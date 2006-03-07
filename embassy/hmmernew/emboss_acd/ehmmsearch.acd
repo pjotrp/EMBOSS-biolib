@@ -42,9 +42,9 @@ endsection: input
 
 
 
-section: additional
+section: required
 [
-  information: "Advanced section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -53,6 +53,14 @@ integer: a
   standard: "Y"
   information: "Number of alignments"
   help: "Limits the alignment output to the <n> best scoring domains. -A0 shuts off the alignment output and can be used to reduce the size of output files."
+]
+
+endsection: required
+
+section: additional
+[
+  information: "Additional section"
+  type: "page"
 ]
 
 float: e
@@ -71,12 +79,6 @@ float: t
   help: " Set the bit score cutoff for the per-sequence ranked hit list to <x>, where <x> is a real number. The default is negative infinity; by default, the threshold is controlled by E-value and not by bit score. Hits with bit scores better than (greater than) this threshold will be shown."
 ]
 
-integer: z
-[
-  information: "Calc E-value for fixed database size."
-  help: "Calculate the E-value scores as if we had seen a sequence database of <n> sequences. The default is the number of sequences seen in your database file <seqfile>."
-]
-
 endsection: additional
 
 
@@ -88,6 +90,12 @@ section: advanced
   information: "Advanced section"
   type: "page"
 ]
+integer: z
+[
+  information: "Calc E-value for fixed database size."
+  help: "Calculate the E-value scores as if we had seen a sequence database of <n> sequences. The default is the number of sequences seen in your database file <seqfile>."
+]
+
 
 boolean: compat
 [
@@ -181,7 +189,6 @@ outfile: outfile
 [
   parameter: "Y"
   knowntype: "hmmsearch output"
-  information: "hmmsearch output file"
   help: "The output consists of four sections: a ranked list of the best scoring sequences, a ranked list of the best scoring domains, alignments for all the best scoring domains, and a histogram of the scores. A sequence score may be higher than a domain score for the same sequence if there is more than one domain in the sequence; the sequence score takes into account all the domains. All sequences scoring above the -E and -T cutoffs are shown in the frst list, then every domain found in this list is shown in the second list of domain hits. If desired, E-value and bit score thresholds may also be applied to the domain list using the -domE and -domT options."
 ]
 

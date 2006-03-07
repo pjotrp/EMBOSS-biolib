@@ -30,9 +30,9 @@ endsection: input
 
 
 
-section: additional
+section: required
 [
-  information: "Advanced section"
+  information: "Required section"
   type: "page"
 ]
 
@@ -50,7 +50,7 @@ list: format
   button: "Y"
 ]
 
-endsection: additional
+endsection: required
 
 
 
