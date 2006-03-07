@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 showseq
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ showseq
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Display a sequence with features, translation etc
-
 <H2>
     Description
 </H2>
@@ -369,14 +366,14 @@ Output file [paamir.showseq]: <b></b>
 <p>
 <a href="#output.9">Go to the output files for this example</a><p><p>
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     (Gapped) sequence(s) filename and optional
+                                  format, or reference (input USA)
    -format             menu       Display format
 *  -things             menu       Specify a list of one or more code
                                   characters in the order in which you wish
@@ -633,39 +630,38 @@ Output file [paamir.showseq]: <b></b>
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 </pre>
 </td></tr></table>
@@ -680,7 +676,7 @@ Output file [paamir.showseq]: <b></b>
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>(Gapped) sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -1022,7 +1018,6 @@ pax* | 10</td>
 </table>
 
 
-
 <H2>
     Input file format
 </H2>
@@ -1181,7 +1176,6 @@ SQ   SEQUENCE   132 AA;  15305 MW;  BCF9EB31 CRC32;
 //
 </pre>
 </td></tr></table><p>
-
 
 <p>
 
@@ -1514,7 +1508,6 @@ regulation
 </pre>
 </td></tr></table><p>
 
-
 <p>
 
 Most of the variants of the output format have already been described in
@@ -1637,7 +1630,6 @@ The directories are searched in the following order:
 <p>
 
 
-
 <p>
 The Genetic Code data files are based on the NCBI genetic code tables.
 Their names and descriptions are:
@@ -1729,7 +1721,6 @@ Base3  = TCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAGTCAG
 
 </pre>
 
-
 <p>      
 The EMBOSS REBASE restriction enzyme data files are stored iin
 directory 'data/REBASE/*' under the EMBOSS installation directory.
@@ -1773,7 +1764,6 @@ of the pair of enzymes is the name that is not preferred and the second
 is the preferred (prototype) name. 
 	 
 	          
-
 
 <H2>
     Notes
@@ -1822,33 +1812,132 @@ It is not a bug. Please don't report it.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="abiview.html">abiview</a></td><td>Reads ABI file and display the trace</td></tr>
-<tr><td><a href="backtranambig.html">backtranambig</a></td><td>Back translate a protein sequence to ambiguous codons</td></tr>
-<tr><td><a href="backtranseq.html">backtranseq</a></td><td>Back translate a protein sequence</td></tr>
-<tr><td><a href="cirdna.html">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
-<tr><td><a href="coderet.html">coderet</a></td><td>Extract CDS, mRNA and translations from feature tables</td></tr>
-<tr><td><a href="lindna.html">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
-<tr><td><a href="pepnet.html">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
-<tr><td><a href="pepwheel.html">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
-<tr><td><a href="plotorf.html">plotorf</a></td><td>Plot potential open reading frames</td></tr>
-<tr><td><a href="prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
-<tr><td><a href="prettyseq.html">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
-<tr><td><a href="recoder.html">recoder</a></td><td>Remove restriction sites but maintain same translation</td></tr>
-<tr><td><a href="redata.html">redata</a></td><td>Search REBASE for enzyme name, references, suppliers etc</td></tr>
-<tr><td><a href="remap.html">remap</a></td><td>Display sequence with restriction sites, translation etc</td></tr>
-<tr><td><a href="restover.html">restover</a></td><td>Find restriction enzymes producing specific overhang</td></tr>
-<tr><td><a href="restrict.html">restrict</a></td><td>Finds restriction enzyme cleavage sites</td></tr>
-<tr><td><a href="seealso.html">seealso</a></td><td>Finds programs sharing group names</td></tr>
-<tr><td><a href="showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
-<tr><td><a href="showdb.html">showdb</a></td><td>Displays information on the currently available databases</td></tr>
-<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
-<tr><td><a href="showorf.html">showorf</a></td><td>Pretty output of DNA translations</td></tr>
-<tr><td><a href="silent.html">silent</a></td><td>Silent mutation restriction enzyme scan</td></tr>
-<tr><td><a href="sixpack.html">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
-<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation. Slow, use SRS and Entrez!</td></tr>
-<tr><td><a href="transeq.html">transeq</a></td><td>Translate nucleic acid sequences</td></tr>
-</table>
+<tr>
+<td><a href="abiview.html">abiview</a></td>
+<td>Reads ABI file and display the trace</td>
+</tr>
 
+<tr>
+<td><a href="backtranambig.html">backtranambig</a></td>
+<td>Back translate a protein sequence to ambiguous codons</td>
+</tr>
+
+<tr>
+<td><a href="backtranseq.html">backtranseq</a></td>
+<td>Back translate a protein sequence</td>
+</tr>
+
+<tr>
+<td><a href="cirdna.html">cirdna</a></td>
+<td>Draws circular maps of DNA constructs</td>
+</tr>
+
+<tr>
+<td><a href="coderet.html">coderet</a></td>
+<td>Extract CDS, mRNA and translations from feature tables</td>
+</tr>
+
+<tr>
+<td><a href="lindna.html">lindna</a></td>
+<td>Draws linear maps of DNA constructs</td>
+</tr>
+
+<tr>
+<td><a href="pepnet.html">pepnet</a></td>
+<td>Displays proteins as a helical net</td>
+</tr>
+
+<tr>
+<td><a href="pepwheel.html">pepwheel</a></td>
+<td>Shows protein sequences as helices</td>
+</tr>
+
+<tr>
+<td><a href="plotorf.html">plotorf</a></td>
+<td>Plot potential open reading frames</td>
+</tr>
+
+<tr>
+<td><a href="prettyplot.html">prettyplot</a></td>
+<td>Displays aligned sequences, with colouring and boxing</td>
+</tr>
+
+<tr>
+<td><a href="prettyseq.html">prettyseq</a></td>
+<td>Output sequence with translated ranges</td>
+</tr>
+
+<tr>
+<td><a href="recoder.html">recoder</a></td>
+<td>Remove restriction sites but maintain same translation</td>
+</tr>
+
+<tr>
+<td><a href="redata.html">redata</a></td>
+<td>Search REBASE for enzyme name, references, suppliers etc</td>
+</tr>
+
+<tr>
+<td><a href="remap.html">remap</a></td>
+<td>Display sequence with restriction sites, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="restover.html">restover</a></td>
+<td>Find restriction enzymes producing specific overhang</td>
+</tr>
+
+<tr>
+<td><a href="restrict.html">restrict</a></td>
+<td>Finds restriction enzyme cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="seealso.html">seealso</a></td>
+<td>Finds programs sharing group names</td>
+</tr>
+
+<tr>
+<td><a href="showalign.html">showalign</a></td>
+<td>Displays a multiple sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="showdb.html">showdb</a></td>
+<td>Displays information on the currently available databases</td>
+</tr>
+
+<tr>
+<td><a href="showfeat.html">showfeat</a></td>
+<td>Show features of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="showorf.html">showorf</a></td>
+<td>Pretty output of DNA translations</td>
+</tr>
+
+<tr>
+<td><a href="silent.html">silent</a></td>
+<td>Silent mutation restriction enzyme scan</td>
+</tr>
+
+<tr>
+<td><a href="sixpack.html">sixpack</a></td>
+<td>Display a DNA sequence with 6-frame translation and ORFs</td>
+</tr>
+
+<tr>
+<td><a href="textsearch.html">textsearch</a></td>
+<td>Search sequence documentation. Slow, use SRS and Entrez!</td>
+</tr>
+
+<tr>
+<td><a href="transeq.html">transeq</a></td>
+<td>Translate nucleic acid sequences</td>
+</tr>
+
+</table>
 
 <H2>
     Author(s)
@@ -1857,7 +1946,6 @@ Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
 <br>
 MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
 
 
 
@@ -1871,18 +1959,15 @@ Written 1999 - GWW
 <br>
 20 Nov 2001 - feature matches and annotation display added - GWW
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

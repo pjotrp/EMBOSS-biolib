@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 primersearch
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ primersearch
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Searches DNA sequences for matches with primer pairs
-
 
 <H2>
     Description
@@ -86,14 +83,14 @@ Output file [hsa203yc1.primersearch]: <b></b>
 <a href="#output.2">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-seqall]            seqall     Sequence database USA
+  [-seqall]            seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
   [-infile]            infile     Primer file
   [-mismatchpercent]   integer    Allowed percent mismatch
   [-outfile]           outfile    Output file name
@@ -136,7 +133,6 @@ Output file [hsa203yc1.primersearch]: <b></b>
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -150,7 +146,7 @@ Output file [hsa203yc1.primersearch]: <b></b>
 
 <tr>
 <td>[-seqall]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>Nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -197,7 +193,6 @@ Output file [hsa203yc1.primersearch]: <b></b>
 </tr>
 
 </table>
-
 
 
 <H2>
@@ -290,7 +285,6 @@ SQ   Sequence 389 BP; 118 A; 124 C; 86 G; 57 T; 4 other;
 </pre>
 </td></tr></table><p>
 
-
 <p>
 
 The input primer file has the following format:
@@ -375,7 +369,6 @@ Amplimer 2
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Data files
 </H2>
@@ -448,10 +441,17 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="eprimer3.html">eprimer3</a></td><td>Picks PCR primers and hybridization oligos</td></tr>
-<tr><td><a href="stssearch.html">stssearch</a></td><td>Search a DNA database for matches with a set of STS primers</td></tr>
-</table>
+<tr>
+<td><a href="eprimer3.html">eprimer3</a></td>
+<td>Picks PCR primers and hybridization oligos</td>
+</tr>
 
+<tr>
+<td><a href="stssearch.html">stssearch</a></td>
+<td>Search a DNA database for matches with a set of STS primers</td>
+</tr>
+
+</table>
 
 <p>
 
@@ -470,13 +470,11 @@ Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
 Cambridge, CB10 1SA, UK. 
 
 
-
 <H2>
     History
 </H2>
 
 Written Aug 2000 - Val Curwen
-
 
 <H2>
     Target users
@@ -484,12 +482,10 @@ Written Aug 2000 - Val Curwen
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

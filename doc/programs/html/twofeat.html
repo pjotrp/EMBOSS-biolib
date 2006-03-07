@@ -12,7 +12,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 twofeat
 </font></b>
 </td></tr>
@@ -21,12 +20,10 @@ twofeat
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Finds neighbouring pairs of features in sequences
-
 <H2>
     Description
 </H2>
@@ -123,14 +120,14 @@ Output report [hsfau.twofeat]: <b></b>
 <p>
 <a href="#output.2">Go to the output files for this example</a><p><p>
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
    -atype              string     By default every feature in the feature
                                   table is allowed. You can set this to be any
                                   feature type you wish to allow.
@@ -331,46 +328,45 @@ Output report [hsfau.twofeat]: <b></b>
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -rformat2            string     Report format
-   -rname2              string     Base file name
-   -rextension2         string     File name extension
-   -rdirectory2         string     Output directory
-   -raccshow2           boolean    Show accession number in the report
-   -rdesshow2           boolean    Show description in the report
-   -rscoreshow2         boolean    Show the score in the report
-   -rusashow2           boolean    Show the full USA in the report
+   -rformat2           string     Report format
+   -rname2             string     Base file name
+   -rextension2        string     File name extension
+   -rdirectory2        string     Output directory
+   -raccshow2          boolean    Show accession number in the report
+   -rdesshow2          boolean    Show description in the report
+   -rscoreshow2        boolean    Show the score in the report
+   -rusashow2          boolean    Show the full USA in the report
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 </pre>
 </td></tr></table>
@@ -384,7 +380,7 @@ Output report [hsfau.twofeat]: <b></b>
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>Sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -599,7 +595,6 @@ You can allow any or no overlaps, specify that they must or must not overlap, th
 
 </table>
 
-
 <H2>
     Input file format
 </H2>
@@ -694,7 +689,6 @@ SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -720,7 +714,6 @@ for further information on report formats.
 
 <p>
 
-
 <b>twofeat</b> 
 outputs a report format file. The default format is <b>table</b>
 
@@ -736,6 +729,12 @@ outputs a report format file. The default format is <b>table</b>
 ########################################
 # Program: twofeat
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: twofeat
+#    [-sequence] tembl:hsfau
+#    -atype polyA_signal
+#    -btype polyA_site
+#    -minrange 10
+#    -maxrange 50
 # Report_format: table
 # Report_file: hsfau.twofeat
 ########################################
@@ -766,7 +765,6 @@ HSFAU	EMBL	polyA_signal	484	489	0.000	+	.	Sequence "HSFAU.6"
 HSFAU	EMBL	polyA_site	509	509	0.000	+	.	Sequence "HSFAU.7" ; FeatFlags "0x40"
 </pre>
 </td></tr></table><p>
-
 
 <H2>
     Data files
@@ -818,12 +816,27 @@ This does no affect the results.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="coderet.html">coderet</a></td><td>Extract CDS, mRNA and translations from feature tables</td></tr>
-<tr><td><a href="extractfeat.html">extractfeat</a></td><td>Extract features from a sequence</td></tr>
-<tr><td><a href="maskfeat.html">maskfeat</a></td><td>Mask off features of a sequence</td></tr>
-<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
-</table>
+<tr>
+<td><a href="coderet.html">coderet</a></td>
+<td>Extract CDS, mRNA and translations from feature tables</td>
+</tr>
 
+<tr>
+<td><a href="extractfeat.html">extractfeat</a></td>
+<td>Extract features from a sequence</td>
+</tr>
+
+<tr>
+<td><a href="maskfeat.html">maskfeat</a></td>
+<td>Mask off features of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="showfeat.html">showfeat</a></td>
+<td>Show features of a sequence</td>
+</tr>
+
+</table>
 
 
 <H2>
@@ -835,7 +848,6 @@ MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
-
 <H2>
     History
 </H2>
@@ -843,18 +855,15 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 Written (2002) - Gary Williams
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

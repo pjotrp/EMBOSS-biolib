@@ -12,7 +12,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 eprimer3
 </font></b>
 </td></tr>
@@ -20,12 +19,10 @@ eprimer3
 <br>&nbsp;
 <p>
 
-
 <H2>
     Function
 </H2>
 Picks PCR primers and hybridization oligos
-
 <H2>
     Description
 </H2>
@@ -145,7 +142,6 @@ Picks PCR primers and hybridization oligos
 </pre></td></tr></table><p>
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
-
 
 
 <H2>
@@ -694,7 +690,6 @@ Picks PCR primers and hybridization oligos
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -816,7 +811,7 @@ E.g. 401,407 68,70 forbids selection of primers in the 7 bases starting at 401 a
 <tr>
 <td>-osize</td>
 <td>Optimum length (in bases) of a primer oligo. EPrimer3 will attempt to pick primers close to this length.</td>
-<td>Integer 1 or more</td>
+<td>Integer 0 or more</td>
 <td>20</td>
 </tr>
 
@@ -1181,7 +1176,6 @@ The scoring system is as for the Maximum Complementarity argument. In the exampl
 </table>
 
 
-
 <H2>
     Input file format
 </H2>
@@ -1306,7 +1300,6 @@ SQ   Sequence 2016 BP; 421 A; 562 C; 538 G; 495 T; 0 other;
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -1385,7 +1378,6 @@ SQ   Sequence 2016 BP; 421 A; 562 C; 538 G; 495 T; 0 other;
 
 </pre>
 </td></tr></table><p>
-
 <p>
 
 If the '-explain' flag has been used, as in the example, then statistics
@@ -1499,10 +1491,17 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="primersearch.html">primersearch</a></td><td>Searches DNA sequences for matches with primer pairs</td></tr>
-<tr><td><a href="stssearch.html">stssearch</a></td><td>Search a DNA database for matches with a set of STS primers</td></tr>
-</table>
+<tr>
+<td><a href="primersearch.html">primersearch</a></td>
+<td>Searches DNA sequences for matches with primer pairs</td>
+</tr>
 
+<tr>
+<td><a href="stssearch.html">stssearch</a></td>
+<td>Search a DNA database for matches with a set of STS primers</td>
+</tr>
+
+</table>
 
 
 <H2>
@@ -1518,7 +1517,6 @@ Gary Williams (gwilliam&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
 <br>
 MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
 
 
 <H2>
@@ -1549,18 +1547,15 @@ with version 3.0.6 installed.
 To avoid the conflict, the EMBOSS program was renamed 'eprimer3'. 
 eprimer3 was released in version 2.3.0 of EMBOSS
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 
 </BODY>

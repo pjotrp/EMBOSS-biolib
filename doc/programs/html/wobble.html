@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 wobble
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ wobble
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Wobble base plot
-
 
 <H2>
     Description
@@ -64,7 +61,7 @@ Here is a sample session with wobble. The example sequence is from Pseudomonas a
 
 % <b>wobble </b>
 Wobble base plot
-Input sequence: <b>tembl:paamir</b>
+Input nucleotide sequence: <b>tembl:paamir</b>
 Graph type [x11]: <b>cps</b>
 Output file [paamir.wobble]: <b></b>
 
@@ -75,14 +72,14 @@ Created wobble.ps
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Sequence USA
+  [-sequence]          sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
    -graph              xygraph    Graph type
   [-outfile]           outfile    Output file name
 
@@ -137,7 +134,6 @@ Created wobble.ps
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -150,7 +146,7 @@ Created wobble.ps
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence USA</td>
+<td>Nucleotide sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
@@ -196,7 +192,6 @@ Created wobble.ps
 </tr>
 
 </table>
-
 
 
 <H2>
@@ -324,7 +319,6 @@ SQ   Sequence 2167 BP; 363 A; 712 C; 730 G; 362 T; 0 other;
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -344,7 +338,6 @@ Expected GC content in third position = 66.54
 </td></tr></table><p>
 <p><h3>Graphics File: wobble.ps</h3>
 <p><img src="wobble.1.wobble.gif" alt="[wobble results]">
-
 
 <H2>
     Data files
@@ -410,15 +403,42 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="getorf.html">getorf</a></td><td>Finds and extracts open reading frames (ORFs)</td></tr>
-<tr><td><a href="marscan.html">marscan</a></td><td>Finds MAR/SAR sites in nucleic sequences</td></tr>
-<tr><td><a href="plotorf.html">plotorf</a></td><td>Plot potential open reading frames</td></tr>
-<tr><td><a href="showorf.html">showorf</a></td><td>Pretty output of DNA translations</td></tr>
-<tr><td><a href="sixpack.html">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
-<tr><td><a href="syco.html">syco</a></td><td>Synonymous codon usage Gribskov statistic plot</td></tr>
-<tr><td><a href="tcode.html">tcode</a></td><td>Fickett TESTCODE statistic to identify protein-coding DNA</td></tr>
-</table>
+<tr>
+<td><a href="getorf.html">getorf</a></td>
+<td>Finds and extracts open reading frames (ORFs)</td>
+</tr>
 
+<tr>
+<td><a href="marscan.html">marscan</a></td>
+<td>Finds MAR/SAR sites in nucleic sequences</td>
+</tr>
+
+<tr>
+<td><a href="plotorf.html">plotorf</a></td>
+<td>Plot potential open reading frames</td>
+</tr>
+
+<tr>
+<td><a href="showorf.html">showorf</a></td>
+<td>Pretty output of DNA translations</td>
+</tr>
+
+<tr>
+<td><a href="sixpack.html">sixpack</a></td>
+<td>Display a DNA sequence with 6-frame translation and ORFs</td>
+</tr>
+
+<tr>
+<td><a href="syco.html">syco</a></td>
+<td>Synonymous codon usage Gribskov statistic plot</td>
+</tr>
+
+<tr>
+<td><a href="tcode.html">tcode</a></td>
+<td>Fickett TESTCODE statistic to identify protein-coding DNA</td>
+</tr>
+
+</table>
 <!--
 
 <H2>
@@ -431,13 +451,11 @@ Alan Bleasby (ajb&nbsp;&copy;&nbsp;ebi.ac.uk)
 European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 
-
 <H2>
     History
 </H2>
 
 Completed Spring 2000.
-
 
 <H2>
     Target users
@@ -445,12 +463,10 @@ Completed Spring 2000.
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

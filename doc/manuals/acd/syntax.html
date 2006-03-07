@@ -1180,6 +1180,7 @@ maxlength: <i>(INT_MAX)</i><br>
 pattern: ""<br>
 upper: N<br>
 lower: N<br>
+word: N<br>
 
  </p>
  </td>
@@ -4300,6 +4301,18 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   </td>
  </tr>
 
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>word: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Disallow whitespace in strings<br>Default: N</p>
+  </td>
+ </tr>
+
 </table>
 
 <a name=table41>&nbsp;</a>
@@ -4369,12 +4382,16 @@ the length of the sequence to which they are applied.</p>
 
 <p>The <i>minlength:</i> attribute defines the minimum length the string must
 be, the <i>maxlength:</i> attribute defines the maximum length the string
-can be.</p>
+can be. The default minimum length is zero. There is no default maximum.</p>
 
 <p>The <i>pattern:</i> attribute defines a regular expression used to
 check the string value. ACD uses the Perl-compatible regular
 expression library (PCRE) so any Perl-compatible regular expression should be
 usable.</p>
+
+<p>The <i>word:</i> attribute requires the result to be a valid word
+with no whitespace. The default minimum length of zero allows an empty
+string but this is not accepted as a word. This may change in future.</p>
 
 <h5>Toggle</h5>
 

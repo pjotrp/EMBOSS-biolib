@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 stretcher
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ stretcher
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Finds the best global alignment between two sequences
-
 
 <H2>
     Description
@@ -98,15 +95,16 @@ Output alignment [hba_human.stretcher]: <b></b>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence USA
-  [-bsequence]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
   [-outfile]           align      Output alignment file name
 
    Additional (Optional) qualifiers:
@@ -180,7 +178,6 @@ Output alignment [hba_human.stretcher]: <b></b>
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -194,14 +191,14 @@ Output alignment [hba_human.stretcher]: <b></b>
 
 <tr>
 <td>[-asequence]<br>(Parameter 1)</td>
-<td>Sequence USA</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-bsequence]<br>(Parameter 2)</td>
-<td>Sequence USA</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
@@ -251,7 +248,6 @@ Output alignment [hba_human.stretcher]: <b></b>
 </tr>
 
 </table>
-
 
 
 <H2>
@@ -492,7 +488,6 @@ SQ   SEQUENCE   146 AA;  15867 MW;  EC9744C9 CRC32;
 </td></tr></table><p>
 
 
-
 <H2>
     Output file format
 </H2>
@@ -528,7 +523,6 @@ for further information on alignment formats.
 
 <p>
 
-
 <p>
 
 The default output format is 'markx0'.
@@ -544,6 +538,9 @@ The default output format is 'markx0'.
 ########################################
 # Program: stretcher
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: stretcher
+#    [-asequence] tsw:hba_human
+#    [-bsequence] tsw:hbb_human
 # Align_format: markx0
 # Report_file: hba_human.stretcher
 ########################################
@@ -589,7 +586,6 @@ HBB_HU DPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH
 #---------------------------------------
 </pre>
 </td></tr></table><p>
-
 
 <H2>
     Data files
@@ -676,10 +672,17 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="est2genome.html">est2genome</a></td><td>Align EST and genomic DNA sequences</td></tr>
-<tr><td><a href="needle.html">needle</a></td><td>Needleman-Wunsch global alignment</td></tr>
-</table>
+<tr>
+<td><a href="est2genome.html">est2genome</a></td>
+<td>Align EST and genomic DNA sequences</td>
+</tr>
 
+<tr>
+<td><a href="needle.html">needle</a></td>
+<td>Needleman-Wunsch global alignment</td>
+</tr>
+
+</table>
 
 <H2>
     Author(s)
@@ -695,7 +698,6 @@ Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
 Cambridge, CB10 1SA, UK.                      
 
 
-
 <H2>
     History
 </H2>
@@ -703,19 +705,16 @@ Cambridge, CB10 1SA, UK.
 
 Completed 13th May 1999.
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

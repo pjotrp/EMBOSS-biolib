@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 wossname
 </font></b>
 </td></tr>
@@ -22,13 +21,11 @@ wossname
 <p>
 
 
-
 <H2>
     Function
 </H2>
 
 Finds programs by keywords in their one-line documentation
-
 
 <H2>
     Description
@@ -192,16 +189,25 @@ showfeat         Show features of a sequence
 twofeat          Finds neighbouring pairs of features in sequences
 
 HMM
-ealistat         Statistics for multiple alignment files
-ehmmalign        Align sequences with an HMM
-ehmmbuild        Build HMM
-ehmmcalibrate    Calibrate a hidden Markov model
-ehmmconvert      Convert between HMM formats
-ehmmemit         Extract HMM sequences
-ehmmfetch        Extract HMM from a database
-ehmmindex        Index an HMM database
-ehmmpfam         Align single sequence with an HMM
-ehmmsearch       Search sequence database with an HMM
+ehmmalign        Align sequences to an HMM profile
+ehmmbuild        Build a profile HMM from an alignment
+ehmmcalibrate    Calibrate HMM search statistics
+ehmmconvert      Convert between profile HMM file formats
+ehmmemit         Generate sequences from a profile HMM
+ehmmfetch        Retrieve an HMM from an HMM database
+ehmmindex        Create a binary SSI index for an HMM database
+ehmmpfam         Search one or more sequences against an HMM database
+ehmmsearch       Search a sequence database with a profile HMM
+oalistat         Statistics for multiple alignment files
+ohmmalign        Align sequences with an HMM
+ohmmbuild        Build HMM
+ohmmcalibrate    Calibrate a hidden Markov model
+ohmmconvert      Convert between HMM formats
+ohmmemit         Extract HMM sequences
+ohmmfetch        Extract HMM from a database
+ohmmindex        Index an HMM database
+ohmmpfam         Align single sequence with an HMM
+ohmmsearch       Search sequence database with an HMM
 
 INFORMATION
 infoalign        Information on a multiple sequence alignment
@@ -299,12 +305,12 @@ vrnadistance     RNA distances
 vrnaduplex       RNA duplex calculation
 vrnaeval         RNA eval
 vrnaevalpair     RNA eval with cofold
-vrnafold         Calculate 2ry structures of RNAs
+vrnafold         Calculate secondary structures of RNAs
 vrnafoldpf       Secondary structures of RNAs with partition
 vrnaheat         RNA melting
 vrnainverse      RNA sequences matching a structure
-vrnalfold        Calculate locally stable 2ry structures of RNAs
-vrnaplot         Plot ernafold output
+vrnalfold        Calculate locally stable secondary structures of RNAs
+vrnaplot         Plot vrnafold output
 vrnasubopt       Calculate RNA suboptimals
 
 NUCLEIC TRANSCRIPTION
@@ -350,7 +356,6 @@ fpars            Discrete character parsimony
 fpenny           Penny algorithm, branch-and-bound
 
 PHYLOGENY DISTANCE MATRIX
-distmat          Creates a distance matrix from multiple alignments
 efitch           Fitch-Margoliash and Least-Squares Distance Methods
 ekitsch          Fitch-Margoliash method with contemporary tips
 eneighbor        Phylogenies from distance matrix by N-J or UPGMA method
@@ -364,6 +369,7 @@ fcontml          Gene frequency and continuous character Maximum Likelihood
 fgendist         Compute genetic distances from gene frequencies
 
 PHYLOGENY MOLECULAR SEQUENCE
+distmat          Creates a distance matrix from multiple alignments
 ednacomp         DNA compatibility algorithm
 ednadist         Nucleic acid sequence Distance Matrix program
 ednainvar        Nucleic acid sequence Invariants method
@@ -588,7 +594,6 @@ dotmatcher       Displays a thresholded dotplot of two sequences
 dotpath          Non-overlapping wordmatch dotplot of two sequences
 dottup           Displays a wordmatch dotplot of two sequences
 dreg             Regular expression search of a nucleotide sequence
-ealistat         Statistics for multiple alignment files
 eclique          Largest clique program
 econsense        Majority-rule and strict consensus tree
 econtml          Continuous character Maximum Likelihood method
@@ -605,15 +610,15 @@ edolpenny        Penny algorithm Dollo or polymorphism
 efactor          Multistate to binary recoding program
 efitch           Fitch-Margoliash and Least-Squares Distance Methods
 egendist         Genetic Distance Matrix program
-ehmmalign        Align sequences with an HMM
-ehmmbuild        Build HMM
-ehmmcalibrate    Calibrate a hidden Markov model
-ehmmconvert      Convert between HMM formats
-ehmmemit         Extract HMM sequences
-ehmmfetch        Extract HMM from a database
-ehmmindex        Index an HMM database
-ehmmpfam         Align single sequence with an HMM
-ehmmsearch       Search sequence database with an HMM
+ehmmalign        Align sequences to an HMM profile
+ehmmbuild        Build a profile HMM from an alignment
+ehmmcalibrate    Calibrate HMM search statistics
+ehmmconvert      Convert between profile HMM file formats
+ehmmemit         Generate sequences from a profile HMM
+ehmmfetch        Retrieve an HMM from an HMM database
+ehmmindex        Create a binary SSI index for an HMM database
+ehmmpfam         Search one or more sequences against an HMM database
+ehmmsearch       Search a sequence database with a profile HMM
 einverted        Finds DNA inverted repeats
 ekitsch          Fitch-Margoliash method with contemporary tips
 embossdata       Finds or fetches data files read by EMBOSS programs
@@ -717,8 +722,18 @@ newseq           Type in a short new sequence
 noreturn         Removes carriage return from ASCII files
 notseq           Exclude a set of sequences and write out the remaining ones
 nthseq           Writes one sequence from a multiple set of sequences
+oalistat         Statistics for multiple alignment files
 octanol          Displays protein hydropathy
 oddcomp          Find protein sequence regions with a biased composition
+ohmmalign        Align sequences with an HMM
+ohmmbuild        Build HMM
+ohmmcalibrate    Calibrate a hidden Markov model
+ohmmconvert      Convert between HMM formats
+ohmmemit         Extract HMM sequences
+ohmmfetch        Extract HMM from a database
+ohmmindex        Index an HMM database
+ohmmpfam         Align single sequence with an HMM
+ohmmsearch       Search sequence database with an HMM
 palindrome       Looks for inverted repeats in a nucleotide sequence
 pasteseq         Insert one sequence into another
 patmatdb         Search a protein sequence with a motif
@@ -812,12 +827,12 @@ vrnadistance     RNA distances
 vrnaduplex       RNA duplex calculation
 vrnaeval         RNA eval
 vrnaevalpair     RNA eval with cofold
-vrnafold         Calculate 2ry structures of RNAs
+vrnafold         Calculate secondary structures of RNAs
 vrnafoldpf       Secondary structures of RNAs with partition
 vrnaheat         RNA melting
 vrnainverse      RNA sequences matching a structure
-vrnalfold        Calculate locally stable 2ry structures of RNAs
-vrnaplot         Plot ernafold output
+vrnalfold        Calculate locally stable secondary structures of RNAs
+vrnaplot         Plot vrnafold output
 vrnasubopt       Calculate RNA suboptimals
 water            Smith-Waterman local alignment
 whichdb          Search all databases for an entry
@@ -901,13 +916,12 @@ Output html tags around the list of programs:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>wossname '' -html -prelink 'http://emboss.sf.net/apps/' -postlink '.html' -out wossname.html </b>
+% <b>wossname '' -html -out wossname.html </b>
 Finds programs by keywords in their one-line documentation
 
 </pre></td></tr></table><p>
 <p>
 <a href="#output.5">Go to the output files for this example</a><p><p>
-
 
 
 <H2>
@@ -922,7 +936,7 @@ Finds programs by keywords in their one-line documentation
                                   EMBOSS programs. If no keyword is specified,
                                   all programs will be listed.
 
-   Additional (Optional) qualifiers (* if not always prompted):
+   Additional (Optional) qualifiers:
    -explode            boolean    The groups that EMBOSS applications belong
                                   to have two forms, exploded and not
                                   exploded. The exploded group names are more
@@ -938,27 +952,6 @@ Finds programs by keywords in their one-line documentation
    -html               toggle     If you are sending the output to a file,
                                   this will format it for displaying as a
                                   table in a WWW document.
-*  -prelink            string     If you are outputting to a file in HTML
-                                  format, you can make the program names into
-                                  hyper-links by setting this to be the first
-                                  half of the URL.
-                                  For example, if you wish the program name to
-                                  be a hyperlink to the URL:
-                                  http://emboss.sourceforge.net/apps/programname.html
-                                  then if you enter
-                                  http://emboss.sourceforge.net/apps/ here,
-                                  then the first half of the URL before the
-                                  programname will be set.
-*  -postlink           string     If you are outputting to a file in HTML
-                                  format, you can make the program names into
-                                  hyper-links by setting this to be the second
-                                  half of the URL.
-                                  For example, if you wish the program name to
-                                  be a hyperlink to the URL:
-                                  http://www.uk.embnet.org/Software/EMBOSS/Apps/programname.html
-                                  then if you enter '.html' here, the second
-                                  half of the URL after the programname will
-                                  be set.
    -groups             boolean    If you use this option, then only the group
                                   names will output to the file
    -alphabetic         boolean    If you use this option, then you will get a
@@ -1036,7 +1029,6 @@ Finds programs by keywords in their one-line documentation
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -1079,27 +1071,6 @@ Finds programs by keywords in their one-line documentation
 <td>If you are sending the output to a file, this will format it for displaying as a table in a WWW document.</td>
 <td>Toggle value Yes/No</td>
 <td>No</td>
-</tr>
-
-<tr>
-<td>-prelink</td>
-<td>If you are outputting to a file in HTML format, you can make the program names into hyper-links by setting this to be the first half of the URL.
-For example, if you wish the program name to be a hyperlink to the URL:
-http://emboss.sourceforge.net/apps/programname.html
-then if you enter
-http://emboss.sourceforge.net/apps/ here, then the first half of the URL before the programname will be set.</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
-</tr>
-
-<tr>
-<td>-postlink</td>
-<td>If you are outputting to a file in HTML format, you can make the program names into hyper-links by setting this to be the second half of the URL.
-For example, if you wish the program name to be a hyperlink to the URL:
-http://www.uk.embnet.org/Software/EMBOSS/Apps/programname.html
-then if you enter '.html' here, the second half of the URL after the programname will be set.</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
 </tr>
 
 <tr>
@@ -1160,11 +1131,9 @@ then if you enter '.html' here, the second half of the URL after the programname
 </table>
 
 
-
 <H2>
     Input file format
 </H2>
-
 
 
 
@@ -1197,110 +1166,109 @@ that the programs belong to or the word that is being searched for.
 <h2><a name="ACD">ACD</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/acdc.html">acdc</a></td><td>ACD compiler</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/acdpretty.html">acdpretty</a></td><td>ACD pretty printing utility</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/acdtable.html">acdtable</a></td><td>Creates an HTML table from an ACD file</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/acdtrace.html">acdtrace</a></td><td>ACD compiler on-screen trace</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/acdvalid.html">acdvalid</a></td><td>ACD file validation</td></tr>
+<tr>
+<td><a href="acdc.html">acdc</a></td>
+<td>ACD compiler</td>
+</tr>
+
+<tr>
+<td><a href="acdpretty.html">acdpretty</a></td>
+<td>ACD pretty printing utility</td>
+</tr>
+
+<tr>
+<td><a href="acdtable.html">acdtable</a></td>
+<td>Creates an HTML table from an ACD file</td>
+</tr>
+
+<tr>
+<td><a href="acdtrace.html">acdtrace</a></td>
+<td>ACD compiler on-screen trace</td>
+</tr>
+
+<tr>
+<td><a href="acdvalid.html">acdvalid</a></td>
+<td>ACD file validation</td>
+</tr>
+
 </table>
 <h2><a name="ALIGNMENT CONSENSUS">ALIGNMENT CONSENSUS</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/cons.html">cons</a></td><td>Creates a consensus from multiple alignments</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/megamerger.html">megamerger</a></td><td>Merge two large overlapping nucleic acid sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/merger.html">merger</a></td><td>Merge two overlapping nucleic acid sequences</td></tr>
+<tr>
+<td><a href="cons.html">cons</a></td>
+<td>Creates a consensus from multiple alignments</td>
+</tr>
+
+<tr>
+<td><a href="megamerger.html">megamerger</a></td>
+<td>Merge two large overlapping nucleic acid sequences</td>
+</tr>
+
+<tr>
+<td><a href="merger.html">merger</a></td>
+<td>Merge two overlapping nucleic acid sequences</td>
+</tr>
+
 </table>
 <h2><a name="ALIGNMENT DIFFERENCES">ALIGNMENT DIFFERENCES</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/diffseq.html">diffseq</a></td><td>Find differences between nearly identical sequences</td></tr>
-</table>
-<h2><a name="ALIGNMENT DOT PLOTS">ALIGNMENT DOT PLOTS</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dotmatcher.html">dotmatcher</a></td><td>Displays a thresholded dotplot of two sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dotpath.html">dotpath</a></td><td>Non-overlapping wordmatch dotplot of two sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dottup.html">dottup</a></td><td>Displays a wordmatch dotplot of two sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/polydot.html">polydot</a></td><td>Displays all-against-all dotplots of a set of sequences</td></tr>
-</table>
-<h2><a name="ALIGNMENT GLOBAL">ALIGNMENT GLOBAL</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/esim4.html">esim4</a></td><td>Align an mRNA to a genomic DNA sequence</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/est2genome.html">est2genome</a></td><td>Align EST and genomic DNA sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/needle.html">needle</a></td><td>Needleman-Wunsch global alignment</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/stretcher.html">stretcher</a></td><td>Finds the best global alignment between two sequences</td></tr>
-</table>
-<h2><a name="ALIGNMENT LOCAL">ALIGNMENT LOCAL</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/matcher.html">matcher</a></td><td>Finds the best local alignments between two sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/seqmatchall.html">seqmatchall</a></td><td>All-against-all comparison of a set of sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/supermatcher.html">supermatcher</a></td><td>Match large sequences against one or more other sequences</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/water.html">water</a></td><td>Smith-Waterman local alignment</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/wordmatch.html">wordmatch</a></td><td>Finds all exact matches of a given size between 2 sequences</td></tr>
-</table>
-<h2><a name="ALIGNMENT MULTIPLE">ALIGNMENT MULTIPLE</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/emma.html">emma</a></td><td>Multiple alignment program - interface to ClustalW program</td></tr>
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-<tr><td><a href="http://emboss.sf.net/apps/prophecy.html">prophecy</a></td><td>Creates matrices/profiles from multiple alignments</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/prophet.html">prophet</a></td><td>Gapped alignment for profiles</td></tr>
-</table>
-<h2><a name="TEST">TEST</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/crystalball.html">crystalball</a></td><td>Answers every drug discovery question about a sequence</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/myseq.html">myseq</a></td><td>Demonstration of sequence reading</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/mytest.html">mytest</a></td><td>Demonstration of sequence reading</td></tr>
-</table>
-<h2><a name="UTILS DATABASE CREATION">UTILS DATABASE CREATION</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/aaindexextract.html">aaindexextract</a></td><td>Extract data from AAINDEX</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/allversusall.html">allversusall</a></td><td>Sequence similarity data from all-versus-all comparison</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/cathparse.html">cathparse</a></td><td>Generates DCF file from raw CATH files</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/cutgextract.html">cutgextract</a></td><td>Extract data from CUTG</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/domainer.html">domainer</a></td><td>Generates domain CCF files from protein CCF files</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/domainnr.html">domainnr</a></td><td>Removes redundant domains from a DCF file</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/domainseqs.html">domainseqs</a></td><td>Adds sequence records to a DCF file</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/domainsse.html">domainsse</a></td><td>Add secondary structure records to a DCF file</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/hetparse.html">hetparse</a></td><td>Converts heterogen group dictionary to EMBL-like format</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/pdbparse.html">pdbparse</a></td><td>Parses PDB files and writes protein CCF files</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/pdbplus.html">pdbplus</a></td><td>Add accessibility & secondary structure to a CCF file</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/pdbtosp.html">pdbtosp</a></td><td>Convert swissprot:PDB codes file to EMBL-like format</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/printsextract.html">printsextract</a></td><td>Extract data from PRINTS</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/prosextract.html">prosextract</a></td><td>Build the PROSITE motif database for use by patmatmotifs</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/rebaseextract.html">rebaseextract</a></td><td>Extract data from REBASE</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/scopparse.html">scopparse</a></td><td>Generate DCF file from raw SCOP files</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/seqnr.html">seqnr</a></td><td>Removes redundancy from DHF files</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/sites.html">sites</a></td><td>Generate residue-ligand CON files from CCF files</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/ssematch.html">ssematch</a></td><td>Search a DCF file for secondary structure matches</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/tfextract.html">tfextract</a></td><td>Extract data from TRANSFAC</td></tr>
-</table>
-<h2><a name="UTILS DATABASE INDEXING">UTILS DATABASE INDEXING</a></h2>
-<table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dbiblast.html">dbiblast</a></td><td>Index a BLAST database</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dbifasta.html">dbifasta</a></td><td>Database indexing for fasta file databases</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dbiflat.html">dbiflat</a></td><td>Index a flat file database</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dbigcg.html">dbigcg</a></td><td>Index a GCG formatted database</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dbxfasta.html">dbxfasta</a></td><td>Database b+tree indexing for fasta file databases</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dbxflat.html">dbxflat</a></td><td>Database b+tree indexing for flat file databases</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/dbxgcg.html">dbxgcg</a></td><td>Database b+tree indexing for GCG formatted databases</td></tr>
+<tr>
+<td><a href="dbiblast.html">dbiblast</a></td>
+<td>Index a BLAST database</td>
+</tr>
+
+<tr>
+<td><a href="dbifasta.html">dbifasta</a></td>
+<td>Database indexing for fasta file databases</td>
+</tr>
+
+<tr>
+<td><a href="dbiflat.html">dbiflat</a></td>
+<td>Index a flat file database</td>
+</tr>
+
+<tr>
+<td><a href="dbigcg.html">dbigcg</a></td>
+<td>Index a GCG formatted database</td>
+</tr>
+
+<tr>
+<td><a href="dbxfasta.html">dbxfasta</a></td>
+<td>Database b+tree indexing for fasta file databases</td>
+</tr>
+
+<tr>
+<td><a href="dbxflat.html">dbxflat</a></td>
+<td>Database b+tree indexing for flat file databases</td>
+</tr>
+
+<tr>
+<td><a href="dbxgcg.html">dbxgcg</a></td>
+<td>Database b+tree indexing for GCG formatted databases</td>
+</tr>
+
 </table>
 <h2><a name="UTILS MISC">UTILS MISC</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="http://emboss.sf.net/apps/embossdata.html">embossdata</a></td><td>Finds or fetches data files read by EMBOSS programs</td></tr>
-<tr><td><a href="http://emboss.sf.net/apps/embossversion.html">embossversion</a></td><td>Writes the current EMBOSS version number</td></tr>
+<tr>
+<td><a href="embossdata.html">embossdata</a></td>
+<td>Finds or fetches data files read by EMBOSS programs</td>
+</tr>
+
+<tr>
+<td><a href="embossversion.html">embossversion</a></td>
+<td>Writes the current EMBOSS version number</td>
+</tr>
+
 </table>
 </td></tr></table><p>
-
 
 
 <p>
@@ -1377,15 +1345,42 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="infoalign.html">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
-<tr><td><a href="infoseq.html">infoseq</a></td><td>Displays some simple information about sequences</td></tr>
-<tr><td><a href="seealso.html">seealso</a></td><td>Finds programs sharing group names</td></tr>
-<tr><td><a href="showdb.html">showdb</a></td><td>Displays information on the currently available databases</td></tr>
-<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation. Slow, use SRS and Entrez!</td></tr>
-<tr><td><a href="tfm.html">tfm</a></td><td>Displays a program's help documentation manual</td></tr>
-<tr><td><a href="whichdb.html">whichdb</a></td><td>Search all databases for an entry</td></tr>
-</table>
+<tr>
+<td><a href="infoalign.html">infoalign</a></td>
+<td>Information on a multiple sequence alignment</td>
+</tr>
 
+<tr>
+<td><a href="infoseq.html">infoseq</a></td>
+<td>Displays some simple information about sequences</td>
+</tr>
+
+<tr>
+<td><a href="seealso.html">seealso</a></td>
+<td>Finds programs sharing group names</td>
+</tr>
+
+<tr>
+<td><a href="showdb.html">showdb</a></td>
+<td>Displays information on the currently available databases</td>
+</tr>
+
+<tr>
+<td><a href="textsearch.html">textsearch</a></td>
+<td>Search sequence documentation. Slow, use SRS and Entrez!</td>
+</tr>
+
+<tr>
+<td><a href="tfm.html">tfm</a></td>
+<td>Displays a program's help documentation manual</td>
+</tr>
+
+<tr>
+<td><a href="whichdb.html">whichdb</a></td>
+<td>Search all databases for an entry</td>
+</tr>
+
+</table>
 
 <H2>
     Author(s)
@@ -1396,11 +1391,9 @@ MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
-
 <H2>
     History
 </H2>
-
 
 
 <H2>
@@ -1410,12 +1403,10 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

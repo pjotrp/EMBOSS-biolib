@@ -12,7 +12,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 abiview
 </font></b>
 </td></tr>
@@ -21,12 +20,10 @@ abiview
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Reads ABI file and display the trace
-
 <H2>
     Description
 </H2>
@@ -66,7 +63,6 @@ Created abiview.ps
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
@@ -75,7 +71,8 @@ Created abiview.ps
 <pre>
    Standard (Mandatory) qualifiers:
   [-infile]            infile     ABI trace file
-  [-outseq]            seqout     Output sequence USA
+  [-outseq]            seqout     Nucleotide sequence filename and optional
+                                  format (output USA)
    -graph              xygraph    Graph type
 
    Additional (Optional) qualifiers:
@@ -95,41 +92,40 @@ Created abiview.ps
    Associated qualifiers:
 
    "-outseq" associated qualifiers
-   -osformat2           string     Output seq format
-   -osextension2        string     File name extension
-   -osname2             string     Base file name
-   -osdirectory2        string     Output directory
-   -osdbname2           string     Database name to add
-   -ossingle2           boolean    Separate file for each entry
-   -oufo2               string     UFO features
-   -offormat2           string     Features format
-   -ofname2             string     Features file name
-   -ofdirectory2        string     Output directory
+   -osformat2          string     Output seq format
+   -osextension2       string     File name extension
+   -osname2            string     Base file name
+   -osdirectory2       string     Output directory
+   -osdbname2          string     Database name to add
+   -ossingle2          boolean    Separate file for each entry
+   -oufo2              string     UFO features
+   -offormat2          string     Features format
+   -ofname2            string     Features file name
+   -ofdirectory2       string     Output directory
 
    "-graph" associated qualifiers
-   -gprompt             boolean    Graph prompting
-   -gtitle              string     Graph title
-   -gsubtitle           string     Graph subtitle
-   -gxtitle             string     Graph x axis title
-   -gytitle             string     Graph y axis title
-   -goutfile            string     Output file for non interactive displays
-   -gdirectory          string     Output directory
+   -gprompt            boolean    Graph prompting
+   -gtitle             string     Graph title
+   -gsubtitle          string     Graph subtitle
+   -gxtitle            string     Graph x axis title
+   -gytitle            string     Graph y axis title
+   -goutfile           string     Output file for non interactive displays
+   -gdirectory         string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 </pre>
 </td></tr></table>
@@ -150,7 +146,7 @@ Created abiview.ps
 
 <tr>
 <td>[-outseq]<br>(Parameter 2)</td>
-<td>Output sequence USA</td>
+<td>Nucleotide sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
 <td><i>&lt;sequence&gt;</i>.<i>format</i></td>
 </tr>
@@ -227,7 +223,6 @@ Created abiview.ps
 
 
 
-
 <H2>
     Input file format
 </H2>
@@ -243,7 +238,6 @@ This reads in a standard ABI trace file.
 <p>This file contains non-printing characters and so cannot be displayed here.
 <p><h3>File: abiview.abi</h3>
 <p>This file contains non-printing characters and so cannot be displayed here.
-
 
 <H2>
     Output file format
@@ -276,7 +270,6 @@ TCCGGTTGTTGAGCAGGGCTCTGTTATGTAGGATATCTCAGANTAACAGACCCCAGGT
 </td></tr></table><p>
 <p><h3>Graphics File: abiview.ps</h3>
 <p><img src="abiview.1.abiview.gif" alt="[abiview results]">
-
 <p>
 
 The horizontal scale of the output image labelled 'Residue Position' is
@@ -336,22 +329,77 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="cirdna.html">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
-<tr><td><a href="lindna.html">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
-<tr><td><a href="pepnet.html">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
-<tr><td><a href="pepwheel.html">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
-<tr><td><a href="prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
-<tr><td><a href="prettyseq.html">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
-<tr><td><a href="remap.html">remap</a></td><td>Display sequence with restriction sites, translation etc</td></tr>
-<tr><td><a href="seealso.html">seealso</a></td><td>Finds programs sharing group names</td></tr>
-<tr><td><a href="showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
-<tr><td><a href="showdb.html">showdb</a></td><td>Displays information on the currently available databases</td></tr>
-<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
-<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="sixpack.html">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
-<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation. Slow, use SRS and Entrez!</td></tr>
-</table>
+<tr>
+<td><a href="cirdna.html">cirdna</a></td>
+<td>Draws circular maps of DNA constructs</td>
+</tr>
 
+<tr>
+<td><a href="lindna.html">lindna</a></td>
+<td>Draws linear maps of DNA constructs</td>
+</tr>
+
+<tr>
+<td><a href="pepnet.html">pepnet</a></td>
+<td>Displays proteins as a helical net</td>
+</tr>
+
+<tr>
+<td><a href="pepwheel.html">pepwheel</a></td>
+<td>Shows protein sequences as helices</td>
+</tr>
+
+<tr>
+<td><a href="prettyplot.html">prettyplot</a></td>
+<td>Displays aligned sequences, with colouring and boxing</td>
+</tr>
+
+<tr>
+<td><a href="prettyseq.html">prettyseq</a></td>
+<td>Output sequence with translated ranges</td>
+</tr>
+
+<tr>
+<td><a href="remap.html">remap</a></td>
+<td>Display sequence with restriction sites, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="seealso.html">seealso</a></td>
+<td>Finds programs sharing group names</td>
+</tr>
+
+<tr>
+<td><a href="showalign.html">showalign</a></td>
+<td>Displays a multiple sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="showdb.html">showdb</a></td>
+<td>Displays information on the currently available databases</td>
+</tr>
+
+<tr>
+<td><a href="showfeat.html">showfeat</a></td>
+<td>Show features of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="showseq.html">showseq</a></td>
+<td>Display a sequence with features, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="sixpack.html">sixpack</a></td>
+<td>Display a DNA sequence with 6-frame translation and ORFs</td>
+</tr>
+
+<tr>
+<td><a href="textsearch.html">textsearch</a></td>
+<td>Search sequence documentation. Slow, use SRS and Entrez!</td>
+</tr>
+
+</table>
 
 <H2>
     Author(s)
@@ -365,14 +413,12 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
 
-
 <H2>
     History
 </H2>
 
 
 Written (January 2001) - Tim Carver
-
 
 
 <H2>
@@ -382,13 +428,11 @@ Written (January 2001) - Tim Carver
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 
 None
-
 
 </BODY>
 </HTML>

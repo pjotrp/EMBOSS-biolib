@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 prettyplot
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ prettyplot
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Displays aligned sequences, with colouring and boxing
-
 
 <H2>
     Description
@@ -49,7 +46,7 @@ various ways.
 
 % <b>prettyplot -resbreak=10 -boxcol -consensus -plurality=3 </b>
 Displays aligned sequences, with colouring and boxing
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Graph type [x11]: <b>cps</b>
 
 Created prettyplot.ps
@@ -75,14 +72,14 @@ Created prettyplot.ps
 <a href="#output.2">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequences]         seqset     File containing a sequence alignment
+  [-sequences]         seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
    -graph              graph      Graph type
 
    Additional (Optional) qualifiers:
@@ -183,7 +180,6 @@ Created prettyplot.ps
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -197,7 +193,7 @@ Created prettyplot.ps
 
 <tr>
 <td>[-sequences]<br>(Parameter 1)</td>
-<td>File containing a sequence alignment</td>
+<td>(Aligned) sequence set filename and optional format, or reference (input USA)</td>
 <td>Readable set of sequences</td>
 <td><b>Required</b></td>
 </tr>
@@ -289,7 +285,7 @@ Residues score Colour
 0.5 to 1.0 ... WHEAT (L)
 under 0.5 .... WHITE (W)
 The only four letters allowed are BPLW, in any order.</td>
-<td>A string up to 4 characters, matching regular expression /^([BPLW]{4})?$/</td>
+<td>Any string up to 4 characters, matching regular expression /^([BPLW]{4})?$/</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
 
@@ -414,7 +410,6 @@ The only four letters allowed are BPLW, in any order.</td>
 </table>
 
 
-
 <H2>
     Input file format
 </H2>
@@ -482,7 +477,6 @@ LGB2_LUPLU IVIKKEMNDAA~~~
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -501,7 +495,6 @@ An image of the alignment is displayed on the specified graphics device.
 <h3>Output files for usage example 2</h3>
 <p><h3>Graphics File: prettyplot.ps</h3>
 <p><img src="prettyplot.2.prettyplot.gif" alt="[prettyplot results]">
-
 
 <H2>
     Data files
@@ -555,7 +548,6 @@ The directories are searched in the following order:
 </ul>
 <p>
 
-
 <H2>
     Notes
 </H2>
@@ -597,26 +589,97 @@ plplot.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="abiview.html">abiview</a></td><td>Reads ABI file and display the trace</td></tr>
-<tr><td><a href="cirdna.html">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
-<tr><td><a href="emma.html">emma</a></td><td>Multiple alignment program - interface to ClustalW program</td></tr>
-<tr><td><a href="infoalign.html">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
-<tr><td><a href="lindna.html">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
-<tr><td><a href="pepnet.html">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
-<tr><td><a href="pepwheel.html">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
-<tr><td><a href="plotcon.html">plotcon</a></td><td>Plot quality of conservation of a sequence alignment</td></tr>
-<tr><td><a href="prettyseq.html">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
-<tr><td><a href="remap.html">remap</a></td><td>Display sequence with restriction sites, translation etc</td></tr>
-<tr><td><a href="seealso.html">seealso</a></td><td>Finds programs sharing group names</td></tr>
-<tr><td><a href="showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
-<tr><td><a href="showdb.html">showdb</a></td><td>Displays information on the currently available databases</td></tr>
-<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
-<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="sixpack.html">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
-<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation. Slow, use SRS and Entrez!</td></tr>
-<tr><td><a href="tranalign.html">tranalign</a></td><td>Align nucleic coding regions given the aligned proteins</td></tr>
-</table>
+<tr>
+<td><a href="abiview.html">abiview</a></td>
+<td>Reads ABI file and display the trace</td>
+</tr>
 
+<tr>
+<td><a href="cirdna.html">cirdna</a></td>
+<td>Draws circular maps of DNA constructs</td>
+</tr>
+
+<tr>
+<td><a href="emma.html">emma</a></td>
+<td>Multiple alignment program - interface to ClustalW program</td>
+</tr>
+
+<tr>
+<td><a href="infoalign.html">infoalign</a></td>
+<td>Information on a multiple sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="lindna.html">lindna</a></td>
+<td>Draws linear maps of DNA constructs</td>
+</tr>
+
+<tr>
+<td><a href="pepnet.html">pepnet</a></td>
+<td>Displays proteins as a helical net</td>
+</tr>
+
+<tr>
+<td><a href="pepwheel.html">pepwheel</a></td>
+<td>Shows protein sequences as helices</td>
+</tr>
+
+<tr>
+<td><a href="plotcon.html">plotcon</a></td>
+<td>Plot quality of conservation of a sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="prettyseq.html">prettyseq</a></td>
+<td>Output sequence with translated ranges</td>
+</tr>
+
+<tr>
+<td><a href="remap.html">remap</a></td>
+<td>Display sequence with restriction sites, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="seealso.html">seealso</a></td>
+<td>Finds programs sharing group names</td>
+</tr>
+
+<tr>
+<td><a href="showalign.html">showalign</a></td>
+<td>Displays a multiple sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="showdb.html">showdb</a></td>
+<td>Displays information on the currently available databases</td>
+</tr>
+
+<tr>
+<td><a href="showfeat.html">showfeat</a></td>
+<td>Show features of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="showseq.html">showseq</a></td>
+<td>Display a sequence with features, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="sixpack.html">sixpack</a></td>
+<td>Display a DNA sequence with 6-frame translation and ORFs</td>
+</tr>
+
+<tr>
+<td><a href="textsearch.html">textsearch</a></td>
+<td>Search sequence documentation. Slow, use SRS and Entrez!</td>
+</tr>
+
+<tr>
+<td><a href="tranalign.html">tranalign</a></td>
+<td>Align nucleic coding regions given the aligned proteins</td>
+</tr>
+
+</table>
 
 <H2>
     Author(s)
@@ -627,14 +690,12 @@ Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
 Cambridge, CB10 1SA, UK.                      
 
 
-
 <p>
 
 Many features were first implemented in the EGCG program "prettyplot" by
 Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
 <br>
 Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
-
 
 
 <p> 
@@ -649,18 +710,15 @@ marking. Rita Grandori suggested the -NOCOLLISION option.
 
 Completed 5th May 1999.
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

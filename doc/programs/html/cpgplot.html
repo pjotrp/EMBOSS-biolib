@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 cpgplot
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ cpgplot
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Plot CpG rich areas
-
 <H2>
     Description
 </H2>
@@ -117,14 +114,14 @@ Created cpgplot.ps
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -window             integer    The percentage CG content and the Observed
                                   frequency of CG is calculated within a
                                   window whose size is set by this parameter.
@@ -212,7 +209,6 @@ Created cpgplot.ps
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -225,7 +221,7 @@ Created cpgplot.ps
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>Nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -317,7 +313,6 @@ Created cpgplot.ps
 </tr>
 
 </table>
-
 
 <H2>
     Input file format
@@ -415,7 +410,6 @@ SQ   Sequence 1218 BP; 162 A; 397 C; 387 G; 272 T; 0 other;
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -451,7 +445,6 @@ RNU68037	cpgplot	misc_feature	596	924	0.000	+	.	Sequence "RNU68037.2"
 </td></tr></table><p>
 <p><h3>Graphics File: cpgplot.ps</h3>
 <p><img src="cpgplot.1.cpgplot.gif" alt="[cpgplot results]">
-
 
 
 <H2>
@@ -502,12 +495,27 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="cpgreport.html">cpgreport</a></td><td>Reports all CpG rich regions</td></tr>
-<tr><td><a href="geecee.html">geecee</a></td><td>Calculates fractional GC content of nucleic acid sequences</td></tr>
-<tr><td><a href="newcpgreport.html">newcpgreport</a></td><td>Report CpG rich areas</td></tr>
-<tr><td><a href="newcpgseek.html">newcpgseek</a></td><td>Reports CpG rich regions</td></tr>
-</table>
+<tr>
+<td><a href="cpgreport.html">cpgreport</a></td>
+<td>Reports all CpG rich regions</td>
+</tr>
 
+<tr>
+<td><a href="geecee.html">geecee</a></td>
+<td>Calculates fractional GC content of nucleic acid sequences</td>
+</tr>
+
+<tr>
+<td><a href="newcpgreport.html">newcpgreport</a></td>
+<td>Report CpG rich areas</td>
+</tr>
+
+<tr>
+<td><a href="newcpgseek.html">newcpgseek</a></td>
+<td>Reports CpG rich regions</td>
+</tr>
+
+</table>
 
 
 <p>
@@ -563,25 +571,21 @@ Alan Bleasby (ajb&nbsp;&copy;&nbsp;ebi.ac.uk)
 European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 
-
 <H2>
     History
 </H2>
 
 Completed 23rd March 1999.
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

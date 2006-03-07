@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 emma
 </font></b>
 </td></tr>
@@ -21,12 +20,10 @@ emma
 <br>&nbsp;
 <p>
 
-
 <H2>
     Function
 </H2>
 Multiple alignment program - interface to ClustalW program
-
 <H2>
     Description
 </H2>
@@ -574,7 +571,7 @@ of your sequences between each bootstrap sample.
 
 % <b>emma </b>
 Multiple alignment program - interface to ClustalW program
-Input sequence(s): <b>globins.fasta</b>
+Input (gapped) sequence(s): <b>globins.fasta</b>
 Output sequence [hbb_human.aln]: <b></b>
 Dendogram output filename [hbb_human.dnd]: <b></b>
 
@@ -638,15 +635,16 @@ GCG-Alignment file created      [12345678A]
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
-  [-outseq]            seqoutset  Output sequence set USA
+  [-sequence]          seqall     (Gapped) sequence(s) filename and optional
+                                  format, or reference (input USA)
+  [-outseq]            seqoutset  Sequence set filename and optional format
+                                  (output USA)
   [-dendoutfile]       outfile    Dendogram output filename
 
    Additional (Optional) qualifiers (* if not always prompted):
@@ -879,7 +877,6 @@ GCG-Alignment file created      [12345678A]
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -892,14 +889,14 @@ GCG-Alignment file created      [12345678A]
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>(Gapped) sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outseq]<br>(Parameter 2)</td>
-<td>Output sequence set USA</td>
+<td>Sequence set filename and optional format (output USA)</td>
 <td>Writeable sequences</td>
 <td><i>&lt;sequence&gt;</i>.<i>format</i></td>
 </tr>
@@ -1115,7 +1112,6 @@ The slow-accurate method is fine for short sequences but will be VERY SLOW for m
 
 </table>
 
-
 <H2>
     Input file format
 </H2>
@@ -1159,7 +1155,6 @@ QAHAGKVFKLVYEAAIQLQVTGVVVTDATLKNLGSVHVSKGVADAHFPVVKEAILKTIKE
 VVGAKWSEELNSAWTIAYDELAIVIKKEMNDAA
 </pre>
 </td></tr></table><p>
-
 <p>
 
 EMBOSS programs do not allow you to simply type the names of two or more
@@ -1410,7 +1405,6 @@ GLB5_PETMA:0.38267,
 LGB2_LUPLU:0.50324);
 </pre>
 </td></tr></table><p>
-
 <p>
 
 <h3>Sequences</h3>
@@ -1643,13 +1637,32 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="infoalign.html">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
-<tr><td><a href="plotcon.html">plotcon</a></td><td>Plot quality of conservation of a sequence alignment</td></tr>
-<tr><td><a href="prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
-<tr><td><a href="showalign.html">showalign</a></td><td>Displays a multiple sequence alignment</td></tr>
-<tr><td><a href="tranalign.html">tranalign</a></td><td>Align nucleic coding regions given the aligned proteins</td></tr>
-</table>
+<tr>
+<td><a href="infoalign.html">infoalign</a></td>
+<td>Information on a multiple sequence alignment</td>
+</tr>
 
+<tr>
+<td><a href="plotcon.html">plotcon</a></td>
+<td>Plot quality of conservation of a sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="prettyplot.html">prettyplot</a></td>
+<td>Displays aligned sequences, with colouring and boxing</td>
+</tr>
+
+<tr>
+<td><a href="showalign.html">showalign</a></td>
+<td>Displays a multiple sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="tranalign.html">tranalign</a></td>
+<td>Align nucleic coding regions given the aligned proteins</td>
+</tr>
+
+</table>
 
 <H2>
     Author(s)
@@ -1663,7 +1676,6 @@ while he was with:
 HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 
-
 <H2>
     History
 </H2>
@@ -1671,18 +1683,15 @@ HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 Completed  18 February 1999
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 </BODY>
 </HTML>
 

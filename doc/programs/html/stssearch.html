@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 stssearch
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ stssearch
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Search a DNA database for matches with a set of STS primers
-
 
 <H2>
     Description
@@ -59,7 +56,7 @@ to be reported..
 
 % <b>stssearch </b>
 Search a DNA database for matches with a set of STS primers
-Input sequence(s): <b>tembl:eclac*</b>
+Input nucleotide sequence(s): <b>tembl:eclac*</b>
 Primer file: <b>lac.primers</b>
 Output file [eclac.stssearch]: <b></b>
 
@@ -69,14 +66,14 @@ Output file [eclac.stssearch]: <b></b>
 
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-seqall]            seqall     Sequence database USA
+  [-seqall]            seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
   [-infile]            infile     Primer file
   [-outfile]           outfile    Output file name
 
@@ -118,7 +115,6 @@ Output file [eclac.stssearch]: <b></b>
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -131,7 +127,7 @@ Output file [eclac.stssearch]: <b></b>
 
 <tr>
 <td>[-seqall]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>Nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -173,7 +169,6 @@ Output file [eclac.stssearch]: <b></b>
 </table>
 
 
-
 <H2>
     Input file format
 </H2>
@@ -195,7 +190,6 @@ PrimD AATACGCAAACCGCCTCTCC   TTATCCGCTCACAATTCCACAC
 PrimE AATACGCAAACCGCCTCTCC   CACAACCCGCTCACAATTCCA
 </pre>
 </td></tr></table><p>
-
 
 <p>
 
@@ -241,7 +235,6 @@ ECLACZ: PrimC PrimerA matched at 1668
 ECLACZ: (rev) PrimC PrimerB matched at 1783
 </pre>
 </td></tr></table><p>
-
 
 <p>
 
@@ -308,10 +301,17 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="eprimer3.html">eprimer3</a></td><td>Picks PCR primers and hybridization oligos</td></tr>
-<tr><td><a href="primersearch.html">primersearch</a></td><td>Searches DNA sequences for matches with primer pairs</td></tr>
-</table>
+<tr>
+<td><a href="eprimer3.html">eprimer3</a></td>
+<td>Picks PCR primers and hybridization oligos</td>
+</tr>
 
+<tr>
+<td><a href="primersearch.html">primersearch</a></td>
+<td>Searches DNA sequences for matches with primer pairs</td>
+</tr>
+
+</table>
 <p>
 
 If you want something that only reports matches of both primer pairs and
@@ -327,11 +327,9 @@ Peter Rice (pmr&nbsp;&copy;&nbsp;ebi.ac.uk)
 Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 
-
 <H2>
     History
 </H2>
-
 
 
 <H2>
@@ -340,12 +338,10 @@ Informatics Division, European Bioinformatics Institute, Wellcome Trust Genome C
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

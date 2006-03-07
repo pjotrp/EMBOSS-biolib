@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 showalign
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ showalign
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Displays a multiple sequence alignment
-
 <H2>
     Description
 </H2>
@@ -172,7 +169,7 @@ To put all of the consensus symbols into uppercase or lowercase, make
 
 % <b>showalign </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -189,7 +186,7 @@ Display the sequences in order of similarity to the reference sequence
 
 % <b>showalign -order=s </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -206,7 +203,7 @@ Format for HTML and highlight some interesting regions in different colours:
 
 % <b>showalign -html -high '4-13 green 43-43 red 51-56 blue' </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -223,7 +220,7 @@ No consensus line at the bottom No ruler line No numbers line Don't repeat the r
 
 % <b>showalign -nocon -norule -nonum -nobot -ref=1 -sb=10 -send=30 </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -240,7 +237,7 @@ Show non-identities between the sequences
 
 % <b>showalign -show=n </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -257,7 +254,7 @@ Show all of the sequences
 
 % <b>showalign -show=a </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -274,7 +271,7 @@ Show identities between the sequences
 
 % <b>showalign -show=i </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -291,7 +288,7 @@ Show similarities between the sequences
 
 % <b>showalign -show=s </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -308,7 +305,7 @@ Show dissimilarities between the sequences
 
 % <b>showalign -show=d </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -325,7 +322,7 @@ Use the first sequence as the reference to compare to:
 
 % <b>showalign -ref=1 </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -342,7 +339,7 @@ Show a range of sequences in uppercase, everything else in lowercase
 
 % <b>showalign -nocon -ref=1 -sl -upper 9-15 -nosimilarcase </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
@@ -359,13 +356,12 @@ Display the sequences in alphabetic order:
 
 % <b>showalign -order=a </b>
 Displays a multiple sequence alignment
-Input sequence set: <b>globins.msf</b>
+Input (aligned) sequence set: <b>globins.msf</b>
 Output file [globins.showalign]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
 <a href="#output.12">Go to the output files for this example</a><p><p>
-
 
 
 <H2>
@@ -473,43 +469,45 @@ Output file [globins.showalign]: <b></b>
                                   for it to give a consensus. Therefore, if
                                   this is set to 100% only columns of
                                   identities contribute to the consensus.
+   -[no]gaps           boolean    If this option is true then gap characters
+                                  can appear in the consensus. The alternative
+                                  is 'N' for nucleotide, or 'X' for protein
 
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 </pre>
 </td></tr></table>
@@ -682,8 +680,14 @@ A file of ranges to colour (one range per line) can be specified as '@filename'.
 <td>0.0</td>
 </tr>
 
-</table>
+<tr>
+<td>-[no]gaps</td>
+<td>If this option is true then gap characters can appear in the consensus. The alternative is 'N' for nucleotide, or 'X' for protein</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
 
+</table>
 
 <H2>
     Input file format
@@ -751,7 +755,6 @@ LGB2_LUPLU IVIKKEMNDAA~~~
 
 </pre>
 </td></tr></table><p>
-
 
 <p>
 
@@ -864,7 +867,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
@@ -872,7 +875,7 @@ HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
@@ -908,7 +911,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
@@ -916,7 +919,7 @@ HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
@@ -953,7 +956,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
@@ -961,7 +964,7 @@ HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 &lt;/pre&gt;
 </pre>
@@ -1014,7 +1017,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  vLVcVLAhHfgkEFTPpVqAAyqKvVAgVAnaLahKYh------
 HBB_HORSE  vLVvVLArHfgkDFTPELqASyqKvVAgVAnaLahKYh------
 HBA_HUMAN  cLLvtLAaHlpaEFTPaVhASLdKfLAsVStvLtsKYr------
@@ -1022,7 +1025,7 @@ HBA_HORSE  cLLstLAvHlpnDFTPaVhASLdKfLSsVStvLtsKYr------
 MYG_PHYCA  aIIhVLhsrhpgDFgaDaqgAMnKaLelfrkdIaaKYkelgyqg
 GLB5_PETMA laavIadtvaagDagfEklmSMiciLlrsAy-------------
 LGB2_LUPLU aILktIkevvgakWSeELnSAwtiaydeLAivIkkEmndaa---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
@@ -1058,7 +1061,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  .L..VLA.H....FTP.V.A...K..A.VA..L..KY.------
 HBB_HORSE  .L..VLA.H...DFTPE..AS..K..A.VA..L..KY.------
 HBA_HUMAN  .LL..LA.H....FTP.V.AS..K.LA.V...L..KY.------
@@ -1066,7 +1069,7 @@ HBA_HORSE  .LL..LA.H...DFTP.V.AS..K.L..V...L..KY.------
 MYG_PHYCA  ....VL......DF.......M.K.L.........KY.......
 GLB5_PETMA ............D...E...SM...L...A.-------------
 LGB2_LUPLU ..L.............E............A...........---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
@@ -1102,7 +1105,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  .Lv.VLA.H...eFTP.V.Aa..K.vA.VA..L..KY.------
 HBB_HORSE  .Lv.VLA.H...DFTPEl.AS..K.vA.VA..L..KY.------
 HBA_HUMAN  .LL..LA.H...eFTP.V.ASl.K.LA.Vs..L..KY.------
@@ -1110,7 +1113,7 @@ HBA_HORSE  .LL..LA.H...DFTP.V.ASl.K.Ls.Vs..L..KY.------
 MYG_PHYCA  .ii.VL......DF..d...aM.K.L......i..KY.......
 GLB5_PETMA ....i.......D...E...SM...L...A.-------------
 LGB2_LUPLU .iL..i.......ws.El.sa.......lA..i..e.....---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
@@ -1146,7 +1149,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 HBB_HUMAN  V..C...H.FGK....P.Q..YQ.V..G..NA.AH..H------
 HBB_HORSE  V..V...R.FGK......Q..YQ.V..G..NA.AH..H------
 HBA_HUMAN  C..VT..A.LPA....A.H...D.F..S..TV.TS..R------
@@ -1154,7 +1157,7 @@ HBA_HORSE  C..ST..V.LPN....A.H...D.F..S..TV.TS..R------
 MYG_PHYCA  A..H..HSRHPG..GA.AQG..N.A.ELFRKD.AA..KELGYQG
 GLB5_PETMA LAAV.ADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 LGB2_LUPLU A..KT.KEVVGAK..E..N..WTIAYDE..IV.KK.MNDAA---
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
@@ -1198,7 +1201,7 @@ MYG_PHYCA  AiiH..HSRHPGd.GADA.G.MN.AlELFRKDi.A..KELGYQG
 GLB5_PETMA lAAViADTVAAGdAGFEKLMsMICilLRS.Y-------------
 LGB2_LUPLU AilKTiKEVV.AkwsEElNs.wTIAYDEl.IViKKeMnDAA---
 HBB_HUMAN  VLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKYH------
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
@@ -1275,7 +1278,7 @@ Consensus  xDxMxGSxQVKxHGKKVLxALxDxVxHLDDLExxxAxLSDLHAxKLRxxVDPxNFKLLxH
 
                   130       140       150       160       170       180
            ----:----|----:----|----:----|----:----|----:----|----:----|
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 GLB5_PETMA LAAViADTVAAG.AGF.KLM..ICI.LRS.Y-------------
 HBA_HORSE  C..ST..V.LPN....A.H..lD.F.sS.sTV.TS..R------
 HBA_HUMAN  C..VT..A.LPAe...A.H..lD.F..S.sTV.TS..R------
@@ -1283,11 +1286,10 @@ HBB_HORSE  V.vV...R.FGK.....lQ..YQ.Vv.G..NA.AH..H------
 HBB_HUMAN  V.vC...H.FGKe...P.Q.aYQ.Vv.G..NA.AH..H------
 LGB2_LUPLU Ai.KTiKEVVGAKwsE.lNsaWTIAYDEl.IViKKeMNDAA---
 MYG_PHYCA  AiiH..HSRHPG..GAdAQGa.N.A.ELFRKDiAA..KELGYQG
-Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxxxxxxx
+Consensus  xLLxVLAxHxxxDFTPEVxASMxKxLAxVAxxLxxKYxx-xxxx
 
 </pre>
 </td></tr></table><p>
-
 
 <H2>
     Data files
@@ -1338,7 +1340,6 @@ The directories are searched in the following order:
 </ul>
 <p>
 
-
 <H2>
     Notes
 </H2>
@@ -1379,26 +1380,97 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="abiview.html">abiview</a></td><td>Reads ABI file and display the trace</td></tr>
-<tr><td><a href="cirdna.html">cirdna</a></td><td>Draws circular maps of DNA constructs</td></tr>
-<tr><td><a href="emma.html">emma</a></td><td>Multiple alignment program - interface to ClustalW program</td></tr>
-<tr><td><a href="infoalign.html">infoalign</a></td><td>Information on a multiple sequence alignment</td></tr>
-<tr><td><a href="lindna.html">lindna</a></td><td>Draws linear maps of DNA constructs</td></tr>
-<tr><td><a href="pepnet.html">pepnet</a></td><td>Displays proteins as a helical net</td></tr>
-<tr><td><a href="pepwheel.html">pepwheel</a></td><td>Shows protein sequences as helices</td></tr>
-<tr><td><a href="plotcon.html">plotcon</a></td><td>Plot quality of conservation of a sequence alignment</td></tr>
-<tr><td><a href="prettyplot.html">prettyplot</a></td><td>Displays aligned sequences, with colouring and boxing</td></tr>
-<tr><td><a href="prettyseq.html">prettyseq</a></td><td>Output sequence with translated ranges</td></tr>
-<tr><td><a href="remap.html">remap</a></td><td>Display sequence with restriction sites, translation etc</td></tr>
-<tr><td><a href="seealso.html">seealso</a></td><td>Finds programs sharing group names</td></tr>
-<tr><td><a href="showdb.html">showdb</a></td><td>Displays information on the currently available databases</td></tr>
-<tr><td><a href="showfeat.html">showfeat</a></td><td>Show features of a sequence</td></tr>
-<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="sixpack.html">sixpack</a></td><td>Display a DNA sequence with 6-frame translation and ORFs</td></tr>
-<tr><td><a href="textsearch.html">textsearch</a></td><td>Search sequence documentation. Slow, use SRS and Entrez!</td></tr>
-<tr><td><a href="tranalign.html">tranalign</a></td><td>Align nucleic coding regions given the aligned proteins</td></tr>
-</table>
+<tr>
+<td><a href="abiview.html">abiview</a></td>
+<td>Reads ABI file and display the trace</td>
+</tr>
 
+<tr>
+<td><a href="cirdna.html">cirdna</a></td>
+<td>Draws circular maps of DNA constructs</td>
+</tr>
+
+<tr>
+<td><a href="emma.html">emma</a></td>
+<td>Multiple alignment program - interface to ClustalW program</td>
+</tr>
+
+<tr>
+<td><a href="infoalign.html">infoalign</a></td>
+<td>Information on a multiple sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="lindna.html">lindna</a></td>
+<td>Draws linear maps of DNA constructs</td>
+</tr>
+
+<tr>
+<td><a href="pepnet.html">pepnet</a></td>
+<td>Displays proteins as a helical net</td>
+</tr>
+
+<tr>
+<td><a href="pepwheel.html">pepwheel</a></td>
+<td>Shows protein sequences as helices</td>
+</tr>
+
+<tr>
+<td><a href="plotcon.html">plotcon</a></td>
+<td>Plot quality of conservation of a sequence alignment</td>
+</tr>
+
+<tr>
+<td><a href="prettyplot.html">prettyplot</a></td>
+<td>Displays aligned sequences, with colouring and boxing</td>
+</tr>
+
+<tr>
+<td><a href="prettyseq.html">prettyseq</a></td>
+<td>Output sequence with translated ranges</td>
+</tr>
+
+<tr>
+<td><a href="remap.html">remap</a></td>
+<td>Display sequence with restriction sites, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="seealso.html">seealso</a></td>
+<td>Finds programs sharing group names</td>
+</tr>
+
+<tr>
+<td><a href="showdb.html">showdb</a></td>
+<td>Displays information on the currently available databases</td>
+</tr>
+
+<tr>
+<td><a href="showfeat.html">showfeat</a></td>
+<td>Show features of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="showseq.html">showseq</a></td>
+<td>Display a sequence with features, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="sixpack.html">sixpack</a></td>
+<td>Display a DNA sequence with 6-frame translation and ORFs</td>
+</tr>
+
+<tr>
+<td><a href="textsearch.html">textsearch</a></td>
+<td>Search sequence documentation. Slow, use SRS and Entrez!</td>
+</tr>
+
+<tr>
+<td><a href="tranalign.html">tranalign</a></td>
+<td>Align nucleic coding regions given the aligned proteins</td>
+</tr>
+
+</table>
 
 
 <H2>
@@ -1410,7 +1482,6 @@ MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
-
 <H2>
     History
 </H2>
@@ -1418,18 +1489,15 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 Written (23 May 2001) - Gary Williams
 
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

@@ -12,7 +12,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 listor
 </font></b>
 </td></tr>
@@ -21,12 +20,10 @@ listor
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Write a list file of the logical OR of two sets of sequences
-
 
 <H2>
     Description
@@ -141,7 +138,6 @@ Output file [file1.list]: <b></b>
 <p>
 <a href="#output.4">Go to the output files for this example</a><p><p>
 
-
 <H2>
     Command line arguments
 </H2>
@@ -149,8 +145,10 @@ Output file [file1.list]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-firstsequences]    seqset     Sequence set USA
-  [-secondsequences]   seqset     Sequence set USA
+  [-firstsequences]    seqset     Sequence set filename and optional format,
+                                  or reference (input USA)
+  [-secondsequences]   seqset     Sequence set filename and optional format,
+                                  or reference (input USA)
   [-outfile]           outfile    The list of sequence names will be written
                                   to this list file
 
@@ -220,7 +218,6 @@ Output file [file1.list]: <b></b>
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -233,14 +230,14 @@ Output file [file1.list]: <b></b>
 
 <tr>
 <td>[-firstsequences]<br>(Parameter 1)</td>
-<td>Sequence set USA</td>
+<td>Sequence set filename and optional format, or reference (input USA)</td>
 <td>Readable set of sequences</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-secondsequences]<br>(Parameter 2)</td>
-<td>Sequence set USA</td>
+<td>Sequence set filename and optional format, or reference (input USA)</td>
 <td>Readable set of sequences</td>
 <td><b>Required</b></td>
 </tr>
@@ -283,7 +280,6 @@ NOT - gives those which occur in the first set except for those that also occur 
 
 
 
-
 <H2>
     Input file format
 </H2>
@@ -320,7 +316,6 @@ tagctattttatgctacgtcagtgac
 gcgcggcgcgcgtgcgtcgttgctggggccc
 </pre>
 </td></tr></table><p>
-
 
 <H2>
     Output file format
@@ -387,7 +382,6 @@ fasta::../../data/file1:one
 </td></tr></table><p>
 
 
-
 <H2>
     Data files
 </H2>
@@ -440,33 +434,132 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="biosed.html">biosed</a></td><td>Replace or delete sequence sections</td></tr>
-<tr><td><a href="codcopy.html">codcopy</a></td><td>Reads and writes a codon usage table</td></tr>
-<tr><td><a href="cutseq.html">cutseq</a></td><td>Removes a specified section from a sequence</td></tr>
-<tr><td><a href="degapseq.html">degapseq</a></td><td>Removes gap characters from sequences</td></tr>
-<tr><td><a href="descseq.html">descseq</a></td><td>Alter the name or description of a sequence</td></tr>
-<tr><td><a href="entret.html">entret</a></td><td>Reads and writes (returns) flatfile entries</td></tr>
-<tr><td><a href="extractfeat.html">extractfeat</a></td><td>Extract features from a sequence</td></tr>
-<tr><td><a href="extractseq.html">extractseq</a></td><td>Extract regions from a sequence</td></tr>
-<tr><td><a href="maskfeat.html">maskfeat</a></td><td>Mask off features of a sequence</td></tr>
-<tr><td><a href="maskseq.html">maskseq</a></td><td>Mask off regions of a sequence</td></tr>
-<tr><td><a href="newseq.html">newseq</a></td><td>Type in a short new sequence</td></tr>
-<tr><td><a href="noreturn.html">noreturn</a></td><td>Removes carriage return from ASCII files</td></tr>
-<tr><td><a href="notseq.html">notseq</a></td><td>Exclude a set of sequences and write out the remaining ones</td></tr>
-<tr><td><a href="nthseq.html">nthseq</a></td><td>Writes one sequence from a multiple set of sequences</td></tr>
-<tr><td><a href="pasteseq.html">pasteseq</a></td><td>Insert one sequence into another</td></tr>
-<tr><td><a href="revseq.html">revseq</a></td><td>Reverse and complement a sequence</td></tr>
-<tr><td><a href="seqret.html">seqret</a></td><td>Reads and writes (returns) sequences</td></tr>
-<tr><td><a href="seqretsplit.html">seqretsplit</a></td><td>Reads and writes (returns) sequences in individual files</td></tr>
-<tr><td><a href="skipseq.html">skipseq</a></td><td>Reads and writes (returns) sequences, skipping first few</td></tr>
-<tr><td><a href="splitter.html">splitter</a></td><td>Split a sequence into (overlapping) smaller sequences</td></tr>
-<tr><td><a href="trimest.html">trimest</a></td><td>Trim poly-A tails off EST sequences</td></tr>
-<tr><td><a href="trimseq.html">trimseq</a></td><td>Trim ambiguous bits off the ends of sequences</td></tr>
-<tr><td><a href="union.html">union</a></td><td>Reads sequence fragments and builds one sequence</td></tr>
-<tr><td><a href="vectorstrip.html">vectorstrip</a></td><td>Strips out DNA between a pair of vector sequences</td></tr>
-<tr><td><a href="yank.html">yank</a></td><td>Reads a sequence range, appends the full USA to a list file</td></tr>
-</table>
+<tr>
+<td><a href="biosed.html">biosed</a></td>
+<td>Replace or delete sequence sections</td>
+</tr>
 
+<tr>
+<td><a href="codcopy.html">codcopy</a></td>
+<td>Reads and writes a codon usage table</td>
+</tr>
+
+<tr>
+<td><a href="cutseq.html">cutseq</a></td>
+<td>Removes a specified section from a sequence</td>
+</tr>
+
+<tr>
+<td><a href="degapseq.html">degapseq</a></td>
+<td>Removes gap characters from sequences</td>
+</tr>
+
+<tr>
+<td><a href="descseq.html">descseq</a></td>
+<td>Alter the name or description of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="entret.html">entret</a></td>
+<td>Reads and writes (returns) flatfile entries</td>
+</tr>
+
+<tr>
+<td><a href="extractfeat.html">extractfeat</a></td>
+<td>Extract features from a sequence</td>
+</tr>
+
+<tr>
+<td><a href="extractseq.html">extractseq</a></td>
+<td>Extract regions from a sequence</td>
+</tr>
+
+<tr>
+<td><a href="maskfeat.html">maskfeat</a></td>
+<td>Mask off features of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="maskseq.html">maskseq</a></td>
+<td>Mask off regions of a sequence</td>
+</tr>
+
+<tr>
+<td><a href="newseq.html">newseq</a></td>
+<td>Type in a short new sequence</td>
+</tr>
+
+<tr>
+<td><a href="noreturn.html">noreturn</a></td>
+<td>Removes carriage return from ASCII files</td>
+</tr>
+
+<tr>
+<td><a href="notseq.html">notseq</a></td>
+<td>Exclude a set of sequences and write out the remaining ones</td>
+</tr>
+
+<tr>
+<td><a href="nthseq.html">nthseq</a></td>
+<td>Writes one sequence from a multiple set of sequences</td>
+</tr>
+
+<tr>
+<td><a href="pasteseq.html">pasteseq</a></td>
+<td>Insert one sequence into another</td>
+</tr>
+
+<tr>
+<td><a href="revseq.html">revseq</a></td>
+<td>Reverse and complement a sequence</td>
+</tr>
+
+<tr>
+<td><a href="seqret.html">seqret</a></td>
+<td>Reads and writes (returns) sequences</td>
+</tr>
+
+<tr>
+<td><a href="seqretsplit.html">seqretsplit</a></td>
+<td>Reads and writes (returns) sequences in individual files</td>
+</tr>
+
+<tr>
+<td><a href="skipseq.html">skipseq</a></td>
+<td>Reads and writes (returns) sequences, skipping first few</td>
+</tr>
+
+<tr>
+<td><a href="splitter.html">splitter</a></td>
+<td>Split a sequence into (overlapping) smaller sequences</td>
+</tr>
+
+<tr>
+<td><a href="trimest.html">trimest</a></td>
+<td>Trim poly-A tails off EST sequences</td>
+</tr>
+
+<tr>
+<td><a href="trimseq.html">trimseq</a></td>
+<td>Trim ambiguous bits off the ends of sequences</td>
+</tr>
+
+<tr>
+<td><a href="union.html">union</a></td>
+<td>Reads sequence fragments and builds one sequence</td>
+</tr>
+
+<tr>
+<td><a href="vectorstrip.html">vectorstrip</a></td>
+<td>Strips out DNA between a pair of vector sequences</td>
+</tr>
+
+<tr>
+<td><a href="yank.html">yank</a></td>
+<td>Reads a sequence range, appends the full USA to a list file</td>
+</tr>
+
+</table>
 
 
 <H2>
@@ -479,7 +572,6 @@ MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
-
 <H2>
     History
 </H2>
@@ -488,13 +580,11 @@ Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 Written (1 Aug 2001) - Gary Williams
 
 
-
 <H2>
     Target users
 </H2>
 
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
-
 
 <H2>
     Comments
@@ -502,7 +592,6 @@ This program is intended to be used by everyone and everything, from naive users
 
 
 None
-
 
 </BODY>
 </HTML>

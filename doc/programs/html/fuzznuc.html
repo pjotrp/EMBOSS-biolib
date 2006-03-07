@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 fuzznuc
 </font></b>
 </td></tr>
@@ -21,12 +20,10 @@ fuzznuc
 <br>&nbsp;
 <p>
 
-
 <H2>
     Function
 </H2>
 Nucleic acid pattern search
-
 <H2>
     Description
 </H2>
@@ -53,7 +50,7 @@ depending on the complexity of the search pattern specified.
 
 % <b>fuzznuc </b>
 Nucleic acid pattern search
-Input sequence(s): <b>tembl:hhtetra</b>
+Input nucleotide sequence(s): <b>tembl:hhtetra</b>
 Search pattern: <b>AAGCTT</b>
 Number of mismatches [0]: <b></b>
 Output report [hhtetra.fuzznuc]: <b></b>
@@ -62,14 +59,14 @@ Output report [hhtetra.fuzznuc]: <b></b>
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -pattern            string     The standard IUPAC one-letter codes for the
                                   nucleotides are used.
                                   The symbol `n' is used for a position where
@@ -109,46 +106,45 @@ Output report [hhtetra.fuzznuc]: <b></b>
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -rformat2            string     Report format
-   -rname2              string     Base file name
-   -rextension2         string     File name extension
-   -rdirectory2         string     Output directory
-   -raccshow2           boolean    Show accession number in the report
-   -rdesshow2           boolean    Show description in the report
-   -rscoreshow2         boolean    Show the score in the report
-   -rusashow2           boolean    Show the full USA in the report
+   -rformat2           string     Report format
+   -rname2             string     Base file name
+   -rextension2        string     File name extension
+   -rdirectory2        string     Output directory
+   -raccshow2          boolean    Show accession number in the report
+   -rdesshow2          boolean    Show description in the report
+   -rscoreshow2        boolean    Show the score in the report
+   -rusashow2          boolean    Show the full USA in the report
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 </pre>
 </td></tr></table>
@@ -162,7 +158,7 @@ Output report [hhtetra.fuzznuc]: <b></b>
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>Nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -220,7 +216,6 @@ For example, [CG](5)TG{A}N(1,5)C</td>
 </tr>
 
 </table>
-
 
 
 <H2>
@@ -306,7 +301,6 @@ SQ   Sequence 1272 BP; 346 A; 455 C; 222 G; 249 T; 0 other;
 //
 </pre>
 </td></tr></table><p>
-
 
 
 <h3>Pattern specification</h3>
@@ -403,7 +397,6 @@ http://emboss.sf.net/docs/themes/ReportFormats.html</A>
 for further information on report formats.
 
 <p>
-
 <p>
 
 By default <b>fuzznuc</b> writes a 'seqtable' report file.
@@ -418,6 +411,9 @@ By default <b>fuzznuc</b> writes a 'seqtable' report file.
 ########################################
 # Program: fuzznuc
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: fuzznuc
+#    -sequence tembl:hhtetra
+#    -pattern AAGCTT
 # Report_format: seqtable
 # Report_file: hhtetra.fuzznuc
 ########################################
@@ -441,7 +437,6 @@ By default <b>fuzznuc</b> writes a 'seqtable' report file.
 #---------------------------------------
 </pre>
 </td></tr></table><p>
-
     
 
 	
@@ -494,11 +489,22 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="dreg.html">dreg</a></td><td>Regular expression search of a nucleotide sequence</td></tr>
-<tr><td><a href="fuzztran.html">fuzztran</a></td><td>Protein pattern search after translation</td></tr>
-<tr><td><a href="marscan.html">marscan</a></td><td>Finds MAR/SAR sites in nucleic sequences</td></tr>
-</table>
+<tr>
+<td><a href="dreg.html">dreg</a></td>
+<td>Regular expression search of a nucleotide sequence</td>
+</tr>
 
+<tr>
+<td><a href="fuzztran.html">fuzztran</a></td>
+<td>Protein pattern search after translation</td>
+</tr>
+
+<tr>
+<td><a href="marscan.html">marscan</a></td>
+<td>Finds MAR/SAR sites in nucleic sequences</td>
+</tr>
+
+</table>
 <p>
 Other EMBOSS programs allow you to search for regular expression
 patterns but may be less easy for the user who has never used regular
@@ -524,7 +530,6 @@ Alan Bleasby (ajb&nbsp;&copy;&nbsp;ebi.ac.uk)
 European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 
-
 <H2>
     History
 </H2>
@@ -533,18 +538,15 @@ Written (2000) - Alan Bleasby
 <br>
 '-usa' added (13 March 2001) - Gary Williams
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

@@ -12,7 +12,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 restrict
 </font></b>
 </td></tr>
@@ -21,12 +20,10 @@ restrict
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Finds restriction enzyme cleavage sites
-
 
 <H2>
     Description
@@ -60,7 +57,7 @@ your own preferred prototype,if you wish.
 
 % <b>restrict </b>
 Finds restriction enzyme cleavage sites
-Input sequence(s): <b>tembl:hsfau</b>
+Input nucleotide sequence(s): <b>tembl:hsfau</b>
 Minimum recognition site length [4]: <b></b>
 Comma separated enzyme list [all]: <b></b>
 Output report [hsfau.restrict]: <b></b>
@@ -79,7 +76,7 @@ This gives the lengths of the restriction fragments produced by cutting with all
 
 % <b>restrict -fragments </b>
 Finds restriction enzyme cleavage sites
-Input sequence(s): <b>tembl:hsfau</b>
+Input nucleotide sequence(s): <b>tembl:hsfau</b>
 Minimum recognition site length [4]: <b></b>
 Comma separated enzyme list [all]: <b></b>
 Output report [hsfau.restrict]: <b></b>
@@ -98,7 +95,7 @@ This gives the lengths of the restriction fragments created by cutting with just
 
 % <b>restrict -solofragment </b>
 Finds restriction enzyme cleavage sites
-Input sequence(s): <b>tembl:hsfau</b>
+Input nucleotide sequence(s): <b>tembl:hsfau</b>
 Minimum recognition site length [4]: <b></b>
 Comma separated enzyme list [all]: <b></b>
 Output report [hsfau.restrict]: <b></b>
@@ -108,14 +105,14 @@ Output report [hsfau.restrict]: <b></b>
 <a href="#output.3">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -sitelen            integer    This sets the minimum length of the
                                   restriction enzyme recognition site. Any
                                   enzymes with sites shorter than this will be
@@ -256,7 +253,6 @@ Output report [hsfau.restrict]: <b></b>
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -270,7 +266,7 @@ Output report [hsfau.restrict]: <b></b>
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>Nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -422,7 +418,6 @@ PpiI</td>
 </table>
 
 
-
 <H2>
     Input file format
 </H2>
@@ -518,7 +513,6 @@ SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -545,7 +539,6 @@ for further information on report formats.
 
 <p>
 
-
 <p>
 
 By default <b>restrict</b> writes a 'table' report file.
@@ -561,6 +554,8 @@ By default <b>restrict</b> writes a 'table' report file.
 ########################################
 # Program: restrict
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: restrict
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -649,6 +644,9 @@ By default <b>restrict</b> writes a 'table' report file.
 ########################################
 # Program: restrict
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: restrict
+#    -fragments
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -693,9 +691,6 @@ By default <b>restrict</b> writes a 'table' report file.
     162     165 HpaII       CCGG                162    164         .         .
     182     186 EcoRII      CCWGG               181    186         .         .
     182     186 BssKI       CCNGG               181    186         .         .
-    190     193 Hin6I       GCGC                190    192         .         .
-    190     193 HhaI        GCGC                192    190         .         .
-    192     195 Hin6I       GCGC                192    194         .         .
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -762,6 +757,9 @@ By default <b>restrict</b> writes a 'table' report file.
 ########################################
 # Program: restrict
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: restrict
+#    -solofragment
+#    -sequence tembl:hsfau
 # Report_format: table
 # Report_file: hsfau.restrict
 ########################################
@@ -806,9 +804,6 @@ By default <b>restrict</b> writes a 'table' report file.
     162     165 HpaII       CCGG                162    164         .         .
     182     186 EcoRII      CCWGG               181    186         .         .
     182     186 BssKI       CCNGG               181    186         .         .
-    190     193 Hin6I       GCGC                190    192         .         .
-    190     193 HhaI        GCGC                192    190         .         .
-    192     195 Hin6I       GCGC                192    194         .         .
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -866,7 +861,6 @@ By default <b>restrict</b> writes a 'table' report file.
 #---------------------------------------
 </pre>
 </td></tr></table><p>
-
 
 <p>
 
@@ -933,7 +927,6 @@ The directories are searched in the following order:
    <li> ~/.embossdata
 </ul>
 <p>
-
 <p>
 The EMBOSS REBASE restriction enzyme data files are stored iin
 directory 'data/REBASE/*' under the EMBOSS installation directory.
@@ -977,7 +970,6 @@ of the pair of enzymes is the name that is not preferred and the second
 is the preferred (prototype) name. 
 	 
 	          
-
 
 
 
@@ -1041,14 +1033,37 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="recoder.html">recoder</a></td><td>Remove restriction sites but maintain same translation</td></tr>
-<tr><td><a href="redata.html">redata</a></td><td>Search REBASE for enzyme name, references, suppliers etc</td></tr>
-<tr><td><a href="remap.html">remap</a></td><td>Display sequence with restriction sites, translation etc</td></tr>
-<tr><td><a href="restover.html">restover</a></td><td>Find restriction enzymes producing specific overhang</td></tr>
-<tr><td><a href="showseq.html">showseq</a></td><td>Display a sequence with features, translation etc</td></tr>
-<tr><td><a href="silent.html">silent</a></td><td>Silent mutation restriction enzyme scan</td></tr>
-</table>
+<tr>
+<td><a href="recoder.html">recoder</a></td>
+<td>Remove restriction sites but maintain same translation</td>
+</tr>
 
+<tr>
+<td><a href="redata.html">redata</a></td>
+<td>Search REBASE for enzyme name, references, suppliers etc</td>
+</tr>
+
+<tr>
+<td><a href="remap.html">remap</a></td>
+<td>Display sequence with restriction sites, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="restover.html">restover</a></td>
+<td>Find restriction enzymes producing specific overhang</td>
+</tr>
+
+<tr>
+<td><a href="showseq.html">showseq</a></td>
+<td>Display a sequence with features, translation etc</td>
+</tr>
+
+<tr>
+<td><a href="silent.html">silent</a></td>
+<td>Silent mutation restriction enzyme scan</td>
+</tr>
+
+</table>
 
 
 <H2>
@@ -1061,13 +1076,11 @@ Alan Bleasby (ajb&nbsp;&copy;&nbsp;ebi.ac.uk)
 European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 
-
 <H2>
     History
 </H2>
 
 Completed 16th April 1999
-
 
 <H2>
     Target users
@@ -1075,12 +1088,10 @@ Completed 16th April 1999
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 
 

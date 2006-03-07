@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 matcher
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ matcher
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Finds the best local alignments between two sequences
-
 
 <H2>
     Description
@@ -102,15 +99,16 @@ Output alignment [hba_human.matcher]: <b></b>
 
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence USA
-  [-bsequence]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
   [-outfile]           align      Output alignment file name
 
    Additional (Optional) qualifiers:
@@ -210,7 +208,6 @@ Output alignment [hba_human.matcher]: <b></b>
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -224,14 +221,14 @@ Output alignment [hba_human.matcher]: <b></b>
 
 <tr>
 <td>[-asequence]<br>(Parameter 1)</td>
-<td>Sequence USA</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-bsequence]<br>(Parameter 2)</td>
-<td>Sequence USA</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
@@ -288,7 +285,6 @@ Output alignment [hba_human.matcher]: <b></b>
 </tr>
 
 </table>
-
 
 
 <H2>
@@ -527,7 +523,6 @@ SQ   SEQUENCE   146 AA;  15867 MW;  EC9744C9 CRC32;
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -563,7 +558,6 @@ http://emboss.sf.net/docs/themes/AlignFormats.html</A>
 for further information on alignment formats.
 
 <p>
-
  
 
 <p>
@@ -577,6 +571,9 @@ for further information on alignment formats.
 ########################################
 # Program: matcher
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: matcher
+#    [-asequence] tsw:hba_human
+#    [-bsequence] tsw:hbb_human
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################
@@ -631,6 +628,10 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
 ########################################
 # Program: matcher
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: matcher
+#    [-asequence] tsw:hba_human
+#    [-bsequence] tsw:hbb_human
+#    -alternatives 10
 # Align_format: markx0
 # Report_file: hba_human.matcher
 ########################################
@@ -674,10 +675,6 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
 
 #=======================================
 #
-# Aligned_sequences: 2
-# 1: HBA_HUMAN
-# 2: HBB_HUMAN
-# Matrix: EBLOSUM62
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -735,7 +732,6 @@ HBB_HU PVQAAYQKVVAGVANALAHKY
 #---------------------------------------
 </pre>
 </td></tr></table><p>
-
 
 
 <H2>
@@ -815,12 +811,27 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="seqmatchall.html">seqmatchall</a></td><td>All-against-all comparison of a set of sequences</td></tr>
-<tr><td><a href="supermatcher.html">supermatcher</a></td><td>Match large sequences against one or more other sequences</td></tr>
-<tr><td><a href="water.html">water</a></td><td>Smith-Waterman local alignment</td></tr>
-<tr><td><a href="wordmatch.html">wordmatch</a></td><td>Finds all exact matches of a given size between 2 sequences</td></tr>
-</table>
+<tr>
+<td><a href="seqmatchall.html">seqmatchall</a></td>
+<td>All-against-all comparison of a set of sequences</td>
+</tr>
 
+<tr>
+<td><a href="supermatcher.html">supermatcher</a></td>
+<td>Match large sequences against one or more other sequences</td>
+</tr>
+
+<tr>
+<td><a href="water.html">water</a></td>
+<td>Smith-Waterman local alignment</td>
+</tr>
+
+<tr>
+<td><a href="wordmatch.html">wordmatch</a></td>
+<td>Finds all exact matches of a given size between 2 sequences</td>
+</tr>
+
+</table>
 
 <p>
 
@@ -845,13 +856,11 @@ Ian Longden (il&nbsp;&copy;&nbsp;sanger.ac.uk)
 Sanger Institute, Wellcome Trust Genome Campus, Hinxton,
 Cambridge, CB10 1SA, UK.                      
 
-
 <H2>
     History
 </H2>
 
  Completed 11th May 1999.
-
 
 <H2>
     Target users
@@ -860,12 +869,10 @@ Cambridge, CB10 1SA, UK.
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

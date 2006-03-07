@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 diffseq
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ diffseq
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Find differences between nearly identical sequences
-
 <H2>
     Description
 </H2>
@@ -88,15 +85,16 @@ Second output features [AF129756.diffgff]: <b></b>
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Sequence USA
-  [-bsequence]         sequence   Sequence USA
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
    -wordsize           integer    The similar regions between the two
                                   sequences are found by creating a hash table
                                   of 'wordsize'd subsequences. 10 is a
@@ -207,7 +205,6 @@ Second output features [AF129756.diffgff]: <b></b>
    -fatal              boolean    Report fatal errors
    -die                boolean    Report deaths
 
-
 </pre>
 </td></tr></table>
 <P>
@@ -220,14 +217,14 @@ Second output features [AF129756.diffgff]: <b></b>
 
 <tr>
 <td>[-asequence]<br>(Parameter 1)</td>
-<td>Sequence USA</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-bsequence]<br>(Parameter 2)</td>
-<td>Sequence USA</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
@@ -284,7 +281,6 @@ Second output features [AF129756.diffgff]: <b></b>
 </tr>
 
 </table>
-
 
 <H2>
     Input file format
@@ -521,7 +517,6 @@ DR   SPTREMBL; O95870; O95870.
 </td></tr></table><p>
 
 
-
 <H2>
     Output file format
 </H2>
@@ -546,7 +541,6 @@ http://emboss.sf.net/docs/themes/ReportFormats.html</A>
 for further information on report formats.
 
 <p>
-
 <p>
 
 By default <b>diffseq</b> writes a 'diffseq' report file.
@@ -561,6 +555,9 @@ By default <b>diffseq</b> writes a 'diffseq' report file.
 ########################################
 # Program: diffseq
 # Rundate: Fri Jul 15 2005 12:00:00
+# Commandline: diffseq
+#    [-asequence] tembl:ap000504
+#    [-bsequence] tembl:af129756
 # Report_format: diffseq
 # Report_file: ap000504.diffseq
 # Additional_files: 2
@@ -605,9 +602,6 @@ AP000504 2466-2466 Length: 1
 Sequence: g
 Sequence: a
 Feature: repeat_region 8391-8686 rpt_family='AluSg'
-AF129756 8500-8500 Length: 1
-
-AP000504 2655-2658 Length: 4
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -886,7 +880,6 @@ AP000504	diffseq	conflict	97827	97827	1.000	+	.	Sequence "AP000504.105" ; note "
 </pre>
 </td></tr></table><p>
 
-
 <p>
 
 The first line is the title giving the names of the sequences used.
@@ -1023,7 +1016,6 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 </table>
 
-
 <H2>
     Author(s)
 </H2>
@@ -1034,7 +1026,6 @@ MRC Rosalind Franklin Centre for Genomics Research
 Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
 
-
 <H2>
     History
 </H2>
@@ -1043,18 +1034,15 @@ Written 15th Aug 2000 - Gary Williams.
 <p>
 18th Aug 2000 - Added writing out GFF files of the mismatched regions
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 
 </BODY>

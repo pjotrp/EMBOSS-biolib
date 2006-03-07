@@ -13,7 +13,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 palindrome
 </font></b>
 </td></tr>
@@ -22,12 +21,10 @@ palindrome
 <p>
 
 
-
 <H2>
     Function
 </H2>
 Looks for inverted repeats in a nucleotide sequence
-
 
 <H2>
     Description
@@ -73,7 +70,7 @@ reported.
 
 % <b>palindrome </b>
 Looks for inverted repeats in a nucleotide sequence
-Input sequence(s): <b>tembl:hsts1</b>
+Input nucleotide sequence(s): <b>tembl:hsts1</b>
 Enter minimum length of palindrome [10]: <b>15</b>
 Enter maximum length of palindrome [100]: <b></b>
 Enter maximum gap between repeated regions [100]: <b></b>
@@ -86,14 +83,14 @@ Report overlapping matches [Y]: <b></b>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
-
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence database USA
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
+                                  format, or reference (input USA)
    -minpallen          integer    Enter minimum length of palindrome
    -maxpallen          integer    Enter maximum length of palindrome
    -gaplimit           integer    Enter maximum gap between repeated regions
@@ -106,39 +103,38 @@ Report overlapping matches [Y]: <b></b>
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of each sequence to be used
-   -send1               integer    End of each sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 </pre>
 </td></tr></table>
@@ -153,7 +149,7 @@ Report overlapping matches [Y]: <b></b>
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence database USA</td>
+<td>Nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -221,7 +217,6 @@ Report overlapping matches [Y]: <b></b>
 </tr>
 
 </table>
-
 
 
 <H2>
@@ -350,7 +345,6 @@ FT   repeat_unit     202..477
 </pre>
 </td></tr></table><p>
 
-
 <H2>
     Output file format
 </H2>
@@ -433,7 +427,6 @@ Palindromes:
 </td></tr></table><p>
 
 
-
 <H2>
     Data files
 </H2>
@@ -512,11 +505,22 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="einverted.html">einverted</a></td><td>Finds DNA inverted repeats</td></tr>
-<tr><td><a href="equicktandem.html">equicktandem</a></td><td>Finds tandem repeats</td></tr>
-<tr><td><a href="etandem.html">etandem</a></td><td>Looks for tandem repeats in a nucleotide sequence</td></tr>
-</table>
+<tr>
+<td><a href="einverted.html">einverted</a></td>
+<td>Finds DNA inverted repeats</td>
+</tr>
 
+<tr>
+<td><a href="equicktandem.html">equicktandem</a></td>
+<td>Finds tandem repeats</td>
+</tr>
+
+<tr>
+<td><a href="etandem.html">etandem</a></td>
+<td>Looks for tandem repeats in a nucleotide sequence</td>
+</tr>
+
+</table>
 <p>
 
 <b>einverted</b> also looks for inverted repeats but is much slower and
@@ -535,13 +539,11 @@ while he was with:
 HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 
-
 <H2>
     History
 </H2>
 
 Written (1999) - Mark Faller.
-
 
 <H2>
     Target users
@@ -549,12 +551,10 @@ Written (1999) - Mark Faller.
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
 
-
 <H2>
     Comments
 </H2>
 None
-
 
 </BODY>
 </HTML>

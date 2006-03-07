@@ -12,7 +12,6 @@
 </td>
 <td align=left valign=middle>
 <b><font size="+6">
-
 epestfind
 </font></b>
 </td></tr>
@@ -20,12 +19,10 @@ epestfind
 <br>&nbsp;
 <p>
 
-
 <H2>
     Function
 </H2>
 Finds PEST motifs as potential proteolytic cleavage sites
-
 <H2>
     Description
 </H2>
@@ -168,7 +165,7 @@ X=10*0+45=45
 
 % <b>epestfind -graph cps -invalid </b>
 Finds PEST motifs as potential proteolytic cleavage sites
-Input sequence: <b>exu2_drops.embl</b>
+Input protein sequence: <b>exu2_drops.embl</b>
 Window length [10]: <b></b>
 Sort order of results
       1 : length
@@ -182,7 +179,6 @@ Created epestfind.ps
 </pre></td></tr></table><p>
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
-
 
 
 <H2>
@@ -226,48 +222,47 @@ Created epestfind.ps
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1             integer    Start of the sequence to be used
-   -send1               integer    End of the sequence to be used
-   -sreverse1           boolean    Reverse (if DNA)
-   -sask1               boolean    Ask for begin/end/reverse
-   -snucleotide1        boolean    Sequence is nucleotide
-   -sprotein1           boolean    Sequence is protein
-   -slower1             boolean    Make lower case
-   -supper1             boolean    Make upper case
-   -sformat1            string     Input sequence format
-   -sdbname1            string     Database name
-   -sid1                string     Entryname
-   -ufo1                string     UFO features
-   -fformat1            string     Features format
-   -fopenfile1          string     Features file name
+   -sbegin1            integer    Start of the sequence to be used
+   -send1              integer    End of the sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2         string     Output directory
+   -odirectory2        string     Output directory
 
    "-graph" associated qualifiers
-   -gprompt             boolean    Graph prompting
-   -gtitle              string     Graph title
-   -gsubtitle           string     Graph subtitle
-   -gxtitle             string     Graph x axis title
-   -gytitle             string     Graph y axis title
-   -goutfile            string     Output file for non interactive displays
-   -gdirectory          string     Output directory
+   -gprompt            boolean    Graph prompting
+   -gtitle             string     Graph title
+   -gsubtitle          string     Graph subtitle
+   -gxtitle            string     Graph x axis title
+   -gytitle            string     Graph y axis title
+   -goutfile           string     Output file for non interactive displays
+   -gdirectory         string     Output directory
 
    General qualifiers:
-   -auto                boolean    Turn off prompts
-   -stdout              boolean    Write standard output
-   -filter              boolean    Read standard input, write standard output
-   -options             boolean    Prompt for standard and additional values
-   -debug               boolean    Write debug output to program.dbg
-   -verbose             boolean    Report some/full command line options
-   -help                boolean    Report command line options. More
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
                                   information on associated and general
                                   qualifiers can be found with -help -verbose
-   -warning             boolean    Report warnings
-   -error               boolean    Report errors
-   -fatal               boolean    Report fatal errors
-   -die                 boolean    Report deaths
-
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
 
 </pre>
 </td></tr></table>
@@ -370,7 +365,6 @@ Created epestfind.ps
 
 </table>
 
-
 <H2>
     Input file format
 </H2>
@@ -432,7 +426,6 @@ SQ   SEQUENCE   477 AA;  53194 MW;  8B5334A77DB9467B CRC64;
 //
 </pre>
 </td></tr></table><p>
-
 
 
 <H2>
@@ -545,7 +538,6 @@ Invalid PEST motif with 10 amino acids between position 225 and 236.
 </td></tr></table><p>
 <p><h3>Graphics File: epestfind.ps</h3>
 <p><img src="epestfind.1.epestfind.gif" alt="[epestfind results]">
-
 <p>
 
 The output from <b>epestfind</b> is a simple text one.  It reports poor
@@ -613,7 +605,6 @@ The directories are searched in the following order:
    <li> ~/.embossdata
 </ul>
 <p>
-
 
 <p>
 
@@ -715,20 +706,67 @@ None.
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
-<tr><td><a href="antigenic.html">antigenic</a></td><td>Finds antigenic sites in proteins</td></tr>
-<tr><td><a href="digest.html">digest</a></td><td>Protein proteolytic enzyme or reagent cleavage digest</td></tr>
-<tr><td><a href="fuzzpro.html">fuzzpro</a></td><td>Protein pattern search</td></tr>
-<tr><td><a href="fuzztran.html">fuzztran</a></td><td>Protein pattern search after translation</td></tr>
-<tr><td><a href="helixturnhelix.html">helixturnhelix</a></td><td>Report nucleic acid binding motifs</td></tr>
-<tr><td><a href="oddcomp.html">oddcomp</a></td><td>Find protein sequence regions with a biased composition</td></tr>
-<tr><td><a href="patmatdb.html">patmatdb</a></td><td>Search a protein sequence with a motif</td></tr>
-<tr><td><a href="patmatmotifs.html">patmatmotifs</a></td><td>Search a PROSITE motif database with a protein sequence</td></tr>
-<tr><td><a href="pepcoil.html">pepcoil</a></td><td>Predicts coiled coil regions</td></tr>
-<tr><td><a href="preg.html">preg</a></td><td>Regular expression search of a protein sequence</td></tr>
-<tr><td><a href="pscan.html">pscan</a></td><td>Scans proteins using PRINTS</td></tr>
-<tr><td><a href="sigcleave.html">sigcleave</a></td><td>Reports protein signal cleavage sites</td></tr>
-</table>
+<tr>
+<td><a href="antigenic.html">antigenic</a></td>
+<td>Finds antigenic sites in proteins</td>
+</tr>
 
+<tr>
+<td><a href="digest.html">digest</a></td>
+<td>Protein proteolytic enzyme or reagent cleavage digest</td>
+</tr>
+
+<tr>
+<td><a href="fuzzpro.html">fuzzpro</a></td>
+<td>Protein pattern search</td>
+</tr>
+
+<tr>
+<td><a href="fuzztran.html">fuzztran</a></td>
+<td>Protein pattern search after translation</td>
+</tr>
+
+<tr>
+<td><a href="helixturnhelix.html">helixturnhelix</a></td>
+<td>Report nucleic acid binding motifs</td>
+</tr>
+
+<tr>
+<td><a href="oddcomp.html">oddcomp</a></td>
+<td>Find protein sequence regions with a biased composition</td>
+</tr>
+
+<tr>
+<td><a href="patmatdb.html">patmatdb</a></td>
+<td>Search a protein sequence with a motif</td>
+</tr>
+
+<tr>
+<td><a href="patmatmotifs.html">patmatmotifs</a></td>
+<td>Search a PROSITE motif database with a protein sequence</td>
+</tr>
+
+<tr>
+<td><a href="pepcoil.html">pepcoil</a></td>
+<td>Predicts coiled coil regions</td>
+</tr>
+
+<tr>
+<td><a href="preg.html">preg</a></td>
+<td>Regular expression search of a protein sequence</td>
+</tr>
+
+<tr>
+<td><a href="pscan.html">pscan</a></td>
+<td>Scans proteins using PRINTS</td>
+</tr>
+
+<tr>
+<td><a href="sigcleave.html">sigcleave</a></td>
+<td>Reports protein signal cleavage sites</td>
+</tr>
+
+</table>
 
 <H2>
     Author(s)
@@ -737,7 +775,6 @@ None.
 Michael K. Schuster and Martin Grabner (martin.grabner&nbsp;&copy;&nbsp;univie.ac.at)
 <br>
 from the Austrian National EMBnet node.
-
 
 <p>
 
@@ -755,18 +792,15 @@ This is based on the algorithm used in the QuickBasic program by Rodgers et al.
 
 Written (March 2002).
 
-
 <H2>
     Target users
 </H2>
 This program is intended to be used by everyone and everything, from naive users to embedded scripts.
 
-
 <H2>
     Comments
 </H2>
 None
-
 </BODY>
 </HTML>
 
