@@ -1,0 +1,65 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: fitch.ffitch</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+   7 Populations
+
+Fitch-Margoliash method version 3.6b
+
+                  __ __             2
+                  \  \   (Obs - Exp)
+Sum of squares =  /_ /_  ------------
+                                2
+                   i  j      Obs
+
+Negative branch lengths not allowed
+
+
+  +---------------------------------------------Mouse     
+  ! 
+  !                                +------Human     
+  !                             +--5 
+  !                           +-4  +--------Chimp     
+  !                           ! ! 
+  !                        +--3 +---------Gorilla   
+  !                        !  ! 
+  1------------------------2  +-----------------Orang     
+  !                        ! 
+  !                        +---------------------Gibbon    
+  ! 
+  +------------------------------------------------------Bovine    
+
+
+remember: this is an unrooted tree!
+
+Sum of squares =     0.01375
+
+Average percent standard deviation =     1.85418
+
+Between        And            Length
+-------        ---            ------
+   1          Mouse             0.76985
+   1             2              0.41983
+   2             3              0.04986
+   3             4              0.02121
+   4             5              0.03695
+   5          Human             0.11449
+   5          Chimp             0.15471
+   4          Gorilla           0.15680
+   3          Orang             0.29209
+   2          Gibbon            0.35537
+   1          Bovine            0.91675
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: fitch.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Mouse:0.76985,((((Human:0.11449,Chimp:0.15471):0.03695,
+Gorilla:0.15680):0.02121,Orang:0.29209):0.04986,Gibbon:0.35537):0.41983,Bovine:0.91675);
+</pre>
+</td></tr></table><p>

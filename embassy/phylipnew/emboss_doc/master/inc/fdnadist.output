@@ -1,0 +1,14 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: dnadist.fdnadist</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5
+Alpha       0.000000  0.303893  0.857546  1.158921  1.542897
+Beta        0.303893  0.000000  0.339731  0.913519  0.619666
+Gamma       0.857546  0.339731  0.000000  1.631729  1.293707
+Delta       1.158921  0.913519  1.631729  0.000000  0.165882
+Epsilon     1.542897  0.619666  1.293707  0.165882  0.000000
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,54 @@
+<b>Here is a sample session with fdnacomp</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fdnacomp -ancseq -stepbox -printdata </b>
+DNA compatibility algorithm
+Input (aligned) nucleotide sequence set(s): <b>dnacomp.dat</b>
+Input tree file: <b></b>
+Weights file: <b></b>
+Output file [dnacomp.fdnacomp]: <b></b>
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+Doing global rearrangements
+  !---------!
+   .........
+
+Output written to file "dnacomp.fdnacomp"
+
+Trees also written onto file "dnacomp.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fdnacomp </b>
+DNA compatibility algorithm
+Input (aligned) nucleotide sequence set(s): <b>dnacomp.dat</b>
+Input tree file: <b>dnacomptree.dat</b>
+Weights file: <b></b>
+Output file [dnacomp.fdnacomp]: <b></b>
+
+Output written to file "dnacomp.fdnacomp"
+
+Trees also written onto file "dnacomp.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.2">Go to the input files for this example</a><br><a href="#output.2">Go to the output files for this example</a><p><p>

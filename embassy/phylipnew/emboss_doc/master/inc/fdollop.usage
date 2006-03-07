@@ -1,0 +1,34 @@
+<b>Here is a sample session with fdollop</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fdollop </b>
+Dollo and polymorphism parsimony algorithm
+Input file: <b>dollop.dat</b>
+Input tree file: <b></b>
+Output file [dollop.fdollop]: <b></b>
+
+
+Dollo and polymorphism parsimony algorithm, version 3.6b
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+Doing global rearrangements
+  !---------!
+   .........
+
+Output written to file "dollop.fdollop"
+
+Trees also written onto file "dollop.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

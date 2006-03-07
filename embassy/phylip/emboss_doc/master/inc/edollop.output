@@ -1,0 +1,42 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: edollop.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Dollo and polymorphism parsimony algorithm, version 3.57c
+
+Dollo parsimony method
+
+
+               
+
+
+One most parsimonious tree found:
+
+
+
+
+  +-----------Delta     
+--3  
+  !  +--------Epsilon   
+  +--4  
+     !  +-----Gamma     
+     +--2  
+        !  +--Beta      
+        +--1  
+           +--Alpha     
+
+
+requires a total of      3.000
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: edollop.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Delta,(Epsilon,(Gamma,(Beta,Alpha))));
+</pre>
+</td></tr></table><p>

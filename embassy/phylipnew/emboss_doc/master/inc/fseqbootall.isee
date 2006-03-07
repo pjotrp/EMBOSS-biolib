@@ -1,0 +1,159 @@
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/distmat.html">distmat</a></td>
+<td>Creates a distance matrix from multiple alignments</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednacomp.html">ednacomp</a></td>
+<td>DNA compatibility algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednadist.html">ednadist</a></td>
+<td>Nucleic acid sequence Distance Matrix program</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednainvar.html">ednainvar</a></td>
+<td>Nucleic acid sequence Invariants method</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednaml.html">ednaml</a></td>
+<td>Phylogenies from nucleic acid Maximum Likelihood</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednamlk.html">ednamlk</a></td>
+<td>Phylogenies from nucleic acid Maximum Likelihood with clock</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednapars.html">ednapars</a></td>
+<td>DNA parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/ednapenny.html">ednapenny</a></td>
+<td>Penny algorithm for DNA</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/eprotdist.html">eprotdist</a></td>
+<td>Protein distance algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/eprotpars.html">eprotpars</a></td>
+<td>Protein parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/erestml.html">erestml</a></td>
+<td>Restriction site Maximum Likelihood method</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/eseqboot.html">eseqboot</a></td>
+<td>Bootstrapped sequences algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdiscboot.html">fdiscboot</a></td>
+<td>Bootstrapped discrete sites algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdnacomp.html">fdnacomp</a></td>
+<td>DNA compatibility algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdnadist.html">fdnadist</a></td>
+<td>Nucleic acid sequence Distance Matrix program</td>
+</tr>
+
+<tr>
+<td><a href="fdnainvar.html">fdnainvar</a></td>
+<td>Nucleic acid sequence Invariants method</td>
+</tr>
+
+<tr>
+<td><a href="fdnaml.html">fdnaml</a></td>
+<td>Estimates nucleotide phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fdnamlk.html">fdnamlk</a></td>
+<td>Estimates nucleotide phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fdnamove.html">fdnamove</a></td>
+<td>Interactive DNA parsimony</td>
+</tr>
+
+<tr>
+<td><a href="fdnapars.html">fdnapars</a></td>
+<td>DNA parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdnapenny.html">fdnapenny</a></td>
+<td>Penny algorithm for DNA</td>
+</tr>
+
+<tr>
+<td><a href="fdolmove.html">fdolmove</a></td>
+<td>Interactive Dollo or Polymorphism Parsimony</td>
+</tr>
+
+<tr>
+<td><a href="ffreqboot.html">ffreqboot</a></td>
+<td>Bootstrapped genetic frequencies algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fproml.html">fproml</a></td>
+<td>Protein phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fpromlk.html">fpromlk</a></td>
+<td>Protein phylogeny by maximum likelihood</td>
+</tr>
+
+<tr>
+<td><a href="fprotdist.html">fprotdist</a></td>
+<td>Protein distance algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fprotpars.html">fprotpars</a></td>
+<td>Protein pasimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="frestboot.html">frestboot</a></td>
+<td>Bootstrapped restriction sites algorithm</td>
+</tr>
+
+<tr>
+<td><a href="frestdist.html">frestdist</a></td>
+<td>Distance matrix from restriction sites or fragments</td>
+</tr>
+
+<tr>
+<td><a href="frestml.html">frestml</a></td>
+<td>Restriction site maximum Likelihood method</td>
+</tr>
+
+<tr>
+<td><a href="fseqboot.html">fseqboot</a></td>
+<td>Bootstrapped sequences algorithm</td>
+</tr>
+
+</table>

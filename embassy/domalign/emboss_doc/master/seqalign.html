@@ -1,0 +1,281 @@
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBASSY: SEQALIGN documentation. </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+<!--#include virtual="/apps/header1.inc" -->
+<H2> SEQALIGN documentation
+<!--#include virtual="/apps/header2.inc" -->
+<!-- END OF HEADER -->
+
+
+
+
+
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<br><H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
+
+<!--#include file="inc/seqalign.ione" -->
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+SEQALIGN reads a directory of "seed" alignments and a directory of sets of protein sequences and writes a directory of "extended" alignments.  An extended alignment is a seed alignment that is extended with sequences from the appropriate sequence set.  The sets directory must contain a sequence set for each seed alignment directory and the files must have the same base name.  For example, sequences from "family.sets" are used to extend the seed alignment "family.aln". 
+<br>Typically, the inputs are (i) DAF files (domain alignment files) containing structure-based sequence alignments and (ii) DHF files (domain hits files) containing sequence relatives (of unknown structure) of these alignments, and the output are DAF files containing the extended alignments. 
+<br>The base names of the output alignments are the same as the input alignments.  The paths for input and output files are specified by the user and the file extensions are set in the ACD file.
+
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+
+     Cannot use the test data files because they might be empty or need 
+     hand-editing 
+
+     Use "<b>SEQALIGN</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+The format of the domain alignment file is described in <a href="domainalign.html">DOMAINALIGN documentation</a>. 
+<br>If other alignment files are used as input, all of the common file formats are supported.
+
+<br><br>The format of the domain hits file is described in <a href="seqsearch.html">SEQSEARCH documentation</a>. 
+<br>If other sequence sets are used as input, all of the common file formats are supported.
+
+<!--#include file="inc/seqalign.input" -->
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+The format of the domain alignment file is described in <a href="domainalign.html">DOMAINALIGN documentation</a>. 
+
+Note however that the file will never contain 'Number' or 'Post_similar' records. Futhermore, the code before each sequence is of the form <b>Acc_Start_End </b>(where domain hits files were used as input sequences) or <b>Acc_n</b> (where other sequences were used as input), where 'Acc' is the accession number of the sequence, 'Start' and 'End' are the start and end point of the sequence in the full length sequence respectively, and 'n' is a sequential count of the sequence in the alignment.
+
+<!--#include file="inc/seqalign.output" -->
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml" 
+-->
+
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+SEQALIGN does not use a data file.
+
+
+
+
+
+
+
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+ 
+<pre>
+<!--#include file="inc/seqalign.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/seqalign.itable" -->
+
+<H3> 6.2 EXAMPLE SESSION </H3>
+An example of interactive use of SEQALIGN is shown below.
+
+<!--#include file="inc/seqalign.usage" -->
+
+<!-- SEQALIGN read all domain alignment files with the file extension .salign (specified in ACD) from the directory /test_data, and extended these alignments using the sequences from domain hits files with file extension .hits (specified in ACD) in the directory /test_data. Extended domain alignment files (file extension .ealign specified in ACD) were written to /test_data/seqalign. -->
+
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
+-->
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
+None.
+
+
+
+
+
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
+-->
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
+<b>  1. Use of CLUSTAL</b><br>
+clustalw must be installed on the system that is running SEQSEARCH.
+
+<br><br>When running SEQSEARCH at the HGMP it is essential that the command 'use clustal' (which runs the script /packages/menu/USE/clustal) is given before it is run. 
+
+
+<br><br><b>  2. Empty domain hits file (input)</b>
+<br>If no sequences are given in the domain hits file then no extended alignment will be generated.
+
+
+
+<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b>Domain hits file </b></td>
+<td> DHF format (FASTA-like). </td>
+<td> Database hits (sequences) with domain classification information.  The hits are relatives to a SCOP or CATH family (or other node in the structural hierarchies) and are found from a search of a discriminating element (e.g. a protein signature, hidden Markov model, simple frequency matrix, Gribskov profile or Hennikoff profile) against a sequence database. </td>
+<td> <a href="seqsearch.html">SEQSEARCH</a> (hits retrieved by PSIBLAST). <a href="sigscan.html">SIGSCAN</a> (hits retrieved by sparse protein signature). <a href="libscan.html">LIBSCAN</a> (hits retrieved by various types of HMM and profile). </td>
+<td> N.A. </td>
+</tr>
+<tr>
+<td><b>Domain alignment file </b></td>
+<td> DAF format (CLUSTAL-like format with domain classification information). </td>
+<td> Contains a sequence alignment of domains belonging to the same SCOP or CATH family.  The file is annotated with domain family classification information.</td>
+<td> <a href="domainalign.html">DOMAINALIGN</a> (structure-based sequence alignment of domains of known structure). </td>
+<td> DOMAINALIGN alignments can be extended with sequence relatives (of unknown structure) to the family in question by using SEQALIGN. </td>
+</tr>
+</table>
+
+
+
+
+
+<!--#include file="inc/seqalign.history" -->
+<!--#include file="inc/seqalign.comment" -->
+
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
+-->
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+The generation of sequence alignments for large datasets such as SCOP or CATH
+potentially requires a lot of time for preparation of datasets, running 
+jobs and so on, in addition to the compute time required for the 
+alignments themselves. 
+SEQALIGN will generate an extended alignment for each seed alignment in a directory for which a file of sequences is available, by using CLUSTALW.  
+Sequences are added one by one to the appropriate seed alignment.
+
+
+
+
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
+None.
+
+
+
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+     (Take this from "Sister applications" in the old documentation)
+-->
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+
+<!--#include file="inc/seqalign.isee" -->
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
+The log file might contain the following messages:
+<br><br><i>Could not open seed sequence file my.file </i> (file read error on input sequence alignment or sequence file)
+<br><i>Empty alignment in my.file </i> (input alignment was empty.)
+<br><i>Empty singlet sequence for my.file </i> (singlet sequence file was empty.)
+<br><i>Could not open domain hits file my.file</i>  (file read error on input sequence file.)
+<br><i>Not enough sequences found in domain hits file </i> (insufficient sequences (i.e. < 2) in input sequence file.)
+
+
+<!-- AUTHORS -->
+<a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
+Ranjeeva Ranasinghe <a href="mailto:rranasin@rfcgr.mrc.ac.uk">(rranasin@rfcgr.mrc.ac.uk)</a>
+<br><br>
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+
+
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
+-->
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
+
+<!--#include file="inc/embossref.ihtml" -->
+
+<H3>14.1 Other useful references  </H3>
+
+<br>
+
+</BODY>
+</HTML>

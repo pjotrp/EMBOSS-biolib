@@ -1,0 +1,452 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: globins50.msf</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+!!AA_MULTIPLE_ALIGNMENT 1.0
+PileUp of: *.pep
+
+ Symbol comparison table: GenRunData:blosum62.cmp  CompCheck: 6430
+
+                   GapWeight: 12
+             GapLengthWeight: 4 
+
+ pileup.msf  MSF: 308  Type: P  August 16, 1999 09:09  Check: 9858 ..
+
+ Name: lgb1_pea         Len:   308  Check: 2200  Weight:  1.00
+ Name: lgb1_vicfa       Len:   308  Check:  214  Weight:  1.00
+ Name: myg_escgi        Len:   308  Check: 3961  Weight:  1.00
+ Name: myg_horse        Len:   308  Check: 5619  Weight:  1.00
+ Name: myg_progu        Len:   308  Check: 6401  Weight:  1.00
+ Name: myg_saisc        Len:   308  Check: 6606  Weight:  1.00
+ Name: myg_lycpi        Len:   308  Check: 6090  Weight:  1.00
+ Name: myg_mouse        Len:   308  Check: 6613  Weight:  1.00
+ Name: myg_musan        Len:   308  Check: 3942  Weight:  1.00
+ Name: hba_ailme        Len:   308  Check: 4558  Weight:  1.00
+ Name: hba_prolo        Len:   308  Check: 5054  Weight:  1.00
+ Name: hba_pagla        Len:   308  Check: 5383  Weight:  1.00
+ Name: hba_macfa        Len:   308  Check: 5135  Weight:  1.00
+ Name: hba_macsi        Len:   308  Check: 5198  Weight:  1.00
+ Name: hba_ponpy        Len:   308  Check: 5050  Weight:  1.00
+ Name: hba2_galcr       Len:   308  Check: 5609  Weight:  1.00
+ Name: hba_mesau        Len:   308  Check: 4702  Weight:  1.00
+ Name: hba2_bosmu       Len:   308  Check: 4241  Weight:  1.00
+ Name: hba_erieu        Len:   308  Check: 4680  Weight:  1.00
+ Name: hba_frapo        Len:   308  Check: 3549  Weight:  1.00
+ Name: hba_phaco        Len:   308  Check: 4440  Weight:  1.00
+ Name: hba_trioc        Len:   308  Check: 5465  Weight:  1.00
+ Name: hba_ansse        Len:   308  Check: 3300  Weight:  1.00
+ Name: hba_colli        Len:   308  Check: 3816  Weight:  1.00
+ Name: hbad_chlme       Len:   308  Check: 4571  Weight:  1.00
+ Name: hbad_pasmo       Len:   308  Check: 6777  Weight:  1.00
+ Name: hbaz_horse       Len:   308  Check: 7187  Weight:  1.00
+ Name: hba4_salir       Len:   308  Check: 7329  Weight:  1.00
+ Name: hbb_ornan        Len:   308  Check: 2667  Weight:  1.00
+ Name: hbb_tacac        Len:   308  Check: 4356  Weight:  1.00
+ Name: hbe_ponpy        Len:   308  Check: 3827  Weight:  1.00
+ Name: hbb_speci        Len:   308  Check: 1556  Weight:  1.00
+ Name: hbb_speto        Len:   308  Check: 2051  Weight:  1.00
+ Name: hbb_equhe        Len:   308  Check: 3414  Weight:  1.00
+ Name: hbb_sunmu        Len:   308  Check: 2927  Weight:  1.00
+ Name: hbb_calar        Len:   308  Check: 3836  Weight:  1.00
+ Name: hbb_mansp        Len:   308  Check: 4322  Weight:  1.00
+ Name: hbb_ursma        Len:   308  Check: 4428  Weight:  1.00
+ Name: hbb_rabit        Len:   308  Check: 4190  Weight:  1.00
+ Name: hbb_tupgl        Len:   308  Check: 4185  Weight:  1.00
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+  lgb1_pea  ~~~~~~~~
+lgb1_vicfa  ~~~~~~~~
+ myg_escgi  ~~~~~~~~
+ myg_horse  ~~~~~~~~
+ myg_progu  ~~~~~~~~
+ myg_saisc  ~~~~~~~~
+ myg_lycpi  ~~~~~~~~
+ myg_mouse  ~~~~~~~~
+ myg_musan  ~~~~~~~~
+ hba_ailme  ~~~~~~~~
+ hba_prolo  ~~~~~~~~
+ hba_pagla  ~~~~~~~~
+ hba_macfa  ~~~~~~~~
+ hba_macsi  ~~~~~~~~
+ hba_ponpy  ~~~~~~~~
+hba2_galcr  ~~~~~~~~
+ hba_mesau  ~~~~~~~~
+hba2_bosmu  ~~~~~~~~
+ hba_erieu  ~~~~~~~~
+ hba_frapo  ~~~~~~~~
+ hba_phaco  ~~~~~~~~
+ hba_trioc  ~~~~~~~~
+ hba_ansse  ~~~~~~~~
+ hba_colli  ~~~~~~~~
+hbad_chlme  ~~~~~~~~
+hbad_pasmo  ~~~~~~~~
+hbaz_horse  ~~~~~~~~
+hba4_salir  ~~~~~~~~
+ hbb_ornan  ~~~~~~~~
+ hbb_tacac  ~~~~~~~~
+ hbe_ponpy  ~~~~~~~~
+ hbb_speci  ~~~~~~~~
+ hbb_speto  ~~~~~~~~
+ hbb_equhe  ~~~~~~~~
+ hbb_sunmu  ~~~~~~~~
+ hbb_calar  ~~~~~~~~
+ hbb_mansp  ~~~~~~~~
+ hbb_ursma  ~~~~~~~~
+ hbb_rabit  ~~~~~~~~
+ hbb_tupgl  ~~~~~~~~
+ hbb_triin  ~~~~~~~~
+ hbb_colli  ~~~~~~~~
+ hbb_larri  ~~~~~~~~
+hbb1_varex  ~~~~~~~~
+hbb2_xentr  ~~~~~~~~
+hbbl_ranca  ~~~~~~~~
+hbb2_tricr  ~~~~~~~~
+glb2_mormr  ~~~~~~~~
+glbz_chith  FGAVFAKM
+hbf1_ureca  VAAMK~~~
+
+</pre>
+</td></tr></table><p>
+
+<a name="input.2"></a>
+<h3>Input files for usage example 2</h3>
+<p><h3>File: rrm.sto</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+# STOCKHOLM 1.0
+
+
+
+YIS5_YEAST/33-104               IYIGNL......NRELTEGDILTVFS.....E.YGVP..VDVILSRD...
+YIS1_YEAST/66-136               IFVGNI......TPDVTPEQIEDHFK.....D.CGQI..KRITLLYD...
+RN15_YEAST/20-91                VYLGSI......PYDQTEEQILDLCS.....N.VGPV..INLKMMFD...
+CST2_HUMAN/18-89                VFVGNI......PYEATEEQLKDIFS.....E.VGPV..VSFRLVYD...
+NSR1_YEAST/269-340              LFLGNL......SFNADRDAIFELFA.....K.HGEV..VSVRIPTH...
+IF4B_HUMAN/98-168               AFLGNL......PYDVTEESIKEFFR.....G.LNIS...AVRLPR....
+TIA1_HUMAN/108-179              VFVGDL......SPQITTEDIKAAFA.....P.FGRI..SDARVVKD...
+PUB1_YEAST/163-234              LFVGDL......NVNVDDETLRNAFK.....D.FPSY..LSGHVMWD...
+NAM8_YEAST/165-237              IFVGDL......APNVTESQLFELFI.....NRYAST..SHAKIVHD...
+RT19_ARATH/33-104               LYIGGL......SPGTDEHSLKDAFS.....S.FNGV..TEARVMTN...
+NSR1_YEAST/170-241              IFVGRL......SWSIDDEWLKKEFE.....H.IGGV..IGARVIYE...
+PES4_YEAST/93-164               LFIGDL......HETVTEETLKGIFK.....K.YPSF..VSAKVCLD...
+PABP_DROME/4-75                 LYVGDL......PQDVNESGLFDKFS.....S.AGPV..LSIRVCRD...
+NOP4_YEAST/28-98                LFVRSI......PQDVTDEQLADFFS.....N.FAPI..KHAVVVKD...
+ROC5_NICSY/219-290              LYVANL......SWALTSQGLRDAFA.....D.QPGF..MSAKVIYD...
+ROC5_NICSY/116-187              LYVGNL......PFSMTSSQLSEIFA.....E.AGTV..ANVEIVYD...
+ROC3_NICSY/99-170               LFVGNL......PYDIDSEGLAQLFQ.....Q.AGVV..EIAEVIYN...
+GBP2_YEAST/221-291              VFIINL......PYSMNWQSLKDMFK.....E.CGHV..LRADVELD...
+PABP_SCHPO/263-333              VYIKNL......DTEITEQEFSDLFG.....Q.FGEI..TSLSLVKD...
+PABP_DROME/183-254              VYVKNF......TEDFDDEKLKEFFE.....P.YGKI..TSYKVMS....
+PABP_DROME/92-162               VFIKNL......DRAIDNKAIYDTFS.....A.FGNI..LSCKVATD...
+SFR3_HUMAN/12-78                VYVGNL......GNNGNKTELERAFG.....Y.YGPL..RSVWVARN...
+SR55_DROME/5-68                 VYVGGL......PYGVRERDLERFFK.....G.YGRT..RDILIKN....
+SFR1_HUMAN/17-85                IYVGNL......PPDIRTKDIEDVFY.....K.YGAI..RDIDLKNR...
+SFR2_CHICK/16-87                LKVDNL......TYRTSPDTLRRVFE.....K.YGRV..GDVYIPRD...
+ROG_HUMAN/10-81                 LFIGGL......NTETNEKALEAVFG.....K.YGRI..VEVLLMKD...
+TRA2_DROME/99-170               IGVFGL......NTNTSQHKVRELFN.....K.YGPI..ERIQMVID...
+ROC_HUMAN/18-82                 VFIGNL.....NTLVVKKSDVEAIFS.....K.YGKI..VGCSVHK....
+NONA_DROME/304-369              LYVGNL......TNDITDDELREMFK.....P.YGEI..SEIFSNLD...
+RU17_DROME/104-175              LFIARI......NYDTSESKLRREFE.....F.YGPI..KKIVLIHD...
+TIA1_HUMAN/216-281              VYCGGV......TSGLTEQLMRQTFS.....P.FGQI..MEIRVFPD...
+TIA1_HUMAN/9-78                 LYVGNL......SRDVTEALILQLFS.....Q.IGPC..KNCKMIMD...
+PUB1_YEAST/76-146               LYVGNL......DKAITEDILKQYFQ.....V.GGPI..ANIKIMID...
+SXL_DROME/213-285               LYVTNL......PRTITDDQLDTIFG.....K.YGSI..VQKNILRD...
+ELAV_DROME/250-322              LYVSGL......PKTMTQQELEAIFA.....P.FGAI..ITSRILQN...
+SXL_DROME/127-198               LIVNYL......PQDMTDRELYALFR.....A.IGPI..NTCRIMRD...
+ELV4_HUMAN/48-119               LIVNYL......PQNMTQEEFRSLFG.....S.IGEI..ESCKLVRD...
+MSSP_HUMAN/31-102               LYIRGL......PPHTTDQDLVKLCQ.....P.YGKI..VSTKAILD...
+ELAV_DROME/404-475              IFIYNL......APETEEAALWQLFG.....P.FGAV..QSVKIVKD...
+SQD_DROME/138-208               IFVGGL......TTEISDEEIKTYFG.....Q.FGNI..VEVEMPLD...
+ROA1_BOVIN/106-176              IFVGGI......KEDTEEHHLRDYFE.....Q.YGKI..EVIEIMTD...
+CABA_MOUSE/161-231              IFVGGL......NPEATEEKIREYFG.....Q.FGEI..EAIELPID...
+SQD_DROME/58-128                LFVGGL......SWETTEKELRDHFG.....K.YGEI..ESINVKTD...
+RB97_DROME/34-104               LFIGGL......APYTTEENLKLFYG.....Q.WGKV..VDVVVMRD...
+GR10_BRANA/8-79                 CFVGGL......AWATGDAELERTFS.....Q.FGEV..IDSKIIND...
+CABA_MOUSE/77-147               MFVGGL......SWDTSKKDLKDYFT.....K.FGEV..VDCTIKMD...
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+ROA1_BOVIN/106-176              NCEV
+CABA_MOUSE/161-231              KCEI
+SQD_DROME/58-128                KVDP
+RB97_DROME/34-104               TVEA
+GR10_BRANA/8-79                 TITV
+CABA_MOUSE/77-147               VIDP
+SFPQ_HUMAN/373-443              TTPR
+NONA_DROME/378-448              ASLR
+NOP3_YEAST/127-190              PLEV
+GBP2_YEAST/124-193              KLMV
+U2AF_SCHPO/312-383              KLHA
+U2AF_HUMAN/261-332              KLLV
+NUCL_CHICK/283-352              EIKL
+MODU_DROME/342-410              EWKL
+RU2B_HUMAN/9-81                 PMRI
+RU1A_HUMAN/12-84                PMRI
+PUB1_YEAST/342-407              NLRT
+PTB_HUMAN/186-253               CCTL
+EWS_HUMAN/363-442               KLKV
+ARP2_PLAFA/364-438              YLKV
+YHH5_YEAST/315-384              TIWV
+PES4_YEAST/305-374              KLLV
+YHC4_YEAST/348-415              TMHV
+PR24_YEAST/212-284              EISV
+MODU_DROME/422-484              PIFI
+RNP1_YEAST/37-109               KIVI
+GBP2_YEAST/351-421              SLQI
+NOP4_YEAST/292-363              LIGD
+MEI2_SCHPO/197-265              LLYF
+IF39_YEAST/79-157               RLFL
+ROF_HUMAN/113-183               YIEV
+MODU_DROME/260-326              FITV
+WHI3_YEAST/540-614              TVSS
+CPO_DROME/453-526               PQTI
+RU2B_HUMAN/153-220              AMKI
+RU1A_HUMAN/210-276              NAMK
+RU1A_YEAST/229-293              NDVT
+SFR1_HUMAN/122-186              EGET
+NOP3_YEAST/202-270              VITV
+U2AG_HUMAN/67-142               PIHA
+D111_ARATH/285-364              TVRA
+PR24_YEAST/43-111               EIIV
+MODU_DROME/177-246              VLSV
+SSB1_YEAST/39-114               EIHI
+RN12_YEAST/200-267              VLHI
+PTB_HUMAN/61-128                PIYI
+LA_HUMAN/113-182                DLLI
+LA_DROME/151-225                ELLR
+PR24_YEAST/119-190              TLVT
+IF39_SCHPO/41-124               TFVV
+//
+</pre>
+</td></tr></table><p>
+
+<a name="input.3"></a>
+<h3>Input files for usage example 3</h3>
+<p><h3>File: fn3.sto</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+# STOCKHOLM 1.0
+#=GF ID    fn3
+#=GF AC    PF00041
+#=GF DE    Fibronectin type III domain
+#=GF AU    Sonnhammer ELL
+#=GF GA    7.8 -1.0
+#=GF TC    7.7 7.7
+#=GF TC    7.9 0.1
+#=GF AL    HMM_simulated_annealing
+#=GF SE    Swissprot_feature_table
+#=GF TP    Domain
+#=GF BM    hmmbuild -F HMM_ls SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_ls
+#=GF BM    hmmbuild -f -F HMM_fs SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_fs
+#=GF AM    globalfirst
+#=GF RN    [1]
+#=GF RM    90384924
+#=GF RT    Structural design and molecular evolution of a cytokine
+#=GF RT    receptor superfamily. 
+#=GF RA    Bazan JF; 
+#=GF RL    PNAS USA 1990;87:6934-6938.
+#=GF RN    [2]
+#=GF RM    95106303
+#=GF RT    Tracing the spread of fibronectin type III domains in
+#=GF RT    bacterial glycohydrolases. 
+#=GF RA    Little E, Bork P, Doolittle R; 
+#=GF RL    J Mol Evol 1994;39:631-643.
+#=GF RC    Definition of fibronectin domains
+#=GF RN    [3]
+#=GF RM    85284965
+#=GF RT    Primary structure of human fibronectin: differential
+#=GF RT    splicing may generate at least 10 polypeptides from a
+#=GF RT    single gene. 
+#=GF RA    Kornblihtt AR, Umezawa K, Vibe-Pedersen K, Baralle FE; 
+#=GF RL    EMBO J. 1985;4:1755-1759.
+#=GF DR    PROSITE; PDOC00214;
+#=GF DR    PRINTS; PR00014;
+#=GF DR    SCOP; 1ttf; sf;
+#=GF DR    SMART; FN3;
+#=GF DR    HOMSTRAD; fn3;
+#=GF DC    The following Pfam-B families contain sequences that according to Prodom
+#=GF DC    are members of this Pfam-A family.
+#=GF DR    PFAMB; PB001437;
+#=GF DR    PFAMB; PB004758;
+#=GF DR    PFAMB; PB007041;
+#=GF DR    PFAMB; PB007646;
+#=GF DR    PFAMB; PB012739;
+#=GF DR    PFAMB; PB016725;
+#=GF DR    PFAMB; PB016744;
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+FAS2_SCHAM/530-616                RFA.AQNEVGF....GPWS
+PTPZ_HUMAN/312-401                QIV.AICTNGL...YGKYS
+NCA1_BOVIN/610-691                YVV.AENQQ.......GKS
+FAS2_SCHAM/642-735                EVR.ATNAIGN....SVPG
+TIE2_HUMAN/543-626                RAR..VNTKAQ....GEWS
+TENA_CHICK/682-767                SLH.IVKNNTR...GPGLS
+UFO_HUMAN/327-411                 CVA.AYTAAGD....GPWS
+TIE1_HUMAN/545-632                DVQ.LYHCTLL....GPAS
+7LES_DROME/1799-1891              WVQ.AHATPTK....SNSS
+NRG_DROME/717-799                 KVV.AINDR.......GES
+#=GR NRG_DROME/717-799    SS     EEE.EEEEE.......EEE
+#=GR NRG_DROME/717-799    SA     030.10200.......020
+NRCA_CHICK/726-810                KVQ.ALNDLGY...APEPS
+NGCA_CHICK/700-794                RVQ.AVNGAGK....GPEA
+TIE2_HUMAN/639-724                DIF.AENNIGS....SNPA
+LAR_DROME/515-598                 WLA.ARSQRGE....GATT
+PTP6_DROME/236-321                RIV.GKNSIGN....GQPT
+TIE2_HUMAN/444-529                CVQ.LVRRGEG....GEGH
+TIE1_HUMAN/446-533                RVQLSRPGEGG...EGAWG
+PTPK_MOUSE/290-376                RVLLTRPGEGG...TGLPG
+PTPB_HUMAN/1355-1434              SIK.VQSAG.......MTS
+PTP1_DROME/583-661                QVN.TVSFG.......VES
+PTP1_DROME/312-394                IVK.TVSGK.......VTS
+PTP1_DROME/217-301                SVQ.TMSED.......EIS
+PTP1_DROME/123-205                QAY.TIYDG.......KES
+PTPB_HUMAN/1261-1344              NVK.TVSGDSW....KTYS
+PTP1_DROME/864-944                TVV.VRSGTESS..VLRSS
+PTPB_HUMAN/1173-1250              WVV.THSGD........LS
+PTPB_HUMAN/1085-1162              VIV.THSGE........LS
+PTPB_HUMAN/467-543                TVT.SISGD........LK
+PTPB_HUMAN/995-1074               QIL.TVSGG.......LFS
+PTPB_HUMAN/731-808                TVT.TKSGQ........YE
+PTPB_HUMAN/643-725                TIT.TRSGKYE...NHSFS
+PTPB_HUMAN/554-632                VVT.TVSGG.......ISS
+PTPB_HUMAN/907-984                MIA.SVSGS........LK
+PTPB_HUMAN/112-192                AIT.AVSGG.......KRS
+IL7R_HUMAN/129-221                KVR.SIPDHYFKGFWSEWS
+FINC_BOVIN/689-768                NVY.EISEE.......GEQ
+KALM_CHICK/178-271                RVA.AVNVHGT...RGFTA
+TENA_HUMAN/1529-1608              MVS.GFTQG.......HQT
+TENA_CHICK/1227-1306              ELY.GVSSG.......RRS
+TENA_CHICK/1136-1215              YLY.GISHG.......FRT
+TENA_HUMAN/1255-1335              TLH.GEVRG.......HST
+TENA_CHICK/1045-1124              TLY.GVIRG.......YRT
+7LES_DROVI/1917-1997              RLA.LAYAATP....GAPI
+PTPB_HUMAN/22-103                 KII.SLDEE........RT
+KALM_CHICK/544-642                EVQ.VLTTGGE....GPAT
+#=GC SS_cons                      EEE.EEECCCC....CCCC
+#=GC SA_cons                      221.2123454....3232
+#=GC seq_cons                     pVt.Ahsst.......t.S
+//
+</pre>
+</td></tr></table><p>
+
+<a name="input.4"></a>
+<h3>Input files for usage example 4</h3>
+<p><h3>File: pkinase.sto</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+# STOCKHOLM 1.0
+#=GF ID    pkinase
+#=GF AC    PF00069
+#=GF DE    Protein kinase domain
+#=GF AU    Sonnhammer ELL
+#=GF GA    -57.9 -57.9
+#=GF TC    -58.0 -58.0
+#=GF TC    -57.7 -57.7
+#=GF AL    Clustalw
+#=GF SE    Unknown
+#=GF TP    Domain
+#=GF BM    hmmbuild -F HMM_ls SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_ls
+#=GF BM    hmmbuild -f -F HMM_fs SEED
+#=GF BM    hmmcalibrate --seed 0 HMM_fs
+#=GF AM    byscore
+#=GF RN    [1]
+#=GF RM    92065863
+#=GF RT    Protein kinase catalytic domain sequence database:
+#=GF RT    identification of conserved features of primary structure
+#=GF RT    and classification of family members. 
+#=GF RA    Hanks SK, Quinn AM; 
+#=GF RL    Methods Enzymol 1991;200:38-62.
+#=GF RN    [2]
+#=GF RM    95285959
+#=GF RT    Protein kinases 6. The eukaryotic protein kinase
+#=GF RT    superfamily: kinase (catalytic) domain structure and
+#=GF RT    classification. 
+#=GF RA    Hanks SK, Hunter T; 
+#=GF RL    FASEB J 1995;9:576-596.
+#=GF RN    [3]
+#=GF RM    97172697
+#=GF RT    The protein kinases of budding yeast: six score and more. 
+#=GF RA    Hunter T, Plowman GD; 
+#=GF RL    Trends Biochem Sci 1997;22:18-22.
+#=GF DR    PROSITE; PDOC00100;
+#=GF DR    PROSITE; PDOC00212;
+#=GF DR    PROSITE; PDOC00213;
+#=GF DR    PROSITE; PDOC00629;
+#=GF DR    PROSITE_PROFILE; PS50011;
+#=GF DR    PRINTS; PR00109;
+#=GF DC    Protein kinase; unclassified specificity.
+#=GF DR    SMART; STYKc;
+#=GF DC    Serine/Threonine protein kinases, catalytic domain
+#=GF DR    SMART; S_TKc;
+#=GF DC    Tyrosine kinase, catalytic domain
+#=GF DR    SMART; TyrKc;
+#=GF DR    SCOP; 1apm; sf;
+#=GF DR    URL; http://www.sdsc.edu/Kinases/pk_home.html;
+#=GF DR    HOMSTRAD; kinase;
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+#=GR SAT4_YEAST/316-590      AS  .....................
+KKL6_YEAST/192-508            TLTRKN.QRWSINEIYESPFV
+#=GR KKL6_YEAST/192-508      AS  .....................
+RAN1_SCHPO/18-295             PKTRI.....TLPEL..STLV
+#=GR RAN1_SCHPO/18-295       AS  .....................
+TRKA_HUMAN/510-781            PQQRH.....SIKDVHARL..
+#=GR TRKA_HUMAN/510-781      AS  .....................
+KSYK_PIG/364-619              VENRP.....GFVAVELRL..
+#=GR KSYK_PIG/364-619        AS  .....................
+BFR2_HUMAN/367-643            PSQRP.....TFKQLVEDL..
+#=GR BFR2_HUMAN/367-643      AS  .....................
+ABL1_CAEEL/311-562            PSDRP.....RFRDIHFNL..
+#=GR ABL1_CAEEL/311-562      AS  .....................
+7LES_DROME/2209-2481          PWERP.....SFRRCYNTL..
+JAK1_HUMAN/864-1137           PSNRT.....SFQNLIEGF..
+#=GR JAK1_HUMAN/864-1137     AS  .....................
+EGFR_DROME/938-1194           AAMRP.....TFKQLTTVF..
+#=GR EGFR_DROME/938-1194     AS  .....................
+RYK_HUMAN/327-593             PEERP.....KFQQLVQCL..
+#=GR RYK_HUMAN/327-593       AS  .....................
+MET_HUMAN/1078-1337           AEMRP.....SFSELVSRI..
+#=GR MET_HUMAN/1078-1337     AS  .....................
+PHY1_CERPU/1004-1282          PLKRP......SFAVICQKL.
+#=GR PHY1_CERPU/1004-1282    AS  .....................
+M3K9_HUMAN/3-262              PHSRP.....SFTNILDQL..
+#=GR M3K9_HUMAN/3-262        AS  .....................
+KYK2_DICDI/108-364            PNDRP.....PFTYIVNKL..
+#=GR KYK2_DICDI/108-364      AS  .....................
+KYK1_DICDI/1289-1559          PDSRP.....TFKQIIVHL..
+#=GR KYK1_DICDI/1289-1559    AS  .....................
+KMIL_AVIMH/82-339             REERP.....LFPQILSSI..
+#=GR KMIL_AVIMH/82-339       AS  .....................
+KPRO_MAIZE/534-812            RSKRP.....TMEHAVQTL..
+#=GR KPRO_MAIZE/534-812      AS  .....................
+AVR1_HUMAN/208-495            PSARL.....TALRIKKTL..
+#=GR AVR1_HUMAN/208-495      AS  .....................
+AVR2_HUMAN/192-479            AEARL.....SAGCVGERI..
+#=GR AVR2_HUMAN/192-479      AS  .....................
+PKN1_MYXXA/59-320             PEDRY....ASIAAFRNALQV
+#=GR PKN1_MYXXA/59-320       AS  .....................
+KMOS_CERAE/60-338             AAQRP.....SARPLLVDL..
+#=GR KMOS_CERAE/60-338       AS  .....................
+KR1_PRVKA/53-332              PVRRP.....SADEILNFGMW
+#=GR KR1_PRVKA/53-332        AS  .....................
+KR1_HSV11/191-478             GALRP.....SAAELLCLPLF
+#=GR KR1_HSV11/191-478       AS  .....................
+JAK1_HUMAN/571-833            PNQRP.....FFRAIMRDI..
+HR25_YEAST/9-273              FDEKP......DYLFLARLF.
+#=GR HR25_YEAST/9-273        AS  .....................
+#=GC seq_cons                     PppR......ohppllpc.ah
+//
+</pre>
+</td></tr></table><p>

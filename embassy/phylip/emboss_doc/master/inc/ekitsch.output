@@ -1,0 +1,64 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: ekitsch.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+   7 Populations
+                  __ __             2
+                  \  \   (Obs - Exp)
+Sum of squares =  /_ /_  ------------
+                                3
+                   i  j      Obs
+
+negative branch lengths not allowed
+
+
+
+
+                                            +-------Human     
+                                         +--6  
+                                     +---5  +-------Chimp     
+                                     !   !  
+                                 +---4   +---------Gorilla   
+                                 !   !  
+       +-------------------------3   +-------------Orang     
+       !                         !  
+  +----2                         +-----------------Gibbon    
+  !    !  
+--1    +-------------------------------------------Mouse     
+  !  
+  +------------------------------------------------Bovine    
+
+
+Sum of squares =      0.168
+
+examined  168 trees
+
+From    To           Length          Time
+----    --           ------          ----
+
+   6  Human           0.13460        0.81151
+   5     6            0.02776        0.67691
+   6  Chimp           0.13460        0.81151
+   4     5            0.07664        0.64915
+   5  Gorilla         0.16236        0.81151
+   3     4            0.06461        0.57251
+   4  Orang           0.23900        0.81151
+   2     3            0.43105        0.50791
+   3  Gibbon          0.30360        0.81151
+   1     2            0.07686        0.07686
+   2  Mouse           0.73465        0.81151
+   1  Bovine          0.81151        0.81151
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: ekitsch.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((((((Human:0.13460,Chimp:0.13460):0.02776,Gorilla:0.16236):0.07664,
+Orang:0.23900):0.06461,Gibbon:0.30360):0.43105,Mouse:0.73465):0.07686,
+Bovine:0.81151);
+</pre>
+</td></tr></table><p>

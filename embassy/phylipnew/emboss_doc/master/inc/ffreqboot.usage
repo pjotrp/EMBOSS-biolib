@@ -1,0 +1,38 @@
+<b>Here is a sample session with ffreqboot</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ffreqboot -seed 3 </b>
+Bootstrapped genetic frequencies algorithm
+Input file: <b>freqboot.dat</b>
+Output file [freqboot.ffreqboot]: <b></b>
+
+
+ bootstrap: true
+jackknife: false
+ permute: false
+ lockhart: false
+ ild: false
+ justwts: false 
+
+completed replicate number   10
+completed replicate number   20
+completed replicate number   30
+completed replicate number   40
+completed replicate number   50
+completed replicate number   60
+completed replicate number   70
+completed replicate number   80
+completed replicate number   90
+completed replicate number  100
+
+Output written to file "freqboot.ffreqboot"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

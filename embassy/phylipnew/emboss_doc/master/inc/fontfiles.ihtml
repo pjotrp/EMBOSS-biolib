@@ -1,0 +1,6 @@
+<p>
+The font file has a default name of "fontfile". If there is no file of
+that name, the program will ask you for the name of a font file (we
+provide ones that have the names font1 through font6). Once you decide
+on a favorite one of these, you could make a copy of it and call it
+fontfile, and it will then be used by default.

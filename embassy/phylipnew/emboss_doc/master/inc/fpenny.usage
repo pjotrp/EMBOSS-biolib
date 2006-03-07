@@ -1,0 +1,31 @@
+<b>Here is a sample session with fpenny</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fpenny </b>
+Penny algorithm, branch-and-bound
+Input file: <b>penny.dat</b>
+Output file [penny.fpenny]: <b></b>
+
+
+How many
+trees looked                                       Approximate
+at so far      Length of        How many           percentage
+(multiples     shortest tree    trees this long    searched
+of  100):      found so far     found so far       so far
+----------     ------------     ------------       ------------
+     1           8.00000                1                6.67
+     2           8.00000                3               20.00
+     3           8.00000                3               53.33
+     4           8.00000                3               93.33
+
+Output written to file "penny.fpenny"
+
+Trees also written onto file "penny.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

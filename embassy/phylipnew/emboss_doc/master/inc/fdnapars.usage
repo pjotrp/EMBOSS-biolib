@@ -1,0 +1,37 @@
+<b>Here is a sample session with fdnapars</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fdnapars </b>
+DNA parsimony algorithm
+Input (aligned) nucleotide sequence set(s): <b>dnapars.dat</b>
+Input tree file: <b></b>
+Output file [dnapars.fdnapars]: <b></b>
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+Doing global rearrangements on the first of the trees tied for best
+  !---------!
+   .........
+   .........
+
+Collapsing best trees
+   .
+
+Output written to file "dnapars.fdnapars"
+
+Tree also written onto file "dnapars.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

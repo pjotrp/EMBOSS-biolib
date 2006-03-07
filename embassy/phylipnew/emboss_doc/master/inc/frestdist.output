@@ -1,0 +1,14 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: restdist.frestdist</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5
+Alpha       0.000000  0.022368  0.107681  0.068767  0.082639
+Beta        0.022368  0.000000  0.107681  0.068767  0.044216
+Gamma       0.107681  0.107681  0.000000  0.176484  0.192466
+Delta       0.068767  0.068767  0.176484  0.000000  0.019724
+Epsilon     0.082639  0.044216  0.192466  0.019724  0.000000
+</pre>
+</td></tr></table><p>

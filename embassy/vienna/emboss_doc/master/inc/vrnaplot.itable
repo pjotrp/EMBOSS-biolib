@@ -1,0 +1,66 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-structure]<br>(Parameter 1)</td>
+<td>Sequence/structure file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.vrnaplot</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-layout</td>
+<td>Layout</td>
+<td><table><tr><td>radial</td> <td><i>(Simple radial)</i></td></tr><tr><td>naview</td> <td><i>(naview)</i></td></tr></table></td>
+<td>naview</td>
+</tr>
+
+<tr>
+<td>-optype</td>
+<td>Type</td>
+<td><table><tr><td>ps</td> <td><i>(postscript)</i></td></tr><tr><td>gml</td> <td><i>(graph meta language)</i></td></tr><tr><td>svg</td> <td><i>(scaleable vector graphics)</i></td></tr><tr><td>xrna</td> <td><i>(XRNA save file)</i></td></tr></table></td>
+<td>ps</td>
+</tr>
+
+<tr>
+<td>-pre</td>
+<td>Pre-annotation</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-post</td>
+<td>Post-annotation</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+</table>

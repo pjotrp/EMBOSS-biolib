@@ -1,0 +1,37 @@
+<b>Here is a sample session with domainnr</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>domainnr </b>
+Removes redundant domains from a DCF file.
+Name of DCF file (domain classification file) (input).: <b>../domainseqs-keep/all_s.scop</b>
+Write redundant domains to separate file. [N]: <b></b>
+Node at which to remove redundancy
+         1 : Class (SCOP)
+         2 : Fold (SCOP)
+         3 : Superfamily (SCOP)
+         4 : Family (SCOP)
+         5 : Class (CATH)
+         6 : Architecture (CATH)
+         7 : Topology (CATH)
+         8 : Homologous Superfamily (CATH)
+         9 : Family (CATH)
+Select number. [1]: <b>1</b>
+Redundancy removal options
+         1 : Remove redundancy at a single threshold % sequence similarity
+         2 : Remove redundancy outside a range of acceptable threshold % similarity
+Select number. [1]: <b>1</b>
+The % sequence identity redundancy threshold. [95.0]: <b>5</b>
+Name of non-redundant DCF file (domain classification file) (output) [test.scop]: <b>all_nr.scop</b>
+Name of log file for the build. [domainnr.log]: <b></b>
+Warning: Bad args passed to ajDomainWrite
+
+// Alpha and beta proteins (a+b)
+D1CS4A_
+D1II7A_
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

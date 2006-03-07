@@ -1,0 +1,45 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: dnapars.fdnapars</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+DNA parsimony algorithm, version 3.6b
+
+
+One most parsimonious tree found:
+
+
+                                            +-----Epsilon   
+               +----------------------------3  
+  +------------2                            +-------Delta     
+  |            |  
+  |            +----------------Gamma     
+  |  
+  1----Beta      
+  |  
+  +---------Alpha     
+
+
+requires a total of     19.000
+
+  between      and       length
+  -------      ---       ------
+     1           2       0.217949
+     2           3       0.487179
+     3      Epsilon      0.096154
+     3      Delta        0.134615
+     2      Gamma        0.275641
+     1      Beta         0.076923
+     1      Alpha        0.173077
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: dnapars.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(((Epsilon:0.09615,Delta:0.13462):0.48718,Gamma:0.27564):0.21795,
+Beta:0.07692,Alpha:0.17308);
+</pre>
+</td></tr></table><p>

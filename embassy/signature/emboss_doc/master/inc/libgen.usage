@@ -1,0 +1,23 @@
+<b>Here is a sample session with libgen</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>libgen </b>
+Generate discriminating elements from alignments.
+Location of DAF files (domain alignment files) (input). [./]: <b>../domainalign-keep/daf</b>
+Residue substitution matrix. [EBLOSUM62]: <b>EBLOSUM62</b>
+Discrimininator type
+         1 : Simple frequency matrix
+         2 : Gribskov profile
+         3 : Henikoff profile
+         4 : Hidden Markov model (HMMER)
+         5 : Hidden Markov model (SAM-T2K)
+         6 : Position-specific scoring matrix
+Select type. [1]: <b>2</b>
+Location of discriminator files (output). [./]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

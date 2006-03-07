@@ -6,7 +6,7 @@ application: ehmmcalibrate
   gui: "yes"
   batch: "yes"
   cpu: "medium"
-  embassy: "hmmer"
+  embassy: "hmmernew"
 ]
 
 

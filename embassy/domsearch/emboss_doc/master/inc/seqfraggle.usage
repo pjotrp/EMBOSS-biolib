@@ -1,0 +1,18 @@
+<b>Here is a sample session with seqfraggle</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>seqfraggle </b>
+Removes fragment sequences from DHF files.
+Location of DHF files (domain hits files) or other sequence files (input). [./]: <b>../seqsearch-keep</b>
+Percentage of median length for definition of fragments. [50]: <b>50</b>
+Location of DHF files (domain hits files) (output). [./]: <b></b>
+
+Processing /homes/user/test/qa/seqsearch-keep/55074.dhf
+Processing /homes/user/test/qa/seqsearch-keep/54894.dhf
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

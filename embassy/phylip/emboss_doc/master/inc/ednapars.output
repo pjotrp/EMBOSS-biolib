@@ -1,0 +1,35 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: ednapars.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+One most parsimonious tree found:
+
+
+
+
+           +--Epsilon   
+        +--4  
+     +--3  +--Delta     
+     !  !  
+  +--2  +-----Gamma     
+  !  !  
+--1  +--------Beta      
+  !  
+  +-----------Alpha     
+
+  remember: this is an unrooted tree!
+
+
+requires a total of     19.000
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: ednapars.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((((Epsilon,Delta),Gamma),Beta),Alpha);
+</pre>
+</td></tr></table><p>

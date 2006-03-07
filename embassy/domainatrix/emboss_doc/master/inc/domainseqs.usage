@@ -1,0 +1,23 @@
+<b>Here is a sample session with domainseqs</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>domainseqs </b>
+Adds sequence records to a DCF file.
+Name of DCF file (domain classification file) (input).: <b>../scopparse-keep/all.scop</b>
+Location of domain CCF file (clean coordinate files) (input). [./]: <b>../domainer-keep</b>
+Retrieve swissprot sequence. [N]: <b>Y</b>
+Name of the pdbcodes to swissprot indexing file.: <b>../pdbtosp-keep/Epdbtosp.dat</b>
+Name of DCF file (domain classification file) (output). [domainseqs.out]: <b>all_s.scop</b>
+Name of log file for the build. [domainseqs.log]: <b></b>
+
+//
+D1CS4A_        
+//
+D1II7A_        
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

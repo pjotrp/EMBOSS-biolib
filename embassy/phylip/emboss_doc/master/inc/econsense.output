@@ -1,0 +1,89 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: econsense.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Majority-rule and strict consensus tree program, version 3.57c
+
+Species in order: 
+
+  A
+  B
+  H
+  D
+  J
+  G
+  E
+  F
+  I
+  C
+
+
+Sets included in the consensus tree
+
+Set (species in order)     How many times out of   9.00
+
+.......**.                   9.00
+..********                   9.00
+..***....*                   6.00
+..****.***                   6.00
+..***.....                   6.00
+..*.*.....                   4.00
+..***..***                   2.00
+
+
+Sets NOT included in consensus tree:
+
+Set (species in order)     How many times out of   9.00
+
+.....**...                   3.00
+.....****.                   3.00
+..**......                   3.00
+.....*****                   3.00
+..*.******                   2.00
+.....*.**.                   2.00
+..****...*                   2.00
+....******                   2.00
+...*******                   1.00
+
+
+CONSENSUS TREE:
+the numbers at the forks indicate the number
+of times the group consisting of the species
+which are to the right of that fork occurred
+among the trees, out of   9.00 trees
+
+  +---------------------------------------A                   
+  !
+  !         +-----------------------------E                   
+  !         !
+  !         !                        +----I                   
+  !         !         +------------9.0
+  !         !         !              +----F                   
+  !    +--9.0         !
+  !    !    !    +--2.0         +---------D                   
+  !    !    !    !    !    +--6.0
+  !    !    !    !    !    !    !    +----J                   
+  !    !    !    !    +--6.0    +--4.0
+  +--9.0    +--6.0         !         +----H                   
+       !         !         !
+       !         !         +--------------C                   
+       !         !
+       !         +------------------------G                   
+       !
+       +----------------------------------B                   
+
+
+  remember: this is an unrooted tree!
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: consense.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(A:9.0,((E:9.0,(((I:9.0,F:9.0):9.0,((D:9.0,(J:9.0,H:9.0):4.0):6.0,C:9.0):6.0):2.0,G:9.0):6.0):9.0,
+B:9.0):9.0);
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,101 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-datafile]<br>(Parameter 1)</td>
+<td>Input file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-randseed</td>
+<td>Random number seed (must be odd)</td>
+<td>Any integer value</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>-method</td>
+<td>Choose the method</td>
+<td><table><tr><td>Seq</td> <td><i>(Molecular sequences)</i></td></tr><tr><td>Mor</td> <td><i>(Discrete Morphology)</i></td></tr><tr><td>Res</td> <td><i>(Restriction Sites)</i></td></tr><tr><td>Gen</td> <td><i>(Gene Frequencies)</i></td></tr></table></td>
+<td>Seq</td>
+</tr>
+
+<tr>
+<td>-test</td>
+<td>Choose test</td>
+<td><table><tr><td>Boot</td> <td><i>(Bootstrap)</i></td></tr><tr><td>Jack</td> <td><i>(Delete-half Jackknife)</i></td></tr><tr><td>Perm</td> <td><i>(Permute species for each character)</i></td></tr></table></td>
+<td>Boot</td>
+</tr>
+
+<tr>
+<td>-reps</td>
+<td>How many replicates</td>
+<td>Integer 1 or more</td>
+<td>100</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>eseqboot.outfile</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-enzymes</td>
+<td>Present in input file</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-all</td>
+<td>All alleles present at each locus</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-inter</td>
+<td>Interleaved input</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-printdata</td>
+<td>Print out the data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

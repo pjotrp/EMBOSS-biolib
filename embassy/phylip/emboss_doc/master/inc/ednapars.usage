@@ -1,0 +1,17 @@
+<b>Here is a sample session with ednapars</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ednapars </b>
+DNA parsimony algorithm
+Input (aligned) sequence set: <b>dnapars.dat</b>
+Randomize input order of species [N]: <b></b>
+Output file [ednapars.outfile]: <b></b>
+Create a tree file [Y]: <b></b>
+Tree file name [ednapars.treefile]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

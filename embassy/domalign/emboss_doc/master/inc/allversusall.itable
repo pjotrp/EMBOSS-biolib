@@ -1,0 +1,66 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-seqinpath]<br>(Parameter 1)</td>
+<td>This option specifies the location of sequence files (input)</td>
+<td>Directory with files</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>[-datoutdir]<br>(Parameter 2)</td>
+<td>This option specifies the location of sequence similarity data files (output).</td>
+<td>Output directory</td>
+<td>./</td>
+</tr>
+
+<tr>
+<td>-logfile</td>
+<td>This option specifies the name of ALLVERSUSALL log file (output). The log file contains messages about any errors arising while ALLVERSUSALL ran.</td>
+<td>Output file</td>
+<td>allversusall.log</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-matrix</td>
+<td>This option specifies the residue substitution matrix that is used for sequence comparison.</td>
+<td>Comparison matrix file in EMBOSS data path</td>
+<td>EBLOSUM62</td>
+</tr>
+
+<tr>
+<td>-gapopen</td>
+<td>This option specifies the gap insertion penalty. The gap insertion penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL matrix for nucleotide sequences.</td>
+<td>Floating point number from 1.0 to 100.0</td>
+<td>10.0 for any sequence</td>
+</tr>
+
+<tr>
+<td>-gapextend</td>
+<td>This option specifies the gap extension penalty. The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. An exception is where one or both sequences are single reads with possible sequencing errors in which case you would expect many single base gaps. You can get this result by setting the gap open penalty to zero (or very low) and using the gap extension penalty to control gap scoring.</td>
+<td>Floating point number from 0.0 to 10.0</td>
+<td>0.5 for any sequence</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

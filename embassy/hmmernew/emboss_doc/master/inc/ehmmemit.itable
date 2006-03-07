@@ -1,0 +1,69 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-hmmfile]<br>(Parameter 1)</td>
+<td>File containing one or more HMMs.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-c</td>
+<td>Predict a single majority-rule consensus sequence instead of sampling sequences from the HMM's probability distribution. Highly conserved residues (p >= 0.9 for DNA, p >= 0.5 for protein) are shown in upper case; others are shown in lower case. Some insert states may become part of the majority rule consensus, because they are used in >= 50% of generated sequences; when this happens, insert-generated residues are simply shown as 'x'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-n</td>
+<td>Generate <n> sequences. Default is 10.</td>
+<td>Any integer value</td>
+<td>10</td>
+</tr>
+
+<tr>
+<td>[-o]<br>(Parameter 2)</td>
+<td>File of synthetic sequences.</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.ehmmemit</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-a</td>
+<td>Write the generated sequences in an aligned format (SELEX) rather than FASTA.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-q</td>
+<td>Quiet; suppress all output except for the sequences themselves. Useful for piping or directing the output.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-seed</td>
+<td>Set the random seed to <n>, where <n> is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmemit on the same HMM will give slightly different results. You can use this option to generate reproducible results.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+</table>

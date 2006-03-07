@@ -1,0 +1,29 @@
+<b>Here is a sample session with frestdist</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>frestdist </b>
+Distance matrix from restriction sites or fragments
+Input file: <b>restdist.dat</b>
+Output file [restdist.frestdist]: <b></b>
+
+
+Restriction site or fragment distances, version 3.6b
+
+Distances calculated for species
+    Alpha        ....
+    Beta         ...
+    Gamma        ..
+    Delta        .
+    Epsilon   
+
+Distances written to file "restdist.frestdist"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

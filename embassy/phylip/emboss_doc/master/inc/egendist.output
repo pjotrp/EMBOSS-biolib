@@ -1,0 +1,14 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: egendist.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5
+European    0.0000  0.0780  0.0807  0.0668  0.1030
+African     0.0780  0.0000  0.2347  0.1050  0.2273
+Chinese     0.0807  0.2347  0.0000  0.0539  0.0633
+American    0.0668  0.1050  0.0539  0.0000  0.1348
+Australian  0.1030  0.2273  0.0633  0.1348  0.0000
+</pre>
+</td></tr></table><p>

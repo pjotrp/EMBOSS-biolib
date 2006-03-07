@@ -1,0 +1,427 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: ehmmconvert
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<!--#include virtual="/apps/header1.inc" -->
+ehmmconvert
+<!--#include virtual="/apps/header2.inc" -->
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+    Function
+</H2>
+<!--#include file="inc/ehmmconvert.ione" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+EMBASSY HMMER is a suite of application wrappers to the original hmmer v2.3.2 applications written by Sean Eddy. hmmer v2.3.2 must be installed on the same system as EMBOSS and the location of the hmmer executables must be defined in your path for EMBASSY HMMER to work.
+
+<p><b>Usage:</b>
+<br>ehmmconvert [options] oldhmmfile newhmmfile
+
+<p>hmmconvert reads an HMM file <oldhmmfile> in any HMMER format, and writes it to a new file <newhmmfile> in a new format. The input and output files must be different files; you can't reliably overwrite the old file. By default, the new HMM file is written in HMMER 2 ASCII format. Available formats are HMMER 2 ASCII (default), HMMER 2 binary (-b) GCG profile (-p) , and Compugen XSW extended profile (-P).
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<!--#include file="inc/ehmmconvert.usage" -->
+
+
+
+<H2>
+    Command line arguments
+</H2>
+Where possible, the same command-line qualifier names and parameter order is used as in the original hmmer.  There are however several unavoidable differences and these are clearly documented in the "Notes" section below.
+<p>More or less all options documented as "expert" in the original hmmer user guide are given in ACD as "advanced" options (-options must be specified on the command-line in order to be prompted for a value for them).  
+<p>
+
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+<!--#include file="inc/ehmmconvert.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/ehmmconvert.itable" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+<H3>Alignment and sequence formats </H3>
+Input and output of alignments and sequences is limited to the formats that the original hmmer supports. These include stockholm, SELEX, MSF, Clustal, Phylip and A2M /aligned FASTA (alignments) and FASTA, GENBANK, EMBL, GCG, PIR (sequences).  It would be fairly straightforward to adapt the code to support all EMBOSS-supported formats. 
+
+<H3>Compressed input files </H3>
+Automatic processing of gzipped files is not supported. 
+<p>
+
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>ehmmconvert</b> reads any normal sequence USAs.
+
+<p>
+
+<!--#include file="inc/ehmmconvert.input" -->
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>ehmmconvert</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+<!--#include file="inc/ehmmconvert.output" -->
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+include file="inc/localfiles.ihtml"
+   -->
+
+None.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+<H3>1. Command-line arguments</H3>
+The following original HMMER options are not supported:
+<br><pre>
+-h         : Use -help to get help information instead.
+-a         : Use -format to set HMM output file format. 
+-b         : Use -format to set HMM output file format. 
+-p         : Use -format to set HMM output file format. 
+-P         : Use -format to set HMM output file format. 
+-A         : Set append: "N" or append: "Y" for "newhmmfile" in the ACD file 
+             instead.  Note you cannot append to an empty file or one in GCG 
+             or Compugen (xsw) formats. 
+-F         : Always set (an existing newhmmfile will be overwritten).
+</pre>
+
+
+
+<H3>2. Installing EMBASSY HMMER</H3>
+The EMBASSY HMMER package contains "wrapper" applications providing an EMBOSS-style interface to the applications in the original HMMER package version 2.3.2 developed by Sean Eddy.  Please read the file INSTALL in the EMBASSY HMMER package distribution for installation instructions.
+
+<H3>3. Installing original HMMER</H3>
+To use EMBASSY HMMER, you will first need to download and install the original HMMER package.  Please read the file 00README in the the original HMMER package distribution for installation instructions:
+<pre>
+WWW home:       http://hmmer.wustl.edu/
+Distribution:   ftp://ftp.genetics.wustl.edu/pub/eddy/hmmer/
+</pre>
+
+<H3>4. Setting up HMMER</H3>
+For the EMBASSY HMMER package to work, the directory containing the original HMMER executables *must* be in your path. For example if you executables were installed to "/usr/local/hmmer/bin", then type:
+<pre>
+set path=(/usr/local/hmmer/bin/ $path)
+rehash
+</pre>
+
+<H3> 5. Getting help </H3>
+Please read the Userguide.pdf distributed with the original HMMER and included in the EMBASSY HMMER distribution under the DOCS directory. The first 3 chapters (Introduction, Installation and Tutorial) are particularly useful.
+<p>Please read the 'Notes' section below for a description of the differences between the original and EMBASSY HMMER, particularly which application command line options are supported. 
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+<H3>Types of input data</H3>
+hmmer v3.2.1 and therefore EMBASSY HMMER is only recommended for use with protein sequences.  If you provide a non-protein sequence you will be reprompted for a protein sequence.  To accept nucleic acid sequences you must replace instances of < type: "protein" > in the application ACD files with <type: "nucleic" >.
+
+<H3>Environment variables</H3>
+The original hmmer uses BLAST environment variables (below), if defined, to locate files. The EMBASSY HMMER does not.
+<pre>
+BLASTDB   location of sequence databases to be searched
+BLASMAT   location of substitution matrices
+HMMERDB   location of HMMs
+</pre>
+
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<!--#include file="inc/ehmmconvert.isee" -->
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+<!--#include virtual="/apps/inc/seddy.address" -->
+<!--#include virtual="/apps/inc/jison.address" -->
+
+<p>This program is an EMBASSY wrapper to a program written by Sean Eddy as part of his hmmer package.
+<p>Please report any bugs to the EMBOSS bug team in the first instance, not to Sean Eddy.
+
+<H2>
+    History
+</H2>
+
+<!--#include file="inc/ehmmconvert.history" -->
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+<!--#include virtual="/apps/inc/target.itxt" -->
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

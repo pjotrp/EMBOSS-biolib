@@ -1,0 +1,18 @@
+<b>Here is a sample session with eclique</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eclique </b>
+Largest clique program
+Discrete characters input: <b>clique.dat</b>
+Use minimum clique size [N]: <b></b>
+Outgroup root [N]: <b></b>
+Output file [eclique.outfile]: <b></b>
+Create a tree file [Y]: <b></b>
+Tree file [eclique.treefile]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

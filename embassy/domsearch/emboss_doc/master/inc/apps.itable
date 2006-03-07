@@ -1,0 +1,41 @@
+<h3><A NAME="domsearch">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current domsearch release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="seqfraggle.html">seqfraggle</a></td>
+<td>
+Removes fragment sequences from DHF files
+</td>
+</tr>
+<tr>
+<td><a href="seqnr.html">seqnr</a></td>
+<td>
+Removes redundancy from DHF files
+</td>
+</tr>
+<tr>
+<td><a href="seqsearch.html">seqsearch</a></td>
+<td>
+Generate PSI-BLAST hits (DHF file) from a DAF file
+</td>
+</tr>
+<tr>
+<td><a href="seqsort.html">seqsort</a></td>
+<td>
+Remove ambiguous classified sequences from DHF files
+</td>
+</tr>
+<tr>
+<td><a href="seqwords.html">seqwords</a></td>
+<td>
+Generates DHF files from keyword search of UniProt
+</td>
+</tr>
+</table>

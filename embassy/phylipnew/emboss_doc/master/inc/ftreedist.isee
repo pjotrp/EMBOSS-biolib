@@ -1,0 +1,19 @@
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr>
+<td><a href="/embassy/phylip/econsense.html">econsense</a></td>
+<td>Majority-rule and strict consensus tree</td>
+</tr>
+
+<tr>
+<td><a href="fconsense.html">fconsense</a></td>
+<td>Majority-rule and strict consensus tree</td>
+</tr>
+
+<tr>
+<td><a href="ftreedistpair.html">ftreedistpair</a></td>
+<td>Distances between two sets of trees</td>
+</tr>
+
+</table>

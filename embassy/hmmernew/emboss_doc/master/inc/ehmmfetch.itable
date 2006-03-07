@@ -1,0 +1,52 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-database]<br>(Parameter 1)</td>
+<td>Database name</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-name]<br>(Parameter 2)</td>
+<td>Entry name</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.ehmmfetch</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-n</td>
+<td>Interpret name as an HMM number instead of a name. Numbering starts at 0. For example, to fetch the frst HMM from an HMM database called foo, you would do 'hmmfetch -n 0 foo'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+</table>

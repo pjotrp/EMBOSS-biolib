@@ -1,0 +1,28 @@
+<b>Here is a sample session with fdolpenny</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fdolpenny </b>
+Penny algorithm Dollo or polymorphism
+Input file: <b>dolpenny.dat</b>
+Output file [dolpenny.fdolpenny]: <b></b>
+
+
+How many
+trees looked                                       Approximate
+at so far      Length of        How many           percentage
+(multiples     shortest tree    trees this long    searched
+of  100):      found so far     found so far       so far
+----------     ------------     ------------       ------------
+     1           3.00000                1                0.95
+
+Output written to file "dolpenny.fdolpenny"
+
+Trees also written onto file "dolpenny.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

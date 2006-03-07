@@ -1,0 +1,22 @@
+<b>Here is a sample session with fclique</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fclique </b>
+Largest clique program
+Input file: <b>clique.dat</b>
+Output file [clique.fclique]: <b></b>
+
+
+Output written to file "clique.fclique"
+
+Tree written on file "clique.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

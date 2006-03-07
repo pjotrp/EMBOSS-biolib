@@ -1,0 +1,143 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>File containing one or more sequence alignments</td>
+<td>Readable sets of sequences</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.fprotdist</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-ncategories</td>
+<td>Number of substitution rate categories</td>
+<td>Integer from 1 to 9</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-rate</td>
+<td>Rate for each category</td>
+<td>List of floating point numbers</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-categories</td>
+<td>File of substitution rate categories</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-weights</td>
+<td>Weights file</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-model</td>
+<td>Choose the method to use</td>
+<td><table><tr><td>j</td> <td><i>(Jones-Taylor-Thornton matrix)</i></td></tr><tr><td>h</td> <td><i>(Henikoff/Tiller PMB matrix)</i></td></tr><tr><td>d</td> <td><i>(Dayhoff PAM matrix)</i></td></tr><tr><td>k</td> <td><i>(Kimura formula)</i></td></tr><tr><td>s</td> <td><i>(Similarity table)</i></td></tr><tr><td>c</td> <td><i>(Categories model)</i></td></tr></table></td>
+<td>j</td>
+</tr>
+
+<tr>
+<td>-gamma</td>
+<td>Rate variation among sites</td>
+<td><table><tr><td>g</td> <td><i>(Gamma distributed rates)</i></td></tr><tr><td>i</td> <td><i>(Gamma+invariant sites)</i></td></tr><tr><td>c</td> <td><i>(Constant rate)</i></td></tr></table></td>
+<td>c</td>
+</tr>
+
+<tr>
+<td>-gammacoefficient</td>
+<td>Coefficient of variation of substitution rate among sites</td>
+<td>Number 0.001 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-invarcoefficient</td>
+<td>Coefficient of variation of substitution rate among sites</td>
+<td>Number 0.001 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-aacateg</td>
+<td>Choose the category to use</td>
+<td><table><tr><td>G</td> <td><i>(George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr Pro))</i></td></tr><tr><td>C</td> <td><i>(Chemical (Cys Met), (Val Leu Ileu Gly Ala Ser Thr), (Pro))</i></td></tr><tr><td>H</td> <td><i>(Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr),(Pro))</i></td></tr></table></td>
+<td>G</td>
+</tr>
+
+<tr>
+<td>-whichcode</td>
+<td>Which genetic code</td>
+<td><table><tr><td>u</td> <td><i>(Universal)</i></td></tr><tr><td>c</td> <td><i>(Ciliate)</i></td></tr><tr><td>m</td> <td><i>(Universal mitochondrial)</i></td></tr><tr><td>v</td> <td><i>(Vertebrate mitochondrial)</i></td></tr><tr><td>f</td> <td><i>(Fly mitochondrial)</i></td></tr><tr><td>y</td> <td><i>(Yeast mitochondrial)</i></td></tr></table></td>
+<td>u</td>
+</tr>
+
+<tr>
+<td>-ease</td>
+<td>Prob change category (1.0=easy)</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.457</td>
+</tr>
+
+<tr>
+<td>-ttratio</td>
+<td>Transition/transversion ratio</td>
+<td>Number 0.000 or more</td>
+<td>2.0</td>
+</tr>
+
+<tr>
+<td>-basefreq</td>
+<td>Base frequencies for A C G T/U (use blanks to separate)</td>
+<td>List of floating point numbers</td>
+<td>0.25 0.25 0.25 0.25</td>
+</tr>
+
+<tr>
+<td>-printdata</td>
+<td>Print data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

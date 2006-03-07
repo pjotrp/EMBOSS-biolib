@@ -1,0 +1,178 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-asequence]<br>(Parameter 1)</td>
+<td>Nucleotide sequence filename and optional format, or reference (input USA)</td>
+<td>Readable sequence</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-bsequence]<br>(Parameter 2)</td>
+<td>Genomic sequence</td>
+<td>Readable sequence(s)</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.esim4</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-word</td>
+<td>Sets the word size (W) for blast hits. Default value: 12.</td>
+<td>Any integer value</td>
+<td>12</td>
+</tr>
+
+<tr>
+<td>-extend</td>
+<td>Sets the word extension termination limit (X) for the blast-like stage of the algorithm. Default value: 12.</td>
+<td>Any integer value</td>
+<td>12</td>
+</tr>
+
+<tr>
+<td>-cutoff</td>
+<td>Sets the cutoff (E) in range [3,10].</td>
+<td>Integer up to 10</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>-usermspa</td>
+<td>False: esim4 calculates mspA, True: value from mspA command line argument.</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-mspa</td>
+<td>MSP score threshold (K) for the first stage of the algorithm. (If this option is not specified, the threshold is computed from the lengths of the sequences, using statistical criteria.) For example, a good value for genomic sequences in the range of a few hundred Kb is 16. To avoid spurious matches, however, a larger value may be needed for longer sequences.</td>
+<td>Any integer value</td>
+<td>16</td>
+</tr>
+
+<tr>
+<td>-usermspb</td>
+<td>False: esim4 calculates mspB, True: value from mspB command line argument.</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-mspb</td>
+<td>Sets the threshold for the MSP scores (C) when aligning the as-yet-unmatched fragments, during the second stage of the algorithm. By default, the smaller of the constant 12 and a statistics-based threshold is chosen.</td>
+<td>Any integer value</td>
+<td>12</td>
+</tr>
+
+<tr>
+<td>-weight</td>
+<td>Weight value (H) (undocumented). 0 uses a default, >0 is a value</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-diagonal</td>
+<td>Bound (K) for the diagonal distance within consecutive MSPs in an exon.</td>
+<td>Any integer value</td>
+<td>10</td>
+</tr>
+
+<tr>
+<td>-strand</td>
+<td>This determines the strand of the genome (R) with which the mRNA will be aligned. The default value is 'both', in which case both strands of the genome are attempted. The other allowed modes are 'forward' and 'reverse'.</td>
+<td><table><tr><td>both</td> <td><i>(Both strands)</i></td></tr><tr><td>forward</td> <td><i>(Forward strand only)</i></td></tr><tr><td>reverse</td> <td><i>(Reverse strand only)</i></td></tr></table></td>
+<td>both</td>
+</tr>
+
+<tr>
+<td>-format</td>
+<td>Sets the output format (A). Exon endpoints only (format=0), exon endpoints and boundaries of the coding region (CDS) in the genomic sequence, when specified for the input mRNA (-format=5), alignment text (-format=1), alignment in lav-block format (-format=2), or both exon endpoints and alignment text (-format=3 or -format=4). If a reverse complement match is found, -format=0,1,2,3,5 will give its position in the plus strand of the longer sequence and the minus strand of the shorter sequence. -format=4 will give its position in the plus strand of the first sequence (mRNA) and the minus strand of the second sequence (genome), regardless of which sequence is longer. The -format=5 option can be used with the S command line option to specify the endpoints of the CDS in the mRNA, and produces output in the exons file format required by PipMaker.</td>
+<td>Integer from 0 to 5</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-cliptails</td>
+<td>Trim poly-A tails (P). Specifies whether or not the program should report the fragment of the alignment containing the poly-A tail (if found). By default (-nocliptails) the alignment is displayed as computed. When this feature is enabled (-cliptails), sim4 will remove the poly-A tails and all format options will produce additional lav alignment headers.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-smallexons</td>
+<td>Requests an additional search for small marginal exons (N) (N=1) guided by the splice-site recognition signals. This option can be used when a high accuracy match is expected. The default value is N=0, specifying no additional search.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]ambiguity</td>
+<td>Controls the set of characters allowed in the input sequences (B). By default (-ambiguity), ambiguity characters (ABCDGHKMNRSTVWXY) are allowed. By specifying -noambiguity, the set of acceptable characters is restricted to A,C,G,T,N and X only.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-cdsregion</td>
+<td>Allows the user to specify the endpoints of the CDS in the input mRNA (S), with the syntax: -cdsregion=n1..n2. This option is only available with the -format=5 flag, which produces output in the format required by PipMaker. Alternatively, the CDS coordinates could appear in a construct CDS=n1..n2 in the FastA header of the mRNA sequence. When the second file is an mRNA database, the command line specification for the CDS will apply to the first sequence in the file only.</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-offseta</td>
+<td>Undocumented (f) - some sort of offset in first sequence.</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-offsetb</td>
+<td>Undocumented (F) - some sort of offset in second sequence.</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-toa</td>
+<td>Undocumented (t)- offset end of first sequence?</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-tob</td>
+<td>Undocumented (T) - offset end of second sequence?</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

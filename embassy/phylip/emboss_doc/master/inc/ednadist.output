@@ -1,0 +1,14 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: ednadist.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5
+Alpha       0.0000  0.2997  0.7820  1.1716  1.4617
+Beta        0.2997  0.0000  0.3219  0.8997  0.5653
+Gamma       0.7820  0.3219  0.0000  1.4481  1.0726
+Delta       1.1716  0.8997  1.4481  0.0000  0.1679
+Epsilon     1.4617  0.5653  1.0726  0.1679  0.0000
+</pre>
+</td></tr></table><p>

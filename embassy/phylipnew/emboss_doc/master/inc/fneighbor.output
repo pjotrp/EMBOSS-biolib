@@ -1,0 +1,58 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: neighbor.fneighbor</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Neighbor-Joining/UPGMA method version 3.6b
+
+
+   7 Populations
+
+ Neighbor-joining method
+
+ Negative branch lengths allowed
+
+
+  +---------------------------------------------Mouse     
+  ! 
+  !                        +---------------------Gibbon    
+  1------------------------2 
+  !                        !  +----------------Orang     
+  !                        +--4 
+  !                           ! +--------Gorilla   
+  !                           +-5 
+  !                             ! +--------Chimp     
+  !                             +-3 
+  !                               +------Human     
+  ! 
+  +------------------------------------------------------Bovine    
+
+
+remember: this is an unrooted tree!
+
+Between        And            Length
+-------        ---            ------
+   1          Mouse           0.76891
+   1             2            0.42027
+   2          Gibbon          0.35793
+   2             4            0.04648
+   4          Orang           0.28469
+   4             5            0.02696
+   5          Gorilla         0.15393
+   5             3            0.03982
+   3          Chimp           0.15168
+   3          Human           0.11752
+   1          Bovine          0.91769
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: neighbor.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Mouse:0.76891,(Gibbon:0.35793,(Orang:0.28469,(Gorilla:0.15393,
+(Chimp:0.15168,Human:0.11752):0.03982):0.02696):0.04648):0.42027,Bovine:0.91769);
+</pre>
+</td></tr></table><p>

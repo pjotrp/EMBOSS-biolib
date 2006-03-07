@@ -1,0 +1,14 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: dolmove.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+     5    6
+Alpha     110110
+Beta      110000
+Gamma     100110
+Delta     001001
+Epsilon   001110
+</pre>
+</td></tr></table><p>

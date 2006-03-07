@@ -1,0 +1,18 @@
+<b>Here is a sample session with ssematch</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ssematch </b>
+Search a DCF file for secondary structure matches.
+Name of file of secondary structure (input).: <b>sse.in</b>
+Name of DCF file (domain classification file) (input).: <b>../domainsse-keep/domainsse.out</b>
+Number of top-scoring matches to report. [5]: <b>1</b>
+Name of DCF file (domain classification file) containing top-scoring domains for residue-based alinnment (output). [sse.ssematch]: <b>res.dcf</b>
+Name of DCF file (domain classification file) containing top-scoring domains for secondary structure element-based alinnment (output). [sse.out2]: <b>elm.dcf</b>
+Name ssematch log file (output) [ssematch.log]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

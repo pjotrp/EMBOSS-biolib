@@ -1,0 +1,36 @@
+<b>Here is a sample session with rocplot</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>rocplot </b>
+Performs ROC analysis on hits files.
+Directory of hits files (input). [rocplot]: <b>rocplot/hitsin</b>
+Available modes
+         1 : Single input file mode
+         2 : Multiple input file mode
+Select mode of operation. [1]: <b>2</b>
+Available modes
+         1 : Do not combine data (multiple ROC curves in single ROC plot - multiple classification plots)
+         2 : Combine data (single ROC curve - single classification plot)
+Select mode of operation. [1]: <b>2</b>
+Available modes
+         1 : Single list of known true relatives
+         2 : Multiple lists of known true relatives
+Select mode of operation. [1]: <b>1</b>
+Overlap threshold for hits. [10]: <b></b>
+Directory for output files. [./]: <b></b>
+Base name of ROC plot file(s) (output). [_rocplot]: <b></b>
+Name of summary file (output). [_summary]: <b></b>
+Base name of classification plot file(s) (output). [_classplot]: <b></b>
+
+/homes/user/test/data/structure/rocplot/hitsin/data1.hits
+/homes/user/test/data/structure/rocplot/hitsin/data2.hits
+Processing data1.hits
+Processing data2.hits
+Please wait ... done!
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

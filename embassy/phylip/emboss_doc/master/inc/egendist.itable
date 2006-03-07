@@ -1,0 +1,80 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-infile]<br>(Parameter 1)</td>
+<td>Data file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-datasets</td>
+<td>How many data sets</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-method</td>
+<td>Choose the method to use</td>
+<td><table><tr><td>Nei</td> <td><i>(Nei genetic distance)</i></td></tr><tr><td>Cav</td> <td><i>(Cavalli-Sforza chord measure)</i></td></tr><tr><td>Rey</td> <td><i>(Reynolds genetic distance)</i></td></tr></table></td>
+<td>Nei</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>egendist.outfile</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-lowertriangle</td>
+<td>Lower-triangular (else Square)</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-multsets</td>
+<td>Analyze multiple data sets</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-all</td>
+<td>Input file contains all alleles at each locus (else one)</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

@@ -1,0 +1,22 @@
+<b>Here is a sample session with fconsense</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fconsense </b>
+Majority-rule and strict consensus tree
+Input tree file: <b>consense.dat</b>
+Output file [consense.fconsense]: <b></b>
+
+
+Consensus tree written to file "consense.treefile"
+
+Output written to file "consense.fconsense"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

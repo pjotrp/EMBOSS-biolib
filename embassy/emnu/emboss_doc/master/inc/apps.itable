@@ -1,0 +1,17 @@
+<h3><A NAME="emnu">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current emnu release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="emnu.html">emnu</a></td>
+<td>
+Simple menu of EMBOSS applications
+</td>
+</tr>
+</table>

@@ -1,0 +1,50 @@
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-infile]            infile     Data file
+*  -datasets           integer    How many data sets
+   -method             menu       Choose the method to use
+*  -randseed           integer    Random number seed (must be odd)
+*  -randtimes          integer    Number of times to jumble
+   -og                 toggle     Outgroup root
+*  -outgnum            integer    Number of the outgroup
+*  -valthresh          float      Threshold value
+  [-outfile]           outfile    Output file name
+  [-[no]trout]         toggle     Create a tree file
+*  -treefile           outfile    Tree file name
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -ancestral          boolean    Use ancestral states in input file
+   -multsets           toggle     Analyze multiple data sets
+   -[no]besttree       toggle     Search for best tree
+*  -random             toggle     Randomize input order of species
+   -printdata          boolean    Print out the data at start of run
+   -progress           boolean    Print indications of progress of run
+   -statesatnodes      boolean    Print states at all nodes of tree
+   -steps              boolean    Print out steps in each character
+   -[no]drawtree       boolean    Draw tree
+
+   Advanced (Unprompted) qualifiers:
+   -thresh             toggle     Use Threshold parsimony
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-treefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

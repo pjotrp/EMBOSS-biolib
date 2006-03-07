@@ -1,0 +1,10 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: retree.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(((((((Human,Chimp),Gorilla),Orang),Gibbon),(Barbary_Ma,(Crab-e._Ma,
+(Rhesus_Mac,Jpn_Macaq)))),Squir._Mon),((Tarsier,Lemur),Bovine),Mouse);
+</pre>
+</td></tr></table><p>

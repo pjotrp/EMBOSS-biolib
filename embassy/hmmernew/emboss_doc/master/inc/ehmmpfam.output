@@ -1,0 +1,113 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: myhmmso.ehmmpfam</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+hmmpfam - search one or more sequences against HMM database
+HMMER 2.3.2 (Oct 2003)
+Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
+Freely distributed under the GNU General Public License (GPL)
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+HMM file:                 ../ehmmcalibrate-ex2-keep/myhmmso
+Sequence file:            ./ehmmpfam-1141730514.25929
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Query sequence: 7LES_DROME
+Accession:      [none]
+Description:    P13368 SEVENLESS PROTEIN (EC 2.7.1.112).
+
+Scores for sequence family classification (score includes all domains):
+Model    Description                                    Score    E-value  N 
+-------- -----------                                    -----    ------- ---
+pkinase  Protein kinase domain                          314.6    1.2e-90   1
+fn3      Fibronectin type III domain                    176.6      4e-49   6
+
+Parsed for domains:
+Model    Domain  seq-f seq-t    hmm-f hmm-t      score  E-value
+-------- ------- ----- -----    ----- -----      -----  -------
+fn3        1/6     437   522 ..     1    84 []    48.3  1.7e-10
+fn3        2/6     825   914 ..     1    84 []    13.4     0.09
+fn3        3/6    1292  1389 ..     1    84 []    15.9     0.05
+fn3        4/6    1799  1891 ..     1    84 []    63.5  4.5e-15
+fn3        5/6    1899  1978 ..     1    84 []    15.2     0.06
+fn3        6/6    1993  2107 ..     1    84 []    20.3    0.018
+pkinase    1/1    2209  2483 ..     1   294 []   314.6  1.2e-90
+
+Alignments of top-scoring domains:
+fn3: domain 1 of 6, from 437 to 522: score 48.3, E = 1.7e-10
+                CS    C CCCCEEEEEECCTTCCEEEEECCC CCCCCCCEEEEE.ECCCCCC
+                   *-&gt;P.saPtnltvtdvtstsltlsWsppt.gngpitgYevtyRqpkngge
+                      P saP   + +++ ++ l ++W p +  ngpi+gY++++ +++ g+ 
+  7LES_DROME   437    PiSAPVIEHLMGLDDSHLAVHWHPGRfTNGPIEGYRLRL-SSSEGNA 482  
+
+                CS CCCCEEECCCCCECECCEEEEECCCCEEEEEECCC CCCC   
+                   wneltvpgtttsytltgLkPgteYevrVqAvnggG.GpeS&lt;-*
+                   + e+ vp    sy+++ L++gt+Y++ +  +n +G+Gp     
+  7LES_DROME   483 TSEQLVPAGRGSYIFSQLQAGTNYTLALSMINKQGeGPVA    522  
+
+fn3: domain 2 of 6, from 825 to 914: score 13.4, E = 0.09
+                CS    CCCCCEEEEEECCTTCCEEEEECCC       CCCCCCCEEEEE.EC
+                   *-&gt;PsaPtnltvtdvtstsltlsWsppt.......gngpitgYevtyRqp
+                       ++P  l++   ++  + +sW+ p++++ ++ + +   +Ye+++  +
+  7LES_DROME   825    GGKPHSLKALL-GAQAAKISWKEPErnpyqsaDAARSWSYELEV-LD 869  
+
+                CS CCCCCCCCCE EECCCCCECECCEEEEECCCCEEEEEECCC  CCCC   
+                   knggewnelt.vpgtttsytltgLkPgteYevrVqAvnggG..GpeS&lt;-*
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+                CS CCEEECCCCCECECCEEEEECCCCEEEEEECCC CCCC   
+                   eltvpgtttsytltgLkPgteYevrVqAvnggG.GpeS&lt;-*
+                   +++v g+ t ++++ L+P t+Y+ r+    ++++G++    
+  7LES_DROME  1941 RRNVAGNHTKMVVEPLQPRTRYQCRLLLGYAATpGAPL    1978 
+
+fn3: domain 6 of 6, from 1993 to 2107: score 20.3, E = 0.018
+                CS    CCCCCEEEEEECCTTCCEEEEECCC CCCCCCCEEEEE.ECCCCCC 
+                   *-&gt;PsaPtnltvtdvtstsltlsWsppt.gngpitgYevtyRqpkngge.
+                      Ps+P+ ++ + + +  ++++W++++++++pi  Y+++   ++++  +
+  7LES_DROME  1993    PSQPGKPQLEHIAEEVFRVTWTAARgNGAPIALYNLEA-LQARSDIr 2038 
+
+                CS                            CCCCEEECCCC CECECCEEEEE
+                   ...........................wneltvpgttt.sytltgLkPgt
+                   +++++++++++++ ++ +  +++   ++++l+  +tt  s++++ L   +
+  7LES_DROME  2039 rrrrrrrrnsggsleqlpwaeepvvveDQWLDFCNTTElSCIVKSLHSSR 2088 
+
+                CS CCCCEEEEEE CCC CCCC   
+                   eYevrVqAvn.ggG.GpeS&lt;-*
+                      +rV+A++ ++G Gp+S   
+  7LES_DROME  2089 LLLFRVRARSlEHGwGPYS    2107 
+
+pkinase: domain 1 of 1, from 2209 to 2483: score 314.6, E = 1.2e-90
+                   *-&gt;yelleklGeGsfGkVykakhkd...ktgkiVAvKilkkekesikekr
+                      ++ll+ lG+G+fG+Vy++++k+++++  ++VA+K l+k+++++ e  
+  7LES_DROME  2209    LKLLRFLGSGAFGEVYEGQLKTedsEEPQRVAIKSLRKGASEFAE-- 2253 
+
+                   flrEiqilkrLsHpNIvrligvfedtddhlylvmEymegGdLfdylrrng
+                   +l E+q++ +++H+NIvrl g++  + +++ l+mE+me GdL++ylr+ +
+  7LES_DROME  2254 LLQEAQLMSNFKHENIVRLVGICF-DTESISLIMEHMEAGDLLSYLRAAR 2302 
+
+                   ..........gplsekeakkialQilrGleYLHsngivHRDLKpeNILld
+                    +++++++++  ls  e++ ++ ++++G +YL+++++vHRDL+ +N+L++
+  7LES_DROME  2303 atstqepqptAGLSLSELLAMCIDVANGCSYLEDMHFVHRDLACRNCLVT 2352 
+
+                   en......dgtvKiaDFGLArlle..sssklttfvGTpwYmmAPEvileg
+                   e +++++++ tvKi+DFGLAr++++++++++ + +  p+++m+PE  l +
+  7LES_DROME  2353 EStgstdrRRTVKIGDFGLARDIYksDYYRKEGEGLLPVRWMSPES-LVD 2401 
+
+                   rgysskvDvWSlGviLyElltggplfpgadlpaftggdevdqliifvlkl
+                     +++++DvW++Gv+++E+lt g                         ++
+  7LES_DROME  2402 GLFTTQSDVWAFGVLCWEILTLG-------------------------QQ 2426 
+
+                   PfsdelpktridpleelfriikrpglrlplpsncSeelkdLlkkcLnkDP
+                   P+         ++ +e+++++k+ g+rl +p+ c e l++Ll  c++ DP
+  7LES_DROME  2427 PYAA-------RNNFEVLAHVKE-GGRLQQPPMCTEKLYSLLLLCWRTDP 2468 
+
+                   skRpGsatakeilnhpwf&lt;-*
+                   ++Rp   +++ + n +     
+  7LES_DROME  2469 WERP---SFRRCYNTLHA    2483 
+
+//
+</pre>
+</td></tr></table><p>

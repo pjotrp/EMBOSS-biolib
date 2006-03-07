@@ -1,0 +1,35 @@
+<h3><A NAME="domalign">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current domalign release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="allversusall.html">allversusall</a></td>
+<td>
+Sequence similarity data from all-versus-all comparison
+</td>
+</tr>
+<tr>
+<td><a href="domainalign.html">domainalign</a></td>
+<td>
+Generate alignments (DAF file) for nodes in a DCF file
+</td>
+</tr>
+<tr>
+<td><a href="domainrep.html">domainrep</a></td>
+<td>
+Reorder DCF file to identify representative structures
+</td>
+</tr>
+<tr>
+<td><a href="seqalign.html">seqalign</a></td>
+<td>
+Extend alignments (DAF file) with sequences (DHF file)
+</td>
+</tr>
+</table>

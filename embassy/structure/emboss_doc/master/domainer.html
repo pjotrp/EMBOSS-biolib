@@ -1,0 +1,460 @@
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBASSY: DOMAINER documentation. </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<!--#include virtual="/apps/header1.inc" -->
+<H2> DOMAINER documentation
+<!--#include virtual="/apps/header2.inc" -->
+
+<!-- END OF HEADER -->
+
+
+
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
+
+<!--#include file="inc/domainer.ione" -->
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+
+DOMAINER reads a DCF file (domain classification file) and a directory of protein 
+CCF files (clean coordinate files) and writes, for each domain in the DCF 
+file, a domain CCF file and domain PDB file.  Each domain CCF 
+file contains coordinates for a single SCOP domain.  The paths 
+and extensions for the protein (input) and domain (output) coordinate 
+files are specified by the user (path) and in the ACD file (extension).  The SCOP domain 
+identifier codes are used to name the output files.  A log file for each 
+of the DCF and PDB format builds is written.
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+     Use "<b>DOMAINER</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+The format of the protein CCF file is described in the  <a href="pdbparse.html">PDBPARSE documentation.</a>
+
+<!--#include file="inc/domainer.input" -->
+
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+The format used for domain CCF files is exactly the same 
+as that used for protein CCF files and is described the  <a href="pdbparse.html">PDBPARSE documentation.</a>
+<br>
+
+<!--#include file="inc/domainer.output" -->
+
+<!--
+<br>An excerpt of the PDB format used for domain CCF files is shown 
+below.  PDB format is explained on the PDB website:
+<br>http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html
+<br>
+<br>
+DOMAINER writes the following records in PDB format (Figure 1):
+<br>(1)  HEADER - bibliographic information.  The text 'CLEANED-UP PDB FILE FOR 
+SCOP DOMAIN XXXXXXX' is always given (where XXXXXXX is a 7-character domain 
+identifier code).
+<br>(2)  TITLE - bibliographic information. The text ' THIS FILE IS MISSING 
+MOST RECORDS FROM THE ORIGINAL PDB FILE' is always given.
+<br>(3)  COMPND - compound information.  The COMPND records from the original  
+PDB file are given.
+<br>(4)  SOURCE - protein source information.  The SOURCE records from the 
+original PDB file are given.
+<br>(5)  REMARK - remark records. Remark records are used for spacing. One 
+REMARK line containing the protein resolution is always given.
+<br>(6)  SEQRES - protein sequence.  
+<br>(7)  ATOM - atomic coordinates.
+<br>(8)  TER - indicates the end of a chain.
+<br>
+<br> 
+<b>Figure 1  Excerpt of a domain clean coordinate file in PDB format</b>
+<table><td bgcolor="#CFCCFF">
+<pre>  
+HEADER     CLEANED-UP PDB FILE FOR SCOP DOMAIN D1CS4A_                          
+TITLE      THIS FILE IS MISSING MOST RECORDS FROM THE ORIGINAL PDB FILE         
+COMPND     MOL_ID: 1; MOLECULE: TYPE V ADENYLATE CYCLASE;                       
+SOURCE     MOL_ID: 1; ORGANISM_SCIENTIFIC: CANIS FAMILIARIS;                    
+REMARK                                                                          
+REMARK     RESOLUTION. 2.50  ANGSTROMS.                                         
+REMARK                                                                          
+SEQRES   1 A   52  ALA ASP ILE GLU GLY PHE THR SER LEU ALA SER GLN CYS          
+SEQRES   2 A   52  THR ALA GLN GLU LEU VAL MET THR LEU ASN GLU LEU PHE          
+SEQRES   3 A   52  ALA ARG PHE ASP LYS LEU ALA ALA GLU ASN HIS CYS LEU          
+SEQRES   4 A   52  ARG ILE LYS ILE LEU GLY ASP CYS TYR TYR CYS VAL SER          
+ATOM      1  N   ASP A   2      51.711 -11.782  62.798  1.00 51.17           N  
+ATOM      2  CA  ASP A   2      52.810 -11.644  61.848  1.00 54.45           C  
+ATOM      3  C   ASP A   2      54.137 -11.314  62.530  1.00 55.11           C  
+ATOM      4  O   ASP A   2      54.175 -10.524  63.469  1.00 55.34           O  
+ATOM      5  CB  ASP A   2      52.437 -10.555  60.831  1.00 57.50           C  
+ATOM      6  CG  ASP A   2      53.460 -10.391  59.729  1.00 61.38           C  
+ATOM      7  OD1 ASP A   2      54.316  -9.485  59.841  1.00 65.55           O  
+ATOM      8  OD2 ASP A   2      53.390 -11.146  58.736  1.00 63.68           O  
+ATOM      9  N   ILE A   3      55.216 -11.941  62.066  1.00 57.14           N  
+ATOM     10  CA  ILE A   3      56.546 -11.705  62.624  1.00 59.46           C  
+ATOM     11  C   ILE A   3      57.020 -10.305  62.230  1.00 60.12           C  
+ATOM     12  O   ILE A   3      56.963  -9.927  61.060  1.00 59.12           O  
+ATOM     13  CB  ILE A   3      57.583 -12.722  62.094  1.00 60.84           C  
+ATOM     14  CG1 ILE A   3      57.184 -14.163  62.447  1.00 63.12           C  
+ATOM     15  CG2 ILE A   3      58.975 -12.384  62.632  1.00 61.24           C  
+ATOM     16  CD1 ILE A   3      57.408 -14.554  63.895  1.00 63.92           C  
+ATOM     17  N   GLU A   4      57.492  -9.548  63.212  1.00 60.23           N  
+ATOM     18  CA  GLU A   4      57.975  -8.198  62.971  1.00 62.14           C  
+ATOM     19  C   GLU A   4      59.401  -8.277  62.424  1.00 60.59           C  
+ATOM     20  O   GLU A   4      60.244  -8.972  62.987  1.00 61.84           O  
+ATOM     21  CB  GLU A   4      57.917  -7.386  64.272  1.00 65.47           C  
+ATOM     22  CG  GLU A   4      58.037  -5.874  64.091  1.00 70.25           C  
+ATOM     23  CD  GLU A   4      57.588  -5.089  65.324  1.00 72.94           C  
+ATOM     24  OE1 GLU A   4      58.262  -5.175  66.377  1.00 70.76           O  
+ATOM     25  OE2 GLU A   4      56.555  -4.380  65.232  1.00 74.36           O  
+ATOM     26  N   GLY A   5      59.642  -7.608  61.298  1.00 57.58           N  
+ATOM     27  CA  GLY A   5      60.956  -7.615  60.681  1.00 56.14           C  
+ATOM     28  C   GLY A   5      61.452  -8.993  60.265  1.00 58.03           C  
+ATOM     29  O   GLY A   5      62.620  -9.322  60.480  1.00 57.47           O  
+ATOM     30  N   PHE A   6      60.576  -9.789  59.649  1.00 58.00           N  
+
+< data ommitted for clarity >
+
+ATOM    354  O   CYS A  47      50.803 -16.789  58.301  1.00 50.50           O  
+ATOM    355  CB  CYS A  47      51.409 -13.972  57.565  1.00 51.82           C  
+ATOM    356  SG  CYS A  47      49.727 -13.277  57.723  1.00 54.53           S  
+TER     357      CYS A  47                                                      
+END                  
+</pre>      
+</table>
+
+-->
+
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml" 
+-->
+
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+None.
+
+
+
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
+
+ 
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+
+<pre>
+<!--#include file="inc/domainer.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/domainer.itable" -->
+
+<H3> 6.2 EXAMPLE SESSION </H3>
+
+An example of interactive use of DOMAINER is shown below.
+
+<!--#include file="inc/domainer.usage" -->
+
+<!--
+<br>Protein clean coordinate files were read from test_data/. 
+<br>Domain definitions were taken from 
+test_data/all.scop and domain clean coordinate files 
+and domain PDB files were written.  
+<br>Three file extensions for protein coordinate input files (e.g. 1cs4.ccf and 1ii7.ccf),  
+domain coordinate files in 
+CCF format (e.g. d1cs4a_.ccf and d1ii7a_.ccf) and PDB formats (e.g. d1cs4a_.ent and d1ii7a_.ent) 
+will have been set in the ACD file.
+<br>Log files called 
+domainer_embl.log and domainer_pdb.log were written.
+<br><br>
+The following command line would achieve the same result.
+<pre>domainer test_data/ test_data/domainer test_data/domainer -scop 
+test_data/all.scop -cpdberrf test_data/domainer/domainer_embl.log -pdberrf 
+test_data/domainer/domainer_pdb.log -mode 1
+</pre>
+-->
+
+
+
+
+
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
+-->
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
+<b>Wildcard matching of SCOP domain start and end points</b>
+<br>SCOP treats PDB residue numbers as integers and this is a potential source
+of error in the domain ranges. It means that DOMAINER (via library calls)
+must use wild card strings when matching a SCOP start / end point to the
+PDB residue number strings.
+
+
+
+
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
+-->
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
+Where coordinates for multiple models are given in a protein coordinate 
+file, the domain CCF file will contain coordinates for the first 
+model.  
+<br>
+<br>In the rare cases where a domain is comprised of segments from more than 
+one chain, the data in the domain CCF file will be presented as 
+belonging to a single chain with a chain identifier of '.'.  A single 
+sequence will be given.
+<br>
+<br>The start and end positions of domains in SCOP coincide in several cases 
+to residues which either lack a CA atom or for which coordinates for a 
+single atom only are given in the PDB file.  To ensure these domains are
+processed during a DOMAINER run, it is important to use protein CCF
+files which have NOT been masked to remove such residues.
+Otherwise errors of the following type may occur in the log file:
+<br>
+<br><pre>
+//
+D1QFUL1
+ERROR Domain end not found in ajXyzCpdbWriteDomain 
+
+//
+D1QFUL1
+ERROR Domain start not found in ajXyzCpdbWriteDomain 
+</pre>
+
+<!--#include file="inc/domainer.history" -->
+<!--#include file="inc/domainer.comment" -->
+
+<H3> 8.1   DATA FILES    </H2>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b> Domain classification file (for SCOP)</b></td>
+<td> DCF format (EMBL-like). </td>
+<td> Classification and other data for domains from SCOP.  </td>
+<td> <a href="scopparse.html">SCOPPARSE</a> </td>
+<td> Domain sequence information can be added to the file by using DOMAINSEQS.  </td>
+</tr>
+<tr>
+<td><b> Domain classification file (for CATH)</b></td>
+<td> DCF format (EMBL-like). </td>
+<td> Classification and other data for domains from CATH.  </td>
+<td> <a href="cathparse.html">CATHPARSE</a> </td>
+<td> Domain sequence information can be added to the file by using DOMAINSEQS.  </td>
+</tr>
+<tr>
+<td><b> Clean coordinate file (for protein) </b></td>
+<td> CCF format (EMBL-like).</td>
+<td> Protein coordinate and derived data for a single PDB file.  The data are 'cleaned-up': self-consistent and error-corrected.  </td>
+<td> <a href="pdbparse.html">PDBPARSE</a> </td>
+<td> Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS. </td>
+</tr>
+<tr>
+<td><b> Clean coordinate file (for domain)</b></td>
+<td> CCF format (EMBL-like).</td>
+<td> Protein coordinate and derived data for a single domain from SCOP or CATH. The data are 'cleaned-up': self-consistent and error-corrected. </td>
+<td> <a href="domainer.html">DOMAINER</a></td>
+<td> Records for residue solvent accessibility and secondary structure are added to the file by using PDBPLUS.</td>
+</tr>
+<tr>
+<td><b>Domain PDB file </b></td>
+<td> PDB format. </td>
+<td> Protein coordinate data for a single domain from SCOP or CATH. </td>
+<td> <a href="domainer.html">DOMAINER</a> </td>
+<td> N.A. </td>
+</tr>
+</table>
+
+
+
+
+
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
+-->
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+  
+ DOMAINER fills the need for a convenient source of protein coordinate data which 
+ includes protein strucutral domain definitions and is therefore appropriate 
+ for domain-centred approaches.  DOMAINER reads protein CCF files and
+ writes files of coordinate data for individual SCOP domains in clean 
+ and PDB formats. Domain definitions are taken from  a DCF file (domain classification file).  For example, SCOPPARSE parses the raw SCOP classification files (dir.cla.scop.txt and dir.des.scop.txt) available at URL (http://scop.mrc-lmb.cam.ac.uk/scop/parse/) and generate a DCF output file suitable for use with DOMAINER.
+
+
+
+
+
+
+
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
+We wrote the DOMAINER application to read protein CCF files and generate files of coordinates for single SCOP domains in the "clean" format (domain CCF files, Figure 1) and the PDB format.  DOMAINER reads a file of domain classification data (e.g. prepared by using the application SCOPPARSE or CATHPARSE), and generates a domain CCF and domain PDB file for each domain listed.  Where coordinates for multiple models were determined, data in the output files are given for the first model only.  In cases where a domain consists of sections from more than one polypeptide chain, the data are presented as belonging to a single chain only (a single sequence with a chain identifier of is given).  
+
+
+
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+-->
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+
+<!--#include file="inc/domainer.isee" -->
+
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
+DOMAINER generates a log file an excerpt of which is shown (Figure 2). If there is a problem in processing a domain, three lines containing the record '//', the domain identifier code and an error message respectively are written. The following messages may then be given.
+
+<br><br><i>WARN  filename not found</i> (A CCF file could not be found).
+<br><br><i>ERROR filename file read error</i> (An error was encountered during a file read or write respectively.)
+<br><br><i>ERROR filename file write error</i> (An error was encountered during a file read or write respectively.)  
+<br><br><i>ERROR Domain start found by wildcard match only</i> (Wildcard matching was needed to find the start (or end) of a domain in a PDB file: see below).
+<br><br>
+Various other error messages may also be given (in case of difficulty email Jon Ison, jison@hgmp.mrc.ac.uk).
+<br>
+<br><b>Figure 2  Excerpt of log file</b>
+<pre>
+//
+DS002__
+WARN  Could not open for reading cpdb file s002.pxyz
+//
+DS003__
+WARN  Could not open for reading cpdb file s003.pxyz
+</pre>
+<br>Messages of the type below can appear in the log file if 
+(i)  The domain is of a PDB file which is in holding, but has not made it into the main PDB release yet.
+(ii) The domain is of a PDB file that is now obsolete - having been replaced by a more recent entry.
+There may be other cases too.
+<br>
+<pre>
+//
+D0LPC_1
+WARN  0lpc.pxyz not found
+</pre> 
+<br>
+Messages of the type below indicate that residues for the start or end of a domain are missing from 
+the protein CCF file (see 'Notes' above).
+<pre>
+//
+D1QFUL1
+ERROR Domain start not found in ajXyzCpdbWriteDomain 
+//
+D1QFUL1
+ERROR Domain end not found in ajXyzCpdbWriteDomain 
+</pre>
+
+
+
+<!-- AUTHORS
+     The main author first then all others. 
+-->
+<a name="13.0"></a>
+<br><br><br><H2> 13.0  AUTHORS                   </H2>
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+
+
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
+-->
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
+
+<!--#include file="inc/embossref.ihtml" -->
+
+
+<H3>14.1 Other useful references  </H3>
+<pre>
+</pre>
+
+</BODY>
+</HTML>

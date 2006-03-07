@@ -1,0 +1,108 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-infile]<br>(Parameter 1)</td>
+<td>File containing data set</td>
+<td>Discrete states file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-intreefile]<br>(Parameter 2)</td>
+<td>(no help text) tree value</td>
+<td>Phylogenetic tree</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-weights</td>
+<td>Weights file</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-ancfile</td>
+<td>Ancestral states file</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-factorfile</td>
+<td>Factors file</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-method</td>
+<td>Parsimony method</td>
+<td><table><tr><td>d</td> <td><i>(Dollo)</i></td></tr><tr><td>p</td> <td><i>(Polymorphism)</i></td></tr></table></td>
+<td>d</td>
+</tr>
+
+<tr>
+<td>-thresh</td>
+<td>Use threshold parsimony</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-threshold</td>
+<td>Threshold value</td>
+<td>Number 0.000 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-initialtree</td>
+<td>Initial tree</td>
+<td><table><tr><td>a</td> <td><i>(Arbitary)</i></td></tr><tr><td>u</td> <td><i>(User)</i></td></tr><tr><td>s</td> <td><i>(Specify)</i></td></tr></table></td>
+<td>Arbitary</td>
+</tr>
+
+<tr>
+<td>-screenwidth</td>
+<td>Width of terminal screen in characters</td>
+<td>Any integer value</td>
+<td>80</td>
+</tr>
+
+<tr>
+<td>-screenlines</td>
+<td>Number of lines on screen</td>
+<td>Any integer value</td>
+<td>24</td>
+</tr>
+
+<tr>
+<td>-outtreefile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.fdolmove</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

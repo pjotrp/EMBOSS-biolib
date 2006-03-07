@@ -1,0 +1,26 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: caths.list.small</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+1cuk03    1  10   8  10   1   1   1  48 1.900
+1hjp03    1  10   8  10   1   1   2  44 2.500
+</pre>
+</td></tr></table><p>
+<p><h3>File: domlist.small</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+1cuk00  D03   F00    1  0   1 - 0  66 -    1  0  67 - 0 142 -    1  0 156 - 0 203 - 
+1hjp00 D03 F01  1  0    1 - 0   66 -  1  0   67 - 0  158 -  1  0  159 - 0  202 -  0  203 - 0  203 - (1) 
+</pre>
+</td></tr></table><p>
+<p><h3>File: CAT.names.all.small</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+1.10.8           1cuk03            :Helicase, Ruva Protein, domain 3	
+1.10.8.10         1cuk03    :DNA helicase RuvA subunit, C-terminal domain 
+0001             2ccyA0        :Mainly Alpha
+0001.0010        1eca00          :Orthogonal Bundle
+</pre>
+</td></tr></table><p>

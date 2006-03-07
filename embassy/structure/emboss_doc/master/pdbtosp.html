@@ -1,0 +1,257 @@
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBASSY: PDBTOSP documentation. </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<!--#include virtual="/apps/header1.inc" -->
+<H2> PDBTOSP documentation
+<!--#include virtual="/apps/header2.inc" -->
+
+<!-- END OF HEADER -->
+
+
+
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
+Convert raw swissprot:PDB equivalence file to EMBL-like format.
+<!--#include file="inc/pdbtosp.ione" -->
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+
+PDBTOSP parses the swissprot:PDB equivalence table available at <a href ="http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt">http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt</a> and writes the data out in EMBL-like format. The raw (input) file can be obtained by doing a "save as ... text format" from the web page. No changes are made to the data other than changing the format in which it is held.  The input and output files are specified by the user.
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+     Use "<b>PDBTOSP</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+
+
+
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+An excerpt from the raw swissprot:PDB equivalence file is shown (Figure 1).
+
+<!--#include file="inc/pdbtosp.input" -->
+
+
+
+
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+An excerpt from the swissprot:PDB equivalence file in EMBL-like format is shown (Figure 2). 
+
+<!--#include file="inc/pdbtosp.output" -->
+
+
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml" 
+-->
+
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+No data files are used by PDBTOSP.
+
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" >
+<tr><td>
+<pre>
+<!--#include file="inc/pdbtosp.ihelp" --></pre>
+</pre>
+</td></tr>
+</table>
+
+
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+ 
+<!--#include file="inc/pdbtosp.itable" -->
+
+<H3> 6.2 EXAMPLE SESSION </H3>
+An example of interactive use of PDBTOSP is shown below.
+
+<!--#include file="inc/pdbtosp.usage" -->
+
+<!-- <br><br>
+The raw swissprot:PDB equivalence file /testdata/pdbtosp.txt was parsed and a new file in EMBL-like format called /testdata/pdbtosp/Epdbtosp.dat was written.
+<br><br>
+
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
+-->
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
+None.
+
+
+
+
+
+
+
+
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
+-->
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
+PDBTOSP is used to create the EMBOSS data file Epdbtosp.dat that is included in the EMBOSS distribution.
+
+
+<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b> swissprot:PDB equivalence file</b></td>
+<td> EMBL-like format. </td>
+<td> A file containing swissprot identifiers for PDB codes. </td>
+<td> Included in the EMBOSS distribution</td>
+<td> N.A. </td>
+</tr>
+</table>
+
+<!--#include file="inc/pdbtosp.history" -->
+<!--#include file="inc/pdbtosp.comment" -->
+
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
+-->
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+
+Some research applications require knowledge of the database sequence(s) that corresponds to the sequence(s) given in a PDB file.  A 'swissprot:PDB equivalence' file listing accession numbers and swissprot database identifiers for certain PDB codes is available, but is not in a format that is consistent with flat file formats used for protein structural data in emboss.  PDBTOSP parses the swissprot:PDB equivalence in its raw format and converts it to an EMBL-like format.
+
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
+PDBTOSP relies on finding a line beginning with '____  _' in the input file (all lines up to and including this one are ignored). Lines of code data are then parsed, up until the first blank line.
+
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+-->
+
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+
+<!--#include file="inc/pdbparse.isee" -->
+
+
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
+None.
+
+
+
+<!-- AUTHORS
+     The main author first then all others. 
+-->
+<a name="13.0"></a>
+<br><br><br><H2> 13.0  AUTHORS                   </H2>
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+
+
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
+-->
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
+
+<!--#include file="inc/embossref.ihtml" -->
+
+
+<H3>14.1 Other useful references  </H3>
+
+
+</BODY>
+</HTML>
+
+
+

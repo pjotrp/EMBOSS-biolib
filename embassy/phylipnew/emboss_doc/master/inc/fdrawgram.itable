@@ -1,0 +1,195 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-intreefile]<br>(Parameter 1)</td>
+<td>(no help text) tree value</td>
+<td>Phylogenetic tree</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-plotfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.fdrawgram</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-[no]grows</td>
+<td>Tree grows horizontally</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-style</td>
+<td>Tree style output</td>
+<td><table><tr><td>c</td> <td><i>(cladogram (v-shaped))</i></td></tr><tr><td>p</td> <td><i>(phenogram (branches are square))</i></td></tr><tr><td>v</td> <td><i>(curvogram (branches are 1/4 out of an ellipse))</i></td></tr><tr><td>e</td> <td><i>(eurogram (branches angle outward, then up))</i></td></tr><tr><td>s</td> <td><i>(swooporam (branches curve outward then reverse))</i></td></tr><tr><td>o</td> <td><i>(circular tree)</i></td></tr></table></td>
+<td>c</td>
+</tr>
+
+<tr>
+<td>-plotter</td>
+<td>Plotter or printer the tree will be drawn on</td>
+<td><table><tr><td>l</td> <td><i>(Postscript printer file format)</i></td></tr><tr><td>m</td> <td><i>(PICT format (for drawing programs))</i></td></tr><tr><td>j</td> <td><i>(HP 75 DPI Laserjet PCL file format)</i></td></tr><tr><td>s</td> <td><i>(HP 150 DPI Laserjet PCL file format)</i></td></tr><tr><td>y</td> <td><i>(HP 300 DPI Laserjet PCL file format)</i></td></tr><tr><td>w</td> <td><i>(MS-Windows Bitmap)</i></td></tr><tr><td>f</td> <td><i>(FIG 2.0 drawing program format)</i></td></tr><tr><td>a</td> <td><i>(Idraw drawing program format)</i></td></tr><tr><td>z</td> <td><i>(VRML Virtual Reality Markup Language file)</i></td></tr><tr><td>n</td> <td><i>(PCX 640x350 file format (for drawing programs))</i></td></tr><tr><td>p</td> <td><i>(PCX 800x600 file format (for drawing programs))</i></td></tr><tr><td>q</td> <td><i>(PCX 1024x768 file format (for drawing programs))</i></td></tr><tr><td>k</td> <td><i>(TeKtronix 4010 graphics terminal)</i></td></tr><tr><td>x</td> <td><i>(X Bitmap format)</i></td></tr><tr><td>v</td> <td><i>(POVRAY 3D rendering program file)</i></td></tr><tr><td>r</td> <td><i>(Rayshade 3D rendering program file)</i></td></tr><tr><td>h</td> <td><i>(Hewlett-Packard pen plotter (HPGL file format))</i></td></tr><tr><td>d</td> <td><i>(DEC ReGIS graphics (VT240 terminal))</i></td></tr><tr><td>e</td> <td><i>(Epson MX-80 dot-matrix printer)</i></td></tr><tr><td>c</td> <td><i>(Prowriter/Imagewriter dot-matrix printer)</i></td></tr><tr><td>t</td> <td><i>(Toshiba 24-pin dot-matrix printer)</i></td></tr><tr><td>o</td> <td><i>(Okidata dot-matrix printer)</i></td></tr><tr><td>b</td> <td><i>(Houston Instruments plotter)</i></td></tr><tr><td>u</td> <td><i>(other (one you have inserted code for))</i></td></tr></table></td>
+<td>l</td>
+</tr>
+
+<tr>
+<td>-previewer</td>
+<td>Previewing device</td>
+<td><table><tr><td>n</td> <td><i>(Will not be previewed)</i></td></tr><tr><td>I i</td> <td><i>(MSDOS graphics screen m:Macintosh screens)</i></td></tr><tr><td>x</td> <td><i>(X Windows display)</i></td></tr><tr><td>w</td> <td><i>(MS Windows display)</i></td></tr><tr><td>k</td> <td><i>(TeKtronix 4010 graphics terminal)</i></td></tr><tr><td>d</td> <td><i>(DEC ReGIS graphics (VT240 terminal))</i></td></tr><tr><td>o</td> <td><i>(Other (one you have inserted code for))</i></td></tr></table></td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>-lengths</td>
+<td>Use branch lengths from user trees</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-labelrotation</td>
+<td>Angle of labels (0 degrees is horizontal for a tree growing vertically)</td>
+<td>Number from 0.000 to 360.000</td>
+<td>90.0</td>
+</tr>
+
+<tr>
+<td>-[no]rescaled</td>
+<td>Automatically rescale branch lengths</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-bscale</td>
+<td>Centimeters per unit branch length</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-treedepth</td>
+<td>Depth of tree as fraction of its breadth</td>
+<td>Number from 0.100 to 100.000</td>
+<td>0.53</td>
+</tr>
+
+<tr>
+<td>-stemlength</td>
+<td>Stem length as fraction of tree depth</td>
+<td>Number from 0.010 to 100.000</td>
+<td>0.05</td>
+</tr>
+
+<tr>
+<td>-nodespace</td>
+<td>Character height as fraction of tip spacing</td>
+<td>Number from 0.100 to 100.000</td>
+<td>0.3333</td>
+</tr>
+
+<tr>
+<td>-nodeposition</td>
+<td>Position of interior nodes</td>
+<td><table><tr><td>i</td> <td><i>(Intermediate between their immediate descendants)</i></td></tr><tr><td>w</td> <td><i>(Weighted average of tip positions)</i></td></tr><tr><td>c</td> <td><i>(Centered among their ultimate descendants)</i></td></tr><tr><td>n</td> <td><i>(Innermost of immediate descendants)</i></td></tr><tr><td>v</td> <td><i>(So tree is v shaped)</i></td></tr></table></td>
+<td>c</td>
+</tr>
+
+<tr>
+<td>-xmargin</td>
+<td>Horizontal margin (cm)</td>
+<td>Number 0.100 or more</td>
+<td>1.65</td>
+</tr>
+
+<tr>
+<td>-ymargin</td>
+<td>Vertical margin (cm)</td>
+<td>Number 0.100 or more</td>
+<td>2.16</td>
+</tr>
+
+<tr>
+<td>-xmarginray</td>
+<td>Horizontal margin (pixels)</td>
+<td>Number 0.100 or more</td>
+<td>1.65</td>
+</tr>
+
+<tr>
+<td>-ymarginray</td>
+<td>Vertical margin (pixels)</td>
+<td>Number 0.100 or more</td>
+<td>2.16</td>
+</tr>
+
+<tr>
+<td>-paperx</td>
+<td>Paper width</td>
+<td>Any numeric value</td>
+<td>20.63750</td>
+</tr>
+
+<tr>
+<td>-papery</td>
+<td>Paper height</td>
+<td>Number 0.100 or more</td>
+<td>26.98750</td>
+</tr>
+
+<tr>
+<td>-pagesheight</td>
+<td>Number of trees across height of page</td>
+<td>Number 1.000 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-pageswidth</td>
+<td>Number of trees across width of page</td>
+<td>Number 1.000 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-hpmargin</td>
+<td>Horizontal overlap (cm)</td>
+<td>Number 0.001 or more</td>
+<td>0.41275</td>
+</tr>
+
+<tr>
+<td>-vpmargin</td>
+<td>Vertical overlap (cm)</td>
+<td>Number 0.001 or more</td>
+<td>0.53975</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-fontfile</td>
+<td>Fontfile</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+</table>

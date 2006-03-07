@@ -1,0 +1,17 @@
+<h3><A NAME="meme">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current meme release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="meme.html">meme</a></td>
+<td>
+Motif detection
+</td>
+</tr>
+</table>

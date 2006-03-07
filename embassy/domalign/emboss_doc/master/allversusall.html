@@ -1,0 +1,269 @@
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBASSY: ALLVERSUSALL documentation. </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<!--#include virtual="/apps/header1.inc" -->
+<H2> ALLVERSUSALL documentation
+<!--#include virtual="/apps/header2.inc" -->
+<!-- END OF HEADER -->
+
+
+
+
+
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<br><H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0     DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
+
+<!--#include file="inc/allversusall.ione" -->
+
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+ALLVERSUSALL reads a directory of files each containing a set of 2 or more sequences, 
+performs an all-versus-all global alignment on each set and writes a file of sequence 
+similarity values for each input file.  The output files have the same base name as the input files. The path and
+extension of the input and output files are specified by the user in the ACD file.
+
+
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+
+     Cannot use the test data files because they might be empty or need 
+     hand-editing 
+
+     Use "<b>ALLVERSUSALL</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+All common sequence format are supported.
+
+<!--#include file="inc/allversusall.input" -->
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+The output file contains 7 columns as follows: 
+<UL>
+<LI>(1) Sequence number (sequential order in input file) of first sequence of a pair.
+<LI>(2) Accesion number of first sequence of a pair. 
+<LI>(3) A ':' is always given.  
+<LI>(4) Sequence number of second sequence.
+<LI>(5) Accesion number of second sequence.
+<LI>(6) A ':' is always given.  
+<LI>(7) Sequence similarity value (2dp).
+</UL>
+
+<!--#include file="inc/allversusall.output" -->
+
+
+
+
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml" 
+-->
+
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+ALLVERSUSALL uses a residue substitution matrix.
+
+
+
+
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+
+<pre>
+<!--#include file="inc/allversusall.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/allversusall.itable" -->
+
+<H3> 6.2 EXAMPLE SESSION </H3>
+An example of interactive use of ALLVERSUSALL is shown below.
+
+<!--#include file="inc/allversusall.usage" -->
+<!--
+<p>
+Files of sequence sets were read from test_data/allversusall/in and files of sequence similarity values were written to test_data/allversusall/.  The log file test_data/allversusall/ALLVERSUSALL.log was written.  The file path and extension of the input and output files was specified in the ACD file. The default gap insertion, extension and residue substitution matrix were used. -->
+
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
+-->
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
+None.
+
+
+
+
+
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
+-->
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
+
+<!--#include file="inc/allversusall.history" -->
+<!--#include file="inc/allversusall.comment" -->
+
+
+
+<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b>Domain hits file </b></td>
+<td> DHF format (FASTA-like). </td>
+<td> Database hits (sequences) with domain classification information.  The hits are relatives to a SCOP or CATH family (or other node in the structural hierarchies) and are found from a search of a discriminating element (e.g. a protein signature, hidden Markov model, simple frequency matrix, Gribskov profile or Hennikoff profile) against a sequence database. </td>
+<td> <a href="seqsearch.html">SEQSEARCH</a> (hits retrieved by PSIBLAST). <a href="sigscan.html">SIGSCAN</a> (hits retrieved by sparse protein signature). <a href="libscan.html">LIBSCAN</a> (hits retrieved by various types of HMM and profile). </td>
+<td> N.A. </td>
+</tr>
+</table>
+
+
+
+
+
+
+
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
+-->
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+All-versus-all sequence comparisons are commonly required.  ALLVERSUSALL performs a full global pair-wise alignment for every permutation of pair of sequence in each input set of sequences.  It writes a file of sequence similarity values for each input set of sequences. 
+
+
+
+
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
+Standard N&W type alignment.
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+-->
+
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+
+
+<!--#include file="inc/allversusall.isee" -->
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
+None.
+
+
+
+
+
+
+<!-- AUTHORS -->
+<a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+
+
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
+-->
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
+Please cite the authors and EMBOSS.
+
+<!--#include file="inc/embossref.ihtml" -->
+
+<H3>14.1 Other useful references  </H3>
+
+<br>
+
+</BODY>
+</HTML>

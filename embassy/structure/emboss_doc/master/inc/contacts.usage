@@ -1,0 +1,21 @@
+<b>Here is a sample session with contacts</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>contacts </b>
+Generate intra-chain CON files from CCF files.
+Location of CCF files (clean coordinate files) (input) [./]: <b>../pdbplus-keep/</b>
+Name of data file with van der Waals radii [Evdw.dat]: <b></b>
+Threshold contact distance [1.0]: <b>1</b>
+Location of CON files (contact files) (output) [./]: <b></b>
+Name of log file for the build [contacts.log]: <b></b>
+
+1ii7
+1cs4
+2hhb
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

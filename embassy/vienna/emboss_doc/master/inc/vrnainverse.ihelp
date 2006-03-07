@@ -1,0 +1,44 @@
+   Standard (Mandatory) qualifiers:
+  [-structure]         infile     Structure/sequence file
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -paramfile          infile     Parameter file
+   -temperature        float      Temperature
+   -[no]gu             boolean    Allow GU pairs
+   -[no]closegu        boolean    Allow GU pairs at end of helices
+   -[no]lp             boolean    Allow lonely pairs
+   -[no]convert        boolean    Convert T to U
+   -nsbases            string     Non-standard bases
+   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
+   -energy             menu       Rarely used option to fold sequences from
+                                  the ABCD... alphabet
+   -dangles            menu       Method
+   -folding            menu       Method
+   -alphabet           string     Find sequences using only these bases
+   -final              float      Stopping value
+   -repeats            integer    No. of times to search for the same
+                                  structure
+   -showfails          boolean    Show information for unsuccessful searches
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

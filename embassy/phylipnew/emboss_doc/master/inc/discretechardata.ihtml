@@ -1,0 +1,83 @@
+<h3>(0,1) Discrete character data</h3>
+
+<p>
+These programs are intended for the use of morphological
+systematists who are dealing with discrete characters, or by molecular
+evolutionists dealing with presence-absence data on restriction
+sites. One of the programs (PARS) allows multistate characters, with
+up to 8 states, plus the unknown state symbol "?". For the others, the
+characters are assumed to be coded into a series of (0,1) two-state
+characters. For most of the programs there are two other states
+possible, "P", which stands for the state of Polymorphism for both
+states (0 and 1), and "?", which stands for the state of ignorance: it
+is the state "unknown", or "does not apply". The state "P" can also be
+denoted by "B", for "both".
+
+<p> There is a method invented by Sokal and Sneath (1963) for linear
+sequences of character states, and fully developed for branching
+sequences of character states by Kluge and Farris (1969) for recoding
+a multistate character into a series of two-state (0,1)
+characters. Suppose we had a character with four states whose
+character-state tree had the rooted form:
+
+<p>
+<pre>
+               1 ---> 0 ---> 2
+                      |
+                      |
+                      V
+                      3
+
+</pre>
+
+<p>
+so that 1 is the ancestral state and 0, 2 and 3 derived states. We
+can represent this as three two-state characters:
+
+
+<p>
+<pre>
+                Old State           New States
+                --- -----           --- ------
+                    0                  001
+                    1                  000
+                    2                  011
+                    3                  101
+
+</pre>
+
+<p>
+The three new states correspond to the three arrows in the above
+character state tree. Possession of one of the new states corresponds
+to whether or not the old state had that arrow in its ancestry. Thus
+the first new state corresponds to the bottommost arrow, which only
+state 3 has in its ancestry, the second state to the rightmost of the
+top arrows, and the third state to the leftmost top arrow. This coding
+will guarantee that the number of times that states arise on the tree
+(in programs MIX, MOVE, PENNY and BOOT) or the number of polymorphic
+states in a tree segment (in the Polymorphism option of DOLLOP,
+DOLMOVE, DOLPENNY and DOLBOOT) will correctly correspond to what would
+have been the case had our programs been able to take multistate
+characters into account. Although I have shown the above character
+state tree as rooted, the recoding method works equally well on
+unrooted multistate characters as long as the connections between the
+states are known and contain no loops.
+
+<p>
+However, in the default option of programs DOLLOP, DOLMOVE,
+DOLPENNY and DOLBOOT the multistate recoding does not necessarily work
+properly, as it may lead the program to reconstruct nonexistent state
+combinations such as 010. An example of this problem is given in my
+paper on alternative phylogenetic methods (1979).
+
+<p>
+If you have multistate character data where the states are connected
+in a branching "character state tree" you may want to do the binary
+recoding yourself. Thanks to Christopher Meacham, the package contains
+a program, FACTOR, which will do the recoding itself. For details see
+the documentation file for FACTOR.
+
+<p>
+We now also have the program PARS, which can do parsimony for
+unordered character states.
+

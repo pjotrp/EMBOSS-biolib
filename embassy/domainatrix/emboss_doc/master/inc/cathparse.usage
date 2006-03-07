@@ -1,0 +1,17 @@
+<b>Here is a sample session with cathparse</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>cathparse </b>
+Generates DCF file from raw CATH files.
+Name of raw CATH classification file (caths.list.vX.X) (input). [caths.list.v2.4]: <b>caths.list.small</b>
+Name of raw CATH classification file (domlist.vX.X) (input). [domlist.v2.4]: <b>domlist.small</b>
+Name of raw CATH classification file (CAT.names.all.vX.X) (input). [CAT.names.all.v2.4]: <b>CAT.names.all.small</b>
+Name of CATH DCF file (domain classification file) (output). [Ecath.dat]: <b></b>
+Name of CATHPARSE log file [cathparse.log]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

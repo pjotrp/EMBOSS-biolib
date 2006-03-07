@@ -1,0 +1,17 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: consense.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+(A,(B,(H,(D,(J,(((G,E),(F,I)),C))))));
+(A,(B,(D,((J,H),(((G,E),(F,I)),C)))));
+(A,(B,(D,(H,(J,(((G,E),(F,I)),C))))));
+(A,(B,(E,(G,((F,I),((J,(H,D)),C))))));
+(A,(B,(E,(G,((F,I),(((J,H),D),C))))));
+(A,(B,(E,((F,I),(G,((J,(H,D)),C))))));
+(A,(B,(E,((F,I),(G,(((J,H),D),C))))));
+(A,(B,(E,((G,(F,I)),((J,(H,D)),C)))));
+(A,(B,(E,((G,(F,I)),(((J,H),D),C)))));
+</pre>
+</td></tr></table><p>

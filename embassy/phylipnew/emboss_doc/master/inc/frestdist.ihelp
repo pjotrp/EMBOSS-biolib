@@ -1,0 +1,40 @@
+   Standard (Mandatory) qualifiers:
+  [-data]              discretestates File containing one or more sets of
+                                  restriction data
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -[no]restsites      boolean    Restriction sites (put N if you want
+                                  restriction fragments)
+   -neili              boolean    Use original Nei/Li model (default uses
+                                  modified Nei/Li model)
+*  -gamma              boolean    Gama distributed rates among sites
+*  -gammacoefficient   float      Coefficient of variation of substitution
+                                  rate among sites
+   -ttratio            float      Transition/transversion ratio
+   -sitelength         integer    Site length
+   -lower              boolean    Lower triangular distance matrix
+   -printdata          boolean    Print data at start of run
+   -[no]progress       boolean    Print indications of progress of run
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

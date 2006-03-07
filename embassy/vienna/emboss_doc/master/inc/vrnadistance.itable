@@ -1,0 +1,66 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-structure]<br>(Parameter 1)</td>
+<td>Structures file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.vrnadistance</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-distance</td>
+<td>Distance types to calculate</td>
+<td><table><tr><td>f</td> <td><i>(Full (tree))</i></td></tr><tr><td>h</td> <td><i>(HIT (tree))</i></td></tr><tr><td>w</td> <td><i>(Weighted coarse (tree))</i></td></tr><tr><td>c</td> <td><i>(Coarse (tree))</i></td></tr><tr><td>F</td> <td><i>(Full (string))</i></td></tr><tr><td>H</td> <td><i>(HIT (string))</i></td></tr><tr><td>W</td> <td><i>(Weighted coarse (string))</i></td></tr><tr><td>C</td> <td><i>(Coarse (string))</i></td></tr><tr><td>P</td> <td><i>(Base pair distance)</i></td></tr></table></td>
+<td>f</td>
+</tr>
+
+<tr>
+<td>-compare</td>
+<td>Distance types to calculate</td>
+<td><table><tr><td>p</td> <td><i>(Pairwise)</i></td></tr><tr><td>m</td> <td><i>(Distance matrix between all structures)</i></td></tr><tr><td>f</td> <td><i>(Compare all structures to the first one)</i></td></tr><tr><td>c</td> <td><i>(Compare continuously)</i></td></tr></table></td>
+<td>p</td>
+</tr>
+
+<tr>
+<td>-schapiro</td>
+<td>Use cost matrix for comparing coarse structures</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-doalignment</td>
+<td>Alignment showing matching substructures</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+</table>

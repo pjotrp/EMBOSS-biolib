@@ -1,0 +1,45 @@
+   Standard (Mandatory) qualifiers:
+  [-infile]            discretestates File containing one or more data sets
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -weights            properties Weights file
+   -ancfile            properties Ancestral states file
+   -thresh             toggle     Use threshold parsimony
+*  -threshold          float      Threshold value
+   -howmany            integer    How many groups of trees
+   -howoften           integer    How often to report, in trees
+   -[no]simple         boolean    Branch and bound is simple
+   -method             menu       Parsimony method
+   -[no]trout          toggle     Write out trees to tree file
+*  -outtreefile        outfile    Tree file name
+   -printdata          boolean    Print data at start of run
+   -[no]progress       boolean    Print indications of progress of run
+   -[no]treeprint      boolean    Print out tree
+   -ancseq             boolean    Print states at all nodes of tree
+   -stepbox            boolean    Print out steps in each character
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

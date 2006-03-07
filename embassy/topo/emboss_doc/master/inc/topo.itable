@@ -1,0 +1,136 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>Protein sequence filename and optional format, or reference (input USA)</td>
+<td>Readable sequence</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-sections</td>
+<td>Examples of region specifications are:
+24-45, 56-78
+1:45, 67=99;765..888
+1,5,8,10,23,45,57,99</td>
+<td>Sequence range</td>
+<td><i>full sequence</i></td>
+</tr>
+
+<tr>
+<td>-[no]membrane</td>
+<td>First membrane from the outside</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-signature</td>
+<td>Are there any signature areas to be marked</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-sigrange</td>
+<td>Examples of ranges specifications are:
+10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF
+1,5,HG,8,10,HY,23,45,SR,57,99,UG</td>
+<td>Sequence range</td>
+<td><i>full sequence</i></td>
+</tr>
+
+<tr>
+<td>-graph</td>
+<td>Graph type</td>
+<td>EMBOSS has a list of known devices, including ps, hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm, png</td>
+<td><i>EMBOSS_GRAPHICS</i> value, or x11</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-cyssymbol</td>
+<td>Code representing shape and colour for cys
+i.e. SR square red, HY hexagon yellow
+CF circle NOfill, UG up arrow green</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-glysymbol</td>
+<td>Symbol to display N-glycosylation sites outside of membrane see cyssymbol for examples</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-acidicaa</td>
+<td>Symbol to display acidic amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-basicaa</td>
+<td>Symbol to display basic amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-amineaa</td>
+<td>Symbol to display amine amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-ohaa</td>
+<td>Symbol to display OH- amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-araa</td>
+<td>Symbol to display aromatic amino acids</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-proline</td>
+<td>Symbol to display prolines</td>
+<td><table><tr><td>N</td> <td><i>(None)</i></td></tr><tr><td>CF</td> <td><i>(circle)</i></td></tr><tr><td>SF</td> <td><i>(square)</i></td></tr><tr><td>HF</td> <td><i>(hexagon)</i></td></tr><tr><td>UF</td> <td><i>(up arrpw)</i></td></tr><tr><td>DF</td> <td><i>(down arrow)</i></td></tr><tr><td>C</td> <td><i>(black circle)</i></td></tr><tr><td>CG</td> <td><i>(green circle)</i></td></tr><tr><td>CR</td> <td><i>(red circle)</i></td></tr><tr><td>CB</td> <td><i>(blue circle)</i></td></tr><tr><td>CA</td> <td><i>(aqua circle)</i></td></tr><tr><td>CM</td> <td><i>(magenta circle)</i></td></tr><tr><td>CY</td> <td><i>(yellow circle)</i></td></tr><tr><td>S</td> <td><i>(black square)</i></td></tr><tr><td>SG</td> <td><i>(green square)</i></td></tr><tr><td>SR</td> <td><i>(red square)</i></td></tr><tr><td>SB</td> <td><i>(blue square)</i></td></tr><tr><td>SA</td> <td><i>(aqua square)</i></td></tr><tr><td>SM</td> <td><i>(magenta square)</i></td></tr><tr><td>SY</td> <td><i>(yellow square)</i></td></tr><tr><td>H</td> <td><i>(black hexagon)</i></td></tr><tr><td>HG</td> <td><i>(green hexagon)</i></td></tr><tr><td>HR</td> <td><i>(red hexagon)</i></td></tr><tr><td>HB</td> <td><i>(blue hexagon)</i></td></tr><tr><td>HA</td> <td><i>(aqua hexagon)</i></td></tr><tr><td>HM</td> <td><i>(magenta hexagon)</i></td></tr><tr><td>HY</td> <td><i>(yellow hexagon)</i></td></tr><tr><td>U</td> <td><i>(black up arrow)</i></td></tr><tr><td>UG</td> <td><i>(green up arrow)</i></td></tr><tr><td>UR</td> <td><i>(red up arrow)</i></td></tr><tr><td>UB</td> <td><i>(blue up arrow)</i></td></tr><tr><td>UA</td> <td><i>(aqua up arrow)</i></td></tr><tr><td>UM</td> <td><i>(magenta up arrow)</i></td></tr><tr><td>UY</td> <td><i>(yellow up arrow)</i></td></tr><tr><td>D</td> <td><i>(black down arrow)</i></td></tr><tr><td>DG</td> <td><i>(green down arrow)</i></td></tr><tr><td>DR</td> <td><i>(red down arrow)</i></td></tr><tr><td>DB</td> <td><i>(blue down arrow)</i></td></tr><tr><td>DA</td> <td><i>(aqua down arrow)</i></td></tr><tr><td>DM</td> <td><i>(magenta down arrow)</i></td></tr><tr><td>DY</td> <td><i>(yellow down arrow)</i></td></tr></table></td>
+<td>CF</td>
+</tr>
+
+<tr>
+<td>-draft</td>
+<td>Is this a draft plot</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

@@ -1,0 +1,44 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: pars.fpars</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Discrete character parsimony algorithm, version 3.6b
+
+
+One most parsimonious tree found:
+
+
+                            +Epsilon   
+           +----------------3  
+  +--------2                +-------------------------Delta     
+  |        |  
+  |        +Gamma     
+  |  
+  1----------------Beta      
+  |  
+  +Alpha     
+
+
+requires a total of      8.000
+
+  between      and       length
+  -------      ---       ------
+     1           2         1.00
+     2           3         2.00
+     3      Epsilon        0.00
+     3      Delta          3.00
+     2      Gamma          0.00
+     1      Beta           2.00
+     1      Alpha          0.00
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: pars.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(((Epsilon:0.00,Delta:3.00):2.00,Gamma:0.00):1.00,Beta:2.00,Alpha:0.00);
+</pre>
+</td></tr></table><p>

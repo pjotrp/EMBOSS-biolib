@@ -1,0 +1,87 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-intreefile]<br>(Parameter 1)</td>
+<td>Tree file</td>
+<td>Phylogenetic tree</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-bintreefile]<br>(Parameter 2)</td>
+<td>Second input tree file</td>
+<td>Phylogenetic tree</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.ftreedistpair</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-dtype</td>
+<td>Distance type</td>
+<td><table><tr><td>s</td> <td><i>(Symmetric difference)</i></td></tr><tr><td>b</td> <td><i>(Branch score distance)</i></td></tr></table></td>
+<td>b</td>
+</tr>
+
+<tr>
+<td>-pairing</td>
+<td>Tree pairing method</td>
+<td><table><tr><td>c</td> <td><i>(Distances between corresponding pairs each tree file)</i></td></tr><tr><td>l</td> <td><i>(Distances between all possible pairs in each tree file)</i></td></tr></table></td>
+<td>l</td>
+</tr>
+
+<tr>
+<td>-style</td>
+<td>Distances output option</td>
+<td><table><tr><td>f</td> <td><i>(Full_matrix)</i></td></tr><tr><td>v</td> <td><i>(One pair per line, verbose)</i></td></tr><tr><td>s</td> <td><i>(One pair per line, sparese)</i></td></tr></table></td>
+<td>v</td>
+</tr>
+
+<tr>
+<td>-noroot</td>
+<td>Trees to be treated as rooted</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-outgrno</td>
+<td>Species number to use as outgroup</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

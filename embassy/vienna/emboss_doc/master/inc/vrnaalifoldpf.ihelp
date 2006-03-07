@@ -1,0 +1,70 @@
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) nucleotide sequence set filename
+                                  and optional format, or reference (input
+                                  USA)
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -constraintfile     infile     Constraint file
+   -paramfile          infile     Parameter file
+   -temperature        float      Temperature
+   -[no]gu             boolean    Allow GU pairs
+   -[no]closegu        boolean    Allow GU pairs at end of helices
+   -[no]lp             boolean    Allow lonely pairs
+   -[no]convert        boolean    Convert T to U
+   -nsbases            string     Non-standard bases
+   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
+   -energy             menu       Rarely used option to fold sequences from
+                                  the ABCD... alphabet
+   -scale              float      Estimate of ensemble free energy
+   -dangles            menu       Method
+   -covariance         float      Weight for covariance
+   -nspenalty          float      Non-compatible sequence penalty
+   -endgaps            boolean    Mark end gaps
+   -most               boolean    Use most informative sequence algorithm
+   -dotoutfile         outfile    Output file name
+   -ssoutfile          outfile    Output file name
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-dotoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-ssoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

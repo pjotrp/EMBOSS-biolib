@@ -1,0 +1,14 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: gendist.fgendist</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5
+European    0.000000  0.078002  0.080749  0.066805  0.103014
+African     0.078002  0.000000  0.234698  0.104975  0.227281
+Chinese     0.080749  0.234698  0.000000  0.053879  0.063275
+American    0.066805  0.104975  0.053879  0.000000  0.134756
+Australian  0.103014  0.227281  0.063275  0.134756  0.000000
+</pre>
+</td></tr></table><p>

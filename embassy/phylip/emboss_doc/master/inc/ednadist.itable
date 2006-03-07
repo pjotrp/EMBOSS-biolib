@@ -1,0 +1,108 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>File containing a sequence alignment</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-matrix</td>
+<td>Form</td>
+<td><table><tr><td>S</td> <td><i>(Square)</i></td></tr><tr><td>L</td> <td><i>(Lower-triangular)</i></td></tr></table></td>
+<td>S</td>
+</tr>
+
+<tr>
+<td>-method</td>
+<td>Choose the method to use</td>
+<td><table><tr><td>Kimura</td> <td><i>(Kimura 2-parameter distance)</i></td></tr><tr><td>JinNei</td> <td><i>(Jin and Nei distance)</i></td></tr><tr><td>ML</td> <td><i>(Maximum Likelihood distance)</i></td></tr><tr><td>Jukes</td> <td><i>(Jukes-Cantor distance)</i></td></tr></table></td>
+<td>Kimura</td>
+</tr>
+
+<tr>
+<td>-ttratio</td>
+<td>Transition/transversion ratio</td>
+<td>Number up to 100.000</td>
+<td>2.0</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>ednadist.outfile</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-categories</td>
+<td>Number of categories of substitution rates</td>
+<td>Any integer value</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-[no]basefrequency</td>
+<td>Use empirical base frequencies</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-freqa</td>
+<td>Frequency for A</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.25</td>
+</tr>
+
+<tr>
+<td>-freqc</td>
+<td>Frequency for C</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.25</td>
+</tr>
+
+<tr>
+<td>-freqg</td>
+<td>Frequency for G</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.25</td>
+</tr>
+
+<tr>
+<td>-freqt</td>
+<td>Frequency for T/U</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.25</td>
+</tr>
+
+<tr>
+<td>-printinitial</td>
+<td>Print out the data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

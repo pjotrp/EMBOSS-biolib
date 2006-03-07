@@ -1,0 +1,23 @@
+<b>Here is a sample session with domainsse</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>domainsse </b>
+Add secondary structure records to a DCF file.
+Name of DCF file (domain classification file) (input): <b>../scopparse-keep/all.scop</b>
+Location of domain CCF file (clean coordinate file) (input) [./]: <b>../domainer-keep</b>
+Name of DCF file (domain classification file) (output) [all.domainsse]: <b>domainsse.out</b>
+Name of DOMAINSSE log file. [domainsse.log]: <b>domainsse.log</b>
+
+Processing D1CS4A_
+Processing D1II7A_
+
+Done!
+ output file name: domainsse.out
+ log file name: domainsse.log
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

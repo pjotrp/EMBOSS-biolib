@@ -1,0 +1,50 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: protpars.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+     5    10
+Alpha     ABCDEFGHIK
+Beta      AB--EFGHIK
+Gamma     ?BCDSFG*??
+Delta     CIKDEFGHIK
+Epsilon   DIKDEFGHIK
+</pre>
+</td></tr></table><p>
+
+<a name="input.3"></a>
+<h3>Input files for usage example 3</h3>
+<p><h3>File: protpars2.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+    5    10
+Alpha     AABBCCCFHK 
+Beta      AABB---FHK 
+Gamma     ??BBCCCF*? 
+Delta     CCIIKKKFHK 
+Epsilon   DDIIKKKFHK 
+    5    10
+Alpha     AADDEGGIIK 
+Beta      AA--EGGIIK 
+Gamma     ??DDSGG??? 
+Delta     CCDDEGGIIK 
+Epsilon   DDDDEGGIIK 
+    5    10
+Alpha     AACDDDEGHI 
+Beta      AA----EGHI 
+Gamma     ??CDDDSG*? 
+Delta     CCKDDDEGHI 
+Epsilon   DDKDDDEGHI 
+</pre>
+</td></tr></table><p>
+
+<a name="input.4"></a>
+<h3>Input files for usage example 4</h3>
+<p><h3>File: protparswts.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+1111100000
+0000011111
+</pre>
+</td></tr></table><p>

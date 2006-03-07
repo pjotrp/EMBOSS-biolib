@@ -1,0 +1,15 @@
+<b>Here is a sample session with seqwords</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>seqwords </b>
+Generates DHF files from keyword search of UniProt.
+Name of keywords file (input): <b>seqwords.terms</b>
+Name of sequence database (input): <b>seqwords.seq</b>
+Name of DHF file (domain hits file) (output) [test.hits]: <b>seqwords.dhf</b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

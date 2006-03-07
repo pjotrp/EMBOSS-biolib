@@ -1,0 +1,53 @@
+<h3><A NAME="domainatrix">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current domainatrix release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="cathparse.html">cathparse</a></td>
+<td>
+Generates DCF file from raw CATH files
+</td>
+</tr>
+<tr>
+<td><a href="domainnr.html">domainnr</a></td>
+<td>
+Removes redundant domains from a DCF file
+</td>
+</tr>
+<tr>
+<td><a href="domainreso.html">domainreso</a></td>
+<td>
+Remove low resolution domains from a DCF file
+</td>
+</tr>
+<tr>
+<td><a href="domainseqs.html">domainseqs</a></td>
+<td>
+Adds sequence records to a DCF file
+</td>
+</tr>
+<tr>
+<td><a href="domainsse.html">domainsse</a></td>
+<td>
+Add secondary structure records to a DCF file
+</td>
+</tr>
+<tr>
+<td><a href="scopparse.html">scopparse</a></td>
+<td>
+Generate DCF file from raw SCOP files
+</td>
+</tr>
+<tr>
+<td><a href="ssematch.html">ssematch</a></td>
+<td>
+Search a DCF file for secondary structure matches
+</td>
+</tr>
+</table>

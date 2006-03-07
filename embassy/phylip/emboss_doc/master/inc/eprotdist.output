@@ -1,0 +1,14 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eprotdist.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5
+Alpha          0.00000  0.47285  0.88304  1.29841  2.12269
+Beta           0.47285  0.00000  0.45192  1.34185  0.84009
+Gamma          0.88304  0.45192  0.00000  1.30693  1.21582
+Delta          1.29841  1.34185  1.30693  0.00000  0.27536
+Epsilon        2.12269  0.84009  1.21582  0.27536  0.00000
+</pre>
+</td></tr></table><p>

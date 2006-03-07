@@ -1,0 +1,39 @@
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/garnier.html">garnier</a></td>
+<td>Predicts protein secondary structure</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/helixturnhelix.html">helixturnhelix</a></td>
+<td>Report nucleic acid binding motifs</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/hmoment.html">hmoment</a></td>
+<td>Hydrophobic moment calculation</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepcoil.html">pepcoil</a></td>
+<td>Predicts coiled coil regions</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepnet.html">pepnet</a></td>
+<td>Displays proteins as a helical net</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepwheel.html">pepwheel</a></td>
+<td>Shows protein sequences as helices</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/tmap.html">tmap</a></td>
+<td>Displays membrane spanning regions</td>
+</tr>
+
+</table>

@@ -1,0 +1,27 @@
+<b>Here is a sample session with eseqboot</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eseqboot </b>
+Bootstrapped sequences algorithm
+Input file: <b>seqboot.dat</b>
+Random number seed (must be odd) [3]: <b></b>
+Method
+       Seq : Molecular sequences
+       Mor : Discrete Morphology
+       Res : Restriction Sites
+       Gen : Gene Frequencies
+Choose the method [Seq]: <b></b>
+test
+      Boot : Bootstrap
+      Jack : Delete-half Jackknife
+      Perm : Permute species for each character
+Choose test [Boot]: <b></b>
+How many replicates [100]: <b></b>
+Output file [eseqboot.outfile]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

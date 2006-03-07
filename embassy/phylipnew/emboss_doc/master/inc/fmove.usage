@@ -1,0 +1,40 @@
+<b>Here is a sample session with fmove</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fmove </b>
+Interactive mixed method parsimony
+Input file: <b>move.dat</b>
+Input tree file: <b></b>
+NEXT? (R # + - S . T U W O F H J K L C ? X Q) (? for Help): <b>Q</b>
+Do you want to write out the tree to a file? (Y or N): <b>Y</b>
+
+ 5 species,   6 characters
+
+Wagner parsimony method
+
+
+Computing steps needed for compatibility in characters...
+
+
+(unrooted)                    8.0 Steps             4 chars compatible
+                            
+  ,-----------5:Epsilon   
+--9  
+  !  ,--------4:Delta     
+  `--8  
+     !  ,-----3:Gamma     
+     `--7  
+        !  ,--2:Beta      
+        `--6  
+           `--1:Alpha     
+
+
+Tree written to file "move.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

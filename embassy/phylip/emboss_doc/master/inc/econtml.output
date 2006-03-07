@@ -1,0 +1,46 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: econtml.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+   5 Populations,   10 Loci
+
+  +----------------------------------African   
+  !  
+  !              +--------American  
+--1--------------2  
+  !              !                    +-----------------------Australian
+  !              +--------------------3  
+  !                                   +Chinese   
+  !  
+  +--European  
+
+
+remember: this is an unrooted tree!
+
+Ln Likelihood =    33.29060
+
+examined   15 trees
+
+Between     And             Length      Approx. Confidence Limits
+-------     ---             ------      ------- ---------- ------
+  1       African           0.08464   (     0.02351,     0.17917)
+  1          2              0.03569   (    -0.00262,     0.09493)
+  2       American          0.02094   (    -0.00904,     0.06731)
+  2          3              0.05098   (     0.00555,     0.12124)
+  3       Australian        0.05959   (     0.01775,     0.12430)
+  3       Chinese           0.00221   (    -0.02034,     0.03710)
+  1       European          0.00624   (    -0.01948,     0.04601)
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: econtml.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(African:0.08464,(American:0.02094,(Australian:0.05959,Chinese:0.00221):0.05098):0.03569,
+European:0.00624);
+</pre>
+</td></tr></table><p>

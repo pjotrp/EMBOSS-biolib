@@ -1,0 +1,241 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>File containing one or more sequence alignments</td>
+<td>Readable sets of sequences</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-intreefile]<br>(Parameter 2)</td>
+<td>(no help text) tree value</td>
+<td>Phylogenetic tree</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 3)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.fproml</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-ncategories</td>
+<td>Number of substitution rate categories</td>
+<td>Integer from 1 to 9</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-rate</td>
+<td>Rate for each category</td>
+<td>List of floating point numbers</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-categories</td>
+<td>File of substitution rate categories</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-weights</td>
+<td>Weights file</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-lengths</td>
+<td>Use branch lengths from user trees</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-model</td>
+<td>Probability model for amino acid change</td>
+<td><table><tr><td>j</td> <td><i>(Jones-Taylor-Thornton)</i></td></tr><tr><td>h</td> <td><i>(Henikoff/Tillier PMBs)</i></td></tr><tr><td>d</td> <td><i>(Dayhoff PAM)</i></td></tr></table></td>
+<td>Jones-Taylor-Thornton</td>
+</tr>
+
+<tr>
+<td>-gamma</td>
+<td>Rate variation among sites</td>
+<td><table><tr><td>g</td> <td><i>(Gamma distributed rates)</i></td></tr><tr><td>i</td> <td><i>(Gamma+invariant sites)</i></td></tr><tr><td>h</td> <td><i>(User defined HMM of rates)</i></td></tr><tr><td>n</td> <td><i>(Constant rate)</i></td></tr></table></td>
+<td>Constant rate</td>
+</tr>
+
+<tr>
+<td>-gammacoefficient</td>
+<td>Coefficient of variation of substitution rate among sites</td>
+<td>Number 0.001 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-ngammacat</td>
+<td>Number of categories (1-9)</td>
+<td>Integer from 1 to 9</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-invarcoefficient</td>
+<td>Coefficient of variation of substitution rate among sites</td>
+<td>Number 0.001 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-ninvarcat</td>
+<td>Number of categories (1-9) including one for invariant sites</td>
+<td>Integer from 1 to 9</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-invarfrac</td>
+<td>Fraction of invariant sites</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.0</td>
+</tr>
+
+<tr>
+<td>-nhmmcategories</td>
+<td>Number of HMM rate categories</td>
+<td>Integer from 1 to 9</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-hmmrates</td>
+<td>HMM category rates</td>
+<td>List of floating point numbers</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-hmmprobabilities</td>
+<td>Probability for each HMM category</td>
+<td>List of floating point numbers</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-adjsite</td>
+<td>Rates at adjacent sites correlated</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-lambda</td>
+<td>Mean block length of sites having the same rate</td>
+<td>Number 1.000 or more</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-njumble</td>
+<td>Number of times to randomise, choose 0 if you don't want to randomise</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-seed</td>
+<td>Random number seed between 1 and 32767 (must be odd)</td>
+<td>Integer from 1 to 32767</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-global</td>
+<td>Global rearrangements</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-outgrno</td>
+<td>Species number to use as outgroup</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-[no]rough</td>
+<td>Speedier but rougher analysis</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]trout</td>
+<td>Write out trees to tree file</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-outtreefile</td>
+<td>Tree file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-printdata</td>
+<td>Print data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]treeprint</td>
+<td>Print out tree</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-hypstate</td>
+<td>Reconstruct hypothetical sequence</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

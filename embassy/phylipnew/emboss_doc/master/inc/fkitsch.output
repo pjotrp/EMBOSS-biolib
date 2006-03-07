@@ -1,0 +1,65 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: kitsch.fkitsch</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+   7 Populations
+
+Fitch-Margoliash method with contemporary tips, version 3.6b
+
+                  __ __             2
+                  \  \   (Obs - Exp)
+Sum of squares =  /_ /_  ------------
+                                2
+                   i  j      Obs
+
+negative branch lengths not allowed
+
+
+                                           +-------Human     
+                                         +-6 
+                                    +----5 +-------Chimp     
+                                    !    ! 
+                                +---4    +---------Gorilla   
+                                !   ! 
+       +------------------------3   +--------------Orang     
+       !                        ! 
+  +----2                        +------------------Gibbon    
+  !    ! 
+--1    +-------------------------------------------Mouse     
+  ! 
+  +------------------------------------------------Bovine    
+
+
+Sum of squares =      0.107
+
+Average percent standard deviation =   5.16213
+
+From     To            Length          Height
+----     --            ------          ------
+
+   6   Human           0.13460         0.81285
+   5      6            0.02836         0.67825
+   6   Chimp           0.13460         0.81285
+   4      5            0.07638         0.64990
+   5   Gorilla         0.16296         0.81285
+   3      4            0.06639         0.57352
+   4   Orang           0.23933         0.81285
+   2      3            0.42923         0.50713
+   3   Gibbon          0.30572         0.81285
+   1      2            0.07790         0.07790
+   2   Mouse           0.73495         0.81285
+   1   Bovine          0.81285         0.81285
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: kitsch.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+((((((Human:0.13460,Chimp:0.13460):0.02836,Gorilla:0.16296):0.07638,
+Orang:0.23933):0.06639,Gibbon:0.30572):0.42923,Mouse:0.73495):0.07790,
+Bovine:0.81285);
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,168 @@
+
+                               vrnadistance 
+
+
+
+Function
+
+   RNA distances
+
+Description
+
+   **************** EDIT HERE ****************
+
+Algorithm
+
+   **************** EDIT HERE ****************
+
+Usage
+
+   [an error has occurred processing this directive]
+
+Command line arguments
+
+   Standard (Mandatory) qualifiers:
+  [-structure]         infile     Structures file
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -distance           menu       Distance types to calculate
+   -compare            menu       Distance types to calculate
+   -schapiro           boolean    Use cost matrix for comparing coarse
+                                  structures
+   -doalignment        boolean    Alignment showing matching substructures
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+   Standard (Mandatory) qualifiers Allowed values Default
+   [-structure]
+   (Parameter 1) Structures file Input file Required
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.vrnadistance
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   -distance Distance types to calculate
+   f (Full (tree))
+   h (HIT (tree))
+   w (Weighted coarse (tree))
+   c (Coarse (tree))
+   F (Full (string))
+   H (HIT (string))
+   W (Weighted coarse (string))
+   C (Coarse (string))
+   P (Base pair distance)
+   f
+   -compare Distance types to calculate
+   p (Pairwise)
+   m (Distance matrix between all structures)
+   f (Compare all structures to the first one)
+   c (Compare continuously)
+   p
+   -schapiro Use cost matrix for comparing coarse structures Boolean
+   value Yes/No No
+   -doalignment Alignment showing matching substructures Boolean value
+   Yes/No No
+
+Input file format
+
+   vrnadistance reads any normal sequence USAs.
+
+   [an error has occurred processing this directive]
+
+Output file format
+
+   vrnadistance outputs a graph to the specified graphics device. outputs
+   a report format file. The default format is ...
+
+   [an error has occurred processing this directive]
+
+Data files
+
+   **************** EDIT HERE ****************
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+    Program name                       Description
+   vrnaalifold    RNA alignment folding
+   vrnaalifoldpf  RNA alignment folding with partition
+   vrnacofold     RNA cofolding
+   vrnacofoldconc RNA cofolding with concentrations
+   vrnacofoldpf   RNA cofolding with partitioning
+   vrnaduplex     RNA duplex calculation
+   vrnaeval       RNA eval
+   vrnaevalpair   RNA eval with cofold
+   vrnafold       Calculate secondary structures of RNAs
+   vrnafoldpf     Secondary structures of RNAs with partition
+   vrnaheat       RNA melting
+   vrnainverse    RNA sequences matching a structure
+   vrnalfold      Calculate locally stable secondary structures of RNAs
+   vrnaplot       Plot vrnafold output
+   vrnasubopt     Calculate RNA suboptimals
+
+Author(s)
+
+   This program is an EMBOSS conversion of a program written by Ivo
+   Hofacker as part of his VIENNA package.
+
+   Although we take every care to ensure that the results of the EMBOSS
+   version are identical to those from the original package, we recommend
+   that you check your inputs give the same results in both versions
+   before publication.
+
+   Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+   not to the original author.
+
+History
+
+   Converted (October 2005) by Alan Bleasby
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments

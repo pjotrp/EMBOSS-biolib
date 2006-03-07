@@ -1,0 +1,21 @@
+<b>Here is a sample session with ednamlk</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ednamlk -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6" -lambda 1.5 </b>
+Phylogenies from nucleic acid Maximum Likelihood with clock
+Input (aligned) sequence set: <b>dnaml.dat</b>
+Search for best tree [Y]: <b></b>
+Global rearrangements [N]: <b></b>
+Randomize input order of species [N]: <b></b>
+Use empirical base frequencies [Y]: <b></b>
+Use Default Mean block length of sites [N]: <b></b>
+Output file [ednamlk.outfile]: <b></b>
+Create a tree file [Y]: <b></b>
+Tree file name [ednamlk.treefile]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

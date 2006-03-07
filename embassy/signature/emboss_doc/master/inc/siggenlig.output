@@ -1,0 +1,773 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: 101.1.F.#.1ii7.d1ii7a_.sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
+XX
+DE    2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+IS   SN 1; NS 2
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   2
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   H ; 1
+XX
+GA   9 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   38 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: 101.2.F.#.1cs4.d1cs4a_.sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG 101;
+XX
+DE    2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+IS   SN 2; NS 2
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   6
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   1 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   3 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   T ; 1
+XX
+GA   0 ; 1
+XX
+NN   [4]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   36 ; 1
+XX
+NN   [5]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   G ; 1
+XX
+GA   0 ; 1
+XX
+NN   [6]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   0 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: FOK.1.F.#.1cs4.d1cs4a_.sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG FOK;
+XX
+DE    FORSKOLIN
+XX
+IS   SN 1; NS 1
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   1
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   43 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: HEM.1.F.#.2hhb...sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 2hhb; DOM .; LIG HEM;
+XX
+DE    PROTOPORPHYRIN IX CONTAINING FE
+XX
+IS   SN 1; NS 4
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   17
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   Y ; 1
+XX
+GA   41 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   H ; 1
+XX
+GA   1 ; 1
+XX
+NN   [4]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [5]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+XX
+GA   0 ; 1
+XX
+NN   [12]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   3 ; 1
+XX
+NN   [13]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   V ; 1
+XX
+GA   1 ; 1
+XX
+NN   [14]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   N ; 1
+XX
+GA   3 ; 1
+XX
+NN   [15]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [16]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   2 ; 1
+XX
+NN   [17]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   34 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: HEM.2.F.#.2hhb...sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 2hhb; DOM .; LIG HEM;
+XX
+DE    PROTOPORPHYRIN IX CONTAINING FE
+XX
+IS   SN 2; NS 4
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   17
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   30 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   9 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [4]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   H ; 1
+XX
+GA   20 ; 1
+XX
+NN   [5]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+XX
+GA   0 ; 1
+XX
+NN   [12]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   3 ; 1
+XX
+NN   [13]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   V ; 1
+XX
+GA   1 ; 1
+XX
+NN   [14]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   N ; 1
+XX
+GA   3 ; 1
+XX
+NN   [15]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [16]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   2 ; 1
+XX
+NN   [17]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   34 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: HEM.3.F.#.2hhb...sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 2hhb; DOM .; LIG HEM;
+XX
+DE    PROTOPORPHYRIN IX CONTAINING FE
+XX
+IS   SN 3; NS 4
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   19
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   M ; 1
+XX
+GA   31 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   T ; 1
+XX
+GA   6 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   Y ; 1
+XX
+GA   2 ; 1
+XX
+NN   [4]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [5]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+XX
+GA   0 ; 1
+XX
+NN   [14]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   3 ; 1
+XX
+NN   [15]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   V ; 1
+XX
+GA   1 ; 1
+XX
+NN   [16]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   N ; 1
+XX
+GA   3 ; 1
+XX
+NN   [17]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [18]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   2 ; 1
+XX
+NN   [19]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   34 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: HEM.4.F.#.2hhb...sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 2hhb; DOM .; LIG HEM;
+XX
+DE    PROTOPORPHYRIN IX CONTAINING FE
+XX
+IS   SN 4; NS 4
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   15
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   30 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   9 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [4]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   H ; 1
+XX
+GA   20 ; 1
+XX
+NN   [5]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+XX
+GA   0 ; 1
+XX
+NN   [10]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   3 ; 1
+XX
+NN   [11]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   V ; 1
+XX
+GA   1 ; 1
+XX
+NN   [12]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   N ; 1
+XX
+GA   3 ; 1
+XX
+NN   [13]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [14]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   2 ; 1
+XX
+NN   [15]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   34 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: MG.1.F.#.1cs4.d1cs4a_.sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG MG;
+XX
+DE    MAGNESIUM ION
+XX
+IS   SN 1; NS 1
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   4
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   1 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   I ; 1
+XX
+GA   0 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   2 ; 1
+XX
+NN   [4]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   39 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: MN.1.F.#.1ii7.d1ii7a_.sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG MN;
+XX
+DE    MANGANESE (II) ION
+XX
+IS   SN 1; NS 1
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   3
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   7 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   H ; 1
+XX
+GA   1 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   38 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: PO4.1.F.#.2hhb...sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 2hhb; DOM .; LIG PO4;
+XX
+DE    PHOSPHATE ION
+XX
+IS   SN 1; NS 1
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   2
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   V ; 1
+XX
+GA   0 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   L ; 1
+XX
+GA   79 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: POP.1.F.#.1cs4.d1cs4a_.sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG POP;
+XX
+DE    PYROPHOSPHATE 2-
+XX
+IS   SN 1; NS 1
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   6
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   1 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   I ; 1
+XX
+GA   0 ; 1
+XX
+NN   [3]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   E ; 1
+XX
+GA   0 ; 1
+XX
+NN   [4]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   G ; 1
+XX
+GA   0 ; 1
+XX
+NN   [5]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   F ; 1
+XX
+GA   0 ; 1
+XX
+NN   [6]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   T ; 1
+XX
+GA   0 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: siggenlig.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+</pre>
+</td></tr></table><p>

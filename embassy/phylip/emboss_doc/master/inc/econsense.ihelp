@@ -1,0 +1,38 @@
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-infile]            infile     New Hampshire standard form tree file
+*  -og                 toggle     Outgroup root
+*  -outgnum            integer    Number of the outgroup
+  [-outfile]           outfile    Output file name
+  [-[no]trout]         boolean    Create a tree file
+  [-treefile]          outfile    Tree file
+
+   Additional (Optional) qualifiers:
+   -root               toggle     Trees to be treated as rooted
+   -[no]drawtree       boolean    Draw tree
+   -progress           boolean    Print indications of progress of run
+   -[no]printsets      boolean    Print out the sets of species
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-treefile" associated qualifiers
+   -odirectory4        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

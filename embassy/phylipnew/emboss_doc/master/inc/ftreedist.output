@@ -1,0 +1,38 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: treedist.ftreedist</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Tree distance program, version 3.6b
+
+Branch score distances between adjacent pairs of trees:
+
+Trees 1 and 2:    4.000000e-02
+Trees 3 and 4:    1.000000e-01
+Trees 5 and 6:    4.000000e-02
+Trees 7 and 8:    4.000000e-02
+Trees 9 and 10:    4.000000e-02
+Trees 11 and 12:    1.000000e-01
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: treedist2.ftreedist</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Tree distance program, version 3.6b
+
+Symmetric differences between adjacent pairs of trees:
+
+Trees 1 and 2:    4
+Trees 3 and 4:    10
+Trees 5 and 6:    4
+Trees 7 and 8:    4
+Trees 9 and 10:    4
+Trees 11 and 12:    10
+</pre>
+</td></tr></table><p>

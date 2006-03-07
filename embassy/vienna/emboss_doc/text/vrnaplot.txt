@@ -1,0 +1,152 @@
+
+                                 vrnaplot 
+
+
+
+Function
+
+   Plot vrnafold output
+
+Description
+
+   **************** EDIT HERE ****************
+
+Algorithm
+
+   **************** EDIT HERE ****************
+
+Usage
+
+   [an error has occurred processing this directive]
+
+Command line arguments
+
+   Standard (Mandatory) qualifiers:
+  [-structure]         infile     Sequence/structure file
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -layout             menu       Layout
+   -optype             menu       Type
+   -pre                string     Pre-annotation
+   -post               string     Post-annotation
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+   Standard (Mandatory) qualifiers Allowed values Default
+   [-structure]
+   (Parameter 1) Sequence/structure file Input file Required
+   [-outfile]
+   (Parameter 2) Output file name Output file <sequence>.vrnaplot
+   Additional (Optional) qualifiers Allowed values Default
+   (none)
+   Advanced (Unprompted) qualifiers Allowed values Default
+   -layout Layout
+   radial (Simple radial)
+   naview (naview)
+   naview
+   -optype Type
+   ps   (postscript)
+   gml  (graph meta language)
+   svg  (scaleable vector graphics)
+   xrna (XRNA save file)
+   ps
+   -pre Pre-annotation Any string is accepted An empty string is accepted
+   -post Post-annotation Any string is accepted An empty string is
+   accepted
+
+Input file format
+
+   vrnaplot reads any normal sequence USAs.
+
+   [an error has occurred processing this directive]
+
+Output file format
+
+   vrnaplot outputs a graph to the specified graphics device. outputs a
+   report format file. The default format is ...
+
+   [an error has occurred processing this directive]
+
+Data files
+
+   **************** EDIT HERE ****************
+
+Notes
+
+   None.
+
+References
+
+   None.
+
+Warnings
+
+   None.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+    Program name                       Description
+   vrnaalifold    RNA alignment folding
+   vrnaalifoldpf  RNA alignment folding with partition
+   vrnacofold     RNA cofolding
+   vrnacofoldconc RNA cofolding with concentrations
+   vrnacofoldpf   RNA cofolding with partitioning
+   vrnadistance   RNA distances
+   vrnaduplex     RNA duplex calculation
+   vrnaeval       RNA eval
+   vrnaevalpair   RNA eval with cofold
+   vrnafold       Calculate secondary structures of RNAs
+   vrnafoldpf     Secondary structures of RNAs with partition
+   vrnaheat       RNA melting
+   vrnainverse    RNA sequences matching a structure
+   vrnalfold      Calculate locally stable secondary structures of RNAs
+   vrnasubopt     Calculate RNA suboptimals
+
+Author(s)
+
+   Peter Rice (pmr © ebi.ac.uk)
+   Informatics Division, European Bioinformatics Institute, Wellcome
+   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+
+History
+
+   Converted (October 2005) by Alan Bleasby
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
+
+Comments

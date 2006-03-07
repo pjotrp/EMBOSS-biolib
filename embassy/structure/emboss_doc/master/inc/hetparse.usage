@@ -1,0 +1,16 @@
+<b>Here is a sample session with hetparse</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>hetparse </b>
+Converts heterogen group dictionary to EMBL-like format.
+Name of input file (raw dictionary of heterogen groups): <b>het.txt</b>
+Search a directory of PDB files with keywords? [N]: <b>Y</b>
+Directory to search with keywords [./]: <b></b>
+Name of EMBL-like format dictionary of heterogen groups. [Ehet.dat]: <b>Ehet.dat</b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

@@ -1,0 +1,434 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: fcontrast
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<!--#include virtual="/apps/header1.inc" -->
+fcontrast
+<!--#include virtual="/apps/header2.inc" -->
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+    Function
+</H2>
+<!--#include file="inc/fcontrast.ione" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+Reads a tree from a tree file, and a data set with continuous
+characters data, and produces the independent contrasts for those
+characters, for use in any multivariate statistics package. Will also
+produce covariances, regressions and correlations between characters
+for those contrasts. Can also correct for within-species sampling
+variation when individual phenotypes are available within a
+population.
+
+
+<H2>
+    Algorithm
+</H2>
+
+This program implements the contrasts calculation described in my 1985
+paper on the comparative method (Felsenstein, 1985d). It reads in a
+data set of the standard quantitative characters sort, and also a tree
+from the treefile. It then forms the contrasts between species that,
+according to that tree, are statistically independent. This is done
+for each character. The contrasts are all standardized by branch
+lengths (actually, square roots of branch lengths).
+
+<p>
+The method is explained in the 1985 paper. It assumes a Brownian
+motion model. This model was introduced by Edwards and Cavalli-Sforza
+(1964; Cavalli-Sforza and Edwards, 1967) as an approximation to the
+evolution of gene frequencies. I have discussed (Felsenstein, 1973b,
+1981c, 1985d, 1988b) the difficulties inherent in using it as a model
+for the evolution of quantitative characters. Chief among these is
+that the characters do not necessarily evolve independently or at
+equal rates. This program allows one to evaluate this, if there is
+independent information on the phylogeny. You can compute the variance
+of the contrasts for each character, as a measure of the variance
+accumulating per unit branch length. You can also test covariances of
+characters.
+
+
+<p>
+The statistics that are printed out include the covariances between
+all pairs of characters, the regressions of each character on each
+other (column j is regressed on row i), and the correlations between
+all pairs of characters. In assessing degress of freedom it is
+important to realize that each contrast was taken to have expectation
+zero, which is known because each contrast could as easily have been
+computed xi-xj instead of xj-xi. Thus there is no loss of a degree of
+freedom for estimation of a mean. The degrees of freedom is thus the
+same as the number of contrasts, namely one less than the number of
+species (tips). If you feed these contrasts into a multivariate
+statistics program make sure that it knows that each variable has
+expectation exactly zero.
+
+
+<h3>Within-species variation</h3>
+
+With the W option selected, CONTRAST analyzes data sets with variation
+within species, using a model like that proposed by Michael Lynch
+(1990). The method is described in vague terms in my book
+(Felsenstein, 2004, pp. 441). If you select the W option for
+within-species variation, the data set should have this structure (on
+the left are the data, on the right my comments:
+
+<p>
+<pre>
+   10    5                           number of species, number of characters
+Alpha        2                       name of 1st species, # of individuals
+ 2.01 5.3 1.5  -3.41 0.3             data for individual #1
+ 1.98 4.3 2.1  -2.98 0.45            data for individual #2
+Gammarus     3                       name of 2nd species, # of individuals
+ 6.57 3.1 2.0  -1.89 0.6             data for individual #1
+ 7.62 3.4 1.9  -2.01 0.7             data for individual #2
+ 6.02 3.0 1.9  -2.03 0.6             data for individual #3
+...                                  (and so on)
+
+
+</pre>
+
+<p>
+The covariances, correlations, and regressions for the "additive"
+(between-species evolutionary variation) and "environmental"
+(within-species phenotypic variation) are printed out (the maximum
+likelihood estimates of each). The program also estimates the
+within-species phenotypic variation in the case where the
+between-species evolutionary covariances are forced to be zero. The
+log-likelihoods of these two cases are compared and a likelihood ratio
+test (LRT) is carried out. The program prints the result of this test
+as a chi-square variate, and gives the number of degrees of freedom of
+the LRT. You have to look up the chi-square variable on a table of the
+chi-square distribution. The A option is available (if the W option is
+invoked) to allow you to turn off the doing of this test if you want
+to.
+
+<p>
+The log-likelihood of the data under the models with and without
+between-species For the moment the program cannot handle the case
+where within-species variation is to be taken into account but where
+only species means are available. (It can handle cases where some
+species have only one member in their sample).
+
+<p>
+We hope to fix this soon. We are also on our way to incorporating
+full-sib, half-sib, or clonal groups within species, so as to do one
+analysis for within-species genetic and between-species phylogenetic
+variation.
+
+<p>
+The data set used as an example below is the example from a paper by
+Michael Lynch (1990), his characters having been log-transformed. In
+the case where there is only one specimen per species, Lynch's model
+is identical to our model of within-species variation (for multiple
+individuals per species it is not a subcase of his model).
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<!--#include file="inc/fcontrast.usage" -->
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+<!--#include file="inc/fcontrast.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/fcontrast.itable" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>fcontrast</b> reads continuous character data.
+
+<!--#include file="inc/contchardata.ihtml" -->
+
+<p>
+
+<!--#include file="inc/fcontrast.input" -->
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>fcontrast</b> statistics that are printed out include the
+covariances between all pairs of characters, the regressions of each
+character on each other (column j is regressed on row i), and the
+correlations between all pairs of characters. In assessing degress of
+freedom it is important to realize that each contrast was taken to
+have expectation zero, which is known because each contrast could as
+easily have been computed xi-xj instead of xj-xi. Thus there is no
+loss of a degree of freedom for estimation of a mean. The degrees of
+freedom is thus the same as the number of contrasts, namely one less
+than the number of species (tips). If you feed these contrasts into a
+multivariate statistics program make sure that it knows that each
+variable has expectation exactly zero.
+
+With the W option selected, the covariances, correlations, and
+regressions for the "additive" (between-species evolutionary
+variation) and "environmental" (within-species phenotypic variation)
+are printed out (the maximum likelihood estimates of each). The
+program also estimates the within-species phenotypic variation in the
+case where the between-species evolutionary covariances are forced to
+be zero. The log-likelihoods of these two cases are compared and a
+likelihood ratio test (LRT) is carried out. The program prints the
+result of this test as a chi-square variate, and gives the number of
+degrees of freedom of the LRT. You have to look up the chi-square
+variable on a table of the chi-square distribution. The A option is
+available (if the W option is invoked) to allow you to turn off the
+doing of this test if you want to.
+
+
+
+<p>
+
+<!--#include file="inc/fcontrast.output" -->
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+None
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<!--#include file="inc/fcontrast.isee" -->
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+<!--#include virtual="/apps/inc/jfelsenstein.address" -->
+
+
+
+<H2>
+    History
+</H2>
+
+<!--#include file="inc/fcontrast.history" -->
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+<!--#include virtual="/apps/inc/target.itxt" -->
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

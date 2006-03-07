@@ -1,0 +1,19 @@
+<b>Here is a sample session with eprotdist</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eprotdist </b>
+Protein distance algorithm
+Input (aligned) sequence set: <b>protdist.dat</b>
+Method
+       Pam : Dayhoff PAM matrix
+       Kim : Kimura formula
+       Cat : Categories model
+Choose the method to use [Pam]: <b></b>
+Output file [eprotdist.outfile]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

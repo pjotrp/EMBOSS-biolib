@@ -1,0 +1,39 @@
+   Standard (Mandatory) qualifiers:
+  [-infile]            frequencies (no help text) frequencies value
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -weights            properties Weights file
+   -test               menu       Choose test
+*  -regular            toggle     Altered sampling fraction
+*  -fracsample         float      Samples as percentage of sites
+*  -blocksize          integer    Block size for bootstraping
+*  -reps               integer    How many replicates
+*  -justweights        menu       Write out datasets or just weights
+*  -seed               integer    Random number seed between 1 and 32767 (must
+                                  be odd)
+   -printdata          boolean    Print out the data at start of run
+*  -[no]dotdiff        boolean    Use dot-differencing
+   -[no]progress       boolean    Print indications of progress of run
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

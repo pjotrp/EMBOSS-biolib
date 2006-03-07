@@ -1,0 +1,31 @@
+<b>Here is a sample session with frestml</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>frestml </b>
+Restriction site maximum Likelihood method
+Input file: <b>restml.dat</b>
+Input tree file: <b></b>
+Output file [restml.frestml]: <b></b>
+
+numseqs: 1
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+Output written to file "restml.frestml"
+
+Tree also written onto file "restml.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

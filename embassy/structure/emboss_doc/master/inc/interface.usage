@@ -1,0 +1,18 @@
+<b>Here is a sample session with interface</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>interface </b>
+Generate inter-chain CON files from CCF files.
+Name of protein CCF file (clean coordinate file) (input): <b>../pdbplus-keep/2hhb.ccf</b>
+Threshold contact distance [1.0]: <b>1</b>
+Name of CON file (contact file) (output) [test.con]: <b>2hhb.con</b>
+Name of log file for the build [interface.log]: <b></b>
+
+2hhb
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

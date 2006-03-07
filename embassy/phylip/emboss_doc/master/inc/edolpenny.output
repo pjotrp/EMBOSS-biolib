@@ -1,0 +1,83 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: edolpenny.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Penny algorithm for Dollo or polymorphism parsimony, version 3.57c
+ branch-and-bound to find all most parsimonious trees
+
+Dollo parsimony method
+
+                     
+
+
+requires a total of              3.000
+
+    3 trees in all found
+
+
+
+
+  +-----------------Delta     
+  !  
+--2  +--------------Epsilon   
+  !  !  
+  +--3  +-----------Gamma1    
+     !  !  
+     +--6  +--------Alpha2    
+        !  !  
+        +--1     +--Beta2     
+           !  +--5  
+           +--4  +--Beta1     
+              !  
+              +-----Alpha1    
+
+
+
+
+
+  +-----------------Delta     
+  !  
+--2  +--------------Epsilon   
+  !  !  
+  +--3  +-----------Gamma1    
+     !  !  
+     +--6        +--Beta2     
+        !  +-----5  
+        !  !     +--Beta1     
+        +--4  
+           !     +--Alpha2    
+           +-----1  
+                 +--Alpha1    
+
+
+
+
+
+  +-----------------Delta     
+  !  
+--2  +--------------Epsilon   
+  !  !  
+  +--3  +-----------Gamma1    
+     !  !  
+     !  !        +--Beta2     
+     +--6     +--5  
+        !  +--4  +--Beta1     
+        !  !  !  
+        +--1  +-----Alpha2    
+           !  
+           +--------Alpha1    
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: edolpenny.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Delta,(Epsilon,(Gamma1,(Alpha2,((Beta2,Beta1),Alpha1)))))[0.3333];
+(Delta,(Epsilon,(Gamma1,((Beta2,Beta1),(Alpha2,Alpha1)))))[0.3333];
+(Delta,(Epsilon,(Gamma1,(((Beta2,Beta1),Alpha2),Alpha1))))[0.3333];
+</pre>
+</td></tr></table><p>

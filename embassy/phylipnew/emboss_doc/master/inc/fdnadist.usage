@@ -1,0 +1,33 @@
+<b>Here is a sample session with fdnadist</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fdnadist </b>
+Nucleic acid sequence Distance Matrix program
+Input (aligned) nucleotide sequence set(s): <b>dnadist.dat</b>
+Distance methods
+         f : F84 distance model
+         k : Kimura 2-parameter distance
+         j : Jukes-Cantor distance
+         l : LogDet distance
+         s : Similarity table
+Choose the method to use [F84 distance model]: <b></b>
+Output file [dnadist.fdnadist]: <b></b>
+
+Distances calculated for species
+    Alpha        ....
+    Beta         ...
+    Gamma        ..
+    Delta        .
+    Epsilon   
+
+Distances written to file "dnadist.fdnadist"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

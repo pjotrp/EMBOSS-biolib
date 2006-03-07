@@ -1,0 +1,19 @@
+<b>Here is a sample session with egendist</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>egendist </b>
+Genetic Distance Matrix program
+Data file: <b>gendist.dat</b>
+Distance methods
+       Nei : Nei genetic distance
+       Cav : Cavalli-Sforza chord measure
+       Rey : Reynolds genetic distance
+Choose the method to use [Nei]: <b></b>
+Output file [egendist.outfile]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

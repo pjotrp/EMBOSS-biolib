@@ -1,0 +1,23 @@
+<b>Here is a sample session with epenny</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>epenny </b>
+Penny algorithm, branch-and-bound
+Data file: <b>penny.dat</b>
+Method
+       Wag : Wagner
+       Cam : Camin-Sokal
+       Mix : Mixed
+Choose the method to use [Wag]: <b></b>
+Output file [epenny.outfile]: <b></b>
+Create a tree file [Y]: <b></b>
+Tree file name [epenny.treefile]: <b></b>
+
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

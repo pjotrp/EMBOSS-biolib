@@ -1,0 +1,26 @@
+<b>Here is a sample session with ednadist</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ednadist </b>
+Nucleic acid sequence Distance Matrix program
+Input (aligned) sequence set: <b>dnadist.dat</b>
+Form of distance matrix
+         S : Square
+         L : Lower-triangular
+Form [S]: <b></b>
+Distance methods
+    Kimura : Kimura 2-parameter distance
+    JinNei : Jin and Nei distance
+        ML : Maximum Likelihood distance
+     Jukes : Jukes-Cantor distance
+Choose the method to use [Kimura]: <b></b>
+Transition/transversion ratio [2.0]: <b></b>
+Output file [ednadist.outfile]: <b></b>
+Kimura
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

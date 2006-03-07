@@ -1,0 +1,115 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-datafile]<br>(Parameter 1)</td>
+<td>(no help text) distances value</td>
+<td>Distance matrix</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.fneighbor</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-matrixtype</td>
+<td>Type of data matrix</td>
+<td><table><tr><td>s</td> <td><i>(Square)</i></td></tr><tr><td>u</td> <td><i>(Upper triangular)</i></td></tr><tr><td>l</td> <td><i>(Lower triangular)</i></td></tr></table></td>
+<td>s</td>
+</tr>
+
+<tr>
+<td>-treetype</td>
+<td>Neighbor-joining or UPGMA tree</td>
+<td><table><tr><td>n</td> <td><i>(Neighbor-joining)</i></td></tr><tr><td>u</td> <td><i>(UPGMA)</i></td></tr></table></td>
+<td>n</td>
+</tr>
+
+<tr>
+<td>-outgrno</td>
+<td>Species number to use as outgroup</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-jumble</td>
+<td>Randomise input order of species</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-seed</td>
+<td>Random number seed between 1 and 32767 (must be odd)</td>
+<td>Integer from 1 to 32767</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-replicates</td>
+<td>Subreplicates</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]trout</td>
+<td>Write out trees to tree file</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-outtreefile</td>
+<td>Tree file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-printdata</td>
+<td>Print data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]treeprint</td>
+<td>Print out tree</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

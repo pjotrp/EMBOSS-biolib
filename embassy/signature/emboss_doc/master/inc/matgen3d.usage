@@ -1,0 +1,39 @@
+<b>Here is a sample session with matgen3d</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>matgen3d </b>
+Generate a 3D-1D scoring matrix from CCF files.
+DCF file amino acid positions
+         1 : All amino acid positions for domains in a DCF file
+         2 : Ligand-binding positions.
+This option specifies the amino acid residue positions to use in calculating the substitution data. [1]: <b>1</b>
+Name of DCF file (domain classification file (input).: <b>../scopparse-keep/all.scop</b>
+Location of domain CCF files (clean coordinate files) (input) [./]: <b>../domainer-keep</b>
+Choose environment definition.
+         1 : Env1
+         2 : Env2
+         3 : Env3
+         4 : Env4
+         5 : Env5
+         6 : Env6
+         7 : Env7
+         8 : Env8
+         9 : Env9
+        10 : Env10
+        11 : Env11
+        12 : Env12
+        13 : Env13
+        14 : Env14
+        15 : Env15
+        16 : Env16
+This option specifies the environment definition. See matgen3d documentation for description of definitions. [1]: <b>1</b>
+Name of substitution matrix (output). [matgen3d.out]: <b></b>
+Name of first log file (calculations). [matgen3d.calc]: <b></b>
+Name of second log file (errors). [matgen3d.log]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

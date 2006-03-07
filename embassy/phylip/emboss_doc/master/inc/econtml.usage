@@ -1,0 +1,22 @@
+<b>Here is a sample session with econtml</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>econtml </b>
+Continuous character Maximum Likelihood method
+Continuous character input file: <b>contml.dat</b>
+Input file has all alleles at each locus [N]: <b></b>
+Search for best tree [Y]: <b></b>
+Global rearrangements [N]: <b></b>
+Randomize input order of species [N]: <b></b>
+Outgroup root [N]: <b></b>
+Analyze multiple data sets [N]: <b></b>
+Output file [econtml.outfile]: <b></b>
+Create a tree file [Y]: <b></b>
+Tree file name [econtml.treefile]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

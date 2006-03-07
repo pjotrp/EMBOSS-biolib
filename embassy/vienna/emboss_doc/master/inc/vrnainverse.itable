@@ -1,0 +1,143 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-structure]<br>(Parameter 1)</td>
+<td>Structure/sequence file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.vrnainverse</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-paramfile</td>
+<td>Parameter file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-temperature</td>
+<td>Temperature</td>
+<td>Any numeric value</td>
+<td>37.0</td>
+</tr>
+
+<tr>
+<td>-[no]gu</td>
+<td>Allow GU pairs</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]closegu</td>
+<td>Allow GU pairs at end of helices</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]lp</td>
+<td>Allow lonely pairs</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]convert</td>
+<td>Convert T to U</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-nsbases</td>
+<td>Non-standard bases</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-[no]tetraloop</td>
+<td>Stabilizing energies for tetra-loops</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-energy</td>
+<td>Rarely used option to fold sequences from the ABCD... alphabet</td>
+<td><table><tr><td>0</td> <td><i>(BP)</i></td></tr><tr><td>1</td> <td><i>(Any with GC)</i></td></tr><tr><td>2</td> <td><i>(Any with AU parameters)</i></td></tr></table></td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-dangles</td>
+<td>Method</td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-folding</td>
+<td>Method</td>
+<td><table><tr><td>m</td> <td><i>(Use minimum energy)</i></td></tr><tr><td>p</td> <td><i>(Use partition function)</i></td></tr><tr><td>mp</td> <td><i>(Use both)</i></td></tr></table></td>
+<td>m</td>
+</tr>
+
+<tr>
+<td>-alphabet</td>
+<td>Find sequences using only these bases</td>
+<td>Any string is accepted</td>
+<td>AUGC</td>
+</tr>
+
+<tr>
+<td>-final</td>
+<td>Stopping value</td>
+<td>Any numeric value</td>
+<td>0.0</td>
+</tr>
+
+<tr>
+<td>-repeats</td>
+<td>No. of times to search for the same structure</td>
+<td>Any integer value</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-showfails</td>
+<td>Show information for unsuccessful searches</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+</table>

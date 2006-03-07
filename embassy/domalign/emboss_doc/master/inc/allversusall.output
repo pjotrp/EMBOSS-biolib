@@ -1,0 +1,35 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: swtiny1.out</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+1 Q9WVI4 : 2 Q9ERL9 : 90.48
+1 Q9WVI4 : 3 Q9DGG6 : 55.70
+1 Q9WVI4 : 4 Q99396 : 54.74
+1 Q9WVI4 : 5 Q99280 : 57.66
+2 Q9ERL9 : 3 Q9DGG6 : 58.28
+2 Q9ERL9 : 4 Q99396 : 56.39
+2 Q9ERL9 : 5 Q99280 : 62.31
+3 Q9DGG6 : 4 Q99396 : 52.26
+3 Q9DGG6 : 5 Q99280 : 53.99
+4 Q99396 : 5 Q99280 : 83.41
+</pre>
+</td></tr></table><p>
+<p><h3>File: swtiny2.out</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+1 O58452 : 2 O30129 : 82.42
+1 O58452 : 3 O26938 : 75.56
+2 O30129 : 3 O26938 : 71.43
+</pre>
+</td></tr></table><p>
+<p><h3>File: allversusall.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+//
+/homes/user/test/data/structure/allversusall/swtiny1.fasta
+//
+/homes/user/test/data/structure/allversusall/swtiny2.fasta
+</pre>
+</td></tr></table><p>

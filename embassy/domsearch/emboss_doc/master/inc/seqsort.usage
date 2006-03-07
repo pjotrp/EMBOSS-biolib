@@ -1,0 +1,17 @@
+<b>Here is a sample session with seqsort</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>seqsort </b>
+Remove ambiguous classified sequences from DHF files.
+Location of DHF files (domain hits files) (input). [./]: <b>../seqnr-keep/hitsnr</b>
+Number of overlapping residues required for merging of two hits. [10]: <b>10</b>
+Write domain families file. [N]: <b>Y</b>
+Write domain ambiguities file. [N]: <b>Y</b>
+Location of DHF files (domain hits files) (output). [./]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

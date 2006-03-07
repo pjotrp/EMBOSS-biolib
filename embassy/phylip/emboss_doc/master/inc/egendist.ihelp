@@ -1,0 +1,34 @@
+   Standard (Mandatory) qualifiers (* if not always prompted):
+  [-infile]            infile     Data file
+*  -datasets           integer    How many data sets
+   -method             menu       Choose the method to use
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers:
+   -lowertriangle      boolean    Lower-triangular (else Square)
+   -multsets           toggle     Analyze multiple data sets
+   -all                boolean    Input file contains all alleles at each
+                                  locus (else one)
+   -progress           boolean    Print indications of progress of run
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

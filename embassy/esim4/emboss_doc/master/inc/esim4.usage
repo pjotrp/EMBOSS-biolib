@@ -1,0 +1,15 @@
+<b>Here is a sample session with esim4</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>esim4 </b>
+Align an mRNA to a genomic DNA sequence
+Input nucleotide sequence: <b>tembl:hs989235</b>
+Genomic sequence: <b>tembl:hsnfg9</b>
+Output file [hs989235.esim4]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

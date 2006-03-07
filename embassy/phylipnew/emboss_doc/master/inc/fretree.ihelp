@@ -1,0 +1,33 @@
+   Standard (Mandatory) qualifiers:
+  [-spp]               integer    Number of species
+  [-intreefile]        tree       (no help text) tree value
+  [-outtreefile]       outfile    Output file name
+
+   Additional (Optional) qualifiers:
+   -initialtree        menu       Initial tree
+   -format             menu       Format to write trees
+   -screenwidth        integer    Width of terminal screen in characters
+   -vscreenwidth       integer    Width of plotting area in characters
+   -screenlines        integer    Number of lines on screen
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outtreefile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

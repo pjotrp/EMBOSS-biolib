@@ -1,0 +1,86 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: penny.fpenny</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Penny algorithm, version 3.6b
+ branch-and-bound to find all most parsimonious trees
+
+Wagner parsimony method
+
+                     
+
+
+requires a total of              8.000
+
+    3 trees in all found
+
+
+
+
+  +-----------------Alpha1    
+  !  
+  !        +--------Alpha2    
+--1        !  
+  !  +-----4     +--Epsilon   
+  !  !     !  +--6  
+  !  !     +--5  +--Delta     
+  +--2        !  
+     !        +-----Gamma1    
+     !  
+     !           +--Beta2     
+     +-----------3  
+                 +--Beta1     
+
+  remember: this is an unrooted tree!
+
+
+
+
+  +-----------------Alpha1    
+  !  
+--1  +--------------Alpha2    
+  !  !  
+  !  !           +--Epsilon   
+  +--2        +--6  
+     !  +-----5  +--Delta     
+     !  !     !  
+     +--4     +-----Gamma1    
+        !  
+        !        +--Beta2     
+        +--------3  
+                 +--Beta1     
+
+  remember: this is an unrooted tree!
+
+
+
+
+  +-----------------Alpha1    
+  !  
+  !           +-----Alpha2    
+--1  +--------2  
+  !  !        !  +--Beta2     
+  !  !        +--3  
+  +--4           +--Beta1     
+     !  
+     !           +--Epsilon   
+     !        +--6  
+     +--------5  +--Delta     
+              !  
+              +-----Gamma1    
+
+  remember: this is an unrooted tree!
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: penny.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Alpha1,((Alpha2,((Epsilon,Delta),Gamma1)),(Beta2,Beta1)))[0.3333];
+(Alpha1,(Alpha2,(((Epsilon,Delta),Gamma1),(Beta2,Beta1))))[0.3333];
+(Alpha1,((Alpha2,(Beta2,Beta1)),((Epsilon,Delta),Gamma1)))[0.3333];
+</pre>
+</td></tr></table><p>

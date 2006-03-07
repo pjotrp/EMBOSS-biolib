@@ -1,0 +1,677 @@
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBASSY: VIENNA: vrnaalifold
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+vrnaalifold
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+
+<H2>
+    Function
+</H2>
+RNA alignment folding
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+<!-- 
+	This is the main part of the document.
+        This is what the user looks at to find out if this program will do what he wants. 
+        Long description.
+        Why it is useful.
+        When it should/shouldn't be used.
+  -->
+
+**************** 
+EDIT HERE
+**************** 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+<!-- 
+        Algorithms
+	  Pseudocode/Vague description/Handwaving/web links to useful pages
+  -->
+
+**************** 
+EDIT HERE
+**************** 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+[an error has occurred processing this directive]
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) nucleotide sequence set filename
+                                  and optional format, or reference (input
+                                  USA)
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -constraintfile     infile     Constraint file
+   -paramfile          infile     Parameter file
+   -temperature        float      Temperature
+   -[no]gu             boolean    Allow GU pairs
+   -[no]closegu        boolean    Allow GU pairs at end of helices
+   -[no]lp             boolean    Allow lonely pairs
+   -[no]convert        boolean    Convert T to U
+   -nsbases            string     Non-standard bases
+   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
+   -energy             menu       Rarely used option to fold sequences from
+                                  the ABCD... alphabet
+   -scale              float      Estimate of ensemble free energy
+   -dangles            menu       Method
+   -covariance         float      Weight for covariance
+   -nspenalty          float      Non-compatible sequence penalty
+   -endgaps            boolean    Mark end gaps
+   -most               boolean    Use most informative sequence algorithm
+   -ssoutfile          outfile    Output file name
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   "-ssoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>(Aligned) nucleotide sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.vrnaalifold</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-constraintfile</td>
+<td>Constraint file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-paramfile</td>
+<td>Parameter file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-temperature</td>
+<td>Temperature</td>
+<td>Any numeric value</td>
+<td>37.0</td>
+</tr>
+
+<tr>
+<td>-[no]gu</td>
+<td>Allow GU pairs</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]closegu</td>
+<td>Allow GU pairs at end of helices</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]lp</td>
+<td>Allow lonely pairs</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]convert</td>
+<td>Convert T to U</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-nsbases</td>
+<td>Non-standard bases</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-[no]tetraloop</td>
+<td>Stabilizing energies for tetra-loops</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-energy</td>
+<td>Rarely used option to fold sequences from the ABCD... alphabet</td>
+<td><table><tr><td>0</td> <td><i>(BP)</i></td></tr><tr><td>1</td> <td><i>(Any with GC)</i></td></tr><tr><td>2</td> <td><i>(Any with AU parameters)</i></td></tr></table></td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-scale</td>
+<td>Estimate of ensemble free energy</td>
+<td>Any numeric value</td>
+<td>1.07</td>
+</tr>
+
+<tr>
+<td>-dangles</td>
+<td>Method</td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-covariance</td>
+<td>Weight for covariance</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-nspenalty</td>
+<td>Non-compatible sequence penalty</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-endgaps</td>
+<td>Mark end gaps</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-most</td>
+<td>Use most informative sequence algorithm</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-ssoutfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>vrnaalifold</b> reads any normal sequence USAs.
+
+<p>
+
+[an error has occurred processing this directive]
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+#include file="inc/reportformats.ihtml"
+   -->
+
+<b>vrnaalifold</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+[an error has occurred processing this directive]
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+<!-- 
+        Any data files used (e.g. translation table file)
+        This includes example data file formats if they are
+        not obvious.
+
+	If you wish to include the standard description of what data
+	files are and how to use embossdata to inspect and retrieve
+	them, use:
+#include file="inc/localfiles.ihtml"
+   -->
+
+**************** 
+EDIT HERE
+**************** 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr>
+<td><a href="vrnaalifoldpf.html">vrnaalifoldpf</a></td>
+<td>RNA alignment folding with partition</td>
+</tr>
+
+<tr>
+<td><a href="vrnacofold.html">vrnacofold</a></td>
+<td>RNA cofolding</td>
+</tr>
+
+<tr>
+<td><a href="vrnacofoldconc.html">vrnacofoldconc</a></td>
+<td>RNA cofolding with concentrations</td>
+</tr>
+
+<tr>
+<td><a href="vrnacofoldpf.html">vrnacofoldpf</a></td>
+<td>RNA cofolding with partitioning</td>
+</tr>
+
+<tr>
+<td><a href="vrnadistance.html">vrnadistance</a></td>
+<td>RNA distances</td>
+</tr>
+
+<tr>
+<td><a href="vrnaduplex.html">vrnaduplex</a></td>
+<td>RNA duplex calculation</td>
+</tr>
+
+<tr>
+<td><a href="vrnaeval.html">vrnaeval</a></td>
+<td>RNA eval</td>
+</tr>
+
+<tr>
+<td><a href="vrnaevalpair.html">vrnaevalpair</a></td>
+<td>RNA eval with cofold</td>
+</tr>
+
+<tr>
+<td><a href="vrnafold.html">vrnafold</a></td>
+<td>Calculate secondary structures of RNAs</td>
+</tr>
+
+<tr>
+<td><a href="vrnafoldpf.html">vrnafoldpf</a></td>
+<td>Secondary structures of RNAs with partition</td>
+</tr>
+
+<tr>
+<td><a href="vrnaheat.html">vrnaheat</a></td>
+<td>RNA melting</td>
+</tr>
+
+<tr>
+<td><a href="vrnainverse.html">vrnainverse</a></td>
+<td>RNA sequences matching a structure</td>
+</tr>
+
+<tr>
+<td><a href="vrnalfold.html">vrnalfold</a></td>
+<td>Calculate locally stable secondary structures of RNAs</td>
+</tr>
+
+<tr>
+<td><a href="vrnaplot.html">vrnaplot</a></td>
+<td>Plot vrnafold output</td>
+</tr>
+
+<tr>
+<td><a href="vrnasubopt.html">vrnasubopt</a></td>
+<td>Calculate RNA suboptimals</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS conversion of a program written by Ivo Hofacker
+as part of his VIENNA package.
+
+<p>
+Although we take every care to ensure that the results of the EMBOSS
+version are identical to those from the original package, we recommend
+that you check your inputs give the same results in both versions
+before publication.
+
+<p>
+Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+not to the original author.
+
+<H2>
+    History
+</H2>
+
+Converted (October 2005) by Alan Bleasby
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+<H2>
+    Comments
+</H2>
+
+
+</BODY>
+</HTML>
+

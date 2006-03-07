@@ -1,0 +1,53 @@
+   Standard (Mandatory) qualifiers:
+  [-intreefile]        tree       (no help text) tree value
+  [-plotfile]          outfile    Output file name
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -plotter            menu       Plotter or printer the tree will be drawn on
+*  -plotterpcl         menu       Laserjet resolution
+*  -plotterpcx         menu       PCX file resolution
+   -previewer          menu       Previewing device
+   -iterate            menu       Iterate to improve tree
+   -lengths            boolean    Use branch lengths from user trees
+   -labeldirection     menu       Label direction
+   -treeangle          float      Angle the tree is to be plotted
+   -arc                float      Degrees the arc should occupy
+*  -labelrotation      float      Angle of labels (0 degrees is horizontal for
+                                  a tree growing vertically)
+   -[no]rescaled       toggle     Automatically rescale branch lengths
+*  -bscale             float      Centimeters per unit branch length
+   -treedepth          float      Depth of tree as fraction of its breadth
+*  -xmargin            float      Horizontal margin (cm)
+*  -ymargin            float      Vertical margin (cm)
+*  -xmarginray         float      Horizontal margin (pixels)
+*  -ymarginray         float      Vertical margin (pixels)
+   -paperx             float      Paper width
+   -papery             float      Paper height
+   -pagesheight        float      Number of trees across height of page
+   -pageswidth         float      Number of trees across width of page
+   -hpmargin           float      Horizontal overlap (cm)
+   -vpmargin           float      Vertical overlap (cm)
+
+   Advanced (Unprompted) qualifiers:
+   -fontfile           string     Fontfile
+
+   Associated qualifiers:
+
+   "-plotfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

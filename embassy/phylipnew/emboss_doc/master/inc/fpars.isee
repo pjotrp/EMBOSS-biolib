@@ -1,0 +1,69 @@
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th><th>Description</th></tr>
+<tr>
+<td><a href="/embassy/phylip/eclique.html">eclique</a></td>
+<td>Largest clique program</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/edollop.html">edollop</a></td>
+<td>Dollo and polymorphism parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/edolpenny.html">edolpenny</a></td>
+<td>Penny algorithm Dollo or polymorphism</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/efactor.html">efactor</a></td>
+<td>Multistate to binary recoding program</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/emix.html">emix</a></td>
+<td>Mixed parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/phylip/epenny.html">epenny</a></td>
+<td>Penny algorithm, branch-and-bound</td>
+</tr>
+
+<tr>
+<td><a href="fclique.html">fclique</a></td>
+<td>Largest clique program</td>
+</tr>
+
+<tr>
+<td><a href="fdollop.html">fdollop</a></td>
+<td>Dollo and polymorphism parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fdolpenny.html">fdolpenny</a></td>
+<td>Penny algorithm Dollo or polymorphism</td>
+</tr>
+
+<tr>
+<td><a href="ffactor.html">ffactor</a></td>
+<td>Multistate to binary recoding program</td>
+</tr>
+
+<tr>
+<td><a href="fmix.html">fmix</a></td>
+<td>Mixed parsimony algorithm</td>
+</tr>
+
+<tr>
+<td><a href="fmove.html">fmove</a></td>
+<td>Interactive mixed method parsimony</td>
+</tr>
+
+<tr>
+<td><a href="fpenny.html">fpenny</a></td>
+<td>Penny algorithm, branch-and-bound</td>
+</tr>
+
+</table>

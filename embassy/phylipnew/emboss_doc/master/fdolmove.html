@@ -1,0 +1,367 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: fdolmove
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<!--#include virtual="/apps/header1.inc" -->
+fdolmove
+<!--#include virtual="/apps/header2.inc" -->
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+    Function
+</H2>
+<!--#include file="inc/fdolmove.ione" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+Interactive construction of phylogenies from discrete character data
+with two states (0 and 1) using the Dollo or polymorphism parsimony
+criteria. Evaluates parsimony and compatibility criteria for those
+phylogenies and displays reconstructed states throughout the
+tree. This can be used to find parsimony or compatibility estimates by
+hand. 
+
+
+
+<H2>
+    Algorithm
+</H2>
+
+
+DOLMOVE is an interactive parsimony program which uses the Dollo and
+Polymorphism parsimony criteria. It is inspired on Wayne Maddison and
+David Maddison's marvellous program MacClade, which is written for
+Apple MacIntosh computers. DOLMOVE reads in a data set which is
+prepared in almost the same format as one for the Dollo and
+polymorhism parsimony program DOLLOP. It allows the user to choose an
+initial tree, and displays this tree on the screen. The user can look
+at different characters and the way their states are distributed on
+that tree, given the most parsimonious reconstruction of state changes
+for that particular tree. The user then can specify how the tree is to
+be rearraranged, rerooted or written out to a file. By looking at
+different rearrangements of the tree the user can manually search for
+the most parsimonious tree, and can get a feel for how different
+characters are affected by changes in the tree topology.
+
+<p>
+This program is compatible with fewer computer systems than the other
+programs in PHYLIP. It can be adapted to PCDOS systems or to any
+system whose screen or terminals emulate DEC VT100 terminals (such as
+Telnet programs for logging in to remote computers over a TCP/IP
+network, VT100-compatible windows in the X windowing system, and any
+terminal compatible with ANSI standard terminals). For any other
+screen types, there is a generic option which does not make use of
+screen graphics characters to display the character states. This will
+be less effective, as the states will be less easy to see when
+displayed.
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<!--#include file="inc/fdolmove.usage" -->
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+<!--#include file="inc/fdolmove.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/fdolmove.itable" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>fdolmove</b>  reads discrete character data with "?", "P", "B" states
+allowed. .
+
+
+<!--#include file="inc/discretechardata.ihtml" -->
+
+<p>
+
+<!--#include file="inc/fdolmove.input" -->
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>fdolmove</b> output:
+
+<p>
+
+If the A option is used, then the program will infer, for any
+character whose ancestral state is unknown ("?") whether the ancestral
+state 0 or 1 will give the fewest changes (according to the criterion
+in use). If these are tied, then it may not be possible for the
+program to infer the state in the internal nodes, and many of these
+will be shown as "?". If the A option is not used, then the program
+will assume 0 as the ancestral state.
+
+<p>
+When reconstructing the placement of forward changes and reversions
+under the Dollo method, keep in mind that each polymorphic state in
+the input data will require one "last minute" reversion. This is
+included in the counts. Thus if we have both states 0 and 1 at a tip
+of the tree the program will assume that the lineage had state 1 up to
+the last minute, and then state 0 arose in that population by
+reversion, without loss of state 1.
+
+<p>
+When DOLMOVE calculates the number of characters compatible with the
+tree, it will take the F option into account and count the multistate
+characters as units, counting a character as compatible with the tree
+only when all of the binary characters corresponding to it are
+compatible with the tree.
+
+
+<p>
+
+<!--#include file="inc/fdolmove.output" -->
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+None
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<!--#include file="inc/fdolmove.isee" -->
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+<!--#include virtual="/apps/inc/jfelsenstein.address" -->
+
+<H2>
+    History
+</H2>
+
+<!--#include file="inc/fdolmove.history" -->
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+<!--#include virtual="/apps/inc/target.itxt" -->
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

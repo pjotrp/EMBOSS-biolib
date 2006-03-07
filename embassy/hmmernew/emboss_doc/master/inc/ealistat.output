@@ -1,0 +1,22 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: globins630.ealistat</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+alistat 1.5m, Sept 1997
+
+Format:              SELEX alignment
+Number of sequences: 630
+Total # residues:    91425
+Smallest:            121
+Largest:             162
+Average length:      145.1
+Alignment length:    469
+Average identity:    25%
+Most related pair:   99%
+Most unrelated pair: 0%
+Most distant seq:    6%
+
+</pre>
+</td></tr></table><p>

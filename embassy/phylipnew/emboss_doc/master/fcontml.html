@@ -1,0 +1,488 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: fcontml
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<!--#include virtual="/apps/header1.inc" -->
+fcontml
+<!--#include virtual="/apps/header2.inc" -->
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+    Function
+</H2>
+<!--#include file="inc/fcontml.ione" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+Estimates phylogenies from gene frequency data by maximum likelihood
+under a model in which all divergence is due to genetic drift in the
+absence of new mutations. Does not assume a molecular clock. An
+alternative method of analyzing this data is to compute Nei's genetic
+distance and use one of the distance matrix programs. This program can
+also do maximum likelihood analysis of continuous characters that
+evolve by a Brownian Motion model, but it assumes that the characters
+evolve at equal rates and in an uncorrelated fashion, so that it does
+not take into account the usual correlations of characters.
+
+
+<H2>
+    Algorithm
+</H2>
+
+
+This program estimates phylogenies by the restricted maximum
+likelihood method based on the Brownian motion model. It is based on
+the model of Edwards and Cavalli-Sforza (1964; Cavalli-Sforza and
+Edwards, 1967). Gomberg (1966), Felsenstein (1973b, 1981c) and
+Thompson (1975) have done extensive further work leading to efficient
+algorithms. CONTML uses restricted maximum likelihood estimation
+(REML), which is the criterion used by Felsenstein (1973b). The actual
+algorithm is an iterative EM Algorithm (Dempster, Laird, and Rubin,
+1977) which is guaranteed to always give increasing likelihoods. The
+algorithm is described in detail in a paper of mine (Felsenstein,
+1981c), which you should definitely consult if you are going to use
+this program. Some simulation tests of it are given by Rohlf and
+Wooten (1988) and Kim and Burgman (1988).
+<p>
+
+The default (gene frequency) mode treats the input as gene frequencies
+at a series of loci, and square-root-transforms the allele frequencies
+(constructing the frequency of the missing allele at each locus
+first). This enables us to use the Brownian motion model on the
+resulting coordinates, in an approximation equivalent to using
+Cavalli-Sforza and Edwards's (1967) chord measure of genetic distance
+and taking that to give distance between particles undergoing pure
+Brownian motion. It assumes that each locus evolves independently by
+pure genetic drift.
+
+<p>
+The alternative continuous characters mode (menu option C) treats the
+input as a series of coordinates of each species in N dimensions. It
+assumes that we have transformed the characters to remove correlations
+and to standardize their variances.
+
+
+<h3>A word about microsatellite data</h3>
+
+<p>
+Many current users of CONTML use it to analyze microsatellite
+data. There are three ways to do this: 
+
+<ul>
+
+<li>
+Coding each copy number as an allele, and feeding in the frequencies
+of these alleles. As CONTML's gene frequency mode assumes that all
+change is by genetic drift, this means that no copy number arises by
+mutation during the divergence of the populations. Since
+microsatellite loci have very high mutation rates, this is
+questionable.
+
+<li>
+Use some other program, one not in the PHYLIP package, to compute
+distances among the populations. Some of the programs that can do this
+are RSTCalc, poptrfdos, Microsat, and Populations. Links to them can
+be found at my Phylogeny Programs web site at
+http://evolution.gs.washington.edu/phylip/software.html.
+
+<p>
+Those distance measures allow for mutation during the divergence of
+the populations. But even they are not perfect -- they do not allow us
+to use all the information contained in the gene frequency differences
+of within a copy number allele. There is a need for a more complete
+statistical treatment of inference of phylogenies from microsatellite
+models, ones that take both mutation and genetic drift fully into
+account.
+
+<li>
+Alternatively, there is the Brownian motion approximation to mean
+population copy number. This is described in my book (Felsenstein,
+2004, Chapter 15, pp. 242-245), and it is implicit also in the
+microsatellite distances. Each locus is coded as a single continuous
+character, the mean of the copy number in at that microsatellite locus
+in that species. Thus if the species (or population) has frequencies
+0.10, 0.24, 0.60, and 0.06 of alleles that have 18, 19, 20, and 21
+copies, it is coded as having
+
+<p>
+<pre>
+0.10 X 18 + 0.24 X 19 + 0.60 X 20 + 0.06 X 21   =  19.62 
+</pre>
+
+<p>
+copies. These values can, I believe, be calculated by a spreadsheet
+program. Each microsatellite is represented by one character, and the
+continuous character mode of CONTML is used (not the gene frequencies
+mode). This coding allows for mutation that changes copy number. It
+does not make complete use of all data, but neither does the treatment
+of microsatellite gene frequencies as changing only genetic
+drift. frequency
+
+</ul>
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<!--#include file="inc/fcontml.usage" -->
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+<!--#include file="inc/fcontml.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/fcontml.itable" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>fcontml</b> reads continuous character data.
+
+<!--#include file="inc/contchardata.ihtml" -->
+
+<p>
+
+<!--#include file="inc/fcontml.input" -->
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>fcontml</b> output has a standard appearance. The topology of the
+tree is given by an unrooted tree diagram. The lengths (in time or in
+expected amounts of variance) are given in a table below the topology,
+and a rough confidence interval given for each length. Negative lower
+bounds on length indicate that rearrangements may be acceptable.
+
+<p>
+The units of length are amounts of expected accumulated variance (not
+time). The log likelihood (natural log) of each tree is also given,
+and it is indicated how many topologies have been tried. The tree does
+not necessarily have all tips contemporary, and the log likelihood may
+be either positive or negative (this simply corresponds to whether the
+density function does or does not exceed 1) and a negative log
+likelihood does not indicate any error. The log likelihood allows
+various formal likelihood ratio hypothesis tests. The description of
+the tree includes approximate standard errors on the lengths of
+segments of the tree. These are calculated by considering only the
+curvature of the likelihood surface as the length of the segment is
+varied, holding all other lengths constant. As such they are most
+probably underestimates of the variance, and hence may give too much
+confidence in the given tree.
+
+<p>
+One should use caution in interpreting the likelihoods that are
+printed out. If the model is wrong, it will not be possible to use the
+likelihoods to make formal statistical statements. Thus, if gene
+frequencies are being analyzed, but the gene frequencies change not
+only by genetic drift, but also by mutation, the model is not
+correct. It would be as well-justified in this case to use GENDIST to
+compute the Nei (1972) genetic distance and then use FITCH, KITSCH or
+NEIGHBOR to make a tree. If continuous characters are being analyzed,
+but if the characters have not been transformed to new coordinates
+that evolve independently and at equal rates, then the model is also
+violated and no statistical analysis is possible. Doing such a
+transformation is not easy, and usually not even possible.
+
+<p>
+If the U (User Tree) option is used and more than one tree is
+supplied, the program also performs a statistical test of each of
+these trees against the one with highest likelihood. If there are two
+user trees, the test done is one which is due to Kishino and Hasegawa
+(1989), a version of a test originally introduced by Templeton
+(1983). In this implementation it uses the mean and variance of
+log-likelihood differences between trees, taken across loci. If the
+two trees means are more than 1.96 standard deviations different then
+the trees are declared significantly different. This use of the
+empirical variance of log-likelihood differences is more robust and
+nonparametric than the classical likelihood ratio test, and may to
+some extent compensate for the any lack of realism in the model
+underlying this program.
+
+<p>
+If there are more than two trees, the test done is an extension of the
+KHT test, due to Shimodaira and Hasegawa (1999). They pointed out that
+a correction for the number of trees was necessary, and they
+introduced a resampling method to make this correction. The version
+used here is a multivariate normal approximation to their test; it is
+due to Shimodaira (1998). The variances and covariances of the sum of
+log likelihoods across loci are computed for all pairs of trees. To
+test whether the difference between each tree and the best one is
+larger than could have been expected if they all had the same expected
+log-likelihood, log-likelihoods for all trees are sampled with these
+covariances and equal means (Shimodaira and Hasegawa's "least
+favorable hypothesis"), and a P value is computed from the fraction of
+times the difference between the tree's value and the highest
+log-likelihood exceeds that actually observed. Note that this sampling
+needs random numbers, and so the program will prompt the user for a
+random number seed if one has not already been supplied. With the
+two-tree KHT test no random numbers are used.
+
+<p>
+In either the KHT or the SH test the program prints out a table of the
+log-likelihoods of each tree, the differences of each from the highest
+one, the variance of that quantity as determined by the log-likelihood
+differences at individual sites, and a conclusion as to whether that
+tree is or is not significantly worse than the best one.
+
+<p>
+One problem which sometimes arises is that the program is fed two
+species (or populations) with identical transformed gene frequencies:
+this can happen if sample sizes are small and/or many loci are
+monomorphic. In this case the program "gets its knickers in a twist"
+and can divide by zero, usually causing a crash. If you suspect that
+this has happened, check for two species with identical
+coordinates. If you find them, eliminate one from the problem: the two
+must always show up as being at the same point on the tree anyway.
+
+<p>
+
+<!--#include file="inc/fcontml.output" -->
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+None
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<!--#include file="inc/fcontml.isee" -->
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+<!--#include virtual="/apps/inc/jfelsenstein.address" -->
+
+<H2>
+    History
+</H2>
+
+<!--#include file="inc/fcontml.history" -->
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+<!--#include virtual="/apps/inc/target.itxt" -->
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

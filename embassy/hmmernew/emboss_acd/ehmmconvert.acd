@@ -3,7 +3,7 @@ application: ehmmconvert
 # EMBOSS wrapper to ehmmconvert from Sean Eddy's HMMER package v.2.3.2
   documentation: "Convert between profile HMM file formats"
   groups: "HMM"
-  embassy: "hmmer"
+  embassy: "hmmernew"
 ]
 
 

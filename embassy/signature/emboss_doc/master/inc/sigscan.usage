@@ -1,0 +1,31 @@
+<b>Here is a sample session with sigscan</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>sigscan </b>
+Generate hits (DHF file) from a signature search.
+Name of signature file (input): <b>../siggen-keep/54894.sig</b>
+Name of database to search.: <b>swsmall</b>
+Residue substitution matrix [EBLOSUM62]: <b></b>
+Gap insertion penalty [10]: <b></b>
+Gap extension penalty [0.5]: <b></b>
+N-terminal matching options
+         1 : Align anywhere and allow only complete signature-sequence fit
+         2 : Align anywhere and allow partial signature-sequence fit
+         3 : Use empirical gaps only
+Select number [1]: <b></b>
+Max. number of hits to output [100]: <b></b>
+Name of DHF file (domain hits file) (output) [SIGSCAN.dhf]: <b></b>
+Name of SAF file (signature alignment file) for signature-sequence alignments (output) [SIGSCAN.aln]: <b></b>
+
+Signature file read ok
+Signature compiled ok
+Signature aligned to db ok
+Hits file written ok
+Alignments file written ok
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

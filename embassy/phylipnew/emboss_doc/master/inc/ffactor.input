@@ -1,0 +1,19 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: factor.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+   4   6
+1 A:B B:C
+2 A:B B:.
+4
+5 0:1 1:2 .:0
+6 .:# #:$ #:%
+999
+Alpha     CAW00#
+Beta      BBX01%
+Gamma     ABY12#
+Epsilon   CAZ01$
+</pre>
+</td></tr></table><p>

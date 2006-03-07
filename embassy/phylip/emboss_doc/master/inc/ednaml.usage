@@ -1,0 +1,37 @@
+<b>Here is a sample session with ednaml</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ednaml -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6" -lambda 1.5 -autog -printdata -progress </b>
+Phylogenies from nucleic acid Maximum Likelihood
+Input (aligned) nucleotide sequence set: <b>dnaml.dat</b>
+Search for best tree [Y]: <b></b>
+Global rearrangements [N]: <b></b>
+Randomize input order of species [N]: <b></b>
+Use empirical base frequencies [Y]: <b></b>
+Outgroup root [N]: <b></b>
+Output file [ednaml.outfile]: <b></b>
+Create a tree file [Y]: <b></b>
+Tree file name [ednaml.treefile]: <b></b>
+
+
+
+
+Adding species:
+   Alpha     
+   Beta      
+   Gamma     
+   Delta     
+   Epsilon   
+
+
+Output written to output file
+
+Tree also written onto file
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

@@ -1,0 +1,16 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: dolpenny.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+    7    6
+Alpha1    110110
+Alpha2    110110
+Beta1     110000
+Beta2     110000
+Gamma1    100110
+Delta     001001
+Epsilon   001110
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,17 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: rocon.hits</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt; RELATED 8 ; ROC 2
+CROSS        Q8Z130    8     99    
+UNKNOWN      Q9YBD5    181   235   
+FALSE        P96175    8     99    
+TRUE         O26938    11    101   
+FALSE        Q7MX57    8     99    
+CROSS        Q8TVB1    7     98    
+TRUE         Q9YBD5    11    105   
+TRUE         Q9YBD5    95    135   
+</pre>
+</td></tr></table><p>

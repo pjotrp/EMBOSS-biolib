@@ -1,0 +1,50 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: all_nr.scop</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+ID   D1II7A_
+XX
+EN   1II7
+XX
+TY   SCOP
+XX
+SI   53931 CL; 56299 FO; 56300 SF; 64427 FA; 64428 DO; 64429 SO; 62415 DD;
+XX
+CL   Alpha and beta proteins (a+b)
+XX
+FO   Metallo-dependent phosphatases
+XX
+SF   Metallo-dependent phosphatases
+XX
+FA   DNA double-strand break repair nuclease
+XX
+DO   Mre11
+XX
+OS   Archaeon Pyrococcus furiosus
+XX
+DS   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   A CHAIN; . START; . END;
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: domainnr.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+Classes are non-redundant
+5% redundancy threshold
+// Alpha and beta proteins (a+b)
+Retained
+D1II7A_
+Rejected
+D1CS4A_
+</pre>
+</td></tr></table><p>

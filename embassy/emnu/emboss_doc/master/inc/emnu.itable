@@ -1,0 +1,42 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-[no]morefiles</td>
+<td>After every command that you run in the menu, either by selecting the name of an EMBOSS program, or by typing the command in the command line, a check is made to see if any new files have been created by that command. If so, the command 'more filenames' will be put into the comamnd line ready for you to quickly view those new files. If you do not wish this to happen, set this to be false.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-explode</td>
+<td>The groups that EMBOSS applications belong to have two forms, exploded and not exploded. The exploded group names are more numerous and often vaguely phrased than the non-exploded ones. The exploded names are formed from definitions of the group names that start like NAME1:NAME2 and which are then expanded into many combinations of the names as: 'NAME1', 'NAME2', 'NAME1 NAME2', NAME2 NAME1'. The non-expanded names are simply like: 'NAME1 NAME2'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

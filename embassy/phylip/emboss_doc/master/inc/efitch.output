@@ -1,0 +1,62 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: efitch.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+   7 Populations
+                  __ __             2
+                  \  \   (Obs - Exp)
+Sum of squares =  /_ /_  ------------
+                                3
+                   i  j      Obs
+
+Negative branch lengths not allowed
+
+
+  +---------------------------------------------Mouse     
+  !  
+  !                                 +-----Human     
+  !                              +--5  
+  !                           +--4  +--------Chimp     
+  !                           !  !  
+  !                        +--3  +---------Gorilla   
+  !                        !  !  
+--1------------------------2  +-----------------Orang     
+  !                        !  
+  !                        +--------------------Gibbon    
+  !  
+  +------------------------------------------------------Bovine    
+
+
+remember: this is an unrooted tree!
+
+Sum of squares =     0.01417
+
+examined   45 trees
+
+Between        And            Length
+-------        ---            ------
+   1          Mouse             0.77028
+   1             2              0.41923
+   2             3              0.05289
+   3             4              0.01693
+   4             5              0.03705
+   5          Human             0.11417
+   5          Chimp             0.15503
+   4          Gorilla           0.15677
+   3          Orang             0.29628
+   2          Gibbon            0.35442
+   1          Bovine            0.91632
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: fitch.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(Mouse:0.77028,((((Human:0.11417,Chimp:0.15503):0.03705,
+Gorilla:0.15677):0.01693,Orang:0.29628):0.05289,Gibbon:0.35442):0.41923,Bovine:0.91632);
+</pre>
+</td></tr></table><p>

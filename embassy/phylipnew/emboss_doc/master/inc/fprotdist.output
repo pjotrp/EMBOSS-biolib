@@ -1,0 +1,14 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: protdist.fprotdist</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5
+Alpha       0.000000  0.330447  0.625670  1.032032  1.354086
+Beta        0.330447  0.000000  0.375578  1.096290  0.677616
+Gamma       0.625670  0.375578  0.000000  0.975798  0.861634
+Delta       1.032032  1.096290  0.975798  0.000000  0.226703
+Epsilon     1.354086  0.677616  0.861634  0.226703  0.000000
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,94 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-hmmfilein]<br>(Parameter 1)</td>
+<td>File containing an HMM.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-hmmfileout]<br>(Parameter 2)</td>
+<td>File containing an HMM with EVD parameters.</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.ehmmcalibrate</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-cpu</td>
+<td>Sets the maximum number of CPUs that the program will run on. The default is to use all CPUs in the machine. Overrides the HMMER NCPU environment variable. Only affects threaded versions of HMMER (the default on most systems).</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-fixed</td>
+<td>Fix the length of the random sequences to <n>, where <n> is a positive (and reasonably sized) integer. The default is instead to generate sequences with a variety of different lengths, controlled by a Gaussian (normal) distribution.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-mean</td>
+<td>Set the mean length of the synthetic sequences to <x>, where <x> is a positive real number. The default is 350.</td>
+<td>Any numeric value</td>
+<td>350.0</td>
+</tr>
+
+<tr>
+<td>-num</td>
+<td>Set the number of synthetic sequences to <n>, where <n> is a positive integer. If <n> is less than about 1000, the ft to the EVD may fail. Higher numbers of <n> will give better determined EVD parameters. The default is 5000; it was empirically chosen as a tradeoff between accuracy and computation time.</td>
+<td>Integer 0 or more</td>
+<td>5000</td>
+</tr>
+
+<tr>
+<td>-pvm</td>
+<td>Run on a Parallel Virtual Machine (PVM). The PVM must already be running. The client program hmmcalibrate-pvm must be installed on all the PVM nodes. Optional PVM support must have been compiled into HMMER.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-sd</td>
+<td>Set the standard deviation of the synthetic sequence length distribution to <x>, where <x> is a positive real number. The default is 350. Note that the Gaussian is left-truncated so that no sequences have lengths <= 0.</td>
+<td>Number 0.000 or more</td>
+<td>350.0</td>
+</tr>
+
+<tr>
+<td>-seed</td>
+<td>Set the random seed to <n>, where <n> is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmcalibrate on the same HMM will give slightly different results. You can use this option to generate reproducible results for different hmmcalibrate runs on the same HMM.</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-histfile</td>
+<td>Save a histogram of the scores and the fitted theoretical curve to file.</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+</table>

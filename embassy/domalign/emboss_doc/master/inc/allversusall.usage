@@ -1,0 +1,18 @@
+<b>Here is a sample session with allversusall</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>allversusall </b>
+Sequence similarity data from all-versus-all comparison.
+Location of sequence files (input [./]: <b>allversusall/</b>
+Location of sequence similarity data files (output) [./]: <b></b>
+Name allversusall log file (output) [allversusall.log]: <b></b>
+
+Processing /homes/user/test/data/structure/allversusall/swtiny1.fasta
+Processing /homes/user/test/data/structure/allversusall/swtiny2.fasta
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

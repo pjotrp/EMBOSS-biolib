@@ -1,0 +1,45 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eclique.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Largest clique program, version 3.57c
+
+
+
+
+Largest Cliques
+------- -------
+
+
+Characters: (  1  2  3  6)
+
+
+  Tree and characters:
+
+     2  1  3  6
+     0  0  1  1
+
+             +1-Delta     
+       +0--1-+
+  +--0-+     +--Epsilon   
+  !    !
+  !    +--------Gamma     
+  !
+  +-------------Alpha     
+  !
+  +-------------Beta      
+
+remember: this is an unrooted tree!
+
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: eclique.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(((Delta,Epsilon),Gamma),Alpha,Beta);
+</pre>
+</td></tr></table><p>

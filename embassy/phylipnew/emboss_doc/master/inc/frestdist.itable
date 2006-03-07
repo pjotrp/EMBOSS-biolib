@@ -1,0 +1,101 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-data]<br>(Parameter 1)</td>
+<td>File containing one or more sets of restriction data</td>
+<td>Discrete states file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.frestdist</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-[no]restsites</td>
+<td>Restriction sites (put N if you want restriction fragments)</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-neili</td>
+<td>Use original Nei/Li model (default uses modified Nei/Li model)</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-gamma</td>
+<td>Gama distributed rates among sites</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-gammacoefficient</td>
+<td>Coefficient of variation of substitution rate among sites</td>
+<td>Number 0.001 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-ttratio</td>
+<td>Transition/transversion ratio</td>
+<td>Number 0.001 or more</td>
+<td>2.0</td>
+</tr>
+
+<tr>
+<td>-sitelength</td>
+<td>Site length</td>
+<td>Integer 1 or more</td>
+<td>6</td>
+</tr>
+
+<tr>
+<td>-lower</td>
+<td>Lower triangular distance matrix</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-printdata</td>
+<td>Print data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

@@ -1,0 +1,361 @@
+<!-- START OF HEADER -->
+<HTML><HEAD>
+<TITLE> EMBASSY: SIGSCANLIG documentation</TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<!--#include virtual="/apps/header1.inc" -->
+<H2> SIGSCANLIG documentation
+<!--#include virtual="/apps/header2.inc" -->
+<!-- END OF HEADER -->
+
+
+<!-- CONTENTS
+     This always includes the sections below.
+     Other subsections can be added for individual applications.
+-->
+<H2>CONTENTS </H2>
+<b> <a href="#1.0">1.0     SUMMARY                   </a></b><br>
+<b> <a href="#2.0">2.0     INPUTS & OUTPUTS          </a></b><br>
+<b> <a href="#3.0">3.0     INPUT FILE FORMAT         </a></b><br>
+<b> <a href="#4.0">4.0     OUTPUT FILE FORMAT        </a></b><br>
+<b> <a href="#5.0">5.0     DATA FILES                </a></b><br>
+<b> <a href="#6.0">6.0     USAGE                     </a></b><br>    
+<b> <a href="#7.0">7.0     KNOWN BUGS & WARNINGS     </a></b><br>    
+<b> <a href="#8.0">8.0     NOTES                     </a></b><br>
+<b> <a href="#9.0">9.0   DESCRIPTION               </a></b><br>
+<b> <a href="#10.0">10.0   ALGORITHM                 </a></b><br>
+<b> <a href="#11.0">11.0   RELATED APPLICATIONS      </a></b><br>
+<b> <a href="#12.0">12.0   DIAGNOSTIC ERROR MESSAGES </a></b><br>
+<b> <a href="#13.0">13.0   AUTHORS                   </a></b><br>
+<b> <a href="#14.0">14.0   REFERENCES                </a></b><br>
+
+<!-- SUMMARY
+     Succint description of the application, particularly its inputs, outputs
+     and what it does.  The same text is given at the top of the source (.c)
+     file and in the <documentation> attribute of the <application definition>
+     of the ACD file.
+-->
+<a name="1.0"></a>
+<br><br><br><H2> 1.0   SUMMARY  </H2>
+<!--#include file="inc/sigscanlig.ione" -->
+
+<p>
+Generates LHF files (ligand hits file) of hits from scanning sequences against a library of ligand-binding signatures.
+
+
+
+<!-- INPUTS & OUTPUTS
+     Short summary of the application inputs and outputs in its different 
+     modes of usage (if appropriate). More detail than the summary.
+-->
+<a name="2.0"></a>
+<br><br><br><H2> 2.0   INPUTS & OUTPUTS          </H2>
+SIGSCANLIG reads one more sequences, e.g. from a sequence database, and scans each in turn against a library of ligand-binding signatures (directory of signature files).  The signatures may be of type 1D or 3D.  To perform the scan, the user provides a scoring matrix which is either a residue substitution matrix (1D signatures) or matrix of 3D:1D (environment:residue) scores (3D). Various other parameters including gap insertion and extension penalties and a score mode are also set. For each query sequence, 3 files are generated as follows: (i) An LHF file (ligand hits file) of hits to the signatures. (ii) A SAF file (signature alignment file) of the corresponding signature-sequence alignments.  (iii) A results file, containing a list of hits (ligands), rank-ordered on the basis of score.  The user specifies the query sequences and also the paths of the signature files (input), LHF, SAF and results files (output).  The file extensions are specified in the ACD file. 
+
+ 
+
+
+
+
+<!-- INPUT FILE FORMAT 
+     Description and example(s) of input file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.
+     Use "<b>sigscanlig</b> reads any normal sequence USAs." if
+     appropriate.
+-->
+<a name="3.0"></a>
+<br><br><br><H2> 3.0   INPUT FILE FORMAT         </H2>
+
+The format of the signature file is described in <a href="siggen.html">SIGGEN documentation</a> (1D signatures) and the <a href="siggenlig.html">SIGGENLIG documentation</a> (3D signatures).
+
+<br>SIGSCANLIG can read protein sequences in any sequence format supported by EMBOSS.
+
+<p>
+
+<!--#include file="inc/sigscanlig.input" -->
+
+
+
+
+
+<!-- OUTPUT FILE FORMAT 
+     Description and example(s) of output file formats.  Should provide enough
+     information to write and parse the file.  Should describe the format in 
+     unusual cases - null input, etc.  
+     If the standard description of the avalable report formats is required, 
+     use:   #include file="inc/reportformats.ihtml"
+     Use "Outputs a graph to the specified graphics device."
+     or  "outputs a report format file. The default format is ..."
+     if appropriate.
+-->
+<a name="4.0"></a>
+<br><br><br><H2> 4.0   OUTPUT FILE FORMAT         </H2>
+
+
+
+
+<b>LHF file (ligand hits file)</b>
+<br>Each LHF file contains the hits from the search of a single query sequence against the library of signatures.  The file (Figure 1) contains two lines per hit. The first contains a description of the hit in 17 text tokens delimited by '^'.  The second line contains the protein sequence.  The tokens are as follows (a '.' is given where a token does not have a value).
+
+<UL>
+<LI>(i) Accession number.
+<LI>(ii)  Database code.
+<LI>(iii - iv) Start and end positions of the hit relative to the full length sequence. 
+</UL>
+
+<br>The next 9 tokens refer to the domain family, superfamily etc for which the signature was derived and are as follows: 
+<UL>
+<LI>(v)  'LIGAND' is always given.
+<LI>(vi)  4-character PDB identifier code. 
+<LI>(vii)  7-character domain identifier code from SCOP or CATH.
+<LI>(viii) Ligand identifier code.  A 3-letter abbreviation of the full ligand name.
+
+<LI>(ix) Site number.  This uniquely identifies a ligand-binding site in the CON file generated by running SITES.
+<LI>(x) The total number of binding sites for a given ligand.
+<LI>(xi) Patch number.  The sequential order (from the N-terminus) of the patch in the ligand-binding site from which the signature was derived. 
+<LI>(xii) Number of patches. The total number of patches in this ligand-binding site.
+<LI>(xiii) Signature data type, either '1D' or '3D', for sequence or structure-based signatures respectively. 
+<LI>(xiv) Signature type, either 'P' for patch signatures or 'F' for full-length signatures.
+</UL>
+
+<br>The next 3 tokens refer to the hit, specifically, information about the search result as follows: 
+<UL>
+<LI>(xv) Score of hit from search algoritm.
+<LI>(xvi) P-value of hit (not written by SIGSCANLIG).
+<LI>(xvii) E-value of hit (not written by SIGSCANLIG).
+</UL>
+
+
+<br><br>
+<b>SAF file (signature alignment file)</b>
+<br>
+The format of the SAF file (signature alignment file, Figure 2) is more or less identical to DAF (domain alignment file) described in the <a href="domainalign.html">DOMAINALIGN documentation</a>.  The file conforms to EMBOSS "simple" multiple sequence alignment format.  Each file contains the signature-sequence alignments corresponding to the search of a single query sequence against a library of signatures.  The SAF file generated by SIGSCANLIG contains some unique features which are summarised here. 
+
+<br><br>
+ All lines beginning with '#' are comments and the first line is always '# DE   Alignment of query sequence against library of signatures'. Each signature-sequence alignment is contained in one or more blocks in the file. These blocks are preceeded by a comment line containing information for the corresponding hit from the LHF (above). Each block contains contains the signature identifier code and accession number of the protein sequence, sequence positions and a section of the signature-sequence alignment.
+
+<UL>
+<li>The signature identifier code uniquely identifies the signature and is of the format <I>ligand identifer code</I>_<I>site number</I>_<I>patch number</I>.  The ligand identifier, site number and the patch number are defined above (a '0' will be given for patch number if the site was represented as a single 'full-length' signature rather than patches).
+
+<LI>The sequence positions are the start and end residue positions of the appropriate section of sequence. The character '-' is used for gaps.  
+
+<LI> The protein sequence is given after the accession number and the signature-sequence alignment is given as a markup line underneath the sequence (signature positions are marked with a '*').
+</UL>
+
+
+<br><br>
+<b>Results file</b>
+<BR>Each results file (Figure 3) contains the summarised results of the search of a single query sequence against the library of signatures.  The results file contains a list of ligands, rank-ordered on the basis of score (highest-scoring ligand is given first). There are four columns under the labels 'LIGID, 'PATCHES', 'SITES' and 'SCORE'.  These give the ligand identifier, the number of patches for that ligand binding site, the number of sites for the ligand and the score of the sequence-signature match.  In the example shown (Figure 3) there is a single ligand.  Typically, the library would represent all ligands represented in PDB. 
+
+<br><br><b>Figure 3   Excerpt from a results file (output) </b>
+<table><td bgcolor="#CFCCFF">
+<pre>
+LIGID     PATCHES   SITES     SCORE     
+101       0         1         0.48      
+</pre>
+</table>
+
+<p>
+
+<!--#include file="inc/sigscanlig.output" -->
+
+
+
+<!-- DATA FILES         
+     Any data files used (e.g. translation table file, substitution matrix 
+     etc.  This includes example data file formats if they are not obvious.
+     For a standard description of what data files are and how embossdata can
+     be used to inspect and retrieve them, use:
+     #include file="inc/localfiles.ihtml"
+-->
+
+<a name="5.0"></a>
+<br><br><br><H2> 5.0   DATA FILES                </H2>
+SIGSCANLIG requires a matrix of 3D:1D scores (residue:environment scoring matrix).
+
+
+
+
+<!-- USAGE
+     Example usage, as run from the command-line.
+     Many examples illustrating different behaviours is good.
+-->
+<a name="6.0"></a>
+<br><br><br><H2> 6.0   USAGE                     </H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" >
+<tr><td>
+<pre>
+<!--#include file="inc/sigscanlig.ihelp" --></pre>
+</pre>
+</td></tr>
+</table>
+
+<H3> 6.1   COMMAND LINE ARGUMENTS </H3>
+<!--#include file="inc/sigscanlig.itable" -->
+
+
+<H3> 6.2 EXAMPLE SESSION </H3>
+An example of interactive use of SIGSCANLIG is shown below.
+
+<!--#include file="inc/sigscanlig.usage" -->
+
+
+
+<!-- KNOWN BUGS & WARNINGS
+     Bugs that have not yet been fixed, easily missued features, problems
+     and caveats etc. Potentially stupid things the program will let you do.
+-->
+<a name="7.0"></a>
+<br><br><br><H2> 7.0   KNOWN BUGS & WARNINGS     </H2>
+None.
+
+
+
+<!-- NOTES
+     Important general remarks, including:
+       Restrictions.
+       Interesting behaviour.
+       Useful things you can do with this program.
+       Future plans.
+       etc.
+-->
+<a name="8.0"></a>
+<br><br><br><H2> 8.0   NOTES                     </H2>
+SIGSCANLIG does not generate p-values or E-values and a value of '0' is given in the LHF files.
+
+<H3> 8.1   GLOSSARY OF FILE TYPES    </H3>
+<table BORDER CELLSPACING=5 CELLPADDING=5 BGCOLOR="#f5f5ff" >
+<tr>
+<td><b>FILE TYPE</b></td>
+<td><b>FORMAT</b></td>
+<td><b>DESCRIPTION</b></td>
+<td><b>CREATED BY <b></td>
+<td><b>SEE ALSO</b></td>
+</tr>
+<tr>
+<td><b>Ligand hits file </b></td>
+<td> LHF format (FASTA-like). </td>
+<td> Database hits (sequences) with ligand classification information.  The hits are putative ligand-binding sequences and are found from a search of a discriminating element (e.g. a protein signature) against a sequence database. </td>
+<td> <a href="sigscanlig.html">SIGSCANLIG</a> (hits retrieved by 1D and 3D signatures). </td>
+<td> N.A. </td>
+</tr>
+<tr>
+<td><b>Signature alignment file </b></td>
+<td> SAF format (CLUSTAL-like). </td>
+<td> One or more signnature-sequence alignments, annotated with bibliographic information, either the domain family classification (for SIGSCAN output) or ligand classification (for SIGSCANLIG output). </td>
+<td> <a href="sigscan.html">SIGSCAN</a> (signature-sequence alignments for a single signature against a database of one or more sequences) or <a href="sigscanlig.html">SIGSCANLIG</a> (signature-sequence alignment for a single query sequence against a library of one or more signatures). </td>
+<td> N.A. </td>
+</tr>
+<tr>
+<td><b>Signature file </b></td>
+<td> SIG format </td>
+<td> Contains a sparse sequence signature suitable for use with the SIGSCANLIG program. Contains a sparse sequence signature. </td>
+<td> <a href="siggen.html">SIGGEN</a>, <a href="siggenlig.html">SIGGENLIG</a>, <a href="libgen.html">LIBGEN</a> </td>
+<td> The files are generated by using SIGGEN. </td>
+</tr>
+</table>
+
+
+<!-- DESCRIPTION
+     A complete, non-technical, user-level description of the application.
+-->
+<a name="9.0"></a>
+<br><br><br><H2> 9.0   DESCRIPTION               </H2>
+
+SIGSCANLIG is an application to screen a query protein sequence against a library of signatures for ligand-binding. 
+See Blades et al., Ison et al. and Daniel et al. for a description of other types of protein signatures and their application.
+
+
+
+
+<!-- ALGORITHM
+     A technical description of algorithmic aspects, describing exactly how
+     the key aspects of the application work.
+-->
+<a name="10.0"></a>
+<br><br><br><H2> 10.0  ALGORITHM                 </H2>
+
+The algorithm is based on an approach first described in Daniel et al (1999) 
+that was applied to the definition of protein families (Ison et al, 2000)
+and later to automatically-generated signatures (Blades et al, 2005).
+
+<br><br><B>Description of scoring modes</B><br>
+The user specifies the mode of scoring ligands, i.e. the way in which the scores in the results files are generated. In 'Patch Score Mode' (mode 1) the score for a ligand is the mean of its patch scores.  In 'Site Score Mode' the score for a ligand is the mean of its site scores.  A site score is the mean of patch score for all patches for a given site.
+
+<br><br><B>Selection of gap penalties</B><br>
+The user specifies the gap insertion and extension penalties. The gap insertion penalty is the score taken away when a gap is created. The gap extension penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized.  Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty. The best value of these penalties depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for 1D signature scans.  If you are performing 3D signature scans you should select a value appropriate to the scoring matrix used.
+
+
+
+
+
+
+<!-- RELATED APPLICATIONS
+     Other applications that either generate the input, use the output or 
+     are in some other way related to the application are described here. 
+-->
+<a name="11.0"></a>
+<br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+<a name="11.0"></a>
+<br><br><br><br><br><br><H2> 11.0  RELATED APPLICATIONS      </H2>
+
+<!--#include file="inc/sigscanlig.isee" -->
+
+
+
+
+
+
+
+<!-- DIAGNOSTIC ERROR MESSAGES
+     Description of error messages or log file, if one is written.
+-->
+<a name="12.0"></a>
+<br><br><br><H2> 12.0  DIAGNOSTIC ERROR MESSAGES </H2>
+
+None.
+
+
+
+
+
+
+
+<!-- AUTHORS
+     The main author first then all others. 
+-->
+<a name="13.0"></a>
+<br><br><br><H2> 13.0  AUTHORS                   </H2>
+Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+<br><br>
+
+Waqas Awan <a href="mailto:wawan@rfcgr.mrc.ac.uk">(mblades@rfcgr.mrc.ac.uk)</a>
+<br>
+MRC Rosalind Franklin Centre for Genomics Research
+Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+
+
+<!-- REFERENCES
+     Quote the paper where the application was first published, described, used etc. 
+-->
+<a name="14.0"></a>
+<br><br><br><H2> 14.0  REFERENCES                </H2>
+Automatic generation and evaluation of sparse protein signatures for families of protein structural domains.  Blades MJ, Ison JC, Ranasinghe R and Findlay, JBC. Protein Science (2005), 14:13-23.
+
+<br><br>
+A key residues approach to the definition of protein families and analysis of sparse family signatures.  JC Ison, AJ Bleasby, MJ Blades, SC Daniel, JH Parish, JBC Findlay.  PROTEINS: Structure, Function & Genetics.  2000, 40:330-341
+
+<br><br>
+Alignment of a sparse protein signature with protein sequences: application to fold prediction for three small globulins.  SC Daniel, JH Parish, JC Ison, MJ Blades & JBC Findlay.  FEBS Letters.  1999, 459:349-352.
+
+<!--#include file="inc/embossref.ihtml" -->
+
+<H3>14.1 Other useful references  </H3>
+ 
+
+</BODY>
+</HTML>

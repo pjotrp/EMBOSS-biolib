@@ -1,0 +1,65 @@
+<b>Here is a sample session with fmix</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fmix </b>
+Mixed parsimony algorithm
+Input file: <b>mix.dat</b>
+Input tree file: <b></b>
+Output file [mix.fmix]: <b></b>
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+Doing global rearrangements
+  !---------!
+   .........
+
+
+Output written to file "mix.fmix"
+
+Trees also written onto file "mix.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fmix -printdata -ancfile mixancfile.dat </b>
+Mixed parsimony algorithm
+Input file: <b>mix.dat</b>
+Input tree file: <b></b>
+Output file [mix.fmix]: <b></b>
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+Doing global rearrangements
+  !---------!
+   .........
+
+
+Output written to file "mix.fmix"
+
+Trees also written onto file "mix.treefile"
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.2">Go to the input files for this example</a><br><a href="#output.2">Go to the output files for this example</a><p><p>

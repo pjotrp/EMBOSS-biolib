@@ -1,0 +1,136 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>File containing one or more sequence alignments</td>
+<td>Readable sets of sequences</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-method</td>
+<td>Choose the method to use</td>
+<td><table><tr><td>f</td> <td><i>(F84 distance model)</i></td></tr><tr><td>k</td> <td><i>(Kimura 2-parameter distance)</i></td></tr><tr><td>j</td> <td><i>(Jukes-Cantor distance)</i></td></tr><tr><td>l</td> <td><i>(LogDet distance)</i></td></tr><tr><td>s</td> <td><i>(Similarity table)</i></td></tr></table></td>
+<td>F84 distance model</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.fdnadist</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-gamma</td>
+<td>Gamma distribution</td>
+<td><table><tr><td>g</td> <td><i>(Gamma distributed rates)</i></td></tr><tr><td>i</td> <td><i>(Gamma+invariant sites)</i></td></tr><tr><td>n</td> <td><i>(No distribution parameters used)</i></td></tr></table></td>
+<td>No distribution parameters used</td>
+</tr>
+
+<tr>
+<td>-ncategories</td>
+<td>Number of substitution rate categories</td>
+<td>Integer from 1 to 9</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-rate</td>
+<td>Category rates</td>
+<td>List of floating point numbers</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-categories</td>
+<td>File of substitution rate categories</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-weights</td>
+<td>Weights file</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-gammacoefficient</td>
+<td>Coefficient of variation of substitution rate among sites</td>
+<td>Number 0.001 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-invarfrac</td>
+<td>Fraction of invariant sites</td>
+<td>Number from 0.000 to 1.000</td>
+<td>0.0</td>
+</tr>
+
+<tr>
+<td>-ttratio</td>
+<td>Transition/transversion ratio</td>
+<td>Number 0.001 or more</td>
+<td>2.0</td>
+</tr>
+
+<tr>
+<td>-[no]freqsfrom</td>
+<td>Use empirical base frequencies from seqeunce input</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-basefreq</td>
+<td>Base frequencies for A C G T/U (use blanks to separate)</td>
+<td>List of floating point numbers</td>
+<td>0.25 0.25 0.25 0.25</td>
+</tr>
+
+<tr>
+<td>-lower</td>
+<td>Lower triangular distance matrix</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-printdata</td>
+<td>Print data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+</table>

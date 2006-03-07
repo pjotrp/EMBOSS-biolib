@@ -1,0 +1,202 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-intreefile]<br>(Parameter 1)</td>
+<td>(no help text) tree value</td>
+<td>Phylogenetic tree</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-plotfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.fdrawtree</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-plotter</td>
+<td>Plotter or printer the tree will be drawn on</td>
+<td><table><tr><td>l</td> <td><i>(Postscript printer file format)</i></td></tr><tr><td>m</td> <td><i>(PICT format (for drawing programs))</i></td></tr><tr><td>j</td> <td><i>(HP Laserjet PCL file format)</i></td></tr><tr><td>w</td> <td><i>(MS-Windows Bitmap)</i></td></tr><tr><td>f</td> <td><i>(FIG 2.0 drawing program format)</i></td></tr><tr><td>a</td> <td><i>(Idraw drawing program format)</i></td></tr><tr><td>z</td> <td><i>(VRML Virtual Reality Markup Language file)</i></td></tr><tr><td>p</td> <td><i>(PCX file format (for drawing programs))</i></td></tr><tr><td>k</td> <td><i>(TeKtronix 4010 graphics terminal)</i></td></tr><tr><td>x</td> <td><i>(X Bitmap format)</i></td></tr><tr><td>v</td> <td><i>(POVRAY 3D rendering program file)</i></td></tr><tr><td>r</td> <td><i>(Rayshade 3D rendering program file)</i></td></tr><tr><td>h</td> <td><i>(Hewlett-Packard pen plotter (HPGL file format))</i></td></tr><tr><td>d</td> <td><i>(DEC ReGIS graphics (VT240 terminal))</i></td></tr><tr><td>e</td> <td><i>(Epson MX-80 dot-matrix printer)</i></td></tr><tr><td>c</td> <td><i>(Prowriter/Imagewriter dot-matrix printer)</i></td></tr><tr><td>t</td> <td><i>(Toshiba 24-pin dot-matrix printer)</i></td></tr><tr><td>o</td> <td><i>(Okidata dot-matrix printer)</i></td></tr><tr><td>b</td> <td><i>(Houston Instruments plotter)</i></td></tr><tr><td>u</td> <td><i>(other (one you have inserted code for))</i></td></tr></table></td>
+<td>l</td>
+</tr>
+
+<tr>
+<td>-plotterpcl</td>
+<td>Laserjet resolution</td>
+<td><table><tr><td>1</td> <td><i>(75 DPI)</i></td></tr><tr><td>2</td> <td><i>(150 DPI)</i></td></tr><tr><td>3</td> <td><i>(300 DPI)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-plotterpcx</td>
+<td>PCX file resolution</td>
+<td><table><tr><td>1</td> <td><i>(EGA 640 X 350)</i></td></tr><tr><td>2</td> <td><i>(VGA 800 X 600)</i></td></tr><tr><td>3</td> <td><i>(VGA 1024 X 768)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-previewer</td>
+<td>Previewing device</td>
+<td><table><tr><td>n</td> <td><i>(Will not be previewed)</i></td></tr><tr><td>I i</td> <td><i>(MSDOS graphics screen m:Macintosh screens)</i></td></tr><tr><td>x</td> <td><i>(X Windows display)</i></td></tr><tr><td>w</td> <td><i>(MS Windows display)</i></td></tr><tr><td>k</td> <td><i>(TeKtronix 4010 graphics terminal)</i></td></tr><tr><td>d</td> <td><i>(DEC ReGIS graphics (VT240 terminal))</i></td></tr><tr><td>o</td> <td><i>(Other (one you have inserted code for))</i></td></tr></table></td>
+<td>x</td>
+</tr>
+
+<tr>
+<td>-iterate</td>
+<td>Iterate to improve tree</td>
+<td><table><tr><td>n</td> <td><i>(No)</i></td></tr><tr><td>e</td> <td><i>(Equal-Daylight algorithm)</i></td></tr><tr><td>b</td> <td><i>(n-Body algorithm)</i></td></tr></table></td>
+<td>e</td>
+</tr>
+
+<tr>
+<td>-lengths</td>
+<td>Use branch lengths from user trees</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-labeldirection</td>
+<td>Label direction</td>
+<td><table><tr><td>a</td> <td><i>(along)</i></td></tr><tr><td>f</td> <td><i>(fixed)</i></td></tr><tr><td>r</td> <td><i>(radial)</i></td></tr><tr><td>m</td> <td><i>(middle)</i></td></tr></table></td>
+<td>m</td>
+</tr>
+
+<tr>
+<td>-treeangle</td>
+<td>Angle the tree is to be plotted</td>
+<td>Number from -360.000 to 360.000</td>
+<td>90.0</td>
+</tr>
+
+<tr>
+<td>-arc</td>
+<td>Degrees the arc should occupy</td>
+<td>Number from 0.000 to 360.000</td>
+<td>360</td>
+</tr>
+
+<tr>
+<td>-labelrotation</td>
+<td>Angle of labels (0 degrees is horizontal for a tree growing vertically)</td>
+<td>Number from 0.000 to 360.000</td>
+<td>90.0</td>
+</tr>
+
+<tr>
+<td>-[no]rescaled</td>
+<td>Automatically rescale branch lengths</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-bscale</td>
+<td>Centimeters per unit branch length</td>
+<td>Any numeric value</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>-treedepth</td>
+<td>Depth of tree as fraction of its breadth</td>
+<td>Number from 0.100 to 100.000</td>
+<td>0.53</td>
+</tr>
+
+<tr>
+<td>-xmargin</td>
+<td>Horizontal margin (cm)</td>
+<td>Number 0.100 or more</td>
+<td>1.65</td>
+</tr>
+
+<tr>
+<td>-ymargin</td>
+<td>Vertical margin (cm)</td>
+<td>Number 0.100 or more</td>
+<td>2.16</td>
+</tr>
+
+<tr>
+<td>-xmarginray</td>
+<td>Horizontal margin (pixels)</td>
+<td>Number 0.100 or more</td>
+<td>1.65</td>
+</tr>
+
+<tr>
+<td>-ymarginray</td>
+<td>Vertical margin (pixels)</td>
+<td>Number 0.100 or more</td>
+<td>2.16</td>
+</tr>
+
+<tr>
+<td>-paperx</td>
+<td>Paper width</td>
+<td>Any numeric value</td>
+<td>20.63750</td>
+</tr>
+
+<tr>
+<td>-papery</td>
+<td>Paper height</td>
+<td>Number 0.100 or more</td>
+<td>26.98750</td>
+</tr>
+
+<tr>
+<td>-pagesheight</td>
+<td>Number of trees across height of page</td>
+<td>Number 1.000 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-pageswidth</td>
+<td>Number of trees across width of page</td>
+<td>Number 1.000 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-hpmargin</td>
+<td>Horizontal overlap (cm)</td>
+<td>Number 0.001 or more</td>
+<td>0.41275</td>
+</tr>
+
+<tr>
+<td>-vpmargin</td>
+<td>Vertical overlap (cm)</td>
+<td>Number 0.001 or more</td>
+<td>0.53975</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-fontfile</td>
+<td>Fontfile</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+</table>

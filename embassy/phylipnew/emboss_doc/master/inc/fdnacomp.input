@@ -1,0 +1,23 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: dnacomp.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+    5   13
+Alpha     AACGUGGCCAAAU
+Beta      AAGGUCGCCAAAC
+Gamma     CAUUUCGUCACAA
+Delta     GGUAUUUCGGCCU
+Epsilon   GGGAUCUCGGCCC
+</pre>
+</td></tr></table><p>
+
+<a name="input.2"></a>
+<h3>Input files for usage example 2</h3>
+<p><h3>File: dnacomptree.dat</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+((((Epsilon,Delta),Gamma),Beta),Alpha);
+</pre>
+</td></tr></table><p>

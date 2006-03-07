@@ -1,0 +1,50 @@
+   Standard (Mandatory) qualifiers:
+  [-infile]            discretestates File containing one or more data sets
+  [-intreefile]        tree       (no help text) tree value
+  [-outfile]           outfile    Output file name
+
+   Additional (Optional) qualifiers (* if not always prompted):
+   -weights            properties Weights file
+   -method             menu       Choose the parsimony method to use
+   -maxtrees           integer    Number of trees to save
+*  -[no]thorough       toggle     More thorough search
+*  -[no]rearrange      boolean    Rearrange on just one best tree
+*  -njumble            integer    Number of times to randomise
+*  -seed               integer    Random number seed between 1 and 32767 (must
+                                  be odd)
+   -outgrno            integer    Species number to use as outgroup
+   -thresh             toggle     Use threshold parsimony
+*  -threshold          float      Threshold value
+   -[no]trout          toggle     Write out trees to tree file
+*  -outtreefile        outfile    Tree file name
+   -printdata          boolean    Print data at start of run
+   -[no]progress       boolean    Print indications of progress of run
+   -[no]treeprint      boolean    Print out tree
+   -stepbox            boolean    Print steps at each site
+   -ancseq             boolean    Print states at all nodes of tree
+*  -[no]dotdiff        boolean    Use dot differencing to display results
+
+   Advanced (Unprompted) qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-outtreefile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+

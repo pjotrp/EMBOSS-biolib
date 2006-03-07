@@ -1,0 +1,153 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-datafile]<br>(Parameter 1)</td>
+<td>Data file to be read in</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-datasets</td>
+<td>Number of sets</td>
+<td>Integer 2 or more</td>
+<td>2</td>
+</tr>
+
+<tr>
+<td>-randseed</td>
+<td>Random number seed (must be odd)</td>
+<td>Any integer value</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>-randtimes</td>
+<td>How many times to randomise</td>
+<td>Any integer value</td>
+<td>3</td>
+</tr>
+
+<tr>
+<td>-valthresh</td>
+<td>Threshold value</td>
+<td>Number 1.000 or more</td>
+<td>1.0</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>edollop.outfile</td>
+</tr>
+
+<tr>
+<td>[-[no]trout]<br>(Parameter 3)</td>
+<td>Create a tree file</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-treefile</td>
+<td>Tree file name</td>
+<td>Output file</td>
+<td>edollop.treefile</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-multsets</td>
+<td>Analyze multiple data sets</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-ancest</td>
+<td>Use ancestral states in input file</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]besttree</td>
+<td>Search for best tree</td>
+<td>Toggle value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-random</td>
+<td>Randomize input order of species</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]dollo</td>
+<td>Do Dollo (else Polymorphism)</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-printdata</td>
+<td>Print out the data at start of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-progress</td>
+<td>Print indications of progress of run</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-steps</td>
+<td>Print out steps in each site</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-statesatnodes</td>
+<td>Print states at all nodes of tree</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]drawtree</td>
+<td>Draw tree</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-thresh</td>
+<td>Use Threshold parsimony</td>
+<td>Toggle value Yes/No</td>
+<td>No</td>
+</tr>
+
+</table>

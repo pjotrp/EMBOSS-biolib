@@ -1,0 +1,69 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: Ecath.dat</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+ID   1CUK03
+XX
+EN   1CUK
+XX
+TY   CATH
+XX
+CI   1 CL; 10 AR; 8 TP; 10 SF; 1 FA; 1 NI;1 IF;
+XX
+CL   Mainly Alpha
+XX
+AR   Orthogonal Bundle
+XX
+TP   Helicase, Ruva Protein, domain 3
+XX
+SF   DNA helicase RuvA subunit, C-terminal domain
+XX
+NR   48
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   0 CHAIN; 156 START; 203 END;
+//
+ID   1HJP03
+XX
+EN   1HJP
+XX
+TY   CATH
+XX
+CI   1 CL; 10 AR; 8 TP; 10 SF; 1 FA; 1 NI;2 IF;
+XX
+CL   Mainly Alpha
+XX
+AR   Orthogonal Bundle
+XX
+TP   Helicase, Ruva Protein, domain 3
+XX
+SF   DNA helicase RuvA subunit, C-terminal domain
+XX
+NR   44
+XX
+NC   1
+XX
+CN   [1]
+XX
+CH   0 CHAIN; 159 START; 202 END;
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: cathparse.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+1.10.8.10
+1.10.8
+0001.0010
+0001
+1.10.8.10
+1.10.8
+0001.0010
+0001
+</pre>
+</td></tr></table><p>

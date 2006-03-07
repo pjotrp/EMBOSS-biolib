@@ -1,0 +1,18 @@
+<b>Here is a sample session with ftreedistpair</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>ftreedistpair -style s </b>
+Distances between two sets of trees
+Tree file: <b>treedist.dat</b>
+Second input tree file: <b>treedist.dat</b>
+Output file [treedist.ftreedistpair]: <b></b>
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

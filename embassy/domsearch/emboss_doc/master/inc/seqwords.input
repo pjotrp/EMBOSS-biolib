@@ -1,0 +1,133 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: seqwords.terms</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+TY   SCOP
+XX
+CL   Alpha and beta proteins (a/b)
+XX
+FO   NAD(P)-binding Rossmann-fold domains
+XX
+SF   NAD(P)-binding Rossmann-fold domains
+XX
+FA   Lactate &amp; malate dehydrogenases, N-terminal domain
+XX
+TE   NAD(P)-binding Rossmann-fold
+TE   Lactate &amp; malate dehydrogenases
+TE   Lactate dehydrogenase
+TE   Malate dehydrogenase
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: seqwords.seq</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   ACEA_ECOLI     STANDARD;      PRT;   434 AA.
+AC   P05313;
+DT   01-NOV-1988 (Rel. 09, Created)
+DT   01-NOV-1988 (Rel. 09, Last sequence update)
+DT   15-DEC-1998 (Rel. 37, Last annotation update)
+DE   ISOCITRATE LYASE (EC 4.1.3.1) (ISOCITRASE) (ISOCITRATASE) (ICL).
+GN   ACEA OR ICL.
+OS   Escherichia coli.
+OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;
+OC   Escherichia.
+RN   [1]
+RP   SEQUENCE FROM N.A.
+RC   STRAIN=K12;
+RX   MEDLINE; 89083515.
+RA   Byrne C.R., Stokes H.W., Ward K.A.;
+RT   "Nucleotide sequence of the aceB gene encoding malate synthase A in
+RT   Escherichia coli.";
+RL   Nucleic Acids Res. 16:10924-10924(1988).
+RN   [2]
+RP   SEQUENCE FROM N.A.
+RC   STRAIN=K12;
+RX   MEDLINE; 88262573.
+RA   Rieul C., Bleicher F., Duclos B., Cortay J.-C., Cozzone A.J.;
+RT   "Nucleotide sequence of the aceA gene coding for isocitrate lyase in
+RT   Escherichia coli.";
+RL   Nucleic Acids Res. 16:5689-5689(1988).
+RN   [3]
+RP   SEQUENCE FROM N.A.
+RX   MEDLINE; 89008064.
+RA   Matsuoka M., McFadden B.A.;
+RT   "Isolation, hyperexpression, and sequencing of the aceA gene encoding
+RT   isocitrate lyase in Escherichia coli.";
+RL   J. Bacteriol. 170:4528-4536(1988).
+RN   [4]
+RP   SEQUENCE FROM N.A.
+RC   STRAIN=K12 / MG1655;
+RX   MEDLINE; 94089392.
+RA   Blattner F.R., Burland V.D., Plunkett G. III, Sofia H.J.,
+RA   Daniels D.L.;
+RT   "Analysis of the Escherichia coli genome. IV. DNA sequence of the
+RT   region from 89.2 to 92.8 minutes.";
+RL   Nucleic Acids Res. 21:5408-5417(1993).
+RN   [5]
+RP   SEQUENCE OF 293-434 FROM N.A.
+RX   MEDLINE; 88227861.
+RA   Klumpp D.J., Plank D.W., Bowdin L.J., Stueland C.S., Chung T.,
+RA   Laporte D.C.;
+RT   "Nucleotide sequence of aceK, the gene encoding isocitrate
+RT   dehydrogenase kinase/phosphatase.";
+RL   J. Bacteriol. 170:2763-2769(1988).
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+FT   CONFLICT     70     70       A -&gt; R (IN REF. 2).
+FT   CONFLICT     80     80       A -&gt; R (IN REF. 1 AND 2).
+FT   CONFLICT    116    116       I -&gt; N (IN REF. 2).
+FT   CONFLICT    144    144       F -&gt; L (IN REF. 1).
+FT   CONFLICT    305    312       LGEEFVNK -&gt; WAKSSLISN (IN REF. 2).
+FT   CONFLICT    307    307       E -&gt; Q (IN REF. 1).
+FT   STRAND        2      6
+FT   TURN          7      9
+FT   HELIX        11     23
+FT   TURN         26     27
+FT   STRAND       28     33
+FT   TURN         37     38
+FT   HELIX        39     47
+FT   TURN         48     48
+FT   STRAND       53     58
+FT   HELIX        64     67
+FT   TURN         68     69
+FT   STRAND       72     75
+FT   TURN         83     84
+FT   HELIX        87    108
+FT   TURN        110    111
+FT   STRAND      113    116
+FT   HELIX       121    134
+FT   TURN        135    136
+FT   TURN        140    141
+FT   STRAND      143    145
+FT   HELIX       148    162
+FT   TURN        163    163
+FT   HELIX       166    168
+FT   STRAND      173    175
+FT   TURN        179    181
+FT   STRAND      182    184
+FT   HELIX       186    188
+FT   TURN        190    191
+FT   HELIX       196    217
+FT   TURN        218    219
+FT   HELIX       225    242
+FT   TURN        243    244
+FT   STRAND      248    255
+FT   STRAND      263    271
+FT   TURN        272    273
+FT   STRAND      274    278
+FT   HELIX       286    311
+SQ   SEQUENCE   312 AA;  32337 MW;  17741A3B5AD068BA CRC64;
+     MKVAVLGAAG GIGQALALLL KTQLPSGSEL SLYDIAPVTP GVAVDLSHIP TAVKIKGFSG
+     EDATPALEGA DVVLISAGVA RKPGMDRSDL FNVNAGIVKN LVQQVAKTCP KACIGIITNP
+     VNTTVAIAAE VLKKAGVYDK NKLFGVTTLD IIRSNTFVAE LKGKQPGEVE VPVIGGHSGV
+     TILPLLSQVP GVSFTEQEVA DLTKRIQNAG TEVVEAKAGG GSATLSMGQA AARFGLSLVR
+     ALQGEQGVVE CAYVEGDGQY ARFFSQPLLL GKNGVEERKS IGTLSAFEQN ALEGMLDTLK
+     KDIALGEEFV NK
+//
+</pre>
+</td></tr></table><p>

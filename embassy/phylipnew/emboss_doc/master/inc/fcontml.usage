@@ -1,0 +1,31 @@
+<b>Here is a sample session with fcontml</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fcontml -printdata </b>
+Gene frequency and continuous character Maximum Likelihood
+Input file: <b>contml.dat</b>
+Input tree file: <b></b>
+Output file [contml.fcontml]: <b></b>
+
+all: true
+Adding species:
+   1. European  
+   2. African   
+   3. Chinese   
+   4. American  
+   5. Australian
+
+
+Output written to file "contml.fcontml"
+
+Tree also written onto file "contml.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

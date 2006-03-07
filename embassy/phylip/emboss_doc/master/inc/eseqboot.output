@@ -1,0 +1,113 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eseqboot.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5     6
+Alpha        AAAAAC
+Beta         AAAAAC
+Gamma        AAACCC
+Delta        CCCCCA
+Epsilon      CCCCCC
+    5     6
+Alpha        AAACAA
+Beta         AAACCC
+Gamma        ACCCAA
+Delta        CCCACC
+Epsilon      CCCAAA
+    5     6
+Alpha        ACCACC
+Beta         ACCCCC
+Gamma        ACCACC
+Delta        CAACAA
+Epsilon      CAAACC
+    5     6
+Alpha        AAAAAC
+Beta         AAACCC
+Gamma        AACAAC
+Delta        CCCCCA
+Epsilon      CCCAAC
+    5     6
+Alpha        AACCAC
+Beta         AACCCC
+Gamma        CCCCAC
+Delta        CCAACA
+Epsilon      CCAAAC
+    5     6
+Alpha        ACAAAC
+Beta         ACCCCC
+Gamma        CCAAAC
+Delta        CACCCA
+Epsilon      CAAAAC
+    5     6
+Alpha        ACCAAA
+Beta         ACCCCC
+Gamma        CCCAAA
+Delta        CAACCC
+Epsilon      CAAAAA
+    5     6
+Alpha        AAAAAC
+Beta         AACCCC
+Gamma        CCAAAC
+Delta        CCCCCA
+Epsilon      CCAAAC
+    5     6
+Alpha        AACAAC
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+Gamma        ACCCAC
+Delta        CCAACA
+Epsilon      CCAAAC
+    5     6
+Alpha        CAAAAC
+Beta         CCCCCC
+Gamma        CAAAAC
+Delta        ACCCCA
+Epsilon      AAAAAC
+    5     6
+Alpha        AAACCC
+Beta         AAACCC
+Gamma        AACCCC
+Delta        CCCAAA
+Epsilon      CCCACC
+    5     6
+Alpha        AACACC
+Beta         AACCCC
+Gamma        AACACC
+Delta        CCACAA
+Epsilon      CCAACC
+    5     6
+Alpha        AAAACC
+Beta         AAAACC
+Gamma        AACCCC
+Delta        CCCCAA
+Epsilon      CCCCAA
+    5     6
+Alpha        AAACAA
+Beta         AAACCC
+Gamma        AACCAA
+Delta        CCCACC
+Epsilon      CCCAAA
+    5     6
+Alpha        AACAAC
+Beta         AACCCC
+Gamma        ACCAAC
+Delta        CCACCA
+Epsilon      CCAAAC
+    5     6
+Alpha        AACACC
+Beta         AACCCC
+Gamma        AACACC
+Delta        CCACAA
+Epsilon      CCAACC
+    5     6
+Alpha        AAACAC
+Beta         AAACCC
+Gamma        CCCCAC
+Delta        CCCACA
+Epsilon      CCCAAC
+</pre>
+</td></tr></table><p>

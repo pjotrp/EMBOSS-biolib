@@ -1,0 +1,20 @@
+<b>Here is a sample session with rocon</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>rocon </b>
+Generates a hits file from comparing two DHF files.
+Name of DHF file (domain hits file) (input).: <b>rocon/rocon.dhf</b>
+Name of domain families file (input).: <b>rocon.valid</b>
+Overlap threshold for hits. [10]: <b>10</b>
+Classification scheme to use
+         1 : Family classification scheme
+         2 : (Not yet available)
+Select number. [1]: <b>1</b>
+Name of hits files (output). [hits.dhf]: <b>rocon.hits</b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

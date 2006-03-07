@@ -1,0 +1,128 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: discboot.ancfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+</pre>
+</td></tr></table><p>
+<p><h3>File: discboot.factfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+</pre>
+</td></tr></table><p>
+<p><h3>File: discboot.mixfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+</pre>
+</td></tr></table><p>
+<p><h3>File: discboot.fdiscboot</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+    5     6
+Alpha     111001
+Beta      111000
+Gamma     100001
+Delta     000110
+Epsilon   000111
+    5     6
+Alpha     111011
+Beta      111000
+Gamma     100011
+Delta     000100
+Epsilon   000111
+    5     6
+Alpha     111110
+Beta      111000
+Gamma     110110
+Delta     000001
+Epsilon   000110
+    5     6
+Alpha     000001
+Beta      000000
+Gamma     000001
+Delta     111110
+Epsilon   111111
+    5     6
+Alpha     111100
+Beta      111000
+Gamma     110100
+Delta     000011
+Epsilon   000100
+    5     6
+Alpha     111100
+Beta      100000
+Gamma     111100
+Delta     000011
+Epsilon   011100
+    5     6
+Alpha     110011
+Beta      110000
+Gamma     100011
+Delta     001100
+Epsilon   001111
+    5     6
+Alpha     111100
+Beta      100000
+Gamma     111100
+Delta     000011
+Epsilon   011100
+    5     6
+Alpha     110100
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+Gamma     101111
+Delta     000000
+Epsilon   001111
+    5     6
+Alpha     110110
+Beta      110000
+Gamma     110110
+Delta     001001
+Epsilon   001110
+    5     6
+Alpha     110111
+Beta      110000
+Gamma     000111
+Delta     001000
+Epsilon   001111
+    5     6
+Alpha     101111
+Beta      100000
+Gamma     001111
+Delta     010000
+Epsilon   011111
+    5     6
+Alpha     011111
+Beta      000000
+Gamma     011111
+Delta     100000
+Epsilon   111111
+    5     6
+Alpha     011000
+Beta      000000
+Gamma     011000
+Delta     100111
+Epsilon   111000
+    5     6
+Alpha     101100
+Beta      100000
+Gamma     101100
+Delta     010011
+Epsilon   011100
+    5     6
+Alpha     111111
+Beta      111110
+Gamma     100001
+Delta     000000
+Epsilon   000001
+    5     6
+Alpha     110110
+Beta      110000
+Gamma     000110
+Delta     001001
+Epsilon   001110
+</pre>
+</td></tr></table><p>

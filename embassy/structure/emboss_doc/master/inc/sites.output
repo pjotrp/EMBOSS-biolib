@@ -1,0 +1,121 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: SITES.con</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+XX   Residue-ligand contact data (for domains).
+XX
+TY   LIGAND
+XX
+EX   THRESH 1.0; IGNORE .; NMOD .; NCHA .;
+XX
+NE   11
+XX
+EN   [1]
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
+XX
+DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+SI   SN 1; NS 2
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
+XX
+S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   SM .; LI 2
+XX
+LI   HIS 10
+LI   ASP 49
+XX
+//
+EN   [2]
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG 101;
+XX
+DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+SI   SN 2; NS 2
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .
+XX
+S1   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
+     ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
+XX
+NC   SM .; LI 6
+XX
+LI   ASP 2
+LI   PHE 6
+LI   THR 7
+LI   LEU 44
+LI   GLY 45
+LI   ASP 46
+XX
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+NC   SM .; LI 3
+XX
+LI   ASP 8
+LI   HIS 10
+LI   ASP 49
+XX
+//
+EN   [10]
+XX
+ID   PDB 2hhb; DOM .; LIG PO4;
+XX
+DE   PHOSPHATE ION
+XX
+SI   SN 1; NS 1
+XX
+CN   MO .; CN1 1; CN2 .; ID1 D; ID2 .; NRES1 146; NRES2 .
+XX
+S1   SEQUENCE   146 AA;  15868 MW;  EC9744C9 CRC32;
+     VHLTPEEKSA VTALWGKVNV DEVGGEALGR LLVVYPWTQR FFESFGDLST PDAVMGNPKV
+     KAHGKKVLGA FSDGLAHLDN LKGTFATLSE LHCDKLHVDP ENFRLLGNVL VCVLAHHFGK
+     EFTPPVQAAY QKVVAGVANA LAHKYH
+XX
+NC   SM .; LI 2
+XX
+LI   VAL 1
+LI   LEU 81
+XX
+//
+EN   [11]
+XX
+ID   PDB 1cs4; DOM d1cs4a_; LIG POP;
+XX
+DE   PYROPHOSPHATE 2-
+XX
+SI   SN 1; NS 1
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .
+XX
+S1   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;
+     ADIEGFTSLA SQCTAQELVM TLNELFARFD KLAAENHCLR IKILGDCYYC VS
+XX
+NC   SM .; LI 6
+XX
+LI   ASP 2
+LI   ILE 3
+LI   GLU 4
+LI   GLY 5
+LI   PHE 6
+LI   THR 7
+XX
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: sites.log</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+CCF: /homes/user/test/qa/pdbplus-keep/1ii7.ccf HETS:YES NHETS:5 SCOP:YES NDOMS: 1
+CCF: /homes/user/test/qa/pdbplus-keep/1cs4.ccf HETS:YES NHETS:7 SCOP:YES NDOMS: 1
+CCF: /homes/user/test/qa/pdbplus-keep/2hhb.ccf HETS:YES NHETS:5 SCOP:NO NCHN:4
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,462 @@
+<!--START OF HEADER - DON'T ALTER -->
+
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBOSS: fgendist
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+
+
+<!--#include virtual="/apps/header1.inc" -->
+fgendist
+<!--#include virtual="/apps/header2.inc" -->
+
+<!--END OF HEADER-->
+
+
+
+
+
+
+<H2>
+    Function
+</H2>
+<!--#include file="inc/fgendist.ione" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+Computes one of three different genetic distance formulas from gene
+frequency data. The formulas are Nei's genetic distance, the
+Cavalli-Sforza chord measure, and the genetic distance of Reynolds
+et. al. The former is appropriate for data in which new mutations
+occur in an infinite isoalleles neutral mutation model, the latter two
+for a model without mutation and with pure genetic drift. The
+distances are written to a file in a format appropriate for input to
+the distance matrix programs.
+
+<H2>
+    Algorithm
+</H2>
+
+
+This program computes any one of three measures of genetic distance
+from a set of gene frequencies in different populations (or
+species). The three are Nei's genetic distance (Nei, 1972),
+Cavalli-Sforza's chord measure (Cavalli- Sforza and Edwards, 1967) and
+Reynolds, Weir, and Cockerham's (1983) genetic distance. These are
+written to an output file in a format that can be read by the distance
+matrix phylogeny programs FITCH and KITSCH.
+
+<p>
+The three measures have somewhat different assumptions. All assume
+that all differences between populations arise from genetic
+drift. Nei's distance is formulated for an infinite isoalleles model
+of mutation, in which there is a rate of neutral mutation and each
+mutant is to a completely new alleles. It is assumed that all loci
+have the same rate of neutral mutation, and that the genetic
+variability initially in the population is at equilibrium between
+mutation and genetic drift, with the effective population size of each
+population remaining constant.
+
+<p>
+Nei's distance is: 
+
+
+<p>
+<pre>                                            
+                                      \   \
+                                      /_  /_  p1mi   p2mi
+                                       m   i
+           D  =  - ln  ( ------------------------------------- ).
+                                                                   
+                           \   \                \   \
+                         [ /_  /_  p1mi2]1/2   [ /_  /_  p2mi2]1/2     
+                            m   i                m   i
+</pre>
+<p>
+where m is summed over loci, i over alleles at the m-th locus, and where 
+
+<p>
+<pre>
+     p1mi 
+</pre>
+<p>
+is the frequency of the i-th allele at the m-th locus in population
+1. Subject to the above assumptions, Nei's genetic distance is
+expected, for a sample of sufficiently many equivalent loci, to rise
+linearly with time.
+
+<p>
+The other two genetic distances assume that there is no mutation, and
+that all gene frequency changes are by genetic drift alone. However
+they do not assume that population sizes have remained constant and
+equal in all populations. They cope with changing population size by
+having expectations that rise linearly not with time, but with the sum
+over time of 1/N, where N is the effective population size. Thus if
+population size doubles, genetic drift will be taking place more
+slowly, and the genetic distance will be expected to be rising only
+half as fast with respect to time. Both genetic distances are
+different estimators of the same quantity under the same model.
+
+<p>
+Cavalli-Sforza's chord distance is given by 
+
+
+<p>
+<pre>                                                              
+                   \               \                        \
+     D2    =    4  /_  [  1   -    /_   p1mi1/2 p 2mi1/2]  /  /_  (am  - 1)
+                    m               i                        m
+
+</pre>
+<p>
+where m indexes the loci, where i is summed over the alleles at the
+m-th locus, and where a is the number of alleles at the m-th locus. It
+can be shown that this distance always satisfies the triangle
+inequality. Note that as given here it is divided by the number of
+degrees of freedom, the sum of the numbers of alleles minus one. The
+quantity which is expected to rise linearly with amount of genetic
+drift (sum of 1/N over time) is D squared, the quantity computed
+above, and that is what is written out into the distance matrix.
+
+<p>
+Reynolds, Weir, and Cockerham's (1983) genetic distance is
+
+
+
+<p>
+<pre>                              
+                       \    \
+                       /_   /_  [ p1mi     -  p2mi]2
+                        m    i                  
+       D2     =      --------------------------------------
+                                           
+                         \               \
+                      2  /_   [  1   -   /_  p1mi    p2mi ]
+                          m               i 
+</pre>
+
+<p>
+where the notation is as before and D2 is the quantity that is
+expected to rise linearly with cumulated genetic drift.
+
+<p>
+Having computed one of these genetic distances, one which you feel is
+appropriate to the biology of the situation, you can use it as the
+input to the programs FITCH, KITSCH or NEIGHBOR. Keep in mind that the
+statistical model in those programs implicitly assumes that the
+distances in the input table have independent errors. For any measure
+of genetic distance this will not be true, as bursts of random genetic
+drift, or sampling events in drawing the sample of individuals from
+each population, cause fluctuations of gene frequency that affect many
+distances simultaneously. While this is not expected to bias the
+estimate of the phylogeny, it does mean that the weighing of evidence
+from all the different distances in the table will not be done with
+maximal efficiency. One issue is which value of the P (Power)
+parameter should be used. This depends on how the variance of a
+distance rises with its expectation. For Cavalli-Sforza's chord
+distance, and for the Reynolds et. al. distance it can be shown that
+the variance of the distance will be proportional to the square of its
+expectation; this suggests a value of 2 for P, which the default value
+for FITCH and KITSCH (there is no P option in NEIGHBOR).
+
+<p>
+If you think that the pure genetic drift model is appropriate, and are
+thus tempted to use the Cavalli-Sforza or Reynolds et. al. distances,
+you might consider using the maximum likelihood program CONTML
+instead. It will correctly weigh the evidence in that case. Like those
+genetic distances, it uses approximations that break down as loci
+start to drift all the way to fixation. Although Nei's distance will
+not break down in that case, it makes other assumptions about equality
+of substitution rates at all loci and constancy of population sizes.
+
+<p>
+qThe most important thing to remember is that genetic distance is not
+an abstract, idealized measure of "differentness". It is an estimate
+of a parameter (time or cumulated inverse effective population size)
+of the model which is thought to have generated the differences we
+see. As an estimate, it has statistical properties that can be
+assessed, and we should never have to choose between genetic distances
+based on their aesthetic properties, or on the personal prestige of
+their originators. Considering them as estimates focuses us on the
+questions which genetic distances are intended to answer, for if there
+are none there is no reason to compute them. For further perspective
+on genetic distances, I recommend my own paper evaluating Reynolds,
+Weir, and Cockerham (1983), and the material in Nei's book (Nei,
+1987).
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<!--#include file="inc/fgendist.usage" -->
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+<!--#include file="inc/fgendist.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+<!--#include file="inc/fgendist.itable" -->
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>fgendist</b> reads continuous character data
+
+<!--#include file="inc/contchardata.ihtml" -->
+<p>
+
+<!--#include file="inc/fgendist.input" -->
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+include file="inc/reportformats.ihtml"
+   -->
+
+<b>fgendist</b> output simply contains on its first line the number of
+species (or populations). Each species (or population) starts a new
+line, with its name printed out first, and then and there are up to
+nine genetic distances printed on each line, in the standard format
+used as input by the distance matrix programs. The output, in its
+default form, is ready to be used in the distance matrix programs.
+
+
+<p>
+
+<!--#include file="inc/fgendist.output" -->
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+None
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<!--#include file="inc/fgendist.isee" -->
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+<!--#include virtual="/apps/inc/jfelsenstein.address" -->
+
+<H2>
+    History
+</H2>
+
+<!--#include file="inc/fgendist.history" -->
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+<!--#include virtual="/apps/inc/target.itxt" -->
+
+
+
+
+
+
+
+
+
+
+
+</BODY>
+</HTML>
+

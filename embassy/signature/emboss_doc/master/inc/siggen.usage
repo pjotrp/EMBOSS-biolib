@@ -1,0 +1,35 @@
+<b>Here is a sample session with siggen</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>siggen </b>
+Generates a sparse protein signature from an alignment.
+Location of DAF files (domain alignment files) (input) [./]: <b>../domainalign-keep/daf</b>
+Specify mode of signature generation
+         1 : Use positions specified in alignment file
+         2 : Use a scoring method
+         3 : Generate a randomised signature
+Select number [1]: <b>2</b>
+Residue contacts scoring method
+         1 : Number
+         2 : Conservation
+         3 : Number and conservation
+         4 : None (structural data available)
+         5 : None (no structural data available)
+Select number [5]: <b>5</b>
+Sequence variability scoring method
+         1 : Substitution matrix
+         2 : Residue class
+         3 : None
+Select number [3]: <b>1</b>
+Substitution matrix to be used [EBLOSUM62]: <b>EBLOSUM62</b>
+The % sparsity of signature [10]: <b>15</b>
+Window size [0]: <b>0</b>
+Ignore alignment postitions with post_similar value of 0 [Y]: <b>Y</b>
+Location of signature files (output) [./]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.1">Go to the output files for this example</a><p><p>

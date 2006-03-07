@@ -1,0 +1,143 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>Nucleotide sequence filename and optional format, or reference (input USA)</td>
+<td>Readable sequence</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;sequence&gt;</i>.vrnafoldpf</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-constraintfile</td>
+<td>Constraint file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-paramfile</td>
+<td>Parameter file</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-temperature</td>
+<td>Temperature</td>
+<td>Any numeric value</td>
+<td>37.0</td>
+</tr>
+
+<tr>
+<td>-circular</td>
+<td>Allow circular RNA</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]gu</td>
+<td>Allow GU pairs</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]closegu</td>
+<td>Allow GU pairs at end of helices</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]lp</td>
+<td>Allow lonely pairs</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]convert</td>
+<td>Convert T to U</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-nsbases</td>
+<td>Non-standard bases</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-[no]tetraloop</td>
+<td>Stabilizing energies for tetra-loops</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-energy</td>
+<td>Rarely used option to fold sequences from the ABCD... alphabet</td>
+<td><table><tr><td>0</td> <td><i>(BP)</i></td></tr><tr><td>1</td> <td><i>(Any with GC)</i></td></tr><tr><td>2</td> <td><i>(Any with AU parameters)</i></td></tr></table></td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-scale</td>
+<td>Estimate of ensemble free energy</td>
+<td>Any numeric value</td>
+<td>1.07</td>
+</tr>
+
+<tr>
+<td>-dangles</td>
+<td>Method</td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td>1</td>
+</tr>
+
+<tr>
+<td>-dotoutfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>-ssoutfile</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+</table>

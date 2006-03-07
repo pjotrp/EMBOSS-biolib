@@ -1,0 +1,17 @@
+<b>Here is a sample session with topo</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>topo tsw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr -basic=db -ohaa=da -araa=dg -graph ps </b>
+Draws an image of a transmembrane protein
+Transmembrane Sections: <b>18 35 49 67 94 115 136 156 165 184 211 232</b>
+First membrane from the outside [Y]: <b>n</b>
+Signature Sections: <b>74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa</b>
+
+Created topo.ps
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

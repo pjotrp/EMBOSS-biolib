@@ -1,0 +1,82 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: ednaml.outfile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+Nucleic acid sequence Maximum Likelihood method, version 3.57c
+
+   5 Species,   13 Sites
+
+Name            Sequences
+----            ---------
+
+Alpha     	AACGTGGCCAAAT
+Beta      	AAGGTCGCCAAAC
+Gamma     	CATTTCGTCACAA
+Delta     	GGTATTTCGGCCT
+Epsilon   	GGGATCTCGGCCC
+
+Site category   Rate of change    Probability
+
+           1        1.000            0.400
+           2        3.200            0.600
+
+
+Empirical Base Frequencies:
+
+   A       0.24615
+   C       0.29231
+   G       0.24615
+  T(U)     0.21538
+
+Transition/transversion ratio =   2.000000
+
+(Transition/transversion parameter =   1.523077)
+
+
+                                                       +Epsilon   
+     +-------------------------------------------------3  
+  +--2                                                 +----Delta     
+  !  !  
+  !  +Beta      
+  !  
+--1--------------------Gamma     
+  !  
+  +---Alpha     
+
+
+remember: this is an unrooted tree!
+
+Ln Likelihood =   -71.83178
+
+Examined   15 trees
+
+ Between        And            Length      Approx. Confidence Limits
+ -------        ---            ------      ------- ---------- ------
+
+   1             2              0.08840     (     zero,     0.48704)
+   2             3              3.33144     (     zero,    12.20065) **
+   3          Epsilon           0.00003     (     zero,     0.39969)
+   3          Delta             0.30872     (     zero,     0.70442) **
+   2          Beta              0.00003     (     zero,     0.41145)
+   1          Gamma             1.35995     (     zero,     3.26620) **
+   1          Alpha             0.24900     (     zero,     0.68195)
+
+     *  = significantly positive, P &lt; 0.05
+     ** = significantly positive, P &lt; 0.01
+
+Combination of categories that contributes the most to the likelihood:
+
+             2122121111 212
+
+</pre>
+</td></tr></table><p>
+<p><h3>File: ednaml.treefile</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+(((Epsilon:0.00012,Delta:0.30872):3.33144,Beta:0.00012):0.08840,
+Gamma:1.35995,Alpha:0.24900);
+</pre>
+</td></tr></table><p>

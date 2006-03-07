@@ -1,0 +1,31 @@
+<b>Here is a sample session with fpromlk</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>fpromlk </b>
+Protein phylogeny by maximum likelihood
+Input (aligned) protein sequence set(s): <b>promlk.dat</b>
+Input tree file: <b></b>
+Output file [promlk.fpromlk]: <b></b>
+
+
+Adding species:
+   1. Alpha     
+   2. Beta      
+   3. Gamma     
+   4. Delta     
+   5. Epsilon   
+
+
+Output written to file "promlk.fpromlk"
+
+Tree also written onto file "promlk.treefile"
+
+Done.
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

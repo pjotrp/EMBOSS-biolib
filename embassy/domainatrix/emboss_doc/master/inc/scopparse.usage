@@ -1,0 +1,17 @@
+<b>Here is a sample session with scopparse</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>scopparse </b>
+Generate DCF file from raw SCOP files.
+Name of raw SCOP classification file dir.cla.scop.txt_X.XX (input).: <b>scop.cla.raw</b>
+Name of raw SCOP description file dir.des.scop.txt_X.XX (input).: <b>scop.des.raw</b>
+Omit domains comprising of more than one segment. [N]: <b>Y</b>
+Omit domains comprising segments from more than one chain. [N]: <b>N</b>
+Name of SCOP DCF file (domain classification file) (output). [test.scop]: <b>all.scop</b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

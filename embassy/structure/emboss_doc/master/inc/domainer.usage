@@ -1,0 +1,25 @@
+<b>Here is a sample session with domainer</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>domainer </b>
+Generates domain CCF files from protein CCF files.
+DCF file (domain classification file) (input): <b>../scopparse-keep/all.scop</b>
+Location of protein CCF files (clean coordinate files) (input). [.]: <b>../pdbplus-keep/</b>
+Location of domain CCF files (clean coordinate files) (output). [./]: <b></b>
+Location of domain PDB files (output). [./]: <b></b>
+Residue number mode
+         1 : Use original PDB residue number
+         2 : Use corrected residue number (index into SEQRES sequence)
+Select mode of operation [1]: <b>1</b>
+Output file [domainer_embl.log]: <b>domainer_embl.log</b>
+Second output file [domainer_pdb.log]: <b>domainer_pdb.log</b>
+
+D1CS4A_
+D1II7A_
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
