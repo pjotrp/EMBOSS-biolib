@@ -20437,7 +20437,7 @@ static AjBool acdSetQualAppl(const AcdPAcd thys, AjBool val)
 static void acdSelectPrompt(const AcdPAcd thys)
 {
     const AjPStr hdrstr;
-    AjPStr delim;
+    AjPStr delim = NULL;
     AjPStr value = NULL;
     AjPStrTok handle;
     static AjPStr line = NULL;
