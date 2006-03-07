@@ -1,0 +1,42 @@
+   Standard (Mandatory) qualifiers:
+  [-dbname]            string     Database name
+   -idformat           menu       Entry format
+   -directory          directory  Database directory
+   -filenames          string     Wildcard database filename
+   -release            string     Release number
+   -date               string     Index date
+   -outfile            outfile    Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -fields             menu       Index fields
+   -exclude            string     Wildcard filename(s) to exclude
+   -maxindex           integer    Maximum index length
+   -sortoptions        string     Sort options, typically '-T .' to use
+                                  current directory for work files and '-k
+                                  1,1' to force GNU sort to use the first
+                                  field
+   -[no]systemsort     boolean    Use system sort utility
+   -[no]cleanup        boolean    Clean up temporary files
+   -indexoutdir        outdir     Index directory
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report deaths
+
