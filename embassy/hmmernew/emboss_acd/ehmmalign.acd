@@ -32,7 +32,7 @@ seqset: seqfile
     parameter: "Y"
     type: "gapstopprotein"
     help: "File containing a (set of) sequence(s)"
-    aligned: "Y"
+    aligned: "N"
 ]
 infile: mapali
 [
