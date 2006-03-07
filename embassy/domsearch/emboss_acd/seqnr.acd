@@ -232,7 +232,7 @@ section: output [
   ]
 
   outdir: redoutdir [
-    standard: "@($(dored)==True)"
+    standard: "$(dored)"
     information: "Location of DHF files (domain hits files) of
                   redundant sequences (output)."
     help: "This option specifies the location of DHF files (domain
