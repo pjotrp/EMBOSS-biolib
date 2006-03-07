@@ -160,7 +160,7 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "protdist output"
+  knowntype: "distance matrix"
 ]
 
 boolean: printdata  [

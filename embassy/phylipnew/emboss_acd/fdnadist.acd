@@ -137,7 +137,7 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "dnadist output"
+  knowntype: "distance matrix"
 ]
 
 boolean: printdata  [
