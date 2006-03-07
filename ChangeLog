@@ -21,7 +21,7 @@
 	Another code cleanup is the addition of Exit functions to all
 	AJAX source files that could still have static memory allocated
 	when a program ends. We aim to clean up memory for all the
-	standadr memory tests in test/memtest.dat. Thsi includes creating
+	standadr memory tests in test/memtest.dat. This includes creating
 	a new fnuction acdReset which resets the stats of ACD processing
 	so that a new ACD file could, in theory, be read once a program
 	has completed.
@@ -30,7 +30,7 @@
 	function names. Old function names will be retained at least until
 	release 4.0.0. They are marked with the __deprecated flag, which
 	causes the gcc compiler to report all uses of the old name. Other
-	compilers are not affected.. The first set to be processed is in
+	compilers are not affected. The first set to be processed is in
 	ajstr.c (string and character functions).
 
 	Sequence reading from website URLs now defaults to HTTP 1.1, with
@@ -50,7 +50,7 @@
 
 	Translation functions in ajax/ajtranslate.c have been cleaned up.
 
-	New program backtranambig to backtranaslate as most ambiguous
+	New program backtranambig to backtranslate as most ambiguous
 	codons.
 	
 	Phylip sequence format can now read sets of alignemnts with blank
