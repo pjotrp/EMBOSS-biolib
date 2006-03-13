@@ -50,12 +50,11 @@ Static Char  *ancsymbol;   /* Ancestral state  */
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPFile outf;
 AjPFile inf;
 
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;

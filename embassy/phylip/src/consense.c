@@ -47,13 +47,12 @@ Static node *garbage;
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPFile outf;
 AjPFile treef;
 AjPFile inf;
  
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;

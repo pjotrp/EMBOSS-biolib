@@ -148,7 +148,6 @@ static double pamprobs[20][20] =
 AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPStr *methodlist;
 AjPStr *categlist;
 AjPStr *genlist;
@@ -168,7 +167,7 @@ AjPFile outf;
   ease = 0.457;
 
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
 

@@ -37,12 +37,11 @@ long f[(long)ww - (long)xx + 1][(long)ww - (long)xx + 1]
 AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPFile outf;
 
 
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
 

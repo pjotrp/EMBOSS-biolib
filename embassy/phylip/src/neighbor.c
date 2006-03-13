@@ -55,7 +55,6 @@ node **cluster;
 
 AjPSeqset seqset;
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPFile outf;
 AjPFile inf;
 AjPFile treef;
@@ -66,7 +65,7 @@ int i;
   outgrno = 1;
 
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;

@@ -88,7 +88,6 @@ boolean *names;
 AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-  AjStatus retval;
   AjPFile outf;
   AjPFile treef;
   int temp;
@@ -109,7 +108,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
   ancseq = false;
   
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv, "PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
   

@@ -58,7 +58,6 @@ void printweights();
 AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPStr *methodlist;
 AjPStr *matrixlist;
 AjPFile outf;
@@ -73,7 +72,7 @@ AjPFile outf;
   kimura = jinnei = freqsfrom = ml =jukes =false;
 
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
   outf = ajAcdGetOutfile("outfile");

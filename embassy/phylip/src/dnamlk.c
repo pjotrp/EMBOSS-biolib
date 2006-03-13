@@ -102,7 +102,6 @@ void maketree(void);
 AjPSeqset seqset;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPFile outf;
 AjPFile treef;
 AjPStr valstr;
@@ -136,7 +135,7 @@ int scanned;
   probcat[0] = 1.0;
 
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
 

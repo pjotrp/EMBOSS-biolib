@@ -28,7 +28,6 @@ Static boolean all, cavalli, lower, nei, reynolds,  mulsets, ibmpc,
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
-AjStatus retval;
 AjPFile outf;
 AjPFile inf;
 AjPStr *methodlist;
@@ -38,7 +37,7 @@ AjPStr *methodlist;
   reynolds = false;
 
   ajNamInit("emboss");
-  retval =  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  ajAcdInitP (pgm, argc, argv,"PHYLIP");
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
