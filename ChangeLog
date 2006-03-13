@@ -1,5 +1,14 @@
 	Version 3.1.0
 
+	Oddcomp had a number of bugs. A window size equal to the sequence
+	length resulted in no hits. The word size was used before reading
+	the input file. A match in the last possible window was missed.
+
+	Biosed modified to specify a position so it can be used to edit A
+	to L in position 2 (for example) in a single sequence or
+	throughout an alignment. Normal use is unchanged. If there is
+	demand, the target could be changed from a string to a pattern.
+
 	Clustal sequence format output is now version 1.83 with 60
 	bases/residues per line. Previous EMBOSS releases reported it as
 	1.4 and printed 50 bases/residues per line.
