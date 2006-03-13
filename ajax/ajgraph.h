@@ -130,8 +130,8 @@ const char*   ajGraphGetYTitleC(const AjPGraph thys);
 void          ajGraphHoriBars (ajint numofpoints, PLFLT *y,
 				   PLFLT *xmin, PLFLT *xmax);
 ajint         ajGraphInfo(AjPList* files);
-AjStatus      ajGraphInit (const char *pgm, ajint argc, char * const argv[]);
-AjStatus      ajGraphInitP (const char *pgm, ajint argc,char * const argv[],
+void          ajGraphInit (const char *pgm, ajint argc, char * const argv[]);
+void          ajGraphInitP (const char *pgm, ajint argc,char * const argv[],
 			    const char *package);
 void          ajGraphInitSeq (AjPGraph thys, const AjPSeq seq);
 AjBool        ajGraphIsData(const AjPGraph thys);
