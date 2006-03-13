@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     ajulong total = 0;
     ajulong other = 0;
     AjBool otherflag;
-    AjBool seqisnuc = ajFalse;
+    AjBool seqisprot = ajTrue;
     ajint increment = 1;
     ajint ringsize;
     ajlong steps = 0;
@@ -83,9 +83,6 @@ int main(int argc, char **argv)
     compdata = ajAcdGetInfile("infile");
     ignorebz = ajAcdGetBool("ignorebz");
 
-    /* number of overlapping words in a window */
-    ringsize = window - word + 1;
-
     /* Output some documentation to the results file */
     ajFmtPrintF(outfile, "#\n# Output from 'oddcomp'\n#\n");
     ajFmtPrintF(outfile, "# The Expected frequencies are taken from the "
@@ -94,6 +91,8 @@ int main(int argc, char **argv)
     /* read the required frequencies into a table */
     oddcomp_readexpfreq(&exptable, compdata, &word);
 
+    /* number of overlapping words in a window */
+    ringsize = window - word + 1;
 
     /* more notes */
     ajFmtPrintF(outfile, "#\n#\tWord size: %d\n",word);
@@ -102,10 +101,12 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	seqisnuc = ajSeqIsNuc(seq);
+	steps = 0;
+	seqisprot = ajSeqIsProt(seq);
+	ajDebug("Reading sequence '%S'\n", ajSeqGetName(seq));
 
 	/* not interested in nucleotide sequences so ignore any that get in */
-	if(seqisnuc)
+	if(!seqisprot)
 	    continue;
 
 	/* ignore sequences shorter than the window of interest */
@@ -117,7 +118,7 @@ int main(int argc, char **argv)
 	if(first_time_round)
 	{
 
-	    if(!embNmerGetNoElements(&no_elements, word, seqisnuc, ignorebz))
+	    if(!embNmerGetNoElements(&no_elements, word, ajFalse, ignorebz))
 		ajFatal("The word size is too large for the data "
 				"structure available.");
 
@@ -125,8 +126,7 @@ int main(int argc, char **argv)
 	    oddcomp_makebigarray(no_elements, &bigarray);
 
 	    oddcomp_makebigarray(ringsize, &windowbuffer); /* create
-								     ring
-								     buffer */
+							      ring buffer */
 
 	    first_time_round = ajFalse;
 	}
@@ -166,6 +166,8 @@ int main(int argc, char **argv)
 		bigarray[count] = - exp_freq;
 	    else
 		bigarray[count] = 0;
+	    ajDebug("loop a count:%Ld no_elements:%Ld bigarray[%Ld]:%Ld dispseq:%S ajb:%S\n",
+		    count, no_elements, count, bigarray[count], dispseq, ajb);
 	}
 
 
@@ -175,7 +177,10 @@ int main(int argc, char **argv)
 	*/
 	for(pos=1;pos<= ringsize; pos += increment)
 	{
-	    result = embNmerProt2int(s, word, pos, &otherflag,ignorebz);
+	    ajDebug("loop b pos:%d ringsize:%d increment:%d\n",
+		    pos, ringsize, increment);
+
+	    result = embNmerProt2int(s, word, pos-1, &otherflag,ignorebz);
 	    if(otherflag)
 		windowbuffer[pos%ringsize] = -1;
 	    else
@@ -187,61 +192,104 @@ int main(int argc, char **argv)
 
 	/*
 	**  ringbuffer now full. calculate the number of steps to get a
-	**  change in  state by working out the sum of negative values
+	**  change in state by working out the sum of negative values
 	*/
 
 	for(count=0; count<no_elements;count++)
+	{
 	    if(bigarray[count]<0)
 		steps -= bigarray[count];
+	    ajDebug("loop c count:%Ld no_elements:%Ld bigarray[%Ld]:%Ld steps:%Ld\n",
+		    count, no_elements, count,
+		    bigarray[count], steps);
 
-	for(pos=ringsize+1; pos <= ajSeqLen(seq)-word; pos += increment)
+	}
+
+	ajDebug("ringsize:%d seqlen:%d word:%d end:%d increment:%d\n",
+		ringsize, ajSeqLen(seq), word, ajSeqLen(seq)-word, increment);
+	/*
+	 **  need to check to see whether or not we have the
+	 **  necessary composition?
+	 */
+	if(steps==0)
 	{
-	    /*
-	    **  need to check to see whether or not we have the
-	    **  necessary composition?
-	    */
+	    for(count=0; count<no_elements;count++)
+		if(bigarray[count]<0)
+		    steps -= bigarray[count];
+	    
+	    /* now check to see if the composition is a hit. */
 	    if(steps==0)
 	    {
-		for(count=0; count<no_elements;count++)
-		    if(bigarray[count]<0)
-			steps -= bigarray[count];
-
-		/* now check to see if the composition is a hit. */
-		if(steps==0)
-		{
-		    ajFmtPrintF(outfile, "\t%s\n", ajSeqName(seq));
-		    total++;
-		    break;
-		}
-	    }
-	    else
-		steps--;
-
-	    result = embNmerProt2int(s, word, pos, &otherflag,ignorebz);
-
-	    /* uncount the word just leaving the window if it wasn't 'other'*/
-	    if(windowbuffer[pos%ringsize] >=0)
-		bigarray[windowbuffer[pos%ringsize]]--;
-	    else
-		other--;
-
-	    /* count this word */
-
-
-	    if(!otherflag)
-	    {
-		windowbuffer[pos%ringsize] = result;
-		bigarray[result]++;
-	    }
-	    else
-	    {
-		windowbuffer[pos%ringsize] = -1;
-		other++;
+		ajFmtPrintF(outfile, "\t%s\n", ajSeqName(seq));
+		total++;
+		continue;
 	    }
 	}
+	else {
+	    steps--;
+
+	    for(pos=ringsize+1; pos <= ajSeqLen(seq)-word+1; pos += increment)
+	    {
+		ajDebug("loop d pos:%d steps:%Ld\n",
+			pos, steps);
+
+		for(count=0; count<no_elements;count++)
+		    if(bigarray[count]<0)
+			ajDebug("bigarray[%Ld]:%Ld\n",
+				count, bigarray[count]);
+
+		result = embNmerProt2int(s, word, pos-1, &otherflag,ignorebz);
+
+		/* uncount the word just leaving the window if it wasn't 'other'*/
+		if(windowbuffer[pos%ringsize] >=0)
+		{
+		    bigarray[windowbuffer[pos%ringsize]]--;
+		    count = windowbuffer[pos%ringsize];
+		    ajDebug("pos:%d bigarray[%Ld] %Ld\n",
+			    pos, count, bigarray[count]);
+		}
+		else
+		    other--;
+
+		/* count this word */
+
+
+		if(!otherflag)
+		{
+		    windowbuffer[pos%ringsize] = result;
+		    bigarray[result]++;
+		    ajDebug("result:%Ld bigarray[%Ld] %Ld\n",
+			    result, result, bigarray[result]);
+		}
+		else
+		{
+		    windowbuffer[pos%ringsize] = -1;
+		    other++;
+		}
+		/*
+		 **  need to check to see whether or not we have the
+		 **  necessary composition?
+		 */
+		if(steps==0)
+		{
+		    for(count=0; count<no_elements;count++)
+			if(bigarray[count]<0)
+			    steps -= bigarray[count];
+
+		    /* now check to see if the composition is a hit. */
+		    if(steps==0)
+		    {
+			ajFmtPrintF(outfile, "\t%s\n", ajSeqName(seq));
+			total++;
+			break;
+		    }
+		}
+		else
+		    steps--;
+	    }
+	}
+
     }
-
-
     ajFmtPrintF(outfile, "\n#\tEND\t#\n");
 
     ajFileClose(&outfile);
