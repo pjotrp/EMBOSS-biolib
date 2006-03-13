@@ -61,7 +61,6 @@ void restdist_inputnumbers(AjPPhyloState state)
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   ajint numseqs;
 
   sitelength = 6.0;
@@ -79,7 +78,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     printf("\nRestriction site or fragment distances, ");
     printf("version %s\n\n",VERSION);
  
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylostates = ajAcdGetDiscretestates("data");
 

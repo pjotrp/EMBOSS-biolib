@@ -78,7 +78,6 @@ boolean goteof, haslengths, lengths;  /* ditto ... */
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
  
-  AjStatus retval;
   AjPStr matrixtype = NULL;
   ajint nummatrices=0;
   long inseed0;
@@ -99,7 +98,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   datasets = 1;
 
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     matrixtype = ajAcdGetListI("matrixtype", 1);
     if(ajStrMatchC(matrixtype, "l")) lower = true;

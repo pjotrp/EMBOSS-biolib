@@ -72,7 +72,6 @@ bitptr stps;
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   ajint numseqs=0;
   ajint numwts=0;
   AjPStr method = NULL;
@@ -95,7 +94,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   msets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylostates = ajAcdGetDiscretestates("infile");
 

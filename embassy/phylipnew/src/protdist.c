@@ -468,7 +468,6 @@ void protdist_inputnumbers(AjPSeqset seqset)
 
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
   AjPStr model = NULL;
   AjPStr gammamethod = NULL;
   AjPFloat basefreq;
@@ -502,7 +501,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
   
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     seqsets = ajAcdGetSeqsetall("sequence");
 

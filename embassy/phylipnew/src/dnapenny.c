@@ -112,8 +112,6 @@ long suppset[] =          /* this was previously a function. */
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
    
-  AjStatus retval;
-
   howoften = often;
   howmany = many;
   outgrno = 1;
@@ -132,7 +130,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   msets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
     seqsets = ajAcdGetSeqsetall("sequence");
 
     howmany = ajAcdGetInt("howmany");

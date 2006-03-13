@@ -66,7 +66,6 @@ double trweight;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
   mulsets = false;
   nophylo = false;
   printdata = false;
@@ -75,7 +74,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   writecont = false;
   reg = true;
 
-    retval =  embInitP (pgm, argc, argv,"PHYLIPNEW");
+    embInitP (pgm, argc, argv,"PHYLIPNEW");
 
     phylofreq = ajAcdGetFrequencies("infile");
     phylotrees = ajAcdGetTree("intreefile");

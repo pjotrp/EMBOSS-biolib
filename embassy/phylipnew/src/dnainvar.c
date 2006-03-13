@@ -62,8 +62,7 @@ long f[(long)ww - (long)xx + 1][(long)ww - (long)xx + 1]
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
- 
+  
   printdata = false;
   weights = false;
   dotdiff = true;
@@ -74,7 +73,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   msets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
     seqsets = ajAcdGetSeqsetall("sequence");
 
     numseqs = 0;

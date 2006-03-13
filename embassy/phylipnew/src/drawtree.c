@@ -242,9 +242,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   AjPStr plottercode = NULL;
   AjPStr getpreviewer = NULL;
   AjPStr labeldirection = NULL;
-  AjStatus retval;    
-
-  retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+  
+  embInitP (pgm, argc, argv, "PHYLIPNEW");
 
   n = (int)((pagex-hpmargin-0.01)/(paperx-hpmargin)+1.0);
   m = (int)((pagey-vpmargin-0.01)/(papery-vpmargin)+1.0);

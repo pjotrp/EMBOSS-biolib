@@ -77,15 +77,13 @@ Char  *ancsymbol;   /* Ancestral state  */
 
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
-
   ibmpc = IBMCRT;
   ansi = ANSICRT;
   progress = true;
   factorrequest = false;
   ancstrrequest = false;
 
-  retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+  embInitP (pgm, argc, argv, "PHYLIPNEW");
 
   inputfile = ajAcdGetInfile("infile");
 

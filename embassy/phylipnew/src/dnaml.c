@@ -162,7 +162,6 @@ void dnamlcopy(tree *a, tree *b, long nonodes, long categs)
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
     AjPStr gammamethod = NULL;
     ajint i;
     AjPFloat basefreq;
@@ -202,7 +201,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
 
     seqsets = ajAcdGetSeqsetall("sequence");

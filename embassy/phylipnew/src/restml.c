@@ -120,7 +120,6 @@ void restml_inputnumbers(AjPPhyloState state)
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   ajint numseqs;
 
   boolean rough;
@@ -144,7 +143,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylostates = ajAcdGetDiscretestates("data");
 

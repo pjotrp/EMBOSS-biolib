@@ -52,7 +52,6 @@ void   treeout(node *);
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   AjPStr method;
 
   /* Initial settings */
@@ -80,7 +79,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   progress = true;
   treeprint = true;
 
-  retval =  embInitP (pgm, argc, argv,"PHYLIPNEW");
+  embInitP (pgm, argc, argv,"PHYLIPNEW");
 
     phylotrees = ajAcdGetTree("intreefile");
     trees_in = 0;

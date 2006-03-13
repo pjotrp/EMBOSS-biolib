@@ -379,7 +379,6 @@ void copytree()
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   AjPStr initialtree = NULL;
 
   how = arb;
@@ -394,7 +393,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   screenwidth = 80;
 
 
-  retval = embInitP(pgm, argc, argv, "PHYLIPNEW");
+  embInitP(pgm, argc, argv, "PHYLIPNEW");
 
     seqsets = ajAcdGetSeqsetall("sequence");
 

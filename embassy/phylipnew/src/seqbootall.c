@@ -102,7 +102,6 @@ longer seed;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
   AjPStr typeofdata = NULL;
   AjPStr test = NULL; 
   AjPStr outputformat = NULL;
@@ -138,7 +137,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   factors = false;
   enzymes = false;
 
-    retval =  embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     seqset = ajAcdGetSeqset("infile");
 

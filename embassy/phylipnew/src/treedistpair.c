@@ -936,7 +936,6 @@ void read_second_file(pattern_elm ***pattern_array,
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   AjPStr disttype = NULL;
   AjPStr tree_p = NULL;
   AjPStr style = NULL;
@@ -965,7 +964,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   trout = false;
   prntsets = false;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylotrees = ajAcdGetTree("intreefile");
 

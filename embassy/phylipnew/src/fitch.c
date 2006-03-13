@@ -87,7 +87,6 @@ char *progname;
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   AjPStr matrixtype = NULL;
 
   long inseed0=0;
@@ -111,7 +110,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
    
     phylodist = ajAcdGetDistances("datafile");
 

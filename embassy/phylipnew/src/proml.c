@@ -517,7 +517,6 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   long i;
   double probsum=0.0;
 
-  AjStatus retval;
   AjPStr model = NULL;
   AjPStr gammamethod = NULL;
   AjPFloat hmmrates;
@@ -554,7 +553,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
   
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
 
     seqsets = ajAcdGetSeqsetall("sequence");

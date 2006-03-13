@@ -146,7 +146,6 @@ void restore_saved_tyme(tree *load_tree, double tymes[])
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
     AjPStr gammamethod = NULL;
     ajint i;
     AjPFloat basefreq;
@@ -182,7 +181,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   datasets = 1;
   mulsets = false;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     seqsets = ajAcdGetSeqsetall("sequence");
 

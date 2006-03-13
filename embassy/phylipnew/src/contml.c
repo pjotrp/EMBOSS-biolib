@@ -97,7 +97,6 @@ node *addwhere;
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 { 
 
-  AjStatus retval;
   AjPStr datatype = NULL;
 
   global = false;
@@ -116,7 +115,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylofreq = ajAcdGetFrequencies("infile");
 

@@ -123,7 +123,6 @@ boolean *names;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
   AjPStr initialtree = NULL;
   AjPStr method = NULL;
 
@@ -142,7 +141,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   scrollinc = 20;
   screenwidth = 80;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     phylostates = ajAcdGetDiscretestates("infile");
 

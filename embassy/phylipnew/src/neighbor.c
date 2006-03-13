@@ -51,7 +51,6 @@ node **cluster;
 
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
   AjPStr matrixtype = NULL;
   AjPStr treetype=NULL;
 
@@ -71,7 +70,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
    
     matrixtype = ajAcdGetListI("matrixtype", 1);
     if(ajStrMatchC(matrixtype, "l")) lower = true;

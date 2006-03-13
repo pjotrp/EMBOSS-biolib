@@ -87,7 +87,6 @@ long *zeros;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
 
   jumble = false;
   njumble = 1;
@@ -107,7 +106,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   msets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
     seqsets = ajAcdGetSeqsetall("sequence");
 
     phylotrees = ajAcdGetTree("intreefile");

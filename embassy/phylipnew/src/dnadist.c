@@ -70,7 +70,6 @@ void   writedists(void);
 
 void   emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-    AjStatus retval;
     AjPStr method = NULL;
     AjPStr gammamethod = NULL;
     AjPFloat basefreq;
@@ -101,7 +100,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   mulsets = false;
   datasets = 1;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
     seqsets = ajAcdGetSeqsetall("sequence");
 

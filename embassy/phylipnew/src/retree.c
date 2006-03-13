@@ -377,7 +377,6 @@ void copytree()
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
 
-  AjStatus retval;
   AjPStr initialtree = NULL;
   AjPStr format = NULL;
 
@@ -390,7 +389,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   nexus = false;
   xmltree = false;
 
-    retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+    embInitP (pgm, argc, argv, "PHYLIPNEW");
 
       phylotrees = ajAcdGetTree("intreefile");
 

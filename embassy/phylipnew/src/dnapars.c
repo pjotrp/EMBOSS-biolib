@@ -95,9 +95,7 @@ char *progname;
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
-  AjStatus retval;
-
-
+  
   jumble = false;
   njumble = 1;
   outgrno = 1;
@@ -119,7 +117,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   dotdiff = true;
   msets = 1;
 
-  retval = embInitP (pgm, argc, argv, "PHYLIPNEW");
+  embInitP (pgm, argc, argv, "PHYLIPNEW");
 
   seqsets = ajAcdGetSeqsetall("sequence");
   numseqs = 0;
