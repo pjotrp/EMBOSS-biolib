@@ -250,7 +250,8 @@ Command line arguments
    them).
 
    Standard (Mandatory) qualifiers:
-  [-alignfile]         seqset     Multiple sequence alignment file.
+  [-alignfile]         seqset     (Aligned) protein sequence set filename and
+                                  optional format, or reference (input USA)
    -n                  string     Name for this HMM. The name can be any
                                   string of non-whitespace characters (e.g.
                                   one 'word'). There is no length limit (at
@@ -430,13 +431,13 @@ Command line arguments
    -verbosity          boolean    Print more possibly useful stuff, such as
                                   the individual scores for each sequence in
                                   the alignment.
-   -weighting          menu       (B)(-wblosum in HMMER) Use the BLOSUM
-                                  filtering algorithm to weight the sequences.
-                                  Cluster the sequences at a given percentage
-                                  identity (see -idlevel); assign each
-                                  cluster a total weight of 1.0, distributed
-                                  equally amongst the members of that cluster.
-                                  (G)(-wgsc in HMMER) Use the
+   -weighting          menu       Values (B)(-wblosum in HMMER) Use the BLOSUM
+                                  filtering algorithm to weight the
+                                  sequences. Cluster the sequences at a given
+                                  percentage identity (see -idlevel); assign
+                                  each cluster a total weight of 1.0,
+                                  distributed equally amongst the members of
+                                  that cluster. (G)(-wgsc in HMMER) Use the
                                   Gerstein/Sonnhammer/Chothia ad hoc sequence
                                   weighting algorithm. This is the default.
                                   (K)(-wme in HMMER) Use the Krogh/Mitchison
@@ -520,8 +521,8 @@ Command line arguments
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-alignfile]
-   (Parameter 1) Multiple sequence alignment file. Readable set of
-   sequences Required
+   (Parameter 1) (Aligned) protein sequence set filename and optional
+   format, or reference (input USA) Readable set of sequences Required
    -n Name for this HMM. The name can be any string of non-whitespace
    characters (e.g. one 'word'). There is no length limit (at least not
    one imposed by HMMER; your shell will complain about command line
@@ -649,21 +650,21 @@ Command line arguments
    -swentry and -swexit. Any numeric value 0.5
    -verbosity Print more possibly useful stuff, such as the individual
    scores for each sequence in the alignment. Boolean value Yes/No No
-   -weighting (B)(-wblosum in HMMER) Use the BLOSUM filtering algorithm
-   to weight the sequences. Cluster the sequences at a given percentage
-   identity (see -idlevel); assign each cluster a total weight of 1.0,
-   distributed equally amongst the members of that cluster. (G)(-wgsc in
-   HMMER) Use the Gerstein/Sonnhammer/Chothia ad hoc sequence weighting
-   algorithm. This is the default. (K)(-wme in HMMER) Use the
-   Krogh/Mitchison maximum entropy algorithm to 'weight' the sequences.
-   This supercedes the Eddy/Mitchison/Durbin maximum discrimination
-   algorithm, which gives almost identical weights but is less robust. ME
-   weighting seems to give a marginal increase in sensitivity over the
-   default GSC weights, but takes a fair amount of time. (W) (-wpb in
-   HMMER) Use the Henikoff position-based weighting scheme. (V)
-   (-wvoronoi in HMMER) Use the Sibbald/Argos Voronoi sequence weighting
-   algorithm in place of the default GSC weighting. (N) (-wnone in HMMER)
-   Turn off all sequence weighting.
+   -weighting Values (B)(-wblosum in HMMER) Use the BLOSUM filtering
+   algorithm to weight the sequences. Cluster the sequences at a given
+   percentage identity (see -idlevel); assign each cluster a total weight
+   of 1.0, distributed equally amongst the members of that cluster.
+   (G)(-wgsc in HMMER) Use the Gerstein/Sonnhammer/Chothia ad hoc
+   sequence weighting algorithm. This is the default. (K)(-wme in HMMER)
+   Use the Krogh/Mitchison maximum entropy algorithm to 'weight' the
+   sequences. This supercedes the Eddy/Mitchison/Durbin maximum
+   discrimination algorithm, which gives almost identical weights but is
+   less robust. ME weighting seems to give a marginal increase in
+   sensitivity over the default GSC weights, but takes a fair amount of
+   time. (W) (-wpb in HMMER) Use the Henikoff position-based weighting
+   scheme. (V) (-wvoronoi in HMMER) Use the Sibbald/Argos Voronoi
+   sequence weighting algorithm in place of the default GSC weighting.
+   (N) (-wnone in HMMER) Turn off all sequence weighting.
    B (Blosum)
    G (Gerstein/Sonnhammer/Chothia)
    K (Krogh/Mitchison)

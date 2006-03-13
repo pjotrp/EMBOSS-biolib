@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-alignfile]<br>(Parameter 1)</td>
-<td>Multiple sequence alignment file.</td>
+<td>(Aligned) protein sequence set filename and optional format, or reference (input USA)</td>
 <td>Readable set of sequences</td>
 <td><b>Required</b></td>
 </tr>
@@ -156,7 +156,7 @@
 
 <tr>
 <td>-weighting</td>
-<td>(B)(-wblosum in HMMER) Use the BLOSUM filtering algorithm to weight the sequences. Cluster the sequences at a given percentage identity (see -idlevel); assign each cluster a total weight of 1.0, distributed equally amongst the members of that cluster. (G)(-wgsc in HMMER) Use the Gerstein/Sonnhammer/Chothia ad hoc sequence weighting algorithm. This is the default. (K)(-wme in HMMER) Use the Krogh/Mitchison maximum entropy algorithm to 'weight' the sequences. This supercedes the Eddy/Mitchison/Durbin maximum discrimination algorithm, which gives almost identical weights but is less robust. ME weighting seems to give a marginal increase in sensitivity over the default GSC weights, but takes a fair amount of time. (W) (-wpb in HMMER) Use the Henikoff position-based weighting scheme. (V) (-wvoronoi in HMMER) Use the Sibbald/Argos Voronoi sequence weighting algorithm in place of the default GSC weighting. (N) (-wnone in HMMER) Turn off all sequence weighting.</td>
+<td>Values (B)(-wblosum in HMMER) Use the BLOSUM filtering algorithm to weight the sequences. Cluster the sequences at a given percentage identity (see -idlevel); assign each cluster a total weight of 1.0, distributed equally amongst the members of that cluster. (G)(-wgsc in HMMER) Use the Gerstein/Sonnhammer/Chothia ad hoc sequence weighting algorithm. This is the default. (K)(-wme in HMMER) Use the Krogh/Mitchison maximum entropy algorithm to 'weight' the sequences. This supercedes the Eddy/Mitchison/Durbin maximum discrimination algorithm, which gives almost identical weights but is less robust. ME weighting seems to give a marginal increase in sensitivity over the default GSC weights, but takes a fair amount of time. (W) (-wpb in HMMER) Use the Henikoff position-based weighting scheme. (V) (-wvoronoi in HMMER) Use the Sibbald/Argos Voronoi sequence weighting algorithm in place of the default GSC weighting. (N) (-wnone in HMMER) Turn off all sequence weighting.</td>
 <td><table><tr><td>B</td> <td><i>(Blosum)</i></td></tr><tr><td>G</td> <td><i>(Gerstein/Sonnhammer/Chothia)</i></td></tr><tr><td>K</td> <td><i>(Krogh/Mitchison)</i></td></tr><tr><td>W</td> <td><i>(Henikoff)</i></td></tr><tr><td>V</td> <td><i>(Sibbald/Argos Voronoi)</i></td></tr><tr><td>N</td> <td><i>(None)</i></td></tr></table></td>
 <td>G</td>
 </tr>

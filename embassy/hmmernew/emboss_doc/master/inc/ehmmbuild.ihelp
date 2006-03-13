@@ -1,5 +1,6 @@
    Standard (Mandatory) qualifiers:
-  [-alignfile]         seqset     Multiple sequence alignment file.
+  [-alignfile]         seqset     (Aligned) protein sequence set filename and
+                                  optional format, or reference (input USA)
    -n                  string     Name for this HMM. The name can be any
                                   string of non-whitespace characters (e.g.
                                   one 'word'). There is no length limit (at
@@ -179,13 +180,13 @@
    -verbosity          boolean    Print more possibly useful stuff, such as
                                   the individual scores for each sequence in
                                   the alignment.
-   -weighting          menu       (B)(-wblosum in HMMER) Use the BLOSUM
-                                  filtering algorithm to weight the sequences.
-                                  Cluster the sequences at a given percentage
-                                  identity (see -idlevel); assign each
-                                  cluster a total weight of 1.0, distributed
-                                  equally amongst the members of that cluster.
-                                  (G)(-wgsc in HMMER) Use the
+   -weighting          menu       Values (B)(-wblosum in HMMER) Use the BLOSUM
+                                  filtering algorithm to weight the
+                                  sequences. Cluster the sequences at a given
+                                  percentage identity (see -idlevel); assign
+                                  each cluster a total weight of 1.0,
+                                  distributed equally amongst the members of
+                                  that cluster. (G)(-wgsc in HMMER) Use the
                                   Gerstein/Sonnhammer/Chothia ad hoc sequence
                                   weighting algorithm. This is the default.
                                   (K)(-wme in HMMER) Use the Krogh/Mitchison
