@@ -24,8 +24,10 @@
 
 
 static void biosed_replace(AjPStr *substr,
-			   const AjPStr target, const AjPStr replace);
-static void biosed_delete(AjPStr *substr, const AjPStr target);
+			   const AjPStr target, const AjPStr replace,
+			   ajint targetpos, ajint begin);
+static void biosed_delete(AjPStr *substr, const AjPStr target,
+			   ajint targetpos, ajint begin);
 
 
 
@@ -44,6 +46,7 @@ int main(int argc, char **argv)
     AjPStr	 replace;
     AjBool       delete;
     AjPSeqout    outseq;
+    ajint        targetpos;
 
     AjPStr       substr = NULL;
     AjPStr       str    = NULL;
@@ -58,6 +61,7 @@ int main(int argc, char **argv)
     seqall  = ajAcdGetSeqall("sequence");
     delete  = ajAcdGetToggle("delete");
     target  = ajAcdGetString("target");
+    targetpos  = ajAcdGetInt("position");
     replace = ajAcdGetString("replace");
     outseq  = ajAcdGetSeqout("outseq");
 
@@ -77,9 +81,9 @@ int main(int argc, char **argv)
 	ajStrFmtUpper(&substr);
 
 	if(!delete)
-	    biosed_replace(&substr,target,replace);
+	    biosed_replace(&substr,target,replace,targetpos, begin);
 	else
-	    biosed_delete(&substr,target);
+	    biosed_delete(&substr,target,targetpos, begin);
 
 	ajSeqReplace(seq,substr);
 	ajSeqAllWrite(outseq,seq);
@@ -104,13 +108,16 @@ int main(int argc, char **argv)
 ** @param [w] substr [AjPStr *] sequence
 ** @param [r] target [const AjPStr] target pattern
 ** @param [r] replace [const AjPStr] replacement subsequence
+** @param [r] targetpos [ajint] target position
+** @param [r] begin [ajint] first base of sequence
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void biosed_replace(AjPStr *substr,
-			   const AjPStr target, const AjPStr replace)
+			   const AjPStr target, const AjPStr replace,
+			   ajint targetpos, ajint begin)
 {
     AjPStr str = NULL;
     AjPStr tmp = NULL;
@@ -129,21 +136,40 @@ static void biosed_replace(AjPStr *substr,
 
     tlen = ajStrGetLen(target);
 
-    while((q=strstr(p,v)))
+    if(targetpos)
     {
-	end = q-p-1;
-
-	if(end > -1)
-	{
-	    ajStrAssignSubC(&tmp,p,0,end);
-	    ajStrAppendS(&str,tmp);
+	q = p;
+	p += (targetpos - begin);
+	end = p - q - 1;
+	if(ajCharPrefixS(p, target)) {
+	    if(end > -1)
+	    {
+		ajStrAssignSubC(&tmp,q,0,end);
+		ajStrAppendS(&str,tmp);
+	    }
+	    p += tlen;
+	    ajStrAppendS(&str,replace);
+	    ajStrAppendC(&str,p);
+	    ajStrAssignS(substr,str);
 	}
-
-	ajStrAppendS(&str,replace);
-	p = q+tlen;
     }
-    ajStrAppendC(&str,p);
-    ajStrAssignS(substr,str);
+    else {
+	while((q=strstr(p,v)))
+	{
+	    end = q-p-1;
+	    
+	    if(end > -1)
+	    {
+		ajStrAssignSubC(&tmp,p,0,end);
+		ajStrAppendS(&str,tmp);
+	    }
+	    
+	    ajStrAppendS(&str,replace);
+	    p = q+tlen;
+	}
+	ajStrAppendC(&str,p);
+	ajStrAssignS(substr,str);
+    }
 
     ajStrDel(&str);
     ajStrDel(&tmp);
@@ -160,12 +186,15 @@ static void biosed_replace(AjPStr *substr,
 **
 ** @param [w] substr [AjPStr*] sequence
 ** @param [r] target [const AjPStr] target pattern
+** @param [r] targetpos [ajint] target position
+** @param [r] begin [ajint] first base of sequence
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void biosed_delete(AjPStr *substr, const AjPStr target)
+static void biosed_delete(AjPStr *substr, const AjPStr target,
+			   ajint targetpos, ajint begin)
 {
     AjPStr str = NULL;
     char   *p  = NULL;
@@ -173,22 +202,43 @@ static void biosed_delete(AjPStr *substr, const AjPStr target)
     const char   *v  = NULL;
     char   *t  = NULL;
     ajint  tlen = 0;
+    AjPStr tmp = NULL;
+    ajint end;
 
     str = ajStrNew();
+    tmp = ajStrNew();
     ajStrAssignS(&str,*substr);
     p = ajStrGetuniquePtr(&str);
     v = ajStrGetPtr(target);
     tlen = ajStrGetLen(target);
 
-    while((q=strstr(p,v)))
+    if(targetpos)
     {
-	t = q + tlen;
-	p = t;
-	while((*q++=*p++));
-	p = t-1;
+	q = p;
+	p += (targetpos - begin);
+	end = p - q - 1;
+	if(ajCharPrefixS(p, target)) {
+	    if(end > -1)
+	    {
+		ajStrAssignSubC(&tmp,q,0,end);
+	    }
+	    p += tlen;
+	    ajStrAppendC(&tmp,p);
+	    ajStrAssignS(substr,tmp);
+	}
     }
-    ajStrAssignC(substr,ajStrGetPtr(str));
+    else {
+	while((q=strstr(p,v)))
+	{
+	    t = q + tlen;
+	    p = t;
+	    while((*q++=*p++));
+	    p = t-1;
+	}
+	ajStrAssignC(substr,ajStrGetPtr(str));
+    }
     ajStrDel(&str);
+    ajStrDel(&tmp);
 
     return;
 }
