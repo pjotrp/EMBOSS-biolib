@@ -2906,6 +2906,70 @@ static char* acdResource[] =
 
 /*** command line retrieval routines ***/
 
+/* @filesection ajacd ********************************************************
+**
+** @nam1rule aj Function belongs to the AJAX library.
+**
+*/
+
+
+/* @datasection [none] ACD internals ***********************************
+**
+** Function is for processing ACD internals.
+**
+** @nam2rule Acd ACD processing
+*/
+
+/* @section initialisation ****************************************************
+**
+** Initialises everything needed for ACD processing. 
+**
+** @fdata [none]
+**
+** @nam3rule  Init    Initialise internals
+** @suffix    P       Package name provided
+**
+** @argrule   Init    pgm [const char*] Program name
+** @argrule   Init    argc [int] Number of command line arguments
+** @argrule   Init    argv [char*[]] kCommand line arguments
+** @argrule   P    package [const char*] Package name (empty for default name)
+**
+** @valrule   *  [void]
+** @fcategory misc
+**
+******************************************************************************/
+
+
+
+
+
+
+
+/* @func ajAcdInit ************************************************************
+**
+** Initialises everything. Reads an ACD (AJAX Command Definition) file
+** prompts the user for any missing information, reads all sequences
+** and other input into local structures which applications can request.
+**
+** @param [r] pgm [const char*] Application name, used as the name
+**                              of the ACD file
+** @param [r] argc [ajint] Number of arguments provided on the command line,
+**        usually passsed as-is by the calling application.
+** @param [r] argv [char* const[]] Actual arguments as an array of text.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajAcdInit(const char *pgm, ajint argc, char * const argv[])
+{
+    return ajAcdInitP(pgm, argc, argv, "");
+}
+
+
+
+
+
+
 /* @func ajAcdInitP ***********************************************************
 **
 ** Initialises everything. Reads an ACD (AJAX Command Definition) file
@@ -2918,11 +2982,11 @@ static char* acdResource[] =
 **        usually passsed as-is by the calling application.
 ** @param [r] argv [char* const[]] Actual arguments as an array of text.
 ** @param [r] package [const char*] Package name, used to find the ACD file
-** @return [AjStatus] Always returns ajStatusOK or aborts.
+** @return [void]
 ** @@
 ******************************************************************************/
 
-AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
+void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 		    const char *package)
 {    
     static AjPFile acdFile = NULL;
@@ -3139,33 +3203,8 @@ AjStatus ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     ajStrDel(&acdPack);
     ajStrDel(&acdFName);
     
-    return ajStatusOK;
+    return;
 }
-
-
-
-
-/* @func ajAcdInit ************************************************************
-**
-** Initialises everything. Reads an ACD (AJAX Command Definition) file
-** prompts the user for any missing information, reads all sequences
-** and other input into local structures which applications can request.
-**
-** @param [r] pgm [const char*] Application name, used as the name
-**                              of the ACD file
-** @param [r] argc [ajint] Number of arguments provided on the command line,
-**        usually passsed as-is by the calling application.
-** @param [r] argv [char* const[]] Actual arguments as an array of text.
-** @return [AjStatus] Always returns ajStatusOK or aborts.
-** @@
-******************************************************************************/
-
-AjStatus ajAcdInit(const char *pgm, ajint argc, char * const argv[])
-{
-    return ajAcdInitP(pgm, argc, argv, "");
-}
-
-
 
 
 /*===========================================================================*/
@@ -6578,23 +6617,12 @@ AjPPhyloState* ajAcdGetDiscretestates(const char *token)
 
 
 
+/* @obsolete ajAcdGetDiscretestatesI
+** @replace ajAcdGetDiscretestatesSingle (1,2/1)
+*/
 
-/* @func ajAcdGetDiscretestatesI **********************************************
-**
-** Returns an from an array item of type Discrete states as defined in a named
-** ACD item, which is an array of objects terminated by a null value.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @param [r] num [ajint] Token number (1 for the first)
-** @return [AjPPhyloState] Discrete states object. The data was already set by
-**         acdSetDiscretestates so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPPhyloState ajAcdGetDiscretestatesI(const char *token, ajint num)
+AjPPhyloState __deprecated ajAcdGetDiscretestatesI(const char *token,
+						   ajint num)
 {
     AjPPhyloState* val;
     ajint i;
@@ -8152,21 +8180,11 @@ AjPStr* ajAcdGetList(const char *token)
 
 
 
-/* @func ajAcdGetListI ********************************************************
-**
-** Returns one item from an array of type List as defined in a named
-** ACD item, which is an array of strings terminated by a null value.
-** Called by the application after all ACD values have been set, and
-** simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @param [r] num [ajint] Token number (1 for the first)
-** @return [AjPStr] String array of values with NULL for last element.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
+/* @obsolete ajAcdGetListI
+** @replace ajAcdGetListSingle (1,2/1)
+*/
 
-AjPStr ajAcdGetListI(const char *token, ajint num)
+AjPStr __deprecated ajAcdGetListI(const char *token, ajint num)
 {
     AjPStr *val;
     ajint i;
@@ -10231,21 +10249,11 @@ AjPStr* ajAcdGetSelect(const char *token)
 
 
 
-/* @func ajAcdGetSelectI ******************************************************
-**
-** Returns one item from an array of type Select as defined in a named
-** ACD item, which is an array of strings terminated by a null value.
-** Called by the application after all ACD values have been set, and
-** simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @param [r] num [ajint] Token number (1 for the first)
-** @return [AjPStr] String array of values with NULL as last element.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
+/* @obsolete ajAcdGetSelectI
+** @replace ajAcdGetSelectSingle (1,2/1)
+*/
 
-AjPStr ajAcdGetSelectI(const char *token, ajint num)
+AjPStr __deprecated ajAcdGetSelectI(const char *token, ajint num)
 {
     AjPStr* val;
     ajint i;
@@ -12134,21 +12142,11 @@ AjPSeqset* ajAcdGetSeqsetall(const char *token)
 
 
 
-/* @func ajAcdGetSeqsetallI ***************************************************
-**
-** Returns an item of type Seqset as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @param [r] num [ajint] Sequence set number (1 for the first)
-** @return [AjPSeqset] Sequence set object. The sequence was already loaded by
-**         acdSetSeqset so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
+/* @obsolete ajAcdGetSeqsetallI
+** @replace ajAcdGetSeqsetallSingle (1,2/1)
+*/
 
-AjPSeqset ajAcdGetSeqsetallI(const char *token, ajint num)
+AjPSeqset __deprecated ajAcdGetSeqsetallI(const char *token, ajint num)
 {
     AjPSeqset *val;
     ajint i;
@@ -12461,21 +12459,11 @@ AjPPhyloTree* ajAcdGetTree(const char *token)
 
 
 
-/* @func ajAcdGetTreeI ********************************************************
-**
-** Returns an item of type Tree as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @param [r] num [ajint] Token number (1 for the first)
-** @return [AjPPhyloTree] Tree object. The data was already set by
-**         acdSetTree so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
+/* @obsolete ajAcdGetTreeI
+** @replace ajAcdGetTreeSingle (1,2/1)
+*/
 
-AjPPhyloTree ajAcdGetTreeI(const char *token, ajint num)
+AjPPhyloTree __deprecated ajAcdGetTreeI(const char *token, ajint num)
 {
     AjPPhyloTree *val;
     ajint i;

@@ -24,7 +24,8 @@ AjPDir        ajAcdGetDirectory (const char *token);
 AjPStr        ajAcdGetDirectoryName (const char *token);
 AjPList       ajAcdGetDirlist (const char *token);
 AjPPhyloState* ajAcdGetDiscretestates (const char *token);
-AjPPhyloState ajAcdGetDiscretestatesI (const char *token, ajint num);
+AjPPhyloState __deprecated ajAcdGetDiscretestatesI (const char *token,
+						    ajint num);
 AjPPhyloState ajAcdGetDiscretestatesSingle (const char *token);
 AjPPhyloDist  ajAcdGetDistances (const char *token);
 AjPFeattable  ajAcdGetFeat (const char *token);
@@ -38,7 +39,7 @@ AjPFile       ajAcdGetInfile (const char *token);
 const AjPStr  ajAcdGetInputs (void);
 ajint         ajAcdGetInt (const char *token);
 AjPStr*       ajAcdGetList (const char *token);
-AjPStr        ajAcdGetListI (const char *token, ajint num);
+AjPStr        __deprecated ajAcdGetListI (const char *token, ajint num);
 AjPStr        ajAcdGetListSingle(const char *token);
 AjPMatrix     ajAcdGetMatrix (const char *token);
 AjPMatrixf    ajAcdGetMatrixf (const char *token);
@@ -63,7 +64,7 @@ AjPRegexp     ajAcdGetRegexp (const char *token);
 AjPReport     ajAcdGetReport (const char *token);
 AjPFile       ajAcdGetScop (const char *token);
 AjPStr*       ajAcdGetSelect (const char *token);
-AjPStr        ajAcdGetSelectI (const char *token, ajint num);
+AjPStr        __deprecated ajAcdGetSelectI (const char *token, ajint num);
 AjPStr        ajAcdGetSelectSingle (const char *token);
 AjPSeq        ajAcdGetSeq (const char *token);
 AjPSeqall     ajAcdGetSeqall (const char *token);
@@ -72,15 +73,16 @@ AjPSeqout     ajAcdGetSeqoutall (const char *token);
 AjPSeqout     ajAcdGetSeqoutset (const char *token);
 AjPSeqset     ajAcdGetSeqset (const char *token);
 AjPSeqset*    ajAcdGetSeqsetall (const char *token);
-AjPSeqset     ajAcdGetSeqsetallI (const char *token, ajint num);
+AjPSeqset     __deprecated ajAcdGetSeqsetallI (const char *token, ajint num);
 AjPSeqset     ajAcdGetSeqsetallSingle (const char *token);
 AjPStr        ajAcdGetString (const char *token);
 AjBool        ajAcdGetToggle (const char *token);
 AjPPhyloTree* ajAcdGetTree (const char *token);
-AjPPhyloTree  ajAcdGetTreeI (const char *token, ajint num);
+AjPPhyloTree  __deprecated ajAcdGetTreeI (const char *token, ajint num);
 AjPPhyloTree  ajAcdGetTreeSingle (const char *token);
-AjStatus      ajAcdInit (const char *pgm, ajint argc, char * const argv[]);
-AjStatus      ajAcdInitP (const char *pgm, ajint argc, char * const argv[],
+
+void          ajAcdInit (const char *pgm, ajint argc, char * const argv[]);
+void          ajAcdInitP (const char *pgm, ajint argc, char * const argv[],
 			  const char *package);
 void          ajAcdPrintType (AjPFile outf, AjBool full);
 void          ajAcdPrintQual(AjPFile outf, AjBool full);
