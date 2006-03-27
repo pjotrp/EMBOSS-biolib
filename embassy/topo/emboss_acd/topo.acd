@@ -24,6 +24,9 @@ section: required [
 range: sections  [
   standard: "y"
   information: "Transmembrane Sections"
+  minsize: "1"
+  minimum: "1"
+  maximum: "$(sequence.length)"
   help: "Examples of region specifications are: \
          24-45, 56-78 \
          1:45, 67=99;765..888 \
@@ -45,8 +48,11 @@ toggle: signature  [
 range: sigrange  [
   standard: "$(signature)"
   information: "Signature Sections"
+  minimum: "1"
+  maximum: "$(sequence.length)"
   help: "Examples of ranges specifications are: \
-         10-10 CF, 56-78 SY\ 1:45 SR, 67=99 HY;765..888 SF \
+         10-10 CF, 56-78 SY\
+         1:45 SR, 67=99 HY;765..888 SF \
          1,5,HG,8,10,HY,23,45,SR,57,99,UG"
 ]
 
@@ -63,18 +69,23 @@ list: cyssymbol  [
   minimum: "1"
   maximum: "1"
   header: "Symbol type for CYS sites outside of membrane"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display cys sites"
@@ -90,18 +101,23 @@ list: glysymbol  [
   maximum: "1"
   header: "Symbol type for N-glycosylation sites outside of
            membrane"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display N-glycosylation sites outside of
@@ -116,18 +132,23 @@ list: acidicaa  [
   minimum: "1"
   maximum: "1"
   header: "Acidic amino acid Symbol type"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display acidic amino acids"
@@ -139,18 +160,23 @@ list: basicaa  [
   minimum: "1"
   maximum: "1"
   header: "Basic amino acid Symbol type"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display basic amino acids"
@@ -162,18 +188,23 @@ list: amineaa  [
   minimum: "1"
   maximum: "1"
   header: "Amine amino acid Symbol type"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display amine amino acids"
@@ -185,18 +216,23 @@ list: ohaa  [
   minimum: "1"
   maximum: "1"
   header: "OH- amino acid Symbol type"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display OH- amino acids"
@@ -208,18 +244,23 @@ list: araa  [
   minimum: "1"
   maximum: "1"
   header: "Aromatic amino acid Symbol type"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display aromatic amino acids"
@@ -231,18 +272,23 @@ list: proline  [
   minimum: "1"
   maximum: "1"
   header: "Prolines Symbol type"
-  values: "N: None, CF: circle, SF: square, HF: hexagon, UF: up
-           arrpw, DF: down arrow, C: black circle, CG: green circle, CR: red
-           circle, CB: blue circle, CA: aqua circle, CM: magenta circle, CY:
-           yellow circle, S: black square, SG: green square, SR: red square,
-           SB: blue square, SA: aqua square, SM: magenta square, SY: yellow
-           square, H: black hexagon, HG: green hexagon, HR: red hexagon, HB:
-           blue hexagon, HA: aqua hexagon, HM: magenta hexagon, HY: yellow
-           hexagon, U: black up arrow, UG: green up arrow, UR: red up arrow,
-           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow, UY:
-           yellow up arrow, D: black down arrow, DG: green down arrow, DR:
-           red down arrow, DB: blue down arrow, DA: aqua down arrow, DM:
-           magenta down arrow, DY: yellow down arrow"
+  values: "N: None, CF: circle, SF: square, HF: hexagon,
+           UF: up arrow, DF: down arrow,
+           C: black circle, CG: green circle, CR: red circle,
+           CB: blue circle, CA: aqua circle, CM: magenta circle,
+           CY: yellow circle,
+           S: black square, SG: green square, SR: red square,
+           SB: blue square, SA: aqua square, SM: magenta square,
+           SY: yellow square,
+           H: black hexagon, HG: green hexagon, HR: red hexagon,
+           HB: blue hexagon, HA: aqua hexagon, HM: magenta hexagon,
+           HY: yellow hexagon,
+           U: black up arrow, UG: green up arrow, UR: red up arrow,
+           UB: blue up arrow, UA: aqua up arrow, UM: magenta up arrow,
+           UY: yellow up arrow,
+           D: black down arrow, DG: green down arrow, DR: red down arrow,
+           DB: blue down arrow, DA: aqua down arrow, DM: magenta down arrow,
+           DY: yellow down arrow"
   delimiter: ","
   codedelimiter: ":"
   information: "Symbol to display prolines"

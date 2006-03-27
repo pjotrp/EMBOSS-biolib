@@ -12,7 +12,7 @@
 #define maxdocstring  256/* length of seq. definition*/
                                 /* (actual limit is 1 less)*/
 
-typedef struct sequence {
+typedef struct topoSequence {
   int check                 ;/* checksum [for the whole entry]*/
   int len                   ;/* entry length*/
   int rev                   ;/* strand of interest (.false.="+")*/
@@ -33,6 +33,6 @@ typedef struct sequence {
   char number[maxaccnum+1] ;/* accession number for sequence*/
   char doc[maxdocstring+1] ;/* sequence definition*/
   char seq[maxseqlen+1]    ;/* current sequence*/
-} sequence;
+} topoSequence;
 
 /*!end */ 
