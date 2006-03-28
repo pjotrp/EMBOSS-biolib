@@ -73,6 +73,8 @@ void    embWordMatchListDelete (AjPList* plist);
 void    embWordMatchListPrint (AjPFile file, const AjPList list);
 void    embWordPrintTable  (const AjPTable table);
 void    embWordPrintTableF (const AjPTable table, AjPFile outf);
+void    embWordPrintTableFI (const AjPTable table, ajint mincount,
+			     AjPFile outf);
 void    embWordMatchListConvToFeat(const AjPList list,
 				   AjPFeattable *tab1, AjPFeattable *tab2,
 				   const AjPSeq seq1, const AjPSeq seq2);

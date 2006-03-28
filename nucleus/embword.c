@@ -234,6 +234,74 @@ void embWordPrintTable(const AjPTable table)
 
 
 
+/* @func embWordPrintTable ****************************************************
+**
+** Print the words found with their frequencies.
+**
+** @param [r] table [const AjPTable] table to be printed
+** @return [void]
+** @@
+******************************************************************************/
+
+void embWordPrintTableI(const AjPTable table)
+{
+    void **array;
+    EmbPWord ajnew;
+    ajint i;
+
+    array = ajTableToarray(table, NULL);
+
+    qsort(array, ajTableLength(table), 2*sizeof (*array),wordCompare);
+    for(i = 0; array[i]; i += 2)
+    {
+	ajnew = (EmbPWord) array[i+1];
+	ajUser("%.*s\t%d", wordLength, ajnew->fword,ajnew->count);
+    }
+
+    AJFREE(array);
+
+    return;
+}
+
+
+
+
+/* @func embWordPrintTableFI **************************************************
+**
+** Print the words found with their frequencies.
+**
+** @param [r] table [const AjPTable] table to be printed
+** @param [r] mincount [ajint] Minimum frequency to report
+** @param [u] outf [AjPFile] Output file.
+** @return [void]
+** @@
+******************************************************************************/
+
+void embWordPrintTableFI(const AjPTable table, ajint mincount, AjPFile outf)
+{
+    void **array;
+    EmbPWord ajnew;
+    ajint i;
+
+    array = ajTableToarray(table, NULL);
+
+    qsort(array, ajTableLength(table), 2*sizeof (*array),wordCompare);
+    for(i = 0; array[i]; i += 2)
+    {
+	ajnew = (EmbPWord) array[i+1];
+	if(ajnew->count < mincount) break;
+	ajFmtPrintF(outf, "%.*s\t%d\n",
+			   wordLength, ajnew->fword,ajnew->count);
+    }
+
+    AJFREE(array);
+
+    return;
+}
+
+
+
+
 /* @func embWordPrintTableF ***************************************************
 **
 ** Print the words found with their frequencies.
@@ -246,22 +314,7 @@ void embWordPrintTable(const AjPTable table)
 
 void embWordPrintTableF(const AjPTable table, AjPFile outf)
 {
-    void **array;
-    EmbPWord ajnew;
-    ajint i;
-
-    array = ajTableToarray(table, NULL);
-
-    qsort(array, ajTableLength(table), 2*sizeof (*array),wordCompare);
-    for(i = 0; array[i]; i += 2)
-    {
-	ajnew = (EmbPWord) array[i+1];
-	ajFmtPrintF(outf, "%.*s\t%d\n",
-			   wordLength, ajnew->fword,ajnew->count);
-    }
-
-    AJFREE(array);
-
+    embWordPrintTableFI(table, 1, outf);
     return;
 }
 

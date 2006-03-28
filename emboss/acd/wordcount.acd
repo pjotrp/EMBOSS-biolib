@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  seqall: sequence  [
     parameter: "Y"
     type: "dna"
   ]
@@ -29,6 +29,20 @@ section: required [
   ]
 
 endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: mincount  [
+    optional: "Y"
+    default: "1"
+    minimum: "1"
+    information: "Minimum word count to report"
+  ]
+
+endsection: additional
 
 section: output [
   information: "Output section"
