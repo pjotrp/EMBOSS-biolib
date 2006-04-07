@@ -56,7 +56,7 @@ section: additional [
   type: "page"
 ]
 
-list: model  [
+list: method  [
   additional: "y"
   minimum: "1"
   maximum: "1"

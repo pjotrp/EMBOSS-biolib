@@ -1645,7 +1645,11 @@ void makedists()
         putc(nayme[i][j], outfile);
       k = spp;
       for (j = 1; j <= k; j++) {
-        fprintf(outfile, "%10.6f", d[i][j - 1]);
+	  /* Quick fix to prevent mixed use of -0.000000 and 0.000000 in output */
+	  if((d[i][j - 1] < 0.0000005) && (d[i][j - 1] > -0.0000005))
+	      fprintf(outfile, "%10.6f", 0.0);
+	  else
+	      fprintf(outfile, "%10.6f", d[i][j - 1]);
         if ((j + 1) % 7 == 0 && j < k)
           putc('\n', outfile);
       }
@@ -1673,7 +1677,11 @@ void makedists()
         else
           n = spp;
         for (k = i; k < n ; k++)
-          fprintf(outfile, "%10.6f", d[j][k]);
+	    /* Quick fix to prevent mixed use of -0.000000 and 0.000000 in output */
+	    if((d[j][k] < 0.0000005) && (d[j][k] > -0.0000005))
+		fprintf(outfile, "%10.6f", 0.0);
+	    else
+		fprintf(outfile, "%10.6f", d[j][k]);
         putc('\n', outfile);
       }
       putc('\n', outfile);
