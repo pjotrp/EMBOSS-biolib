@@ -465,11 +465,11 @@ static void palindrome_Print(AjPFile outfile,
     if(pal->forwardEnd - pal->forwardStart > maxLen)
 	return;
 
-    ajFmtPrintF(outfile, "%-5d ", (pal->forwardStart+1));
+    ajFmtPrintF(outfile, "%-8d ", (pal->forwardStart+1));
     for(i = pal->forwardStart; i < pal->forwardEnd; i++)
 	ajFmtPrintF(outfile, "%c", ajStrGetCharPos(seq, i));
 
-    ajFmtPrintF(outfile, " %5d\n      ", pal->forwardEnd);
+    ajFmtPrintF(outfile, " %8d\n         ", pal->forwardEnd);
 
     for(i = pal->forwardStart,
 	j=pal->revStart; i < pal->forwardEnd; i++)
@@ -478,12 +478,12 @@ static void palindrome_Print(AjPFile outfile,
 	else
 	    ajFmtPrintF(outfile, " ");
 
-    ajFmtPrintF(outfile, "\n%-5d ", (pal->revStart+1));
+    ajFmtPrintF(outfile, "\n%-8d ", (pal->revStart+1));
 
     for(i = pal->revStart; i > pal->revEnd; i--)
 	ajFmtPrintF(outfile, "%c", ajStrGetCharPos(seq, i));
 
-    ajFmtPrintF(outfile, " %5d\n\n", (pal->revEnd+2));
+    ajFmtPrintF(outfile, " %8d\n\n", (pal->revEnd+2));
 
     return;
 }
