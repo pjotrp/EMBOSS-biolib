@@ -543,7 +543,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
 
-    model = ajAcdGetListI("model", 1);
+    model = ajAcdGetListI("method", 1);
 
     if(ajStrMatchC(model, "j")) usejtt = true;
     else if(ajStrMatchC(model, "h")) usepmb = true;

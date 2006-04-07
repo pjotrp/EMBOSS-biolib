@@ -72,7 +72,7 @@ list: method  [
 ]
 
 list: gamma  [
-	additional: "@($(model) == { j | h | d | c })"
+	additional: "@($(method) == { j | h | d | c })"
 	minimum: "1"
 	maximum: "1"
 	header: "Rate variation among sites"
@@ -99,7 +99,7 @@ float: invarcoefficient [
 ]
 
 list: aacateg  [
-  additional: "@($(model) == c)"
+  additional: "@($(method) == c)"
   minimum: "1"
   maximum: "1"
   header: "Which categorizations of amino acids to use - all have groups: (Glu Gln Asp Asn), (Lys Arg His), (Phe Tyr Trp)plus:"
@@ -111,7 +111,7 @@ list: aacateg  [
 ]
 
 list: whichcode  [
-  additional: "@($(model) == c)"
+  additional: "@($(method) == c)"
   minimum: "1"
   maximum: "1"
   header: "Which genetic code"
@@ -126,7 +126,7 @@ list: whichcode  [
 ]
 
 float: ease  [
-  additional: "@($(model) == c)"
+  additional: "@($(method) == c)"
   minimum: "0.0"
   maximum: "1.0"
   default: "0.457"
@@ -134,7 +134,7 @@ float: ease  [
 ]
 
 float: ttratio  [
-  additional: "@($(model) == c)"
+  additional: "@($(method) == c)"
   minimum: "0.0"
   default: "2.0"
   information: "Transition/transversion ratio"
@@ -142,7 +142,7 @@ float: ttratio  [
 
 
 array: basefreq [
-	additional: "@($(model) == c)"
+	additional: "@($(method) == c)"
 	size: "4"
 	minimum: "0.0"
 	maximum: "1.0"
