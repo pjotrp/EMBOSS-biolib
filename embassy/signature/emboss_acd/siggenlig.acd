@@ -36,7 +36,7 @@ directory: ccfpdir [
            (domains), contain 'cleaned-up' data that is self-consistent and
            error-corrected. Records for residue solvent accessibility and
            secondary structure are added to the file by using PDBPLUS.
-           default: "./"
+           default: ./"
     extension: "ccf"
     nullok: "Y"
     knowntype: "protein clean coordinates"
@@ -55,7 +55,7 @@ directory: ccfddir [
            (domains), contain 'cleaned-up' data that is self-consistent and
            error-corrected. Records for residue solvent accessibility and
            secondary structure are added to the file by using PDBPLUS.
-           default: "./"
+           default: ./"
     extension: "ccf"
     nullok: "Y"
     knowntype: "domain clean coordinates"
@@ -168,7 +168,7 @@ section: output [
     help: "This option specifies the location of signature files
            (output). A 'signature file' contains a sparse sequence signature
            suitable for use with the SIGSCAN and SIGSCANLIG programs. The files are generated
-           by using SIGGEN and SIGGENLIG".
+           by using SIGGEN and SIGGENLIG."
 
     default: "./"
     extension: "sig"
