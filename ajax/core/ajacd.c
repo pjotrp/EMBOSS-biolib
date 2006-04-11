@@ -730,8 +730,7 @@ static void      acdPretty(const char *fmt, ...);
 static void      acdPrettyShift();
 static void      acdPrettyWrap(ajint left, const char *fmt, ...);
 static void      acdPrettyUnShift();
-static void      acdPrintCalcAttr(AjPFile outf, const AjBool full,
-				  const char* acdtype,
+static void      acdPrintCalcattr(AjPFile outf, const char* acdtype,
 				  const AcdOAttr calcattr[]);
 static void      acdProcess(void);
 static void      acdPromptAlign(AcdPAcd thys);
@@ -806,7 +805,11 @@ static AcdEStage acdStage(const AjPStr token);
 static AcdPAcd   acdTestAssoc(const AcdPAcd thys,
 			      const AjPStr name, const AjPStr altname);
 static void      acdTestAssocUnknown(const AjPStr name);
+static AjBool    acdTestDebugIsSet(void);
+static AjBool    acdTestDebug(void);
+static AjBool    acdTestFilter(void);
 static AjBool    acdTestQualC(const char *name);
+static AjBool    acdTestStdout(void);
 static void      acdTestUnknown(const AjPStr name, const AjPStr alias,
 				ajint pnum);
 static AjBool    acdTextFormat(AjPStr* text);
@@ -1645,6 +1648,14 @@ AcdOAttr acdAttrProperties[] =
 
 AcdOAttr acdAttrRange[] =
 {
+    {"minimum", VT_INT, "1",
+	 "Minimum value"},
+    {"maximum", VT_INT, "(INT_MAX)",
+	 "Maximum value"},
+    {"size", VT_INT, "0",
+	 "Number of values required"},
+    {"minsize", VT_INT, "0",
+	 "Number of values required"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -2237,7 +2248,7 @@ AcdOQual acdQualAppl[] =	  /* careful: index numbers used in */
     {"warning",    "Y", "boolean", "Report warnings"},
     {"error",      "Y", "boolean", "Report errors"},
     {"fatal",      "Y", "boolean", "Report fatal errors"},
-    {"die",        "Y", "boolean", "Report deaths"},
+    {"die",        "Y", "boolean", "Report dying program messages"},
     {NULL, NULL, NULL, NULL}
 };
 
@@ -2918,6 +2929,7 @@ static char* acdResource[] =
 ** Function is for processing ACD internals.
 **
 ** @nam2rule Acd ACD processing
+** @suffix    P  [char*]     Package name provided
 */
 
 /* @section initialisation ****************************************************
@@ -2927,11 +2939,10 @@ static char* acdResource[] =
 ** @fdata [none]
 **
 ** @nam3rule  Init    Initialise internals
-** @suffix    P       Package name provided
 **
 ** @argrule   Init    pgm [const char*] Program name
-** @argrule   Init    argc [int] Number of command line arguments
-** @argrule   Init    argv [char*[]] kCommand line arguments
+** @argrule   Init    argc [ajint] Number of command line arguments
+** @argrule   Init    argv [char* const[]] Command line arguments
 ** @argrule   P    package [const char*] Package name (empty for default name)
 **
 ** @valrule   *  [void]
@@ -5359,6 +5370,137 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 
     return;
 }
+
+
+/* @section return ************************************************************
+**
+** Returns values to the calling program. 
+**
+** @fdata [none]
+**
+** @nam3rule  Get    Get value
+** @nam4rule  GetAlign    ACD alignment datatype
+** @nam4rule  GetArray    ACD array datatype
+** @nam4rule  GetBool    ACD booleandatatype
+** @nam4rule  GetCodon    ACD codon usage datatype
+** @nam4rule  GetCpdb    ACD clean PDB data datatype
+** @nam4rule  GetDatafile    ACD Datafile datatype
+** @nam4rule  GetDirectory    ACD directory datatype
+** @nam4rule  GetDirlist    ACD directory list datatype
+** @nam4rule  GetDiscretestates   ACD discrete states datatype
+** @nam4rule  GetDistances    ACD distances datatype
+** @nam4rule  GetFeat    ACD features datatype
+** @nam4rule  GetFeatout    ACD features output datatype
+** @nam4rule  GetFilelist   ACD file list datatype
+** @nam4rule  GetFloat    ACD floating point number datatype
+** @nam4rule  GetFrequencies    ACD frequenciesdatatype
+** @nam4rule  GetGraph    ACD graphical output datatype
+** @nam4rule  GetGraphxy   ACD XY plot graphical output datatype
+** @nam4rule  GetInfile    ACD input file datatype
+** @nam4rule  GetInt    ACD integer number datatype
+** @nam4rule  GetList    ACD list menu items datatype
+** @nam4rule  GetMatrix    ACD integer comparison matrix datatype
+** @nam4rule  GetMatrixf    ACD floating point comparison matrix datatype
+** @nam4rule  GetOutcodon    ACD codon usage output datatype
+** @nam4rule  GetOutcpdb    ACD clean PDB output datatype
+** @nam4rule  GetOutdata    ACD output datafile datatype
+** @nam4rule  GetOutdir    ACD output directory datatype
+** @nam4rule  GetOutdiscrete    ACD discrete states output datatype
+** @nam4rule  GetOutdistance    ACD distance output datatype
+** @nam4rule  GetOutfile   ACD output file datatype
+** @nam4rule  GetOutfileall   ACD multiple output files datatype
+** @nam4rule  GetOutfreq   ACD frequency output datatype
+** @nam4rule  GetOutmatrix   ACD integer comparison matrix output datatype
+** @nam4rule  GetOutmatrixf  ACD floating point comparison matrix output
+**                           datatype
+** @nam4rule  GetOutproperties   ACD properties output datatype
+** @nam4rule  GetOutscop   ACD SCOP output datatype
+** @nam4rule  GetOuttree   ACD tree output datatype
+** @nam4rule  GetProperties   ACD properties datatype
+** @nam4rule  GetRange   ACD position ranges datatype
+** @nam4rule  GetRegexp    ACD regular expression datatype
+** @nam4rule  GetReport   ACD report output datatype
+** @nam4rule  GetScop   ACD SCOP data file datatype
+** @nam4rule  GetSelect   ACD selection menu items datatype
+** @nam4rule  GetSeq   ACD sequence input datatype
+** @nam4rule  GetSeqall   ACD sequence stream inputdatatype
+** @nam4rule  GetSeqout   ACD sequence output datatype
+** @nam4rule  GetSeqoutall   ACD sequence stream output datatype
+** @nam4rule  GetSeqoutset   ACD sequence set output datatype
+** @nam4rule  GetSeqset   ACD sequence set input datatype
+** @nam4rule  GetSeqsetall   ACD sequence sets datatype
+** @nam4rule  GetString   ACD string datatype
+** @nam4rule  GetToggle   ACD boolean toggle datatype
+** @nam4rule  GetTree   ACD phylogenetic tree datatype
+** @nam4rule  GetValue   ACD datatype string value
+** @nam5rule  Name    Name of ACD datatype value
+** @nam5rule  Single  First in array of ACD datatype values
+**
+** @argrule   Get    token [const char*] Token name
+** @argrule   Num    token [const char*] Token name
+**
+** @valrule   Align  [AjPAlign]
+** @valrule   Array  [AjPFloat]
+** @valrule   Bool  [AjBool]
+** @valrule   Codon  [AjPCod]
+** @valrule   Cpdb  [AjPFile]
+** @valrule   Datafile  [AjPFile]
+** @valrule   Directory  [AjPDir]
+** @valrule   Dirlist  [AjPList]
+** @valrule   Discretestates  [AjPPhyloState*]
+** @valrule   *DiscretestatesSingle  [AjPPhyloState]
+** @valrule   Distances  [AjPPhyloDist]
+** @valrule   Feat  [AjPFeattable]
+** @valrule   Featout  [AjPFeattabOut]
+** @valrule   Filelist  [AjPList]
+** @valrule   Float  [float]
+** @valrule   Frequencies  [AjPPhyloFreq]
+** @valrule   Graph  [AjPGraph]
+** @valrule   Graphxy  [AjPGraph]
+** @valrule   Infile  [AjPFile]
+** @valrule   Int  [ajint]
+** @valrule   List  [AjPStr*]
+** @valrule   *ListSingle  [AjPStr]
+** @valrule   Matrix  [AjPMatrix]
+** @valrule   Matrixf  [AjPMatrixf]
+** @valrule   Outcodon  [AjPOutfile]
+** @valrule   Outcpdb   [AjPOutfile]
+** @valrule   Outdata  [AjPOutfile]
+** @valrule   Outdir  [AjPDir]
+** @valrule   Outdiscrete  [AjPOutfile]
+** @valrule   Outdistance  [AjPOutfile]
+** @valrule   Outfile  [AjPFile]
+** @valrule   Outfileall  [AjPFile]
+** @valrule   Outfreq  [AjPOutfile]
+** @valrule   Outmatrix  [AjPOutfile]
+** @valrule   Outmatrixf  [AjPOutfile]
+** @valrule   Outproperties  [AjPOutfile]
+** @valrule   Outscop  [AjPOutfile]
+** @valrule   Outtree  [AjPOutfile]
+** @valrule   Properties  [AjPPhyloProp]
+** @valrule   Range  [AjPRange]
+** @valrule   Regexp  [AjPRegexp]
+** @valrule   Report  [AjPReport]
+** @valrule   Scop  [AjPFile]
+** @valrule   Select   [AjPStr*]
+** @valrule   *SelectSingle  [AjPStr]
+** @valrule   Seq  [AjPSeq]
+** @valrule   Seqall  [AjPSeqall]
+** @valrule   Seqout  [AjPSeqout]
+** @valrule   Seqoutall  [AjPSeqout]
+** @valrule   Seqoutset  [AjPSeqout]
+** @valrule   Seqset  [AjPSeqset]
+** @valrule   Seqsetall  [AjPSeqset*]
+** @valrule   *SeqsetallSingle  [AjPSeqset]
+** @valrule   String  [AjPStr]
+** @valrule   Toggle  [AjBool]
+** @valrule   Tree  [AjPPhyloTree*]
+** @valrule   *TreeSingle  [AjPPhyloTree]
+** @valrule   Value  [AjPStr]
+** @valrule   *Name  [AjPStr]
+** @fcategory misc
+**
+******************************************************************************/
 
 
 
@@ -7934,7 +8076,7 @@ static void acdSetGraphxy(AcdPAcd thys)
 
 /* @func ajAcdGetInfile *******************************************************
 **
-** Returns an item of type Outfile as defined in a named ACD item.
+** Returns an item of type file as defined in a named ACD item.
 ** Called by the application after all ACD values have been set,
 ** and simply returns what the ACD item already has.
 **
@@ -9774,6 +9916,23 @@ static void acdSetRange(AcdPAcd thys)
 
     ajint itry;
 
+    ajint imin;
+    ajint imax;
+    ajint isize;
+    ajint iminsize;
+
+    acdAttrToInt(thys, "minimum", 1, &imin);
+    acdLog("minimum: %d\n", imin);
+    
+    acdAttrToInt(thys, "maximum", INT_MAX, &imax);
+    acdLog("maximum: %d\n", imax);
+    
+    acdAttrToInt(thys, "minsize", 0, &iminsize);
+    acdLog("minsize: %d\n", iminsize);
+    
+    acdAttrToInt(thys, "size", 0, &isize);
+    acdLog("size: %d\n", isize);
+    
     required = acdIsRequired(thys);
     acdReplyInit(thys, "", &acdReplyDef);
 
@@ -9786,7 +9945,7 @@ static void acdSetRange(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &acdReply);
 
-	val = ajRangeGet(acdReply);
+	val = ajRangeGetLimits(acdReply, imin, imax, iminsize, isize);
 	if(!val)
 	{
 	    acdBadVal(thys, required,
@@ -12626,7 +12785,7 @@ static void acdSetTree(AcdPAcd thys)
 
 
 
-/* @func ajAcdValue ***********************************************************
+/* @func ajAcdGetValue ********************************************************
 **
 ** Returns the string value of any ACD item
 **
@@ -12637,9 +12796,18 @@ static void acdSetTree(AcdPAcd thys)
 ** @@
 ******************************************************************************/
 
-AjPStr ajAcdValue(const char *token)
+AjPStr ajAcdGetValue(const char *token)
 {
     return acdGetValStr(token);
+}
+
+/* @obsolete ajAcdValue
+** @rename ajAcdGetValue
+*/
+
+AjPStr __deprecated ajAcdValue(const char *token)
+{
+    return ajAcdGetValue(token);
 }
 
 
@@ -15965,7 +16133,7 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 
     /*
      ** A variable - is it a simple (toggle) dependency?
-     ** Toggles can be $(varname) or @($(varname)) or @(!$(varname))
+     ** Toggles can be $(varname) or \@($(varname)) or \@(!$(varname))
      ** Also allowed is automatic variable acdprotein
      */
 
@@ -16249,7 +16417,7 @@ static AjBool acdFunResolve(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpPlus *****************************************************
 **
-** Looks for and resolves an expression @( num + num )
+** Looks for and resolves an expression \@( num + num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16304,7 +16472,7 @@ static AjBool acdExpPlus(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpMinus ****************************************************
 **
-** Looks for and resolves an expression @( num - num )
+** Looks for and resolves an expression \@( num - num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16359,7 +16527,7 @@ static AjBool acdExpMinus(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpStar *****************************************************
 **
-** Looks for and resolves an expression @( num * num )
+** Looks for and resolves an expression \@( num * num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16414,7 +16582,7 @@ static AjBool acdExpStar(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpDiv ******************************************************
 **
-** Looks for and resolves an expression @( num / num )
+** Looks for and resolves an expression \@( num / num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16471,8 +16639,8 @@ static AjBool acdExpDiv(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpNot ******************************************************
 **
-** Looks for and resolves an expression @(! bool ) or @(NOT bool)
-** or @(not bool). An invalid bool value is treated as false,
+** Looks for and resolves an expression \@(! bool ) or \@(NOT bool)
+** or \@(not bool). An invalid bool value is treated as false,
 ** so it will return a true value.
 **
 ** @param [w] result [AjPStr*] Expression result
@@ -16517,7 +16685,7 @@ static AjBool acdExpNot(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpEqual ****************************************************
 **
-** Looks for and resolves an expression @( num == num )
+** Looks for and resolves an expression \@( num == num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16599,7 +16767,7 @@ static AjBool acdExpEqual(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpNotEqual *************************************************
 **
-** Looks for and resolves an expression @( num != num )
+** Looks for and resolves an expression \@( num != num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16681,7 +16849,7 @@ static AjBool acdExpNotEqual(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpGreater **************************************************
 **
-** Looks for and resolves an expression @( num > num )
+** Looks for and resolves an expression \@( num > num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16763,7 +16931,7 @@ static AjBool acdExpGreater(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpLesser ***************************************************
 **
-** Looks for and resolves an expression @( num < num )
+** Looks for and resolves an expression \@( num < num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16845,7 +17013,7 @@ static AjBool acdExpLesser(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpOr *******************************************************
 **
-** Looks for and resolves an expression @( num | num )
+** Looks for and resolves an expression \@( num | num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -16931,7 +17099,7 @@ static AjBool acdExpOr(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpAnd ******************************************************
 **
-** Looks for and resolves an expression @( num & num )
+** Looks for and resolves an expression \@( num & num )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -17016,7 +17184,7 @@ static AjBool acdExpAnd(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpCond *****************************************************
 **
-** Looks for and resolves an expression @( bool ? trueval : falseval )
+** Looks for and resolves an expression \@( bool ? trueval : falseval )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -17056,8 +17224,8 @@ static AjBool acdExpCond(AjPStr* result, const AjPStr str)
 /* @funcstatic acdExpOneof ****************************************************
 **
 ** Looks for and resolves an expression as a test for a list of values
-** @( var == { vala | valb | valc } )
-** @( var != { vala | valb | valc } )
+** \@( var == { vala | valb | valc } )
+** \@( var != { vala | valb | valc } )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -17139,7 +17307,7 @@ static AjBool acdExpOneof(AjPStr* result, const AjPStr str)
 /* @funcstatic acdExpCase *****************************************************
 **
 ** Looks for and resolves an expression as a switch/case statement
-** @( var = casea : vala, caseb: valb else: val )
+** \@( var = casea : vala, caseb: valb else: val )
 **
 ** @param [w] result [AjPStr*] Expression result
 ** @param [r] str [const AjPStr] String with possible expression
@@ -17243,7 +17411,7 @@ static AjBool acdExpCase(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpFilename *************************************************
 **
-** Looks for an expression @(file: string) and returns a trimmed
+** Looks for an expression \@(file: string) and returns a trimmed
 ** lower case file name prefix or suffix.
 **
 ** @param [w] result [AjPStr*] Expression result
@@ -17278,7 +17446,7 @@ static AjBool acdExpFilename(AjPStr* result, const AjPStr str)
 
 /* @funcstatic acdExpExists ***************************************************
 **
-** Looks for an expression @(is string) and returns ajTrue
+** Looks for an expression \@(is string) and returns ajTrue
 ** if there is a value, and ajFalse if there is none
 **
 ** @param [w] result [AjPStr*] Expression result
@@ -17552,6 +17720,21 @@ static AjBool acdAttrValueStr(const AcdPAcd thys,
 }
 
 
+/* @section internals *********************************************************
+**
+** Sets internal values
+**
+** @fdata [none]
+**
+** @nam3rule Set Set an internal value
+** @nam4rule SetControl Set a control variable
+**
+** @argrule SetControl optionName [const char*] Control variable name
+**
+** @valrule * [AjBool]
+** @fcategory misc
+**
+******************************************************************************/
 
 
 /* @func ajAcdSetControl ******************************************************
@@ -17862,6 +18045,23 @@ static void acdArgsParse(ajint argc, char * const argv[])
     
     return;
 }
+
+/* @section provenance *******************************************************
+**
+** Functions providing information about the run-time environment
+**
+** @fdata [none]
+**
+** @nam3rule Get Return data as a string
+** @nam4rule GetCmdline Return the full commandline equiovalent
+** @nam4rule GetInputs Return the full commandline equiovalent
+** @nam4rule GetProgram Return the program name
+**
+** @valrule * [const AjPStr]
+** @fcategory misc
+**
+******************************************************************************/
+
 
 
 /* @func ajAcdGetCmdline ******************************************************
@@ -19133,9 +19333,7 @@ static AjBool acdIsRequired(const AcdPAcd thys)
 }
 
 
-
-
-/* @func ajAcdDebug ***********************************************************
+/* @funcstatic acdTestDebug ***************************************************
 **
 ** Tests whether debug messages are required by checking
 ** internal variable 'acdDebug'
@@ -19144,16 +19342,27 @@ static AjBool acdIsRequired(const AcdPAcd thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajAcdDebug(void)
+static AjBool acdTestDebug(void)
 {
-    ajDebug("ajAcdDebug returning %B", acdDebug);
+    ajDebug("acdDebug returning %B", acdDebug);
     return acdDebug;
+}
+
+/* @obsolete ajAcdDebug
+** @remove No longer public
+*/
+
+AjBool __deprecated ajAcdDebug(void)
+{
+    return acdTestDebug();
 }
 
 
 
 
-/* @func ajAcdDebugIsSet ******************************************************
+
+
+/* @funcstatic acdTestDebugIsSet **********************************************
 **
 ** Tests whether the command line switch for debug messages has been set
 ** by testing internal variable 'acdDebugSet'
@@ -19162,16 +19371,25 @@ AjBool ajAcdDebug(void)
 ** @@
 ******************************************************************************/
 
-AjBool ajAcdDebugIsSet(void)
+static AjBool acdTestDebugIsSet(void)
 {
-    ajDebug("ajAcdDebugIsSet returning %B", acdDebugSet);
+    ajDebug("acdTestDebugIsSet returning %B", acdDebugSet);
     return acdDebugSet;
+}
+
+/* @obsolete ajAcdDebugIsSet
+** @remove No longer public
+*/
+
+AjBool __deprecated ajAcdDebugIsSet(void)
+{
+    return acdTestDebugIsSet();
 }
 
 
 
 
-/* @func ajAcdFilter **********************************************************
+/* @funcstatic acdTestFilter **************************************************
 **
 ** Tests whether input and output use stdin and stdout as a filter
 ** by returning internal variable 'acdFilter'
@@ -19180,15 +19398,24 @@ AjBool ajAcdDebugIsSet(void)
 ** @@
 ******************************************************************************/
 
-AjBool ajAcdFilter(void)
+static AjBool acdTestFilter(void)
 {
     return acdFilter;
+}
+
+/* @obsolete ajAcdFilter
+** @remove No longer public
+*/
+
+AjBool __deprecated ajAcdFilter(void)
+{
+    return acdTestFilter();
 }
 
 
 
 
-/* @func ajAcdStdout **********************************************************
+/* @funcstatic acdTestStdout **************************************************
 **
 ** Tests whether output uses stdout for output by default
 ** by returning internal variable 'acdStdout'
@@ -19197,24 +19424,29 @@ AjBool ajAcdFilter(void)
 ** @@
 ******************************************************************************/
 
-AjBool ajAcdStdout(void)
+static AjBool acdTestStdout(void)
 {
     return acdStdout;
+}
+
+/* @obsolete ajAcdStdout
+** @remove No longer public
+*/
+
+AjBool __deprecated ajAcdStdout(void)
+{
+    return acdTestStdout();
 }
 
 
 
 
-/* @func ajAcdProgramS ********************************************************
-**
-** Returns the application (program) name from the ACD definition.
-**
-** @param [w] pgm [AjPStr*] returns the program name.
-** @return [void]
-** @@
-******************************************************************************/
 
-void ajAcdProgramS(AjPStr* pgm)
+/* @obsolete ajAcdProgramS
+** @remove Use ajAcdGetProgram
+*/
+
+void __deprecated ajAcdProgramS(AjPStr* pgm)
 {
     ajStrAssignS(pgm, acdProgram);
     return;
@@ -19223,19 +19455,27 @@ void ajAcdProgramS(AjPStr* pgm)
 
 
 
-/* @func ajAcdProgram *********************************************************
+/* @func ajAcdGetProgram ******************************************************
 **
 ** Returns the application (program) name from the ACD definition.
 **
-** @return [const char*] Program name
+** @return [const AjPStr] Program name
 ** @@
 ******************************************************************************/
 
-const char* ajAcdProgram(void)
+const AjPStr ajAcdGetProgram(void)
+{
+    return acdProgram;
+}
+
+/* @obsolete ajAcdProgram
+** @remove Use ajAcdGetProgram
+*/
+
+const char* __deprecated ajAcdProgram(void)
 {
     return ajStrGetPtr(acdProgram);
 }
-
 
 
 
@@ -21642,31 +21882,109 @@ static AjBool acdTextFormat(AjPStr* text)
 }
 
 
+/* @section print *************************************************************
+**
+** @fdata [none]
+**
+** Print internal details for use by entrails
+**
+** @nam3rule Print Print internal details
+** @nam4rule PrintQual Print details of ACD datatype known qualifiers
+** @nam4rule PrintType Print details of ACD datatypes
+**
+** @argrule Print outf [AjPFile] Output file
+** @argrule Print full [AjBool] Print full details
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
 
 
-/* @func ajAcdDummyFunction ***************************************************
+
+/* @func ajAcdPrintQual *******************************************************
 **
-** Dummy function to catch all unused functions defined in the ajacd
-** source file.
+** Report details of all known ACD qualifiers for all applications.
+** For use by EMBOSS entrails.
 **
+** @param [u] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report
 ** @return [void]
 **
 ******************************************************************************/
 
-void ajAcdDummyFunction(void)
+void ajAcdPrintQual(AjPFile outf, AjBool full)
 {
-    AjPStr ajpstr=NULL;
-    AcdPAcd acdpacd=NULL;
-    float f=0.0;
-    char c;
+    ajint i;
+    AcdPQual qual;
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
 
-    acdSetXxxx(acdpacd);	    /* template function for acdSet */
-    acdAttrToChar(acdpacd, "attr", '.', &c);
-    acdQualToFloat(acdpacd, "", 0.0, 0, &f, &ajpstr);
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# ACD Application Qualifiers\n");
+    ajFmtPrintF(outf, "# Qualifier       Type        Default     Helptext\n");
+    ajFmtPrintF(outf, "QualAppl {\n");
+    
+    for(i=0; acdQualAppl[i].Name; i++)
+    {
+	qual = &acdQualAppl[i];
+	ajFmtPrintF(outf, "  %-15s", qual->Name);
+	ajFmtPrintF(outf, " %-10s", qual->Type);
+	ajFmtPrintS(&tmpstr, " \"%s\"", qual->Default);
+	if(ajStrGetLen(tmpstr) > maxtmp)
+	    maxtmp = ajStrGetLen(tmpstr);
+	ajFmtPrintF(outf, " %-12S", tmpstr);
+	ajFmtPrintF(outf, " \"%s\"", qual->Help);
+	ajFmtPrintF(outf, "\n");
+    }
+    ajFmtPrintF(outf, "}\n\n");
+    if(maxtmp > 12) ajWarn("ajAcdPrintQual max tmpstr len %d",
+			maxtmp);	      
+    ajStrDel(&tmpstr);
+    return;
 }
 
+/* @func ajAcdPrintAppl *******************************************************
+**
+** Report details of all known ACD attributes for all applications.
+** For use by EMBOSS entrails.
+**
+** @param [u] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report
+** @return [void]
+**
+******************************************************************************/
 
+void ajAcdPrintAppl(AjPFile outf, AjBool full)
+{
+    ajint i;
+    AcdPAttr attr;
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
 
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# ACD Application Attributes\n");
+    ajFmtPrintF(outf, "# Attribute       Type       Default      Helptext\n");
+    
+    ajFmtPrintF(outf, "AttrAppl {\n");
+    for(i=0; acdAttrAppl[i].Name; i++)
+    {
+	attr = &acdAttrAppl[i];
+	ajFmtPrintF(outf, "  %-15s", attr->Name);
+	ajFmtPrintF(outf, " %-10s", acdValNames[attr->Type]);
+	ajFmtPrintS(&tmpstr, "\"%s\"", attr->Default);
+	if(ajStrGetLen(tmpstr) > maxtmp)
+	    maxtmp = ajStrGetLen(tmpstr);
+	ajFmtPrintF(outf, " %-12S", tmpstr);
+	ajFmtPrintF(outf, " \"%s\"", attr->Help);
+	ajFmtPrintF(outf, "\n");
+    }
+    ajFmtPrintF(outf, "}\n\n");
+    if(maxtmp > 12) ajWarn("ajAcdPrintAppl max tmpstr len %d",
+			maxtmp);	      
+    ajStrDel(&tmpstr);
+    return;
+}
 
 /* @func ajAcdPrintType *******************************************************
 **
@@ -21685,19 +22003,23 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
     AcdPAttr attr;
     AcdPQual qual;
     ajint i;
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# ACD Types\n");
-    ajFmtPrintF(outf, "# Name\n");
-    ajFmtPrintF(outf, "#     Attribute    Type       Default Comment\n");
-    ajFmtPrintF(outf, "#     Qualifier    Type       Default Helptext\n");
+    ajFmtPrintF(outf, "# Name           Group      Description\n");
+    ajFmtPrintF(outf, "#     Attribute       Type       "
+		"Default      Comment\n");
+    ajFmtPrintF(outf, "#     Qualifier       Type       "
+		"Default      Helptext\n");
     ajFmtPrintF(outf, "AcdType {\n");
     
     for(i=0; acdType[i].Name; i++) 
     {
 	pat = &acdType[i];
-	ajFmtPrintF(outf, "  %-15s", pat->Name);
-	ajFmtPrintF(outf, "  %-10s", pat->Group);
+	ajFmtPrintF(outf, "  %-14s", pat->Name);
+	ajFmtPrintF(outf, " %-10s", pat->Group);
 	ajFmtPrintF(outf, " \"%s\"", pat->Valid);
 	ajFmtPrintF(outf, "\n");
 	if(full && pat->Attr)
@@ -21705,9 +22027,12 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
 	    ajFmtPrintF(outf, "    attributes {\n");
 	    for(attr=pat->Attr; attr->Name; attr++)
 	    {
-		ajFmtPrintF(outf, "      %-12s", attr->Name);
+		ajFmtPrintF(outf, "      %-15s", attr->Name);
 		ajFmtPrintF(outf, " %-10s", acdValNames[attr->Type]);
-		ajFmtPrintF(outf, " \"%s\"", attr->Default);
+		ajFmtPrintS(&tmpstr, "\"%s\"", attr->Default);
+		if(ajStrGetLen(tmpstr) > maxtmp)
+		    maxtmp = ajStrGetLen(tmpstr);
+		ajFmtPrintF(outf, " %-12S", tmpstr);
 		ajFmtPrintF(outf, " \"%s\"", attr->Help);
 		ajFmtPrintF(outf, "\n");
 	    }
@@ -21719,9 +22044,12 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
 	    ajFmtPrintF(outf, "    qualifiers {\n");
 	    for(qual=pat->Quals; qual->Name; qual++)
 	    {
-		ajFmtPrintF(outf, "      %-12s", qual->Name);
+		ajFmtPrintF(outf, "      %-15s", qual->Name);
 		ajFmtPrintF(outf, " %-10s", qual->Type);
-		ajFmtPrintF(outf, " \"%s\"", qual->Default);
+		ajFmtPrintS(&tmpstr, "\"%s\"", qual->Default);
+		if(ajStrGetLen(tmpstr) > maxtmp)
+		    maxtmp = ajStrGetLen(tmpstr);
+		ajFmtPrintF(outf, " %-12S", tmpstr);
 		ajFmtPrintF(outf, " \"%s\"", qual->Help);
 		ajFmtPrintF(outf, "\n");
 	    }
@@ -21731,34 +22059,40 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
     ajFmtPrintF(outf, "}\n");
     
     ajFmtPrintF(outf, "# ACD Default attributes\n");
-    ajFmtPrintF(outf, "# Name             Type     Default      Comment\n");
+    ajFmtPrintF(outf, "# Name             Type     Default        Comment\n");
     for(i=0; acdAttrDef[i].Name; i++)
     {
 	ajFmtPrintF(outf, "  %-15s", acdAttrDef[i].Name);
 	ajFmtPrintF(outf, "  %-10s", acdValNames[acdAttrDef[i].Type]);
-	ajFmtPrintF(outf, " \"%s\"", acdAttrDef[i].Default);
+	ajFmtPrintS(&tmpstr, "\"%s\"", acdAttrDef[i].Default);
+	if(ajStrGetLen(tmpstr) > maxtmp)
+	    maxtmp = ajStrGetLen(tmpstr);
+	ajFmtPrintF(outf, " %-12S", tmpstr);
 	ajFmtPrintF(outf, " \"%s\"", acdAttrDef[i].Help);
 	ajFmtPrintF(outf, "\n");
     }
     ajFmtPrintF(outf, "\n");
-    
+
     ajFmtPrintF(outf, "# ACD Calculated attributes\n");
     ajFmtPrintF(outf, "# Name\n");
-    ajFmtPrintF(outf, "#     Attribute    Type       Comment\n");
-    
-    acdPrintCalcAttr(outf, full, "distances", acdCalcDistances);
-    acdPrintCalcAttr(outf, full, "features", acdCalcFeat);
-    acdPrintCalcAttr(outf, full, "frequencies", acdCalcFrequencies);
-    acdPrintCalcAttr(outf, full, "properties", acdCalcProperties);
-    acdPrintCalcAttr(outf, full, "regexp", acdCalcRegexp);
-    acdPrintCalcAttr(outf, full, "sequence", acdCalcSeq);
-    acdPrintCalcAttr(outf, full, "seqall", acdCalcSeqall);
-    acdPrintCalcAttr(outf, full, "seqset", acdCalcSeqset);
-    acdPrintCalcAttr(outf, full, "seqsetall", acdCalcSeqsetall);
-    acdPrintCalcAttr(outf, full, "string", acdCalcString);
-    acdPrintCalcAttr(outf, full, "tree", acdCalcTree);
+    ajFmtPrintF(outf, "#     Attribute      Type       "
+		"Default              Comment\n");
+
+    acdPrintCalcattr(outf, "distances", acdCalcDistances);
+    acdPrintCalcattr(outf, "features", acdCalcFeat);
+    acdPrintCalcattr(outf, "frequencies", acdCalcFrequencies);
+    acdPrintCalcattr(outf, "properties", acdCalcProperties);
+    acdPrintCalcattr(outf, "regexp", acdCalcRegexp);
+    acdPrintCalcattr(outf, "sequence", acdCalcSeq);
+    acdPrintCalcattr(outf, "seqall", acdCalcSeqall);
+    acdPrintCalcattr(outf, "seqset", acdCalcSeqset);
+    acdPrintCalcattr(outf, "seqsetall", acdCalcSeqsetall);
+    acdPrintCalcattr(outf, "string", acdCalcString);
+    acdPrintCalcattr(outf, "tree", acdCalcTree);
     ajFmtPrintF(outf, "\n");
-    
+    if(maxtmp > 12) ajWarn("ajAcdPrintType max tmpstr len %d",
+			maxtmp);	      
+    ajStrDel(&tmpstr);
 
     return;
 }
@@ -21766,76 +22100,48 @@ void ajAcdPrintType(AjPFile outf, AjBool full)
 
 
 
-/* @funcstatic acdPrintCalcAttr ***********************************************
+/* @funcstatic acdPrintCalcattr ***********************************************
 **
 ** Report calculated attributes set
 ** For use by EMBOSS entrails.
 **
 ** @param [u] outf [AjPFile] Output file
-** @param [r] full [AjBool] Full report
 ** @param [r] acdtype [const char*] ACD type name
 ** @param [r] calcattr [const AcdOAttr[]] Acd calculated attributes
 ** @return [void]
 **
 ******************************************************************************/
 
-static void acdPrintCalcAttr(AjPFile outf, AjBool full,
-			     const char* acdtype, const AcdOAttr calcattr[])
+static void acdPrintCalcattr(AjPFile outf, const char* acdtype,
+			     const AcdOAttr calcattr[])
 {
     ajint i;
+
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
 
     ajFmtPrintF(outf, "  %s",acdtype);
     ajFmtPrintF(outf, "\n");
-    if(full && calcattr[0].Name)
+    ajFmtPrintF(outf, "    attributes {\n");
+    for(i=0; calcattr[i].Name; i++)
     {
-	ajFmtPrintF(outf, "    attributes {\n");
-	for(i=0; calcattr[i].Name; i++)
-	{
-	    ajFmtPrintF(outf, "      %-12s", calcattr[i].Name);
-	    ajFmtPrintF(outf, " %-10s", acdValNames[calcattr[i].Type]);
-	    ajFmtPrintF(outf, " \"%s\"", calcattr[i].Default);
-	    ajFmtPrintF(outf, " \"%s\"", calcattr[i].Help);
-	    ajFmtPrintF(outf, "\n");
-	}
-	ajFmtPrintF(outf, "    }\n");
-    }
-
-    return;
-}
-
-
-/* @func ajAcdPrintQual *******************************************************
-**
-** Report details of all known ACD qualifiers for all applications.
-** For use by EMBOSS entrails.
-**
-** @param [u] outf [AjPFile] Output file
-** @param [r] full [AjBool] Full report
-** @return [void]
-**
-******************************************************************************/
-
-void ajAcdPrintQual(AjPFile outf, AjBool full)
-{
-    ajint i;
-    AcdPQual qual;
-
-    ajFmtPrintF(outf, "\n");
-    ajFmtPrintF(outf, "# ACD Application Qualifiers\n");
-    ajFmtPrintF(outf, "# Qualifier    Type       Default Helptext\n");
-    
-    for(i=0; acdQualAppl[i].Name; i++)
-    {
-	qual = &acdQualAppl[i];
-	ajFmtPrintF(outf, "%-12s", qual->Name);
-	ajFmtPrintF(outf, " %-10s", qual->Type);
-	ajFmtPrintF(outf, " \"%s\"", qual->Default);
-	ajFmtPrintF(outf, " \"%s\"", qual->Help);
+	ajFmtPrintF(outf, "      %-14s", calcattr[i].Name);
+	ajFmtPrintF(outf, " %-10s", acdValNames[calcattr[i].Type]);
+	ajFmtPrintS(&tmpstr, "\"%s\"", calcattr[i].Default);
+	if(ajStrGetLen(tmpstr) > maxtmp)
+	    maxtmp = ajStrGetLen(tmpstr);
+	ajFmtPrintF(outf, " %-20S", tmpstr);
+	ajFmtPrintF(outf, " \"%s\"", calcattr[i].Help);
 	ajFmtPrintF(outf, "\n");
     }
-    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "    }\n");
+    if(maxtmp > 20) ajWarn("acdPrintCalcAttr max tmpstr len %d",
+			maxtmp);	      
+    ajStrDel(&tmpstr);
+
     return;
 }
+
 
 /* @funcstatic acdVocabCheck **************************************************
 **
@@ -22019,6 +22325,21 @@ static void acdErrorAcd(const AcdPAcd thys, const char* fmt, ...)
 }
 
 
+/* @section exit **************************************************************
+**
+** Functions called on exit
+**
+** @fdata [none]
+**
+** @nam3rule Exit Cleanup of internals when program exits
+**
+** @argrule Exit silent [AjBool] If false, produce warnings for unused
+**                               ACD datatype definitions
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
 
 
 /* @func ajAcdExit ************************************************************
@@ -24610,3 +24931,39 @@ static void acdFree(void** PPval)
     return;
 }
 
+
+
+/* @section unused ***********************************************************
+**
+** @fdata [none]
+**
+** @nam3rule Unused Contains dummy calls to unused functions to keep
+**                 compilers happy
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
+ 
+
+
+/* @func ajAcdUnused ***************************************************
+**
+** Dummy function to catch all unused functions defined in the ajacd
+** source file.
+**
+** @return [void]
+**
+******************************************************************************/
+
+void ajAcdUnused(void)
+{
+    AjPStr ajpstr=NULL;
+    AcdPAcd acdpacd=NULL;
+    float f=0.0;
+    char c;
+
+    acdSetXxxx(acdpacd);	    /* template function for acdSet */
+    acdAttrToChar(acdpacd, "attr", '.', &c);
+    acdQualToFloat(acdpacd, "", 0.0, 0, &f, &ajpstr);
+}

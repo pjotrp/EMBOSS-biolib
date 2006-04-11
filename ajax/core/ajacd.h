@@ -8,8 +8,8 @@ extern "C"
 
 #include "ajax.h"
 
-AjBool        ajAcdDebug (void);
-AjBool        ajAcdDebugIsSet (void);
+AjBool        __deprecated ajAcdDebug (void);
+AjBool        __deprecated ajAcdDebugIsSet (void);
 void          ajAcdExit (AjBool single);
 AjBool        ajAcdFilter (void);
 
@@ -81,18 +81,22 @@ AjPPhyloTree* ajAcdGetTree (const char *token);
 AjPPhyloTree  __deprecated ajAcdGetTreeI (const char *token, ajint num);
 AjPPhyloTree  ajAcdGetTreeSingle (const char *token);
 
+AjPStr        ajAcdGetValue (const char* token);
+
 void          ajAcdInit (const char *pgm, ajint argc, char * const argv[]);
 void          ajAcdInitP (const char *pgm, ajint argc, char * const argv[],
 			  const char *package);
-void          ajAcdPrintType (AjPFile outf, AjBool full);
+void          ajAcdPrintAppl(AjPFile outf, AjBool full);
 void          ajAcdPrintQual(AjPFile outf, AjBool full);
-const char*   ajAcdProgram (void);
-void          ajAcdProgramS (AjPStr* pgm);
+void          ajAcdPrintType (AjPFile outf, AjBool full);
+const AjPStr  ajAcdGetProgram (void);
+const char*   __deprecated ajAcdProgram (void);
+void          __deprecated ajAcdProgramS (AjPStr* pgm);
 AjBool        ajAcdSetControl (const char* optionName);
 AjBool        ajAcdStdout (void);
-AjPStr        ajAcdValue (const char* token);
-void ajAcdDummyFunction(void);
+void          ajAcdUnused(void);
 
+AjPStr        __deprecated ajAcdValue (const char* token);
 #endif
 
 #ifdef __cplusplus
