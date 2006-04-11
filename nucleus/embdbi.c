@@ -1646,7 +1646,7 @@ void embDbiLogHeader(AjPFile logfile, const AjPStr dbname,
 
     today =  ajTimeTodayF("report");
     ajFmtPrintF(logfile, "########################################\n");
-    ajFmtPrintF(logfile, "# Program: %s\n", ajAcdProgram());
+    ajFmtPrintF(logfile, "# Program: %S\n", ajAcdGetProgram());
     ajFmtPrintF(logfile, "# Rundate: %D\n", today);
     ajFmtPrintF(logfile, "# Dbname: %S\n", dbname);
     ajFmtPrintF(logfile, "# Release: %S\n", release);
@@ -1734,7 +1734,7 @@ void embDbiLogCmdline(AjPFile logfile)
     AjPStr cmdline = NULL;
 
     ajFmtPrintF(logfile, "########################################\n");
-    ajFmtPrintF(logfile, "# Commandline: %s\n", ajAcdProgram());
+    ajFmtPrintF(logfile, "# Commandline: %S\n", ajAcdGetProgram());
     ajStrAssignS(&cmdline, ajAcdGetCmdline());
     if(ajStrGetLen(cmdline))
     {

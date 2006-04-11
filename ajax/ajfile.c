@@ -5488,7 +5488,7 @@ const char* ajFileTempName(const char *dir)
     
     
     
-    ajFmtPrintS(&dt,"%S%s-%d.%d",direct,ajAcdProgram(),time(0),
+    ajFmtPrintS(&dt,"%S%S-%d.%d",direct,ajAcdGetProgram(),time(0),
 		ajRandomNumber());
     
     retry = 5;
@@ -5500,7 +5500,7 @@ const char* ajFileTempName(const char *dir)
 	while(!stat(ajStrGetPtr(dt),&buf) && retry)
 #endif
 	{
-	    ajFmtPrintS(&dt,"%S%s-%d.%d",direct,ajAcdProgram(),time(0),
+	    ajFmtPrintS(&dt,"%S%S-%d.%d",direct,ajAcdGetProgram(),time(0),
 			ajRandomNumber());
 	    --retry;
 	}

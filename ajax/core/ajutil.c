@@ -149,8 +149,8 @@ void ajLogInfo(void)
 	    return;
 
 	ajUtilUid(&uids),
-	ajFmtPrintF(logf, "%s\t%S\t%D\n",
-		    ajAcdProgram(),
+	ajFmtPrintF(logf, "%S\t%S\t%D\n",
+		    ajAcdGetProgram(),
 		    uids,
 		    today);
 	ajStrDel(&uids);
