@@ -54,7 +54,7 @@ static void     wordOrderPosMatchTable(AjPList unorderedList);
 
 static unsigned wordStrHash(const void *key, unsigned hashsize);
 
-static void     wordVFree(const void *key, void **count, void *cl);
+static void     wordVFree(const void **key, void **count, void *cl);
 
 
 /* @funcstatic wordCmpStr *****************************************************
@@ -234,38 +234,6 @@ void embWordPrintTable(const AjPTable table)
 
 
 
-/* @func embWordPrintTable ****************************************************
-**
-** Print the words found with their frequencies.
-**
-** @param [r] table [const AjPTable] table to be printed
-** @return [void]
-** @@
-******************************************************************************/
-
-void embWordPrintTableI(const AjPTable table)
-{
-    void **array;
-    EmbPWord ajnew;
-    ajint i;
-
-    array = ajTableToarray(table, NULL);
-
-    qsort(array, ajTableLength(table), 2*sizeof (*array),wordCompare);
-    for(i = 0; array[i]; i += 2)
-    {
-	ajnew = (EmbPWord) array[i+1];
-	ajUser("%.*s\t%d", wordLength, ajnew->fword,ajnew->count);
-    }
-
-    AJFREE(array);
-
-    return;
-}
-
-
-
-
 /* @func embWordPrintTableFI **************************************************
 **
 ** Print the words found with their frequencies.
@@ -349,15 +317,20 @@ static void wordPositionListDelete(void **x,void *cl)
 **
 ** free the elements in a list of positons
 **
-** @param [r] key [const void*] key for a table item
+** @param [r] key [const void**] key for a table item
 ** @param [d] count [void**] Data values as void**
 ** @param [r] cl [void*] Ignored user data, usually NULL.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void wordVFree(const void *key, void **count, void *cl)
+static void wordVFree(const void **key, void **count, void *cl)
 {
+    char* ckey;
+
+    ckey = (char*) *key;
+    ajCharDel(&ckey);
+
     /* free the elements in the list of the positons */
     ajListMap(((EmbPWord)*count)->list,wordPositionListDelete, NULL);
 
@@ -384,7 +357,7 @@ static void wordVFree(const void *key, void **count, void *cl)
 
 void embWordFreeTable(AjPTable *table)
 {
-    ajTableMap(*table, wordVFree, NULL);
+    ajTableMapDel(*table, wordVFree, NULL);
     ajTableFree(table);
     table = 0;
 
@@ -574,10 +547,12 @@ ajint embWordGetTable(AjPTable *table, const AjPSeq seq)
     ajint ilast;
     ajint *k;
     EmbPWord rec;
+    char* key;
 
     ajint iwatch[] = {-1};
     ajint iw;
     AjBool dowatch;
+    size_t wordsize = wordLength+1;
 
     assert(wordLength > 0);
 
@@ -626,10 +601,11 @@ ajint embWordGetTable(AjPTable *table, const AjPSeq seq)
 	{
 	    /* else create a new word */
 	    AJNEW0(rec);
-	    rec->count= 1;
-	    rec->fword = startptr;
+	    rec->count = 1;
+	    key = ajCharNewResLenC(startptr, wordsize, wordLength);
+	    rec->fword = key;
 	    rec->list = ajListNew();
-	    ajTablePut(*table, startptr, rec);
+	    ajTablePut(*table, key, rec);
 	}
 
 	AJNEW0(k);
