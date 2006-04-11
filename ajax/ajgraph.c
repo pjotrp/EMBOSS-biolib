@@ -6595,7 +6595,8 @@ void ajGraphInit(const char *pgm, ajint argc, char * const argv[])
     ajDebug("=g= plxswin('%s') [argv[0]]\n", argv[0]);
     plxswin(argv[0]);
 
-    return ajAcdInit(pgm, argc, argv);
+    ajAcdInit(pgm, argc, argv);
+    return;
 }
 
 
@@ -6629,7 +6630,8 @@ void ajGraphInitP(const char *pgm, ajint argc, char *const argv[],
     ajDebug("=g= plxswin('%s') [argv[0]]\n", argv[0]);
     plxswin(argv[0]);
 
-    return ajAcdInitP(pgm, argc, argv, package);
+    ajAcdInitP(pgm, argc, argv, package);
+    return;
 }
 
 
