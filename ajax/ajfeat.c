@@ -318,25 +318,29 @@ static void         featWarn(const char* fmt, ...);
 ** @alias FeatSInFormat
 ** @alias FeatOInFormat
 **
-** @attr Name [char*] INput format name
+** @attr Name [char*] Input format name
+** @attr Alias [AjBool] True if name is an alias for an identical definition
 ** @attr Dna [AjBool] True if suitable for nucleotide data
 ** @attr Prot [AjBool] True if suitable for protein data
 ** @attr Used [AjBool] True if already used (initialised)
 ** @attr Read [(AjBool*)] Function to read feature data
 ** @attr InitReg [(AjBool*)] Function to initialise regular expressions
 ** @attr DelReg [(AjBool*)] Function to clean up regular expressions
+** @attr Desc [char*] Description
 ** @@
 ******************************************************************************/
 
 typedef struct FeatSInFormat
 {
     char* Name;
+    AjBool Alias;
     AjBool Dna;
     AjBool Prot;
     AjBool Used;
     AjBool (*Read)  (AjPFeattable thys, AjPFileBuff file);
     AjBool (*InitReg)(void);
     AjBool (*DelReg)(void);
+    char* Desc;
 } FeatOInFormat;
 #define FeatPInFormat FeatOInFormat*
 
@@ -357,31 +361,46 @@ typedef struct FeatSInFormat
 
 static FeatOInFormat featInFormatDef[] =
 {
-    {"unknown",       AJFALSE, AJFALSE, AJFALSE,
-	 featReadUnknown, NULL,               NULL},
-    {"embl",          AJTRUE,  AJFALSE, AJFALSE,
-	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-    {"em",            AJTRUE,  AJFALSE, AJFALSE,
-	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-    {"genbank",       AJTRUE,  AJFALSE, AJFALSE,
-	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-    {"gb",            AJTRUE,  AJFALSE, AJFALSE,
-	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-    {"ddbj",          AJTRUE,  AJFALSE, AJFALSE,
-	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl},
-    {"gff",           AJTRUE,  AJTRUE,  AJFALSE,
-	 featReadGff,     featRegInitGff,     featDelRegGff},
-    {"swiss",         AJFALSE, AJTRUE,  AJFALSE,
-	 featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
-    {"sw",            AJFALSE, AJTRUE,  AJFALSE,
-	 featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
-    {"swissprot",     AJFALSE, AJTRUE,  AJFALSE,
-	 featReadSwiss,   featRegInitSwiss,   featDelRegSwiss},
-    {"pir",           AJFALSE, AJTRUE,  AJFALSE,
-	 featReadPir,     featRegInitPir,     featDelRegPir},
-    {"nbrf",           AJFALSE, AJTRUE,  AJFALSE,
-	 featReadPir,     featRegInitPir,     featDelRegPir},
-    {NULL, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL}
+    /*Name            Alias    Dna      Prot     Used (initially false)
+         ReadFunction      RegInitFunction    RegDelFunction
+         Description*/
+    {"unknown",       AJFALSE, AJFALSE, AJFALSE, AJFALSE,
+	 featReadUnknown, NULL,               NULL,
+	 "unknown format"},
+    {"embl",          AJFALSE, AJTRUE,  AJFALSE, AJFALSE,
+	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl,
+	 "embl/genbank/ddbj format"},
+    {"em",            AJTRUE,  AJTRUE,  AJFALSE, AJFALSE,
+	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl,
+	 "embl/genbank/ddbj format"},
+    {"genbank",       AJTRUE,  AJTRUE,  AJFALSE, AJFALSE,
+	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl,
+	 "embl/genbank/ddbj format"},
+    {"gb",            AJTRUE,  AJTRUE,  AJFALSE, AJFALSE,
+	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl,
+	 "embl/genbank/ddbj format"},
+    {"ddbj",          AJTRUE,  AJTRUE,  AJFALSE, AJFALSE,
+	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl,
+	 "embl/genbank/ddbj format"},
+    {"gff",           AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,
+	 featReadGff,     featRegInitGff,     featDelRegGff,
+	 "GFF version 1 or 2"},
+    {"swiss",         AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 featReadSwiss,   featRegInitSwiss,   featDelRegSwiss,
+	 "SwissProt format"},
+    {"sw",            AJTRUE,  AJFALSE, AJTRUE,  AJFALSE,
+	 featReadSwiss,   featRegInitSwiss,   featDelRegSwiss,
+	 "SwissProt format"},
+    {"swissprot",     AJTRUE,  AJFALSE, AJTRUE,  AJFALSE,
+	 featReadSwiss,   featRegInitSwiss,   featDelRegSwiss,
+	 "SwissProt format"},
+    {"pir",           AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 featReadPir,     featRegInitPir,     featDelRegPir,
+	 "PIR format"},
+    {"nbrf",          AJTRUE,  AJFALSE, AJTRUE,  AJFALSE,
+	 featReadPir,     featRegInitPir,     featDelRegPir,
+	 "PIR format"},
+    {NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL, NULL}
 };
 
 static FeatPInFormat featInFormat = featInFormatDef;
@@ -492,16 +511,24 @@ static void        featGffProcessTagval(AjPFeature gf,
 ** @alias FeatOOutFormat
 **
 ** @attr Name [char*] Format name
+** @attr Alias [AjBool] True if name is an alias for an identical definition
+** @attr Dna [AjBool] True if suitable for nucleotide data
+** @attr Prot [AjBool] True if suitable for protein data
 ** @attr VocInit [(AjBool*)] Function to initialise vocabulary
 ** @attr Write [(AjBool*)] Function to write data
+** @attr Desc [char*] Description
 ** @@
 ******************************************************************************/
 
 typedef struct FeatSOutFormat
 {
     char* Name;
+    AjBool Alias;
+    AjBool Dna;
+    AjBool Prot;
     AjBool (*VocInit) (void);
     AjBool (*Write) (const AjPFeattable thys, AjPFile file);
+    char* Desc;
 } FeatOOutFormat;
 #define FeatPOutFormat FeatOOutFormat*
 
@@ -520,17 +547,40 @@ typedef struct FeatSOutFormat
 
 static FeatOOutFormat featOutFormatDef[] =
 {
-    {"unknown",   NULL,               feattableWriteUnknown},
-    {"embl",      featVocabInitEmbl,  ajFeattableWriteEmbl},
-    {"genbank",   featVocabInitEmbl,  ajFeattableWriteGenbank},
-    {"gb",        featVocabInitEmbl,  ajFeattableWriteGenbank},
-    {"ddbj",      featVocabInitEmbl,  ajFeattableWriteDdbj},
-    {"gff",       featVocabInitGff,   ajFeattableWriteGff},
-    {"pir",       featVocabInitPir,   ajFeattableWritePir},
-    {"swissprot", featVocabInitSwiss, ajFeattableWriteSwiss},
-    {"swiss",     featVocabInitSwiss, ajFeattableWriteSwiss},
-    {"sw",        featVocabInitSwiss, ajFeattableWriteSwiss},
-    {NULL, NULL, NULL}
+    /* Name       Alias    Nucleotide Prot
+         VocInit             WriteFunction
+	 Description*/
+    {"unknown",   AJFALSE, AJFALSE,   AJFALSE,
+	 NULL,               feattableWriteUnknown,
+	 "unknown format"},
+    {"embl",      AJFALSE, AJTRUE,    AJFALSE,
+	 featVocabInitEmbl,  ajFeattableWriteEmbl,
+	 "embl format"},
+    {"genbank",   AJFALSE, AJTRUE,    AJFALSE,
+	 featVocabInitEmbl,  ajFeattableWriteGenbank,
+	 "genbank format"},
+    {"gb",        AJTRUE,  AJTRUE,    AJFALSE,
+	 featVocabInitEmbl,  ajFeattableWriteGenbank,
+	 "genbank format"},
+    {"ddbj",      AJFALSE, AJTRUE,    AJFALSE,
+	 featVocabInitEmbl,  ajFeattableWriteDdbj,
+	 "ddbj format"},
+    {"gff",       AJFALSE, AJTRUE,    AJTRUE,
+	 featVocabInitGff,   ajFeattableWriteGff,
+	 "GFF version 2"},
+    {"pir",       AJFALSE, AJFALSE,   AJTRUE,
+	 featVocabInitPir,   ajFeattableWritePir,
+	 "PIR format"},
+    {"swiss",     AJFALSE, AJFALSE,   AJTRUE,
+	 featVocabInitSwiss, ajFeattableWriteSwiss,
+	 "SwissProt format"},
+    {"sw",        AJTRUE,  AJFALSE,   AJTRUE,
+	 featVocabInitSwiss, ajFeattableWriteSwiss,
+	 "SwissProt format"},
+    {"swissprot", AJTRUE,  AJFALSE,   AJTRUE,
+	 featVocabInitSwiss, ajFeattableWriteSwiss,
+	 "SwissProt format"},
+    {NULL, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL}
 };
 
 static FeatPOutFormat featOutFormat = featOutFormatDef;
@@ -1430,7 +1480,7 @@ static AjPFeature featFeatNew(AjPFeattable thys,
     static ajint maxexon    = 0;
     
     if(!featDefSource)
-	ajAcdProgramS(&featDefSource);
+	ajStrAssignS(&featDefSource, ajAcdGetProgram());
     
     /* ajDebug ("\nfeatFeatNew '%S' %d .. %d %x\n",
        type, Start, End, flags); */
@@ -1535,7 +1585,7 @@ static AjPFeature featFeatNewProt(AjPFeattable thys,
     static ajint maxexon    = 0;
     
     if(!featDefSource)
-	ajAcdProgramS (&featDefSource);
+	ajStrAssignS(&featDefSource, ajAcdGetProgram());
     
     /*ajDebug("\nfeatFeatNew '%S' %d .. %d %x\n", type, Start, End, flags);*/
     
@@ -2846,7 +2896,7 @@ static void featGffProcessTagval(AjPFeature gf, AjPFeattable table,
 ** 5-12   Keyname
 ** 14-19  From
 ** 21-26  To
-** 34-74  Descrition
+** 34-74  Description
 **
 ** @param [u] thys [AjPFeattable] Feature table
 ** @param [r] origline [const AjPStr] Input line
@@ -10797,6 +10847,67 @@ void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
     if (ajStrGetLen(setname))
 	ajStrAssignS(&thys->Seqid, setname);
     ajDebug("ajFeatDefName set to  '%S'\n", setname);
+
+    return;
+}
+
+
+
+
+/* @func ajFeatPrintFormat **************************************************
+**
+** Reports the internal data structures
+**
+** @param [u] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report (usually ajFalse)
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatPrintFormat(AjPFile outf, AjBool full)
+{
+    ajint i = 0;
+
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# feature input formats\n");
+    ajFmtPrintF(outf, "# Name  Format name (or alias)\n");
+    ajFmtPrintF(outf, "# Alias Name is an alias\n");
+    ajFmtPrintF(outf, "# Nuc   Valid for nucleotide sequences\n");
+    ajFmtPrintF(outf, "# Pro   Valid for protein sequences\n");
+    ajFmtPrintF(outf, "# Name         Alias   Nuc   Pro "
+		"Description\n");
+    ajFmtPrintF(outf, "InFormat {\n");
+    for(i=0; featInFormatDef[i].Name; i++)
+    {
+	if(full || !featInFormatDef[i].Alias)
+	    ajFmtPrintF(outf, "  %-12s %5B %5B %5B \"%s\"\n",
+			featInFormatDef[i].Name,
+			featInFormatDef[i].Alias,
+			featInFormatDef[i].Dna,
+			featInFormatDef[i].Prot,
+			featInFormatDef[i].Desc);
+    }
+    ajFmtPrintF(outf, "}\n\n");
+
+    ajFmtPrintF(outf, "# feature output formats\n");
+    ajFmtPrintF(outf, "# Name  Format name (or alias)\n");
+    ajFmtPrintF(outf, "# Alias Name is an alias\n");
+    ajFmtPrintF(outf, "# Nuc   Valid for nucleotide sequences\n");
+    ajFmtPrintF(outf, "# Pro   Valid for protein sequences\n");
+    ajFmtPrintF(outf, "# Name         Alias   Nuc   Pro "
+		"Description\n");
+    ajFmtPrintF(outf, "OutFormat {\n");
+    for(i=0; featOutFormatDef[i].Name; i++)
+    {
+	if(full || !featOutFormatDef[i].Alias)
+	    ajFmtPrintF(outf, "  %-12s %5B %5B %5B \"%s\"\n",
+			featOutFormatDef[i].Name,
+			featOutFormatDef[i].Alias,
+			featOutFormatDef[i].Dna,
+			featOutFormatDef[i].Prot,
+			featOutFormatDef[i].Desc);
+    }
+    ajFmtPrintF(outf, "}\n\n");
 
     return;
 }

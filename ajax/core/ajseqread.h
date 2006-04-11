@@ -32,8 +32,13 @@ extern "C"
 
 typedef struct SeqSAccess {
   char *Name;
+  AjBool Alias;
+  AjBool Entry;
+  AjBool Query;
+  AjBool All;
   AjBool (*Access) (AjPSeqin seqin);
   AjBool (*AccessFree) (void* qrydata);
+  char* Desc;
 } SeqOAccess;
 
 #define SeqPAccess SeqOAccess*
@@ -50,6 +55,8 @@ void         ajSeqinSetNuc (AjPSeqin seqin);
 void         ajSeqinSetProt (AjPSeqin seqin);
 void         ajSeqinSetRange (AjPSeqin seqin, ajint ibegin, ajint iend);
 void         ajSeqinUsa (AjPSeqin* pthis, const AjPStr Usa);
+void         ajSeqinTrace (const AjPSeqin thys);
+
 AjBool       ajSeqParseFasta(const AjPStr str, AjPStr* id, AjPStr* acc,
 			     AjPStr* sv, AjPStr* desc);
 AjBool       ajSeqParseNcbi(const AjPStr str, AjPStr* id, AjPStr* acc,

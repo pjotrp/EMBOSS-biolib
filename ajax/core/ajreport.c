@@ -42,6 +42,7 @@
 **
 ** @attr Name [char*] Format name
 ** @attr Desc [char*] Format description
+** @attr Alias [AjBool] Name is an alias for an identical definition
 ** @attr Mintags [ajint] Minimum number of special tags needed
 ** @attr Showseq [AjBool] ajTrue if sequence is to be included
 ** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
@@ -53,6 +54,7 @@ typedef struct ReportSFormat
 {
     char *Name;
     char *Desc;
+    AjBool Alias;
     ajint Mintags;
     AjBool Showseq;
     AjBool Nuc;
@@ -127,53 +129,53 @@ static char* reportCharname(const AjPReport thys);
 static ReportOFormat reportFormat[] =
 {
 /*   Name         Description */
-/* MinTags  Showseq  Nuc      Prot     Function */
+/*       Alias MinTags  Showseq  Nuc      Prot     Function */
    /* standard feature formats */
     {"embl",      "EMBL feature format",
-	 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteEmbl},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteEmbl},
     {"genbank",   "Genbank feature format",
-	 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteGenbank},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteGenbank},
     {"gff",       "GFF feature format",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteGff},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteGff},
     {"pir",       "PIR feature format",
-	 0, AJFALSE, AJFALSE, AJTRUE,  reportWritePir},
+	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  reportWritePir},
     {"swiss",     "Swissprot feature format",
-	 0, AJFALSE, AJFALSE, AJTRUE,  reportWriteSwiss},
+	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  reportWriteSwiss},
     /* trace  for debug */
     {"trace",     "Debugging trace of full internal data content",
-	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTrace},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTrace},
     /* list file for input to other programs */
     {"listfile",  "EMBOSS list file of sequence USAs with ranges",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteListFile},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteListFile},
     /* feature reports */
     {"dbmotif",   "Motif database hits",
-	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
     {"diffseq",   "Differences between a pair of sequences",
-	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
 /*    cirdna/lindna input format - looks horrible in those programs */
 /*    {"draw",      "",
 	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteDraw},*/
     {"excel",     "Tab-delimited file for import to Microsoft Excel",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
     {"feattable", "EMBL format feature table with internal tags",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
     {"motif",     "Motif report",
-	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
     {"nametable", "Simple table with sequence name",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteNameTable},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteNameTable},
     {"regions",   "Annotated sequence regions",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteRegions},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteRegions},
     {"seqtable",  "Simple table with sequence on each line",
-	 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSeqTable},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSeqTable},
     {"simple",    "Simple report",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSimple},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSimple},
     {"srs",       "Simple report format for SRS",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSrs},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSrs},
     {"table",     "Simple table",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTable},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTable},
     {"tagseq",    "Sequence with features marked below",
-	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTagseq},
-    {NULL, NULL, 0, 0, 0, 0, NULL}
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTagseq},
+    {NULL, NULL, AJFALSE, 0, AJFALSE, AJFALSE, AJFALSE, NULL}
 };
 
 
@@ -2477,9 +2479,9 @@ void ajReportWriteHeader(AjPReport thys,
     if(!thys->Count)
     {
 	ajFmtPrintF(outf, "########################################\n");
-	ajFmtPrintF(outf, "# Program: %s\n", ajAcdProgram());
+	ajFmtPrintF(outf, "# Program: %S\n", ajAcdGetProgram());
 	ajFmtPrintF(outf, "# Rundate: %D\n", today);
-	ajFmtPrintF(outf, "# Commandline: %s\n", ajAcdProgram());
+	ajFmtPrintF(outf, "# Commandline: %S\n", ajAcdGetProgram());
 	ajStrAssignS(&tmpstr, ajAcdGetCmdline());
 	if(ajStrGetLen(tmpstr))
 	{
@@ -2944,23 +2946,27 @@ void ajReportPrintFormat(AjPFile outf, AjBool full)
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# report output formats\n");
     ajFmtPrintF(outf, "# Name    Format name (or alias)\n");
-    ajFmtPrintF(outf, "# Mintags Minimum number of tags to be specified (0 for al)\n");
-    ajFmtPrintF(outf, "# Showseq Includes sequence\n");
+    ajFmtPrintF(outf, "# Alias   Alias name\n");
     ajFmtPrintF(outf, "# Nuc     Valid for nucleotide sequences\n");
     ajFmtPrintF(outf, "# Pro     Valid for protein sequences\n");
+    ajFmtPrintF(outf, "# Mintags Minimum number of tags to be specified (0 for all)\n");
+    ajFmtPrintF(outf, "# Showseq Includes sequence\n");
     ajFmtPrintF(outf, "# Desc    Format description\n");
-    ajFmtPrintF(outf, "# Name    Mintags Showseq Nuc Pro Description\n");
+    ajFmtPrintF(outf, "# Name          Alias Nuc Pro Mintags Showseq "
+		"Description\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "RFormat {\n");
     for(i=0; reportFormat[i].Name; i++)
     {
-	ajFmtPrintF(outf, "  %-12s %7d     %3B %3B %3B '%s'\n",
-		     reportFormat[i].Name,
-		     reportFormat[i].Mintags,
-		     reportFormat[i].Showseq,
-		     reportFormat[i].Nuc,
-		     reportFormat[i].Prot,
-		     reportFormat[i].Desc);
+	if(full || !reportFormat[i].Alias)
+	    ajFmtPrintF(outf, "  %-12s %5B %3B %3B %7d %7B \"%s\"\n",
+			reportFormat[i].Name,
+			reportFormat[i].Alias,
+			reportFormat[i].Nuc,
+			reportFormat[i].Prot,
+			reportFormat[i].Mintags,
+			reportFormat[i].Showseq,
+			reportFormat[i].Desc);
     }
     ajFmtPrintF(outf, "}\n\n");
 

@@ -199,7 +199,7 @@ static SeqOType seqType[] =
     {"gapnucleotide",  AJTRUE,  AJTRUE,  ISNUC,  "?Xx",   "NNN",
 	 seqTypeCharNucGap,
 	 "nucleotide sequence with gaps"},
-    {"gapnucleotidephylo",  AJTRUE,  AJTRUE,  ISNUC,  "",   "",
+    {"gapnucleotidephylo",  AJTRUE,  AJTRUE,  ISNUC,  NULL,  NULL,
 	 seqTypeCharNucGapPhylo,
 	 "nucleotide sequence with gaps and queries"},
     {"protein",        AJFALSE, AJTRUE,  ISPROT, "?*",  "XX",
@@ -217,7 +217,7 @@ static SeqOType seqType[] =
     {"gapstopprotein", AJTRUE,  AJTRUE,  ISPROT, "?",  "X",
 	 seqTypeCharProtStopGap,
 	 "protein sequence with gaps and possible stops"},
-    {"gapproteinphylo", AJTRUE,  AJTRUE,  ISPROT, "",  "",
+    {"gapproteinphylo", AJTRUE,  AJTRUE,  ISPROT, NULL,  NULL,
 	 seqTypeCharProtGapPhylo,
 	 "protein sequence with gaps, stops and queries"},
     {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?*Uu", "XXXx",
@@ -1192,27 +1192,45 @@ void ajSeqType(AjPSeq thys)
 void ajSeqPrintType(AjPFile outf, AjBool full)
 {
     ajint i;
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
 
     char* typeName[] = {"ANY", "NUC", "PRO"};
 
     ajFmtPrintF(outf, "\n# Sequence Types\n");
-    ajFmtPrintF(outf, "# Name                 Gap Ambig N/P From To Description\n");
+    ajFmtPrintF(outf, "# Name                 Gap Ambig N/P "
+		"From     To       Description\n");
     ajFmtPrintF(outf, "seqType {\n");
     for(i=0; seqType[i].Name; i++)
     {
 	if (seqType[i].ConvertFrom)
-	    ajFmtPrintF(outf, "  %-20s %3B   %3B %s \"%s\" \"%s\" \"%s\"\n",
+	{
+	    ajFmtPrintF(outf, "  %-20s %3B   %3B %3s",
 			seqType[i].Name, seqType[i].Gaps,
-			seqType[i].Ambig, typeName[seqType[i].Type],
-			seqType[i].ConvertFrom, seqType[i].ConvertTo,
-			seqType[i].Desc);
+			seqType[i].Ambig, typeName[seqType[i].Type]);
+	    ajFmtPrintS(&tmpstr, "\"%s\"", seqType[i].ConvertFrom);
+	    if(maxtmp > ajStrGetLen(tmpstr))
+	       maxtmp = ajStrGetLen(tmpstr);
+	    ajFmtPrintF(outf, " %-8S", tmpstr);
+	    ajFmtPrintS(&tmpstr, "\"%s\"", seqType[i].ConvertTo);
+	    if(maxtmp > ajStrGetLen(tmpstr))
+	       maxtmp = ajStrGetLen(tmpstr);
+	    ajFmtPrintF(outf, " %-8S", tmpstr);
+	    ajFmtPrintF(outf, " \"%s\"\n", seqType[i].Desc);
+	}
 	else
-	    ajFmtPrintF(outf, "  %-20s %3B   %3B %s \"\" \"\" \"%s\"\n",
+	{
+	    ajFmtPrintF(outf, "  %-20s %3B   %3B %s \"\"       \"\"       "
+			"\"%s\"\n",
 			seqType[i].Name, seqType[i].Gaps,
 			seqType[i].Ambig, typeName[seqType[i].Type],
 			seqType[i].Desc);
+	}
     }
     ajFmtPrintF(outf, "}\n");
+    if(maxtmp > 8) ajWarn("ajSeqPrintType max tmpstr len %d",
+			maxtmp);	      
+    ajStrDel(&tmpstr);
 
     return;
 }

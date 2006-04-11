@@ -513,24 +513,61 @@ static void       seqSocketTimeout(int sig);
 
 static SeqOAccess seqAccess[] =
 {
-    {"emboss", seqAccessEmboss, seqAccessFreeEmboss},
-    {"emblcd", seqAccessEmblcd, seqAccessFreeEmblcd},
-    {"entrez",seqAccessEntrez, NULL},
-    {"seqhound",seqAccessSeqhound, NULL},
-    {"srs",seqAccessSrs, NULL},
-    {"srsfasta",seqAccessSrsfasta, NULL},
-    {"srswww",seqAccessSrswww, NULL},
-    {"url",seqAccessUrl, NULL},
-    {"app",seqAccessApp, NULL},
-    {"external",seqAccessApp, NULL},
-    /* {"asis",ajSeqAccessAsis, NULL}, */        /* called by seqUsaProcess */
-    /* {"file",ajSeqAccessFile, NULL}, */        /* called by seqUsaProcess */
-    /* {"offset",ajSeqAccessOffset, NULL}, */    /* called by seqUsaProcess */
-    {"direct",seqAccessDirect, NULL},
-    {"gcg",seqAccessGcg, NULL},
-    {"embossgcg",seqAccessEmbossGcg, NULL},
-    {"blast",seqAccessBlast, NULL},
-    {NULL, NULL, NULL}
+    /*Name        Alias    Entry    Query    All
+         AccessFunction   FreeFunction
+	 Description*/
+    {"emboss",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessEmboss, seqAccessFreeEmboss,
+	 "dbx program indexed"},
+    {"emblcd",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessEmblcd, seqAccessFreeEmblcd,
+	 "use EMBL-CD index from dbi programs or Staden"},
+    {"entrez",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessEntrez, NULL,
+	 "use NCBI Entrez services"},
+    {"seqhound",  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessSeqhound, NULL,
+	 "use BluePrint seqhound services"},
+    {"srs",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessSrs, NULL,
+	 "retrieve in text format from a local SRS installation"},
+    {"srsfasta",  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessSrsfasta, NULL,
+	 "ertrieve in FASTA format from a local SRS installation"},
+    {"srswww",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessSrswww, NULL,
+	 "retrieve in text format from an SRS webserver"},
+    {"url",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessUrl, NULL,
+	 "retrieve a URL from a remote webserver"},
+    {"app",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessApp, NULL,
+	 "call an external application"},
+    {"external",  AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessApp, NULL,
+	 "call an external application"},
+    /* {"asis",      AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 ajSeqAccessAsis, NULL,
+	 ""}, */        /* called by seqUsaProcess */
+    /* {"file",      AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 ajSeqAccessFile, NULL,
+	 ""}, */        /* called by seqUsaProcess */
+    /* {"offset",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 ajSeqAccessOffset, NULL,
+	 ""}, */    /* called by seqUsaProcess */
+    {"direct",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessDirect, NULL,
+	 "reading the original files unindexed"},
+    {"gcg",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessGcg, NULL,
+	 "emboss dbigcg indexed"},
+    {"embossgcg", AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessEmbossGcg, NULL,
+	 "emboss dbxgcg indexed"},
+    {"blast",     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+	 seqAccessBlast, NULL,
+	 "blast database format version 2 or 3"},
+    {NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL}
 };
 
 static char aa_btoa[27] = {"-ARNDCQEGHILKMFPSTWYVBZX*"};
@@ -7799,12 +7836,16 @@ void ajSeqPrintAccess(AjPFile outf, AjBool full)
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# sequence access methods\n");
-    ajFmtPrintF(outf, "# Name\n");
+    ajFmtPrintF(outf, "# Name       Alias Entry Query   All Description\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "method {\n");
-    for(i=0; seqAccess[i].Name; i++)
-	ajFmtPrintF(outf, "  %-12s\n",
-		     seqAccess[i].Name);
+    for(i=0; seqAccess[i].Name; i++) {
+	if(full || !seqAccess[i].Alias)
+	    ajFmtPrintF(outf, "  %-10s %5B %5B %5B %5B \"%s\"\n",
+			seqAccess[i].Name, seqAccess[i].Alias,
+			seqAccess[i].Entry, seqAccess[i].Query,
+			seqAccess[i].All, seqAccess[i].Desc);
+    }
 
     ajFmtPrintF(outf, "}\n\n");
 

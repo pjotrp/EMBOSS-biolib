@@ -35,6 +35,7 @@ static AjPStr seqoutUsaTest = NULL;
 **
 ** @attr Name [char*] Format name
 ** @attr Desc [char*] Format description
+** @attr Alias [AjBool] Name is an alias for an identical definition
 ** @attr Single [AjBool] Write each sequence to a new file if true (e.g. GCG)
 ** @attr Save [AjBool] Save in memory and write at end (e.g. MSF alignments)
 ** @attr Protein [AjBool] True if protein data is supported
@@ -50,10 +51,11 @@ typedef struct SeqSOutFormat
 {
     char *Name;
     char *Desc;
+    AjBool Alias;
     AjBool Single;
     AjBool Save;
-    AjBool Protein;
     AjBool Nucleotide;
+    AjBool Protein;
     AjBool Feature;
     AjBool Gap;
     AjBool Multiset;
@@ -194,152 +196,152 @@ static void       seqWriteTreecon(AjPSeqout outseq);
 static SeqOOutFormat seqOutFormat[] =
 {
 /*   Name,         Description */
-/*      Single,  Save,    Protein, Nucleotide */
+/*      Alias     Single,  Save,    Nucleotide, Protein */
 /*      Feature, Gap,     Multiset,WriteFunction */
     {"unknown",    "Unknown format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteFasta}, /* internal default
 							writes FASTA */
     /* set 'fasta' in ajSeqOutFormatDefault */
     {"gcg",        "GCG sequence format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGcg},
     {"gcg8",       "GCG old (version 8) sequence format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGcg}, /* alias for gcg */
     {"embl",       "EMBL entry format",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteEmbl},
     {"em",         "EMBL entry format (alias)",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteEmbl}, /* alias for embl */
     {"swiss",      "Swissprot entry format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 AJFALSE, AJFALSE, AJFALSE, AJFALSE, AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteSwiss},
     {"sw",         "Swissprot entry format(alias)",
-	 AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteSwiss}, /* alias for swiss */
     {"swissprot",  "Swissprot entry format(alias)",
-	 AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJFALSE, AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteSwiss}, /* alias for swiss */
     {"fasta",      "FASTA format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteFasta},
     {"pearson",    "FASTA format (alias)",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteFasta}, /* alias for fasta */
     {"ncbi",       "NCBI fasta format with NCBI-style IDs",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteNcbi},
     {"nbrf",       "NBRF/PIR entry format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteNbrf},
     {"pir",        "NBRF/PIR entry format (alias)",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteNbrf}, /* alias for nbrf */
     {"genbank",    "Genbank entry format",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGenbank},
     {"gb",         "Genbank entry format (alias)",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGenbank}, /* alias for genbank */
     {"ddbj",       "Genbank/DDBJ entry format (alias)",
-	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGenbank}, /* alias for genbank */
     {"gff",        "GFF feature file with sequence in the header",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteGff},
     {"ig",         "Intelligenetics sequence format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteIg},
     {"codata",     "Codata entry format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteCodata},
     {"strider",    "DNA strider output format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteStrider},
     {"acedb",      "ACEDB sequence format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteAcedb},
     {"experiment", "Staden experiment file",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteExperiment},
     {"staden",     "Old staden package sequence format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteStaden},
     {"text",       "Plain text",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteText},
     {"plain",      "Plain text (alias)",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteText}, /* alias for text */
     {"raw",        "Plain text (alias)",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteText}, /* alias for text output */
     {"fitch",      "Fitch program format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteFitch},
     {"msf",        "GCG MSF (mutiple sequence file) file format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteMsf},
     {"clustal",    "Clustalw output format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteClustal},
     {"aln",        "Clustalw output format (alias)",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteClustal}, /* alias for clustal */
     {"selex",      "Selex format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteSelex},
     {"phylip",     "Phylip interleaved format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJTRUE,  seqWritePhylip},
     {"phylipnon",  "Phylip non-interleaved format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWritePhylipnon},
     {"phylip3",    "Phylip non-interleaved format (alias)",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  /* alias for phylipnon*/
+	 AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  /* alias for phylipnon*/
 	 AJFALSE, AJTRUE,  AJFALSE, seqWritePhylipnon},
     {"asn1",       "NCBI ASN.1 format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteAsn1},
     {"hennig86",   "Hennig86 output format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteHennig86},
     {"mega",       "Mega interleaved output format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteMega},
     {"meganon",    "Mega non-interleaved output format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteMeganon},
     {"nexus",      "Nexus/paup interleaved format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteNexus},
     {"paup",       "Nexus/paup interleaved format (alias)",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteNexus}, /* alias for nexus */
     {"nexusnon",   "Nexus/paup non-interleaved format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteNexusnon},
     {"paupnon",    "Nexus/paup non-interleaved format (alias)",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteNexusnon},	/* alias for nexusnon*/
     {"jackknifer", "Jackknifer output interleaved format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteJackknifer},
     {"jackknifernon", "Jackknifer output non-interleaved format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteJackknifernon},
     {"treecon",    "Treecon output format",
-	 AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteTreecon},
     {"mase",       "Mase program format",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteMase},
     {"debug",      "Debugging trace of full internal data content",
-	 AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDebug}, /* trace report */
-    {NULL, NULL, 0, 0, 0, 0, 0, 0, 0, NULL}
+    {NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, NULL}
 };
 
 
@@ -1697,7 +1699,7 @@ static void seqWriteSelex(AjPSeqout outseq)
     AjPSeq* seqs = NULL;
     ajint test;
     AjPSelexdata sdata = NULL;
-    AjPSelexSQ qdata   = NULL;
+    AjPSelexseq qdata   = NULL;
     ajint namelen = 0;
     ajint v       = 0;
     AjBool sep    = ajFalse;
@@ -3919,24 +3921,28 @@ void ajSeqPrintOutFormat(AjPFile outf, AjBool full)
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# sequence output formats\n");
+    ajFmtPrintF(outf, "# Alias Alias name\n");
     ajFmtPrintF(outf, "# Single: If true, write each sequence to new file\n");
     ajFmtPrintF(outf, "# Save: If true, save sequences, write when closed\n");
-    ajFmtPrintF(outf, "# Pro   Can read protein input\n");
     ajFmtPrintF(outf, "# Nuc   Can read nucleotide input\n");
+    ajFmtPrintF(outf, "# Pro   Can read protein input\n");
     ajFmtPrintF(outf, "# Feat  Can read feature annotation\n");
     ajFmtPrintF(outf, "# Gap   Can read gap characters\n");
     ajFmtPrintF(outf, "# Mset  Can read seqsetall (multiple seqsets)\n");
-    ajFmtPrintF(outf, "# Name         Single Save  Pro  Nuc Feat  Gap MSet\n");
+    ajFmtPrintF(outf, "# Name          Alias Single Save  Pro  Nuc Feat  "
+		"Gap MSet Description\n");
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "OutFormat {\n");
     for(i=0; seqOutFormat[i].Name; i++)
     {
-	ajFmtPrintF(outf, "  %-15s %3B  %3B  %3B  %3B  %3B  %3B  %3B '%s'\n",
+	ajFmtPrintF(outf,
+		    "  %-15s %3B    %3B  %3B  %3B  %3B  %3B  %3B  %3B \"%s\"\n",
 		    seqOutFormat[i].Name,
+		    seqOutFormat[i].Alias,
 		    seqOutFormat[i].Single,
 		    seqOutFormat[i].Save,
-		    seqOutFormat[i].Protein,
 		    seqOutFormat[i].Nucleotide,
+		    seqOutFormat[i].Protein,
 		    seqOutFormat[i].Feature,
 		    seqOutFormat[i].Gap,
 		    seqOutFormat[i].Multiset,

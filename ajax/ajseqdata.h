@@ -103,7 +103,7 @@ typedef struct AjSSeqQuery {
 #define AjPSeqQuery AjOSeqQuery*
 
 
-/* @data AjPSelexSQ ***********************************************************
+/* @data AjPSelexseq **********************************************************
 **
 ** Ajax Selex object for #=SQ information.
 **
@@ -121,7 +121,7 @@ typedef struct AjSSeqQuery {
 ** @@
 ******************************************************************************/
 
-typedef struct AjSSelexSQ
+typedef struct AjSSelexseq
 {
     AjPStr name;
     AjPStr source;
@@ -131,9 +131,9 @@ typedef struct AjSSelexSQ
     ajint  start;
     ajint  stop;
     ajint  len;
-} AjOSelexSQ;
+} AjOSelexseq;
 
-#define AjPSelexSQ AjOSelexSQ*
+#define AjPSelexseq AjOSelexseq*
 
 /* @data AjPSelex *************************************************************
 **
@@ -154,8 +154,8 @@ typedef struct AjSSelexSQ
 ** @attr ga [float[2]] Undocumented
 ** @attr tc [float[2]] Undocumented
 ** @attr nc [float[2]] Undocumented
-** @attr sq [AjPSelexSQ*] Selex sequence objects
-** @attr n [ajint] Number of AjPSelexSQ sequence objects
+** @attr sq [AjPSelexseq*] Selex sequence objects
+** @attr n [ajint] Number of AjPSelexseq sequence objects
 ** @attr Count [ajint] Count
 ** @@
 ******************************************************************************/
@@ -174,7 +174,7 @@ typedef struct AjSSelex
     float  ga[2];
     float  tc[2];
     float  nc[2];
-    AjPSelexSQ *sq;
+    AjPSelexseq *sq;
     ajint  n;
     ajint  Count;
 } AjOSelex;
@@ -201,7 +201,7 @@ typedef struct AjSSelex
 ** @attr ga [float[2]] Undocumented
 ** @attr tc [float[2]] Undocumented
 ** @attr nc [float[2]] Undocumented
-** @attr sq [AjPSelexSQ] Selex sequence object
+** @attr sq [AjPSelexseq] Selex sequence object
 ** @@
 ******************************************************************************/
 
@@ -219,7 +219,7 @@ typedef struct AjSSelexdata
     float  ga[2];
     float  tc[2];
     float  nc[2];
-    AjPSelexSQ sq;
+    AjPSelexseq sq;
 } AjOSelexdata;
 
 #define AjPSelexdata AjOSelexdata*

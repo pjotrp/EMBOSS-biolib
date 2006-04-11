@@ -79,6 +79,7 @@ AjPFeature    ajFeatNewProt (AjPFeattable thys,
 			     const AjPStr source, const AjPStr type,
 			     ajint Start, ajint End, float score);
 AjBool        ajFeatOutFormatDefault (AjPStr* pformat);
+void          ajFeatPrintFormat(AjPFile outf, AjBool full);
 AjPFeattable  ajFeatRead  (AjPFeattabIn ftin) ;
 void          ajFeatReverse  (AjPFeature thys, ajint ilen) ;
 AjBool        ajFeatSetDesc (AjPFeature thys, const AjPStr desc);

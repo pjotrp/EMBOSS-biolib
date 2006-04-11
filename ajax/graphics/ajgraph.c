@@ -138,6 +138,7 @@ static AjBool   GraphYTitlearg(const char *name, va_list args);
 **                      entry with the same Device name.
 ** @attr XYDisplay [(void*)] Function to display an XY graph
 ** @attr GOpen [(void*)] Function to display a general graph
+** @attr Desc [char*] Description
 ** @@
 ******************************************************************************/
 
@@ -150,6 +151,7 @@ typedef struct GraphSType
     AjBool Alias;
     void (*XYDisplay) (AjPGraph thys, AjBool closeit, const char *ext);
     void (*GOpen) (AjPGraph thys, const char *ext);
+    char* Desc;
 } GraphOType;
 #define GraphPType GraphOType*
 
@@ -164,72 +166,97 @@ typedef struct GraphSType
 ******************************************************************************/
 
 static GraphOType graphType[] = {
+    /*Name       Device     Extension
+       PlPlot   Alias    DisplayFunction       OpenFunction
+       Description*/
   {"ps",         "ps",      ".ps",
-       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "Postscript"},
   {"postscript", "ps",      ".ps",
-       AJTRUE,  AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJTRUE,  GraphxyDisplayToFile, GraphOpenFile,
+       "Postscript"},
 
   {"hpgl",       "lj_hpgl", ".hpgl",
-       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "HPGL general"},
 
   {"hp7470",     "hp7470",  ".hpgl",
-       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "HPGL 7470 pen plotter"},
 
   {"hp7580",     "hp7580",  ".hpgl",
-       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "HPGL 7580 pen plotter"},
 
   {"meta",       "plmeta",  ".meta",
-       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "Metafile"},
 
   {"cps",        "psc",     ".ps",
-       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "Colour postscript"},
   {"colourps",   "psc",     ".ps",
-       AJTRUE,  AJTRUE,  GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJTRUE,  GraphxyDisplayToFile, GraphOpenFile,
+       "Colour postscript"},
 
 #ifndef X_DISPLAY_MISSING /* X11 is  available */
   {"x11",        "xwin",    "null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       "X11 in new window"},
   {"xwindows",   "xwin",    "null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       "X11 in new window"},
 #endif
 
   {"tekt",       "tekt",    "null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       "Tektronix screen graphics"},
   {"tektronics", "tekt",    "null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       "Tektronix screen graphics"},
 
   {"tek",        "tek4107t","null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       "Tektronix screen graphics"},
   {"tek4107t",   "tek4107t","null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       "Tektronix model 4107 screen graphics"},
 
   {"none",       "null",    "null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       "No output"},
   {"null",       "null",    "null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       "No output"},
   {"text",       "null",    "null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       "Text file"},
 
   {"data",       "data",    ".dat",
-       AJTRUE,  AJFALSE, GraphxyDisplayToData, GraphOpenData},
+       AJTRUE,  AJFALSE, GraphxyDisplayToData, GraphOpenData,
+       "Data file for Staden package"},
 
 #ifndef X_DISPLAY_MISSING /* X11 is available */
   {"xterm",      "xterm",   "null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin},
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       "Xterm screen graphics"},
 #endif
 
 #ifdef PLD_png          /* if png/gd/zlib libraries available for png driver */
   {"png",        "png",     ".png",
-       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile},
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "PNG graphics files"},
 #endif
 
 #ifdef GROUT          /* if gdome2/libxml2/glib libraries available for xml */
   {"xml",        "xml",     ".xml",
-       AJFALSE, AJFALSE, GraphxyDisplayToFile, GraphOpenXml},
+       AJFALSE, AJFALSE, GraphxyDisplayToFile, GraphOpenXml,
+       "XML metadata"},
 #endif
 
   {NULL, NULL, NULL,
-       AJFALSE, AJFALSE, NULL, NULL}
+       AJFALSE, AJFALSE, NULL, NULL,
+       NULL}
 };
 
 
@@ -1073,8 +1100,8 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 	if( ajStrGetLen(thys->plplot->title) <=1)
 	{
 	    ajtime = ajTimeTodayF("day");
-	    ajFmtPrintAppS(&thys->plplot->title,"%s (%D)",
-			   ajAcdProgram(),ajtime);
+	    ajFmtPrintAppS(&thys->plplot->title,"%S (%D)",
+			   ajAcdGetProgram(),ajtime);
 	    ajTimeDel(&ajtime);
 	}
     }
@@ -1186,7 +1213,7 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 	{
 	    ajtime = ajTimeToday();
 	    ajStrAppendC(&thys->plplot->title,
-		      ajFmtString("%s (%D)",ajAcdProgram(),ajtime));
+		      ajFmtString("%S (%D)",ajAcdGetProgram(),ajtime));
 	    ajTimeDel(&ajtime);
 	}
 
@@ -3264,8 +3291,8 @@ void ajGraphInitSeq(AjPGraph thys, const AjPSeq seq)
     if (thys->plplot)
     {
 	if(!ajStrGetLen(thys->plplot->title))
-	    ajFmtPrintS(&thys->plplot->title, "%s of %s",
-			ajAcdProgram(), ajSeqName(seq));
+	    ajFmtPrintS(&thys->plplot->title, "%S of %S",
+			ajAcdGetProgram(), ajSeqGetName(seq));
     }
     ajGraphxySetXRangeII(thys, 1, ajSeqLen(seq));
 
@@ -4447,7 +4474,7 @@ static void GraphNewPlplot(AjPGraph graph)
     graph->plplot->numofgraphsmax = 1;
     graph->plplot->flags          = GRAPH_XY;
     graph->plplot->minmaxcalc     = 0;
-    ajFmtPrintS(&graph->plplot->outputfile,"%s", ajAcdProgram());
+    ajFmtPrintS(&graph->plplot->outputfile,"%S", ajAcdGetProgram());
 
     return;
 }
@@ -4527,7 +4554,7 @@ static void GraphxyNewPlplot(AjPGraph thys)
     thys->plplot->xstart = thys->plplot->xend = 0;
     thys->plplot->ystart = thys->plplot->yend = 0;
     thys->plplot->Obj                 = 0;
-    ajFmtPrintS(&thys->plplot->outputfile,"%s", ajAcdProgram());
+    ajFmtPrintS(&thys->plplot->outputfile,"%S", ajAcdGetProgram());
 
     return;
 }
@@ -5388,8 +5415,8 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	{
 	    ajtime = ajTimeToday();
 	    ajStrAppendC(&thys->plplot->title,
-			     ajFmtString("%s (%D)",
-					 ajAcdProgram(),
+			     ajFmtString("%S (%D)",
+					 ajAcdGetProgram(),
 					 ajtime));
 	    ajTimeDel(&ajtime);
 	}
@@ -6656,15 +6683,24 @@ void ajGraphPrintType(AjPFile outf, AjBool full)
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# Graphics Devices\n");
-    ajFmtPrintF(outf, "# Name         Device       Extension\n");
+    ajFmtPrintF(outf, "# Name     Name\n");
+    ajFmtPrintF(outf, "# Alias    Alias name\n");
+    ajFmtPrintF(outf, "# Device   Device name\n");
+    ajFmtPrintF(outf, "# Extension Filename extension (null if no file created)\n");
+    ajFmtPrintF(outf, "# Description\n");
+    ajFmtPrintF(outf, "# Name       Alias Device     Extension Description\n");
     ajFmtPrintF(outf, "GraphType {\n");
     for(i=0; graphType[i].Name; i++)
     {
 	gt = &graphType[i];
-	ajFmtPrintF(outf, "  %-12s", gt->Name);
-	ajFmtPrintF(outf, " %-12s", gt->Device);
-	ajFmtPrintF(outf, " %s", gt->Ext);
-	ajFmtPrintF(outf, "\n");
+	if(full || !gt->Alias) {
+	    ajFmtPrintF(outf, "  %-10s", gt->Name);
+	    ajFmtPrintF(outf, " %5B", gt->Alias);
+	    ajFmtPrintF(outf, " %-10s", gt->Device);
+	    ajFmtPrintF(outf, " %-10s", gt->Ext);
+	    ajFmtPrintF(outf, " \"%s\"", gt->Desc);
+	    ajFmtPrintF(outf, "\n");
+	}
     }
     ajFmtPrintF(outf, "}\n");
 
