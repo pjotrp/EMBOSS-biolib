@@ -2973,7 +2973,8 @@ static char* acdResource[] =
 
 void ajAcdInit(const char *pgm, ajint argc, char * const argv[])
 {
-    return ajAcdInitP(pgm, argc, argv, "");
+    ajAcdInitP(pgm, argc, argv, "");
+    return;
 }
 
 
