@@ -1,5 +1,15 @@
 	Version 3.1.0
 
+	Added additional information to "entrails" output (entrails is
+	built by "make check" and displays internal data to assist
+	developers of wrappers and interfaces). The output now includes
+	application attributes and reports definitions which are aliases
+	(with -full on the commandline).
+
+	Added -mincount option to wordcount to report only words occuring
+	a given number of times. The default of 1 does not change the
+	previous results.
+
 	Oddcomp had a number of bugs. A window size equal to the sequence
 	length resulted in no hits. The word size was used before reading
 	the input file. A match in the last possible window was missed.
