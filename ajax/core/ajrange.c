@@ -202,7 +202,30 @@ void ajRangeDel(AjPRange *thys)
 ** @@
 ******************************************************************************/
 
- AjPRange ajRangeGet(const AjPStr str)
+AjPRange ajRangeGet(const AjPStr str)
+{
+    return ajRangeGetLimits(str, INT_MIN, INT_MAX, 0, 0);
+}
+
+
+
+/* @func ajRangeGetLimits *****************************************************
+**
+** Create a range object from a string
+**
+** @param [r] str [const AjPStr] range string
+** @param [r] imin [ajint] Minimum value
+** @param [r] imax [ajint] Maximum value
+** @param [r] minsize [ajint] Minimum number of values
+** @param [r] size [ajint] Required number of values, zero for unlimited
+**
+** @return [AjPRange] range object
+** @category new [AjPRange] Create a range object from a string
+** @@
+******************************************************************************/
+
+AjPRange ajRangeGetLimits(const AjPStr str, ajint imin, ajint imax,
+			   ajint minsize, ajint size)
 {
     AjPRange ret = NULL;
     static AjPStr c1 = NULL;
@@ -232,7 +255,7 @@ void ajRangeDel(AjPRange *thys)
     {
 	/* knock off the '@' */
 	ajStrKeepRange(&s, 1, ajStrGetLen(s));
-       ret = ajRangeFile(s);
+	ret = ajRangeFileLimits(s, imin, imax, minsize, size);
     }
     else
     {
@@ -261,6 +284,22 @@ void ajRangeDel(AjPRange *thys)
 		ajWarn("Odd integer(s) in range specification [%d]",n);
 		return NULL;
 	    }
+
+	    if(size)
+	    {
+		if(n != size)
+		{
+		    ajWarn("Range specification requires exactly %d pairs",
+			   size);
+		    return NULL;
+		}
+	    }
+	    else if (n < minsize)
+	    {
+		ajWarn("Range specification requires at least %d pairs",
+		       minsize);
+		return NULL;
+	    }
 	    ret=ajRangeNewI((e=n>>1));
 
 	    /* get the pairs of numbers and put them in the AjPRange object */
@@ -287,6 +326,21 @@ void ajRangeDel(AjPRange *thys)
 		ajRangeDel(&ret);
 		return NULL;
 	    }
+
+	    if (f < imin)
+	    {
+		ajWarn("From range [%d] less than minimum [%d]",f,imin);
+		ajRangeDel(&ret);
+		return NULL;
+	    }
+
+	    if (t > imax)
+	    {
+		ajWarn("To range [%d] greater than maximum [%d]",t,imax);
+		ajRangeDel(&ret);
+		return NULL;
+	    }
+
 	    ret->start[0]=f;
 	    ret->end[0]=t;
 
@@ -348,7 +402,21 @@ void ajRangeDel(AjPRange *thys)
 	    }
 	}
 	else
+	{
+	    if(size)
+	    {
+		ajWarn("Range specification requires exactly %d pairs",
+		       size);
+		return NULL;
+	    }
+	    else if (0 < minsize)
+	    {
+		ajWarn("Range specification requires at least %d pairs",
+		       minsize);
+		return NULL;
+	    }
 	    ret=ajRangeNewI(0);
+	}
 
 	ajStrDelStatic(&c1);
 	ajStrDelStatic(&c2);
@@ -391,6 +459,43 @@ void ajRangeDel(AjPRange *thys)
 ******************************************************************************/
 
 AjPRange ajRangeFile(const AjPStr name)
+{
+    return ajRangeFileLimits(name, 1, INT_MAX, 0, 0);
+}
+
+/* @func ajRangeFileLimits ****************************************************
+**
+** Load a range object from a file
+**
+** The format of the range file is:
+** Comment lines start with '#' in the first column.
+** Comment lines and blank lines are ignored.
+** The line may start with white-space.
+** There are two positive numbers per line separated by white-space.
+** The second number must be greater or equal to the first number.
+** There is optional text after the two numbers.
+** White-space before or after the text is removed.
+**
+** e.g.:
+**
+** # this is my set of ranges
+** 12	23
+**  4	5	this is like 12-23, but smaller
+** 67	10348	interesting region
+**
+** @param [r] name [const AjPStr] range file name
+** @param [r] imin [ajint] Minimum value
+** @param [r] imax [ajint] Maximum value
+** @param [r] minsize [ajint] Minimum number of values
+** @param [r] size [ajint] Required number of values, zero for unlimited
+**
+** @return [AjPRange] range object
+** @category new [AjPRange] Create a range object from a file
+** @@
+******************************************************************************/
+
+AjPRange ajRangeFileLimits(const AjPStr name, ajint imin, ajint imax,
+			   ajint minsize, ajint size)
 {
     AjPRange ret = NULL;
     AjPFile infile;
@@ -464,8 +569,24 @@ AjPRange ajRangeFile(const AjPStr name)
     
     /* now we know how many pairs of numbers to store, create ajRange object */
     n  = ajListstrLength(onelist);
+    if(size)
+    {
+	if(n != size)
+	{
+	    ajWarn("Range specification requires exactly %d pairs",
+		   size);
+	    return NULL;
+	}
+    }
+    else if (n < minsize)
+    {
+	ajWarn("Range specification requires at least %d pairs",
+	       minsize);
+	return NULL;
+    }
     ret = ajRangeNewI(n);
-    
+
+
     /* populate ajRange object from lists and check numbers are valid */
     for(k = 0; k < n; k++)
     {
@@ -495,7 +616,23 @@ AjPRange ajRangeFile(const AjPStr name)
 	    ajRangeDel(&ret);
 	    return NULL;
 	}
-	
+
+	if (numone < imin)
+	{
+	    ajWarn("From range [%d] less than minimum [%d]",
+		   numone,imin);
+	    ajRangeDel(&ret);
+	    return NULL;
+	}
+
+	if (numtwo > imax)
+	{
+	    ajWarn("To range [%d] greater than maximum [%d]",
+		   numtwo,imax);
+	    ajRangeDel(&ret);
+	    return NULL;
+	}
+
 	ret->start[k] = numone;
 	ret->end[k]   = numtwo;
 

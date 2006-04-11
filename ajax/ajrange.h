@@ -55,7 +55,11 @@ AjPRange  ajRangeCopy(const AjPRange src);
 AjBool    ajRangeDefault(const AjPRange thys, const AjPSeq s);
 void      ajRangeDel(AjPRange *thys);
 AjPRange  ajRangeFile(const AjPStr name);
+AjPRange  ajRangeFileLimits(const AjPStr name, ajint imin, ajint imax,
+			   ajint minsize, ajint size);
 AjPRange  ajRangeGet(const AjPStr s);
+AjPRange  ajRangeGetLimits(const AjPStr str, ajint imin, ajint imax,
+			   ajint minsize, ajint size);
 AjPRange  ajRangeNewI(ajint n);
 ajint     ajRangeNumber(const AjPRange thys);
 AjBool    ajRangeOrdered (const AjPRange thys);
