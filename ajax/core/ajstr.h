@@ -123,6 +123,7 @@ char*      ajCharNewS (const AjPStr thys);
 char*      ajCharNewRes(size_t size);
 char*      ajCharNewResC(const char* txt, size_t size);
 char*      ajCharNewResS(const AjPStr str, size_t size);
+char*      ajCharNewResLenC(const char* txt, size_t size, size_t len);
 
 /* destructors */
 

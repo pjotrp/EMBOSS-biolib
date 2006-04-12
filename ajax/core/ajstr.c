@@ -132,6 +132,7 @@ static ajlong strTotal     = 0;
 ** @argrule   C       txt [const char*] C character string
 ** @argrule   S       str [const AjPStr] Text string
 ** @argrule   NewRes  size [size_t] Reserved size
+** @argrule   Len     len [size_t] Length of string
 **
 ** @valrule   *  [char*] New C-style string
 ** @fcategory new
@@ -296,6 +297,36 @@ char __deprecated * ajCharNewLS(size_t size, const AjPStr thys) {
 }
 
 
+
+/* @func ajCharNewResLenC *****************************************************
+**
+** A text string constructor which allocates memory for a string of the 
+** specified length and initialises it with the text string provided.
+**
+** @param [r] txt [const char*] String object as initial value and size
+**                          for the text.
+** @param [r] size [size_t] Maximum string length, as returned by strlen
+** @param [r] len [size_t] Length of txt to save calculation time.
+** @return [char*] A new text string.
+** @ure The text provided must fit in the specified length
+** @@
+******************************************************************************/
+
+char* ajCharNewResLenC(const char* txt, size_t size, size_t len)
+{
+    static char* cp;
+    size_t isize;
+
+    isize = size;
+
+    if(len >= isize)
+	isize = len + 1;
+
+    cp = (char*) AJALLOC0(isize);
+    memmove(cp, txt, len);
+
+    return cp;
+}
 
 /* @section destructors
 **
