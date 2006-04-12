@@ -434,16 +434,26 @@ static void namPrintResource(const AjPStr* rsattr)
 void ajNamPrintDbAttr(AjPFile outf, AjBool full)
 {
     ajint i;
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
 
     ajFmtPrintF(outf, "# Database attributes\n");
-    ajFmtPrintF(outf, "%12s %10s %s\n", "Attribute", "default", "Comment");
+    ajFmtPrintF(outf, "# %-15s %-12s %s\n", "Attribute", "Default", "Comment");
     ajFmtPrintF(outf, "namDbAttrs {\n");
     for(i=0; namDbAttrs[i].Name; i++)
-	ajFmtPrintF(outf, "%12s %10s %s\n",
-		     namDbAttrs[i].Name, namDbAttrs[i].Defval,
-		     namDbAttrs[i].Comment);
+    {
+	ajFmtPrintF(outf, "  %-15s", namDbAttrs[i].Name);
+	ajFmtPrintS(&tmpstr, "\"%s\"", namDbAttrs[i].Defval);
+	if(ajStrGetLen(tmpstr) > maxtmp)
+	    maxtmp = ajStrGetLen(tmpstr);
+	ajFmtPrintF(outf, " %-12S", tmpstr);
+	ajFmtPrintF(outf, " \"%s\"\n", namDbAttrs[i].Comment);
+    }
 
-    ajFmtPrintF(outf, "}\n");
+    if(maxtmp > 12) ajWarn("ajNamPrintDbAttr max tmpstr len %d",
+			maxtmp);	      
+    ajFmtPrintF(outf, "}\n\n");
+    ajStrDel(&tmpstr);
 
     return;
 }
@@ -463,16 +473,26 @@ void ajNamPrintDbAttr(AjPFile outf, AjBool full)
 void ajNamPrintRsAttr(AjPFile outf, AjBool full)
 {
     ajint i;
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
 
     ajFmtPrintF(outf, "# Resource attributes\n");
-    ajFmtPrintF(outf, "%12s %10s %s\n", "Attribute", "default", "Comment");
+    ajFmtPrintF(outf, "# %-15s %-12s %s\n", "Attribute", "Default", "Comment");
     ajFmtPrintF(outf, "namRsAttrs {\n");
     for(i=0; namRsAttrs[i].Name; i++)
-	ajFmtPrintF(outf, "%12s %10s %s\n",
-		     namRsAttrs[i].Name, namRsAttrs[i].Defval,
-		     namRsAttrs[i].Comment);
+    {
+	ajFmtPrintF(outf, "  %-15s", namRsAttrs[i].Name);
+	ajFmtPrintS(&tmpstr, "\"%s\"", namRsAttrs[i].Defval);
+	if(ajStrGetLen(tmpstr) > maxtmp)
+	    maxtmp = ajStrGetLen(tmpstr);
+	ajFmtPrintF(outf, " %-12S", tmpstr);
+	ajFmtPrintF(outf, " \"%s\"\n", namRsAttrs[i].Comment);
+    }
+    ajFmtPrintF(outf, "}\n\n");
 
-    ajFmtPrintF(outf, "}\n");
+    if(maxtmp > 12) ajWarn("ajNamPrintRsAttr max tmpstr len %d",
+			maxtmp);	      
+    ajStrDel(&tmpstr);
 
     return;
 }

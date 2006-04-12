@@ -1046,7 +1046,7 @@ ajint ajCodIndexC(const char *codon)
 ** Read a codon index from a filename using a specified format.
 **
 ** The format can be in the format argument, as a prefix format:: to the
-** flelname, or empty to allow all known formats to be tried.
+** filename, or empty to allow all known formats to be tried.
 **
 ** @param [w] thys [AjPCod] Codon object
 ** @param [r] fn [const AjPStr] filename
@@ -1640,7 +1640,8 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
     {
 	for(i=0;i<64;i++)
 	{
-	    thys->num[i] = (double)thys->CodonCount * thys->tcount[i] / 1000.0 + 0.1;
+	    thys->num[i] = ((double)thys->CodonCount* thys->tcount[i]
+			    / 1000.0 + 0.1);
 	}
     }
 
@@ -3642,7 +3643,7 @@ void ajCodPrintFormat(AjPFile outf, AjBool full)
     ajFmtPrintF(outf, "Format {\n");
     for(i=0; codInFormatDef[i].Name; i++)
     {
-	ajFmtPrintF(outf, "  %-12s %3B '%s'\n",
+	ajFmtPrintF(outf, "  %-12s %3B \"%s\"\n",
 		     codInFormatDef[i].Name,
 		     codInFormatDef[i].Try,
 		     codInFormatDef[i].Desc);
@@ -3658,7 +3659,7 @@ void ajCodPrintFormat(AjPFile outf, AjBool full)
     ajFmtPrintF(outf, "OFormat {\n");
     for(i=0; codOutFormatDef[i].Name; i++)
     {
-	ajFmtPrintF(outf, "  %-12s '%s'\n",
+	ajFmtPrintF(outf, "  %-12s \"%s\"\n",
 		     codOutFormatDef[i].Name,
 		     codOutFormatDef[i].Desc);
     }
