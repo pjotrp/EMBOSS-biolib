@@ -32,7 +32,7 @@
  * 
  * SELEX format is documented in Docs/formats.tex.
  ****************************************************************************
- * RCS $Id: interleaved.c,v 1.3 2006/02/22 15:02:27 rice Exp $
+ * RCS $Id: interleaved.c,v 1.4 2006/04/12 08:56:00 rice Exp $
  */
 
 #include "ajax.h"
@@ -493,7 +493,7 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     ajint i=0;
     const AjPStr fmt=NULL;
     AjPSelexdata sdata=NULL;
-    AjPSelexSQ   sqdata=NULL;
+    AjPSelexseq   sqdata=NULL;
     const char *p=NULL;
     char *q=NULL;
     char  c='\0';
