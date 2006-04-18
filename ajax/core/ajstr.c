@@ -6179,7 +6179,7 @@ AjBool ajStrSetRes(AjPStr* Pstr, size_t size)
 	return ajTrue;
     }
 
-    return ajTrue;
+    return ajFalse;
 }
 
 
@@ -6225,7 +6225,7 @@ AjBool ajStrSetResRound(AjPStr* Pstr, size_t size)
 	return ajTrue;
     }
 
-    return ajTrue;
+    return ajFalse;
 }
 
 
