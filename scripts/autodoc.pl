@@ -122,9 +122,6 @@ my @embassylist = ("appendixd",
 my @doclist = (
 	       "$doctop"
 	       );
-foreach $x (@embassylist) {
-    push @doclist, "$doctop/embassy/$x";
-}
 
 # Filenames for cvs add and commit commands.
 # These hold a list of the names of files to be added/committed
@@ -137,15 +134,6 @@ my $cvsdoctextcommit = '';
 my $badlynx = 0;
 my $badsrc = 0;
 
-$doccreate = "";
-
-if ($#ARGV >= 0) {
-    $argdoccreate = $ARGV[0];
-    if ($argdoccreate =~ /^[-]create/i) {$doccreate = "Y"}
-}
-
-$cvscommit = $doccreate;
-
 ######################################################################
 ######################################################################
 # 
@@ -154,8 +142,22 @@ $cvscommit = $doccreate;
 ######################################################################
 ######################################################################
 
+######################################################################
+# 
+# Name: usage
+# 
+# Description:
+#       Reports command line options
+#
+######################################################################
 
-
+sub usage () {
+  print STDERR "Usage:\n";
+  print STDERR "  autodoc.pl -create -embassy=package [appname]\n";
+  print STDERR "\n";
+  print STDERR "Default is to produce docuemntation for all applications\n";
+  exit();
+}
 ######################################################################
 # 
 # Name: htmlsource
@@ -717,6 +719,68 @@ sub checkincludefile ( $$$ ) {
 
 
 
+######################################################################
+# 
+# Name: checkhistoryfile
+# 
+# Description: 
+# 	This checks for the existence of a history file.
+#       If no file is found, creates a blank file..
+#
+# Args: 
+# 	$thisprogram - the name of the program
+#	$docdir - the location of the web pages
+# 
+# 
+######################################################################
+
+sub checkhistoryfile ( $$ ) {
+
+    my ($thisprogram, $docdir) = @_;
+
+    my $histfile = "$docdir/inc/$thisprogram.history";
+
+# check to see if the include file has changed
+    if (! -e "$histfile") {
+	open (HIST, ">$histfile") || die "Cannot open $histfile";
+	print HIST "\n";
+	close HIST;
+    }
+}
+
+
+
+######################################################################
+# 
+# Name: checkcommentfile
+# 
+# Description: 
+# 	This checks for the existence of a coment file.
+#       If no file is found, creates a file with the test 'None'..
+#
+# Args: 
+# 	$thisprogram - the name of the program
+#	$docdir - the location of the web pages
+# 
+# 
+######################################################################
+
+sub checkcommentfile ( $$ ) {
+
+    my ($thisprogram, $docdir) = @_;
+
+    my $commentfile = "$docdir/inc/$thisprogram.comment";
+
+# check to see if the include file has changed
+    if (! -e "$commentfile") {
+	open (HIST, ">$commentfile") || die "Cannot open $commentfile";
+	print HIST "None\n";
+	close HIST;
+    }
+}
+
+
+
 ##################################################################
 ##################################################################
 #
@@ -724,6 +788,31 @@ sub checkincludefile ( $$$ ) {
 #
 ##################################################################
 ##################################################################
+
+foreach $x (@embassylist) {
+    push @doclist, "$doctop/embassy/$x";
+}
+
+$doccreate = "";
+
+foreach $test (@ARGV) {
+    if ($test =~ /^-(.*)/) {
+	$opt=$1;
+	if ($opt eq "create") {$doccreate = "Y"}
+	elsif ($opt =~ /embassy[=](.*)/) {
+	    $singlepackage=$1;
+	    ###print STDERR "Singlepackage '$singlepackage'\n";
+	}
+	else {print STDERR "+++ unknown option '$opt'\n";usage()}
+    }
+    elsif(!defined($singleapp)) {
+	$singleapp = $test;
+	###print STDERR "Singleapp '$singleapp'\n";
+    }
+    else {print STDERR "+++ only on application name allowed\n;usage()"}
+}
+
+$cvscommit = $doccreate;
 
 open(LOGEX, ">makeexample.log") || die "Cannot open makeexample.log";
 close (LOGEX);
@@ -737,8 +826,10 @@ getprogramnames();
 # This will be copied to the file 'index.html' at the end of the script
 # if all goes well.
 # 'index.html' is the file we will be putting in the distribution.
-open (INDEX, "> i.i") || die "Cannot open i.i\n";
-indexheader(INDEX);
+if(!defined($singlepackage) && !defined($singleapp)) {
+    open (INDEX, "> i.i") || die "Cannot open i.i\n";
+    indexheader(INDEX);
+}
 
 
 # main loop
@@ -746,11 +837,13 @@ indexheader(INDEX);
 foreach $docdir (@doclist) {
     if ($docdir =~ /embassy\/(.*)/) {
 	$embassy = $1;
+	if(defined($singlepackage) && $embassy ne $singlepackage) {next}
 	print LOG "embassy $embassy\n";
 	$eindex =  "$cvsedoc/$embassy/emboss_doc/master/inc/apps.itable";
-	open (EINDEX, ">e.e") || die "Cannot open 'e.e'";
+	if(!defined($singleapp)) {
+	    open (EINDEX, ">e.e") || die "Cannot open 'e.e'";
 #	embassyindexheader(EINDEX, $embassy);
-print EINDEX "<h3><A NAME=\"$embassy\">Applications</A> in the <a
+	    print EINDEX "<h3><A NAME=\"$embassy\">Applications</A> in the <a
 href=\"ftp://emboss.open-bio.org/pub/EMBOSS/\">current $embassy release</a></h3>
 
 <table border cellpadding=4 bgcolor=\"#FFFFF0\">
@@ -761,15 +854,17 @@ href=\"ftp://emboss.open-bio.org/pub/EMBOSS/\">current $embassy release</a></h3>
 </tr>
 
 ";
-
+	}
     }
-    else {
+    else {			# main EMBOSS applications
+	if(defined($singlepackage)) {next}
 	$embassy = "";
 	$eindex = "";
     }
 
 # look at all applications alphabetically
     foreach $thisprogram (sort (keys %progs)) {
+	if(defined($singleapp) && $thisprogram ne $singleapp) {next}
 	if ($embassy eq "") {
 	    if (defined($embassyprogs{$thisprogram})) {next}
 	}
@@ -783,25 +878,29 @@ href=\"ftp://emboss.open-bio.org/pub/EMBOSS/\">current $embassy release</a></h3>
 # if this is a non-EMBASSY program then add it to the index.html file
 	if (!defined($embassyprogs{$thisprogram})) {
 	    $progdocdir = $docdir;
-	    print INDEX
+	    if(!defined($singleapp)) {
+		print INDEX
 "<tr>
 <td><a href=\"$thisprogram.html\">$thisprogram</a></td>
 <td>
 $progs{$thisprogram}
 </td>
 </tr>\n";
+	    }
 	}
 	else {
 # update the embassy index here -
 # or just use the %embassyprogs array to make a list?
 	    $progdocdir = "$cvsedoc/$embassyprogs{$thisprogram}/emboss_doc/master";
-	    print EINDEX
+	    if(!defined($singleapp)) {
+		print EINDEX
 "<tr>
 <td><a href=\"$thisprogram.html\">$thisprogram</a></td>
 <td>
 $progs{$thisprogram}
 </td>
 </tr>\n";
+	    }
 	}
 
 # check the documentation for this file exists and is not a symbolic link 
@@ -855,6 +954,13 @@ $progs{$thisprogram}
 # check to see if the command table include file exists
 	system "acdtable $thisprogram 2> x.x";
 	checkincludefile($thisprogram, $progdocdir, 'itable');
+
+
+# check to see if the comment file exists
+	checkcommentfile($thisprogram, $progdocdir);
+
+# check to see if the comment file exists
+	checkhistoryfile($thisprogram, $progdocdir);
 
 
 # check on the existence of the 'seealso' include file for this application
@@ -953,27 +1059,32 @@ $progs{$thisprogram}
 
     }
     if($embassy ne "") {
-	print EINDEX "</table>\n";
-	close EINDEX;
+	if(!defined($singleapp)) {
+	    print EINDEX "</table>\n";
+	    close EINDEX;
 # check to see if the index.html file has changed
-	$diff = filediff ("$eindex", "e.e");
+	    $diff = filediff ("$eindex", "e.e");
 
-	$status = htmlsource("index.html", "$docmaster");
-	if (!$status) {
-	    $badsrc++;
-	    print "htmlsource error $status $docmaster/index.html";
-	}
-	else {
+	    $status = htmlsource("index.html", "$docmaster");
+	    if (!$status) {
+		$badsrc++;
+		print "htmlsource error $status $docmaster/index.html";
+	    }
+	    else {
 # change ../emboss_icon.jpg and ../index.html to current directory
-	    system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
-	    system "perl -p -i -e 's#/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
-	    filediff ("$dochtml/index.html", "x.x");
+		system "perl -p -i -e 's#\.\.\/index.html#index.html#g;' x.x";
+		system "perl -p -i -e 's#/images/emboss_icon.jpg#emboss_icon.jpg#g;' x.x";
+		filediff ("$dochtml/index.html", "x.x");
+	    }
 	}
     }
 }
 # main loop over all directories completed.
 
 # end the index.html file
+if(defined($singleapp)) {exit()}
+
+if(defined($singlepackage)) {exit()}
 indexfooter(INDEX);
 close(INDEX);
 
