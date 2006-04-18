@@ -10,7 +10,8 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	dbifasta.acd dbiflat.acd dbigcg.acd dbxfasta.acd dbxflat.acd \
 	dbxgcg.acd degapseq.acd demoalign.acd \
 	demofeatures.acd demolist.acd demoreport.acd demosequence.acd \
-	demostring.acd demotable.acd descseq.acd diffseq.acd digest.acd \
+	demostring.acd demostringnew.acd \
+	demotable.acd descseq.acd diffseq.acd digest.acd \
 	distmat.acd dotmatcher.acd dotpath.acd dottup.acd dreg.acd \
 	einverted.acd embossdata.acd embossversion.acd emma.acd emowse.acd \
 	entrails.acd entret.acd epestfind.acd eprimer3.acd equicktandem.acd \

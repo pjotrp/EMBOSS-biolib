@@ -15,7 +15,7 @@ endif
 check_PROGRAMS = acdlog ajtest \
 complex corbatest \
 demoalign demofeatures demolist demoreport \
-demosequence demostring demotable \
+demosequence demostring demostringnew demotable \
 entrails giep histogramtest intconv \
 kmrsplitter kmrunion \
 newcoils \
@@ -251,6 +251,7 @@ demolist_SOURCES = demolist.c
 demoreport_SOURCES = demoreport.c
 demosequence_SOURCES = demosequence.c
 demostring_SOURCES = demostring.c
+demostringnew_SOURCES = demostringnew.c
 demotable_SOURCES = demotable.c
 entrails_SOURCES = entrails.c
 histogramtest_SOURCES = histogramtest.c
