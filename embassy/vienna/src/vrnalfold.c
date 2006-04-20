@@ -6,7 +6,7 @@
 		  Vienna RNA package
 */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -76,8 +76,7 @@ int main(int argc, char *argv[])
 
     
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnalfold",argc,argv,"VIENNA");
+    embInitP("vrnalfold",argc,argv,"VIENNA");
 
 
     do_backtrack = 1; 

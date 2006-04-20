@@ -1,4 +1,4 @@
-#include "ajax.h"
+#include "emboss.h"
 #include "phylip.h"
 
 /* version 3.56c. (c) Copyright 1993 by Joseph Felsenstein.
@@ -131,8 +131,7 @@ int scanned;
   progress = true;
   treeprint = true;
 
-  ajNamInit("emboss");
-  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  embInitP (pgm, argc, argv,"PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
 

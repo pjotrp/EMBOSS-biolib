@@ -352,22 +352,24 @@ int main(int argc, char **argv)
     /********************/
     /* PROCESS ACD DATA */
     /********************/    
-    ajNamInit("emboss");
-    ajAcdInitP("rocplot", argc, argv, "SIGNATURE");
+    embInitP("rocplot", argc, argv, "SIGNATURE");
 
     hitsfiles     = ajAcdGetDirlist("hitsfilespath");
     outdir        = ajAcdGetOutdir("outdir");
     mode          = ajAcdGetList("mode");
     if(ajStrGetCharFirst(*mode)=='2')
 	multimode = ajAcdGetList("multimode");
-    if((ajStrGetCharFirst(*mode)=='2') && (ajStrGetCharFirst(*multimode)=='2'))
+    if((ajStrGetCharFirst(*mode)=='2') &&
+       (ajStrGetCharFirst(*multimode)=='2'))
 	datamode  = ajAcdGetList("datamode");
-    if((ajStrGetCharFirst(*mode)=='2') && (ajStrGetCharFirst(*multimode)=='2') && 
+    if((ajStrGetCharFirst(*mode)=='2') &&
+       (ajStrGetCharFirst(*multimode)=='2') && 
        (ajStrGetCharFirst(*datamode)=='1'))
 	thresh    = ajAcdGetInt("thresh");
     rocbasename       = ajAcdGetString("rocbasename");
     outfdata      = ajAcdGetOutfile("outfile");
-    if((ajStrGetCharFirst(*mode)=='2') && (ajStrGetCharFirst(*multimode)=='1'))
+    if((ajStrGetCharFirst(*mode)=='2') &&
+       (ajStrGetCharFirst(*multimode)=='1'))
 	barbasename   = ajAcdGetString("barbasename");
     classbasename      = ajAcdGetString("classbasename");
     norange           = ajAcdGetBool("norange");
@@ -554,9 +556,10 @@ int main(int argc, char **argv)
 	ajFmtPrintS(&roclegend[0], "%S", hitsnames[0]);
 
 	/* Write classification plot file */
-	ajFmtPrintS(&classtitle, "Classification plot for %S", hitsnames[0]);	
-	if(!rocplot_write_classplot(outdir, classbasename, classtitle, classxlabel, 
-				    classylabel, NUMCLASSES, 0, classlegend, 
+	ajFmtPrintS(&classtitle, "Classification plot for %S", hitsnames[0]);
+	if(!rocplot_write_classplot(outdir, classbasename, classtitle,
+				    classxlabel, classylabel,
+				    NUMCLASSES, 0, classlegend, 
 				    classx, classy, ajIntGet(hitcnt, 0)))
 	    ajFatal("rocplot_write_classplot failed");
     }
@@ -617,7 +620,8 @@ int main(int argc, char **argv)
 	    binsize  = BINSIZE;
 	    /* Could possibly set more sensible values here - wait for 
 	     user feedback. */
-	    if(!rocplot_write_barchart(outdir, barbasename, bartitle, barxlabel, 
+	    if(!rocplot_write_barchart(outdir, barbasename,
+				       bartitle, barxlabel, 
 				       barylabel, nbins, binstart, binsize,
 				       rocn, numfiles))
 		ajFatal("rocplot_write_barchart failed");
@@ -649,7 +653,8 @@ int main(int argc, char **argv)
 	    /**********************************************/
 	    if(datamodei==1)
 	    {
-		ajStrAppendC(&roctitle, " (combined - single list of targets)");
+		ajStrAppendC(&roctitle,
+			     " (combined - single list of targets)");
 		ajStrAppendC(&classtitle, 
 			  " (combined - single list of targets)");
 	    }
@@ -847,7 +852,7 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
     /* Housekeeping variables */
     AjPStr    hitsfile   = NULL;    /* Name of hits file                   */
     AjPStr    tmpname    = NULL;    /* Temp. variable for holding file name*/
-    AjPList   tmpnames   = NULL;    /* List for names only of hits files.  */    
+    AjPList   tmpnames   = NULL;    /* List for names only of hits files.  */
     AjPFile   inf        = NULL;    /* For hits file (input)               */
     ajint     lastroc    = 0;       /* Last ROC value read in              */
     ajint     filecnt    = 0;       /* Counter for no. hits files parsed   */
@@ -1328,7 +1333,8 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		if((tmphit = (AjPHitdata)ajListIterNext(iters[x])))
 		{
 		    if(((datamode==1) && 
-			(rocplot_hit_is_unique(tmphit, mrglist, thresh, norange))) ||
+			(rocplot_hit_is_unique(tmphit, mrglist,
+					       thresh, norange))) ||
 		       (datamode==2))
 		    {
 			ajIntInc(hitcnt, 0);
@@ -1346,7 +1352,8 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			if(!ajStrMatchC(tmphit->Class, "TRUE"))
 			    ntrue_sum += (float) ntrue;
 			/* DIAGNOSTICS 
-			ajFmtPrintF(errf, "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n", 
+			ajFmtPrintF(errf,
+                                    "For hit %5d ntrue=%5d ntrue_sum=%5.3f\n", 
 				    ajIntGet(*hitcnt, x),ntrue, ntrue_sum); */
 
 			/* Single list of known true relatives */	
@@ -1374,7 +1381,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			    while(ajListPop(xylist, (void **)&xyptr))
 			    {
 				ajFloat2dPut(rocx, 0, y, xyptr->X);
-				ajFloat2dPut(rocy, 0, y, xyptr->Y);		 
+				ajFloat2dPut(rocy, 0, y, xyptr->Y);
 
 				rocplot_XYdataDel(&xyptr);
 				y++;
@@ -1463,7 +1470,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 				(float)ajIntGet(*hitcnt, x));
 				
 
-		/* ajFmtPrintF(errf, "   (sens = %f  spec = %f\n",sens, spec);  */
+		/* ajFmtPrintF(errf,"   (sens = %f  spec = %f\n",sens, spec);*/
 
 		/* Create data point and populate list */
 		xyptr = rocplot_XYdataNew();
@@ -1634,7 +1641,8 @@ static AjBool rocplot_count_class(AjPHitdata tmphit, ajint hitcnt,
 ** @@
 **
 ******************************************************************************/
-static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname, AjPStr title, 
+static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname,
+				      AjPStr title, 
 				      AjPStr xlabel, AjPStr ylabel, 
 				      ajint nseries, AjPStr *legend, 
 				      AjPFloat2d rocx, AjPFloat2d rocy, 
@@ -2265,29 +2273,3 @@ void seqsort_unused(void)
 {
     rocplot_compX(NULL, NULL);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

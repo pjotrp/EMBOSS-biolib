@@ -48,14 +48,17 @@
 ** PROTOTYPES  
 **
 ******************************************************************************/
-AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv, ajint envdefi, AjPFile logf);
-void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap, ajint patchsize, ajint gapdistance, ajint typei);
+AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv,
+			    ajint envdefi, AjPFile logf);
+void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap,
+				 ajint patchsize, ajint gapdistance,
+				 ajint typei);
 AjPPdb siggenlig_read_ccf(AjPCmap cmap, AjPDir ccfd, AjPDir ccfp);
 
 
 
 
-/* @prog siggenlig *************************************************************
+/* @prog siggenlig ***********************************************************
 **
 ** Generates ligand-binding signatures from a CON file (contacts file) of 
 ** residue-ligand contacts.
@@ -67,59 +70,61 @@ int main(ajint argc, char **argv)
     /*************************/
     /* Variable declarations */
     /*************************/
-    AjPFile logf       = NULL;  /* Log file.                                  */
-    AjPFile conf         = NULL;  /* CON file (input).                          */
-    AjPDir ccfp          = NULL;  /* CCF file - protein (input).                */
-    AjPDir ccfd          = NULL;  /* CCF file - domain (input).                 */
-    AjPPdb  pdb          = NULL;  /* PDB object.                                */
-    AjIList iter_residue    = NULL;  /* Iterator for residues in PDB object.          */
-    AjPResidue residue         = NULL;  /* Temp. object.                              */
+    AjPFile logf       = NULL;  /* Log file.                                 */
+    AjPFile conf         = NULL;  /* CON file (input).                       */
+    AjPDir ccfp          = NULL;  /* CCF file - protein (input).             */
+    AjPDir ccfd          = NULL;  /* CCF file - domain (input).              */
+    AjPPdb  pdb          = NULL;  /* PDB object.                             */
+    AjIList iter_residue    = NULL;  /* Iterator for residues in PDB object. */
+    AjPResidue residue         = NULL;  /* Temp. object.                     */
     
     
     AjPStr *mode         = NULL;  /* Mode, 1: Full-length signatures, 
-				     2: Patch signatures.                       */
-    ajint   modei        = 0;     /* Selected mode as integer.                  */
+				     2: Patch signatures.                    */
+    ajint   modei        = 0;     /* Selected mode as integer.               */
     
     AjPStr *type         = NULL;  /* Type, 1: 1D (sequence) signature, 
-				     2: 3D (structural) signature.              */
-    ajint   typei        = 0;     /* Selected mode as integer.                  */
+				     2: 3D (structural) signature.           */
+    ajint   typei        = 0;     /* Selected mode as integer.               */
     
-    AjPStr  *envdef      = NULL;  /* Holds environment options from acd.        */
-    ajint   envdefi      = 0;     /* envdef as an int.                          */
-    ajint   patchsize    = 0;     /* Minimum patch size.                        */
-    ajint   gapdistance  = 0;     /* Maximum gap distance.                      */
-    ajint   wsiz         = 0;     /* Window size.                               */
-    AjPDir  sigdir       = NULL;  /* Directory of signature files (output).     */
+    AjPStr  *envdef      = NULL;  /* Holds environment options from acd.     */
+    ajint   envdefi      = 0;     /* envdef as an int.                       */
+    ajint   patchsize    = 0;     /* Minimum patch size.                     */
+    ajint   gapdistance  = 0;     /* Maximum gap distance.                   */
+    ajint   wsiz         = 0;     /* Window size.                            */
+    AjPDir  sigdir       = NULL;  /* Directory of signature files (output).  */
     
-    AjPCmap cmap         = NULL;  /* Contact map for entry from CON file (input)*/
-    AjPList cmap_list    = NULL;  /* List of contact maps from CON file (input).*/
-    AjIList iter         = NULL;  /* Iterator for cmap_list.                    */
+    AjPCmap cmap         = NULL;  /* Contact map for entry from CON
+				     file (input)*/
+    AjPList cmap_list    = NULL;  /* List of contact maps from CON
+				     file (input).*/
+    AjIList iter         = NULL;  /* Iterator for cmap_list.  */
     
-    AjPSignature    sig  = NULL;  /* Full-length or patch signature.            */
-    AjPList    sig_list  = NULL;  /* List of signatures.                        */
-    AjPSigdat    sigdat  = NULL;  /* Raw signature position.                    */
-    AjPSigdat sigdat_tmp = NULL;  /* Raw signature position.                    */
-    AjPList sigdat_list  = NULL;  /* List of signature positions.               */
+    AjPSignature    sig  = NULL;  /* Full-length or patch signature.  */
+    AjPList    sig_list  = NULL;  /* List of signatures.  */
+    AjPSigdat    sigdat  = NULL;  /* Raw signature position.  */
+    AjPSigdat sigdat_tmp = NULL;  /* Raw signature position.  */
+    AjPList sigdat_list  = NULL;  /* List of signature positions.  */
     
-    ajint             x  = 0;     /* Loop counter.                              */
-    ajint       prevpos  = 0;     /* Previous contact position.                 */
-    ajint       patchno  = 0;     /* Patch number.                              */
-    ajint   num_patches  = 0;     /* Number of patches.                         */ 
+    ajint             x  = 0;     /* Loop counter.  */
+    ajint       prevpos  = 0;     /* Previous contact position.  */
+    ajint       patchno  = 0;     /* Patch number.  */
+    ajint   num_patches  = 0;     /* Number of patches.  */
     
-    AjPStr     sigfname  = NULL;  /* Name of signature file.                    */
-    AjPFile    sigoutf   = NULL;  /* Signature output file.                     */
-    AjPStr   OEnv        = NULL;  /* Residue environment.                          */
-    AjBool   firstpos  = ajTrue;  /* Housekeeping.                              */
-    AjBool iscontact   = ajFalse; /* Housekeeping.                              */
-    AjBool   foundresidue = ajFalse; /* Housekeeping.                              */
+    AjPStr     sigfname  = NULL;  /* Name of signature file.  */
+    AjPFile    sigoutf   = NULL;  /* Signature output file.  */
+    AjPStr   OEnv        = NULL;  /* Residue environment.  */
+    AjBool   firstpos  = ajTrue;  /* Housekeeping.  */
+    AjBool iscontact   = ajFalse; /* Housekeeping.  */
+    AjBool   foundresidue = ajFalse; /* Housekeeping.  */
     
     
     
     /*************************/
     /* Read data from acd.   */
     /*************************/
-    ajNamInit("emboss");
-    ajAcdInitP("siggenlig",argc,argv,"SIGNATURE"); 
+    embInitP("siggenlig",argc,argv,"SIGNATURE");
+
     conf        = ajAcdGetInfile("confile");
     ccfd        = ajAcdGetDirectory("ccfddir");
     ccfp        = ajAcdGetDirectory("ccfpdir");
@@ -162,7 +167,8 @@ int main(ajint argc, char **argv)
     /* WRITE FULL-LENGTH SIGNATURE */
     if(modei == 1)
     {
-	/* Process each contact map (protein-ligand interaction site) in turn */
+	/* Process each contact map (protein-ligand interaction site)
+           in turn */
 	while( (cmap=(AjPCmap)ajListIterNext(iter)))
 	{
 	    /* 3D signature */
@@ -173,7 +179,8 @@ int main(ajint argc, char **argv)
 	    
 	    /* Allocate intitial signature object (w/o position data) and copy
 	       data from Cmap object / ACD. */
-	    siggenlig_new_sig_from_cmap(&sig, cmap, patchsize, gapdistance, typei);
+	    siggenlig_new_sig_from_cmap(&sig, cmap, patchsize,
+					gapdistance, typei);
 
 	    /* Create list of for putative signature positions. */
 	    sigdat_list = ajListNew();
@@ -182,13 +189,15 @@ int main(ajint argc, char **argv)
 	    {
 		if((ajInt2dGet(cmap->Mat, 0, x)))
 		{
-		    /* Always 1 residue and 1 gap for these signature positions. */
+		    /* Always 1 residue and 1 gap for these signature
+                       positions. */
 		    sigdat = embSigdatNew(1,1);
 		  
 		    /* 1D signature */
 		    if(typei==1)
 		    {
-			ajChararrPut(&sigdat->rids, 0, ajStrGetCharPos(cmap->Seq1, x));
+			ajChararrPut(&sigdat->rids, 0,
+				     ajStrGetCharPos(cmap->Seq1, x));
 			ajIntPut(&sigdat->rfrq, 0, 1);
 		    }
 		    /* 3D signature */
@@ -200,7 +209,8 @@ int main(ajint argc, char **argv)
 			{
 			    if(residue->Idx == x+1)
 			    {
-				if((!siggenlig_assign_env(residue, &OEnv, envdefi, logf)))
+				if((!siggenlig_assign_env(residue, &OEnv,
+							  envdefi, logf)))
 				    ajStrAssignC(&OEnv, "*");
 				
 				ajStrAssignS(&sigdat->eids[0], OEnv);
@@ -237,7 +247,8 @@ int main(ajint argc, char **argv)
 	    
 		
 	    /* WRITE SIGNATURE FILE */
-	    ajFmtPrintS(&sigfname, "%S.%d.F.#.%S.", sig->Ligid, sig->sn, sig->Id);
+	    ajFmtPrintS(&sigfname, "%S.%d.F.#.%S.",
+			sig->Ligid, sig->sn, sig->Id);
 	    if(MAJSTRGETLEN(sig->Domid))
 		ajStrAppendS(&sigfname, sig->Domid);
 	    else
@@ -253,7 +264,8 @@ int main(ajint argc, char **argv)
     /* WRITE PATCH SIGNATURE */
     else 
     {
-	/* Process each contact map (protein-ligand interaction site) in turn */
+	/* Process each contact map (protein-ligand interaction site)
+           in turn */
 	while( (cmap=(AjPCmap)ajListIterNext(iter)))
 	{
 	    /* 3D signature */
@@ -268,7 +280,9 @@ int main(ajint argc, char **argv)
 	    sigdat_list = ajListNew();
 	    sig_list    = ajListNew();
 	    
-	    for(patchno = 0, firstpos = ajTrue, prevpos=0, x=0; x<cmap->Dim; x++)
+	    for(patchno = 0, firstpos = ajTrue, prevpos=0, x=0;
+		x<cmap->Dim;
+		x++)
 	    {
 		iscontact = ajInt2dGet(cmap->Mat, 0, x);
 
@@ -280,7 +294,8 @@ int main(ajint argc, char **argv)
 		    /* 1D signature */
 		    if(typei==1)
 		    {
-			ajChararrPut(&sigdat->rids, 0, ajStrGetCharPos(cmap->Seq1, x));
+			ajChararrPut(&sigdat->rids, 0,
+				     ajStrGetCharPos(cmap->Seq1, x));
 			ajIntPut(&sigdat->rfrq, 0, 1);
 		    }
 		    /* 3D signature */
@@ -292,7 +307,8 @@ int main(ajint argc, char **argv)
 			{
 			    if(residue->Idx == x+1)
 			    {
-				if((!siggenlig_assign_env(residue, &OEnv, envdefi, logf)))
+				if((!siggenlig_assign_env(residue, &OEnv,
+							  envdefi, logf)))
 				    ajStrAssignC(&OEnv, "*");
 				ajStrAssignS(&sigdat->eids[0], OEnv);
 				ajIntPut(&sigdat->efrq, 0, 1);
@@ -319,30 +335,39 @@ int main(ajint argc, char **argv)
 			ajListPushApp(sigdat_list, sigdat);
 		    else
 		    {
-			/* Either create new signature or delete list of Sigdat objects */
+			/* Either create new signature or delete list
+                           of Sigdat objects */
 			if((ajListLength(sigdat_list) >= patchsize))
 			{
-			    /* Allocate signature object (w/o position data) and copy
-			       data from Cmap object / ACD. */
-			    siggenlig_new_sig_from_cmap(&sig, cmap, patchsize, gapdistance, typei);
+			    /* Allocate signature object (w/o position
+			       data) and copy data from Cmap object /
+			       ACD. */
+			    siggenlig_new_sig_from_cmap(&sig, cmap,
+							patchsize, gapdistance,
+							typei);
 			    sig->pn = ++patchno;
 
-			    /* Convert list of Sigdata objects into array in signature */
-			    sig->npos = ajListToArray(sigdat_list, (void***)&sig->dat);
+			    /* Convert list of Sigdata objects into
+                               array in signature */
+			    sig->npos = ajListToArray(sigdat_list,
+						      (void***)&sig->dat);
 			    ajListPushApp(sig_list, sig);
 			  
 
-			    /* Set gap distance for current position, i.e. the first position in 
-			       the next putative signature, to 0 */
+			    /* Set gap distance for current position,
+			       i.e. the first position in the next
+			       putative signature, to 0 */
 			    ajIntPut(&sigdat->gsiz, 0, 0);
 			}
 			else
 			{
-			    while(ajListPop(sigdat_list, (void **) &sigdat_tmp))
+			    while(ajListPop(sigdat_list,
+					    (void **) &sigdat_tmp))
 				embSigdatDel(&sigdat_tmp);
 			}
 
-			/* Push current position, i.e. the first position in the next putative signature. */
+			/* Push current position, i.e. the first
+                           position in the next putative signature. */
 			ajListDel(&sigdat_list);
 			sigdat_list = ajListNew();
 			ajListPushApp(sigdat_list, sigdat);
@@ -365,7 +390,8 @@ int main(ajint argc, char **argv)
 	    {
 		/* Allocate signature object (w/o position data) and copy
 		   data from Cmap object / ACD. */
-		siggenlig_new_sig_from_cmap(&sig, cmap, patchsize, gapdistance, typei);
+		siggenlig_new_sig_from_cmap(&sig, cmap, patchsize,
+					    gapdistance, typei);
 		sig->pn = ++patchno;
 
 	      
@@ -389,7 +415,8 @@ int main(ajint argc, char **argv)
 	    {
 		sig->np = num_patches;
 
-		ajFmtPrintS(&sigfname, "%S.%d.P.%d-%d.%S.", sig->Ligid, sig->sn, sig->pn, sig->np, sig->Id);
+		ajFmtPrintS(&sigfname, "%S.%d.P.%d-%d.%S.",
+			    sig->Ligid, sig->sn, sig->pn, sig->np, sig->Id);
 		if(MAJSTRGETLEN(sig->Domid))
 		    ajStrAppendS(&sigfname, sig->Domid);
 		else
@@ -434,8 +461,8 @@ int main(ajint argc, char **argv)
 
 AjPPdb siggenlig_read_ccf(AjPCmap cmap,  AjPDir ccfd,  AjPDir ccfp)
 {
-    AjPPdb  pdb          = NULL;  /* PDB object.                                */
-    AjPFile ccffptr      = NULL;  /* CCF file pointer.                          */
+    AjPPdb  pdb          = NULL;  /* PDB object.  */
+    AjPFile ccffptr      = NULL;  /* CCF file pointer.  */
 
     if(MAJSTRGETLEN(cmap->Domid))
 	ccffptr = ajFileNewDirF(ccfd, cmap->Domid);
@@ -472,7 +499,9 @@ AjPPdb siggenlig_read_ccf(AjPCmap cmap,  AjPDir ccfd,  AjPDir ccfp)
 
 
 
-void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap, ajint patchsize, ajint gapdistance, ajint typei)
+void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap,
+				 ajint patchsize, ajint gapdistance,
+				 ajint typei)
 {
     /* Allocate intitial signature object (w/o position data) and copy
        data from Cmap object / ACD. */
@@ -504,7 +533,8 @@ void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap, ajint patchsiz
 
 
 
-AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv, ajint envdefi, AjPFile logf)
+AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv,
+			    ajint envdefi, AjPFile logf)
 {
     char     SEnv = '\0';
     ajint    NUMENV = 0;
@@ -577,6 +607,3 @@ AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv, ajint envdefi, AjP
 
     return ajTrue;
 }
-				
-				    
-			      

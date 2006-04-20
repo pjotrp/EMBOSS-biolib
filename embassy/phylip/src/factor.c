@@ -1,4 +1,4 @@
-#include "ajax.h"
+#include "emboss.h"
 #include "phylip.h"
 
 /* version 3.56c. (c) Copyright 1988-1993 by Joseph Felsenstein and
@@ -53,8 +53,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjPFile outf;
 AjPFile inf;
 
-  ajNamInit("emboss");
-  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  embInitP (pgm, argc, argv,"PHYLIP");
 
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;

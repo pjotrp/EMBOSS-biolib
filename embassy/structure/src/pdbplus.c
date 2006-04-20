@@ -154,8 +154,7 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd. */
-    ajNamInit("emboss");
-    ajAcdInitP("pdbplus",argc,argv,"STRUCTURE");
+    embInitP("pdbplus",argc,argv,"STRUCTURE");
 
     ccfin        = ajAcdGetDirlist("ccfinpath");  
     pdbin        = ajAcdGetDirectory("pdbindir"); 

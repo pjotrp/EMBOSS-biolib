@@ -63,8 +63,8 @@ int main(int argc, char **argv)
           
 
     /* Read data from acd*/
-    ajNamInit("emboss");
-    ajAcdInitP("pdbtosp", argc, argv, "STRUCTURE");
+    embInitP("pdbtosp", argc, argv, "STRUCTURE");
+
     inf1  =  ajAcdGetInfile("infile");
     outf  =  ajAcdGetOutfile("outfile");
 

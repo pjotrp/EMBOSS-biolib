@@ -94,11 +94,14 @@ typedef struct AjSLighit
 ******************************************************************************/
 AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits);
 
-/* AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList siglist, AjPList hits); */
+/* AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList siglist,
+                                AjPList hits); */
 
-/* AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist, AjPList hits, ajint n, AjBool DOSEQ); */
+/* AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist,
+                                   AjPList hits, ajint n, AjBool DOSEQ); */
 
-AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n, AjBool DOSEQ);
+AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n,
+				AjBool DOSEQ);
 
 static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 						  AjPList hits);
@@ -162,16 +165,15 @@ int main(int argc, char **argv)
     AjPDir     resultsdir=NULL;   /* Directory of results files (output).  */
     AjPFile    resultsf =NULL;   /* Results file (output).  */
 
-    AjPStr *mode         = NULL;  /* Mode, 1: Patch score mode, 
-				     2: Site score mode.                       */
-    ajint   modei        = 0;     /* Selected mode as integer.                  */
+    AjPStr *mode         = NULL;  /* Mode, 1: Patch score mode, 2:
+				     Site score mode.  */
+    ajint   modei        = 0;     /* Selected mode as integer.  */
 
 
     AjIList iter        = NULL;   /* Iterator. */
     
 
-    ajNamInit("emboss");
-    ajAcdInitP("sigscanlig", argc, argv, "SIGNATURE");
+    embInitP("sigscanlig", argc, argv, "SIGNATURE");
     
 
     /* GET VALUES FROM ACD */
@@ -207,8 +209,12 @@ int main(int argc, char **argv)
 		    sigok=ajTrue;
 		    ajListPushApp(siglist, sig);
 		    /*
-		    ajFmtPrint("Id: %S\nDomid: %S\nLigid: %S\nns: %d\nsn: %d\nnp: %d\npn: %d\nminpatch: %d\nmaxgap: %d\n", 
-			       sig->Id, sig->Domid, sig->Ligid, sig->ns, sig->sn, sig->np, sig->pn, sig->minpatch, sig->maxgap); */
+		    ajFmtPrint("Id: %S\nDomid: %S\nLigid: %S\nns: %d\n"
+                               "sn: %d\nnp: %d\npn: %d\nminpatch: %d\n"
+                               "maxgap: %d\n", 
+			       sig->Id, sig->Domid, sig->Ligid, sig->ns,
+                               sig->sn, sig->np, sig->pn, sig->minpatch,
+                               sig->maxgap); */
 		    
 
 		}
@@ -244,9 +250,10 @@ int main(int argc, char **argv)
 		ajListPushApp(hits, hit);
 		hit=NULL; /* To force reallocation by embSignatureAlignSeq */
 	    }
-	    /* There has to be a hit for each signature for correct generation of the
-	       LHF by sigscanlig_WriteFasta. So push an empty hit if necessary. 
-	       'hit'=NULL forces reallocation by embSignatureAlignSeq. */
+	    /* There has to be a hit for each signature for correct
+	       generation of the LHF by sigscanlig_WriteFasta. So push
+	       an empty hit if necessary.  'hit'=NULL forces
+	       reallocation by embSignatureAlignSeq. */
 	    /*
 	       else
 	       {
@@ -285,7 +292,8 @@ int main(int argc, char **argv)
 	    ajFatal("Bad args to sigscanlig_SignatureAlignWriteBlock"); */
 
 
-	/* Sort list of hits by ligand type and site number.  Process list of ligands and print out. */
+	/* Sort list of hits by ligand type and site number.
+	   Process list of ligands and print out. */
 	ajListSort2(hits, embMatchLigid, embMatchSN);
 
 
@@ -335,11 +343,12 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic sigscanlig_SignatureAlignWriteBlock *******************************
+/* @funcstatic sigscanlig_SignatureAlignWriteBlock ****************************
 **
-** Writes the alignments of a Signature to a list of AjOHit objects to an output 
-** file. This is intended for displaying the results from scans of a signature 
-** against a protein sequence database. The full sequence / alignment is 
+** Writes the alignments of a Signature to a list of AjOHit objects to an 
+** output file. This is intended for displaying the results from scans of
+** a signature against a protein sequence database.
+** The full sequence / alignment is 
 ** printed out for each sequence in its own block.
 **
 ** @param [w] outf     [AjPFile] Output file stream
@@ -437,7 +446,9 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
     
 
     /* Print header info and SCOP classification records of signature */
-    ajFmtPrintF(outf, "# DE   Alignment of query sequence against library of signatures\n");
+    ajFmtPrintF(outf,
+		"# DE   Alignment of query sequence against library of "
+		"signatures\n");
 
     
     /* Main loop for printing alignment. */
@@ -452,7 +463,8 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 	ajFmtPrintF(outf, "# XX\n");
 
 	ajFmtPrintF(outf, "# ");
-	/*	if((!sigscanlig_WriteFastaHit(outf, siglist, hits, hitcnt, ajFalse)))
+	/*	if((!sigscanlig_WriteFastaHit(outf, siglist, hits,
+                                              hitcnt, ajFalse)))
 		ajFatal("Bad args to sigscanlig_WriteFasta"); */
 
 	if((!sigscanlig_WriteFastaHit(outf, hits, hitcnt, ajFalse)))
@@ -465,7 +477,8 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 	    num+=mwid2;
 
 
-	    ajFmtPrintS(&label, "%S_%d_%d", hit->Sig->Ligid, hit->Sig->sn, hit->Sig->pn);
+	    ajFmtPrintS(&label, "%S_%d_%d",
+			hit->Sig->Ligid, hit->Sig->sn, hit->Sig->pn);
 	    
 
 	    /* There is some of the sequence left to print. */
@@ -512,13 +525,14 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 
 
 
-/* @funcstatic sigscanlig_WriteFasta ************************************************
+/* @funcstatic sigscanlig_WriteFasta ******************************************
 **
-** Write a list of Hit objects to an output file in LHF (ligand hits file) format
-** (see documentation for the DOMAINATRIX "sigscanlig" application).  The list of 
-** Hit objects corresponds to a search of signatures against a sequence database.
-** There *must* be one hit per search and the list of correponding signatures must 
-** be provided. For this reason, if a signature search did not generate a hit then 
+** Write a list of Hit objects to an output file in LHF (ligand hits file)
+** format (see documentation for the DOMAINATRIX "sigscanlig" application).
+** The list of  Hit objects corresponds to a search of signatures against a
+** sequence database. There *must* be one hit per search and the list of
+** correponding signatures must be provided. For this reason, if a signature
+** search did not generate a hit then 
 ** an empty hit should be given in the list. 
 ** 
 ** @param [u] outf [AjPFile] Output file stream
@@ -563,9 +577,9 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 
     for(x=0; x<sizarr; x++)
     {
-	/* There has to be a hit for each signature for correct generation of the
-	   LHF by sigscanlig_WriteFasta. Therefore empty hits may have been pushed.
-	   Catch those here. */
+	/* There has to be a hit for each signature for correct
+	   generation of the LHF by sigscanlig_WriteFasta. Therefore
+	   empty hits may have been pushed.  Catch those here. */
 	/* if(!MAJSTRGETLEN(hit->Model))
 	    continue; */
 	
@@ -644,7 +658,7 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 
 
 
-/* @funcstatic sigscanlig_LighitNew *************************************************
+/* @funcstatic sigscanlig_LighitNew *******************************************
 **
 ** Constructor for Lighit object. 
 ** 
@@ -673,7 +687,7 @@ AjPLighit sigscanlig_LighitNew(void)
 
 
 
-/* @funcstatic sigscanlig_LigHitDel *************************************************
+/* @funcstatic sigscanlig_LigHitDel *******************************************
 **
 ** Destructor for Lighit object. 
 ** 
@@ -701,7 +715,7 @@ void sigscanlig_LigHitDel(AjPLighit *obj)
 
 
 
-/* @funcstatic sigscanlig_WriteFastaHit *********************************************
+/* @funcstatic sigscanlig_WriteFastaHit ***************************************
 **
 ** Write a Hit from a Hitlist object to an output file in embl-like format
 ** (see documentation for the DOMAINATRIX "seqsearch" application).
@@ -710,16 +724,17 @@ void sigscanlig_LigHitDel(AjPLighit *obj)
 ** 
 ** @param [u] outf [AjPFile] Output file stream
 ** @param [r] hits [const AjPList] List of hit objects.
-** @param [r] siglist [const AjPList] List of signnature objects.
 ** @param [r] n  [ajint] Number of hit to generate.
 ** @param [r] DOSEQ  [AjBool] True if sequence is to be printed. 
 **
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
-/* AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist, AjPList hits, ajint n, AjBool DOSEQ) */
-AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n, AjBool DOSEQ)
+AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n,
+				AjBool DOSEQ)
 {
+/* AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist,
+                                   AjPList hits, ajint n, AjBool DOSEQ) */
     AjPHit hit       = NULL;
     AjPSignature sig = NULL;
     
@@ -880,7 +895,8 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 	}
 	
 	
-	/* Increment count of sites and hits/patches (for current ligand) and patches (for current site) */
+	/* Increment count of sites and hits/patches (for current ligand)
+	   and patches (for current site) */
 	if(hit->Sig->sn != prevsn)
 	    nsites++;
 	score+= hit->Score;
@@ -942,7 +958,8 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 
 
     float  score        = 0.0;    /* Score for current ligand */
-    ajint  nhits        = 0;      /* No. of hits (patches) for current ligand. */
+    ajint  nhits        = 0;      /* No. of hits (patches) for current
+				     ligand. */
     ajint  nsites       = 0;      /* No. of sites for current ligand */
 
     float  score_site   = 0.0;    /* Score for this site. */
@@ -1000,7 +1017,8 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 	}
 
 	
-	/* Increment count of sites and hits/patches (for current ligand) and patches (for current site) */
+	/* Increment count of sites and hits/patches (for current
+           ligand) and patches (for current site) */
 	if(hit->Sig->sn != prevsn)
 	    nsites++;
 	score_site += hit->Score;
@@ -1047,7 +1065,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 
 
 
-/* @funcstatic sigscanlig_MatchinvScore ***************************************************
+/* @funcstatic sigscanlig_MatchinvScore ***************************************
 **
 ** Function to sort Lighit objects by score record. Usually called by 
 ** ajListSort.  The sorting order is inverted - i.e. it returns -1 if score1 
@@ -1096,17 +1114,15 @@ void sigscanlig_WriteResults(AjPList results, AjPFile resultsf)
     
     iter = ajListIter(results);
 
-    ajFmtPrintF(resultsf, "%-10s%-10s%-10s%-10s\n", "LIGID", "PATCHES", "SITES", "SCORE");
+    ajFmtPrintF(resultsf, "%-10s%-10s%-10s%-10s\n",
+		"LIGID", "PATCHES", "SITES", "SCORE");
     
     while((lighit = (AjPLighit) ajListIterNext(iter)))
-	ajFmtPrintF(resultsf, "%-10S%-10d%-10d%-10.2f\n", lighit->ligid, lighit->np, lighit->ns, lighit->score);
+	ajFmtPrintF(resultsf, "%-10S%-10d%-10d%-10.2f\n",
+		    lighit->ligid, lighit->np, lighit->ns, lighit->score);
 
 
     ajListIterFree(&iter);
 
     return;
 }
-
-
-
-

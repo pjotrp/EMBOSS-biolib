@@ -134,8 +134,8 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd. */
-    ajNamInit("emboss");
-    ajAcdInitP("contacts",argc,argv,"STRUCTURE"); 
+    embInitP("contacts",argc,argv,"STRUCTURE");
+
     cpdb_path     = ajAcdGetDirlist("cpdbdir");
     con_path      = ajAcdGetOutdir("conoutdir");
     logf          = ajAcdGetOutfile("conlogfile");

@@ -1,4 +1,4 @@
-#include "ajax.h"
+#include "emboss.h"
 #include "phylip.h"
 
 /* version 3.52c. (c) Copyright 1993 by Joseph Felsenstein and Mary Kuhner.
@@ -64,8 +64,7 @@ int i;
 
   outgrno = 1;
 
-  ajNamInit("emboss");
-  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  embInitP (pgm, argc, argv,"PHYLIP");
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;

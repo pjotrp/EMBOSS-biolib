@@ -1,4 +1,4 @@
-#include "ajax.h"
+#include "emboss.h"
 #include "phylip.h"
 
 /* version 3.573c. (c) Copyright 1993-1998 by Joseph Felsenstein.
@@ -107,8 +107,7 @@ long inseed0;
  stepbox = false;
  ancseq = false;
  
-  ajNamInit("emboss");
-  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  embInitP (pgm, argc, argv,"PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
 

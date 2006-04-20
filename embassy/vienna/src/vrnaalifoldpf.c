@@ -6,7 +6,7 @@
 		  Vienna RNA package
 */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -23,7 +23,7 @@
 #include "aln_util.h"
 extern void  read_parameter_file(AjPFile fname);
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.2 2006/02/22 15:02:28 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.3 2006/04/20 12:57:58 rice Exp $";
 
 #define PRIVATE static
 
@@ -90,8 +90,7 @@ int main(int argc, char *argv[])
     AjPStr tname = NULL;
     
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnaalifoldpf",argc,argv,"VIENNA");
+    embInitP("vrnaalifoldpf",argc,argv,"VIENNA");
     
     
     constring = ajStrNew();

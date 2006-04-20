@@ -1,4 +1,4 @@
-#include "ajax.h"
+#include "emboss.h"
 #include "phylip.h"
 
 /* version 3.572c. (c) Copyright 1995 by Joseph Felsenstein.
@@ -94,8 +94,7 @@ AjPFile inf;
   stepbox = false;
   ancseq = false;
 
-  ajNamInit("emboss");
-  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  embInitP (pgm, argc, argv,"PHYLIP");
   
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;

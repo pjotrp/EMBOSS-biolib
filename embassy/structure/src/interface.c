@@ -115,8 +115,8 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("interface",argc,argv,"STRUCTURE"); 
+    embInitP("interface",argc,argv,"STRUCTURE");
+
     cpdb_inf      = ajAcdGetInfile("infile");
     con_outf      = ajAcdGetOutfile("outfile");
     logf          = ajAcdGetOutfile("conlogfile");

@@ -8,7 +8,7 @@
 	    calculates specific heat using C = - T d^2/dT^2 G(T)
 */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -142,8 +142,7 @@ int main(int argc, char *argv[])
     char edangle = '\0';
 
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnaheat",argc,argv,"VIENNA");
+    embInitP("vrnaheat",argc,argv,"VIENNA");
     
     
     seq       = ajAcdGetSeq("sequence");

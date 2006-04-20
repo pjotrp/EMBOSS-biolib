@@ -3,7 +3,7 @@
 	   Walter Fontana, Ivo L Hofacker, Peter F Stadler
 			  Vienna RNA Package
 */
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -58,8 +58,7 @@ int main(int argc, char *argv[])
     
     AjPStr etypes = NULL;
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnadistance",argc,argv,"VIENNA");
+    embInitP("vrnadistance",argc,argv,"VIENNA");
 
     sfile     = ajAcdGetInfile("structure");
     edist     = ajAcdGetList("distance");

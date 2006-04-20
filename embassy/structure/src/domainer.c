@@ -89,8 +89,8 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("domainer",argc,argv,"STRUCTURE"); 
+    embInitP("domainer",argc,argv,"STRUCTURE");
+
     cpdb_dir     = ajAcdGetDirectory("ccfpdir");
     mode          = ajAcdGetList("mode");
     cpdbscop_dir = ajAcdGetOutdir("ccfoutdir");

@@ -3,7 +3,7 @@
   Last changed Time-stamp: <2003-09-10 13:55:01 ivo> 
 */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -38,8 +38,7 @@ int main(int argc, char *argv[])
     AjPStr eline = NULL;
    
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnaplot",argc,argv,"VIENNA");
+    embInitP("vrnaplot",argc,argv,"VIENNA");
 
 
     inf    = ajAcdGetInfile("structure");

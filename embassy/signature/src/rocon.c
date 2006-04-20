@@ -90,8 +90,7 @@ int main(int argc, char **argv)
 
     
     /* ACD processing. */
-    ajNamInit("emboss");
-    ajAcdInitP("rocon",argc,argv,"SIGNATURE");
+    embInitP("rocon",argc,argv,"SIGNATURE");
 
     hitsin   = ajAcdGetInfile("hitsinfile");
     validin  = ajAcdGetInfile("validinfile");

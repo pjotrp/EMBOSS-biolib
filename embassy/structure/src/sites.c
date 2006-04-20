@@ -309,8 +309,8 @@ int main(ajint argc, char **argv)
 
     
     /* READ ACD FILE */
-    ajNamInit("emboss");
-    ajAcdInitP("sites",argc,argv,"STRUCTURE"); 
+    embInitP("sites",argc,argv,"STRUCTURE");
+
     prot        = ajAcdGetDirlist("protpath");
     dom         = ajAcdGetDirectory("domaindir");
     dcf_fptr    = ajAcdGetInfile("dcffile");

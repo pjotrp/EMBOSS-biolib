@@ -6,7 +6,7 @@
 			  Vienna RNA package
 */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -64,8 +64,7 @@ int main(int argc, char *argv[])
     duplexT mfe;
     duplexT *subopt;
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnaduplex",argc,argv,"VIENNA");
+    embInitP("vrnaduplex",argc,argv,"VIENNA");
     
     seq1      = ajAcdGetSeq("asequence");
     seq2      = ajAcdGetSeq("bsequence");

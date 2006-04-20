@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     AjPStr     inname    = NULL;  /* Name of current input alignments.     */
     AjPFile    inf       = NULL;  /* File pointer for alignments (input).  */
 
-    AjPDir     outdir    = NULL;  /* Directory of output discriminators.   */    
+    AjPDir     outdir    = NULL;  /* Directory of output discriminators.   */
     AjPStr     outname   = NULL;  /* Name of output file.                  */
     AjPFile    outf      = NULL;  /* File for discriminator (output).      */
 
@@ -133,12 +133,11 @@ int main(int argc, char **argv)
     AjPStr     cons      = NULL;  /* Housekeeping.                         */
 
     /* For PSSM generation via PSIBLAST: all have dummy values */
-    ajint      niter     = 0;     /* Number of iterations                  */          
+    ajint      niter     = 0;     /* Number of iterations                  */
     float      evalue    = 0.0;   /* Threshold E-value                     */
     AjPStr     database  = NULL;  /* Blast-indexed database to search      */
 
-    ajNamInit("emboss");
-    ajAcdInitP("libgen",argc,argv,"SIGNATURE");
+    embInitP("libgen",argc,argv,"SIGNATURE");
     
     
     /* ACD processing. */
@@ -213,7 +212,9 @@ int main(int argc, char **argv)
 	ajStrAppendS(&outname, ajDirExt(outdir));
 
 
-	if((modei==LIBGEN_HMMER) || (modei==LIBGEN_PSSM) || (modei==LIBGEN_SAM))
+	if((modei==LIBGEN_HMMER) ||
+	   (modei==LIBGEN_PSSM)  ||
+	   (modei==LIBGEN_SAM))
 	{
 	    /* Write alignment in CLUSTAL format to temp. file. */
 	    ajRandomSeed();
@@ -251,7 +252,8 @@ int main(int argc, char **argv)
 		ajFmtPrintS(&cmd,"hmmbuild -g %S %S",outname,seqsfname);
 	    else if(modei==LIBGEN_PSSM)
 		/* niter, evalue and database arg's have dummy values. */
-		ajFmtPrintS(&cmd,"blastpgp -i %S -B %S -j %d -e %f -d %S -C %S\n",
+		ajFmtPrintS(&cmd,
+			    "blastpgp -i %S -B %S -j %d -e %f -d %S -C %S\n",
 			    seqfname, seqsfname, niter,evalue, database, 
 			    outname);
 	    else if(modei==LIBGEN_SAM)
@@ -895,4 +897,3 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
     AJFREE (pcnt);
     return;
 }
-

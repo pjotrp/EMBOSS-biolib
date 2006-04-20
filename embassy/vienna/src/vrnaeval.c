@@ -5,7 +5,7 @@
 			   c Ivo L Hofacker
 			  Vienna RNA Pckage
 */
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -23,7 +23,7 @@
 #endif
 
 /*@unused@*/
-static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.2 2006/02/22 15:02:29 rice Exp $";
+static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.3 2006/04/20 12:57:58 rice Exp $";
 
 #define  PUBLIC
 #define  PRIVATE   static
@@ -72,8 +72,7 @@ int main(int argc, char *argv[])
     AjPStr seqstring1 = NULL;
     AjPStr constring1 = NULL;
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnaeval",argc,argv,"VIENNA");
+    embInitP("vrnaeval",argc,argv,"VIENNA");
 
 
     string    = NULL;

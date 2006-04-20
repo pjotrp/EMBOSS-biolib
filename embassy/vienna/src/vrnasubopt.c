@@ -5,7 +5,7 @@
 			   c Ivo L Hofacker
 			  Vienna RNA package
 */
-#include "ajax.h"
+#include "emboss.h"
 #include <config.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -65,8 +65,7 @@ int main(int argc, char *argv[])
     float prange;
    
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnasubopt",argc,argv,"VIENNA");
+    embInitP("vrnasubopt",argc,argv,"VIENNA");
     
     
     constring = ajStrNew();

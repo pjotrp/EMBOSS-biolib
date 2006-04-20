@@ -85,7 +85,8 @@ int main(int argc, char **argv)
     float        gapo =0.0;       /* Gap insertion penalty.                  */
     float        gape =0.0;       /* Gap extension penalty.                  */
 
-    ajint        nhits=0;         /* Max. no. of hits to write to output files*/
+    ajint        nhits=0;         /* Max. no. of hits to write to
+				     output files*/
     AjPHitlist   hits=NULL;       /* Hitlist to stores hits from signature-
 				     sequence matches.                       */
 
@@ -96,8 +97,7 @@ int main(int argc, char **argv)
 
 
 
-    ajNamInit("emboss");
-    ajAcdInitP("sigscan", argc, argv, "SIGNATURE");
+    embInitP("sigscan", argc, argv, "SIGNATURE");
     
 
     /* GET VALUES FROM ACD */
@@ -197,8 +197,9 @@ int main(int argc, char **argv)
 
 /* @funcstatic sigscan_SignatureAlignWrite ************************************
 **
-** Writes the alignments of a Signature to a list of AjOHit objects to an output 
-** file. This is intended for displaying the results from scans of a signature 
+** Writes the alignments of a Signature to a list of AjOHit objects to an
+** output file.
+** This is intended for displaying the results from scans of a signature 
 ** against a protein sequence database.  Segments of sequences / alignment
 ** are given for all sequences in the same block.
 **
@@ -327,8 +328,9 @@ static AjBool sigscan_SignatureAlignWrite(AjPFile outf,
 
 /* @funcstatic sigscan_SignatureAlignWriteBlock *******************************
 **
-** Writes the alignments of a Signature to a list of AjOHit objects to an output 
-** file. This is intended for displaying the results from scans of a signature 
+** Writes the alignments of a Signature to a list of AjOHit objects to an
+** output file.
+** This is intended for displaying the results from scans of a signature 
 ** against a protein sequence database. The full sequence / alignment is 
 ** printed out for each sequence in its own block.
 **
@@ -461,28 +463,3 @@ void sigscan_dummy_function(void)
 {
     sigscan_SignatureAlignWrite(NULL, NULL, NULL);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

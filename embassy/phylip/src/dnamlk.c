@@ -1,4 +1,4 @@
-#include "ajax.h"
+#include "emboss.h"
 #include "phylip.h"
 
 /* version 3.56c. (c) Copyright 1986-1993 by the University of Washington
@@ -134,8 +134,7 @@ int scanned;
   probcat = (double *)Malloc(sizeof(double));
   probcat[0] = 1.0;
 
-  ajNamInit("emboss");
-  ajAcdInitP (pgm, argc, argv,"PHYLIP");
+  embInitP (pgm, argc, argv,"PHYLIP");
 
   seqset = ajAcdGetSeqset("sequence");
 

@@ -132,8 +132,8 @@ int main(ajint argc, char **argv)
     
     
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("pdbparse",argc,argv,"STRUCTURE"); 
+    embInitP("pdbparse",argc,argv,"STRUCTURE");
+
     pdb_path     = ajAcdGetDirlist("pdbpath");
     ccf_path    = ajAcdGetOutdir("ccfoutdir");
     logf         = ajAcdGetOutfile("logfile");

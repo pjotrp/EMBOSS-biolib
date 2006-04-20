@@ -5,7 +5,7 @@
 */
 /* Last changed Time-stamp: <2000-09-28 14:58:05 ivo> */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -75,8 +75,7 @@ int main(int argc, char *argv[])
     
     
     
-    ajNamInit("emboss");
-    ajAcdInitP("vrnainverse",argc,argv,"VIENNA");
+    embInitP("vrnainverse",argc,argv,"VIENNA");
     
     
     inf        = ajAcdGetInfile("structure");

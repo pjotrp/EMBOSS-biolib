@@ -6,7 +6,7 @@
 		  Vienna RNA package
 */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -90,8 +90,7 @@ int main(int argc, char *argv[])
 
 
 
-    ajNamInit("emboss");
-    ajAcdInitP("vrnafold",argc,argv,"VIENNA");
+    embInitP("vrnafold",argc,argv,"VIENNA");
     
     
     seqstring = ajStrNew();

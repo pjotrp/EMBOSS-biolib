@@ -92,8 +92,8 @@
 ** @attr   nccon_do [AjBool]       Whether to use score based on convervation 
 **     			           and number of contacts.
 ** @attr random [AjBool]           Whether to generate a randomised signature. 
-** @attr  manual [AjBool]          Whether signature positions were taken from. 
-**  alignment file (manual selection).
+** @attr manual [AjBool]           Whether signature positions were taken from 
+**                                 alignment file (manual selection).
 **
 ** @alias AjSScorealg
 ** @alias AjOScorealg
@@ -197,9 +197,10 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
 					   float *spar_check,
 					   ajint wsiz);
 
-static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cmaps, 
-			 ajint conthresh, AjBool *noca, AjPInt2d seq_pos, 
-			 AjPInt *atom_idx);
+static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores,
+				AjPCmap *cmaps, ajint conthresh,
+				AjBool *noca, AjPInt2d seq_pos, 
+				AjPInt *atom_idx);
 
 
 
@@ -218,41 +219,44 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores, AjPCmap *cm
 int main(ajint argc, char **argv)
 {
     /* Variables for stuff in acd. */
-    AjPList     alg_path      =NULL;   /* Location of alignment files -input. */
-    AjPStr      alg_name      =NULL;   /* Name of alignment file. */
-    AjPDir      cpdb_path     =NULL;   /* Location of coordinate files -input. */
-    AjPStr      cpdb_name     =NULL;   /* Name of coordinate file. */
-    AjPDir      con_path      =NULL;   /* Location of contact files -input. */
-    AjPStr      con_name      =NULL;   /* Name of contact file. */
-    AjPDir      sig_path      =NULL;   /* Location of signature files -input. */
-    AjPStr      sig_name      =NULL;   /* Name of signature files. */
-    AjPStr      sig_name_sp   =NULL;   /* Sparsity extn for signature file. */
-    AjPStr      pair_mat      =NULL;   /* Residue pair substitution matrix. */
-    AjPStr      temp          =NULL;   /* Temp string. */
-    AjPStr      temp1         =NULL;   /* Temp string. */
-    AjPStr      temp2         =NULL;   /* Temp string. */
-    AjPStr      temp3         =NULL;   /* Temp string. */
+    AjPList     alg_path      =NULL;  /* Location of alignment files -input.*/
+    AjPStr      alg_name      =NULL;  /* Name of alignment file. */
+    AjPDir      cpdb_path     =NULL;  /* Location of coordinate files -input.*/
+    AjPStr      cpdb_name     =NULL;  /* Name of coordinate file. */
+    AjPDir      con_path      =NULL;  /* Location of contact files -input. */
+    AjPStr      con_name      =NULL;  /* Name of contact file. */
+    AjPDir      sig_path      =NULL;  /* Location of signature files -input. */
+    AjPStr      sig_name      =NULL;  /* Name of signature files. */
+    AjPStr      sig_name_sp   =NULL;  /* Sparsity extn for signature file. */
+    AjPStr      pair_mat      =NULL;  /* Residue pair substitution matrix. */
+    AjPStr      temp          =NULL;  /* Temp string. */
+    AjPStr      temp1         =NULL;  /* Temp string. */
+    AjPStr      temp2         =NULL;  /* Temp string. */
+    AjPStr      temp3         =NULL;  /* Temp string. */
     
 
-    AjPFile     fptr_alg      =NULL;    /* Pointer to alignment file. */
-    AjPFile     fptr_con      =NULL;    /* Pointer to current contact file. */
-    AjPFile     fptr_cpdb     =NULL;    /* Pointer to current coordinate file. */
-    AjPFile     sig_outf      =NULL;    /* File pointer for output file. */
+    AjPFile     fptr_alg      =NULL;   /* Pointer to alignment file. */
+    AjPFile     fptr_con      =NULL;   /* Pointer to current contact file. */
+    AjPFile     fptr_cpdb     =NULL;   /* Pointer to current coordinate file.*/
+    AjPFile     sig_outf      =NULL;   /* File pointer for output file. */
 
-    AjPList     list          =NULL;    /* List of files in alignment directory. */   
+    AjPList     list          =NULL;   /* List of files in align directory. */
     AjPMatrixf  mat           =NULL;
-    AjPInt2d    seq_pos       =NULL;    /* Numbering of sequence according to 
-					   alignment. */
+    AjPInt2d    seq_pos       =NULL;   /* Numbering of sequence according to 
+					  alignment. */
 
 
-    AjPSignature sig=NULL;              /* Signature. */
-    AjPScopalg  alg           =NULL;    /* Pointer to Scopalg structure. */
-    AjPScorealg scores        =NULL;    /* Pointer to Scorealg structure. */
-    AjPCmap    *cmaps         =NULL;    /* Array of pointers to Cmap structures. */
+    AjPSignature sig=NULL;             /* Signature. */
+    AjPScopalg  alg           =NULL;   /* Pointer to Scopalg structure. */
+    AjPScorealg scores        =NULL;   /* Pointer to Scorealg structure. */
+    AjPCmap    *cmaps         =NULL;   /* Array of pointers to Cmap structs */
 
-    AjBool      score_seq_mat =ajFalse;  /* Score by residue conservation  (Y/N). */ 
-    AjBool      score_seq_var =ajFalse; /* Score by variability function  (Y/N). */ 
-    AjBool      score_ncon    =ajFalse; /* Score by number of contacts  (Y/N). */ 
+    AjBool      score_seq_mat =ajFalse; /* Score by residue
+					   conservation (Y/N). */
+    AjBool      score_seq_var =ajFalse; /* Score by variability
+					   function (Y/N). */
+    AjBool      score_ncon    =ajFalse; /* Score by number of contacts
+					   (Y/N). */
     AjBool      score_ccon    =ajFalse; /* Score by conservation of contacts  
 					   (Y/N). */
 
@@ -261,13 +265,15 @@ int main(ajint argc, char **argv)
 					   implemented at moment). */ 
     AjBool      filterpsim    =ajFalse; /* Filter on basis of post_similar data
 					   line (Y/N). */ 
-    AjBool      filtercon     =ajFalse; /* Filter on basis of number of contacts
-					   (Y/N). */ 
+    AjBool      filtercon     =ajFalse; /* Filter on basis of number
+					   of contacts (Y/N). */
     ajint       conthresh     =0;       /* Threshold number of contacts for
 					   filtercon. */
     AjPStr      *mode         =NULL;    /* Holds mode options from acd*/
-    AjPStr      *seqoption    =NULL;    /* Holds sequence scoring options from acd*/
-    AjPStr      *conoption    =NULL;    /* Holds contact scoring options from acd*/
+    AjPStr      *seqoption    =NULL;    /* Holds sequence scoring
+					   options from acd*/
+    AjPStr      *conoption    =NULL;    /* Holds contact scoring
+					   options from acd*/
 
     char        id            ='.';     /* Chain identifier for a scop domain*/
     ajint       idn           =0;       /* Chain identifier as a number. */
@@ -284,10 +290,13 @@ int main(ajint argc, char **argv)
 					    the alignment contained an NOCA 
 					    grouyp in the original pdb
 					    file. */
-    AjPInt     *atom_idx=NULL;          /* Indeces into the full length sequences
-					   for sequences in the alignment (alignment
-                                           sequences are for structured residues 
-					   (residues with electron density) only). */
+    AjPInt     *atom_idx=NULL;          /* Indices into the full
+					   length sequences for
+					   sequences in the alignment
+					   (alignment sequences are
+					   for structured residues
+					   (residues with electron
+					   density) only). */
     AjPStr      tempres       =NULL;
 
 
@@ -316,8 +325,8 @@ int main(ajint argc, char **argv)
 
 
     /* Read data from acd. */
-    ajNamInit("emboss");
-    ajAcdInitP("siggen",argc,argv,"SIGNATURE"); 
+    embInitP("siggen",argc,argv,"SIGNATURE");
+
     sig_path      = ajAcdGetOutdir("sigoutdir");
     alg_path      = ajAcdGetDirlist("algpath");
     sig_sparse    = ajAcdGetInt("sparsity");
@@ -390,14 +399,16 @@ int main(ajint argc, char **argv)
 
 	/*      ajFmtPrint("2\n");fflush(stdout); */
 
-        /* Read alignment file, write Scopalg structure, close alignment file.*/
+        /* Read alignment file, write Scopalg structure,
+	   close alignment file.*/
         ajDmxScopalgRead(fptr_alg, &alg);
 
 
 	/* For non-STAMP alignments there will not be no Post_similar line 
 	   present, however, the siggen algorithms depend on there being one.
 	   Therefore write one here in which the values are all '1' (i.e. no 
-	   positions will be included because of the Post_similar assignment.) */
+	   positions will be included because of the
+	   Post_similar assignment.) */
 	if(!MAJSTRGETLEN(alg->Post_similar))
 	    for(x=0;x<alg->width;x++)
 		ajStrAppendK(&alg->Post_similar, '1');
@@ -460,11 +471,13 @@ int main(ajint argc, char **argv)
                     ajFatal("Could not open contact file!!");
                 
                 
-                /* Read contact data file; hard-coded to read model 1 from file. */
+                /* Read contact data file; hard-coded to read model 1
+                   from file. */
                 /* A scop identifier is presumed if the id is 7 characters 
                    long and the first character is a 'd' or 'D'. */
                 if((ajStrGetLen(alg->Codes[x])==7)
-                   &&(toupper((ajint) ajStrGetCharFirst(alg->Codes[x])) == (ajint) 'D'))
+                   &&(toupper((ajint) ajStrGetCharFirst(alg->Codes[x])) ==
+		      (ajint) 'D'))
 
                 { 
                     /*Read the chain id from the SCOP domain code and convert 
@@ -479,8 +492,9 @@ int main(ajint argc, char **argv)
                 }
                 else  
                 {
-                    /*Not sure of a chain identifier so read the first chain. */
-                    ajWarn("Uncertain of chain identifier so reading first chain");
+                    /*Not sure of a chain identifier so read the first chain.*/
+                    ajWarn("Uncertain of chain identifier so reading "
+			   "first chain");
                     cmaps[x] = ajCmapReadINew(fptr_con, 1,1);
                 }
                 
@@ -512,7 +526,8 @@ int main(ajint argc, char **argv)
                     }
                 }
                 else  
-                    /* Not sure of a chain identifier so read the first chain. */
+                    /* Not sure of a chain identifier so read the
+                       first chain. */
                     idn=1;
 
 
@@ -524,7 +539,8 @@ int main(ajint argc, char **argv)
 
                 if(!embPdbResidueIndexICA(pdb, idn, &atom_idx[x], &nres))
                 {
-                    ajWarn("Could not find chain in siggen embPdbResidueIndexICA\n");
+                    ajWarn("Could not find chain in siggen "
+			   "embPdbResidueIndexICA\n");
                     ajPdbDel(&pdb);
                     ajFileClose(&fptr_cpdb);
                     continue;
@@ -578,7 +594,8 @@ int main(ajint argc, char **argv)
 
 	/*      ajFmtPrint("14\n");fflush(stdout); */
 
-        /* Score alignement - write Scorealg structure and generate signature. */
+        /* Score alignement - write Scorealg structure and generate
+           signature. */
 	if(ajStrGetCharFirst(*mode) == '1')
 	{
 	    sig = siggen_SigSelectManual(alg, 
@@ -607,7 +624,8 @@ int main(ajint argc, char **argv)
 
 	    if(ajStrGetCharFirst(*conoption) == '5')
 	    {
-		if( (sig = siggen_SigSelectSeq(alg, scores, seq_pos, sig_sparse, 
+		if( (sig = siggen_SigSelectSeq(alg, scores, seq_pos,
+					       sig_sparse, 
 					       &spar_check, wsiz))==NULL)
 		{
 		    if(ajStrGetCharFirst(*conoption) != '5')
@@ -889,18 +907,20 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
 				  AjPMatrixf mat, 
 				  AjPInt2d seq_pos)
 {
-    ajint       memb_cnt     =0;  /* Counter for members of the family (lignment). */
+    ajint       memb_cnt     =0;  /* Counter for members of the family
+				     (alignment). */
     ajint       res_cnt      =0;  /* Counter for residue in the alignment.   */
     ajint       post_cnt     =0;  /* Counter for post_similar line.          */
     float       **sub        =0;  /* Array of floats for sub matrix.         */
-    float       val          =0;  /* Current value for res sub score.        */        
+    float       val          =0;  /* Current value for res sub score.        */
     float       pos_score    =0;  /* Total sub score for all res at position.*/
     float       temp         =0;  /* Temp variable for score.                */
     AjPSeqCvt   cvt          =0;  /* Sequence character conversion table.    */
 
 
-    cvt = ajMatrixfCvt(mat);    /* Create sequence character conversion table. */
-    sub = ajMatrixfArray(mat);  /* Create matrix as array of floats          . */
+    cvt = ajMatrixfCvt(mat);    /* Create sequence character
+				   conversion table. */
+    sub = ajMatrixfArray(mat);  /* Create matrix as array of floats. */
     
 
     /* Counter for positions in alignment. */
