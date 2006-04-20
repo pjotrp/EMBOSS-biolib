@@ -117,8 +117,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("ssematch",argc,argv,"DOMAINATRIX");
+    embInitP("ssematch",argc,argv,"DOMAINATRIX");
     dcfin       = ajAcdGetInfile("dcfinfile");
     ssin       = ajAcdGetInfile("ssinfile");
     max_hits      = ajAcdGetInt("maxhits");

@@ -150,8 +150,7 @@ int main(int argc, char **argv)
   
 
     /* ACD processing */
-    ajNamInit("emboss");
-    ajAcdInitP("seqalign",argc,argv,"DOMALIGN");
+    embInitP("seqalign",argc,argv,"DOMALIGN");
 
     inseqsdhf = ajAcdGetDirlist("dhfinpath");
     inseqsdaf = ajAcdGetDirlist("dafinpath");

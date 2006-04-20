@@ -82,8 +82,8 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("allversusall",argc,argv,"DOMALIGN");
+    embInitP("allversusall",argc,argv,"DOMALIGN");
+
     in        = ajAcdGetDirlist("seqinpath");
     matrix    = ajAcdGetMatrixf("matrix");
     gapopen   = ajAcdGetFloat("gapopen");

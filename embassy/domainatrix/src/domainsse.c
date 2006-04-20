@@ -70,22 +70,25 @@
 int main(int argc, char **argv)
 {
     ajint    num       = 0;
-    AjPStr   msg       = NULL; /* Pointer to String used for messages.        */
-    AjPDir   dccf      = NULL; /* Pointer to Path of dccf (clean domain) files*/
-    AjPStr   dccf_name = NULL; /* Pointer to Name of dccf (clean domain) file */
+    AjPStr   msg       = NULL; /* Pointer to String used for messages.  */
+    AjPDir   dccf      = NULL; /* Pointer to Path of dccf (clean
+				  domain) files*/
+    AjPStr   dccf_name = NULL; /* Pointer to Name of dccf (clean
+   				  domain) file */
    
-    AjPStr   sse       = NULL; /* Pointer to Secondary structure element map. */
-    AjPStr   sss       = NULL; /* Pointer to Secondary structure string.      */
+    AjPStr   sse       = NULL; /* Pointer to Secondary structure
+				  element map. */
+    AjPStr   sss       = NULL; /* Pointer to Secondary structure
+				  string.  */
     char     ss; 
 
-    AjPFile  dccf_inf  = NULL; /* File pointer for input domain files.        */
-    AjPFile  dcf_inf   = NULL; /* File pointer to input scop file.            */
-    AjPFile  dcf_outf  = NULL; /* File pointer for scop output file.          */
-    AjPFile  errf      = NULL; /* File pointer for output log file.           */
-    
-    AjPScop  scop      = NULL; /* Pointer to scopstride object.               */
-    AjPPdb   pdb       = NULL; /* Pointer to pdb object.                      */
-    AjPResidue temp_res= NULL; /* Pointer to Residue object.                  */
+    AjPFile  dccf_inf  = NULL; /* File pointer for input domain files.  */
+    AjPFile  dcf_inf   = NULL; /* File pointer to input scop file.  */
+    AjPFile  dcf_outf  = NULL; /* File pointer for scop output file.  */
+    AjPFile  errf      = NULL; /* File pointer for output log */
+    AjPScop  scop      = NULL; /* Pointer to scopstride object.  */
+    AjPPdb   pdb       = NULL; /* Pointer to pdb object.  */
+    AjPResidue temp_res= NULL; /* Pointer to Residue object.  */
     AjIList  iter      = NULL;
 
 
@@ -97,8 +100,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("domainsse",argc,argv,"DOMAINATRIX");
+    embInitP("domainsse",argc,argv,"DOMAINATRIX");
     dcf_inf    = ajAcdGetInfile("dcfinfile");
     dcf_outf   = ajAcdGetOutfile("dcfoutfile");
     dccf        = ajAcdGetDirectory("dccfdir");
@@ -106,8 +108,8 @@ int main(int argc, char **argv)
 
 
 
-    /* Start of main application loop.
-       ajScopReadC creates a Scop object from a scop file in embl-like format. */
+    /* Start of main application loop.  ajScopReadC creates a Scop
+       object from a scop file in embl-like format. */
     while((scop=(ajScopReadCNew(dcf_inf, "*"))))
     {
         /* construct name of domain coordinate file*/
@@ -238,4 +240,3 @@ int main(int argc, char **argv)
     ajExit();
     return 0;
 }
-

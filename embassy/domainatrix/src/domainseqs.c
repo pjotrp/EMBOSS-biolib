@@ -140,8 +140,7 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("domainseqs",argc,argv,"DOMAINATRIX");
+    embInitP("domainseqs",argc,argv,"DOMAINATRIX");
 
     domain_inf    = ajAcdGetInfile("dcfinfile");
     getswiss    = ajAcdGetToggle("getswiss");
