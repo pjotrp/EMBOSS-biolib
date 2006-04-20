@@ -123,9 +123,9 @@ static AjBool   seqwords_keysearch(AjPFile inf,
 
 int main(int argc, char **argv)
 {
-    AjPFile     key_inf=NULL;	/* File pointer for keywords file.           */ 
-    AjPFile     sp_inf =NULL;	/* File pointer for swissprot database.      */ 
-    AjPFile     outf   =NULL;	/* File pointer for output file.             */ 
+    AjPFile     key_inf=NULL;	/* File pointer for keywords file.           */
+    AjPFile     sp_inf =NULL;	/* File pointer for swissprot database.      */
+    AjPFile     outf   =NULL;	/* File pointer for output file.             */
     AjPTerms    keyptr =NULL;	/* Pointer to terms structure.               */
     AjPHitlist  hitptr =NULL;	/* Pointer to hitlist structure.             */
     
@@ -134,8 +134,8 @@ int main(int argc, char **argv)
  
    
     /* Read data from acd */
-    ajNamInit("emboss");
-    ajAcdInitP("seqwords",argc,argv,"DOMSEARCH");
+    embInitP("seqwords",argc,argv,"DOMSEARCH");
+
     key_inf  = ajAcdGetInfile("keyfile");
     sp_inf  = ajAcdGetInfile("spfile");
     outf =  ajAcdGetOutfile("outfile");
@@ -534,7 +534,7 @@ static AjBool seqwords_keysearch(AjPFile inf,
 	    ajStrRemoveWhiteExcess(&temp);
 
 
-	    /*Priority is given to domain (rather than full length) sequence. */
+	    /*Priority is given to domain (rather than full length) sequence.*/
 	    if(foundft)
 	    {
 		for(x=0;x<nhits;x++)
@@ -543,10 +543,12 @@ static AjBool seqwords_keysearch(AjPFile inf,
 		    (*hits)->N++;
 
 		    
-		    /* Reallocate memory for array of hits in hitlist structure. */
+		    /* Reallocate memory for array of hits in hitlist
+                       structure. */
 		    AJCRESIZE((*hits)->hits, (*hits)->N);
 		    (*hits)->hits[(*hits)->N-1]=embHitNew();
-		    ajStrAssignC(&(*hits)->hits[(*hits)->N-1]->Model, "KEYWORD");
+		    ajStrAssignC(&(*hits)->hits[(*hits)->N-1]->Model,
+				 "KEYWORD");
 		    
 
 		    /* Assign start and end of hit. */
@@ -573,7 +575,7 @@ static AjBool seqwords_keysearch(AjPFile inf,
 		/* Reallocate memory for array of hits in hitlist structure */
 		AJCRESIZE((*hits)->hits, (*hits)->N);
 		(*hits)->hits[(*hits)->N-1]=embHitNew();
-		ajStrAssignC(&(*hits)->hits[(*hits)->N-1]->Model, "KEYWORD");				    
+		ajStrAssignC(&(*hits)->hits[(*hits)->N-1]->Model, "KEYWORD");
 
 		/* Extract whole sequence */
 		ajStrAssignRef(&(*hits)->hits[(*hits)->N - 1]->Seq, temp); 

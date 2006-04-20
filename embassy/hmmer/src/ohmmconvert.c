@@ -17,7 +17,7 @@
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -71,8 +71,7 @@ int main(int argc, char **argv)
      * Parse command line
      ***********************************************/
 
-    ajNamInit("emboss");
-    ajAcdInitP("ohmmconvert",argc,argv,"HMMER");
+    embInitP("ohmmconvert",argc,argv,"HMMER");
 
     outfmt    = P7ASCII; 
     do_append = FALSE;

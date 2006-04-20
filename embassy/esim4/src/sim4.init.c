@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.9 2006/02/22 15:02:27 rice Exp $";
+"$Id: sim4.init.c,v 1.10 2006/04/20 12:46:07 rice Exp $";
 #endif         
            
 
@@ -159,18 +159,19 @@ int main(int argc, char *argv[])
         
 #ifdef EMBASSY
         
-        /* this is a bletcherous hack still in here because in the orignal
-        one of the format modes refers back to the command line options which have
-        been referenced oddly as a side effects of ckargs.  Only the 2nd and 3rd
-        parameters are referenced */
+        /* this is a bletcherous hack still in here because in the
+        original one of the format modes refers back to the command
+        line options which have been referenced oddly as a side
+        effects of ckargs.  Only the 2nd and 3rd parameters are
+        referenced */
         
         ckargs("AXWRKCDHEPNBS", argc, argv, 2);
         
-	/* retrieve variables using EMBASSY methods and set the rs fields with them */
+	/* retrieve variables using EMBASSY methods and set the rs
+	fields with them */
         
-	ajNamInit("emboss");
-	ajAcdInitP("esim4",argc,argv,"ESIM4");
-/*	embInitP ("esim4", argc, argv, "ESIM4"); */
+	embInitP("esim4",argc,argv,"ESIM4");
+
         sim4_argvals(&rs);
 
 

@@ -108,7 +108,7 @@ int main(int argc, char **argv)
 
    
     AjPList famlist    = NULL;      /* List of family members.               */
-    AjPList supfamlist = NULL;      /* List of superfamily members.          */	
+    AjPList supfamlist = NULL;      /* List of superfamily members.          */
     AjPList foldlist   = NULL;      /* List of fold members.                 */
     
     AjPFile ambigf     = NULL;      /* Domain ambiguities output file.       */
@@ -125,8 +125,8 @@ int main(int argc, char **argv)
 
 
     /* ACD processing */
-    ajNamInit("emboss");
-    ajAcdInitP("seqsort",argc,argv,"DOMSEARCH");
+    embInitP("seqsort",argc,argv,"DOMSEARCH");
+
     sig_overlap    = ajAcdGetInt("overlap");
     ambigf         = ajAcdGetOutfile("ambigfile");
     hitsf          = ajAcdGetOutfile("hitsfile");
@@ -245,7 +245,7 @@ static AjPList seqsort_HitlistListRead(AjPStr path,
     }	
 
     /* All files containing hits will be in a list. */
-    ajFileScan(path, tmp, &list, ajFalse, ajFalse, NULL, NULL, ajFalse, NULL);    
+    ajFileScan(path, tmp, &list, ajFalse, ajFalse, NULL, NULL, ajFalse, NULL);
 
     
     /* Read each psiblast file and create a list of Scophit structures. */
@@ -254,7 +254,7 @@ static AjPList seqsort_HitlistListRead(AjPStr path,
 	if((inf = ajFileNewIn(filename)) == NULL)
 	{
 	  ajWarn("Could not open for reading\n");
-	  ajFmtPrintS(&logf,"WARN  Could not open for reading %S\n",filename);	
+	  ajFmtPrintS(&logf,"WARN  Could not open for reading %S\n",filename);
 	  continue;	    
 	}	
 	

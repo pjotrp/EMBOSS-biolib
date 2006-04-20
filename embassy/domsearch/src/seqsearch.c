@@ -101,20 +101,21 @@ int main(int argc, char **argv)
     
     AjPDir     dhfout    = NULL;   /* Directory of hits files for output.    */
     AjPStr     dhfname   = NULL;   /* Name of hits file.                     */
-    AjPStr     singlet   = NULL;   /* sequence of a particular sunid.        */ 
+    AjPStr     singlet   = NULL;   /* sequence of a particular sunid.        */
 
     AjPStr     msg       = NULL;   /* Error message.                         */
     AjPStr     temp      = NULL;   /* Temp string.                           */
     AjPStr     psiname   = NULL;   /* Name of psiblast output file.          */
-    AjPStr     database  = NULL;   /* Name of blast-indexed database to search. */
+    AjPStr     database  = NULL;   /* Name of blast-indexed db to search.    */
     
     AjPFile    families  = NULL;   /* Pointer to families file for output.   */
     AjPFile    logf      = NULL;   /* Log file pointer.                      */
     AjPFile    psif      = NULL;   /* Pointer to psiblast output file.       */
     
-    ajint      maxhits   = 0;      /* Maximum number of hits reported by PSIBLAST. */          
-    ajint      niter     = 0;      /* Number of PSIBLAST iterations.               */          
-    float      evalue    = 0.0;    /* Threshold E-value for inclusion in family.   */
+    ajint      maxhits   = 0;      /* Maximum number of hits from PSIBLAST.  */
+    ajint      niter     = 0;      /* Number of PSIBLAST iterations.         */
+
+    float      evalue    = 0.0;    /* Threshold E-value for family inclusion */
     
     AjPList    listin     = NULL;  /* A list of hitlist for eleminating the 
 				      identical hits.                        */
@@ -127,7 +128,7 @@ int main(int argc, char **argv)
     
     AjPHitlist tmphitlist = NULL;
     AjPHitlist hitlist   = NULL;   /* Hitlist object for holding results of 
-                                      PSIBLAST hits.                         */  
+                                      PSIBLAST hits.                         */
     
     AjIList    iter       = NULL;
     AjPScophit hit        = NULL;  /* For eleminating identical hits. */
@@ -148,8 +149,8 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd. */
-    ajNamInit("emboss");
-    ajAcdInitP("seqsearch",argc,argv,"DOMSEARCH"); 
+    embInitP("seqsearch",argc,argv,"DOMSEARCH");
+
     mode       = ajAcdGetList("mode");
     inseqs     = ajAcdGetDirlist("inseqspath");
     dhfout     = ajAcdGetOutdir("dhfoutdir");
@@ -225,13 +226,15 @@ int main(int argc, char **argv)
 	    
 	/* No hits. */   
 	if(tmphitlist->N == 0)
-            ajFmtPrintF(logf, "WARN  No PSIBLAST hits therefore no output file\n", 
+            ajFmtPrintF(logf,
+			"WARN  No PSIBLAST hits therefore no output file\n", 
                         inname);
 	else
         {
-	    /* This list will only ever contain a single hitlist. 
-	       Create a list of scophits to eleminate identical hits. 
-	       Sort this list by accession number, then by start, then by end. */
+	    /* This list will only ever contain a single hitlist.
+	       Create a list of scophits to eleminate identical hits.
+	       Sort this list by accession number, then by start, then
+	       by end. */
 
 	    ajListPushApp(listin,tmphitlist);
 	    embDmxHitlistToScophits(listin, &listout);
@@ -379,7 +382,8 @@ int main(int argc, char **argv)
 ** @param [r] evalue     [float]       Threshold E-value for psiblast
 ** @param [r] database   [AjPStr]      Database name
 **
-** @return [AjPFile] Pointer to  psiblast output file for reading or NULL for error.
+** @return [AjPFile] Pointer to  psiblast output file for reading or NULL
+**                   for error.
 ** @@
 ** 
 ** Note
@@ -510,8 +514,10 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
 
     
     /* Run PSI-BLAST. */
-    ajFmtPrintS(&temp,"blastpgp -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
-                seq_in, seqs_in, niter,evalue, maxhits, maxhits, database, *psiname);
+    ajFmtPrintS(&temp,
+		"blastpgp -i %S -B %S -j %d -e %f -b %d -v %d -d %S > %S\n",
+                seq_in, seqs_in, niter,evalue, maxhits, maxhits, database,
+		*psiname);
     ajFmtPrint("%S\n", temp);
     system(ajStrGetPtr(temp));
     
@@ -672,7 +678,8 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
 ** @param [r] scophit   [AjPHitlist]  Hit 
 ** @param [r] psif      [AjPFile]     psiblast output file 
 **
-** @return [AjPHitlist] Pointer to Hitlist object (or NULL if 0 hits were found)
+** @return [AjPHitlist] Pointer to Hitlist object
+**                      (or NULL if 0 hits were found)
 ** @@
 ** 
 ******************************************************************************/
@@ -842,7 +849,3 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
 
     return hitlist;
 }
-
-
-
-

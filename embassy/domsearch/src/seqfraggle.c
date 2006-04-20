@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 
     AjPStr      temp        = NULL;  /* Temp string.                         */
     AjPStr      temp2       = NULL;  /* Temp string.                         */
-    AjPStr      exec        = NULL;  /* The UNIX command line to be executed.*/    
+    AjPStr      exec        = NULL;  /* The UNIX command line to be executed.*/
 
     ajint       thresh      = 0;     /* Threshold for definition of fragments*/
     ajint       x           = 0;     /* Loop counters.                       */
@@ -120,8 +120,8 @@ int main(int argc, char **argv)
 
 
     /* Read data from acd. */
-    ajNamInit("emboss");
-    ajAcdInitP("seqfraggle",argc,argv,"DOMSEARCH"); 
+    embInitP("seqfraggle",argc,argv,"DOMSEARCH");
+
     dhfin      = ajAcdGetDirlist("dhfinpath");
     dhfout     = ajAcdGetOutdir("dhfoutdir");
     thresh      = ajAcdGetInt("thresh");
@@ -146,12 +146,12 @@ int main(int argc, char **argv)
 	    seqfraggle_getlengths(hitlist, &num_hits, &seq_len_sort, &seq_len, 
 				  &seq_ok);
 	else
-	    seqfraggle_getlengths_other(temp, &seqset, &num_hits, &seq_len_sort, 
-					&seq_len, &seq_ok);
+	    seqfraggle_getlengths_other(temp, &seqset, &num_hits,
+					&seq_len_sort, &seq_len, &seq_ok);
 
 	
-	/* if num_hits > 1 then seq_len_sort, seq_len & seq_ok all have to be freed.
-	   seqset ALWAYS has to be freed. */
+	/* if num_hits > 1 then seq_len_sort, seq_len & seq_ok all
+	   have to be freed.  seqset ALWAYS has to be freed. */
 	
 	if(!num_hits)
 	{

@@ -12,11 +12,11 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ohmmbuild.c,v 1.2 2006/02/22 15:02:28 rice Exp $
+ * RCS $Id: ohmmbuild.c,v 1.3 2006/04/20 12:49:54 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -239,8 +239,7 @@ int main(int argc, char **argv)
 
   
 
-    ajNamInit("emboss");
-    ajAcdInitP("ohmmbuild",argc,argv,"HMMER");
+    embInitP("ohmmbuild",argc,argv,"HMMER");
 
     ajstrategy = ajAcdGetList("strategy");
     ajstrat = *ajStrGetPtr(*ajstrategy);

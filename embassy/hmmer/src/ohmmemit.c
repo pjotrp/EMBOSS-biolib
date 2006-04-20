@@ -12,12 +12,12 @@
  * SRE, Sun Mar  8 14:11:24 1998 [St. Louis]
  * 
  * main() for generating sequences from an HMM
- * RCS $Id: ohmmemit.c,v 1.2 2006/02/22 15:02:28 rice Exp $
+ * RCS $Id: ohmmemit.c,v 1.3 2006/04/20 12:49:54 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -74,8 +74,7 @@ int main(int argc, char **argv)
     do_consensus = FALSE;
     ofile        = NULL;
 
-    ajNamInit("emboss");
-    ajAcdInitP("ohmmemit",argc,argv,"HMMER");
+    embInitP("ohmmemit",argc,argv,"HMMER");
 
     ajselex = ajAcdGetBool("selex");
     ajcons  = ajAcdGetBool("consensus");

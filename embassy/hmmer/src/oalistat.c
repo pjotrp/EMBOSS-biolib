@@ -10,13 +10,13 @@
 
 /* alistat_main.c
  * Fri Jan 27 10:41:41 1995
- * RCS $Id: oalistat.c,v 1.3 2006/03/07 13:24:48 rice Exp $
+ * RCS $Id: oalistat.c,v 1.4 2006/04/20 12:49:54 rice Exp $
  * 
  * Look at an alignment file, determine some simple statistics.
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <string.h>
 #include "config.h"
@@ -63,8 +63,7 @@ int main(int argc, char **argv)
     allreport = FALSE;
     do_fast   = FALSE;
 
-    ajNamInit("emboss");
-    ajAcdInitP("oalistat",argc,argv,"HMMER");
+    embInitP("oalistat",argc,argv,"HMMER");
 
     inf = ajAcdGetInfile("infile");
     outf = ajAcdGetOutfile("outfile");

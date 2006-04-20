@@ -1,7 +1,7 @@
 #ifndef SIM4_H
 #define SIM4_H
 
-/* $Id: sim4.h,v 1.3 2004/06/14 14:43:30 rice Exp $ */
+/* $Id: sim4.h,v 1.4 2006/04/20 12:46:07 rice Exp $ */
 
 
 /* 
@@ -13,7 +13,7 @@ sim4.init.c
 */
 #ifdef    EMBASSY
 
-#include "ajax.h"
+#include "emboss.h"
 
 extern AjPSeqall  esim4_seqall;
 extern AjPSeq     esim4_sequence;

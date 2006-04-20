@@ -3062,8 +3062,7 @@ int main (int argc, char * argv[], char **env) {
     start_time = time(NULL)-600;
 
 /* read in the EMBOSS acd files to build the programs groups data structure */
-    ajNamInit("emboss");
-    ajAcdInitP("emnu",argc,argv,"EMNU");
+    embInitP("emnu",argc,argv,"EMNU");
 
 /* display name and version */
     printf("%s version: %s\nEMBOSS Simple Menu\n\nStarting...", 
