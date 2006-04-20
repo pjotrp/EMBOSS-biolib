@@ -1878,8 +1878,12 @@ void ajNamInit(const char* prefix)
     AjPStr homercVal     = NULL;
     AjPStr basename      = NULL;
     
+
+    if(namVarMasterTable && namDbMasterTable && namResMasterTable)
+	return;
+
     /* create new tables to hold the values */
-    
+
     namVarMasterTable = ajStrTableNewCaseC(0);
     namDbMasterTable = ajStrTableNewCaseC(0);
     namResMasterTable = ajStrTableNewCaseC(0);
