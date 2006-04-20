@@ -60,8 +60,7 @@ int main(int argc, char **argv)
 
 
     /* ACD file processing */
-    ajNamInit("emboss");
-    ajAcdInitP("ehmmcalibrate",argc,argv,"HMMERNEW");
+    embInitP("ehmmcalibrate",argc,argv,"HMMERNEW");
 
     hmmfilein  = ajAcdGetInfile("hmmfilein");
     cpu        = ajAcdGetInt("cpu");

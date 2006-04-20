@@ -15,7 +15,7 @@
 **  October 2003   Fix for file closing
 **
 *****************************************************************************/
-#include "ajax.h"
+#include "emboss.h"
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
@@ -169,9 +169,8 @@ AjPSeqout outseq;
 /*
 ** Setup screen control package, keypad and MSE, check for in-line arguments
 */
-        ajNamInit("emboss"); 
-	ajAcdInitP("mse", argc, argv, "MSE");
-  
+
+	embInitP("mse", argc, argv, "MSE");
 
 	seqset = ajAcdGetSeqset("sequence");
 

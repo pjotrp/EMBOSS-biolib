@@ -137,8 +137,7 @@ extern void init_meme(
   AjBool ajalign;
   
 
-  ajNamInit("emboss");
-  ajAcdInitP("meme",argc,argv,"MEME");
+  embInitP("meme",argc,argv,"MEME");
 
 
   seqall = ajAcdGetSeqall("sequence");
@@ -884,4 +883,4 @@ extern void init_meme(
   *debug_file_p = debug_file;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.4 2006/02/22 15:02:28 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.5 2006/04/20 13:18:36 rice Exp $ */

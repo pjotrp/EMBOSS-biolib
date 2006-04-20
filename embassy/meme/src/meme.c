@@ -45,7 +45,7 @@
 
 	<datafile>	set of samples: [>id sequence]+
 */
-#include "ajax.h"
+#include "emboss.h"
 	
 #define DEFINE_GLOBALS 
 #include "meme.h"
@@ -633,4 +633,4 @@ extern PRIORS *create_priors(
   return priors;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/meme.c,v 1.2 2004/06/14 14:43:30 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/meme.c,v 1.3 2006/04/20 13:18:36 rice Exp $ */
