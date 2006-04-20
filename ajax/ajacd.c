@@ -631,12 +631,13 @@ static ajint     acdFindAttrC(const AcdPAttr attr, const char* attrib);
 static AcdPAcd   acdFindItem(const AjPStr item, ajint number);
 static ajint     acdFindKeyC(const char* key);
 static AcdPAcd   acdFindParam(ajint PNum);
-static AcdPAcd   acdFindQual(const AjPStr qual, const AjPStr noqual,
-			     const AjPStr master,
-			     ajint PNum, ajint *iparam);
+static AcdPAcd   acdFindQual(AjPStr* pqual);
 static AcdPAcd   acdFindQualAssoc(const AcdPAcd pa, const AjPStr qual,
 				  const AjPStr noqual,
 				  ajint PNum);
+static AcdPAcd   acdFindQualDetail(const AjPStr qual, const AjPStr noqual,
+				   const AjPStr master,
+				   ajint PNum, ajint *iparam);
 static AcdPAcd   acdFindQualMaster(const AjPStr qual, const AjPStr noqual,
 				   const AjPStr master,
 				   ajint PNum);
@@ -681,7 +682,7 @@ static AjBool    acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 static AjBool    acdIsParamValue(const AjPStr pval);
 static ajint     acdIsQual(const char* arg, const char* arg2, ajint *iparam,
 			   AjPStr *pqual, AjPStr *pnoqual, AjPStr *pvalue,
-			   ajint* number, AcdPAcd* acd);
+			   ajint* number, AjPStr *pmaster, AcdPAcd* acd);
 static AjBool    acdIsQtype(const AcdPAcd thys);
 static AjBool    acdIsRequired(const AcdPAcd thys);
 static AjBool    acdIsRightB(AjPStr* pstr, AjPList listwords);
@@ -17912,6 +17913,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
     AjPStr value = NULL;
     AjPStr param = NULL;
     AjPStr token = NULL;
+    AjPStr master = NULL;
     
     acdLog("ArgsParse\n=========\n");
     
@@ -17946,7 +17948,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	acdLog("\n");
 	jparam = 0;
 	if((j = acdIsQual(cp, cq, &jparam, &qual, &noqual, 
-			  &value, &number, &acd)))
+			  &value, &number, &master, &acd)))
 	{
 	    if(jparam)
 	    {
@@ -17970,7 +17972,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	    acdLog("\n");
 	    
 	    /*
-	     ** acdFindQual dies (Unknown qualifier) if acd is not set,
+	     ** acdFindQualDetail dies (Unknown qualifier) if acd is not set,
 	     ** so we are safe here
 	     */
 	    
@@ -17988,8 +17990,8 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		    itestparam++)
 		{
 		    acdLog("test [%d] '%S'\n", itestparam, qual);
-		    acd = acdFindQual(qual, NULL, NULL,
-				      itestparam, &jtestparam);
+		    acd = acdFindQualDetail(qual, NULL, NULL,
+					    itestparam, &jtestparam);
 		    if(acd)
 		    {
 			acdDef(acd, value);
@@ -18001,8 +18003,13 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		}
 	    }
 	    
+
 	    ajStrAppendK(&acdArgSave, '-');
 	    ajStrAppendS(&acdArgSave, noqual);
+	    if(number)
+		ajFmtPrintAppS(&acdArgSave, "%d", number);
+	    else if(ajStrGetLen(master))
+		ajFmtPrintAppS(&acdArgSave, "_%S", master);
 	    if(j==2)
 	    {
 		i++;
@@ -18216,7 +18223,8 @@ static AjBool acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 ** Qualifiers start with "-".
 ** Qualifiers are assumed to take a value, which is either
 ** delimited by an "=" sign or is the next argument.
-** Qualifiers can also have numbered suffix if matching one of the parameters
+** Qualifiers can also have a numbered suffix if matching one of the parameters
+** or a specific master qualifier as a suffix after an underscore.
 **
 ** @param [r] arg [const char*] Argument
 ** @param [r] arg2 [const char*] Next argument
@@ -18225,6 +18233,7 @@ static AjBool acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 ** @param [w] pnoqual [AjPStr*] Qualifier name with possible 'no' prefix
 ** @param [w] pvalue [AjPStr*] Qualifier value copied on success
 ** @param [w] number [ajint*] Qualifier number
+** @param [w] pmaster [AjPStr*] Named master qualifier
 ** @param [w] acd [AcdPAcd*] Qualifier data
 ** @return [ajint] Number of arguments consumed
 ** @@
@@ -18232,7 +18241,8 @@ static AjBool acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 
 static ajint acdIsQual(const char* arg, const char* arg2,
 		       ajint *iparam, AjPStr *pqual, AjPStr *pnoqual,
-		       AjPStr *pvalue, ajint* number, AcdPAcd* acd)
+		       AjPStr *pvalue, ajint* number, AjPStr *pmaster,
+		       AcdPAcd* acd)
 {
     ajint ret=0;
     const char *cp;
@@ -18242,13 +18252,12 @@ static ajint acdIsQual(const char* arg, const char* arg2,
     AjBool qstart    = ajFalse;
     AjBool nullok    = ajFalse;
     AjBool attrok    = ajFalse;
-
-    AjPStr qmaster = NULL;
     AjPStr noqual  = NULL;
 
     cp = arg;
     *number = 0;
-    
+    ajStrDel(pmaster);
+
     if(!strcmp(cp, "-"))	       /* stdin or stdout parameter */
 	return 0;
     if(!strcmp(cp, "."))		/* dummy parameter */
@@ -18300,10 +18309,10 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 	    return 0;
     }
     
-    acdQualParse(pqual, &noqual, &qmaster, number);
-    
-    if(ajStrGetLen(qmaster)) /* specific master, turn off auto processing */
-	acdMasterQual = NULL; /* qmaster resets this in acdFindQual below */
+    acdQualParse(pqual, &noqual, pmaster, number);
+
+    if(ajStrGetLen(*pmaster)) /* specific master, turn off auto processing */
+	acdMasterQual = NULL; /* pmaster resets this in acdFindQualDetail  */
     
     if(acdMasterQual)	      /* we are still working with a master */
     {
@@ -18324,8 +18333,8 @@ static ajint acdIsQual(const char* arg, const char* arg2,
     
     if(!acdMasterQual)
     {
-	acdLog("(b) no master, general test with acdFindQual\n");
-	*acd = acdFindQual(*pqual, noqual, qmaster, *number, iparam);
+	acdLog("(b) no master, general test with acdFindQualDetail\n");
+	*acd = acdFindQualDetail(*pqual, noqual, *pmaster, *number, iparam);
     }
     
     if(!*acd)				/* test acdc-badqual */
@@ -18368,7 +18377,6 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 		ret = 1;
 		ajStrAssignC(pvalue, "N");
 		ajStrDel(&noqual);
-		ajStrDel(&qmaster);
 		return ret;
 	    }
 
@@ -18389,7 +18397,6 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 		ret = 1;
 		ajStrAssignC(pvalue, "");
 		ajStrDel(&noqual);
-		ajStrDel(&qmaster);
 		return ret;
 	    }
 	    else	 /* test acdc-noprefixbad acdc-noprefixbad2 */
@@ -18452,7 +18459,6 @@ static ajint acdIsQual(const char* arg, const char* arg2,
     }
 
     ajStrDel(&noqual);
-    ajStrDel(&qmaster);
     return ret;
 }
 
@@ -18594,6 +18600,57 @@ static AcdPAcd acdFindItem(const AjPStr item, ajint number)
 
 /* @funcstatic acdFindQual ****************************************************
 **
+** Finds a qualifier by name, and returns the full name
+**
+** @param [r] pqual [AjPStr*] Qualifier name
+** @return [AcdPAcd] ACD item for qualifier
+** @@
+******************************************************************************/
+
+static AcdPAcd acdFindQual(AjPStr *pqual)
+{
+    AcdPAcd ret    = NULL;
+    AcdPAcd pa;
+    ajint ifound = 0;
+    AjBool found = ajFalse;
+
+    if(!ajStrGetLen(*pqual)) return NULL;
+
+    for(pa=acdList; pa; pa=pa->Next)
+    {
+	found = ajFalse;
+
+	if(acdIsStype(pa))
+	    continue;
+
+	found = ajFalse;
+	if(pa->Level == ACD_QUAL || pa->Level == ACD_PARAM)
+	{
+	    if(ajStrPrefixS(pa->Name, *pqual))
+		found = ajTrue;
+	    if(found)
+	    {
+		if(ajStrMatchS(pa->Name, *pqual))
+		    return pa;
+		ifound++;
+		ret = pa;
+	    }
+	}
+    }
+    if(ifound == 1)
+    {
+	ajStrAssignS(pqual, ret->Name);
+	return ret;
+    }
+
+    return NULL;
+}
+
+
+
+
+/* @funcstatic acdFindQualDetail **********************************************
+**
 ** Returns the parameter definition for a named qualifier and
 ** (optionally) a given qualifier number. If the qualifier number
 ** is given, it is checked. If not, the current parameter number is checked.
@@ -18609,9 +18666,9 @@ static AcdPAcd acdFindItem(const AjPStr item, ajint number)
 ** @@
 ******************************************************************************/
 
-static AcdPAcd acdFindQual(const AjPStr qual, const AjPStr noqual,
-			   const AjPStr master,
-			   ajint PNum, ajint *iparam)
+static AcdPAcd acdFindQualDetail(const AjPStr qual, const AjPStr noqual,
+				 const AjPStr master,
+				 ajint PNum, ajint *iparam)
 {
     /* test for match of parameter number and type */
     
@@ -18635,7 +18692,7 @@ static AcdPAcd acdFindQual(const AjPStr qual, const AjPStr noqual,
     
     ambigList = ajStrNew();
     
-    acdLog("acdFindQual '%S' (%S) PNum: %d iparam: %d\n",
+    acdLog("acdFindQualMaster '%S' (%S) PNum: %d iparam: %d\n",
 	   qual, noqual, PNum, *iparam);
     
     for(pa=acdList; pa; pa=pa->Next)
@@ -19231,6 +19288,8 @@ static void acdQualParse(AjPStr* pqual, AjPStr* pnoqual, AjPStr* pqmaster,
     if(ajStrGetLen(acdQualNumTmp))
 	ajStrToInt(acdQualNumTmp, number);
 
+    if(ajStrGetLen(*pqmaster))
+	acdFindQual(pqmaster);
     return;
 }
 
