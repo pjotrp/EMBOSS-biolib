@@ -1,8 +1,6 @@
 #!/bin/csh -f
 
-
 set app = $argv[1]
-
 set embosshome = ~/cvsemboss
 set embossinst = ~/cvsemboss
 
@@ -18,16 +16,7 @@ end
 
 cd $embosshome
 
-cd plplot
-echo "make PLPLOT"
-make install
-cd ../ajax 
-echo "make AJAX"
-make install
-cd ../nucleus
-echo "make NUCLEUS"
-make install
-cd ../emboss
+cd emboss
 echo "make $app"
 make $app
 echo "install $app"
