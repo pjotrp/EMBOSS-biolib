@@ -65,14 +65,19 @@ xdbgcg-all = seqret qanxgcg:* -out x.x -auto
 xdbgcgpir-des = seqret qaxpirall-des:cytochrome -out x.x -auto
 #
 dbiblast = dbiblast -dir ../wormpep -file wormpep -index ./output -db worm -auto
+dbiblastmem = dbiblast -nosystemsort -dir ../wormpep -file wormpep -index ./output -db worm -auto
 dbiblastswnew = dbiblast -dir ../data -db swnew -auto
 dbiblastlist = dbiblast -dir ../data -file 'swsplit.00.pin,swsplit.01.pin,swsplit.02.pin,swsplit.03.pin,swsplit.04.pin' -index ./output -db swsplit -auto
 dbiblastwild = dbiblast -dir ../data -file swsplit.*.pin -index ./output -db swsplit -auto
 dbiblastwildstar = dbiblast -dir ../data -file swsplit.*.* -index ./output -db swsplit -auto
 dbifasta = dbifasta -dir ../wormpep -file wormpep -index ./output -id idacc -db worm -auto
+dbifastamem = dbifasta -dir ../wormpep -file wormpep -index ./output -id idacc -db worm -nosystemsort -auto
 dbiflat = dbiflat -dir ../swiss -file seq.dat -index ./output -id swiss -db swiss -auto
+dbiflatmem = dbiflat -dir ../swiss -file seq.dat -index ./output -id swiss -db swiss -nosystemsort -auto
 dbigcg = dbigcg -dir ../embl -file '*.seq' -index ./output -id embl -db embl -auto
+dbigcgmem = dbigcg -nosystemsort -dir ../embl -file '*.seq' -index ./output -id embl -db embl -auto
 dbigcg2 = dbigcg -dir ../pir -file '*.seq' -index ./output -id pir -db pir -auto
+dbigcgmem2 = dbigcg -nosystemsort -dir ../pir -file '*.seq' -index ./output -id pir -db pir -auto
 #dbxblast =test= dbxblast -dir ../wormpep -file wormpep -index ./output  -id idacc -dbres worm -db worm -auto
 #dbxblastlist =test= dbxblast -dir ../data -file 'swsplit.00.pin,swsplit.01.pin,swsplit.02.pin,swsplit.03.pin,swsplit.04.pin' -index ./output -dbres swnew -dbname swsplit -auto
 #dbxblastwild =test= dbxblast -dir ../data -file swsplit.*.pin -index ./output -dbres swnew -dbname swsplit -auto
@@ -92,7 +97,8 @@ dotmatcher = dotmatcher tembl:hsfau tembl:hsfau1 -graph ps -auto
 dotpath = dotpath tembl:hsfau tembl:hsfau1 -graph ps -auto
 dottup = dottup tembl:hsfau tembl:hsfau1 -graph ps -auto
 dreg = dreg tembl:hsfau -pattern ggcaggcgcgc -auto
-einverted = einverted tembl:hsfau -send 400 -auto
+einverted = einverted tembl:hsts1 -auto
+einvertedhs = einverted 'tembl:hs*' -auto
 embl1 = seqret -auto tembl:hsfau
 emblmany = seqret -auto 'tembl:hsf*'
 embossdata = embossdata -fetch -file Eamino.dat -outfile output/Eamino.dat -auto
