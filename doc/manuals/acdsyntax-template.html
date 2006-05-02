@@ -1615,17 +1615,23 @@ decimal places that will be taken into account for this value.</p>
 <p>The integer data type can hold simple integer values. The
 <i>minimum:</i> and <i>maximum:</i> attributes define the boundaries
 and default to the boundaries as specified by the systems setup. The
-inc: attribute defines the steps that this parameter is allowed to
+<i>increment:</i> attribute defines the steps that this parameter is allowed to
 take, in case there is a need to iterate this parameter.</p>
 
 <!-- #acdattr-range -->
 <h5>Range</h5>
 
-<p>Sequence ranges have (currently) no specific attributes. The value
-provided by the user is a list of sequence position pairs to be
-interpreted by the application. The upper and lower bounds (sequence
-positions can be negative to count back from the end) will depend on
-the length of the sequence to which they are applied.</p>
+<p>Sequence ranges have similar attribute to integers. The
+<i>minimum:</i> and <i>maximum:</i> attributes define the boundaries
+and default to the boundaries as specified by the systems setup. The
+<i>minlength:</i> attribute defines the minimum number of values
+required. The <i>size:</i> attribute defines an exact number of values
+required.</p>
+
+<p>The value provided by the user is a list of sequence position pairs
+to be interpreted by the application. The upper and lower bounds
+(sequence positions can be negative to count back from the end) will
+depend on the length of the sequence to which they are applied.</p>
 
 <!-- #acdattr-string -->
 <h5>String</h5>
