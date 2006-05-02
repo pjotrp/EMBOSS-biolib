@@ -68,6 +68,7 @@ void ajExit(void)
     ajMeltExit();
     ajTimeExit();
     ajRegExit();
+    ajArrExit();
     ajStrExit();
     ajMemExit();
     ajMessExit();     /* clears data for ajDebug - do this last!!!  */

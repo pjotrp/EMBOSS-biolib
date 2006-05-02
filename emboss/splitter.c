@@ -102,11 +102,13 @@ int main(int argc, char **argv)
     }
 
     ajSeqWriteClose(seqout);
-
+    ajSeqoutDel(&seqout);
     ajSeqDel(&subseq);
     ajStrDel(&str);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

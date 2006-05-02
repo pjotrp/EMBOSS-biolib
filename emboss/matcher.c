@@ -347,7 +347,10 @@ int main(int argc, char **argv)
     ajStrDel(&aa0str);
     ajStrDel(&aa1str);
 
-    ajExit();
+    ajSeqDel(&seq);
+    ajSeqDel(&seq2);
+
+    embExit();
 
     return 0;
 }

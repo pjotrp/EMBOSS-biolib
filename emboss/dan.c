@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 	ajFeattableDel(&TabRpt);
     }
 
-    if(mult)
+    /*if(mult)*/
 	ajGraphCloseWin();
 
     ajGraphxyDel(&mult);
@@ -250,7 +250,6 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 		       float ta[], float tpa[], float cga[], ajint *np)
 {
     static AjBool initialised = 0;
-    AjPStr type   = NULL;
     AjPStr substr = NULL;
     float  fwindow;
     ajint    i;
@@ -271,13 +270,7 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 
     if(!initialised)
     {
-	type = ajStrNew();
-	if(isDNA)
-	    ajStrAssignC(&type,"dna");
-	else
-	    ajStrAssignC(&type,"rna");
-	ajMeltInit(type, window);
-	ajStrDel(&type);
+	ajMeltInit(isDNA, window);
     }
 
     fwindow  = (float) window;
@@ -387,7 +380,6 @@ static void dan_reportgc(AjPReport report,
     AjPFeature gf = NULL;
     AjPStr tmpStr = NULL;
     static AjBool initialised = 0;
-    AjPStr type   = NULL;
     AjPStr substr = NULL;
     float  fwindow;
     ajint    i;
@@ -413,13 +405,7 @@ static void dan_reportgc(AjPReport report,
 
     if(!initialised)
     {
-	type = ajStrNew();
-	if(isDNA)
-	    ajStrAssignC(&type,"dna");
-	else
-	    ajStrAssignC(&type,"rna");
-	ajMeltInit(type, window);
-	ajStrDel(&type);
+	ajMeltInit(isDNA, window);
     }
 
     fwindow  = (float) window;

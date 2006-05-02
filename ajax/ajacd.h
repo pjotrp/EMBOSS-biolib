@@ -81,7 +81,7 @@ AjPPhyloTree* ajAcdGetTree (const char *token);
 AjPPhyloTree  __deprecated ajAcdGetTreeI (const char *token, ajint num);
 AjPPhyloTree  ajAcdGetTreeSingle (const char *token);
 
-AjPStr        ajAcdGetValue (const char* token);
+const AjPStr  ajAcdGetValue (const char* token);
 
 void          ajAcdInit (const char *pgm, ajint argc, char * const argv[]);
 void          ajAcdInitP (const char *pgm, ajint argc, char * const argv[],
@@ -96,7 +96,7 @@ AjBool        ajAcdSetControl (const char* optionName);
 AjBool        ajAcdStdout (void);
 void          ajAcdUnused(void);
 
-AjPStr        __deprecated ajAcdValue (const char* token);
+const AjPStr  __deprecated ajAcdValue (const char* token);
 #endif
 
 #ifdef __cplusplus

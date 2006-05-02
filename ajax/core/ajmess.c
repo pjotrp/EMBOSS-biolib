@@ -59,6 +59,7 @@ static char *messErrorFile;
 static AjBool fileDebug      = 0;
 static AjPFile fileDebugFile = NULL;
 static AjPStr fileDebugName  = NULL;
+static char* messErrMess = NULL;
 
 static char* messGetFilename(const char *path);
 
@@ -989,7 +990,6 @@ char* ajMessCaughtMessage(void)
 
 char* ajMessSysErrorText(void)
 {
-    static char* errmess = 0;
     char *mess;
 
     if(errno)
@@ -998,12 +998,11 @@ char* ajMessSysErrorText(void)
 	mess = ajFmtString(SYSERR_OK, errno, strerror(errno));
       
     /* must make copy - will be used when mess* calls itself */
-    if(errmess)
-	AJFREE(errmess);
-    errmess = ajSysStrdup(mess);
+    AJFREE(messErrMess);
+    messErrMess = ajSysStrdup(mess);
 
     AJFREE(mess);
-    return errmess;
+    return messErrMess;
 }
 
 
@@ -1748,6 +1747,7 @@ void ajMessExit(void)
 {
     ajFileClose(&fileDebugFile);
     ajStrDel(&fileDebugName);
+    AJFREE(messErrMess);
 
     return;
 }

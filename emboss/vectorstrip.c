@@ -102,6 +102,7 @@ static void vectorstrip_read_vector_data(AjPFile vectorfile,
 /* destructors */
 static void vectorstrip_free_list(AjPList *list);
 static void vectorstrip_free_cp(CPattern* pat);
+static void vectorstrip_vlistdel(AjPList* vlist);
 
 
 /* data processing */
@@ -188,7 +189,7 @@ int main(int argc, char **argv)
     if(!ajListLength(vectorlist))
     {
 	ajUser("\nNo suitable vectors found - exiting\n");
-	ajExit();
+	embExitBad();
 	return 0;
     }
 
@@ -212,13 +213,42 @@ int main(int argc, char **argv)
     ajStrDel(&threeprime);
 
     ajFileClose(&outf);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajFileClose(&vectorfile);
 
-    ajExit();
+    vectorstrip_vlistdel(&vectorlist);
+
+    embExit();
 
     return 0;
 }
 
 
+
+
+/* @funcstatic vectorstrip_vlistdel *******************************************
+**
+** Undocumented.
+**
+** @param [d] vlist [AjPList*] vectors
+** @return [void]
+******************************************************************************/
+
+static void vectorstrip_vlistdel(AjPList* vlist)
+{
+    Vector v = NULL;
+    
+    while(ajListPop(*vlist,(void **)&v))
+    {
+	ajStrDel(&v->name);
+	ajStrDel(&v->fiveprime);
+	ajStrDel(&v->threeprime);
+	AJFREE(v);
+    }
+    ajListDel(vlist);
+}
 
 
 /* "constructors" */
@@ -332,7 +362,6 @@ static void vectorstrip_read_vector_data(AjPFile vectorfile,
     }
 
     ajStrDel(&rdline);
-    ajFileClose(&vectorfile);
 
     return;
 }

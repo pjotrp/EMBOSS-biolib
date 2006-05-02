@@ -61,7 +61,7 @@ int main(int argc, char **argv)
     EmbPShow ss;
     AjPFile outfile;
     AjPSeqout outseq=NULL;
-    AjPStr *tablelist;
+    AjPStr tablename;
     ajint table;
     AjPRange uppercase;
     AjPRange highlight;
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     seq         = ajAcdGetSeq("sequence");
     outfile     = ajAcdGetOutfile("outfile");
     outseq      = ajAcdGetSeqoutall("outseq");
-    tablelist   = ajAcdGetList("table");
+    tablename   = ajAcdGetListSingle("table");
     uppercase   = ajAcdGetRange("uppercase");
     highlight   = ajAcdGetRange("highlight");
     numberseq   = ajAcdGetBool("number");
@@ -110,7 +110,7 @@ int main(int argc, char **argv)
     
     
     /* get the number of the genetic code used */
-    ajStrToInt(tablelist[0], &table);
+    ajStrToInt(tablename, &table);
     trnTable = ajTrnNewI(table);
     
     /* get begin and end positions */
@@ -250,8 +250,17 @@ int main(int argc, char **argv)
     
     ajTrnDel(&trnTable);
     ajSeqWriteClose(outseq);
-    
-    ajExit();
+    ajSeqoutDel(&outseq);
+    ajSeqDel(&seq);
+    ajSeqDel(&pep);
+    ajStrDel(&substr);
+    ajStrDel(&tablename);
+    ajFileClose(&outfile);
+    ajRangeDel(&uppercase);
+    ajRangeDel(&highlight);
+
+
+    embExit();
     return 0;
 }
 

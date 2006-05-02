@@ -102,7 +102,7 @@ int main(int argc, char **argv)
 
     embWordLength(wordlen);
     if(embWordGetTable(&seq1MatchTable, seq1))
-	matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2, ajTrue);
+	matchlist = embWordBuildMatchTable(seq1MatchTable, seq2, ajTrue);
 
 
     if(stretch)
@@ -204,11 +204,17 @@ int main(int argc, char **argv)
     }
 
     ajGraphClose();
+    ajSeqDel(&seq1);
+    ajSeqDel(&seq2);
+    ajGraphxyDel(&graph);
+    ajGraphxyDel(&xygraph);
+
+    embWordFreeTable(&seq1MatchTable);
 
     if(matchlist)
 	embWordMatchListDelete(&matchlist); /* free the match structures */
 
-    ajExit();
+    embExit();
 
     return 0;
 }

@@ -1858,6 +1858,7 @@ void ajAlignDel(AjPAlign* pthys)
     AjPAlign thys;
 
     thys = *pthys;
+    if(!thys) return;
 
     ajDebug("ajAlignDel %d seqs\n", thys->Nseqs);
     ajStrDel(&thys->Formatstr);
@@ -2789,7 +2790,7 @@ void ajAlignSetMatrixFloat(AjPAlign thys, const AjPMatrixf matrix)
 
 void ajAlignSetGapI(AjPAlign thys, ajint gappen, ajint extpen)
 {
-    static AjPStr tmpstr = NULL;
+    AjPStr tmpstr = NULL;
 
     ajFmtPrintS(&tmpstr, "%d", gappen);
     ajStrAssignS(&thys->GapPen, tmpstr);
@@ -2797,6 +2798,7 @@ void ajAlignSetGapI(AjPAlign thys, ajint gappen, ajint extpen)
     ajFmtPrintS(&tmpstr, "%d", extpen);
     ajStrAssignS(&thys->ExtPen, tmpstr);
 
+    ajStrDel(&tmpstr);
     return;
 }
 
@@ -2816,7 +2818,7 @@ void ajAlignSetGapI(AjPAlign thys, ajint gappen, ajint extpen)
 
 void ajAlignSetGapR(AjPAlign thys, float gappen, float extpen)
 {
-    static AjPStr tmpstr = NULL;
+    AjPStr tmpstr = NULL;
 
     ajint precision = 3;
     ajint i;
@@ -2837,6 +2839,7 @@ void ajAlignSetGapR(AjPAlign thys, float gappen, float extpen)
     }
     ajStrAssignS(&thys->ExtPen, tmpstr);
 
+    ajStrDel(&tmpstr);
     return;
 }
 
@@ -2855,7 +2858,7 @@ void ajAlignSetGapR(AjPAlign thys, float gappen, float extpen)
 
 void ajAlignSetScoreI(AjPAlign thys, ajint score)
 {
-    static AjPStr tmpstr = NULL;
+    AjPStr tmpstr = NULL;
     AlignPData data = NULL;
 
     ajListLast(thys->Data, (void**) &data);
@@ -2864,6 +2867,8 @@ void ajAlignSetScoreI(AjPAlign thys, ajint score)
 
     ajDebug("ajAlignSetScoreI: %d '%S' %d\n",
 	    score, data->Score, data->LenAli);
+
+    ajStrDel(&tmpstr);
 
     return;
 }
@@ -2883,7 +2888,7 @@ void ajAlignSetScoreI(AjPAlign thys, ajint score)
 
 void ajAlignSetScoreL(AjPAlign thys, ajlong score)
 {
-    static AjPStr tmpstr = NULL;
+    AjPStr tmpstr = NULL;
     AlignPData data = NULL;
 
     ajListLast(thys->Data, (void**) &data);
@@ -2892,6 +2897,7 @@ void ajAlignSetScoreL(AjPAlign thys, ajlong score)
 
     ajDebug("ajAlignSetScoreI: %Ld '%S' %d\n",
 	    score, data->Score, data->LenAli);
+    ajStrDel(&tmpstr);
 
     return;
 }
@@ -2911,7 +2917,7 @@ void ajAlignSetScoreL(AjPAlign thys, ajlong score)
 
 void ajAlignSetScoreR(AjPAlign thys, float score)
 {
-    static AjPStr tmpstr = NULL;
+    AjPStr tmpstr = NULL;
 
     ajint precision = 3;
     ajint i;
@@ -2926,6 +2932,7 @@ void ajAlignSetScoreR(AjPAlign thys, float score)
     }
     ajStrAssignS(&data->Score, tmpstr);
 
+    ajStrDel(&tmpstr);
     return;
 }
 

@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     embInit("showorf", argc, argv);
 
     a         = ajAcdGetSeq("sequence");
-    codestr = ajAcdGetListI("table", 1);
+    codestr   = ajAcdGetListSingle("table");
     width     = ajAcdGetInt("width");
     outf      = ajAcdGetOutfile("outfile");
     frames    = ajAcdGetList("frames");
@@ -167,7 +167,12 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajCodDel(&codon);
 
-    ajExit();
+    ajSeqDel(&a);
+    ajFileClose(&outf);
+    ajStrDel(&codestr);
+    ajStrDelarray(&frames);
+
+    embExit();
 
     return 0;
 }

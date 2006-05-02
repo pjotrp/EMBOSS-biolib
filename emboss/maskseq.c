@@ -33,11 +33,11 @@
 
 int main(int argc, char **argv)
 {
-    AjPSeq seq;
-    AjPSeqout seqout;
-    AjPRange regions;
-    AjPStr maskchar;
-    AjBool tolower;
+    AjPSeq seq = NULL;
+    AjPSeqout seqout = NULL;
+    AjPRange regions = NULL;
+    AjPStr maskchar = NULL;
+    AjBool dolower = ajFalse;
     AjPStr str = NULL;
     ajint beg;
     ajint end;
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
     seqout   = ajAcdGetSeqout("outseq");
     regions  = ajAcdGetRange("regions");
     maskchar = ajAcdGetString("maskchar");
-    tolower  = ajAcdGetToggle("tolower");
+    dolower  = ajAcdGetToggle("tolower");
 
     beg = ajSeqBegin(seq)-1;
     end = ajSeqEnd(seq)-1;
@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     ** if the mask character is null or space or 'tower' is True, then
     ** ToLower the regions, else replace with maskseq
     */
-    if(tolower || ajStrGetLen(maskchar) == 0 || ajStrMatchC(maskchar, " "))
+    if(dolower || ajStrGetLen(maskchar) == 0 || ajStrMatchC(maskchar, " "))
     	ajRangeStrToLower(regions, &str);
     else
         ajRangeStrMask(regions, maskchar, &str);
@@ -71,7 +71,13 @@ int main(int argc, char **argv)
     ajSeqWrite(seqout, seq);
     ajSeqWriteClose(seqout);
 
-    ajExit();
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajRangeDel(&regions);
+    ajStrDel(&maskchar);
+    ajStrDel(&str);
+
+    embExit();
 
     return 0;
 }

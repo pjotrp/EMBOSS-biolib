@@ -197,6 +197,9 @@ int main(int argc, char **argv)
     ajReportSetTail(report,tailstr);
     ajReportWrite(report, tab, sequence);
 
+    ajReportDel(&report);
+    ajFeattableDel(&tab);
+
     ajStrDel(&temp);
     ajStrDel(&regexp);
     ajStrDel(&savereg);
@@ -207,11 +210,15 @@ int main(int argc, char **argv)
     ajStrDel(&redatanew);
     ajStrDel(&accession);
     ajSeqDel(&sequence);
+    ajStrDel(&tailstr);
+    ajStrDel(&fthit);
+    ajStrDel(&name);
+    ajStrDel(&tmpstr);
 
     ajFeattableDel(&tab);
     ajFileClose(&inf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

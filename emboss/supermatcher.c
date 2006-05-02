@@ -62,7 +62,7 @@ typedef struct concatS
 static void supermatcher_matchListOrder(void **x,void *cl);
 static void supermatcher_orderandconcat(AjPList list,AjPList ordered);
 static void supermatcher_removelists(void **x,void *cl);
-static ajint supermatcher_findstartpoints(AjPTable *seq1MatchTable,
+static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
 					  const AjPSeq b,
 					  const AjPSeq a, ajint *start1,
 					  ajint *start2, ajint *end1,
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 	    ajStrAssignC(&n,"");
 
 
-	    if(!supermatcher_findstartpoints(&seq1MatchTable,b,a,
+	    if(!supermatcher_findstartpoints(seq1MatchTable,b,a,
 					     &start1, &start2,
 					     &end1, &end2,
 					     width))
@@ -218,8 +218,9 @@ int main(int argc, char **argv)
 		ajStrDel(&n);
 		continue;
 	    }
-	    ajDebug("++ %S v %S end1: %d start1: %d\n",
-		    ajSeqGetName(a), ajSeqGetName(b), end1, start1);
+	    ajDebug("++ %S v %S start:%d %d end:%d %d\n",
+		    ajSeqGetName(a), ajSeqGetName(b),
+		    start1, start2, end1, end2);
 
 	    if(end1-start1 > oldmax)
 	    {
@@ -286,10 +287,18 @@ int main(int argc, char **argv)
 
     }
 
+    AJFREE(path);
+    AJFREE(compass);
+
     ajAlignClose(align);
     ajAlignDel(&align);
+    ajSeqallDel(&seq1);
+    ajSeqDel(&a);
+    ajSeqsetDel(&seq2);
+    ajFileClose(&outf);
+    ajFileClose(&errorf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }
@@ -435,7 +444,7 @@ static void supermatcher_findmax(void **x,void *cl)
 **
 ** Undocumented.
 **
-** @param [w] seq1MatchTable [AjPTable*] match table
+** @param [w] seq1MatchTable [AjPTable] match table
 ** @param [r] b [const AjPSeq] second sequence
 ** @param [r] a [const AjPSeq] first sequence
 ** @param [w] start1 [ajint*] start in sequence 1
@@ -447,7 +456,7 @@ static void supermatcher_findmax(void **x,void *cl)
 ** @@
 ******************************************************************************/
 
-static ajint supermatcher_findstartpoints(AjPTable *seq1MatchTable,
+static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
 					  const AjPSeq b,
 					  const AjPSeq a, ajint *start1,
 					  ajint *start2, ajint *end1,

@@ -85,13 +85,12 @@ typedef struct SValue
 
 int main(int argc, char **argv)
 {
-
     ajint begin, end;
     AjPSeqall seqall;
     AjPSeq seq;
     EmbPShow ss;
     AjPFile outfile;
-    AjPStr * tablelist;
+    AjPStr tablename;
     ajint table;
     AjPRange uppercase;
     AjPRange highlight;
@@ -143,7 +142,7 @@ int main(int argc, char **argv)
 
     seqall      = ajAcdGetSeqall("sequence");
     outfile     = ajAcdGetOutfile("outfile");
-    tablelist   = ajAcdGetList("table");
+    tablename   = ajAcdGetListSingle("table");
     uppercase   = ajAcdGetRange("uppercase");
     highlight   = ajAcdGetRange("highlight");
     threeletter = ajAcdGetBool("threeletter");
@@ -179,7 +178,7 @@ int main(int argc, char **argv)
 	ajFatal("Blunt/Sticky end cutters shouldn't both be disabled.");
 
     /* get the number of the genetic code used */
-    ajStrToInt(tablelist[0], &table);
+    ajStrToInt(tablename, &table);
     trnTable = ajTrnNewI(table);
 
     /* read the local file of enzymes names */
@@ -364,7 +363,17 @@ int main(int argc, char **argv)
 
     ajTrnDel(&trnTable);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajFileClose(&outfile);
+    ajStrDel(&tablename);
+    ajStrDel(&enzymes);
+    ajStrDelarray(&framelist);
+
+    ajRangeDel(&uppercase);
+    ajRangeDel(&highlight);
+
+    embExit();
 
     return 0;
 }

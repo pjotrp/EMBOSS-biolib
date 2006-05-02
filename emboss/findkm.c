@@ -283,6 +283,10 @@ int main(int argc, char **argv)
     AJFREE(V);
 
     ajFileClose(&infile);
+    ajFileClose(&outfile);
+
+    ajGraphxyDel(&graphLB);
+    ajStrDel(&line);
 
     ajExit();
 

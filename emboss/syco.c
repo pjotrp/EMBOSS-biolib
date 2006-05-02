@@ -65,9 +65,9 @@ int main(int argc, char **argv)
     };
 
 
-    float *xarr[3];
-    float *farr[3];
-    ajint *unc[3];
+    float *xarr[3] = {NULL, NULL, NULL};
+    float *farr[3] = {NULL, NULL, NULL};
+    ajint *unc[3]  = {NULL, NULL, NULL};
 
     float sum;
 
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     else
     {
 	ajFmtPrintF(outf,"Insufficient data points\n");
-	ajExit();
+	ajExitBad();
 	return 0;
     }
     
@@ -259,8 +259,17 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
     ajCodDel(&codon);
     ajCodDel(&cdup);
-    
-    ajExit();
+    ajSeqDel(&a);
+    ajStrDel(&tmp);
+    ajGraphxyDel(&graph);
+    for(i=0;i<3;i++)
+    {
+	AJFREE(farr[i]);
+	AJFREE(unc[i]);
+	AJFREE(xarr[i]);
+    }
+
+    embExit();
 
     return 0;
 }

@@ -111,7 +111,7 @@ int main(int argc, char **argv)
 
     embInit("dbxflat", argc, argv);
 
-    dbtype     = ajAcdGetListI("idformat",1);
+    dbtype     = ajAcdGetListSingle("idformat");
     fieldarray = ajAcdGetList("fields");
     directory  = ajAcdGetDirectoryName("directory");
     indexdir   = ajAcdGetOutdirName("indexoutdir");

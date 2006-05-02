@@ -49,28 +49,28 @@ typedef struct AjSIntarr
 
 
 
-/* @datastatic AjPFltarr ******************************************************
+/* @datastatic IsochorePFltarr ************************************************
 **
 ** Integer array
 **
-** @alias AjSFltarr
-** @alias AjPFltarr
+** @alias IsochoreSFltarr
+** @alias IsochorePFltarr
 **
 ** @attr Size [ajint] Size
 ** @attr Array [float*] Float array
 ******************************************************************************/
 
-typedef struct AjSFltarr
+typedef struct IsochoreSFltarr
 {
     ajint Size;
     float* Array;
-} AjOFltarr;
-#define AjPFltarr AjOFltarr*
+} IsochoreOFltarr;
+#define IsochorePFltarr IsochoreOFltarr*
 
 
 
-
-static AjPFltarr isochore_FltarrNew0(size_t size);
+static void isochore_FltarrDel(IsochorePFltarr *parr);
+static IsochorePFltarr isochore_FltarrNew0(size_t size);
 
 
 
@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 {
     AjPSeq seq;
     AjPFile out;
-    AjPFltarr results;
+    IsochorePFltarr results;
 
     AjPGraph plot;
     AjPGraphPlpData graphdata;
@@ -225,7 +225,11 @@ int main(int argc, char **argv)
      **
      */
 
-    ajExit();
+    ajSeqDel(&seq);
+    ajFileClose(&out);
+    ajGraphxyDel(&plot);
+    isochore_FltarrDel(&results);
+    embExit();
 
     return 0;
 }
@@ -239,17 +243,38 @@ int main(int argc, char **argv)
 ** Undocumented.
 **
 ** @param [r] size [size_t] Undocumented
-** @return [AjPFltarr] Undocumented
+** @return [IsochorePFltarr] Undocumented
 ** @@
 ******************************************************************************/
 
-static AjPFltarr isochore_FltarrNew0(size_t size)
+static IsochorePFltarr isochore_FltarrNew0(size_t size)
 {
-    AjPFltarr ret;
+    IsochorePFltarr ret;
 
     AJNEW(ret);
     ret->Size = size;
     AJCNEW(ret->Array,size);
 
     return ret;
+}
+
+
+
+
+/* @funcstatic isochore_FltarrNew0 ********************************************
+**
+** Undocumented.
+**
+** @param [d] parr [IsochorePFltarr*] Undocumented
+** @return [void]
+** @@
+******************************************************************************/
+
+static void isochore_FltarrDel(IsochorePFltarr *parr)
+{
+    if(!*parr) return;
+    AJFREE((*parr)->Array);
+    AJFREE(*parr);
+
+    return;
 }

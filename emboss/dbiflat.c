@@ -1,3 +1,4 @@
+
 /* @source dbiflat application
 **
 ** Index flatfile databases
@@ -186,7 +187,6 @@ int main(int argc, char **argv)
     AjPStr filename;
     AjPStr exclude;
     AjPStr curfilename = NULL;
-
     AjPFile libr = NULL;
     AjPStr idformat = NULL;
 
@@ -317,6 +317,7 @@ int main(int argc, char **argv)
 	    if(!systemsort)	    /* save the entry data in lists */
 	    {
 		embDbiMemEntry(idlist, fieldList, nfields, entry, ifile);
+		entry = NULL;
 	    }
 	}
 	idCount += idCountFile;
@@ -381,7 +382,9 @@ int main(int argc, char **argv)
 		   nfields, nfiles, idDone, idCount);
 
     if(systemsort)
+    {
 	embDbiRmEntryFile(dbname, cleanup);
+    }
 
     ajListDel(&listInputFiles);
 
@@ -451,10 +454,7 @@ int main(int argc, char **argv)
     ajRegFree(&regRefseqVer);
     ajRegFree(&regRefseqEnd);
 
-    if(systemsort)
-    {
-	embDbiEntryDel(&dbiflatEntry);
-    }
+    embDbiEntryDel(&dbiflatEntry);
 
     ajStrDel(&rline);
     ajStrDel(&tmpfd);
@@ -559,7 +559,7 @@ static EmbPEntry dbiflat_NextFlatEntry(AjPFile libr, ajint ifile,
 	dbiflatEntry->spos    = is;
 	dbiflatEntry->filenum = ifile+1;
 
-	/* field tokens as list, then move to ret->field */
+	/* field tokens as list, then move to dbiflatEntry->field */
 	for(ifield=0; ifield < nfields; ifield++)
 	{
 	    dbiflatEntry->nfield[ifield] = ajListLength(fdl[ifield]);
@@ -772,6 +772,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 			    ajFmtPrintF(alistfile[accfield],
 					"%S %S\n", *id, tmpac);
 			}
+			ajStrDel(&tmpac);
 		    }
 		    else
 		    {
@@ -783,7 +784,10 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 			    fd = ajCharNewS(tmpac);
 			    ajListPushApp(fdl[accfield], fd);
 			}
+			ajStrDel(&tmpac);
 		    }
+		    ajStrDel(&format);
+		    ajStrDel(&prefix);
 		}
 		else {
 		    embDbiMaxlen(&tmpfd, &maxFieldLen[accfield]);

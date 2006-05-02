@@ -194,6 +194,7 @@ int main(int argc, char **argv)
 	ajErr("Error reading angle file");
 
     ajFileClose(&file);
+    ajStrDel(&buffer);
 
 
     for(i=1;i<ajStrGetLen(sstr)-1;i++)

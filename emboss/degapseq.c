@@ -1,3 +1,4 @@
+
 /* @source degapseq application
 **
 ** Remove gaps from sequences
@@ -57,6 +58,10 @@ int main(int argc, char **argv)
     }
 
     ajSeqWriteClose(seqout);
+
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
 
     ajExit();
     return 0;

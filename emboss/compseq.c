@@ -58,7 +58,6 @@ int main(int argc, char **argv)
     AjPFile infile;
     AjBool reverse;
     AjBool calcfreq;
-    AjPStr ajb=NULL;
 
     ajint pos;
     const char *s;
@@ -70,6 +69,7 @@ int main(int argc, char **argv)
     AjBool first_time_round = ajTrue;
     ajulong count;
     AjPStr dispseq = NULL;
+    AjPStr tmpstr = NULL;		/* from table, no need to delete */
 
     ajulong total = 0;		/* no. of words counted */
     ajulong calcfreq_total = 0; /* no. of single bases/residues counted */
@@ -141,7 +141,9 @@ int main(int argc, char **argv)
 		    "from the file: %s\n",ajFileName(infile));
 	compseq_readexpfreq(&exptable, infile, word);
 	have_exp_freq = ajTrue;
+	ajFileClose(&infile);
     }
+
     ajFmtPrintF(outfile, "#\n");
     ajFmtPrintF(outfile, "# The input sequences are:\n");
     
@@ -315,8 +317,11 @@ int main(int argc, char **argv)
 
 	if(have_exp_freq)
 	{
-	    if((ajb=ajTableGet(exptable,dispseq)))
-		ajStrToDouble(ajb, &exp_freq);
+	    if((tmpstr=ajTableGet(exptable,dispseq)))
+	    {
+		ajStrToDouble(tmpstr, &exp_freq);
+		tmpstr = NULL;
+	    }
 	}
 	else
 	{
@@ -396,13 +401,16 @@ int main(int argc, char **argv)
 		obs_freq, exp_freq, obs_exp);
     
     ajFileClose(&outfile);
-    
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
 
     AJFREE(bigarray);
-    
+    ajStrDel(&dispseq);
+
     if(have_exp_freq)
 	ajTableFree(&exptable);
-    
+ 
+
     ajExit();
 
     return 0;

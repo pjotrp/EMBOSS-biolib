@@ -53,7 +53,7 @@ int main(int argc, char **argv)
     AjBool unfavoured;
     AjBool overlap;
     AjBool allpartials;
-    AjPStr *menu;
+    AjPStr menu;
     ajint  n;
 
     AjPFile  outf = NULL;
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
     embInit("digest", argc, argv);
 
     a           = ajAcdGetSeq("sequence");
-    menu        = ajAcdGetList("menu");
+    menu        = ajAcdGetListSingle("menu");
     unfavoured  = ajAcdGetBool("unfavoured");
     overlap     = ajAcdGetBool("overlap");
     allpartials = ajAcdGetBool("allpartials");
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 
     /* outf      = ajAcdGetOutfile("originalfile"); */
 
-    sscanf(ajStrGetPtr(*menu),"%d",&n);
+    ajStrToInt(menu, &n);
     --n;
 
     substr = ajStrNew();
@@ -168,7 +168,8 @@ int main(int argc, char **argv)
 	ajFeattableClear(TabRpt);
     }
     
-    
+    ajReportDel(&report);
+
     ajFeattableDel(&TabRpt);
     
     ajSeqDel(&a);
@@ -176,12 +177,15 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajListDel(&pa);
     ajListDel(&l);
-    
+    ajStrDel(&menu);
+
     if(outf)
 	ajFileClose(&outf);
     ajFileClose(&mfptr);
-    
-    ajExit();
+
+    ajStrDel(&tmpStr);
+
+    embExit();
 
     return 0;
 }
@@ -264,7 +268,7 @@ static void digest_report_hits(AjPReport report, const AjPSeq seq,
     EmbPPropFrag fr;
     AjPStr t;
     ajint len;
-    static AjPStr tmpStr = NULL;
+    AjPStr tmpStr = NULL;
 
     t   = ajStrNew();
     len = strlen(s);
@@ -291,6 +295,7 @@ static void digest_report_hits(AjPReport report, const AjPSeq seq,
     }
 
     ajStrDel(&t);
+    ajStrDel(&tmpStr);
 
     return;
 }

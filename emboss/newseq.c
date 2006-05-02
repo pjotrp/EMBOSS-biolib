@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     AjPStr name = NULL;
     AjPStr desc = NULL;
     AjPStr sequence = NULL;
-    AjPStr *type;
+    AjPStr type;
 
     embInit("newseq", argc, argv);
 
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     name     = ajAcdGetString("name");
     desc     = ajAcdGetString("description");
     sequence = ajAcdGetString("sequence");
-    type     = ajAcdGetList("type");
+    type     = ajAcdGetListSingle("type");
 
     /* initialise the sequence */
     seq = ajSeqNewL(ajStrGetLen(sequence));
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     ajSeqAssName(seq, name);
     ajSeqAssDesc(seq, desc);
 
-    if(!ajStrCmpC(type[0], "N"))
+    if(!ajStrCmpC(type, "N"))
 	ajSeqSetNuc(seq);
     else
 	ajSeqSetProt(seq);
@@ -65,6 +65,13 @@ int main(int argc, char **argv)
 
     ajSeqWrite(seqout, seq);
     ajSeqWriteClose(seqout);
+
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&name);
+    ajStrDel(&desc);
+    ajStrDel(&type);
+    ajStrDel(&sequence);
 
     ajExit();
 

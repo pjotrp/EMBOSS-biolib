@@ -45,7 +45,7 @@ int main(int argc, char **argv)
     AjPSeq seq2;
     AjPSeqout seqout;
     ajint wordlen;
-    AjPTable seq1MatchTable = 0;
+    AjPTable seq1MatchTable = NULL;
     AjPList matchlist = NULL;
     AjPFile outfile;
     AjBool prefer;
@@ -66,13 +66,13 @@ int main(int argc, char **argv)
     embWordLength(wordlen);
     if(embWordGetTable(&seq1MatchTable, seq1))
 	/* get table of words */
-	matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2, ajTrue);
+	matchlist = embWordBuildMatchTable(seq1MatchTable, seq2, ajTrue);
     else
 	ajFatal("No match found\n");
 
 
     /* get the minimal set of overlapping matches */
-    embWordMatchMin(matchlist, ajSeqLen(seq1), ajSeqLen(seq2));
+       embWordMatchMin(matchlist, ajSeqLen(seq1), ajSeqLen(seq2));
 
     if(ajListLength(matchlist))
     {
@@ -80,14 +80,19 @@ int main(int argc, char **argv)
 	megamerger_Merge(matchlist, seq1, seq2, seqout, outfile, prefer);
 
 	/* tidy up */
-	embWordMatchListDelete(&matchlist); /* free the match structures */
     }
 
+    embWordMatchListDelete(&matchlist); /* free the match structures */
+    embWordFreeTable(&seq1MatchTable);
 
     ajSeqWriteClose(seqout);
     ajFileClose(&outfile);
 
-    ajExit();
+    ajSeqDel(&seq1);
+    ajSeqDel(&seq2);
+    ajSeqoutDel(&seqout);
+
+    embExit();
 
     return 0;
 }

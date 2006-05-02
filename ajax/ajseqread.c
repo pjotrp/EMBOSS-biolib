@@ -45,6 +45,9 @@ static AjPRegexp seqRegGcgLen = NULL;
 static AjPRegexp seqRegGcgTyp = NULL;
 static AjPRegexp seqRegGcgNam = NULL;
 static AjPRegexp seqRegGcgMsf = NULL;
+static AjPRegexp seqRegGcgMsflen = NULL;
+static AjPRegexp seqRegGcgMsfnam = NULL;
+static AjPRegexp seqRegGcgWgt = NULL;
 
 static AjBool seqInFormatSet = AJFALSE;
 
@@ -222,6 +225,7 @@ static AjBool     seqFindInFormat(const AjPStr format, ajint *iformat);
 static AjBool     seqFormatSet(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqGcgDots(AjPSeq thys, const AjPSeqin seqin,
 			     AjPStr* pline, ajint maxlines, ajint *len);
+static void       seqGcgRegInit(void);
 static AjBool     seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin,
 				AjPStr* pline,
 				ajint maxlines, ajint *len);
@@ -929,6 +933,7 @@ AjBool ajSeqallNext(AjPSeqall seqall, AjPSeq* retseq)
 	*/
 
 	*retseq = seqall->Seq;
+	seqall->Returned = ajTrue;
 	return ajTrue;
     }
 
@@ -939,6 +944,7 @@ AjBool ajSeqallNext(AjPSeqall seqall, AjPSeq* retseq)
 	ajSeqSetRange(seqall->Seq, seqall->Begin, seqall->End);
 
 	*retseq = seqall->Seq;
+	seqall->Returned = ajTrue;
 
 	ajDebug("ajSeqallNext success\n");
 	return ajTrue;
@@ -5217,8 +5223,8 @@ static AjBool seqReadCodata(AjPSeq thys, AjPSeqin seqin)
 
 static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
 {
-    static AjPStrTok handle = NULL;
-    static AjPStr token     = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr token     = NULL;
     ajint bufflines         = 0;
     AjPFileBuff buff;
     AjBool ok = ajTrue;
@@ -5261,6 +5267,8 @@ static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
     {
 	ajDebug("unknown - failed\n");
 	ajFileBuffReset(buff);
+	ajStrTokenDel(&handle);
+	ajStrDel(&token);
 	return ajFalse;
     }
 
@@ -5268,6 +5276,8 @@ static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
     if(!ajStrMatchC(token, ":"))
     {
 	ajFileBuffReset(buff);
+	ajStrTokenDel(&handle);
+	ajStrDel(&token);
 	return ajFalse;
     }
 
@@ -5275,6 +5285,8 @@ static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
     if(!ajStrGetLen(token))
     {
 	ajFileBuffReset(buff);
+	ajStrTokenDel(&handle);
+	ajStrDel(&token);
 	return ajFalse;
     }
 
@@ -5294,7 +5306,8 @@ static AjBool seqReadAcedb(AjPSeq thys, AjPSeqin seqin)
 
     ajFileBuffClear(buff, 0);
 
-    ajStrTokenReset(&handle);
+    ajStrTokenDel(&handle);
+    ajStrDel(&token);
 
     return ajTrue;
 }
@@ -5630,28 +5643,33 @@ static AjBool seqReadMsf(AjPSeq thys, AjPSeqin seqin)
 
 static AjBool seqGcgMsfReadseq(const AjPStr rdline, const AjPTable msftable)
 {
-    static AjPRegexp seqexp = NULL;
     SeqPMsfItem msfitem;
-    static AjPStr token     = NULL;
-    static AjPStr seqstr    = NULL;
+    AjPStr token     = NULL;
+    AjPStr seqstr    = NULL;
+    AjBool status;
 
-
-    if(!seqexp)
-	seqexp = ajRegCompC("[^ \t\n\r]+");
-
-    if(!ajRegExec(seqexp, rdline))
+    status = ajStrExtractWord(rdline, &seqstr, &token);
+    if(!status)
+    {
+	ajStrDel(&token);
+	ajStrDel(&seqstr);
 	return ajFalse;
+    }
 
-    ajRegSubI(seqexp, 0, &token);
+    ajDebug("seqGcgMsfReadseq '%S' '%S'\n", token, seqstr);
+
     msfitem = ajTableGet(msftable, token);
     if(!msfitem)
     {
 	ajStrDel(&token);
+	ajStrDel(&seqstr);
 	return ajFalse;
     }
 
-    ajRegPost(seqexp, &seqstr);
     seqAppend(&msfitem->Seq, seqstr);
+
+    ajStrDel(&token);
+    ajStrDel(&seqstr);
 
     return ajTrue;
 }
@@ -6429,13 +6447,13 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
 
 static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 {
-    static AjPStrTok handle = NULL;
-    static AjPStr token     = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr token     = NULL;
     ajint bufflines         = 0;
     AjBool ok;
     AjBool done = ajFalse;
     AjPFileBuff buff;
-    static AjPStr tmpstr = NULL;
+    AjPStr tmpstr = NULL;
     AjBool dofeat        = ajFalse;
     AjPSeqQuery qry;
     AjPStr liststr;			/* for lists, do not delete */
@@ -6681,9 +6699,11 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	ajDebug("sequence start at '%S'\n", seqReadLine);
 	while(!ajStrPrefixC(seqReadLine,"ORIGIN") &&
 	      !ajStrPrefixC(seqReadLine,"BASE COUNT"))
-	    if(!ajFileBuffGetStore(buff,&seqReadLine, seqin->Text, &thys->TextPtr))
+	    if(!ajFileBuffGetStore(buff,&seqReadLine,
+				   seqin->Text, &thys->TextPtr))
 		break;
-	ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
 	while(ok && !ajStrPrefixC(seqReadLine, "//"))
 	{
 	    if(!ajStrPrefixC(seqReadLine, "ORIGIN") &&
@@ -6697,12 +6717,15 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 
     if(!ajStrMatchC(qry->Method,"gcg"))
 	while(ok && !ajStrPrefixC(seqReadLine,"//"))
-	    ok = ajFileBuffGetStore(buff,&seqReadLine, seqin->Text, &thys->TextPtr);
+	    ok = ajFileBuffGetStore(buff,&seqReadLine,
+				    seqin->Text, &thys->TextPtr);
 
 
     ajFileBuffClear(buff, 0);
 
-    ajStrTokenReset(&handle);
+    ajStrTokenDel(&handle);
+    ajStrDel(&token);
+    ajStrDel(&tmpstr);
 
     return ajTrue;
 }
@@ -7232,8 +7255,45 @@ static ajint seqAppendCommented(AjPStr* pseq, AjBool* incomment,
     return ret;
 }
 
+/* @funcstatic seqGcgRegInit **************************************************
+**
+** Initialises regular expressions for GCG and MSF format parsing
+**
+**
+** @return [void]
+******************************************************************************/
 
+static void seqGcgRegInit(void)
+{
+    if(!seqRegGcgDot)
+	seqRegGcgDot = ajRegCompC("[.][.]");
 
+    if(!seqRegGcgChk)
+	seqRegGcgChk = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]*([0-9]+)");
+
+    if(!seqRegGcgLen)
+	seqRegGcgLen = ajRegCompC("[Ll][Ee][Nn][Gg][Tt][Hh]:[ \t]*([0-9]+)");
+
+    if(!seqRegGcgTyp)
+	seqRegGcgTyp = ajRegCompC("[Tt][Yy][Pp][Ee]:[ \t]*([NP])");
+
+    if(!seqRegGcgNam)
+	seqRegGcgNam = ajRegCompC("[^ \t>]+");
+
+    if(!seqRegGcgMsf)
+	seqRegGcgMsf = ajRegCompC("[Mm][Ss][Ff]:[ \t]*([0-9]+)");
+
+    if(!seqRegGcgMsflen)
+	seqRegGcgMsflen = ajRegCompC("[Ll][Ee][Nn]:[ \t]*([0-9]+)");
+
+    if(!seqRegGcgWgt)
+	seqRegGcgWgt = ajRegCompC("[Ww][Ee][Ii][Gg][Hh][Tt]:[ \t]*([0-9.]+)");
+
+    if(!seqRegGcgMsfnam)
+	seqRegGcgMsfnam = ajRegCompC("[Nn][Aa][Mm][Ee]:[ \t]*([^ \t]+)");
+
+    return;
+}
 
 /* @funcstatic seqGcgDots *****************************************************
 **
@@ -7268,15 +7328,7 @@ static AjBool seqGcgDots(AjPSeq thys, const  AjPSeqin seqin,
 
     buff = seqin->Filebuff;
 
-    if(!seqRegGcgDot)
-    {
-	seqRegGcgDot = ajRegCompC("[.][.]");
-	seqRegGcgChk = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]*([0-9]+)");
-	seqRegGcgLen = ajRegCompC("[Ll][Ee][Nn][Gg][Tt][Hh]:[ \t]*([0-9]+)");
-	seqRegGcgTyp = ajRegCompC("[Tt][Yy][Pp][Ee]:[ \t]*([NP])");
-	seqRegGcgNam = ajRegCompC("[^ \t>]+");
-	seqRegGcgMsf = ajRegCompC("[Mm][Ss][Ff]:[ \t]*([0-9]+)");
-    }
+    seqGcgRegInit();
 
     while(nlines < maxlines)
     {
@@ -7322,6 +7374,7 @@ static AjBool seqGcgDots(AjPSeq thys, const  AjPSeqin seqin,
 	    ajDebug("   type '%S'\n", thys->Type);
 	}
 
+	ajStrDel(&token);
 	return ajTrue;
     }
 
@@ -7355,30 +7408,17 @@ static AjBool seqGcgDots(AjPSeq thys, const  AjPSeqin seqin,
 static AjBool seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
 			    ajint maxlines, ajint* len)
 {
-    static AjPStr token = NULL;
+    AjPStr token = NULL;
     ajint check  = 0;
     ajint nlines = 0;
 
     AjPFileBuff buff;
 
-    static AjPRegexp dotexp = NULL;
-    static AjPRegexp chkexp = NULL;
-    static AjPRegexp lenexp = NULL;
-    static AjPRegexp typexp = NULL;
-    static AjPRegexp namexp = NULL;
-
     buff = seqin->Filebuff;
 
-    if(!dotexp)
-    {
-	dotexp = ajRegCompC("[.][.]");
-	chkexp = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]+([0-9]+)");
-	lenexp = ajRegCompC("[Mm][Ss][Ff]:[ \t]*([0-9]+)");
-	typexp = ajRegCompC("[Tt][Yy][Pp][Ee]:[ \t]+([NP])");
-	namexp = ajRegCompC("[^ \t]+");
-    }
-
     ajDebug("seqGcgMsfDots maxlines: %d\nline: '%S'\n", maxlines,*pline);
+
+    seqGcgRegInit();
 
     while(nlines < maxlines)
     {
@@ -7391,29 +7431,33 @@ static AjBool seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
 	if(nlines > maxlines)
 	    return ajFalse;
 
-	if(!ajRegExec(dotexp, *pline))
+	if(!ajRegExec(seqRegGcgDot, *pline))
 	    continue;
 
 	/* dots found. This must be the line if this is MSF format */
 
-	if(!ajRegExec(chkexp, *pline))	/* check: is required */
+	if(!ajRegExec(seqRegGcgChk, *pline))	/* check: is required */
 	    return ajFalse;
 
-	if(!ajRegExec(lenexp, *pline)) /* MSF: len is required for GCG*/
+	if(!ajRegExec(seqRegGcgMsf, *pline)) /* MSF: len required for GCG*/
 	    return ajFalse;
 
 
-	ajRegSubI(lenexp, 1, &token);
+	ajRegSubI(seqRegGcgMsf, 1, &token);
 	ajStrToInt(token, len);
 
-	ajRegSubI(chkexp, 1, &token);
+	ajRegSubI(seqRegGcgChk, 1, &token);
 	ajStrToInt(token, &check);
 
-	if(ajRegExec(namexp, *pline))
-	    ajRegSubI(namexp, 0, &thys->Name);
+	if(ajRegExec(seqRegGcgNam, *pline))
+	    ajRegSubI(seqRegGcgNam, 0, &thys->Name);
 
-	if(ajRegExec(typexp, *pline))
-	    ajRegSubI(typexp, 1, &thys->Type);
+	if(ajRegExec(seqRegGcgTyp, *pline))
+	    ajRegSubI(seqRegGcgTyp, 1, &thys->Type);
+
+	ajStrDel(&token);
+	ajDebug("seqGcgMsfDots '%S' '%S' len: %d check: %d\n",
+		thys->Name, thys->Type, *len, check);
 
 	return ajTrue;
     }
@@ -7441,32 +7485,18 @@ static AjBool seqGcgMsfDots(AjPSeq thys, const AjPSeqin seqin, AjPStr* pline,
 static AjBool seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* pmsfitem)
 {
     AjPStr name         = NULL;	/* NOTE: not static. New each time for list */
-    /* Hurrah! */
-    static AjPStr token = NULL;
+    AjPStr token = NULL;
     SeqPMsfItem msfitem = NULL;
-
-    static AjPRegexp chkexp = NULL;
-    static AjPRegexp lenexp = NULL;
-    static AjPRegexp wgtexp = NULL;
-    static AjPRegexp namexp = NULL;
-
-    if(!chkexp)
-    {
-	chkexp = ajRegCompC("[Cc][Hh][Ee][Cc][Kk]:[ \t]*([0-9]+)");
-	lenexp = ajRegCompC("[Ll][Ee][Nn][Gg]?[Tt]?[Hh]?:[ \t]*([0-9]+)");
-	wgtexp = ajRegCompC("[Ww][Ee][Ii][Gg][Hh][Tt]:[ \t]*([0-9.]+)");
-	namexp = ajRegCompC("[Nn][Aa][Mm][Ee]:[ \t]*([^ \t]+)");
-    }
 
     ajDebug("seqGcgMsfHeader '%S'\n", line);
 
-    if(!ajRegExec(namexp, line))
+    if(!ajRegExec(seqRegGcgMsfnam, line))
 	return ajFalse;
 
-    ajRegSubI(namexp, 1, &name);
+    ajRegSubI(seqRegGcgMsfnam, 1, &name);
     /*ajDebug("Name found\n");*/
 
-    if(!ajRegExec(chkexp, line))
+    if(!ajRegExec(seqRegGcgChk, line))
 	return ajFalse;
 
     /*ajDebug("Check found\n");*/
@@ -7474,12 +7504,12 @@ static AjBool seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* pmsfitem)
     *pmsfitem = AJNEW0(msfitem);
     msfitem->Name = name;
 
-    ajRegSubI(chkexp, 1, &token);
+    ajRegSubI(seqRegGcgChk, 1, &token);
     ajStrToInt(token, &msfitem->Check);
 
-    if(ajRegExec(lenexp, line))
+    if(ajRegExec(seqRegGcgMsflen, line))
     {
-	ajRegSubI(lenexp, 1, &token);
+	ajRegSubI(seqRegGcgMsflen, 1, &token);
 	ajStrToInt(token, &msfitem->Len);
     }
     else
@@ -7487,9 +7517,9 @@ static AjBool seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* pmsfitem)
 
     msfitem->Seq = ajStrNewRes(msfitem->Len+1);
 
-    if(ajRegExec(wgtexp, line))
+    if(ajRegExec(seqRegGcgWgt, line))
     {
-	ajRegSubI(wgtexp, 1, &token);
+	ajRegSubI(seqRegGcgWgt, 1, &token);
 	ajStrToFloat(token, &msfitem->Weight);
     }
     else
@@ -7497,6 +7527,8 @@ static AjBool seqGcgMsfHeader(const AjPStr line, SeqPMsfItem* pmsfitem)
 
     ajDebug("MSF header name '%S' check %d len %d weight %.3f\n",
 	    msfitem->Name, msfitem->Check, msfitem->Len, msfitem->Weight);
+
+    ajStrDel(&token);
 
     return ajTrue;
 }
@@ -8476,7 +8508,7 @@ void ajSeqQueryDel(AjPSeqQuery* pthis)
     if(thys->QryData)
     {
 	if(thys->Access->AccessFree)
-	    thys->Access->AccessFree(thys->QryData);
+	    thys->Access->AccessFree(thys);
 
 	AJFREE(thys->QryData);
     }
@@ -9523,7 +9555,6 @@ AjBool ajSeqGetFromUsa(const AjPStr thys, AjBool protein, AjPSeq *seq)
     AjPSeqin seqin;
     AjBool ok;
 
-
     seqin        = ajSeqinNew();
     seqin->multi = ajFalse;
     seqin->Text  = ajFalse;
@@ -9536,7 +9567,6 @@ AjBool ajSeqGetFromUsa(const AjPStr thys, AjBool protein, AjPSeq *seq)
     ajSeqinUsa(&seqin, thys);
     ok = ajSeqRead(*seq, seqin);
     ajSeqinDel(&seqin);
-
 
     if(!ok)
 	return ajFalse;
@@ -9645,6 +9675,9 @@ void ajSeqReadExit(void)
     ajRegFree(&seqRegGcgNam);
     ajRegFree(&seqRegGcgTyp);
     ajRegFree(&seqRegGcgMsf);
+    ajRegFree(&seqRegGcgMsflen);
+    ajRegFree(&seqRegGcgMsfnam);
+    ajRegFree(&seqRegGcgWgt);
     ajRegFree(&seqRegNbrfId);
     ajRegFree(&seqRegStadenId);
     ajRegFree(&seqRegHennigBlank);
@@ -9655,6 +9688,10 @@ void ajSeqReadExit(void)
     ajRegFree(&seqRegStockholmSeq);
     ajRegFree(&seqRegAbiDots);
     ajRegFree(&seqRegRawNonseq);
+    ajRegFree(&seqRegPhylipTop);
+    ajRegFree(&seqRegPhylipHead);
+    ajRegFree(&seqRegPhylipSeq);
+    ajRegFree(&seqRegPhylipSeq2);
 
     /* sequence reading strings */
     ajStrDel(&seqFtFmtEmbl);

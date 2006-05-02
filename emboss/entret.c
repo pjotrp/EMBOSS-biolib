@@ -52,6 +52,8 @@ int main(int argc, char **argv)
     }
 
     ajFileClose(&outf);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
 
     ajExit();
     return 0;

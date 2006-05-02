@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 		    seq2 = ajSeqsetGetSeq(seqset,j);
 		    if(ajSeqLen(seq2) > statwordlen)
 		    {
-			matchlist = embWordBuildMatchTable(&seq1MatchTable,
+			matchlist = embWordBuildMatchTable(seq1MatchTable,
 							   seq2, ajTrue);
 			if (ajListLength(matchlist))
 			{
@@ -96,8 +96,10 @@ int main(int argc, char **argv)
     }
 
     ajAlignClose(align);
+    ajAlignDel(&align);
+    ajSeqsetDel(&seqset);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

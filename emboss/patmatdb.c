@@ -142,7 +142,12 @@ int main(int argc, char **argv)
     ajReportClose(report);
     ajReportDel(&report);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDel(&fthit);
+    ajStrDel(&tmpstr);
+
+    embExit();
 
     return 0;
 }

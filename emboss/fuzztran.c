@@ -51,8 +51,7 @@ int main(int argc, char **argv)
 
     AjPList l;
 
-    AjPStr *lframe;
-    AjPStr *lgcode;
+    AjPStr gcode;
     AjPTrn trantable;
     AjPStr frame;
     ajint  table;
@@ -92,8 +91,8 @@ int main(int argc, char **argv)
     pattern  = ajAcdGetString("pattern");
     report   = ajAcdGetReport("outfile");
     mismatch = ajAcdGetInt("mismatch");
-    lgcode   = ajAcdGetList("table");
-    lframe   = ajAcdGetList("frame");
+    gcode    = ajAcdGetListSingle("table");
+    frame    = ajAcdGetListSingle("frame");
 
     ajFmtPrintAppS(&tmpstr, "Pattern: %S\n", pattern);
     ajFmtPrintAppS(&tmpstr, "Mismatch: %d\n", mismatch);
@@ -107,13 +106,12 @@ int main(int argc, char **argv)
     seqname  = ajStrNew();
     opattern = ajStrNew();
 
-    frame = lframe[0];
-    ajStrToInt(lgcode[0],&table);
+    ajStrToInt(gcode,&table);
 
     trantable = ajTrnNewI(table);
 
     plen = ajStrGetLen(pattern);
-    ajStrAssignC(&opattern,ajStrGetPtr(pattern));
+    ajStrAssignS(&opattern,pattern);
 
     if(!(type=embPatGetType(opattern,&pattern,mismatch,1,&m,&amino,&carboxyl)))
 	ajFatal("Illegal pattern");
@@ -268,6 +266,7 @@ int main(int argc, char **argv)
 	}
 
 	ajListDel(&l);
+	ajStrDel(&text);
     }
 
 
@@ -282,7 +281,14 @@ int main(int argc, char **argv)
     ajStrDel(&pro);
     ajStrDel(&text);
     ajStrDel(&pattern);
+    ajStrDel(&opattern);
     ajStrDel(&seqname);
+    ajStrDel(&tmpstr);
+
+    ajStrDel(&gcode);
+    ajStrDel(&frame);
+
+    ajSeqallDel(&seqall);
     ajSeqDel(&seq);
 
     ajReportClose(report);
@@ -327,9 +333,9 @@ static void fuzztran_save_hits(AjPList l, ajint hits, ajint fnum,
     ajint begin;
     ajint end;
     AjPFeature gf = NULL;
-    static AjPStr fthit;
-    static AjPStr s = NULL;
-    static AjPStr t = NULL;
+    AjPStr fthit = NULL;
+    AjPStr s = NULL;
+    AjPStr t = NULL;
 
     if(!fthit)
 	ajStrAssignC(&fthit, "hit");
@@ -406,6 +412,8 @@ static void fuzztran_save_hits(AjPList l, ajint hits, ajint fnum,
 
 
     ajStrDel(&s);
+    ajStrDel(&t);
+    ajStrDel(&fthit);
 
     return;
 }

@@ -42,9 +42,9 @@ static void maskfeat_StrToLower(AjPStr *str, ajint begin, ajint end);
 int main(int argc, char **argv)
 {
 
-    AjPSeqall seqall;
-    AjPSeq seq;
-    AjPSeqout seqout;
+    AjPSeqall seqall = NULL;
+    AjPSeq seq = NULL;
+    AjPSeqout seqout = NULL;
     AjPStr type;
     AjPStr maskchar;
     AjBool tolower;
@@ -67,7 +67,13 @@ int main(int argc, char **argv)
 
     ajSeqWriteClose(seqout);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&type);
+    ajStrDel(&maskchar);
+
+    embExit();
 
     return 0;
 }

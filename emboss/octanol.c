@@ -194,7 +194,20 @@ int main(int argc, char **argv)
 
     ajGraphxyDisplay(mult,AJTRUE);
 
-    ajExit();
+    ajFileClose(&datafile);
+    ajSeqDel(&seq);
+    ajGraphxyDel(&mult);
+
+    if(!interface)
+	ajGraphPlpDataDel(&graphdata);
+
+    if(!octanol)
+	ajGraphPlpDataDel(&graphdata2);
+
+    if(!difference)
+	ajGraphPlpDataDel(&graphdata3);
+
+    embExit();
 
     return 0;
 }

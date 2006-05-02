@@ -1857,12 +1857,12 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
     if(jlenb < 0)
 	jlenb = lenb-1;
 
-    ajDebug("embAlignPathCalcFast\n");
+    /* ajDebug("embAlignPathCalcFast\n"); */
 
-    ajDebug("lena: %d lenb: %d width: %d pathwidth: %d\n", lena, lenb,
-	    width, pathwidth);
-    ajDebug("a: '%10.10s .. %10.10s' %d\n", a, &a[jlena], lena);
-    ajDebug("b: '%10.10s .. %10.10s' %d\n", b, &b[jlenb], lenb);
+    /* ajDebug("lena: %d lenb: %d width: %d pathwidth: %d\n", lena, lenb,
+	    width, pathwidth); */
+    /* ajDebug("a: '%10.10s .. %10.10s' %d\n", a, &a[jlena], lena); */
+    /* ajDebug("b: '%10.10s .. %10.10s' %d\n", b, &b[jlenb], lenb); */
 
     /* Create stores for the maximum values in a row or column */
 
@@ -1874,8 +1874,8 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
     {
 	path[i*width] = sub[ajSeqCvtK(cvt,a[i])][ajSeqCvtK(cvt,b[0])];
 	compass[i*width] = 0;
-	ajDebug("CalcFast inita [%d] path: %.2f compass: %d\n",
-		i*width, path[i*width], compass[i*width]);
+	/* ajDebug("CalcFast inita [%d] path: %.2f compass: %d\n",
+		i*width, path[i*width], compass[i*width]); */
     }
 
     for(i=0;i<lena;++i)
@@ -1885,8 +1885,8 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
     {
 	path[j] = sub[ajSeqCvtK(cvt,a[0])][ajSeqCvtK(cvt,b[j])];
 	compass[j] = 0;
-	ajDebug("CalcFast initb [%d] path: %.2f compass: %d\n",
-		j, path[j], compass[j]);
+	/* ajDebug("CalcFast initb [%d] path: %.2f compass: %d\n",
+		j, path[j], compass[j]); */
     }
 
     for(j=width;j<lenb;++j)
@@ -1915,8 +1915,9 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
 	    /* Set compass to diagonal value 0 */
 	    compass[i*width+xpos] = 0;
 	    path[i*width+xpos] = mscore;
-	    ajDebug("CalcFast initc [%d] path: %.2f compass: %d\n",
-		    i*width+xpos, path[i*width+xpos], compass[i*width+xpos]);
+	    /* ajDebug("CalcFast initc [%d] path: %.2f compass: %d\n",
+		    i*width+xpos, path[i*width+xpos],
+		    compass[i*width+xpos]); */
 
 	    /* update the maximum against the previous point */
 	    if(xpos > 0)
@@ -1949,9 +1950,9 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
 		mscore = maxa[i-1]+match;
 		path[i*width+xpos] = mscore;
 		compass[i*width+xpos] = 1; /* Score comes from left */
-		ajDebug("CalcFast initd [%d] path: %.2f compass: %d\n",
+		/* ajDebug("CalcFast initd [%d] path: %.2f compass: %d\n",
 			i*width+xpos, path[i*width+xpos],
-			compass[i*width+xpos]);
+			compass[i*width+xpos]); */
 	    }
 
 
@@ -1961,9 +1962,9 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
 		mscore = maxb[i+xpos-1]+match;
 		path[i*width+xpos] = mscore;
 		compass[i*width+xpos] = 2; /* Score comes from bottom */
-		ajDebug("CalcFast inite [%d] path: %.2f compass: %d\n",
+		/* ajDebug("CalcFast inite [%d] path: %.2f compass: %d\n",
 			i*width+xpos, path[i*width+xpos],
-			compass[i*width+xpos]);
+			compass[i*width+xpos]); */
 	    }
 
 	    xpos++;
@@ -1984,7 +1985,7 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
 		if(path[i*width+j] > max)
 		    max = path[i*width+j];
 	    }
-	    ajDebug("%S\n", outstr);
+	    /* ajDebug("%S\n", outstr); */
 	}
     }
 
@@ -3393,7 +3394,13 @@ void embAlignReportLocal(AjPAlign align,
     ajint end2;
 */
 
-    ajDebug("embAlignReportLocal %d %d\n", start1, start2);
+    ajDebug("embAlignReportLocal start: %d %d offset: %d %d len:%d %d "
+	    "Offset:%d %d Offend:%d %d\n",
+	    start1, start2,
+	    offset1, offset2,
+	    ajStrGetLen(m), ajStrGetLen(n),
+	    ajSeqOffset(seqa), ajSeqOffset(seqb),
+	    ajSeqOffend(seqa), ajSeqOffend(seqb));
 /*
     res1   = ajSeqNew();
     res2   = ajSeqNew();

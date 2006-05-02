@@ -180,11 +180,18 @@ int main(int argc, char **argv)
     }
 
     ajReportWrite(report, tab, saveseq);
+    ajReportDel(&report);
+    ajFileClose(&outfile);
 
     ajFeattableDel(&tab);
+    ajSeqDel(&sequence);
+    ajSeqDel(&saveseq);
+    ajSeqCvtDel(&cvt);
 
     ajStrDel(&str);
     ajStrDel(&substr);
+    ajStrDel(&tseq);
+    ajStrDel(&tmpstr);
 
     ajExit();
 

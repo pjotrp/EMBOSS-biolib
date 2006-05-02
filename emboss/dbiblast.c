@@ -88,6 +88,9 @@ static AjPStr tmpac  = NULL;
 static AjPStr tmpsv  = NULL;
 static AjPStr tmpgi  = NULL;
 
+static EmbPEntry dbiblastEntry = NULL;
+static AjPList* fdl   = NULL;
+
 /* @datastatic PMemFile *******************************************************
 **
 ** DbiBlast in-memory file
@@ -620,6 +623,7 @@ int main(int argc, char **argv)
 	    ajListDel(&fieldList[i]);
 	}
     }
+    AJFREE(alistfile);
     ajStrDel(&version);
     ajStrDel(&seqtype);
     ajFileClose(&elistfile);
@@ -638,7 +642,6 @@ int main(int argc, char **argv)
     ajStrDel(&indexdir);
     ajStrDel(&filename);
     ajStrDel(&exclude);
-    ajStrDel(&curfilename);
     ajStrDel(&idformat);
     ajStrDel(&tmpfname);
 
@@ -646,7 +649,7 @@ int main(int argc, char **argv)
 
     ajFileClose(&logfile);
 
-    ajListDel(&listTestFiles);
+    ajListstrFree(&listTestFiles);
 
     ajStrDel(&t);
     ajStrDel(&id);
@@ -658,6 +661,25 @@ int main(int argc, char **argv)
     ajStrDel(&tmpac);
     ajStrDel(&tmpsv);
     ajRegFree(&wrdexp);
+
+    if(systemsort)
+    {
+	embDbiEntryDel(&dbiblastEntry);
+    }
+
+    if(fdl)
+    {
+        for(i=0; i < nfields; i++)
+            ajListFree(&fdl[i]);
+        AJFREE(fdl);
+    }
+
+    for(i=0;i<nfiles;i++)
+    {
+        ajStrDel(&divfiles[i]);
+    }
+    AJFREE(divfiles);
+    AJFREE(testFiles);
 
     embExit();
 
@@ -694,9 +716,7 @@ static EmbPEntry dbiblast_nextblastentry(PBlastDb db, ajint ifile,
 					 AjPFile elistfile,
 					 AjPFile * alistfile)
 {
-    static EmbPEntry ret = NULL;
     ajint i;
-    static AjPList* fdl   = NULL;
     static ajint lastfile = -1;
     static ajint iparser  = -1;
     static ajint called   = 0;
@@ -751,8 +771,8 @@ static EmbPEntry dbiblast_nextblastentry(PBlastDb db, ajint ifile,
 	iload = TABLESIZE-1;
     }
 
-    if(!ret || !systemsort)
-	ret = embDbiEntryNew(nfields);
+    if(!dbiblastEntry || !systemsort)
+	dbiblastEntry = embDbiEntryNew(nfields);
 
     /* pick up the next entry, parse it and dump it */
 
@@ -790,32 +810,33 @@ static EmbPEntry dbiblast_nextblastentry(PBlastDb db, ajint ifile,
 	ajFmtPrintF(elistfile, "%S %d %d %d\n", id, ir, is, ifile+1);
     else
     {
-	ret->entry   = ajCharNewS(id);
-	ret->rpos    = ir;
-	ret->spos    = is;
-	ret->filenum = ifile+1;
+	dbiblastEntry->entry   = ajCharNewS(id);
+	dbiblastEntry->rpos    = ir;
+	dbiblastEntry->spos    = is;
+	dbiblastEntry->filenum = ifile+1;
 
-	/* field tokens as list, then move to ret->field */
+	/* field tokens as list, then move to dbiblastEntry->field */
 	for(ifield=0; ifield < nfields; ifield++)
 	{
-	    ret->nfield[ifield] = ajListLength(fdl[ifield]);
+	    dbiblastEntry->nfield[ifield] = ajListLength(fdl[ifield]);
 
-	    if(ret->nfield[ifield])
+	    if(dbiblastEntry->nfield[ifield])
 	    {
-		AJCNEW(ret->field[ifield],ret->nfield[ifield]);
+		AJCNEW(dbiblastEntry->field[ifield],
+		       dbiblastEntry->nfield[ifield]);
 
 		i = 0;
 		while(ajListPop(fdl[ifield], (void**) &token))
-		    ret->field[ifield][i++] = token;
+		    dbiblastEntry->field[ifield][i++] = token;
 	    }
 	    else
-		ret->field[ifield] = NULL;
+		dbiblastEntry->field[ifield] = NULL;
 	}
     }
     ipos++;
     jpos++;
 
-    return ret;
+    return dbiblastEntry;
 }
 
 

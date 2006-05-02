@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 				xstart+(float)ajSeqLen(seq1),
 				ystart+(float)ajSeqLen(seq2));
 
-		matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2,
+		matchlist = embWordBuildMatchTable(seq1MatchTable, seq2,
 						   ajTrue);
 		if(matchlist)
 		    polydot_plotMatches(matchlist);
@@ -207,16 +207,22 @@ int main(int argc, char **argv)
 	for(i=0;i<ajSeqsetSize(seqset);i++)
 	{
 	    ajFeatWrite(seq1out, tabptr[i]);
+	    ajFeattableDel(&tabptr[i]);
 	}
     }
     
     ajGraphClose();
-    
+    ajGraphxyDel(&graph);
+
     ajStrDel(&sajb);
     AJFREE(lines);
     AJFREE(pts);
-    
-    ajExit();
+    AJFREE(tabptr);
+
+    ajSeqsetDel(&seqset);
+    ajFeattabOutDel(&seq1out);;
+
+    embExit();
 
     return 0;
 }

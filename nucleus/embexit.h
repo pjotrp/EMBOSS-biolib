@@ -7,6 +7,7 @@ extern "C"
 #define embexit_h
 
 void embExit (void);
+void embExitBad (void);
 
 #endif
 

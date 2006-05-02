@@ -70,6 +70,9 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajCodDel(&codon);
 
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+
     ajExit();
 
     return 0;

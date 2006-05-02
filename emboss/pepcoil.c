@@ -101,7 +101,7 @@ int main(int argc, char **argv)
     AjPFloat2d rdat = NULL;
 
 
-    ajGraphInit("pepcoil", argc, argv);
+    embInit("pepcoil", argc, argv);
 
 
     rdat = ajFloat2dNew();
@@ -315,10 +315,14 @@ int main(int argc, char **argv)
 
     ajStrDel(&stmp);
     ajStrDel(&sstr);
+    ajStrDel(&substr);
     ajSeqDel(&seq);
     ajFileClose(&outf);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+
+    embExit();
 
     return 0;
 }

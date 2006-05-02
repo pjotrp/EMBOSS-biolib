@@ -57,6 +57,12 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf, "%-12s %5.2f\n", ajSeqName(seq), pgc);
     }
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+
+    ajFileClose(&outf);
+
+    embExit();
+
     return 0;
 }

@@ -226,8 +226,11 @@ int main(int argc, char **argv)
     ajStrDel(&altname);
     ajStrDel(&altacc);
     ajRegFree(&exp);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDel(&pattern);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

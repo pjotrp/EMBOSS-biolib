@@ -169,6 +169,10 @@ int main(int argc, char **argv)
     ajAlignClose(align);
     ajAlignDel(&align);
 
+    ajSeqallDel(&seqall);
+    ajSeqDel(&a);
+    ajSeqDel(&b);
+
     AJFREE(compass);
     AJFREE(path);
 
@@ -177,7 +181,7 @@ int main(int argc, char **argv)
     ajStrDel(&ss);
     ajStrDel(&tmpstr);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

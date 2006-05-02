@@ -60,7 +60,7 @@ typedef struct EmbSWord2 {
 
 
 
-AjPList embWordBuildMatchTable (AjPTable *seq1MatchTable,
+AjPList embWordBuildMatchTable (const AjPTable seq1MatchTable,
 				const AjPSeq seq2, ajint orderit);
 void    embWordClear (void);
 void    embWordExit(void);

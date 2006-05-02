@@ -92,7 +92,7 @@ typedef struct AjSSilent
 
 
 
-
+static void silent_relistdel(AjPList* relist);
 static AjPList silent_mismatch(const AjPStr sstr, AjPList ressite,
 			       AjPStr* tailstr,
 			       const AjPStr sname, ajint RStotal, ajint begin,
@@ -230,7 +230,6 @@ int main(int argc, char **argv)
     (void) ajReportWrite (report,feat,seq);
     ajFeattableDel(&feat);
 
-    ajSeqDel(&seq);
     ajStrDel(&revcomp);
     ajStrDel(&enzymes);
 
@@ -241,8 +240,12 @@ int main(int argc, char **argv)
 
     ajReportClose(report);
     ajReportDel(&report);
+    ajSeqDel(&seq);
+    ajStrDel(&sstr);
 
-    ajExit();
+    silent_relistdel(&relist);
+
+    embExit();
 
     return 0;
 }
@@ -251,6 +254,27 @@ int main(int argc, char **argv)
 
 
 
+
+/* @funcstatic silent_relistdel ***********************************************
+**
+** Undocumented.
+**
+** @param [d] relist [AjPList8] restriction enzymes
+** @return [void]
+******************************************************************************/
+
+static void silent_relistdel(AjPList* relist)
+{
+    AjPRinfo rlp = NULL;
+    
+    while(ajListPop(*relist,(void **)&rlp))
+    {
+	ajStrDel(&rlp->code);
+	ajStrDel(&rlp->site);
+	AJFREE(rlp);
+    }
+    ajListDel(relist);
+}
 
 
 /* @funcstatic silent_mismatch ************************************************

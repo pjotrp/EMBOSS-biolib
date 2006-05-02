@@ -418,11 +418,14 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajStrDel(&substr);
 
-    if(outf)
-	ajFileClose(&outf);
+    ajFileClose(&outf);
     ajReportClose(report);
+    ajReportDel(&report);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+
+    embExit();
 
     return 0;
 }

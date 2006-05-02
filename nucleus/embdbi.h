@@ -44,6 +44,7 @@ typedef struct EmbSEntry {
   ajint filenum;
   ajint rpos;
   ajint spos;
+  ajint nfields;
   ajint* nfield;
   char*** field;
 } EmbOEntry;

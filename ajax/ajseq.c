@@ -33,6 +33,7 @@ static ajulong seqCrcTable[256];
 
 static AjPStr seqVersionAccnum = NULL;
 
+static AjPStr seqTempUsa = NULL;
 
 
 static void       seqCrcGen( void );
@@ -1638,14 +1639,13 @@ ajint ajSeqGetRange(const AjPSeq thys, ajint* begin, ajint* end)
 
 const AjPStr ajSeqGetUsa(const AjPSeq thys)
 {
-    static AjPStr usa = NULL;
     ajDebug("ajSeqGetUsa '%S'\n", thys->Usa);
 
     if(ajStrGetLen(thys->Usa))
 	return thys->Usa;
 
-    ajSeqMakeUsaS(thys, NULL, &usa);
-    return usa;
+    ajSeqMakeUsaS(thys, NULL, &seqTempUsa);
+    return seqTempUsa;
 }
 
 
@@ -1830,6 +1830,7 @@ void ajSeqExit(void)
     ajSeqTypeExit();
 
     ajStrDel(&seqVersionAccnum);
+    ajStrDel(&seqTempUsa);
 
 
     return;
@@ -1921,7 +1922,9 @@ void ajSeqallDel(AjPSeqall *thys)
     if(!*thys)
 	return;
 
-    ajSeqDel(&(*thys)->Seq);
+    if(!(*thys)->Returned)
+	ajSeqDel(&(*thys)->Seq);
+
     ajSeqinDel(&(*thys)->Seqin);
 
     AJFREE(*thys);
@@ -3771,7 +3774,8 @@ void ajSeqallClear(AjPSeqall thys)
     thys->Begin = 0;
     thys->End   = 0;
     thys->Rev   = ajFalse;
-  
+    thys->Returned = ajFalse;
+ 
     return;
 }
 

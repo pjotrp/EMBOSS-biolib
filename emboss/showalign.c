@@ -136,7 +136,7 @@ int main(int argc, char **argv)
     AjPSeqset seqset = NULL;
     AjPStr refseq;		/* input name/number of reference sequence */
     ajint  nrefseq;		/* numeric reference sequence */
-    AjPStr show;		/* what to show */
+    AjPStr show=NULL;		/* what to show */
     ajint width;		/* width of displayed sequence line */
     ajint margin;		/* width of displayed margin on left side */
     AjPMatrix matrix;		/* scoring matrix structure */
@@ -177,8 +177,8 @@ int main(int argc, char **argv)
     seqset      = ajAcdGetSeqset("sequence");
     outf        = ajAcdGetOutfile("outfile");
     refseq      = ajAcdGetString("refseq");
-    show        = ajAcdGetListI("show",1);
-    order       = ajAcdGetListI("order",1);
+    show        = ajAcdGetListSingle("show");
+    order       = ajAcdGetListSingle("order");
     width       = ajAcdGetInt("width");
     margin      = ajAcdGetInt("margin");
     matrix      = ajAcdGetMatrix("matrix");
@@ -257,7 +257,16 @@ int main(int argc, char **argv)
 
     ajStrDel(&xxx);
 
-    ajExit();
+    ajSeqsetDel(&seqset);
+    ajStrDel(&refseq);
+    ajStrDel(&show);
+    ajMatrixDel(&matrix);
+    ajStrDel(&cons);
+    ajRangeDel(&highlight);
+    ajRangeDel(&uppercase);
+    ajStrDel(&order);
+
+    embExit();
 
     return 0;
 }

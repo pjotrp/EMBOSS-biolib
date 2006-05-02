@@ -228,9 +228,9 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajint imin, ajint imax,
 			   ajint minsize, ajint size)
 {
     AjPRange ret = NULL;
-    static AjPStr c1 = NULL;
-    static AjPStr c2 = NULL;
-    static AjPStr c3 = NULL;
+    AjPStr c1 = NULL;
+    AjPStr c2 = NULL;
+    AjPStr c3 = NULL;
     static AjPStr s   =NULL;
     const char *cp;
     char *p;
@@ -418,12 +418,12 @@ AjPRange ajRangeGetLimits(const AjPStr str, ajint imin, ajint imax,
 	    ret=ajRangeNewI(0);
 	}
 
-	ajStrDelStatic(&c1);
-	ajStrDelStatic(&c2);
-	ajStrDelStatic(&c3);
+	ajStrDel(&c1);
+	ajStrDel(&c2);
+	ajStrDel(&c3);
     }
 
-    ajStrDelStatic(&s);
+    ajStrDel(&s);
 
     return ret;
 }

@@ -174,14 +174,24 @@ int main(int argc, char **argv)
 	AJFREE (fmatrix[i]);
     AJFREE (fmatrix);
 
+    AJFREE(path);
+    AJFREE(compass);
+
     ajStrDel(&line);
+    ajStrDel(&cons);
     ajStrDel(&name);
+    ajStrDel(&pname);
     ajStrDel(&mname);
+    ajStrDel(&tname);
     ajStrDel(&substr);
+    ajStrDel(&m);
+    ajStrDel(&n);
     ajSeqDel(&seq);
     ajFileClose(&inf);
     ajFileClose(&outf);
-    ajExit();
+
+    ajSeqallDel(&seqall);
+    embExit();
 
     return 0;
 }

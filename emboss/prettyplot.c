@@ -163,12 +163,12 @@ int main(int argc, char **argv)
     float *score = 0;
     float scoremax = 0;
 
-    float *identical;
+    float *identical = NULL;
     ajint identicalmaxindex;
-    float *matching;
+    float *matching = NULL;
     ajint matchingmaxindex;
 
-    float *colcheck;
+    float *colcheck = NULL;
 
     ajint **matrix;
     ajint m1 = 0;
@@ -1012,15 +1012,21 @@ int main(int argc, char **argv)
 	oldfg = ajGraphSetFore(oldfg);
 
     ajGraphCloseWin();
- 
+    ajGraphxyDel(&graph);
+
     ajStrDel(&sidentity);
     ajStrDel(&ssimilarity);
     ajStrDel(&sother);
     ajStrDel(&options);
 
     for(i=0;i<numseq;i++)
+    {
 	ajStrDel(&seqnames[i]);
-
+	AJFREE(seqcolptr[i]);
+	AJFREE(seqboxptr[i]);
+    }
+    AJFREE(seqcolptr);
+    AJFREE(seqboxptr);
 
     AJFREE(seqnames);
     AJFREE(score);
@@ -1028,13 +1034,27 @@ int main(int argc, char **argv)
     AJFREE(seqcount);
 
     AJFREE(colmat);
-    if(shadecolour)
-	AJFREE(shadecolour);
+    AJFREE(shadecolour);
 
     AJFREE(seqcharptr);
 
+    AJFREE(identical);
+    AJFREE(matching);
+    AJFREE(colcheck);
 
-    ajExit();
+    ajStrDel(&titlestr);
+
+    ajSeqsetDel(&seqset);
+    ajMatrixDel(&cmpmatrix);
+    ajStrDel(&shade);
+    ajStrDel(&sboxcolval);
+    ajStrDel(&sidentity);
+    ajStrDel(&ssimilarity);
+    ajStrDel(&sother);
+    ajFloatDel(&pair);
+    ajTimeDel(&ajtime);
+
+    embExit();
 
     return 0;
 }

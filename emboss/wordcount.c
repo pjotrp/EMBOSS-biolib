@@ -66,7 +66,11 @@ int main(int argc, char **argv)
      */
     embWordFreeTable(&table);	/* free table of words */
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajFileClose(&outf);
+
+    embExit();
 
     return 0;
 }

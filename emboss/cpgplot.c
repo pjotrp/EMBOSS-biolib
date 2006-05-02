@@ -177,7 +177,15 @@ int main(int argc, char **argv)
 
     ajSeqDel(&seq);
     ajStrDel(&substr);
+    ajStrDel(&bases);
+
     ajFileClose(&outf);
+    ajSeqallDel(&seqall);
+    ajFeattabOutDel(&featout);
+
+    AJFREE(obsexp);
+    AJFREE(thresh);
+    AJFREE(xypc);
 
     ajExit();
 

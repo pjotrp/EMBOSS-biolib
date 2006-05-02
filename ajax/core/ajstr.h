@@ -393,6 +393,7 @@ ajint      ajStrFindlastC(const AjPStr str, const char* txt);
 /* parsing */
 
 AjBool     ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword);
+AjBool     ajStrExtractWord(const AjPStr str, AjPStr* Prest, AjPStr* Pword);
 const AjPStr ajStrParseC(const AjPStr str, const char* txtdelim);
 ajint      ajStrParseCount(const AjPStr line);
 ajint      ajStrParseCountC(const AjPStr line, const char *txtdelim);

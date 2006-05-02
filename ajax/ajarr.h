@@ -560,6 +560,8 @@ typedef struct AjSLong3d {
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
+void        ajArrExit(void);
+
 void        ajDoubleDel(AjPDouble *thys);
 double*     ajDoubleDouble(const AjPDouble thys);
 double      ajDoubleGet(const AjPDouble thys, ajint elem);
@@ -641,6 +643,7 @@ ajint**     ajInt2dInt(const AjPInt2d thys);
 void        ajInt2dLen(const AjPInt2d thys, ajint *len1, ajint *len2);
 AjPInt2d    ajInt2dNew(void);
 AjPInt2d    ajInt2dNewL(ajint size);
+AjPInt2d    ajInt2dNewLL(ajint size, ajint size2);
 AjBool      ajInt2dPut(AjPInt2d *thys, ajint elem1, ajint elem2, ajint v);
 
 void        ajInt3dDel(AjPInt3d *thys);

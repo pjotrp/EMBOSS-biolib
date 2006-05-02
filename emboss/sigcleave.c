@@ -299,14 +299,17 @@ int main(int argc, char **argv)
 	ajReportWrite(report, TabRpt, seq);
 
 	ajFeattableDel(&TabRpt);
-	ajStrDelStatic(&strand);
     }
 
+    ajStrDel(&strand);
 
-    ajSeqDel(&seq);
     ajStrDel(&substr);
     ajStrDel(&sstr);
     ajStrDel(&stmp);
+    ajStrDel(&fthit);
+    ajStrDel(&tmpStr);
+    ajStrDel(&headStr);
+    ajStrDel(&tailStr);
 
     ajFloat2dDel(&matrix);
     ajFloatDel(&hwt);
@@ -317,8 +320,11 @@ int main(int argc, char **argv)
 	ajFileClose(&outf);
 
     ajReportClose(report);
+    ajReportDel(&report);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

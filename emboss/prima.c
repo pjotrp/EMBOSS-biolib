@@ -26,8 +26,9 @@
 #define SIMLIMIT 30
 #define SIMLIMIT2 70
 
-
-
+static float* entropy = NULL;
+static float* enthalpy = NULL;
+static float* energy = NULL;
 
 /* @datastatic AjPPrimer ******************************************************
 **
@@ -83,7 +84,7 @@ typedef struct AjSPair
 
 
 
-static ajint prima_primalign(const char *a, const char *b);
+static ajint prima_primalign(const AjPStr a, const AjPStr b);
 static void prima_reject_self(AjPList forlist,AjPList revlist,
 			      ajint *neric, ajint *nfred);
 static void prima_best_primer(AjPList forlist, AjPList revlist,
@@ -141,7 +142,7 @@ int main(int argc, char **argv)
     AjPFile outf = NULL;
 
     AjPSeq sequence = NULL;
-    AjPStr substr;
+    AjPStr substr   = NULL;
     AjPStr seqstr = NULL;
     AjPStr revstr = NULL;
 
@@ -258,8 +259,13 @@ int main(int argc, char **argv)
     revstr = ajStrNewC(ajStrGetPtr(substr));
     ajSeqReverseStr(&revstr);
 
+    AJCNEW0(entropy, seqlen);
+    AJCNEW0(enthalpy, seqlen);
+    AJCNEW0(energy, seqlen);
+
     /* Initialise Tm calculation arrays */
-    ajTm2(ajStrGetPtr(substr),0,seqlen,saltconc,dnaconc,1);
+    ajTm2(ajStrGetPtr(substr),0,seqlen,saltconc,dnaconc,1,
+	  &entropy, &enthalpy, &energy);
 
 
     ajFmtPrintF(outf, "\n\nINPUT SUMMARY\n");
@@ -324,7 +330,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(outf,
 			"Product GC content [%.2f] outside acceptable range\n",
 			prodGC);
-	    ajExit();
+	    embExitBad();
 	    return 0;
 	}
 
@@ -534,14 +540,23 @@ int main(int argc, char **argv)
 
 
     ajStrDel(&seqstr);
+    ajStrDel(&revstr);
     ajStrDel(&substr);
+    ajStrDel(&p1);
+    ajStrDel(&p2);
 
     ajListDel(&forlist);
     ajListDel(&revlist);
     ajListDel(&pairlist);
 
+    ajFileClose(&outf);
+    ajSeqDel(&sequence);
 
-    ajExit();
+    AJFREE(entropy);
+    AJFREE(enthalpy);
+    AJFREE(energy);
+
+    embExit();
 
     return 0;
 }
@@ -553,13 +568,13 @@ int main(int argc, char **argv)
 **
 ** Align two sequences and return match percentage
 **
-** @param [r] a [const char*] sequence a
-** @param [r] b [const char*] sequence b
+** @param [r] a [const AjPStr] sequence a
+** @param [r] b [const AjPStr] sequence b
 ** @return [ajint] percent match
 ** @@
 ******************************************************************************/
 
-static ajint prima_primalign(const char *a, const char *b)
+static ajint prima_primalign(const AjPStr a, const AjPStr b)
 {
     ajint plen;
     ajint qlen;
@@ -573,23 +588,23 @@ static ajint prima_primalign(const char *a, const char *b)
     ajint alen;
     ajint blen;
 
-    alen = strlen(a);
-    blen = strlen(b);
+    alen = ajStrGetLen(a);
+    blen = ajStrGetLen(b);
 
 
     if(alen > blen)
     {
         plen = alen;
 	qlen = blen;
-        p = a;
-        q = b;
+        p = ajStrGetPtr(a);
+        q = ajStrGetPtr(b);
     }
     else
     {
         plen = blen;
         qlen = alen;
-        p = b;
-        q = a;
+        p = ajStrGetPtr(b);
+        q = ajStrGetPtr(a);
     }
 
     limit = plen-qlen+1;
@@ -691,7 +706,8 @@ static void prima_testproduct(const AjPStr seqstr,
 	thisplen = minprimerlen + i;
 
 	primerTm = ajTm2("",forpstart,thisplen, saltconc,
-			dnaconc, isDNA);
+			 dnaconc, isDNA,
+			 &entropy, &enthalpy, &energy);
 
 	/* If temp out of range ignore rest of loop iteration */
 	if(primerTm<minprimerTm || primerTm>maxprimerTm)
@@ -739,7 +755,8 @@ static void prima_testproduct(const AjPStr seqstr,
 	thisplen = minprimerlen + i;
 
 	primerTm = ajTm2("",revpstart,thisplen, saltconc,
-			dnaconc, isDNA);
+			 dnaconc, isDNA,
+			 &entropy, &enthalpy, &energy);
 	/* If temp out of range ignore rest of loop iteration */
 	if(primerTm<minprimerTm || primerTm>maxprimerTm)
 	    continue;
@@ -815,9 +832,9 @@ static void prima_reject_self(AjPList forlist,AjPList revlist, ajint *neric,
 	ajListPop(forlist,(void **)&tmp);
 	len = tmp->primerlen;
 	cut = (len/2)-1;
-	ajStrAssignSubC(&str1,ajStrGetPtr(tmp->substr),0,cut);
-	ajStrAssignSubC(&str2,ajStrGetPtr(tmp->substr),cut+1,len-1);
-	x = prima_primalign(ajStrGetPtr(str1),ajStrGetPtr(str2));
+	ajStrAssignSubS(&str1,tmp->substr,0,cut);
+	ajStrAssignSubS(&str2,tmp->substr,cut+1,len-1);
+	x = prima_primalign(str1,str2);
 	if(x<SIMLIMIT)
 	    ajListPushApp(forlist,(void *)tmp);
 	else
@@ -849,9 +866,9 @@ static void prima_reject_self(AjPList forlist,AjPList revlist, ajint *neric,
 	ajListPop(revlist,(void **)&tmp);
 	len = tmp ->primerlen;
 	cut = (len/2)-1;
-	ajStrAssignSubC(&str1,ajStrGetPtr(tmp->substr),0,cut);
-	ajStrAssignSubC(&str2,ajStrGetPtr(tmp->substr),cut+1,len-1);
-	x = prima_primalign(ajStrGetPtr(str1),ajStrGetPtr(str2));
+	ajStrAssignSubS(&str1,tmp->substr,0,cut);
+	ajStrAssignSubS(&str2,tmp->substr,cut+1,len-1);
+	x = prima_primalign(str1,str2);
 
 	if(x<SIMLIMIT)
 	    ajListPushApp(revlist,(void *)tmp);
@@ -923,8 +940,7 @@ static void prima_best_primer(AjPList forlist, AjPList revlist,
 	{
 	    ajListPop(revlist, (void**)&temp2);
 
-	    x=prima_primalign(ajStrGetPtr(temp->substr),
-			      ajStrGetPtr(temp2->substr));
+	    x=prima_primalign(temp->substr,temp2->substr);
 
 	    if(x<=SIMLIMIT)
 		good = ajTrue;
@@ -1190,7 +1206,8 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 	    ajStrAssignSubC(&fstr, ajStrGetPtr(seqstr), forstart, forend);
 
 	    thisplen = ajStrGetLen(fstr);
-	    primerTm =ajTm2("",forstart,thisplen, saltconc, dnaconc, isDNA);
+	    primerTm =ajTm2("",forstart,thisplen, saltconc, dnaconc, isDNA,
+			    &entropy, &enthalpy, &energy);
 
 	    if(primerTm <minprimerTm || primerTm>maxprimerTm)
 		continue;
@@ -1203,11 +1220,10 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 	    /*instead of calling the self-reject function */
 	    cut = (thisplen/2)-1;
 
-	    ajStrAssignSubC(&str1, ajStrGetPtr(fstr), 0, cut);
-	    ajStrAssignSubC(&str2, ajStrGetPtr(fstr), cut+1, thisplen-1);
+	    ajStrAssignSubS(&str1, fstr, 0, cut);
+	    ajStrAssignSubS(&str2, fstr, cut+1, thisplen-1);
 
-	    if((fsc=prima_primalign(ajStrGetPtr(str1), ajStrGetPtr(str2))) >
-	       SIMLIMIT)
+	    if((fsc=prima_primalign(str1, str2)) > SIMLIMIT)
 		continue;
 
 	    /* Test for match with rest of sequence */
@@ -1261,7 +1277,8 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 		ajSeqReverseStr(&rstr);
 
 		thisplen = ajStrGetLen(rstr);
-		primerTm = ajTm2("", revstart, thisplen, saltconc, dnaconc, 1);
+		primerTm = ajTm2("", revstart, thisplen, saltconc, dnaconc, 1,
+				 &entropy, &enthalpy, &energy);
 
 		if(primerTm <minprimerTm || primerTm>maxprimerTm)
 		    continue;
@@ -1273,11 +1290,10 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 		/*instead of calling the self-reject function */
 		cut = (thisplen/2)-1;
 
-		ajStrAssignSubC(&str1, ajStrGetPtr(rstr), 0, cut);
-		ajStrAssignSubC(&str2, ajStrGetPtr(rstr), cut+1, thisplen-1);
+		ajStrAssignSubS(&str1, rstr, 0, cut);
+		ajStrAssignSubS(&str2, rstr, cut+1, thisplen-1);
 
-		if((rsc=prima_primalign(ajStrGetPtr(str1), ajStrGetPtr(str2))) <
-		   SIMLIMIT)
+		if((rsc=prima_primalign(str1, str2)) < SIMLIMIT)
 		    continue;
 
 		/* Test for match with rest of sequence */

@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     AjPSeq pep;
     AjPStr *framelist;
     AjBool frames[6];	/* frames to be translated 1 to 3, -1 to -3 */
-    AjPStr *tablelist;
+    AjPStr tablename;
     ajint table;
     AjPRange regions;
     AjPRange seqregions;
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
     seqout    = ajAcdGetSeqoutall("outseq");
     seqall    = ajAcdGetSeqall("sequence");
     framelist = ajAcdGetList("frame");
-    tablelist = ajAcdGetList("table");
+    tablename = ajAcdGetListSingle("table");
     regions   = ajAcdGetRange("regions");
     trim      = ajAcdGetBool("trim");
     clean     = ajAcdGetBool("clean");
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     transeq_GetFrames(framelist, frames);
 
     /* initialise the translation table */
-    ajStrToInt(tablelist[0], &table);
+    ajStrToInt(tablename, &table);
     trnTable = ajTrnNewI(table);
 
     /* shift values of translate region to match -sbegin=n parameter */
@@ -123,8 +123,16 @@ int main(int argc, char **argv)
     ajSeqWriteClose(seqout);
 
     ajTrnDel(&trnTable);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajSeqDel(&pep);
+    ajStrDelarray(&framelist);
+    ajStrDel(&tablename);
+    ajSeqoutDel(&seqout);
+    ajRangeDel(&regions);
+    ajRangeDel(&seqregions);
 
-    ajExit();
+    embExit();
     return 0;
 }
 

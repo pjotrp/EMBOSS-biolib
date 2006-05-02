@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     embInit("prettyseq", argc, argv);
 
     a      = ajAcdGetSeq("sequence");
-    codestr = ajAcdGetListI("table",1);
+    codestr = ajAcdGetListSingle("table");
     width  = ajAcdGetInt("width");
     range  = ajAcdGetRange("range");
     outf   = ajAcdGetOutfile("outfile");
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
     isn    = ajAcdGetBool("nlabel");
 
     ajStrToInt(codestr, &gcode);
-    codon  = ajCodNewCode(gcode);;
+    codon  = ajCodNewCode(gcode);
     beg = ajSeqBegin(a);
     end = ajSeqEnd(a);
 
@@ -126,7 +126,12 @@ int main(int argc, char **argv)
     ajCodDel(&codon);
     ajRangeDel(&range);
 
-    ajExit();
+    ajSeqDel(&a);
+    ajFileClose(&outf);
+    ajStrDel(&codestr);
+    ajStrDel(&pro);
+
+    embExit();
 
     return 0;
 }

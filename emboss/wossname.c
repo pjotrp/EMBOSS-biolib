@@ -91,8 +91,11 @@ int main(int argc, char **argv, char **env)
     
     embGrpGroupsListDel(&glist);
     embGrpGroupsListDel(&alpha);
-    
-    ajExit();
+    ajFileClose(&outfile);
+    ajStrDel(&search);
+    ajStrDel(&showembassy);
+
+    embExit();
     
     return 0;
 }

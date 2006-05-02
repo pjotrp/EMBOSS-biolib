@@ -451,14 +451,20 @@ int main(int argc, char **argv)
     
     
     ajListDel(&list);
-    
+
+    ajSeqDel(&seq);
+    ajSeqDel(&seq2);
+    ajGraphxyDel(&graph);
+    ajGraphxyDel(&xygraph);
+    ajMatrixDel(&matrix);
     
     /* deallocate memory */
     ajStrDel(&aa0str);
     ajStrDel(&aa1str);
     ajStrDel(&se1);
     ajStrDel(&se2);
-    
+    ajStrDel(&subt);
+
     AJFREE(strret);			/* created withing ajFmtString */
     
     ajExit();

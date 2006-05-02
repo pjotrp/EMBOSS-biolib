@@ -188,8 +188,18 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajFileClose(&enzfile);
     ajFileClose(&outf);
+    ajFileClose(&dfile);
+    ajFileClose(&enzfile);
+    ajFileClose(&equfile);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajStrDel(&seqcmp);
+    ajStrDel(&enzymes);
+    ajStrDel(&name);
+
+    ajStrTableFree(&table);
+
+    embExit();
 
     return 0;
 }

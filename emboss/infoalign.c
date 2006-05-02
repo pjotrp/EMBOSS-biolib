@@ -396,8 +396,13 @@ int main(int argc, char **argv)
     ajStrDel(&altname);
     ajStrDel(&xxx);
     ajSeqDel(&consensus);
-    
-    ajExit();
+
+    ajSeqsetDel(&seqset);
+    ajStrDel(&refseq);
+    ajMatrixDel(&matrix);
+    ajStrDel(&cons);
+
+    embExit();
     return 0;
 }
 

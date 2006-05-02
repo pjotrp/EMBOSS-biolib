@@ -46,6 +46,8 @@ static void grpAddGroupsToList(const AjPList alpha, AjPList glist,
 			       const AjPStr appl, const AjPStr doc,
 			       const AjPStr package);
 
+static AjPStr grpStr1 = NULL;
+static AjPStr grpStr2 = NULL;
 
 
 
@@ -547,8 +549,6 @@ static void grpNoComment(AjPStr* text)
 
 static AjPStr grpParseValueRB(AjPStrTok* tokenhandle, const char* delim)
 {
-    static AjPStr strp    = NULL;
-    static AjPStr tmpstrp = NULL;
     char  endq[]   = " ";
     char  endqbr[] = " ]";
     ajint iquote;
@@ -559,57 +559,53 @@ static AjPStr grpParseValueRB(AjPStrTok* tokenhandle, const char* delim)
     char *quotes    = "\"'{(<";
     char *endquotes = "\"'})>";
 
-    if(!ajStrTokenNextParseC(tokenhandle, delim, &strp))
+    if(!ajStrTokenNextParseC(tokenhandle, delim, &grpStr1))
 	return NULL;
 
-    cq = strchr(quotes, ajStrGetCharFirst(strp));
+    cq = strchr(quotes, ajStrGetCharFirst(grpStr1));
     if(!cq)
-	return strp;
+	return grpStr1;
 
 
     /* quote found: parse up to closing quote then strip white space */
 
-    ajStrDelStatic(&tmpstrp);
+    ajStrDelStatic(&grpStr2);
 
     iquote = cq - quotes;
     endq[0] = endqbr[0] = endquotes[iquote];
-    ajStrCutStart(&strp, 1);
+    ajStrCutStart(&grpStr1, 1);
 
     while(!done)
     {
-	if(ajStrSuffixC(strp, endq))
+	if(ajStrSuffixC(grpStr1, endq))
 	{
-	    ajStrCutEnd(&strp, 1);
+	    ajStrCutEnd(&grpStr1, 1);
 	    done = ajTrue;
 	}
 
-	if(ajStrSuffixC(strp, endqbr))
+	if(ajStrSuffixC(grpStr1, endqbr))
 	{
-	    ajStrCutEnd(&strp, 2);
+	    ajStrCutEnd(&grpStr1, 2);
 	    rightb = ajTrue;
 	    done = ajTrue;
 	}
 
-	if(ajStrGetLen(strp))
+	if(ajStrGetLen(grpStr1))
 	{
-	    if(ajStrGetLen(tmpstrp))
-	    {
-		ajStrAppendC(&tmpstrp, " ");
-		ajStrAppendS(&tmpstrp, strp);
-	    }
-	    else
-		ajStrAssignS(&tmpstrp, strp);
+	    if(ajStrGetLen(grpStr2))
+		ajStrAppendC(&grpStr2, " ");
+	    ajStrAppendS(&grpStr2, grpStr1);
 	}
 
 	if(!done)
-	    if(!ajStrTokenNextParseC(tokenhandle, delim, &strp))
+	    if(!ajStrTokenNextParseC(tokenhandle, delim, &grpStr1))
 		return NULL;
     }
 
     if(rightb)
-	ajStrAppendC(&tmpstrp, "]");
+	ajStrAppendC(&grpStr2, "]");
 
-    return tmpstrp;
+    return grpStr2;
 }
 
 
@@ -1633,3 +1629,17 @@ void embGrpGroupMakeUnique(AjPList list)
 }
 
 
+/* @func embGrpExit ***********************************************************
+**
+** Cleanup program group internals on exit
+**
+** @return [void]
+******************************************************************************/
+
+void embGrpExit(void)
+{
+    ajStrDel(&grpStr1);
+    ajStrDel(&grpStr2);
+
+    return;
+}

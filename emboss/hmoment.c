@@ -178,14 +178,16 @@ int main(int argc, char **argv)
 	}
     }
 
-    if(plot)
-        ajGraphClose();
-    else
-	ajFileClose(&outf);
+    ajGraphClose();
+    ajGraphxyDel(&graph);
+    ajFileClose(&outf);
+
     ajStrDel(&str);
     ajStrDel(&st);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    embExit();
 
     return 0;
 }

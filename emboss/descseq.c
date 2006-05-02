@@ -84,6 +84,11 @@ int main(int argc, char **argv)
     ajSeqWrite(seqout, seq);
     ajSeqWriteClose(seqout);
 
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&name);
+    ajStrDel(&desc);
+
     ajExit();
 
     return 0;

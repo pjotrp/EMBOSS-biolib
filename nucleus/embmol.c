@@ -33,6 +33,7 @@ static ajint embMolFragSort(const void* a, const void* b);
 
 
 
+
 /* @func embMolGetFrags *******************************************************
 **
 ** Create a sorted list of molwt fragments
@@ -161,6 +162,7 @@ ajint embMolGetFrags(const AjPStr thys, ajint rno, AjPList *l)
 
 
     ajListSort(*l,embMolFragSort);
+    ajIntDel(&defcut);
 
     return ajListLength(*l);
 }

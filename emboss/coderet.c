@@ -173,6 +173,10 @@ int main(int argc, char **argv)
     ajStrDel(&cds);
     ajStrDel(&mrna);
     ajStrDel(&usa);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajFileClose(&logf);
 
     ajExit();
 

@@ -35,14 +35,12 @@ static void prophecy_simple_matrix(const AjPSeqset seqset, AjPFile outf,
 				   const AjPStr name,
 				   ajint thresh);
 static void prophecy_gribskov_profile(const AjPSeqset seqset,
-				      float **sub,
 				      AjPFile outf, const AjPStr name,
 				      ajint thresh,
 				      float gapopen, float gapextend,
 				      AjPStr *cons);
 static void prophecy_henikoff_profile(const AjPSeqset seqset,
 				      const AjPMatrixf imtx,
-				      float **sub,
 				      ajint thresh, const AjPSeqCvt cvt,
 				      AjPFile outf, const AjPStr name,
 				      float gapopen, float gapextend,
@@ -66,10 +64,8 @@ int main(int argc, char **argv)
     AjPStr cons  = NULL;
 
     ajint thresh;
-    const char *p;
-    AjPStr *type;
+    AjPStr type;
 
-    float **sub = NULL;
     AjPMatrixf imtx = NULL;
     AjPSeqCvt cvt = NULL;
     float gapopen;
@@ -82,7 +78,7 @@ int main(int argc, char **argv)
     name   = ajAcdGetString("name");
     thresh = ajAcdGetInt("threshold");
     imtx   = ajAcdGetMatrixf("datafile");
-    type   = ajAcdGetList("type");
+    type   = ajAcdGetListSingle("type");
     outf   = ajAcdGetOutfile("outfile");
 
     gapopen   = ajAcdGetFloat("open");
@@ -91,25 +87,29 @@ int main(int argc, char **argv)
     gapopen   = ajRoundF(gapopen, 8);
     gapextend = ajRoundF(gapextend, 8);
 
-    p = ajStrGetPtr(*type);
     cons = ajStrNewC("");
 
 
-    if(*p=='F')
+    if(ajStrGetCharFirst(type) == 'F')
 	prophecy_simple_matrix(seqset,outf,name,thresh);
 
-    if(*p=='G')
-	prophecy_gribskov_profile(seqset,sub,outf,name,thresh,
+    if(ajStrGetCharFirst(type) == 'G')
+	prophecy_gribskov_profile(seqset,outf,name,thresh,
 				 gapopen,gapextend,&cons);
 
-    if(*p=='H')
-	prophecy_henikoff_profile(seqset,imtx,sub,thresh,cvt,outf,name,
+    if(ajStrGetCharFirst(type) == 'H')
+	prophecy_henikoff_profile(seqset,imtx,thresh,cvt,outf,name,
 				 gapopen,gapextend,&cons);
-
-
 
     ajFileClose(&outf);
-    ajExit();
+
+    ajSeqsetDel(&seqset);
+    ajStrDel(&name);
+    ajStrDel(&cons);
+    ajMatrixfDel(&imtx);
+    ajStrDel(&type);
+
+    embExit();
 
     return 0;
 }
@@ -235,7 +235,6 @@ static void prophecy_simple_matrix(const AjPSeqset seqset, AjPFile outf,
 ** Undocumented.
 **
 ** @param [r] seqset [const AjPSeqset] Undocumented
-** @param [w] sub [float**] Undocumented
 ** @param [u] outf [AjPFile] Undocumented
 ** @param [r] name [const AjPStr] Undocumented
 ** @param [r] thresh [ajint] Undocumented
@@ -245,7 +244,7 @@ static void prophecy_simple_matrix(const AjPSeqset seqset, AjPFile outf,
 ** @@
 ******************************************************************************/
 
-static void prophecy_gribskov_profile(const AjPSeqset seqset, float **sub,
+static void prophecy_gribskov_profile(const AjPSeqset seqset,
 				      AjPFile outf, const AjPStr name,
 				      ajint thresh,
 				      float gapopen, float gapextend,
@@ -254,6 +253,7 @@ static void prophecy_gribskov_profile(const AjPSeqset seqset, float **sub,
     AjPMatrixf imtx = 0;
     AjPSeqCvt cvt = 0;
     AjPStr mname = NULL;
+    float **sub = NULL;
 
     float **mat;
     ajint nseqs;
@@ -463,7 +463,6 @@ static void prophecy_gribskov_profile(const AjPSeqset seqset, float **sub,
 **
 ** @param [r] seqset [const AjPSeqset] Undocumented
 ** @param [r] imtx [const AjPMatrixf] Undocumented
-** @param [w] sub [float**] Undocumented
 ** @param [r] thresh [ajint] Undocumented
 ** @param [r] cvt [const AjPSeqCvt] Undocumented
 ** @param [u] outf [AjPFile] Undocumented
@@ -477,12 +476,12 @@ static void prophecy_gribskov_profile(const AjPSeqset seqset, float **sub,
 
 static void prophecy_henikoff_profile(const AjPSeqset seqset,
 				      const AjPMatrixf imtx,
-				      float **sub,
 				      ajint thresh, const AjPSeqCvt cvt,
 				      AjPFile outf, const AjPStr name,
 				      float gapopen, float gapextend,
 				      AjPStr *cons)
 {
+    float **sub = NULL;
     float **mat;
     ajint nseqs;
     ajint mlen;

@@ -136,6 +136,10 @@ static float lindna_VerTextSeqHeightMax(const AjPStr Name, float postext,
 					ajint NumNames);
 
 
+static ajint  lindnaMaxinter=0;
+static ajint* lindnaInter=NULL;
+static float* lindnaFromText=NULL;
+static float* lindnaToText=NULL;
 
 
 /* @prog lindna ***************************************************************
@@ -225,7 +229,7 @@ int main(int argc, char **argv)
     Ruler = ajAcdGetBool("ruler");
 
     /* get the type of blocks */
-    BlockType = ajAcdGetListI("blocktype", 1);
+    BlockType = ajAcdGetListSingle("blocktype");
     /* get the type of junctions used to link blocks */
     InterSymbol = ajAcdGetSelectI("intersymbol",1);
     /* get the colour of junctions used to link blocks */
@@ -502,8 +506,46 @@ int main(int argc, char **argv)
     ajStrDel(&line);
 
     ajGraphCloseWin();
+    ajGraphxyDel(&graph);
 
-    ajExit();
+    for(i=0;i<NumGroups;i++)
+    {
+	for(j=0;j<NumLabels[i];j++)
+	{
+	    ajStrDel(&Style[i][j]);
+	    ajStrDel(&Name[i][j]);
+	}
+	ajStrDel(&GroupName[i]);
+	AJFREE(NumNames[i]);
+	AJFREE(Colour[i]);
+	AJFREE(Adjust[i]);
+	AJFREE(FromSymbol[i]);
+	AJFREE(ToSymbol[i]);
+	AJFREE(TextOri[i]);
+	AJFREE(From[i]);
+	AJFREE(To[i]);
+	AJFREE(Name[i]);
+	AJFREE(Style[i]);
+    }
+    AJFREE(AdjustMax);
+    AJFREE(GroupHeight);
+    AJFREE(NumLabels);
+    AJFREE(GroupName);
+    AJFREE(NumNames);
+    AJFREE(Style);
+    AJFREE(Name);
+    AJFREE(Colour);
+    AJFREE(Adjust);
+    AJFREE(FromSymbol);
+    AJFREE(ToSymbol);
+    AJFREE(TextOri);
+    AJFREE(From);
+    AJFREE(To);
+    AJFREE(lindnaInter);
+    AJFREE(lindnaFromText);
+    AJFREE(lindnaToText);
+
+    embExit();
 
     return 0;
 }
@@ -1676,8 +1718,6 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
     ajint j;
     ajint AdjustMax;
     const AjPStr token;
-    static float* FromText=NULL;
-    static float* ToText=NULL;
     ajint maxnumlabels=0;
 /*    float FromText[MAXLABELS];*/
 /*    float ToText[MAXLABELS];*/
@@ -1686,8 +1726,8 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
     if (NumLabels > maxnumlabels)
     {
 	maxnumlabels = NumLabels;
-	AJCRESIZE(FromText, maxnumlabels);
-	AJCRESIZE(ToText, maxnumlabels);
+	AJCRESIZE(lindnaFromText, maxnumlabels);
+	AJCRESIZE(lindnaToText, maxnumlabels);
     }
 
     /* compute the length of the horizontal strings */
@@ -1700,13 +1740,13 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 		token = ajStrParseC(Name[i], ";");
 		stringLength = ajGraphTextLength(0, 0, 1, 0,
 						 ajStrGetPtr(token));
-		FromText[i] = From[i]-stringLength/2;
-		ToText[i]   = From[i]+stringLength/2;
+		lindnaFromText[i] = From[i]-stringLength/2;
+		lindnaToText[i]   = From[i]+stringLength/2;
 	    }
 	    else
 	    {
-		FromText[i] = From[i];
-		ToText[i]   = From[i];
+		lindnaFromText[i] = From[i];
+		lindnaToText[i]   = From[i];
 	    }
 	}
 
@@ -1717,13 +1757,13 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 		token = ajStrParseC(Name[i], ";");
 		stringLength = ajGraphTextLength(0, 0, 1, 0,
 						 ajStrGetPtr(token));
-		FromText[i] = (To[i]+From[i])/2-stringLength/2;
-		ToText[i]   = (To[i]+From[i])/2+stringLength/2;
+		lindnaFromText[i] = (To[i]+From[i])/2-stringLength/2;
+		lindnaToText[i]   = (To[i]+From[i])/2+stringLength/2;
 	    }
 	    else
 	    {
-		FromText[i] = (To[i]+From[i])/2;
-		ToText[i]   = (To[i]+From[i])/2;
+		lindnaFromText[i] = (To[i]+From[i])/2;
+		lindnaToText[i]   = (To[i]+From[i])/2;
 	    }
 	}
 
@@ -1734,13 +1774,13 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 		token = ajStrParseC(Name[i], ";");
 		stringLength = ajGraphTextLength(0, 0, 1, 0,
 						 ajStrGetPtr(token));
-		FromText[i] = (To[i]+From[i])/2-stringLength/2;
-		ToText[i]   = (To[i]+From[i])/2+stringLength/2;
+		lindnaFromText[i] = (To[i]+From[i])/2-stringLength/2;
+		lindnaToText[i]   = (To[i]+From[i])/2+stringLength/2;
 	    }
 	    else
 	    {
-		FromText[i] = (To[i]+From[i])/2;
-		ToText[i]   = (To[i]+From[i])/2;
+		lindnaFromText[i] = (To[i]+From[i])/2;
+		lindnaToText[i]   = (To[i]+From[i])/2;
 	    }
 	}
     }
@@ -1761,25 +1801,33 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 	    {
 		if(j>i)
 		{
-		    if((ToText[i]>=FromText[j]) && (FromText[i]<=FromText[j]))
+		    if((lindnaToText[i]>=lindnaFromText[j]) &&
+		       (lindnaFromText[i]<=lindnaFromText[j]))
 			Adjust[j] = Adjust[i]+1;
-		    if((ToText[i]>=ToText[j]) && (FromText[i]<=ToText[j]))
+		    if((lindnaToText[i]>=lindnaToText[j]) &&
+		       (lindnaFromText[i]<=lindnaToText[j]))
 			Adjust[j] = Adjust[i]+1;
-		    if((ToText[i]<=ToText[j]) && (FromText[i]>=FromText[j]))
+		    if((lindnaToText[i]<=lindnaToText[j]) &&
+		       (lindnaFromText[i]>=lindnaFromText[j]))
 			Adjust[j] = Adjust[i]+1;
-		    if((ToText[i]>=ToText[j]) && (FromText[i]<=FromText[j]))
+		    if((lindnaToText[i]>=lindnaToText[j]) &&
+		       (lindnaFromText[i]<=lindnaFromText[j]))
 			Adjust[j] = Adjust[i]+1;
 		}
 
 		if(i>j)
 		{
-		    if((ToText[j]>=FromText[i]) && (FromText[j]<=FromText[i]))
+		    if((lindnaToText[j]>=lindnaFromText[i]) &&
+		       (lindnaFromText[j]<=lindnaFromText[i]))
 			Adjust[i] = Adjust[j]+1;
-		    if((ToText[j]>=ToText[i]) && (FromText[j]<=ToText[i]))
+		    if((lindnaToText[j]>=lindnaToText[i]) &&
+		       (lindnaFromText[j]<=lindnaToText[i]))
 			Adjust[i] = Adjust[j]+1;
-		    if((ToText[j]<=ToText[i]) && (FromText[j]>=FromText[i]))
+		    if((lindnaToText[j]<=lindnaToText[i]) &&
+		       (lindnaFromText[j]>=lindnaFromText[i]))
 			Adjust[i] = Adjust[j]+1;
-		    if((ToText[j]>=ToText[i]) && (FromText[j]<=FromText[i]))
+		    if((lindnaToText[j]>=lindnaToText[i]) &&
+		       (lindnaFromText[j]<=lindnaFromText[i]))
 			Adjust[i] = Adjust[j]+1;
 		}
 	    }
@@ -1851,14 +1899,12 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
     ajint i;
     ajint j;
     ajint NumBlocks;
-    static ajint maxinter=0;
-    static ajint* Inter=NULL;
 /*    ajint Inter[MAXLABELS];*/
 
-    if (NumLabels > maxinter)
+    if (NumLabels > lindnaMaxinter)
     {
-	maxinter = NumLabels;
-	AJCRESIZE(Inter, maxinter);
+	lindnaMaxinter = NumLabels;
+	AJCRESIZE(lindnaInter, lindnaMaxinter);
     }
 
     /*ajGraphSetBackgroundWhite();*/
@@ -1883,7 +1929,7 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
 	    lindna_DrawBlocks(xDraw, yDraw-posblock, BlockHeight, TextHeight,
 			      From[i], To[i], Name[i], postext, TextOri[i],
 			      NumNames[i], Adjust[i], Colour[i], BlockType);
-	    Inter[j++] = i;
+	    lindnaInter[j++] = i;
 	}
 
 	if(ajStrMatchCaseC(Style[i], "Range"))
@@ -1896,8 +1942,8 @@ static void lindna_DrawGroup(float xDraw, float yDraw, float Border,
 
     /* draw all interblocks */
     for(i=0; i<NumBlocks-1; i++)
-	lindna_InterBlocks(xDraw, yDraw-posblock, BlockHeight, To[Inter[i]],
-			   From[Inter[i+1]], InterSymbol, InterColour);
+	lindna_InterBlocks(xDraw, yDraw-posblock, BlockHeight, To[lindnaInter[i]],
+			   From[lindnaInter[i+1]], InterSymbol, InterColour);
 
     return;
 }

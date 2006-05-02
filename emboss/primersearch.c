@@ -196,7 +196,7 @@ int main(int argc, char **argv)
     if(!ajListLength(primerList))
     {
 	ajUser("\nNo suitable primers found - exiting\n");
-	ajExit();
+	embExitBad();
 	return 0;
 
     }
@@ -215,7 +215,12 @@ int main(int argc, char **argv)
 
     ajFileClose(&outf);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+
+    ajFileClose(&primerFile);
+
+    embExit();
 
     return 0;
 }
@@ -449,7 +454,6 @@ static void psearch_read_primers(AjPList *primerList, AjPFile primerFile,
     }
 
     ajStrDel(&rdline);
-    ajFileClose(&primerFile);
 
     return;
 }

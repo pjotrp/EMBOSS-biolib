@@ -104,7 +104,10 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajFileClose(&outf);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajFileClose(&outf);
+
+    embExit();
 
     return 0;
 }

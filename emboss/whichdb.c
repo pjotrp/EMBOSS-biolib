@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     
     if(!ajStrGetLen(entry))
     {
-	ajExit();
+	ajExitBad();
 	return 0;
     }
     
@@ -133,12 +133,17 @@ int main(int argc, char **argv)
     ajListDel(&dblist);
     ajStrDel(&type);
     ajStrDel(&comm);
+    ajStrDel(&meth);
+    ajStrDel(&defnam);
     ajStrDel(&rel);
     ajStrDel(&idqry);
     ajStrDel(&snam);
     ajSeqDel(&seq);
-    
-    ajExit();
+    ajStrDel(&entry);
+    ajStrDel(&name);
+    ajFileClose(&outf);
+
+    embExit();
 
     return 0;
 }

@@ -140,14 +140,21 @@ int main(int argc, char **argv)
 			      minobsexp, minpc, ajStrGetPtr(strand));
 
 	ajStrDel(&strand);
-   }
+    }
 
+    ajStrDel(&bases);
 
     ajSeqDel(&seq);
     ajStrDel(&substr);
     ajFileClose(&outf);
 
-    ajExit();
+    AJFREE(obsexp);
+    AJFREE(thresh);
+    AJFREE(xypc);
+
+    ajSeqallDel(&seqall);
+
+    embExit();
 
     return 0;
 }

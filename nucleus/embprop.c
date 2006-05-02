@@ -724,3 +724,21 @@ AjBool embPropTransition(char base1, char base2)
 
     return (u1 == u2);
 }
+
+/* @func embPropExit *********************************************************
+**
+** Cleanup of properties data
+**
+** @return [void]
+******************************************************************************/
+
+void embPropExit(void)
+{
+    ajint i;
+    for(i=0;i<EMBPROPSIZE;i++)
+    {
+	AJFREE(EmbPropTable[i]);
+    }
+
+    return;
+}

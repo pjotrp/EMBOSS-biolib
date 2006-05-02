@@ -91,7 +91,15 @@ int main(int argc, char **argv)
     ajReportClose(report);
     ajReportDel(&report);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajRegFree(&patexp);
+
+    ajStrDel(&tmpstr);
+    ajStrDel(&substr);
+    ajStrDel(&str);
+
+    embExit();
 
     return 0;
 }

@@ -1,6 +1,5 @@
 application: merger [
-  documentation: "Merge two overlapping nucleic acid
-                  sequences"
+  documentation: "Merge two overlapping sequences"
   groups: "Alignment:Consensus"
 ]
 
@@ -11,12 +10,12 @@ section: input [
 
   sequence: asequence [
     parameter: "Y"
-    type: "DNA"
+    type: "any"
   ]
 
   sequence: bsequence [
     parameter: "Y"
-    type: "DNA"
+    type: "@($(acdprotein) ? stopprotein : nucleotide)"
   ]
 
   matrixf: datafile  [
@@ -41,7 +40,7 @@ section: additional [
     information: "Gap opening penalty"
     minimum: "0.0"
     maximum: "100.0"
-    default: "50.0"
+    default: "@($(acdprotein)? 50.0 : 50.0 )"
   ]
 
   float: gapextend  [
@@ -49,7 +48,7 @@ section: additional [
     information: "Gap extension penalty"
     minimum: "0.0"
     maximum: "10.0"
-    default: "5.0"
+    default: "@($(acdprotein)? 5.0 : 5.0)"
   ]
 
 endsection: additional

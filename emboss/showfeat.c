@@ -73,14 +73,14 @@ static void showfeat_AddPos(AjPStr *posout, ajint start, ajint end);
 int main(int argc, char **argv)
 {
 
-    AjPSeqall seqall;
-    AjPFile outfile;
-    AjPSeq seq;
-    AjPStr matchsource;
-    AjPStr matchtype;
-    AjPStr matchtag;
-    AjPStr matchvalue;
-    AjPStr *sortlist;
+    AjPSeqall seqall = NULL;
+    AjPFile outfile = NULL;
+    AjPSeq seq = NULL;
+    AjPStr matchsource = NULL;
+    AjPStr matchtype = NULL;
+    AjPStr matchtag = NULL;
+    AjPStr matchvalue = NULL;
+    AjPStr *sortlist = NULL;
     AjBool html;
     AjBool id;
     AjBool description;
@@ -97,12 +97,12 @@ int main(int argc, char **argv)
     AjBool tags;
     AjBool values;
     AjBool stricttags;
-    AjPRange annotation;
+    AjPRange annotation = NULL;
     
     ajint i;
     ajint beg;
     ajint end;
-    AjPStr descriptionline;
+    AjPStr descriptionline = NULL;
 
     embInit("showfeat", argc, argv);
 
@@ -200,8 +200,17 @@ int main(int argc, char **argv)
     }
     
     ajFileClose(&outfile);
-    
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDel(&matchsource);
+    ajStrDel(&matchtype);
+    ajStrDel(&matchtag);
+    ajStrDel(&matchvalue);
+    ajStrDelarray(&sortlist);
+    ajRangeDel(&annotation);
+    ajStrDel(&descriptionline);
+
+    embExit();
 
     return 0;
 }
@@ -816,8 +825,8 @@ static AjBool showfeat_MatchPatternTags(const AjPFeature feat,
 					AjPStr *tagstmp, AjBool values)
 {
     AjIList titer;                      /* iterator for feat */
-    static AjPStr tagnam = NULL;        /* tag structure */
-    static AjPStr tagval = NULL;        /* tag structure */
+    AjPStr tagnam = NULL;        /* tag structure */
+    AjPStr tagval = NULL;        /* tag structure */
     AjBool val = ajFalse;               /* returned value */
     AjBool tval;                        /* tags result */
     AjBool vval;                        /* value result */
@@ -912,6 +921,9 @@ static AjBool showfeat_MatchPatternTags(const AjPFeature feat,
      */
     if(!val)
         ajStrSetClear(tagstmp);
+
+    ajStrDel(&tagnam);
+    ajStrDel(&tagval);
 
     return val;
 }

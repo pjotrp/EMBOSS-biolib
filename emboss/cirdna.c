@@ -155,8 +155,15 @@ static AjPStr** Name=NULL;
 /*static AjPStr Style[MAXGROUPS][MAXLABELS]; */
 /*static AjPStr Name[MAXGROUPS][MAXLABELS];*/
 
+static ajint cirdnaMaxinter=0;
+static ajint* cirdnaInter=NULL;
+/*ajint Inter[MAXLABELS];*/
 
 
+static float* cirdnaFromText=NULL;
+static float* cirdnaToText=NULL;
+/*    float FromText[MAXLABELS];*/
+/*    float ToText[MAXLABELS];*/
 
 /* @prog cirdna ***************************************************************
 **
@@ -242,16 +249,16 @@ int main(int argc, char **argv)
     Ruler = ajAcdGetBool("ruler");
 
     /* get the type of blocks */
-    BlockType = ajAcdGetListI("blocktype", 1);
+    BlockType = ajAcdGetListSingle("blocktype");
 
     /* get the angle of the molecule's origin */
     OriginAngle = ajAcdGetFloat("originangle");
 
     /* get the position of the ticks */
-    PosTicks = ajAcdGetSelectI("posticks", 1);
+    PosTicks = ajAcdGetSelectSingle("posticks");
 
     /* get the position of the text for blocks */
-    PosBlocks = ajAcdGetSelectI("posblocks", 1);
+    PosBlocks = ajAcdGetSelectSingle("posblocks");
 
     /* to draw or not to draw junctions to link blocks */
     InterSymbol = ajAcdGetBool("intersymbol");
@@ -533,10 +540,49 @@ int main(int argc, char **argv)
     ajFileClose(&infile);
     ajStrDel(&line);
 
+    ajStrDel(&PosTicks);
+    ajStrDel(&PosBlocks);
+
     /* close the graphical window */
     ajGraphCloseWin();
+    ajGraphxyDel(&graph);
 
-    ajExit();
+    for(i=0;i<NumGroups;i++)
+    {
+	for(j=0;j<NumLabels[i];j++)
+	{
+	    ajStrDel(&Style[i][j]);
+	    ajStrDel(&Name[i][j]);
+	}
+	ajStrDel(&GroupName[i]);
+	AJFREE(NumNames[i]);
+	AJFREE(Colour[i]);
+	AJFREE(Adjust[i]);
+	AJFREE(FromSymbol[i]);
+	AJFREE(ToSymbol[i]);
+	AJFREE(From[i]);
+	AJFREE(To[i]);
+	AJFREE(Name[i]);
+	AJFREE(Style[i]);
+    }
+    AJFREE(AdjustMax);
+    AJFREE(GroupHeight);
+    AJFREE(NumLabels);
+    AJFREE(GroupName);
+    AJFREE(NumNames);
+    AJFREE(Style);
+    AJFREE(Name);
+    AJFREE(Colour);
+    AJFREE(Adjust);
+    AJFREE(FromSymbol);
+    AJFREE(ToSymbol);
+    AJFREE(From);
+    AJFREE(To);
+    AJFREE(cirdnaInter);
+    AJFREE(cirdnaFromText);
+    AJFREE(cirdnaToText);
+
+    embExit();
 
     return 0;
 }
@@ -1888,11 +1934,7 @@ static ajint cirdna_OverlapTextGroup(AjPStr const *Name2, AjPStr const *Style2,
     ajint j;
     ajint AdjustMax;
     const AjPStr token;
-    static float* FromText=NULL;
-    static float* ToText=NULL;
     static ajint maxnumlabels=0;
-/*    float FromText[MAXLABELS];*/
-/*    float ToText[MAXLABELS];*/
     float llim;
     float ulim;
     float stringLength;
@@ -1900,8 +1942,8 @@ static ajint cirdna_OverlapTextGroup(AjPStr const *Name2, AjPStr const *Style2,
     if (NumLabels > maxnumlabels)
     {
 	maxnumlabels = NumLabels;
-	AJCRESIZE(FromText, maxnumlabels);
-	AJCRESIZE(ToText, maxnumlabels);
+	AJCRESIZE(cirdnaFromText, maxnumlabels);
+	AJCRESIZE(cirdnaToText, maxnumlabels);
     }
     /* compute the length of the horizontal strings */
     for(i=0; i<NumLabels; i++)
@@ -1917,13 +1959,13 @@ static ajint cirdna_OverlapTextGroup(AjPStr const *Name2, AjPStr const *Style2,
 	    llim = From[i]-stringLength/2;
 	    if((ulim<0.0) || (llim<0.0))
 	    {
-		FromText[i] = llim;
-		ToText[i] = ulim;
+		cirdnaFromText[i] = llim;
+		cirdnaToText[i] = ulim;
 	    }
 	    else
 	    {
-		FromText[i] = ulim;
-		ToText[i] = llim;
+		cirdnaFromText[i] = ulim;
+		cirdnaToText[i] = llim;
 	    }
 	}
 	else if(ajStrMatchCaseC(Style2[i], "Block"))
@@ -1936,13 +1978,13 @@ static ajint cirdna_OverlapTextGroup(AjPStr const *Name2, AjPStr const *Style2,
 	    llim = (To[i]+From[i])/2-stringLength/2;
 	    if((ulim<0.0) || (llim<0.0))
 	    {
-		FromText[i] = llim;
-		ToText[i] = ulim;
+		cirdnaFromText[i] = llim;
+		cirdnaToText[i] = ulim;
 	    }
 	    else
 	    {
-		FromText[i] = ulim;
-		ToText[i] = llim;
+		cirdnaFromText[i] = ulim;
+		cirdnaToText[i] = llim;
 	    }
 	}
 	else if(ajStrMatchCaseC(Style2[i], "Range"))
@@ -1955,17 +1997,17 @@ static ajint cirdna_OverlapTextGroup(AjPStr const *Name2, AjPStr const *Style2,
 	    llim = (To[i]+From[i])/2-stringLength/2;
 	    if((ulim<0.0) || (llim<0.0))
 	    {
-		FromText[i] = llim;
-		ToText[i] = ulim;
+		cirdnaFromText[i] = llim;
+		cirdnaToText[i] = ulim;
 	    }
 	    else
 	    {
-		FromText[i] = ulim;
-		ToText[i] = llim;
+		cirdnaFromText[i] = ulim;
+		cirdnaToText[i] = llim;
 	    }
 	}
 	else
-	    FromText[i] =  ToText[i] = 0.0;
+	    cirdnaFromText[i] =  cirdnaToText[i] = 0.0;
     }
 
     /*
@@ -1983,28 +2025,30 @@ static ajint cirdna_OverlapTextGroup(AjPStr const *Name2, AjPStr const *Style2,
 	    {
 		if(j>i)
 		{
-		    if(FromText[i]<0.0)
+		    if(cirdnaFromText[i]<0.0)
 		    {
-			ulim = End-Start-1+FromText[i];
-			if((ToText[j]<=ulim) && (FromText[j]>=ulim))
+			ulim = End-Start-1+cirdnaFromText[i];
+			if((cirdnaToText[j]<=ulim) &&
+			   (cirdnaFromText[j]>=ulim))
 			    Adjust[j] = Adjust[i]+1;
 		    }
-		    if((ToText[j]<=FromText[i]) &&
-		       (FromText[j]>=FromText[i]))
+		    if((cirdnaToText[j]<=cirdnaFromText[i]) &&
+		       (cirdnaFromText[j]>=cirdnaFromText[i]))
 			Adjust[j] = Adjust[i]+1;
 		}
 
 		if(i>j)
 		{
-		    if(FromText[j]<0.0)
+		    if(cirdnaFromText[j]<0.0)
 		    {
-			ulim = End-Start-1+FromText[j];
-			if((ToText[i]<=ulim) && (FromText[i]>=ulim))
+			ulim = End-Start-1+cirdnaFromText[j];
+			if((cirdnaToText[i]<=ulim) &&
+			   (cirdnaFromText[i]>=ulim))
 			    Adjust[i] = Adjust[j]+1;
 		    }
 
-		    if((ToText[i]<=FromText[j]) &&
-		       (FromText[i]>=FromText[j]))
+		    if((cirdnaToText[i]<=cirdnaFromText[j]) &&
+		       (cirdnaFromText[i]>=cirdnaFromText[j]))
 			Adjust[i] = Adjust[j]+1;
 		}
 	    }
@@ -2122,14 +2166,11 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
     ajint i;
     ajint j;
     ajint  NumBlocks;
-    static ajint maxinter=0;
-    static ajint* Inter=NULL;
-    /*ajint Inter[MAXLABELS];*/
 
-    if (NumLabels > maxinter)
+    if (NumLabels > cirdnaMaxinter)
     {
-	maxinter = NumLabels;
-	AJCRESIZE(Inter, maxinter);
+	cirdnaMaxinter = NumLabels;
+	AJCRESIZE(cirdnaInter, cirdnaMaxinter);
     }
 
     /* draw all labels */
@@ -2160,7 +2201,7 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
 			      Name2[i], postext,
 			      OriginAngle, PosBlocks, NumNames[i], Adjust[i],
 			      Colour[i], BlockType);
-	    Inter[j++] = i;
+	    cirdnaInter[j++] = i;
 	}
 
 	if(ajStrMatchCaseC(Style2[i], "Range"))
@@ -2174,7 +2215,8 @@ static void cirdna_DrawGroup(float xDraw, float yDraw, float posblock,
     /* draw all interblocks */
     for(i=0; i<NumBlocks-1; i++)
 	cirdna_InterBlocks(xDraw, yDraw, RealLength, Radius-posblock,
-			   BlockHeight, From[Inter[i]], To[Inter[i+1]],
+			   BlockHeight,
+			   From[cirdnaInter[i]], To[cirdnaInter[i+1]],
 			   OriginAngle, InterSymbol, InterColour);
 
     return;

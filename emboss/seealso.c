@@ -106,13 +106,19 @@ int main(int argc, char **argv, char **env)
 	embGrpOutputGroupsList(outfile, newlist, ajTrue, html, package);
     
     embGrpGroupsListDel(&newlist);
-    ajFileClose(&outfile);
     
     embGrpGroupsListDel(&glist);
     embGrpGroupsListDel(&alpha);
     embGrpGroupsListDel(&appglist);
     embGrpGroupsListDel(&applist);
-    
+
+   /*  embGrpGroupsListDel(&appgroups); */ /* appgroup points to another list*/
+
+    ajFileClose(&outfile);
+    ajStrDel(&search);
+    ajStrDel(&showembassy);
+    ajStrDel(&package);
+
     embExit();
     
     return 0;

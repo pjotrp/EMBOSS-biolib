@@ -139,7 +139,15 @@ int main(int argc, char **argv)
 
     ajStrDel(&str);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqallDel(&other);
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajStrDelarray(&pointlist);
+    ajStrDelarray(&codonlist);
+    ajStrDelarray(&blocklist);
+
+    embExit();
 
     return 0;
 }

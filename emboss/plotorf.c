@@ -67,8 +67,8 @@ int main(int argc, char **argv)
     AjPGraph graph;
     AjPGraphPlpData data;
 
-    float *x[6];
-    float *y[6];
+    float *x[6] = {NULL,NULL,NULL,NULL,NULL,NULL};
+    float *y[6] = {NULL,NULL,NULL,NULL,NULL,NULL};
     AjPInt cnt;
     ajint beg;
     ajint end;
@@ -149,7 +149,7 @@ int main(int argc, char **argv)
     ajGraphxySetYEnd(graph,2.0);
     ajGraphSetTitleC(graph,"Potential codons (rectangles)");
     ajGraphxyDisplay(graph,ajTrue);
-
+    ajGraphxyDel(&graph);
 
     ajStrDel(&str);
     ajStrDel(&rev);
@@ -163,8 +163,15 @@ int main(int argc, char **argv)
     for(i=0;i<nstops;++i)
 	ajStrDel(&stops[i]);
     AJFREE(stops);
+    for(i=0;i<6;++i)
+    {
+	AJFREE(x[i]);
+	AJFREE(y[i]);
+    }
 
-    ajExit();
+    ajSeqDel(&seq);
+
+    embExit();
 
     return 0;
 }

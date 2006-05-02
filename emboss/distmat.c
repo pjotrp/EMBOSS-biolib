@@ -109,7 +109,8 @@ int main (int argc, char * argv[])
     AjPFloat2d match = NULL;
     AjPFloat2d matchDist = NULL;
     AjPFloat2d gap = NULL;
-    AjPStr* methodlist;
+    AjPStr methodlist = NULL;
+    AjPStr methodlist2 = NULL;
     AjPFile outf = NULL;
 
     AjBool nuc = ajFalse;
@@ -126,7 +127,7 @@ int main (int argc, char * argv[])
     else if( ajSeqsetIsProt(seqset))
 	nuc = ajFalse;
     else
-	ajExit();
+	embExit();
 
 
     outf   = ajAcdGetOutfile("outfile"); /* output filename  */
@@ -134,13 +135,13 @@ int main (int argc, char * argv[])
     gapwt  = ajAcdGetFloat("gapweight");
     if(nuc)
     {
-	methodlist = ajAcdGetList("nucmethod");
-        ajAcdGetList("protmethod");
+	methodlist = ajAcdGetListSingle("nucmethod");
+        methodlist2 = ajAcdGetListSingle("protmethod");
     }
     else
     {
-        ajAcdGetList("nucmethod");
-	methodlist = ajAcdGetList("protmethod");
+        methodlist2 = ajAcdGetListSingle("nucmethod");
+	methodlist = ajAcdGetListSingle("protmethod");
     }
     posn   = ajAcdGetInt("position");
     calc_a = ajAcdGetBool("calculatea");
@@ -158,7 +159,7 @@ int main (int argc, char * argv[])
     else if(posn == 23 || posn == 13 || posn != 12)
 	ajFatal("Choose base positions 1, 2, 3, 12, or 123");
 
-    ajStrToInt(methodlist[0], &method);
+    ajStrToInt(methodlist, &method);
 
     nseqs = ajSeqsetSize(seqset);
     if(nseqs<2)
@@ -208,10 +209,16 @@ int main (int argc, char * argv[])
 	ajCharDel(&seqcharptr[i]);
     AJFREE(seqcharptr);
 
-    if(method == 0 || method == 1 || method == 4 )
-        ajFloat2dDel(&gap);
+    ajFloat2dDel(&gap);
+    ajFloat2dDel(&match);
+    ajFloat2dDel(&matchDist);
 
-    ajExit();
+    ajSeqsetDel(&seqset);
+    ajFileClose(&outf);
+    ajStrDel(&methodlist);
+    ajStrDel(&methodlist2);
+
+    embExit();
 
     return 0;
 }

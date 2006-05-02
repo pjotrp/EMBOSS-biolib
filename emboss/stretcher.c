@@ -261,9 +261,8 @@ int main(int argc, char **argv)
 
     ajAlignClose(align);
 
-    ajSeqsetDel(&seqset);
     ajAlignDel(&align);
-
+    ajSeqsetDel(&seqset);
 
     AJFREE(res);
     AJFREE(seqc0);
@@ -277,9 +276,14 @@ int main(int argc, char **argv)
 
     ajSeqDel(&res0);
     ajSeqDel(&res1);
+    ajSeqsetDel(&seqset);
+    ajSeqDel(&res0);
+    ajSeqDel(&res1);
+    ajSeqDel(&seq0);
+    ajSeqDel(&seq1);
+    /* ajMatrixDel(&matrix);*/ /* owned by align, deleted by ajAlignDel */
 
-
-    ajExit();
+    embExit();
 
     return 0;
 }
@@ -292,7 +296,7 @@ int main(int argc, char **argv)
 static ajint nmax=0;
 
 /* @funcstatic stretcher_Ealign ***********************************************
-**
+**s
 ** Undocumented
 **
 ** @param [r] A [const char*] Sequence A with trailing blank

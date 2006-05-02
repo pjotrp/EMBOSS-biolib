@@ -23,7 +23,7 @@
 
 
 
-/* @func  embExit *************************************************************
+/* @func embExit **************************************************************
 **
 ** Cleans up as necessary, and calls ajExit
 **
@@ -34,8 +34,24 @@
 void embExit (void)
 {
     embDbiExit();
+    embGrpExit();
+    embPropExit();
     embWordExit();
 
     ajExit();
+    return;
+}
+
+/* @func embExitBad ***********************************************************
+**
+** Cleans up as necessary, and calls ajExitBad
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void embExitBad (void)
+{
+    ajExitBad();
     return;
 }

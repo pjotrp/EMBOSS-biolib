@@ -190,6 +190,7 @@ EmbPEntry embDbiEntryNew(ajint nfields)
     EmbPEntry ret;
 
     AJNEW0(ret);
+    ret->nfields = nfields;
     AJCNEW0(ret->nfield, nfields);
     AJCNEW0(ret->field, nfields);
 
@@ -209,11 +210,24 @@ EmbPEntry embDbiEntryNew(ajint nfields)
 
 void embDbiEntryDel(EmbPEntry* Pentry)
 {
+    EmbPEntry entry;
+    ajint i;
+    ajint j;
+
     if(!*Pentry) return;
+    entry = *Pentry;
+    for(i=0;i<entry->nfields;i++)
+    {
+	for(j=0;j<entry->nfield[i];j++)
+	{
+	    AJFREE(entry->field[i][j]);
+	}
+	AJFREE(entry->field[i]);
+    }
 
-    AJFREE((*Pentry)->nfield);
-    AJFREE((*Pentry)->field);
-
+    AJFREE(entry->nfield);
+    AJFREE(entry->field);
+    AJFREE(entry->entry);
     AJFREE(*Pentry);
 
     return;

@@ -65,8 +65,8 @@ int main(int argc, char **argv)
     AjPGraph   graph;
     AjPGraphPlpData data;
 
-    float *x[6];
-    float *y[6];
+    float *x[6] = {NULL, NULL, NULL, NULL, NULL, NULL};
+    float *y[6] = {NULL, NULL, NULL, NULL, NULL, NULL};
     float xt;
     float mean;
     float ymin;
@@ -130,7 +130,8 @@ int main(int argc, char **argv)
     
     for(i=0;i<6;++i)
     {
-	wobble_calcpc(ajStrGetPtr(fwd),ajStrGetPtr(rev),i,x,y,count,beg,ajStrGetPtr(gc),
+	wobble_calcpc(ajStrGetPtr(fwd),ajStrGetPtr(rev),i,x,y,
+		      count,beg,ajStrGetPtr(gc),
 		      window);
 
 	data = ajGraphPlpDataNewI(count[i]);
@@ -179,8 +180,16 @@ int main(int argc, char **argv)
     ajStrDel(&gc);
     ajStrDel(&fwd);
     ajStrDel(&rev);
+    ajSeqDel(&seq);
+    ajFileClose(&outf);
+    ajGraphxyDel(&graph);
+    for(i=0;i<6;i++)
+    {
+	AJFREE(x[i]);
+	AJFREE(y[i]);
+    }
 
-    ajExit();
+    embExit();
 
     return 0;
 }

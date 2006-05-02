@@ -50,7 +50,7 @@ static void   showdbDBOut(AjPFile outfile,
 			   ajint maxfield, ajint maxdefined,
 			   ajint maxrelease);
 
-static AjPStr showdbGetFields(const AjPStr dbname);
+static void   showdbGetFields(const AjPStr dbname, AjPStr* fields);
 static int    showdbDBSortDefined(const void* str1, const void* str2);
 
 
@@ -80,7 +80,8 @@ int main(int argc, char **argv)
     AjBool only;
 
     AjPFile outfile = NULL;
-    AjPStr dbname   = NULL;	/* the next database name to look at */
+    AjPStr onedbname   = NULL;		/* user-specified single database */
+    AjPStr nextdbname   = NULL;	/* the next database name to look at */
     AjPStr type     = NULL;
     AjBool id;
     AjBool qry;
@@ -104,7 +105,7 @@ int main(int argc, char **argv)
 
     embInit("showdb", argc, argv);
 
-    dbname  = ajAcdGetString("database");
+    onedbname  = ajAcdGetString("database");
     outfile = ajAcdGetOutfile("outfile");
 
     html    = ajAcdGetBool("html");
@@ -133,11 +134,11 @@ int main(int argc, char **argv)
     
     
     /* Just one specified name to get details on? */
-    if(ajStrGetLen(dbname))
+    if(ajStrGetLen(onedbname))
     {
-	if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
+	if(ajNamDbDetails(onedbname, &type, &id, &qry, &all, &comment,
 			  &release, &methods, &defined))
-	    showdbDBWidth(dbname, type, methods, defined, release,
+	    showdbDBWidth(onedbname, type, methods, defined, release,
 			   &maxname, &maxtype, &maxmethod,
 			   &maxfield, &maxdefined, &maxrelease);
 
@@ -150,7 +151,7 @@ int main(int argc, char **argv)
 			  maxname, maxtype, maxmethod, maxfield,
 			  maxdefined, maxrelease);
     
-    	    showdbDBOut(outfile, dbname, type, id, qry, all,
+    	    showdbDBOut(outfile, onedbname, type, id, qry, all,
 			 methods, defined,
 			 comment, release, html,
 			 dotype, doid, doqry, doall, 
@@ -160,7 +161,7 @@ int main(int argc, char **argv)
 			 maxmethod, maxfield, maxdefined, maxrelease);
 	}
 	else
-	    ajFatal("The database '%S' does not exist", dbname);
+	    ajFatal("The database '%S' does not exist", onedbname);
     }
     else
     {
@@ -181,11 +182,11 @@ int main(int argc, char **argv)
 	maxrelease = 7;
 
 	/* find the field widths */
-	while((dbname = ajListIterNext(iter)) != NULL)
+	while((nextdbname = ajListIterNext(iter)) != NULL)
 	{
-	    if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
+	    if(ajNamDbDetails(nextdbname, &type, &id, &qry, &all, &comment,
 			      &release, &methods, &defined))
-	    showdbDBWidth(dbname, type, methods, defined, release,
+	    showdbDBWidth(nextdbname, type, methods, defined, release,
 			   &maxname, &maxtype, &maxmethod,
 			   &maxfield, &maxdefined, &maxrelease);
 	}
@@ -204,13 +205,13 @@ int main(int argc, char **argv)
 	iter = ajListIterRead(dbnames);
 
 	/* write out protein databases */
-	while((dbname = ajListIterNext(iter)) != NULL)
-	    if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
+	while((nextdbname = ajListIterNext(iter)) != NULL)
+	    if(ajNamDbDetails(nextdbname, &type, &id, &qry, &all, &comment,
 			      &release, &methods, &defined))
 	    {
 		if(protein &&
 		   (ajStrMatchC(type, "P") || ajStrMatchC(type, "Protein")))
-		   showdbDBOut(outfile, dbname, type, id, qry, all,
+		   showdbDBOut(outfile, nextdbname, type, id, qry, all,
 				 methods, defined,
 				 comment, release, html, dotype, doid,
 				 doqry, doall, domethod, dofields, dodefined,
@@ -219,7 +220,7 @@ int main(int argc, char **argv)
 				 maxfield, maxdefined, maxrelease);
 	    }
 	    else
-		ajFatal("The database '%S' does not exist", dbname);
+		ajFatal("The database '%S' does not exist", nextdbname);
 
 
 	/* reset the iterator */
@@ -227,14 +228,14 @@ int main(int argc, char **argv)
 	iter = ajListIterRead(dbnames);
 
 	/* now write out nucleic databases */
-	while((dbname = ajListIterNext(iter)) != NULL)
+	while((nextdbname = ajListIterNext(iter)) != NULL)
 	{
-	    if(ajNamDbDetails(dbname, &type, &id, &qry, &all, &comment,
+	    if(ajNamDbDetails(nextdbname, &type, &id, &qry, &all, &comment,
 			      &release, &methods, &defined))
 	    {
 		if( nucleic &&
 		   (ajStrMatchC(type, "N") || ajStrMatchC(type, "Nucleotide")))
-		    showdbDBOut(outfile, dbname, type, id, qry, all,
+		    showdbDBOut(outfile, nextdbname, type, id, qry, all,
 				 methods, defined,
 				 comment, release, html,
 				 dotype, doid,
@@ -244,7 +245,7 @@ int main(int argc, char **argv)
 				 maxfield, maxdefined, maxrelease);
 	    }
 	    else
-		ajFatal("The database '%S' does not exist", dbname);
+		ajFatal("The database '%S' does not exist", nextdbname);
 	}
 
 	ajListIterFree(&iter);
@@ -256,8 +257,15 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outfile, "</table>\n");
     
     ajFileClose(&outfile);
-    
-    ajExit();
+    ajStrDel(&onedbname);
+    /*ajStrDel(&nextdbname);*/		/* points to name from list */
+    ajStrDel(&type);
+    ajStrDel(&methods);
+    ajStrDel(&defined);
+    ajStrDel(&release);
+    ajStrDel(&comment);
+
+    embExit();
 
     return 0;
 }
@@ -287,6 +295,7 @@ static void showdbDBWidth (const AjPStr dbname,
 			   ajint *maxfield, ajint* maxdefined,
 			   ajint *maxrelease)
 {
+    AjPStr fields = NULL;
     ajint i;
 
     if (ajStrGetLen(dbname) > *maxname)
@@ -304,10 +313,11 @@ static void showdbDBWidth (const AjPStr dbname,
     if (ajStrGetLen(release) > *maxrelease)
 	*maxrelease = ajStrGetLen(release);
 
-    i = ajStrGetLen(showdbGetFields(dbname));
+    showdbGetFields(dbname, &fields);
+    i = ajStrGetLen(fields);
     if (i > *maxfield)
 	*maxfield = i;
-    return;
+    ajStrDel(&fields);
 
     return;
 }
@@ -512,6 +522,7 @@ static void showdbDBOut(AjPFile outfile,
 			ajint maxname, ajint maxtype, ajint maxmethod,
 			ajint maxfield, ajint maxdefined, ajint maxrelease)
 {
+    AjPStr fields = NULL;
 
     if(html)
 	/* start table line and output name */
@@ -587,7 +598,8 @@ static void showdbDBOut(AjPFile outfile,
 	if(html)
 	    ajFmtPrintF(outfile, "<td>");
 
-        ajFmtPrintF(outfile, "%-*S ", maxfield, showdbGetFields(dbname));
+        showdbGetFields(dbname, &fields);
+	ajFmtPrintF(outfile, "%-*S ", maxfield, fields);
 
 	if(html)
 	    ajFmtPrintF(outfile, "</td>");
@@ -638,6 +650,8 @@ static void showdbDBOut(AjPFile outfile,
     else
 	ajFmtPrintF(outfile, "\n");
 
+    ajStrDel(&fields);
+
     return;
 }
 
@@ -649,30 +663,30 @@ static void showdbDBOut(AjPFile outfile,
 ** Get a database's valid query fields (apart from the default 'id' and 'acc')
 **
 ** @param [r] dbname [const AjPStr] database name
-** @return [AjPStr] the available search fields
+** @param [w] fields [AjPStr*] the available search fields
+** @return [void]
 ** @@
 ******************************************************************************/
 
-static AjPStr showdbGetFields(const AjPStr dbname)
+static void showdbGetFields(const AjPStr dbname, AjPStr* fields)
 {
-    static AjPStr str = NULL;
     AjPSeqQuery query;
 
     query = ajSeqQueryNew();
 
     ajStrAssignS(&query->DbName, dbname);
     ajNamDbData(query);
-    ajStrAssignS(&str, query->DbFields);
+    ajStrAssignS(fields, query->DbFields);
 
     /* if there are no query fields, then change to a '_' */
-    if(!ajStrGetLen(str))
-  	ajStrAssignC(&str, "-     ");
+    if(!ajStrGetLen(*fields))
+  	ajStrAssignC(fields, "-     ");
     else
 	/* change spaces to commas to make the result one word */
-	ajStrExchangeSetCC(&str, " ", ",");
+	ajStrExchangeSetCC(fields, " ", ",");
 
     ajSeqQueryDel(&query);
-    return str;
+    return;
 }
 
 

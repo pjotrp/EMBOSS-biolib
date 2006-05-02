@@ -698,14 +698,15 @@ AjBool ajListNth(const AjPList thys, ajint n, void** x)
     ajint len;
     ajint i;
 
-    if(!thys || n<1)
+    if(!thys || n<0)
 	return ajFalse;
 
     len = ajListLength(thys);
-    if(n>len)
+    if(n>=len)
 	return ajFalse;
 
-    for(i=0,rest = thys->First; i<n ; rest = rest->Next);
+    for(i=0,rest = thys->First; i<n ; rest = rest->Next)
+	i++;
 
     if(x)
 	*x = listNodeItem(rest);
@@ -2144,17 +2145,23 @@ void ajListPushList(AjPList thys, AjPList* pmore)
 	    thys->First->Next->Prev = more->Last;
 	}
 	else
+	{
+	    /* master list is empty */
 	    thys->Last = more->Last;
+	}
 
 	AJFREE(thys->First);
 	thys->First = more->First;
 	thys->Count += more->Count;
 	thys->First->Prev = NULL;
+	more->First = NULL;
+	more->Count=0;
+
 	if(thys->Count > listMaxNum)
 	    listMaxNum = thys->Count;
     }
 
-    AJFREE(more);	/* free the list but not the nodes */
+    ajListDel(pmore);	/* free the list but not the nodes */
 
     return;
 }

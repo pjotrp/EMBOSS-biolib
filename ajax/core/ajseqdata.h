@@ -696,6 +696,8 @@ typedef struct AjSSeqset {
 ** @attr Begin [ajint] start position
 ** @attr End [ajint] end position
 ** @attr Rev [AjBool] if true: reverse-complement
+** @attr Returned [AjBool] if true: Seq object has been returned to a new owner
+**                         and is not to be deleted by the destructor
 ** @@
 ******************************************************************************/
 
@@ -706,6 +708,7 @@ typedef struct AjSSeqall {
   ajint Begin;
   ajint End;
   AjBool Rev;
+  AjBool Returned;
 } AjOSeqall;
 
 #define AjPSeqall AjOSeqall*

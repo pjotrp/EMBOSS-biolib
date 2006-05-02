@@ -185,8 +185,11 @@ int main(int argc, char **argv)
     ajStrDel(&m);
     ajStrDel(&ss);
     ajStrDel(&tmpstr);
-    
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&a);
+    ajSeqDel(&b);
+
+    embExit();
 
     return 0;
 }

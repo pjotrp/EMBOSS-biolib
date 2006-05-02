@@ -162,10 +162,12 @@ int main(int argc, char **argv)
 	ajStrDel(&str);
     }
 
-    if(plot)
-        ajGraphClose();
-    else
-	ajFileClose(&outf);
+    ajGraphClose();
+    ajGraphxyDel(&graph);
+
+    ajFileClose(&outf);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
 
     ajStrDel(&str);
     ajStrDel(&bases);

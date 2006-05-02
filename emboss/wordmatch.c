@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
     embWordLength(wordlen);
     if(embWordGetTable(&seq1MatchTable, seq1))
-	matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2, ajTrue);
+	matchlist = embWordBuildMatchTable(seq1MatchTable, seq2, ajTrue);
 
     if(matchlist && outf)
 	ajFmtPrintF(outf, "FINALLY length = %d\n",ajListLength(matchlist));
@@ -119,8 +119,14 @@ int main(int argc, char **argv)
 
     ajAlignClose(align);
     ajAlignDel(&align);
+    ajSeqDel(&seq1);
+    ajSeqDel(&seq2);
+    ajFeattableDel(&Tab1);
+    ajFeattableDel(&Tab2);
+    ajFeattabOutDel(&seq1out);
+    ajFeattabOutDel(&seq2out);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

@@ -83,9 +83,9 @@ int main(int argc, char **argv)
     AjPSeq seq;
     EmbPShow ss;
     AjPFile outfile;
-    AjPStr *formatlist;
+    AjPStr formatname;
     AjPStr *thinglist;
-    AjPStr *tablelist;
+    AjPStr tablename;
     ajint table = 0;
     AjPRange translaterange;
     AjPRange uppercase;
@@ -145,9 +145,9 @@ int main(int argc, char **argv)
 
     seqall         = ajAcdGetSeqall("sequence");
     outfile        = ajAcdGetOutfile("outfile");
-    formatlist     = ajAcdGetList("format");
+    formatname     = ajAcdGetListSingle("format");
     thinglist      = ajAcdGetList("things");
-    tablelist      = ajAcdGetList("table");
+    tablename      = ajAcdGetListSingle("table");
     translaterange = ajAcdGetRange("translate");
     uppercase      = ajAcdGetRange("uppercase");
     highlight      = ajAcdGetRange("highlight");
@@ -200,30 +200,30 @@ int main(int argc, char **argv)
     
     
     /* get the format to use */
-    if(!ajStrCmpC(formatlist[0], "0"))
+    if(ajStrMatchC(formatname, "0"))
 	for(i=0; thinglist[i]; i++)
 	{
 	    ajStrAppendS(&format, thinglist[i]);
 	    ajStrAppendC(&format, " ");
 	}
-    else if(!ajStrCmpC(formatlist[0], "1"))
+    else if(ajStrMatchC(formatname, "1"))
 	ajStrAssignC(&format, "S A ");
-    else if(!ajStrCmpC(formatlist[0], "2"))
+    else if(ajStrMatchC(formatname, "2"))
 	ajStrAssignC(&format, "B N T S A F ");
-    else if(!ajStrCmpC(formatlist[0], "3"))
+    else if(ajStrMatchC(formatname, "3"))
 	ajStrAssignC(&format, "B N T S A ");
-    else if(!ajStrCmpC(formatlist[0], "4"))
+    else if(ajStrMatchC(formatname, "4"))
 	ajStrAssignC(&format, "B N T S B 1 A F ");
-    else if(!ajStrCmpC(formatlist[0], "5"))
+    else if(ajStrMatchC(formatname, "5"))
 	ajStrAssignC(&format, "B N T S B 1 2 3 A F ");
-    else if(!ajStrCmpC(formatlist[0], "6"))
+    else if(ajStrMatchC(formatname, "6"))
 	ajStrAssignC(&format, "B N T S B 1 2 3 T -3 -2 -1 A F ");
-    else if(!ajStrCmpC(formatlist[0], "7"))
+    else if(ajStrMatchC(formatname, "7"))
 	ajStrAssignC(&format, "B R S N T C -R B 1 2 3 T -3 -2 -1 A ");
-    else if(!ajStrCmpC(formatlist[0], "8"))
+    else if(ajStrMatchC(formatname, "8"))
 	ajStrAssignC(&format, "B 1 2 3 N T R S T C -R T -3 -2 -1 A F ");
     else
-	ajFatal("Invalid format type: %S", formatlist[0]);
+	ajFatal("Invalid format type: %S", formatname);
     
     
     /* make the format upper case */
@@ -332,7 +332,7 @@ int main(int argc, char **argv)
 	ss = embShowNew(seq, begin, end, width, length, margin, html, offset);
 
 	/* get the number of the genetic code used */
-	ajStrToInt(tablelist[0], &table);
+	ajStrToInt(tablename, &table);
 
 	if(html)
 	    ajFmtPrintF(outfile, "<PRE>");
@@ -361,8 +361,22 @@ int main(int argc, char **argv)
     ajStrDel(&format);
     ajFileClose(&outfile);
     ajTrnDel(&trnTable);
-    
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDelarray(&thinglist);
+    ajStrDel(&formatname);
+    ajStrDel(&tablename);
+    ajStrDel(&enzymes);
+    ajStrDel(&matchsource);
+    ajStrDel(&matchtype);
+    ajStrDel(&matchtag);
+    ajStrDel(&matchvalue);
+    ajRangeDel(&translaterange);
+    ajRangeDel(&uppercase);
+    ajRangeDel(&highlight);
+    ajRangeDel(&annotation);
+
+    embExit();
 
     return 0;
 }
@@ -712,11 +726,12 @@ static AjBool showseq_MatchFeature(const AjPFeature gf, AjPFeature newgf,
 static AjBool showseq_MatchPatternTags(const AjPFeature gf,
 				       AjPFeature newgf,
 				       const AjPStr tpattern,
-				       const AjPStr vpattern, AjBool stricttags)
+				       const AjPStr vpattern,
+				       AjBool stricttags)
 {
     AjIList titer;                      /* iterator for feat */
-    static AjPStr tagnam;	        /* tag name from tag structure */
-    static AjPStr tagval;       	/* tag value from tag structure */
+    AjPStr tagnam = NULL;	        /* tag name from tag structure */
+    AjPStr tagval = NULL;       	/* tag value from tag structure */
     AjBool val = ajFalse;               /* returned value */
     AjBool tval;                        /* tags result */
     AjBool vval;                        /* value result */
@@ -775,6 +790,9 @@ static AjBool showseq_MatchPatternTags(const AjPFeature gf,
             ajFeatTagAdd(newgf, tagnam, tagval);
     }
     ajListIterFree(&titer);
+
+    ajStrDel(&tagnam);
+    ajStrDel(&tagval);
 
     return val;
 }

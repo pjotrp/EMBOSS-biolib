@@ -46,6 +46,8 @@
 static AjBool seqCdReverse = AJFALSE;
 
 static AjPRegexp seqCdDivExp = NULL;
+static AjPRegexp seqRegHttpProxy = NULL;
+static AjPRegexp seqRegHttpUrl = NULL;
 
 static char* seqCdName = NULL;
 static ajint seqCdMaxNameSize = 0;
@@ -392,6 +394,7 @@ typedef struct SeqSEmbossQry
 
 
 
+
 static AjBool     seqAccessApp(AjPSeqin seqin);
 static AjBool     seqAccessBlast(AjPSeqin seqin);
 /* static AjBool     seqAccessCmd(AjPSeqin seqin);*/ /* not implemented */
@@ -400,8 +403,8 @@ static AjBool     seqAccessEmblcd(AjPSeqin seqin);
 static AjBool     seqAccessEmboss(AjPSeqin seqin);
 static AjBool     seqAccessEmbossGcg(AjPSeqin seqin);
 static AjBool     seqAccessEntrez(AjPSeqin seqin);
-static AjBool     seqAccessFreeEmblcd(void* qryd);
-static AjBool     seqAccessFreeEmboss(void* qryd);
+static AjBool     seqAccessFreeEmblcd(void* qry);
+static AjBool     seqAccessFreeEmboss(void* qry);
 static AjBool     seqAccessGcg(AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf(AjPSeqin seqin); */ /* obsolete */
 static AjBool     seqAccessSeqhound(AjPSeqin seqin);
@@ -412,6 +415,8 @@ static AjBool     seqAccessUrl(AjPSeqin seqin);
 
 static AjBool     seqBlastOpen(AjPSeqQuery qry, AjBool next);
 static ajint      seqCdDivNext(AjPSeqQuery qry);
+static void       seqCdIdxDel(SeqPCdIdx* pthys);
+static void       seqCdTrgDel(SeqPCdTrg* pthys);
 static AjBool     seqBlastAll(AjPSeqin seqin);
 static AjPFile    seqBlastFileOpen(const AjPStr dir, const AjPStr name);
 static AjBool     seqBlastLoadBuff(AjPSeqin seqin);
@@ -789,22 +794,25 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 **
 ** Frees data specific to reading EMBL CD-ROM index files.
 **
-** @param [r] qrydata [void*] query data specific to EMBLCD
+** @param [r] qry [void*] query data specific to EMBLCD
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-static AjBool seqAccessFreeEmblcd(void* qrydata)
+static AjBool seqAccessFreeEmblcd(void* qry)
 {
     SeqPCdQry qryd;
+    AjPSeqQuery query;
     AjBool retval = ajTrue;
 
     ajDebug("seqAccessFreeEmblcd\n");
 
-    qryd = (SeqPCdQry) qrydata;
-
+    query = (AjPSeqQuery) qry;
+    qryd = query->QryData;
     qryd->libr=0;
     qryd->libs=0;
+
+    seqCdQryClose(query);
 
     return retval;
 }
@@ -824,7 +832,7 @@ static AjBool seqAccessFreeEmblcd(void* qrydata)
 
 static AjBool seqCdAll(AjPSeqin seqin)
 {
-    static AjPStr divfile = NULL;
+    AjPStr divfile = NULL;
     SeqPCdFile dfp;
     AjPList list;
     AjPSeqQuery qry;
@@ -856,10 +864,11 @@ static AjBool seqCdAll(AjPSeqin seqin)
     ajDebug("EMBLCD All index directory '%S'\n", qry->IndexDir);
 
     dfp = seqCdFileOpen(qry->IndexDir, "division.lkp", &divfile);
+    ajStrDel(&divfile);
     if(!dfp)
     {
-	ajWarn("Cannot open division file '%S' for database '%S'",
-	       divfile, qry->DbName);
+	ajWarn("Cannot open division file for database '%S'",
+	       qry->DbName);
 	return ajFalse;
     }
 
@@ -1167,9 +1176,10 @@ static void seqCdFileClose(SeqPCdFile* pthis)
 {
     SeqPCdFile thys;
 
-    ajDebug("seqCdFileClose of %F\n", (*pthis)->File);
-
     thys = *pthis;
+    if(!thys) return;
+
+    ajDebug("seqCdFileClose of %F\n", (*pthis)->File);
 
     ajFileClose(&thys->File);
     AJFREE(thys->Header);
@@ -1713,16 +1723,20 @@ static AjBool seqCdReadHeader(SeqPCdFile fil)
 static AjBool seqCdTrgOpen(const AjPStr dir, const char* name,
 			   SeqPCdFile* trgfil, SeqPCdFile* hitfil)
 {
-    static AjPStr tmpname  = NULL;
-    static AjPStr fullname = NULL;
+    AjPStr tmpname  = NULL;
+    AjPStr fullname = NULL;
 
     ajFmtPrintS(&tmpname, "%s.trg",name);
     *trgfil = seqCdFileOpen(dir, ajStrGetPtr(tmpname), &fullname);
+    ajStrDel(&tmpname);
     if(!*trgfil)
 	return ajFalse;
 
     ajFmtPrintS(&tmpname, "%s.hit",name);
     *hitfil = seqCdFileOpen(dir, ajStrGetPtr(tmpname), &fullname);
+    ajStrDel(&tmpname);
+    ajStrDel(&fullname);
+
     if(!*hitfil)
 	return ajFalse;
 
@@ -2934,24 +2948,24 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
 **
 ** Frees data specific to reading EMBOSS B+tree index files.
 **
-** @param [r] qrydata [void*] query data specific to EMBLCD
+** @param [r] qry [void*] query data specific to EMBLCD
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-static AjBool seqAccessFreeEmboss(void* qrydata)
+static AjBool seqAccessFreeEmboss(void* qry)
 {
+    AjPSeqQuery query;
     SeqPEmbossQry qryd;
     AjBool retval = ajTrue;
 
     ajDebug("seqAccessFreeEmboss\n");
 
-    qryd = (SeqPEmbossQry) qrydata;
-
-    qryd->libs = NULL;
-    qryd->libr = NULL;
-
+    query = (AjPSeqQuery) qry;
+    qryd = query->QryData;
     qryd->nentries = -1;
+
+    seqEmbossQryClose(query);
 
     return retval;
 }
@@ -5045,6 +5059,8 @@ static AjBool seqCdQryClose(AjPSeqQuery qry)
     ajDebug("seqCdQryClose clean up qryd\n");
 
     qryd = qry->QryData;
+    if(!qryd)
+	return ajTrue;
 
     ajCharDel(&qryd->name);
     ajStrDel(&qryd->divfile);
@@ -5053,7 +5069,9 @@ static AjBool seqCdQryClose(AjPSeqQuery qry)
     ajStrDel(&qryd->seqfile);
     ajStrDel(&qryd->srcfile);
     ajStrDel(&qryd->tblfile);
-    ajStrDel(&qryd->idxLine->EntryName);
+
+    seqCdIdxDel(&qryd->idxLine);
+    seqCdTrgDel(&qryd->trgLine);
 
     seqCdFileClose(&qryd->ifp);
     seqCdFileClose(&qryd->dfp);
@@ -6449,10 +6467,9 @@ static AjBool seqHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
 {
     AjPStr url              = NULL;
     AjPStr portstr          = NULL;
-    static AjPRegexp urlexp = NULL;
 
-    if(!urlexp)
-	urlexp = ajRegCompC("^http://([a-z0-9.-]+)(:[0-9]+)?(.*)");
+    if(!seqRegHttpUrl)
+	seqRegHttpUrl = ajRegCompC("^http://([a-z0-9.-]+)(:[0-9]+)?(.*)");
 
     if(!ajNamDbGetUrl(qry->DbName, &url))
     {
@@ -6460,21 +6477,21 @@ static AjBool seqHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
 	return ajFalse;
     }
 
-    if(!ajRegExec(urlexp, url))
+    if(!ajRegExec(seqRegHttpUrl, url))
     {
 	ajErr("invalid URL '%S' for database '%S'", url, qry->DbName);
 	return ajFalse;
     }
     
     ajDebug("seqHttpUrl db: '%S' url: '%S'\n", qry->DbName, url);
-    ajRegSubI(urlexp, 1, host);
-    ajRegSubI(urlexp, 2, &portstr);
+    ajRegSubI(seqRegHttpUrl, 1, host);
+    ajRegSubI(seqRegHttpUrl, 2, &portstr);
     if(ajStrGetLen(portstr))
     {
 	ajStrCutStart(&portstr, 1);
 	ajStrToInt(portstr, iport);
     }
-    ajRegSubI(urlexp, 3, urlget);
+    ajRegSubI(seqRegHttpUrl, 3, urlget);
     ajStrDel(&portstr);
     ajStrDel(&url);
 
@@ -6498,12 +6515,11 @@ static AjBool seqHttpUrl(const AjPSeqQuery qry, ajint* iport, AjPStr* host,
 static AjBool seqHttpProxy(const AjPSeqQuery qry, ajint* proxyport,
 			   AjPStr* proxyname)
 {
-    static AjPRegexp proxexp = NULL;
     AjPStr proxyStr          = NULL;
     AjPStr proxy             = NULL;
 
-    if(!proxexp)
-	proxexp = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
+    if(!seqRegHttpProxy)
+	seqRegHttpProxy = ajRegCompC("^([a-z0-9.-]+):([0-9]+)$");
 
     ajNamGetValueC("proxy", &proxy);
     if(ajStrGetLen(qry->DbProxy))
@@ -6512,10 +6528,10 @@ static AjBool seqHttpProxy(const AjPSeqQuery qry, ajint* proxyport,
     if(ajStrMatchC(proxy, ":"))
 	ajStrAssignC(&proxy, "");
 
-    if(ajRegExec(proxexp, proxy))
+    if(ajRegExec(seqRegHttpProxy, proxy))
     {
-	ajRegSubI(proxexp, 1, proxyname);
-	ajRegSubI(proxexp, 2, &proxyStr);
+	ajRegSubI(seqRegHttpProxy, 1, proxyname);
+	ajRegSubI(seqRegHttpProxy, 2, &proxyStr);
 	ajStrToInt(proxyStr, proxyport);
 	ajStrDel(&proxyStr);
 	ajStrDel(&proxy);
@@ -7854,6 +7870,45 @@ void ajSeqPrintAccess(AjPFile outf, AjBool full)
 
 
 
+/* @funcstatic seqCdIdxDel ****************************************************
+**
+** Destructor for SeqPCdIdx
+**
+** @param [d] pthys [SeqPCdIdx*] Cd index object
+** @return [void]
+******************************************************************************/
+
+static void seqCdIdxDel(SeqPCdIdx* pthys)
+{
+    SeqPCdIdx thys = *pthys;
+    if(!thys) return;
+
+    ajStrDel(&thys->EntryName);
+    AJFREE(*pthys);
+}
+
+
+/* @funcstatic seqCdTrgDel ****************************************************
+**
+** Destructor for SeqPCdTrg
+**
+** @param [d] pthys [SeqPCdTrg*] Cd index target object
+** @return [void]
+******************************************************************************/
+
+static void seqCdTrgDel(SeqPCdTrg* pthys)
+{
+    SeqPCdTrg thys = *pthys;
+    if(!thys) return;
+
+    ajStrDel(&thys->Target);
+    AJFREE(*pthys);
+}
+
+
+
+
+
 /* @func ajSeqDbExit **********************************************************
 **
 ** Cleans up sequence database processing internal memory
@@ -7865,7 +7920,8 @@ void ajSeqPrintAccess(AjPFile outf, AjBool full)
 void ajSeqDbExit(void)
 {
     ajRegFree(&seqCdDivExp);
-
+    ajRegFree(&seqRegHttpProxy);
+    ajRegFree(&seqRegHttpUrl);
     ajCharDel(&seqCdName);
 
     return;

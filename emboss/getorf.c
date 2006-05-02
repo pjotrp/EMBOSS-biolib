@@ -69,11 +69,11 @@ int main(int argc, char **argv)
 
     AjPSeqall seqall;
     AjPSeqout seqout;
-    AjPStr *tablelist;
+    AjPStr tablestr;
     ajint table;
     ajint minsize;
     ajint maxsize;
-    AjPStr *findlist;
+    AjPStr findstr;
     ajint find;
     AjBool methionine;
     AjBool circular;
@@ -95,10 +95,10 @@ int main(int argc, char **argv)
     
     seqout     = ajAcdGetSeqoutall("outseq");
     seqall     = ajAcdGetSeqall("sequence");
-    tablelist  = ajAcdGetList("table");
+    tablestr   = ajAcdGetListSingle("table");
     minsize    = ajAcdGetInt("minsize");
     maxsize    = ajAcdGetInt("maxsize");
-    findlist   = ajAcdGetList("find");
+    findstr    = ajAcdGetListSingle("find");
     methionine = ajAcdGetBool("methionine");
     circular   = ajAcdGetBool("circular");
     reverse    = ajAcdGetBool("reverse");
@@ -106,11 +106,11 @@ int main(int argc, char **argv)
     
     
     /* initialise the translation table */
-    ajStrToInt(tablelist[0], &table);
+    ajStrToInt(tablestr, &table);
     trnTable = ajTrnNewI(table);
     
     /* what sort of ORF are we looking for */
-    ajStrToInt(findlist[0], &find);
+    ajStrToInt(findstr, &find);
     
     /*
     ** get the minimum size converted to protein length if storing
@@ -160,8 +160,15 @@ int main(int argc, char **argv)
     
     ajSeqWriteClose(seqout);
     ajTrnDel(&trnTable);
-    
-    ajExit();
+
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDel(&sseq);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&tablestr);
+    ajStrDel(&findstr);
+
+    embExit();
 
     return 0;
 }

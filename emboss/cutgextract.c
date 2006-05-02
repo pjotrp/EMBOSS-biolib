@@ -54,7 +54,9 @@ typedef struct CutgSValues
 } CutgOValues;
 #define CutgPValues CutgOValues*
 
-static AjPStr savepid = NULL;
+static AjPStr cutgextractSavepid = NULL;
+static AjPStr cutgextractLine = NULL;
+static AjPStr cutgextractOrg  = NULL;
 
 static char *cutgextract_next(AjPFile inf, const AjPStr wildspecies,
 			      AjPStr* pspecies, AjPStr* pdoc);
@@ -203,7 +205,7 @@ int main(int argc, char **argv)
 		       value->Count[0] - savecount[0],
 		       value->Count[1] - savecount[1],
 		       value->Count[2] - savecount[2],
-		       savepid);
+		       cutgextractSavepid);
 	    }
 	}
 	ajStrDel(&entry);
@@ -280,6 +282,24 @@ int main(int argc, char **argv)
 
     ajTableFree(&table);
     ajListDel(&flist);
+    ajStrDel(&wild);
+    ajStrDel(&release);
+    ajStrDel(&wildspecies);
+    ajStrDel(&filename);
+    ajFileClose(&logf);
+
+    ajStrDel(&cutgextractSavepid);
+    ajStrDel(&cutgextractLine);
+    ajStrDel(&cutgextractOrg);
+
+    ajStrDel(&fname);
+    ajStrDel(&tmpkey);
+    ajStrDel(&species);
+    ajStrDel(&docstr);
+    ajStrDel(&division);
+    ajStrDel(&baseentry);
+
+    ajStrTableFree(&table);
 
     ajExit();
 
@@ -318,8 +338,6 @@ int main(int argc, char **argv)
 static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
 			      AjPStr* pspecies, AjPStr* pdoc)
 {
-    static AjPStr line = NULL;
-    static AjPStr org  = NULL;
     AjPStrTok handle    = NULL;
     AjPStr token = NULL;
     ajint i;
@@ -328,28 +346,28 @@ static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
     char c;
     AjBool done = ajFalse;
 
-    if(!line)
-    {
-	line = ajStrNew();
-	org  = ajStrNew();
-    }
+    if(!cutgextractLine)
+	cutgextractLine = ajStrNew();
 
-    ajStrAssignC(&line,"");
+    if(!cutgextractOrg)
+	cutgextractOrg  = ajStrNew();
+
+    ajStrAssignC(&cutgextractLine,"");
     ajStrAssignC(pdoc,"");
     while (!done)
     {
 
-	while(*ajStrGetPtr(line) != '>')
-	    if(!ajFileReadLine(inf,&line))
+	while(ajStrGetCharFirst(cutgextractLine) != '>')
+	    if(!ajFileReadLine(inf,&cutgextractLine))
 		return NULL;
 
-	handle = ajStrTokenNewC(line,"\\\n\t\r");
+	handle = ajStrTokenNewC(cutgextractLine,"\\\n\t\r");
 	for(i=0;i<7;++i) {
 	    ajStrTokenNextParseC(&handle,"\\\n\t\r",&token);
 	    if(i==5)
 	    {
-		ajStrAssignC(&org,"E");
-		ajStrAppendS(&org, token);
+		ajStrAssignC(&cutgextractOrg,"E");
+		ajStrAppendS(&cutgextractOrg, token);
 		ajStrAssignS(pspecies, token);
 		if(ajStrMatchWildS(token,wildspecies))
 		{
@@ -383,7 +401,7 @@ static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
 		ajStrAppendC(pdoc, "#PI ");
 		ajStrAppendS(pdoc, token);
 		ajStrAppendC(pdoc, "\n");
-		ajStrAssignS(&savepid, token);
+		ajStrAssignS(&cutgextractSavepid, token);
 		break;
 	    case 5:
 		ajStrAppendC(pdoc, "#OS ");
@@ -402,12 +420,12 @@ static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
 
 	ajStrTokenDel(&handle);
 	if(!done)
-	    if(!ajFileReadLine(inf,&line))
+	    if(!ajFileReadLine(inf,&cutgextractLine))
 		return NULL;
     }
 
-    len = ajStrGetLen(org);
-    p   = ajStrGetuniquePtr(&org);
+    len = ajStrGetLen(cutgextractOrg);
+    p   = ajStrGetuniquePtr(&cutgextractOrg);
     for(i=0;i<len;++i)
     {
 	c = p[i];
@@ -458,8 +476,8 @@ static ajint cutgextract_readcodons(AjPFile inf, AjBool allrecords,
 	16,15,57,59,60,58,24,25,34,33,39,40,20,19,11,12,
 	10, 9,63,62, 8, 7,14,13,21,23,22,32,61, 1, 0, 2
     };
-    static AjPStr line  = NULL;
-    static AjPStr value = NULL;
+    AjPStr line  = NULL;
+    AjPStr value = NULL;
     ajint thiscount[64];
 
     AjPStrTok token = NULL;
@@ -488,6 +506,10 @@ static ajint cutgextract_readcodons(AjPFile inf, AjBool allrecords,
 	    nstops += n;
     }
 
+    ajStrDel(&line);
+    ajStrDel(&value);
+    ajStrTokenDel(&token);
+
     if(!allrecords)
 	if(nstops > 1)
 	    return -1;
@@ -496,8 +518,6 @@ static ajint cutgextract_readcodons(AjPFile inf, AjBool allrecords,
     {
 	count[i] += thiscount[i];
     }	
-
-    ajStrTokenDel(&token);
 
     return nstops;
 }

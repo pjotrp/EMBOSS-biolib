@@ -2550,8 +2550,29 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 
     
     if(!ok)
+    {
+	ajRegFree(&exp1);
+	ajRegFree(&exp2);
+	ajStrDel(&line);
+	ajStrDel(&str);
+	ajStrDel(&xentry);
+	ajStrDel(&source);
+	ajStrDel(&class);
+	ajStrDel(&fold);
+	ajStrDel(&super);
+	ajStrDel(&family);
+	ajStrDel(&domain);
+	ajStrDel(&pdb);
+	ajStrDel(&tentry);
+	ajStrDel(&stmp);
+	ajStrDel(&Acc);
+	ajStrDel(&Spr);
+	ajStrDel(&SeqPdb);
+	ajStrDel(&SeqSpr);
+	ajStrDel(&sse);
+	ajStrDel(&sss);
 	return NULL;
-    
+    }    
     
     while(ok && (!ajStrPrefixC(line,"//")))
     {

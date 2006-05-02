@@ -80,13 +80,16 @@ int main(int argc, char **argv)
     ajSeqWriteClose(seqout);
     ajSeqWriteClose(junkout);
 
-    if(gotone)
-	ajExit();
-    else
-    {
-	ajWarn("No matches found.");
-	ajExitBad();
-    }
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajSeqoutDel(&junkout);
+    ajStrDel(&exclude);
+    ajStrDel(&pattern);
+    ajStrDel(&name);
+    ajStrDel(&acc);
+
+    embExit();
 
     return 0;
 }
@@ -99,7 +102,7 @@ int main(int argc, char **argv)
 ** If the list of names starts with a '@', open that file, read in
 ** the list of names and replaces the input string with the names
 **
-** Else simlpy copy the exclude list
+** Else simply copy the exclude list
 **
 ** @param [r] exclude [const AjPStr] names to search for or 'file'
 ** @param [w] pattern [AjPStr*] names to search for or 'file'

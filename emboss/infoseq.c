@@ -405,7 +405,15 @@ int main(int argc, char **argv)
     ajStrDel(&altsv);
     ajStrDel(&altgi);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDel(&altusa);
+    ajStrDel(&altname);
+    ajStrDel(&altacc);
+    ajStrDel(&altgi);
+    ajStrDel(&altsv);
+
+    embExit();
 
     return 0;
 }

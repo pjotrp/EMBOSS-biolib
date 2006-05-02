@@ -141,14 +141,6 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outfile, "\n\n\n");
 	ajFmtPrintF(outfile, "Palindromes:\n");
 
-	/* check sequence is of type nucleotide else return error */
-	if(!ajSeqIsNuc(sequence))
-	{
-	    ajFmtPrintF(outfile,"Error, sequence must be a "
-			"nucleotide sequence");
-	    ajExit();
-	}
-    
 
 	/* set vars in readiness to enter loop */
 	seqstr = ajStrNewC(ajSeqChar(sequence));
@@ -278,13 +270,14 @@ int main(int argc, char **argv)
 	ajStrDel(&seqstr);
     
     }
-  
-  
-  
-  
+
     ajFileClose(&outfile);
-  
-    ajExit();
+
+    ajSeqallDel(&seqall);
+    ajSeqDel(&sequence);
+    ajStrDel(&seqstr);
+
+    embExit();
 
     return 0;
 }

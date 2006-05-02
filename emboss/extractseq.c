@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     AjPRange regions;
     AjPStr newstr = NULL;
     AjBool separate;
-    AjPList strlist;
+    AjPList strlist = NULL;
     ajint nr;
     ajint i;
     ajint st;
@@ -122,6 +122,13 @@ int main(int argc, char **argv)
 
 
     ajSeqWriteClose(seqout);
+
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+
+    ajRangeDel(&regions);
+    ajStrDel(&newstr);
+    ajListstrFree(&strlist);
 
     ajExit();
 

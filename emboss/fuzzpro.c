@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
     plen = ajStrGetLen(pattern);
 
-    ajStrAssignC(&opattern,ajStrGetPtr(pattern));
+    ajStrAssignS(&opattern,pattern);
     if(!(type=embPatGetType(opattern,&pattern,mismatch,1,&m,&amino,&carboxyl)))
 	ajFatal("Illegal pattern");
     embPatCompile(type,pattern,&plen,&buf,off,&sotable,&solimit,&m,
@@ -123,18 +123,23 @@ int main(int argc, char **argv)
 	ajFeattableDel(&tab);
 	
 	ajListDel(&l);
+	ajStrDel(&text);
     }
 
 
 
-    if(type==6)
-      for(i=0;i<m;++i) AJFREE(skipm[i]);
-
-    if(tidy)
-	AJFREE(tidy);
+    if(skipm)
+    {
+	for(i=0;i<m;++i) AJFREE(skipm[i]);
+	AJFREE(skipm);
+    }
+    AJFREE(tidy);
 
     ajStrDel(&pattern);
+    ajStrDel(&opattern);
     ajStrDel(&seqname);
+    ajStrDel(&tmpstr);
+    ajSeqallDel(&seqall);
     ajSeqDel(&seq);
 
     ajReportClose(report);
@@ -168,13 +173,12 @@ static void fuzzpro_report_hits(AjPList l, ajint hits,
     EmbPMatMatch m;
     AjPStr s;
     AjPFeature gf = NULL;
-    static AjPStr fthit;
+    AjPStr fthit = NULL;
     ajint begin;
 
     begin = ajSeqBegin(seq) - 1;
 
-    if(!fthit)
-	ajStrAssignC(&fthit, "hit");
+    ajStrAssignC(&fthit, "hit");
 
     s = ajStrNew();
 
@@ -200,6 +204,7 @@ static void fuzzpro_report_hits(AjPList l, ajint hits,
     ajReportWrite(report, tab, seq);
 
     ajStrDel(&s);
+    ajStrDel(&fthit);
 
     return;
 }

@@ -36,7 +36,7 @@ section: additional [
 ]
 
   integer: mincount  [
-    optional: "Y"
+    additional: "Y"
     default: "1"
     minimum: "1"
     information: "Minimum word count to report"

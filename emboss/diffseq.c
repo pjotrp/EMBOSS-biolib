@@ -170,7 +170,7 @@ int main(int argc, char **argv)
     embWordLength(wordlen);
     if(embWordGetTable(&seq1MatchTable, seq1))
 	/* get table of words */
-	matchlist = embWordBuildMatchTable(&seq1MatchTable, seq2, ajTrue);
+	matchlist = embWordBuildMatchTable(seq1MatchTable, seq2, ajTrue);
 
 
     /* get the minimal set of overlapping matches */

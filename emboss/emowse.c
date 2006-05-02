@@ -126,23 +126,24 @@ static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
 
 int main(int argc, char **argv)
 {
-    AjPSeq seq;
-    AjPSeqall seqall;
-    AjPFile outf;
-    AjPFile mwinf;
-    AjPFile ffile;
-    AjPStr *enzyme;
+    AjPSeq seq = NULL;
+    AjPSeqall seqall = NULL;
+    AjPFile outf = NULL;
+    AjPFile mwinf = NULL;
+    AjPFile ffile = NULL;
+    AjPStr enzyme = NULL;
     ajint smolwt;
     ajint range;
     float tol;
     float partials;
-    AjPDouble freqs;
+    AjPDouble freqs = NULL;
     ajint begin;
     ajint end;
     double smw;
     ajint rno;
+    ajint i;
 
-    AjPList flist;
+    AjPList flist = NULL;
     EmbPMdata *data = NULL;
     ajint dno;
     ajint nfrags;
@@ -153,7 +154,7 @@ int main(int argc, char **argv)
 
     seqall   = ajAcdGetSeqall("sequence");
     mwinf    = ajAcdGetInfile("infile");
-    enzyme   = ajAcdGetList("enzyme");
+    enzyme   = ajAcdGetListSingle("enzyme");
     smolwt   = ajAcdGetInt("weight");
     range    = ajAcdGetInt("pcrange");
     ffile    = ajAcdGetDatafile("frequencies");
@@ -166,8 +167,10 @@ int main(int argc, char **argv)
 
     freqs = ajDoubleNewL(FGUESS);
     emowse_read_freqs(ffile, &freqs);
-    if(sscanf(ajStrGetPtr(*enzyme),"%d",&rno)!=1)
-	ajFatal("Illegal enzyme entry [%S]",*enzyme);
+    ajFileClose(&ffile);
+
+    if(ajFmtScanS(enzyme,"%d",&rno)!=1)
+	ajFatal("Illegal enzyme entry [%S]",enzyme);
 
 
     if(!(dno = emowse_read_data(mwinf,&data)))
@@ -194,19 +197,33 @@ int main(int argc, char **argv)
 
 	emowse_match(data,dno,flist,nfrags,(double)tol,seq,hlist,
 		     (double)partials,
-	      smw,rno,freqs);
+		     smw,rno,freqs);
 
 	ajListDel(&flist);
     }
 
 
     emowse_print_hits(outf,hlist,dno,data);
+    for(i=0;i<dno;i++)
+    {
+	ajStrDel(&data[i]->sdata);
+	AJFREE(data[i]);
+    }
+    AJFREE(data);
 
     ajListDel(&hlist);
 
     ajFileClose(&mfptr);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajFileClose(&outf);
+    ajStrDel(&enzyme);
+
+    ajDoubleDel(&freqs);
+    ajListDel(&flist);
+
+    embExit();
 
     return 0;
 }
@@ -244,7 +261,6 @@ static void emowse_read_freqs(AjPFile finf, AjPDouble *freqs)
     }
 
     ajStrDel(&str);
-    ajFileClose(&finf);
 
     return;
 }
@@ -320,6 +336,7 @@ static ajint emowse_read_data(AjPFile inf, EmbPMdata** data)
     n = ajListToArray(l,(void ***)data);
     ajListDel(&l);
     ajStrDel(&str);
+    ajStrTokenDel(&token);
 
     return n;
 }

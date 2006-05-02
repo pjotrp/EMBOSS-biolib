@@ -228,6 +228,7 @@ static void reportWriteEmbl(AjPReport thys,
 
     /*  ajFmtPrintF(thys->File, "#EMBL output\n"); */
 
+    ajFeattabOutDel(&thys->Ftquery);
     thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
@@ -262,6 +263,7 @@ static void reportWriteGenbank(AjPReport thys,
 
     /* ajFmtPrintF(thys->File, "#Genbank output\n"); */
 
+    ajFeattabOutDel(&thys->Ftquery);
     thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
@@ -289,17 +291,19 @@ static void reportWriteGenbank(AjPReport thys,
 static void reportWriteGff(AjPReport thys,
 			   const AjPFeattable ftable, const AjPSeq seq)
 {
-    static AjPStr ftfmt = NULL;
+    AjPStr ftfmt = NULL;
 
     if(!ftfmt)
 	ajStrAssignC(&ftfmt, "gff");
 
+    ajFeattabOutDel(&thys->Ftquery);
     thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
 	ajWarn("ajReportWriteGff features output failed format: '%S'",
 	       ftfmt);
+    ajStrDel(&ftfmt);
 
     return;
 }
@@ -326,6 +330,7 @@ static void reportWritePir(AjPReport thys,
     if(!ftfmt)
 	ajStrAssignC(&ftfmt, "pir");
 
+    ajFeattabOutDel(&thys->Ftquery);
     thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
@@ -358,6 +363,7 @@ static void reportWriteSwiss(AjPReport thys,
     if(!ftfmt)
 	ajStrAssignC(&ftfmt, "swissprot");
 
+    ajFeattabOutDel(&thys->Ftquery);
     thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
@@ -1836,7 +1842,7 @@ static void reportWriteTable(AjPReport thys,
     AjPStr tagval = NULL;
     ajint jwid = 6;
     ajint jmin = 6;	 /* minimum width for printing special tags */
-    static AjPStr strstr = NULL;
+    AjPStr strstr = NULL;
 
     outf = thys->File;
     
@@ -1904,7 +1910,8 @@ static void reportWriteTable(AjPReport thys,
     
     ajStrDel(&subseq);
     ajStrDel(&tagval);
-    
+    ajStrDel(&strstr);
+
     ajListIterFree(&iterft);
 
     AJFREE(tagtypes);

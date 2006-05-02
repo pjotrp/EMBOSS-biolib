@@ -80,7 +80,7 @@ int main(int argc, char **argv)
 
 
     if(!pepwindow_getnakaidata(datafile,&matrix[0]))
-	exit(-1);
+	ajExitBad();
 
     s1 = ajStrGetPtr(aa0str);
 
@@ -111,8 +111,14 @@ int main(int argc, char **argv)
     ajGraphxySetMaxMin(mult,0.0,(float)ajSeqLen(seq),min,max);
 
     ajGraphxyDisplay(mult,AJTRUE);
+    ajGraphxyDel(&mult);
 
-    ajExit();
+    ajFileClose(&datafile);
+    ajSeqDel(&seq);
+
+    ajStrDel(&aa0str);
+
+    embExit();
 
     return 0;
 }
@@ -238,7 +244,6 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
 	    ajStrTokenDel(&token);
 	}
     }
-    ajFileClose(&file);
 
     ajStrDel(&buffer);
     ajStrDel(&description);

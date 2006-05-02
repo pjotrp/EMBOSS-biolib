@@ -91,6 +91,7 @@ typedef struct EmbSGroupTop {
 
 ajint         embGrpCompareTwoGnodes(const void * a, const void * b);
 ajint         embGrpCompareTwoPnodes(const void * a, const void * b);
+void          embGrpExit(void);
 void          embGrpGetProgGroups(AjPList glist, AjPList alpha,
 				  char * const env[],
 				  AjBool emboss, AjBool embassy,

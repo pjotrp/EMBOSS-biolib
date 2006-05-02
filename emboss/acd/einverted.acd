@@ -11,7 +11,7 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  seqall: sequence  [
     parameter: "Y"
     type: "dna"
   ]
@@ -56,10 +56,10 @@ section: additional [
 
   integer: maxrepeat  [
     additional: "Y"
-    default: "4000"
+    default: "2000"
     information: "Maximum extent of repeats"
     help: "Maximum separation between the start of repeat and the end
-           of the inverted repeat (the default is 4000 bases)."
+           of the inverted repeat (the default is 2000 bases)."
   ]
 
 endsection: additional

@@ -191,6 +191,7 @@ int main(int argc, char **argv)
     }
 
     ajGraphCloseWin();
+    ajGraphxyDel(&graph);
 
     ajStrDel(&strand);
     ajStrDel(&fstr);
@@ -198,7 +199,12 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajStrDel(&substr);
 
-    ajExit();
+    ajStrDel(&squares);
+    ajStrDel(&diamonds);
+    ajStrDel(&octags);
+    ajStrDel(&txt);
+
+    embExit();
 
     return 0;
 }

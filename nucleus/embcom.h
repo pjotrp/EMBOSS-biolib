@@ -7,17 +7,6 @@ extern "C"
 #define embcom_h
 
 
-#define MAX_W  50
-
-
-struct STR
- {
-  char WORD[MAX_W];
- };
-
-typedef struct STR STRING;
-
-
 struct traccia {
     ajint ind;
     float pc;

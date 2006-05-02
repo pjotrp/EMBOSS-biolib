@@ -255,7 +255,7 @@ void* ajMemResize(void* ptr, ajlong nbytes,
 
     if(ptr == NULL)
     {
-	ptr = ajMemAlloc(nbytes, file, line, nofail);
+	ptr = ajMemCalloc0(nbytes, 1, file, line, nofail);
 	return ptr;
     }
 

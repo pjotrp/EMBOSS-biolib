@@ -652,9 +652,11 @@ static void*     acdGetValueRef(const char *token, const char* type);
 static void*     acdGetValueSingle(const char *token, const char* type);
 static AjBool    acdGetValueAssoc(const AcdPAcd thys, const char *token,
 				  AjPStr *result);
-static void*     acdGetValueNum(const char *token, const char* type,
+static void*     acdGetValueNumC(const char *token, const char* type,
 				ajint pnum, AjBool passbyref);
-static AjPStr    acdGetValStr(const char *token);
+static void*     acdGetValueNumS(const AjPStr token, const char* type,
+				ajint pnum, AjBool passbyref);
+static const AjPStr acdGetValStr(const char *token);
 static void      acdHelp(void);
 static void      acdHelpAppend(const AcdPAcd thys, AjPStr* str, char flag);
 static void      acdHelpAssoc(const AcdPAcd thys, AjPStr *str,
@@ -814,7 +816,7 @@ static AjBool    acdTestStdout(void);
 static void      acdTestUnknown(const AjPStr name, const AjPStr alias,
 				ajint pnum);
 static AjBool    acdTextFormat(AjPStr* text);
-static void      acdTokenToLower(char *token, ajint* number);
+static void      acdTokenToLowerS(AjPStr *token, ajint* number);
 static AjBool    acdUserGet(const AcdPAcd thys, AjPStr* reply);
 static AjBool    acdUserGetPrompt(const AcdPAcd thys, const char* assocqual,
 				  const char* prompt, AjPStr* reply);
@@ -3066,7 +3068,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	acdLog("Trying acdfile '%S' (package '%s' installed)\n",
 	       acdFName, package);
 	acdFile = ajFileNewIn(acdFName);
-	if(acdFile)
+	if(!acdFile)
 	{
 	    acdLog("acdfile '%S' not opened\n", acdFName);
 	    ajStrAssignC(&acdPack, package); /* package name for acdInitP */
@@ -3214,6 +3216,8 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     ajStrDel(&acdRoot);
     ajStrDel(&acdRootInst);
     ajStrDel(&acdPack);
+    ajStrDel(&acdPackRoot);
+    ajStrDel(&acdPackRootName);
     ajStrDel(&acdFName);
     
     return;
@@ -3283,7 +3287,7 @@ static AcdEStage acdStage(const AjPStr token)
     if(ifound > 1)
     {					/* test ambigtype.acd */
 	acdError("ambiguous acd type %S (%S)", token, ambigList);
-	ajStrDelStatic(&ambigList);
+	ajStrDel(&ambigList);
     }
 
     ajStrDel(&ambigList);
@@ -3578,7 +3582,7 @@ static AjPStr acdParseValue(AjPList listwords)
     endq[0] = endquotes[iquote];
     
     ajStrCutStart(&strp, 1);
-    ajStrDelStatic(&acdParseReturn);
+    ajStrDel(&acdParseReturn);
     
     while(!done)
     {
@@ -4203,8 +4207,8 @@ static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
     AcdPAcd vacd;
     AcdPAcd saveqacd = NULL;
     AcdPQual quals;
-    static AjPStr qname = NULL;
-    static AjPStr qtype = NULL;
+    AjPStr qname = NULL;
+    AjPStr qtype = NULL;
     AjPStr protName = NULL;
     ajint itype;
     ajint i;
@@ -4242,8 +4246,8 @@ static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
     if(saveqacd)
 	acd->AssocQuals = saveqacd;
     
-    ajStrDelStatic(&qname);
-    ajStrDelStatic(&qtype);
+    ajStrDel(&qname);
+    ajStrDel(&qtype);
     
     /*
      ** For the first sequence, set the sequence type variable
@@ -4483,7 +4487,7 @@ static void acdDel(AcdPAcd *Pacd)
     {
 	ajStrDel((AjPStr*)&pa->Value);
     }
-    else if(pa->Level == ACD_QUAL)
+    else if(pa->Level == ACD_QUAL || pa->Level == ACD_PARAM)
     {
 	if(!acdType[pa->Type].PassByRef)
 	{
@@ -4694,7 +4698,7 @@ static AcdPAcd acdFindAssoc(const AcdPAcd thys, const AjPStr name,
 	acdErrorAcd(thys,		/* ambigdefattr.acd */
 		    "Attribute or qualifier '%S' ambiguous (%S)\n",
 		    name, ambigList);
-	ajStrDelStatic(&ambigList);
+	ajStrDel(&ambigList);
     }
 
     ajStrDel(&ambigList);
@@ -4852,7 +4856,7 @@ static AjBool acdTestQualC(const char *name)
 	{
 	    /* ajWarn("Ambiguous associated qualifier '%s' (%S)",
 	       name, ambigList);
-	       ajStrDelStatic(&ambigList); */
+	       ajStrDel(&ambigList); */
 	    ajStrDel(&ambigList);
 	    return ajFalse;
 	}
@@ -4886,7 +4890,7 @@ static AjBool acdTestQualC(const char *name)
 	if(ifound > 1)
 	{
 	    /* ajWarn("Ambiguous qualifier '%s' (%S)", name, ambigList);
-	       ajStrDelStatic(&ambigList); */
+	       ajStrDel(&ambigList); */
 	    ajStrDel(&ambigList);
 	    return ajFalse;
 	}
@@ -4990,7 +4994,7 @@ static ajint acdFindTypeC(const char* type)
     if(ifound > 1)
     {			      /* warn now with the list, fail below */
 	ajWarn("ambiguous type %s (%S)", type, ambigList);
-	ajStrDelStatic(&ambigList);
+	ajStrDel(&ambigList);
     }
 
     if(ifound != 1)	       /* Fatal: but covered by other tests */
@@ -5498,7 +5502,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   Toggle  [AjBool]
 ** @valrule   Tree  [AjPPhyloTree*]
 ** @valrule   *TreeSingle  [AjPPhyloTree]
-** @valrule   Value  [AjPStr]
+** @valrule   Value  [const AjPStr]
 ** @valrule   *Name  [AjPStr]
 ** @fcategory misc
 **
@@ -5962,7 +5966,7 @@ static void acdSetArray(AcdPAcd thys)
     float fdef;
     float ftol;
     float ftot;
-    static AjPStr deflist = NULL;
+    AjPStr deflist = NULL;
     ajint i;
     float* array;
     
@@ -6067,7 +6071,9 @@ static void acdSetArray(AcdPAcd thys)
     
     thys->Value = val;
     ajFloatStr(val, precision, &thys->ValStr);
-    
+
+    ajStrDel(&deflist);
+
     return;
 }
 
@@ -12792,13 +12798,13 @@ static void acdSetTree(AcdPAcd thys)
 ** Returns the string value of any ACD item
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPStr] String object. The string was already set by
+** @return [const AjPStr] String object. The string was already set by
 **         acdSetString so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPStr ajAcdGetValue(const char *token)
+const AjPStr ajAcdGetValue(const char *token)
 {
     return acdGetValStr(token);
 }
@@ -12807,7 +12813,7 @@ AjPStr ajAcdGetValue(const char *token)
 ** @rename ajAcdGetValue
 */
 
-AjPStr __deprecated ajAcdValue(const char *token)
+const AjPStr __deprecated ajAcdValue(const char *token)
 {
     return ajAcdGetValue(token);
 }
@@ -12894,18 +12900,19 @@ static void* acdGetValue(const char *token, const char* type)
 {
     void *ret;
     ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
 
-    char *cp = ajCharNewC(token);
+    tmpstr = ajStrNewC(token);
 
     acdLog("acdGetValue '%s' (%s)\n", token, type);
 
-    acdTokenToLower(cp, &pnum);
+    acdTokenToLowerS(&tmpstr, &pnum);
 
-    ret = acdGetValueNum(cp, type, pnum, REF_NONE);
+    ret = acdGetValueNumS(tmpstr, type, pnum, REF_NONE);
 
     acdLog("acdGetValue '%s' result %x\n", token, ret);
 
-    ajCharDel(&cp);
+    ajStrDel(&tmpstr);
 
     return ret;
 }
@@ -12936,18 +12943,19 @@ static void* acdGetValueRef(const char *token, const char* type)
 {
     void *ret;
     ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
 
-    char *cp = ajCharNewC(token);
+    tmpstr = ajStrNewC(token);
 
     acdLog("acdGetValue '%s' (%s)\n", token, type);
 
-    acdTokenToLower(cp, &pnum);
+    acdTokenToLowerS(&tmpstr, &pnum);
 
-    ret = acdGetValueNum(cp, type, pnum, REF_ALL);
+    ret = acdGetValueNumS(tmpstr, type, pnum, REF_ALL);
 
     acdLog("acdGetValueRef '%s' result %x\n", token, ret);
 
-    ajCharDel(&cp);
+    ajStrDel(&tmpstr);
 
     return ret;
 }
@@ -12977,18 +12985,19 @@ static void* acdGetValueSingle(const char *token, const char* type)
 {
     void *ret;
     ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
 
-    char *cp = ajCharNewC(token);
+    tmpstr = ajStrNewC(token);
 
     acdLog("acdGetValue '%s' (%s)\n", token, type);
 
-    acdTokenToLower(cp, &pnum);
+    acdTokenToLowerS(&tmpstr, &pnum);
 
-    ret = acdGetValueNum(cp, type, pnum, REF_SINGLE);
+    ret = acdGetValueNumS(tmpstr, type, pnum, REF_SINGLE);
 
-    acdLog("acdGetValueRef '%s' result %x\n", token, ret);
+    acdLog("acdGetValueSingle '%s' result %x\n", token, ret);
 
-    ajCharDel(&cp);
+    ajStrDel(&tmpstr);
 
     return ret;
 }
@@ -13003,26 +13012,24 @@ static void* acdGetValueSingle(const char *token, const char* type)
 **
 ** @param [r] token [const char*] Token name, optionally including
 **                                a numeric suffix.
-** @return [AjPStr] String.
+** @return [const AjPStr] String.
 **
 ******************************************************************************/
 
-static AjPStr acdGetValStr(const char *token)
+static const AjPStr acdGetValStr(const char *token)
 {
     AcdPAcd acd;
     ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
 
-    static AjPStr tokstr = NULL;
-
-    char *cp = ajCharNewC(token);
+    tmpstr = ajStrNewC(token);
 
     acdLog("acdGetValStr '%s' (%s)\n", token);
 
-    acdTokenToLower(cp, &pnum);
-    ajStrAssignC(&tokstr, cp);
-    AJFREE(cp);
+    acdTokenToLowerS(&tmpstr, &pnum);
 
-    acd = acdFindAcd(tokstr, tokstr, pnum);
+    acd = acdFindAcd(tmpstr, tmpstr, pnum);
+    ajStrDel(&tmpstr);
     if(!acd) return NULL;
 
     return acd->ValStr;
@@ -13049,13 +13056,13 @@ static AjBool acdGetValueAssoc(const AcdPAcd thys, const char *token,
 {
     ajint pnum = 0;		   /* need to get from end of token */
     AcdPAcd pa;
-    char   *cp;
+    AjPStr tmpstr = NULL;
 
-    cp = ajCharNewC(token);
+    tmpstr = ajStrNewC(token);
     acdLog("acdGetValueAssoc '%s' (%S)\n", token, thys->Name);
 
-    acdTokenToLower(cp, &pnum);
-    ajCharDel(&cp);
+    acdTokenToLowerS(&tmpstr, &pnum);
+    ajStrDel(&tmpstr);
 
     if(pnum)
 	acdErrorAcd(thys,
@@ -13079,7 +13086,7 @@ static AjBool acdGetValueAssoc(const AcdPAcd thys, const char *token,
 
 
 
-/* @funcstatic acdGetValueNum *************************************************
+/* @funcstatic acdGetValueNumC ************************************************
 **
 ** Picks up the value by name, type and number.
 **
@@ -13089,15 +13096,15 @@ static AjBool acdGetValueAssoc(const AcdPAcd thys, const char *token,
 ** @param [r] reftype [ajint] Reference passing type.
 **                            REF_NONE means ACD still owns the value,
 **                            REF_ALL means the caller owns the value,
-**                            REF_SINGLE menas the caller owns one value,
+**                            REF_SINGLE means the caller owns one value,
 **                            but ACD owns the array
 ** @return [void*] Value of unknown type.
 ** @cre Aborts if not found.
 **
 ******************************************************************************/
 
-static void* acdGetValueNum(const char *token, const char* type,
-			    ajint pnum, ajint reftype)
+static void* acdGetValueNumC(const char *token, const char* type,
+			     ajint pnum, ajint reftype)
 {
     AcdPAcd pa;
     AcdPAcd ret = NULL;
@@ -13148,7 +13155,7 @@ static void* acdGetValueNum(const char *token, const char* type,
     if(ifound > 1)
     {
 	ajWarn("Ambiguous qualifier '-%s' (%S)", token, ambigList);
-	ajStrDelStatic(&ambigList);
+	ajStrDel(&ambigList);
     }
 
     if(ifound == 1)
@@ -13169,6 +13176,33 @@ static void* acdGetValueNum(const char *token, const char* type,
     ajDie("Qualifier '-%s' not found\n", token);
 
     return NULL;
+}
+
+
+
+
+/* @funcstatic acdGetValueNumS ************************************************
+**
+** Picks up the value by name, type and number.
+**
+** @param [r] token [const AjPStr] Token name
+** @param [r] type [const char*] ACD type
+** @param [r] pnum [ajint] parameter number, or 0 for a general qualifier.
+** @param [r] reftype [ajint] Reference passing type.
+**                            REF_NONE means ACD still owns the value,
+**                            REF_ALL means the caller owns the value,
+**                            REF_SINGLE means the caller owns one value,
+**                            but ACD owns the array
+** @return [void*] Value of unknown type.
+** @cre Aborts if not found.
+**
+******************************************************************************/
+
+static void* acdGetValueNumS(const AjPStr token, const char* type,
+                             ajint pnum, ajint reftype)
+{
+    return acdGetValueNumC(ajStrGetPtr(token), type,
+			   pnum, reftype);
 }
 
 
@@ -14581,7 +14615,7 @@ static void acdHelpText(const AcdPAcd thys, AjPStr* str)
 	
 	acdVarResolve(&msg);
 	ajStrAssignS(str, msg);
-	ajStrDelStatic(&msg);
+	ajStrDel(&msg);
     }
 
     return;
@@ -15218,7 +15252,7 @@ static AjBool acdSetQualDefInt(AcdPAcd thys, const char* name,
 			       ajint value)
 {
     AjPStr *attrstr;
-    static AjPStr qname = NULL;
+    AjPStr qname = NULL;
     AcdPAcd acd;
 
     ajStrAssignC(&qname, name);
@@ -15235,6 +15269,8 @@ static AjBool acdSetQualDefInt(AcdPAcd thys, const char* name,
 	return ajFalse;
 
     ajFmtPrintS(&attrstr[DEF_DEFAULT], "%d", value);
+
+    ajStrDel(&qname);
 
     return ajTrue;
 }
@@ -17492,12 +17528,12 @@ static AjBool acdExpExists(AjPStr* result, const AjPStr str)
 **
 ** @param [r] var [const AjPStr] Variable reference
 ** @param [w] name [AjPStr*] Variable name
-** @param [w] attrname [AjPStr*] Attribute name, or "default" if not set.
+** @param [w] pattrname [AjPStr*] Attribute name, or "default" if not set.
 ** @return [AjBool] ajTrue if successfully split
 ** @@
 ******************************************************************************/
 
-static AjBool acdVarSplit(const AjPStr var, AjPStr* name, AjPStr* attrname)
+static AjBool acdVarSplit(const AjPStr var, AjPStr* name, AjPStr* pattrname)
 {
     ajint i;
 
@@ -17505,12 +17541,12 @@ static AjBool acdVarSplit(const AjPStr var, AjPStr* name, AjPStr* attrname)
     i = ajStrFindC(*name, ".");		/* qualifier with value */
     if(i > 0)
     {
-	ajStrAssignS(attrname, var);
+	ajStrAssignS(pattrname, var);
 	ajStrKeepRange(name, 0, i-1); /* strip any value and keep testing */
-	ajStrCutStart(attrname, i+1);
+	ajStrCutStart(pattrname, i+1);
     }
     else
-	ajStrDelStatic(attrname);
+	ajStrDelStatic(pattrname);
 
     return ajTrue;
 }
@@ -19112,14 +19148,14 @@ static AcdPAcd acdFindParam(ajint PNum)
 ** Attributes include any specially calculated by the acdSet function
 ** for that type.
 **
-** @param [u] result [AjPStr*] Resulting attribute value
+** @param [u] presult [AjPStr*] Resulting attribute value
 ** @param [r] name [const AjPStr] ACD item name
 ** @param [r] attrib [const AjPStr] attribute name
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool acdGetAttr(AjPStr* result,
+static AjBool acdGetAttr(AjPStr* presult,
 			 const AjPStr name, const AjPStr attrib)
 {
     const char *cp;
@@ -19134,7 +19170,7 @@ static AjBool acdGetAttr(AjPStr* result,
     ajint i;
 
     acdLog("acdGetAttr name '%S' attrib '%S'\n", name, attrib);
-    ajStrDelStatic(result);
+    ajStrDelStatic(presult);
     
     ajStrAssignS(&tempstr, name);
     ajStrFmtLower(&tempstr);
@@ -19161,7 +19197,7 @@ static AjBool acdGetAttr(AjPStr* result,
 	{
 	    if(!acdDoHelp)			/* test undefvar.acd */
 		acdError("Variable '%S' not yet defined\n", name);
-	    ajStrAssignC(result, "...");    /* only for help - patch it up */
+	    ajStrAssignC(presult, "...");    /* only for help - patch it up */
 	    return ajTrue;
 	}
     }
@@ -19170,9 +19206,9 @@ static AjBool acdGetAttr(AjPStr* result,
     {
 	if (!acdDoValid)
 	{
-	    ajStrAssignS(result, pa->ValStr);
+	    ajStrAssignS(presult, pa->ValStr);
 	    acdLog("no attribute name, use valstr for %S '%S'\n",
-		   pa->Name, *result);
+		   pa->Name, *presult);
 	    pa->Used |= USED_ACD;
 	    return ajTrue;
 	}
@@ -19184,9 +19220,9 @@ static AjBool acdGetAttr(AjPStr* result,
 	i = acdFindAttr(attr, attrib);
 	if(i >= 0)
 	{
-	    ajStrAssignS(result, pa->DefStr[i]);
+	    ajStrAssignS(presult, pa->DefStr[i]);
 	    acdLog("default attribute %S found for %S '%S'\n",
-		   attrib, pa->Name, *result);
+		   attrib, pa->Name, *presult);
 	    return ajTrue;
 	}
     }
@@ -19197,9 +19233,9 @@ static AjBool acdGetAttr(AjPStr* result,
 	i = acdFindAttr(attr, attrib);
 	if(i >= 0)
 	{
-	    ajStrAssignS(result, pa->AttrStr[i]);
+	    ajStrAssignS(presult, pa->AttrStr[i]);
 	    acdLog("type attribute %S found for %S '%S'\n",
-		   attrib, pa->Name, *result);
+		   attrib, pa->Name, *presult);
 	    return ajTrue;
 	}
     }
@@ -19214,9 +19250,9 @@ static AjBool acdGetAttr(AjPStr* result,
 	i = acdFindAttr(attr, attrib);
 	if(i >= 0)
 	{
-	    ajStrAssignS(result, pa->SetStr[i]);
+	    ajStrAssignS(presult, pa->SetStr[i]);
 	    acdLog("calculated attribute %S found for %S '%S'\n",
-		   attrib, pa->Name, *result);
+		   attrib, pa->Name, *presult);
 	    return ajTrue;
 	}
     }
@@ -19226,14 +19262,14 @@ static AjBool acdGetAttr(AjPStr* result,
 	acdLog("++isdefined++ Testing\n");
 	if (ajStrGetLen(pa->ValStr))
 	{
-	    ajStrAssignC(result, "Y");
+	    ajStrAssignC(presult, "Y");
 	}
 	else
 	{
-	    ajStrAssignC(result, "N");
+	    ajStrAssignC(presult, "N");
 	}
 	acdLog("isdefined attribute found for %S '%S'\n",
-	       pa->Name, *result);
+	       pa->Name, *presult);
 	return ajTrue;
     }
     
@@ -19297,38 +19333,40 @@ static void acdQualParse(AjPStr* pqual, AjPStr* pnoqual, AjPStr* pqmaster,
 
 
 
-/* @funcstatic acdTokenToLower ************************************************
+/* @funcstatic acdTokenToLowerS ***********************************************
 **
 ** Converts a token name to lower case and looks for a trailing number.
 **
-** @param [u] token [char*] Qualifier name set to lower case
+** @param [u] ptoken [AjPStr*] Qualifier name set to lower case
 **        with number suffix removed
 ** @param [w] number [ajint*] Qualifier number suffix if any.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdTokenToLower(char *token, ajint* number)
+static void acdTokenToLowerS(AjPStr *ptoken, ajint* number)
 {
-    char *cp;
-    char *cq;
+    const char *cp;
+    const char *cq;
     ajint ilen;
 
-    ajCharFmtLower(token);
-    cp = token;
-    cq = &cp[strlen(token)];
+    ajStrFmtLower(ptoken);
+    cp = ajStrGetPtr(*ptoken);
+    cq = cp+ajStrGetLen(*ptoken);
     if(!isdigit((ajint)*--cq))
     {
-	*number = 0;
-	return;
+        *number = 0;
+        return;
     }
 
-    while(isdigit((ajint)*--cq));
+    while(isdigit((ajint)*--cq))
+	;
+
     ++cq;
 
     *number = (ajint) strtol(cq, NULL, 0);
     ilen = cq - cp;
-    token[ilen] = '\0';
+    ajStrCutEnd(ptoken, ajStrGetLen(*ptoken) - ilen);
 
     return;
 }
@@ -19404,7 +19442,7 @@ static AjBool acdIsRequired(const AcdPAcd thys)
 
 static AjBool acdTestDebug(void)
 {
-    ajDebug("acdDebug returning %B", acdDebug);
+    ajDebug("acdDebug returning %B\n", acdDebug);
     return acdDebug;
 }
 
@@ -19433,7 +19471,7 @@ AjBool __deprecated ajAcdDebug(void)
 
 static AjBool acdTestDebugIsSet(void)
 {
-    ajDebug("acdTestDebugIsSet returning %B", acdDebugSet);
+    ajDebug("acdTestDebugIsSet returning %B\n", acdDebugSet);
     return acdDebugSet;
 }
 
@@ -20424,7 +20462,7 @@ static AjBool acdCodeGet(const AjPStr code, AjPStr *msg)
 	ret = ajTrue;
     }
 
-    ajStrDelStatic(&tmpcode);
+    ajStrDel(&tmpcode);
 
     return ret;
 }
@@ -20447,8 +20485,8 @@ static AjBool acdCodeGet(const AjPStr code, AjPStr *msg)
 
 static AjBool acdCodeDef(const AcdPAcd thys, AjPStr *msg)
 {
-    static AjPStr code  = NULL;
-    static AjPStr value = NULL;
+    AjPStr code  = NULL;
+    AjPStr value = NULL;
 
     AjBool ret = ajFalse;
 
@@ -20465,13 +20503,13 @@ static AjBool acdCodeDef(const AcdPAcd thys, AjPStr *msg)
     {
 	ajFmtPrintS(msg, "-%S : %S",
 		    thys->Name, value);
-	ajStrDelStatic(&value);
+	ajStrDel(&value);
 	ret = ajTrue;
     }
     else
 	acdLog("defcode not found '%S'\n", code);
 
-    ajStrDelStatic(&code);
+    ajStrDel(&code);
 
     return ret;
 }
@@ -20494,7 +20532,7 @@ static AjBool acdCodeDef(const AcdPAcd thys, AjPStr *msg)
 static AjBool acdHelpCodeDef(const AcdPAcd thys, AjPStr *msg)
 {
     AjPStr code         = NULL;
-    static AjPStr value = NULL;
+    AjPStr value = NULL;
 
     AjBool ret = ajFalse;
 
@@ -20510,7 +20548,7 @@ static AjBool acdHelpCodeDef(const AcdPAcd thys, AjPStr *msg)
     if(acdCodeGet(code, &value))
     {
 	ajFmtPrintS(msg, "%S", value);
-	ajStrDelStatic(&value);
+	ajStrDel(&value);
 	ret = ajTrue;
     }
     else
@@ -20535,15 +20573,15 @@ static AjBool acdHelpCodeDef(const AcdPAcd thys, AjPStr *msg)
 static void acdCodeInit(void)
 {
     AjPFile codeFile           = NULL;
-    static AjPStr codeFName    = NULL;
-    static AjPStr codeRoot     = NULL;
-    static AjPStr codeRootInst = NULL;
-    static AjPStr codePack     = NULL;
-    static AjPStr codeCode     = NULL;
-    static AjPStr codeValue    = NULL;
-    static AjPStr codeLine     = NULL;
-    static AjPStr codeText     = NULL;
-    static AjPStr codeLanguage = NULL;
+    AjPStr codeFName    = NULL;
+    AjPStr codeRoot     = NULL;
+    AjPStr codeRootInst = NULL;
+    AjPStr codePack     = NULL;
+    AjPStr codeCode     = NULL;
+    AjPStr codeValue    = NULL;
+    AjPStr codeLine     = NULL;
+    AjPStr codeText     = NULL;
+    AjPStr codeLanguage = NULL;
     AjPRegexp codexp = NULL;
     
     if(acdCodeSet)
@@ -20598,7 +20636,7 @@ static void acdCodeInit(void)
 
     ajFileClose(&codeFile);
     
-    ajStrDelStatic(&codeLine);
+    ajStrDel(&codeLine);
     
     acdCodeTable = ajStrTableNew(0);
     
@@ -20619,9 +20657,15 @@ static void acdCodeInit(void)
 	      codeFName, codeCode, codeValue);
     
     ajRegFree(&codexp);
-    ajStrDelStatic(&codeText);
-    ajStrDelStatic(&codeFName);
-    
+    ajStrDel(&codeText);
+    ajStrDel(&codeFName);
+    ajStrDel(&codeRoot);
+    ajStrDel(&codeRootInst);
+    ajStrDel(&codePack);
+    ajStrDel(&codeCode);
+    ajStrDel(&codeValue);
+    ajStrDel(&codeLanguage);
+
     acdCodeSet = ajTrue;
     return;
 }
@@ -20728,7 +20772,7 @@ static void acdSelectPrompt(const AcdPAcd thys)
     AjPStr delim = NULL;
     AjPStr value = NULL;
     AjPStrTok handle;
-    static AjPStr line = NULL;
+    AjPStr line = NULL;
     static char* white = " \t\n\r";
     ajint i = 0;
     
@@ -20755,7 +20799,7 @@ static void acdSelectPrompt(const AcdPAcd thys)
     }
     
     ajStrTokenDel(&handle);
-    ajStrDelStatic(&line);
+    ajStrDel(&line);
     ajStrDel(&value);
     ajStrDel(&delim);
 
@@ -20784,9 +20828,9 @@ static void acdListPrompt(const AcdPAcd thys)
     AjPStrTok handle;
     AjPStrTok codehandle;
 
-    static AjPStr line = NULL;
-    static AjPStr code = NULL;
-    static AjPStr desc = NULL;
+    AjPStr line = NULL;
+    AjPStr code = NULL;
+    AjPStr desc = NULL;
 
     static char* white = " \t\n\r";
 
@@ -20827,9 +20871,9 @@ static void acdListPrompt(const AcdPAcd thys)
     }
 
     ajStrTokenDel(&handle);
-    ajStrDelStatic(&line);
-    ajStrDelStatic(&code);
-    ajStrDelStatic(&desc);
+    ajStrDel(&line);
+    ajStrDel(&code);
+    ajStrDel(&desc);
 
     ajStrDel(&delim);
 
@@ -20996,7 +21040,7 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
     }
 
     ajStrTokenDel(&rephandle);
-    ajStrDelStatic(&repstr);
+    ajStrDel(&repstr);
     
     ilen = ajListstrLength(list);
     acdLog("Found %d matches OK: %b min: %d max: %d\n",
@@ -21037,7 +21081,7 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
     if(ok)
 	acdLog("Before return val[0] '%S'\n", val[0]);
     
-    ajListstrDel(&list);
+    ajListstrFree(&list);
     ajStrDel(&delim);
     ajStrDel(&codedelim);
     ajStrDel(&repdelim);
@@ -21052,6 +21096,7 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
     ajStrDel(&repstr);
     
     ajStrDel(&validstr);
+    ajStrDel(&value);
 
     if(ok)
 	acdLog("Before return val[0] '%S'\n", val[0]);
@@ -21085,22 +21130,22 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
 {
     AjPStr *val = NULL;
     
-    static AjPStr delim=NULL;
-    const AjPStr tmpstr;
+    AjPStr delim=NULL;
+    const AjPStr tmpstr = NULL;
     AjPStr value = NULL;
     AjBool exactcase;
-    AjPStrTok handle;
-    AjPStrTok rephandle;
-    static AjPStr line      = NULL;
-    static AjPStr code      = NULL;
-    static AjPStr desc      = NULL;
+    AjPStrTok handle = NULL;
+    AjPStrTok rephandle = NULL;
+    AjPStr line      = NULL;
+    AjPStr code      = NULL;
+    AjPStr desc      = NULL;
     AjPList list            = NULL;
-    static AjPStr repstr    = NULL;
-    static AjPStr hitstr    = NULL;
-    static AjPStr validstr  = NULL;
+    AjPStr repstr    = NULL;
+    AjPStr hitstr    = NULL;
+    AjPStr validstr  = NULL;
     AjPStr hitstr2 = NULL;
-    static AjPStr ambigList = NULL;
-    static AjPStr repdelim  = NULL;
+    AjPStr ambigList = NULL;
+    AjPStr repdelim  = NULL;
     static char* white = " \t\n\r";
     ajint i = 0;
     ajint k = 0;
@@ -21198,7 +21243,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
 	ajStrTokenDel(&handle);
     }
     ajStrTokenDel(&rephandle);
-    ajStrDelStatic(&repstr);
+    ajStrDel(&repstr);
     
     ilen = ajListstrLength(list);
     
@@ -21233,12 +21278,15 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
     
     ajListstrDel(&list);
     ajStrDel(&value);
-    ajStrDelStatic(&line);
-    ajStrDelStatic(&code);
-    ajStrDelStatic(&desc);
-    ajStrDelStatic(&ambigList);
-    ajStrDelStatic(&hitstr2);
-    
+    ajStrDel(&line);
+    ajStrDel(&code);
+    ajStrDel(&desc);
+    ajStrDel(&ambigList);
+    ajStrDel(&hitstr2);
+    ajStrDel(&delim);
+    ajStrDel(&repdelim);
+    ajStrDel(&validstr);
+
     if(!ok)
 	return NULL;
     

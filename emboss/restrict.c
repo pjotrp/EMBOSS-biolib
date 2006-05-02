@@ -86,7 +86,6 @@ int main(int argc, char **argv)
     AjBool nameit;
     AjBool limit;
     AjBool frags;
-    AjPFile dfile;
 
     AjPFile enzfile = NULL;
     AjPFile equfile = NULL;
@@ -120,7 +119,7 @@ int main(int argc, char **argv)
     limit      = ajAcdGetBool("limit");
     frags      = ajAcdGetBool("fragments");
     nameit     = ajAcdGetBool("name");
-    dfile      = ajAcdGetDatafile("datafile");
+    enzfile      = ajAcdGetDatafile("datafile");
     ifrag      = ajAcdGetBool("solofragment");
     
     /* obsolete. Can be uncommented in acd file and here to reuse */
@@ -140,18 +139,12 @@ int main(int argc, char **argv)
     /* read the local file of enzymes names */
     restrict_read_file_of_enzyme_names(&enzymes);
 
-    if(!dfile)
+    if(!enzfile)
     {
 	ajFileDataNewC(ENZDATA,&enzfile);
 	if(!enzfile)
 	    ajFatal("Cannot locate enzyme file. Run REBASEEXTRACT");
     }
-    else
-    {
-	enzfile = dfile;
-    }
-
-
 
     if(limit)
     {
@@ -210,12 +203,17 @@ int main(int argc, char **argv)
     ajListDel(&l);
     ajSeqDel(&seq);
     ajFileClose(&enzfile);
-    if(outf)
-	ajFileClose(&outf);
+    ajFileClose(&outf);
 
     ajReportClose(report);
+    ajReportDel(&report);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajStrDel(&enzymes);
+
+    ajStrTableFree(&table);
+
+    embExit();
 
     return 0;
 }

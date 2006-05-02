@@ -92,10 +92,10 @@ int main(int argc, char **argv)
     ajStrTrimEndC(&pattern," .\t\n");
 
     seqname = ajStrNew();
-    opattern=ajStrNew();
+    opattern = ajStrNew();
 
     /* Copy original pattern regexps */
-    ajStrAssignC(&opattern,ajStrGetPtr(pattern));
+    ajStrAssignS(&opattern,pattern);
 
     if(!(type=embPatGetType(opattern,&pattern,mismatch,0,&m,&amino,&carboxyl)))
 	ajFatal("Illegal pattern");
@@ -134,22 +134,30 @@ int main(int argc, char **argv)
 	ajFeattableDel(&tab);
 
 	ajListDel(&l);
+	ajStrDel(&text);
     }
 
 
 
-    if(type==6)
+    if(skipm)
+    {
 	for(i=0;i<m;++i) AJFREE(skipm[i]);
+	AJFREE(skipm);
+    }
 
-    if(tidy)
-	AJFREE(tidy);
+    AJFREE(tidy);
 
     ajStrDel(&pattern);
+    ajStrDel(&opattern);
     ajStrDel(&seqname);
+    ajStrDel(&tmpstr);
+
     ajSeqDel(&seq);
 
     ajReportClose(report);
     ajReportDel(&report);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
 
     ajExit();
     return 0;
@@ -182,7 +190,7 @@ static void fuzznuc_report_hits(AjPList *l, ajint hits,
     EmbPMatMatch m;
     AjPStr s;
     AjPFeature gf = NULL;
-    static AjPStr fthit;
+    AjPStr fthit = NULL;
     ajint begin;
     ajint end;
     ajint adj;
@@ -239,6 +247,7 @@ static void fuzznuc_report_hits(AjPList *l, ajint hits,
     ajReportWrite(report, tab, seq);
 
     ajStrDel(&s);
+    ajStrDel(&fthit);
 
     return;
 }

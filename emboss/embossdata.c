@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     AjPStr ddir = NULL;
     AjPStr path = NULL;
     AjPStr cmd  = NULL;
-    AjPStr *rstrs = NULL;
+    AjPStr* rstrs = NULL;
 
     ajint result;
     char *p = NULL;
@@ -211,6 +211,8 @@ int main(int argc, char **argv)
     ajStrDel(&ddir);
     ajStrDel(&filename);
     ajFileClose(&outf);
+
+    AJFREE(rstrs);			/* individual strings freed on list */
 
     ajExit();
 

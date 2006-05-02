@@ -144,6 +144,7 @@ static void       seqClone(AjPSeqout outseq, const AjPSeq seq);
 static void       seqDbName(AjPStr* name, const AjPStr db);
 static void       seqDeclone(AjPSeqout outseq);
 static AjBool     seqFileReopen(AjPSeqout outseq);
+static void       seqFormatDel(SeqPSeqFormat* pformat);
 static AjBool     seqoutUfoLocal(const AjPSeqout thys);
 static AjBool     seqoutUsaProcess(AjPSeqout thys);
 static void       seqsetClone(AjPSeqout outseq, const AjPSeqset seq, ajint i);
@@ -925,6 +926,7 @@ static void seqWriteGcg(AjPSeqout outseq)
     }
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -950,6 +952,7 @@ static void seqWriteStaden(AjPSeqout outseq)
 
     sf->width = 60;
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -973,6 +976,7 @@ static void seqWriteText(AjPSeqout outseq)
     seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -2142,6 +2146,7 @@ static void seqWriteCodata(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "\n");
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -2190,6 +2195,7 @@ static void seqWriteNbrf(AjPSeqout outseq)
     sf->spacer = 11;
     strcpy(sf->endstr, "*\n");
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -2373,6 +2379,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
     sf->numjust = ajTrue;
     
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
     
     return;
 }
@@ -2537,7 +2544,8 @@ static void seqWriteEmbl(AjPSeqout outseq)
     sf->numjust = ajTrue;
     
     seqWriteSeq(outseq, sf);
-    
+    seqFormatDel(&sf);
+
     return;
 }
 
@@ -2709,6 +2717,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
     sf->width = 60;
     
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
     
     return;
 }
@@ -2881,6 +2890,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
     sf->numwidth = 8;
     
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
     
     return;
 }
@@ -2935,6 +2945,7 @@ static void seqWriteGff(AjPSeqout outseq)
        */
     
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
     
     if(ajStrMatchC(outseq->Type, "P"))
 	ajFmtPrintF(outseq->File, "##end-Protein\n");
@@ -2984,6 +2995,7 @@ static void seqWriteStrider(AjPSeqout outseq)
     strcpy(sf->endstr, "\n//");
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -3012,6 +3024,7 @@ static void seqWriteFitch(AjPSeqout outseq)
     sf->width  = 60;
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -3285,6 +3298,7 @@ static void seqWriteAsn1(AjPSeqout outseq)
     strcpy(sf->endstr, "\"\n      } } ,");
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -3313,6 +3327,7 @@ static void seqWriteIg(AjPSeqout outseq)
     strcpy(sf->endstr, "1");	/* linear (DNA) */
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -3342,6 +3357,7 @@ static void seqWriteAcedb(AjPSeqout outseq)
     strcpy(sf->endstr, "\n");
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
     return;
 }
@@ -3440,6 +3456,7 @@ static void seqWriteDebug(AjPSeqout outseq)
     sf->width    = 50;
     
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
     
     return;
 }
@@ -4846,6 +4863,9 @@ void ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
     sf->width  = 60;
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
+
+    ajSeqoutDel(&outseq);
 
     return;
 }
@@ -4891,7 +4911,23 @@ void ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
     sf->width  = 60;
 
     seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
 
+    return;
+}
+
+
+/* @funcstatic seqFormatDel ***************************************************
+**
+** Delete a sequence format object
+**
+** @param [d] pformat [SeqPSeqFormat*] Sequence format
+** @return [void]
+******************************************************************************/
+
+static void seqFormatDel(SeqPSeqFormat* pformat)
+{
+    AJFREE(*pformat);
     return;
 }
 

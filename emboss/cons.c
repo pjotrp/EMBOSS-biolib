@@ -109,6 +109,10 @@ int main(int argc, char **argv)
 
     ajStrDel(&cons);
     ajSeqDel(&seqo);
+    ajSeqsetDel(&seqset);
+    ajMatrixDel(&cmpmatrix);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&name);
 
     ajExit ();
 

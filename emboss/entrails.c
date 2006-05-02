@@ -57,6 +57,8 @@ int main(int argc, char **argv)
 
     ajGraphPrintType(outf, full);
 
+    ajFileClose(&outf);
+
     ajExit();
 
     return 0;

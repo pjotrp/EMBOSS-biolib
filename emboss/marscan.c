@@ -170,10 +170,10 @@ int main(int argc, char **argv)
 
 
     /* Copy original patterns for regexps */
-    ajStrAssignC(&opattern16, ajStrGetPtr(pattern16));
-    ajStrAssignC(&opattern16rev, ajStrGetPtr(pattern16rev));
-    ajStrAssignC(&opattern8, ajStrGetPtr(pattern8));
-    ajStrAssignC(&opattern8rev, ajStrGetPtr(pattern8rev));
+    ajStrAssignS(&opattern16, pattern16);
+    ajStrAssignS(&opattern16rev, pattern16rev);
+    ajStrAssignS(&opattern8, pattern8);
+    ajStrAssignS(&opattern8rev, pattern8rev);
 
     if(!(type16=embPatGetType(opattern16,&pattern16,
 			      mismatch16, 0, &m16, &amino16,
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
 	ajStrAssignC(&seqname, ajSeqName(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
-	ajStrAssignSubC(&text, ajSeqCharCopy(seq), begin-1, end-1);
+	ajStrAssignSubC(&text, ajSeqChar(seq), begin-1, end-1);
 	ajStrFmtUpper(&text);
 	adj = begin+end+1;
 
@@ -270,7 +270,6 @@ int main(int argc, char **argv)
 	{
 	    ajListPushList(l16, &l16rev);
 	    ajListSort(l16, embPatRestrictStartCompare);
-
 	}
 
 
@@ -298,6 +297,9 @@ int main(int argc, char **argv)
 	*/
 	ajListDel(&l16);
 	ajListDel(&l8);
+
+	ajListDel(&l16rev);
+	ajListDel(&l8rev);
 
     }
 
@@ -333,13 +335,23 @@ int main(int argc, char **argv)
     ajStrDel(&pattern8);
     ajStrDel(&pattern8rev);
 
+    ajStrDel(&opattern16);
+    ajStrDel(&opattern16rev);
+    ajStrDel(&opattern8);
+    ajStrDel(&opattern8rev);
+
     ajStrDel(&seqname);
     ajSeqDel(&seq);
+    ajSeqallDel(&seqall);
 
     ajReportClose(report);
     ajReportDel(&report);
 
-    ajExit();
+    ajStrDel(&text);
+
+    ajStrDel(&seqname);
+
+    embExit();
 
     return 0;
 }
@@ -369,16 +381,16 @@ static void marscan_stepdown(AjPList l16, AjPList l8, AjPFeattable *tab)
     AjBool stored_match = ajFalse;
 
     /* distance between the patterns in the stored match */
-    ajint stored_dist;
+    ajint stored_dist = 0;
 
     /* position of 16 pattern match in stored match */
-    ajint stored_16_pos;
+    ajint stored_16_pos = 0;
 
     /* position of 8 pattern match in stored match */
-    ajint stored_8_pos;
+    ajint stored_8_pos = 0;
 
     /* position of end of second pattern in stored match */
-    ajint stored_lastpos;
+    ajint stored_lastpos = 0;
 
     /* flag for empty list of length 16 pattern matches*/
     AjBool notend16 = ajTrue;

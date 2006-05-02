@@ -45,7 +45,10 @@ int main(int argc, char **argv)
 
     ajSeqWriteClose(seqout);
 
-    ajExit();
+    ajSeqsetDel(&seqset);
+    ajSeqoutDel(&seqout);
+
+    embExit();
 
     return 0;
 }

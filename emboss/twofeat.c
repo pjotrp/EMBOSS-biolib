@@ -166,7 +166,7 @@ int main(int argc, char **argv)
     /* feature a */
     asource   = ajAcdGetString("asource");
     atype     = ajAcdGetString("atype");
-    asense    = ajAcdGetListI("asense", 1);
+    asense    = ajAcdGetListSingle("asense");
     aminscore = ajAcdGetFloat("aminscore");
     amaxscore = ajAcdGetFloat("amaxscore");
     atag      = ajAcdGetString("atag");
@@ -175,19 +175,19 @@ int main(int argc, char **argv)
     /* feature b */
     bsource   = ajAcdGetString("bsource");
     btype     = ajAcdGetString("btype");
-    bsense    = ajAcdGetListI("bsense", 1);
+    bsense    = ajAcdGetListSingle("bsense");
     bminscore = ajAcdGetFloat("bminscore");
     bmaxscore = ajAcdGetFloat("bmaxscore");
     btag      = ajAcdGetString("btag");
     bvalue    = ajAcdGetString("bvalue");
 
     /* relation */
-    overlap   = ajAcdGetListI("overlap", 1); 
+    overlap   = ajAcdGetListSingle("overlap"); 
     minrange  = ajAcdGetInt("minrange");
     maxrange  = ajAcdGetInt("maxrange");
-    rangetype = ajAcdGetListI("rangetype", 1);
-    sense     = ajAcdGetListI("sense", 1);
-    order     = ajAcdGetListI("order", 1);
+    rangetype = ajAcdGetListSingle("rangetype");
+    sense     = ajAcdGetListSingle("sense");
+    order     = ajAcdGetListSingle("order");
     
     /* output */
     twoout   = ajAcdGetToggle("twoout");

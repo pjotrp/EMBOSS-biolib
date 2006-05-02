@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 
     inf  = ajAcdGetInfile("infile");
     outf = ajAcdGetOutfile("outfile");
-    system = ajAcdGetListI("system",1);
+    system = ajAcdGetListSingle("system");
     if(ajStrMatchC(system, "pc"))
 	pcoutput = ajTrue;
     if(ajStrMatchC(system, "mac"))

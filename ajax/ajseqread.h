@@ -37,7 +37,7 @@ typedef struct SeqSAccess {
   AjBool Query;
   AjBool All;
   AjBool (*Access) (AjPSeqin seqin);
-  AjBool (*AccessFree) (void* qrydata);
+  AjBool (*AccessFree) (void* qry);
   char* Desc;
 } SeqOAccess;
 

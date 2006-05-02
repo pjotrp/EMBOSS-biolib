@@ -192,7 +192,10 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
     ajFileClose(&mfptr);
 
-    ajExit();
+    ajSeqallDel(&a);
+    ajSeqDel(&seq);
+
+    embExit();
 
     return 0;
 }

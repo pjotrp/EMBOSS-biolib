@@ -43,7 +43,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[]);
 int main(int argc, char **argv)
 {
     AjPFile datafile;
-    AjPStr aa0str = 0;
+    AjPStr aa0str = NULL;
     AjPSeqset seqset;
     AjPGraphPlpData graphdata;
     AjPGraph mult;
@@ -175,8 +175,15 @@ int main(int argc, char **argv)
 
 
     ajGraphxyDisplay(mult,AJTRUE);
+    ajGraphxyDel(&mult);
 
-    ajExit();
+    ajSeqsetDel(&seqset);
+    ajFileClose(&datafile);
+    ajStrDel(&aa0str);
+
+    AJFREE(position);
+
+    embExit();
 
     return 0;
 }

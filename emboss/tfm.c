@@ -115,8 +115,10 @@ int main(int argc, char **argv)
     ajStrDel(&pager);
     ajStrDel(&line);
     ajStrDel(&cmd);
-    
-    ajExit();
+    ajStrDel(&program);
+    ajStrDel(&docroot);
+
+    embExit();
 
     return 0;
 }

@@ -889,7 +889,7 @@ static ajint wordMatchCmpPos(const void* v1, const void* v2)
 **                 which is a list of items in "all hits" being updated
 **   (c) new hits, found in the word table from the other sequence.
 **
-** @param [u] seq1MatchTable [AjPTable*] Match table
+** @param [r] seq1MatchTable [const AjPTable] Match table
 ** @param [r] seq2 [const AjPSeq] Second sequence
 ** @param [r] orderit [ajint] 1 to sort results at end, else 0.
 ** @return [AjPList] List of matches.
@@ -897,7 +897,8 @@ static ajint wordMatchCmpPos(const void* v1, const void* v2)
 ** @@
 ******************************************************************************/
 
-AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
+AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
+			       const AjPSeq seq2,
 				ajint orderit)
 {
     ajint i = 0;
@@ -941,7 +942,7 @@ AjPList embWordBuildMatchTable(AjPTable *seq1MatchTable,  const AjPSeq seq2,
 
     while(i <= ilast)
     {
-	if((wordmatch = ajTableGet(*seq1MatchTable, startptr)))
+	if((wordmatch = ajTableGet(seq1MatchTable, startptr)))
 	{
 	    /* match found so create EmbSWordMatch structure and fill it
 	    ** in. Then set next pos accordingly

@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     const char *s;
     ajlong result;
     ajlong *bigarray;
-    ajlong *windowbuffer;		/* ring buffer for sliding window */
+    ajlong *windowbuffer = NULL;	/* ring buffer for sliding window */
     ajulong no_elements;
     AjBool first_time_round = ajTrue;
     AjBool ignorebz = ajTrue;
@@ -298,7 +298,14 @@ int main(int argc, char **argv)
 
     ajStrTableFree(&exptable);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajFileClose(&compdata);
+
+    ajStrDel(&dispseq);
+    AJFREE(windowbuffer);
+
+    embExit();
 
     return 0;
 }

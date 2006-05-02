@@ -168,9 +168,14 @@ int main(int argc, char **argv)
     ajSeqReplace(a, merged);
     ajSeqWrite(seqout, a);
     ajSeqWriteClose(seqout);
+    ajSeqoutDel(&seqout);
+
+    ajSeqDel(&a);
+    ajSeqDel(&b);
 
     ajAlignClose(align);
     ajAlignDel(&align);
+    ajStrDel(&merged);
 
     AJFREE(compass);
     AJFREE(path);
@@ -178,7 +183,7 @@ int main(int argc, char **argv)
     ajStrDel(&n);
     ajStrDel(&m);
 
-    ajExit();
+    embExit();
 
     return 0;
 }
@@ -232,7 +237,7 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
     /* lengths of the sequences after the aligned region */
     ajint alen;
     ajint blen;
-    static AjPStr tmpstr;
+    AjPStr tmpstr = NULL;
 
     mm = ajStrNewS(m);
     nn = ajStrNewS(n);
@@ -432,6 +437,8 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
 
     ajStrDel(&mm);
     ajStrDel(&nn);
+    ajStrDel(&tmpstr);
+
     return;
 }
 

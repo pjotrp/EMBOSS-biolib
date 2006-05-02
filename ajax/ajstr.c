@@ -8403,7 +8403,8 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 **
 ** @nam3rule Extract        Return token(s) from a string and return
 **                          the remainder
-** @nam4rule ExtractFirst   Remove first word from a string
+** @nam4rule ExtractFirst   Remove first word from a string, no leading spaces
+** @nam4rule ExtractWord    Remove first word from a string, skipping spaces
 ** @nam3rule Parse          Parse tokens using strtok
 ** @nam4rule ParseCount     Count tokens using string token functions
 ** @nam5rule ParseCountMulti Multiple (reentrant) version (obsolete?)
@@ -8454,7 +8455,7 @@ AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
 	return ajFalse;
 
     cp = ajStrGetPtr(str);
-    if(isspace(*cp++)) return ajFalse;
+    if(isspace(*cp++)) 	return ajFalse;
 
     while(*cp && !isspace(*cp))		/* look for end of first word */
     {
@@ -8471,6 +8472,68 @@ AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
     if(!*cp) return ajFalse;		/* nothing after whitespace */
 
     ajStrAssignSubS(Pword, str, 0, i);
+    ajStrAssignSubS(Prest, str, j, str->Len);
+
+    ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
+	    i, j, str->Len, *Pword);
+    return ajTrue;
+}
+
+
+
+/* @func ajStrExtractWord *****************************************************
+**
+** Returns a word from the start of a string, and the remainder of the string.
+** Leading spaces are skipped.
+**
+** @param [r] str [const AjPStr] String to be parsed (first call) or
+**        NULL for followup calls using the same string, as for the
+**        C RTL function strtok which is eventually called.
+** @param [w] Prest [AjPStr*] Remainder of string
+** @param [w] Pword [AjPStr*] First word of string
+** @return [AjBool] True if parsing succeeded
+** @@
+******************************************************************************/
+
+AjBool ajStrExtractWord(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
+{
+    ajint i=0;
+    ajint istart=0;
+    ajint j=0;
+    const char* cp;
+
+    if(!str)
+	return ajFalse;
+
+    if(!str->Len)
+	return ajFalse;
+
+    cp = ajStrGetPtr(str);
+    while(isspace(*cp))
+    {
+	cp++;
+	istart++;
+    }
+
+    if(!*cp)
+	return ajFalse;
+
+    i = istart-1;
+    while(*cp && !isspace(*cp))		/* look for end of first word */
+    {
+	cp++;
+	i++;
+    }
+
+    j = i+1;
+    while(*cp && isspace(*cp))
+    {
+	cp++;
+	j++;
+    }
+    if(!*cp) return ajFalse;		/* nothing after whitespace */
+
+    ajStrAssignSubS(Pword, str, istart, i);
     ajStrAssignSubS(Prest, str, j, str->Len);
 
     ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",

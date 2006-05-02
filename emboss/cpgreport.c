@@ -42,6 +42,8 @@ static void cpgreport_calcgc(ajint from, ajint to, const char *p,
 			     ajint *dcg, ajint *dgc, ajint *gc);
 
 
+static AjPStr cpgreportSource = NULL;
+static AjPStr cpgreportType   = NULL;
 
 
 /* @prog cpgreport ************************************************************
@@ -109,6 +111,11 @@ int main(int argc, char **argv)
     ajFeatWrite(featout, feattable);
     ajFeattableDel(&feattable);
 
+    ajFeattabOutDel(&featout);
+    ajSeqallDel(&seqall);
+    ajStrDel(&cpgreportSource);
+    ajStrDel(&cpgreportType);
+
     ajExit();
 
     return 0;
@@ -150,17 +157,15 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
     ajint dcg;
     ajint dgc;
     ajint gc;
-    static AjPStr source = NULL;
-    static AjPStr type   = NULL;
     char  strand = '+';
     ajint frame  = 0;
     AjPFeature feature;
     float score2 = 0.0;
 
-    if(!source)
+    if(!cpgreportSource)
     {
-      ajStrAssignC(&source,"cpgreport");
-      ajStrAssignC(&type,"misc_feature");
+      ajStrAssignC(&cpgreportSource,"cpgreport");
+      ajStrAssignC(&cpgreportType,"misc_feature");
     }
 
 
@@ -179,7 +184,8 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 	    if(dgc)
 	    {
 	        score2 = (float) top;
-	        feature = ajFeatNew(feattable, source, type,
+	        feature = ajFeatNew(feattable, cpgreportSource,
+				    cpgreportType,
 				    lsum+2+z,t+2+z,
 				    score2, strand, frame) ;
 		if(!feature)
@@ -194,7 +200,8 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 	    else
 	    {
 		score2   = (float) top;
-		feature = ajFeatNew(feattable, source, type,
+		feature = ajFeatNew(feattable, cpgreportSource,
+				    cpgreportType,
 				    lsum+2+z,t+2+z,
 				    score2, strand, frame) ;
 		ajFmtPrintF(outf,"%-20s %6d %6d %5d ",name,lsum+2+z,t+2+z,
@@ -230,7 +237,8 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 			((float)dcg/(float)dgc));
 	    score2   = (float) top;
 	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
-	    feature  = ajFeatNew(feattable, source, type,
+	    feature  = ajFeatNew(feattable, cpgreportSource,
+				 cpgreportType,
 				 lsum+2+z,t+2+z,
 				 score2, strand, frame);
 	}
@@ -241,7 +249,8 @@ static void cpgreport_cpgsearch(AjPFile outf, ajint from, ajint to,
 			(float)gc*100.0/(float)(t+1-lsum));
 	    score2   = (float) top;
 	    /*score2 = ajFmtPrintS(&score2,"%d.0",top);*/
-	    feature  = ajFeatNew(feattable, source, type,
+	    feature  = ajFeatNew(feattable, cpgreportSource,
+				 cpgreportType,
 				 lsum+2+z,t+2+z,
 				 score2, strand, frame);
 	}

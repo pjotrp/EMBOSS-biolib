@@ -512,8 +512,15 @@ int main(int argc, char **argv)
 
     etandem_finalReport(tab, outfile);
     ajReportWrite(report, tab, sequence);
+    ajReportDel(&report);
+    ajFeattableDel(&tab);
+    ajSeqDel(&sequence);
+    ajFileClose(&outfile);
 
+    ajSeqCvtDel(&cvt);
     ajStrDel(&nseq);
+    ajStrDel(&tmpstr);
+    AJFREE(ring);
 
     ajExit();
 

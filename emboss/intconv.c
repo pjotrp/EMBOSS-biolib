@@ -156,8 +156,10 @@ int main(int argc, char **argv)
     }
 
     ajStrDel(&line);
+    ajFileClose(&inf);
+    ajFileClose(&outf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

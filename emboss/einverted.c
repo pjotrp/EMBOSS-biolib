@@ -55,8 +55,6 @@
 ** maxsave has been made a command line parameter
 */
 
-#define TEST
-
 static ajint match;
 static ajint mismatch;
 static ajint threshold;
@@ -76,7 +74,7 @@ static AjPInt2d matrix=NULL;
 
 
 
-static void einverted_report(ajint max, ajint imax);
+static void einverted_report(ajint max, ajint imax, AjPSeq seq);
 
 
 
@@ -107,6 +105,7 @@ int main(int argc, char **argv)
     AjPInt localMax = NULL;
     AjPInt back = NULL;
 
+    AjPSeqall seqall = NULL;
     AjPSeq sequence = NULL;
     AjPStr nseq = NULL;
 
@@ -114,15 +113,18 @@ int main(int argc, char **argv)
     embInit("einverted", argc, argv);
 
     outfile   = ajAcdGetOutfile("outfile");
-    sequence  = ajAcdGetSeq("sequence");
+    seqall  = ajAcdGetSeqall("sequence");
     threshold = ajAcdGetInt("threshold");
     match     = ajAcdGetInt("match");
     mismatch  = ajAcdGetInt("mismatch");
     gap       = ajAcdGetInt("gap");
     maxsave   = ajAcdGetInt("maxrepeat");
 
-    length = ajSeqLen(sequence);
     cvt    = ajSeqCvtNew("ACGT");
+
+    while(ajSeqallNext(seqall, &sequence))
+    {
+    length = ajSeqLen(sequence);
     ajSeqNum(sequence, cvt, &nseq);
     sq = ajStrGetPtr(nseq);
 
@@ -162,9 +164,9 @@ int main(int argc, char **argv)
 	    break; /* T */
 	}
 
-    back     = ajIntNew();
-    localMax = ajIntNew();
-    matrix   = ajInt2dNew();
+    back     = ajIntNewL(maxsave);
+    localMax = ajIntNewL(maxsave);
+    matrix   = ajInt2dNewLL(maxsave, maxsave);
 
     for(i=0; i<maxsave; i++)
     {
@@ -180,8 +182,8 @@ int main(int argc, char **argv)
     {
 	irel = i % maxsave;
 
-	ajDebug("i: %d irel: %d back[irel] %d\n", i, irel,
-		ajIntGet(back,irel));
+	/*ajDebug("i: %d irel: %d back[irel] %d\n", i, irel,
+		ajIntGet(back,irel));*/
 
         if(ajIntGet(back,irel))	/* something to report */
 	{
@@ -192,7 +194,7 @@ int main(int argc, char **argv)
 		    jmax = j;
 		    imax = ajIntGet(localMax,j%maxsave);
 		}
-	    einverted_report(imax, jmax);
+	    einverted_report(imax, jmax, sequence);
 	    lastReported = jmax;
 
 	    for(j = jmax; j >= i-maxsave; --j)
@@ -302,7 +304,19 @@ int main(int argc, char **argv)
     ajIntDel(&back);
     ajInt2dDel(&matrix);
 
-    ajExit();
+    for(i=0;i<5;i++)
+	AJFREE(revmatch[i]);
+
+}
+
+    ajSeqallDel(&seqall);
+    ajSeqDel(&sequence);
+    ajFileClose(&outfile);
+    ajSeqCvtDel(&cvt);
+
+    ajStrDel(&nseq);
+
+    embExit();
 
     return 0;
 }
@@ -316,10 +330,11 @@ int main(int argc, char **argv)
 **
 ** @param [r] max [ajint] Undocumented
 ** @param [r] imax [ajint] Undocumented
+** @param [r] seq [AjPSeq] Sequence
 ** @@
 ******************************************************************************/
 
-static void einverted_report(ajint max, ajint imax)
+static void einverted_report(ajint max, ajint imax, AjPSeq seq)
 {
     ajint *t1;
     ajint *ip;
@@ -347,7 +362,7 @@ static void einverted_report(ajint max, ajint imax)
 
     i  = imax;
     ip = align1; jp = align2;
-    while(max > 0 && j >= 0)		/* original missed blunt joins */
+    while(max > 0 && j >= 1)		/* original missed blunt joins */
     {
 	*ip++ = i;
 	*jp++ = i-j;			/* seqpt + 1 */
@@ -386,9 +401,10 @@ static void einverted_report(ajint max, ajint imax)
 #endif
 
     /* report reconstruction */
-    ajFmtPrintF(outfile, "\nScore %d: %d/%d (%3d%%) matches, %d gaps\n",
-		 saveMax, nmatch, (nmatch+nmis),
-		 (100*nmatch)/(nmatch+nmis), ngap);
+    ajFmtPrintF(outfile, "\n%S: Score %d: %d/%d (%3d%%) matches, %d gaps\n",
+		ajSeqGetName(seq),
+		saveMax, nmatch, (nmatch+nmis),
+		(100*nmatch)/(nmatch+nmis), ngap);
 
     ajFmtPrintF(outfile, "%8d ", *align2); /* NB *jp is 1+coord */
     for(jp = align2; *jp; ++jp)

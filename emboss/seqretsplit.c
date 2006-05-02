@@ -66,7 +66,12 @@ int main(int argc, char **argv)
     ajSeqWriteClose(seqout);
     ajStrTableFree(&table);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&name);
+
+    embExit();
 
     return 0;
 }

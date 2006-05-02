@@ -76,7 +76,11 @@ int main(int argc, char **argv)
 	}
     }
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajFileClose(&outf);
+    ajSeqDel(&seq);
+
+    embExit();
 
     return 0;
 }

@@ -311,6 +311,9 @@ int main(int argc, char **argv)
     ajSeqWriteClose(seqout);
     ajStrDel(&nseq);
     ajSeqDel(&seqo);
+    ajSeqoutDel(&seqout);
+    ajStrDel(&fname);
+    ajStrDel(&baseN);
 
     ajExit ();
 

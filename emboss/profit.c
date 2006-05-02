@@ -224,13 +224,18 @@ int main(int argc, char **argv)
 
     ajStrDel(&line);
     ajStrDel(&name);
-    ajStrDel(&mname);
     ajStrDel(&substr);
+    ajStrDel(&mname);
+    ajStrDel(&pname);
+    ajStrDel(&cons);
+
     ajSeqDel(&seq);
     ajFileClose(&inf);
     ajFileClose(&outf);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+
+    embExit();
 
     return 0;
 }

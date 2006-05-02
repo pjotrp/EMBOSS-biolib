@@ -81,6 +81,7 @@ static void     GraphPrint(const AjPGraph thys);
 static void     GraphOpenData(AjPGraph thys, const char *ext);
 static void     GraphOpenFile(AjPGraph thys, const char *ext);
 static void     GraphOpenNull(AjPGraph thys, const char *ext);
+static void     GraphOpenSimple(AjPGraph thys, const char *ext);
 static void     GraphOpenXml(AjPGraph thys, const char *ext);
 static void     GraphOpenXwin(AjPGraph thys, const char *ext);
 static void     GraphPen(ajint pen, ajint red, ajint green, ajint blue);
@@ -209,27 +210,27 @@ static GraphOType graphType[] = {
 #endif
 
   {"tekt",       "tekt",    "null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenSimple,
        "Tektronix screen graphics"},
   {"tektronics", "tekt",    "null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenSimple,
        "Tektronix screen graphics"},
 
   {"tek",        "tek4107t","null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenSimple,
        "Tektronix screen graphics"},
   {"tek4107t",   "tek4107t","null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenSimple,
        "Tektronix model 4107 screen graphics"},
 
   {"none",       "null",    "null",
-       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
+       AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenSimple,
        "No output"},
   {"null",       "null",    "null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenSimple,
        "No output"},
   {"text",       "null",    "null",
-       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
+       AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenSimple,
        "Text file"},
 
   {"data",       "data",    ".dat",
@@ -3381,6 +3382,24 @@ static void GraphOpenNull(AjPGraph thys, const char *ext)
 
 
 
+/* @funcstatic GraphOpenSimple ************************************************
+**
+** A general routine for drawing graphs. Does nothing.
+**
+** @param [u] thys [AjPGraph] Multiple graph pointer.
+** @param [r] ext [const char*] file extension
+** @return [void]
+** @@
+******************************************************************************/
+
+static void GraphOpenSimple(AjPGraph thys, const char *ext )
+{
+    return;
+}
+
+
+
+
 /* @funcstatic GraphOpenXwin **************************************************
 **
 ** A general routine for drawing graphs to an xwin. Does nothing.
@@ -3393,6 +3412,12 @@ static void GraphOpenNull(AjPGraph thys, const char *ext)
 
 static void GraphOpenXwin(AjPGraph thys, const char *ext )
 {
+    const char* programname = NULL;
+
+    programname = ajStrGetPtr(ajAcdGetProgram());
+    ajDebug("=g= plxswin('%s') ajAcdGetProgram\n", programname);
+    plxswin(programname);
+
     return;
 }
 
@@ -4128,11 +4153,16 @@ void ajGraphxyDel(AjPGraph* pthis)
 
     if (thys->plplot)
     {
+	ajDebug("ajGraphxyDel numofgraphs:%d\n",
+		thys->plplot->numofgraphs);
+
 	for(i = 0 ; i < thys->plplot->numofgraphs ; i++)
 	{
 	    graphdata = (thys->plplot->graphs)[i];
 	    if (graphdata)
 	    {
+		ajDebug("ajGraphxyDel graphs[%d]\n", i);
+
 		if(!graphdata->xcalc)
 		    AJFREE(graphdata->x);
 		if(!graphdata->ycalc)
@@ -5717,6 +5747,8 @@ void ajGraphPlpDataDel(AjPGraphPlpData *thys)
     if (!this)
 	return;
 
+    ajDebug("ajGraphPlpDataDel objects:%d\n", this->numofobjects);
+
     here = p = this->Obj;
     while(p)
     {
@@ -6591,9 +6623,6 @@ void ajGraphInit(const char *pgm, ajint argc, char * const argv[])
     ajNamInit("emboss");
 
     GraphRegister();
-
-    ajDebug("=g= plxswin('%s') [argv[0]]\n", argv[0]);
-    plxswin(argv[0]);
 
     ajAcdInit(pgm, argc, argv);
     return;

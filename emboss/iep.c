@@ -195,6 +195,8 @@ int main(int argc, char **argv)
 	}
     }
     ajGraphClose();
+    ajGraphxyDel(&graph);
+
     AJFREE(K);
     AJFREE(pro);
     AJFREE(op);
@@ -203,7 +205,10 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajFileClose(&outf);
 
-    ajExit();
+    ajSeqallDel(&all);
+    ajSeqDel(&a);
+
+    embExit();
 
     return 0;
 }

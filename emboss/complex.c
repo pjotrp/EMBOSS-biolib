@@ -28,8 +28,8 @@
 
 int main(int argc, char **argv)
 {
-    char *charseq;
-    char *name;
+    const char *charseq;
+    const char *name;
 
     AjPSeq    seq;
     AjPSeqall seqall;
