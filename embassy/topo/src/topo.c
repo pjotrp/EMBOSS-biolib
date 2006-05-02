@@ -317,8 +317,10 @@ int main(int argc, char * argv[])
     /* acd defs */
     AjPSeq sequence;
     AjPRange regions;
+    AjPRange sigregions;
     AjBool draft ;
-    AjBool outstart,ajspnum;
+    AjBool outstart;
+    AjBool ajspnum;
     AjPStr listcys;
     AjPStr listgly;
     AjPStr listacid;
@@ -456,14 +458,14 @@ int main(int argc, char * argv[])
     ajspnum = ajAcdGetToggle("signature");
     if(ajspnum){
 	/* num num code sets */
-	regions = ajAcdGetRange ("sigrange");
-	ii = ajRangeNumber(regions);
+	sigregions = ajAcdGetRange ("sigrange");
+	ii = ajRangeNumber(sigregions);
 	isigstart = (int *) AJALLOC(sizeof(int));         
 	isigend = (int *) AJALLOC(sizeof(int));               
 	for(i=0;i<ii;i++){
 	    AjPStr val = NULL;
-	    ajRangeValues(regions,i,isigstart,isigend);
-	    if(ajRangeText(regions,i,&val)){
+	    ajRangeValues(sigregions,i,isigstart,isigend);
+	    if(ajRangeText(sigregions,i,&val)){
 		symsign = getValFromStr(val);
 	    }
 	    else{
@@ -829,10 +831,24 @@ int main(int argc, char * argv[])
 
     ajGraphCloseWin() ;
 
+    ajGraphxyDel(&graph);
     AJFREE(istart);
     AJFREE(iend);
+    ajSeqDel(&sequence);
+    ajRangeDel(&regions);
+    ajRangeDel(&sigregions);
+    ajStrDel(&listcys);
+    ajStrDel(&listgly);
+    ajStrDel(&listacid);
+    ajStrDel(&listbase);
+    ajStrDel(&listamine);
+    ajStrDel(&listoh);
+    ajStrDel(&listaro);
+    ajStrDel(&listpro);
+    AJFREE(strand);
+    AJFREE(syms);
 
-    ajExit();
+    embExit();
     return 0;
 }	/*end ;*/
 

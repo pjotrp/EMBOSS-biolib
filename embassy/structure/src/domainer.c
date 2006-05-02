@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
     AjPScop  scop=NULL;
     AjPPdb   pdb=NULL;
-    AjPStr  *mode       = NULL;		/* Mode of operation from acd*/
+    AjPStr  mode       = NULL;		/* Mode of operation from acd */
     ajint    moden      = 0;            /* Mode as an integer */
 
     
@@ -92,14 +92,14 @@ int main(int argc, char **argv)
     embInitP("domainer",argc,argv,"STRUCTURE");
 
     cpdb_dir     = ajAcdGetDirectory("ccfpdir");
-    mode          = ajAcdGetList("mode");
+    mode          = ajAcdGetListSingle("mode");
     cpdbscop_dir = ajAcdGetOutdir("ccfoutdir");
     pdbscop_dir  = ajAcdGetOutdir("pdboutdir");
     scop_inf      = ajAcdGetInfile("scopfile");
     errf1         = ajAcdGetOutfile("pdblogfile");
     errf2         = ajAcdGetOutfile("cpdblogfile");
     
-    if(ajStrGetCharFirst(*mode)=='1')
+    if(ajStrGetCharFirst(mode)=='1')
 	moden = ajPDB;
     else
 	moden = ajIDX;
@@ -257,8 +257,11 @@ int main(int argc, char **argv)
     ajFileClose(&errf1);
     ajFileClose(&errf2);
 
+    ajDirDel(&cpdb_dir);
+    ajDiroutDel(&cpdbscop_dir);
+    ajDiroutDel(&pdbscop_dir);
+    ajStrDel(&mode);
 
-
-    ajExit();
+    embExit();
     return 0;
 }	
