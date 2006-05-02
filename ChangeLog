@@ -1,4 +1,11 @@
-	Version 3.1.0
+Version 3.1.0
+
+	Program einverted output is changed to include the sequence ID
+	and the program input is changed to process more than one sequence
+	as input. The change to the output format was needed to indicate
+	which sequence is reported. The program is also speeded up by not
+	dynamically resizing the internal arrays used to hold sequence
+	positions.
 
 	Added additional information to "entrails" output (entrails is
 	built by "make check" and displays internal data to assist
@@ -37,13 +44,16 @@
 	pointer at the first delimiter after the matched token. This only
 	changes the result if the delimiter set is changed on the next call.
 
-	Another code cleanup is the addition of Exit functions to all
-	AJAX source files that could still have static memory allocated
-	when a program ends. We aim to clean up memory for all the
-	standadr memory tests in test/memtest.dat. This includes creating
-	a new fnuction acdReset which resets the stats of ACD processing
-	so that a new ACD file could, in theory, be read once a program
-	has completed.
+	Another code cleanup is the addition of Exit functions to all AJAX
+	and NUCLEUS source files that could still have static memory
+	allocated when a program ends. We aim to clean up memory for all
+	the standard memory tests in test/memtest.dat. This includes
+	creating a new function acdReset which resets the stats of ACD
+	processing so that a new ACD file could, in theory, be read once a
+	program has completed. All programs need to call the embExit
+	function at the end to call the NUCLEUS and AJAX cleanup
+	functions. Some of these functions will also log memory usage
+	statistics if debugging is turned on (-debug on the command line).
 
 	We are working through all the library code making standard
 	function names. Old function names will be retained at least until
