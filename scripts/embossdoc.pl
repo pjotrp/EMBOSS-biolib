@@ -142,10 +142,13 @@ sub testorder($@$) {
 sub issuffix($@) {
     my ($name,@suffixes) = @_;
     my $s;
+    if($#suffixes < 0) {return 0}
+
     foreach $s (@suffixes) {
 #	print LOG "issuffix '$name' '$s'\n";
 	if ($name eq $s) {return 1}
     }
+
 #    print LOG "issuffix failed\n";
     return 0;
 }
@@ -187,6 +190,7 @@ sub matchargname($$@) {
     my ($aname, $anum, @nameparts) = @_;
     my $j = $#nameparts;
     my $argname = $aname;
+    $argname =~ s/^[*]//go;
     $argname =~ s/([A-Z])/ $1/go;
     my @argparts = split(' ', $argname);
     my $k = $#argparts;
@@ -325,7 +329,7 @@ sub testmodify($$\@\@) {
     $tc = ${$tcast}[0];
     $tx = ${$tcode}[0];
     if(!defined($tc)) {
-    print STDERR "testmodify tc undefined for $fname $pubout\n";
+    print "testmodify tc undefined for $fname $pubout\n";
     }
     if ($tc ne "$tdata" && $tc ne "$tdata\*") {
 	print "bad category modify - parameter1 '$tc' not '$tdata\*'\n";
@@ -479,15 +483,16 @@ $infile = "";
 $lib = "unknown";
 $countglobal=0;
 $countstatic=0;
+$countsection = 0;
 
-@namrules = 0;
+@namrules = ();
+@sufname = ();
 $namrulesfilecount=$#namrules;
 $namrulesdatacount=$#namrules;
 $suffixfilecount=$#sufname;
 $suffixdatacount=$#sufname;
 
 $dosecttest = 0;
-$dosorttest = 0;
 $datatype="undefined";
 
 $flastname = 0;
@@ -551,7 +556,6 @@ else {
 
 if($pubout eq "ajstr") {
     $dosecttest = 1;
-    $dosorttest = 1;
 }
 
 open (OBS, ">>deprecated.new");
@@ -637,6 +641,12 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    $OFILE = HTML;
 	    $countglobal++;
+	    if($sect ne "") {
+		if($countsection == 0) {
+		    print "bad section $sect has no public functions\n";
+		}
+	    }
+	    $countsection = 0;
 	    ($sect, $srest) = ($data =~ /\S+\s+([^*\n]+)\s*(.*)/gos);
 	    if(!defined($sect)) {
 		print "bad section: $data\n";
@@ -668,6 +678,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	}
 
 	elsif ($token eq "fdata")  {
+	    $dosecttest = 1;
 	    if($mastertoken ne "section") {
 		print "bad syntax \@$token must be in \@section\n";
 	    }
@@ -682,6 +693,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	}
 
 	elsif ($token eq "datasection")  {
+	    $dosecttest = 1;
 	    if($partnum != 1) {
 		print "bad syntax \@$token must be at start\n";
 	    }
@@ -700,6 +712,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	}
 
 	elsif ($token eq "filesection")  {
+	    $dosecttest = 1;
 	    if($partnum != 1) {
 		print "bad syntax \@$token must be at start\n";
 	    }
@@ -768,7 +781,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		print LOG "$token argnumb: $argnumb\n";
 	    }
 	    ($argpref, $argname, $argtype, $argdesc) =
-		($data =~ /\S+\s+(\S+)\s+(\S+)\s+[\[]([^\]]+)[\]]\s*(.*)/gos);
+		($data =~ /\S+\s+(\S+)\s+(\S+)\s+[\[]([^\]]+[\]]?)[\]]\s*(.*)/gos);
 	    if(!defined($argdesc)) {
 		print "bad argrule: $data";
 		next;
@@ -808,6 +821,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    if ($token eq "prog") {$isprog = 1}
 	    $OFILE = HTML;
 	    $countglobal++;
+	    if($sect ne "") {$countsection++;}
 	    if ($sect ne $lastfsect) {
 		print $OFILE "<hr><h2><a name=\"$sect\">\n";
 		print $OFILE "$sect</a></h2>\n";
@@ -962,6 +976,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $ismacro = 1;
 	    $OFILE = HTML;
 	    $countglobal++;
+	    if($sect ne "") {$countsection++;}
 	    if ($sect ne $lastfsect) {
 		print $OFILE "<hr><h2><a name=\"$sect\">\n";
 		print $OFILE "$sect</a></h2>\n";
@@ -1772,15 +1787,21 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    $valtypeall = "";
 	    $i=0;
 	    foreach $v (@valname) {
+		$vv = $v;
 #		print LOG "valrule '$v' testing $fname\n";
 		$j = $i+1;
-#		print LOG "argrule $j '$a' [$argtype[$i]] '$argdesc[$i]'\n";
+#		print LOG "valrule $j '$v' [$valtype[$i]]'\n";
 		if(matchargname($v, 0, @nameparts)) {
-#		    print LOG "valrule used: '$v' [$valtype[$i]]\n";
+#		    print LOG "valrule used: '$vv' [$valtype[$i]]\n";
+		    if($vv =~ /^[*](.+)/) {
+			$vv = $1;
+			@genvalname = ();
+			@genvaltype = ();
+		    }
 		    push (@genvaltype, $valtype[$i]);
-		    push (@genvalname, $v);
+		    push (@genvalname, $vv);
 		}
-		if($v eq "*") {
+		if($vv eq "*") {
 		    $valtypeall = $valtype[$i]
 		    }
 		$i++;
@@ -1987,6 +2008,12 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    print $OFILE "<h3>Availability</h3>\n";
 	    print $OFILE "$availtext\n";
 	}
+    }
+}
+
+if($sect ne "") {
+    if($countsection == 0) {
+	print "bad section $sect has no public functions\n";
     }
 }
 
