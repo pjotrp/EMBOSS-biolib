@@ -228,7 +228,7 @@ Command line arguments
 *  -rate               array      Rate for each category
 *  -categories         properties File of substitution rate categories
    -weights            properties Weights file
-   -model              menu       Choose the method to use
+   -method             menu       Choose the method to use
 *  -gamma              menu       Rate variation among sites
 *  -gammacoefficient   float      Coefficient of variation of substitution
                                   rate among sites
@@ -278,7 +278,7 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -292,7 +292,7 @@ Command line arguments
    -rate Rate for each category List of floating point numbers
    -categories File of substitution rate categories Property value(s)
    -weights Weights file Property value(s)
-   -model Choose the method to use
+   -method Choose the method to use
    j (Jones-Taylor-Thornton matrix)
    h (Henikoff/Tiller PMB matrix)
    d (Dayhoff PAM matrix)

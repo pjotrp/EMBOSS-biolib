@@ -21,7 +21,7 @@
                                   self-consistent and error-corrected.
                                   Records for residue solvent accessibility
                                   and secondary structure are added to the
-                                  file by using PDBPLUS. default: "./
+                                  file by using PDBPLUS. default: ./
    -ccfddir            directory  This option specifies the location of
                                   protein CCF file (clean coordinate files)
                                   (input). A 'clean cordinate file' contains
@@ -35,7 +35,7 @@
                                   self-consistent and error-corrected.
                                   Records for residue solvent accessibility
                                   and secondary structure are added to the
-                                  file by using PDBPLUS. default: "./
+                                  file by using PDBPLUS. default: ./
    -mode               menu       This option specifies the mode of signature
                                   generation. In 'Full-length signature mode'
                                   (mode 1) a single signature incorporating
@@ -84,8 +84,7 @@
                                   contains a sparse sequence signature
                                   suitable for use with the SIGSCAN and
                                   SIGSCANLIG programs. The files are generated
-                                  by using SIGGEN and SIGGENLIG". default:
-                                  "./
+                                  by using SIGGEN and SIGGENLIG.
   [-logfile]           outfile    Name of siggenlig logfile
 
    Additional (Optional) qualifiers: (none)
@@ -108,5 +107,5 @@
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 

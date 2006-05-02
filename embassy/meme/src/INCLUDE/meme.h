@@ -11,7 +11,7 @@
 #include <hash.h>
 #include <gamma.h>
 #include <chi.h>
-#include <ajax.h>
+#include <emboss.h>
 
 extern AjPFile outf;
 extern AjPSeqall seqall;

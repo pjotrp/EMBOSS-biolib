@@ -54,7 +54,7 @@
 </tr>
 
 <tr>
-<td>-model</td>
+<td>-method</td>
 <td>Choose the method to use</td>
 <td><table><tr><td>j</td> <td><i>(Jones-Taylor-Thornton matrix)</i></td></tr><tr><td>h</td> <td><i>(Henikoff/Tiller PMB matrix)</i></td></tr><tr><td>d</td> <td><i>(Dayhoff PAM matrix)</i></td></tr><tr><td>k</td> <td><i>(Kimura formula)</i></td></tr><tr><td>s</td> <td><i>(Similarity table)</i></td></tr><tr><td>c</td> <td><i>(Categories model)</i></td></tr></table></td>
 <td>j</td>

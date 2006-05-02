@@ -1178,7 +1178,7 @@ FOK       1         1         -1000000.00
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
   6.1 COMMAND LINE ARGUMENTS
 

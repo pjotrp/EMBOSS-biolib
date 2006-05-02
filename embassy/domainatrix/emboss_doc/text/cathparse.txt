@@ -192,18 +192,18 @@ CH   0 CHAIN; 159 START; 202 END;
                                   (input). The raw CATH parsable files
                                   (classification and description files)
                                   available from ftp.biochem.ucl.ac.uk
-                                  (/pub/cathdata/v2.4").
+                                  (/pub/cathdata/v2.4).
   [-domfile]           infile     This option specifies the name of raw CATH
                                   classification file (domlist.vX.X) (input).
                                   The raw CATH parsable files (classification
                                   and description files) available from
-                                  ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4").
+                                  ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4).
   [-namesfile]         infile     This option specifies the name of raw CATH
                                   classification file (CAT.names.all.vX.X)
                                   (input). The raw CATH parsable files
                                   (classification and description files)
                                   available from ftp.biochem.ucl.ac.uk
-                                  (/pub/cathdata/v2.4").
+                                  (/pub/cathdata/v2.4).
   [-outfile]           outfile    This option specifies the name of CATH DCF
                                   file (domain classification file) (output).
                                   A 'domain classification file' contains
@@ -239,25 +239,24 @@ CH   0 CHAIN; 159 START; 202 END;
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-listfile]
    (Parameter 1) This option specifies the name of raw CATH
    classification file (caths.list.vX.X) (input). The raw CATH parsable
    files (classification and description files) available from
-   ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4"). Input file
-   caths.list.v2.4
+   ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4). Input file caths.list.v2.4
    [-domfile]
    (Parameter 2) This option specifies the name of raw CATH
    classification file (domlist.vX.X) (input). The raw CATH parsable
    files (classification and description files) available from
-   ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4"). Input file domlist.v2.4
+   ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4). Input file domlist.v2.4
    [-namesfile]
    (Parameter 3) This option specifies the name of raw CATH
    classification file (CAT.names.all.vX.X) (input). The raw CATH
    parsable files (classification and description files) available from
-   ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4"). Input file
+   ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4). Input file
    CAT.names.all.v2.4
    [-outfile]
    (Parameter 4) This option specifies the name of CATH DCF file (domain

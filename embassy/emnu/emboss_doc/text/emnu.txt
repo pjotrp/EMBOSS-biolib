@@ -1,6 +1,7 @@
 
-   [an error has occurred processing this directive] emnu [an error has
-   occurred processing this directive]
+                                   emnu 
+
+
 
 Function
 
@@ -138,7 +139,7 @@ The following keys get other things:
 F1,F2,F3,F5 -view, view sequence, copy and delete the last file looked at
 ^X exit, ^N/^T file menus, ^R recall stored file, TAB complete name of option
 
-Press any key to continue... 
+Press any key to continue...
      _________________________________________________________________
 
   Programs menus
@@ -176,8 +177,8 @@ Press any key to continue...
      _________________________________________________________________
 
                                   PROGRAMS MENU
->EXIT                                                                          
- 
+>EXIT
+
  HELP
 
  chaos        Create a chaos game representation plot fro a sequence
@@ -229,7 +230,7 @@ m
 
 
 
-Press any key to continue... 
+Press any key to continue...
      _________________________________________________________________
 
   All files menu
@@ -257,10 +258,10 @@ Press any key to continue...
    file menus will sort the files using the appropriate method.
 
  F8  AlphaSort
-     Sort the files by name (Start a files menu if not already in one) 
+     Sort the files by name (Start a files menu if not already in one)
 
- F9  TimeSort   
-     Sort the files by time (Start a files menu if not already in one) 
+ F9  TimeSort
+     Sort the files by time (Start a files menu if not already in one)
 
    The following will use the current files menu item to display, copy of
    delete. If you are not currently in a FILES menu or if the current
@@ -273,37 +274,37 @@ Press any key to continue...
    Note: you can use the commands in any menu and they will work on the
    default file.
 
- F1  ViewFile   
-     Show the contents of the current menu item file, or last file viewed 
+ F1  ViewFile
+     Show the contents of the current menu item file, or last file viewed
 
- F2  View Seq   
-     Display the current file as a sequence 
+ F2  View Seq
+     Display the current file as a sequence
 
- F4  CopyFile   
-     Copy the current file to a new file 
+ F4  CopyFile
+     Copy the current file to a new file
 
- F5  DelFile   
-     Delete the current file 
+ F5  DelFile
+     Delete the current file
 
- ^G  GetFile   
-     Add the name of the current file to the command line 
+ ^G  GetFile
+     Add the name of the current file to the command line
 
    Separate from the memory of the default file used by the above
    commands is a specific method of remembering the name of an item in
    the FILES menus and recalling it into the command line at a later date
    by using the following pair of key codes.
 
- ^S  StoreFile   
-     Remember the name of the current menu item file 
+ ^S  StoreFile
+     Remember the name of the current menu item file
 
- ^R  RecalFile   
-     Add the stored file name to the command line 
+ ^R  RecalFile
+     Add the stored file name to the command line
 
    And finally, it is often useful to be able to make a new directory
    (folder) and go directly into that new directory.
 
- F3  New Dir    
-     Create a new directory and go into it 
+ F3  New Dir
+     Create a new directory and go into it
      _________________________________________________________________
 
                 FILES: /people/gwilliam/tmp
@@ -358,7 +359,7 @@ F4 makes a new directory, F8 sort files by name, F9 sort files by time
 
 
 
-Press any key to continue... 
+Press any key to continue...
      _________________________________________________________________
 
   New files menu
@@ -372,20 +373,20 @@ Press any key to continue...
      _________________________________________________________________
 
               NEW FILES: /people/gwilliam/tmp
->EXIT                                          
+>EXIT
  HELP
  TO HOME
  PARENT DIRECTORY
 
  five.needle          20 Nov 2000 16:51   29 Kb
- 
- 
- 
- 
- 
 
- 
- 
+
+
+
+
+
+
+
 > EXIT
  ? Help F1 ViewFile F3 New Dir  ^G GetFile ^S StoreFile F9 TimeSort ^T AllFile
 ^X Exit F2 View Seq F4 CopyFile F5 DelFile ^R RecalFile F8 AlphaSort
@@ -416,7 +417,7 @@ The following keys do other things:
 F4 makes a new directory, F8 sort files by name, F9 sort files by time
 ^X exit, ^T all files menu, ^S store current file name, ^R recall stored file
 
-Press any key to continue... 
+Press any key to continue...
      _________________________________________________________________
 
    The name of this program, emnu, comes from the observation that the
@@ -511,7 +512,7 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    (none)

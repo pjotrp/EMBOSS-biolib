@@ -491,7 +491,7 @@ AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    -mode This option specifies the amino acid residue positions to use in

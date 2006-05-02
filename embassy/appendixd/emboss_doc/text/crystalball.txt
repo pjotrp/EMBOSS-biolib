@@ -109,7 +109,7 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -284,9 +284,11 @@ Known bugs
 
 See also
 
-   Program name            Description
+   Program name                 Description
+   intconv      Convert ints to ajints and longs to ajlongs
    myseq        Demonstration of sequence reading
    mytest       Demonstration of sequence reading
+   seqinfo      Returns sequence information
 
 Author(s)
 

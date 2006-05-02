@@ -363,7 +363,7 @@ CCF: /homes/user/test/qa/pdbplus-keep/2hhb.ccf HETS:YES NHETS:5 SCOP:NO NCHN:4
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-protpath]

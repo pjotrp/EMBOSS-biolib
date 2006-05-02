@@ -13,12 +13,12 @@ Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 HMM file:             ../ehmmcalibrate-ex1-keep/globino.hmm
-Sequence file:        ./ehmmalign-1141730405.25929
+Sequence file:        ./ehmmalign-1234567890.1234
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Alignment saved in file globins630.ali
 
-hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex1-keep/globino.hmm ./ehmmalign-1141730405.25929
+hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex1-keep/globino.hmm ./ehmmalign-1234567890.1234
 
 
 </pre></td></tr></table><p>

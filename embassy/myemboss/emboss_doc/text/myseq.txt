@@ -72,7 +72,7 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -291,7 +291,9 @@ See also
 
    Program name                      Description
    crystalball  Answers every drug discovery question about a sequence
+   intconv      Convert ints to ajints and longs to ajlongs
    mytest       Demonstration of sequence reading
+   seqinfo      Returns sequence information
 
 Author(s)
 

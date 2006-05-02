@@ -7,21 +7,21 @@
 
 <tr>
 <td>[-listfile]<br>(Parameter 1)</td>
-<td>This option specifies the name of raw CATH classification file (caths.list.vX.X) (input). The raw CATH parsable files (classification and description files) available from ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4").</td>
+<td>This option specifies the name of raw CATH classification file (caths.list.vX.X) (input). The raw CATH parsable files (classification and description files) available from ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4).</td>
 <td>Input file</td>
 <td>caths.list.v2.4</td>
 </tr>
 
 <tr>
 <td>[-domfile]<br>(Parameter 2)</td>
-<td>This option specifies the name of raw CATH classification file (domlist.vX.X) (input). The raw CATH parsable files (classification and description files) available from ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4").</td>
+<td>This option specifies the name of raw CATH classification file (domlist.vX.X) (input). The raw CATH parsable files (classification and description files) available from ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4).</td>
 <td>Input file</td>
 <td>domlist.v2.4</td>
 </tr>
 
 <tr>
 <td>[-namesfile]<br>(Parameter 3)</td>
-<td>This option specifies the name of raw CATH classification file (CAT.names.all.vX.X) (input). The raw CATH parsable files (classification and description files) available from ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4").</td>
+<td>This option specifies the name of raw CATH classification file (CAT.names.all.vX.X) (input). The raw CATH parsable files (classification and description files) available from ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4).</td>
 <td>Input file</td>
 <td>CAT.names.all.v2.4</td>
 </tr>
