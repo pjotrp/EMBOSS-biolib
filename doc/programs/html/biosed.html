@@ -105,7 +105,9 @@ Replace or delete sequence sections
   [-outseq]            seqout     Sequence filename and optional format
                                   (output USA)
 
-   Additional (Optional) qualifiers: (none)
+   Additional (Optional) qualifiers:
+   -position           integer    Sequence position to match
+
    Advanced (Unprompted) qualifiers:
    -delete             toggle     Delete the target sequence sections
 
@@ -152,7 +154,7 @@ Replace or delete sequence sections
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
 </pre>
 </td></tr></table>
@@ -199,7 +201,10 @@ Replace or delete sequence sections
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-position</td>
+<td>Sequence position to match</td>
+<td>Integer 0 or more</td>
+<td>0</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

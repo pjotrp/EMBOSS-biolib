@@ -24,7 +24,7 @@ merger
 <H2>
     Function
 </H2>
-Merge two overlapping nucleic acid sequences
+Merge two overlapping sequences
 
 <H2>
     Description
@@ -100,8 +100,8 @@ the best results with a set of poor quality EST test sequences.
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>merger </b>
-Merge two overlapping nucleic acid sequences
-Input nucleotide sequence: <b>tembl:eclacy</b>
+Merge two overlapping sequences
+Input sequence: <b>tembl:eclacy</b>
 Second nucleotide sequence: <b>tembl:eclaca</b>
 Output alignment [eclacy.merger]: <b></b>
 Output sequence [eclacy.fasta]: <b></b>
@@ -128,10 +128,10 @@ into the correct orientation to make it join. For example:
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Nucleotide sequence filename and optional
-                                  format, or reference (input USA)
-  [-bsequence]         sequence   Nucleotide sequence filename and optional
-                                  format, or reference (input USA)
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
   [-outfile]           align      Output alignment file name
   [-outseq]            seqout     Sequence filename and optional format
                                   (output USA)
@@ -217,7 +217,7 @@ into the correct orientation to make it join. For example:
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
 </pre>
 </td></tr></table>
@@ -232,14 +232,14 @@ into the correct orientation to make it join. For example:
 
 <tr>
 <td>[-asequence]<br>(Parameter 1)</td>
-<td>Nucleotide sequence filename and optional format, or reference (input USA)</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-bsequence]<br>(Parameter 2)</td>
-<td>Nucleotide sequence filename and optional format, or reference (input USA)</td>
+<td>Sequence filename and optional format, or reference (input USA)</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
@@ -275,14 +275,14 @@ into the correct orientation to make it join. For example:
 <td>-gapopen</td>
 <td>Gap opening penalty</td>
 <td>Number from 0.000 to 100.000</td>
-<td>50.0</td>
+<td>@($(acdprotein)? 50.0 : 50.0 )</td>
 </tr>
 
 <tr>
 <td>-gapextend</td>
 <td>Gap extension penalty</td>
 <td>Number from 0.000 to 10.000</td>
-<td>5.0</td>
+<td>@($(acdprotein)? 5.0 : 5.0)</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

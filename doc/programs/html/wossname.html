@@ -100,7 +100,7 @@ acdvalid         ACD file validation
 ALIGNMENT CONSENSUS
 cons             Creates a consensus from multiple alignments
 megamerger       Merge two large overlapping nucleic acid sequences
-merger           Merge two overlapping nucleic acid sequences
+merger           Merge two overlapping sequences
 
 ALIGNMENT DIFFERENCES
 diffseq          Find differences between nearly identical sequences
@@ -272,6 +272,7 @@ shuffleseq       Shuffles a set of sequences maintaining composition
 
 NUCLEIC PRIMERS
 eprimer3         Picks PCR primers and hybridization oligos
+prima            Selects primers for PCR and DNA amplification
 primersearch     Searches DNA sequences for matches with primer pairs
 stssearch        Search a DNA database for matches with a set of STS primers
 
@@ -482,8 +483,10 @@ prophet          Gapped alignment for profiles
 
 TEST
 crystalball      Answers every drug discovery question about a sequence
+intconv          Convert ints to ajints and longs to ajlongs
 myseq            Demonstration of sequence reading
 mytest           Demonstration of sequence reading
+seqinfo          Returns sequence information
 
 UTILS DATABASE CREATION
 aaindexextract   Extract data from AAINDEX
@@ -696,6 +699,7 @@ hmoment          Hydrophobic moment calculation
 iep              Calculates the isoelectric point of a protein
 infoalign        Information on a multiple sequence alignment
 infoseq          Displays some simple information about sequences
+intconv          Convert ints to ajints and longs to ajlongs
 interface        Generate inter-chain CON files from CCF files
 isochore         Plots isochores in large DNA sequences
 libgen           Generate discriminating elements from alignments
@@ -708,7 +712,7 @@ matcher          Finds the best local alignments between two sequences
 matgen3d         Generate a 3D-1D scoring matrix from CCF files
 megamerger       Merge two large overlapping nucleic acid sequences
 meme             Motif detection
-merger           Merge two overlapping nucleic acid sequences
+merger           Merge two overlapping sequences
 msbar            Mutate sequence beyond all recognition
 mse              Multiple Sequence Editor
 mwcontam         Shows molwts that match across a set of files
@@ -754,6 +758,7 @@ polydot          Displays all-against-all dotplots of a set of sequences
 preg             Regular expression search of a protein sequence
 prettyplot       Displays aligned sequences, with colouring and boxing
 prettyseq        Output sequence with translated ranges
+prima            Selects primers for PCR and DNA amplification
 primersearch     Searches DNA sequences for matches with primer pairs
 printsextract    Extract data from PRINTS
 profit           Scan a sequence or database with a matrix or profile
@@ -775,6 +780,7 @@ scopparse        Generate DCF file from raw SCOP files
 seealso          Finds programs sharing group names
 seqalign         Extend alignments (DAF file) with sequences (DHF file)
 seqfraggle       Removes fragment sequences from DHF files
+seqinfo          Returns sequence information
 seqmatchall      All-against-all comparison of a set of sequences
 seqnr            Removes redundancy from DHF files
 seqret           Reads and writes (returns) sequences
@@ -1027,7 +1033,7 @@ Finds programs by keywords in their one-line documentation
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
 </pre>
 </td></tr></table>
@@ -1207,7 +1213,7 @@ that the programs belong to or the word that is being searched for.
 
 <tr>
 <td><a href="merger.html">merger</a></td>
-<td>Merge two overlapping nucleic acid sequences</td>
+<td>Merge two overlapping sequences</td>
 </tr>
 
 </table>

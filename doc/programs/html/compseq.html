@@ -88,7 +88,7 @@ To count the frequencies of dinucleotides in a file:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>compseq tembl:hsfau 2 result3.comp </b>
+% <b>compseq tembl:hsfau -word 2 result3.comp </b>
 Count composition of dimer/trimer/etc words in a sequence
 
 </pre></td></tr></table><p>
@@ -103,7 +103,7 @@ To count the frequencies of hexanucleotides, without outputting the results of h
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>compseq tembl:hsfau 6 result6.comp -nozero </b>
+% <b>compseq tembl:hsfau -word 6 result6.comp -nozero </b>
 Count composition of dimer/trimer/etc words in a sequence
 
 </pre></td></tr></table><p>
@@ -118,7 +118,7 @@ To count the frequencies of trinucleotides in frame 2 of a sequence and use a pr
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>compseq tembl:hsfau 3 result3.comp -frame 2 -in prev.comp </b>
+% <b>compseq tembl:hsfau -word 3 result3.comp -frame 2 -in prev.comp </b>
 Count composition of dimer/trimer/etc words in a sequence
 
 </pre></td></tr></table><p>
@@ -134,7 +134,7 @@ Count composition of dimer/trimer/etc words in a sequence
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-word]              integer    This is the size of word (n-mer) to count.
+   -word               integer    This is the size of word (n-mer) to count.
                                   Thus if you want to count codon frequencies,
                                   you should enter 3 here.
   [-outfile]           outfile    This is the results file.
@@ -219,7 +219,7 @@ Count composition of dimer/trimer/etc words in a sequence
    -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory3        string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -234,7 +234,7 @@ Count composition of dimer/trimer/etc words in a sequence
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
 </pre>
 </td></tr></table>
@@ -254,7 +254,7 @@ Count composition of dimer/trimer/etc words in a sequence
 </tr>
 
 <tr>
-<td>[-word]<br>(Parameter 2)</td>
+<td>-word</td>
 <td>This is the size of word (n-mer) to count.
 Thus if you want to count codon frequencies, you should enter 3 here.</td>
 <td>Integer from 1 to 20</td>
@@ -262,7 +262,7 @@ Thus if you want to count codon frequencies, you should enter 3 here.</td>
 </tr>
 
 <tr>
-<td>[-outfile]<br>(Parameter 3)</td>
+<td>[-outfile]<br>(Parameter 2)</td>
 <td>This is the results file.</td>
 <td>Output file</td>
 <td><i>&lt;sequence&gt;</i>.compseq</td>
