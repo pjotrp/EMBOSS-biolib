@@ -13,7 +13,13 @@ while (<>) {
     if (/^Valgrind test (\S+)/) {
 	$name = $1;
 	$leak = $status = 0;
-	if (/^Valgrind test (\S+) OK/) {next}
+	if (/^Valgrind test (\S+) OK [\(]all clean[\)]/) {next}
+	elsif (/^Valgrind test (\S+) OK [\(]still reachable +([^\)]+)/) {
+	    $status = $2;
+	    print "\n";
+	    print "$name reachable $status\n";
+	    print "\% $cmd{$name}\n";
+	}
 	elsif (/^Valgrind test (\S+) returned status (\d+)/) {
 	    $status = $2;
 	    print "\n";
