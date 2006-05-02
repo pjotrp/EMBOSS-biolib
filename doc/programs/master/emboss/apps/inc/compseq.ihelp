@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-word]              integer    This is the size of word (n-mer) to count.
+   -word               integer    This is the size of word (n-mer) to count.
                                   Thus if you want to count codon frequencies,
                                   you should enter 3 here.
   [-outfile]           outfile    This is the results file.
@@ -86,7 +86,7 @@
    -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory3        string     Output directory
+   -odirectory2        string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts

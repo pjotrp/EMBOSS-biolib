@@ -1,5 +1,5 @@
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Nucleotide sequence filename and optional
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
    -gap                integer    Gap penalty
    -threshold          integer    Minimum score threshold
@@ -10,14 +10,14 @@
    Additional (Optional) qualifiers:
    -maxrepeat          integer    Maximum separation between the start of
                                   repeat and the end of the inverted repeat
-                                  (the default is 4000 bases).
+                                  (the default is 2000 bases).
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1            integer    Start of the sequence to be used
-   -send1              integer    End of the sequence to be used
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
    -sreverse1          boolean    Reverse (if DNA)
    -sask1              boolean    Ask for begin/end/reverse
    -snucleotide1       boolean    Sequence is nucleotide

@@ -13,7 +13,7 @@
 </tr>
 
 <tr>
-<td>[-word]<br>(Parameter 2)</td>
+<td>-word</td>
 <td>This is the size of word (n-mer) to count.
 Thus if you want to count codon frequencies, you should enter 3 here.</td>
 <td>Integer from 1 to 20</td>
@@ -21,7 +21,7 @@ Thus if you want to count codon frequencies, you should enter 3 here.</td>
 </tr>
 
 <tr>
-<td>[-outfile]<br>(Parameter 3)</td>
+<td>[-outfile]<br>(Parameter 2)</td>
 <td>This is the results file.</td>
 <td>Output file</td>
 <td><i>&lt;sequence&gt;</i>.compseq</td>

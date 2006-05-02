@@ -7,6 +7,11 @@
 </tr>
 
 <tr>
+<td><a href="prima.html">prima</a></td>
+<td>Selects primers for PCR and DNA amplification</td>
+</tr>
+
+<tr>
 <td><a href="primersearch.html">primersearch</a></td>
 <td>Searches DNA sequences for matches with primer pairs</td>
 </tr>
