@@ -145,7 +145,7 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
@@ -773,7 +773,7 @@ See also
 
    Program name                 Description
    cons         Creates a consensus from multiple alignments
-   merger       Merge two overlapping nucleic acid sequences
+   merger       Merge two overlapping sequences
 
    Compare this with the program merger which does a more accurate
    alignment of more divergent sequences using the Needle and Wunsch

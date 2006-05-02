@@ -27,18 +27,20 @@ Output file [rnu68037.wordcount]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Nucleotide sequence filename and optional
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
    -wordsize           integer    Word size
   [-outfile]           outfile    Output file name
 
-   Additional (Optional) qualifiers: (none)
+   Additional (Optional) qualifiers:
+   -mincount           integer    Minimum word count to report
+
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1            integer    Start of the sequence to be used
-   -send1              integer    End of the sequence to be used
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
    -sreverse1          boolean    Reverse (if DNA)
    -sask1              boolean    Ask for begin/end/reverse
    -snucleotide1       boolean    Sequence is nucleotide
@@ -68,17 +70,17 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -wordsize Word size Integer 2 or more 4
    [-outfile]
    (Parameter 2) Output file name Output file <sequence>.wordcount
    Additional (Optional) qualifiers Allowed values Default
-   (none)
+   -mincount Minimum word count to report Integer 1 or more 1
    Advanced (Unprompted) qualifiers Allowed values Default
    (none)
 

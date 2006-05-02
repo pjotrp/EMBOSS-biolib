@@ -131,7 +131,7 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -263,7 +263,7 @@ See also
 
    Program name                    Description
    megamerger   Merge two large overlapping nucleic acid sequences
-   merger       Merge two overlapping nucleic acid sequences
+   merger       Merge two overlapping sequences
 
 Author(s)
 

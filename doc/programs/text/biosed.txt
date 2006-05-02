@@ -60,7 +60,9 @@ Command line arguments
   [-outseq]            seqout     Sequence filename and optional format
                                   (output USA)
 
-   Additional (Optional) qualifiers: (none)
+   Additional (Optional) qualifiers:
+   -position           integer    Sequence position to match
+
    Advanced (Unprompted) qualifiers:
    -delete             toggle     Delete the target sequence sections
 
@@ -107,7 +109,7 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
@@ -119,7 +121,7 @@ Command line arguments
    (Parameter 2) Sequence filename and optional format (output USA)
    Writeable sequence <sequence>.format
    Additional (Optional) qualifiers Allowed values Default
-   (none)
+   -position Sequence position to match Integer 0 or more 0
    Advanced (Unprompted) qualifiers Allowed values Default
    -delete Delete the target sequence sections Toggle value Yes/No No
 

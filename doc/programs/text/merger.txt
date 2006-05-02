@@ -5,7 +5,7 @@
 
 Function
 
-   Merge two overlapping nucleic acid sequences
+   Merge two overlapping sequences
 
 Description
 
@@ -64,8 +64,8 @@ Usage
 
 
 % merger 
-Merge two overlapping nucleic acid sequences
-Input nucleotide sequence: tembl:eclacy
+Merge two overlapping sequences
+Input sequence: tembl:eclacy
 Second nucleotide sequence: tembl:eclaca
 Output alignment [eclacy.merger]: 
 Output sequence [eclacy.fasta]: 
@@ -81,10 +81,10 @@ Output sequence [eclacy.fasta]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-asequence]         sequence   Nucleotide sequence filename and optional
-                                  format, or reference (input USA)
-  [-bsequence]         sequence   Nucleotide sequence filename and optional
-                                  format, or reference (input USA)
+  [-asequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
+  [-bsequence]         sequence   Sequence filename and optional format, or
+                                  reference (input USA)
   [-outfile]           align      Output alignment file name
   [-outseq]            seqout     Sequence filename and optional format
                                   (output USA)
@@ -170,15 +170,15 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-asequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
+   (Parameter 1) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    [-bsequence]
-   (Parameter 2) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
+   (Parameter 2) Sequence filename and optional format, or reference
+   (input USA) Readable sequence Required
    [-outfile]
    (Parameter 3) Output alignment file name Alignment output file
    [-outseq]
@@ -191,8 +191,10 @@ Command line arguments
    'data' directory of the EMBOSS installation. Comparison matrix file in
    EMBOSS data path EBLOSUM62 for protein
    EDNAFULL for DNA
-   -gapopen Gap opening penalty Number from 0.000 to 100.000 50.0
-   -gapextend Gap extension penalty Number from 0.000 to 10.000 5.0
+   -gapopen Gap opening penalty Number from 0.000 to 100.000
+   @($(acdprotein)? 50.0 : 50.0 )
+   -gapextend Gap extension penalty Number from 0.000 to 10.000
+   @($(acdprotein)? 5.0 : 5.0)
    Advanced (Unprompted) qualifiers Allowed values Default
    (none)
 

@@ -53,7 +53,7 @@ Output file [hsts1.inv]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   Nucleotide sequence filename and optional
+  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
    -gap                integer    Gap penalty
    -threshold          integer    Minimum score threshold
@@ -64,14 +64,14 @@ Command line arguments
    Additional (Optional) qualifiers:
    -maxrepeat          integer    Maximum separation between the start of
                                   repeat and the end of the inverted repeat
-                                  (the default is 4000 bases).
+                                  (the default is 2000 bases).
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1            integer    Start of the sequence to be used
-   -send1              integer    End of the sequence to be used
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
    -sreverse1          boolean    Reverse (if DNA)
    -sask1              boolean    Ask for begin/end/reverse
    -snucleotide1       boolean    Sequence is nucleotide
@@ -101,12 +101,12 @@ Command line arguments
    -warning            boolean    Report warnings
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
-   -die                boolean    Report deaths
+   -die                boolean    Report dying program messages
 
    Standard (Mandatory) qualifiers Allowed values Default
    [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
+   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
+   reference (input USA) Readable sequence(s) Required
    -gap Gap penalty Any integer value 12
    -threshold Minimum score threshold Any integer value 50
    -match Match score Any integer value 3
@@ -115,8 +115,8 @@ Command line arguments
    (Parameter 2) Output file name Output file <sequence>.einverted
    Additional (Optional) qualifiers Allowed values Default
    -maxrepeat Maximum separation between the start of repeat and the end
-   of the inverted repeat (the default is 4000 bases). Any integer value
-   4000
+   of the inverted repeat (the default is 2000 bases). Any integer value
+   2000
    Advanced (Unprompted) qualifiers Allowed values Default
    (none)
 
@@ -295,7 +295,7 @@ Output file format
   File: hsts1.inv
 
 
-Score 236: 108/130 ( 83%) matches, 0 gaps
+HSTS1: Score 236: 108/130 ( 83%) matches, 0 gaps
       13 gctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgagccgagatcg
 cgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
          |||||  | ||||||||||||| |||||| ||||||||  |||||| |||||||||||||||| |||||
@@ -303,71 +303,7 @@ cgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
      328 cgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactcggttctagg
 ctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
 
-Score 228: 108/132 ( 81%) matches, 0 gaps
-      11 cagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgagccgagat
-cgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
-           |||||  | ||||||||||||| |||||| ||||||||  |||||| |||||||||||||||| ||||
-|   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
-     330 accgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactcggttcta
-ggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
-
-Score 226: 110/136 ( 80%) matches, 0 gaps
-       7 gtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgagccg
-agatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
-         ||    |||||  | ||||||||||||| |||||| ||||||||  |||||| ||||||||||||||||
-|||||   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
-     334 caccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactcggt
-tctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
-
-Score 221: 111/139 ( 79%) matches, 0 gaps
-       4 gtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagtgag
-ccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
-         |  ||    |||||  | ||||||||||||| |||||| ||||||||  |||||| ||||||||||||||
-|| |||||   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
-     337 ccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtcactc
-ggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
-
-Score 216: 112/142 ( 78%) matches, 0 gaps
-       1 cctgtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcagt
-gagccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaa 142
-
-         |  |  ||    |||||  | ||||||||||||| |||||| ||||||||  |||||| |||||||||||
-||||| |||||   ||| || ||||||||||||| || ||||| ||||| |  |  ||||||||||||||||
-     340 gacccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgtca
-ctcggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggtttttttttttttttttt 199
-
-
-Score 199: 54/170 ( 31%) matches, 1 gaps
-       1 -cctgtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcag
-tgagccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaagaccgc
-cagggctcaaacaaaaaacctc 170
-           |||        |        |  |     |    |  | |   |  | || ||  |     | |
-     | |     || |  |      |   |  ||          |        |  |||||||||||||||| |
- |     |   ||       ||
-     342 tcgacccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaacgt
-cactcggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggttttttttttttttttttttttt
-tttttctggcggtcccgaaaag 172
-
-Score 175: 56/171 ( 32%) matches, 1 gaps
-       1 -cctgtagtcccagctacgcgagaggctgaggcagcagaattacttgaacccaggaggcggaggttgcag
-tgagccgagatcgcgccactgcactccagcctgggtgagagagcgagactctgtctcaaaaaaaaaaaaaaaagaccgc
-cagggctcaaacaaaaaacctcg 171
-              | | |   |   |      ||  |  |  ||||||  | |           || ||  |  |  |
-      |  |     | ||     | |  |      |          |        | ||||||||||||||| |
- |      |     |   | |
-     344 aatcgacccgcaccaccgatgaaccctccgactccgtcttcttaacgaacttggaccctccgtctccaac
-gtcactcggttctaggctggtaacatgaggtcggacccgctgtctcgttctgacagggttttttttttttttttttttt
-tttttttctggcggtcccgaaaa 173
-
-Score 172: 100/120 ( 83%) matches, 4 gaps
-     345 tttttgtacttttagtagagacgggggtttcaccatgttgtccaggctggtcttgaactcctgacctcag
-gtgatccacccgcctcggccccccaaagtactaggattacaggcgtgagccacc 468
-         |||||||  | ||||||||||| ||||| || |||||||| |||||||||||   || |||| |||||||
-|||||    | | ||| ||| |||||||   | |||||||||||||||||||||
-    3177 aaaaacacaataatcatctctgaccccacagcggtacaaccggtccgaccagggtttaaggattggagtc
-cacta----gactgagtcggagggtttcgccaccctaatgtccgcactcggtgg 3058
-
-Score 164: 128/174 ( 73%) matches, 3 gaps
+HSTS1: Score 164: 128/174 ( 73%) matches, 3 gaps
    12128 agaggatttttttttttttttttttttttgagacagagttttgctctgttgcccaggctggaatgcaacg
 gcgtgatcttggctcactgtaacctctgcctcc-tgggttcgagtgattctcctgcctcagcctc-caagtagctggga
 ttaca-gcatgtgccaccatgcctggct 12301
@@ -378,18 +314,17 @@ ttaca-gcatgtgccaccatgcctggct 12301
 cgcactagtactgagtgatgtcggagtttaaggcacccaagtttactaggagagcggaaccggagacctcaacaacctt
 aatgtccacactcggtggtgtggaccga 12573
 
-Score 80: 44/51 ( 86%) matches, 2 gaps
+HSTS1: Score 80: 44/51 ( 86%) matches, 2 gaps
    12246 ctcctgcctcag-cctccaagtagctgggattaca-gcatgtgccaccatgcc 12296
          |||||| ||||| | |||||   |||||||||||| ||||| |||||||| ||
    13938 gaggacagagtcagaaggtttcacgaccctaatgtccgtactcggtggtatgg 13886
 
-Score 130: 74/94 ( 78%) matches, 1 gaps
-   13890 tggtggctcatgcctgtaatcccagcactttggaagactgagacaggagcaattgcttgaggtctggagt
-tcaataccagcctgggcaacataac 13984
-         |||||||| ||||||||||| |||| ||||| | || ||||| |||| |  |   ||||| ||| |||||
-|  | | |||||||| |||||| ||
-   14822 accaccgaatacggacattaaggtcttgaaagcctccgactccgtccaccat-gtgaacttcagtcctca
-aactctagtcggaccggttgtactg 14729
+HSTS1: Score 99: 53/65 ( 81%) matches, 1 gaps
+   13884 tgggtatggtggctcatgcctgtaatcccagcactttggaagactgagacaggagcaattgcttga 139
+49
+         ||||| |||||||   ||||||||||||||||    ||| || ||||| ||| || ||||||||||
+   14692 acccacaccaccgtacacggacattagggtcgatggaccctccgactccgtcttc-ttaacgaact 146
+28
 
 Data files
 
