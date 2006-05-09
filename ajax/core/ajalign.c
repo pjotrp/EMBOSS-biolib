@@ -667,6 +667,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     ajint i;
     ajint j;
     ajint jj;
+    ajint kk;
     ajint istart;
     ajint iend;
     ajint ilen;
@@ -846,7 +847,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 			jj=0;
 		    }
 		    if(jj)
-			ajFmtPrintAppS(&tmpnum,"%.*s",jj,"                  ");
+			ajStrAppendCountK(&tmpnum, ' ', jj);
 		    ajFmtPrintF(outf, "%S\n", tmpnum);
 		}
 
@@ -886,28 +887,30 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 			jpos = ipos[iseq];
 			ajStrAssignC(&tmpnum, "");
 			jj=7;
+			kk=7;
 			cp = ajStrGetPtr(tmpstr);
 			while (*cp) {
 			    jj++;
 			    if ((*cp != '-') && (*cp != ' '))
 			    {
+				kk = jj;
 				jpos += increment;
 				if (jpos%10 == 0)
 				{
 				    ajFmtPrintAppS(&tmpnum,"%*d",jj,jpos);
 				    jj=0;
+				    kk=0;
 				    num[iseq] = ajTrue;
 				}
 			    }
 			    cp++;
 			}
 			if (lastline && !num[iseq]){
-			    ajFmtPrintAppS(&tmpnum,"%*d",jj,jpos);
-			    jj = 0;
+			    ajFmtPrintAppS(&tmpnum,"%*d",kk,jpos);
+			    jj = jj - kk;
 			}
 			if(jj)
-			    ajFmtPrintAppS(&tmpnum,"%.*s",jj,
-					   "                  ");
+			    ajStrAppendCountK(&tmpnum, ' ', jj);
 			ajFmtPrintF(outf, "%S\n", tmpnum);
 		    }
 		    if (increment > 0)
@@ -1465,11 +1468,20 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 				mrkcons);
 
 		if(ajStrGetLen(tmpstr))
-		    ajFmtPrintF(outf,
-				"%-13.13S %6d %S %6d\n",
-				alignSeqName(thys, iseq),
-				ipos[iseq]+incs[iseq], tmpstr,
-				ipos[iseq]+icnt);
+		{
+		    if(icnt)
+			ajFmtPrintF(outf,
+				    "%-13.13S %6d %S %6d\n",
+				    alignSeqName(thys, iseq),
+				    ipos[iseq]+incs[iseq], tmpstr,
+				    ipos[iseq]+icnt);
+		    else
+			ajFmtPrintF(outf,
+				    "%-13.13S %6d %S %6d\n",
+				    alignSeqName(thys, iseq),
+				    ipos[iseq], tmpstr,
+				    ipos[iseq]);
+		}
 		else
 		    ajFmtPrintF(outf,
 				"%-13.13S\n",
