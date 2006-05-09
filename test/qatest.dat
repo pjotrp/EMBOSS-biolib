@@ -17377,7 +17377,7 @@ FP /^# Score: +-11\n/
 FP 1 /^           10     \n/
 FP 1 /^ AFULL AACCGGTTAAA\n/
 FP 1 /^ BFULL AACGGG-----\n/
-FP 1 /^                 7\n/
+FP 1 /^            7     \n/
 FC = 44
 //
 
@@ -17395,10 +17395,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/64 \(15\.6%\)/
 FP /^# Score: +-55\n/
-FP 1 /^               10        20        30        40        50\n/
-FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTCCCAAATTTG\n/
-FP 1 /^ BFULL A------------AAC----------------GGGCCTTT----------\n/
-FP 1 /^                                           10            \n/
+FP 1 /^          60        50        40        30        20     \n/
+FP 1 /^ AFULL CATGCCAATTGGCCCAAATTTGGGAAAACCCCGGGGTTTTAAACCCGGGT\n/
+FP 1 /^ BFULL ------------------------AAAGGCCC----------------GT\n/
+FP 1 /^          10         \n/
 FC = 48
 //
 
@@ -17416,10 +17416,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +47\/65 \(72\.3%\)/
 FP /^# Score: +115\n/
-FP 1 /^                60    \n/
-FP 1 /^ AFULL GGCC-AATTGGCATG\n/
-FP 1 /^ APART GGTTTAACCGG--TT\n/
-FP 1 /^            50        \n/
+FP 1 /^           10         \n/
+FP 1 /^ AFULL TTTAACCGGTTACGT\n/
+FP 1 /^ APART TTTAACCGGTT----\n/
+FP 1 /^       10             \n/
 FC = 48
 //
 
@@ -17437,15 +17437,13 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/60 \(13\.3%\)/
 FP /^# Score: +-180\n/
-FP 1 /^           10        20        30        40        50    \n/
-FP 1 /^ AFULL AACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTCCCAAATTTGGGCC\n/
-FP 1 /^       :: :::                                            \n/
-FP 1 /^ BFULL AAACGG--------------------------------------------\n/
-FP 1 /^           60    \n/
-FP 1 /^ AFULL AATTGGCATG\n/
-FP 1 /^           : : : \n/
-FP 1 /^ BFULL ----GCCTTT\n/
-FP 1 /^             10  \n/
+FP 1 /^          60        50        40        30        20     \n/
+FP 1 /^ AFULL CATGCCAATTGGCCCAAATTTGGGAAAACCCCGGGGTTTTAAACCCGGGT\n/
+FP 1 /^ BFULL AAAGGC--------------------------------------------\n/
+FP 1 /^        10                                               \n/
+FP 1 /^          10     \n/
+FP 1 /^ AFULL TTAACCGGTT\n/
+FP 1 /^ BFULL ----CCGTTT\n/
 FC = 49
 //
 
@@ -17463,10 +17461,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/15 \(40\.0%\)/
 FP /^# Score: +-18\n/
-FP 1 /^               10     \n/
-FP 1 /^ AFULL ACGTAACCGGTTAAA\n/
-FP 1 /^ BFULL A---AACGGGCCTTT\n/
-FP 1 /^                  10  \n/
+FP 1 /^           10         \n/
+FP 1 /^ AFULL TTTAACCGGTTACGT\n/
+FP 1 /^ BFULL AAAGGCCCGTT---T\n/
+FP 1 /^        10            \n/
 FC = 43
 //
 
@@ -17484,10 +17482,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +-226\n/
-FP 1 /^               10        20        30        40        50\n/
-FP 1 /^ AFULL ACGTAACCGGTTAAACCCGGGTTTAAAACCCCGGGGTTTTCCCAAATTTG\n/
-FP 1 /^ BFULL --------------------------------GGGCCTTT----------\n/
-FP 1 /^                                           10            \n/
+FP 1 /^          60        50        40        30        20     \n/
+FP 1 /^ AFULL CATGCCAATTGGCCCAAATTTGGGAAAACCCCGGGGTTTTAAACCCGGGT\n/
+FP 1 /^ BFULL ------------------------AAAGGCCC------------------\n/
+FP 1 /^                                10                       \n/
 FC = 49
 //
 
@@ -17505,10 +17503,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +9\/64 \(14\.1%\)/
 FP /^# Score: +-211\n/
-FP 1 /^               60    \n/
-FP 1 /^ AFULL GGCCAATTGGCATG\n/
-FP 1 /^ BFULL GGCCT---------\n/
-FP 1 /^          10         \n/
+FP /^          10         \n/
+FP /^ AFULL TTAACCGGTTACGT\n/
+FP /^ BFULL TT------------\n/
+FP /^                     \n/
 FC = 49
 //
 
@@ -17527,10 +17525,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +-11\n/
-FP 1 /^           10     \n/
-FP 1 /^ AFULL AACCGGTTAAA\n/
-FP 1 /^ BFULL AACGGG-----\n/
-FP 1 /^                 7\n/
+FP /^           10     \n/
+FP /^ AFULL TTTAACCGGTT\n/
+FP /^ BFULL -----CCCGTT\n/
+FP /^                 2\n/
 FC = 46
 //
 
@@ -17942,10 +17940,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\n/
-FP 1 /^                 10  \n/
-FP 1 /^             20      \n/
-FP 1 /^ AFULL AAACCCGGG--TTT\n/
-FP 1 /^ BFULL AAAC--GGGCCTTT\n/
+FP 1 /^            20       \n/
+FP 1 /^ AFULL AAA--CCCGGGTTT\n/
+FP 1 /^ BFULL AAAGGCCCG--TTT\n/
+FP 1 /^        10           \n/
 FC = 42
 //
 
@@ -17964,11 +17962,12 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +46\/64 \(71\.9%\)/
 FP /^# Score: +196\n/
-FP 1 /^ AFULL T----GGGCCAATT\n/
-FP 1 /^ APART TAACCGG-----TT\n/
-FP 1 /^        50           \n\n/
-FP 1 /^           10        20        30        40              \n/
-FP 1 /^               10        20        30           40       \n/
+FP 1 /^                  50              40        30        20 \n/
+FP 1 /^            50             40           30        20     \n/
+FP 1 /^              10     \n/
+FP 1 /^ AFULL GGGTTTAACCGGTT\n/
+FP 1 /^ APART GGGTTTAACCGGTT\n/
+FP 1 /^          10         \n/
 FC = 48
 //
 
@@ -17986,10 +17985,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\n/
-FP 1 /^             20      \n/
-FP 1 /^ AFULL AAACCCGGG--TTT\n/
-FP 1 /^ BFULL AAAC--GGGCCTTT\n/
-FP 1 /^                 10  \n/
+FP 1 /^            20       \n/
+FP 1 /^ AFULL AAA--CCCGGGTTT\n/
+FP 1 /^ BFULL AAAGGCCCG--TTT\n/
+FP 1 /^        10           \n/
 FC = 43
 //
 
@@ -18007,10 +18006,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +7\/10 \(70\.0%\)/
 FP /^# Score: +25\n/
-FP 1 /^           10    \n/
-FP 1 /^ AFULL AACCGG--TT\n/
-FP 1 /^ BFULL AACGGGCCTT\n/
-FP 1 /^              10 \n/
+FP 1 /^          10     \n/
+FP 1 /^ AFULL AA--CCGGTT\n/
+FP 1 /^ BFULL AAGGCCCGTT\n/
+FP 1 /^       10        \n/
 FC = 43
 //
 
@@ -18028,10 +18027,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +7\/9 \(77\.8%\)/
 FP /^# Score: +29\n/
-FP 1 /^      50        \n/
-FP 1 /^ AFULL GGGCCAATT\n/
-FP 1 /^ BFULL GGGCC--TT\n/
-FP 1 /^             10 \n/
+FP 1 /^              50\n/
+FP 1 /^ AFULL AATTGGCCC\n/
+FP 1 /^ BFULL AA--GGCCC\n/
+FP 1 /^       10       \n/
 FC = 43
 //
 
@@ -18049,10 +18048,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/11 \(72\.7%\)/
 FP /^# Score: +30\n/
-FP 1 /^            50    \n/
-FP 1 /^ AFULL AAATTTGGGCC\n/
-FP 1 /^ BFULL AAA--CGGGCC\n/
-FP 1 /^                 9\n/
+FP /^          50      \n/
+FP /^ AFULL GGCCCAAATTT\n/
+FP /^ BFULL GGCCCG--TTT\n/
+FP /^                 1\n/
 FC = 43
 //
 
@@ -18071,10 +18070,10 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
-FP 1 /^           10\n/
-FP 1 /^ AFULL AACCGG\n/
-FP 1 /^ BFULL AACGGG\n/
-FP 1 /^            7\n/
+FP /^      10     \n/
+FP /^ AFULL CCGGTT\n/
+FP /^ BFULL CCCGTT\n/
+FP /^            2\n/
 FC = 46
 //
 
@@ -18136,11 +18135,11 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
-FP 1 /^           10\n/
-FP 1 /^ AFULL AACCGG\n/
-FP 1 /^       ::: ::\n/
-FP 1 /^ BFULL AACGGG\n/
-FP 1 /^            7\n/
+FP 1 /^      10     \n/
+FP 1 /^ AFULL CCGGTT\n/
+FP 1 /^       :: :::\n/
+FP 1 /^ BFULL CCCGTT\n/
+FP 1 /^            2\n/
 FC = 47
 //
 
@@ -18160,11 +18159,11 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
-FP 1 /^           10\n/
-FP 1 /^ AFULL AACCGG\n/
-FP 1 /^          X  \n/
-FP 1 /^ BFULL AACGGG\n/
-FP 1 /^            7\n/
+FP 1 /^      10     \n/
+FP 1 /^ AFULL CCGGTT\n/
+FP 1 /^         X   \n/
+FP 1 /^ BFULL CCCGTT\n/
+FP 1 /^            2\n/
 FC = 47
 //
 ID align-matcher-markx2rev
@@ -18183,9 +18182,9 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
-FP 1 /^           10\n/
-FP 1 /^ AFULL AACCGG\n/
-FP 1 /^ BFULL \.\.\.G\.\.\n/
+FP 1 /^      10     \n/
+FP 1 /^ AFULL CCGGTT\n/
+FP 1 /^ BFULL \.\.C\.\.\.\n/
 FC = 45
 //
 
@@ -18207,8 +18206,8 @@ FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\n/
-FP 1 /^>AFULL \.\.\nAACCGG\n/
-FP 1 /^>BFULL \.\.\nAACGGG\n/
+FP 1 /^>AFULL \.\.\nCCGGTT\n/
+FP 1 /^>BFULL \.\.\nCCCGTT\n/
 FC = 45
 //
 
@@ -18226,8 +18225,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FP 1 /^>AFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACCGG\n/
-FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nAACGGG\n/
+FP 1 /^>AFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nCCGGTT\n/
+FP 1 /^>BFULL \.\.\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\n;[^\n]+\nCCCGTT\n/
 FC = 66
 //
 
@@ -18246,9 +18245,9 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FP 1 /^>AFULL\n/
-FP 1 /^TTGGCC\n/
+FP 1 /^CCGGTT\n/
 FP 1 /^>BFULL\n/
-FP 1 /^TTGCCC\n/
+FP 1 /^CCCGTT\n/
 FC = 4
 //
 
@@ -19156,6 +19155,7 @@ FP /^# Score: +24\.0\n/
 FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggttttcccaaatttgggcc     54\n/
 FP 1 /^      +          \|\|\|\|\.\.\|\.\.\|\|\|                 +\n/
 FP 1 /^BFULL +1 --------aaacgggccttt------------------------------     12\n/
+FP 1 /^BFULL +12 ----------     12\n/
 FC = 43
 //
 
@@ -19249,9 +19249,9 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/64 \(12\.5%\)/
 FP /^# Score: +24\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttcccaaatttg     50\n/
-FP 1 /^      +              \|\|\|\|\.\.\|\.\.\|\|\|                          \n/
-FP 1 /^BFULL +1 ------------aaacgggccttt--------------------------     12\n/
+FP /^AFULL +64 catgccaattggcccaaatttgggaaaaccccggggttttaaacccgggt     15\n/
+FP /^       +                                          \|\|\|\.\.\|\.\.\|\|\n/
+FP /^BFULL +12 ----------------------------------------aaaggcccgt      3\n/
 FC = 44
 //
 
@@ -19269,9 +19269,9 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +46\/67 \(68\.7%\)/
 FP /^# Score: +162\.0\n/
-FP 1 /^AFULL             48 ttgggccaattggcatg     64\n/
-FP 1 /^                     \|\| \.\.\|\|\.\.\|\|      \n/
-FP 1 /^APART             47 tt-aaccggtt------     56\n/
+FP /^AFULL +17 ggtttaaccggttacgt      1\n/
+FP /^      +   \|\|\|\|\|\|\|\|\|\|\|\|\|    \n/
+FP /^APART +13 ggtttaaccggtt----      1\n/
 FC = 44
 //
 
@@ -19289,9 +19289,9 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/60 \(13\.3%\)/
 FP /^# Score: +24\.0\n/
-FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggttttcccaaatttgggcc     54\n/
-FP 1 /^      +          \|\|\|\|\.\.\|\.\.\|\|\|                 +\n/
-FP 1 /^BFULL +1 --------aaacgggccttt------------------------------     12\n/
+FP 1 /^AFULL +64 catgccaattggcccaaatttgggaaaaccccggggttttaaacccgggt     15\n/
+FP 1 /^      +                                           \|\|\|\.\.\|\.\.\|\|\n/
+FP 1 /^BFULL +12 ----------------------------------------aaaggcccgt      3\n/
 FC = 45
 //
 
@@ -19309,8 +19309,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +3\/24 \(12\.5%\)/
 FP /^# Score: +15\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaa---------     15\n/
-FP 1 /^BFULL +1 ------------aaacgggccttt     12\n/
+FP 1 /^AFULL +15 ---------tttaaccggttacgt      1\n/
+FP 1 /^BFULL +12 aaaggcccgttt------------      1\n/
 FC = 41
 //
 
@@ -19328,8 +19328,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +22\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttcccaaatttg     50\n/
-FP 1 /^BFULL +5 --------------------------------gggccttt----------     12\n/
+FP /^AFULL +64 catgccaattggcccaaatttgggaaaaccccggggttttaaacccgggt     15\n/
+FP /^BFULL +12 -------aaaggccc-----------------------------------      5\n/
 FC = 45
 //
 
@@ -19347,8 +19347,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +6\/64 \( 9\.4%\)/
 FP /^# Score: +14\.0\n/
-FP 1 /^AFULL +1 acgtaaccggttaaacccgggtttaaaaccccggggttttcccaaatttg     50\n/
-FP 1 /^BFULL +1 ------------aaacgggcct----------------------------     10\n/
+FP /^AFULL +64 catgccaattggcccaaatttgggaaaaccccggggttttaaacccgggt     15\n/
+FP /^BFULL +10 -aggcccgttt---------------------------------------      1\n/
 FC = 45
 //
 
@@ -19367,8 +19367,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/11 \(45\.5%\)/
 FP /^# Score: +21\.0\n/
-FP 1 /^AFULL +5 aaccggttaaa     15\n/
-FP 1 /^BFULL +2 aacggg-----      7\n/
+FP /^AFULL +15 tttaaccggtt      5\n/
+FP /^BFULL  +7 -----cccgtt      2\n/
 FC = 44
 //
 
@@ -19520,8 +19520,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
-FP 1 /^AFULL             13 aaacccggg--ttt     24\n/
-FP 1 /^BFULL              1 aaa--cgggccttt     12\n/
+FP /^AFULL             24 aaa--cccgggttt     13\n/
+FP /^BFULL             12 aaaggccc--gttt      1\n/
 FC = 40
 //
 
@@ -19540,8 +19540,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +46\/62 \(74\.2%\)/
 FP /^# Score: +196\.0\n/
-FP 1 /^AFULL +5 aaccggttaaacccgggtttaaaaccccggggtttt---cccaaatttgg     51\n/
-FP 1 /^APART +1 aaccggttaaacccgggtttaaaaccccggggttttaaaccc------gg     44\n/
+FP /^AFULL +58 aattgg-----cccaaatttggg---aaaaccccggggttttaaacccgg     17\n/
+FP /^APART +56 aaccggttaaaccc------gggtttaaaaccccggggttttaaacccgg     13\n/
 FC = 44
 //
 
@@ -19559,8 +19559,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +10\/14 \(71\.4%\)/
 FP /^# Score: +38\.0\n/
-FP 1 /^AFULL             13 aaacccggg--ttt     24\n/
-FP 1 /^BFULL              1 aaa--cgggccttt     12\n/
+FP 1 /^AFULL             24 aaa--cccgggttt     13\n/
+FP 1 /^BFULL             12 aaaggccc--gttt      1\n/
 FC = 41
 //
 
@@ -19578,8 +19578,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +7\/10 \(70\.0%\)/
 FP /^# Score: +25\.0\n/
-FP 1 /^AFULL              5 aaccgg--tt     12\n/
-FP 1 /^BFULL              2 aacgggcctt     11\n/
+FP /^AFULL             12 aa--ccggtt      5\n/
+FP /^BFULL             11 aaggcccgtt      2\n/
 FC = 41
 //
 
@@ -19597,8 +19597,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +7\/9 \(77\.8%\)/
 FP /^# Score: +29\.0\n/
-FP 1 /^AFULL             50 gggccaatt     58\n/
-FP 1 /^BFULL              5 gggcc--tt     11\n/
+FP /^AFULL             58 aattggccc     50\n/
+FP /^BFULL             11 aa--ggccc      5\n/
 FC = 41
 //
 
@@ -19616,8 +19616,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +8\/11 \(72\.7%\)/
 FP /^# Score: +30\.0\n/
-FP 1 /^AFULL             44 aaatttgggcc     54\n/
-FP 1 /^BFULL              1 aaa--cgggcc      9\n/
+FP /^AFULL             54 ggcccaaattt     44\n/
+FP /^BFULL              9 ggccc--gttt      1\n/
 FC = 41
 //
 
@@ -19636,8 +19636,8 @@ FP 0 /Died: /
 FI stdout
 FP /^# Identity: +5\/6 \(83\.3%\)/
 FP /^# Score: +21\.0\n/
-FP 1 /^AFULL              5 aaccgg     10\n/
-FP 1 /^BFULL              2 aacggg      7\n/
+FP /^AFULL             10 ccggtt      5\n/
+FP /^BFULL              7 cccgtt      2\n/
 FC = 44
 //
 
@@ -19707,10 +19707,10 @@ FI supermatcher.error
 FZ = 0
 FI eclac.supermatcher
 FZ > 71230
-FP /^ECLAC +1 /
 FP /^# Score: 37385\.0/
 FP 5 /^# Score: /
-FP /^ECLACA +1801 [acgt]+ +1832\n/
+FP /^ECLACA +1832 [acgt]+ +1783\n/
+FP /^ECLACA   +32 [acgt]+ +1\n/
 //
 
 ID align-supermatcher-rangerev
@@ -19731,10 +19731,11 @@ FI supermatcher.error
 FZ = 0
 FI eclac.supermatcher
 FZ > 69555
-FP /^ECLAC +101 /
+FP 3 /^ECLAC +7277 /
 FP /^# Score: 36385\.0/
 FP 5 /^# Score: /
-FP /^ECLACA +1701 [acgt]+ +1732\n/
+FP /^ECLACA +32 [acgt]+ +1\n/
+FP 2 /^ECLAC +127 [acgt]+ +101\n/
 //
 
 #######################################
