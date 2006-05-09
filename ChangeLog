@@ -1,5 +1,15 @@
 Version 3.1.0
 
+	Further correction to reversed sequence numbering for local alignments
+	from water and supermatcher. For these local alignments all reversed
+	alignments were ending at "1" because the end offset was not
+	calculated correctly. Matcher called a different function to set
+	sequence posisitions and reported correct positions.
+
+	For alignments with a line of gaps, adjusted the numbering to
+	report the last sequence position instead of the next at the start
+	of the line.
+	
 	Program einverted output is changed to include the sequence ID
 	and the program input is changed to process more than one sequence
 	as input. The change to the output format was needed to indicate
@@ -70,7 +80,7 @@ Version 3.1.0
 	to run the program, with any replies to prompts included.
 
 	Excel report format includes a column for Strand to indicate
-	sequences on ther reverse strand. The strand column is + for a
+	sequences on the reverse strand. The strand column is + for a
 	forward feature (all protein features are forward) or - for a
 	reverse direction feature.
 
