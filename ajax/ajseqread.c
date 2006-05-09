@@ -431,12 +431,12 @@ static SeqOInFormat seqInFormatDef[] = {
   {"gff",         "GFF feature file with sequence in the header",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  AJFALSE, seqReadGff},
-  {"stockholm",   "Stockholm (pfam) format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
   {"selex",       "Selex format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadSelex},
+  {"stockholm",   "Stockholm (pfam) format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
   {"pfam",        "Stockholm (pfam) format (alias)",
        AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
@@ -2696,8 +2696,6 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		ok=ajFileBuffGet(buff,&line);
 		ajDebug("Stockholm: block read: %S", line);
 	    }
-	    /* jison added n-- to give correct count of sequences */
-	    n--;
 	    ajDebug("Stockholm: read block of %d sequences\n", n);
 	}
 	ajFileSeek(buff->File,lpos,0);
@@ -2834,8 +2832,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		else
 		{
 		    if(!ajStrMatchS(namstr, stock->name[scnt]))
-			ajWarn("Bad stockholm format found '%S' expect '%S'",
-			       namstr, stock->name[scnt]);
+			ajWarn("Bad stockholm format found id %d '%S' expect '%S'",
+			       scnt, namstr, stock->name[scnt]);
 		}
 		ajStrRemoveLastNewline(&seqstr);
 		ajStrAppendS(&stock->str[scnt], seqstr);
