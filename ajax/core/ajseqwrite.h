@@ -6,6 +6,9 @@ extern "C"
 #ifndef ajseqwrite_h
 #define ajseqwrite_h
 
+
+
+
 /* @data AjPSeqout ************************************************************
 **
 ** Ajax Sequence Output object.
@@ -112,6 +115,13 @@ typedef struct AjSSeqout {
 
 #define AjPSeqout AjOSeqout*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void         ajSeqAllWrite (AjPSeqout outseq, const AjPSeq seq);
 AjBool       ajSeqFileNewOut (AjPSeqout seqout, const AjPStr name);
 ajint        ajSeqoutCheckGcg (const AjPSeqout outseq);
@@ -136,6 +146,10 @@ void         ajSeqWriteExit(void);
 void         ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
 void         ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
 
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

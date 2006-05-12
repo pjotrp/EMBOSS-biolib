@@ -16,6 +16,9 @@ extern "C"
 #define BTREE_DEF_CACHESIZE 100
 #define BTREE_DEF_PAGESIZE  2048
 
+
+
+
 /* @data EmbPBtreeEntry *******************************************************
 **
 ** Index tree entries
@@ -164,6 +167,10 @@ typedef struct EmbSBtreeEntry
 
 
 
+/*
+** Prototype definitions
+*/
+
 void   embBtreeEmblAC(const AjPStr acline, AjPList aclist);
 void   embBtreeEmblKW(const AjPStr kwline, AjPList kwlist, ajint maxlen);
 void   embBtreeEmblDE(const AjPStr deline, AjPList delist, ajint maxlen);
@@ -194,6 +201,9 @@ AjBool         embBtreeOpenCaches(EmbPBtreeEntry entry);
 AjBool         embBtreeCloseCaches(EmbPBtreeEntry entry);
 AjBool         embBtreeDumpParameters(EmbPBtreeEntry entry);
 
+/*
+** End of prototype definitions
+*/
 
 #endif
 

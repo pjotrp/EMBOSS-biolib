@@ -4,10 +4,11 @@ extern "C"
 #endif
 
 
-
-
 #ifndef aj3dvector_h
 #define aj3dvector_h
+
+
+
 
 /* @data AjP3dVector *********************************************************
 **
@@ -55,7 +56,9 @@ typedef struct AjS3dVector
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
-/* aj3dvector.h () $Date: 2005/10/31 15:43:43 $                    DJC Oct03 */
+/*
+** Prototype definitions
+*/
 
 float       aj3dVectorAngle(const AjP3dVector first,
 			    const AjP3dVector fecond);
@@ -78,6 +81,10 @@ AjP3dVector aj3dVectorNew(void);
 void        aj3dVectorSum(const AjP3dVector first,
 			  const AjP3dVector second,
 			  AjP3dVector sum);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

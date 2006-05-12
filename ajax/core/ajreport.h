@@ -6,6 +6,9 @@ extern "C"
 #ifndef ajseqreport_h
 #define ajseqreport_h
 
+
+
+
 /* @data AjPReport ************************************************************
 **
 ** Ajax Report Output object.
@@ -80,6 +83,13 @@ typedef struct AjSReport {
 
 #define AjPReport AjOReport*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void         ajReportClose (AjPReport pthys);
 void         ajReportDel (AjPReport* pthys);
 void         ajReportDummyFunction(void);
@@ -115,6 +125,10 @@ void         ajReportWriteHeader (AjPReport thys,
 				  const AjPFeattable ftable, const AjPSeq seq);
 void         ajReportWriteTail (AjPReport thys,
 				const AjPFeattable ftable, const AjPSeq seq);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

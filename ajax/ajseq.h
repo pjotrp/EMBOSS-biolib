@@ -9,6 +9,9 @@ extern "C"
 #include "ajseqdata.h"
 #include "ajax.h"
 
+
+
+
 /* @data AjPSeqCvt ************************************************************
 **
 ** Sequence conversion data. Used to convert a sequence to binary.
@@ -50,7 +53,12 @@ typedef struct AjSSeqCvt {
 
 #define AjPSeqCvt AjOSeqCvt*
 
-/* ======= prototypes ==================*/
+
+
+
+/*
+** Prototype definitions
+*/
 
 AjBool       ajIsAccession (const AjPStr accnum);
 const AjPStr ajIsSeqversion (const AjPStr sv);
@@ -239,6 +247,11 @@ ajint        ajSeqTrueLen (const AjPSeq seq);
 ajint        ajSeqTruePos (const AjPSeq thys, ajint ipos);
 ajint        ajSeqTruePosI (const AjPSeq thys, ajint imin, ajint ipos);
 ajint        ajSeqTruePosII (ajint ilen, ajint imin, ajint ipos);
+
+/*
+** End of prototype definitions
+*/
+
 #endif
 
 #ifdef __cplusplus

@@ -104,6 +104,9 @@ extern "C" {
 struct real_pcre;                 /* declaration; the definition is private  */
 typedef struct real_pcre pcre;
 
+
+
+
 /* @data pcre_extra ***********************************************************
 **
 ** The structure for passing additional data to pcre_exec(). This is defined in
@@ -122,6 +125,9 @@ typedef struct pcre_extra {
   unsigned long int match_limit;
   void *callout_data;
 } pcre_extra;
+
+
+
 
 /* @data pcre_callout_block ***************************************************
 **
@@ -160,6 +166,9 @@ typedef struct pcre_callout_block {
   void        *callout_data;
 } pcre_callout_block;
 
+
+
+
 /* Indirection for store get and free functions. These can be set to
 alternative malloc/free functions if required. There is also an optional
 callout function that is triggered by the (?) regex item. Some magic is
@@ -172,6 +181,9 @@ PCRE_DATA_SCOPE void *(*pcre_calloc)(size_t,size_t);
 PCRE_DATA_SCOPE void  (*pcre_free)(void *);
 PCRE_DATA_SCOPE int   (*pcre_callout)(pcre_callout_block *);
 #else   /* VPCOMPAT */
+/*
+** Prototype definitions
+*/
 extern void *pcre_malloc(size_t);
 extern void *pcre_calloc(size_t,size_t);
 extern void  pcre_free(void *);
@@ -204,6 +216,11 @@ extern int  pcre_info(const pcre *, int *, int *);
 extern const unsigned char *pcre_maketables(void);
 extern pcre_extra *pcre_study(const pcre *, int, const char **);
 extern const char *pcre_version(void);
+
+/*
+** End of prototype definitions
+*/
+
 
 #ifdef __cplusplus
 }  /* extern "C" */

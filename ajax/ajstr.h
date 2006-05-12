@@ -9,6 +9,9 @@ extern "C"
 #include "ajdefine.h"
 #include "ajtable.h"
 
+
+
+
 /* @data AjPStr ***************************************************************
 **
 ** Ajax string object.
@@ -54,6 +57,9 @@ typedef struct AjSStr {
 #define AjPStr AjOStr*
 typedef AjPStr* AjPPStr;
 
+
+
+
 /* @data AjIStr ***************************************************************
 **
 ** String iterator, used to test iterator functionality.
@@ -77,6 +83,7 @@ typedef AjPStr* AjPPStr;
 ** @attr Ptr [char*] Current string pointer
 ** @@
 ******************************************************************************/
+
 typedef struct AjSStrIter {
   char *Start;
   char *End;
@@ -84,6 +91,8 @@ typedef struct AjSStrIter {
 } AjOStrIter;
 
 #define AjIStr  AjOStrIter*
+
+
 
 
 /* @data AjPStrTok ************************************************************
@@ -110,9 +119,15 @@ typedef struct AjSStrTok {
 #define AjPStrTok AjOStrTok*
 
 
+
+
 /* ========================================================================= */
 /* ========================= All functions by section ====================== */
 /* ========================================================================= */
+
+/*
+** Prototype definitions
+*/
 
 /* === C character string === */
 
@@ -679,6 +694,11 @@ const char __deprecated *MAJSTRSTR(const AjPStr thys);
 ajint __deprecated MAJSTRLEN(const AjPStr thys);
 ajint __deprecated MAJSTRSIZE(const AjPStr thys);
 ajint __deprecated MAJSTRREF(const AjPStr thys);
+
+/*
+** End of prototype definitions
+*/
+
 
 /*#define    MAJSTRREF(str) str->Use*/
 /*#define    MAJSTRSIZE(str) str->Res*/

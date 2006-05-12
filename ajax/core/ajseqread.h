@@ -6,6 +6,9 @@ extern "C"
 #ifndef ajseqread_h
 #define ajseqread_h
 
+
+
+
 /* @data SeqPAccess ***********************************************************
 **
 ** Ajax Sequence Access database reading object.
@@ -43,6 +46,13 @@ typedef struct SeqSAccess {
 
 #define SeqPAccess SeqOAccess*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 AjPSeqall    ajSeqallFile (const AjPStr usa);
 AjBool       ajSeqAllRead (AjPSeq thys, AjPSeqin seqin);
 AjBool       ajSeqGetFromUsa (const AjPStr thys, AjBool protein, AjPSeq *seq);
@@ -78,6 +88,10 @@ ajint        ajSeqsetFromPair (AjPSeqset thys,
 			       const AjPSeq seqa, const AjPSeq seqb);
 AjBool       ajSeqsetallRead (AjPList thys, AjPSeqin seqin);
 AjBool       ajSeqsetRead (AjPSeqset thys, AjPSeqin seqin);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

@@ -133,6 +133,10 @@ typedef struct AjSIList {
 #define AjIList AjOIList*
 
 
+/*
+** Prototype definitions
+*/
+
 void        ajListAppend (AjPList list, AjPListNode* tail);
 AjPList     ajListCopy   (const AjPList list);      /* new list returned */
 void        ajListDel   (AjPList *list);
@@ -227,6 +231,10 @@ void        ajListUnique2(AjPList thys,
 			  int (*compar2) (const void* x, const void* cl),
 			  void nodedelete (void** x, void* cl));
 void        ajListDummyFunction(void** array);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

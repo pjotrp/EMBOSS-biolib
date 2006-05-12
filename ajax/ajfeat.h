@@ -31,6 +31,10 @@ extern "C"
 /* ========== All functions in (more or less) alphabetical order =========== */
 /* ========================================================================= */
 
+/*
+** Prototype definitions
+*/
+
 AjPFeature    ajFeatAdd (AjPFeattable thys, const AjPStr type,
 			 ajint start, ajint end, float score,
 			 char strand, ajint frame, const AjPStr desc);
@@ -177,6 +181,10 @@ AjBool        ajFeatUfoWrite (const AjPFeattable thys,
 AjBool        ajFeatWrite (AjPFeattabOut ftout, const AjPFeattable ft) ;
 
 void          ajFeatUnused(void);
+
+/*
+** End of prototype definitions
+*/
 
 
 /*

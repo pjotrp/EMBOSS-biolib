@@ -63,6 +63,13 @@ typedef struct AjSMatrixf {
 } AjOMatrixf;
 #define AjPMatrixf AjOMatrixf*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 AjIntArray*   ajMatrixArray (const AjPMatrix thys);
 void          ajMatrixChar (const AjPMatrix thys, ajint i, AjPStr *label);
 AjPSeqCvt     ajMatrixCvt (const AjPMatrix thys);
@@ -94,6 +101,10 @@ AjBool        ajMatrixfSeqNum (const AjPMatrixf thys, const AjPSeq seq,
 			       AjPStr* numseq);
 AjBool        ajMatrixfRead (AjPMatrixf* pthis, const AjPStr filename);
 ajint         ajMatrixfSize (const AjPMatrixf thys);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

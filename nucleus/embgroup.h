@@ -7,6 +7,8 @@ extern "C"
 #define embgroup_h
 
 
+
+
 /* @data EmbPGroupProg ********************************************************
 **
 ** Hold details of programs (names and documentation) and the package
@@ -30,6 +32,9 @@ typedef struct EmbSGroupProg {
   AjPList groups;
 } EmbOGroupProg;
 #define EmbPGroupProg EmbOGroupProg*
+
+
+
 
 /* @data EmbPGroupTop *********************************************************
 **
@@ -89,6 +94,12 @@ typedef struct EmbSGroupTop {
 #define EmbPGroupTop EmbOGroupTop*
 
 
+
+
+/*
+** Prototype definitions
+*/
+
 ajint         embGrpCompareTwoGnodes(const void * a, const void * b);
 ajint         embGrpCompareTwoPnodes(const void * a, const void * b);
 void          embGrpExit(void);
@@ -119,6 +130,10 @@ void          embGrpSortGroupsList(AjPList groupslist);
 void          embGrpSortProgsList(AjPList progslist);
 void          embGrpGroupMakeUnique(AjPList list);
 void          embGrpProgsMakeUnique(AjPList list);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

@@ -26,6 +26,13 @@ typedef struct AjSTime {
 #define AjPTime AjOTime*
 #define AjPDate AjODate*a
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void          ajTimeExit(void);
 AjBool        ajTimeLocal(const time_t timer, AjPTime thys);
 AjPTime       ajTimeToday (void);
@@ -40,6 +47,9 @@ AjBool        ajTimeSetS(AjPTime thys, const char* timestr);
 AjPTime       ajTimeNew(void);
 void          ajTimeDel(AjPTime *thys);
 
+/*
+** End of prototype definitions
+*/
 
 #endif
 

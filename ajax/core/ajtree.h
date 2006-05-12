@@ -13,6 +13,9 @@ enum AjETreeType {ajETreeAny, ajETreeStr};
 
 #define AjPTreeNode AjOTreeNode*
 
+
+
+
 /* @data AjPTree **************************************************************
 **
 ** Tree data object. Trees are simple linked nodes with back pointers.
@@ -47,6 +50,13 @@ typedef struct AjSTree {
 
 #define AjPTree AjOTree*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 AjBool  ajTreeAddData(AjPTree thys, void* data);
 AjPTree ajTreeAddNode(AjPTree thys);
 AjPTree ajTreeAddSubNode(AjPTree thys);
@@ -70,6 +80,10 @@ ajint   ajTreeToArray(const AjPTree thys, void*** array);
 void    ajTreeTrace(const AjPTree thys);
 
 void    ajTreeDummyFunction(void);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

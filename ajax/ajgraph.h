@@ -73,6 +73,11 @@ extern "C"
 		       AJGRAPH_SUBTITLE + AJGRAPH_OVERLAP)
 
 
+
+/*
+** Prototype definitions
+*/
+
 void          ajGraphBox (PLFLT x0, PLFLT y0,PLFLT size);
 void          ajGraphBoxFill (PLFLT x0, PLFLT y0, PLFLT size);
 ajint         ajGraphCheckColour (const AjPStr colour);
@@ -293,6 +298,9 @@ void          ajGraphFillRectangleOnCurve(PLFLT xcentre, PLFLT ycentre,
 					  PLFLT Radius, PLFLT BoxHeight,
 					  PLFLT StartAngle, PLFLT EndAngle);
 
+/*
+** End of prototype definitions
+*/
 
 #endif /* ajgraph_h */
 

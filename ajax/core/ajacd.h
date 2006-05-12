@@ -8,6 +8,10 @@ extern "C"
 
 #include "ajax.h"
 
+/*
+** Prototype definitions
+*/
+
 AjBool        __deprecated ajAcdDebug (void);
 AjBool        __deprecated ajAcdDebugIsSet (void);
 void          ajAcdExit (AjBool single);
@@ -97,6 +101,12 @@ AjBool        ajAcdStdout (void);
 void          ajAcdUnused(void);
 
 const AjPStr  __deprecated ajAcdValue (const char* token);
+
+/*
+** End of prototype definitions
+*/
+
+
 #endif
 
 #ifdef __cplusplus

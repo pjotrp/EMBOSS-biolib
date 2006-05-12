@@ -55,6 +55,11 @@ typedef struct AjSCod
 #define AjPCod AjOCod*
 
 
+
+/*
+** Prototype definitions
+*/
+
 void         ajCodAssCode(AjPCod thys, ajint geneticcode);
 void         ajCodAssDesc(AjPCod thys, const AjPStr desc);
 void         ajCodAssDescC(AjPCod thys, const char* desc);
@@ -112,6 +117,11 @@ void 	     ajCodWrite(AjPCod thys, AjPFile outf);
 void 	     ajCodWriteOut( const AjPCod thys, AjPOutfile outf);
 ajint        ajCodOutFormat(const AjPStr name);
 void         ajCodPrintFormat(AjPFile outf, AjBool full);
+
+/*
+** End of prototype definitions
+*/
+
 #endif
 
 #ifdef __cplusplus

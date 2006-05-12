@@ -55,6 +55,13 @@ typedef struct AjSXmlFile
 
 #define AjPGraphXml AjOXmlFile*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 AjPXmlNode	ajXmlNodeNew();
 AjPGraphXml 	ajXmlCreateNewOutputFile();
 AjPGraphXml 	ajXmlFileNew();
@@ -196,6 +203,9 @@ void 	ajXmlAddGroutOption(AjPGraphXml file,
 void 	ajXmlAddGroutOptionC(AjPGraphXml file,
 			     const char *name, const char *value);
 
+/*
+** End of prototype definitions
+*/
 
 #else
 

@@ -21,6 +21,10 @@ extern "C"
 
 
 
+/*
+** Prototype definitions
+*/
+
 float              ajDegToRad (float degrees);
 double             ajGaussProb (float mean, float sd, float score);
 float              ajGeoMean(const float *s, ajint n);
@@ -36,6 +40,10 @@ float              ajRoundF (float a, ajint nbits);
 unsigned long long ajSp64Crc(const AjPStr thys);
 ajint              ajMathPosI(ajint len, ajint imin, ajint ipos);
 ajint              ajMathPos(ajint len, ajint ipos);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

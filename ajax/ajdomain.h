@@ -322,11 +322,17 @@ typedef struct AjSDomain
 
 
 
-void ajDomainDummyFunction(void);
+
 
 /* ======================================================================= */
 /* =========================== Scop object =============================== */
 /* ======================================================================= */
+
+/*
+** Prototype definitions
+*/
+
+void     ajDomainDummyFunction(void);
 AjPScop  ajScopNew(ajint n);
 void     ajScopDel(AjPScop *ptr);
 AjBool   ajScopCopy(AjPScop *to, const AjPScop from);
@@ -396,6 +402,10 @@ AjPStr      ajDomainGetPdb(const AjPDomain obj);
 AjPStr      ajDomainGetAcc(const AjPDomain obj);
 AjPStr      ajDomainGetSpr(const AjPDomain obj);
 ajint       ajDomainGetN(const AjPDomain obj);
+
+/*
+** End of prototype definitions
+*/
 
 
 /******************************************************************************

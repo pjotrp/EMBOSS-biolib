@@ -230,7 +230,11 @@ enum AjEOutfileType
     OUTFILE_SCOP,			/* SCOP data */
     OUTFILE_TREE			/* Phylogenetic tree data */
 };
-/* ============= prototypes =========================*/
+
+
+/*
+** Prototype definitions
+*/
 
 void        ajDirDel (AjPDir* pthis);
 void        ajDiroutDel (AjPDir* pthis);
@@ -391,6 +395,12 @@ AjPFile     ajOutfileFile (const AjPOutfile thys);
 AjPStr      ajOutfileFormat (const AjPOutfile thys);
 FILE*       ajOutfileFp (const AjPOutfile thys);
 AjPOutfile  ajOutfileNew(const AjPStr name);
+
+/*
+** End of prototype definitions
+*/
+
+
 
 /* ============= definitions =========================*/
 #define AJ_FILE_R S_IRUSR

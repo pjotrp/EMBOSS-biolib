@@ -6,6 +6,9 @@ extern "C"
 #ifndef ajseqdata_h
 #define ajseqdata_h
 
+
+
+
 #define NULLFPOS -1
 
 enum AjEQryType {QRY_UNKNOWN, QRY_ENTRY, QRY_QUERY, QRY_ALL};
@@ -103,6 +106,8 @@ typedef struct AjSSeqQuery {
 #define AjPSeqQuery AjOSeqQuery*
 
 
+
+
 /* @data AjPSelexseq **********************************************************
 **
 ** Ajax Selex object for #=SQ information.
@@ -134,6 +139,9 @@ typedef struct AjSSelexseq
 } AjOSelexseq;
 
 #define AjPSelexseq AjOSelexseq*
+
+
+
 
 /* @data AjPSelex *************************************************************
 **
@@ -182,6 +190,8 @@ typedef struct AjSSelex
 #define AjPSelex AjOSelex*
 
 
+
+
 /* @data AjPSelexdata *********************************************************
 **
 ** Ajax Selex data object (individual sequences)
@@ -223,6 +233,8 @@ typedef struct AjSSelexdata
 } AjOSelexdata;
 
 #define AjPSelexdata AjOSelexdata*
+
+
 
 
 /* @data AjPStockholm *********************************************************
@@ -286,6 +298,8 @@ typedef struct AjSStockholm
 #define AjPStockholm AjOStockholm*
 
 
+
+
 /* @data AjPStockholmdata *****************************************************
 **
 ** Ajax Stockholm data object (individual sequences)
@@ -337,6 +351,8 @@ typedef struct AjSStockholmdata
 } AjOStockholmdata;
 
 #define AjPStockholmdata AjOStockholmdata*
+
+
 
 
 /* @data AjPSeqin *************************************************************
@@ -456,6 +472,7 @@ typedef struct AjSSeqin {
 
 
 
+
 /* @data AjPSeq ***************************************************************
 **
 ** Ajax Sequence object.
@@ -553,6 +570,7 @@ typedef struct AjSSeqin {
 **
 ** @@
 ******************************************************************************/
+
 typedef struct AjSSeq {
   AjPStr Name;
   AjPStr Acc;
@@ -595,6 +613,8 @@ typedef struct AjSSeq {
 } AjOSeq;
 
 #define AjPSeq AjOSeq*
+
+
 
 /* @data AjPSeqset ************************************************************
 **
@@ -671,6 +691,7 @@ typedef struct AjSSeqset {
 } AjOSeqset;
 
 #define AjPSeqset AjOSeqset*
+
 
 
 

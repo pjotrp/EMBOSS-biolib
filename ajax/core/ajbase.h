@@ -19,6 +19,10 @@ struct AjIUB
 
 
 
+/*
+** Prototype definitions
+*/
+
 AjBool        ajBaseAa1ToAa3(char aa1, AjPStr *aa3);
 const AjPStr  ajBaseCodes(ajint ibase);
 void          ajBaseExit(void);
@@ -30,6 +34,10 @@ ajint         ajAZToBin(ajint c);
 char          ajAZToBinC(char c);
 char          ajBinToAZ(ajint c);
 ajint         ajIntToAZ(ajint n);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

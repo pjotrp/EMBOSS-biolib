@@ -9,6 +9,13 @@ extern "C"
 #define PAZ  26
 #define PAZ1 27
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 			    const AjFloatArray *sub, const AjPSeqCvt cvt,
 			    ajint lenm, ajint lenn, float *id, float *sim,
@@ -137,6 +144,10 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 			      ajint width);
 
 void embAlignUnused(void);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

@@ -86,6 +86,13 @@ typedef struct AjSAlign {
 
 #define AjPAlign AjOAlign*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void         ajAlignClose (AjPAlign thys);
 AjBool       ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix,
 			      AjPStr *cons, ajint* retident, 
@@ -152,6 +159,10 @@ void         ajAlignWrite (AjPAlign thys);
 void         ajAlignWriteClose (AjPAlign thys);
 void         ajAlignWriteHeader (AjPAlign thys);
 void         ajAlignWriteTail (AjPAlign thys);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

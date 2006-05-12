@@ -32,6 +32,13 @@ typedef void (*Fmt_T) (ajint code, VALIST ap,
 typedef void (*Fmt_S) (const char *fmt, char **pos, VALIST ap, int width,
 		       AjBool convert, AjBool *ok);
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void   ajFmtFmt (int put(int c, void *cl), void *cl,
 		 const char *fmt, ...);
 void   ajFmtVfmt (int put(int c, void *cl), void *cl,
@@ -78,6 +85,11 @@ ajint  ajFmtVfmtStrCL (char** buf, ajint pos, ajint *size,
 ajint  ajFmtScanS (const AjPStr thys, const char* fmt, ...);
 ajint  ajFmtScanC (const char* thys, const char* fmt, ...);
 ajint  ajFmtScanF (AjPFile thys, const char* fmt, ...);
+
+/*
+** End of prototype definitions
+*/
+
 #endif
 
 #ifdef __cplusplus

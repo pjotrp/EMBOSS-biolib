@@ -6,6 +6,9 @@ extern "C"
 #ifndef embdbi_h
 #define embdbi_h
 
+
+
+
 /* @data EmbPField ************************************************************
 **
 ** NUCLEUS internal structure for database indexing applications
@@ -23,6 +26,9 @@ typedef struct EmbSField {
   ajint nid;
 } EmbOField;
 #define EmbPField EmbOField*
+
+
+
 
 /* @data EmbPEntry ************************************************************
 **
@@ -49,6 +55,13 @@ typedef struct EmbSEntry {
   char*** field;
 } EmbOEntry;
 #define EmbPEntry EmbOEntry*
+
+
+
+
+/*
+** Prototype definitions
+*/
 
 ajint     embDbiCmpId (const void* a, const void* b);
 ajint     embDbiCmpFieldId (const void* a, const void* b);
@@ -142,6 +155,10 @@ void      embDbiWriteEntryRecord (AjPFile file, ajint maxidlen,
 void      embDbiWriteHit (AjPFile file, ajint idnum);
 void      embDbiWriteTrg (AjPFile file, ajint maxfieldlen,
 			  ajint idnum, ajint idcnt, const AjPStr hitstr);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

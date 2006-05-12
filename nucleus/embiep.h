@@ -12,6 +12,10 @@ extern "C"
 
 
 
+/*
+** Prototype definitions
+*/
+
 void   embIepCalcK (double *K);
 void   embIepComp (const char *s, ajint amino, ajint *c);
 double embIepGetCharge (const ajint *c, const double *pro, double *total);
@@ -25,6 +29,10 @@ double embIepPhConverge (const ajint *c, const double *K,
 void   embIepPkRead (void);
 double embIepPkToK (double pK);
 double embIepPkFromK (double K);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

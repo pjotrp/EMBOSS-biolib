@@ -627,6 +627,10 @@ typedef struct AjSBtHybrid
 
 
 
+/*
+** Prototype definitions
+*/
+
 AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
 			    const char *idir, const char *mode,
 			    ajint pagesize, ajint order, ajint fill,
@@ -713,6 +717,9 @@ void        ajBtreeFreeSecArray(AjPBtcache cache);
 void 	    ajBtreeHybLeafList(AjPBtcache cache, ajlong rootblock,
 			       const AjPStr idname, AjPList list);
 
+/*
+** End of prototype definitions
+*/
 
 #endif
 

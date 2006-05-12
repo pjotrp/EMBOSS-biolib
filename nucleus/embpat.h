@@ -17,6 +17,8 @@ extern "C"
 #define AJBPS    1			/* Bits per state		*/
 
 
+
+
 /* @data EmbPPatMatch *********************************************************
 **
 ** NUCLEUS data structure for pattern matches
@@ -33,6 +35,8 @@ typedef struct EmbSPatMatch {
   ajint *len;
 } EmbOPatMatch;
 #define EmbPPatMatch EmbOPatMatch*
+
+
 
 
 /* @data EmbPPatRestrict ******************************************************
@@ -98,6 +102,10 @@ typedef struct EmbSPatBYPNode
 
 
 
+
+/*
+** Prototype definitions
+*/
 
 void            embPatBMHInit (const AjPStr pat, ajint len, ajint *next);
 ajint           embPatBMHSearch (const AjPStr str, const AjPStr pat,
@@ -237,6 +245,10 @@ ajint           embPatVariablePattern (const AjPStr pattern,
 				       const AjPStr patname, AjPList l,
 				       ajint mode,
 				       ajint mismatch, ajint begin);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

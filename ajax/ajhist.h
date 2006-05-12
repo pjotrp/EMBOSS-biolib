@@ -109,6 +109,13 @@ typedef struct AjSHist {
 } AjOHist;
 #define AjPHist AjOHist*
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void    ajHistClose (void);
 void    ajHistCopyData (AjPHist hist, ajint index, const PLFLT *data);
 void    ajHistDelete (AjPHist* hist);
@@ -129,6 +136,10 @@ void    ajHistSetTitleC (AjPHist hist, const char* strng);
 void    ajHistSetXAxisC (AjPHist hist, const char* strng);
 void    ajHistSetYAxisLeftC (AjPHist hist,const  char* strng);
 void    ajHistSetYAxisRightC (AjPHist hist, const char* strng);
+
+/*
+** End of prototype definitions
+*/
 
 #endif /* ajhist_h */
 

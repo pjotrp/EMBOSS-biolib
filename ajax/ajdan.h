@@ -18,6 +18,12 @@ struct AjMelt
 };
 
 
+
+
+/*
+** Prototype definitions
+*/
+
 void  ajMeltExit(void);
 void  ajMeltInit(AjBool isdna, ajint savesize);
 float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len);
@@ -36,6 +42,10 @@ float ajTm2(const char *strand, ajint pos, ajint len, float saltconc,
 float ajMeltGC(const AjPStr strand, ajint len);
 float ajProdTm(float gc, float saltconc, ajint len);
 float ajAnneal(float tmprimer, float tmproduct);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

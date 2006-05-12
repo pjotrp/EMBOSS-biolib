@@ -18,6 +18,12 @@ extern "C"
 #include <sys/stat.h>
 
 
+
+
+/*
+** Prototype definitions
+*/
+
 AjBool        ajSysArglist (const AjPStr cmdline, char** pgm, char*** arglist);
 void          ajSysArgListFree (char*** arglist);
 void          ajSysBasename(AjPStr *filename);
@@ -42,9 +48,15 @@ char         *ajSysFgets(char *buf, int size, FILE *fp);
 FILE         *ajSysFopen(const char *name, const char *flags);
 
 /*
- * S_IFREG is non-ANSI therefore define it here
- * At least keeps all the very dirty stuff in one place
- */
+** End of prototype definitions
+*/
+
+
+/*
+** S_IFREG is non-ANSI therefore define it here
+** At least keeps all the very dirty stuff in one place
+*/
+
 #ifndef S_IFREG
 #define S_IFREG 0100000
 #endif

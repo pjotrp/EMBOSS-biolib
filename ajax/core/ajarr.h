@@ -560,6 +560,10 @@ typedef struct AjSLong3d {
 /* =================== All functions in alphabetical order ================= */
 /* ========================================================================= */
 
+/*
+** Prototype definitions
+*/
+
 void        ajArrExit(void);
 
 void        ajDoubleDel(AjPDouble *thys);
@@ -725,6 +729,12 @@ ajint*      ajArrIntLine(const AjPStr line, const char *delim, ajint cols,
 			 ajint startcol, ajint endcol);
 float*      ajArrFloatLine(const AjPStr line, const char *delim, ajint cols,
 			   ajint startcol, ajint endcol);
+
+/*
+** End of prototype definitions
+*/
+
+
 #endif
 
 #ifdef __cplusplus

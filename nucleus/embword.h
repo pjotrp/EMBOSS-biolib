@@ -6,6 +6,9 @@ extern "C"
 #ifndef embWord_h
 #define embWord_h
 
+
+
+
 /* @data EmbPWordMatch ********************************************************
 **
 ** NUCLEUS data structure for word matches
@@ -26,6 +29,9 @@ typedef struct EmbSWordMatch {
 } EmbOWordMatch;
 #define EmbPWordMatch EmbOWordMatch*
 
+
+
+
 /* @data EmbPWord *************************************************************
 **
 ** NUCLEUS data structure for words
@@ -43,6 +49,9 @@ typedef struct EmbSWord {
 } EmbOWord;
 #define EmbPWord EmbOWord*
 
+
+
+
 /* @data EmbPWord2 ************************************************************
 **
 ** NUCLEUS data structure for words (part 2)
@@ -59,6 +68,11 @@ typedef struct EmbSWord2 {
 #define EmbPWord2 EmbOWord2*
 
 
+
+
+/*
+** Prototype definitions
+*/
 
 AjPList embWordBuildMatchTable (const AjPTable seq1MatchTable,
 				const AjPSeq seq2, ajint orderit);
@@ -82,6 +96,10 @@ void    embWordMatchListConvToFeat(const AjPList list,
 void    embWordMatchMin(AjPList matchlist, ajint seq1length, int
         			seq2length);
 void    embWordUnused(void);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

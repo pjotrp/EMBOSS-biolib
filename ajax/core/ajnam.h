@@ -6,6 +6,13 @@ extern "C"
 #ifndef ajnam_h
 #define ajnam_h
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 AjBool ajNamDatabase(const AjPStr name);
 AjBool ajNamDbAccess (const AjPStr dbname, const AjPSeqQuery qry,
 		      AjPStr* method);
@@ -49,6 +56,11 @@ AjBool ajNamRsAttrValueC(const char *name, const char *attribute,
 AjBool ajNamRsListValue(const AjPStr name, AjPStr *value);
 AjBool ajNamSetControl (const char* optionName);
 void   ajNamVariables (void); /* "" "" may want to delete later */
+
+/*
+** End of prototype definitions
+*/
+
 #endif
 
 #ifdef __cplusplus

@@ -44,8 +44,13 @@ typedef struct EmbSPropFrag	/* Enzyme digestion structure */
 
 
 
+
+/*
+** Prototype definitions
+*/
+
 void    embPropAminoRead (AjPFile fp);
-  /* void    embPropAminoRead (void); */
+/* void    embPropAminoRead (void); */
 void 	embPropCalcFragments (const char *s, ajint n, ajint begin,
 			      AjPList *l, AjPList *pa,
 			      AjBool unfavoured, AjBool overlap,
@@ -53,7 +58,7 @@ void 	embPropCalcFragments (const char *s, ajint n, ajint begin,
 			      AjPStr *rname);
 double  embPropCalcMolextcoeff(const char *s, ajint start, ajint end);
 double  embPropCalcMolwt (const char *s, ajint start, ajint end);
-  /* new method for chemically modified ends */
+/* new method for chemically modified ends */
 double  embPropCalcMolwtMod (const char *s, ajint start, ajint end,
 			     double nmass, double cmass);
 const char*   embPropCharToThree (char c);
@@ -65,6 +70,10 @@ AjBool  embPropPurine (char base);
 AjBool  embPropPyrimidine (char base);
 AjBool  embPropTransversion (char base1, char base2);
 AjBool  embPropTransition (char base1, char base2);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 

@@ -6,6 +6,13 @@ extern "C"
 #ifndef ajseqtype_h
 #define ajseqtype_h
 
+
+
+
+/*
+** Prototype definitions
+*/
+
 void         ajSeqGap (AjPSeq thys, char gapc, char padc);
 void         ajSeqGapLen (AjPSeq thys, char gapc, char padc, ajint ilen);
 void         ajSeqGapS (AjPStr* seq, char gapc);
@@ -36,6 +43,10 @@ AjBool       ajSeqTypeIsProt (const AjPStr type_name);
 void         ajSeqType (AjPSeq thys);
 AjBool       ajSeqTypeCheckIn (AjPSeq thys, const AjPSeqin seqin);
 AjBool       ajSeqTypeCheckS (AjPStr* pthys, const AjPStr type_name);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 
