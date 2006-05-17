@@ -24,7 +24,7 @@
 #include <dirent.h>     /* for readdir */
 #else
 #include "win32.h"
-#include "dirent_w32.h
+#include "dirent_w32.h"
 #endif
 #include <string.h>
 #include <sys/stat.h>   /* for stat */
