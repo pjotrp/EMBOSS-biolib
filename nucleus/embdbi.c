@@ -19,9 +19,15 @@
 ******************************************************************************/
 
 #include "emboss.h"
+#ifndef WIN32
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#else
+#include "win32.h"
+#include "dirent_w32.h"
+#endif
+
 #include <errno.h>
 
 static AjPStr dbiCmdStr    = NULL;
@@ -486,6 +492,7 @@ AjBool embDbiFlatOpenlib(const AjPStr lname, AjPFile* libr)
 void embDbiRmFile(const AjPStr dbname, const char* ext, ajint nfiles,
 		  AjBool cleanup)
 {
+#ifndef WIN32
     ajint i;
 
     if(!cleanup)
@@ -503,6 +510,32 @@ void embDbiRmFile(const AjPStr dbname, const char* ext, ajint nfiles,
     embDbiSysCmd(dbiCmdStr);
 
     return;
+
+#else	/* WIN32 */
+    static AjPStr filestr = NULL;
+    ajint i;
+    
+    if (!cleanup)
+	return;
+    
+    if (nfiles)
+    {
+	for (i=1; i<= nfiles; i++)
+	{
+	    ajFmtPrintS (&filestr, "%S%03d.%s", dbname, i, ext);
+	    DeleteFile(ajStrStr(filestr));
+	    ajDebug("Deleting file %S\n", filestr);
+	}
+    }
+    else
+    {
+	ajFmtPrintS (&filestr, "%S.%s", dbname, ext);
+	DeleteFile(ajStrStr(filestr));
+	ajDebug("Deleting file %S\n", filestr);
+    }
+    
+    return;
+#endif	/* WIN32 */
 }
 
 
@@ -522,12 +555,23 @@ void embDbiRmFile(const AjPStr dbname, const char* ext, ajint nfiles,
 void embDbiRmFileI(const AjPStr dbname, const char* ext, ajint ifile,
 		   AjBool cleanup)
 {
+#ifndef WIN32
     if(!cleanup)
 	return;
 
     ajFmtPrintS(&dbiCmdStr, "rm %S%03d.%s ", dbname, ifile, ext);
 
     embDbiSysCmd(dbiCmdStr);
+#else
+    static AjPStr filestr = NULL;
+    
+    if (!cleanup)
+	return;
+    
+    ajFmtPrintS (&filestr, "%S%03d.%s ", dbname, ifile, ext);
+    DeleteFile(ajStrStr(filestr));
+    ajDebug("Deleting file %S\n", filestr);
+#endif	/* WIN32 */
 
     return;
 }
@@ -576,6 +620,17 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 {
     ajint i;
 
+#ifdef WIN32
+    char* sortProgDir = getenv(EMBOSSWINROOT_ENVVAR);
+    if (sortProgDir == NULL)
+    {
+	AjPStr msg = ajStrNewC(EMBOSSWINROOT_ENVVAR);
+	ajStrAppC(&msg, " environment variable not defined");
+	ajFatal(ajStrStr(msg));
+    }
+#endif
+
+
     if(nfiles)
     {
 	for(i=1; i<=nfiles; i++)
@@ -583,19 +638,33 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	    ajFmtPrintS(&dbiInFname, "%S%03d.%s ", dbname, i, ext1);
 	    ajFmtPrintS(&dbiOutFname, "%S%03d.%s.srt", dbname, i, ext1);
 	    if(sortopt)
+#ifndef WIN32
 		ajFmtPrintS(&dbiCmdStr, "env LC_ALL=C sort -o %S %S %S",
 			    dbiOutFname, sortopt, dbiInFname);
+#else
+	    ajFmtPrintS (&dbiCmdStr, "%s\\sort.exe -o %S %S %S",
+		     sortProgDir, dbiOutFname, sortopt, dbiInFname);
+#endif
 	    else
+#ifndef WIN32
 		ajFmtPrintS(&dbiCmdStr, "env LC_ALL=C sort -o %S %S",
 			    dbiOutFname, dbiInFname);
+#else
+	    ajFmtPrintS (&cmdstr, "%s\\sort.exe -o %S %S",
+			 sortProgDir, dbiOutFname, dbiInFname);
+#endif
 	    embDbiSysCmd(dbiCmdStr);
 
 	    embDbiRmFileI(dbname, ext1, i, cleanup);
 	}
 
+#ifndef WIN32
 	ajFmtPrintS(&dbiCmdStr, "env LC_ALL=C sort -m -o %S.%s %S",
 		    dbname, ext2, sortopt);
-
+#else
+	ajFmtPrintS (&cmdstr, "%s\\sort.exe -m -o %S.%s %S",
+		     sortProgDir, dbname, ext2, sortopt);
+#endif
 	for(i=1; i<=nfiles; i++)
 	    ajFmtPrintAppS(&dbiCmdStr, " %S%03d.%s.srt", dbname, i, ext1);
 
@@ -609,8 +678,13 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
     {
 	ajFmtPrintS(&dbiInFname, "%S.%s ", dbname, ext1);
 	ajFmtPrintS(&dbiOutFname, "%S.%s", dbname, ext2);
+#ifndef WIN32
 	ajFmtPrintS(&dbiCmdStr, "env LC_ALL=C sort -o %S %S %S",
 		    dbiOutFname, sortopt, dbiInFname);
+#else
+	ajFmtPrintS(&dbiCmdStr, "%s\\sort.exe -o %S %S %S",
+		    sortProgDir, dbiOutFname, sortopt, dbiInFname);
+#endif
 	embDbiSysCmd(dbiCmdStr);
 	embDbiRmFile(dbname, ext1, 0, cleanup);
     }
@@ -632,6 +706,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 
 void embDbiSysCmd(const AjPStr cmdstr)
 {
+#ifndef WIN32
     char** arglist = NULL;
     char* pgm;
     pid_t pid;
@@ -660,6 +735,23 @@ void embDbiSysCmd(const AjPStr cmdstr)
 
     ajSysArgListFree(&arglist);
     ajCharDel(&pgm);
+
+#else
+    PROCESS_INFORMATION procInfo;
+    STARTUPINFO startInfo;
+    
+    ajDebug ("Launching process '%S'\n", cmdstr);
+    
+    ZeroMemory(&startInfo, sizeof(startInfo));
+    startInfo.cb = sizeof(startInfo);
+    
+    if (!CreateProcess(NULL, ajStrStr(cmdstr), NULL, NULL, FALSE,
+		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
+	ajFatal("CreateProcess failed");
+
+    WaitForSingleObject(procInfo.hProcess, INFINITE);
+
+#endif	/* WIN32 */
 
     return;
 }
