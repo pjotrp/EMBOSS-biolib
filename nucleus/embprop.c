@@ -72,7 +72,11 @@ void embPropAminoRead(AjPFile mfptr)
 {
     AjPStr  line  = NULL;
     AjPStr  delim = NULL;
-
+#ifndef WIN32
+    static char *delimstr=" :\t\n";
+#else
+    static char *delimstr=" :\t\n\r";
+#endif
     const char *p;
 
     ajint cols = 0;
@@ -81,7 +85,7 @@ void embPropAminoRead(AjPFile mfptr)
 	return;
 
     line  = ajStrNew();
-    delim = ajStrNewC(" :\t\n");
+    delim = ajStrNewC(delimstr);
 
     while(ajFileGets(mfptr, &line))
     {
