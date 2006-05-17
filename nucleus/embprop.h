@@ -29,7 +29,16 @@ extern "C"
 
 
 
+#ifndef WIN32
 extern double *EmbPropTable[];
+#else
+#ifdef NUCLEUS_EXPORTS
+__declspec(dllexport) double *EmbPropTable[];
+#else
+__declspec(dllimport) double *EmbPropTable[];
+#endif
+#endif
+
 
 
 

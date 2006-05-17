@@ -27,4 +27,9 @@
 #include "embexit.h"
 #include "embindex.h"
 
+#ifdef WIN32
+#define VERSION "3.1.0"
+#endif
+
+
 #endif
