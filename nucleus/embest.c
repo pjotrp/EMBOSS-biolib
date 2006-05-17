@@ -28,7 +28,6 @@
 
 #include "emboss.h"
 #include "embest.h"
-#include <dirent.h>
 #include <time.h>
 #include <string.h>
 #include <stdio.h>
