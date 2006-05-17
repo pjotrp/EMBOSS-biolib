@@ -134,28 +134,49 @@ void embIepPkRead(void)
     while(ajFileGets(inf,&line))
     {
 	p = ajStrGetPtr(line);
+#ifndef WIN32
 	if(*p=='#' || *p=='!' || *p=='\n')
+#else
+	if(*p=='#' || *p=='!' || *p=='\n' || *p=='\r')
+#endif
 	    continue;
 
 	if(!ajStrCmpLenC(line,"Amino",5))
 	{
+#ifndef WIN32
 	    p = ajSysStrtok(p," \t\n");
 	    p = ajSysStrtok(NULL," \t\n");
+#else
+	    p = ajSysStrtok(p," \t\n\r");
+	    p = ajSysStrtok(NULL," \t\n\r");
+#endif
 	    sscanf(p,"%lf",&amino);
 	    continue;
 	}
 
 	if(!ajStrCmpLenC(line,"Carboxyl",8))
 	{
+#ifndef WIN32
 	    p = ajSysStrtok(p," \t\n");
 	    p = ajSysStrtok(NULL," \t\n");
+#else
+	    p = ajSysStrtok(p," \t\n\r");
+	    p = ajSysStrtok(NULL," \t\n\r");
+#endif
+
 	    sscanf(p,"%lf",&carboxyl);
 	    continue;
 	}
 
+#ifndef WIN32
 	p  = ajSysStrtok(p," \t\n");
 	ch = ajSysItoC(toupper((ajint)*p));
 	p  = ajSysStrtok(NULL," \t\n");
+#else
+	p  = ajSysStrtok(p," \t\n\r");
+	ch = ajSysItoC(toupper((ajint)*p));
+	p  = ajSysStrtok(NULL," \t\n\r");
+#endif
 	sscanf(p,"%lf",&AjpK[ajAZToInt(ch)]);
     }
 
