@@ -31,8 +31,15 @@
 #include "limits.h"
 #include "float.h"
 
+#ifndef WIN32
 ajint aj_hist_mark=GRAPH_HIST;
-
+#else
+#ifdef AJAXDLL_EXPORTS
+__declspec(dllexport) ajint aj_hist_mark=GRAPH_HIST;
+#else
+__declspec(dllimport) ajint aj_hist_mark=GRAPH_HIST;
+#endif
+#endif
 
 
 

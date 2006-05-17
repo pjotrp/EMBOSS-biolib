@@ -7603,8 +7603,16 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
     /* \5 qry->QryString */
 
     if(!seqRegUsaId)		 /* \1 is filename \4 is the qry->QryString */
+#ifndef WIN32
 	seqRegUsaId = ajRegCompC("^([^|]+[|]|[^:{%]+)"
 			   "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
+#else
+	/* Windows file names can start with e.g.: 'C:\' */
+	/* But allow e.g. 'C:/...', for Staden spin */
+	seqRegUsaId = ajRegCompC ("^(([a-zA-Z]:[\\\\/])?[^:{%]+)"
+				  "(([:{%])(([^:}]+):)?([^:}]*)}?)?$");
+#endif
+
 
     if(!seqRegUsaList)	 /* \1 is filename \3 is the qry->QryString */
 	seqRegUsaList = ajRegCompC("^(@|[Ll][Ii][Ss][Tt]:+)(.+)$");
@@ -7825,10 +7833,17 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 
 	if(regstat)
 	{
+#ifndef WIN32
 	    ajRegSubI(seqRegUsaId, 1, &qry->Filename);
 	    ajRegSubI(seqRegUsaId, 3, &seqQryChr);
 	    ajRegSubI(seqRegUsaId, 5, &qry->Field);
 	    ajRegSubI(seqRegUsaId, 6, &qry->QryString);
+#else
+	    ajRegSubI (idexp, 1, &qry->Filename);
+	    ajRegSubI (idexp, 4, &seqQryChr);
+	    ajRegSubI (idexp, 6, &qry->Field);
+	    ajRegSubI (idexp, 7, &qry->QryString);
+#endif
 	    ajDebug("found filename %S\n", qry->Filename);
 	    if(ajStrMatchC(seqQryChr, "%")) {
 		ajStrToLong(qry->QryString, &qry->Fpos);

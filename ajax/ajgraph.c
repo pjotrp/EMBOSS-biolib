@@ -34,6 +34,136 @@
 #include <float.h>
 #define AZ 28
 
+
+#ifdef WIN32
+#include "plplotP.h"
+#include "plcore.h"
+
+/*
+** Andre Blavier:
+** The following function defs come from the old version of PLPLOT (the one
+** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
+** my poor understanding of their purpose and of the meaning of their
+** disappearance in PLPOT 5.1.0
+*/
+
+
+PLFLT plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
+{
+    PLFLT diag;
+    /*
+     ** set an arbitrary char default size; don't know why this is not set yet
+     ** nor how it should be appropriately done
+     */
+    if (plsc->chrdef == 0.0)
+	c_plschr(2.0, 1.0);
+
+    if (dx == 0.0 && dy !=0.0)
+	diag = plstrl(text)/plP_wcmmy(1.0);
+    else if (dy == 0.0 && dx !=0.0)
+	diag = plstrl(text)/plP_wcmmx(1.0);
+    else
+	diag = sqrt((plstrl(text)/plP_wcmmx(1.0)) *
+		    (plstrl(text)/plP_wcmmx(1.0)) + 
+		    (plstrl(text)/plP_wcmmy(1.0)) *
+		    (plstrl(text)/plP_wcmmy(1.0)));
+
+    return diag;
+}
+
+
+
+
+PLFLT plgchrW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy)
+{
+    PLFLT diag;
+    /*
+     ** set an arbitrary char default size; don't know why this is not set yet
+     ** nor how it should be appropriately done
+     */
+
+    if (plsc->chrdef == 0.0)
+	c_plschr(2.0, 1.0);
+
+    if (dx == 0.0 && dy !=0.0)
+	diag = plsc->chrdef/plP_wcmmx(1.0);
+    else if(dy == 0.0 && dx !=0.0)
+	diag = plsc->chrdef/plP_wcmmy(1.0);
+    else
+	diag = sqrt((plsc->chrdef/plP_wcmmx(1.0)) *
+		    (plsc->chrdef/plP_wcmmx(1.0)) +
+		    (plsc->chrdef/plP_wcmmy(1.0)) *
+		    (plsc->chrdef/plP_wcmmy(1.0)));
+
+    return diag;
+}
+
+
+
+
+void plxsfnam(const char *fnam, const char* ext)
+{
+    char* str = malloc(strlen(fnam) + strlen(ext) + 1);
+
+    strcpy(str, fnam);
+    strcat(str, ext);
+    plP_sfnam(plsc, str);
+    free(str);
+
+    return;
+}
+
+
+
+
+voidplxtrace (FILE* outf)
+{
+    return;
+}
+
+
+
+
+void plxswin(const char* window)
+{
+    if (plsc->plwindow != NULL)
+	free((void *) plsc->plwindow);
+
+    plsc->plwindow = (char *) malloc(1 + strlen(window));
+
+    (void) strcpy(plsc->plwindow, window);
+}
+
+
+
+
+int plfileinfo (char* tmp)
+{
+    
+    if (plsc->family && plsc->BaseName != NULL)
+    {					/* family names*/
+	(void) sprintf(tmp, "%s.%%0%1dd",
+		       plsc->BaseName, (int) plsc->fflen);
+	return plsc->member;
+    }
+    
+    if (plsc->FileName == NULL)
+    {
+	*tmp='\0';
+	return 0;
+    }
+    
+    /* simple filenames */
+    (void) sprintf(tmp, plsc->FileName);
+
+    return -1;
+}
+#endif	/* WIN32 */
+
+
+
+
+
 enum AjEGraphObjectTypes { RECTANGLE, RECTANGLEFILL, TEXT, LINE};
 
 static char *colournum[] = { "BLACK", "RED", "YELLOW", "GREEN", "AQUAMARINE",

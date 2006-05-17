@@ -63,6 +63,14 @@ void   ajNamVariables (void); /* "" "" may want to delete later */
 
 #endif
 
+#ifdef WIN32
+#ifdef AJAXDLL_EXPORTS
+__declspec(dllexport) const char* EMBOSSWINROOT_ENVVAR;
+#else
+__declspec(dllimport) const char* EMBOSSWINROOT_ENVVAR;
+#endif
+#endif
+
 #ifdef __cplusplus
 }
 #endif

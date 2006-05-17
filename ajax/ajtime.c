@@ -351,7 +351,7 @@ AjBool ajTimeLocal(const time_t timer, AjPTime thys)
 	ajStrDel(&timestr);
     }
 
-#ifdef __ppc__
+#if defined(__ppc__) || defined(WIN32)
     result = localtime(&timer);
     if(!result)
 	return ajFalse;

@@ -23,14 +23,24 @@
 
 #include "ajax.h"
 #include <stdarg.h>
+#ifndef WIN32
 #include <dirent.h>
+#else
+#include "win32.h"
+#include "dirent_w32.h"
+#include <direct.h>
+#endif
 #include <sys/stat.h>
 #include <sys/types.h>
+#ifndef WIN32
 #include <sys/wait.h>
 #include <pwd.h>
+#endif
 #include <string.h>
 #include <errno.h>
+#ifndef WIN32
 #include <unistd.h>
+#endif
 #include <limits.h>
 #include <fcntl.h>
 
@@ -392,6 +402,7 @@ AjPFile ajFileNew(void)
 
 
 
+#ifndef WIN32
 /* @func ajFileNewInPipe ******************************************************
 **
 ** Creates a new file object to read the output from a command.
@@ -468,6 +479,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
     
    return thys;
 }
+#endif
 
 
 
@@ -506,6 +518,7 @@ AjPFile ajFileNewIn(const AjPStr name)
 	return thys;
     }
     
+#ifndef WIN32
     if(ajStrGetCharLast(name) == '|')	/* pipe character at end */
 	return ajFileNewInPipe(name);
 
@@ -544,6 +557,7 @@ AjPFile ajFileNewIn(const AjPStr name)
     }
     ajStrDel(&userstr);
     ajStrDel(&reststr);
+#endif
 
     if(!fileWildExp)
 	fileWildExp = ajRegCompC("(.*/)?([^/]*[*?][^/]*)$");
@@ -568,7 +582,7 @@ AjPFile ajFileNewIn(const AjPStr name)
     ajStrDelStatic(&fileNameTmp);
 
     ajNamResolve(&thys->Name);
-    thys->fp = fopen(ajStrGetPtr(thys->Name), "r");
+    thys->fp = fopen(ajStrGetPtr(thys->Name), "rb");
     if(!thys->fp)
     {
 	ajStrDel(&thys->Name);
@@ -642,7 +656,7 @@ AjPFile ajFileNewInList(AjPList list)
     ajDebug("ajFileNewInList pop '%S'\n", thys->Name);
     ajListstrTrace(thys->List);
     ajNamResolve(&thys->Name);
-    thys->fp = fopen(ajStrGetPtr(thys->Name), "r");
+    thys->fp = fopen(ajStrGetPtr(thys->Name), "rb");
     if(!thys->fp)
     {
 	ajDebug("ajFileNewInList fopen failed\n");
@@ -682,7 +696,7 @@ AjPFile ajFileNewApp(const AjPStr name)
     AjPFile thys;
 
     AJNEW0(thys);
-    thys->fp = fopen(ajStrGetPtr(name), "a");
+    thys->fp = fopen(ajStrGetPtr(name), "ab");
     if(!thys->fp)
     {
 	thys->Handle = 0;
@@ -734,7 +748,7 @@ AjPFile ajFileNewOut(const AjPStr name)
     }
 
     AJNEW0(thys);
-    thys->fp = fopen(ajStrGetPtr(name), "w");
+    thys->fp = fopen(ajStrGetPtr(name), "wb");
     if(!thys->fp)
     {
 	thys->Handle = 0;
@@ -815,7 +829,7 @@ AjPFile ajFileNewOutD(const AjPStr dir, const AjPStr name)
 
     if(!ajStrGetLen(dir))
     {
-	thys->fp = fopen(ajStrGetPtr(name), "w");
+	thys->fp = fopen(ajStrGetPtr(name), "wb");
 	ajDebug("ajFileNewOutD open name '%S'\n", name);
     }
     else
@@ -829,7 +843,7 @@ AjPFile ajFileNewOutD(const AjPStr dir, const AjPStr name)
 		ajStrAppendC(&fileDirfixTmp, "/");
 	    ajStrAppendS(&fileDirfixTmp, name);
 	}
-	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "w");
+	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "wb");
 	ajDebug("ajFileNewOutD open dirfix '%S'\n", fileDirfixTmp);
     }
 
@@ -881,7 +895,7 @@ AjPFile ajFileNewOutDir(const AjPDir dir, const AjPStr name)
 
     if(!dir)
     {
-	thys->fp = fopen(ajStrGetPtr(name), "w");
+	thys->fp = fopen(ajStrGetPtr(name), "wb");
 	ajDebug("ajFileNewOutDir open name '%S'\n", name);
     }
     else
@@ -897,7 +911,7 @@ AjPFile ajFileNewOutDir(const AjPDir dir, const AjPStr name)
 	}
 	ajFileNameExt(&fileDirfixTmp, dir->Extension);
 
-	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "w");
+	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "wb");
 	ajDebug("ajFileNewOutDir open dirfix '%S'\n", fileDirfixTmp);
     }
 
@@ -1220,11 +1234,14 @@ void ajFileOutClose(AjPFile* pthis)
 static void fileClose(AjPFile thys)
 {
     int status = 0;
+#ifndef WIN32
     pid_t retval;
+#endif
 
     if(!thys)
 	return;
 
+#ifndef WIN32
     if (thys->Pid)
     {
 	ajDebug("fileClose waiting for waitpid for pid  %d\n",
@@ -1239,7 +1256,8 @@ static void fileClose(AjPFile thys)
 	    status = 0;
 	}
     }
-    
+#endif
+
     if(thys->Handle)
     {
 	ajDebug("closing file '%F'\n", thys);
@@ -1745,7 +1763,7 @@ AjBool ajFileNext(AjPFile thys)
 FILE* ajFileReopen(AjPFile thys, const AjPStr name)
 {
     ajStrAssignS(&thys->Name, name);
-    return freopen(ajStrGetPtr(thys->Name), "r", thys->fp);
+    return freopen(ajStrGetPtr(thys->Name), "rb", thys->fp);
 }
 
 

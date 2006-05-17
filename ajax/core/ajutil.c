@@ -24,9 +24,14 @@
 
 #include "ajax.h"
 #include <stdarg.h>
+#ifdef WIN32
+#include "win32.h"
+#include <winsock2.h>
+#include <lmcons.h> /* for UNLEN */
+#else
 #include <pwd.h>
 #include <unistd.h>
-
+#endif
 
 
 
@@ -49,6 +54,9 @@ static ajint utilBigendCalled = 0;
 
 void ajExit(void)
 {
+#ifdef WIN32
+    WSACleanup();
+#endif
     ajDebug("\nFinal Summary\n=============\n\n");
     ajLogInfo();
     ajTableExit();
@@ -179,6 +187,7 @@ void ajLogInfo(void)
 
 AjBool ajUtilUid(AjPStr* dest)
 {
+#ifndef WIN32
     ajint uid;
     struct passwd* pwd;
 
@@ -204,6 +213,24 @@ AjBool ajUtilUid(AjPStr* dest)
     ajStrAssignC(dest, pwd->pw_name);
 
     return ajTrue;
+
+#else	/* WIN32 */
+    char nameBuf[UNLEN+1];
+    DWORD nameLen = UNLEN+1;
+
+    ajDebug("ajUtilUid\n");
+
+    if (GetUserName(nameBuf, &nameLen))
+    {
+	ajDebug("  pwd: '%s'\n", nameBuf);
+	ajStrAssC (dest, nameBuf);
+	return ajTrue;
+    }
+
+    ajStrAssC (dest, "");
+
+    return ajFalse;
+#endif
 }
 
 

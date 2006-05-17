@@ -25,8 +25,17 @@
 
 #include "ajax.h"
 
+#ifndef WIN32
 #include <dirent.h>
 #include <unistd.h>
+#else
+#include "win32.h"
+#include <winsock2.h>
+#include <stdlib.h>
+const char* EMBOSSWINROOT_ENVVAR = "EMBOSSWIN";
+const char* PLPLOT_LIB_ENVVAR = "PLPLOT_LIB";
+#endif
+
 
 enum NamEType
 {
@@ -71,7 +80,11 @@ static char namFixedRoot[] = "/nfs/WWW/data/EMBOSS";
 #ifdef PREFIX
 static char namInstallRoot[] = PREFIX;
 #else
+#ifndef WIN32
 static char namInstallRoot[] = "/usr/local";
+#else
+static char *namInstallRoot;
+#endif
 #endif
 
 /* package name from the makefile */
@@ -1868,6 +1881,7 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 
 void ajNamInit(const char* prefix)
 {
+#ifndef WIN32
     const char *prefixRoot;
     AjPFile prefixRootFile;
     AjPStr prefixRootStr = NULL;
@@ -2046,6 +2060,55 @@ void ajNamInit(const char* prefix)
 	ajDie("Error(s) in configuration files");
 
     return;
+
+#else	/* WIN32 */
+    WSADATA wsaData;
+    AjPStr ini_file_name = NULL;
+    AjPFile ini_file;
+    const char* emboss_root = getenv(EMBOSSWINROOT_ENVVAR);
+    const char* plplot_lib = getenv(PLPLOT_LIB_ENVVAR);
+    
+    namInstallRoot = emboss_root;
+    
+    if(emboss_root == NULL)
+    {
+	AjPStr msg = ajStrNewC(EMBOSSWINROOT_ENVVAR);
+	ajStrAppC(&msg, " environment variable not defined");
+	ajFatal(ajStrStr(msg));
+    }
+    
+    if(plplot_lib == NULL)
+    {
+	char* putenv_str =
+	    malloc(strlen(PLPLOT_LIB_ENVVAR) + 2 + strlen(emboss_root));
+	sprintf(putenv_str, "%s=%s", PLPLOT_LIB_ENVVAR, emboss_root);
+	_putenv(putenv_str);
+    }
+    
+    WSAStartup(MAKEWORD(1, 1), &wsaData);
+    
+    namMasterTable = ajStrTableNewCaseC(0);
+    namPrefixStr = ajStrNewC(prefix);
+    ajStrAppC(&namPrefixStr, "_");
+    
+    ini_file_name = ajStrNewC(emboss_root);
+    ajStrAppC(&ini_file_name, "\\");
+    ajStrAppC(&ini_file_name, "emboss.ini");
+    
+    ini_file = ajFileNewIn(ini_file_name);
+    ajStrDel(&ini_file_name);
+
+    if(ini_file)
+    {
+	namProcessFile(ini_file);
+	ajFileClose(&ini_file);
+    }
+    else
+	ajFatal("emboss.ini file not found");
+
+    
+    return;
+#endif	/* WIN32 */
 }
 
 

@@ -673,12 +673,19 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
 
     AjPList rlabel_list = NULL;
     AjPStr  *rlabel_arr  = NULL;
+
+#ifndef WIN32
+    static char *delimstr = " :\t\n";
+#else
+    static char *delimstr = " :\t\n\r";
+#endif
+
     rlabel_list = ajListNew();
     
 
     firststring = ajStrNew();
     
-    delim = ajStrNewC(" :\t\n");
+    delim = ajStrNewC(delimstr);
     
     ajFileDataNew(filename,&file);
     
@@ -693,7 +700,11 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
     while(ajFileGets(file,&buffer))
     {
 	ptr = ajStrGetPtr(buffer);
+#ifndef WIN32
 	if(*ptr != '#' && *ptr != '\n')
+#else
+	if(*ptr != '#' && *ptr != '\n' && *ptr != '\r')
+#endif
 	{
 	    if(first)
 		first = ajFalse;
@@ -832,6 +843,14 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
 
     AjPList rlabel_list = NULL;
     AjPStr  *rlabel_arr  = NULL;
+#ifndef WIN32
+    static char *delimstr = " :\t\n";
+#else
+    static char *delimstr = " :\t\n\r";
+#endif
+
+
+
     rlabel_list = ajListNew();
     
 
@@ -839,7 +858,7 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
     firststring = ajStrNew();
     reststring  = ajStrNew();
 
-    delim = ajStrNewC(" :\t\n");
+    delim = ajStrNewC(delimstr);
     
     ajFileDataNew(filename,&file);
     
@@ -855,7 +874,11 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
     while(ajFileGets(file,&buffer))
     {
 	ptr = ajStrGetPtr(buffer);
+#ifndef WIN32
 	if(*ptr != '#' && *ptr != '\n')
+#else
+	if(*ptr != '#' && *ptr != '\n' && *ptr != '\r')
+#endif
 	{	
 	    if(first)
 		first = ajFalse;

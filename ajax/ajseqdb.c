@@ -31,12 +31,18 @@
 #include "limits.h"
 #include <stdarg.h>
 #include <sys/types.h>
+#ifndef WIN32
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <dirent.h>
 #include <unistd.h>
+#else
+#include <winsock2.h>
+#include <io.h>
+#include <fcntl.h>
+#endif
 #include <errno.h>
 #include <signal.h>
 
@@ -1932,8 +1938,10 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
 	    if(!fp)
 		return ajFalse;
 
+#ifndef WIN32
 	    signal(SIGALRM, seqSocketTimeout);
 	    alarm(180);	    /* allow 180 seconds to read from the socket */
+#endif
 
 	    /*
 	     ** read out list of GI numbers
@@ -2126,7 +2134,9 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
     }
     ajFileBuffDel(&seqfile);
 
+#ifndef WIN32
     alarm(0);
+#endif
 
     ajStrAssignS(&seqin->Db, qry->DbName);
 
@@ -2300,8 +2310,10 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
 		return ajFalse;
 	    }
 
+#ifndef WIN32
 	    signal(SIGALRM, seqSocketTimeout);
 	    alarm(180);	    /* allow 180 seconds to read from the socket */
+#endif
 
 	    /*
 	     ** read out list of GI numbers
@@ -2496,7 +2508,9 @@ static AjBool seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 
     ajFileBuffLoad(seqin->Filebuff);
 
+#ifndef WIN32
     alarm(0);
+#endif
 
     ajFileBuffStripHtml(seqin->Filebuff);
     ajFileBuffGet(seqin->Filebuff, &giline);
@@ -2803,12 +2817,16 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 	return ajFalse;
     }
 
+#ifndef WIN32
     signal(SIGALRM, seqSocketTimeout);
     alarm(180);	    /* allow 180 seconds to read from the socket */
+#endif
 
     ajFileBuffLoad(seqin->Filebuff);
 
+#ifndef WIN32
     alarm(0);
+#endif
 
     ajFileBuffStripHtml(seqin->Filebuff);
 
@@ -6406,12 +6424,16 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     ajDebug("Ready to read errno %d msg '%s'\n",
 	    errno, ajMessSysErrorText());
 
+#ifndef WIN32
     signal(SIGALRM, seqSocketTimeout);
     alarm(180);	    /* we allow 180 seconds to read from the socket */
+#endif
 
     ajFileBuffLoad(seqin->Filebuff);
 
+#ifndef WIN32
     alarm(0);
+#endif
 
     ajFileBuffStripHtml(seqin->Filebuff);
 
@@ -6611,7 +6633,10 @@ static FILE* seqHttpGetProxy(const AjPSeqQuery qry,
     struct hostent* hp;
     ajint i;
 
+#ifndef WIN32
     h_errno = 0;
+#endif
+
     /* herror("proxy error"); */
     ajDebug("seqHttpGetProxy db: '%S' proxy '%S' host; %S get; '%S'\n",
 	    qry->DbName, proxyname, host, get);
@@ -6621,8 +6646,12 @@ static FILE* seqHttpGetProxy(const AjPSeqQuery qry,
 	ajErr("Failed to find proxy host '%S'", proxyname);
 	return NULL;
     }
+
+#ifndef WIN32
     ajDebug("gethostbyname proxyName '%S' returns '%s' errno %d hp_addr ",
 	    proxyname, hp->h_name, h_errno);
+#endif
+
     for(i=0; i< hp->h_length; i++)
     {
 	if(i)
@@ -6657,7 +6686,10 @@ static FILE* seqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
     struct hostent* hp;
     ajint i;
 
+#ifndef WIN32
     h_errno = 0;
+#endif
+
     ajDebug("seqHttpGet db: '%S' host '%S' get: '%S'\n",
 	    qry->DbName, host, get);
     hp = gethostbyname(ajStrGetPtr(host));
@@ -6668,8 +6700,16 @@ static FILE* seqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
 	      host, qry->DbName);
 	return NULL;
     }
+
+#ifndef WIN32
     ajDebug("gethostbyname host '%S' returns '%s' errno %d hp_addr ",
 	    host, hp->h_name, h_errno);
+#else
+    ajDebug("gethostbyname host '%S' returns '%s' errno %d hp_addr ",
+	    host, hp->h_name, WSAGetLastError());
+#endif
+
+
     for(i=0; i< hp->h_length; i++)
     {
 	if(i)
@@ -6706,13 +6746,30 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 {
     FILE* fp       = NULL;
     AjPStr gethead = NULL;
+#ifndef WIN32
     ajint sock;
+#else
+    SOCKET sock;
+#endif
     ajint istatus;
     struct sockaddr_in sin;
     AjPStr errstr  = NULL;
  
     ajDebug("creating socket\n");
+
+#ifndef WIN32
     sock = socket(AF_INET, SOCK_STREAM, 0);
+#else
+    /* Windows' socket() creates sockets in overlapped mode. */
+    /* Only WSASocket() can override this. */
+    sock = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, 0);
+    if(sock == INVALID_SOCKET)
+    {
+	ajErr ("Socket create failed for database '%S'", qry->DbName);
+	return NULL;
+    }
+#endif
+
     if(sock < 0)
     {
 	ajDebug("Socket create failed, sock: %d\n", sock);
@@ -6784,7 +6841,16 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 
     ajStrDel(&gethead);
 
+#ifndef WIN32
     fp = ajSysFdopen(sock, "r");
+#else
+    {
+        int fd = _open_osfhandle(sock, _O_RDONLY);
+	fp = ajSysFdopen(fd, "r");
+    }
+#endif
+
+
     ajDebug("fdopen errno %d msg '%s'\n",
 	    errno, ajMessSysErrorText());
     if(!fp)

@@ -23,6 +23,7 @@
 
 #include "ajax.h"
 
+#ifndef WIN32
 #ifndef __VMS
 #include <termios.h>
 #endif
@@ -30,6 +31,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <unistd.h>
+#endif
 
 
 static AjPStr sysTokRets = NULL;
@@ -61,7 +63,11 @@ void ajSysBasename(AjPStr *s)
     p = t+(len-1);
     while(p!=t)
     {
+#ifndef WIN32
 	if(*p=='/')
+#else
+	if(*p=='/' || *p=='\\')
+#endif
 	    break;
 	--p;
     }
@@ -144,7 +150,11 @@ AjBool ajSysWhich(AjPStr *s)
 
     ajSysBasename(&tname);
 
+#ifndef WIN32
     p=ajSysStrtok(p,":");
+#else
+    p=ajSysStrtok(p,";");
+#endif
 
     if(p==NULL)
     {
@@ -155,15 +165,23 @@ AjBool ajSysWhich(AjPStr *s)
 
     while(1)
     {
+#ifndef WIN32
 	ajFmtPrintS(&fname,"%s/%S",p,tname);
-
+#else
+	ajFmtPrintS(&fname,"%s\\%S",p,tname);
+#endif
 	if(ajFileStat(fname, AJ_FILE_X))
 	{
 	    ajStrSetClear(s);
 	    ajStrAssignEmptyS(s,fname);
 	    break;
 	}
+
+#ifndef WIN32
 	if((p = ajSysStrtok(NULL,":"))==NULL)
+#else
+	if((p = ajSysStrtok(NULL,";"))==NULL)
+#endif
         {
 	    ajStrDelStatic(&fname);
 	    ajStrDelStatic(&tname);
@@ -224,7 +242,11 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 
 	/*ajDebug("  env[%d] '%s'\n", count, env[count]);*/
 
+#ifndef WIN32
 	if(!strncmp("PATH=",env[count],5))
+#else
+	if(!strnicmp("PATH=",env[count],5))
+#endif
 	    break;
 
 	++count;
@@ -249,8 +271,12 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 
     /*ajDebug("tmp '%S' save '%S' buf '%S'\n", tmp, save, buf);*/
  
+#ifndef WIN32
     p = ajSysStrtokR(ajStrGetPtr(tmp),":",&save,&buf);
-    
+#else
+    p = ajSysStrtokR(ajStrGetPtr(tmp),";",&save,&buf);
+#endif
+
     if(p==NULL)
     {
 	ajStrDel(&fname);
@@ -261,11 +287,20 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	return ajFalse;
     }
     
-    
+
+#ifndef WIN32    
     ajFmtPrintS(&fname,"%s/%S",p,tname);
+#else
+    ajFmtPrintS(&fname,"%s\\%S.exe",p,tname);
+#endif
+
     while(!ajFileStat(fname, AJ_FILE_X))
     {
+#ifndef WIN32
 	if((p = ajSysStrtokR(NULL,":",&save,&buf))==NULL)
+#else
+	if((p = ajSysStrtokR(NULL,";",&save,&buf))==NULL)
+#endif
 	{
 	    ajStrDel(&fname);
 	    ajStrDel(&tname);
@@ -274,7 +309,11 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	    ajStrDel(&tmp);
 	    return ajFalse;
 	}
+#ifndef WIN32
 	ajFmtPrintS(&fname,"%s/%S",p,tname);
+#else
+	ajFmtPrintS(&fname,"%s\\%S.exe",p,tname);
+#endif
     }
     
     
@@ -304,6 +343,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 ** @@
 ******************************************************************************/
 
+#ifndef WIN32
 void ajSystem(const AjPStr cl)
 {
     pid_t pid;
@@ -359,6 +399,7 @@ void ajSystem(const AjPStr cl)
 
     return;
 }
+#endif
 
 
 
@@ -380,6 +421,7 @@ void ajSystem(const AjPStr cl)
 ** @@
 ******************************************************************************/
 
+#ifndef WIN32
 void ajSystemEnv(const AjPStr cl, char * const env[])
 {
     pid_t pid;
@@ -441,6 +483,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 
     return;
 }
+#endif
 
 
 
@@ -454,6 +497,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 ** @@
 ******************************************************************************/
 
+#ifndef WIN32
 AjBool ajSysUnlink(const AjPStr s)
 {
     if(!unlink(ajStrGetPtr(s)))
@@ -461,6 +505,7 @@ AjBool ajSysUnlink(const AjPStr s)
 
     return ajFalse;
 }
+#endif
 
 
 
@@ -474,6 +519,7 @@ AjBool ajSysUnlink(const AjPStr s)
 ** @@
 ******************************************************************************/
 
+#ifndef WIN32
 void ajSysCanon(AjBool state)
 {
 #ifndef __VMS
@@ -495,6 +541,7 @@ void ajSysCanon(AjBool state)
 
     return;
 }
+#endif
 
 
 

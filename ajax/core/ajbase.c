@@ -35,7 +35,6 @@ char iubbases[] = "XACMGRSVTWYHKDBN";
 
 AjBool aj_base_I = 0;
 
-AjBool aj_base_I;
 
 
 /* @func ajBaseCodes *******************************************************

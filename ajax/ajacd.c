@@ -7985,6 +7985,7 @@ static void acdSetGraphxy(AcdPAcd thys)
 	    if(ajNamGetValueC("GRAPHICS",&gdev))
 		acdReplyInit(thys, ajStrGetPtr(gdev), &acdReplyDef);
 	    else
+#ifndef WIN32
 #ifndef X_DISPLAY_MISSING /* X11 is available */
 		acdReplyInit(thys, "x11", &acdReplyDef);
 #else
@@ -7993,6 +7994,9 @@ static void acdSetGraphxy(AcdPAcd thys)
 #else
 		acdReplyInit(thys, "ps", &acdReplyDef);
 #endif
+#endif
+#else
+	    acdReplyInit(thys, "win3", &acdReplyDef);
 #endif
 	}
 	else				/* leave empty */
@@ -8003,7 +8007,11 @@ static void acdSetGraphxy(AcdPAcd thys)
 	if(ajNamGetValueC("GRAPHICS",&gdev))
 	    acdReplyInit(thys, ajStrGetPtr(gdev), &acdReplyDef);
 	else
+#ifndef WIN32
 	    acdReplyInit(thys, "x11", &acdReplyDef);
+#else
+	    acdReplyInit(thys, "win3", &acdReplyDef);
+#endif
     }
     ajStrDel(&gdev);
     acdPromptGraph(thys);
@@ -14448,8 +14456,11 @@ static void acdHelpExpectRange(const AcdPAcd thys, AjPStr* str)
 
 static void acdHelpExpectGraph(const AcdPAcd thys, AjPStr* str)
 {
+#ifndef WIN32
     ajStrAssignC(str, "<i>EMBOSS_GRAPHICS</i> value, or x11");
-
+#else
+    ajStrAssignC(str, "<i>EMBOSS_GRAPHICS</i> value, or win3");
+#endif
     return;
 }
 

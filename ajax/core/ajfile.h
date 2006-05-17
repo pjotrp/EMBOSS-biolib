@@ -57,7 +57,9 @@ typedef struct AjSFile {
   AjBool End;
   AjBool App;
   AjPStr Buff;
+#ifndef WIN32
   pid_t Pid;
+#endif
 } AjOFile;
 
 #define AjPFile AjOFile*
@@ -403,9 +405,15 @@ AjPOutfile  ajOutfileNew(const AjPStr name);
 
 
 /* ============= definitions =========================*/
+#ifndef WIN32
 #define AJ_FILE_R S_IRUSR
 #define AJ_FILE_W S_IWUSR
 #define AJ_FILE_X S_IXUSR
+#else
+#define AJ_FILE_R S_IREAD
+#define AJ_FILE_W S_IWRITE
+#define AJ_FILE_X S_IEXEC
+#endif
 
 #endif
 

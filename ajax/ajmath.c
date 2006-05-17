@@ -27,7 +27,9 @@
 #include <time.h>
 #include <float.h>
 #include <stdlib.h>
+#ifndef WIN32
 #include <sys/time.h>
+#endif
 
 
 
@@ -284,7 +286,9 @@ void ajRandomSeed(void)
     
     double x = 0.0;
     ajint seed;
+#ifndef WIN32
     struct timeval tv;
+#endif
     AjPStr timestr = NULL;
     
     /*
@@ -305,8 +309,13 @@ void ajRandomSeed(void)
     }
     else
     {
+#ifndef WIN32
 	gettimeofday(&tv,NULL);
 	seed = (tv.tv_usec % 9999)+1;
+#else
+	/* Needs looking at to try to get usec resolution */
+	seed = (time(0) % 9999) + 1;
+#endif
     }
 
 
@@ -468,7 +477,11 @@ static void spcrc64calctab(unsigned long long *crctab)
 	v = (unsigned long long)i;
 	for(j=0;j<8;++j)
 	    if(v&1)
+#ifndef WIN32
 		v = 0xd800000000000000ULL ^ (v>>1);
+#else
+		v = 0xd800000000000000 ^ (v>>1);
+#endif
 	    else
 		v >>= 1;
 	crctab[i] = v;
@@ -503,7 +516,11 @@ unsigned long long ajSp64Crc(const AjPStr thys)
 	++initialised;
     }
 
+#ifndef WIN32
     crc = 0ULL;
+#else
+    crc = 0U;
+#endif
     p = ajStrGetPtr(thys);
     len = ajStrGetLen(thys);
     
