@@ -7839,10 +7839,10 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 	    ajRegSubI(seqRegUsaId, 5, &qry->Field);
 	    ajRegSubI(seqRegUsaId, 6, &qry->QryString);
 #else
-	    ajRegSubI (idexp, 1, &qry->Filename);
-	    ajRegSubI (idexp, 4, &seqQryChr);
-	    ajRegSubI (idexp, 6, &qry->Field);
-	    ajRegSubI (idexp, 7, &qry->QryString);
+	    ajRegSubI (seqRegUsaId, 1, &qry->Filename);
+	    ajRegSubI (seqRegUsaId, 4, &seqQryChr);
+	    ajRegSubI (seqRegUsaId, 6, &qry->Field);
+	    ajRegSubI (seqRegUsaId, 7, &qry->QryString);
 #endif
 	    ajDebug("found filename %S\n", qry->Filename);
 	    if(ajStrMatchC(seqQryChr, "%")) {

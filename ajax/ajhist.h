@@ -42,7 +42,18 @@ extern "C"
 AJGRAPH_Y_INVERT_TICK + AJGRAPH_X_INVERT_TICK + AJGRAPH_Y_TICK + \
 AJGRAPH_X_TICK + AJGRAPH_X_LABEL + AJGRAPH_Y_LABEL + AJGRAPH_TITLE )
 
+#ifndef WIN32
 extern ajint aj_hist_mark;
+#else
+#ifdef AJAXDLL_EXPORTS
+__declspec(dllexport) ajint aj_hist_mark;
+#else
+__declspec(dllimport) ajint aj_hist_mark;
+#endif
+#endif
+
+
+
 
 /* @data AjPHistData **********************************************************
 **

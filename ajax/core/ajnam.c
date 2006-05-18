@@ -2065,15 +2065,20 @@ void ajNamInit(const char* prefix)
     WSADATA wsaData;
     AjPStr ini_file_name = NULL;
     AjPFile ini_file;
+    AjPStr shortname = NULL;
+    
     const char* emboss_root = getenv(EMBOSSWINROOT_ENVVAR);
     const char* plplot_lib = getenv(PLPLOT_LIB_ENVVAR);
+
+    shortname = ajStrNew();
+    ajStrAssignC(&shortname,"global");
     
     namInstallRoot = emboss_root;
     
     if(emboss_root == NULL)
     {
 	AjPStr msg = ajStrNewC(EMBOSSWINROOT_ENVVAR);
-	ajStrAppC(&msg, " environment variable not defined");
+	ajStrAppendC(&msg, " environment variable not defined");
 	ajFatal(ajStrStr(msg));
     }
     
@@ -2087,25 +2092,26 @@ void ajNamInit(const char* prefix)
     
     WSAStartup(MAKEWORD(1, 1), &wsaData);
     
-    namMasterTable = ajStrTableNewCaseC(0);
+    namVarMasterTable = ajStrTableNewCaseC(0);
     namPrefixStr = ajStrNewC(prefix);
-    ajStrAppC(&namPrefixStr, "_");
+    ajStrAppendC(&namPrefixStr, "_");
     
     ini_file_name = ajStrNewC(emboss_root);
-    ajStrAppC(&ini_file_name, "\\");
-    ajStrAppC(&ini_file_name, "emboss.ini");
+    ajStrAppendC(&ini_file_name, "\\");
+    ajStrAppendC(&ini_file_name, "emboss.ini");
     
     ini_file = ajFileNewIn(ini_file_name);
     ajStrDel(&ini_file_name);
 
     if(ini_file)
     {
-	namProcessFile(ini_file);
+	namProcessFile(ini_file,shortname);
 	ajFileClose(&ini_file);
     }
     else
 	ajFatal("emboss.ini file not found");
 
+    ajStrDel(&shortname);
     
     return;
 #endif	/* WIN32 */

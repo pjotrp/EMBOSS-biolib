@@ -24,6 +24,8 @@
 ** Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
+#ifdef HAVE_JAVA
+
 #include "ajax.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -5376,3 +5378,5 @@ static int java_block(int chan, unsigned long flag)
 
 
 #endif
+
+#endif / *HAVE_JAVA */
