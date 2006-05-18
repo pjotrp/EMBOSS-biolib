@@ -402,7 +402,6 @@ AjPFile ajFileNew(void)
 
 
 
-#ifndef WIN32
 /* @func ajFileNewInPipe ******************************************************
 **
 ** Creates a new file object to read the output from a command.
@@ -415,6 +414,7 @@ AjPFile ajFileNew(void)
 
 AjPFile ajFileNewInPipe(const AjPStr name)
 {
+#ifndef WIN32
     AjPFile thys;
     
     ajint pipefds[2];		     /* file descriptors for a pipe */
@@ -478,8 +478,10 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 	fileOpenMax = fileOpenCnt;
     
    return thys;
-}
+#else /* WIN32 */
+    return NULL;
 #endif
+}
 
 
 

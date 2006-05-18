@@ -116,11 +116,9 @@ void         ajReportSetSubTail (AjPReport thys, const AjPStr tail);
 void         ajReportSetSubTailC (AjPReport thys, const char* tail);
 void         ajReportSetType (AjPReport thys,
 			      const AjPFeattable ftable, const AjPSeq seq);
-void         ajReportTrace (const AjPReport thys);
 AjBool       ajReportValid (AjPReport thys);
 void         ajReportWrite (AjPReport thys,
 			    const AjPFeattable ftable,  const AjPSeq seq);
-void         ajReportWriteClose (AjPReport thys);
 void         ajReportWriteHeader (AjPReport thys,
 				  const AjPFeattable ftable, const AjPSeq seq);
 void         ajReportWriteTail (AjPReport thys,

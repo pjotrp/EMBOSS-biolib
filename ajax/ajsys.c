@@ -343,9 +343,9 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 ** @@
 ******************************************************************************/
 
-#ifndef WIN32
 void ajSystem(const AjPStr cl)
 {
+#ifndef WIN32
     pid_t pid;
     pid_t retval;
     ajint status;
@@ -397,9 +397,10 @@ void ajSystem(const AjPStr cl)
 
     AJFREE(pgm);
 
+#endif
     return;
 }
-#endif
+
 
 
 
@@ -421,9 +422,9 @@ void ajSystem(const AjPStr cl)
 ** @@
 ******************************************************************************/
 
-#ifndef WIN32
 void ajSystemEnv(const AjPStr cl, char * const env[])
 {
+#ifndef WIN32
     pid_t pid;
     pid_t retval;
     ajint status;
@@ -480,10 +481,10 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 
     AJFREE(pgm);
 
+#endif
 
     return;
 }
-#endif
 
 
 
@@ -497,15 +498,14 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 ** @@
 ******************************************************************************/
 
-#ifndef WIN32
 AjBool ajSysUnlink(const AjPStr s)
 {
+#ifndef WIN32
     if(!unlink(ajStrGetPtr(s)))
 	return ajTrue;
-
+#endif
     return ajFalse;
 }
-#endif
 
 
 
@@ -519,9 +519,9 @@ AjBool ajSysUnlink(const AjPStr s)
 ** @@
 ******************************************************************************/
 
-#ifndef WIN32
 void ajSysCanon(AjBool state)
 {
+#ifndef WIN32
 #ifndef __VMS
     static struct termios tty;
 
@@ -538,10 +538,9 @@ void ajSysCanon(AjBool state)
 
     tcsetattr(1, TCSANOW, &tty);
 #endif
-
+#endif
     return;
 }
-#endif
 
 
 

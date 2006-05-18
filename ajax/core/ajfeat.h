@@ -35,15 +35,7 @@ extern "C"
 ** Prototype definitions
 */
 
-AjPFeature    ajFeatAdd (AjPFeattable thys, const AjPStr type,
-			 ajint start, ajint end, float score,
-			 char strand, ajint frame, const AjPStr desc);
-AjPFeature    ajFeatAddC (AjPFeattable thys, const char* type,
-			  ajint start, ajint end, float score,
-			  char strand, ajint frame, const AjPStr desc);
 AjBool        ajFeatIsChild (const AjPFeature gf);
-void *        ajFeatClearTag(AjPFeature thys, const AjPFeattable table,
-			     const AjPStr tag) ;
 AjPFeature    ajFeatCopy (const AjPFeature orig);
 void          ajFeatDefName(AjPFeattable thys, const AjPStr setname);
 void          ajFeatDel(AjPFeature *pthis) ;
@@ -154,7 +146,6 @@ void          ajFeattabOutSetBasename (AjPFeattabOut thys,
 				       const AjPStr basename);
 AjBool        ajFeattabOutSetType(AjPFeattabOut thys, const AjPStr type);
 AjBool        ajFeattabOutSetTypeC(AjPFeattabOut thys, const char* type);
-AjPFeattable  ajFeattabRead (AjPFeattabIn ftin) ;
 AjBool        ajFeatTagAdd (AjPFeature thys,
 			    const AjPStr tag, const AjPStr value);
 AjBool        ajFeatTagAddC (AjPFeature thys,
@@ -171,7 +162,6 @@ AjBool        ajFeatTagval (AjIList iter, AjPStr* tagnam,
 			    AjPStr* tagval);
 void          ajFeatTest (void);
 void          ajFeatTrace (const AjPFeature thys);
-void          ajFeatTraceOld (const AjPFeattable thys);
 AjBool        ajFeatTrimOffRange (AjPFeature ft, ajint ioffset,
 				  ajint begin, ajint end,
 				  AjBool dobegin, AjBool doend);

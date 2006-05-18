@@ -73,8 +73,6 @@ void         ajCodAssSpecies(AjPCod thys, const AjPStr species);
 void         ajCodAssSpeciesC(AjPCod thys, const char* species);
 void         ajCodAssName(AjPCod thys, const AjPStr name);
 void         ajCodAssNameC(AjPCod thys, const char* name);
-void         ajCodAss(AjPCod thys);
-void         ajCodAssC(AjPCod thys);
 void         ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys);
 void         ajCodBacktranslateAmbig(AjPStr *b, const AjPStr a,
 				     const AjPCod thys);

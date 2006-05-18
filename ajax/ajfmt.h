@@ -62,8 +62,6 @@ ajint  ajFmtVPrintCL (char *buf, ajint size,
 void   ajFmtPrintSplit(AjPFile outf, const AjPStr str,
 		       const char *prefix, ajint len,
 		       const char *delim);
-ajint  ajFmtVFmtS(char *buf, ajint size,
-		  const char *fmt, va_list ap);
 char*  ajFmtString (const char *fmt, ...);
 char*  ajFmtVString(const char *fmt, va_list ap);
 Fmt_T  ajFmtRegister(ajint code, Fmt_T cvt);

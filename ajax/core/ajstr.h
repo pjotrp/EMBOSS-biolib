@@ -260,7 +260,6 @@ AjBool     ajStrRemoveWhite(AjPStr* Pstr);
 AjBool     ajStrRemoveWhiteExcess(AjPStr* Pstr);
 AjBool     ajStrRemoveWild(AjPStr* Pstr);
 AjBool     ajStrTrimC (AjPStr* pthis, const char* txt);
-AjBool     ajStrTrimEnd (AjPStr* Pstr, const char* txt);
 AjBool     ajStrTrimEndC (AjPStr* Pstr, const char* txt);
 AjBool     ajStrTrimStartC (AjPStr* Pstr, const char* txt);
 AjBool     ajStrTrimWhite(AjPStr* Pstr);
@@ -555,7 +554,6 @@ int        __deprecated ajStrCmp(const void* str, const void* str2);
 int        __deprecated ajStrCmpCase(const AjPStr str, const AjPStr str2);
 int        __deprecated ajStrCmpCaseCC (const char* str1, const char* str2);
 int        __deprecated ajStrCmpO  (const AjPStr thys, const AjPStr anoth);
-int        __deprecated ajStrCmpV(const void* str, const void* str2);
 int        __deprecated ajStrCmpWild(const AjPStr str, const AjPStr str2);
 int        __deprecated ajStrCmpWildCC (const char* str, const char* text);
 AjBool     __deprecated ajStrConvert   (AjPStr* pthis, const AjPStr oldc,

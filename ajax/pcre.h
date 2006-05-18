@@ -213,7 +213,6 @@ extern int  pcre_get_substring(const char *, const int *, int, int,
 extern int  pcre_get_substring_list(const char *, const int *, int,
               const char ***);
 extern int  pcre_info(const pcre *, int *, int *);
-extern const unsigned char *pcre_maketables(void);
 extern pcre_extra *pcre_study(const pcre *, int, const char **);
 extern const char *pcre_version(void);
 

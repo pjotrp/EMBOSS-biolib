@@ -284,6 +284,7 @@ AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
+
 AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 			   const AjPMatrixf matrix,
 			   float gapopen, float gapextend,

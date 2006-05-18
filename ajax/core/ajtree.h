@@ -65,7 +65,6 @@ AjPTree ajTreeCopy(const AjPTree thys);
 void    ajTreeDel(AjPTree* pthis);
 void    ajTreeExit(void);
 void    ajTreeFree(AjPTree* pthis);
-AjBool  ajTreeGetData(AjPTree thys, void** data);
 ajint   ajTreeLength(const AjPTree thys);
 void    ajTreeMap(AjPTree thys, void apply(void** x, void* cl), void* cl);
 AjPTree ajTreeNew(void);

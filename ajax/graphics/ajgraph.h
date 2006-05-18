@@ -119,10 +119,6 @@ void          ajGraphGetCharSize (float *defheight, float *currentheight);
 ajint         ajGraphGetColour(void);
 void          ajGraphGetOut (float *xp,float *yp, ajint *xleng,
 			     ajint *yleng, ajint *xoff, ajint *yoff);
-void          ajGraphGetOutputDeviceParams(float *xp,float *yp,
-					   ajint *xleng, ajint *yleng,
-					   ajint *xoff,
-					   ajint *yoff);
 const AjPStr  ajGraphGetSubTitle(const AjPGraph thys);
 const char*   ajGraphGetSubTitleC(const AjPGraph thys);
 const AjPStr  ajGraphGetTitle(const AjPGraph thys);
@@ -226,7 +222,6 @@ void          ajGraphPlpDataSetYTitleC (AjPGraphPlpData graphdata,
 void          ajGraphxyDel (AjPGraph* pmult);
 void          ajGraphxyDisplay (AjPGraph thys, AjBool closeit );
 AjPGraph      ajGraphxyNewI (ajint numofpoints);
-void          ajGraphxyPrint (AjPGraph thys) ;
 void          ajGraphxyCheckMaxMin (AjPGraph thys);
 AjBool        ajGraphxySet (AjPGraph thys, const AjPStr type);
 void          ajGraphxySetCirclePoints (AjPGraph thys, AjBool set);
@@ -268,7 +263,6 @@ void          ajGraphSetSubTitle  (AjPGraph thys, const AjPStr title);
 void          ajGraphSetSubTitleC (AjPGraph thys, const char *title);
 void          ajGraphSetTitle     (AjPGraph thys, const AjPStr title);
 void          ajGraphSetTitleC    (AjPGraph thys, const char *title);
-void          ajGraphxyTrace      (AjPGraph thys);
 void          ajGraphSetXTitle  (AjPGraph thys, const AjPStr title);
 void          ajGraphSetXTitleC (AjPGraph thys, const char *title);
 void          ajGraphSetYTitle  (AjPGraph thys, const AjPStr title);

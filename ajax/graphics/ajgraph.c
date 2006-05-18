@@ -116,7 +116,7 @@ void plxsfnam(const char *fnam, const char* ext)
 
 
 
-voidplxtrace (FILE* outf)
+void plxtrace (FILE* outf)
 {
     return;
 }

@@ -59,7 +59,7 @@ typedef struct AjSXmlFile
 
 
 /*
-** Prototype definitions
+** Protoxxxtype definitions (only added if GROUT is set. Don't export yet)
 */
 
 AjPXmlNode	ajXmlNodeNew();
@@ -204,7 +204,7 @@ void 	ajXmlAddGroutOptionC(AjPGraphXml file,
 			     const char *name, const char *value);
 
 /*
-** End of prototype definitions
+** End of protoxxxtype definitions
 */
 
 #else

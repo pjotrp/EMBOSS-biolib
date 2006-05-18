@@ -14,13 +14,10 @@ extern "C"
 */
 
 AjBool ajNamDatabase(const AjPStr name);
-AjBool ajNamDbAccess (const AjPStr dbname, const AjPSeqQuery qry,
-		      AjPStr* method);
 AjBool ajNamDbDetails (const AjPStr name, AjPStr* type, AjBool* id,
 		       AjBool* qry, AjBool* all,
 		       AjPStr* comment, AjPStr* release,
 		       AjPStr* methods, AjPStr* defined);
-AjBool ajNamDbGetAlias (const AjPStr dbname, AjPStr* dbalias);
 AjBool ajNamDbGetDbalias (const AjPStr dbname, AjPStr* dbalias);
 AjBool ajNamDbGetUrl (const AjPStr dbname, AjPStr* url);
 AjBool ajNamDbData (AjPSeqQuery qry);

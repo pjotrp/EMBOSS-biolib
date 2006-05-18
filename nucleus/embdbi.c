@@ -650,7 +650,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 		ajFmtPrintS(&dbiCmdStr, "env LC_ALL=C sort -o %S %S",
 			    dbiOutFname, dbiInFname);
 #else
-	    ajFmtPrintS (&cmdstr, "%s\\sort.exe -o %S %S",
+	    ajFmtPrintS (&dbiCmdStr, "%s\\sort.exe -o %S %S",
 			 sortProgDir, dbiOutFname, dbiInFname);
 #endif
 	    embDbiSysCmd(dbiCmdStr);
@@ -662,7 +662,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	ajFmtPrintS(&dbiCmdStr, "env LC_ALL=C sort -m -o %S.%s %S",
 		    dbname, ext2, sortopt);
 #else
-	ajFmtPrintS (&cmdstr, "%s\\sort.exe -m -o %S.%s %S",
+	ajFmtPrintS (&dbiCmdStr, "%s\\sort.exe -m -o %S.%s %S",
 		     sortProgDir, dbname, ext2, sortopt);
 #endif
 	for(i=1; i<=nfiles; i++)

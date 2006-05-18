@@ -156,7 +156,6 @@ void         ajAlignTrace (const AjPAlign thys);
 void         ajAlignTraceT (const AjPAlign thys, const char* title);
 AjBool       ajAlignValid (AjPAlign thys);
 void         ajAlignWrite (AjPAlign thys);
-void         ajAlignWriteClose (AjPAlign thys);
 void         ajAlignWriteHeader (AjPAlign thys);
 void         ajAlignWriteTail (AjPAlign thys);
 

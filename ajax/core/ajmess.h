@@ -130,9 +130,6 @@ void              ajVWarn (const char *format, va_list args) ; /* warning
 void              ajWarn (const char *format, ...); /* warning message */
 
                                                   /* abort - but see below */
-AjBool            ajMessQuery (const char *text,...); /* ask yes/no question */
-AjBool            ajMessPrompt (const char *prompt, const char *dfault,
-				const char *fmt) ;
 
 /* ask for data satisfying format get results via freecard() */
 
@@ -146,8 +143,6 @@ ajint             ajMessErrorCount (void);
 
 
 
-const jmp_buf*    ajMessCatchCrash (const jmp_buf* ) ;
-const jmp_buf*    ajMessCatchError (const jmp_buf* ) ;
 char*             ajMessCaughtMessage (void) ;
 
 void              ajMessInvokeDebugger(void);
