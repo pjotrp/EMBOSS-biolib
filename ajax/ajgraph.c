@@ -48,6 +48,24 @@
 */
 
 
+/* @func plstrlW *************************************************************
+**
+** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
+**
+** @param [r] x [PLFLT] Undocumented
+** @param [r] y [PLFLT] Undocumented
+** @param [r] dx [PLFLT] Undocumented
+** @param [r] dy [PLFLT] Undocumented
+** @param [r] text [const char*] Undocumented
+** @return [PLFLT] Undocumented
+** @@
+** Andre Blavier:
+** The following function defs come from the old version of PLPLOT (the one
+** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
+** my poor understanding of their purpose and of the meaning of their
+** disappearance in PLPOT 5.1.0
+******************************************************************************/
+
 PLFLT plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
 {
     PLFLT diag;
@@ -73,6 +91,23 @@ PLFLT plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
 
 
 
+
+/* @func plgchrW **************************************************************
+**
+** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
+**
+** @param [r] x [PLFLT] Undocumented
+** @param [r] y [PLFLT] Undocumented
+** @param [r] dx [PLFLT] Undocumented
+** @param [r] dy [PLFLT] Undocumented
+** @return [PLFLT] Undocumented
+** @@
+** Andre Blavier:
+** The following function defs come from the old version of PLPLOT (the one
+** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
+** my poor understanding of their purpose and of the meaning of their
+** disappearance in PLPOT 5.1.0
+******************************************************************************/
 
 PLFLT plgchrW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy)
 {
@@ -101,6 +136,21 @@ PLFLT plgchrW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy)
 
 
 
+/* @func plxsfnam *************************************************************
+**
+** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
+**
+** @param [r] fnam [const char*] Undocumented
+** @param [r] ext [const char*] Undocumented
+** @return [void]
+** @@
+** Andre Blavier:
+** The following function defs come from the old version of PLPLOT (the one
+** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
+** my poor understanding of their purpose and of the meaning of their
+** disappearance in PLPOT 5.1.0
+******************************************************************************/
+
 void plxsfnam(const char *fnam, const char* ext)
 {
     char* str = malloc(strlen(fnam) + strlen(ext) + 1);
@@ -116,12 +166,40 @@ void plxsfnam(const char *fnam, const char* ext)
 
 
 
+/* @func plxtrace *************************************************************
+**
+** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
+**
+** @param [u] outf [FILE*] Undocumented
+** @return [void]
+** @@
+** Andre Blavier:
+** The following function defs come from the old version of PLPLOT (the one
+** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
+** my poor understanding of their purpose and of the meaning of their
+** disappearance in PLPOT 5.1.0
+******************************************************************************/
+
 void plxtrace (FILE* outf)
 {
     return;
 }
 
 
+
+/* @func plxswin *************************************************************
+**
+** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
+**
+** @param [r] window [const char*] Undocumented
+** @return [void]
+** @@
+** Andre Blavier:
+** The following function defs come from the old version of PLPLOT (the one
+** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
+** my poor understanding of their purpose and of the meaning of their
+** disappearance in PLPOT 5.1.0
+******************************************************************************/
 
 
 void plxswin(const char* window)
@@ -135,6 +213,21 @@ void plxswin(const char* window)
 }
 
 
+
+
+/* @func plfileinfo ***********************************************************
+**
+** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
+**
+** @param [r] tmp [char*] Undocumented
+** @return [int] Undocumented
+** @@
+** Andre Blavier:
+** The following function defs come from the old version of PLPLOT (the one
+** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
+** my poor understanding of their purpose and of the meaning of their
+** disappearance in PLPOT 5.1.0
+******************************************************************************/
 
 
 int plfileinfo (char* tmp)
@@ -2615,8 +2708,8 @@ void ajGraphSetOri(ajint ori)
 
 /* @func ajGraphPlenv *********************************************************
 **
-** Defines a plot environment. i.e. tells plplot wether the graph is boxed,
-** wether it has tick marks, wether it has labels etc. These should already
+** Defines a plot environment. i.e. tells plplot whether the graph is boxed,
+** whether it has tick marks, whether it has labels etc. These should already
 ** be set in the flags.
 **
 ** @param [r] xmin [float] X axis start
@@ -3423,9 +3516,9 @@ void ajGraphInitSeq(AjPGraph thys, const AjPSeq seq)
     {
 	if(!ajStrGetLen(thys->plplot->title))
 	    ajFmtPrintS(&thys->plplot->title, "%S of %S",
-			ajAcdGetProgram(), ajSeqGetName(seq));
+			ajAcdGetProgram(), ajSeqGetNameS(seq));
     }
-    ajGraphxySetXRangeII(thys, 1, ajSeqLen(seq));
+    ajGraphxySetXRangeII(thys, 1, ajSeqGetLen(seq));
 
     return;
 }
