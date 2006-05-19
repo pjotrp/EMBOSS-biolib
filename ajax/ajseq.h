@@ -220,9 +220,6 @@ ajint        ajSeqGetLenTrue (const AjPSeq seq);
 ajint        ajSeqCalcTruepos (const AjPSeq thys, ajint ipos);
 ajint        ajSeqCalcTrueposMin (const AjPSeq thys, ajint imin, ajint ipos);
 
-/*
-** End of prototype definitions
-*/
 
 AjPSeq       __deprecated ajSeqNewC (const char* seq, const char* name);
 AjPSeq       __deprecated ajSeqNewStr (const AjPStr str);
@@ -294,7 +291,6 @@ AjBool       __deprecated ajSeqGetReversed (const AjPSeq thys);
 
 const AjPStr __deprecated ajSeqStr (const AjPSeq thys);
 const char*  __deprecated ajSeqChar (const AjPSeq thys);
-char*        __deprecated ajSeqCharCopyC(const AjPSeq seq);
 AjPStr       __deprecated ajSeqStrCopy (const AjPSeq thys);
 char*        __deprecated ajSeqCharCopy (const AjPSeq seq);
 char*        __deprecated ajSeqCharCopyL (const AjPSeq seq, size_t size);
@@ -327,6 +323,10 @@ ajuint       __deprecated ajSeqCrc(const AjPStr seq );
 
 void         __deprecated ajSeqGarbageOn(AjPSeq *thys);
 void         __deprecated ajSeqGarbageOff(AjPSeq *thys);
+
+/*
+** End of prototype definitions
+*/
 
 #endif
 
