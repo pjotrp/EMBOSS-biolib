@@ -48,10 +48,10 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	seqdesc = ajSeqGetDesc(seq);
-	len     = ajSeqLen(seq);
+	seqdesc = ajSeqGetDescS(seq);
+	len     = ajSeqGetLen(seq);
 
-	ajFmtPrintF(outf, "Sequence \'%s\'\n",     ajSeqName(seq));
+	ajFmtPrintF(outf, "Sequence \'%s\'\n",     ajSeqGetNameC(seq));
 
 	if(!ajStrIsWhite(seqdesc))
 	    ajFmtPrintF(outf, "Description:\t%S\n", seqdesc );
@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 	{
 	    ajFmtPrintF(outf, "Type:\t\tDNA\n");
 	    ajFmtPrintF(outf, "Length:\t\t%d basepairs\n", len);
-	    seqstr = ajSeqStr(seq);
+	    seqstr = ajSeqGetSeqS(seq);
 	    pgc = ajMeltGC(seqstr,len);
 	    ajFmtPrintF(outf, "GC Content:\t%-8.4f%%\n", pgc*100.0);
 	}

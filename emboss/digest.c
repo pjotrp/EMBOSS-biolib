@@ -86,9 +86,9 @@ int main(int argc, char **argv)
     --n;
 
     substr = ajStrNew();
-    be     = ajSeqBegin(a);
-    en     = ajSeqEnd(a);
-    ajStrAssignSubC(&substr,ajSeqChar(a),be-1,en-1);
+    be     = ajSeqGetBegin(a);
+    en     = ajSeqGetEnd(a);
+    ajStrAssignSubC(&substr,ajSeqGetSeqC(a),be-1,en-1);
     len = en-be+1;
     
     l     = ajListNew();
@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     
     if(outf)
 	ajFmtPrintF(outf,"DIGEST of %s from %d to %d Molwt=%10.3f\n\n",
-		    ajSeqName(a),be,en,embPropCalcMolwt(ajSeqChar(a),0,len-1));
+		    ajSeqGetNameC(a),be,en,embPropCalcMolwt(ajSeqGetSeqC(a),0,len-1));
     if(!ncomp)
     {
 	if(outf)

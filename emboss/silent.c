@@ -164,23 +164,23 @@ int main(int argc, char **argv)
     /*calling function to read in RE info*/
     RStotal = silent_restr_read(&relist,enzymes);
 
-    begin = ajSeqBegin(seq);             /* returns the seq start posn, or 1
+    begin = ajSeqGetBegin(seq);             /* returns the seq start posn, or 1
                                             if no start has been set */
-    end   = ajSeqEnd(seq);               /* returns the seq end posn, or seq
+    end   = ajSeqGetEnd(seq);               /* returns the seq end posn, or seq
                                             length if no end has been set */
     radj=begin+end+1;                    /* posn adjustment for complementary
                                             strand */
 
 
-    ajStrAssignSubC(&sstr,ajSeqChar(seq),--begin,--end);
+    ajStrAssignSubC(&sstr,ajSeqGetSeqC(seq),--begin,--end);
     ajStrFmtUpper(&sstr);
 
-    sname = ajSeqGetName(seq);
+    sname = ajSeqGetNameS(seq);
     ajStrAssignC(&revcomp,ajStrGetPtr(sstr));
-    ajSeqReverseStr(&revcomp);
+    ajSeqstrReverse(&revcomp);
     start  = begin+1;
 
-    feat = ajFeattableNewDna(ajSeqGetName(seq));
+    feat = ajFeattableNewDna(ajSeqGetNameS(seq));
 
     if(sshow)
     {
@@ -259,7 +259,7 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [d] relist [AjPList8] restriction enzymes
+** @param [d] relist [AjPList*] restriction enzymes
 ** @return [void]
 ******************************************************************************/
 

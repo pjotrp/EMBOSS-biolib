@@ -50,11 +50,11 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	ajSeqTrim(seq);
-	seqstr = ajSeqStr(seq);
-	len    = ajSeqLen(seq);
+	seqstr = ajSeqGetSeqS(seq);
+	len    = ajSeqGetLen(seq);
 	pgc    = ajMeltGC(seqstr,len); /* forward strand for now... */
 
-	ajFmtPrintF(outf, "%-12s %5.2f\n", ajSeqName(seq), pgc);
+	ajFmtPrintF(outf, "%-12s %5.2f\n", ajSeqGetNameC(seq), pgc);
     }
 
     ajSeqallDel(&seqall);

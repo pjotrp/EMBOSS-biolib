@@ -213,15 +213,15 @@ static void coderet_put_seq(const AjPSeq seq, const AjPStr strseq,
     ajStrFmtLower(&fn);
 
     nseq = ajSeqNewL(ajStrGetLen(strseq));
-    ajSeqAssName(nseq, fn);
-    ajSeqAssEntry(nseq, fn);
+    ajSeqAssignNameS(nseq, fn);
+    ajSeqAssignEntryS(nseq, fn);
 
     if(!type)
 	ajSeqSetNuc(nseq);
     else
 	ajSeqSetProt(nseq);
 
-    ajSeqReplace(nseq,strseq);
+    ajSeqAssignSeqS(nseq,strseq);
 
 
     ajSeqWrite(seqout,nseq);

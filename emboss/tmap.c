@@ -531,10 +531,10 @@ static void tmap_present3p(ajint antal, const ajint *npos, const ajint *cpos,
     ajStrAssignC(&hdr, "");
     ajReportSetHeader(report, hdr);
 
-    seq = ajSeqNewL(ajSeqsetSize(seqset));
+    seq = ajSeqNewRes(ajSeqsetSize(seqset));
     ajSeqSetProt(seq);
-    ajSeqAssNameC(seq, "Consensus");
-    ajSeqAssSeq(seq, cons);
+    ajSeqAssignNameC(seq, "Consensus");
+    ajSeqAssignSeqS(seq, cons);
     feat = ajFeattableNewSeq(seq);
 
     for(i=1; i<=antal; i++)

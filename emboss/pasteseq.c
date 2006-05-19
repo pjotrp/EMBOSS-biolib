@@ -58,18 +58,18 @@ int main(int argc, char **argv)
     **  create the new sequence - set the size to the size of the two input
     **  sequences plus 1 for the terminating NULL
     */
-    newseq = ajSeqNewL(ajSeqLen(seq) + ajSeqLen(insertseq) + 1);
+    newseq = ajSeqNewRes(ajSeqGetLen(seq) + ajSeqGetLen(insertseq) + 1);
 
     /* create a name for the sequence */
-    ajSeqAssName(newseq, ajSeqGetName(seq));
+    ajSeqAssignNameS(newseq, ajSeqGetNameS(seq));
 
     /* set the description of the sequence */
-    ajSeqAssDesc(newseq, ajSeqGetDesc(seq));
+    ajSeqAssignDescS(newseq, ajSeqGetDescS(seq));
 
     /* do the insertion here */
-    str = ajSeqStrCopy(seq);
-    ajStrInsertS(&str, pos, ajSeqStr(insertseq));
-    ajSeqReplace(newseq, str);
+    str = ajSeqGetSeqCopyS(seq);
+    ajStrInsertS(&str, pos, ajSeqGetSeqS(insertseq));
+    ajSeqAssignSeqS(newseq, str);
 
     /* set the type of the output sequence (is this required?) */
     ajSeqType(newseq);

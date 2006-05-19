@@ -107,8 +107,8 @@ int main(int argc, char **argv)
     **  using in the merge by uppercasing it
     */
 
-    ajSeqToLower(a);
-    ajSeqToLower(b);
+    ajSeqFmtLower(a);
+    ajSeqFmtLower(b);
 
     m = ajStrNew();
     n = ajStrNew();
@@ -116,11 +116,11 @@ int main(int argc, char **argv)
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
 
-    begina = ajSeqBegin(a);
-    beginb = ajSeqBegin(b);
+    begina = ajSeqGetBegin(a);
+    beginb = ajSeqGetBegin(b);
 
-    lena = ajSeqLen(a);
-    lenb = ajSeqLen(b);
+    lena = ajSeqGetLen(a);
+    lenb = ajSeqGetLen(b);
     len  = lena*lenb;
 
     if(len>maxarr)
@@ -135,8 +135,8 @@ int main(int argc, char **argv)
     }
 
 
-    p = ajSeqChar(a);
-    q = ajSeqChar(b);
+    p = ajSeqGetSeqC(a);
+    q = ajSeqGetSeqC(b);
 
     ajStrAssignC(&m,"");
     ajStrAssignC(&n,"");
@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     ** input sequences which are used in the merger
     */
     merger_Merge(align, &merged,p,q,m,n,start1,start2,score,1,cvt,
-		 ajSeqName(a),ajSeqName(b),begina,beginb);
+		 ajSeqGetNameC(a),ajSeqGetNameC(b),begina,beginb);
 
     embAlignReportGlobal(align, a, b, m, n,
 			 start1, start2, gapopen, gapextend,
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
     ajAlignReset(align);
 
     /* write the merged sequence */
-    ajSeqReplace(a, merged);
+    ajSeqAssignSeqS(a, merged);
     ajSeqWrite(seqout, a);
     ajSeqWriteClose(seqout);
     ajSeqoutDel(&seqout);

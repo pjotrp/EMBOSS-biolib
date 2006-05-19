@@ -93,7 +93,7 @@ int main(int argc, char **argv)
 				    &err2[0]))
 	ajFatal("Could not read data file");
 
-    graphdata = ajGraphPlpDataNewI(ajSeqLen(seq)-llen);
+    graphdata = ajGraphPlpDataNewI(ajSeqGetLen(seq)-llen);
     ajGraphPlpDataSetColour(graphdata,GREEN);
 
     if(interface)
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     }
 
 
-    graphdata3 = ajGraphPlpDataNewI(ajSeqLen(seq)-llen);
+    graphdata3 = ajGraphPlpDataNewI(ajSeqGetLen(seq)-llen);
     ajGraphPlpDataSetColour(graphdata3,BLACK);
 
     if(difference)
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
 	ajGraphPlpDataSetTypeC(graphdata3,"2D Plot");
     }
 
-    graphdata2 = ajGraphPlpDataNewI(ajSeqLen(seq)-llen);
+    graphdata2 = ajGraphPlpDataNewI(ajSeqGetLen(seq)-llen);
     ajGraphPlpDataSetColour(graphdata2,RED);
 
     if(octanol)
@@ -127,13 +127,13 @@ int main(int argc, char **argv)
     }
 
 
-    ajGraphAddLine(mult,0.0,0.0,(float)ajSeqLen(seq),0.0,BLACK);
+    ajGraphAddLine(mult,0.0,0.0,(float)ajSeqGetLen(seq),0.0,BLACK);
 
     midpoint = ((float)llen+1.0)/2.0;
 
-    ajSeqToLower(seq);
+    ajSeqFmtLower(seq);
 
-    s1 = ajStrGetPtr(ajSeqStr(seq));
+    s1 = ajStrGetPtr(ajSeqGetSeqS(seq));
 
     for(j=0;j<llen;j++)
     {
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 	total2 += matrix2[ajAZToInt(s1[j])];
     }
 
-    for(i=0;i<ajSeqLen(seq)-llen;i++)
+    for(i=0;i<ajSeqGetLen(seq)-llen;i++)
     {
 	v = graphdata->x[i] = (float)i+midpoint;
 	xmin1 = (xmin1<v) ? xmin1 : v;
@@ -187,7 +187,7 @@ int main(int argc, char **argv)
     min = min*1.1;
     max = max*1.1;
 
-    ajGraphxySetMaxMin(mult,0.0,(float)ajSeqLen(seq),min,max);
+    ajGraphxySetMaxMin(mult,0.0,(float)ajSeqGetLen(seq),min,max);
     ajGraphPlpDataSetMaxima(graphdata,xmin1,xmax1,ymin1,ymax1);
     ajGraphPlpDataSetMaxima(graphdata2,xmin2,xmax2,ymin2,ymax2);
     ajGraphPlpDataSetMaxima(graphdata3,xmin3,xmax3,ymin3,ymax3);

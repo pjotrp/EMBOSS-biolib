@@ -49,15 +49,15 @@ int main(int argc, char **argv)
     outf      = ajAcdGetSeqout("outfile");
 
     substr = ajStrNew();
-    beg    = ajSeqBegin(a);
-    end    = ajSeqEnd(a);
-    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    beg    = ajSeqGetBegin(a);
+    end    = ajSeqGetEnd(a);
+    ajStrAssignSubS(&substr,ajSeqGetSeqS(a),beg-1,end-1);
 
     back = ajStrNew();
     ajCodSetBacktranslate(&codon);
     ajCodBacktranslate(&back,substr,codon);
 
-    ajSeqAssSeq (a, back);
+    ajSeqAssignSeqS (a, back);
     ajSeqSetNuc (a);
 
     ajSeqWrite(outf,a);

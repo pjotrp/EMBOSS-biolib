@@ -234,8 +234,8 @@ int main(int argc, char **argv)
     
     while(ajSeqallNext(seqall, &seq))
     {
-	begin = ajSeqBegin(seq)-1;
-	end   = ajSeqEnd(seq)-1;
+	begin = ajSeqGetBegin(seq)-1;
+	end   = ajSeqGetEnd(seq)-1;
 
 	restrictlist = ajListNew();
 
@@ -244,9 +244,9 @@ int main(int argc, char **argv)
 	{
 	    if(html)
 		ajFmtPrintF(outfile, "<H2>%S</H2>\n",
-			    ajSeqGetName(seq));
+			    ajSeqGetNameS(seq));
 	    else
-		ajFmtPrintF(outfile, "%S\n", ajSeqGetName(seq));
+		ajFmtPrintF(outfile, "%S\n", ajSeqGetNameS(seq));
 	}
 
 	if(description)
@@ -257,11 +257,11 @@ int main(int argc, char **argv)
 	    */
 	    if(html)
 		ajFmtPrintF(outfile, "<H3>%S</H3>\n",
-			    ajSeqGetDesc(seq));
+			    ajSeqGetDescS(seq));
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAssignS(&descriptionline, ajSeqGetDesc(seq));
+		ajStrAssignS(&descriptionline, ajSeqGetDescS(seq));
 		ajStrFmtWrap(&descriptionline, width+margin);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
@@ -270,7 +270,7 @@ int main(int argc, char **argv)
 
 
 	/* get the feature table of the sequence */
-	feattab = ajSeqCopyFeat(seq);
+	feattab = ajSeqGetFeatCopy(seq);
 
 	/* new feature table to hold the filetered features */
         newfeattab = ajFeattableNew(NULL);
@@ -309,7 +309,7 @@ int main(int argc, char **argv)
 	    }
 
 	    ajFileSeek(enzfile, 0L, 0);
-	    hits = embPatRestrictMatch(seq, 1, ajSeqLen(seq), enzfile, enzymes,
+	    hits = embPatRestrictMatch(seq, 1, ajSeqGetLen(seq), enzfile, enzymes,
 				       sitelen, plasmid, ambiguity, mincuts,
 				       maxcuts, blunt, sticky, commercial,
 				       restrictlist);

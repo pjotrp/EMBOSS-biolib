@@ -108,10 +108,10 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall,&seq))
     {
 	l = ajListNew();
-	ajStrAssignC(&seqname,ajSeqName(seq));
-	begin = ajSeqBegin(seq);
-	end   = ajSeqEnd(seq);
-	ajStrAssignSubC(&text,ajSeqChar(seq),begin-1,end-1);
+	ajStrAssignC(&seqname,ajSeqGetNameC(seq));
+	begin = ajSeqGetBegin(seq);
+	end   = ajSeqGetEnd(seq);
+	ajStrAssignSubC(&text,ajSeqGetSeqC(seq),begin-1,end-1);
 	ajStrFmtUpper(&text);
 	adj = begin+end+1;
 
@@ -120,11 +120,11 @@ int main(int argc, char **argv)
 			 solimit,regexp,skipm,&hits,m,&tidy);
 	if(sc)
 	{
-	    ajSeqReverseStr(&text);
+	    ajSeqstrReverse(&text);
 	    embPatFuzzSearch(type,begin,pattern,seqname,text,l,
 			     plen,mismatch,amino,carboxyl,buf,off,sotable,
 			     solimit,regexp,skipm,&thits,m,&tidy);
-	    ajSeqReverseStr(&text);
+	    ajSeqstrReverse(&text);
 	}
 
 
@@ -195,9 +195,9 @@ static void fuzznuc_report_hits(AjPList *l, ajint hits,
     ajint end;
     ajint adj;
 
-    begin = ajSeqBegin(seq) - 1;
-    end   = ajSeqEnd(seq) - 1;
-    adj   =  ajSeqBegin(seq) + ajSeqEnd(seq) + 1;
+    begin = ajSeqGetBegin(seq) - 1;
+    end   = ajSeqGetEnd(seq) - 1;
+    adj   =  ajSeqGetBegin(seq) + ajSeqGetEnd(seq) + 1;
 
     if(!fthit)
       ajStrAssignC(&fthit, "hit");

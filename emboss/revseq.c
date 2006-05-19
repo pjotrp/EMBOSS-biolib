@@ -58,9 +58,9 @@ int main(int argc, char **argv)
 	if(reverse && complement)
 	    ajSeqReverseForce(seq);	/* reverses and complements */
 	else if(reverse)
-	    ajSeqRevOnly(seq);
+	    ajSeqReverseOnly(seq);
 	else if(complement)
-	    ajSeqCompOnly(seq);
+	    ajSeqComplementOnly(seq);
 	else
 	  ajDebug("No action was specified\n");
 

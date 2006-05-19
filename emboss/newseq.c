@@ -50,18 +50,18 @@ int main(int argc, char **argv)
     type     = ajAcdGetListSingle("type");
 
     /* initialise the sequence */
-    seq = ajSeqNewL(ajStrGetLen(sequence));
+    seq = ajSeqNewRes(ajStrGetLen(sequence));
 
     /* assign some things to the sequence */
-    ajSeqAssName(seq, name);
-    ajSeqAssDesc(seq, desc);
+    ajSeqAssignNameS(seq, name);
+    ajSeqAssignDescS(seq, desc);
 
     if(!ajStrCmpC(type, "N"))
 	ajSeqSetNuc(seq);
     else
 	ajSeqSetProt(seq);
 
-    ajSeqReplace(seq, sequence);
+    ajSeqAssignSeqS(seq, sequence);
 
     ajSeqWrite(seqout, seq);
     ajSeqWriteClose(seqout);

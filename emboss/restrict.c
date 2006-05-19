@@ -177,7 +177,7 @@ int main(int argc, char **argv)
 
 	if(hits)
 	{
-	    name = ajStrNewC(ajSeqName(seq));
+	    name = ajStrNewC(ajSeqGetNameC(seq));
 	    restrict_reportHits(report, seq, TabRpt,
 				l,hits,begin,end,
 				ambiguity,min,max,
@@ -471,7 +471,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
     patStr  = ajStrNew();
     
     fn = 0;
-    len = ajSeqLen(seq);
+    len = ajSeqGetLen(seq);
     
     ajStrAssignC(&fthit, "hit");
 

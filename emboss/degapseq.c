@@ -48,10 +48,10 @@ int main(int argc, char **argv)
     {
 	/* get a copy of the sequence string */
 	str = ajStrNew();
-	ajStrAssignS(&str, ajSeqStr(seq));
+	ajStrAssignS(&str, ajSeqGetSeqS(seq));
 
 	ajStrRemoveGap(&str);
-	ajSeqReplace(seq, str);
+	ajSeqAssignSeqS(seq, str);
 	ajStrDel(&str);
 
 	ajSeqAllWrite(seqout, seq);

@@ -130,16 +130,16 @@ int main(int argc, char **argv)
     txt    = ajStrNew();
 
 
-    begin = ajSeqBegin(seq);
-    end   = ajSeqEnd(seq);
+    begin = ajSeqGetBegin(seq);
+    end   = ajSeqGetEnd(seq);
     ajDebug("begin: %d end: %d\n", begin, end);
-    strand = ajSeqStrCopy(seq);
+    strand = ajSeqGetSeqCopyS(seq);
 
     ajStrFmtUpper(&strand);
     ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
     len = ajStrGetLen(substr);
 
-    ajFmtPrintS(&txt,"PEPWHEEL of %s from %d to %d",ajSeqName(seq),
+    ajFmtPrintS(&txt,"PEPWHEEL of %s from %d to %d",ajSeqGetNameC(seq),
 		begin,end);
 
     ajGraphOpenWin(graph,xmin,xmax,ymin,ymax);

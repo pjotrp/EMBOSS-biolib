@@ -50,9 +50,9 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
 	for(n=0;n<shuffles;++n)
 	{
-	    seq_str = ajSeqStrCopy(seq);
+	    seq_str = ajSeqGetSeqCopyS(seq);
 	    ajStrRandom(&seq_str);
-	    ajSeqReplace(seq, seq_str);
+	    ajSeqAssignSeqS(seq, seq_str);
 	    ajSeqAllWrite(seqout, seq);
 	    ajStrDel(&seq_str);
 	}

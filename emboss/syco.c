@@ -129,9 +129,9 @@ int main(int argc, char **argv)
     substr = ajStrNew();
     tmp    = ajStrNew();
     
-    beg = ajSeqBegin(a);
-    end = ajSeqEnd(a);
-    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    beg = ajSeqGetBegin(a);
+    end = ajSeqGetEnd(a);
+    ajStrAssignSubC(&substr,ajSeqGetSeqC(a),beg-1,end-1);
     
     
     
@@ -162,7 +162,7 @@ int main(int argc, char **argv)
     
     
     if(!plot)
-	ajFmtPrintF(outf,"SYCO of %s from %d to %d\n",ajSeqName(a),beg,
+	ajFmtPrintF(outf,"SYCO of %s from %d to %d\n",ajSeqGetNameC(a),beg,
 		    end);
     
     

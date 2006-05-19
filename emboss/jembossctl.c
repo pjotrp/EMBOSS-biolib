@@ -1955,7 +1955,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
 
     ok = jctl_GetSeqFromUsa(usa,&seq);
     if(ok)
-	fprintf(stdout,"%d %f %d",(int)ajSeqLen(seq),seq->Weight,
+	fprintf(stdout,"%d %f %d",(int)ajSeqGetLen(seq),seq->Weight,
 		(int)ajSeqIsNuc(seq));
     else
 	fprintf(stdout,"0 0.0 0");

@@ -112,10 +112,10 @@ int main(int argc, char **argv)
 
 
 
-    begin = ajSeqBegin(seq);
-    end   = ajSeqEnd(seq);
+    begin = ajSeqGetBegin(seq);
+    end   = ajSeqGetEnd(seq);
 
-    strand = ajSeqStrCopy(seq);
+    strand = ajSeqGetSeqCopyS(seq);
 
     ajStrFmtUpper(&strand);
     ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
 	pstart=count;
 	pstop = AJMIN(end-1, count+230);
 
-	ajFmtPrintS(&txt,"PEPNET of %s from %d to %d",ajSeqName(seq),
+	ajFmtPrintS(&txt,"PEPNET of %s from %d to %d",ajSeqGetNameC(seq),
 		    pstart+1,pstop+1);
 
 

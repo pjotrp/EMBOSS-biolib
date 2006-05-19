@@ -508,13 +508,13 @@ void embWordMatchListConvToFeat(const AjPList list,
 			    p->seq1start+1,p->seq1start+p->length , score,
 			    strand, frame) ;
 	
-	ajFeatTagSet(feature, tag, ajSeqGetName(seq2));
+	ajFeatTagSet(feature, tag, ajSeqGetNameS(seq2));
 	
 	feature = ajFeatNew(*tab2, source, type,
 			    p->seq2start+1,p->seq2start+p->length , score,
 			    strand, frame) ;
 	
-	ajFeatTagSet(feature, tag, ajSeqGetName(seq1));
+	ajFeatTagSet(feature, tag, ajSeqGetNameS(seq1));
     }
     
     ajListIterFree(&iter);
@@ -557,26 +557,26 @@ ajint embWordGetTable(AjPTable *table, const AjPSeq seq)
     assert(wordLength > 0);
 
     ajDebug("embWordGetTable seq.len %d wordlength %d\n",
-	     ajSeqLen(seq), wordLength);
+	     ajSeqGetLen(seq), wordLength);
 
-    if(ajSeqLen(seq) < wordLength)
+    if(ajSeqGetLen(seq) < wordLength)
     {
 	ajErr("wordsize = %d, sequence length = %d",
-	      wordLength, ajSeqLen(seq));
+	      wordLength, ajSeqGetLen(seq));
 	return ajFalse;
     }
 
     if(!*table)
     {
-	*table = ajTableNewL(ajSeqLen(seq), wordCmpStr, wordStrHash);
+	*table = ajTableNewL(ajSeqGetLen(seq), wordCmpStr, wordStrHash);
 	ajDebug("make new table\n");
     }
 
     /* initialise ptr to start of seq string */
-    startptr = ajSeqChar(seq);
+    startptr = ajSeqGetSeqC(seq);
 
     i = 0;
-    ilast = ajSeqLen(seq) - wordLength;
+    ilast = ajSeqGetLen(seq) - wordLength;
 
     while(i <= ilast)
     {
@@ -696,7 +696,7 @@ static ajint wordGetWholeMatch(EmbPWordMatch match,
 
     nextpos = match->seq1start + 1;
 
-    ilast = ajSeqLen(seq2) - wordLength;
+    ilast = ajSeqGetLen(seq2) - wordLength;
     while(i <= ilast)
     {
 	/* find if it matches */
@@ -928,15 +928,15 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
     if(!wordCurList)
 	wordCurList = ajListNew();
 
-    if(ajSeqLen(seq2) < wordLength)
+    if(ajSeqGetLen(seq2) < wordLength)
     {
 	ajErr("ERROR: Sequence length = %d and word length = %d.\n",
-	      ajSeqLen(seq2), wordLength);
+	      ajSeqGetLen(seq2), wordLength);
 	ajErr("sequence length must be larger than word length");
 	return NULL;
     }
-    startptr = ajSeqChar(seq2);
-    ilast    = ajSeqLen(seq2) - wordLength;
+    startptr = ajSeqGetSeqC(seq2);
+    ilast    = ajSeqGetLen(seq2) - wordLength;
 
     /*ajDebug("ilast: %d\n", ilast);*/
 

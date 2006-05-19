@@ -81,13 +81,13 @@ int main(int argc, char **argv)
     	if((pseq = ajSeqsetGetSeq(protseq, proteinseqcount++)) == NULL)
     	    ajErr("No guide protein sequence available for "
 		  "nucleic sequence %S",
-		  ajSeqGetName(nseq));
+		  ajSeqGetNameS(nseq));
 
 	ajDebug("Aligning %S and %S\n",
-		ajSeqGetName(nseq), ajSeqGetName(pseq));
+		ajSeqGetNameS(nseq), ajSeqGetNameS(pseq));
 
         /* get copy of pseq string with no gaps */
-        ajStrAssignS(&degapstr, ajSeqStr(pseq));
+        ajStrAssignS(&degapstr, ajSeqGetSeqS(pseq));
         ajStrRemoveGap(&degapstr);
 
         /*
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
             pep = ajTrnSeqOrig(trnTable, nseq, frame);
             degapstr2 = ajStrNew();
             ajStrAssignRef(&degapstr2, degapstr);
-            pos = ajStrFindCaseS(ajSeqStr(pep), degapstr);
+            pos = ajStrFindCaseS(ajSeqGetSeqS(pep), degapstr);
 
             /* 
             ** we might have a START codon that should be translated as 'M'
@@ -110,14 +110,14 @@ int main(int argc, char **argv)
                (ajStrGetPtr(degapstr)[0] == 'M' || ajStrGetPtr(degapstr)[0] == 'm')) {
                 /* see if pep minus the first character is a match */
                 ajStrCutStart(&degapstr2, 1);
-                pos = ajStrFindCaseS(ajSeqStr(pep), degapstr2); 
+                pos = ajStrFindCaseS(ajSeqGetSeqS(pep), degapstr2); 
                 /* pos is >= 1 if we have a match that is after the first residue */
                 if (pos >= 1) {
                     /* point back at the putative START Methionine */
                     pos--;
                     /* test if first codon is a START */
                     codon = ajStrNew();
-                    ajStrAssignSubS(&codon, ajSeqStr(nseq), 
+                    ajStrAssignSubS(&codon, ajSeqGetSeqS(nseq), 
                                 (pos*3)+frame-1, (pos*3)+frame+2);
                     type = ajTrnStartStop(trnTable, codon, &aa);
                     if (type != 1) {
@@ -141,15 +141,15 @@ int main(int argc, char **argv)
 
         if(pos == -1)
 	    ajErr("Guide protein sequence %S not found in nucleic sequence %S",
-		  ajSeqGetName(pseq), ajSeqGetName(nseq));
+		  ajSeqGetNameS(pseq), ajSeqGetNameS(nseq));
 	else
 	{
 	    ajDebug("got a match with frame=%d\n", frame);
             /* extract the coding region of nseq with gaps */
             newseq = ajSeqNew();
             ajSeqSetNuc(newseq);
-            ajSeqAssName(newseq, ajSeqGetName(nseq));
-            ajSeqAssDesc(newseq, ajSeqGetDesc(nseq));
+            ajSeqAssignNameS(newseq, ajSeqGetNameS(nseq));
+            ajSeqAssignDescS(newseq, ajSeqGetDescS(nseq));
             tranalign_AddGaps(newseq, nseq, pseq, (pos*3)+frame-1);
 
             /* output the gapped nucleic sequence */
@@ -199,17 +199,17 @@ static void tranalign_AddGaps(AjPSeq newseq,
 
     newstr = ajStrNew();
 
-    for(; ppos<ajSeqLen(pseq); ppos++)
-    	if(ajSeqChar(pseq)[ppos] == '-')
+    for(; ppos<ajSeqGetLen(pseq); ppos++)
+    	if(ajSeqGetSeqC(pseq)[ppos] == '-')
     	    ajStrAppendC(&newstr, "---");
 	else
 	{
-    	    ajStrAppendSubS(&newstr, ajSeqStr(nseq), npos, npos+2);
+    	    ajStrAppendSubS(&newstr, ajSeqGetSeqS(nseq), npos, npos+2);
     	    npos+=3;
     	}
 
     ajDebug("aligned seq=%S\n", newstr);
-    ajSeqReplace(newseq, newstr);
+    ajSeqAssignSeqS(newseq, newstr);
 
     ajStrDel(&newstr);
 

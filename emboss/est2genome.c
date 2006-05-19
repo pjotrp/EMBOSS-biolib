@@ -226,11 +226,11 @@ int main(int argc, char **argv)
 
     /* Make sure theres enough space to hold the genomic AjPSeq */
 
-    if(megabytes < ajSeqLen(genome)*1.5e-6)
+    if(megabytes < ajSeqGetLen(genome)*1.5e-6)
     {
 	ajWarn("increasing space from %.3f to %.3f Mb\n",
-	       megabytes, 1.5e-6*ajSeqLen(genome));
-	megabytes = 1.5e-6*ajSeqLen(genome);
+	       megabytes, 1.5e-6*ajSeqGetLen(genome));
+	megabytes = 1.5e-6*ajSeqGetLen(genome);
     }
 
     /* find the GT/AG splice sites */
@@ -265,7 +265,7 @@ int main(int argc, char **argv)
 	    double std  = 0;
 	    EmbPEstAlign sge;
 
-	    shuffled_est = ajSeqNewS(est);
+	    shuffled_est = ajSeqNewSeq(est);
 
 	    for(n=0;n<shuffles;n++)
 	    {
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
 					      splice_sites, 0, 0,
 					      DIAGONAL);
 		score = sge->score;
-		ajDebug("%30.30S\n", ajSeqStr(shuffled_est));
+		ajDebug("%30.30S\n", ajSeqGetSeqS(shuffled_est));
 		ajDebug("%5d score %d seed %d\n", n, score, seed);
 		if(score > max_score)
 		    max_score = score;
@@ -310,7 +310,7 @@ int main(int argc, char **argv)
 
 	if(search_mode != FORWARD_ONLY) /* reverse strand */
 	{
-	    reversed_est = ajSeqNewS(est);
+	    reversed_est = ajSeqNewSeq(est);
 	    ajSeqReverseForce(reversed_est);
 	    
 	    rge = embEstAlignLinearSpace(reversed_est, genome,
@@ -529,7 +529,7 @@ static void est2genome_make_output(AjPFile ofile,
 	if(align)
 	{
 	    ajFmtPrintF(ofile, "\n\n%s vs %s:\n",
-			ajSeqName(genome), ajSeqName(est));
+			ajSeqGetNameC(genome), ajSeqGetNameC(est));
 	    embEstPrintAlign(ofile, genome, est, ge, width);
 	}
     }

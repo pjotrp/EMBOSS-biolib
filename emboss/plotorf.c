@@ -107,17 +107,17 @@ int main(int argc, char **argv)
     nstarts = ajArrCommaList(start,&starts);
     nstops  = ajArrCommaList(stop,&stops);
 
-    beg = ajSeqBegin(seq);
-    end = ajSeqEnd(seq);
+    beg = ajSeqGetBegin(seq);
+    end = ajSeqGetEnd(seq);
 
     str = ajStrNew();
     cnt = ajIntNew();
 
-    ajSeqToUpper(seq);
-    ajStrAssignSubC(&str,ajSeqChar(seq),beg-1,end-1);
+    ajSeqFmtUpper(seq);
+    ajStrAssignSubC(&str,ajSeqGetSeqC(seq),beg-1,end-1);
 
     rev = ajStrNewC(ajStrGetPtr(str));
-    ajSeqReverseStr(&rev);
+    ajSeqstrReverse(&rev);
 
     for(i=0;i<6;++i)
     {

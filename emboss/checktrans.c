@@ -86,15 +86,15 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-        begin = ajSeqBegin(seq);
-        end   = ajSeqEnd(seq);
+        begin = ajSeqGetBegin(seq);
+        end   = ajSeqGetEnd(seq);
 
-        strand = ajSeqStr(seq);
+        strand = ajSeqGetSeqS(seq);
 
-	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
+	ajStrAssignSubS(&substr,strand,begin-1,end-1);
 
         /* end with a '*' if needed and there is not one there already */
-        if(addlast && ajSeqChar(seq)[end-1] != '*')
+        if(addlast && ajSeqGetSeqC(seq)[end-1] != '*')
 	{
             ajStrAppendK(&substr,'*');
             addedasterisk = ajTrue;
@@ -221,10 +221,10 @@ static void checktrans_ajbseq(AjPSeqout outseq, const char *seq,
     nm  = ajStrNew();
 
     ajStrAssignSubC(&str,seq,begin,end);
-    ajSeqReplace(sq,str);
+    ajSeqAssignSeqS(sq,str);
 
     ajFmtPrintS(&nm,"%s_%d",name,count);
-    ajSeqAssName(sq,nm);
+    ajSeqAssignNameS(sq,nm);
 
     ajSeqWrite(outseq, sq);
 

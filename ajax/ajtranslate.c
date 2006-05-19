@@ -572,7 +572,7 @@ static void trnNoComment(AjPStr* text)
 ** Frame 4 is the same as frame -1, 5 is -2, 6 is -3.
 **
 ** You will have to set the sequence of this object with something like:
-**  ajSeqReplace(trnPeptide, seqstr);
+**  ajSeqAssignSeqS(trnPeptide, seqstr);
 **
 **
 ** @param [r] nucleicSeq [const AjPSeq] nucleic sequence being translated
@@ -596,7 +596,7 @@ AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame)
     value = ajStrNew();
 
     /* name for the subsequence */
-    ajStrAssignS(&name, ajSeqGetName(nucleicSeq));
+    ajStrAssignS(&name, ajSeqGetNameS(nucleicSeq));
 
     /*
     ** if the frame is not 0 then append the frame number to the name to
@@ -612,9 +612,9 @@ AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame)
 	ajStrAppendS(&name, value);
     }
 
-    ajSeqAssName(trnPeptide, name);
+    ajSeqAssignNameS(trnPeptide, name);
 
-    ajSeqAssDesc(trnPeptide, ajSeqGetDesc(nucleicSeq));
+    ajSeqAssignDescS(trnPeptide, ajSeqGetDescS(nucleicSeq));
 
     ajStrDel(&name);
     ajStrDel(&value);
@@ -1021,7 +1021,7 @@ void ajTrnAltRevStr(const AjPTrn trnObj, const AjPStr str, AjPStr *pep)
 
 void ajTrnSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 {
-    ajTrnC(trnObj, ajSeqChar(seq), ajSeqLen(seq), pep);
+    ajTrnC(trnObj, ajSeqGetSeqC(seq), ajSeqGetLen(seq), pep);
 
     return;
 }
@@ -1051,7 +1051,7 @@ void ajTrnSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 
 void ajTrnRevSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 {
-    ajTrnRevC(trnObj, ajSeqChar(seq), ajSeqLen(seq), pep);
+    ajTrnRevC(trnObj, ajSeqGetSeqC(seq), ajSeqGetLen(seq), pep);
 
     return;
 }
@@ -1084,7 +1084,7 @@ void ajTrnRevSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 
 void ajTrnAltRevSeq(const AjPTrn trnObj, const AjPSeq seq, AjPStr *pep)
 {
-    ajTrnAltRevC(trnObj, ajSeqChar(seq), ajSeqLen(seq), pep);
+    ajTrnAltRevC(trnObj, ajSeqGetSeqC(seq), ajSeqGetLen(seq), pep);
 
     return;
 }
@@ -1240,7 +1240,7 @@ void ajTrnStrFrame(const AjPTrn trnObj, const AjPStr seq, ajint frame,
 void ajTrnSeqFrame(const AjPTrn trnObj, const AjPSeq seq, ajint frame,
 		   AjPStr *pep)
 {
-    ajTrnCFrame(trnObj, ajSeqChar(seq), ajSeqLen(seq), frame, pep);
+    ajTrnCFrame(trnObj, ajSeqGetSeqC(seq), ajSeqGetLen(seq), frame, pep);
 
     return;
 }
@@ -1298,7 +1298,7 @@ AjPSeq ajTrnSeqFramePep(const AjPTrn trnObj, const AjPSeq seq, ajint frame)
     trn = ajStrNew();
 
     ajTrnSeqFrame(trnObj, seq, frame, &trn);
-    ajSeqReplace(pep, trn);
+    ajSeqAssignSeqS(pep, trn);
 
     ajStrDel(&trn);
 
@@ -1463,7 +1463,7 @@ AjPSeq ajTrnSeqOrig(const AjPTrn trnObj, const AjPSeq seq, ajint frame)
     if(frame > 3)
 	ajStrReverse(&trn);
 
-    ajSeqReplace(pep, trn);
+    ajSeqAssignSeqS(pep, trn);
 
     ajStrDel(&trn);
 

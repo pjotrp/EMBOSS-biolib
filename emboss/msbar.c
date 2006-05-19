@@ -113,7 +113,7 @@ int main(int argc, char **argv)
         for(try=0; try<attempts; try++)
 	{
 	    /* get a copy of the sequence string */
-	    ajStrAssignS(&str, ajSeqStr(seq));
+	    ajStrAssignS(&str, ajSeqGetSeqS(seq));
 
 	    /* do the mutation operations */
 	    for(i=0; i<count; i++)
@@ -131,7 +131,7 @@ int main(int argc, char **argv)
 	if(try >= attempts)
 	    ajWarn("No unique mutation found after %d attempts", attempts);
 
-	ajSeqReplace(seq, str);
+	ajSeqAssignSeqS(seq, str);
 	ajSeqAllWrite(seqout, seq);
     }
 
@@ -562,7 +562,7 @@ static AjBool msbar_Unlike(const AjPStr str, AjPSeqall other)
     AjPSeq nextother;
 
     while(ajSeqallNext(other, &nextother))
-        if(ajStrMatchCaseS(str, ajSeqStr(nextother)))
+        if(ajStrMatchCaseS(str, ajSeqGetSeqS(nextother)))
             return ajFalse;
     
     return ajTrue;

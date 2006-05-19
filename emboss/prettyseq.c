@@ -99,11 +99,11 @@ int main(int argc, char **argv)
 
     ajStrToInt(codestr, &gcode);
     codon  = ajCodNewCode(gcode);
-    beg = ajSeqBegin(a);
-    end = ajSeqEnd(a);
+    beg = ajSeqGetBegin(a);
+    end = ajSeqGetEnd(a);
 
     substr = ajStrNew();
-    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    ajStrAssignSubC(&substr,ajSeqGetSeqC(a),beg-1,end-1);
     ajStrFmtUpper(&substr);
     pro=ajStrNewS(substr);
     len = ajStrGetLen(substr);
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     prettyseq_makeRuler(len,beg,ruler,npos);
     prettyseq_calcProteinPos(ppos,pro,len);
     prettyseq_showTrans(ppos,npos,pro,substr,len,ruler,beg,
-			outf,isrule,isp,isn,width,ajSeqName(a));
+			outf,isrule,isp,isn,width,ajSeqGetNameC(a));
 
     AJFREE(npos);
     AJFREE(ppos);

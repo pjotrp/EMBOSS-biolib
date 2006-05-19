@@ -513,7 +513,7 @@ AjPStr embPropProtGaps(AjPSeq seq, ajint pad)
     AjPStr temp;
     ajint i;
 
-    temp = ajStrNewRes(ajSeqLen(seq)*3 + pad+1);
+    temp = ajStrNewRes(ajSeqGetLen(seq)*3 + pad+1);
 
     /* put any required padding spaces at the start */
     for(i=0; i<pad; i++)
@@ -551,7 +551,7 @@ AjPStr embPropProt1to3(AjPSeq seq, ajint pad)
     AjPStr temp;
     ajint i;
 
-    temp = ajStrNewRes(ajSeqLen(seq)*3 + pad+1);
+    temp = ajStrNewRes(ajSeqGetLen(seq)*3 + pad+1);
 
     /* put any required padding spaces at the start */
     for(i=0; i<pad; i++)

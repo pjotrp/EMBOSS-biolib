@@ -158,36 +158,36 @@ int main(int argc, char **argv)
     ajTimeLocal(tim,&ajtime);
     ajtime.format = 0;
     
-    b1 = ajSeqBegin(seq);
-    b2 = ajSeqBegin(seq2);
-    e1 = ajSeqEnd(seq);
-    e2 = ajSeqEnd(seq2);
+    b1 = ajSeqGetBegin(seq);
+    b2 = ajSeqGetBegin(seq2);
+    e1 = ajSeqGetEnd(seq);
+    e2 = ajSeqGetEnd(seq2);
     
-    ajStrAssignSubC(&se1,ajSeqChar(seq),b1-1,e1-1);
-    ajStrAssignSubC(&se2,ajSeqChar(seq2),b2-1,e2-1);
-    ajSeqReplace(seq,se1);
-    ajSeqReplace(seq2,se2);
-    
-    
-    s1 = ajStrGetPtr(ajSeqStr(seq));
-    s2 = ajStrGetPtr(ajSeqStr(seq2));
+    ajStrAssignSubC(&se1,ajSeqGetSeqC(seq),b1-1,e1-1);
+    ajStrAssignSubC(&se2,ajSeqGetSeqC(seq2),b2-1,e2-1);
+    ajSeqAssignSeqS(seq,se1);
+    ajSeqAssignSeqS(seq2,se2);
     
     
-    aa0str = ajStrNewRes(1+ajSeqLen(seq)); /* length plus trailing blank */
-    aa1str = ajStrNewRes(1+ajSeqLen(seq2));
+    s1 = ajStrGetPtr(ajSeqGetSeqS(seq));
+    s2 = ajStrGetPtr(ajSeqGetSeqS(seq2));
+    
+    
+    aa0str = ajStrNewRes(1+ajSeqGetLen(seq)); /* length plus trailing blank */
+    aa1str = ajStrNewRes(1+ajSeqGetLen(seq2));
     
     list = ajListNew();
     
     
-    for(i=0;i<ajSeqLen(seq);i++)
+    for(i=0;i<ajSeqGetLen(seq);i++)
 	ajStrAppendK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
     
-    for(i=0;i<ajSeqLen(seq2);i++)
+    for(i=0;i<ajSeqGetLen(seq2);i++)
 	ajStrAppendK(&aa1str,(char)ajSeqCvtK(cvt, *s2++));
     
-    max= ajSeqLen(seq);
-    if(ajSeqLen(seq2) > max)
-	max = ajSeqLen(seq2);
+    max= ajSeqGetLen(seq);
+    if(ajSeqGetLen(seq2) > max)
+	max = ajSeqGetLen(seq2);
     
     xmargin = ymargin = max *0.15;
     ticklen = xmargin*0.1;
@@ -208,16 +208,16 @@ int main(int argc, char **argv)
 	ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
 		       0.0-xmargin,(float)max+xmargin);
 
-	ajGraphTextMid(max*0.5,(ajSeqLen(seq2))+xmargin-onefifth,
+	ajGraphTextMid(max*0.5,(ajSeqGetLen(seq2))+xmargin-onefifth,
 		       ajGraphGetTitleC(graph));
-	ajGraphTextMid((ajSeqLen(seq))*0.5,0.0-(xmargin/2.0),
+	ajGraphTextMid((ajSeqGetLen(seq))*0.5,0.0-(xmargin/2.0),
 		       ajGraphGetXTitleC(graph));
-	ajGraphTextLine(0.0-(xmargin*0.75),(ajSeqLen(seq2))*0.5,
-			0.0-(xmargin*0.75),(ajSeqLen(seq)),
+	ajGraphTextLine(0.0-(xmargin*0.75),(ajSeqGetLen(seq2))*0.5,
+			0.0-(xmargin*0.75),(ajSeqGetLen(seq)),
 			ajGraphGetYTitleC(graph),0.5);
 
 	ajGraphSetCharSize(0.5);
-	ajGraphTextMid(max*0.5,(ajSeqLen(seq2))+xmargin-(onefifth*3),
+	ajGraphTextMid(max*0.5,(ajSeqGetLen(seq2))+xmargin-(onefifth*3),
 		       ajGraphGetSubTitleC(graph));
     }
     
@@ -226,7 +226,7 @@ int main(int argc, char **argv)
     s1= ajStrGetPtr(aa0str);
     s2 = ajStrGetPtr(aa1str);
     
-    for(j=0;j < ajSeqLen(seq2)-windowsize;j++)
+    for(j=0;j < ajSeqGetLen(seq2)-windowsize;j++)
     {
 	i =0;
 	total = 0;
@@ -243,7 +243,7 @@ int main(int argc, char **argv)
 	    startj = k-windowsize;
 	}
 
-	while(i < ajSeqLen(seq) && k < ajSeqLen(seq2))
+	while(i < ajSeqGetLen(seq) && k < ajSeqGetLen(seq2))
 	{
 	    total = total - sub[(ajint)s1[i-windowsize]]
 		[(ajint)s2[k-windowsize]];
@@ -276,7 +276,7 @@ int main(int argc, char **argv)
 				 stretch);
     }
     
-    for(i=0;i < ajSeqLen(seq)-windowsize;i++)
+    for(i=0;i < ajSeqGetLen(seq)-windowsize;i++)
     {
 	j = 0;
 	total = 0;
@@ -293,7 +293,7 @@ int main(int argc, char **argv)
 	    startj = j-windowsize;
 	}
 
-	while(k < ajSeqLen(seq) && j < ajSeqLen(seq2))
+	while(k < ajSeqGetLen(seq) && j < ajSeqGetLen(seq2))
 	{
 	    total = total - sub[(ajint)s1[k-windowsize]]
 		[(ajint)s2[j-windowsize]];
@@ -328,10 +328,10 @@ int main(int argc, char **argv)
     
     if(boxit && !stretch)
     {
-	ajGraphRect(0.0,0.0,(float)ajSeqLen(seq),(float)ajSeqLen(seq2));
+	ajGraphRect(0.0,0.0,(float)ajSeqGetLen(seq),(float)ajSeqGetLen(seq2));
 
 	i=0;
-	while(acceptableticksx[i]*numbofticks < ajSeqLen(seq))
+	while(acceptableticksx[i]*numbofticks < ajSeqGetLen(seq))
 	    i++;
 
 	if(i<=13)
@@ -341,21 +341,21 @@ int main(int argc, char **argv)
 	ticklen   = xmargin*0.1;
 	onefifth  = xmargin*0.2;
 
-	if(ajSeqLen(seq2)/ajSeqLen(seq) > 10 )
+	if(ajSeqGetLen(seq2)/ajSeqGetLen(seq) > 10 )
 	{
 	    /* alot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
 	    sprintf(ptr,"%d",b1-1);
 	    ajGraphTextMid( 0.0,0.0-(onefifth),ptr);
 
-	    ajGraphLine((float)(ajSeqLen(seq)),0.0,
-			(float)ajSeqLen(seq),0.0-ticklen);
-	    sprintf(ptr,"%d",ajSeqLen(seq)+b1-1);
-	    ajGraphTextMid((float)ajSeqLen(seq),0.0-(onefifth),ptr);
+	    ajGraphLine((float)(ajSeqGetLen(seq)),0.0,
+			(float)ajSeqGetLen(seq),0.0-ticklen);
+	    sprintf(ptr,"%d",ajSeqGetLen(seq)+b1-1);
+	    ajGraphTextMid((float)ajSeqGetLen(seq),0.0-(onefifth),ptr);
 
 	}
 	else
-	    for(k2=0.0;k2<ajSeqLen(seq);k2+=tickgap)
+	    for(k2=0.0;k2<ajSeqGetLen(seq);k2+=tickgap)
 	    {
 		ajGraphLine(k2,0.0,k2,0.0-ticklen);
 		sprintf(ptr,"%d",(ajint)k2+b1-1);
@@ -363,27 +363,27 @@ int main(int argc, char **argv)
 	    }
 
 	i = 0;
-	while(acceptableticks[i]*numbofticks < ajSeqLen(seq2))
+	while(acceptableticks[i]*numbofticks < ajSeqGetLen(seq2))
 	    i++;
 
 	tickgap   = acceptableticks[i];
 	ticklen   = ymargin*0.01;
 	onefifth  = ymargin*0.02;
 
-	if(ajSeqLen(seq)/ajSeqLen(seq2) > 10 )
+	if(ajSeqGetLen(seq)/ajSeqGetLen(seq2) > 10 )
 	{
 	    /* alot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
 	    sprintf(ptr,"%d",b2-1);
 	    ajGraphTextEnd( 0.0-(onefifth),0.0,ptr);
 
-	    ajGraphLine(0.0,(float)ajSeqLen(seq2),0.0-ticklen,
-			(float)ajSeqLen(seq2));
-	    sprintf(ptr,"%d",ajSeqLen(seq2)+b2-1);
-	    ajGraphTextEnd( 0.0-(onefifth),(float)ajSeqLen(seq2),ptr);
+	    ajGraphLine(0.0,(float)ajSeqGetLen(seq2),0.0-ticklen,
+			(float)ajSeqGetLen(seq2));
+	    sprintf(ptr,"%d",ajSeqGetLen(seq2)+b2-1);
+	    ajGraphTextEnd( 0.0-(onefifth),(float)ajSeqGetLen(seq2),ptr);
 	}
 	else
-	    for(k2=0.0;k2<ajSeqLen(seq2);k2+=tickgap)
+	    for(k2=0.0;k2<ajSeqGetLen(seq2);k2+=tickgap)
 	    {
 		ajGraphLine(0.0,k2,0.0-ticklen,k2);
 		sprintf(ptr,"%d",(ajint)k2+b2-1);
@@ -406,8 +406,8 @@ int main(int argc, char **argv)
 
 	ajGraphSetTitleC(xygraph,ajStrGetPtr(tit));
 
-	ajGraphSetXTitleC(xygraph,ajSeqName(seq));
-	ajGraphSetYTitleC(xygraph,ajSeqName(seq2));
+	ajGraphSetXTitleC(xygraph,ajSeqGetNameC(seq));
+	ajGraphSetYTitleC(xygraph,ajSeqGetNameC(seq2));
 
 	ajGraphPlpDataSetTypeC(gdata,"2D Plot Float");
 	ajGraphPlpDataSetTitle(gdata,subt);

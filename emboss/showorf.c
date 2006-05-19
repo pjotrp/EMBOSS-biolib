@@ -129,15 +129,15 @@ int main(int argc, char **argv)
     }
 
 
-    beg = ajSeqBegin(a);
-    end = ajSeqEnd(a);
+    beg = ajSeqGetBegin(a);
+    end = ajSeqGetEnd(a);
 
     substr = ajStrNew();
-    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    ajStrAssignSubC(&substr,ajSeqGetSeqC(a),beg-1,end-1);
     len = ajStrGetLen(substr);
     
     revstr = ajStrNewC(ajStrGetPtr(substr));
-    ajSeqReverseStr(&revstr);
+    ajSeqstrReverse(&revstr);
 
     /* Allocate memory for translations and positions */
     for(i=0;i<6;++i)
@@ -152,7 +152,7 @@ int main(int argc, char **argv)
     showorf_MakeRuler(len,beg,ruler,npos);
     showorf_CalcProteinPos(ppos,pseqs,len);
     showorf_showTrans(ppos,npos,pseqs,substr,len,mark,ruler,beg,
-		      outf,isrule,isp,isn,width,ajSeqName(a));
+		      outf,isrule,isp,isn,width,ajSeqGetNameC(a));
 
 
     for(i=0;i<6;++i)

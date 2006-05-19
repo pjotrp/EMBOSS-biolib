@@ -600,7 +600,7 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 
 	    if(!hit)
 		vectorstrip_write_sequence(sequence, seqout, ajIntGet(five, i),
-					   ajSeqEnd(sequence),outf);
+					   ajSeqGetEnd(sequence),outf);
 	}
 
 	for(i=0; i<ajIntLen(three); i++)
@@ -611,7 +611,7 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 		    hit=1;
 	    if(!hit)
 		vectorstrip_write_sequence(sequence, seqout,
-					   ajSeqBegin(sequence),
+					   ajSeqGetBegin(sequence),
 					   ajIntGet(three,i),outf);
 	}
 	break;
@@ -619,11 +619,11 @@ static void vectorstrip_process_hits(const AjPList fivelist,
     case 3:
 	for(i=0; i<ajIntLen(five); i++)
 	    vectorstrip_write_sequence(sequence, seqout, ajIntGet(five, i),
-				       ajSeqEnd(sequence), outf);
+				       ajSeqGetEnd(sequence), outf);
 	break;
     case 4:
 	for(j=0; j<ajIntLen(three); j++)
-	    vectorstrip_write_sequence(sequence, seqout, ajSeqBegin(sequence),
+	    vectorstrip_write_sequence(sequence, seqout, ajSeqGetBegin(sequence),
 				       ajIntGet(three, j), outf);
 	break;
 
@@ -675,10 +675,10 @@ static void vectorstrip_scan_sequence(const Vector vector, AjPSeqout seqout,
     threelist = ajListNew();
 
 
-    ajStrAssignC(&seqname,ajSeqName(sequence));
-    begin = ajSeqBegin(sequence);
-    end   = ajSeqEnd(sequence);
-    ajStrAssignSubC(&text,ajStrGetPtr(ajSeqStr(sequence)),begin-1,end-1);
+    ajStrAssignC(&seqname,ajSeqGetNameC(sequence));
+    begin = ajSeqGetBegin(sequence);
+    end   = ajSeqGetEnd(sequence);
+    ajStrAssignSubC(&text,ajStrGetPtr(ajSeqGetSeqS(sequence)),begin-1,end-1);
     ajStrFmtUpper(&text);
 
     if(ajStrGetLen(vector->fiveprime))
@@ -809,8 +809,8 @@ static void vectorstrip_write_sequence(const AjPSeq sequence, AjPSeqout seqout,
     AjPStr threetrim = NULL;
     AjPStr outs      = NULL;
 
-    seqcp = ajSeqNewS(sequence);
-    name  = ajStrNewS(ajSeqGetName(seqcp));
+    seqcp = ajSeqNewSeq(sequence);
+    name  = ajStrNewS(ajSeqGetNameS(seqcp));
     num   = ajStrNew();
 
     if(start <= end)
@@ -824,23 +824,23 @@ static void vectorstrip_write_sequence(const AjPSeq sequence, AjPSeqout seqout,
 	ajStrFromInt(&num, end);
 	ajStrAppendS(&name, num);
 
-	ajSeqAssName(seqcp, name);
+	ajSeqAssignNameS(seqcp, name);
 	ajSeqAllWrite(seqout, seqcp);
 
 	/* report the hit to outf */
 	ajFmtPrintF(outf, "\tfrom %d to %d\n", start, end);
-	ajStrAssignSubS(&outs, ajSeqStr(seqcp), start-1, end-1);
+	ajStrAssignSubS(&outs, ajSeqGetSeqS(seqcp), start-1, end-1);
 	vectorstrip_reportseq(outs, outf);
 	if(start !=1)
 	{
-	    ajStrAssignSubS(&fivetrim, ajSeqStr(seqcp), 0, start-2);
+	    ajStrAssignSubS(&fivetrim, ajSeqGetSeqS(seqcp), 0, start-2);
 	    ajFmtPrintF(outf, "\tsequence trimmed from 5' end:\n");
 	    vectorstrip_reportseq(fivetrim, outf);
 	}
 
-	if(end!=ajSeqLen(seqcp))
+	if(end!=ajSeqGetLen(seqcp))
 	{
-	    ajStrAssignSubS(&threetrim, ajSeqStr(seqcp), end, ajSeqLen(seqcp));
+	    ajStrAssignSubS(&threetrim, ajSeqGetSeqS(seqcp), end, ajSeqGetLen(seqcp));
 	    ajFmtPrintF(outf, "\tsequence trimmed from 3' end:\n");
 	    vectorstrip_reportseq(threetrim, outf);
 	}

@@ -53,17 +53,17 @@ int main(int argc, char **argv)
     seqall = ajAcdGetSeqall("sequence");
     patexp = ajAcdGetRegexp("pattern");
 
-    ajFmtPrintAppS (&tmpstr, "Pattern: %S\n", ajAcdValue("pattern"));
+    ajFmtPrintAppS (&tmpstr, "Pattern: %S\n", ajAcdGetValue("pattern"));
     ajReportSetHeader (report, tmpstr);
 
     while(ajSeqallNext(seqall, &seq))
     {
 	ipos  = 1;
-	ajStrAssignS(&str, ajSeqStr(seq));
+	ajStrAssignS(&str, ajSeqGetSeqS(seq));
 	ajStrFmtUpper(&str);
 	ajDebug("Testing '%s' len: %d %d\n",
-		ajSeqName(seq), ajSeqLen(seq), ajStrGetLen(str));
-	feat = ajFeattableNewDna(ajSeqGetName(seq));
+		ajSeqGetNameC(seq), ajSeqGetLen(seq), ajStrGetLen(str));
+	feat = ajFeattableNewDna(ajSeqGetNameS(seq));
 	while(ajStrGetLen(str) && ajRegExec(patexp, str))
 	{
 	    ioff = ajRegOffset(patexp);

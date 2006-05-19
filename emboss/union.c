@@ -50,15 +50,15 @@ int main(int argc, char **argv)
     {
 	if(first)
 	{
-	    uniseq = ajSeqNewS(seq);
+	    uniseq = ajSeqNewSeq(seq);
 	    first  = ajFalse;
 	}
 	ajSeqTrim(seq);
 
-	ajStrAppendS(&unistr, ajSeqStr(seq));
+	ajStrAppendS(&unistr, ajSeqGetSeqS(seq));
     }
 
-    ajSeqReplace(uniseq, unistr);
+    ajSeqAssignSeqS(uniseq, unistr);
     ajSeqWrite(seqout, uniseq);
     ajSeqWriteClose(seqout);
 

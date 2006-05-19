@@ -83,12 +83,12 @@ int main(int argc, char **argv)
     {
 	ajSeqTrim(seq);
 
-	len = ajSeqLen(seq);
+	len = ajSeqGetLen(seq);
 	pos = 0;
 
         if (source)
           {
-            old_feattable = ajSeqCopyFeat(seq);
+            old_feattable = ajSeqGetFeatCopy(seq);
             iter = ajListIterRead(old_feattable->Features);
 
             while(ajListIterMore(iter)) {
@@ -163,7 +163,7 @@ static void splitter_write(AjPSeqout default_seqout,
 			   ajint end, const AjPSeq seq)
 {
   /* set the description of the subsequence */
-  ajSeqAssDesc(subseq, ajSeqGetDesc(seq));
+  ajSeqAssignDescS(subseq, ajSeqGetDescS(seq));
 
   /* set the type of the subsequence */
   ajSeqType(subseq);
@@ -191,12 +191,12 @@ static void splitter_MakeSubSeqName (AjPStr * name_ptr,
   AjPStr value = ajStrNew();
 
   /* create a nice name for the subsequence */
-  ajStrAssignS(name_ptr, ajSeqGetName(seq));
+  ajStrAssignS(name_ptr, ajSeqGetNameS(seq));
   ajStrAppendC(name_ptr, "_");
-  ajStrFromInt(&value, ajSeqBegin(seq)+start);
+  ajStrFromInt(&value, ajSeqGetBegin(seq)+start);
   ajStrAppendS(name_ptr, value);
   ajStrAppendC(name_ptr, "-");
-  ajStrFromInt(&value, ajSeqBegin(seq)+end);
+  ajStrFromInt(&value, ajSeqGetBegin(seq)+end);
   ajStrAppendS(name_ptr, value);
 
   ajStrDel(&value);
@@ -228,11 +228,11 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
   subseq->Fttable = new_feattable;
   ajFeattableSetNuc(new_feattable);
 
-  ajStrAssignSubC(&str,ajSeqChar(seq),start,end);
-  ajSeqReplace(subseq,str);
+  ajStrAssignSubC(&str,ajSeqGetSeqC(seq),start,end);
+  ajSeqAssignSeqS(subseq,str);
   if (feature)
     splitter_AddSubSeqFeat(subseq->Fttable,start,end,seq);
-  ajSeqAssName(subseq, name);
+  ajSeqAssignNameS(subseq, name);
   splitter_write(seqout,subseq,start,end,seq);
   ajStrDel(&str);
 }
@@ -256,7 +256,7 @@ static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajint start,
   AjPFeattable old_feattable;
   AjIList iter;
 
-  old_feattable = ajSeqCopyFeat(oldseq);
+  old_feattable = ajSeqGetFeatCopy(oldseq);
   iter = ajListIterRead(old_feattable->Features);
 
   while(ajListIterMore(iter)) {

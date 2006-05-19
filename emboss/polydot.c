@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     for(i=0;i<ajSeqsetSize(seqset);i++)
     {
 	seq1 = ajSeqsetGetSeq(seqset, i);
-	total += (float)ajSeqLen(seq1);
+	total += (float)ajSeqGetLen(seq1);
 
     }
     
@@ -133,8 +133,8 @@ int main(int argc, char **argv)
 		seq2 = ajSeqsetGetSeq(seqset, j);
 		if(boxit)
 		    ajGraphRect(xstart,ystart,
-				xstart+(float)ajSeqLen(seq1),
-				ystart+(float)ajSeqLen(seq2));
+				xstart+(float)ajSeqGetLen(seq1),
+				ystart+(float)ajSeqGetLen(seq2));
 
 		matchlist = embWordBuildMatchTable(seq1MatchTable, seq2,
 						   ajTrue);
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 
 		if(j==0)
 		{
-		    for(k=0.0;k<ajSeqLen(seq1);k+=tickgap)
+		    for(k=0.0;k<ajSeqGetLen(seq1);k+=tickgap)
 		    {
 			ajGraphLine(xstart+k,ystart,xstart+k,
 				    ystart-ticklen);
@@ -159,14 +159,14 @@ int main(int argc, char **argv)
 			sprintf(ptr,"%d",(ajint)k);
 			ajGraphTextMid(xstart+k,ystart-(onefifth),ptr);
 		    }
-		    ajGraphTextMid(xstart+((float)ajSeqLen(seq1)/2.0),
+		    ajGraphTextMid(xstart+((float)ajSeqGetLen(seq1)/2.0),
 				   ystart-(3*onefifth),
 				   ajStrGetPtr(ajSeqsetName(seqset, i)));
 		}
 
 		if(i==0)
 		{
-		    for(k=0.0;k<ajSeqLen(seq2);k+=tickgap)
+		    for(k=0.0;k<ajSeqGetLen(seq2);k+=tickgap)
 		    {
 			ajGraphLine(xstart,ystart+k,xstart-ticklen,
 				    ystart+k);
@@ -175,16 +175,16 @@ int main(int argc, char **argv)
 			ajGraphTextEnd(xstart-(onefifth),ystart+k,ptr);
 		    }
 		    ajGraphTextLine(xstart-(3*onefifth),
-				    ystart+((float)ajSeqLen(seq2)/2.0),
-				    xstart-(3*onefifth),ystart+ajSeqLen(seq2),
+				    ystart+((float)ajSeqGetLen(seq2)/2.0),
+				    xstart-(3*onefifth),ystart+ajSeqGetLen(seq2),
 				    ajStrGetPtr(ajSeqsetName(seqset, j)),0.5);
 		}
-		ystart += (float)ajSeqLen(seq2)+(float)gap;
+		ystart += (float)ajSeqGetLen(seq2)+(float)gap;
 	    }
 	}
 	embWordFreeTable(&seq1MatchTable);
 	seq1MatchTable = NULL;
-	xstart += (float)ajSeqLen(seq1)+(float)gap;
+	xstart += (float)ajSeqGetLen(seq1)+(float)gap;
 	ystart = 0.0;
     }
     
@@ -195,8 +195,8 @@ int main(int argc, char **argv)
     {
 	seq1 = ajSeqsetGetSeq(seqset, i);
 	ajFmtPrintS(&sajb,"%3d %6d %5d %6d %s",i+1,
-		    ajSeqLen(seq1),lines[i],
-		    pts[i],ajSeqName(seq1));
+		    ajSeqGetLen(seq1),lines[i],
+		    pts[i],ajSeqGetNameC(seq1));
 
 	ajGraphTextStart(total+onefifth,total-(onefifth*(i+2)),
 			 ajStrGetPtr(sajb));

@@ -63,10 +63,10 @@ int main(int argc, char **argv)
 
     str = ajStrNew();
 
-    begin = ajSeqBegin(sequence) - 1;
-    end   = ajSeqEnd(sequence) - 1;
+    begin = ajSeqGetBegin(sequence) - 1;
+    end   = ajSeqGetEnd(sequence) - 1;
 
-    ajStrAssignSubS(&str,ajSeqStr(sequence),begin,end);
+    ajStrAssignSubS(&str,ajSeqGetSeqS(sequence),begin,end);
 
 
     ajStrFmtLower(&str);

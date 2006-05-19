@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 	sense = ajTrue;		   /* forward sense initially */
 
 	/* get the length of the sequence */
-	len = ajSeqLen(seq);
+	len = ajSeqGetLen(seq);
 
 	/*
 	** if the sequence is circular, append it to itself to triple its
@@ -137,10 +137,10 @@ int main(int argc, char **argv)
 	*/
 	if(circular)
 	{
-	    ajStrAssignS(&sseq, ajSeqStr(seq));
-	    ajStrAppendS(&sseq, ajSeqStr(seq));
-	    ajStrAppendS(&sseq, ajSeqStr(seq));
-	    ajSeqReplace(seq, sseq);
+	    ajStrAssignS(&sseq, ajSeqGetSeqS(seq));
+	    ajStrAppendS(&sseq, ajSeqGetSeqS(seq));
+	    ajStrAppendS(&sseq, ajSeqGetSeqS(seq));
+	    ajSeqAssignSeqS(seq, sseq);
 	}
 
 	/* find the ORFs */
@@ -222,8 +222,8 @@ static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
     ajint seqlen;
     const char *chrseq;
 
-    seqlen = ajSeqLen(seq);
-    chrseq = ajSeqChar(seq);
+    seqlen = ajSeqGetLen(seq);
+    chrseq = ajSeqGetSeqC(seq);
 
     /* initialise the ORF sequences */
     newstr[0] = NULL;
@@ -434,10 +434,10 @@ static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
 	{
 	    /* translate frame 1 into pep */
 	    pep = ajTrnSeqOrig(trnTable, seq, 1);
-	    if(ajSeqLen(pep) >= minsize && 
-	       ajSeqLen(pep) <= maxsize)
+	    if(ajSeqGetLen(pep) >= minsize && 
+	       ajSeqGetLen(pep) <= maxsize)
 		getorf_WriteORF(seq, len, seqlen, sense, find, orf_no,
-				0, seqlen-1, ajSeqStr(pep), seqout,
+				0, seqlen-1, ajSeqGetSeqS(pep), seqout,
 				around);
 	    ajSeqDel(&pep);
 	}
@@ -446,10 +446,10 @@ static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
 	{
 	    /* translate frame 2 into pep */
 	    pep = ajTrnSeqOrig(trnTable, seq, 2);
-	    if(ajSeqLen(pep) >= minsize &&
-	       ajSeqLen(pep) <= maxsize)
+	    if(ajSeqGetLen(pep) >= minsize &&
+	       ajSeqGetLen(pep) <= maxsize)
 		getorf_WriteORF(seq, len, seqlen, sense, find, orf_no,
-				1, seqlen-1, ajSeqStr(pep), seqout,
+				1, seqlen-1, ajSeqGetSeqS(pep), seqout,
 				around);
 	    ajSeqDel(&pep);
 	}
@@ -458,10 +458,10 @@ static void getorf_FindORFs(const AjPSeq seq, ajint len, const AjPTrn trnTable,
 	{
 	    /* translate frame 3 into pep */
 	    pep = ajTrnSeqOrig(trnTable, seq, 3);
-	    if(ajSeqLen(pep) >= minsize && 
-	       ajSeqLen(pep) >= maxsize)
+	    if(ajSeqGetLen(pep) >= minsize && 
+	       ajSeqGetLen(pep) >= maxsize)
 		getorf_WriteORF(seq, len, seqlen, sense, find, orf_no,
-				2, seqlen-1, ajSeqStr(pep), seqout,
+				2, seqlen-1, ajSeqGetSeqS(pep), seqout,
 				around);
 	    ajSeqDel(&pep);
 	}
@@ -547,7 +547,7 @@ static void getorf_WriteORF(const AjPSeq seq,
 
 	if(e > seqlen)
 	    return;
-	ajStrAssignSubS(&aroundstr, ajSeqStr(seq), s-1, e-1);
+	ajStrAssignSubS(&aroundstr, ajSeqGetSeqS(seq), s-1, e-1);
 
     }
     else if(find == AROUND_START)
@@ -560,7 +560,7 @@ static void getorf_WriteORF(const AjPSeq seq,
 
 	if(e > seqlen)
 	    return;
-	ajStrAssignSubS(&aroundstr, ajSeqStr(seq), s-1, e-1);
+	ajStrAssignSubS(&aroundstr, ajSeqGetSeqS(seq), s-1, e-1);
 
     }
     else if(find == AROUND_END_STOP)
@@ -573,20 +573,20 @@ static void getorf_WriteORF(const AjPSeq seq,
 				
 	if(e > seqlen)
 	    return;
-	ajStrAssignSubS(&aroundstr, ajSeqStr(seq), s-1, e-1);
+	ajStrAssignSubS(&aroundstr, ajSeqGetSeqS(seq), s-1, e-1);
     }
 
 
 
     /* set the name and description */
-    ajStrAssignS(&name, ajSeqGetName(seq));
+    ajStrAssignS(&name, ajSeqGetNameS(seq));
     ajStrAppendC(&name, "_");
 
     /* post-increment the ORF number for the next ORF */
     ajStrFromInt(&value,(*orf_no)++);
 	
     ajStrAppendS(&name, value);
-    ajSeqAssName(new, name);
+    ajSeqAssignNameS(new, name);
 
     /* set the description of the translation */
     ajStrAssignC(&name, "[");
@@ -649,17 +649,17 @@ static void getorf_WriteORF(const AjPSeq seq,
 	ajStrAppendC(&name, ". ");
     }
 
-    ajStrAppendS(&name, ajSeqGetDesc(seq));
-    ajSeqAssDesc(new, name);
+    ajStrAppendS(&name, ajSeqGetDescS(seq));
+    ajSeqAssignDescS(new, name);
 
 
     /* replace newstr in new */
     if(find == N_STOP2STOP || find == N_START2STOP || find == P_STOP2STOP ||
 	find == P_START2STOP)
-	ajSeqReplace(new, str);
+	ajSeqAssignSeqS(new, str);
     else
 	/* sequence to be 50 bases around the codon */
-	ajSeqReplace(new, aroundstr);
+	ajSeqAssignSeqS(new, aroundstr);
 
     ajSeqAllWrite(seqout, new);
 

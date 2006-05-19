@@ -209,7 +209,7 @@ int main(int argc, char **argv)
 	  ajFmtPrintF(outf,"ANTIGENIC of %s  from: %d  to: %d\n\n",
 		      ajSeqName(seq),begin,end);
 	  ajFmtPrintF(outf,"Length %d residues, score calc from %d to %d\n",
-		      ajSeqLen(seq),fpos+3+begin,lpos+3+begin);
+		      ajSeqGetLen(seq),fpos+3+begin,lpos+3+begin);
 	  ajFmtPrintF(outf,"Reporting all peptides over %d residues\n\n",
 		      minlen);
 	  ajFmtPrintF(outf,

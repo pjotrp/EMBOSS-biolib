@@ -163,7 +163,7 @@ int main(int argc, char **argv)
 
 	/* note the name of the sequence */
 	if(count_of_sequence_names++ < 10)
-	    ajFmtPrintF(outfile, "#\t%s\n", ajSeqName(seq));
+	    ajFmtPrintF(outfile, "#\t%s\n", ajSeqGetNameC(seq));
 	else if(count_of_sequence_names++ == 11)
 	    ajFmtPrintF(outfile, "# ... et al.\n");
 
@@ -192,8 +192,8 @@ int main(int argc, char **argv)
           
 	}
 
-	ajSeqToUpper(seq);
-	s = ajSeqChar(seq);
+	ajSeqFmtUpper(seq);
+	s = ajSeqGetSeqC(seq);
 
 	/*
 	**  Start at the first position, or at the frame, if it has been
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
 	**  if frame is specified. Stop when less than a word-length from
 	**  the end of the sequence.
 	*/
-	for(pos=frame; pos <= ajSeqLen(seq)-word; pos += increment)
+	for(pos=frame; pos <= ajSeqGetLen(seq)-word; pos += increment)
 	{
 	    if(seqisnuc)
 		result = embNmerNuc2int(s, word, pos, &otherflag);
@@ -222,7 +222,7 @@ int main(int argc, char **argv)
         if(calcfreq) 
         {
         /* Count the single bases or residues to get the observed frequences */
-            for(pos=0; pos < ajSeqLen(seq); pos++) 
+            for(pos=0; pos < ajSeqGetLen(seq); pos++) 
             {
                 if(seqisnuc)
                     result = embNmerNuc2int(s, 1, pos, &otherflag);
@@ -244,9 +244,9 @@ int main(int argc, char **argv)
 	{
 	    /* Do it again on the reverse strand */
 	    ajSeqReverseForce(seq);
-	    s = ajSeqChar(seq);
+	    s = ajSeqGetSeqC(seq);
 
-	    for(pos=frame; pos <= ajSeqLen(seq)-word; pos += increment)
+	    for(pos=frame; pos <= ajSeqGetLen(seq)-word; pos += increment)
 	    {
 		result = embNmerNuc2int(s, word, pos, &otherflag);
 
@@ -266,7 +266,7 @@ int main(int argc, char **argv)
                 ** observed frequences 
                 */
 
-                for(pos=0; pos < ajSeqLen(seq); pos++) 
+                for(pos=0; pos < ajSeqGetLen(seq); pos++) 
                 {
                     result = embNmerNuc2int(s, 1, pos, &otherflag);
                                     

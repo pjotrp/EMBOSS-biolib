@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     ajint pos;
     const char *s;
     ajlong result;
-    ajlong *bigarray;
+    ajlong *bigarray = NULL;
     ajlong *windowbuffer = NULL;	/* ring buffer for sliding window */
     ajulong no_elements;
     AjBool first_time_round = ajTrue;
@@ -103,14 +103,14 @@ int main(int argc, char **argv)
     {
 	steps = 0;
 	seqisprot = ajSeqIsProt(seq);
-	ajDebug("Reading sequence '%S'\n", ajSeqGetName(seq));
+	ajDebug("Reading sequence '%S'\n", ajSeqGetNameS(seq));
 
 	/* not interested in nucleotide sequences so ignore any that get in */
 	if(!seqisprot)
 	    continue;
 
 	/* ignore sequences shorter than the window of interest */
-	if(ajSeqLen(seq)<window)
+	if(ajSeqGetLen(seq)<window)
 	    continue;
 
 
@@ -131,8 +131,8 @@ int main(int argc, char **argv)
 	    first_time_round = ajFalse;
 	}
 
-	ajSeqToUpper(seq);
-	s = ajSeqChar(seq);
+	ajSeqFmtUpper(seq);
+	s = ajSeqGetSeqC(seq);
 
 	/*
 	** initialise the results buffer for this sequence.
@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 	}
 
 	ajDebug("ringsize:%d seqlen:%d word:%d end:%d increment:%d\n",
-		ringsize, ajSeqLen(seq), word, ajSeqLen(seq)-word, increment);
+		ringsize, ajSeqGetLen(seq), word, ajSeqGetLen(seq)-word, increment);
 	/*
 	 **  need to check to see whether or not we have the
 	 **  necessary composition?
@@ -220,7 +220,7 @@ int main(int argc, char **argv)
 	    /* now check to see if the composition is a hit. */
 	    if(steps==0)
 	    {
-		ajFmtPrintF(outfile, "\t%s\n", ajSeqName(seq));
+		ajFmtPrintF(outfile, "\t%s\n", ajSeqGetNameC(seq));
 		total++;
 		continue;
 	    }
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 	else {
 	    steps--;
 
-	    for(pos=ringsize+1; pos <= ajSeqLen(seq)-word+1; pos += increment)
+	    for(pos=ringsize+1; pos <= ajSeqGetLen(seq)-word+1; pos += increment)
 	    {
 		ajDebug("loop d pos:%d steps:%Ld\n",
 			pos, steps);
@@ -279,7 +279,7 @@ int main(int argc, char **argv)
 		    /* now check to see if the composition is a hit. */
 		    if(steps==0)
 		    {
-			ajFmtPrintF(outfile, "\t%s\n", ajSeqName(seq));
+			ajFmtPrintF(outfile, "\t%s\n", ajSeqGetNameC(seq));
 			total++;
 			break;
 		    }

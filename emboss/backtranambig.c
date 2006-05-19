@@ -55,14 +55,14 @@ int main(int argc, char **argv)
     codon = ajCodNewCode(gctablenum);
 
     substr = ajStrNew();
-    beg    = ajSeqBegin(a);
-    end    = ajSeqEnd(a);
-    ajStrAssignSubC(&substr,ajSeqChar(a),beg-1,end-1);
+    beg    = ajSeqGetBegin(a);
+    end    = ajSeqGetEnd(a);
+    ajStrAssignSubC(&substr,ajSeqGetSeqC(a),beg-1,end-1);
 
     back = ajStrNew();
     ajCodBacktranslateAmbig(&back,substr,codon);
 
-    ajSeqAssSeq (a, back);
+    ajSeqAssignSeqS (a, back);
     ajSeqSetNuc (a);
 
     ajSeqWrite(outf,a);

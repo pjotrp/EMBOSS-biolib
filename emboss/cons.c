@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 
     /* write out consensus sequence */
     seqo = ajSeqNew();
-    ajSeqAssSeq(seqo,cons);
+    ajSeqAssignSeqS(seqo,cons);
 
     if (ajSeqsetIsNuc(seqset))
       ajSeqSetNuc(seqo);
@@ -100,9 +100,9 @@ int main(int argc, char **argv)
       ajSeqSetProt(seqo);
 
     if(name == NULL)
-	ajSeqAssName(seqo,ajSeqsetGetName(seqset));
+	ajSeqAssignNameS(seqo,ajSeqsetGetName(seqset));
     else
-	ajSeqAssName(seqo,name);
+	ajSeqAssignNameS(seqo,name);
 
     ajSeqWrite(seqout,seqo);
     ajSeqWriteClose(seqout);

@@ -164,7 +164,7 @@ int main(int argc, char **argv)
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
 	ajFileSeek(enzfile,0L,0);
-	ajSeqToUpper(seq);
+	ajSeqFmtUpper(seq);
 
 	hits = embPatRestrictMatch(seq,begin,end,enzfile,enzymes,sitelen,
 				   plasmid,ambiguity,min,max,blunt,sticky,
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
 
 	if(hits)
 	{
-	    name = ajStrNewC(ajSeqName(seq));
+	    name = ajStrNewC(ajSeqGetNameC(seq));
 	    restover_printHits(seq, seqcmp, outf,l,name,hits,begin,end,
 			       ambiguity,min,max,plasmid,blunt,sticky,
 			       sitelen,limit,table,alpha,frags,nameit,
@@ -332,10 +332,10 @@ static void restover_printHits(const AjPSeq seq, const AjPStr seqcmp,
 	}
 
 	if(m->cut2 >= m->cut1)
-	    ajStrAssignSubS(&overhead, ajSeqStr( seq), m->cut1, m->cut2-1);
+	    ajStrAssignSubS(&overhead, ajSeqGetSeqS( seq), m->cut1, m->cut2-1);
 	else
 	{
-	    ajStrAssignSubS(&overhead, ajSeqStr( seq), m->cut2, m->cut1-1);
+	    ajStrAssignSubS(&overhead, ajSeqGetSeqS( seq), m->cut2, m->cut1-1);
 	    ajStrReverse(&overhead);
 	}
 
@@ -364,10 +364,10 @@ static void restover_printHits(const AjPSeq seq, const AjPStr seqcmp,
 	if(m->cut3 || m->cut4)
 	{
 	    if(m->cut4 >= m->cut3)
-		ajStrAssignSubS(&overhead, ajSeqStr( seq), m->cut3, m->cut4-1);
+		ajStrAssignSubS(&overhead, ajSeqGetSeqS( seq), m->cut3, m->cut4-1);
 	    else
 	    {
-		ajStrAssignSubS(&overhead, ajSeqStr( seq), m->cut4, m->cut3-1);
+		ajStrAssignSubS(&overhead, ajSeqGetSeqS( seq), m->cut4, m->cut3-1);
 		ajStrReverse(&overhead);
 	    }
 

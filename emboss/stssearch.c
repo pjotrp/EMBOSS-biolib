@@ -130,11 +130,11 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	ajSeqToUpper(seq);
-	ajStrAssignS(&seqstr, ajSeqStr(seq));
-	ajStrAssignS(&revstr, ajSeqStr(seq));
-	ajSeqReverseStr(&revstr);
-	ajDebug("Testing: %s\n", ajSeqName(seq));
+	ajSeqFmtUpper(seq);
+	ajStrAssignS(&seqstr, ajSeqGetSeqS(seq));
+	ajStrAssignS(&revstr, ajSeqGetSeqS(seq));
+	ajSeqstrReverse(&revstr);
+	ajDebug("Testing: %s\n", ajSeqGetNameC(seq));
 	ntests = 0;
 	ajListMap(primList, stssearch_primTest, NULL);
     }
@@ -189,9 +189,9 @@ static void stssearch_primTest(void **x,void *cl)
     {
 	ioff = ajRegOffset(primdata->Prima);
 	ajDebug("%s: %S PrimerA matched at %d\n",
-		ajSeqName(seq), primdata->Name, ioff);
+		ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajFmtPrintF(out, "%s: %S PrimerA matched at %d\n",
-		    ajSeqName(seq), primdata->Name, ioff);
+		    ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajRegTrace(primdata->Prima);
     }
 
@@ -200,9 +200,9 @@ static void stssearch_primTest(void **x,void *cl)
     {
 	ioff = ajRegOffset(primdata->Primb);
 	ajDebug("%s: %S PrimerB matched at %d\n",
-		ajSeqName(seq), primdata->Name, ioff);
+		ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajFmtPrintF(out, "%s: %S PrimerB matched at %d\n",
-		    ajSeqName(seq), primdata->Name, ioff);
+		    ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajRegTrace(primdata->Primb);
     }
 
@@ -211,9 +211,9 @@ static void stssearch_primTest(void **x,void *cl)
     {
 	ioff = ajStrGetLen(seqstr) - ajRegOffset(primdata->Prima);
 	ajDebug("%s: (rev) %S PrimerA matched at %d\n",
-		ajSeqName(seq), primdata->Name, ioff);
+		ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajFmtPrintF(out, "%s: (rev) %S PrimerA matched at %d\n",
-		    ajSeqName(seq), primdata->Name, ioff);
+		    ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajRegTrace(primdata->Prima);
     }
 
@@ -222,9 +222,9 @@ static void stssearch_primTest(void **x,void *cl)
     {
 	ioff = ajStrGetLen(seqstr) - ajRegOffset(primdata->Primb);
 	ajDebug("%s: (rev) %S PrimerB matched at %d\n",
-		ajSeqName(seq), primdata->Name, ioff);
+		ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajFmtPrintF(out, "%s: (rev) %S PrimerB matched at %d\n",
-		    ajSeqName(seq), primdata->Name, ioff);
+		    ajSeqGetNameC(seq), primdata->Name, ioff);
 	ajRegTrace(primdata->Primb);
     }
 

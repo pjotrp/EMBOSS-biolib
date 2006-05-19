@@ -67,35 +67,35 @@ int main(int argc, char **argv)
     {
 	ajSeqTrim(seq);
 
-	len = ajSeqLen(seq);
+	len = ajSeqGetLen(seq);
 	pos = 0;
 
 	if(!addover)
 	{
 	    while(pos+size <= len-1)
 	    {
-		ajStrAssignSubC(&str,ajSeqChar(seq),pos,pos+size-1);
-		ajSeqReplace(subseq, str);
+		ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,pos+size-1);
+		ajSeqAssignSeqS(subseq, str);
 		splitter_write(seqout,subseq,pos,pos+size-1,seq);
 		pos += size-overlap;
 	    }
 
-	    ajStrAssignSubC(&str,ajSeqChar(seq),pos,len-1);
-	    ajSeqReplace(subseq, str);
+	    ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,len-1);
+	    ajSeqAssignSeqS(subseq, str);
 	    splitter_write(seqout,subseq,pos,len-1,seq);
 	}
 	else
 	{
 	    while(pos+size+overlap < len-1)
 	    {
-		ajStrAssignSubC(&str,ajSeqChar(seq),pos,pos+size+overlap-1);
-		ajSeqReplace(subseq,str);
+		ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,pos+size+overlap-1);
+		ajSeqAssignSeqS(subseq,str);
 		splitter_write(seqout,subseq,pos,pos+size+overlap-1,seq);
 		pos += size;
 	    }
 
-	    ajStrAssignSubC(&str,ajSeqChar(seq),pos,len-1);
-	    ajSeqReplace(subseq, str);
+	    ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,len-1);
+	    ajSeqAssignSeqS(subseq, str);
 	    splitter_write(seqout,subseq,pos,len-1,seq);
 	}
 
@@ -140,17 +140,17 @@ static void splitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
 
 
     /* create a name for the subsequence */
-    ajStrAssignS(&name, ajSeqGetName(seq));
+    ajStrAssignS(&name, ajSeqGetNameS(seq));
     ajStrAppendC(&name, "_");
-    ajStrFromInt(&value, ajSeqBegin(seq)+start);
+    ajStrFromInt(&value, ajSeqGetBegin(seq)+start);
     ajStrAppendS(&name, value);
     ajStrAppendC(&name, "-");
-    ajStrFromInt(&value, ajSeqBegin(seq)+end);
+    ajStrFromInt(&value, ajSeqGetBegin(seq)+end);
     ajStrAppendS(&name, value);
-    ajSeqAssName(subseq, name);
+    ajSeqAssignNameS(subseq, name);
 
     /* set the description of the subsequence */
-    ajSeqAssDesc(subseq, ajSeqGetDesc(seq));
+    ajSeqAssignDescS(subseq, ajSeqGetDescS(seq));
 
     /* set the type of the subsequence */
     ajSeqType(subseq);

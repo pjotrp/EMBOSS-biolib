@@ -372,10 +372,10 @@ int main(int argc, char **argv)
     trshld = ajAcdGetFloat("threshold");
     outf   = ajAcdGetOutfile("outfile");
     mfptr = ajAcdGetDatafile("aadata");
-    sorder = ajAcdGetSelectI("order", 1);
+    sorder = ajAcdGetSelectSingle("order");
     graph  = ajAcdGetGraphxy("graph");
-    begin  = ajSeqBegin(seq);
-    end    = ajSeqEnd(seq);
+    begin  = ajSeqGetBegin(seq);
+    end    = ajSeqGetEnd(seq);
     map    = ajStrNew();
     str    = ajStrNew();
     substr = ajStrNew();
@@ -386,7 +386,7 @@ int main(int argc, char **argv)
     
     AJCNEW0(aac, EMBIEPSIZE);
     
-    ajStrAssignSubC(&str, ajSeqChar(seq), (begin - 1), (end - 1));
+    ajStrAssignSubC(&str, ajSeqGetSeqC(seq), (begin - 1), (end - 1));
     ajStrFmtUpper(&str);
     seqlen = ajStrGetLen(str);
     itrbeg = ajStrIterNew(str);
@@ -550,19 +550,19 @@ int main(int argc, char **argv)
     if(ajListLength(reslst) == 0)
 	ajFmtPrintF(outf, "    No PEST motif was identified in %s from "
 		    "%d to %d.\n\n",
-		    ajSeqName(seq), begin, end);
+		    ajSeqGetNameC(seq), begin, end);
 
     
     if(ajListLength(reslst) == 1)
 	ajFmtPrintF(outf, "     1 PEST motif was identified in %s from "
 		    "%d to %d.\n\n",
-		    ajSeqName(seq), begin, end);
+		    ajSeqGetNameC(seq), begin, end);
 
     
     if(ajListLength(reslst) > 1)
     {
 	ajFmtPrintF(outf, "%6d PEST motifs were identified in %s\n",
-		    ajListLength(reslst), ajSeqName(seq));
+		    ajListLength(reslst), ajSeqGetNameC(seq));
 	ajFmtPrintF(outf, "       from positions %d to %d and sorted by "
 		    "%S.\n\n", begin, end, sorder);
     }
@@ -688,7 +688,7 @@ int main(int argc, char **argv)
     ajGraphxySetOverLap(graph, ajFalse);
     ajGraphPlpDataSetTypeC(plot, "2D Plot");
     ajGraphPlpDataSetTitleC(plot, "PEST-find");
-    ajFmtPrintS(&map, "Sequence %s from %d to %d", ajSeqName(seq),
+    ajFmtPrintS(&map, "Sequence %s from %d to %d", ajSeqGetNameC(seq),
 		begin, end);
     ajGraphPlpDataSetXTitle(plot, map);
     ajGraphPlpDataSetYTitleC(plot, "PEST score");

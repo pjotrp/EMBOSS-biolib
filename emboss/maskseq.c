@@ -50,12 +50,12 @@ int main(int argc, char **argv)
     maskchar = ajAcdGetString("maskchar");
     dolower  = ajAcdGetToggle("tolower");
 
-    beg = ajSeqBegin(seq)-1;
-    end = ajSeqEnd(seq)-1;
+    beg = ajSeqGetBegin(seq)-1;
+    end = ajSeqGetEnd(seq)-1;
 
 
     /* get the copy of the sequence and the regions */
-    ajStrAssignSubS(&str, ajSeqStr(seq), beg, end);
+    ajStrAssignSubS(&str, ajSeqGetSeqS(seq), beg, end);
     ajRangeBegin(regions, beg+1);
 
     /*
@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     else
         ajRangeStrMask(regions, maskchar, &str);
     
-    ajSeqReplace(seq, str);
+    ajSeqAssignSeqS(seq, str);
     ajSeqWrite(seqout, seq);
     ajSeqWriteClose(seqout);
 

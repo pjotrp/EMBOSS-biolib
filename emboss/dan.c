@@ -146,7 +146,7 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	npoints = 0;
-	strand  = ajSeqStrCopy(seq);
+	strand  = ajSeqGetSeqCopyS(seq);
 	len     = ajStrGetLen(strand);
 	begin   = ajSeqallBegin(seqall);
 	end     = ajSeqallEnd(seqall);
@@ -156,7 +156,7 @@ int main(int argc, char **argv)
 	if(!doplot)
 	    if(outf)
 		ajFmtPrintF(outf,"DAN of: %s   from: %d  to: %d\n\n",
-			    ajSeqName(seq), begin, end);
+			    ajSeqGetNameC(seq), begin, end);
 
 	ajStrFmtUpper(&strand);
 
@@ -397,8 +397,8 @@ static void dan_reportgc(AjPReport report,
     ajint begin;
     ajint end;
 
-    begin = ajSeqBegin(seq);
-    end   = ajSeqEnd(seq);
+    begin = ajSeqGetBegin(seq);
+    end   = ajSeqGetEnd(seq);
 
     --begin;
     --end;
@@ -417,7 +417,7 @@ static void dan_reportgc(AjPReport report,
     {
 	ibegin = i;
 	iend = i + window -1;
-	ajStrAssignSubS(&substr, ajSeqStr(seq), ibegin, iend);
+	ajStrAssignSubS(&substr, ajSeqGetSeqS(seq), ibegin, iend);
 
 	xa[*np]  = (float)(i+1);
 	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
@@ -542,7 +542,7 @@ static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
     ajGraphxySetXLabel(graphs,ajTrue);
     ajGraphxySetYLabel(graphs,ajTrue);
 
-    ajGraphSetTitleC(graphs,ajSeqName(seq));
+    ajGraphSetTitleC(graphs,ajSeqGetNameC(seq));
     ajGraphSetXTitleC(graphs,"Base number");
     ajGraphSetYTitleC(graphs,"Melt temp (C)");
 

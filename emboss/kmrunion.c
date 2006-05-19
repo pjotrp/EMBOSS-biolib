@@ -88,7 +88,7 @@ int main(int argc, char **argv)
       ajStrAssignC(&type_str, "source");
 
       if (first) {
-	uniseq = ajSeqNewS(seq);
+	uniseq = ajSeqNewSeq(seq);
 
         if (feature) {
           new_feattable = ajFeattableNewSeq(seq);
@@ -109,14 +109,14 @@ int main(int argc, char **argv)
       }
 
       if (feature) {
-        old_feattable = ajSeqCopyFeat(seq);
+        old_feattable = ajSeqGetFeatCopy(seq);
         source_feature = NULL;
 
         if (source) {
           source_feature = ajFeatNew(new_feattable, source_str, type_str,
                                      ajStrGetLen(unistr) -
                                      overlap_base_count + 1,
-                                     ajStrGetLen(unistr) + ajSeqLen (seq) -
+                                     ajStrGetLen(unistr) + ajSeqGetLen(seq) -
                                      overlap_base_count,
                                      score, strand, frame);
           ajFeatTagAddCC (source_feature, "origid", ajStrGetPtr(seq->Name));
@@ -129,11 +129,11 @@ int main(int argc, char **argv)
                              offset - overlap_base_count, source_feature);
         }
 
-        offset += ajSeqLen (seq) - overlap_base_count;
+        offset += ajSeqGetLen(seq) - overlap_base_count;
       }
 
-      ajStrAppendSubS(&unistr, ajSeqStr(seq), overlap_base_count,
-                  ajSeqLen (seq) - 1);
+      ajStrAppendSubS(&unistr, ajSeqGetSeqS(seq), overlap_base_count,
+                  ajSeqGetLen(seq) - 1);
 
       if (!first) {
         ajSeqDel (&prev_seq);
@@ -141,13 +141,13 @@ int main(int argc, char **argv)
 
       first = ajFalse;
 
-      prev_seq = ajSeqNewS(seq);
+      prev_seq = ajSeqNewSeq(seq);
 
       ajStrDel(&source_str);
       ajStrDel(&type_str);
     }
 
-    ajSeqReplace (uniseq, unistr);
+    ajSeqAssignSeqS(uniseq, unistr);
 /*
     if (feature)
 	seqout->Features = AJTRUE;
@@ -178,10 +178,10 @@ int main(int argc, char **argv)
 static ajulong union_GetOverlap (const AjPSeq first_seq,
 				 const AjPSeq second_seq)
 {
-  const AjPStr first_seq_str = ajSeqStr(first_seq);
-  const AjPStr second_seq_str = ajSeqStr(second_seq);
+  const AjPStr first_seq_str = ajSeqGetSeqS(first_seq);
+  const AjPStr second_seq_str = ajSeqGetSeqS(second_seq);
 
-  int i = ajSeqLen(first_seq);
+  int i = ajSeqGetLen(first_seq);
 
   const char * first_str = ajStrGetPtr(first_seq_str);
   const char * second_str = ajStrGetPtr(second_seq_str);

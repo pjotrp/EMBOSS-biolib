@@ -79,10 +79,10 @@ int main(int argc, char **argv)
 	while(ajSeqallNext(seqall, &seq))
 	{
 	    ajSeqAllWrite(seqout,seq);
-	    len = ajSeqLen(seq);
-	    name = ajSeqName(seq);
+	    len = ajSeqGetLen(seq);
+	    name = ajSeqGetNameC(seq);
 
-	    charseq = ajSeqChar(seq);
+	    charseq = ajSeqGetSeqC(seq);
 	    if(len >= lwin)
 	    {
 		Num_seq++;
@@ -99,9 +99,9 @@ int main(int argc, char **argv)
 	Num_seq = 0;
 	while((ajSeqallNext(seqall, &seq) && Num_seq < 1))
 	{
-	    len = ajSeqLen(seq);
-	    name = ajSeqName(seq);
-	    charseq = ajSeqChar(seq);
+	    len = ajSeqGetLen(seq);
+	    name = ajSeqGetNameC(seq);
+	    charseq = ajSeqGetSeqC(seq);
 	    Num_seq ++;
 	    embComComplexity(charseq,name,len,jmin,jmax,lwin,
 			     step,sim,freq,omnia,

@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     if(separate)
     {
 	strlist = ajListstrNew();
-	ajRangeStrExtractList(regions, ajSeqStr(seq), strlist);
+	ajRangeStrExtractList(regions, ajSeqGetSeqS(seq), strlist);
 	nr = ajRangeNumber(regions);
 	for(i=0; i<nr; i++)
 	{
@@ -75,20 +75,20 @@ int main(int argc, char **argv)
 	    newseq = ajSeqNew();
 
 	    /* create a name for the new sequence */
-	    ajStrAssignS(&name, ajSeqGetName(seq));
+	    ajStrAssignS(&name, ajSeqGetNameS(seq));
 	    ajStrAppendC(&name, "_");
 	    ajStrFromInt(&value, st);
 	    ajStrAppendS(&name, value);
 	    ajStrAppendC(&name, "_");
 	    ajStrFromInt(&value, en);
 	    ajStrAppendS(&name, value);
-	    ajSeqAssName(newseq, name);
+	    ajSeqAssignNameS(newseq, name);
 
 	    /* set the sequence description */
-	    ajSeqAssDesc(newseq, ajSeqGetDesc(seq));
+	    ajSeqAssignDescS(newseq, ajSeqGetDescS(seq));
 
 	    /* set the extracted sequence */
-	    ajSeqReplace(newseq, str);
+	    ajSeqAssignSeqS(newseq, str);
 
 	    /* set the type */
 	    if(ajSeqIsNuc(seq))
@@ -114,8 +114,8 @@ int main(int argc, char **argv)
 	**  concatenate all regions from the sequence into the same
 	**  sequence
 	*/
-	ajRangeStrExtract(regions, ajSeqStr(seq), &newstr);
-	ajSeqReplace(seq, newstr);
+	ajRangeStrExtract(regions, ajSeqGetSeqS(seq), &newstr);
+	ajSeqAssignSeqS(seq, newstr);
 	ajStrSetClear(&newstr);
 	ajSeqAllWrite(seqout, seq);
     }

@@ -146,8 +146,8 @@ int main(int argc, char **argv)
 
     /* Get parameters */
     inseq         = ajAcdGetSeq("sequence");
-    seq_begin     = ajSeqBegin(inseq);
-    seq_end       = ajSeqEnd(inseq);
+    seq_begin     = ajSeqGetBegin(inseq);
+    seq_end       = ajSeqGetEnd(inseq);
     seq_start     = seq_begin - 1;
     outfile       = ajAcdGetOutfile("outfile");
     hwindow       = ajAcdGetInt("hwindow");
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 		table = ajListIterNext(listIter);
 		for(j = seq_start; j < seq_end; j++)
 		{
-		    ajStrAssignSubS(&key, ajSeqStr(inseq), j, j);
+		    ajStrAssignSubS(&key, ajSeqGetSeqS(inseq), j, j);
 		    value = ajTableGet(table, key);
 		    if(value != NULL)
 		    {
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
 	for(i=0; i<9; i++)
 	{
 	    ajFmtPrintS(&tmpa, "%s residues in %s from position %d to %d",
-			propertyTitles[i], ajSeqName(inseq),
+			propertyTitles[i], ajSeqGetNameC(inseq),
 			seq_begin, seq_end);
 	    pepinfo_printIntResults(outfile, inseq, iv[i], ajStrGetPtr(tmpa));
 	}
@@ -250,7 +250,7 @@ int main(int argc, char **argv)
 	hist->displaytype=HIST_SEPARATE;
 
 	ajFmtPrintS(&tmpa, "Properties of residues in %s from position "
-		    "%d to %d", ajSeqName(inseq),seq_begin, seq_end);
+		    "%d to %d", ajSeqGetNameC(inseq),seq_begin, seq_end);
 	ajHistSetTitleC(hist, ajStrGetPtr(tmpa));
 
 	ajHistSetXAxisC(hist, "Residue Number");
@@ -259,7 +259,7 @@ int main(int argc, char **argv)
 	for(i=0; i<9; i++)
 	{
 	    ajFmtPrintS(&tmpa,  "%s residues in %s from position %d to %d",
-			propertyTitles[i], ajSeqName(inseq), seq_begin,
+			propertyTitles[i], ajSeqGetNameC(inseq), seq_begin,
 			seq_end);
 	    ajFmtPrintS(&tmpb,  "%s residues", propertyTitles[i]);
 	    pepinfo_plotHistInt2(hist, inseq, iv[i], i,
@@ -325,7 +325,7 @@ int main(int argc, char **argv)
 		total = 0.00;
 		for(k=0; k < hwindow; k++)
 		{
-		    ajStrAssignSubS(&key, ajSeqStr(inseq), (j+k), (j+k));
+		    ajStrAssignSubS(&key, ajSeqGetSeqS(inseq), (j+k), (j+k));
 		    value = ajTableGet(table, key);
 		    if(value == NULL)
 		    {
@@ -364,7 +364,7 @@ int main(int argc, char **argv)
 	{
 	    ajFmtPrintS(&tmpa,
 			"Hydropathy plot of residues %d to %d of sequence "
-			"%s using %s",seq_begin, seq_end, ajSeqName(inseq),
+			"%s using %s",seq_begin, seq_end, ajSeqGetNameC(inseq),
 			hydroTitles[i]);
 	    pepinfo_plotGraph2Float(graphs, inseq, pf[i], ajStrGetPtr(tmpa),
 				    "Residue Number", "Hydropathy value",
@@ -426,7 +426,7 @@ static void pepinfo_printIntResults(AjPFile outfile, const AjPSeq seq,
     ajFmtPrintF(outfile, "Position  Residue\t\t\tResult\n");
     for(i = seq_start; i<seq_end; i++)
     {
-       ajStrAssignSubS(&aa, ajSeqStr(seq), i, i);
+       ajStrAssignSubS(&aa, ajSeqGetSeqS(seq), i, i);
        ajFmtPrintF(outfile,  "   %5d%8s%32d\n", (i+1),
 			ajStrGetPtr(aa), *results++);
     }
@@ -465,7 +465,7 @@ static void pepinfo_printFloatResults(AjPFile outfile, const AjPSeq seq,
     ajFmtPrintF(outfile, "Position  Residue\t\t\tResult\n");
     for(i = seq_start; i<seq_end; i++)
     {
-       ajStrAssignSubS(&aa, ajSeqStr(seq), i, i);
+       ajStrAssignSubS(&aa, ajSeqGetSeqS(seq), i, i);
        ajFmtPrintF(outfile,  "%5d%8s%32.3f\n", (i+1),
 			ajStrGetPtr(aa), *results++);
     }

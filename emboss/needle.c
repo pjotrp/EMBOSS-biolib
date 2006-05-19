@@ -99,13 +99,13 @@ int main(int argc, char **argv)
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
 
-    begina = ajSeqBegin(a)+ajSeqOffset(a);
-    lena = ajSeqLen(a);
+    begina = ajSeqGetBegin(a)+ajSeqGetOffset(a);
+    lena = ajSeqGetLen(a);
 
     while(ajSeqallNext(seqall,&b))
     {
 	ajSeqTrim(b);
-	lenb = ajSeqLen(b);
+	lenb = ajSeqGetLen(b);
 	len = lena*lenb;
 
 	if(len < 0)
@@ -122,10 +122,10 @@ int main(int argc, char **argv)
 	    maxarr=len;
 	}
 
-	beginb=ajSeqBegin(b)+ajSeqOffset(b);
+	beginb=ajSeqGetBegin(b)+ajSeqGetOffset(b);
 
-	p = ajSeqChar(a);
-	q = ajSeqChar(b);
+	p = ajSeqGetSeqC(a);
+	q = ajSeqGetSeqC(b);
 
 	ajStrAssignC(&m,"");
 	ajStrAssignC(&n,"");
@@ -145,7 +145,7 @@ int main(int argc, char **argv)
 			     start1, start2,
 			     gapopen, gapextend,
 			     score, matrix,
-			     ajSeqOffset(a), ajSeqOffset(b));
+			     ajSeqGetOffset(a), ajSeqGetOffset(b));
 
 	if(!dobrief)
 	{

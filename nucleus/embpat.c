@@ -3667,7 +3667,7 @@ ajint embPatRestrictMatch(const AjPSeq seq, ajint begin, ajint end,
     len = plen = ajStrGetLen(substr);
     ajStrAssignSubC(&revstr,ajStrGetPtr(strand),begin-1,end-1);
     ajStrFmtUpper(&revstr);
-    ajSeqReverseStr(&revstr);
+    ajSeqstrReverse(&revstr);
 
     ajStrAssignS(&binstr,substr);
     ajStrAssignS(&binrev,revstr);

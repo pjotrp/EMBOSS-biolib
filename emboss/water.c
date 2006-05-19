@@ -106,13 +106,13 @@ int main(int argc, char **argv)
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
     
-    begina=ajSeqBegin(a)+ajSeqOffset(a);
+    begina=ajSeqGetBegin(a)+ajSeqGetOffset(a);
     
     while(ajSeqallNext(seqall,&b))
     {
-	lena = ajSeqLen(a);
+	lena = ajSeqGetLen(a);
 	ajSeqTrim(b);
-	lenb = ajSeqLen(b);
+	lenb = ajSeqGetLen(b);
 
 	len = lena*lenb;
 
@@ -130,10 +130,10 @@ int main(int argc, char **argv)
 	    maxarr=len;
 	}
 
-	beginb=ajSeqBegin(b)+ajSeqOffset(b);
+	beginb=ajSeqGetBegin(b)+ajSeqGetOffset(b);
 
-	p = ajSeqChar(a);
-	q = ajSeqChar(b);
+	p = ajSeqGetSeqC(a);
+	q = ajSeqGetSeqC(b);
 
 	ajStrAssignC(&m,"");
 	ajStrAssignC(&n,"");

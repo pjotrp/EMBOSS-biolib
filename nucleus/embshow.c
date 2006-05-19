@@ -1347,7 +1347,7 @@ static void showFillSeq(const EmbPShow thys,
 	showMargin(thys, lines);
 
     /* get the bit of the sequence to display */
-    ajStrAppendSubS(&line, ajSeqStr(thys->seq), pos, pos+thys->width-1);
+    ajStrAppendSubS(&line, ajSeqGetSeqS(thys->seq), pos, pos+thys->width-1);
 
     /* change to three-letter code */
     if(!thys->nucleic && info->threeletter)
@@ -1404,12 +1404,12 @@ static void showFillSeq(const EmbPShow thys,
 	** if the sequence has ended we might have to fill out the end
 	** with blanks
 	*/
-	if(pos+thys->width > ajSeqLen(thys->seq))
+	if(pos+thys->width > ajSeqGetLen(thys->seq))
 	{
-	    showPad(lines, thys->width - ajSeqLen(thys->seq) + pos);
+	    showPad(lines, thys->width - ajSeqGetLen(thys->seq) + pos);
 	    ajListstrPushApp(lines,
 			     ajFmtStr(" %d",
-				      ajSeqLen(thys->seq)+thys->offset-1));
+				      ajSeqGetLen(thys->seq)+thys->offset-1));
 	}
 	else
 	    ajListstrPushApp(lines,
@@ -1605,10 +1605,10 @@ static void showFillComp(const EmbPShow thys,
 
 
     /* get the sequence at this position */
-    ajStrAppendSubS(&line, ajSeqStr(thys->seq), pos, pos+thys->width-1);
+    ajStrAppendSubS(&line, ajSeqGetSeqS(thys->seq), pos, pos+thys->width-1);
 
     /* get the complement */
-    ajSeqCompOnlyStr(&line);
+    ajSeqstrComplementOnly(&line);
     ajListstrPushApp(lines, line);
 
     /* optional number at right */
@@ -1618,12 +1618,12 @@ static void showFillComp(const EmbPShow thys,
 	** if the sequence has ended we might have to fill
 	** out the end with blanks
 	*/
-	if(pos+thys->width > ajSeqLen(thys->seq))
+	if(pos+thys->width > ajSeqGetLen(thys->seq))
 	{
-	    showPad(lines, thys->width - ajSeqLen(thys->seq) + pos);
+	    showPad(lines, thys->width - ajSeqGetLen(thys->seq) + pos);
 	    ajListstrPushApp(lines,
 			     ajFmtStr(" %d",
-				      ajSeqLen(thys->seq)+thys->offset-1));
+				      ajSeqGetLen(thys->seq)+thys->offset-1));
 	}
 	else
 	    ajListstrPushApp(lines, ajFmtStr(" %d",
@@ -1700,13 +1700,13 @@ static void showFillTran(const EmbPShow thys,
 	    if(info->threeletter)
 	    {
 		sajb = embPropProt1to3(tran,framepad);
-		ajSeqReplace(tran, sajb);
+		ajSeqAssignSeqS(tran, sajb);
 	    }
 	    else
 	    {
 		/* pad with 2 spaces after every residue */
 		sajb = embPropProtGaps(tran,framepad);
-		ajSeqReplace(tran,sajb);
+		ajSeqAssignSeqS(tran,sajb);
 	    }
 	    ajStrDel(&sajb);
 
@@ -1747,18 +1747,18 @@ static void showFillTran(const EmbPShow thys,
 	    last = -1;
 
 	    /*
-	       for(i=0; i<ajSeqLen(tran); i++)
-	       if(ajStrGetPtr(ajSeqStr(tran))[i] == '*')
+	       for(i=0; i<ajSeqGetLen(tran); i++)
+	       if(ajStrGetPtr(ajSeqGetSeqS(tran))[i] == '*')
 	       {
 		   if(i-last < info->orfminsize+1)
 		   {
 		       if(info->lcinterorf)
 			   for(j=last+1; j<i; j++)
-			       ajStrGetPtr(ajSeqStr(tran))[j] =
-			       tolower((ajint) ajStrGetPtr(ajSeqStr(tran))[j]);
+			       ajStrGetPtr(ajSeqGetSeqS(tran))[j] =
+			       tolower((ajint) ajStrGetPtr(ajSeqGetSeqS(tran))[j]);
 		       else
 			   for(j=last+1; j<i; j++)
-			       ajStrGetPtr(ajSeqStr(tran))[j] = '-';
+			       ajStrGetPtr(ajSeqGetSeqS(tran))[j] = '-';
 		   }
 		   last = i;
 	       }
@@ -1767,7 +1767,7 @@ static void showFillTran(const EmbPShow thys,
 	    /* Thomas version */
 	    if(frame < 4)
 	    {
-		transeq = ajSeqStrCopy(tran);
+		transeq = ajSeqGetSeqCopyS(tran);
 		for(i=0; i<ajStrGetLen(transeq); i++)
 		    if(ajStrGetCharPos(transeq,i) == '*')
 		    {
@@ -1795,12 +1795,12 @@ static void showFillTran(const EmbPShow thys,
 		    else
 			ajStrPasteCountK(&transeq,j,'-',i-j);
 		}
-		ajSeqReplace(tran, transeq);
+		ajSeqAssignSeqS(tran, transeq);
 		ajStrDel(&transeq);
 	    }
 	    else /* frame 4,5,6 */
 	    {
-		transeq = ajSeqStrCopy(tran);
+		transeq = ajSeqGetSeqCopyS(tran);
 		for(i=0; i<ajStrGetLen(transeq); i++)
 		    if(ajStrGetCharPos(transeq,i) == '*')
 		    {
@@ -1817,7 +1817,7 @@ static void showFillTran(const EmbPShow thys,
 		    } 
 
 		/* put the first ORF in lower case or convert it to -'s */
-		if(i == ajSeqLen(tran) && !(info->firstorf) 
+		if(i == ajSeqGetLen(tran) && !(info->firstorf) 
 		   && i-last < info->orfminsize+1)
 		{
 		    j = last+1;
@@ -1826,7 +1826,7 @@ static void showFillTran(const EmbPShow thys,
 		    else
 			ajStrPasteCountK(&transeq,j,'-',i-j);
 		}
-		ajSeqReplace(tran, transeq);
+		ajSeqAssignSeqS(tran, transeq);
 		ajStrDel(&transeq);
 	    }
 	    
@@ -1834,14 +1834,14 @@ static void showFillTran(const EmbPShow thys,
 	    if(info->threeletter)
 	    {
 		sajb = embPropProt1to3(tran,framepad);
-		ajSeqReplace(tran,sajb );
+		ajSeqAssignSeqS(tran,sajb );
 	    }
 	    else
 	    {
 		sajb = embPropProtGaps(tran,framepad);
 
 		/* pad with 2 spaces after every residue */
-		ajSeqReplace(tran,sajb );
+		ajSeqAssignSeqS(tran,sajb );
 	    }
 	    ajStrDel(&sajb);
 	}
@@ -1852,7 +1852,8 @@ static void showFillTran(const EmbPShow thys,
 
 
     /* get the sequence at this position */
-    ajStrAppendSubS(&line, ajSeqStr(info->transeq), pos, pos+thys->width-1);
+    ajStrAppendSubS(&line, ajSeqGetSeqS(info->transeq),
+		    pos, pos+thys->width-1);
 
     /* get the number of the starting and ending amino-acid on this line */
     startpos = info->tranpos;

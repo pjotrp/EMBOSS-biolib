@@ -74,7 +74,7 @@ static AjPInt2d matrix=NULL;
 
 
 
-static void einverted_report(ajint max, ajint imax, AjPSeq seq);
+static void einverted_report(ajint max, ajint imax, const AjPSeq seq);
 
 
 
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &sequence))
     {
-    length = ajSeqLen(sequence);
+    length = ajSeqGetLen(sequence);
     ajSeqNum(sequence, cvt, &nseq);
     sq = ajStrGetPtr(nseq);
 
@@ -330,11 +330,11 @@ int main(int argc, char **argv)
 **
 ** @param [r] max [ajint] Undocumented
 ** @param [r] imax [ajint] Undocumented
-** @param [r] seq [AjPSeq] Sequence
+** @param [r] seq [const AjPSeq] Sequence
 ** @@
 ******************************************************************************/
 
-static void einverted_report(ajint max, ajint imax, AjPSeq seq)
+static void einverted_report(ajint max, ajint imax, const AjPSeq seq)
 {
     ajint *t1;
     ajint *ip;
@@ -402,7 +402,7 @@ static void einverted_report(ajint max, ajint imax, AjPSeq seq)
 
     /* report reconstruction */
     ajFmtPrintF(outfile, "\n%S: Score %d: %d/%d (%3d%%) matches, %d gaps\n",
-		ajSeqGetName(seq),
+		ajSeqGetNameS(seq),
 		saveMax, nmatch, (nmatch+nmis),
 		(100*nmatch)/(nmatch+nmis), ngap);
 

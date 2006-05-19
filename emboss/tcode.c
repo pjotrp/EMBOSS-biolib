@@ -159,8 +159,8 @@ int main(int argc, char **argv)
 	    ftable = ajFeattableNewSeq(seq);
 	
 
-	ajSeqToUpper(seq);
-	seqstr = ajSeqStr(seq);
+	ajSeqFmtUpper(seq);
+	seqstr = ajSeqGetSeqS(seq);
 	len    = ajStrGetLen(seqstr);
 
 
@@ -176,8 +176,8 @@ int main(int argc, char **argv)
 	{
 	    testcode = tcode_slide(seqstr,window,table1,pos);
 
-	    ajIntPut(&from,npoints,pos+1+ajSeqOffset(seq));
-	    ajIntPut(&to,npoints,pos+window+ajSeqOffset(seq));
+	    ajIntPut(&from,npoints,pos+1+ajSeqGetOffset(seq));
+	    ajIntPut(&to,npoints,pos+window+ajSeqGetOffset(seq));
 	    ajFloatPut(&testcodes,npoints,testcode);
 	    
 	    pos += step;

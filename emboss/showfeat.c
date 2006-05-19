@@ -134,28 +134,28 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	/* get begin and end positions */
-	beg = ajSeqBegin(seq)-1;
-	end = ajSeqEnd(seq)-1;
+	beg = ajSeqGetBegin(seq)-1;
+	end = ajSeqGetEnd(seq)-1;
 
 	/* do the ID name and description */
 	if(id)
 	{
 	    if(html)
 		ajFmtPrintF(outfile, "<H2>%S</H2>\n",
-			    ajSeqGetName(seq));
+			    ajSeqGetNameS(seq));
 	    else
-		ajFmtPrintF(outfile, "%S\n", ajSeqGetName(seq));
+		ajFmtPrintF(outfile, "%S\n", ajSeqGetNameS(seq));
 	}
 
 	if(description)
 	{
 	    if(html)
 		ajFmtPrintF(outfile, "<H3>%S</H3>\n",
-			    ajSeqGetDesc(seq));
+			    ajSeqGetDescS(seq));
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAssignS(&descriptionline, ajSeqGetDesc(seq));
+		ajStrAssignS(&descriptionline, ajSeqGetDescS(seq));
 		ajStrFmtWrap(&descriptionline, 80);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
@@ -174,11 +174,11 @@ int main(int argc, char **argv)
 		ajFmtPrintF(outfile, "=");
 
 	    ajFmtPrintF(outfile, "| ");
-	    if(beg != 0 || end+1 != ajSeqLen(seq))
+	    if(beg != 0 || end+1 != ajSeqGetLen(seq))
 		ajFmtPrintF(outfile, "%d-%d of %d\n", beg+1, end+1,
-			    ajSeqLen(seq));
+			    ajSeqGetLen(seq));
 	    else
-		ajFmtPrintF(outfile, "%d\n", ajSeqLen(seq));
+		ajFmtPrintF(outfile, "%d\n", ajSeqGetLen(seq));
 	}
 
 
@@ -286,7 +286,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
     AjBool child;	                 /* true if multiple's child */
 
     /* get the feature table of the sequence */
-    feat = ajSeqCopyFeat(seq);
+    feat = ajSeqGetFeatCopy(seq);
     if(!feat)
 	return;
 

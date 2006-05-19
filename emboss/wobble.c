@@ -109,18 +109,18 @@ int main(int argc, char **argv)
     window = ajAcdGetInt("window");
     outf   = ajAcdGetOutfile("outfile");
     
-    ajSeqToUpper(seq);
+    ajSeqFmtUpper(seq);
     ajStrFmtUpper(&gc);
     
-    beg = ajSeqBegin(seq);
-    end = ajSeqEnd(seq);
+    beg = ajSeqGetBegin(seq);
+    end = ajSeqGetEnd(seq);
     
     fwd = ajStrNew();
     rev = ajStrNew();
     
-    ajStrAssignSubC(&fwd,ajSeqChar(seq),beg-1,end-1);
+    ajStrAssignSubC(&fwd,ajSeqGetSeqC(seq),beg-1,end-1);
     rev = ajStrNewC(ajStrGetPtr(fwd));
-    ajSeqReverseStr(&rev);
+    ajSeqstrReverse(&rev);
     
     
     wobble_checkstring(&gc);

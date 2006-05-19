@@ -359,7 +359,7 @@ int main(int argc, char **argv)
     report   = ajAcdGetReport("outfile");
     outfile  = ajAcdGetOutfile("origfile");
     sequence = ajAcdGetSeq("sequence");
-    nbase    = ajSeqLen(sequence);
+    nbase    = ajSeqGetLen(sequence);
 
     tab = ajFeattableNewSeq(sequence);
 

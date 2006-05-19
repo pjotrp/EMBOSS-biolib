@@ -91,8 +91,8 @@ static IsochorePFltarr isochore_FltarrNew0(size_t size);
 **
 ** Future changes: Users should be able to ask for a sequence range
 ** and plot just that range. Currently a range can be set on the
-** command line but it is ignored. The range is from "ajSeqBegin(seq)"
-** to "ajSeqEnd(seq)".
+** command line but it is ignored. The range is from "ajSeqGetBegin(seq)"
+** to "ajSeqGetEnd(seq)".
 **
 ******************************************************************************/
 
@@ -130,11 +130,11 @@ int main(int argc, char **argv)
 
     ajGraphInitSeq(plot, seq);
 
-    sq = ajStrGetPtr(ajSeqStr(seq));
+    sq = ajStrGetPtr(ajSeqGetSeqS(seq));
 
-    ibeg = ajSeqBegin(seq);
-    iend = ajSeqEnd(seq);
-    ilen = ajSeqLen(seq);
+    ibeg = ajSeqGetBegin(seq);
+    iend = ajSeqGetEnd(seq);
+    ilen = ajSeqGetLen(seq);
 
     iwin = ajAcdGetInt("window");
     ishift = ajAcdGetInt("shift");
@@ -261,7 +261,7 @@ static IsochorePFltarr isochore_FltarrNew0(size_t size)
 
 
 
-/* @funcstatic isochore_FltarrNew0 ********************************************
+/* @funcstatic isochore_FltarrDel *********************************************
 **
 ** Undocumented.
 **

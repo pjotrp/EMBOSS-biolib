@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 
 
     /* get the minimal set of overlapping matches */
-       embWordMatchMin(matchlist, ajSeqLen(seq1), ajSeqLen(seq2));
+       embWordMatchMin(matchlist, ajSeqGetLen(seq1), ajSeqGetLen(seq2));
 
     if(ajListLength(matchlist))
     {
@@ -134,8 +134,8 @@ static void megamerger_Merge(const AjPList matchlist,
 
     tmp    = ajStrNew();
     seqstr = ajStrNew();
-    s1     = ajSeqStrCopy(seq1);
-    s2     = ajSeqStrCopy(seq2);
+    s1     = ajSeqGetSeqCopyS(seq1);
+    s2     = ajSeqGetSeqCopyS(seq2);
 
     /* change the sequences to lowercase to highlight problem areas */
     ajStrFmtLower(&s1);
@@ -143,7 +143,7 @@ static void megamerger_Merge(const AjPList matchlist,
 
     /* title line */
     ajFmtPrintF(outfile, "# Report of megamerger of: %s and %s\n\n",
-		ajSeqName(seq1), ajSeqName(seq2));
+		ajSeqGetNameC(seq1), ajSeqGetNameC(seq2));
 
     iter = ajListIterRead(matchlist);
     while(ajListIterMore(iter))
@@ -153,9 +153,9 @@ static void megamerger_Merge(const AjPList matchlist,
 	if(!count++)
 	{
 	    ajFmtPrintF(outfile, "%s overlap starts at %d\n",
-			ajSeqName(seq1), p->seq1start+1);
+			ajSeqGetNameC(seq1), p->seq1start+1);
 	    ajFmtPrintF(outfile, "%s overlap starts at %d\n\n",
-			ajSeqName(seq2), p->seq2start+1);
+			ajSeqGetNameC(seq2), p->seq2start+1);
 
 	    /* get initial sequence before the overlapping region */
 	    if(p->seq1start == 0)
@@ -168,7 +168,7 @@ static void megamerger_Merge(const AjPList matchlist,
 		{
 		    ajFmtPrintF(outfile, "Using %s 1-%d as the "
 				"initial sequence\n\n",
-				ajSeqName(seq2), p->seq2start);
+				ajSeqGetNameC(seq2), p->seq2start);
 		    ajStrAssignSubS(&seqstr, s2, 0, p->seq2start-1);
 		}
 
@@ -176,7 +176,7 @@ static void megamerger_Merge(const AjPList matchlist,
 	    else if(p->seq2start == 0)
 	    {
 		ajFmtPrintF(outfile, "Using %s 1-%d as the initial "
-			    "sequence\n\n", ajSeqName(seq1),
+			    "sequence\n\n", ajSeqGetNameC(seq1),
 			    p->seq1start);
 		ajStrAssignSubS(&seqstr, s1, 0, p->seq1start-1);
 
@@ -190,7 +190,7 @@ static void megamerger_Merge(const AjPList matchlist,
 		{
 		    ajFmtPrintF(outfile, "Using %s 1-%d as the "
 				"initial sequence\n\n",
-				ajSeqName(seq1), p->seq1start);
+				ajSeqGetNameC(seq1), p->seq1start);
 		    ajStrAssignSubS(&tmp, s1, 0, p->seq1start-1);
 		    ajStrFmtUpper(&tmp);
 		    ajStrAssignS(&seqstr, tmp);
@@ -199,7 +199,7 @@ static void megamerger_Merge(const AjPList matchlist,
 		else
 		{
 		    ajFmtPrintF(outfile, "Using %s 1-%d as the initial "
-				"sequence\n\n", ajSeqName(seq2),
+				"sequence\n\n", ajSeqGetNameC(seq2),
 				p->seq2start);
 		    ajStrAssignSubS(&tmp, s2, 0, p->seq2start-1);
 		    ajStrFmtUpper(&tmp);
@@ -217,18 +217,18 @@ static void megamerger_Merge(const AjPList matchlist,
 	    ajFmtPrintF(outfile, "\nWARNING!\nMismatch region found:\n");
 	    if(prev1end<p->seq1start)
 		ajFmtPrintF(outfile, "Mismatch %s %d-%d\n",
-			    ajSeqName(seq1), prev1end+1,
+			    ajSeqGetNameC(seq1), prev1end+1,
 			    p->seq1start);
 	    else
 		ajFmtPrintF(outfile, "Mismatch %s %d\n",
-			    ajSeqName(seq1), prev1end);
+			    ajSeqGetNameC(seq1), prev1end);
 
 	    if(prev2end<p->seq2start)
 		ajFmtPrintF(outfile, "Mismatch %s %d-%d\n",
-			    ajSeqName(seq2), prev2end+1, p->seq2start);
+			    ajSeqGetNameC(seq2), prev2end+1, p->seq2start);
 	    else
 		ajFmtPrintF(outfile, "Mismatch %s %d\n",
-			    ajSeqName(seq2), prev2end);
+			    ajSeqGetNameC(seq2), prev2end);
 
             if(prefer)
 	    {
@@ -247,13 +247,13 @@ static void megamerger_Merge(const AjPList matchlist,
 	        mid1 = (prev1end + p->seq1start-1)/2;
 	        mid2 = (prev2end + p->seq2start-1)/2;
 	        /* is the mismatch closer to the ends of seq1 or seq2? */
-	        if(AJMIN(mid1, ajSeqLen(seq1)-mid1-1) <
-		    AJMIN(mid2, ajSeqLen(seq2)-mid2-1))
+	        if(AJMIN(mid1, ajSeqGetLen(seq1)-mid1-1) <
+		    AJMIN(mid2, ajSeqGetLen(seq2)-mid2-1))
 	        {
 		    ajFmtPrintF(outfile, "Mismatch is closer to the ends "
 				"of %s, so use %s in the merged "
-				"sequence\n\n", ajSeqName(seq1),
-				ajSeqName(seq2));
+				"sequence\n\n", ajSeqGetNameC(seq1),
+				ajSeqGetNameC(seq2));
 		    if(prev2end < p->seq2start)
 		    {
 		        ajStrAssignSubS(&tmp, s2, prev2end, p->seq2start-1);
@@ -267,7 +267,7 @@ static void megamerger_Merge(const AjPList matchlist,
 		    ajFmtPrintF(outfile,
 				"Mismatch is closer to the ends of %s, "
 				"so use %s in the merged sequence\n\n",
-				ajSeqName(seq2), ajSeqName(seq1));
+				ajSeqGetNameC(seq2), ajSeqGetNameC(seq1));
 		    if(prev1end < p->seq1start)
 		    {
 		        ajStrAssignSubS(&tmp, s1, prev1end, p->seq1start-1);
@@ -280,8 +280,8 @@ static void megamerger_Merge(const AjPList matchlist,
 
 	/* output the match */
 	ajFmtPrintF(outfile, "Matching region %s %d-%d : %s %d-%d\n",
-		    ajSeqName(seq1), p->seq1start+1,
-		    p->seq1start + p->length, ajSeqName(seq2),
+		    ajSeqGetNameC(seq1), p->seq1start+1,
+		    p->seq1start + p->length, ajSeqGetNameC(seq2),
 		    p->seq2start+1, p->seq2start + p->length);
 	ajFmtPrintF(outfile, "Length of match: %d\n", p->length);
 	ajStrAppendSubS(&seqstr, s1, p->seq1start, p->seq1start + p->length-1);
@@ -295,50 +295,50 @@ static void megamerger_Merge(const AjPList matchlist,
     }
 
     /* end of overlapping region */
-    ajFmtPrintF(outfile, "\n%s overlap ends at %d\n", ajSeqName(seq1),
+    ajFmtPrintF(outfile, "\n%s overlap ends at %d\n", ajSeqGetNameC(seq1),
 		p->seq1start+p->length);
-    ajFmtPrintF(outfile, "%s overlap ends at %d\n\n", ajSeqName(seq2),
+    ajFmtPrintF(outfile, "%s overlap ends at %d\n\n", ajSeqGetNameC(seq2),
 		p->seq2start+p->length);
 
     /* is seq1 only longer that the matched regions? */
-    if(prev2end >= ajSeqLen(seq2) && prev1end < ajSeqLen(seq1))
+    if(prev2end >= ajSeqGetLen(seq2) && prev1end < ajSeqGetLen(seq1))
     {
 	ajFmtPrintF(outfile, "Using %s %d-%d as the final "
-		    "sequence\n\n", ajSeqName(seq1), prev1end+1,
-		    ajSeqLen(seq1));
-	ajStrAppendSubS(&seqstr, s1, prev1end, ajSeqLen(seq1)-1);
+		    "sequence\n\n", ajSeqGetNameC(seq1), prev1end+1,
+		    ajSeqGetLen(seq1));
+	ajStrAppendSubS(&seqstr, s1, prev1end, ajSeqGetLen(seq1)-1);
 
 	/* is seq2 only longer that the matched regions? */
     }
-    else if(prev1end >= ajSeqLen(seq1) && prev2end < ajSeqLen(seq2))
+    else if(prev1end >= ajSeqGetLen(seq1) && prev2end < ajSeqGetLen(seq2))
     {
 	ajFmtPrintF(outfile, "Using %s %d-%d as the final "
-		    "sequence\n\n", ajSeqName(seq2), prev2end+1,
-		    ajSeqLen(seq2));
-	ajStrAppendSubS(&seqstr, s2, prev2end, ajSeqLen(seq2)-1);
+		    "sequence\n\n", ajSeqGetNameC(seq2), prev2end+1,
+		    ajSeqGetLen(seq2));
+	ajStrAppendSubS(&seqstr, s2, prev2end, ajSeqGetLen(seq2)-1);
 
 	/* both are longer! */
     }
-    else if(prev1end < ajSeqLen(seq1) && prev2end < ajSeqLen(seq2))
+    else if(prev1end < ajSeqGetLen(seq1) && prev2end < ajSeqGetLen(seq2))
     {
 	ajFmtPrintF(outfile, "WARNING!\n");
 	ajFmtPrintF(outfile, "Neither sequence's overlap is at the "
 		    "end of the sequence\n");
-	if(ajSeqLen(seq1)-prev1end > ajSeqLen(seq2)-prev2end)
+	if(ajSeqGetLen(seq1)-prev1end > ajSeqGetLen(seq2)-prev2end)
 	{
 	    ajFmtPrintF(outfile, "Using %s %d-%d as the final "
-			"sequence\n\n", ajSeqName(seq1), prev1end+1,
-			ajSeqLen(seq1));
-	    ajStrAssignSubS(&tmp, s1, prev1end, ajSeqLen(seq1)-1);
+			"sequence\n\n", ajSeqGetNameC(seq1), prev1end+1,
+			ajSeqGetLen(seq1));
+	    ajStrAssignSubS(&tmp, s1, prev1end, ajSeqGetLen(seq1)-1);
 	    ajStrFmtUpper(&tmp);
 	    ajStrAppendS(&seqstr, tmp);
 	}
 	else
 	{
 	    ajFmtPrintF(outfile, "Using %s %d-%d as the final "
-			       "sequence\n\n", ajSeqName(seq2), prev2end+1,
-			       ajSeqLen(seq2));
-	    ajStrAssignSubS(&tmp, s2, prev2end, ajSeqLen(seq2)-1);
+			       "sequence\n\n", ajSeqGetNameC(seq2), prev2end+1,
+			       ajSeqGetLen(seq2));
+	    ajStrAssignSubS(&tmp, s2, prev2end, ajSeqGetLen(seq2)-1);
 	    ajStrFmtUpper(&tmp);
 	    ajStrAppendS(&seqstr, tmp);
 
@@ -346,8 +346,8 @@ static void megamerger_Merge(const AjPList matchlist,
     }
 
     /* write out sequence at end */
-    seq = ajSeqNewS(seq1);
-    ajSeqReplace(seq, seqstr);
+    seq = ajSeqNewSeq(seq1);
+    ajSeqAssignSeqS(seq, seqstr);
     ajSeqWrite(seqout, seq);
 
     ajSeqDel(&seq);

@@ -1122,7 +1122,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 
     ajDebug("embAlignWalkNWMatrix\n");
 
-    ajDebug("seqlen a:%d b:%d\n", ajSeqLen(a), ajSeqLen(b));
+    ajDebug("seqlen a:%d b:%d\n", ajSeqGetLen(a), ajSeqGetLen(b));
 
     errbounds=gapextend;
     errbounds=0.01;
@@ -2060,8 +2060,8 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 
 
     /* ajDebug extra */
-    ajDebug("SeqA '%s' %d %d\n", ajSeqName(a), ajSeqLen(a), lena);
-    ajDebug("SeqB '%s' %d %d\n", ajSeqName(b), ajSeqLen(b), lenb);
+    ajDebug("SeqA '%s' %d %d\n", ajSeqGetNameS(a), ajSeqGetLen(a), lena);
+    ajDebug("SeqB '%s' %d %d\n", ajSeqGetNameS(b), ajSeqGetLen(b), lenb);
     ajDebug("start1: %d start2: %d width; %d\n", *start1, *start2, width);
 
     pmax = (float) (-1*INT_MAX);
@@ -3273,8 +3273,8 @@ void embAlignReportGlobal(AjPAlign align,
 	    ajStrGetLen(m), ajStrGetLen(m) - ajSeqGapCountS(m),
 	    ajStrGetLen(n), ajStrGetLen(n) - ajSeqGapCountS(n));
 
-    alen=ajSeqLen(seqa) - apos;
-    blen=ajSeqLen(seqb) - bpos;
+    alen=ajSeqGetLen(seqa) - apos;
+    blen=ajSeqGetLen(seqb) - bpos;
 
     ajDebug("alen: %d blen: %d apos: %d bpos: %d\n", alen, blen, apos, bpos);
 
@@ -3308,19 +3308,19 @@ void embAlignReportGlobal(AjPAlign align,
 
     ajDebug("  res1: %5d '%S' \n", ajStrGetLen(fa), fa);
     ajDebug("  res2: %5d '%S' \n", ajStrGetLen(fb), fb);
-    maxlen = AJMAX(ajSeqLen(seqa), ajSeqLen(seqb));
+    maxlen = AJMAX(ajSeqGetLen(seqa), ajSeqGetLen(seqb));
 
     res1   = ajSeqNewRangeCI(ajStrGetPtr(fa), ajStrGetLen(fa),
-			     ajSeqOffset(seqa), ajSeqOffend(seqa),
-			     ajSeqRev(seqa));
-    ajSeqAssName(res1, ajSeqGetName(seqa));
-    ajSeqAssUsa(res1, ajSeqGetUsa(seqa));
+			     ajSeqGetOffset(seqa), ajSeqGetOffend(seqa),
+			     ajSeqIsReversed(seqa));
+    ajSeqAssignNameS(res1, ajSeqGetNameS(seqa));
+    ajSeqAssignUsaS(res1, ajSeqGetUsaS(seqa));
 
     res2   = ajSeqNewRangeCI(ajStrGetPtr(fb), ajStrGetLen(fb),
-			     ajSeqOffset(seqb), ajSeqOffend(seqb),
-			     ajSeqRev(seqb));
-    ajSeqAssName(res2, ajSeqGetName(seqb));
-    ajSeqAssUsa(res2, ajSeqGetUsa(seqb));
+			     ajSeqGetOffset(seqb), ajSeqGetOffend(seqb),
+			     ajSeqIsReversed(seqb));
+    ajSeqAssignNameS(res2, ajSeqGetNameS(seqb));
+    ajSeqAssignUsaS(res2, ajSeqGetUsaS(seqb));
 
     ajSeqGapStandard(res1, '-');
     ajSeqGapStandard(res2, '-');
@@ -3338,11 +3338,11 @@ void embAlignReportGlobal(AjPAlign align,
     /*
     ajAlignSetRange(align,
 		    start1, end1-1,
-                    ajSeqOffset(seqa)+ajSeqLen(res1)+ajSeqOffend(seqa)
+                    ajSeqGetOffset(seqa)+ajSeqGetLen(res1)+ajSeqGetOffend(seqa)
                            -ajSeqGapCount(res1),
                     offset1,
 		    start2, end2-1,
-                    ajSeqOffset(seqb)+ajSeqLen(res1)+ajSeqOffend(seqb)
+                    ajSeqGetOffset(seqb)+ajSeqGetLen(res1)+ajSeqGetOffend(seqb)
                            -ajSeqGapCount(res1),
                     offset2);
 */
@@ -3392,11 +3392,11 @@ void embAlignReportLocal(AjPAlign align,
     ajint offend1;
     ajint offend2;
 
-    offend1 = ajSeqLen(seqa) - ajStrGetLen(m) - start1
+    offend1 = ajSeqGetLen(seqa) - ajStrGetLen(m) - start1
 	+ ajStrCalcCountK(m, '.')
 	+ ajStrCalcCountK(m, '-')
 	    + ajStrCalcCountK(m, ' ');
-    offend2 = ajSeqLen(seqb) - ajStrGetLen(n) - start2
+    offend2 = ajSeqGetLen(seqb) - ajStrGetLen(n) - start2
 	+ ajStrCalcCountK(n, '.')
 	+ ajStrCalcCountK(n, '-')
 	    + ajStrCalcCountK(n, ' ');
@@ -3406,35 +3406,35 @@ void embAlignReportLocal(AjPAlign align,
 	    offset1, offset2,
 	    offend1, offend2,
 	    ajStrGetLen(m), ajStrGetLen(n),
-	    ajSeqLen(seqa), ajSeqLen(seqb),
-	    ajSeqOffset(seqa), ajSeqOffset(seqb),
-	    ajSeqOffend(seqa), ajSeqOffend(seqb));
+	    ajSeqGetLen(seqa), ajSeqGetLen(seqb),
+	    ajSeqGetOffset(seqa), ajSeqGetOffset(seqb),
+	    ajSeqGetOffend(seqa), ajSeqGetOffend(seqb));
 /*
     res1   = ajSeqNew();
     res2   = ajSeqNew();
 
-    ajSeqAssName(res1, ajSeqGetName(seqa));
-    ajSeqAssName(res2, ajSeqGetName(seqb));
-    ajSeqAssUsa(res1, ajSeqGetUsa(seqa));
-    ajSeqAssUsa(res2, ajSeqGetUsa(seqb));
-    ajSeqAssSeq(res1, m);
-    ajSeqAssSeq(res2, n);
+    ajSeqAssignNameS(res1, ajSeqGetNameS(seqa));
+    ajSeqAssignNameS(res2, ajSeqGetNameS(seqb));
+    ajSeqAssignUsaS(res1, ajSeqGetUsaS(seqa));
+    ajSeqAssignUsaS(res2, ajSeqGetUsaS(seqb));
+    ajSeqAssignSeqS(res1, m);
+    ajSeqAssignSeqS(res2, n);
 
     ajAlignDefineSS(align, res1, res2);
 */
     res1   = ajSeqNewRangeCI(ajStrGetPtr(m), ajStrGetLen(m),
-			     start1+ajSeqOffset(seqa),
-			     offend1+ajSeqOffend(seqa),
-			     ajSeqRev(seqa));
-    ajSeqAssName(res1, ajSeqGetName(seqa));
-    ajSeqAssUsa(res1, ajSeqGetUsa(seqa));
+			     start1+ajSeqGetOffset(seqa),
+			     offend1+ajSeqGetOffend(seqa),
+			     ajSeqIsReversed(seqa));
+    ajSeqAssignNameS(res1, ajSeqGetNameS(seqa));
+    ajSeqAssignUsaS(res1, ajSeqGetUsaS(seqa));
 
     res2   = ajSeqNewRangeCI(ajStrGetPtr(n), ajStrGetLen(n),
-			     start2+ajSeqOffset(seqb),
-			     offend2+ajSeqOffend(seqb),
-			     ajSeqRev(seqb));
-    ajSeqAssName(res2, ajSeqGetName(seqb));
-    ajSeqAssUsa(res2, ajSeqGetUsa(seqb));
+			     start2+ajSeqGetOffset(seqb),
+			     offend2+ajSeqGetOffend(seqb),
+			     ajSeqIsReversed(seqb));
+    ajSeqAssignNameS(res2, ajSeqGetNameS(seqb));
+    ajSeqAssignUsaS(res2, ajSeqGetUsaS(seqb));
 
     ajSeqGapStandard(res1, '-');
     ajSeqGapStandard(res2, '-');
@@ -3449,10 +3449,10 @@ void embAlignReportLocal(AjPAlign align,
     end2 = start2 - ajStrCalcCountK(n, '-') + ajStrGetLen(n);
     ajAlignSetRange(align,
 		    start1, end1+1,
-                    ajSeqLen(seqa)-ajSeqGapCount(seqa),
+                    ajSeqGetLen(seqa)-ajSeqGapCount(seqa),
                     offset1,
 		    start2, end2+1,
-                    ajSeqLen(seqb)-ajSeqGapCount(seqb),
+                    ajSeqGetLen(seqb)-ajSeqGapCount(seqb),
                     offset2);
 */
 

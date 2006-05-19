@@ -129,8 +129,8 @@ int main(int argc, char **argv)
 
 	/* write header to file */
 
-	ajFmtPrintF(outfile, "Palindromes of:  %s \n", ajSeqName(sequence));
-	ajFmtPrintF(outfile, "Sequence length is: %d \n", ajSeqLen(sequence));
+	ajFmtPrintF(outfile, "Palindromes of:  %s \n", ajSeqGetNameC(sequence));
+	ajFmtPrintF(outfile, "Sequence length is: %d \n", ajSeqGetLen(sequence));
 	ajFmtPrintF(outfile, "Start at position: %d\nEnd at position: %d\n",
 		    beginPos, endPos);
 	ajFmtPrintF(outfile,"Minimum length of Palindromes is: %d \n", minLen);
@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 
 
 	/* set vars in readiness to enter loop */
-	seqstr = ajStrNewC(ajSeqChar(sequence));
+	seqstr = ajStrNewC(ajSeqGetSeqC(sequence));
 	begin  = beginPos - 1;
 	end    = endPos - 1;
 

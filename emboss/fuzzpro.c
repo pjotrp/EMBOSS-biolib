@@ -108,10 +108,10 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall,&seq))
     {
 	l = ajListNew();
-	ajStrAssignC(&seqname,ajSeqName(seq));
+	ajStrAssignC(&seqname,ajSeqGetNameC(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
-	ajStrAssignSubC(&text,ajSeqChar(seq),begin-1,end-1);
+	ajStrAssignSubC(&text,ajSeqGetSeqC(seq),begin-1,end-1);
 	ajStrFmtUpper(&text);
 
 	embPatFuzzSearch(type,begin,pattern,seqname,text,l,
@@ -176,7 +176,7 @@ static void fuzzpro_report_hits(AjPList l, ajint hits,
     AjPStr fthit = NULL;
     ajint begin;
 
-    begin = ajSeqBegin(seq) - 1;
+    begin = ajSeqGetBegin(seq) - 1;
 
     ajStrAssignC(&fthit, "hit");
 

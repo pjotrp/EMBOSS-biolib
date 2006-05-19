@@ -47,8 +47,8 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
 			    const AjPTable retable);
 static void remap_DelTable(AjPTable * table);
 static void remap_read_file_of_enzyme_names(AjPStr *enzymes);
-static int remap_ajStrCmpCase(const void* str1, const void* str2);
-static void remap_ajStrDel(void** str, void* cl);
+static int remap_cmpcase(const void* str1, const void* str2);
+static void remap_strdel(void** str, void* cl);
 static void rebase_RenamePreferred(const AjPList list, const AjPTable table, 
 				   AjPList newlist);
 static void remap_RestrictPreferred(const AjPList l, const AjPTable t);
@@ -190,17 +190,17 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	/* get begin and end positions */
-	begin = ajSeqBegin(seq)-1;
-	end   = ajSeqEnd(seq)-1;
+	begin = ajSeqGetBegin(seq)-1;
+	end   = ajSeqGetEnd(seq)-1;
 
 	/* do the name and description */
 	if(nameseq)
 	{
 	    if(html)
 		ajFmtPrintF(outfile, "<H2>%S</H2>\n",
-				   ajSeqGetName(seq));
+				   ajSeqGetNameS(seq));
 	    else
-		ajFmtPrintF(outfile, "%S\n", ajSeqGetName(seq));
+		ajFmtPrintF(outfile, "%S\n", ajSeqGetNameS(seq));
 	}
 
 	if(description)
@@ -211,11 +211,11 @@ int main(int argc, char **argv)
 	    */
 	    if(html)
 		ajFmtPrintF(outfile, "<H3>%S</H3>\n",
-				   ajSeqGetDesc(seq));
+				   ajSeqGetDescS(seq));
 	    else
 	    {
 		descriptionline = ajStrNew();
-		ajStrAssignS(&descriptionline, ajSeqGetDesc(seq));
+		ajStrAssignS(&descriptionline, ajSeqGetDescS(seq));
 		ajStrFmtWrap(&descriptionline, width+margin);
 		ajFmtPrintF(outfile, "%S\n", descriptionline);
 		ajStrDel(&descriptionline);
@@ -872,7 +872,7 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
         rebase_RenamePreferred(nocutlist, retable, newlist);
         ajListstrFree(&nocutlist);
         nocutlist = newlist;
-        ajListUnique(nocutlist, remap_ajStrCmpCase, remap_ajStrDel);
+        ajListUnique(nocutlist, remap_cmpcase, remap_strdel);
     }
 
 
@@ -891,8 +891,8 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
      **  nocutlist item is deleted.
      */
 
-    ajListSort(nocutlist, remap_ajStrCmpCase);
-    ajListSort(cutlist, remap_ajStrCmpCase);
+    ajListSort(nocutlist, remap_cmpcase);
+    ajListSort(cutlist, remap_cmpcase);
 
     citer = ajListIterRead(cutlist);
     niter = ajListIter(nocutlist);
@@ -1089,7 +1089,7 @@ static void remap_read_file_of_enzyme_names(AjPStr *enzymes)
 
 
 
-/* @funcstatic remap_ajStrCmpCase *********************************************
+/* @funcstatic remap_cmpcase *********************************************
 **
 ** Compares the value of two strings for use in sorting (e.g. ajListSort)
 ** Case Independent!
@@ -1102,7 +1102,7 @@ static void remap_read_file_of_enzyme_names(AjPStr *enzymes)
 ** @@
 ******************************************************************************/
 
-static int remap_ajStrCmpCase(const void* str1, const void* str2) 
+static int remap_cmpcase(const void* str1, const void* str2) 
 {
     const char* cp;
     const char* cq;
@@ -1129,7 +1129,7 @@ static int remap_ajStrCmpCase(const void* str1, const void* str2)
 
 
 
-/* @funcstatic remap_ajStrDel *********************************************
+/* @funcstatic remap_strdel *********************************************
 **
 ** Deletes a string when called by ajListUnique
 **
@@ -1139,7 +1139,7 @@ static int remap_ajStrCmpCase(const void* str1, const void* str2)
 ** @@
 ******************************************************************************/
 
-static void remap_ajStrDel(void** str, void* cl) 
+static void remap_strdel(void** str, void* cl) 
 {
     ajStrDel((AjPStr*)str);
 

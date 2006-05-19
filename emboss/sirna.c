@@ -191,7 +191,7 @@ static void sirna_report(AjPReport report, const AjPSeq seq, AjBool poliii,
     /* get start of CDS region */
     CDS_begin = sirna_begin(seq, report, poliii, aa, tt, polybase, context);
 
-    cseq = ajSeqChar(seq);
+    cseq = ajSeqGetSeqC(seq);
 
     /*
     ** Using a list holding info on position, %GC, score. Sort by
@@ -211,7 +211,7 @@ static void sirna_report(AjPReport report, const AjPSeq seq, AjBool poliii,
 	    count_gc++;
     }
 
-    e = (ajSeqEnd(seq) - window_len); /* last position a window can start */
+    e = (ajSeqGetEnd(seq) - window_len); /* last position a window can start */
     for(position=CDS_begin; position < e; position+=shift)
     {
 	window_start = position;
@@ -432,7 +432,7 @@ static ajint sirna_begin(const AjPSeq seq, AjPReport report, AjBool poliii,
     AjPStr head2  = NULL;
 
     /* get input sequence features */
-    featab = ajSeqCopyFeat(seq);
+    featab = ajSeqGetFeatCopy(seq);
     type   = ajStrNew();
     ajStrAssignC(&type, "CDS");
     head  = ajStrNew();
@@ -484,7 +484,7 @@ static ajint sirna_begin(const AjPSeq seq, AjPReport report, AjBool poliii,
     /* if didn't find a CDS, assume -sbegin is the CDS */
     if(begin == 0)
     {
-	begin = ajSeqBegin(seq)-1;
+	begin = ajSeqGetBegin(seq)-1;
 	if(begin == 0)
 	{
 	    ajDebug("begin = 0\n");
@@ -628,7 +628,7 @@ static void sirna_output(const AjPList list,
     type   = ajStrNewC("misc_feature");
     name   = ajStrNew();     /* new name of the 23 base target sequence */
     desc = ajStrNew();       /* new description of 23 base target sequence */
-    seq23 = ajSeqNewL(24);   /* 23-base target sequence */
+    seq23 = ajSeqNewRes(24);   /* 23-base target sequence */
 
     /* if no hits then ignore much of this routine */
     if(ajListLength(list))
@@ -654,20 +654,20 @@ static void sirna_output(const AjPList list,
 		** the siRNA probe region
 		*/
 		ajStrAssignC(&subseq, "(");
-		ajStrAppendSubS(&subseq, ajSeqStr(seq), value->pos, value->pos+1);
+		ajStrAppendSubS(&subseq, ajSeqGetSeqS(seq), value->pos, value->pos+1);
 		ajStrAppendC(&subseq, ")");
 	    }
 
-	    ajStrAppendSubS(&subseq, ajSeqStr(seq), value->pos+2, value->pos+20);
+	    ajStrAppendSubS(&subseq, ajSeqGetSeqS(seq), value->pos+2, value->pos+20);
 	    ajStrFmtUpper(&subseq);
 	    ajStrExchangeKK(&subseq, 'T', 'U');
 	    ajStrAppendC(&subseq, "dTdT");
 	    ajFmtPrintS(&tmpStr, "*forward %S", subseq);
 	    ajFeatTagAdd(gf,  NULL, tmpStr);
 
-	    ajStrAssignSubS(&subseq, ajSeqStr(seq), value->pos+2, value->pos+20);
+	    ajStrAssignSubS(&subseq, ajSeqGetSeqS(seq), value->pos+2, value->pos+20);
 	    ajStrFmtUpper(&subseq);
-	    ajSeqReverseStr(&subseq);
+	    ajSeqstrReverse(&subseq);
 	    ajStrExchangeKK(&subseq, 'T', 'U');
 	    ajStrAppendC(&subseq, "dTdT");
 	    ajFmtPrintS(&tmpStr, "*reverse %S", subseq);
@@ -678,25 +678,25 @@ static void sirna_output(const AjPList list,
 	    ** get sequence
 	    */
 	    ajDebug("Now write sequence file\n");
-	    ajStrAssignSubS(&subseq, ajSeqStr(seq), value->pos, value->pos+22);
-	    ajSeqReplace(seq23, subseq);
+	    ajStrAssignSubS(&subseq, ajSeqGetSeqS(seq), value->pos, value->pos+22);
+	    ajSeqAssignSeqS(seq23, subseq);
 	    ajSeqSetNuc(seq23);
 
 	    /* give it a name */
 	    ajDebug("Doing name\n");
-	    ajStrAssignS(&name, ajSeqGetName(seq));
+	    ajStrAssignS(&name, ajSeqGetNameS(seq));
 	    ajStrAppendC(&name, "_");
 	    ajStrFromInt(&tmpStr, value->pos+1);
 	    ajStrAppendS(&name, tmpStr);
-	    ajSeqAssName(seq23, name);
+	    ajSeqAssignNameS(seq23, name);
 
 	    /* get description */
 	    ajDebug("Doing description\n");
 	    ajFmtPrintS(&desc, "%%GC %4.1f Score %d ", 
 			((float)value->GCcount*100.0)/20.0,
 			value->score);
-	    ajStrAppendS(&desc, ajSeqGetDesc(seq));
-	    ajSeqAssDesc(seq23, desc);
+	    ajStrAppendS(&desc, ajSeqGetDescS(seq));
+	    ajSeqAssignDescS(seq23, desc);
 
 	    ajDebug("Write seq23\n");
 	    ajSeqAllWrite(seqout, seq23);

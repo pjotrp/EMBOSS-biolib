@@ -222,11 +222,11 @@ int main(int argc, char **argv)
     /* get the consensus sequence */
     embConsCalc(seqset, matrix, ajSeqsetSize(seqset), ajSeqsetLen(seqset),
 		fplural, setcase, ident, gaps, &cons);
-    ajSeqAssSeq(consensus, cons);	/* set the sequence string */
+    ajSeqAssignSeqS(consensus, cons);	/* set the sequence string */
 
     /* name the sequence */
 
-    ajSeqAssName(consensus,(xxx=ajStrNewC("Consensus")));
+    ajSeqAssignNameS(consensus,(xxx=ajStrNewC("Consensus")));
 
     /* if margin is given as -1 ensure it is reset to a nice value */
     showalign_NiceMargin(seqset, &margin, docon, nrefseq);
@@ -295,7 +295,7 @@ static ajint showalign_Getrefseq(const AjPStr refseq, const AjPSeqset seqset)
     {
 	seq = ajSeqsetGetSeq(seqset, i);
 
-	if(!ajStrCmpS(ajSeqGetName(seq), refseq))
+	if(!ajStrCmpS(ajSeqGetNameS(seq), refseq))
 	    return i;
     }
 
@@ -353,7 +353,7 @@ static void showalign_NiceMargin(const AjPSeqset seqset, ajint *margin,
     for(i=0; i<ajSeqsetSize(seqset); i++)
     {
 	seq = ajSeqsetGetSeq(seqset, i);
-	len = ajStrGetLen(ajSeqGetName(seq));
+	len = ajStrGetLen(ajSeqGetNameS(seq));
 	if(len > longest)
 	    longest = len;
     }
@@ -461,11 +461,11 @@ static void showalign_MakeAll(const AjPSeq ref,
     char *s;
     const char *r;
 
-    sstr = ajSeqStrCopy(seq);
-    lenseq = ajSeqLen(seq);
-    lenref = ajSeqLen(ref);
+    sstr = ajSeqGetSeqCopyS(seq);
+    lenseq = ajSeqGetLen(seq);
+    lenref = ajSeqGetLen(ref);
     s = ajStrGetuniquePtr(&sstr);
-    r = ajSeqChar(ref);
+    r = ajSeqGetSeqC(ref);
 
 
     /* if not changing the case, do nothing */
@@ -487,7 +487,7 @@ static void showalign_MakeAll(const AjPSeq ref,
 	    if(s[i] != '-')
 		s[i] = tolower((int)s[i]);	/* dissimilar to lowercase */;
 
-    ajSeqReplace(seq, sstr);
+    ajSeqAssignSeqS(seq, sstr);
     return;
 }
 
@@ -515,11 +515,11 @@ static void showalign_MakeIdentity(const AjPSeq ref, AjPSeq seq)
     char *s;
     const char *r;
 
-    sstr = ajSeqStrCopy(seq);
-    lenseq = ajSeqLen(seq);
-    lenref = ajSeqLen(ref);
+    sstr = ajSeqGetSeqCopyS(seq);
+    lenseq = ajSeqGetLen(seq);
+    lenref = ajSeqGetLen(ref);
     s = ajStrGetuniquePtr(&sstr);
-    r = ajSeqChar(ref);
+    r = ajSeqGetSeqC(ref);
 
 
 
@@ -533,7 +533,7 @@ static void showalign_MakeIdentity(const AjPSeq ref, AjPSeq seq)
 	    if(s[i] != '-')
 		s[i] = '.';
 
-    ajSeqReplace(seq, sstr);
+    ajSeqAssignSeqS(seq, sstr);
     return;
 }
 
@@ -567,11 +567,11 @@ static void showalign_MakeNonidentity(const AjPSeq ref,
     char *s;
     const char *r;
 
-    sstr = ajSeqStrCopy(seq);
-    lenseq = ajSeqLen(seq);
-    lenref = ajSeqLen(ref);
+    sstr = ajSeqGetSeqCopyS(seq);
+    lenseq = ajSeqGetLen(seq);
+    lenref = ajSeqGetLen(ref);
     s = ajStrGetuniquePtr(&sstr);
-    r = ajSeqChar(ref);
+    r = ajSeqGetSeqC(ref);
 
 
     for(i=0; i<lenref; i++)
@@ -600,7 +600,7 @@ static void showalign_MakeNonidentity(const AjPSeq ref,
 		s[i] = toupper((int)s[i]);
 
 
-    ajSeqReplace(seq, sstr);
+    ajSeqAssignSeqS(seq, sstr);
     ajStrDel(&sstr);
     
     return;
@@ -636,11 +636,11 @@ static void showalign_MakeSimilar(const AjPSeq ref, AjPSeq seq,
     char *s;
     const char *r;
 
-    sstr = ajSeqStrCopy(seq);
-    lenseq = ajSeqLen(seq);
-    lenref = ajSeqLen(ref);
+    sstr = ajSeqGetSeqCopyS(seq);
+    lenseq = ajSeqGetLen(seq);
+    lenref = ajSeqGetLen(ref);
     s = ajStrGetuniquePtr(&sstr);
-    r = ajSeqChar(ref);
+    r = ajSeqGetSeqC(ref);
 
 
     for(i=0; i<lenref; i++)
@@ -668,7 +668,7 @@ static void showalign_MakeSimilar(const AjPSeq ref, AjPSeq seq,
 	    if(s[i] != '-')
 		s[i] = '.';
 
-    ajSeqReplace(seq, sstr);
+    ajSeqAssignSeqS(seq, sstr);
     return;
 }
 
@@ -699,17 +699,17 @@ static void showalign_MakeDissimilar(const AjPSeq ref, AjPSeq seq,
     char *s;
     const char *r;
 
-    sstr = ajSeqStrCopy(seq);
-    lenref = ajSeqLen(ref);
+    sstr = ajSeqGetSeqCopyS(seq);
+    lenref = ajSeqGetLen(ref);
     s = ajStrGetuniquePtr(&sstr);
-    r = ajSeqChar(ref);
+    r = ajSeqGetSeqC(ref);
 
     for(i=0; i<lenref; i++)
 	if(s[i] != '-')
 	    if(sub[ajSeqCvtK(cvt, r[i])][ajSeqCvtK(cvt, s[i])] > 0)
 		s[i] = '.';
 
-    ajSeqReplace(seq, sstr);
+    ajSeqAssignSeqS(seq, sstr);
     return;
 }
 
@@ -755,7 +755,7 @@ static void showalign_Order(const AjPStr order,
     else
 	ref = seqs[nrefseq];
 
-    rlen = ajSeqLen(ref);
+    rlen = ajSeqGetLen(ref);
 
     /* initialise all order positions as unused */
     for(i=0; seqs[i]; i++)
@@ -786,9 +786,9 @@ static void showalign_Order(const AjPStr order,
 
     case 'S':			/* Similarity to the reference sequence */
 	if(nrefseq == -1)
-	    r = ajSeqChar(consensus);
+	    r = ajSeqGetSeqC(consensus);
 	else
-	    r = ajSeqChar(seqs[nrefseq]);
+	    r = ajSeqGetSeqC(seqs[nrefseq]);
 
 	for(i=0, j=0; seqs[i]; i++)
 	{
@@ -796,8 +796,8 @@ static void showalign_Order(const AjPStr order,
 	    {
 		aorder[j].seq = seqs[i];
 		aorder[j].similarity = 0;
-		len = ajSeqLen(aorder[j].seq);
-		s = ajSeqChar(aorder[j].seq);
+		len = ajSeqGetLen(aorder[j].seq);
+		s = ajSeqGetSeqC(aorder[j].seq);
 		for(k=0; k<len && k<rlen; k++)
 		    aorder[j].similarity += sub[ajSeqCvtK(cvt,
 			             r[k])][ajSeqCvtK(cvt,s[k])];
@@ -819,7 +819,7 @@ static void showalign_Order(const AjPStr order,
        ajUser("sorted names:");
        for(i=0; seqs[i]; i++)
        if(aorder[i].seq != NULL)
-       ajUser("%s", ajSeqName(aorder[i].seq));
+       ajUser("%s", ajSeqGetNameC(aorder[i].seq));
 
        */
 
@@ -1085,12 +1085,12 @@ static ajint showalign_OutputSeq(AjPFile outf, const AjPSeq seq, ajint pos,
 	end = pos+width-1;
 
     /* the bit of the sequence to be output */
-    ajStrAssignSubS(&line, ajSeqStr(seq), pos, end);
+    ajStrAssignSubS(&line, ajSeqGetSeqS(seq), pos, end);
 
     /* name of sequence */
     ajFmtPrintS(&marginfmt, "%%-%d.%dS", margin, margin);
     if(margin > 0)
-	ajFmtPrintF(outf, ajStrGetPtr(marginfmt), ajSeqGetName(seq));
+	ajFmtPrintF(outf, ajStrGetPtr(marginfmt), ajSeqGetNameS(seq));
 
     /* change required ranges to uppercase */
     embShowUpperRange(&line, uppercase, pos);
@@ -1127,8 +1127,8 @@ static ajint showalign_OutputSeq(AjPFile outf, const AjPSeq seq, ajint pos,
 
 static ajint showalign_CompareTwoSeqNames(const void * a, const void * b)
 {
-    return strcmp(ajSeqName((*(AjOOrder *)a).seq),
-		  ajSeqName((*(AjOOrder *)b).seq));
+    return strcmp(ajSeqGetNameC((*(AjOOrder *)a).seq),
+		  ajSeqGetNameC((*(AjOOrder *)b).seq));
 }
 
 

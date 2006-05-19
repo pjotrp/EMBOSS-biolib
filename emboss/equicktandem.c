@@ -96,20 +96,20 @@ int main(int argc, char **argv)
     thresh    = ajAcdGetInt("threshold");
     maxrepeat = ajAcdGetInt("maxrepeat");
 
-    saveseq = ajSeqNewS(sequence);
+    saveseq = ajSeqNewSeq(sequence);
     tab = ajFeattableNewSeq(saveseq);
 
     ajFmtPrintAppS(&tmpstr, "Threshold: %d\n", thresh);
     ajFmtPrintAppS(&tmpstr, "Maxrepeat: %d\n", maxrepeat);
     ajReportSetHeader(report, tmpstr);
 
-    begin = ajSeqBegin(sequence) - 1;
-    end   = ajSeqEnd(sequence) - 1;
+    begin = ajSeqGetBegin(sequence) - 1;
+    end   = ajSeqGetEnd(sequence) - 1;
 
     substr = ajStrNew();
-    str = ajSeqStrCopy(sequence);
+    str = ajSeqGetSeqCopyS(sequence);
     ajStrAssignSubS(&substr,str,begin,end);
-    ajSeqReplace(sequence,substr);
+    ajSeqAssignSeqS(sequence,substr);
 
     cvt = ajSeqCvtNewText("ACGTN");
     ajSeqNum(sequence, cvt, &tseq);

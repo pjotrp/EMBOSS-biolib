@@ -87,8 +87,8 @@ int main(int argc, char **argv)
     embWordFreeTable(&seq1MatchTable);	/* free table of words */
 
     if(outf)
-	ajFmtPrintF(outf, "%10s %10s Length\n", ajSeqName(seq1),
-		    ajSeqName(seq2));
+	ajFmtPrintF(outf, "%10s %10s Length\n", ajSeqGetNameC(seq1),
+		    ajSeqGetNameC(seq2));
 
     if(matchlist)
     {
@@ -103,9 +103,9 @@ int main(int argc, char **argv)
 	    /* ungapped alignment so same length for both sequences */
 	    ajAlignSetSubRange(align,
 			       start1, 1, len,
-			       ajSeqRev(seq1), ajSeqLen(seq1),
+			       ajSeqIsReversed(seq1), ajSeqGetLen(seq1),
 			       start2, 1, len,
-			       ajSeqRev(seq2), ajSeqLen(seq2));
+			       ajSeqIsReversed(seq2), ajSeqGetLen(seq2));
 	}
 	ajListIterFree(&iter) ;
 

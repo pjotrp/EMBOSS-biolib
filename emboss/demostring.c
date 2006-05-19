@@ -1,6 +1,6 @@
 /* @source demostring application
 **
-** Demomnstration of how the string functions should be used.
+** Demonstration of how the string functions should be used.
 ** @author Copyright (C) Peter Rice (pmr@sanger.ac.uk)
 ** @@
 ** This program is free software; you can redistribute it and/or

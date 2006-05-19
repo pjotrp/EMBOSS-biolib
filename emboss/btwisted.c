@@ -76,8 +76,8 @@ int main(int argc, char **argv)
     angletable  = btwisted_getdinucdata(angles);
     energytable = btwisted_getdinucdata(energies);
 
-    begin = ajSeqBegin(seq);
-    end   = ajSeqEnd(seq);
+    begin = ajSeqGetBegin(seq);
+    end   = ajSeqGetEnd(seq);
 
     len   = end-begin+1;
 

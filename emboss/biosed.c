@@ -85,7 +85,7 @@ int main(int argc, char **argv)
 	else
 	    biosed_delete(&substr,target,targetpos, begin);
 
-	ajSeqReplace(seq,substr);
+	ajSeqAssignSeqS(seq,substr);
 	ajSeqAllWrite(outseq,seq);
     }
 

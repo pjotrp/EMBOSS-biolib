@@ -63,11 +63,11 @@ int main(int argc, char **argv)
     datafile = ajAcdGetDatafile("datafile");
     llen     = ajAcdGetInt("length");
 
-    s1 = ajStrGetPtr(ajSeqStr(seq));
+    s1 = ajStrGetPtr(ajSeqGetSeqS(seq));
 
-    aa0str = ajStrNewRes(ajSeqLen(seq)+1);
+    aa0str = ajStrNewRes(ajSeqGetLen(seq)+1);
 
-    graphdata = ajGraphPlpDataNewI(ajSeqLen(seq)-llen);
+    graphdata = ajGraphPlpDataNewI(ajSeqGetLen(seq)-llen);
 
     midpoint = (ajint)((llen+1)/2);
 
@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 
     ajGraphDataAdd(mult,graphdata);
 
-    for(i=0;i<ajSeqLen(seq);i++)
+    for(i=0;i<ajSeqGetLen(seq);i++)
 	ajStrAppendK(&aa0str,(char)ajAZToInt(*s1++));
 
 
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
 
     s1 = ajStrGetPtr(aa0str);
 
-    for(i=0;i<ajSeqLen(seq)-llen;i++)
+    for(i=0;i<ajSeqGetLen(seq)-llen;i++)
     {
 	total = 0;
 	for(j=0;j<llen;j++)
@@ -102,13 +102,13 @@ int main(int argc, char **argv)
 	s1++;
     }
 
-    ajGraphPlpDataSetMaxima(graphdata,0.,(float)ajSeqLen(seq),min,max);
+    ajGraphPlpDataSetMaxima(graphdata,0.,(float)ajSeqGetLen(seq),min,max);
 
     min = min*1.1;
     max = max*1.1;
 
-    ajGraphPlpDataSetMaxMin(graphdata,0.0,(float)ajSeqLen(seq),min,max);
-    ajGraphxySetMaxMin(mult,0.0,(float)ajSeqLen(seq),min,max);
+    ajGraphPlpDataSetMaxMin(graphdata,0.0,(float)ajSeqGetLen(seq),min,max);
+    ajGraphxySetMaxMin(mult,0.0,(float)ajSeqGetLen(seq),min,max);
 
     ajGraphxyDisplay(mult,AJTRUE);
     ajGraphxyDel(&mult);

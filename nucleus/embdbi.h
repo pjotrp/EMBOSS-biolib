@@ -40,6 +40,7 @@ typedef struct EmbSField {
 ** @attr filenum [ajint] record in division file
 ** @attr rpos [ajint] entry offset in data file
 ** @attr spos [ajint] entry offset in sequence file
+** @attr nfields [ajint] number of fields
 ** @attr nfield [ajint*] number of tokens for each field
 ** @attr field [char***] array of tokens for each field
 ** @@

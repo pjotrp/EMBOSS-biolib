@@ -4493,9 +4493,9 @@ AjBool embSignatureAlignSeq(const AjPSignature S, const AjPSeq seq,
     ajStrAssignS(&(*hit)->Seq, P);
     (*hit)->Start=thisp;
     (*hit)->End=maxp;
-    ajStrAssignS(&(*hit)->Acc, ajSeqGetAcc(seq));
+    ajStrAssignS(&(*hit)->Acc, ajSeqGetAccS(seq));
     if(!MAJSTRGETLEN((*hit)->Acc))
-	ajStrAssignS(&(*hit)->Acc, ajSeqGetName(seq));
+	ajStrAssignS(&(*hit)->Acc, ajSeqGetNameS(seq));
     if(!MAJSTRGETLEN((*hit)->Acc))
 	ajWarn("Could not find an accession number or name for a sequence"
 	       " in embSignatureAlignSeq");

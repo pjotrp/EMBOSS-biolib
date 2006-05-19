@@ -96,8 +96,8 @@ int main(int argc, char **argv)
 
     ajFmtPrintAppS(&tmpstr, "Pattern: %S\n", pattern);
     ajFmtPrintAppS(&tmpstr, "Mismatch: %d\n", mismatch);
-    ajFmtPrintAppS(&tmpstr, "TransTable: %S\n", ajAcdValue("table"));
-    ajFmtPrintAppS(&tmpstr, "Frames: %S\n", ajAcdValue("frame"));
+    ajFmtPrintAppS(&tmpstr, "TransTable: %S\n", ajAcdGetValue("table"));
+    ajFmtPrintAppS(&tmpstr, "Frames: %S\n", ajAcdGetValue("frame"));
     ajReportSetHeader(report, tmpstr);
 
 
@@ -126,10 +126,10 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall,&seq))
     {
 	l = ajListNew();
-	ajStrAssignC(&seqname,ajSeqName(seq));
+	ajStrAssignC(&seqname,ajSeqGetNameC(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
-	ajStrAssignSubC(&text,ajSeqChar(seq),begin-1,end-1);
+	ajStrAssignSubC(&text,ajSeqGetSeqC(seq),begin-1,end-1);
 	ajStrFmtUpper(&text);
 
 	if(!ajStrCmpC(frame,"F"))
@@ -345,8 +345,8 @@ static void fuzztran_save_hits(AjPList l, ajint hits, ajint fnum,
 
     tab = *ptab;
 
-    begin = ajSeqBegin(seq);
-    end   = ajSeqEnd(seq);
+    begin = ajSeqGetBegin(seq);
+    end   = ajSeqGetEnd(seq);
 
     forward=ajTrue;
     if(fnum<0)

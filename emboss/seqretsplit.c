@@ -100,20 +100,20 @@ static AjPStr seqretsplit_Name(AjPTable table, AjPSeq seq)
 
     ajint i;
 
-    if(ajTableGet(table, ajSeqGetName(seq)))
+    if(ajTableGet(table, ajSeqGetNameS(seq)))
     {
 	nseq++;
 	ajDebug("seqretsplit_Name test nseq:%d name '%S'\n",
-		nseq, ajSeqGetName(seq));
+		nseq, ajSeqGetNameS(seq));
 
 	for(i=2; i <= nseq; i++)
 	{
-	    ajFmtPrintS(&newname, "%S.%03d", ajSeqGetName(seq), i);
+	    ajFmtPrintS(&newname, "%S.%03d", ajSeqGetNameS(seq), i);
 
 	    if(!ajTableGet(table, newname))
 	    {
-		ajStrAssignS(&oldname, ajSeqGetName(seq));
-		ajSeqAssName(seq, newname);
+		ajStrAssignS(&oldname, ajSeqGetNameS(seq));
+		ajSeqAssignNameS(seq, newname);
 		ajWarn("Duplicate name '%S' changed to '%S'",
 		       oldname, newname);
 		ajDebug("seqretsplit_Name oldname '%S' newname '%S'\n",
@@ -125,13 +125,13 @@ static AjPStr seqretsplit_Name(AjPTable table, AjPSeq seq)
 
 	if(!ret)
 	    ajWarn("Unable to set new name for duplicate sequence "
-		   "number %d '%S'", nseq, ajSeqGetName(seq));
+		   "number %d '%S'", nseq, ajSeqGetNameS(seq));
     }
     else
 	ajDebug("seqretsplit_Name OK name '%S'\n",
-		ajSeqGetName(seq));
+		ajSeqGetNameS(seq));
 
-    ajStrAssignS(&tabname, ajSeqGetName(seq));
+    ajStrAssignS(&tabname, ajSeqGetNameS(seq));
     ajStrAssignC(&tabvalue, ""); /* can't be NULL - needed to test Get result */
     ajTablePut(table, tabname, tabvalue);
 

@@ -304,9 +304,9 @@ int main(int argc, char **argv)
 
     /* write out consensus sequence */
     seqo = ajSeqNew();
-    ajSeqAssName(seqo,fname);
-    ajSeqAssSeq(seqo,nseq);
-    ajSeqSetRange(seqo,base_start,ajSeqEnd(seqo));
+    ajSeqAssignNameS(seqo,fname);
+    ajSeqAssignSeqS(seqo,nseq);
+    ajSeqSetRange(seqo,base_start,ajSeqGetEnd(seqo));
     ajSeqWrite(seqout,seqo);
     ajSeqWriteClose(seqout);
     ajStrDel(&nseq);

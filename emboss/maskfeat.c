@@ -118,7 +118,7 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type,
     /* get the feature table of the sequence */
     feat = ajSeqGetFeat(seq);
 
-    ajStrAssignS(&str, ajSeqStr(seq));
+    ajStrAssignS(&str, ajSeqGetSeqS(seq));
 
     /* For all features... */
 
@@ -145,7 +145,7 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type,
 	ajListIterFree(&iter);
     }
 
-    ajSeqReplace(seq, str);
+    ajSeqAssignSeqS(seq, str);
 
 
     ajStrDel(&str);

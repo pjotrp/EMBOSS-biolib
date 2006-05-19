@@ -126,7 +126,7 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	/* get the feature table of the sequence */
-	featab = ajSeqCopyFeat(seq);
+	featab = ajSeqGetFeatCopy(seq);
 
         /* delete features in the table that don't match our criteria */
         extractfeat_FeatureFilter(featab, source, type, sense,
@@ -383,7 +383,7 @@ static void extractfeat_GetFeatseq(const AjPSeq seq, const AjPFeature gf,
     const AjPStr str = NULL;		/* sequence string */
     AjPStr tmp = NULL;
 
-    str = ajSeqStr(seq);
+    str = ajSeqGetSeqS(seq);
     tmp = ajStrNew();
 
     ajDebug("about to get sequence from %d-%d, len=%d\n",
@@ -393,7 +393,7 @@ static void extractfeat_GetFeatseq(const AjPSeq seq, const AjPFeature gf,
 
     /* if feature was in reverse sense, then get reverse complement */
     if(!sense)
-    	ajSeqReverseStr(&tmp);
+    	ajSeqstrReverse(&tmp);
 
     ajStrAssignS(gfstr, tmp);
 
@@ -476,15 +476,15 @@ static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
     ** complement
     */
     if(compall)
-    	ajSeqReverseStr(featstr);
+    	ajSeqstrReverse(featstr);
 
     /* set the extracted sequence */
     newseq = ajSeqNew();
-    ajSeqReplace(newseq, *featstr);
+    ajSeqAssignSeqS(newseq, *featstr);
 
      /* create a nice name for the new sequence */
     name = ajStrNew();
-    ajStrAppendS(&name, ajSeqGetName(seq));
+    ajStrAppendS(&name, ajSeqGetNameS(seq));
     ajStrAppendC(&name, "_");
     value = ajStrNew();
     ajStrFromInt(&value, firstpos+1);
@@ -500,7 +500,7 @@ static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
     	ajStrAppendS(&name, type);
     }
 
-    ajSeqAssName(newseq, name);
+    ajSeqAssignNameS(newseq, name);
 
     /* set the sequence description with the 'type' added */
     desc = ajStrNew();
@@ -510,8 +510,8 @@ static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
     if(ajStrGetLen(describestr))
     	ajStrAppendS(&desc, describestr);
 
-    ajStrAppendS(&desc, ajSeqGetDesc(seq));
-    ajSeqAssDesc(newseq, desc);
+    ajStrAppendS(&desc, ajSeqGetDescS(seq));
+    ajSeqAssignDescS(newseq, desc);
 
     /* set the type */
     if(ajSeqIsNuc(seq))
@@ -574,7 +574,7 @@ static void extractfeat_BeforeAfter(const AjPSeq seq, AjPStr * featstr,
      */
 
 
-    str = ajSeqStr(seq);     /* NB don't alter this sequence string */
+    str = ajSeqGetSeqS(seq);     /* NB don't alter this sequence string */
 
     /*
     ** get start and end positions to truncate featstr at or to
@@ -595,7 +595,7 @@ static void extractfeat_BeforeAfter(const AjPSeq seq, AjPStr * featstr,
     if(end < start)
     {
         ajWarn("Extraction region end less than start for %S [%d-%d]",
-	       ajSeqGetName(seq), firstpos+1, lastpos+1);
+	       ajSeqGetNameS(seq), firstpos+1, lastpos+1);
         return;
     }
 
@@ -728,21 +728,21 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
         start = 0;
     }
 
-    if(end > ajSeqLen(seq)-1)
-    	tmp = ajSeqLen(seq)-1;
+    if(end > ajSeqGetLen(seq)-1)
+    	tmp = ajSeqGetLen(seq)-1;
     else
     	tmp = end;
 
-    if(start <= ajSeqLen(seq) && tmp >= 0)
+    if(start <= ajSeqGetLen(seq) && tmp >= 0)
     {
         ajDebug("Get subsequence %d-%d\n", start, tmp);
-        ajStrAppendSubS(&result, ajSeqStr(seq), start, tmp);
+        ajStrAppendSubS(&result, ajSeqGetSeqS(seq), start, tmp);
         ajDebug("result=%S\n", result);
     }
 
-    if(end > ajSeqLen(seq)-1)
+    if(end > ajSeqGetLen(seq)-1)
     {
-        pad = end - ajSeqLen(seq)+1;
+        pad = end - ajSeqGetLen(seq)+1;
         if(ajSeqIsNuc(seq))
             ajStrAppendCountK(&result, 'N', pad);
         else
@@ -755,7 +755,7 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
     if(!sense)
     {
 	ajDebug("get reverse sense of subsequence\n");
-    	ajSeqReverseStr(&result);
+    	ajSeqstrReverse(&result);
 	ajDebug("result=%S\n", result);
     }
 

@@ -114,17 +114,17 @@ int main(int argc, char **argv)
     trnTable = ajTrnNewI(table);
     
     /* get begin and end positions */
-    begin = ajSeqBegin(seq)-1;
-    end = ajSeqEnd(seq)-1;
+    begin = ajSeqGetBegin(seq)-1;
+    end = ajSeqGetEnd(seq)-1;
     
     /* do the name and description */
     if(nameseq)
     {
 	if(html)
 	    ajFmtPrintF(outfile, "<H2>%S</H2>\n",
-			ajSeqGetName(seq));
+			ajSeqGetNameS(seq));
 	else
-	    ajFmtPrintF(outfile, "%S\n", ajSeqGetName(seq)); 
+	    ajFmtPrintF(outfile, "%S\n", ajSeqGetNameS(seq)); 
     }
     
     if(description)
@@ -135,11 +135,11 @@ int main(int argc, char **argv)
 	 */
 	if(html)
 	    ajFmtPrintF(outfile, "<H3>%S</H3>\n",
-			ajSeqGetDesc(seq));
+			ajSeqGetDescS(seq));
 	else
 	{
 	    descriptionline = ajStrNew();
-	    ajStrAssignS(&descriptionline, ajSeqGetDesc(seq));
+	    ajStrAssignS(&descriptionline, ajSeqGetDescS(seq));
 	    ajStrFmtWrap(&descriptionline, width+margin);
 	    ajFmtPrintF(outfile, "%S\n", descriptionline);
 	    ajStrDel(&descriptionline);
@@ -216,16 +216,16 @@ int main(int argc, char **argv)
 	    /* frame -1 uses frame 1 codons */
 	    pep = ajTrnSeqOrig(trnTable, seq, 2-i);
 	  
-	pepbegin = ajSeqBegin(pep)-1;
-	pepend = ajSeqEnd(pep)-1;
-	pepseq = ajSeqStr(pep);
+	pepbegin = ajSeqGetBegin(pep)-1;
+	pepend = ajSeqGetEnd(pep)-1;
+	pepseq = ajSeqGetSeqS(pep);
 
 	ajStrAssignSubS(&substr,pepseq,pepbegin,pepend);
 
 	/* end with a '*' if we want to and there is not one there already */
-	ajDebug("last residue =%c\n", ajSeqChar(pep)[pepend]);
+	ajDebug("last residue =%c\n", ajSeqGetSeqC(pep)[pepend]);
 
-	if(addlast && ajSeqChar(pep)[pepend] != '*')
+	if(addlast && ajSeqGetSeqC(pep)[pepend] != '*')
 	{
 	    ajStrAppendK(&substr,'*');
 	    addedasterisk = ajTrue;
@@ -238,9 +238,9 @@ int main(int argc, char **argv)
 
 	totalorf += sixpackFindorfs(outseq, outfile, 0, peplen,
 				    ajStrGetPtr(substr),
-				    ajSeqName(pep), orfminsize,
+				    ajSeqGetNameC(pep), orfminsize,
 				    addedasterisk, firstorf,
-				    i+1, ajSeqName(seq), mstart);
+				    i+1, ajSeqGetNameC(seq), mstart);
 
 	ajSeqDel(&pep);
     }
@@ -405,12 +405,12 @@ static void sixpackPrintseq(AjPSeqout outseq,
     ajSeqSetProt(sq);
 
     ajStrAssignSubC(&str,seq,begin,end);
-    ajSeqReplace(sq,str);
+    ajSeqAssignSeqS(sq,str);
 
     ajFmtPrintS(&nm, "%s_ORF%d  Translation of %s in frame %d, ORF %d, "
 		"threshold %d, %daa",
 		name,count,origname,frame,count,min_orflength,orflength);
-    ajSeqAssName(sq,nm);
+    ajSeqAssignNameS(sq,nm);
 
     ajSeqWrite(outseq, sq);
 

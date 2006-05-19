@@ -582,12 +582,12 @@ static void psearch_scan_seq(const Primer primdata,
     AjPList rhits_list = NULL;
 
     /* initialise variables for search */
-    ajStrAssignC(&seqname,ajSeqName(seq));
-    ajStrAssignS(&seqstr, ajSeqStr(seq));
-    ajStrAssignS(&revstr, ajSeqStr(seq));
+    ajStrAssignC(&seqname,ajSeqGetNameC(seq));
+    ajStrAssignS(&seqstr, ajSeqGetSeqS(seq));
+    ajStrAssignS(&revstr, ajSeqGetSeqS(seq));
     ajStrFmtUpper(&seqstr);
     ajStrFmtUpper(&revstr);
-    ajSeqReverseStr(&revstr);
+    ajSeqstrReverse(&revstr);
     fhits_list = ajListNew();
     rhits_list = ajListNew();
 
@@ -595,7 +595,7 @@ static void psearch_scan_seq(const Primer primdata,
     {
 	/* test OligoA against forward sequence, and OligoB against reverse */
 	embPatFuzzSearch(primdata->forward->type,
-			 ajSeqBegin(seq),
+			 ajSeqGetBegin(seq),
 			 primdata->forward->patstr,
 			 seqname,
 			 seqstr,
@@ -616,7 +616,7 @@ static void psearch_scan_seq(const Primer primdata,
 
 	if(fhits)
 	    embPatFuzzSearch(primdata->reverse->type,
-			     ajSeqBegin(seq),
+			     ajSeqGetBegin(seq),
 			     primdata->reverse->patstr,
 			     seqname,
 			     revstr,
@@ -639,7 +639,7 @@ static void psearch_scan_seq(const Primer primdata,
     {
 	/*test OligoB against forward sequence, and OligoA against reverse  */
 	embPatFuzzSearch(primdata->reverse->type,
-			 ajSeqBegin(seq),
+			 ajSeqGetBegin(seq),
 			 primdata->reverse->patstr,
 			 seqname,
 			 seqstr,
@@ -660,7 +660,7 @@ static void psearch_scan_seq(const Primer primdata,
 
 	if(fhits)
 	    embPatFuzzSearch(primdata->forward->type,
-			     ajSeqBegin(seq),
+			     ajSeqGetBegin(seq),
 			     primdata->forward->patstr,
 			     seqname,
 			     revstr,
@@ -731,7 +731,7 @@ static void psearch_store_hits(const Primer primdata,
 	ri = ajListIterRead(rhits);
 	while(!ajListIterDone(ri))
 	{
-	    ajint seqlen = ajSeqLen(seq);
+	    ajint seqlen = ajSeqGetLen(seq);
 	    ajint s = (fm->start);
 	    ajint e;
 
@@ -748,9 +748,9 @@ static void psearch_store_hits(const Primer primdata,
 		primerhit->acc=NULL;
 		primerhit->forward=NULL;
 		primerhit->reverse=NULL;
-		ajStrAssignC(&primerhit->seqname,ajSeqName(seq));
-		ajStrAssignS(&primerhit->desc, ajSeqGetDesc(seq));
-		ajStrAssignS(&primerhit->acc, ajSeqGetAcc(seq));
+		ajStrAssignC(&primerhit->seqname,ajSeqGetNameC(seq));
+		ajStrAssignS(&primerhit->desc, ajSeqGetDescS(seq));
+		ajStrAssignS(&primerhit->acc, ajSeqGetAccS(seq));
 		primerhit->forward_pos = fm->start;
 		primerhit->reverse_pos = rm->start;
 		primerhit->forward_mismatch = fm->mm;

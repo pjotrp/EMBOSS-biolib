@@ -60,7 +60,7 @@ int main(int argc, char **argv)
 	ajStrAssignSubS(&substr,ajSeqStr(seq),beg-1,end-1);
 	ajStrFmtUpper(&substr);
 	cai = (float)ajCodCai(codon,substr);
-	ajFmtPrintF(outf,"Sequence: %S CAI: %.3f\n",ajSeqGetName(seq), cai);
+	ajFmtPrintF(outf,"Sequence: %S CAI: %.3f\n",ajSeqGetNameS(seq), cai);
     }
 
     ajFileClose(&outf);

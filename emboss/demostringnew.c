@@ -20,7 +20,7 @@
 
 #include "emboss.h"
 
-/* @prog demostring ***********************************************************
+/* @prog demostringnew ********************************************************
 **
 ** Illustrates use of the AJAX string library.
 **
@@ -49,8 +49,8 @@
 
 
 
-void demostring_msg(char * msg);
-void demostring_str(char * msg);
+static void demostring_msg(const char * msg);
+static void demostring_str(const char * msg);
 
 
 
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 
     /* Functions with the prefix ajStr are for manipulating EMBOSS strings.
        Functions with the prefix ajChar are for manipulating C-type (char*) string 
-       See @filesection and @datasection sections in ajstr.c */
+       See filesection and datasection sections in ajstr.c */
 
 
     /*
@@ -387,18 +387,33 @@ AjBool     ajStrReverse(AjPStr* Pstr);
 }
 
 
+/* @funcstatic demostring_msg *************************************************
+**
+** Prints string and text details to the user
+**
+** @param [r] msg [const char*] Message prefix
+** @return [void]
+******************************************************************************/
 
-
- void demostring_msg(char * msg)
+static void demostring_msg(const char * msg)
  {
    ajUser("%s\nstr0: %S\nstr1: %S\nstr2: %S\nstr3: %S\nstr4: %S\nstr5: %S\n"
 	  "txt0: %s\ntxt1: %s\ntxt2: %s\ntxt3: %s\ntxt4: %s\ntxt5: %s\n\n\n",
-	  msg, str0, str1, str2, str3, str4, str5, txt0, txt1, txt2, txt3, txt4, txt5);
+	  msg, str0, str1, str2, str3, str4, str5,
+	  txt0, txt1, txt2, txt3, txt4, txt5);
    
    return;
  }
 
- void demostring_str(char * msg)
+/* @funcstatic demostring_str *************************************************
+**
+** Prints string details to the user
+**
+** @param [r] msg [const char*] Message prefix
+** @return [void]
+******************************************************************************/
+
+static void demostring_str(const char * msg)
  {
    ajUser("%s\nstr0: %S\nstr1: %S\nstr2: %S\nstr3: %S\nstr4: %S\nstr5: %S\n",
 	  msg, str0, str1, str2, str3, str4, str5);

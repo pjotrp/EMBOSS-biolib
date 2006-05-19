@@ -173,29 +173,29 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seq1,&a))
     {
         ajSeqTrim(a);
-	begina = 1 + ajSeqOffset(a);
+	begina = 1 + ajSeqGetOffset(a);
 
-	m = ajStrNewRes(1+ajSeqLen(a));
+	m = ajStrNewRes(1+ajSeqGetLen(a));
 
-	lena = ajSeqLen(a);
+	lena = ajSeqGetLen(a);
 
-	ajDebug("Read '%S'\n", ajSeqGetName(a));
+	ajDebug("Read '%S'\n", ajSeqGetNameS(a));
 
 	if(!embWordGetTable(&seq1MatchTable, a)) /* get table of words */
 	    ajErr("Could not generate table for %s\n",
-		  ajSeqName(a));
+		  ajSeqGetNameC(a));
 
 	for(k=0;k<ajSeqsetSize(seq2);k++)
 	{
 	    b      = ajSeqsetGetSeq(seq2, k);
-	    lenb   = ajSeqLen(b);
-	    beginb = 1 + ajSeqOffset(b);
+	    lenb   = ajSeqGetLen(b);
+	    beginb = 1 + ajSeqGetOffset(b);
 
-	    n=ajStrNewRes(1+ajSeqLen(b));
+	    n=ajStrNewRes(1+ajSeqGetLen(b));
 
-	    ajDebug("Processing '%S'\n", ajSeqGetName(b));
-	    p = ajSeqChar(a);
-	    q = ajSeqChar(b);
+	    ajDebug("Processing '%S'\n", ajSeqGetNameS(b));
+	    p = ajSeqGetSeqC(a);
+	    q = ajSeqGetSeqC(b);
 
 	    ajStrAssignC(&m,"");
 	    ajStrAssignC(&n,"");
@@ -214,12 +214,12 @@ int main(int argc, char **argv)
 		ajFmtPrintF(errorf,
 			    "No wordmatch start points for "
 			    "%s vs %s. No alignment\n",
-			    ajSeqName(a),ajSeqName(b));
+			    ajSeqGetNameC(a),ajSeqGetNameC(b));
 		ajStrDel(&n);
 		continue;
 	    }
 	    ajDebug("++ %S v %S start:%d %d end:%d %d\n",
-		    ajSeqGetName(a), ajSeqGetName(b),
+		    ajSeqGetNameS(a), ajSeqGetNameS(b),
 		    start1, start2, end1, end2);
 
 	    if(end1-start1 > oldmax)
@@ -253,7 +253,7 @@ int main(int argc, char **argv)
 	    if(scoreonly)
 	    {
 		if(outf)
-		    ajFmtPrintF(outf,"%s %s %.2f\n",ajSeqName(a),ajSeqName(b),
+		    ajFmtPrintF(outf,"%s %s %.2f\n",ajSeqGetNameC(a),ajSeqGetNameC(b),
 				score);
 	    }
 	    else
@@ -265,10 +265,10 @@ int main(int argc, char **argv)
 
 		ajDebug("Calling embAlignPrintLocal\n");
 		if(outf)
-		    embAlignPrintLocal(outf,ajSeqChar(a),ajSeqChar(b),
+		    embAlignPrintLocal(outf,ajSeqGetSeqC(a),ajSeqGetSeqC(b),
 				       m,n,start1,start2,
-				       score,1,sub,cvt,ajSeqName(a),
-				       ajSeqName(b),
+				       score,1,sub,cvt,ajSeqGetNameC(a),
+				       ajSeqGetNameC(b),
 				       begina,beginb);
 		embAlignReportLocal(align, a, b,
 				    m,n,start1,start2,
@@ -472,10 +472,10 @@ static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
     ajint bega;
     ajint begb;
 
-    amax = ajSeqLen(a)-1;
-    bmax = ajSeqLen(b)-1;
-    bega = ajSeqOffset(a);
-    begb = ajSeqOffset(b);
+    amax = ajSeqGetLen(a)-1;
+    bmax = ajSeqGetLen(b)-1;
+    bega = ajSeqGetOffset(a);
+    begb = ajSeqGetOffset(b);
 
 
     ajDebug("supermatcher_findstartpoints len %d %d off %d %d\n",
@@ -538,7 +538,7 @@ static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
     
     
     ajDebug("supermatcher_findstartpoints has %d..%d [%d] %d..%d [%d]\n",
-	    *start1, *end1, ajSeqLen(a), *start2, *end2, ajSeqLen(b));
+	    *start1, *end1, ajSeqGetLen(a), *start2, *end2, ajSeqGetLen(b));
 
     return 1;
 }

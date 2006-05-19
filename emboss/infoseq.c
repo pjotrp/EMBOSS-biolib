@@ -198,37 +198,37 @@ int main(int argc, char **argv)
 
 
 	/* get the usa ('-' if unknown) */
-	usa = ajSeqGetUsa(seq);
+	usa = ajSeqGetUsaS(seq);
 	if(ajStrGetLen(usa) == 0)
 	    usa = altusa;
 
 	/* get the name ('-' if unknown) */
-	name = ajSeqGetName(seq);
+	name = ajSeqGetNameS(seq);
 	if(ajStrGetLen(name) == 0)
 	    name = altname;
 
 	/* get the accession number ('-' if unknown) */
-	acc = ajSeqGetAcc(seq);
+	acc = ajSeqGetAccS(seq);
 	if(ajStrGetLen(acc) == 0)
 	    acc = altacc;
 
 	/* get the GI number ('-' if unknown) */
-	gi = ajSeqGetGi(seq);
+	gi = ajSeqGetGiS(seq);
 	if(ajStrGetLen(gi) == 0)
 	    gi = altgi;
 
 	/* get the version number ('-' if unknown) */
-	sv = ajSeqGetSv(seq);
+	sv = ajSeqGetSvS(seq);
 	if(ajStrGetLen(sv) == 0)
 	    sv = altsv;
 
-	length = ajSeqLen(seq);
+	length = ajSeqGetLen(seq);
 	if(dopgc && !type)
 	{
-	    pgc = ajMeltGC(ajSeqStr(seq),length);
+	    pgc = ajMeltGC(ajSeqGetSeqS(seq),length);
 	    pgc *= 100;			/* percentage */
 	}
-	desc = ajSeqGetDesc(seq);
+	desc = ajSeqGetDescS(seq);
 
 	/* start table line */
 	if(html)

@@ -55,17 +55,17 @@ int main(int argc, char **argv)
 	/* is there a name? */
 	if(ajStrGetLen(name))
 	{
-	    ajStrAssignS(&temp, ajSeqGetName(seq));
+	    ajStrAssignS(&temp, ajSeqGetNameS(seq));
 	    ajStrAppendS(&temp, name);
-	    ajSeqAssName(seq, temp);
+	    ajSeqAssignNameS(seq, temp);
 	}
 
 	/* is there a description? */
 	if(ajStrGetLen(desc))
 	{
-	    ajStrAssignS(&temp, ajSeqGetDesc(seq));
+	    ajStrAssignS(&temp, ajSeqGetDescS(seq));
 	    ajStrAppendS(&temp, desc);
-	    ajSeqAssDesc(seq, temp);
+	    ajSeqAssignDescS(seq, temp);
 	}
 
 	/* otherwise, just overwrite the existing values */
@@ -74,11 +74,11 @@ int main(int argc, char **argv)
     {
 	/* is there a name? */
 	if(ajStrGetLen(name))
-	    ajSeqAssName(seq, name);
+	    ajSeqAssignNameS(seq, name);
 
 	/* is there a description? */
 	if(ajStrGetLen(desc))
-	    ajSeqAssDesc(seq, desc);
+	    ajSeqAssignDescS(seq, desc);
     }
 
     ajSeqWrite(seqout, seq);

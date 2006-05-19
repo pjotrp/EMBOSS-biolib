@@ -164,21 +164,21 @@ int main(int argc, char **argv)
 
     RStotal=recoder_readRE(&relist,enzymes);      /* read in RE info */
 
-    begin = ajSeqBegin(seq);              /* seq start posn, or 1     */
-    end   = ajSeqEnd(seq);                /* seq end posn, or seq len */
+    begin = ajSeqGetBegin(seq);              /* seq start posn, or 1     */
+    end   = ajSeqGetEnd(seq);                /* seq end posn, or seq len */
     radj  = begin+end+1;                  /* posn adjustment for compl seq */
 
     /* --begin and --end to convert counting from 0-N, not 1-N */
-    ajStrAssignSubC(&sstr,ajSeqChar(seq),--begin,--end);
+    ajStrAssignSubC(&sstr,ajSeqGetSeqC(seq),--begin,--end);
     ajStrFmtUpper(&sstr);
 
-    sname = ajSeqGetName(seq);
+    sname = ajSeqGetNameS(seq);
 
     ajStrAssignC(&revcomp,ajStrGetPtr(sstr));	 /* copying seq into revcomp */
-    ajSeqReverseStr(&revcomp);		 /* getting rev complement   */
+    ajSeqstrReverse(&revcomp);		 /* getting rev complement   */
     start = begin+1;
 
-    feat = ajFeattableNewDna(ajSeqGetName(seq));
+    feat = ajFeattableNewDna(ajSeqGetNameS(seq));
 
     if(sshow)
     {

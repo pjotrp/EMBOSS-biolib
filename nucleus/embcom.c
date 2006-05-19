@@ -77,7 +77,7 @@ static void comWinComplex(const char *win,const char *winsim, ajint lwin,
 			  float *ComplexOfWin, ajint jmin, ajint jmax);
 static void comCalcUj2(ajint lwin, ajint jlen,const char *win,float *Ujvalue);
 static void comCalcUj(ajint lwin, ajint jlen,const char *win,float *Ujvalue);
-static ajint comCounter(AjPStr* str, ajint k);
+static ajint comCounter(AjPStr const * str, ajint k);
 static void comAmbiguity(char *seq, ajint l);
 static void comReplace(const char *vet,char *ch);
 static void comCalcFreqACN(const char *seq, ajint lseq,float *Freq);
@@ -1240,13 +1240,13 @@ static void comCalcUj(ajint lwin, ajint jlen,const char *win,float *Ujvalue)
 **
 ** Counter of matches for complexity
 **
-** @param [r] str [AjPStr*] Words
+** @param [r] str [AjPStr const*] Words
 ** @param [r] k [ajint] Number of words
 ** @return [ajint] Counter returned
 ** @@
 ******************************************************************************/
 
-static ajint comCounter(AjPStr* str, ajint k)
+static ajint comCounter(AjPStr const * str, ajint k)
 
 {
     ajint i;

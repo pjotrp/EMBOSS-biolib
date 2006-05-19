@@ -86,12 +86,12 @@ int main(int argc, char **argv)
     full     = ajAcdGetBool("full");
     prune    = ajAcdGetBool("prune");
 
-    ajSeqToUpper(sequence);		/* prosite regexs are all upper case */
+    ajSeqFmtUpper(sequence);		/* prosite regexs are all upper case */
     tab = ajFeattableNewSeq(sequence);
     ajStrAssignC(&tailstr, "");
 
     seqlength = ajStrGetLen(str);
-    str       = ajSeqStrCopy(sequence);
+    str       = ajSeqGetSeqCopyS(sequence);
 
     redatanew = ajStrNewC("PROSITE/prosite.lines");
     docdata   = ajStrNewC("PROSITE/");

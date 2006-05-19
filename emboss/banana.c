@@ -110,8 +110,8 @@ int main(int argc, char **argv)
     graph  = ajAcdGetGraph("graph");
     numres = ajAcdGetInt("residuesperline");
 
-    ibeg = ajSeqBegin(seq);
-    iend = ajSeqEnd(seq);
+    ibeg = ajSeqGetBegin(seq);
+    iend = ajSeqGetEnd(seq);
 
     ajStrAssignSubS(&sstr, ajSeqStr(seq), ibeg-1, iend-1);
     ilen = ajStrGetLen(sstr);

@@ -48,16 +48,16 @@ int main(int argc, char **argv)
     to     = ajAcdGetInt("to")-1;
     seqout = ajAcdGetSeqout("outseq");
 
-    beg = ajSeqBegin(seq)-1;
-    end = ajSeqEnd(seq)-1;
+    beg = ajSeqGetBegin(seq)-1;
+    end = ajSeqGetEnd(seq)-1;
 
     str = ajStrNew();
 
     /* get a COPY of the sequence string */
-    ajStrAssignSubS(&str, ajSeqStr(seq), beg, end);
+    ajStrAssignSubS(&str, ajSeqGetSeqS(seq), beg, end);
     ajStrCutRange(&str, from-beg, to-beg);
 
-    ajSeqReplace(seq, str);
+    ajSeqAssignSeqS(seq, str);
 
     ajSeqWrite(seqout, seq);
     ajSeqWriteClose(seqout);

@@ -248,16 +248,16 @@ int main(int argc, char **argv)
     overlap = ajAcdGetInt("overlap");
     dolist  = ajAcdGetBool("list");
 
-    seqstr = ajSeqStrCopy(sequence);
+    seqstr = ajSeqGetSeqCopyS(sequence);
     ajStrFmtUpper(&seqstr);
 
-    begin  = ajSeqBegin(sequence);
-    end    = ajSeqEnd(sequence);
+    begin  = ajSeqGetBegin(sequence);
+    end    = ajSeqGetEnd(sequence);
     seqlen = end-begin+1;
 
     ajStrAssignSubC(&substr,ajStrGetPtr(seqstr),begin-1,end-1);
     revstr = ajStrNewC(ajStrGetPtr(substr));
-    ajSeqReverseStr(&revstr);
+    ajSeqstrReverse(&revstr);
 
     AJCNEW0(entropy, seqlen);
     AJCNEW0(enthalpy, seqlen);
@@ -274,9 +274,9 @@ int main(int argc, char **argv)
     if(targetrange)
 	ajFmtPrintF
 	    (outf, "Prima of %s from positions %d to %d bps\n",
-	     ajSeqName(sequence),targetstart, targetend);
+	     ajSeqGetNameC(sequence),targetstart, targetend);
     else
-	ajFmtPrintF(outf, "Prima of %s\n", ajSeqName(sequence));
+	ajFmtPrintF(outf, "Prima of %s\n", ajSeqGetNameC(sequence));
 
     ajFmtPrintF(outf, "PRIMER CONSTRAINTS:\n");
     ajFmtPrintF
@@ -463,7 +463,7 @@ int main(int argc, char **argv)
 	    v1 = pair->r->start;
 	    v2 = v1 + pair->r->primerlen -1;
 	    ajStrAssignSubS(&p2,substr,v1,v2);
-	    ajSeqReverseStr(&p2);
+	    ajSeqstrReverse(&p2);
 	    ajFmtPrintF(outf,
 			"%6d %-25.25s %d\n", v1+begin, ajStrGetPtr(p2), v2+begin);
 
@@ -514,7 +514,7 @@ int main(int argc, char **argv)
 	    v1 = pair->r->start;
 	    v2 = v1 + pair->r->primerlen -1;
 	    ajStrAssignSubS(&p2,substr,v1,v2);
-	    ajSeqReverseStr(&p2);
+	    ajSeqstrReverse(&p2);
 	    ajStrAssignSubS(&p1,substr,v1,v2);
 	    ajFmtPrintF(outf,"    Reverse: 5' %s 3'\n",ajStrGetPtr(p1));
 	    ajFmtPrintF(outf,"             Start: %d\n",v1+begin);
@@ -750,7 +750,7 @@ static void prima_testproduct(const AjPStr seqstr,
 	    break;
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(seqstr),revpstart,revpend);
-	ajSeqReverseStr(&substr);
+	ajSeqstrReverse(&substr);
 
 	thisplen = minprimerlen + i;
 
@@ -1274,7 +1274,7 @@ static void prima_testtarget(const AjPStr seqstr, const AjPStr revstr,
 		    break;
 
 		ajStrAssignSubC(&rstr, ajStrGetPtr(seqstr), revstart, revend);
-		ajSeqReverseStr(&rstr);
+		ajSeqstrReverse(&rstr);
 
 		thisplen = ajStrGetLen(rstr);
 		primerTm = ajTm2("", revstart, thisplen, saltconc, dnaconc, 1,
@@ -1466,7 +1466,7 @@ static void prima_test_multi(AjPList forlist, AjPList revlist, ajint *neric,
 	v = tmp->primerlen;
 	limit = len-v+1;
 	ajStrAssignC(&st,ajStrGetPtr(tmp->substr));
-	ajSeqReverseStr(&st);
+	ajSeqstrReverse(&st);
 	p = ajStrGetPtr(st);
 	for(j=0;j<limit && count<2;++j)
 	{
