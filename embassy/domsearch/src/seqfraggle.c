@@ -399,7 +399,7 @@ static void seqfraggle_getlengths_other(AjPStr temp,
 	{
 	    tmpseq = ajSeqsetGetSeq(*seqset, x);
 	    
-    	    len = ajSeqLen(tmpseq);
+    	    len = ajSeqGetLen(tmpseq);
 	    ajIntPut(seq_len, x, len);
 	    ajIntPut(seq_len_sort, x, len);
 	}

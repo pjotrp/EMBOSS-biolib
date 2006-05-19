@@ -203,9 +203,9 @@ int main(int argc, char *argv[])
     string = NULL;
     structure = NULL;
 
-    length = ajSeqLen(seq);
+    length = ajSeqGetLen(seq);
     string = (char *) space(length+1);
-    strcpy(string,ajSeqChar(seq));
+    strcpy(string,ajSeqGetSeqC(seq));
 
     len = ajStrGetLen(constring);
     structure = (char *) space(length+1);

@@ -423,8 +423,8 @@ static AjBool  ssematch_NWScore(AjPScop temp_scop,
         qseq = ssematch_convertbases(temp_scop->Sss);
 
 
-    lenp = ajSeqLen(pseq); /* Length of query sequence.   */
-    lenq = ajSeqLen(qseq); /* Length of subject sequence. */
+    lenp = ajSeqGetLen(pseq); /* Length of query sequence.   */
+    lenq = ajSeqGetLen(qseq); /* Length of subject sequence. */
    
 
    
@@ -441,8 +441,8 @@ static AjBool  ssematch_NWScore(AjPScop temp_scop,
 	maxarr=len;
     }
 
-    p = ajSeqChar(pseq); 
-    q = ajSeqChar(qseq); 
+    p = ajSeqGetSeqC(pseq); 
+    q = ajSeqGetSeqC(qseq); 
 
     ajStrAssignC(&pstr,"");
     ajStrAssignC(&qstr,"");

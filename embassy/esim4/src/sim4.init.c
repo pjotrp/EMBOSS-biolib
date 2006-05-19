@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.10 2006/04/20 12:46:07 rice Exp $";
+"$Id: sim4.init.c,v 1.11 2006/05/19 11:31:56 rice Exp $";
 #endif         
            
 
@@ -127,7 +127,7 @@ AjPSeq    esim4_rsequence=NULL;
 AjPSeq    esim4_genome=NULL;
 AjPFile   ESIM4_OUTDEV;  /* value set in sim4_argvals(), below */
 /* example: a is esim4_genome, b is revseq1 */
-#define ESIM4REVSEQ(a,b)    ajSeqReverse(a); (void) strcpy((char *) b,ajSeqChar(a));
+#define ESIM4REVSEQ(a,b)    ajSeqReverseDo(a); (void) strcpy((char *) b,ajSeqGetSeqC(a));
 #else   /* EMBASSY */
 /* example: a is sf2, b is seq1 */
 #define ESIM4REVSEQ(a,b) a = seq_revcomp_inplace(a); b = SEQ_CHARS(a)
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
         sim4_argvals(&rs);
 
 
-	ajSeqToUpper(esim4_sequence);
+	ajSeqFmtUpper(esim4_sequence);
 
         DNA_scores(&ds, ss);
 
@@ -185,10 +185,10 @@ int main(int argc, char *argv[])
          */
 	ajSeqTrim(esim4_sequence);
         
-	len1 = strlen(ajSeqChar(esim4_sequence));
+	len1 = strlen(ajSeqGetSeqC(esim4_sequence));
         seq1 = malloc(sizeof(sim4_uchar) * (1 + len1 ));
-        (void) strcpy((char *) seq1,ajSeqChar(esim4_sequence));
-	h1= ajCharNewC(ajSeqName(esim4_sequence));
+        (void) strcpy((char *) seq1,ajSeqGetSeqC(esim4_sequence));
+	h1= ajCharNewC(ajSeqGetNameC(esim4_sequence));
 	if (!is_DNA(seq1, len1))
                 fatal("The mRNA sequence is not a DNA sequence.");
         seq_toupper(seq1, len1, h1);
@@ -196,13 +196,13 @@ int main(int argc, char *argv[])
         if( ! ajSeqallNext(esim4_seqall,&esim4_genome)){
                 fatal("The genomic sequence file specification is invalid.");
         }
-	ajSeqToUpper(esim4_genome);
+	ajSeqFmtUpper(esim4_genome);
 	/* AJB: Trim genomic sequence */
 	ajSeqTrim(esim4_genome);
-	len2 = strlen(ajSeqChar(esim4_genome));
+	len2 = strlen(ajSeqGetSeqC(esim4_genome));
         seq2 = malloc(sizeof(sim4_uchar) * (2 + len2 ));
-        (void) strcpy((char *) seq2,ajSeqChar(esim4_genome));
-	h2= ajCharNewC(ajSeqName(esim4_genome));
+        (void) strcpy((char *) seq2,ajSeqGetSeqC(esim4_genome));
+	h2= ajCharNewC(ajSeqGetNameC(esim4_genome));
 	if (!is_DNA(seq2, len2))
                 fatal("The mRNA sequence is not a DNA sequence.");
         seq_toupper(seq2, len2, h2);
@@ -216,7 +216,7 @@ int main(int argc, char *argv[])
  
         revseq1 = malloc(sizeof(sim4_uchar) * (1 + len1 ));
         esim4_rsequence = ajSeqNew ();
-	ajSeqReplace (esim4_rsequence,ajSeqStrCopy(esim4_sequence));
+	ajSeqAssignSeqS(esim4_rsequence,ajSeqGetSeqCopyS(esim4_sequence));
         ESIM4REVSEQ(esim4_rsequence,revseq1);
 
         if (rs.ali_flag==5) {
@@ -340,13 +340,13 @@ else {
            if (count) { /* skip the first seq2, already in memory */
 #ifdef EMBASSY
 	      /* AJB: Trim sequence again */
-	       ajSeqToUpper(esim4_genome);
+	       ajSeqFmtUpper(esim4_genome);
 	      ajSeqTrim(esim4_genome);
-	      len2 = strlen(ajSeqChar(esim4_genome));
+	      len2 = strlen(ajSeqGetSeqC(esim4_genome));
               if(seq2 != NULL)free(seq2);
               seq2 = malloc(sizeof(sim4_uchar) * (2 + len2 ));
-              (void) strcpy((char *) seq2,ajSeqChar(esim4_genome));
-	      tok = h2= ajCharNewC(ajSeqName(esim4_genome));
+              (void) strcpy((char *) seq2,ajSeqGetSeqC(esim4_genome));
+	      tok = h2= ajCharNewC(ajSeqGetNameC(esim4_genome));
 	      if (!is_DNA(seq2, len2))
                       fatal("The mRNA sequence is not a DNA sequence.");
               seq_toupper(seq2, len2, h2);
@@ -778,7 +778,7 @@ AjPStr   esim4_cdsregion;
         args->ali_flag    = ajAcdGetInt ("format");
         args->poly_flag   = ajAcdGetBool ("cliptails");
         args->acc_flag    = ajAcdGetBool ("smallexons");
-        esim4_strand      = ajAcdGetListI ("strand", 1);
+        esim4_strand      = ajAcdGetListSingle("strand");
         args->DRANGE      = ajAcdGetInt ("diagonal");
         args->weight      = ajAcdGetInt ("weight");
         args->cutoff      = ajAcdGetInt ("cutoff");

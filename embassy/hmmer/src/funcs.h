@@ -9,7 +9,7 @@
  ************************************************************/
 
 /* funcs.h 
- * RCS $Id: funcs.h,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: funcs.h,v 1.3 2006/05/19 11:33:12 rice Exp $
  *
  * Declarations of external functions in HMMER.
  */            
@@ -286,7 +286,7 @@ extern void GetRankedHit(struct tophit_s *h, int rank,
 			 struct fancyali_s **r_ali);
 extern int    TophitsMaxName(struct tophit_s *h);
 extern void   FullSortTophits(struct tophit_s *h);
-extern void   TophitsReport(struct tophit_s *h, double E, int nseq);
+extern void   TophitsReport(FILE* fp,struct tophit_s *h, double E, int nseq);
 
 /* from trace.c
  * Support for traceback (state path) structure

@@ -450,12 +450,12 @@ static AjBool domainseqs_AlignDomain(AjPSeq sp_seq,
     cvt = ajMatrixfCvt(matrix);
 
 
-    begina  = ajSeqBegin(sp_seq)+ajSeqOffset(sp_seq);
+    begina  = ajSeqGetBegin(sp_seq)+ajSeqGetOffset(sp_seq);
 
-    lena = ajSeqLen(sp_seq);
+    lena = ajSeqGetLen(sp_seq);
     ajSeqTrim(pdb_seq);
-    lenb = ajSeqLen(pdb_seq);
-    len  = ajSeqLen(sp_seq)*ajSeqLen(pdb_seq);
+    lenb = ajSeqGetLen(pdb_seq);
+    len  = ajSeqGetLen(sp_seq)*ajSeqGetLen(pdb_seq);
     
     if(len>maxarr)
     {
@@ -464,10 +464,10 @@ static AjBool domainseqs_AlignDomain(AjPSeq sp_seq,
 	maxarr=len;
     }
     
-    beginb  = ajSeqBegin(pdb_seq)+ajSeqOffset(pdb_seq);
+    beginb  = ajSeqGetBegin(pdb_seq)+ajSeqGetOffset(pdb_seq);
 
-    p = ajSeqChar(sp_seq); 
-    q = ajSeqChar(pdb_seq); 
+    p = ajSeqGetSeqC(sp_seq); 
+    q = ajSeqGetSeqC(pdb_seq); 
     
     ajStrAssignC(&m,"");
     ajStrAssignC(&n,"");
@@ -572,24 +572,24 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq,
     ajint no_gaps_pdb = 0;   /* The number of gaps in the pdb sequence. */
     
     ajDebug("embAlignReportGlobal %d %d\n", start1, start2);
-    ajDebug("  sp_seq: '%S' \n", ajSeqStr(sp_seq));
-    ajDebug("  pdb_seq: '%S' \n", ajSeqStr(pdb_seq));
+    ajDebug("  sp_seq: '%S' \n", ajSeqGetSeqS(sp_seq));
+    ajDebug("  pdb_seq: '%S' \n", ajSeqGetSeqS(pdb_seq));
     ajDebug("  alim: '%S' \n", m);
     ajDebug("  alin: '%S' \n", n);
 
-    maxlen = AJMAX(ajSeqLen(sp_seq), ajSeqLen(pdb_seq));
+    maxlen = AJMAX(ajSeqGetLen(sp_seq), ajSeqGetLen(pdb_seq));
 
     seqset = ajSeqsetNew();
     res1 = ajSeqNew();
     res2 = ajSeqNew();
 
-    ajSeqAssName (res1, ajSeqGetName(sp_seq));
-    ajSeqAssName (res2, ajSeqGetName(pdb_seq));
-    ajSeqAssUsa (res1, ajSeqGetUsa(sp_seq));
-    ajSeqAssUsa (res2, ajSeqGetUsa(pdb_seq));
+    ajSeqAssignNameS(res1, ajSeqGetNameS(sp_seq));
+    ajSeqAssignNameS(res2, ajSeqGetNameS(pdb_seq));
+    ajSeqAssignUsaS(res1, ajSeqGetUsaS(sp_seq));
+    ajSeqAssignUsaS(res2, ajSeqGetUsaS(pdb_seq));
 
-    a = ajSeqChar(sp_seq);
-    b = ajSeqChar(pdb_seq);
+    a = ajSeqGetSeqC(sp_seq);
+    b = ajSeqGetSeqC(pdb_seq);
     
     /* Generate the full aligned sequences. */
     ajStrSetRes(&fa, maxlen);
@@ -626,8 +626,8 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq,
     ajStrAppendS(&fa, m);
     ajStrAppendS(&fb, n);
 
-    alen=ajSeqLen(sp_seq) - apos;
-    blen=ajSeqLen(pdb_seq) - bpos;
+    alen=ajSeqGetLen(sp_seq) - apos;
+    blen=ajSeqGetLen(pdb_seq) - bpos;
 
     ajDebug("alen: %d blen: %d apos: %d bpos: %d\n", 
 	    alen, blen, apos, bpos);
@@ -661,8 +661,8 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq,
 
     ajDebug("  res1: %5d '%S' \n", ajStrGetLen(fa), fa);
     ajDebug("  res2: %5d '%S' \n", ajStrGetLen(fb), fb);
-    ajSeqAssSeq (res1, fa);
-    ajSeqAssSeq (res2, fb);
+    ajSeqAssignSeqS(res1, fa);
+    ajSeqAssignSeqS(res2, fb);
 
     ajSeqsetFromPair (seqset, res1, res2);
 

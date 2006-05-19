@@ -41,9 +41,9 @@ int main(int argc, char **argv)
 
     ajFmtPrintF(outf, "Sequence properties\n");
     ajFmtPrintF(outf, "===================\n");
-    ajFmtPrintF(outf, "Name: %S\n", ajSeqGetName(seq));
-    ajFmtPrintF(outf, "Usa: %S\n", ajSeqGetUsa(seq));
-    ajFmtPrintF(outf, "Length: %d\n", ajSeqLen(seq));
+    ajFmtPrintF(outf, "Name: %S\n", ajSeqGetNameS(seq));
+    ajFmtPrintF(outf, "Usa: %S\n", ajSeqGetUsaS(seq));
+    ajFmtPrintF(outf, "Length: %d\n", ajSeqGetLen(seq));
     ajFileClose(&outf);
 
     ajExit ();

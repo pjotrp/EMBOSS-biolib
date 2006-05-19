@@ -220,9 +220,9 @@ int main(int argc, char *argv[])
     }
    
 
-    length = ajSeqLen(seq);
+    length = ajSeqGetLen(seq);
     string = (char *) space(length+1);   
-    strcpy(string,ajSeqChar(seq));
+    strcpy(string,ajSeqGetSeqC(seq));
    
        
     for (l = 0; l < length; l++)

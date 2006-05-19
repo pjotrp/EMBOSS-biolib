@@ -140,14 +140,14 @@ int main(int argc, char *argv[])
     }
 
 
-    s1len = ajSeqLen(seq1);
-    s2len = ajSeqLen(seq2);
+    s1len = ajSeqGetLen(seq1);
+    s2len = ajSeqGetLen(seq2);
 
     s1 = (char *) space(s1len+1);
     s2 = (char *) space(s2len+1);
 
-    strcpy(s1,ajSeqChar(seq1));
-    strcpy(s2,ajSeqChar(seq2));
+    strcpy(s1,ajSeqGetSeqC(seq1));
+    strcpy(s2,ajSeqGetSeqC(seq2));
     
     for (l = 0; l < s1len; l++)
     {

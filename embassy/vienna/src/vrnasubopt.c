@@ -156,9 +156,9 @@ int main(int argc, char *argv[])
     sequence  = NULL;
     structure = NULL;
 
-    length = ajSeqLen(seq);
+    length = ajSeqGetLen(seq);
     sequence = (char *) space(length+1);
-    strcpy(sequence,ajSeqChar(seq));
+    strcpy(sequence,ajSeqGetSeqC(seq));
 
     len = ajStrGetLen(constring);
     structure = (char *) space(length+1);
@@ -186,7 +186,7 @@ int main(int argc, char *argv[])
 
     /* first lines of output (suitable  for sort +1n) */
 
-    ajFmtPrintF(outf,"> %s [%d]\n", ajSeqName(seq), delta);
+    ajFmtPrintF(outf,"> %s [%d]\n", ajSeqGetNameC(seq), delta);
 
     if(n_back>0)
     {

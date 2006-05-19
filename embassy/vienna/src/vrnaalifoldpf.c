@@ -23,7 +23,7 @@
 #include "aln_util.h"
 extern void  read_parameter_file(AjPFile fname);
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.3 2006/04/20 12:57:58 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.4 2006/05/19 11:34:23 rice Exp $";
 
 #define PRIVATE static
 
@@ -196,10 +196,10 @@ int main(int argc, char *argv[])
     {
 	tseq  = (AjPSeq) ajSeqsetGetSeq(seq,i);
 	tname = (AjPStr) ajSeqsetName(seq,i);
-	len   = ajSeqLen(tseq);
+	len   = ajSeqGetLen(tseq);
 	AS[i] = (char *) space(len+1);
 	names[i] = (char *) space(ajStrGetLen(tname)+1);
-	strcpy(AS[i],ajSeqChar(tseq));
+	strcpy(AS[i],ajSeqGetSeqC(tseq));
 	strcpy(names[i],ajStrGetPtr(tname));
     }
     AS[n_seq] = NULL;

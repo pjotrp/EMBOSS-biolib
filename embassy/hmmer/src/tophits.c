@@ -322,7 +322,7 @@ FullSortTophits(struct tophit_s *h)
  *           Prints information on stdout
  */           
 void
-TophitsReport(struct tophit_s *h, double E, int nseq)
+TophitsReport(FILE* fp, struct tophit_s *h, double E, int nseq)
 {
   int i;
   int memused;
@@ -368,8 +368,8 @@ TophitsReport(struct tophit_s *h, double E, int nseq)
 
   /* Format and print a summary
    */
-  printf("tophits_s report:\n");
-  printf("     Total hits:           %d\n", h->num);
-  printf("     Satisfying E cutoff:  %d\n", n);
-  printf("     Total memory:         %dK\n", memused / 1000);
+  fprintf(fp, "tophits_s report:\n");
+  fprintf(fp, "     Total hits:           %d\n", h->num);
+  fprintf(fp, "     Satisfying E cutoff:  %d\n", n);
+  fprintf(fp, "     Total memory:         %dK\n", memused / 1000);
 }

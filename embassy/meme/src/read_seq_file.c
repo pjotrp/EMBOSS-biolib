@@ -370,13 +370,13 @@ extern BOOLEAN read_sequence(
   /* get the sample name; truncate to msn characters */
   Resize(name, msn+1, char);
 
-  if(strlen(ajSeqName(eseq))>msn)
-      strncpy(name,ajSeqName(eseq),msn);
+  if(strlen(ajSeqGetNameC(eseq))>msn)
+      strncpy(name,ajSeqGetNameC(eseq),msn);
   else
-      strcpy(name,ajSeqName(eseq));
+      strcpy(name,ajSeqGetNameC(eseq));
   name[msn]='\0';
 
-  p = ajStrGetPtr(ajSeqGetDesc(eseq));
+  p = ajStrGetPtr(ajSeqGetDescS(eseq));
   
   /* read in description */
   *sample_de = NULL;			/* in case no description found */
@@ -428,10 +428,10 @@ static int read_sequence_data(
     read sample sequence 
   */
 
-  length = ajSeqLen(eseq);
+  length = ajSeqGetLen(eseq);
   
-  Resize(seq, ajSeqLen(eseq)+1, char);
-  strcpy(seq,ajSeqChar(eseq));
+  Resize(seq, ajSeqGetLen(eseq)+1, char);
+  strcpy(seq,ajSeqGetSeqC(eseq));
   seq[length] = '\0';
 
   *sequence = seq;
@@ -466,4 +466,4 @@ static int read_sequence_de(
 
   return length;
 }
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/read_seq_file.c,v 1.3 2006/02/22 15:02:28 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/read_seq_file.c,v 1.4 2006/05/19 11:33:21 rice Exp $ */
