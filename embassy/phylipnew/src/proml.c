@@ -814,7 +814,7 @@ void input_protdata(AjPSeqset seqset, long chars)
   for(i=0;i<spp;i++){
     initnameseq(seqset, i);
     strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
-    y[i][chars] = '\0';
+    /*y[i][chars] = '\0';*/ /* no trailing null - just the characters */
   }
   if (!printdata)
     return;

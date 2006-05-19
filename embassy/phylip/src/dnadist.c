@@ -488,7 +488,7 @@ void doinit(int argc, char *argv[])
   y = (Char **)Malloc(numsp*sizeof(Char *));
   nodep = (node **)Malloc(numsp*sizeof(node *));
   for (i = 0; i < numsp; i++) {
-    y[i] = (Char *)Malloc(sites*sizeof(Char));
+    y[i] = (Char *)Malloc((sites+1)*sizeof(Char));
     nodep[i] = (node *)Malloc(sizeof(node));
   }
 }  /* doinit */

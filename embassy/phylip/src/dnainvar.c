@@ -316,7 +316,7 @@ void doinit(int argc, char *argv[])
       getoptions();*/
   y       = (Char **)Malloc(numsp*sizeof(Char *));
   for (i = 0; i < numsp; i++)
-    y[i] = (Char *)Malloc(sites*sizeof(Char));
+    y[i] = (Char *)Malloc((sites+1)*sizeof(Char));
 
   weight       = (long *)Malloc(sites * sizeof(long));
   alias        = (long *)Malloc(sites * sizeof(long));

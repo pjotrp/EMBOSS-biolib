@@ -539,7 +539,7 @@ void doinit(int argc, char *argv[])
   emboss_getnums();
   y = (Char **)Malloc(spp*sizeof(Char *));
   for (i = 0; i < spp; i++)
-    y[i] = (Char *)Malloc(chars*sizeof(Char));
+    y[i] = (Char *)Malloc((chars+1)*sizeof(Char));
   treenode = (node **)Malloc((spp*2-1)*sizeof(node *));
   for (i = 0; i < spp; i++)
     treenode[i] = (node *)Malloc(sizeof(node));

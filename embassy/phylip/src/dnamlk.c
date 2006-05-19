@@ -789,7 +789,7 @@ void doinit(int argc, char *argv[])
   for (i=0;i<spp;i++)
     naym[i] = (char *)Malloc(nmlngth+1);
   for (i = 0; i < spp; i++)
-    y[i] = (char *)Malloc(sites * sizeof(char));
+    y[i] = (char *)Malloc((sites+1) * sizeof(char));
   for (i = 0; i < spp; i++)
     curtree.nodep[i] = (node *)Malloc(sizeof(node));
   for (i = spp; i < nonodes; i++) {

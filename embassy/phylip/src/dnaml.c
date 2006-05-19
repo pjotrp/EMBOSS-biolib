@@ -739,7 +739,7 @@ void doinit(int argc, char *argv[])
   emboss_getnums();
   y = (Char **)Malloc(numsp*sizeof(Char *));
   for (i = 0; i < numsp; i++)
-    y[i] = (Char *)Malloc(sites*sizeof(Char));
+    y[i] = (Char *)Malloc((sites+1)*sizeof(Char));
   curtree.nodep = (node **)Malloc(numsp2*sizeof(node *));
   for (i = 0; i < numsp; i++)
     curtree.nodep[i] = (node *)Malloc(sizeof(node));
