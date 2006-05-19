@@ -1656,9 +1656,9 @@ AcdOAttr acdAttrRange[] =
     {"maximum", VT_INT, "(INT_MAX)",
 	 "Maximum value"},
     {"size", VT_INT, "0",
-	 "Number of values required"},
+	 "Exact number of values required"},
     {"minsize", VT_INT, "0",
-	 "Number of values required"},
+	 "Minimum number of values required"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -10722,7 +10722,7 @@ static void acdSetSeq(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    acdInFileSave(ajSeqGetName(val), ajTrue);	/* save sequence name */
+    acdInFileSave(ajSeqGetNameS(val), ajTrue);	/* save sequence name */
     
     /* some standard options using associated qualifiers */
     
@@ -10818,7 +10818,7 @@ static void acdSetSeq(AcdPAcd thys)
 	   sbegin, send, sreverse);
     
     if(val->Rev)
-	ajSeqReverse(val);
+	ajSeqReverseDo(val);
     
     ajSeqinDel(&seqin);
     
@@ -10828,9 +10828,9 @@ static void acdSetSeq(AcdPAcd thys)
     thys->SetAttr = &acdCalcSeq[0];
     thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
     
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqBegin(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqEnd(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqGetBegin(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqGetEnd(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqGetLen(val));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(val));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
@@ -11104,10 +11104,10 @@ static void acdSetSeqall(AcdPAcd thys)
 	    acdSetQualDefBool(thys, "sreverse", sreverse);
 	}
     }
-    
-    if(val->Rev)
-	ajSeqallReverse(val);
-    
+    /* no need to do this - it should happen in ajSeqallNext */
+    /* if(val->Rev)
+	ajSeqallReverse(val); */
+
     acdLog("sbegin: %d, send: %d, sreverse: %B\n",
 	   sbegin, send, sreverse);
     
@@ -11119,7 +11119,7 @@ static void acdSetSeqall(AcdPAcd thys)
     
     ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqallBegin(val));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqallEnd(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqLen(seq));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqGetLen(seq));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(seq));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(seq));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], seq->Name);
@@ -18649,7 +18649,7 @@ static AcdPAcd acdFindItem(const AjPStr item, ajint number)
 **
 ** Finds a qualifier by name, and returns the full name
 **
-** @param [r] pqual [AjPStr*] Qualifier name
+** @param [u] pqual [AjPStr*] Qualifier name
 ** @return [AcdPAcd] ACD item for qualifier
 ** @@
 ******************************************************************************/
@@ -22008,6 +22008,7 @@ static AjBool acdTextFormat(AjPStr* text)
 ** Print internal details for use by entrails
 **
 ** @nam3rule Print Print internal details
+** @nam4rule PrintAppl Print details of ACD application attributes
 ** @nam4rule PrintQual Print details of ACD datatype known qualifiers
 ** @nam4rule PrintType Print details of ACD datatypes
 **
@@ -22020,6 +22021,49 @@ static AjBool acdTextFormat(AjPStr* text)
 ******************************************************************************/
 
 
+
+
+/* @func ajAcdPrintAppl *******************************************************
+**
+** Report details of all known ACD attributes for all applications.
+** For use by EMBOSS entrails.
+**
+** @param [u] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report
+** @return [void]
+**
+******************************************************************************/
+
+void ajAcdPrintAppl(AjPFile outf, AjBool full)
+{
+    ajint i;
+    AcdPAttr attr;
+    AjPStr tmpstr = NULL;
+    ajint maxtmp = 0;
+
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# ACD Application Attributes\n");
+    ajFmtPrintF(outf, "# Attribute       Type       Default      Helptext\n");
+    
+    ajFmtPrintF(outf, "AttrAppl {\n");
+    for(i=0; acdAttrAppl[i].Name; i++)
+    {
+	attr = &acdAttrAppl[i];
+	ajFmtPrintF(outf, "  %-15s", attr->Name);
+	ajFmtPrintF(outf, " %-10s", acdValNames[attr->Type]);
+	ajFmtPrintS(&tmpstr, "\"%s\"", attr->Default);
+	if(ajStrGetLen(tmpstr) > maxtmp)
+	    maxtmp = ajStrGetLen(tmpstr);
+	ajFmtPrintF(outf, " %-12S", tmpstr);
+	ajFmtPrintF(outf, " \"%s\"", attr->Help);
+	ajFmtPrintF(outf, "\n");
+    }
+    ajFmtPrintF(outf, "}\n\n");
+    if(maxtmp > 12) ajWarn("ajAcdPrintAppl max tmpstr len %d",
+			maxtmp);	      
+    ajStrDel(&tmpstr);
+    return;
+}
 
 /* @func ajAcdPrintQual *******************************************************
 **
@@ -22063,47 +22107,7 @@ void ajAcdPrintQual(AjPFile outf, AjBool full)
     return;
 }
 
-/* @func ajAcdPrintAppl *******************************************************
-**
-** Report details of all known ACD attributes for all applications.
-** For use by EMBOSS entrails.
-**
-** @param [u] outf [AjPFile] Output file
-** @param [r] full [AjBool] Full report
-** @return [void]
-**
-******************************************************************************/
 
-void ajAcdPrintAppl(AjPFile outf, AjBool full)
-{
-    ajint i;
-    AcdPAttr attr;
-    AjPStr tmpstr = NULL;
-    ajint maxtmp = 0;
-
-    ajFmtPrintF(outf, "\n");
-    ajFmtPrintF(outf, "# ACD Application Attributes\n");
-    ajFmtPrintF(outf, "# Attribute       Type       Default      Helptext\n");
-    
-    ajFmtPrintF(outf, "AttrAppl {\n");
-    for(i=0; acdAttrAppl[i].Name; i++)
-    {
-	attr = &acdAttrAppl[i];
-	ajFmtPrintF(outf, "  %-15s", attr->Name);
-	ajFmtPrintF(outf, " %-10s", acdValNames[attr->Type]);
-	ajFmtPrintS(&tmpstr, "\"%s\"", attr->Default);
-	if(ajStrGetLen(tmpstr) > maxtmp)
-	    maxtmp = ajStrGetLen(tmpstr);
-	ajFmtPrintF(outf, " %-12S", tmpstr);
-	ajFmtPrintF(outf, " \"%s\"", attr->Help);
-	ajFmtPrintF(outf, "\n");
-    }
-    ajFmtPrintF(outf, "}\n\n");
-    if(maxtmp > 12) ajWarn("ajAcdPrintAppl max tmpstr len %d",
-			maxtmp);	      
-    ajStrDel(&tmpstr);
-    return;
-}
 
 /* @func ajAcdPrintType *******************************************************
 **
