@@ -126,6 +126,7 @@ void         ajSeqAllWrite (AjPSeqout outseq, const AjPSeq seq);
 AjBool       ajSeqFileNewOut (AjPSeqout seqout, const AjPStr name);
 ajint        ajSeqoutCheckGcg (const AjPSeqout outseq);
 void         ajSeqoutClear (AjPSeqout thys);
+void         ajSeqoutCount(const AjPSeqout seqout, ajint* b);
 void         ajSeqoutDefName(AjPSeqout thys,
 			     const AjPStr setname, AjBool multi);
 void         ajSeqoutDel (AjPSeqout* thys);
