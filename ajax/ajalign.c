@@ -354,7 +354,7 @@ static void alignWriteTrace(AjPAlign thys)
 	    ajFmtPrintF(thys->File,
 			"Num%d.%d: %d/%d %d> %d..%d <%d (%d) Rev:%B %d..%d %d..%d\n",
 			iali, iseq,
-			(ajSeqLen(seq) - ajSeqGapCount(seq)),
+			(ajSeqGetLen(seq) - ajSeqGapCount(seq)),
 			data->Len[iseq],
 			data->Offset[iseq],
 			data->Start[iseq], data->End[iseq],
@@ -364,16 +364,17 @@ static void alignWriteTrace(AjPAlign thys)
 			alignSeqGapBegin(data, iseq),
 			alignSeqGapEnd(data, iseq));
 
-	    if (ajSeqLen(seq) <= 40)
+	    if (ajSeqGetLen(seq) <= 40)
 		ajFmtPrintF(thys->File,
 			    "Seq%d.%d: %d '%S'\n",
-			    iali, iseq, ajSeqLen(seq), ajSeqStr(seq));
+			    iali, iseq, ajSeqGetLen(seq), ajSeqGetSeqS(seq));
 	    else
 	    {
-		ajStrAssignSubS(&tmpstr, ajSeqStr(seq), -20, -1);
+		ajStrAssignSubS(&tmpstr, ajSeqGetSeqS(seq), -20, -1);
 		ajFmtPrintF(thys->File,
 			    "Seq%d.%d: %d '%20.20S...%20S'\n",
-			    iali, iseq, ajSeqLen(seq), ajSeqStr(seq), tmpstr);
+			    iali, iseq, ajSeqGetLen(seq),
+			    ajSeqGetSeqS(seq), tmpstr);
 	    }
 	}
     }
@@ -469,8 +470,8 @@ static void alignWriteSeqformat(AjPAlign thys, ajint iali, const char* sqfmt)
 	seq = ajSeqNewS(alignSeq(thys, iseq, iali));
 	istart = data->SubOffset[iseq];
 	iend = istart + ilen - 1;
-	ajStrAssignSubS(&tmpstr, ajSeqStr(seq), istart, iend);
-	ajSeqReplace(seq, tmpstr);
+	ajStrAssignSubS(&tmpstr, ajSeqGetSeqS(seq), istart, iend);
+	ajSeqAssignSeqS(seq, tmpstr);
 	ajSeqWrite(seqout, seq);
 	ajSeqDel(&seq);
     }
@@ -740,8 +741,8 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     }
     else if(markx == 2)
     {
-	seq = ajSeqStr(data->Seq[0]);
-	ajStrAssignS(&cons, ajSeqStr(data->Seq[1]));
+	seq = ajSeqGetSeqS(data->Seq[0]);
+	ajStrAssignS(&cons, ajSeqGetSeqS(data->Seq[1]));
 	alignDiff(&cons, seq, '.');
     }
     else
@@ -758,7 +759,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 	incs[iseq] = alignSeqIncrement(data, iseq);
 	ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
 	ajDebug("#   Seq[%d]'%S'\n",
-		iseq, ajSeqStr(data->Seq[iseq]));
+		iseq, ajSeqGetSeqS(data->Seq[iseq]));
     }
 
     for(iseq=0; iseq < nseq; iseq++)
@@ -801,7 +802,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 	{	    
 	    for(iseq=0; iseq < nseq; iseq++)
 	    {
-		seq = ajSeqStr(data->Seq[iseq]);
+		seq = ajSeqGetSeqS(data->Seq[iseq]);
 		istart = i + data->SubOffset[iseq];
 		iend = (istart+iwidth-1);
 		if (iend >= (data->SubOffset[iseq]+ilen-1))
@@ -931,7 +932,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     else {
 	for(iseq=0; iseq < nseq; iseq++)
 	{
-	    seq = ajSeqStr(data->Seq[iseq]);
+	    seq = ajSeqGetSeqS(data->Seq[iseq]);
 	    istart = data->SubOffset[iseq];
 	    iend = istart + ilen - 1;
 	    ajStrAssignSubS(&tmpstr, seq, istart, iend);
@@ -1167,7 +1168,7 @@ static void alignWriteSimple(AjPAlign thys)
 	    incs[iseq] = alignSeqIncrement(data, iseq);
 	    ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
 	    ajDebug("#   Seq[%d]'%S'\n",
-		    iseq, ajSeqStr(data->Seq[iseq]));
+		    iseq, ajSeqGetSeqS(data->Seq[iseq]));
 	}
 	for(iseq=0; iseq < nseq; iseq++)
 	{
@@ -1181,7 +1182,7 @@ static void alignWriteSimple(AjPAlign thys)
 	{	    
 	    for(iseq=0; iseq < nseq; iseq++)
 	    {
-		seq = ajSeqStr(data->Seq[iseq]);
+		seq = ajSeqGetSeqS(data->Seq[iseq]);
 		istart = i + data->SubOffset[iseq];
 		iend = AJMIN(data->SubOffset[iseq]+ilen-1, istart+iwidth-1);
 		ajStrAssignSubS(&tmpstr, seq, istart, iend);
@@ -1432,7 +1433,7 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 	    ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
 	    ajDebug("#   Seq[%d] Off:%d Sta:%d End:%d '%S'\n",
 		    iseq, data->Offset[iseq], data->Start[iseq],
-		    data->End[iseq], ajSeqStr(data->Seq[iseq]));
+		    data->End[iseq], ajSeqGetSeqS(data->Seq[iseq]));
 	}
 	
 	for(iseq=0; iseq < nseq; iseq++)
@@ -1444,7 +1445,7 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 	{	    
 	    for(iseq=0; iseq < nseq; iseq++)
 	    {
-		seq = ajSeqStr(data->Seq[iseq]);
+		seq = ajSeqGetSeqS(data->Seq[iseq]);
 		istart = i + data->SubOffset[iseq];
 		iend = AJMIN(data->SubOffset[iseq]+ilen-1, istart+iwidth-1);
 		ajStrAssignSubS(&tmpstr, seq, istart, iend);
@@ -1547,7 +1548,7 @@ static void alignWriteTCoffee (AjPAlign thys)
     /* print header */
     ajFmtPrintF (outf, "%d\n", nseq); /* number of sequences */
     for (iseq=0; iseq < nseq; iseq++) {
-	ajStrAssignS(&sseq,ajSeqStr(pdata[0]->Seq[iseq]));
+	ajStrAssignS(&sseq,ajSeqGetSeqS(pdata[0]->Seq[iseq]));
 	ajStrRemoveWhiteExcess(&sseq);
 	ajStrExchangeCC(&sseq, "-","");
 	/* <seqname> <seqlen> <sequence> */
@@ -1572,12 +1573,12 @@ static void alignWriteTCoffee (AjPAlign thys)
 	/* go through all pairwise alignments */
 	for (s1=0; s1<nseq-1; s1++)
 	{
-	    sseq1 = ajSeqStr(pdata[0]->Seq[s1]);
+	    sseq1 = ajSeqGetSeqS(pdata[0]->Seq[s1]);
 	    for (s2=s1+1; s2<nseq; s2++) 
 	    {
 		ajFmtPrintF (outf, "#%d %d\n", s1+1, s2+1);
 		n1 = 1; n2 = 1;
-		sseq2 = ajSeqStr(pdata[0]->Seq[s2]);
+		sseq2 = ajSeqGetSeqS(pdata[0]->Seq[s2]);
 
 		for (i=0; i<ilen; i++)
 		{
@@ -1649,14 +1650,14 @@ AjBool ajAlignDefine(AjPAlign thys, AjPSeqset seqset)
     for(i=0; i < thys->Nseqs; i++)
     {
 	seq = ajSeqsetGetSeq(seqset, i);
-	data->Start[i]  = ajSeqBegin(seq);
-	data->End[i]    = ajSeqEnd(seq);
-	data->Len[i]    = ajSeqLen(seq) + ajSeqOffset(seq) + ajSeqOffend(seq)
-	    - ajSeqGapCount(seq);
-	data->Offset[i] = ajSeqOffset(seq);
-	data->Offend[i] = ajSeqOffend(seq);
+	data->Start[i] = ajSeqGetBegin(seq);
+	data->End[i]   = ajSeqGetEnd(seq);
+	data->Len[i]   = ajSeqGetLen(seq) + ajSeqGetOffset(seq)
+	    + ajSeqGetOffend(seq) - ajSeqGapCount(seq);
+	data->Offset[i] = ajSeqGetOffset(seq);
+	data->Offend[i] = ajSeqGetOffend(seq);
 	data->SubOffset[i] = 0;
-	data->Rev[i]    = ajSeqRev(seq);
+	data->Rev[i]    = ajSeqIsReversed(seq);
 	if(thys->SeqExternal)
 	    data->Seq[i] = (AjPSeq) seq;
 	else
@@ -1719,7 +1720,7 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
     }
 
     ajDebug("ajAlignDefineSS '%S' '%S'\n",
-	    ajSeqGetName(seqa), ajSeqGetName(seqb));
+	    ajSeqGetNameS(seqa), ajSeqGetNameS(seqb));
     if(thys->SeqExternal)
     {
 	data->Seq[0] = seqa;
@@ -1735,14 +1736,14 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
     }
     seq = data->Seq[0];
 
-    data->Start[0] = ajSeqBegin(seq);
-    data->End[0] = ajSeqEnd(seq);
-    data->Len[0] = ajSeqLen(seq) + ajSeqOffset(seq) + ajSeqOffend(seq)
+    data->Start[0] = ajSeqGetBegin(seq);
+    data->End[0] = ajSeqGetEnd(seq);
+    data->Len[0] = ajSeqGetLen(seq) + ajSeqGetOffset(seq) + ajSeqGetOffend(seq)
 	- ajSeqGapCount(seq);
-    data->Offset[0] = ajSeqOffset(seq);
-    data->Offend[0] = ajSeqOffend(seq);
+    data->Offset[0] = ajSeqGetOffset(seq);
+    data->Offend[0] = ajSeqGetOffend(seq);
     data->SubOffset[0] = 0;
-    data->Rev[0] = ajSeqRev(seq);
+    data->Rev[0] = ajSeqIsReversed(seq);
 
     if(thys->SeqExternal)
 	data->Seq[1] = seqb;
@@ -1757,16 +1758,16 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
     }
     seq = data->Seq[1];
 
-    data->Start[1] = ajSeqBegin(seq);
-    data->End[1] = ajSeqEnd(seq);
-    data->Len[1] = ajSeqLen(seq) + ajSeqOffset(seq) + ajSeqOffend(seq)
+    data->Start[1] = ajSeqGetBegin(seq);
+    data->End[1] = ajSeqGetEnd(seq);
+    data->Len[1] = ajSeqGetLen(seq) + ajSeqGetOffset(seq) + ajSeqGetOffend(seq)
 	- ajSeqGapCount(seq);
-    data->Offset[1] = ajSeqOffset(seq);
-    data->Offend[1] = ajSeqOffend(seq);
+    data->Offset[1] = ajSeqGetOffset(seq);
+    data->Offend[1] = ajSeqGetOffend(seq);
     data->SubOffset[1] = 0;
-    data->Rev[1] = ajSeqRev(seq);
+    data->Rev[1] = ajSeqIsReversed(seq);
 
-    data->LenAli = AJMIN(ajSeqLen(seqa), ajSeqLen(seqb));
+    data->LenAli = AJMIN(ajSeqGetLen(seqa), ajSeqGetLen(seqb));
 
     ajListPushApp(thys->Data, data);
 
@@ -1842,8 +1843,8 @@ AjBool ajAlignDefineCC(AjPAlign thys, const char* seqa, const char* seqb,
     data->LenAli = AJMIN(strlen(seqa), strlen(seqb));
 
     ajDebug("ajAlignDefineCC %s %d %s %d\n",
-	    namea, ajSeqLen(data->Seq[0]),
-	    nameb, ajSeqLen(data->Seq[1]));
+	    namea, ajSeqGetLen(data->Seq[0]),
+	    nameb, ajSeqGetLen(data->Seq[1]));
     ajListPushApp(thys->Data, data);
 
     ajStrDel(&tmpstr);
@@ -3643,7 +3644,7 @@ static const AjPStr alignSeqName(const AjPAlign thys, ajint i)
     if(thys->Showusa)
 	return ajSeqGetUsa(seq);
 
-    return ajSeqGetName(seq);
+    return ajSeqGetNameS(seq);
 }
 
 
@@ -3681,7 +3682,7 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
 	for(i=0;i<thys->Nseqs;++i)
 	{
 	    ajDebug("alignDataDel seq[%d] %S %d\n",
-		    i, ajSeqGetName(thys->Seq[i]), ajSeqLen(thys->Seq[i]));
+		    i, ajSeqGetNameS(thys->Seq[i]), ajSeqGetLen(thys->Seq[i]));
 	    ajSeqDel(&thys->Seq[i]);
         }
     AJFREE(thys->Seq);
@@ -4406,16 +4407,16 @@ static void alignTraceData(const AjPAlign thys)
 	
 	ajDebug("%d Seq: {\n", iali);
 	for(i=0; i < nseq; i++)
-	    if(ajSeqLen(data->Seq[i]) > 40)
+	    if(ajSeqGetLen(data->Seq[i]) > 40)
 	    {
-		ajStrAssignSubS(&tmpstr, ajSeqStr(data->Seq[i]), -20, -1);
+		ajStrAssignSubS(&tmpstr, ajSeqGetSeqS(data->Seq[i]), -20, -1);
 		ajDebug("%6d [%d] '%20.20S...%20S'\n",
-			ajSeqLen(data->Seq[i]), i,
-			ajSeqStr(data->Seq[i]),
+			ajSeqGetLen(data->Seq[i]), i,
+			ajSeqGetSeqS(data->Seq[i]),
 			tmpstr);
 	    }
 	    else
-		ajDebug("  %d '%S'\n", i, ajSeqStr(data->Seq[i]));
+		ajDebug("  %d '%S'\n", i, ajSeqGetSeqS(data->Seq[i]));
 
 	ajDebug("  }\n");	
     }

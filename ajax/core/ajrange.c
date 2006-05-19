@@ -904,7 +904,7 @@ AjBool ajRangeSeqExtract(const AjPRange thys, AjPSeq seq)
 	    ajStrAppendSubS(&outstr, ajSeqStr(seq), st-1, en-1);
 	    ajDebug("Range [%d] %d..%d '%S'\n", i, st, en, outstr);
 	}
-	ajSeqReplace(seq, outstr);
+	ajSeqAssignSeqS(seq, outstr);
 	ajStrDel(&outstr);
     }
 
@@ -968,7 +968,7 @@ AjBool ajRangeSeqStuff(const AjPRange thys, AjPSeq seq)
 	    lastst = lastst+len+1;
 	    lasten = en+1;
 	}
-	ajSeqReplace(seq, outstr);
+	ajSeqAssignSeqS(seq, outstr);
 	ajStrDel(&outstr);
     }
 
@@ -1022,7 +1022,7 @@ AjBool ajRangeSeqMask(const AjPRange thys, const AjPStr maskchar, AjPSeq seq)
 	    for(j=st; j<=en; ++j)
 		ajStrInsertS(&str, st, maskchar);
 	}
-	ajSeqReplace(seq, str);
+	ajSeqAssignSeqS(seq, str);
 	ajStrDel(&str);
     }
     else
@@ -1030,7 +1030,7 @@ AjBool ajRangeSeqMask(const AjPRange thys, const AjPStr maskchar, AjPSeq seq)
 	str = ajStrNew();
 	for(j=0; j<=ajStrGetLen(str); ++j)
 	    ajStrInsertS(&str, j, maskchar);
-	ajSeqReplace(seq, str);
+	ajSeqAssignSeqS(seq, str);
 	ajStrDel(&str);
     }
 
@@ -1093,7 +1093,7 @@ AjBool ajRangeSeqToLower(const AjPRange thys, AjPSeq seq)
     }
     else
     {
-	ajSeqToLower(seq);
+	ajSeqFmtLower(seq);
     }
 
     
@@ -1492,8 +1492,8 @@ AjBool ajRangeDefault(const AjPRange thys, const AjPSeq s)
 	return ajTrue;
 
     if(thys->n==1 &&
-       thys->start[0]==ajSeqBegin(s) &&
-       thys->end[0]==ajSeqEnd(s))
+       thys->start[0]==ajSeqGetBegin(s) &&
+       thys->end[0]==ajSeqGetEnd(s))
 	return ajTrue;
 
     return ajFalse;

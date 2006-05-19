@@ -229,7 +229,7 @@ static void reportWriteEmbl(AjPReport thys,
     /*  ajFmtPrintF(thys->File, "#EMBL output\n"); */
 
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
+    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
@@ -264,7 +264,7 @@ static void reportWriteGenbank(AjPReport thys,
     /* ajFmtPrintF(thys->File, "#Genbank output\n"); */
 
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
+    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
@@ -297,7 +297,7 @@ static void reportWriteGff(AjPReport thys,
 	ajStrAssignC(&ftfmt, "gff");
 
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
+    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
@@ -331,7 +331,7 @@ static void reportWritePir(AjPReport thys,
 	ajStrAssignC(&ftfmt, "pir");
 
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
+    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
@@ -364,7 +364,7 @@ static void reportWriteSwiss(AjPReport thys,
 	ajStrAssignC(&ftfmt, "swissprot");
 
     ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetName(seq),
+    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
 				       ajStrGetPtr(thys->Type),
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
@@ -442,7 +442,7 @@ static void reportWriteDbMotif(AjPReport thys,
 	ilen    = iend - istart + 1;
 	
 	jstart = AJMAX(0, istart-6);
-	jend   = AJMIN(ajSeqLen(seq), iend+4);
+	jend   = AJMIN(ajSeqGetLen(seq), iend+4);
 	
 	ajStrAssignResC(&tmpstr, ilen+10, "");
 	for(j=istart+1; j<iend; j++)
@@ -732,9 +732,9 @@ static void reportWriteDraw(AjPReport thys,
     }
 
     ajFmtPrintF(outf, "Start %d\n", 
- 		ajSeqBegin(seq) + ajSeqOffset(seq));
+ 		ajSeqGetBegin(seq) + ajSeqGetOffset(seq));
     ajFmtPrintF(outf, "End   %d\n", 
- 		ajSeqEnd(seq) + ajSeqOffset(seq));
+ 		ajSeqGetEnd(seq) + ajSeqGetOffset(seq));
 
     ajFmtPrintF(outf, "\n"); 
     ajFmtPrintF(outf, "group\n");
@@ -1556,10 +1556,10 @@ static void reportWriteSeqTable(AjPReport thys, const AjPFeattable ftable,
 	ajStrAssignSubS(&subseq, ajSeqStr(seq), istart-1, iend-1);
 	/* ajStrFmtUpper(&subseq); */
 	if(feature->Strand == '-')
-	    ajSeqReverseStr(&subseq);
+	    ajSeqstrReverse(&subseq);
 	
 	ajDebug("reportWriteSeqTable subseq %d seq %d %d..%d\n",
-		ajStrGetLen(subseq), ajSeqLen(seq), istart, iend);
+		ajStrGetLen(subseq), ajSeqGetLen(seq), istart, iend);
 	
 	if(feature->Strand == '-')
 	    ajFmtPrintF(outf, "%7d %7d", iend, istart);
@@ -1982,9 +1982,9 @@ static void reportWriteTagseq(AjPReport thys,
 
     outf = thys->File;
 
-    seqlen = ajSeqLen(seq);
-    seqbeg = ajSeqBegin(seq) + ajSeqOffset(seq);
-    seqend = ajSeqEnd(seq) + ajSeqOffset(seq);
+    seqlen = ajSeqGetLen(seq);
+    seqbeg = ajSeqGetBegin(seq) + ajSeqGetOffset(seq);
+    seqend = ajSeqGetEnd(seq) + ajSeqGetOffset(seq);
     
     ajReportWriteHeader(thys, ftable, seq);
     
@@ -2535,13 +2535,13 @@ void ajReportWriteHeader(AjPReport thys,
     
     ajFmtPrintF(outf, "# Sequence: %S     from: %d   to: %d\n",
 		ajReportSeqName(thys, seq),
-		ajSeqBegin(seq) + ajSeqOffset(seq),
-		ajSeqEnd(seq) + ajSeqOffset(seq));
+		ajSeqGetBegin(seq) + ajSeqGetOffset(seq),
+		ajSeqGetEnd(seq) + ajSeqGetOffset(seq));
     
     if(thys->Showacc)
-	ajFmtPrintF(outf, "# Accession: %S\n", ajSeqGetAcc(seq));
+	ajFmtPrintF(outf, "# Accession: %S\n", ajSeqGetAccS(seq));
     if(thys->Showdes)
-	ajFmtPrintF(outf, "# Description: %S\n", ajSeqGetDesc(seq));
+	ajFmtPrintF(outf, "# Description: %S\n", ajSeqGetDescS(seq));
     
     ajFmtPrintF(outf, "# HitCount: %d\n",
 		ajFeattableSize(ftable));
@@ -2898,7 +2898,7 @@ const AjPStr ajReportSeqName(const AjPReport thys, const AjPSeq seq)
     if(thys->Showusa)
 	return ajSeqGetUsa(seq);
 
-    return ajSeqGetName(seq);
+    return ajSeqGetNameS(seq);
 }
 
 

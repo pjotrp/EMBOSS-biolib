@@ -5662,14 +5662,14 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	
 	
 	if(docomp)
-	    ajSeqReverseStr(&tmp);
+	    ajSeqstrReverse(&tmp);
 	ajStrAppendS(res,tmp);
 	ajStrDel(&tmp);
     }
     ajStrTokenDel(&handle);
 
     if(isglobcomp)
-	ajSeqReverseStr(res);
+	ajSeqstrReverse(res);
     
     return ajTrue;
 }
@@ -7502,9 +7502,9 @@ AjPFeattable ajFeattableNewSeq(const AjPSeq seq)
     /*  AJNEW0(thys);  deleted by AJB */
 
     if(ajSeqIsProt(seq))
-	thys = ajFeattableNewProt(ajSeqGetName(seq));
+	thys = ajFeattableNewProt(ajSeqGetNameS(seq));
     else
-	thys = ajFeattableNewDna(ajSeqGetName(seq));
+	thys = ajFeattableNewDna(ajSeqGetNameS(seq));
 
     return thys;
 }
