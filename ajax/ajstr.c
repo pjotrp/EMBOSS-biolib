@@ -1776,7 +1776,7 @@ static AjPStr strNew(size_t size)
 ** @argrule   Delarray PPstr [AjPStr**]
 ** 
 ** @valrule   * [void]
-** @valrule   DelStatic [AjBool] True if the string still exists as empty
+** @valrule   *DelStatic [AjBool] True if the string still exists as empty
 **                               False if the string was reference counted
 **                               and this instance was deleted
 ** @fcategory delete
@@ -1859,8 +1859,8 @@ void ajStrDel(AjPStr* Pstr)
 ** If the given string is NULL, or a NULL pointer, simply returns.
 **
 ** @param  [w] Pstr [AjPStr*] Pointer to the string to be deleted.
-** @return [AjBool] ajTrue if the string still exists,
-**                  ajFalse if it was deleted.
+** @return [AjBool] True if the string exists and can be reused
+**                  False if the string was deleted.
 ** @@
 ******************************************************************************/
 
@@ -1890,13 +1890,16 @@ AjBool ajStrDelStatic(AjPStr* Pstr)
 
 
 
+
 /* @obsolete ajStrDelReuse
 ** @rename ajStrDelStatic
 */
 
 AjBool __deprecated ajStrDelReuse(AjPStr* pthis)
 {
-    return ajStrDelStatic(pthis);
+    ajStrDelStatic(pthis);
+    if(*pthis) return ajTrue;
+    return ajFalse;
 }
 
 
@@ -4881,8 +4884,8 @@ AjBool __deprecated ajStrRev(AjPStr* pthis)
 ** @argrule CountC txt [const char*] Text to count
 ** @argrule CountK chr [char] Character to count
 **
-** @valrule Count [ajint] Number of occurrences
 ** @valrule * [AjBool] Result of query
+** @valrule *Count [ajint] Number of occurrences
 **
 ** @fcategory use
 */
@@ -8418,11 +8421,12 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 ** @argrule Split PPstr [AjPStr**] String array of results
 ** @argrule Extract Prest [AjPStr*] Remainder of string
 ** @argrule First Pword [AjPStr*] First word of string
+** @argrule Word Pword [AjPStr*] First word of string
 **
 ** @valrule * [const AjPStr] Latest string parsed.
-** @valrule Count [ajint] Number of string matches.
-** @valrule Split [ajint] Number of string matches.
-** @valrule Extract [AjBool] True if a match was found
+** @valrule *Count [ajint] Number of string matches.
+** @valrule *Split [ajint] Number of string matches.
+** @valrule *Extract [AjBool] True if a match was found
 **
 ** @fcategory use
 */
