@@ -1,4 +1,9 @@
-Version 3.1.0
+Version 4.0.0
+
+	Function names in ajseq.c have been standardised. Old names are
+	still accepted but are marked as "deprecated" and will generate
+	warnings with the gcc compiler (see ajstr below). Other compilers
+	will see no difference.
 
 	Further correction to reversed sequence numbering for local alignments
 	from water and supermatcher. For these local alignments all reversed
