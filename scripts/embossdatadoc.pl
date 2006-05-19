@@ -166,6 +166,9 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 		$dattr =~ s/\s+$//gos;
 		$dattr =~ s/\s+/ /gos;
 		$dattr =~ s/ ([*]+)/$1 /gos;
+		if($dattr =~ /^[\#]else /gos) {next}
+		$dattr =~ s/^[\#]endif //gos;
+		$dattr =~ s/^[\#]ifn?def \S+ //gos;
 		push @lattrs, $dattr;
 		if (defined($dcc) && $dcc ne "") {
 		    $icc++;

@@ -4,10 +4,10 @@ use English;
 
 $basefile = $ARGV[0];
 
-open DEP, "$ENV{HOME}/cvsemboss/deprecated.txt" || die "Cannot open deprecated.txt";
-open SRC, "$basefile.c" || die "Cannot open $basefile.c";
-open NEWSRC, ">$basefile.new" || die "Cannot open $basefile.new";
-#open DBG, ">fixdeprecated.dbg" || die "Cannot open fixdeprecated.dbg";
+open (DEP, "$ENV{HOME}/cvsemboss/deprecated.txt") || die "Cannot open deprecated.txt";
+open (SRC, "$basefile.c") || die "Cannot open $basefile.c";
+open (NEWSRC, ">$basefile.new") || die "Cannot open $basefile.new";
+#open (DBG, ">fixdeprecated.dbg") || die "Cannot open fixdeprecated.dbg";
 
 $patcnt=0;
 $notecnt=0;

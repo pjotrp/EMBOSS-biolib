@@ -627,7 +627,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
     $fdata = "";
     $ctype = "";
 
-    while ($cc =~ m/\s@((\S+)([^@]*[^@\s]))/gos) {
+    while ($cc =~ m/\s@((\S+)\s+([^@]*[^@\s]))/gos) {
 	$data = $1;
 	$token = $2;
 	#print "<$token>\n";
@@ -673,7 +673,6 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    splice(@namrules, 1+$namrulesdatacount);
 	    splice(@namdescs, 1+$namrulesdatacount);
 	    splice(@sufname, 1+$suffixdatacount);
-	    splice(@suftype, 1+$suffixdatacount);
 	    splice(@sufdesc, 1+$suffixdatacount);
 	}
 
@@ -707,7 +706,6 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    splice(@namrules, 1+$namrulesfilecount);
 	    splice(@namdescs, 1+$namrulesfilecount);
 	    splice(@sufname, 1+$suffixfilecount);
-	    splice(@suftype, 1+$suffixfilecount);
 	    splice(@sufdesc, 1+$suffixfilecount);
 	}
 
@@ -729,10 +727,9 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 
 	elsif ($token eq "suffix")  {
 	    # can be on its own or in a block?
-	    ($sufname,$suftype, $sufdesc) =
-		($data =~ /\S+\s+(\S+)\s+[\[]([^\]]+)[\]]\s*(.*)/gos);
+	    ($sufname,$sufdesc) =
+		($data =~ /\S+\s+(\S+)\s+(.*)/gos);
 	    push(@sufname, $sufname);
-	    push(@suftype, $suftype);
 	    push(@sufdesc, $sufdesc);
 	}
 
@@ -1802,8 +1799,8 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 		    push (@genvalname, $vv);
 		}
 		if($vv eq "*") {
-		    $valtypeall = $valtype[$i]
-		    }
+		    $valtypeall = $valtype[$i];
+		}
 		$i++;
 	    }
 	    if($valtypeall ne "") {
