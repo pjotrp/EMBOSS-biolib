@@ -28,7 +28,7 @@ section: required [
   ]
 
   integer: position  [
-    optional: "Y"
+    additional: "Y"
     information: "Sequence position to match"
     default: "0"
     minimum: "0"
