@@ -21957,15 +21957,15 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 32
+FC = 31
 FP /^Maximum score:      248.11 bits\n/
 FI globin.hmm
-FC = 456
+FC = 458
 FP /^HMMER2.0\n/
 FP /^CKSUM 5854\n/
 FI globins50.out2
 FC = 260
-FP /^#=SQ HBB2_TRICR 0.5133 - - 0..0::0 -\n/
+FP /^#=SQ HBB2_TRICR 0.5133 HBB2_TRICR - 0..0::0 -\n/
 FI globins50.out3
 FC = 436
 FP /^M 0.00 0.00 0.00 0.00 0.00 3.32 0.00 .* 1.17 0.00 7.14 0.00 0.00 \n/
@@ -21992,7 +21992,7 @@ FI globin.out2
 FC = 35
 FP /% Statistical details of theoretical EVD fit:\n/
 FI globin.hmm
-FC = 458
+FC = 460
 FP /^COM   ohmmbuild ../../data/hmm/globins50.msf globin.hmm -auto\n/
 FP /^COM   ohmmcalibrate globin.hmm -seed 1079460101 -auto\n/
 FP 2 /^COM/
@@ -22007,12 +22007,10 @@ FC = 0
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 26
-FP /     Total hits:           1\n/
 FI s13421.ohmmsearch
-FC = 24
+FC = 54
 FP /S13421     1/1     303   347 ..     1    45 \[.    12.7    0.089\n/
+FP /     Total hits:           1\n/
 //
 
 ID ohmm-own-keep1
@@ -22123,14 +22121,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 32
+FC = 31
 FP /^Number of sequences:               90\n/
 FI myhmms
-FC = 231
+FC = 233
 FP /^LENG  71\n/
 FI rrm.out2
 FC = 276
-FP /^#=SQ CABA_MOUSE\/77-147  0.8083 - - 0..0::0 -\n/
+FP /^#=SQ CABA_MOUSE\/77-147  0.8083 CABA_MOUSE\/77-147 - 0..0::0 -\n/
 FI rrm.out3
 FC = 211
 FP /^M 3.15 2.06 [0. ]+ 26.86 0.00 34.70 0.81 [0. ]+ 20.42 [0. ]+ \n/
@@ -22190,15 +22188,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI myhmms
-FC = 233
-FP /^LENG  71\n/
+FC = 826
+FP /^LENG  268\n/
 FI myhmms.ohmmcalibrate
 FC = 13
 FP /^\n/
 FI myhmms.out2
-FC = 33
-FP /^HMM: rrm\n/
-FP /^chi-sq statistic =    32.6731\n/
+FC = 34
+FP /^chi-sq statistic =    48.8891\n/
 //
 
 ID ohmmpfam-ex
@@ -22240,7 +22237,7 @@ FC = 1
 FP /^Alignment saved in file globins630.ali\n/
 FI globins630.ali
 FC = 6952
-FP /^#=SQ HBB_HUMAN  1.0000 - - 0..0::0 -\n/
+FP /^#=SQ HBB_HUMAN  1.0000 HBB_HUMAN - 0..0::0 -\n/
 FP 5 /^HBB_HUMAN   [.]+\n/
 FP /^HBB_HUMAN   L.DN...L.KG....TFAT.LS.EL...H.CDKLHVDPE.NFRLL.GNVL\n/
 //
