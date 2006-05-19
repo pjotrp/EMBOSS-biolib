@@ -84,8 +84,8 @@ static AjPRegexp seqRegUsaWild  = NULL;
 ** @attr Alias [AjBool] Name is an alias for an identical definition
 ** @attr Try [AjBool] If true, try for an unknown input. Duplicate names
 **                    and read-anything formats are set false
-** @attr Protein [AjBool] True if suitable for protein
 ** @attr Nucleotide [AjBool] True if suitable for nucleotide
+** @attr Protein [AjBool] True if suitable for protein
 ** @attr Feature [AjBool] True if includes parsable feature data
 ** @attr Gap [AjBool] True if allows gap characters
 ** @attr Multiset [AjBool] If true, supports multiple sequence sets
@@ -169,6 +169,253 @@ typedef struct SeqSMsfItem
 } SeqOMsfItem;
 
 #define SeqPMsfItem SeqOMsfItem*
+
+
+/* @datastatic SeqPStockholm **************************************************
+**
+** Ajax Stockholm object.
+**
+** @new stockholmNew Default constructor
+** @delete stockholmDel Default destructor
+**
+** @attr id [AjPStr] identifier
+** @attr ac [AjPStr] accession
+** @attr de [AjPStr] description
+** @attr au [AjPStr] author
+** @attr al [AjPStr] Undocumented
+** @attr tp [AjPStr] Undocumented
+** @attr se [AjPStr] Undocumented
+** @attr ga [ajint[2]] Undocumented
+** @attr tc [float[2]] Undocumented
+** @attr nc [float[2]] Undocumented
+** @attr bm [AjPStr] Undocumented
+** @attr ref [AjPStr] Undocumented
+** @attr dc [AjPStr] Undocumented
+** @attr dr [AjPStr] Undocumented
+** @attr cc [AjPStr] Undocumented
+** @attr sacons [AjPStr] Undocumented
+** @attr sscons [AjPStr] Undocumented
+** @attr gs [AjPStr] Undocumented
+** @attr name [AjPStr*] Undocumented
+** @attr str [AjPStr*] Undocumented
+** @attr n [ajint] Undocumented
+** @attr Count [ajint] Count
+** @@
+******************************************************************************/
+
+typedef struct SeqSStockholm
+{
+    AjPStr id;
+    AjPStr ac;
+    AjPStr de;
+    AjPStr au;
+    AjPStr al;
+    AjPStr tp;
+    AjPStr se;
+    ajint  ga[2];
+    float  tc[2];
+    float  nc[2];
+    AjPStr bm;
+    AjPStr ref;
+    AjPStr dc;
+    AjPStr dr;
+    AjPStr cc;
+    AjPStr sacons;
+    AjPStr sscons;
+    AjPStr gs;
+    AjPStr *name;
+    AjPStr *str;
+    ajint  n;
+    ajint  Count;
+} SeqOStockholm;
+
+#define SeqPStockholm SeqOStockholm*
+
+
+
+
+/* @datastatic SeqPStockholmdata **********************************************
+**
+** Ajax Stockholm data object (individual sequences)
+**
+** @new stockholmdataNew Default constructor
+** @delete stockholmdataDel Default destructor
+**
+** @attr id [AjPStr] identifier
+** @attr ac [AjPStr] accession
+** @attr de [AjPStr] description
+** @attr au [AjPStr] author
+** @attr al [AjPStr] Undocumented
+** @attr tp [AjPStr] Undocumented
+** @attr se [AjPStr] Undocumented
+** @attr bm [AjPStr] Undocumented
+** @attr sscons [AjPStr] Undocumented
+** @attr sacons [AjPStr] Undocumented
+** @attr ref [AjPStr] Undocumented
+** @attr dc [AjPStr] Undocumented
+** @attr dr [AjPStr] Undocumented
+** @attr cc [AjPStr] Undocumented
+** @attr gs [AjPStr] Undocumented
+** @attr ga [float[2]] Undocumented
+** @attr tc [float[2]] Undocumented
+** @attr nc [float[2]] Undocumented
+** @@
+******************************************************************************/
+
+typedef struct SeqSStockholmdata
+{
+    AjPStr id;
+    AjPStr ac;
+    AjPStr de;
+    AjPStr au;
+    AjPStr al;
+    AjPStr tp;
+    AjPStr se;
+    AjPStr bm;
+    AjPStr sscons;
+    AjPStr sacons;
+    AjPStr ref;
+    AjPStr dc;
+    AjPStr dr;
+    AjPStr cc;
+    AjPStr gs;
+    float  ga[2];
+    float  tc[2];
+    float  nc[2];
+} SeqOStockholmdata;
+
+#define SeqPStockholmdata SeqOStockholmdata*
+
+
+
+
+/* @datastatic SeqPSelexseq ***************************************************
+**
+** Ajax Selex object for #=SQ information.
+**
+** @new selexSQNew Default constructor
+** @delete selexSQDel Default destructor
+**
+** @attr name [AjPStr] Object name
+** @attr source [AjPStr] Source file
+** @attr ac [AjPStr] accession
+** @attr de [AjPStr] description
+** @attr wt [float] weight (default 1.0)
+** @attr start [ajint] start position
+** @attr stop [ajint] end position
+** @attr len [ajint] length
+** @@
+******************************************************************************/
+
+typedef struct SeqSSelexseq
+{
+    AjPStr name;
+    AjPStr source;
+    AjPStr ac;
+    AjPStr de;
+    float  wt;
+    ajint  start;
+    ajint  stop;
+    ajint  len;
+}SeqOSelexseq;
+
+#define SeqPSelexseq SeqOSelexseq*
+
+
+
+
+/* @datastatic SeqPSelex ******************************************************
+**
+** Ajax Selex object.
+**
+** @new selexNew Default constructor
+** @delete selexDel Default destructor
+**
+** @attr id [AjPStr] identifier
+** @attr ac [AjPStr] accession
+** @attr de [AjPStr] description
+** @attr au [AjPStr] author
+** @attr cs [AjPStr] Undocumented
+** @attr rf [AjPStr] Undocumented
+** @attr name [AjPStr*] Undocumented
+** @attr str [AjPStr*] Undocumented
+** @attr ss [AjPStr*] Undocumented
+** @attr ga [float[2]] Undocumented
+** @attr tc [float[2]] Undocumented
+** @attr nc [float[2]] Undocumented
+** @attr sq [SeqPSelexseq*] Selex sequence objects
+** @attr n [ajint] Number of SeqPSelexseq sequence objects
+** @attr Count [ajint] Count
+** @@
+******************************************************************************/
+
+typedef struct SeqSSelex
+{
+    AjPStr id;
+    AjPStr ac;
+    AjPStr de;
+    AjPStr au;
+    AjPStr cs;
+    AjPStr rf;
+    AjPStr *name;
+    AjPStr *str;
+    AjPStr *ss;
+    float  ga[2];
+    float  tc[2];
+    float  nc[2];
+    SeqPSelexseq *sq;
+    ajint  n;
+    ajint  Count;
+} SeqOSelex;
+
+#define SeqPSelex SeqOSelex*
+
+
+
+
+/* @datastatic SeqPSelexdata **************************************************
+**
+** Ajax Selex data object (individual sequences)
+**
+** @new selexdataNew Default constructor
+** @delete selexdataDel Default destructor
+**
+** @attr id [AjPStr] identifier
+** @attr ac [AjPStr] accession
+** @attr de [AjPStr] description
+** @attr au [AjPStr] author
+** @attr cs [AjPStr] Undocumented
+** @attr rf [AjPStr] Undocumented
+** @attr name [AjPStr] Undocumented
+** @attr str [AjPStr] Undocumented
+** @attr ss [AjPStr] Undocumented
+** @attr ga [float[2]] Undocumented
+** @attr tc [float[2]] Undocumented
+** @attr nc [float[2]] Undocumented
+** @attr sq [SeqPSelexseq] Selex sequence object
+** @@
+******************************************************************************/
+
+typedef struct SeqSSelexdata
+{
+    AjPStr id;
+    AjPStr ac;
+    AjPStr de;
+    AjPStr au;
+    AjPStr cs;
+    AjPStr rf;
+    AjPStr name;
+    AjPStr str;
+    AjPStr ss;
+    float  ga[2];
+    float  tc[2];
+    float  nc[2];
+    SeqPSelexseq sq;
+} SeqOSelexdata;
+
+#define SeqPSelexdata SeqOSelexdata*
+
+
 
 
 
@@ -283,17 +530,17 @@ static AjBool     seqReadText(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadTreecon(AjPSeq thys, AjPSeqin seqin);
 static void       seqSelexAppend(const AjPStr src, AjPStr *dest, ajint beg,
 				 ajint end);
-static void       seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n);
-static AjBool     seqSelexHeader(AjPSelex *thys, const AjPStr line, ajint n,
+static void       seqSelexCopy(AjPSeq *thys, SeqPSelex selex, ajint n);
+static AjBool     seqSelexHeader(SeqPSelex *thys, const AjPStr line, ajint n,
 				 AjBool *named, ajint *sqcnt);
 static void       seqSelexPos(const AjPStr line, ajint *begin, ajint *end);
-static AjBool     seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
+static AjBool     seqSelexReadBlock(SeqPSelex *thys, AjBool *named, ajint n,
 				    AjPStr *line, AjPFileBuff buff,
 				    AjBool store, AjPStr *astr);
 static AjBool     seqSetInFormat(const AjPStr format);
 static void       seqSetName(AjPStr* name, const AjPStr str);
 static void       seqSetNameFile(AjPStr* name, const AjPSeqin seqin);
-static void       seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n);
+static void       seqStockholmCopy(AjPSeq *thys, SeqPStockholm stock, ajint n);
 static void       seqSvSave(AjPSeq thys, const AjPStr sv);
 static void       seqTaxSave(AjPSeq thys, const AjPStr tax);
 static void       seqTextSeq(AjPStr* textptr, const AjPStr seq);
@@ -303,6 +550,21 @@ static void       seqUsaRestore(AjPSeqin seqin, const SeqPListUsa node);
 static void       seqUsaSave(SeqPListUsa node, const AjPSeqin seqin);
 
 
+static SeqPStockholm stockholmNew(ajint i);
+static void         stockholmDel(SeqPStockholm *thys);
+
+/*
+static SeqPStockholmdata stockholmdataNew(void);
+static void         stockholmdataDel(SeqPStockholmdata *thys);
+static SeqPSelexdata seqSelexClone(const SeqPSelexdata thys);
+static void         selexDel(SeqPSelex *thys);
+static void         selexdataDel(SeqPSelexdata *thys);
+static SeqPSelexdata selexdataNew(void);
+static void         selexseqDel(SeqPSelexseq *thys);
+*/
+
+static SeqPSelex     selexNew(ajint n);
+static SeqPSelexseq  selexseqNew(void);
 
 
 /* static data that needs the function definitions and so must come later */
@@ -425,18 +687,15 @@ static SeqOInFormat seqInFormatDef[] = {
   {"plain",       "Plain text (alias)",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadText},	/* alias for text */
-  {"abi",         "ABI trace file",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  AJFALSE, seqReadAbi},
   {"gff",         "GFF feature file with sequence in the header",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  AJFALSE, seqReadGff},
-  {"selex",       "Selex format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  AJFALSE, seqReadSelex},
   {"stockholm",   "Stockholm (pfam) format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
+  {"selex",       "Selex format",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJFALSE, seqReadSelex},
   {"pfam",        "Stockholm (pfam) format (alias)",
        AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadStockholm},
@@ -453,6 +712,9 @@ static SeqOInFormat seqInFormatDef[] = {
   {"experiment",  "Staden experiment file",
        AJFALSE, AJTRUE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  AJFALSE, seqReadExperiment},
+  {"abi",         "ABI trace file",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+       AJFALSE, AJTRUE,  AJFALSE, seqReadAbi},
   {NULL, NULL, 0, 0, 0, 0, 0, 0, 0, NULL}
 };
 
@@ -582,8 +844,6 @@ void ajSeqinDel(AjPSeqin* pthis)
     ajStrDel(&thys->Filename);
     ajStrDel(&thys->Entryname);
     ajStrDel(&thys->Inseq);
-    ajSelexDel(&thys->Selex);
-    ajStockholmDel(&thys->Stockholm);
     ajSeqQueryDel(&thys->Query);
 
     if(thys->Filebuff)
@@ -925,7 +1185,10 @@ AjBool ajSeqallNext(AjPSeqall seqall, AjPSeq* retseq)
     if(!seqall->Count)
     {
 	seqall->Count = 1;
-	ajSeqSetRange(seqall->Seq, seqall->Begin, seqall->End);
+	if(seqall->Rev)
+	    ajSeqSetRangeRev(seqall->Seq, seqall->Begin, seqall->End);
+	else
+	    ajSeqSetRange(seqall->Seq, seqall->Begin, seqall->End);
 
 	/*
 	seqall->Seq->Begin = seqall->Begin;
@@ -941,7 +1204,10 @@ AjBool ajSeqallNext(AjPSeqall seqall, AjPSeq* retseq)
     if(ajSeqRead(seqall->Seq, seqall->Seqin))
     {
 	seqall->Count++;
-	ajSeqSetRange(seqall->Seq, seqall->Begin, seqall->End);
+	if(seqall->Rev)
+	    ajSeqSetRangeRev(seqall->Seq, seqall->Begin, seqall->End);
+	else
+	    ajSeqSetRange(seqall->Seq, seqall->Begin, seqall->End);
 
 	*retseq = seqall->Seq;
 	seqall->Returned = ajTrue;
@@ -1304,14 +1570,15 @@ AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
 	if (seqin->List)
 	    ajSeqinClearPos(seqin);
 	/*ajDebug("read name '%S' length %d format '%S' '%S' seqindata: %x\n",
-	  seq->Entryname, ajSeqLen(seq),
+	  seq->Entryname, ajSeqGetLen(seq),
 	  seqin->Formatstr, seq->Formatstr, seqin->Data);*/
 	ajStrAssignEmptyS(&seq->Db, seqin->Db);
 	if(!ajStrGetLen(seq->Type))
 	    ajSeqType(seq);
 
 	ajDebug ("ajSeqsetRead read sequence %d %x '%s' %d..%d (%d)\n",
-	  iseq, seq, ajSeqName(seq), seq->Begin, seq->End, ajSeqLen(seq));
+		 iseq, seq, ajSeqGetNameS(seq),
+		 seq->Begin, seq->End, ajSeqGetLen(seq));
 	/*ajSeqTrace(seq);*/
 	iseq++;
 
@@ -1395,7 +1662,7 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
     {
 	ajDebug("read name '%S' length %d format '%S' '%S' "
 		"seqindata: %x multidone: %B\n",
-		seq->Entryname, ajSeqLen(seq),
+		seq->Entryname, ajSeqGetLen(seq),
 		seqin->Formatstr, seq->Formatstr,
 		seqin->Data, seqin->multidone);
 	ajStrAssignEmptyS(&seq->Db, seqin->Db);
@@ -1491,11 +1758,11 @@ ajint ajSeqsetFromList(AjPSeqset thys, const AjPList list)
 	thys->Seqweight[i] = seq->Weight;
 	thys->Seq[i] = seq;
 	thys->Totweight += seq->Weight;
-	if(ajSeqLen(seq) > thys->Len)
-	    thys->Len = ajSeqLen(seq);
+	if(ajSeqGetLen(seq) > thys->Len)
+	    thys->Len = ajSeqGetLen(seq);
 	ajDebug("seq %d '%x'\n", i, seq);
 	ajDebug("seq '%x' len: %d weight: %.3f\n",
-		seq->Name, ajSeqLen(seq), thys->Seq[i]->Weight);
+		seq->Name, ajSeqGetLen(seq), thys->Seq[i]->Weight);
 	i++;
     }
     ajListIterFree(&iter);
@@ -1545,7 +1812,7 @@ ajint ajSeqsetApp(AjPSeqset thys, const AjPSeq seq)
 
     ajDebug("ajSeqsetApp '%S' size %d len %d add '%S' len %d\n",
 	    thys->Full, thys->Size, thys->Len,
-	    seq->Full, ajSeqLen(seq));
+	    seq->Full, ajSeqGetLen(seq));
 
     thys->Size ++;
     AJCRESIZE(thys->Seq, thys->Size);
@@ -1564,8 +1831,8 @@ ajint ajSeqsetApp(AjPSeqset thys, const AjPSeq seq)
     thys->Seqweight[iseq] = seq->Weight;
     thys->Seq[iseq] = ajSeqNewS(seq);
     thys->Totweight += seq->Weight;
-    if(ajSeqLen(seq) > thys->Len)
-	thys->Len = ajSeqLen(seq);
+    if(ajSeqGetLen(seq) > thys->Len)
+	thys->Len = ajSeqGetLen(seq);
 
     ajDebug("result '%S' size %d len\n",
 	    thys->Full, thys->Size, thys->Len);
@@ -1655,9 +1922,9 @@ static ajint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 	    {
 		/* ajSeqinTrace(seqin); */
 		if(seqin->Upper)
-		    ajSeqToUpper(thys);
+		    ajSeqFmtUpper(thys);
 		if(seqin->Lower)
-		    ajSeqToLower(thys);
+		    ajSeqFmtLower(thys);
 		if(seqin->Begin)
 		    thys->Begin = seqin->Begin;
 		if(seqin->End)
@@ -1782,9 +2049,11 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
 	    default:
 		ajDebug("unknown code %d from seqReadFmt\n", stat);
 	    }
+	    ajSeqClear(thys);
 
 	    if(seqin->Format)
 		break;			/* we read something */
+	    ajFileBuffTrace(seqin->Filebuff);
 	}
 
 	if(!seqin->Format)
@@ -1834,6 +2103,8 @@ static AjBool seqRead(AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqRead failed - try again with format %d '%s'\n",
 	    seqin->Format, seqInFormatDef[seqin->Format].Name);
 
+    ajDebug("Search:%B Data:%x ajFileBuffEmpty:%B\n",
+	    seqin->Search, seqin->Data, ajFileBuffEmpty(buff));
     /* while(seqin->Search) */ /* need to check end-of-file to avoid repeats */
     while(seqin->Search && (seqin->Data ||!ajFileBuffEmpty(buff)))
     {
@@ -2353,7 +2624,7 @@ static AjBool seqReadGcg(AjPSeq thys, AjPSeqin seqin)
     ajDebug("   Gcg dots read ok len: %d\n", len);
 
 
-    while(ok &&  (ajSeqLen(thys) < len))
+    while(ok &&  (ajSeqGetLen(thys) < len))
     {
 	ok = ajFileBuffGetStore(buff, &seqReadLine,
 				seqin->Text, &thys->TextPtr);
@@ -2362,11 +2633,11 @@ static AjBool seqReadGcg(AjPSeq thys, AjPSeqin seqin)
 	    bufflines++;
 	    seqAppendCommented(&thys->Seq, &incomment, seqReadLine);
 	    ajDebug("line %d seqlen: %d ok: %B\n",
-		    bufflines, ajSeqLen(thys), ok);
+		    bufflines, ajSeqGetLen(thys), ok);
 	}
     }
-    ajDebug("lines: %d ajSeqLen : %d len: %d ok: %B\n",
-	    bufflines, ajSeqLen(thys), len, ok);
+    ajDebug("lines: %d ajSeqGetLen : %d len: %d ok: %B\n",
+	    bufflines, ajSeqGetLen(thys), len, ok);
 
     ajFileBuffClear(buff, 0);
 
@@ -2499,7 +2770,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 {
     AjPFileBuff buff  = seqin->Filebuff;
     AjPStr      line  = NULL;
-    AjPSelex    selex;
+    SeqPSelex    selex;
     ajint       n      = 0;
     const char  *p     = NULL;
     AjBool      ok     = ajFalse;
@@ -2510,20 +2781,15 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
     ajint       i;
     char        c      = '\0';
     AjBool      first  = ajTrue;
-    ajint       filestat;
 
     line = ajStrNew();
 
 
-    if(!seqin->Selex)
+    if(seqin->Data)
+	selex = seqin->Data;
+    else
     {
-        if(ajFileBuffEof(buff) && ajFileStdin(ajFileBuffFile(buff)))
-	  return ajFalse;
-	ajFileBuffClear(buff,-1);
-	ajFileBuffReset(buff);
-	buff->Fpos = 0;
-	filestat = ajFileSeek(buff->File, 0L, 0);
-	ajDebug("filestat %d\n", filestat);
+	ajFileBuffBuff(buff);    /* must buffer to test sequences */
 
 	/* First count the sequences, and get any header information */
 	while(!isseq && (ok=ajFileBuffGet(buff,&line)))
@@ -2567,7 +2833,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	ajFileBuffReset(buff);
 	buff->Fpos = 0;
 	ajFileSeek(buff->File, 0L, 0);
-	selex = ajSelexNew(n);
+	selex = selexNew(n);
 
 	/* now read it for real */
 
@@ -2591,29 +2857,36 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	ajDebug("First Block Line: %S",line);
 
 	ok = ajTrue;
-	while(ok)
+	while(ok && !ajStrPrefixC(line, "# ID"))
 	{
 	    seqSelexReadBlock(&selex,&named,n,&line,buff,
 			      seqin->Text, &thys->TextPtr);
 	    ok = ajFileBuffGetStore(buff,&line,
 				     seqin->Text, &thys->TextPtr);
 	}
-	seqin->Selex = selex;
+	if(ok)
+	    ajFileBuffClearStore(buff, 1,
+				 line, seqin->Text, &thys->TextPtr);
+	else
+	    ajFileBuffClear(buff, 0);
+
+	seqin->Data = selex;
     }
 
 
     /* At this point the Selex structure is fully loaded */
-    if(seqin->Selex->Count >= seqin->Selex->n)
+    if(selex->Count >= selex->n)
     {
+	seqin->Data = NULL;
 	ajStrDel(&line);
 	return ajFalse;
     }
 
-    i = seqin->Selex->Count;
+    i = selex->Count;
 
-    seqSelexCopy(&thys,seqin,i);
+    seqSelexCopy(&thys,selex,i);
 
-    ++seqin->Selex->Count;
+    ++selex->Count;
 
     ajFileBuffClear(buff,0);
 
@@ -2652,7 +2925,7 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
     AjBool      gsf   = ajTrue;
     AjBool      reff  = ajTrue;
 
-    AjPStockholm stock = NULL;
+    SeqPStockholm stock = NULL;
 
     ajint i     = 0;
     ajint n     = 0;
@@ -2661,15 +2934,23 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
     line = ajStrNew();
 
-    if(!seqin->Stockholm)
+    ajDebug("seqReadStockholm EOF:%B Data:%x\n",
+	    ajFileBuffEof(buff), seqin->Data);
+    if(seqin->Data)
+	stock = seqin->Data;
+    else
     {
+	ajFileBuffBuff(buff); 		/* must buffer to test sequences */
+	ajFileBuffTraceFull(buff, 20, 0);
 	lpos = ajFileTell(buff->File);
-	ok=ajFileBuffGet(buff,&line);
+	ok=ajFileBuffGetStore(buff,&line, seqin->Text, &thys->TextPtr);
 
 	if(!ok || !ajStrPrefixC(line,"# STOCKHOLM 1."))
 	{
 	    if (ok)
 		ajDebug("Stockholm: bad first line: %S", line);
+	    else
+		ajDebug("Stockholm: no first line\n");
 	    ajFileBuffReset(buff);
 	    ajStrDel(&line);
 	    return ajFalse;
@@ -2684,7 +2965,7 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		ajFmtScanS(line,"%*s%*s%d",&n);
 		ajDebug("Stockholm: parsed SQ line of %d sequences\n", n);
 	    }
-	    ok=ajFileBuffGet(buff,&line);
+	    ok=ajFileBuffGetStore(buff,&line, seqin->Text, &thys->TextPtr);
 	    ajDebug("Stockholm: SQ search: %S", line);
 	}
 
@@ -2693,8 +2974,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	    while(ok && !ajStrMatchC(line, "\n"))
 	    {
 		n++;
-		ok=ajFileBuffGet(buff,&line);
-		ajDebug("Stockholm: block read: %S", line);
+		ok=ajFileBuffGetStore(buff,&line, seqin->Text, &thys->TextPtr);
+		ajDebug("Stockholm: block %d read: %S", n, line);
 	    }
 	    ajDebug("Stockholm: read block of %d sequences\n", n);
 	}
@@ -2708,7 +2989,7 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	                       seqin->Text, &thys->TextPtr); */
 	ok=ajFileBuffGetStore(buff,&line,
 			       seqin->Text, &thys->TextPtr);
-	stock = ajStockholmNew(n);
+	stock = stockholmNew(n);
 
 	ajDebug("Created stockholm data object size: %d\n", n);
 
@@ -2841,37 +3122,46 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		if(scnt >= n)
 		    scnt = 0;
 	    }
-	    /* jison added to reset scnt each time an empty line
-	       (used to divide blocks of sequence) is found */
-	    else 
-		scnt = 0;
 
 	    ok = ajFileBuffGetStore(buff,&line,
 				     seqin->Text, &thys->TextPtr);
 	}
+	while(ok && !ajStrPrefixC(line, "# STOCKHOLM 1."))
+	{
+	    ok = ajFileBuffGetStore(buff,&line,
+				     seqin->Text, &thys->TextPtr);
+	}
+	if(ok)
+	    ajFileBuffClearStore(buff, 1,
+				 line, seqin->Text, &thys->TextPtr);
+	else
+	    ajFileBuffClear(buff, 0);
 
 	ajStrDel(&word);
 	ajStrDel(&token);
 	ajStrDel(&post);
 	ajStrDel(&namstr);
 	ajStrDel(&seqstr);
-	seqin->Stockholm = stock;
+	seqin->Data = stock;
     }
 
 
     /* At this point the Stockholm structure is fully loaded */
-    if(seqin->Stockholm->Count >= seqin->Stockholm->n)
+    if(stock->Count >= stock->n)
     {
+	ajDebug("Stockholm count %d: All done\n", stock->Count);
+	stockholmDel(&stock);
+	seqin->Data = NULL;
 	ajStrDel(&line);
 	return ajFalse;
     }
 
-    i = seqin->Stockholm->Count;
+    i = stock->Count;
 
-    seqStockholmCopy(&thys,seqin,i);
+    seqStockholmCopy(&thys,stock,i);
 
 
-    ++seqin->Stockholm->Count;
+    ++stock->Count;
 
 
 
@@ -2894,24 +3184,24 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 ** Pad with gaps to make lengths equal.
 **
 ** @param [w] thys [AjPSeq*] sequence object
-** @param [u] seqin [AjPSeqin] seqin containing selex info
+** @param [u] selex [SeqPSelex] seqin containing selex info
 ** @param [r] n [ajint] index into selex object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
+static void seqSelexCopy(AjPSeq *thys, SeqPSelex selex, ajint n)
 {
     AjPSeq pthis   = *thys;
-    AjPSelex selex = seqin->Selex;
-    AjPSelexdata sdata;
+    /*SeqPSelexdata sdata;*/
 
     ajStrAssignS(&pthis->Seq, selex->str[n]);
     ajStrAssignS(&pthis->Name, selex->name[n]);
     pthis->Weight = selex->sq[n]->wt;
 
+/*
     if(!(*thys)->Selexdata)
-	(*thys)->Selexdata = ajSelexdataNew();
+	(*thys)->Selexdata = selexdataNew();
 
     sdata = (*thys)->Selexdata;
 
@@ -2942,7 +3232,7 @@ static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
     sdata->sq->start = selex->sq[n]->start;
     sdata->sq->stop  = selex->sq[n]->stop;
     sdata->sq->len   = selex->sq[n]->len;
-
+*/
     return;
 }
 
@@ -2955,27 +3245,25 @@ static void seqSelexCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
 ** Pad with gaps to make lengths equal.
 **
 ** @param [w] thys [AjPSeq*] sequence object
-** @param [u] seqin [AjPSeqin] seqin containing selex info
+** @param [u] stock [SeqPStockholm] seqin containing selex info
 ** @param [r] n [ajint] index into stockholm object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
+static void seqStockholmCopy(AjPSeq *thys, SeqPStockholm stock, ajint n)
 {
     AjPSeq pthis;
-    AjPStockholm stock;
-    AjPStockholmdata sdata;
+    /*SeqPStockholmdata sdata;*/
 
     pthis = *thys;
-    stock = seqin->Stockholm;
 
     ajStrAssignS(&pthis->Seq, stock->str[n]);
     ajStrAssignS(&pthis->Name, stock->name[n]);
 
-
+/*
     if(!(*thys)->Stock)
-	(*thys)->Stock = ajStockholmdataNew();
+	(*thys)->Stock = stockholmdataNew();
 
     sdata = (*thys)->Stock;
 
@@ -2999,7 +3287,7 @@ static void seqStockholmCopy(AjPSeq *thys, AjPSeqin seqin, ajint n)
     sdata->tc[1] = stock->tc[1];
     sdata->nc[0] = stock->nc[0];
     sdata->nc[1] = stock->nc[1];
-
+*/
     return;
 }
 
@@ -3062,7 +3350,7 @@ static void seqSelexAppend(const AjPStr src, AjPStr *dest,
 **
 ** Load a Selex object with header information for a single line
 **
-** @param [w] thys [AjPSelex*] Selex object
+** @param [w] thys [SeqPSelex*] Selex object
 ** @param [r] line [const AjPStr] Selex header line
 ** @param [r] n  [ajint] Number of sequences in Selex file
 ** @param [w] named  [AjBool*] Whether names of sequences have been read
@@ -3071,10 +3359,10 @@ static void seqSelexAppend(const AjPStr src, AjPStr *dest,
 ** @@
 ******************************************************************************/
 
-static AjBool seqSelexHeader(AjPSelex *thys, const AjPStr line, ajint n,
+static AjBool seqSelexHeader(SeqPSelex *thys, const AjPStr line, ajint n,
 			     AjBool *named, ajint *sqcnt)
 {
-    AjPSelex pthis;
+    SeqPSelex pthis;
     AjPStrTok token = NULL;
     AjPStr handle   = NULL;
 
@@ -3206,7 +3494,7 @@ static void seqSelexPos(const AjPStr line, ajint *begin, ajint *end)
 **
 ** Read a block of sequence information from a selex file
 **
-** @param [w] thys [AjPSelex*] Selex object
+** @param [w] thys [SeqPSelex*] Selex object
 ** @param [w] named  [AjBool*] Whether names of sequences have been read
 ** @param [r] n  [ajint] Number of sequences in Selex file
 ** @param [u] line [AjPStr*] Line from Selex file
@@ -3217,11 +3505,11 @@ static void seqSelexPos(const AjPStr line, ajint *begin, ajint *end)
 ** @@
 ******************************************************************************/
 
-static AjBool seqSelexReadBlock(AjPSelex *thys, AjBool *named, ajint n,
+static AjBool seqSelexReadBlock(SeqPSelex *thys, AjBool *named, ajint n,
 				AjPStr *line, AjPFileBuff buff,
 				AjBool store, AjPStr *astr)
 {
-    AjPSelex pthis;
+    SeqPSelex pthis;
     AjPStr *seqs = NULL;
     AjPStr *ss   = NULL;
 
@@ -3472,6 +3760,7 @@ static AjBool seqReadRaw(AjPSeq thys, AjPSeqin seqin)
 	    ajDebug("seqReadRaw: Bad character found in line: %S\n",
 		    seqReadLine);
 	    ajFileBuffReset(buff);
+	    ajStrAssignC(&thys->Seq,"");
 	    return ajFalse;
 	}
 	seqAppend(&thys->Seq, seqReadLine);
@@ -3658,7 +3947,7 @@ static AjBool seqReadClustal(AjPSeq thys, AjPSeqin seqin)
 
     alndata = seqin->Data;
     alntable = alndata->Table;
-    if(alndata->Count >=alndata->Nseq)
+    if(alndata->Count >= alndata->Nseq)
     {					/* all done */
 	ajFileBuffClear(seqin->Filebuff, 0);
 	ajTableMapDel(alntable, seqMsfTabDel, NULL);
@@ -5409,7 +5698,7 @@ static AjBool seqReadMase(AjPSeq thys, AjPSeqin seqin)
     ajStrRemoveWhite(&seqReadLine);
     seqSetName(&thys->Name, seqReadLine);
     ajStrRemoveWhite(&des);
-    ajSeqAssDesc(thys, des);
+    ajSeqAssignDescS(thys, des);
 
     ok = ajFileBuffGetStore(buff, &seqReadLine,
 			    seqin->Text, &thys->TextPtr);
@@ -6813,7 +7102,7 @@ static AjBool seqReadGff(AjPSeq thys, AjPSeqin seqin)
 	ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
     }
 
-    if(!ajSeqLen(thys))
+    if(!ajSeqGetLen(thys))
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
@@ -6909,6 +7198,7 @@ static AjBool seqReadAbi(AjPSeq thys, AjPSeqin seqin)
     /* Read in sequence         */
     ok = ajSeqABIReadSeq(fp,baseO,numBases,&thys->Seq);
     if(!ok) {
+	ajFileSeek(fp,filestat,0);
 	ajFileBuffResetPos(buff);
 	return ajFalse;
     }
@@ -9831,6 +10121,452 @@ void ajSeqinTrace(const AjPSeqin thys)
 
     return;
 }
+
+
+
+
+/* @funcstatic stockholmNew ***************************************************
+**
+** Creates and initialises a Stockholm object.
+**
+** @param [r] i [ajint] Number of sequences
+** @return [SeqPStockholm] New sequence object.
+** @@
+******************************************************************************/
+
+static SeqPStockholm stockholmNew(ajint i)
+{
+    SeqPStockholm thys = NULL;
+
+    AJNEW0(thys);
+
+    thys->id  = ajStrNew();
+    thys->ac  = ajStrNew();
+    thys->de  = ajStrNew();
+    thys->au  = ajStrNew();
+    thys->al  = ajStrNew();
+    thys->tp  = ajStrNew();
+    thys->se  = ajStrNew();
+    thys->bm  = ajStrNew();
+    thys->dc  = ajStrNew();
+    thys->dr  = ajStrNew();
+    thys->cc  = ajStrNew();
+    thys->gs  = ajStrNew();
+    thys->ref = ajStrNew();
+    thys->sacons  = ajStrNew();
+    thys->sscons  = ajStrNew();
+
+    thys->n = i;
+
+    AJCNEW0(thys->name,i);
+    AJCNEW0(thys->str,i);
+
+    for(i=0;i<thys->n;++i)
+    {
+	thys->name[i] = ajStrNew();
+	thys->str[i]  = ajStrNew();
+    }
+
+    return thys;
+}
+
+
+
+
+/* #funcstatic stockholmdataNew ***********************************************
+**
+** Creates and initialises a Stockholm data object.
+**
+** #return [SeqPStockholmdata] New sequence object.
+** ##
+******************************************************************************/
+
+/*static SeqPStockholmdata stockholmdataNew(void)
+{
+    SeqPStockholmdata thys = NULL;
+
+    AJNEW0(thys);
+
+    thys->id  = ajStrNew();
+    thys->ac  = ajStrNew();
+    thys->de  = ajStrNew();
+    thys->au  = ajStrNew();
+    thys->al  = ajStrNew();
+    thys->tp  = ajStrNew();
+    thys->se  = ajStrNew();
+    thys->bm  = ajStrNew();
+    thys->dc  = ajStrNew();
+    thys->dr  = ajStrNew();
+    thys->cc  = ajStrNew();
+    thys->gs  = ajStrNew();
+    thys->ref = ajStrNew();
+    thys->sacons  = ajStrNew();
+    thys->sscons  = ajStrNew();
+
+    return thys;
+}*/
+
+
+/* @funcstatic stockholmDel ***************************************************
+**
+** Deletes a Stockholm object.
+**
+** @param [d] Pseq [SeqPStockholm*] Stockholm object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void stockholmDel(SeqPStockholm *Pseq)
+{
+    SeqPStockholm pthis = NULL;
+    ajint i;
+
+    if(!Pseq)
+	return;
+    pthis = *Pseq;
+    if(!pthis)
+	return;
+
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->al);
+    ajStrDel(&pthis->tp);
+    ajStrDel(&pthis->se);
+    ajStrDel(&pthis->bm);
+    ajStrDel(&pthis->dc);
+    ajStrDel(&pthis->dr);
+    ajStrDel(&pthis->cc);
+    ajStrDel(&pthis->gs);
+    ajStrDel(&pthis->ref);
+    ajStrDel(&pthis->sacons);
+    ajStrDel(&pthis->sscons);
+
+    for(i=0;i<pthis->n;++i)
+    {
+	ajStrDel(&pthis->name[i]);
+	ajStrDel(&pthis->str[i]);
+    }
+
+    AJFREE(pthis->name);
+    AJFREE(pthis->str);
+    AJFREE(*Pseq);
+
+    return;
+}
+
+
+
+
+/* #funcstatic stockholmdataDel ***********************************************
+**
+** Deletes a Stockholm data object.
+**
+** #param [d] Pseq [SeqPStockholmdata*] Stockholm object
+** #return [void]
+** ##
+******************************************************************************/
+
+/*static void stockholmdataDel(SeqPStockholmdata *Pseq)
+{
+    SeqPStockholmdata pthis = NULL;
+
+    if(!Pseq)
+	return;
+    pthis = *Pseq;
+    if(!pthis)
+	return;
+
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->al);
+    ajStrDel(&pthis->tp);
+    ajStrDel(&pthis->se);
+    ajStrDel(&pthis->bm);
+    ajStrDel(&pthis->dc);
+    ajStrDel(&pthis->dr);
+    ajStrDel(&pthis->cc);
+    ajStrDel(&pthis->gs);
+    ajStrDel(&pthis->ref);
+    ajStrDel(&pthis->sacons);
+    ajStrDel(&pthis->sscons);
+
+    AJFREE(*Pseq);
+
+    return;
+}*/
+
+
+/* @funcstatic selexNew *******************************************************
+**
+** Creates and initialises a selex #=SQ line object.
+**
+** @param [r] n [ajint] Number of sequences
+** @return [SeqPSelex] New sequence object.
+** @@
+******************************************************************************/
+
+static SeqPSelex selexNew(ajint n)
+{
+    SeqPSelex thys = NULL;
+    ajint    i;
+
+    AJNEW0(thys);
+    thys->id = ajStrNew();
+    thys->ac = ajStrNew();
+    thys->de = ajStrNew();
+    thys->au = ajStrNew();
+    thys->cs = ajStrNew();
+    thys->rf = ajStrNew();
+    thys->n  = n;
+
+    AJCNEW(thys->name,n);
+    AJCNEW(thys->str,n);
+    AJCNEW(thys->ss,n);
+    AJCNEW(thys->sq,n);
+
+    for(i=0;i<n;++i)
+    {
+	thys->name[i] = ajStrNew();
+	thys->str[i]  = ajStrNew();
+	thys->ss[i]   = ajStrNew();
+	thys->sq[i]   = selexseqNew();
+    }
+
+    return thys;
+}
+
+
+
+
+/* @funcstatic selexseqNew ****************************************************
+**
+** Creates and initialises a selex #=SQ line object.
+**
+** @return [SeqPSelexseq] New sequence object.
+** @@
+******************************************************************************/
+
+static SeqPSelexseq selexseqNew()
+{
+    SeqPSelexseq thys = NULL;
+
+    AJNEW0(thys);
+
+    thys->name   = ajStrNew();
+    thys->source = ajStrNew();
+    thys->ac     = ajStrNew();
+    thys->de     = ajStrNew();
+
+    return thys;
+}
+
+
+
+
+/* #funcstatic selexdataNew ***************************************************
+**
+** Creates and initialises a selex #=SQ line object.
+**
+** #return [SeqPSelexdata] New sequence object.
+** ##
+******************************************************************************/
+
+/*static SeqPSelexdata selexdataNew(void)
+{
+    SeqPSelexdata thys = NULL;
+
+    AJNEW0(thys);
+    thys->id = ajStrNew();
+    thys->ac = ajStrNew();
+    thys->de = ajStrNew();
+    thys->au = ajStrNew();
+    thys->cs = ajStrNew();
+    thys->rf = ajStrNew();
+
+    thys->name = ajStrNew();
+    thys->str  = ajStrNew();
+    thys->ss   = ajStrNew();
+    thys->sq   = selexseqNew();
+
+    return thys;
+}*/
+
+
+/* #funcstatic selexseqDel ****************************************************
+**
+** Deletes a Selex object.
+**
+** #param [d] Pseq [SeqPSelexseq*] Selex #=SQ object
+** #return [void]
+** ##
+******************************************************************************/
+
+/*static void selexseqDel(SeqPSelexseq *Pseq)
+{
+    SeqPSelexseq pthis;
+
+    pthis = *Pseq;
+
+    if(!Pseq || !pthis)
+	return;
+
+    ajStrDel(&pthis->name);
+    ajStrDel(&pthis->source);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+
+    AJFREE(pthis);
+    *Pseq = NULL;
+
+    return;
+}*/
+
+
+
+
+/* #funcstatic selexDel *******************************************************
+**
+** Deletes a Selex object.
+**
+** #param [d] Pseq [SeqPSelex*] Selex object
+** #return [void]
+** ##
+******************************************************************************/
+
+/*static void selexDel(SeqPSelex *Pseq)
+{
+    SeqPSelex pthis;
+    ajint    i;
+    ajint    n;
+
+    pthis = *Pseq;
+
+    if(!Pseq || !pthis)
+	return;
+
+    n = pthis->n;
+    for(i=0;i<n;++i)
+    {
+	ajStrDel(&pthis->name[i]);
+	ajStrDel(&pthis->str[i]);
+	ajStrDel(&pthis->ss[i]);
+	selexseqDel(&pthis->sq[i]);
+    }
+
+    if(n)
+    {
+	AJFREE(pthis->name);
+	AJFREE(pthis->str);
+	AJFREE(pthis->ss);
+	AJFREE(pthis->sq);
+    }
+
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->cs);
+    ajStrDel(&pthis->rf);
+
+    AJFREE(pthis);
+    *Pseq = NULL;
+
+    return;
+}*/
+
+
+
+
+/* #funcstatic selexdataDel ***************************************************
+**
+** Deletes a Selex data object.
+**
+** #param [d] Pseq [SeqPSelexdata*] Selex data object
+** #return [void]
+** ##
+******************************************************************************/
+
+/*static void selexdataDel(SeqPSelexdata *Pseq)
+{
+    SeqPSelexdata pthis;
+
+    pthis = *Pseq;
+
+    if(!Pseq || !pthis)
+	return;
+
+
+    ajStrDel(&pthis->name);
+    ajStrDel(&pthis->str);
+    ajStrDel(&pthis->ss);
+    selexseqDel(&pthis->sq);
+
+    ajStrDel(&pthis->id);
+    ajStrDel(&pthis->ac);
+    ajStrDel(&pthis->de);
+    ajStrDel(&pthis->au);
+    ajStrDel(&pthis->cs);
+    ajStrDel(&pthis->rf);
+
+    AJFREE(pthis);
+    *Pseq = NULL;
+
+    return;
+}*/
+
+
+
+
+/* #funcstatic seqSelexClone *************************************************
+**
+** Clone a Selexdata object
+**
+** #param [r] thys [const SeqPSelexdata] selex data object
+**
+** #return [SeqPSelexdata] New selex data object.
+** ##
+******************************************************************************/
+
+/*static SeqPSelexdata seqSelexClone(const SeqPSelexdata thys)
+{
+    SeqPSelexdata pthis;
+
+    pthis = selexdataNew();
+
+    ajStrAssignS(&pthis->id, thys->id);
+    ajStrAssignS(&pthis->ac, thys->ac);
+    ajStrAssignS(&pthis->de, thys->de);
+    ajStrAssignS(&pthis->au, thys->au);
+    ajStrAssignS(&pthis->cs, thys->cs);
+    ajStrAssignS(&pthis->rf, thys->rf);
+    ajStrAssignS(&pthis->name, thys->name);
+    ajStrAssignS(&pthis->str, thys->str);
+    ajStrAssignS(&pthis->ss, thys->ss);
+
+    pthis->ga[0] = thys->ga[0];
+    pthis->ga[1] = thys->ga[1];
+    pthis->tc[0] = thys->tc[0];
+    pthis->tc[1] = thys->tc[1];
+    pthis->nc[0] = thys->nc[0];
+    pthis->nc[1] = thys->nc[1];
+
+    ajStrAssignS(&pthis->sq->name, thys->sq->name);
+    ajStrAssignS(&pthis->sq->source, thys->sq->source);
+    ajStrAssignS(&pthis->sq->ac, thys->sq->ac);
+    ajStrAssignS(&pthis->sq->de, thys->sq->de);
+
+    pthis->sq->wt    = thys->sq->wt;
+    pthis->sq->start = thys->sq->start;
+    pthis->sq->stop  = thys->sq->stop;
+    pthis->sq->len   = thys->sq->len;
+
+
+    return pthis;
+}*/
 
 
 

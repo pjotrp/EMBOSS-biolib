@@ -108,253 +108,6 @@ typedef struct AjSSeqQuery {
 
 
 
-/* @data AjPSelexseq **********************************************************
-**
-** Ajax Selex object for #=SQ information.
-**
-** @new ajSelexSQNew Default constructor
-** @delete ajSelexSQDel Default destructor
-**
-** @attr name [AjPStr] Object name
-** @attr source [AjPStr] Source file
-** @attr ac [AjPStr] accession
-** @attr de [AjPStr] description
-** @attr wt [float] weight (default 1.0)
-** @attr start [ajint] start position
-** @attr stop [ajint] end position
-** @attr len [ajint] length
-** @@
-******************************************************************************/
-
-typedef struct AjSSelexseq
-{
-    AjPStr name;
-    AjPStr source;
-    AjPStr ac;
-    AjPStr de;
-    float  wt;
-    ajint  start;
-    ajint  stop;
-    ajint  len;
-} AjOSelexseq;
-
-#define AjPSelexseq AjOSelexseq*
-
-
-
-
-/* @data AjPSelex *************************************************************
-**
-** Ajax Selex object.
-**
-** @new ajSelexNew Default constructor
-** @delete ajSelexDel Default destructor
-**
-** @attr id [AjPStr] identifier
-** @attr ac [AjPStr] accession
-** @attr de [AjPStr] description
-** @attr au [AjPStr] author
-** @attr cs [AjPStr] Undocumented
-** @attr rf [AjPStr] Undocumented
-** @attr name [AjPStr*] Undocumented
-** @attr str [AjPStr*] Undocumented
-** @attr ss [AjPStr*] Undocumented
-** @attr ga [float[2]] Undocumented
-** @attr tc [float[2]] Undocumented
-** @attr nc [float[2]] Undocumented
-** @attr sq [AjPSelexseq*] Selex sequence objects
-** @attr n [ajint] Number of AjPSelexseq sequence objects
-** @attr Count [ajint] Count
-** @@
-******************************************************************************/
-
-typedef struct AjSSelex
-{
-    AjPStr id;
-    AjPStr ac;
-    AjPStr de;
-    AjPStr au;
-    AjPStr cs;
-    AjPStr rf;
-    AjPStr *name;
-    AjPStr *str;
-    AjPStr *ss;
-    float  ga[2];
-    float  tc[2];
-    float  nc[2];
-    AjPSelexseq *sq;
-    ajint  n;
-    ajint  Count;
-} AjOSelex;
-
-#define AjPSelex AjOSelex*
-
-
-
-
-/* @data AjPSelexdata *********************************************************
-**
-** Ajax Selex data object (individual sequences)
-**
-** @new ajSelexdataNew Default constructor
-** @delete ajSelexdataDel Default destructor
-**
-** @attr id [AjPStr] identifier
-** @attr ac [AjPStr] accession
-** @attr de [AjPStr] description
-** @attr au [AjPStr] author
-** @attr cs [AjPStr] Undocumented
-** @attr rf [AjPStr] Undocumented
-** @attr name [AjPStr] Undocumented
-** @attr str [AjPStr] Undocumented
-** @attr ss [AjPStr] Undocumented
-** @attr ga [float[2]] Undocumented
-** @attr tc [float[2]] Undocumented
-** @attr nc [float[2]] Undocumented
-** @attr sq [AjPSelexseq] Selex sequence object
-** @@
-******************************************************************************/
-
-typedef struct AjSSelexdata
-{
-    AjPStr id;
-    AjPStr ac;
-    AjPStr de;
-    AjPStr au;
-    AjPStr cs;
-    AjPStr rf;
-    AjPStr name;
-    AjPStr str;
-    AjPStr ss;
-    float  ga[2];
-    float  tc[2];
-    float  nc[2];
-    AjPSelexseq sq;
-} AjOSelexdata;
-
-#define AjPSelexdata AjOSelexdata*
-
-
-
-
-/* @data AjPStockholm *********************************************************
-**
-** Ajax Stockholm object.
-**
-** @new ajStockholmNew Default constructor
-** @delete ajStockholmDel Default destructor
-**
-** @attr id [AjPStr] identifier
-** @attr ac [AjPStr] accession
-** @attr de [AjPStr] description
-** @attr au [AjPStr] author
-** @attr al [AjPStr] Undocumented
-** @attr tp [AjPStr] Undocumented
-** @attr se [AjPStr] Undocumented
-** @attr ga [ajint[2]] Undocumented
-** @attr tc [float[2]] Undocumented
-** @attr nc [float[2]] Undocumented
-** @attr bm [AjPStr] Undocumented
-** @attr ref [AjPStr] Undocumented
-** @attr dc [AjPStr] Undocumented
-** @attr dr [AjPStr] Undocumented
-** @attr cc [AjPStr] Undocumented
-** @attr sacons [AjPStr] Undocumented
-** @attr sscons [AjPStr] Undocumented
-** @attr gs [AjPStr] Undocumented
-** @attr name [AjPStr*] Undocumented
-** @attr str [AjPStr*] Undocumented
-** @attr n [ajint] Undocumented
-** @attr Count [ajint] Count
-** @@
-******************************************************************************/
-
-typedef struct AjSStockholm
-{
-    AjPStr id;
-    AjPStr ac;
-    AjPStr de;
-    AjPStr au;
-    AjPStr al;
-    AjPStr tp;
-    AjPStr se;
-    ajint  ga[2];
-    float  tc[2];
-    float  nc[2];
-    AjPStr bm;
-    AjPStr ref;
-    AjPStr dc;
-    AjPStr dr;
-    AjPStr cc;
-    AjPStr sacons;
-    AjPStr sscons;
-    AjPStr gs;
-    AjPStr *name;
-    AjPStr *str;
-    ajint  n;
-    ajint  Count;
-} AjOStockholm;
-
-#define AjPStockholm AjOStockholm*
-
-
-
-
-/* @data AjPStockholmdata *****************************************************
-**
-** Ajax Stockholm data object (individual sequences)
-**
-** @new ajStockholmdataNew Default constructor
-** @delete ajStockholmdataDel Default destructor
-**
-** @attr id [AjPStr] identifier
-** @attr ac [AjPStr] accession
-** @attr de [AjPStr] description
-** @attr au [AjPStr] author
-** @attr al [AjPStr] Undocumented
-** @attr tp [AjPStr] Undocumented
-** @attr se [AjPStr] Undocumented
-** @attr bm [AjPStr] Undocumented
-** @attr sscons [AjPStr] Undocumented
-** @attr sacons [AjPStr] Undocumented
-** @attr ref [AjPStr] Undocumented
-** @attr dc [AjPStr] Undocumented
-** @attr dr [AjPStr] Undocumented
-** @attr cc [AjPStr] Undocumented
-** @attr gs [AjPStr] Undocumented
-** @attr ga [float[2]] Undocumented
-** @attr tc [float[2]] Undocumented
-** @attr nc [float[2]] Undocumented
-** @@
-******************************************************************************/
-
-typedef struct AjSStockholmdata
-{
-    AjPStr id;
-    AjPStr ac;
-    AjPStr de;
-    AjPStr au;
-    AjPStr al;
-    AjPStr tp;
-    AjPStr se;
-    AjPStr bm;
-    AjPStr sscons;
-    AjPStr sacons;
-    AjPStr ref;
-    AjPStr dc;
-    AjPStr dr;
-    AjPStr cc;
-    AjPStr gs;
-    float  ga[2];
-    float  tc[2];
-    float  nc[2];
-} AjOStockholmdata;
-
-#define AjPStockholmdata AjOStockholmdata*
-
-
-
-
 /* @data AjPSeqin *************************************************************
 **
 ** Ajax Sequence Input object.
@@ -416,8 +169,6 @@ typedef struct AjSStockholmdata
 ** @attr Fileseqs [ajint] Number of seqs in file - used by seqsetall input
 ** @attr Fpos [ajlong] File position (fseek) for building USA
 ** @attr Query [AjPSeqQuery] Query data - see AjPSeqQuery
-** @attr Selex [AjPSelex] Selex data
-** @attr Stockholm [AjPStockholm] Stokholm data
 ** @attr Data [void*] Format data for reuse, e.g. multiple sequence input
 ** @@
 ******************************************************************************/
@@ -463,8 +214,6 @@ typedef struct AjSSeqin {
   ajint Fileseqs;
   ajlong Fpos;
   AjPSeqQuery Query;
-  AjPSelex Selex;
-  AjPStockholm Stockholm;
   void *Data;
 } AjOSeqin;
 
@@ -521,8 +270,6 @@ typedef struct AjSSeqin {
 ** @attr Taxlist [AjPList] Taxonomy list (just species for now)
 ** @attr Seq [AjPStr] The sequence
 ** @attr Fttable [AjPFeattable] Feature table
-** @attr Selexdata [AjPSelexdata] Selex data
-** @attr Stock [AjPStockholmdata] Stockholm data
 ** @attr Accuracy [ajint*] Accuracy values (one per base) from base calling
 **
 ** @new ajSeqNew Default constructor
@@ -607,8 +354,6 @@ typedef struct AjSSeq {
   AjPList Taxlist;
   AjPStr Seq;
   AjPFeattable Fttable;
-  AjPSelexdata Selexdata;
-  AjPStockholmdata Stock;
   ajint* Accuracy;
 } AjOSeq;
 
