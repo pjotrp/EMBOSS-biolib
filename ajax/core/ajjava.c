@@ -5379,4 +5379,4 @@ static int java_block(int chan, unsigned long flag)
 
 #endif
 
-#endif / *HAVE_JAVA */
+#endif /* HAVE_JAVA */
