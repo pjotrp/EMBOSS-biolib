@@ -21,7 +21,7 @@
 
 #include "emboss.h"
 
-
+#ifndef WIN32
 
 
 static AjPStr emma_getUniqueFileName(void);
@@ -477,3 +477,11 @@ static AjPStr emma_getUniqueFileName()
 
     return filename;
 }
+
+#else
+int main()
+{
+    fprintf(stdout,"emma not yet converted for Win32\n");
+    return 0;
+}
+#endif

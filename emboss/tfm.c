@@ -22,7 +22,7 @@
 
 #include "emboss.h"
 
-
+#ifndef WIN32
 
 
 static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html);
@@ -303,3 +303,12 @@ static void tfm_FixImages(AjPStr *line, const AjPStr path)
     
     return;
 }
+
+#else
+int main()
+{
+    fprintf(stdout,"tfm not yet converted for Win32\n");
+
+    return 0;
+}
+#endif
