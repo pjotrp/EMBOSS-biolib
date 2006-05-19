@@ -284,11 +284,9 @@ Known bugs
 
 See also
 
-   Program name                 Description
-   intconv      Convert ints to ajints and longs to ajlongs
+   Program name            Description
    myseq        Demonstration of sequence reading
    mytest       Demonstration of sequence reading
-   seqinfo      Returns sequence information
 
 Author(s)
 

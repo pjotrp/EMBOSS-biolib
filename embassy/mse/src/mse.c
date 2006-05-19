@@ -117,9 +117,9 @@ void DoSave(char *FName, AjPSeqout outseq)
     ajSeqFileNewOut(outseq, ajname);
   }    
   for(i=1;i<NOS && OkToEdit[i]; i++){
-    seqnew = ajSeqNewC(Seq[i].Mem, Seq[i].Name);
-    ajSeqAssEntryC(seqnew, Seq[i].Name);
-    ajSeqAssDescC(seqnew, Seq[i].Desc);
+    seqnew = ajSeqNewNameC(Seq[i].Mem, Seq[i].Name);
+    ajSeqAssignEntryC(seqnew, Seq[i].Name);
+    ajSeqAssignDescC(seqnew, Seq[i].Desc);
     ajSeqAllWrite(myoutseq, seqnew);
     ajSeqDel(&seqnew);
   }
@@ -2542,9 +2542,9 @@ void DoWrite( int Start, int Finish, char *FName )
     myoutseq->Format = DEFAULTFORMAT;
     ajSeqFileNewOut(myoutseq, ajname);
 
-    seqnew = ajSeqNewC(Seq[Strand].Mem, Seq[Strand].Name);
-    ajSeqAssEntryC(seqnew, Seq[Strand].Name);
-    ajSeqAssDescC(seqnew, Seq[Strand].Desc);
+    seqnew = ajSeqNewNameC(Seq[Strand].Mem, Seq[Strand].Name);
+    ajSeqAssignEntryC(seqnew, Seq[Strand].Name);
+    ajSeqAssignDescC(seqnew, Seq[Strand].Desc);
     ajSeqWrite(myoutseq, seqnew);
 
     Seq[Strand].Mem  = sChar;

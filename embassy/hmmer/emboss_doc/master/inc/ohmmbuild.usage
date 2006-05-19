@@ -27,8 +27,7 @@ Weighting sequences heuristically        ... done.
 Constructing model architecture          ... done.
 Saving count vector file                 ... done. [globins50.out3]
 Converting counts to probabilities       ... done.
-Setting model name, etc.                 ... done. [globins50]
-
+Setting model name, etc.                 ... 
 Constructed a profile HMM (length 146)
 Average score:      187.26 bits
 Minimum score:       77.42 bits

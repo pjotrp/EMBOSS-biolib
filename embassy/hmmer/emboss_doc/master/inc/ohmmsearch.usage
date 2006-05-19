@@ -6,33 +6,6 @@
 
 % <b>ohmmsearch Artemia.fa ../ohmmcalibrate-ex-keep/globin.hmm -auto </b>
 
-                   *->vlstaeeklvkaswgkkvnvaeeggeellrrlfvsppttktffsh<-
-                      +ls  e+ ++++ wgk+ ++ +e+g + +  lf  +p+   +f +  
-      S13421   303    GLSGLEKNAILSTWGKVRGNLQEVGKATFGKLFTAHPEYQQMFRF   347  
-
-                   *
-                    
-      S13421     -   -    
-
-score    obs    exp  (one = represents 1 sequences)
------    ---    ---
-   12      1      0|=                                                          
-
-
-% Statistical details of theoretical EVD fit:
-              mu =    -7.9790
-          lambda =     0.6465
-chi-sq statistic =     0.0000
-  P(chi-square)  =          0
-tophits_s report:
-     Total hits:           1
-     Satisfying E cutoff:  1
-     Total memory:         15K
-tophits_s report:
-     Total hits:           1
-     Satisfying E cutoff:  1
-     Total memory:         15K
-
 </pre></td></tr></table><p>
 <p>
 <a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

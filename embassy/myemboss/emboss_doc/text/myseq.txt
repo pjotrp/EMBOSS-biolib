@@ -291,9 +291,7 @@ See also
 
    Program name                      Description
    crystalball  Answers every drug discovery question about a sequence
-   intconv      Convert ints to ajints and longs to ajlongs
    mytest       Demonstration of sequence reading
-   seqinfo      Returns sequence information
 
 Author(s)
 
