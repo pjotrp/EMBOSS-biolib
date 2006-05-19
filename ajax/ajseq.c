@@ -2571,7 +2571,7 @@ char* ajSeqGetSeqCopyC(const AjPSeq seq)
 /* @obsolete ajSeqCharCopy
 ** @rename ajSeqGetSeqCopyC
 */
-char* __deprecated ajSeqCharCopyC(const AjPSeq seq)
+char* __deprecated ajSeqCharCopy(const AjPSeq seq)
 {
     return ajCharNewS(seq->Seq);
 }
