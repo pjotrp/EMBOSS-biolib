@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ohmmsearch.c,v 1.3 2006/04/20 12:49:54 rice Exp $
+ * RCS $Id: ohmmsearch.c,v 1.4 2006/05/19 11:33:03 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -431,7 +431,7 @@ int main(int argc, char **argv)
 		ajFmtPrintF(outf,"%s: domain %d of %d, from %d to %d: score "
 			    "%.1f, E = %.2g\n", name, domidx, ndom, sqfrom,
 			    sqto, sc, evalue);
-		PrintFancyAli(stdout, ali);
+		PrintFancyAli(ajFileFp(outf), ali);
 	    }
 	    else if (evalue >= domE)
 	    {
@@ -457,15 +457,15 @@ int main(int argc, char **argv)
 
     /* 4. Histogram output */
     ajFmtPrintF(outf,"\nHistogram of all scores:\n");
-    PrintASCIIHistogram(stdout, histogram);
+    PrintASCIIHistogram(ajFileFp(outf), histogram);
 
     /* 5. Tophits summaries, while developing...
      */
     ajFmtPrintF(outf,"\nTotal sequences searched: %d\n", nseq);
     ajFmtPrintF(outf,"\nWhole sequence top hits:\n");
-    TophitsReport(ghit, globE, nseq);
+    TophitsReport(ajFileFp(outf), ghit, globE, nseq);
     ajFmtPrintF(outf,"\nDomain top hits:\n");
-    TophitsReport(dhit, domE, nseq);
+    TophitsReport(ajFileFp(outf), dhit, domE, nseq);
 
     /*********************************************** 
      * Clean-up and exit.

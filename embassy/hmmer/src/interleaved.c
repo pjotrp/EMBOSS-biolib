@@ -32,7 +32,7 @@
  * 
  * SELEX format is documented in Docs/formats.tex.
  ****************************************************************************
- * RCS $Id: interleaved.c,v 1.4 2006/04/12 08:56:00 rice Exp $
+ * RCS $Id: interleaved.c,v 1.5 2006/05/19 11:33:03 rice Exp $
  */
 
 #include "ajax.h"
@@ -492,14 +492,14 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     const AjPSeq seq = NULL;
     ajint i=0;
     const AjPStr fmt=NULL;
-    AjPSelexdata sdata=NULL;
-    AjPSelexseq   sqdata=NULL;
     const char *p=NULL;
-    char *q=NULL;
     char  c='\0';
+    /*
+    char *q=NULL;
+    AjPSelexseq   sqdata=NULL;
+    AjPSelexdata sdata=NULL;
+    */
     ajint cnt=0;
-    const AjPStr setname=NULL;
-    
     info->name = NULL;
     info->rf=NULL;
     info->cs=NULL;
@@ -507,6 +507,8 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     info->acc=NULL;
     info->au=NULL;
     info->flags=0;
+
+    AjPStr tmpstr = NULL;
 
     ajSeqsetFill(seqset);
     
@@ -550,16 +552,41 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
 	info->sqinfo[i].flags = 0;
 	info->wgt[i] = ajSeqsetWeight(seqset,i);
     }
-    seq = ajSeqsetGetSeq(seqset,0);
     info->nseq = n;
     info->alen = maxlen;
 
-    if(ajStrPrefixC(fmt,"selex"))
+    for(i=0;i<n;++i)
     {
-	info->cs = ajCharNewRes(maxlen+1);
-	strcpy(info->cs,ajSeqChar(seq));
-	info->rf = ajCharNewRes(maxlen+1);
-	strcpy(info->rf,ajSeqChar(seq));
+	seq = ajSeqsetGetSeq(seqset,i);
+	if((len=ajStrGetLen(ajSeqGetNameS(seq))))
+	{
+	    if(len>= SQINFO_NAMELEN)
+		len = SQINFO_NAMELEN - 1;
+	    ajStrAssignSubS(&tmpstr, ajSeqGetNameS(seq), 0, len);
+	    strcpy(info->sqinfo[i].id,ajStrGetPtr(tmpstr));
+	    info->sqinfo[i].flags |= SQINFO_ID;
+	    strcpy(info->sqinfo[i].name,ajStrGetPtr(tmpstr));
+	    info->sqinfo[i].flags |= SQINFO_NAME;
+	}
+	if((len=ajStrGetLen(ajSeqGetAccS(seq))))
+	{
+	    if(len>= SQINFO_NAMELEN)
+		len = SQINFO_NAMELEN - 1;
+	    ajStrAssignSubS(&tmpstr, ajSeqGetAccS(seq), 0, len);
+	    strcpy(info->sqinfo[i].acc,ajStrGetPtr(tmpstr));
+	    info->sqinfo[i].flags |= SQINFO_ACC;
+	}
+    }
+    seq = ajSeqsetGetSeq(seqset,0);
+    info->cs = ajCharNewS(ajSeqGetSeqS(seq));
+    info->name = ajCharNewS(ajSeqGetNameS(seq));
+    info->acc = ajCharNewS(ajSeqGetAccS(seq));
+    info->desc = ajCharNewS(ajSeqGetDescS(seq));
+    info->rf = ajCharNewS(ajSeqGetSeqS(seq));
+
+/*
+    info->rf = ajCharNewS(seq);
+
 	len = ajStrGetLen(seq->Selexdata->name);
 	info->name = ajCharNewRes(len+1);
 	strcpy(info->name,ajStrGetPtr(seq->Selexdata->name));
@@ -606,7 +633,7 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
 		info->sqinfo[i].name[63]='\0';
 		info->sqinfo[i].flags |= SQINFO_NAME;
 	    }
-/*
+/ *
 	    if((len=ajStrGetLen(sqdata->id)))
 	    {
 		if(len<64)
@@ -616,7 +643,7 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
 		info->sqinfo[i].id[63]='\0';
 		info->sqinfo[i].flags |= SQINFO_ID;
 	    }
-*/
+* /
 
 	    strcpy(info->sqinfo[i].id,info->sqinfo[i].name);
 	    info->sqinfo[i].flags |= SQINFO_ID;	    
@@ -665,23 +692,9 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
 	    }
 	}
     }
-    else
-    {
-	for(i=0;i<n;++i)
-	{
-	    setname = ajSeqsetName(seqset,i);
-	    if((len=ajStrGetLen(setname)))
-	    {
-		if(len<64)
-		    strcpy(info->sqinfo[i].name,ajStrGetPtr(setname));
-		else
-		    strncpy(info->sqinfo[i].name,ajStrGetPtr(setname),63);
-		info->sqinfo[i].name[63]='\0';
-		info->sqinfo[i].flags |= SQINFO_NAME;
-	    }
-	}
+/ *
     }
-
+*/
 
 
     for(i=0;i<n;++i)
