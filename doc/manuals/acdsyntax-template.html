@@ -1625,8 +1625,12 @@ take, in case there is a need to iterate this parameter.</p>
 <i>minimum:</i> and <i>maximum:</i> attributes define the boundaries
 and default to the boundaries as specified by the systems setup. The
 <i>minlength:</i> attribute defines the minimum number of values
-required. The <i>size:</i> attribute defines an exact number of values
 required.</p>
+
+<p>The <i>size:</i> attribute defines an exact number of values
+required. The <i>minsize:</i> attribute defines a minimum number of values
+required for ranges that can be any length. Only one of these values
+should be defined for any range.</p>
 
 <p>The value provided by the user is a list of sequence position pairs
 to be interpreted by the application. The upper and lower bounds
