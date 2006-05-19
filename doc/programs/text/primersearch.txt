@@ -318,7 +318,6 @@ See also
 
    Program name                         Description
    eprimer3     Picks PCR primers and hybridization oligos
-   prima        Selects primers for PCR and DNA amplification
    stssearch    Search a DNA database for matches with a set of STS primers
 
    stssearch does something similar, but doesn't allow you to find

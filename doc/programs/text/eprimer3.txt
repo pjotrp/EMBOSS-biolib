@@ -1281,7 +1281,6 @@ Known bugs
 See also
 
    Program name                         Description
-   prima        Selects primers for PCR and DNA amplification
    primersearch Searches DNA sequences for matches with primer pairs
    stssearch    Search a DNA database for matches with a set of STS primers
 
