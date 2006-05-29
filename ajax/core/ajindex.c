@@ -13509,7 +13509,7 @@ static void btreeHybInsertKey(AjPBtcache cache, AjPBtpage page,
     v = n;
     SBT_NKEYS(lbuf,v);
     btreeWriteNode(cache,lpage,tkarray,tparray,i);
-
+    lpage->dirty = BT_LOCK;
 
 
     for(i=0;i<n+1;++i)
@@ -13537,7 +13537,7 @@ static void btreeHybInsertKey(AjPBtcache cache, AjPBtpage page,
     SBT_NKEYS(rbuf,v);
     rpage->dirty = BT_DIRTY;
     btreeWriteNode(cache,rpage,tkarray,tparray,rkeyno);
-
+    rpage->dirty = BT_LOCK;
 
     for(i=0;i<rkeyno+1;++i)
     {
@@ -13552,6 +13552,9 @@ static void btreeHybInsertKey(AjPBtcache cache, AjPBtpage page,
     ipage = rpage;
     if(strcmp(key->Ptr,mediankey->Ptr)<0)
 	ipage = lpage;
+
+    lpage->dirty = BT_DIRTY;
+    rpage->dirty = BT_DIRTY;
 
     btreeInsertNonFull(cache,ipage,key,less,greater);
 
@@ -15149,7 +15152,7 @@ static void btreeNumInsertKey(AjPBtcache cache, AjPBtpage page,
     v = n;
     SBT_NKEYS(lbuf,v);
     btreeWriteNumNode(cache,lpage,tkarray,tparray,i);
-
+    lpage->dirty = BT_LOCK;
 
 
     for(i=0;i<n+1;++i)
@@ -15175,7 +15178,7 @@ static void btreeNumInsertKey(AjPBtcache cache, AjPBtpage page,
     SBT_NKEYS(rbuf,v);
     rpage->dirty = BT_DIRTY;
     btreeWriteNumNode(cache,rpage,tkarray,tparray,rkeyno);
-
+    rpage->dirty = BT_LOCK;
 
     for(i=0;i<rkeyno+1;++i)
     {
@@ -15191,6 +15194,9 @@ static void btreeNumInsertKey(AjPBtcache cache, AjPBtpage page,
     if(key < mediankey)
 	ipage = lpage;
 
+    lpage->dirty = BT_DIRTY;
+    rpage->dirty = BT_DIRTY;
+    
     btreeNumInsertNonFull(cache,ipage,key,less,greater);
 
 
