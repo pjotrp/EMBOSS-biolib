@@ -5850,8 +5850,6 @@ static AjBool seqReadMsf(AjPSeq thys, AjPSeqin seqin)
 	    ok = ajFileBuffGetStore(buff, &seqReadLine,
 				    seqin->Text, &thys->TextPtr);
 	    bufflines++;
-	    if(bufflines > seqMaxGcglines)
-		ok = ajFalse;
 
 	    if(seqGcgMsfHeader(seqReadLine, &msfitem))
 	    {
@@ -6297,6 +6295,15 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     ajStrTokenNextParse(&handle, &token);	/* entry name */
 
     seqSetName(&thys->Name, token);
+
+    ajStrTokenNextParse(&handle, &token);	/* entry name */
+    if(ajStrMatchC(token, "SV"))
+    {
+	ajStrTokenNextParse(&handle, &token);	/* SV */
+	ajStrInsertK(&token, 0, '.');
+	ajStrInsertS(&token, 0, thys->Name);
+	seqSvSave(thys, token);
+    }
 
     ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
 
