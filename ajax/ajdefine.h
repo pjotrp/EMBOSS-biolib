@@ -8,6 +8,21 @@ extern "C"
 
 #include "ajarch.h"
 
+#ifndef WIN32
+#define SLASH_CHAR   '/'
+#define SLASH_STRING "/"
+#define CURRENT_DIR  "./"
+#define UP_DIR       "../"
+#define PATH_SEPARATOR ":"
+#else
+#define SLASH_CHAR   '\\'
+#define SLASH_STRING "\\"
+#define CURRENT_DIR  ".\\"
+#define UP_DIR       "..\\"
+#define PATH_SEPARATOR ";"
+#endif
+
+
 #define NPOS (size_t) (-1)
 /* const size_t NPOS = (size_t) (-1);*/ /* maximum size_t value */
 

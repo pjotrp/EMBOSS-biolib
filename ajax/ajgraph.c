@@ -478,6 +478,12 @@ static GraphOType graphType[] = {
        "XML metadata"},
 #endif
 
+#ifdef WIN32
+  {"win3",        "win3",     "null",
+       AJTRUE, AJFALSE, GraphxyDisplayXwin, GraphOpenXwin,
+       "Windows screen graphics"},
+#endif
+
   {NULL, NULL, NULL,
        AJFALSE, AJFALSE, NULL, NULL,
        NULL}

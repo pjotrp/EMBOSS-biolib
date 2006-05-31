@@ -1881,7 +1881,6 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 
 void ajNamInit(const char* prefix)
 {
-#ifndef WIN32
     const char *prefixRoot;
     AjPFile prefixRootFile;
     AjPStr prefixRootStr = NULL;
@@ -1891,10 +1890,33 @@ void ajNamInit(const char* prefix)
     AjPStr debugVal      = NULL;
     AjPStr homercVal     = NULL;
     AjPStr basename      = NULL;
+    AjBool root_defined;
+    AjBool is_windows = ajFalse;
     
+    /*
+    ** The Windows socket interface must be initialised before any
+    ** socket calls are made elsewhere in the AJAX library.
+    ** This must only be done once so here is as good a place
+    ** as any to do it.
+    ** Set the winsock version to 1.1
+    **
+    ** Also note that EMBOSS_ROOT must be set for ajNamInit to
+    ** work with Windows. This will be done by the Windows
+    ** installer but developers must set it manually e,g,
+    **    set EMBOSS_ROOT C:\win32\emboss
+    */
+#ifdef WIN32    
+    WSADATA wsaData;
+#endif
 
     if(namVarMasterTable && namDbMasterTable && namResMasterTable)
 	return;
+
+#ifdef WIN32
+    WSAStartup(MAKEWORD(1, 1), &wsaData);
+    is_windows = ajTrue;
+#endif
+
 
     /* create new tables to hold the values */
 
@@ -1943,9 +1965,18 @@ void ajNamInit(const char* prefix)
     
     ajStrAppendC(&prefixCap, prefix);
     ajStrFmtUpper(&prefixCap);
-    
-    if(ajNamGetenv(prefixStr, &prefixRootStr))
+
+    root_defined = ajNamGetenv(prefixStr, &prefixRootStr);
+    if(!root_defined && is_windows)
+	ajDie("EMBOSS_ROOT must be defined for Windows");
+
+    if(root_defined)
+    {
 	prefixRoot = ajStrGetPtr(prefixRootStr);
+#ifdef WIN32
+	namInstallRoot = prefixRoot;
+#endif
+    }
     else
 	prefixRoot = namFixedRoot;
     
@@ -1954,8 +1985,12 @@ void ajNamInit(const char* prefix)
     ajStrAssignC(&namFixedRootBaseStr, prefixRoot);
     ajFileDirUp(&namFixedRootBaseStr);
     
-    /* look for default file in the install directory as
-       <install-prefix>/share/PREFIX/emboss.default */
+    /*
+    ** look for default file in the install directory as
+       <install-prefix>/share/PREFIX/emboss.default
+    **
+    ** Note that this will fail with Windows on many levels
+    */
     
     ajFmtPrintS(&namRootStr, "%s/share/%S/%s.default",
 		 namInstallRoot, prefixCap, prefix);
@@ -1967,7 +2002,9 @@ void ajNamInit(const char* prefix)
     if(!prefixRootFile)
     {
 	/* try original directory */
-	ajFmtPrintS(&namRootStr, "%s/%s.default", prefixRoot, prefix);
+	    ajFmtPrintS(&namRootStr, "%s%s%s.default", prefixRoot,
+			SLASH_STRING,prefix);
+
 	prefixRootFile = ajFileNewIn(namRootStr);
 	ajStrAssignC(&basename, "source");
     }
@@ -1994,7 +2031,8 @@ void ajNamInit(const char* prefix)
     if(prefixRoot)
     {
 	ajStrAssignC(&namRootStr, prefixRoot);
-	ajStrAppendC(&namRootStr, "/.");
+	ajStrAppendC(&namRootStr, SLASH_STRING);
+	ajStrAppendC(&namRootStr, ".");
 	ajStrAppendC(&namRootStr, prefix);
 	ajStrAppendC(&namRootStr, "rc");
 	if(namFileOrig)
@@ -2013,7 +2051,13 @@ void ajNamInit(const char* prefix)
 	    ajStrAppendC(&namFileOrig, "(failed)");
     }
     
-    /* look for $HOME/.embossrc */
+
+    /*
+    ** look for $HOME/.embossrc
+    **
+    ** Note that this will not work with Windows as there is
+    ** no concept of HOME
+    */
     
     prefixRoot= getenv("HOME");
     
@@ -2060,61 +2104,6 @@ void ajNamInit(const char* prefix)
 	ajDie("Error(s) in configuration files");
 
     return;
-
-#else	/* WIN32 */
-    WSADATA wsaData;
-    AjPStr ini_file_name = NULL;
-    AjPFile ini_file;
-    AjPStr shortname = NULL;
-    
-    const char* emboss_root = getenv(EMBOSSWINROOT_ENVVAR);
-    const char* plplot_lib = getenv(PLPLOT_LIB_ENVVAR);
-
-    shortname = ajStrNew();
-    ajStrAssignC(&shortname,"global");
-    
-    namInstallRoot = emboss_root;
-    
-    if(emboss_root == NULL)
-    {
-	AjPStr msg = ajStrNewC(EMBOSSWINROOT_ENVVAR);
-	ajStrAppendC(&msg, " environment variable not defined");
-	ajFatal(ajStrStr(msg));
-    }
-    
-    if(plplot_lib == NULL)
-    {
-	char* putenv_str =
-	    malloc(strlen(PLPLOT_LIB_ENVVAR) + 2 + strlen(emboss_root));
-	sprintf(putenv_str, "%s=%s", PLPLOT_LIB_ENVVAR, emboss_root);
-	_putenv(putenv_str);
-    }
-    
-    WSAStartup(MAKEWORD(1, 1), &wsaData);
-    
-    namVarMasterTable = ajStrTableNewCaseC(0);
-    namPrefixStr = ajStrNewC(prefix);
-    ajStrAppendC(&namPrefixStr, "_");
-    
-    ini_file_name = ajStrNewC(emboss_root);
-    ajStrAppendC(&ini_file_name, "\\");
-    ajStrAppendC(&ini_file_name, "emboss.ini");
-    
-    ini_file = ajFileNewIn(ini_file_name);
-    ajStrDel(&ini_file_name);
-
-    if(ini_file)
-    {
-	namProcessFile(ini_file,shortname);
-	ajFileClose(&ini_file);
-    }
-    else
-	ajFatal("emboss.ini file not found");
-
-    ajStrDel(&shortname);
-    
-    return;
-#endif	/* WIN32 */
 }
 
 

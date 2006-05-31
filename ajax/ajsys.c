@@ -63,11 +63,7 @@ void ajSysBasename(AjPStr *s)
     p = t+(len-1);
     while(p!=t)
     {
-#ifndef WIN32
-	if(*p=='/')
-#else
-	if(*p=='/' || *p=='\\')
-#endif
+	if(*p==SLASH_CHAR)
 	    break;
 	--p;
     }
@@ -150,11 +146,7 @@ AjBool ajSysWhich(AjPStr *s)
 
     ajSysBasename(&tname);
 
-#ifndef WIN32
-    p=ajSysStrtok(p,":");
-#else
-    p=ajSysStrtok(p,";");
-#endif
+    p=ajSysStrtok(p,PATH_SEPARATOR);
 
     if(p==NULL)
     {
@@ -165,11 +157,8 @@ AjBool ajSysWhich(AjPStr *s)
 
     while(1)
     {
-#ifndef WIN32
-	ajFmtPrintS(&fname,"%s/%S",p,tname);
-#else
-	ajFmtPrintS(&fname,"%s\\%S",p,tname);
-#endif
+	ajFmtPrintS(&fname,"%s%s%S",p,SLASH_STRING,tname);
+
 	if(ajFileStat(fname, AJ_FILE_X))
 	{
 	    ajStrSetClear(s);
@@ -177,11 +166,7 @@ AjBool ajSysWhich(AjPStr *s)
 	    break;
 	}
 
-#ifndef WIN32
-	if((p = ajSysStrtok(NULL,":"))==NULL)
-#else
-	if((p = ajSysStrtok(NULL,";"))==NULL)
-#endif
+	if((p = ajSysStrtok(NULL,PATH_SEPARATOR))==NULL)
         {
 	    ajStrDelStatic(&fname);
 	    ajStrDelStatic(&tname);
@@ -271,11 +256,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 
     /*ajDebug("tmp '%S' save '%S' buf '%S'\n", tmp, save, buf);*/
  
-#ifndef WIN32
-    p = ajSysStrtokR(ajStrGetPtr(tmp),":",&save,&buf);
-#else
-    p = ajSysStrtokR(ajStrGetPtr(tmp),";",&save,&buf);
-#endif
+    p = ajSysStrtokR(ajStrGetPtr(tmp),PATH_SEPARATOR,&save,&buf);
 
     if(p==NULL)
     {
@@ -288,19 +269,11 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     }
     
 
-#ifndef WIN32    
-    ajFmtPrintS(&fname,"%s/%S",p,tname);
-#else
-    ajFmtPrintS(&fname,"%s\\%S.exe",p,tname);
-#endif
+    ajFmtPrintS(&fname,"%s%s%S",p,SLASH_STRING,tname);
 
     while(!ajFileStat(fname, AJ_FILE_X))
     {
-#ifndef WIN32
-	if((p = ajSysStrtokR(NULL,":",&save,&buf))==NULL)
-#else
-	if((p = ajSysStrtokR(NULL,";",&save,&buf))==NULL)
-#endif
+	if((p = ajSysStrtokR(NULL,PATH_SEPARATOR,&save,&buf))==NULL)
 	{
 	    ajStrDel(&fname);
 	    ajStrDel(&tname);
@@ -309,11 +282,8 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 	    ajStrDel(&tmp);
 	    return ajFalse;
 	}
-#ifndef WIN32
-	ajFmtPrintS(&fname,"%s/%S",p,tname);
-#else
-	ajFmtPrintS(&fname,"%s\\%S.exe",p,tname);
-#endif
+
+	ajFmtPrintS(&fname,"%s%s%S",p,SLASH_STRING,tname);
     }
     
     

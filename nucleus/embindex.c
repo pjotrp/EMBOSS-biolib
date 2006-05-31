@@ -681,7 +681,7 @@ static AjPFile btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
 
     filename = ajStrNew();
 
-    ajFmtPrintS(&filename,"%S/%S%s",idirectory,dbname,add);
+    ajFmtPrintS(&filename,"%S%s%S%s",idirectory,SLASH_STRING,dbname,add);
     
     fp =  ajFileNewOut(filename);
 
