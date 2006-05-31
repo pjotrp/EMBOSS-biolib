@@ -81,10 +81,10 @@ PLFLT plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
     else if (dy == 0.0 && dx !=0.0)
 	diag = plstrl(text)/plP_wcmmx(1.0);
     else
-	diag = sqrt((plstrl(text)/plP_wcmmx(1.0)) *
-		    (plstrl(text)/plP_wcmmx(1.0)) + 
-		    (plstrl(text)/plP_wcmmy(1.0)) *
-		    (plstrl(text)/plP_wcmmy(1.0)));
+	diag = (PLFLT) sqrt((plstrl(text)/plP_wcmmx(1.0)) *
+			    (plstrl(text)/plP_wcmmx(1.0)) + 
+			    (plstrl(text)/plP_wcmmy(1.0)) *
+			    (plstrl(text)/plP_wcmmy(1.0)));
 
     return diag;
 }
@@ -125,10 +125,10 @@ PLFLT plgchrW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy)
     else if(dy == 0.0 && dx !=0.0)
 	diag = plsc->chrdef/plP_wcmmy(1.0);
     else
-	diag = sqrt((plsc->chrdef/plP_wcmmx(1.0)) *
-		    (plsc->chrdef/plP_wcmmx(1.0)) +
-		    (plsc->chrdef/plP_wcmmy(1.0)) *
-		    (plsc->chrdef/plP_wcmmy(1.0)));
+	diag = (PLFLT) sqrt((plsc->chrdef/plP_wcmmx(1.0)) *
+			    (plsc->chrdef/plP_wcmmx(1.0)) +
+			    (plsc->chrdef/plP_wcmmy(1.0)) *
+			    (plsc->chrdef/plP_wcmmy(1.0)));
 
     return diag;
 }
@@ -1263,7 +1263,7 @@ static void GraphSetPen(ajint colour)
 void ajGraphSetPenWidth(float width)
 {
     ajDebug("=g= plwid(%.2f) [width]\n", width);
-    plwid(width);
+    plwid((PLINT)width);
 
     return;
 }
@@ -1909,8 +1909,8 @@ void ajGraphCircle(PLFLT xcentre, PLFLT ycentre, float radius)
 
     for(i=0;i<360;i++)
     {
-	x[i] = xcentre + (radius * (float)cos(ajDegToRad(i)));
-	y[i] = ycentre + (radius * (float)sin(ajDegToRad(i)));
+	x[i] = xcentre + (radius * (float)cos(ajDegToRad((float)i)));
+	y[i] = ycentre + (radius * (float)sin(ajDegToRad((float)i)));
     }
     x[360] = x[0];
     y[360] = y[0];
@@ -6987,7 +6987,7 @@ static float GraphDistPts(float x1, float y1, float x2, float y2)
 {
     PLFLT diag;
 
-    diag = sqrt( (x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) );
+    diag = (PLFLT) sqrt( (x2-x1) * (x2-x1) + (y2-y1) * (y2-y1) );
 
     return diag;
 }
@@ -7117,19 +7117,19 @@ PLFLT ajGraphFitTextOnLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
     
     if( stringHeight<TextHeight )
     {
-	for(i=oldcharsize; i>0.0; i+=0.1)
+	for(i=oldcharsize; i>0.0; i+=(PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringHeight = ajGraphTextHeight(x1, y1, x2, y2);
 	    if( stringHeight>TextHeight )
 	    {
-		i-=0.1;
+		i -= (PLFLT)0.1;
 		break;
 	    }
 	}
     }
     else
-	for(i=oldcharsize; i>0.0; i-=0.1)
+	for(i=oldcharsize; i>0.0; i-=(PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringHeight = ajGraphTextHeight(x1, y1, x2, y2);
@@ -7144,19 +7144,19 @@ PLFLT ajGraphFitTextOnLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
     
     if( stringHeight<TextHeight )
     {
-	for(i=oldcharsize; i>0.0; i+=0.1)
+	for(i=oldcharsize; i>0.0; i+=(PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringHeight = ajGraphTextHeight(x1, y1, x2, y2);
 	    if( stringHeight>TextHeight )
 	    {
-		i-=0.1;
+		i -= (PLFLT)0.1;
 		break;
 	    }
 	}
     }
     else
-	for(i=oldcharsize; i>0.0; i-=0.1)
+	for(i=oldcharsize; i>0.0; i -= (PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringHeight = ajGraphTextHeight(x1, y1, x2, y2);
@@ -7171,19 +7171,19 @@ PLFLT ajGraphFitTextOnLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
     
     if( stringHeight<TextHeight )
     {
-	for(i=oldcharsize; i>0.0; i+=0.1)
+	for(i=oldcharsize; i>0.0; i += (PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringHeight = ajGraphTextHeight(x1, y1, x2, y2);
 	    if( stringHeight>TextHeight )
 	    {
-		i-=0.1;
+		i -= (PLFLT)0.1;
 		break;
 	    }
 	}
     }
     else
-	for(i=oldcharsize; i>0.0; i-=0.1)
+	for(i=oldcharsize; i>0.0; i -= (PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringHeight = ajGraphTextHeight(x1, y1, x2, y2);
@@ -7199,20 +7199,20 @@ PLFLT ajGraphFitTextOnLine(PLFLT x1, PLFLT y1, PLFLT x2, PLFLT y2,
     
     if( stringLength<distpts )
     {
-	for(i=charsize; i>0.0; i+=0.1)
+	for(i=charsize; i>0.0; i += (PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringLength = ajGraphTextLength(x1, y1, x2, y2, text);
 	    if( stringLength>distpts )
 	    {
-		i-=0.1;
+		i -= (PLFLT)0.1;
 		break;
 	    }
 	}
     }
     else
     {
-	for(i=charsize; i>0.0; i-=0.1)
+	for(i=charsize; i>0.0; i -= (PLFLT)0.1)
 	{
 	    ajGraphSetDefCharSize(i);
 	    stringLength = ajGraphTextLength(x1, y1, x2, y2, text);
@@ -7334,8 +7334,10 @@ static void GraphDrawTextOnCurve(PLFLT xcentre, PLFLT ycentre,
     numchar = strlen(Text);
     for(i=0; i<numchar; i++)
     {
-	xy1 = ajComputeCoord(xcentre, ycentre, Radius, Angle+pos*i+0.5*pos);
-	xy2 = ajComputeCoord(xcentre, ycentre, Radius, Angle+pos*i+1.5*pos);
+	xy1 = ajComputeCoord(xcentre, ycentre, Radius, Angle+pos*(PLFLT)i+
+			     (PLFLT)0.5*pos);
+	xy2 = ajComputeCoord(xcentre, ycentre, Radius, Angle+pos*(PLFLT)i+
+			     (PLFLT)1.5*pos);
 	strcpy(text, Text);
 	text[i+1] = '\0';
 	ajGraphDrawTextOnLine(xy1[0], xy1[1], xy2[0], xy2[1], &text[i], just);

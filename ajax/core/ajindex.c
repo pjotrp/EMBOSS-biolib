@@ -1345,7 +1345,7 @@ static void btreeWriteBucket(AjPBtcache cache, const AjPBucket bucket,
     keyptr = PBT_BUCKKEYLEN(lbuf);
     for(i=0;i<nentries;++i)
     {
-	if((keyptr-lbuf+1)+sizeof(ajint) > cache->pagesize)
+	if((ajint)((keyptr-lbuf+1)+sizeof(ajint)) > cache->pagesize)
 	    ajFatal("BucketWrite: Bucket cannot hold more than %d keys",
 		    i-1);
 
@@ -2432,7 +2432,7 @@ static void btreeGetKeys(AjPBtcache cache, unsigned char *buf,
 	BT_GETAJINT(lenptr,&ival);
 	len = ival+1;
 	
-	if((keyptr-tbuf+1) + len + sizeof(ajlong) > pagesize)
+	if((ajint)((keyptr-tbuf+1) + len + sizeof(ajlong)) > pagesize)
 	{
     	    ajDebug("GetKeys: Overflow\n");
 	    GBT_OVERFLOW(tbuf,&overflow);
@@ -2458,7 +2458,7 @@ static void btreeGetKeys(AjPBtcache cache, unsigned char *buf,
     }
     
 
-    if((keyptr-tbuf+1) + sizeof(ajlong) > pagesize)
+    if((ajint)((keyptr-tbuf+1) + sizeof(ajlong)) > pagesize)
     {
 	ajDebug("GetKeys: Overflow\n");
 	GBT_OVERFLOW(tbuf,&overflow);
@@ -2582,7 +2582,7 @@ static void btreeWriteNode(AjPBtcache cache, AjPBtpage spage,
     for(i=0;i<nkeys;++i)
     {
 	len = ajStrGetLen(keys[i]) + 1;
-	if((keyptr-tbuf+1) + len + sizeof(ajlong) > cache->pagesize)
+	if((ajint)((keyptr-tbuf+1) + len + sizeof(ajlong)) > cache->pagesize)
 	{
 	    ajDebug("WriteNode: Overflow\n");
 	    if(!overflow)		/* No overflow buckets yet */
@@ -2623,7 +2623,7 @@ static void btreeWriteNode(AjPBtcache cache, AjPBtpage spage,
 
 
 
-    if((keyptr-tbuf+1) + sizeof(ajlong) > cache->pagesize)
+    if((ajint)((keyptr-tbuf+1) + sizeof(ajlong)) > cache->pagesize)
     {
 	ajDebug("WriteNode: Overflow\n");
 	page->dirty = BT_DIRTY;
@@ -7095,7 +7095,7 @@ static void btreeWritePriBucket(AjPBtcache cache, const AjPPriBucket bucket,
     keyptr = PBT_BUCKKEYLEN(lbuf);
     for(i=0;i<nentries;++i)
     {
-	if((keyptr-lbuf+1)+sizeof(ajint) > cache->pagesize)
+	if((ajint)((keyptr-lbuf+1)+sizeof(ajint)) > cache->pagesize)
 	    ajFatal("PriBucketWrite: Bucket cannot hold more than %d keys",
 		    i-1);
 
@@ -8390,7 +8390,7 @@ static void btreeWriteSecBucket(AjPBtcache cache, const AjPSecBucket bucket,
     keyptr = PBT_BUCKKEYLEN(lbuf);
     for(i=0;i<nentries;++i)
     {
-	if((keyptr-lbuf+1)+sizeof(ajint) > cache->pagesize)
+	if((ajint)((keyptr-lbuf+1)+sizeof(ajint)) > cache->pagesize)
 	    ajFatal("SecBucketWrite: Bucket cannot hold more than %d keys",
 		    i-1);
 

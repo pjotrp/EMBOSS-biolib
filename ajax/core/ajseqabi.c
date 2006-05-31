@@ -583,14 +583,18 @@ static AjBool seqABIReadFloat4(AjPFile fp,float* f4)
 {
 
     unsigned char buf[sizeof(ajlong)];
-
+    ajulong res;
+    
     if (ajFileRead((void *)buf,4,1,fp) != 1)
 	return ajFalse;
-    *f4 = (ajlong)
+
+    res = (ajulong)
         (((ajulong)buf[3]) +
          ((ajulong)buf[2]<<8) +
          ((ajulong)buf[1]<<16) +
          ((ajulong)buf[0]<<24));
+
+    *f4 = (float) res;
 
     return ajTrue;
 }

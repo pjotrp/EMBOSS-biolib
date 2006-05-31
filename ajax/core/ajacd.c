@@ -5976,10 +5976,10 @@ static void acdSetArray(AcdPAcd thys)
     acdAttrToFloat(thys, "maximum", FLT_MAX, &fmax);
     acdLog("maximum: %e\n", fmax);
     
-    acdAttrToFloat(thys, "sum", 1.0, &sum);
+    acdAttrToFloat(thys, "sum", (float)1.0, &sum);
     acdLog("sum: %e\n", sum);
     
-    acdAttrToFloat(thys, "tolerance", 0.01, &tolerance);
+    acdAttrToFloat(thys, "tolerance", (float)0.01, &tolerance);
     acdLog("tolerance: %e\n", tolerance);
     
     acdAttrToInt(thys, "precision", 3, &precision);

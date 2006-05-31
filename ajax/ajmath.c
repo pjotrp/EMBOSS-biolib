@@ -314,7 +314,7 @@ void ajRandomSeed(void)
 	seed = (tv.tv_usec % 9999)+1;
 #else
 	/* Needs looking at to try to get usec resolution */
-	seed = (time(0) % 9999) + 1;
+	seed = (ajint) ((time(0) % 9999) + 1);
 #endif
     }
 

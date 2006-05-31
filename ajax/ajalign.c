@@ -3048,20 +3048,20 @@ void ajAlignSetSubStandard(AjPAlign thys, ajint iali)
     {
 	if(data->NumId >= 0)
 	{
-	    pct = 100. * (float) data->NumId / (float) data->LenAli;
+	    pct = (float)100. * (float) data->NumId / (float) data->LenAli;
 	    ajFmtPrintAppS(&tmphdr, "Identity:   %5d/%d (%4.1f%%)\n",
 			   data->NumId, data->LenAli, pct);
 	}
 
 	if(data->NumSim >= 0)
 	{
-	    pct = 100. * (float) data->NumSim / (float) data->LenAli;
+	    pct = (float)100. * (float) data->NumSim / (float) data->LenAli;
 	    ajFmtPrintAppS(&tmphdr, "Similarity: %5d/%d (%4.1f%%)\n",
 			   data->NumSim, data->LenAli, pct);
 	}
 	if(data->NumGap >= 0)
 	{
-	    pct = 100. * (float) data->NumGap / (float) data->LenAli;
+	    pct = (float)100. * (float) data->NumGap / (float) data->LenAli;
 	    ajFmtPrintAppS(&tmphdr, "Gaps:       %5d/%d (%4.1f%%)\n",
 			   data->NumGap, data->LenAli, pct);
 	}
@@ -3876,7 +3876,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    const char **seqcharptr;
+    char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -3914,7 +3914,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     seqs    = alignSeqs(thys, iali);
     nseqs   = thys->Nseqs;
     mlen    = alignLen(thys, iali);
-    fplural = alignTotweight(thys, 0) * fplurality / 100.;
+    fplural = alignTotweight(thys, 0) * fplurality / (float)100.;
     ident   = alignTotweight(thys, 0);
     
     ajDebug("alignConsStats ali:%d mlen:%d\n", iali, mlen);
@@ -3946,7 +3946,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
     {
-	seqcharptr[iseq] =  ajSeqChar(alignSeq(thys, iseq, iali));
+	seqcharptr[iseq] =  (char *) ajSeqChar(alignSeq(thys, iseq, iali));
     }
 
     /* For each position in the alignment, calculate consensus character */
@@ -4524,7 +4524,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    const char **seqcharptr;
+    char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -4534,7 +4534,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AjBool isident;
     AjBool issim;
     AjBool isgap;
-    const AjPSeq* seqs;
+    AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
     AjPStr debugstr1=NULL;
     AjPStr debugstr2=NULL;
@@ -4562,7 +4562,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     nseqs   = thys->Size;
     mlen    = thys->Len;
-    fplural = ajSeqsetTotweight(thys) * fplurality / 100.;
+    fplural = ajSeqsetTotweight(thys) * fplurality / (float)100.;
     ident   = ajSeqsetTotweight(thys);
     
     /* ajDebug("fplural:%.2f ident:%.1f mlen: %d\n",
@@ -4584,8 +4584,8 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
     {
-	seqcharptr[iseq] =  ajSeqsetSeq(thys, iseq);
-	seqs[iseq] =  ajSeqsetGetSeq(thys, iseq);
+	seqcharptr[iseq] =  (char *) ajSeqsetSeq(thys, iseq);
+	seqs[iseq] =  (AjPSeq) ajSeqsetGetSeq(thys, iseq);
     }
     
     /* For each position in the alignment, calculate consensus character */

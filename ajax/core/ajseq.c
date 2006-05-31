@@ -1146,7 +1146,8 @@ void ajSeqAssignSvS(AjPSeq seq, const AjPStr str)
 */
 void __deprecated ajSeqAssSvC(AjPSeq thys, const char* text)
 {
-    return ajSeqAssignSvC(thys, text);
+    ajSeqAssignSvC(thys, text);
+    return;
 }
 
 /* @obsolete ajSeqAssSv
@@ -1154,7 +1155,8 @@ void __deprecated ajSeqAssSvC(AjPSeq thys, const char* text)
 */
 void __deprecated ajSeqAssSv(AjPSeq thys, const AjPStr str)
 {
-    return ajSeqAssignSvS(thys, str);
+    ajSeqAssignSvS(thys, str);
+    return;
 }
 
 
@@ -1202,7 +1204,8 @@ void ajSeqAssignUfoS(AjPSeq seq, const AjPStr str)
 */
 void __deprecated ajSeqAssUfoC(AjPSeq thys, const char* text)
 {
-    return ajSeqAssignUfoC(thys, text);
+    ajSeqAssignUfoC(thys, text);
+    return;
 }
 
 /* @obsolete ajSeqAssUfo
@@ -1210,7 +1213,8 @@ void __deprecated ajSeqAssUfoC(AjPSeq thys, const char* text)
 */
 void __deprecated ajSeqAssUfo(AjPSeq thys, const AjPStr str)
 {
-    return ajSeqAssignUfoS(thys, str);
+    ajSeqAssignUfoS(thys, str);
+    return;
 }
 
 
@@ -1257,7 +1261,8 @@ void ajSeqAssignUsaS(AjPSeq seq, const AjPStr str)
 */
 void __deprecated ajSeqAssUsaC(AjPSeq thys, const char* text)
 {
-    return ajSeqAssignUsaC(thys, text);
+    ajSeqAssignUsaC(thys, text);
+    return;
 }
 
 /* @obsolete ajSeqAssUsa
@@ -1265,7 +1270,8 @@ void __deprecated ajSeqAssUsaC(AjPSeq thys, const char* text)
 */
 void __deprecated ajSeqAssUsa(AjPSeq thys, const AjPStr str)
 {
-    return ajSeqAssignUsaS(thys, str);
+    ajSeqAssignUsaS(thys, str);
+    return;
 }
 
 
@@ -1374,6 +1380,8 @@ void ajSeqSetRange(AjPSeq seq, ajint pos1, ajint pos2)
 }
 
 
+
+
 /* @func ajSeqSetRangeRev *****************************************************
 **
 ** Sets the start and end positions for a sequence (not for a sequence set),
@@ -1460,6 +1468,7 @@ void __deprecated ajSeqReplaceC(AjPSeq thys, const char* seq)
 void __deprecated ajSeqMakeUsa(AjPSeq thys, const AjPSeqin seqin)
 {
     seqMakeUsa(thys, &thys->Usa);
+    return;
 }
 
 /* @obsolete ajSeqMakeUsa
@@ -1470,6 +1479,7 @@ void __deprecated ajSeqMakeUsaS(const AjPSeq thys,
 				const AjPSeqin seqin, AjPStr* usa)
 {
     seqMakeUsa(thys, usa);
+    return;
 }
 
 /* @funcstatic seqMakeUsa ****************************************************
@@ -3040,7 +3050,8 @@ void ajSeqCalcCount(const AjPSeq seq, ajint* b)
 */
 void __deprecated ajSeqCount(const AjPSeq seq, ajint* b)
 {
-    return ajSeqCalcCount(seq, b);
+    ajSeqCalcCount(seq, b);
+    return;
 }
 
 /* @func ajSeqCalcCrc *********************************************************
@@ -6320,7 +6331,7 @@ void __deprecated ajSeqCompOnlyStr(AjPStr* pthis)
 float ajSeqstrCalcMolwt(const AjPStr seq)
 {
     /* source: Biochemistry LABFAX */
-    static float aa[26] = {      89.10, 132.61, 121.16, 133.11, /* A-D */
+    static double aa[26] = {     89.10, 132.61, 121.16, 133.11, /* A-D */
 				147.13, 165.19,  75.07, 155.16,	/* E-H */
 				131.18,   0.00, 146.19, 131.18,	/* I-L */
 				149.21, 132.12,   0.00, 115.13,	/* M-P */
@@ -6332,7 +6343,7 @@ float ajSeqstrCalcMolwt(const AjPStr seq)
     const char* cp;
 
     cp = ajStrGetPtr(seq);
-    mw = 18.015;
+    mw = (float) 18.015;
     
     while(*cp)
     {
@@ -6342,7 +6353,7 @@ float ajSeqstrCalcMolwt(const AjPStr seq)
 	    ajDebug("seqMW bad character '%c' %d\n", *cp, *cp);
 	    i = 'X' - 'A';
 	}
-	mw += aa[i] - (float) 18.015;
+	mw += (float) aa[i] - (float) 18.015;
 	cp++;
     }
 
@@ -6397,7 +6408,7 @@ ajuint ajSeqstrCalcCrc(const AjPStr seq)
     }
     ajDebug("CRC32 calculated %08lX\n", crc);
 
-    return( crc );
+    return (ajuint)crc;
 }
 
 

@@ -1556,6 +1556,8 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
     ajint idx;
     double fraction;
     double tcount;
+    double res;
+    
     AjPTrn trn = NULL;
 
     while(ajFileBuffGet(inbuff,&line))
@@ -1640,8 +1642,8 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
     {
 	for(i=0;i<64;i++)
 	{
-	    thys->num[i] = ((double)thys->CodonCount* thys->tcount[i]
-			    / 1000.0 + 0.1);
+	    res = ((double)thys->CodonCount* thys->tcount[i] / 1000.0 + 0.1);
+	    thys->num[i] = (ajint) res;
 	}
     }
 
@@ -2333,7 +2335,7 @@ static void codWriteEmboss(const AjPCod thys, AjPFile outf)
 	    if(codon[i] == 'C' || codon[i] == 'G')
 		gc[i] += thys->num[j];
     }
-    totgc = gc[0] + gc[1] + gc[2];
+    totgc = (float) (gc[0] + gc[1] + gc[2]);
     ajFmtPrintF(outf, "\n#Coding GC %5.2f%%\n",
 		(100.0 * totgc/(float)thys->CodonCount/3.0));
     ajFmtPrintF(outf, "#1st letter GC %5.2f%%\n",
@@ -2474,7 +2476,7 @@ static void codWriteCutg(const AjPCod thys, AjPFile outf)
     }
     ajFmtPrintF(outf, "\n\n");
     ajFmtPrintF(outf, "%S\n", minusline);
-    totgc = gc[0] + gc[1] + gc[2];
+    totgc = (float) (gc[0] + gc[1] + gc[2]);
     ajFmtPrintF(outf, "Coding GC %5.2f%% 1st letter GC %5.2f%% "
 		"2nd letter GC %5.2f%% 3rd letter GC %5.2f%%\n",
 		(100.0 * totgc/(float)thys->CodonCount/3.0),
@@ -2571,7 +2573,7 @@ static void codWriteCutgaa(const AjPCod thys, AjPFile outf)
     }
     ajFmtPrintF(outf, "\n\n");
     ajFmtPrintF(outf, "%S\n", minusline);
-    totgc = gc[0] + gc[1] + gc[2];
+    totgc = (float) (gc[0] + gc[1] + gc[2]);
     ajFmtPrintF(outf, "Coding GC %5.2f%% 1st letter GC %5.2f%% "
 		"2nd letter GC %5.2f%% 3rd letter GC %5.2f%%\n",
 		(100.0 * totgc/(float)thys->CodonCount/3.0),
@@ -3589,7 +3591,7 @@ static void codFix(AjPCod thys)
 	}
     }
 
-    if(abs(totfreq - 1000.0) > 0.1)
+    if(fabs(totfreq - 1000.0) > 0.1)
 	ajDebug("Codon usage file '%S' has total frequency/1000 of %.2f\n",
 	       thys->Name, totfreq);
 
@@ -3610,7 +3612,7 @@ static void codFix(AjPCod thys)
 	}
     }
 
-    if(abs(totfrac - (double)totaa) > 0.1)
+    if(fabs(totfrac - (double)totaa) > 0.1)
 	ajDebug("Codon usage file '%S' has total fraction of %.2f for %d amino acids\n",
 	       thys->Name, totfrac, totaa);
 

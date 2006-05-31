@@ -1974,7 +1974,7 @@ void ajNamInit(const char* prefix)
     {
 	prefixRoot = ajStrGetPtr(prefixRootStr);
 #ifdef WIN32
-	namInstallRoot = prefixRoot;
+	namInstallRoot = (char *) prefixRoot;
 #endif
     }
     else

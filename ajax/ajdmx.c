@@ -2000,7 +2000,7 @@ AjBool ajDmxScopalgWriteFasta(const AjPScopalg align, AjPFile outf)
 
 AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list)
 {
-    const AjPScop *arr = NULL;  /* Array derived from list */
+    AjPScop *arr = NULL;  /* Array derived from list */
     ajint dim =0;         /* Size of array */
     ajint idx =0;         /* Index into array for the Pdb code */
 

@@ -215,9 +215,9 @@ AjBool     ajStrAssignSubS(AjPStr* Pstr, const AjPStr str,
 /* combination */
 
 AjBool     ajStrAppendC(AjPStr* Pstr, const char* txt);
-AjBool     ajStrAppendK(AjPStr* Pstr, const char chr);
+AjBool     ajStrAppendK(AjPStr* Pstr, char chr);
 AjBool     ajStrAppendS(AjPStr* Pstr, const AjPStr str);
-AjBool     ajStrAppendCountK(AjPStr* Pstr, const char chr, size_t num);
+AjBool     ajStrAppendCountK(AjPStr* Pstr, char chr, size_t num);
 AjBool     ajStrAppendLenC(AjPStr* Pstr, const char* txt, size_t len);
 AjBool     ajStrAppendSubS(AjPStr* Pstr, const AjPStr str,
 			   ajint pos1, ajint pos2);
@@ -233,7 +233,7 @@ AjBool     ajStrJoinS (AjPStr* Pstr, ajint pos,
 AjBool     ajStrMask(AjPStr* str, ajint begin, ajint end,
 				  char maskchar);
 AjBool     ajStrPasteS( AjPStr* Pstr, ajint pos, const AjPStr str);
-AjBool     ajStrPasteCountK(AjPStr* Pstr, ajint pos, const char chr,
+AjBool     ajStrPasteCountK(AjPStr* Pstr, ajint pos, char chr,
 		      size_t num);
 AjBool     ajStrPasteMaxC (AjPStr* Pstr, ajint pos, const char* txt,
 		     size_t n);
@@ -398,7 +398,7 @@ ajint      ajStrFindC  (const AjPStr str, const char* txt);
 ajint      ajStrFindK  (const AjPStr str, const char chr);
 ajint      ajStrFindS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindAnyC  (const AjPStr str, const char* txt);
-ajint      ajStrFindAnyK(const AjPStr str, const char chr);
+ajint      ajStrFindAnyK(const AjPStr str, char chr);
 ajint      ajStrFindAnyS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindCaseC (const AjPStr str, const char* txt);
 ajint      ajStrFindCaseS (const AjPStr str, const AjPStr str2);

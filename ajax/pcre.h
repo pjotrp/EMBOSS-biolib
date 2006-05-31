@@ -206,7 +206,7 @@ extern void pcre_free_substring_list(const char **);
 extern int  pcre_fullinfo(const pcre *, const pcre_extra *, int,
               void *);
 extern int  pcre_get_named_substring(const pcre *, const char *,
-              int *, int,  const char *, const char **);
+              const int *, int,  const char *, const char **);
 extern int  pcre_get_stringnumber(const pcre *, const char *);
 extern int  pcre_get_substring(const char *, const int *, int, int,
               const char **);

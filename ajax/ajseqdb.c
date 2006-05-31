@@ -884,7 +884,7 @@ static AjBool seqCdAll(AjPSeqin seqin)
     list = ajListstrNew();
 
     seqCdFileSeek(dfp, 0);
-    for(i=0; i < dfp->Header->NRecords; i++)
+    for(i=0; i < (ajint) dfp->Header->NRecords; i++)
     {
 	seqCdFileReadShort(&j, dfp);
 	seqCdFileReadName(name, nameSize, dfp);
@@ -4604,7 +4604,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 	    ajDebug("acnum First: %d Count: %d\n",
 		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
 	    ipos = qryd->trgLine->FirstHit;
-	    for(i = 0; i < qryd->trgLine->NHits; i++)
+	    for(i = 0; i < (ajint) qryd->trgLine->NHits; i++)
 	    {
 		seqCdFileReadInt(&j, qryd->hitfp);
 		j--;
@@ -4646,7 +4646,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 	    ajDebug("seqvn First: %d Count: %d\n",
 		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
 	    ipos = qryd->trgLine->FirstHit;
-	    for(i = 0; i < qryd->trgLine->NHits; i++)
+	    for(i = 0; i < (ajint) qryd->trgLine->NHits; i++)
 	    {
 		seqCdFileReadInt(&j, qryd->hitfp);
 		j--;
@@ -4688,7 +4688,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 	    ajDebug("seqvn First: %d Count: %d\n",
 		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
 	    ipos = qryd->trgLine->FirstHit;
-	    for(i = 0; i < qryd->trgLine->NHits; i++)
+	    for(i = 0; i < (ajint) qryd->trgLine->NHits; i++)
 	    {
 		seqCdFileReadInt(&j, qryd->hitfp);
 		j--;
@@ -4730,7 +4730,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 	    ajDebug("des First: %d Count: %d\n",
 		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
 	    ipos = qryd->trgLine->FirstHit;
-	    for(i = 0; i < qryd->trgLine->NHits; i++)
+	    for(i = 0; i < (ajint) qryd->trgLine->NHits; i++)
 	    {
 		seqCdFileReadInt(&j, qryd->hitfp);
 		j--;
@@ -4772,7 +4772,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 	    ajDebug("key First: %d Count: %d\n",
 		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
 	    ipos = qryd->trgLine->FirstHit;
-	    for(i = 0; i < qryd->trgLine->NHits; i++)
+	    for(i = 0; i < (ajint) qryd->trgLine->NHits; i++)
 	    {
 		seqCdFileReadInt(&j, qryd->hitfp);
 		j--;
@@ -4814,7 +4814,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 	    ajDebug("tax First: %d Count: %d\n",
 		    qryd->trgLine->FirstHit, qryd->trgLine->NHits);
 	    ipos = qryd->trgLine->FirstHit;
-	    for(i = 0; i < qryd->trgLine->NHits; i++)
+	    for(i = 0; i < (ajint) qryd->trgLine->NHits; i++)
 	    {
 		seqCdFileReadInt(&j, qryd->hitfp);
 		j--;
@@ -7456,7 +7456,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 	    ajFileSeek(qryd->libs,apos,0);
 	    iamb = ajFileReadUint(qryd->libs, bigend);
 	    ajDebug("iamb %d\n", iamb);
-	    for(i=0;i<iamb;i++)
+	    for(i=0;i<(ajint)iamb;i++)
 	    {
 		ui = ajFileReadUint(qryd->libs, bigend);
 		bc = (ui & 0xF0000000);
@@ -7467,7 +7467,7 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 
 		ajDebug("amb[%3d] %x %5d %x %2d %8x %10d\n",
 			i, ip, ip, bc, bc, bn, bn, ui, ui);
-		for(j=0; j<= bn; j++)
+		for(j=0; j<= (ajint)bn; j++)
 		    seq[ip+j] = abases[bc];
 	    }
 	}
@@ -7868,7 +7868,7 @@ static ajint seqCdTrgFind(AjPSeqQuery qry, const char* indexname,
 		trgline->FirstHit, trgline->NHits);
 	pos = trgline->FirstHit;
 
-	for(j=0;j<trgline->NHits;++j)
+	for(j=0;j<(ajint)trgline->NHits;++j)
 	{
 	    seqCdFileReadInt(&k,hitfp);
 	    --k;

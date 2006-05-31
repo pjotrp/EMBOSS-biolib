@@ -395,9 +395,9 @@ float ajTm(const AjPStr strand, ajint len, ajint shift, float saltconc,
     double LogDNA;
 
 
-    R      = 1.987;		       /* molar gas constant (cal/c * mol) */
+    R      = (float) 1.987;	       /* molar gas constant (cal/c * mol) */
     LogDNA = R * (float)log((double)(DNAconc/4000000000.0));	     /* nM */
-    To = 273.15;
+    To = (float) 273.15;
 
     ajMeltEnergy(strand, len, shift, isDNA, ajFalse, &sumEnthalpy,
 			&sumEntropy);
@@ -564,9 +564,9 @@ float ajTm2(const char *strand, ajint pos, ajint len, float saltconc,
 
 
     /* LogSalt = 16.6 * (float) (log10((double) (saltconc/1000.0))); */ /* mM */
-    R = 1.987;		 /* molar gas constant (cal/c * mol)        */
+    R = (float) 1.987;		 /* molar gas constant (cal/c * mol)        */
     LogDNA = R * (float)log((double)(DNAconc/4000000000.0)); /* nM */
-    To = 273.15;
+    To = (float) 273.15;
 
     ajMeltEnergy2(strand, pos, len, isDNA, &sumEnthalpy,
 		  &sumEntropy, saveentr, saveenth, saveener);

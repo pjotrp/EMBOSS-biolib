@@ -4767,7 +4767,7 @@ void ajFileBuffTraceFull(const AjPFileBuff thys, size_t nlines,
 	     thys->Pos, thys->Size, thys->Nobuff, thys->Fpos);
 
     line = thys->Lines;
-    for(i=1; line && (i <= nlines); i++)
+    for(i=1; line && (i <= (ajint)nlines); i++)
     {
 	if(line == thys->Curr)
 	    ajDebug("*Line %x %d: %5d %5d <%-20S>\n",
@@ -4783,7 +4783,7 @@ void ajFileBuffTraceFull(const AjPFileBuff thys, size_t nlines,
     }
 
     line = thys->Freelines;
-    for(i=1; line && (i <= nfree);  i++)
+    for(i=1; line && (i <= (ajint)nfree);  i++)
     {
 	if(line == thys->Freelast) last = ajTrue;
 	ajDebug(" Free %x %d: %d bytes %B\n",

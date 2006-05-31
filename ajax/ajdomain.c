@@ -3530,7 +3530,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPScop*]    Array of Scop objects
+** @param [r] arr [AjPScop*]    Array of Scop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [ajint]       Search term
 **
@@ -3541,7 +3541,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
+ajint ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id)
 {
     int l;
     int m;
@@ -4620,7 +4620,7 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 
 ajint ajDomainDCFType(AjPFile inf)
 {
-    ajlong  offset      = 0.0;
+    ajlong  offset      = 0;
     static  AjPStr line = NULL;
     static  AjPStr tmp  = NULL;	
 

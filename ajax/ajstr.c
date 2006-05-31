@@ -250,7 +250,7 @@ char* ajCharNewResC(const char* txt, size_t size)
     isize = size;
     ilen = strlen(txt);
 
-    if(ilen >= isize)
+    if(ilen >= (ajint) isize)
 	isize = ilen + 1;
 
     cp = (char*) AJALLOC0(isize);
@@ -278,7 +278,7 @@ char* ajCharNewResS(const AjPStr str, size_t size)
     size_t isize;
 
     isize = size;
-    if(str->Len >= isize)
+    if(str->Len >= (ajint) isize)
 	isize = str->Len + 1;
 
     cp = (char*) AJALLOC0(isize);
@@ -848,7 +848,7 @@ AjBool ajCharPrefixC(const char* txt, const char* txt2)
     if(!ilen)				/* no prefix */
 	return ajFalse;
 
-    if(ilen > strlen(txt))		/* pref longer */
+    if(ilen > (ajint) strlen(txt))		/* pref longer */
 	return ajFalse;
 
     if(strncmp(txt, txt2, ilen))    /* +1 or -1 for a failed match */
@@ -883,7 +883,7 @@ AjBool ajCharPrefixS(const char* txt, const AjPStr str)
     if(!txt)
 	return ajFalse;
 
-    if(str->Len > strlen(txt))	/* pref longer */
+    if(str->Len > (ajint) strlen(txt))	/* pref longer */
 	return ajFalse;
 
     if(strncmp(txt, str->Ptr, str->Len)) /* +1 or -1 for a failed match */
@@ -1215,7 +1215,7 @@ int ajCharCmpCaseLen(const char* txt, const char* txt2, size_t len)
     const char* cq;
     ajint i;
 
-    for(cp=txt,cq=txt2,i=0;*cp && *cq && i<len;++i,++cp,++cq)
+    for(cp=txt,cq=txt2,i=0;*cp && *cq && i<(ajint)len;++i,++cp,++cq)
 	if(toupper((ajint) *cp) != toupper((ajint) *cq))
 	{
 	    if(toupper((ajint) *cp) > toupper((ajint) *cq))
@@ -2656,7 +2656,7 @@ AjBool ajStrAppendCountK(AjPStr* Pstr, char chr, size_t num)
     thys = *Pstr;
 
     if(thys)
-	j = AJMAX(thys->Res, thys->Len+num+1);
+	j = AJMAX(thys->Res, (ajint)(thys->Len+num+1));
     else
 	j = num+1;
 
@@ -2664,7 +2664,7 @@ AjBool ajStrAppendCountK(AjPStr* Pstr, char chr, size_t num)
     thys = *Pstr;			/* possible new location */
 
     cp = &thys->Ptr[thys->Len];
-    for(i=0; i<num; i++)
+    for(i=0; i<(ajint)num; i++)
     {
 	*cp = chr;
 	cp++;
@@ -2710,7 +2710,7 @@ AjBool ajStrAppendLenC(AjPStr* Pstr, const char* txt, size_t len)
 	ajFatal("ajStrAppendLenC source string is NULL");
 
     if(*Pstr)
-	j = AJMAX(thys->Res, thys->Len+len+1);
+	j = AJMAX(thys->Res, (ajint) (thys->Len+len+1));
     else
 	j = len+1;
 
@@ -3123,7 +3123,7 @@ AjBool ajStrPasteCountK( AjPStr* Pstr, ajint pos, char chr,
 */
 
 AjBool __deprecated ajStrReplaceK( AjPStr* pthis, ajint ibegin,
-		      const char overwrite, ajint ilen)
+		      char overwrite, ajint ilen)
 {
     return ajStrPasteCountK(pthis, ibegin, overwrite, ilen);
 }
@@ -3163,7 +3163,7 @@ AjBool ajStrPasteMaxC (AjPStr* Pstr, ajint pos, const char* txt,
     ibegin = ajMathPos(thys->Len, pos);
     iend = ibegin + len;
 
-    if((iend  > thys->Len) || (len > slen) ) /* can't fit */
+    if((iend  > thys->Len) || ((ajint)len > slen) ) /* can't fit */
 	return ajFalse;
 
     ptr1 = &thys->Ptr[ibegin];
@@ -3389,7 +3389,7 @@ AjBool ajStrCutEnd(AjPStr* Pstr, size_t len)
 	ajFatal("ajStrCutEnd called with negative length '%d' to be cut",
 		len);
 
-    if(len > thys->Len)
+    if((ajint)len > thys->Len)
 	thys->Len = 0;
     else
 	thys->Len -= len;
@@ -3487,7 +3487,7 @@ AjBool ajStrCutStart(AjPStr* Pstr, size_t len)
 	ajFatal("ajStrCutStart called with negative length '%d' to be cut",
 		len);
 
-    if(len > thys->Len)
+    if((ajint)len > thys->Len)
 	thys->Len = 0;
     else
     {
@@ -4360,7 +4360,7 @@ AjBool ajStrTruncateLen(AjPStr* Pstr, size_t len)
 
     thys = ajStrGetuniqueStr(Pstr);
 
-    if(len > thys->Len) return ajTrue;
+    if((ajint)len > thys->Len) return ajTrue;
 
     thys->Ptr[len] = '\0';
     thys->Len = len;
@@ -4678,7 +4678,7 @@ AjBool ajStrExchangeSetCC(AjPStr* Pstr, const char* txt, const char* txtnew)
     thys = ajStrGetuniqueStr(Pstr);
 
     i = strlen(txtnew);
-    if(strlen(txt) > i)
+    if((ajint)strlen(txt) > i)
     {
 	ajErr("ajStrExchangeSetCC new char set '%s' shorter than old '%s'",
 	       txt, txtnew);
@@ -6176,7 +6176,7 @@ AjBool ajStrSetRes(AjPStr* Pstr, size_t size)
 
     thys = *Pstr;
 
-    if((thys->Use > 1) || (thys->Res < savesize))
+    if((thys->Use > 1) || (thys->Res < (ajint)savesize))
     {
 	strCloneL(Pstr, savesize);
 	return ajTrue;
@@ -6221,7 +6221,7 @@ AjBool ajStrSetResRound(AjPStr* Pstr, size_t size)
     }
 
     thys = *Pstr;
-    if((thys->Use > 1 || thys->Res < size))
+    if((thys->Use > 1 || thys->Res < (ajint)size))
     {
 	roundsize = ajRound(size, STRSIZE);
 	strCloneL(Pstr, roundsize);
@@ -6310,7 +6310,7 @@ AjBool ajStrSetValidLen(AjPStr* Pstr, size_t len)
 	ret = ajFalse;
     }
 
-    if(len >= thys->Res)
+    if((ajint)len >= thys->Res)
     {
 	ajWarn("ajStrFixI called with length %d for string with size %d\n",
 	       len, thys->Res);
@@ -6769,7 +6769,7 @@ AjBool ajStrFromDouble(AjPStr* Pstr, double val, ajint precision)
     else
 	i = precision + 4;
 
-    ret = ajStrSetRes(Pstr, i);
+    ret = ajStrSetRes(Pstr, (size_t)i);
     thys = *Pstr;
 
     sprintf(fmt, "%%.%df", precision);
@@ -6810,7 +6810,7 @@ AjBool ajStrFromDoubleExp(AjPStr* Pstr, double val, ajint precision)
     else
 	i = precision + 8;
 
-    ret = ajStrSetRes(Pstr, i);
+    ret = ajStrSetRes(Pstr, (size_t) i);
     thys = *Pstr;
 
     sprintf(fmt, "%%.%de", precision);

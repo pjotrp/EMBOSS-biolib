@@ -929,7 +929,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 		    jtot += ret->Data[jold];
 		    ret->Data[jnew--] = ret->Data[jold--];
 		}
-		jrest = 1.0 - jtot;
+		jrest = (float) 1.0 - jtot;
 		ret->Data[misspos] = jrest;
 		misspos -= ret->Allele[j-1];
 		jnew--;

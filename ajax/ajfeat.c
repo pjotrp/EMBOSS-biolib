@@ -6208,11 +6208,11 @@ void ajFeatTest (void)
     ajStrAssignC(&type, "misc_feature");
     ajStrAssignC(&desc, "Just testing");
 
-    ft = ajFeatNew(table, source, type, 5, 7, 1.23, '+', 0);
+    ft = ajFeatNew(table, source, type, 5, 7, (float)1.23, '+', 0);
     ajFeatSetDesc(ft, desc);
 
     ajStrAssignC(&desc, "Testing again");
-    ft = ajFeatNew(table, source, type, 9, 19, 4.56, '-', 3);
+    ft = ajFeatNew(table, source, type, 9, 19, (float)4.56, '-', 3);
     ajFeatSetDesc(ft, desc);
 
     ajFeattableTrace(table);

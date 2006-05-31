@@ -299,7 +299,7 @@ static void cvt_d(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 	m = hval;
 
     do
-	*--p = ajSysItoC(m%10 + '0');
+	*--p = ajSysItoC((ajint)(m%10 + '0'));
     while((m /= 10) > 0);
 
     if(hval < 0)
@@ -313,7 +313,7 @@ static void cvt_d(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 	m = val;
 
     do
-	*--p = ajSysItoC(m%10 + '0');
+	*--p = ajSysItoC((ajint)(m%10 + '0'));
     while((m /= 10) > 0);
 
     if(val < 0)
@@ -2510,7 +2510,7 @@ static void scvt_x(const char *fmt, char **pos, VALIST ap, ajint width,
 #if defined(HAVE64)
 		hn = sc_hex(ajStrGetPtr(t));
 #else
-		val = hval;
+		val = (unsigned long *) hval;
 		if(sscanf(ajStrGetPtr(t),"%lx",&n)!=1)
 		{
 		    ajStrDel(&t);
@@ -2739,7 +2739,7 @@ static void scvt_o(const char *fmt, char **pos, VALIST ap, ajint width,
 #if defined(HAVE64)
 		hn = sc_octal(ajStrGetPtr(t));
 #else
-		val = hval;
+		val = (unsigned long *) hval;
 		if(sscanf(ajStrGetPtr(t),"%lo",&n)!=1)
 		{
 		    ajStrDel(&t);
@@ -2838,7 +2838,7 @@ static void scvt_u(const char *fmt, char **pos, VALIST ap, ajint width,
 #if defined(HAVE64)
 		hn = sc_ulong(ajStrGetPtr(t));
 #else
-		val = hval;
+		val = (unsigned long *) hval;
 		if(sscanf(ajStrGetPtr(t),"%lu",&n)!=1)
 		{
 		    ajStrDel(&t);
