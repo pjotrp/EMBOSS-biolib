@@ -49,6 +49,7 @@
 ******************************************************************************/
 
 #include "emboss.h"
+#ifndef WIN32
 #include <dirent.h>
 #include <sys/wait.h>
 #include <sys/stat.h>
@@ -57,6 +58,7 @@
 #include <sys/fcntl.h>
 #else
 #include <fcntl.h>
+#endif
 #endif
 #include <string.h>
 
@@ -71,6 +73,9 @@
 #define BLASTIDSANGER  4
 #define BLASTPREFNCBI  1
 
+#ifdef WIN32
+typedef char* caddr_t;
+#endif
 
 #define TABLESIZE 10000
 #define HDRSIZE 1000

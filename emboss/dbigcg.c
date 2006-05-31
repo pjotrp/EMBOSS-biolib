@@ -45,8 +45,10 @@
 ******************************************************************************/
 
 #include "emboss.h"
+#ifndef WIN32
 #include <dirent.h>
 #include <sys/wait.h>
+#endif
 #include <string.h>
 
 #define GCGTYPE_OTHER 0

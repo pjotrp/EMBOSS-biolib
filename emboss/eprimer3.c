@@ -21,8 +21,13 @@
 ******************************************************************************/
 
 #include "emboss.h"
+#ifndef WIN32
 #include <unistd.h>
-
+#else
+#include <io.h>
+#include <fcntl.h>
+#include <windows.h>
+#endif
 
 
 /* estimate size of a sequence's output table */
@@ -184,7 +189,9 @@ int main(int argc, char **argv, char **env)
     AjPStr program  = NULL;
 
     /* fork/pipe variables */
+#ifndef WIN32
     pid_t nPid;
+#endif
     int pipeto[2];	  /* pipe to feed the exec'ed program input */
     int pipefrom[2];	  /* pipe to get the exec'ed program output */
 
@@ -299,8 +306,7 @@ int main(int argc, char **argv, char **env)
 
     while(ajSeqallNext(sequence, &seq))
     {
-
-
+#ifndef WIN32
         /* open the pipes to connect to primer3 */
         if( pipe( pipeto ) != 0 )
             ajFatal( "Couldn't open pipe() to" );
@@ -357,6 +363,105 @@ int main(int argc, char **argv, char **env)
 
             close(pipeto[0]);
             close(pipefrom[1]);
+
+#else	// WIN32
+	    {
+		HANDLE hChildStdinRd, hChildStdinWr, hChildStdinWrDup, 
+		hChildStdoutRd, hChildStdoutWr, hChildStdoutRdDup, 
+		hSaveStdin, hSaveStdout;
+		BOOL fSuccess;
+		SECURITY_ATTRIBUTES saAttr;
+		saAttr.nLength = sizeof(SECURITY_ATTRIBUTES);
+		saAttr.bInheritHandle = TRUE;
+		saAttr.lpSecurityDescriptor = NULL;
+		
+	  // The steps for redirecting child process's STDOUT:
+	  //     1. Save current STDOUT, to be restored later. 
+	  //     2. Create anonymous pipe to be STDOUT for child process. 
+	  //     3. Set STDOUT of the parent process to be write handle to 
+	  //        the pipe, so it is inherited by the child process. 
+	  //     4. Create a noninheritable duplicate of the read handle and
+	  //        close the inheritable read handle.
+
+		 hSaveStdout = GetStdHandle(STD_OUTPUT_HANDLE);
+		 if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
+		     ajFatal ( "Couldn't open pipe() from" );
+		 if (!SetStdHandle(STD_OUTPUT_HANDLE, hChildStdoutWr)) 
+		     ajFatal("Redirecting STDOUT failed");
+		 fSuccess = DuplicateHandle(GetCurrentProcess(),
+                                            hChildStdoutRd,
+					    GetCurrentProcess(),
+                                            &hChildStdoutRdDup , 0,
+					    FALSE,
+					    DUPLICATE_SAME_ACCESS);
+		 if(!fSuccess)
+		     ajFatal("DuplicateHandle failed");
+		 CloseHandle(hChildStdoutRd);
+
+	    // The steps for redirecting child process's STDIN: 
+	    //     1.  Save current STDIN, to be restored later. 
+	    //     2.  Create anonymous pipe to be STDIN for child process. 
+	    //     3.  Set STDIN of the parent to be the read handle to the 
+	    //         pipe, so it is inherited by the child process. 
+	    //     4.  Create a noninheritable duplicate of the write handle, 
+	    //         and close the inheritable write handle.
+
+		 hSaveStdin = GetStdHandle(STD_INPUT_HANDLE);
+		 if (!CreatePipe(&hChildStdinRd, &hChildStdinWr, &saAttr, 0)) 
+		     ajFatal ( "Couldn't open pipe() to" );
+		 if (!SetStdHandle(STD_INPUT_HANDLE, hChildStdinRd)) 
+		     ajFatal("Redirecting Stdin failed");
+		 fSuccess = DuplicateHandle(GetCurrentProcess(),
+                                            hChildStdinWr, 
+					    GetCurrentProcess(),
+                                            &hChildStdinWrDup, 0, 
+					    FALSE,         // not inherited 
+					    DUPLICATE_SAME_ACCESS); 
+		  if (!fSuccess) 
+		      ajFatal("DuplicateHandle failed");
+		  CloseHandle(hChildStdinWr);
+
+		  {	// Create the child process
+			PROCESS_INFORMATION piProcInfo;
+			STARTUPINFO siStartInfo;
+			BOOL bFuncRetn = FALSE;
+			char* primer3_core_Dir = getenv("EMBOSS_ROOT");
+			char cmd[MAX_PATH];
+
+			ZeroMemory(&piProcInfo, sizeof(PROCESS_INFORMATION));
+			ZeroMemory(&siStartInfo, sizeof(STARTUPINFO));
+			siStartInfo.cb = sizeof(STARTUPINFO);
+
+			if (primer3_core_Dir == NULL)
+			    ajFatal("Cannot find primer3_core.exe");
+					
+			sprintf(cmd, "%s\\primer3_core.exe", primer3_core_Dir);
+
+			bFuncRetn = CreateProcess(NULL,
+				   cmd,	 // command line 
+				   NULL, // process security attributes 
+				   NULL, // primary thread security attributes 
+				   TRUE, // handles are inherited 
+				   0,    // creation flags 
+				   NULL, // use parent's environment 
+				   NULL, // use parent's current directory 
+				   &siStartInfo,  // STARTUPINFO pointer 
+				   &piProcInfo);  // receives PROCESS_INFORMATION
+			 if (bFuncRetn == 0)
+			     ajFatal("There was a problem executing primer3");
+			 CloseHandle(piProcInfo.hProcess);
+			 CloseHandle(piProcInfo.hThread);
+		  }
+
+	      if (!SetStdHandle(STD_INPUT_HANDLE, hSaveStdin))
+		  ajFatal("Re-redirecting Stdin failed\n");
+	      if (!SetStdHandle(STD_OUTPUT_HANDLE, hSaveStdout))
+		  ajFatal("Re-redirecting Stdout failed\n");
+
+	      CloseHandle(hChildStdoutWr);
+	      pipeto[1] = _open_osfhandle(hChildStdinWrDup, _O_APPEND);
+	      pipefrom[0] = _open_osfhandle(hChildStdoutRdDup, _O_RDONLY);
+#endif	// WIN32
 
             stream = eprimer3_start_write(pipeto[1]);
     
