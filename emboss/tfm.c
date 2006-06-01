@@ -22,8 +22,6 @@
 
 #include "emboss.h"
 
-#ifndef WIN32
-
 
 static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html);
 static AjBool tfm_FindAppDoc(const AjPStr program, const AjPStr docroot,
@@ -91,7 +89,7 @@ int main(int argc, char **argv)
 		ajStrAssignC(&pager,"more");
 	}
 	ajFmtPrintS(&cmd,"%S %S",pager,path);
-	ajSystem(cmd);
+	system(ajStrGetPtr(cmd));
     }
     else
     {
@@ -139,31 +137,47 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 {
 
     AjPStr docrootinst = NULL;
+    AjPStr roottmp = NULL;
+    
+    AjBool is_windows = ajFalse;
+#ifdef WIN32
+    is_windows = ajTrue;
+#endif
 
-    ajNamGetValueC("docroot", docroot);
+    docrootinst = ajStrNew();
+    roottmp     = ajStrNew();
+
+    ajNamGetValueC("docroot", &roottmp);
 
     /* look at EMBOSS doc files */
 
     /* try to open the installed doc directory */
-    if(!ajStrGetLen(*docroot))
+    if(!ajStrGetLen(roottmp))
     {
 	ajNamRootInstall(&docrootinst);
-	ajFileDirFix(&docrootinst);
-	ajFmtPrintS(docroot, "%Sshare/EMBOSS/doc/",
-		    docrootinst);
-	if(html)
+
+	if(is_windows)
 	{
-	    ajStrAppendC(docroot, "html/");
+	    ajFileDirUp(&docrootinst);
+	    ajFileDirUp(&docrootinst);
+	    ajStrAppendC(&docrootinst,"doc");
 	}
 	else
-	{
-	    ajStrAppendC(docroot, "programs/text/");
-	}
+	    ajFmtPrintS(docroot, "%Sshare%sEMBOSS%sdoc%s",
+			docrootinst,SLASH_STRING,SLASH_STRING,SLASH_STRING);
 
+	ajFileDirFix(&docrootinst);
+
+	if(html)
+	    ajFmtPrintS(docroot,"%Sprograms%shtml%s",docrootinst,SLASH_STRING,
+			SLASH_STRING);
+	else
+	    ajFmtPrintS(docroot,"%Sprograms%stext%s",docrootinst,SLASH_STRING,
+			SLASH_STRING);
     }
     ajFileDirFix(docroot);
 
-    if(!ajFileDir(docroot))
+    if(!ajFileDir(docroot) && !is_windows)
     {
 	/*
 	**  if that didn't work then try the doc directory from the
@@ -184,6 +198,7 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 	}
     }
 
+    ajStrDel(&roottmp);
     ajStrDel(&docrootinst);
 
     return;
@@ -264,7 +279,7 @@ static void tfm_FixImages(AjPStr *line, const AjPStr path)
 #ifdef __CYGWIN__
     char *root = NULL;
 #endif
-    
+
     q = ajStrGetPtr(*line);
 
     if(!(p = strstr(q,"<img")))
@@ -294,7 +309,7 @@ static void tfm_FixImages(AjPStr *line, const AjPStr path)
     }
     ajStrAssignC(&post,p);
 
-    ajFmtPrintS(line,"%Sfile://%S/html/%S%S",pre,newpath,name,post);
+    ajFmtPrintS(line,"%Sfile:/%S%S%S",pre,newpath,name,post);
 
     ajStrDel(&newpath);
     ajStrDel(&name);
@@ -303,12 +318,3 @@ static void tfm_FixImages(AjPStr *line, const AjPStr path)
     
     return;
 }
-
-#else
-int main()
-{
-    fprintf(stdout,"tfm not yet converted for Win32\n");
-
-    return 0;
-}
-#endif
