@@ -457,9 +457,6 @@ void ajTableMap(AjPTable table,
     if(!table)
 	return;
 
-    if(!apply)
-	return;
-
     stamp = table->timestamp;
     for(i = 0; i < table->size; i++)
 	for(p = table->buckets[i]; p; p = p->link)
@@ -500,9 +497,6 @@ void ajTableMapDel(AjPTable table,
     struct binding *p;
 
     if(!table)
-	return;
-
-    if(!apply)
 	return;
 
     stamp = table->timestamp;
