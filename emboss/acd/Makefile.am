@@ -45,7 +45,7 @@ pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \
 	wossname.acd yank.acd
 
 pkgdata3_DATA =	codes.english  \
-	groups.standard knowntypes.standard \
+	groups.standard keywords.standard knowntypes.standard \
 	sections.standard variables.standard
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/acd
