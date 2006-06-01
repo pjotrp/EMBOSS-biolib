@@ -557,6 +557,8 @@ static AcdPAcd acdSetCurr = NULL;
 
 static ajint acdNParam=0;
 
+static AjPTable acdGrpTable = NULL;
+
 static void      acdAmbigApp(AjPStr* pambiglist, const AjPStr str);
 static void      acdAmbigAppC(AjPStr* pambiglist, const char* txt);
 static void      acdArgsParse(ajint argc, char * const argv[]);
@@ -782,6 +784,7 @@ static AjBool    acdQualToSeqend(const AcdPAcd thys, const char *qual,
 				 ajint defval, ajint *result,
 				 AjPStr* valstr);
 static AjPTable  acdReadGroups(void);
+static AjPTable  acdReadKeywords(void);
 static void      acdReadKnowntypes(AjPTable* desctable, AjPTable* infotable);
 static void      acdReadSections(AjPTable* typetable, AjPTable* infotable);
 static AjBool    acdReplyInit(const AcdPAcd thys,
@@ -824,6 +827,7 @@ static void      acdUserSavereply(const AcdPAcd thys, const char* assocqual,
 				  AjBool userset, const AjPStr reply);
 static void      acdValidAppl(const AcdPAcd thys);
 static void      acdValidApplGroup(const AjPStr groups);
+static void      acdValidApplKeywords(const AjPStr groups);
 static void      acdValidKnowntype(const AcdPAcd thys);
 static void      acdValidRelation(const AcdPAcd thys);
 static void      acdValidSection(const AcdPAcd thys);
@@ -1144,6 +1148,8 @@ AcdOAttr acdAttrAppl[] =
     {"documentation", VT_STR, "",
 	 "Short description of the application function"},
     {"groups", VT_STR, "",
+	 "Standard application group(s) for wossname and GUIs"},
+    {"keywords", VT_STR, "",
 	 "Standard application group(s) for wossname and GUIs"},
     {"gui", VT_STR, "",
 	 "Suitability for launching in a GUI"},
@@ -20666,6 +20672,8 @@ static void acdCodeInit(void)
     if(!ajStrIsWhite(codeText))		/* test acdc-codebad */
 	ajDie("Bad format in codes file %S after '%S \"%S\"'",
 	      codeFName, codeCode, codeValue);
+
+    codeCode = codeValue = NULL; /* saved in the table */
     
     ajRegFree(&codexp);
     ajStrDel(&codeText);
@@ -20673,8 +20681,6 @@ static void acdCodeInit(void)
     ajStrDel(&codeRoot);
     ajStrDel(&codeRootInst);
     ajStrDel(&codePack);
-    ajStrDel(&codeCode);
-    ajStrDel(&codeValue);
     ajStrDel(&codeLanguage);
 
     acdCodeSet = ajTrue;
@@ -22551,6 +22557,7 @@ static void acdReset(void)
     }
 
     ajStrTableFree(&acdCodeTable);
+    ajStrTableFree(&acdGrpTable);
 
     ajStrDel(&acdTmpStr);
     ajStrDel(&acdTmpStr2);
@@ -22727,6 +22734,9 @@ static void acdValidAppl(const AcdPAcd thys)
     /* group must be a known group (and subgroup) */
 
     acdValidApplGroup(thys->AttrStr[i]);
+
+    i = acdFindAttrC(acdAttrAppl, "keywords");
+    acdValidApplKeywords(thys->AttrStr[i]);
 
     return;
 }
@@ -23849,7 +23859,6 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
 
 static void acdValidApplGroup(const AjPStr groups)
 {
-    static AjPTable grpTable = NULL;
     AjPRegexp grpexp         = NULL;
     AjPStr tmpGroups         = NULL;
     AjPStr grpName           = NULL;
@@ -23858,7 +23867,7 @@ static void acdValidApplGroup(const AjPStr groups)
     if(!acdDoValid)
 	return;
 
-    grpTable = acdReadGroups();
+    acdGrpTable = acdReadGroups();
 
     ajStrAssignS(&tmpGroups, groups);
 
@@ -23869,7 +23878,7 @@ static void acdValidApplGroup(const AjPStr groups)
     {
 	ajRegSubI(grpexp, 1, &grpName);
 	ajStrRemoveWhite(&grpName);
-	grpDesc = ajTableGet(grpTable, grpName);
+	grpDesc = ajTableGet(acdGrpTable, grpName);
 	if(!grpDesc)
 	    acdErrorValid("Unknown group '%S' for application", grpName);
 	ajRegPost(grpexp, &tmpGroups);
@@ -23878,6 +23887,53 @@ static void acdValidApplGroup(const AjPStr groups)
     ajStrDel(&grpName);
     ajStrDel(&tmpGroups);
     ajRegFree(&grpexp);
+
+    return;
+}
+
+
+
+
+/* @funcstatic acdValidApplKeywords *******************************************
+**
+** Validation for application keywords
+**
+** @param [r] keys [const AjPStr] Keyword(s)
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdValidApplKeywords(const AjPStr keys)
+{
+    static AjPTable keyTable = NULL;
+    AjPRegexp keyexp         = NULL;
+    AjPStr tmpKeys           = NULL;
+    AjPStr keyName           = NULL;
+    AjPStr keyDesc           = NULL;
+
+    if(!acdDoValid)
+	return;
+
+    keyTable = acdReadKeywords();
+
+    ajStrAssignS(&tmpKeys, keys);
+
+    /* step through each group */
+    keyexp = ajRegCompC("([^,]+),?");
+
+    while(ajRegExec(keyexp, tmpKeys))
+    {
+	ajRegSubI(keyexp, 1, &keyName);
+	ajStrRemoveWhite(&keyName);
+	keyDesc = ajTableGet(keyTable, keyName);
+	if(!keyDesc)
+	    acdErrorValid("Unknown keyword '%S' for application", keyName);
+	ajRegPost(keyexp, &tmpKeys);
+    }
+
+    ajStrDel(&keyName);
+    ajStrDel(&tmpKeys);
+    ajRegFree(&keyexp);
 
     return;
 }
@@ -23974,6 +24030,108 @@ static AjPTable acdReadGroups(void)
     ajStrDel(&grpDesc);
 
     ajRegFree(&grpxp);
+
+    return ret;
+}
+
+
+
+
+/* @funcstatic acdReadKeywords ************************************************
+**
+** Read standard table of application keywords
+**
+** @return [AjPTable] String table of keyword names and descriptions
+** @@
+******************************************************************************/
+
+static AjPTable acdReadKeywords(void)
+{
+    AjPTable ret = ajStrTableNewCase(50);
+
+    AjPFile keyFile    = NULL;
+    AjPStr keyFName    = NULL;
+    AjPStr keyRoot     = NULL;
+    AjPStr keyRootInst = NULL;
+    AjPStr keyPack     = NULL;
+    AjPStr keyLine     = NULL;
+    AjPRegexp keyxp    = NULL;
+    AjPStr keyName     = NULL;
+    AjPStr keyDesc     = NULL;
+
+    if(!acdGrpTable)
+	acdGrpTable = acdReadGroups();
+
+    ajNamRootPack(&keyPack);
+    ajNamRootInstall(&keyRootInst);
+    ajFileDirFix(&keyRootInst);
+    
+    if(ajNamGetValueC("acdroot", &keyRoot))
+    {
+	ajFileDirFix(&keyRoot);
+	ajFmtPrintS(&keyFName, "%Skeywords.standard", keyRoot);
+	keyFile = ajFileNewIn(keyFName);
+	acdLog("Keyword file in acdroot: '%S'\n", keyFName);
+    }
+    else
+    {
+	ajFmtPrintS(&keyFName, "%Sshare/%S/acd/keywords.standard",
+		    keyRootInst, keyPack);
+	acdLog("Keyword file installed: '%S'\n", keyFName);
+	keyFile = ajFileNewIn(keyFName);
+	if(!keyFile)
+	{
+	    acdLog("keyword file '%S' not opened\n", keyFName);
+	    ajNamRoot(&keyRoot);
+	    ajFileDirFix(&keyRoot);
+	    ajFmtPrintS(&keyFName, "%Sacd/keywords.standard", keyRoot);
+	    acdLog("Keywords file from source dir: '%S'\n", keyFName);
+	    keyFile = ajFileNewIn(keyFName);
+	}
+    }
+    
+    if(!keyFile)			/* test acdc-keymissing */
+	ajDie("Keyword file %S not found", keyFName);
+    else
+	acdLog("Keyword file %F used\n", keyFile);
+    
+    keyxp = ajRegCompC("([^ ]+) +([^ ].*)");
+    while(keyFile && ajFileReadLine(keyFile, &keyLine))
+    {
+	if(ajStrCutComments(&keyLine))
+	{
+	    ajStrRemoveWhite(&keyLine);
+
+	    if(ajRegExec(keyxp, keyLine))
+	    {
+		ajRegSubI(keyxp, 1, &keyName);
+		ajRegSubI(keyxp, 2, &keyDesc);
+		ajStrExchangeKK(&keyName, '_', ' ');
+		if(ajTableGet(acdGrpTable, keyName))
+		    ajWarn("Keyword %S in file %S is a known group",
+			   keyName, keyFName);
+		if(ajTablePut(ret, keyName, keyDesc))
+		    ajWarn("Duplicate keyword in file %S",
+			   keyFName);
+		keyName = NULL;
+		keyDesc = NULL;
+	    }
+	    else
+		ajErr("Bad record in file %S:\n%S",
+		      keyFName, keyLine);
+	}
+    }
+    ajFileClose(&keyFile);
+
+    ajStrDel(&keyFName);
+    ajStrDel(&keyRoot);
+    ajStrDel(&keyRootInst);
+    ajStrDel(&keyPack);
+    ajStrDel(&keyLine);
+    ajStrDel(&keyName);
+    ajStrDel(&keyDesc);
+
+    ajRegFree(&keyxp);
 
     return ret;
 }
