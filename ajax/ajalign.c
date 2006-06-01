@@ -4007,17 +4007,17 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 		{
 		    if(matrix)
 		    {
-			contri = (float)matrix[m1][m2]*seqs[jseq]->Weight;
-			+ajFloatGet(posScore,iseq);
-			contrj = (float)matrix[m1][m2]*seqs[iseq]->Weight;
-			+ajFloatGet(posScore,jseq);
+			contri = (float)matrix[m1][m2]*seqs[jseq]->Weight
+			  +ajFloatGet(posScore,iseq);
+			contrj = (float)matrix[m1][m2]*seqs[iseq]->Weight
+			  +ajFloatGet(posScore,jseq);
 		    }
 		    else
 		    {
-			contri = fmatrix[m1][m2]*seqs[jseq]->Weight;
-			+ajFloatGet(posScore,iseq);
-			contrj = fmatrix[m1][m2]*seqs[iseq]->Weight;
-			+ajFloatGet(posScore,jseq);
+			contri = fmatrix[m1][m2]*seqs[jseq]->Weight
+			  +ajFloatGet(posScore,iseq);
+			contrj = fmatrix[m1][m2]*seqs[iseq]->Weight
+			  +ajFloatGet(posScore,jseq);
 		    }
 		    ajFloatPut(&posScore,iseq,contri);
 		    ajFloatPut(&posScore,jseq,contrj);
@@ -4634,17 +4634,17 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 		{
 		    if(matrix)
 		    {
-			contri = (float)matrix[m1][m2]*seqs[jseq]->Weight;
-			+ajFloatGet(posScore,iseq);
-			contrj = (float)matrix[m1][m2]*seqs[iseq]->Weight;
-			+ajFloatGet(posScore,jseq);
+			contri = (float)matrix[m1][m2]*seqs[jseq]->Weight
+			  +ajFloatGet(posScore,iseq);
+			contrj = (float)matrix[m1][m2]*seqs[iseq]->Weight
+			  +ajFloatGet(posScore,jseq);
 		    }
 		    else
 		    {
-			contri = fmatrix[m1][m2]*seqs[jseq]->Weight;
-			+ajFloatGet(posScore,iseq);
-			contrj = fmatrix[m1][m2]*seqs[iseq]->Weight;
-			+ajFloatGet(posScore,jseq);
+			contri = fmatrix[m1][m2]*seqs[jseq]->Weight
+			  +ajFloatGet(posScore,iseq);
+			contrj = fmatrix[m1][m2]*seqs[iseq]->Weight
+			  +ajFloatGet(posScore,jseq);
 		    }
 		    ajFloatPut(&posScore,iseq,contri);
 		    ajFloatPut(&posScore,jseq,contrj);
