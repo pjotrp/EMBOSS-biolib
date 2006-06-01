@@ -124,7 +124,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="../../ajax;&quot;../../plplot-inc/include&quot;;&quot;../../plplot-inc/include/plplot&quot;"
-				PreprocessorDefinitions="HAVE_MEMMOVE;WIN32;NDEBUG;_WINDOWS;_USRDLL;NUCLEUS_EXPORTS"
+				PreprocessorDefinitions="HAVE_MEMMOVE;WIN32;NDEBUG;_WINDOWS;_USRDLL;NUCLEUS_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"

@@ -127,7 +127,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				AdditionalIncludeDirectories="&quot;../../plplot-inc/include&quot;;&quot;../../plplot-inc/include/plplot&quot;"
-				PreprocessorDefinitions="POSIX_MALLOC_THRESHOLD=10;HAVE_MEMMOVE;NDEBUG;_POSIX_;WIN32;_USRDLL;AJAXDLL_EXPORTS"
+				PreprocessorDefinitions="POSIX_MALLOC_THRESHOLD=10;HAVE_MEMMOVE;NDEBUG;_POSIX_;WIN32;_USRDLL;AJAXDLL_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
 				RuntimeLibrary="0"
 				UsePrecompiledHeader="0"
