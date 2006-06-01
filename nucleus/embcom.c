@@ -28,8 +28,9 @@
 #include <time.h>
 
 
-
+#ifndef WIN32
 #define fmodf(a,b) (float)fmod((double)a,(double)b)
+#endif
 
 static void comWriteTable(AjPFile fp, const char *name,
 		          const UJWin *RUj,const UJWin *MedUj,
@@ -1356,7 +1357,7 @@ static void comReplace(const char *vet,char *ch)
     ajint x1;
     time_t   tm;
 
-    dim = strlen(vet);
+    dim = (ajint) strlen(vet);
     srand((unsigned) time(&tm));
     x  = rand();
     x1 = (x%dim);

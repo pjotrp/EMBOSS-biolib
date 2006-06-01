@@ -395,7 +395,7 @@ static const char* estShuffleSeq( char *s, ajint *seed )
     ajint n;
     ajint len;
 
-    len = strlen(s);
+    len = (ajint) strlen(s);
 
     AJCNEW(tmp, len);
 
@@ -444,7 +444,7 @@ static float estRand3(ajint *idum)
 
     ajint FAC;
 
-    FAC = ((float)1.0/(float)MBIG);
+    FAC = (ajint) (((float)1.0/(float)MBIG));
 
     if(*idum < 0 || iff == 0)
     {
@@ -487,7 +487,7 @@ static float estRand3(ajint *idum)
 	mj += MBIG;
     ma[inext] = mj;
 
-    ZZ = mj*FAC;
+    ZZ = (float) (mj*FAC);
     ZZ = (ZZ < (float)0.0 ? -ZZ : ZZ );
     ZZ = (ZZ > (float)1.0 ? ZZ-(ajint)ZZ : ZZ);
 
@@ -648,7 +648,7 @@ void embEstPrintAlign(AjPFile ofile, const AjPSeq genome, const AjPSeq est,
 
 
 		sprintf(number," %d ", intron_width );
-		numlen = strlen(number);
+		numlen = (ajint) strlen(number);
 
 		for(j=len;j<len+half_width;j++)
 		{

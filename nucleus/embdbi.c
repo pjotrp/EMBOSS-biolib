@@ -737,7 +737,7 @@ void embDbiSysCmd(const AjPStr cmdstr)
     ZeroMemory(&startInfo, sizeof(startInfo));
     startInfo.cb = sizeof(startInfo);
     
-    if (!CreateProcess(NULL, ajStrStr(cmdstr), NULL, NULL, FALSE,
+    if (!CreateProcess(NULL, (char *)ajStrGetPtr(cmdstr), NULL, NULL, FALSE,
 		       CREATE_NO_WINDOW, NULL, NULL, &startInfo, &procInfo))
 	ajFatal("CreateProcess failed");
 

@@ -292,7 +292,7 @@ EmbPPatMatch embPatMatchFindC(const AjPStr regexp, const char *sptr,
 	*pos = posi = ajRegOffset(regcomp);
 	AJNEW(len);
 	*len = ajRegLenI(regcomp,0);
-	*pos +=sptr-ptr;
+	*pos += (ajint) (sptr-ptr);
 	node = ajListNodesNew(pos, NULL);
 	ajListAppend(poslist, &node);
 	node = ajListNodesNew(len, NULL);
@@ -2130,7 +2130,7 @@ ajint embPatSOSearch(const AjPStr str, const AjPStr name,
 	    state = (state<<AJBPS) | table[(ajint)*p];
 	    if(state < limit)
 	    {
-		pos = (p-q)-plen+1;
+		pos = (ajint) ((p-q)-plen+1);
 		if(amino && pos)
 		    return matches;
 
@@ -2288,7 +2288,7 @@ ajint embPatBYGSearch(const AjPStr str, const AjPStr name,
 		    table[(ajint)*p], state, *p); */
 	    if(state < limit)
 	    {
-		pos=(p-q)-plen+1;
+		pos = (ajint) ((p-q)-plen+1);
 		if(amino && pos)
 		    return matches;
 
@@ -2296,7 +2296,7 @@ ajint embPatBYGSearch(const AjPStr str, const AjPStr name,
 		{
 		    ++matches;
 		    embPatPushHit(l,name,pos,plen,begin,0);
-		    /* ajDebug("..pat hit matches:%d list:%d name:'%S' pos:%d\n",
+		  /* ajDebug("..pat hit matches:%d list:%d name:'%S' pos:%d\n",
 			    matches, ajListLength(l), name, pos); */
 		}
 	    }
@@ -2990,7 +2990,7 @@ ajint embPatBruteForce(const AjPStr seq, const AjPStr pat,
 	return count;
     }
 
-    len = strlen(s);
+    len = (ajint) strlen(s);
     for(i=0;i<len;++i)
     {
 	patOUBrute(s,p,i,0,mm,mm,1,l,carboxyl,begin,&count,name,i);

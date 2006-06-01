@@ -576,7 +576,7 @@ static AjPStr grpParseValueRB(AjPStrTok* tokenhandle, const char* delim)
 
     ajStrDelStatic(&grpStr2);
 
-    iquote = cq - quotes;
+    iquote = (ajint) (cq - quotes);
     endq[0] = endqbr[0] = endquotes[iquote];
     ajStrCutStart(&grpStr1, 1);
 

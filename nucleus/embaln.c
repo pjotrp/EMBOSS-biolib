@@ -268,7 +268,7 @@ void embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
     for(i=0;i<lena;++i)
     {
 	result = sub[ajSeqCvtK(cvt,a[i])][ajSeqCvtK(cvt,b[0])];
-	path[i*lenb] = (result > 0.) ? result : 0.;
+	path[i*lenb] = (result > 0.) ? result : (float)0.;
 	compass[i*lenb] = 0;
     }
 
@@ -282,7 +282,7 @@ void embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
     for(j=0;j<lenb;++j)
     {
 	result = sub[ajSeqCvtK(cvt,a[0])][ajSeqCvtK(cvt,b[j])];
-	path[j] = (result > 0.) ? result : 0.;
+	path[j] = (result > 0.) ? result : (float)0.;
 	compass[j] = 0;
     }
 
@@ -612,7 +612,7 @@ float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     ajDebug("embAlignScoreNWMatrix\n");
 
     errbounds = gapextend;
-    errbounds = 0.01;
+    errbounds = (float) 0.01;
 
     /* Get maximum path axis score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -767,7 +767,7 @@ float embAlignScoreSWMatrix(const float *path, const ajint *compass,
     ajDebug("embAlignScoreSWMatrix\n");
 
     errbounds = gapextend;
-    errbounds = 0.01;
+    errbounds = (float) 0.01;
 
     /* Get maximum path score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -956,7 +956,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
     ajDebug("embAlignWalkSWMatrix\n");
 
     errbounds = gapextend;
-    errbounds = 0.01;
+    errbounds = (float) 0.01;
 
     /* Get maximum path score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -1125,7 +1125,7 @@ void embAlignWalkNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
     ajDebug("seqlen a:%d b:%d\n", ajSeqGetLen(a), ajSeqGetLen(b));
 
     errbounds=gapextend;
-    errbounds=0.01;
+    errbounds = (float) 0.01;
 
     /* Get maximum path axis score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -1339,7 +1339,7 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
     /* Now deal with the alignment overlap */
     p = ajStrGetPtr(m);
     q = ajStrGetPtr(n);
-    olen = strlen(p);
+    olen = (ajint) strlen(p);
     for(i=0;i<olen;++i)
     {
 	ajStrAppendK(&fa,p[i]);
@@ -1376,8 +1376,8 @@ void embAlignPrintGlobal(AjPFile outf, const char *a, const char *b,
     }
 
 
-    alen = strlen(&a[apos]);
-    blen = strlen(&b[bpos]);
+    alen = (ajint) strlen(&a[apos]);
+    blen = (ajint) strlen(&b[bpos]);
 
     if(alen>blen)
     {
@@ -1614,7 +1614,7 @@ void embAlignPrintLocal(AjPFile outf, const char *a, const char *b,
     /* Now deal with the alignment overlap */
     p    = ajStrGetPtr(m);
     q    = ajStrGetPtr(n);
-    olen = strlen(p);
+    olen = (ajint) strlen(p);
     fa   = m;
     fb   = n;
 
@@ -2591,9 +2591,11 @@ void embAlignWalkProfileMatrix(const float *path, const ajint *compass,
     const char *p;
     const char *q;
 
-    float errbounds = 0.01;
+    float errbounds;
 
     ajDebug("embAlignWalkProfileMatrix\n");
+
+    errbounds = (float) 0.01;
 
     /* Get maximum path score and save position */
     pathmax = -(float) INT_MAX;
@@ -2772,7 +2774,7 @@ void embAlignPrintProfile(AjPFile outf, const char *a, const char *b,
     /* Now deal with the alignment overlap */
     p    = ajStrGetPtr(m);
     q    = ajStrGetPtr(n);
-    olen = strlen(p);
+    olen = (ajint) strlen(p);
     fa   = m;
     fb   = n;
 
@@ -2969,7 +2971,7 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 
     p = ajStrGetPtr(fm);
     q = ajStrGetPtr(fn);
-    olen = strlen(p);
+    olen = (ajint) strlen(p);
 
 
     *id = *sim = 0.;
@@ -2998,10 +3000,10 @@ void embAlignCalcSimilarity(const AjPStr m, const AjPStr n,
 
     max = (lenm>lenn) ? lenm : lenn;
     
-    *idx  = *id / (float)max * 100.;
-    *simx = *sim / (float)max * 100.;
-    *id   *= (100. / (float)(olen-gaps));
-    *sim  *= (100. / (float)(olen-gaps));
+    *idx  = *id / (float)max * (float)100.;
+    *simx = *sim / (float)max * (float)100.;
+    *id   *= ((float)100. / (float)(olen-gaps));
+    *sim  *= ((float)100. / (float)(olen-gaps));
 
 
     ajStrDel(&fm);
@@ -3062,9 +3064,11 @@ float embAlignScoreProfileMatrix(const float *path, const ajint *compass,
 
     const char *q;
 
-    float errbounds=0.01;
+    float errbounds;
 
     ajDebug("embAlignWalkProfileMatrix\n");
+
+    errbounds = (float) 0.01;
 
     /* Get maximum path score and save position */
     pathmax = -(float) INT_MAX;
@@ -3530,7 +3534,7 @@ void embAlignReportProfile(AjPAlign thys, const AjPSeqset seqset,
     /* Now deal with the alignment overlap */
     p    = ajStrGetPtr(m);
     q    = ajStrGetPtr(n);
-    olen = strlen(p);
+    olen = (ajint) strlen(p);
     fa   = m;
     fb   = n;
 

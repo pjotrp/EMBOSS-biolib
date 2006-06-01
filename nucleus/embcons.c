@@ -68,6 +68,7 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
     AjPSeqCvt cvt  = 0;
     AjPFloat score = NULL;
     const char **seqcharptr;
+    char **ptrfree;
     char res;
     char nocon = '-';
 
@@ -205,7 +206,8 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 	ajStrAppendK(cons,res);
     }
 
-    AJFREE(seqcharptr);
+    ptrfree = (char **) seqcharptr;
+    AJFREE(ptrfree);
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&score);

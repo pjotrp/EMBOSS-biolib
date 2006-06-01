@@ -194,9 +194,9 @@ void embBtreeEmblAC(const AjPStr acline, AjPList aclist)
 	    q = p;
 	    while(isdigit((int)*(--q)));
 	    ++q;
-	    ajStrAssignSubC(&tstr,q,0,p-q-1);
+	    ajStrAssignSubC(&tstr,q,0,(ajint)(p-q-1));
 	    ajStrToInt(tstr,&lo);
-	    field = p-q;
+	    field = (ajint) (p-q);
 	    ajFmtPrintS(&format,"%%S%%0%dd",field);
 	    
 	    ++p;
@@ -204,7 +204,7 @@ void embBtreeEmblAC(const AjPStr acline, AjPList aclist)
 	    while(!isdigit((int)*q))
 		++q;
 	    sscanf(q,"%d",&hi);
-	    ajStrAssignSubC(&prefix,p,0,q-p-1);
+	    ajStrAssignSubC(&prefix,p,0,(ajint)(q-p-1));
 	    
 	    for(i=lo;i<=hi;++i)
 	    {
@@ -337,9 +337,9 @@ void embBtreeGenBankAC(const AjPStr acline, AjPList aclist)
 	    q = p;
 	    while(isdigit((int)*(--q)));
 	    ++q;
-	    ajStrAssignSubC(&tstr,q,0,p-q-1);
+	    ajStrAssignSubC(&tstr,q,0,(ajint)(p-q-1));
 	    ajStrToInt(tstr,&lo);
-	    field = p-q;
+	    field = (ajint) (p-q);
 	    ajFmtPrintS(&format,"%%S%%0%dd",field);
 	    
 	    ++p;
@@ -347,7 +347,7 @@ void embBtreeGenBankAC(const AjPStr acline, AjPList aclist)
 	    while(!isdigit((int)*q))
 		++q;
 	    sscanf(q,"%d",&hi);
-	    ajStrAssignSubC(&prefix,p,0,q-p-1);
+	    ajStrAssignSubC(&prefix,p,0,(ajint)(q-p-1));
 	    
 	    for(i=lo;i<=hi;++i)
 	    {

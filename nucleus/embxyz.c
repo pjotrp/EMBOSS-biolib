@@ -152,8 +152,8 @@ AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
 		maxarr=len;
 	    }
 
-	    p = ajSeqChar(inseqs[x]);
-	    q = ajSeqChar(inseqs[y]);
+	    p = (char *) ajSeqChar(inseqs[x]);
+	    q = (char *) ajSeqChar(inseqs[y]);
 
 	    ajStrAssignC(&m,"");
 	    ajStrAssignC(&n,"");
@@ -384,8 +384,8 @@ AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 		maxarr=len;
 	    }
 
-	    p = ajSeqChar(inseqs[x]);
-	    q = ajSeqChar(inseqs[y]);
+	    p = (char *) ajSeqChar(inseqs[x]);
+	    q = (char *) ajSeqChar(inseqs[y]);
 
 	    ajStrAssignC(&m,"");
 	    ajStrAssignC(&n,"");

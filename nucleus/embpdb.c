@@ -193,6 +193,7 @@ AjBool embPdbidToSp(const AjPStr pdb, AjPStr *spr, const AjPList list)
 AjBool embPdbidToAcc(const AjPStr pdb, AjPStr *acc, const AjPList list)
 {
     const AjPPdbtosp *arr = NULL;  /* Array derived from list */
+    AjPPdbtosp *arrfree = NULL;
     ajint dim = 0;           /* Size of array */
     ajint idx = 0;           /* Index into array for the Pdb code */
 
@@ -214,14 +215,16 @@ AjBool embPdbidToAcc(const AjPStr pdb, AjPStr *acc, const AjPList list)
 
     if( (idx = ajPdbtospArrFindPdbid(arr, dim, pdb))==-1)
     {
-	AJFREE(arr);
+        arrfree = (AjPPdbtosp*) arr;
+	AJFREE(arrfree);
 	return ajFalse;
     }
     
     else
     {
 	ajStrAssignS(acc, arr[idx]->Acc[0]);
-	AJFREE(arr);
+        arrfree = (AjPPdbtosp*) arr;
+	AJFREE(arrfree);
 	return ajTrue;
     }
 }
@@ -374,7 +377,7 @@ float embAtomDistance(const AjPAtom atm1, const AjPAtom atm2,
 
 
     /*  This calculation uses square root */
-    val1= sqrt(val) - embVdwRad(atm1, vdw) - embVdwRad(atm2, vdw);
+    val1= (float) (sqrt(val) - embVdwRad(atm1, vdw) - embVdwRad(atm2, vdw));
         
     return val1;
 } 

@@ -323,7 +323,7 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
 
     ajStrAssignC(rname,PROPENZReagent[n]);
     defcnt = 0;
-    len = strlen(s);
+    len = (ajint) strlen(s);
 
     t = ajListNew();			/* Temporary list */
 
