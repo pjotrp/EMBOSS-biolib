@@ -32,8 +32,6 @@
 #include "win32.h"
 #include <winsock2.h>
 #include <stdlib.h>
-const char* EMBOSSWINROOT_ENVVAR = "EMBOSSWIN";
-const char* PLPLOT_LIB_ENVVAR = "PLPLOT_LIB";
 #endif
 
 
@@ -83,7 +81,7 @@ static char namInstallRoot[] = PREFIX;
 #ifndef WIN32
 static char namInstallRoot[] = "/usr/local";
 #else
-static char *namInstallRoot;
+static char namInstallRoot[MAX_PATH];
 #endif
 #endif
 
@@ -1974,7 +1972,7 @@ void ajNamInit(const char* prefix)
     {
 	prefixRoot = ajStrGetPtr(prefixRootStr);
 #ifdef WIN32
-	namInstallRoot = (char *) prefixRoot;
+	strcpy(namInstallRoot,prefixRoot);
 #endif
     }
     else
