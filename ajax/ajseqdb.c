@@ -42,6 +42,7 @@
 #include <winsock2.h>
 #include <io.h>
 #include <fcntl.h>
+extern int _open_osfhandle();
 #endif
 #include <errno.h>
 #include <signal.h>
