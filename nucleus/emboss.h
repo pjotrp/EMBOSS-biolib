@@ -28,7 +28,7 @@
 #include "embindex.h"
 
 #ifdef WIN32
-#define VERSION "3.1.0"
+#define VERSION "4.0.0"
 #endif
 
 
