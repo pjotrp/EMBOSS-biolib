@@ -31,6 +31,8 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <unistd.h>
+#else
+#include "win32.h"
 #endif
 
 
@@ -472,6 +474,9 @@ AjBool ajSysUnlink(const AjPStr s)
 {
 #ifndef WIN32
     if(!unlink(ajStrGetPtr(s)))
+	return ajTrue;
+#else
+    if(DeleteFile(ajStrGetPtr(s)))
 	return ajTrue;
 #endif
     return ajFalse;
