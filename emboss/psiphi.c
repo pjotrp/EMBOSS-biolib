@@ -29,45 +29,45 @@
 
 
 
-static ajint chain_index(ajint selected,
+static ajint psiphi_chain_index(ajint selected,
 			 ajint highest,
 			 ajint lowest);
 
-static ajint first_residue_number(const AjPPdb pdb,
+static ajint psiphi_first_residue_number(const AjPPdb pdb,
 				  ajint index,
 				  ajint startres);
 
-static ajint last_residue_number(const AjPPdb pdb,
+static ajint psiphi_last_residue_number(const AjPPdb pdb,
 				 ajint index,
 				 ajint startres,
 				 ajint finishres);
 
-static AjBool phi_calculable(const AjBool* known);
+static AjBool psiphi_phi_calculable(const AjBool* known);
 
-static AjBool psi_calculable(const AjBool* known);
+static AjBool psiphi_psi_calculable(const AjBool* known);
 
-static float phival(AjPAtom const *atoms);
+static float psiphi_phival(AjPAtom const *atoms);
 
-static float psival(AjPAtom const *atoms);
+static float psiphi_psival(AjPAtom const *atoms);
 
-static AjBool load_previous_residue(AjPAtom current,
+static AjBool psiphi_load_previous_residue(AjPAtom current,
 				    AjPAtom* atoms,
 				    AjBool* known);
 
-static AjBool load_next_residue(AjPAtom current,
+static AjBool psiphi_load_next_residue(AjPAtom current,
 				AjPAtom* atoms,
 				AjBool* known);
 
-static AjBool load_current_residue(AjPAtom current,
+static AjBool psiphi_load_current_residue(AjPAtom current,
 				   AjPAtom* atoms,
 				   AjBool* known);
 
-static AjPFeature write_psi_phi(AjPFeattable angletab,
+static AjPFeature psiphi_write_psi_phi(AjPFeattable angletab,
 				ajint resnum,
 				float phi,
 				float psi);
 
-static void shift_residues(AjPAtom* atoms,
+static void psiphi_shift_residues(AjPAtom* atoms,
 			   AjBool* known);
 
 
@@ -165,19 +165,19 @@ int main( int argc , char **argv )
     
     /* check and set number of chain to be analysed */
     highest = pdb->Nchn;
-    index = chain_index(selected,
-			highest,
-			lowest);
+    index = psiphi_chain_index(selected,
+			       highest,
+			       lowest);
 
     /* check and set range of residues to be analysed */
     firstres = 
-	first_residue_number(pdb,
-			     index,
-			     startres);    
-    lastres = last_residue_number(pdb,
-				  index,
-				  startres,
-				  finishres);
+	psiphi_first_residue_number(pdb,
+				    index,
+				    startres);    
+    lastres = psiphi_last_residue_number(pdb,
+					 index,
+					 startres,
+					 finishres);
     secondres = firstres+1;
     thirdres = firstres+2;
 
@@ -249,44 +249,44 @@ int main( int argc , char **argv )
 	/* load window with atom co-ordinates */
 	/* get previous N, CA and C' */
 	if(resnum == firstres)
-	    load_previous_residue(inlist,
-				  atoms,
-				  known);
+	    psiphi_load_previous_residue(inlist,
+					 atoms,
+					 known);
 	/* get current N, CA and C' */
 	else if(resnum == secondres)
-	    load_current_residue(inlist,
-				 atoms,
-				 known);
+	    psiphi_load_current_residue(inlist,
+					atoms,
+					known);
 	/* get new next N, CA and C'  */
 	else if(resnum == thirdres)
 	{
 	    /* cpos residue no. for which angles calc'd */
 	    cpos = resnum-1;
-	    load_next_residue(inlist,
-			      atoms,
-			      known);
+	    psiphi_load_next_residue(inlist,
+				     atoms,
+				     known);
 	}
 	else
 	    break;
     }while((inlist = ajListIterNext(atomlist)));
 
     /* analyse first residue */
-    if(phi_calculable(known))
-	phi = phival(atoms);
+    if(psiphi_phi_calculable(known))
+	phi = psiphi_phival(atoms);
     else
 	phi = FUnavailableAngle;
-    if(psi_calculable(known))
-	psi = psival(atoms);
+    if(psiphi_psi_calculable(known))
+	psi = psiphi_psival(atoms);
     else
 	psi = FUnavailableAngle;
-    curft = write_psi_phi(angles,
-				   cpos,
-				   phi,
-				   psi);
+    curft = psiphi_write_psi_phi(angles,
+				 cpos,
+				 phi,
+				 psi);
 
     /* loop through list until last residue to be analysed */
     prevres = resnum;
-    shift_residues(atoms, known);
+    psiphi_shift_residues(atoms, known);
     do
     {
 	resnum = inlist->Idx;
@@ -296,20 +296,20 @@ int main( int argc , char **argv )
 	if(resnum > prevres)
 	{
 	    /* analyse previous previous residue */
-	    if(phi_calculable(known))
-		phi = phival(atoms);
+	    if(psiphi_phi_calculable(known))
+		phi = psiphi_phival(atoms);
 	    else
 		phi = FUnavailableAngle;
-	    if(psi_calculable(known))
-		psi = psival(atoms);
+	    if(psiphi_psi_calculable(known))
+		psi = psiphi_psival(atoms);
 	    else
 		psi = FUnavailableAngle;
-	    curft = write_psi_phi(angles,
-				  cpos,
-				  phi,
-				  psi);
+	    curft = psiphi_write_psi_phi(angles,
+					 cpos,
+					 phi,
+					 psi);
 
-	    shift_residues(atoms, known);
+	    psiphi_shift_residues(atoms, known);
 	}
 	/* not finished? get new next N, CA and C'  */
 	if(resnum <= lastres)
@@ -317,9 +317,9 @@ int main( int argc , char **argv )
 	    /* conditional is kludge for bad residue numbers at termini */
 	    if( resnum > 1 )
 		cpos = resnum-1;
-	    load_next_residue(inlist,
-			      atoms,
-			      known);
+	    psiphi_load_next_residue(inlist,
+				     atoms,
+				     known);
 	}
 	else
 	    break;
@@ -335,33 +335,33 @@ int main( int argc , char **argv )
     if(cpos < lastres)
     {
 
-	if(phi_calculable(known))
-	    phi = phival(atoms);
+	if(psiphi_phi_calculable(known))
+	    phi = psiphi_phival(atoms);
 	else
 	    phi = FUnavailableAngle;
-	if(psi_calculable(known))
-	    psi = psival(atoms);
+	if(psiphi_psi_calculable(known))
+	    psi = psiphi_psival(atoms);
 	else
 	    psi = FUnavailableAngle;
 
-	curft = write_psi_phi(angles,
-			      cpos,
-			      phi,
-			      psi);
+	curft = psiphi_write_psi_phi(angles,
+				     cpos,
+				     phi,
+				     psi);
 	cpos++;
-	shift_residues(atoms,
-		       known);
+	psiphi_shift_residues(atoms,
+			      known);
     }
     /* analyse last residue */
     if((cpos < lastres ) &&
-       (phi_calculable(known)))
+       (psiphi_phi_calculable(known)))
     {
-	phi = phival(atoms);
+	phi = psiphi_phival(atoms);
 	psi = FUnavailableAngle;
-	curft   = write_psi_phi(angles,
-				cpos,
-				phi,
-				psi);
+	curft   = psiphi_write_psi_phi(angles,
+				       cpos,
+				       phi,
+				       psi);
     }
     /* END ANALYSIS OF CHAIN HERE */
 
@@ -403,7 +403,7 @@ int main( int argc , char **argv )
 
 
 
-/* @funcstatic chain_index ***************************************************
+/* @funcstatic psiphi_chain_index ********************************************
 **
 ** check selected protein chain number present in structure file; return index
 **
@@ -415,9 +415,9 @@ int main( int argc , char **argv )
 ** @return [ajint] index
 ** @@
 ******************************************************************************/
-static ajint chain_index(ajint selected,
-			 ajint highest,
-			 ajint lowest)
+static ajint psiphi_chain_index(ajint selected,
+				ajint highest,
+				ajint lowest)
 {
     /* ERROR: chain number too high */ 
     if(selected > highest)
@@ -433,7 +433,7 @@ static ajint chain_index(ajint selected,
 
 
 
-/* @funcstatic first_residue_number ***********************************
+/* @funcstatic psiphi_first_residue_number ***********************************
 **
 ** check selected lower residue within chain's range and return 1st window res
 **
@@ -445,7 +445,7 @@ static ajint chain_index(ajint selected,
 ** @return [ajint] First window residue number
 ** @@
 ******************************************************************************/
-static ajint first_residue_number (const AjPPdb pdb,
+static ajint psiphi_first_residue_number (const AjPPdb pdb,
 				   ajint index,
 				   ajint startres)
 {
@@ -485,7 +485,7 @@ static ajint first_residue_number (const AjPPdb pdb,
 
 
 
-/* @funcstatic last_residue_number ******************************************
+/* @funcstatic psiphi_last_residue_number *************************************
 **
 ** check selected upper protein residue within chain's range and return limit
 **
@@ -499,10 +499,10 @@ static ajint first_residue_number (const AjPPdb pdb,
 ** @return [ajint] Last residue number
 ** @@
 ******************************************************************************/
-static ajint last_residue_number(const AjPPdb pdb,
-				 ajint index,
-				 ajint startres,
-				 ajint finishres)
+static ajint psiphi_last_residue_number(const AjPPdb pdb,
+					ajint index,
+					ajint startres,
+					ajint finishres)
 {
     ajint lastres   = 0;
     ajint highres = 0;
@@ -533,7 +533,7 @@ static ajint last_residue_number(const AjPPdb pdb,
 
 
 
-/* @funcstatic phi_calculable ************************************************
+/* @funcstatic psiphi_phi_calculable ******************************************
 **
 ** are all necessary atoms present to calculate phi torsion angle?
 **
@@ -541,7 +541,7 @@ static ajint last_residue_number(const AjPPdb pdb,
 ** @return [AjBool] ajTrue if calculable
 ** @@
 ******************************************************************************/
-static AjBool phi_calculable(const AjBool* known)
+static AjBool psiphi_phi_calculable(const AjBool* known)
 {
     AjBool phicalc = AJFALSE;
     /*
@@ -559,7 +559,7 @@ static AjBool phi_calculable(const AjBool* known)
 
 
 
-/* @funcstatic psi_calculable ************************************************
+/* @funcstatic psiphi_psi_calculable ******************************************
 **
 ** are all necessary atoms present to calculate psi torsion angle?
 **
@@ -567,7 +567,7 @@ static AjBool phi_calculable(const AjBool* known)
 ** @return [AjBool] ajTrue if calculable
 ** @@
 ******************************************************************************/
-static AjBool psi_calculable(const AjBool* known)
+static AjBool psiphi_psi_calculable(const AjBool* known)
 {
     AjBool psicalc = AJFALSE;
     /*
@@ -587,7 +587,7 @@ static AjBool psi_calculable(const AjBool* known)
 
 
 
-/* @funcstatic phival ********************************************************
+/* @funcstatic psiphi_phival **************************************************
 **
 ** returns the phi torsion angle between a specified set of AjPAtoms
 **
@@ -596,7 +596,7 @@ static AjBool psi_calculable(const AjBool* known)
 ** @@
 ******************************************************************************/
 
-static float phival (AjPAtom const * atoms)
+static float psiphi_phival (AjPAtom const * atoms)
 {
     float phi;
     
@@ -647,7 +647,7 @@ static float phival (AjPAtom const * atoms)
 
 
 
-/* @funcstatic psival ********************************************************
+/* @funcstatic psiphi_psival **************************************************
 **
 ** returns the psi torsion angle between a specified set of AjPAtoms
 **
@@ -656,7 +656,7 @@ static float phival (AjPAtom const * atoms)
 ** @@
 ******************************************************************************/
 
-static float psival (AjPAtom const * atoms)
+static float psiphi_psival (AjPAtom const * atoms)
 {
     float psi;
     
@@ -708,7 +708,7 @@ static float psival (AjPAtom const * atoms)
 
 
 
-/* @funcstatic load_previous_residue *****************************************
+/* @funcstatic psiphi_load_previous_residue ***********************************
 **
 ** checks and/or loads one mainchain AjPAtom from into window of AjPAtoms
 ** returns AJFALSE if non-residue atom
@@ -720,9 +720,9 @@ static float psival (AjPAtom const * atoms)
 ** @@
 ******************************************************************************/
 
-static AjBool load_previous_residue(AjPAtom ajpAtom,
-				    AjPAtom* atoms,
-				    AjBool* known)
+static AjBool psiphi_load_previous_residue(AjPAtom ajpAtom,
+					   AjPAtom* atoms,
+					   AjBool* known)
 {
     AjBool isres = AJFALSE;
 
@@ -756,7 +756,7 @@ static AjBool load_previous_residue(AjPAtom ajpAtom,
 
 
 
-/* @funcstatic load_current_residue ******************************************
+/* @funcstatic psiphi_load_current_residue ************************************
 **
 ** check and/or loads one mainchain AjPAtom into window of AjPAtoms
 ** returns AJFALSE if non-residue atom
@@ -768,9 +768,9 @@ static AjBool load_previous_residue(AjPAtom ajpAtom,
 ** @@
 ******************************************************************************/
 
-static AjBool load_current_residue(AjPAtom ajpAtom,
-				   AjPAtom* atoms,
-				   AjBool* known)
+static AjBool psiphi_load_current_residue(AjPAtom ajpAtom,
+					  AjPAtom* atoms,
+					  AjBool* known)
 {
     AjBool isres = AJFALSE;
     
@@ -805,7 +805,7 @@ static AjBool load_current_residue(AjPAtom ajpAtom,
 
 
 
-/* @funcstatic load_next_residue *********************************************
+/* @funcstatic psiphi_load_next_residue ***************************************
 **
 ** loads AjPAtoms from next residue into window; returns AJTRUE if window full
 ** returns AJFALSE if non-residue atom
@@ -817,9 +817,9 @@ static AjBool load_current_residue(AjPAtom ajpAtom,
 ** @@
 ******************************************************************************/
 
-static AjBool load_next_residue(AjPAtom ajpAtom,
-				AjPAtom* atoms,
-				AjBool* known)
+static AjBool psiphi_load_next_residue(AjPAtom ajpAtom,
+				       AjPAtom* atoms,
+				       AjBool* known)
 {
     AjBool isres = AJFALSE;
 
@@ -854,7 +854,7 @@ static AjBool load_next_residue(AjPAtom ajpAtom,
 
 
 
-/* @funcstatic write_psi_phi *************************************************
+/* @funcstatic psiphi_write_psi_phi *******************************************
 **
 ** writes torsion angle features to a feature table and returns new feature  
 **
@@ -867,10 +867,10 @@ static AjBool load_next_residue(AjPAtom ajpAtom,
 ** @@
 ******************************************************************************/
 
-static AjPFeature write_psi_phi (AjPFeattable angletab,
-				 ajint resnum,
-				 float phi,
-				 float psi)
+static AjPFeature psiphi_write_psi_phi (AjPFeattable angletab,
+					ajint resnum,
+					float phi,
+					float psi)
 {
     AjPFeature angleft;
     AjPStr feattmp;
@@ -894,7 +894,7 @@ static AjPFeature write_psi_phi (AjPFeattable angletab,
 
 
 
-/* @funcstatic shift_residues ***************************************
+/* @funcstatic psiphi_shift_residues ***************************************
 **
 ** moves AjPAtoms one residue along an array of mainchain AjPAtoms
 **
@@ -904,8 +904,8 @@ static AjPFeature write_psi_phi (AjPFeattable angletab,
 ** @@
 ******************************************************************************/
 
-static void shift_residues(AjPAtom* atoms,
-				     AjBool* known)
+static void psiphi_shift_residues(AjPAtom* atoms,
+				  AjBool* known)
 {
     /* move previous atoms */
     if(known[ENCurr])
