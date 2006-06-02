@@ -43,6 +43,7 @@ void          ajFeatExit (void);
 ajint         ajFeatGetEnd (const AjPFeature thys);
 AjBool        ajFeatGetForward (const AjPFeature thys);
 ajint         ajFeatGetFrame (const AjPFeature thys);
+ajint         ajFeatGetLength(const AjPFeature thys);
 ajint         ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type);
 AjBool        ajFeatGetNote (const AjPFeature thys, const AjPStr name,
 			     AjPStr* val);
@@ -52,11 +53,14 @@ AjBool        ajFeatGetNoteCI(const AjPFeature thys, const char* name,
 			      ajint count, AjPStr* val);
 AjBool        ajFeatGetNoteI (const AjPFeature thys, const AjPStr name,
 			      ajint count, AjPStr* val);
+float         ajFeatGetScore (const AjPFeature thys);
+const AjPStr  ajFeatGetSource (const AjPFeature thys);
 ajint         ajFeatGetStart (const AjPFeature thys);
+char          ajFeatGetStrand (const AjPFeature thys);
 AjBool        ajFeatGetTag (const AjPFeature thys, const AjPStr name,
 			    ajint num, AjPStr* val);
 ajint         ajFeatGetTrans(const AjPStr str, AjPStr **cds);
-AjPStr        ajFeatGetType (const AjPFeature thys);
+const AjPStr  ajFeatGetType (const AjPFeature thys);
 AjBool        ajFeatIsCompMult (const AjPFeature gf);
 AjBool        ajFeatIsLocal (const AjPFeature gf);
 AjBool        ajFeatIsLocalRange (const AjPFeature gf, ajint start, ajint end);
@@ -89,7 +93,9 @@ void          ajFeattableClear (AjPFeattable thys);
 AjPFeattable  ajFeattableCopy (const AjPFeattable orig);
 void          ajFeattableDel (AjPFeattable *pthis) ;
 ajint         ajFeattableEnd (const AjPFeattable thys);
-AjPStr        ajFeattableGetName (const AjPFeattable thys);
+const AjPStr  ajFeattableGetName (const AjPFeattable thys);
+const char*   ajFeattableGetTypeC (const AjPFeattable thys);
+const AjPStr  ajFeattableGetTypeS (const AjPFeattable thys);
 AjBool        ajFeattableIsNuc (const AjPFeattable thys);
 AjBool        ajFeattableIsProt (const AjPFeattable thys);
 ajint         ajFeattableLen (const AjPFeattable thys);

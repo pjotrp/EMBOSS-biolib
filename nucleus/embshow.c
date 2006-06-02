@@ -2708,7 +2708,7 @@ static void showFillFT(const EmbPShow thys,
 		continue;
 
             /* don't output the 'source' feature */
-	    if(!ajStrCmpC(gf->Type, "source"))
+	    if(!ajStrCmpC(ajFeatGetType(gf), "source"))
 		continue;
 
 	    /*
@@ -2716,12 +2716,13 @@ static void showFillFT(const EmbPShow thys,
 	    ** Working in human coordinates here: 1 to SeqLength,
 	    ** not 0 to SeqLength-1)
 	    */
-	    if(pos+1 > gf->End || pos+thys->width < gf->Start)
+	    if(pos+1 > ajFeatGetEnd(gf) ||
+	       pos+thys->width < ajFeatGetStart(gf))
 		continue;
 
 	    /* prepare name string */
 	    namestr = ajStrNew();
-	    ajStrAssignS(&namestr,  gf->Type);
+	    ajStrAssignS(&namestr,  ajFeatGetType(gf));
 
 	    /* add tags to namestr*/
 	    showAddTags(&namestr, gf, ajTrue);
@@ -2730,9 +2731,10 @@ static void showFillFT(const EmbPShow thys,
 	    **  note the start and end positions of the name and line
 	    **  graphics
 	    */
-	    start = (gf->Start-1<pos) ? pos : gf->Start-1;
-	    end   = (gf->End-1>pos+thys->width-1) ? pos+thys->width-1 :
-		gf->End-1;
+	    start = (ajFeatGetStart(gf)-1<pos) ?
+		pos : ajFeatGetStart(gf)-1;
+	    end   = (ajFeatGetEnd(gf)-1>pos+thys->width-1) ?
+		pos+thys->width-1 : ajFeatGetEnd(gf)-1;
 
 	    /* print the name starting with the line */
 	    namestart = start;
@@ -2785,9 +2787,9 @@ static void showFillFT(const EmbPShow thys,
 	    ajStrAppendCountK(&linestr, '=', end-start+1 );
 
 	    /* put in end position characters */
-	    if(gf->Start-1>=pos)
+	    if(ajFeatGetStart(gf)-1>=pos)
 		ajStrPasteCountK(&linestr,0, '|', 1);
-	    if(gf->End-1<=pos+thys->width-1)
+	    if(ajFeatGetEnd(gf)-1<=pos+thys->width-1)
 		ajStrPasteCountK(&linestr, (end-start), '|', 1);
 
 
