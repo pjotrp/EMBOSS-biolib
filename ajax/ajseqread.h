@@ -34,6 +34,7 @@ extern "C"
 ** @attr All [AjBool] Supports retrieval of all entries
 ** @attr Access [(AjBool*)] Access function
 ** @attr AccessFree [(AjBool*)] Access cleanup function
+** @attr Desc [char*] Description
 ** @@
 ******************************************************************************/
 

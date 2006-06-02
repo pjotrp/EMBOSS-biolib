@@ -4126,7 +4126,7 @@ static AjBool featTagName(const AjPStr line, AjPStr* name, AjPStr* type,
 ******************************************************************************/
 
 static AjBool featFeatType(const AjPStr line, AjPStr* type,
-			   AjPStr* sofaid, AjPStr* tag, AjPStr* req)
+			   AjPStr* intids, AjPStr* tag, AjPStr* req)
 {
     const char* cp = ajStrGetPtr(line);
     const char* cq;
@@ -4134,7 +4134,7 @@ static AjBool featFeatType(const AjPStr line, AjPStr* type,
     AjBool istag = ajFalse;
 
     ajStrAssignC(type, "");
-    ajStrAssignC(sofaid, "");
+    ajStrAssignC(intids, "");
     ajStrAssignC(tag, "");
     ajStrAssignC(req, "");
 
@@ -4187,7 +4187,7 @@ static AjBool featFeatType(const AjPStr line, AjPStr* type,
 	{
 	    i++;
 	}
-	ajStrAppendLenC(sofaid, cq, i);
+	ajStrAppendLenC(intids, cq, i);
 
 	while (*cp)
 	{
@@ -4203,20 +4203,9 @@ static AjBool featFeatType(const AjPStr line, AjPStr* type,
 	    {
 		i++;
 	    }
-	    ajStrAppendK(sofaid, ' ');
-	    ajStrAppendLenC(sofaid, cq, i);
+	    ajStrAppendK(intids, ' ');
+	    ajStrAppendLenC(intids, cq, i);
 	}
-
-/* avoid this - for protein features there is no SO term! */
-/*
-	if(!ajStrPrefixC(*sofaid, "SO:"))
-	{
-	    ajWarn("bad SO term '%S' in features file", *sofaid);
-	    ajStrAssignC(sofaid, "");
-	    return ajFalse;
-	}
-*/
-
     }
 
     return ajTrue;
@@ -6037,7 +6026,7 @@ ajint ajFeatGetStart(const AjPFeature thys)
 
 
 
-/* @func ajFeatGetStrans ******************************************************
+/* @func ajFeatGetStrand ******************************************************
 **
 ** Returns the strand of a feature object.
 **

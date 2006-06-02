@@ -3530,7 +3530,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [AjPScop*]    Array of Scop objects
+** @param [r] arr [const AjPScop*]    Array of Scop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [ajint]       Search term
 **
@@ -3541,7 +3541,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id)
+ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
 {
     int l;
     int m;

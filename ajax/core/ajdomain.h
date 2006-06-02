@@ -338,7 +338,7 @@ void     ajScopDel(AjPScop *ptr);
 AjBool   ajScopCopy(AjPScop *to, const AjPScop from);
 
 ajint    ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id);
-ajint    ajScopArrFindSunid(AjPScop *arr, ajint siz, ajint id);
+ajint    ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id);
 ajint    ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id);
 
 ajint    ajScopMatchScopid(const void *hit1, const void *hit2);

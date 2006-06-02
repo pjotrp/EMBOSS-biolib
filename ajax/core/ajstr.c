@@ -8473,7 +8473,7 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 ** Finds the last occurrence in a string of a second (text) string.
 **
 ** @param [r] str [const AjPStr] String to search
-** @param [r] str2 [const ajPStr] text to look for
+** @param [r] str2 [const AjPStr] text to look for
 ** @return [ajint] Position of the text string if found.
 ** @error -1 Text not found.
 ** @@
