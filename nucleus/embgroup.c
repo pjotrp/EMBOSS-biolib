@@ -38,18 +38,18 @@ static void grpGetAcdDirs(AjPList glist, AjPList alpha, char * const env[],
 			  const AjPStr acddir, AjBool explode, AjBool colon,
 			  AjBool gui, AjBool embassy,
 			  const AjPStr embassyname);
-static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
-		     AjBool explode, AjBool colon,
+static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPStr* keywords,
+		     AjPList groups, AjBool explode, AjBool colon,
 		     AjBool *gui, AjBool* embassy, AjPStr* hasembassyname);
 static void grpNoComment(AjPStr* text);
 static AjPStr grpParseValueRB(AjPStrTok* tokenhandle, const char* delim);
 static void grpSplitList(AjPList groups, const AjPStr value, AjBool explode,
-			 AjBool colon);
+			 AjBool colon, AjPStr* keywords);
 static void grpSubSplitList(AjPList groups, AjPList sublist);
 static void grpAddGroupsToList(const AjPList alpha, AjPList glist,
 			       const AjPList groups,
 			       const AjPStr appl, const AjPStr doc,
-			       const AjPStr package);
+			       const AjPStr keywords, const AjPStr package);
 
 static AjPStr grpStr1 = NULL;
 static AjPStr grpStr2 = NULL;
@@ -238,10 +238,10 @@ static void grpGetAcdDirs(AjPList glist, AjPList alpha, char * const env[],
 /* @funcstatic grpGetAcdFiles *************************************************
 **
 ** Given a directory, it searches for ACD files which describe an
-** existing program on the path.
-** Parses out the documentation and groups from these ACD files.
-** Returns a list of program names and documentation grouped by group names.
-** Returns an alphabetic list of program names and documentation.
+** existing program on the path,
+** parses out the documentation and groups from these ACD files,
+** returns a list of program names and documentation grouped by group names,
+** and returns an alphabetic list of program names and documentation.
 **
 ** @param [w] glist [AjPList] List of groups of programs
 ** @param [w] alpha [AjPList] Alphabetic list of programs
@@ -273,6 +273,7 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
     AjPStr applpath = NULL;		/* path of application */
     AjPStr doc      = NULL;
     AjPList groups  = NULL;
+    AjPStr keywords = NULL;
     AjBool guiresult;
     AjBool isembassy;
     AjPStr hasembassyname = NULL;
@@ -301,8 +302,8 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 		    if((file = ajFileNewIn(progpath)) != NULL)
 		    {
 			groups = ajListstrNew();
-			grpParse(file, &appl, &doc, groups, explode,
-				 colon, &guiresult,
+			grpParse(file, &appl, &doc, &keywords, groups,
+				 explode, colon, &guiresult,
 				 &isembassy, &hasembassyname);
 
 			/* see if the appl is the name of a real program */
@@ -324,7 +325,8 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 					appl, embassyname);
 			    else
 				grpAddGroupsToList(alpha, glist, groups,
-						   appl, doc, hasembassyname);
+						   appl, doc, keywords,
+						   hasembassyname);
 			}
 
 			ajFileClose(&file);
@@ -355,6 +357,7 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 ** @param [u] file [AjPFile]  ACD file
 ** @param [w] appl [AjPStr*] Application name
 ** @param [w] doc  [AjPStr*]  Documentation string
+** @param [w] keywords  [AjPStr*]  Keywords string
 ** @param [w] groups [AjPList] Program groups string
 ** @param [r] explode [AjBool] Expand group names around ':'
 ** @param [r] colon [AjBool] Retain ':' in group names
@@ -368,7 +371,8 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 ** @@
 ******************************************************************************/
 
-static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
+static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPStr *keywords,
+		     AjPList groups,
 		     AjBool explode, AjBool colon,
 		     AjBool *gui, AjBool* embassy, AjPStr* hasembassyname)
 {
@@ -383,14 +387,14 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
     AjPStr token  = NULL;
     AjPStr value  = NULL;
     ajint done = 0;
-    ajint donedoc    = ajFalse;
-    ajint donegroup  = ajFalse;
     AjPStr nullgroup = NULL;
     AjPStr newstr    = NULL;
     AjPStr tmpvalue  = NULL;
 
     /* initialise a name for programs with no assigned group */
     ajStrAppendC(&nullgroup, "ASSORTED");
+
+    ajStrAssignC(keywords, "");
 
     /* if 'gui' not defined in ACD, default is 'gui: Y' */
     *gui = ajTrue;
@@ -426,22 +430,21 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
 	/* is the next token 'doc' or 'groups' or 'gui' */
 	while(ajStrTokenNextParseC(&tokenhandle, whiteplus, &tmpstr))
 	{
-	    while(ajStrCmpC(tmpstr, "]"))
+	    while(!ajStrMatchC(tmpstr, "]"))
 	    {
 		ajStrAssignS(&token, tmpstr);
 		value = grpParseValueRB(&tokenhandle, white);
-		done = !ajStrCmpC(value, "]");
+		done = ajStrMatchC(value, "]");
 
 		if(!done)
 		{
 		    ajStrTokenNextParseC(&tokenhandle, whiteplus, &tmpstr);
 		    ajStrFmtLower(&tmpstr);
-		    done = !ajStrCmpC(tmpstr, "]");
+		    done = ajStrMatchC(tmpstr, "]");
 		}
 
-		if(ajStrPrefixCaseC(token, "doc"))
+		if(ajStrPrefixCaseC(token, "documentation"))
 		{
-		    donedoc = ajTrue;
 		    ajStrAssignS(doc, value);
 		    ajStrTrimWhite(doc);
 		    ajStrTrimC(doc, ".,");
@@ -458,10 +461,16 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
 
 		    ajStrDel(&tmpvalue);
 		}
-		else if(ajStrPrefixCaseC(token, "group"))
+		else if(ajStrPrefixCaseC(token, "groups"))
 		{
-		    donegroup = ajTrue;
-		    grpSplitList(groups, value, explode, colon);
+		    grpSplitList(groups, value, explode, colon, keywords);
+		}
+		else if(ajStrPrefixCaseC(token, "keywords"))
+		{
+		    ajStrExchangeKK(&value, ' ', '_');
+		    if(ajStrGetLen(*keywords))
+			ajStrAppendK(keywords, ' ');
+		    ajStrAppendS(keywords, value);
 		}
 		else if(ajStrPrefixCaseC(token, "embassy"))
 		{
@@ -474,11 +483,14 @@ static void grpParse(AjPFile file, AjPStr *appl, AjPStr *doc, AjPList groups,
 	}
     }
 
-    /* check that we got the doc and groups descriptions */
-    if(!donedoc)
+    /* check that we got the doc, keywords and groups descriptions */
+    if(!ajStrGetLen(*doc))
 	ajStrAssignC(doc, "");
 
-    if(!donegroup)
+    if(!ajStrGetLen(*keywords))
+	ajStrAssignC(keywords, "");
+
+    if(!ajListLength(groups))
     {
 	newstr = ajStrNewRef(nullgroup);
 	ajListstrPushApp(groups, newstr);
@@ -629,13 +641,14 @@ static AjPStr grpParseValueRB(AjPStrTok* tokenhandle, const char* delim)
 ** @param [r]  value  [const AjPStr] Groups string from ACD file
 ** @param [r]  explode [AjBool] Expand group names around ':'
 ** @param [r]  colon [AjBool] Retain ':' in group names
+** @param [u]  keywords [AjPStr] List of keywords
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void grpSplitList(AjPList groups, const AjPStr value, AjBool explode,
-			 AjBool colon)
+			 AjBool colon, AjPStr *keywords)
 {
     AjPStrTok colontokenhandle;
     AjPStrTok tokenhandle;
@@ -645,7 +658,7 @@ static void grpSplitList(AjPList groups, const AjPStr value, AjBool explode,
     AjPStr tmpstr  = NULL;
     AjPStr substr  = NULL;
     AjPStr copystr = NULL;
-
+    AjPStr keystr  = NULL;
 
     tokenhandle = ajStrTokenNewC(value, delim);
 
@@ -653,6 +666,13 @@ static void grpSplitList(AjPList groups, const AjPStr value, AjBool explode,
     {
 	ajStrTrimWhite(&tmpstr);
 	ajStrTrimC(&tmpstr, ".");
+
+	ajStrAssignS(&keystr, tmpstr);
+	ajStrExchangeKK(&keystr, ':', '_');
+	ajStrExchangeKK(&keystr, ' ', '_');
+	if(ajStrGetLen(*keywords))
+	    ajStrAppendK(keywords, ' ');
+	ajStrAppendS(keywords, keystr);
 
 	/*
 	** split the group name on colons and expand the sub-names into several
@@ -664,7 +684,7 @@ static void grpSplitList(AjPList groups, const AjPStr value, AjBool explode,
 	    colontokenhandle  = ajStrTokenNewC(tmpstr, colonstring);
 	    while(ajStrTokenNextParse(&colontokenhandle, &substr))
 	    {
-		copystr = ajStrNewRef(substr); /* make new copy of the string
+		copystr = ajStrNewS(substr); /* make new copy of the string
 					       for the list to hold */
 		ajStrTrimWhite(&copystr);
 		ajListstrPushApp(subnames, copystr);
@@ -866,6 +886,7 @@ static void grpSubSplitList(AjPList groups, AjPList sublist)
 ** @param [r] groups [const AjPList] List of groups for this application
 ** @param [r]  appl  [const AjPStr] Application name
 ** @param [r]  doc  [const AjPStr] Documentation string
+** @param [r] keywords [const AjPStr] List of keywords for this application
 ** @param [r]  package  [const AjPStr] Name of package
 **
 ** @return [void]
@@ -875,7 +896,7 @@ static void grpSubSplitList(AjPList groups, AjPList sublist)
 static void grpAddGroupsToList(const AjPList alpha, AjPList glist,
 			       const AjPList groups,
 			       const AjPStr appl, const AjPStr doc,
-			       const AjPStr package)
+			       const AjPStr keywords, const AjPStr package)
 {
     AjPStr g = NULL;	/* temporary value of member of groups list */
     AjIList aiter;	/* 'alpha' iterator */
@@ -894,7 +915,7 @@ static void grpAddGroupsToList(const AjPList alpha, AjPList glist,
 
 
     /* add this program to the alphabetic list of programs */
-    apnode = embGrpMakeNewPnode(appl, doc, package);
+    apnode = embGrpMakeNewPnode(appl, doc, keywords, package);
     aiter = ajListIterRead(alpha);
     al = ajListIterNext(aiter);
     ajListPushApp(al->progs, apnode);
@@ -942,7 +963,7 @@ static void grpAddGroupsToList(const AjPList alpha, AjPList glist,
 
 		if(!foundit)
 		{
-		    ppnode = embGrpMakeNewPnode(appl, doc, package);
+		    ppnode = embGrpMakeNewPnode(appl, doc, keywords, package);
 		    ajListPushApp(gl->progs, ppnode);
 		}
 		break;
@@ -954,7 +975,7 @@ static void grpAddGroupsToList(const AjPList alpha, AjPList glist,
 	    /* went past the end of the group list */
 	    gpnode = embGrpMakeNewGnode(g);
 	    ajListPushApp(glist, gpnode);
-	    ppnode = embGrpMakeNewPnode(appl, doc, package);
+	    ppnode = embGrpMakeNewPnode(appl, doc, keywords, package);
 	    ajListPushApp(gpnode->progs, ppnode);
 	}
 	ajListIterFree(&giter);
@@ -1012,6 +1033,9 @@ EmbPGroupTop embGrpMakeNewGnode(const AjPStr name)
 ** name and documentation.
 **
 ** @param [r] name [const AjPStr] Name of the program
+** @param [r] keywords [const AjPStr] Keywords for this program
+**                                    with underscores for spaces and
+**                                    with spaces as separators
 ** @param [r] doc [const AjPStr] Description of the program
 ** @param [r] package [const AjPStr] Name of the package
 ** @return [EmbPGroupProg] pointer to a new gnode struct
@@ -1019,13 +1043,14 @@ EmbPGroupTop embGrpMakeNewGnode(const AjPStr name)
 ******************************************************************************/
 
 EmbPGroupProg embGrpMakeNewPnode(const AjPStr name, const AjPStr doc,
-				 const AjPStr package)
+				 const AjPStr keywords, const AjPStr package)
 {
     EmbPGroupProg gpnode;
 
     AJNEW0(gpnode);
     gpnode->name    = ajStrNewS(name);
     gpnode->doc     = ajStrNewS(doc);
+    gpnode->keywords= ajStrNewS(keywords);
     gpnode->package = ajStrNewS(package);
     gpnode->groups  = ajListNew();
 
@@ -1147,6 +1172,7 @@ ajint embGrpCompareTwoPnodes(const void * a, const void * b)
 ** @param [r] groupslist [const AjPList] List of groups to be displayed
 ** @param [r] showprogs [AjBool] If True, display the programs in each group
 ** @param [r] html [AjBool] If True, format for HTML, else make a simple list
+** @param [r] showkey [AjBool] If True, show keywords
 ** @param [r] package [const AjPStr] Name of current package
 ** @return [void]
 ** @@
@@ -1154,7 +1180,7 @@ ajint embGrpCompareTwoPnodes(const void * a, const void * b)
 
 void embGrpOutputGroupsList(AjPFile outfile, const AjPList groupslist,
 			    AjBool showprogs, AjBool html,
-			    const AjPStr package)
+			    AjBool showkey, const AjPStr package)
 {
     EmbPGroupTop gl;
     AjIList giter;			/* 'groupslist' iterator */
@@ -1184,7 +1210,7 @@ void embGrpOutputGroupsList(AjPFile outfile, const AjPList groupslist,
 	{
 	    if(html) ajFmtPrintF(outfile,"<table border cellpadding=4 "
 				 "bgcolor=\"#FFFFF0\">\n");
-	    embGrpOutputProgsList(outfile, gl->progs, html, package);
+	    embGrpOutputProgsList(outfile, gl->progs, html, showkey, package);
 	    if(html)
 		ajFmtPrintF(outfile,"</table>\n");
 	    else
@@ -1209,16 +1235,18 @@ void embGrpOutputGroupsList(AjPFile outfile, const AjPList groupslist,
 ** @param [u] outfile [AjPFile] Output file handle
 ** @param [r] progslist [const AjPList] List of programs to be displayed
 ** @param [r] html [AjBool] If True, format for HTML, else make a simple list
+** @param [r] showkey [AjBool] Show keywords in output
 ** @param [r] package [const AjPStr] Name of current package
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 void embGrpOutputProgsList(AjPFile outfile, const AjPList progslist,
-			   AjBool html, const AjPStr package)
+			   AjBool html, AjBool showkey, const AjPStr package)
 {
     EmbPGroupProg pl;
     AjIList piter;			/* 'progslist' iterator */
+    AjPStr keystr = NULL;
 
     /* output the programs for each group */
     piter = ajListIterRead(progslist);
@@ -1228,6 +1256,17 @@ void embGrpOutputProgsList(AjPFile outfile, const AjPList progslist,
 
     while((pl = ajListIterNext(piter)) != NULL)
     {
+	if(showkey && ajStrGetLen(pl->keywords)) {
+	    ajFmtPrintS(&keystr, "(%S)", pl->keywords);
+	    ajStrExchangeKK(&keystr, ' ', ',');
+	    ajStrExchangeKK(&keystr, '_', ' ');
+	    ajStrInsertK(&keystr, 0, ' ');
+	}
+	else
+	{
+	    ajStrAssignC(&keystr, "");
+	}
+
 	if(html)
 	{
 	    ajFmtPrintF(outfile, "<tr>\n");
@@ -1245,11 +1284,11 @@ void embGrpOutputProgsList(AjPFile outfile, const AjPList progslist,
 			    "<td><a href=\"/emboss/apps/%S.html\">%S</a></td>\n",
 			    pl->name, pl->name);
 	    ajFmtPrintF(outfile,
-			"<td>%S</td>\n</tr>\n\n",
-			pl->doc);
+			"<td>%S%S</td>\n</tr>\n\n",
+			pl->doc, keystr);
 	}
 	else
-	    ajFmtPrintF(outfile, "%-16S %S\n", pl->name, pl->doc);
+	    ajFmtPrintF(outfile, "%-16S %S%S\n", pl->name, pl->doc, keystr);
     }
 
     ajListIterFree(&piter);
@@ -1333,12 +1372,13 @@ void embGrpProgsListDel(AjPList *progslist)
 ** @param [r] glist [const AjPList] List of EmbPGroupProg struct to
 **                                  search through
 ** @param [r] key [const AjPStr] String to search for
+** @param [r] all [AjBool] Match all words in key search string
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 void embGrpKeySearchProgs(AjPList newlist,
-			  const AjPList glist, const AjPStr key)
+			  const AjPList glist, const AjPStr key, AjBool all)
 {
     AjIList giter;		/* 'glist' iterator */
     AjIList piter;		/* 'plist' iterator */
@@ -1349,6 +1389,7 @@ void embGrpKeySearchProgs(AjPList newlist,
     AjPStr gname = NULL;
     AjPStr name  = NULL;
     AjPStr doc   = NULL;
+    AjPStr keywords= NULL;
     AjPStr keystr = NULL;
 
     /*
@@ -1374,14 +1415,36 @@ void embGrpKeySearchProgs(AjPList newlist,
 	{
 	    ajStrAssignS(&name, pl->name);
 	    ajStrAssignS(&doc, pl->doc);
+	    ajStrAssignS(&keywords, pl->keywords);
 	    ajStrFmtUpper(&name);
 	    ajStrFmtUpper(&doc);
+	    ajStrFmtUpper(&keywords);
 
-	    if(strstr(ajStrGetPtr(doc), ajStrGetPtr(keystr)) != NULL ||
-	       strstr(ajStrGetPtr(name), ajStrGetPtr(keystr)) != NULL)
+	    if (all)
 	    {
-		ppnode = embGrpMakeNewPnode(pl->name, pl->doc, pl->package);
-		ajListPushApp(gpnode->progs, ppnode);
+		if(ajStrMatchWordAllS(doc,keystr) ||
+		   ajStrMatchWordAllS(keywords, keystr) ||
+		   ajStrMatchWordAllS(name, keystr))
+		{
+		    ajDebug("Search '%S' in name:'%S' doc:'%S' key:'%S'\n",
+			    keystr, pl->name, pl->doc, pl->keywords);
+		    ppnode = embGrpMakeNewPnode(pl->name, pl->doc, 
+						pl->keywords, pl->package);
+		    ajListPushApp(gpnode->progs, ppnode);
+		}
+	    }
+	    else
+	    {
+		if(ajStrMatchWordOneS(doc,keystr) ||
+		   ajStrMatchWordOneS(keywords, keystr) ||
+		   ajStrMatchWordOneS(name, keystr))
+		{
+		    ajDebug("Search '%S' in name:'%S' doc:'%S' key:'%S'\n",
+			    keystr, pl->name, pl->doc, pl->keywords);
+		    ppnode = embGrpMakeNewPnode(pl->name, pl->doc, 
+						pl->keywords, pl->package);
+		    ajListPushApp(gpnode->progs, ppnode);
+		}
 	    }
 
 	    ajStrDel(&name);
@@ -1507,7 +1570,7 @@ void embGrpKeySearchSeeAlso(AjPList newlist, AjPList *appgroups,
 
 		    /* make new application node and push on base */
 		    ppnode = embGrpMakeNewPnode(pl->name, pl->doc,
-						pl->package);
+						pl->keywords, pl->package);
 		    ajListPushApp(base, ppnode);
 
 		}

@@ -28,6 +28,7 @@ extern "C"
 typedef struct EmbSGroupProg {
   AjPStr name;
   AjPStr doc;
+  AjPStr keywords;
   AjPStr package;
   AjPList groups;
 } EmbOGroupProg;
@@ -112,20 +113,22 @@ void          embGrpGetProgGroups(AjPList glist, AjPList alpha,
 void          embGrpGroupsListDel(AjPList *groupslist);
 void          embGrpProgsListDel(AjPList *progslist);
 void          embGrpKeySearchProgs(AjPList newlist, const AjPList glist,
-				   const AjPStr key);
+				   const AjPStr key, AjBool all);
 void          embGrpKeySearchSeeAlso(AjPList newlist,
 				     AjPList *appgroups, AjPStr* package,
 				     const AjPList alpha, const AjPList glist,
 				     const AjPStr key);
 EmbPGroupTop  embGrpMakeNewGnode(const AjPStr name);
 EmbPGroupProg embGrpMakeNewPnode(const AjPStr name, const AjPStr doc,
-				 const AjPStr package);
+				 const AjPStr keywords, const AjPStr package);
 void          embGrpOutputGroupsList(AjPFile outfile,
 				     const AjPList groupslist,
 				     AjBool showprogs, AjBool html,
+				     AjBool showkey,
 				     const AjPStr package);
 void          embGrpOutputProgsList(AjPFile outfile,  const AjPList progslist,
-				    AjBool html, const AjPStr package);
+				    AjBool html, AjBool showkey,
+				    const AjPStr package);
 void          embGrpSortGroupsList(AjPList groupslist);
 void          embGrpSortProgsList(AjPList progslist);
 void          embGrpGroupMakeUnique(AjPList list);
