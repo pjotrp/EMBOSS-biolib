@@ -18,8 +18,9 @@ extern "C"
 ** @alias EmbOGroupProg
 ** @alias EmbSGroupProg
 **
-** @attr name [AjPStr] name of group or of program
-** @attr doc [AjPStr] documentation for this program
+** @attr name [AjPStr] Name of group or of program
+** @attr doc [AjPStr] Documentation for this program
+** @attr keywords [AjPStr] keywords for this program
 ** @attr package [AjPStr] EMBASSY package, empty for main package
 ** @attr groups [AjPList] List of group(s) this program belongs to.
 ** @@

@@ -641,7 +641,7 @@ static AjPStr grpParseValueRB(AjPStrTok* tokenhandle, const char* delim)
 ** @param [r]  value  [const AjPStr] Groups string from ACD file
 ** @param [r]  explode [AjBool] Expand group names around ':'
 ** @param [r]  colon [AjBool] Retain ':' in group names
-** @param [u]  keywords [AjPStr] List of keywords
+** @param [u]  keywords [AjPStr*] List of keywords
 **
 ** @return [void]
 ** @@
@@ -1033,10 +1033,10 @@ EmbPGroupTop embGrpMakeNewGnode(const AjPStr name)
 ** name and documentation.
 **
 ** @param [r] name [const AjPStr] Name of the program
+** @param [r] doc [const AjPStr] Description of the program
 ** @param [r] keywords [const AjPStr] Keywords for this program
 **                                    with underscores for spaces and
 **                                    with spaces as separators
-** @param [r] doc [const AjPStr] Description of the program
 ** @param [r] package [const AjPStr] Name of the package
 ** @return [EmbPGroupProg] pointer to a new gnode struct
 ** @@
