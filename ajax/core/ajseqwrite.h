@@ -31,7 +31,7 @@ extern "C"
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
 ** @attr Rev [AjBool] true: to be reverse-complemented
 ** @attr Offset [ajint] offset from start
-** @attr Usa [AjPStr] USA fo re-reading
+** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
 ** @attr Fttable [AjPFeattable] Feature table
 ** @attr Ftquery [AjPFeattabOut] Feature table output
