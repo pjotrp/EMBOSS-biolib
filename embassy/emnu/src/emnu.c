@@ -1421,7 +1421,7 @@ we should delete the old list */
 /* do search */
 	ajStrAssignC(&searchstr, name);
 	searchlist = ajListNew();
-	(void) embGrpKeySearchProgs (searchlist, alpha, searchstr);
+	(void) embGrpKeySearchProgs (searchlist, alpha, searchstr, ajFalse);
 
 /* tidy up */
 	ajStrDel(&searchstr);
