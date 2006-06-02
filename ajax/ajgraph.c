@@ -219,7 +219,7 @@ void plxswin(const char* window)
 **
 ** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
 **
-** @param [r] tmp [char*] Undocumented
+** @param [w] tmp [char*] Undocumented
 ** @return [int] Undocumented
 ** @@
 ** Andre Blavier:
