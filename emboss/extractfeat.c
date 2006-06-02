@@ -193,7 +193,7 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 
 
     /* For all features... */
-    if(featab && featab->Features)
+    if(featab && ajFeattableSize(featab))
     {
 	/* initialise details of a feature */
         featseq = ajStrNew();
@@ -250,7 +250,8 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 
 
 	    ajDebug("feature %S %d-%d is parent %B, child %B, single %B\n",
-		    gf->Type, gf->Start, gf->End, parent, child, single);
+		    ajFeatGetType(gf), ajFeatGetStart(gf), ajFeatGetEnd(gf),
+		    parent, child, single);
 
 	    /*
 	    ** If single or parent, write out any stored previous feature
@@ -297,12 +298,12 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 	    ** are forward sense until its possible to  reverse-complement
 	    ** them all together.
 	    */
-	    if(!compall && gf->Strand == '-')
+	    if(!compall && ajFeatGetStrand(gf) == '-')
 	        sense = ajFalse;
 	    
 	    /* get 'type' name of feature */
 	    if(single || parent)
-	    	ajStrAssignS(&type, gf->Type);
+	    	ajStrAssignS(&type, ajFeatGetType(gf));
 	    
 	    /*
 	    ** if single or parent, get 'before' + 'after' sequence
@@ -310,17 +311,17 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 	    */
             if(single || parent)
 	    {
-                firstpos = gf->Start-1;
-                lastpos = gf->End-1;
+                firstpos = ajFeatGetStart(gf)-1;
+                lastpos = ajFeatGetEnd(gf)-1;
             }
 	    
 	    /* if child, update the boundary positions */
             if(child)
 	    {
                 if(sense)
-                    lastpos = gf->End-1;
+                    lastpos = ajFeatGetEnd(gf)-1;
 		else
-		    firstpos = gf->Start-1;
+		    firstpos = ajFeatGetStart(gf)-1;
             }
 	    
             extractfeat_MatchPatternDescribe(gf, describe, &describeout);
@@ -387,9 +388,10 @@ static void extractfeat_GetFeatseq(const AjPSeq seq, const AjPFeature gf,
     tmp = ajStrNew();
 
     ajDebug("about to get sequence from %d-%d, len=%d\n",
-	    gf->Start, gf->End, gf->End - gf->Start+1);
+	    ajFeatGetStart(gf), ajFeatGetEnd(gf),
+	    ajFeatGetLength(gf));
 
-    ajStrAssignSubS(&tmp, str, gf->Start-1, gf->End-1);
+    ajStrAssignSubS(&tmp, str, ajFeatGetStart(gf)-1, ajFeatGetEnd(gf)-1);
 
     /* if feature was in reverse sense, then get reverse complement */
     if(!sense)
@@ -894,14 +896,27 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
     **      for score, maxscore <= minscore
     */
 
-    if(!embMiscMatchPattern(gf->Source, source) ||
-       !embMiscMatchPattern(gf->Type, type) ||
-       (gf->Strand == '+' && sense == -1) ||
-       (gf->Strand == '-' && sense == +1) ||
-       (scoreok && gf->Score < minscore) ||
-       (scoreok && gf->Score > maxscore) ||
+    ajDebug("extractfeat_MatchFeature\n");
+
+    ajDebug("embMiscMatchPattern(ajFeatGetSource(gf), source) %B\n",
+	    embMiscMatchPattern(ajFeatGetSource(gf), source));
+    ajDebug("embMiscMatchPattern(ajFeatGetType(gf), type) %B\n",
+	    embMiscMatchPattern(ajFeatGetType(gf), type));
+    ajDebug("ajFeatGetStrand(gf) '%x' sense %d\n", ajFeatGetStrand(gf), sense);
+    ajDebug("scoreok: %B ajFeatGetScore(gf): %f minscore:%f maxscore:%f\n",
+	    scoreok, ajFeatGetScore(gf), minscore, maxscore);
+    if(!embMiscMatchPattern(ajFeatGetSource(gf), source) ||
+       !embMiscMatchPattern(ajFeatGetType(gf), type) ||
+       (ajFeatGetStrand(gf) == '+' && sense == -1) ||
+       (ajFeatGetStrand(gf) == '-' && sense == +1) ||
+       (scoreok && ajFeatGetScore(gf) < minscore) ||
+       (scoreok && ajFeatGetScore(gf) > maxscore) ||
        !*tagsmatch)
+    {
+	ajDebug("return ajFalse\n");
 	return ajFalse;
+    }
+    ajDebug("return ajTrue\n");
 
     return ajTrue;
 }

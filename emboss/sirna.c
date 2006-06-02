@@ -461,16 +461,16 @@ static ajint sirna_begin(const AjPSeq seq, AjPReport report, AjBool poliii,
 		  "should be ignored\nwhen ordering siRNA probes.\n");
  
     /* are there any features - find the first CDS feature */
-    if(featab && featab->Features)
+    if(ajFeattableSize(featab))
     {
 	iter = ajListIterRead(featab->Features);
 	while(ajListIterMore(iter))
 	{
 	    gf = ajListIterNext(iter);
-	    if(ajStrMatchS(type, gf->Type))
+	    if(ajStrMatchS(type, ajFeatGetType(gf)))
 	    {
 		/* is the feature 'CDS'? */
-		begin = gf->Start-1;
+		begin = ajFeatGetStart(gf)-1;
 		ajFmtPrintS(&head2, "CDS region found in feature table "
 			    "starting at %d", 
 			    begin+1);        
@@ -654,18 +654,21 @@ static void sirna_output(const AjPList list,
 		** the siRNA probe region
 		*/
 		ajStrAssignC(&subseq, "(");
-		ajStrAppendSubS(&subseq, ajSeqGetSeqS(seq), value->pos, value->pos+1);
+		ajStrAppendSubS(&subseq, ajSeqGetSeqS(seq),
+				value->pos, value->pos+1);
 		ajStrAppendC(&subseq, ")");
 	    }
 
-	    ajStrAppendSubS(&subseq, ajSeqGetSeqS(seq), value->pos+2, value->pos+20);
+	    ajStrAppendSubS(&subseq, ajSeqGetSeqS(seq),
+			    value->pos+2, value->pos+20);
 	    ajStrFmtUpper(&subseq);
 	    ajStrExchangeKK(&subseq, 'T', 'U');
 	    ajStrAppendC(&subseq, "dTdT");
 	    ajFmtPrintS(&tmpStr, "*forward %S", subseq);
 	    ajFeatTagAdd(gf,  NULL, tmpStr);
 
-	    ajStrAssignSubS(&subseq, ajSeqGetSeqS(seq), value->pos+2, value->pos+20);
+	    ajStrAssignSubS(&subseq, ajSeqGetSeqS(seq),
+			    value->pos+2, value->pos+20);
 	    ajStrFmtUpper(&subseq);
 	    ajSeqstrReverse(&subseq);
 	    ajStrExchangeKK(&subseq, 'T', 'U');
@@ -678,7 +681,8 @@ static void sirna_output(const AjPList list,
 	    ** get sequence
 	    */
 	    ajDebug("Now write sequence file\n");
-	    ajStrAssignSubS(&subseq, ajSeqGetSeqS(seq), value->pos, value->pos+22);
+	    ajStrAssignSubS(&subseq, ajSeqGetSeqS(seq),
+			    value->pos, value->pos+22);
 	    ajSeqAssignSeqS(seq23, subseq);
 	    ajSeqSetNuc(seq23);
 

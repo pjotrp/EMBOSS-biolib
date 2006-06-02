@@ -29,7 +29,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 				 ajint end, const AjPStr matchsource,
 				 const AjPStr matchtype, const AjPStr matchtag,
 				 const AjPStr matchvalue,
-				 AjPStr const *sortlist,
+				 const AjPStr sortlist,
 				 ajint width, AjBool collapse,
 				 AjBool forward, AjBool reverse,
 				 AjBool unknown, AjBool strand,
@@ -80,7 +80,7 @@ int main(int argc, char **argv)
     AjPStr matchtype = NULL;
     AjPStr matchtag = NULL;
     AjPStr matchvalue = NULL;
-    AjPStr *sortlist = NULL;
+    AjPStr sortlist = NULL;
     AjBool html;
     AjBool id;
     AjBool description;
@@ -112,7 +112,7 @@ int main(int argc, char **argv)
     matchtype   = ajAcdGetString("matchtype");
     matchtag    = ajAcdGetString("matchtag");
     matchvalue  = ajAcdGetString("matchvalue");
-    sortlist    = ajAcdGetList("sort");
+    sortlist    = ajAcdGetListSingle("sort");
     html        = ajAcdGetBool("html");
     id          = ajAcdGetBool("id");
     description = ajAcdGetBool("description");
@@ -206,7 +206,7 @@ int main(int argc, char **argv)
     ajStrDel(&matchtype);
     ajStrDel(&matchtag);
     ajStrDel(&matchvalue);
-    ajStrDelarray(&sortlist);
+    ajStrDel(&sortlist);
     ajRangeDel(&annotation);
     ajStrDel(&descriptionline);
 
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 ** @param [r] matchtype [const AjPStr] type pattern to display
 ** @param [r] matchtag [const AjPStr] tag pattern to display
 ** @param [r] matchvalue [const AjPStr] tag's value pattern to display
-** @param [r] sortlist [AjPStr const *] type of sorting of features to do
+** @param [r] sortlist [const AjPStr] type of sorting of features to do
 ** @param [r] width [ajint] width of line of features
 ** @param [r] collapse [AjBool] show all features on separate lines
 ** @param [r] forward [AjBool] show forward sense features
@@ -253,7 +253,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 				 ajint end, const AjPStr matchsource,
 				 const AjPStr matchtype, const AjPStr matchtag,
 				 const AjPStr matchvalue,
-				 AjPStr const *sortlist,
+				 const AjPStr sortlist,
 				 ajint width, AjBool collapse,
 				 AjBool forward, AjBool reverse,
 				 AjBool unknown, AjBool strand,
@@ -296,19 +296,19 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
     tagsout = ajStrNewC("");
     posout  = ajStrNewC("");
 
-    if(feat->Features)
+    if(ajFeattableSize(feat))
     {
-	if(!ajStrCmpC(sortlist[0], "source"))
+	if(!ajStrCmpC(sortlist, "source"))
 	    /* sort by: sense, source, type, start */
 	    ajListSort(feat->Features, showfeat_CompareFeatSource);
-	else if(!ajStrCmpC(sortlist[0], "start"))
+	else if(!ajStrCmpC(sortlist, "start"))
 	    /* sort by: sense, start, type, source, source */
 	    ajListSort(feat->Features, showfeat_CompareFeatPos);
-	else if(!ajStrCmpC(sortlist[0], "type"))
+	else if(!ajStrCmpC(sortlist, "type"))
 	    /* type */
 	    /* sort by: sense, type, source, start */
 	    ajListSort(feat->Features, showfeat_CompareFeatType);
-	else if(!ajStrCmpC(sortlist[0], "join"))
+	else if(!ajStrCmpC(sortlist, "join"))
             join = ajTrue;
 	/* else - no sort */
 
@@ -336,7 +336,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 
 
 	    /* check that the feature is within the range we wish to display */
-	    if(beg+1 > gf->End || end+1 < gf->Start)
+	    if(beg+1 > ajFeatGetEnd(gf) || end+1 < ajFeatGetStart(gf))
 		continue;
 
             /* ignore remote IDs */
@@ -344,16 +344,16 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
                 continue;
 
 	    /* check that we want to output this sense */
-	    if(!forward && gf->Strand == '+')
+	    if(!forward && ajFeatGetStrand(gf) == '+')
 		continue;
-	    if(!reverse && gf->Strand == '-')
+	    if(!reverse && ajFeatGetStrand(gf) == '-')
 		continue;
-	    if(!unknown && gf->Strand == '\0')
+	    if(!unknown && ajFeatGetStrand(gf) == '\0')
 		continue;
 
 	    /* check that we want to output this match of source, type */
-	    if(!embMiscMatchPattern(gf->Source, matchsource) ||
-	       !embMiscMatchPattern(gf->Type, matchtype) ||
+	    if(!embMiscMatchPattern(ajFeatGetSource(gf), matchsource) ||
+	       !embMiscMatchPattern(ajFeatGetType(gf), matchtype) ||
 	       !showfeat_MatchPatternTags(gf, matchtag, matchvalue,
 					  stricttags, &tagstmp, values))
 		continue;
@@ -367,9 +367,9 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 	     */
 	    if((!collapse ||
 		first ||
-		gf->Strand != strandout ||
-		(source && ajStrCmpCaseS(gf->Source, sourceout)) ||
-		ajStrCmpCaseS(gf->Type, typeout))
+		ajFeatGetStrand(gf) != strandout ||
+		(source && ajStrCmpCaseS(ajFeatGetSource(gf), sourceout)) ||
+		ajStrCmpCaseS(ajFeatGetType(gf), typeout))
 	       &&
 	       (!join ||
 		! child ||
@@ -383,9 +383,9 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 		/* reset the strings for the new line */
 		ajStrSetClear(&lineout);
 		ajStrAppendCountK(&lineout, ' ', width);
-		ajStrAssignS(&sourceout, gf->Source);
-		ajStrAssignS(&typeout, gf->Type);
-		strandout = gf->Strand;
+		ajStrAssignS(&sourceout, ajFeatGetSource(gf));
+		ajStrAssignS(&typeout, ajFeatGetType(gf));
+		strandout = ajFeatGetStrand(gf);
 		ajStrSetClear(&tagsout);
 		ajStrSetClear(&posout);
 
@@ -406,10 +406,11 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 	    ajStrSetClear(&tagstmp);
 
 	    /* add positions to posout */
-	    showfeat_AddPos(&posout, gf->Start, gf->End);
+	    showfeat_AddPos(&posout, ajFeatGetStart(gf), ajFeatGetEnd(gf));
 
 	    /* write the feature on the line */
-	    showfeat_WriteFeat(lineout, strandout, gf->Start, gf->End, width,
+	    showfeat_WriteFeat(lineout, strandout,
+			       ajFeatGetStart(gf), ajFeatGetEnd(gf), width,
 			       beg, end);
 
 	    first = ajFalse;
@@ -561,7 +562,7 @@ static void showfeat_WriteFeat(AjPStr line, char strand, ajint fstart,
 
 
 
-/* @funcstatic showfeat_FeatOut************************************************
+/* @funcstatic showfeat_FeatOut ***********************************************
 **
 ** Show the sequence features  and source, type, etc.
 ** We guarantee to not have trailing whitespace at the end of a line.
@@ -675,27 +676,27 @@ static ajint showfeat_CompareFeatSource(const void * a, const void * b)
     d = *(AjPFeature *)b;
 
     /* sort by strand */
-    if(c->Strand == d->Strand)
+    if(ajFeatGetStrand(c) == ajFeatGetStrand(d))
     {
 	/* stands are the same, sort by source */
-	val = ajStrCmpCaseS(c->Source, d->Source);
+	val = ajStrCmpCaseS(ajFeatGetSource(c), ajFeatGetSource(d));
 
 	if(val != 0)
 	    return val;
 
 
 	/* source is the same, sort by type */
-	val = ajStrCmpCaseS(c->Type, d->Type);
+	val = ajStrCmpCaseS(ajFeatGetType(c), ajFeatGetType(d));
 	if(val != 0)
 	    return val;
 
 
 	/* type is the same, sort by start */
-	return (c->Start - d->Start);
+	return (ajFeatGetStart(c) - ajFeatGetStart(d));
     }
-    else if(c->Strand == '+')
+    else if(ajFeatGetStrand(c) == '+')
 	return -1;
-    else if(c->Strand == '\0' && d->Strand == '-')
+    else if(ajFeatGetStrand(c) == '\0' && ajFeatGetStrand(d) == '-')
 	return -1;
 
     return 1;
@@ -726,24 +727,24 @@ static ajint showfeat_CompareFeatType(const void * a, const void * b)
     d = *(AjPFeature *)b;
 
     /* sort by strand */
-    if(c->Strand == d->Strand)
+    if(ajFeatGetStrand(c) == ajFeatGetStrand(d))
     {
 	/* stands are the same, sort by type */
-	val = ajStrCmpCaseS(c->Type, d->Type);
+	val = ajStrCmpCaseS(ajFeatGetType(c), ajFeatGetType(d));
 	if(val != 0)
 	    return val;
 
 	/* type is the same, sort by source */
-	val = ajStrCmpCaseS(c->Source, d->Source);
+	val = ajStrCmpCaseS(ajFeatGetSource(c), ajFeatGetSource(d));
 	if(val != 0)
 	    return val;
 
 	/* source is the same, sort by start */
-	return (c->Start - d->Start);
+	return (ajFeatGetStart(c) - ajFeatGetStart(d));
     }
-    else if(c->Strand == '+')
+    else if(ajFeatGetStrand(c) == '+')
 	return -1;
-    else if(c->Strand == '\0' && d->Strand == '-')
+    else if(ajFeatGetStrand(c) == '\0' && ajFeatGetStrand(d) == '-')
 	return -1;
 
     return 1;
@@ -774,25 +775,25 @@ static ajint showfeat_CompareFeatPos(const void * a, const void * b)
     d = *(AjPFeature *)b;
 
     /* sort by strand */
-    if(c->Strand == d->Strand)
+    if(ajFeatGetStrand(c) == ajFeatGetStrand(d))
     {
 	/* strands are the same, sort by start */
-	val = c->Start - d->Start;
+	val = ajFeatGetStart(c) - ajFeatGetStart(d);
 	if(val != 0)
 	    return val;
 
 	/* starts are the same, sort by type */
-	val = ajStrCmpCaseS(c->Type, d->Type);
+	val = ajStrCmpCaseS(ajFeatGetType(c), ajFeatGetType(d));
 	if(val != 0)
 	    return val;
 
 	/* type is the same, sort by source */
-	val = ajStrCmpCaseS(c->Source, d->Source);
+	val = ajStrCmpCaseS(ajFeatGetSource(c), ajFeatGetSource(d));
 	return val;
     }
-    else if(c->Strand == '+')
+    else if(ajFeatGetStrand(c) == '+')
 	return -1;
-    else if(c->Strand == '\0' && d->Strand == '-')
+    else if(ajFeatGetStrand(c) == '\0' && ajFeatGetStrand(d) == '-')
 	return -1;
 
     return 1;

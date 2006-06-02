@@ -112,7 +112,9 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type,
     ** want lower-case if 'tolower' or 'maskchar' is null
     ** or it is the SPACE character
     */
-    lower = (tolower || ajStrGetLen(maskchar) == 0 || ajStrMatchC(maskchar, " "));
+    lower = (tolower ||
+	     ajStrGetLen(maskchar) == 0 ||
+	     ajStrMatchC(maskchar, " "));
 
 
     /* get the feature table of the sequence */
@@ -122,7 +124,7 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type,
 
     /* For all features... */
 
-    if(feat && feat->Features)
+    if(feat && ajFeattableSize(feat))
     {
 	iter = ajListIterRead(feat->Features) ;
 	while(ajListIterMore(iter))
@@ -130,13 +132,15 @@ static void maskfeat_FeatSeqMask(AjPSeq seq, const AjPStr type,
 	    gf = ajListIterNext(iter) ;
 	    tokens = ajStrTokenNewC(type, whiteSpace);
 	    while(ajStrTokenNextParse( &tokens, &key))
-		if(ajStrMatchWildS(gf->Type, key))
+		if(ajStrMatchWildS(ajFeatGetType(gf), key))
 		{
 		    if(lower)
-			maskfeat_StrToLower(&str, gf->Start-1, gf->End-1);
+			maskfeat_StrToLower(&str, ajFeatGetStart(gf)-1,
+					    ajFeatGetEnd(gf)-1);
 		    else
-		        ajStrMask(&str, gf->Start-1, gf->End-1,
-				  *ajStrGetPtr(maskchar));
+		        ajStrMask(&str, ajFeatGetStart(gf)-1,
+				  ajFeatGetEnd(gf)-1,
+				  ajStrGetCharFirst(maskchar));
 		}
 
 	    ajStrTokenDel( &tokens);

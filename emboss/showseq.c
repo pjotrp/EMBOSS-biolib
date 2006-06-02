@@ -691,12 +691,12 @@ static AjBool showseq_MatchFeature(const AjPFeature gf, AjPFeature newgf,
      **      for sense, 0
      **      for score, maxscore <= minscore
      */
-    if(!embMiscMatchPattern(gf->Source, source) ||
-       !embMiscMatchPattern(gf->Type, type) ||
-       (gf->Strand == '+' && sense == -1) ||
-       (gf->Strand == '-' && sense == +1) ||
-       (scoreok && gf->Score < minscore) ||
-       (scoreok && gf->Score > maxscore) ||
+    if(!embMiscMatchPattern(ajFeatGetSource(gf), source) ||
+       !embMiscMatchPattern(ajFeatGetType(gf), type) ||
+       (ajFeatGetStrand(gf) == '+' && sense == -1) ||
+       (ajFeatGetStrand(gf) == '-' && sense == +1) ||
+       (scoreok && ajFeatGetScore(gf) < minscore) ||
+       (scoreok && ajFeatGetScore(gf) > maxscore) ||
        !*tagsmatch)
 	return ajFalse;
 
