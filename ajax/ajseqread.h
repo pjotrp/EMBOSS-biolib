@@ -28,6 +28,10 @@ extern "C"
 ** @other AjPSeqin Sequence input
 **
 ** @attr Name [char*] Access method name used in emboss.default
+** @attr Alias [AjBool] Alias for another name
+** @attr Entry [AjBool] Supports retrieval of single entries
+** @attr Query [AjBool] Supports retrieval of selected entries
+** @attr All [AjBool] Supports retrieval of all entries
 ** @attr Access [(AjBool*)] Access function
 ** @attr AccessFree [(AjBool*)] Access cleanup function
 ** @@
