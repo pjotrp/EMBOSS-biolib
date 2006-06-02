@@ -1,4 +1,5 @@
-/**
+/* @source
+**
 ** Illustrates use of the AJAX string library.
 ** 
 ** @author Copyright (C) Jon Ison (jison@ebi.ac.uk)
@@ -19,12 +20,6 @@
 ******************************************************************************/
 
 #include "emboss.h"
-
-/* @prog demostringnew ********************************************************
-**
-** Illustrates use of the AJAX string library.
-**
-******************************************************************************/
 
 
 
@@ -53,6 +48,12 @@ static void demostring_msg(const char * msg);
 static void demostring_str(const char * msg);
 
 
+
+/* @prog demostringnew ********************************************************
+**
+** Illustrates use of the AJAX string library.
+**
+******************************************************************************/
 
 int main(int argc, char **argv)
 {
