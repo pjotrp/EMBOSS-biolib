@@ -1,5 +1,78 @@
 Version 4.0.0
 
+	New format "swissnew", with aliases "swnew" and "swissprotnew",
+	added.  UniProt has announced future changes to the UniProt entry
+	format, which is still called "swiss" in EMBOSS. The ID line had
+	"Reviewed" and "Unreviewed" in place of "STANDARD" and
+	"PRELIMINARY", and no longer has the "PRT;" placeholder for the
+	EMBL format "division" - now obsolete as EMBL has changed this
+	part of their ID line in the latest release. In EMBOSS 4.0.0 we
+	replace "STANDARD" with "Unreviewed" as more appropriate to
+	entries that come from FASTA files and other sources.
+
+	Programs which analyze nucleotide features now call ajFeatGet
+	functions in most places. In previous releases, some of these
+	programs used the internal feature data structures directly.
+
+	GFF format feature files are designed for nucleotide
+	sequences. EMBOSS supports the use of GFF for protein sequence.
+
+	Feature keys (to use the EMBL/Genbank feature table term) are now
+	defined with external names for each format and a list of internal
+	names to be used byu EMBOSS. This greatly simplified the
+	conversion of SwissProt and PIR feature tables. The internal table
+	also has a list of aliases. The internal aliases for nucleotide
+	features are as far as possible identifiers from the Sequence
+	Ontology SOFA (feature annotation) subset. In a few cases, where
+	multiple EMBL/Genbank terms map to a single SOFA term, new terms
+	have been added to extend the SOFA name uniquely (we simply append
+	the EMBL/Genbank feature key).
+
+	MSF format files with more than 5000 sequences were truncated on
+	input - only the first 5000 names were being read. This limit has
+	been removed. As "emma" uses MSF format for the clustalw run it
+	launches, this problem limited emma to 5000 output sequences in
+	previous releases.
+
+	The EMBL database has changed its ID line. The new line has
+	semicolons after each token, the primary accession instead of the
+	ID (there is no ID in the new EMBL format), and the sequence
+	version as a number. Internally in EMBOSS we continue to build the
+	accnum.n style sequence version. We expect most other packages
+	will take some time to change EMBL formats, so for output this is
+	clled "emblnew" format. As input, "embl" format will accept both
+	the old and new style entries. For database indexing, dbiflat and
+	dbxflat will read old and new formats as "embl" by looking for SV
+	on the ID line. EMBL and EMBLNEW format output is also improved by
+	wrapping long DE lines.
+
+	Wossname will now search for each word in a phrase used as the
+	search text. By default, all words must match. A new qualifier
+	-noallmatch tells wossname to match any word in the
+	search. Partial word matches are accepted so "restrict" will match
+	"restriction". The search term is also compared to the groups and
+	keywords attributes in the ACD file. A new qualifier -showkey will
+	report the keywords to help explain why applications were matched.
+	
+	All ACD files have a new application attribute keywords: which
+	provides keywords to search for in addition to the groups.  This
+	is intended for keywords which are hard to include correctly in
+	the short description. A file keywords.standard is provided with a
+	list of all keywords. this is for use by utilities searching
+	programs by keyword, which will be expected to check the groups
+	and keywords attributes in a single query.
+
+	Reading a sequence of type "any" sets the sequence type to
+	nucleotide by default. Any x or X ambiguity codes will be
+	converted to 'n' or 'N' to avoid confusion in programs that will
+	convert a second nucleotide sequence (alignment programs, for
+	example). X is allowed as an unknown character in nucleotide
+	sequences (and N is also allowed as 'any base').
+
+	Stockholm and Selex sequence formats, used mainly by the HMMER and
+	HMMERNEW embassy packages, have been corrected for a few cases
+	where automatic format detection generated errors.
+	
 	Function names in ajseq.c have been standardised. Old names are
 	still accepted but are marked as "deprecated" and will generate
 	warnings with the gcc compiler (see ajstr below). Other compilers
