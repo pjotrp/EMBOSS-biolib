@@ -2,7 +2,11 @@
 
 SET emboss_qadata /homes/pmr/cvsemboss/test
 
-SET emboss_timetoday "2005-07-15 12:00:00"
+# Standard date for test runs - set to the date of the release
+# Used to make the output consistent where an application reports
+# today's date
+
+SET emboss_timetoday "2006-07-15 12:00:00"
 
 #######################################
 # Standard test databases
