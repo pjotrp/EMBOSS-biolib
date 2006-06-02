@@ -233,6 +233,61 @@ void embBtreeEmblAC(const AjPStr acline, AjPList aclist)
 
 
 
+/* @func embBtreeEmblSV **************************************************
+**
+** Extract sequence version from an EMBL new format ID line 
+**
+** @param [r] idline[const AjPStr] AC line
+** @param [w] svlist [AjPList] list of accession numbers
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void embBtreeEmblSV(const AjPStr idline, AjPList svlist)
+{
+    AjPStr line      = NULL;
+    AjPStrTok handle = NULL;
+    AjPStr token     = NULL;
+    AjPStr str       = NULL;
+    AjPStr idstr      = NULL;
+    AjPStr svstr      = NULL;
+    
+    line   = ajStrNew();
+    token  = ajStrNew();
+    idstr   = ajStrNew();
+    svstr   = ajStrNew();
+    
+    ajStrAssignC(&line, &MAJSTRGETPTR(idline)[5]);
+
+    handle = ajStrTokenNewC(line," \t\n;");
+
+    str = ajStrNew();
+    if(!ajStrTokenNextParse(&handle,&idstr))
+	return;
+    if(!ajStrTokenNextParse(&handle,&token))
+	return;
+    if(!ajStrTokenNextParse(&handle,&svstr))
+	return;
+
+    if(!ajStrMatchC(token, "SV"))
+	return;
+
+    ajFmtPrintS(&str,"%S.%S", idstr, svstr);
+
+    ajListPush(svlist,(void *)str);
+
+    ajStrDel(&idstr);
+    ajStrDel(&svstr);
+    ajStrDel(&token);
+    ajStrTokenDel(&handle);
+    ajStrDel(&line);
+    
+    return;
+}
+
+
+
 
 /* @func embBtreeEmblDE **************************************************
 **

@@ -298,11 +298,15 @@ static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
 	{
 	    entry->fpos = pos;
 	    ajFmtScanS(line,"%*S%S",&entry->id);
+	    ajStrTrimEndC(&entry->id, ";");
 /*
 	    ++global;
 	    printf("%d. %s\n",global,ajStrGetPtr(entry->id));
 */
+	    if(entry->do_sv)
+		embBtreeEmblSV(line,entry->sv);
 	}
+
 
 	if(entry->do_sv)
 	    if(ajStrPrefixC(line,"SV") ||

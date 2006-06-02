@@ -683,7 +683,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 	regEmblTax = ajRegCompC(" *([^;.\n\r()]+)");
 
     if(!regEmblId)
-	regEmblId = ajRegCompC("^ID   ([^ \t]+)");
+	regEmblId = ajRegCompC("^ID   ([^\\s;]+)(;\\s+SV\\s+(\\d+))?");
 
     if(!regEmblEnd)
 	regEmblEnd = ajRegCompC("^//");
@@ -731,6 +731,25 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 	    ajRegExec(regEmblId, rline);
 	    ajRegSubI(regEmblId, 1, id);
 	    ajDebug("++id '%S'\n", *id);
+	    ajRegSubI(regEmblId, 3, &tmpfd);
+	    if(svnfield >= 0 && ajStrGetLen(tmpfd))
+	    {
+		ajStrFmtUpper(&tmpfd);
+		ajStrInsertK(&tmpfd, 0, '.');
+		ajStrInsertS(&tmpfd, 0, *id);
+		ajDebug("++sv '%S'\n", tmpfd);
+		embDbiMaxlen(&tmpfd, &maxFieldLen[svnfield]);
+
+		countfield[svnfield]++;
+		if(systemsort)
+		    ajFmtPrintF(alistfile[svnfield], "%S %S\n", *id, tmpfd);
+		else
+		{
+		    fd = ajCharNewS(tmpfd);
+		    ajListPushApp(fdl[svnfield], fd);
+		}
+		svndone = ajTrue;
+	    }
 	    continue;
 	}
 
