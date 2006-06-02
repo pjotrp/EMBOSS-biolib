@@ -255,7 +255,7 @@ static AjBool seqTypeTestI(AjPSeq thys, ajint itype)
     AjPRegexp badchars;
 
     /*
-     ** We have a known type, not we need to either show the sequence
+     ** We have a known type, now we need to either show the sequence
      ** matches it, or fix it so it does (or, of course, give up)
      */
 
@@ -1073,6 +1073,11 @@ void ajSeqSetNuc(AjPSeq thys)
     ajStrAssignC(&thys->Type, "N");
     if(thys->Fttable)
 	ajFeattableSetNuc(thys->Fttable);
+
+    /* set N as the ambiguity code */
+    ajStrExchangeSetCC(&thys->Seq,
+		       "xX",
+		       "nN");
 
     return;
 }
