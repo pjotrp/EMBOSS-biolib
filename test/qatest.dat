@@ -319,7 +319,7 @@ IN
 FI act1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 4918
+FC = 4921
 FP 47 /^acdProcess/
 FI stderr
 FC = 2
@@ -4367,11 +4367,11 @@ FP /\A.{308}L48662\001/
 FI outfile.dbiflat
 FC = 34
 FP /# Release: 0.0\n/
-FP /# Date: 15\/07\/05\n/
+FP /# Date: 15\/07\/06\n/
 FP /# Files: 1\n/
 FP /#   File 1: .*/rod.dat\n/
 FP /# Fields: 2\n/
-FP /# Rundate: Fri Jul 15 2005 12:00:00\n/
+FP /# Rundate: Sat Jul 15 2006 12:00:00\n/
 FP 1 /^Index \S+ maxlen \d+ items \d+\n/
 FP 1 /^filename: /
 //
@@ -4407,11 +4407,11 @@ FP /\A.{308}L48662\001/
 FI outfile.dbiflat
 FC = 35
 FP /# Release: 0.0\n/
-FP /# Date: 15\/07\/05\n/
+FP /# Date: 15\/07\/06\n/
 FP /# Files: 1\n/
 FP /#   File 1: .*/rod.dat\n/
 FP /# Fields: 2\n/
-FP /# Rundate: Fri Jul 15 2005 12:00:00\n/
+FP /# Rundate: Sat Jul 15 2006 12:00:00\n/
 FP 1 /^Index \S+ maxlen \d+ items \d+\n/
 FP 1 /^filename: /
 //
@@ -8518,7 +8518,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 1
-FP /^[123].\d+(\.\d+)?\n/
+FP /^[1-4].\d+(\.\d+)?\n/
 //
 
 ID emowse-ex
@@ -9752,7 +9752,7 @@ ID feat-embl
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft embl::test.out -auto
 FI test.out
-FZ = 78146
+FZ = 78151
 ## Internal quotes
 FP /^FT                   ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -9795,7 +9795,7 @@ ID feat-genbank-toembl
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.gbft em::test.out -auto
 FI test.out
-FZ = 78146
+FZ = 78151
 ## Internal quotes
 FP /^FT                   ""amiE"" gene"\n/
 ## Bad features type (CODS) to misc_feature
@@ -9822,7 +9822,7 @@ ID feat-pir-togff
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 5019
+FZ = 5029
 ## active site two locations with copied annotation (note and comment)
 FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; note "Cys, His" ; comment "status experimental"\n/
 FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN.11" ; FeatFlags "0x4"\n/
@@ -9832,9 +9832,9 @@ ID feat-pir-topir
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir pir::test.out -auto
 FI test.out
-FZ = 1917
+FZ = 1765
 ## active site two locations with copied annotation (note and comment)
-FP /^F;38,90\/Active site: Cys, His, act_site #status experimental\n/
+FP /^F;38,90\/Active site: Cys, His #status experimental\n/
 //
 
 ID feat-swiss
@@ -14087,7 +14087,7 @@ ID seqret-offset-zero
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat%0
 FI test.out
-FZ = 5457
+FZ = 5462
 FP /^ID   MMAM /
 FP /^ID   RNOPS /
 FP /^ID   RNU68037 /
@@ -14117,7 +14117,7 @@ ID seqret-query-direct-name
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:MMAM
 FI test.out
-FZ = 969
+FZ = 974
 FP /^ID   MMAM /
 FP 1 /^ID/
 //
@@ -14147,7 +14147,7 @@ ID seqret-query-direct-id
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:id:MMAM
 FI test.out
-FZ = 969
+FZ = 974
 FP /^ID   MMAM /
 FP 1 /^ID/
 //
@@ -14177,7 +14177,7 @@ ID seqret-query-direct-acc
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:L48662
 FI test.out
-FZ = 969
+FZ = 974
 FP /^ID   MMAM /
 FP 1 /^ID/
 //
@@ -14219,7 +14219,7 @@ ID seqret-query-direct-sv
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:L48662*
 FI test.out
-FZ = 969
+FZ = 974
 FP /^ID   MMAM /
 FP 1 /^ID/
 //
@@ -14279,7 +14279,7 @@ ID seqret-query-direct-deswordstart
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:Mus
 FI test.out
-FZ = 969
+FZ = 974
 FP /^ID   MMAM /
 FP 1 /^ID/
 //
@@ -14288,7 +14288,7 @@ ID seqret-query-direct-deswordmid
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:mrna
 FI test.out
-FZ = 5457
+FZ = 5462
 FP /^ID   RNOPS /
 FP 3 /^ID/
 //
@@ -14327,7 +14327,7 @@ ID seqret-query-direct-org
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Mus\*
 FI test.out
-FZ = 969
+FZ = 974
 FP /^ID   MMAM /
 FP 1 /^ID/
 //
@@ -14346,7 +14346,7 @@ ID seqret-query-direct-org3
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rodentia
 FI test.out
-FZ = 5457
+FZ = 5462
 FP /^ID   MMAM /
 FP /^ID   RNOPS /
 FP /^ID   RNU68037 /
@@ -19755,7 +19755,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI kim1.out
-FZ = 3390
+FZ = 3385
 FP /^ID   PAAMIR     standard; DNA; UNC; 2167 BP.\n/
 FI abc.seq
 FC = 0
@@ -19776,7 +19776,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI kim1.out
-FZ = 3390
+FZ = 3385
 FP /^ID   PAAMIR     standard; DNA; UNC; 2167 BP.\n/
 FI outseq
 FC = 0
