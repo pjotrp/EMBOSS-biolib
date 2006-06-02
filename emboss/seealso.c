@@ -101,9 +101,11 @@ int main(int argc, char **argv, char **env)
     }
     
     if(groups)
-	embGrpOutputGroupsList(outfile, appgroups, ajFalse, html, package);
+	embGrpOutputGroupsList(outfile, appgroups, ajFalse,
+			       html, ajFalse, package);
     else
-	embGrpOutputGroupsList(outfile, newlist, ajTrue, html, package);
+	embGrpOutputGroupsList(outfile, newlist, ajTrue,
+			       html, ajFalse, package);
     
     embGrpGroupsListDel(&newlist);
     

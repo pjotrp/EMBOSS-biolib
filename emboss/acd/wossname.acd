@@ -12,11 +12,11 @@ section: input [
   string: search  [
     parameter: "Y"
     default: ""
-    information: "Keyword to search for, or blank to list all programs"
+    information: "Text to search for, or blank to list all programs"
     help: "Enter a word or words here and a case-independent search
-           for it will be made in the one-line documentation of all of the
-           EMBOSS programs. If no keyword is specified, all programs will be
-           listed."
+           for it will be made in the one-line documentation, group
+	   names and keywords  of all of the EMBOSS programs.
+	   If no keyword is specified, all programs will be listed."
     knowntype: "emboss keyword"
   ]
 
@@ -39,6 +39,20 @@ section: additional [
            many combinations of the names as: 'NAME1', 'NAME2', 'NAME1
            NAME2', NAME2 NAME1'. The non-expanded names are simply like:
            'NAME1 NAME2'."
+  ]
+
+  boolean:  allmatch [
+    additional: "Y"
+    default: "Y"
+    information: "Match all words in the search string"
+    help: "By default, all words in the search string must match. This
+	  option searches for a match to any word in a list of possibilities"
+  ]
+
+  boolean:  showkeywords [
+    additional: "Y"
+    default: "N"
+    information: "Show keywords with program documentation"
   ]
 
 endsection: additional
