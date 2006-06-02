@@ -21,9 +21,6 @@
 
 #include "emboss.h"
 
-#ifndef WIN32
-
-
 static AjPStr emma_getUniqueFileName(void);
 
 
@@ -391,8 +388,12 @@ int main(int argc, char **argv, char **env)
 
 /*    ajFmtError("..%s..\n\n", ajStrGetPtr( cmd)); */
     ajDebug("Executing '%S'\n", cmd);
+#ifndef WIN32
     ajSystemEnv(cmd, env);
-
+#else
+    if(system(ajStrGetPtr(cmd)) == -1)
+	ajFatal("clustalw execution failure");
+#endif
 
     /* produce alignment file only if one was produced */
     if(!only_dend)
@@ -477,11 +478,3 @@ static AjPStr emma_getUniqueFileName()
 
     return filename;
 }
-
-#else
-int main()
-{
-    fprintf(stdout,"emma not yet converted for Win32\n");
-    return 0;
-}
-#endif
