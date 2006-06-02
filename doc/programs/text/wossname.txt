@@ -38,9 +38,11 @@ frestboot        Bootstrapped restriction sites algorithm
 frestdist        Distance matrix from restriction sites or fragments
 frestml          Restriction site maximum Likelihood method
 recoder          Remove restriction sites but maintain same translation
+redata           Search REBASE for enzyme name, references, suppliers etc
 remap            Display sequence with restriction sites, translation etc
 restover         Find restriction enzymes producing specific overhang
 restrict         Finds restriction enzyme cleavage sites
+showseq          Display a sequence with features, translation etc
 silent           Silent mutation restriction enzyme scan
 
 
@@ -867,9 +869,10 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-search]            string     Enter a word or words here and a
                                   case-independent search for it will be made
-                                  in the one-line documentation of all of the
-                                  EMBOSS programs. If no keyword is specified,
-                                  all programs will be listed.
+                                  in the one-line documentation, group names
+                                  and keywords of all of the EMBOSS programs.
+                                  If no keyword is specified, all programs
+                                  will be listed.
 
    Additional (Optional) qualifiers:
    -explode            boolean    The groups that EMBOSS applications belong
@@ -883,6 +886,10 @@ Command line arguments
                                   names as: 'NAME1', 'NAME2', 'NAME1 NAME2',
                                   NAME2 NAME1'. The non-expanded names are
                                   simply like: 'NAME1 NAME2'.
+   -[no]allmatch       boolean    By default, all words in the search string
+                                  must match. This option searches for a match
+                                  to any word in a list of possibilities
+   -showkeywords       boolean    Show keywords with program documentation
    -outfile            outfile    Output file name
    -html               toggle     If you are sending the output to a file,
                                   this will format it for displaying as a
@@ -967,9 +974,10 @@ Command line arguments
    Standard (Mandatory) qualifiers Allowed values Default
    [-search]
    (Parameter 1) Enter a word or words here and a case-independent search
-   for it will be made in the one-line documentation of all of the EMBOSS
-   programs. If no keyword is specified, all programs will be listed. Any
-   string is accepted An empty string is accepted
+   for it will be made in the one-line documentation, group names and
+   keywords of all of the EMBOSS programs. If no keyword is specified,
+   all programs will be listed. Any string is accepted An empty string is
+   accepted
    Additional (Optional) qualifiers Allowed values Default
    -explode The groups that EMBOSS applications belong to have two forms,
    exploded and not exploded. The exploded group names are more numerous
@@ -978,6 +986,11 @@ Command line arguments
    NAME1:NAME2 and which are then expanded into many combinations of the
    names as: 'NAME1', 'NAME2', 'NAME1 NAME2', NAME2 NAME1'. The
    non-expanded names are simply like: 'NAME1 NAME2'. Boolean value
+   Yes/No No
+   -[no]allmatch By default, all words in the search string must match.
+   This option searches for a match to any word in a list of
+   possibilities Boolean value Yes/No Yes
+   -showkeywords Show keywords with program documentation Boolean value
    Yes/No No
    -outfile Output file name Output file stdout
    -html If you are sending the output to a file, this will format it for

@@ -234,7 +234,7 @@ Output file format
 
 ########################################
 # Program: garnier
-# Rundate: Fri Jul 15 2005 12:00:00
+# Rundate: Sat Jul 15 2006 12:00:00
 # Commandline: garnier
 #    -sequence tsw:amic_pseae
 # Report_format: tagseq

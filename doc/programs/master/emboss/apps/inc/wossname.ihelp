@@ -1,9 +1,10 @@
    Standard (Mandatory) qualifiers:
   [-search]            string     Enter a word or words here and a
                                   case-independent search for it will be made
-                                  in the one-line documentation of all of the
-                                  EMBOSS programs. If no keyword is specified,
-                                  all programs will be listed.
+                                  in the one-line documentation, group names
+                                  and keywords of all of the EMBOSS programs.
+                                  If no keyword is specified, all programs
+                                  will be listed.
 
    Additional (Optional) qualifiers:
    -explode            boolean    The groups that EMBOSS applications belong
@@ -17,6 +18,10 @@
                                   names as: 'NAME1', 'NAME2', 'NAME1 NAME2',
                                   NAME2 NAME1'. The non-expanded names are
                                   simply like: 'NAME1 NAME2'.
+   -[no]allmatch       boolean    By default, all words in the search string
+                                  must match. This option searches for a match
+                                  to any word in a list of possibilities
+   -showkeywords       boolean    Show keywords with program documentation
    -outfile            outfile    Output file name
    -html               toggle     If you are sending the output to a file,
                                   this will format it for displaying as a

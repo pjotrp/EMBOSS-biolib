@@ -65,6 +65,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Etags.swiss
   Matrices.proteinstructure
   Emass.dat
+  Etags.gffprotein
   EGC.txt
   Ehth87.dat
   Eaa_hydropathy.dat
@@ -144,6 +145,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Eaa_acc_surface.dat
   Epepcoil.dat
   Ememe.dat
+  Efeatures.gffprotein
   Eprior1.plib
   Efeatures.embl
   EBLOSUM30

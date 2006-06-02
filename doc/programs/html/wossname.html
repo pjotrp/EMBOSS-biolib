@@ -69,9 +69,11 @@ frestboot        Bootstrapped restriction sites algorithm
 frestdist        Distance matrix from restriction sites or fragments
 frestml          Restriction site maximum Likelihood method
 recoder          Remove restriction sites but maintain same translation
+redata           Search REBASE for enzyme name, references, suppliers etc
 remap            Display sequence with restriction sites, translation etc
 restover         Find restriction enzymes producing specific overhang
 restrict         Finds restriction enzyme cleavage sites
+showseq          Display a sequence with features, translation etc
 silent           Silent mutation restriction enzyme scan
 
 
@@ -932,9 +934,10 @@ Finds programs by keywords in their one-line documentation
    Standard (Mandatory) qualifiers:
   [-search]            string     Enter a word or words here and a
                                   case-independent search for it will be made
-                                  in the one-line documentation of all of the
-                                  EMBOSS programs. If no keyword is specified,
-                                  all programs will be listed.
+                                  in the one-line documentation, group names
+                                  and keywords of all of the EMBOSS programs.
+                                  If no keyword is specified, all programs
+                                  will be listed.
 
    Additional (Optional) qualifiers:
    -explode            boolean    The groups that EMBOSS applications belong
@@ -948,6 +951,10 @@ Finds programs by keywords in their one-line documentation
                                   names as: 'NAME1', 'NAME2', 'NAME1 NAME2',
                                   NAME2 NAME1'. The non-expanded names are
                                   simply like: 'NAME1 NAME2'.
+   -[no]allmatch       boolean    By default, all words in the search string
+                                  must match. This option searches for a match
+                                  to any word in a list of possibilities
+   -showkeywords       boolean    Show keywords with program documentation
    -outfile            outfile    Output file name
    -html               toggle     If you are sending the output to a file,
                                   this will format it for displaying as a
@@ -1041,7 +1048,7 @@ Finds programs by keywords in their one-line documentation
 
 <tr>
 <td>[-search]<br>(Parameter 1)</td>
-<td>Enter a word or words here and a case-independent search for it will be made in the one-line documentation of all of the EMBOSS programs. If no keyword is specified, all programs will be listed.</td>
+<td>Enter a word or words here and a case-independent search for it will be made in the one-line documentation, group names and keywords of all of the EMBOSS programs. If no keyword is specified, all programs will be listed.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -1055,6 +1062,20 @@ Finds programs by keywords in their one-line documentation
 <tr>
 <td>-explode</td>
 <td>The groups that EMBOSS applications belong to have two forms, exploded and not exploded. The exploded group names are more numerous and often vaguely phrased than the non-exploded ones. The exploded names are formed from definitions of the group names that start like NAME1:NAME2 and which are then expanded into many combinations of the names as: 'NAME1', 'NAME2', 'NAME1 NAME2', NAME2 NAME1'. The non-expanded names are simply like: 'NAME1 NAME2'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]allmatch</td>
+<td>By default, all words in the search string must match. This option searches for a match to any word in a list of possibilities</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-showkeywords</td>
+<td>Show keywords with program documentation</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>

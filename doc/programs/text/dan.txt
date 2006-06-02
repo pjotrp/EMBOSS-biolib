@@ -390,7 +390,7 @@ Output file format
 
 ########################################
 # Program: dan
-# Rundate: Fri Jul 15 2005 12:00:00
+# Rundate: Sat Jul 15 2006 12:00:00
 # Commandline: dan
 #    -sequence tembl:paamir
 # Report_format: seqtable

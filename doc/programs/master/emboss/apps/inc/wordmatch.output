@@ -6,7 +6,7 @@
 <pre>
 ########################################
 # Program: wordmatch
-# Rundate: Fri Jul 15 2005 12:00:00
+# Rundate: Sat Jul 15 2006 12:00:00
 # Commandline: wordmatch
 #    [-asequence] tsw:hba_human
 #    [-bsequence] tsw:hbb_human
@@ -33,7 +33,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2005-07-15
+##date 2006-07-15
 ##Type Protein HBA_HUMAN
 HBA_HUMAN	wordmatch	misc_feature	58	62	1.000	+	.	Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
 HBA_HUMAN	wordmatch	misc_feature	14	17	1.000	+	.	Sequence "HBA_HUMAN.2" ; note "HBB_HUMAN"
@@ -44,7 +44,7 @@ HBA_HUMAN	wordmatch	misc_feature	116	119	1.000	+	.	Sequence "HBA_HUMAN.3" ; note
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2005-07-15
+##date 2006-07-15
 ##Type Protein HBB_HUMAN
 HBB_HUMAN	wordmatch	misc_feature	63	67	1.000	+	.	Sequence "HBB_HUMAN.1" ; note "HBA_HUMAN"
 HBB_HUMAN	wordmatch	misc_feature	15	18	1.000	+	.	Sequence "HBB_HUMAN.2" ; note "HBA_HUMAN"

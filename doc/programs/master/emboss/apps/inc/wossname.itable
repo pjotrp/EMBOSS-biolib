@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-search]<br>(Parameter 1)</td>
-<td>Enter a word or words here and a case-independent search for it will be made in the one-line documentation of all of the EMBOSS programs. If no keyword is specified, all programs will be listed.</td>
+<td>Enter a word or words here and a case-independent search for it will be made in the one-line documentation, group names and keywords of all of the EMBOSS programs. If no keyword is specified, all programs will be listed.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -21,6 +21,20 @@
 <tr>
 <td>-explode</td>
 <td>The groups that EMBOSS applications belong to have two forms, exploded and not exploded. The exploded group names are more numerous and often vaguely phrased than the non-exploded ones. The exploded names are formed from definitions of the group names that start like NAME1:NAME2 and which are then expanded into many combinations of the names as: 'NAME1', 'NAME2', 'NAME1 NAME2', NAME2 NAME1'. The non-expanded names are simply like: 'NAME1 NAME2'.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-[no]allmatch</td>
+<td>By default, all words in the search string must match. This option searches for a match to any word in a list of possibilities</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-showkeywords</td>
+<td>Show keywords with program documentation</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>

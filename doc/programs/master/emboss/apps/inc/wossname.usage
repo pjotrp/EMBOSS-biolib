@@ -15,9 +15,11 @@ frestboot        Bootstrapped restriction sites algorithm
 frestdist        Distance matrix from restriction sites or fragments
 frestml          Restriction site maximum Likelihood method
 recoder          Remove restriction sites but maintain same translation
+redata           Search REBASE for enzyme name, references, suppliers etc
 remap            Display sequence with restriction sites, translation etc
 restover         Find restriction enzymes producing specific overhang
 restrict         Finds restriction enzyme cleavage sites
+showseq          Display a sequence with features, translation etc
 silent           Silent mutation restriction enzyme scan
 
 

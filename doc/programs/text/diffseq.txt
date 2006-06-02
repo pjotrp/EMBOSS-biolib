@@ -553,7 +553,7 @@ Output file format
 
 ########################################
 # Program: diffseq
-# Rundate: Fri Jul 15 2005 12:00:00
+# Rundate: Sat Jul 15 2006 12:00:00
 # Commandline: diffseq
 #    [-asequence] tembl:ap000504
 #    [-bsequence] tembl:af129756
@@ -660,7 +660,7 @@ AF129756 103855-103855 Length: 1
   File: AF129756.diffgff
 
 ##gff-version 2.0
-##date 2005-07-15
+##date 2006-07-15
 ##Type DNA AF129756
 AF129756        diffseq conflict        6882    6882    1.000   +       .
 Sequence "AF129756.1" ; note "SNP in AP000504" ; replace "a"
@@ -866,7 +866,7 @@ Sequence "AF129756.105" ; note "SNP in AP000504" ; replace "c"
   File: AP000504.diffgff
 
 ##gff-version 2.0
-##date 2005-07-15
+##date 2006-07-15
 ##Type DNA AP000504
 AP000504        diffseq conflict        847     847     1.000   +       .
 Sequence "AP000504.1" ; note "SNP in AF129756" ; replace "t"
