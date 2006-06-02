@@ -374,6 +374,8 @@ AjBool     ajStrMatchWildC  (const AjPStr thys, const char* text);
 AjBool     ajStrMatchWildS  (const AjPStr thys, const AjPStr wild);
 AjBool     ajStrMatchWildWordC (const AjPStr str, const char* text);
 AjBool     ajStrMatchWildWordS (const AjPStr str, const AjPStr text);
+AjBool     ajStrMatchWordAllS(const AjPStr str, const AjPStr str2);
+AjBool     ajStrMatchWordOneS(const AjPStr str, const AjPStr str2);
 AjBool     ajStrPrefixC(const AjPStr str, const char* txt2);
 AjBool     ajStrPrefixS(const AjPStr str, const AjPStr str2);
 AjBool     ajStrPrefixCaseC (const AjPStr str, const char* pref);
@@ -403,6 +405,7 @@ ajint      ajStrFindAnyS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindCaseC (const AjPStr str, const char* txt);
 ajint      ajStrFindCaseS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindlastC(const AjPStr str, const char* txt);
+ajint      ajStrFindlastS(const AjPStr str, const AjPStr str2);
 
 /* parsing */
 

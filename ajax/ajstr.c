@@ -7413,17 +7413,20 @@ AjBool __deprecated ajStrWrapLeft(AjPStr* pthis, ajint width, ajint left)
 ** Functions for comparing strings 
 **
 ** @fdata      [AjPStr]
-** @fnote     Same namrule as "String comparison functions: C-type (char*)
-**            strings."
-** @nam3rule  Match         Compare two complete strings.
-** @nam4rule  MatchCase   Case-insensitive comparison.
-** @nam4rule  MatchWild   Comparison using wildcard characters.
+**
+** @nam3rule  Match          Compare two complete strings.
+** @nam4rule  MatchCase      Case-insensitive comparison.
+** @nam4rule  MatchWild      Comparison using wildcard characters.
 ** @nam5rule  MatchWildWord  Case-insensitive wildcard comparison of 
-**                         first words within two strings.
-** @nam3rule  Prefix        Compare start of string to given prefix.
-** @nam4rule  PrefixCase  Case-insensitive comparison.
-** @nam3rule  Suffix        Compare end of string to given suffix.
-** @nam4rule  SuffixCase  Case-insensitive comparison.
+**                           first words within two strings.
+** @nam4rule  MatchWord      Comparison using whole words.
+** @nam5rule  MatchWordOne   Comparison using whole words matching any one.
+** @nam5rule  MatchWordAll   Comparison using whole words matching every one.
+
+** @nam3rule  Prefix         Compare start of string to given prefix.
+** @nam4rule  PrefixCase     Case-insensitive comparison.
+** @nam3rule  Suffix         Compare end of string to given suffix.
+** @nam4rule  SuffixCase     Case-insensitive comparison.
 **
 ** @argrule * str [const AjPStr] String
 ** @argrule C txt2 [const char*] String
@@ -7643,6 +7646,74 @@ AjBool __deprecated ajStrMatchWord(const AjPStr str, const AjPStr str2)
     return ajStrMatchWildWordS(str, str2);
 }
 
+
+
+
+/* @func ajStrMatchWordAllS **************************************************
+**
+** Test for matching all words within a string.
+** Matches can be to parts of words in the original string.
+**
+** 'Word' is defined as no white space.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const AjPStr] Text
+** @return [AjBool]  ajTrue if found
+** @@
+******************************************************************************/
+
+AjBool ajStrMatchWordAllS(const AjPStr str, const AjPStr str2)
+{
+    AjBool ret = ajTrue;
+    const AjPStr teststr = NULL;
+
+    teststr = ajStrParseWhite(str2);
+
+    if(!teststr)
+	return ajFalse;
+
+    while (teststr)
+    {
+	if(ajStrFindS(str, teststr) == -1)
+	    ret = ajFalse;
+	teststr = ajStrParseWhite(NULL);
+    }
+    return ret;
+}
+
+
+
+/* @func ajStrMatchWordOneS **************************************************
+**
+** Test for matching a word within a string.
+** Matches can be to parts of words in the original string.
+**
+** 'Word' is defined as no white space.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const AjPStr] Text
+** @return [AjBool]  ajTrue if found
+** @@
+******************************************************************************/
+
+AjBool ajStrMatchWordOneS(const AjPStr str, const AjPStr str2)
+{
+    AjBool ret = ajFalse;
+    const AjPStr teststr = NULL;
+
+    teststr = ajStrParseWhite(str2);
+
+    if(!teststr)
+	return ajFalse;
+
+    while (teststr)
+    {
+	if(ajStrFindS(str, teststr) != -1)
+	    ret = ajTrue;
+	teststr = ajStrParseWhite(NULL);
+    }
+    return ret;
+}
 
 
 
@@ -8125,7 +8196,7 @@ int __deprecated ajStrCmp(const void* str, const void* str2)
 **                          within another string. 
 ** @nam4rule  FindAny       Any in a set of characters (FindSet?)
 ** @nam4rule  FindCase      Case insensitive
-** @nam3rule  Findlast          Locate last occurence of a string
+** @nam3rule  Findlast      Locate last occurence of a string
 **
 ** @argrule * str [const AjPStr] String
 ** @argrule C txt2 [const char*] Text to find
@@ -8396,6 +8467,49 @@ ajint __deprecated ajStrRFindC(const AjPStr thys, const char* text)
 {
     return ajStrFindlastC(thys, text);
 }
+
+/* @func ajStrFindlastS *******************************************************
+**
+** Finds the last occurrence in a string of a second (text) string.
+**
+** @param [r] str [const AjPStr] String to search
+** @param [r] str2 [const ajPStr] text to look for
+** @return [ajint] Position of the text string if found.
+** @error -1 Text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindlastS(const AjPStr str, const AjPStr str2)
+{
+    ajint i = 0;
+    ajint j = 0;
+    const char* ptr1 = 0;
+    const char* ptr2 = 0;
+    ajint found = ajTrue;
+
+    for(i=str->Len-str2->Len;i>=0;i--)
+    {
+	ptr1 = &str->Ptr[i];
+	ptr2 = &str2->Ptr[i];
+	found = ajTrue;
+	for(j=0;j<str2->Len;j++)
+	{
+	    if(*ptr1 != *ptr2)
+	    {
+		found = ajFalse;
+		break;
+	    }
+	    ptr2++;
+	    ptr1++;
+	}
+
+	if(found)
+	    return i;
+    }
+
+    return -1;
+}
+
 
 /* @section parsing functions
 **
