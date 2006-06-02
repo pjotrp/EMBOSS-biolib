@@ -558,7 +558,7 @@ static SeqOAccess seqAccess[] =
     {"external",  AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessApp, NULL,
 	 "call an external application"},
-    /* {"asis",      AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
+    /* {"asis",      AJFALSE, AJTRUE, AJFALSE, AJFALSE,  
 	 ajSeqAccessAsis, NULL,
 	 ""}, */        /* called by seqUsaProcess */
     /* {"file",      AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
