@@ -218,7 +218,11 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     path  = ajStrNew();
     
     ajSysBasename(&tname);
- 
+
+#ifdef WIN32
+    ajStrAppendC(&tname,".exe");
+#endif
+
     ajDebug("ajSysWhichEnv '%S' => %S\n", *s, tname);
 
     count = 0;
