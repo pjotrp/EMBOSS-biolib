@@ -392,6 +392,22 @@ static void copy_data(char *basedir)
 	exit(-1);
     }
 
+    sprintf(command,"cp -fp %s/emboss/win32/misc/*.txt %s/win32/data",
+	    basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -fp %s/emboss/win32/misc/emboss.default "
+	    "%s/win32/apps/release",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
     return;
 }
 
