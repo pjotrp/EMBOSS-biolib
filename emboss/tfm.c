@@ -138,6 +138,7 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 
     AjPStr docrootinst = NULL;
     AjPStr roottmp = NULL;
+    AjPStr tmpstr = NULL;
     
     AjBool is_windows = ajFalse;
 #ifdef WIN32
@@ -146,7 +147,8 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 
     docrootinst = ajStrNew();
     roottmp     = ajStrNew();
-
+    tmpstr      = ajStrNew();
+    
     ajNamGetValueC("docroot", &roottmp);
 
     /* look at EMBOSS doc files */
@@ -158,8 +160,13 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 
 	if(is_windows)
 	{
-	    ajFileDirUp(&docrootinst);
-	    ajFileDirUp(&docrootinst);
+	    ajFileDirFix(&docrootinst);
+	    ajFmtPrintS(&tmpstr,"%Sdoc",docrootinst);
+	    if(!ajSysIsDirectory(ajStrGetPtr(tmpstr)))
+	    {
+		ajFileDirUp(&docrootinst);
+		ajFileDirUp(&docrootinst);
+	    }
 	    ajStrAppendC(&docrootinst,"doc");
 	}
 	else
@@ -200,7 +207,8 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 
     ajStrDel(&roottmp);
     ajStrDel(&docrootinst);
-
+    ajStrDel(&tmpstr);
+    
     return;
 }
 
