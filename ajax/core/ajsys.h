@@ -67,8 +67,13 @@ FILE         *ajSysFopen(const char *name, const char *flags);
 #define S_IFDIR 0x4000
 #endif
 
+#ifndef WIN32
 #define AJ_FILE_REG S_IFREG
 #define AJ_FILE_DIR S_IFDIR
+#else
+#define AJ_FILE_REG _S_IFREG
+#define AJ_FILE_DIR _S_IFDIR
+#endif
 
 #endif
 
