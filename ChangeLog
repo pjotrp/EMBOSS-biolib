@@ -1,4 +1,12 @@
 Version 4.0.0
+	Digest changed to read a sequence stream (earlier versions read
+	only one sequence). Code for this was contributed by Henrikki
+	Almusa of Medicel in Finland.
+
+	Two new programs makenucseq and makeprotseq have been submitted by
+	Henrikki Almusa of Medicel in Finland. They create sets of random
+	sequences, Sequence composition can be specified by a codon usage
+	file or by pepstats output.
 
 	New format "swissnew", with aliases "swnew" and "swissprotnew",
 	added.  UniProt has announced future changes to the UniProt entry
@@ -19,7 +27,7 @@ Version 4.0.0
 
 	Feature keys (to use the EMBL/Genbank feature table term) are now
 	defined with external names for each format and a list of internal
-	names to be used byu EMBOSS. This greatly simplified the
+	names to be used by EMBOSS. This greatly simplified the
 	conversion of SwissProt and PIR feature tables. The internal table
 	also has a list of aliases. The internal aliases for nucleotide
 	features are as far as possible identifiers from the Sequence
