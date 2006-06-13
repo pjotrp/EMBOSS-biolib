@@ -337,9 +337,9 @@ AjPScop  ajScopNew(ajint n);
 void     ajScopDel(AjPScop *ptr);
 AjBool   ajScopCopy(AjPScop *to, const AjPScop from);
 
-ajint    ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id);
-ajint    ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id);
-ajint    ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id);
+ajint    ajScopArrFindScopid( AjPScop const *arr, ajint siz, const AjPStr id);
+ajint    ajScopArrFindSunid(AjPScop const *arr, ajint siz, ajint id);
+ajint    ajScopArrFindPdbid(AjPScop const *arr, ajint siz, const AjPStr id);
 
 ajint    ajScopMatchScopid(const void *hit1, const void *hit2);
 ajint    ajScopMatchPdbId(const void *hit1, const void *hit2);
@@ -366,7 +366,7 @@ AjPCath   ajCathNew(ajint n);
 void      ajCathDel(AjPCath *ptr);
 AjBool   ajCathCopy(AjPCath *to, const AjPCath from);
 
-ajint     ajCathArrFindPdbid(const AjPCath *arr, ajint siz, const AjPStr id);
+ajint     ajCathArrFindPdbid(AjPCath const *arr, ajint siz, const AjPStr id);
 ajint     ajCathMatchPdbId(const void *hit1, const void *hit2);
 
 AjPCath   ajCathReadCNew(AjPFile inf, const char *entry);

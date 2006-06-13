@@ -3484,7 +3484,7 @@ ajint ajDomainGetN(const AjPDomain obj)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPScop*]    Array of AjPScop objects
+** @param [r] arr [AjPScop const *]    Array of AjPScop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -3494,7 +3494,7 @@ ajint ajDomainGetN(const AjPDomain obj)
 **                         Scop objects.
 ** @@
 ****************************************************************************/
-ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
+ajint ajScopArrFindScopid(AjPScop const *arr, ajint siz, const AjPStr id)
 
 {
     int l;
@@ -3530,7 +3530,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPScop*]    Array of Scop objects
+** @param [r] arr [AjPScop const *]    Array of Scop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [ajint]       Search term
 **
@@ -3541,7 +3541,7 @@ ajint ajScopArrFindScopid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
+ajint ajScopArrFindSunid(AjPScop const *arr, ajint siz, ajint id)
 {
     int l;
     int m;
@@ -3574,7 +3574,7 @@ ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
 ** objects (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPScop*]    Array of AjPScop objects
+** @param [r] arr [AjPScop const*]    Array of AjPScop objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -3585,7 +3585,7 @@ ajint ajScopArrFindSunid(const AjPScop *arr, ajint siz, ajint id)
 ** @@
 ****************************************************************************/
 
-ajint ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id)
+ajint ajScopArrFindPdbid(AjPScop const *arr, ajint siz, const AjPStr id)
 {
     int l;
     int m;
@@ -3620,7 +3620,7 @@ ajint ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPCath*]    Array of AjPCath objects
+** @param [r] arr [AjPCath const*]    Array of AjPCath objects
 ** @param [r] siz [ajint]       Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -3631,7 +3631,7 @@ ajint ajScopArrFindPdbid(const AjPScop *arr, ajint siz, const AjPStr id)
 ** @@
 ****************************************************************************/
 
-ajint ajCathArrFindPdbid(const AjPCath *arr, ajint siz, const AjPStr id)
+ajint ajCathArrFindPdbid(AjPCath const *arr, ajint siz, const AjPStr id)
 {
     int l;
     int m;
