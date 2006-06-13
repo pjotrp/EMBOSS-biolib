@@ -1231,6 +1231,8 @@ AcdOAttr acdAttrCodon[] =
 {
     {"name", VT_STR, "Ehum.cut",
 	 "Codon table name"},
+    {"nullok", VT_BOOL, "N",
+	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -6218,11 +6220,15 @@ static void acdSetCodon(AcdPAcd thys)
     AjBool ok       = ajFalse;
 
     ajint itry;
+    AjBool nullok;
     AjPStr fmt    = NULL;
 
     val = ajCodNew();			/* set the default value */
     acdAttrResolve(thys, "name", &name);
 
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdLog("nullok: %B\n", nullok);
+    
     if (!acdGetValueAssoc(thys, "format", &fmt))
 	ajStrAssignC(&fmt, "");
 
@@ -6250,8 +6256,15 @@ static void acdSetCodon(AcdPAcd thys)
 	}
 	else
 	{
-	    acdBadVal(thys, required, "Codon file is required");
-	    ok = ajFalse;
+	    if(nullok)
+	    {
+		ajCodDel(&val);
+	    }
+	    else
+	    {
+		acdBadVal(thys, required, "Codon file is required");
+		ok = ajFalse;
+	    }
 	}
     }
 
@@ -6318,12 +6331,16 @@ static void acdSetCpdb(AcdPAcd thys)
     AjBool ok       = ajFalse;
 
     ajint itry;
+    AjBool nullok;
     AjPStr fmt    = NULL;
 
     val = NULL;				/* set the default value */
 
     acdAttrResolve(thys, "name", &name);
 
+    acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdLog("nullok: %B\n", nullok);
+    
     if (!acdGetValueAssoc(thys, "format", &fmt))
 	ajStrAssignC(&fmt, "");
 
@@ -6351,10 +6368,11 @@ static void acdSetCpdb(AcdPAcd thys)
 	    }
 	}
 	else
-	{
-	    acdBadVal(thys, required, "Cleaned PDB data file is required");
-	    ok = ajFalse;
-	}
+	    if(!nullok)
+	    {
+		acdBadVal(thys, required, "Cleaned PDB data file is required");
+		ok = ajFalse;
+	    }
     }
 
     if(!ok)
