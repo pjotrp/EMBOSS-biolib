@@ -370,7 +370,7 @@ void ajCodDel(AjPCod *pthys)
     ajStrDel(&thys->Release);
     ajStrDel(&thys->Desc);
 
-    AJFREE(thys);
+    AJFREE(*pthys);
 
     return;
 }
@@ -3671,6 +3671,32 @@ void ajCodPrintFormat(AjPFile outf, AjBool full)
 }
 
 
+/* @func ajCodGetCodonlist ****************************************************
+**
+** Cleans up coson usage processing internal memory
+**
+** @param [r] cod [AjPCod] Cusp file
+** @param [w] list [AjPList] List with character distributions
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajCodGetCodonlist(AjPCod cod, AjPList list)
+{
+    ajint i;
+    ajint j;
+    AjPStr codon = NULL;
+
+    for(i=0;i<AJCODSTART;++i)
+    {
+	for(j=0;j<cod->tcount[i];j++)
+	{
+	    codon = ajStrNewC(ajCodTriplet(i));
+	    ajListstrPushApp(list, codon);
+	    codon = NULL;
+	}
+    }
+}
 
 
 /* @func ajCodExit ************************************************************
