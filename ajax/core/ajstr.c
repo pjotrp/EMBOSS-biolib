@@ -2597,7 +2597,7 @@ AjBool ajStrAppendS(AjPStr* Pstr, const AjPStr str)
     ajint j;
 
     if(!str) {
-	ajFatal("ajStrAppend source string is NULL");
+	ajFatal("ajStrAppendS source string is NULL");
     }
 
     thys = *Pstr;
