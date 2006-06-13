@@ -20,7 +20,8 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	geecee.acd getorf.acd giep.acd helixturnhelix.acd histogramtest.acd \
 	hmoment.acd iep.acd infoalign.acd infoseq.acd intconv.acd \
 	isochore.acd kmrsplitter.acd kmrunion.acd lindna.acd listor.acd \
-	marscan.acd maskfeat.acd maskseq.acd matcher.acd megamerger.acd \
+	makenucseq.acd makeprotseq.acd marscan.acd maskfeat.acd maskseq.acd \
+	matcher.acd megamerger.acd \
 	merger.acd msbar.acd mwcontam.acd mwfilter.acd
 
 pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \

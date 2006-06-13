@@ -45,7 +45,7 @@ findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
 iep infoalign infoseq isochore \
 jembossctl lindna listor \
-marscan maskfeat maskseq \
+makenucseq makeprotseq marscan maskfeat maskseq \
 matcher megamerger merger msbar \
 mwcontam mwfilter \
 needle newcpgreport newcpgseek newseq \
