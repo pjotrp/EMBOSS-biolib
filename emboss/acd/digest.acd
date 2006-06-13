@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence [
+  seqall: sequences [
     parameter: "Y"
     type: "Protein"
   ]
