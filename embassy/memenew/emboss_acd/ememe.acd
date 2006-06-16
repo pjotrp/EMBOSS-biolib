@@ -1,0 +1,352 @@
+application: ememe 
+[
+  documentation: "Motif detection"
+  groups: "Protein:Motifs"
+  embassy: "meme"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+seqset: dataset
+[
+# User must provide the full filename of a set of sequences, not an indirect
+# reference, e.g. a USA is NOT acceptable.
+  information: "Set of sequences (not a USA!)"
+  parameter: "Y"
+  type: "any"
+  help: "User must provide the full filename of a set of sequences, not an indirect reference, e.g. a USA is NOT acceptable."
+  aligned: "N"
+]
+
+infile: bfile
+[
+  additional: "Y"
+  default: ""
+  nullok: "Y"
+  information: "Name of background Markov model file"
+  help: "The name of the file containing the background model for sequences.  The background model is the model of random sequences used by MEME.  The background model is used by MEME 1) during EM as the 'null model', 2) for calculating the log likelihood ratio of a motif, 3) for calculating the significance (E-value) of a motif, and, 4) for creating the position-specific scoring matrix (log-odds matrix). See application documentation for more information."
+  knowntype: "MEME (meme) background Markov model file"
+]
+
+infile: plib
+[
+  additional: "Y"
+  default: ""
+  nullok: "Y"
+  information: "Name of Dirichlet prior file"
+  help: "The name of the file containing the Dirichlet prior in the format of file prior30.plib"
+  knowntype: "MEME (meme) Dirichlet prior file"
+]
+
+endsection: input
+
+
+
+
+section: required 
+[
+  information: "Required section"
+  type: "page"
+]
+endsection: required
+
+
+
+
+
+section: additional 
+[
+  information: "Additional section"
+  type: "page"
+]
+
+selection: mod
+[
+  additional: "Y"
+  casesensitive: "N"
+  default: "zoops"
+  delimiter: ","
+  header: "Distribution of motifs"
+  help: "If you know how occurrences of motifs are distributed in the training set sequences, you can specify it with these options.  The default distribution of motif occurrences is assumed to be zero or one occurrence of per sequence.  oops : One Occurrence Per Sequence. MEME assumes that each sequence in the dataset contains exactly one occurrence of each motif. This option is the fastest and most sensitive but the motifs returned by MEME may be 'blurry' if any of the sequences is missing them.  zoops : Zero or One Occurrence Per Sequence.  MEME assumes that each sequence may contain at most one occurrence of each motif. This option is useful when you suspect that some motifs may be missing from some of the sequences. In that case, the motifs found will be more accurate than using the first option. This option takes more computer time than the first option (about twice as much) and is slightly less sensitive to weak motifs present in all of the sequences.  anr : Any Number of Repetitions.  MEME assumes each sequence may contain any number of non-overlapping occurrences of each motif. This option is useful when you suspect that motifs repeat multiple times within a single sequence. In that case, the motifs found will be much more accurate than using one of the other options. This option can also be used to discover repeats within a single sequence. This option takes the much more computer time than the first option (about ten times as much) and is somewhat less sensitive to weak motifs which do not repeat within a	single sequence than the other two options."
+  information: "Select motif distribution"
+  maximum: "1"
+  minimum: "1"
+  delimiter: ","
+  values: "oops, zoops, anr"
+]
+
+integer: nmotifs  
+[
+  additional: "Y"
+  default: "1"
+  information: "Maximum number of motifs to find"
+  help: "The number of *different* motifs to search for.  MEME will search for and output <n> motifs."
+]
+
+boolean: text
+[
+  additional: "Y"
+  default: "N"
+  information: "Output in text format (default is HTML)"
+  help: "Default output is in HTML"
+]
+
+selection: prior  
+[
+# The default should be dirichlet (if -dna and -alph) or -dmix (-protein) but these cannot easily be set automatically, so define this as a 'standard' to force user to think.
+  additional: "Y"
+  casesensitive: "N"
+  default: "dirichlet"
+  minimum: "1"
+  maximum: "1"
+  header: "Prior"
+  delimiter: ","
+  values: "dirichlet, dmix, mega, megap, addone"
+  information: "Prior to use"
+  help: "The prior distribution on the model parameters.  dirichlet: Simple Dirichlet prior.  This is the default for -dna and -alph.  It is based on the non-redundant database letter frequencies.  dmix:  Mixture of Dirichlets prior.  This is the default for -protein.   mega:  Extremely low variance dmix; variance is scaled inversely with the size of the dataset.  megap: Mega for all but last iteration of EM; dmix on last iteration.  addone: Add +1 to each observed count."
+]
+
+float: evt
+[
+  additional: "Y"
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Threshold value of motif E-value at which to stop searching."
+  help: "Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs <n> have been found."
+]
+
+integer: nsites  
+[
+  additional: "Y"
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Number of sites for each motif"
+  help: "These switches are ignored if mod = oops.  The (expected) number of occurrences of each motif.  If a value for -nsites is specified, only that number of occurrences is tried.  Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences.  If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used.  The hardcoded default value of -minsites is equal to sqrt(number sequences).  The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5* num.sequences, 50) (anr)."
+]
+
+integer: minsites  
+[
+  additional: "Y"
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Minimum number of sites for each motif"
+  help: "These switches are ignored if mod = oops.  The (expected) number of occurrences of each motif.  If a value for -nsites is specified, only that number of occurrences is tried.  Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences.  If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used.  The hardcoded default value of -minsites is equal to sqrt(number sequences).  The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr)."
+]
+
+integer: maxsites  
+[
+  additional: "Y"
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Maximum number of sites for each motif"
+  help: "These switches are ignored if mod = oops.  The (expected) number of occurrences of each motif.  If a value for -nsites is specified, only that number of occurrences is tried.  Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences.  If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used.  The hardcoded default value of -minsites is equal to sqrt(number sequences).  The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr)."
+]
+
+float: wnsites
+[
+  additional: "Y"
+  default: ".8"
+  information: "Weight on expected number of sites"
+  help: "The weight on the prior on nsites.  This controls how strong the bias towards motifs with exactly nsites sites (or between minsites and maxsites sites)	is.  It is a number in the range [0..1).  The larger it is, the stronger the bias towards motifs with exactly nsites occurrences is."
+]
+
+integer: w  
+[
+  additional: "Y"
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Motif width"
+  help: "The width of the motif(s) to search for.   If -w is given, only that width is tried.  Otherwise, widths between -minw and -maxw are tried.  Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value."
+]
+
+integer: minw  
+[
+  additional: "Y"
+  default: "8"
+  information: "Minumum motif width"
+  help: "The width of the motif(s) to search for.   If -w is given, only that width is tried.  Otherwise, widths between -minw and -maxw are tried.  Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value."
+]
+
+integer: maxw  
+[
+  additional: "Y"
+  default: "50"
+  information: "Maximum motif width"
+  help: "The width of the motif(s) to search for.   If -w is given, only that width is tried.  Otherwise, widths between -minw and -maxw are tried.  Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value."
+]
+
+boolean: nomatrim
+[
+  additional: "Y"
+  default: "N"
+  information: "Do not adjust motif width using multiple alignment."
+  help: "The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method.  Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored.  The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps).  See application documentation for further information."
+]
+
+integer: wg
+[
+  additional: "Y"
+  default: "11"
+  information: "Gap opening cost for multiple alignments"
+  help: "The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method.  Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored.  The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps).  See application documentation for further information."
+]
+
+integer: ws
+[
+  additional: "Y"
+  default: "1"
+  information: "Gap extension cost for multiple alignments"
+  help: "The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method.  Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored.  The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps).  See application documentation for further information."
+]
+
+boolean: noendgaps
+[
+  additional: "Y"  
+  default: "N"
+  information: "Do not penalise end gaps in multiple alignments"
+  help: "The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method.  Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored.  The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps).  See application documentation for further information."
+]
+
+boolean: revcomp
+[
+  additional: "Y"  
+  default: "N"
+  information: "Allow sites on + or - DNA strands"
+  help: "Motifs occurrences may be on the given DNA strand or on its reverse complement. The default is to look for DNA motifs only on the strand given in the training set."
+] 
+
+boolean: pal
+[
+  additional: "Y"  
+  default: "N"
+  information: "Force palindromes (requires input sequence to be dna)"
+  help: "Choosing -pal causes MEME to look for palindromes in DNA datasets. MEME averages the letter frequencies in corresponding columns of the motif (PSPM) together. For instance, if the width of the motif is 10, columns 1 and 10, 2 and 9, 3 and 8, etc., are averaged together.  The averaging combines the frequency of A in one column with T in the other, and the frequency of C in one column with G in the other."
+] 
+
+boolean: nostatus
+[
+  additional: "Y"
+  default: "Y"
+  information: "Do not print progress reports to terminal"
+  help: "Set this option to print a progress report to the terminal."
+]
+
+endsection: additional
+
+
+
+
+
+section: advanced
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+integer: maxiter  
+[
+  default: "50"
+  information: "Maximum EM iterations to run"
+  help: "The number of iterations of EM to run from any starting point.	EM is run for <n> iterations or until convergence (see -distance, below) from each starting point."
+]
+
+float: distance  
+[
+  default: "0.001"
+  information: "EM convergence criterion"
+  help: "The convergence criterion.  MEME stops iterating EM when the change in the motif frequency matrix is less than <a>. (Change is the euclidean distance between two successive frequency matrices.)"
+]
+
+float: b  
+[
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1.0"
+  information: "Strength of the prior"
+  help: "The strength of the prior on model parameters.  A value of 0 means use intrinsic strength of prior if prior = dmix.  The default values are 0.01 if prior = dirichlet or 0 if prior = dmix.  These defaults are hardcoded into MEME (the value of the default in the ACD file is not used)."
+]
+
+float: spfuzz  
+[
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1.0"
+  information: "Fuzziness of sequence to theta mapping"
+  help: "The fuzziness of the mapping.  Possible values are greater than 0.  Meaning depends on -spmap, see below.  See the application documentation for more information."
+]
+
+selection: spmap  
+[
+  casesensitive: "N"
+  default: "uni"
+  minimum: "1"
+  maximum: "1"
+  header: "Starting point seq to theta mapping type"
+  delimiter: ","
+  values: "uni, pam"
+  information: "Select type of mapping"
+  help: "The type of mapping function to use.  uni: Use prior when converting a substring to an estimate of theta.  Default -spfuzz <a>: 0.5.  pam: Use columns of PAM <a> matrix when converting a substring to an estimate of theta.	Default -spfuzz <a>: 120 (PAM 120). See the application documentation for more information."
+]
+
+string: cons  
+[
+  default: ""
+  information: "Consensus sequence to start EM from"
+  help: "Override the sampling of starting points and just use a starting point derived from <string>. This is useful when an actual occurrence of a motif is known and can be used as the starting point for finding the motif.  See the application documentation for more information."
+  knowntype: "MEME (meme) consensus sequence"
+]
+
+integer: maxsize  
+[
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Maximum dataset size in characters"
+]
+
+integer: p
+[
+  default: "0"
+  information: "Use parallel version with <p> processors"
+  help: "Only values of >0 will be applied. The -p <np> argument causes a version of MEME compiled for a parallel CPU architecture to be run.  (By placing <np> in quotes you may pass installation specific switches to the 'mpirun' command.  The number of processors to run on must be the first argument following -p)."
+]
+
+integer: time
+[
+  default: "0"
+  information: "Quit before <t> CPU seconds consumed"
+  help: "Only values of >0 will be applied."
+]
+
+string: sf
+[
+  default: ""
+  information: "Print <sf> as name of sequence file"
+  knowntype: "MEME (meme) name of sequence file"
+]
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile
+[
+  parameter: "Y"
+  information: "Output file."
+  knowntype: "MEME (meme) output file"
+]
+
+endsection: output

@@ -1,0 +1,303 @@
+CONTENTS
+1. Installing EMBASSY MEME
+2. Installing original MEME
+3. Setting up MEME
+4. Documentation
+5. EMBASSY MEME notes
+6. EMBASSY MEME application notes
+7. Rough guide to writing an EMBASSY wrapper to MEME.
+
+
+
+1. Installing EMBASSY MEME
+The EMBASSY MEME package contains "wrapper" applications providing an 
+EMBOSS-style interface to the applications in the original MEME package 
+version 3.0.14 developed by Timothy L. Bailey.
+
+Please read the file README in the EMBASSY MEME package distribution 
+for installation instructions.
+
+
+
+2. Installing original MEME
+To use EMBASSY MEME, you will first need to download and install the 
+original MEME package:
+WWW home:       http://meme.sdsc.edu/meme/
+Distribution:   http://meme.nbcr.net/downloads/old_versions/  
+
+Please read the file README in the the original MEME package distribution 
+for installation instructions.
+
+
+
+3. Setting up MEME
+For the EMBASSY MEME package to work, the directory containing the original 
+MEME executables *must* be in your path. For example if you executables 
+were installed to "/usr/local/meme/bin", then type:
+
+set path=(/usr/local/meme/bin/ $path)
+rehash
+
+
+
+4. Documentation
+Once you have installed the original MEME, type
+
+meme > meme.txt 
+mast > mast.txt 
+
+to retrieve the meme and mast documentation into text files. 
+
+Please read the documentation now.  
+
+Please read the notes below for a description of the differences between the
+original and EMBASSY MEME, particularly which application command line 
+options are supported. 
+
+Read the documentation on-line: http://emboss.sourceforge.net/apps/
+
+
+
+5. EMBASSY MEME notes
+EMBASSY MEME is a suite of application wrappers to the original meme v3.0.14 
+applications.  meme v3.0.14 must be installed on the same system as EMBOSS and 
+the location of the meme executables must be defined in your path for EMBASSY
+MEME to work.
+
+Where possible, the same command-line qualifier names and parameter order is 
+used as in the original meme.  There are however several unavoidable 
+differences and these are clearly documented in the application documentation.  
+
+Most of the options in the original meme are given in ACD as "advanced" or
+"additional" options. -options must be specified on the command-line in order 
+to be prompted for a value for "additional" options but "advanced" options 
+will never be prompted for.  
+
+
+
+
+6. EMBASSY MEME application notes
+6.1 ememe 
+MEME takes as input a group of DNA or protein sequences (the training set)
+and outputs as many motifs as requested. MEME uses statistical modeling
+techniques to automatically choose the best width, number of occurrences,
+and description for each motif.  MEME outputs its results as a hypertext 
+(HTML) document.
+
+Usage:
+ememe [options] dataset outfile
+
+The <dataset> and <outfile> parameters are new to EMBASSY MEME. The output
+is always written to <outfile>. The name of input sequences may be specified 
+with the -dataset option as normal.
+
+The following original MEME options are not supported:
+-h         : Use -help to get help information.
+-dna	   : EMBOSS will specify whether sequences use a DNA alphabet 
+             automatically.
+-protein   : EMBOSS will specify whether sequences use a protein alphabet 
+             automatically.
+
+The following additional options are provided:
+outfile    : Application output that was normally written to stdout.
+
+Note: ememe makes a temporary local copy of its input sequence data.  You 
+must ensure there is sufficient disk space for this in the directory that 
+ememe is run.
+
+
+
+
+
+6.2 emast
+emast takes as input a file containing the descriptions of one or more motifs
+and searches a sequence database that you select for sequences that match
+the motifs. The motif file can be the output of the MEME motif discovery tool 
+or any file in the appropriate format. MAST outputs three things: 1. The names 
+of the high-scoring sequences sorted by the strength of the combined match of 
+the sequence to all of the motifs in the group. 2. Motif diagrams showing the 
+order and spacing of the motifs within each matching sequence. 3. Detailed 
+annotation of each matching sequence showing the sequence and the locations 
+and strengths of matches to the motifs. 
+
+Usage:
+emast [options] mfile outfile
+
+The < outfile > parameter is new to EMBASSY MEME. The output is always written 
+to < outfile >. 
+
+The following original MEME options are not supported:
+-stdout       : The output is always written to file.
+-hit_list     : Use -hitlist instead. 
+
+The following additional options are provided:
+outfile       : Application output that was normally written to stdout.
+
+
+
+
+
+7. Rough guide to writing an EMBASSY wrapper to MEME
+7.1  Download the source
+The latest release may well not be as stable as the older ones so use the most 
+recent old version:
+http://meme.nbcr.net/downloads/old_versions/   
+
+7.2  Install software
+Follow the install instructions in the file README in the original MEME distro:
+   tar -xvf meme-3.0.14.tar.gz 
+   cd meme-3.0.14 
+   bin/install meme
+   bin/runtests  
+
+Add the bin directory to your path now, e.g. 
+   set path= ( /usr/local/bin $path )
+   rehash
+
+7.3  Get the meme and mast documentation
+   meme > meme.txt
+   mast > mast.txt 
+
+These files are the source of information for the ACD files (*.acd) and 
+application documentation (*.html).  Also for documentation in the source
+code itself (*.c).
+
+7.4  Create directories for new EMBASSY package 
+Create directories (& subdirectories) for new pacakge in emboss/emboss/embassy 
+   mkdir memenew
+   cd memenew
+   mkdir src emboss_acd emboss_doc m4 
+
+Do *not* create CVS directory!
+
+7.5  Create files in embassy/memenew
+In the steps below, files may be copied from any other EMBASSY package:
+
+Touch the following (empty) files:
+   AUTHORS ChangeLog NEWS README
+
+Copy these from some other EMBASSY package:
+   COPYING INSTALL Makefile.am configure.in ltmain.sh 
+
+Do NOT create CVS directories:
+   memenew/m4/CVS, new_package/emboss_acd/CVS, new_package/src/CVS
+Do NOT create files in each CVS directory:  
+   Entries, Repository, Root, Template, Entries.log (in memenew/CVS only)
+
+7.6  Create files in m4 directory.
+Copy these from some other EMBASSY package:
+   amd64.m4  general.m4  grout.m4  java.m4  lf_x11.m4  pngdriver.m4  sgi.m4
+
+7.7  Create Makefile.am files
+Copy these from some other EMBASSY package:
+   memenew/src/Makefile.am
+   memenew/emboss_acd/Makefile.am
+
+7.8 Create subdirectories & files in emboss_doc directory
+   mkdir emboss_doc/html emboss_doc/master emboss_doc/text
+   mkdir emboss_doc/master/inc/
+
+Create the following files (copy and adapt from an existing EMBASSY package):
+   emboss_doc/Makefile.am
+   emboss_doc/master/index.html
+   emboss_doc/master/application1_name.html
+   emboss_doc/master/application2_name.html
+   etc (one master template per application)
+   emboss_doc/text/Makefile.am
+   emboss_doc/html/Makefile.am
+   emboss_doc/html/index.html 
+   emboss_doc/master/inc/appplication1_name.comment
+   emboss_doc/master/inc/appplication2_name.comment
+   etc (one comment file per application)
+   emboss_doc/master/inc/appplication1_name.history
+   emboss_doc/master/inc/appplication2_name.history
+   etc (one history file per application)
+
+The other include files will be generated for you during the standard EMBOSS 
+application documentation procedure.
+
+Then 
+touch emboss_doc/html/application1_name.html
+touch emboss_doc/html/application2_name.html
+etc (one per application)
+
+touch emboss_doc/text/application1_name.txt
+touch emboss_doc/text/application2_name.txt
+etc (one per application)
+
+Ultimately these will be overwritten in the EMBOSS application documentation 
+procedure, but are needed so that make will work from the outset.
+
+
+7.9  Edit Makefile.am files 
+It's obvious what to do from inspecting the files:
+   memenew/src/Makefile.am 
+   memenew/emboss_acd/Makefile.am
+
+7.10 Edit configure.in.  
+The first line can give *any* single application name 
+e.g.  AC_INIT (src/ememe.c) 
+The second line is a version number, use 0.1.0 for a beta realease.
+
+7.11 Create .c & .acd files in /src & /emboss_acd.
+
+7.12 Work through the help pages (meme.txt, mast.txt) for each application 
+option in turn.  Apply 7.13 - 7.14 below.
+
+7.13 Decide if the option will be kept in the EMBOSS version.  
+Options might not be supported because:
+(i)  The option is redundant because of in-built EMBOSS functionality, 
+     e.g. the help option -h is not needed because -help is an in-built 
+     qualifier for all EMBOSS applications. 
+(ii) The option is subsumed by an EMBOSS qualifier, e.g. there may be 
+     multiple options for setting a single parameter with different values, 
+     which would sensibly be rolled into a single ACD list definition in 
+     EMBOSS.
+(iii)The option is always set so need not be defined in the ACD file.
+
+Document any redundant options!
+ 
+7.14 Paste in appropriate documentation text into meme/mast.acd
+Copy "information" text from ememe.txt / emast.txt (list of parameters).
+Copy "help" information from ememe.txt / emast.txt
+
+7.15 Decide whether a new parameter (typically for the application output, 
+which might be written to stdout by default) is required.
+
+7.16 Paste in appropriate documentation text into meme/mast.html
+Copy text from ememe.txt / emast.txt.  Better to paste in everything to maintain 
+continuity, even though there'll be some redundancy (e.g. in descriptions of 
+qualifiers) with the documentation generated automatically from the ACD file.
+
+7.17 Write QA tests, see entry under MEMENEW in emboss/emboss/test/qatest.dat 
+in the EMBOSS distribution.  Use the examples from the MEME README and any test 
+data files as are necessary from the "tests" directory of the MEME distribution. 
+There are a couple of issues (documented in qatest.dat):
+i.  Do not use FZ lines as ememe & emast use temp files with random names: these 
+names are printed to the output files. 
+ii. Consider ommitting tests for all but the first example for MEME. For 
+meme-3.0.14 these examples seemed to require a full-length swissprot database 
+and a different MEME dictionary to that provided in the MEME distribution.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

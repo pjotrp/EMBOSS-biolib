@@ -1,0 +1,302 @@
+application: emast
+[
+  documentation: "Motif detection"
+  groups: "Protein:Motifs"
+  embassy: "mast"
+]
+
+
+
+
+
+section: input 
+[
+  information: "Input section"
+  type: "page"
+]
+
+infile: mfile
+[
+  parameter: "Y"
+  information: "File containing motifs to use; may be a MEME output file or a file with a valid format."
+  help: "If -d <database> is not given, MAST looks for database specified inside of <mfile>."
+  knowntype: "MEME (mast) motif file"
+]
+
+infile: d
+[
+# If the user sets a value then < stdin > (below) will be ignored. 
+  additional: "Y"
+  default: ""
+  nullok: "Y"
+  information: "Database to search with motifs"
+  help: "If -d <database> is not given, MAST looks for database specified inside of <mfile>."
+  knowntype: "MEME (mast) database to search with motifs"
+]
+
+infile: a
+[
+  additional: "Y"
+  default: ""
+  nullok: "Y"
+  information: "Alphabet for motifs in <mfile>"
+  help: "<mfile> is assumed to contain motifs in the format output by bin/make_logodds and <a> is their alphabet; -d <database> or -stdin must be specified when this option is used."
+  knowntype: "MEME (mast) alphabet"
+]
+
+infile: bfile
+[
+  additional: "Y"
+  default: ""
+  nullok: "Y"
+  information: "Read background frequencies from file"
+  help: "The random model uses the letter frequencies given in <bfile> instead of the non-redundant database frequencies.  The format of <bfile> is the same as that for the MEME -bfile opton; see the MEME documentation for details.  Sample files are given in directory tests: tests/nt.freq and tests/na.freq in the MEME distribution.)"
+  knowntype: "MEME (mast) background frequencies"
+]
+
+endsection: input
+
+
+
+
+
+section: required 
+[
+  information: "Required section"
+  type: "page"
+]
+
+float: ev
+[
+  standard: "Y"
+  default: "10"
+  information: "Print results for sequences with E-value"
+]
+
+float: mt
+[
+  standard: "Y"
+  default: "0.0001"
+  information: "Show motif matches with p-value < mt"
+]
+
+endsection: required
+
+
+
+
+
+section: additional 
+[
+  information: "Additional section"
+  type: "page"
+]
+integer: smax
+[  
+  additional: "Y"
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Print results for no more than <smax> sequences"
+]
+
+boolean: stdin
+[
+# If the user specifies a file for < d > above, < stdin > will be ignored. 
+  additional: "Y"
+  default: "N"
+  information: "Read database from standard input"
+  help: "The default is to read the database specified inside <mfile>."
+]
+
+boolean: text
+[
+  additional: "Y"
+  default: "N"
+  information: "Output in text (ASCII) format"
+  help: "Default is hypertext (HTML) format"
+]
+
+boolean: dna
+[  
+  additional: "Y"
+# Default value not indicated in the original MEME documentation.
+  default: "N"
+  information: "Translate DNA sequences to protein"
+]
+
+boolean: comp
+[  
+  additional: "Y"
+# Default value not indicated in the original MEME documentation.
+  default: "N"
+  information: "Adjust p-values and E-values for sequence composition"
+  help: "The random model uses the letter frequencies in the current target
+  	sequence instead of the non-redundant database frequencies.  This
+  	causes p-values and E-values to be compensated individually for the 
+  	actual composition of each sequence in the database.  This option
+  	can increase search time substantially due to the need to compute
+  	a different score distribution for each high-scoring sequence."
+]
+
+integer: rank
+[  
+  additional: "Y"
+# Default value not indicated in the original MEME documentation.
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Print results starting with <rank> best"
+]
+
+boolean: best
+[
+  additional: "Y"
+  default: "N"
+  information: "Include only the best motif in diagrams"
+]
+
+boolean: remcorr
+[
+  additional: "Y"
+  default: "N"
+  information: "Remove highly correlated motifs from query"
+]
+
+boolean: brief
+[
+  additional: "Y"
+  default: "N"
+  information: "Brief output: do not print documentation."
+]
+
+boolean: b
+[
+  additional: "Y"
+  default: "N"
+  information: "Print only sections I and II"
+]
+
+boolean: nostatus
+[
+  additional: "Y"
+  default: "N"
+  information: "Do not print progress report"
+]
+
+boolean: hitlist
+[
+  additional: "Y"
+  default: "N"
+  information: "Print hit_list instead of diagram; implies -text"
+  help: "If you specify the -hitlist switch to MAST, the motif 'diagram' takes the form of a comma separated list of motif occurrences ('hits').  Each 'hit' has the format: <strand><motif> <start> <end> <p-value> where  <strand> is the strand (+ or - for DNA, blank for protein), <motif> is the motif number, <start> is the starting position of the hit, <end> is the ending position of the hit, and <p-value> is the position p-value of the hit."
+]
+
+endsection: additional
+
+
+
+
+
+section: advanced
+[
+  information: "Advanced section"
+  type: "page"
+]
+
+integer: c
+[
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Only use the first <c> motifs"
+]
+
+boolean: sep
+[  
+# Default value not indicated in the original MEME documentation 
+  default: "N"
+  information: "Score reverse complement DNA strand as a separate sequence"
+]
+
+boolean: norc
+[  
+# Default value not indicated in the original MEME documentation, or relationship to -sep option. 
+  default: "N"
+  information: "Do not score reverse complement DNA strand"
+]
+
+boolean: w
+[
+  default: "N"
+  information: "Show weak matches (mt<p-value<mt*10) in angle brackets"
+]
+
+boolean: seqp
+[
+  default: "N"
+  information: "Use SEQUENCE p-values for motif thresholds"
+  help: "The default is to use POSITION p-values."
+]
+
+string: mf
+[
+  default: ""
+  information: "Print <mf> as motif file name."
+  knowntype: "MEME (mast) name of motif file"
+]
+
+string: df
+[
+  default: ""
+  information: "Print <df> as database name."
+  knowntype: "MEME (mast) name of database"
+]
+
+integer: minseqs
+[
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Lower bound on number of sequences in db"
+]
+
+float: mev
+[
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Use only motifs with E-values less than <mev>"
+]
+
+integer: m
+[
+# Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
+  default: "-1"
+  information: "Use only motif(s) number <m>"
+  help: "Overrides value set by using -mev."
+]
+
+string: diag
+[
+  default: ""
+  information: "Nominal order and spacing of motifs"
+  help: "See on-line documentation for a valid example."
+  knowntype: "MEME (mast) nominal order and spacing of motifs"
+]
+
+endsection: advanced
+
+
+
+
+
+section: output 
+[
+  information: "Output section"
+  type: "page"
+]
+
+outfile: outfile
+[
+  parameter: "Y"
+  information: "Output file."
+  knowntype: "MEME (mast) output file"
+]
+
+endsection: output
