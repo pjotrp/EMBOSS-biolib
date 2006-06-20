@@ -272,7 +272,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqType
     ok = ajJavaGetSeqFromUsa(name,&seq);
     if(ok)
     {
-	len = ajSeqLen(seq);
+	len = ajSeqGetLen(seq);
 	nuc = ajSeqIsNuc(seq);
 	weight = seq->Weight;
 

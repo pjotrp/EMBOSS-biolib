@@ -2393,7 +2393,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 	}
     }
 
-    ajListSort(list,ajStrCmp);
+    ajListSort(list,ajStrVcmp);
 
     while(ajListPop(list,(void **)&tstr))
     {
@@ -2594,7 +2594,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 	if(t)
 	    ajListSort(list,jctl_date);
 	else
-	    ajListSort(list,ajStrCmp);
+	    ajListSort(list,ajStrVcmp);
     }
 
 
