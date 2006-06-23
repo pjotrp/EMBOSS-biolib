@@ -24,7 +24,7 @@
  *      Packaged for squid, Thu Oct  1 10:07:11 1992
  *      ANSI conversion in full swing, Mon Jul 12 12:22:21 1993
  *
- * RCS $Id: sqio.c,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: sqio.c,v 1.3 2006/06/23 08:56:35 ajb Exp $
  */
 
 #include "ajax.h"
@@ -219,7 +219,7 @@ readline(FILE *f, char *s)
     }
 }
 
-/* Function: getline()
+/* Function: hmmer_getline()
  * Date:     SRE, Tue Mar  3 08:30:01 1998 [St. Louis]
  *
  * Purpose:  read a line from a sequence file into V->sbuffer.
@@ -235,7 +235,7 @@ readline(FILE *f, char *s)
  * Returns:  (void)
  */
 static void 
-getline(struct ReadSeqVars *V)
+hmmer_getline(struct ReadSeqVars *V)
 {
   char *cp;
   
@@ -305,7 +305,7 @@ readLoop(int addfirst, int (*endTest)(char *,int *), struct ReadSeqVars *V)
   V->seqlen = 0;
   if (addfirst) addseq(V->sbuffer, V);
   do {
-    getline(V);
+    hmmer_getline(V);
 	/* feof() alone is a bug; files not necessarily \n terminated */
     if (*(V->sbuffer) == '\0' && feof(V->f))
       done = TRUE;
@@ -333,7 +333,7 @@ readPIR(struct ReadSeqVars *V)
   char *sptr;
 				/* load first line of entry  */
   while (!feof(V->f) && strncmp(V->sbuffer, "ENTRY", 5) != 0)
-    getline(V);
+    hmmer_getline(V);
   if (feof(V->f)) return;
 
   if ((sptr = strtok(V->sbuffer + 15, "\n\t ")) != NULL)
@@ -342,7 +342,7 @@ readPIR(struct ReadSeqVars *V)
       SetSeqinfoString(V->sqinfo, sptr, SQINFO_ID);
     }
   do {
-    getline(V);
+    hmmer_getline(V);
     if (!feof(V->f) && strncmp(V->sbuffer, "TITLE", 5) == 0)
       SetSeqinfoString(V->sqinfo, V->sbuffer+15, SQINFO_DESC);
     else if (!feof(V->f) && strncmp(V->sbuffer, "ACCESSION", 9) == 0)
@@ -351,7 +351,7 @@ readPIR(struct ReadSeqVars *V)
 	  SetSeqinfoString(V->sqinfo, sptr, SQINFO_ACC);
       }
   } while (! feof(V->f) && (strncmp(V->sbuffer,"SEQUENCE", 8) != 0));
-  getline(V);			/* skip next line, coords */
+  hmmer_getline(V);			/* skip next line, coords */
 
   readLoop(0, endPIR, V);
 
@@ -365,7 +365,7 @@ readPIR(struct ReadSeqVars *V)
   /* get next line
    */
   while (!feof(V->f) && strncmp(V->sbuffer, "ENTRY", 5) != 0)
-    getline(V);
+    hmmer_getline(V);
 }
 
 
@@ -383,7 +383,7 @@ readIG(struct ReadSeqVars *V)
   char *nm;
 				/* position past ';' comments */
   do {
-    getline(V);
+    hmmer_getline(V);
   } while (! (feof(V->f) || ((*V->sbuffer != 0) && (*V->sbuffer != ';')) ));
 
   if (!feof(V->f))
@@ -395,7 +395,7 @@ readIG(struct ReadSeqVars *V)
     }
   
   while (!(feof(V->f) || ((*V->sbuffer != '\0') && (*V->sbuffer == ';'))))
-    getline(V);
+    hmmer_getline(V);
 }
 
 static int 
@@ -417,7 +417,7 @@ readStrider(struct ReadSeqVars *V)
 	  if ((nm = strtok(V->sbuffer+16, ",\n\t ")) != NULL)
 	    SetSeqinfoString(V->sqinfo, nm, SQINFO_NAME);
 	}
-      getline(V);
+      hmmer_getline(V);
     }
 
   if (! feof(V->f))
@@ -426,7 +426,7 @@ readStrider(struct ReadSeqVars *V)
   /* load next line
    */
   while ((!feof(V->f)) && (*V->sbuffer != ';')) 
-    getline(V);
+    hmmer_getline(V);
 }
 
 
@@ -444,7 +444,7 @@ readGenBank(struct ReadSeqVars *V)
   int   in_definition;
 
   while (strncmp(V->sbuffer, "LOCUS", 5) != 0)
-    getline(V);
+    hmmer_getline(V);
 
   if ((sptr = strtok(V->sbuffer+12, "\n\t ")) != NULL)
     {
@@ -455,7 +455,7 @@ readGenBank(struct ReadSeqVars *V)
   in_definition = FALSE;
   while (! feof(V->f))
     {
-      getline(V);
+      hmmer_getline(V);
       if (! feof(V->f) && strstr(V->sbuffer, "DEFINITION") == V->sbuffer)
 	{
 	  if ((sptr = strtok(V->sbuffer+12, "\n")) != NULL)
@@ -488,11 +488,11 @@ readGenBank(struct ReadSeqVars *V)
 
 
   while (!(feof(V->f) || ((*V->sbuffer!=0) && (strstr(V->sbuffer,"LOCUS") == V->sbuffer))))
-    getline(V);
+    hmmer_getline(V);
 				/* SRE: V->s now holds "//", so sequential
 				   reads are wedged: fixed Tue Jul 13 1993 */
   while (!feof(V->f) && strstr(V->sbuffer, "LOCUS  ") != V->sbuffer)
-    getline(V);
+    hmmer_getline(V);
 }
 
 static int
@@ -521,7 +521,7 @@ readGCGdata(struct ReadSeqVars *V)
     Die("bogus GCGdata format? %s", V->sbuffer);
 
 				/* second line contains free text description */
-  getline(V);
+  hmmer_getline(V);
   SetSeqinfoString(V->sqinfo, V->sbuffer, SQINFO_DESC);
 
   if (binary) {
@@ -541,7 +541,7 @@ readGCGdata(struct ReadSeqVars *V)
   else readLoop(0, endGCGdata, V);
   
   while (!(feof(V->f) || ((*V->sbuffer != 0) && (*V->sbuffer == '>'))))
-    getline(V);
+    hmmer_getline(V);
 }
 
 static int
@@ -561,12 +561,12 @@ readPearson(struct ReadSeqVars *V)
   if ((sptr = strtok(NULL, "\n")) != NULL)
     SetSeqinfoString(V->sqinfo, sptr, SQINFO_DESC);
 				/* workaround for long NCBI NR lines */
-  while (V->longline && ! feof(V->f)) getline(V);
+  while (V->longline && ! feof(V->f)) hmmer_getline(V);
 
   readLoop(0, endPearson, V);
 
   while (!(feof(V->f) || ((*V->sbuffer != 0) && (*V->sbuffer == '>'))))
-    getline(V);
+    hmmer_getline(V);
 }
 
 
@@ -593,7 +593,7 @@ readEMBL(struct ReadSeqVars *V)
 
 				/* make sure we have first line */
   while (!feof(V->f) && strncmp(V->sbuffer, "ID  ", 4) != 0)
-    getline(V);
+    hmmer_getline(V);
 
   if ((sptr = strtok(V->sbuffer+5, "\n\t ")) != NULL)
     {
@@ -602,7 +602,7 @@ readEMBL(struct ReadSeqVars *V)
     }
 
   do {
-    getline(V);
+    hmmer_getline(V);
     if (!feof(V->f) && strstr(V->sbuffer, "AC  ") == V->sbuffer)
       {
 	if ((sptr = strtok(V->sbuffer+5, ";  \t\n")) != NULL)
@@ -626,7 +626,7 @@ readEMBL(struct ReadSeqVars *V)
 
 				/* load next record's ID line */
   while (!feof(V->f) && strncmp(V->sbuffer, "ID  ", 4) != 0)
-    getline(V);
+    hmmer_getline(V);
 }
 
 
@@ -642,7 +642,7 @@ readZuker(struct ReadSeqVars *V)
 {
   char *sptr;
 
-  getline(V);  /*s == "seqLen seqid string..."*/
+  hmmer_getline(V);  /*s == "seqLen seqid string..."*/
 
   if ((sptr = strtok(V->sbuffer+6, " \t\n")) != NULL)
     SetSeqinfoString(V->sqinfo, sptr, SQINFO_NAME);
@@ -653,7 +653,7 @@ readZuker(struct ReadSeqVars *V)
   readLoop(0, endZuker, V);
 
   while (!(feof(V->f) | ((*V->sbuffer != '\0') & (*V->sbuffer == '('))))
-    getline(V);
+    hmmer_getline(V);
 }
 
 static void 
@@ -675,7 +675,7 @@ readUWGCG(struct ReadSeqVars *V)
 
   do {
     done = feof(V->f);
-    getline(V);
+    hmmer_getline(V);
     if (! done) addseq(V->sbuffer, V);
   } while (!done);
 }
@@ -687,7 +687,7 @@ readSquid(struct ReadSeqVars *V)
   char *sptr;
   int   dostruc = FALSE;
 
-  while (strncmp(V->sbuffer, "NAM ", 4) != 0) getline(V);
+  while (strncmp(V->sbuffer, "NAM ", 4) != 0) hmmer_getline(V);
 
   if ((sptr = strtok(V->sbuffer+4, "\n\t ")) != NULL)
     SetSeqinfoString(V->sqinfo, sptr, SQINFO_NAME);
@@ -695,7 +695,7 @@ readSquid(struct ReadSeqVars *V)
   /*CONSTCOND*/
   while (1)
     {
-      getline(V);
+      hmmer_getline(V);
       if (feof(V->f)) {squid_errno = SQERR_FORMAT; return; }
 
       if (strncmp(V->sbuffer, "SRC ", 4) == 0)
@@ -727,14 +727,14 @@ readSquid(struct ReadSeqVars *V)
   while (1)
     {
 				/* sequence line */
-      getline(V);
+      hmmer_getline(V);
       if (feof(V->f) || strncmp(V->sbuffer, "++", 2) == 0) 
 	break;
       addseq(V->sbuffer, V);
 				/* structure line */
       if (dostruc)
 	{
-	  getline(V);
+	  hmmer_getline(V);
 	  if (feof(V->f)) { squid_errno = SQERR_FORMAT; return; }
 	  addstruc(V->sbuffer, V);
 	}
@@ -742,7 +742,7 @@ readSquid(struct ReadSeqVars *V)
 
 
   while (!feof(V->f) && strncmp(V->sbuffer, "NAM ", 4) != 0)
-    getline(V);
+    hmmer_getline(V);
 }
 
 
@@ -822,7 +822,7 @@ SeqfileOpen(const char *filename, int format, char *env)
 
   /* Load the first line.
    */
-  getline(dbfp);
+  hmmer_getline(dbfp);
 
   return dbfp;
 }
@@ -839,7 +839,7 @@ SeqfilePosition(SQFILE *sqfp, long offset)
     Die("SeqfilePosition() failed: in a nonrewindable data file or stream");
 
   fseek(sqfp->f, offset, SEEK_SET);
-  getline(sqfp);
+  hmmer_getline(sqfp);
 }
 
 
@@ -859,7 +859,7 @@ SeqfileRewind(SQFILE *sqfp)
   if (sqfp->ali_aseqs != NULL) sqfp->ali_curridx = 0;
   else {
     rewind(sqfp->f);
-    getline(sqfp);
+    hmmer_getline(sqfp);
   }
 }
 
@@ -954,7 +954,7 @@ int ReadSeq(SQFILE *V, int format, char **ret_seq, SQINFO *sqinfo)
       do {			/* skip leading comments on GCG file */
 	gotuw = (strstr(V->sbuffer,"..") != NULL);
 	if (gotuw) readUWGCG(V);
-	getline(V);
+	hmmer_getline(V);
       } while (! feof(V->f));
       break;
 
