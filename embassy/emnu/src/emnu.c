@@ -2,7 +2,7 @@
 **
 ** Simple menu for EMBOSS applications
 **
-** @author: Copyright (C) Gary Williams (gwilliam@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Gary Williams
 ** 1 Nov 2000 - written - GWW
 ** @@
 **
