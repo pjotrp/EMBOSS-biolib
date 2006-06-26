@@ -3,8 +3,8 @@
 ** Reads a DAF file (domain alignment file) and a DHF (domain hits file) and 
 ** writes a DAF file extended with the hits.
 ** 
-** @author: Copyright (C) Ranjeeva Ranasinghe (rranasin@hgmp.mrc.ac.uk)
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Ranjeeva Ranasinghe
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@
 **  Software Suite.  Trends in Genetics, 15:276-278.  
 **  See also http://www.uk.embnet.org/Software/EMBOSS
 **  
-**  Email jison@rfcgr.mrc.ac.uk.
+**  Email jison@ebi.mrc.ac.uk.
 **  
 **  NOTES
 **  seqalign writes a temporary clustalw input file in fasta format (via a call 

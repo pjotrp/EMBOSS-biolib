@@ -3,8 +3,8 @@
 ** Generates DAF files (domain alignment files) of structure-based sequence 
 ** alignments for nodes in a DCF file (domain classification file).
 **
-** @author: Copyright (C) Ranjeeva Ranasinghe (rranasin@hgmp.mrc.ac.uk)
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Ranjeeva Ranasinghe
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@
 **  Software Suite.  Trends in Genetics, 15:276-278.  
 **  See also http://www.uk.embnet.org/Software/EMBOSS
 **  
-**  Email jison@rfcgr.mrc.ac.uk.
+**  Email jison@ebi.ac.uk.
 **  
 **  NOTES
 **  Implement futher alignment options, e.g. TCOFFEE.

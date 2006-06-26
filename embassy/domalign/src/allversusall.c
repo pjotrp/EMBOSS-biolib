@@ -3,7 +3,7 @@
 ** Does an all-versus-all global alignment for each set of sequences in an 
 ** input directory and writes files of sequence similarity values. 
 **
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 **  Software Suite.  Trends in Genetics, 15:276-278.  
 **  See also http://www.uk.embnet.org/Software/EMBOSS
 **  
-**  Email jison@rfcgr.mrc.ac.uk.
+**  Email jison@ebi.mrc.ac.uk.
 **  
 **  NOTES
 **  
