@@ -210,8 +210,7 @@ d4at1d1              0 TFLSEDQVDQLALYAPQATVNRIDNYEVVGKSRPSLP      0
 <br><br><br><H2> 5.0   DATA FILES                </H2>
  DOMAINALIGN does not use any data files but uses the STAMP
  "pdb.directories" file which specifies the permissible prefix, extension and path of
-PDB files used by STAMP.  On the RFCGR system, this file is
- /packages/stamp/defs/pdb.directories and should look like :
+PDB files used by STAMP.  This file should look like :
 
 <table><td bgcolor="#FFCCFF">
 <pre>
@@ -433,9 +432,6 @@ Unix %
 DOMAINALIGN requires a modified version of STAMP (see <a href="#8.0">Notes</a> below). 
 The modified STAMP application must be installed on the system that is running DOMAINALIGN.
 
-<br><br>When running DOMAINALIGN at the RFCGR, to ensure the modified version of STAMP is used, 
-type <b>'use stamp2'</b> (which runs the script /packages/menu/USE/stamp2) before DOMAINALIGN is run.   
-
 
 <br><br><b>  2. Strange STAMP behaviour</b><br>
  STAMP will ignore (omit from the alignment and *not* replace with '-' or 
@@ -523,12 +519,6 @@ No sequence alignment or structural superimposition files are generated for node
 </pre>
 </td></table>
 
-<br> The modified code (for 2. and 3. above) is kept on the HGMP file system in /packages/stamp/src2
-<br><br> <i>WHEN RUNNING DOMAINALIGN AT THE HGMP IT IS ESSENTIAL THAT THE COMMAND 
- <b>'use stamp2'</b> (which runs the script /packages/menu/USE/stamp2) IS GIVEN 
- BEFORE DOMAINALIGN IS RUN. </i>  
-
-<br>This will ensure that the modified version of STAMP is used.
  
 <br><br><b>  3. pdb.directories file</b><br>
 STAMP (and therefore DOMAINALIGN) uses a "pdb.directories" file: see <a href="#5.0">5.0     DATA FILES                </a>
@@ -641,12 +631,14 @@ The following message may appear in the log file.
 
 <!-- AUTHORS -->
 <a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
-Ranjeeva Ranasinghe <a href="mailto:rranasin@rfcgr.mrc.ac.uk">(rranasin@rfcgr.mrc.ac.uk)</a>
+Ranjeeva Ranasinghe 
 <br><br>
-Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+Jon Ison <a href="mailto:jison@ebi.ac.uk">(jison@ebi.ac.uk)</a>
 <br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+The European Bioinformatics Institute 
+Wellcome Trust Genome Campus 
+Cambridge CB10 1SD 
+UK 
 
 
 
