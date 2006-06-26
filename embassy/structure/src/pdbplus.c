@@ -4,8 +4,8 @@
 ** a CCF file (clean coordinate file) for a protein or domain.
 ** 
 **
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
-** @author: Copyright (C) Amanda O'Reilly (aoreilly@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
+** @author: Copyright (C) Amanda O'Reilly
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@
 **  Bioinformatics (submitted).  
 **  Jon C. Ison, Amanda O'Reilly and Alan J. Bleasby
 **  
-**  Email jison@rfcgr.mrc.ac.uk.
+**  Email jison@ebi.ac.uk.
 **  
 ******************************************************************************/
 

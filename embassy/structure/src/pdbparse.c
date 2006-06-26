@@ -3,7 +3,7 @@
 **  Parses PDB files and writes CCF files (clean coordinate files) for 
 **  proteins.
 **
-**  @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+**  @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 **  @@
 **
 **  This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@
 **  Software Suite.  Trends in Genetics, 15:276-278.  
 **  See also http://www.uk.embnet.org/Software/EMBOSS
 **  
-**  Email jison@rfcgr.mrc.ac.uk.
+**  Email jison@ebi.ac.uk.
 **  
 **  NOTES
 **  1. Check files which produce "ATOM/SEQRES show no correspondence" 

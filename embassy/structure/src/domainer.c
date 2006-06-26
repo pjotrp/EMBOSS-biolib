@@ -3,7 +3,7 @@
 ** Reads CCF files (clean coordinate files) for proteins and writes CCF 
 ** files for domains, taken from a DCF file (domain classification file).
 ** 
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 **  XXX (in preparation). 
 **  Jon C. Ison  
 **  
-**  Email jison@rfcgr.mrc.ac.uk.
+**  Email jison@ebi.ac.uk.
 **  
 ******************************************************************************/
 

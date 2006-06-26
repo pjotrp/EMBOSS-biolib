@@ -5,7 +5,7 @@
 ** classification) and writes a "hits file" for the hits, which are classified 
 ** and rank-ordered on the basis of score.
 **
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -33,7 +33,7 @@
 **  Software Suite.  Trends in Genetics, 15:276-278.  
 **  See also http://www.uk.embnet.org/Software/EMBOSS
 **  
-**  Email jison@rfcgr.mrc.ac.uk.
+**  Email jison@ebi.ac.uk.
 **  
 **  NOTES
 **  

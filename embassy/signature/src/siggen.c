@@ -3,8 +3,8 @@
 ** Generates a sparse protein signature from an alignment and residue contact 
 ** data.
 ** 
-** @author: Copyright (C) Matt Blades (mblades@hgmp.mrc.ac.uk)
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Matt Blades 
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -32,7 +32,7 @@
 **  families of protein structural domains. MJ Blades, JC Ison, R Ranasinghe
 **  and JBC Findlay. Protein Science. 2005 (accepted)
 **  
-**  Email Jon Ison (jison@rfcgr.mrc.ac.uk)
+**  Email Jon Ison (jison@ebi.ac.uk)
 **  
 ****************************************************************************/
 
@@ -1167,7 +1167,7 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
                 {
                     printf("Error in Siggen_ScoreSeqVar.... total"
 			   " = greater than number of sequences\n");
-                    printf("Exiting....   email jison@hgmp.mrc.ac.uk\n");
+                    printf("Exiting....   email jison@ebi.ac.uk\n");
                     ajExit();
 
                     return 0;

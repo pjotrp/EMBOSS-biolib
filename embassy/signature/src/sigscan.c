@@ -3,7 +3,7 @@
 ** Generates a DHF (domain hits file) of hits (sequences) from scanning a 
 ** signature against a sequence database.
 **
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -31,7 +31,7 @@
 **  families of protein structural domains. MJ Blades, JC Ison, R Ranasinghe
 **  and JBC Findlay. Protein Science. 2005 (accepted)
 **  
-**  Email Jon Ison (jison@rfcgr.mrc.ac.uk)
+**  Email Jon Ison (jison@ebi.ac.uk)
 **  
 **  NOTES
 ** 

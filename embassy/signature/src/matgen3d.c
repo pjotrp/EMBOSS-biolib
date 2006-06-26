@@ -2,8 +2,8 @@
 **
 ** Generates a 3D-1D scoring matrix from CCF files (clean coordinate files).
 **
-** @author: Copyright (C) Waqas Awan (wawan@hgmp.mrc.ac.uk)
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Waqas Awan 
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or

@@ -3,8 +3,8 @@
 ** Converts raw dictionary of heterogen groups
 ** to a file in EMBL-like format.
 ** 
-** @author: Copyright (C) Waqas Awan (wawan@hgmp.mrc.ac.uk)
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Waqas Awan
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -33,8 +33,7 @@
 **  Software Suite.  Trends in Genetics, 15:276-278.  
 **  See also http://www.uk.embnet.org/Software/EMBOSS
 **  
-**  Email jison@rfcgr.mrc.ac.uk
-**        wawan@rfcgr.mrc.ac.uk
+**  Email jison@ebi.ac.uk
 **  
 **  NOTES
 **  

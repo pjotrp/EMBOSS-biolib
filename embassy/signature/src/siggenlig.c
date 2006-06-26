@@ -3,8 +3,8 @@
 ** Generates ligand-binding signatures from a CON file (contacts file) of 
 ** residue-ligand contacts.
 ** 
-** @author: Copyright (C) Waqas Awan (wawan@hgmp.mrc.ac.uk)
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Waqas Awan 
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -28,8 +28,7 @@
 **  
 **  Please cite the authors and EMBOSS.
 **
-**  Email Waqas Awan (wawan@rfcgr.mrc.ac.uk) or 
-**        Jon Ison (jison@rfcgr.mrc.ac.uk)
+**  Email Jon Ison (jison@ebi.ac.uk)
 **  
 ****************************************************************************/
 

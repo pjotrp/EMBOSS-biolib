@@ -5,8 +5,8 @@
  ** scans sequences against such a library of discriminating 
  ** elements and writes a library scan file for each one.
  **
- ** @author: Copyright (C) Ranjeeva Ranasinghe (rranasin@hgmp.mrc.ac.uk)
- ** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+ ** @author: Copyright (C) Ranjeeva Ranasinghe
+ ** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
  ** @@
  **
  ** This program is free software; you can redistribute it and/or
@@ -1697,7 +1697,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 	    
 	    
             if(posdash >= posdot)
-                ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+                ajFatal("Could not create filename.");
 	    
             else
             {
@@ -1725,8 +1725,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
                 if(!(libscan_SunidToScopInfo(sun_id,&family,&superfamily,
 					     &fold, &class, scoplist)))
                     ajFatal("libscan_SunidToScopInfo failed in "
-			    "libscan_RunBlastpgpInModeOne. "
-			    "email rranasin@hgmp.mrc.ac.uk\n");
+			    "libscan_RunBlastpgpInModeOne.\n");
 		
 		
 		/* search with PSSM */
@@ -2012,7 +2011,7 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
     posdot  = ajStrFindlastC(hmmfile, ".");
 
     if(posdash >= posdot)
-      ajWarn("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+      ajWarn("Could not create filename.");
     else{
       ajStrAssignSubS(&sunidfrag, hmmfile, posdash+1, posdot-1);
       ajStrToInt(sunidfrag,&sunid);
@@ -2068,7 +2067,7 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
 
 	    /* get the family by binary search on scoplist to find the relavent entry */
 	    if(!(libscan_SunidToScopInfo(sunid,&family,&superfamily,&fold,&class, scoplist)))
-		ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan. email rranasin@hgmp.mrc.ac.uk\n");
+		ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan.\n");
 
 	    ajStrAssignS(&hit->Acc,sunidfrag);
 	    ajStrAssignS(&hit->Spr,family);
@@ -2300,7 +2299,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     posdot  = ajStrFindlastC(profile, ".");
     
     if(posdash >= posdot)
-      ajWarn("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+      ajWarn("Could not create filename.");
     else{
       ajStrAssignSubS(&sunidfrag, profile, posdash+1, posdot-1);
       ajStrToInt(sunidfrag,&sunid);
@@ -2350,7 +2349,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
 
     /* get the family by binary search on scoplist to find the relavent entry */
     if(!(libscan_SunidToScopInfo(sunid,&family,&superfamily,&fold,&class, scoplist)))
-	ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan. email rranasin@hgmp.mrc.ac.uk\n");
+	ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan.\n");
 
     ajStrAssignS(&hit->Acc,sunidfrag);
     ajStrAssignS(&hit->Spr,family);
@@ -2753,7 +2752,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
     posdot  = ajStrFindlastC(samfile, ".");
 
     if(posdash >= posdot)
-      ajWarn("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+      ajWarn("Could not create filename.");
     else{
       ajStrAssignSubS(&sunidfrag, samfile, posdash+1, posdot-1);
       ajStrToInt(sunidfrag,&sunid);
@@ -2802,7 +2801,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
 	
 	    /* get the family by binary search on scoplist to find the relavent entry */
     if(!(libscan_SunidToScopInfo(sunid,&family,&superfamily,&fold,&class, scoplist)))
-	ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan. email rranasin@hgmp.mrc.ac.uk\n");
+	ajFatal("libscan_SunidToScopInfo failed in libscan_HmmLibScan.\n");
 
 	    /* construct the hit */
 	    ajStrAssignS(&hit->Acc,sunidfrag);
@@ -3087,7 +3086,7 @@ static AjBool libscan_RunHmmerInModeOne(AjPSeqset db, AjPStr hmmpath,
         
 	    
             if(posdash >= posdot)
-                ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+                ajFatal("Could not create filename.");
 	    
             else
             {
@@ -3108,8 +3107,7 @@ static AjBool libscan_RunHmmerInModeOne(AjPSeqset db, AjPStr hmmpath,
                 if(!(libscan_SunidToScopInfo(sun_id,&family,&superfamily,
 					     &fold, &class, scoplist)))
                     ajFatal("libscan_SunidToScopInfo failed in "
-			    "libscan_RunHmmerInModeOne. "
-			    "email rranasin@hgmp.mrc.ac.uk\n");
+			    "libscan_RunHmmerInModeOne.\n");
             
 
                 /* READ SCOP FAMILIES FILE & FILL THE LIST OF TARGETS*/
@@ -3245,7 +3243,7 @@ static AjBool libscan_RunProphetInModeOne(AjPSeqset db, AjPStr profpath,
             posdot  = ajStrFindlastC(profile, ".");
             
             if(posdash >= posdot)
-                ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+                ajFatal("Could not create filename.");
 
             else
             {
@@ -3269,8 +3267,7 @@ static AjBool libscan_RunProphetInModeOne(AjPSeqset db, AjPStr profpath,
                 if(!(libscan_SunidToScopInfo(sun_id,&family,&superfamily,
 					     &fold, &class, scoplist)))
                     ajFatal("libscan_SunidToScopInfo failed in "
-			    "libscan_RunProphetInModeOne. "
-			    "email rranasin@hgmp.mrc.ac.uk\n");
+			    "libscan_RunProphetInModeOne.\n");
                                   
                 /* search with Gribskov Profile */
                 libscan_ProfileSearch(db,profile,gapo,gape,family,superfamily,fold,class,
@@ -3405,7 +3402,7 @@ static AjBool libscan_RunSignatureInModeOne(AjPSeqset db, AjPStr sigpath,
             posdot  = ajStrFindlastC(sigfile, ".");
             
             if(posdash >= posdot)
-                ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+                ajFatal("Could not create filename.");
 
             else
             {
@@ -3430,8 +3427,7 @@ static AjBool libscan_RunSignatureInModeOne(AjPSeqset db, AjPStr sigpath,
                 /* do a binary search on scoplist to find the relavent entry */
                 if(!(libscan_SunidToScopInfo(sun_id,&family,&superfamily,
 					     &fold,&class,scoplist)))
-                    ajFatal("libscan_SunidToScopInfo failed. "
-			    "email rranasin@hgmp.mrc.ac.uk\n");
+                    ajFatal("libscan_SunidToScopInfo failed.\n");
                  
 		/* search with Signature */
                 libscan_SignatureSearch(db,sigfile,sub,gapo,gape,ntopt,
@@ -3570,7 +3566,7 @@ static AjBool libscan_RunSamInModeOne(AjPStr samdb, AjPStr sampath,
 	    
 	    
             if(posdash >= posdot)
-                ajFatal("Could not create filename. Email rranasin@hgmp.mrc.ac.uk");
+                ajFatal("Could not create filename.");
 	    
             else
             {
@@ -3591,8 +3587,7 @@ static AjBool libscan_RunSamInModeOne(AjPStr samdb, AjPStr sampath,
                 if(!(libscan_SunidToScopInfo(sun_id,&family,&superfamily,
 					     &fold, &class, scoplist)))
                     ajFatal("libscan_SunidToScopInfo failed in "
-			    "libscan_RunSamerInModeOne. "
-			    "email rranasin@hgmp.mrc.ac.uk\n");
+			    "libscan_RunSamerInModeOne.\n");
             
                 /* search with SAM HMM */
                 libscan_SamSearch(samdb,samfile, family,superfamily,fold,class,
@@ -4017,8 +4012,7 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
 		    /*if(!(libscan_SunidToScopInfo(sunid,&family,&superfamily,
 					     &fold, &class, scoplist)))
                     ajFatal("libscan_SunidToScopInfo failed in "
-			    "libscan_ReadPsiblastOutput"
-			    "email rranasin@hgmp.mrc.ac.uk\n");*/
+			    "libscan_ReadPsiblastOutput"\n");*/
 
 		    ajStrAssignS(&hitlist->hits[hitn-1]->Acc, acc);		    
 		    ajStrAssignS(&hitlist->hits[hitn-1]->Spr, acc);

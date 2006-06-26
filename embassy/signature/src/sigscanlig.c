@@ -4,7 +4,7 @@
 ** against a library of ligand-binding signatures.
 **
 **
-** @author: Copyright (C) Jon Ison (jison@hgmp.mrc.ac.uk)
+** @author: Copyright (C) Jon Ison (jison@ebi.ac.uk)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -28,7 +28,7 @@
 **  
 **  Please cite the authors and EMBOSS.
 **
-**  Email Jon Ison (jison@rfcgr.mrc.ac.uk)
+**  Email Jon Ison (jison@ebi.ac.uk)
 **  
 **  NOTES
 ** 
