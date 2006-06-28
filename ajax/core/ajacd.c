@@ -6744,7 +6744,12 @@ static void acdSetDirlist(AcdPAcd thys)
     }    
 
     ajFileScan(acdReply,t,&val,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
-    
+
+    /* Sort list so that list of files is system-independent */
+    ajListSort(val, ajStrVcmp);
+	
+
+
     n = ajListLength(val);
 
     ajDebug("acdSetDirlist '%S' listlength %d\n",
