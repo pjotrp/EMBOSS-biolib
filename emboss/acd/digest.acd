@@ -56,6 +56,25 @@ section: advanced [
            well as the favoured ones."
   ]
 
+  boolean: ragging [
+    information: "Allow ragging"
+    help: "Allows semi-specific and non-specific digestion. This option
+           is particularly useful for generating lists of peptide
+           sequences for protein identification using mass-spectrometry."
+  ]
+
+  list: termini [
+    default: "1"
+    minimum: "1"
+    maximum: "4"
+    values: "1: none,2: nterm,3: cterm,4: nterm OR cterm"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Ragging value"
+    information: "Select number"
+    button: "Y"
+  ]
+
 endsection: advanced
 
 section: output [

@@ -56,8 +56,10 @@ int main(int argc, char **argv)
     AjBool overlap;
     AjBool allpartials;
     AjPStr menu;
-    ajint  n;
-
+    AjPStr rag;
+    ajint  n = 0;
+    ajint  r = 0;
+    
     AjPFile  outf = NULL;
     AjPReport report    = NULL;
     AjPFeattable TabRpt = NULL;
@@ -65,6 +67,10 @@ int main(int argc, char **argv)
     AjPList  l;
     AjPList  pa;
     AjPFile mfptr   = NULL;
+
+    AjBool nterm = ajFalse;
+    AjBool cterm = ajFalse;
+    AjBool dorag = ajFalse;
 
     ajint     ncomp;
     ajint     npart;
@@ -74,6 +80,8 @@ int main(int argc, char **argv)
 
     seqall      = ajAcdGetSeqall("sequences");
     menu        = ajAcdGetListSingle("menu");
+    dorag       = ajAcdGetBool("ragging");
+    rag         = ajAcdGetListSingle("termini");
     unfavoured  = ajAcdGetBool("unfavoured");
     overlap     = ajAcdGetBool("overlap");
     allpartials = ajAcdGetBool("allpartials");
@@ -86,6 +94,15 @@ int main(int argc, char **argv)
 
     ajStrToInt(menu, &n);
     --n;
+
+    ajStrToInt(rag, &r);
+
+    if(r==2 || r==4)
+	nterm = ajTrue;
+
+    if(r==3 || r==4)
+	cterm = ajTrue;
+
 
     while(ajSeqallNext(seqall, &a))
     {
@@ -105,7 +122,8 @@ int main(int argc, char **argv)
 
 	embPropCalcFragments(ajStrGetPtr(substr),n,be,&l,&pa,
 			     unfavoured,overlap,
-			     allpartials,&ncomp,&npart,&rname);
+			     allpartials,&ncomp,&npart,&rname,
+			     nterm, cterm, dorag);
 
 	if(outf)
 	    ajFmtPrintF(outf,"DIGEST of %s from %d to %d Molwt=%10.3f\n\n",
