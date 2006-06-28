@@ -64,7 +64,8 @@ void 	embPropCalcFragments (const char *s, ajint n, ajint begin,
 			      AjPList *l, AjPList *pa,
 			      AjBool unfavoured, AjBool overlap,
 			      AjBool allpartials, ajint *ncomp, ajint *npart,
-			      AjPStr *rname);
+			      AjPStr *rname, AjBool nterm, AjBool cterm,
+			      AjBool dorag);
 double  embPropCalcMolextcoeff(const char *s, ajint start, ajint end);
 double  embPropCalcMolwt (const char *s, ajint start, ajint end);
 /* new method for chemically modified ends */

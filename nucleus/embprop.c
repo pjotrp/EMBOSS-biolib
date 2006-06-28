@@ -42,6 +42,8 @@
 #define PROPENZCHYMOT  6
 #define PROPENZCNBR    7
 
+#define RAG_MINPEPLEN 3
+
 #define AMINODATFILE "Eamino.dat"
 
 static AjBool propInit = 0;
@@ -270,6 +272,10 @@ const char* embPropIntToThree(ajint c)
 ** @param [w] ncomp [ajint *] number of complete digest fragments
 ** @param [w] npart [ajint *] number of partial digest fragments
 ** @param [w] rname [AjPStr *] name of reagent
+** @param [w] nterm [AjBool] nterm ragging
+** @param [w] cterm [AjBool] cterm ragging
+** @param [w] dorag [AjBool] true if ragging
+
 **
 ** @return [void]
 ** @@
@@ -279,7 +285,8 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
 			  AjPList *l, AjPList *pa,
 			  AjBool unfavoured, AjBool overlap,
 			  AjBool allpartials, ajint *ncomp, ajint *npart,
-			  AjPStr *rname)
+			  AjPStr *rname, AjBool nterm, AjBool cterm,
+			  AjBool dorag)
 {
     static char *PROPENZReagent[]=
     {
@@ -320,6 +327,11 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
     ajint *ival;
     ajint defcnt;
 
+    ajint it;
+    ajint jt;
+    ajint st;
+    ajint mt;
+    ajint et;
 
     ajStrAssignC(rname,PROPENZReagent[n]);
     defcnt = 0;
@@ -397,15 +409,46 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
     /* Push the hits */
     for(i=0;i<defcnt;++i)
     {
+	if(dorag)
+	{
+	    st = begsa[i];
+	    et = endsa[i];
+	    for(it=st+RAG_MINPEPLEN-1; it < et; ++it)
+	    {
+		AJNEW0(fr);
+		fr->start = st;
+		fr->end   = it;
+		fr->molwt = embPropCalcMolwt(s,st,it);
+		if(n == PROPENZCNBR)
+		    fr->molwt -= (17.045 + 31.095);
+		fr->isfrag = ajTrue;
+		ajListPush(*l,(void *)fr);
+	    }
+	}
+	
 	AJNEW0(fr);
 	fr->start  = begsa[i];
 	fr->end    = endsa[i];
 	fr->molwt  = molwtsa[i];
 	fr->isfrag = afrag[i];
 	ajListPush(*l,(void *) fr);
+
+	if(dorag && nterm)
+	    for(it=st+1; it < et-RAG_MINPEPLEN+2; ++it)
+	    {
+		AJNEW0(fr);
+		fr->start = it;
+		fr->end   = et;
+		fr->molwt = embPropCalcMolwt(s,it,et);
+		if(n == PROPENZCNBR)
+		    fr->molwt -= (17.045 + 31.095);
+		fr->isfrag = ajTrue;
+		ajListPush(*l,(void *)fr);
+	    }
     }
 
-    ajListSort(*l,propFragCompare);
+    if(!dorag)
+	ajListSort(*l,propFragCompare);
     *ncomp = defcnt;
 
 
@@ -417,6 +460,25 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
     {
 	for(i=0;i<lim;++i)
 	{
+	    if(dorag)
+	    {
+		st = begsa[i];
+		mt = endsa[i];
+		et = endsa[i+1];
+		if(cterm)
+		    for(it=mt+1; it < et; ++it)
+		    {
+			AJNEW0(fr);
+			fr->start = st;
+			fr->end   = it;
+			fr->molwt = embPropCalcMolwt(s,st,it);
+			if(n == PROPENZCNBR)
+			    fr->molwt -= (17.045 + 31.095);
+			fr->isfrag = ajTrue;
+			ajListPush(*l,(void *)fr);
+		    }
+	    }
+
 	    AJNEW0(fr);
 	    fr->isfrag = ajTrue;
 	    fr->molwt = embPropCalcMolwt(s,begsa[i],endsa[i+1]);
@@ -426,6 +488,19 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
 	    fr->end   = endsa[i+1];
 	    ajListPush(*pa,(void *)fr);
 	    ++(*npart);
+
+	    if(dorag && nterm)
+		for(it=st+1; it<mt; ++it)
+		{
+		    AJNEW0(fr);
+		    fr->start = it;
+		    fr->end   = et;
+		    fr->molwt = embPropCalcMolwt(s,it,et);
+		    if(n == PROPENZCNBR)
+			fr->molwt -= (17.045 + 31.095);
+		    fr->isfrag = ajTrue;
+		    ajListPush(*l,(void *)fr);
+		}
 	}
 
 	if(*npart)			/* Remove complete sequence */
@@ -433,7 +508,9 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
 	    --(*npart);
 	    ajListPop(*pa,(void **)&fr);
 	}
-	ajListSort(*pa,propFragCompare);
+
+	if(!dorag)
+	    ajListSort(*pa,propFragCompare);
     }
 
     if(allpartials)
@@ -457,7 +534,9 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
 	    --(*npart);
 	    ajListPop(*pa,(void **)&fr);
 	}
-	ajListSort(*pa,propFragCompare);
+
+	if(!dorag)
+	    ajListSort(*pa,propFragCompare);
     }
 
     if(defcnt)
