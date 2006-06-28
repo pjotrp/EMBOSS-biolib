@@ -1,4 +1,7 @@
 Version 4.0.0
+        Digest changed to add ragging option. Original code was
+	contributed by Gregoire R Thomas.
+
 	Digest changed to read a sequence stream (earlier versions read
 	only one sequence). Code for this was contributed by Henrikki
 	Almusa of Medicel in Finland.
