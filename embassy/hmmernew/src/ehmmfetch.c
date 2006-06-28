@@ -39,8 +39,8 @@ int main(int argc, char **argv)
     /* ACD data item variables */
     AjPFile database = NULL;
     AjPStr      name = NULL;
-    AjBool         n = ajFalse;
-    AjPFile    outfile = NULL;
+    AjBool      nhmm = ajFalse;
+    AjPFile  outfile = NULL;
 
     /* Housekeeping variables */
     AjPStr        cmd = NULL;
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
     database   = ajAcdGetInfile("database");
     name       = ajAcdGetString("name");
-    n          = ajAcdGetBool("n");
+    nhmm       = ajAcdGetBool("nhmm");
     outfile    = ajAcdGetOutfile("outfile");
     
 
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
        iv. HMMER & new parameters.
        */
     ajFmtPrintS(&cmd, "hmmfetch");
-    if(n)
+    if(nhmm)
 	ajStrAppendC(&cmd, " -n ");
     /* Note the output redirected to outfile  */
     ajFmtPrintAppS(&cmd, " %s %S > %s", 

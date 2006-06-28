@@ -72,7 +72,7 @@ section: required
   type: "page"
 ]
 
-string: n
+string: nhmm
 [
     standard: "Y"
     default: ""

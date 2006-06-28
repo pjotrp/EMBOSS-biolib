@@ -75,7 +75,7 @@ boolean: c
   help: "Predict a single majority-rule consensus sequence instead of sampling sequences from the HMM's probability distribution. Highly conserved residues (p >= 0.9 for DNA, p >= 0.5 for protein) are shown in upper case; others are shown in lower case.  Some insert states may become part of the majority rule consensus, because they are used in >= 50% of generated sequences; when this happens, insert-generated residues are simply shown as 'x'."
 ]
 
-integer: n  
+integer: nseq  
 [
   standard: "Y"
   default: "10"

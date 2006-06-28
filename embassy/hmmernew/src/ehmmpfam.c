@@ -39,10 +39,10 @@ int main(int argc, char **argv)
     /* ACD data item variables */
     AjPFile   hmmfile = NULL;
     AjPSeqall seqfile = NULL;
-    AjBool          n = 0;
+    AjBool        nuc = 0;
     ajint           A = 0;
-    float         E = 0.0;
-    float         T = 0.0;
+    float           E = 0.0;
+    float           T = 0.0;
     ajint           Z = 0;
     AjBool        acc = ajFalse;
     AjBool     compat = ajFalse;
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 
     hmmfile = ajAcdGetInfile("hmmfile");
     seqfile = ajAcdGetSeqall("seqfile");
-    n       = ajAcdGetBool("n");
+    nuc     = ajAcdGetBool("nuc");
     A       = ajAcdGetInt("A");
     E       = ajAcdGetFloat("E");
     T       = ajAcdGetFloat("T");
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
        iv. HMMER & new parameters.
        */
     ajFmtPrintS(&cmd, "hmmpfam");
-    if(n)
+    if(nuc)
 	ajStrAppendC(&cmd, " -n ");
     ajFmtPrintAppS(&cmd, " -A %d -E %f -T %f -Z %d", A, E, T, Z);
     if(acc)

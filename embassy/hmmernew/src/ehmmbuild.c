@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     AjPFile        null = NULL;
     AjPFile         pam = NULL;
     float        pamwgt = 0.0;
-    AjPStr            n = NULL;
+    AjPStr         nhmm = NULL;
     AjPStr    *strategy = NULL;
     ajint      pbswitch = 0;
     float       archpri = 0.0;
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     null      = ajAcdGetInfile("null");
     pam       = ajAcdGetInfile("pam");
     pamwgt    = ajAcdGetFloat("pamwgt");
-    n         = ajAcdGetString("n");
+    nhmm      = ajAcdGetString("nhmm");
     strategy  = ajAcdGetList("strategy");
     pbswitch  = ajAcdGetInt("pbswitch");
     archpri   = ajAcdGetFloat("archpri");
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 	ajFmtPrintS(&cmd, " --null %s ", ajFileName(null));
     if(pam)
 	ajFmtPrintAppS(&cmd, " --pam %s  --pamwgt %f ", ajFileName(pam), pamwgt);
-    ajFmtPrintAppS(&cmd, " -n %S ", n);
+    ajFmtPrintAppS(&cmd, " -n %S ", nhmm);
 
     /* ACD option only allows one selection */
     option = ajStrGetCharFirst(strategy[0]);
@@ -221,7 +221,7 @@ int main(int argc, char **argv)
 
 
     /* 6. Exit cleanly */
-    ajStrDel(&n);
+    ajStrDel(&nhmm);
     ajStrDel(&cmd);
     ajStrDel(&rnd1);
     ajStrDel(&rnd2);

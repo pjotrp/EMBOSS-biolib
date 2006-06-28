@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     ajint        seed  = 0;
     AjBool           a = ajFalse;
     AjBool           c = ajFalse;
-    ajint            n = 0;
+    ajint         nseq = 0;
     AjBool           q = 0;
     AjPFile          o = NULL;
 
@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     seed    = ajAcdGetInt("seed");
     a       = ajAcdGetBool("a");
     c       = ajAcdGetBool("c");
-    n       = ajAcdGetInt("n");
+    nseq    = ajAcdGetInt("nseq");
     q       = ajAcdGetBool("q");
     o       = ajAcdGetOutfile("o");
 
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 	ajStrAppendC(&cmd, " -a ");
     if(c)
 	ajStrAppendC(&cmd, " -c ");
-    ajFmtPrintAppS(&cmd, " -n %d ", n);
+    ajFmtPrintAppS(&cmd, " -n %d ", nseq);
     if(q)
 	ajStrAppendC(&cmd, " -q ");
     ajFmtPrintAppS(&cmd, " -o %s ", ajFileName(o));

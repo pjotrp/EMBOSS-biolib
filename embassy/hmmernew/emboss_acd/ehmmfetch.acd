@@ -45,7 +45,7 @@ section: advanced
   type: "page"
 ]
 
-boolean: n
+boolean: nhmm
 [
   information: "Interpret name as an HMM number."
   help: "Interpret name as an HMM number instead of a name.
