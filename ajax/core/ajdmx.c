@@ -177,7 +177,7 @@ AjPScopalg ajDmxScopalgNew(ajint n)
 
 /* @func ajDmxScopalgRead ***************************************************
 **
-** Read a Scopalg object from a file (see scopalign.c documentation).
+** Read a Scopalg object from a file. 
 ** 
 ** @param [u] inf      [AjPFile] Input file stream
 ** @param [w] thys     [AjPScopalg*]  Scopalg object
@@ -1289,7 +1289,6 @@ ajint ajDmxScopalgGetseqs(const AjPScopalg thys, AjPStr **arr)
 /* @func ajDmxScophitsWrite *************************************************
 **
 ** Write contents of a list of Scophits to an output file in embl-like format
-** (see scopalign.c documentation).
 ** Text for Class, Archhitecture, Topology, Fold, Superfamily and Family 
 ** is only written if the text is available.
 ** 
@@ -1424,7 +1423,6 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
 /* @func ajDmxScophitsWriteFasta ********************************************
 **
 ** Write contents of a list of Scophits to an output file in DHF format
-** (see scopalign.c documentation).
 ** Text for Class, Archhitecture, Topology, Fold, Superfamily and Family 
 ** is only written if the text is available.
 ** 
@@ -1740,8 +1738,6 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 
 AjBool ajDmxScopalgWrite(const AjPScopalg scop, AjPFile outf)
 {
-    /* Could modify scopalign.c to use this function now it is done */
-
     ajint x = 0;    
     ajint y = 0;    
     ajint tmp_wid  = 0;     /* Temp. variable for width */

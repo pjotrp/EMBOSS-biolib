@@ -171,9 +171,9 @@ typedef struct AjSScophit
 **
 ** Ajax Scopalg object.
 **
-** Holds data associated with a structure alignment that is generated 
-** by the EMBOSS applications scopalign.  Now adapted to hold CATH domain
-** data also by addition of Type, Architecture and Topology elements.
+** Holds data associated with a structure alignment.
+** Now adapted to hold CATH domain data also by addition of Type, 
+** Architecture and Topology elements.
 **
 ** AjPScopalg is implemented as a pointer to a C data structure.
 **
