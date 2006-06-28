@@ -5307,7 +5307,11 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
     ajStrDel(&s);
     ajStrDel(&tpath);
     ajListDel(&dirs);
-    
+
+	/* Sort list so that list of files is system-independent */
+	ajListSort(*result, ajStrVcmp);
+	
+
     if(result)
 	return ajListLength(*result);
     
