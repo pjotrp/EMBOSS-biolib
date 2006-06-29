@@ -1,5 +1,8 @@
 Version 4.0.0
-        Digest changed to add ragging option. Original code was
+        Restrict: alphabetic sorting fixed in the case where -limit
+	is specified
+        
+	Digest changed to add ragging option. Original code was
 	contributed by Gregoire R Thomas.
 
 	Digest changed to read a sequence stream (earlier versions read
