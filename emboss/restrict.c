@@ -299,6 +299,23 @@ static void restrict_printHits(AjPFile outf, AjPList l, const AjPStr name,
 
     hits = embPatRestrictRestrict(l,hits,!limit,alpha);
 
+    for(i=0;i<hits;++i)
+    {
+	ajListPop(l,(void **)&m);
+	if(limit)
+	{
+	    value = ajTableGet(table,m->cod);
+	    if(value)
+		ajStrAssignS(&m->cod,value);
+	}
+	ajListPushApp(l,(void *)m);
+    }
+
+    
+    if(alpha)
+	ajListSort2(l,embPatRestrictNameCompare, embPatRestrictStartCompare);
+
+
     if(frags)
     {
 	fa = AJALLOC(hits*2*sizeof(ajint));
@@ -506,20 +523,29 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 
     ajReportSetHeader(report, tmpStr);
 
+
     for(i=0;i<hits;++i)
     {
 	ajListPop(l,(void **)&m);
-	ajListPushApp(l,(void *)m);	/* Might need for ifrag display */
-	if(!plasmid && m->circ12)
-	    continue;
-
-
 	if(limit)
 	{
 	    value = ajTableGet(table,m->cod);
 	    if(value)
 		ajStrAssignS(&m->cod,value);
 	}
+	ajListPushApp(l,(void *)m);
+    }
+
+    
+    if(alpha)
+	ajListSort2(l,embPatRestrictNameCompare, embPatRestrictStartCompare);
+
+    for(i=0;i<hits;++i)
+    {
+	ajListPop(l,(void **)&m);
+	ajListPushApp(l,(void *)m);	/* Might need for ifrag display */
+	if(!plasmid && m->circ12)
+	    continue;
 
 	if(m->forward)
 	    cend = m->start + ajStrGetLen(m->pat) - 1;
