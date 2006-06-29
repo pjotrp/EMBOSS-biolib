@@ -3,6 +3,7 @@
 ** Retrieves CDS, mRNA and translations from feature tables
 **
 ** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** Last modified by Jon Ison Thu Jun 29 08:26:08 BST 2006
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -40,10 +41,12 @@ static void coderet_put_seq(const AjPSeq seq, const AjPStr strseq,
 
 int main(int argc, char **argv)
 {
-    AjPSeqall seqall = NULL;
-    AjPSeq seq       = NULL;
-    AjPSeqout seqout = NULL;
-    AjPFile logf     = NULL;
+    AjPSeqall seqall     = NULL;
+    AjPSeq seq           = NULL;
+    AjPSeqout seqout     = NULL;
+    AjPFile outfilecds   = NULL;
+    AjPFile outfilemrna  = NULL;
+    AjPFile outfileprot  = NULL;
 
     ajint ncds  = 0;
     ajint nmrna = 0;
@@ -72,7 +75,9 @@ int main(int argc, char **argv)
     dotran = ajAcdGetBool("translation");
 
     seqout = ajAcdGetSeqout("outseq");
-    logf = ajAcdGetOutfile("outfile");
+    outfilecds  = ajAcdGetOutfile("outfilecds");
+    outfilemrna = ajAcdGetOutfile("outfilemrna");
+    outfileprot = ajAcdGetOutfile("outfileprot");
 
     cds  = ajStrNew();
     mrna = ajStrNew();
@@ -86,25 +91,31 @@ int main(int argc, char **argv)
     ajStrAssignS(&usa,ajSeqallGetUsa(seqall));
 
     if(docds)
-	ajFmtPrintF(logf, "   CDS");
+	ajFmtPrintF(outfilecds, "   CDS");
 
     if(domrna)
-	ajFmtPrintF(logf, "  mRNA");
+	ajFmtPrintF(outfilemrna, "  mRNA");
 
     if(dotran)
-	ajFmtPrintF(logf, " Trans");
+	ajFmtPrintF(outfileprot, " Trans");
 
-    ajFmtPrintF(logf, " Total Sequence\n");
+    ajFmtPrintF(outfilecds,  " Total Sequence\n");
+    ajFmtPrintF(outfilemrna, " Total Sequence\n");
+    ajFmtPrintF(outfileprot, " Total Sequence\n");
+
     if(docds)
-	ajFmtPrintF(logf, " =====");
+	ajFmtPrintF(outfilecds, " =====");
 
     if(domrna)
-	ajFmtPrintF(logf, " =====");
+	ajFmtPrintF(outfilemrna, " =====");
 
     if(dotran)
-	ajFmtPrintF(logf, " =====");
+	ajFmtPrintF(outfileprot, " =====");
 
-    ajFmtPrintF(logf, " ===== ========\n");
+    ajFmtPrintF(outfilecds, " ===== ========\n");
+    ajFmtPrintF(outfilemrna, " ===== ========\n");
+    ajFmtPrintF(outfileprot, " ===== ========\n");
+
     while(ajSeqallNext(seqall,&seq))
     {
 	if(docds)
@@ -124,7 +135,7 @@ int main(int argc, char **argv)
 	    }
 	    if(ncds)
 		AJFREE(cdslines);
-	    ajFmtPrintF(logf, "%6d", ncds);
+	    ajFmtPrintF(outfilecds, "%6d", ncds);
 	}
 
 	if(domrna)
@@ -145,7 +156,7 @@ int main(int argc, char **argv)
 
 	    if(nmrna)
 		AJFREE(mrnalines);
-	    ajFmtPrintF(logf, "%6d", nmrna);
+	    ajFmtPrintF(outfilemrna, "%6d", nmrna);
 	}
 
 
@@ -161,9 +172,11 @@ int main(int argc, char **argv)
 
 	    if(ntran)
 		AJFREE(tranlines);
-	    ajFmtPrintF(logf, "%6d", ntran);
+	    ajFmtPrintF(outfileprot, "%6d", ntran);
 	}
-	ajFmtPrintF(logf, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq));
+	ajFmtPrintF(outfilecds, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq));
+	ajFmtPrintF(outfilemrna, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq));
+	ajFmtPrintF(outfileprot, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq));
     }
 
 
@@ -176,7 +189,9 @@ int main(int argc, char **argv)
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
     ajSeqoutDel(&seqout);
-    ajFileClose(&logf);
+    ajFileClose(&outfilecds);
+    ajFileClose(&outfilemrna);
+    ajFileClose(&outfileprot);
 
     ajExit();
 

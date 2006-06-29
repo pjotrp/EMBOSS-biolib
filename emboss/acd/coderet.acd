@@ -49,10 +49,22 @@ section: output [
     type: "any"
   ]
 
-  outfile: outfile [
+  outfile: outfilecds [
     parameter: "Y"
-    extension: "coderet"
-    knowntype: "coderet output"
+    extension: "coderetcds"
+    knowntype: "coderet cds output"
+  ]
+
+  outfile: outfilemrna [
+    parameter: "Y"
+    extension: "coderetmrns"
+    knowntype: "coderet mrna output"
+  ]
+
+  outfile: outfileprot [
+    parameter: "Y"
+    extension: "coderetprot"
+    knowntype: "coderet protein output"
   ]
 
 endsection: output
