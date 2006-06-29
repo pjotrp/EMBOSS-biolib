@@ -5,9 +5,10 @@
 **
 ** @author Copyright (C) David Martin (david.martin@biotek.uio.no) based on
 ** compseq by Gary Williams
+** @modified 29 June 2006    Jon Ison   All mods marked up with JISON
+** @modified 8 November 1999 David Martin.
 ** @@
 **
-** Last modified 8 November 1999 David Martin.
 **
 ** This program is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU General Public License
@@ -31,7 +32,6 @@
 
 static ajint oddcomp_readexpfreq(AjPTable *exptable, AjPFile compdata,
 				 ajint *size);
-static ajint oddcomp_makebigarray(ajlong no_elements, ajlong **bigarray);
 
 
 
@@ -45,43 +45,44 @@ static ajint oddcomp_makebigarray(ajlong no_elements, ajlong **bigarray);
 int main(int argc, char **argv)
 {
 
-    AjPSeqall seqall;
-    AjPSeq seq;
-    ajint word = 2;
-
-    AjPFile outfile;
-    AjPFile compdata;
-    ajint window;
-    ajint pos;
-    const char *s;
-    ajlong result;
-    ajlong *bigarray = NULL;
-    ajlong *windowbuffer = NULL;	/* ring buffer for sliding window */
-    ajulong no_elements;
-    AjBool first_time_round = ajTrue;
-    AjBool ignorebz = ajTrue;
-    ajulong count;
-    AjPStr dispseq = NULL;
-    AjPStr ajb = NULL;
-    ajulong total = 0;
-    ajulong other = 0;
-    AjBool otherflag;
-    AjBool seqisprot = ajTrue;
-    ajint increment = 1;
-    ajint ringsize;
-    ajlong steps = 0;
-
-    AjPTable exptable = NULL;		/* table of expected frequencies */
-    ajlong exp_freq;
-
+    AjPSeqall seqall      = NULL;
+    AjPSeq    seq         = NULL;
+    ajint     word        = 2;
+    AjPFile   outfile     = NULL;
+    AjPFile   compdata    = NULL;
+    ajint     window      = 0;
+    ajint     pos         = 0;
+    const     char *s     = NULL;
+    ajlong    result      = 0;
+    ajlong   *bigarray    = NULL;
+    ajlong   *windowbuffer= NULL;	/* ring buffer for sliding window */
+    ajulong   no_elements = 0;
+    AjBool    first_time_round = ajTrue;
+    AjBool    ignorebz    = ajTrue;
+    ajulong   count       = 0;
+    AjPStr    dispseq     = NULL;
+    AjPStr    ajb         = NULL;
+    ajulong   total       = 0;
+    ajulong   other       = 0;
+    AjBool    otherflag; 
+    AjBool    seqisprot   = ajTrue;
+    ajint     increment   = 1;
+    ajint     ringsize    = 0;
+    ajint     lastringsize= 0;          /* JISON */
+    ajlong    steps       = 0;
+    AjPTable  exptable    = NULL;	/* table of expected frequencies */
+    ajlong    exp_freq    = 0;
+    AjBool    fullwindow  = ajFalse;    /* JISON */
+    
 
     embInit("oddcomp", argc, argv);
 
-    seqall   = ajAcdGetSeqall("sequence");
-    window   = ajAcdGetInt("window");
-    outfile  = ajAcdGetOutfile("outfile");
-    compdata = ajAcdGetInfile("infile");
-    ignorebz = ajAcdGetBool("ignorebz");
+    seqall     = ajAcdGetSeqall("sequence");
+    window     = ajAcdGetInt("window");
+    outfile    = ajAcdGetOutfile("outfile");
+    compdata   = ajAcdGetInfile("infile");
+    ignorebz   = ajAcdGetBool("ignorebz");
+    fullwindow = ajAcdGetBool("fullwindow");
 
     /* Output some documentation to the results file */
     ajFmtPrintF(outfile, "#\n# Output from 'oddcomp'\n#\n");
@@ -101,18 +102,31 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
+	/* JISON entire 'if' block below */
+	if(fullwindow)
+	{
+	    window   = ajSeqGetLen(seq);    
+	    ringsize = window - word + 1;
+	}	
+	
 	steps = 0;
 	seqisprot = ajSeqIsProt(seq);
 	ajDebug("Reading sequence '%S'\n", ajSeqGetNameS(seq));
 
 	/* not interested in nucleotide sequences so ignore any that get in */
 	if(!seqisprot)
+	{
+	    lastringsize = ringsize;   /* JISON */
 	    continue;
-
+	}
+	
 	/* ignore sequences shorter than the window of interest */
 	if(ajSeqGetLen(seq)<window)
+	{
+	    lastringsize = ringsize;   /* JISON */
 	    continue;
-
+	}
+	
 
 	/*  first of all need to make a store for the results */
 	if(first_time_round)
@@ -122,14 +136,21 @@ int main(int argc, char **argv)
 		ajFatal("The word size is too large for the data "
 				"structure available.");
 
-
-	    oddcomp_makebigarray(no_elements, &bigarray);
-
-	    oddcomp_makebigarray(ringsize, &windowbuffer); /* create
-							      ring buffer */
+	    AJCNEW(bigarray, no_elements);
+	    AJCNEW(windowbuffer, ringsize);  /* create ring buffer */
 
 	    first_time_round = ajFalse;
 	}
+	/* JISON ... entire 'else' block below */
+	else
+	{
+	    if(ringsize > lastringsize)
+	    {
+		AJFREE(windowbuffer);
+		AJCNEW(windowbuffer, ringsize);
+	    }
+	}
+	
 
 	ajSeqFmtUpper(seq);
 	s = ajSeqGetSeqC(seq);
@@ -222,6 +243,7 @@ int main(int argc, char **argv)
 	    {
 		ajFmtPrintF(outfile, "\t%s\n", ajSeqGetNameC(seq));
 		total++;
+		lastringsize = ringsize;   /* JISON */
 		continue;
 	    }
 	}
@@ -288,8 +310,9 @@ int main(int argc, char **argv)
 		    steps--;
 	    }
 	}
-
+	lastringsize = ringsize;   /* JISON */
     }
+    
     ajFmtPrintF(outfile, "\n#\tEND\t#\n");
 
     ajFileClose(&outfile);
@@ -310,25 +333,6 @@ int main(int argc, char **argv)
     return 0;
 }
 
-
-
-
-/* @funcstatic oddcomp_makebigarray *******************************************
-**
-** Undocumented.
-**
-** @param [r] no_elements [ajlong] Undocumented
-** @param [w] bigarray [ajlong**] Undocumented
-** @return [ajint] Undocumented
-** @@
-******************************************************************************/
-
-static ajint oddcomp_makebigarray(ajlong no_elements, ajlong **bigarray)
-{
-    AJCNEW(*bigarray, no_elements);
-
-    return 0;
-}
 
 
 
