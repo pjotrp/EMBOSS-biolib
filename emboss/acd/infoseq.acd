@@ -16,6 +16,32 @@ section: input [
 
 endsection: input
 
+
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+
+boolean: columns
+[
+   default: "N"
+   information: "Print information in neat, aligned columns."
+   help: "Set this option on (Y) to print the sequence information into neat, aligned columns in the output file. Alternatively, leave it unset (N), in which case the information records will be delimited by a character, which you may specify by using the -delimiter option.  In other words, if -columns is set on, the -delimiter option is overriden."
+]
+
+string: delimiter
+[
+   default: "|"
+   information: "Delimiter of records in text output file"
+   help: "This string, which is usually a single character only, is used to delimit individual records in the text output file.  It could be a space character, a tab character, a pipe character or any other character or string."
+]
+
+endsection: advanced
+
+
+
 section: output [
   information: "Output section"
   type: "page"
@@ -46,7 +72,7 @@ section: output [
   ]
 
   boolean: heading  [
-    default: "@(!$(only))"
+    default: "Y"
     information: "Display column headings"
   ]
 
