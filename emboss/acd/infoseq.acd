@@ -26,7 +26,7 @@ section: advanced [
 
 boolean: columns
 [
-   default: "N"
+   default: "Y"
    information: "Print information in neat, aligned columns."
    help: "Set this option on (Y) to print the sequence information into neat, aligned columns in the output file. Alternatively, leave it unset (N), in which case the information records will be delimited by a character, which you may specify by using the -delimiter option.  In other words, if -columns is set on, the -delimiter option is overriden."
 ]
