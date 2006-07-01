@@ -299,20 +299,18 @@ static void restrict_printHits(AjPFile outf, AjPList l, const AjPStr name,
 
     hits = embPatRestrictRestrict(l,hits,!limit,alpha);
 
-    for(i=0;i<hits;++i)
-    {
-	ajListPop(l,(void **)&m);
-	if(limit)
+    if(limit)
+	for(i=0;i<hits;++i)
 	{
+	    ajListPop(l,(void **)&m);
 	    value = ajTableGet(table,m->cod);
 	    if(value)
 		ajStrAssignS(&m->cod,value);
+	    ajListPushApp(l,(void *)m);
 	}
-	ajListPushApp(l,(void *)m);
-    }
 
     
-    if(alpha)
+    if(alpha && limit)
 	ajListSort2(l,embPatRestrictNameCompare, embPatRestrictStartCompare);
 
 
@@ -524,20 +522,17 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
     ajReportSetHeader(report, tmpStr);
 
 
-    for(i=0;i<hits;++i)
-    {
-	ajListPop(l,(void **)&m);
-	if(limit)
+    if(limit)
+	for(i=0;i<hits;++i)
 	{
+	    ajListPop(l,(void **)&m);
 	    value = ajTableGet(table,m->cod);
 	    if(value)
 		ajStrAssignS(&m->cod,value);
+	    ajListPushApp(l,(void *)m);
 	}
-	ajListPushApp(l,(void *)m);
-    }
-
     
-    if(alpha)
+    if(alpha && limit)
 	ajListSort2(l,embPatRestrictNameCompare, embPatRestrictStartCompare);
 
     for(i=0;i<hits;++i)
