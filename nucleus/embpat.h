@@ -7,14 +7,6 @@ extern "C"
 #define embpat_h
 
 
-/*
- *  Defines for string search algorithms
- */
-#define AJALPHA  256			/* Alphabet			*/
-#define AJMOD256 0xff
-#define AJALPHA2 128			/* ASCII printable		*/
-#define AJWORD   32			/* Size of a word		*/
-#define AJBPS    1			/* Bits per state		*/
 
 
 
@@ -84,21 +76,15 @@ typedef struct EmbSPatRestrict
 
 
 
-/* @data EmbPPatBYPNode *******************************************************
-**
-** NUCLEUS data structure for nodes in Baeza-Yates & Perleberg algorithm
-**
-** @attr offset [ajint] Offset
-** @attr next [struct EmbSPatBYPNode*] Pointer to next node
-** @@
-******************************************************************************/
+#define EmbPPatBYPNode AjOPatBYPNode*
+#define EmbOPatBYPNode AjOPatBYPNode
 
-typedef struct EmbSPatBYPNode
-{
-    ajint offset;
-    struct EmbSPatBYPNode *next;
-} EmbOPatBYPNode;
-#define EmbPPatBYPNode EmbOPatBYPNode*
+
+ 
+ 
+ 
+#define EmbPPatComp AjOPatComp*
+
 
 
 
@@ -163,6 +149,14 @@ ajint           embPatGetType(const AjPStr pattern, AjPStr *cleanpat,
 			      ajint mismatch,
 			      AjBool protein,
 			      ajint *m, AjBool *left, AjBool *right);
+
+void		embPatCompileII (AjPPatComp thys, ajint mismatch);
+void		embPatFuzzSearchII (AjPPatComp thys, ajint begin,
+				   const AjPStr name, const AjPStr text,
+				   AjPList l, ajint mismatch, ajint *hits,
+				   void **tidy);
+ajint		embPatGetTypeII (AjPPatComp thys, const AjPStr pattern,
+				 ajint mismatch, AjBool protein);
 
 void            embPatKMPInit (const AjPStr pat, ajint len, ajint *next);
 ajint           embPatKMPSearch (const AjPStr str, const AjPStr pat,
