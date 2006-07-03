@@ -2,6 +2,8 @@
 **
 ** Finds fuzzy protein patterns in nucleic acid sequences
 ** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+**
+** Last modified by Jon Ison on Wed Jun 28 14:04:18 BST 2006
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -112,6 +114,7 @@ int main(int argc, char **argv)
 
     plen = ajStrGetLen(pattern);
     ajStrAssignS(&opattern,pattern);
+
 
     if(!(type=embPatGetType(opattern,&pattern,mismatch,1,&m,&amino,&carboxyl)))
 	ajFatal("Illegal pattern");
@@ -258,12 +261,12 @@ int main(int argc, char **argv)
 
 	    ajStrAssignC(&pro,"");
 	}
+	
+	/* Report always written even when there's no data */
+	ajReportWrite(report, tab, seq);
 
 	if(ajFeattableSize(tab))
-	{
-	  ajReportWrite(report, tab, seq);
-	  ajFeattableDel(&tab);
-	}
+	    ajFeattableDel(&tab);
 
 	ajListDel(&l);
 	ajStrDel(&text);

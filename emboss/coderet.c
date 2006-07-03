@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 		AJFREE(tranlines);
 	    /* ajFmtPrintF(outfile, "%6d", ntran); */
 	}
-	/*	ajFmtPrintF(outfile, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq)); */
+	/*ajFmtPrintF(outfile, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq)); */
     }
 
 
