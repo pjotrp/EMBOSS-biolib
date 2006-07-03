@@ -1,10 +1,40 @@
 Version 4.0.0
-        Restrict: alphabetic sorting fixed in the case where -limit
+        "a2m" alignment format (which is just fasta) is now supported in 
+	ACD.
+	
+        New EMBASSY MEME package containing "wrapper" applications 
+	providing an EMBOSS-style interface to the applications in 
+	the original MEME package version 3.0.14 developed by Timothy 
+	L. Bailey.  The package is fully documented.
+
+	New EMBASSY HMMER package contains "wrapper" applications 
+	providing an EMBOSS-style interface to the applications in 
+	the original HMMER package version 2.3.2 developed by Sean Eddy.
+	The package is fully documented.
+	
+        ACD dirlist: order of list of files is now system-indepdendent.
+
+	fuzztran: now always generates an output file, even if there
+	is no data. 
+
+	coderet: now writes any permutation of cds, mrna and protein 
+	sequence output to separate files.  Output file formats may
+	be set independently and have the default file extensions of
+	"cds", "mrna" and "prot".
+
+	oddcomp: New ACD option to set the window size equal to length 
+	of the current protein.  Code cleaned up.
+	
+	Restrict: alphabetic sorting fixed in the case where -limit
 	is specified
         
 	Digest changed to add ragging option. Original code was
 	contributed by Gregoire R Thomas.
 
+	infoseq: code largely rewritten.  Two new advanced ACD options 
+	to specify output using a user-defined delimiter or in columns.  
+	Output much cleaner, e.g. columns are aligned.
+	
 	Digest changed to read a sequence stream (earlier versions read
 	only one sequence). Code for this was contributed by Henrikki
 	Almusa of Medicel in Finland.
