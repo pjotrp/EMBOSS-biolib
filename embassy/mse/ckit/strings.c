@@ -1,4 +1,4 @@
-/***  strings.c  *********************************************************
+/***  Strings.c  *********************************************************
 ** 
 **  This file contains several string manipulation routines.
 **
@@ -209,7 +209,7 @@ char *ptr=string;
 
 /***  StrChange *******************************************************
 **
-**  This function returns at pointer to "String" after replacing all
+**  This function returns a pointer to "String" after replacing all
 **  occurences of the character "before" with the character "after".
 **
 **  Restiction: Only single character replacements are possible.
@@ -220,13 +220,14 @@ char *ptr=string;
 
 char *StrChange(char *string, char before, char after )
 {
+    char* cp = string;
 
-	while( *string ) {
-	  if ( *string == before ) *string = after;
-	  *string++;
+	while( *cp ) {
+	  if ( *cp == before ) *cp = after;
+	  cp++;
 	}
 
-	return(string);
+	return(cp);
 
 } /* End of StrChange */
 

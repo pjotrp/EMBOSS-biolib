@@ -127,15 +127,15 @@ static int comp[26] = {
 char *DNAtoRNA(char *strand)
 
 {
-char *ptr = strand;
+    char *ptr = strand;
 
-	while( *strand ) {
-	  if ( *strand == 'T' ) *strand = 'U';
-	  if ( *strand == 't' ) *strand = 'u';
-	  *strand++;
+	while( *ptr ) {
+	  if ( *ptr == 'T' ) *ptr = 'U';
+	  if ( *ptr == 't' ) *ptr = 'u';
+	  ptr++;
 	}
 
-	return(ptr);
+	return(strand);
 
 } /* End of DNAtoRNA */
 
@@ -148,15 +148,15 @@ char *ptr = strand;
 char *RNAtoDNA(char *strand)
 
 {
-char *ptr = strand;
+    char *ptr = strand;
 
-	while( *strand ) {
-	  if ( *strand == 'U' ) *strand = 'T';
-	  if ( *strand == 'u' ) *strand = 't';
-	  *strand++;
+	while( *ptr ) {
+	  if ( *ptr == 'U' ) *ptr = 'T';
+	  if ( *ptr == 'u' ) *ptr = 't';
+	  ptr++;
 	}
 
-	return(ptr);
+	return(strand);
 
 } /* End of RNAtoDNA */
 
