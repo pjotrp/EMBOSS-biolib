@@ -41,12 +41,11 @@ static void coderet_put_seq(const AjPSeq seq, const AjPStr strseq,
 
 int main(int argc, char **argv)
 {
-    AjPSeqall seqall     = NULL;
-    AjPSeq seq           = NULL;
-    AjPSeqout seqout     = NULL;
-    AjPFile outfilecds   = NULL;
-    AjPFile outfilemrna  = NULL;
-    AjPFile outfileprot  = NULL;
+    AjPSeqall seqall      = NULL;
+    AjPSeq seq            = NULL;
+    AjPSeqout seqoutcds   = NULL;
+    AjPSeqout seqoutmrna  = NULL;
+    AjPSeqout seqoutprot  = NULL;
 
     ajint ncds  = 0;
     ajint nmrna = 0;
@@ -74,10 +73,9 @@ int main(int argc, char **argv)
     docds  = ajAcdGetBool("cds");
     dotran = ajAcdGetBool("translation");
 
-    seqout = ajAcdGetSeqout("outseq");
-    outfilecds  = ajAcdGetOutfile("outfilecds");
-    outfilemrna = ajAcdGetOutfile("outfilemrna");
-    outfileprot = ajAcdGetOutfile("outfileprot");
+    seqoutcds  = ajAcdGetSeqout("seqoutcds");
+    seqoutmrna = ajAcdGetSeqout("seqoutmrna");
+    seqoutprot = ajAcdGetSeqout("seqoutprot");
 
     cds  = ajStrNew();
     mrna = ajStrNew();
@@ -90,31 +88,6 @@ int main(int argc, char **argv)
     */
     ajStrAssignS(&usa,ajSeqallGetUsa(seqall));
 
-    if(docds)
-	ajFmtPrintF(outfilecds, "   CDS");
-
-    if(domrna)
-	ajFmtPrintF(outfilemrna, "  mRNA");
-
-    if(dotran)
-	ajFmtPrintF(outfileprot, " Trans");
-
-    ajFmtPrintF(outfilecds,  " Total Sequence\n");
-    ajFmtPrintF(outfilemrna, " Total Sequence\n");
-    ajFmtPrintF(outfileprot, " Total Sequence\n");
-
-    if(docds)
-	ajFmtPrintF(outfilecds, " =====");
-
-    if(domrna)
-	ajFmtPrintF(outfilemrna, " =====");
-
-    if(dotran)
-	ajFmtPrintF(outfileprot, " =====");
-
-    ajFmtPrintF(outfilecds, " ===== ========\n");
-    ajFmtPrintF(outfilemrna, " ===== ========\n");
-    ajFmtPrintF(outfileprot, " ===== ========\n");
 
     while(ajSeqallNext(seqall,&seq))
     {
@@ -130,12 +103,12 @@ int main(int argc, char **argv)
 		    ajWarn("Cannot extract %s\n",ajSeqName(seq));
 		    continue;
 		}
-		coderet_put_seq(seq,cds,i,"cds",0,seqout);
+		coderet_put_seq(seq,cds,i,"cds",0,seqoutcds);
 		ajStrDel(&cdslines[i]);
 	    }
 	    if(ncds)
 		AJFREE(cdslines);
-	    ajFmtPrintF(outfilecds, "%6d", ncds);
+	    /* ajFmtPrintF(outfile, "%6d", ncds); */
 	}
 
 	if(domrna)
@@ -150,13 +123,13 @@ int main(int argc, char **argv)
 		    ajWarn("Cannot extract %s",ajSeqName(seq));
 		    continue;
 		}
-		coderet_put_seq(seq,mrna,i,"mrna",0,seqout);
+		coderet_put_seq(seq,mrna,i,"mrna",0,seqoutmrna);
 		ajStrDel(&mrnalines[i]);
 	    }
 
 	    if(nmrna)
 		AJFREE(mrnalines);
-	    ajFmtPrintF(outfilemrna, "%6d", nmrna);
+	    /* ajFmtPrintF(outfile, "%6d", nmrna);*/
 	}
 
 
@@ -166,21 +139,24 @@ int main(int argc, char **argv)
 
 	    for(i=0;i<ntran;++i)
 	    {
-		coderet_put_seq(seq,tranlines[i],i,"pro",1,seqout);
+		coderet_put_seq(seq,tranlines[i],i,"pro",1,seqoutprot);
 		ajStrDel(&tranlines[i]);
 	    }
 
 	    if(ntran)
 		AJFREE(tranlines);
-	    ajFmtPrintF(outfileprot, "%6d", ntran);
+	    /* ajFmtPrintF(outfile, "%6d", ntran); */
 	}
-	ajFmtPrintF(outfilecds, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq));
-	ajFmtPrintF(outfilemrna, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq));
-	ajFmtPrintF(outfileprot, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq));
+	/*	ajFmtPrintF(outfile, "%6d %s\n", ncds+nmrna+ntran, ajSeqName(seq)); */
     }
 
 
-    ajSeqWriteClose(seqout);
+    if(docds)
+	ajSeqWriteClose(seqoutcds);
+    if(domrna)
+	ajSeqWriteClose(seqoutmrna);
+    if(dotran)
+	ajSeqWriteClose(seqoutprot);
 
 
     ajStrDel(&cds);
@@ -188,10 +164,9 @@ int main(int argc, char **argv)
     ajStrDel(&usa);
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
-    ajSeqoutDel(&seqout);
-    ajFileClose(&outfilecds);
-    ajFileClose(&outfilemrna);
-    ajFileClose(&outfileprot);
+    ajSeqoutDel(&seqoutcds);
+    ajSeqoutDel(&seqoutmrna);
+    ajSeqoutDel(&seqoutprot);
 
     ajExit();
 

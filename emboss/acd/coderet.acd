@@ -1,70 +1,83 @@
-application: coderet [
+application: coderet 
+[
   documentation: "Extract CDS, mRNA and translations from
                   feature tables"
   groups: "Feature tables, Nucleic:Translation"
 ]
 
-section: input [
+section: input 
+[
   information: "Input section"
   type: "page"
 ]
 
-  seqall: seqall  [
+seqall: seqall  
+[
     parameter: "Y"
     type: "DNA"
     entry: "Y"
-  ]
+]
 
 endsection: input
 
-section: advanced [
+section: advanced 
+[
   information: "Advanced section"
   type: "page"
 ]
 
-  boolean: cds  [
+boolean: cds  
+[
     default: "Y"
     information: "Extract CDS sequences"
-  ]
+]
 
-  boolean: mrna  [
+boolean: mrna  
+[
     default: "Y"
     information: "Extract mrna sequences"
-  ]
+]
 
-  boolean: translation  [
+boolean: translation  
+[
     default: "Y"
     information: "Extract translated sequences"
-  ]
+]
 
 endsection: advanced
 
-section: output [
+section: output 
+[
   information: "Output section"
   type: "page"
 ]
 
-  seqout: outseq [
-    parameter: "Y"
-    type: "any"
-  ]
+seqout: seqoutcds 
+[
+    standard: "$(cds)"
+    type: "nucleotide"
+    information: "CDS sequences"
+    osextension: "cds"
+    nullok: "Y"
+]
 
-  outfile: outfilecds [
-    parameter: "Y"
-    extension: "coderetcds"
-    knowntype: "coderet cds output"
-  ]
+seqout: seqoutmrna 
+[
+    standard: "$(mrna)"
+    type: "nucleotide"
+    information: "mrna sequences"
+    osextension: "mrna"
+    nullok: "Y"
+]
 
-  outfile: outfilemrna [
-    parameter: "Y"
-    extension: "coderetmrns"
-    knowntype: "coderet mrna output"
-  ]
+seqout: seqoutprot 
+[
+    standard: "$(translation)"
+    type: "protein"
+    information: "Translated (protein) sequences"
+    osextension: "prot"
+    nullok: "Y"
+]
 
-  outfile: outfileprot [
-    parameter: "Y"
-    extension: "coderetprot"
-    knowntype: "coderet protein output"
-  ]
 
 endsection: output
