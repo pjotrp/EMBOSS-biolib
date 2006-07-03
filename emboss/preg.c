@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 
     report = ajAcdGetReport("outfile");
     seqall = ajAcdGetSeqall("sequence");
-    patexp = ajAcdGetRegexp("pattern");
+    patexp = ajAcdGetRegexpSingle("pattern");
 
     ajFmtPrintAppS (&tmpstr, "Pattern: %S\n", ajAcdGetValue("pattern"));
     ajReportSetHeader (report, tmpstr);

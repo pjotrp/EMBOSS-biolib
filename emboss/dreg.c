@@ -51,7 +51,7 @@ int main(int argc, char **argv)
 
     report = ajAcdGetReport ("outfile");
     seqall = ajAcdGetSeqall("sequence");
-    patexp = ajAcdGetRegexp("pattern");
+    patexp = ajAcdGetRegexpSingle("pattern");
 
     ajFmtPrintAppS (&tmpstr, "Pattern: %S\n", ajAcdGetValue("pattern"));
     ajReportSetHeader (report, tmpstr);
@@ -61,8 +61,9 @@ int main(int argc, char **argv)
 	ipos  = 1;
 	ajStrAssignS(&str, ajSeqGetSeqS(seq));
 	ajStrFmtUpper(&str);
-	ajDebug("Testing '%s' len: %d %d\n",
-		ajSeqGetNameC(seq), ajSeqGetLen(seq), ajStrGetLen(str));
+	ajDebug("Testing '%s' len: %d %d regex %x\n",
+		ajSeqGetNameC(seq), ajSeqGetLen(seq), ajStrGetLen(str),
+		patexp);
 	feat = ajFeattableNewDna(ajSeqGetNameS(seq));
 	while(ajStrGetLen(str) && ajRegExec(patexp, str))
 	{

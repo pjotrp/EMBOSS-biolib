@@ -23,7 +23,7 @@ section: required [
   type: "page"
 ]
 
-  string: pattern  [
+  pattern: pattern  [
     standard: "Y"
     information: "Search pattern"
     help: "The standard IUPAC one-letter codes for the nucleotides are
@@ -48,14 +48,8 @@ section: required [
            respectively ends with a `>' symbol. \
            A period ends the pattern. (Optional in fuzznuc). \
            For example, [CG](5)TG{A}N(1,5)C"
-     knowntype: "prosite nucleotide pattern"
-  ]
-
-  integer: mismatch  [
-    standard: "Y"
-    default: "0"
-    minimum: "0"
-    information: "Number of mismatches"
+     type: "nucleotide"
+     pmismatch: "0"
   ]
 
 endsection: required
@@ -79,7 +73,7 @@ section: output [
 
   report: outfile  [
     parameter: "Y"
-    taglist: "int:mismatch=Mismatch"
+    taglist: "str:pat=Pattern_name int:mismatch=Mismatch"
     rformat: "seqtable"
     precision: "0"
   ]

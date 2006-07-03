@@ -25,13 +25,9 @@
 #include "stdlib.h"
 
 
-
-
-static void fuzztran_save_hits(AjPList l, ajint hits, ajint fnum,
-			       const AjPStr pro,
-			       AjPFeattable* ptab, const AjPSeq seq);
-
-
+static void fuzztran_SourceFeature(const AjPFeattable thys, const AjPSeq pseq,
+				   ajint start, ajint frame,
+				   AjPFeattable sourcetab);
 
 
 /* @prog fuzztran *************************************************************
@@ -46,12 +42,9 @@ int main(int argc, char **argv)
     AjPSeq seq;
     AjPReport report = NULL;
     AjPFeattable tab = NULL;
-    AjPStr pattern   = NULL;
-    AjPStr opattern  = NULL;
-    AjPStr seqname   = NULL;
-    AjPStr text      = NULL;
-
-    AjPList l;
+    AjPFeattable seqtab = NULL;
+    AjPPatlistSeq plist = NULL;
+    AjPSeq pseq = NULL;
 
     AjPStr gcode;
     AjPTrn trantable;
@@ -60,232 +53,116 @@ int main(int argc, char **argv)
     AjPStr pro = NULL;
     ajint frameno;
 
+    AjPStr text = NULL;
 
-    ajint plen;
-    ajint mismatch;
-
-    AjBool amino;
-    AjBool carboxyl;
-
-    ajint type = 0;
-    ajint *buf = NULL;
-    ajint hits = 0;
-    ajint m;
-    ajint i;
     ajint begin;
     ajint end;
 
-    EmbOPatBYPNode off[AJALPHA];
-
-    ajuint *sotable = NULL;
-    ajuint solimit;
-
-    AjPStr regexp = NULL;
-    ajint **skipm = NULL;
-
-
     AjPStr tmpstr = NULL;
-    void  *tidy   = NULL;
 
     embInit("fuzztran", argc, argv);
 
     seqall   = ajAcdGetSeqall("sequence");
-    pattern  = ajAcdGetString("pattern");
+    plist    = ajAcdGetPattern("pattern");
     report   = ajAcdGetReport("outfile");
-    mismatch = ajAcdGetInt("mismatch");
     gcode    = ajAcdGetListSingle("table");
     frame    = ajAcdGetListSingle("frame");
 
-    ajFmtPrintAppS(&tmpstr, "Pattern: %S\n", pattern);
-    ajFmtPrintAppS(&tmpstr, "Mismatch: %d\n", mismatch);
+    ajPatlistSeqDoc(plist, &tmpstr);
     ajFmtPrintAppS(&tmpstr, "TransTable: %S\n", ajAcdGetValue("table"));
     ajFmtPrintAppS(&tmpstr, "Frames: %S\n", ajAcdGetValue("frame"));
     ajReportSetHeader(report, tmpstr);
-
-
-    ajStrTrimEndC(&pattern," .\t\n");
-
-    seqname  = ajStrNew();
-    opattern = ajStrNew();
 
     ajStrToInt(gcode,&table);
 
     trantable = ajTrnNewI(table);
 
-    plen = ajStrGetLen(pattern);
-    ajStrAssignS(&opattern,pattern);
-
-
-    if(!(type=embPatGetType(opattern,&pattern,mismatch,1,&m,&amino,&carboxyl)))
-	ajFatal("Illegal pattern");
-    embPatCompile(type,pattern,&plen,&buf,off,&sotable,&solimit,
-		  &m,&regexp,&skipm,mismatch);
-
-
-    text = ajStrNew();
-    pro  = ajStrNew();
-
-
     while(ajSeqallNext(seqall,&seq))
     {
-	l = ajListNew();
-	ajStrAssignC(&seqname,ajSeqGetNameC(seq));
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
 	ajStrAssignSubC(&text,ajSeqGetSeqC(seq),begin-1,end-1);
 	ajStrFmtUpper(&text);
+	seqtab = ajFeattableNewDna(ajSeqGetNameS(seq));
 
-	if(!ajStrCmpC(frame,"F"))
+	if(ajStrMatchCaseC(frame,"F") || ajStrMatchCaseC(frame,"6"))
 	{
+	    tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+	    ajStrAssignC(&pro,"");
 	    ajTrnStrFrame(trantable,text,1,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,1, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,2,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,2, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,3,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,3, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-	}
-	else if(!ajStrCmpC(frame,"R"))
-	{
-	    ajTrnStrFrame(trantable,text,-1,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits, -1, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,-2,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,-2, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,-3,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,-3, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-	}
-	else if(!ajStrCmpC(frame,"6"))
-	{
-	    ajTrnStrFrame(trantable,text,1,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits, 1, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,2,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits, 2, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,3,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,3, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,-1,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,-1, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,-2,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits, -2, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-
-	    ajTrnStrFrame(trantable,text,-3,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits, -3, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-	}
-	else
-	{
-	    ajStrToInt(frame,&frameno);
-	    ajTrnStrFrame(trantable,text,frameno,&pro);
-	    embPatFuzzSearch(type,begin,pattern,seqname,pro,l,
-			     plen,mismatch,amino,carboxyl,buf,off,sotable,
-			     solimit,regexp,skipm,&hits,m,&tidy);
-	    if(hits)
-		fuzztran_save_hits(l,hits,frameno, pro, &tab, seq);
-
-	    ajStrAssignC(&pro,"");
-	}
-	
-	/* Report always written even when there's no data */
-	ajReportWrite(report, tab, seq);
-
-	if(ajFeattableSize(tab))
+	    pseq = ajSeqNewNameS(pro, ajSeqGetNameS(seq));
+	    embPatlistSeqSearch(tab,pseq,plist,ajFalse);
+	    fuzztran_SourceFeature(tab, pseq, begin, 1, seqtab);
 	    ajFeattableDel(&tab);
+	    ajSeqDel(&pseq);
 
-	ajListDel(&l);
+	    tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+	    ajStrAssignC(&pro,"");
+	    ajTrnStrFrame(trantable,text,2,&pro);
+	    pseq = ajSeqNewNameS(pro, ajSeqGetNameS(seq));
+	    embPatlistSeqSearch(tab,pseq,plist,ajFalse);
+	    fuzztran_SourceFeature(tab, pseq, begin, 2, seqtab);
+	    ajFeattableDel(&tab);
+	    ajSeqDel(&pseq);
+
+	    tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+	    ajStrAssignC(&pro,"");
+	    ajTrnStrFrame(trantable,text,3,&pro);
+	    pseq = ajSeqNewNameS(pro, ajSeqGetNameS(seq));
+	    embPatlistSeqSearch(tab,pseq,plist,ajFalse);
+	    fuzztran_SourceFeature(tab, pseq, begin, 3, seqtab);
+	    ajFeattableDel(&tab);
+	    ajSeqDel(&pseq);
+	}
+	if(ajStrMatchCaseC(frame,"R") || ajStrMatchCaseC(frame,"6"))
+	{
+	    tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+	    ajStrAssignC(&pro,"");
+	    ajTrnStrFrame(trantable,text,-1,&pro);
+	    pseq = ajSeqNewNameS(pro, ajSeqGetNameS(seq));
+	    embPatlistSeqSearch(tab,pseq,plist,ajFalse);
+	    fuzztran_SourceFeature(tab, pseq, begin, -1, seqtab);
+	    ajFeattableDel(&tab);
+	    ajSeqDel(&pseq);
+
+	    tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+	    ajStrAssignC(&pro,"");
+	    ajTrnStrFrame(trantable,text,-2,&pro);
+	    pseq = ajSeqNewNameS(pro, ajSeqGetNameS(seq));
+	    embPatlistSeqSearch(tab,pseq,plist,ajFalse);
+	    fuzztran_SourceFeature(tab, pseq, begin, -2, seqtab);
+	    ajFeattableDel(&tab);
+	    ajSeqDel(&pseq);
+
+	    tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+	    ajStrAssignC(&pro,"");
+	    ajTrnStrFrame(trantable,text,-3,&pro);
+	    pseq = ajSeqNewNameS(pro, ajSeqGetNameS(seq));
+	    embPatlistSeqSearch(tab,pseq,plist,ajFalse);
+	    fuzztran_SourceFeature(tab, pseq, end, -3, seqtab);
+	    ajFeattableDel(&tab);
+	    ajSeqDel(&pseq);
+	}
+	ajStrToInt(frame,&frameno);
+	if(frameno != 0 && frameno != 6)
+	{
+	    tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+	    ajStrAssignC(&pro,"");
+	    ajTrnStrFrame(trantable,text,frameno,&pro);
+	    pseq = ajSeqNewNameS(pro, ajSeqGetNameS(seq));
+	    embPatlistSeqSearch(tab,pseq,plist,ajFalse);
+	    fuzztran_SourceFeature(tab, pseq, begin, frameno, seqtab);
+	    ajFeattableDel(&tab);
+	    ajSeqDel(&pseq);
+	}
+
+	ajReportWrite(report, seqtab, seq);
 	ajStrDel(&text);
     }
 
 
-
-    if(type==6)
-	for(i=0;i<m;++i)
-	    AJFREE(skipm[i]);
-
-    if(tidy)
-	AJFREE(tidy);
-
     ajStrDel(&pro);
     ajStrDel(&text);
-    ajStrDel(&pattern);
-    ajStrDel(&opattern);
-    ajStrDel(&seqname);
     ajStrDel(&tmpstr);
 
     ajStrDel(&gcode);
@@ -293,6 +170,7 @@ int main(int argc, char **argv)
 
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
+    ajSeqDel(&pseq);
 
     ajReportClose(report);
     ajReportDel(&report);
@@ -306,117 +184,111 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic fuzztran_save_hits *********************************************
+/* @funcstatic fuzztran_SourceFeature *****************************************
 **
-** Save the hits in a feature table for later reporting.
+** Creates a dna source feature matching the all features in a
+** protein fetaure table.
 **
-** @param [u] l [AjPList] List of hits stored as EmbPMatch objects
-** @param [r] hits [ajint] Number of hits
-** @param [r] fnum [ajint] Frame number 1, 2, 3, -1, -2 or -3.
-** @param [r] pro [const AjPStr] Protein translation
-** @param [u] ptab [AjPFeattable*] Feature table (created if first use)
-** @param [r] seq [const AjPSeq] Sequence
+** @param [r] thys [const AjPFeattable] Protein feature table object
+** @param [r] thys [const AjPFeattableSeq] Protein sequence object
+** @param [r] start [ajuint] Start position in source sequence
+**                           (base position of start of first codon,
+**                           counted from the start of the sequence)
+** @param [r] frame [ajuint] Reading frame 1, 2 or 3 for forward and
+**                           -1 -2 or -3 for reverse
+** @param [u] thys [AjPFeattable] Protein feature table object
+** @return [void]
 ** @@
 ******************************************************************************/
 
-
-static void fuzztran_save_hits(AjPList l, ajint hits, ajint fnum,
-			       const AjPStr pro,
-			       AjPFeattable* ptab, const AjPSeq seq)
+static void fuzztran_SourceFeature(const AjPFeattable thys, const AjPSeq pseq,
+				   ajint start, ajint frame,
+				   AjPFeattable sourcetab)
 {
-    ajint i;
-    EmbPMatMatch m;
-    ajint ff;
-    AjBool forward;
-    ajint slen;
-    ajint npos;
-    ajint nlast;
-    AjPFeattable tab;
-    char strand = '+';
-    ajint begin;
-    ajint end;
-    AjPFeature gf = NULL;
+    AjIList iter=NULL;
+    AjPFeature protfeature = NULL;
+    AjPFeature sourcefeature = NULL;
+    char strand;
+    ajint framenum;
+    AjBool rev;
+    ajint begin = 0;
+    ajint end = 0;
     AjPStr fthit = NULL;
     AjPStr s = NULL;
     AjPStr t = NULL;
+    AjPStr v = NULL;
 
-    if(!fthit)
-	ajStrAssignC(&fthit, "hit");
+    ajStrAssignC(&fthit, "hit");
 
-    if(!*ptab)
-	*ptab = ajFeattableNewSeq(seq);
-
-    tab = *ptab;
-
-    begin = ajSeqGetBegin(seq);
-    end   = ajSeqGetEnd(seq);
-
-    forward=ajTrue;
-    if(fnum<0)
+    if(frame > 0)
     {
-	forward=ajFalse;
+	strand = '+';
+	framenum = frame;
+	rev = ajFalse;
+    }
+    else
+    {
 	strand = '-';
+	framenum = -frame;
+	rev = ajTrue;
     }
 
-    slen = end-begin+1;
-
-    s = ajStrNew();
-    ff = abs(fnum);
-    if(ff>3)
+    if(thys->Features)
     {
-	ff -= 3;
-	forward = ajFalse;
+	iter = ajListIter(thys->Features) ;
+	while(ajListIterMore(iter))
+	{
+	    protfeature = (AjPFeature)ajListIterNext (iter);
+	    if(rev)
+	    {
+		begin = start - framenum
+		    - 3*protfeature->Start + 4;
+		end = start - framenum
+		    - 3*protfeature->End + 2;
+	    }
+	    else
+	    {
+		begin = start + framenum
+		    + 3*protfeature->Start - 4;
+		end = start + framenum
+		    + 3*protfeature->End - 2;
+	    }
+	    sourcefeature = ajFeatNew(sourcetab, NULL, fthit, begin, end,
+				      ajFeatGetScore(protfeature),
+				      strand, framenum);
+	    if(ajFeatGetNoteC(protfeature, "pat", &v))
+	    {
+		ajFmtPrintS(&s, "*pat %S", v);
+		ajFeatTagAdd(sourcefeature, NULL, s);
+	    }
+	    if(ajFeatGetNoteC(protfeature, "mismatch", &v))
+	    {
+		ajFmtPrintS(&s, "*mismatch %S", v);
+		ajFeatTagAdd(sourcefeature, NULL, s);
+	    }
+	    ajFmtPrintS(&s, "*frame %d", framenum);
+	    ajFeatTagAdd(sourcefeature, NULL, s);
+
+	    ajFmtPrintS(&s, "*start %d", ajFeatGetStart(protfeature));
+	    ajFeatTagAdd(sourcefeature, NULL, s);
+
+	    ajFmtPrintS(&s, "*end %d", ajFeatGetEnd(protfeature));
+	    ajFeatTagAdd(sourcefeature, NULL, s);
+
+	    ajStrAssignSubS(&t,ajSeqGetSeqS(pseq),
+			    ajFeatGetStart(protfeature)-1,
+			    ajFeatGetEnd(protfeature)-1);
+	    ajFmtPrintS(&s, "*translation %S", t);
+	    ajFeatTagAdd(sourcefeature, NULL, s);
+
+	}
+	ajListIterFree(&iter) ;
     }
 
-    ff %= 3;
-    if(ff)
-	ff -= 3;
-
-    ajListReverse(l);
-
-    for(i=0;i<hits;++i)
-    {
-	ajListPop(l,(void **)&m);
-	if(forward)
-	{
-	    npos  = (m->start*3) + ff + (begin-1);
-	    nlast = npos + m->len*3 - 1;
-	}
-	else
-	{
-	    nlast = (slen/3)*3  - (m->start*3) - (fnum-1) + (begin);
-	    npos  = nlast - m->len*3 + 1;
-	}
-
-        gf = ajFeatNew(tab, NULL, fthit, npos, nlast,
-		       (float) (m->len - m->mm), strand, fnum);
-
-	if(m->mm)
-	{
-	    ajFmtPrintS(&s, "*mismatch %d", m->mm);
-	    ajFeatTagAdd(gf, NULL, s);
-	}
-
-	ajFmtPrintS(&s, "*frame %d", fnum);
-	ajFeatTagAdd(gf, NULL, s);
-
-	ajFmtPrintS(&s, "*start %d", m->start);
-	ajFeatTagAdd(gf, NULL, s);
-
-	ajFmtPrintS(&s, "*end %d", m->start + m->len - 1);
-	ajFeatTagAdd(gf, NULL, s);
-
-	ajStrAssignSubS(&t,pro,m->start-1,m->start+m->len-2);
-	ajFmtPrintS(&s, "*translation %S", t);
-	ajFeatTagAdd(gf, NULL, s);
-
-	embMatMatchDel(&m);
-    }
-
-
+    ajStrDel(&fthit);
     ajStrDel(&s);
     ajStrDel(&t);
-    ajStrDel(&fthit);
+    ajStrDel(&v);
 
     return;
 }

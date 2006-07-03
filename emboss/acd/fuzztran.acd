@@ -23,7 +23,7 @@ section: required [
   type: "page"
 ]
 
-  string: pattern  [
+  pattern: pattern  [
     standard: "Y"
     information: "Search pattern"
     help: "The standard IUPAC one-letter codes for the amino acids are
@@ -48,14 +48,8 @@ section: required [
            respectively ends with a `>' symbol. \
            A period ends the pattern. (Optional in fuzztran). \
            For example, [DE](2)HS{P}X(2)PX(2,4)C"
-    knowntype: "prosite pattern"
-  ]
-
-  integer: mismatch  [
-    standard: "Y"
-    default: "0"
-    minimum: "0"
-    information: "Number of mismatches"
+     type: "protein"
+     pmismatch: "0"
   ]
 
 endsection: required
@@ -108,7 +102,7 @@ section: output [
 
   report: outfile  [
     parameter: "Y"
-    taglist: "int:mismatch=Mismatch int:frame=Frame
+    taglist: "str:pat=Pattern_name int:mismatch=Mismatch int:frame=Frame
               int:start=PStart int:end=PEnd str:translation=Translation"
     rformat: "table"
     precision: "0"

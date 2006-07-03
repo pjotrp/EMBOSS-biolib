@@ -24,18 +24,10 @@
 
 
 
-
-static void fuzzpro_report_hits(AjPList l, ajint hits,
-				AjPReport report,
-				AjPFeattable tab, const AjPSeq seq);
-
-
-
-
 /* @prog fuzzpro **************************************************************
 **
 ** Protein pattern search
-*
+*q
 ******************************************************************************/
 
 int main(int argc, char **argv)
@@ -44,167 +36,39 @@ int main(int argc, char **argv)
     AjPSeq seq;
     AjPFeattable tab = NULL;
     AjPReport report = NULL;
-    AjPStr pattern   = NULL;
-    AjPStr opattern  = NULL;
-    AjPStr seqname   = NULL;
-    AjPStr text      = NULL;
-
-    AjPList l;
-
-    ajint plen;
-    ajint mismatch;
-
-    AjBool amino;
-    AjBool carboxyl;
-    ajint    type = 0;
-    ajint    *buf = NULL;
-    ajint    hits = 0;
-    ajint    m;
-    ajint    i;
-    ajint    end;
-    ajint    begin;
-
-    EmbOPatBYPNode off[AJALPHA];
-
-    ajuint *sotable = NULL;
-    ajuint solimit;
-
-    AjPStr regexp = NULL;
-
-    ajint **skipm = NULL;
-
     AjPStr tmpstr = NULL;
-    void   *tidy  = NULL;
 
+    AjPPatlistSeq plist = NULL;
 
     embInit("fuzzpro", argc, argv);
 
     seqall   = ajAcdGetSeqall("sequence");
     report   = ajAcdGetReport("outfile");
-    pattern  = ajAcdGetString("pattern");
-    mismatch = ajAcdGetInt("mismatch");
+    plist    = ajAcdGetPattern("pattern");
 
-    ajFmtPrintAppS(&tmpstr, "Pattern: %S\n", pattern);
-    ajFmtPrintAppS(&tmpstr, "Mismatch: %d\n", mismatch);
+    ajPatlistSeqDoc(plist, &tmpstr);
     ajReportSetHeader(report, tmpstr);
-
-
-    ajStrTrimEndC(&pattern," .\t\n");
-
-    seqname  = ajStrNew();
-    opattern = ajStrNew();
-
-    plen = ajStrGetLen(pattern);
-
-    ajStrAssignS(&opattern,pattern);
-    if(!(type=embPatGetType(opattern,&pattern,mismatch,1,&m,&amino,&carboxyl)))
-	ajFatal("Illegal pattern");
-    embPatCompile(type,pattern,&plen,&buf,off,&sotable,&solimit,&m,
-		  &regexp,&skipm,mismatch);
-
-    text = ajStrNew();
-
 
     while(ajSeqallNext(seqall,&seq))
     {
-	l = ajListNew();
-	ajStrAssignC(&seqname,ajSeqGetNameC(seq));
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
-	ajStrAssignSubC(&text,ajSeqGetSeqC(seq),begin-1,end-1);
-	ajStrFmtUpper(&text);
-
-	embPatFuzzSearch(type,begin,pattern,seqname,text,l,
-			 plen,mismatch,amino,carboxyl,buf,off,sotable,
-			 solimit,regexp,skipm,&hits,m,&tidy);
-
-	tab = ajFeattableNewProt(seqname);
-	fuzzpro_report_hits(l,hits,report, tab, seq);
-	ajFeattableDel(&tab);
-	
-	ajListDel(&l);
-	ajStrDel(&text);
+	tab = ajFeattableNewProt(ajSeqGetNameS(seq));
+        embPatlistSeqSearch(tab,seq,plist,ajFalse);
+        ajReportWrite(report,tab,seq);
+        ajFeattableDel(&tab);
     }
 
 
+    ajPatlistSeqDel(&plist);
 
-    if(skipm)
-    {
-	for(i=0;i<m;++i) AJFREE(skipm[i]);
-	AJFREE(skipm);
-    }
-    AJFREE(tidy);
-
-    ajStrDel(&pattern);
-    ajStrDel(&opattern);
-    ajStrDel(&seqname);
     ajStrDel(&tmpstr);
-    ajSeqallDel(&seqall);
-    ajSeqDel(&seq);
 
     ajReportClose(report);
     ajReportDel(&report);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
 
     ajExit();
 
     return 0;
 }
 
-
-
-
-/* @funcstatic fuzzpro_report_hits ********************************************
-**
-** Undocumented.
-**
-** @param [u] l [AjPList] Undocumented
-** @param [r] hits [ajint] Undocumented
-** @param [u] report [AjPReport] Report object
-** @param [u] tab [AjPFeattable] Feature table
-** @param [r] seq [const AjPSeq] Sequence
-** @@
-******************************************************************************/
-
-static void fuzzpro_report_hits(AjPList l, ajint hits,
-				AjPReport report,
-				AjPFeattable tab, const AjPSeq seq)
-{
-    ajint i;
-    EmbPMatMatch m;
-    AjPStr s;
-    AjPFeature gf = NULL;
-    AjPStr fthit = NULL;
-    ajint begin;
-
-    begin = ajSeqGetBegin(seq) - 1;
-
-    ajStrAssignC(&fthit, "hit");
-
-    s = ajStrNew();
-
-    ajListReverse(l);
-
-    for(i=0;i<hits;++i)
-    {
-	ajListPop(l,(void **)&m);
-        gf = ajFeatNew(tab, NULL, fthit,
-		       m->start,
-		       m->start + m->len - 1,
-		       (float) (m->len - m->mm), '?', 0);
-
-	if(m->mm)
-	{
-	    ajFmtPrintS(&s, "*mismatch %d", m->mm);
-	    ajFeatTagAdd(gf, NULL, s);
-	}
-
-	embMatMatchDel(&m);
-    }
-
-    ajReportWrite(report, tab, seq);
-
-    ajStrDel(&s);
-    ajStrDel(&fthit);
-
-    return;
-}
