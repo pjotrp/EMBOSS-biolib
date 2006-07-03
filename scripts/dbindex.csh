@@ -4,7 +4,7 @@ set top = ~/cvsemboss/test
 
 echo "$top"
 
-cd test
+cd $top
 
 cd swiss
 echo "Indexing swiss"
