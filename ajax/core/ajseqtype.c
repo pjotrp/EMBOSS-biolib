@@ -128,12 +128,10 @@ static AjPRegexp seqtypeRegRnaGap   = NULL;
 
 
 
-char seqCharProt[]      = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyBUXZbuxz*?";
+char seqCharProt[]  = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyBJOUXZbjouxz*?";
 char seqCharProtPure[]  = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwy";
 char seqCharProtAmbig[] = "BUXZbuxz?";
 char seqCharProtStop[]  = "*";
-char seqCharProtU[]     = "Uu";
-char seqCharProtX[]     = "Xx";
 char seqCharNuc[]       = "ACGTUacgtuBDHKMNRSVWXYbdhkmnrsvwxy?";
 char seqCharNucPure[]   = "ACGTUacgtu";
 char seqCharNucAmbig[]  = "BDHKMNRSVWXYbdhkmnrsvwxy?";
