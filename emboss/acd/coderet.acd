@@ -20,64 +20,41 @@ seqall: seqall
 
 endsection: input
 
-section: advanced 
-[
-  information: "Advanced section"
-  type: "page"
-]
-
-boolean: cds  
-[
-    default: "Y"
-    information: "Extract CDS sequences"
-]
-
-boolean: mrna  
-[
-    default: "Y"
-    information: "Extract mrna sequences"
-]
-
-boolean: translation  
-[
-    default: "Y"
-    information: "Extract translated sequences"
-]
-
-endsection: advanced
-
 section: output 
 [
   information: "Output section"
   type: "page"
 ]
 
-seqout: seqoutcds 
+seqout: cdsoutseq
 [
-    standard: "$(cds)"
     type: "nucleotide"
     information: "CDS sequences"
     osextension: "cds"
     nullok: "Y"
 ]
 
-seqout: seqoutmrna 
+seqout: mrnaoutseq
 [
-    standard: "$(mrna)"
     type: "nucleotide"
     information: "mrna sequences"
     osextension: "mrna"
     nullok: "Y"
 ]
 
-seqout: seqoutprot 
+seqout: translationoutseq 
 [
-    standard: "$(translation)"
     type: "protein"
     information: "Translated (protein) sequences"
     osextension: "prot"
     nullok: "Y"
 ]
 
+
+  outfile: outfile [
+    parameter: "Y"
+    extension: "coderet"
+    knowntype: "coderet output"
+  ]
 
 endsection: output
