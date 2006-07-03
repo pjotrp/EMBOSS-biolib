@@ -576,6 +576,8 @@ print HTML  "<h1>$file</h1>\n";
 print HTMLB "<h1>$file</h1>\n";
 
 $sect = $lastfsect = $laststatfsect = "";
+$mainprog = 0;
+$functot = 0;
 
 ##############################################################
 ## $source is the entire source file as a string with newlines
@@ -815,9 +817,19 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    }
 	    $ismacro = 0;
 	    $isprog = 0;
-	    if ($token eq "prog") {$isprog = 1}
+	    if ($token eq "prog") {
+		$isprog = 1;
+		$mainprog=1;
+		if($functot) {
+		    print "bad ordering - main program should come first\n";
+		}
+	    }
+	    if($mainprog && !$isprog) {
+		print "bad function prototype: not static after main program\n";
+	    }
 	    $OFILE = HTML;
 	    $countglobal++;
+	    $functot++;
 	    if($sect ne "") {$countsection++;}
 	    if ($sect ne $lastfsect) {
 		print $OFILE "<hr><h2><a name=\"$sect\">\n";
@@ -829,6 +841,7 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    ($ftype,$fname, $fargs) =
 		$rest =~ /^\s*([^\(\)]*\S)\s+(\S+)\s*[\(]\s*([^{]*)[)]\s*[\{]/os;
+	    if($isprog) {$progname = $name}
 	    print "Function $name\n";
 	    print $OFILE "<hr><h3><a name=\"$name\">\n";
 	    print $OFILE "Function</a> ".srsref($name)."</h3>\n";
@@ -915,6 +928,11 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    ($ftype,$fname, $fargs) =
 		$rest =~ /^\s*static\s+([^\(\)]*\S)\s+(\S+)\s*[\(]\s*([^{]*)[)]\s*[\{]/os;
+	    if($mainprog) {
+		if($name !~ /^$progname[_A-Z]/) {
+		    print "bad name expected prefix '$progname\_'\n";
+		}
+	    }
 	    print "Static function $name\n";
 	    print $OFILE "<h3><a name=\"$name\">\n";
 	    print $OFILE "Static function</a> ".srsref($name)."</h3>\n";
