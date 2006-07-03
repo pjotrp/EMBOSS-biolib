@@ -22,7 +22,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: alifold.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static char rcsid[] UNUSED = "$Id: alifold.c,v 1.3 2006/07/03 15:23:07 rice Exp $";
 
 #define PAREN
 
@@ -324,7 +324,7 @@ float alifold(char **strings, char *structure)
   sector[s].ml = (backtrack_type=='M') ? 1 : ((backtrack_type=='C')?2:0);
    
   while (s>0) {
-    int ss, ml, fij, fi, cij, traced, i1, j1, d3, d5, jj=0;
+    int ss, ml, fij, fi, cij=0, traced, i1, j1, d3, d5, jj=0;
     int canonical = 1;     /* (i,j) closes a canonical structure */
     i  = sector[s].i;
     j  = sector[s].j;
