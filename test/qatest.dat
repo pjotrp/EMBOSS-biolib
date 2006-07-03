@@ -385,13 +385,13 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 1167
+FZ = 1339
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence filename and optional format, or\n/
 FP 1 /^ +\[-bsequence\] +sequence +Sequence filename and optional format, or\n/
 FP 2 /^ +\[-.sequence\] +sequence +Sequence filename and optional format, or\n/
-FP /   [-]testalen           string     asequence length \.\.\.\n/
+FP /   [-]testalen           string     asequence length \.\.\./
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -403,11 +403,11 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 4129
+FZ = 4301
 FP 26 /   boolean /
 FP  6 /   integer /
 FP 26 /   string /
-FP /   [-]testalen           string     asequence length \.\.\.\n/
+FP /   [-]testalen           string     asequence length \.\.\./
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -2992,15 +2992,19 @@ AP coderet
 IN tembl:X03487
 IN
 IN
+IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI hsferg1.fasta
+FI hsferg1.cds
 FP /^>x03487_cds_1\natgacgaccgcgt/
-FP /aatgaaagctaa\n>x03487_mrna_1\ncagacgttcttcgc/
-FP /ctcctacgtttacctgtccatg\n>x03487_pro_1\nMTTASTSQVRQNY/
+FI hsferg1.mrna
+FP /^>x03487_mrna_1\ncagacgttcttcgccgagagtcgtcggggttt/
+FI hsferg1.prot
+FP /^>x03487_pro_1\nMTTASTSQVRQNYHQDSEAAINRQINLELYASYVYLSMS/
 FI hsferg1.coderet
 FC = 3
 FP /     1     1     1     3 HSFERG1\n/
@@ -3018,10 +3022,8 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI hsferg1.fasta
-FP 0 /^>x03487_cds_1/
-FP /^>x03487_mrna_1\ncagacgttcttcgc/
-FP 0 /^>x03487_pro_1/
+FI hsferg1.mrna
+FP /^>x03487_mrna_1\ncagacgttcttcgccgagagtcgtcggggttt/
 FI hsferg1.coderet
 FC = 3
 FP /     1     1 HSFERG1\n/
@@ -9691,17 +9693,16 @@ AP fuzznuc
 IN tembl:hhtetra
 IN AAGCTT
 IN
-IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hhtetra.fuzznuc
-FZ = 644
+FZ = 717
 FP /^# HitCount: 2\n/
-FP /^      1       6        . aagctt\n/
-FP /^   1267    1272        . aagctt\n/
+FP /^      1       6 pattern1            . aagctt\n/
+FP /^   1267    1272 pattern1            . aagctt\n/
 //
 
 ID fuzzpro-ex
@@ -9709,18 +9710,18 @@ AP fuzzpro
 IN tsw:*
 IN [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 IN
-IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 100k_rat.fuzzpro
-FZ = 28954
+FZ = 33232
 FP 6 /^# HitCount: 1\n/
-FP /^     53      63        . YVGDEAQSKRG\n/
-FP 3 /^     53      63        . YVGDEAQSKRG\n/
-FP 3 /^     55      65        . YVGDEAQSKRG\n/
+FP 6 /^# HitCount: [1-9]\d*/
+FP /^     53      63 pattern1            . YVGDEAQSKRG\n/
+FP 3 /^     53      63 pattern1            . YVGDEAQSKRG\n/
+FP 3 /^     55      65 pattern1            . YVGDEAQSKRG\n/
 //
 
 ID fuzztran-ex
@@ -9728,7 +9729,6 @@ AP fuzztran
 CL -opt
 IN tembl:rnops
 IN RA
-IN
 IN f
 IN
 IN
@@ -9738,11 +9738,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI rnops.fuzztran
-FZ = 1231
+FZ = 1392
 FP /^# HitCount: 9\n/
-FP /^    919     924       2        .      1    307    308 RA         \n/
-FP /^    752     757       2        .      2    251    252 RA         \n/
-FP /^     72      77       2        .      3     24     25 RA         \n/
+FP /^    919     924       2 pattern1            .      1    307    308 RA         \n/
+FP /^    752     757       2 pattern1            .      2    251    252 RA         \n/
+FP /^     72      77       2 pattern1            .      3     24     25 RA         \n/
 FP 6 /^.* 1 +\d+ +\d+ RA +\n/
 FP 2 /^.* 2 +\d+ +\d+ RA +\n/
 FP 1 /^.* 3 +\d+ +\d+ RA +\n/
@@ -9988,6 +9988,36 @@ FP /^Isoelectric Point = 6\.8820\n/
 FP /^  7\.00    43\.59    -0\.41\n/
 //
 
+ID iep-ex2
+AP iep
+CL tsw:ifna2_human -disulphide 2 -lysinemodified 2 
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI ifna2_human.iep
+FZ = 762 
+FP /^Isoelectric Point = 5\.7322\n/
+FP /^  7\.00    27\.65    -2\.35\n/
+//
+
+ID iep-ifna2-nooptions
+AP iep
+CL tsw:ifna2_human
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI ifna2_human.iep
+FZ = 762 
+FP /^Isoelectric Point = 6\.7505\n/
+FP /^  7\.00    33\.53    -0\.47\n/
+//
+
 # change examples to .msf from .seq
 #
 ID infoalign-ex
@@ -10122,7 +10152,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 202
+FZ = 236
 FP /^tembl-id:PAAMIR\s+PAAMIR\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
 //
 
@@ -10136,7 +10166,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 168
+FZ = 186
 FP /^PAAMIR\s+X13776\s+N\s+2167\s+66\.54\s+Pseudomonas/
 //
 
@@ -10150,8 +10180,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 19
-FP /^PAAMIR\s+2167\n/
+FZ = 46
+FP /^PAAMIR\s+2167\s+\n/
 //
 
 ID infoseq-ex4
@@ -10164,7 +10194,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 75
+FZ = 88
 FP /^Pseudomonas aeruginosa .* regulation\n/
 //
 
@@ -10178,8 +10208,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 2
-FP /^N\n/
+FZ = 12
+FP /^Type\s+\nN\s+\n/
 //
 
 ID infoseq-ex6
@@ -10192,8 +10222,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FZ = 354
-FP /^<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>2167</td><td>66.54 </td><td>Pseudomonas .* regulation</td></tr>\n/
+FZ = 353
+FP /^<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>2167</td><td>66.54</td><td>Pseudomonas .* regulation</td></tr>\n/
 //
 
 ID isochore-ex
@@ -11049,7 +11079,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.pepstats
-FZ = 1440
+FZ = 1500
 FP /^Molecular weight = 38563\.97/
 FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
@@ -14548,7 +14578,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
-FZ = 3701
+FZ = 3719
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -14558,7 +14588,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
-FZ = 3701
+FZ = 3719
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -14568,7 +14598,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
-FZ = 3701
+FZ = 3719
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
@@ -14578,7 +14608,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
-FZ = 3701
+FZ = 3719
 FP /^ID   AB000095 /
 FP 1 /^ID /
 //
