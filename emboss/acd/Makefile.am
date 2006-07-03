@@ -19,13 +19,14 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	freak.acd fuzznuc.acd fuzzpro.acd fuzztran.acd garnier.acd \
 	geecee.acd getorf.acd giep.acd helixturnhelix.acd histogramtest.acd \
 	hmoment.acd iep.acd infoalign.acd infoseq.acd intconv.acd \
-	isochore.acd kmrsplitter.acd kmrunion.acd lindna.acd listor.acd \
+	isochore.acd lindna.acd listor.acd \
 	makenucseq.acd makeprotseq.acd marscan.acd maskfeat.acd maskseq.acd \
 	matcher.acd megamerger.acd \
 	merger.acd msbar.acd mwcontam.acd mwfilter.acd
 
 pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \
-	newseq.acd noreturn.acd notseq.acd nthseq.acd octanol.acd oddcomp.acd \
+	newseq.acd noreturn.acd notseq.acd nthseq.acd \
+	octanol.acd oddcomp.acd origsplitter.acd origunion.acd \
 	palindrome.acd pasteseq.acd patmatdb.acd patmatmotifs.acd \
 	patmattest.acd pepcoil.acd pepinfo.acd pepnet.acd pepstats.acd \
 	pepwheel.acd pepwindow.acd pepwindowall.acd plotcon.acd plotorf.acd \

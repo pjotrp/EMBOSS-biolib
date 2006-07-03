@@ -17,7 +17,7 @@ complex corbatest \
 demoalign demofeatures demolist demoreport \
 demosequence demostring demostringnew demotable \
 entrails giep histogramtest intconv \
-kmrsplitter kmrunion \
+origsplitter origunion \
 newcoils \
 patmattest \
 prima primers \
@@ -256,8 +256,8 @@ demotable_SOURCES = demotable.c
 entrails_SOURCES = entrails.c
 histogramtest_SOURCES = histogramtest.c
 intconv_SOURCES = intconv.c
-kmrsplitter_SOURCES = kmrsplitter.c
-kmrunion_SOURCES = kmrunion.c
+origsplitter_SOURCES = origsplitter.c
+origunion_SOURCES = origunion.c
 newcoils_SOURCES = newcoils.c
 patmattest_SOURCES = patmattest.c
 prima_SOURCES = prima.c
