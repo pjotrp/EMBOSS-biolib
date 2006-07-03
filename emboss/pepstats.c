@@ -107,7 +107,7 @@ int main(int argc, char **argv)
 
 
 
-	embIepComp(ajStrGetPtr(substr),1,c);
+	embIepCompS(substr,1,0,0,c);
 	if(!termini)
 	    c[EMBIEPAMINO]=c[EMBIEPCARBOXYL]=0;
 
@@ -124,7 +124,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"Average Residue Weight  = %-7.3f \t"
 		    "Charge   = %-6.1f\n", molwt/(double)len,charge);
 
-	if(!embIepIEP(ajStrGetPtr(substr),1,&iep,termini))
+	if(!embIepIepS(substr,1,0,0,&iep,termini))
 	    ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	else
 	    ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n",iep);

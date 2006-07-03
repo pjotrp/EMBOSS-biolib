@@ -426,20 +426,24 @@ int main(int argc, char **argv)
 		    if(ajStrIterIsBegin(itrbeg))
 #ifndef PESTFIND_NTERM
 		        /* exclude the N-terminal amino acid */
-			ajStrAssignSubS(&substr, str, (posbeg + 1), (posend - 1));
+			ajStrAssignSubS(&substr, str,
+					(posbeg + 1), (posend - 1));
 #else
 		        /* include the N-terminal amino acid */
-			ajStrAssignSubS(&substr, str, (posbeg + 0), (posend - 1));
+			ajStrAssignSubS(&substr, str,
+					(posbeg + 0), (posend - 1));
 #endif
 		    else if(ajStrIterIsEnd(itrend))
 		        /* always include the C-terminal amino acid */
-		        ajStrAssignSubS(&substr, str, (posbeg + 1), (posend - 0));
+		        ajStrAssignSubS(&substr, str,
+					(posbeg + 1), (posend - 0));
 		    else
 		        /* always exclude the positively charged flanks */
-		        ajStrAssignSubS(&substr, str, (posbeg + 1), (posend - 1));
+		        ajStrAssignSubS(&substr, str,
+					(posbeg + 1), (posend - 1));
 
 		    sublen = ajStrGetLen(substr);
-		    embIepComp(ajStrGetPtr(substr), 1, aac);
+		    embIepCompS(substr, 1, 0, 0, aac);
 		    /* Valid PEST motifs must contain D or E, P and S or T. */
 		    if(
 		       aac[ajAZToInt ('D')] + aac[ajAZToInt ('E')] == 0 ||
