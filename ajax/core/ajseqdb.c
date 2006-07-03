@@ -405,6 +405,7 @@ typedef struct SeqSEmbossQry
 static AjBool     seqAccessApp(AjPSeqin seqin);
 static AjBool     seqAccessBlast(AjPSeqin seqin);
 /* static AjBool     seqAccessCmd(AjPSeqin seqin);*/ /* not implemented */
+static AjBool     seqAccessDbfetch(AjPSeqin seqin);
 static AjBool     seqAccessDirect(AjPSeqin seqin);
 static AjBool     seqAccessEmblcd(AjPSeqin seqin);
 static AjBool     seqAccessEmboss(AjPSeqin seqin);
@@ -413,6 +414,7 @@ static AjBool     seqAccessEntrez(AjPSeqin seqin);
 static AjBool     seqAccessFreeEmblcd(void* qry);
 static AjBool     seqAccessFreeEmboss(void* qry);
 static AjBool     seqAccessGcg(AjPSeqin seqin);
+static AjBool     seqAccessMrs(AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf(AjPSeqin seqin); */ /* obsolete */
 static AjBool     seqAccessSeqhound(AjPSeqin seqin);
 static AjBool     seqAccessSrs(AjPSeqin seqin);
@@ -528,6 +530,9 @@ static SeqOAccess seqAccess[] =
     /*Name        Alias    Entry    Query    All
          AccessFunction   FreeFunction
 	 Description*/
+    {"dbfetch",    AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
+	 seqAccessDbfetch, NULL,
+	 "retrieve in text format from EBI dbfetch REST services"},
     {"emboss",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessEmboss, seqAccessFreeEmboss,
 	 "dbx program indexed"},
@@ -540,6 +545,9 @@ static SeqOAccess seqAccess[] =
     {"seqhound",  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessSeqhound, NULL,
 	 "use BluePrint seqhound services"},
+    {"mrs",       AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
+	 seqAccessMrs, NULL,
+	 "retrieve in text format from CMBI MRS server"},
     {"srs",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessSrs, NULL,
 	 "retrieve in text format from a local SRS installation"},
@@ -579,7 +587,11 @@ static SeqOAccess seqAccess[] =
     {"blast",     AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessBlast, NULL,
 	 "blast database format version 2 or 3"},
-    {NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL}
+    {NULL, AJFALSE, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL},
+/* after the NULL access method, and so unreachable.
+** seqhound requires a username and password which it prompts for
+** interactively
+*/
 };
 
 static char aa_btoa[27] = {"-ARNDCQEGHILKMFPSTWYVBZX*"};
@@ -6348,6 +6360,230 @@ static AjBool seqCdQryFile(AjPSeqQuery qry)
 ** These functions manage the remote URL database access methods.
 **
 ******************************************************************************/
+
+
+
+
+/* @funcstatic seqAccessDbfetch ***********************************************
+**
+** Reads sequence(s) using EBI's dbfetch REST services.
+**
+** Dbfetch is accessed as a simple URL.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessDbfetch(AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr urlget    = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;	      /* HTTP version 1.0, 1.1, ... */
+    ajint iport;
+    ajint proxyPort;
+    FILE *fp;
+    AjPSeqQuery qry;
+    AjPStr searchdb = NULL;
+    AjPStr qryid = NULL;
+
+    iport = 80;
+    proxyPort = 0;			/* port for proxy axxess */
+    qry = seqin->Query;
+
+    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	ajStrAssignS(&searchdb, qry->DbName);
+    ajDebug("seqAccessDbfetch %S:%S\n", qry->DbAlias, qry->Id);
+
+    if(!seqHttpUrl(qry, &iport, &host, &urlget))
+    {
+	ajStrDel(&host);
+	ajStrDel(&urlget);
+	return ajFalse;
+    }
+
+    seqHttpVersion(qry, &httpver);
+    if(ajStrGetLen(qry->Id))
+	ajStrAssignS(&qryid, qry->Id);
+    else if(ajStrGetLen(qry->Acc))
+	ajStrAssignS(&qryid, qry->Acc);
+    else {
+	return ajFalse;
+    }
+    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	ajFmtPrintS(&get, "GET http://%S:%d%S?db=%S&id=%S&style=raw\n",
+		    host, iport, urlget, searchdb, qryid);
+    else
+	ajFmtPrintS(&get, "GET %S?db=%S&id=%S&style=raw\n",
+		    urlget, searchdb, qryid);
+
+    /* finally we have set the GET command */
+    ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
+
+    if(ajStrGetLen(proxyName))
+	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+    else
+	fp = seqHttpGet(qry, host, iport, get);
+
+    if(!fp)
+	return ajFalse;
+
+    ajFileBuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFileBuffNewF(fp);
+    if(!seqin->Filebuff)
+    {
+	ajDebug("socket buffer attach failed\n");
+	ajErr("socket buffer attach failed for database '%S'", qry->DbName);
+	return ajFalse;
+    }
+    ajDebug("Ready to read errno %d msg '%s'\n",
+	    errno, ajMessSysErrorText());
+
+#ifndef WIN32
+    signal(SIGALRM, seqSocketTimeout);
+    alarm(180);	    /* we allow 180 seconds to read from the socket */
+#endif
+
+    ajFileBuffLoad(seqin->Filebuff);
+
+#ifndef WIN32
+    alarm(0);
+#endif
+
+    ajFileBuffStripHtml(seqin->Filebuff);
+
+    ajStrAssignS(&seqin->Db, qry->DbName);
+
+    ajStrDel(&host);
+    ajStrDel(&urlget);
+    ajStrDel(&get);
+    ajStrDel(&proxyName);
+    ajStrDel(&httpver);
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqAccessMrs ***********************************************
+**
+** Reads sequence(s) using CMBI Nijmegen's Maarten's Retrieval System.
+**
+** MRS is accessed as a simple URL.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessMrs(AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr urlget    = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;	      /* HTTP version 1.0, 1.1, ... */
+    ajint iport;
+    ajint proxyPort;
+    FILE *fp;
+    AjPSeqQuery qry;
+    AjPStr searchdb = NULL;
+    AjPStr qryid = NULL;
+
+    iport = 80;
+    proxyPort = 0;			/* port for proxy axxess */
+    qry = seqin->Query;
+
+    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	ajStrAssignS(&searchdb, qry->DbName);
+    ajDebug("seqAccessMrs %S:%S\n", qry->DbAlias, qry->Id);
+
+    if(!seqHttpUrl(qry, &iport, &host, &urlget))
+    {
+	ajStrDel(&host);
+	ajStrDel(&urlget);
+	return ajFalse;
+    }
+
+    seqHttpVersion(qry, &httpver);
+    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	ajFmtPrintS(&get, "GET http://%S:%d%S",
+		    host, iport, urlget);
+    else
+	ajFmtPrintS(&get, "GET %S",
+		    urlget);
+
+    ajFmtPrintAppS(&get,
+		   "?db=%S",
+		   searchdb, qryid);
+
+    if(ajStrGetLen(qry->Id))
+	ajFmtPrintAppS(&get,
+		       "&query=%S",
+		       qry->Id);
+    else if(ajStrGetLen(qry->Acc))
+    {
+    	ajFmtPrintAppS(&get,
+		       "&query=%S",
+		       qry->Acc);
+	return ajFalse;
+    }
+
+    ajFmtPrintAppS(&get,
+		   "&format=entry&exp=1&save_to=text/plain\n",
+		   searchdb, qryid);
+    /* finally we have set the GET command */
+    ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
+
+    if(ajStrGetLen(proxyName))
+	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+    else
+	fp = seqHttpGet(qry, host, iport, get);
+
+    if(!fp)
+	return ajFalse;
+
+    ajFileBuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFileBuffNewF(fp);
+    if(!seqin->Filebuff)
+    {
+	ajDebug("socket buffer attach failed\n");
+	ajErr("socket buffer attach failed for database '%S'", qry->DbName);
+	return ajFalse;
+    }
+    ajDebug("Ready to read errno %d msg '%s'\n",
+	    errno, ajMessSysErrorText());
+
+#ifndef WIN32
+    signal(SIGALRM, seqSocketTimeout);
+    alarm(180);	    /* we allow 180 seconds to read from the socket */
+#endif
+
+    ajFileBuffLoad(seqin->Filebuff);
+
+#ifndef WIN32
+    alarm(0);
+#endif
+
+    ajFileBuffStripHtml(seqin->Filebuff);
+
+    ajStrAssignS(&seqin->Db, qry->DbName);
+
+    ajStrDel(&host);
+    ajStrDel(&urlget);
+    ajStrDel(&get);
+    ajStrDel(&proxyName);
+    ajStrDel(&httpver);
+
+    qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
 
 
 
