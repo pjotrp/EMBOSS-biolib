@@ -5436,7 +5436,6 @@ ajint ajFeattableSize(const AjPFeattable thys)
 
 
 
-
 /* @func ajFeattabInClear *****************************************************
 **
 ** Clears a Tabin input object back to "as new" condition, except
@@ -6789,11 +6788,11 @@ static AjBool featVocabInitSwiss(void)
 **
 ** @param [u] thys [AjPFeature] Feature
 ** @param [r] desc [const AjPStr] Feature description (simple text)
-** @return [AjBool] ajTrue on success
+** @return [void]
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatSetDescApp(AjPFeature thys, const AjPStr desc)
+void ajFeatSetDescApp(AjPFeature thys, const AjPStr desc)
 {
     FeatPTagval tv        = NULL;
     static AjPStr tagnote = NULL;
@@ -6810,7 +6809,7 @@ AjBool ajFeatSetDescApp(AjPFeature thys, const AjPStr desc)
     else
 	ajFeatTagSet (thys, tagnote, desc);
 
-    return ajTrue;
+    return;
 }
 
 
@@ -6822,15 +6821,57 @@ AjBool ajFeatSetDescApp(AjPFeature thys, const AjPStr desc)
 **
 ** @param [u] thys [AjPFeature] Feature
 ** @param [r] desc [const AjPStr] Feature description (simple text)
-** @return [AjBool] ajTrue on success
+** @return [void]
 ** @@
 ******************************************************************************/
 
-AjBool ajFeatSetDesc(AjPFeature thys, const AjPStr desc)
+void ajFeatSetDesc(AjPFeature thys, const AjPStr desc)
 {
     ajFeatTagSetC(thys, "note", desc);
 
-    return ajTrue;
+    return;
+}
+
+
+
+
+/* @func ajFeatSetScore *******************************************************
+**
+** Sets the score for a feature
+**
+** @param [u] thys [AjPFeature] Feature
+** @param [r] score [float] Score value
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatSetScore(AjPFeature thys, float score)
+{
+    thys->Score = score;
+    return;
+}
+
+
+
+
+/* @func ajFeatSetStrand ******************************************************
+**
+** Sets the score for a feature
+**
+** @param [u] thys [AjPFeature] Feature
+** @param [r] score [float] Score value
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajFeatSetStrand(AjPFeature thys, AjBool rev)
+{
+    if(rev)
+	thys->Strand = '-';
+    else
+	thys->Strand = '+';
+
+    return;
 }
 
 
