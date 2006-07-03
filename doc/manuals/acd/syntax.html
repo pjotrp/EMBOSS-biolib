@@ -1250,6 +1250,7 @@ word: N<br>
   <td>
   <p>
 name: "Ehum.cut"<br>
+nullok: N<br>
 
  </p>
  </td>
@@ -1652,6 +1653,42 @@ protein: Y<br>
 
  <tr>
   <td>
+  <p><b>pattern</b></p>
+  </td>
+  <td>
+  <p>Property value(s)</p>
+  </td>
+
+  <td>
+  <p>
+&nbsp;
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+minlength: 1<br>
+maxlength: <i>(INT_MAX)</i><br>
+maxsize: <i>(INT_MAX)</i><br>
+upper: N<br>
+lower: N<br>
+type: "string"<br>
+
+ </p>
+ </td>
+
+  <td>
+  <p>
+pformat: ""<br>
+pmismatch: ""<br>
+pname: ""<br>
+
+ </p>
+ </td>
+
+ <tr>
+  <td>
   <p><b>properties</b></p>
   </td>
   <td>
@@ -1702,15 +1739,18 @@ length (integer)<br>
   <p>
 minlength: 1<br>
 maxlength: <i>(INT_MAX)</i><br>
+maxsize: <i>(INT_MAX)</i><br>
 upper: N<br>
 lower: N<br>
+type: "string"<br>
 
  </p>
  </td>
 
   <td>
   <p>
-&nbsp;
+pformat: ""<br>
+pname: ""<br>
 
  </p>
  </td>
@@ -4502,6 +4542,18 @@ value is calculated, the user may need some extra guidance.</p>
 
  <tr>
   <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>nullok: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Can accept a null filename as 'no file'<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>cpdb</p>
   </td>
   <td>
@@ -4922,6 +4974,78 @@ value is calculated, the user may need some extra guidance.</p>
 
  <tr>
   <td>
+  <p>pattern</p>
+  </td>
+  <td>
+  <p>minlength: <i>integer<i></p>
+  </td>
+  <td>
+  <p>Minimum pattern length<br>Default: 1</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>maxlength: <i>integer<i></p>
+  </td>
+  <td>
+  <p>Maximum pattern length<br>Default: <i>(INT_MAX)</i></p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>maxsize: <i>integer<i></p>
+  </td>
+  <td>
+  <p>Maximum number of patterns<br>Default: <i>(INT_MAX)</i></p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>upper: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Convert to upper case<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>lower: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Convert to lower case<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>type: <i>string<i></p>
+  </td>
+  <td>
+  <p>Type (nucleotide, protein)<br>Default: "string"</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>properties</p>
   </td>
   <td>
@@ -4997,6 +5121,18 @@ value is calculated, the user may need some extra guidance.</p>
   <p>&nbsp;</p>
   </td>
   <td>
+  <p>maxsize: <i>integer<i></p>
+  </td>
+  <td>
+  <p>Maximum number of patterns<br>Default: <i>(INT_MAX)</i></p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
   <p>upper: <i>Y/N<i></p>
   </td>
   <td>
@@ -5013,6 +5149,18 @@ value is calculated, the user may need some extra guidance.</p>
   </td>
   <td>
   <p>Convert to lower case<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>type: <i>string<i></p>
+  </td>
+  <td>
+  <p>Type (string, nucleotide, protein)<br>Default: "string"</p>
   </td>
  </tr>
 
@@ -9563,6 +9711,66 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   </td>
   <td>
   <p>Reverse (if DNA)<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>pattern</p>
+  </td>
+  <td>
+  <p>-pformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>File format<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-pmismatch: <i>string<i></p>
+  </td>
+  <td>
+  <p>Pattern mismatch<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-pname: <i>string<i></p>
+  </td>
+  <td>
+  <p>Pattern base name<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>regexp</p>
+  </td>
+  <td>
+  <p>-pformat: <i>string<i></p>
+  </td>
+  <td>
+  <p>File format<br>Default: ""</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>-pname: <i>string<i></p>
+  </td>
+  <td>
+  <p>Pattern base name<br>Default: ""</p>
   </td>
  </tr>
 
