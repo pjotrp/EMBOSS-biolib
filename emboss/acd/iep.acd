@@ -16,6 +16,40 @@ section: input [
 
 endsection: input
 
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: amino  [
+    optional: "Y"
+    information: "Number of N-termini"
+    default: "1"
+    minimum: "0"
+  ]
+
+  boolean: termini  [
+    optional: "Y"
+    information: "Include charge at N and C terminus"
+    default: "Y"
+  ]
+
+  integer: lysinemodified  [
+    optional: "Y"
+    information: "Number of modified lysines"
+    default: "0"
+    minimum: "0"
+  ]
+
+  integer: disulphides  [
+    optional: "Y"
+    information: "Number of disulphide bridges"
+    default: "0"
+    minimum: "0"
+  ]
+
+endsection: additional
+
 section: advanced [
   information: "Advanced section"
   type: "page"
@@ -26,16 +60,6 @@ section: advanced [
     minimum: ".01"
     maximum: "1."
     default: ".5"
-  ]
-
-  integer: amino  [
-    information: "Number of N-termini"
-    default: "1"
-  ]
-
-  boolean: termini  [
-    default: "Y"
-    information: "Include charge at N and C terminus"
   ]
 
 endsection: advanced

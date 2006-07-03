@@ -42,6 +42,8 @@ int main(int argc, char **argv)
     AjPStr substr;
     AjPFile outf;
     AjBool termini;
+    ajint sscount;
+    ajint modlysine;
     AjBool doplot;
     AjBool dofile;
     AjPGraph graph = NULL;
@@ -82,6 +84,8 @@ int main(int argc, char **argv)
     step      = ajAcdGetFloat("step");
     termini   = ajAcdGetBool("termini");
     amino     = ajAcdGetInt("amino");
+    sscount   = ajAcdGetInt("disulphides");
+    modlysine = ajAcdGetInt("lysinemodified");
     outf      = ajAcdGetOutfile("outfile");
 
 
@@ -110,16 +114,17 @@ int main(int argc, char **argv)
 	    pro[i]=0.;
 	}
 
-	embIepComp(ajStrGetPtr(substr),amino,c); /* Get sequence composition */
-
+	embIepCompS(substr, amino, sscount, modlysine, c);
 
 	if(dofile)
 	{
-	    ajFmtPrintF(outf,"IEP of %s from %d to %d\n",ajSeqName(a),be,en);
-	    if(!embIepIEP(ajStrGetPtr(substr),amino,&iep,termini))
+	    ajFmtPrintF(outf,"IEP of %S from %d to %d\n",
+			ajSeqGetNameS(a), be, en);
+	    if(!embIepIepS(substr, amino, sscount, modlysine,
+			  &iep, termini))
 		ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	    else
-		ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n\n",iep);
+		ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n\n", iep);
 
 	    ajFmtPrintF(outf,"   pH     Bound    Charge\n");
 
@@ -146,7 +151,7 @@ int main(int argc, char **argv)
 	    for(pH=1.0,k=0;pH<=14.0;pH+=GSTEP,++k)
 	    {
 		xa[k] = (float)pH;
-		H=embIepPhToHconc(pH);
+		H = embIepPhToHconc(pH);
 		if(!termini)
 		    c[EMBIEPAMINO] = c[EMBIEPCARBOXYL]=0;
 		embIepGetProto(K,c,op,H,pro);
@@ -161,7 +166,8 @@ int main(int argc, char **argv)
 	    tmp = ajStrNew();
 	    ajFmtPrintS(&tit,"%s %d-%d IEP=",ajSeqName(a),be,en);
 
-	    if(!embIepIEP(ajStrGetPtr(substr),amino,&iep,termini))
+	    if(!embIepIepS(substr, amino, sscount, modlysine,
+			   &iep,termini))
 		ajStrAssignC(&tmp,"none");
 	    else
 		ajFmtPrintS(&tmp,"%-8.4f",iep);
