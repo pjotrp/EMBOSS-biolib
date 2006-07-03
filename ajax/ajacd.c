@@ -666,12 +666,13 @@ static void      acdHelpAssoc(const AcdPAcd thys, AjPStr *str,
 static void      acdHelpAssocTable(const AcdPAcd thys, AjPList tablist,
 				   char flag);
 static AjBool    acdHelpCodeDef(const AcdPAcd thys, AjPStr *msg);
+static void      acdHelpExpect(const AcdPAcd thys, AjBool table, AjPStr *str);
 static void      acdHelpShow(const AjPStr str, const char* title);
 static void      acdHelpTable(const AcdPAcd thys, AjPList tablist,
 			       char flag);
 static void      acdHelpTableShow(const AjPList tablist, const char* title);
 static void      acdHelpText(const AcdPAcd thys, AjPStr* msg);
-static void      acdHelpValid(const AcdPAcd thys, AjPStr *str);
+static void      acdHelpValid(const AcdPAcd thys, AjBool table, AjPStr *str);
 static AjBool    acdHelpVarResolve(AjPStr* str, const AjPStr src);
 static AjBool    acdInFilename(AjPStr* infname);
 static AjBool    acdInFileSave(const AjPStr infname, AjBool reset);
@@ -904,44 +905,48 @@ static AcdOExpList explist[] =
 
 /*static void*  ajAcdGetXxxx (const char *token);*/
 
-static void acdHelpExpectCodon(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectDirlist(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectData(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectFeatout(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectFilelist(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectFloat(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectGraph(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectIn(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectInt(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectMatrix(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectOut(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectRange(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectRegexp(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectSeq(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectSeqout(const AcdPAcd thys, AjPStr* str);
-static void acdHelpExpectString(const AcdPAcd thys, AjPStr* str);
+static void acdHelpExpectCodon(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectDirlist(const AcdPAcd thys, AjBool table,
+				 AjPStr* str);
+static void acdHelpExpectData(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectFeatout(const AcdPAcd thys, AjBool table,
+				 AjPStr* str);
+static void acdHelpExpectFilelist(const AcdPAcd thys, AjBool table,
+				  AjPStr* str);
+static void acdHelpExpectFloat(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectGraph(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectIn(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectInt(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectMatrix(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectOut(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectRange(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectRegexp(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectSeq(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectSeqout(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpExpectString(const AcdPAcd thys, AjBool table, AjPStr* str);
 
 static void acdHelpTextSeq(const AcdPAcd thys, AjPStr* str);
 static void acdHelpTextSeqout(const AcdPAcd thys, AjPStr* str);
 
-static void acdHelpValidCodon(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidDirlist(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidData(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidFeatout(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidFilelist(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidFloat(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidGraph(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidIn(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidInt(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidList(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidMatrix(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidOut(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidRange(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidRegexp(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidSelect(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidSeq(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidSeqout(const AcdPAcd thys, AjPStr* str);
-static void acdHelpValidString(const AcdPAcd thys, AjPStr* str);
+static void acdHelpValidCodon(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidDirlist(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidData(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidFeatout(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidFilelist(const AcdPAcd thys, AjBool table,
+				 AjPStr* str);
+static void acdHelpValidFloat(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidGraph(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidIn(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidInt(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidList(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidMatrix(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidOut(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidRange(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidRegexp(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidSelect(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidSeq(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidSeqout(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidString(const AcdPAcd thys, AjBool table, AjPStr* str);
 
 static AjBool acdKnownValueList(const AcdPAcd thys, AjPStr* value);
 static AjBool acdKnownValueSelect(const AcdPAcd thys, AjPStr* value);
@@ -962,6 +967,7 @@ static void acdDelList(void** PPval);
 static void acdDelMatrix(void** PPval);
 static void acdDelMatrixf(void** PPval);
 static void acdDelOutfile(void** PPval);
+static void acdDelPatlist(void** PPval);
 static void acdDelPhyloDist(void** PPval);
 static void acdDelPhyloFreq(void** PPval);
 static void acdDelPhyloProp(void** PPval);
@@ -1020,6 +1026,7 @@ static void acdSetOutmatrixf(AcdPAcd thys);
 static void acdSetOutproperties(AcdPAcd thys);
 static void acdSetOutscop(AcdPAcd thys);
 static void acdSetOuttree(AcdPAcd thys);
+static void acdSetPattern(AcdPAcd thys);
 static void acdSetProperties(AcdPAcd thys);
 static void acdSetRange(AcdPAcd thys);
 static void acdSetRegexp(AcdPAcd thys);
@@ -1643,6 +1650,24 @@ AcdOAttr acdAttrOuttree[] =
 	 NULL}
 };
 
+AcdOAttr acdAttrPattern[] =
+{
+    {"minlength", VT_INT, "1",
+	 "Minimum pattern length"},
+    {"maxlength", VT_INT, "(INT_MAX)",
+	 "Maximum pattern length"},
+    {"maxsize", VT_INT, "(INT_MAX)",
+	 "Maximum number of patterns"},
+    {"upper", VT_BOOL, "N",
+	 "Convert to upper case"},
+    {"lower", VT_BOOL, "N",
+	 "Convert to lower case"},
+    {"type", VT_STR, "string",
+	 "Type (nucleotide, protein)"},
+    {NULL, VT_NULL, NULL,
+	 NULL}
+};
+
 AcdOAttr acdAttrProperties[] =
 {
     {"length", VT_INT, "0",
@@ -1677,10 +1702,14 @@ AcdOAttr acdAttrRegexp[] =
 	 "Minimum pattern length"},
     {"maxlength", VT_INT, "(INT_MAX)",
 	 "Maximum pattern length"},
+    {"maxsize", VT_INT, "(INT_MAX)",
+	 "Maximum number of patterns"},
     {"upper", VT_BOOL, "N",
 	 "Convert to upper case"},
     {"lower", VT_BOOL, "N",
 	 "Convert to lower case"},
+    {"type", VT_STR, "string",
+	 "Type (string, nucleotide, protein)"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -2337,90 +2366,105 @@ AcdOQual acdQualGraphxy[] =
 
 AcdOQual acdQualOutcodon[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutcpdb[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutdata[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutdiscrete[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutdistance[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutfile[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
+    {"odirectory", "",  "string",  "Output directory"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutfileall[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
+    {"odirectory", "",  "string",  "Output directory"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutfreq[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutmatrix[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutmatrixf[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutproperties[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOutscop[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
     {NULL, NULL, NULL, NULL}
 };
 
 AcdOQual acdQualOuttree[] =
 {
-    {"odirectory","",  "string",  "Output directory"},
-    {"oformat","",  "string",  "Output format specific to this output type"},
+    {"odirectory", "",  "string",  "Output directory"},
+    {"oformat",    "",  "string",  "Output format specific to this data type"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualPattern[] =
+{
+    {"pformat",    "",  "string",  "File format"},
+    {"pmismatch",  "",  "integer", "Pattern mismatch"},
+    {"pname",      "",  "string",  "Pattern base name"},
+    {NULL, NULL, NULL, NULL}
+};
+
+AcdOQual acdQualRegexp[] =
+{
+    {"pformat",    "",  "string",  "File format"},
+    {"pname",      "",  "string",  "Pattern base name"},
     {NULL, NULL, NULL, NULL}
 };
 
@@ -2768,6 +2812,11 @@ AcdOType acdType[] =
 	 acdSetOuttree,         NULL,                  acdDelOutfile,
 	 AJTRUE,  AJTRUE,  &acdUseOutfile,
 	 "Phylogenetic tree" },
+    {"pattern",       "input",     acdSecInput,
+	 acdAttrPattern,        acdQualPattern,
+	 acdSetPattern,         NULL,                  acdDelPatlist,
+	 AJTRUE,  AJTRUE,  &acdUseData,
+	 "Property value(s)" },
     {"properties",     "input",     acdSecInput,
 	 acdAttrProperties,     NULL,
 	 acdSetProperties,      NULL,                  acdDelPhyloProp,
@@ -2779,7 +2828,7 @@ AcdOType acdType[] =
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Sequence range" },
     {"regexp",	       "input",     acdSecInput,
-	 acdAttrRegexp,         NULL,
+	 acdAttrRegexp,         acdQualRegexp,
 	 acdSetRegexp,          NULL,                  acdDelReg,
 	 AJTRUE,  AJFALSE, &acdUseMisc,
 	 "Regular expression pattern" },
@@ -2874,8 +2923,8 @@ AcdOType acdType[] =
 typedef struct AcdSValid
 {
     char* Name;
-    void (*Valid) (const AcdPAcd thys, AjPStr* str);
-    void (*Expect) (const AcdPAcd thys, AjPStr* str);
+    void (*Valid) (const AcdPAcd thys, AjBool table, AjPStr* str);
+    void (*Expect) (const AcdPAcd thys, AjBool table, AjPStr* str);
 } AcdOValid;
 
 #define AcdPValid AcdOValid*
@@ -9788,6 +9837,154 @@ static void acdSetOuttree(AcdPAcd thys)
 }
 
     
+/* @func ajAcdGetPattern ******************************************************
+**
+** Returns an item of type Pattern as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPPatlistSeq] Compiled pattern list of sequence patterns.
+**                     The original pattern string is available
+**                     through a call to ajAcdGetValue
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPatlistSeq ajAcdGetPattern(const char *token)
+{
+    return acdGetValueRef(token, "pattern");
+}
+
+
+
+
+/* @funcstatic acdSetPattern **************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD sequence pattern item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other is available) is NULL.
+**
+** Attributes for minimum and maximum length are applied with error
+** messages if exceeded.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetPattern(AcdPAcd thys)
+{    
+    AjPPatlistSeq val = NULL;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    AjBool upper;
+    AjBool lower;
+    ajint itry;
+    
+    ajint minlen;
+    ajint maxlen;
+    ajint maxsize;
+    ajint len;
+    AjPStr type = NULL;
+    AjPStr patname = NULL;
+    AjPStr fmt = NULL;
+    ajint mismatch = 0;
+    AjBool isprotein = ajTrue;
+    
+    acdAttrToInt(thys, "minlength", 1, &minlen);
+    
+    acdAttrToInt(thys, "maxlength", INT_MAX, &maxlen);
+    acdAttrToBool(thys, "upper", ajFalse, &upper);
+    acdAttrToBool(thys, "lower", ajFalse, &lower);
+    acdAttrToStr(thys, "type", "protein", &type);
+    acdAttrToInt(thys, "maxsize", INT_MAX, &maxsize);
+    acdQualToInt(thys, "pmismatch", 0, &mismatch, &acdTmpStr);
+    acdGetValueAssoc(thys, "pname", &patname);
+    acdGetValueAssoc(thys, "pformat", &fmt);
+    ajStrFmtLower(&type);
+
+    if(ajStrGetCharFirst(type) != 'p')
+	isprotein = ajFalse;
+
+    if(mismatch < 0)
+	mismatch = 0;
+
+    ajDebug("acdSetPattern name '%S' mismatch %d type '%S' protein %B\n",
+	    patname, mismatch, type, isprotein);
+    
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, "", &acdReplyDef);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+	if(val)
+	    ajPatlistSeqDel(&val);
+	
+	ajStrAssignS(&acdReply, acdReplyDef);
+	
+	if(required)
+	    acdUserGet(thys, &acdReply);
+	
+	len = ajStrGetLen(acdReply);
+	
+	if(len < minlen)
+	{
+	    acdBadVal(thys, required,
+		      "Too short (%S) - minimum length is %d characters",
+		      thys->Name, minlen);
+	    ok = ajFalse;
+	}
+
+	if(len > maxlen)
+	{
+	    acdBadVal(thys, required,
+		      "Too long (%S) - maximum length is %d characters",
+		      thys->Name,maxlen);
+	    ok = ajFalse;
+	}
+
+	if(ok)
+	    val = ajPatlistSeqRead(acdReply, patname,
+				   isprotein, mismatch);
+
+	if(ok && !val)
+	{
+	    acdBadVal(thys, required,
+		      "Bad regular expression pattern:\n   '%S'",
+		      acdReply);
+	    ok = ajFalse;
+	}	
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    /* regexps have special set attributes the same as strings */
+    
+    thys->SAttr = acdAttrListCount(acdCalcRegexp);
+    thys->SetAttr = &acdCalcRegexp[0];
+    thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
+    
+    ajStrFromInt(&thys->SetStr[0], ajStrGetLen(acdReply));
+    
+    thys->Value = val;
+    ajStrAssignS(&thys->ValStr, acdReply);
+    
+    return;
+}
+
+
+
+
 /* @func ajAcdGetProperties ***************************************************
 **
 ** Returns an item of type Properties as defined in a named ACD item.
@@ -10025,9 +10222,47 @@ static void acdSetRange(AcdPAcd thys)
 ** @@
 ******************************************************************************/
 
-AjPRegexp ajAcdGetRegexp(const char *token)
+AjPPatlistRegex ajAcdGetRegexp(const char *token)
 {
-    return acdGetValueRef(token, "regexp");
+    return acdGetValueSingle(token, "regexp");
+}
+
+
+
+
+/* @func ajAcdGetRegexpSingle *************************************************
+**
+** Returns an item of type Regexp as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPRegexp] Compiled regular expression.
+**                     The original pattern string is available
+**                     through a call to ajAcdGetValue
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPRegexp ajAcdGetRegexpSingle(const char *token)
+{
+    AjPPatlistRegex val;
+    AjPPatternRegex patreg = NULL;
+    ajint i = 0;
+
+    val = acdGetValueSingle(token, "regexp");
+    while (ajPatlistRegexGetNext(val, &patreg))
+	i++;
+
+    if(i > 1)
+	ajWarn("Single list value %s, but can choose %d values",
+	       token, i);
+
+    if(i < 1)
+	ajWarn("Single list value %s, no value found: returning NULL value",
+	       token);
+
+    return ajPatternRegexGetCompiled(patreg);
 }
 
 
@@ -10054,7 +10289,7 @@ AjPRegexp ajAcdGetRegexp(const char *token)
 
 static void acdSetRegexp(AcdPAcd thys)
 {    
-    AjPRegexp val = NULL;
+    AjPPatlistRegex val = NULL;
     
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
@@ -10065,14 +10300,25 @@ static void acdSetRegexp(AcdPAcd thys)
     
     ajint minlen;
     ajint maxlen;
+    ajint maxsize;
     ajint len;
+    AjPStr type = NULL;
+    AjPStr patname = NULL;
+    AjPStr fmt = NULL;
+    ajint itype = 0;
     
     acdAttrToInt(thys, "minlength", 1, &minlen);
     
     acdAttrToInt(thys, "maxlength", INT_MAX, &maxlen);
     acdAttrToBool(thys, "upper", ajFalse, &upper);
     acdAttrToBool(thys, "lower", ajFalse, &lower);
-    
+    acdAttrToStr(thys, "type", "string", &type);
+    acdAttrToInt(thys, "maxsize", INT_MAX, &maxsize);
+    acdGetValueAssoc(thys, "pname", &patname);
+    acdGetValueAssoc(thys, "pformat", &fmt);
+    ajStrFmtLower(&type);
+    itype = ajPatternRegexType(type);
+
     required = acdIsRequired(thys);
     acdReplyInit(thys, "", &acdReplyDef);
     
@@ -10080,7 +10326,7 @@ static void acdSetRegexp(AcdPAcd thys)
     {
 	ok = ajTrue;	   /* accept the default if nothing changes */
 	if(val)
-	    ajRegFree(&val);
+	    ajPatlistRegexDel(&val);
 	
 	ajStrAssignS(&acdReply, acdReplyDef);
 	
@@ -10112,7 +10358,8 @@ static void acdSetRegexp(AcdPAcd thys)
 	    ajStrFmtLower(&acdReply);
 
 	if(ok)
-	    val = ajRegComp(acdReply);
+	    val = ajPatlistRegexRead(acdReply, patname,
+				     itype, upper, lower);
 
 	if(ok && !val)
 	{
@@ -13263,6 +13510,7 @@ static void acdHelp(void)
     static AjPStr helpAss = NULL;
     static AjPStr helpGen = NULL;
     static AjPStr helpStr = NULL;
+
     enum
     {
 	HELP_UNK, HELP_APP, HELP_REQ, HELP_OPT,
@@ -13294,7 +13542,8 @@ static void acdHelp(void)
 	genlist = ajListNew();
 	if(acdVerbose)
 	    asslist = ajListNew();
-	ajUser("<table border cellspacing=0 cellpadding=3 bgcolor=\"#ccccff\">");
+	ajUser("<table border cellspacing=0 cellpadding=3 "
+	       "bgcolor=\"#ccccff\">");
 	/* was #f5f5ff */
     }
     
@@ -13406,14 +13655,16 @@ static void acdHelp(void)
 
     if(flagReq)
 	acdHelpShow(helpReq,
-		    "Standard (Mandatory) qualifiers (* if not always prompted)");
+		    "Standard (Mandatory) qualifiers "
+		    "(* if not always prompted)");
     else
 	acdHelpShow(helpReq, "Standard (Mandatory) qualifiers");
 
     acdHelpTableShow(reqlist, "Standard (Mandatory) qualifiers");
     if(flagOpt)
 	acdHelpShow(helpOpt,
-		    "Additional (Optional) qualifiers (* if not always prompted)");
+		    "Additional (Optional) qualifiers "
+		    "(* if not always prompted)");
     else
 	acdHelpShow(helpOpt, "Additional (Optional) qualifiers");
 
@@ -13564,7 +13815,18 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
 	ajFmtPrintS(&name, " -%S%S", nostr, thys->Name);
     
     ajFmtPrintS(&line, "%c %-20S %-10S ", flag, name, type);
+
+    acdHelpExpect(thys, ajFalse, &text);
+    if(ajStrGetLen(text))
+    {
+	ajStrInsertC(&text, 0, "[");
+       ajStrAppendC(&text, "] ");
+    }
     acdHelpText(thys, &text);
+    if(ajStrGetLen(text))
+       ajStrAppendC(&text, " ");
+    acdHelpValid(thys, ajFalse, &text);
+    ajStrRemoveWhite(&text);
     acdTextFormat(&text);
     ajStrFmtWrapLeft(&text, 45, 34);
     ajStrAppendS(&line, text);
@@ -13595,9 +13857,10 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidSeq(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidSeq(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13614,9 +13877,10 @@ static void acdHelpValidSeq(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidSeqout(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidSeqout(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13633,9 +13897,10 @@ static void acdHelpValidSeqout(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidOut(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidOut(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13652,9 +13917,10 @@ static void acdHelpValidOut(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidIn(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidIn(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13671,9 +13937,10 @@ static void acdHelpValidIn(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidData(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidData(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13690,7 +13957,7 @@ static void acdHelpValidData(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidInt(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidInt(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint imin;
     ajint imax;
@@ -13702,23 +13969,29 @@ static void acdHelpValidInt(const AcdPAcd thys, AjPStr* str)
     acdAttrValueStr(thys, "maximum", "$", &acdTmpStr);
     if(!ajStrToInt(acdTmpStr, &imax))
 	imax = INT_MAX;
-    
-    
+
+    ajStrAssignC(str, "");
+    if(!table)
+	ajStrAppendC(str, " (");
+
     if(imax != INT_MAX)
     {
 	if(imin != INT_MIN)
-	    ajFmtPrintS(str, "Integer from %d to %d", imin, imax);
+	    ajFmtPrintAppS(str, "Integer from %d to %d", imin, imax);
 	else
-	    ajFmtPrintS(str, "Integer up to %d", imax);
+	    ajFmtPrintAppS(str, "Integer up to %d", imax);
     }
     else
     {
 	if(imin != INT_MIN)
-	    ajFmtPrintS(str, "Integer %d or more", imin);
+	    ajFmtPrintAppS(str, "Integer %d or more", imin);
 	else
-	    ajFmtPrintS(str, "Any integer value");
+	    ajFmtPrintAppS(str, "Any integer value");
     }
     
+    if(!table)
+	ajStrAppendC(str, ")");
+
     return;
 }
 
@@ -13735,7 +14008,7 @@ static void acdHelpValidInt(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidFloat(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidFloat(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     float fmin;
     float fmax;
@@ -13753,21 +14026,29 @@ static void acdHelpValidFloat(const AcdPAcd thys, AjPStr* str)
     if(!ajStrToInt(acdTmpStr, &iprec))
 	iprec = 3;
 
+    ajStrAssignC(str, "");
+
+    if(table)
+	ajStrAppendC(str, " (");
+
     if(fmax != FLT_MAX)
     {
 	if(fmin != -FLT_MAX)
-	    ajFmtPrintS(str, "Number from %.*f to %.*f",
+	    ajFmtPrintAppS(str, "Number from %.*f to %.*f",
 			iprec, fmin, iprec, fmax);
 	else
-	    ajFmtPrintS(str, "Number up to %.*f", iprec, fmax);
+	    ajFmtPrintAppS(str, "Number up to %.*f", iprec, fmax);
     }
     else
     {
 	if(fmin != -FLT_MAX)
-	    ajFmtPrintS(str, "Number %.*f or more", iprec, fmin);
+	    ajFmtPrintAppS(str, "Number %.*f or more", iprec, fmin);
 	else
-	    ajFmtPrintS(str, "Any numeric value");
+	    ajFmtPrintAppS(str, "Any numeric value");
     }
+
+    if(table)
+	ajStrAppendC(str, ")");
 
     return;
 }
@@ -13785,9 +14066,10 @@ static void acdHelpValidFloat(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidCodon(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidCodon(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13804,9 +14086,10 @@ static void acdHelpValidCodon(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidDirlist(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidDirlist(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13823,9 +14106,10 @@ static void acdHelpValidDirlist(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidFilelist(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidFilelist(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13842,9 +14126,10 @@ static void acdHelpValidFilelist(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidMatrix(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidMatrix(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13861,9 +14146,10 @@ static void acdHelpValidMatrix(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidFeatout(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidFeatout(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13885,9 +14171,10 @@ static void acdHelpValidFeatout(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidRange(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidRange(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "");
+    if(table)
+	ajStrAssignC(str, "");
     return;
 }
 
@@ -13904,7 +14191,7 @@ static void acdHelpValidRange(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidGraph(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidGraph(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     AjPList list;
     AjPStr name = NULL;
@@ -13914,7 +14201,10 @@ static void acdHelpValidGraph(const AcdPAcd thys, AjPStr* str)
 
     ajCall("ajGraphListDevices", list);
 
-    ajFmtPrintS(str, "EMBOSS has a list of known devices, including ");
+    if(table)
+	ajFmtPrintAppS(str, "EMBOSS has a list of known devices, including ");
+    else
+	ajFmtPrintAppS(str, " (");
 
     while(ajListstrPop(list, &name))
     {
@@ -13924,6 +14214,9 @@ static void acdHelpValidGraph(const AcdPAcd thys, AjPStr* str)
 	ajStrDel(&name);
 	i++;
     }
+
+    if(!table)
+	ajFmtPrintAppS(str, ")");
 
     ajListDel(&list);
 
@@ -13943,27 +14236,31 @@ static void acdHelpValidGraph(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidString(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidString(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint minlen;
     ajint maxlen;
     AjBool  word;
 
-    acdAttrValueStr(thys, "min", "0", &acdTmpStr);
+    acdAttrValueStr(thys, "minlength", "0", &acdTmpStr);
     if(!ajStrToInt(acdTmpStr, &minlen))
 	minlen = 0;
-    acdAttrValueStr(thys, "max", "0", &acdTmpStr);
+    acdAttrValueStr(thys, "maxlength", "0", &acdTmpStr);
     if(!ajStrToInt(acdTmpStr, &maxlen))
 	maxlen = 0;
     acdAttrValueStr(thys, "word", "0", &acdTmpStr);
     if(!ajStrToBool(acdTmpStr, &word))
 	ajFatal("Bad boolean value");
     
+    if(table)
+	ajStrAssignC(str, "");
+    else
+	ajStrAppendC(str, " (");
 
     if(word)
-	ajFmtPrintS(str, "Any string without whitespace ");
+	ajFmtPrintAppS(str, "Any string without whitespace ");
     else
-    	ajFmtPrintS(str, "Any string ");
+    	ajFmtPrintAppS(str, "Any string ");
     if(maxlen > 0)
     {
 	if(minlen > 0)
@@ -13986,6 +14283,9 @@ static void acdHelpValidString(const AcdPAcd thys, AjPStr* str)
     if(ajStrGetLen(acdTmpStr))
 	ajFmtPrintAppS(str, ", matching regular expression /%S/", acdTmpStr);
 
+    if(!table)
+	ajStrAppendC(str, ")");
+
     return;
 }
 
@@ -14002,15 +14302,15 @@ static void acdHelpValidString(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidRegexp(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidRegexp(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint minlen;
     ajint maxlen;
 
-    acdAttrValueStr(thys, "min", "0", &acdTmpStr);
+    acdAttrValueStr(thys, "minlength", "0", &acdTmpStr);
     if(!ajStrToInt(acdTmpStr, &minlen))
 	minlen = 0;
-    acdAttrValueStr(thys, "max", "0", &acdTmpStr);
+    acdAttrValueStr(thys, "maxlength", "0", &acdTmpStr);
     if(!ajStrToInt(acdTmpStr, &maxlen))
 	maxlen = 0;
 
@@ -14054,7 +14354,7 @@ static void acdHelpValidRegexp(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidList(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidList(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     AjPStr codedelim   = NULL;
     AjPStr delim       = NULL;
@@ -14078,7 +14378,11 @@ static void acdHelpValidList(const AcdPAcd thys, AjPStr* str)
 
     handle = ajStrTokenNewC(value, ajStrGetPtr(delim));
 
-    ajFmtPrintS(str, "<table>");
+    if(table)
+	ajFmtPrintAppS(str, "<table>");
+    else
+	ajFmtPrintAppS(str, " (Values: ");
+
     acdAttrValueStr(thys, "codedelimiter", ":", &codedelim);
     while(ajStrTokenNextFind(&handle, &line))
     {
@@ -14087,11 +14391,21 @@ static void acdHelpValidList(const AcdPAcd thys, AjPStr* str)
 	ajStrTokenNextParseC(&codehandle, ajStrGetPtr(delim), &desc);
 	ajStrTrimC(&code, white);
 	ajStrTrimC(&desc, white);
-	ajFmtPrintAppS(str, "<tr><td>%S</td> <td><i>(%S)</i></td></tr>",
-		       code, desc);
+	if(table)
+	    ajFmtPrintAppS(str, "<tr><td>%S</td> <td><i>(%S)</i></td></tr>",
+			   code, desc);
+	else
+	    ajFmtPrintAppS(str, "%S (%S); ",
+			   code, desc);
 	ajStrTokenDel(&codehandle);
     }
-    ajFmtPrintAppS(str, "</table>");
+    if(table)
+	ajFmtPrintAppS(str, "</table>");
+    else
+    {
+	ajStrCutEnd(str, 2);
+	ajStrAppendC(str, ")");
+    }
 
     ajStrTokenDel(&handle);
 
@@ -14111,7 +14425,7 @@ static void acdHelpValidList(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValidSelect(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValidSelect(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     AjPStr delim       = NULL;
     AjPStr value       = NULL;
@@ -14154,15 +14468,22 @@ static void acdHelpValidSelect(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpValid(const AcdPAcd thys, AjPStr* str)
+static void acdHelpValid(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint i;
+    AjPStr tmpstr = NULL;
 
-    if(ajStrGetLen(*str))
+    if(table && ajStrGetLen(*str))
 	return;
 
-    if(acdAttrValueStr(thys, "valid", "", str))
+    if(acdAttrValueStr(thys, "valid", "", &tmpstr))
+    {
+	if(table)
+	    ajStrAppendS(str, tmpstr);
+	else
+	    ajFmtPrintAppS(str, "(%S)", tmpstr);
 	return;
+    }
 
     /* special processing for sequences, outseq, outfile */
 
@@ -14170,14 +14491,15 @@ static void acdHelpValid(const AcdPAcd thys, AjPStr* str)
 	if(ajCharMatchC(acdType[thys->Type].Name, acdValue[i].Name))
 	{
 	    /* Calling funclist acdValue() */
-	    if(acdValue[i].Valid) acdValue[i].Valid(thys, str);
+	    if(acdValue[i].Valid)
+		acdValue[i].Valid(thys, table, str);
 	    break;
 	}
 
     if(ajStrGetLen(*str))
 	return;
 
-    ajStrAssignC(str, acdType[thys->Type].Valid);
+    ajStrAppendC(str, acdType[thys->Type].Valid);
 
     return;
 }
@@ -14195,9 +14517,10 @@ static void acdHelpValid(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectSeq(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectSeq(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajFmtPrintS(str, "<b>Required</b>");
+    if(table)
+	ajFmtPrintAppS(str, "<b>Required</b>");
 
     return;
 }
@@ -14215,13 +14538,17 @@ static void acdHelpExpectSeq(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectSeqout(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectSeqout(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     static ajint icall = 0;
 
     if(!icall++)
-	ajFmtPrintS(str, "<i>&lt;sequence&gt;</i>.<i>format</i>");
-
+    {
+	if(table)
+	    ajFmtPrintAppS(str, "<i>&lt;*&gt;</i>.<i>format</i>");
+	else
+	    ajFmtPrintAppS(str, "<sequence>.<format>");
+    }
     return;
 }
 
@@ -14238,12 +14565,17 @@ static void acdHelpExpectSeqout(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectOut(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectOut(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     static ajint icall = 0;
 
     if(!icall++)
-	ajFmtPrintS(str, "<i>&lt;sequence&gt;</i>.%S", acdProgram);
+    {
+	if(table)
+	    ajFmtPrintAppS(str, "<i>&lt;*&gt;</i>.%S", acdProgram);
+	else
+	    ajFmtPrintAppS(str, "*.%S", acdProgram);
+    }
 
     return;
 }
@@ -14261,15 +14593,18 @@ static void acdHelpExpectOut(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectInt(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectInt(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint i;
 
     acdAttrValueStr(thys, "default", "0", &acdTmpStr);
     if(ajStrToInt(acdTmpStr, &i))
-	ajFmtPrintS(str, "%d", i);
+	ajFmtPrintAppS(str, "%d", i);
     else
-	ajFmtPrintS(str, "<i>calculated value</i>");
+    {
+	if(table)
+	    ajFmtPrintAppS(str, "<i>calculated value</i>");
+    }
 
     return;
 }
@@ -14287,7 +14622,7 @@ static void acdHelpExpectInt(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectFloat(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectFloat(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     float f;
     ajint iprec;
@@ -14300,7 +14635,7 @@ static void acdHelpExpectFloat(const AcdPAcd thys, AjPStr* str)
     if(!ajStrToInt(acdTmpStr, &iprec))
 	iprec = 3;
 
-    ajFmtPrintS(str, "%.*f", iprec, f);
+    ajFmtPrintAppS(str, "%.*f", iprec, f);
 
     return;
 }
@@ -14318,9 +14653,10 @@ static void acdHelpExpectFloat(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectIn(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectIn(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajFmtPrintS(str, "<b>Required</b>");
+    if(table)
+	ajFmtPrintS(str, "<b>Required</b>");
 
     return;
 }
@@ -14338,9 +14674,10 @@ static void acdHelpExpectIn(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectData(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectData(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajFmtPrintS(str, "<i>File in the data file path</i>");
+    if(table)
+	ajFmtPrintS(str, "<i>File in the data file path</i>");
 
     return;
 }
@@ -14358,11 +14695,17 @@ static void acdHelpExpectData(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectCodon(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectCodon(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    acdAttrResolve(thys, "name", str);
-    if(ajStrGetLen(*str))
+    AjPStr tmpstr = NULL;
+
+    acdAttrResolve(thys, "name", &tmpstr);
+    if(ajStrGetLen(tmpstr))
+    {
+	ajStrAppendS(str, tmpstr);
+	ajStrDel(&tmpstr);
 	return;
+    }
     
     return;
 }
@@ -14378,11 +14721,17 @@ static void acdHelpExpectCodon(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectDirlist(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectDirlist(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    acdAttrResolve(thys, "default", str);
-    if(ajStrGetLen(*str))
+    AjPStr tmpstr = NULL;
+    acdAttrResolve(thys, "default", &tmpstr);
+    if(ajStrGetLen(tmpstr))
+    {
+	ajStrAppendS(str, tmpstr);
+	ajStrDel(&tmpstr);
 	return;
+    }
+
     ajStrAssignC(str, DEFDLIST);
 
     return;
@@ -14401,9 +14750,11 @@ static void acdHelpExpectDirlist(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectFilelist(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectFilelist(const AcdPAcd thys, AjBool table,
+				  AjPStr* str)
 {
-    ajStrAssignC(str, "<i>comma-separated file list</i>");
+    if(table)
+	ajStrAppendC(str, "<i>comma-separated file list</i>");
 
     return;
 }
@@ -14423,9 +14774,12 @@ static void acdHelpExpectFilelist(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectMatrix(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectMatrix(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "EBLOSUM62 for protein<br>EDNAFULL for DNA");
+    if(table)
+	ajStrAppendC(str, "EBLOSUM62 for protein<br>EDNAFULL for DNA");
+    else
+	ajStrAppendC(str, "EBLOSUM62 for protein, EDNAFULL for DNA");
 
     return;
 }
@@ -14443,9 +14797,12 @@ static void acdHelpExpectMatrix(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectFeatout(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectFeatout(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "<i>unknown.gff</i>");
+    if(table)
+	ajStrAppendC(str, "<i>unknown.gff</i>");
+    else
+	ajStrAppendC(str, "unknown.gff");
 
     return;
 }
@@ -14463,9 +14820,12 @@ static void acdHelpExpectFeatout(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectRange(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectRange(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    ajStrAssignC(str, "<i>full sequence</i>");
+    if(table)
+	ajStrAppendC(str, "<i>full sequence</i>");
+    else
+	ajStrAppendC(str, "(full sequence)");
 
     return;
 }
@@ -14483,12 +14843,18 @@ static void acdHelpExpectRange(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectGraph(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectGraph(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
 #ifndef WIN32
-    ajStrAssignC(str, "<i>EMBOSS_GRAPHICS</i> value, or x11");
+    if(table)
+	ajStrAppendC(str, "<i>EMBOSS_GRAPHICS</i> value, or x11");
+    else
+	ajStrAppendC(str, "$EMBOSS_GRAPHICS value, or x11");
 #else
-    ajStrAssignC(str, "<i>EMBOSS_GRAPHICS</i> value, or win3");
+    if(table)
+	ajStrAppendC(str, "<i>EMBOSS_GRAPHICS</i> value, or win3");
+    else
+	ajStrAppendC(str, "$EMBOSS_GRAPHICS value, or win3");
 #endif
     return;
 }
@@ -14506,7 +14872,7 @@ static void acdHelpExpectGraph(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectRegexp(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectRegexp(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint minlen;
 
@@ -14515,9 +14881,16 @@ static void acdHelpExpectRegexp(const AcdPAcd thys, AjPStr* str)
 	minlen = 0;
 
     if(minlen > 0)
-	ajStrAssignC(str, "<b>Required</b>");
+    {
+	if(table)
+	    ajStrAppendC(str, "<b>Required</b>");
+    }
     else
-	ajStrAssignC(str, "<i>An empty regular expression is accepted</i>");
+    {
+	if(table)
+	    ajStrAppendC(str,
+			 "<i>An empty regular expression is accepted</i>");
+    }
     return;
 }
 
@@ -14534,7 +14907,7 @@ static void acdHelpExpectRegexp(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpectString(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpectString(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint minlen;
 
@@ -14543,9 +14916,15 @@ static void acdHelpExpectString(const AcdPAcd thys, AjPStr* str)
 	minlen = 0;
 
     if(minlen > 0)
-	ajStrAssignC(str, "<b>Required</b>");
+    {
+	if(table)
+	    ajStrAppendC(str, "<b>Required</b>");
+    }
     else
-	ajStrAssignC(str, "<i>An empty string is accepted</i>");
+    {
+	if(table)
+	    ajStrAppendC(str, "<i>An empty string is accepted</i>");
+    }
 
     return;
 }
@@ -14563,7 +14942,7 @@ static void acdHelpExpectString(const AcdPAcd thys, AjPStr* str)
 ** @@
 ******************************************************************************/
 
-static void acdHelpExpect(const AcdPAcd thys, AjPStr* str)
+static void acdHelpExpect(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
     ajint i;
     if(ajStrGetLen(*str))
@@ -14582,7 +14961,7 @@ static void acdHelpExpect(const AcdPAcd thys, AjPStr* str)
 	if(ajCharMatchC(acdType[thys->Type].Name, acdValue[i].Name))
 	{
 	    /* Calling funclist acdValue() */
-	    if(acdValue[i].Expect) acdValue[i].Expect(thys, str);
+	    if(acdValue[i].Expect) acdValue[i].Expect(thys, table, str);
 	    break;
 	}
 
@@ -14590,12 +14969,13 @@ static void acdHelpExpect(const AcdPAcd thys, AjPStr* str)
     if(ajStrGetLen(*str))
 	return;
     
-    ajStrAssignS(str, thys->DefStr[DEF_DEFAULT]);
+    ajStrAppendS(str, thys->DefStr[DEF_DEFAULT]);
     
     if(ajStrGetLen(*str))
 	return;
-    
-    ajStrAssignC(str, "&nbsp;");
+
+    if(table)
+	ajStrAppendC(str, "&nbsp;");
     
     return;
 }
@@ -14654,7 +15034,7 @@ static void acdHelpText(const AcdPAcd thys, AjPStr* str)
 	}
 	
 	acdVarResolve(&msg);
-	ajStrAssignS(str, msg);
+	ajStrAppendS(str, msg);
 	ajStrDel(&msg);
     }
 
@@ -14800,8 +15180,8 @@ static void acdHelpAssocTable(const AcdPAcd thys, AjPList tablist, char flag)
 	ajFmtPrintS(&line, "  %-20S %-10S ",
 		    qname,  qtype);
 	acdHelpText(pa, &item->Help);
-	acdHelpValid(pa, &item->Valid);
-	acdHelpExpect(pa, &item->Expect);
+	acdHelpValid(pa, ajTrue, &item->Valid);
+	acdHelpExpect(pa, ajTrue, &item->Expect);
 	ajListPushApp(tablist, item);
     }
 
@@ -14875,7 +15255,7 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist, char flag)
     
     ajStrAssignC(&type, acdType[thys->Type].Name);
     
-    acdHelpExpect(thys, &item->Expect);
+    acdHelpExpect(thys, ajTrue, &item->Expect);
     
     /*
      **  warning - don't try acdVarResolve here because we have not yet
@@ -14887,7 +15267,7 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist, char flag)
     else
 	ajFmtPrintS(&name, "-%S%S", nostr, thys->Name);
     
-    acdHelpValid(thys, &item->Valid);
+    acdHelpValid(thys, ajTrue, &item->Valid);
     acdHelpText(thys, &item->Help);
     
     ajListPushApp(tablist, item);
@@ -24952,6 +25332,23 @@ static void acdDelOutfile(void** PPval)
 
 
 
+/* @funcstatic acdDelPatlist **************************************************
+**
+** Function with void** prototype to delete ACD pattern list data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelPatlist(void** PPval)
+{
+    if(!*PPval) return;
+    ajPatlistSeqDel((AjPPatlistSeq*)PPval);
+    return;
+}
+
+
+
 /* @funcstatic acdDelPhyloDist ************************************************
 **
 ** Function with void** prototype to delete ACD phylogenetic distance data
@@ -25070,7 +25467,7 @@ static void acdDelRange(void** PPval)
 static void acdDelReg(void** PPval)
 {
     if(!*PPval) return;
-    ajRegFree((AjPRegexp*)PPval);
+    ajPatlistRegexDel((AjPPatlistRegex*)PPval);
     return;
 }
 
