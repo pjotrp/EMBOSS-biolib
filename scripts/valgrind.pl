@@ -119,12 +119,12 @@ while (<MEMTEST>) {
 }
 close MEMTEST;
 
-$valgopts = "--leak-check=yes --show-reachable=yes --num-callers=15 --verbose --logfile-fd=9 --error-limit=no --leak-resolution=high";
+$valgopts = "--leak-check=yes --show-reachable=yes --num-callers=15 --verbose --log-fd=9 --error-limit=no --leak-resolution=high";
 ## --leak-check=yes       Test for memory leaks at end
 ## --show-reachable=yes   Show allocated memory still reachable
 ## --num-callers=15       Backtrace 15 functions - use more if needed
 ## --verbose              
-## --logfile-fd=9         Write to file 9 for redirect (default 2 is stderr)
+## --log-fd=9         Write to file 9 for redirect (default 2 is stderr)
 ## --error-limit=no       Don't stop after 300 errors
 ## --leak-resolution=high Report alternate backtraces
 
