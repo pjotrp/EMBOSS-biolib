@@ -328,10 +328,9 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
     ajint defcnt;
 
     ajint it;
-    ajint jt;
-    ajint st;
-    ajint mt;
-    ajint et;
+    ajint st = 0;
+    ajint mt = 0;
+    ajint et = 0;
 
     ajStrAssignC(rname,PROPENZReagent[n]);
     defcnt = 0;
