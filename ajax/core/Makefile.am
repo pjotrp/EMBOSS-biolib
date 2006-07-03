@@ -38,7 +38,7 @@ ajcall.c ajcod.c \
 ajdan.c ajdmx.c ajdomain.c ajexcept.c \
 ajfeat.c ajfile.c ajfmt.c ajgraphxml.c ajindex.c ajjava.c ajlist.c \
 ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c ajnexus.c \
-ajpdb.c ajpdbio.c ajphylo.c \
+ajpat.c ajpdb.c ajpdbio.c ajphylo.c \
 ajrange.c ajreg.c ajreport.c \
 ajseq.c ajseqabi.c ajseqdb.c ajseqread.c ajseqtype.c ajseqwrite.c \
 ajsort.c ajstr.c ajsys.c \
@@ -54,7 +54,7 @@ ajdan.h ajdmx.h ajdomain.h ajexcept.h \
 ajfeat.h ajfeatdata.h ajfile.h ajfmt.h \
 ajgraph.h ajgraphxml.h ajgraphstruct.h ajhist.h ajindex.h ajjava.h ajlist.h \
 ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h ajnexus.h \
-ajpdb.h ajpdbio.h ajphylo.h \
+ajpat.h ajpdb.h ajpdbio.h ajphylo.h \
 ajrange.h ajreg.h ajreport.h \
 ajseq.h ajseqabi.h ajseqdata.h ajseqdb.h ajseqread.h ajseqtype.h ajseqwrite.h \
 ajsort.h ajstr.h ajsys.h \
