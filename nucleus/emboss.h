@@ -13,6 +13,7 @@
 #include "embinit.h"
 #include "embword.h"
 #include "embpat.h"
+#include "embpatlist.h"
 #include "embmat.h"
 #include "embdata.h"
 #include "embnmer.h"
