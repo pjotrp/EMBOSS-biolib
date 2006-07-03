@@ -3,8 +3,8 @@
 
 set app = $argv[1]
 
-set embosshome = ~/cvsemboss
-set embossinst = ~/cvsemboss
+set embosshome = /data/pmr/cvsemboss
+set embossinst = /data/pmr/cvsemboss
 
 foreach embosshome (`embossversion -full -auto| grep '^BaseDirectory'`)
 #  echo "$embosshome"
@@ -20,16 +20,16 @@ cd $embosshome
 
 cd plplot
 echo "make PLPLOT"
-make install
+make install |& egrep '^[^ =\[]*:'
 cd ../ajax 
 echo "make AJAX"
-make install
+make install |& egrep '^[^ =\[]*:'
 cd ../nucleus
 echo "make NUCLEUS"
-make install
+make install |& egrep '^[^ =\[]*:'
 cd ../emboss
 echo "make $app"
-make $app
+make $app |& egrep '^[^ =\[]*:'
 echo "install $app"
-cp $app $embossinst/bin
+/usr/bin/install -c .libs/$app /data/pmr/local/bin/$app
 cp acd/$app.acd $embossinst/share/EMBOSS/acd/
