@@ -1,4 +1,58 @@
 Version 4.0.0
+        EMBL/Genbank have agreed to add a new amino acid code 'O' for
+        pyrrolysine. O has been added to EMBOSS checking for protein
+        sequence data, and to the existing data files that contain 'U'
+        (selenocysteine). IUPAC/IUBMB has accepted the use of O for prootein
+        sequences. This means that any alphabetic text is now a valid
+        protein sequence. There are 20 naturally occurring amino acids,
+        plus 'X' (unknown) 'B' and 'Z' ('D' or 'N' and 'E' or 'Q' for
+        analyis of complete digests) 'J' ('I' or 'L' in mass spectrometry)
+        plus 'U' (selenocysteine) and 'O' (pyrrolysine). There is a small
+        complication - older versions of phylip sometimes use 'O' as a gap
+        character. EMBOSS will still allow this in nucleotide sequences.
+
+        New sequence access method "mrs" uses CMBI's "Maarten's Retrieval
+        System" http://mrs.cmbi.ru.nl/mrs/cgi-bin/mrs.cgi to query
+        databases by ID or accession.
+
+        New sequence access method "dbfetch" uses the EBI's dbfetch REST
+        services http://www.ebi.ac.uk/cgi-bin/dbfetch to query databases
+        by ID or accession.
+
+	iep changed to allow users to specifiy number of mofified
+	(uncharged) lysines and intrachain disulphide bridges. This
+	includes extensions to embIep functions to include the two new
+	parameters. These updates were provided by Clemens Broger of
+	F.Hofmann-La Roche Ltd.
+
+	Changes to splitter and union by Kim Rutherford (Atermis
+	maintainer at the Sanger Institute) allow features to be preserve
+	for nucleotide sequences. The default operation of both programs
+	is unchanged.
+
+	Regular expressions have the same syntax as the new pattern
+	datatype - they can be in a file, with pattern names, and have a
+	qualifier -pname to set the name for a pattern. Regular
+	expressions also have a type defined in ACD which can be
+	nucleotide (e.g. for dreg), protein (e.g. for preg) and string for
+	general patterns. Function ajAcdGetRegexSingle will read a single
+	regular expression. ajAcdGetRegex now reads a list of regular
+	expressions.
+
+	New ACD pattern type reads a PROSITE style pattern, or @filename
+	where filename contains patterns with names in FASTA
+	format. Patterns in the file are concate=nated if on multiple
+	lines. The file may also contain mismatch=n after the ID to set
+	the number of mismatches for a pattersn. Patterns also have
+	associated qualifiers -pmismatch and -pname for the pattern on the
+	commandline or all patterns in the file.
+	
+	Pattern processing is changed to use lists of patterns, as
+	submitted by Henrikki Almusa of Medical in Helsinki. This is
+	implemented as new ACD data type "pattern" which required some
+	nucleus embPat functions and data types to be moved to AJAX ajPat
+	so that they can be called from ajacd.c
+
         "a2m" alignment format (which is just fasta) is now supported in 
 	ACD.
 	
@@ -23,7 +77,7 @@ Version 4.0.0
 	"cds", "mrna" and "prot".
 
 	oddcomp: New ACD option to set the window size equal to length 
-	of the current protein.  Code cleaned up.
+	of the current protein. Code cleaned up.
 	
 	Restrict: alphabetic sorting fixed in the case where -limit
 	is specified
