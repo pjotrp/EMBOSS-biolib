@@ -340,13 +340,13 @@ int main(int argc, char **argv, char **env)
             if(ajSysWhich(&program))
             {
     	        execlp( "primer3_core", "primer3_core", NULL );
-    	        ajFatal("There was a problem while executing primer3");
+    	        ajDie("There was a problem while executing primer3");
             }
             else
-    	        ajFatal("The program 'primer3_core' must be on the path.\n"
-    		    "It is part of the 'primer3' package, version 0.9,\n"
-    		    "available from the Whitehead Institute.\n"
-    		    "See: http://www-genome.wi.mit.edu/");
+    	        ajDie("The program 'primer3_core' must be on the path.\n"
+		      "It is part of the 'primer3' package, version 0.9,\n"
+		      "available from the Whitehead Institute.\n"
+		      "See: http://www-genome.wi.mit.edu/");
     
             ajStrDel(&program);
 
