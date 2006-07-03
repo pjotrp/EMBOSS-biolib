@@ -3918,7 +3918,8 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
     srsdbexp = ajRegCompC("^([A-Za-z0-9_-]+)(:)([A-Za-z0-9_-]+)");
     
     /* first take out the HTTP header (HTTP 1.0 onwards) */
-    
+    if(!thys->Size)
+	return;
     
     ajFileBuffPrint(thys, "Before ajFileBuffStripHtml");
 
