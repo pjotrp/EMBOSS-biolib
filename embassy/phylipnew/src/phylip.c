@@ -894,7 +894,7 @@ void inputweightsstr2(AjPStr str, long a, long b, long *weightsum,
 
   *weightsum = 0;
   for (i = a; i < b; i++) {
-    ch == ajStrGetCharPos(str, i-1);
+    ch = ajStrGetCharPos(str, i-1);
     weight[i] = 1;
     if (ch == '0' || ch == '1')
       weight[i] = ch - '0';
