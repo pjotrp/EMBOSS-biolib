@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     outfile    = ajAcdGetOutfile("outfile");
     compdata   = ajAcdGetInfile("infile");
     ignorebz   = ajAcdGetBool("ignorebz");
-    fullwindow = ajAcdGetBool("fullwindow");
+    fullwindow = ajAcdGetToggle("fullwindow");
 
     /* Output some documentation to the results file */
     ajFmtPrintF(outfile, "#\n# Output from 'oddcomp'\n#\n");
