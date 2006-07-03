@@ -1356,7 +1356,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	}
 
 	ajStrAssignC(&fileHomeTmp,p);
-	ajStrAppendC(&fileHomeTmp, ".embossdata");
+	ajStrAppendC(&fileHomeTmp, "/.embossdata");
 	ajStrAppendC(&fileHomeTmp, SLASH_STRING);
 	ajStrAppendS(&fileHomeTmp,fileBaseTmp);
 	ajDebug("ajFileDataNew trying '%S'\n", fileHomeTmp);
