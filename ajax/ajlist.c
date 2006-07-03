@@ -375,20 +375,21 @@ AjPListNode ajListNodesNew(void* x, ...)
 
     topnode = listDummyNode(&node);
 
-    ajDebug("ajListNodesNew topnode: %x -> %x\n", topnode, topnode->Next);
+    /*ajDebug("ajListNodesNew topnode: %x -> %x\n",
+      topnode, topnode->Next);*/
     for( ; x; x = va_arg(ap, void *))
     {
 	node->Item = x;
 	listDummyNode(&node->Next);
 	node->Next->Prev = node;
-	ajDebug("topnode: %x node: %x, item: %x -> %x\n",
-		topnode, node, x, node->Next);
+	/*ajDebug("topnode: %x node: %x, item: %x -> %x\n",
+		topnode, node, x, node->Next);*/
     }
     va_end(ap);
 
     topnode->Prev = NULL;
 
-    listNodesTrace(node);
+    /*listNodesTrace(node);*/
 
     return node;
 }
@@ -443,7 +444,7 @@ void ajListAppend(AjPList thys, AjPListNode* morenodes)
 
     assert(thys);
 
-    listNodesTrace(*morenodes);
+    /*listNodesTrace(*morenodes);*/
 
     more->Next->Prev = thys->Last;
     thys->Last->Next = more->Next;
@@ -2465,6 +2466,8 @@ AjBool ajListstrPopEnd(AjPList thys, AjPStr *x)
 
 void ajListDummyFunction(void** array)
 {
+    const AjPListNode p = NULL;
+    listNodesTrace(p);
     listArrayTrace(array);
 
     return;
