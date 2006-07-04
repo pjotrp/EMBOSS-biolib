@@ -193,7 +193,7 @@ void embIepPkRead(void)
 
 
 
-/* @func embIepComp ***********************************************************
+/* @func embIepCompC **********************************************************
 **
 ** Calculate the amino acid composition of a protein sequence
 **
@@ -274,7 +274,8 @@ void embIepCompS(const AjPStr str, ajint amino,
 		 ajint sscount, ajint modlysine,
 		 ajint *c)
 {
-    return embIepCompC(ajStrGetPtr(str), amino, sscount, modlysine, c);
+    embIepCompC(ajStrGetPtr(str), amino, sscount, modlysine, c);
+    return;
 }
 
 
@@ -284,7 +285,8 @@ void embIepCompS(const AjPStr str, ajint amino,
 */
 void __deprecated embIepComp(const char *s, ajint amino, ajint *c)
 {
-    return embIepCompC(s, amino, 0, 0, c);
+    embIepCompC(s, amino, 0, 0, c);
+    return;
 }
 
 /* @func embIepCalcK  *********************************************************
