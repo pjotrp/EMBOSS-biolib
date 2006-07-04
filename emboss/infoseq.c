@@ -326,7 +326,7 @@ AjBool infoseq_printheader(AjBool html,  AjBool instring, char *text,
 			   AjPFile outfile)
 {
     /* Suppress delimiter on first call (for first string printed out) */
-    static AjBool nodelim = ajTrue;
+    static AjBool nodelim = AJTRUE;
     
     /* Reset for each new line */
     if(instring == ajFalse)
@@ -371,7 +371,7 @@ AjBool infoseq_print(AjBool html, AjBool instring, AjPStr str, AjBool usewid,
 		     AjPFile outfile)
 {
     /* Suppress delimiter on first call (for first string printed out) */
-    static AjBool nodelim = ajTrue;
+    static AjBool nodelim = AJTRUE;
     
     /* Reset for each new line */
     if(instring == ajFalse)
