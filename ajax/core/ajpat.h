@@ -138,7 +138,9 @@ typedef struct AjSPatternRegex {
 
 #define AjPPatternRegex AjOPatternRegex*
 
-// type can be 0: string, 1: prosite (protein) 2: prosite like (nucleotide)
+/*
+** type can be 0: string, 1: prosite (protein) 2: prosite like (nucleotide)
+*/
 #define AJ_PAT_TYPE_STRING 0
 #define AJ_PAT_TYPE_PRO 1
 #define AJ_PAT_TYPE_NUCL 2
@@ -233,7 +235,7 @@ ajint ajPatternRegexGetType (const AjPPatternRegex thys);
 void ajPatternRegexSetCompiled (AjPPatternRegex thys, AjPRegexp pat);
 void patPatternRegexDebug (AjPPatternRegex pat);
 
-// Patlist handling functions
+/* Patlist handling functions */
 AjPPatlistSeq ajPatlistSeqNewType (AjBool Protein);
 AjPPatlistRegex ajPatlistRegexNewType (ajint type);
 AjPPatlistRegex ajPatlistRegexNew (void);
