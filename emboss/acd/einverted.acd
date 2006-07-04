@@ -75,4 +75,14 @@ section: output [
     knowntype: "inverted output"
   ]
 
+seqout: seqout  
+[
+    additional: "Y"
+    nullok: "Y"
+    information: "File for sequence of regions of inverted repeats."
+    help: "The sequence of the inverted repeat regions without gap characters."
+]
+
+
+
 endsection: output
