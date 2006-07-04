@@ -1,4 +1,8 @@
 Version 4.0.0
+        Simple XML DOM added. This has no additional library
+	dependencies. This is a preliminary step in producing (revisiting)
+	XML graphics output etc.
+	
         EMBL/Genbank have agreed to add a new amino acid code 'O' for
         pyrrolysine. O has been added to EMBOSS checking for protein
         sequence data, and to the existing data files that contain 'U'
@@ -19,7 +23,7 @@ Version 4.0.0
         services http://www.ebi.ac.uk/cgi-bin/dbfetch to query databases
         by ID or accession.
 
-	iep changed to allow users to specifiy number of mofified
+	iep changed to allow users to specifiy number of modified
 	(uncharged) lysines and intrachain disulphide bridges. This
 	includes extensions to embIep functions to include the two new
 	parameters. These updates were provided by Clemens Broger of
