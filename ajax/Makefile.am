@@ -35,7 +35,7 @@ LIBS =
 AJAXSRC = ajacd.c ajalign.c ajarr.c ajassert.c \
 ajbase.c \
 ajcall.c ajcod.c \
-ajdan.c ajdmx.c ajdomain.c ajexcept.c \
+ajdan.c ajdmx.c ajdom.c ajdomain.c ajexcept.c \
 ajfeat.c ajfile.c ajfmt.c ajgraphxml.c ajindex.c ajjava.c ajlist.c \
 ajmath.c ajmatrices.c ajmem.c ajmess.c ajnam.c ajnexus.c \
 ajpat.c ajpdb.c ajpdbio.c ajphylo.c \
@@ -50,7 +50,7 @@ AJAXGSRC = ajgraph.c ajhist.c
 include_HEADERS = ajax.h ajarch.h ajdefine.h \
 ajacd.h ajalign.h ajarr.h ajassert.h \
 ajbase.h ajcall.h ajcod.h \
-ajdan.h ajdmx.h ajdomain.h ajexcept.h \
+ajdan.h ajdmx.h ajdom.h ajdomain.h ajexcept.h \
 ajfeat.h ajfeatdata.h ajfile.h ajfmt.h \
 ajgraph.h ajgraphxml.h ajgraphstruct.h ajhist.h ajindex.h ajjava.h ajlist.h \
 ajmath.h ajmatrices.h ajmem.h ajmess.h ajnam.h ajnexus.h \

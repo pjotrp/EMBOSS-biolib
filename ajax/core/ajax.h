@@ -74,6 +74,7 @@ extern "C"
 #include "ajjava.h"
 #include "ajgraphxml.h"
 #include "ajvector.h"
+#include "ajdom.h"
 
 #endif
 
