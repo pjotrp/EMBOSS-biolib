@@ -230,6 +230,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\ajax\ajdom.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\ajax\ajdomain.c"
 				>
 			</File>
@@ -295,6 +299,10 @@
 			</File>
 			<File
 				RelativePath="..\..\ajax\ajnexus.c"
+				>
+			</File>
+			<File
+				RelativePath="..\..\ajax\ajpat.c"
 				>
 			</File>
 			<File
@@ -480,6 +488,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\ajax\ajdom.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\ajax\ajdomain.h"
 				>
 			</File>
@@ -553,6 +565,10 @@
 			</File>
 			<File
 				RelativePath="..\..\ajax\ajnexus.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\ajax\ajpat.h"
 				>
 			</File>
 			<File

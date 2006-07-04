@@ -262,6 +262,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\nucleus\embpatlist.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\nucleus\embpdb.c"
 				>
 			</File>
@@ -369,6 +373,10 @@
 			</File>
 			<File
 				RelativePath="..\..\nucleus\embpat.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\nucleus\embpatlist.h"
 				>
 			</File>
 			<File
