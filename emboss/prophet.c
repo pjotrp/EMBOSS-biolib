@@ -2,6 +2,7 @@
 **
 ** Gapped alignment for profiles
 ** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
+** @modified July 5 2006 Jon Ison (to use align ACD definition)
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -33,17 +34,17 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 				 ajint *mlen, float *gapopen,
 				 float *gapextend, ajint *thresh,
 				 float *maxs, AjPStr *cons);
+
 static void prophet_scan_profile(const AjPStr substr, const AjPStr pname,
 				 const AjPStr name, const AjPStr mname,
 				 ajint mlen, float * const *fmatrix,
 				 ajint thresh, float maxs, float gapopen,
-				 float gapextend, AjPFile outf,
-				 const AjPStr cons, float opencoeff,
-				 float extendcoeff, float *path,
-				 ajint *compass, AjPStr *m, AjPStr *n,
-				 ajint slen, ajint begin);
-
-
+				 float gapextend, AjPAlign align,
+				 const AjPStr cons,
+				 float opencoeff, float extendcoeff,
+				 float *path, ajint *compass, AjPStr *m,
+				 AjPStr *n, ajint slen, ajint begin);
+/* JISON AjPAlign align replaces AjPOutfile outf */
 
 
 /* @prog prophet **************************************************************
@@ -57,7 +58,6 @@ int main(int argc, char **argv)
     AjPSeqall seqall;
     AjPSeq seq   = NULL;
     AjPFile inf  = NULL;
-    AjPFile outf = NULL;
 
     AjPStr strand = NULL;
     AjPStr substr = NULL;
@@ -70,6 +70,8 @@ int main(int argc, char **argv)
     AjPStr m      = NULL;
     AjPStr n      = NULL;
 
+    AjPAlign align= NULL; /* JISON, replaces AjPOutfile outf */
+    
     ajint type;
     ajint begin;
     ajint end;
@@ -103,7 +105,7 @@ int main(int argc, char **argv)
     inf         = ajAcdGetInfile("infile");
     opencoeff   = ajAcdGetFloat("gapopen");
     extendcoeff = ajAcdGetFloat("gapextend");
-    outf        = ajAcdGetOutfile("outfile");
+    align       = ajAcdGetAlign("align");  /*JISON replacing outfile */
 
     opencoeff   = ajRoundF(opencoeff, 8);
     extendcoeff = ajRoundF(extendcoeff, 8);
@@ -120,7 +122,7 @@ int main(int argc, char **argv)
     if(!type)
       ajFatal("Unrecognised profile/matrix file format");
 
-    prophet_read_profile(inf,&name,&mname,&mlen,&gapopen,&gapextend,&thresh,
+    prophet_read_profile(inf,&pname,&mname,&mlen,&gapopen,&gapextend,&thresh,
 			 &maxfs, &cons);
     AJCNEW(fmatrix, mlen);
 
@@ -146,7 +148,7 @@ int main(int argc, char **argv)
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
 
-	ajStrAssignC(&pname,ajSeqName(seq));
+	ajStrAssignC(&name,ajSeqName(seq));
 	strand = ajSeqStrCopy(seq);
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
@@ -163,10 +165,17 @@ int main(int argc, char **argv)
 	ajStrAssignC(&m,"");
 	ajStrAssignC(&n,"");
 
+	/* JISON used to be
 	prophet_scan_profile(substr,pname,name,mname,mlen,fmatrix,thresh,maxs,
 			     gapopen,gapextend,outf,cons,opencoeff,
-			     extendcoeff,path,compass,&m,&n,len,begin);
+			     extendcoeff,path,compass,&m,&n,len,begin); */
 
+	/* JISON new call and reset align */
+	prophet_scan_profile(substr,pname,name,mname,mlen,fmatrix,thresh,
+			     maxs,gapopen,gapextend,align,cons,opencoeff,
+			     extendcoeff,path,compass,&m,&n,len,begin); 
+	ajAlignReset(align);
+	
 	ajStrDel(&strand);
     }
 
@@ -188,7 +197,6 @@ int main(int argc, char **argv)
     ajStrDel(&n);
     ajSeqDel(&seq);
     ajFileClose(&inf);
-    ajFileClose(&outf);
 
     ajSeqallDel(&seqall);
     embExit();
@@ -347,7 +355,9 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 
 
 
-/* @funcstatic prophet_scan_profile *******************************************
+
+
+/* @funcstatic prophet_scan_profile ******************************************
 **
 ** Scan sequence with profile
 **
@@ -361,7 +371,7 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 ** @param [r] maxs [float] maximum score
 ** @param [r] gapopen [float] open penalty
 ** @param [r] gapextend [float] extend penalty
-** @param [u] outf [AjPFile] outfile
+** @param [u] align [AjPAlign] alignment
 ** @param [r] cons [const AjPStr] consensus sequence
 ** @param [r] opencoeff [float] opening co-efficient
 ** @param [r] extendcoeff [float] extension co-efficient
@@ -379,15 +389,19 @@ static void prophet_scan_profile(const AjPStr substr, const AjPStr pname,
 				 const AjPStr name, const AjPStr mname,
 				 ajint mlen, float * const *fmatrix,
 				 ajint thresh, float maxs, float gapopen,
-				 float gapextend, AjPFile outf,
+				 float gapextend, AjPAlign align,
 				 const AjPStr cons,
 				 float opencoeff, float extendcoeff,
 				 float *path, ajint *compass, AjPStr *m,
 				 AjPStr *n, ajint slen, ajint begin)
 {
+    /* JISON AjPAlign align replaces AjPOutfile outf */
     float score;
     ajint start1;
     ajint start2;
+    AjPSeq seqm=NULL;
+    AjPSeq seqn=NULL;
+    
 
     embAlignProfilePathCalc(ajStrGetPtr(substr),mlen,slen,opencoeff,extendcoeff,
 			    path,fmatrix,compass,0);
@@ -401,9 +415,18 @@ static void prophet_scan_profile(const AjPStr substr, const AjPStr pname,
 			      &start2);
 
 
-    embAlignPrintProfile(outf,ajStrGetPtr(cons),ajStrGetPtr(substr),*m,*n,
-			 start1,start2,score,1,fmatrix,"Consensus",
-			 ajStrGetPtr(pname),1,begin);
+    /* JISON ... used to be 
+       embAlignPrintProfile(outf,ajStrGetPtr(cons),ajStrGetPtr(substr),*m,*n,
+       start1,start2,score,1,fmatrix,"Consensus",
+       ajStrGetPtr(pname),1,begin); */
 
+    /* JISON new block */
+    seqm=ajSeqNewNameS((const AjPStr)*m, (const AjPStr)name);
+    seqn=ajSeqNewNameS((const AjPStr)*n, (const AjPStr)pname); 
+    ajAlignDefineSS(align, seqm, seqn);
+    ajAlignWrite(align);
+    ajSeqDel(&seqm);
+    ajSeqDel(&seqn);
+    
     return;
 }

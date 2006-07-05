@@ -52,9 +52,11 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+align: align
+[
     parameter: "Y"
-    knowntype: "prophet output"
-  ]
+    information: "Files of profile:sequence alignments"  
+    aformat: "simple"
+]
 
 endsection: output
