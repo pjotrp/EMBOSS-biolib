@@ -171,7 +171,7 @@ int main(int argc, char **argv)
 			     extendcoeff,path,compass,&m,&n,len,begin); */
 
 	/* JISON new call and reset align */
-	prophet_scan_profile(substr,pname,name,mname,mlen,fmatrix,thresh,
+	prophet_scan_profile(substr,name,pname,mname,mlen,fmatrix,thresh,
 			     maxs,gapopen,gapextend,align,cons,opencoeff,
 			     extendcoeff,path,compass,&m,&n,len,begin); 
 	ajAlignReset(align);
@@ -385,8 +385,8 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 ******************************************************************************/
 
 
-static void prophet_scan_profile(const AjPStr substr, const AjPStr pname,
-				 const AjPStr name, const AjPStr mname,
+static void prophet_scan_profile(const AjPStr substr, const AjPStr name,
+				 const AjPStr pname, const AjPStr mname,
 				 ajint mlen, float * const *fmatrix,
 				 ajint thresh, float maxs, float gapopen,
 				 float gapextend, AjPAlign align,
@@ -421,8 +421,8 @@ static void prophet_scan_profile(const AjPStr substr, const AjPStr pname,
        ajStrGetPtr(pname),1,begin); */
 
     /* JISON new block */
-    seqm=ajSeqNewNameS((const AjPStr)*m, (const AjPStr)name);
-    seqn=ajSeqNewNameS((const AjPStr)*n, (const AjPStr)pname); 
+    seqm=ajSeqNewNameS((const AjPStr)*m, (const AjPStr)pname);
+    seqn=ajSeqNewNameS((const AjPStr)*n, (const AjPStr)name); 
     ajAlignDefineSS(align, seqm, seqn);
     ajAlignWrite(align);
     ajSeqDel(&seqm);
