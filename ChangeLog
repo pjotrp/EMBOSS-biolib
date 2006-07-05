@@ -1,4 +1,8 @@
 Version 4.0.0
+        Prophet modified to use an "align:" ACD definition rather than an
+	"outfile:".  A bug which was mixing up the name of the profile with
+	the name of the sequence has been fixed. 
+	
         Simple XML DOM added. This has no additional library
 	dependencies. This is a preliminary step in producing (revisiting)
 	XML graphics output etc.
