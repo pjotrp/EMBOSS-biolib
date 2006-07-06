@@ -1,4 +1,4 @@
-application: meme [
+application: omeme [
   documentation: "Motif detection"
   groups: "Protein:Motifs"
   embassy: "meme"
