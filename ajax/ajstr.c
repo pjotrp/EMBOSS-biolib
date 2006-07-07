@@ -7917,6 +7917,42 @@ AjBool __deprecated ajStrSuffix(const AjPStr str, const AjPStr str2)
     return ajStrSuffixS(str, str2);
 }
 
+/* @func ajStrSuffixCaseC *****************************************************
+**
+** Case-insensitive test for matching the end of a string against a 
+** given suffix text string.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] Prefix
+** @return [AjBool] ajTrue if the string ends with the suffix
+** @@
+******************************************************************************/
+
+AjBool ajStrSuffixCaseC(const AjPStr str, const char* txt2)
+{
+    return ajCharSuffixCaseC(str->Ptr, txt2);
+}
+
+
+
+
+/* @func ajStrSuffixCaseS *****************************************************
+**
+** Case-insensitive test for matching the end of a string against a 
+** given suffix string.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const AjPStr] Prefix
+** @return [AjBool] ajTrue if the string ends with the suffix
+** @@
+******************************************************************************/
+
+AjBool ajStrSuffixCaseS(const AjPStr str, const AjPStr str2)
+{
+    return ajCharSuffixCaseC(str->Ptr, str2->Ptr);
+}
+
+
 /* @section comparison (sorting)
 **
 ** Functions for sorting strings.

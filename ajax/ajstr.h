@@ -382,6 +382,8 @@ AjBool     ajStrPrefixCaseC (const AjPStr str, const char* pref);
 AjBool     ajStrPrefixCaseS (const AjPStr str, const AjPStr pref);
 AjBool     ajStrSuffixC (const AjPStr thys, const char* suff);
 AjBool     ajStrSuffixS (const AjPStr thys, const AjPStr suff);
+AjBool     ajStrSuffixCaseC (const AjPStr str, const char* pref);
+AjBool     ajStrSuffixCaseS (const AjPStr str, const AjPStr pref);
 
 /* comparison (sorting) */
 
