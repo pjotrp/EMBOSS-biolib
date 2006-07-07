@@ -1,4 +1,28 @@
 Version 4.0.0
+	The output produced by -help provides more information about
+	associated qualifiers than the HTML table view (from acdtable)
+	which is included in the HTML documentation in the
+	duistribution. However, there is also a lot of extra information
+	in the acdtable output on the default values and the allowed
+	values for each qualifier. The -help output is now expanded to
+	include all the information provided by the acdtable view. A
+	benefit of this is that we can now remove the badly formatted
+	acdtable from the text version of the documentation. This is used
+	by tfm so the output of the tfm program will now be easier to read.
+
+	The default prompts for input and output files have been very
+	simple for the first 10 years. EMBOSS now has a "known type"
+	defined for all files in ACD. The known type is now included in
+	the automatically generated prompt for input and output files. To
+	help in this process, the known type should not have the word
+	"file" at the end. This will be added automatically in the prompt.
+
+	Printing with conversion type %g could write extra zeros where the
+	decimal point was stripped. In C, %g conversion removes trailing
+	zeros and the decimal point if nothing remains after it. The AJAX
+	print conversion functions added extra zeros at start of the
+	output to extend the result up to the expected width.
+
         Prophet modified to use an "align:" ACD definition rather than an
 	"outfile:".  A bug which was mixing up the name of the profile with
 	the name of the sequence has been fixed. 
@@ -10,7 +34,7 @@ Version 4.0.0
         EMBL/Genbank have agreed to add a new amino acid code 'O' for
         pyrrolysine. O has been added to EMBOSS checking for protein
         sequence data, and to the existing data files that contain 'U'
-        (selenocysteine). IUPAC/IUBMB has accepted the use of O for prootein
+        (selenocysteine). IUPAC/IUBMB has accepted the use of O for protein
         sequences. This means that any alphabetic text is now a valid
         protein sequence. There are 20 naturally occurring amino acids,
         plus 'X' (unknown) 'B' and 'Z' ('D' or 'N' and 'E' or 'Q' for
