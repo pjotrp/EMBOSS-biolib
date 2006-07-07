@@ -97,7 +97,7 @@ section: output [
     additional: "Y"
     default: "supermatcher.error"
     help: "Error file to be written to"
-    knowntype: "supermatcher error file"
+    knowntype: "supermatcher error"
   ]
 
 endsection: output

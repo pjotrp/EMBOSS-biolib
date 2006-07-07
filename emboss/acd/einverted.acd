@@ -75,9 +75,9 @@ section: output [
     knowntype: "inverted output"
   ]
 
-seqout: seqout  
+seqout: outseq
 [
-    additional: "Y"
+    parameter: "Y"
     nullok: "Y"
     information: "File for sequence of regions of inverted repeats."
     help: "The sequence of the inverted repeat regions without gap characters."

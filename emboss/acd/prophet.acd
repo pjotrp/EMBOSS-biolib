@@ -52,10 +52,9 @@ section: output [
   type: "page"
 ]
 
-align: align
+align: outfile
 [
     parameter: "Y"
-    information: "Files of profile:sequence alignments"  
     aformat: "simple"
 ]
 

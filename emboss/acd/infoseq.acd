@@ -35,7 +35,11 @@ string: delimiter
 [
    default: "|"
    information: "Delimiter of records in text output file"
-   help: "This string, which is usually a single character only, is used to delimit individual records in the text output file.  It could be a space character, a tab character, a pipe character or any other character or string."
+   help: "This string, which is usually a single character only, is
+   used to delimit individual records in the text output file.  It
+   could be a space character, a tab character, a pipe character or
+   any other character or string."
+   knowntype: "output delimiter"
 ]
 
 endsection: advanced

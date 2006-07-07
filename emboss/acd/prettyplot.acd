@@ -205,7 +205,7 @@ section: additional [
              3:Checks all those not in the current consensus.If any of these
              give a top score for matching or identical scores then a
              collision has occured."
-      help: "0:Normal collision check. (default) \
+      help: "Values are 0:Normal collision check. (default) \
              1:Compares identical scores with the max score found. So if any
              other residue matches the identical score then a collision has
              occurred. \

@@ -33,7 +33,6 @@ section: required [
 
 toggle: fullwindow
 [
-    standard: "N"
     default: "N"
     information: "Set window size to length of current protein"
     help: "Set this option on (Y) if you want the window size to be

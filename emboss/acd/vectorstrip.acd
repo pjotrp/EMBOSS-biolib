@@ -30,7 +30,7 @@ section: input [
       nullok: "Y"
       default: ""
       information: "Name of vectorfile"
-      knowntype: "vector file"
+      knowntype: "vector"
     ]
 
   endsection: vectorfilesection

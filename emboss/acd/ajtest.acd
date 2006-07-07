@@ -26,12 +26,6 @@ section: output [
   type: "page"
 ]
 
-  outdir: outdir [
-    information: "Temporary directory"
-    default: "/tmp"
-    knowntype: "temporary file"
-  ]
-
   outfile: outfile [
   standard: "Y"
     nullok: "Y"
@@ -55,6 +49,12 @@ section: output [
     nulldefault: "Y"
     missing: "Y"
     type: "any"
+  ]
+
+  outdir: outdir [
+    information: "Temporary directory"
+    default: "/tmp"
+    knowntype: "temporary"
   ]
 
 endsection: output

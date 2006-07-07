@@ -3,6 +3,22 @@ application: makenucseq [
   groups: "Edit"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  codon: codonfile [
+    standard: "Y"
+    information: "Optional codon usage file"
+    help: "Optional codon usage file. Nucleotide sequences will be
+           created as triplets matching the frequencies in the file,
+           with the end trimmed to be in the correct reading frame."
+    nullok: "Y"
+  ]
+
+endsection: input
+
 section: required [
   information: "Required section"
   type: "page"
@@ -21,13 +37,6 @@ section: required [
     minimum: "1"
     information: "Length of each sequence"
   ]
-
-endsection: required
-
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
 
   toggle: useinsert [
     additional: "Y"
@@ -50,24 +59,8 @@ section: advanced [
     # maximum: "@($(length) - @($(insert) ? $(insert.length)-1 : 0))"
   ]
 
-endsection: advanced
+endsection: required
 
-
-section: input [
-  information: "Input section"
-  type: "page"
-]
-
-  codon: codonfile [
-    standard: "Y"
-    information: "Codon distribution file"
-    help: "Optional codon usage file. Nucleotide sequences will be
-           created as triplets matching the frequencies in the file,
-           with the end trimmed to be in the correct reading frame."
-    nullok: "Y"
-  ]
-
-endsection: input
 
 section: output [
   information: "Output section"

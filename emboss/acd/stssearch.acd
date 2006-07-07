@@ -17,7 +17,7 @@ section: input [
   infile: infile  [
     parameter: "Y"
     information: "Primer file"
-    knowntype: "primer pairs file"
+    knowntype: "primer pairs"
   ]
 
 endsection: input

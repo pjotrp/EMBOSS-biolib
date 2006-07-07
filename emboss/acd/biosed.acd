@@ -27,14 +27,6 @@ section: required [
     knowntype: "sequence"
   ]
 
-  integer: position  [
-    additional: "Y"
-    information: "Sequence position to match"
-    default: "0"
-    minimum: "0"
-    maximum: "$(sequence.len)"
-  ]
-
   toggle: delete  [
     information: "Delete the target sequence sections"
     default: "N"
@@ -48,6 +40,21 @@ section: required [
   ]
 
 endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+  integer: position  [
+    additional: "Y"
+    information: "Sequence position to match"
+    default: "0"
+    minimum: "0"
+    maximum: "$(sequence.len)"
+  ]
+
+endsection: additional
 
 section: output [
   information: "Output section"

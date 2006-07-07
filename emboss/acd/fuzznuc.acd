@@ -16,13 +16,6 @@ section: input [
     type: "dna"
   ]
 
-endsection: input
-
-section: required [
-  information: "Required section"
-  type: "page"
-]
-
   pattern: pattern  [
     standard: "Y"
     information: "Search pattern"
@@ -52,7 +45,7 @@ section: required [
      pmismatch: "0"
   ]
 
-endsection: required
+endsection: input
 
 section: advanced [
   information: "Advanced section"

@@ -14,13 +14,13 @@ section: input [
   infile: infile  [
     parameter: "Y"
     information: "Full pathname of WITHREFM file"
-    knowntype: "rebase withrefm file"
+    knowntype: "rebase withrefm"
   ]
 
   infile: protofile  [
     parameter: "Y"
     information: "Full pathname of PROTO file"
-    knowntype: "rebase proto file"
+    knowntype: "rebase proto"
   ]
 
   boolean: equivalences  [

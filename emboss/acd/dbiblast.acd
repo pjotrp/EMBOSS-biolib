@@ -133,15 +133,15 @@ section: output [
   type: "page"
 ]
 
+  outfile: outfile [
+    standard: "Y"
+    knowntype: "log"
+  ]
+
   outdir: indexoutdir  [
     default: "."
     information: "Index directory"
     knowntype: "output directory"
-  ]
-
-  outfile: outfile [
-    standard: "Y"
-    knowntype: "log file"
   ]
 
 endsection: output

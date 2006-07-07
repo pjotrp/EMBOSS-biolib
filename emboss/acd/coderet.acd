@@ -26,8 +26,15 @@ section: output
   type: "page"
 ]
 
+  outfile: outfile [
+    parameter: "Y"
+    extension: "coderet"
+    knowntype: "coderet output"
+  ]
+
 seqout: cdsoutseq
 [
+    parameter: "Y"
     type: "nucleotide"
     information: "CDS sequences"
     osextension: "cds"
@@ -36,25 +43,21 @@ seqout: cdsoutseq
 
 seqout: mrnaoutseq
 [
+    parameter: "Y"
     type: "nucleotide"
-    information: "mrna sequences"
+    information: "Messenger RNA sequences"
     osextension: "mrna"
     nullok: "Y"
 ]
 
 seqout: translationoutseq 
 [
+    parameter: "Y"
     type: "protein"
     information: "Translated (protein) sequences"
     osextension: "prot"
     nullok: "Y"
 ]
 
-
-  outfile: outfile [
-    parameter: "Y"
-    extension: "coderet"
-    knowntype: "coderet output"
-  ]
 
 endsection: output

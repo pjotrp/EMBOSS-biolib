@@ -29,11 +29,11 @@ string comparison_matrix_name Comparison matrix name
 file complex_temporary_output Program complex temporary file
 file compseq_output Output from compseq
 file consense_output Phylip consense program output file
-file contact_file Contact file
+file contact Contact file
 file contml_input Phylip contml program input file
 file contml_output Phylip contml program output file
 frequencies continuous_character Continuous character frequency input file
-file continuous_character_frequency_file Phylip continuous character frequency  input file
+file continuous_character_frequency Phylip continuous character frequency  input file
 file contrast_output Phylip contrast program output file
 file copy_of_datafile An EMBOSS datafile in its original format
 string database_release Database name and release number
@@ -41,18 +41,18 @@ file dictionary_of_heterogen_groups Dictionary of heterogen groups
 file dirichlet_prior HMMER dirichlet prior file
 file discrete_characters_input Phylip discrete characters input file
 discretestates discrete_states Phylip discrete states file
-file discriminator_file Discriminator files
+file discriminator Discriminator files
 file dnacomp_output Phylip dnacomp program output file
 file dnadist_output Phylip dnadist program output file
 file dnapars_output Phylip dnapars program output file
 file dnapenny_output Phylip dnapenny program output file
-file domain_alignment_file Domain alignment file
-file domain_classification_file Domain classification file
+file domain_alignment Domain alignment file
+file domain_classification Domain classification file
 file domain_clean_coordinates Clean domain coordinates
-file domain_families_file Domain families file
-file domain_hits_file Domain hits file
-file domain_pdb_file Domain pdb file
-file domainatrix_log_file Domainatrix log file
+file domain_families Domain families file
+file domain_hits Domain hits file
+file domain_pdb Domain pdb file
+file domainatrix_log Domainatrix log file
 string embassy_package EMBASSY package name
 directory emboss_database_directory Database directory
 string emboss_database_name Database name
@@ -77,7 +77,6 @@ file enzyme_data enzyme kinetics data (application-specific)
 string enzyme_name Restriction enzyme name
 string enzyme_list Restriction enzyme name list
 string external_program External program name
-file restriction_enzyme_data Restriction enzyme datafile
 file factor_input Phylip factor program input file
 file factor_output Phylip factor program output file
 string feature_key Feature table keys with wildcards, separated by |
@@ -102,27 +101,27 @@ file gff feature file in GFF format
 file hmm_database HMMER hmm database filename
 string hmm_database_name HMMER hmm database name
 string hmm_entry_name HMMER hmm database entry id
-file hmm_file HMMER hidden markov model file
+file hmm HMMER hidden markov model file
 file hmmalign_output HMMER hmmalign program output file
 file hmmcalibrate_output HMMER hmmcalibrate program output file
 file hmmemit_output HMMER hmmemit program output file
 file hmmer_alignment HMMER alignment file
-file hmmer_count_file HMMER emission and transition count file
+file hmmer_count HMMER emission and transition count file
 file hmmer_null_model HMMER null model file
 file hmmer_histogram HMMER histogram file
-file hmmer_matrix_file HMMER matrix file
+file hmmer_matrix HMMER matrix file
 file hmmpfam_output HMMER hmmpfam program output file
 file hmmsearch_output HMMER hmmsearch program output file
-file hits_file Hits file
+file hits Hits file
 integer integer_gap_penalty Affine gap penalty
 integer integer_gap_extension Affine gap extension penalty
 file integer_long_data Standard format info on int and long
 file inverted_output Output from the Sanger Centre inverted program
-file keywords_file Keywords file
+file keywords Keywords file
 file kitsch_input Phylip kitsch program input file
 file kitsch_output Phylip kitsch program output file
 file lindna_mapping_commands Commands to the lindna drawing program
-file log_file General log file for application results
+file log General log file for application results
 report megamerger_report report file from megamerger program
 file mix_input Phylipmix  program input file
 file mix_output Phylip mix program output file
@@ -136,34 +135,35 @@ file newcoils_datafile Data file for newcoils
 string nucleotide_codes DNA/RNA sequence characters - see pattern for allowed set
 string nucleotide_sequence DNA/RNA sequence
 directory input_directory Directory for input files
+string output_delimiter Delimiter between fields in single line output
 outdir output_directory Directory for output files
 string output_filename Output filename
 string output_format Output file format
-file overlap_file Sequence overlap length(s)
-string pdb_file_prefix Pdb file prefix
-file pdb_file Pdb file
+file overlap Sequence overlap length(s)
+string pdb_prefix Pdb file prefix
+file pdb Pdb file
 file peptide_molweights Peptide molecular weight values
 string plot_colour Plot colour name
 string plot_shading Plot shading BPLW in any order
-file primer_pairs_file Primer pairs file
+file primer_pairs Primer pairs file
 file primer3_out Whitehead primer3 program output
 file prints_database PRINTS database file
-file profile_file profile data file
+file profile profile data file
 string protein_codes protein sequence characters
-file matrix_file weight matrix file
+file matrix weight matrix file
 file newick_tree PHYLIP tree file
 tree newick PHYLIP tree file
 file octanol_datafile Datafile for octanol
 file penny_input Phylip penny program input file
 file penny_output Phylip penny program output file
+file pepstats_output Pepstats program output file
 string phylip_category_values Sapce-separated phylip category values
 string phylip_probability_values Sapce-separated phylip probability values
 file pars_output Phylip pars program output file
-file naccess_log_file naccess log file
-file stride_log_file stride log file
+file naccess_log naccess log file
 file profile_or_matrix Profile or weight matrix file
 file primer3_output Output from the Whitehead primer3_core program
-file profile_or_matrix_file Profile or weight matrix file
+file profile_or_matrix Profile or weight matrix file
 string program_name Program name with command line options to follow
 file proml_output Phylip proml program output file
 file promlk_output Phylip promlk program output file
@@ -176,23 +176,27 @@ file protein_clean_coordinates Clean protein structure coordinates
 file protpars_input Phylip protpars program input file
 file protpars_output Phylip protpars program output file
 file quicktandem_output Output from the Sanger Centre quicktandem program
-file raw_cath_domlist_file Raw cath domlist file
-file raw_cath_list_file Raw cath list file
+file raw_cath_domlist Raw cath domlist file
+file raw_cath_list Raw cath list file
 file raw_dictionary_of_heterogen_groups Raw dictionary of heterogen groups
-file raw_cath_names_file Raw cath names file
-file raw_scop_classification_file Raw scop classification file
-file raw_scop_description_file Raw scop escription file
-file rebase_proto_file REBASE database proto file
-file rebase_withrefm_file REBASE database withrefm file
+file raw_cath_names Raw cath names file
+file raw_scop_classification Raw scop classification file
+file raw_scop_description Raw scop escription file
+file rebase_proto REBASE database proto file
+file rebase_withrefm REBASE database withrefm file
 string regular_expression Regular expression
 file restboot_input Phylip restboot program input file
 file restboot_output Phylip restboot program output file
 file restdist_output Phylip restdist program output file
 file restml_input Phylip restml program input file
 file restml_output Phylip restml program output file
-file rocplot_summary_file Rocplot summary file
-file secondary_structure_file Secondary structure file
-file selex_file Selex alignment file
+file restriction_enzyme_data Restriction enzyme datafile
+file rna_constraint Vienna RNA structure contraints
+file rna_parameter Vienna RNA parameters
+file rna_structures Vienna RNA structures
+file rocplot_summary Rocplot summary file
+file secondary_structure Secondary structure file
+file selex Selex alignment file
 file seqboot_input Phylip seqboot program input file
 file seqboot_output Phylip seqboot program output file
 file seqbootdisc_output Phylip seqboot_disc program output file
@@ -200,35 +204,37 @@ file seqbootfreq_output Phylip seqboot_freq program output file
 file seqbootrest_output Phylip seqboot_rest program output file
 file seqbootseq_output Phylip seqboot_seq program output file
 string sequence Sequence
-file sequence_file Sequence files
+file sequence Sequence files
 string sequence_id_input Sequence identifier for an input sequence
 string sequence_id_list Sequence identifier list or @filename for input sequences
 string sequence_id_output Sequence identifier for an output sequence
+file sequence_overlap File of sequence overlaps
 string sequence_type EMBOSS sequence type
 string sequence_range Sequence range in the format nn..nn
 string sequence_mask_character Sequence code or space (lowercase) for sequence masking
-file signature_file Signature file
+file signature Signature file
 file sim4_output Sim4 program output file
-file sites_log_file Sites log file
+file sites_log Sites log file
 string sort_utility_options Command line options for the system sort utility
+file stride_log stride log file
 string string Any string value
-file supermatcher_error_file error file from supermatcher program
+file supermatcher_error error file from supermatcher program
 file swissprot_database Swissprot-format (embl) database
-file swissprot_pdb_equivalence_file Embl-like format swissprot:pdb equivalence file
+file swissprot_pdb_equivalence Embl-like format swissprot:pdb equivalence file
 file swissprot_pdb_equivalence_table Swissprot:pdb equivalence table
 file tandem_output Output from the Sanger Centre tandem program
-file temporary_file Temporary file read, written and deleted
+file temporary Temporary file read, written and deleted
 file testcode_data Testcode data file
 file text_documentation Program documentation in ASCII text
-string threshold_identity_similar_related Three floating point threshold values for identical, similar and related residues
+array threshold_identity_similar_related Three floating point threshold values for identical, similar and related residues
 file transfac_data Transfac database file
 file treedist_output Phylip treedist program output file
 discretestates two_state_characters File of two state characters
-file transfac_site_file TRANSFAC database site.dat file
+file transfac_site TRANSFAC database site.dat file
 string url_prefix Prefix for all URLs
 string url_suffix Suffix for all URLs
 file usa_list List of USAs suitable for @list input
 file van_der_waals_radii Van der waals radii file
-file vector_file vector definition file
+file vector vector definition file
 properties weights File of weights
 string wildcard_string String with wildcard characters

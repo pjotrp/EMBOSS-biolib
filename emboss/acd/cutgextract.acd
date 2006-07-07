@@ -60,7 +60,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    knowntype: "log file"
+    knowntype: "log"
   ]
 
   string: filename  [

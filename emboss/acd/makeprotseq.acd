@@ -3,6 +3,23 @@ application: makeprotseq [
   groups: "Edit"
 ]
 
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  infile: pepstatsfile [
+    standard: "Y"
+    information: "Optional amino acid composition file"
+    help: "This file should be a pepstats output file. Protein
+           sequences will be created with the composition in the
+           pepstats output file."
+    nullok: "Y"
+    knowntype: "pepstats output"
+  ]
+
+endsection: input
+
 section: required [
   information: "Required section"
   type: "page"
@@ -21,13 +38,6 @@ section: required [
     minimum: "1"
     information: "Length of each sequence"
   ]
-
-endsection: required
-
-section: advanced [
-  information: "Advanced section"
-  type: "page"
-]
 
   toggle: useinsert [
     additional: "Y"
@@ -50,24 +60,8 @@ section: advanced [
     # maximum: "@($(length) - @($(insert) ? $(insert.length)-1 : 0))"
   ]
 
-endsection: advanced
+endsection: required
 
-
-section: input [
-  information: "Input section"
-  type: "page"
-]
-
-  infile: pepstatsdata [
-    standard: "Y"
-    information: "Distribution file"
-    help: "This file should be a pepstats output file. Protein
-           sequences will be created with the composition in the
-           pepstats output file."
-    nullok: "Y"
-  ]
-
-endsection: input
 
 section: output [
   information: "Output section"

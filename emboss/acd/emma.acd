@@ -99,7 +99,7 @@ section: input [
 
     variable: usermatrix "@($(pwmatrix) == o)"
 
-    infile: pairwisedata  [
+    infile: pairwisedatafile  [
       additional: "$(usermatrix)"
       default: ""
       nullok: "@(!$(usermatrix))"
@@ -176,7 +176,7 @@ section: input [
 
     variable: umamatrix "@($(dnamatrix) == own)"
 
-    infile: mamatrix  [
+    infile: mamatrixfile  [
       additional: "@($(usermamatrix)?True:$(umamatrix))"
       default: ""
       nullok: "@($(usermamatrix)?@(!$(umamatrix)):True)"
