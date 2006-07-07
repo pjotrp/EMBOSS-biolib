@@ -36,11 +36,12 @@
 
 
 
-static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
-				  AjPFile outf, AjBool hassup);
-static void rebex_printEnzHeader(AjPFile outf);
-static void rebex_printRefHeader(AjPFile outf);
-static void rebex_printSuppHeader(AjPFile outf);
+static void rebaseextract_process_pattern(const AjPStr pattern,
+					  const AjPStr code,
+					  AjPFile outf, AjBool hassup);
+static void rebaseextract_printEnzHeader(AjPFile outf);
+static void rebaseextract_printRefHeader(AjPFile outf);
+static void rebaseextract_printSuppHeader(AjPFile outf);
 
 
 
@@ -99,15 +100,15 @@ int main(int argc, char **argv)
 
     pfname = ajStrNewC(DATANAME);
     ajFileDataNewWrite(pfname,&outf);
-    rebex_printEnzHeader(outf);
+    rebaseextract_printEnzHeader(outf);
 
     ajStrAssignC(&pfname,DATANAME2);
     ajFileDataNewWrite(pfname,&outf2);
-    rebex_printRefHeader(outf2);
+    rebaseextract_printRefHeader(outf2);
 
     ajStrAssignC(&pfname,DATANAME3);
     ajFileDataNewWrite(pfname,&outf3);
-    rebex_printSuppHeader(outf3);
+    rebaseextract_printSuppHeader(outf3);
 
     if(doequ)
     {
@@ -325,7 +326,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf2,"//\n");
 
 
-	rebex_process_pattern(pattern,code,outf,hassup);
+	rebaseextract_process_pattern(pattern,code,outf,hassup);
 
     }
 
@@ -362,7 +363,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic rebex_process_pattern ******************************************
+/* @funcstatic rebaseextract_process_pattern **********************************
 **
 ** Convert rebase pattern into emboss pattern
 **
@@ -373,9 +374,10 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
-				  AjPFile outf,
-				  AjBool hassup)
+static void rebaseextract_process_pattern(const AjPStr pattern,
+					  const AjPStr code,
+					  AjPFile outf,
+					  AjBool hassup)
 {
     AjPStr temp = NULL;
     AjPStr ppat = NULL;
@@ -562,7 +564,8 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
 	    ajFmtPrintF(outf,"%s\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
 			ajStrGetPtr(ppat),len,ncuts,blunt,cut1,cut2,cut3,cut4);
 	else
-	    ajFmtPrintF(outf,"%s\t%d\t%d\t%d\t%d\t%d\t0\t0\n",ajStrGetPtr(ppat),
+	    ajFmtPrintF(outf,"%s\t%d\t%d\t%d\t%d\t%d\t0\t0\n",
+			ajStrGetPtr(ppat),
 			len,ncuts,blunt,cut1,cut2);
     }
 
@@ -577,7 +580,7 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
 
 
 
-/* @funcstatic rebex_printEnzHeader *******************************************
+/* @funcstatic rebaseextract_printEnzHeader ***********************************
 **
 ** print comments at start of embossre.enz
 **
@@ -585,7 +588,7 @@ static void rebex_process_pattern(const AjPStr pattern, const AjPStr code,
 ** @@
 ******************************************************************************/
 
-static void rebex_printEnzHeader(AjPFile outf)
+static void rebaseextract_printEnzHeader(AjPFile outf)
 {
     ajFmtPrintF(outf,"# REBASE enzyme patterns for EMBOSS\n#\n");
     ajFmtPrintF(outf,"# Format:\n");
@@ -622,7 +625,7 @@ static void rebex_printEnzHeader(AjPFile outf)
 
 
 
-/* @funcstatic rebex_printRefHeader *******************************************
+/* @funcstatic rebaseextract_printRefHeader ***********************************
 **
 ** Print header to embossre.ref
 **
@@ -630,7 +633,7 @@ static void rebex_printEnzHeader(AjPFile outf)
 ** @@
 ******************************************************************************/
 
-static void rebex_printRefHeader(AjPFile outf)
+static void rebaseextract_printRefHeader(AjPFile outf)
 {
     ajFmtPrintF(outf,"# REBASE enzyme information for EMBOSS\n#\n");
     ajFmtPrintF(outf,"# Format:\n");
@@ -651,7 +654,7 @@ static void rebex_printRefHeader(AjPFile outf)
 
 
 
-/* @funcstatic rebex_printSuppHeader ******************************************
+/* @funcstatic rebaseextract_printSuppHeader **********************************
 **
 ** Print header to embossre.sup
 **
@@ -659,7 +662,7 @@ static void rebex_printRefHeader(AjPFile outf)
 ** @@
 ******************************************************************************/
 
-static void rebex_printSuppHeader(AjPFile outf)
+static void rebaseextract_printSuppHeader(AjPFile outf)
 {
     ajFmtPrintF(outf,"# REBASE Supplier information for EMBOSS\n#\n");
     ajFmtPrintF(outf,"# Format:\n");

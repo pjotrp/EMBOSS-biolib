@@ -51,11 +51,12 @@ struct DNAB
 
 
 
-static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven);
-static void hth_print_hits(AjPList ajb, ajint n, float minsd, ajint lastcol,
-			   AjBool eightyseven, AjPFile outf);
-static void hth_report_hits(AjPList ajb, ajint lastcol,
-			    AjPFeattable TabRpt);
+static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven);
+static void helixturnhelix_print_hits(AjPList ajb,
+				      ajint n, float minsd, ajint lastcol,
+				      AjBool eightyseven, AjPFile outf);
+static void helixturnhelix_report_hits(AjPList ajb, ajint lastcol,
+				       AjPFeattable TabRpt);
 
 
 
@@ -123,7 +124,7 @@ int main(int argc, char **argv)
 
     eightyseven = ajAcdGetBool("eightyseven");
 
-    cols = hth_readNab(&matrix,eightyseven);
+    cols = helixturnhelix_readNab(&matrix,eightyseven);
     ajDebug("cols = %d\n",cols);
 
     lastcol = cols-3;
@@ -177,7 +178,7 @@ int main(int argc, char **argv)
 		++n;
 	    }
 	}
-	hth_report_hits(ajb, lastcol, TabRpt);
+	helixturnhelix_report_hits(ajb, lastcol, TabRpt);
 
 	ajReportWrite(report, TabRpt, seq);
 	ajFeattableDel(&TabRpt);
@@ -197,7 +198,8 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(outf, "\nHELIXTURNHELIX: Nucleic Acid Binding "
 			"Domain search\n\n");
 	    ajFmtPrintF(outf,"\nHits above +%.2f SD (%.2f)\n",minsd,minscore);
-	    hth_print_hits(ajb, n, minsd, lastcol, eightyseven, outf);
+	    helixturnhelix_print_hits(ajb, n, minsd, lastcol,
+				      eightyseven, outf);
 	}
     
     ajInt2dDel(&matrix);
@@ -219,7 +221,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic hth_readNab ****************************************************
+/* @funcstatic helixturnhelix_readNab *****************************************
 **
 ** Undocumented.
 **
@@ -230,7 +232,7 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 
-static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
+static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 {
     AjPFile mfptr = NULL;
     AjPStr  line  = NULL;
@@ -379,7 +381,7 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 
 
 
-/* @funcstatic hth_print_hits *************************************************
+/* @funcstatic helixturnhelix_print_hits **************************************
 **
 ** Undocumented.
 **
@@ -393,8 +395,9 @@ static ajint hth_readNab(AjPInt2d *matrix,AjBool eightyseven)
 ******************************************************************************/
 
 
-static void hth_print_hits(AjPList ajb, ajint n, float minsd, ajint lastcol,
-			   AjBool eightyseven, AjPFile outf)
+static void helixturnhelix_print_hits(AjPList ajb, ajint n,
+				      float minsd, ajint lastcol,
+				      AjBool eightyseven, AjPFile outf)
 {
     DNAB     **lp;
 
@@ -458,7 +461,7 @@ static void hth_print_hits(AjPList ajb, ajint n, float minsd, ajint lastcol,
 
 
 
-/* @funcstatic hth_report_hits ************************************************
+/* @funcstatic helixturnhelix_report_hits *************************************
 **
 ** Undocumented.
 **
@@ -469,7 +472,8 @@ static void hth_print_hits(AjPList ajb, ajint n, float minsd, ajint lastcol,
 ** @@
 ******************************************************************************/
 
-static void hth_report_hits(AjPList ajb, ajint lastcol, AjPFeattable TabRpt)
+static void helixturnhelix_report_hits(AjPList ajb,
+				       ajint lastcol, AjPFeattable TabRpt)
 {
     DNAB     **lp = NULL;
 

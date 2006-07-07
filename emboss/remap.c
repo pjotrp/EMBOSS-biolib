@@ -49,7 +49,7 @@ static void remap_DelTable(AjPTable * table);
 static void remap_read_file_of_enzyme_names(AjPStr *enzymes);
 static int remap_cmpcase(const void* str1, const void* str2);
 static void remap_strdel(void** str, void* cl);
-static void rebase_RenamePreferred(const AjPList list, const AjPTable table, 
+static void remap_RenamePreferred(const AjPList list, const AjPTable table, 
 				   AjPList newlist);
 static void remap_RestrictPreferred(const AjPList l, const AjPTable t);
 static AjBool remap_Ambiguous(const AjPStr str);
@@ -869,7 +869,7 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
     if(limit)
     {
         newlist = ajListstrNew();
-        rebase_RenamePreferred(nocutlist, retable, newlist);
+        remap_RenamePreferred(nocutlist, retable, newlist);
         ajListstrFree(&nocutlist);
         nocutlist = newlist;
         ajListUnique(nocutlist, remap_cmpcase, remap_strdel);
@@ -1149,7 +1149,7 @@ static void remap_strdel(void** str, void* cl)
 
 
 
-/* @funcstatic rebase_RenamePreferred *****************************************
+/* @funcstatic remap_RenamePreferred ******************************************
 **
 ** Iterates through a list of strings
 ** Forteach string it checks if that string occurs as
@@ -1164,7 +1164,7 @@ static void remap_strdel(void** str, void* cl)
 ** @@
 ******************************************************************************/
 
-static void rebase_RenamePreferred(const AjPList list, const AjPTable table, 
+static void remap_RenamePreferred(const AjPList list, const AjPTable table, 
 				   AjPList newlist) 
 {
     AjIList iter = NULL;

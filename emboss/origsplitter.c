@@ -26,7 +26,7 @@
 
 
 
-static void splitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
+static void origsplitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
 			   ajint end, const AjPSeq seq);
 
 
@@ -76,13 +76,13 @@ int main(int argc, char **argv)
 	    {
 		ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,pos+size-1);
 		ajSeqAssignSeqS(subseq, str);
-		splitter_write(seqout,subseq,pos,pos+size-1,seq);
+		origsplitter_write(seqout,subseq,pos,pos+size-1,seq);
 		pos += size-overlap;
 	    }
 
 	    ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,len-1);
 	    ajSeqAssignSeqS(subseq, str);
-	    splitter_write(seqout,subseq,pos,len-1,seq);
+	    origsplitter_write(seqout,subseq,pos,len-1,seq);
 	}
 	else
 	{
@@ -90,13 +90,13 @@ int main(int argc, char **argv)
 	    {
 		ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,pos+size+overlap-1);
 		ajSeqAssignSeqS(subseq,str);
-		splitter_write(seqout,subseq,pos,pos+size+overlap-1,seq);
+		origsplitter_write(seqout,subseq,pos,pos+size+overlap-1,seq);
 		pos += size;
 	    }
 
 	    ajStrAssignSubC(&str,ajSeqGetSeqC(seq),pos,len-1);
 	    ajSeqAssignSeqS(subseq, str);
-	    splitter_write(seqout,subseq,pos,len-1,seq);
+	    origsplitter_write(seqout,subseq,pos,len-1,seq);
 	}
 
     }
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic splitter_write  ************************************************
+/* @funcstatic origsplitter_write  ********************************************
 **
 ** Write out split sequence
 **
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void splitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
+static void origsplitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
 			   ajint end, const AjPSeq seq)
 {
     AjPStr name  = NULL;

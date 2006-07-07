@@ -27,12 +27,15 @@
 
 
 
-AjBool infoseq_printheader(AjBool html,  AjBool instring, char *text, 
-			   ajint wid, AjBool columns, AjPStr delimiter, 
-			   AjPFile outfile);
-AjBool infoseq_print(AjBool html, AjBool instring, AjPStr str, AjBool 
-		     usewid, ajint wid, AjBool columns, AjPStr delimiter, 
-		     AjPFile outfile);
+static AjBool infoseq_printheader(AjBool html,  AjBool instring,
+				  const char *text, 
+				  ajint wid, AjBool columns,
+				  const AjPStr delimiter, 
+				  AjPFile outfile);
+static AjBool infoseq_print(AjBool html, AjBool instring,
+			    const AjPStr str, AjBool 
+			    usewid, ajint wid, AjBool columns,
+			    const AjPStr delimiter, AjPFile outfile);
 
 
 /* @prog infoseq **************************************************************
@@ -143,37 +146,49 @@ int main(int argc, char **argv)
 
 		
 		if(dousa)
-		    instring = infoseq_printheader(html, instring, "USA", 25, 
-						   columns, delimiter, outfile);
+		    instring = infoseq_printheader(html, instring,
+						   "USA", 25, 
+						   columns, delimiter,
+						   outfile);
 		if(doname)
-		    instring = infoseq_printheader(html, instring, "Name", 15, 
-						   columns, delimiter, outfile);
+		    instring = infoseq_printheader(html, instring,
+						   "Name", 15, 
+						   columns, delimiter,
+						   outfile);
 		if(doacc)
-		    instring = infoseq_printheader(html, instring, "Accession", 
-						   15, columns, delimiter, 
+		    instring = infoseq_printheader(html, instring,
+						   "Accession", 15,
+						   columns, delimiter, 
 						   outfile);
 		if(dogi)
-		    instring = infoseq_printheader(html, instring, "GI", 15, 
+		    instring = infoseq_printheader(html, instring,
+						   "GI", 15, 
 						   columns, delimiter, 
 						   outfile);
 		if(dosv)
-		    instring = infoseq_printheader(html, instring, "Version", 8, 
-						   columns, delimiter, outfile);
+		    instring = infoseq_printheader(html, instring,
+						   "Version", 8, 
+						   columns, delimiter,
+						   outfile);
 		if(dotype)
-		    instring = infoseq_printheader(html, instring, "Type", 5, 
+		    instring = infoseq_printheader(html, instring,
+						   "Type", 5, 
 						   columns, delimiter, 
 						   outfile);
 		if(dolength)		
-		    instring = infoseq_printheader(html, instring, "Length", 7, 
+		    instring = infoseq_printheader(html, instring,
+						   "Length", 7, 
 						   columns, delimiter, 
 						   outfile);
 		if(!type && dopgc)
-		    instring = infoseq_printheader(html, instring, "%GC", 7, 
+		    instring = infoseq_printheader(html, instring,
+						   "%GC", 7, 
 						   columns, delimiter, 
 						   outfile);
 		if(dodesc)
-		    instring = infoseq_printheader(html, instring, "Description", 
-						   12, columns, delimiter, 
+		    instring = infoseq_printheader(html, instring,
+						   "Description", 12,
+						   columns, delimiter, 
 						   outfile);
 
 		/* End the HTML table title line */
@@ -235,19 +250,24 @@ int main(int argc, char **argv)
 
 
 	if(dousa)
-	    instring = infoseq_print(html, instring, usa, ajTrue, 25, columns, 
+	    instring = infoseq_print(html, instring, usa,
+				     ajTrue, 25, columns, 
 				     delimiter, outfile);
 	if(doname)
-	    instring = infoseq_print(html, instring, name, ajTrue, 15, columns, 
+	    instring = infoseq_print(html, instring, name,
+				     ajTrue, 15, columns, 
 				     delimiter, outfile);
 	if(doacc)
-	    instring = infoseq_print(html, instring, acc, ajTrue, 15, columns, 
+	    instring = infoseq_print(html, instring, acc,
+				     ajTrue, 15, columns, 
 				     delimiter, outfile);
 	if(dogi)
-	    instring = infoseq_print(html, instring, gi, ajTrue, 15, columns, 
+	    instring = infoseq_print(html, instring, gi,
+				     ajTrue, 15, columns, 
 				     delimiter, outfile);
 	if(dosv)
-	    instring = infoseq_print(html, instring, sv, ajTrue, 8, columns, 
+	    instring = infoseq_print(html, instring, sv,
+				     ajTrue, 8, columns, 
 				     delimiter, outfile);
 	if(dotype)
 	{
@@ -317,13 +337,21 @@ int main(int argc, char **argv)
 **
 ** Prints out a sequence information record to html or text file. 
 **
-** @param [u] seqout [AjPSeqout] Undocumented
-** @returns [AjBool] True on success.
+** @param [r] html  [AjBool] Undocumented
+** @param [r] instring [AjBool] Undocumented
+** @param [r] text [const char *] Undocumented
+** @param [r] wid [ajint] Undocumented
+** @param [r] columns [AjBool] Undocumented
+** @param [r] delimiter [const AjPStr] Undocumented
+** @param [u] outfile [AjPFile] Undocumented
+** @return [AjBool] True on success.
 ** @@
 ******************************************************************************/
-AjBool infoseq_printheader(AjBool html,  AjBool instring, char *text, 
-			   ajint wid, AjBool columns, AjPStr delimiter, 
-			   AjPFile outfile)
+static AjBool infoseq_printheader(AjBool html,  AjBool instring,
+				  const char *text, 
+				  ajint wid, AjBool columns,
+				  const AjPStr delimiter, 
+				  AjPFile outfile)
 {
     /* Suppress delimiter on first call (for first string printed out) */
     static AjBool nodelim = AJTRUE;
@@ -362,21 +390,28 @@ AjBool infoseq_printheader(AjBool html,  AjBool instring, char *text,
 **
 ** Prints out a sequence information record to html or text file. 
 **
-** @param [u] seqout [AjPSeqout] Undocumented
-** @returns [AjBool]  True on success.
+** @param [r] html  [AjBool] Undocumented
+** @param [r] instring [AjBool] Undocumented
+** @param [r] str [const AjPStr] Undocumented
+** @param [r] usewid [AjBool] Undocumented
+** @param [r] wid [ajint] Undocumented
+** @param [r] columns [AjBool] Undocumented
+** @param [r] delimiter [const AjPStr] Undocumented
+** @param [u] outfile [AjPFile] Undocumented
+** @return [AjBool]  True on success.
 ** @@
 ******************************************************************************/
-AjBool infoseq_print(AjBool html, AjBool instring, AjPStr str, AjBool usewid,
-		     ajint wid, AjBool columns, AjPStr delimiter, 
-		     AjPFile outfile)
+static AjBool infoseq_print(AjBool html, AjBool instring, const AjPStr str,
+			    AjBool usewid, ajint wid, AjBool columns,
+			    const AjPStr delimiter, AjPFile outfile)
 {
     /* Suppress delimiter on first call (for first string printed out) */
     static AjBool nodelim = AJTRUE;
-    
+
     /* Reset for each new line */
     if(instring == ajFalse)
 	nodelim = ajTrue;
-    
+   
 
     if(html)
 	ajFmtPrintF(outfile, "<td>%S</td>", str);
@@ -402,9 +437,3 @@ AjBool infoseq_print(AjBool html, AjBool instring, AjPStr str, AjBool usewid,
     
     return ajTrue;
 }
-
-
-
-
-
-  

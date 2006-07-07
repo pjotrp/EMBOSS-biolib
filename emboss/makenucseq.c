@@ -25,8 +25,9 @@
 #include "stdlib.h"
 
 
-AjPStr makeseq_random_sequence (AjPStr* seqchar, int scmax, int length);
-void makeseq_default_chars (AjPList* list);
+static AjPStr makenucseq_random_sequence (AjPStr const* seqchar,
+					  ajint scmax, ajint length);
+static void makenucseq_default_chars (AjPList* list);
 
 /* @prog makenucseq ***********************************************************
 **
@@ -62,7 +63,8 @@ int main(int argc, char **argv)
 
     /* this is checked by acd
     if (amount <=0 || length <= 0)
-	ajFatal ("Amount or lenght is 0 or less. Unable to create any sequences"); */
+	ajFatal ("Amount or length is 0 or less. "
+	         "Unable to create any sequences"); */
 
     /* if insert, make sure sequence is large enough */
     if (ajStrGetLen(insert))
@@ -71,14 +73,16 @@ int main(int argc, char **argv)
 	/* start= start <= 1 ? 0 : --start; */ /* checked in acd */
 	start--;
 	if (length <= 0)
-	    ajFatal ("Sequence smaller than inserted part. Unable to create sequences.");
+	    ajFatal ("Sequence smaller than inserted part. "
+		     "Unable to create sequences.");
     }
 
     /* make the list of AjPStr to be used in sequence creation */
     if (codondata)
     {
 	ajCodGetCodonlist(codondata, list);
-	    /* length is length in nucleotides, random sequence is made of triplets */
+	    /* length is length in nucleotides, random sequence is
+               made of triplets */
 	extra = length % 3;
 	length /= 3;
 	if (extra)
@@ -89,7 +93,7 @@ int main(int argc, char **argv)
     }
     else
     {
-	makeseq_default_chars (&list);
+	makenucseq_default_chars (&list);
     }
 
     /* if insert, make sure type is correct */
@@ -115,7 +119,7 @@ int main(int argc, char **argv)
 
     while (amount-- > 0)
     {
-	seqstr = makeseq_random_sequence (seqr,scmax,length);
+	seqstr = makenucseq_random_sequence (seqr,scmax,length);
 	if (ajStrGetLen(insert))
 	    ajStrInsertS(&seqstr,start,insert);
 	ajStrFmtLower(&seqstr);
@@ -141,17 +145,18 @@ int main(int argc, char **argv)
     return 0;
 }
 
-/* @funcstatic makeseq_random_sequence ****************************************
+/* @funcstatic makenucseq_random_sequence *************************************
 **
 ** Creates string containing random sequence from given character distribution.
 **
-** @param [r] seqchar [char*] Characters use to make sequence from
+** @param [r] seqchar [AjPStr const*] Characters use to make sequence from
 ** @param [r] scmax [ajint] lenght of the seqchar string
 ** @param [r] length [ajint] Length of the wanted sequence
 ** @return [AjPStr] Sequence string
 ** @@
 ******************************************************************************/
-AjPStr makeseq_random_sequence (AjPStr* seqchar, int scmax, int length)
+static AjPStr makenucseq_random_sequence (AjPStr const* seqchar,
+					  ajint scmax, ajint length)
 {
     AjPStr seq = ajStrNew();
     ajint idx  = 0;
@@ -166,7 +171,7 @@ AjPStr makeseq_random_sequence (AjPStr* seqchar, int scmax, int length)
     return seq;
 }
 
-/* @funcstatic makeseq_default_chars ******************************************
+/* @funcstatic makenucseq_default_chars ***************************************
 **
 ** Crates equal ditribution of characters for completely random sequences.
 **
@@ -174,7 +179,7 @@ AjPStr makeseq_random_sequence (AjPStr* seqchar, int scmax, int length)
 ** @return [void]
 ** @@
 ******************************************************************************/
-void makeseq_default_chars (AjPList* list)
+static void makenucseq_default_chars (AjPList* list)
 {
     int i;
     int max;

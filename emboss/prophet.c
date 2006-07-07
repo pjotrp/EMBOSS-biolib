@@ -105,7 +105,7 @@ int main(int argc, char **argv)
     inf         = ajAcdGetInfile("infile");
     opencoeff   = ajAcdGetFloat("gapopen");
     extendcoeff = ajAcdGetFloat("gapextend");
-    align       = ajAcdGetAlign("align");  /*JISON replacing outfile */
+    align       = ajAcdGetAlign("outfile");  /*JISON replacing outfile */
 
     opencoeff   = ajRoundF(opencoeff, 8);
     extendcoeff = ajRoundF(extendcoeff, 8);
@@ -362,8 +362,8 @@ static void prophet_read_profile(AjPFile inf, AjPStr *name, AjPStr *mname,
 ** Scan sequence with profile
 **
 ** @param [r] substr [const AjPStr] sequence
-** @param [r] pname [const AjPStr] profilename
 ** @param [r] name [const AjPStr] seq name
+** @param [r] pname [const AjPStr] profilename
 ** @param [r] mname [const AjPStr] matrix name
 ** @param [r] mlen [ajint] profile length
 ** @param [r] fmatrix [float* const *] score matrix

@@ -122,8 +122,6 @@ int main(int argc, char **argv)
     AjPSeqout seqout = NULL;
     AjPStr    tempstr = NULL;
     AjPSeq    tempseq = NULL;
-    ajint     tempstart = 0;
-    ajint     tempend   = 0;
     AjPStr    tempname = 0;
     tempseq = ajSeqNew();
     
@@ -137,7 +135,7 @@ int main(int argc, char **argv)
     mismatch  = ajAcdGetInt("mismatch");
     gap       = ajAcdGetInt("gap");
     maxsave   = ajAcdGetInt("maxrepeat");
-    seqout    = ajAcdGetSeqout("seqout");
+    seqout    = ajAcdGetSeqout("outseq");
     
 
     cvt    = ajSeqCvtNew("ACGT");
@@ -220,7 +218,8 @@ int main(int argc, char **argv)
 			imax = ajIntGet(localMax,j%maxsave);
 		    }
 		/* JISON added &listseq, &liststart, &listend args */
-		einverted_report(imax, jmax, sequence, &listseq, &liststart, &listend, &pos);
+		einverted_report(imax, jmax, sequence, &listseq,
+				 &liststart, &listend, &pos);
 		lastReported = jmax;
 
 		for(j = jmax; j >= i-maxsave; --j)
@@ -330,7 +329,10 @@ int main(int argc, char **argv)
 	temppos=0;
 	while(ajListstrPop(listseq, &tempstr))
 	{
-	    ajFmtPrintS(&tempname, "%S %d %d", ajSeqGetNameS(sequence), ajIntGet(liststart, temppos), ajIntGet(listend, temppos));
+	    ajFmtPrintS(&tempname, "%S_%d_%d",
+			ajSeqGetNameS(sequence),
+			ajIntGet(liststart, temppos),
+			ajIntGet(listend, temppos));
 	    ajSeqAssignNameS(tempseq, tempname);
 	    ajSeqAssignSeqS(tempseq, tempstr);
 	    if(seqout)
@@ -379,9 +381,10 @@ int main(int argc, char **argv)
 ** @param [r] max [ajint] Undocumented
 ** @param [r] imax [ajint] Undocumented
 ** @param [r] seq [const AjPSeq] Sequence
-** @param [r] listseq [AjPList *] List (for sequence regions)
-** @param [r] liststart [AjPInt *] List (for start of regions)
-** @param [r] listend [AjPInt *] List (for end of regions)
+** @param [u] listseq [AjPList *] List (for sequence regions)
+** @param [u] liststart [AjPInt *] List (for start of regions)
+** @param [u] listend [AjPInt *] List (for end of regions)
+** @param [u] pos [ajint*] Position
 ** @@
 ******************************************************************************/
 

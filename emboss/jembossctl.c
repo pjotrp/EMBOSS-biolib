@@ -74,35 +74,38 @@
 
 
 
-static AjBool jctl_up(const char *buf,int *uid,int *gid,AjPStr *home);
-static AjBool jctl_do_fork(char *buf, int uid, int gid);
-static AjBool jctl_do_batch(char *buf, int uid, int gid);
-static AjBool jctl_do_directory(char *buf, int uid, int gid);
-static AjBool jctl_do_deletefile(char *buf, int uid, int gid);
-static AjBool jctl_do_seq(char *buf, int uid, int gid);
-static AjBool jctl_do_seqset(char *buf, int uid, int gid);
-static AjBool jctl_do_renamefile(char *buf, int uid, int gid);
-static AjBool jctl_do_deletedir(char *buf, int uid, int gid);
-static AjBool jctl_do_listfiles(char *buf, int uid, int gid, AjPStr *retlist);
-static AjBool jctl_do_listdirs(char *buf, int uid, int gid, AjPStr *retlist);
-static AjBool jctl_do_getfile(char *buf, int uid, int gid,
+static AjBool jembossctl_up(const char *buf,int *uid,int *gid,AjPStr *home);
+static AjBool jembossctl_do_fork(char *buf, int uid, int gid);
+static AjBool jembossctl_do_batch(char *buf, int uid, int gid);
+static AjBool jembossctl_do_directory(char *buf, int uid, int gid);
+static AjBool jembossctl_do_deletefile(char *buf, int uid, int gid);
+static AjBool jembossctl_do_seq(char *buf, int uid, int gid);
+static AjBool jembossctl_do_seqset(char *buf, int uid, int gid);
+static AjBool jembossctl_do_renamefile(char *buf, int uid, int gid);
+static AjBool jembossctl_do_deletedir(char *buf, int uid, int gid);
+static AjBool jembossctl_do_listfiles(char *buf, int uid, int gid,
+				      AjPStr *retlist);
+static AjBool jembossctl_do_listdirs(char *buf, int uid, int gid,
+				     AjPStr *retlist);
+static AjBool jembossctl_do_getfile(char *buf, int uid, int gid,
 			      unsigned char **fbuf, int *size);
-static AjBool jctl_do_putfile(char *buf, int uid, int gid);
+static AjBool jembossctl_do_putfile(char *buf, int uid, int gid);
 
-static char **jctl_make_array(const AjPStr str);
-static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
-			      char *buf);
-static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
-			   AjPStr *dir, AjPStr *outstd, AjPStr *errstd);
-static AjBool jctl_check_buffer(const char *buf, int mlen);
-static AjBool jctl_chdir(const char *file);
-static AjBool jctl_initgroups(const char *buf, int gid);
-static void jctl_zero(char *buf);
-static time_t jctl_Datestr(const AjPStr s);
-static int    jctl_date(const void* str1, const void* str2);
+static char **jembossctl_make_array(const AjPStr str);
+static void jembossctl_tidy_strings(AjPStr *tstr, AjPStr *home,
+				    AjPStr *retlist,
+				    char *buf);
+static void jembossctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
+				 AjPStr *dir, AjPStr *outstd, AjPStr *errstd);
+static AjBool jembossctl_check_buffer(const char *buf, int mlen);
+static AjBool jembossctl_chdir(const char *file);
+static AjBool jembossctl_initgroups(const char *buf, int gid);
+static void jembossctl_zero(char *buf);
+static time_t jembossctl_Datestr(const AjPStr s);
+static int    jembossctl_date(const void* str1, const void* str2);
 
-static AjBool jctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq);
-static AjBool jctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq);
+static AjBool jembossctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq);
+static AjBool jembossctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq);
 
 
 
@@ -143,15 +146,16 @@ static AjBool jctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq);
 #endif
 
 
-static void jctl_empty_core_dump(void);
+static void jembossctl_empty_core_dump(void);
 #ifndef NO_AUTH
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-			      ajint *gid, AjPStr *home);
+static AjBool jembossctl_check_pass(AjPStr username, AjPStr password,
+				    ajint *uid,
+				    ajint *gid, AjPStr *home);
 #endif
 
 #ifdef PAM
-static int jctl_pam_conv(int num_msg, struct pam_message **msg,
-			 struct pam_response **resp, void *appdata_ptr);
+static int jembossctl_pam_conv(int num_msg, struct pam_message **msg,
+			       struct pam_response **resp, void *appdata_ptr);
 #endif
 
 #define JBUFFLEN 10000
@@ -159,12 +163,12 @@ static int jctl_pam_conv(int num_msg, struct pam_message **msg,
 
 
 
-static int jctl_pipe_read(char *buf, int n, int seconds);
-static int jctl_pipe_write(const char *buf, int n, int seconds);
-static int jctl_snd(const char *buf,int len);
-static int jctl_rcv(char *buf);
+static int jembossctl_pipe_read(char *buf, int n, int seconds);
+static int jembossctl_pipe_write(const char *buf, int n, int seconds);
+static int jembossctl_snd(const char *buf,int len);
+static int jembossctl_rcv(char *buf);
 
-static int java_block(int chan, unsigned long flag);
+static int jembossctl_java_block(int chan, unsigned long flag);
 
 #ifndef __ppc__
 extern char *strptime(const char *s, const char *format, struct tm *tm);
@@ -210,7 +214,7 @@ int main(int argc, char **argv)
 
     if(!(cbuf=(char *)malloc(JBUFFLEN+1)))
     {
-	jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
+	jembossctl_tidy_strings(&tstr,&home,&retlist,cbuf);
 	fprintf(stderr,"jctl buf malloc error (jembossctl)\n");
 	fflush(stderr);
 	exit(-1);
@@ -218,13 +222,13 @@ int main(int argc, char **argv)
 
     bzero((void*)cbuf,JBUFFLEN+1);
 
-    jctl_empty_core_dump();
+    jembossctl_empty_core_dump();
 
 
     message = ajStrNewC("OK");
-    if(jctl_snd(ajStrGetPtr(message),ajStrGetLen(message))==-1)
+    if(jembossctl_snd(ajStrGetPtr(message),ajStrGetLen(message))==-1)
     {
-	jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
+	jembossctl_tidy_strings(&tstr,&home,&retlist,cbuf);
 	ajStrDel(&message);
 	fprintf(stderr,"jctl send error (jembossctl)\n");
 	fflush(stderr);
@@ -234,9 +238,9 @@ int main(int argc, char **argv)
 
     /* Wait for a command from jni */
 
-    if((mlen = jctl_rcv(cbuf))==-1)
+    if((mlen = jembossctl_rcv(cbuf))==-1)
     {
-	jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
+	jembossctl_tidy_strings(&tstr,&home,&retlist,cbuf);
 	ajStrDel(&message);
 	fprintf(stderr,"jctl command recv error (jembossctl)\n");
 	fflush(stderr);
@@ -244,9 +248,9 @@ int main(int argc, char **argv)
     }
 
 
-    if(!jctl_check_buffer(cbuf,mlen))
+    if(!jembossctl_check_buffer(cbuf,mlen))
     {
-	jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
+	jembossctl_tidy_strings(&tstr,&home,&retlist,cbuf);
 	ajStrDel(&message);
 	fprintf(stderr,"jctl bad buffer error (jembossctl)\n");
 	fflush(stderr);
@@ -257,7 +261,7 @@ int main(int argc, char **argv)
 
     if(sscanf(cbuf,"%d",&command)!=1)
     {
-	jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
+	jembossctl_tidy_strings(&tstr,&home,&retlist,cbuf);
 	ajStrDel(&message);
 	fprintf(stderr,"jctl sscanf error (jembossctl)\n");
 	fflush(stderr);
@@ -270,13 +274,13 @@ int main(int argc, char **argv)
     case COMM_AUTH:
 	ajStrAssignC(&tstr,cbuf);
 	c='\0';
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
 	    c=1;
 
- 	if((mlen = jctl_snd(&c,1)) < 0)
+ 	if((mlen = jembossctl_snd(&c,1)) < 0)
 	{
-	    jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
+	    jembossctl_tidy_strings(&tstr,&home,&retlist,cbuf);
 	    ajStrDel(&message);
 	    fprintf(stderr,"jctl command send error (auth)\n");
 	    fflush(stderr);
@@ -287,96 +291,96 @@ int main(int argc, char **argv)
 
     case EMBOSS_FORK:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 
 	if(ok)
-	    ok = jctl_do_fork(cbuf,uid,gid);
+	    ok = jembossctl_do_fork(cbuf,uid,gid);
 	break;
 
     case MAKE_DIRECTORY:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_directory(cbuf,uid,gid);
+	    ok = jembossctl_do_directory(cbuf,uid,gid);
 	break;
 
     case DELETE_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_deletefile(cbuf,uid,gid);
+	    ok = jembossctl_do_deletefile(cbuf,uid,gid);
 	break;
 
     case DELETE_DIR:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_deletedir(cbuf,uid,gid);
+	    ok = jembossctl_do_deletedir(cbuf,uid,gid);
 	break;
 
     case LIST_FILES:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 
 	if(ok)
-	    ok = jctl_do_listfiles(cbuf,uid,gid,&retlist);
+	    ok = jembossctl_do_listfiles(cbuf,uid,gid,&retlist);
 
 	fprintf(stdout,"%s",ajStrGetPtr(retlist));
 	break;
 
     case LIST_DIRS:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_listdirs(cbuf,uid,gid,&retlist);
+	    ok = jembossctl_do_listdirs(cbuf,uid,gid,&retlist);
 
 	fprintf(stdout,"%s",ajStrGetPtr(retlist));
 	break;
 
     case GET_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_getfile(cbuf,uid,gid,&fbuf,&size);
+	    ok = jembossctl_do_getfile(cbuf,uid,gid,&fbuf,&size);
 
 	break;
 
     case PUT_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_putfile(cbuf,uid,gid);
+	    ok = jembossctl_do_putfile(cbuf,uid,gid);
 
 	break;
 
     case BATCH_FORK:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 
 	if(ok)
-	    ok = jctl_do_batch(cbuf,uid,gid);
+	    ok = jembossctl_do_batch(cbuf,uid,gid);
 	break;
 
     case RENAME_FILE:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_renamefile(cbuf,uid,gid);
+	    ok = jembossctl_do_renamefile(cbuf,uid,gid);
 	break;
 
 
     case SEQ_ATTRIB:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_seq(cbuf,uid,gid);
+	    ok = jembossctl_do_seq(cbuf,uid,gid);
 	break;
 
     case SEQSET_ATTRIB:
 	ajStrAssignC(&tstr,cbuf);
-	ok = jctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
+	ok = jembossctl_up(ajStrGetPtr(tstr),&uid,&gid,&home);
 	if(ok)
-	    ok = jctl_do_seqset(cbuf,uid,gid);
+	    ok = jembossctl_do_seqset(cbuf,uid,gid);
 	break;
 
     default:
@@ -386,7 +390,7 @@ int main(int argc, char **argv)
 
     bzero((void*)cbuf,JBUFFLEN+1);
     ajStrDel(&message);
-    jctl_tidy_strings(&tstr,&home,&retlist,cbuf);
+    jembossctl_tidy_strings(&tstr,&home,&retlist,cbuf);
 
     fflush(stdout);
     fflush(stderr);
@@ -398,7 +402,7 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic jctl_empty_core_dump *******************************************
+/* @funcstatic jembossctl_empty_core_dump *************************************
 **
 ** Set process coredump size to be zero
 **
@@ -406,7 +410,7 @@ int main(int argc, char **argv)
 ** @@
 ******************************************************************************/
 
-static void jctl_empty_core_dump()
+static void jembossctl_empty_core_dump()
 {
     struct rlimit limit;
 
@@ -422,10 +426,11 @@ static void jctl_empty_core_dump()
 
 
 #ifdef N_SHADOW
-/* @header jctl_check_pass ****************************************************
+/* @header jembossctl_check_pass **********************************************
 **
 ******************************************************************************/
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
+static AjBool jembossctl_check_pass(AjPStr username, AjPStr password,
+				    ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
     struct spwd *shadow = NULL;
@@ -462,10 +467,11 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef AIX_SHADOW
-/* @header jctl_check_pass ****************************************************
+/* @header jembossctl_check_pass **********************************************
 **
 ******************************************************************************/
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
+static AjBool jembossctl_check_pass(AjPStr username, AjPStr password,
+				    ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
     struct userpw *shadow = NULL;
@@ -498,10 +504,11 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef HPUX_SHADOW
-/* @header jctl_check_pass ****************************************************
+/* @header jembossctl_check_pass **********************************************
 **
 ******************************************************************************/
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
+static AjBool jembossctl_check_pass(AjPStr username, AjPStr password,
+				    ajint *uid,
 			ajint *gid, AjPStr *home)
 {
     struct spwd *shadow = NULL;
@@ -569,11 +576,12 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef NO_SHADOW
-/* @header jctl_check_pass ****************************************************
+/* @header jembossctl_check_pass **********************************************
 **
 ******************************************************************************/
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-			      ajint *gid, AjPStr *home)
+static AjBool jembossctl_check_pass(AjPStr username, AjPStr password,
+				    ajint *uid,
+				    ajint *gid, AjPStr *home)
 {
     struct passwd *pwd  = NULL;
     char *p = NULL;
@@ -600,10 +608,11 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef R_SHADOW
-/* @header jctl_check_pass ****************************************************
+/* @header jembossctl_check_pass **********************************************
 **
 ******************************************************************************/
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
+static AjBool jembossctl_check_pass(AjPStr username, AjPStr password,
+				    ajint *uid,
 			      ajint *gid, AjPStr *home)
 {
     struct spwd *shadow = NULL;
@@ -675,11 +684,12 @@ static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
 
 
 #ifdef RNO_SHADOW
-/* @header jctl_check_pass ****************************************************
+/* @header jembossctl_check_pass **********************************************
 **
 ******************************************************************************/
-static AjBool jctl_check_pass(AjPStr username, AjPStr password, ajint *uid,
-			      ajint *gid, AjPStr *home)
+static AjBool jembossctl_check_pass(AjPStr username, AjPStr password,
+				    ajint *uid,
+				    ajint *gid, AjPStr *home)
 {
     struct passwd *pwd  = NULL;
     char *p = NULL;
@@ -739,11 +749,11 @@ struct ad_user
 };
 
 
-/* @header jctl_pam_conv ******************************************************
+/* @header jembossctl_pam_conv ************************************************
 **
 ******************************************************************************/
-static int jctl_pam_conv(int num_msg, struct pam_message **msg,
-			 struct pam_response **resp, void *appdata_ptr)
+static int jembossctl_pam_conv(int num_msg, struct pam_message **msg,
+			       struct pam_response **resp, void *appdata_ptr)
 {
     struct ad_user *user;
     struct pam_response *response;
@@ -796,11 +806,11 @@ static int jctl_pam_conv(int num_msg, struct pam_message **msg,
 
 
 
-/* @header jctl_check_pass ****************************************************
+/* @header jembossctl_check_pass **********************************************
 **
 ******************************************************************************/
-static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
-			      ajint *gid,AjPStr *home)
+static AjBool jembossctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
+				    ajint *gid,AjPStr *home)
 {
     struct ad_user user_info;
 
@@ -819,7 +829,7 @@ static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
     user_info.username = (char *) ajStrGetPtr(username);
     user_info.password = (char *) ajStrGetPtr(password);
 
-    conv.cv = jctl_pam_conv;
+    conv.cv = jembossctl_pam_conv;
     conv.userinfo = (void *)&user_info;
 
     pwd = getpwnam(ajStrGetPtr(username));
@@ -861,7 +871,7 @@ static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 
 
 
-/* @funcstatic jctl_up ********************************************************
+/* @funcstatic jembossctl_up **************************************************
 **
 ** Primary username/password check. Return uid/gid/homedir
 **
@@ -873,7 +883,7 @@ static AjBool jctl_check_pass(AjPStr username,AjPStr password,ajint *uid,
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
+static AjBool jembossctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 {
     AjPStr username = NULL;
     AjPStr password = NULL;
@@ -893,7 +903,7 @@ static AjBool jctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 	   bzero((void*)ajStrGetPtr(username),ajStrGetLen(username));
 	if(ajStrGetLen(password))
 	   bzero((void*)ajStrGetPtr(password),ajStrGetLen(password));
-	jctl_zero((char*)buf);
+	jembossctl_zero((char*)buf);
 
 	ajStrDel(&username);
 	ajStrDel(&password);
@@ -913,13 +923,13 @@ static AjBool jctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 
 
 #ifndef NO_AUTH
-    ok = jctl_check_pass(username,password,uid,gid,home);
+    ok = jembossctl_check_pass(username,password,uid,gid,home);
 #endif
 
 
     bzero((void*)ajStrGetPtr(username),ajStrGetLen(username));
     bzero((void*)ajStrGetPtr(password),ajStrGetLen(password));
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     ajStrDel(&username);
     ajStrDel(&password);
@@ -941,7 +951,7 @@ static AjBool jctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 
 
 
-/* @funcstatic jctl_do_batch **************************************************
+/* @funcstatic jembossctl_do_batch ********************************************
 **
 ** Fork emboss program
 **
@@ -952,7 +962,7 @@ static AjBool jctl_up(const char *buf, int *uid, int *gid, AjPStr *home)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_batch(char *buf, int uid, int gid)
+static AjBool jembossctl_do_batch(char *buf, int uid, int gid)
 {
     AjPStr cl     = NULL;
     AjPStr prog   = NULL;
@@ -1007,9 +1017,9 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     dir    = ajStrNew();
 
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1033,7 +1043,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 
     ajStrAssignC(&dir,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
 
     p = q = ajStrGetPtr(cl);
@@ -1041,12 +1051,12 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 	++p;
     ajStrAssignSubC(&prog,q,0,p-q-1);
 
-    argp = jctl_make_array(cl);
-    envp = jctl_make_array(enviro);
+    argp = jembossctl_make_array(cl);
+    envp = jembossctl_make_array(enviro);
 
     if(!ajSysWhichEnv(&prog,envp))
     {
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1066,7 +1076,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 	close(errpipe[1]);
 	close(outpipe[0]);
 	close(outpipe[1]);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1108,20 +1118,20 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 
     /* Tell JNI to continue */
     c = 1;
-    jctl_snd((char *)&c,1);
+    jembossctl_snd((char *)&c,1);
 
     block = 1;
-    if(java_block(outpipe[0],block)==-1)
+    if(jembossctl_java_block(outpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 1. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
-    if(java_block(errpipe[0],block)==-1)
+    if(jembossctl_java_block(errpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 2. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1255,16 +1265,16 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 
 
     block = 0;
-    if(java_block(outpipe[0],block)==-1)
+    if(jembossctl_java_block(outpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot block 3. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
-    if(java_block(errpipe[0],block)==-1)
+    if(jembossctl_java_block(errpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot block 4. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1288,7 +1298,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(setgid(gid)==-1)
     {
 	fprintf(stderr,"Setgid error (do_batch)\n");
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1296,7 +1306,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(setuid(uid)==-1)
     {
 	fprintf(stderr,"Setgid error (do_batch)\n");
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1304,7 +1314,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(chdir(ajStrGetPtr(dir))==-1)
     {
 	fprintf(stderr,"chdir error (do_batch)\n");
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1320,7 +1330,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(!(fp=fopen(".finished","w")))
     {
 	fprintf(stderr,"fopen error (do_batch)\n");
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1328,11 +1338,11 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
     if(fclose(fp))
     {
 	fprintf(stderr,"fclose error (do_batch)\n");
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
-    jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+    jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 
     return ajTrue;
 }
@@ -1340,7 +1350,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_do_fork ***************************************************
+/* @funcstatic jembossctl_do_fork *********************************************
 **
 ** Fork emboss program
 **
@@ -1351,7 +1361,7 @@ static AjBool jctl_do_batch(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_fork(char *buf, int uid, int gid)
+static AjBool jembossctl_do_fork(char *buf, int uid, int gid)
 {
     AjPStr cl     = NULL;
     AjPStr prog   = NULL;
@@ -1397,9 +1407,9 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
     dir    = ajStrNew();
 
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1423,7 +1433,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
     ajStrAssignC(&dir,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
 
     p = q = ajStrGetPtr(cl);
@@ -1431,12 +1441,12 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 	++p;
     ajStrAssignSubC(&prog,q,0,p-q-1);
 
-    argp = jctl_make_array(cl);
-    envp = jctl_make_array(enviro);
+    argp = jembossctl_make_array(cl);
+    envp = jembossctl_make_array(enviro);
 
     if(!ajSysWhichEnv(&prog,envp))
     {
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1456,7 +1466,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 	close(errpipe[1]);
 	close(outpipe[0]);
 	close(outpipe[1]);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1497,17 +1507,17 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
 
     block = 1;
-    if(java_block(outpipe[0],block)==-1)
+    if(jembossctl_java_block(outpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 5. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
-    if(java_block(errpipe[0],block)==-1)
+    if(jembossctl_java_block(errpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 6. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1640,16 +1650,16 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
 
     block = 0;
-    if(java_block(outpipe[0],block)==-1)
+    if(jembossctl_java_block(outpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot block 7. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
-    if(java_block(errpipe[0],block)==-1)
+    if(jembossctl_java_block(errpipe[0],block)==-1)
     {
 	fprintf(stderr,"Cannot block 8. %d\n",errno);
-	jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+	jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 	return ajFalse;
     }
 
@@ -1674,7 +1684,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 	AJFREE(envp[i]);
     AJFREE(envp);
 
-    jctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
+    jembossctl_fork_tidy(&cl,&prog,&enviro,&dir,&outstd,&errstd);
 
     return ajTrue;
 }
@@ -1682,7 +1692,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_make_array ************************************************
+/* @funcstatic jembossctl_make_array ******************************************
 **
 ** Construct argv and env arrays for Ajax.fork
 **
@@ -1691,7 +1701,7 @@ static AjBool jctl_do_fork(char *buf, int uid, int gid)
 ** @return [char**] env or argv array
 ******************************************************************************/
 
-static char** jctl_make_array(const AjPStr str)
+static char** jembossctl_make_array(const AjPStr str)
 {
     int n;
     char **ptr = NULL;
@@ -1723,7 +1733,7 @@ static char** jctl_make_array(const AjPStr str)
 
 
 
-/* @funcstatic jctl_do_directory **********************************************
+/* @funcstatic jembossctl_do_directory ****************************************
 **
 ** Make user directory
 **
@@ -1734,7 +1744,7 @@ static char** jctl_make_array(const AjPStr str)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_directory(char *buf, int uid, int gid)
+static AjBool jembossctl_do_directory(char *buf, int uid, int gid)
 {
     AjPStr dir = NULL;
     AjPStr str = NULL;
@@ -1745,7 +1755,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 
     dir = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_directory)\n");
 	ajStrDel(&dir);
@@ -1762,7 +1772,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
     ajStrAssignC(&dir,p);
 
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -1778,7 +1788,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-    if(!jctl_chdir(ajStrGetPtr(dir)))
+    if(!jembossctl_chdir(ajStrGetPtr(dir)))
     {
 	ajStrDel(&dir);
 	fprintf(stderr,"chdir error (mkdir)\n");
@@ -1816,7 +1826,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_do_deletefile *********************************************
+/* @funcstatic jembossctl_do_deletefile ***************************************
 **
 ** Delete a user file
 **
@@ -1827,7 +1837,7 @@ static AjBool jctl_do_directory(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
+static AjBool jembossctl_do_deletefile(char *buf, int uid, int gid)
 {
     AjPStr ufile = NULL;
     char *p = NULL;
@@ -1835,7 +1845,7 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 
     ufile = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_deletefile)\n");
 	ajStrDel(&ufile);
@@ -1851,7 +1861,7 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
     /* retrieve user file */
     ajStrAssignC(&ufile,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -1867,7 +1877,7 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-    if(!jctl_chdir(ajStrGetPtr(ufile)))
+    if(!jembossctl_chdir(ajStrGetPtr(ufile)))
     {
 	fprintf(stderr,"setuid error (delete file)\n");
 	ajStrDel(&ufile);
@@ -1889,7 +1899,7 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_do_seq ****************************************************
+/* @funcstatic jembossctl_do_seq **********************************************
 **
 ** Get sequence attributes (top level)
 **
@@ -1900,7 +1910,7 @@ static AjBool jctl_do_deletefile(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_seq(char *buf, int uid, int gid)
+static AjBool jembossctl_do_seq(char *buf, int uid, int gid)
 {
     AjPStr usa = NULL;
     char *p    = NULL;
@@ -1909,7 +1919,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
 
     usa  = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_seq)\n");
 	ajStrDel(&usa);
@@ -1925,7 +1935,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
     /* retrieve user file */
     ajStrAssignC(&usa,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -1943,7 +1953,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
 
 /*
 **  Might need a kludge for solaris so leave this code here
-**  if(!jctl_chdir(ajStrGetPtr(usa)))
+**  if(!jembossctl_chdir(ajStrGetPtr(usa)))
 **  {
 **	fprintf(stderr,"setuid error (seq attr)\n");
 **	ajStrDel(&usa);
@@ -1953,7 +1963,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
 
     seq = ajSeqNew();
 
-    ok = jctl_GetSeqFromUsa(usa,&seq);
+    ok = jembossctl_GetSeqFromUsa(usa,&seq);
     if(ok)
 	fprintf(stdout,"%d %f %d",(int)ajSeqGetLen(seq),seq->Weight,
 		(int)ajSeqIsNuc(seq));
@@ -1974,7 +1984,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_do_seqset *************************************************
+/* @funcstatic jembossctl_do_seqset *******************************************
 **
 ** Get seqset attributes (top level)
 **
@@ -1985,7 +1995,7 @@ static AjBool jctl_do_seq(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_seqset(char *buf, int uid, int gid)
+static AjBool jembossctl_do_seqset(char *buf, int uid, int gid)
 {
     AjPStr usa = NULL;
     char *p    = NULL;
@@ -1996,7 +2006,7 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
     usa = ajStrNew();
     seq = ajSeqsetNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_seqset)\n");
 	ajStrDel(&usa);
@@ -2012,7 +2022,7 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
     /* retrieve user file */
     ajStrAssignC(&usa,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2030,7 +2040,7 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
 
     /*
     **  Leave this code here for now in case of Solaris weirdness
-    ** if(!jctl_chdir(ajStrGetPtr(usa)))
+    ** if(!jembossctl_chdir(ajStrGetPtr(usa)))
     ** {
     **	   fprintf(stderr,"setuid error (seqset attrib)\n");
     **	   ajStrDel(&ufile);
@@ -2039,7 +2049,7 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
     */
 
 
-    ok = jctl_GetSeqsetFromUsa(usa,&seq);
+    ok = jembossctl_GetSeqsetFromUsa(usa,&seq);
     if(ok)
 	fprintf(stdout,"%d %f %d",(int)ajSeqsetLen(seq),
 		ajSeqsetTotweight(seq),(int)ajSeqsetIsNuc(seq));
@@ -2060,7 +2070,7 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_do_renamefile *********************************************
+/* @funcstatic jembossctl_do_renamefile ***************************************
 **
 ** Rename a user file
 **
@@ -2071,7 +2081,7 @@ static AjBool jctl_do_seqset(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
+static AjBool jembossctl_do_renamefile(char *buf, int uid, int gid)
 {
     AjPStr ufile    = NULL;
     AjPStr u2file   = NULL;
@@ -2081,7 +2091,7 @@ static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
     ufile  = ajStrNew();
     u2file = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_renamefile)\n");
 	ajStrDel(&ufile);
@@ -2103,7 +2113,7 @@ static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
     /* retrieve new name */
     ajStrAssignC(&u2file,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2121,7 +2131,7 @@ static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-    if(!jctl_chdir(ajStrGetPtr(ufile)))
+    if(!jembossctl_chdir(ajStrGetPtr(ufile)))
     {
 	fprintf(stderr,"setuid error (rename file)\n");
 	ajStrDel(&ufile);
@@ -2146,7 +2156,7 @@ static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_do_deletedir **********************************************
+/* @funcstatic jembossctl_do_deletedir ****************************************
 **
 ** Recursively delete a user directory
 **
@@ -2157,7 +2167,7 @@ static AjBool jctl_do_renamefile(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
+static AjBool jembossctl_do_deletedir(char *buf, int uid, int gid)
 {
     AjPStr dir  = NULL;
     AjPStr cmnd = NULL;
@@ -2166,7 +2176,7 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 
     dir = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_deletedir)\n");
 	ajStrDel(&dir);
@@ -2182,7 +2192,7 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
     /* retrieve user directory */
     ajStrAssignC(&dir,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2205,9 +2215,9 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-    if(!jctl_chdir(ajStrGetPtr(dir)))
+    if(!jembossctl_chdir(ajStrGetPtr(dir)))
     {
-	fprintf(stderr,"jctl_chdir error (delete directory)\n");
+	fprintf(stderr,"jembossctl_chdir error (delete directory)\n");
 	ajStrDel(&dir);
 	return ajFalse;
     }
@@ -2239,7 +2249,7 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_do_listfiles **********************************************
+/* @funcstatic jembossctl_do_listfiles ****************************************
 **
 ** Return regular files in a directory
 **
@@ -2251,7 +2261,8 @@ static AjBool jctl_do_deletedir(char *buf, int uid, int gid)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
+static AjBool jembossctl_do_listfiles(char *buf, int uid, int gid,
+				      AjPStr *retlist)
 {
     AjPStr dir  = NULL;
     AjPStr full = NULL;
@@ -2288,7 +2299,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     dir  = ajStrNew();
     full = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_listfiles)\n");
 	ajStrDel(&dir);
@@ -2305,7 +2316,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
     /* retrieve user file */
     ajStrAssignC(&dir,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
@@ -2419,7 +2430,7 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 
 
 
-/* @funcstatic jctl_do_listdirs ***********************************************
+/* @funcstatic jembossctl_do_listdirs *****************************************
 **
 ** Return directoriy files within a directory
 **
@@ -2431,7 +2442,8 @@ static AjBool jctl_do_listfiles(char *buf, int uid, int gid,AjPStr *retlist)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
+static AjBool jembossctl_do_listdirs(char *buf, int uid, int gid,
+				     AjPStr *retlist)
 {
     AjPStr dir     = NULL;
     AjPStr full    = NULL;
@@ -2472,7 +2484,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     dir  = ajStrNew();
     full = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_listdirs)\n");
 	ajStrDel(&dir);
@@ -2492,7 +2504,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     /* retrieve directory */
     ajStrAssignC(&dir,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
 
 
@@ -2590,9 +2602,9 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
     {
 	ajListPop(list,(void **)&tstr);
 	ajListPush(list,(void *)tstr);
-	t = jctl_Datestr(tstr);
+	t = jembossctl_Datestr(tstr);
 	if(t)
-	    ajListSort(list,jctl_date);
+	    ajListSort(list,jembossctl_date);
 	else
 	    ajListSort(list,ajStrVcmp);
     }
@@ -2621,7 +2633,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 
 
 
-/* @funcstatic jctl_do_getfile ************************************************
+/* @funcstatic jembossctl_do_getfile ******************************************
 **
 ** Get a user file
 **
@@ -2634,7 +2646,7 @@ static AjBool jctl_do_listdirs(char *buf, int uid, int gid,AjPStr *retlist)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_getfile(char *buf, int uid, int gid,
+static AjBool jembossctl_do_getfile(char *buf, int uid, int gid,
 			      unsigned char **fbuf, int *size)
 {
     AjPStr file    = NULL;
@@ -2659,11 +2671,11 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
     file = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	message = ajStrNew();
 	ajFmtPrintS(&message,"-1");
-	if(jctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
+	if(jembossctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
 	{
 	    fprintf(stderr,"get file send error\n");
 	    return ajFalse;
@@ -2684,14 +2696,14 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     /* retrieve file name */
     ajStrAssignC(&file,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
     if(setgid(gid)==-1)
     {
 	message = ajStrNew();
 	ajFmtPrintS(&message,"-1");
 
-	if(jctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
+	if(jembossctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
 	{
 	    fprintf(stderr,"get file send error\n");
 	    ajStrDel(&file);
@@ -2710,7 +2722,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 	message = ajStrNew();
 	ajFmtPrintS(&message,"-1");
 
-	if(jctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
+	if(jembossctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
 	{
 	    fprintf(stderr,"get file send error\n");
 	    ajStrDel(&file);
@@ -2725,12 +2737,12 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     }
 
 
-    if(!jctl_chdir(ajStrGetPtr(file)))
+    if(!jembossctl_chdir(ajStrGetPtr(file)))
     {
 	message = ajStrNew();
 	ajFmtPrintS(&message,"-1");
 
-	if(jctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
+	if(jembossctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
 	{
 	    fprintf(stderr,"get file send error\n");
 	    ajStrDel(&file);
@@ -2764,7 +2776,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
     message = ajStrNew();
     ajFmtPrintS(&message,"%d",n);
-    if(jctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
+    if(jembossctl_snd(ajStrGetPtr(message),ajStrGetLen(message)+1)==-1)
     {
 	fprintf(stderr,"get file send error\n");
 	ajStrDel(&file);
@@ -2796,7 +2808,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
     }
 
     block = 1;
-    if(java_block(fd,block)==-1)
+    if(jembossctl_java_block(fd,block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 9. %d\n",errno);
 	ajStrDel(&file);
@@ -2833,7 +2845,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
 
     block = 0;
-    if(java_block(fd,block)==-1)
+    if(jembossctl_java_block(fd,block)==-1)
     {
 	fprintf(stderr,"Cannot block 10. %d\n",errno);
 	ajStrDel(&file);
@@ -2917,7 +2929,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 
 
 
-/* @funcstatic jctl_do_putfile ************************************************
+/* @funcstatic jembossctl_do_putfile ******************************************
 **
 ** Put a user file
 **
@@ -2928,7 +2940,7 @@ static AjBool jctl_do_getfile(char *buf, int uid, int gid,
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_do_putfile(char *buf, int uid, int gid)
+static AjBool jembossctl_do_putfile(char *buf, int uid, int gid)
 {
     int sofar = 0;
     int size;
@@ -2951,7 +2963,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     message = ajStrNewC("OK");
     file    = ajStrNew();
 
-    if(!jctl_initgroups(buf,gid))
+    if(!jembossctl_initgroups(buf,gid))
     {
 	fprintf(stderr,"Initgroups failure (do_putfile)\n");
 	ajStrDel(&file);
@@ -2968,11 +2980,11 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     /* retrieve file name */
     ajStrAssignC(&file,p);
 
-    jctl_zero((char*)buf);
+    jembossctl_zero((char*)buf);
 
-    if(jctl_snd(ajStrGetPtr(message),2)==-1)
+    if(jembossctl_snd(ajStrGetPtr(message),2)==-1)
     {
-	fprintf(stderr,"jctl OK1 error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl OK1 error (jembossctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -2980,10 +2992,10 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
 
 
-    rval = jctl_rcv(buf);
+    rval = jembossctl_rcv(buf);
     if(rval==-1)
     {
-	fprintf(stderr,"jctl recv error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl recv error (jembossctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -2991,16 +3003,16 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
     if(sscanf(buf,"%d",&size)!=1)
     {
-	fprintf(stderr,"jctl file size read  error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl file size read  error (jembossctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
     }
 
 
-    if(jctl_snd(ajStrGetPtr(message),2)==-1)
+    if(jembossctl_snd(ajStrGetPtr(message),2)==-1)
     {
-	fprintf(stderr,"jctl OK2 error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl OK2 error (jembossctl_do_putfile)\n");
 	ajStrDel(&file);
 	ajStrDel(&message);
 	return ajFalse;
@@ -3012,7 +3024,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     {
 	if(!(fbuf=(unsigned char *)malloc(size)))
 	{
-	    fprintf(stderr,"jctl malloc error (jctl_do_putfile)\n");
+	    fprintf(stderr,"jctl malloc error (jembossctl_do_putfile)\n");
 	    ajStrDel(&message);
 	    ajStrDel(&file);
 	    return ajFalse;
@@ -3029,7 +3041,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 	now = tv.tv_sec;
 	if(now-then>PUTTIMEOUT)
 	{
-	    fprintf(stderr,"jctl timeout error (jctl_do_putfile)\n");
+	    fprintf(stderr,"jctl timeout error (jembossctl_do_putfile)\n");
 	    ajStrDel(&file);
 	    ajStrDel(&message);
 	    return ajFalse;
@@ -3037,10 +3049,10 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
 
 
-	mlen = jctl_rcv(buf);
+	mlen = jembossctl_rcv(buf);
 	if(mlen==-1)
 	{
-	    fprintf(stderr,"jctl recv error (jctl_do_putfile)\n");
+	    fprintf(stderr,"jctl recv error (jembossctl_do_putfile)\n");
 	    ajStrDel(&file);
 	    ajStrDel(&message);
 	    return ajFalse;
@@ -3079,7 +3091,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 	return ajFalse;
     }
 
-    if(!jctl_chdir(ajStrGetPtr(file)))
+    if(!jembossctl_chdir(ajStrGetPtr(file)))
     {
 	fprintf(stderr,"chdir error (put file)\n");
 	if(size)
@@ -3092,7 +3104,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
     if((fd=open(ajStrGetPtr(file),O_CREAT|O_WRONLY|O_TRUNC,0644))<0)
     {
-	fprintf(stderr,"jctl open error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl open error (jembossctl_do_putfile)\n");
 	if(size)
 	    AJFREE(fbuf);
 	ajStrDel(&file);
@@ -3102,7 +3114,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
 
     block = 1;
-    if(java_block(fd,block)==-1)
+    if(jembossctl_java_block(fd,block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 11. %d\n",errno);
 	if(size)
@@ -3122,7 +3134,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 	now = tv.tv_sec;
 	if(now-then>PUTTIMEOUT)
 	{
-	    fprintf(stderr,"jctl timeout error (jctl_do_putfile)\n");
+	    fprintf(stderr,"jctl timeout error (jembossctl_do_putfile)\n");
 	    ajStrDel(&file);
 	    ajStrDel(&message);
 	    return ajFalse;
@@ -3137,7 +3149,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
     }
 
     block = 0;
-    if(java_block(fd,block)==-1)
+    if(jembossctl_java_block(fd,block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 12. %d\n",errno);
 	if(size)
@@ -3149,7 +3161,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
     if(close(fd)<0)
     {
-	fprintf(stderr,"jctl close error (jctl_do_putfile)\n");
+	fprintf(stderr,"jctl close error (jembossctl_do_putfile)\n");
 	if(size)
 	    AJFREE(fbuf);
 	ajStrDel(&file);
@@ -3170,7 +3182,7 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 
 
 
-/* @funcstatic jctl_tidy_strings **********************************************
+/* @funcstatic jembossctl_tidy_strings ****************************************
 **
 ** Deallocate memory
 **
@@ -3182,8 +3194,9 @@ static AjBool jctl_do_putfile(char *buf, int uid, int gid)
 ** @return [void]
 ******************************************************************************/
 
-static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
-			      char *buf)
+static void jembossctl_tidy_strings(AjPStr *tstr, AjPStr *home,
+				    AjPStr *retlist,
+				    char *buf)
 {
     ajStrDel(tstr);
     ajStrDel(home);
@@ -3196,7 +3209,7 @@ static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 
 
 
-/* @funcstatic jctl_fork_tidy *************************************************
+/* @funcstatic jembossctl_fork_tidy *******************************************
 **
 ** Deallocate fork memory
 **
@@ -3210,7 +3223,7 @@ static void jctl_tidy_strings(AjPStr *tstr, AjPStr *home, AjPStr *retlist,
 ** @return [void]
 ******************************************************************************/
 
-static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
+static void jembossctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 			   AjPStr *dir, AjPStr *outstd, AjPStr *errstd)
 {
     ajStrDel(cl);
@@ -3226,7 +3239,7 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 
 
 
-/* @funcstatic jctl_check_buffer **********************************************
+/* @funcstatic jembossctl_check_buffer ****************************************
 **
 ** Sanity check on socket commands
 **
@@ -3236,7 +3249,7 @@ static void jctl_fork_tidy(AjPStr *cl, AjPStr *prog, AjPStr *enviro,
 ** @return [AjBool] true if sane
 ******************************************************************************/
 
-static AjBool jctl_check_buffer(const char *buf, int mlen)
+static AjBool jembossctl_check_buffer(const char *buf, int mlen)
 {
     const char *p;
     int str1len;
@@ -3318,7 +3331,7 @@ static AjBool jctl_check_buffer(const char *buf, int mlen)
 
 
 
-/* @funcstatic jctl_chdir *****************************************************
+/* @funcstatic jembossctl_chdir ***********************************************
 **
 ** If a filename is given (e.g. delete) then first chdir to the directory
 **
@@ -3327,7 +3340,7 @@ static AjBool jctl_check_buffer(const char *buf, int mlen)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_chdir(const char *file)
+static AjBool jembossctl_chdir(const char *file)
 {
     char *p;
     AjPStr str = NULL;
@@ -3361,7 +3374,7 @@ static AjBool jctl_chdir(const char *file)
 
 
 
-/* @funcstatic jctl_initgroups ************************************************
+/* @funcstatic jembossctl_initgroups ******************************************
 **
 ** Initialise groups
 **
@@ -3371,7 +3384,7 @@ static AjBool jctl_chdir(const char *file)
 ** @return [AjBool] true if success
 ******************************************************************************/
 
-static AjBool jctl_initgroups(const char *buf, int gid)
+static AjBool jembossctl_initgroups(const char *buf, int gid)
 {
     AjPStr str  = NULL;
     AjPStr user = NULL;
@@ -3394,7 +3407,7 @@ static AjBool jctl_initgroups(const char *buf, int gid)
 
 
 
-/* @funcstatic jctl_zero ******************************************************
+/* @funcstatic jembossctl_zero ************************************************
 **
 ** Wipe username/password
 **
@@ -3403,7 +3416,7 @@ static AjBool jctl_initgroups(const char *buf, int gid)
 ** @return [void]
 ******************************************************************************/
 
-static void jctl_zero(char *buf)
+static void jembossctl_zero(char *buf)
 {
     char *p;
 
@@ -3417,7 +3430,7 @@ static void jctl_zero(char *buf)
 
 
 
-/* @funcstatic jctl_pipe_read *************************************************
+/* @funcstatic jembossctl_pipe_read *******************************************
 **
 ** Read a byte stream from stdin (unblocked)
 **
@@ -3429,7 +3442,7 @@ static void jctl_zero(char *buf)
 ** @@
 ******************************************************************************/
 
-static int jctl_pipe_read(char *buf, int n, int seconds)
+static int jembossctl_pipe_read(char *buf, int n, int seconds)
 {
 #ifdef HAVE_POLL
     struct pollfd ufds;
@@ -3455,7 +3468,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 
 
     block = 1;
-    if(java_block(rchan,block)==-1)
+    if(jembossctl_java_block(rchan,block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 13. %d\n",errno);
 	return -1;
@@ -3473,7 +3486,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 	now = tv.tv_sec;
 	if(now-then >= seconds)
 	{
-	    fprintf(stderr,"jctl_pipe_read timeout\n");
+	    fprintf(stderr,"jembossctl_pipe_read timeout\n");
 	    return -1;
 	}
 
@@ -3491,7 +3504,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 		while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
 		if(got == -1)
 		{
-		    fprintf(stderr,"jctl_pipe_read read error\n");
+		    fprintf(stderr,"jembossctl_pipe_read read error\n");
 		    return -1;
 		}
 		sum += got;
@@ -3508,7 +3521,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 	now = tv.tv_sec;
 	if(now-then >= seconds)
 	{
-	    fprintf(stderr,"jctl_pipe_read timeout\n");
+	    fprintf(stderr,"jembossctl_pipe_read timeout\n");
 	    return -1;
 	}
 
@@ -3526,7 +3539,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 	    while((got=read(rchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(got == -1)
 	    {
-		fprintf(stderr,"jctl_pipe_read read error\n");
+		fprintf(stderr,"jembossctl_pipe_read read error\n");
 		return -1;
 	    }
 	    sum += got;
@@ -3538,7 +3551,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 #endif
 
     block = 0;
-    if(java_block(rchan,block)==-1)
+    if(jembossctl_java_block(rchan,block)==-1)
     {
 	fprintf(stderr,"Cannot block 14. %d\n",errno);
 	return -1;
@@ -3550,7 +3563,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 
 
 
-/* @funcstatic jctl_pipe_write ************************************************
+/* @funcstatic jembossctl_pipe_write ******************************************
 **
 ** Write a byte stream to stdout (unblocked)
 **
@@ -3562,7 +3575,7 @@ static int jctl_pipe_read(char *buf, int n, int seconds)
 ** @@
 ******************************************************************************/
 
-static int jctl_pipe_write(const char *buf, int n, int seconds)
+static int jembossctl_pipe_write(const char *buf, int n, int seconds)
 {
 #ifdef HAVE_POLL
     struct pollfd ufds;
@@ -3588,7 +3601,7 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 
 
     block = 1;
-    if(java_block(tchan,block)==-1)
+    if(jembossctl_java_block(tchan,block)==-1)
     {
 	fprintf(stderr,"Cannot unblock 15. %d\n",errno);
 	return -1;
@@ -3605,7 +3618,7 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 	now = tv.tv_sec;
 	if(now-then >= seconds)
 	{
-	    fprintf(stderr,"jctl_pipe_write timeout\n");
+	    fprintf(stderr,"jembossctl_pipe_write timeout\n");
 	    return -1;
 	}
 
@@ -3620,7 +3633,7 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 	    while((sent=write(tchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(sent == -1)
 	    {
-		fprintf(stderr,"jctl_pipe_write send error\n");
+		fprintf(stderr,"jembossctl_pipe_write send error\n");
 		return -1;
 	    }
 	    written += sent;
@@ -3636,7 +3649,7 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 	now = tv.tv_sec;
 	if(now-then >= seconds)
 	{
-	    fprintf(stderr,"jctl_pipe_write timeout\n");
+	    fprintf(stderr,"jembossctl_pipe_write timeout\n");
 	    return -1;
 	}
 
@@ -3654,7 +3667,7 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 	    while((sent=write(tchan,p,n-(p-buf)))==-1 && errno==EINTR);
 	    if(sent == -1)
 	    {
-		fprintf(stderr,"jctl_pipe_write send error\n");
+		fprintf(stderr,"jembossctl_pipe_write send error\n");
 		return -1;
 	    }
 	    written += sent;
@@ -3666,7 +3679,7 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 #endif
 
     block = 0;
-    if(java_block(tchan,block)==-1)
+    if(jembossctl_java_block(tchan,block)==-1)
     {
 	fprintf(stderr,"Cannot block 16. %d\n",errno);
 	return -1;
@@ -3678,7 +3691,7 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 
 
 
-/* @funcstatic jctl_snd *******************************************************
+/* @funcstatic jembossctl_snd *************************************************
 **
 ** Mimic socket write using pipes
 **
@@ -3689,18 +3702,18 @@ static int jctl_pipe_write(const char *buf, int n, int seconds)
 ** @@
 ******************************************************************************/
 
-static int jctl_snd(const char *buf,int len)
+static int jembossctl_snd(const char *buf,int len)
 {
 
-    if(jctl_pipe_write((char *)&len,sizeof(int),TIMEOUT)==-1)
+    if(jembossctl_pipe_write((char *)&len,sizeof(int),TIMEOUT)==-1)
     {
-	fprintf(stderr,"jctl_snd error\n");
+	fprintf(stderr,"jembossctl_snd error\n");
 	return -1;
     }
 
-    if(jctl_pipe_write(buf,len,TIMEOUT)==-1)
+    if(jembossctl_pipe_write(buf,len,TIMEOUT)==-1)
     {
-	fprintf(stderr,"jctl_snd error\n");
+	fprintf(stderr,"jembossctl_snd error\n");
 	return -1;
     }
 
@@ -3710,7 +3723,7 @@ static int jctl_snd(const char *buf,int len)
 
 
 
-/* @funcstatic jctl_rcv *******************************************************
+/* @funcstatic jembossctl_rcv *************************************************
 **
 ** Mimic socket read using pipes
 **
@@ -3720,19 +3733,19 @@ static int jctl_snd(const char *buf,int len)
 ** @@
 ******************************************************************************/
 
-static int jctl_rcv(char *buf)
+static int jembossctl_rcv(char *buf)
 {
     int len;
 
-    if(jctl_pipe_read((char *)&len,sizeof(int),TIMEOUT)==-1)
+    if(jembossctl_pipe_read((char *)&len,sizeof(int),TIMEOUT)==-1)
     {
-	fprintf(stderr,"jctl_rcv error\n");
+	fprintf(stderr,"jembossctl_rcv error\n");
 	return -1;
     }
 
-    if(jctl_pipe_read(buf,len,TIMEOUT)==-1)
+    if(jembossctl_pipe_read(buf,len,TIMEOUT)==-1)
     {
-	fprintf(stderr,"jctl_rcv error\n");
+	fprintf(stderr,"jembossctl_rcv error\n");
 	return -1;
     }
 
@@ -3742,7 +3755,7 @@ static int jctl_rcv(char *buf)
 
 
 
-/* @funcstatic java_block *****************************************************
+/* @funcstatic jembossctl_java_block ******************************************
 **
 ** File descriptor block/unblock
 **
@@ -3753,7 +3766,7 @@ static int jctl_rcv(char *buf)
 ** @@
 ******************************************************************************/
 
-static int java_block(int chan, unsigned long flag)
+static int jembossctl_java_block(int chan, unsigned long flag)
 {
 
     if(ioctl(chan,FIONBIO,&flag)==-1)
@@ -3775,7 +3788,7 @@ static int java_block(int chan, unsigned long flag)
 
 
 
-/* @funcstatic jctl_Datestr ***************************************************
+/* @funcstatic jembossctl_Datestr *********************************************
 **
 ** Test string for valid Jemboss date. Return time_t
 ** or 0 if invalid string
@@ -3786,7 +3799,7 @@ static int java_block(int chan, unsigned long flag)
 ** @@
 ******************************************************************************/
 
-static time_t jctl_Datestr(const AjPStr s)
+static time_t jembossctl_Datestr(const AjPStr s)
 {
     AjPStr tmp = NULL;
     struct tm tm;
@@ -3863,7 +3876,7 @@ static time_t jctl_Datestr(const AjPStr s)
 
 
 
-/* @funcstatic jctl_date ******************************************************
+/* @funcstatic jembossctl_date ************************************************
 **
 ** Date comparison for ajListSort
 **
@@ -3874,7 +3887,7 @@ static time_t jctl_Datestr(const AjPStr s)
 ** @@
 ******************************************************************************/
 
-static int jctl_date(const void* str1, const void* str2)
+static int jembossctl_date(const void* str1, const void* str2)
 {
     AjPStr *a;
     AjPStr *b;
@@ -3882,13 +3895,13 @@ static int jctl_date(const void* str1, const void* str2)
     a = (AjPStr*)str1;
     b = (AjPStr*)str2;
 
-    return (int)(jctl_Datestr(*b) - jctl_Datestr(*a));
+    return (int)(jembossctl_Datestr(*b) - jembossctl_Datestr(*a));
 }
 
 
 
 
-/* @funcstatic jctl_GetSeqFromUsa *********************************************
+/* @funcstatic jembossctl_GetSeqFromUsa ***************************************
 **
 ** Return a sequence given a USA
 **
@@ -3897,7 +3910,7 @@ static int jctl_date(const void* str1, const void* str2)
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool jctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq)
+static AjBool jembossctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq)
 {
     AjPSeqin seqin;
     AjBool ok;
@@ -3921,7 +3934,7 @@ static AjBool jctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq)
 
 
 
-/* @funcstatic jctl_GetSeqsetFromUsa ******************************************
+/* @funcstatic jembossctl_GetSeqsetFromUsa ************************************
 **
 ** Return a seqset given a usa
 **
@@ -3930,7 +3943,7 @@ static AjBool jctl_GetSeqFromUsa(const AjPStr thys, AjPSeq *seq)
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool jctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq)
+static AjBool jembossctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq)
 {
     AjPSeqin seqin;
     AjBool ok;

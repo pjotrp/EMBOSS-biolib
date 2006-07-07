@@ -190,13 +190,13 @@ int main(int argc, char **argv)
 ** protein fetaure table.
 **
 ** @param [r] thys [const AjPFeattable] Protein feature table object
-** @param [r] thys [const AjPFeattableSeq] Protein sequence object
-** @param [r] start [ajuint] Start position in source sequence
-**                           (base position of start of first codon,
-**                           counted from the start of the sequence)
-** @param [r] frame [ajuint] Reading frame 1, 2 or 3 for forward and
-**                           -1 -2 or -3 for reverse
-** @param [u] thys [AjPFeattable] Protein feature table object
+** @param [r] pseq [const AjPSeq] Protein sequence object
+** @param [r] start [ajint] Start position in source sequence
+**                          (base position of start of first codon,
+**                          counted from the start of the sequence)
+** @param [r] frame [ajint] Reading frame 1, 2 or 3 for forward and
+**                          -1 -2 or -3 for reverse
+** @param [u] sourcetab [AjPFeattable] Protein feature table object
 ** @return [void]
 ** @@
 ******************************************************************************/
