@@ -681,7 +681,9 @@ static void cvt_f(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 
     if(precision < 0)
     {
-	if(code == 'f') precision = FLT_DIG;
+	if(code == 'f') precision = 6;
+	else if(code == 'g') precision = 6;
+	else if(code == 'e') precision = 6;
 	else precision = DBL_DIG;
     }
 
@@ -695,12 +697,18 @@ static void cvt_f(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 	ajint i = 2;
 
 	assert(precision <= 99);
-	fmt[i++] = ajSysItoC((precision/10)%10 + '0');
+	if(precision > 9)
+	    fmt[i++] = ajSysItoC((precision/10)%10 + '0');
 	fmt[i++] = ajSysItoC(precision%10 + '0');
 	fmt[i++] = ajSysItoC(code);
 	fmt[i]   = '\0';
 
 	sprintf(buf, fmt, va_arg(VA_V(ap), double));
+	if(code == 'g')
+	{
+	    if(width == INT_MIN && precision > strlen(buf))
+		precision = strlen(buf);
+	}
     }
 
     /* now write string and support width */
