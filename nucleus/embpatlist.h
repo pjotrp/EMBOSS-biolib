@@ -15,9 +15,9 @@ void   embPatlistSeqSearch   (AjPFeattable ftable, const AjPSeq seq,
 void   embPatlistRegexSearch (AjPFeattable ftable, const AjPSeq seq,
 			      AjPPatlistRegex plist, AjBool reverse);
 void   embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
-			      AjPPatternRegex pat, AjBool reverse);
+			      const AjPPatternRegex pat, AjBool reverse);
 void   embPatternSeqSearch   (AjPFeattable ftable, const AjPSeq seq,
-			       AjPPatternSeq pat, AjBool reverse);
+			      const AjPPatternSeq pat, AjBool reverse);
 AjBool embPatternSeqCompile  (AjPPatternSeq pat);
 
 /*

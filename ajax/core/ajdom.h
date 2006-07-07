@@ -23,6 +23,29 @@ extern "C"
 
 
 
+/* @data AjSDomNode **********************************************************
+**
+** DOM parsing node
+**
+** @alias AjODomNode
+** @alias AjPDomNode
+**
+** @attr name [AjPStr] Undocumented
+** @attr value [AjPStr] Undocumented
+** @attr type [ajuint] Undocumented
+** @attr parentnode [struct AjSDomNode*] Undocumented
+** @attr childnodes [struct AjSDomNodeList*] Undocumented
+** @attr firstchild [struct AjSDomNode*] Undocumented
+** @attr lastchild [struct AjSDomNode*] Undocumented
+** @attr previoussibling [struct AjSDomNode*] Undocumented
+** @attr nextsibling [struct AjSDomNode*] Undocumented
+** @attr attributes [struct AjSDomNodeList*] Undocumented
+** @attr ownerdocument [struct AjSDomNode*] Undocumented
+** @attr subtreeModified [ajuint] Undocumented
+** @attr sub [union] Undocumented
+**
+******************************************************************************/
+
 typedef struct AjSDomNode
 {
     AjPStr name;
@@ -110,6 +133,19 @@ typedef struct AjSDomNode
 
 
 
+/* @data AjSDomNodeEntry ******************************************************
+**
+** DOM parsing node entry
+**
+** @alias AjODomNodeEntry
+** @alias AjPDomNodeEntry
+**
+** @attr prev [struct AjSDomNodeEntry*] Undocumented
+** @attr next [struct AjSDomNodeEntry*] Undocumented
+** @attr node [AjPDomNode] Undocumented
+**
+******************************************************************************/
+
 typedef struct AjSDomNodeEntry
 {
     struct AjSDomNodeEntry *prev;
@@ -121,6 +157,24 @@ typedef struct AjSDomNodeEntry
 
 
 
+
+/* @data AjSDomNodeList ******************************************************
+**
+** DOM parsing node list
+**
+** @alias AjODomNodeList
+** @alias AjPDomNodeList
+**
+** @attr ownerdocument [AjPDomNode] Undocumented
+** @attr ownerelement [AjPDomNode] Undocumented
+** @attr length [ajint] Undocumented
+** @attr first [AjPDomNodeEntry] Undocumented
+** @attr last [AjPDomNodeEntry] Undocumented
+** @attr filter [ajuint] Undocumented
+** @attr list [struct AjSDomNodeList*] Undocumented
+** @attr table [AjPTable] Undocumented
+**
+******************************************************************************/
 
 typedef struct AjSDomNodeList 
 {
@@ -162,19 +216,22 @@ typedef struct AjSDomNodeList
 
 AjPDomNode ajDomDocumentCreateNode(AjPDomDocument doc, ajuint nodetype);
 
-AjPDomDocumentType ajDomImplementationCreateDocumentType(AjPStr qualname,
-							 AjPStr publicid,
-							 AjPStr systemid);
-AjPDomDocumentType ajDomImplementationCreateDocumentTypeC(char *qualname,
-							  char *publicid,
-							  char *systemid);
+AjPDomDocumentType ajDomImplementationCreateDocumentType(const AjPStr qualname,
+							 const AjPStr publicid,
+							const AjPStr systemid);
+AjPDomDocumentType ajDomImplementationCreateDocumentTypeC(const char *qualname,
+							  const char *publicid,
+							 const char *systemid);
 
-AjPDomDocument  ajDomImplementationCreateDocument(AjPStr uri, AjPStr qualname,
+AjPDomDocument  ajDomImplementationCreateDocument(const AjPStr uri,
+						  const AjPStr qualname,
 						  AjPDomDocumentType doctype);
-AjPDomDocument ajDomImplementationCreateDocumentC(char *uri, char *qualname,
+AjPDomDocument ajDomImplementationCreateDocumentC(const char *uri,
+						  const char *qualname,
 						  AjPDomDocumentType doctype);
 
-AjPDomNodeEntry ajDomNodeListAppend(AjPDomNodeList list, AjPDomNode child);
+AjPDomNodeEntry ajDomNodeListAppend(AjPDomNodeList list,
+				    AjPDomNode child);
 
 AjPStr          ajDomElementGetAttribute(const AjPDomElement element,
 					 const AjPStr name);
@@ -205,7 +262,7 @@ AjPDomNodeList ajDomElementGetElementsByTagNameC(AjPDomElement element,
 						 const char *name);
 
 void           ajDomElementNormalise(AjPDomElement element);
-AjPStr         ajDomCharacterDataSubstringData(AjPDomCharacterData data,
+AjPStr         ajDomCharacterDataSubstringData(const AjPDomCharacterData data,
 					       ajint offset, ajint count);
 void           ajDomCharacterDataAppendData(AjPDomCharacterData data,
 					    const AjPStr arg);
@@ -225,7 +282,7 @@ void           ajDomCharacterDataReplaceDataC(AjPDomCharacterData data,
 					      ajint offset, ajint count,
 					      const char *arg);
 
-ajint          ajDomCharacterDataGetLength(AjPDomCharacterData data);
+ajint          ajDomCharacterDataGetLength(const AjPDomCharacterData data);
 AjPDomText     ajDomTextSplitText(AjPDomText text, ajint offset);
 AjPDomElement  ajDomDocumentCreateElement(AjPDomDocument doc,
 					  const AjPStr tagname);
@@ -271,8 +328,8 @@ AjPDomNodeList ajDomDocumentGetElementsByTagName(AjPDomDocument doc,
 AjPDomNodeList ajDomDocumentGetElementsByTagNameC(AjPDomDocument doc,
 						  const char *name);
 
-AjPDomDocumentType ajDomDocumentGetDoctype(AjPDomDocument doc);
-AjPDomElement      ajDomDocumentGetDocumentElement(AjPDomDocument doc);
+AjPDomDocumentType ajDomDocumentGetDoctype(const AjPDomDocument doc);
+AjPDomElement      ajDomDocumentGetDocumentElement(const AjPDomDocument doc);
 
 AjPDomNode         ajDomNodeAppendChild(AjPDomNode node,
 					AjPDomNode extrachild);
@@ -288,7 +345,8 @@ AjPDomNode         ajDomNodeReplaceChild(AjPDomNode node, AjPDomNode newchild,
 					 AjPDomNode oldchild);
 AjPDomNode         ajDomNodeCloneNode(AjPDomNode node, AjBool deep);
 AjPDomNode         ajDomNodeListItem(const AjPDomNodeList list, ajint index);
-AjBool             ajDomNodeListExists(AjPDomNodeList list, AjPDomNode child);
+AjBool             ajDomNodeListExists(AjPDomNodeList list,
+				       const AjPDomNode child);
 AjPDomNodeEntry    ajDomNodeListRemove(AjPDomNodeList list, AjPDomNode child);
 AjPDomNodeList     ajDomCreateNodeList(AjPDomDocument doc);
 
@@ -312,14 +370,14 @@ AjPDomNodeEntry  ajDomNodeListReplace(AjPDomNodeList list, AjPDomNode newchild,
 AjBool ajDomNodeHasChildNodes(const AjPDomNode node);
 
 
-ajint ajDomWrite(AjPDomDocument node, AjPFile outf);
+ajint ajDomWrite(const AjPDomDocument node, AjPFile outf);
 
 
 
 
-void ajDomPrintNode(AjPDomNode node, ajint indent);
-void ajDomPrintNode2(AjPDomNode node);
-void ajDomNodePrintNode(AjPDomNode node);
+void ajDomPrintNode(const AjPDomNode node, ajint indent);
+void ajDomPrintNode2(const AjPDomNode node);
+void ajDomNodePrintNode(const AjPDomNode node);
 
 
 /*

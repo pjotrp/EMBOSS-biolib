@@ -3673,15 +3673,15 @@ void ajCodPrintFormat(AjPFile outf, AjBool full)
 
 /* @func ajCodGetCodonlist ****************************************************
 **
-** Cleans up coson usage processing internal memory
+** Writes codon triplets to a string list
 **
-** @param [r] cod [AjPCod] Cusp file
+** @param [r] cod [const AjPCod] Cusp file
 ** @param [w] list [AjPList] List with character distributions
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajCodGetCodonlist(AjPCod cod, AjPList list)
+void ajCodGetCodonlist(const AjPCod cod, AjPList list)
 {
     ajint i;
     ajint j;
@@ -3701,7 +3701,7 @@ void ajCodGetCodonlist(AjPCod cod, AjPList list)
 
 /* @func ajCodExit ************************************************************
 **
-** Cleans up coson usage processing internal memory
+** Cleans up codon usage processing internal memory
 **
 ** @return [void]
 ** @@

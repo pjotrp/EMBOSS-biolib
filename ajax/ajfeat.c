@@ -6644,7 +6644,8 @@ static AjBool featVocabRead(const char* name,
     
     ajStrDel(&line);
     ajStrDel(&token);
-    
+    ajStrDel(&intids);
+
     line = (AjPStr) ajTableGet(pTypeTable, ajStrNew());
     /*ajDebug("Default type...: '%S'\n", line);*/
     
@@ -6859,7 +6860,7 @@ void ajFeatSetScore(AjPFeature thys, float score)
 ** Sets the score for a feature
 **
 ** @param [u] thys [AjPFeature] Feature
-** @param [r] score [float] Score value
+** @param [r] rev [AjBool] True if reverse strand
 ** @return [void]
 ** @@
 ******************************************************************************/

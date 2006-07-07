@@ -96,7 +96,7 @@ const char*  ajCodGetDescC(const AjPCod thys);
 const AjPStr ajCodGetDivision(const AjPCod thys);
 const char*  ajCodGetDivisionC(const AjPCod thys);
 void         ajCodExit(void);
-void         ajCodGetCodonlist(AjPCod cod, AjPList list);
+void         ajCodGetCodonlist(const AjPCod cod, AjPList list);
 const AjPStr ajCodGetName(const AjPCod thys);
 const char*  ajCodGetNameC(const AjPCod thys);
 ajint        ajCodGetNumcds(const AjPCod thys);

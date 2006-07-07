@@ -25,20 +25,20 @@
 ******************************************************************************/
 #include "emboss.h"
 
-/* @func AjPFeattable embPatlistSeqSearch ********************************
+/* @func embPatlistSeqSearch **************************************************
 **
 ** The main search function of patterns. It compiles the patterns and searches
 ** with them. If the pattern fails to compile, it is removed from list.
 **
 ** @param [w] ftable [AjPFeattable] Table of found features
 ** @param [r] seq [const AjPSeq] Sequence to search
-** @param [w] plist [AjPPatlistSeq] List of patterns to search with
+** @param [u] plist [AjPPatlistSeq] List of patterns to search with
 ** @param [r] reverse [AjBool] Search reverese sequence as well
-** @return [AjPFeattable] The table of found features
+** @return [void]
 ** @@
 ******************************************************************************/
 void embPatlistSeqSearch (AjPFeattable ftable, const AjPSeq seq,
-			      AjPPatlistSeq plist, AjBool reverse)
+			  AjPPatlistSeq plist, AjBool reverse)
 {
     AjPPatternSeq patseq = NULL;
     AjPPatComp compPat;
@@ -68,13 +68,13 @@ void embPatlistSeqSearch (AjPFeattable ftable, const AjPSeq seq,
 **
 ** @param [w] ftable [AjPFeattable] Table of found features
 ** @param [r] seq [const AjPSeq] Sequence to search
-** @param [w] plist [AjPPatlistRegex] List of patterns to search with
+** @param [u] plist [AjPPatlistRegex] List of patterns to search with
 ** @param [r] reverse [AjBool] Search reverese sequence as well
-** @return [AjPFeattable] The table of found features
+** @return [void]
 ** @@
 ******************************************************************************/
 void embPatlistRegexSearch (AjPFeattable ftable, const AjPSeq seq,
-				AjPPatlistRegex plist, AjBool reverse)
+			    AjPPatlistRegex plist, AjBool reverse)
 {
     AjPPatternRegex patreg = NULL;
     AjPRegexp compPat;
@@ -99,19 +99,19 @@ void embPatlistRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     return;
 }
 
-/* @func void embPatternRegexSearch *******************************************
+/* @func embPatternRegexSearch ************************************************
 **
 ** The search function for a single regular expression pattern.
 **
 ** @param [w] ftable [AjPFeattable] Table of found features
 ** @param [r] seq [const AjPSeq] Sequence to search
-** @param [r] pat [AjPPatternRegex] Pattern to search with
+** @param [r] pat [const AjPPatternRegex] Pattern to search with
 ** @param [r] reverse [AjBool] Search reverese sequence as well
 ** @return [void]
 ** @@
 ******************************************************************************/
 void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
-			    AjPPatternRegex pat, AjBool reverse)
+			    const AjPPatternRegex pat, AjBool reverse)
 {
     ajint pos=0;
     ajint off;
@@ -163,19 +163,19 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     return;
 }
 
-/* @func void embPatternSeqSearch *********************************************
+/* @func embPatternSeqSearch **************************************************
 **
 ** The search function for a single sequence pattern.
 **
 ** @param [w] ftable [AjPFeattable] Table of found features
 ** @param [r] seq [const AjPSeq] Sequence to search
-** @param [r] pat [AjPPatternSeq] Pattern to search with
+** @param [r] pat [const AjPPatternSeq] Pattern to search with
 ** @param [r] reverse [AjBool] Search reverese sequence as well
 ** @return [void]
 ** @@
 ******************************************************************************/
 void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
-			  AjPPatternSeq pat, AjBool reverse)
+			  const AjPPatternSeq pat, AjBool reverse)
 {
     void *tidy;
     ajint hits;

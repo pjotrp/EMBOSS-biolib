@@ -32,13 +32,16 @@
 
 
 
-static AjBool          domIsAncestor(AjPDomNode node, AjPDomNode parent);
+static AjBool          domIsAncestor(const AjPDomNode node,
+				     const AjPDomNode parent);
 
-static AjPDomNodeEntry domDoLookupNode(AjPDomNodeList list, AjPDomNode node);
+static AjPDomNodeEntry domDoLookupNode(const AjPDomNodeList list,
+				       const AjPDomNode node);
 static void            domUpdateNode(AjPDomNode node);
 static AjPDomNode      domDoRemoveChild(AjPDomNode node, AjPDomNode child);
-static void            domRemoveFromMap(AjPDomNodeList list, AjPDomNode key);
-static void            domAddToMap(AjPDomNodeList list, AjPDomNode key,
+static void            domRemoveFromMap(AjPDomNodeList list,
+					const AjPDomNode key);
+static void            domAddToMap(AjPDomNodeList list, const AjPDomNode key,
 				   AjPDomNodeEntry val);
 
 
@@ -51,7 +54,7 @@ static void        domTraverseC(AjPDomNodeList list, AjPDomNode node,
 				const char *tagname);
 
 static AjPDomNode  domNodeCloneNode(AjPDomDocument ownerdocument,
-				    AjPDomNode node, AjBool deep);
+				    const AjPDomNode node, AjBool deep);
 
 
 static void   domWriteEncoded(const AjPStr s, AjPFile outf);
@@ -115,12 +118,12 @@ static const char *nodeinfo[] =
 ** Remove a key/value pair from a DOM nodelist 
 **
 ** @param [w] list [AjPDomNodeList] node list
-** @param [w] key [AjPDomNode] key
+** @param [r] key [const AjPDomNode] key
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void domRemoveFromMap(AjPDomNodeList list, AjPDomNode key)
+static void domRemoveFromMap(AjPDomNodeList list, const AjPDomNode key)
 {
     if(!list->table)
 	return;
@@ -139,13 +142,13 @@ static void domRemoveFromMap(AjPDomNodeList list, AjPDomNode key)
 ** Add a key/value pair to a DOM nodelist 
 **
 ** @param [w] list [AjPDomNodeList] node list
-** @param [r] key [AjPDomNode] key
-** @param [r] val [AjPDomNodeEntry] value
+** @param [r] key [const AjPDomNode] key
+** @param [u] val [AjPDomNodeEntry] value
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void domAddToMap(AjPDomNodeList list, AjPDomNode key,
+static void domAddToMap(AjPDomNodeList list, const AjPDomNode key,
 			AjPDomNodeEntry val)
 {
     if(!list->table)
@@ -167,12 +170,13 @@ static void domAddToMap(AjPDomNodeList list, AjPDomNode key,
 ** Append a child node to a DOM nodelist 
 **
 ** @param [w] list [AjPDomNodeList] node list
-** @param [r] key [AjPDomNode] child
+** @param [u] child [AjPDomNode] child
 ** @return [AjPDomNodeEntry] Node list child entry created
 ** @@
 ******************************************************************************/
 
-AjPDomNodeEntry ajDomNodeListAppend(AjPDomNodeList list, AjPDomNode child)
+AjPDomNodeEntry ajDomNodeListAppend(AjPDomNodeList list,
+				    AjPDomNode child)
 {
     AjPDomNodeEntry p;
     AjPDomDocumentType doctype;
@@ -232,8 +236,8 @@ AjPDomNodeEntry ajDomNodeListAppend(AjPDomNodeList list, AjPDomNode child)
 ** Appends an extra child at the end of the childnodes list of a node.
 ** If extrachild is already in the list, it is first removed.  
 **
-** @param [w] list [AjPDomNode] node
-** @param [r] key [AjPDomNode] extra child
+** @param [w] node [AjPDomNode] node
+** @param [u] extrachild [AjPDomNode] extra child
 ** @return [AjPDomNode] Pointer to extrachild or NULL if error
 ** @@
 ******************************************************************************/
@@ -369,15 +373,15 @@ static void domUpdateNode(AjPDomNode node)
 **
 ** Tests whether a putative parent is the parent of a child
 **
-** @param [r] node [AjPDomNode] node
-** @param [r] parent [AjPDomNode] putative parent
+** @param [r] node [const AjPDomNode] node
+** @param [r] parent [const AjPDomNode] putative parent
 ** @return [AjBool] true if ancestor found
 ** @@
 ******************************************************************************/
 
-static AjBool domIsAncestor(AjPDomNode node, AjPDomNode parent)
+static AjBool domIsAncestor(const AjPDomNode node, const AjPDomNode parent)
 {
-    AjPDomNode p = NULL;
+    const AjPDomNode p = NULL;
 
     for(p=parent; p; p=p->parentnode)
 	if(p==node)
@@ -394,7 +398,7 @@ static AjBool domIsAncestor(AjPDomNode node, AjPDomNode parent)
 ** Removes a child node from a list of children 
 **
 ** @param [w] node [AjPDomNode] node
-** @param [r] child [AjPDomNode] child to remove
+** @param [u] child [AjPDomNode] child to remove
 ** @return [AjPDomNode] child removed
 ** @@
 ******************************************************************************/
@@ -423,13 +427,13 @@ AjPDomNode ajDomRemoveChild(AjPDomNode node, AjPDomNode child)
 **
 ** Check whether a child exists in a nodelist 
 **
-** @param [r] list [AjPDomNodeList] list
-** @param [r] child [AjPDomNode] child
-** @return [AjPBool] true if child is in the list
+** @param [u] list [AjPDomNodeList] list
+** @param [r] child [const AjPDomNode] child
+** @return [AjBool] true if child is in the list
 ** @@
 ******************************************************************************/
 
-AjBool ajDomNodeListExists(AjPDomNodeList list, AjPDomNode child)
+AjBool ajDomNodeListExists(AjPDomNodeList list, const AjPDomNode child)
 {
     AjPDomNodeEntry e = NULL;
 
@@ -451,13 +455,14 @@ AjBool ajDomNodeListExists(AjPDomNodeList list, AjPDomNode child)
 **
 ** Return a pointer to a given node of a nodelist
 **
-** @param [r] list [AjPDomNodeList] list
-** @param [r] node [AjPDomNode] node
+** @param [r] list [const AjPDomNodeList] list
+** @param [r] node [const AjPDomNode] node
 ** @return [AjPDomNodeEntry] node entry or NULL if not found
 ** @@
 ******************************************************************************/
 
-static AjPDomNodeEntry domDoLookupNode(AjPDomNodeList list, AjPDomNode node)
+static AjPDomNodeEntry domDoLookupNode(const AjPDomNodeList list,
+				       const AjPDomNode node)
 {
     AjPDomNodeEntry p;
 
@@ -474,8 +479,8 @@ static AjPDomNodeEntry domDoLookupNode(AjPDomNodeList list, AjPDomNode node)
 ** Remove a child from a nodelist 
 **
 ** @param [w] list [AjPDomNodeList] list
-** @param [r] child [AjPDomNode] child
-** @return [AjPNodeEntry] child removed or NULL if not found
+** @param [u] child [AjPDomNode] child
+** @return [AjPDomNodeEntry] child removed or NULL if not found
 ** @@
 ******************************************************************************/
 
@@ -538,7 +543,7 @@ AjPDomNodeEntry ajDomNodeListRemove(AjPDomNodeList list, AjPDomNode child)
 ** Low level removal of a child node from a list of children 
 **
 ** @param [w] node [AjPDomNode] node
-** @param [r] child [AjPDomNode] child to remove
+** @param [u] child [AjPDomNode] child to remove
 ** @return [AjPDomNode] child removed
 ** @@
 ******************************************************************************/
@@ -717,11 +722,11 @@ void ajDomDocumentDestroyNodeList(AjPDomDocument doc, AjPDomNodeList list,
 
 
 
-/* @func ajDomCreateNodeList ****************************************
+/* @func ajDomCreateNodeList **************************************************
 **
 ** Create a nodelist
 **
-** @param [r] doc [AjPDomDocument] document
+** @param [u] doc [AjPDomDocument] document
 ** @return [AjPDomNodeList] new list
 ** @@
 ******************************************************************************/
@@ -743,7 +748,7 @@ AjPDomNodeList ajDomCreateNodeList(AjPDomDocument doc)
 **
 ** General document node creation
 **
-** @param [r] doc [AjPDomDocument] document
+** @param [u] doc [AjPDomDocument] document
 ** @param [r] nodetype [ajuint] type of node to create
 ** @return [AjPDomNode] new node
 ** @@
@@ -799,17 +804,16 @@ AjPDomNode ajDomDocumentCreateNode(AjPDomDocument doc, ajuint nodetype)
 ** Creates an empty DocumentType node into which entities/notations (etc)
 ** can be placed 
 **
-** @param [r] doc [AjPDomDocument] document
-** @param [r] qualname [AjPStr] qualified name
-** @param [r] publicid [AjPStr] public id
-** @param [r] systemid [AjPStr] systemid
+** @param [r] qualname [const AjPStr] qualified name
+** @param [r] publicid [const AjPStr] public id
+** @param [r] systemid [const AjPStr] systemid
 ** @return [AjPDomDocumentType] new DocumentType node
 ** @@
 ******************************************************************************/
 
-AjPDomDocumentType ajDomImplementationCreateDocumentType(AjPStr qualname,
-							 AjPStr publicid,
-							 AjPStr systemid)
+AjPDomDocumentType ajDomImplementationCreateDocumentType(const AjPStr qualname,
+							 const AjPStr publicid,
+							 const AjPStr systemid)
 {
     char *p = NULL;
     char *s = NULL;
@@ -834,17 +838,16 @@ AjPDomDocumentType ajDomImplementationCreateDocumentType(AjPStr qualname,
 ** Creates an empty DocumentType node into which entities/notations (etc)
 ** can be placed 
 **
-** @param [r] doc [AjPDomDocument] document
-** @param [r] qualname [char *] qualified name
-** @param [r] publicid [char *] public id
-** @param [r] systemid [char *] systemid
+** @param [r] qualname [const char *] qualified name
+** @param [r] publicid [const char *] public id
+** @param [r] systemid [const char *] systemid
 ** @return [AjPDomDocumentType] new DocumentType node
 ** @@
 ******************************************************************************/
 
-AjPDomDocumentType ajDomImplementationCreateDocumentTypeC(char *qualname,
-							  char *publicid,
-							  char *systemid)
+AjPDomDocumentType ajDomImplementationCreateDocumentTypeC(const char *qualname,
+							  const char *publicid,
+							  const char *systemid)
 {
     AjPDomDocumentType doctype;
     AjPDomNodeMap entities;
@@ -890,17 +893,18 @@ AjPDomDocumentType ajDomImplementationCreateDocumentTypeC(char *qualname,
 ** Creates an XML Document object of the specified type with its document
 ** element.
 **
-** @param [r] uri [AjPStr] uri (not implemented. Pass NULL)
-** @param [r] qualname [AjPStr] qualified name
-** @param [r] publicid [AjPDomDocumentType] doctype
+** @param [r] uri [const AjPStr] uri (not implemented. Pass NULL)
+** @param [r] qualname [const AjPStr] qualified name
+** @param [u] doctype [AjPDomDocumentType] doctype
 ** @return [AjPDomDocument] new document
 ** @@
 ******************************************************************************/
 
-AjPDomDocument ajDomImplementationCreateDocument(AjPStr uri, AjPStr qualname,
+AjPDomDocument ajDomImplementationCreateDocument(const AjPStr uri,
+						 const AjPStr qualname,
 						 AjPDomDocumentType doctype)
 {
-    char *p = NULL;
+    const char *p = NULL;
     
     if(qualname)
         p = qualname->Ptr;
@@ -916,15 +920,16 @@ AjPDomDocument ajDomImplementationCreateDocument(AjPStr uri, AjPStr qualname,
 ** Creates an XML Document object of the specified type with its document
 ** element.
 **
-** @param [r] uri [char *] uri (not implemented. Pass NULL)
-** @param [r] qualname [char *] qualified name
-** @param [r] publicid [AjPDomDocumentType] doctype
+** @param [r] uri [const char *] uri (not implemented. Pass NULL)
+** @param [r] qualname [const char *] qualified name
+** @param [u] doctype [AjPDomDocumentType] doctype
 ** @return [AjPDomDocument] new document
 ** @@
 ******************************************************************************/
 
-AjPDomDocument ajDomImplementationCreateDocumentC(char *uri, char *qualname,
-						  AjPDomDocumentType doctype)
+AjPDomDocument ajDomImplementationCreateDocumentC(const char *uri,
+						  const char *qualname,
+					          AjPDomDocumentType doctype)
 {
     AjPDomDocument doc     = NULL;
     AjPDomElement  element = NULL;
@@ -967,7 +972,7 @@ AjPDomDocument ajDomImplementationCreateDocumentC(char *uri, char *qualname,
 **
 ** Returns the named node from a nodemap
 **
-** @param [r] map [AjPDomNodeMap] map
+** @param [r] map [const AjPDomNodeMap] map
 ** @param [r] name [const AjPStr] name
 ** @return [AjPDomNode] node
 ** @@
@@ -990,7 +995,7 @@ AjPDomNode ajDomNodeMapGetItem(const AjPDomNodeMap map, const AjPStr name)
 **
 ** Returns the named node from a nodemap
 **
-** @param [r] map [AjPDomNodeMap] map
+** @param [r] map [const AjPDomNodeMap] map
 ** @param [r] name [const char *] name
 ** @return [AjPDomNode] node
 ** @@
@@ -1028,7 +1033,7 @@ AjPDomNode ajDomNodeMapGetItemC(const AjPDomNodeMap map, const char *name)
 **
 ** Returns the value of a named attribute 
 **
-** @param [r] element [AjPDomElement] element
+** @param [r] element [const AjPDomElement] element
 ** @param [r] name [const AjPStr] name
 ** @return [AjPStr] value or empty string
 ** @@
@@ -1051,7 +1056,7 @@ AjPStr ajDomElementGetAttribute(const AjPDomElement element, const AjPStr name)
 **
 ** Returns the value of a named attribute 
 **
-** @param [r] element [AjPDomElement] element
+** @param [r] element [const AjPDomElement] element
 ** @param [r] name [const char *] name
 ** @return [AjPStr] value or empty string
 ** @@
@@ -1084,8 +1089,8 @@ AjPStr ajDomElementGetAttributeC(const AjPDomElement element,
 ** with the new node and returned.
 ** The replaced node should usually be freed with DestroyNode.
 **
-** @param [r] map [AjPDomNodeMap] map
-** @param [r] arg [AjPDomNode] arg
+** @param [u] map [AjPDomNodeMap] map
+** @param [u] arg [AjPDomNode] arg
 ** @return [AjPDomNode] replaced node or NULL
 ** @@
 ******************************************************************************/
@@ -1149,7 +1154,7 @@ AjPDomNode ajDomNodeMapSetItem(AjPDomNodeMap map, AjPDomNode arg)
 **
 ** Removes and returns item from a  map
 **
-** @param [w] map [AjPDomNodeMap] map
+** @param [u] map [AjPDomNodeMap] map
 ** @param [r] name [const AjPStr] name
 ** @return [AjPDomNode] removed node or NULL
 ** @@
@@ -1217,7 +1222,7 @@ AjPDomNode ajDomNodeMapRemoveItemC(AjPDomNodeMap map, const char *name)
 **
 ** Return the node in the map at a given index
 **
-** @param [w] map [AjPDomNodeMap] map
+** @param [r] map [const AjPDomNodeMap] map
 ** @param [r] index [ajint] index
 ** @return [AjPDomNode] node or NULL
 ** @@
@@ -1387,7 +1392,7 @@ void ajDomElementSetAttributeC(const AjPDomElement element, const char *name,
 **
 ** Remove and free a named attribute
 **
-** @param [r] element [const AjPDomElement] element
+** @param [u] element [AjPDomElement] element
 ** @param [r] name [const AjPStr] name
 ** @return [void]
 ** @@
@@ -1411,7 +1416,7 @@ void ajDomElementRemoveAttribute(AjPDomElement element, const AjPStr name)
 **
 ** Remove and free a named attribute
 **
-** @param [r] element [const AjPDomElement] element
+** @param [u] element [AjPDomElement] element
 ** @param [r] name [const char *] name
 ** @return [void]
 ** @@
@@ -1488,8 +1493,8 @@ AjPDomNode ajDomElementGetAttributeNodeC(const AjPDomElement element,
 ** If this element already has an attribute with the same name it will be
 ** replaced with the new attribute and returned.
 **
-** @param [w] element [AjPDomElement] element
-** @param [r] newattr [AjPDomNode] name
+** @param [u] element [AjPDomElement] element
+** @param [u] newattr [AjPDomNode] name
 ** @return [AjPDomNode] new or replaced attribute
 ** @@
 ******************************************************************************/
@@ -1523,7 +1528,7 @@ AjPDomNode ajDomElementSetAttributeNode(AjPDomElement element,
 ** Removes and returns a pointer to an attribute
 **
 ** @param [w] element [AjPDomElement] element
-** @param [r] oldattr [AjPDomNode] attribute
+** @param [u] oldattr [AjPDomNode] attribute
 ** @return [AjPDomNode] removed attribute or NULL
 ** @@
 ******************************************************************************/
@@ -1551,7 +1556,7 @@ AjPDomNode ajDomElementRemoveAttributeNode(AjPDomElement element,
 ** Preorder elements
 **
 ** @param [w] list [AjPDomNodeList] list
-** @param [r] node [AjPDomNode] node
+** @param [u] node [AjPDomNode] node
 ** @param [r] tagname [const AjPStr] tagname
 ** @return [void]
 ** @@
@@ -1582,7 +1587,7 @@ static void domTraverse(AjPDomNodeList list, AjPDomNode node,
 ** Preorder elements
 **
 ** @param [w] list [AjPDomNodeList] list
-** @param [r] node [AjPDomNode] node
+** @param [u] node [AjPDomNode] node
 ** @param [r] tagname [const char *] tagname
 ** @return [void]
 ** @@
@@ -1614,8 +1619,8 @@ static void domTraverseC(AjPDomNodeList list, AjPDomNode node,
 ** Return a nodelist of the elements with the name tagname in the order
 ** in which they are found.
 **
-** @param [r] element [AjPDomElement] element
-** @param [r] tagname [const AjPStr] name
+** @param [u] element [AjPDomElement] element
+** @param [r] name [const AjPStr] name
 ** @return [AjPDomNodeList] nodelist
 ** @@
 ******************************************************************************/
@@ -1639,8 +1644,8 @@ AjPDomNodeList ajDomElementGetElementsByTagName(AjPDomElement element,
 ** Return a nodelist of the elements with the name tagname in the order
 ** in which they are found.
 **
-** @param [r] element [AjPDomElement] element
-** @param [r] tagname [const char *] name
+** @param [u] element [AjPDomElement] element
+** @param [r] name [const char *] name
 ** @return [AjPDomNodeList] nodelist
 ** @@
 ******************************************************************************/
@@ -1719,7 +1724,7 @@ void ajDomElementNormalise(AjPDomElement element)
 ** If the sum of offset and count exceeds the length of the character data,
 ** a string representing the remainder of the string is returned.
 **
-** @param [r] data [AjPDomCharacterData] character data
+** @param [r] data [const AjPDomCharacterData] character data
 ** @param [r] offset [ajint] offset
 ** @param [r] count [ajint] count
 
@@ -1727,7 +1732,8 @@ void ajDomElementNormalise(AjPDomElement element)
 ** @@
 ******************************************************************************/
 
-AjPStr ajDomCharacterDataSubstringData(AjPDomCharacterData data, ajint offset,
+AjPStr ajDomCharacterDataSubstringData(const AjPDomCharacterData data,
+				       ajint offset,
 				       ajint count)
 {
     AjPStr sub = NULL;
@@ -1955,12 +1961,12 @@ void ajDomCharacterDataReplaceDataC(AjPDomCharacterData data, ajint offset,
 **
 ** Return length of character data 
 **
-** @param [r] data [AjPDomCharacterData] character data
+** @param [r] data [const AjPDomCharacterData] character data
 ** @return [ajint] length
 ** @@
 ******************************************************************************/
 
-ajint ajDomCharacterDataGetLength(AjPDomCharacterData data)
+ajint ajDomCharacterDataGetLength(const AjPDomCharacterData data)
 {
     return data ? data->sub.CharacterData.length : 0;
 }
@@ -2100,7 +2106,7 @@ AjPDomDocumentFragment ajDomDocumentCreateDocumentFragment(AjPDomDocument doc)
 ** Create a  text node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] data [const AjPStr] text
+** @param [r] data [const AjPStr] text
 ** @return [AjPDomText] text node
 ** @@
 ******************************************************************************/
@@ -2121,7 +2127,7 @@ AjPDomText ajDomDocumentCreateTextNode(AjPDomDocument doc, const AjPStr data)
 ** Create a text node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] data [const char *] text
+** @param [r] data [const char *] text
 ** @return [AjPDomText] text node
 ** @@
 ******************************************************************************/
@@ -2152,7 +2158,7 @@ AjPDomText ajDomDocumentCreateTextNodeC(AjPDomDocument doc, const char *data)
 ** Create a comment node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] data [const AjPStr] text
+** @param [r] data [const AjPStr] text
 ** @return [AjPDomComment] comment node
 ** @@
 ******************************************************************************/
@@ -2173,7 +2179,7 @@ AjPDomComment ajDomDocumentCreateComment(AjPDomDocument doc, const AjPStr data)
 ** Create a comment node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] data [const char *] text
+** @param [r] data [const char *] text
 ** @return [AjPDomComment] comment node
 ** @@
 ******************************************************************************/
@@ -2204,7 +2210,7 @@ AjPDomComment ajDomDocumentCreateCommentC(AjPDomDocument doc, const char *data)
 ** Create a CDATA section
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] data [const AjPStr] text
+** @param [r] data [const AjPStr] text
 ** @return [AjPDomCDATASection] comment node
 ** @@
 ******************************************************************************/
@@ -2226,7 +2232,7 @@ AjPDomCDATASection ajDomDocumentCreateCDATASection(AjPDomDocument doc,
 ** Create a CDATA section
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] data [const char *] text
+** @param [r] data [const char *] text
 ** @return [AjPDomCDATASection] comment node
 ** @@
 ******************************************************************************/
@@ -2258,7 +2264,7 @@ AjPDomCDATASection ajDomDocumentCreateCDATASectionC(AjPDomDocument doc,
 ** Create an attribute node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] name [const AjPStr] text
+** @param [r] name [const AjPStr] text
 ** @return [AjPDomAttr] attribute node
 ** @@
 ******************************************************************************/
@@ -2290,7 +2296,7 @@ AjPDomAttr ajDomDocumentCreateAttribute(AjPDomDocument doc,
 ** Create an attribute node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] name [const char *] text
+** @param [r] name [const char *] text
 ** @return [AjPDomAttr] attribute node
 ** @@
 ******************************************************************************/
@@ -2322,7 +2328,7 @@ AjPDomAttr ajDomDocumentCreateAttributeC(AjPDomDocument doc,
 ** Create an entity reference node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] name [const AjPStr] text
+** @param [r] name [const AjPStr] text
 ** @return [AjPDomEntityReference] entity reference node
 ** @@
 ******************************************************************************/
@@ -2344,7 +2350,7 @@ AjPDomEntityReference ajDomDocumentCreateEntityReference(AjPDomDocument doc,
 ** Create an entity reference node
 **
 ** @param [w] doc [AjPDomDocument] document
-** @param [w] name [const AjPStr] text
+** @param [r] name [const char *] text
 ** @return [AjPDomEntityReference] entity reference node
 ** @@
 ******************************************************************************/
@@ -2430,7 +2436,7 @@ AjPDomPi ajDomDocumentCreateProcessingInstructionC(AjPDomDocument doc,
 ** Perform a preorder traversal of the entire document. Return a nodelist
 ** of the elements matching tagname in the order in which they are found.
 **
-** @param [r] doc [AjPDomDocument] document
+** @param [u] doc [AjPDomDocument] document
 ** @param [r] name [const AjPStr] name
 ** @return [AjPDomNodeList] nodelist
 ** @@
@@ -2459,7 +2465,7 @@ AjPDomNodeList ajDomDocumentGetElementsByTagName(AjPDomDocument doc,
 ** Perform a preorder traversal of the entire document. Return a nodelist
 ** of the elements matching tagname in the order in which they are found.
 **
-** @param [r] doc [AjPDomDocument] document
+** @param [u] doc [AjPDomDocument] document
 ** @param [r] name [const char *] name
 ** @return [AjPDomNodeList] nodelist
 ** @@
@@ -2487,12 +2493,12 @@ AjPDomNodeList ajDomDocumentGetElementsByTagNameC(AjPDomDocument doc,
 **
 ** Get document type
 **
-** @param [r] doc [AjPDomDocument] document
+** @param [r] doc [const AjPDomDocument] document
 ** @return [AjPDomDocumentType] doctype
 ** @@
 ******************************************************************************/
 
-AjPDomDocumentType ajDomDocumentGetDoctype(AjPDomDocument doc)
+AjPDomDocumentType ajDomDocumentGetDoctype(const AjPDomDocument doc)
 {
     return doc ? doc->sub.Document.doctype : NULL;
 }
@@ -2507,12 +2513,12 @@ AjPDomDocumentType ajDomDocumentGetDoctype(AjPDomDocument doc)
 ** of a document may also be processing instructions, document type nodes,
 ** and comments which may precede the document element in the list. 
 **
-** @param [r] doc [AjPDomDocument] document
+** @param [r] doc [const AjPDomDocument] document
 ** @return [AjPDomElement] root element
 ** @@
 ******************************************************************************/
 
-AjPDomElement ajDomDocumentGetDocumentElement(AjPDomDocument doc)
+AjPDomElement ajDomDocumentGetDocumentElement(const AjPDomDocument doc)
 {
     return doc ? doc->sub.Document.documentelement : NULL;
 }
@@ -2524,13 +2530,13 @@ AjPDomElement ajDomDocumentGetDocumentElement(AjPDomDocument doc)
 **
 ** Print a node with indentation
 **
-** @param [r] node [AjPDomNode] node
+** @param [r] node [const AjPDomNode] node
 ** @param [r] indent [ajint] indentation
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajDomPrintNode(AjPDomNode node, ajint indent)
+void ajDomPrintNode(const AjPDomNode node, ajint indent)
 {
     AjPDomNode n;
     ajint i;
@@ -2575,12 +2581,12 @@ void ajDomPrintNode(AjPDomNode node, ajint indent)
 **
 ** Print a node with zero indentation
 **
-** @param [r] node [AjPDomNode] node
+** @param [r] node [const AjPDomNode] node
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajDomPrintNode2(AjPDomNode node)
+void ajDomPrintNode2(const AjPDomNode node)
 {
     ajFmtPrint("\n");
     ajDomPrintNode(node,0);
@@ -2595,12 +2601,12 @@ void ajDomPrintNode2(AjPDomNode node)
 **
 ** Print a node internals
 **
-** @param [r] node [AjPDomNode] node
+** @param [r] node [const AjPDomNode] node
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajDomNodePrintNode(AjPDomNode node)
+void ajDomNodePrintNode(const AjPDomNode node)
 {
     if(!node)
     {
@@ -2642,8 +2648,8 @@ void ajDomNodePrintNode(AjPDomNode node)
 ** If newchild is already in the list it will first be removed. 
 **
 ** @param [w] node [AjPDomNode] node
-** @param [r] newchild [AjPDomNode] node to insert
-** @param [r] refchild [AjPDomNode] node to insert before
+** @param [u] newchild [AjPDomNode] node to insert
+** @param [u] refchild [AjPDomNode] node to insert before
 ** @return [AjPDomNode] inserted node
 ** @@
 ******************************************************************************/
@@ -2749,13 +2755,13 @@ AjPDomNode ajDomNodeInsertBefore(AjPDomNode node, AjPDomNode newchild,
 
 
 
-/* @funcstatic ajDomNodeListInsert *******************************************
+/* @func ajDomNodeListInsert **************************************************
 **
 ** Insert newchild into list directly before the existing child refchild.
 **
-** @param [w] list [AjPDomNodeList] list
-** @param [r] newchild [AjPDomNode] node to insert
-** @param [r] refchild [AjPDomNode] node to insert before
+** @param [u] list [AjPDomNodeList] list
+** @param [u] newchild [AjPDomNode] node to insert
+** @param [u] refchild [AjPDomNode] node to insert before
 ** @return [AjPDomNodeEntry] inserted node
 ** @@
 ******************************************************************************/
@@ -2827,9 +2833,9 @@ AjPDomNodeEntry ajDomNodeListInsert(AjPDomNodeList list, AjPDomNode newchild,
 **
 ** Replace oldchild with newchild in the list of children.
 **
-** @param [w] node [AjPDomNode] node
-** @param [r] newchild [AjPDomNode] node to insert
-** @param [r] refchild [AjPDomNode] node to replace
+** @param [u] node [AjPDomNode] node
+** @param [u] newchild [AjPDomNode] node to insert
+** @param [u] oldchild [AjPDomNode] node to replace
 ** @return [AjPDomNode] oldchild node
 ** @@
 ******************************************************************************/
@@ -2932,9 +2938,9 @@ AjPDomNode ajDomNodeReplaceChild(AjPDomNode node, AjPDomNode newchild,
 **
 ** Replace oldchild with newchild in a nodelist.
 **
-** @param [w] list [AjPDomNodeList] list
-** @param [r] newchild [AjPDomNode] node to insert
-** @param [r] refchild [AjPDomNode] node to replace
+** @param [u] list [AjPDomNodeList] list
+** @param [u] newchild [AjPDomNode] node to insert
+** @param [u] oldchild [AjPDomNode] node to replace
 ** @return [AjPDomNodeEntry] inserted node
 ** @@
 ******************************************************************************/
@@ -2978,15 +2984,15 @@ AjPDomNodeEntry ajDomNodeListReplace(AjPDomNodeList list, AjPDomNode newchild,
 **
 ** Low level clone node
 **
-** @param [w] ownerdocument [AjPDomDocument] owner document for clone
-** @param [r] newchild [AjPDomNode] node to clone
+** @param [u] ownerdocument [AjPDomDocument] owner document for clone
+** @param [r] node [const AjPDomNode] node to clone
 ** @param [r] deep [AjBool] do a deep clone
 ** @return [AjPDomNode] clone
 ** @@
 ******************************************************************************/
 
 static AjPDomNode domNodeCloneNode(AjPDomDocument ownerdocument,
-				   AjPDomNode node, AjBool deep)
+				   const AjPDomNode node, AjBool deep)
 {
     AjPDomNode clone  = NULL;
     AjPDomNode ntmp   = NULL;
@@ -3130,7 +3136,7 @@ static AjPDomNode domNodeCloneNode(AjPDomDocument ownerdocument,
 **
 ** Clone node
 **
-** @param [r] node [AjPDomNode] node to clone
+** @param [u] node [AjPDomNode] node to clone
 ** @param [r] deep [AjBool] do a deep clone
 ** @return [AjPDomNode] clone
 ** @@
@@ -3239,13 +3245,13 @@ AjBool ajDomNodeHasChildNodes(const AjPDomNode node)
 **
 ** Write XML from memory
 **
-** @param [r] node [AjPDomDocument] document to write
-** @param [w] outf [AjPFile] output file
+** @param [r] node [const AjPDomDocument] document to write
+** @param [u] outf [AjPFile] output file
 ** @return [ajint] zero OK, negative if error
 ** @@
 ******************************************************************************/
 
-ajint ajDomWrite(AjPDomDocument node, AjPFile outf)
+ajint ajDomWrite(const AjPDomDocument node, AjPFile outf)
 {
     AjPDomNodeEntry e = NULL;
     AjPDomNode c = NULL;

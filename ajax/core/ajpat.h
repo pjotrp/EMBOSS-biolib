@@ -36,18 +36,21 @@ typedef struct AjSPatBYPNode
 ** NUCLEUS data structure that holds all needed datas for compiling and
 ** searching. Not including mismatch number.
 **
+** @alias AjSPatComp
+** @alias AjOPatComp
+**
 ** @attr pattern [AjPStr] Prosite pattern string
 ** @attr type [ajint] Prosite pattern compile type
 ** @attr plen [ajint] Prosite pattern length
 ** @attr buf [ajint*] Buffer for BMH search
-** @attr off [struct AjSPatBYPNode] Offset buffer for B-Y/P search
+** @attr off [AjOPatBYPNode[AJALPHA]] Offset buffer for B-Y/P search
 ** @attr sotable [ajuint*] Buffer for SHIFT-OR
 ** @attr solimit [ajuint] Limit for BMH search
 ** @attr m [ajint] Real length of pattern (from embPatGetType)
 ** @attr regex [AjPStr] PCRE regexp string
 ** @attr skipm [ajint**] Skip buffer for Tarhio-Ukkonen
-** @attr amino [AjPBool] Must match left begin
-** @attr carboxyl [AjPBool] Must match right
+** @attr amino [AjBool] Must match left begin
+** @attr carboxyl [AjBool] Must match right
 **
 ** @@
 ******************************************************************************/
@@ -69,7 +72,7 @@ typedef struct AjSPatComp
 } AjOPatComp;
 #define AjPPatComp AjOPatComp*
 
-/* @data AjPPatSeq ************************************************************
+/* @data AjPPatternSeq ********************************************************
 **
 ** Ajax sequence pattern object.
 **
@@ -216,24 +219,24 @@ typedef struct AjSPatlistRegex {
 AjPPatternSeq ajPatternSeqNewList (AjPPatlistSeq plist, const AjPStr name,
 				   const AjPStr pat, ajint mismatch);
 void ajPatternSeqDel (AjPPatternSeq* pthys);
-const AjPStr ajPatternSeqGetName (AjPPatternSeq thys);
-const AjPStr ajPatternSeqGetPattern (AjPPatternSeq thys);
-AjPPatComp ajPatternSeqGetCompiled (AjPPatternSeq thys);
+const AjPStr ajPatternSeqGetName (const AjPPatternSeq thys);
+const AjPStr ajPatternSeqGetPattern (const AjPPatternSeq thys);
+AjPPatComp ajPatternSeqGetCompiled (const AjPPatternSeq thys);
 AjBool ajPatternSeqGetProtein (const AjPPatternSeq thys);
 ajint ajPatternSeqGetMismatch (const AjPPatternSeq thys);
 void ajPatternSeqSetCompiled (AjPPatternSeq thys, void* pat);
-void patPatternSeqDebug (AjPPatternSeq pat);
+void ajPatternSeqDebug (const AjPPatternSeq pat);
 
 AjPPatternRegex ajPatternRegexNewList (AjPPatlistRegex plist,
 				       const AjPStr name,
 				       const AjPStr pat);
 void ajPatternRegexDel (AjPPatternRegex* pthys);
-const AjPStr ajPatternRegexGetName (AjPPatternRegex thys);
-const AjPStr ajPatternRegexGetPattern (AjPPatternRegex thys);
-AjPRegexp ajPatternRegexGetCompiled (AjPPatternRegex thys);
+const AjPStr ajPatternRegexGetName (const AjPPatternRegex thys);
+const AjPStr ajPatternRegexGetPattern (const AjPPatternRegex thys);
+AjPRegexp ajPatternRegexGetCompiled (const AjPPatternRegex thys);
 ajint ajPatternRegexGetType (const AjPPatternRegex thys);
 void ajPatternRegexSetCompiled (AjPPatternRegex thys, AjPRegexp pat);
-void patPatternRegexDebug (AjPPatternRegex pat);
+void ajPatternRegexDebug (const AjPPatternRegex pat);
 
 /* Patlist handling functions */
 AjPPatlistSeq ajPatlistSeqNewType (AjBool Protein);

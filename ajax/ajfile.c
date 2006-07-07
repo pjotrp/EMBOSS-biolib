@@ -1251,6 +1251,8 @@ static void fileClose(AjPFile thys)
 		thys->Pid);
 	while((retval=waitpid(thys->Pid,&status,WNOHANG))!= thys->Pid)
 	{
+	    sleep(1);
+
 	    /*ajDebug("fileClose waitpid returns %d status %d\n",
 		    retval, status);*/
 	    if(retval == -1)

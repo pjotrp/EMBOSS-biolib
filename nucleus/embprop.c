@@ -272,9 +272,9 @@ const char* embPropIntToThree(ajint c)
 ** @param [w] ncomp [ajint *] number of complete digest fragments
 ** @param [w] npart [ajint *] number of partial digest fragments
 ** @param [w] rname [AjPStr *] name of reagent
-** @param [w] nterm [AjBool] nterm ragging
-** @param [w] cterm [AjBool] cterm ragging
-** @param [w] dorag [AjBool] true if ragging
+** @param [r] nterm [AjBool] nterm ragging
+** @param [r] cterm [AjBool] cterm ragging
+** @param [r] dorag [AjBool] true if ragging
 
 **
 ** @return [void]
