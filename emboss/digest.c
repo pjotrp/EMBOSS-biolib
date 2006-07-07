@@ -79,7 +79,7 @@ int main(int argc, char **argv)
 
     embInit("digest", argc, argv);
 
-    seqall      = ajAcdGetSeqall("sequences");
+    seqall      = ajAcdGetSeqall("seqall");
     menu        = ajAcdGetListSingle("menu");
     dorag       = ajAcdGetBool("ragging");
     rag         = ajAcdGetListSingle("termini");
