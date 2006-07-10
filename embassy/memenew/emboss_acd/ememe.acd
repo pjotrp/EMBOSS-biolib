@@ -2,7 +2,7 @@ application: ememe
 [
   documentation: "Motif detection"
   groups: "Protein:Motifs"
-  embassy: "meme"
+  embassy: "memenew"
 ]
 
 
@@ -33,7 +33,7 @@ infile: bfile
   nullok: "Y"
   information: "Name of background Markov model file"
   help: "The name of the file containing the background model for sequences.  The background model is the model of random sequences used by MEME.  The background model is used by MEME 1) during EM as the 'null model', 2) for calculating the log likelihood ratio of a motif, 3) for calculating the significance (E-value) of a motif, and, 4) for creating the position-specific scoring matrix (log-odds matrix). See application documentation for more information."
-  knowntype: "MEME (meme) background Markov model file"
+  knowntype: "background markov model meme"
 ]
 
 infile: plib
@@ -43,7 +43,7 @@ infile: plib
   nullok: "Y"
   information: "Name of Dirichlet prior file"
   help: "The name of the file containing the Dirichlet prior in the format of file prior30.plib"
-  knowntype: "MEME (meme) Dirichlet prior file"
+  knowntype: "dirichlet prior meme"
 ]
 
 endsection: input
@@ -158,7 +158,7 @@ float: wnsites
   help: "The weight on the prior on nsites.  This controls how strong the bias towards motifs with exactly nsites sites (or between minsites and maxsites sites)	is.  It is a number in the range [0..1).  The larger it is, the stronger the bias towards motifs with exactly nsites occurrences is."
 ]
 
-integer: w  
+integer: w
 [
   additional: "Y"
 # Negative default so that program can pick up if a value was set at all, and so that a value of 0 may be set.
@@ -299,7 +299,7 @@ string: cons
   default: ""
   information: "Consensus sequence to start EM from"
   help: "Override the sampling of starting points and just use a starting point derived from <string>. This is useful when an actual occurrence of a motif is known and can be used as the starting point for finding the motif.  See the application documentation for more information."
-  knowntype: "MEME (meme) consensus sequence"
+  knowntype: "sequence"
 ]
 
 integer: maxsize  
@@ -319,15 +319,15 @@ integer: p
 integer: time
 [
   default: "0"
-  information: "Quit before <t> CPU seconds consumed"
-  help: "Only values of >0 will be applied."
+  information: "Quit before <time> CPU seconds consumed"
+  help: "Only values of more than 0 will be applied."
 ]
 
 string: sf
 [
   default: ""
   information: "Print <sf> as name of sequence file"
-  knowntype: "MEME (meme) name of sequence file"
+  knowntype: "sequence id output"
 ]
 
 endsection: advanced
@@ -346,7 +346,7 @@ outfile: outfile
 [
   parameter: "Y"
   information: "Output file."
-  knowntype: "MEME (meme) output file"
+  knowntype: "meme output"
 ]
 
 endsection: output

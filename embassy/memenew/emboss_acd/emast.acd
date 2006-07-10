@@ -2,7 +2,7 @@ application: emast
 [
   documentation: "Motif detection"
   groups: "Protein:Motifs"
-  embassy: "mast"
+  embassy: "memenew"
 ]
 
 
@@ -20,7 +20,7 @@ infile: mfile
   parameter: "Y"
   information: "File containing motifs to use; may be a MEME output file or a file with a valid format."
   help: "If -d <database> is not given, MAST looks for database specified inside of <mfile>."
-  knowntype: "MEME (mast) motif file"
+  knowntype: "meme output"
 ]
 
 infile: d
@@ -31,7 +31,7 @@ infile: d
   nullok: "Y"
   information: "Database to search with motifs"
   help: "If -d <database> is not given, MAST looks for database specified inside of <mfile>."
-  knowntype: "MEME (mast) database to search with motifs"
+  knowntype: "meme database name"
 ]
 
 infile: a
@@ -40,8 +40,8 @@ infile: a
   default: ""
   nullok: "Y"
   information: "Alphabet for motifs in <mfile>"
-  help: "<mfile> is assumed to contain motifs in the format output by bin/make_logodds and <a> is their alphabet; -d <database> or -stdin must be specified when this option is used."
-  knowntype: "MEME (mast) alphabet"
+  help: "Input file <mfile> is assumed to contain motifs in the format output by bin/make_logodds and <a> is their alphabet; -d <database> or -stdin must be specified when this option is used."
+  knowntype: "meme alphabet"
 ]
 
 infile: bfile
@@ -51,7 +51,7 @@ infile: bfile
   nullok: "Y"
   information: "Read background frequencies from file"
   help: "The random model uses the letter frequencies given in <bfile> instead of the non-redundant database frequencies.  The format of <bfile> is the same as that for the MEME -bfile opton; see the MEME documentation for details.  Sample files are given in directory tests: tests/nt.freq and tests/na.freq in the MEME distribution.)"
-  knowntype: "MEME (mast) background frequencies"
+  knowntype: "meme background frequencies"
 ]
 
 endsection: input
@@ -240,14 +240,14 @@ string: mf
 [
   default: ""
   information: "Print <mf> as motif file name."
-  knowntype: "MEME (mast) name of motif file"
+  knowntype: "output identifier"
 ]
 
 string: df
 [
   default: ""
   information: "Print <df> as database name."
-  knowntype: "MEME (mast) name of database"
+  knowntype: "meme database name"
 ]
 
 integer: minseqs
@@ -277,7 +277,7 @@ string: diag
   default: ""
   information: "Nominal order and spacing of motifs"
   help: "See on-line documentation for a valid example."
-  knowntype: "MEME (mast) nominal order and spacing of motifs"
+  knowntype: "meme motif order"
 ]
 
 endsection: advanced
@@ -296,7 +296,7 @@ outfile: outfile
 [
   parameter: "Y"
   information: "Output file."
-  knowntype: "MEME (mast) output file"
+  knowntype: "mast output"
 ]
 
 endsection: output
