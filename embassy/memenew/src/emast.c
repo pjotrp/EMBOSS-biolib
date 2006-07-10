@@ -128,8 +128,8 @@ int main(int argc, char **argv)
        iii.Original MAST options (that don't appear in ACD file)
        iv. EMBASSY MAST new qualifiers and parameters.
        */
-    if(!ajNamGetValueC("meme", &cmd))
-	ajStrAssignC(&cmd, "meme");
+    if(!ajNamGetValueC("mast", &cmd))
+	ajStrAssignC(&cmd, "mast");
     ajFmtPrintAppS(&cmd, " %s ", ajFileName(mfile));
 
     /* Warn user if both d and stdin are specified and use only d */
