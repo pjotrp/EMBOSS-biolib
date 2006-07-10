@@ -75,6 +75,9 @@ static AjBool acdOptions = AJFALSE;
 static AjBool acdStdout = AJFALSE;
 static AjBool acdCodeSet = AJFALSE;
 static AjPTable acdCodeTable = NULL;
+static AjBool acdKnowntypeSet = AJFALSE;
+static AjPTable acdKnowntypeTypeTable = NULL;
+static AjPTable acdKnowntypeDescTable = NULL;
 
 static ajint acdInFile = 0;
 static ajint acdInFileSet = AJFALSE;
@@ -601,6 +604,7 @@ static void      acdBadVal(const AcdPAcd thys, AjBool required,
 static AjBool    acdCodeDef(const AcdPAcd thys, AjPStr *msg);
 static AjBool    acdCodeGet(const AjPStr code, AjPStr *msg);
 static void      acdCodeInit(void);
+static ajint     acdCountType(const char* type);
 static AjBool    acdDataFilename(AjPStr* datafname,
 				 const AjPStr name, const AjPStr ext,
 				 AjBool nullok);
@@ -697,6 +701,8 @@ static AjBool    acdIsQtype(const AcdPAcd thys);
 static AjBool    acdIsRequired(const AcdPAcd thys);
 static AjBool    acdIsRightB(AjPStr* pstr, AjPList listwords);
 static AjBool    acdIsStype(const AcdPAcd thys);
+static const AjPStr acdKnowntypeDesc(AcdPAcd thys);
+static void      acdKnowntypeInit(void);
 static void      acdListAttr(const AcdPAttr attr, const AjPPStr valstr,
 			     ajint nattr);
 static void      acdListPrompt(const AcdPAcd thys);
@@ -794,7 +800,7 @@ static AjBool    acdQualToSeqend(const AcdPAcd thys, const char *qual,
 				 AjPStr* valstr);
 static AjPTable  acdReadGroups(void);
 static AjPTable  acdReadKeywords(void);
-static void      acdReadKnowntypes(AjPTable* desctable, AjPTable* infotable);
+static void      acdReadKnowntype(AjPTable* desctable, AjPTable* infotable);
 static void      acdReadSections(AjPTable* typetable, AjPTable* infotable);
 static AjBool    acdReplyInit(const AcdPAcd thys,
 			      const char *defval, AjPStr* reply);
@@ -3238,6 +3244,9 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     *k = ajListLength(acdListWords);
     ajListPushApp(acdListCount, k);
     
+    acdCodeInit();
+    acdKnowntypeInit();
+
     /* Parse the input to set the initial definitions */
     
     acdParse(acdListWords, acdListCount);
@@ -4630,6 +4639,33 @@ static void acdTestUnknown(const AjPStr name, const AjPStr alias, ajint pnum)
     }
 
     return;
+}
+
+
+
+
+/* @funcstatic acdCountType ***************************************************
+**
+** Counts number of qualifiers with a given type.
+**
+** @param [r] type [const char*] ACD type
+** @return [ajint] Number of qualifiers of this type
+** @@
+******************************************************************************/
+
+static ajint acdCountType(const char* type)
+{
+    ajint ret = 0;
+    AcdPAcd pa;
+    ajint itype = 0;
+
+    itype = acdFindTypeC(type);
+
+    for(pa=acdList; pa; pa=pa->Next)
+    {
+	if(pa->Type == itype) ret++;
+    }
+    return ret;
 }
 
 
@@ -20064,15 +20100,13 @@ static void acdPromptCodon(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " codon usage"))
+	if(!ajStrSuffixC(knowntype, " file"))
 	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " codon usage file");
     }
     else
 	acdPromptStandard(thys, "Codon usage file", &count);
@@ -20102,7 +20136,7 @@ static void acdPromptDirectory(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20138,7 +20172,7 @@ static void acdPromptDirlist(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20174,7 +20208,7 @@ static void acdPromptFilelist(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20211,7 +20245,7 @@ static void acdPromptFeat(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20247,15 +20281,13 @@ static void acdPromptCpdb(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " pdb"))
+	if(ajStrSuffixC(knowntype, " file"))
 	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " clean pdb file");
     }
     else
 	acdPromptStandard(thys, "clean PDB file", &count);
@@ -20285,18 +20317,16 @@ static void acdPromptScop(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " scop entry"))
+	if(!ajStrSuffixC(knowntype, " file"))
 	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " scop entry file");
     }
     else
-	acdPromptStandard(thys, "scop entry", &count);
+	acdPromptStandard(thys, "Scop entry vile", &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
@@ -20451,7 +20481,7 @@ static void acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned)
 
     ajSeqTypeSummary(type, &tmptype, &gaps);
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
 	ajStrAssignS(&tmptype, knowntype);
 
@@ -20522,18 +20552,16 @@ static void acdPromptTree(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " tree"))
+	if(!ajStrSuffixC(knowntype, " file"))
 	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " tree file");
     }
     else
-    acdPromptStandardAlt(thys, "Input tree file", "tree file", &count);
+	acdPromptStandardAlt(thys, "Input tree file", "tree file", &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
@@ -20561,7 +20589,7 @@ static void acdPromptGraph(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20598,18 +20626,17 @@ static void acdPromptFeatout(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
+	if(ajStrSuffixC(knowntype, " features"))
 	   acdPromptStandardAppend(thys, " features");
-	else
-	   acdPromptStandardAppend(thys, " output features");
+	acdPromptStandardAppend(thys, " output");
     }
     else
-	acdPromptStandard(thys, "output features", &count);
+	acdPromptStandard(thys, "features output", &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
@@ -20637,7 +20664,7 @@ static void acdPromptAlign(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20676,7 +20703,7 @@ static void acdPromptReport(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20716,7 +20743,7 @@ static void acdPromptSeqout(AcdPAcd thys, const AjPStr type)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -20755,15 +20782,12 @@ static void acdPromptOutcodon(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " codon usage"))
-	   acdPromptStandardAppend(thys, " output file");
-	else
-	   acdPromptStandardAppend(thys, " codon usage output file");
+	acdPromptStandardAppend(thys, " output file");
     }
     else
 	acdPromptStandard(thys, "codon usage output file", &count);
@@ -20794,15 +20818,12 @@ static void acdPromptOutcpdb(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixCaseC(knowntype, " pdb"))
-	   acdPromptStandardAppend(thys, " output file");
-	else
-	   acdPromptStandardAppend(thys, " clean PDB output file");
+	acdPromptStandardAppend(thys, " output file");
     }
     else
 	acdPromptStandard(thys, "clean PDB output file", &count);
@@ -20833,15 +20854,12 @@ static void acdPromptOutdata(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " data file");
-	else
-	   acdPromptStandardAppend(thys, " output data file");
+	acdPromptStandardAppend(thys, " output file");
     }
     else
 	acdPromptStandard(thys, "output data file", &count);
@@ -20872,18 +20890,15 @@ static void acdPromptOutdir(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " directory");
-	else
-	   acdPromptStandardAppend(thys, " output directory");
+	acdPromptStandardAppend(thys, " output directory");
     }
     else
-    acdPromptStandard(thys, "output directory", &count);
+	acdPromptStandard(thys, "output directory", &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
@@ -20911,18 +20926,15 @@ static void acdPromptOutdiscrete(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " discrete data file");
-	else
-	   acdPromptStandardAppend(thys, " output discrete data file");
+	acdPromptStandardAppend(thys, " output discrete data file");
     }
     else
-	acdPromptStandard(thys, "output discrete data file", &count);
+	acdPromptStandard(thys, "discrete data output file", &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
@@ -20950,15 +20962,12 @@ static void acdPromptOutdistance(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " distance data file");
-	else
-	   acdPromptStandardAppend(thys, " output distance data file");
+	acdPromptStandardAppend(thys, " distance data output file");
     }
     else
 	acdPromptStandard(thys, "output distance data file", &count);
@@ -20989,15 +20998,12 @@ static void acdPromptOutfreq(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " frequency data output file");
+	acdPromptStandardAppend(thys, " frequency data output file");
     }
     else
     acdPromptStandard(thys, "frequency data output file", &count);
@@ -21028,15 +21034,12 @@ static void acdPromptOutmatrix(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " matrix output file");
+	acdPromptStandardAppend(thys, " matrix output file");
     }
     else
 	acdPromptStandard(thys, "matrix output file", &count);
@@ -21067,15 +21070,12 @@ static void acdPromptOutproperties(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " properties data output file");
+	acdPromptStandardAppend(thys, " properties data output file");
     }
     else
 	acdPromptStandard(thys, "properties data output file", &count);
@@ -21106,15 +21106,12 @@ static void acdPromptOutscop(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " scop output file");
+	acdPromptStandardAppend(thys, " scop output file");
     }
     else
 	acdPromptStandard(thys, "scop output file", &count);
@@ -21145,15 +21142,12 @@ static void acdPromptOuttree(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " tree output file");
+	acdPromptStandardAppend(thys, " tree output file");
     }
     else
 	acdPromptStandard(thys, "tree output file", &count);
@@ -21324,7 +21318,7 @@ static void acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
 
 static void acdPromptStandardAppend(AcdPAcd thys, const char* str)
 {
-    ajStrAssignC(&thys->StdPrompt, str);
+    ajStrAppendC(&thys->StdPrompt, str);
 }
 
 
@@ -21364,7 +21358,7 @@ static void acdPromptOutfile(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -21403,7 +21397,7 @@ static void acdPromptInfile(AcdPAcd thys)
 
     const AjPStr knowntype;
 
-    knowntype = acdAttrValue(thys, "knowntype");
+    knowntype = acdKnowntypeDesc(thys);
     if(ajStrGetLen(knowntype))
     {
 	count++;
@@ -21669,6 +21663,25 @@ static void acdCodeInit(void)
 }
 
 
+
+
+/* @funcstatic acdKnowntypeInit ***********************************************
+**
+** Sets up the known type data
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdKnowntypeInit(void)
+{
+    if(acdKnowntypeSet) return;
+
+    acdReadKnowntype(&acdKnowntypeDescTable, &acdKnowntypeTypeTable);
+    acdKnowntypeSet = ajTrue;
+
+    return;
+}
 
 
 /* @funcstatic acdSetQualAppl *************************************************
@@ -23537,6 +23550,8 @@ static void acdReset(void)
 	acdDel(&pa);
     }
 
+    ajStrTableFree(&acdKnowntypeTypeTable);
+    ajStrTableFree(&acdKnowntypeDescTable);
     ajStrTableFree(&acdCodeTable);
     ajStrTableFree(&acdGrpTable);
 
@@ -23633,6 +23648,7 @@ static void acdReset(void)
     acdOptions = AJFALSE;
     acdStdout = AJFALSE;
     acdCodeSet = AJFALSE;
+    acdKnowntypeSet = AJFALSE;
     acdInFile = 0;
     acdInFileSet = AJFALSE;
     acdOutFile = 0;
@@ -24137,6 +24153,7 @@ static void acdValidQual(const AcdPAcd thys)
     if(acdType[thys->Type].Stdprompt &&
        (ajStrGetLen(tmpinfo) || ajStrGetLen(tmpprompt)) &&
        !acdAttrTestDefined(thys, "default") &&
+       !acdAttrTestDefined(thys, "knowntype") &&
        *acdType[thys->Type].UseClassCount == 1)
     {
 	acdWarn("Unexpected information value for type '%s'",
@@ -24412,8 +24429,10 @@ static void acdValidQual(const AcdPAcd thys)
 	{
 	    if((qualCountOut == 1) &&
 	       !ajStrMatchC(thys->Token, "outfile"))
+	    {
 		acdWarn("First output file qualifier '%S' is not 'outfile'",
 			thys->Token);
+	    }
 	}
 	
 	/* still to do - check for type */
@@ -24678,8 +24697,6 @@ static void acdValidQual(const AcdPAcd thys)
 
 static void acdValidKnowntype(const AcdPAcd thys)
 {
-    static AjPTable descTable = NULL;
-    static AjPTable acdtypeTable = NULL;
     const AjPStr typestr         = NULL;
     AjPStr acdKnownType    = NULL;
     static AjPStr defType = NULL;
@@ -24691,13 +24708,11 @@ static void acdValidKnowntype(const AcdPAcd thys)
     if (!ajStrGetLen(typestr))
 	return;
 
-    if(!descTable)
-	acdReadKnowntypes(&descTable, &acdtypeTable);
 
     if (!defType)
 	ajFmtPrintS(&defType, "%S output", acdProgram);
 
-    acdKnownType = ajTableGet(acdtypeTable, typestr);
+    acdKnownType = ajTableGet(acdKnowntypeTypeTable, typestr);
     if (!acdKnownType)
     {
 	if (!ajStrMatchS(typestr, defType))
@@ -24730,7 +24745,31 @@ static void acdValidKnowntype(const AcdPAcd thys)
 }
 
 
-/* @funcstatic acdReadKnowntypes **********************************************
+/* @funcstatic acdKnowntypeDesc ***********************************************
+**
+** Return description of known type
+**
+** @param [r] thys [AcdPAcd] Acd object
+** @return [const AjPStr] Known type description or NULL if not defined.
+** @@
+******************************************************************************/
+
+static const AjPStr acdKnowntypeDesc(AcdPAcd thys)
+{
+    const AjPStr knowntype = NULL;
+    const AjPStr knowndesc;
+
+    knowntype = acdAttrValue(thys, "knowntype");
+    if(!ajStrGetLen(knowntype)) return NULL;
+
+    knowndesc = ajTableGet(acdKnowntypeDescTable, knowntype);
+    return knowndesc;
+}
+
+
+
+
+/* @funcstatic acdReadKnowntype ***********************************************
 **
 ** Read standard file of ACD sections and store in new AjPTable objects
 **
@@ -24741,7 +24780,7 @@ static void acdValidKnowntype(const AcdPAcd thys)
 ** @@
 ******************************************************************************/
 
-static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
+static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
 {
     AjPFile knownFile    = NULL;
     AjPStr knownFName    = NULL;
@@ -24801,8 +24840,8 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
 
 	    if(ajRegExec(knownxp, knownLine))
 	    {
-		ajRegSubI(knownxp, 1, &knownType);
-		ajRegSubI(knownxp, 2, &knownName);
+		ajRegSubI(knownxp, 1, &knownName);
+		ajRegSubI(knownxp, 2, &knownType);
 		ajRegSubI(knownxp, 3, &knownDesc);
 		ajStrExchangeKK(&knownName, '_', ' ');
 		if(ajStrMatchCaseC(knownType, "infile") ||
@@ -24816,9 +24855,8 @@ static void acdReadKnowntypes(AjPTable* desctable, AjPTable* typetable)
 		if(ajTablePut(*typetable, knownName, knownType))
 		    ajWarn("Duplicate knowntype name '%S' in file %S line %d",
 			   knownName, knownFName, iline);
-		if(ajTablePut(*desctable, knownName, knownDesc))
-		    ajWarn("Duplicate knowntype name '%S' in file %S line %d",
-			   knownName, knownFName, iline);
+		ajTablePut(*desctable, knownName, knownDesc);
+
 	        knownName = NULL;
 		knownType = NULL;
 		knownDesc = NULL;
@@ -26226,7 +26264,7 @@ static void acdFree(void** PPval)
 
 
 
-/* @section unused ***********************************************************
+/* @section unused ************************************************************
 **
 ** @fdata [none]
 **
@@ -26240,7 +26278,7 @@ static void acdFree(void** PPval)
  
 
 
-/* @func ajAcdUnused ***************************************************
+/* @func ajAcdUnused **********************************************************
 **
 ** Dummy function to catch all unused functions defined in the ajacd
 ** source file.
@@ -26259,4 +26297,5 @@ void ajAcdUnused(void)
     acdSetXxxx(acdpacd);	    /* template function for acdSet */
     acdAttrToChar(acdpacd, "attr", '.', &c);
     acdQualToFloat(acdpacd, "", 0.0, 0, &f, &ajpstr);
+    acdCountType("outfile");
 }
