@@ -522,6 +522,7 @@ AcdPSection acdSections[] = {
 ** @attr TypeDel [(void*)] Function to delete value
 ** @attr PassByRef [AjBool] Pass by reference - so caller owns the object
 ** @attr Stdprompt [AjBool] Expect a standard prompt
+** @attr Prompt [(const AjPStr*)] Function to set standard prompt
 ** @attr UseCount [ajint*] Number of times this type has been used
 ** @attr UseClassCount [ajint*] Number of times this class of types
 **                              has been used
@@ -542,6 +543,7 @@ typedef struct AcdSType
     void (*TypeDel)(void**);
     AjBool PassByRef;
     AjBool Stdprompt;
+    const AjPStr (*Prompt)(AcdPAcd thys);
     ajint* UseCount;
     ajint* UseClassCount;
     char* Valid;
@@ -701,7 +703,7 @@ static AjBool    acdIsQtype(const AcdPAcd thys);
 static AjBool    acdIsRequired(const AcdPAcd thys);
 static AjBool    acdIsRightB(AjPStr* pstr, AjPList listwords);
 static AjBool    acdIsStype(const AcdPAcd thys);
-static const AjPStr acdKnowntypeDesc(AcdPAcd thys);
+static const AjPStr acdKnowntypeDesc(const AcdPAcd thys);
 static void      acdKnowntypeInit(void);
 static void      acdListAttr(const AcdPAttr attr, const AjPPStr valstr,
 			     ajint nattr);
@@ -750,45 +752,54 @@ static void      acdPrettyUnShift();
 static void      acdPrintCalcattr(AjPFile outf, const char* acdtype,
 				  const AcdOAttr calcattr[]);
 static void      acdProcess(void);
-static void      acdPromptAlign(AcdPAcd thys);
-static void      acdPromptCodon(AcdPAcd thys);
-static void      acdPromptCpdb(AcdPAcd thys);
-static void      acdPromptDirectory(AcdPAcd thys);
-static void      acdPromptDirlist(AcdPAcd thys);
-static void      acdPromptFeat(AcdPAcd thys);
-static void      acdPromptFeatout(AcdPAcd thys);
-static void      acdPromptFilelist(AcdPAcd thys);
-static void      acdPromptGraph(AcdPAcd thys);
-static void      acdPromptInfile(AcdPAcd thys);
-static void      acdPromptOutcodon(AcdPAcd thys);
-static void      acdPromptOutcpdb(AcdPAcd thys);
-static void      acdPromptOutdata(AcdPAcd thys);
-static void      acdPromptOutdir(AcdPAcd thys);
-static void      acdPromptOutdiscrete(AcdPAcd thys);
-static void      acdPromptOutdistance(AcdPAcd thys);
-static void      acdPromptOutfile(AcdPAcd thys);
-static void      acdPromptOutfreq(AcdPAcd thys);
-static void      acdPromptOutmatrix(AcdPAcd thys);
-static void      acdPromptOutproperties(AcdPAcd thys);
-static void      acdPromptOutscop(AcdPAcd thys);
-static void      acdPromptOuttree(AcdPAcd thys);
-static void      acdPromptReport(AcdPAcd thys);
-static void      acdPromptScop(AcdPAcd thys);
-static void      acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned);
-static void      acdPromptSeqout(AcdPAcd thys, const AjPStr type);
-static void      acdPromptStandard(AcdPAcd thys, const char* type,
+static const AjPStr acdPromptAlign(AcdPAcd thys);
+static const AjPStr acdPromptCodon(AcdPAcd thys);
+static const AjPStr acdPromptCpdb(AcdPAcd thys);
+static const AjPStr acdPromptDatafile(AcdPAcd thys);
+static const AjPStr acdPromptDirectory(AcdPAcd thys);
+static const AjPStr acdPromptDirlist(AcdPAcd thys);
+static const AjPStr acdPromptDiscretestates(AcdPAcd thys);
+static const AjPStr acdPromptDistances(AcdPAcd thys);
+static const AjPStr acdPromptFeat(AcdPAcd thys);
+static const AjPStr acdPromptFeatout(AcdPAcd thys);
+static const AjPStr acdPromptFilelist(AcdPAcd thys);
+static const AjPStr acdPromptFrequencies(AcdPAcd thys);
+static const AjPStr acdPromptGraph(AcdPAcd thys);
+static const AjPStr acdPromptInfile(AcdPAcd thys);
+static const AjPStr acdPromptMatrix(AcdPAcd thys);
+static const AjPStr acdPromptOutcodon(AcdPAcd thys);
+static const AjPStr acdPromptOutcpdb(AcdPAcd thys);
+static const AjPStr acdPromptOutdata(AcdPAcd thys);
+static const AjPStr acdPromptOutdir(AcdPAcd thys);
+static const AjPStr acdPromptOutdiscrete(AcdPAcd thys);
+static const AjPStr acdPromptOutdistance(AcdPAcd thys);
+static const AjPStr acdPromptOutfile(AcdPAcd thys);
+static const AjPStr acdPromptOutfileall(AcdPAcd thys);
+static const AjPStr acdPromptOutfreq(AcdPAcd thys);
+static const AjPStr acdPromptOutmatrix(AcdPAcd thys);
+static const AjPStr acdPromptOutproperties(AcdPAcd thys);
+static const AjPStr acdPromptOutscop(AcdPAcd thys);
+static const AjPStr acdPromptOuttree(AcdPAcd thys);
+static const AjPStr acdPromptPattern(AcdPAcd thys);
+static const AjPStr acdPromptProperties(AcdPAcd thys);
+static const AjPStr acdPromptRegexp(AcdPAcd thys);
+static const AjPStr acdPromptReport(AcdPAcd thys);
+static const AjPStr acdPromptScop(AcdPAcd thys);
+static const AjPStr acdPromptSeq(AcdPAcd thys);
+static const AjPStr acdPromptSeqout(AcdPAcd thys);
+static void         acdPromptStandard(AcdPAcd thys, const char* type,
 				   ajint* count);
-static void      acdPromptStandardS(AcdPAcd thys, const AjPStr str);
-static void      acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
+static void         acdPromptStandardS(AcdPAcd thys, const AjPStr str);
+static void         acdPromptStandardAlt(AcdPAcd thys, const char* firsttype,
 				      const char* type, ajint* count);
-static void      acdPromptStandardAppend(AcdPAcd thys, const char* str);
-static void      acdPromptTree(AcdPAcd thys);
+static void         acdPromptStandardAppend(AcdPAcd thys, const char* str);
+static const AjPStr acdPromptTree(AcdPAcd thys);
 static void      acdQualParse(AjPStr* pqual, AjPStr* pnoqual,
 			      AjPStr* pqmaster, ajint* number);
 static AjBool    acdQualToBool(const AcdPAcd thys, const char *qual,
 			       AjBool defval, AjBool *result, AjPStr* valstr);
 static AjBool    acdQualToFloat(const AcdPAcd thys, const char *qual,
-				float defval, ajint precision,
+ 				float defval, ajint precision,
 				float *result, AjPStr* valstr);
 static AjBool    acdQualToInt(const AcdPAcd thys, const char *qual,
 			      ajint defval, ajint *result, AjPStr* valstr);
@@ -848,7 +859,7 @@ static void      acdValidRelation(const AcdPAcd thys);
 static void      acdValidSection(const AcdPAcd thys);
 static void      acdValidSectionFull(AjPStr* secname);
 static AjBool    acdValidSectionMatch(const char* secname);
-static void      acdValidQual(const AcdPAcd thys);
+static void      acdValidQual(AcdPAcd thys);
 static AjBool    acdValIsBool(const char* arg);
 static AjBool    acdVarResolve(AjPStr* str);
 static AjBool    acdVarSimple(AjPStr var, AjPStr* varname);
@@ -1894,6 +1905,8 @@ AcdOAttr acdAttrSeqoutset[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, "N",
 	 "Can accept a null USA as 'no output'"},
+    {"aligned", VT_BOOL, "N",
+	 "Sequences are aligned"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -2220,7 +2233,7 @@ AcdOKey acdKeywords[] =
 ** @attr Name [char*] Output type name
 ** @attr Format [char*] Default format (needs to be stored elsewhere)
 ** @attr Type [ajint] Enumerated type (see AjEOutfileType in ajfile.h)
-** @attr Prompt [(void*)] Function to define standard prompt
+** @attr Prompt [(const AjPStr*)] Function to define standard prompt
 ** @attr Outformat [(ajint*)] Function to test output format
 ** @@
 ******************************************************************************/
@@ -2230,7 +2243,7 @@ typedef struct AcdSOuttype
     char* Name;
     char* Format;
     ajint Type;
-    void (*Prompt)(AcdPAcd thys);
+    const AjPStr (*Prompt)(AcdPAcd thys);
     ajint (*Outformat)(const AjPStr format);
 } AcdOOuttype;
 
@@ -2649,272 +2662,272 @@ AcdOType acdType[] =
 /*   Name               Group       Section
 **       Attributes             Qualifiers
 **       SetFunction            HelpFunction           Destructor
-**       PassRef  StdPrompt UseCount      UseClassCount
+**       PassRef  StdPrompt PromptFunction     UseCount      UseClassCount
 **       Description of valid string for help */
     {"align",          "output",    acdSecOutput,
 	 acdAttrAlign,          acdQualAlign,
 	 acdSetAlign,           NULL,                  acdDelAlign,
-	 AJTRUE,  AJTRUE,  &acdUseAlign, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptAlign,     &acdUseAlign, &acdUseOut,
 	 "Alignment output file" },
     {"array",          "simple",    NULL,
 	 acdAttrArray,          NULL,
 	 acdSetArray,           NULL,                  acdDelFloat,
-	 AJTRUE,  AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJTRUE,  AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "List of floating point numbers" },
     {"boolean",        "simple",    NULL,
 	 acdAttrBool,           NULL,
 	 acdSetBool,            NULL,                  acdFree,
-	 AJFALSE, AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJFALSE, AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Boolean value Yes/No" },
     {"codon",	       "input",     acdSecInput,
 	 acdAttrCodon,          acdQualCodon,
 	 acdSetCodon,           NULL,                  acdDelCod,
-	 AJTRUE,  AJTRUE,  &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptCodon,     &acdUseData, &acdUseIn,
 	 "Codon usage file in EMBOSS data path" },
     {"cpdb",           "input",     acdSecInput,
 	 acdAttrCpdb,           acdQualCpdb,
 	 acdSetCpdb,            NULL,                  acdDelFile,
-	 AJTRUE,  AJTRUE,  &acdUseInfile, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptCpdb,      &acdUseInfile, &acdUseIn,
 	 "Clean PDB file" },
     {"datafile",       "input",     acdSecInput,
 	 acdAttrDatafile,       NULL,
 	 acdSetDatafile,        NULL,                  acdDelFile,
-	 AJTRUE,  AJFALSE, &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptDatafile,  &acdUseData, &acdUseIn,
 	 "Data file" },
     {"directory",      "input",     acdSecInput,
 	 acdAttrDirectory,      NULL,
 	 acdSetDirectory,       NULL,                  acdDelDir,
-	 AJTRUE,  AJTRUE,  &acdUseMisc, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptDirectory, &acdUseMisc, &acdUseIn,
 	 "Directory" },
     {"dirlist",	       "input",     acdSecInput,
 	 acdAttrDirlist,        NULL,
 	 acdSetDirlist,         NULL,                  acdDelList,
-	 AJTRUE,  AJTRUE,  &acdUseMisc, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptDirlist,   &acdUseMisc, &acdUseIn,
 	 "Directory with files" },
     {"discretestates", "input",     acdSecInput,
 	 acdAttrDiscretestates, NULL,
 	 acdSetDiscretestates,  NULL,                  acdDelPhyloState,
-	 AJTRUE,  AJTRUE,  &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptDiscretestates, &acdUseData, &acdUseIn,
 	 "Discrete states file" },
     {"distances",      "input",     acdSecInput,
 	 acdAttrDistances,      NULL,
 	 acdSetDistances,       NULL,                  acdDelPhyloDist,
-	 AJTRUE,  AJTRUE,  &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptDistances, &acdUseData, &acdUseIn,
 	 "Distance matrix" },
     {"features",       "input",     acdSecInput,
 	 acdAttrFeat,           acdQualFeat,
 	 acdSetFeat,            NULL,                  acdDelFeattable,
-	 AJTRUE,  AJTRUE,  &acdUseFeat, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptFeat,      &acdUseFeat, &acdUseIn,
 	 "Readable feature table" },
     {"featout",        "output",    acdSecOutput,
 	 acdAttrFeatout,        acdQualFeatout,
 	 acdSetFeatout,         NULL,                  acdDelFeattabOut,
-	 AJTRUE,  AJTRUE,  &acdUseFeatout, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptFeatout,   &acdUseFeatout, &acdUseOut,
 	 "Writeable feature table" },
     {"filelist",       "input",     acdSecInput,
 	 acdAttrFilelist,       NULL,
 	 acdSetFilelist,        NULL,                  acdDelList,
-	 AJTRUE,  AJTRUE,  &acdUseMisc, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptFilelist,  &acdUseMisc, &acdUseIn,
 	 "Comma-separated file list" },
     {"float",          "simple",    NULL,
 	 acdAttrFloat,          NULL,
 	 acdSetFloat,           NULL,                  acdFree,
-	 AJFALSE, AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJFALSE, AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Floating point number" },
     {"frequencies",    "input",     acdSecInput,
 	 acdAttrFrequencies,    NULL,
 	 acdSetFrequencies,     NULL,                  acdDelPhyloFreq,
-	 AJTRUE,  AJTRUE,  &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptFrequencies, &acdUseData, &acdUseIn,
 	 "Frequency value(s)" },
     {"graph",          "graph",     acdSecOutput,
 	 acdAttrGraph,          acdQualGraph,
 	 acdSetGraph,           NULL,                  acdFree,
-	 AJTRUE,  AJTRUE,  &acdUseGraph, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptGraph,     &acdUseGraph, &acdUseOut,
 	 "Graph device for a general graph" },
     {"infile",         "input",     acdSecInput,
 	 acdAttrInfile,         NULL,
 	 acdSetInfile,          NULL,                  acdDelFile,
-	 AJTRUE,  AJTRUE,  &acdUseInfile, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptInfile,    &acdUseInfile, &acdUseIn,
 	 "Input file" },
     {"integer",        "simple",    NULL,
 	 acdAttrInt,            NULL,
 	 acdSetInt,             NULL,                  acdFree,
-	 AJFALSE, AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJFALSE, AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Integer" },
     {"list",           "selection", NULL,
 	 acdAttrList,           NULL,
 	 acdSetList,            NULL,                  acdDelStrArray,
-	 AJTRUE,  AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJTRUE,  AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Choose from menu list of values" },
     {"matrix",         "input",     acdSecInput,
 	 acdAttrMatrix,         NULL,
 	 acdSetMatrix,          NULL,                  acdDelMatrix,
-	 AJTRUE,  AJFALSE, &acdUseData, &acdUseIn,
+	 AJTRUE,  AJFALSE, acdPromptMatrix,    &acdUseData, &acdUseIn,
 	 "Comparison matrix file in EMBOSS data path" },
     {"matrixf",        "input",     acdSecInput,
 	 acdAttrMatrixf,        NULL,
 	 acdSetMatrixf,         NULL,                  acdDelMatrixf,
-	 AJTRUE,  AJFALSE, &acdUseData, &acdUseIn,
+	 AJTRUE,  AJFALSE, acdPromptMatrix,    &acdUseData, &acdUseIn,
 	 "Comparison matrix file in EMBOSS data path" },
     {"outcodon",       "output",    acdSecOutput,
 	 acdAttrOutcodon,       acdQualOutcodon,
 	 acdSetOutcodon,        NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutcodon,  &acdUseOutfile, &acdUseOut,
 	 "Codon usage file" },
     {"outcpdb",        "output",    acdSecOutput,
 	 acdAttrOutcpdb,        NULL,
 	 acdSetOutcpdb,         NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutcpdb,   &acdUseOutfile, &acdUseOut,
 	 "Cleaned PDB file" },
     {"outdata",        "output",    acdSecOutput,
 	 acdAttrOutdata,        acdQualOutdata,
 	 acdSetOutdata,         NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutdata,   &acdUseOutfile, &acdUseOut,
 	 "Formatted output file" },
     {"outdir",         "output",    acdSecOutput,
 	 acdAttrOutdir,         NULL,
 	 acdSetOutdir,          NULL,                  acdDelDir,
-	 AJTRUE,  AJTRUE,  &acdUseMisc, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutdir,    &acdUseMisc, &acdUseOut,
 	 "Output directory" },
     {"outdiscrete",    "output",    acdSecOutput,
 	 acdAttrOutdiscrete,    acdQualOutdiscrete,
 	 acdSetOutdiscrete,     NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutdiscrete, &acdUseOutfile, &acdUseOut,
 	 "Discrete states file" },
     {"outdistance",    "output",    acdSecOutput,
 	 acdAttrOutdistance,    NULL,
 	 acdSetOutdistance,     NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutdistance, &acdUseOutfile, &acdUseOut,
 	 "Distance matrix" },
     {"outfile",        "output",     acdSecOutput,
 	 acdAttrOutfile,        acdQualOutfile,
 	 acdSetOutfile,         NULL,                  acdDelFile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutfile,     &acdUseOutfile, &acdUseOut,
 	 "Output file" },
     {"outfileall",     "output",    acdSecOutput,
 	 acdAttrOutfileall,     acdQualOutfileall,
 	 acdSetOutfileall,      NULL,                  acdDelFile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutfileall,  &acdUseOutfile, &acdUseOut,
 	 "Multiple output files" },
     {"outfreq",        "output",    acdSecOutput,
 	 acdAttrOutfreq,        acdQualOutfreq,
 	 acdSetOutfreq,         NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutfreq,     &acdUseOutfile, &acdUseOut,
 	 "Frequency value(s)" },
     {"outmatrix",      "output",    acdSecOutput,
 	 acdAttrOutmatrix,      acdQualOutmatrix,
 	 acdSetOutmatrix,       NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutmatrix,   &acdUseOutfile, &acdUseOut,
 	 "Comparison matrix file" },
     {"outmatrixf",     "output",    acdSecOutput,
 	 acdAttrOutmatrixf,     acdQualOutmatrixf,
 	 acdSetOutmatrixf,      NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutmatrix,   &acdUseOutfile, &acdUseOut,
 	 "Comparison matrix file" },
     {"outproperties",  "output",    acdSecOutput,
 	 acdAttrOutproperties,  acdQualOutproperties,
 	 acdSetOutproperties,   NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutproperties, &acdUseOutfile, &acdUseOut,
 	 "Property value(s)" },
     {"outscop",        "output",    acdSecOutput,
 	 acdAttrOutscop,        acdQualOutscop,
 	 acdSetOutscop,         NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOutscop,     &acdUseOutfile, &acdUseOut,
 	 "Scop entry" },
     {"outtree",        "output",    acdSecOutput,
 	 acdAttrOuttree,        acdQualOuttree,
 	 acdSetOuttree,         NULL,                  acdDelOutfile,
-	 AJTRUE,  AJTRUE,  &acdUseOutfile, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptOuttree,     &acdUseOutfile, &acdUseOut,
 	 "Phylogenetic tree" },
     {"pattern",       "input",     acdSecInput,
 	 acdAttrPattern,        acdQualPattern,
 	 acdSetPattern,         NULL,                  acdDelPatlist,
-	 AJTRUE,  AJFALSE, &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptPattern,     &acdUseData, &acdUseIn,
 	 "Property value(s)" },
     {"properties",     "input",     acdSecInput,
 	 acdAttrProperties,     NULL,
 	 acdSetProperties,      NULL,                  acdDelPhyloProp,
-	 AJTRUE,  AJTRUE,  &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptProperties,  &acdUseData, &acdUseIn,
 	 "Property value(s)" },
     {"range",	       "simple",    NULL,
 	 acdAttrRange,          NULL,
 	 acdSetRange,           NULL,                  acdDelRange,
-	 AJTRUE,  AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJTRUE,  AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Sequence range" },
     {"regexp",	       "input",     acdSecInput,
 	 acdAttrRegexp,         acdQualRegexp,
 	 acdSetRegexp,          NULL,                  acdDelReg,
-	 AJTRUE,  AJFALSE, &acdUseMisc, &acdUseIn,
+	 AJTRUE,  AJTRUE, acdPromptRegexp,     &acdUseMisc, &acdUseIn,
 	 "Regular expression pattern" },
     {"report",         "output",    acdSecOutput,
 	 acdAttrReport,         acdQualReport,
 	 acdSetReport,          NULL,                  acdDelReport,
-	 AJTRUE,  AJTRUE,  &acdUseReport, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptReport,    &acdUseReport, &acdUseOut,
 	 "Report output file" },
     {"scop",           "input",     acdSecInput,
 	 acdAttrScop,           acdQualScop,
 	 acdSetScop,            NULL,                  acdDelFile,
-	 AJTRUE,  AJTRUE,  &acdUseInfile, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptScop,      &acdUseInfile, &acdUseIn,
 	 "Clean PDB file" },
     {"selection",      "selection", NULL,
 	 acdAttrSelect,         NULL,
 	 acdSetSelect,          NULL,                  acdDelStrArray,
-	 AJTRUE,  AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJTRUE,  AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Choose from selection list of values" },
     {"sequence",       "input",     acdSecInput,
 	 acdAttrSeq,            acdQualSeq,
 	 acdSetSeq,             acdHelpTextSeq,        acdDelSeq,
-	 AJTRUE,  AJTRUE,  &acdUseSeq, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptSeq,       &acdUseSeq, &acdUseIn,
 	 "Readable sequence" },
     {"seqall",         "input",     acdSecInput,
 	 acdAttrSeqall,         acdQualSeqall,
 	 acdSetSeqall,          acdHelpTextSeq,        acdDelSeqall,
-	 AJTRUE,  AJTRUE,  &acdUseSeq, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptSeq,       &acdUseSeq, &acdUseIn,
 	 "Readable sequence(s)" },
     {"seqout",         "output",    acdSecOutput,
 	 acdAttrSeqout,         acdQualSeqout,
 	 acdSetSeqout,          acdHelpTextSeqout,     acdDelSeqout, 
-	 AJTRUE,  AJTRUE,  &acdUseSeqout, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptSeqout,    &acdUseSeqout, &acdUseOut,
 	 "Writeable sequence" },
     {"seqoutall",      "output",    acdSecOutput,
 	 acdAttrSeqoutall,      acdQualSeqoutall,
 	 acdSetSeqoutall,       acdHelpTextSeqout,     acdDelSeqout,
-	 AJTRUE,  AJTRUE,  &acdUseSeqout, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptSeqout,    &acdUseSeqout, &acdUseOut,
 	 "Writeable sequence(s)" },
     {"seqoutset",      "output",    acdSecOutput,
 	 acdAttrSeqoutset,      acdQualSeqoutset,
 	 acdSetSeqoutset,       acdHelpTextSeqout,     acdDelSeqout,
-	 AJTRUE,  AJTRUE,  &acdUseSeqout, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptSeqout,    &acdUseSeqout, &acdUseOut,
 	 "Writeable sequences" },
     {"seqset",         "input",     acdSecInput,
 	 acdAttrSeqset,         acdQualSeqset,
 	 acdSetSeqset,          acdHelpTextSeq,        acdDelSeqset,
-	 AJTRUE,  AJTRUE,  &acdUseSeq, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptSeq,       &acdUseSeq, &acdUseIn,
 	 "Readable set of sequences" },
     {"seqsetall",      "input",     acdSecInput,
 	 acdAttrSeqsetall,      acdQualSeqsetall,
 	 acdSetSeqsetall,       acdHelpTextSeq,        acdDelSeqsetArray,
-	 AJTRUE,  AJTRUE,  &acdUseSeq, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptSeq,       &acdUseSeq, &acdUseIn,
 	 "Readable sets of sequences" },
     {"string",         "simple",    NULL,
 	 acdAttrString,          NULL,
 	 acdSetString,           NULL,                 acdDelStr,
-	 AJTRUE,  AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJTRUE,  AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "String value" },
     {"toggle",         "simple",     NULL,
 	 acdAttrToggle,          NULL,
 	 acdSetToggle,           NULL,                 acdFree,
-	 AJFALSE, AJFALSE, &acdUseMisc, &acdUseMisc,
+	 AJFALSE, AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Toggle value Yes/No" },
     {"tree",           "input",      acdSecInput,
 	 acdAttrTree,            NULL,
 	 acdSetTree,             NULL,                 acdDelPhyloTree,
-	 AJTRUE,  AJTRUE,  &acdUseData, &acdUseIn,
+	 AJTRUE,  AJTRUE,  acdPromptTree,      &acdUseData, &acdUseIn,
 	 "Phylogenetic tree" },
     {"xygraph",        "graph",      acdSecOutput,
 	 acdAttrGraphxy,         acdQualGraphxy,
 	 acdSetGraphxy,          NULL,                 acdFree,
-	 AJTRUE,  AJTRUE,  &acdUseGraph, &acdUseOut,
+	 AJTRUE,  AJTRUE,  acdPromptGraph,     &acdUseGraph, &acdUseOut,
 	 "Graph device for a 2D graph" },
      {NULL, NULL, NULL,   NULL, NULL,   NULL, NULL, NULL,
 	  AJFALSE, AJFALSE, 0,   NULL}
@@ -10972,7 +10985,7 @@ static void acdSetSeq(AcdPAcd thys)
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrGetPtr(infname), &acdReplyDef);
-    acdPromptSeq(thys, typestr, ajFalse);
+    acdPromptSeq(thys);
     ajStrDel(&infname);
  
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -11263,7 +11276,7 @@ static void acdSetSeqall(AcdPAcd thys)
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrGetPtr(infname), &acdReplyDef);
-    acdPromptSeq(thys, typestr, ajFalse);
+    acdPromptSeq(thys);
     ajStrDel(&infname);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -11539,7 +11552,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrGetPtr(infname), &acdReplyDef);
-    acdPromptSeq(thys, typestr, aligned);
+    acdPromptSeq(thys);
     ajStrDel(&infname);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -11855,7 +11868,7 @@ static void acdSetSeqout(AcdPAcd thys)
     }
     ajStrDel(&name);
 
-    acdPromptSeqout(thys, typestr);
+    acdPromptSeqout(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
@@ -12047,7 +12060,7 @@ static void acdSetSeqoutall(AcdPAcd thys)
         acdReplyInit(thys, ajStrGetPtr(acdTmpOutFName), &acdReplyDef);
     }
     ajStrDel(&name);
-    acdPromptSeqout(thys, typestr);
+    acdPromptSeqout(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
@@ -12238,7 +12251,7 @@ static void acdSetSeqoutset(AcdPAcd thys)
     }
     ajStrDel(&name);
 
-    acdPromptSeqout(thys, typestr);
+    acdPromptSeqout(thys);
     
     for(itry=acdPromptTry; itry && !ok; itry--)
     {
@@ -12418,7 +12431,7 @@ static void acdSetSeqset(AcdPAcd thys)
     acdInFilename(&infname);
     required = acdIsRequired(thys);
     acdReplyInit(thys, ajStrGetPtr(infname), &acdReplyDef);
-    acdPromptSeq(thys, typestr, aligned);
+    acdPromptSeq(thys);
     ajStrDel(&infname);
 
     for(itry=acdPromptTry; itry && !ok; itry--)
@@ -20090,11 +20103,11 @@ const char* __deprecated ajAcdProgram(void)
 ** Sets the default prompt for this ACD object to be a codon usage file
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptCodon(AcdPAcd thys)
+static const AjPStr acdPromptCodon(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20115,7 +20128,7 @@ static void acdPromptCodon(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20126,11 +20139,11 @@ static void acdPromptCodon(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a directory
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptDirectory(AcdPAcd thys)
+static const AjPStr acdPromptDirectory(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20151,7 +20164,7 @@ static void acdPromptDirectory(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20162,11 +20175,11 @@ static void acdPromptDirectory(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a dirlist
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptDirlist(AcdPAcd thys)
+static const AjPStr acdPromptDirlist(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20187,7 +20200,7 @@ static void acdPromptDirlist(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20198,11 +20211,11 @@ static void acdPromptDirlist(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a filelist
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptFilelist(AcdPAcd thys)
+static const AjPStr acdPromptFilelist(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20223,7 +20236,7 @@ static void acdPromptFilelist(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20235,11 +20248,11 @@ static void acdPromptFilelist(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptFeat(AcdPAcd thys)
+static const AjPStr acdPromptFeat(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20260,7 +20273,7 @@ static void acdPromptFeat(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+     return thys->StdPrompt;
 }
 
 
@@ -20271,11 +20284,11 @@ static void acdPromptFeat(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a clean PDB file
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptCpdb(AcdPAcd thys)
+static const AjPStr acdPromptCpdb(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20296,7 +20309,7 @@ static void acdPromptCpdb(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20307,11 +20320,11 @@ static void acdPromptCpdb(AcdPAcd thys)
 ** Sets the default prompt for this ACD object to be a scop entry
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptScop(AcdPAcd thys)
+static const AjPStr acdPromptScop(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20332,7 +20345,7 @@ static void acdPromptScop(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20464,13 +20477,11 @@ static void acdHelpTextSeqout(const AcdPAcd thys, AjPStr* Pstr)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @param [r] type [const AjPStr] Sequence type
-** @param [r] aligned [AjBool] Aligned sequence set
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned)
+static const AjPStr acdPromptSeq(AcdPAcd thys)
 {
     static ajint count=0;
     AjPStr tmptype = NULL;
@@ -20478,20 +20489,26 @@ static void acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned)
     AjPStr seqPrompt = NULL;
     AjPStr seqPromptAlt = NULL;
     const AjPStr knowntype;
-
-    ajSeqTypeSummary(type, &tmptype, &gaps);
+    const AjPStr type = NULL;
+    AjBool aligned=ajFalse;
 
     knowntype = acdKnowntypeDesc(thys);
-    if(ajStrGetLen(knowntype))
-	ajStrAssignS(&tmptype, knowntype);
+
+    type = acdAttrValue(thys, "type");
+
+    if(ajCharPrefixC(acdType[thys->Type].Name,"seqset"))
+       acdAttrToBool(thys, "aligned", ajFalse, &aligned);
+
+    ajSeqTypeSummary(type, &tmptype, &gaps);
 
     seqPrompt = ajStrNewRes(32);
     seqPromptAlt = ajStrNewRes(32);
 
+    if(ajStrGetLen(knowntype))
+	ajFmtPrintAppS(&seqPromptAlt, "%S ", knowntype);
     if(ajStrGetLen(tmptype))
-	ajFmtPrintS(&seqPromptAlt, "%S sequence", tmptype);
-    else
-	ajFmtPrintS(&seqPromptAlt, "sequence");
+	ajFmtPrintAppS(&seqPromptAlt, "%S ", tmptype);
+    ajFmtPrintAppS(&seqPromptAlt, "sequence");
 
 
     if(ajCharMatchC(acdType[thys->Type].Name, "seqset"))
@@ -20520,8 +20537,14 @@ static void acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned)
 
     ajFmtPrintS(&seqPrompt, "Input %S", seqPromptAlt);
 
-    acdPromptStandardAlt(thys, ajStrGetPtr(seqPrompt),
-			 ajStrGetPtr(seqPromptAlt), &count);
+    if(knowntype)
+    {
+	count++;
+	acdPromptStandardS(thys, seqPromptAlt);
+    }
+    else
+	acdPromptStandardAlt(thys, ajStrGetPtr(seqPrompt),
+			     ajStrGetPtr(seqPromptAlt), &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
@@ -20530,7 +20553,7 @@ static void acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned)
     ajStrDel(&tmptype);
     ajStrDel(&seqPrompt);
     ajStrDel(&seqPromptAlt);
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20542,11 +20565,11 @@ static void acdPromptSeq(AcdPAcd thys, const AjPStr type, AjBool aligned)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptTree(AcdPAcd thys)
+static const AjPStr acdPromptTree(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20567,7 +20590,7 @@ static void acdPromptTree(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20579,11 +20602,11 @@ static void acdPromptTree(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptGraph(AcdPAcd thys)
+static const AjPStr acdPromptGraph(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20604,7 +20627,7 @@ static void acdPromptGraph(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20616,11 +20639,11 @@ static void acdPromptGraph(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptFeatout(AcdPAcd thys)
+static const AjPStr acdPromptFeatout(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20642,7 +20665,7 @@ static void acdPromptFeatout(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20654,11 +20677,11 @@ static void acdPromptFeatout(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptAlign(AcdPAcd thys)
+static const AjPStr acdPromptAlign(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20681,7 +20704,7 @@ static void acdPromptAlign(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20693,11 +20716,11 @@ static void acdPromptAlign(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptReport(AcdPAcd thys)
+static const AjPStr acdPromptReport(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20720,7 +20743,7 @@ static void acdPromptReport(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20732,35 +20755,82 @@ static void acdPromptReport(AcdPAcd thys)
 ** prompt with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @param [r] type [const AjPStr] Sequence type
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptSeqout(AcdPAcd thys, const AjPStr type)
+static const AjPStr acdPromptSeqout(AcdPAcd thys)
 {
     static ajint count=0;
-
+    AjPStr tmptype = NULL;
+    AjBool gaps = AJFALSE;
+    AjPStr seqPrompt = NULL;
+    AjPStr seqPromptAlt = NULL;
     const AjPStr knowntype;
+    const AjPStr type = NULL;
+    AjBool aligned=ajFalse;
 
     knowntype = acdKnowntypeDesc(thys);
+
+    type = acdAttrValue(thys, "type");
+
+    if(ajCharPrefixC(acdType[thys->Type].Name,"seqoutset"))
+       acdAttrToBool(thys, "aligned", ajFalse, &aligned);
+
+    ajSeqTypeSummary(type, &tmptype, &gaps);
+
+    seqPrompt = ajStrNewRes(32);
+    seqPromptAlt = ajStrNewRes(32);
+
     if(ajStrGetLen(knowntype))
+	ajFmtPrintAppS(&seqPromptAlt, "%S ", knowntype);
+    if(ajStrGetLen(tmptype))
+	ajFmtPrintAppS(&seqPromptAlt, "%S ", tmptype);
+    ajFmtPrintAppS(&seqPromptAlt, "output sequence");
+
+
+    if(ajCharMatchC(acdType[thys->Type].Name, "seqoutset"))
     {
-	count++;
-	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " output"))
-	   acdPromptStandardAppend(thys, " sequence");
-	else
-	   acdPromptStandardAppend(thys, " output sequence");
+	ajStrAppendC(&seqPromptAlt, " set");
+	if(aligned)
+	    ajStrInsertC(&seqPromptAlt, 0, "(aligned) ");
+    }
+    else if(ajCharMatchC(acdType[thys->Type].Name, "seqoutsetall"))
+    {
+	ajStrAppendC(&seqPromptAlt, " set(s)");
+	if(aligned)
+	    ajStrInsertC(&seqPromptAlt, 0, "(aligned) ");
+    }
+    else if(ajCharMatchC(acdType[thys->Type].Name, "seqoutall"))
+    {
+	ajStrAppendC(&seqPromptAlt, "(s)");
+	if(gaps)
+	    ajStrInsertC(&seqPromptAlt, 0, "(gapped) ");
     }
     else
-    acdPromptStandard(thys, "output sequence", &count);
+    {
+	if(gaps)
+	    ajStrInsertC(&seqPromptAlt, 0, "(gapped) ");
+    }
+
+    ajFmtPrintS(&seqPrompt, "%S", seqPromptAlt);
+    if(knowntype)
+    {
+	count++;
+	acdPromptStandardS(thys, seqPromptAlt);
+    }
+    else
+	acdPromptStandardAlt(thys, ajStrGetPtr(seqPrompt),
+			     ajStrGetPtr(seqPromptAlt), &count);
 
     if(!acdAttrTestDefined(thys, "default") &&
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    ajStrDel(&tmptype);
+    ajStrDel(&seqPrompt);
+    ajStrDel(&seqPromptAlt);
+    return thys->StdPrompt;
 }
 
 
@@ -20772,11 +20842,11 @@ static void acdPromptSeqout(AcdPAcd thys, const AjPStr type)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutcodon(AcdPAcd thys)
+static const AjPStr acdPromptOutcodon(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20796,7 +20866,7 @@ static void acdPromptOutcodon(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20808,11 +20878,11 @@ static void acdPromptOutcodon(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutcpdb(AcdPAcd thys)
+static const AjPStr acdPromptOutcpdb(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20832,7 +20902,7 @@ static void acdPromptOutcpdb(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20844,11 +20914,11 @@ static void acdPromptOutcpdb(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutdata(AcdPAcd thys)
+static const AjPStr acdPromptOutdata(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20868,7 +20938,7 @@ static void acdPromptOutdata(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20880,11 +20950,11 @@ static void acdPromptOutdata(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutdir(AcdPAcd thys)
+static const AjPStr acdPromptOutdir(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20895,6 +20965,8 @@ static void acdPromptOutdir(AcdPAcd thys)
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " file"))
+	    acdPromptStandardAppend(thys, " file");
 	acdPromptStandardAppend(thys, " output directory");
     }
     else
@@ -20904,7 +20976,7 @@ static void acdPromptOutdir(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20916,11 +20988,11 @@ static void acdPromptOutdir(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutdiscrete(AcdPAcd thys)
+static const AjPStr acdPromptOutdiscrete(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20940,7 +21012,7 @@ static void acdPromptOutdiscrete(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20952,11 +21024,11 @@ static void acdPromptOutdiscrete(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutdistance(AcdPAcd thys)
+static const AjPStr acdPromptOutdistance(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -20976,7 +21048,7 @@ static void acdPromptOutdistance(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -20988,11 +21060,11 @@ static void acdPromptOutdistance(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutfreq(AcdPAcd thys)
+static const AjPStr acdPromptOutfreq(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -21012,7 +21084,7 @@ static void acdPromptOutfreq(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -21024,11 +21096,11 @@ static void acdPromptOutfreq(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutmatrix(AcdPAcd thys)
+static const AjPStr acdPromptOutmatrix(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -21048,7 +21120,7 @@ static void acdPromptOutmatrix(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -21060,11 +21132,11 @@ static void acdPromptOutmatrix(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutproperties(AcdPAcd thys)
+static const AjPStr acdPromptOutproperties(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -21084,7 +21156,7 @@ static void acdPromptOutproperties(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -21096,11 +21168,11 @@ static void acdPromptOutproperties(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutscop(AcdPAcd thys)
+static const AjPStr acdPromptOutscop(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -21120,7 +21192,7 @@ static void acdPromptOutscop(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -21132,11 +21204,11 @@ static void acdPromptOutscop(AcdPAcd thys)
 ** prompt with "second", "third" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOuttree(AcdPAcd thys)
+static const AjPStr acdPromptOuttree(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -21156,7 +21228,7 @@ static void acdPromptOuttree(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
 }
 
 
@@ -21348,11 +21420,11 @@ static void acdPromptStandardS(AcdPAcd thys, const AjPStr str)
 ** file with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptOutfile(AcdPAcd thys)
+static const AjPStr acdPromptOutfile(AcdPAcd thys)
 {
     static ajint count = 0;
 
@@ -21375,7 +21447,46 @@ static void acdPromptOutfile(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptOutfileall ********************************************
+**
+** Sets the default prompt for this ACD object to be a set of  output
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptOutfileall(AcdPAcd thys)
+{
+    static ajint count = 0;
+
+    const AjPStr knowntype;
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(ajStrSuffixC(knowntype, " output"))
+	   acdPromptStandardAppend(thys, " file(s)");
+	else
+	   acdPromptStandardAppend(thys, " output file(s)");
+    }
+    else
+	acdPromptStandard(thys, "output file(s)", &count);
+
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
 }
 
 
@@ -21387,11 +21498,11 @@ static void acdPromptOutfile(AcdPAcd thys)
 ** file with "first", "second" etc. added.
 **
 ** @param [u] thys [AcdPAcd] Current ACD object.
-** @return [void]
+** @return [const AjPStr] Generated standard prompt
 ** @@
 ******************************************************************************/
 
-static void acdPromptInfile(AcdPAcd thys)
+static const AjPStr acdPromptInfile(AcdPAcd thys)
 {
     static ajint count = 0;
 
@@ -21402,10 +21513,8 @@ static void acdPromptInfile(AcdPAcd thys)
     {
 	count++;
 	acdPromptStandardS(thys, knowntype);
-	if(ajStrSuffixC(knowntype, " input"))
+	if(!ajStrSuffixC(knowntype, " file"))
 	   acdPromptStandardAppend(thys, " file");
-	else
-	   acdPromptStandardAppend(thys, " input file");
     }
     else
 	acdPromptStandard(thys, "input file", &count);
@@ -21414,7 +21523,347 @@ static void acdPromptInfile(AcdPAcd thys)
        acdAttrTestDefined(thys, "nullok"))
 	acdPromptStandardAppend(thys, " (optional)");
     
-    return;
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptDatafile **********************************************
+**
+** Sets the default prompt for this ACD object to be an input data
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptDatafile(AcdPAcd thys)
+{
+    static ajint count = 0;
+
+    const AjPStr knowntype;
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(ajStrSuffixC(knowntype, " data"))
+	   acdPromptStandardAppend(thys, " file");
+	else
+	   acdPromptStandardAppend(thys, " data file");
+    }
+    else
+	acdPromptStandard(thys, "data file", &count);
+
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptmatrix *************************************************
+**
+** Sets the default prompt for this ACD object to be an input data
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptMatrix(AcdPAcd thys)
+{
+    static ajint count = 0;
+    AjBool protein = ajFalse;
+
+    const AjPStr knowntype;
+
+    acdAttrToBool(thys, "protein", ajFalse, &protein);
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " file"))
+	   acdPromptStandardAppend(thys, " file");
+    }
+    else
+    {
+	if(acdDoValid)
+	    acdPromptStandard(thys, "comparison matrix file",
+			      &count);
+	else
+	{
+	    if(protein)
+		acdPromptStandard(thys, "(protein) comparison matrix file",
+				  &count);
+	    else
+		acdPromptStandard(thys, "(nucleotide) comparison matrix file",
+				  &count);
+	}
+    }
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptDiscretestates ****************************************
+**
+** Sets the default prompt for this ACD object to be an input discrete states
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptDiscretestates(AcdPAcd thys)
+{
+    static ajint count = 0;
+
+    const AjPStr knowntype;
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " file"))
+	   acdPromptStandardAppend(thys, " file");
+    }
+    else
+	acdPromptStandard(thys, "discrete states file", &count);
+
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptDistances ****************************************
+**
+** Sets the default prompt for this ACD object to be an input distances
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptDistances(AcdPAcd thys)
+{
+    static ajint count = 0;
+
+    const AjPStr knowntype;
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " file"))
+	   acdPromptStandardAppend(thys, " file");
+    }
+    else
+	acdPromptStandard(thys, "distances file", &count);
+
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptFrequencies ****************************************
+**
+** Sets the default prompt for this ACD object to be an input frequencies
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptFrequencies(AcdPAcd thys)
+{
+    static ajint count = 0;
+
+    const AjPStr knowntype;
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " file"))
+	   acdPromptStandardAppend(thys, " file");
+    }
+    else
+	acdPromptStandard(thys, "frequencies file", &count);
+
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptProperties ****************************************
+**
+** Sets the default prompt for this ACD object to be an input properties
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptProperties(AcdPAcd thys)
+{
+    static ajint count = 0;
+
+    const AjPStr knowntype;
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " file"))
+	   acdPromptStandardAppend(thys, " file");
+    }
+    else
+	acdPromptStandard(thys, "properties file", &count);
+
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptPattern ***********************************************
+**
+** Sets the default prompt for this ACD object to be a pattern string or
+** file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptPattern(AcdPAcd thys)
+{
+    static ajint count = 0;
+    AjPStr type = NULL;
+
+    const AjPStr knowntype;
+
+    acdAttrToStr(thys, "type", "", &type);
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " pattern"))
+	   acdPromptStandardAppend(thys, " pattern");
+    }
+    else
+    {
+	if(ajStrPrefixCaseC(type, "p"))
+	    acdPromptStandard(thys,
+			      "protein pattern string or @file", &count);
+	else if(ajStrPrefixCaseC(type, "n"))
+	    acdPromptStandard(thys,
+			      "nucleotide pattern string or @file", &count);
+	else
+	    acdPromptStandard(thys,
+			      "pattern string or @file", &count);
+    }
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
+}
+
+
+
+
+/* @funcstatic acdPromptRegexp ************************************************
+**
+** Sets the default prompt for this ACD object to be a regular expression
+** string or file with "first", "second" etc. added.
+**
+** @param [u] thys [AcdPAcd] Current ACD object.
+** @return [const AjPStr] Generated standard prompt
+** @@
+******************************************************************************/
+
+static const AjPStr acdPromptRegexp(AcdPAcd thys)
+{
+    static ajint count = 0;
+    AjPStr type = NULL;
+
+    const AjPStr knowntype;
+
+    acdAttrToStr(thys, "type", "", &type);
+
+    knowntype = acdKnowntypeDesc(thys);
+    if(ajStrGetLen(knowntype))
+    {
+	count++;
+	acdPromptStandardS(thys, knowntype);
+	if(!ajStrSuffixC(knowntype, " regular expression"))
+	   acdPromptStandardAppend(thys, " regular expression");
+    }
+    else
+    {
+	if(ajStrPrefixCaseC(type, "p"))
+	    acdPromptStandard(thys,
+			      "protein regular expression string or @file",
+			      &count);
+	else if(ajStrPrefixCaseC(type, "n"))
+	    acdPromptStandard(thys,
+			      "nucleotide regular expression string or @file",
+			      &count);
+	else
+	    acdPromptStandard(thys,
+			      "regular expression string or @file",
+			      &count);
+    }
+    if(!acdAttrTestDefined(thys, "default") &&
+       acdAttrTestDefined(thys, "nullok"))
+	acdPromptStandardAppend(thys, " (optional)");
+    
+    return thys->StdPrompt;
 }
 
 
@@ -23900,12 +24349,12 @@ static void acdValidSection(const AcdPAcd thys)
 **
 ** Validation for a qualifier definition
 **
-** @param [r] thys [const AcdPAcd] ACD object
+** @param [u] thys [AcdPAcd] ACD object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdValidQual(const AcdPAcd thys)
+static void acdValidQual(AcdPAcd thys)
 {
     ajint itype;
     AjBool isparam = ajFalse;
@@ -23922,6 +24371,7 @@ static void acdValidQual(const AcdPAcd thys)
     const AjPStr tmpinfo   = NULL;
     const AjPStr tmpprompt = NULL;
     const AjPStr tmphelp   = NULL;
+    const AjPStr tmpstandard = NULL;
 
     static ajint qualCountSeq     = 0;
     static ajint qualCountSeqout  = 0;
@@ -23943,6 +24393,7 @@ static void acdValidQual(const AcdPAcd thys)
     static AjBool seqoutMulti  = AJFALSE;
     static AjBool featMulti    = AJFALSE;
     static AjBool featoutMulti = AJFALSE;
+    AjBool okinfo = ajFalse;
 
     if(!acdDoValid)
 	return;
@@ -24109,6 +24560,36 @@ static void acdValidQual(const AcdPAcd thys)
     tmpinfo = acdAttrValue(thys, "information");
     tmpprompt = acdAttrValue(thys, "prompt");
     tmphelp = acdAttrValue(thys, "help");
+
+    if(acdType[thys->Type].Prompt)
+    {
+	tmpstandard = acdType[thys->Type].Prompt(thys);
+	if(ajStrGetLen(tmpstandard) &&
+	   acdKnowntypeDesc(thys))
+	{
+	    if(ajStrGetLen(tmpinfo))
+	    {
+		if(ajStrMatchS(tmpinfo, tmpstandard))
+		    okinfo = ajTrue;
+		else
+		    acdWarn("Information string for '%S' not standard '%S'",
+			    thys->Name, tmpstandard);
+	    }
+	    else
+	    {
+		    acdWarn("Missing standard information '%S' expected '%S'",
+			    thys->Name, tmpstandard);
+	    }
+	}
+/*
+	else if(ajStrGetLen(tmpinfo))
+	{
+		acdWarn("Standard prompt for '%S' is '%S' information '%S'",
+			thys->Name, tmpstandard, tmpinfo);
+			
+	}
+*/
+    }
     if(ajStrGetLen(tmpprompt) && !ajStrGetLen(tmpinfo))
 	acdErrorValid("Prompt specified but no information");
 
@@ -24700,6 +25181,7 @@ static void acdValidKnowntype(const AcdPAcd thys)
     const AjPStr typestr         = NULL;
     AjPStr acdKnownType    = NULL;
     static AjPStr defType = NULL;
+    AjBool typeok = ajFalse;
 
     if(!acdDoValid)
 	return;
@@ -24735,6 +25217,92 @@ static void acdValidKnowntype(const AcdPAcd thys)
 		    typestr, acdKnownType, acdType[thys->Type].Name);
 	}
     }
+    else if (ajStrMatchC(acdKnownType, "sequence"))
+    {
+	if (!ajCharMatchC(acdType[thys->Type].Name, "sequence") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "seqall") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "seqset") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "seqsetall") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "seqout") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "seqoutall") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "seqoutset") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "seqoutsetall"))
+	{
+	    acdWarn("Knowntype '%S' defined for type '%S', used for '%s'",
+		    typestr, acdKnownType, acdType[thys->Type].Name);
+	}
+    }
+    else if (ajStrMatchC(acdKnownType, "codon") ||
+	     ajStrMatchC(acdKnownType, "cpdb") ||
+	     ajStrMatchC(acdKnownType, "matrix") ||
+	     ajStrMatchC(acdKnownType, "discretestates") ||
+	     ajStrMatchC(acdKnownType, "distances") ||
+	     ajStrMatchC(acdKnownType, "frequencies") ||
+	     ajStrMatchC(acdKnownType, "properties") ||
+	     ajStrMatchC(acdKnownType, "scop") ||
+	     ajStrMatchC(acdKnownType, "tree"))
+    {
+	typeok = ajFalse;
+	if (ajStrMatchC(acdKnownType, "codon"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "codon") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outcodon"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "cpdb"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "cpdb") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outcpdb"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "discretestates"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "discretestates") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outdiscrete"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "distances"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "distances") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outdistances"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "frequencies"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "frequiencies") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outfreq"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "properties"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "properties") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outproperties"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "scop"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "scop") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outscop"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "tree"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "tree") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outtree"))
+	       typeok = ajTrue;
+
+	if (ajStrMatchC(acdKnownType, "matrix"))
+	    if(ajCharMatchC(acdType[thys->Type].Name, "matrix") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "matrixf") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outmatrix") ||
+	       ajCharMatchC(acdType[thys->Type].Name, "outmatrixf"))
+	       typeok = ajTrue;
+
+	if (!ajCharMatchC(acdType[thys->Type].Name, "infile") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "datafile") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "directory") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "dirlist") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "outfile") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "outdir") &&
+	    !ajCharMatchC(acdType[thys->Type].Name, "filelist"))
+	{
+	    if(!typeok)
+		acdWarn("Knowntype '%S' defined for type '%S', used for '%s'",
+			typestr, acdKnownType, acdType[thys->Type].Name);
+	}
+    }
     else if (!ajStrMatchC(acdKnownType, acdType[thys->Type].Name))
     {
 	acdWarn("Knowntype '%S' defined for type '%S', used for '%s'",
@@ -24749,12 +25317,12 @@ static void acdValidKnowntype(const AcdPAcd thys)
 **
 ** Return description of known type
 **
-** @param [r] thys [AcdPAcd] Acd object
+** @param [r] thys [const AcdPAcd] Acd object
 ** @return [const AjPStr] Known type description or NULL if not defined.
 ** @@
 ******************************************************************************/
 
-static const AjPStr acdKnowntypeDesc(AcdPAcd thys)
+static const AjPStr acdKnowntypeDesc(const AcdPAcd thys)
 {
     const AjPStr knowntype = NULL;
     const AjPStr knowndesc;
