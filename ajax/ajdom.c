@@ -1014,12 +1014,12 @@ AjPDomNode ajDomNodeMapGetItemC(const AjPDomNodeMap map, const char *name)
 	    map = map->list;
 	    for(e=map->first; e; e=e->next)
 		if(e->node->type == nodetype &&
-		   !strcoll(name,e->node->name->Ptr))
+		   !strcmp(name,e->node->name->Ptr))
 			    return e->node;
 	}
 	else
 	    for(e=map->first; e; e=e->next)
-		if(!strcoll(name,e->node->name->Ptr))
+		if(!strcmp(name,e->node->name->Ptr))
 		    return e->node;
     }
     
@@ -1122,7 +1122,7 @@ AjPDomNode ajDomNodeMapSetItem(AjPDomNodeMap map, AjPDomNode arg)
 	    return NULL;
 	}
 
-	for(e=map->first; e && strcoll(arg->name->Ptr,e->node->name->Ptr);
+	for(e=map->first; e && strcmp(arg->name->Ptr,e->node->name->Ptr);
 	    e=e->next)
 	{
 	    ;
@@ -1198,7 +1198,7 @@ AjPDomNode ajDomNodeMapRemoveItemC(AjPDomNodeMap map, const char *name)
 
 	for(e=map->first; e; e=e->next)
 	{
-	    if(!strcoll(name,e->node->name->Ptr) &&
+	    if(!strcmp(name,e->node->name->Ptr) &&
 	       ajDomNodeListRemove(map,e->node))
 	    {
 		r = e->node;
@@ -1569,7 +1569,7 @@ static void domTraverse(AjPDomNodeList list, AjPDomNode node,
 
     if(list && node && node->type == AJDOM_ELEMENT_NODE && tagname)
     {
-	if(ajStrMatchC(tagname,"*") || !strcoll(tagname->Ptr,node->name->Ptr))
+	if(ajStrMatchC(tagname,"*") || !strcmp(tagname->Ptr,node->name->Ptr))
 	    ajDomNodeListAppend(list,node);
 
 	for(n=node->firstchild; n; n=n->nextsibling)
@@ -1600,7 +1600,7 @@ static void domTraverseC(AjPDomNodeList list, AjPDomNode node,
 
     if(list && node && node->type == AJDOM_ELEMENT_NODE && tagname)
     {
-	if(ajCharMatchC(tagname,"*") || !strcoll(tagname,node->name->Ptr))
+	if(ajCharMatchC(tagname,"*") || !strcmp(tagname,node->name->Ptr))
 	    ajDomNodeListAppend(list,node);
 
 	for(n=node->firstchild; n; n=n->nextsibling)
