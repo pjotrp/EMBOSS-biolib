@@ -1,8 +1,8 @@
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-infile]            infile     Primer file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Primer pairs file
+  [-outfile]           outfile    [*.stssearch] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

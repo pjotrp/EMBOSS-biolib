@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Sequence filename and optional format, or
                                   reference (input USA)
-   -regions            range      Regions to extract.
+   -regions            range      [Whole sequence] Regions to extract.
                                   A set of regions is specified by a set of
                                   pairs of positions.
                                   The positions are integers.
@@ -11,11 +11,11 @@
                                   24-45, 56-78
                                   1:45, 67=99;765..888
                                   1,5,8,10,23,45,57,99
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -separate           boolean    If this is set true then each specified
+   -separate           boolean    [N] If this is set true then each specified
                                   region is written out as a separate
                                   sequence. The name of the sequence is
                                   created from the name of the original

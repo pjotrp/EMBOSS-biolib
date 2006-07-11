@@ -1,14 +1,16 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -menu               menu       Select class
-*  -custom             datafile   Name of data file
-   -mismatch           integer    Number of mismatches
-  [-outfile]           outfile    Output file name
+   -menu               menu       [V] Select class (Values: F (fungi); I
+                                  (insect); P (plant); V (vertebrate); O
+                                  (other); C (Custom))
+*  -custom             datafile   Transfac database data file (optional)
+   -mismatch           integer    [0] Number of mismatches (Integer 0 or more)
+  [-outfile]           outfile    [*.tfscan] Output file name
 
    Additional (Optional) qualifiers:
-   -minlength          integer    Display matches equal to or above this
-                                  length
+   -minlength          integer    [1] Display matches equal to or above this
+                                  length (Integer 1 or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

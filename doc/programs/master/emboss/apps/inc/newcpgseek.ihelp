@@ -1,8 +1,8 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -score              integer    CpG score
-  [-outfile]           outfile    Output file name
+   -score              integer    [17] CpG score (Integer from 1 to 200)
+  [-outfile]           outfile    [*.newcpgseek] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

@@ -1,38 +1,44 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -window             integer    The percentage CG content and the Observed
-                                  frequency of CG is calculated within a
-                                  window whose size is set by this parameter.
-                                  The window is moved down the sequence and
-                                  these statistics are calculated at each
-                                  postition that the window is moved to.
-   -minlen             integer    This sets the minimum length that a CpG
-                                  island has to be before it is reported.
-   -minoe              float      This sets the minimum average observed to
-                                  expected ratio of C plus G to CpG in a set
-                                  of 10 windows that are required before a CpG
-                                  island is reported.
-   -minpc              float      This sets the minimum average percentage of
-                                  G plus C a set of 10 windows that are
-                                  required before a CpG island is reported.
-  [-outfile]           outfile    This sets the name of the file holding the
-                                  report of the input sequence name, CpG
-                                  island parameters and the output details of
-                                  any CpG islands that are found.
-  [-graph]             xygraph    Graph type
-  [-outfeat]           featout    File for output features
+   -window             integer    [100] The percentage CG content and the
+                                  Observed frequency of CG is calculated
+                                  within a window whose size is set by this
+                                  parameter. The window is moved down the
+                                  sequence and these statistics are calculated
+                                  at each postition that the window is moved
+                                  to. (Integer 1 or more)
+   -minlen             integer    [200] This sets the minimum length that a
+                                  CpG island has to be before it is reported.
+                                  (Integer 1 or more)
+   -minoe              float      [0.6] This sets the minimum average observed
+                                  to expected ratio of C plus G to CpG in a
+                                  set of 10 windows that are required before a
+                                  CpG island is reported. (Number from 0.000
+                                  to 10.000
+   -minpc              float      [50.] This sets the minimum average
+                                  percentage of G plus C a set of 10 windows
+                                  that are required before a CpG island is
+                                  reported. (Number from 0.000 to 100.000
+  [-outfile]           outfile    [*.cpgplot] This sets the name of the file
+                                  holding the report of the input sequence
+                                  name, CpG island parameters and the output
+                                  details of any CpG islands that are found.
+  [-graph]             xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+  [-outfeat]           featout    [unknown.gff] File for output features
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]obsexp         boolean    If this is set to true then the graph of the
-                                  observed to expected ratio of C plus G to
-                                  CpG within a window is displayed.
-   -[no]cg             boolean    If this is set to true then the graph of the
-                                  regions which have been determined to be
-                                  CpG islands is displayed.
-   -[no]pc             boolean    If this is set to true then the graph of the
-                                  percentage C plus G within a window is
+   -[no]obsexp         boolean    [Y] If this is set to true then the graph of
+                                  the observed to expected ratio of C plus G
+                                  to CpG within a window is displayed.
+   -[no]cg             boolean    [Y] If this is set to true then the graph of
+                                  the regions which have been determined to
+                                  be CpG islands is displayed.
+   -[no]pc             boolean    [Y] If this is set to true then the graph of
+                                  the percentage C plus G within a window is
                                   displayed.
 
    Associated qualifiers:

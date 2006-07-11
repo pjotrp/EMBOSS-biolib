@@ -1,15 +1,17 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -name               string     Name of the sequence
-   -description        string     Description of the sequence
+   -name               string     Name of the sequence (Any string is
+                                  accepted)
+   -description        string     Description of the sequence (Any string is
+                                  accepted)
 
    Advanced (Unprompted) qualifiers:
-   -append             boolean    This allows you to append the name or
+   -append             boolean    [N] This allows you to append the name or
                                   description you have given on to the end of
                                   the existing name or description of the
                                   sequence.

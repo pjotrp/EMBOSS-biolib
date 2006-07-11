@@ -1,9 +1,10 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-   -skip               integer    Number of sequences to skip at start
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+   -skip               integer    [0] Number of sequences to skip at start
+                                  (Any integer value)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:

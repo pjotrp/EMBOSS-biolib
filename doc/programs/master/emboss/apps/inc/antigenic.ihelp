@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-   -minlen             integer    Minimum length
+   -minlen             integer    [6] Minimum length (Integer from 1 to 50)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)

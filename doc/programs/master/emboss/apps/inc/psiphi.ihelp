@@ -1,12 +1,14 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Clean coordinate file
-   -chainnumber        integer    Number of the chain for which torsion angles
-                                  should be calculated
-   -startresiduenumber integer    First residue in chain for which torsion
-                                  angles should be calculated
-   -finishresiduenumber integer    Last residue in chain for which torsion
+  [-infile]            infile     Clean protein structure coordinates file
+   -chainnumber        integer    [1] Number of the chain for which torsion
+                                  angles should be calculated (Integer 1 or
+                                  more)
+   -startresiduenumber integer    [1] First residue in chain for which torsion
+                                  angles should be calculated (Integer 1 or
+                                  more)
+   -finishresiduenumber integer    [1] Last residue in chain for which torsion
                                   angles should be calculated (1 = last
-                                  residue)
+                                  residue) (Any integer value)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)

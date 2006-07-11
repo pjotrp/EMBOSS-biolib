@@ -1,11 +1,12 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -wordsize           integer    Word size
-  [-outfile]           outfile    Output file name
+   -wordsize           integer    [4] Word size (Integer 2 or more)
+  [-outfile]           outfile    [*.wordcount] Output file name
 
    Additional (Optional) qualifiers:
-   -mincount           integer    Minimum word count to report
+   -mincount           integer    [1] Minimum word count to report (Integer 1
+                                  or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

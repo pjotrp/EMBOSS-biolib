@@ -1,18 +1,21 @@
    Standard (Mandatory) qualifiers:
-  [-directory]         dirlist    CUTG directory
-  [-outfile]           outfile    Output file name
+  [-directory]         dirlist    [.] Codon usage directories
+  [-outfile]           outfile    [*.cutgextract] General log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -release            string     CUTG release
-   -wildspec           string     Type of codon file
-   -species            string     Species wildcard
-   -allrecords         boolean    Include all records, including those with
-                                  warnings
+   -release            string     CUTG release (Any string is accepted)
+   -wildspec           string     [*.codon] Type of codon file (Any string is
+                                  accepted)
+   -species            string     [*] Species wildcard (Any string is
+                                  accepted)
+   -allrecords         boolean    [N] Include all records, including those
+                                  with warnings
    -filename           string     Single output filename to override automatic
                                   one file for each species. Leave blank to
                                   generate the filenames. Specify a filename
                                   to combine several species into one file.
+                                  (Any string is accepted)
 
    Associated qualifiers:
 

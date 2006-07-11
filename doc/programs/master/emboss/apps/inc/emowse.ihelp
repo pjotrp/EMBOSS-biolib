@@ -1,18 +1,25 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-infile]            infile     Name of molecular weight data file
-   -weight             integer    Whole sequence molwt
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Peptide molecular weight values file
+   -weight             integer    [0] Whole sequence molwt (Any integer value)
+  [-outfile]           outfile    [*.emowse] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   Molecular weight data for amino acids
-   -frequencies        datafile   Frequencies file
-   -enzyme             menu       Enzyme or reagent
-   -pcrange            integer    Allowed whole sequence weight variability
-   -tolerance          float      Tolerance
-   -partials           float      Partials factor
+   -aadata             datafile   [Eamino.dat] Amino acids properties and
+                                  molecular weight data file
+   -frequencies        datafile   [Efreqs.dat] Amino acid frequencies data
+                                  file
+   -enzyme             menu       [1] Enzyme or reagent (Values: 1 (Trypsin);
+                                  2 (Lys-C); 3 (Arg-C); 4 (Asp-N); 5
+                                  (V8-bicarb); 6 (V8-phosph); 7
+                                  (Chymotrypsin); 8 (CNBr))
+   -pcrange            integer    [25] Allowed whole sequence weight
+                                  variability (Integer from 0 to 75)
+   -tolerance          float      [0.1] Tolerance (Number from 0.100 to 1.000
+   -partials           float      [0.4] Partials factor (Number from 0.100 to
+                                  1.000
 
    Associated qualifiers:
 

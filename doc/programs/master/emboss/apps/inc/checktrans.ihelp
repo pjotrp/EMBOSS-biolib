@@ -1,13 +1,15 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-   -orfml              integer    Minimum ORF Length to report
-  [-outfile]           outfile    Output file name
-  [-outseq]            seqoutall  Sequence file to hold output ORF sequences
-  [-outfeat]           featout    File for output features
+   -orfml              integer    [100] Minimum ORF Length to report (Integer
+                                  1 or more)
+  [-outfile]           outfile    [*.checktrans] Output file name
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence file to hold
+                                  output ORF sequences
+  [-outfeat]           featout    [unknown.gff] File for output features
 
    Additional (Optional) qualifiers:
-   -[no]addlast        boolean    An asterisk in the protein sequence
+   -[no]addlast        boolean    [Y] An asterisk in the protein sequence
                                   indicates the position of a STOP codon.
                                   Checktrans assumes that all ORFs end in a
                                   STOP codon. Forcing the sequence to end with

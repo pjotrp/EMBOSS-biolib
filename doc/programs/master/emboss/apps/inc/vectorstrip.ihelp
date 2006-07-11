@@ -1,16 +1,17 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-[no]vectorfile]    toggle     Are your vector sequences in a file?
-*  -vectorsfile        infile     Name of vectorfile
-   -mismatch           integer    Max allowed % mismatch
-   -[no]besthits       boolean    Show only the best hits (minimise
+  [-[no]vectorfile]    toggle     [Y] Are your vector sequences in a file?
+*  -vectorsfile        infile     Cloning vector definition file (optional)
+   -mismatch           integer    [10] Max allowed % mismatch (Any integer
+                                  value)
+   -[no]besthits       boolean    [Y] Show only the best hits (minimise
                                   mismatches)?
-*  -linkera            string     The 5' sequence
-*  -linkerb            string     The 3' sequence
-  [-outfile]           outfile    Output file name
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+*  -linkera            string     The 5' sequence (Any string is accepted)
+*  -linkerb            string     The 3' sequence (Any string is accepted)
+  [-outfile]           outfile    [*.vectorstrip] Output file name
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

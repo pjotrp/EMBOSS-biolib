@@ -3,30 +3,48 @@
                                   format, or reference (input USA)
 
    Additional (Optional) qualifiers:
-   -outfile            outfile    If you enter the name of a file here then
-                                  this program will write the sequence details
-                                  into that file.
-   -html               boolean    Format output as an HTML table
+   -outfile            outfile    [stdout] If you enter the name of a file
+                                  here then this program will write the
+                                  sequence details into that file.
+   -html               boolean    [N] Format output as an HTML table
 
    Advanced (Unprompted) qualifiers:
-   -only               boolean    This is a way of shortening the command line
-                                  if you only want a few things to be
+   -[no]columns        boolean    [Y] Set this option on (Y) to print the
+                                  sequence information into neat, aligned
+                                  columns in the output file. Alternatively,
+                                  leave it unset (N), in which case the
+                                  information records will be delimited by a
+                                  character, which you may specify by using
+                                  the -delimiter option. In other words, if
+                                  -columns is set on, the -delimiter option is
+                                  overriden.
+   -delimiter          string     [|] This string, which is usually a single
+                                  character only, is used to delimit
+                                  individual records in the text output file.
+                                  It could be a space character, a tab
+                                  character, a pipe character or any other
+                                  character or string. (Any string is
+                                  accepted)
+   -only               boolean    [N] This is a way of shortening the command
+                                  line if you only want a few things to be
                                   displayed. Instead of specifying:
                                   '-nohead -noname -noacc -notype -nopgc
                                   -nodesc'
                                   to get only the length output, you can
                                   specify
                                   '-only -length'
-   -heading            boolean    Display column headings
-   -usa                boolean    Display the USA of the sequence
-   -name               boolean    Display 'name' column
-   -accession          boolean    Display 'accession' column
-   -gi                 boolean    Display 'GI' column
-   -version            boolean    Display 'version' column
-   -type               boolean    Display 'type' column
-   -length             boolean    Display 'length' column
-   -pgc                boolean    Display 'percent GC content' column
-   -description        boolean    Display 'description' column
+   -[no]heading        boolean    [Y] Display column headings
+   -usa                boolean    [@(!$(only))] Display the USA of the
+                                  sequence
+   -name               boolean    [@(!$(only))] Display 'name' column
+   -accession          boolean    [@(!$(only))] Display 'accession' column
+   -gi                 boolean    [N] Display 'GI' column
+   -version            boolean    [N] Display 'version' column
+   -type               boolean    [@(!$(only))] Display 'type' column
+   -length             boolean    [@(!$(only))] Display 'length' column
+   -pgc                boolean    [@(!$(only))] Display 'percent GC content'
+                                  column
+   -description        boolean    [@(!$(only))] Display 'description' column
 
    Associated qualifiers:
 

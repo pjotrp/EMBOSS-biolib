@@ -1,8 +1,8 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Profile or matrix file
+  [-infile]            infile     Profile or weight matrix file
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.profit] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

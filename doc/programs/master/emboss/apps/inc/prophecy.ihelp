@@ -1,13 +1,18 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
-   -type               menu       Select type
-*  -datafile           matrixf    Scoring matrix
-   -name               string     Enter a name for the profile
-*  -threshold          integer    Enter threshold reporting percentage
-*  -open               float      Gap opening penalty
-*  -extension          float      Gap extension penalty
-  [-outfile]           outfile    Output file name
+   -type               menu       [F] Select type (Values: F (Frequency); G
+                                  (Gribskov); H (Henikoff))
+*  -datafile           matrixf    ['Epprofile' for Gribskov type, or
+                                  EBLOSUM62] Scoring matrix
+   -name               string     [mymatrix] Enter a name for the profile (Any
+                                  string is accepted)
+*  -threshold          integer    [75] Enter threshold reporting percentage
+                                  (Integer from 1 to 100)
+*  -open               float      [3.0] Gap opening penalty (Any numeric value
+*  -extension          float      [0.3] Gap extension penalty (Any numeric
+                                  value
+  [-outfile]           outfile    [*.prophecy] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

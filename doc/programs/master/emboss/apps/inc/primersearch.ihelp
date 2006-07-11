@@ -1,9 +1,11 @@
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-infile]            infile     Primer file
-  [-mismatchpercent]   integer    Allowed percent mismatch
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Primer pairs file
+  [-mismatchpercent]   integer    [0] Allowed percent mismatch (Any integer
+                                  value)
+  [-outfile]           outfile    [*.primersearch] Whitehead primer3_core
+                                  program output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

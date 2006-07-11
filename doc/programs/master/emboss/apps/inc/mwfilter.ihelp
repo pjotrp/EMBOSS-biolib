@@ -1,13 +1,14 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Molecular weight file input
-   -tolerance          float      Ppm tolerance
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Molecular weights file
+   -tolerance          float      [50.0] Ppm tolerance (Any numeric value
+  [-outfile]           outfile    [*.mwfilter] Molecular weights output file
 
    Additional (Optional) qualifiers:
-   -showdel            boolean    Output deleted mwts
+   -showdel            boolean    [N] Output deleted mwts
 
    Advanced (Unprompted) qualifiers:
-   -datafile           datafile   Data file of noisy molecular weights
+   -datafile           datafile   [Emwfilter.dat] Molecular weight standards
+                                  data file
 
    Associated qualifiers:
 

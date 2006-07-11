@@ -1,11 +1,14 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Enter name of file containing data
-  [-outfile]           outfile    Output file name
-   -graphlb            xygraph    Graph type
+  [-infile]            infile     Enzyme kinetics data (application-specific)
+                                  file
+  [-outfile]           outfile    [*.findkm] Output file name
+   -graphlb            xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]plot           boolean    S/V vs S
+   -[no]plot           boolean    [Y] S/V vs S
 
    Associated qualifiers:
 

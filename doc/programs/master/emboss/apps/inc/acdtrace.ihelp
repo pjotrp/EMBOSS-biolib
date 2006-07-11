@@ -1,5 +1,6 @@
    Standard (Mandatory) qualifiers:
-  [-program]           string     Program name, followed by command line
+  [-program]           string     Program name, followed by command line (Any
+                                  string is accepted)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

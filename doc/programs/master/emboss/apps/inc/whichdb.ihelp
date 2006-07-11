@@ -1,11 +1,12 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-entry]             string     ID or Accession number
-*  -outfile            outfile    Output file name
+  [-entry]             string     ID or Accession number (Any string is
+                                  accepted)
+*  -outfile            outfile    [*.whichdb] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -get                toggle     Retrieve sequences
-   -showall            boolean    Show failed attempts
+   -get                toggle     [N] Retrieve sequences
+   -showall            boolean    [N] Show failed attempts
 
    Associated qualifiers:
 

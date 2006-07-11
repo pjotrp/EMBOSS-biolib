@@ -1,15 +1,15 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) nucleotide sequence(s) filename and
                                   optional format, or reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]reverse        boolean    Set this to be false if you do not wish to
-                                  reverse the output sequence
-   -[no]complement     boolean    Set this to be false if you do not wish to
-                                  complement the output sequence
+   -[no]reverse        boolean    [Y] Set this to be false if you do not wish
+                                  to reverse the output sequence
+   -[no]complement     boolean    [Y] Set this to be false if you do not wish
+                                  to complement the output sequence
 
    Associated qualifiers:
 

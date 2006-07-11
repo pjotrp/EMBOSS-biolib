@@ -1,16 +1,24 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-*  -graph              xygraph    Graph type
-*  -outfile            outfile    Output file name
+*  -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+*  -outfile            outfile    [*.iep] Output file name
 
-   Additional (Optional) qualifiers: (none)
+   Additional (Optional) qualifiers:
+   -amino              integer    [1] Number of N-termini (Integer 0 or more)
+   -[no]termini        boolean    [Y] Include charge at N and C terminus
+   -lysinemodified     integer    [0] Number of modified lysines (Integer 0 or
+                                  more)
+   -disulphides        integer    [0] Number of disulphide bridges (Integer 0
+                                  or more)
+
    Advanced (Unprompted) qualifiers:
-   -step               float      Step value for pH
-   -amino              integer    Number of N-termini
-   -[no]termini        boolean    Include charge at N and C terminus
-   -plot               toggle     Plot charge vs pH
-   -[no]report         toggle     Write results to a file
+   -step               float      [.5] Step value for pH (Number from 0.010 to
+                                  1.000
+   -plot               toggle     [N] Plot charge vs pH
+   -[no]report         toggle     [Y] Write results to a file
 
    Associated qualifiers:
 

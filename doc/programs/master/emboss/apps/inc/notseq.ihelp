@@ -17,14 +17,15 @@
                                   myseq, hs*, one two three
                                   a file containing a list of sequence names
                                   can be specified by giving the file name
-                                  preceeded by a '@', eg: '@names.dat'
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+                                  preceeded by a '@', eg: '@names.dat' (Any
+                                  string is accepted)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -junkoutseq         seqoutall  This file collects the sequences which you
-                                  have excluded from the main output file of
-                                  sequences.
+   -junkoutseq         seqoutall  [/dev/null] This file collects the sequences
+                                  which you have excluded from the main
+                                  output file of sequences.
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

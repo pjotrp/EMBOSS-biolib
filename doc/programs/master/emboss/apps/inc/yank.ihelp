@@ -1,11 +1,11 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.yank] List of USAs output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -newfile            boolean    Overwrite existing output file
+   -newfile            boolean    [N] Overwrite existing output file
 
    Associated qualifiers:
 

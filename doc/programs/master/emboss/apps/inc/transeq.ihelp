@@ -1,13 +1,32 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqoutall  Protein sequence set(s) filename and
-                                  optional format (output USA)
+  [-outseq]            seqoutall  [<sequence>.<format>] Protein sequence
+                                  set(s) filename and optional format (output
+                                  USA)
 
    Additional (Optional) qualifiers:
-   -frame              menu       Frame(s) to translate
-   -table              menu       Code to use
-   -regions            range      Regions to translate.
+   -frame              menu       [1] Frame(s) to translate (Values: 1 (1); 2
+                                  (2); 3 (3); F (Forward three frames); -1
+                                  (-1); -2 (-2); -3 (-3); R (Reverse three
+                                  frames); 6 (All six frames))
+   -table              menu       [0] Code to use (Values: 0 (Standard); 1
+                                  (Standard (with alternative initiation
+                                  codons)); 2 (Vertebrate Mitochondrial); 3
+                                  (Yeast Mitochondrial); 4 (Mold, Protozoan,
+                                  Coelenterate Mitochondrial and
+                                  Mycoplasma/Spiroplasma); 5 (Invertebrate
+                                  Mitochondrial); 6 (Ciliate Macronuclear and
+                                  Dasycladacean); 9 (Echinoderm
+                                  Mitochondrial); 10 (Euplotid Nuclear); 11
+                                  (Bacterial); 12 (Alternative Yeast Nuclear);
+                                  13 (Ascidian Mitochondrial); 14 (Flatworm
+                                  Mitochondrial); 15 (Blepharisma
+                                  Macronuclear); 16 (Chlorophycean
+                                  Mitochondrial); 21 (Trematode
+                                  Mitochondrial); 22 (Scenedesmus obliquus);
+                                  23 (Thraustochytrium Mitochondrial))
+   -regions            range      [Whole sequence] Regions to translate.
                                   If this is left blank, then the complete
                                   sequence is translated.
                                   A set of regions is specified by a set of
@@ -22,27 +41,27 @@
                                   Note: you should not try to use this option
                                   with any other frame than the default,
                                   -frame=1
-   -trim               boolean    This removes all 'X' and '*' characters from
-                                  the right end of the translation. The
+   -trim               boolean    [N] This removes all 'X' and '*' characters
+                                  from the right end of the translation. The
                                   trimming process starts at the end and
                                   continues until the next character is not a
                                   'X' or a '*'
-   -clean              boolean    This changes all STOP codon positions from
-                                  the '*' character to 'X' (an unknown
+   -clean              boolean    [N] This changes all STOP codon positions
+                                  from the '*' character to 'X' (an unknown
                                   residue). This is useful because some
                                   programs will not accept protein sequences
                                   with '*' characters in them.
 
    Advanced (Unprompted) qualifiers:
-   -alternative        boolean    The default definition of frame '-1' is the
-                                  reverse-complement of the set of codons used
-                                  in frame 1. (Frame -2 is the set of codons
-                                  used by frame 2, similarly frames -3 and 3).
-                                  This is a common standard, used by the
-                                  Staden package and other programs. If you
-                                  prefer to define frame '-1' as using the set
-                                  of codons starting with the last codon of
-                                  the sequence, then set this to be true.
+   -alternative        boolean    [N] The default definition of frame '-1' is
+                                  the reverse-complement of the set of codons
+                                  used in frame 1. (Frame -2 is the set of
+                                  codons used by frame 2, similarly frames -3
+                                  and 3). This is a common standard, used by
+                                  the Staden package and other programs. If
+                                  you prefer to define frame '-1' as using the
+                                  set of codons starting with the last codon
+                                  of the sequence, then set this to be true.
 
    Associated qualifiers:
 

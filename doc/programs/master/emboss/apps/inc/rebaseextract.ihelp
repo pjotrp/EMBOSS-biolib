@@ -1,11 +1,11 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Full pathname of WITHREFM file
-  [-protofile]         infile     Full pathname of PROTO file
+  [-infile]            infile     REBASE database withrefm file
+  [-protofile]         infile     REBASE database proto file
 
    Additional (Optional) qualifiers:
-   -[no]equivalences   boolean    This option calculates an embossre.equ file
-                                  using restriction enzyme prototypes in the
-                                  withrefm file.
+   -[no]equivalences   boolean    [Y] This option calculates an embossre.equ
+                                  file using restriction enzyme prototypes in
+                                  the withrefm file.
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers: (none)

@@ -1,12 +1,14 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.btwisted] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -angledata          datafile   File containing base pair twist angles
-   -energydata         datafile   File containing base pair stacking energies
+   -angledata          datafile   [Eangles.dat] DNA base pair twist angle data
+                                  file
+   -energydata         datafile   [Eenergy.dat] DNA base pair stacking
+                                  energies data file
 
    Associated qualifiers:
 

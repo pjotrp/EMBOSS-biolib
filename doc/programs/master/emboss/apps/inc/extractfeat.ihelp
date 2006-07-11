@@ -1,12 +1,12 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -before             integer    If this value is greater than 0 then that
-                                  number of bases or residues before the
+   -before             integer    [0] If this value is greater than 0 then
+                                  that number of bases or residues before the
                                   feature are included in the extracted
                                   sequence. This allows you to get the context
                                   of the feature. If this value is negative
@@ -20,9 +20,9 @@
                                   feature. The output sequence will be padded
                                   with 'N' or 'X' characters if the sequence
                                   starts after the required start of the
-                                  extraction.
-   -after              integer    If this value is greater than 0 then that
-                                  number of bases or residues after the
+                                  extraction. (Any integer value)
+   -after              integer    [0] If this value is greater than 0 then
+                                  that number of bases or residues after the
                                   feature are included in the extracted
                                   sequence. This allows you to get the context
                                   of the feature. If this value is negative
@@ -36,10 +36,10 @@
                                   feature. The output sequence will be padded
                                   with 'N' or 'X' characters if the sequence
                                   ends before the required end of the
-                                  extraction.
-   -source             string     By default any feature source in the feature
-                                  table is shown. You can set this to match
-                                  any feature source you wish to show.
+                                  extraction. (Any integer value)
+   -source             string     [*] By default any feature source in the
+                                  feature table is shown. You can set this to
+                                  match any feature source you wish to show.
                                   The source name is usually either the name
                                   of the program that detected the feature or
                                   it is the feature table (eg: EMBL) that the
@@ -48,8 +48,8 @@
                                   If you wish to show more than one source,
                                   separate their names with the character '|',
                                   eg:
-                                  gene* | embl
-   -type               string     By default every feature in the feature
+                                  gene* | embl (Any string is accepted)
+   -type               string     [*] By default every feature in the feature
                                   table is extracted. You can set this to be
                                   any feature type you wish to extract.
                                   See http://www3.ebi.ac.uk/Services/WebFeat/
@@ -61,17 +61,21 @@
                                   If you wish to extract more than one type,
                                   separate their names with the character '|',
                                   eg:
-                                  *UTR | intron
-   -sense              integer    By default any feature type in the feature
-                                  table is extracted. You can set this to
-                                  match any feature sense you wish. 0 - any
-                                  sense, 1 - forward sense, -1 - reverse sense
-   -minscore           float      If this is greater than or equal to the
+                                  *UTR | intron (Any string is accepted)
+   -sense              integer    [0 - any sense, 1 - forward sense, -1 -
+                                  reverse sense] By default any feature type
+                                  in the feature table is extracted. You can
+                                  set this to match any feature sense you
+                                  wish. 0 - any sense, 1 - forward sense, -1 -
+                                  reverse sense (Any integer value)
+   -minscore           float      [0.0] If this is greater than or equal to
+                                  the maximum score, then any score is
+                                  permitted (Any numeric value
+   -maxscore           float      [0.0] If this is less than or equal to the
                                   maximum score, then any score is permitted
-   -maxscore           float      If this is less than or equal to the maximum
-                                  score, then any score is permitted
-   -tag                string     Tags are the types of extra values that a
-                                  feature may have. For example in the EMBL
+                                  (Any numeric value
+   -tag                string     [*] Tags are the types of extra values that
+                                  a feature may have. For example in the EMBL
                                   feature table, a 'CDS' type of feature may
                                   have the tags '/codon', '/codon_start',
                                   '/db_xref', '/EC_number', '/evidence',
@@ -90,12 +94,12 @@
                                   If you wish to extract more than one tag,
                                   separate their names with the character '|',
                                   eg:
-                                  gene | label
-   -value              string     Tag values are the values associated with a
-                                  feature tag. Tags are the types of extra
-                                  values that a feature may have. For example
-                                  in the EMBL feature table, a 'CDS' type of
-                                  feature may have the tags '/codon',
+                                  gene | label (Any string is accepted)
+   -value              string     [*] Tag values are the values associated
+                                  with a feature tag. Tags are the types of
+                                  extra values that a feature may have. For
+                                  example in the EMBL feature table, a 'CDS'
+                                  type of feature may have the tags '/codon',
                                   '/codon_start', '/db_xref', '/EC_number',
                                   '/evidence', '/exception', '/function',
                                   '/gene', '/label', '/map', '/note',
@@ -113,9 +117,9 @@
                                   If you wish to show more than one tag value,
                                   separate their names with a space or the
                                   character '|', eg:
-                                  pax* | 10
-   -join               boolean    Some features, such as CDS (coding sequence)
-                                  and mRNA are composed of introns
+                                  pax* | 10 (Any string is accepted)
+   -join               boolean    [N] Some features, such as CDS (coding
+                                  sequence) and mRNA are composed of introns
                                   concatenated together. There may be other
                                   forms of 'joined' sequence, depending on the
                                   feature table. If this option is set TRUE,
@@ -124,7 +128,7 @@
                                   and 'after' qualifiers have been set, then
                                   only the sequence before the first feature
                                   and after the last feature are added.
-   -featinname         boolean    To aid you in identifying the type of
+   -featinname         boolean    [N] To aid you in identifying the type of
                                   feature that has been output, the type of
                                   feature is added to the start of the
                                   description of the output sequence.
@@ -164,7 +168,7 @@
                                   If you wish to extract more than one tag,
                                   separate their names with the character '|',
                                   eg:
-                                  gene | label
+                                  gene | label (Any string is accepted)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

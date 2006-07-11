@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers: (none)
    Additional (Optional) qualifiers:
    -full               boolean    Show all EMBOSS version information fields
-   -outfile            outfile    Output file name
+   -outfile            outfile    [stdout] Output file name
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
-  [-files]             filelist   Comma separated file list
-   -tolerance          float      Ppm tolerance
-  [-outfile]           outfile    Output file name
+  [-files]             filelist   Molecular weights file list
+   -tolerance          float      [50.0] Ppm tolerance (Any numeric value
+  [-outfile]           outfile    [*.mwcontam] Molecular weights output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

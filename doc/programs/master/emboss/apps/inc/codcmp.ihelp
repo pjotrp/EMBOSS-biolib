@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-first]             codon      First codon usage file
   [-second]            codon      Second codon usage file for comparison
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.codcmp] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

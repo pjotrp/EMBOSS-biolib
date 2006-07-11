@@ -1,11 +1,12 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) protein sequence filename and
                                   optional format, or reference (input USA)
-  [-outfile]           seqout     (Gapped) nucleotide sequence filename and
-                                  optional format (output USA)
+  [-outfile]           seqout     [<sequence>.<format>] (Gapped) nucleotide
+                                  sequence filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers:
-   -cfile              codon      Codon usage table name
+   -cfile              codon      [Ehuman.cut] Codon usage table name
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

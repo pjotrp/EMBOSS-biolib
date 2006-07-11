@@ -3,15 +3,19 @@
                                   reference (input USA)
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
-   -wordsize           integer    Word size
-*  -graph              graph      Graph type
-*  -xygraph            xygraph    Graph type
+   -wordsize           integer    [10] Word size (Integer 2 or more)
+*  -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+*  -xygraph            xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -[no]boxit          boolean    Draw a box around dotplot
+*  -[no]boxit          boolean    [Y] Draw a box around dotplot
 
    Advanced (Unprompted) qualifiers:
-   -stretch            toggle     Use non-proportional axes
+   -stretch            toggle     [N] Use non-proportional axes
 
    Associated qualifiers:
 

@@ -1,17 +1,22 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Protein sequence filename and optional
                                   format, or reference (input USA)
-   -graph              xygraph    Graph type
-  [-outfile]           outfile    Output file name
+   -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+  [-outfile]           outfile    [*.pepinfo] Output file name
 
    Additional (Optional) qualifiers:
-   -aaproperties       datafile   Amino acid properties filename
-   -aahydropathy       datafile   Hydropathy data filename
-   -hwindow            integer    Window size for hydropathy averaging
+   -aaproperties       datafile   [Eaa_properties.dat] Amino acid chemical
+                                  classes data file
+   -aahydropathy       datafile   [Eaa_hydropathy.dat] Amino acid hydropathy
+                                  values data file
+   -hwindow            integer    [9] Window size for hydropathy averaging
+                                  (Integer 1 or more)
 
    Advanced (Unprompted) qualifiers:
-   -[no]generalplot    boolean    Plot histogram of general properties
-   -[no]hydropathyplot boolean    Plot graphs of hydropathy
+   -[no]generalplot    boolean    [Y] Plot histogram of general properties
+   -[no]hydropathyplot boolean    [Y] Plot graphs of hydropathy
 
    Associated qualifiers:
 

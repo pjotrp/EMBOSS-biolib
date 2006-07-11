@@ -1,11 +1,13 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Input file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     ASCII text file
+  [-outfile]           outfile    [*.noreturn] ASCII text output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -system             menu       Target operating system for end-of-line
-                                  format
+   -system             menu       [unix] Target operating system for
+                                  end-of-line format (Values: unix (Unix/Linux
+                                  systems); pc (Windows/DOS); mac (Apple
+                                  Macintosh))
 
    Associated qualifiers:
 

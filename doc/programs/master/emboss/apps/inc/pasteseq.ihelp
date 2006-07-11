@@ -2,12 +2,12 @@
   [-asequence]         sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
   [-bsequence]         sequence   Sequence to insert
-   -pos                integer    The position in the main input sequence to
-                                  insert after.
+   -pos                integer    [$(asequence.end)] The position in the main
+                                  input sequence to insert after.
                                   To insert before the start use the position
-                                  0.
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+                                  0. (Integer 0 or more)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

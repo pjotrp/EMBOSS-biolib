@@ -1,14 +1,15 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-   -enzymes            string     Comma separated enzyme list
+   -enzymes            string     [all] Comma separated enzyme list (Any
+                                  string is accepted)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -sshow              boolean    Display untranslated sequence
-   -tshow              boolean    Display translated sequence
-   -allmut             boolean    Display all mutations
+   -sshow              boolean    [N] Display untranslated sequence
+   -tshow              boolean    [N] Display translated sequence
+   -allmut             boolean    [N] Display all mutations
 
    Associated qualifiers:
 

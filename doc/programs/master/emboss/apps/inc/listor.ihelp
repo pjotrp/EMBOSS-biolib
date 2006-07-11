@@ -3,12 +3,12 @@
                                   or reference (input USA)
   [-secondsequences]   seqset     Sequence set filename and optional format,
                                   or reference (input USA)
-  [-outfile]           outfile    The list of sequence names will be written
-                                  to this list file
+  [-outfile]           outfile    [*.listor] The list of sequence names will
+                                  be written to this list file
 
    Additional (Optional) qualifiers:
-   -operator           menu       The following logical operators combine the
-                                  sequences in the following ways:
+   -operator           menu       [OR] The following logical operators combine
+                                  the sequences in the following ways:
                                   OR - gives all that occur in one set or the
                                   other
                                   AND - gives only those which occur in both
@@ -17,7 +17,11 @@
                                   set or the other, but not in both
                                   NOT - gives those which occur in the first
                                   set except for those that also occur in the
-                                  second
+                                  second (Values: O (OR - merger of both
+                                  sets); A (AND - only those in both sets); X
+                                  (XOR - only those not in both sets); N (NOT
+                                  - those of the first set that are not in the
+                                  second))
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

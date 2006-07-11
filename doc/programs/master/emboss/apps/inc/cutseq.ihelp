@@ -1,14 +1,16 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
-   -from               integer    This is the start position (inclusive) of
-                                  the section of the sequence that you wish to
-                                  remove.
-   -to                 integer    This is the end position (inclusive) of the
-                                  section of the sequence that you wish to
-                                  remove.
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+   -from               integer    [Start of sequence (0)] This is the start
+                                  position (inclusive) of the section of the
+                                  sequence that you wish to remove. (Any
+                                  integer value)
+   -to                 integer    [End of sequence (0)] This is the end
+                                  position (inclusive) of the section of the
+                                  sequence that you wish to remove. (Any
+                                  integer value)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

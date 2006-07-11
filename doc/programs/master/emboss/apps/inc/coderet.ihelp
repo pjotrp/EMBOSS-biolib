@@ -1,16 +1,16 @@
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.coderet] Output file name
+  [-cdsoutseq]         seqoutall  [<sequence>.<format>] Coding nucleotide
+                                  output sequence(s) (optional)
+  [-mrnaoutseq]        seqoutall  Messenger RNA nucleotide output sequence(s)
+                                  (optional)
+  [-translationoutseq] seqoutall  Translated coding protein output sequence(s)
+                                  (optional)
 
    Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers:
-   -[no]cds            boolean    Extract CDS sequences
-   -[no]mrna           boolean    Extract mrna sequences
-   -[no]translation    boolean    Extract translated sequences
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-seqall" associated qualifiers
@@ -29,20 +29,44 @@
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
 
-   "-outseq" associated qualifiers
-   -osformat2          string     Output seq format
-   -osextension2       string     File name extension
-   -osname2            string     Base file name
-   -osdirectory2       string     Output directory
-   -osdbname2          string     Database name to add
-   -ossingle2          boolean    Separate file for each entry
-   -oufo2              string     UFO features
-   -offormat2          string     Features format
-   -ofname2            string     Features file name
-   -ofdirectory2       string     Output directory
-
    "-outfile" associated qualifiers
-   -odirectory3        string     Output directory
+   -odirectory2        string     Output directory
+
+   "-cdsoutseq" associated qualifiers
+   -osformat3          string     Output seq format
+   -osextension3       string     File name extension
+   -osname3            string     Base file name
+   -osdirectory3       string     Output directory
+   -osdbname3          string     Database name to add
+   -ossingle3          boolean    Separate file for each entry
+   -oufo3              string     UFO features
+   -offormat3          string     Features format
+   -ofname3            string     Features file name
+   -ofdirectory3       string     Output directory
+
+   "-mrnaoutseq" associated qualifiers
+   -osformat4          string     Output seq format
+   -osextension4       string     File name extension
+   -osname4            string     Base file name
+   -osdirectory4       string     Output directory
+   -osdbname4          string     Database name to add
+   -ossingle4          boolean    Separate file for each entry
+   -oufo4              string     UFO features
+   -offormat4          string     Features format
+   -ofname4            string     Features file name
+   -ofdirectory4       string     Output directory
+
+   "-translationoutseq" associated qualifiers
+   -osformat5          string     Output seq format
+   -osextension5       string     File name extension
+   -osname5            string     Base file name
+   -osdirectory5       string     Output directory
+   -osdbname5          string     Database name to add
+   -ossingle5          boolean    Separate file for each entry
+   -oufo5              string     UFO features
+   -offormat5          string     Features format
+   -ofname5            string     Features file name
+   -ofdirectory5       string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts

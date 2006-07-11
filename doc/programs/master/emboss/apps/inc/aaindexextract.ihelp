@@ -1,5 +1,5 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Full pathname of file aaindex1
+  [-infile]            infile     AAINDEX database file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

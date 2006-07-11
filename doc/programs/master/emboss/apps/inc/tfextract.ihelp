@@ -1,5 +1,5 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Full pathname of transfac SITE.DAT
+  [-infile]            infile     Transfac database sites file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

@@ -11,7 +11,7 @@
 
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
-   -oformat2           string     Output format specific to this output type
+   -oformat2           string     Output format specific to this data type
 
    General qualifiers:
    -auto               boolean    Turn off prompts

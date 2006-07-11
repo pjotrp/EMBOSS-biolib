@@ -1,7 +1,8 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.entret] Full text of a sequence database
+                                  entry output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:

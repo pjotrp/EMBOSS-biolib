@@ -1,13 +1,15 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-   -maxrepeat          integer    Maximum repeat size
-   -threshold          integer    Threshold score
+   -maxrepeat          integer    [600] Maximum repeat size (Any integer
+                                  value)
+   -threshold          integer    [20] Threshold score (Any integer value)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -origfile           outfile    Output file name
+   -origfile           outfile    [*.equicktandem] Sanger Centre program
+                                  quicktandem output file (optional)
 
    Associated qualifiers:
 

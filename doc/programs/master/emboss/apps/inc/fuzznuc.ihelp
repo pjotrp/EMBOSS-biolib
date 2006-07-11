@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -pattern            string     The standard IUPAC one-letter codes for the
+   -pattern            pattern    The standard IUPAC one-letter codes for the
                                   nucleotides are used.
                                   The symbol `n' is used for a position where
                                   any nucleotide is accepted.
@@ -30,12 +30,11 @@
                                   A period ends the pattern. (Optional in
                                   fuzznuc).
                                   For example, [CG](5)TG{A}N(1,5)C
-   -mismatch           integer    Number of mismatches
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -complement         boolean    Search complementary strand
+   -complement         boolean    [0] Search complementary strand
 
    Associated qualifiers:
 
@@ -54,6 +53,11 @@
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-pattern" associated qualifiers
+   -pformat            string     File format
+   -pmismatch          integer    Pattern mismatch
+   -pname              string     Pattern base name
 
    "-outfile" associated qualifiers
    -rformat2           string     Report format

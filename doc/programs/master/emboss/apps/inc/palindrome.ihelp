@@ -1,12 +1,16 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -minpallen          integer    Enter minimum length of palindrome
-   -maxpallen          integer    Enter maximum length of palindrome
-   -gaplimit           integer    Enter maximum gap between repeated regions
-   -nummismatches      integer    Number of mismatches allowed
-  [-outfile]           outfile    Output file name
-   -[no]overlap        boolean    Report overlapping matches
+   -minpallen          integer    [10] Enter minimum length of palindrome
+                                  (Integer 1 or more)
+   -maxpallen          integer    [100] Enter maximum length of palindrome
+                                  (Any integer value)
+   -gaplimit           integer    [100] Enter maximum gap between repeated
+                                  regions (Integer 0 or more)
+   -nummismatches      integer    [0] Number of mismatches allowed (Positive
+                                  integer)
+  [-outfile]           outfile    [*.palindrome] Output file name
+   -[no]overlap        boolean    [Y] Report overlapping matches
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

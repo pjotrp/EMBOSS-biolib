@@ -1,11 +1,12 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -score              integer    This sets the score for each CG sequence
-                                  found. A value of 17 is more sensitive, but
-                                  28 has also been used with some success.
-  [-outfile]           outfile    Output file name
-  [-outfeat]           featout    File for output features
+   -score              integer    [17] This sets the score for each CG
+                                  sequence found. A value of 17 is more
+                                  sensitive, but 28 has also been used with
+                                  some success. (Integer from 1 to 200)
+  [-outfile]           outfile    [*.cpgreport] Output file name
+  [-outfeat]           featout    [unknown.gff] File for output features
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

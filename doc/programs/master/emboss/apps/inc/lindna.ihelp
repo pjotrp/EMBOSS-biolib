@@ -1,44 +1,54 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Input file containing mapping data
-   -[no]ruler          boolean    Draw a ruler
-   -blocktype          menu       Type of blocks
-   -graphout           graph      Graph type
+  [-infile]            infile     [inputfile] Commands to the lindna drawing
+                                  program file
+   -[no]ruler          boolean    [Y] Draw a ruler
+   -blocktype          menu       [Filled] Type of blocks (Values: Open (Open
+                                  blocks); Filled (Filled blocks); Outline
+                                  (Black border))
+   -graphout           graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -maxgroups          integer    Maximum number of groups
-   -maxlabels          integer    Maximum number of labels
-   -intersymbol        selection  Type of junctions between blocks
-   -intercolour        integer    Colour of junctions between blocks (enter a
-                                  colour number)
-   -interticks         boolean    Horizontal junctions between ticks
-   -gapsize            integer    Interval between ticks in the ruler
-   -ticklines          boolean    Vertical lines at the ruler's ticks
-   -textheight         float      Height of text. Enter a number <1.0 or >1.0
-                                  to decrease or increase the size,
-                                  respectively
-   -textlength         float      Length of text. Enter a number <1.0 or >1.0
-                                  to decrease or increase the size,
-                                  respectively
-   -margin             float      Width of left margin. This is the region
-                                  left to the groups where the names of the
-                                  groups are displayed. Enter a number <1.0 or
+   -maxgroups          integer    [20] Maximum number of groups (Integer 1 or
+                                  more)
+   -maxlabels          integer    [10000] Maximum number of labels (Integer 1
+                                  or more)
+   -intersymbol        selection  [Straight] Type of junctions between blocks
+   -intercolour        integer    [1] Colour of junctions between blocks
+                                  (enter a colour number) (Integer from 0 to
+                                  15)
+   -interticks         boolean    [N] Horizontal junctions between ticks
+   -gapsize            integer    [500] Interval between ticks in the ruler
+                                  (Integer 0 or more)
+   -ticklines          boolean    [N] Vertical lines at the ruler's ticks
+   -textheight         float      [1.0] Height of text. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively
-   -tickheight         float      Height of ticks. Enter a number <1.0 or >1.0
-                                  to decrease or increase the size,
-                                  respectively
-   -blockheight        float      Height of blocks. Enter a number <1.0 or
+                                  respectively (Number 0.000 or more
+   -textlength         float      [1.0] Length of text. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively
-   -rangeheight        float      Height of range ends. Enter a number <1.0 or
+                                  respectively (Number 0.000 or more
+   -margin             float      [1.0] Width of left margin. This is the
+                                  region left to the groups where the names of
+                                  the groups are displayed. Enter a number
+                                  <1.0 or >1.0 to decrease or increase the
+                                  size, respectively (Number 0.000 or more
+   -tickheight         float      [1.0] Height of ticks. Enter a number <1.0
+                                  or >1.0 to decrease or increase the size,
+                                  respectively (Number 0.000 or more
+   -blockheight        float      [1] Height of blocks. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively
-   -gapgroup           float      Space between groups. Enter a number <1.0 or
-                                  >1.0 to decrease or increase the size,
-                                  respectively
-   -postext            float      Space between text and ticks, blocks, and
-                                  ranges. Enter a number <1.0 or >1.0 to
+                                  respectively (Number 0.000 or more
+   -rangeheight        float      [1.0] Height of range ends. Enter a number
+                                  <1.0 or >1.0 to decrease or increase the
+                                  size, respectively (Number 0.000 or more
+   -gapgroup           float      [1.0] Space between groups. Enter a number
+                                  <1.0 or >1.0 to decrease or increase the
+                                  size, respectively (Number 0.000 or more
+   -postext            float      [1.0] Space between text and ticks, blocks,
+                                  and ranges. Enter a number <1.0 or >1.0 to
                                   decrease or increase the size, respectively
+                                  (Number 0.000 or more
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
