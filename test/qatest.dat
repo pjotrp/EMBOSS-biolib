@@ -319,7 +319,7 @@ IN
 FI act1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 4921
+FC = 4962
 FP 47 /^acdProcess/
 FI stderr
 FC = 2
@@ -385,7 +385,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 1339
+FZ = 1426
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence filename and optional format, or\n/
@@ -403,9 +403,9 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 4301
+FZ = 4388
 FP 26 /   boolean /
-FP  6 /   integer /
+FP  7 /   integer /
 FP 26 /   string /
 FP /   [-]testalen           string     asequence length \.\.\./
 FP 0 /Warning: /
@@ -8441,11 +8441,16 @@ IN
 IN
 IN
 IN
+IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
+FI hsts1.fasta
+FC = 26
+FP 8 /^>/
+FP /^>HSTS1_12246_12296\nctcc.*ccatgcc\n>HSTS1_13886_13938\nggtatgg.*aggag/
 FI hsts1.inv
 FP /Score 236: 108/130 \( 83%\) matches, 0 gaps/
 //
@@ -10369,16 +10374,16 @@ FP 0 /Died: /
 FI makeseq.fasta
 FC = 300
 FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
-FP /\A>EMBOSS_001\ngttgctatgttt.*attctaaca\ntaaaattgt.*ttctcggta\n/
+FP /\A>EMBOSS_001\nggtccgaggggta.*gataaaa\ntaaaatg.*cccta\n/
 //
 
 ID makenucseq-ex2
 UC Providing a codon usage file specifies the sequence composition.
 UC This Pseudomonas aeruginosa file specifies a high GC content.
 AP makenucseq
-IN
-IN
 IN Epseae.cut
+IN
+IN
 IN
 FI stderr
 FC = 2
@@ -10389,6 +10394,62 @@ FI makeseq.fasta
 FC = 300
 FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
 FP /\A>EMBOSS_001\ngggcgtctg.*gtcaacttc\ngcgcggcag.*gtgcgcgaa\n/
+//
+
+ID pepstats-keep
+AP pepstats
+DL keep
+IN tsw:laci_ecoli
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.pepstats
+FZ = 1500
+FP /^Molecular weight = 38563\.97/
+FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
+FP /^Isoelectric Point = 6\.8820\n/
+FP /^A280 Molar Extinction Coefficient  = 21620\s+\n/
+FP /^A280 Extinction Coefficient 1mg/ml = 0.56\s+\n/
+FP /^Improbability of expression in inclusion bodies = 0\.670\n/
+FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
+FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+121\s+33\.611\n/
+//
+
+ID makeprotseq-ex
+AP makeprotseq
+IN
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI makeseq.fasta
+FC = 300
+FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
+FP /\A>EMBOSS_001\nnrvlhpepnprt.*lmmydsqfwcdfe\nwadcc.*gkkvd\n>/
+//
+
+ID makeprotseq-ex2
+AP makeprotseq
+IN ../pepstats-keep/laci_ecoli.pepstats
+IN
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI makeseq.fasta
+FC = 300
+FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
+FP /\A>EMBOSS_001\neqngievef.*avpdkallvv\nnllvla.*kssnv\n>/
 //
 
 ID marscan-ex
@@ -11069,27 +11130,6 @@ FP /^Text1 x1 139.599991 y1 93.500000 colour 1 size 0.750000 D\n/
 FP /^Rectangle x1 134.499985 y1 85.430000 x2 137.499985 y2 88.430000 colour 9\n/
 //
 
-ID pepstats-ex
-AP pepstats
-IN tsw:laci_ecoli
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI laci_ecoli.pepstats
-FZ = 1500
-FP /^Molecular weight = 38563\.97/
-FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
-FP /^Isoelectric Point = 6\.8820\n/
-FP /^A280 Molar Extinction Coefficient  = 21620\s+\n/
-FP /^A280 Extinction Coefficient 1mg/ml = 0.56\s+\n/
-FP /^Improbability of expression in inclusion bodies = 0\.670\n/
-FP /^A = Ala\s+44\s+12\.222\s+1\.421\s+\n/
-FP /^Tiny\s+\(A\+C\+G\+S\+T\)\s+121\s+33\.611\n/
-//
-
 ID pepwheel-ex
 AP pepwheel
 CL tsw:hbb_human -send 30
@@ -11604,9 +11644,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hd_fugru.prophet
-FP /^Score: 170.08\n/
-FP /^Consensus +15 +ELSAVDKAWVKAN\.SVAEVGGHALERGLFASEPMTLEFFDTFKYL 58 +\n/
-FP /^HBA_HUMAN +1 +VLSPADKTNVKAAWG\.GKVGAHAGEYGAEALERMFLSFPTTKTYF 44 +\n/
+FP /^# Score: 170.08\n/
+FP /^globins +15 ELSAVDKAWVKAN-SVAEVGGHALERGLFASEPMTLEFFDTFKYLSTFDL +63\n/
+FP /^HBA_HUMAN +1 VLSPADKTNVKAAWG-GKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDL +49\n/
 //
 
 ID prosextract-keep
@@ -20719,7 +20759,7 @@ FP /CCF FILE:.*/1cs4.ccf \([1-3]\/3\)/
 FP /CCF FILE:.*/1ii7.ccf \([1-3]\/3\)/
 FP /CCF FILE:.*/2hhb.ccf \([1-3]\/3\)/
 FI stderr
-FZ = 315
+FC = 2
 FP 0 /^Warning:/
 FP 0 /^Error:/
 FP 0 /^Died:/
@@ -21340,7 +21380,6 @@ IN 1
 IN 
 IN 
 IN 
-CC output filenames sort differently
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -21349,13 +21388,13 @@ FP 0 /Died: /
 FI stdout
 FC = 0
 FZ = 0
-FI 101.1.F.#.1ii7.d1ii7a_.sig
-FC = 30
-FZ = 318
-FP  /^IN   /
-FI 101.2.F.#.1cs4.d1cs4a_.sig
+FI 101.1.F.#.1cs4.d1cs4a_.sig
 FC = 62
 FZ = 610
+FP  /^IN   /
+FI 101.2.F.#.1ii7.d1ii7a_.sig
+FC = 30
+FZ = 318
 FP  /^IN   /
 FI FOK.1.F.#.1cs4.d1cs4a_.sig
 FC = 22
@@ -21680,7 +21719,7 @@ AB hmmernew
 RQ hmmer
 AA ehmmbuild
 DL keep
-CL ../../data/hmmnew/globins50.msf globin.hmm -n globins50 -strategy D
+CL ../../data/hmmnew/globins50.msf globin.hmm -nhmm globins50 -strategy D
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -21703,7 +21742,7 @@ AB hmmernew
 RQ hmmer
 AA ehmmbuild
 DL keep
-CL ../../data/hmmnew/rrm.sto myhmms -n rrm -strategy D
+CL ../../data/hmmnew/rrm.sto myhmms -nhmm rrm -strategy D
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -21727,7 +21766,7 @@ AA ehmmbuild
 DL keep
 ## myhmms is overwritten, so copy file to ensure output of previous test is not overwritten.
 PP cp ../ehmmbuild-ex2-keep/myhmms ./
-CL ../../data/hmmnew/fn3.sto myhmms -n fn3 -strategy D
+CL ../../data/hmmnew/fn3.sto myhmms -nhmm fn3 -strategy D
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -21753,7 +21792,7 @@ AA ehmmbuild
 DL keep
 ## myhmms is overwritten, so copy file to ensure output of previous test is not overwritten.
 PP cp ../ehmmbuild-ex3-keep/myhmms ./
-CL ../../data/hmmnew/pkinase.sto myhmms -n pkinase -strategy D
+CL ../../data/hmmnew/pkinase.sto myhmms -nhmm pkinase -strategy D
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -22453,9 +22492,9 @@ FP /^Most distant seq:    6%\n/
 # MEME
 #######################################
 
-ID meme-ex
+ID omeme-ex
 AB meme
-AA meme
+AA omeme
 CL -protein
 IN ../../data/memepep.dat
 IN
@@ -22466,7 +22505,7 @@ FC = 6
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI carp_rhich.meme
+FI carp_rhich.omeme
 FC = 359
 FP /^MOTIF\s+1\s+width =\s+8\s+sites =\s+5.0\n/
 FP /MOTIF\s+2\s+width =\s+15\s+sites =\s+5.0\n/
@@ -22499,7 +22538,7 @@ FP /^Motif detection\n/
 FI stdout
 FC = 0
 FI ex1.html
-FC =1314
+FC =1341
 FP /^ce1cg                    1.0000    105  ara                      1.0000    105  \n/
 FP /^bglr1                    1.0000    105  crp                      1.0000    105  \n/
 //
@@ -22518,7 +22557,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex2.html
-FC =1304
+FC =1331
 FP /^ce1cg                    1.0000    105  ara                      1.0000    105  \n/
 FP /^bglr1                    1.0000    105  crp                      1.0000    105  \n/
 //
@@ -22537,7 +22576,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex3.html
-FC =1383
+FC =1410
 FP /^ce1cg                    1.0000    105  ara                      1.0000    105  \n/
 FP /^bglr1                    1.0000    105  crp                      1.0000    105  \n/
 //
@@ -22556,7 +22595,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex4.html
-FC =1192
+FC =1219
 FP /^CHO1                     1.0000    800  CHO2                     1.0000    800  \n/
 FP /^FAS1                     1.0000    800  FAS2                     1.0000    800  \n/
 //
@@ -22575,7 +22614,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex5.html
-FC =1480
+FC =1500
 FP /^ICYA_MANSE               1.0000    189  LACB_BOVIN               1.0000    178  \n/
 FP /^BBP_PIEBR                1.0000    173  RETB_BOVIN               1.0000    183  \n/
 //
@@ -22594,7 +22633,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex6.html
-FC =1746
+FC =1766
 FP /^RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  \n/
 FP /^BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  \n/
 //
@@ -22613,7 +22652,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex7.html
-FC =2037
+FC =2057
 FP /^RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  \n/
 FP /^BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  \n/
 //
@@ -22632,7 +22671,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex8.html
-FC =2476
+FC =2496
 FP /^RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  \n/
 FP /^BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  \n/
 //
@@ -22652,7 +22691,7 @@ FP /^Motif detection\n/
 FI stdout
 FC =0
 FI ex9.html
-FC =7811
+FC =7759
 FP /^2BHD_STREX               1.0000    255  3BHD_COMTE               1.0000    253  \n/
 FP /^ADH_DROME                1.0000    255  AP27_MOUSE               1.0000    244  \n/
 //
@@ -22662,10 +22701,11 @@ AB memenew
 RQ meme
 AA emast
 ## PP cp ../ememe-ex1-keep/ex1.html .
-## Cannot use ouptput of ememe-ex1-keep test as input, because temporary sequence file
-## named in /ememe-ex1-keep/ex1.html after "DATAFILE" will have been deleted.  Instead 
-## use data/memenew/ex1.html which names the sequence file "crp0.s": which must be copied 
-## to the test directory. 
+## Cannot use ouptput of ememe-ex1-keep test as input,
+## because temporary sequence file named in /ememe-ex1-keep/ex1.html
+## after "DATAFILE" will have been deleted.
+## Instead use data/memenew/ex1.html which names the sequence file "crp0.s"
+## which must be copied to the test directory. 
 PP cp ../../data/memenew/crp0.s .
 CL ../../data/memenew/ex1.html ex1.out
 IN
@@ -23685,13 +23725,13 @@ FI dnaml.fdnamlk
 FC = 89
 FP /^        1           0.264            0.522\n/
 FP /^        2           2.000\n/
-FP /^Ln Likelihood =   -60.826[0-9][0-9]\n/
-FP /^ +2 +Gamma +4.54360 +0.90684\n/
+FP /^Ln Likelihood =   -60.782[0-9][0-9]\n/
+FP /^ +2 +Gamma +4.52915 +0.90799\n/
 FP /^             1121121111 111\n/
 FI dnaml.treefile
 FC = 2
-FP /^\(\(Epsilon:0.61427,Delta:0.61427\):3.92933,\(Gamma:0.90684,\n/
-FP /^\(Beta:0.65105,Alpha:0.65105\):0.25578\):3.63676\);\n/
+FP /^\(\(Epsilon:0.58058,Delta:0.58058\):3.94856,\(Gamma:0.90799,\n/
+FP /^\(Beta:0.67846,Alpha:0.67846\):0.22953\):3.62116\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -23885,11 +23925,11 @@ IN ../../data/evolution/factor.dat
 IN
 FI factor.ffactor
 FC = 5
-FP /^ +4 +8\n/
-FP /^Alpha     11100000\n/
-FP /^Beta      10001001\n/
-FP /^Gamma     00011100\n/
-FP /^Epsilon   11101010\n/
+FP /^ +4 +5\n/
+FP /^Alpha     CA00\#\n/
+FP /^Beta      BB01\%\n/
+FP /^Gamma     AB12\#\n/
+FP /^Epsilon   CA01\$\n/
 FI factor.factor
 FC = 0
 FI factor.ancestor
@@ -24656,6 +24696,474 @@ IN
 FI hsfau.crystalball
 FC = 9
 FP 9 /:/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+#######################################
+# VIENNA
+#######################################
+
+ID vrnaalifold-ex
+AB vienna
+AA vrnaalifold
+IN ../../data/ecoli6s.fasta
+IN
+FI ecoli6s.vrnaalifold
+FC = 2
+FP /\(-56\.91 \= -48\.71 \+  -8\.20\) \n/
+FP /^\.\.\.\.\(\(\(\(\(\(\(\(\(\(\(\.\(\(\(\.\..*\)\)\.\)\)\)\)\)\)\.\.\.\.\. /
+FI ecoli6s.ssps
+FC = 500
+FP /^%%Pages: 1\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnaalifoldpf-ex
+AB vienna
+AA vrnaalifoldpf
+IN ../../data/ecoli6s.fasta
+IN
+FI ecoli6s.ssps
+FC = 500
+FP /^%%Pages: 1\n/
+FI ecoli6s.ps
+FC = 334
+FP /^%%Pages: 1\n/
+FI ecoli6s.vrnaalifoldpf
+FC = 177
+FP /\(-56\.91 \= -48\.71 \+  -8\.20\) \n/
+FP /^\.\.\.\.\(\(\(\(\(\(\(\(\(\(\(\.\(\(\(\.\..*\)\)\.\)\)\)\)\)\)\.\.\.\.\. /
+FP /^\.\.\.\.\(\(.*\.\.\{\.\(\(\..*\)\)\.\.\.\.\. \[-59\.30\]\n/
+FP /^ frequency of mfe structure in ensemble 0\.0206905\n/
+FP /^7 sequences; length of alignment 203\n/
+FP /^   64   142  0 100.0\%   0.000 CG:1    GC:4    UG:1    UA:1   \n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnacofold-ex
+AB vienna
+AA vrnacofold
+## Example from Algorithms Mol Biol. 2006; 1: 3.
+## Partition function and base pairing probabilities of RNA heterodimers
+## Stephan H Bernhart, Hakim Tafer, Ulrike Mückstein, Christoph Flamm,
+## Peter F Stadler and Ivo L Hofacker
+IN ../../data/cofold-red.fasta
+IN ../../data/cofold-blue.fasta
+IN
+FI red.vrnacofold
+FC = 2
+FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
+FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
+FI red.ssps
+FC = 131
+FP /^%%Pages: 1\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnacofoldconc-ex
+AB vienna
+AA vrnacofoldconc
+IN ../../data/cofold-red.fasta
+IN ../../data/cofold-blue.fasta
+IN ../../data/cofold-conc.dat
+IN
+FI red.vrnacofoldconc
+FC = 17
+FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
+FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
+FP /^Expinit2 = 0.513986\n/
+FP /^tab = -1.738299\ttaa = 4.679345\ttbb = -12.558919\n/
+FP /^-5.884889\t-0.208509\t-16.658920\t-0.003662\t-4.266495\n/
+FP /^10.000000\t+0.000000\t+0.000000\t+4.053814\t+0.000000\t+1.892373\t+0.000000 f\n/
+FI red.ssps
+FC = 131
+FP /^%%Pages: 1\n/
+FI red.aps
+FC = 123
+FP /^%%Pages: 1\n/
+FI red.aaps
+FC = 162
+FP /^%%Pages: 1\n/
+FI red.abps
+FC = 209
+FP /^%%Pages: 1\n/
+FI red.bps
+FC = 139
+FP /^%%Pages: 1\n/
+FI red.bbps
+FC = 152
+FP /^%%Pages: 1\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnacofoldpf-ex
+AB vienna
+AA vrnacofoldpf
+IN ../../data/cofold-red.fasta
+IN ../../data/cofold-blue.fasta
+IN
+FI red.vrnacofoldpf
+FC = 4
+FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
+FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
+FP /^\.\.\.\.\(\(\(\(\,\.\.\.\)\)\)\}\(\(\(\.\.\.\.\)\)\)\. \[ -5\.88\]\n/
+FP /^ frequency of mfe structure in ensemble 0.279849\n/
+FI red.ps
+FC = 207
+FP /^%%Pages: 1\n/
+FI red.ssps
+FC = 131
+FP /^%%Pages: 1\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnadistance-ex
+AB vienna
+AA vrnadistance
+CL -distance "f,h" -doalignment
+IN ../../data/rna4.fold
+IN
+FI rna4.vrnadistance
+FC = 7
+FP /^f: 26  \n/
+FP /^h: 32  \n/
+FP /^\(_____\(\.\(\(\(__\(\(\(\(\.\.\.\.\._____\)\)\)\)_\)\)\)\.\)\)\.\.\.\.\(\(\.\.\(\(\(\(\.\.\.\.\.\)\)\)\)\.\)\)\.\n/
+FP /^_\.\.\.\.\.\(_\(\(\(\.\.\(\(\(\(\.\.\.\.\.\.\.\.\.\.\)\)\)\)\.\)\)\)_\)_\.\.\.\.__\.__\(\(\(\.\.\.\._\)\)\)_\.___\n/
+FP /^\(____\(\(U1\)\(\(U5_\)P7\)\(U1\)P2\)\(U4\)\(\(U2\)\(\(U5\)P4\)\(U1\)P2\)\(U1\)R1\)\n/
+FP /^\(\(U5\)\(\(U2\)\(\(U10\)P4\)\(U1\)P4\)\(U5\)_____\(\(U4\)P3\)\(U1\)_______R1\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnaduplex-ex
+AB vienna
+AA vrnaduplex
+IN ../../data/cofold-red.fasta
+IN ../../data/cofold-blue.fasta
+IN
+FI red.vrnaduplex
+FC = 1
+FP /^\.\(\.\(\(\(\(\(\.\&\.\)\)\)\)\)\.\)\.   1\,9   :   6\,14  \(-4\.10\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnaeval-ex
+AB vienna
+AA vrnaeval
+IN ../../data/evalrna.fasta
+IN ../../data/eval1.con
+IN
+FI eval.vrnaeval
+FC = 2
+FP /^GGGGCCCCC\n/
+FP /^\(\.\.\.\)\.\.\.\. \(  4\.90\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnaeval-test2
+AB vienna
+AA vrnaeval
+IN ../../data/evalrna.fasta
+IN ../../data/eval2.con
+IN
+FI eval.vrnaeval
+FC = 2
+FP /^GGGGCCCCC\n/
+FP /^\(\.\.\.\.\)\.\.\. \(  1\.90\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnaeval-test3
+AB vienna
+AA vrnaeval
+IN ../../data/evalrna.fasta
+IN ../../data/eval3.con
+IN
+FI eval.vrnaeval
+FC = 2
+FP /^GGGGCCCCC\n/
+FP /^\.\.\.\(\.\.\.\.\) \(  4\.90\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnaevalpair-ex
+AB vienna
+AA vrnaevalpair
+IN ../../data/cofold-red.fasta
+IN ../../data/cofold-red.con
+IN ../../data/cofold-blue.fasta
+IN ../../data/cofold-blue.con
+IN
+FI red.vrnaevalpair
+FC = 2
+FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
+FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnafold-keep
+AB vienna
+AA vrnafold
+DL keep
+IN ../../data/rna1.seq
+IN
+FI rna1.ssps
+FC = 147
+FP /^%%Pages: 1\n/
+FI rna1.vrnafold
+FC = 2
+FP /^CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA\n/
+FP /^\.\(\(\(\.\.\(\(\.\.\.\.\)\)\.\(\(\(\(\(\.\.\.\.\.\.\.\.\)\)\)\)\)\.\.\)\)\)\.\. \( -3\.50\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnafold-ex2
+AB vienna
+AA vrnafold
+CL  -constraintfile ../../data/rna1.fold
+IN  ../../data/rna1.seq
+IN
+FI rna1.ssps
+FC = 146
+FP /^%%Pages: 1\n/
+FI rna1.vrnafold
+FC = 2
+FP /^CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA\n/
+FP /^\.\.\.\(\(\(\(\.\.\(\(\(\(\(\.\.\.\.\.\)\)\)\)\)\.\.\.\)\)\)\)\.\.\.\.\.\.\.\.\. \( -2\.20\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnafoldpf-ex
+AB vienna
+AA vrnafoldpf
+CL -temperature 42
+IN  ../../data/rna2.seq
+IN
+FI rna2.ssps
+FC = 130
+FP /%%Pages: 1\n/
+FI rna2.ps
+FC = 182
+FP /%%Pages: 1\n/
+FI rna2.vrnafoldpf
+FC = 5
+FP /\.\.\.\.\.\(\(\(\(\(\.\.\.\.\.\)\)\)\)\)\.\.\.\.\.\.\.\. \( -3\.47\)\n/
+FP /\.\.\{\(\,\(\(\(\(\(\.\.\.\.\.\)\)\)\}\}\.\}\}\,\,\.\.\. \[ -4\.45\]\n/
+FP / frequency of mfe structure in ensemble 0\.209182\n/
+FP / ensemble diversity 3\.04  \n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnaheat-ex
+AB vienna
+AA vrnaheat
+CL -mintemp 30 -maxtemp 120 -step 0.1 -smoothing 4
+IN ../../data/cofold-red.fasta
+IN
+FI red.vrnaheat
+FC = 900
+FP /^74\.2\s+0\.000322\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnainverse-ex
+AB vienna
+AA vrnainverse
+TI 120
+CL -repeats 3 -succeed
+IN ../../data/rna3.fold
+IN
+FI rna3.vrnainverse
+FC = 3
+FP 3 /^[ACGU]{76}   [0-9][0-9]\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnainverse-ex2
+AB vienna
+AA vrnainverse
+CL -folding partition -repeats 3
+IN ../../data/rna3.fold
+IN
+FI rna3.vrnainverse
+FC = 3
+FP 3 /^[ACGU]{76}   [0-9][0-9]  \(0\.[0-9][0-9][0-9][0-9][0-9][0-9]\)\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnalfold-ex
+AB vienna
+AA vrnalfold
+IN tembl:hsts1
+IN
+FI hsts1.vrnalfold
+FC = 952
+FP /^\.\(\(\(\.\.\.\.\.\(\(\(\(\(\.\.\.\.\.\.\)\)\)\)\)\.\.\.\(\(\.\.\.\.\)\)\.\.\.\.\.\.\.\)\)\)\. \(-10\.40\) 13193\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+
+ID vrnaplot-ex
+AB vienna
+AA vrnaplot
+IN ../vrnafold-keep/rna1.vrnafold
+IN
+FI rna1.vrnaplot
+FC = 147
+FP /%%Pages: 1\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+//
+
+
+ID vrnasubopt-ex
+AB vienna
+AA vrnasubopt
+IN ../../data/rna1.seq
+IN
+FI rna1.vrnasubopt
+FC = 9
+FP /^> rna1 \[100\]\n/
+FP /^CACTACTCCAAGGACCGTATCTTTCTCAGTGCGACAGTAA   -380    100\n/
+FP /^\.\.\.\(\(\(\(\(\.\.\.\.\)\)\.\(\(\(\(\.\(\(\.\.\.\.\.\)\)\)\)\)\)\.\.\.\)\)\)\.  -2\.80\n/
+FP /^\.\.\.\(\(\(\(\(\.\.\.\.\)\)\.\(\(\(\(\(\.\.\.\.\.\.\.\.\)\)\)\)\)\.\.\.\)\)\)\.  -3\.80\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
