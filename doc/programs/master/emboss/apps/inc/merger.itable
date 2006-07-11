@@ -30,7 +30,7 @@
 <td>[-outseq]<br>(Parameter 4)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -49,14 +49,14 @@
 <tr>
 <td>-gapopen</td>
 <td>Gap opening penalty</td>
-<td>Number from 0.000 to 100.000</td>
+<td>Number from 0.000 to 100.000)</td>
 <td>@($(acdprotein)? 50.0 : 50.0 )</td>
 </tr>
 
 <tr>
 <td>-gapextend</td>
 <td>Gap extension penalty</td>
-<td>Number from 0.000 to 10.000</td>
+<td>Number from 0.000 to 10.000)</td>
 <td>@($(acdprotein)? 5.0 : 5.0)</td>
 </tr>
 

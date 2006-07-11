@@ -8,7 +8,6 @@
 Protein pattern search after translation
 Input nucleotide sequence(s): <b>tembl:rnops</b>
 Search pattern: <b>RA</b>
-Number of mismatches [0]: <b></b>
 Translation frames
          1 : 1
          2 : 2

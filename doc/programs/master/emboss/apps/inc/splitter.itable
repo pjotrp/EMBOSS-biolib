@@ -16,7 +16,7 @@
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -39,10 +39,31 @@
 <td>0</td>
 </tr>
 
+<tr>
+<td>-source</td>
+<td>Split using source features with /oridif qualifiers</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-multifile</td>
+<td>Split sequence into multiple files</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
 <tr bgcolor="#FFFFCC">
 <th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
 <th align="left">Allowed values</th>
 <th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-feature</td>
+<td>Use feature information</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr>

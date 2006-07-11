@@ -30,14 +30,14 @@
 <td>[-outseq]<br>(Parameter 3)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 4)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.megamerger</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

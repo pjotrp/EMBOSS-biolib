@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-infile]<br>(Parameter 2)</td>
-<td>Primer file</td>
+<td>Primer pairs file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.stssearch</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

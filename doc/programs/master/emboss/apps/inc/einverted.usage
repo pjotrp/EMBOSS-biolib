@@ -10,7 +10,8 @@ Gap penalty [12]: <b></b>
 Minimum score threshold [50]: <b></b>
 Match score [3]: <b></b>
 Mismatch score [-4]: <b></b>
-Output file [hsts1.inv]: <b></b>
+Sanger Centre program inverted output file [hsts1.inv]: <b></b>
+File for sequence of regions of inverted repeats. [hsts1.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

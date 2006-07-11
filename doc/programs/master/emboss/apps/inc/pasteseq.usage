@@ -8,7 +8,7 @@ To insert the sequence 'tsw:flav_nossm' after position 67 in sequence 'tsw:amir_
 
 % <b>pasteseq tsw:amir_pseae tsw:flav_nossm -pos=67 </b>
 Insert one sequence into another
-Output sequence [amir_pseae.fasta]: <b></b>
+output sequence [amir_pseae.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

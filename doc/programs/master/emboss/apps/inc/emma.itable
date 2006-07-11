@@ -16,14 +16,14 @@
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence set filename and optional format (output USA)</td>
 <td>Writeable sequences</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-dendoutfile]<br>(Parameter 3)</td>
-<td>Dendogram output filename</td>
+<td>Dendrogram (tree file) from clustalw output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.emma</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -48,7 +48,7 @@
 
 <tr>
 <td>-dendfile</td>
-<td>Name of old dendrogram file</td>
+<td>Dendrogram (tree file) from clustalw file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -73,8 +73,8 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 </tr>
 
 <tr>
-<td>-pairwisedata</td>
-<td>Filename of user pairwise matrix</td>
+<td>-pairwisedatafile</td>
+<td>Comparison matrix file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -93,14 +93,14 @@ We also supply an identity matrix which gives a score of 1.0 to two identical am
 
 <tr>
 <td>-dnamatrix</td>
-<td>This gives a menu where you are offered amenu where a single matrix (not a series) can be selected.</td>
+<td>This gives a menu where a single matrix (not a series) can be selected.</td>
 <td><table><tr><td>i</td> <td><i>(iub)</i></td></tr><tr><td>c</td> <td><i>(clustalw)</i></td></tr><tr><td>o</td> <td><i>(own)</i></td></tr></table></td>
 <td>i</td>
 </tr>
 
 <tr>
-<td>-mamatrix</td>
-<td>Filename of user multiple alignment matrix</td>
+<td>-mamatrixfile</td>
+<td>Comparison matrix file (optional)'</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -116,14 +116,14 @@ The slow-accurate method is fine for short sequences but will be VERY SLOW for m
 <tr>
 <td>-pwgapopen</td>
 <td>The penalty for opening a gap in the pairwise alignments.</td>
-<td>Number 0.000 or more</td>
+<td>Number 0.000 or more)</td>
 <td>10.0</td>
 </tr>
 
 <tr>
 <td>-pwgapextend</td>
 <td>The penalty for extending a gap by 1 residue in the pairwise alignments.</td>
-<td>Number 0.000 or more</td>
+<td>Number 0.000 or more)</td>
 <td>0.1</td>
 </tr>
 

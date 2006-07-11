@@ -8,7 +8,7 @@
 # Program: digest
 # Rundate: Sat Jul 15 2006 12:00:00
 # Commandline: digest
-#    -sequence tsw:opsd_human
+#    -seqall tsw:opsd_human
 # Report_format: seqtable
 # Report_file: opsd_human.digest
 ########################################

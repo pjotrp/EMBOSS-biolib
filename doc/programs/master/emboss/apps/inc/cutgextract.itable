@@ -7,16 +7,16 @@
 
 <tr>
 <td>[-directory]<br>(Parameter 1)</td>
-<td>CUTG directory</td>
+<td>Codon usage directories</td>
 <td>Directory with files</td>
 <td>.</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>General log output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.cutgextract</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

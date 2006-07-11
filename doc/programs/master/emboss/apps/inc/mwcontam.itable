@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-files]<br>(Parameter 1)</td>
-<td>Comma separated file list</td>
+<td>Molecular weights file list</td>
 <td>Comma-separated file list</td>
 <td><i>comma-separated file list</i></td>
 </tr>
@@ -15,15 +15,15 @@
 <tr>
 <td>-tolerance</td>
 <td>Ppm tolerance</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>50.0</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Molecular weights output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.mwcontam</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

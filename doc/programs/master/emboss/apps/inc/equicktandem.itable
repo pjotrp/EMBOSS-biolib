@@ -51,9 +51,9 @@
 
 <tr>
 <td>-origfile</td>
-<td>Output file name</td>
+<td>Sanger Centre program quicktandem output file (optional)</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.equicktandem</td>
+<td>&nbsp;</td>
 </tr>
 
 </table>

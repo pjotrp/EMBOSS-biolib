@@ -8,7 +8,6 @@
 Protein pattern search
 Input protein sequence(s): <b>tsw:*</b>
 Search pattern: <b>[FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G</b>
-Number of mismatches [0]: <b></b>
 Output report [100k_rat.fuzzpro]: <b></b>
 
 </pre></td></tr></table><p>

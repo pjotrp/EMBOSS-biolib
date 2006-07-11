@@ -7,7 +7,7 @@
 % <b>getorf -minsize 300 </b>
 Finds and extracts open reading frames (ORFs)
 Input nucleotide sequence(s): <b>tembl:eclaci</b>
-Output sequence [eclaci.orf]: <b></b>
+protein output sequence(s) [eclaci.orf]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

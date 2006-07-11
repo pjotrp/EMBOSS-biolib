@@ -60,7 +60,7 @@ PpiI</td>
 
 <tr>
 <td>-datafile</td>
-<td>Alternative RE data file</td>
+<td>Restriction enzyme data file (optional)</td>
 <td>Data file</td>
 <td><i>File in the data file path</i></td>
 </tr>

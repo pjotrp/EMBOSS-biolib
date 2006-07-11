@@ -49,7 +49,7 @@ qanxflatall:hsfau1
 # Trying 'tpir:hsfau1'
 # Failed 'tpir:hsfau1'
 # Trying 'qasrswww:hsfau1'
-qasrswww:hsfau1
+# Failed 'qasrswww:hsfau1'
 # Trying 'qanxfasta:hsfau1'
 # Failed 'qanxfasta:hsfau1'
 # Trying 'qanxgcgall:hsfau1'

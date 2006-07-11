@@ -39,6 +39,20 @@
 </tr>
 
 <tr>
+<td>-[no]columns</td>
+<td>Set this option on (Y) to print the sequence information into neat, aligned columns in the output file. Alternatively, leave it unset (N), in which case the information records will be delimited by a character, which you may specify by using the -delimiter option. In other words, if -columns is set on, the -delimiter option is overriden.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-delimiter</td>
+<td>This string, which is usually a single character only, is used to delimit individual records in the text output file. It could be a space character, a tab character, a pipe character or any other character or string.</td>
+<td>Any string is accepted</td>
+<td>|</td>
+</tr>
+
+<tr>
 <td>-only</td>
 <td>This is a way of shortening the command line if you only want a few things to be displayed. Instead of specifying:
 '-nohead -noname -noacc -notype -nopgc -nodesc'
@@ -49,10 +63,10 @@ to get only the length output, you can specify
 </tr>
 
 <tr>
-<td>-heading</td>
+<td>-[no]heading</td>
 <td>Display column headings</td>
 <td>Boolean value Yes/No</td>
-<td>@(!$(only))</td>
+<td>Yes</td>
 </tr>
 
 <tr>

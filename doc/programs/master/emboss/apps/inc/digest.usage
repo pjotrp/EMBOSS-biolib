@@ -6,7 +6,7 @@
 
 % <b>digest </b>
 Protein proteolytic enzyme or reagent cleavage digest
-Input protein sequence: <b>tsw:opsd_human</b>
+Input protein sequence(s): <b>tsw:opsd_human</b>
 Enzymes and Reagents
          1 : Trypsin
          2 : Lys-C

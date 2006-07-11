@@ -21,7 +21,7 @@
 
 <tr>
 <td>-custom</td>
-<td>Name of data file</td>
+<td>Transfac database data file (optional)</td>
 <td>Data file</td>
 <td><i>File in the data file path</i></td>
 </tr>
@@ -37,7 +37,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.tfscan</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

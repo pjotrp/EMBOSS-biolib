@@ -6,9 +6,9 @@
 
 % <b>primersearch tembl:z52466 </b>
 Searches DNA sequences for matches with primer pairs
-Primer file: <b>primers</b>
+Primer pairs file: <b>primers</b>
 Allowed percent mismatch [0]: <b></b>
-Output file [hsa203yc1.primersearch]: <b></b>
+Whitehead primer3_core program output file [hsa203yc1.primersearch]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -24,9 +24,9 @@ Here we run the same example but allowing 20% mismatch between the primers and t
 
 % <b>primersearch tembl:z52466 </b>
 Searches DNA sequences for matches with primer pairs
-Primer file: <b>primers</b>
+Primer pairs file: <b>primers</b>
 Allowed percent mismatch [0]: <b>20</b>
-Output file [hsa203yc1.primersearch]: <b></b>
+Whitehead primer3_core program output file [hsa203yc1.primersearch]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

@@ -16,7 +16,7 @@
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Protein sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -6,7 +6,7 @@
 
 % <b>profit </b>
 Scan a sequence or database with a matrix or profile
-Profile or matrix file: <b>outfile.prophecy</b>
+Profile or weight matrix file: <b>outfile.prophecy</b>
 Input sequence(s): <b>tsw:*</b>
 Output file [outfile.profit]: <b></b>
 

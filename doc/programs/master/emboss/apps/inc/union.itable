@@ -16,7 +16,7 @@
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -26,7 +26,10 @@
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-overlapfile</td>
+<td>Sequence overlaps output file (optional)</td>
+<td>Output file</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -36,7 +39,24 @@
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-feature</td>
+<td>Use feature information</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-source</td>
+<td>Create source features</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-findoverlap</td>
+<td>Look for overlaps when joining</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 </table>

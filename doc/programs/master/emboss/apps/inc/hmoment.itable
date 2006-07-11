@@ -23,7 +23,7 @@
 <td>-outfile</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.hmoment</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -62,7 +62,7 @@
 <tr>
 <td>-baseline</td>
 <td>Graph marker line</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>0.35</td>
 </tr>
 

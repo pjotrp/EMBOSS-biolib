@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.btwisted</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -37,14 +37,14 @@
 
 <tr>
 <td>-angledata</td>
-<td>File containing base pair twist angles</td>
+<td>DNA base pair twist angle data file</td>
 <td>Data file</td>
 <td>Eangles.dat</td>
 </tr>
 
 <tr>
 <td>-energydata</td>
-<td>File containing base pair stacking energies</td>
+<td>DNA base pair stacking energies data file</td>
 <td>Data file</td>
 <td>Eenergy.dat</td>
 </tr>

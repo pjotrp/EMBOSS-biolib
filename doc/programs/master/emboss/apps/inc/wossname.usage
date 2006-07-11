@@ -108,6 +108,8 @@ entret           Reads and writes (returns) flatfile entries
 extractfeat      Extract features from a sequence
 extractseq       Extract regions from a sequence
 listor           Write a list file of the logical OR of two sets of sequences
+makenucseq       Creates random nucleotide sequences
+makeprotseq      Creates random protein sequences
 maskfeat         Mask off features of a sequence
 maskseq          Mask off regions of a sequence
 newseq           Type in a short new sequence
@@ -406,12 +408,14 @@ pepwindowall     Displays protein hydropathy of a set of sequences
 PROTEIN MOTIFS
 antigenic        Finds antigenic sites in proteins
 digest           Protein proteolytic enzyme or reagent cleavage digest
+emast            Motif detection
+ememe            Motif detection
 epestfind        Finds PEST motifs as potential proteolytic cleavage sites
 fuzzpro          Protein pattern search
 fuzztran         Protein pattern search after translation
 helixturnhelix   Report nucleic acid binding motifs
-meme             Motif detection
 oddcomp          Find protein sequence regions with a biased composition
+omeme            Motif detection
 patmatdb         Search a protein sequence with a motif
 patmatmotifs     Search a PROSITE motif database with a protein sequence
 pepcoil          Predicts coiled coil regions
@@ -569,8 +573,10 @@ ehmmpfam         Search one or more sequences against an HMM database
 ehmmsearch       Search a sequence database with a profile HMM
 einverted        Finds DNA inverted repeats
 ekitsch          Fitch-Margoliash method with contemporary tips
+emast            Motif detection
 embossdata       Finds or fetches data files read by EMBOSS programs
 embossversion    Writes the current EMBOSS version number
+ememe            Motif detection
 emix             Mixed parsimony algorithm
 emma             Multiple alignment program - interface to ClustalW program
 emnu             Simple menu of EMBOSS applications
@@ -649,13 +655,14 @@ isochore         Plots isochores in large DNA sequences
 libgen           Generate discriminating elements from alignments
 lindna           Draws linear maps of DNA constructs
 listor           Write a list file of the logical OR of two sets of sequences
+makenucseq       Creates random nucleotide sequences
+makeprotseq      Creates random protein sequences
 marscan          Finds MAR/SAR sites in nucleic sequences
 maskfeat         Mask off features of a sequence
 maskseq          Mask off regions of a sequence
 matcher          Finds the best local alignments between two sequences
 matgen3d         Generate a 3D-1D scoring matrix from CCF files
 megamerger       Merge two large overlapping nucleic acid sequences
-meme             Motif detection
 merger           Merge two overlapping sequences
 msbar            Mutate sequence beyond all recognition
 mse              Multiple Sequence Editor
@@ -682,6 +689,7 @@ ohmmfetch        Extract HMM from a database
 ohmmindex        Index an HMM database
 ohmmpfam         Align single sequence with an HMM
 ohmmsearch       Search sequence database with an HMM
+omeme            Motif detection
 palindrome       Looks for inverted repeats in a nucleotide sequence
 pasteseq         Insert one sequence into another
 patmatdb         Search a protein sequence with a motif

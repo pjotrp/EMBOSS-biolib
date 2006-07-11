@@ -19,15 +19,16 @@
 # Sequence: HHTETRA     from: 1   to: 1272
 # HitCount: 2
 #
-# Pattern: AAGCTT
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 AAGCTT
+# 
 # Complement: No
 #
 #=======================================
 
-  Start     End Mismatch Sequence
-      1       6        . aagctt
-   1267    1272        . aagctt
+  Start     End Pattern_name Mismatch Sequence
+      1       6 pattern1            . aagctt
+   1267    1272 pattern1            . aagctt
 
 #---------------------------------------
 #---------------------------------------

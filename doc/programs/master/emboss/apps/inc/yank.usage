@@ -12,7 +12,7 @@ Input (gapped) sequence: <b>tembl:hsfau1</b>
      Begin at position [start]: <b>1913</b>
        End at position [end]: <b>1915</b>
         Reverse strand [N]: <b></b>
-Output file [hsfau1.yank]: <b>cds.list</b>
+List of USAs output file [hsfau1.yank]: <b>cds.list</b>
 
 </pre></td></tr></table><p>
 <p>

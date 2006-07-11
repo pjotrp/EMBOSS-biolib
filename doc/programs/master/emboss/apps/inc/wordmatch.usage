@@ -8,8 +8,8 @@
 Finds all exact matches of a given size between 2 sequences
 Word size [4]: <b></b>
 Output alignment [hba_human.wordmatch]: <b></b>
-Output features [HBA_HUMAN.gff]: <b></b>
-Second output features [HBB_HUMAN.gff]: <b></b>
+Features output [HBA_HUMAN.gff]: <b></b>
+Second features output [HBB_HUMAN.gff]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

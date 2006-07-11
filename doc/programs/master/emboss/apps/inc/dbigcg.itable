@@ -49,9 +49,9 @@
 
 <tr>
 <td>-outfile</td>
-<td>Output file name</td>
+<td>General log output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.dbigcg</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -114,7 +114,7 @@
 
 <tr>
 <td>-indexoutdir</td>
-<td>Index directory</td>
+<td>Index file output directory</td>
 <td>Output directory</td>
 <td>.</td>
 </tr>

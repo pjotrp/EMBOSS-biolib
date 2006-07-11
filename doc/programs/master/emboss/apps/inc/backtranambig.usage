@@ -7,7 +7,7 @@
 % <b>backtranambig </b>
 Back translate a protein sequence to ambiguous codons
 Input (gapped) protein sequence: <b>tsw:opsd_human</b>
-Output sequence [opsd_human.fasta]: <b></b>
+(gapped) nucleotide output sequence [opsd_human.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

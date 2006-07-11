@@ -86,7 +86,7 @@
 
 <tr>
 <td>-indexoutdir</td>
-<td>Index directory</td>
+<td>Index file output directory</td>
 <td>Output directory</td>
 <td>.</td>
 </tr>

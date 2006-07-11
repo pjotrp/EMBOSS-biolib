@@ -6,7 +6,7 @@
 
 % <b>lindna -graph cps </b>
 Draws linear maps of DNA constructs
-Input file containing mapping data [inputfile]: <b>data.linp</b>
+Commands to the lindna drawing program file [inputfile]: <b>data.linp</b>
 Draw a ruler [Y]: <b></b>
       Open : Open blocks
     Filled : Filled blocks

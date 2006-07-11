@@ -9,7 +9,7 @@ To search for entries in swissprot with at least 1 SR AND at least 2 RS:
 % <b>oddcomp </b>
 Find protein sequence regions with a biased composition
 Input protein sequence(s): <b>tsw:*</b>
-Compseq output file to use for expected word frequencies: <b>oddcomp.comp</b>
+Program compseq output file: <b>oddcomp.comp</b>
 Window size to consider (e.g. 30 aa) [30]: <b></b>
 Output file [100k_rat.oddcomp]: <b>out.odd</b>
 

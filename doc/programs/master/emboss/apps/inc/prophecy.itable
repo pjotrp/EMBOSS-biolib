@@ -43,14 +43,14 @@
 <tr>
 <td>-open</td>
 <td>Gap opening penalty</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>3.0</td>
 </tr>
 
 <tr>
 <td>-extension</td>
 <td>Gap extension penalty</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>0.3</td>
 </tr>
 
@@ -58,7 +58,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.prophecy</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

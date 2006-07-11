@@ -6,9 +6,9 @@
 
 % <b>mwfilter </b>
 Filter noisy molwts from mass spec output
-Molecular weight file input: <b>molwts.dat</b>
+Molecular weights file: <b>molwts.dat</b>
 Ppm tolerance [50.0]: <b></b>
-Output file [molwts.mwfilter]: <b></b>
+Molecular weights output file [molwts.mwfilter]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

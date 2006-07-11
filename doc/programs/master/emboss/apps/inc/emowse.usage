@@ -7,7 +7,7 @@
 % <b>emowse </b>
 Protein identification by mass spectrometry
 Input protein sequence(s): <b>tsw:*</b>
-Name of molecular weight data file: <b>test.mowse</b>
+Peptide molecular weight values file: <b>test.mowse</b>
 Whole sequence molwt [0]: <b></b>
 Output file [100k_rat.emowse]: <b></b>
 

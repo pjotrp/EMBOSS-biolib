@@ -114,3 +114,116 @@ SQ   SEQUENCE   360 AA;  38564 MW;  4CA5A1D6 CRC32;
 //
 </pre>
 </td></tr></table><p>
+
+<a name="input.2"></a>
+<h3>Input files for usage example 2</h3>
+<p><h3>Database entry: tsw:ifna2_human</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+ID   IFNA2_HUMAN    STANDARD;      PRT;   188 AA.
+AC   P01563; P01564; Q14606; Q96KI6;
+DT   21-JUL-1986, integrated into UniProtKB/Swiss-Prot.
+DT   21-JUL-1986, sequence version 1.
+DT   27-JUN-2006, entry version 72.
+DE   Interferon alpha-2 precursor (Interferon alpha-A) (LeIF A).
+GN   Name=IFNA2;
+OS   Homo sapiens (Human).
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
+OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+OC   Catarrhini; Hominidae; Homo.
+OX   NCBI_TaxID=9606;
+RN   [1]
+RP   NUCLEOTIDE SEQUENCE.
+RX   MEDLINE=81052322; PubMed=6159538; DOI=10.1038/287411a0;
+RA   Goeddel D.V., Yelverton E., Ullrich A., Heyneker H.L., Miozzari G.,
+RA   Holmes W., Seeburg P.H., Dull T.J., May L., Stebbing N., Crea R.,
+RA   Maeda S., McCandliss R., Sloma A., Tabor J.M., Gross M.,
+RA   Familletti P.C., Pestka S.;
+RT   "Human leukocyte interferon produced by E. coli is biologically
+RT   active.";
+RL   Nature 287:411-416(1980).
+RN   [2]
+RP   NUCLEOTIDE SEQUENCE.
+RX   MEDLINE=81148795; PubMed=6163083; DOI=10.1038/290020a0;
+RA   Goeddel D.V., Leung D.W., Dull T.J., Gross M., Lawn R.M.,
+RA   McCandliss R., Seeburg P.H., Ullrich A., Yelverton E., Gray P.W.;
+RT   "The structure of eight distinct cloned human leukocyte interferon
+RT   cDNAs.";
+RL   Nature 290:20-26(1981).
+RN   [3]
+RP   NUCLEOTIDE SEQUENCE.
+RX   MEDLINE=82060261; PubMed=6170983;
+RA   Lawn R.M., Gross M., Houck C.M., Franke A.E., Gray P.V., Goeddel D.V.;
+RT   "DNA sequence of a major human leukocyte interferon gene.";
+RL   Proc. Natl. Acad. Sci. U.S.A. 78:5435-5439(1981).
+RN   [4]
+RP   NUCLEOTIDE SEQUENCE.
+RC   TISSUE=Bone marrow tumor;
+RX   MEDLINE=86069501; PubMed=3906813;
+RA   Oliver G., Balbas P., Valle F., Soberon X., Bolivar F.;
+RT   "Cloning of human leukocyte interferon cDNA and a strategy for its
+RT   production in E. coli.";
+RL   Rev. Latinoam. Microbiol. 27:141-150(1985).
+RN   [5]
+RP   NUCLEOTIDE SEQUENCE.
+RC   TISSUE=Placenta;
+RX   MEDLINE=98357449; PubMed=9694076;
+RA   Austruy E., Bagnis C., Carbuccia N., Maroc C., Birg F., Dubreuil P.,
+RA   Mannoni P., Chabannon C.;
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+DR   Ensembl; ENSG00000188379; Homo sapiens.
+DR   HGNC; HGNC:5423; IFNA2.
+DR   MIM; 147562; gene.
+DR   LinkHub; P01563; -.
+DR   RZPD-ProtExp; A0813; -.
+DR   RZPD-ProtExp; IOH35221; -.
+DR   RZPD-ProtExp; RZPDo834E0933; -.
+DR   GO; GO:0005132; F:interferon-alpha/beta receptor binding; TAS.
+DR   GO; GO:0007166; P:cell surface receptor linked signal transdu...; TAS.
+DR   GO; GO:0007267; P:cell-cell signaling; TAS.
+DR   GO; GO:0006917; P:induction of apoptosis; TAS.
+DR   GO; GO:0006954; P:inflammatory response; TAS.
+DR   InterPro; IPR009079; 4_helix_cytokine.
+DR   InterPro; IPR000471; Interferon_abd.
+DR   PANTHER; PTHR11691; Interferon_abd; 1.
+DR   Pfam; PF00143; Interferon; 1.
+DR   PRINTS; PR00266; INTERFERONAB.
+DR   ProDom; PD000550; Interferon_abd; 1.
+DR   SMART; SM00076; IFabd; 1.
+DR   PROSITE; PS00252; INTERFERON_A_B_D; 1.
+KW   3D-structure; Antiviral defense; Cytokine; Direct protein sequencing;
+KW   Glycoprotein; Pharmaceutical; Polymorphism; Signal.
+FT   SIGNAL        1     23
+FT   CHAIN        24    188       Interferon alpha-2.
+FT                                /FTId=PRO_0000016360.
+FT   CARBOHYD    129    129       O-linked (GalNAc...).
+FT                                /FTId=CAR_000049.
+FT   DISULFID     24    121
+FT   DISULFID     52    161
+FT   VARIANT      46     46       K -&gt; R (in alpha-2B and alpha-2C).
+FT                                /FTId=VAR_004012.
+FT   VARIANT      57     57       H -&gt; R (in alpha-2C).
+FT                                /FTId=VAR_013001.
+FT   HELIX        33     44
+FT   TURN         49     54
+FT   HELIX        63     66
+FT   HELIX        76     91
+FT   HELIX        93     98
+FT   HELIX       101    123
+FT   TURN        126    127
+FT   TURN        133    133
+FT   HELIX       134    155
+FT   TURN        156    157
+FT   HELIX       160    178
+FT   TURN        179    182
+SQ   SEQUENCE   188 AA;  21550 MW;  101DD21D394CBF97 CRC64;
+     MALTFALLVA LLVLSCKSSC SVGCDLPQTH SLGSRRTLML LAQMRKISLF SCLKDRHDFG
+     FPQEEFGNQF QKAETIPVLH EMIQQIFNLF STKDSSAAWD ETLLDKFYTE LYQQLNDLEA
+     CVIQGVGVTE TPLMKEDSIL AVRKYFQRIT LYLKEKKYSP CAWEVVRAEI MRSFSLSTNL
+     QESLRSKE
+//
+</pre>
+</td></tr></table><p>

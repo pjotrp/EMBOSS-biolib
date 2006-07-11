@@ -7,11 +7,11 @@
 % <b>vectorstrip @vecseqs.list </b>
 Strips out DNA between a pair of vector sequences
 Are your vector sequences in a file? [Y]: <b></b>
-Name of vectorfile: <b>vectors</b>
+Cloning vector definition file (optional): <b>vectors</b>
 Max allowed % mismatch [10]: <b></b>
 Show only the best hits (minimise mismatches)? [Y]: <b></b>
 Output file [pbluescript.vectorstrip]: <b>vector.strip</b>
-Output sequence [pbluescript.fasta]: <b>vector.fasta</b>
+output sequence(s) [pbluescript.fasta]: <b>vector.fasta</b>
 
 </pre></td></tr></table><p>
 <p>

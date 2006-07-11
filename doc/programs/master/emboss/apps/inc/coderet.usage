@@ -9,8 +9,10 @@ To extract all of the CDS, mRNA and the protein translations:
 % <b>coderet </b>
 Extract CDS, mRNA and translations from feature tables
 Input nucleotide sequence(s): <b>tembl:X03487</b>
-Output sequence [hsferg1.fasta]: <b></b>
 Output file [hsferg1.coderet]: <b></b>
+Coding nucleotide output sequence(s) (optional) [hsferg1.cds]: <b></b>
+Messenger RNA nucleotide output sequence(s) (optional) [hsferg1.mrna]: <b></b>
+Translated coding protein output sequence(s) (optional) [hsferg1.prot]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -27,8 +29,8 @@ To only extract the mRNA sequence:
 % <b>coderet -nocds -notranslation </b>
 Extract CDS, mRNA and translations from feature tables
 Input nucleotide sequence(s): <b>tembl:X03487</b>
-Output sequence [hsferg1.fasta]: <b></b>
 Output file [hsferg1.coderet]: <b></b>
+Messenger RNA nucleotide output sequence(s) (optional) [hsferg1.mrna]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

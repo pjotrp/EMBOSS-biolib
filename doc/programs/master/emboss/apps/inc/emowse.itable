@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-infile]<br>(Parameter 2)</td>
-<td>Name of molecular weight data file</td>
+<td>Peptide molecular weight values file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -30,7 +30,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.emowse</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -51,14 +51,14 @@
 
 <tr>
 <td>-aadata</td>
-<td>Molecular weight data for amino acids</td>
+<td>Amino acids properties and molecular weight data file</td>
 <td>Data file</td>
 <td>Eamino.dat</td>
 </tr>
 
 <tr>
 <td>-frequencies</td>
-<td>Frequencies file</td>
+<td>Amino acid frequencies data file</td>
 <td>Data file</td>
 <td>Efreqs.dat</td>
 </tr>
@@ -80,14 +80,14 @@
 <tr>
 <td>-tolerance</td>
 <td>Tolerance</td>
-<td>Number from 0.100 to 1.000</td>
+<td>Number from 0.100 to 1.000)</td>
 <td>0.1</td>
 </tr>
 
 <tr>
 <td>-partials</td>
 <td>Partials factor</td>
-<td>Number from 0.100 to 1.000</td>
+<td>Number from 0.100 to 1.000)</td>
 <td>0.4</td>
 </tr>
 

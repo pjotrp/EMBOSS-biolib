@@ -16,14 +16,14 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.sixpack</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-outseq</td>
 <td>ORF sequence output</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

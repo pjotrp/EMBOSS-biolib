@@ -23,7 +23,7 @@
 <td>-outfile</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.syco</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -66,7 +66,7 @@
 <tr>
 <td>-minimum</td>
 <td>Minimum value for a common codon</td>
-<td>Number from 0.000 to 0.990</td>
+<td>Number from 0.000 to 0.990)</td>
 <td>.15</td>
 </tr>
 

@@ -6,7 +6,7 @@
 
 % <b>findkm -graph cps </b>
 Find Km and Vmax for an enzyme reaction
-Enter name of file containing data: <b>enztest.dat</b>
+Enzyme kinetics data (application-specific) file: <b>enztest.dat</b>
 Output file [enztest.findkm]: <b></b>
 
 Created findkm.ps

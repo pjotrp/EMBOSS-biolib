@@ -21,7 +21,7 @@
 
 <tr>
 <td>-vectorsfile</td>
-<td>Name of vectorfile</td>
+<td>Cloning vector definition file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -58,14 +58,14 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vectorstrip</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outseq]<br>(Parameter 4)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

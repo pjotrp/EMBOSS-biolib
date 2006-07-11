@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.pepinfo</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -34,14 +34,14 @@
 
 <tr>
 <td>-aaproperties</td>
-<td>Amino acid properties filename</td>
+<td>Amino acid chemical classes data file</td>
 <td>Data file</td>
 <td>Eaa_properties.dat</td>
 </tr>
 
 <tr>
 <td>-aahydropathy</td>
-<td>Hydropathy data filename</td>
+<td>Amino acid hydropathy values data file</td>
 <td>Data file</td>
 <td>Eaa_hydropathy.dat</td>
 </tr>

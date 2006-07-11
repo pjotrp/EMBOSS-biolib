@@ -16,7 +16,7 @@
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -71,14 +71,14 @@ If you wish to extract more than one type, separate their names with the charact
 <tr>
 <td>-minscore</td>
 <td>If this is greater than or equal to the maximum score, then any score is permitted</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>0.0</td>
 </tr>
 
 <tr>
 <td>-maxscore</td>
 <td>If this is less than or equal to the maximum score, then any score is permitted</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>0.0</td>
 </tr>
 

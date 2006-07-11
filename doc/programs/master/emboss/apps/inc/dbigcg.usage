@@ -16,7 +16,7 @@ Database directory [.]: <b>embl</b>
 Wildcard database filename [*.seq]: <b></b>
 Release number [0.0]: <b></b>
 Index date [00/00/00]: <b></b>
-Output file [outfile.dbigcg]: <b></b>
+General log output file [outfile.dbigcg]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

@@ -20,7 +20,7 @@
 
 <tr>
 <td>-outfile</td>
-<td>Output file name</td>
+<td>Program documentation text output file</td>
 <td>Output file</td>
 <td>stdout</td>
 </tr>

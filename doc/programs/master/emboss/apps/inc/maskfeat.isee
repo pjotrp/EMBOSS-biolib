@@ -52,6 +52,16 @@
 </tr>
 
 <tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
+</tr>
+
+<tr>
 <td><a href="maskseq.html">maskseq</a></td>
 <td>Mask off regions of a sequence</td>
 </tr>

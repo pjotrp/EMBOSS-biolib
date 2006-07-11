@@ -6,7 +6,7 @@
 
 % <b>prosextract </b>
 Build the PROSITE motif database for use by patmatmotifs
-Name of prosite directory [.]: <b></b>
+PROSITE database directory [.]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

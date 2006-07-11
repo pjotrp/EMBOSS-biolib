@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-prositedir]<br>(Parameter 1)</td>
-<td>Name of prosite directory</td>
+<td>PROSITE database directory</td>
 <td>Directory</td>
 <td>&nbsp;</td>
 </tr>

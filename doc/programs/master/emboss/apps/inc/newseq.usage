@@ -15,7 +15,7 @@ Type of sequence
          P : Protein
 Type of sequence [N]: <b>p</b>
 Enter the sequence: <b>KKKEERADLIAY</b>
-Output sequence [outfile.fasta]: <b>swiss::mycc.pep</b>
+output sequence [outfile.fasta]: <b>swiss::mycc.pep</b>
 
 </pre></td></tr></table><p>
 <p>

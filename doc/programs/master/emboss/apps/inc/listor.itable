@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>The list of sequence names will be written to this list file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.listor</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

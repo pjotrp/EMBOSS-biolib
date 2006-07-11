@@ -29,21 +29,21 @@
 <tr>
 <td>-dnaconc</td>
 <td>Enter DNA concentration (nM)</td>
-<td>Number from 1.000 to 100000.000</td>
+<td>Number from 1.000 to 100000.000)</td>
 <td>50.</td>
 </tr>
 
 <tr>
 <td>-saltconc</td>
 <td>Enter salt concentration (mM)</td>
-<td>Number from 1.000 to 1000.000</td>
+<td>Number from 1.000 to 1000.000)</td>
 <td>50.</td>
 </tr>
 
 <tr>
 <td>-mintemp</td>
 <td>Enter a minimum value for the temperature scale (y-axis) of the plot.</td>
-<td>Number from 0.000 to 150.000</td>
+<td>Number from 0.000 to 150.000)</td>
 <td>55.</td>
 </tr>
 
@@ -77,14 +77,14 @@
 <tr>
 <td>-formamide</td>
 <td>This specifies the percent formamide to be used in calculations (it is ignored unless -product is used).</td>
-<td>Number from 0.000 to 100.000</td>
+<td>Number from 0.000 to 100.000)</td>
 <td>0.</td>
 </tr>
 
 <tr>
 <td>-mismatch</td>
 <td>This specifies the percent mismatch to be used in calculations (it is ignored unless -product is used).</td>
-<td>Number from 0.000 to 100.000</td>
+<td>Number from 0.000 to 100.000)</td>
 <td>0.</td>
 </tr>
 
@@ -105,7 +105,7 @@
 <tr>
 <td>-temperature</td>
 <td>If -thermo has been specified then this specifies the temperature at which to calculate the DeltaG, DeltaH and DeltaS values.</td>
-<td>Number from 0.000 to 100.000</td>
+<td>Number from 0.000 to 100.000)</td>
 <td>25.</td>
 </tr>
 

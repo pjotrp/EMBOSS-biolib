@@ -7,14 +7,14 @@
 
 <tr>
 <td>[-estsequence]<br>(Parameter 1)</td>
-<td>EST sequence(s)</td>
+<td>Spliced EST nucleotide sequence(s)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-genomesequence]<br>(Parameter 2)</td>
-<td>Genomic sequence</td>
+<td>Unspliced genomic nucleotide sequence</td>
 <td>Readable sequence</td>
 <td><b>Required</b></td>
 </tr>
@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.est2genome</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -112,7 +112,7 @@
 <td>-space</td>
 <td>For linear-space recursion. If product of sequence lengths divided by 4 exceeds this then a divide-and-conquer strategy is used to control the memory requirements. In this way very long sequences can be aligned.
 If you have a machine with plenty of memory you can raise this parameter (but do not exceed the machine's physical RAM)</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>10.0</td>
 </tr>
 

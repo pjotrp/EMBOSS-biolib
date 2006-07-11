@@ -23,7 +23,7 @@
 <td>-outfile</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.charge</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -47,7 +47,7 @@
 
 <tr>
 <td>-aadata</td>
-<td>Amino acid property data file name</td>
+<td>Amino acids properties and molecular weight data file</td>
 <td>Data file</td>
 <td>Eamino.dat</td>
 </tr>

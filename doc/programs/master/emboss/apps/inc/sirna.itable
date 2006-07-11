@@ -23,7 +23,7 @@
 <td>[-outseq]<br>(Parameter 3)</td>
 <td>This is a file of the sequences of the 23 base regions that the siRNAs are selected from. You may use it to do searches of mRNA databases (e.g. REFSEQ) to confirm that the probes are unique to the gene you wish to use it on.</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

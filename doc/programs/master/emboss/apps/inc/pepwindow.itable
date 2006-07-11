@@ -27,7 +27,7 @@
 
 <tr>
 <td>-datafile</td>
-<td>Aaindex database file</td>
+<td>AAINDEX entry data file</td>
 <td>Data file</td>
 <td>Enakai.dat</td>
 </tr>

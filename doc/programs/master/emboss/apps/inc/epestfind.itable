@@ -30,7 +30,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Name of file to which results will be written.</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.epestfind</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
@@ -48,7 +48,7 @@
 
 <tr>
 <td>-aadata</td>
-<td>File of amino acid properties and molecular masses.</td>
+<td>Amino acids properties and molecular weight data file</td>
 <td>Data file</td>
 <td>Eamino.dat</td>
 </tr>
@@ -56,7 +56,7 @@
 <tr>
 <td>-threshold</td>
 <td>Threshold value to discriminate weak from potential PEST motifs. Valid PEST motifs are discriminated into 'poor' and 'potential' motifs depending on this threshold score. By default, the default value is set to +5.0 based on experimental data. Alterations are not recommended since significance is a matter of biology, not mathematics.</td>
-<td>Number from -55.00 to 55.00</td>
+<td>Number from -55.00 to 55.00)</td>
 <td>+5.0</td>
 </tr>
 

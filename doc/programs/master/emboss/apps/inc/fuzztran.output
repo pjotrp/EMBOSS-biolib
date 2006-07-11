@@ -21,23 +21,23 @@
 # Sequence: RNOPS     from: 1   to: 1493
 # HitCount: 9
 #
-# Pattern: RA
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 RA
 # TransTable: 0
 # Frames: F
 #
 #=======================================
 
-  Start     End   Score Mismatch  Frame PStart   PEnd Translation
-     97     102       2        .      1     33     34 RA         
-    133     138       2        .      1     45     46 RA         
-    421     426       2        .      1    141    142 RA         
-    625     630       2        .      1    209    210 RA         
-    835     840       2        .      1    279    280 RA         
-    919     924       2        .      1    307    308 RA         
-    227     232       2        .      2     76     77 RA         
-    752     757       2        .      2    251    252 RA         
-     72      77       2        .      3     24     25 RA         
+  Start     End   Score Pattern_name Mismatch  Frame PStart   PEnd Translation
+     97     102       2 pattern1            .      1     33     34 RA         
+    133     138       2 pattern1            .      1     45     46 RA         
+    421     426       2 pattern1            .      1    141    142 RA         
+    625     630       2 pattern1            .      1    209    210 RA         
+    835     840       2 pattern1            .      1    279    280 RA         
+    919     924       2 pattern1            .      1    307    308 RA         
+    227     232       2 pattern1            .      2     76     77 RA         
+    752     757       2 pattern1            .      2    251    252 RA         
+     72      77       2 pattern1            .      3     24     25 RA         
 
 #---------------------------------------
 #---------------------------------------

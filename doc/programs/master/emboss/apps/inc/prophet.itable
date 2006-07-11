@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-infile]<br>(Parameter 2)</td>
-<td>Profile or matrix file</td>
+<td>Profile or weight matrix file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -22,22 +22,22 @@
 <tr>
 <td>-gapopen</td>
 <td>Gap opening coefficient</td>
-<td>Number from 0.000 to 100.000</td>
+<td>Number from 0.000 to 100.000)</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-gapextend</td>
 <td>Gap extension coefficient</td>
-<td>Number from 0.000 to 100.000</td>
+<td>Number from 0.000 to 100.000)</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.prophet</td>
+<td>Output alignment file name</td>
+<td>Alignment output file</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

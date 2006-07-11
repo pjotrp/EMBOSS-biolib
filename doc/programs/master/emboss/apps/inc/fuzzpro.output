@@ -19,12 +19,12 @@
 # Sequence: 100K_RAT     from: 1   to: 889
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -33,12 +33,12 @@
 # Sequence: 5H1D_FUGRU     from: 1   to: 379
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -47,37 +47,23 @@
 # Sequence: ACT1_FUGRU     from: 1   to: 375
 # HitCount: 1
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
-     53      63        . YVGDEAQSKRG
+  Start     End Pattern_name Mismatch Sequence
+     53      63 pattern1            . YVGDEAQSKRG
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
-
-#---------------------------------------
-#---------------------------------------
-#=======================================
-#
-# Sequence: OPS2_PATYE     from: 1   to: 399
-# HitCount: 0
-#
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
-#
-#=======================================
-
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -86,12 +72,12 @@
 # Sequence: OPS2_SCHGR     from: 1   to: 380
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -100,12 +86,26 @@
 # Sequence: AQP1_HUMAN     from: 1   to: 269
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
+
+#---------------------------------------
+#---------------------------------------
+#=======================================
+#
+# Sequence: IFNA2_HUMAN     from: 1   to: 188
+# HitCount: 0
+#
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
+#
+#=======================================
+
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------

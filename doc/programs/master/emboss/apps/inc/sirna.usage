@@ -8,7 +8,7 @@
 Finds siRNA duplexes in mRNA
 Input nucleotide sequence(s): <b>tembl:hsfau</b>
 Output report [hsfau.sirna]: <b></b>
-Output sequence [hsfau.fasta]: <b></b>
+output sequence(s) [hsfau.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -26,7 +26,7 @@ Show the first two bases of the 23 base target region in brackets. These do not 
 Finds siRNA duplexes in mRNA
 Input nucleotide sequence(s): <b>tembl:hsfau</b>
 Output report [hsfau.sirna]: <b></b>
-Output sequence [hsfau.fasta]: <b></b>
+output sequence(s) [hsfau.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Molecular weight file input</td>
+<td>Molecular weights file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -15,15 +15,15 @@
 <tr>
 <td>-tolerance</td>
 <td>Ppm tolerance</td>
-<td>Any numeric value</td>
+<td>Any numeric value)</td>
 <td>50.0</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Molecular weights output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.mwfilter</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -47,7 +47,7 @@
 
 <tr>
 <td>-datafile</td>
-<td>Data file of noisy molecular weights</td>
+<td>Molecular weight standards data file</td>
 <td>Data file</td>
 <td>Emwfilter.dat</td>
 </tr>

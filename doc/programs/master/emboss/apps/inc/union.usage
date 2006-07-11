@@ -9,7 +9,7 @@ the file 'cds.list' contains a list of the regions making up the coding sequence
 % <b>union </b>
 Reads sequence fragments and builds one sequence
 Input (gapped) sequence(s): <b>@cds.list</b>
-Output sequence [hsfau1.fasta]: <b></b>
+output sequence [hsfau1.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

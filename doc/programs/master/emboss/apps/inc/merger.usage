@@ -7,9 +7,9 @@
 % <b>merger </b>
 Merge two overlapping sequences
 Input sequence: <b>tembl:eclacy</b>
-Second nucleotide sequence: <b>tembl:eclaca</b>
+Second sequence: <b>tembl:eclaca</b>
 Output alignment [eclacy.merger]: <b></b>
-Output sequence [eclacy.fasta]: <b></b>
+output sequence [eclacy.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

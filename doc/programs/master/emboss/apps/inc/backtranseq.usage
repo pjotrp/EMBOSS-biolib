@@ -9,7 +9,7 @@ Note that this is a human protein and so the default human codon frequency file 
 % <b>backtranseq </b>
 Back translate a protein sequence
 Input (gapped) protein sequence: <b>tsw:opsd_human</b>
-Output sequence [opsd_human.fasta]: <b></b>
+(gapped) nucleotide output sequence [opsd_human.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -26,7 +26,7 @@ This uses a drosophila sequence and codon table.
 % <b>backtranseq -cfile Edrome.cut </b>
 Back translate a protein sequence
 Input (gapped) protein sequence: <b>tsw:ach2_drome</b>
-Output sequence [ach2_drome.fasta]: <b></b>
+(gapped) nucleotide output sequence [ach2_drome.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

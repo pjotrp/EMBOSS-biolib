@@ -11,7 +11,7 @@ Multiple substitution correction methods for proteins
          1 : Jukes-Cantor
          2 : Kimura Protein
 Method to use [0]: <b>2</b>
-Output file [pax.distmat]: <b></b>
+Phylip distance matrix output file [pax.distmat]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

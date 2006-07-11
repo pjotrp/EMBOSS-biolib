@@ -6,8 +6,8 @@
 
 % <b>abiview -graph cps </b>
 Reads ABI file and display the trace
-ABI trace file: <b>abiview.abi</b>
-Output sequence [abiview.fasta]: <b></b>
+ABI sequencing trace file: <b>abiview.abi</b>
+nucleotide output sequence [abiview.fasta]: <b></b>
 
 Created abiview.ps
 

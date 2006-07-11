@@ -23,15 +23,8 @@ Repetition of an element of the pattern can be indicated by following that eleme
 When a pattern is restricted to either the N- or C-terminal of a sequence, that pattern either starts with a `<' symbol or respectively ends with a `>' symbol.
 A period ends the pattern. (Optional in fuzzpro).
 For example, [DE](2)HS{P}X(2)PX(2,4)C</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
-</tr>
-
-<tr>
-<td>-mismatch</td>
-<td>Number of mismatches</td>
-<td>Integer 0 or more</td>
-<td>0</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>

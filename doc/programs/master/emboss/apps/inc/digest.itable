@@ -6,9 +6,9 @@
 </tr>
 
 <tr>
-<td>[-sequence]<br>(Parameter 1)</td>
-<td>Protein sequence filename and optional format, or reference (input USA)</td>
-<td>Readable sequence</td>
+<td>[-seqall]<br>(Parameter 1)</td>
+<td>Protein sequence(s) filename and optional format, or reference (input USA)</td>
+<td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
 
@@ -54,6 +54,20 @@
 <td>Trypsin will not normally cut after a K if it is followed by (e.g.) another K or a P. Specifying this shows those cuts. as well as the favoured ones.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
+</tr>
+
+<tr>
+<td>-ragging</td>
+<td>Allows semi-specific and non-specific digestion. This option is particularly useful for generating lists of peptide sequences for protein identification using mass-spectrometry.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-termini</td>
+<td>Select number</td>
+<td><table><tr><td>1</td> <td><i>(none)</i></td></tr><tr><td>2</td> <td><i>(nterm)</i></td></tr><tr><td>3</td> <td><i>(cterm)</i></td></tr><tr><td>4</td> <td><i>(nterm OR cterm)</i></td></tr></table></td>
+<td>1</td>
 </tr>
 
 <tr>

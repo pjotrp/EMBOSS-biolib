@@ -13,17 +13,31 @@
 </tr>
 
 <tr>
-<td>[-outseq]<br>(Parameter 2)</td>
-<td>Sequence filename and optional format (output USA)</td>
-<td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
-<td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.coderet</td>
+<td>[-cdsoutseq]<br>(Parameter 3)</td>
+<td>Coding nucleotide output sequence(s) (optional)</td>
+<td>Writeable sequence(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-mrnaoutseq]<br>(Parameter 4)</td>
+<td>Messenger RNA nucleotide output sequence(s) (optional)</td>
+<td>Writeable sequence(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-translationoutseq]<br>(Parameter 5)</td>
+<td>Translated coding protein output sequence(s) (optional)</td>
+<td>Writeable sequence(s)</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -43,24 +57,7 @@
 </tr>
 
 <tr>
-<td>-[no]cds</td>
-<td>Extract CDS sequences</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
-</tr>
-
-<tr>
-<td>-[no]mrna</td>
-<td>Extract mrna sequences</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
-</tr>
-
-<tr>
-<td>-[no]translation</td>
-<td>Extract translated sequences</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>

@@ -6,8 +6,8 @@
 
 % <b>rebaseextract </b>
 Extract data from REBASE
-Full pathname of WITHREFM file: <b>withrefm</b>
-Full pathname of PROTO file: <b>proto</b>
+REBASE database withrefm file: <b>withrefm</b>
+REBASE database proto file: <b>proto</b>
 
 </pre></td></tr></table><p>
 <p>

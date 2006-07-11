@@ -6,9 +6,9 @@
 
 % <b>mwcontam </b>
 Shows molwts that match across a set of files
-Comma separated file list: <b>../data/mw2.dat,mw3.dat</b>
+Molecular weights file list: <b>../data/mw2.dat,mw3.dat</b>
 Ppm tolerance [50.0]: <b></b>
-Output file [outfile.mwcontam]: <b></b>
+Molecular weights output file [outfile.mwcontam]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

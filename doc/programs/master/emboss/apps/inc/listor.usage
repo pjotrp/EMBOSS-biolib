@@ -8,7 +8,7 @@ Write the logical OR of two lists:
 
 % <b>listor ../data/file2 </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -24,7 +24,7 @@ Write the logical AND of two lists:
 
 % <b>listor ../data/file2 -operator and </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -40,7 +40,7 @@ Write the logical XOR of two lists:
 
 % <b>listor ../data/file2 -operator xor </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -56,7 +56,7 @@ Write the logical NOT of two lists:
 
 % <b>listor ../data/file2 -operator not </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

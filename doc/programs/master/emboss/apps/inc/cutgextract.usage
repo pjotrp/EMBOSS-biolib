@@ -6,8 +6,8 @@
 
 % <b>cutgextract </b>
 Extract data from CUTG
-CUTG directory [.]: <b>data</b>
-Output file [outfile.cutgextract]: <b></b>
+Codon usage directories [.]: <b>data</b>
+General log output file [outfile.cutgextract]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
