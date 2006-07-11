@@ -32,31 +32,34 @@ section: output
     knowntype: "coderet output"
   ]
 
-seqout: cdsoutseq
+seqoutall: cdsoutseq
 [
     parameter: "Y"
     type: "nucleotide"
-    information: "CDS sequences"
+    information: "Coding nucleotide output sequence(s) (optional)"
     osextension: "cds"
     nullok: "Y"
+    knowntype: "cds sequence"
 ]
 
-seqout: mrnaoutseq
+seqoutall: mrnaoutseq
 [
     parameter: "Y"
     type: "nucleotide"
-    information: "Messenger RNA sequences"
+    information: "Messenger RNA nucleotide output sequence(s) (optional)"
     osextension: "mrna"
     nullok: "Y"
+    knowntype: "mrna sequence"
 ]
 
-seqout: translationoutseq 
+seqoutall: translationoutseq 
 [
     parameter: "Y"
     type: "protein"
-    information: "Translated (protein) sequences"
+    information: "Translated coding protein output sequence(s) (optional)"
     osextension: "prot"
     nullok: "Y"
+    knowntype: "translated cds sequence"
 ]
 
 

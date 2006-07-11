@@ -66,9 +66,9 @@ int main(int argc, char **argv)
 
     seqall  = ajAcdGetSeqall("seqall");
 
-    seqoutcds  = ajAcdGetSeqout("cdsoutseq");
-    seqoutmrna = ajAcdGetSeqout("mrnaoutseq");
-    seqoutprot = ajAcdGetSeqout("translationoutseq");
+    seqoutcds  = ajAcdGetSeqoutall("cdsoutseq");
+    seqoutmrna = ajAcdGetSeqoutall("mrnaoutseq");
+    seqoutprot = ajAcdGetSeqoutall("translationoutseq");
     logf = ajAcdGetOutfile("outfile");
 
     cds  = ajStrNew();
