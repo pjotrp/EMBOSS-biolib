@@ -169,9 +169,9 @@ public class BuildJembossForm implements ActionListener
           String urlEmbassyPrefix = parseAcd.getUrlPrefix();
           url = mysettings.getembURL();
           if(urlEmbassyPrefix != null)
-            url = url + "embassy/" + urlEmbassyPrefix + "/" ;
+            url = url + "apps/release/4.0/embassy/" +applName+ "/" ;
           else
-            url = url + "apps/";
+            url = url + "apps/release/4.0/emboss/apps/";
 
           url = url+applName+".html";
         }
