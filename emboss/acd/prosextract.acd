@@ -14,7 +14,7 @@ section: input [
 
   directory: prositedir  [
     parameter: "Y"
-    information: "Name of prosite directory"
+    information: "PROSITE database directory"
     knowntype: "prosite database"
   ]
 

@@ -15,7 +15,7 @@ section: input [
 
   datafile: anglesfile  [
     additional: "Y"
-    information: "Angles data file"
+    information: "DNA base timer roll angles data file"
     default: "Eangles_tri.dat"
     knowntype: "base trimer roll angles"
   ]

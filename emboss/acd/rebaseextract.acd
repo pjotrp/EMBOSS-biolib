@@ -13,13 +13,13 @@ section: input [
 
   infile: infile  [
     parameter: "Y"
-    information: "Full pathname of WITHREFM file"
+    information: "REBASE database withrefm file"
     knowntype: "rebase withrefm"
   ]
 
   infile: protofile  [
     parameter: "Y"
-    information: "Full pathname of PROTO file"
+    information: "REBASE database proto file"
     knowntype: "rebase proto"
   ]
 

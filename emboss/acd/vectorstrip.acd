@@ -29,7 +29,7 @@ section: input [
       standard: "$(vectorfile)"
       nullok: "Y"
       default: ""
-      information: "Name of vectorfile"
+      information: "Cloning vector definition file (optional)"
       knowntype: "vector"
     ]
 

@@ -52,7 +52,7 @@ section: output [
   ]
 
   outdir: outdir [
-    information: "Temporary directory"
+    information: "Temporary working file output directory"
     default: "/tmp"
     knowntype: "temporary"
   ]

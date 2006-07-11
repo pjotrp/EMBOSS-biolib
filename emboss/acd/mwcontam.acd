@@ -11,8 +11,8 @@ section: input [
 
   filelist: files  [
     parameter: "Y"
-    information: "Comma separated file list"
-    knowntype: "molwt list"
+    information: "Molecular weights file list"
+    knowntype: "molwt"
   ]
 
 endsection: input
@@ -38,7 +38,8 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     extension: "mwcontam"
-    knowntype: "molwt list"
+    knowntype: "molwt"
+    information: "Molecular weights output file"
   ]
 
 endsection: output

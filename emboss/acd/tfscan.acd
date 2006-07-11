@@ -29,7 +29,7 @@ section: input [
 
   datafile: custom  [
     standard: "@($(menu)==C)"
-    information: "Name of data file"
+    information: "Transfac database data file (optional)"
     nullok: "@($(menu)!=C)"
     knowntype: "transfac data"
     default: ""

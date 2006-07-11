@@ -78,6 +78,7 @@ section: output [
     extension: "oldtan"
     nullok: "Y"
     knowntype: "tandem output"
+    information: "Sanger Centre program tandem output file (optional)"
   ]
 
 endsection: output

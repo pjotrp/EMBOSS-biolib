@@ -16,20 +16,19 @@ section: input [
 
   infile: infile  [
     parameter: "Y"
-    information: "Name of molecular weight data file"
+    information: "Peptide molecular weight values file"
     knowntype: "peptide molweights"
   ]
 
   datafile: aadata  [
-    information: "Amino acid data file"
-    help: "Molecular weight data for amino acids"
+    information: "Amino acids properties and molecular weight data file"
     default: "Eamino.dat"
     knowntype: "amino acid properties"
   ]
 
   datafile: frequencies  [
     default: "Efreqs.dat"
-    information: "Frequencies file"
+    information: "Amino acid frequencies data file"
     knowntype: "amino acid frequencies"
   ]
 

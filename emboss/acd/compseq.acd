@@ -17,8 +17,7 @@ section: input [
   infile: infile  [
     additional: "Y"
     nullok: "Y"
-    information: "Optional 'compseq' file to use for expected word
-                  frequencies"
+    information: "Program compseq output file (optional)"
     help: "This is a file previously produced by 'compseq' that can be
            used to set the expected frequencies of words in this analysis. \
            The word size in the current run must be the same as the one in
@@ -124,6 +123,7 @@ section: output [
     parameter: "Y"
     extension: "composition"
     help: "This is the results file."
+    information: "Program compseq output file"
     knowntype: "compseq output"
   ]
 

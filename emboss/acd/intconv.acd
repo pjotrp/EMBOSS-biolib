@@ -12,7 +12,7 @@ section: input [
 infile: infile  [
   parameter: "Y"
   knowntype: "integer long data"
-  information: "Input file"
+  information: "Standard format information on int and long data file"
 ]
 
 endsection: input
@@ -25,6 +25,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "ajint ajlong data"
+  information: "Standard format info on ajint and ajlong output file"
 ]
 
 endsection: output

@@ -11,7 +11,7 @@ section: input [
 infile: infile  [
   parameter: "Y"
   default: "inputfile"
-  information: "Input file containing mapping data"
+  information: "Commands to the lindna drawing program file"
   knowntype: "lindna mapping commands"
 ]
 

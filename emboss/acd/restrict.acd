@@ -15,7 +15,7 @@ section: input [
 
   datafile: datafile  [
     default: ""
-    information: "Alternative RE data file"
+    information: "Restriction enzyme data file (optional)"
     knowntype: "restriction enzyme data"
     nullok: "Y"
   ]

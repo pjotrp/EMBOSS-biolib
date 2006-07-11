@@ -1,17 +1,17 @@
 # Known Types
 # Knowntype_string          Type     Comment
 
-aaindex_data                      file           AAINDEX data entry
+aaindex_data                      file           AAINDEX entry
 aaindex_database                  file           AAINDEX database
 abi_trace                         file           ABI sequencing trace
 ajint_ajlong_data                 file           Standard format info on ajint and ajlong
 alistat_input                     file           Phylip alistat program input
 alistat_output                    file           Phylip alistat program output
-amino_acid_classification         file           Datafile with amino acid chemical classes
+amino_acid_classification         file           Amino acid chemical classes data
 # replace this with aaindex_database perhaps?
 
-amino_acid_frequencies            file           Amino acid frequencies
-amino_acid_hydropathy             file           Datafile with amino acid hydropathy values
+amino_acid_frequencies            file           Amino acid frequencies data
+amino_acid_hydropathy             file           Amino acid hydropathy values data
 amino_acid_properties             file           Amino acids properties and molecular weight data
 
 ancestral_states                  properties     File of ancestral states
@@ -26,7 +26,7 @@ cds_sequence                      sequence       Coding
 clique_input                      file           Phylip clique program input
 clique_output                     file           Phylip clique program output
 codon_list                        string         Codon triplet(s)
-codon_usage                       file           Codon usage
+codon_usage                       codon          Codon usage
 comparison_matrix                 file           Comparison matrix
 comparison_matrix_name            string         Comparison matrix name
 complex_temporary_output          file           Program complex temporary
@@ -147,24 +147,23 @@ meme_motif_order                  file           MEME directive for ordering and
 meme_output                       file           MEME program output
 mix_input                         file           Phylip mix program input
 mix_output                        file           Phylip mix program output
-molwt_list                        file           Molecular weights list
+molwt                             file           Molecular weights
 mrna_sequence                     sequence       Messenger RNA
 multistate_factors                properties     File of multistate factors
 naccess_log                       file           Log file from naccess program
 name                              string         Single word without spaces
 neighbor_input                    file           Phylip neighbor program input
 neighbor_output                   file           Phylip neighbor program output
-newcoils_datafile                 file           Data file for newcoils
+newcoils_datafile                 file           Program newcoils data
 newick                            tree           PHYLIP tree
 newick_tree                       file           PHYLIP tree
 nucleotide_codes                  string         DNA/RNA sequence characters
 nucleotide_sequence               string         DNA/RNA sequence
-octanol_datafile                  file           Datafile for octanol
 output_delimiter                  string         Delimiter between fields in single line output
 output_filename                   string         Output filename
 output_format                     string         Output file format
 output_identifier                 string         Identifier to be used in output
-overlap                           file           Sequence overlap length(s)
+overlap                           file           Sequence overlap lengths
 pars_output                       file           Phylip pars program output
 pdb                               file           Pdb entry
 pdb_prefix                        string         Pdb entry prefix
@@ -200,7 +199,7 @@ protein_clean_coordinates         file           Clean protein structure coordin
 protein_codes                     string         Protein sequence characters
 protpars_input                    file           Phylip protpars program input
 protpars_output                   file           Phylip protpars program output
-quicktandem_output                file           Output from the Sanger Centre quicktandem program
+quicktandem_output                file           Sanger Centre program quicktandem output
 raw_cath_domlist                  file           Raw cath domlist
 raw_cath_list                     file           Raw cath list
 raw_cath_names                    file           Raw cath names
@@ -215,7 +214,7 @@ restboot_output                   file           Phylip restboot program output
 restdist_output                   file           Phylip restdist program output
 restml_input                      file           Phylip restml program input
 restml_output                     file           Phylip restml program output
-restriction_enzyme_data           file           Restriction enzyme datafile
+restriction_enzyme_data           file           Restriction enzyme data
 rna_concentration                 file           Vienna RNA concentration data
 rna_constraint                    file           Vienna RNA structure contraints
 rna_parameter                     file           Vienna RNA parameters
@@ -238,24 +237,24 @@ sequence_id_input                 string         Sequence identifier for an inpu
 sequence_id_list                  string         Sequence identifier list or @filename for input sequences
 sequence_id_output                string         Sequence identifier for an output sequence
 sequence_mask_character           string         Sequence code or space (lowercase) for sequence masking
-sequence_overlap                  file           File of sequence overlaps
+sequence_overlap                  file           Sequence overlaps
 sequence_range                    string         Sequence range in the format nn..nn
 sequence_type                     string         EMBOSS sequence type
 signature_alignment               file           Domainatrix signature alignment
 sim4_output                       file           Sim4 program output
 sites_log                         file           Sites log
 sort_utility_options              string         Command line options for the system sort utility
-standard_molwt_list               file           Molecular weights standards list
+standard_molwt                    file           Molecular weight standards
 stride_log                        file           Log file from stride program
 string                            string         Any string value
-supermatcher_error                file           Error file from supermatcher program
+supermatcher_error                file           Program supermatcher errors
 swissprot_database                file           Swissprot-format (embl) database
 swissprot_pdb_equivalence         file           Embl-like format swissprot:pdb equivalence
 swissprot_pdb_equivalence_table   file           Swissprot:pdb equivalence table
-tandem_output                     file           Output from the Sanger Centre tandem program
+tandem_output                     file           Sanger Centre program tandem output
 temporary                         file           Temporary working
 testcode_data                     file           Testcode data
-text_documentation                file           Program documentation in ASCII text
+text_documentation                file           Program documentation text
 threshold_identity_similar_related array          Three floating point threshold values for identical, similar and related residues
 translated_cds_sequence           sequence       Translated coding
 transfac_data                     file           Transfac database data
@@ -264,8 +263,9 @@ treedist_output                   file           Phylip treedist program output
 two_state_characters              discretestates Two state characters
 url_prefix                        string         Prefix for all URLs
 url_suffix                        string         Suffix for all URLs
-usa_list                          file           List of USAs suitable for @list input
+usa_list                          file           List of USAs
 van_der_waals_radii               file           Van der waals radii
 vector                            file           Cloning vector definition
 weights                           properties     Phyliup weights
+white_wimley_datafile             file           White-Wimley data
 wildcard_string                   string         String with wildcard characters

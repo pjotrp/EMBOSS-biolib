@@ -51,6 +51,7 @@ section: output [
     extension: "oldqtan"
     nullok: "Y"
     knowntype: "quicktandem output"
+    information: "Sanger Centre program quicktandem output file (optional)"
   ]
 
 endsection: output

@@ -36,6 +36,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "entry full text"
+    information: "Full text of a sequence database entry output file"
   ]
 
 endsection: output

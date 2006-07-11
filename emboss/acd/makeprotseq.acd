@@ -10,7 +10,7 @@ section: input [
 
   infile: pepstatsfile [
     standard: "Y"
-    information: "Optional amino acid composition file"
+    information: "Pepstats program output file (optional)"
     help: "This file should be a pepstats output file. Protein
            sequences will be created with the composition in the
            pepstats output file."

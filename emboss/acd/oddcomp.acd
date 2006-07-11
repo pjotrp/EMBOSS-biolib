@@ -16,8 +16,7 @@ section: input [
 
   infile: infile  [
     parameter: "Y"
-    information: "Compseq output file to use for expected word
-                  frequencies"
+    information: "Program compseq output file"
     help: "This is a file in the format of the output produced by
            'compseq' that is used to set the minimum frequencies of words in
            this analysis."

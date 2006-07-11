@@ -10,7 +10,7 @@ section: input [
 
   dirlist: directory  [
     parameter: "Y"
-    information: "CUTG directory"
+    information: "Codon usage directories"
     knowntype: "codon usage"
   ]
 
@@ -61,6 +61,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "log"
+    information: "General log output file"
   ]
 
   string: filename  [

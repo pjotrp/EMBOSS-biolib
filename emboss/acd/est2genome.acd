@@ -14,13 +14,15 @@ section: input [
   seqall: estsequence [
     parameter: "Y"
     type: "dna"
-    information: "EST sequence(s)"
+    information: "Spliced EST nucleotide sequence(s)"
+    knowntype: "est sequence"
   ]
 
   sequence: genomesequence [
     parameter: "Y"
     type: "dna"
-    information: "Genomic sequence"
+    information: "Unspliced genomic nucleotide sequence"
+    knowntype: "genomic sequence"
   ]
 
 endsection: input

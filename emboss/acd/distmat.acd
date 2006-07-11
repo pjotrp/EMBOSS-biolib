@@ -112,6 +112,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "distance matrix"
+    information: "Phylip distance matrix output file"
   ]
 
 endsection: output

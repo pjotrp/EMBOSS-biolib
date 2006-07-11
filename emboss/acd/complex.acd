@@ -95,11 +95,12 @@ outfile: outfile  [
 
 outfile: ujtablefile  [
   default: "complex.ujtable"
-  information: "UjTable temporary file name"
+  information: "Program complex temporary output file"
   knowntype: "complex temporary output"
   help: ""
   nullok: "Y"
 ]
+
 seqoutall: outseq  [
   standard: "$(omnia)"
   nullok: "Y"

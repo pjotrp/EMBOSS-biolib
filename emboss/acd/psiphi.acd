@@ -10,7 +10,7 @@ section: input [
 
   infile: infile [
     parameter: "Y"
-    information: "Clean coordinate file"
+    information: "Clean protein structure coordinates file"
     knowntype: "protein clean coordinates"
   ]
 

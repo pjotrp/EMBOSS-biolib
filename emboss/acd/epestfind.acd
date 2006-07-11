@@ -18,8 +18,7 @@ section: input [
   datafile: aadata  [
     additional: "Y"
     default: "Eamino.dat"
-    help: "File of amino acid properties and molecular masses."
-    information: "Amino acid data file"
+    information: "Amino acids properties and molecular weight data file"
     knowntype: "amino acid properties"
   ]
 

@@ -124,12 +124,13 @@ section: output [
   outfile: outfile [
     standard: "Y"
     knowntype: "log"
+    information: "General log output file"
   ]
 
   outdir: indexoutdir [
     default: "."
-    information: "Index directory"
-    knowntype: "output directory"
+    information: "Index file output directory"
+    knowntype: "emboss database index"
   ]
 
 endsection: output

@@ -18,7 +18,7 @@ section: input [
 
   datafile: datafile  [
     additional: "Y"
-    information: "Aaindex database file"
+    information: "AAINDEX entry data file"
     directory: "AAINDEX"
     default: "Enakai.dat"
     knowntype: "aaindex data"

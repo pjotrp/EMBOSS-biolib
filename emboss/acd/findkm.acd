@@ -10,7 +10,7 @@ section: input [
 
   infile: infile  [
     parameter: "Y"
-    information: "Enter name of file containing data"
+    information: "Enzyme kinetics data (application-specific) file"
     knowntype: "enzyme data"
   ]
 

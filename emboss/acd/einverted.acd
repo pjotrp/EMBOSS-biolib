@@ -73,6 +73,7 @@ section: output [
     parameter: "Y"
     extension: "inv"
     knowntype: "inverted output"
+    information: "Sanger Centre program inverted output file"
   ]
 
 seqout: outseq

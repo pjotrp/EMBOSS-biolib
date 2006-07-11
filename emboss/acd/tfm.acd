@@ -29,6 +29,7 @@ section: output [
     additional: "Y"
     default: "stdout"
     knowntype: "text documentation"
+    information: "Program documentation text output file"
   ]
 
   boolean: html  [

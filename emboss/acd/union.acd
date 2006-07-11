@@ -50,7 +50,7 @@ section: output [
 
   outfile: overlapfile  [
     additional: "Y"
-    information: "Output sequence overlaps to a file"
+    information: "Sequence overlaps output file (optional)"
     knowntype: "sequence overlap"
     extension: "overlaps"
     nullok: "Y"

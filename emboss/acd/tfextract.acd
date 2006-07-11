@@ -13,7 +13,7 @@ section: input [
 
   infile: infile  [
     parameter: "Y"
-    information: "Full pathname of transfac SITE.DAT"
+    information: "Transfac database sites file"
     knowntype: "transfac site"
   ]
 

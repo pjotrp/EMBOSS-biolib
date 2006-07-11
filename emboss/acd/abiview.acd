@@ -11,8 +11,8 @@ section: input [
   infile: infile  [
     parameter: "Y"
     default: ""
-    information: "ABI trace file"
     knowntype: "abi trace"
+    information: "ABI sequencing trace file"
   ]
 
 endsection: input
