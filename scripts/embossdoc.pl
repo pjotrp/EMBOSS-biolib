@@ -928,17 +928,17 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    ($name, $frest) = ($data =~ /\S+\s+(\S+)\s*(.*)/gos);
 	    ($ftype,$fname, $fargs) =
 		$rest =~ /^\s*static\s+([^\(\)]*\S)\s+(\S+)\s*[\(]\s*([^{]*)[)]\s*[\{]/os;
-	    if($mainprog) {
-		if($name !~ /^$progname[_A-Z]/) {
-		    print "bad name expected prefix '$progname\_'\n";
-		}
-	    }
 	    print "Static function $name\n";
 	    print $OFILE "<h3><a name=\"$name\">\n";
 	    print $OFILE "Static function</a> ".srsref($name)."</h3>\n";
 	    if(!defined($ftype)){
 		print "bad static function prototype: not parsed\n";
 		next;
+	    }
+	    if($mainprog) {
+		if($name !~ /^$progname[_A-Z]/) {
+		    print "bad name expected prefix '$progname\_'\n";
+		}
 	    }
 	    $srest = $frest;
 	    $frest =~ s/>/\&gt;/gos;
@@ -1946,6 +1946,10 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 # body is the code up to a '}' at the start of a line
 
 	    ($body) = ($rest =~ /(.*?\n\}[^\n]*\n)/os);
+	    if(!defined($body)) {
+		print "bad code body, closing brace not found\n";
+		$body = "\n";
+	    }
 	    print SRS $body;
 
 	    if(defined($fname)) {
