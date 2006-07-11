@@ -155,7 +155,7 @@ int main(int argc, char **argv, char **env)
     else if(pwdc=='o')
 	ajStrAssignC(&pwdstr,"own");
 
-    pairwise_matrix = ajAcdGetInfile("pairwisedata");
+    pairwise_matrix = ajAcdGetInfile("pairwisedatafile");
 
     pw_gapc = ajAcdGetFloat( "pwgapopen");
     pw_gapv = ajAcdGetFloat( "pwgapextend");
@@ -186,7 +186,7 @@ int main(int argc, char **argv, char **env)
 	ajStrAssignC(&m2str,"own");
 
 
-    ma_matrix = ajAcdGetInfile("mamatrix");
+    ma_matrix = ajAcdGetInfile("mamatrixfile");
     gapc      = ajAcdGetFloat("gapopen");
     gapv      = ajAcdGetFloat("gapextend");
     endgaps   = ajAcdGetBool("endgaps");

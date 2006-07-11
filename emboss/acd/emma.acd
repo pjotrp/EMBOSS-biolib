@@ -34,8 +34,8 @@ section: input [
       additional: "$(dend)"
       default: ""
       nullok: "@(!$(dend))"
-      information: "Name of old dendrogram file"
       knowntype: "dendrogram"
+      information: "Dendrogram (tree file) from clustalw file (optional)"
     ]
 
   section: protalignsection [
@@ -103,7 +103,7 @@ section: input [
       additional: "$(usermatrix)"
       default: ""
       nullok: "@(!$(usermatrix))"
-      information: "Filename of user pairwise matrix"
+      information: "Comparison matrix file (optional)"
       knowntype: "comparison matrix"
     ]
 
@@ -170,7 +170,7 @@ section: input [
       codedelimiter: ":"
       information: "Select matrix"
       button: "Y"
-      help: "This gives a menu where you are offered amenu where a
+      help: "This gives a menu where a
              single matrix (not a series) can be selected."
     ]
 
@@ -180,7 +180,7 @@ section: input [
       additional: "@($(usermamatrix)?True:$(umamatrix))"
       default: ""
       nullok: "@($(usermamatrix)?@(!$(umamatrix)):True)"
-      information: "Filename of user multiple alignment matrix"
+      information: "Comparison matrix file (optional)'"
       knowntype: "comparison matrix"
     ]
 
@@ -422,7 +422,7 @@ section: output [
   outfile: dendoutfile  [
     parameter: "Y"
     extension: "dnd"
-    information: "Dendogram output filename"
+    information: "Dendrogram (tree file) from clustalw output file"
     knowntype: "dendrogram"
   ]
 
