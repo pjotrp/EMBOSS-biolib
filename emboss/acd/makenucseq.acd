@@ -10,11 +10,12 @@ section: input [
 
   codon: codonfile [
     standard: "Y"
-    information: "Optional codon usage file"
+    information: "Codon usage file (optional)"
     help: "Optional codon usage file. Nucleotide sequences will be
            created as triplets matching the frequencies in the file,
            with the end trimmed to be in the correct reading frame."
     nullok: "Y"
+    knowntype: "codon usage"
   ]
 
 endsection: input

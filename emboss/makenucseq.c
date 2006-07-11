@@ -173,7 +173,7 @@ static AjPStr makenucseq_random_sequence (AjPStr const* seqchar,
 
 /* @funcstatic makenucseq_default_chars ***************************************
 **
-** Crates equal ditribution of characters for completely random sequences.
+** Crates equal distribution of characters for completely random sequences.
 **
 ** @param [w] list [AjPList*] List with character distributions
 ** @return [void]
@@ -184,8 +184,8 @@ static void makenucseq_default_chars (AjPList* list)
     int i;
     int max;
     char *chars;
-    char seqCharNucPure[]   = "ACGTUacgtu";
-    int  seqCharNucPureLength = 10;
+    char seqCharNucPure[]   = "ACGTacgt";
+    int  seqCharNucPureLength = 8;
     AjPStr tmp;
 
     chars = seqCharNucPure;
