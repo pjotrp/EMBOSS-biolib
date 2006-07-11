@@ -332,7 +332,7 @@ void ajPatternRegexSetCompiled (AjPPatternRegex thys, AjPRegexp pat)
 **
 ** Constructor for a pattern list object
 **
-** @param [r] pat [const AjPPattenSeq] Pattern object
+** @param [r] pat [const AjPPatternSeq] Pattern object
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -350,7 +350,7 @@ void ajPatternSeqDebug (const AjPPatternSeq pat)
 **
 ** Constructor for a pattern list object
 **
-** @param [r] pat [const AjPPattenRegex] Pattern object
+** @param [r] pat [const AjPPatternRegex] Pattern object
 ** @return [void]
 ** @@
 ******************************************************************************/
