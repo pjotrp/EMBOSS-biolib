@@ -77,6 +77,16 @@ Version 4.0.0
 	for nucleotide sequences. The default operation of both programs
 	is unchanged.
 
+	Regular expression pattern lists are accepted by dreg and preg.
+	The output reports include pattern names which default to regex1,
+	regex2, and so on. The "regex" prefix can be set using the new
+	associated qualifier -pname on the command line.
+
+	Prosite pattern lists are accepted by fuzznuc, fuzzpro and fuzztran.
+	The output reports include pattern names which default to pattern1,
+	pattern2, and so on. The "pattern" prefix can be set using the new
+	associated qualifier -pname on the command line.
+
 	Regular expressions have the same syntax as the new pattern
 	datatype - they can be in a file, with pattern names, and have a
 	qualifier -pname to set the name for a pattern. Regular
