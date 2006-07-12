@@ -125,6 +125,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   ENUC.4.2
   ENUC.4.4
   Etags.embl
+  Etags.gff3
   Etags.gff
   Etags.pir
   EPAM100
@@ -188,6 +189,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Efeatures.gffprotein
   Eprior1.plib
   Efeatures.embl
+  Efeatures.gff3
   EBLOSUM30
   EBLOSUM35
   EBLOSUM40
