@@ -681,6 +681,8 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	embDbiRmFile(dbname, ext1, 0, cleanup);
     }
 
+    ajStrDel(&dir);
+
     return;
 }
 
@@ -1922,6 +1924,7 @@ void embDbiLogFinal(AjPFile logfile, ajint maxindex, const ajint* maxFieldLen,
 		nfiles, idCount, (idCount-idDone));
     return;
 }
+
 
 
 
