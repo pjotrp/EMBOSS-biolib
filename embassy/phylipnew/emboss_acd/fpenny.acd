@@ -9,38 +9,40 @@ section: input [
   type: "page"
 ]
 
-discretestates: infile  [
-  parameter: "Y"
-  characters: "01PB?"
-  help: "File containing one or more data sets"
-  knowntype: "discrete characters"
-  information: "Phylip character discrete states file"
-]
+  discretestates: infile [
+    parameter: "Y"
+    characters: "01PB?"
+    help: "File containing one or more data sets"
+    knowntype: "discrete characters"
+    information: "Phylip character discrete states file"
+  ]
 
-properties: weights [
-	additional: "Y"
-	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	information: "Phylip weights file (optional)"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
-properties: ancfile [
-	additional: "Y"
-	characters: "01?"
-	information: "Phylip ancestral states file (optional)"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
-properties: mixfile [
-	additional: "Y"
-	characters: "CSW"
-	information: "Phylip mix output file (optional)"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    information: "Phylip weights file (optional)"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
+
+  properties: ancfile [
+    additional: "Y"
+    characters: "01?"
+    information: "Phylip ancestral states file (optional)"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
+
+  properties: mixfile [
+    additional: "Y"
+    characters: "CSW"
+    information: "Phylip mix output file (optional)"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
 
 endsection: input
 
@@ -49,49 +51,47 @@ section: additional [
   type: "page"
 ]
 
-list: method  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Wag:Wagner; 
-           Cam:Camin-Sokal; 
-           Mix:Mixed;"
-  information: "Choose the method to use"
-  default: "Wagner"
-]
+  list: method [
+    additional: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed;"
+    information: "Choose the method to use"
+    default: "Wagner"
+  ]
 
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-        maximum: "$(infile.discretesize)"
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(infile.discretesize)"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
-integer: howmany  [
-  additional: "Y"
-  information: "How many groups of trees"
-  default: "1000"
-]
+  integer: howmany [
+    additional: "Y"
+    information: "How many groups of trees"
+    default: "1000"
+  ]
 
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
+  integer: howoften [
+    additional: "Y"
+    information: "How often to report, in trees"
+    default: "100"
+  ]
 
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-]
+  boolean: simple [
+    additional: "Y"
+    information: "Branch and bound is simple"
+  ]
 
-float: threshold  [
-  additional: "Y"
-  minimum: "1.0"
-  default: "$(infile.discretesize)" 
-  information: "Threshold value"
-]
+  float: threshold [
+    additional: "Y"
+    minimum: "1.0"
+    default: "$(infile.discretesize)"
+    information: "Threshold value"
+  ]
 
 endsection: additional
 
@@ -100,54 +100,54 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "penny output"
-  information: "Phylip penny program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "penny output"
+    information: "Phylip penny program output file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
-boolean: stepbox  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
+  boolean: stepbox [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each site"
+  ]
 
-boolean: ancseq  [
-  additional: "Y"
-  default: "N"
-  information: "Print states at all nodes of tree"
-]
+  boolean: ancseq [
+    additional: "Y"
+    default: "N"
+    information: "Print states at all nodes of tree"
+  ]
 
 endsection: output

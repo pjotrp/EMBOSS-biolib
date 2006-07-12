@@ -101,10 +101,8 @@ section: additional [
     minimum: "1"
     maximum: "1"
     header: "Rate variation among sites"
-    values: "g:Gamma distributed rates; 
-             i:Gamma+invariant sites;
-             h:User defined HMM of rates; 
-             n:Constant rate"
+    values: "g:Gamma distributed rates; i:Gamma+invariant sites;
+             h:User defined HMM of rates; n:Constant rate"
     information: "Rate variation among sites"
     default: "Constant rate"
   ]

@@ -1,5 +1,6 @@
 application: seqsearch [
-  documentation: "Generate PSI-BLAST hits (DHF file) from a DAF file."
+  documentation: "Generate PSI-BLAST hits (DHF file) from a
+                  DAF file."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

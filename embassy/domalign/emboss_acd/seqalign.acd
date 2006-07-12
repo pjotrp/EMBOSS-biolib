@@ -1,5 +1,6 @@
 application: seqalign [
-  documentation: "Extend alignments (DAF file) with sequences (DHF file)."
+  documentation: "Extend alignments (DAF file) with sequences
+                  (DHF file)."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
@@ -70,7 +71,6 @@ section: input [
     knowntype: "domain alignment"
     nullok: "Y"
   ]
-
 
   directory: dhfindir [
     parameter: "Y"

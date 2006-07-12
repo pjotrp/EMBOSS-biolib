@@ -1,5 +1,6 @@
 application: ssematch [
-  documentation: "Search a DCF file for secondary structure matches."
+  documentation: "Search a DCF file for secondary structure
+                  matches."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -139,7 +140,8 @@ section: output [
 
   outfile: outssfile [
     parameter: "Y"
-    information: "Domain classification residue-based output file"
+    information: "Domain classification residue-based output
+                  file"
     help: "This option specifies the name of the file containing
            top-scoring domains for residue-based alinnment (output).A 'domain
            classification file' contains classification and other data for
@@ -149,7 +151,8 @@ section: output [
 
   outfile: outsefile [
     parameter: "Y"
-    information: "Domain classification structure-based output file"
+    information: "Domain classification structure-based output
+                  file"
     help: "This option specifies the name of the file containing
            top-scoring domains for secondary structure element-based
            alinnment (output). A 'domain classification file' contains

@@ -10,7 +10,7 @@ section: input [
   type: "page"
 ]
 
-  seqset: sequence  [
+  seqset: sequence [
     parameter: "Y"
     help: "File containing a sequence alignment"
     type: "gapany"
@@ -31,7 +31,7 @@ section: output [
   type: "page"
 ]
 
-  seqoutset: outseq  [
+  seqoutset: outseq [
     parameter: "Y"
   ]
 

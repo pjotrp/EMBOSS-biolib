@@ -1,5 +1,6 @@
 application: crystalball [
-  documentation: "Answers every drug discovery question about a sequence."
+  documentation: "Answers every drug discovery question about
+                  a sequence."
   groups: "Test"
   embassy: "appendixd"
 ]
@@ -9,7 +10,7 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  sequence: sequence [
     parameter: "Y"
     type: "any"
   ]
@@ -21,47 +22,47 @@ section: additional [
   type: "page"
 ]
 
-  boolean: competition  [
+  boolean: competition [
     additional: "Y"
     information: "Who else is working with this target?"
   ]
 
-  boolean: rdtime  [
+  boolean: rdtime [
     additional: "Y"
     information: "Total research and development time to bring
                   a drug for this target to market."
   ]
 
-  boolean: rdcost  [
+  boolean: rdcost [
     additional: "Y"
     information: "Total cost of our research and development
                   effort."
   ]
 
-  boolean: animalstudies  [
+  boolean: animalstudies [
     additional: "Y"
     information: "What will we learn from the animal studies?"
   ]
 
-  boolean: clinicaltrials  [
+  boolean: clinicaltrials [
     additional: "Y"
     information: "Detail all of the surprises we'll get from
                   the clinical trials."
   ]
 
-  boolean: fdaproblems  [
+  boolean: fdaproblems [
     additional: "Y"
     information: "List all of the issues the FDA will raise
                   with our paperwork."
   ]
 
-  boolean: fdatime  [
+  boolean: fdatime [
     additional: "Y"
     information: "How long will the FDA take to render a
                   decision?"
   ]
 
-  boolean: profit  [
+  boolean: profit [
     additional: "Y"
     information: "How much will we make after the drug gets to
                   market?"
@@ -74,7 +75,7 @@ section: advanced [
   type: "page"
 ]
 
-  boolean: everythingelse  [
+  boolean: everythingelse [
     information: "Tell us everything else we'd really like to
                   know now rather than later"
   ]
@@ -86,7 +87,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "crystalball output"
   ]

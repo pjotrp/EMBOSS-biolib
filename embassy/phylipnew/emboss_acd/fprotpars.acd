@@ -1,155 +1,155 @@
 application: fprotpars [
-	documentation: "Protein pasimony algorithm"
-	groups: "Phylogeny:Molecular sequence"
+  documentation: "Protein pasimony algorithm"
+  groups: "Phylogeny:Molecular sequence"
   embassy: "phylipnew"
 ]
 
 section: input [
-	information: "Input section"
-	type: "page"
+  information: "Input section"
+  type: "page"
 ]
 
-seqsetall: sequence [
-	parameter: "Y"
-	type: "gapproteinphylo"
-	aligned: "Y"
-        help: "File containing one or more sequence alignments"
-]
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapproteinphylo"
+    aligned: "Y"
+    help: "File containing one or more sequence alignments"
+  ]
 
-tree: intreefile [
-	parameter: "Y"
-	nullok: "Y"
-	knowntype: "newick"
-	information: "Phylip tree file (optional)"
-]
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+  ]
 
-properties: weights [
-	additional: "Y"
-	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	information: "Phylip weights file (optional)"
-	nullok: "Y"
-        length: "$(sequence.length)"
-        size: "@(@($(sequence.multicount)>1) ? 1:0)"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    information: "Phylip weights file (optional)"
+    nullok: "Y"
+    length: "$(sequence.length)"
+    size: "@(@($(sequence.multicount)>1) ? 1:0)"
+  ]
 
 endsection: input
 
 section: additional [
-	information: "Additional section"
-	type: "page"
+  information: "Additional section"
+  type: "page"
 ]
 
-integer: njumble [
-	additional: "@(!$(intreefile.isdefined))"
-	default: "0"
-	minimum: "0"
-	information: "Number of times to randomise"
-]
+  integer: njumble [
+    additional: "@(!$(intreefile.isdefined))"
+    default: "0"
+    minimum: "0"
+    information: "Number of times to randomise"
+  ]
 
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	minimum: "1"
-	maximum: "32767"
-	default: "1"
-]
+  integer: seed [
+    additional: "$(njumble)"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    minimum: "1"
+    maximum: "32767"
+    default: "1"
+  ]
 
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-        maximum: "$(sequence.count)"
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(sequence.count)"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
-toggle: thresh [
-	additional: "Y"
-	default: "N"
-	information: "Use threshold parsimony"
-]
+  toggle: thresh [
+    additional: "Y"
+    default: "N"
+    information: "Use threshold parsimony"
+  ]
 
-float: threshold [
-	additional: "$(thresh)"
-	minimum: "1"
-	information: "Threshold value"
-	default: "1"
-]
+  float: threshold [
+    additional: "$(thresh)"
+    minimum: "1"
+    information: "Threshold value"
+    default: "1"
+  ]
 
-list: whichcode [
-	additional: "Y"
-	default: "Universal"
-	minimum: "1"
-	maximum: "1"
-	header: "Genetic codes"
-	values: "U:Universal,M:Mitochondrial,V:Vertebrate mitochondrial,F:Fly mitochondrial,Y:Yeast mitochondrial"
-	delimiter: ","
-	codedelimiter: ":"
-	information: "Use which genetic code"
-]
-
+  list: whichcode [
+    additional: "Y"
+    default: "Universal"
+    minimum: "1"
+    maximum: "1"
+    header: "Genetic codes"
+    values: "U:Universal,M:Mitochondrial,V:Vertebrate
+             mitochondrial,F:Fly mitochondrial,Y:Yeast mitochondrial"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Use which genetic code"
+  ]
 
 endsection: additional
 
 section: output [
-	information: "Output section"
-	type: "page"
+  information: "Output section"
+  type: "page"
 ]
 
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "protpars output"
+    information: "Phylip protpars program output file"
+  ]
 
-outfile: outfile [
-	parameter: "Y"
-	knowntype: "protpars output"
-	information: "Phylip protpars program output file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
+  boolean: stepbox [
+    additional: "Y"
+    default: "N"
+    information: "Print steps at each site"
+  ]
 
-boolean: stepbox [
-	additional: "Y"
-	default: "N"
-	information: "Print steps at each site"
-]
+  boolean: ancseq [
+    additional: "Y"
+    default: "N"
+    information: "Print sequences at all nodes of tree"
+  ]
 
-boolean: ancseq [
-	additional: "Y"
-	default: "N"
-	information: "Print sequences at all nodes of tree"
-]
-
-boolean: dotdiff [
-	additional: "@($(printdata) | $(ancseq))"
-	default: "Y"
-	information: "Use dot differencing to display results"
-]
+  boolean: dotdiff [
+    additional: "@($(printdata) | $(ancseq))"
+    default: "Y"
+    information: "Use dot differencing to display results"
+  ]
 
 endsection: output

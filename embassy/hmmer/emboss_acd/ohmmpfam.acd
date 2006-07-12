@@ -12,16 +12,16 @@ section: input [
   type: "page"
 ]
 
-seqall: seqall  [
-  parameter: "Y"
-  type: "any"
-]
+  seqall: seqall [
+    parameter: "Y"
+    type: "any"
+  ]
 
-infile: hmmfile  [
-  parameter: "Y"
-  information: "HMMER hidden markov model file"
-  knowntype: "hmm"
-]
+  infile: hmmfile [
+    parameter: "Y"
+    information: "HMMER hidden markov model file"
+    knowntype: "hmm"
+  ]
 
 endsection: input
 
@@ -30,65 +30,65 @@ section: advanced [
   type: "page"
 ]
 
-boolean: nucleic  [
-  default: "N"
-  information: "Force nucleic comparison"
-]
+  boolean: nucleic [
+    default: "N"
+    information: "Force nucleic comparison"
+  ]
 
-integer: nalign  [
-  default: "100"
-  information: "Number of alignments"
-]
+  integer: nalign [
+    default: "100"
+    information: "Number of alignments"
+  ]
 
-float: evalue  [
-  default: "10."
-  information: "E-value cutoff"
-]
+  float: evalue [
+    default: "10."
+    information: "E-value cutoff"
+  ]
 
-float: hitcut  [
-  default: "-1000000."
-  information: "Hit score cutoff"
-]
+  float: hitcut [
+    default: "-1000000."
+    information: "Hit score cutoff"
+  ]
 
-integer: dbsize  [
-  default: "59021"
-  information: "Calc E-value for DB size n"
-]
+  integer: dbsize [
+    default: "59021"
+    information: "Calc E-value for DB size n"
+  ]
 
-integer: cpu  [
-  default: "0"
-  information: "Number of CPUs"
-]
+  integer: cpu [
+    default: "0"
+    information: "Number of CPUs"
+  ]
 
-float: dome  [
-  default: "1000000."
-  information: "E-value domain cutoff"
-]
+  float: dome [
+    default: "1000000."
+    information: "E-value domain cutoff"
+  ]
 
-float: domt  [
-  default: "-1000000."
-  information: "Hit score domain cutoff"
-]
+  float: domt [
+    default: "-1000000."
+    information: "Hit score domain cutoff"
+  ]
 
-boolean: forward  [
-  default: "N"
-  information: "Use forward algorithm"
-]
+  boolean: forward [
+    default: "N"
+    information: "Use forward algorithm"
+  ]
 
-boolean: nulltwo  [
-  default: "N"
-  information: "Turn off second null model"
-]
+  boolean: nulltwo [
+    default: "N"
+    information: "Turn off second null model"
+  ]
 
-boolean: pvm  [
-  default: "N"
-  information: "Use parallel virtual machine"
-]
+  boolean: pvm [
+    default: "N"
+    information: "Use parallel virtual machine"
+  ]
 
-boolean: xnu  [
-  default: "N"
-  information: "Use XNU filtering"
-]
+  boolean: xnu [
+    default: "N"
+    information: "Use XNU filtering"
+  ]
 
 endsection: advanced
 
@@ -97,10 +97,10 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "hmmpfam output"
-  information: "HMMER hmmpfam program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "hmmpfam output"
+    information: "HMMER hmmpfam program output file"
+  ]
 
 endsection: output

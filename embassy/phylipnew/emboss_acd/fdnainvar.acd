@@ -9,20 +9,20 @@ section: input [
   type: "page"
 ]
 
-seqsetall: sequence  [
-  parameter: "Y"
-  type: "gapdnaphylo"
-  aligned: "Y"
-  help: "File containing one or more sequence alignments"
-]
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapdnaphylo"
+    aligned: "Y"
+    help: "File containing one or more sequence alignments"
+  ]
 
-properties: weights [
-  standard: "Y"
-  length: "$(sequence.length)"
-  nullok: "Y"
-  knowntype: "weights"
-  information: "Phylip weights file (optional)"
-]
+  properties: weights [
+    standard: "Y"
+    length: "$(sequence.length)"
+    nullok: "Y"
+    knowntype: "weights"
+    information: "Phylip weights file (optional)"
+  ]
 
 endsection: input
 
@@ -31,40 +31,40 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dnainvar output"
-  information: "Phylip dnainvar program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "dnainvar output"
+    information: "Phylip dnainvar program output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: dotdiff [
-  additional: "$(printdata)"
-  default: "Y"
-  information: "Use dot-differencing to display results"
-]
+  boolean: dotdiff [
+    additional: "$(printdata)"
+    default: "Y"
+    information: "Use dot-differencing to display results"
+  ]
 
-boolean: printpattern [
-  additional: "Y"
-  default: "Y"
-  information: "Print counts of patterns"
-]
+  boolean: printpattern [
+    additional: "Y"
+    default: "Y"
+    information: "Print counts of patterns"
+  ]
 
-boolean: printinvariant  [
-  additional: "Y"
-  default: "Y"
-  information: "Print invariants"
-]
+  boolean: printinvariant [
+    additional: "Y"
+    default: "Y"
+    information: "Print invariants"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

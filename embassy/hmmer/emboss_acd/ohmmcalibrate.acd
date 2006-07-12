@@ -12,11 +12,11 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "HMMER hidden markov model file"
-  knowntype: "hmm"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "HMMER hidden markov model file"
+    knowntype: "hmm"
+  ]
 
 endsection: input
 
@@ -25,42 +25,42 @@ section: advanced [
   type: "page"
 ]
 
-integer: cpu  [
-  default: "0"
-  information: "Number of CPUs"
-]
+  integer: cpu [
+    default: "0"
+    information: "Number of CPUs"
+  ]
 
-integer: fixed  [
-  default: "0"
-  minimum: "0"
-  information: "Length fix for random sequences"
-]
+  integer: fixed [
+    default: "0"
+    minimum: "0"
+    information: "Length fix for random sequences"
+  ]
 
-float: mean  [
-  default: "350."
-  information: "Mean length of synthetic sequences"
-]
+  float: mean [
+    default: "350."
+    information: "Mean length of synthetic sequences"
+  ]
 
-integer: num  [
-  default: "5000"
-  information: "Number of synthetic sequences"
-]
+  integer: num [
+    default: "5000"
+    information: "Number of synthetic sequences"
+  ]
 
-boolean: pvm  [
-  default: "N"
-  information: "Run on parallel virtual machines"
-]
+  boolean: pvm [
+    default: "N"
+    information: "Run on parallel virtual machines"
+  ]
 
-float: sd  [
-  default: "350."
-  information: "Standard deviation of syntheic sequences"
-]
+  float: sd [
+    default: "350."
+    information: "Standard deviation of syntheic sequences"
+  ]
 
-integer: seed  [
-  default: "0"
-  minimum: "0"
-  information: "Random seed"
-]
+  integer: seed [
+    default: "0"
+    minimum: "0"
+    information: "Random seed"
+  ]
 
 endsection: advanced
 
@@ -69,17 +69,17 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "hmmcalibrate output"
-  information: "HMMER hmmcalibrate program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "hmmcalibrate output"
+    information: "HMMER hmmcalibrate program output file"
+  ]
 
-outfile: histogramfile  [
-  default: ""
-  information: "HMMER histogram output file (optional)"
-  knowntype: "hmmer histogram"
-  nullok: "Y"
-]
+  outfile: histogramfile [
+    default: ""
+    information: "HMMER histogram output file (optional)"
+    knowntype: "hmmer histogram"
+    nullok: "Y"
+  ]
 
 endsection: output

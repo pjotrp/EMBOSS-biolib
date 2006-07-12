@@ -9,11 +9,11 @@ section: input [
   type: "page"
 ]
 
-tree: intreefile [
-  parameter: "Y"
-  knowntype: "newick"
-  information: "Phylip tree file"
-]
+  tree: intreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file"
+  ]
 
 endsection: input
 
@@ -22,39 +22,36 @@ section: additional [
   type: "page"
 ]
 
-list: method [
-  additional: "Y"
-  minimum: "1"
-  maximum: "1"
-  information: "Consensus method"
-  values: "s:strict consensus tree; 
-           mr:Majority Rule;
-           mre:Majority Rule (extended); 
-           ml:Minimum fraction (0.5 to 1.0)"
-  default: "mre"
-]
+  list: method [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    information: "Consensus method"
+    values: "s:strict consensus tree; mr:Majority Rule; mre:Majority
+             Rule (extended); ml:Minimum fraction (0.5 to 1.0)"
+    default: "mre"
+  ]
 
-float: mlfrac [
-	additional: "@($(method)==ml)"
-	minimum: "0.5"
-	maximum: "1.0"
-	default: "0.5"
-	information: "Fraction (l) of times a branch must appear"
-]
+  float: mlfrac [
+    additional: "@($(method)==ml)"
+    minimum: "0.5"
+    maximum: "1.0"
+    default: "0.5"
+    information: "Fraction (l) of times a branch must appear"
+  ]
 
-toggle: root [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as Rooted"
-]
+  toggle: root [
+    additional: "Y"
+    default: "N"
+    information: "Trees to be treated as Rooted"
+  ]
 
-
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
 endsection: additional
 
@@ -63,41 +60,42 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile [
-  parameter: "Y"
-  knowntype: "consense output"
-  information: "Phylip consense program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "consense output"
+    information: "Phylip consense program output file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
-boolean: prntsets [
-  additional: "Y"
-  default: "Y"
-  information: "Print out the sets of species"
-]
+  boolean: prntsets [
+    additional: "Y"
+    default: "Y"
+    information: "Print out the sets of species"
+  ]
+
 endsection: output

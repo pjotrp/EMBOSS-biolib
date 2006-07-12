@@ -9,39 +9,39 @@ section: input [
   type: "page"
 ]
 
-discretestates: infile  [
-  parameter: "Y"
-  characters: "01PB?"
-  knowntype: "discrete states"
-  information: "Phylip discrete states file"
-]
+  discretestates: infile [
+    parameter: "Y"
+    characters: "01PB?"
+    knowntype: "discrete states"
+    information: "Phylip discrete states file"
+  ]
 
-properties: ancfile [
-  additional: "Y"
-  characters: "01"
-  length: "$(infile.discretelength)"
-  knowntype: "ancestral states"
-  nullok: "Y"
-  information: "Phylip ancestral states file"
-]
+  properties: ancfile [
+    additional: "Y"
+    characters: "01"
+    length: "$(infile.discretelength)"
+    knowntype: "ancestral states"
+    nullok: "Y"
+    information: "Phylip ancestral states file"
+  ]
 
-properties: factorfile [
-  additional: "Y"
-  characters: ""
-  length: "$(infile.discretelength)"
-  knowntype: "multistate factors"
-  nullok: "Y"
-  information: "Phylip multistate factors file (optional)"
-]
+  properties: factorfile [
+    additional: "Y"
+    characters: ""
+    length: "$(infile.discretelength)"
+    knowntype: "multistate factors"
+    nullok: "Y"
+    information: "Phylip multistate factors file (optional)"
+  ]
 
-properties: weights [
-  additional: "Y"
-  characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  length: "$(infile.discretelength)"
-  knowntype: "Weights"
-  nullok: "Y"
-  information: "Phylip weights file (optional)"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    length: "$(infile.discretelength)"
+    knowntype: "Weights"
+    nullok: "Y"
+    information: "Phylip weights file (optional)"
+  ]
 
 endsection: input
 
@@ -50,19 +50,20 @@ section: additional [
   type: "page"
 ]
 
-integer: cliqmin  [
-  additional: "Y"
-  default: "0"
-  minimum: "0"
-  information: "Minimum clique size"
-]
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-        maximum: "$(infile.discretesize)"
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: cliqmin [
+    additional: "Y"
+    default: "0"
+    minimum: "0"
+    information: "Minimum clique size"
+  ]
+
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(infile.discretesize)"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
 endsection: additional
 
@@ -71,48 +72,48 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "clique output"
-  information: "Phylip clique program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "clique output"
+    information: "Phylip clique program output file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
-boolean: printcomp  [
-  additional: "Y"
-  default: "N"
-  information: "Print out compatibility matrix"
-]
+  boolean: printcomp [
+    additional: "Y"
+    default: "N"
+    information: "Print out compatibility matrix"
+  ]
 
 endsection: output

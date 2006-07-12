@@ -1,97 +1,99 @@
 application: frestdist [
-  documentation: "Distance matrix from restriction sites or fragments"
+  documentation: "Distance matrix from restriction sites or
+                  fragments"
   groups: "Phylogeny:Molecular sequence"
   embassy: "phylipnew"
 ]
 
 section: input [
-	information: "Input section"
-	type: "page"
+  information: "Input section"
+  type: "page"
 ]
 
-discretestates: data [
-        characters: "01+-?"
-	parameter: "Y"
-        help: "File containing one or more sets of restriction data"
-]
-
+  discretestates: data [
+    characters: "01+-?"
+    parameter: "Y"
+    help: "File containing one or more sets of restriction data"
+  ]
 
 endsection: input
 
 section: additional [
-	information: "Additional section"
-	type: "page"
+  information: "Additional section"
+  type: "page"
 ]
 
-boolean: restsites [
-	additional: "Y"
-	information: "Restriction sites (put N if you want restriction fragments)"
-	default: "Y"
-]
+  boolean: restsites [
+    additional: "Y"
+    information: "Restriction sites (put N if you want
+                  restriction fragments)"
+    default: "Y"
+  ]
 
-boolean: neili [
-	additional: "Y"
-	information: "Use original Nei/Li model (default uses modified Nei/Li model)"
-	default: "N"
-]
+  boolean: neili [
+    additional: "Y"
+    information: "Use original Nei/Li model (default uses
+                  modified Nei/Li model)"
+    default: "N"
+  ]
 
-boolean: gamma  [
-	additional: "@(!$(neili))"
-  	information: "Gama distributed rates among sites"
-  	default: "N"
-]
+  boolean: gamma [
+    additional: "@(!$(neili))"
+    information: "Gama distributed rates among sites"
+    default: "N"
+  ]
 
-float: gammacoefficient [
-	additional: "$(gamma)" 
-	information: "Coefficient of variation of substitution rate among sites"
-	minimum: "0.001"
-	default: "1"
-]
+  float: gammacoefficient [
+    additional: "$(gamma)"
+    information: "Coefficient of variation of substitution rate
+                  among sites"
+    minimum: "0.001"
+    default: "1"
+  ]
 
-float: ttratio [
-	additional: "Y"
-	default: "2.0"
-        minimum: "0.001"
-	information: "Transition/transversion ratio"
-]
+  float: ttratio [
+    additional: "Y"
+    default: "2.0"
+    minimum: "0.001"
+    information: "Transition/transversion ratio"
+  ]
 
-integer: sitelength [
-	additional: "Y"
-	default: "6"
-	information: "Site length"
-	minimum: "1"
-]
+  integer: sitelength [
+    additional: "Y"
+    default: "6"
+    information: "Site length"
+    minimum: "1"
+  ]
 
-boolean: lower [
-	additional: "Y"
-	default: "N"
-	information: "Lower triangular distance matrix"
-]
+  boolean: lower [
+    additional: "Y"
+    default: "N"
+    information: "Lower triangular distance matrix"
+  ]
 
-endsection: additional	
+endsection: additional
 
 section: output [
-	information: "Output section"
-	type: "page"
+  information: "Output section"
+  type: "page"
 ]
 
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "restdist output"
+    information: "Phylip restdist program output file"
+  ]
 
-outfile: outfile [
-	parameter: "Y"
-	knowntype: "restdist output"
-	information: "Phylip restdist program output file"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
-
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

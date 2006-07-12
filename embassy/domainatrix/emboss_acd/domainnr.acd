@@ -192,7 +192,8 @@ section: output [
 
   outfile: redoutfile [
     standard: "$(retain)"
-    information: "Domain classification redundant output file (optional)"
+    information: "Domain classification redundant output file
+                  (optional)"
     help: "This option specifies the name of DCF file (domain
            classification file) for redundant sequences (output). A 'domain
            classification file' contains classification and other data for

@@ -12,10 +12,10 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "HMMER hmm database file"
-  knowntype: "hmm database"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "HMMER hmm database file"
+    knowntype: "hmm database"
+  ]
 
 endsection: input

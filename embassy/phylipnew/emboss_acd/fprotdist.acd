@@ -9,45 +9,45 @@ section: input [
   type: "page"
 ]
 
-seqsetall: sequence  [
-  parameter: "Y"
-  type: "gapproteinphylo"
-  aligned: "Y"
-  help: "File containing one or more sequence alignments"
-]
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapproteinphylo"
+    aligned: "Y"
+    help: "File containing one or more sequence alignments"
+  ]
 
-integer: ncategories  [
-	additional: "Y"
-	default: "1"	
-	minimum: "1"
-	maximum: "9"
-	information: "Number of substitution rate categories"
-]
+  integer: ncategories [
+    additional: "Y"
+    default: "1"
+    minimum: "1"
+    maximum: "9"
+    information: "Number of substitution rate categories"
+  ]
 
-array: rate [
-	additional: "@($(ncategories) > 1)"
-	information: "Rate for each category"
-	size: "$(ncategories)"
-        sumtest: "N"
-]
+  array: rate [
+    additional: "@($(ncategories) > 1)"
+    information: "Rate for each category"
+    size: "$(ncategories)"
+    sumtest: "N"
+  ]
 
-properties: categories  [
-	additional: "@($(ncategories) > 1)"
-	characters: "1-$(ncategories)"
-	information: "File of substitution rate categories"
-	nullok: "@($(ncategories) == 1)"
-        size: "1"
-        length: "$(sequence.length)"
-]
+  properties: categories [
+    additional: "@($(ncategories) > 1)"
+    characters: "1-$(ncategories)"
+    information: "File of substitution rate categories"
+    nullok: "@($(ncategories) == 1)"
+    size: "1"
+    length: "$(sequence.length)"
+  ]
 
-properties: weights [
-	additional: "Y"
-	characters: "01"
-	information: "Weights file"
-        length: "$(sequence.length)"
-        size: "@(@($(sequence.multicount)>1) ? 1:0)"
-	nullok: "Y"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "01"
+    information: "Weights file"
+    length: "$(sequence.length)"
+    size: "@(@($(sequence.multicount)>1) ? 1:0)"
+    nullok: "Y"
+  ]
 
 endsection: input
 
@@ -56,100 +56,96 @@ section: additional [
   type: "page"
 ]
 
-list: method  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "j:Jones-Taylor-Thornton matrix;
-           h:Henikoff/Tiller PMB matrix;
-           d:Dayhoff PAM matrix; 
-  	   k:Kimura formula;
-           s:Similarity table;
-           c:Categories model"
-  information: "Choose the method to use"
-  default: "j"
-]
+  list: method [
+    additional: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "j:Jones-Taylor-Thornton matrix; h:Henikoff/Tiller PMB
+             matrix; d:Dayhoff PAM matrix; k:Kimura formula; s:Similarity
+             table; c:Categories model"
+    information: "Choose the method to use"
+    default: "j"
+  ]
 
-list: gamma  [
-	additional: "@($(method) == { j | h | d | c })"
-	minimum: "1"
-	maximum: "1"
-	header: "Rate variation among sites"
-	values: "g:Gamma distributed rates;
-        	 i:Gamma+invariant sites;
-          	 c:Constant rate"
-  	information: "Rate variation among sites"
-  	default: "c"
-]
+  list: gamma [
+    additional: "@($(method) == { j | h | d | c })"
+    minimum: "1"
+    maximum: "1"
+    header: "Rate variation among sites"
+    values: "g:Gamma distributed rates; i:Gamma+invariant sites;
+             c:Constant rate"
+    information: "Rate variation among sites"
+    default: "c"
+  ]
 
-float: gammacoefficient [
-	additional: "@($(gamma)==g)" 
-	information: "Coefficient of variation of substitution rate among sites"
-	minimum: "0.001"
-	default: "1"
-]
+  float: gammacoefficient [
+    additional: "@($(gamma)==g)"
+    information: "Coefficient of variation of substitution rate
+                  among sites"
+    minimum: "0.001"
+    default: "1"
+  ]
 
+  float: invarcoefficient [
+    additional: "@($(gamma)==i)"
+    information: "Coefficient of variation of substitution rate
+                  among sites"
+    minimum: "0.001"
+    default: "1"
+  ]
 
-float: invarcoefficient [
-	additional: "@($(gamma)==i)" 
-	information: "Coefficient of variation of substitution rate among sites"
-	minimum: "0.001"
-	default: "1"
-]
+  list: aacateg [
+    additional: "@($(method) == c)"
+    minimum: "1"
+    maximum: "1"
+    header: "Which categorizations of amino acids to use - all have
+             groups: (Glu Gln Asp Asn), (Lys Arg His), (Phe Tyr Trp)plus:"
+    values: "G:George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly
+             Ala Ser Thr Pro); C:Chemical (Cys Met), (Val Leu Ileu Gly Ala
+             Ser Thr), (Pro); H:Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser
+             Thr),(Pro)"
+    information: "Choose the category to use"
+    default: "G"
+  ]
 
-list: aacateg  [
-  additional: "@($(method) == c)"
-  minimum: "1"
-  maximum: "1"
-  header: "Which categorizations of amino acids to use - all have groups: (Glu Gln Asp Asn), (Lys Arg His), (Phe Tyr Trp)plus:"
-  values: "G:George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr Pro); 
-           C:Chemical (Cys Met), (Val Leu Ileu Gly Ala Ser Thr), (Pro); 
-           H:Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr),(Pro)"
-  information: "Choose the category to use"
-  default: "G"
-]
+  list: whichcode [
+    additional: "@($(method) == c)"
+    minimum: "1"
+    maximum: "1"
+    header: "Which genetic code"
+    values: "u:Universal; c:Ciliate; m:Universal mitochondrial;
+             v:Vertebrate mitochondrial; f:Fly mitochondrial; y:Yeast
+             mitochondrial"
+    information: "Which genetic code"
+    default: "u"
+  ]
 
-list: whichcode  [
-  additional: "@($(method) == c)"
-  minimum: "1"
-  maximum: "1"
-  header: "Which genetic code"
-  values: "u:Universal; 
-           c:Ciliate;
-           m:Universal mitochondrial; 
-           v:Vertebrate mitochondrial;
-           f:Fly mitochondrial; 
-           y:Yeast mitochondrial"
-  information: "Which genetic code"
-  default: "u"
-]
+  float: ease [
+    additional: "@($(method) == c)"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.457"
+    information: "Prob change category (1.0=easy)"
+  ]
 
-float: ease  [
-  additional: "@($(method) == c)"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.457"
-  information: "Prob change category (1.0=easy)"
-]
+  float: ttratio [
+    additional: "@($(method) == c)"
+    minimum: "0.0"
+    default: "2.0"
+    information: "Transition/transversion ratio"
+  ]
 
-float: ttratio  [
-  additional: "@($(method) == c)"
-  minimum: "0.0"
-  default: "2.0"
-  information: "Transition/transversion ratio"
-]
-
-
-array: basefreq [
-	additional: "@($(method) == c)"
-	size: "4"
-	minimum: "0.0"
-	maximum: "1.0"
-	default: "0.25 0.25 0.25 0.25"
-	information: "Base frequencies for A C G T/U (use blanks to separate)"
-	sum: 1.0
-]
+  array: basefreq [
+    additional: "@($(method) == c)"
+    size: "4"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25 0.25 0.25 0.25"
+    information: "Base frequencies for A C G T/U (use blanks to
+                  separate)"
+    sum: "1.0"
+  ]
 
 endsection: additional
 
@@ -158,22 +154,22 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "distance matrix"
-  information: "Phylip distance matrix output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "distance matrix"
+    information: "Phylip distance matrix output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

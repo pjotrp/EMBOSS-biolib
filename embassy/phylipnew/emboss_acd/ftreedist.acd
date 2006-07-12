@@ -9,11 +9,11 @@ section: input [
   type: "page"
 ]
 
-tree: intreefile [
-  parameter: "Y"
-  knowntype: "newick"
-  information: "Phylip tree file"
-]
+  tree: intreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file"
+  ]
 
 endsection: input
 
@@ -22,43 +22,42 @@ section: additional [
   type: "page"
 ]
 
-list: dtype [
-  additional: "Y"
-  information: "Distance type"
-  values: "s:Symmetric difference;
-           b:Branch score distance"
-  default: "b"
-]
+  list: dtype [
+    additional: "Y"
+    information: "Distance type"
+    values: "s:Symmetric difference; b:Branch score distance"
+    default: "b"
+  ]
 
-list: pairing [
-  additional: "Y"
-  information: "Tree pairing method"
-  values: "a:Distances between adjacent pairs in tree file;
-           p:Distances between all possible pairs in tree file"
-  default: "a"
-]
+  list: pairing [
+    additional: "Y"
+    information: "Tree pairing method"
+    values: "a:Distances between adjacent pairs in tree file;
+             p:Distances between all possible pairs in tree file"
+    default: "a"
+  ]
 
-list: style [
-  additional: "Y"
-  information: "Distances output option"
-  values: "f:Full matrix;
-           v:One pair per line, verbose;
-           s:One pair per line, sparse"
-  default: "v"
-]
+  list: style [
+    additional: "Y"
+    information: "Distances output option"
+    values: "f:Full matrix; v:One pair per line, verbose; s:One pair
+             per line, sparse"
+    default: "v"
+  ]
 
-boolean: noroot [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as rooted"
-]
+  boolean: noroot [
+    additional: "Y"
+    default: "N"
+    information: "Trees to be treated as rooted"
+  ]
 
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
+
 endsection: additional
 
 section: output [
@@ -66,16 +65,16 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "treedist output"
-  information: "Phylip treedist program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "treedist output"
+    information: "Phylip treedist program output file"
+  ]
 
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: progress [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
 endsection: output

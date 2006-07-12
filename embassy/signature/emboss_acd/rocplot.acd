@@ -193,8 +193,8 @@ section: output [
   outfile: outfile [
     standard: "Y"
     information: "Rocplot summary output file"
-    help: "This option specifies the name of the summary file (output). A
-           text file summarising the analysis."
+    help: "This option specifies the name of the summary file
+           (output). A text file summarising the analysis."
     default: "_summary"
     knowntype: "rocplot summary"
   ]

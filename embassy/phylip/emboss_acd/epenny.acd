@@ -9,22 +9,22 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "Phylip penny program input file"
-  knowntype: "penny input"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "Phylip penny program input file"
+    knowntype: "penny input"
+  ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
+  toggle: multsets [
+    additional: "Y"
+    default: "N"
+    information: "Analyze multiple data sets"
+  ]
 
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
-]
+  integer: datasets [
+    standard: "$(multsets)"
+    information: "How many data sets"
+  ]
 
 endsection: input
 
@@ -33,40 +33,40 @@ section: required [
   type: "page"
 ]
 
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed"
-  information: "Choose the method to use"
-  default: "Wag"
-]
+  list: method [
+    standard: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "Wag:Wagner; Cam:Camin-Sokal; Mix:Mixed"
+    information: "Choose the method to use"
+    default: "Wag"
+  ]
 
-toggle: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
+  toggle: og [
+    additional: "Y"
+    information: "Outgroup root"
+    default: "N"
+  ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
+  integer: outgnum [
+    standard: "$(og)"
+    minimum: "1"
+    default: "1"
+    information: "Number of the outgroup"
+  ]
 
-toggle: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
+  toggle: thresh [
+    default: "N"
+    information: "Use Threshold parsimony"
+  ]
 
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
+  float: valthresh [
+    standard: "$(thresh)"
+    minimum: "1.0"
+    default: "1.0"
+    information: "Threshold value"
+  ]
 
 endsection: required
 
@@ -75,22 +75,22 @@ section: additional [
   type: "page"
 ]
 
-integer: numgroups  [
-  additional: "Y"
-  information: "How many groups of 100 trees"
-  default: "1000"
-]
+  integer: numgroups [
+    additional: "Y"
+    information: "How many groups of 100 trees"
+    default: "1000"
+  ]
 
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
+  integer: howoften [
+    additional: "Y"
+    information: "How often to report, in trees"
+    default: "100"
+  ]
 
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-]
+  boolean: simple [
+    additional: "Y"
+    information: "Branch and bound is simple"
+  ]
 
 endsection: additional
 
@@ -99,54 +99,54 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "epenny.outfile"
-  knowntype: "penny output"
-  information: "Phylip penny program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "epenny.outfile"
+    knowntype: "penny output"
+    information: "Phylip penny program output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
+  boolean: steps [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each site"
+  ]
 
-boolean: seqatnodes  [
-  additional: "Y"
-  default: "N"
-  information: "Print sequences at all nodes of tree"
-]
+  boolean: seqatnodes [
+    additional: "Y"
+    default: "N"
+    information: "Print sequences at all nodes of tree"
+  ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+  ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
+  toggle: trout [
+    parameter: "Y"
+    default: "Y"
+    information: "Create a tree file"
+  ]
 
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "epenny.treefile"
-  information: "Phylip tree output file"
-  knowntype: "newick tree"
-]
+  outfile: treefile [
+    standard: "$(trout)"
+    default: "epenny.treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+  ]
 
 endsection: output

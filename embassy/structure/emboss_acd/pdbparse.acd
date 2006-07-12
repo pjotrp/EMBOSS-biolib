@@ -1,5 +1,6 @@
 application: pdbparse [
-  documentation: "Parses PDB files and writes protein CCF files."
+  documentation: "Parses PDB files and writes protein CCF
+                  files."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -118,7 +119,8 @@ section: output [
 
   outdir: ccfoutdir [
     parameter: "Y"
-    information: "Clean protein structure coordinates file output directory"
+    information: "Clean protein structure coordinates file
+                  output directory"
     help: "This option specifies the location of CCF files (clean
            coordinate files) (output). A 'protein clean cordinate file'
            contains protein coordinate and other data for a single PDB file.

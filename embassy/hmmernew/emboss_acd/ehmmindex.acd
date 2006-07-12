@@ -1,7 +1,6 @@
-application: ehmmindex 
-[
-# EMBOSS wrapper to ehmmindex from Sean Eddy's HMMER package v.2.3.2
-  documentation: "Create a binary SSI index for an HMM database."
+application: ehmmindex [
+  documentation: "Create a binary SSI index for an HMM
+                  database."
   groups: "HMM"
   gui: "yes"
   batch: "yes"
@@ -9,22 +8,16 @@ application: ehmmindex
   embassy: "hmmernew"
 ]
 
-
-
-
-
-section: input 
-[
+section: input [
   information: "Input section"
   type: "page"
 ]
 
-infile: database
-[
-  parameter: "Y"
-  information: "HMMER hmm database file"
-  knowntype: "hmm database"
-  help: "HMM database."
-]
+  infile: database [
+    parameter: "Y"
+    information: "HMMER hmm database file"
+    knowntype: "hmm database"
+    help: "HMM database."
+  ]
 
 endsection: input

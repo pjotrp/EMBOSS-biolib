@@ -12,11 +12,11 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "HMMER hidden markov model file"
-  knowntype: "hmm"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "HMMER hidden markov model file"
+    knowntype: "hmm"
+  ]
 
 endsection: input
 
@@ -25,11 +25,11 @@ section: advanced [
   type: "page"
 ]
 
-integer: seed  [
-  default: "0"
-  minimum: "0"
-  information: "Random seed"
-]
+  integer: seed [
+    default: "0"
+    minimum: "0"
+    information: "Random seed"
+  ]
 
 endsection: advanced
 
@@ -38,26 +38,25 @@ section: output [
   type: "page"
 ]
 
-boolean: selex  [
-  default: "N"
-  information: "Output in selex format"
-]
+  boolean: selex [
+    default: "N"
+    information: "Output in selex format"
+  ]
 
-boolean: consensus  [
-  default: "N"
-  information: "Output consensus sequence"
-]
+  boolean: consensus [
+    default: "N"
+    information: "Output consensus sequence"
+  ]
 
-integer: number  [
-  default: "10"
-  information: "Number of sequences to produce"
-]
+  integer: number [
+    default: "10"
+    information: "Number of sequences to produce"
+  ]
 
-
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "hmmemit output"
-  information: "HMMER hmmemit program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "hmmemit output"
+    information: "HMMER hmmemit program output file"
+  ]
 
 endsection: output

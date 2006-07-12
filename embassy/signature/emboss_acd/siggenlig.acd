@@ -1,5 +1,6 @@
 application: siggenlig [
-  documentation: "Generate ligand-binding signatures from a CON file."
+  documentation: "Generate ligand-binding signatures from a
+                  CON file."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
@@ -11,6 +12,7 @@ section: input [
   information: "Input section"
   type: "page"
 ]
+
   infile: confile [
     parameter: "Y"
     information: "Structure contacts file"
@@ -23,9 +25,10 @@ section: input [
     knowntype: "contact"
   ]
 
-directory: ccfpdir [
+  directory: ccfpdir [
     standard: "Y"
-    information: "Clean protein structure coordinates directory (optional)"
+    information: "Clean protein structure coordinates directory
+                  (optional)"
     help: "This option specifies the location of protein CCF file
            (clean coordinate files) (input). A 'clean cordinate file'
            contains protein coordinate and derived data for a single PDB file
@@ -41,9 +44,10 @@ directory: ccfpdir [
     knowntype: "protein clean coordinates"
   ]
 
-directory: ccfddir [
+  directory: ccfddir [
     standard: "Y"
-    information: "Clean domain coordinates directory (optional)"
+    information: "Clean domain coordinates directory
+                  (optional)"
     help: "This option specifies the location of protein CCF file
            (clean coordinate files) (input). A 'clean cordinate file'
            contains protein coordinate and derived data for a single PDB file
@@ -59,20 +63,14 @@ directory: ccfddir [
     knowntype: "domain clean coordinates"
   ]
 
-
 endsection: input
-
-
-
-
-
 
 section: required [
   information: "Required section"
   type: "page"
 ]
 
- list: mode [
+  list: mode [
     standard: "Y"
     values: "1: Full-length signature mode, 2: Patch signature mode"
     default: "1"
@@ -83,12 +81,20 @@ section: required [
     button: "Y"
     header: "Available modes"
     information: "Select mode of operation."
-    help: "This option specifies the mode of signature generation. In 'Full-length signature mode' (mode 1) a single signature incorporating all residue positions that contact the ligand plus intervening gaps is generated.  In 'Patch signature mode' (mode 2) one or more signatures corresponding to 'patches' of residue positions are generated.  A patch is a set of residues that are near-neighbours in sequence and is described by two user-defined parameters: minimum patch size and maximum gap distance."
+    help: "This option specifies the mode of signature generation. In
+           'Full-length signature mode' (mode 1) a single signature
+           incorporating all residue positions that contact the ligand plus
+           intervening gaps is generated. In 'Patch signature mode' (mode 2)
+           one or more signatures corresponding to 'patches' of residue
+           positions are generated. A patch is a set of residues that are
+           near-neighbours in sequence and is described by two user-defined
+           parameters: minimum patch size and maximum gap distance."
   ]
 
-list: type [
+  list: type [
     standard: "Y"
-    values: "1: 1D (sequence) signature, 2: 3D (structural) signature"
+    values: "1: 1D (sequence) signature, 2: 3D (structural)
+             signature"
     default: "1"
     minimum: "1"
     maximum: "1"
@@ -97,42 +103,48 @@ list: type [
     button: "Y"
     header: "Available types"
     information: "Select type of signature."
-    help: "This option specifies the type of signature generated. In '1D (sequence) signature' sequence-based signatures are generated.  In '3D (structural) signature' structure-based signatures are generated."
+    help: "This option specifies the type of signature generated. In
+           '1D (sequence) signature' sequence-based signatures are generated.
+           In '3D (structural) signature' structure-based signatures are
+           generated."
   ]
 
-integer: patchsize
-[
+  integer: patchsize [
     standard: "@($(mode)==2)"
     information: "Minimum patch size (input)"
-    help: "This option specifies the minimum patch size. This is the minimum number of contact positions that must be incorporated in a signature."
+    help: "This option specifies the minimum patch size. This is the
+           minimum number of contact positions that must be incorporated in a
+           signature."
     default: "5"
     minimum: "3"
-]
+  ]
 
-
-integer: gapdistance
-[
+  integer: gapdistance [
     standard: "@($(mode)==2)"
     information: "Maximum gap distance (input)"
-    help: "This option specifies the maximum gap distance. This is the maximum allowable gap (residues) between two residue in a patch.  If two contact residues are further than this distance apart in sequence, they would not belong to the same patch."
+    help: "This option specifies the maximum gap distance. This is the
+           maximum allowable gap (residues) between two residue in a patch.
+           If two contact residues are further than this distance apart in
+           sequence, they would not belong to the same patch."
     default: "2"
     minimum: "0"
-]
+  ]
 
-list: environment  [
-  standard: "@($(type)==2)"
-  default: "1"
-  minimum: "1"
-  maximum: "16"
-  values: "1: Env1,2: Env2,3: Env3,4: Env4,5: Env5,6: Env6,7: Env7,8: Env8,9: Env9,10: Env10,11: Env11,12: Env12,13: Env13,14: Env14,15: Env15,16: Env16"
-  delimiter: ","
-  codedelimiter: ":"
-  header: "Choose environment definition."
-  information: "This option specifies the environment definition. See matgen3d documentation for description of definitions."
-]
-
-
-
+  list: environment [
+    standard: "@($(type)==2)"
+    default: "1"
+    minimum: "1"
+    maximum: "16"
+    values: "1: Env1,2: Env2,3: Env3,4: Env4,5: Env5,6: Env6,7:
+             Env7,8: Env8,9: Env9,10: Env10,11: Env11,12: Env12,13: Env13,14:
+             Env14,15: Env15,16: Env16"
+    delimiter: ","
+    codedelimiter: ":"
+    header: "Choose environment definition."
+    information: "This option specifies the environment
+                  definition. See matgen3d documentation for description of
+                  definitions."
+  ]
 
   integer: wsiz [
     standard: "Y"
@@ -151,10 +163,6 @@ list: environment  [
 
 endsection: required
 
-
-
-
-
 section: output [
   information: "Output section"
   type: "page"
@@ -164,28 +172,19 @@ section: output [
     parameter: "Y"
     help: "This option specifies the location of signature files
            (output). A 'signature file' contains a sparse sequence signature
-           suitable for use with the SIGSCAN and SIGSCANLIG programs. The files are generated
-           by using SIGGEN and SIGGENLIG."
-
+           suitable for use with the SIGSCAN and SIGSCANLIG programs. The
+           files are generated by using SIGGEN and SIGGENLIG."
     default: "./"
     extension: "sig"
     knowntype: "domainatrix signature"
     information: "Domainatrix signature output directory"
   ]
 
-
-outfile: logfile [
- parameter: "Y"
- default: "siggenlig.log"
+  outfile: logfile [
+    parameter: "Y"
+    default: "siggenlig.log"
     knowntype: "domainatrix log"
     information: "Domainatrix log output file"
-]
+  ]
 
 endsection: output
-
-
-
-
-
-
-

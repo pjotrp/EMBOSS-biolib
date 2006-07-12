@@ -1,5 +1,6 @@
 application: seqsort [
-  documentation: "Remove ambiguous classified sequences from DHF files."
+  documentation: "Remove ambiguous classified sequences from
+                  DHF files."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
@@ -34,7 +35,7 @@ section: required [
   type: "page"
 ]
 
- integer: overlap [
+  integer: overlap [
     standard: "Y"
     information: "Number of overlapping residues required for
                   merging of two hits."

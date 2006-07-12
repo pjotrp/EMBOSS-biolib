@@ -9,30 +9,30 @@ section: input [
   type: "page"
 ]
 
-infile: datafile  [
-  parameter: "Y"
-  information: "Phylip dolpenny program input file"
-  knowntype: "dolpenny input"
-]
+  infile: datafile [
+    parameter: "Y"
+    information: "Phylip dolpenny program input file"
+    knowntype: "dolpenny input"
+  ]
 
-boolean: ancest  [
-  additional: "Y"
-  default: "N"
-  information: "Use ancestral states in input file"
-]
+  boolean: ancest [
+    additional: "Y"
+    default: "N"
+    information: "Use ancestral states in input file"
+  ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
+  toggle: multsets [
+    additional: "Y"
+    default: "N"
+    information: "Analyze multiple data sets"
+  ]
 
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "2"
-  default: "2"
-  information: "Number of sets"
-]
+  integer: datasets [
+    standard: "$(multsets)"
+    minimum: "2"
+    default: "2"
+    information: "Number of sets"
+  ]
 
 endsection: input
 
@@ -41,23 +41,23 @@ section: required [
   type: "page"
 ]
 
-boolean: dollo  [
-  parameter: "Y"
-  default: "Y"
-  information: "Dollo Parsimony method (else Polymorphism)"
-]
+  boolean: dollo [
+    parameter: "Y"
+    default: "Y"
+    information: "Dollo Parsimony method (else Polymorphism)"
+  ]
 
-toggle: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
+  toggle: thresh [
+    default: "N"
+    information: "Use Threshold parsimony"
+  ]
 
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
+  float: valthresh [
+    standard: "$(thresh)"
+    minimum: "1.0"
+    default: "1.0"
+    information: "Threshold value"
+  ]
 
 endsection: required
 
@@ -66,22 +66,22 @@ section: additional [
   type: "page"
 ]
 
-integer: numgroups  [
-  additional: "Y"
-  information: "How many groups of 100 trees"
-  default: "1000"
-]
+  integer: numgroups [
+    additional: "Y"
+    information: "How many groups of 100 trees"
+    default: "1000"
+  ]
 
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
+  integer: howoften [
+    additional: "Y"
+    information: "How often to report, in trees"
+    default: "100"
+  ]
 
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-]
+  boolean: simple [
+    additional: "Y"
+    information: "Branch and bound is simple"
+  ]
 
 endsection: additional
 
@@ -90,54 +90,54 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "edolpenny.outfile"
-  knowntype: "dolpenny output"
-  information: "phylip dolpenny program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "edolpenny.outfile"
+    knowntype: "dolpenny output"
+    information: "phylip dolpenny program output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
+  boolean: steps [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each site"
+  ]
 
-boolean: statesatnodes  [
-  additional: "Y"
-  default: "N"
-  information: "Print states at all nodes of tree"
-]
+  boolean: statesatnodes [
+    additional: "Y"
+    default: "N"
+    information: "Print states at all nodes of tree"
+  ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+  ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
+  toggle: trout [
+    parameter: "Y"
+    default: "Y"
+    information: "Create a tree file"
+  ]
 
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "edolpenny.treefile"
-  information: "Phylip tree output file"
-  knowntype: "newick tree"
-]
+  outfile: treefile [
+    standard: "$(trout)"
+    default: "edolpenny.treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+  ]
 
 endsection: output

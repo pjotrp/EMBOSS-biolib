@@ -1,5 +1,6 @@
 application: contacts [
-  documentation: "Generate intra-chain CON files from CCF files."
+  documentation: "Generate intra-chain CON files from CCF
+                  files."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"
@@ -14,7 +15,8 @@ section: input [
 
   dirlist: cpdbdir [
     parameter: "Y"
-    information: "Clean protein structure coordinates directories"
+    information: "Clean protein structure coordinates
+                  directories"
     help: "This option specifies the location of CCF files (clean
            coordinate files) (input). A 'clean cordinate file' contains
            protein coordinate and derived data for a single PDB file

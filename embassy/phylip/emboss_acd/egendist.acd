@@ -9,28 +9,28 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "Phylip gendist program input file"
-  knowntype: "gendist input"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "Phylip gendist program input file"
+    knowntype: "gendist input"
+  ]
 
-boolean: lowertriangle  [
-  additional: "Y"
-  default: "N"
-  information: "Lower-triangular (else Square)"
-]
+  boolean: lowertriangle [
+    additional: "Y"
+    default: "N"
+    information: "Lower-triangular (else Square)"
+  ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
+  toggle: multsets [
+    additional: "Y"
+    default: "N"
+    information: "Analyze multiple data sets"
+  ]
 
-integer: datasets  [
-  standard: "$(multsets)"
-  information: "How many data sets"
-]
+  integer: datasets [
+    standard: "$(multsets)"
+    information: "How many data sets"
+  ]
 
 endsection: input
 
@@ -39,16 +39,16 @@ section: required [
   type: "page"
 ]
 
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Distance methods"
-  values: "Nei:Nei genetic distance; Cav:Cavalli-Sforza chord
-           measure; Rey:Reynolds genetic distance;"
-  information: "Choose the method to use"
-  default: "Nei"
-]
+  list: method [
+    standard: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Distance methods"
+    values: "Nei:Nei genetic distance; Cav:Cavalli-Sforza chord
+             measure; Rey:Reynolds genetic distance;"
+    information: "Choose the method to use"
+    default: "Nei"
+  ]
 
 endsection: required
 
@@ -57,12 +57,12 @@ section: additional [
   type: "page"
 ]
 
-boolean: all  [
-  additional: "Y"
-  default: "N"
-  information: "Input file contains all alleles at each locus
-                (else one)"
-]
+  boolean: all [
+    additional: "Y"
+    default: "N"
+    information: "Input file contains all alleles at each locus
+                  (else one)"
+  ]
 
 endsection: additional
 
@@ -71,17 +71,17 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "egendist.outfile"
-  knowntype: "gendist output"
-  information: "Phylip gendist program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "egendist.outfile"
+    knowntype: "gendist output"
+    information: "Phylip gendist program output file"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

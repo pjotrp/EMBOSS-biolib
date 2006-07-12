@@ -9,44 +9,45 @@ section: input [
   type: "page"
 ]
 
-discretestates: infile  [
-  parameter: "Y"
-]
+  discretestates: infile [
+    parameter: "Y"
+  ]
 
-properties: mixfile  [
-	additional: "Y"
-	characters: ""
-	information: "File of mixtures"
-	nullok: "Y"
-        size: "1"
-        length: "$(infile.discretelength)"
-]
+  properties: mixfile [
+    additional: "Y"
+    characters: ""
+    information: "File of mixtures"
+    nullok: "Y"
+    size: "1"
+    length: "$(infile.discretelength)"
+  ]
 
-properties: ancfile  [
-	additional: "Y"
-	characters: ""
-	information: "File of ancestors"
-	nullok: "Y"
-        size: "1"
-        length: "$(infile.discretelength)"
-]
+  properties: ancfile [
+    additional: "Y"
+    characters: ""
+    information: "File of ancestors"
+    nullok: "Y"
+    size: "1"
+    length: "$(infile.discretelength)"
+  ]
 
-properties: weights [
-	additional: "Y"
-	characters: "01"
-	information: "Weights file"
-	help: "Weights file"
-        length: "$(infile.discretelength)"
-	nullok: "Y"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "01"
+    information: "Weights file"
+    help: "Weights file"
+    length: "$(infile.discretelength)"
+    nullok: "Y"
+  ]
 
-properties: factorfile [
-	additional: "Y"
-	information: "Factors file"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
+  properties: factorfile [
+    additional: "Y"
+    information: "Factors file"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
+
 endsection: input
 
 section: additional [
@@ -54,78 +55,75 @@ section: additional [
   type: "page"
 ]
 
-list: test  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Test"
-  values: "b:Bootstrap; 
-           j:Jackknife; 
-           c:Permute species for each character;
-           o:Permute character order;
-           s:Permute within species;
-	   r:Rewrite data"
-  information: "Choose test"
-  default: "b"
-]
+  list: test [
+    additional: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Test"
+    values: "b:Bootstrap; j:Jackknife; c:Permute species for each
+             character; o:Permute character order; s:Permute within species;
+             r:Rewrite data"
+    information: "Choose test"
+    default: "b"
+  ]
 
-toggle: regular [
-	additional: "@( $(test) == { b | j } )"
-	information: "Altered sampling fraction"
-	default: "N"
-]
+  toggle: regular [
+    additional: "@( $(test) == { b | j } )"
+    information: "Altered sampling fraction"
+    default: "N"
+  ]
 
-float: fracsample [
-	additional: "@(!$(regular))"
-	information: "Samples as percentage of sites"
-	default: "100.0"
-	minimum: "0.1"
-        maximum: "100.0"
-]
+  float: fracsample [
+    additional: "@(!$(regular))"
+    information: "Samples as percentage of sites"
+    default: "100.0"
+    minimum: "0.1"
+    maximum: "100.0"
+  ]
 
-list: morphseqtype  [
-  additional: "@($(test) == r )"
-  minimum: "1"
-  maximum: "1"
-  header: "Output format"
-  values: "p:PHYLIP; 
-           n:NEXUS"
-  information: "Output format"
-  default: "p"
-]
+  list: morphseqtype [
+    additional: "@($(test) == r )"
+    minimum: "1"
+    maximum: "1"
+    header: "Output format"
+    values: "p:PHYLIP; n:NEXUS"
+    information: "Output format"
+    default: "p"
+  ]
 
-integer: blocksize [
-	information: "Block size for bootstraping"
-	additional: "@($(test) == b)"
-	default: "1"
-	minimum: "1"
-]
+  integer: blocksize [
+    information: "Block size for bootstraping"
+    additional: "@($(test) == b)"
+    default: "1"
+    minimum: "1"
+  ]
 
-integer: reps  [
-  additional: "@($(test) != r)"
-  information: "How many replicates"
-  minimum: "1"
-  default: "100"
-]
+  integer: reps [
+    additional: "@($(test) != r)"
+    information: "How many replicates"
+    minimum: "1"
+    default: "100"
+  ]
 
-list: justweights  [
-  additional: "@( $(test) == { b | j } )"
-  minimum: "1"
-  maximum: "1"
-  header: "Write out datasets or just weights"
-  values: "d:Datasets; 
-           w:Weights"
-  information: "Write out datasets or just weights"
-  default: "d"
-]
+  list: justweights [
+    additional: "@( $(test) == { b | j } )"
+    minimum: "1"
+    maximum: "1"
+    header: "Write out datasets or just weights"
+    values: "d:Datasets; w:Weights"
+    information: "Write out datasets or just weights"
+    default: "d"
+  ]
 
-integer: seed [
-	additional: "@($(test) != r)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	minimum: "1"
-	maximum: "32767"
-	default: "1"
-]
+  integer: seed [
+    additional: "@($(test) != r)"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    minimum: "1"
+    maximum: "32767"
+    default: "1"
+  ]
+
 endsection: additional
 
 section: output [
@@ -133,52 +131,52 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "seqbootdisc output"
-  information: "Phylip seqboot_disc program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "seqbootdisc output"
+    information: "Phylip seqboot_disc program output file"
+  ]
 
-outfile: outancfile  [
-  parameter: "Y"
-  knowntype: "phylip ancestor"
-  extension: "ancfile"
-  information: "Phylip ancestor data output file (optional)"
-  nullok: @(!$(ancfile.isdefined))
-]
+  outfile: outancfile [
+    parameter: "Y"
+    knowntype: "phylip ancestor"
+    extension: "ancfile"
+    information: "Phylip ancestor data output file (optional)"
+    nullok: "@(!$(ancfile.isdefined))"
+  ]
 
-outfile: outmixfile  [
-  parameter: "Y"
-  knowntype: "phylip mix"
-  extension: "mixfile"
-  information: "Phylip mix data output file (optional)"
-  nullok: "@(!$(mixfile.isdefined))"
-]
+  outfile: outmixfile [
+    parameter: "Y"
+    knowntype: "phylip mix"
+    extension: "mixfile"
+    information: "Phylip mix data output file (optional)"
+    nullok: "@(!$(mixfile.isdefined))"
+  ]
 
-outfile: outfactfile  [
-  parameter: "Y"
-  extension: "factfile"
-  knowntype: "phylip factor"
-  information: "Phylip factor data output file (optional)"
-  nullok: "@(!$(factorfile.isdefined))"
-]
+  outfile: outfactfile [
+    parameter: "Y"
+    extension: "factfile"
+    knowntype: "phylip factor"
+    information: "Phylip factor data output file (optional)"
+    nullok: "@(!$(factorfile.isdefined))"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: dotdiff [
-	additional: "$(printdata)"
-	default: "Y"
-	information: "Use dot-differencing"
-]
+  boolean: dotdiff [
+    additional: "$(printdata)"
+    default: "Y"
+    information: "Use dot-differencing"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

@@ -9,18 +9,18 @@ section: input [
   type: "page"
 ]
 
-tree: intreefile [
-  parameter: "Y"
-  knowntype: "newick"
-  information: "Phylip tree file"
-]
+  tree: intreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file"
+  ]
 
-tree: bintreefile [
-  parameter: "Y"
-  knowntype: "newick"
-  information: "Second phylip tree file"
-  nullok: "Y"
-]
+  tree: bintreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Second phylip tree file"
+    nullok: "Y"
+  ]
 
 endsection: input
 
@@ -29,44 +29,43 @@ section: additional [
   type: "page"
 ]
 
-list: dtype [
-  additional: "Y"
-  information: "Distance type"
-  values: "s:Symmetric difference;
-           b:Branch score distance"
-  default: "b"
-]
+  list: dtype [
+    additional: "Y"
+    information: "Distance type"
+    values: "s:Symmetric difference; b:Branch score distance"
+    default: "b"
+  ]
 
-list: pairing [
-  additional: "Y"
-  information: "Tree pairing method"
-  values: "c:Distances between corresponding pairs each tree file;
-           l:Distances between all possible pairs in each tree file"
-  default: "l"
-]
+  list: pairing [
+    additional: "Y"
+    information: "Tree pairing method"
+    values: "c:Distances between corresponding pairs each tree file;
+             l:Distances between all possible pairs in each tree file"
+    default: "l"
+  ]
 
-list: style [
-  additional: "Y"
-  information: "Distances output option"
-  values: "f:Full_matrix;
-           v:One pair per line, verbose;
-           s:One pair per line, sparese"
-  default: "Verbose"
-  default: "v"
-]
+  list: style [
+    additional: "Y"
+    information: "Distances output option"
+    values: "f:Full_matrix; v:One pair per line, verbose; s:One pair
+             per line, sparese"
+    default: "Verbose"
+    default: "v"
+  ]
 
-boolean: noroot [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as rooted"
-]
+  boolean: noroot [
+    additional: "Y"
+    default: "N"
+    information: "Trees to be treated as rooted"
+  ]
 
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
+
 endsection: additional
 
 section: output [
@@ -74,16 +73,16 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "treedist output"
-  information: "Phylip treedist program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "treedist output"
+    information: "Phylip treedist program output file"
+  ]
 
-boolean: progress [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

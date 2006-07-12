@@ -9,20 +9,20 @@ section: input [
   type: "page"
 ]
 
-seqsetall: sequence  [
-  parameter: "Y"
-  type: "gapdnaphylo"
-  aligned: "Y"
-  help:  "File containing one or more sequence alignments"
-]
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapdnaphylo"
+    aligned: "Y"
+    help: "File containing one or more sequence alignments"
+  ]
 
-properties: weights [
-	additional: "Y"
-	characters: "01"
-        length: "$(sequence.length)"
-        size: "1"
-	nullok: "Y"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "01"
+    length: "$(sequence.length)"
+    size: "1"
+    nullok: "Y"
+  ]
 
 endsection: input
 
@@ -31,44 +31,44 @@ section: additional [
   type: "page"
 ]
 
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
+  integer: howoften [
+    additional: "Y"
+    information: "How often to report, in trees"
+    default: "100"
+  ]
 
-integer: howmany  [
-  additional: "Y"
-  information: "How many groups of trees"
-  default: "1000"
-]
+  integer: howmany [
+    additional: "Y"
+    information: "How many groups of trees"
+    default: "1000"
+  ]
 
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-  default: "Y"
-]
+  boolean: simple [
+    additional: "Y"
+    information: "Branch and bound is simple"
+    default: "Y"
+  ]
 
-integer: outgrno  [
-  additional: "Y"
-  minimum: "0"
-  maximum: "$(sequence.count)"
-  default: "0"
-  information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(sequence.count)"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
-toggle: thresh  [
-  additional: "Y"
-  default: "N"
-  information: "Use threshold parsimony"
-]
+  toggle: thresh [
+    additional: "Y"
+    default: "N"
+    information: "Use threshold parsimony"
+  ]
 
-float: threshold  [
-  additional: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
+  float: threshold [
+    additional: "$(thresh)"
+    minimum: "1.0"
+    default: "1.0"
+    information: "Threshold value"
+  ]
 
 endsection: additional
 
@@ -77,55 +77,54 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dnapenny output"
-  information: "Phylip dnapenny program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "dnapenny output"
+    information: "Phylip dnapenny program output file"
+  ]
 
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
+  boolean: stepbox [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each site"
+  ]
 
-boolean: stepbox  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
-
-boolean: ancseq  [
-  additional: "Y"
-  default: "N"
-  information: "Print sequences at all nodes of tree"
-]
+  boolean: ancseq [
+    additional: "Y"
+    default: "N"
+    information: "Print sequences at all nodes of tree"
+  ]
 
 endsection: output

@@ -12,31 +12,33 @@ section: input [
   type: "page"
 ]
 
-  sequence: asequence  [
+  sequence: asequence [
     parameter: "Y"
     type: "dna"
   ]
 
-  infile: aconstraintfile  [
+  infile: aconstraintfile [
     nullok: "Y"
     default: ""
-    information: "Vienna RNA structure contraints file (optional)"
+    information: "Vienna RNA structure contraints file
+                  (optional)"
     knowntype: "rna constraint"
   ]
 
-  sequence: bsequence  [
+  sequence: bsequence [
     parameter: "Y"
     type: "dna"
   ]
 
-  infile: bconstraintfile  [
+  infile: bconstraintfile [
     nullok: "Y"
     default: ""
-    information: "Second vienna RNA structure contraints file (optional)"
+    information: "Second vienna RNA structure contraints file
+                  (optional)"
     knowntype: "rna constraint"
   ]
 
-  infile: concentrationfile  [
+  infile: concentrationfile [
     parameter: "Y"
     information: "Vienna RNA concentration data file"
     knowntype: "rna concentration"
@@ -92,7 +94,7 @@ section: advanced [
     information: "Stabilizing energies for tetra-loops"
   ]
 
-  list: energy  [
+  list: energy [
     default: "0"
     minimum: "1"
     maximum: "1"
@@ -101,24 +103,23 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
-    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+    help: "Rarely used option to fold sequences from the ABCD...
+           alphabet"
   ]
-
 
   float: scale [
     default: "1.07"
     information: "Estimate of ensemble free energy"
   ]
 
-  list: dangles  [
+  list: dangles [
     default: "1"
     minimum: "1"
     maximum: "1"
     header: "How to treat dangling end energies"
-    values: "0:Ignore,
-             1:Only unpaired bases for just one dangling end,
-             2:Always use dangling energies,
-             3:Allow coaxial stacking of adjacent helices"
+    values: "0:Ignore, 1:Only unpaired bases for just one dangling
+             end, 2:Always use dangling energies, 3:Allow coaxial stacking of
+             adjacent helices"
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
@@ -136,47 +137,47 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
   ]
 
-  outfile: ssoutfile  [
+  outfile: ssoutfile [
     name: "$(asequence.name)"
     extension: "ssps"
     knowntype: "vienna structure"
   ]
 
-  outfile: aoutfile  [
+  outfile: aoutfile [
     name: "$(asequence.name)"
     extension: "aps"
     knowntype: "vienna dotplot"
     information: "First (a) vienna dotplot output file"
   ]
 
-  outfile: aaoutfile  [
+  outfile: aaoutfile [
     name: "$(asequence.name)"
     extension: "aaps"
     knowntype: "vienna dotplot"
     information: "Second (a-a) vienna dotplot output file"
   ]
 
-  outfile: boutfile  [
+  outfile: boutfile [
     name: "$(asequence.name)"
     extension: "bps"
     knowntype: "vienna dotplot"
     information: "Third (b) vienna dotplot output file"
   ]
 
-  outfile: bboutfile  [
+  outfile: bboutfile [
     name: "$(asequence.name)"
     extension: "bbps"
     knowntype: "vienna dotplot"
     information: "Fourth (b-b) vienna dotplot output file"
   ]
 
-  outfile: aboutfile  [
+  outfile: aboutfile [
     name: "$(asequence.name)"
     extension: "abps"
     knowntype: "vienna dotplot"

@@ -12,17 +12,17 @@ section: input [
   type: "page"
 ]
 
-string: database  [
-  parameter: "Y"
-  information: "Database name"
-  knowntype: "hmm database name"
-]
+  string: database [
+    parameter: "Y"
+    information: "Database name"
+    knowntype: "hmm database name"
+  ]
 
-string: name  [
-  parameter: "Y"
-  information: "Entry name"
-  knowntype: "hmm entry name"
-]
+  string: name [
+    parameter: "Y"
+    information: "Entry name"
+    knowntype: "hmm entry name"
+  ]
 
 endsection: input
 
@@ -31,10 +31,10 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "hmm"
-  information: "HMMER hidden markov model output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "hmm"
+    information: "HMMER hidden markov model output file"
+  ]
 
 endsection: output

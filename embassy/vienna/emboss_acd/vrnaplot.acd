@@ -12,7 +12,7 @@ section: input [
   type: "page"
 ]
 
-  infile: structure  [
+  infile: structure [
     parameter: "Y"
     information: "Vienna RNAfold output file"
     knowntype: "rnafold output"
@@ -25,7 +25,7 @@ section: advanced [
   type: "page"
 ]
 
-  list: layout  [
+  list: layout [
     default: "naview"
     minimum: "1"
     maximum: "1"
@@ -36,24 +36,25 @@ section: advanced [
     information: "Layout"
   ]
 
-  list: optype  [
+  list: optype [
     default: "ps"
     minimum: "1"
     maximum: "1"
     header: "Output type"
-    values: "ps:postscript, gml:graph meta language, svg:scaleable vector graphics, xrna:XRNA save file"
+    values: "ps:postscript, gml:graph meta language, svg:scaleable
+             vector graphics, xrna:XRNA save file"
     delimiter: ","
     codedelimiter: ":"
     information: "Type"
   ]
 
-  string: pre  [
+  string: pre [
     information: "Pre-annotation"
     default: ""
     knowntype: "string"
   ]
 
-  string: post  [
+  string: post [
     information: "Post-annotation"
     default: ""
     knowntype: "string"
@@ -66,7 +67,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"

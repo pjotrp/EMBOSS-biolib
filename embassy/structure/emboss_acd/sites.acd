@@ -1,5 +1,6 @@
 application: sites [
-  documentation: "Generate residue-ligand CON files from CCF files."
+  documentation: "Generate residue-ligand CON files from CCF
+                  files."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -14,7 +15,8 @@ section: input [
 
   dirlist: protpath [
     parameter: "Y"
-    information: "Clean protein structure coordinates directories"
+    information: "Clean protein structure coordinates
+                  directories"
     default: "./"
     extension: "ccf"
     help: "This option specifies the location of the protein CCF files

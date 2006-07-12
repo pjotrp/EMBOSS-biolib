@@ -9,12 +9,12 @@ section: input [
   type: "page"
 ]
 
-seqset: sequence  [
-  parameter: "Y"
-  type: "gapany"
-  aligned: "Y"
-  help: "File containing a sequence alignment"
-]
+  seqset: sequence [
+    parameter: "Y"
+    type: "gapany"
+    aligned: "Y"
+    help: "File containing a sequence alignment"
+  ]
 
 endsection: input
 
@@ -23,54 +23,54 @@ section: required [
   type: "page"
 ]
 
-toggle: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
+  toggle: besttree [
+    additional: "Y"
+    default: "Y"
+    information: "Search for best tree"
+  ]
 
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
+  toggle: random [
+    standard: "$(besttree)"
+    default: "N"
+    information: "Randomize input order of species"
+  ]
 
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
+  integer: randseed [
+    standard: "$(random)"
+    default: "3"
+    information: "Random number seed (must be odd)"
+  ]
 
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
+  integer: randtimes [
+    standard: "$(random)"
+    default: "3"
+    information: "How many times to randomise"
+  ]
 
-toggle: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
+  toggle: og [
+    additional: "Y"
+    information: "Outgroup root"
+    default: "N"
+  ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
+  integer: outgnum [
+    standard: "$(og)"
+    minimum: "1"
+    default: "1"
+    information: "Number of the outgroup"
+  ]
 
-toggle: thresh  [
-  default: "N"
-  information: "Use Threshold parsimony"
-]
+  toggle: thresh [
+    default: "N"
+    information: "Use Threshold parsimony"
+  ]
 
-float: valthresh  [
-  standard: "$(thresh)"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Threshold value"
-]
+  float: valthresh [
+    standard: "$(thresh)"
+    minimum: "1.0"
+    default: "1.0"
+    information: "Threshold value"
+  ]
 
 endsection: required
 
@@ -79,55 +79,54 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "eprotpars.outfile"
-  knowntype: "protpars output"
-  information: "Phylip protpars program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "eprotpars.outfile"
+    knowntype: "protpars output"
+    information: "Phylip protpars program output file"
+  ]
 
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: steps [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each site"
+  ]
 
-boolean: steps  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each site"
-]
+  boolean: seqatnodes [
+    additional: "Y"
+    default: "N"
+    information: "Print sequences at all nodes of tree"
+  ]
 
-boolean: seqatnodes  [
-  additional: "Y"
-  default: "N"
-  information: "Print sequences at all nodes of tree"
-]
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+  ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
+  toggle: trout [
+    parameter: "Y"
+    default: "Y"
+    information: "Create a tree file"
+  ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "eprotpars.treefile"
-  information: "Phylip tree output file"
-  knowntype: "newick tree"
-]
+  outfile: treefile [
+    standard: "$(trout)"
+    default: "eprotpars.treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+  ]
 
 endsection: output

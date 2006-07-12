@@ -10,70 +10,67 @@ section: input [
   type: "page"
 ]
 
-seqsetall: sequence  [
-  parameter: "Y"
-  type: "gapdnaphylo"
-  aligned: "Y"
-  help: "File containing one or more sequence alignments"
-]
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapdnaphylo"
+    aligned: "Y"
+    help: "File containing one or more sequence alignments"
+  ]
 
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Distance methods"
-  values: "f:F84 distance model; 
-           k:Kimura 2-parameter distance;
-           j:Jukes-Cantor distance; 
-           l:LogDet distance;
-           s:Similarity table"
-  information: "Choose the method to use"
-  default: "F84 distance model"
-]
+  list: method [
+    standard: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Distance methods"
+    values: "f:F84 distance model; k:Kimura 2-parameter distance;
+             j:Jukes-Cantor distance; l:LogDet distance; s:Similarity table"
+    information: "Choose the method to use"
+    default: "F84 distance model"
+  ]
 
-list: gamma  [
-  additional:  "@( $(method) == { f | k | j } )" 
-  minimum: "1"
-  maximum: "1"
-  header: "Gamma distribution"
-  values: "g:Gamma distributed rates;
-           i:Gamma+invariant sites;
-           n:No distribution parameters used"
-  information: "Gamma distribution"
-  default: "No distribution parameters used"
-]
+  list: gamma [
+    additional: "@( $(method) == { f | k | j } )"
+    minimum: "1"
+    maximum: "1"
+    header: "Gamma distribution"
+    values: "g:Gamma distributed rates; i:Gamma+invariant sites;
+             n:No distribution parameters used"
+    information: "Gamma distribution"
+    default: "No distribution parameters used"
+  ]
 
-integer: ncategories  [
-  additional: "@(@($(method) == { f | k | j } )  &  @($(gamma) == n))"
-  default: "1"	
-  minimum: "1"
-  maximum: "9"
-  information: "Number of substitution rate categories"
-]
+  integer: ncategories [
+    additional: "@(@($(method) == { f | k | j } ) & @($(gamma)
+                 == n))"
+    default: "1"
+    minimum: "1"
+    maximum: "9"
+    information: "Number of substitution rate categories"
+  ]
 
-array: rate [
-  additional: "@($(ncategories) > 1)"
-  information: "Category rates"
-  default: "1.0"
-  minimum: "0.0"
-  size: "$(ncategories)"
-  sumtest: "N"
-]
+  array: rate [
+    additional: "@($(ncategories) > 1)"
+    information: "Category rates"
+    default: "1.0"
+    minimum: "0.0"
+    size: "$(ncategories)"
+    sumtest: "N"
+  ]
 
-properties: categories  [
-  additional: "@($(ncategories) > 1)"
-  characters: "1-$(ncategories)"
-  help: "File of substitution rate categories"
-  nullok: "Y"
-]
+  properties: categories [
+    additional: "@($(ncategories) > 1)"
+    characters: "1-$(ncategories)"
+    help: "File of substitution rate categories"
+    nullok: "Y"
+  ]
 
-properties: weights  [
-  additional: "Y"
-  characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-  information: "Weights file"
-  length: "$(sequence.length)"
-  nullok: "Y"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    information: "Weights file"
+    length: "$(sequence.length)"
+    nullok: "Y"
+  ]
 
 endsection: input
 
@@ -82,51 +79,52 @@ section: additional [
   type: "page"
 ]
 
-float: gammacoefficient [
-	additional: "@($(gamma) != n)" 
-	information: "Coefficient of variation of substitution rate among sites"
-	minimum: "0.001"
-	default: "1"
-]
+  float: gammacoefficient [
+    additional: "@($(gamma) != n)"
+    information: "Coefficient of variation of substitution rate
+                  among sites"
+    minimum: "0.001"
+    default: "1"
+  ]
 
+  float: invarfrac [
+    additional: "@($(gamma)==i)"
+    information: "Fraction of invariant sites"
+    default: "0.0"
+    minimum: "0.0"
+    maximum: "0.9999"
+  ]
 
-float: invarfrac  [
-	additional: "@($(gamma)==i)"
-	information: "Fraction of invariant sites"
-	default: "0.0"
-	minimum: "0.0"
-	maximum: "0.9999"
-]
+  float: ttratio [
+    additional: "@( @($(method) == f) | @($(method) == k))"
+    information: "Transition/transversion ratio"
+    default: "2.0"
+    minimum: "0.001"
+  ]
 
+  toggle: freqsfrom [
+    additional: "@($(method) == f)"
+    default: "Y"
+    information: "Use empirical base frequencies from seqeunce
+                  input"
+  ]
 
-float: ttratio  [
-  additional: "@( @($(method) == f) | @($(method) == k))"
-  information: "Transition/transversion ratio"
-  default: "2.0"
-  minimum: "0.001"
-]
+  array: basefreq [
+    additional: "@(!$(freqsfrom))"
+    size: "4"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25 0.25 0.25 0.25"
+    information: "Base frequencies for A C G T/U (use blanks to
+                  separate)"
+    sum: "1.0"
+  ]
 
-toggle: freqsfrom [
-  additional: "@($(method) == f)"
-  default: "Y"
-  information: "Use empirical base frequencies from seqeunce input"
-]
-
-array: basefreq [
-	additional: "@(!$(freqsfrom))"
-	size: "4"
-	minimum: "0.0"
-	maximum: "1.0"
-	default: "0.25 0.25 0.25 0.25"
-	information: "Base frequencies for A C G T/U (use blanks to separate)"
-	sum: 1.0
-]
-
-boolean: lower [
-	additional: "Y"
-	default: "N"
-	information: "Lower triangular distance matrix"
-]
+  boolean: lower [
+    additional: "Y"
+    default: "N"
+    information: "Lower triangular distance matrix"
+  ]
 
 endsection: additional
 
@@ -135,22 +133,22 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "distance matrix"
-  information: "Phylip distance matrix output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "distance matrix"
+    information: "Phylip distance matrix output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

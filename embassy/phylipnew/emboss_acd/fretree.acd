@@ -9,67 +9,62 @@ section: input [
   type: "page"
 ]
 
-integer: spp [
-	information: "Number of species"
-	parameter: "Y"
-]
+  integer: spp [
+    information: "Number of species"
+    parameter: "Y"
+  ]
 
-
-tree: intreefile [
-	parameter: "Y"
-	knowntype: "newick"
-	information: "Phylip tree file"
-]
-
+  tree: intreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file"
+  ]
 
 endsection: input
 
 section: additional [
-	information: "Additional section"
-	type: "page"
+  information: "Additional section"
+  type: "page"
 ]
 
-list: initialtree  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Initial tree"
-	values: "a:Arbitary;
-        	 u:User;
-          	 s:Specify"
-  	information: "Initial tree"
-  	default: "Arbitary"
-]
+  list: initialtree [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Initial tree"
+    values: "a:Arbitary; u:User; s:Specify"
+    information: "Initial tree"
+    default: "Arbitary"
+  ]
 
-list: format  [
-  additional: "Y"
-  minimum: "1"
-  maximum: "1"
-  header: "test"
-  values: "p:PHYLIP; 
-           n:NEXUS; 
-           x:XML"
-  information: "Format to write trees"
-  default: "p"
-]
+  list: format [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "test"
+    values: "p:PHYLIP; n:NEXUS; x:XML"
+    information: "Format to write trees"
+    default: "p"
+  ]
 
-integer: screenwidth [
-	additional: "Y"
-	default: "80"
-	information: "Width of terminal screen in characters"
-]
+  integer: screenwidth [
+    additional: "Y"
+    default: "80"
+    information: "Width of terminal screen in characters"
+  ]
 
-integer: vscreenwidth [
-	additional: "Y"
-	default: "80"
-	information: "Width of plotting area in characters"
-]
+  integer: vscreenwidth [
+    additional: "Y"
+    default: "80"
+    information: "Width of plotting area in characters"
+  ]
 
-integer: screenlines [
-	additional: "Y"
-	default: "24"
-	information: "Number of lines on screen"
-]
+  integer: screenlines [
+    additional: "Y"
+    default: "24"
+    information: "Number of lines on screen"
+  ]
+
 endsection: additional
 
 section: output [
@@ -77,10 +72,11 @@ section: output [
   type: "page"
 ]
 
-outfile: outtreefile [
-  parameter: "Y"
-  extension: "treefile"
-  knowntype: "newick tree"
-  information: "PHYLIP tree output file"
-]
+  outfile: outtreefile [
+    parameter: "Y"
+    extension: "treefile"
+    knowntype: "newick tree"
+    information: "PHYLIP tree output file"
+  ]
+
 endsection: output

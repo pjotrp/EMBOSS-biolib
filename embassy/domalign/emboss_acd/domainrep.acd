@@ -1,5 +1,6 @@
 application: domainrep [
-  documentation: "Reorder DCF file to identify representative structures."
+  documentation: "Reorder DCF file to identify representative
+                  structures."
   groups: "Protein:3D Structure"
   gui: "yes"
   batch: "yes"

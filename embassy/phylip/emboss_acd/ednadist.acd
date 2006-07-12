@@ -10,20 +10,20 @@ section: input [
   type: "page"
 ]
 
-seqset: sequence  [
-  parameter: "Y"
-  type: "gapany"
-  aligned: "Y"
-  help: "File containing a sequence alignment"
-]
+  seqset: sequence [
+    parameter: "Y"
+    type: "gapany"
+    aligned: "Y"
+    help: "File containing a sequence alignment"
+  ]
 
-list: matrix  [
-  standard: "y"
-  header: "Form of distance matrix"
-  values: "S:Square;L:Lower-triangular"
-  information: "Form"
-  default: "S"
-]
+  list: matrix [
+    standard: "y"
+    header: "Form of distance matrix"
+    values: "S:Square;L:Lower-triangular"
+    information: "Form"
+    default: "S"
+  ]
 
 endsection: input
 
@@ -32,24 +32,24 @@ section: required [
   type: "page"
 ]
 
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Distance methods"
-  values: "Kimura:Kimura 2-parameter distance; JinNei:Jin and Nei
-           distance; ML:Maximum Likelihood distance; Jukes:Jukes-Cantor
-           distance"
-  information: "Choose the method to use"
-  default: "Kimura"
-]
+  list: method [
+    standard: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Distance methods"
+    values: "Kimura:Kimura 2-parameter distance; JinNei:Jin and Nei
+             distance; ML:Maximum Likelihood distance; Jukes:Jukes-Cantor
+             distance"
+    information: "Choose the method to use"
+    default: "Kimura"
+  ]
 
-float: ttratio  [
-  standard: "y"
-  information: "Transition/transversion ratio"
-  default: "2.0"
-  maximum: "100.0"
-]
+  float: ttratio [
+    standard: "y"
+    information: "Transition/transversion ratio"
+    default: "2.0"
+    maximum: "100.0"
+  ]
 
 endsection: required
 
@@ -58,49 +58,49 @@ section: additional [
   type: "page"
 ]
 
-integer: categories  [
-  additional: "Y"
-  default: "1"
-  information: "Number of categories of substitution rates"
-]
+  integer: categories [
+    additional: "Y"
+    default: "1"
+    information: "Number of categories of substitution rates"
+  ]
 
-toggle: basefrequency  [
-  additional: "@($(method) == ML)"
-  default: "Y"
-  information: "Use empirical base frequencies"
-]
+  toggle: basefrequency [
+    additional: "@($(method) == ML)"
+    default: "Y"
+    information: "Use empirical base frequencies"
+  ]
 
-float: freqa  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for A"
-]
+  float: freqa [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for A"
+  ]
 
-float: freqc  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for C"
-]
+  float: freqc [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for C"
+  ]
 
-float: freqg  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for G"
-]
+  float: freqg [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for G"
+  ]
 
-float: freqt  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for T/U"
-]
+  float: freqt [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for T/U"
+  ]
 
 endsection: additional
 
@@ -109,17 +109,17 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "ednadist.outfile"
-  knowntype: "dnadist output"
-  information: "Phylip dnadist program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "ednadist.outfile"
+    knowntype: "dnadist output"
+    information: "Phylip dnadist program output file"
+  ]
 
-boolean: printinitial  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printinitial [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
 endsection: output

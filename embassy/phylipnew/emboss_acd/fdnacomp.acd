@@ -9,27 +9,27 @@ section: input [
   type: "page"
 ]
 
-seqsetall: sequence  [
-  parameter: "Y"
-  type: "gapdnaphylo"
-  aligned: "Y"
-  help: "File containing one or more sequence alignments"
-]
+  seqsetall: sequence [
+    parameter: "Y"
+    type: "gapdnaphylo"
+    aligned: "Y"
+    help: "File containing one or more sequence alignments"
+  ]
 
-tree: intreefile  [
-  parameter: "Y"
-  nullok: "Y"
-  knowntype: "newick"
-  information: "Phylip tree file (optional)"
-]
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+  ]
 
-properties: weights [
-  standard: "Y"
-  information: "Phylip weights file (optional)"
-  length: "$(sequence.length)"
-  nullok: "Y"
-  knowntype: "weights"
-]
+  properties: weights [
+    standard: "Y"
+    information: "Phylip weights file (optional)"
+    length: "$(sequence.length)"
+    nullok: "Y"
+    knowntype: "weights"
+  ]
 
 endsection: input
 
@@ -38,29 +38,29 @@ section: additional [
   type: "page"
 ]
 
-integer: outgrno  [
-  additional: "Y"
-  minimum: "0"
-  default: "0"
-  maximum: "$(sequence.count)"
-  information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    default: "0"
+    maximum: "$(sequence.count)"
+    information: "Species number to use as outgroup"
+  ]
 
-integer: njumble [
-  additional: "@(!$(intreefile.isdefined))"
-  information: "Number of times to randomise"
-  minimum: "0"
-  default: "0"
+  integer: njumble [
+    additional: "@(!$(intreefile.isdefined))"
+    information: "Number of times to randomise"
+    minimum: "0"
+    default: "0"
+  ]
 
-]
-
-integer: seed [
-  additional: "$(njumble)"
-  information: "Random number seed between 1 and 32767 (must be odd)"
-  minimum: 1
-  maximum: "32767"
-  default: 1
-]
+  integer: seed [
+    additional: "$(njumble)"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    minimum: "1"
+    maximum: "32767"
+    default: "1"
+  ]
 
 endsection: additional
 
@@ -69,54 +69,54 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dnacomp output"
-  information: "Phylip dnacomp program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "dnacomp output"
+    information: "Phylip dnacomp program output file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: treeprint [
-  additional: "Y"
-  default: "Y"
-  information: "Print out tree"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
-boolean: stepbox  [
-  additional: "Y"
-  default: "N"
-  information: "Print steps & compatibility at sites"
-]
+  boolean: stepbox [
+    additional: "Y"
+    default: "N"
+    information: "Print steps & compatibility at sites"
+  ]
 
-boolean: ancseq  [
-  additional: "Y"
-  default: "N"
-  information: "Print sequences at all nodes of tree"
-]
+  boolean: ancseq [
+    additional: "Y"
+    default: "N"
+    information: "Print sequences at all nodes of tree"
+  ]
 
 endsection: output

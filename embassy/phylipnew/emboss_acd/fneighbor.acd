@@ -13,11 +13,11 @@ section: input [
   type: "page"
 ]
 
-distances: datafile  [
-  parameter: "Y"
-  knowntype: "distance matrix"
-  information: "Phylip distance matrix file"
-]
+  distances: datafile [
+    parameter: "Y"
+    knowntype: "distance matrix"
+    information: "Phylip distance matrix file"
+  ]
 
 endsection: input
 
@@ -26,57 +26,54 @@ section: additional [
   type: "page"
 ]
 
-list: matrixtype  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Matrix type"
-	values: "s:Square;
-        	 u:Upper triangular;
-          	 l:Lower triangular"
-  	information: "Type of data matrix"
-  	default: "s"
-]
+  list: matrixtype [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Matrix type"
+    values: "s:Square; u:Upper triangular; l:Lower triangular"
+    information: "Type of data matrix"
+    default: "s"
+  ]
 
-list: treetype  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Tree type"
-	values: "n:Neighbor-joining;
-        	 u:UPGMA"
-  	information: "Neighbor-joining or UPGMA tree"
-  	default: "n"
-]
+  list: treetype [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Tree type"
+    values: "n:Neighbor-joining; u:UPGMA"
+    information: "Neighbor-joining or UPGMA tree"
+    default: "n"
+  ]
 
-integer: outgrno [
-	additional: "@($(treetype)==n)"
-	minimum: "0"  
-        maximum: "$(datafile.distancesize)"
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "@($(treetype)==n)"
+    minimum: "0"
+    maximum: "$(datafile.distancesize)"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
-toggle: jumble  [
-  additional: "Y"
-  default: "N"
-  information: "Randomise input order of species"
-]
+  toggle: jumble [
+    additional: "Y"
+    default: "N"
+    information: "Randomise input order of species"
+  ]
 
-integer: seed [
-	additional: "$(jumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	minimum: "1"
-	maximum: "32767"
-	default: "1"
-]
+  integer: seed [
+    additional: "$(jumble)"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    minimum: "1"
+    maximum: "32767"
+    default: "1"
+  ]
 
-boolean: replicates  [
-  additional: "Y"
-  default: "N"
-  information: "Subreplicates"
-]
-
+  boolean: replicates [
+    additional: "Y"
+    default: "N"
+    information: "Subreplicates"
+  ]
 
 endsection: additional
 
@@ -85,41 +82,42 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "neighbor output"
-  information: "Phylip neighbor program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "neighbor output"
+    information: "Phylip neighbor program output file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
+
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
 endsection: output

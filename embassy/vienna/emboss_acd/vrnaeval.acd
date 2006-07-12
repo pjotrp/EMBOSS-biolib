@@ -12,14 +12,15 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  sequence: sequence [
     parameter: "Y"
     type: "dna"
   ]
 
-  infile: constraintfile  [
+  infile: constraintfile [
     parameter: "Y"
-    information: "Vienna RNA structure contraints file (optional)"
+    information: "Vienna RNA structure contraints file
+                  (optional)"
     knowntype: "rna constraint"
   ]
 
@@ -52,7 +53,7 @@ section: advanced [
     information: "Stabilising energies for tetra-loops"
   ]
 
-  list: energy  [
+  list: energy [
     default: "0"
     minimum: "1"
     maximum: "1"
@@ -61,19 +62,19 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
-    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+    help: "Rarely used option to fold sequences from the ABCD...
+           alphabet"
   ]
 
-
-  list: dangles  [
+  list: dangles [
     default: "1"
     minimum: "1"
     maximum: "1"
     header: "How to treat dangling end energies"
-    values: "0:No stabilising energies for dangling ends,
-             1:Use stabilising energies for dangling ends,
-             2:Dangling energies as in a partition function
-             3:Allow coaxial stacking of adjacent helices"
+    values: "0:No stabilising energies for dangling ends, 1:Use
+             stabilising energies for dangling ends, 2:Dangling energies as
+             in a partition function 3:Allow coaxial stacking of adjacent
+             helices"
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
@@ -91,7 +92,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "rnaeval output"
     information: "Vienna RNAeval output file"

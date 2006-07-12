@@ -9,17 +9,17 @@ section: input [
   type: "page"
 ]
 
-frequencies: infile [
-  parameter: "Y"
-  help: "File containing one or more sets of data"
-]
+  frequencies: infile [
+    parameter: "Y"
+    help: "File containing one or more sets of data"
+  ]
 
-tree: intreefile  [
-  parameter: "Y"
-  knowntype: "newick"
-  information: "Phylip tree file"
-  nullok: "N"
-]
+  tree: intreefile [
+    parameter: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file"
+    nullok: "N"
+  ]
 
 endsection: input
 
@@ -28,28 +28,30 @@ section: additional [
   type: "page"
 ]
 
-boolean: varywithin [
-  additional: "Y"
-  default: "N"
-  information: "Within-population variation in data"
-]
+  boolean: varywithin [
+    additional: "Y"
+    default: "N"
+    information: "Within-population variation in data"
+  ]
 
-boolean: reg  [
-  additional: "@(!$(varywithin))"
-  default: "Y"
-  information: "Print out correlations and regressions"
-]
+  boolean: reg [
+    additional: "@(!$(varywithin))"
+    default: "Y"
+    information: "Print out correlations and regressions"
+  ]
 
-boolean: writecont  [
-  additional: "@(!$(varywithin))"
-  default: "N"
-  information: "Print out contrasts"
-]
-boolean: nophylo  [
-  additional: "$(varywithin)"
-  default: "Y"
-  information: "LRT test of no phylogenetic component, with and without VarA"
-]
+  boolean: writecont [
+    additional: "@(!$(varywithin))"
+    default: "N"
+    information: "Print out contrasts"
+  ]
+
+  boolean: nophylo [
+    additional: "$(varywithin)"
+    default: "Y"
+    information: "LRT test of no phylogenetic component, with
+                  and without VarA"
+  ]
 
 endsection: additional
 
@@ -58,23 +60,22 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "contrast output"
-  information: "Phylip contrast program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "contrast output"
+    information: "Phylip contrast program output file"
+  ]
 
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
-
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

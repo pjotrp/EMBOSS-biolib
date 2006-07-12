@@ -9,11 +9,11 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "Phylip factor program input file"
-  knowntype: "factor input"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "Phylip factor program input file"
+    knowntype: "factor input"
+  ]
 
 endsection: input
 
@@ -22,23 +22,23 @@ section: additional [
   type: "page"
 ]
 
+  boolean: anc [
+    additional: "Y"
+    default: "N"
+    information: "Put ancestral states in output file"
+  ]
 
-boolean: anc  [
-  additional: "Y"
-  default: "N"
-  information: "Put ancestral states in output file"
-]
+  boolean: factors [
+    additional: "Y"
+    default: "N"
+    information: "Put factors information in output file"
+  ]
 
-boolean: factors  [
-  additional: "Y"
-  default: "N"
-  information: "Put factors information in output file"
-]
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: additional
 
@@ -47,23 +47,24 @@ section: output [
   type: "page"
 ]
 
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "factor output"
+    information: "Phylip factor program output file"
+  ]
 
-outfile: outfile [
-	parameter: "Y"
-	knowntype: "factor output"
-	information: "Phylip factor program output file"
-]
+  outfile: outfactorfile [
+    extension: "factor"
+    information: "Phylip factor data output file (optional)"
+    nullok: "Y"
+    knowntype: "phylip factor"
+  ]
 
-outfile: outfactorfile [
-	extension: "factor"
-	information: "Phylip factor data output file (optional)"
-	nullok: "Y"
-	knowntype: "phylip factor"
-]
-outfile: outancfile [
-	extension: "ancestor"
-	information: "Phylip ancestor data output file (optional)"
-	nullok: "Y"
-	knowntype: "phylip ancestor"
-]
+  outfile: outancfile [
+    extension: "ancestor"
+    information: "Phylip ancestor data output file (optional)"
+    nullok: "Y"
+    knowntype: "phylip ancestor"
+  ]
+
 endsection: output

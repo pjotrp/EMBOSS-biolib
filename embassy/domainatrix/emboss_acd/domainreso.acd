@@ -1,5 +1,6 @@
 application: domainreso [
-  documentation: "Remove low resolution domains from a DCF file."
+  documentation: "Remove low resolution domains from a DCF
+                  file."
   groups: "PROTEIN:3D STRUCTURE"
   gui: "yes"
   batch: "yes"

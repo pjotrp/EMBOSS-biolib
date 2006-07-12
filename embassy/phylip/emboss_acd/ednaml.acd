@@ -1,6 +1,6 @@
 application: ednaml [
-  documentation: "Phylogenies from nucleic acid
-                  Maximum Likelihood"
+  documentation: "Phylogenies from nucleic acid Maximum
+                  Likelihood"
   groups: "Phylogeny:Molecular sequence"
   gui: "yes"
   batch: "yes"
@@ -13,12 +13,12 @@ section: input [
   type: "page"
 ]
 
-seqset: sequence  [
-  parameter: "Y"
-  type: "gapnucleotide"
-  aligned: "Y"
-  help: "File containing a sequence alignment"
-]
+  seqset: sequence [
+    parameter: "Y"
+    type: "gapnucleotide"
+    aligned: "Y"
+    help: "File containing a sequence alignment"
+  ]
 
 endsection: input
 
@@ -27,132 +27,132 @@ section: required [
   type: "page"
 ]
 
-toggle: besttree  [
-  standard: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
+  toggle: besttree [
+    standard: "Y"
+    default: "Y"
+    information: "Search for best tree"
+  ]
 
-boolean: lengths  [
-  standard: "@(!$(besttree))"
-  default: "N"
-  information: "Use lengths from user trees"
-]
+  boolean: lengths [
+    standard: "@(!$(besttree))"
+    default: "N"
+    information: "Use lengths from user trees"
+  ]
 
-boolean: global  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Global rearrangements"
-]
+  boolean: global [
+    standard: "$(besttree)"
+    default: "N"
+    information: "Global rearrangements"
+  ]
 
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
+  toggle: random [
+    standard: "$(besttree)"
+    default: "N"
+    information: "Randomize input order of species"
+  ]
 
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
+  integer: randseed [
+    standard: "$(random)"
+    default: "3"
+    information: "Random number seed (must be odd)"
+  ]
 
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
+  integer: randtimes [
+    standard: "$(random)"
+    default: "3"
+    information: "How many times to randomise"
+  ]
 
-toggle: basefrequency [
-  standard: Y
-  default: Y
-  information: "Use empirical base frequencies"
-]
+  toggle: basefrequency [
+    standard: "Y"
+    default: "Y"
+    information: "Use empirical base frequencies"
+  ]
 
-float: freqa  [
-  standard: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for A"
-]
+  float: freqa [
+    standard: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for A"
+  ]
 
-float: freqc  [
-  standard: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for C"
-]
+  float: freqc [
+    standard: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for C"
+  ]
 
-float: freqg  [
-  standard: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for G"
-]
+  float: freqg [
+    standard: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for G"
+  ]
 
-float: freqt  [
-  standard: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for T/U"
-]
+  float: freqt [
+    standard: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for T/U"
+  ]
 
-toggle: categories  [
-  standard: "Y"
-  default: "N"
-  information: "More then one category of substitution rates"
-]
+  toggle: categories [
+    standard: "Y"
+    default: "N"
+    information: "More then one category of substitution rates"
+  ]
 
-integer: catnum  [
-  standard: "$(categories)"
-  minimum: "2"
-  maximum: "9"
-  default: "2"
-  information: "Number of categories of substitution rates"
-]
+  integer: catnum [
+    standard: "$(categories)"
+    minimum: "2"
+    maximum: "9"
+    default: "2"
+    information: "Number of categories of substitution rates"
+  ]
 
-string: catvals  [
-  standard: "$(categories)"
-  information: "Space separated category values"
-  knowntype: "phylip category values"
-]
+  string: catvals [
+    standard: "$(categories)"
+    information: "Space separated category values"
+    knowntype: "phylip category values"
+  ]
 
-string: catprob [
-  standard: "$(categories)"
-  information: "Space separated probability values"
-  knowntype: "phylip probability values"
-]
+  string: catprob [
+    standard: "$(categories)"
+    information: "Space separated probability values"
+    knowntype: "phylip probability values"
+  ]
 
-toggle: autog [
-  standard: "$(categories)"
-  default: "N"
-  information: "Use Default Mean block length of sites"
-]
+  toggle: autog [
+    standard: "$(categories)"
+    default: "N"
+    information: "Use Default Mean block length of sites"
+  ]
 
-float: lambda  [
-  standard: "@(!$(autog))"
-  minimum: "1.0"
-  default: "1.0"
-  information: "Mean block length of sites having the same rate
-                (greater than 1)"
-]
+  float: lambda [
+    standard: "@(!$(autog))"
+    minimum: "1.0"
+    default: "1.0"
+    information: "Mean block length of sites having the same
+                  rate (greater than 1)"
+  ]
 
-toggle: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
+  toggle: og [
+    standard: "Y"
+    information: "Outgroup root"
+    default: "N"
+  ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
+  integer: outgnum [
+    standard: "$(og)"
+    minimum: "1"
+    default: "1"
+    information: "Number of the outgroup"
+  ]
 
 endsection: required
 
@@ -161,11 +161,11 @@ section: additional [
   type: "page"
 ]
 
-float: ttratio  [
-  additional: "Y"
-  default: "2.0"
-  information: "Transition/transversion ratio"
-]
+  float: ttratio [
+    additional: "Y"
+    default: "2.0"
+    information: "Transition/transversion ratio"
+  ]
 
 endsection: additional
 
@@ -174,41 +174,42 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "ednaml.outfile"
-  knowntype: "dnaml output"
-  information: "Phylip dnaml program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "ednaml.outfile"
+    knowntype: "dnaml output"
+    information: "Phylip dnaml program output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+  ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
+  toggle: trout [
+    parameter: "Y"
+    default: "Y"
+    information: "Create a tree file"
+  ]
 
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "ednaml.treefile"
-  information: "Phylip tree output file"
-  knowntype: "newick tree"
-]
+  outfile: treefile [
+    standard: "$(trout)"
+    default: "ednaml.treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+  ]
+
 endsection: output

@@ -12,27 +12,27 @@ section: input [
   type: "page"
 ]
 
-  seqset: sequences  [
+  seqset: sequences [
     parameter: "Y"
     type: "any"
     aligned: "Y"
   ]
 
-  infile: priorfile  [
+  infile: priorfile [
     default: ""
     information: "HMMER dirichlet prior file"
     knowntype: "dirichlet prior hmmer"
     nullok: "Y"
   ]
 
-  infile: nullfile  [
+  infile: nullfile [
     default: ""
     information: "HMMER null model file (optional)"
     knowntype: "hmmer null model"
     nullok: "Y"
   ]
 
-  infile: pamfile  [
+  infile: pamfile [
     default: ""
     information: "HMMER matrix file (optional)"
     knowntype: "hmmer matrix"
@@ -46,7 +46,7 @@ section: advanced [
   type: "page"
 ]
 
-  list: strategy  [
+  list: strategy [
     default: "L"
     minimum: "1"
     maximum: "1"
@@ -58,32 +58,32 @@ section: advanced [
     button: "Y"
   ]
 
-  boolean: append  [
+  boolean: append [
     default: "N"
     information: "Append to file"
   ]
 
-  boolean: amino  [
+  boolean: amino [
     default: "N"
     information: "Treat as protein"
   ]
 
-  boolean: nucleic  [
+  boolean: nucleic [
     default: "N"
     information: "Treat as dna"
   ]
 
-  float: archpri  [
+  float: archpri [
     default: "0.85"
     information: "Architecture prior"
   ]
 
-  boolean: binary  [
+  boolean: binary [
     default: "N"
     information: "Write HMM as binary"
   ]
 
-  list: cstrategy  [
+  list: cstrategy [
     default: "F"
     minimum: "1"
     maximum: "1"
@@ -95,52 +95,52 @@ section: advanced [
     button: "Y"
   ]
 
-  boolean: fast  [
+  boolean: fast [
     default: "N"
     information: "Work in fast mode"
   ]
 
-  float: gapmax  [
+  float: gapmax [
     default: "0.5"
     information: "Fast mode control"
   ]
 
-  boolean: hand  [
+  boolean: hand [
     default: "N"
     information: "Specify model by hand"
   ]
 
-  float: idlevel  [
+  float: idlevel [
     default: "0.62"
     information: "Cutoff ID threhold"
   ]
 
-  boolean: efficiency  [
+  boolean: efficiency [
     default: "Y"
     information: "Be efficient"
   ]
 
-  float: pamweight  [
+  float: pamweight [
     default: "20.0"
     information: "Weighting for PAM"
   ]
 
-  float: swentry  [
+  float: swentry [
     default: "0.5"
     information: "Probability control for local entries"
   ]
 
-  float: swexit  [
+  float: swexit [
     default: "0.5"
     information: "Probability control for exits"
   ]
 
-  boolean: more  [
+  boolean: more [
     default: "N"
     information: "Verbosity"
   ]
 
-  list: weighting  [
+  list: weighting [
     default: "G"
     minimum: "1"
     maximum: "1"
@@ -160,22 +160,23 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "hmm"
     information: "HMMER hidden markov model output file"
   ]
 
-  outfile: resavefile  [
+  outfile: resavefile [
     default: ""
     information: "elex alignment output file (optional)"
     knowntype: "selex"
     nullok: "Y"
   ]
 
-  outfile: cfile  [
+  outfile: cfile [
     default: ""
-    information: "HMMER emission and transition count output file (optional)"
+    information: "HMMER emission and transition count output
+                  file (optional)"
     knowntype: "hmmer count"
     nullok: "Y"
   ]

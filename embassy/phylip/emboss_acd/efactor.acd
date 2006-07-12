@@ -9,11 +9,11 @@ section: input [
   type: "page"
 ]
 
-infile: datafile  [
-  parameter: "Y"
-  information: "Phylip factor program input file"
-  knowntype: "factor input"
-]
+  infile: datafile [
+    parameter: "Y"
+    information: "Phylip factor program input file"
+    knowntype: "factor input"
+  ]
 
 endsection: input
 
@@ -22,23 +22,23 @@ section: additional [
   type: "page"
 ]
 
-boolean: anc  [
-  additional: "Y"
-  default: "N"
-  information: "Put ancestral states in output file"
-]
+  boolean: anc [
+    additional: "Y"
+    default: "N"
+    information: "Put ancestral states in output file"
+  ]
 
-boolean: factors  [
-  additional: "Y"
-  default: "N"
-  information: "Put factors information in output file"
-]
+  boolean: factors [
+    additional: "Y"
+    default: "N"
+    information: "Put factors information in output file"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Show progress"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Show progress"
+  ]
 
 endsection: additional
 
@@ -47,11 +47,11 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "efactor.outfile"
-  knowntype: "factor output"
-  information: "Phylip factor program output file "
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "efactor.outfile"
+    knowntype: "factor output"
+    information: "Phylip factor program output file"
+  ]
 
 endsection: output

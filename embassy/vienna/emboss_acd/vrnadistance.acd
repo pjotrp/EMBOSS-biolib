@@ -12,7 +12,7 @@ section: input [
   type: "page"
 ]
 
-  infile: structure  [
+  infile: structure [
     parameter: "Y"
     information: "Vienna RNA structures file"
     knowntype: "rna structures"
@@ -25,41 +25,45 @@ section: advanced [
   type: "page"
 ]
 
-  list: distance  [
+  list: distance [
     default: "f"
     minimum: "1"
     maximum: "9"
     header: "Distance types"
-    values: "f:Full (tree),h:HIT (tree),w:Weighted coarse (tree),c:Coarse (tree),F:Full (string),H: HIT (string),W:Weighted coarse (string),C:Coarse (string),P:Base pair distance"
+    values: "f:Full (tree),h:HIT (tree),w:Weighted coarse
+             (tree),c:Coarse (tree),F:Full (string),H: HIT
+             (string),W:Weighted coarse (string),C:Coarse (string),P:Base
+             pair distance"
     delimiter: ","
     codedelimiter: ":"
     information: "Distance"
     help: "Distance types to calculate"
   ]
 
-  list: compare  [
+  list: compare [
     default: "p"
     minimum: "1"
     maximum: "1"
     header: "Comparison type"
-    values: "p:Pairwise,m:Distance matrix between all structures,f:Compare all structures to the first one,c:Compare continuously"
+    values: "p:Pairwise,m:Distance matrix between all
+             structures,f:Compare all structures to the first one,c:Compare
+             continuously"
     delimiter: ","
     codedelimiter: ":"
     information: "Comparison method"
     help: "Distance types to calculate"
   ]
 
-  boolean: schapiro  [
+  boolean: schapiro [
     default: "N"
-    information: "Use cost matrix for comparing coarse structures"
+    information: "Use cost matrix for comparing coarse
+                  structures"
   ]
 
-  boolean: doalignment  [
+  boolean: doalignment [
     default: "N"
     information: "Alignment showing matching substructures"
   ]
-
-
 
 endsection: advanced
 
@@ -68,7 +72,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"

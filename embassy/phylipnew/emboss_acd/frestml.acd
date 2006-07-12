@@ -9,28 +9,28 @@ section: input [
   type: "page"
 ]
 
-discretestates: data [
-        characters: "01+-?"
-	parameter: "Y"
-        help: "File containing one or more sets of restriction data"
-]
+  discretestates: data [
+    characters: "01+-?"
+    parameter: "Y"
+    help: "File containing one or more sets of restriction data"
+  ]
 
-properties: weights [
-	additional: "Y"
-	characters: "01"
-	information: "Phylip weights file (optional)"
-	help: "Weights file"
-        length: "$(data.length)"
-        size: "1"
-	nullok: "Y"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "01"
+    information: "Phylip weights file (optional)"
+    help: "Weights file"
+    length: "$(data.length)"
+    size: "1"
+    nullok: "Y"
+  ]
 
-tree: intreefile [
-	parameter: "Y"
-	nullok: "Y"
-	knowntype: "newick"
-	information: "Phylip tree file (optional)"
-]
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+  ]
 
 endsection: input
 
@@ -39,62 +39,61 @@ section: additional [
   type: "page"
 ]
 
-integer: njumble [
-	additional: "Y"
-	default: "0"
-	minimum: "0"
-	information: "Number of times to randomise"
-]
+  integer: njumble [
+    additional: "Y"
+    default: "0"
+    minimum: "0"
+    information: "Number of times to randomise"
+  ]
 
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	minimum: "1"
-	maximum: "32767"
-	default: "1"
-]
+  integer: seed [
+    additional: "$(njumble)"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    minimum: "1"
+    maximum: "32767"
+    default: "1"
+  ]
 
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-	maximum: "$(data.size)"
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(data.size)"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
-boolean: allsites  [
-  additional: "Y"
-  default: "Y"
-  information: "All sites detected"
-]
+  boolean: allsites [
+    additional: "Y"
+    default: "Y"
+    information: "All sites detected"
+  ]
 
-boolean: lengths  [
-  additional: "$(intreefile.isdefined)"
-  default: "N"
-  information: "Use lengths from user trees"
-]
+  boolean: lengths [
+    additional: "$(intreefile.isdefined)"
+    default: "N"
+    information: "Use lengths from user trees"
+  ]
 
-integer: sitelength  [
-  additional: "Y"
-  default: "6"
-  minimum: "1"
-  maximum: "8"
-  information: "Site length"
-]
+  integer: sitelength [
+    additional: "Y"
+    default: "6"
+    minimum: "1"
+    maximum: "8"
+    information: "Site length"
+  ]
 
-boolean: global  [
-  additional: "@(!$(intreefile.isdefined))"
-  default: "N"
-  information: "Global rearrangements"
-]
+  boolean: global [
+    additional: "@(!$(intreefile.isdefined))"
+    default: "N"
+    information: "Global rearrangements"
+  ]
 
-
-boolean: rough [
-	additional: "@(!$(intreefile.isdefined))"
-	default: "Y"
-	information: "Speedier but rougher analysis"
-]
-  	
+  boolean: rough [
+    additional: "@(!$(intreefile.isdefined))"
+    default: "Y"
+    information: "Speedier but rougher analysis"
+  ]
 
 endsection: additional
 
@@ -103,41 +102,41 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "restml output"
-  information: "Phylip restml program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "restml output"
+    information: "Phylip restml program output file"
+  ]
 
-toggle: trout  [
-  additional: "Y"
-  default: "Y"
-  information: "Write out trees to tree file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-outfile: outtreefile [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file"
-  knowntype: "newick tree"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "Y"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: treeprint  [
-  additional: "Y"
-  default: "Y"
-  information: "Print out tree"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
 endsection: output

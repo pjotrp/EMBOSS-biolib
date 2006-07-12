@@ -12,7 +12,7 @@ section: input [
   type: "page"
 ]
 
-  infile: infile  [
+  infile: infile [
     parameter: "Y"
     knowntype: "alistat input"
     information: "HMMER alistat program input file"
@@ -25,12 +25,12 @@ section: advanced [
   type: "page"
 ]
 
-  boolean: additional  [
+  boolean: additional [
     default: "N"
     information: "Show additional information"
   ]
 
-  boolean: fast  [
+  boolean: fast [
     default: "N"
     information: "Use sampling method"
   ]
@@ -42,7 +42,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "alistat output"
     information: "HMMER alistat program output file"

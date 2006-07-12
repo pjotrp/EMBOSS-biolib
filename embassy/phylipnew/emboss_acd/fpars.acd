@@ -9,25 +9,27 @@ section: input [
   type: "page"
 ]
 
-discretestates: infile  [
-  parameter: "Y"
-  help: "File containing one or more data sets"
-]
+  discretestates: infile [
+    parameter: "Y"
+    help: "File containing one or more data sets"
+  ]
 
-tree: intreefile [
-	parameter: "Y"
-	nullok: "Y"
-	knowntype: "newick"
-	information: "Phylip tree file (optional)"
-]
-properties: weights [
-	additional: "Y"
-	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	information: "Weights file"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+  ]
+
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    information: "Weights file"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
+
 endsection: input
 
 section: additional [
@@ -35,72 +37,72 @@ section: additional [
   type: "page"
 ]
 
-list: method  [
-  additional: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "w:Wagner; 
-           c:Camin-Sokal"
-  information: "Choose the parsimony method to use"
-  default: "Wagner"
-]
+  list: method [
+    additional: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "w:Wagner; c:Camin-Sokal"
+    information: "Choose the parsimony method to use"
+    default: "Wagner"
+  ]
 
-integer: maxtrees [
-  additional: "Y"
-  information: "Number of trees to save"
-  default: "100"
-  minimum: "1"
-  maximum: "1000000"
-]
+  integer: maxtrees [
+    additional: "Y"
+    information: "Number of trees to save"
+    default: "100"
+    minimum: "1"
+    maximum: "1000000"
+  ]
 
-toggle: thorough [
-  additional: "@(!$(intreefile.isdefined))"
-  information: "More thorough search"
-  default: "Y"
-]
+  toggle: thorough [
+    additional: "@(!$(intreefile.isdefined))"
+    information: "More thorough search"
+    default: "Y"
+  ]
 
-boolean: rearrange [
-  additional: "$(thorough)"
-  default: "Y"
-  information: "Rearrange on just one best tree"
-]
+  boolean: rearrange [
+    additional: "$(thorough)"
+    default: "Y"
+    information: "Rearrange on just one best tree"
+  ]
 
-integer: njumble [
-	additional: "@(!$(intreefile.isdefined))"
-	default: "0"
-	minimum: "0"
-	information: "Number of times to randomise"
-]
+  integer: njumble [
+    additional: "@(!$(intreefile.isdefined))"
+    default: "0"
+    minimum: "0"
+    information: "Number of times to randomise"
+  ]
 
-integer: seed [
-	additional: "$(njumble)"
-	information: "Random number seed between 1 and 32767 (must be odd)"
-	minimum: "1"
-	maximum: "32767"
-	default: "1"
-]
+  integer: seed [
+    additional: "$(njumble)"
+    information: "Random number seed between 1 and 32767 (must
+                  be odd)"
+    minimum: "1"
+    maximum: "32767"
+    default: "1"
+  ]
 
-integer: outgrno [
-	additional: "Y"
-	minimum: "0"  
-        maximum: "$(infile.discretesize)"
-	default: "0"
-	information: "Species number to use as outgroup"
-]
+  integer: outgrno [
+    additional: "Y"
+    minimum: "0"
+    maximum: "$(infile.discretesize)"
+    default: "0"
+    information: "Species number to use as outgroup"
+  ]
 
-toggle: thresh [
-	additional: "Y"
-	default: "N"
-	information: "Use threshold parsimony"
-]
+  toggle: thresh [
+    additional: "Y"
+    default: "N"
+    information: "Use threshold parsimony"
+  ]
 
-float: threshold [
-	additional: "$(thresh)"
-	minimum: "1"
-	information: "Threshold value"
-	default: "1"
-]
+  float: threshold [
+    additional: "$(thresh)"
+    minimum: "1"
+    information: "Threshold value"
+    default: "1"
+  ]
 
 endsection: additional
 
@@ -109,60 +111,60 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "pars output"
-  information: "Phylip pars program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "pars output"
+    information: "Phylip pars program output file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
-boolean: stepbox [
-	additional: "Y"
-	default: "N"
-	information: "Print steps at each site"
-]
+  boolean: stepbox [
+    additional: "Y"
+    default: "N"
+    information: "Print steps at each site"
+  ]
 
-boolean: ancseq [
-	additional: "Y"
-	default: "N"
-	information: "Print states at all nodes of tree"
-]
+  boolean: ancseq [
+    additional: "Y"
+    default: "N"
+    information: "Print states at all nodes of tree"
+  ]
 
-boolean: dotdiff [
-  additional: "@($(ancseq) | $(printdata))"
-  default: "Y"
-  information: "Use dot differencing to display results"
-]
+  boolean: dotdiff [
+    additional: "@($(ancseq) | $(printdata))"
+    default: "Y"
+    information: "Use dot differencing to display results"
+  ]
 
 endsection: output

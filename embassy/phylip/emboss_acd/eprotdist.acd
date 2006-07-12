@@ -9,12 +9,12 @@ section: input [
   type: "page"
 ]
 
-seqset: sequence  [
-  parameter: "Y"
-  type: "gapany"
-  aligned: "Y"
-  help: "File containing sequences"
-]
+  seqset: sequence [
+    parameter: "Y"
+    type: "gapany"
+    aligned: "Y"
+    help: "File containing sequences"
+  ]
 
 endsection: input
 
@@ -23,16 +23,16 @@ section: required [
   type: "page"
 ]
 
-list: method  [
-  standard: "y"
-  minimum: "1"
-  maximum: "1"
-  header: "Method"
-  values: "Pam:Dayhoff PAM matrix; Kim:Kimura formula;
-           Cat:Categories model"
-  information: "Choose the method to use"
-  default: "Pam"
-]
+  list: method [
+    standard: "y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "Pam:Dayhoff PAM matrix; Kim:Kimura formula;
+             Cat:Categories model"
+    information: "Choose the method to use"
+    default: "Pam"
+  ]
 
 endsection: required
 
@@ -41,83 +41,83 @@ section: additional [
   type: "page"
 ]
 
-list: categ  [
-  additional: "@($(method) == Cat)"
-  minimum: "1"
-  maximum: "1"
-  header: "categorization of amino acids\n all have groups: (Glu Gln
-           Asp Asn), (Lys Arg His), (Phe Tyr Trp) plus:-"
-  values: "G:George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly Ala
-           Ser Thr Pro); C:Chemical (Cys Met), (Val Leu Ileu Gly Ala Ser
-           Thr), (Pro); H:Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser Thr),
-           (Pro)"
-  information: "Choose the category to use"
-  default: "G"
-]
+  list: categ [
+    additional: "@($(method) == Cat)"
+    minimum: "1"
+    maximum: "1"
+    header: "categorization of amino acids\n all have groups: (Glu
+             Gln Asp Asn), (Lys Arg His), (Phe Tyr Trp) plus:-"
+    values: "G:George/Hunt/Barker (Cys), (Met Val Leu Ileu), (Gly
+             Ala Ser Thr Pro); C:Chemical (Cys Met), (Val Leu Ileu Gly Ala
+             Ser Thr), (Pro); H:Hall (Cys), (Met Val Leu Ileu), (Gly Ala Ser
+             Thr), (Pro)"
+    information: "Choose the category to use"
+    default: "G"
+  ]
 
-list: gencode  [
-  additional: "@($(method) == Cat)"
-  minimum: "1"
-  maximum: "1"
-  header: "Which genetic code"
-  values: "U:Universal; M:Mitochondrial; V:Vertebrate mitochondrial;
-           F:Fly mitochondrial; Y:Yeast mitochondrial"
-  information: "Which genetic code"
-  default: "U"
-]
+  list: gencode [
+    additional: "@($(method) == Cat)"
+    minimum: "1"
+    maximum: "1"
+    header: "Which genetic code"
+    values: "U:Universal; M:Mitochondrial; V:Vertebrate
+             mitochondrial; F:Fly mitochondrial; Y:Yeast mitochondrial"
+    information: "Which genetic code"
+    default: "U"
+  ]
 
-float: prob  [
-  additional: "@($(method) == Cat)"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.457"
-  information: "Prob change category (1.0=easy)"
-]
+  float: prob [
+    additional: "@($(method) == Cat)"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.457"
+    information: "Prob change category (1.0=easy)"
+  ]
 
-float: tranrate  [
-  additional: "@($(method) == Cat)"
-  minimum: "0.0"
-  default: "2.0"
-  information: "Transition/transversion ratio"
-]
+  float: tranrate [
+    additional: "@($(method) == Cat)"
+    minimum: "0.0"
+    default: "2.0"
+    information: "Transition/transversion ratio"
+  ]
 
-toggle: basefrequency  [
-  additional: "@($(method) == Cat)"
-  default: "Y"
-  information: "Use empirical base frequencies"
-]
+  toggle: basefrequency [
+    additional: "@($(method) == Cat)"
+    default: "Y"
+    information: "Use empirical base frequencies"
+  ]
 
-float: freqa  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for A"
-]
+  float: freqa [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for A"
+  ]
 
-float: freqc  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for C"
-]
+  float: freqc [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for C"
+  ]
 
-float: freqg  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for G"
-]
+  float: freqg [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for G"
+  ]
 
-float: freqt  [
-  additional: "@(!$(basefrequency))"
-  minimum: "0.0"
-  maximum: "1.0"
-  default: "0.25"
-  information: "Frequency for T/U"
-]
+  float: freqt [
+    additional: "@(!$(basefrequency))"
+    minimum: "0.0"
+    maximum: "1.0"
+    default: "0.25"
+    information: "Frequency for T/U"
+  ]
 
 endsection: additional
 
@@ -126,23 +126,23 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "eprotdist.outfile"
-  knowntype: "protdist output"
-  information: "Phylip protdist program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "eprotdist.outfile"
+    knowntype: "protdist output"
+    information: "Phylip protdist program output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output

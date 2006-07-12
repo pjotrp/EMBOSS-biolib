@@ -9,11 +9,11 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "Phylip tree file"
-  knowntype: "Newick tree"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "Phylip tree file"
+    knowntype: "Newick tree"
+  ]
 
 endsection: input
 
@@ -22,24 +22,24 @@ section: required [
   type: "page"
 ]
 
-toggle: root  [
-  additional: "Y"
-  default: "N"
-  information: "Trees to be treated as rooted"
-]
+  toggle: root [
+    additional: "Y"
+    default: "N"
+    information: "Trees to be treated as rooted"
+  ]
 
-toggle: og  [
-  standard: "$(root)"
-  information: "Outgroup root"
-  default: "N"
-]
+  toggle: og [
+    standard: "$(root)"
+    information: "Outgroup root"
+    default: "N"
+  ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
+  integer: outgnum [
+    standard: "$(og)"
+    minimum: "1"
+    default: "1"
+    information: "Number of the outgroup"
+  ]
 
 endsection: required
 
@@ -48,42 +48,42 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "econsense.outfile"
-  knowntype: "consense output"
-  information: "Phylip consense program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "econsense.outfile"
+    knowntype: "consense output"
+    information: "Phylip consense program output file"
+  ]
 
-boolean: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
+  boolean: trout [
+    parameter: "Y"
+    default: "Y"
+    information: "Create a tree file"
+  ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+  ]
 
-outfile: treefile  [
-  parameter: "Y"
-  extension: "treefile"
-  information: "Phylip tree output file"
-  knowntype: "Newick tree"
-]
+  outfile: treefile [
+    parameter: "Y"
+    extension: "treefile"
+    information: "Phylip tree output file"
+    knowntype: "Newick tree"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: printsets  [
-  additional: "Y"
-  default: "Y"
-  information: "Print out the sets of species"
-]
+  boolean: printsets [
+    additional: "Y"
+    default: "Y"
+    information: "Print out the sets of species"
+  ]
 
 endsection: output

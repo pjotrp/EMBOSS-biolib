@@ -9,31 +9,31 @@ section: input [
   type: "page"
 ]
 
-discretestates: infile  [
-  parameter: "Y"
-  characters: "01PB?"
-  help: "File containing one or more data sets"
-  knowntype: "discrete characters"
-  information: "Phylip character discrete states file"
-]
+  discretestates: infile [
+    parameter: "Y"
+    characters: "01PB?"
+    help: "File containing one or more data sets"
+    knowntype: "discrete characters"
+    information: "Phylip character discrete states file"
+  ]
 
-properties: weights [
-	additional: "Y"
-	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	information: "Weights file"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    information: "Weights file"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
 
-properties: ancfile [
-	additional: "Y"
-	characters: "01?"
-	information: "Ancestral states file"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
+  properties: ancfile [
+    additional: "Y"
+    characters: "01?"
+    information: "Ancestral states file"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
 
 endsection: input
 
@@ -42,46 +42,46 @@ section: additional [
   type: "page"
 ]
 
-toggle: thresh [
-	additional: "Y"
-	default: "N"
-	information: "Use threshold parsimony"
-]
+  toggle: thresh [
+    additional: "Y"
+    default: "N"
+    information: "Use threshold parsimony"
+  ]
 
-float: threshold [
-	additional: "$(thresh)"
-	minimum: "0"
-	information: "Threshold value"
-	default: "1"
-]
-integer: howmany  [
-  additional: "Y"
-  information: "How many groups of trees"
-  default: "1000"
-]
+  float: threshold [
+    additional: "$(thresh)"
+    minimum: "0"
+    information: "Threshold value"
+    default: "1"
+  ]
 
-integer: howoften  [
-  additional: "Y"
-  information: "How often to report, in trees"
-  default: "100"
-]
+  integer: howmany [
+    additional: "Y"
+    information: "How many groups of trees"
+    default: "1000"
+  ]
 
-boolean: simple  [
-  additional: "Y"
-  information: "Branch and bound is simple"
-  default: "Y"
-]
+  integer: howoften [
+    additional: "Y"
+    information: "How often to report, in trees"
+    default: "100"
+  ]
 
-list: method  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Method"
-	values: "d:Dollo;
-                 p:Polymorphism"
-  	information: "Parsimony method"
-  	default: "d"
-]
+  boolean: simple [
+    additional: "Y"
+    information: "Branch and bound is simple"
+    default: "Y"
+  ]
+
+  list: method [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "d:Dollo; p:Polymorphism"
+    information: "Parsimony method"
+    default: "d"
+  ]
 
 endsection: additional
 
@@ -90,56 +90,54 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "dolpenny output"
-  information: "Phylip dolpenny program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "dolpenny output"
+    information: "Phylip dolpenny program output file"
+  ]
 
+  toggle: trout [
+    additional: "Y"
+    default: "Y"
+    information: "Write out trees to tree file"
+  ]
 
-toggle: trout [
-	additional: "Y"
-	default: "Y"
-	information: "Write out trees to tree file"
-]
+  outfile: outtreefile [
+    additional: "$(trout)"
+    extension: "treefile"
+    information: "Phylip tree output file (optional)"
+    knowntype: "newick tree"
+    nullok: "Y"
+  ]
 
-outfile: outtreefile  [
-  additional: "$(trout)"
-  extension: "treefile"
-  information: "Phylip tree output file (optional)"
-  knowntype: "newick tree"
-  nullok: "Y"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print data at start of run"
+  ]
 
-boolean: printdata [
-	additional: "Y"
-	default: "N"
-	information: "Print data at start of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "Y"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: progress [
-	additional: "Y"
-	default: "Y"
-	information: "Print indications of progress of run"
-]
+  boolean: treeprint [
+    additional: "Y"
+    default: "Y"
+    information: "Print out tree"
+  ]
 
+  boolean: ancseq [
+    additional: "Y"
+    default: "N"
+    information: "Print states at all nodes of tree"
+  ]
 
-boolean: treeprint [
-	additional: "Y"
-	default: "Y"
-	information: "Print out tree"
-]
-
-boolean: ancseq  [
-  additional: "Y"
-  default: "N"
-  information: "Print states at all nodes of tree"
-]
-
-boolean: stepbox  [
-  additional: "Y"
-  default: "N"
-  information: "Print out steps in each character"
-]
+  boolean: stepbox [
+    additional: "Y"
+    default: "N"
+    information: "Print out steps in each character"
+  ]
 
 endsection: output

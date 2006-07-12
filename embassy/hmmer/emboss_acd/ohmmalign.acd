@@ -12,26 +12,26 @@ section: input [
   type: "page"
 ]
 
-  infile: hmmfile  [
+  infile: hmmfile [
     parameter: "Y"
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
   ]
 
-  seqset: sequences  [
+  seqset: sequences [
     parameter: "Y"
     type: "gapany"
     aligned: "Y"
   ]
 
-  infile: mapalifile  [
+  infile: mapalifile [
     default: ""
     information: "HMMER alignment file (optional)"
     knowntype: "hmmer alignment"
     nullok: "Y"
   ]
 
-  infile: withalifile  [
+  infile: withalifile [
     default: ""
     information: "HMMER heuristic alignment file (optional)"
     knowntype: "hmmer alignment"
@@ -45,7 +45,7 @@ section: advanced [
   type: "page"
 ]
 
-  boolean: matchonly  [
+  boolean: matchonly [
     default: "N"
     information: "Only show match state alignment symbols"
   ]
@@ -57,7 +57,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "hmmalign output"
     information: "HMMER hmmalign program output file"

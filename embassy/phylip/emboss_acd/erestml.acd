@@ -9,24 +9,24 @@ section: input [
   type: "page"
 ]
 
-infile: datafile  [
-  parameter: "Y"
-  information: "Phylip restml program input file"
-  knowntype: "restml input"
-]
+  infile: datafile [
+    parameter: "Y"
+    information: "Phylip restml program input file"
+    knowntype: "restml input"
+  ]
 
-toggle: multsets  [
-  additional: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
+  toggle: multsets [
+    additional: "Y"
+    default: "N"
+    information: "Analyze multiple data sets"
+  ]
 
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "2"
-  default: "2"
-  information: "Number of sets"
-]
+  integer: datasets [
+    standard: "$(multsets)"
+    minimum: "2"
+    default: "2"
+    information: "Number of sets"
+  ]
 
 endsection: input
 
@@ -35,42 +35,42 @@ section: required [
   type: "page"
 ]
 
-toggle: besttree  [
-  additional: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
+  toggle: besttree [
+    additional: "Y"
+    default: "Y"
+    information: "Search for best tree"
+  ]
 
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
+  toggle: random [
+    standard: "$(besttree)"
+    default: "N"
+    information: "Randomize input order of species"
+  ]
 
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
+  integer: randseed [
+    standard: "$(random)"
+    default: "3"
+    information: "Random number seed (must be odd)"
+  ]
 
-integer: randtimes  [
-  standard: "$(random)"
-  default: "3"
-  information: "How many times to randomise"
-]
+  integer: randtimes [
+    standard: "$(random)"
+    default: "3"
+    information: "How many times to randomise"
+  ]
 
-toggle: og  [
-  additional: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
+  toggle: og [
+    additional: "Y"
+    information: "Outgroup root"
+    default: "N"
+  ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
+  integer: outgnum [
+    standard: "$(og)"
+    minimum: "1"
+    default: "1"
+    information: "Number of the outgroup"
+  ]
 
 endsection: required
 
@@ -79,38 +79,38 @@ section: additional [
   type: "page"
 ]
 
-boolean: allsites  [
-  additional: "Y"
-  default: "Y"
-  information: "Are all sites detected"
-]
+  boolean: allsites [
+    additional: "Y"
+    default: "Y"
+    information: "Are all sites detected"
+  ]
 
-boolean: lengths  [
-  additional: "@(!$(besttree))"
-  default: "N"
-  information: "Use lengths from user trees"
-]
+  boolean: lengths [
+    additional: "@(!$(besttree))"
+    default: "N"
+    information: "Use lengths from user trees"
+  ]
 
-integer: sitelen  [
-  additional: "Y"
-  default: "6"
-  minimum: "1"
-  maximum: "8"
-  information: "Site length"
-]
+  integer: sitelen [
+    additional: "Y"
+    default: "6"
+    minimum: "1"
+    maximum: "8"
+    information: "Site length"
+  ]
 
-float: extrap  [
-  additional: "Y"
-  default: "100.0"
-  minimum: "0.001"
-  information: "Extrapolation factor"
-]
+  float: extrap [
+    additional: "Y"
+    default: "100.0"
+    minimum: "0.001"
+    information: "Extrapolation factor"
+  ]
 
-boolean: global  [
-  additional: "$(besttree)"
-  default: "N"
-  information: "Global rearrangements"
-]
+  boolean: global [
+    additional: "$(besttree)"
+    default: "N"
+    information: "Global rearrangements"
+  ]
 
 endsection: additional
 
@@ -119,42 +119,42 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "erestml.outfile"
-  knowntype: "restml output"
-  information: "Phylip restml program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "erestml.outfile"
+    knowntype: "restml output"
+    information: "Phylip restml program output file"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+  ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
+  toggle: trout [
+    parameter: "Y"
+    default: "Y"
+    information: "Create a tree file"
+  ]
 
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "erestml.treefile"
-  information: "Phylip tree output file"
-  knowntype: "newick tree"
-]
+  outfile: treefile [
+    standard: "$(trout)"
+    default: "erestml.treefile"
+    information: "Phylip tree output file"
+    knowntype: "newick tree"
+  ]
 
 endsection: output

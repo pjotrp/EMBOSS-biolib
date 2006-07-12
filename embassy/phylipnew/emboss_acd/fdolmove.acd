@@ -1,5 +1,6 @@
 application: fdolmove [
-  documentation: "Interactive Dollo or Polymorphism Parsimony"
+  documentation: "Interactive Dollo or Polymorphism
+                  Parsimony"
   groups: "Phylogeny:Molecular sequence"
   batch: "no"
   embassy: "phylipnew"
@@ -10,99 +11,99 @@ section: input [
   type: "page"
 ]
 
-discretestates: infile  [
-  parameter: "Y"
-  characters: "01PB?"
-  help: "File containing data set"
-  knowntype: "discrete characters"
-  information: "Phylip character discrete states file"
-]
+  discretestates: infile [
+    parameter: "Y"
+    characters: "01PB?"
+    help: "File containing data set"
+    knowntype: "discrete characters"
+    information: "Phylip character discrete states file"
+  ]
 
-tree: intreefile [
-	parameter: "Y"
-	nullok: "Y"
-	knowntype: "newick"
-	information: "Phylip tree file (optional)"
-]
-properties: weights [
-	additional: "Y"
-	characters: "01"
-	information: "Weights file"
-	help: "Weights file"
-        length: "$(infile.discretelength)"
-        size: "1"
-	nullok: "Y"
-]
+  tree: intreefile [
+    parameter: "Y"
+    nullok: "Y"
+    knowntype: "newick"
+    information: "Phylip tree file (optional)"
+  ]
 
-properties: ancfile [
-	additional: "Y"
-	characters: "01?"
-	information: "Ancestral states file"
-	nullok: "Y"
-        length: "$(infile.discretelength)"
-        size: "1"
-]
-properties: factorfile [
-	additional: "Y"
-	information: "Factors file"
-	nullok: "Y"
-        length: "$(infile.discretelengt)"
-        size: "1"
-]
+  properties: weights [
+    additional: "Y"
+    characters: "01"
+    information: "Weights file"
+    help: "Weights file"
+    length: "$(infile.discretelength)"
+    size: "1"
+    nullok: "Y"
+  ]
+
+  properties: ancfile [
+    additional: "Y"
+    characters: "01?"
+    information: "Ancestral states file"
+    nullok: "Y"
+    length: "$(infile.discretelength)"
+    size: "1"
+  ]
+
+  properties: factorfile [
+    additional: "Y"
+    information: "Factors file"
+    nullok: "Y"
+    length: "$(infile.discretelengt)"
+    size: "1"
+  ]
+
 endsection: input
 
 section: additional [
-	information: "Additional section"
-	type: "page"
+  information: "Additional section"
+  type: "page"
 ]
 
-list: method  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Method"
-	values: "d:Dollo;
-                 p:Polymorphism"
-  	information: "Parsimony method"
-  	default: "d"
-]
+  list: method [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Method"
+    values: "d:Dollo; p:Polymorphism"
+    information: "Parsimony method"
+    default: "d"
+  ]
 
-toggle: thresh [
-	additional: "Y"
-	default: "N"
-	information: "Use threshold parsimony"
-]
+  toggle: thresh [
+    additional: "Y"
+    default: "N"
+    information: "Use threshold parsimony"
+  ]
 
-float: threshold [
-	additional: "$(thresh)"
-	minimum: "0"
-	information: "Threshold value"
-	default: "1"
-]
+  float: threshold [
+    additional: "$(thresh)"
+    minimum: "0"
+    information: "Threshold value"
+    default: "1"
+  ]
 
-list: initialtree  [
-	additional: "Y"
-	minimum: "1"
-	maximum: "1"
-	header: "Initial tree"
-	values: "a:Arbitary;
-        	 u:User;
-          	 s:Specify"
-  	information: "Initial tree"
-  	default: "Arbitary"
-]
+  list: initialtree [
+    additional: "Y"
+    minimum: "1"
+    maximum: "1"
+    header: "Initial tree"
+    values: "a:Arbitary; u:User; s:Specify"
+    information: "Initial tree"
+    default: "Arbitary"
+  ]
 
-integer: screenwidth [
-	additional: "Y"
-	default: "80"
-	information: "Width of terminal screen in characters"
-]
+  integer: screenwidth [
+    additional: "Y"
+    default: "80"
+    information: "Width of terminal screen in characters"
+  ]
 
-integer: screenlines [
-	additional: "Y"
-	default: "24"
-	information: "Number of lines on screen"
-]
+  integer: screenlines [
+    additional: "Y"
+    default: "24"
+    information: "Number of lines on screen"
+  ]
 
 endsection: additional
 
@@ -111,12 +112,12 @@ section: output [
   type: "page"
 ]
 
-outfile: outtreefile [
-	additional: "Y"
-	extension: "treefile"
-	knowntype: "newick tree"
-  information: "Phylip tree output file (optional)"
-	nullok: "Y"
-]
+  outfile: outtreefile [
+    additional: "Y"
+    extension: "treefile"
+    knowntype: "newick tree"
+    information: "Phylip tree output file (optional)"
+    nullok: "Y"
+  ]
 
 endsection: output

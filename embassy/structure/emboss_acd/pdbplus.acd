@@ -1,5 +1,6 @@
 application: pdbplus [
-  documentation: "Add accessibility & secondary structure to a CCF file." 
+  documentation: "Add accessibility & secondary structure to
+                  a CCF file."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -14,7 +15,8 @@ section: input [
 
   dirlist: ccfinpath [
     parameter: "Y"
-    information: "Clean protein structure coordinates directories"
+    information: "Clean protein structure coordinates
+                  directories"
     help: "This option specifies the location of CCF files (clean
            coordinate files) (input). A 'clean cordinate file' contains
            protein coordinate and derived data for a single PDB file
@@ -89,7 +91,8 @@ section: output [
 
   outdir: ccfoutdir [
     parameter: "Y"
-    information: "Clean protein structure coordinates file output directory"
+    information: "Clean protein structure coordinates file
+                  output directory"
     help: "This option specifies the location of CCF files (clean
            coordinate files) (output). A 'clean cordinate file' contains
            protein coordinate and derived data for a single PDB file

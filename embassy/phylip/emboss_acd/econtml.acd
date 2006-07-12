@@ -13,23 +13,24 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  information: "Phylip contml program input file"
-  knowntype: "contml input"
-]
+  infile: infile [
+    parameter: "Y"
+    information: "Phylip contml program input file"
+    knowntype: "contml input"
+  ]
 
-toggle: continuous  [
-  additional: "Y"
-  default: "N"
-  information: "Continuous characters (else Gene frequencies)"
-]
+  toggle: continuous [
+    additional: "Y"
+    default: "N"
+    information: "Continuous characters (else Gene
+                  frequencies)"
+  ]
 
-boolean: all  [
-  standard: "@(!$(continuous))"
-  default: "N"
-  information: "Input file has all alleles at each locus"
-]
+  boolean: all [
+    standard: "@(!$(continuous))"
+    default: "N"
+    information: "Input file has all alleles at each locus"
+  ]
 
 endsection: input
 
@@ -38,61 +39,61 @@ section: required [
   type: "page"
 ]
 
-toggle: besttree  [
-  standard: "Y"
-  default: "Y"
-  information: "Search for best tree"
-]
+  toggle: besttree [
+    standard: "Y"
+    default: "Y"
+    information: "Search for best tree"
+  ]
 
-boolean: lengths  [
-  standard: "@(!$(besttree))"
-  default: "N"
-  information: "Use lengths from user trees"
-]
+  boolean: lengths [
+    standard: "@(!$(besttree))"
+    default: "N"
+    information: "Use lengths from user trees"
+  ]
 
-boolean: global  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Global rearrangements"
-]
+  boolean: global [
+    standard: "$(besttree)"
+    default: "N"
+    information: "Global rearrangements"
+  ]
 
-toggle: random  [
-  standard: "$(besttree)"
-  default: "N"
-  information: "Randomize input order of species"
-]
+  toggle: random [
+    standard: "$(besttree)"
+    default: "N"
+    information: "Randomize input order of species"
+  ]
 
-integer: randseed  [
-  standard: "$(random)"
-  default: "3"
-  information: "Random number seed (must be odd)"
-]
+  integer: randseed [
+    standard: "$(random)"
+    default: "3"
+    information: "Random number seed (must be odd)"
+  ]
 
-toggle: og  [
-  standard: "Y"
-  information: "Outgroup root"
-  default: "N"
-]
+  toggle: og [
+    standard: "Y"
+    information: "Outgroup root"
+    default: "N"
+  ]
 
-integer: outgnum  [
-  standard: "$(og)"
-  minimum: "1"
-  default: "1"
-  information: "Number of the outgroup"
-]
+  integer: outgnum [
+    standard: "$(og)"
+    minimum: "1"
+    default: "1"
+    information: "Number of the outgroup"
+  ]
 
-toggle: multsets  [
-  standard: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
+  toggle: multsets [
+    standard: "Y"
+    default: "N"
+    information: "Analyze multiple data sets"
+  ]
 
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "1"
-  default: "1"
-  information: "How many data sets"
-]
+  integer: datasets [
+    standard: "$(multsets)"
+    minimum: "1"
+    default: "1"
+    information: "How many data sets"
+  ]
 
 endsection: required
 
@@ -108,43 +109,42 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "econtml.outfile"
-  knowntype: "contml output"
-  information: "Phylip contml program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "econtml.outfile"
+    knowntype: "contml output"
+    information: "Phylip contml program output file"
+  ]
 
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: drawtree [
+    additional: "Y"
+    default: "Y"
+    information: "Draw tree"
+  ]
 
-boolean: drawtree  [
-  additional: "Y"
-  default: "Y"
-  information: "Draw tree"
-]
+  toggle: trout [
+    parameter: "Y"
+    default: "Y"
+    information: "Create a tree file"
+  ]
 
-toggle: trout  [
-  parameter: "Y"
-  default: "Y"
-  information: "Create a tree file"
-]
-
-outfile: treefile  [
-  standard: "$(trout)"
-  default: "econtml.treefile"
-  information: "Phylip tree output file"
-  knowntype: "Newick tree"
-]
+  outfile: treefile [
+    standard: "$(trout)"
+    default: "econtml.treefile"
+    information: "Phylip tree output file"
+    knowntype: "Newick tree"
+  ]
 
 endsection: output

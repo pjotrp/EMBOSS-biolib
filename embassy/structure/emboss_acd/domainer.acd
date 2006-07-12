@@ -1,5 +1,6 @@
 application: domainer [
-  documentation: "Generates domain CCF files from protein CCF files."
+  documentation: "Generates domain CCF files from protein CCF
+                  files."
   groups: "Utils:Database creation"
   gui: "yes"
   batch: "yes"
@@ -38,7 +39,8 @@ section: input [
            default: "./"
     extension: "ccf"
     knowntype: "protein clean coordinates"
-    information: "Clean protein structure coordinates directory"
+    information: "Clean protein structure coordinates
+                  directory"
   ]
 
 endsection: input
@@ -58,7 +60,8 @@ section: output [
     default: "./"
     extension: "ccf"
     knowntype: "domain clean coordinates"
-    information: "Clean domain coordinates file output directory"
+    information: "Clean domain coordinates file output
+                  directory"
   ]
 
   outdir: pdboutdir [

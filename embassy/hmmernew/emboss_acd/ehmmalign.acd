@@ -1,6 +1,4 @@
-application: ehmmalign 
-[
-# EMBOSS wrapper to hmmalign from Sean Eddy's HMMER package v.2.3.2
+application: ehmmalign [
   documentation: "Align sequences to an HMM profile"
   groups: "HMM"
   gui: "yes"
@@ -9,105 +7,99 @@ application: ehmmalign
   embassy: "hmmernew"
 ]
 
-
-
-
-
-section: input 
-[
+section: input [
   information: "Input section"
   type: "page"
 ]
 
-infile: hmmfile  
-[
+  infile: hmmfile [
     parameter: "Y"
     knowntype: "hmm"
     information: "HMMER hidden markov model file"
     help: "File containing a HMM profile"
-]
+  ]
 
-seqset: seqfile
-[
+  seqset: seqfile [
     parameter: "Y"
     type: "gapstopprotein"
     help: "File containing a (set of) sequence(s)"
     aligned: "N"
-]
-infile: mapali
-[
-#   Advanced input option
-    default: ""
-    information: "HMMER alignment file (optional)"
-    knowntype: "hmmer alignment"
-    nullok: "Y"
-    help: "Reads an alignment from file and aligns it as a single object to the HMM; e.g. the alignment in file is held fixed. This allows you to align sequences to a model with hmmalign and view them in the context of an existing trusted multiple alignment. The alignment to the alignment is defined by a 'map' kept in the HMM, and so is fast and guaranteed to be consistent with the way the HMM was constructed from the alignment. The alignment in the file must be exactly the alignment that the HMM was built from. Compare the -withali option."
-]
+  ]
 
-infile: withali  
-[
-#   Advanced input option
+  infile: mapali [
     default: ""
     information: "HMMER alignment file (optional)"
     knowntype: "hmmer alignment"
     nullok: "Y"
-    help: "Reads an alignment from file and aligns it as a single object to the HMM; e.g. the alignment in file is held fixed. This allows you to align sequences to a model with hmmalign and view them in the context of an existing trusted multiple alignment. The alignment to the alignment is done with a heuristic (nonoptimal) dynamic programming procedure, which may be somewhat slow and is not guaranteed to be completely consistent with the way the HMM was constructed (though it should be quite close). However, any alignment can be used, not just the alignment that the HMM was built from. Compare the -mapali option."
-]
+    help: "Reads an alignment from file and aligns it as a single
+           object to the HMM; e.g. the alignment in file is held fixed. This
+           allows you to align sequences to a model with hmmalign and view
+           them in the context of an existing trusted multiple alignment. The
+           alignment to the alignment is defined by a 'map' kept in the HMM,
+           and so is fast and guaranteed to be consistent with the way the
+           HMM was constructed from the alignment. The alignment in the file
+           must be exactly the alignment that the HMM was built from. Compare
+           the -withali option."
+  ]
+
+  infile: withali [
+    default: ""
+    information: "HMMER alignment file (optional)"
+    knowntype: "hmmer alignment"
+    nullok: "Y"
+    help: "Reads an alignment from file and aligns it as a single
+           object to the HMM; e.g. the alignment in file is held fixed. This
+           allows you to align sequences to a model with hmmalign and view
+           them in the context of an existing trusted multiple alignment. The
+           alignment to the alignment is done with a heuristic (nonoptimal)
+           dynamic programming procedure, which may be somewhat slow and is
+           not guaranteed to be completely consistent with the way the HMM
+           was constructed (though it should be quite close). However, any
+           alignment can be used, not just the alignment that the HMM was
+           built from. Compare the -mapali option."
+  ]
 
 endsection: input
 
-
-
-
-
-section: additional
-[
+section: additional [
   information: "Additional section"
   type: "page"
 ]
+
 endsection: additional
 
-
-
-
-section: advanced 
-[
+section: advanced [
   information: "Advanced section"
   type: "page"
 ]
+
 endsection: advanced
 
-
-
-
-
-section: output 
-[
+section: output [
   information: "Output section"
   type: "page"
 ]
 
-align: o
-[
+  align: o [
     parameter: "Y"
     help: "Multiple sequence alignment output file."
     aformat: "fasta"
-]
+  ]
 
-boolean: m
-[
+  boolean: m [
     additional: "Y"
     default: "N"
     information: "Only show match state alignment symbols."
-    help: "Include in the alignment only those symbols aligned to match states. Do not show symbols assigned to insert states."
-]
+    help: "Include in the alignment only those symbols aligned to
+           match states. Do not show symbols assigned to insert states."
+  ]
 
-boolean: q
-[
+  boolean: q [
     additional: "Y"
     default: "N"
     information: "Suppress all output except the alignment."
-    help: "Quiet; suppress all output except the alignment itself. Useful for piping or redirecting the output."
-]
+    help: "Quiet; suppress all output except the alignment itself.
+           Useful for piping or redirecting the output."
+  ]
 
 endsection: output

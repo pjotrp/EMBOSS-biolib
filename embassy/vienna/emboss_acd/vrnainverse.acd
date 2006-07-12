@@ -12,7 +12,7 @@ section: input [
   type: "page"
 ]
 
-  infile: structure  [
+  infile: structure [
     parameter: "Y"
     information: "Vienna RNA structures file"
     knowntype: "rna structures"
@@ -73,7 +73,7 @@ section: advanced [
     information: "Stabilizing energies for tetra-loops"
   ]
 
-  list: energy  [
+  list: energy [
     default: "0"
     minimum: "1"
     maximum: "1"
@@ -82,25 +82,24 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
-    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+    help: "Rarely used option to fold sequences from the ABCD...
+           alphabet"
   ]
 
-
-  list: dangles  [
+  list: dangles [
     default: "1"
     minimum: "1"
     maximum: "1"
     header: "How to treat dangling end energies"
-    values: "0:Ignore,
-             1:Only unpaired bases for just one dangling end,
-             2:Always use dangling energies,
-             3:Allow coaxial stacking of adjacent helices"
+    values: "0:Ignore, 1:Only unpaired bases for just one dangling
+             end, 2:Always use dangling energies, 3:Allow coaxial stacking of
+             adjacent helices"
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
   ]
 
-  list: folding  [
+  list: folding [
     default: "m"
     minimum: "1"
     maximum: "1"
@@ -111,30 +110,31 @@ section: advanced [
     information: "Method"
   ]
 
-  string: alphabet  [
+  string: alphabet [
     information: "Find sequences using only these bases"
     default: "AUGC"
     knowntype: "nucleotide codes"
   ]
 
-  float: final  [
+  float: final [
     information: "Stopping value"
     default: "0.0"
   ]
 
-  integer: repeats  [
-    information: "Number of times to search for the same structure"
+  integer: repeats [
+    information: "Number of times to search for the same
+                  structure"
     default: "0"
     minimum: "0"
   ]
 
-  boolean: succeed  [
+  boolean: succeed [
     information: "Continue until a match is found"
     help: "The original RNAinverse uses a negative repeat for this"
     default: "N"
   ]
 
-  boolean: showfails  [
+  boolean: showfails [
     information: "Show information for unsuccessful searches"
     default: "N"
   ]
@@ -146,7 +146,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"

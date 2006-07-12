@@ -1,5 +1,6 @@
 application: vrnafoldpf [
-  documentation: "Secondary structures of RNAs with partition"
+  documentation: "Secondary structures of RNAs with
+                  partition"
   groups: "Nucleic:RNA folding"
   gui: "yes"
   batch: "yes"
@@ -12,15 +13,16 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  sequence: sequence [
     parameter: "Y"
     type: "dna"
   ]
 
-  infile: constraintfile  [
+  infile: constraintfile [
     nullok: "Y"
     default: ""
-    information: "Vienna RNA structure contraints file (optional)"
+    information: "Vienna RNA structure contraints file
+                  (optional)"
     knowntype: "rna constraint"
   ]
 
@@ -79,7 +81,7 @@ section: advanced [
     information: "Stabilizing energies for tetra-loops"
   ]
 
-  list: energy  [
+  list: energy [
     default: "0"
     minimum: "1"
     maximum: "1"
@@ -88,24 +90,23 @@ section: advanced [
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
-    help: "Rarely used option to fold sequences from the ABCD... alphabet"
+    help: "Rarely used option to fold sequences from the ABCD...
+           alphabet"
   ]
-
 
   float: scale [
     default: "1.07"
     information: "Estimate of ensemble free energy"
   ]
 
-  list: dangles  [
+  list: dangles [
     default: "1"
     minimum: "1"
     maximum: "1"
     header: "How to treat dangling end energies"
-    values: "0:Ignore,
-             1:Only unpaired bases for just one dangling end,
-             2:Always use dangling energies,
-             3:Allow coaxial stacking of adjacent helices"
+    values: "0:Ignore, 1:Only unpaired bases for just one dangling
+             end, 2:Always use dangling energies, 3:Allow coaxial stacking of
+             adjacent helices"
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
@@ -118,20 +119,20 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"
   ]
 
-  outfile: dotoutfile  [
+  outfile: dotoutfile [
     name: "$(sequence.name)"
     extension: "ps"
     knowntype: "postscript"
     information: "Vienna dotplot postscript output file"
   ]
 
-  outfile: ssoutfile  [
+  outfile: ssoutfile [
     name: "$(sequence.name)"
     extension: "ssps"
     knowntype: "postscript"

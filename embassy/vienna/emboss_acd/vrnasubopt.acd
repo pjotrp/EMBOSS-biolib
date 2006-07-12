@@ -12,15 +12,16 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  sequence: sequence [
     parameter: "Y"
     type: "dna"
   ]
 
-  infile: constraintfile  [
+  infile: constraintfile [
     nullok: "Y"
     default: ""
-    information: "Vienna RNA structure contraints file (optional)"
+    information: "Vienna RNA structure contraints file
+                  (optional)"
     knowntype: "rna constraint"
   ]
 
@@ -69,14 +70,16 @@ section: advanced [
     information: "Stabilizing energies for tetra-loops"
   ]
 
-  float: erange  [
+  float: erange [
     default: "1.0"
-    information: "Calculate suboptimal structures within erange of the mfe"
+    information: "Calculate suboptimal structures within erange
+                  of the mfe"
   ]
 
-  float: prange  [
+  float: prange [
     default: "0.0"
-    information: "Only print structures with energy within prange of the mfe"
+    information: "Only print structures with energy within
+                  prange of the mfe"
   ]
 
   boolean: sort [
@@ -89,21 +92,20 @@ section: advanced [
     information: "Logarithmic energy function for multi-loops"
   ]
 
-  list: dangles  [
+  list: dangles [
     default: "2"
     minimum: "1"
     maximum: "1"
     header: "How to treat dangling end energies"
-    values: "0:Ignore,
-             1:Only unpaired bases for just one dangling end,
-             2:Always use dangling energies,
-             3:Allow coaxial stacking of adjacent helices"
+    values: "0:Ignore, 1:Only unpaired bases for just one dangling
+             end, 2:Always use dangling energies, 3:Allow coaxial stacking of
+             adjacent helices"
     delimiter: ","
     codedelimiter: ":"
     information: "Method"
   ]
 
-  integer: nrandom  [
+  integer: nrandom [
     default: "0"
     information: "Number of random suboptimal structures"
   ]
@@ -115,7 +117,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "rnafold output"
     information: "Vienna RNAfold output file"

@@ -9,31 +9,30 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  knowntype: "continuous character frequency"
-  information: "Phylip continuous character frequency file"
-]
+  infile: infile [
+    parameter: "Y"
+    knowntype: "continuous character frequency"
+    information: "Phylip continuous character frequency file"
+  ]
 
-infile: treefile  [
-  parameter: "Y"
-  knowntype: "newick tree"
-  information: "Phylip tree file"
-]
+  infile: treefile [
+    parameter: "Y"
+    knowntype: "newick tree"
+    information: "Phylip tree file"
+  ]
 
+  toggle: multsets [
+    standard: "Y"
+    default: "N"
+    information: "Analyze multiple data sets"
+  ]
 
-toggle: multsets  [
-  standard: "Y"
-  default: "N"
-  information: "Analyze multiple data sets"
-]
-
-integer: datasets  [
-  standard: "$(multsets)"
-  minimum: "1"
-  default: "1"
-  information: "How many data sets"
-]
+  integer: datasets [
+    standard: "$(multsets)"
+    minimum: "1"
+    default: "1"
+    information: "How many data sets"
+  ]
 
 endsection: input
 
@@ -42,29 +41,29 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  default: "econtrast.outfile"
-  knowntype: "contrast output"
-  information: "Phylip contrast program output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    default: "econtrast.outfile"
+    knowntype: "contrast output"
+    information: "Phylip contrast program output file"
+  ]
 
-boolean: corplusreg  [
-  additional: "Y"
-  default: "Y"
-  information: "Print out correlations and regressions"
-]
+  boolean: corplusreg [
+    additional: "Y"
+    default: "Y"
+    information: "Print out correlations and regressions"
+  ]
 
-boolean: printdata  [
-  additional: "Y"
-  default: "N"
-  information: "Print out the data at start of run"
-]
+  boolean: printdata [
+    additional: "Y"
+    default: "N"
+    information: "Print out the data at start of run"
+  ]
 
-boolean: progress  [
-  additional: "Y"
-  default: "N"
-  information: "Print indications of progress of run"
-]
+  boolean: progress [
+    additional: "Y"
+    default: "N"
+    information: "Print indications of progress of run"
+  ]
 
 endsection: output
