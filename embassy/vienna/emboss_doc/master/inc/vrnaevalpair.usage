@@ -1,0 +1,17 @@
+<b>Here is a sample session with vrnaevalpair</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaevalpair </b>
+RNA eval with cofold
+Input nucleotide sequence: <b>cofold-red.fasta</b>
+Vienna RNA structure contraints file: <b>cofold-red.con</b>
+Second nucleotide sequence: <b>cofold-blue.fasta</b>
+Second vienna RNA structure contraints file: <b>cofold-blue.con</b>
+Vienna RNAeval output file [red.vrnaevalpair]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

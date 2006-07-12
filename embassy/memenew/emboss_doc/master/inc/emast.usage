@@ -1,0 +1,15 @@
+<b>Here is a sample session with emast</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>emast ex1.html ex1.out </b>
+Motif detection
+Print results for sequences with E-value [10]: <b></b>
+Show motif matches with p-value < mt [0.0001]: <b></b>
+
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

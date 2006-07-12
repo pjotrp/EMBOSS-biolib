@@ -1,0 +1,15 @@
+<b>Here is a sample session with vrnaeval</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaeval </b>
+RNA eval
+Input nucleotide sequence: <b>evalrna.fasta</b>
+Vienna RNA structure contraints file (optional): <b>eval1.con</b>
+Vienna RNAeval output file [eval.vrnaeval]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

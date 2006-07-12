@@ -1,0 +1,14 @@
+<b>Here is a sample session with vrnalfold</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnalfold </b>
+Calculate locally stable secondary structures of RNAs
+Input nucleotide sequence: <b>tembl:hsts1</b>
+Vienna RNALfold output file [hsts1.vrnalfold]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

@@ -1,0 +1,29 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: cofold-red.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;red
+AUGAAGAUGA
+</pre>
+</td></tr></table><p>
+<p><h3>File: cofold-red.con</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+....((((..
+</pre>
+</td></tr></table><p>
+<p><h3>File: cofold-blue.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;blue
+CUGUCUGUCUUGAGACA
+</pre>
+</td></tr></table><p>
+<p><h3>File: cofold-blue.con</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+..))))(((....))).
+</pre>
+</td></tr></table><p>

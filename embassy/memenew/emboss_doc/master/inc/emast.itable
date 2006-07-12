@@ -1,0 +1,230 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-mfile]<br>(Parameter 1)</td>
+<td>If -d <database> is not given, MAST looks for database specified inside of <mfile>.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-ev</td>
+<td>Print results for sequences with E-value</td>
+<td>Any numeric value</td>
+<td>10</td>
+</tr>
+
+<tr>
+<td>-mt</td>
+<td>Show motif matches with p-value < mt</td>
+<td>Any numeric value</td>
+<td>0.0001</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>MAST program output file</td>
+<td>Output file</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-d</td>
+<td>If -d <database> is not given, MAST looks for database specified inside of <mfile>.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-a</td>
+<td>Input file <mfile> is assumed to contain motifs in the format output by bin/make_logodds and <a> is their alphabet; -d <database> or -stdin must be specified when this option is used.</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-bfile</td>
+<td>The random model uses the letter frequencies given in <bfile> instead of the non-redundant database frequencies. The format of <bfile> is the same as that for the MEME -bfile opton; see the MEME documentation for details. Sample files are given in directory tests: tests/nt.freq and tests/na.freq in the MEME distribution.)</td>
+<td>Input file</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-smax</td>
+<td>Print results for no more than <smax> sequences</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>-stdin</td>
+<td>The default is to read the database specified inside <mfile>.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-text</td>
+<td>Default is hypertext (HTML) format</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-dna</td>
+<td>Translate DNA sequences to protein</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-comp</td>
+<td>The random model uses the letter frequencies in the current target sequence instead of the non-redundant database frequencies. This causes p-values and E-values to be compensated individually for the actual composition of each sequence in the database. This option can increase search time substantially due to the need to compute a different score distribution for each high-scoring sequence.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-rank</td>
+<td>Print results starting with <rank> best</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>-best</td>
+<td>Include only the best motif in diagrams</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-remcorr</td>
+<td>Remove highly correlated motifs from query</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-brief</td>
+<td>Brief output: do not print documentation.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-b</td>
+<td>Print only sections I and II</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-nostatus</td>
+<td>Do not print progress report</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-hitlist</td>
+<td>If you specify the -hitlist switch to MAST, the motif 'diagram' takes the form of a comma separated list of motif occurrences ('hits'). Each 'hit' has the format: <strand><motif> <start> <end> <p-value> where <strand> is the strand (+ or - for DNA, blank for protein), <motif> is the motif number, <start> is the starting position of the hit, <end> is the ending position of the hit, and <p-value> is the position p-value of the hit.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-c</td>
+<td>Only use the first <c> motifs</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>-sep</td>
+<td>Score reverse complement DNA strand as a separate sequence</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-norc</td>
+<td>Do not score reverse complement DNA strand</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-w</td>
+<td>Show weak matches (mt<p-value<mt*10) in angle brackets</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-seqp</td>
+<td>The default is to use POSITION p-values.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-mf</td>
+<td>Print <mf> as motif file name.</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-df</td>
+<td>Print <df> as database name.</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-minseqs</td>
+<td>Lower bound on number of sequences in db</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>-mev</td>
+<td>Use only motifs with E-values less than <mev></td>
+<td>Any numeric value</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>-m</td>
+<td>Overrides value set by using -mev.</td>
+<td>Any integer value</td>
+<td>-1</td>
+</tr>
+
+<tr>
+<td>-diag</td>
+<td>See on-line documentation for a valid example.</td>
+<td>Any string is accepted</td>
+<td><i>An empty string is accepted</i></td>
+</tr>
+
+</table>

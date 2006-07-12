@@ -1,0 +1,14 @@
+<b>Here is a sample session with vrnafoldpf</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnafoldpf -temperature 42 </b>
+Secondary structures of RNAs with partition
+Input nucleotide sequence: <b>rna2.seq</b>
+Vienna RNAfold output file [rna2.vrnafoldpf]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

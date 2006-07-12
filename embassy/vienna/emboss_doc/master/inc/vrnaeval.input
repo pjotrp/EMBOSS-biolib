@@ -1,0 +1,15 @@
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: evalrna.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;eval
+GGGGCCCCC</pre>
+</td></tr></table><p>
+<p><h3>File: eval1.con</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+(...)....
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,14 @@
+<b>Here is a sample session with vrnaalifold</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaalifold </b>
+RNA alignment folding
+Input (aligned) nucleotide sequence set: <b>ecoli6s.fasta</b>
+Vienna RNAfold output file [ecoli6s.vrnaalifold]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
