@@ -14118,7 +14118,7 @@ static void acdHelpValidFloat(const AcdPAcd thys, AjBool table, AjPStr* str)
 	    ajFmtPrintAppS(str, "Any numeric value");
     }
 
-    if(table)
+    if(!table)
 	ajStrAppendC(str, ")");
 
     return;
@@ -25358,6 +25358,7 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     AjPStr knownLine     = NULL;
     AjPRegexp knownxp    = NULL;
     AjPStr knownName     = NULL;
+    AjPStr knownName2     = NULL;
     AjPStr knownType     = NULL;
     AjPStr knownDesc     = NULL;
     ajint iline = 0;
@@ -25366,8 +25367,8 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     ajNamRootInstall(&knownRootInst);
     ajFileDirFix(&knownRootInst);
     
-    *desctable = ajStrTableNewCase(50);
-    *typetable = ajStrTableNewCase(50);
+    *desctable = ajStrTableNewCase(500);
+    *typetable = ajStrTableNewCase(500);
 
     if(ajNamGetValueC("acdroot", &knownRoot))
     {
@@ -25423,9 +25424,11 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
 		if(ajTablePut(*typetable, knownName, knownType))
 		    ajWarn("Duplicate knowntype name '%S' in file %S line %d",
 			   knownName, knownFName, iline);
-		ajTablePut(*desctable, knownName, knownDesc);
+		ajStrAssignS(&knownName2, knownName);
+		ajTablePut(*desctable, knownName2, knownDesc);
 
 	        knownName = NULL;
+	        knownName2 = NULL;
 		knownType = NULL;
 		knownDesc = NULL;
 	    }
