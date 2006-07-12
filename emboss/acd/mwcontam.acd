@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  filelist: files  [
+  filelist: files [
     parameter: "Y"
     information: "Molecular weights file list"
     knowntype: "molwt"
@@ -22,7 +22,7 @@ section: required [
   type: "page"
 ]
 
-  float: tolerance  [
+  float: tolerance [
     standard: "Y"
     information: "Ppm tolerance"
     default: "50.0"
@@ -35,7 +35,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     extension: "mwcontam"
     knowntype: "molwt"

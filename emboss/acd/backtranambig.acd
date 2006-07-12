@@ -1,5 +1,6 @@
 application: backtranambig [
-  documentation: "Back translate a protein sequence to ambiguous codons"
+  documentation: "Back translate a protein sequence to
+                  ambiguous codons"
   groups: "Nucleic:Translation, Protein:Composition"
 ]
 
@@ -8,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  sequence: sequence [
     parameter: "Y"
     type: "gapstopprotein"
   ]
@@ -20,7 +21,7 @@ section: additional [
   type: "page"
 ]
 
-  list: table  [
+  list: table [
     additional: "Y"
     default: "0"
     minimum: "1"
@@ -48,7 +49,7 @@ section: output [
   type: "page"
 ]
 
-  seqout: outfile  [
+  seqout: outfile [
     parameter: "Y"
     type: "gapnucleotide"
   ]

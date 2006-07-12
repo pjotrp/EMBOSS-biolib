@@ -12,8 +12,8 @@ section: input [
     standard: "Y"
     information: "Pepstats program output file (optional)"
     help: "This file should be a pepstats output file. Protein
-           sequences will be created with the composition in the
-           pepstats output file."
+           sequences will be created with the composition in the pepstats
+           output file."
     nullok: "Y"
     knowntype: "pepstats output"
   ]
@@ -25,14 +25,14 @@ section: required [
   type: "page"
 ]
 
-  integer: amount  [
+  integer: amount [
     standard: "Y"
     default: "100"
     minimum: "1"
     information: "Number of sequences created"
   ]
 
-  integer: length  [
+  integer: length [
     standard: "Y"
     default: "100"
     minimum: "1"
@@ -45,30 +45,28 @@ section: required [
     default: "N"
   ]
 
-  string: insert  [
+  string: insert [
     standard: "$(useinsert)"
     information: "Inserted string"
     help: "String that is inserted into sequence"
     knowntype: "sequence"
   ]
 
-  integer: start  [
+  integer: start [
     standard: "$(useinsert)"
     information: "Start point of inserted sequence"
     minimum: "1"
     default: "1"
-    # maximum: "@($(length) - @($(insert) ? $(insert.length)-1 : 0))"
   ]
 
 endsection: required
-
 
 section: output [
   information: "Output section"
   type: "page"
 ]
 
-  seqoutall: outseq  [
+  seqoutall: outseq [
     parameter: "Y"
     type: "protein"
     name: "makeseq"

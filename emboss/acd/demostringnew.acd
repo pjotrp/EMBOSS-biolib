@@ -1,5 +1,6 @@
 application: demostringnew [
-  documentation: "Illustrates use of the AJAX string library."
+  documentation: "Illustrates use of the AJAX string
+                  library."
   groups: "Test"
 ]
 

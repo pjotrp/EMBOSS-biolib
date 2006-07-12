@@ -9,11 +9,12 @@ section: input [
   type: "page"
 ]
 
-infile: infile  [
-  parameter: "Y"
-  knowntype: "integer long data"
-  information: "Standard format information on int and long data file"
-]
+  infile: infile [
+    parameter: "Y"
+    knowntype: "integer long data"
+    information: "Standard format information on int and long
+                  data file"
+  ]
 
 endsection: input
 
@@ -22,10 +23,11 @@ section: output [
   type: "page"
 ]
 
-outfile: outfile  [
-  parameter: "Y"
-  knowntype: "ajint ajlong data"
-  information: "Standard format info on ajint and ajlong output file"
-]
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "ajint ajlong data"
+    information: "Standard format info on ajint and ajlong
+                  output file"
+  ]
 
 endsection: output

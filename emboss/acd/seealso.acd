@@ -8,7 +8,7 @@ section: input [
   type: "page"
 ]
 
-  string: search  [
+  string: search [
     parameter: "Y"
     default: ""
     information: "Program to search for"
@@ -24,7 +24,7 @@ section: additional [
   type: "page"
 ]
 
-  boolean: explode  [
+  boolean: explode [
     additional: "Y"
     default: "N"
     information: "Use the expanded group names"
@@ -50,7 +50,7 @@ section: advanced [
   type: "page"
 ]
 
-  boolean: emboss  [
+  boolean: emboss [
     default: "Y"
     information: "Search the EMBOSS programs"
     help: "If you use this option then EMBOSS program documentation
@@ -62,7 +62,7 @@ section: advanced [
            of the GNU Public Licence scheme"
   ]
 
-  boolean: embassy  [
+  boolean: embassy [
     default: "Y"
     information: "Search the EMBASSY programs"
     help: "If you use this option then EMBASSY program documentation
@@ -74,15 +74,14 @@ section: advanced [
            of the GNU Public Licence scheme"
   ]
 
-  string: showembassy  [
+  string: showembassy [
     default: ""
     information: "Show programs in one EMBASSY package"
-    help: "If you use this option then this EMBASSY package
-           program documentation will be searched.
-           EMBASSY programs are not strictly part of EMBOSS, but use the
-           same code libraries and share the same look and feel, but are
-           generally developed by people who wish the programs to be outside
-           of the GNU Public Licence scheme"
+    help: "If you use this option then this EMBASSY package program
+           documentation will be searched. EMBASSY programs are not strictly
+           part of EMBOSS, but use the same code libraries and share the same
+           look and feel, but are generally developed by people who wish the
+           programs to be outside of the GNU Public Licence scheme"
     knowntype: "embassy package"
   ]
 
@@ -93,7 +92,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     additional: "Y"
     default: "stdout"
     knowntype: "seealso output"
@@ -104,7 +103,7 @@ section: output [
     type: "frame"
   ]
 
-    toggle: html  [
+    toggle: html [
       additional: "Y"
       default: "N"
       information: "Format the output for HTML"
@@ -114,7 +113,7 @@ section: output [
 
   endsection: htmlsection
 
-  boolean: groups  [
+  boolean: groups [
     additional: "Y"
     default: "N"
     information: "Output only the group names"
@@ -122,9 +121,10 @@ section: output [
            output to the file"
   ]
 
-  boolean: colon  [
+  boolean: colon [
     default: "N"
-    information: "Put a colon in the group name between two levels"
+    information: "Put a colon in the group name between two
+                  levels"
     help: "The groups that EMBOSS applications belong to have up to
            two levels, for example the primary group 'ALIGNMENT' has several
            sub-groups, or second-level groups, e.g.: CONSENSUS, DIFFERENCES,

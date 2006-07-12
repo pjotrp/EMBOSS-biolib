@@ -11,7 +11,7 @@ section: input [
   type: "page"
 ]
 
-  seqall: sequence  [
+  seqall: sequence [
     parameter: "Y"
     type: "dna"
   ]
@@ -23,25 +23,25 @@ section: required [
   type: "page"
 ]
 
-  integer: gap  [
+  integer: gap [
     default: "12"
     standard: "Y"
     information: "Gap penalty"
   ]
 
-  integer: threshold  [
+  integer: threshold [
     default: "50"
     standard: "Y"
     information: "Minimum score threshold"
   ]
 
-  integer: match  [
+  integer: match [
     default: "3"
     standard: "Y"
     information: "Match score"
   ]
 
-  integer: mismatch  [
+  integer: mismatch [
     default: "-4"
     standard: "Y"
     information: "Mismatch score"
@@ -54,7 +54,7 @@ section: additional [
   type: "page"
 ]
 
-  integer: maxrepeat  [
+  integer: maxrepeat [
     additional: "Y"
     default: "2000"
     information: "Maximum extent of repeats"
@@ -69,21 +69,20 @@ section: output [
   type: "page"
 ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     extension: "inv"
     knowntype: "inverted output"
     information: "Sanger Centre program inverted output file"
   ]
 
-seqout: outseq
-[
+  seqout: outseq [
     parameter: "Y"
     nullok: "Y"
-    information: "File for sequence of regions of inverted repeats."
-    help: "The sequence of the inverted repeat regions without gap characters."
-]
-
-
+    information: "File for sequence of regions of inverted
+                  repeats."
+    help: "The sequence of the inverted repeat regions without gap
+           characters."
+  ]
 
 endsection: output

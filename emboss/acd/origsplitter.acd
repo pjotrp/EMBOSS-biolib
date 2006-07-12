@@ -9,7 +9,7 @@ section: input [
   type: "page"
 ]
 
-  seqall: sequence  [
+  seqall: sequence [
     parameter: "Y"
     type: "any"
   ]
@@ -21,14 +21,14 @@ section: additional [
   type: "page"
 ]
 
-  integer: size  [
+  integer: size [
     additional: "Y"
     minimum: "1"
     default: "10000"
     information: "Size to split at"
   ]
 
-  integer: overlap  [
+  integer: overlap [
     additional: "Y"
     minimum: "0"
     maximum: "@($(size)-1)"
@@ -43,7 +43,7 @@ section: advanced [
   type: "page"
 ]
 
-  boolean: addoverlap  [
+  boolean: addoverlap [
     default: "N"
     information: "Add overlap to size"
   ]
@@ -55,7 +55,7 @@ section: output [
   type: "page"
 ]
 
-  seqoutall: outseq  [
+  seqoutall: outseq [
     parameter: "Y"
   ]
 

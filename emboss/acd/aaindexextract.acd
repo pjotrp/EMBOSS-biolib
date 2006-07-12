@@ -11,7 +11,7 @@ section: input [
   type: "page"
 ]
 
-  infile: infile  [
+  infile: infile [
     information: "AAINDEX database file"
     parameter: "Y"
     knowntype: "aaindex database"

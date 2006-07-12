@@ -12,8 +12,8 @@ section: input [
     standard: "Y"
     information: "Codon usage file (optional)"
     help: "Optional codon usage file. Nucleotide sequences will be
-           created as triplets matching the frequencies in the file,
-           with the end trimmed to be in the correct reading frame."
+           created as triplets matching the frequencies in the file, with the
+           end trimmed to be in the correct reading frame."
     nullok: "Y"
     knowntype: "codon usage"
   ]
@@ -25,14 +25,14 @@ section: required [
   type: "page"
 ]
 
-  integer: amount  [
+  integer: amount [
     standard: "Y"
     default: "100"
     minimum: "1"
     information: "Number of sequences created"
   ]
 
-  integer: length  [
+  integer: length [
     standard: "Y"
     default: "100"
     minimum: "1"
@@ -45,30 +45,28 @@ section: required [
     default: "N"
   ]
 
-  string: insert  [
+  string: insert [
     standard: "$(useinsert)"
     information: "Inserted string"
     help: "String that is inserted into sequence"
     knowntype: "sequence"
   ]
 
-  integer: start  [
+  integer: start [
     standard: "$(useinsert)"
     information: "Start point of inserted sequence"
     minimum: "1"
     default: "1"
-    # maximum: "@($(length) - @($(insert) ? $(insert.length)-1 : 0))"
   ]
 
 endsection: required
-
 
 section: output [
   information: "Output section"
   type: "page"
 ]
 
-  seqoutall: outseq  [
+  seqoutall: outseq [
     parameter: "Y"
     type: "nucleotide"
     name: "makeseq"

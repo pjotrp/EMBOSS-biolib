@@ -9,19 +9,19 @@ section: input [
   type: "page"
 ]
 
-  sequence: sequence  [
+  sequence: sequence [
     parameter: "Y"
     type: "protein"
   ]
 
-  datafile: aaproperties  [
+  datafile: aaproperties [
     additional: "Y"
     default: "Eaa_properties.dat"
     information: "Amino acid chemical classes data file"
     knowntype: "amino acid classification"
   ]
 
-  datafile: aahydropathy  [
+  datafile: aahydropathy [
     additional: "Y"
     default: "Eaa_hydropathy.dat"
     information: "Amino acid hydropathy values data file"
@@ -35,7 +35,7 @@ section: additional [
   type: "page"
 ]
 
-  integer: hwindow  [
+  integer: hwindow [
     additional: "Y"
     default: "9"
     minimum: "1"
@@ -50,25 +50,24 @@ section: output [
   type: "page"
 ]
 
-  xygraph: graph  [
+  xygraph: graph [
     standard: "Y"
     multiple: "3"
   ]
 
-  outfile: outfile  [
+  outfile: outfile [
     parameter: "Y"
     knowntype: "pepinfo output"
   ]
 
-  boolean: generalplot  [
+  boolean: generalplot [
     default: "Y"
     information: "Plot histogram of general properties"
   ]
 
-  boolean: hydropathyplot  [
+  boolean: hydropathyplot [
     default: "Y"
     information: "Plot graphs of hydropathy"
   ]
 
 endsection: output
-

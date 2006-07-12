@@ -11,12 +11,12 @@ section: input [
   type: "page"
 ]
 
-  seqall: sequence  [
+  seqall: sequence [
     parameter: "Y"
     type: "dna"
   ]
 
-  pattern: pattern  [
+  pattern: pattern [
     standard: "Y"
     information: "Search pattern"
     help: "The standard IUPAC one-letter codes for the nucleotides are
@@ -41,8 +41,8 @@ section: input [
            respectively ends with a `>' symbol. \
            A period ends the pattern. (Optional in fuzznuc). \
            For example, [CG](5)TG{A}N(1,5)C"
-     type: "nucleotide"
-     pmismatch: "0"
+    type: "nucleotide"
+    pmismatch: "0"
   ]
 
 endsection: input
@@ -52,7 +52,7 @@ section: advanced [
   type: "page"
 ]
 
-  boolean: complement  [
+  boolean: complement [
     default: "0"
     information: "Search complementary strand"
   ]
@@ -64,7 +64,7 @@ section: output [
   type: "page"
 ]
 
-  report: outfile  [
+  report: outfile [
     parameter: "Y"
     taglist: "str:pat=Pattern_name int:mismatch=Mismatch"
     rformat: "seqtable"

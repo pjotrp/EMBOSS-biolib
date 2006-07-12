@@ -1,5 +1,6 @@
 application: union [
-  documentation: "Reads sequence fragments and builds one sequence"
+  documentation: "Reads sequence fragments and builds one
+                  sequence"
   groups: "Edit"
 ]
 
@@ -8,12 +9,12 @@ section: input [
   type: "page"
 ]
 
-  boolean: feature  [
+  boolean: feature [
     default: "N"
     information: "Use feature information"
   ]
 
-  seqall: sequence  [
+  seqall: sequence [
     parameter: "Y"
     type: "gapany"
     features: "$(feature)"
@@ -26,7 +27,7 @@ section: advanced [
   type: "page"
 ]
 
-  boolean: source  [
+  boolean: source [
     default: "N"
     information: "Create source features"
   ]
@@ -43,12 +44,12 @@ section: output [
   type: "page"
 ]
 
-  seqout: outseq  [
+  seqout: outseq [
     parameter: "Y"
     features: "$(feature)"
   ]
 
-  outfile: overlapfile  [
+  outfile: overlapfile [
     additional: "Y"
     information: "Sequence overlaps output file (optional)"
     knowntype: "sequence overlap"
