@@ -164,8 +164,8 @@ Usage
 % fdnainvar -printdata 
 Nucleic acid sequence Invariants method
 Input (aligned) nucleotide sequence set(s): dnainvar.dat
-Input file: 
-Output file [dnainvar.fdnainvar]: 
+Phylip weights file (optional): 
+Phylip dnainvar program output file [dnainvar.fdnainvar]: 
 
 
 Output written to output file "dnainvar.fdnainvar"
@@ -181,15 +181,16 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-   -weights            properties (no help text) properties value
-  [-outfile]           outfile    Output file name
+   -weights            properties Phylip weights file (optional)
+  [-outfile]           outfile    [*.fdnainvar] Phylip dnainvar program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -printdata          boolean    Print data at start of run
-*  -[no]dotdiff        boolean    Use dot-differencing to display results
-   -[no]printpattern   boolean    Print counts of patterns
-   -[no]printinvariant boolean    Print invariants
-   -[no]progress       boolean    Print indications of progress of run
+   -printdata          boolean    [N] Print data at start of run
+*  -[no]dotdiff        boolean    [Y] Use dot-differencing to display results
+   -[no]printpattern   boolean    [Y] Print counts of patterns
+   -[no]printinvariant boolean    [Y] Print invariants
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -227,24 +228,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) File containing one or more sequence alignments Readable
-   sets of sequences
-   -weights (no help text) properties value Property value(s)
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.fdnainvar
-   Additional (Optional) qualifiers Allowed values Default
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]dotdiff Use dot-differencing to display results Boolean value
-   Yes/No Yes
-   -[no]printpattern Print counts of patterns Boolean value Yes/No Yes
-   -[no]printinvariant Print invariants Boolean value Yes/No Yes
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

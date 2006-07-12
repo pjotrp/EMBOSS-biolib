@@ -18,7 +18,7 @@ discretestates: data [
 properties: weights [
 	additional: "Y"
 	characters: "01"
-	information: "Weights file"
+	information: "Phylip weights file (optional)"
 	help: "Weights file"
         length: "$(data.length)"
         size: "1"
@@ -29,6 +29,7 @@ tree: intreefile [
 	parameter: "Y"
 	nullok: "Y"
 	knowntype: "newick"
+	information: "Phylip tree file (optional)"
 ]
 
 endsection: input
@@ -105,6 +106,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "restml output"
+  information: "Phylip restml program output file"
 ]
 
 toggle: trout  [
@@ -116,7 +118,7 @@ toggle: trout  [
 outfile: outtreefile [
   additional: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

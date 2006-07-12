@@ -1,15 +1,19 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Data file
-*  -datasets           integer    How many data sets
-   -method             menu       Choose the method to use
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Phylip gendist program input file
+*  -datasets           integer    [0] How many data sets (Any integer value)
+   -method             menu       [Nei] Choose the method to use (Values: Nei
+                                  (Nei genetic distance); Cav (Cavalli-Sforza
+                                  chord measure); Rey (Reynolds genetic
+                                  distance))
+  [-outfile]           outfile    [egendist.outfile] Phylip gendist program
+                                  output file
 
    Additional (Optional) qualifiers:
-   -lowertriangle      boolean    Lower-triangular (else Square)
-   -multsets           toggle     Analyze multiple data sets
-   -all                boolean    Input file contains all alleles at each
+   -lowertriangle      boolean    [N] Lower-triangular (else Square)
+   -multsets           toggle     [N] Analyze multiple data sets
+   -all                boolean    [N] Input file contains all alleles at each
                                   locus (else one)
-   -progress           boolean    Print indications of progress of run
+   -progress           boolean    [N] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

@@ -1,22 +1,28 @@
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-hmmfile]           infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-hmmfile]           infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmsearch] HMMER hmmsearch program
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -nalign             integer    Number of alignments
-   -evalue             float      E-value cutoff
-   -hitcut             float      Hit score cutoff
-   -dbsize             integer    Calc E-value for DB size n
-   -cpu                integer    Number of CPUs
-   -dome               float      E-value domain cutoff
-   -domt               float      Hit score domain cutoff
-   -forward            boolean    Use forward algorithm
-   -nulltwo            boolean    Turn off second null model
-   -pvm                boolean    Use parallel virtual machine
-   -xnu                boolean    Use XNU filtering
+   -nalign             integer    [100] Number of alignments (Any integer
+                                  value)
+   -evalue             float      [10.] E-value cutoff (Any numeric value)
+   -hitcut             float      [-1000000.] Hit score cutoff (Any numeric
+                                  value)
+   -dbsize             integer    [59021] Calc E-value for DB size n (Any
+                                  integer value)
+   -cpu                integer    [0] Number of CPUs (Any integer value)
+   -dome               float      [1000000.] E-value domain cutoff (Any
+                                  numeric value)
+   -domt               float      [-1000000.] Hit score domain cutoff (Any
+                                  numeric value)
+   -forward            boolean    [N] Use forward algorithm
+   -nulltwo            boolean    [N] Turn off second null model
+   -pvm                boolean    [N] Use parallel virtual machine
+   -xnu                boolean    [N] Use XNU filtering
 
    Associated qualifiers:
 

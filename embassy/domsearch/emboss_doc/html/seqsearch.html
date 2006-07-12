@@ -448,9 +448,9 @@ DLVTLYFSDIVGFTTISAMSEPIEVVDLLNDLYTLFDAIIGSHDVYKVETIGDAYMVASGLPKRNGMRHAAEIANMSLDI
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 //
-/homes/user/test/qa/domainalign-keep/daf/55074.daf
-//
 /homes/user/test/qa/domainalign-keep/daf/54894.daf
+//
+/homes/user/test/qa/domainalign-keep/daf/55074.daf
 </pre>
 </td></tr></table><p>
 
@@ -505,14 +505,16 @@ SEQSEARCH does not requires any data files.
  
 <pre>
    Standard (Mandatory) qualifiers:
-   -mode               menu       This option specifies the mode of SEQSEARCH
-                                  operation. SEQSEARCH takes as input a
-                                  directory of either i. single sequences, ii.
-                                  set of sequences (unaligned or aligned, but
-                                  typically aligned sequences within a domain
-                                  alignment file)). The user has to specify
-                                  which.
-  [-inseqspath]        dirlist    This option specifies the location of
+   -mode               menu       [1] This option specifies the mode of
+                                  SEQSEARCH operation. SEQSEARCH takes as
+                                  input a directory of either i. single
+                                  sequences, ii. set of sequences (unaligned
+                                  or aligned, but typically aligned sequences
+                                  within a domain alignment file)). The user
+                                  has to specify which. (Values: 1 (Single
+                                  sequences); 2 (Multiple sequences (e.g.
+                                  sequence set or alignment)))
+  [-inseqspath]        dirlist    [./] This option specifies the location of
                                   sequences, e.g. DAF files (domain alignment
                                   files) (input). SEQSEARCH takes as input a
                                   database of either i. single sequences, ii.
@@ -529,22 +531,25 @@ SEQSEARCH does not requires any data files.
                                   alignments can be extended with sequence
                                   relatives (of unknown structure) by using
                                   SEQALIGN.
-  [-database]          string     Name of BLAST-indexed database to search.
-   -niter              integer    This option specifies the number of PSIBLAST
-                                  iterations. This option specifies the
-                                  number of PSIBLAST iterations that are
-                                  performed in a search.
-   -evalue             float      This option specifies the threshold E-value
-                                  for inclusion in family. This option
+  [-database]          string     [swissprot] Name of BLAST-indexed database
+                                  to search. (Any string is accepted)
+   -niter              integer    [1] This option specifies the number of
+                                  PSIBLAST iterations. This option specifies
+                                  the number of PSIBLAST iterations that are
+                                  performed in a search. (Any integer value)
+   -evalue             float      [0.001] This option specifies the threshold
+                                  E-value for inclusion in family. This option
                                   specifies the threshold E-value for a
-                                  PSIBLAST hit to be retained.
-   -maxhits            integer    This option specifies the maximum number of
-                                  hits. This option specifies the maximum
-                                  number of PSIBLAST hit that are retained. It
-                                  should normally be set high so that nothing
-                                  is discarded.
-  [-dhfoutdir]         outdir     This option specifies the location of DHF
-                                  files (domain hits files) (output). A
+                                  PSIBLAST hit to be retained. (Any numeric
+                                  value)
+   -maxhits            integer    [1000] This option specifies the maximum
+                                  number of hits. This option specifies the
+                                  maximum number of PSIBLAST hit that are
+                                  retained. It should normally be set high so
+                                  that nothing is discarded. (Any integer
+                                  value)
+  [-dhfoutdir]         outdir     [./] This option specifies the location of
+                                  DHF files (domain hits files) (output). A
                                   'domain hits file' contains database hits
                                   (sequences) with domain classification
                                   information, in FASTA format. The hits are
@@ -552,10 +557,10 @@ SEQSEARCH does not requires any data files.
                                   found from a search of a sequence database.
                                   Files containing hits retrieved by PSIBLAST
                                   are generated by using SEQSEARCH.
-   -logfile            outfile    This option specifies the name of log file
-                                  for the build. The log file contains
-                                  messages about any errors arising while
-                                  SEQSEARCH ran.
+   -logfile            outfile    [seqsearch.log] This option specifies the
+                                  name of log file for the build. The log file
+                                  contains messages about any errors arising
+                                  while SEQSEARCH ran.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -683,13 +688,13 @@ Input mode
          1 : Single sequences
          2 : Multiple sequences (e.g. sequence set or alignment)
 Select mode of operation. [1]: <b>2</b>
-Location of sequences, e.g. DAF files (domain alignment files) (input). [./]: <b>../domainalign-keep/daf</b>
+Domain alignment directories [./]: <b>../domainalign-keep/daf</b>
 Name of BLAST-indexed database to search. [swissprot]: <b>swsmall</b>
 Number of PSIBLAST iterations. [1]: <b></b>
 Threshold E-value for inclusion in family. [0.001]: <b>0.0001</b>
 Maximum number of hits. [1000]: <b>100</b>
-Location of DHF files (domain hits files) (output). [./]: <b></b>
-Name of log file for the build. [seqsearch.log]: <b></b>
+Domain hits file output directory [./]: <b></b>
+Domainatrix log output file [seqsearch.log]: <b></b>
 [blastpgp] WARNING: posFindAlignmentDimensions: Attempting to recover data from multiple alignment file
 
 [blastpgp] WARNING: posProcessAlignment: Alignment recovered successfully
@@ -698,11 +703,11 @@ Name of log file for the build. [seqsearch.log]: <b></b>
 
 [blastpgp] WARNING: posProcessAlignment: Alignment recovered successfully
 
-
-PROCESSING /homes/user/test/qa/domainalign-keep/daf/55074.daf
-blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
 
 PROCESSING /homes/user/test/qa/domainalign-keep/daf/54894.daf
+blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
+
+PROCESSING /homes/user/test/qa/domainalign-keep/daf/55074.daf
 blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
 
 
@@ -738,8 +743,6 @@ None.
 <br><br><br><H2> 8.0   NOTES                     </H2>
 <b>  1. Use of psiblast</b><br>
 psiblast must be installed on the system that is running SEQSEARCH.
-
-<br><br>When running SEQSEARCH at the HGMP it is essential that the command 'use blast_v2' (which runs the script /packages/menu/USE/blast_v2) is given before it is run. 
 
 <br><br>SEQSEARCH requires a blast-indexed database to be present, i.e. both the sequence and index file must be present on the system.  The name of the database to search specified in the acd file is that which is given as the -d parameter to blastpgp (e.g. blastpgp -d swissprot).
 
@@ -912,10 +915,14 @@ The following 3 types of message might appear in the log file:
 
 <!-- AUTHORS -->
 <a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
-Ranjeeva Ranasinghe <a href="mailto:rranasin@rfcgr.mrc.ac.uk">(rranasin@rfcgr.mrc.ac.uk)</a>
+Ranjeeva Ranasinghe 
 <br><br>
-Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
-<br>MRC Rosalind Franklin Centre for Genomics Research, Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+Jon Ison <a href="mailto:jison@ebi.ac.uk">(jison@ebi.ac.uk)</a>
+<br>
+The European Bioinformatics Institute 
+Wellcome Trust Genome Campus 
+Cambridge CB10 1SD 
+UK 
 
 
 

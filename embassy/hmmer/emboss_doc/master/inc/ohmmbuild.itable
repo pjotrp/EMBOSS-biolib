@@ -14,9 +14,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ohmmbuild</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -37,21 +37,21 @@
 
 <tr>
 <td>-priorfile</td>
-<td>Dirichlet prior file</td>
+<td>HMMER dirichlet prior file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-nullfile</td>
-<td>NULL model file</td>
+<td>HMMER null model file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-pamfile</td>
-<td>PAM file</td>
+<td>HMMER matrix file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -177,14 +177,14 @@
 
 <tr>
 <td>-resavefile</td>
-<td>Resave selex filename</td>
+<td>elex alignment output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-cfile</td>
-<td>Emission and transition count file</td>
+<td>HMMER emission and transition count output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

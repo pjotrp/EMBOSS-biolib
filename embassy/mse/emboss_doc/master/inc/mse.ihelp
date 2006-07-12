@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing a sequence alignment
-  [-outseq]            seqoutset  Sequence set filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutset  [<sequence>.<format>] Sequence set filename
+                                  and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

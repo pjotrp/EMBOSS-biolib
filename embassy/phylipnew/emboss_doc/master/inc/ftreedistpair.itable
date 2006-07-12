@@ -7,23 +7,23 @@
 
 <tr>
 <td>[-intreefile]<br>(Parameter 1)</td>
-<td>Tree file</td>
+<td>Phylip tree file</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-bintreefile]<br>(Parameter 2)</td>
-<td>Second input tree file</td>
+<td>Second phylip tree file</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Phylip treedist program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ftreedistpair</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -14,16 +14,16 @@
 
 <tr>
 <td>[-constraintfile]<br>(Parameter 2)</td>
-<td>Constraint file</td>
+<td>Vienna RNA structure contraints file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Vienna RNAeval output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnaeval</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -44,7 +44,7 @@
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>

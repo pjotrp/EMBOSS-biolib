@@ -6,9 +6,9 @@
 
 % <b>ffitch </b>
 Fitch-Margoliash and Least-Squares Distance Methods
-Input file: <b>fitch.dat</b>
-Input tree file: <b></b>
-Output file [fitch.ffitch]: <b></b>
+Phylip distance matrix file: <b>fitch.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip fitch program output file [fitch.ffitch]: <b></b>
 
 
  inseed: 0

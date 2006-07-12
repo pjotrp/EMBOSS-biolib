@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-seqinpath]<br>(Parameter 1)</td>
-<td>This option specifies the location of sequence files (input)</td>
+<td>(no help text) dirlist value</td>
 <td>Directory with files</td>
 <td>./</td>
 </tr>

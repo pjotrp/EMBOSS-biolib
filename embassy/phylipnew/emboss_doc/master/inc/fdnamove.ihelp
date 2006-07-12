@@ -2,17 +2,22 @@
   [-sequence]          seqsetall  (Aligned) nucleotide sequence set(s)
                                   filename and optional format, or reference
                                   (input USA)
-  [-intreefile]        tree       (no help text) tree value
+  [-intreefile]        tree       Phylip tree file (optional)
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -weights            properties Weights file - Ignore sites with weight zero
-   -outgrno            integer    Species number to use as outgroup
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -initialtree        menu       Initial tree
-   -screenwidth        integer    Width of terminal screen in characters
-   -screenlines        integer    Number of lines on screen
-   -outtreefile        outfile    Output file name
+   -weights            properties Weights file - ignore sites with weight zero
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 1.000 or more)
+   -initialtree        menu       [Arbitary] Initial tree (Values: a
+                                  (Arbitary); u (User); s (Specify))
+   -screenwidth        integer    [80] Width of terminal screen in characters
+                                  (Any integer value)
+   -screenlines        integer    [24] Number of lines on screen (Any integer
+                                  value)
+   -outtreefile        outfile    [*.fdnamove] Phylip tree output file
+                                  (optional)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

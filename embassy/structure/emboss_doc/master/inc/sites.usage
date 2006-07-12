@@ -6,17 +6,17 @@
 
 % <b>sites </b>
 Generate residue-ligand CON files from CCF files.
-Protein CCF files (clean coordinate files) (input) [./]: <b>../pdbplus-keep</b>
-Domain CCF files (clean coordinate files) (input) [./]: <b>../domainer-keep</b>
-Name of DCF file (domain classification file) (input): <b>../scopparse-keep/all.scop</b>
+Clean protein structure coordinates directories [./]: <b>../pdbplus-keep</b>
+Clean domain coordinates directory [./]: <b>../domainer-keep</b>
+Domain classification file: <b>../scopparse-keep/all.scop</b>
 Threshold contact distance [1.0]: <b>1</b>
-Name of output file [SITES.con]: <b></b>
-Name of log file [sites.log]: <b></b>
+Structure contacts output file [SITES.con]: <b></b>
+Domainatrix log output file [sites.log]: <b></b>
 
 Entries in HetDic 4306
 Entries in Dbase 4306
-CCF FILE: /homes/user/test/qa/pdbplus-keep/1ii7.ccf (1/3)
-CCF FILE: /homes/user/test/qa/pdbplus-keep/1cs4.ccf (2/3)
+CCF FILE: /homes/user/test/qa/pdbplus-keep/1cs4.ccf (1/3)
+CCF FILE: /homes/user/test/qa/pdbplus-keep/1ii7.ccf (2/3)
 CCF FILE: /homes/user/test/qa/pdbplus-keep/2hhb.ccf (3/3)
 
 </pre></td></tr></table><p>

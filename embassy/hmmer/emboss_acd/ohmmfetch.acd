@@ -33,7 +33,8 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "hmm file"
+  knowntype: "hmm"
+  information: "HMMER hidden markov model output file"
 ]
 
 endsection: output

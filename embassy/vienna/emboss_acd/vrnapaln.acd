@@ -21,8 +21,8 @@ section: input [
   infile: paramfile [
     nullok: "Y"
     default: ""
-    information: "Parameter file"
-    knowntype: "rna parameter file"
+    information: "Vienna RNA parameters file (optional)"
+    knowntype: "rna parameter"
   ]
 
 endsection: input
@@ -55,6 +55,7 @@ section: advanced [
   string: nsbases [
     default: ""
     information: "Non-standard bases"
+    knowntype: "nucleotide codes"
   ]
 
   boolean: tetraloop [
@@ -125,6 +126,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "rnafold output"
+    information: "Vienna RNAfold output file"
   ]
 
 endsection: output

@@ -1,20 +1,24 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     File containing a sequence alignment
-   -og                 toggle     Outgroup root
-*  -outgnum            integer    Number of the outgroup
-   -random             toggle     Randomize input order of species
-*  -randseed           integer    Random number seed (must be odd)
-*  -randtimes          integer    Number of times to jumble
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+   -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+   -random             toggle     [N] Randomize input order of species
+*  -randseed           integer    [0] Random number seed (must be odd) (Any
+                                  integer value)
+*  -randtimes          integer    [0] Number of times to jumble (Any integer
+                                  value)
+  [-outfile]           outfile    [ednacomp.outfile] Phylip dnacomp program
+                                  output file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [ednacomp.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
-   -[no]drawtree       boolean    Draw tree
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -stepoutput         boolean    Print steps & compatibility at sites
-   -allnodes           boolean    Print sequences at all nodes of tree
+   -[no]drawtree       boolean    [Y] Draw tree
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -stepoutput         boolean    [N] Print steps & compatibility at sites
+   -allnodes           boolean    [N] Print sequences at all nodes of tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

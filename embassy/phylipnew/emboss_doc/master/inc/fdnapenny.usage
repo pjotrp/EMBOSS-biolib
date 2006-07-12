@@ -7,7 +7,7 @@
 % <b>fdnapenny </b>
 Penny algorithm for DNA
 Input (aligned) nucleotide sequence set(s): <b>dnapenny.dat</b>
-Output file [dnapenny.fdnapenny]: <b></b>
+Phylip dnapenny program output file [dnapenny.fdnapenny]: <b></b>
 
 justweights: false
 numwts: 0

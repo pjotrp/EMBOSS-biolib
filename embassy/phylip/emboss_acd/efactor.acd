@@ -11,7 +11,7 @@ section: input [
 
 infile: datafile  [
   parameter: "Y"
-  information: "Data file"
+  information: "Phylip factor program input file"
   knowntype: "factor input"
 ]
 
@@ -51,6 +51,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "efactor.outfile"
   knowntype: "factor output"
+  information: "Phylip factor program output file "
 ]
 
 endsection: output

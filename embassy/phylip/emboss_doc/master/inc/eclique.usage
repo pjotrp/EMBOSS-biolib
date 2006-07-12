@@ -6,12 +6,12 @@
 
 % <b>eclique </b>
 Largest clique program
-Discrete characters input: <b>clique.dat</b>
+Phylip clique program input file: <b>clique.dat</b>
 Use minimum clique size [N]: <b></b>
 Outgroup root [N]: <b></b>
-Output file [eclique.outfile]: <b></b>
+Phylip clique program output file [eclique.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file [eclique.treefile]: <b></b>
+Phylip tree output file [eclique.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

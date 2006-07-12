@@ -1,18 +1,23 @@
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing data set
-  [-intreefile]        tree       (no help text) tree value
+  [-intreefile]        tree       Phylip tree file (optional)
 
    Additional (Optional) qualifiers (* if not always prompted):
    -weights            properties Weights file
    -ancfile            properties Ancestral states file
    -factorfile         properties Factors file
-   -method             menu       Parsimony method
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -initialtree        menu       Initial tree
-   -screenwidth        integer    Width of terminal screen in characters
-   -screenlines        integer    Number of lines on screen
-   -outtreefile        outfile    Output file name
+   -method             menu       [d] Parsimony method (Values: d (Dollo); p
+                                  (Polymorphism))
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 0.000 or more)
+   -initialtree        menu       [Arbitary] Initial tree (Values: a
+                                  (Arbitary); u (User); s (Specify))
+   -screenwidth        integer    [80] Width of terminal screen in characters
+                                  (Any integer value)
+   -screenlines        integer    [24] Number of lines on screen (Any integer
+                                  value)
+   -outtreefile        outfile    [*.fdolmove] Phylip tree output file
+                                  (optional)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

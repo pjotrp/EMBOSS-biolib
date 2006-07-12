@@ -6,7 +6,7 @@
 
 % <b>sigscan </b>
 Generate hits (DHF file) from a signature search.
-Name of signature file (input): <b>../siggen-keep/54894.sig</b>
+Domainatrix signature file: <b>../siggen-keep/54894.sig</b>
 Name of database to search.: <b>swsmall</b>
 Residue substitution matrix [EBLOSUM62]: <b></b>
 Gap insertion penalty [10]: <b></b>
@@ -17,8 +17,8 @@ N-terminal matching options
          3 : Use empirical gaps only
 Select number [1]: <b></b>
 Max. number of hits to output [100]: <b></b>
-Name of DHF file (domain hits file) (output) [SIGSCAN.dhf]: <b></b>
-Name of SAF file (signature alignment file) for signature-sequence alignments (output) [SIGSCAN.aln]: <b></b>
+Domain hits output file [SIGSCAN.dhf]: <b></b>
+Domainatrix signature alignment output file [SIGSCAN.aln]: <b></b>
 
 Signature file read ok
 Signature compiled ok

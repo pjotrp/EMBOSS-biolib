@@ -11,7 +11,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "New Hampshire standard form tree file"
+  information: "Phylip tree file"
   knowntype: "Newick tree"
 ]
 
@@ -52,6 +52,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "econsense.outfile"
   knowntype: "consense output"
+  information: "Phylip consense program output file"
 ]
 
 boolean: trout  [
@@ -69,7 +70,7 @@ boolean: drawtree  [
 outfile: treefile  [
   parameter: "Y"
   extension: "treefile"
-  information: "Tree file"
+  information: "Phylip tree output file"
   knowntype: "Newick tree"
 ]
 

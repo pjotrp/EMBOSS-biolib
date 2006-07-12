@@ -113,6 +113,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "ednadist.outfile"
   knowntype: "dnadist output"
+  information: "Phylip dnadist program output file"
 ]
 
 boolean: printinitial  [

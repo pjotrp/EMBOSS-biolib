@@ -6,7 +6,7 @@
 
 % <b>domainnr </b>
 Removes redundant domains from a DCF file.
-Name of DCF file (domain classification file) (input).: <b>../domainseqs-keep/all_s.scop</b>
+Domain classification file: <b>../domainseqs-keep/all_s.scop</b>
 Write redundant domains to separate file. [N]: <b></b>
 Node at which to remove redundancy
          1 : Class (SCOP)
@@ -24,8 +24,8 @@ Redundancy removal options
          2 : Remove redundancy outside a range of acceptable threshold % similarity
 Select number. [1]: <b>1</b>
 The % sequence identity redundancy threshold. [95.0]: <b>5</b>
-Name of non-redundant DCF file (domain classification file) (output) [test.scop]: <b>all_nr.scop</b>
-Name of log file for the build. [domainnr.log]: <b></b>
+Domain classification output file [test.scop]: <b>all_nr.scop</b>
+Domainatrix log output file [domainnr.log]: <b></b>
 Warning: Bad args passed to ajDomainWrite
 
 // Alpha and beta proteins (a+b)

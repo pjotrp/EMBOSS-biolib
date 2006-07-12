@@ -15,7 +15,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "Data file"
+  information: "Phylip kitsch program input file"
   knowntype: "kitsch input"
 ]
 
@@ -107,6 +107,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "ekitsch.outfile"
   knowntype: "kitsch output"
+  information: "Phylip kitsch program output file"
 ]
 
 boolean: printdata  [
@@ -130,7 +131,7 @@ boolean: drawtree  [
 outfile: treefile  [
   standard: "Y"
   default: "ekitsch.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

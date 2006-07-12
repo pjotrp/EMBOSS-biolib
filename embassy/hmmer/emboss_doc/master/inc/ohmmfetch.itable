@@ -21,9 +21,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ohmmfetch</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

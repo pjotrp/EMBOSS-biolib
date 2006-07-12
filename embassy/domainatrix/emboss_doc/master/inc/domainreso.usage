@@ -6,13 +6,13 @@
 
 % <b>domainreso </b>
 Remove low resolution domains from a DCF file.
-Location of domain CCF file (clean coordinate files) (input). [./]: <b>../domainer-keep/</b>
-Name of DCF file (domain classification file) (input).: <b>../scopparse-keep/all.scop</b>
+Clean domain coordinates directories [./]: <b>../domainer-keep/</b>
+Domain classification file: <b>../scopparse-keep/all.scop</b>
 Threshold for inclusion (Angstroms). [2.8]: <b>2.3</b>
-Name of DCF file (domain classification file) (output). [test.scop]: <b>all_2.3.scop</b>
+Domain classification output file [test.scop]: <b>all_2.3.scop</b>
 
-/homes/user/test/qa/domainer-keep/d1ii7a_.ccf
 /homes/user/test/qa/domainer-keep/d1cs4a_.ccf
+/homes/user/test/qa/domainer-keep/d1ii7a_.ccf
 
 </pre></td></tr></table><p>
 <p>

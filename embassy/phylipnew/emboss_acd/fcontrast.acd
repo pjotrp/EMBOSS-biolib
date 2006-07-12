@@ -17,6 +17,7 @@ frequencies: infile [
 tree: intreefile  [
   parameter: "Y"
   knowntype: "newick"
+  information: "Phylip tree file"
   nullok: "N"
 ]
 
@@ -60,6 +61,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "contrast output"
+  information: "Phylip contrast program output file"
 ]
 
 

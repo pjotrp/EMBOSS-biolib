@@ -13,24 +13,22 @@ section: input [
 ]
 
   infile: classfile [
-    information: "Name of raw SCOP classification file
-                  dir.cla.scop.txt_X.XX (input)."
+    information: "Raw scop classification file"
     help: "This option specifies the name of raw SCOP classification
            file dir.cla.scop.txt_X.XX (input). This is the raw SCOP
            classification file available at
            http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.cla.scop.txt_1.57."
-    knowntype: "Raw scop classification file"
+    knowntype: "Raw scop classification"
     parameter: "Y"
   ]
 
   infile: desinfile [
-    information: "Name of raw SCOP description file
-                  dir.des.scop.txt_X.XX (input)."
+    information: "Raw scop description file"
     help: "This option specifies the name of raw SCOP description file
            dir.des.scop.txt_X.XX (input). This is the raw SCOP description
            file available at
            http://scop.mrc-lmb.cam.ac.uk/scop/parse/dir.des.scop.txt_1.57."
-    knowntype: "raw scop description file"
+    knowntype: "raw scop description"
     parameter: "Y"
   ]
 
@@ -90,8 +88,7 @@ section: output [
 ]
 
   outfile: dcffile [
-    information: "Name of SCOP DCF file (domain classification
-                  file) (output)."
+    information: "Domain classification output file"
     help: "This option specifies the name of SCOP DCF file (domain
            classification file) (output). A 'domain classification file'
            contains classification and other data for domains from the SCOP
@@ -99,7 +96,7 @@ section: output [
            in DCF format (EMBL-like). Domain sequence information can be
            added to the file by using DOMAINSEQS."
     default: "test.scop"
-    knowntype: "domain classification file"
+    knowntype: "domain classification"
     parameter: "Y"
   ]
 

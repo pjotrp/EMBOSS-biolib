@@ -6,8 +6,8 @@
 
 % <b>fmove </b>
 Interactive mixed method parsimony
-Input file: <b>move.dat</b>
-Input tree file: <b></b>
+Phylip character discrete states file: <b>move.dat</b>
+phylip tree file (optional): <b></b>
 NEXT? (R # + - S . T U W O F H J K L C ? X Q) (? for Help): <b>Q</b>
 Do you want to write out the tree to a file? (Y or N): <b>Y</b>
 

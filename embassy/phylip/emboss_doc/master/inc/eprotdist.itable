@@ -21,7 +21,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip protdist program output file</td>
 <td>Output file</td>
 <td>eprotdist.outfile</td>
 </tr>

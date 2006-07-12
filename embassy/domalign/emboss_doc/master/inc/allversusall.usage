@@ -6,7 +6,7 @@
 
 % <b>allversusall </b>
 Sequence similarity data from all-versus-all comparison.
-Location of sequence files (input [./]: <b>allversusall/</b>
+Sequence directories [./]: <b>allversusall/</b>
 Location of sequence similarity data files (output) [./]: <b></b>
 Name allversusall log file (output) [allversusall.log]: <b></b>
 

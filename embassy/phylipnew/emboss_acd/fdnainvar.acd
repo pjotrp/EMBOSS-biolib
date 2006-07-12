@@ -21,6 +21,7 @@ properties: weights [
   length: "$(sequence.length)"
   nullok: "Y"
   knowntype: "weights"
+  information: "Phylip weights file (optional)"
 ]
 
 endsection: input
@@ -33,6 +34,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "dnainvar output"
+  information: "Phylip dnainvar program output file"
 ]
 
 boolean: printdata  [

@@ -7,8 +7,8 @@
 % <b>fdnaml -printdata -ncategories 2 -categories "1111112222222" -rate "1.0 2.0" -gamma h -nhmmcategories 5 -hmmrates "0.264 1.413 3.596 7.086 12.641" -hmmprobabilities "0.522 0.399 0.076 0.0036 0.000023" -lambda 1.5 -weight "0111111111110" </b>
 Estimates nucleotide phylogeny by maximum likelihood
 Input (aligned) nucleotide sequence set(s): <b>dnaml.dat</b>
-Input tree file: <b></b>
-Output file [dnaml.fdnaml]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip dnaml program output file [dnaml.fdnaml]: <b></b>
 
 
  mulsets: false
@@ -78,8 +78,8 @@ Done.
 % <b>fdnaml -printdata -njumble 3 -seed 3  </b>
 Estimates nucleotide phylogeny by maximum likelihood
 Input (aligned) nucleotide sequence set(s): <b>dnaml.dat</b>
-Input tree file: <b></b>
-Output file [dnaml.fdnaml]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip dnaml program output file [dnaml.fdnaml]: <b></b>
 
 
  mulsets: false

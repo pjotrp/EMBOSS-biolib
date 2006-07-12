@@ -79,6 +79,7 @@ section: output [
 outfile: outfile [
 	parameter: "Y"
 	knowntype: "restdist output"
+	information: "Phylip restdist program output file"
 ]
 
 boolean: printdata [

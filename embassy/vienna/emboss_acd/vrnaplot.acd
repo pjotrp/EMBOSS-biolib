@@ -14,7 +14,8 @@ section: input [
 
   infile: structure  [
     parameter: "Y"
-    information: "Sequence/structure file"
+    information: "Vienna RNAfold output file"
+    knowntype: "rnafold output"
   ]
 
 endsection: input
@@ -49,11 +50,13 @@ section: advanced [
   string: pre  [
     information: "Pre-annotation"
     default: ""
+    knowntype: "string"
   ]
 
   string: post  [
     information: "Post-annotation"
     default: ""
+    knowntype: "string"
   ]
 
 endsection: advanced
@@ -66,6 +69,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "rnafold output"
+    information: "Vienna RNAfold output file"
   ]
 
 endsection: output

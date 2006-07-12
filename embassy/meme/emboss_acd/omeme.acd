@@ -141,7 +141,7 @@ list: prior  [
 boolean: brief  [
   additional: "Y"
   default: "Y"
-  information: "Don't print documemtation"
+  information: "Don't print documentation"
 ]
 
 float: b  [
@@ -328,6 +328,7 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
+  information: "MEME program output file"
   knowntype: "meme output"
 ]
 

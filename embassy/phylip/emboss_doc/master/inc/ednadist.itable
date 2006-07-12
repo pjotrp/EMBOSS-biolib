@@ -35,7 +35,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip dnadist program output file</td>
 <td>Output file</td>
 <td>ednadist.outfile</td>
 </tr>

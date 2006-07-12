@@ -4,15 +4,16 @@
                                   parse, which should be of the format
                                   specified at
                                   http://pdb.rutgers.edu/het_dictionary.txt
-   -dogrep             toggle     This option specifies whether to search a
-                                  directory of files (typically PDB files)
+   -dogrep             toggle     [N] This option specifies whether to search
+                                  a directory of files (typically PDB files)
                                   with keywords. If set, HETPARSE will search
                                   the directory and will count the number of
                                   files that each heterogen appears in.
-*  -dirlistpath        dirlist    This option specifies the directory to
+*  -dirlistpath        dirlist    [./] This option specifies the directory to
                                   search with keywords.
-  [-outfile]           outfile    This option specifies the name of EMBL-like
-                                  format dictionary of heterogen groups.
+  [-outfile]           outfile    [Ehet.dat] This option specifies the name of
+                                  EMBL-like format dictionary of heterogen
+                                  groups.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

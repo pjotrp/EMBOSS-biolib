@@ -14,7 +14,7 @@ section: input [
 
   dirlist: hitsfilespath [
     parameter: "Y"
-    information: "Directory of hits files (input)."
+    information: "Hits directories"
     help: "This option specifies the directory of hits files (input).
            A 'hits file'contains a list of hits (e.g. from a prediction
            method) that are classified and rank-ordered on the basis of
@@ -25,7 +25,7 @@ section: input [
            run on the files to perform Receiver Operator Characteristic
            (ROC) analysis on the hits."
     default: "rocplot"
-    knowntype: "hits file"
+    knowntype: "hits"
   ]
 
 endsection: input
@@ -165,11 +165,11 @@ section: output [
 
   outdir: outdir [
     parameter: "Y"
-    information: "Directory for output files."
     help: "This option specifies the directory where output files are
            written."
     default: "./"
-    knowntype: "output directory"
+    knowntype: "output general"
+    information: "General output file directory"
   ]
 
   string: rocbasename [
@@ -192,11 +192,11 @@ section: output [
 
   outfile: outfile [
     standard: "Y"
-    information: "Name of summary file (output)."
-    help: "This option specifies the name of summary file (output). A
+    information: "Rocplot summary output file"
+    help: "This option specifies the name of the summary file (output). A
            text file summarising the analysis."
     default: "_summary"
-    knowntype: "rocplot summary file"
+    knowntype: "rocplot summary"
   ]
 
   string: barbasename [
@@ -229,9 +229,8 @@ section: output [
   ]
 
   outfile: logfile [
-    information: "Name of error log file (output)."
     default: "rocplot.log"
-    knowntype: "domainatrix log file"
+    knowntype: "domainatrix log"
   ]
 
 endsection: output

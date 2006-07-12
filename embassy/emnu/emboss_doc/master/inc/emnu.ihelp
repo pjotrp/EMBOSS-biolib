@@ -1,6 +1,6 @@
    Standard (Mandatory) qualifiers: (none)
    Additional (Optional) qualifiers:
-   -[no]morefiles      boolean    After every command that you run in the
+   -[no]morefiles      boolean    [Y] After every command that you run in the
                                   menu, either by selecting the name of an
                                   EMBOSS program, or by typing the command in
                                   the command line, a check is made to see if
@@ -10,8 +10,8 @@
                                   you to quickly view those new files. If you
                                   do not wish this to happen, set this to be
                                   false.
-   -explode            boolean    The groups that EMBOSS applications belong
-                                  to have two forms, exploded and not
+   -explode            boolean    [N] The groups that EMBOSS applications
+                                  belong to have two forms, exploded and not
                                   exploded. The exploded group names are more
                                   numerous and often vaguely phrased than the
                                   non-exploded ones. The exploded names are

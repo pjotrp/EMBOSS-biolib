@@ -95,7 +95,35 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with vrnainverse</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnainverse -repeats 3 </b>
+RNA sequences matching a structure
+Vienna RNA structures file: <b>rna3.fold</b>
+Vienna RNAfold output file [rna3.vrnainverse]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnainverse -repeats 3 -succeed </b>
+RNA sequences matching a structure
+Vienna RNA structures file: <b>rna3.fold</b>
+Vienna RNAfold output file [rna3.vrnainverse]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#output.2">Go to the output files for this example</a><p><p>
 
 
 
@@ -106,30 +134,57 @@ EDIT HERE
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-structure]         infile     Structure/sequence file
-  [-outfile]           outfile    Output file name
+  [-structure]         infile     Vienna RNA structures file
+  [-outfile]           outfile    [*.vrnainverse] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -dangles            menu       Method
-   -folding            menu       Method
-   -alphabet           string     Find sequences using only these bases
-   -final              float      Stopping value
-   -repeats            integer    No. of times to search for the same
-                                  structure
-   -showfails          boolean    Show information for unsuccessful searches
+   -sequence           sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
+   -folding            menu       [m] Method (Values: m (Minimum energy); pv
+                                  (Partition function); mp (Both))
+   -alphabet           string     [AUGC] Find sequences using only these bases
+                                  (Any string is accepted)
+   -final              float      [0.0] Stopping value (Any numeric value)
+   -repeats            integer    [0] Number of times to search for the same
+                                  structure (Integer 0 or more)
+   -succeed            boolean    [N] The original RNAinverse uses a negative
+                                  repeat for this
+   -showfails          boolean    [N] Show information for unsuccessful
+                                  searches
 
    Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin             integer    Start of the sequence to be used
+   -send               integer    End of the sequence to be used
+   -sreverse           boolean    Reverse (if DNA)
+   -sask               boolean    Ask for begin/end/reverse
+   -snucleotide        boolean    Sequence is nucleotide
+   -sprotein           boolean    Sequence is protein
+   -slower             boolean    Make lower case
+   -supper             boolean    Make upper case
+   -sformat            string     Input sequence format
+   -sdbname            string     Database name
+   -sid                string     Entryname
+   -ufo                string     UFO features
+   -fformat            string     Features format
+   -fopenfile          string     Features file name
 
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
@@ -161,16 +216,16 @@ EDIT HERE
 
 <tr>
 <td>[-structure]<br>(Parameter 1)</td>
-<td>Structure/sequence file</td>
+<td>Vienna RNA structures file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnainverse</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -190,8 +245,15 @@ EDIT HERE
 </tr>
 
 <tr>
+<td>-sequence</td>
+<td>Nucleotide sequence filename and optional format, or reference (input USA)</td>
+<td>Readable sequence</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -255,14 +317,14 @@ EDIT HERE
 <tr>
 <td>-dangles</td>
 <td>Method</td>
-<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies)</i></td></tr><tr><td>3</td> <td><i>(Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
 <td>1</td>
 </tr>
 
 <tr>
 <td>-folding</td>
 <td>Method</td>
-<td><table><tr><td>m</td> <td><i>(Use minimum energy)</i></td></tr><tr><td>p</td> <td><i>(Use partition function)</i></td></tr><tr><td>mp</td> <td><i>(Use both)</i></td></tr></table></td>
+<td><table><tr><td>m</td> <td><i>(Minimum energy)</i></td></tr><tr><td>pv</td> <td><i>(Partition function)</i></td></tr><tr><td>mp</td> <td><i>(Both)</i></td></tr></table></td>
 <td>m</td>
 </tr>
 
@@ -282,9 +344,16 @@ EDIT HERE
 
 <tr>
 <td>-repeats</td>
-<td>No. of times to search for the same structure</td>
-<td>Any integer value</td>
+<td>Number of times to search for the same structure</td>
+<td>Integer 0 or more</td>
 <td>0</td>
+</tr>
+
+<tr>
+<td>-succeed</td>
+<td>The original RNAinverse uses a negative repeat for this</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr>
@@ -323,7 +392,15 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: rna3.fold</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+(((((((..((((........)))).(((((.......))))).....(((((.......))))))))))))....
+</pre>
+</td></tr></table><p>
 
 
 
@@ -351,7 +428,28 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: rna3.vrnainverse</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+UGCUAUCUUGCGCAAAUGCCCGUGCUGCCACCUGACAAGUGGUCAUUCGAGAGUUGUUGUUUCUCGGUAGCAGCCA   27
+GGGAUACCAACUGCCGGUUUACAGUGGAGGACAACACAUCCUCGGUCCGGAUUGCGAGUGAGUCCGUAUUCCUCAC   22
+GCUAGUAAAUCCCAACUCCGGGGGAGGAAAUAGAACUAAUUUCAUAGUCGGUAAGGUACAUACUGUAUUAGCCCAA   24
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: rna3.vrnainverse</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+CGUAUAGCAGUACCUAACCCCGUGCGUUACAUAACCGUUGUAAGUUGAACUAGGCCCACGCUAGUCUAUGCGCUGG   28
+UUGAUCAAAGGCGAUCCGAGACGUCGCAGCAACUGGCCUGCUGGAGUUCAGUGACACCUCCACUGUGGUUAAGUAC   22
+GGCGAAGCCAGGGACGCAUUACCCUCCGGACCACCCUCGUCUGCUCAUUAACCUGAAAUUGGUUACUUCGCCUUUU   24
+</pre>
+</td></tr></table><p>
 
 
 

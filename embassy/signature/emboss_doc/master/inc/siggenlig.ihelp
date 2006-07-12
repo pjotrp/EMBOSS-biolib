@@ -36,38 +36,48 @@
                                   Records for residue solvent accessibility
                                   and secondary structure are added to the
                                   file by using PDBPLUS. default: ./
-   -mode               menu       This option specifies the mode of signature
-                                  generation. In 'Full-length signature mode'
-                                  (mode 1) a single signature incorporating
-                                  all residue positions that contact the
-                                  ligand plus intervening gaps is generated.
-                                  In 'Patch signature mode' (mode 2) one or
-                                  more signatures corresponding to 'patches'
-                                  of residue positions are generated. A patch
-                                  is a set of residues that are
-                                  near-neighbours in sequence and is described
-                                  by two user-defined parameters: minimum
-                                  patch size and maximum gap distance.
-   -type               menu       This option specifies the type of signature
-                                  generated. In '1D (sequence) signature'
-                                  sequence-based signatures are generated. In
-                                  '3D (structural) signature' structure-based
-                                  signatures are generated.
-*  -patchsize          integer    This option specifies the minimum patch
+   -mode               menu       [1] This option specifies the mode of
+                                  signature generation. In 'Full-length
+                                  signature mode' (mode 1) a single signature
+                                  incorporating all residue positions that
+                                  contact the ligand plus intervening gaps is
+                                  generated. In 'Patch signature mode' (mode
+                                  2) one or more signatures corresponding to
+                                  'patches' of residue positions are
+                                  generated. A patch is a set of residues that
+                                  are near-neighbours in sequence and is
+                                  described by two user-defined parameters:
+                                  minimum patch size and maximum gap distance.
+                                  (Values: 1 (Full-length signature mode); 2
+                                  (Patch signature mode))
+   -type               menu       [1] This option specifies the type of
+                                  signature generated. In '1D (sequence)
+                                  signature' sequence-based signatures are
+                                  generated. In '3D (structural) signature'
+                                  structure-based signatures are generated.
+                                  (Values: 1 (1D (sequence) signature); 2 (3D
+                                  (structural) signature))
+*  -patchsize          integer    [5] This option specifies the minimum patch
                                   size. This is the minimum number of contact
                                   positions that must be incorporated in a
-                                  signature.
-*  -gapdistance        integer    This option specifies the maximum gap
+                                  signature. (Integer 3 or more)
+*  -gapdistance        integer    [2] This option specifies the maximum gap
                                   distance. This is the maximum allowable gap
                                   (residues) between two residue in a patch.
                                   If two contact residues are further than
                                   this distance apart in sequence, they would
-                                  not belong to the same patch.
-*  -environment        menu       This option specifies the environment
+                                  not belong to the same patch. (Integer 0 or
+                                  more)
+*  -environment        menu       [1] This option specifies the environment
                                   definition. See matgen3d documentation for
-                                  description of definitions.
-   -wsiz               integer    This option specifies the window size. When
-                                  a signature is aligned to a protein
+                                  description of definitions. (Values: 1
+                                  (Env1); 2 (Env2); 3 (Env3); 4 (Env4); 5
+                                  (Env5); 6 (Env6); 7 (Env7); 8 (Env8); 9
+                                  (Env9); 10 (Env10); 11 (Env11); 12 (Env12);
+                                  13 (Env13); 14 (Env14); 15 (Env15); 16
+                                  (Env16))
+   -wsiz               integer    [0] This option specifies the window size.
+                                  When a signature is aligned to a protein
                                   sequence, the permissible gaps between two
                                   signature positions is determined by the
                                   empirical gaps and the window size. The user
@@ -78,14 +88,14 @@
                                   generating values of window size depending
                                   upon the alignment (window size is
                                   identified by the WSIZ record in the
-                                  signature output file).
-  [-sigoutdir]         outdir     This option specifies the location of
+                                  signature output file). (Any integer value)
+  [-sigoutdir]         outdir     [./] This option specifies the location of
                                   signature files (output). A 'signature file'
                                   contains a sparse sequence signature
                                   suitable for use with the SIGSCAN and
                                   SIGSCANLIG programs. The files are generated
                                   by using SIGGEN and SIGGENLIG.
-  [-logfile]           outfile    Name of siggenlig logfile
+  [-logfile]           outfile    [siggenlig.log] Domainatrix log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

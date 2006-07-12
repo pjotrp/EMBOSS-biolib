@@ -273,8 +273,8 @@ Usage
 
 % fdolpenny 
 Penny algorithm Dollo or polymorphism
-Input file: dolpenny.dat
-Output file [dolpenny.fdolpenny]: 
+Phylip character discrete states file: dolpenny.dat
+Phylip dolpenny program output file [dolpenny.fdolpenny]: 
 
 
 How many
@@ -297,24 +297,28 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing one or more data sets
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fdolpenny] Phylip dolpenny program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
    -weights            properties Weights file
    -ancfile            properties Ancestral states file
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -howmany            integer    How many groups of trees
-   -howoften           integer    How often to report, in trees
-   -[no]simple         boolean    Branch and bound is simple
-   -method             menu       Parsimony method
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -ancseq             boolean    Print states at all nodes of tree
-   -stepbox            boolean    Print out steps in each character
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 0.000 or more)
+   -howmany            integer    [1000] How many groups of trees (Any integer
+                                  value)
+   -howoften           integer    [100] How often to report, in trees (Any
+                                  integer value)
+   -[no]simple         boolean    [Y] Branch and bound is simple
+   -method             menu       [d] Parsimony method (Values: d (Dollo); p
+                                  (Polymorphism))
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -ancseq             boolean    [N] Print states at all nodes of tree
+   -stepbox            boolean    [N] Print out steps in each character
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -339,35 +343,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) File containing one or more data sets Discrete states
-   file
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.fdolpenny
-   Additional (Optional) qualifiers Allowed values Default
-   -weights Weights file Property value(s)
-   -ancfile Ancestral states file Property value(s)
-   -thresh Use threshold parsimony Toggle value Yes/No No
-   -threshold Threshold value Number 0.000 or more 1
-   -howmany How many groups of trees Any integer value 1000
-   -howoften How often to report, in trees Any integer value 100
-   -[no]simple Branch and bound is simple Boolean value Yes/No Yes
-   -method Parsimony method
-   d (Dollo)
-   p (Polymorphism)
-   d
-   -[no]trout Write out trees to tree file Toggle value Yes/No Yes
-   -outtreefile Tree file name Output file
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   -[no]treeprint Print out tree Boolean value Yes/No Yes
-   -ancseq Print states at all nodes of tree Boolean value Yes/No No
-   -stepbox Print out steps in each character Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

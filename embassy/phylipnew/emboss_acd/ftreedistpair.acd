@@ -11,14 +11,14 @@ section: input [
 
 tree: intreefile [
   parameter: "Y"
-  knowntype: "newick tree"
-  information: "Tree file"
+  knowntype: "newick"
+  information: "Phylip tree file"
 ]
 
 tree: bintreefile [
   parameter: "Y"
-  knowntype: "newick tree"
-  information: "Second input tree file"
+  knowntype: "newick"
+  information: "Second phylip tree file"
   nullok: "Y"
 ]
 
@@ -77,6 +77,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "treedist output"
+  information: "Phylip treedist program output file"
 ]
 
 boolean: progress [

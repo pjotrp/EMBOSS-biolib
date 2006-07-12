@@ -120,6 +120,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "seqbootrest output"
+  information: "Phylip seqboot_rest program output file'"
 ]
 
 boolean: printdata  [

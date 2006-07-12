@@ -148,8 +148,8 @@ getting wrapped around unnecessarily.
 
 % <b>fclique </b>
 Largest clique program
-Input file: <b>clique.dat</b>
-Output file [clique.fclique]: <b></b>
+Phylip discrete states file: <b>clique.dat</b>
+Phylip clique program output file [clique.fclique]: <b></b>
 
 
 Output written to file "clique.fclique"
@@ -172,21 +172,23 @@ Done.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            discretestates (no help text) discretestates value
-  [-outfile]           outfile    Output file name
+  [-infile]            discretestates Phylip discrete states file
+  [-outfile]           outfile    [*.fclique] Phylip clique program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -ancfile            properties Ancestral states file
-   -factorfile         properties Multistate factors file
-   -weights            properties Weights file
-   -cliqmin            integer    Minimum clique size
-   -outgrno            integer    Species number to use as outgroup
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -printcomp          boolean    Print out compatibility matrix
+   -ancfile            properties Phylip ancestral states file
+   -factorfile         properties Phylip multistate factors file (optional)
+   -weights            properties Phylip weights file (optional)
+   -cliqmin            integer    [0] Minimum clique size (Integer 0 or more)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -printcomp          boolean    [N] Print out compatibility matrix
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -224,16 +226,16 @@ Done.
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>(no help text) discretestates value</td>
+<td>Phylip discrete states file</td>
 <td>Discrete states file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip clique program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fclique</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -244,21 +246,21 @@ Done.
 
 <tr>
 <td>-ancfile</td>
-<td>Ancestral states file</td>
+<td>Phylip ancestral states file</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-factorfile</td>
-<td>Multistate factors file</td>
+<td>Phylip multistate factors file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-weights</td>
-<td>Weights file</td>
+<td>Phylip weights file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
@@ -286,7 +288,7 @@ Done.
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

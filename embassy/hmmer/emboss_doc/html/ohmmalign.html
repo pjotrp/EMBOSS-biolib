@@ -129,16 +129,17 @@ Alignment saved in file globins630.ali
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-hmmfile]           infile     HMM file
+  [-hmmfile]           infile     HMMER hidden markov model file
   [-sequences]         seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.ohmmalign] HMMER hmmalign program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -mapalifile         infile     Map alignment
-   -withalifile        infile     Heuristic alignment
-   -matchonly          boolean    Only show match state alignment symbols
+   -mapalifile         infile     HMMER alignment file (optional)
+   -withalifile        infile     HMMER heuristic alignment file (optional)
+   -matchonly          boolean    [N] Only show match state alignment symbols
 
    Associated qualifiers:
 
@@ -188,7 +189,7 @@ Alignment saved in file globins630.ali
 
 <tr>
 <td>[-hmmfile]<br>(Parameter 1)</td>
-<td>HMM file</td>
+<td>HMMER hidden markov model file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -202,9 +203,9 @@ Alignment saved in file globins630.ali
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>HMMER hmmalign program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ohmmalign</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -225,14 +226,14 @@ Alignment saved in file globins630.ali
 
 <tr>
 <td>-mapalifile</td>
-<td>Map alignment</td>
+<td>HMMER alignment file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-withalifile</td>
-<td>Heuristic alignment</td>
+<td>HMMER heuristic alignment file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>

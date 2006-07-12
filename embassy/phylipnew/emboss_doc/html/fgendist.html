@@ -225,8 +225,8 @@ Weir, and Cockerham (1983), and the material in Nei's book (Nei,
 
 % <b>fgendist </b>
 Compute genetic distances from gene frequencies
-Input file: <b>gendist.dat</b>
-Output file [gendist.fgendist]: <b></b>
+Phylip gendist program input file: <b>gendist.dat</b>
+Phylip gendist program output file [gendist.fgendist]: <b></b>
 
 Distances calculated for species
     European     .
@@ -254,12 +254,15 @@ Done.
 <pre>
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fgendist] Phylip gendist program output
+                                  file
 
    Additional (Optional) qualifiers:
-   -method             menu       Which method to use
-   -[no]progress       boolean    Print indications of progress of run
-   -lower              boolean    Lower triangular distance matrix
+   -method             menu       [n] Which method to use (Values: n (Nei
+                                  genetic distance); c (Cavalli-Sforza chord
+                                  measure); r (Reynolds genetic distance))
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -lower              boolean    [N] Lower triangular distance matrix
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -301,9 +304,9 @@ Done.
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip gendist program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fgendist</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

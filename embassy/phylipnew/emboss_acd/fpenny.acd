@@ -13,13 +13,14 @@ discretestates: infile  [
   parameter: "Y"
   characters: "01PB?"
   help: "File containing one or more data sets"
-  knowntype: "discrete characters input"
+  knowntype: "discrete characters"
+  information: "Phylip character discrete states file"
 ]
 
 properties: weights [
 	additional: "Y"
 	characters: "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	information: "Weights file"
+	information: "Phylip weights file (optional)"
 	nullok: "Y"
         length: "$(infile.discretelength)"
         size: "1"
@@ -27,7 +28,7 @@ properties: weights [
 properties: ancfile [
 	additional: "Y"
 	characters: "01?"
-	information: "Ancestral states file"
+	information: "Phylip ancestral states file (optional)"
 	nullok: "Y"
         length: "$(infile.discretelength)"
         size: "1"
@@ -35,7 +36,7 @@ properties: ancfile [
 properties: mixfile [
 	additional: "Y"
 	characters: "CSW"
-	information: "Mixture file"
+	information: "Phylip mix output file (optional)"
 	nullok: "Y"
         length: "$(infile.discretelength)"
         size: "1"
@@ -102,6 +103,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "penny output"
+  information: "Phylip penny program output file"
 ]
 
 toggle: trout [
@@ -113,7 +115,7 @@ toggle: trout [
 outfile: outtreefile  [
   additional: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file (optional)"
   knowntype: "newick tree"
   nullok: "Y"
 ]

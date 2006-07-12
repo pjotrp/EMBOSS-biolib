@@ -12,6 +12,7 @@ section: input [
 tree: intreefile [
   parameter: "Y"
   knowntype: "newick"
+  information: "Phylip tree file"
 ]
 
 endsection: input
@@ -68,6 +69,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "treedist output"
+  information: "Phylip treedist program output file"
 ]
 
 

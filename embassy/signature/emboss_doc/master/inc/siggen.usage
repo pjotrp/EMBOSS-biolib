@@ -6,7 +6,7 @@
 
 % <b>siggen </b>
 Generates a sparse protein signature from an alignment.
-Location of DAF files (domain alignment files) (input) [./]: <b>../domainalign-keep/daf</b>
+Domain alignment directories [./]: <b>../domainalign-keep/daf</b>
 Specify mode of signature generation
          1 : Use positions specified in alignment file
          2 : Use a scoring method
@@ -27,8 +27,8 @@ Select number [3]: <b>1</b>
 Substitution matrix to be used [EBLOSUM62]: <b>EBLOSUM62</b>
 The % sparsity of signature [10]: <b>15</b>
 Window size [0]: <b>0</b>
-Ignore alignment postitions with post_similar value of 0 [Y]: <b>Y</b>
-Location of signature files (output) [./]: <b></b>
+Ignore alignment positions with post_similar value of 0 [Y]: <b>Y</b>
+Domainatrix signature output directory [./]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

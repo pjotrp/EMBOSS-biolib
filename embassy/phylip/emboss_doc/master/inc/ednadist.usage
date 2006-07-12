@@ -18,7 +18,7 @@ Distance methods
      Jukes : Jukes-Cantor distance
 Choose the method to use [Kimura]: <b></b>
 Transition/transversion ratio [2.0]: <b></b>
-Output file [ednadist.outfile]: <b></b>
+Phylip dnadist program output file [ednadist.outfile]: <b></b>
 Kimura
 
 </pre></td></tr></table><p>

@@ -14,9 +14,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnaheat</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -37,7 +37,7 @@
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -115,8 +115,8 @@
 <tr>
 <td>-step</td>
 <td>Step size in degrees C</td>
-<td>Integer from 1 to 100</td>
-<td>1</td>
+<td>Number from 0.010 to 1000.000</td>
+<td>1.0</td>
 </tr>
 
 <tr>
@@ -124,13 +124,6 @@
 <td>Method</td>
 <td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies)</i></td></tr></table></td>
 <td>2</td>
-</tr>
-
-<tr>
-<td>-ssoutfile</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td>&nbsp;</td>
 </tr>
 
 </table>

@@ -22,8 +22,8 @@ section: input
 infile: hmmfile
 [
   parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+  knowntype: "hmm"
+  information: "HMMER hidden markov model file"
   help: "File containing one or more HMMs."
 ]
 
@@ -91,10 +91,11 @@ boolean: q
   help: "Quiet; suppress all output except for the sequences themselves. Useful for piping or directing the output."
 ]
 
-outfile: o  
+outfile: o
 [
   parameter: "Y"
   knowntype: "hmmemit output"
+  information: "HMMER hmmemit program output file"
   help: "File of synthetic sequences."
 ]
 

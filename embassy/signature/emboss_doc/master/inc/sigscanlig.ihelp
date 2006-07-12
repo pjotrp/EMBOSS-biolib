@@ -1,5 +1,5 @@
    Standard (Mandatory) qualifiers:
-  [-siginfiles]        dirlist    This option specifies the directory of
+  [-siginfiles]        dirlist    [./] This option specifies the directory of
                                   signature files (input). A 'signature file'
                                   contains a sparse sequence signature
                                   suitable for use with the SIGSCAN and
@@ -7,48 +7,58 @@
                                   by using SIGGEN and SIGGENLIG.
   [-dbsequences]       seqall     This option specifies the name of the
                                   database of query sequences.
-   -sub                matrixf    This option specifies the scoring matrix to
-                                  use, e.g. residue substitution matrix (1D
-                                  signatures) or matrix of 3D:1D
-                                  (environment:residue) scores (3D).
-   -mode               menu       This option specifies the mode of scoring
-                                  ligands. In 'Patch Score Mode' (mode 1) the
-                                  score for a ligand is the mean of its patch
-                                  scores. In 'Site Score Mode' the score for a
-                                  ligand is the mean of its site scores. A
-                                  site score is the mean of patch score for
-                                  all patches for a given site.
-   -gapo               float      This option specifies the gap insertion
-                                  penalty. The gap insertion penalty is the
-                                  score taken away when a gap is created. The
-                                  best value depends on the choice of
-                                  comparison matrix. The default value assumes
-                                  you are using the EBLOSUM62 matrix for
-                                  protein sequences, and the EDNAMAT matrix
-                                  for nucleotide sequences.
-   -gape               float      This option specifies the gap extension
-                                  penalty. The gap extension penalty is added
-                                  to the standard gap penalty for each base or
-                                  residue in the gap. This is how long gaps
-                                  are penalized. Usually you will expect a few
-                                  long gaps rather than many short gaps, so
-                                  the gap extension penalty should be lower
-                                  than the gap penalty.
-   -nterm              menu       This option specifies the N-terminal
+   -sub                matrixf    [EBLOSUM62] This option specifies the
+                                  scoring matrix to use, e.g. residue
+                                  substitution matrix (1D signatures) or
+                                  matrix of 3D:1D (environment:residue) scores
+                                  (3D).
+   -mode               menu       [1] This option specifies the mode of
+                                  scoring ligands. In 'Patch Score Mode' (mode
+                                  1) the score for a ligand is the mean of
+                                  its patch scores. In 'Site Score Mode' the
+                                  score for a ligand is the mean of its site
+                                  scores. A site score is the mean of patch
+                                  score for all patches for a given site.
+                                  (Values: 1 (Patch score mode); 2 (Site score
+                                  mode))
+   -gapo               float      [10.0 for any sequence] This option
+                                  specifies the gap insertion penalty. The gap
+                                  insertion penalty is the score taken away
+                                  when a gap is created. The best value
+                                  depends on the choice of comparison matrix.
+                                  The default value assumes you are using the
+                                  EBLOSUM62 matrix for protein sequences, and
+                                  the EDNAMAT matrix for nucleotide sequences.
+                                  (Floating point number from 1.0 to 100.0)
+   -gape               float      [0.5 for any sequence] This option specifies
+                                  the gap extension penalty. The gap
+                                  extension penalty is added to the standard
+                                  gap penalty for each base or residue in the
+                                  gap. This is how long gaps are penalized.
+                                  Usually you will expect a few long gaps
+                                  rather than many short gaps, so the gap
+                                  extension penalty should be lower than the
+                                  gap penalty. (Floating point number from 0.0
+                                  to 10.0)
+   -nterm              menu       [1] This option specifies the N-terminal
                                   matching option. This determines how the
                                   first signature position is aligned to a
-                                  sequence from the database.
-  [-hitsdir]           outdir     This option specifies the directory of the
-                                  LHF files (ligand hits files) (output). A
-                                  'ligand hits file' contains database hits
+                                  sequence from the database. (Values: 1
+                                  (Align anywhere and allow only complete
+                                  signature-sequence fit); 2 (Align anywhere
+                                  and allow partial signature-sequence fit); 3
+                                  (Use empirical gaps only))
+  [-hitsdir]           outdir     [./] This option specifies the directory of
+                                  the LHF files (ligand hits files) (output).
+                                  A 'ligand hits file' contains database hits
                                   (sequences) with ligand classification
                                   information, in the LHF format (FASTA-like).
                                   The hits are putative ligand-binding
                                   sequences and are found from a search of a
                                   sequence database, in this case, by using
                                   SIGSCANLIG.
-  [-aligndir]          outdir     This option specifies the name of the SAF
-                                  (signature alignment file) (output).A
+  [-aligndir]          outdir     [./] This option specifies the name of the
+                                  SAF (signature alignment file) (output).A
                                   'signature alignment file' contains one or
                                   more signnature-sequence alignments. The
                                   file is in DAF format (CLUSTAL-like) and is
@@ -63,21 +73,22 @@
                                   SIGSCANLIG will contain a signature-sequence
                                   alignment for a single query sequence
                                   against a library of one or more signatures.
-  [-resultsdir]        outdir     This option specifies the directory for the
-                                  results files. A results file is generated
-                                  for each query sequence and contains a list
-                                  of hits (ligands), rank-ordered on the basis
-                                  of score.
+  [-resultsdir]        outdir     [./] This option specifies the directory for
+                                  the results files. A results file is
+                                  generated for each query sequence and
+                                  contains a list of hits (ligands),
+                                  rank-ordered on the basis of score.
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -nhits              integer    This option specifies the maximum number of
-                                  hits to output.
-   -domax              toggle     This option specifies whether to consider a
-                                  max. number of top-scoring hits only for
-                                  each ligand.
-*  -maxhits            integer    This option specifies the maximum number of
-                                  top-scoring hits to consider for each
-                                  ligand.
+   -nhits              integer    [100] This option specifies the maximum
+                                  number of hits to output. (Any integer
+                                  value)
+   -domax              toggle     [N] This option specifies whether to
+                                  consider a max. number of top-scoring hits
+                                  only for each ligand.
+*  -maxhits            integer    [0] This option specifies the maximum number
+                                  of top-scoring hits to consider for each
+                                  ligand. (Any integer value)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

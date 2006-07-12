@@ -14,8 +14,8 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+  information: "HMMER hidden markov model file"
+  knowntype: "hmm"
 ]
 
 endsection: input
@@ -72,11 +72,12 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmmcalibrate output"
+  information: "HMMER hmmcalibrate program output file"
 ]
 
 outfile: histogramfile  [
   default: ""
-  information: "Name for histogram file"
+  information: "HMMER histogram output file (optional)"
   knowntype: "hmmer histogram"
   nullok: "Y"
 ]

@@ -22,7 +22,7 @@ Usage
 
 % ohmmpfam 7LES_DROME ../ohmm-own-keep/myhmms 
 Align single sequence with an HMM
-Output file [7les_drome.ohmmpfam]: 
+HMMER hmmpfam program output file [7les_drome.ohmmpfam]: 
 
                 CS    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV
                 RF    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV
@@ -81,23 +81,29 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-hmmfile]           infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-hmmfile]           infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmpfam] HMMER hmmpfam program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -nucleic            boolean    Force nucleic comparison
-   -nalign             integer    Number of alignments
-   -evalue             float      E-value cutoff
-   -hitcut             float      Hit score cutoff
-   -dbsize             integer    Calc E-value for DB size n
-   -cpu                integer    Number of CPUs
-   -dome               float      E-value domain cutoff
-   -domt               float      Hit score domain cutoff
-   -forward            boolean    Use forward algorithm
-   -nulltwo            boolean    Turn off second null model
-   -pvm                boolean    Use parallel virtual machine
-   -xnu                boolean    Use XNU filtering
+   -nucleic            boolean    [N] Force nucleic comparison
+   -nalign             integer    [100] Number of alignments (Any integer
+                                  value)
+   -evalue             float      [10.] E-value cutoff (Any numeric value)
+   -hitcut             float      [-1000000.] Hit score cutoff (Any numeric
+                                  value)
+   -dbsize             integer    [59021] Calc E-value for DB size n (Any
+                                  integer value)
+   -cpu                integer    [0] Number of CPUs (Any integer value)
+   -dome               float      [1000000.] E-value domain cutoff (Any
+                                  numeric value)
+   -domt               float      [-1000000.] Hit score domain cutoff (Any
+                                  numeric value)
+   -forward            boolean    [N] Use forward algorithm
+   -nulltwo            boolean    [N] Turn off second null model
+   -pvm                boolean    [N] Use parallel virtual machine
+   -xnu                boolean    [N] Use XNU filtering
 
    Associated qualifiers:
 
@@ -134,30 +140,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-seqall]
-   (Parameter 1) Sequence(s) filename and optional format, or reference
-   (input USA) Readable sequence(s) Required
-   [-hmmfile]
-   (Parameter 2) HMM file Input file Required
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.ohmmpfam
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -nucleic Force nucleic comparison Boolean value Yes/No No
-   -nalign Number of alignments Any integer value 100
-   -evalue E-value cutoff Any numeric value 10.
-   -hitcut Hit score cutoff Any numeric value -1000000.
-   -dbsize Calc E-value for DB size n Any integer value 59021
-   -cpu Number of CPUs Any integer value 0
-   -dome E-value domain cutoff Any numeric value 1000000.
-   -domt Hit score domain cutoff Any numeric value -1000000.
-   -forward Use forward algorithm Boolean value Yes/No No
-   -nulltwo Turn off second null model Boolean value Yes/No No
-   -pvm Use parallel virtual machine Boolean value Yes/No No
-   -xnu Use XNU filtering Boolean value Yes/No No
 
 Input file format
 

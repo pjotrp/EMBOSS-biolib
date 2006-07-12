@@ -157,7 +157,7 @@ int main(int argc, char *argv[])
     etloop    = ajAcdGetBool("tetraloop");
     eenergy   = ajAcdGetList("energy");
     edangles  = ajAcdGetList("dangles");
-    h         = ajAcdGetInt("step");
+    h         = ajAcdGetFloat("step");
     mpoints   = ajAcdGetInt("smoothing");
    
     outf      = ajAcdGetOutfile("outfile");

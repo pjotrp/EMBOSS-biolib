@@ -6,8 +6,8 @@
 
 % <b>efactor </b>
 Multistate to binary recoding program
-Data file: <b>factor.dat</b>
-Output file [efactor.outfile]: <b></b>
+Phylip factor program input file: <b>factor.dat</b>
+Phylip factor program output file [efactor.outfile]: <b></b>
 
 
 Data matrix written on output file

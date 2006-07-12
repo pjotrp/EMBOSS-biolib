@@ -1,14 +1,22 @@
    Standard (Mandatory) qualifiers:
-  [-structure]         infile     Structures file
-  [-outfile]           outfile    Output file name
+  [-structure]         infile     Vienna RNA structures file
+  [-outfile]           outfile    [*.vrnadistance] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -distance           menu       Distance types to calculate
-   -compare            menu       Distance types to calculate
-   -schapiro           boolean    Use cost matrix for comparing coarse
+   -distance           menu       [f] Distance types to calculate (Values: f
+                                  (Full (tree)); h (HIT (tree)); w (Weighted
+                                  coarse (tree)); c (Coarse (tree)); F (Full
+                                  (string)); H (HIT (string)); W (Weighted
+                                  coarse (string)); C (Coarse (string)); P
+                                  (Base pair distance))
+   -compare            menu       [p] Distance types to calculate (Values: p
+                                  (Pairwise); m (Distance matrix between all
+                                  structures); f (Compare all structures to
+                                  the first one); c (Compare continuously))
+   -schapiro           boolean    [N] Use cost matrix for comparing coarse
                                   structures
-   -doalignment        boolean    Alignment showing matching substructures
+   -doalignment        boolean    [N] Alignment showing matching substructures
 
    Associated qualifiers:
 

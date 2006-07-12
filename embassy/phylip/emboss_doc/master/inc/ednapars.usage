@@ -8,9 +8,9 @@
 DNA parsimony algorithm
 Input (aligned) sequence set: <b>dnapars.dat</b>
 Randomize input order of species [N]: <b></b>
-Output file [ednapars.outfile]: <b></b>
+Phylip dnapars program output file [ednapars.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [ednapars.treefile]: <b></b>
+Phylip tree output file [ednapars.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

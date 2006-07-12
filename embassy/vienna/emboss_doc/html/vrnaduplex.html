@@ -95,7 +95,21 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with vrnaduplex</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaduplex </b>
+RNA duplex calculation
+Input nucleotide sequence: <b>cofold-red.fasta</b>
+Second nucleotide sequence: <b>cofold-blue.fasta</b>
+Vienna RNAfold output file [red.vrnaduplex]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -110,21 +124,25 @@ EDIT HERE
                                   format, or reference (input USA)
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnaduplex] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -delta              float      Energy range for suboptimal structures
-   -sort               boolean    Sort suboptimal structures
-   -dangles            menu       Method
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -delta              float      [-1.0] Energy range for suboptimal
+                                  structures (Any numeric value)
+   -sort               boolean    [N] Sort suboptimal structures
+   -dangles            menu       [1] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
 
    Associated qualifiers:
 
@@ -204,9 +222,9 @@ EDIT HERE
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnaduplex</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -227,7 +245,7 @@ EDIT HERE
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -298,7 +316,7 @@ EDIT HERE
 <tr>
 <td>-dangles</td>
 <td>Method</td>
-<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies)</i></td></tr><tr><td>3</td> <td><i>(Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
 <td>1</td>
 </tr>
 
@@ -331,7 +349,23 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: cofold-red.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;red
+AUGAAGAUGA
+</pre>
+</td></tr></table><p>
+<p><h3>File: cofold-blue.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;blue
+CUGUCUGUCUUGAGACA
+</pre>
+</td></tr></table><p>
 
 
 
@@ -359,7 +393,15 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: red.vrnaduplex</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+.(.(((((.&amp;.))))).).   1,9   :   6,14  (-4.10)
+</pre>
+</td></tr></table><p>
 
 
 

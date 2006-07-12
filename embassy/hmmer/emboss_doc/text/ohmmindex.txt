@@ -28,7 +28,7 @@ Index an HMM database
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM database file
+  [-infile]            infile     HMMER hmm database file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -48,12 +48,12 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-                 Standard (Mandatory) qualifiers  Allowed values Default
+                 Standard (Mandatory) qualifiers    Allowed values Default
    [-infile]
-   (Parameter 1) HMM database file Input file     Required
-                 Additional (Optional) qualifiers Allowed values Default
+   (Parameter 1) HMMER hmm database file Input file Required
+                 Additional (Optional) qualifiers   Allowed values Default
                  (none)
-                 Advanced (Unprompted) qualifiers Allowed values Default
+                 Advanced (Unprompted) qualifiers   Allowed values Default
                  (none)
 
 Input file format

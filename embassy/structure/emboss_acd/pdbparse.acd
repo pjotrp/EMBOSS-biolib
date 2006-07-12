@@ -14,14 +14,14 @@ section: input [
 
   dirlist: pdbpath [
     parameter: "Y"
-    information: "Location of PDB files (input)"
+    information: "Pdb entry directories"
     help: "This option specifies the location of PDB files (input). A
            PDB file contains protein coordinate and other data. A detailed
            explanation of the PDB file format is available on the PDB web
            site http://www.rcsb.org/pdb/info.html."
     default: "./"
     extension: "ent"
-    knowntype: "pdb file"
+    knowntype: "pdb"
   ]
 
 endsection: input
@@ -118,8 +118,7 @@ section: output [
 
   outdir: ccfoutdir [
     parameter: "Y"
-    information: "Location of CCF files (clean coordinate
-                  files) (output)"
+    information: "Clean protein structure coordinates file output directory"
     help: "This option specifies the location of CCF files (clean
            coordinate files) (output). A 'protein clean cordinate file'
            contains protein coordinate and other data for a single PDB file.
@@ -134,11 +133,11 @@ section: output [
 
   outfile: logfile [
     standard: "Y"
-    information: "Name of log file for the build."
+    information: "Domainatrix log output file"
     help: "This option specifies tame of the log file for the build.
            The log file may contain messages about inconsistencies or errors
            in the PDB files that were parsed."
-    knowntype: "domainatrix log file"
+    knowntype: "domainatrix log"
     default: "pdbparse.log"
   ]
 

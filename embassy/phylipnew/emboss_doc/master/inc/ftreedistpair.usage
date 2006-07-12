@@ -6,9 +6,9 @@
 
 % <b>ftreedistpair -style s </b>
 Distances between two sets of trees
-Tree file: <b>treedist.dat</b>
-Second input tree file: <b>treedist.dat</b>
-Output file [treedist.ftreedistpair]: <b></b>
+Phylip tree file: <b>treedist.dat</b>
+Second phylip tree file: <b>treedist.dat</b>
+Phylip treedist program output file [treedist.ftreedistpair]: <b></b>
 
 Done.
 

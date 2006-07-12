@@ -1,11 +1,12 @@
    Standard (Mandatory) qualifiers:
-  [-datafile]          infile     Data file
-  [-outfile]           outfile    Output file name
+  [-datafile]          infile     Phylip factor program input file
+  [-outfile]           outfile    [efactor.outfile] Phylip factor program
+                                  output file
 
    Additional (Optional) qualifiers:
-   -anc                boolean    Put ancestral states in output file
-   -factors            boolean    Put factors information in output file
-   -[no]progress       boolean    Show progress
+   -anc                boolean    [N] Put ancestral states in output file
+   -factors            boolean    [N] Put factors information in output file
+   -[no]progress       boolean    [Y] Show progress
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

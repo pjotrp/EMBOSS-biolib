@@ -6,7 +6,7 @@
 
 % <b>eseqboot </b>
 Bootstrapped sequences algorithm
-Input file: <b>seqboot.dat</b>
+Phylip seqboot program input file: <b>seqboot.dat</b>
 Random number seed (must be odd) [3]: <b></b>
 Method
        Seq : Molecular sequences
@@ -20,7 +20,7 @@ test
       Perm : Permute species for each character
 Choose test [Boot]: <b></b>
 How many replicates [100]: <b></b>
-Output file [eseqboot.outfile]: <b></b>
+Phylip seqboot program output file [eseqboot.outfile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

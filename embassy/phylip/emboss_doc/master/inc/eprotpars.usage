@@ -8,9 +8,9 @@
 Protein parsimony algorithm
 Input (aligned) sequence set: <b>protpars.dat</b>
 Randomize input order of species [N]: <b></b>
-Output file [eprotpars.outfile]: <b></b>
+Phylip protpars program output file [eprotpars.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [eprotpars.treefile]: <b></b>
+Phylip tree output file [eprotpars.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

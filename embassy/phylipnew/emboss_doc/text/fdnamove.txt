@@ -76,7 +76,7 @@ Usage
 % fdnamove 
 Interactive DNA parsimony
 Input (aligned) nucleotide sequence set(s): dnamove.dat
-Input tree file: 
+Phylip tree file (optional): 
 NEXT (R # + - S . T U W O F H J K L C ? X Q) (? for Help): Q
 Do you want to write out the tree to a file? (Y or N): Y
 
@@ -110,17 +110,22 @@ Command line arguments
   [-sequence]          seqsetall  (Aligned) nucleotide sequence set(s)
                                   filename and optional format, or reference
                                   (input USA)
-  [-intreefile]        tree       (no help text) tree value
+  [-intreefile]        tree       Phylip tree file (optional)
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -weights            properties Weights file - Ignore sites with weight zero
-   -outgrno            integer    Species number to use as outgroup
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -initialtree        menu       Initial tree
-   -screenwidth        integer    Width of terminal screen in characters
-   -screenlines        integer    Number of lines on screen
-   -outtreefile        outfile    Output file name
+   -weights            properties Weights file - ignore sites with weight zero
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 1.000 or more)
+   -initialtree        menu       [Arbitary] Initial tree (Values: a
+                                  (Arbitary); u (User); s (Specify))
+   -screenwidth        integer    [80] Width of terminal screen in characters
+                                  (Any integer value)
+   -screenlines        integer    [24] Number of lines on screen (Any integer
+                                  value)
+   -outtreefile        outfile    [*.fdnamove] Phylip tree output file
+                                  (optional)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -158,30 +163,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Aligned) nucleotide sequence set(s) filename and
-   optional format, or reference (input USA) Readable sets of sequences
-   [-intreefile]
-   (Parameter 2) (no help text) tree value Phylogenetic tree
-   Additional (Optional) qualifiers Allowed values Default
-   -weights Weights file - Ignore sites with weight zero Property
-   value(s)
-   -outgrno Species number to use as outgroup Integer 0 or more 0
-   -thresh Use threshold parsimony Toggle value Yes/No No
-   -threshold Threshold value Number 1.000 or more 1
-   -initialtree Initial tree
-   a (Arbitary)
-   u (User)
-   s (Specify)
-   Arbitary
-   -screenwidth Width of terminal screen in characters Any integer value
-   80
-   -screenlines Number of lines on screen Any integer value 24
-   -outtreefile Output file name Output file <sequence>.fdnamove
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

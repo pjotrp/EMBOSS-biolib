@@ -1,32 +1,195 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          sequence   Protein sequence filename and optional
                                   format, or reference (input USA)
-   -sections           range      Examples of region specifications are:
+   -sections           range      [(full sequence)] Examples of region
+                                  specifications are:
                                   24-45, 56-78
                                   1:45, 67=99;765..888
                                   1,5,8,10,23,45,57,99
-   -[no]membrane       boolean    First membrane from the outside
-   -signature          toggle     Are there any signature areas to be marked
-*  -sigrange           range      Examples of ranges specifications are:
+   -[no]membrane       boolean    [Y] First membrane from the outside
+   -signature          toggle     [N] Are there any signature areas to be
+                                  marked
+*  -sigrange           range      [(full sequence)] Examples of ranges
+                                  specifications are:
                                   10-10 CF, 56-78 SY\ 1:45 SR, 67=99
                                   HY;765..888 SF
                                   1,5,HG,8,10,HY,23,45,SR,57,99,UG
-   -graph              graph      Graph type
+   -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -cyssymbol          menu       Code representing shape and colour for cys
+   -cyssymbol          menu       [CF] Code representing shape and colour for
+                                  cys
                                   i.e. SR square red, HY hexagon yellow
-                                  CF circle NOfill, UG up arrow green
-   -glysymbol          menu       Symbol to display N-glycosylation sites
+                                  CF circle NOfill, UG up arrow green (Values:
+                                  N (None); CF (circle); SF (square); HF
+                                  (hexagon); UF (up arrow); DF (down arrow); C
+                                  (black circle); CG (green circle); CR (red
+                                  circle); CB (blue circle); CA (aqua circle);
+                                  CM (magenta circle); CY (yellow circle); S
+                                  (black square); SG (green square); SR (red
+                                  square); SB (blue square); SA (aqua square);
+                                  SM (magenta square); SY (yellow square); H
+                                  (black hexagon); HG (green hexagon); HR (red
+                                  hexagon); HB (blue hexagon); HA (aqua
+                                  hexagon); HM (magenta hexagon); HY (yellow
+                                  hexagon); U (black up arrow); UG (green up
+                                  arrow); UR (red up arrow); UB (blue up
+                                  arrow); UA (aqua up arrow); UM (magenta up
+                                  arrow); UY (yellow up arrow); D (black down
+                                  arrow); DG (green down arrow); DR (red down
+                                  arrow); DB (blue down arrow); DA (aqua down
+                                  arrow); DM (magenta down arrow); DY (yellow
+                                  down arrow))
+   -glysymbol          menu       [CF] Symbol to display N-glycosylation sites
                                   outside of membrane see cyssymbol for
-                                  examples
-   -acidicaa           menu       Symbol to display acidic amino acids
-   -basicaa            menu       Symbol to display basic amino acids
-   -amineaa            menu       Symbol to display amine amino acids
-   -ohaa               menu       Symbol to display OH- amino acids
-   -araa               menu       Symbol to display aromatic amino acids
-   -proline            menu       Symbol to display prolines
-   -draft              boolean    Is this a draft plot
+                                  examples (Values: N (None); CF (circle); SF
+                                  (square); HF (hexagon); UF (up arrow); DF
+                                  (down arrow); C (black circle); CG (green
+                                  circle); CR (red circle); CB (blue circle);
+                                  CA (aqua circle); CM (magenta circle); CY
+                                  (yellow circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -acidicaa           menu       [CF] Symbol to display acidic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -basicaa            menu       [CF] Symbol to display basic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -amineaa            menu       [CF] Symbol to display amine amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -ohaa               menu       [CF] Symbol to display OH- amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -araa               menu       [CF] Symbol to display aromatic amino acids
+                                  (Values: N (None); CF (circle); SF (square);
+                                  HF (hexagon); UF (up arrow); DF (down
+                                  arrow); C (black circle); CG (green circle);
+                                  CR (red circle); CB (blue circle); CA (aqua
+                                  circle); CM (magenta circle); CY (yellow
+                                  circle); S (black square); SG (green
+                                  square); SR (red square); SB (blue square);
+                                  SA (aqua square); SM (magenta square); SY
+                                  (yellow square); H (black hexagon); HG
+                                  (green hexagon); HR (red hexagon); HB (blue
+                                  hexagon); HA (aqua hexagon); HM (magenta
+                                  hexagon); HY (yellow hexagon); U (black up
+                                  arrow); UG (green up arrow); UR (red up
+                                  arrow); UB (blue up arrow); UA (aqua up
+                                  arrow); UM (magenta up arrow); UY (yellow up
+                                  arrow); D (black down arrow); DG (green
+                                  down arrow); DR (red down arrow); DB (blue
+                                  down arrow); DA (aqua down arrow); DM
+                                  (magenta down arrow); DY (yellow down
+                                  arrow))
+   -proline            menu       [CF] Symbol to display prolines (Values: N
+                                  (None); CF (circle); SF (square); HF
+                                  (hexagon); UF (up arrow); DF (down arrow); C
+                                  (black circle); CG (green circle); CR (red
+                                  circle); CB (blue circle); CA (aqua circle);
+                                  CM (magenta circle); CY (yellow circle); S
+                                  (black square); SG (green square); SR (red
+                                  square); SB (blue square); SA (aqua square);
+                                  SM (magenta square); SY (yellow square); H
+                                  (black hexagon); HG (green hexagon); HR (red
+                                  hexagon); HB (blue hexagon); HA (aqua
+                                  hexagon); HM (magenta hexagon); HY (yellow
+                                  hexagon); U (black up arrow); UG (green up
+                                  arrow); UR (red up arrow); UB (blue up
+                                  arrow); UA (aqua up arrow); UM (magenta up
+                                  arrow); UY (yellow up arrow); D (black down
+                                  arrow); DG (green down arrow); DR (red down
+                                  arrow); DB (blue down arrow); DA (aqua down
+                                  arrow); DM (magenta down arrow); DY (yellow
+                                  down arrow))
+   -draft              boolean    [N] Is this a draft plot
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

@@ -7,8 +7,8 @@
 % <b>fcontml -printdata </b>
 Gene frequency and continuous character Maximum Likelihood
 Input file: <b>contml.dat</b>
-Input tree file: <b></b>
-Output file [contml.fcontml]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip contml program output file [contml.fcontml]: <b></b>
 
 all: true
 Adding species:

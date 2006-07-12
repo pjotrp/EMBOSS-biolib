@@ -95,7 +95,20 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with vrnasubopt</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnasubopt </b>
+Calculate RNA suboptimals
+Input nucleotide sequence: <b>rna1.seq</b>
+Vienna RNAfold output file [rna1.vrnasubopt]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -108,26 +121,32 @@ EDIT HERE
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnasubopt] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -constraintfile     infile     Constraint file
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -erange             float      Calculate suboptimal structures within
-                                  erange of the mfe
-   -prange             float      Only print structures with energy within
-                                  prange of the mfe
-   -sort               boolean    Sort structures by energy
-   -logml              boolean    logarithmic energy function for multi-loops
-   -dangles            menu       Method
-   -nrandom            integer    number of random suboptimal structures
+   -constraintfile     infile     Vienna RNA structure contraints file
+                                  (optional)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -erange             float      [1.0] Calculate suboptimal structures within
+                                  erange of the mfe (Any numeric value)
+   -prange             float      [0.0] Only print structures with energy
+                                  within prange of the mfe (Any numeric value)
+   -sort               boolean    [N] Sort structures by energy
+   -logml              boolean    [N] Logarithmic energy function for
+                                  multi-loops
+   -dangles            menu       [2] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
+   -nrandom            integer    [0] Number of random suboptimal structures
+                                  (Any integer value)
 
    Associated qualifiers:
 
@@ -184,9 +203,9 @@ EDIT HERE
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnasubopt</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -207,14 +226,14 @@ EDIT HERE
 
 <tr>
 <td>-constraintfile</td>
-<td>Constraint file</td>
+<td>Vienna RNA structure contraints file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -284,7 +303,7 @@ EDIT HERE
 
 <tr>
 <td>-logml</td>
-<td>logarithmic energy function for multi-loops</td>
+<td>Logarithmic energy function for multi-loops</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
@@ -292,13 +311,13 @@ EDIT HERE
 <tr>
 <td>-dangles</td>
 <td>Method</td>
-<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies)</i></td></tr><tr><td>3</td> <td><i>(Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
 <td>2</td>
 </tr>
 
 <tr>
 <td>-nrandom</td>
-<td>number of random suboptimal structures</td>
+<td>Number of random suboptimal structures</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -332,7 +351,16 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: rna1.seq</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;rna1
+CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA
+</pre>
+</td></tr></table><p>
 
 
 
@@ -360,7 +388,23 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: rna1.vrnasubopt</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt; rna1 [100]
+CACTACTCCAAGGACCGTATCTTTCTCAGTGCGACAGTAA   -380    100
+...(((((....)).((((.((.....))))))...))).  -2.80
+...(((((....)).(((((........)))))...))).  -3.80
+...(((((....)..(((((........)))))..)))).  -3.10
+.(((..((....)).((((.((.....))))))..)))..  -2.80
+.(((..((....)).(((((........)))))..)))..  -3.80
+......((....)).(((((........))))).......  -3.10
+...............(((((........))))).......  -3.30
+</pre>
+</td></tr></table><p>
 
 
 

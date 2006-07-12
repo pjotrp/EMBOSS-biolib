@@ -12,9 +12,9 @@ Global rearrangements [N]: <b></b>
 Randomize input order of species [N]: <b></b>
 Use empirical base frequencies [Y]: <b></b>
 Outgroup root [N]: <b></b>
-Output file [ednaml.outfile]: <b></b>
+Phylip dnaml program output file [ednaml.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [ednaml.treefile]: <b></b>
+Phylip tree output file [ednaml.treefile]: <b></b>
 
 
 

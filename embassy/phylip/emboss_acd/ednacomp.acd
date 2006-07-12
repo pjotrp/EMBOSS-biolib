@@ -63,6 +63,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "ednacomp.outfile"
   knowntype: "dnacomp output"
+  information: "Phylip dnacomp program output file"
 ]
 
 toggle: trout  [
@@ -80,7 +81,7 @@ boolean: drawtree  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "ednacomp.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "Newick tree"
   nullok: "Y"
 ]

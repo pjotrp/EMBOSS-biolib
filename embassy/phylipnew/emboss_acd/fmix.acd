@@ -13,13 +13,15 @@ discretestates: infile  [
   parameter: "Y"
   characters: "01PB?"
   help: "File containing one or more data sets"
-  knowntype: "discrete characters input"
+  knowntype: "discrete characters"
+  information: "hylip character discrete states file"
 ]
 
 tree: intreefile [
 	parameter: "Y"
 	nullok: "Y"
 	knowntype: "newick"
+	information: "Phylip tree file (optional)"
 ]
 
 properties: weights [
@@ -106,6 +108,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "mix output"
+  information: "Phylip mix program output file"
 ]
 
 toggle: trout [
@@ -117,7 +120,7 @@ toggle: trout [
 outfile: outtreefile  [
   additional: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file (optional)"
   knowntype: "newick tree"
   nullok: "Y"
 ]

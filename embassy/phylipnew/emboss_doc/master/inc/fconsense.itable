@@ -7,16 +7,16 @@
 
 <tr>
 <td>[-intreefile]<br>(Parameter 1)</td>
-<td>(no help text) tree value</td>
+<td>Phylip tree file</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip consense program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fconsense</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -62,7 +62,7 @@
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

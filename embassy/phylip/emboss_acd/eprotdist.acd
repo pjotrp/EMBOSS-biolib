@@ -130,6 +130,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "eprotdist.outfile"
   knowntype: "protdist output"
+  information: "Phylip protdist program output file"
 ]
 
 boolean: printdata  [

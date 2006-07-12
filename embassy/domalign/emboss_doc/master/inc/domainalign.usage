@@ -6,8 +6,8 @@
 
 % <b>domainalign </b>
 Generate alignments (DAF file) for nodes in a DCF file.
-Name of DCF file (domain classification file) (input).: <b>all.scop2</b>
-Location of domain PDB files (input). [./]: <b>../domainer-keep2</b>
+Domain classification file: <b>all.scop2</b>
+Domain pdb directory [./]: <b>../domainer-keep2</b>
 Node at which to remove redundancy
          1 : Class (SCOP)
          2 : Fold (SCOP)
@@ -24,9 +24,9 @@ Alignment algorithm option
          2 : TCOFFEE
 Select number. [1]: <b>1</b>
 Write sequences of singlet families to file. [Y]: <b>N</b>
-Location of DAF files (domain alignment files) (output). [./]: <b>daf</b>
-Location of structural superimposition files (output). [./]: <b></b>
-Name of log file (output). [domainalign.log]: <b></b>
+Domain alignment file output directory [./]: <b>daf</b>
+Pdb entry file output directory [./]: <b></b>
+Domainatrix log output file [domainalign.log]: <b></b>
 
 
 STAMP Structural Alignment of Multiple Proteins

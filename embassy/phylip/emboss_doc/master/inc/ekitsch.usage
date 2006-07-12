@@ -6,9 +6,9 @@
 
 % <b>ekitsch </b>
 Fitch-Margoliash method with contemporary tips
-Data file: <b>kitsch.dat</b>
-Output file [ekitsch.outfile]: <b></b>
-Tree file name [ekitsch.treefile]: <b></b>
+Phylip kitsch program input file: <b>kitsch.dat</b>
+Phylip kitsch program output file [ekitsch.outfile]: <b></b>
+Phylip tree output file [ekitsch.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

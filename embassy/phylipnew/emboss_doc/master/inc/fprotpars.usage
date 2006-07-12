@@ -7,8 +7,8 @@
 % <b>fprotpars </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
-Input tree file: <b></b>
-Output file [protpars.fprotpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
 
 
 Adding species:
@@ -40,8 +40,8 @@ Trees also written onto file "protpars.treefile"
 % <b>fprotpars -njumble 3 -seed 3 -printdata -ancseq -whichcode m -stepbox -outgrno 2  -thresh -threshold 3 </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
-Input tree file: <b></b>
-Output file [protpars.fprotpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
 
 
 Adding species:
@@ -97,8 +97,8 @@ Trees also written onto file "protpars.treefile"
 % <b>fprotpars -njumble 3 -seed 3 </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars2.dat</b>
-Input tree file: <b></b>
-Output file [protpars2.fprotpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars2.fprotpars]: <b></b>
 
 Data set # 1:
 
@@ -240,8 +240,8 @@ Trees also written onto file "protpars2.treefile"
 % <b>fprotpars -option </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
-Input tree file: <b></b>
-Weights file: <b>protparswts.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip weights file (optional): <b>protparswts.dat</b>
 Number of times to randomise [0]: <b></b>
 Species number to use as outgroup [0]: <b></b>
 Use threshold parsimony [N]: <b></b>
@@ -252,9 +252,9 @@ Genetic codes
          F : Fly mitochondrial
          Y : Yeast mitochondrial
 Use which genetic code [Universal]: <b></b>
-Output file [protpars.fprotpars]: <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
 Write out trees to tree file [Y]: <b></b>
-Tree file name [protpars.treefile]: <b></b>
+Phylip tree output file (optional) [protpars.treefile]: <b></b>
 Print data at start of run [N]: <b></b>
 Print indications of progress of run [Y]: <b></b>
 Print out tree [Y]: <b></b>

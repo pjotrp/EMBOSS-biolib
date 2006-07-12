@@ -22,8 +22,8 @@ section: input
 infile: hmmfile  
 [
   parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+  knowntype: "hmm"
+  information: "MMER hidden markov model file"
   help: "File of HMMs."
 ]
 
@@ -206,7 +206,7 @@ outfile: outfile
 [
   parameter: "Y"
   knowntype: "hmmpfam output"
-  information: "Output report for each input sequence." 
+  information: "HMMER hmmpfam program output file" 
   help: "There is a separate output report for each sequence in seqfile. This report consists of three sections: a ranked list of the best scoring HMMs, a list of the best scoring domains in order of their occurrence in the sequence, and alignments for all the best scoring domains."
 ]
 

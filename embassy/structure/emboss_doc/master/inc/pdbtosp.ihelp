@@ -4,9 +4,10 @@
                                   HETPARSE parses this file, which is
                                   available at URL
                                   http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt
-  [-outfile]           outfile    This option specifies the name of
-                                  swissprot:PDB equivalence file (EMBL-like
-                                  format). This is the PDBTOSP output file.
+  [-outfile]           outfile    [Epdbtosp.dat] This option specifies the
+                                  name of swissprot:PDB equivalence file
+                                  (EMBL-like format). This is the PDBTOSP
+                                  output file.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

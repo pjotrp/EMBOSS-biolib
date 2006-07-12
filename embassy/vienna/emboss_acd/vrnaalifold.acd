@@ -21,15 +21,15 @@ section: input [
   infile: constraintfile  [
     nullok: "Y"
     default: ""
-    information: "Constraint file"
-    knowntype: "rna constraint file"
+    information: "Vienna RNA structure contraints file (optional)"
+    knowntype: "rna constraint"
   ]
 
   infile: paramfile [
     nullok: "Y"
     default: ""
-    information: "Parameter file"
-    knowntype: "rna parameter file"
+    information: "Vienna RNA parameters file (optional)"
+    knowntype: "rna parameter"
   ]
 
 endsection: input
@@ -67,6 +67,7 @@ section: advanced [
   string: nsbases [
     default: ""
     information: "Non-standard bases"
+    knowntype: "nucleotide codes"
   ]
 
   boolean: tetraloop [
@@ -93,13 +94,13 @@ section: advanced [
   ]
 
   list: dangles  [
-    default: "1"
+    default: "2"
     minimum: "1"
     maximum: "1"
     header: "How to treat dangling end energies"
     values: "0:Ignore,
              1:Only unpaired bases for just one dangling end,
-             2:Always use dangling energies
+             2:Always use dangling energies,
              3:Allow coaxial stacking of adjacent helices"
     delimiter: ","
     codedelimiter: ":"
@@ -136,12 +137,14 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "rnafold output"
+    information: "Vienna RNAfold output file"
   ]
 
   outfile: ssoutfile  [
     name: "$(sequence.name)"
     extension: "ssps"
-    knowntype: "postscript"
+    knowntype: "vienna structure"
+    information: "Vienna structure postscript output file"
   ]
 
 endsection: output

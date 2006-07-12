@@ -15,7 +15,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "Continuous character input file"
+  information: "Phylip contml program input file"
   knowntype: "contml input"
 ]
 
@@ -112,6 +112,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "econtml.outfile"
   knowntype: "contml output"
+  information: "Phylip contml program output file"
 ]
 
 
@@ -142,7 +143,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "econtml.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "Newick tree"
 ]
 

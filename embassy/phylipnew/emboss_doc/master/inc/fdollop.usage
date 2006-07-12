@@ -6,9 +6,9 @@
 
 % <b>fdollop </b>
 Dollo and polymorphism parsimony algorithm
-Input file: <b>dollop.dat</b>
-Input tree file: <b></b>
-Output file [dollop.fdollop]: <b></b>
+Phylip character discrete states file: <b>dollop.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip dollop program output file [dollop.fdollop]: <b></b>
 
 
 Dollo and polymorphism parsimony algorithm, version 3.6b

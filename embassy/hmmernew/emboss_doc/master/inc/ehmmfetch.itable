@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-database]<br>(Parameter 1)</td>
-<td>Database name</td>
+<td>HMMER hmm database file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -21,9 +21,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ehmmfetch</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -43,7 +43,7 @@
 </tr>
 
 <tr>
-<td>-n</td>
+<td>-nhmm</td>
 <td>Interpret name as an HMM number instead of a name. Numbering starts at 0. For example, to fetch the frst HMM from an HMM database called foo, you would do 'hmmfetch -n 0 foo'.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>

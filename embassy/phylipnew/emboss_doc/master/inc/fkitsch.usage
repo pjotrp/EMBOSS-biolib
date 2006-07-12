@@ -6,9 +6,9 @@
 
 % <b>fkitsch </b>
 Fitch-Margoliash method with contemporary tips
-Input file: <b>kitsch.dat</b>
-Input tree file: <b></b>
-Output file [kitsch.fkitsch]: <b></b>
+Phylip distance matrix file: <b>kitsch.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip kitsch program output file [kitsch.fkitsch]: <b></b>
 
 
  inseed: 0

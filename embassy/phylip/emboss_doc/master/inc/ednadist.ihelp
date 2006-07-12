@@ -1,18 +1,30 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing a sequence alignment
-   -matrix             menu       Form
-   -method             menu       Choose the method to use
-   -ttratio            float      Transition/transversion ratio
-  [-outfile]           outfile    Output file name
+   -matrix             menu       [S] Form (Values: S (Square); L
+                                  (Lower-triangular))
+   -method             menu       [Kimura] Choose the method to use (Values:
+                                  Kimura (Kimura 2-parameter distance); JinNei
+                                  (Jin and Nei distance); ML (Maximum
+                                  Likelihood distance); Jukes (Jukes-Cantor
+                                  distance))
+   -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  up to 100.000)
+  [-outfile]           outfile    [ednadist.outfile] Phylip dnadist program
+                                  output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -categories         integer    Number of categories of substitution rates
-*  -[no]basefrequency  toggle     Use empirical base frequencies
-*  -freqa              float      Frequency for A
-*  -freqc              float      Frequency for C
-*  -freqg              float      Frequency for G
-*  -freqt              float      Frequency for T/U
-   -printinitial       boolean    Print out the data at start of run
+   -categories         integer    [1] Number of categories of substitution
+                                  rates (Any integer value)
+*  -[no]basefrequency  toggle     [Y] Use empirical base frequencies
+*  -freqa              float      [0.25] Frequency for A (Number from 0.000 to
+                                  1.000)
+*  -freqc              float      [0.25] Frequency for C (Number from 0.000 to
+                                  1.000)
+*  -freqg              float      [0.25] Frequency for G (Number from 0.000 to
+                                  1.000)
+*  -freqt              float      [0.25] Frequency for T/U (Number from 0.000
+                                  to 1.000)
+   -printinitial       boolean    [N] Print out the data at start of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

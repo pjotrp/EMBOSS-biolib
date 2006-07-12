@@ -1,24 +1,28 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     File containing a sequence
-   -og                 toggle     Outgroup root
-*  -outgnum            integer    Number of the outgroup
-*  -valthresh          float      Threshold value
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+   -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+*  -valthresh          float      [1.0] Threshold value (Number 1.000 or more)
+  [-outfile]           outfile    [ednapenny.outfile] Phylip dnapenny program
+                                  output file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [ednapenny.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
-   -numgroups          integer    How many groups of 100 trees
-   -howoften           integer    How often to report, in trees
+   -numgroups          integer    [1000] How many groups of 100 trees (Any
+                                  integer value)
+   -howoften           integer    [100] How often to report, in trees (Any
+                                  integer value)
    -simple             boolean    Branch and bound is simple
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -steps              boolean    Print out steps in each site
-   -seqatnodes         boolean    Print sequences at all nodes of tree
-   -[no]drawtree       boolean    Draw tree
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -steps              boolean    [N] Print out steps in each site
+   -seqatnodes         boolean    [N] Print sequences at all nodes of tree
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers:
-   -thresh             toggle     Use Threshold parsimony
+   -thresh             toggle     [N] Use Threshold parsimony
 
    Associated qualifiers:
 

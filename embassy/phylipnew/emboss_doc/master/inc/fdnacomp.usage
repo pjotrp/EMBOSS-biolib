@@ -7,9 +7,9 @@
 % <b>fdnacomp -ancseq -stepbox -printdata </b>
 DNA compatibility algorithm
 Input (aligned) nucleotide sequence set(s): <b>dnacomp.dat</b>
-Input tree file: <b></b>
-Weights file: <b></b>
-Output file [dnacomp.fdnacomp]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip weights file (optional): <b></b>
+Phylip dnacomp program output file [dnacomp.fdnacomp]: <b></b>
 
 Adding species:
    1. Alpha     
@@ -40,9 +40,9 @@ Trees also written onto file "dnacomp.treefile"
 % <b>fdnacomp </b>
 DNA compatibility algorithm
 Input (aligned) nucleotide sequence set(s): <b>dnacomp.dat</b>
-Input tree file: <b>dnacomptree.dat</b>
-Weights file: <b></b>
-Output file [dnacomp.fdnacomp]: <b></b>
+Phylip tree file (optional): <b>dnacomptree.dat</b>
+Phylip weights file (optional): <b></b>
+Phylip dnacomp program output file [dnacomp.fdnacomp]: <b></b>
 
 Output written to file "dnacomp.fdnacomp"
 

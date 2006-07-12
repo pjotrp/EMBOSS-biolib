@@ -398,13 +398,17 @@ AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2
   6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers (* if not always prompted):
-   -mode               menu       This option specifies the amino acid residue
-                                  positions to use in calculating the
-                                  substitution data.
-*  -model              menu       This option specifies whether to use all
-                                  ligands or a specific set of ligands present
-                                  in a CON file when calculating the
-                                  substitution data.
+   -mode               menu       [1] This option specifies the amino acid
+                                  residue positions to use in calculating the
+                                  substitution data. (Values: 1 (All amino
+                                  acid positions for domains in a DCF file); 2
+                                  (Ligand-binding positions.))
+*  -model              menu       [1] This option specifies whether to use all
+                                  ligands or a specific set of ligands
+                                  present in a CON file when calculating the
+                                  substitution data. (Values: 1 (All ligands
+                                  within a CON file); 2 (Select ligands within
+                                  a CON file.))
 *  -dcfinfile          infile     This option specifies the name of DCF file
                                   (domain classification file) (input). A
                                   'domain classification file' contains
@@ -428,10 +432,10 @@ AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2
                                   of ligand ('heterogen') 3-character
                                   identifier codes. One id code should be
                                   given per line.
-  [-ccfddir]           directory  This option specifies the location of CCF
-                                  files (clean coordinate files) (input) which
-                                  have been processed by using PDBPLUS. A
-                                  'clean cordinate file' contains protein
+  [-ccfddir]           directory  [./] This option specifies the location of
+                                  CCF files (clean coordinate files) (input)
+                                  which have been processed by using PDBPLUS.
+                                  A 'clean cordinate file' contains protein
                                   coordinate and derived data for a single PDB
                                   file ('protein clean coordinate file') or a
                                   single domain from SCOP or CATH ('domain
@@ -443,10 +447,10 @@ AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2
                                   for residue solvent accessibility and
                                   secondary structure are added to the file by
                                   using PDBPLUS.
-*  -ccfpdir            directory  This option specifies the location of CCF
-                                  files (clean coordinate files) (input) which
-                                  have been processed by using PDBPLUS. A
-                                  'clean cordinate file' contains protein
+*  -ccfpdir            directory  [./] This option specifies the location of
+                                  CCF files (clean coordinate files) (input)
+                                  which have been processed by using PDBPLUS.
+                                  A 'clean cordinate file' contains protein
                                   coordinate and derived data for a single PDB
                                   file ('protein clean coordinate file') or a
                                   single domain from SCOP or CATH ('domain
@@ -458,12 +462,19 @@ AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2
                                   for residue solvent accessibility and
                                   secondary structure are added to the file by
                                   using PDBPLUS.
-   -modee              menu       This option specifies the environment
+   -modee              menu       [1] This option specifies the environment
                                   definition. See matgen3d documentation for
-                                  description of definitions.
-  [-scmatrixfile]      outfile    Name of substitution matrix (output).
-  [-calclogfile]       outfile    Name of first log file (calculations).
-  [-logfile]           outfile    Name of second log file (errors).
+                                  description of definitions. (Values: 1
+                                  (Env1); 2 (Env2); 3 (Env3); 4 (Env4); 5
+                                  (Env5); 6 (Env6); 7 (Env7); 8 (Env8); 9
+                                  (Env9); 10 (Env10); 11 (Env11); 12 (Env12);
+                                  13 (Env13); 14 (Env14); 15 (Env15); 16
+                                  (Env16))
+  [-scmatrixfile]      outfile    [matgen3d.out] Domainatrix substitution
+                                  matrix output file
+  [-calclogfile]       outfile    [matgen3d.calc] Domainatrix calculations log
+                                  output file
+  [-logfile]           outfile    [matgen3d.log] Domainatrix log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -493,208 +504,3 @@ AU   -0.01  1.19  0.91  0.50  1.19  0.68 -0.11  2.00  1.19  0.35 -0.11  0.91  2
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   -mode This option specifies the amino acid residue positions to use in
-   calculating the substitution data.
-   1 (All amino acid positions for domains in a DCF file)
-   2 (Ligand-binding positions.)
-   1
-   -model This option specifies whether to use all ligands or a specific
-   set of ligands present in a CON file when calculating the substitution
-   data.
-   1 (All ligands within a CON file)
-   2 (Select ligands within a CON file.)
-   1
-   -dcfinfile This option specifies the name of DCF file (domain
-   classification file) (input). A 'domain classification file' contains
-   classification and other data for domains from SCOP or CATH, in DCF
-   format (EMBL-like). The files are generated by using SCOPPARSE and
-   CATHPARSE. Domain sequence information can be added to the file by
-   using DOMAINSEQS. Input file Required
-   -coninfile This option specifies the location of CON files (contact
-   files) (output). A 'contact file' contains contact data for a protein
-   or a domain from SCOP or CATH, in the CON format (EMBL-like). The
-   contacts may be intra-chain residue-residue, inter-chain
-   residue-residue or residue-ligand. The files are generated by using
-   CONTACTS, INTERFACE and SITES. Input file Required
-   -liginfile This option specifies the location of the ligand list file.
-   This file contains a list of ligand ('heterogen') 3-character
-   identifier codes. One id code should be given per line. Input file
-   Required
-   [-ccfddir]
-   (Parameter 1) This option specifies the location of CCF files (clean
-   coordinate files) (input) which have been processed by using PDBPLUS.
-   A 'clean cordinate file' contains protein coordinate and derived data
-   for a single PDB file ('protein clean coordinate file') or a single
-   domain from SCOP or CATH ('domain clean coordinate file'), in CCF
-   format (EMBL-like). The files, generated by using PDBPARSE (PDB files)
-   or DOMAINER (domains), contain 'cleaned-up' data that is
-   self-consistent and error-corrected. Records for residue solvent
-   accessibility and secondary structure are added to the file by using
-   PDBPLUS. Directory ./
-   -ccfpdir This option specifies the location of CCF files (clean
-   coordinate files) (input) which have been processed by using PDBPLUS.
-   A 'clean cordinate file' contains protein coordinate and derived data
-   for a single PDB file ('protein clean coordinate file') or a single
-   domain from SCOP or CATH ('domain clean coordinate file'), in CCF
-   format (EMBL-like). The files, generated by using PDBPARSE (PDB files)
-   or DOMAINER (domains), contain 'cleaned-up' data that is
-   self-consistent and error-corrected. Records for residue solvent
-   accessibility and secondary structure are added to the file by using
-   PDBPLUS. Directory ./
-   -modee This option specifies the environment definition. See matgen3d
-   documentation for description of definitions.
-   1  (Env1)
-   2  (Env2)
-   3  (Env3)
-   4  (Env4)
-   5  (Env5)
-   6  (Env6)
-   7  (Env7)
-   8  (Env8)
-   9  (Env9)
-   10 (Env10)
-   11 (Env11)
-   12 (Env12)
-   13 (Env13)
-   14 (Env14)
-   15 (Env15)
-   16 (Env16)
-   1
-   [-scmatrixfile]
-   (Parameter 2) Name of substitution matrix (output). Output file
-   matgen3d.out
-   [-calclogfile]
-   (Parameter 3) Name of first log file (calculations). Output file
-   matgen3d.calc
-   [-logfile]
-   (Parameter 4) Name of second log file (errors). Output file
-   matgen3d.log
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
-
-  6.2 EXAMPLE SESSION
-
-   An example of interactive use of MATGEN3D is shown below. Here is a
-   sample session with matgen3d
-
-
-% matgen3d 
-Generate a 3D-1D scoring matrix from CCF files.
-DCF file amino acid positions
-         1 : All amino acid positions for domains in a DCF file
-         2 : Ligand-binding positions.
-This option specifies the amino acid residue positions to use in calculating th
-e substitution data. [1]: 1
-Name of DCF file (domain classification file (input).: ../scopparse-keep/all.sc
-op
-Location of domain CCF files (clean coordinate files) (input) [./]: ../domainer
--keep
-Choose environment definition.
-         1 : Env1
-         2 : Env2
-         3 : Env3
-         4 : Env4
-         5 : Env5
-         6 : Env6
-         7 : Env7
-         8 : Env8
-         9 : Env9
-        10 : Env10
-        11 : Env11
-        12 : Env12
-        13 : Env13
-        14 : Env14
-        15 : Env15
-        16 : Env16
-This option specifies the environment definition. See matgen3d documentation fo
-r description of definitions. [1]: 1
-Name of substitution matrix (output). [matgen3d.out]: 
-Name of first log file (calculations). [matgen3d.calc]: 
-Name of second log file (errors). [matgen3d.log]: 
-
-   Go to the input files for this example
-   Go to the output files for this example
-
-7.0 KNOWN BUGS & WARNINGS
-
-   The CCF files read must contain secondary structure and solvent
-   accessibility data. These can be added to the file by using PDBPLUS
-
-8.0 NOTES
-
-  8.1 GLOSSARY OF FILE TYPES
-
-   FILE TYPE FORMAT DESCRIPTION CREATED BY SEE ALSO
-   Domain classification file (for SCOP) DCF format (EMBL-like).
-   Classification and other data for domains from SCOP. SCOPPARSE Domain
-   sequence information can be added to the file by using DOMAINSEQS.
-   Domain classification file (for CATH) DCF format (EMBL-like).
-   Classification and other data for domains from CATH. CATHPARSE Domain
-   sequence information can be added to the file by using DOMAINSEQS.
-   Clean coordinate file (for domain) CCF format (EMBL-like). Protein
-   coordinate and derived data for a single domain from SCOP or CATH. The
-   data are 'cleaned-up': self-consistent and error-corrected. DOMAINER
-   Records for residue solvent accessibility and secondary structure are
-   added to the file by using PDBPLUS.
-
-9.0 DESCRIPTION
-
-   MATGEN3D generates a matrix of 3D:1D scores which give the probability
-   of finding a certain amino acid residue (1D) in a certain environment
-   in space (3D). The environments are defined on the basis of secondary
-   structure and solvent accessibility. The 3D:1D scores are calculated
-   from the first domain only from each family represented in the DCF
-   file (input). This ensures the scores are not biased to any particular
-   family of proteins.
-
-10.0 ALGORITHM
-
-   Environment definitions will be described here.
-   
-11.0 RELATED APPLICATIONS
-
-See also
-
-   Program name                       Description
-   contacts     Generate intra-chain CON files from CCF files
-   domainalign  Generate alignments (DAF file) for nodes in a DCF file
-   domainrep    Reorder DCF file to identify representative structures
-   domainreso   Remove low resolution domains from a DCF file
-   interface    Generate inter-chain CON files from CCF files
-   libgen       Generate discriminating elements from alignments
-   psiphi       Phi and psi torsion angles from protein coordinates
-   rocon        Generates a hits file from comparing two DHF files
-   rocplot      Performs ROC analysis on hits files
-   seqalign     Extend alignments (DAF file) with sequences (DHF file)
-   seqfraggle   Removes fragment sequences from DHF files
-   seqsearch    Generate PSI-BLAST hits (DHF file) from a DAF file
-   seqsort      Remove ambiguous classified sequences from DHF files
-   seqwords     Generates DHF files from keyword search of UniProt
-   siggen       Generates a sparse protein signature from an alignment
-   siggenlig    Generate ligand-binding signatures from a CON file
-   sigscan      Generate hits (DHF file) from a signature search
-   sigscanlig   Search ligand-signature library & write hits (LHF file)
-
-12.0 DIAGNOSTIC ERROR MESSAGES
-
-   None.
-
-13.0 AUTHORS
-
-   Waqas Awan (wawan@rfcgr.mrc.ac.uk)
-   Jon Ison (jison@rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-14.0 REFERENCES
-
-   Please cite the authors and EMBOSS.
-   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
-   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
-   
-   See also http://emboss.sourceforge.net/
-
-  14.1 Other useful references

@@ -282,7 +282,7 @@ not intended that the table be used for inferring the tree.
 % <b>fprotdist </b>
 Protein distance algorithm
 Input (aligned) protein sequence set(s): <b>protdist.dat</b>
-Output file [protdist.fprotdist]: <b></b>
+Phylip distance matrix output file [protdist.fprotdist]: <b></b>
 
 
 Computing distances:
@@ -310,27 +310,46 @@ Output written to file "protdist.fprotdist"
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fprotdist] Phylip distance matrix output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -ncategories        integer    Number of substitution rate categories
+   -ncategories        integer    [1] Number of substitution rate categories
+                                  (Integer from 1 to 9)
 *  -rate               array      Rate for each category
 *  -categories         properties File of substitution rate categories
    -weights            properties Weights file
-   -method             menu       Choose the method to use
-*  -gamma              menu       Rate variation among sites
-*  -gammacoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-*  -invarcoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-*  -aacateg            menu       Choose the category to use
-*  -whichcode          menu       Which genetic code
-*  -ease               float      Prob change category (1.0=easy)
-*  -ttratio            float      Transition/transversion ratio
-*  -basefreq           array      Base frequencies for A C G T/U (use blanks
-                                  to separate)
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+   -method             menu       [j] Choose the method to use (Values: j
+                                  (Jones-Taylor-Thornton matrix); h
+                                  (Henikoff/Tiller PMB matrix); d (Dayhoff PAM
+                                  matrix); k (Kimura formula); s (Similarity
+                                  table); c (Categories model))
+*  -gamma              menu       [c] Rate variation among sites (Values: g
+                                  (Gamma distributed rates); i
+                                  (Gamma+invariant sites); c (Constant rate))
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+*  -invarcoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+*  -aacateg            menu       [G] Choose the category to use (Values: G
+                                  (George/Hunt/Barker (Cys), (Met Val Leu
+                                  Ileu), (Gly Ala Ser Thr Pro)); C (Chemical
+                                  (Cys Met), (Val Leu Ileu Gly Ala Ser Thr),
+                                  (Pro)); H (Hall (Cys), (Met Val Leu Ileu),
+                                  (Gly Ala Ser Thr),(Pro)))
+*  -whichcode          menu       [u] Which genetic code (Values: u
+                                  (Universal); c (Ciliate); m (Universal
+                                  mitochondrial); v (Vertebrate
+                                  mitochondrial); f (Fly mitochondrial); y
+                                  (Yeast mitochondrial))
+*  -ease               float      [0.457] Prob change category (1.0=easy)
+                                  (Number from 0.000 to 1.000)
+*  -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  0.000 or more)
+*  -basefreq           array      [0.25 0.25 0.25 0.25] Base frequencies for A
+                                  C G T/U (use blanks to separate)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -388,9 +407,9 @@ Output written to file "protdist.fprotdist"
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip distance matrix output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fprotdist</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -16,13 +16,15 @@ section: input [
 distances: datafile  [
   parameter: "Y"
   help: "File containing one or more distance matrices"
-  knowntype: "distance matrix"
+  knowntype: "distance matrix"	
+information: "Phylip distance matrix file"
 ]
 
 tree: intreefile [
 	parameter: "Y"
 	nullok: "Y"
 	knowntype: "newick"
+	information: "Phylip tree file (optional)"
 ]
 
 endsection: input
@@ -93,6 +95,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "kitsch output"
+  information: "Phylip kitsch program output file"
 ]
 
 toggle: trout [
@@ -104,7 +107,7 @@ toggle: trout [
 outfile: outtreefile  [
   additional: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file (optional)"
   knowntype: "newick tree"
   nullok: "Y"
 ]

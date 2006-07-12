@@ -7,14 +7,14 @@
 
 <tr>
 <td>[-datafile]<br>(Parameter 1)</td>
-<td>Data file</td>
+<td>Phylip factor program input file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip factor program output file</td>
 <td>Output file</td>
 <td>efactor.outfile</td>
 </tr>

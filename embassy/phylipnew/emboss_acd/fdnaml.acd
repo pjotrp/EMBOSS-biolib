@@ -21,6 +21,7 @@ section: input [
     parameter: "Y"
     nullok: "Y"
     knowntype: "newick"
+    information: "Phylip tree file (optional)"
   ]
 
   integer: ncategories [
@@ -236,6 +237,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     knowntype: "dnaml output"
+    information: "Phylip dnaml program output file"
   ]
 
   toggle: trout [
@@ -247,7 +249,7 @@ section: output [
   outfile: outtreefile [
     additional: "$(trout)"
     extension: "treefile"
-    information: "Tree file name"
+    information: "Phylip tree output file (optional)"
     knowntype: "newick tree"
     nullok: "Y"
   ]

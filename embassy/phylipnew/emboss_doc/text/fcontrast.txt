@@ -112,8 +112,8 @@ Usage
 % fcontrast 
 Continuous character Contrasts
 Input file: contrast.dat
-Input tree file: contrast.tree
-Output file [contrast.fcontrast]: 
+Phylip tree file: contrast.tree
+Phylip contrast program output file [contrast.fcontrast]: 
 
 
 Output written to file "contrast.fcontrast"
@@ -128,17 +128,18 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file
+  [-outfile]           outfile    [*.fcontrast] Phylip contrast program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -varywithin         boolean    Within-population variation in data
-*  -[no]reg            boolean    Print out correlations and regressions
-*  -writecont          boolean    Print out contrasts
-*  -[no]nophylo        boolean    LRT test of no phylogenetic component, with
-                                  and without VarA
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+   -varywithin         boolean    [N] Within-population variation in data
+*  -[no]reg            boolean    [Y] Print out correlations and regressions
+*  -writecont          boolean    [N] Print out contrasts
+*  -[no]nophylo        boolean    [Y] LRT test of no phylogenetic component,
+                                  with and without VarA
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -160,28 +161,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) File containing one or more sets of data Frequency
-   value(s)
-   [-intreefile]
-   (Parameter 2) (no help text) tree value Phylogenetic tree
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.fcontrast
-   Additional (Optional) qualifiers Allowed values Default
-   -varywithin Within-population variation in data Boolean value Yes/No
-   No
-   -[no]reg Print out correlations and regressions Boolean value Yes/No
-   Yes
-   -writecont Print out contrasts Boolean value Yes/No No
-   -[no]nophylo LRT test of no phylogenetic component, with and without
-   VarA Boolean value Yes/No Yes
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

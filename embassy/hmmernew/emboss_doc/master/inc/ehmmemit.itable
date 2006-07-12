@@ -20,7 +20,7 @@
 </tr>
 
 <tr>
-<td>-n</td>
+<td>-nseq</td>
 <td>Generate <n> sequences. Default is 10.</td>
 <td>Any integer value</td>
 <td>10</td>
@@ -30,7 +30,7 @@
 <td>[-o]<br>(Parameter 2)</td>
 <td>File of synthetic sequences.</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ehmmemit</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

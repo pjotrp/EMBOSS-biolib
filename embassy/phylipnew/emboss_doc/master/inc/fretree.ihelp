@@ -1,14 +1,19 @@
    Standard (Mandatory) qualifiers:
-  [-spp]               integer    Number of species
-  [-intreefile]        tree       (no help text) tree value
-  [-outtreefile]       outfile    Output file name
+  [-spp]               integer    [0] Number of species (Any integer value)
+  [-intreefile]        tree       Phylip tree file
+  [-outtreefile]       outfile    [*.fretree] PHYLIP tree output file
 
    Additional (Optional) qualifiers:
-   -initialtree        menu       Initial tree
-   -format             menu       Format to write trees
-   -screenwidth        integer    Width of terminal screen in characters
-   -vscreenwidth       integer    Width of plotting area in characters
-   -screenlines        integer    Number of lines on screen
+   -initialtree        menu       [Arbitary] Initial tree (Values: a
+                                  (Arbitary); u (User); s (Specify))
+   -format             menu       [p] Format to write trees (Values: p
+                                  (PHYLIP); n (NEXUS); x (XML))
+   -screenwidth        integer    [80] Width of terminal screen in characters
+                                  (Any integer value)
+   -vscreenwidth       integer    [80] Width of plotting area in characters
+                                  (Any integer value)
+   -screenlines        integer    [24] Number of lines on screen (Any integer
+                                  value)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

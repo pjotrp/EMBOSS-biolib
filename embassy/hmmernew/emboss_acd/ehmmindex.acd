@@ -22,7 +22,7 @@ section: input
 infile: database
 [
   parameter: "Y"
-  information: "HMM database file"
+  information: "HMMER hmm database file"
   knowntype: "hmm database"
   help: "HMM database."
 ]

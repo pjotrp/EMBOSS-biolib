@@ -136,29 +136,30 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "seqbootdisc output"
+  information: "Phylip seqboot_disc program output file"
 ]
 
 outfile: outancfile  [
   parameter: "Y"
-  knowntype: "outancfile"
+  knowntype: "phylip ancestor"
   extension: "ancfile"
-  information: "Out ancestor file name"
+  information: "Phylip ancestor data output file (optional)"
   nullok: @(!$(ancfile.isdefined))
 ]
 
 outfile: outmixfile  [
   parameter: "Y"
-  knowntype: "outmixfile"
+  knowntype: "phylip mix"
   extension: "mixfile"
-  information: "Out mix file name"
+  information: "Phylip mix data output file (optional)"
   nullok: "@(!$(mixfile.isdefined))"
 ]
 
 outfile: outfactfile  [
   parameter: "Y"
   extension: "factfile"
-  knowntype: "outfactfile"
-  information: "Out fact file name"
+  knowntype: "phylip factor"
+  information: "Phylip factor data output file (optional)"
   nullok: "@(!$(factorfile.isdefined))"
 ]
 

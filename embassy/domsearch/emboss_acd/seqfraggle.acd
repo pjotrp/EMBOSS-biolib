@@ -14,8 +14,7 @@ section: input [
 
   dirlist: dhfinpath [
     parameter: "Y"
-    information: "Location of DHF files (domain hits files) or
-                  other sequence files (input)."
+    information: "Domain hits directories"
     help: "This option specifies the location of DHF files (domain
            hits files) or other sequence files (input). A 'domain hits file'
            contains database hits (sequences) with domain classification
@@ -26,7 +25,7 @@ section: input [
            accept sequence or sequence sets in any of the common formats."
     extension: "dhf"
     default: "./"
-    knowntype: "domain hits file"
+    knowntype: "domain hits"
   ]
 
 endsection: input
@@ -58,8 +57,7 @@ section: output [
 
   outdir: dhfoutdir [
     parameter: "Y"
-    information: "Location of DHF files (domain hits files)
-                  (output)."
+    information: "Domain hits file output directory"
     help: "This option specifies the location of DHF files (domain
            hits files) (output). A 'domain hits file' contains database hits
            (sequences) with domain classification information, in FASTA or
@@ -70,7 +68,7 @@ section: output [
            common formats."
     default: "./"
     extension: "dhf"
-    knowntype: "domain hits file"
+    knowntype: "domain hits"
   ]
 
 endsection: output

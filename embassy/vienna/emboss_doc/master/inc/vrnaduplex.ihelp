@@ -3,21 +3,25 @@
                                   format, or reference (input USA)
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnaduplex] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -delta              float      Energy range for suboptimal structures
-   -sort               boolean    Sort suboptimal structures
-   -dangles            menu       Method
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -delta              float      [-1.0] Energy range for suboptimal
+                                  structures (Any numeric value)
+   -sort               boolean    [N] Sort suboptimal structures
+   -dangles            menu       [1] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
 
    Associated qualifiers:
 

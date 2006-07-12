@@ -6,15 +6,15 @@
 
 % <b>pdbparse </b>
 Parses PDB files and writes protein CCF files.
-Location of PDB files (input) [./]: <b>structure</b>
+Pdb entry directories [./]: <b>structure</b>
 Mask non-amino acid groups in protein chains that do not contain a C-alpha atom. [N]: <b></b>
 Mask amino acids in protein chains that do not contain a C-alpha atom. [N]: <b>Y</b>
 Mask amino acid residues in protein chains with a single atom only. [N]: <b></b>
-Location of CCF files (clean coordinate files) (output) [./]: <b></b>
-Name of log file for the build. [pdbparse.log]: <b></b>
+Clean protein structure coordinates file output directory [./]: <b></b>
+Domainatrix log output file [pdbparse.log]: <b></b>
 
-Processing /homes/user/test/data/structure/1ii7.ent
 Processing /homes/user/test/data/structure/1cs4.ent
+Processing /homes/user/test/data/structure/1ii7.ent
 Processing /homes/user/test/data/structure/2hhb.ent
 
 </pre></td></tr></table><p>

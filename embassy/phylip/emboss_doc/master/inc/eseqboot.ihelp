@@ -1,17 +1,25 @@
    Standard (Mandatory) qualifiers:
-  [-datafile]          infile     Input file
-   -randseed           integer    Random number seed (must be odd)
-   -method             menu       Choose the method
-   -test               menu       Choose test
-   -reps               integer    How many replicates
-  [-outfile]           outfile    Output file name
+  [-datafile]          infile     Phylip seqboot program input file
+   -randseed           integer    [3] Random number seed (must be odd) (Any
+                                  integer value)
+   -method             menu       [Seq] Choose the method (Values: Seq
+                                  (Molecular sequences); Mor (Discrete
+                                  Morphology); Res (Restriction Sites); Gen
+                                  (Gene Frequencies))
+   -test               menu       [Boot] Choose test (Values: Boot
+                                  (Bootstrap); Jack (Delete-half Jackknife);
+                                  Perm (Permute species for each character))
+   -reps               integer    [100] How many replicates (Integer 1 or
+                                  more)
+  [-outfile]           outfile    [eseqboot.outfile] Phylip seqboot program
+                                  output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -enzymes            boolean    Present in input file
-*  -all                boolean    All alleles present at each locus
-   -inter              boolean    Interleaved input
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
+*  -enzymes            boolean    [N] Present in input file
+*  -all                boolean    [N] All alleles present at each locus
+   -inter              boolean    [N] Interleaved input
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

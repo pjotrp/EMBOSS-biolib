@@ -1,12 +1,14 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmconvert] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -format             menu       Select format
-   -append             boolean    Append to file
-   -force              boolean    Force overwriting
+   -format             menu       [A] Select format (Values: A (ascii); B
+                                  (binary); G (gcg); X (xsw))
+   -append             boolean    [N] Append to file
+   -force              boolean    [N] Force overwriting
 
    Associated qualifiers:
 

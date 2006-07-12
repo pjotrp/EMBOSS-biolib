@@ -165,6 +165,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "ednamlk.outfile"
   knowntype: "dnamlk output"
+  information: "phylip dnamlk program output file"
 ]
 
 boolean: printdata  [
@@ -194,7 +195,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "ednamlk.treefile"
-  information: "Tree file name"
+  information: "Phylip output tree file"
   knowntype: "newick tree"
 ]
 

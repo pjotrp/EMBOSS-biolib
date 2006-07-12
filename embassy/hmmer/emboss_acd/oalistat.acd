@@ -15,7 +15,7 @@ section: input [
   infile: infile  [
     parameter: "Y"
     knowntype: "alistat input"
-    information: "Alignment file"
+    information: "HMMER alistat program input file"
   ]
 
 endsection: input
@@ -45,6 +45,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "alistat output"
+    information: "HMMER alistat program output file"
   ]
 
 endsection: output

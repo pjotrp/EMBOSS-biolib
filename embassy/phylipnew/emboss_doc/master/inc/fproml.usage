@@ -7,8 +7,8 @@
 % <b>fproml </b>
 Protein phylogeny by maximum likelihood
 Input (aligned) protein sequence set(s): <b>proml.dat</b>
-Input tree file: <b></b>
-Output file [proml.fproml]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip proml program output file [proml.fproml]: <b></b>
 
 
 Adding species:

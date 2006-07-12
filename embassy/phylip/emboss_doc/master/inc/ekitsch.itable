@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Data file</td>
+<td>Phylip kitsch program input file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -35,14 +35,14 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip kitsch program output file</td>
 <td>Output file</td>
 <td>ekitsch.outfile</td>
 </tr>
 
 <tr>
 <td>-treefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file</td>
 <td>Output file</td>
 <td>ekitsch.treefile</td>
 </tr>

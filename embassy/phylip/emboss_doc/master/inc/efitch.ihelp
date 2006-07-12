@@ -1,28 +1,32 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Data file
-*  -datasets           integer    How many data sets
-*  -randseed           integer    Random number seed (must be odd)
-*  -randtimes          integer    Number of times to jumble
-   -og                 toggle     Outgroup root
-*  -outgnum            integer    Number of the outgroup
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+  [-infile]            infile     Phylip fitch program input file
+*  -datasets           integer    [0] How many data sets (Any integer value)
+*  -randseed           integer    [0] Random number seed (must be odd) (Any
+                                  integer value)
+*  -randtimes          integer    [0] Number of times to jumble (Any integer
+                                  value)
+   -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+  [-outfile]           outfile    [efitch.outfile] Phylip fitch program output
+                                  file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [*.efitch] Phylip tree output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -lt                 boolean    Lower-triangular data matrix
-   -ut                 boolean    Upper-triangular data matrix
-   -replicates         boolean    Subreplicates
-   -multsets           toggle     Analyze multiple data sets
-   -[no]besttree       toggle     Search for best tree
-*  -random             toggle     Randomize input order of species
-*  -length             boolean    Use lengths from user trees
-   -power              float      Power
-   -negbranch          boolean    Negative branch lengths allowed
-*  -global             boolean    Global rearrangements
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -[no]drawtree       boolean    Draw tree
+   -lt                 boolean    [N] Lower-triangular data matrix
+   -ut                 boolean    [N] Upper-triangular data matrix
+   -replicates         boolean    [N] Subreplicates
+   -multsets           toggle     [N] Analyze multiple data sets
+   -[no]besttree       toggle     [Y] Search for best tree
+*  -random             toggle     [N] Randomize input order of species
+*  -length             boolean    [N] Use lengths from user trees
+   -power              float      [3.0] Power (Any numeric value)
+   -negbranch          boolean    [N] Negative branch lengths allowed
+*  -global             boolean    [N] Global rearrangements
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

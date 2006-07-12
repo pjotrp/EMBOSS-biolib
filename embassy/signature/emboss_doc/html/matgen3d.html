@@ -462,13 +462,17 @@ MATGEN3D does not use any data files.
 <tr><td>
 <pre>
    Standard (Mandatory) qualifiers (* if not always prompted):
-   -mode               menu       This option specifies the amino acid residue
-                                  positions to use in calculating the
-                                  substitution data.
-*  -model              menu       This option specifies whether to use all
-                                  ligands or a specific set of ligands present
-                                  in a CON file when calculating the
-                                  substitution data.
+   -mode               menu       [1] This option specifies the amino acid
+                                  residue positions to use in calculating the
+                                  substitution data. (Values: 1 (All amino
+                                  acid positions for domains in a DCF file); 2
+                                  (Ligand-binding positions.))
+*  -model              menu       [1] This option specifies whether to use all
+                                  ligands or a specific set of ligands
+                                  present in a CON file when calculating the
+                                  substitution data. (Values: 1 (All ligands
+                                  within a CON file); 2 (Select ligands within
+                                  a CON file.))
 *  -dcfinfile          infile     This option specifies the name of DCF file
                                   (domain classification file) (input). A
                                   'domain classification file' contains
@@ -492,10 +496,10 @@ MATGEN3D does not use any data files.
                                   of ligand ('heterogen') 3-character
                                   identifier codes. One id code should be
                                   given per line.
-  [-ccfddir]           directory  This option specifies the location of CCF
-                                  files (clean coordinate files) (input) which
-                                  have been processed by using PDBPLUS. A
-                                  'clean cordinate file' contains protein
+  [-ccfddir]           directory  [./] This option specifies the location of
+                                  CCF files (clean coordinate files) (input)
+                                  which have been processed by using PDBPLUS.
+                                  A 'clean cordinate file' contains protein
                                   coordinate and derived data for a single PDB
                                   file ('protein clean coordinate file') or a
                                   single domain from SCOP or CATH ('domain
@@ -507,10 +511,10 @@ MATGEN3D does not use any data files.
                                   for residue solvent accessibility and
                                   secondary structure are added to the file by
                                   using PDBPLUS.
-*  -ccfpdir            directory  This option specifies the location of CCF
-                                  files (clean coordinate files) (input) which
-                                  have been processed by using PDBPLUS. A
-                                  'clean cordinate file' contains protein
+*  -ccfpdir            directory  [./] This option specifies the location of
+                                  CCF files (clean coordinate files) (input)
+                                  which have been processed by using PDBPLUS.
+                                  A 'clean cordinate file' contains protein
                                   coordinate and derived data for a single PDB
                                   file ('protein clean coordinate file') or a
                                   single domain from SCOP or CATH ('domain
@@ -522,12 +526,19 @@ MATGEN3D does not use any data files.
                                   for residue solvent accessibility and
                                   secondary structure are added to the file by
                                   using PDBPLUS.
-   -modee              menu       This option specifies the environment
+   -modee              menu       [1] This option specifies the environment
                                   definition. See matgen3d documentation for
-                                  description of definitions.
-  [-scmatrixfile]      outfile    Name of substitution matrix (output).
-  [-calclogfile]       outfile    Name of first log file (calculations).
-  [-logfile]           outfile    Name of second log file (errors).
+                                  description of definitions. (Values: 1
+                                  (Env1); 2 (Env2); 3 (Env3); 4 (Env4); 5
+                                  (Env5); 6 (Env6); 7 (Env7); 8 (Env8); 9
+                                  (Env9); 10 (Env10); 11 (Env11); 12 (Env12);
+                                  13 (Env13); 14 (Env14); 15 (Env15); 16
+                                  (Env16))
+  [-scmatrixfile]      outfile    [matgen3d.out] Domainatrix substitution
+                                  matrix output file
+  [-calclogfile]       outfile    [matgen3d.calc] Domainatrix calculations log
+                                  output file
+  [-logfile]           outfile    [matgen3d.log] Domainatrix log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -627,21 +638,21 @@ MATGEN3D does not use any data files.
 
 <tr>
 <td>[-scmatrixfile]<br>(Parameter 2)</td>
-<td>Name of substitution matrix (output).</td>
+<td>Domainatrix substitution matrix output file</td>
 <td>Output file</td>
 <td>matgen3d.out</td>
 </tr>
 
 <tr>
 <td>[-calclogfile]<br>(Parameter 3)</td>
-<td>Name of first log file (calculations).</td>
+<td>Domainatrix calculations log output file</td>
 <td>Output file</td>
 <td>matgen3d.calc</td>
 </tr>
 
 <tr>
 <td>[-logfile]<br>(Parameter 4)</td>
-<td>Name of second log file (errors).</td>
+<td>Domainatrix log output file</td>
 <td>Output file</td>
 <td>matgen3d.log</td>
 </tr>
@@ -683,8 +694,8 @@ DCF file amino acid positions
          1 : All amino acid positions for domains in a DCF file
          2 : Ligand-binding positions.
 This option specifies the amino acid residue positions to use in calculating the substitution data. [1]: <b>1</b>
-Name of DCF file (domain classification file (input).: <b>../scopparse-keep/all.scop</b>
-Location of domain CCF files (clean coordinate files) (input) [./]: <b>../domainer-keep</b>
+Domain classification file (optional): <b>../scopparse-keep/all.scop</b>
+Clean domain coordinates directory [./]: <b>../domainer-keep</b>
 Choose environment definition.
          1 : Env1
          2 : Env2
@@ -703,9 +714,9 @@ Choose environment definition.
         15 : Env15
         16 : Env16
 This option specifies the environment definition. See matgen3d documentation for description of definitions. [1]: <b>1</b>
-Name of substitution matrix (output). [matgen3d.out]: <b></b>
-Name of first log file (calculations). [matgen3d.calc]: <b></b>
-Name of second log file (errors). [matgen3d.log]: <b></b>
+Domainatrix substitution matrix output file [matgen3d.out]: <b></b>
+Domainatrix calculations log output file [matgen3d.calc]: <b></b>
+Domainatrix log output file [matgen3d.log]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -924,14 +935,16 @@ None.
 -->
 <a name="13.0"></a>
 <br><br><br><H2> 13.0  AUTHORS                   </H2>
-Waqas Awan <a href="mailto:wawan@rfcgr.mrc.ac.uk">(wawan@rfcgr.mrc.ac.uk)</a>
+Waqas Awan
 <br>
 
-Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+Jon Ison <a href="mailto:jison@ebi.ac.uk">(jison@ebi.ac.uk)</a>
 <br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
 
+The European Bioinformatics Institute 
+Wellcome Trust Genome Campus 
+Cambridge CB10 1SD 
+UK 
 
 
 <!-- REFERENCES

@@ -6,10 +6,10 @@
 
 % <b>domainsse </b>
 Add secondary structure records to a DCF file.
-Name of DCF file (domain classification file) (input): <b>../scopparse-keep/all.scop</b>
-Location of domain CCF file (clean coordinate file) (input) [./]: <b>../domainer-keep</b>
-Name of DCF file (domain classification file) (output) [all.domainsse]: <b>domainsse.out</b>
-Name of DOMAINSSE log file. [domainsse.log]: <b>domainsse.log</b>
+Domain classification file: <b>../scopparse-keep/all.scop</b>
+Clean domain coordinates directory [./]: <b>../domainer-keep</b>
+Domain classification output file [all.domainsse]: <b>domainsse.out</b>
+Domainatrix log output file [domainsse.log]: <b>domainsse.log</b>
 
 Processing D1CS4A_
 Processing D1II7A_

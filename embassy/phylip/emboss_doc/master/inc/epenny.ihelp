@@ -1,27 +1,32 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Data file
-*  -datasets           integer    How many data sets
-   -method             menu       Choose the method to use
-*  -outgnum            integer    Number of the outgroup
-*  -valthresh          float      Threshold value
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+  [-infile]            infile     Phylip penny program input file
+*  -datasets           integer    [0] How many data sets (Any integer value)
+   -method             menu       [Wag] Choose the method to use (Values: Wag
+                                  (Wagner); Cam (Camin-Sokal); Mix (Mixed))
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+*  -valthresh          float      [1.0] Threshold value (Number 1.000 or more)
+  [-outfile]           outfile    [epenny.outfile] Phylip penny program output
+                                  file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [epenny.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
-   -multsets           toggle     Analyze multiple data sets
-   -og                 toggle     Outgroup root
-   -numgroups          integer    How many groups of 100 trees
-   -howoften           integer    How often to report, in trees
+   -multsets           toggle     [N] Analyze multiple data sets
+   -og                 toggle     [N] Outgroup root
+   -numgroups          integer    [1000] How many groups of 100 trees (Any
+                                  integer value)
+   -howoften           integer    [100] How often to report, in trees (Any
+                                  integer value)
    -simple             boolean    Branch and bound is simple
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -steps              boolean    Print out steps in each site
-   -seqatnodes         boolean    Print sequences at all nodes of tree
-   -[no]drawtree       boolean    Draw tree
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -steps              boolean    [N] Print out steps in each site
+   -seqatnodes         boolean    [N] Print sequences at all nodes of tree
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers:
-   -thresh             toggle     Use Threshold parsimony
+   -thresh             toggle     [N] Use Threshold parsimony
 
    Associated qualifiers:
 

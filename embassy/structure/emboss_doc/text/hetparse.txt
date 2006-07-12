@@ -223,15 +223,16 @@ NN   0
                                   parse, which should be of the format
                                   specified at
                                   http://pdb.rutgers.edu/het_dictionary.txt
-   -dogrep             toggle     This option specifies whether to search a
-                                  directory of files (typically PDB files)
+   -dogrep             toggle     [N] This option specifies whether to search
+                                  a directory of files (typically PDB files)
                                   with keywords. If set, HETPARSE will search
                                   the directory and will count the number of
                                   files that each heterogen appears in.
-*  -dirlistpath        dirlist    This option specifies the directory to
+*  -dirlistpath        dirlist    [./] This option specifies the directory to
                                   search with keywords.
-  [-outfile]           outfile    This option specifies the name of EMBL-like
-                                  format dictionary of heterogen groups.
+  [-outfile]           outfile    [Ehet.dat] This option specifies the name of
+                                  EMBL-like format dictionary of heterogen
+                                  groups.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -257,113 +258,3 @@ NN   0
 
   6.1 COMMAND LINE ARGUMENTS
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) This option specifies the name of input file (raw
-   dictionary of heterogen groups) to parse, which should be of the
-   format specified at http://pdb.rutgers.edu/het_dictionary.txt Input
-   file Required
-   -dogrep This option specifies whether to search a directory of files
-   (typically PDB files) with keywords. If set, HETPARSE will search the
-   directory and will count the number of files that each heterogen
-   appears in. Toggle value Yes/No No
-   -dirlistpath This option specifies the directory to search with
-   keywords. Directory with files ./
-   [-outfile]
-   (Parameter 2) This option specifies the name of EMBL-like format
-   dictionary of heterogen groups. Output file Ehet.dat
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
-
-  6.2 EXAMPLE SESSION
-
-   An example of interactive use of HETPARSE is shown below. Here is a
-   sample session with hetparse
-
-
-% hetparse 
-Converts heterogen group dictionary to EMBL-like format.
-Name of input file (raw dictionary of heterogen groups): het.txt
-Search a directory of PDB files with keywords? [N]: Y
-Directory to search with keywords [./]: 
-Name of EMBL-like format dictionary of heterogen groups. [Ehet.dat]: Ehet.dat
-
-   Go to the input files for this example
-   Go to the output files for this example
-
-7.0 KNOWN BUGS & WARNINGS
-
-   None.
-
-8.0 NOTES
-
-   HETPARSE is used to create the EMBOSS data file Ehet.dat that is
-   included in the EMBOSS distribution.
-
-  8.1 GLOSSARY OF FILE TYPES
-
-   FILE TYPE FORMAT DESCRIPTION CREATED BY SEE ALSO
-   Dictionary of heterogen groups A file of the dictionary of heterogen
-   groups in PDB. HETPARSE N.A.
-
-   None
-
-9.0 DESCRIPTION
-
-   Some research applications require knowledge of the types of small
-   molecules or 'heterogens' (non-protein groups) that are represented in
-   PDB files. A dictionary of such groups containing various data for all
-   of the heterogens found in PDB is available, but is not in a
-   convenient format. HETPARSE parses the dictionary in its raw format
-   and converts it to an EMBL-like format.
-
-10.0 ALGORITHM
-
-   None.
-
-11.0 RELATED APPLICATIONS
-
-See also
-
-    Program name                        Description
-   aaindexextract Extract data from AAINDEX
-   allversusall   Sequence similarity data from all-versus-all comparison
-   cathparse      Generates DCF file from raw CATH files
-   cutgextract    Extract data from CUTG
-   domainer       Generates domain CCF files from protein CCF files
-   domainnr       Removes redundant domains from a DCF file
-   domainseqs     Adds sequence records to a DCF file
-   domainsse      Add secondary structure records to a DCF file
-   pdbparse       Parses PDB files and writes protein CCF files
-   pdbplus        Add accessibility & secondary structure to a CCF file
-   pdbtosp        Convert swissprot:PDB codes file to EMBL-like format
-   printsextract  Extract data from PRINTS
-   prosextract    Build the PROSITE motif database for use by patmatmotifs
-   rebaseextract  Extract data from REBASE
-   scopparse      Generate DCF file from raw SCOP files
-   seqnr          Removes redundancy from DHF files
-   sites          Generate residue-ligand CON files from CCF files
-   ssematch       Search a DCF file for secondary structure matches
-   tfextract      Extract data from TRANSFAC
-
-12.0 DIAGNOSTIC ERROR MESSAGES
-
-   None.
-
-13.0 AUTHORS
-
-   Jon Ison (jison@rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-14.0 REFERENCES
-
-   Please cite the authors and EMBOSS.
-   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
-   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
-   
-   See also http://emboss.sourceforge.net/
-
-  14.1 Other useful references

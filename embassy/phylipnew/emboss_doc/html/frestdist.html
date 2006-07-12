@@ -244,7 +244,7 @@ are not taken into account in the statistical model used here.
 % <b>frestdist </b>
 Distance matrix from restriction sites or fragments
 Input file: <b>restdist.dat</b>
-Output file [restdist.frestdist]: <b></b>
+Phylip restdist program output file [restdist.frestdist]: <b></b>
 
 
 Restriction site or fragment distances, version 3.6b
@@ -276,21 +276,23 @@ Done.
    Standard (Mandatory) qualifiers:
   [-data]              discretestates File containing one or more sets of
                                   restriction data
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.frestdist] Phylip restdist program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -[no]restsites      boolean    Restriction sites (put N if you want
+   -[no]restsites      boolean    [Y] Restriction sites (put N if you want
                                   restriction fragments)
-   -neili              boolean    Use original Nei/Li model (default uses
+   -neili              boolean    [N] Use original Nei/Li model (default uses
                                   modified Nei/Li model)
-*  -gamma              boolean    Gama distributed rates among sites
-*  -gammacoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-   -ttratio            float      Transition/transversion ratio
-   -sitelength         integer    Site length
-   -lower              boolean    Lower triangular distance matrix
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+*  -gamma              boolean    [N] Gama distributed rates among sites
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+   -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  0.001 or more)
+   -sitelength         integer    [6] Site length (Integer 1 or more)
+   -lower              boolean    [N] Lower triangular distance matrix
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -332,9 +334,9 @@ Done.
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip restdist program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.frestdist</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

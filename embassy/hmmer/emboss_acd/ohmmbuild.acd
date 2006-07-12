@@ -20,22 +20,22 @@ section: input [
 
   infile: priorfile  [
     default: ""
-    information: "Dirichlet prior file"
-    knowntype: "dirichlet prior"
+    information: "HMMER dirichlet prior file"
+    knowntype: "dirichlet prior hmmer"
     nullok: "Y"
   ]
 
   infile: nullfile  [
     default: ""
-    information: "NULL model file"
+    information: "HMMER null model file (optional)"
     knowntype: "hmmer null model"
     nullok: "Y"
   ]
 
   infile: pamfile  [
     default: ""
-    information: "PAM file"
-    knowntype: "hmmer matrix file"
+    information: "HMMER matrix file (optional)"
+    knowntype: "hmmer matrix"
     nullok: "Y"
   ]
 
@@ -162,20 +162,21 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    knowntype: "hmm file"
+    knowntype: "hmm"
+    information: "HMMER hidden markov model output file"
   ]
 
   outfile: resavefile  [
     default: ""
-    information: "Resave selex filename"
-    knowntype: "selex file"
+    information: "elex alignment output file (optional)"
+    knowntype: "selex"
     nullok: "Y"
   ]
 
   outfile: cfile  [
     default: ""
-    information: "Emission and transition count file"
-    knowntype: "hmmer count file"
+    information: "HMMER emission and transition count output file (optional)"
+    knowntype: "hmmer count"
     nullok: "Y"
   ]
 

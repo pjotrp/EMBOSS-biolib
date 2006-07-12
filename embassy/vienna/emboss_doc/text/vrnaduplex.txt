@@ -17,7 +17,17 @@ Algorithm
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with vrnaduplex
+
+
+% vrnaduplex 
+RNA duplex calculation
+Input nucleotide sequence: cofold-red.fasta
+Second nucleotide sequence: cofold-blue.fasta
+Vienna RNAfold output file [red.vrnaduplex]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
@@ -26,21 +36,25 @@ Command line arguments
                                   format, or reference (input USA)
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnaduplex] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -delta              float      Energy range for suboptimal structures
-   -sort               boolean    Sort suboptimal structures
-   -dangles            menu       Method
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -delta              float      [-1.0] Energy range for suboptimal
+                                  structures (Any numeric value)
+   -sort               boolean    [N] Sort suboptimal structures
+   -dangles            menu       [1] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
 
    Associated qualifiers:
 
@@ -94,49 +108,32 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-asequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-bsequence]
-   (Parameter 2) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.vrnaduplex
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -paramfile Parameter file Input file Required
-   -temperature Temperature Any numeric value 37.0
-   -[no]gu Allow GU pairs Boolean value Yes/No Yes
-   -[no]closegu Allow GU pairs at end of helices Boolean value Yes/No Yes
-   -[no]lp Allow lonely pairs Boolean value Yes/No Yes
-   -[no]convert Convert T to U Boolean value Yes/No Yes
-   -nsbases Non-standard bases Any string is accepted An empty string is
-   accepted
-   -[no]tetraloop Stabilizing energies for tetra-loops Boolean value
-   Yes/No Yes
-   -delta Energy range for suboptimal structures Any numeric value -1.0
-   -sort Sort suboptimal structures Boolean value Yes/No No
-   -dangles Method
-   0 (Ignore)
-   1 (Only unpaired bases for just one dangling end)
-   2 (Always use dangling energies 3:Allow coaxial stacking of adjacent
-   helices)
-   1
-
 Input file format
 
    vrnaduplex reads any normal sequence USAs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: cofold-red.fasta
+
+>red
+AUGAAGAUGA
+
+  File: cofold-blue.fasta
+
+>blue
+CUGUCUGUCUUGAGACA
 
 Output file format
 
    vrnaduplex outputs a graph to the specified graphics device. outputs a
    report format file. The default format is ...
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: red.vrnaduplex
+
+   .(.(((((.&.))))).).   1,9   :   6,14  (-4.10)
 
 Data files
 

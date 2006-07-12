@@ -6,8 +6,8 @@
 
 % <b>fclique </b>
 Largest clique program
-Input file: <b>clique.dat</b>
-Output file [clique.fclique]: <b></b>
+Phylip discrete states file: <b>clique.dat</b>
+Phylip clique program output file [clique.fclique]: <b></b>
 
 
 Output written to file "clique.fclique"

@@ -21,6 +21,7 @@ tree: intreefile [
   parameter: "Y"
   knowntype: "newick"
   nullok: "Y"
+  information: "Phylip tree file (optional)"
 ]
 
 endsection: input
@@ -86,6 +87,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "contml output"
+  information: "Phylip contml program output file"
 ]
 
 toggle: trout [
@@ -97,7 +99,7 @@ toggle: trout [
 outfile: outtreefile [
         additional: "$(trout)"
 	extension: "treefile"
-	information: "Tree file name"
+	information: "Phylip tree output file (optional)"
 	knowntype: "newick tree"
 	nullok: "Y"
 ]

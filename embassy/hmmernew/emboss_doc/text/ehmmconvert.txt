@@ -72,8 +72,9 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-oldhmmfile]        infile     HMM input file
-   -format             menu       Select format
-  [-newhmmfile]        outfile    HMM output file
+   -format             menu       [A] Select format (Values: A (ascii); B
+                                  (binary); G (gcg); X (xsw))
+  [-newhmmfile]        outfile    [*.ehmmconvert] HMM output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -96,22 +97,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-oldhmmfile]
-   (Parameter 1) HMM input file Input file Required
-   -format Select format
-   A (ascii)
-   B (binary)
-   G (gcg)
-   X (xsw)
-   A
-   [-newhmmfile]
-   (Parameter 2) HMM output file Output file <sequence>.ehmmconvert
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

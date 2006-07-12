@@ -14,12 +14,9 @@ section: input [
 
   dirlist: seqinpath [
     parameter: "Y"
-    information: "Location of sequence files (input"
-    help: "This option specifies the location of sequence files
-           (input)"
     default: "./"
     extension: "fasta"
-    knowntype: "Sequence file"
+    knowntype: "sequence data"
   ]
 
   matrixf: matrix [
@@ -105,7 +102,7 @@ section: output [
     help: "This option specifies the name of ALLVERSUSALL log file
            (output). The log file contains messages about any errors arising
            while ALLVERSUSALL ran."
-    knowntype: "domainatrix log file"
+    knowntype: "domainatrix log"
   ]
 
 endsection: output

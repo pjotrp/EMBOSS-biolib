@@ -9,9 +9,9 @@ DNA compatibility algorithm
 Input (aligned) sequence set: <b>dnacomp.dat</b>
 Outgroup root [N]: <b></b>
 Randomize input order of species [N]: <b></b>
-Output file [ednacomp.outfile]: <b></b>
+Phylip dnacomp program output file [ednacomp.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [ednacomp.treefile]: <b></b>
+Phylip tree output file [ednacomp.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

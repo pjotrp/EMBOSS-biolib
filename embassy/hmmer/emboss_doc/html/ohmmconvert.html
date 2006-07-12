@@ -182,14 +182,16 @@ Convert between HMM formats
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmconvert] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -format             menu       Select format
-   -append             boolean    Append to file
-   -force              boolean    Force overwriting
+   -format             menu       [A] Select format (Values: A (ascii); B
+                                  (binary); G (gcg); X (xsw))
+   -append             boolean    [N] Append to file
+   -force              boolean    [N] Force overwriting
 
    Associated qualifiers:
 
@@ -223,16 +225,16 @@ Convert between HMM formats
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>HMM file</td>
+<td>HMMER hidden markov model file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ohmmconvert</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

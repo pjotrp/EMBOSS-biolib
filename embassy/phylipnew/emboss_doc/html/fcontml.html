@@ -171,8 +171,8 @@ drift. frequency
 % <b>fcontml -printdata </b>
 Gene frequency and continuous character Maximum Likelihood
 Input file: <b>contml.dat</b>
-Input tree file: <b></b>
-Output file [contml.fcontml]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip contml program output file [contml.fcontml]: <b></b>
 
 all: true
 Adding species:
@@ -204,22 +204,26 @@ Done.
 <pre>
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fcontml] Phylip contml program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -datatype           menu       Input type in infile
-*  -lengths            boolean    Use branch lengths from user trees
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-*  -global             boolean    Global rearrangements
-   -outgrno            integer    Species number to use as outgroup
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
+   -datatype           menu       [g] Input type in infile (Values: g (Gene
+                                  frequencies); i (Continuous characters))
+*  -lengths            boolean    [N] Use branch lengths from user trees
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+*  -global             boolean    [N] Global rearrangements
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -264,16 +268,16 @@ Done.
 
 <tr>
 <td>[-intreefile]<br>(Parameter 2)</td>
-<td>(no help text) tree value</td>
+<td>Phylip tree file (optional)</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Phylip contml program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fcontml</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -333,7 +337,7 @@ Done.
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

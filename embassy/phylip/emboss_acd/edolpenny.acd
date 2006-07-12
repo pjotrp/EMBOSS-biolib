@@ -11,7 +11,7 @@ section: input [
 
 infile: datafile  [
   parameter: "Y"
-  information: "Data file"
+  information: "Phylip dolpenny program input file"
   knowntype: "dolpenny input"
 ]
 
@@ -94,6 +94,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "edolpenny.outfile"
   knowntype: "dolpenny output"
+  information: "phylip dolpenny program output file"
 ]
 
 boolean: printdata  [
@@ -135,7 +136,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "edolpenny.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

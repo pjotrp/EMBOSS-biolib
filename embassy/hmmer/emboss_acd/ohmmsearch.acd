@@ -19,8 +19,8 @@ seqall: seqall  [
 
 infile: hmmfile  [
   parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+  information: "HMMER hidden markov model file"
+  knowntype: "hmm"
 ]
 
 endsection: input
@@ -95,6 +95,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmmsearch output"
+  information: "HMMER hmmsearch program output file"
 ]
 
 endsection: output

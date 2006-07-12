@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-intreefile]<br>(Parameter 2)</td>
-<td>(no help text) tree value</td>
+<td>phylip tree file (optional)</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
@@ -90,9 +90,9 @@
 
 <tr>
 <td>-outtreefile</td>
-<td>Output file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fmove</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

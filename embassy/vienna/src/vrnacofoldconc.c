@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     seq2      = ajAcdGetSeq("bsequence");
     confile2  = ajAcdGetInfile("bconstraintfile");
     paramfile = ajAcdGetInfile("paramfile");
-    concfile  = ajAcdGetInfile("concentrations");
+    concfile  = ajAcdGetInfile("concentrationfile");
     eT        = ajAcdGetFloat("temperature");
     eGU       = ajAcdGetBool("gu");
     eclose    = ajAcdGetBool("closegu");

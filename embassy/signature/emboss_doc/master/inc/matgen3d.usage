@@ -10,8 +10,8 @@ DCF file amino acid positions
          1 : All amino acid positions for domains in a DCF file
          2 : Ligand-binding positions.
 This option specifies the amino acid residue positions to use in calculating the substitution data. [1]: <b>1</b>
-Name of DCF file (domain classification file (input).: <b>../scopparse-keep/all.scop</b>
-Location of domain CCF files (clean coordinate files) (input) [./]: <b>../domainer-keep</b>
+Domain classification file (optional): <b>../scopparse-keep/all.scop</b>
+Clean domain coordinates directory [./]: <b>../domainer-keep</b>
 Choose environment definition.
          1 : Env1
          2 : Env2
@@ -30,9 +30,9 @@ Choose environment definition.
         15 : Env15
         16 : Env16
 This option specifies the environment definition. See matgen3d documentation for description of definitions. [1]: <b>1</b>
-Name of substitution matrix (output). [matgen3d.out]: <b></b>
-Name of first log file (calculations). [matgen3d.calc]: <b></b>
-Name of second log file (errors). [matgen3d.log]: <b></b>
+Domainatrix substitution matrix output file [matgen3d.out]: <b></b>
+Domainatrix calculations log output file [matgen3d.calc]: <b></b>
+Domainatrix log output file [matgen3d.log]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

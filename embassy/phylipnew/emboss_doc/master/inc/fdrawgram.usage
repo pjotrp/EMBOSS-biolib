@@ -6,8 +6,8 @@
 
 % <b>fdrawgram -previewer n </b>
 Plots a cladogram- or phenogram-like rooted tree diagram
-Input tree file: <b>drawgram.tree</b>
-Output file [drawgram.fdrawgram]: <b></b>
+Phylip tree file: <b>drawgram.tree</b>
+Phylip drawgram output file [drawgram.fdrawgram]: <b></b>
  Is the tree ready to be plotted? Type Y or N: <b>Y</b>
 
 

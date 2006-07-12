@@ -1,23 +1,26 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Distance matrix
-*  -datasets           integer    How many data sets
-   -[no]nj             toggle     Neighbor-joining
-*  -og                 toggle     Outgroup root
-*  -outgnum            integer    Number of the outgroup
-*  -randseed           integer    Random number seed (must be odd)
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+  [-infile]            infile     Phylip neighbor program input file
+*  -datasets           integer    [0] How many data sets (Any integer value)
+   -[no]nj             toggle     [Y] Neighbor-joining
+*  -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [0] Number of the outgroup (Any integer
+                                  value)
+*  -randseed           integer    [0] Random number seed (must be odd) (Any
+                                  integer value)
+  [-outfile]           outfile    [eneighbor.outfile] Phylip neighbor program
+                                  output file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [eneighbor.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
-   -lt                 boolean    Lower-triangular data matrix
-   -ut                 boolean    Upper-triangular data matrix
-   -[no]sr             boolean    Subreplicates
-   -multsets           toggle     Analyze multiple data sets
-   -random             toggle     Randomize input order of species
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -[no]drawtree       boolean    Draw tree
+   -lt                 boolean    [N] Lower-triangular data matrix
+   -ut                 boolean    [N] Upper-triangular data matrix
+   -[no]sr             boolean    [Y] Subreplicates
+   -multsets           toggle     [N] Analyze multiple data sets
+   -random             toggle     [N] Randomize input order of species
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

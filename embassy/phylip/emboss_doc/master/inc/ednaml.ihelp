@@ -1,34 +1,48 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     File containing a sequence alignment
-   -[no]besttree       toggle     Search for best tree
-*  -lengths            boolean    Use lengths from user trees
-*  -global             boolean    Global rearrangements
-*  -random             toggle     Randomize input order of species
-*  -randseed           integer    Random number seed (must be odd)
-*  -randtimes          integer    How many times to randomise
-   -[no]basefrequency  toggle     Use empirical base frequencies
-*  -freqa              float      Frequency for A
-*  -freqc              float      Frequency for C
-*  -freqg              float      Frequency for G
-*  -freqt              float      Frequency for T/U
-   -categories         toggle     More then one category of substitution rates
-*  -catnum             integer    Number of categories of substitution rates
-*  -catvals            string     Space separated category values
-*  -catprob            string     Space separated probability values
-*  -autog              toggle     Use Default Mean block length of sites
-*  -lambda             float      Mean block length of sites having the same
-                                  rate (greater than 1)
-   -og                 toggle     Outgroup root
-*  -outgnum            integer    Number of the outgroup
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+   -[no]besttree       toggle     [Y] Search for best tree
+*  -lengths            boolean    [N] Use lengths from user trees
+*  -global             boolean    [N] Global rearrangements
+*  -random             toggle     [N] Randomize input order of species
+*  -randseed           integer    [3] Random number seed (must be odd) (Any
+                                  integer value)
+*  -randtimes          integer    [3] How many times to randomise (Any integer
+                                  value)
+   -[no]basefrequency  toggle     [Y] Use empirical base frequencies
+*  -freqa              float      [0.25] Frequency for A (Number from 0.000 to
+                                  1.000)
+*  -freqc              float      [0.25] Frequency for C (Number from 0.000 to
+                                  1.000)
+*  -freqg              float      [0.25] Frequency for G (Number from 0.000 to
+                                  1.000)
+*  -freqt              float      [0.25] Frequency for T/U (Number from 0.000
+                                  to 1.000)
+   -categories         toggle     [N] More then one category of substitution
+                                  rates
+*  -catnum             integer    [2] Number of categories of substitution
+                                  rates (Integer from 2 to 9)
+*  -catvals            string     Space separated category values (Any string
+                                  is accepted)
+*  -catprob            string     Space separated probability values (Any
+                                  string is accepted)
+*  -autog              toggle     [N] Use Default Mean block length of sites
+*  -lambda             float      [1.0] Mean block length of sites having the
+                                  same rate (greater than 1) (Number 1.000 or
+                                  more)
+   -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+  [-outfile]           outfile    [ednaml.outfile] Phylip dnaml program output
+                                  file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [ednaml.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
-   -ttratio            float      Transition/transversion ratio
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -[no]drawtree       boolean    Draw tree
+   -ttratio            float      [2.0] Transition/transversion ratio (Any
+                                  numeric value)
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

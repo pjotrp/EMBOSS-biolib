@@ -27,6 +27,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "ednainvar.outfile"
   knowntype: "dnainvar output"
+  information: "Phylip dnainvar program output file"
 ]
 
 boolean: printdata  [

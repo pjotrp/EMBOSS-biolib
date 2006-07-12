@@ -1,22 +1,28 @@
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-aconstraintfile]   infile     Constraint file
+  [-aconstraintfile]   infile     Vienna RNA structure contraints file
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-bconstraintfile]   infile     Constraint file
-  [-outfile]           outfile    Output file name
+  [-bconstraintfile]   infile     Second vienna RNA structure contraints file
+  [-outfile]           outfile    [*.vrnaevalpair] Vienna RNAeval output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]convert        boolean    Convert T to U
-   -[no]tetraloop      boolean    Stabilising energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -dangles            menu       Method
-   -logml              boolean    Use log scale for multiloop energies
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]convert        boolean    [Y] Convert T to U
+   -[no]tetraloop      boolean    [Y] Stabilising energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (No stabilising
+                                  energies for dangling ends); 1 (Use
+                                  stabilising energies for dangling ends); 2
+                                  (Dangling energies as in a partition
+                                  function 3:Allow coaxial stacking of
+                                  adjacent helices))
+   -logml              boolean    [N] Use log scale for multiloop energies
 
    Associated qualifiers:
 

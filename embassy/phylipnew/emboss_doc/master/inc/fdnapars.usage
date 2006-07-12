@@ -7,8 +7,8 @@
 % <b>fdnapars </b>
 DNA parsimony algorithm
 Input (aligned) nucleotide sequence set(s): <b>dnapars.dat</b>
-Input tree file: <b></b>
-Output file [dnapars.fdnapars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip dnapars program output file [dnapars.fdnapars]: <b></b>
 
 Adding species:
    1. Alpha     

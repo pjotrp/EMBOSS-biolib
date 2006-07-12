@@ -12,6 +12,7 @@ section: input [
 tree: intreefile [
   parameter: "Y"
   knowntype: "newick"
+  information: "Phylip tree file"
 ]
 
 endsection: input
@@ -65,6 +66,7 @@ section: output [
 outfile: outfile [
   parameter: "Y"
   knowntype: "consense output"
+  information: "Phylip consense program output file"
 ]
 
 toggle: trout [
@@ -76,7 +78,7 @@ toggle: trout [
 outfile: outtreefile  [
   additional: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file (optional)"
   knowntype: "newick tree"
   nullok: "Y"
 ]

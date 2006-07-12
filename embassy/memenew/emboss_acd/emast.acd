@@ -18,7 +18,7 @@ section: input
 infile: mfile
 [
   parameter: "Y"
-  information: "File containing motifs to use; may be a MEME output file or a file with a valid format."
+  information: "MEME program output file"
   help: "If -d <database> is not given, MAST looks for database specified inside of <mfile>."
   knowntype: "meme output"
 ]
@@ -29,9 +29,9 @@ infile: d
   additional: "Y"
   default: ""
   nullok: "Y"
-  information: "Database to search with motifs"
+  information: "MEME database file (optional)"
   help: "If -d <database> is not given, MAST looks for database specified inside of <mfile>."
-  knowntype: "meme database name"
+  knowntype: "meme database"
 ]
 
 infile: a
@@ -39,7 +39,7 @@ infile: a
   additional: "Y"
   default: ""
   nullok: "Y"
-  information: "Alphabet for motifs in <mfile>"
+  information: "MEME motif alphabet file (optional)"
   help: "Input file <mfile> is assumed to contain motifs in the format output by bin/make_logodds and <a> is their alphabet; -d <database> or -stdin must be specified when this option is used."
   knowntype: "meme alphabet"
 ]
@@ -49,7 +49,7 @@ infile: bfile
   additional: "Y"
   default: ""
   nullok: "Y"
-  information: "Read background frequencies from file"
+  information: "MEME background frequencies file (optional)"
   help: "The random model uses the letter frequencies given in <bfile> instead of the non-redundant database frequencies.  The format of <bfile> is the same as that for the MEME -bfile opton; see the MEME documentation for details.  Sample files are given in directory tests: tests/nt.freq and tests/na.freq in the MEME distribution.)"
   knowntype: "meme background frequencies"
 ]
@@ -247,7 +247,7 @@ string: df
 [
   default: ""
   information: "Print <df> as database name."
-  knowntype: "meme database name"
+  knowntype: "string"
 ]
 
 integer: minseqs
@@ -295,7 +295,7 @@ section: output
 outfile: outfile
 [
   parameter: "Y"
-  information: "Output file."
+  information: "MAST program output file"
   knowntype: "mast output"
 ]
 

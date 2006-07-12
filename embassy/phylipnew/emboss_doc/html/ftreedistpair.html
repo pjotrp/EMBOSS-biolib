@@ -207,9 +207,9 @@ order of these pairs in the input tree file, in odd ways.
 
 % <b>ftreedistpair -style s </b>
 Distances between two sets of trees
-Tree file: <b>treedist.dat</b>
-Second input tree file: <b>treedist.dat</b>
-Output file [treedist.ftreedistpair]: <b></b>
+Phylip tree file: <b>treedist.dat</b>
+Second phylip tree file: <b>treedist.dat</b>
+Phylip treedist program output file [treedist.ftreedistpair]: <b></b>
 
 Done.
 
@@ -227,17 +227,25 @@ Done.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-intreefile]        tree       Tree file
-  [-bintreefile]       tree       Second input tree file
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file
+  [-bintreefile]       tree       Second phylip tree file
+  [-outfile]           outfile    [*.ftreedistpair] Phylip treedist program
+                                  output file
 
    Additional (Optional) qualifiers:
-   -dtype              menu       Distance type
-   -pairing            menu       Tree pairing method
-   -style              menu       Distances output option
-   -noroot             boolean    Trees to be treated as rooted
-   -outgrno            integer    Species number to use as outgroup
-   -progress           boolean    Print indications of progress of run
+   -dtype              menu       [b] Distance type (Values: s (Symmetric
+                                  difference); b (Branch score distance))
+   -pairing            menu       [l] Tree pairing method (Values: c
+                                  (Distances between corresponding pairs each
+                                  tree file); l (Distances between all
+                                  possible pairs in each tree file))
+   -style              menu       [v] Distances output option (Values: f
+                                  (Full_matrix); v (One pair per line,
+                                  verbose); s (One pair per line, sparese))
+   -noroot             boolean    [N] Trees to be treated as rooted
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -progress           boolean    [N] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -272,23 +280,23 @@ Done.
 
 <tr>
 <td>[-intreefile]<br>(Parameter 1)</td>
-<td>Tree file</td>
+<td>Phylip tree file</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-bintreefile]<br>(Parameter 2)</td>
-<td>Second input tree file</td>
+<td>Second phylip tree file</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Phylip treedist program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ftreedistpair</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

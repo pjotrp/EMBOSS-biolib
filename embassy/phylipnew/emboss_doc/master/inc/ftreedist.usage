@@ -6,8 +6,8 @@
 
 % <b>ftreedist </b>
 Distances between trees
-Input tree file: <b>treedist.dat</b>
-Output file [treedist.ftreedist]: <b></b>
+Phylip tree file: <b>treedist.dat</b>
+Phylip treedist program output file [treedist.ftreedist]: <b></b>
 
 
 Output written to file "treedist.ftreedist"
@@ -27,8 +27,8 @@ Done.
 
 % <b>ftreedist -dtype s </b>
 Distances between trees
-Input tree file: <b>treedist2.dat</b>
-Output file [treedist2.ftreedist]: <b></b>
+Phylip tree file: <b>treedist2.dat</b>
+Phylip treedist program output file [treedist2.ftreedist]: <b></b>
 
 
 Output written to file "treedist2.ftreedist"

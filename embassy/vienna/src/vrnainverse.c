@@ -52,6 +52,7 @@ int main(int argc, char *argv[])
     int   found;
     
     AjPFile inf     = NULL;
+    AjPSeq  seq = NULL;
     AjPFile paramfile = NULL;
     AjPFile outf = NULL;
     
@@ -67,6 +68,7 @@ int main(int argc, char *argv[])
     AjPStr *method   = NULL;
     AjPStr ealpha    = NULL;
     AjBool showfails = ajFalse;
+    AjBool succeed = ajFalse;
     
     char edangle = '\0';
     
@@ -79,6 +81,7 @@ int main(int argc, char *argv[])
     
     
     inf        = ajAcdGetInfile("structure");
+    seq        = ajAcdGetSeq("sequence");
     paramfile  = ajAcdGetInfile("paramfile");
     eT         = ajAcdGetFloat("temperature");
     eGU        = ajAcdGetBool("gu");
@@ -92,6 +95,7 @@ int main(int argc, char *argv[])
     final_cost = ajAcdGetFloat("final");
     repeat     = ajAcdGetInt("repeats");
     showfails  = ajAcdGetBool("showfails");
+    succeed    = ajAcdGetBool("succeed");
     outf       = ajAcdGetOutfile("outfile");
     
     
@@ -156,7 +160,7 @@ int main(int argc, char *argv[])
     if (paramfile)
 	read_parameter_file(paramfile);
     
-    give_up = (repeat<0);
+    give_up = succeed;
     
     do {
       
@@ -185,23 +189,23 @@ int main(int argc, char *argv[])
 	length = (int) strlen(structure);
 	str2 = (char *) space((unsigned)length+1);
 
+/* now look for a sequence to match the structure */
+
+/*
 	if ((line = get_line(fp))!=NULL)
 	    if (strcmp(line, "@") == 0)
 	    {
 		free(line);
 		break;
 	    }
+*/
 
 	start = (char *) space((unsigned) length+1);
-	if (line !=NULL)
-	{
-	    (void) strncpy(start, line, length);
-	    free(line);
-	}
-
+	if(seq)
+	    (void) strncpy(start, ajSeqGetSeqC(seq), length);
 
 	if (repeat!=0)
-	    found = (repeat>0)? repeat : (-repeat);
+	    found = repeat;
 	else
 	    found = 1;
       
@@ -228,7 +232,7 @@ int main(int argc, char *argv[])
 	    if (mfe)
 	    {
 		energy = inverse_fold(string, structure);
-		if( (repeat>=0) || (energy<=0.0) ) {
+		if( (!succeed) || (energy<=0.0) ) {
 		    found--;
 		    hd = hamming(rstart, string);
 		    ajFmtPrintF(outf,"%s  %3d", string, hd);

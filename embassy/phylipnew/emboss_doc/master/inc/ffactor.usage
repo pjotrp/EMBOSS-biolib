@@ -6,8 +6,8 @@
 
 % <b>ffactor </b>
 Multistate to binary recoding program
-File containing data set: <b>factor.dat</b>
-Output file [factor.ffactor]: <b></b>
+Phylip factor program input file: <b>factor.dat</b>
+Phylip factor program output file [factor.ffactor]: <b></b>
 
 
 Data matrix written on file "factor.ffactor"

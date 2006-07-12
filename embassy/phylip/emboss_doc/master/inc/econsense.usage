@@ -6,10 +6,10 @@
 
 % <b>econsense </b>
 Majority-rule and strict consensus tree
-New Hampshire standard form tree file: <b>consense.dat</b>
-Output file [econsense.outfile]: <b></b>
+Phylip tree file: <b>consense.dat</b>
+Phylip consense program output file [econsense.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file [consense.treefile]: <b></b>
+Phylip tree output file [consense.treefile]: <b></b>
 
 
 

@@ -20,17 +20,17 @@
 </tr>
 
 <tr>
-<td>[-concentrations]<br>(Parameter 3)</td>
-<td>Concentration file</td>
+<td>[-concentrationfile]<br>(Parameter 3)</td>
+<td>Vienna RNA concentration data file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 4)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnacofoldconc</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -51,21 +51,21 @@
 
 <tr>
 <td>-aconstraintfile</td>
-<td>Constraint file</td>
+<td>Vienna RNA structure contraints file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-bconstraintfile</td>
-<td>Constraint file</td>
+<td>Second vienna RNA structure contraints file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -136,7 +136,7 @@
 <tr>
 <td>-dangles</td>
 <td>Method</td>
-<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies)</i></td></tr><tr><td>3</td> <td><i>(Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
 <td>1</td>
 </tr>
 
@@ -156,35 +156,35 @@
 
 <tr>
 <td>-aoutfile</td>
-<td>Output file name</td>
+<td>First (a) vienna dotplot output file</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-aaoutfile</td>
-<td>Output file name</td>
+<td>Second (a-a) vienna dotplot output file</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-boutfile</td>
-<td>Output file name</td>
+<td>Third (b) vienna dotplot output file</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-bboutfile</td>
-<td>Output file name</td>
+<td>Fourth (b-b) vienna dotplot output file</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-aboutfile</td>
-<td>Output file name</td>
+<td>Fifth (a-b) vienna dotplot output file</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

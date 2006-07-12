@@ -136,6 +136,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "seqbootseq output"
+  information: "Phylip seqboot_seq program output file"
 ]
 
 boolean: printdata  [

@@ -114,7 +114,7 @@ Please read the Userguide.pdf distributed with the original HMMER and included i
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild globins50.msf globin.hmm -n globins50 -strategy D </b>
+% <b>ehmmbuild globins50.msf globin.hmm -nhmm globins50 -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment
@@ -165,7 +165,7 @@ hmmbuild  -n globins50  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild rrm.sto myhmms -n rrm -strategy D </b>
+% <b>ehmmbuild rrm.sto myhmms -nhmm rrm -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment
@@ -216,7 +216,7 @@ hmmbuild  -n rrm  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swe
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild fn3.sto myhmms -n fn3 -strategy D </b>
+% <b>ehmmbuild fn3.sto myhmms -nhmm fn3 -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment
@@ -267,7 +267,7 @@ hmmbuild  -n fn3  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swe
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild pkinase.sto myhmms -n pkinase -strategy D </b>
+% <b>ehmmbuild pkinase.sto myhmms -nhmm pkinase -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment
@@ -326,14 +326,15 @@ Where possible, the same command-line qualifier names and parameter order is use
    Standard (Mandatory) qualifiers:
   [-alignfile]         seqset     (Aligned) protein sequence set filename and
                                   optional format, or reference (input USA)
-   -n                  string     Name for this HMM. The name can be any
+   -nhmm               string     Name for this HMM. The name can be any
                                   string of non-whitespace characters (e.g.
                                   one 'word'). There is no length limit (at
                                   least not one imposed by HMMER; your shell
                                   will complain about command line lengths
-                                  frst).
-   -strategy           menu       All alignments are local with respect to the
-                                  sequence and are configured to be local
+                                  frst). (Any string without whitespace is
+                                  accepted)
+   -strategy           menu       [D] All alignments are local with respect to
+                                  the sequence and are configured to be local
                                   (fragmentary) or global with respect to the
                                   HMM. The model is also configured to find a
                                   single or multiple domains (matches) to a
@@ -349,8 +350,12 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   to the old hmms program of HMMER 1. (S)
                                   Single domain per sequence, local alignments
                                   with respect to the HMM. Analogous to the
-                                  old hmmsw program of HMMER 1.
-  [-hmmfile]           outfile    Output file name
+                                  old hmmsw program of HMMER 1. (Values: D
+                                  (global-multidomain); F (local-multidomain);
+                                  G (global-singledomain); S
+                                  (local-singledomain))
+  [-hmmfile]           outfile    [*.ehmmbuild] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -379,32 +384,34 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   but this isn't recommended, as it hasn't
                                   been tested. ( -pam itself hasn't been
                                   tested much!)
-   -pamwgt             float      Controls the weight <x> on a PAM-based
-                                  prior. Only has effect if -pam option is
-                                  also in use. <x> is a positive real number,
-                                  20.0 by default. <x> is the number of
-                                  'pseudocounts' contriubuted by the heuristic
-                                  prior. Very high values of <x> can force a
-                                  scoring system that is entirely driven by
-                                  the substitution matrix, making HMMER
-                                  somewhat approximate Gribskov profiles.
-   -pbswitch           integer    For alignments with a very large number of
-                                  sequences, the GSC, BLOSUM, and Voronoi
-                                  weighting schemes are slow; they're O(N^2)
-                                  for N sequences. Henikoff position-based
-                                  weights (PB weights) are more effcient. At
-                                  or above a certain threshold sequence number
-                                  <n> hmmbuild will switch from GSC, BLOSUM,
-                                  or Voronoi weights to PB weights. To disable
-                                  this switching behavior (at the cost of
-                                  compute time, set <n> to be something larger
-                                  than the number of sequences in your
-                                  alignment. <n> is a positive integer; the
-                                  default is 1000.
-   -archpri            float      The value of the 'architecture prior' used
-                                  by MAP architecture construction. This value
-                                  is a probability between 0 and 1. This
-                                  parameter governs a geometric prior
+   -pamwgt             float      [20.0] Controls the weight <x> on a
+                                  PAM-based prior. Only has effect if -pam
+                                  option is also in use. <x> is a positive
+                                  real number, 20.0 by default. <x> is the
+                                  number of 'pseudocounts' contriubuted by the
+                                  heuristic prior. Very high values of <x>
+                                  can force a scoring system that is entirely
+                                  driven by the substitution matrix, making
+                                  HMMER somewhat approximate Gribskov
+                                  profiles. (Any numeric value)
+   -pbswitch           integer    [1000] For alignments with a very large
+                                  number of sequences, the GSC, BLOSUM, and
+                                  Voronoi weighting schemes are slow; they're
+                                  O(N^2) for N sequences. Henikoff
+                                  position-based weights (PB weights) are more
+                                  effcient. At or above a certain threshold
+                                  sequence number <n> hmmbuild will switch
+                                  from GSC, BLOSUM, or Voronoi weights to PB
+                                  weights. To disable this switching behavior
+                                  (at the cost of compute time, set <n> to be
+                                  something larger than the number of
+                                  sequences in your alignment. <n> is a
+                                  positive integer; the default is 1000. (Any
+                                  integer value)
+   -archpri            float      [0.85] The value of the 'architecture prior'
+                                  used by MAP architecture construction. This
+                                  value is a probability between 0 and 1.
+                                  This parameter governs a geometric prior
                                   distribution over model lengths. As
                                   'archpri' increases, longer models are
                                   favored a priori. As 'archpri' decreases, it
@@ -412,10 +419,10 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   to make a column a 'consensus' match column
                                   in the model architecture. The 0.85 default
                                   has been chosen empirically as a reasonable
-                                  setting.
-   -binary             boolean    Write the HMM to file in HMMER binary format
-                                  instead of readable ASCII text.
-   -fast               boolean    Quickly and heuristically determine the
+                                  setting. (Any numeric value)
+   -binary             boolean    [N] Write the HMM to file in HMMER binary
+                                  format instead of readable ASCII text.
+   -fast               boolean    [N] Quickly and heuristically determine the
                                   architecture of the model by assigning all
                                   columns with more than a certain fraction of
                                   gap characters to insert states. By default
@@ -423,7 +430,7 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   using the --gapmax option. The default
                                   construction algorithm is a maximum a
                                   posteriori (MAP) algorithm, which is slower.
-   -gapmax             float      Controls the -fast model construction
+   -gapmax             float      [0.5] Controls the -fast model construction
                                   algorithm, but if -fast is not being used,
                                   has no effect. If a column has more than a
                                   fraction <x> of gap symbols in it, it gets
@@ -433,39 +440,41 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   columns get assigned to consensus, and
                                   models get longer; smaller values of <x>
                                   mean fewer columns get assigned to
-                                  consensus, and models get smaller.
-   -hand               boolean    Specify the architecture of the model by
-                                  hand: the alignment file must be in SELEX or
-                                  Stockholm format, and the reference
+                                  consensus, and models get smaller. (Any
+                                  numeric value)
+   -hand               boolean    [N] Specify the architecture of the model by
+                                  hand: the alignment file must be in SELEX
+                                  or Stockholm format, and the reference
                                   annotation line (RF in SELEX, GC RF in
                                   Stockholm) is used to specify the
                                   architecture. Any column marked with a
                                   non-gap symbol (such as an 'x', for
                                   instance) is assigned as a consensus (match)
                                   column in the model.
-   -sidlevel           float      Controls both the determination of effective
-                                  sequence number and the behavior of the
-                                  -wblosum weighting option. The sequence
-                                  alignment is clustered by percent identity,
-                                  and the number of clusters at a cutoff
-                                  threshold of <x> is used to determine the
-                                  effective sequence number. Higher values of
-                                  <x> give more clusters and higher effective
-                                  sequence numbers; lower values of <x> give
-                                  fewer clusters and lower effective sequence
-                                  numbers. <x> is a fraction from 0 to 1, and
-                                  by default is set to 0.62 (corresponding to
-                                  the clustering level used in constructing
-                                  the BLOSUM62 substitution matrix).
-   -noeff              boolean    Turn off the effective sequence number
+   -sidlevel           float      [0.62] Controls both the determination of
+                                  effective sequence number and the behavior
+                                  of the -wblosum weighting option. The
+                                  sequence alignment is clustered by percent
+                                  identity, and the number of clusters at a
+                                  cutoff threshold of <x> is used to determine
+                                  the effective sequence number. Higher
+                                  values of <x> give more clusters and higher
+                                  effective sequence numbers; lower values of
+                                  <x> give fewer clusters and lower effective
+                                  sequence numbers. <x> is a fraction from 0
+                                  to 1, and by default is set to 0.62
+                                  (corresponding to the clustering level used
+                                  in constructing the BLOSUM62 substitution
+                                  matrix). (Any numeric value)
+   -noeff              boolean    [N] Turn off the effective sequence number
                                   calculation, and use the true number of
                                   sequences instead. This will usually reduce
                                   the sensitivity of the final model (so don't
                                   do it without good reason!)
-   -swentry            float      Controls the total probability that is
-                                  distributed to local entries into the model,
-                                  versus starting at the beginning of the
-                                  model as in a global alignment. <x> is a
+   -swentry            float      [0.5] Controls the total probability that is
+                                  distributed to local entries into the
+                                  model, versus starting at the beginning of
+                                  the model as in a global alignment. <x> is a
                                   probability from 0 to 1, and by default is
                                   set to 0.5. Higher values of <x> mean that
                                   hits that are fragments on their left (N or
@@ -481,8 +490,9 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   has no effect. You have independent control
                                   over local/global alignment behavior for
                                   the N/C (5'/3') termini of your target
-                                  sequences using --swentry and --swexit.
-   -swexit             float      Controls the total probability that is
+                                  sequences using --swentry and --swexit. (Any
+                                  numeric value)
+   -swexit             float      [0.5] Controls the total probability that is
                                   distributed to local exits from the model,
                                   versus ending an alignment at the end of the
                                   model as in a global alignment. <x> is a
@@ -501,12 +511,13 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   has no effect. You have independent control
                                   over local/global alignment behavior for
                                   the N/C (5'/3') termini of your target
-                                  sequences using -swentry and -swexit.
-   -verbosity          boolean    Print more possibly useful stuff, such as
-                                  the individual scores for each sequence in
-                                  the alignment.
-   -weighting          menu       Values (B)(-wblosum in HMMER) Use the BLOSUM
-                                  filtering algorithm to weight the
+                                  sequences using -swentry and -swexit. (Any
+                                  numeric value)
+   -verbosity          boolean    [N] Print more possibly useful stuff, such
+                                  as the individual scores for each sequence
+                                  in the alignment.
+   -weighting          menu       [G] Values (B)(-wblosum in HMMER) Use the
+                                  BLOSUM filtering algorithm to weight the
                                   sequences. Cluster the sequences at a given
                                   percentage identity (see -idlevel); assign
                                   each cluster a total weight of 1.0,
@@ -528,7 +539,10 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   Use the Sibbald/Argos Voronoi sequence
                                   weighting algorithm in place of the default
                                   GSC weighting. (N) (-wnone in HMMER) Turn
-                                  off all sequence weighting.
+                                  off all sequence weighting. (Values: B
+                                  (Blosum); G (Gerstein/Sonnhammer/Chothia); K
+                                  (Krogh/Mitchison); W (Henikoff); V
+                                  (Sibbald/Argos Voronoi); N (None))
    -o                  outfile    Re-save the starting alignment to file, in
                                   Stockholm format. The columns which were
                                   assigned to match states will be marked with
@@ -611,7 +625,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 </tr>
 
 <tr>
-<td>-n</td>
+<td>-nhmm</td>
 <td>Name for this HMM. The name can be any string of non-whitespace characters (e.g. one 'word'). There is no length limit (at least not one imposed by HMMER; your shell will complain about command line lengths frst).</td>
 <td>Any string without whitespace is accepted</td>
 <td><i>An empty string is accepted</i></td>
@@ -626,9 +640,9 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>[-hmmfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ehmmbuild</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -1808,6 +1822,7 @@ The following original HMMER options are not supported:
 The following additional options are provided:
 <br><pre>
 -weighting : Sequence weighting algorithm. 
+-n         : Use -nhmm instead (-n causes problems for GUI developers)
 </pre>
 
 

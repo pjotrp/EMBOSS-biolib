@@ -37,7 +37,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>There is a separate output report for each sequence in seqfile. This report consists of three sections: a ranked list of the best scoring HMMs, a list of the best scoring domains in order of their occurrence in the sequence, and alignments for all the best scoring domains.</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ehmmpfam</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -47,7 +47,7 @@
 </tr>
 
 <tr>
-<td>-n</td>
+<td>-nuc</td>
 <td>Specify that models and sequence are nucleic acid, not protein. Other HMMER programs autodetect this; but because of the order in which hmmpfam accesses data, it can't reliably determine the correct 'alphabet' by itself.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>

@@ -1,25 +1,28 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnaheat] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -mintemp            float      Temperature
-   -maxtemp            float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -smoothing          integer    Parabola fitting value
-   -step               integer    Step size in degrees C
-   -dangles            menu       Method
-   -ssoutfile          outfile    Output file name
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -mintemp            float      [0.0] Temperature (Any numeric value)
+   -maxtemp            float      [100.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -smoothing          integer    [2] Parabola fitting value (Any integer
+                                  value)
+   -step               float      [1.0] Step size in degrees C (Number from
+                                  0.010 to 1000.000)
+   -dangles            menu       [2] Method (Values: 0 (Ignore); 2 (Always
+                                  use dangling energies))
 
    Associated qualifiers:
 
@@ -41,9 +44,6 @@
 
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
-
-   "-ssoutfile" associated qualifiers
-   -odirectory         string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts

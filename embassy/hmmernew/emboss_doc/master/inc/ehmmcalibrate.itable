@@ -16,7 +16,7 @@
 <td>[-hmmfileout]<br>(Parameter 2)</td>
 <td>File containing an HMM with EVD parameters.</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ehmmcalibrate</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

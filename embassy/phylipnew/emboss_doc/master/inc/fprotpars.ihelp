@@ -1,26 +1,32 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fprotpars] Phylip protpars program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -weights            properties Weights file
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -outgrno            integer    Species number to use as outgroup
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -whichcode          menu       Use which genetic code
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -stepbox            boolean    Print steps at each site
-   -ancseq             boolean    Print sequences at all nodes of tree
-*  -[no]dotdiff        boolean    Use dot differencing to display results
+   -weights            properties Phylip weights file (optional)
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 1.000 or more)
+   -whichcode          menu       [Universal] Use which genetic code (Values:
+                                  U (Universal); M (Mitochondrial); V
+                                  (Vertebrate mitochondrial); F (Fly
+                                  mitochondrial); Y (Yeast mitochondrial))
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print steps at each site
+   -ancseq             boolean    [N] Print sequences at all nodes of tree
+*  -[no]dotdiff        boolean    [Y] Use dot differencing to display results
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

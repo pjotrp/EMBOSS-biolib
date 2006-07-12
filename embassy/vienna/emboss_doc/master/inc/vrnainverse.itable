@@ -7,16 +7,16 @@
 
 <tr>
 <td>[-structure]<br>(Parameter 1)</td>
-<td>Structure/sequence file</td>
+<td>Vienna RNA structures file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnainverse</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -36,8 +36,15 @@
 </tr>
 
 <tr>
+<td>-sequence</td>
+<td>Nucleotide sequence filename and optional format, or reference (input USA)</td>
+<td>Readable sequence</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -101,14 +108,14 @@
 <tr>
 <td>-dangles</td>
 <td>Method</td>
-<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies 3:Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
+<td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>1</td> <td><i>(Only unpaired bases for just one dangling end)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies)</i></td></tr><tr><td>3</td> <td><i>(Allow coaxial stacking of adjacent helices)</i></td></tr></table></td>
 <td>1</td>
 </tr>
 
 <tr>
 <td>-folding</td>
 <td>Method</td>
-<td><table><tr><td>m</td> <td><i>(Use minimum energy)</i></td></tr><tr><td>p</td> <td><i>(Use partition function)</i></td></tr><tr><td>mp</td> <td><i>(Use both)</i></td></tr></table></td>
+<td><table><tr><td>m</td> <td><i>(Minimum energy)</i></td></tr><tr><td>pv</td> <td><i>(Partition function)</i></td></tr><tr><td>mp</td> <td><i>(Both)</i></td></tr></table></td>
 <td>m</td>
 </tr>
 
@@ -128,9 +135,16 @@
 
 <tr>
 <td>-repeats</td>
-<td>No. of times to search for the same structure</td>
-<td>Any integer value</td>
+<td>Number of times to search for the same structure</td>
+<td>Integer 0 or more</td>
 <td>0</td>
+</tr>
+
+<tr>
+<td>-succeed</td>
+<td>The original RNAinverse uses a negative repeat for this</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr>

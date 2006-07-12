@@ -6,11 +6,11 @@
 
 % <b>scopparse </b>
 Generate DCF file from raw SCOP files.
-Name of raw SCOP classification file dir.cla.scop.txt_X.XX (input).: <b>scop.cla.raw</b>
-Name of raw SCOP description file dir.des.scop.txt_X.XX (input).: <b>scop.des.raw</b>
+Raw scop classification file: <b>scop.cla.raw</b>
+Raw scop description file: <b>scop.des.raw</b>
 Omit domains comprising of more than one segment. [N]: <b>Y</b>
 Omit domains comprising segments from more than one chain. [N]: <b>N</b>
-Name of SCOP DCF file (domain classification file) (output). [test.scop]: <b>all.scop</b>
+Domain classification output file [test.scop]: <b>all.scop</b>
 
 </pre></td></tr></table><p>
 <p>

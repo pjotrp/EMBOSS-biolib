@@ -1,13 +1,16 @@
    Standard (Mandatory) qualifiers:
-  [-structure]         infile     Sequence/structure file
-  [-outfile]           outfile    Output file name
+  [-structure]         infile     Vienna RNAfold output file
+  [-outfile]           outfile    [*.vrnaplot] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -layout             menu       Layout
-   -optype             menu       Type
-   -pre                string     Pre-annotation
-   -post               string     Post-annotation
+   -layout             menu       [naview] Layout (Values: radial (Simple
+                                  radial); naview (naview))
+   -optype             menu       [ps] Type (Values: ps (postscript); gml
+                                  (graph meta language); svg (scaleable vector
+                                  graphics); xrna (XRNA save file))
+   -pre                string     Pre-annotation (Any string is accepted)
+   -post               string     Post-annotation (Any string is accepted)
 
    Associated qualifiers:
 

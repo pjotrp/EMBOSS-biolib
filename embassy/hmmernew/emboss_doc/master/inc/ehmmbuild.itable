@@ -13,7 +13,7 @@
 </tr>
 
 <tr>
-<td>-n</td>
+<td>-nhmm</td>
 <td>Name for this HMM. The name can be any string of non-whitespace characters (e.g. one 'word'). There is no length limit (at least not one imposed by HMMER; your shell will complain about command line lengths frst).</td>
 <td>Any string without whitespace is accepted</td>
 <td><i>An empty string is accepted</i></td>
@@ -28,9 +28,9 @@
 
 <tr>
 <td>[-hmmfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ehmmbuild</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -50,8 +50,8 @@ Usage
 
 % fdrawtree 
 Plots an unrooted tree diagram
-Input tree file: drawgram.tree
-Output file [drawgram.fdrawtree]: 
+Phylip tree file: drawgram.tree
+Phylip drawtree output file [drawgram.fdrawtree]: 
 
 DRAWTREE from PHYLIP version 3.6b
 Reading tree ...
@@ -72,37 +72,82 @@ Done.
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-intreefile]        tree       (no help text) tree value
-  [-plotfile]          outfile    Output file name
+  [-intreefile]        tree       Phylip tree file
+  [-plotfile]          outfile    [*.fdrawtree] Phylip drawtree output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -plotter            menu       Plotter or printer the tree will be drawn on
-*  -plotterpcl         menu       Laserjet resolution
-*  -plotterpcx         menu       PCX file resolution
-   -previewer          menu       Previewing device
-   -iterate            menu       Iterate to improve tree
-   -lengths            boolean    Use branch lengths from user trees
-   -labeldirection     menu       Label direction
-   -treeangle          float      Angle the tree is to be plotted
-   -arc                float      Degrees the arc should occupy
-*  -labelrotation      float      Angle of labels (0 degrees is horizontal for
-                                  a tree growing vertically)
-   -[no]rescaled       toggle     Automatically rescale branch lengths
-*  -bscale             float      Centimeters per unit branch length
-   -treedepth          float      Depth of tree as fraction of its breadth
-*  -xmargin            float      Horizontal margin (cm)
-*  -ymargin            float      Vertical margin (cm)
-*  -xmarginray         float      Horizontal margin (pixels)
-*  -ymarginray         float      Vertical margin (pixels)
-   -paperx             float      Paper width
-   -papery             float      Paper height
-   -pagesheight        float      Number of trees across height of page
-   -pageswidth         float      Number of trees across width of page
-   -hpmargin           float      Horizontal overlap (cm)
-   -vpmargin           float      Vertical overlap (cm)
+   -plotter            menu       [l] Plotter or printer the tree will be
+                                  drawn on (Values: l (Postscript printer file
+                                  format); m (PICT format (for drawing
+                                  programs)); j (HP Laserjet PCL file format);
+                                  w (MS-Windows Bitmap); f (FIG 2.0 drawing
+                                  program format); a (Idraw drawing program
+                                  format); z (VRML Virtual Reality Markup
+                                  Language file); p (PCX file format (for
+                                  drawing programs)); k (TeKtronix 4010
+                                  graphics terminal); x (X Bitmap format); v
+                                  (POVRAY 3D rendering program file); r
+                                  (Rayshade 3D rendering program file); h
+                                  (Hewlett-Packard pen plotter (HPGL file
+                                  format)); d (DEC ReGIS graphics (VT240
+                                  terminal)); e (Epson MX-80 dot-matrix
+                                  printer); c (Prowriter/Imagewriter
+                                  dot-matrix printer); t (Toshiba 24-pin
+                                  dot-matrix printer); o (Okidata dot-matrix
+                                  printer); b (Houston Instruments plotter); u
+                                  (other (one you have inserted code for)))
+*  -plotterpcl         menu       [1] Laserjet resolution (Values: 1 (75 DPI);
+                                  2 (150 DPI); 3 (300 DPI))
+*  -plotterpcx         menu       [1] PCX file resolution (Values: 1 (EGA 640
+                                  X 350); 2 (VGA 800 X 600); 3 (VGA 1024 X
+                                  768))
+   -previewer          menu       [x] Previewing device (Values: n (Will not
+                                  be previewed); I i (MSDOS graphics screen
+                                  m:Macintosh screens); x (X Windows display);
+                                  w (MS Windows display); k (TeKtronix 4010
+                                  graphics terminal); d (DEC ReGIS graphics
+                                  (VT240 terminal)); o (Other (one you have
+                                  inserted code for)))
+   -iterate            menu       [e] Iterate to improve tree (Values: n (No);
+                                  e (Equal-Daylight algorithm); b (n-Body
+                                  algorithm))
+   -lengths            boolean    [N] Use branch lengths from user trees
+   -labeldirection     menu       [m] Label direction (Values: a (along); f
+                                  (fixed); r (radial); m (middle))
+   -treeangle          float      [90.0] Angle the tree is to be plotted
+                                  (Number from -360.000 to 360.000)
+   -arc                float      [360] Degrees the arc should occupy (Number
+                                  from 0.000 to 360.000)
+*  -labelrotation      float      [90.0] Angle of labels (0 degrees is
+                                  horizontal for a tree growing vertically)
+                                  (Number from 0.000 to 360.000)
+   -[no]rescaled       toggle     [Y] Automatically rescale branch lengths
+*  -bscale             float      [1.0] Centimeters per unit branch length
+                                  (Any numeric value)
+   -treedepth          float      [0.53] Depth of tree as fraction of its
+                                  breadth (Number from 0.100 to 100.000)
+*  -xmargin            float      [1.65] Horizontal margin (cm) (Number 0.100
+                                  or more)
+*  -ymargin            float      [2.16] Vertical margin (cm) (Number 0.100 or
+                                  more)
+*  -xmarginray         float      [1.65] Horizontal margin (pixels) (Number
+                                  0.100 or more)
+*  -ymarginray         float      [2.16] Vertical margin (pixels) (Number
+                                  0.100 or more)
+   -paperx             float      [20.63750] Paper width (Any numeric value)
+   -papery             float      [26.98750] Paper height (Number 0.100 or
+                                  more)
+   -pagesheight        float      [1] Number of trees across height of page
+                                  (Number 1.000 or more)
+   -pageswidth         float      [1] Number of trees across width of page
+                                  (Number 1.000 or more)
+   -hpmargin           float      [0.41275] Horizontal overlap (cm) (Number
+                                  0.001 or more)
+   -vpmargin           float      [0.53975] Vertical overlap (cm) (Number
+                                  0.001 or more)
 
    Advanced (Unprompted) qualifiers:
-   -fontfile           string     Fontfile
+   -fontfile           string     Fontfile name (Any string is accepted)
 
    Associated qualifiers:
 
@@ -123,90 +168,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-intreefile]
-   (Parameter 1) (no help text) tree value Phylogenetic tree
-   [-plotfile]
-   (Parameter 2) Output file name Output file <sequence>.fdrawtree
-   Additional (Optional) qualifiers Allowed values Default
-   -plotter Plotter or printer the tree will be drawn on
-   l (Postscript printer file format)
-   m (PICT format (for drawing programs))
-   j (HP Laserjet PCL file format)
-   w (MS-Windows Bitmap)
-   f (FIG 2.0 drawing program format)
-   a (Idraw drawing program format)
-   z (VRML Virtual Reality Markup Language file)
-   p (PCX file format (for drawing programs))
-   k (TeKtronix 4010 graphics terminal)
-   x (X Bitmap format)
-   v (POVRAY 3D rendering program file)
-   r (Rayshade 3D rendering program file)
-   h (Hewlett-Packard pen plotter (HPGL file format))
-   d (DEC ReGIS graphics (VT240 terminal))
-   e (Epson MX-80 dot-matrix printer)
-   c (Prowriter/Imagewriter dot-matrix printer)
-   t (Toshiba 24-pin dot-matrix printer)
-   o (Okidata dot-matrix printer)
-   b (Houston Instruments plotter)
-   u (other (one you have inserted code for))
-   l
-   -plotterpcl Laserjet resolution
-   1 (75 DPI)
-   2 (150 DPI)
-   3 (300 DPI)
-   1
-   -plotterpcx PCX file resolution
-   1 (EGA 640 X 350)
-   2 (VGA 800 X 600)
-   3 (VGA 1024 X 768)
-   1
-   -previewer Previewing device
-   n   (Will not be previewed)
-   I i (MSDOS graphics screen m:Macintosh screens)
-   x   (X Windows display)
-   w   (MS Windows display)
-   k   (TeKtronix 4010 graphics terminal)
-   d   (DEC ReGIS graphics (VT240 terminal))
-   o   (Other (one you have inserted code for))
-   x
-   -iterate Iterate to improve tree
-   n (No)
-   e (Equal-Daylight algorithm)
-   b (n-Body algorithm)
-   e
-   -lengths Use branch lengths from user trees Boolean value Yes/No No
-   -labeldirection Label direction
-   a (along)
-   f (fixed)
-   r (radial)
-   m (middle)
-   m
-   -treeangle Angle the tree is to be plotted Number from -360.000 to
-   360.000 90.0
-   -arc Degrees the arc should occupy Number from 0.000 to 360.000 360
-   -labelrotation Angle of labels (0 degrees is horizontal for a tree
-   growing vertically) Number from 0.000 to 360.000 90.0
-   -[no]rescaled Automatically rescale branch lengths Toggle value Yes/No
-   Yes
-   -bscale Centimeters per unit branch length Any numeric value 1.0
-   -treedepth Depth of tree as fraction of its breadth Number from 0.100
-   to 100.000 0.53
-   -xmargin Horizontal margin (cm) Number 0.100 or more 1.65
-   -ymargin Vertical margin (cm) Number 0.100 or more 2.16
-   -xmarginray Horizontal margin (pixels) Number 0.100 or more 1.65
-   -ymarginray Vertical margin (pixels) Number 0.100 or more 2.16
-   -paperx Paper width Any numeric value 20.63750
-   -papery Paper height Number 0.100 or more 26.98750
-   -pagesheight Number of trees across height of page Number 1.000 or
-   more 1
-   -pageswidth Number of trees across width of page Number 1.000 or more
-   1
-   -hpmargin Horizontal overlap (cm) Number 0.001 or more 0.41275
-   -vpmargin Vertical overlap (cm) Number 0.001 or more 0.53975
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -fontfile Fontfile Any string is accepted An empty string is accepted
 
 Input file format
 

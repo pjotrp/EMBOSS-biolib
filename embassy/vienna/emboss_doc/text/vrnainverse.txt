@@ -17,35 +17,81 @@ Algorithm
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with vrnainverse
+
+
+% vrnainverse -repeats 3 
+RNA sequences matching a structure
+Vienna RNA structures file: rna3.fold
+Vienna RNAfold output file [rna3.vrnainverse]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+   Example 2
+
+
+% vrnainverse -repeats 3 -succeed 
+RNA sequences matching a structure
+Vienna RNA structures file: rna3.fold
+Vienna RNAfold output file [rna3.vrnainverse]: 
+
+   Go to the output files for this example
 
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-structure]         infile     Structure/sequence file
-  [-outfile]           outfile    Output file name
+  [-structure]         infile     Vienna RNA structures file
+  [-outfile]           outfile    [*.vrnainverse] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -dangles            menu       Method
-   -folding            menu       Method
-   -alphabet           string     Find sequences using only these bases
-   -final              float      Stopping value
-   -repeats            integer    No. of times to search for the same
-                                  structure
-   -showfails          boolean    Show information for unsuccessful searches
+   -sequence           sequence   Nucleotide sequence filename and optional
+                                  format, or reference (input USA)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
+   -folding            menu       [m] Method (Values: m (Minimum energy); pv
+                                  (Partition function); mp (Both))
+   -alphabet           string     [AUGC] Find sequences using only these bases
+                                  (Any string is accepted)
+   -final              float      [0.0] Stopping value (Any numeric value)
+   -repeats            integer    [0] Number of times to search for the same
+                                  structure (Integer 0 or more)
+   -succeed            boolean    [N] The original RNAinverse uses a negative
+                                  repeat for this
+   -showfails          boolean    [N] Show information for unsuccessful
+                                  searches
 
    Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin             integer    Start of the sequence to be used
+   -send               integer    End of the sequence to be used
+   -sreverse           boolean    Reverse (if DNA)
+   -sask               boolean    Ask for begin/end/reverse
+   -snucleotide        boolean    Sequence is nucleotide
+   -sprotein           boolean    Sequence is protein
+   -slower             boolean    Make lower case
+   -supper             boolean    Make upper case
+   -sformat            string     Input sequence format
+   -sdbname            string     Database name
+   -sid                string     Entryname
+   -ufo                string     UFO features
+   -fformat            string     Features format
+   -fopenfile          string     Features file name
 
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
@@ -65,60 +111,42 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-structure]
-   (Parameter 1) Structure/sequence file Input file Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.vrnainverse
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -paramfile Parameter file Input file Required
-   -temperature Temperature Any numeric value 37.0
-   -[no]gu Allow GU pairs Boolean value Yes/No Yes
-   -[no]closegu Allow GU pairs at end of helices Boolean value Yes/No Yes
-   -[no]lp Allow lonely pairs Boolean value Yes/No Yes
-   -[no]convert Convert T to U Boolean value Yes/No Yes
-   -nsbases Non-standard bases Any string is accepted An empty string is
-   accepted
-   -[no]tetraloop Stabilizing energies for tetra-loops Boolean value
-   Yes/No Yes
-   -energy Rarely used option to fold sequences from the ABCD... alphabet
-   0 (BP)
-   1 (Any with GC)
-   2 (Any with AU parameters)
-   0
-   -dangles Method
-   0 (Ignore)
-   1 (Only unpaired bases for just one dangling end)
-   2 (Always use dangling energies 3:Allow coaxial stacking of adjacent
-   helices)
-   1
-   -folding Method
-   m  (Use minimum energy)
-   p  (Use partition function)
-   mp (Use both)
-   m
-   -alphabet Find sequences using only these bases Any string is accepted
-   AUGC
-   -final Stopping value Any numeric value 0.0
-   -repeats No. of times to search for the same structure Any integer
-   value 0
-   -showfails Show information for unsuccessful searches Boolean value
-   Yes/No No
-
 Input file format
 
    vrnainverse reads any normal sequence USAs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: rna3.fold
+
+   (((((((..((((........)))).(((((.......))))).....(((((.......))))))))))))....
 
 Output file format
 
    vrnainverse outputs a graph to the specified graphics device. outputs
    a report format file. The default format is ...
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: rna3.vrnainverse
+
+UGCUAUCUUGCGCAAAUGCCCGUGCUGCCACCUGACAAGUGGUCAUUCGAGAGUUGUUGUUUCUCGGUAGCAGCCA
+27
+GGGAUACCAACUGCCGGUUUACAGUGGAGGACAACACAUCCUCGGUCCGGAUUGCGAGUGAGUCCGUAUUCCUCAC
+22
+GCUAGUAAAUCCCAACUCCGGGGGAGGAAAUAGAACUAAUUUCAUAGUCGGUAAGGUACAUACUGUAUUAGCCCAA
+24
+
+  Output files for usage example 2
+
+  File: rna3.vrnainverse
+
+CGUAUAGCAGUACCUAACCCCGUGCGUUACAUAACCGUUGUAAGUUGAACUAGGCCCACGCUAGUCUAUGCGCUGG
+28
+UUGAUCAAAGGCGAUCCGAGACGUCGCAGCAACUGGCCUGCUGGAGUUCAGUGACACCUCCACUGUGGUUAAGUAC
+22
+GGCGAAGCCAGGGACGCAUUACCCUCCGGACCACCCUCGUCUGCUCAUUAACCUGAAAUUGGUUACUUCGCCUUUU
+24
 
 Data files
 

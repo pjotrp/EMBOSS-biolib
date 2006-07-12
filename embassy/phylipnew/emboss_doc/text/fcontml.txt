@@ -97,8 +97,8 @@ Usage
 % fcontml -printdata 
 Gene frequency and continuous character Maximum Likelihood
 Input file: contml.dat
-Input tree file: 
-Output file [contml.fcontml]: 
+Phylip tree file (optional): 
+Phylip contml program output file [contml.fcontml]: 
 
 all: true
 Adding species:
@@ -123,22 +123,26 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fcontml] Phylip contml program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -datatype           menu       Input type in infile
-*  -lengths            boolean    Use branch lengths from user trees
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-*  -global             boolean    Global rearrangements
-   -outgrno            integer    Species number to use as outgroup
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
+   -datatype           menu       [g] Input type in infile (Values: g (Gene
+                                  frequencies); i (Continuous characters))
+*  -lengths            boolean    [N] Use branch lengths from user trees
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+*  -global             boolean    [N] Global rearrangements
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -163,34 +167,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) File containing one or more sets of data Frequency
-   value(s)
-   [-intreefile]
-   (Parameter 2) (no help text) tree value Phylogenetic tree
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.fcontml
-   Additional (Optional) qualifiers Allowed values Default
-   -datatype Input type in infile
-   g (Gene frequencies)
-   i (Continuous characters)
-   g
-   -lengths Use branch lengths from user trees Boolean value Yes/No No
-   -njumble Number of times to randomise Integer 0 or more 0
-   -seed Random number seed between 1 and 32767 (must be odd) Integer
-   from 1 to 32767 1
-   -global Global rearrangements Boolean value Yes/No No
-   -outgrno Species number to use as outgroup Integer 0 or more 0
-   -[no]trout Write out trees to tree file Toggle value Yes/No Yes
-   -outtreefile Tree file name Output file
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   -[no]treeprint Print out tree Boolean value Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

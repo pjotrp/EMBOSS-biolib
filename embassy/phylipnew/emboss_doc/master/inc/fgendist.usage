@@ -6,8 +6,8 @@
 
 % <b>fgendist </b>
 Compute genetic distances from gene frequencies
-Input file: <b>gendist.dat</b>
-Output file [gendist.fgendist]: <b></b>
+Phylip gendist program input file: <b>gendist.dat</b>
+Phylip gendist program output file [gendist.fgendist]: <b></b>
 
 Distances calculated for species
     European     .

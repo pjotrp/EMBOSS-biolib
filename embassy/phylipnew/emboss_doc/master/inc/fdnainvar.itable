@@ -14,16 +14,16 @@
 
 <tr>
 <td>-weights</td>
-<td>(no help text) properties value</td>
+<td>Phylip weights file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip dnainvar program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fdnainvar</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

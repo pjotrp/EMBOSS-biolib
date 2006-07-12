@@ -7,7 +7,7 @@
 % <b>ffreqboot -seed 3 </b>
 Bootstrapped genetic frequencies algorithm
 Input file: <b>freqboot.dat</b>
-Output file [freqboot.ffreqboot]: <b></b>
+Phylip seqboot_freq program output file [freqboot.ffreqboot]: <b></b>
 
 
  bootstrap: true

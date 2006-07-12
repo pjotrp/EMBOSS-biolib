@@ -1,32 +1,42 @@
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.ohmmbuild] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -priorfile          infile     Dirichlet prior file
-   -nullfile           infile     NULL model file
-   -pamfile            infile     PAM file
-   -strategy           menu       Select preference
-   -append             boolean    Append to file
-   -amino              boolean    Treat as protein
-   -nucleic            boolean    Treat as dna
-   -archpri            float      Architecture prior
-   -binary             boolean    Write HMM as binary
-   -cstrategy          menu       Select strategy
-   -fast               boolean    Work in fast mode
-   -gapmax             float      Fast mode control
-   -hand               boolean    Specify model by hand
-   -idlevel            float      Cutoff ID threhold
-   -[no]efficiency     boolean    Be efficient
-   -pamweight          float      Weighting for PAM
-   -swentry            float      Probability control for local entries
-   -swexit             float      Probability control for exits
-   -more               boolean    Verbosity
-   -weighting          menu       Select weighting
-   -resavefile         outfile    Resave selex filename
-   -cfile              outfile    Emission and transition count file
+   -priorfile          infile     HMMER dirichlet prior file
+   -nullfile           infile     HMMER null model file (optional)
+   -pamfile            infile     HMMER matrix file (optional)
+   -strategy           menu       [L] Select preference (Values: M (multiple);
+                                  L (local); G (global))
+   -append             boolean    [N] Append to file
+   -amino              boolean    [N] Treat as protein
+   -nucleic            boolean    [N] Treat as dna
+   -archpri            float      [0.85] Architecture prior (Any numeric
+                                  value)
+   -binary             boolean    [N] Write HMM as binary
+   -cstrategy          menu       [F] Select strategy (Values: F (Fast); H
+                                  (Hand))
+   -fast               boolean    [N] Work in fast mode
+   -gapmax             float      [0.5] Fast mode control (Any numeric value)
+   -hand               boolean    [N] Specify model by hand
+   -idlevel            float      [0.62] Cutoff ID threhold (Any numeric
+                                  value)
+   -[no]efficiency     boolean    [Y] Be efficient
+   -pamweight          float      [20.0] Weighting for PAM (Any numeric value)
+   -swentry            float      [0.5] Probability control for local entries
+                                  (Any numeric value)
+   -swexit             float      [0.5] Probability control for exits (Any
+                                  numeric value)
+   -more               boolean    [N] Verbosity
+   -weighting          menu       [G] Select weighting (Values: B (Blosum); G
+                                  (Gerstein/Sonnhammer/Chothia); K
+                                  (Krogh/Mitchison); N (None); V (Voronoi))
+   -resavefile         outfile    elex alignment output file (optional)
+   -cfile              outfile    HMMER emission and transition count output
+                                  file (optional)
 
    Associated qualifiers:
 

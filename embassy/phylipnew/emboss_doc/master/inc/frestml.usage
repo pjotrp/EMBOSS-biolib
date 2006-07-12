@@ -7,8 +7,8 @@
 % <b>frestml </b>
 Restriction site maximum Likelihood method
 Input file: <b>restml.dat</b>
-Input tree file: <b></b>
-Output file [restml.frestml]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip restml program output file [restml.frestml]: <b></b>
 
 numseqs: 1
 

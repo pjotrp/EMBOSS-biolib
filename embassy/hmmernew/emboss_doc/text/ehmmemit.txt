@@ -75,7 +75,7 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File containing one or more HMMs.
-   -c                  boolean    Predict a single majority-rule consensus
+   -c                  boolean    [N] Predict a single majority-rule consensus
                                   sequence instead of sampling sequences from
                                   the HMM's probability distribution. Highly
                                   conserved residues (p >= 0.9 for DNA, p >=
@@ -86,24 +86,26 @@ Command line arguments
                                   of generated sequences; when this happens,
                                   insert-generated residues are simply shown
                                   as 'x'.
-   -n                  integer    Generate  sequences. Default is 10.
-  [-o]                 outfile    File of synthetic sequences.
+   -nseq               integer    [10] Generate  sequences. Default is 10.
+                                  (Any integer value)
+  [-o]                 outfile    [*.ehmmemit] File of synthetic sequences.
 
    Additional (Optional) qualifiers:
-   -a                  boolean    Write the generated sequences in an aligned
-                                  format (SELEX) rather than FASTA.
-   -q                  boolean    Quiet; suppress all output except for the
-                                  sequences themselves. Useful for piping or
-                                  directing the output.
+   -a                  boolean    [N] Write the generated sequences in an
+                                  aligned format (SELEX) rather than FASTA.
+   -q                  boolean    [N] Quiet; suppress all output except for
+                                  the sequences themselves. Useful for piping
+                                  or directing the output.
 
    Advanced (Unprompted) qualifiers:
-   -seed               integer    Set the random seed to , where  is a
-                                  positive integer. The default is to use
+   -seed               integer    [0] Set the random seed to , where  is
+                                  a positive integer. The default is to use
                                   time() to generate a different seed for each
                                   run, which means that two different runs of
                                   hmmemit on the same HMM will give slightly
                                   different results. You can use this option
-                                  to generate reproducible results.
+                                  to generate reproducible results. (Integer 0
+                                  or more)
 
    Associated qualifiers:
 
@@ -124,32 +126,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-hmmfile]
-   (Parameter 1) File containing one or more HMMs. Input file Required
-   -c Predict a single majority-rule consensus sequence instead of
-   sampling sequences from the HMM's probability distribution. Highly
-   conserved residues (p >= 0.9 for DNA, p >= 0.5 for protein) are shown
-   in upper case; others are shown in lower case. Some insert states may
-   become part of the majority rule consensus, because they are used in
-   >= 50% of generated sequences; when this happens, insert-generated
-   residues are simply shown as 'x'. Boolean value Yes/No No
-   -n Generate sequences. Default is 10. Any integer value 10
-   [-o]
-   (Parameter 2) File of synthetic sequences. Output file
-   <sequence>.ehmmemit
-   Additional (Optional) qualifiers Allowed values Default
-   -a Write the generated sequences in an aligned format (SELEX) rather
-   than FASTA. Boolean value Yes/No No
-   -q Quiet; suppress all output except for the sequences themselves.
-   Useful for piping or directing the output. Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -seed Set the random seed to , where is a positive integer. The
-   default is to use time() to generate a different seed for each run,
-   which means that two different runs of hmmemit on the same HMM will
-   give slightly different results. You can use this option to generate
-   reproducible results. Integer 0 or more 0
 
 Input file format
 
@@ -397,6 +373,7 @@ Notes
 
    The following original HMMER options are not supported:
 -h         : Use -help to get help information instead.
+-n         : Use -nseq instead (-n causes problems for GUI developers)
 
   2. Installing EMBASSY HMMER
 

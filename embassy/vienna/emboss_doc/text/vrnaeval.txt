@@ -17,26 +17,43 @@ Algorithm
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with vrnaeval
+
+
+% vrnaeval 
+RNA eval
+Input nucleotide sequence: evalrna.fasta
+Vienna RNA structure contraints file (optional): eval1.con
+Vienna RNAeval output file [eval.vrnaeval]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-constraintfile]    infile     Constraint file
-  [-outfile]           outfile    Output file name
+  [-constraintfile]    infile     Vienna RNA structure contraints file
+                                  (optional)
+  [-outfile]           outfile    [*.vrnaeval] Vienna RNAeval output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]convert        boolean    Convert T to U
-   -[no]tetraloop      boolean    Stabilising energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -dangles            menu       Method
-   -logml              boolean    Use log scale for multiloop energies
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]convert        boolean    [Y] Convert T to U
+   -[no]tetraloop      boolean    [Y] Stabilising energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (No stabilising
+                                  energies for dangling ends); 1 (Use
+                                  stabilising energies for dangling ends); 2
+                                  (Dangling energies as in a partition
+                                  function 3:Allow coaxial stacking of
+                                  adjacent helices))
+   -logml              boolean    [N] Use log scale for multiloop energies
 
    Associated qualifiers:
 
@@ -74,47 +91,32 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-constraintfile]
-   (Parameter 2) Constraint file Input file Required
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.vrnaeval
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -paramfile Parameter file Input file Required
-   -temperature Temperature Any numeric value 37.0
-   -[no]convert Convert T to U Boolean value Yes/No Yes
-   -[no]tetraloop Stabilising energies for tetra-loops Boolean value
-   Yes/No Yes
-   -energy Rarely used option to fold sequences from the ABCD... alphabet
-   0 (BP)
-   1 (Any with GC)
-   2 (Any with AU parameters)
-   0
-   -dangles Method
-   0 (No stabilising energies for dangling ends)
-   1 (Use stabilising energies for dangling ends)
-   2 (Dangling energies as in a partition function 3:Allow coaxial
-   stacking of adjacent helices)
-   1
-   -logml Use log scale for multiloop energies Boolean value Yes/No No
-
 Input file format
 
    vrnaeval reads any normal sequence USAs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: evalrna.fasta
+
+>eval
+GGGGCCCCC
+
+  File: eval1.con
+
+   (...)....
 
 Output file format
 
    vrnaeval outputs a graph to the specified graphics device. outputs a
    report format file. The default format is ...
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: eval.vrnaeval
+
+GGGGCCCCC
+(...).... (  4.90)
 
 Data files
 

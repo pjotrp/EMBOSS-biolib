@@ -6,22 +6,22 @@
 
 % <b>seqnr </b>
 Removes redundancy from DHF files.
-Location of DHF files (domain hits files) (input). [./]: <b>../seqfraggle-keep</b>
+Domain hits directories [./]: <b>../seqfraggle-keep</b>
 Use singlet sequences (e.g. DHF files) to filter input. [Y]: <b>N</b>
 Use sets of sequences (e.g. DHF files) to filter input. [Y]: <b>Y</b>
-Location of sets of filter sequences (e.g. DAF files) (input). [./]: <b>../domainalign-keep/daf</b>
+Domain alignment directory [./]: <b>../domainalign-keep/daf</b>
 Redundancy removal options
          1 : Remove redundancy at a single threshold % sequence similarity
          2 : Remove redundancy outside a range of acceptable threshold % similarity
 Select number. [1]: <b>1</b>
 The % sequence identity redundancy threshold. [95.0]: <b>70</b>
-Location of DHF files (domain hits files) of non-redundant sequences (output). [./]: <b>hitsnr</b>
+Domain hits file output directory [./]: <b>hitsnr</b>
 Retain redundant sequences. [N]: <b>Y</b>
-Location of DHF files (domain hits files) of redundant sequences (output). [./]: <b>hitsred</b>
-Name seqnr log file (output). [seqnr.log]: <b></b>
+Domain hits file redundant output directory [./]: <b>hitsred</b>
+Domainatrix log output file [seqnr.log]: <b></b>
 
-Processing /homes/user/test/qa/seqfraggle-keep/55074.dhf
 Processing /homes/user/test/qa/seqfraggle-keep/54894.dhf
+Processing /homes/user/test/qa/seqfraggle-keep/55074.dhf
 
 </pre></td></tr></table><p>
 <p>

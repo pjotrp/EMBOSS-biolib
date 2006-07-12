@@ -6,8 +6,8 @@
 
 % <b>pdbplus </b>
 Add accessibility & secondary structure to a CCF file.
-Location of CCF files (clean coordinate files) (input) [./]: <b>../pdbparse-keep/</b>
-Location of PDB files (input) [./]: <b></b>
+Clean protein structure coordinates directories [./]: <b>../pdbparse-keep/</b>
+Pdb entry directory [./]: <b></b>
 File prefix of PDB files (if any): <b></b>
 Mode of operation
          1 : Use STRIDE only
@@ -15,17 +15,17 @@ Mode of operation
          3 : Use STRIDE and NACCESS
 Select mode [1]: <b>3</b>
 Threshold size for SSEs (secondary structure elements) [4]: <b>4</b>
-Location of CCF files (clean coordinate files) (output) [./]: <b></b>
-Name of log file for PDBPLUS [pdbplus.log]: <b></b>
-Name of log file for STRIDE [stride.log]: <b></b>
-Name of log file for NACCESS [naccess.log]: <b></b>
+Clean protein structure coordinates file output directory [./]: <b></b>
+Domainatrix log output file [pdbplus.log]: <b></b>
+Stride program log output file [stride.log]: <b></b>
+Naccess program log output file [naccess.log]: <b></b>
 
-Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
-stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
-naccess /homes/user/test/data/structure/1ii7.ent  >> naccess.log 2>&1
 Processing /homes/user/test/qa/pdbparse-keep/1cs4.ccf
 stride /homes/user/test/data/structure/1cs4.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
 naccess /homes/user/test/data/structure/1cs4.ent  >> naccess.log 2>&1
+Processing /homes/user/test/qa/pdbparse-keep/1ii7.ccf
+stride /homes/user/test/data/structure/1ii7.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
+naccess /homes/user/test/data/structure/1ii7.ent  >> naccess.log 2>&1
 Processing /homes/user/test/qa/pdbparse-keep/2hhb.ccf
 stride /homes/user/test/data/structure/2hhb.ent -f./pdbplus-1234567890.1234 >> stride.log 2>&1
 naccess /homes/user/test/data/structure/2hhb.ent  >> naccess.log 2>&1

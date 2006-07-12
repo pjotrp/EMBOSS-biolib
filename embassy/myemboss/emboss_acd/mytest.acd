@@ -23,7 +23,7 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    knowntype: "myseq output"
+    knowntype: "mytest output"
   ]
 
 endsection: output

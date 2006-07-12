@@ -14,7 +14,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "HMM database file"
+  information: "HMMER hmm database file"
   knowntype: "hmm database"
 ]
 

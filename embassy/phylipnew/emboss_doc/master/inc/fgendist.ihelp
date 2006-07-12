@@ -1,11 +1,14 @@
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fgendist] Phylip gendist program output
+                                  file
 
    Additional (Optional) qualifiers:
-   -method             menu       Which method to use
-   -[no]progress       boolean    Print indications of progress of run
-   -lower              boolean    Lower triangular distance matrix
+   -method             menu       [n] Which method to use (Values: n (Nei
+                                  genetic distance); c (Cavalli-Sforza chord
+                                  measure); r (Reynolds genetic distance))
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -lower              boolean    [N] Lower triangular distance matrix
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

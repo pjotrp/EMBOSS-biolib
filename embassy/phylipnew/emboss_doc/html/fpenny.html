@@ -340,8 +340,8 @@ between Felsenstein and Sober (1986).
 
 % <b>fpenny </b>
 Penny algorithm, branch-and-bound
-Input file: <b>penny.dat</b>
-Output file [penny.fpenny]: <b></b>
+Phylip character discrete states file: <b>penny.dat</b>
+Phylip penny program output file [penny.fpenny]: <b></b>
 
 
 How many
@@ -374,25 +374,31 @@ Trees also written onto file "penny.treefile"
 <pre>
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing one or more data sets
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fpenny] Phylip penny program output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -weights            properties Weights file
-   -ancfile            properties Ancestral states file
-   -mixfile            properties Mixture file
-   -method             menu       Choose the method to use
-   -outgrno            integer    Species number to use as outgroup
-   -howmany            integer    How many groups of trees
-   -howoften           integer    How often to report, in trees
+   -weights            properties Phylip weights file (optional)
+   -ancfile            properties Phylip ancestral states file (optional)
+   -mixfile            properties Phylip mix output file (optional)
+   -method             menu       [Wagner] Choose the method to use (Values:
+                                  Wag (Wagner); Cam (Camin-Sokal); Mix
+                                  (Mixed))
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -howmany            integer    [1000] How many groups of trees (Any integer
+                                  value)
+   -howoften           integer    [100] How often to report, in trees (Any
+                                  integer value)
    -simple             boolean    Branch and bound is simple
-   -threshold          float      Threshold value
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -stepbox            boolean    Print out steps in each site
-   -ancseq             boolean    Print states at all nodes of tree
+   -threshold          float      [$(infile.discretesize)] Threshold value
+                                  (Number 1.000 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print out steps in each site
+   -ancseq             boolean    [N] Print states at all nodes of tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -437,9 +443,9 @@ Trees also written onto file "penny.treefile"
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip penny program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fpenny</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -450,21 +456,21 @@ Trees also written onto file "penny.treefile"
 
 <tr>
 <td>-weights</td>
-<td>Weights file</td>
+<td>Phylip weights file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-ancfile</td>
-<td>Ancestral states file</td>
+<td>Phylip ancestral states file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-mixfile</td>
-<td>Mixture file</td>
+<td>Phylip mix output file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
@@ -520,7 +526,7 @@ Trees also written onto file "penny.treefile"
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

@@ -401,14 +401,16 @@ C  -4  -4   2  -7
                                   using SCOPPARSE and CATHPARSE. Domain
                                   sequence information can be added to the
                                   file by using DOMAINSEQS.
-   -maxhits            integer    This option specifies the number of
-                                  top-scoring matches to report.
-  [-outssfile]         outfile    This option specifies the name of the file
-                                  containing top-scoring domains for
-                                  residue-based alinnment (output).A 'domain
-                                  classification file' contains classification
-                                  and other data for domains from SCOP or
-                                  CATH, in DCF format (EMBL-like).
+   -maxhits            integer    [5] This option specifies the number of
+                                  top-scoring matches to report. (Any integer
+                                  value)
+  [-outssfile]         outfile    [*.ssematch] This option specifies the name
+                                  of the file containing top-scoring domains
+                                  for residue-based alinnment (output).A
+                                  'domain classification file' contains
+                                  classification and other data for domains
+                                  from SCOP or CATH, in DCF format
+                                  (EMBL-like).
   [-outsefile]         outfile    This option specifies the name of the file
                                   containing top-scoring domains for secondary
                                   structure element-based alinnment (output).
@@ -416,48 +418,53 @@ C  -4  -4   2  -7
                                   classification and other data for domains
                                   from SCOP or CATH, in DCF format
                                   (EMBL-like).
-   -logfile            outfile    This option specifies the name of the
-                                  ssematch log file (output).
+   -logfile            outfile    [ssematch.log] This option specifies the
+                                  name of the ssematch log file (output).
 
    Additional (Optional) qualifiers:
-   -datafile           matrixf    This option specifies the secondary
+   -datafile           matrixf    [SSSUB] This option specifies the secondary
                                   structure substitution matrix.
-   -gapopenr           float      This options specifies the gap insertion
-                                  penalty for reside-based alignment. The gap
-                                  insertion penalty is the score taken away
-                                  when a gap is created. The best value
-                                  depends on the choice of comparison matrix.
-                                  The default value assumes you are using the
-                                  EBLOSUM62 matrix for protein sequences, and
-                                  the EDNAFULL matrix for nucleotide
-                                  sequences.
-   -gapextendr         float      This options specifies the gap extension
-                                  penalty for residue-based alignment. The gap
-                                  extension, penalty is added to the standard
-                                  gap penalty for each base or residue in the
-                                  gap. This is how long gaps are penalized.
-                                  Usually you will expect a few long gaps
-                                  rather than many short gaps, so the gap
-                                  extension penalty should be lower than the
-                                  gap penalty.
-   -gapopene           float      This options specifies the gap insertion
-                                  penalty for element-based alignment. The gap
-                                  insertion penalty is the score taken away
-                                  when a gap is created. The best value
-                                  depends on the choice of comparison matrix.
-                                  The default value assumes you are using the
-                                  EBLOSUM62 matrix for protein sequences, and
-                                  the EDNAFULL matrix for nucleotide
-                                  sequences.
-   -gapextende         float      This options specifies the gap extension
-                                  penalty for secondary structure
-                                  element-based alignment. The gap extension,
+   -gapopenr           float      [10.0 for any sequence] This options
+                                  specifies the gap insertion penalty for
+                                  reside-based alignment. The gap insertion
+                                  penalty is the score taken away when a gap
+                                  is created. The best value depends on the
+                                  choice of comparison matrix. The default
+                                  value assumes you are using the EBLOSUM62
+                                  matrix for protein sequences, and the
+                                  EDNAFULL matrix for nucleotide sequences.
+                                  (Floating point number from 1.0 to 100.0)
+   -gapextendr         float      [0.5 for any sequence] This options
+                                  specifies the gap extension penalty for
+                                  residue-based alignment. The gap extension,
                                   penalty is added to the standard gap penalty
                                   for each base or residue in the gap. This
                                   is how long gaps are penalized. Usually you
                                   will expect a few long gaps rather than many
                                   short gaps, so the gap extension penalty
                                   should be lower than the gap penalty.
+                                  (Floating point number from 0.0 to 10.0)
+   -gapopene           float      [10.0 for any sequence] This options
+                                  specifies the gap insertion penalty for
+                                  element-based alignment. The gap insertion
+                                  penalty is the score taken away when a gap
+                                  is created. The best value depends on the
+                                  choice of comparison matrix. The default
+                                  value assumes you are using the EBLOSUM62
+                                  matrix for protein sequences, and the
+                                  EDNAFULL matrix for nucleotide sequences.
+                                  (Floating point number from 1.0 to 100.0)
+   -gapextende         float      [0.5 for any sequence] This options
+                                  specifies the gap extension penalty for
+                                  secondary structure element-based alignment.
+                                  The gap extension, penalty is added to the
+                                  standard gap penalty for each base or
+                                  residue in the gap. This is how long gaps
+                                  are penalized. Usually you will expect a few
+                                  long gaps rather than many short gaps, so
+                                  the gap extension penalty should be lower
+                                  than the gap penalty. (Floating point number
+                                  from 0.0 to 10.0)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -521,7 +528,7 @@ C  -4  -4   2  -7
 <td>[-outssfile]<br>(Parameter 3)</td>
 <td>This option specifies the name of the file containing top-scoring domains for residue-based alinnment (output).A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like).</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ssematch</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
@@ -603,12 +610,12 @@ An example of interactive use of SSEMATCH is shown below.
 
 % <b>ssematch </b>
 Search a DCF file for secondary structure matches.
-Name of file of secondary structure (input).: <b>sse.in</b>
-Name of DCF file (domain classification file) (input).: <b>../domainsse-keep/domainsse.out</b>
+Secondary structure file: <b>sse.in</b>
+Domain classification file: <b>../domainsse-keep/domainsse.out</b>
 Number of top-scoring matches to report. [5]: <b>1</b>
-Name of DCF file (domain classification file) containing top-scoring domains for residue-based alinnment (output). [sse.ssematch]: <b>res.dcf</b>
-Name of DCF file (domain classification file) containing top-scoring domains for secondary structure element-based alinnment (output). [sse.out2]: <b>elm.dcf</b>
-Name ssematch log file (output) [ssematch.log]: <b></b>
+Domain classification residue-based output file [sse.ssematch]: <b>res.dcf</b>
+Domain classification structure-based output file [sse.out2]: <b>elm.dcf</b>
+Domainatrix log output file [ssematch.log]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -831,11 +838,13 @@ None.
 
 <!-- AUTHORS -->
 <a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
-Amanda O'Reilly <a href="mailto:aoreilly@rfcgr.mrc.ac.uk">(aoreilly@rfcgr.mrc.ac.uk)</a>
-<br>Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+Amanda O'Reilly 
+<br>Jon Ison <a href="mailto:jison@ebi.ac.uk">(jison@ebi.ac.uk)</a>
 <br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+The European Bioinformatics Institute 
+Wellcome Trust Genome Campus 
+Cambridge CB10 1SD 
+UK 
 
 
 

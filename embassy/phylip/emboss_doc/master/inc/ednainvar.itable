@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip dnainvar program output file</td>
 <td>Output file</td>
 <td>ednainvar.outfile</td>
 </tr>

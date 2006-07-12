@@ -14,12 +14,12 @@ section: input [
 
   infile: siginfile [
     parameter: "Y"
-    information: "Name of signature file (input)"
+    information: "Domainatrix signature file"
     help: "This option specifies the name of the signature file
            (input). A 'signature file' contains a sparse sequence signature
            suitable for use with the SIGSCAN and SIGSCANLIG programs. The files are generated
            by using SIGGEN and SIGGENLIG."
-    knowntype: "signature file"
+    knowntype: "domainatrix signature"
   ]
 
   seqall: dbsequence [
@@ -116,8 +116,7 @@ section: output [
 
   outfile: hitsfile [
     parameter: "Y"
-    information: "Name of DHF file (domain hits file) (output)"
-    help: "This option specifies the name of the DHF file (domain hits
+   help: "This option specifies the name of the DHF file (domain hits
            file) (output). A 'domain hits file' contains database hits
            (sequences) with domain classification information, in the DHF
            format (FASTA-like). The hits are relatives to a SCOP or CATH
@@ -127,13 +126,12 @@ section: output [
            by using SEQSEARCH or various types of HMM and profile by using
            LIBSCAN."
     default: "SIGSCAN.dhf"
-    knowntype: "domain hits file"
+    knowntype: "domain hits"
+    information: "Domain hits output file"
   ]
 
   outfile: alignfile [
     parameter: "Y"
-    information: "Name of SAF file (signature alignment file) for
-	          signature-sequence alignments (output)"
     help: "This option specifies the name of the SAF (signature
            alignment file) (output).A 'signature alignment file'
            contains one or more signature-sequence alignments. The
@@ -148,7 +146,8 @@ section: output [
            query sequence against a library of one or more
            signatures."
     default: "SIGSCAN.aln"
-    knowntype: "signature alignment file"
+    knowntype: "signature alignment"
+    information: "Domainatrix signature alignment output file"
   ]
 
 

@@ -6,7 +6,7 @@
 
 % <b>ohmmpfam 7LES_DROME ../ohmm-own-keep/myhmms </b>
 Align single sequence with an HMM
-Output file [7les_drome.ohmmpfam]: <b></b>
+HMMER hmmpfam program output file [7les_drome.ohmmpfam]: <b></b>
 
                 CS    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV
                 RF    PSPPRNFSVRVLSPRELEVSWLPPEQLRSESVYYTLHWQQELDGENV

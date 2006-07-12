@@ -6,11 +6,11 @@
 
 % <b>seqsort </b>
 Remove ambiguous classified sequences from DHF files.
-Location of DHF files (domain hits files) (input). [./]: <b>../seqnr-keep/hitsnr</b>
+Domain hits directory [./]: <b>../seqnr-keep/hitsnr</b>
 Number of overlapping residues required for merging of two hits. [10]: <b>10</b>
 Write domain families file. [N]: <b>Y</b>
 Write domain ambiguities file. [N]: <b>Y</b>
-Location of DHF files (domain hits files) (output). [./]: <b></b>
+Domain hits file output directory [./]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

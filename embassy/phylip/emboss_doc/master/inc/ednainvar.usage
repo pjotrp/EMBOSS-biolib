@@ -7,7 +7,7 @@
 % <b>ednainvar </b>
 Nucleic acid sequence Invariants method
 Input (aligned) nucleotide sequence set: <b>dnainvar.dat</b>
-Output file [ednainvar.outfile]: <b></b>
+Phylip dnainvar program output file [ednainvar.outfile]: <b></b>
 
 
 

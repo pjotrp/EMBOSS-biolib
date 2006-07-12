@@ -63,21 +63,21 @@
 
 <tr>
 <td>[-scmatrixfile]<br>(Parameter 2)</td>
-<td>Name of substitution matrix (output).</td>
+<td>Domainatrix substitution matrix output file</td>
 <td>Output file</td>
 <td>matgen3d.out</td>
 </tr>
 
 <tr>
 <td>[-calclogfile]<br>(Parameter 3)</td>
-<td>Name of first log file (calculations).</td>
+<td>Domainatrix calculations log output file</td>
 <td>Output file</td>
 <td>matgen3d.calc</td>
 </tr>
 
 <tr>
 <td>[-logfile]<br>(Parameter 4)</td>
-<td>Name of second log file (errors).</td>
+<td>Domainatrix log output file</td>
 <td>Output file</td>
 <td>matgen3d.log</td>
 </tr>

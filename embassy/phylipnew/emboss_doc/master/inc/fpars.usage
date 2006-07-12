@@ -7,8 +7,8 @@
 % <b>fpars </b>
 Discrete character parsimony
 Input file: <b>pars.dat</b>
-Input tree file: <b></b>
-Output file [pars.fpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip pars program output file [pars.fpars]: <b></b>
 
 Adding species:
    1. Alpha     

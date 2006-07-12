@@ -21,9 +21,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip distance matrix output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fdnadist</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -15,8 +15,7 @@ section: input [
   dirlist: dafinpath [
     parameter: "Y"
     default: "./"
-    information: "Location of DAF files (domain alignment
-                  files) (input)."
+    information: "Domain alignment directories"
     help: "This option specifies the location of DAF files (domain
            alignment files) (input). A 'domain alignment file' contains a
            sequence alignment of domains belonging to the same SCOP or CATH
@@ -27,7 +26,7 @@ section: input [
            with sequence relatives (of unknown structure) by using SEQALIGN."
     default: "./"
     extension: "daf"
-    knowntype: "domain alignment file"
+    knowntype: "domain alignment"
   ]
 
   matrixf: matrixfile [
@@ -113,14 +112,14 @@ section: output [
     parameter: "Y"
     default: "./"
     extension: "disc"
-    information: "Location of discriminator files (output)."
+    information: "Discriminator file output directory"
     help: "This option specifies the location of discriminator files
            (output). The discriminator files contain one of the supported
            profiles, including simple frequency matrices, Gribskov profiles,
            Hennikoff profiles, hidden Markov models (HMMER package), hidden
            Markov models (SAM-T2K package) and position-specific scoring
            matrices."
-    knowntype: "discriminator file"
+    knowntype: "discriminator"
   ]
 
 endsection: output

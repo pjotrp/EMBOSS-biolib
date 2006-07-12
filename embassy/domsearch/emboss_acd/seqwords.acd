@@ -14,17 +14,17 @@ section: input [
 
   infile: keyfile [
     parameter: "Y"
-    information: "Name of keywords file (input)"
+    information: "Keywords file"
     help: "This option specifies the name of keywords file (input).
            This contains a list of keywords specific to a number of SCOP or
            CATH families and superfamilies used by SEQWORDS to search a
            sequence database."
-    knowntype: "Keywords file"
+    knowntype: "keywords"
   ]
 
   infile: spfile [
     parameter: "Y"
-    information: "Name of sequence database (input)"
+    information: "Swissprot-format database file"
     help: "This option specifies the name of the sequence database
            (input) to search."
     knowntype: "Swissprot database"
@@ -39,7 +39,7 @@ section: output [
 
   outfile: outfile [
     parameter: "Y"
-    information: "Name of DHF file (domain hits file) (output)"
+    information: "Domain hits output file"
     help: "This option specifies the name of the DHF file (domain hits
            file) (output). A 'domain hits file' contains database hits
            (sequences) with domain classification information, in the DHF
@@ -50,7 +50,7 @@ section: output [
            retrieved by a sparse protein signatare by using SIGSCAN or
            various types of HMM and profile by using LIBSCAN."
     default: "test.hits"
-    knowntype: "Domain hits file"
+    knowntype: "domain hits"
   ]
 
 endsection: output

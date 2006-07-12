@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Sequence filename and optional format, or
                                   reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.myseq] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

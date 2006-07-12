@@ -4,11 +4,11 @@
 <p><h3>File: factor.ffactor</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-    4    8
-Alpha     11100000
-Beta      10001001
-Gamma     00011100
-Epsilon   11101010
+    4    5
+Alpha     CA00#
+Beta      BB01%
+Gamma     AB12#
+Epsilon   CA01$
 </pre>
 </td></tr></table><p>
 <p><h3>File: factor.factor</h3>

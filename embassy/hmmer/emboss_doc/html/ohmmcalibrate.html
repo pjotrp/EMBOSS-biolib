@@ -126,19 +126,24 @@ EDIT HERE
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmcalibrate] HMMER hmmcalibrate program
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -cpu                integer    Number of CPUs
-   -fixed              integer    Length fix for random sequences
-   -mean               float      Mean length of synthetic sequences
-   -num                integer    Number of synthetic sequences
-   -pvm                boolean    Run on parallel virtual machines
-   -sd                 float      Standard deviation of syntheic sequences
-   -seed               integer    Random seed
-   -histogramfile      outfile    Name for histogram file
+   -cpu                integer    [0] Number of CPUs (Any integer value)
+   -fixed              integer    [0] Length fix for random sequences (Integer
+                                  0 or more)
+   -mean               float      [350.] Mean length of synthetic sequences
+                                  (Any numeric value)
+   -num                integer    [5000] Number of synthetic sequences (Any
+                                  integer value)
+   -pvm                boolean    [N] Run on parallel virtual machines
+   -sd                 float      [350.] Standard deviation of syntheic
+                                  sequences (Any numeric value)
+   -seed               integer    [0] Random seed (Integer 0 or more)
+   -histogramfile      outfile    HMMER histogram output file (optional)
 
    Associated qualifiers:
 
@@ -175,16 +180,16 @@ EDIT HERE
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>HMM file</td>
+<td>HMMER hidden markov model file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>HMMER hmmcalibrate program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ohmmcalibrate</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -254,7 +259,7 @@ EDIT HERE
 
 <tr>
 <td>-histogramfile</td>
-<td>Name for histogram file</td>
+<td>HMMER histogram output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

@@ -1,14 +1,15 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Continuous character frequency file
-  [-treefile]          infile     Newick tree file
-   -multsets           toggle     Analyze multiple data sets
-*  -datasets           integer    How many data sets
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Phylip continuous character frequency file
+  [-treefile]          infile     Phylip tree file
+   -multsets           toggle     [N] Analyze multiple data sets
+*  -datasets           integer    [1] How many data sets (Integer 1 or more)
+  [-outfile]           outfile    [econtrast.outfile] Phylip contrast program
+                                  output file
 
    Additional (Optional) qualifiers:
-   -[no]corplusreg     boolean    Print out correlations and regressions
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
+   -[no]corplusreg     boolean    [Y] Print out correlations and regressions
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

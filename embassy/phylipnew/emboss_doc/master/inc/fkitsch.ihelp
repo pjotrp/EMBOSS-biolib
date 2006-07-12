@@ -1,23 +1,26 @@
    Standard (Mandatory) qualifiers:
   [-datafile]          distances  File containing one or more distance
                                   matrices
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fkitsch] Phylip kitsch program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -matrixtype         menu       Type of data matrix
-   -minev              boolean    Minimum evolution
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -power              float      Power
-   -negallowed         boolean    Negative branch lengths allowed
-   -replicates         boolean    Subreplicates
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
+   -matrixtype         menu       [s] Type of data matrix (Values: s (Square);
+                                  u (Upper triangular); l (Lower triangular))
+   -minev              boolean    [N] Minimum evolution
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -power              float      [2.0] Power (Any numeric value)
+   -negallowed         boolean    [N] Negative branch lengths allowed
+   -replicates         boolean    [N] Subreplicates
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

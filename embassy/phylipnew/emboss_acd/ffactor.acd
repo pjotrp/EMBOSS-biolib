@@ -11,7 +11,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "File containing data set"
+  information: "Phylip factor program input file"
   knowntype: "factor input"
 ]
 
@@ -51,16 +51,19 @@ section: output [
 outfile: outfile [
 	parameter: "Y"
 	knowntype: "factor output"
+	information: "Phylip factor program output file"
 ]
 
 outfile: outfactorfile [
 	extension: "factor"
-	information: "Factor outfile name"
+	information: "Phylip factor data output file (optional)"
 	nullok: "Y"
+	knowntype: "phylip factor"
 ]
 outfile: outancfile [
 	extension: "ancestor"
-	information: "Ancestor outfile name"
+	information: "Phylip ancestor data output file (optional)"
 	nullok: "Y"
+	knowntype: "phylip ancestor"
 ]
 endsection: output

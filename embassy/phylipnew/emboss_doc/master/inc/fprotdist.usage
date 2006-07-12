@@ -7,7 +7,7 @@
 % <b>fprotdist </b>
 Protein distance algorithm
 Input (aligned) protein sequence set(s): <b>protdist.dat</b>
-Output file [protdist.fprotdist]: <b></b>
+Phylip distance matrix output file [protdist.fprotdist]: <b></b>
 
 
 Computing distances:

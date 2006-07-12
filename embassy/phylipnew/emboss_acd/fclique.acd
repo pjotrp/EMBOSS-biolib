@@ -13,6 +13,7 @@ discretestates: infile  [
   parameter: "Y"
   characters: "01PB?"
   knowntype: "discrete states"
+  information: "Phylip discrete states file"
 ]
 
 properties: ancfile [
@@ -21,7 +22,7 @@ properties: ancfile [
   length: "$(infile.discretelength)"
   knowntype: "ancestral states"
   nullok: "Y"
-  information: "Ancestral states file"
+  information: "Phylip ancestral states file"
 ]
 
 properties: factorfile [
@@ -30,7 +31,7 @@ properties: factorfile [
   length: "$(infile.discretelength)"
   knowntype: "multistate factors"
   nullok: "Y"
-  information: "Multistate factors file"
+  information: "Phylip multistate factors file (optional)"
 ]
 
 properties: weights [
@@ -39,7 +40,7 @@ properties: weights [
   length: "$(infile.discretelength)"
   knowntype: "Weights"
   nullok: "Y"
-  information: "Weights file"
+  information: "Phylip weights file (optional)"
 ]
 
 endsection: input
@@ -73,6 +74,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "clique output"
+  information: "Phylip clique program output file"
 ]
 
 toggle: trout [
@@ -84,7 +86,7 @@ toggle: trout [
 outfile: outtreefile  [
   additional: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file (optional)"
   knowntype: "newick tree"
   nullok: "Y"
 ]

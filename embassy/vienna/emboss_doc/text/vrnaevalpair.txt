@@ -17,29 +17,47 @@ Algorithm
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with vrnaevalpair
+
+
+% vrnaevalpair 
+RNA eval with cofold
+Input nucleotide sequence: cofold-red.fasta
+Vienna RNA structure contraints file: cofold-red.con
+Second nucleotide sequence: cofold-blue.fasta
+Second vienna RNA structure contraints file: cofold-blue.con
+Vienna RNAeval output file [red.vrnaevalpair]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-aconstraintfile]   infile     Constraint file
+  [-aconstraintfile]   infile     Vienna RNA structure contraints file
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-bconstraintfile]   infile     Constraint file
-  [-outfile]           outfile    Output file name
+  [-bconstraintfile]   infile     Second vienna RNA structure contraints file
+  [-outfile]           outfile    [*.vrnaevalpair] Vienna RNAeval output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]convert        boolean    Convert T to U
-   -[no]tetraloop      boolean    Stabilising energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -dangles            menu       Method
-   -logml              boolean    Use log scale for multiloop energies
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]convert        boolean    [Y] Convert T to U
+   -[no]tetraloop      boolean    [Y] Stabilising energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (No stabilising
+                                  energies for dangling ends); 1 (Use
+                                  stabilising energies for dangling ends); 2
+                                  (Dangling energies as in a partition
+                                  function 3:Allow coaxial stacking of
+                                  adjacent helices))
+   -logml              boolean    [N] Use log scale for multiloop energies
 
    Associated qualifiers:
 
@@ -93,52 +111,41 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-asequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-aconstraintfile]
-   (Parameter 2) Constraint file Input file Required
-   [-bsequence]
-   (Parameter 3) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-bconstraintfile]
-   (Parameter 4) Constraint file Input file Required
-   [-outfile]
-   (Parameter 5) Output file name Output file <sequence>.vrnaevalpair
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -paramfile Parameter file Input file Required
-   -temperature Temperature Any numeric value 37.0
-   -[no]convert Convert T to U Boolean value Yes/No Yes
-   -[no]tetraloop Stabilising energies for tetra-loops Boolean value
-   Yes/No Yes
-   -energy Rarely used option to fold sequences from the ABCD... alphabet
-   0 (BP)
-   1 (Any with GC)
-   2 (Any with AU parameters)
-   0
-   -dangles Method
-   0 (No stabilising energies for dangling ends)
-   1 (Use stabilising energies for dangling ends)
-   2 (Dangling energies as in a partition function 3:Allow coaxial
-   stacking of adjacent helices)
-   1
-   -logml Use log scale for multiloop energies Boolean value Yes/No No
-
 Input file format
 
    vrnaevalpair reads any normal sequence USAs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: cofold-red.fasta
+
+>red
+AUGAAGAUGA
+
+  File: cofold-red.con
+
+   ....((((..
+
+  File: cofold-blue.fasta
+
+>blue
+CUGUCUGUCUUGAGACA
+
+  File: cofold-blue.con
+
+   ..))))(((....))).
 
 Output file format
 
    vrnaevalpair outputs a graph to the specified graphics device. outputs
    a report format file. The default format is ...
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: red.vrnaevalpair
+
+AUGAAGAUGA&CUGUCUGUCUUGAGACA
+....((((..&..))))(((....))). ( -4.40)
 
 Data files
 

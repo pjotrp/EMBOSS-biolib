@@ -83,8 +83,8 @@ Usage
 % fdnapars 
 DNA parsimony algorithm
 Input (aligned) nucleotide sequence set(s): dnapars.dat
-Input tree file: 
-Output file [dnapars.fdnapars]: 
+Phylip tree file (optional): 
+Phylip dnapars program output file [dnapars.fdnapars]: 
 
 Adding species:
    1. Alpha
@@ -116,29 +116,33 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fdnapars] Phylip dnapars program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
    -weights            properties Weights file
-   -maxtrees           integer    Number of trees to save
-*  -[no]thorough       toggle     More thorough search
-*  -[no]rearrange      boolean    Rearrange on just one best tree
-   -transversion       boolean    Use transversion parsimony
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -outgrno            integer    Species number to use as outgroup
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -stepbox            boolean    Print out steps in each site
-   -ancseq             boolean    Print sequences at all nodes of tree
-   -[no]treeprint      boolean    Print out tree
-*  -[no]dotdiff        boolean    Use dot differencing to display results
+   -maxtrees           integer    [10000] Number of trees to save (Integer
+                                  from 1 to 1000000)
+*  -[no]thorough       toggle     [Y] More thorough search
+*  -[no]rearrange      boolean    [Y] Rearrange on just one best tree
+   -transversion       boolean    [N] Use transversion parsimony
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1.0] Threshold value (Number 1.000 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -stepbox            boolean    [N] Print out steps in each site
+   -ancseq             boolean    [N] Print sequences at all nodes of tree
+   -[no]treeprint      boolean    [Y] Print out tree
+*  -[no]dotdiff        boolean    [Y] Use dot differencing to display results
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -179,40 +183,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) File containing one or more sequence alignments Readable
-   sets of sequences
-   [-intreefile]
-   (Parameter 2) (no help text) tree value Phylogenetic tree
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.fdnapars
-   Additional (Optional) qualifiers Allowed values Default
-   -weights Weights file Property value(s)
-   -maxtrees Number of trees to save Integer from 1 to 1000000 10000
-   -[no]thorough More thorough search Toggle value Yes/No Yes
-   -[no]rearrange Rearrange on just one best tree Boolean value Yes/No
-   Yes
-   -transversion Use transversion parsimony Boolean value Yes/No No
-   -njumble Number of times to randomise Integer 0 or more 0
-   -seed Random number seed between 1 and 32767 (must be odd) Integer
-   from 1 to 32767 1
-   -outgrno Species number to use as outgroup Integer 0 or more 0
-   -thresh Use threshold parsimony Toggle value Yes/No No
-   -threshold Threshold value Number 1.000 or more 1.0
-   -[no]trout Write out trees to tree file Toggle value Yes/No Yes
-   -outtreefile Tree file name Output file
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   -stepbox Print out steps in each site Boolean value Yes/No No
-   -ancseq Print sequences at all nodes of tree Boolean value Yes/No No
-   -[no]treeprint Print out tree Boolean value Yes/No Yes
-   -[no]dotdiff Use dot differencing to display results Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

@@ -14,38 +14,35 @@ section: input [
 
   infile: listfile [
     parameter: "Y"
-    information: "Name of raw CATH classification file
-                  (caths.list.vX.X) (input)."
+    information: "Raw cath list file"
     help: "This option specifies the name of raw CATH classification
            file (caths.list.vX.X) (input). The raw CATH parsable files
            (classification and description files) available from
            ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4)."
     default: "caths.list.v2.4"
-    knowntype: "Raw cath list file"
+    knowntype: "Raw cath list"
   ]
 
   infile: domfile [
     parameter: "Y"
-    information: "Name of raw CATH classification file
-                  (domlist.vX.X) (input)."
+    information: "Raw cath domlist file"
     help: "This option specifies the name of raw CATH classification
            file (domlist.vX.X) (input). The raw CATH parsable files
            (classification and description files) available from
            ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4)."
     default: "domlist.v2.4"
-    knowntype: "Raw cath domlist file"
+    knowntype: "Raw cath domlist"
   ]
 
   infile: namesfile [
     parameter: "Y"
-    information: "Name of raw CATH classification file
-                  (CAT.names.all.vX.X) (input)."
+    information: "Raw cath names file"
     help: "This option specifies the name of raw CATH classification
            file (CAT.names.all.vX.X) (input). The raw CATH parsable files
            (classification and description files) available from
            ftp.biochem.ucl.ac.uk (/pub/cathdata/v2.4)."
     default: "CAT.names.all.v2.4"
-    knowntype: "Raw cath names file"
+    knowntype: "Raw cath names"
   ]
 
 endsection: input
@@ -57,8 +54,7 @@ section: output [
 
   outfile: outfile [
     parameter: "Y"
-    information: "Name of CATH DCF file (domain classification
-                  file) (output)."
+    information: "Domain classification output file"
     help: "This option specifies the name of CATH DCF file (domain
            classification file) (output). A 'domain classification file'
            contains classification and other data for domains from SCOP or
@@ -66,15 +62,15 @@ section: output [
            SCOPPARSE and CATHPARSE. Domain sequence information can be added
            to the file by using DOMAINSEQS."
     default: "Ecath.dat"
-    knowntype: "domain classification file"
+    knowntype: "domain classification"
   ]
 
   outfile: logfile [
     standard: "Y"
-    information: "Name of CATHPARSE log file"
+    information: "Domainatrix log output file"
     help: "This option specifies the name of the CATHPARSE log file."
     default: "cathparse.log"
-    knowntype: "domainatrix log file"
+    knowntype: "domainatrix log"
   ]
 
 endsection: output

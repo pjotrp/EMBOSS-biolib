@@ -171,9 +171,10 @@ XX
                                   available at URL
                                   http://www.expasy.ch/cgi-bin/lists?pdbtosp.tx
 t
-  [-outfile]           outfile    This option specifies the name of
-                                  swissprot:PDB equivalence file (EMBL-like
-                                  format). This is the PDBTOSP output file.
+  [-outfile]           outfile    [Epdbtosp.dat] This option specifies the
+                                  name of swissprot:PDB equivalence file
+                                  (EMBL-like format). This is the PDBTOSP
+                                  output file.
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -199,111 +200,3 @@ t
 
   6.1 COMMAND LINE ARGUMENTS
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) This option specifies the name of raw swissprot:PDB
-   equivalence file (input). HETPARSE parses this file, which is
-   available at URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt Input
-   file Required
-   [-outfile]
-   (Parameter 2) This option specifies the name of swissprot:PDB
-   equivalence file (EMBL-like format). This is the PDBTOSP output file.
-   Output file Epdbtosp.dat
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
-
-  6.2 EXAMPLE SESSION
-
-   An example of interactive use of PDBTOSP is shown below. Here is a
-   sample session with pdbtosp
-
-
-% pdbtosp 
-Convert swissprot:PDB codes file to EMBL-like format.
-Name of raw swissprot:PDB equivalence file (input): pdbtosp.txt
-Name of swissprot:PDB equivalence file (EMBL-like format output) [Epdbtosp.dat]
-: 
-
-   Go to the input files for this example
-   Go to the output files for this example
-
-7.0 KNOWN BUGS & WARNINGS
-
-   None.
-
-8.0 NOTES
-
-   PDBTOSP is used to create the EMBOSS data file Epdbtosp.dat that is
-   included in the EMBOSS distribution.
-
-  8.1 GLOSSARY OF FILE TYPES
-
-   FILE TYPE FORMAT DESCRIPTION CREATED BY SEE ALSO
-   swissprot:PDB equivalence file EMBL-like format. A file containing
-   swissprot identifiers for PDB codes. Included in the EMBOSS
-   distribution N.A.
-
-   None
-
-9.0 DESCRIPTION
-
-   Some research applications require knowledge of the database
-   sequence(s) that corresponds to the sequence(s) given in a PDB file. A
-   'swissprot:PDB equivalence' file listing accession numbers and
-   swissprot database identifiers for certain PDB codes is available, but
-   is not in a format that is consistent with flat file formats used for
-   protein structural data in emboss. PDBTOSP parses the swissprot:PDB
-   equivalence in its raw format and converts it to an EMBL-like format.
-
-10.0 ALGORITHM
-
-   PDBTOSP relies on finding a line beginning with '____ _' in the input
-   file (all lines up to and including this one are ignored). Lines of
-   code data are then parsed, up until the first blank line.
-
-11.0 RELATED APPLICATIONS
-
-See also
-
-    Program name                        Description
-   aaindexextract Extract data from AAINDEX
-   allversusall   Sequence similarity data from all-versus-all comparison
-   cathparse      Generates DCF file from raw CATH files
-   cutgextract    Extract data from CUTG
-   domainer       Generates domain CCF files from protein CCF files
-   domainnr       Removes redundant domains from a DCF file
-   domainseqs     Adds sequence records to a DCF file
-   domainsse      Add secondary structure records to a DCF file
-   hetparse       Converts heterogen group dictionary to EMBL-like format
-   pdbplus        Add accessibility & secondary structure to a CCF file
-   pdbtosp        Convert swissprot:PDB codes file to EMBL-like format
-   printsextract  Extract data from PRINTS
-   prosextract    Build the PROSITE motif database for use by patmatmotifs
-   rebaseextract  Extract data from REBASE
-   scopparse      Generate DCF file from raw SCOP files
-   seqnr          Removes redundancy from DHF files
-   sites          Generate residue-ligand CON files from CCF files
-   ssematch       Search a DCF file for secondary structure matches
-   tfextract      Extract data from TRANSFAC
-
-12.0 DIAGNOSTIC ERROR MESSAGES
-
-   None.
-
-13.0 AUTHORS
-
-   Jon Ison (jison@rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
-14.0 REFERENCES
-
-   Please cite the authors and EMBOSS.
-   Rice P, Longden I and Bleasby A (2000) "EMBOSS - The European
-   Molecular Biology Open Software Suite" Trends in Genetics, 15:276-278.
-   
-   See also http://emboss.sourceforge.net/
-
-  14.1 Other useful references

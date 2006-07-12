@@ -6,7 +6,7 @@
 
 % <b>libgen </b>
 Generate discriminating elements from alignments.
-Location of DAF files (domain alignment files) (input). [./]: <b>../domainalign-keep/daf</b>
+Domain alignment directories [./]: <b>../domainalign-keep/daf</b>
 Residue substitution matrix. [EBLOSUM62]: <b>EBLOSUM62</b>
 Discrimininator type
          1 : Simple frequency matrix
@@ -16,7 +16,7 @@ Discrimininator type
          5 : Hidden Markov model (SAM-T2K)
          6 : Position-specific scoring matrix
 Select type. [1]: <b>2</b>
-Location of discriminator files (output). [./]: <b></b>
+Discriminator file output directory [./]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

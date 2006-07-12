@@ -1,22 +1,25 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-  [-intreefile]        tree       (no help text) tree value
-   -weights            properties Weights file
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+   -weights            properties Phylip weights file (optional)
+  [-outfile]           outfile    [*.fdnacomp] Phylip dnacomp program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -outgrno            integer    Species number to use as outgroup
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -stepbox            boolean    Print steps & compatibility at sites
-   -ancseq             boolean    Print sequences at all nodes of tree
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print steps & compatibility at sites
+   -ancseq             boolean    [N] Print sequences at all nodes of tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

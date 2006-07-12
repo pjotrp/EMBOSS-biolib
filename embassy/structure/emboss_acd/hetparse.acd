@@ -14,8 +14,7 @@ section: input [
 
   infile: infile [
     parameter: "Y"
-    information: "Name of input file (raw dictionary of
-                  heterogen groups)"
+    information: "Raw dictionary of heterogen groups file"
     help: "This option specifies the name of input file (raw
            dictionary of heterogen groups) to parse, which should be of the
            format specified at http://pdb.rutgers.edu/het_dictionary.txt"
@@ -35,12 +34,12 @@ section: input [
 
   dirlist: dirlistpath [
     standard: "$(dogrep)"
-    information: "Directory to search with keywords"
+    information: "Pdb entry directories"
     help: "This option specifies the directory to search with
            keywords."
     default: "./"
     extension: "ent"
-    knowntype: "pdb file"
+    knowntype: "pdb"
   ]
 
 endsection: input
@@ -60,8 +59,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     default: "Ehet.dat"
-    information: "Name of EMBL-like format dictionary of
-                  heterogen groups."
+    information: "Dictionary of heterogen groups output file"
     help: "This option specifies the name of EMBL-like format
            dictionary of heterogen groups."
     knowntype: "Dictionary of heterogen groups"

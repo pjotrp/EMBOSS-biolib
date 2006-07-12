@@ -1,23 +1,26 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Data file
-*  -datasets           integer    How many data sets
-*  -randseed           integer    Random number seed (must be odd)
-*  -randtimes          integer    Number of times to jumble
-  [-outfile]           outfile    Output file name
-   -treefile           outfile    Tree file name
+  [-infile]            infile     Phylip kitsch program input file
+*  -datasets           integer    [0] How many data sets (Any integer value)
+*  -randseed           integer    [0] Random number seed (must be odd) (Any
+                                  integer value)
+*  -randtimes          integer    [0] Number of times to jumble (Any integer
+                                  value)
+  [-outfile]           outfile    [ekitsch.outfile] Phylip kitsch program
+                                  output file
+   -treefile           outfile    [ekitsch.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -lt                 boolean    Lower-triangular data matrix
-   -ut                 boolean    Upper-triangular data matrix
-   -replicates         boolean    Subreplicates
-   -multsets           toggle     Analyze multiple data sets
-   -[no]besttree       toggle     Search for best tree
-*  -random             toggle     Randomize input order of species
-   -power              float      Power
-   -negbranch          boolean    Negative branch lengths allowed
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -[no]drawtree       boolean    Draw tree
+   -lt                 boolean    [N] Lower-triangular data matrix
+   -ut                 boolean    [N] Upper-triangular data matrix
+   -replicates         boolean    [N] Subreplicates
+   -multsets           toggle     [N] Analyze multiple data sets
+   -[no]besttree       toggle     [Y] Search for best tree
+*  -random             toggle     [N] Randomize input order of species
+   -power              float      [3.0] Power (Any numeric value)
+   -negbranch          boolean    [N] Negative branch lengths allowed
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

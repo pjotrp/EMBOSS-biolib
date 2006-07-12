@@ -135,9 +135,9 @@ Usage
 
 % ftreedistpair -style s 
 Distances between two sets of trees
-Tree file: treedist.dat
-Second input tree file: treedist.dat
-Output file [treedist.ftreedistpair]: 
+Phylip tree file: treedist.dat
+Second phylip tree file: treedist.dat
+Phylip treedist program output file [treedist.ftreedistpair]: 
 
 Done.
 
@@ -148,17 +148,25 @@ Done.
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-intreefile]        tree       Tree file
-  [-bintreefile]       tree       Second input tree file
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file
+  [-bintreefile]       tree       Second phylip tree file
+  [-outfile]           outfile    [*.ftreedistpair] Phylip treedist program
+                                  output file
 
    Additional (Optional) qualifiers:
-   -dtype              menu       Distance type
-   -pairing            menu       Tree pairing method
-   -style              menu       Distances output option
-   -noroot             boolean    Trees to be treated as rooted
-   -outgrno            integer    Species number to use as outgroup
-   -progress           boolean    Print indications of progress of run
+   -dtype              menu       [b] Distance type (Values: s (Symmetric
+                                  difference); b (Branch score distance))
+   -pairing            menu       [l] Tree pairing method (Values: c
+                                  (Distances between corresponding pairs each
+                                  tree file); l (Distances between all
+                                  possible pairs in each tree file))
+   -style              menu       [v] Distances output option (Values: f
+                                  (Full_matrix); v (One pair per line,
+                                  verbose); s (One pair per line, sparese))
+   -noroot             boolean    [N] Trees to be treated as rooted
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -progress           boolean    [N] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -180,33 +188,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-intreefile]
-   (Parameter 1) Tree file Phylogenetic tree
-   [-bintreefile]
-   (Parameter 2) Second input tree file Phylogenetic tree
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.ftreedistpair
-   Additional (Optional) qualifiers Allowed values Default
-   -dtype Distance type
-   s (Symmetric difference)
-   b (Branch score distance)
-   b
-   -pairing Tree pairing method
-   c (Distances between corresponding pairs each tree file)
-   l (Distances between all possible pairs in each tree file)
-   l
-   -style Distances output option
-   f (Full_matrix)
-   v (One pair per line, verbose)
-   s (One pair per line, sparese)
-   v
-   -noroot Trees to be treated as rooted Boolean value Yes/No No
-   -outgrno Species number to use as outgroup Integer 0 or more 0
-   -progress Print indications of progress of run Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

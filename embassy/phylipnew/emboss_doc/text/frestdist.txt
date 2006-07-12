@@ -163,7 +163,7 @@ Usage
 % frestdist 
 Distance matrix from restriction sites or fragments
 Input file: restdist.dat
-Output file [restdist.frestdist]: 
+Phylip restdist program output file [restdist.frestdist]: 
 
 
 Restriction site or fragment distances, version 3.6b
@@ -188,21 +188,23 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-data]              discretestates File containing one or more sets of
                                   restriction data
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.frestdist] Phylip restdist program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -[no]restsites      boolean    Restriction sites (put N if you want
+   -[no]restsites      boolean    [Y] Restriction sites (put N if you want
                                   restriction fragments)
-   -neili              boolean    Use original Nei/Li model (default uses
+   -neili              boolean    [N] Use original Nei/Li model (default uses
                                   modified Nei/Li model)
-*  -gamma              boolean    Gama distributed rates among sites
-*  -gammacoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-   -ttratio            float      Transition/transversion ratio
-   -sitelength         integer    Site length
-   -lower              boolean    Lower triangular distance matrix
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+*  -gamma              boolean    [N] Gama distributed rates among sites
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+   -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  0.001 or more)
+   -sitelength         integer    [6] Site length (Integer 1 or more)
+   -lower              boolean    [N] Lower triangular distance matrix
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -224,29 +226,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-data]
-   (Parameter 1) File containing one or more sets of restriction data
-   Discrete states file
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.frestdist
-   Additional (Optional) qualifiers Allowed values Default
-   -[no]restsites Restriction sites (put N if you want restriction
-   fragments) Boolean value Yes/No Yes
-   -neili Use original Nei/Li model (default uses modified Nei/Li model)
-   Boolean value Yes/No No
-   -gamma Gama distributed rates among sites Boolean value Yes/No No
-   -gammacoefficient Coefficient of variation of substitution rate among
-   sites Number 0.001 or more 1
-   -ttratio Transition/transversion ratio Number 0.001 or more 2.0
-   -sitelength Site length Integer 1 or more 6
-   -lower Lower triangular distance matrix Boolean value Yes/No No
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

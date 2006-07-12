@@ -17,7 +17,7 @@ frequencies: infile  [
 properties: weights [
 	additional: "Y"
 	characters: "01"
-	information: "Weights file"
+	information: "Phylip weights file (optional)"
 	help: "Weights file"
         length: "$(infile.length)"
 	nullok: "Y"
@@ -101,6 +101,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "seqbootfreq output"
+  information: "Phylip seqboot_freq program output file"
 ]
 
 boolean: printdata  [

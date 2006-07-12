@@ -8,9 +8,9 @@
 Penny algorithm for DNA
 Input (aligned) sequence set: <b>dnapenny.dat</b>
 Outgroup root [N]: <b></b>
-Output file [ednapenny.outfile]: <b></b>
+Phylip dnapenny program output file [ednapenny.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [ednapenny.treefile]: <b></b>
+Phylip tree output file [ednapenny.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

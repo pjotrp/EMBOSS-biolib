@@ -6,16 +6,16 @@
 
 % <b>emix </b>
 Mixed parsimony algorithm
-Data file: <b>mix.dat</b>
+Phylip mix program input file: <b>mix.dat</b>
 Method
        Wag : Wagner
        Cam : Camin-Sokal
        Mix : Mixed
 Choose the method to use [Wag]: <b></b>
 Outgroup root [N]: <b></b>
-Output file [emix.outfile]: <b></b>
+Phylip mix program output file [emix.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [emix.treefile]: <b></b>
+Phylip tree output file [emix.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

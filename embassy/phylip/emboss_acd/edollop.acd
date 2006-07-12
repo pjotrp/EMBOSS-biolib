@@ -11,7 +11,7 @@ section: input [
 
 infile: datafile  [
   parameter: "Y"
-  information: "Data file to be read in"
+  information: "Phylip dollop program input file"
   knowntype: "dollop input"
 ]
 
@@ -101,6 +101,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "edollop.outfile"
   knowntype: "dollop output"
+  information: "Phylip dollop program output file"
 ]
 
 boolean: printdata  [
@@ -142,7 +143,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "edollop.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

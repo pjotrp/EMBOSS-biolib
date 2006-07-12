@@ -22,8 +22,8 @@ section: input
 infile: hmmfilein  
 [
   parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+  information: "HMMER hidden markov model file"
+  knowntype: "hmm"
   help: "File containing an HMM."
 ]
 
@@ -108,7 +108,7 @@ section: output
 outfile: hmmfileout
 [
   parameter: "Y"
-  information: "HMM file with EVD parameters"
+  information: "HMMER hmmcalibrate program output file"
   knowntype: "hmmcalibrate output"
   help: "File containing an HMM with EVD parameters."
 ]
@@ -117,7 +117,7 @@ outfile: histfile
 [
   nullok: "Yes"
   nulldefault: "Yes"
-  information: "Name for histogram file"
+  information: "HMMER histogram output file (optional)"
   knowntype: "hmmer histogram"
   help: "Save a histogram of the scores and the fitted theoretical curve to file."
 ]

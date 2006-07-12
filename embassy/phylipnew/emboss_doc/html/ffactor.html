@@ -100,8 +100,8 @@ states is assumed to be a tree, with no loops in it.
 
 % <b>ffactor </b>
 Multistate to binary recoding program
-File containing data set: <b>factor.dat</b>
-Output file [factor.ffactor]: <b></b>
+Phylip factor program input file: <b>factor.dat</b>
+Phylip factor program output file [factor.ffactor]: <b></b>
 
 
 Data matrix written on file "factor.ffactor"
@@ -122,17 +122,18 @@ Done.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     File containing data set
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Phylip factor program input file
+  [-outfile]           outfile    [*.ffactor] Phylip factor program output
+                                  file
 
    Additional (Optional) qualifiers:
-   -anc                boolean    Put ancestral states in output file
-   -factors            boolean    Put factors information in output file
-   -[no]progress       boolean    Print indications of progress of run
+   -anc                boolean    [N] Put ancestral states in output file
+   -factors            boolean    [N] Put factors information in output file
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers:
-   -outfactorfile      outfile    Factor outfile name
-   -outancfile         outfile    Ancestor outfile name
+   -outfactorfile      outfile    Phylip factor data output file (optional)
+   -outancfile         outfile    Phylip ancestor data output file (optional)
 
    Associated qualifiers:
 
@@ -172,16 +173,16 @@ Done.
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>File containing data set</td>
+<td>Phylip factor program input file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip factor program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ffactor</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -219,14 +220,14 @@ Done.
 
 <tr>
 <td>-outfactorfile</td>
-<td>Factor outfile name</td>
+<td>Phylip factor data output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-outancfile</td>
-<td>Ancestor outfile name</td>
+<td>Phylip ancestor data output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
@@ -469,11 +470,11 @@ putting the Factors and Ancestors information into the data file.
 <p><h3>File: factor.ffactor</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-    4    8
-Alpha     11100000
-Beta      10001001
-Gamma     00011100
-Epsilon   11101010
+    4    5
+Alpha     CA00#
+Beta      BB01%
+Gamma     AB12#
+Epsilon   CA01$
 </pre>
 </td></tr></table><p>
 <p><h3>File: factor.factor</h3>

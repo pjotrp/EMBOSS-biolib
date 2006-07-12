@@ -11,7 +11,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "Data file"
+  information: "Phylip penny program input file"
   knowntype: "penny input"
 ]
 
@@ -103,6 +103,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "epenny.outfile"
   knowntype: "penny output"
+  information: "Phylip penny program output file"
 ]
 
 boolean: printdata  [
@@ -144,7 +145,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "epenny.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

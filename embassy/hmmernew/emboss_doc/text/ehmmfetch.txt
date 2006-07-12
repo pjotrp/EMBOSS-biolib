@@ -61,13 +61,14 @@ Command line arguments
    them).
 
    Standard (Mandatory) qualifiers:
-  [-database]          infile     Database name
-  [-name]              string     Entry name
-  [-outfile]           outfile    Output file name
+  [-database]          infile     HMMER hmm database file
+  [-name]              string     Entry name (Any string is accepted)
+  [-outfile]           outfile    [*.ehmmfetch] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -n                  boolean    Interpret name as an HMM number instead of a
+   -nhmm               boolean    Interpret name as an HMM number instead of a
                                   name. Numbering starts at 0. For example,
                                   to fetch the frst HMM from an HMM database
                                   called foo, you would do 'hmmfetch -n 0
@@ -92,21 +93,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-database]
-   (Parameter 1) Database name Input file Required
-   [-name]
-   (Parameter 2) Entry name Any string is accepted An empty string is
-   accepted
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.ehmmfetch
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -n Interpret name as an HMM number instead of a name. Numbering starts
-   at 0. For example, to fetch the frst HMM from an HMM database called
-   foo, you would do 'hmmfetch -n 0 foo'. Boolean value Yes/No No
 
 Input file format
 
@@ -474,6 +460,7 @@ Notes
 
    The following original HMMER options are not supported:
 -h         : Use -help to get help information instead.
+-n         : Use -nhmm instead (-n causes problems for GUI developers)
 
    The following additional options are provided:
 -outfile   : Output file with HMM.

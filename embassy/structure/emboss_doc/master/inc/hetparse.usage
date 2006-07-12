@@ -6,10 +6,10 @@
 
 % <b>hetparse </b>
 Converts heterogen group dictionary to EMBL-like format.
-Name of input file (raw dictionary of heterogen groups): <b>het.txt</b>
+Raw dictionary of heterogen groups file: <b>het.txt</b>
 Search a directory of PDB files with keywords? [N]: <b>Y</b>
-Directory to search with keywords [./]: <b></b>
-Name of EMBL-like format dictionary of heterogen groups. [Ehet.dat]: <b>Ehet.dat</b>
+Pdb entry directories [./]: <b></b>
+Dictionary of heterogen groups output file [Ehet.dat]: <b>Ehet.dat</b>
 
 </pre></td></tr></table><p>
 <p>

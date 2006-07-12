@@ -94,31 +94,11 @@ NE   11
 XX
 EN   [1]
 XX
-ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
-XX
-DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
-XX
-SI   SN 1; NS 2
-XX
-CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
-XX
-S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
-     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
-     LKKAI
-XX
-NC   SM .; LI 2
-XX
-LI   HIS 10
-LI   ASP 49
-XX
-//
-EN   [2]
-XX
 ID   PDB 1cs4; DOM d1cs4a_; LIG 101;
 XX
 DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
 XX
-SI   SN 2; NS 2
+SI   SN 1; NS 2
 XX
 CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .
 XX
@@ -133,6 +113,26 @@ LI   THR 7
 LI   LEU 44
 LI   GLY 45
 LI   ASP 46
+XX
+//
+EN   [2]
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
+XX
+DE   2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+SI   SN 2; NS 2
+XX
+CN   MO .; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .
+XX
+S1   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;
+     MKFAHLADIH LGYEQFHKPQ REEEFAEAFK NALEIAVQEN VDFILIAGDL FHSSRPSPGT
+     LKKAI
+XX
+NC   SM .; LI 2
+XX
+LI   HIS 10
+LI   ASP 49
 XX
 
 
@@ -236,42 +236,7 @@ In addition, where 3D signatures are generated, the following records have diffe
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: 101.1.F.#.1ii7.d1ii7a_.sig</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-<pre>
-TY   LIGAND
-XX
-TS   1D
-XX
-ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
-XX
-DE    2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
-XX
-IS   SN 1; NS 2
-XX
-IP   PN 0; NP 0; MP 5; MG 2
-XX
-NP   2
-XX
-NN   [1]
-XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
-XX
-AA   H ; 1
-XX
-GA   9 ; 1
-XX
-NN   [2]
-XX
-IN   NRES 1 ; NGAP 1 ; WSIZ 0
-XX
-AA   D ; 1
-XX
-GA   38 ; 1
-//
-</pre>
-</td></tr></table><p>
-<p><h3>File: 101.2.F.#.1cs4.d1cs4a_.sig</h3>
+<p><h3>File: 101.1.F.#.1cs4.d1cs4a_.sig</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 TY   LIGAND
@@ -282,7 +247,7 @@ ID   PDB 1cs4; DOM d1cs4a_; LIG 101;
 XX
 DE    2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
 XX
-IS   SN 2; NS 2
+IS   SN 1; NS 2
 XX
 IP   PN 0; NP 0; MP 5; MG 2
 XX
@@ -335,6 +300,41 @@ XX
 AA   D ; 1
 XX
 GA   0 ; 1
+//
+</pre>
+</td></tr></table><p>
+<p><h3>File: 101.2.F.#.1ii7.d1ii7a_.sig</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+TY   LIGAND
+XX
+TS   1D
+XX
+ID   PDB 1ii7; DOM d1ii7a_; LIG 101;
+XX
+DE    2'-DEOXY-ADENOSINE 3'-MONOPHOSPHATE
+XX
+IS   SN 2; NS 2
+XX
+IP   PN 0; NP 0; MP 5; MG 2
+XX
+NP   2
+XX
+NN   [1]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   H ; 1
+XX
+GA   9 ; 1
+XX
+NN   [2]
+XX
+IN   NRES 1 ; NGAP 1 ; WSIZ 0
+XX
+AA   D ; 1
+XX
+GA   38 ; 1
 //
 </pre>
 </td></tr></table><p>
@@ -1071,38 +1071,48 @@ SIGGENLIG does not use any data files.
                                   Records for residue solvent accessibility
                                   and secondary structure are added to the
                                   file by using PDBPLUS. default: ./
-   -mode               menu       This option specifies the mode of signature
-                                  generation. In 'Full-length signature mode'
-                                  (mode 1) a single signature incorporating
-                                  all residue positions that contact the
-                                  ligand plus intervening gaps is generated.
-                                  In 'Patch signature mode' (mode 2) one or
-                                  more signatures corresponding to 'patches'
-                                  of residue positions are generated. A patch
-                                  is a set of residues that are
-                                  near-neighbours in sequence and is described
-                                  by two user-defined parameters: minimum
-                                  patch size and maximum gap distance.
-   -type               menu       This option specifies the type of signature
-                                  generated. In '1D (sequence) signature'
-                                  sequence-based signatures are generated. In
-                                  '3D (structural) signature' structure-based
-                                  signatures are generated.
-*  -patchsize          integer    This option specifies the minimum patch
+   -mode               menu       [1] This option specifies the mode of
+                                  signature generation. In 'Full-length
+                                  signature mode' (mode 1) a single signature
+                                  incorporating all residue positions that
+                                  contact the ligand plus intervening gaps is
+                                  generated. In 'Patch signature mode' (mode
+                                  2) one or more signatures corresponding to
+                                  'patches' of residue positions are
+                                  generated. A patch is a set of residues that
+                                  are near-neighbours in sequence and is
+                                  described by two user-defined parameters:
+                                  minimum patch size and maximum gap distance.
+                                  (Values: 1 (Full-length signature mode); 2
+                                  (Patch signature mode))
+   -type               menu       [1] This option specifies the type of
+                                  signature generated. In '1D (sequence)
+                                  signature' sequence-based signatures are
+                                  generated. In '3D (structural) signature'
+                                  structure-based signatures are generated.
+                                  (Values: 1 (1D (sequence) signature); 2 (3D
+                                  (structural) signature))
+*  -patchsize          integer    [5] This option specifies the minimum patch
                                   size. This is the minimum number of contact
                                   positions that must be incorporated in a
-                                  signature.
-*  -gapdistance        integer    This option specifies the maximum gap
+                                  signature. (Integer 3 or more)
+*  -gapdistance        integer    [2] This option specifies the maximum gap
                                   distance. This is the maximum allowable gap
                                   (residues) between two residue in a patch.
                                   If two contact residues are further than
                                   this distance apart in sequence, they would
-                                  not belong to the same patch.
-*  -environment        menu       This option specifies the environment
+                                  not belong to the same patch. (Integer 0 or
+                                  more)
+*  -environment        menu       [1] This option specifies the environment
                                   definition. See matgen3d documentation for
-                                  description of definitions.
-   -wsiz               integer    This option specifies the window size. When
-                                  a signature is aligned to a protein
+                                  description of definitions. (Values: 1
+                                  (Env1); 2 (Env2); 3 (Env3); 4 (Env4); 5
+                                  (Env5); 6 (Env6); 7 (Env7); 8 (Env8); 9
+                                  (Env9); 10 (Env10); 11 (Env11); 12 (Env12);
+                                  13 (Env13); 14 (Env14); 15 (Env15); 16
+                                  (Env16))
+   -wsiz               integer    [0] This option specifies the window size.
+                                  When a signature is aligned to a protein
                                   sequence, the permissible gaps between two
                                   signature positions is determined by the
                                   empirical gaps and the window size. The user
@@ -1113,14 +1123,14 @@ SIGGENLIG does not use any data files.
                                   generating values of window size depending
                                   upon the alignment (window size is
                                   identified by the WSIZ record in the
-                                  signature output file).
-  [-sigoutdir]         outdir     This option specifies the location of
+                                  signature output file). (Any integer value)
+  [-sigoutdir]         outdir     [./] This option specifies the location of
                                   signature files (output). A 'signature file'
                                   contains a sparse sequence signature
                                   suitable for use with the SIGSCAN and
                                   SIGSCANLIG programs. The files are generated
                                   by using SIGGEN and SIGGENLIG.
-  [-logfile]           outfile    Name of siggenlig logfile
+  [-logfile]           outfile    [siggenlig.log] Domainatrix log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -1229,7 +1239,7 @@ SIGGENLIG does not use any data files.
 
 <tr>
 <td>[-logfile]<br>(Parameter 3)</td>
-<td>Name of siggenlig logfile</td>
+<td>Domainatrix log output file</td>
 <td>Output file</td>
 <td>siggenlig.log</td>
 </tr>
@@ -1267,9 +1277,9 @@ An example of interactive use of SIGGENLIG is shown below.
 
 % <b>siggenlig </b>
 Generate ligand-binding signatures from a CON file.
-Name of CON file (contact files) (input): <b>../sites-keep/SITES.con</b>
-Location of protein CCF files (clean coordinate files) (input). [.]: <b>../pdbplus-keep</b>
-Location of domain CCF files (clean coordinate files) (input). [.]: <b>../domainer-keep</b>
+Structure contacts file: <b>../sites-keep/SITES.con</b>
+Clean protein structure coordinates directory (optional) [.]: <b>../pdbplus-keep</b>
+Clean domain coordinates directory (optional) [.]: <b>../domainer-keep</b>
 Available modes
          1 : Full-length signature mode
          2 : Patch signature mode
@@ -1279,8 +1289,8 @@ Available types
          2 : 3D (structural) signature
 Select type of signature. [1]: <b>1</b>
 Window size [0]: <b></b>
-Name of directory of signature files (output) [./]: <b></b>
-Name of siggenlig logfile [siggenlig.log]: <b></b>
+Domainatrix signature output directory [./]: <b></b>
+Domainatrix log output file [siggenlig.log]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -1537,9 +1547,14 @@ Jon Ison (jison&nbsp;&copy;&nbsp;hgmp.mrc.ac.uk)
 HGMP-RC, Genome Campus, Hinxton, Cambridge CB10 1SB, UK
 
 <br><br>
-Waqas Awan <a href="mailto:wawan@rfcgr.mrc.ac.uk">(mblades@rfcgr.mrc.ac.uk)</a>
-<br>MRC Rosalind Franklin Centre for Genomics Research, Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
+Waqas Awan
+<br>
+Jon Ison <a href="mailto:jison@ebi.ac.uk">(jison@ebi.ac.uk)</a>
+<br>
+The European Bioinformatics Institute 
+Wellcome Trust Genome Campus 
+Cambridge CB10 1SD 
+UK 
 
 <!-- REFERENCES
      Quote the paper where the application was first published, described, used etc. 

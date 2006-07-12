@@ -14,8 +14,8 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+  information: "HMMER hidden markov model file"
+  knowntype: "hmm"
 ]
 
 endsection: input
@@ -57,6 +57,7 @@ integer: number  [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "hmmemit output"
+  information: "HMMER hmmemit program output file"
 ]
 
 endsection: output

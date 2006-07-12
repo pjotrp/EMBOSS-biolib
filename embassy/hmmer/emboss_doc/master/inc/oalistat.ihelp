@@ -1,11 +1,12 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Alignment file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER alistat program input file
+  [-outfile]           outfile    [*.oalistat] HMMER alistat program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -additional         boolean    Show additional information
-   -fast               boolean    Use sampling method
+   -additional         boolean    [N] Show additional information
+   -fast               boolean    [N] Use sampling method
 
    Associated qualifiers:
 

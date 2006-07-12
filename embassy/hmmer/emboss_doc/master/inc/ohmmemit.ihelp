@@ -1,13 +1,15 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmemit] HMMER hmmemit program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -seed               integer    Random seed
-   -selex              boolean    Output in selex format
-   -consensus          boolean    Output consensus sequence
-   -number             integer    Number of sequences to produce
+   -seed               integer    [0] Random seed (Integer 0 or more)
+   -selex              boolean    [N] Output in selex format
+   -consensus          boolean    [N] Output consensus sequence
+   -number             integer    [10] Number of sequences to produce (Any
+                                  integer value)
 
    Associated qualifiers:
 

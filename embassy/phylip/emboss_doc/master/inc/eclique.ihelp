@@ -1,19 +1,21 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-infile]            infile     Discrete characters input
-   -minclique          toggle     Use minimum clique size
-*  -cliqminnum         integer    Minimum clique size
-   -og                 toggle     Outgroup root
-*  -outgnum            integer    Number of the outgroup
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         boolean    Create a tree file
-  [-treefile]          outfile    Tree file
+  [-infile]            infile     Phylip clique program input file
+   -minclique          toggle     [N] Use minimum clique size
+*  -cliqminnum         integer    [1] Minimum clique size (Any integer value)
+   -og                 toggle     [N] Outgroup root
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+  [-outfile]           outfile    [eclique.outfile] Phylip clique program
+                                  output file
+  [-[no]trout]         boolean    [Y] Create a tree file
+  [-treefile]          outfile    [eclique.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
-   -ancestral          boolean    Use ancestral states in input file
-   -[no]drawtree       boolean    Draw tree
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -matrixout          boolean    Print out compatibility matrix
+   -ancestral          boolean    [N] Use ancestral states in input file
+   -[no]drawtree       boolean    [Y] Draw tree
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -matrixout          boolean    [N] Print out compatibility matrix
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

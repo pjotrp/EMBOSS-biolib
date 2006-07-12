@@ -14,16 +14,16 @@
 
 <tr>
 <td>[-intreefile]<br>(Parameter 2)</td>
-<td>(no help text) tree value</td>
+<td>Phylip tree file (optional)</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Phylip protpars program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fprotpars</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -34,7 +34,7 @@
 
 <tr>
 <td>-weights</td>
-<td>Weights file</td>
+<td>Phylip weights file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
@@ -90,7 +90,7 @@
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

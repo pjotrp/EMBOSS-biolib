@@ -1,3 +1,8 @@
+4.0.0
+	Fixed compiler warnings in 3 string manipulation functions that
+	relpace single characters (T/U for DNA and RNA or general
+	replacements)
+
 1.0.0
 	Added 'Control-D' as an alias for delete. MSE was using the
 	VMS/EDT keypad ',' key which is not available on most Unix

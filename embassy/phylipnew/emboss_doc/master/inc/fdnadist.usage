@@ -14,7 +14,7 @@ Distance methods
          l : LogDet distance
          s : Similarity table
 Choose the method to use [F84 distance model]: <b></b>
-Output file [dnadist.fdnadist]: <b></b>
+Phylip distance matrix output file [dnadist.fdnadist]: <b></b>
 
 Distances calculated for species
     Alpha        ....

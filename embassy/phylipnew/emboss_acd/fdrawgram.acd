@@ -11,13 +11,14 @@ section: input [
 ]
 
 string: fontfile [
-	information: "Fontfile"
-	knowntype: "fontfile"
+	information: "Fontfile name"
+	knowntype: "phylip font"
 ]
 
 tree: intreefile [
 	parameter: "Y"
 	knowntype: "newick"
+  information: "Phylip tree file"
 ]
 
 endsection: input
@@ -37,6 +38,7 @@ section: output [
 outfile: plotfile [
 	parameter: Y
 	knowntype: "drawgram output"
+	information: "Phylip drawgram output file"
 ]
 
 

@@ -1,7 +1,8 @@
    Standard (Mandatory) qualifiers:
-  [-database]          string     Database name
-  [-name]              string     Entry name
-  [-outfile]           outfile    Output file name
+  [-database]          string     Database name (Any string is accepted)
+  [-name]              string     Entry name (Any string is accepted)
+  [-outfile]           outfile    [*.ohmmfetch] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

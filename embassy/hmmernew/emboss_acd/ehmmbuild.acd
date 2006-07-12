@@ -27,8 +27,8 @@ seqset: alignfile
 infile: prior
 [
     default: ""
-    information: "Dirichlet prior file."
-    knowntype: "dirichlet prior"
+    knowntype: "dirichlet prior hmmer"
+    information: "HMMER dirichlet prior file (optional)"
     nullok: "Y"
     help: "Read a Dirichlet prior from file, replacing the default mixture Dirichlet. The format of prior files is documented in the User's Guide, and an example is given in the Demos directory of the HMMER distribution."
 ]
@@ -37,8 +37,8 @@ infile: null
 [
 #   Advanced input file
     default: ""
-    information: "NULL model file"
     knowntype: "hmmer null model"
+    information: "HMMER null model file (optional)"
     nullok: "Y"
     help: "Read a null model from file. The default for protein is to use average amino acid frequencies from Swissprot 34 and p1 = 350/351; for nucleic acid, the default is to use 0.25 for each base and p1 = 1000/1001. For documentation of the format of the null model file and further explanation of how the null model is used, see the User's Guide."
 ]
@@ -47,8 +47,8 @@ infile: pam
 [
 #   Advanced input file
     default: ""
-    information: "PAM file"
-    knowntype: "hmmer matrix file"
+    knowntype: "hmmer matrix"
+    information: "HMMER matrix file (optional)"
     nullok: "Y"
     help: "Apply a heuristic PAM- (substitution matrix-) based prior on match emission probabilities instead of the default mixture Dirichlet. The substitution matrix is read from file. See -pamwgt. The default Dirichlet state transition prior and insert emission prior are unaffected. Therefore in principle you could combine -prior with -pam but this isn't recommended, as it hasn't been tested. ( -pam itself hasn't been tested much!)"
 ]
@@ -216,16 +216,17 @@ section: output
 outfile: hmmfile  
 [
     parameter: "Y"
-    knowntype: "hmm file"
+    knowntype: "hmm"
     append: "Y"
+    information: "HMMER hidden markov model output file"
 ]
 
 outfile: o
 [
     nullok: "Yes"
     nulldefault: "Yes"
-    information: "Resave starting alignment."
-    knowntype: "selex file"
+    knowntype: "selex"
+    information: "Selex alignment output file (optional)"
     help: "Re-save the starting alignment to file, in Stockholm format. The columns which were assigned to match states will be marked with x's in an RF annotation line. If either the -hand or -fast construction options were chosen, the alignment may have been slightly altered to be compatible with Plan 7 transitions, so saving the final alignment and comparing to the starting alignment can let you view these alterations. See the User's Guide for more information on this arcane side effect."
 ]
 
@@ -233,8 +234,8 @@ outfile: cfile
 [
     nullok: "Yes"
     nulldefault: "Yes"
-    information: "Emission and transition count file"
-    knowntype: "hmmer count file"
+    information: "HMMER emission and transition count output file (optional)"
+    knowntype: "hmmer count"
     help: "Save the observed emission and transition counts to file after the architecture has been determined (e.g. after residues/gaps have been assigned to match, delete, and insert states). This option is used in HMMER development for generating data files useful for training new Dirichlet priors. The format of count files is documented in the User's Guide."
 ]
 

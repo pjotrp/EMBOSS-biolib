@@ -11,8 +11,8 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "HMM file"
-  knowntype: "hmm file"
+  information: "HMMER hidden markov model file"
+  knowntype: "hmm"
 ]
 
 endsection: input
@@ -53,7 +53,8 @@ section: output [
 
 outfile: outfile  [
   parameter: "Y"
-  knowntype: "hmm file"
+  knowntype: "hmm"
+  information: "HMMER hidden markov model output file"
 ]
 
 endsection: output

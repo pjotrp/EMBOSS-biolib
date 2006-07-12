@@ -4,13 +4,6 @@
 <p><h3>File: pdbparse.log</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-/homes/user/test/data/structure/1ii7.ent
-SEQRESLENDIF   1 (A)
-ATOMCOL12      390
-SECBOTH        1 1 SER 57 GLU 73
-SECBOTH        1 1 VAL 78 ILE 81
-SECBOTH        1 1 LYS 2 LEU 6
-//
 /homes/user/test/data/structure/1cs4.ent
 SEQRESLENDIF   1 (A)
 ATOMCOL12      429
@@ -18,6 +11,13 @@ BADINDEX       1 (A)
 GAPPEDOK       1 (A)
 SECSTART       1 1 ILE 384
 SECSTART       1 1 ILE 384
+//
+/homes/user/test/data/structure/1ii7.ent
+SEQRESLENDIF   1 (A)
+ATOMCOL12      390
+SECBOTH        1 1 SER 57 GLU 73
+SECBOTH        1 1 VAL 78 ILE 81
+SECBOTH        1 1 LYS 2 LEU 6
 //
 /homes/user/test/data/structure/2hhb.ent
 ATOMCOL12      1277

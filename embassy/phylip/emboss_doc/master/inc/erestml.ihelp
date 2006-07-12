@@ -1,26 +1,31 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-datafile]          infile     Input file
-*  -datasets           integer    Number of sets
-*  -random             toggle     Randomize input order of species
-*  -randseed           integer    Random number seed (must be odd)
-*  -randtimes          integer    How many times to randomise
-*  -outgnum            integer    Number of the outgroup
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+  [-datafile]          infile     Phylip restml program input file
+*  -datasets           integer    [2] Number of sets (Integer 2 or more)
+*  -random             toggle     [N] Randomize input order of species
+*  -randseed           integer    [3] Random number seed (must be odd) (Any
+                                  integer value)
+*  -randtimes          integer    [3] How many times to randomise (Any integer
+                                  value)
+*  -outgnum            integer    [1] Number of the outgroup (Integer 1 or
+                                  more)
+  [-outfile]           outfile    [erestml.outfile] Phylip restml program
+                                  output file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [erestml.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -multsets           toggle     Analyze multiple data sets
-   -[no]besttree       toggle     Search for best tree
-   -og                 toggle     Outgroup root
-   -[no]allsites       boolean    Are all sites detected
-*  -lengths            boolean    Use lengths from user trees
-   -sitelen            integer    Site length
-   -extrap             float      Extrapolation factor
-*  -global             boolean    Global rearrangements
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -[no]drawtree       boolean    Draw tree
+   -multsets           toggle     [N] Analyze multiple data sets
+   -[no]besttree       toggle     [Y] Search for best tree
+   -og                 toggle     [N] Outgroup root
+   -[no]allsites       boolean    [Y] Are all sites detected
+*  -lengths            boolean    [N] Use lengths from user trees
+   -sitelen            integer    [6] Site length (Integer from 1 to 8)
+   -extrap             float      [100.0] Extrapolation factor (Number 0.001
+                                  or more)
+*  -global             boolean    [N] Global rearrangements
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

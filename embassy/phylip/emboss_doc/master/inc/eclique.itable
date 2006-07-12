@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Discrete characters input</td>
+<td>Phylip clique program input file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -42,7 +42,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip clique program output file</td>
 <td>Output file</td>
 <td>eclique.outfile</td>
 </tr>
@@ -56,7 +56,7 @@
 
 <tr>
 <td>[-treefile]<br>(Parameter 4)</td>
-<td>Tree file</td>
+<td>Phylip tree output file</td>
 <td>Output file</td>
 <td>eclique.treefile</td>
 </tr>

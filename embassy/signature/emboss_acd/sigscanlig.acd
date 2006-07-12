@@ -14,14 +14,14 @@ section: input [
 
   dirlist: siginfiles [
     parameter: "Y"
-    information: "Directory of signature files (input)"
+    information: "Domainatrix signature file directory"
     help: "This option specifies the directory of signature files
            (input). A 'signature file' contains a sparse sequence signature
            suitable for use with the SIGSCAN and SIGSCANLIG programs. The files are generated
            by using SIGGEN and SIGGENLIG."
     extension: "sig"
     default: "./"
-    knowntype: "signature file"
+    knowntype: "domainatrix signature"
   ]
 
   seqall: dbsequences [
@@ -152,7 +152,6 @@ section: output [
 
   outdir: hitsdir [
     parameter: "Y"
-    information: "Directory of LHF files (ligand hits file) (output)"
     help: "This option specifies the directory of the LHF files (ligand hits
 	   files) (output). A 'ligand hits file' contains database hits
            (sequences) with ligand classification information, in the LHF
@@ -161,13 +160,12 @@ section: output [
            by using SIGSCANLIG."
     default: "./"
     extension: "lhf"
-    knowntype: "ligand hits file"
+    knowntype: "domainatrix ligand hits"
+    information: "Domainatrix LHF ligand hits file output directory"
   ]
 
  outdir: aligndir [
     parameter: "Y"
-    information: "Directory of alignment files for
-                  signature-sequence alignments (output)"
     help: "This option specifies the name of the SAF (signature alignment
            file) (output).A 'signature alignment file' contains one or 
            more signnature-sequence alignments. The file is in DAF format 
@@ -181,19 +179,20 @@ section: output [
            a library of one or more signatures."
      default: "./"
     extension: "aln"
-    knowntype: "Signature-sequence alignment"
+    knowntype: "signature alignment"
+    information: "Domainatrix signature alignment file output directory"
   ]
 
 
   outdir: resultsdir [
     parameter: "Y"
-    information: "Directory of results file (output)"
     help: "This option specifies the directory for the results files.
            A results file is generated for each query sequence and contains 
            a list of hits (ligands), rank-ordered on the basis of score."
     default: "./"
     extension: "results"
-    knowntype: "sigscanlig output file"
+    knowntype: "sigscanlig output"
+    information: "Domainatrix sigscanlig program output file directory"
   ]
 
 endsection: output

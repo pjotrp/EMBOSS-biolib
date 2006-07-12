@@ -6,13 +6,13 @@
 
 % <b>egendist </b>
 Genetic Distance Matrix program
-Data file: <b>gendist.dat</b>
+Phylip gendist program input file: <b>gendist.dat</b>
 Distance methods
        Nei : Nei genetic distance
        Cav : Cavalli-Sforza chord measure
        Rey : Reynolds genetic distance
 Choose the method to use [Nei]: <b></b>
-Output file [egendist.outfile]: <b></b>
+Phylip gendist program output file [egendist.outfile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

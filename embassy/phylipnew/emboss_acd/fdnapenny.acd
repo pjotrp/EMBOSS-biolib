@@ -80,6 +80,7 @@ section: output [
 outfile: outfile  [
   parameter: "Y"
   knowntype: "dnapenny output"
+  information: "Phylip dnapenny program output file"
 ]
 
 
@@ -92,7 +93,7 @@ toggle: trout [
 outfile: outtreefile  [
   additional: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file (optional)"
   knowntype: "newick tree"
   nullok: "Y"
 ]

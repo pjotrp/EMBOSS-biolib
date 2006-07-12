@@ -1,20 +1,24 @@
    Standard (Mandatory) qualifiers:
-  [-datafile]          distances  (no help text) distances value
-  [-outfile]           outfile    Output file name
+  [-datafile]          distances  Phylip distance matrix file
+  [-outfile]           outfile    [*.fneighbor] Phylip neighbor program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -matrixtype         menu       Type of data matrix
-   -treetype           menu       Neighbor-joining or UPGMA tree
-*  -outgrno            integer    Species number to use as outgroup
-   -jumble             toggle     Randomise input order of species
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -replicates         boolean    Subreplicates
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
+   -matrixtype         menu       [s] Type of data matrix (Values: s (Square);
+                                  u (Upper triangular); l (Lower triangular))
+   -treetype           menu       [n] Neighbor-joining or UPGMA tree (Values:
+                                  n (Neighbor-joining); u (UPGMA))
+*  -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -jumble             toggle     [N] Randomise input order of species
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -replicates         boolean    [N] Subreplicates
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

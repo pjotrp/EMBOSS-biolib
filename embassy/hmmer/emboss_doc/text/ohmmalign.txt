@@ -31,16 +31,17 @@ Alignment saved in file globins630.ali
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-hmmfile]           infile     HMM file
+  [-hmmfile]           infile     HMMER hidden markov model file
   [-sequences]         seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.ohmmalign] HMMER hmmalign program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -mapalifile         infile     Map alignment
-   -withalifile        infile     Heuristic alignment
-   -matchonly          boolean    Only show match state alignment symbols
+   -mapalifile         infile     HMMER alignment file (optional)
+   -withalifile        infile     HMMER heuristic alignment file (optional)
+   -matchonly          boolean    [N] Only show match state alignment symbols
 
    Associated qualifiers:
 
@@ -77,22 +78,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-hmmfile]
-   (Parameter 1) HMM file Input file Required
-   [-sequences]
-   (Parameter 2) (Aligned) sequence set filename and optional format, or
-   reference (input USA) Readable set of sequences Required
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.ohmmalign
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -mapalifile Map alignment Input file Required
-   -withalifile Heuristic alignment Input file Required
-   -matchonly Only show match state alignment symbols Boolean value
-   Yes/No No
 
 Input file format
 

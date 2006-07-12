@@ -247,7 +247,7 @@ alignment XML format  </td></tr>
 % <b>fseqbootall -seed 3 </b>
 Bootstrapped sequences algorithm
 Input (aligned) sequence set: <b>seqboot.dat</b>
-Output file [seqboot.fseqbootall]: <b></b>
+Phylip seqboot program output file [seqboot.fseqbootall]: <b></b>
 
 
  bootstrap: true
@@ -287,7 +287,8 @@ Done.
    Standard (Mandatory) qualifiers:
   [-infile]            seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fseqbootall] Phylip seqboot program
+                                  output file
 
    Additional (Optional) qualifiers (* if not always prompted):
    -categories         properties File of input categories
@@ -295,24 +296,37 @@ Done.
    -ancfile            properties File of ancestors
    -weights            properties Weights file
    -factorfile         properties Factors file
-   -datatype           menu       Choose the datatype
-   -test               menu       Choose test
-*  -regular            toggle     Altered sampling fraction
-*  -fracsample         float      Samples as percentage of sites
-*  -rewriteformat      menu       Output format
-*  -seqtype            menu       Output format
-*  -morphseqtype       menu       Output format
-*  -blocksize          integer    Block size for bootstraping
-*  -reps               integer    How many replicates
-*  -justweights        menu       Write out datasets or just weights
-*  -enzymes            boolean    Is the number of enzymes present in input
-                                  file
-*  -all                boolean    All alleles present at each locus
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -printdata          boolean    Print out the data at start of run
-*  -[no]dotdiff        boolean    Use dot-differencing
-   -[no]progress       boolean    Print indications of progress of run
+   -datatype           menu       [s] Choose the datatype (Values: s
+                                  (Molecular sequences); m (Discrete
+                                  Morphology); r (Restriction Sites); g (Gene
+                                  Frequencies))
+   -test               menu       [b] Choose test (Values: b (Bootstrap); j
+                                  (Jackknife); c (Permute species for each
+                                  character); o (Permute character order); s
+                                  (Permute within species); r (Rewrite data))
+*  -regular            toggle     [N] Altered sampling fraction
+*  -fracsample         float      [100.0] Samples as percentage of sites
+                                  (Number from 0.100 to 100.000)
+*  -rewriteformat      menu       [p] Output format (Values: p (PHYLIP); n
+                                  (NEXUS); x (XML))
+*  -seqtype            menu       [d] Output format (Values: d (dna); p
+                                  (protein); r (rna))
+*  -morphseqtype       menu       [p] Output format (Values: p (PHYLIP); n
+                                  (NEXUS))
+*  -blocksize          integer    [1] Block size for bootstraping (Integer 1
+                                  or more)
+*  -reps               integer    [100] How many replicates (Integer 1 or
+                                  more)
+*  -justweights        menu       [d] Write out datasets or just weights
+                                  (Values: d (Datasets); w (Weights))
+*  -enzymes            boolean    [N] Is the number of enzymes present in
+                                  input file
+*  -all                boolean    [N] All alleles present at each locus
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -printdata          boolean    [N] Print out the data at start of run
+*  -[no]dotdiff        boolean    [Y] Use dot-differencing
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -370,9 +384,9 @@ Done.
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip seqboot program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fseqbootall</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

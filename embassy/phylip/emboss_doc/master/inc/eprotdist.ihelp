@@ -1,20 +1,37 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing sequences
-   -method             menu       Choose the method to use
-  [-outfile]           outfile    Output file name
+   -method             menu       [Pam] Choose the method to use (Values: Pam
+                                  (Dayhoff PAM matrix); Kim (Kimura formula);
+                                  Cat (Categories model))
+  [-outfile]           outfile    [eprotdist.outfile] Phylip protdist program
+                                  output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -categ              menu       Choose the category to use
-*  -gencode            menu       Which genetic code
-*  -prob               float      Prob change category (1.0=easy)
-*  -tranrate           float      Transition/transversion ratio
-*  -[no]basefrequency  toggle     Use empirical base frequencies
-*  -freqa              float      Frequency for A
-*  -freqc              float      Frequency for C
-*  -freqg              float      Frequency for G
-*  -freqt              float      Frequency for T/U
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
+*  -categ              menu       [G] Choose the category to use (Values: G
+                                  (George/Hunt/Barker (Cys), (Met Val Leu
+                                  Ileu), (Gly Ala Ser Thr Pro)); C (Chemical
+                                  (Cys Met), (Val Leu Ileu Gly Ala Ser Thr),
+                                  (Pro)); H (Hall (Cys), (Met Val Leu Ileu),
+                                  (Gly Ala Ser Thr), (Pro)))
+*  -gencode            menu       [U] Which genetic code (Values: U
+                                  (Universal); M (Mitochondrial); V
+                                  (Vertebrate mitochondrial); F (Fly
+                                  mitochondrial); Y (Yeast mitochondrial))
+*  -prob               float      [0.457] Prob change category (1.0=easy)
+                                  (Number from 0.000 to 1.000)
+*  -tranrate           float      [2.0] Transition/transversion ratio (Number
+                                  0.000 or more)
+*  -[no]basefrequency  toggle     [Y] Use empirical base frequencies
+*  -freqa              float      [0.25] Frequency for A (Number from 0.000 to
+                                  1.000)
+*  -freqc              float      [0.25] Frequency for C (Number from 0.000 to
+                                  1.000)
+*  -freqg              float      [0.25] Frequency for G (Number from 0.000 to
+                                  1.000)
+*  -freqt              float      [0.25] Frequency for T/U (Number from 0.000
+                                  to 1.000)
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

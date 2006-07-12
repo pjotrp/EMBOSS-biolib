@@ -1,7 +1,8 @@
    Standard (Mandatory) qualifiers:
   [-oldhmmfile]        infile     HMM input file
-   -format             menu       Select format
-  [-newhmmfile]        outfile    HMM output file
+   -format             menu       [A] Select format (Values: A (ascii); B
+                                  (binary); G (gcg); X (xsw))
+  [-newhmmfile]        outfile    [*.ehmmconvert] HMM output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)

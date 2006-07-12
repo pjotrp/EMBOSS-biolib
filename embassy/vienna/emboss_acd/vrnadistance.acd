@@ -14,8 +14,8 @@ section: input [
 
   infile: structure  [
     parameter: "Y"
-    information: "Structures file"
-    knowntype: "rna structures file"
+    information: "Vienna RNA structures file"
+    knowntype: "rna structures"
   ]
 
 endsection: input
@@ -71,6 +71,7 @@ section: output [
   outfile: outfile  [
     parameter: "Y"
     knowntype: "rnafold output"
+    information: "Vienna RNAfold output file"
   ]
 
 endsection: output

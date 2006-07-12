@@ -91,9 +91,9 @@ Usage
 
 % fdollop 
 Dollo and polymorphism parsimony algorithm
-Input file: dollop.dat
-Input tree file: 
-Output file [dollop.fdollop]: 
+Phylip character discrete states file: dollop.dat
+Phylip tree file (optional): 
+Phylip dollop program output file [dollop.fdollop]: 
 
 
 Dollo and polymorphism parsimony algorithm, version 3.6b
@@ -121,24 +121,28 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing one or more data sets
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fdollop] Phylip dollop program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -weights            properties Weights file
+   -weights            properties Phylip weights file (optional)
    -ancfile            properties Ancestral states file
-   -method             menu       Parsimony method
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -threshold          float      Threshold value
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -ancseq             boolean    Print states at all nodes of tree
-   -stepbox            boolean    Print out steps in each character
+   -method             menu       [d] Parsimony method (Values: d (Dollo); p
+                                  (Polymorphism))
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -threshold          float      [$(infile.discretesize)] Threshold value
+                                  (Number 0.000 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -ancseq             boolean    [N] Print states at all nodes of tree
+   -stepbox            boolean    [N] Print out steps in each character
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -163,36 +167,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) File containing one or more data sets Discrete states
-   file
-   [-intreefile]
-   (Parameter 2) (no help text) tree value Phylogenetic tree
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.fdollop
-   Additional (Optional) qualifiers Allowed values Default
-   -weights Weights file Property value(s)
-   -ancfile Ancestral states file Property value(s)
-   -method Parsimony method
-   d (Dollo)
-   p (Polymorphism)
-   d
-   -njumble Number of times to randomise Integer 0 or more 0
-   -seed Random number seed between 1 and 32767 (must be odd) Integer
-   from 1 to 32767 1
-   -threshold Threshold value Number 0.000 or more $(infile.discretesize)
-   -[no]trout Write out trees to tree file Toggle value Yes/No Yes
-   -outtreefile Tree file name Output file
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   -[no]treeprint Print out tree Boolean value Yes/No Yes
-   -ancseq Print states at all nodes of tree Boolean value Yes/No No
-   -stepbox Print out steps in each character Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

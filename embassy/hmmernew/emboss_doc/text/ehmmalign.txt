@@ -76,10 +76,10 @@ Command line arguments
   [-o]                 align      Multiple sequence alignment output file.
 
    Additional (Optional) qualifiers:
-   -m                  boolean    Include in the alignment only those symbols
-                                  aligned to match states. Do not show symbols
-                                  assigned to insert states.
-   -q                  boolean    Quiet; suppress all output except the
+   -m                  boolean    [N] Include in the alignment only those
+                                  symbols aligned to match states. Do not show
+                                  symbols assigned to insert states.
+   -q                  boolean    [N] Quiet; suppress all output except the
                                   alignment itself. Useful for piping or
                                   redirecting the output.
 
@@ -156,42 +156,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-hmmfile]
-   (Parameter 1) File containing a HMM profile Input file Required
-   [-seqfile]
-   (Parameter 2) File containing a (set of) sequence(s) Readable set of
-   sequences Required
-   [-o]
-   (Parameter 3) Multiple sequence alignment output file. Alignment
-   output file
-   Additional (Optional) qualifiers Allowed values Default
-   -m Include in the alignment only those symbols aligned to match
-   states. Do not show symbols assigned to insert states. Boolean value
-   Yes/No No
-   -q Quiet; suppress all output except the alignment itself. Useful for
-   piping or redirecting the output. Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -mapali Reads an alignment from file and aligns it as a single object
-   to the HMM; e.g. the alignment in file is held fixed. This allows you
-   to align sequences to a model with hmmalign and view them in the
-   context of an existing trusted multiple alignment. The alignment to
-   the alignment is defined by a 'map' kept in the HMM, and so is fast
-   and guaranteed to be consistent with the way the HMM was constructed
-   from the alignment. The alignment in the file must be exactly the
-   alignment that the HMM was built from. Compare the -withali option.
-   Input file Required
-   -withali Reads an alignment from file and aligns it as a single object
-   to the HMM; e.g. the alignment in file is held fixed. This allows you
-   to align sequences to a model with hmmalign and view them in the
-   context of an existing trusted multiple alignment. The alignment to
-   the alignment is done with a heuristic (nonoptimal) dynamic
-   programming procedure, which may be somewhat slow and is not
-   guaranteed to be completely consistent with the way the HMM was
-   constructed (though it should be quite close). However, any alignment
-   can be used, not just the alignment that the HMM was built from.
-   Compare the -mapali option. Input file Required
 
 Input file format
 

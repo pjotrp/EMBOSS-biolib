@@ -49,7 +49,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip protpars program output file</td>
 <td>Output file</td>
 <td>eprotpars.outfile</td>
 </tr>
@@ -63,7 +63,7 @@
 
 <tr>
 <td>-treefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file</td>
 <td>Output file</td>
 <td>eprotpars.treefile</td>
 </tr>

@@ -15,7 +15,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "Data file"
+  information: "Phylip fitch program input file"
   knowntype: "fitch input"
 ]
 
@@ -132,6 +132,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "efitch.outfile"
   knowntype: "fitch output"
+  information: "Phylip fitch program output file"
 ]
 
 boolean: printdata  [
@@ -161,7 +162,7 @@ boolean: drawtree  [
 outfile: treefile  [
   standard: "$(trout)"
   extension: "treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

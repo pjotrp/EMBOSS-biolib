@@ -11,7 +11,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "Data file"
+  information: "Phylip gendist program input file"
   knowntype: "gendist input"
 ]
 
@@ -75,6 +75,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "egendist.outfile"
   knowntype: "gendist output"
+  information: "Phylip gendist program output file"
 ]
 
 boolean: progress  [

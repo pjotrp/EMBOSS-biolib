@@ -178,10 +178,10 @@ Usage
 % fdiscboot -seed 3 
 Bootstrapped discrete sites algorithm
 Input file: discboot.dat
-Output file [discboot.fdiscboot]: 
-Out ancestor file name [discboot.ancfile]: 
-Out mix file name [discboot.mixfile]: 
-Out fact file name [discboot.factfile]: 
+Phylip seqboot_disc program output file [discboot.fdiscboot]: 
+Phylip ancestor data output file (optional) [discboot.ancfile]: 
+Phylip mix data output file (optional) [discboot.mixfile]: 
+Phylip factor data output file (optional) [discboot.factfile]: 
 
 
  bootstrap: true
@@ -214,28 +214,37 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates (no help text) discretestates value
-  [-outfile]           outfile    Output file name
-  [-outancfile]        outfile    Out ancestor file name
-  [-outmixfile]        outfile    Out mix file name
-  [-outfactfile]       outfile    Out fact file name
+  [-outfile]           outfile    [*.fdiscboot] Phylip seqboot_disc program
+                                  output file
+  [-outancfile]        outfile    Phylip ancestor data output file (optional)
+  [-outmixfile]        outfile    Phylip mix data output file (optional)
+  [-outfactfile]       outfile    Phylip factor data output file (optional)
 
    Additional (Optional) qualifiers (* if not always prompted):
    -mixfile            properties File of mixtures
    -ancfile            properties File of ancestors
    -weights            properties Weights file
    -factorfile         properties Factors file
-   -test               menu       Choose test
-*  -regular            toggle     Altered sampling fraction
-*  -fracsample         float      Samples as percentage of sites
-*  -morphseqtype       menu       Output format
-*  -blocksize          integer    Block size for bootstraping
-*  -reps               integer    How many replicates
-*  -justweights        menu       Write out datasets or just weights
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -printdata          boolean    Print out the data at start of run
-*  -[no]dotdiff        boolean    Use dot-differencing
-   -[no]progress       boolean    Print indications of progress of run
+   -test               menu       [b] Choose test (Values: b (Bootstrap); j
+                                  (Jackknife); c (Permute species for each
+                                  character); o (Permute character order); s
+                                  (Permute within species); r (Rewrite data))
+*  -regular            toggle     [N] Altered sampling fraction
+*  -fracsample         float      [100.0] Samples as percentage of sites
+                                  (Number from 0.100 to 100.000)
+*  -morphseqtype       menu       [p] Output format (Values: p (PHYLIP); n
+                                  (NEXUS))
+*  -blocksize          integer    [1] Block size for bootstraping (Integer 1
+                                  or more)
+*  -reps               integer    [100] How many replicates (Integer 1 or
+                                  more)
+*  -justweights        menu       [d] Write out datasets or just weights
+                                  (Values: d (Datasets); w (Weights))
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -printdata          boolean    [N] Print out the data at start of run
+*  -[no]dotdiff        boolean    [Y] Use dot-differencing
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -266,53 +275,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) (no help text) discretestates value Discrete states file
-
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.fdiscboot
-   [-outancfile]
-   (Parameter 3) Out ancestor file name Output file
-   [-outmixfile]
-   (Parameter 4) Out mix file name Output file
-   [-outfactfile]
-   (Parameter 5) Out fact file name Output file
-   Additional (Optional) qualifiers Allowed values Default
-   -mixfile File of mixtures Property value(s)
-   -ancfile File of ancestors Property value(s)
-   -weights Weights file Property value(s)
-   -factorfile Factors file Property value(s)
-   -test Choose test
-   b (Bootstrap)
-   j (Jackknife)
-   c (Permute species for each character)
-   o (Permute character order)
-   s (Permute within species)
-   r (Rewrite data)
-   b
-   -regular Altered sampling fraction Toggle value Yes/No No
-   -fracsample Samples as percentage of sites Number from 0.100 to
-   100.000 100.0
-   -morphseqtype Output format
-   p (PHYLIP)
-   n (NEXUS)
-   p
-   -blocksize Block size for bootstraping Integer 1 or more 1
-   -reps How many replicates Integer 1 or more 100
-   -justweights Write out datasets or just weights
-   d (Datasets)
-   w (Weights)
-   d
-   -seed Random number seed between 1 and 32767 (must be odd) Integer
-   from 1 to 32767 1
-   -printdata Print out the data at start of run Boolean value Yes/No No
-   -[no]dotdiff Use dot-differencing Boolean value Yes/No Yes
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

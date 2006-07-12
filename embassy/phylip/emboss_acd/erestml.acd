@@ -11,7 +11,7 @@ section: input [
 
 infile: datafile  [
   parameter: "Y"
-  information: "Input file"
+  information: "Phylip restml program input file"
   knowntype: "restml input"
 ]
 
@@ -123,6 +123,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "erestml.outfile"
   knowntype: "restml output"
+  information: "Phylip restml program output file"
 ]
 
 boolean: printdata  [
@@ -152,7 +153,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "erestml.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

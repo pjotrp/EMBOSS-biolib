@@ -17,21 +17,38 @@ Algorithm
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with vrnadistance
+
+
+% vrnadistance -distance "f,h" -doalignment 
+RNA distances
+Vienna RNA structures file: rna4.fold
+Vienna RNAfold output file [rna4.vrnadistance]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-structure]         infile     Structures file
-  [-outfile]           outfile    Output file name
+  [-structure]         infile     Vienna RNA structures file
+  [-outfile]           outfile    [*.vrnadistance] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -distance           menu       Distance types to calculate
-   -compare            menu       Distance types to calculate
-   -schapiro           boolean    Use cost matrix for comparing coarse
+   -distance           menu       [f] Distance types to calculate (Values: f
+                                  (Full (tree)); h (HIT (tree)); w (Weighted
+                                  coarse (tree)); c (Coarse (tree)); F (Full
+                                  (string)); H (HIT (string)); W (Weighted
+                                  coarse (string)); C (Coarse (string)); P
+                                  (Base pair distance))
+   -compare            menu       [p] Distance types to calculate (Values: p
+                                  (Pairwise); m (Distance matrix between all
+                                  structures); f (Compare all structures to
+                                  the first one); c (Compare continuously))
+   -schapiro           boolean    [N] Use cost matrix for comparing coarse
                                   structures
-   -doalignment        boolean    Alignment showing matching substructures
+   -doalignment        boolean    [N] Alignment showing matching substructures
 
    Associated qualifiers:
 
@@ -53,48 +70,32 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-structure]
-   (Parameter 1) Structures file Input file Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.vrnadistance
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -distance Distance types to calculate
-   f (Full (tree))
-   h (HIT (tree))
-   w (Weighted coarse (tree))
-   c (Coarse (tree))
-   F (Full (string))
-   H (HIT (string))
-   W (Weighted coarse (string))
-   C (Coarse (string))
-   P (Base pair distance)
-   f
-   -compare Distance types to calculate
-   p (Pairwise)
-   m (Distance matrix between all structures)
-   f (Compare all structures to the first one)
-   c (Compare continuously)
-   p
-   -schapiro Use cost matrix for comparing coarse structures Boolean
-   value Yes/No No
-   -doalignment Alignment showing matching substructures Boolean value
-   Yes/No No
-
 Input file format
 
    vrnadistance reads any normal sequence USAs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: rna4.fold
+
+((.(((((((.....))))))).))....((..((((.....)))).)).
+.....((((..((((..........)))).)))).....(((....))).
 
 Output file format
 
    vrnadistance outputs a graph to the specified graphics device. outputs
    a report format file. The default format is ...
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: rna4.vrnadistance
+
+f: 26
+(_____(.(((__((((....._____))))_))).))....((..((((.....)))).)).
+_.....(_(((..((((..........)))).)))_)_....__.__(((...._)))_.___
+h: 32
+(____((U1)((U5_)P7)(U1)P2)(U4)((U2)((U5)P4)(U1)P2)(U1)R1)
+((U5)((U2)((U10)P4)(U1)P4)(U5)_____((U4)P3)(U1)_______R1)
 
 Data files
 

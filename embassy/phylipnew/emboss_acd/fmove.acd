@@ -14,13 +14,15 @@ discretestates: infile  [
   parameter: "Y"
   characters: "01PB?"
   help: "File containing data set"
-  knowntype: "discrete characters input"
+  knowntype: "discrete characters"
+  information: "Phylip character discrete states file"
 ]
 
 tree: intreefile [
 	parameter: "Y"
 	nullok: "Y"
 	knowntype: "newick"
+	information: "phylip tree file (optional)"
 ]
 properties: weights [
 	additional: "Y"
@@ -118,6 +120,7 @@ outfile: outtreefile [
 	extension: "treefile"
 	knowntype: "newick tree"
 	nullok: "Y"
+	information: "Phylip tree output file (optional)"
 ]
 
 endsection: output

@@ -50,8 +50,8 @@ Usage
 
 % fdolmove 
 Interactive Dollo or Polymorphism Parsimony
-Input file: dolmove.dat
-Input tree file: 
+Phylip character discrete states file: dolmove.dat
+Phylip tree file (optional): 
 NEXT? (R # + - S . T U W O F H J K L C ? X Q) (? for Help): Q
 Do you want to write out the tree to a file? (Y or N): Y
 
@@ -87,19 +87,24 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing data set
-  [-intreefile]        tree       (no help text) tree value
+  [-intreefile]        tree       Phylip tree file (optional)
 
    Additional (Optional) qualifiers (* if not always prompted):
    -weights            properties Weights file
    -ancfile            properties Ancestral states file
    -factorfile         properties Factors file
-   -method             menu       Parsimony method
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -initialtree        menu       Initial tree
-   -screenwidth        integer    Width of terminal screen in characters
-   -screenlines        integer    Number of lines on screen
-   -outtreefile        outfile    Output file name
+   -method             menu       [d] Parsimony method (Values: d (Dollo); p
+                                  (Polymorphism))
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 0.000 or more)
+   -initialtree        menu       [Arbitary] Initial tree (Values: a
+                                  (Arbitary); u (User); s (Specify))
+   -screenwidth        integer    [80] Width of terminal screen in characters
+                                  (Any integer value)
+   -screenlines        integer    [24] Number of lines on screen (Any integer
+                                  value)
+   -outtreefile        outfile    [*.fdolmove] Phylip tree output file
+                                  (optional)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -121,33 +126,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) File containing data set Discrete states file
-   [-intreefile]
-   (Parameter 2) (no help text) tree value Phylogenetic tree
-   Additional (Optional) qualifiers Allowed values Default
-   -weights Weights file Property value(s)
-   -ancfile Ancestral states file Property value(s)
-   -factorfile Factors file Property value(s)
-   -method Parsimony method
-   d (Dollo)
-   p (Polymorphism)
-   d
-   -thresh Use threshold parsimony Toggle value Yes/No No
-   -threshold Threshold value Number 0.000 or more 1
-   -initialtree Initial tree
-   a (Arbitary)
-   u (User)
-   s (Specify)
-   Arbitary
-   -screenwidth Width of terminal screen in characters Any integer value
-   80
-   -screenlines Number of lines on screen Any integer value 24
-   -outtreefile Output file name Output file <sequence>.fdolmove
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

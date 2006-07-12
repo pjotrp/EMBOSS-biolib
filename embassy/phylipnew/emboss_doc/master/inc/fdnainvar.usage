@@ -7,8 +7,8 @@
 % <b>fdnainvar -printdata </b>
 Nucleic acid sequence Invariants method
 Input (aligned) nucleotide sequence set(s): <b>dnainvar.dat</b>
-Input file: <b></b>
-Output file [dnainvar.fdnainvar]: <b></b>
+Phylip weights file (optional): <b></b>
+Phylip dnainvar program output file [dnainvar.fdnainvar]: <b></b>
 
 
 Output written to output file "dnainvar.fdnainvar"

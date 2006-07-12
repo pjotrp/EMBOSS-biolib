@@ -77,7 +77,7 @@
 
 <tr>
 <td>[-logfile]<br>(Parameter 3)</td>
-<td>Name of siggenlig logfile</td>
+<td>Domainatrix log output file</td>
 <td>Output file</td>
 <td>siggenlig.log</td>
 </tr>

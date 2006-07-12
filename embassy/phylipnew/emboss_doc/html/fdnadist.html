@@ -286,7 +286,7 @@ Distance methods
          l : LogDet distance
          s : Similarity table
 Choose the method to use [F84 distance model]: <b></b>
-Output file [dnadist.fdnadist]: <b></b>
+Phylip distance matrix output file [dnadist.fdnadist]: <b></b>
 
 Distances calculated for species
     Alpha        ....
@@ -315,26 +315,37 @@ Done.
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-   -method             menu       Choose the method to use
-  [-outfile]           outfile    Output file name
+   -method             menu       [F84 distance model] Choose the method to
+                                  use (Values: f (F84 distance model); k
+                                  (Kimura 2-parameter distance); j
+                                  (Jukes-Cantor distance); l (LogDet
+                                  distance); s (Similarity table))
+  [-outfile]           outfile    [*.fdnadist] Phylip distance matrix output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -gamma              menu       Gamma distribution
-*  -ncategories        integer    Number of substitution rate categories
-*  -rate               array      Category rates
+*  -gamma              menu       [No distribution parameters used] Gamma
+                                  distribution (Values: g (Gamma distributed
+                                  rates); i (Gamma+invariant sites); n (No
+                                  distribution parameters used))
+*  -ncategories        integer    [1] Number of substitution rate categories
+                                  (Integer from 1 to 9)
+*  -rate               array      [1.0] Category rates
 *  -categories         properties File of substitution rate categories
    -weights            properties Weights file
-*  -gammacoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-*  -invarfrac          float      Fraction of invariant sites
-*  -ttratio            float      Transition/transversion ratio
-*  -[no]freqsfrom      toggle     Use empirical base frequencies from seqeunce
-                                  input
-*  -basefreq           array      Base frequencies for A C G T/U (use blanks
-                                  to separate)
-   -lower              boolean    Lower triangular distance matrix
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+*  -invarfrac          float      [0.0] Fraction of invariant sites (Number
+                                  from 0.000 to 1.000)
+*  -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  0.001 or more)
+*  -[no]freqsfrom      toggle     [Y] Use empirical base frequencies from
+                                  seqeunce input
+*  -basefreq           array      [0.25 0.25 0.25 0.25] Base frequencies for A
+                                  C G T/U (use blanks to separate)
+   -lower              boolean    [N] Lower triangular distance matrix
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -399,9 +410,9 @@ Done.
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip distance matrix output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fdnadist</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

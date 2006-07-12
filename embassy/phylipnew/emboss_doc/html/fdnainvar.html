@@ -238,8 +238,8 @@ models of nucleic acid change.
 % <b>fdnainvar -printdata </b>
 Nucleic acid sequence Invariants method
 Input (aligned) nucleotide sequence set(s): <b>dnainvar.dat</b>
-Input file: <b></b>
-Output file [dnainvar.fdnainvar]: <b></b>
+Phylip weights file (optional): <b></b>
+Phylip dnainvar program output file [dnainvar.fdnainvar]: <b></b>
 
 
 Output written to output file "dnainvar.fdnainvar"
@@ -262,15 +262,16 @@ Done.
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-   -weights            properties (no help text) properties value
-  [-outfile]           outfile    Output file name
+   -weights            properties Phylip weights file (optional)
+  [-outfile]           outfile    [*.fdnainvar] Phylip dnainvar program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -printdata          boolean    Print data at start of run
-*  -[no]dotdiff        boolean    Use dot-differencing to display results
-   -[no]printpattern   boolean    Print counts of patterns
-   -[no]printinvariant boolean    Print invariants
-   -[no]progress       boolean    Print indications of progress of run
+   -printdata          boolean    [N] Print data at start of run
+*  -[no]dotdiff        boolean    [Y] Use dot-differencing to display results
+   -[no]printpattern   boolean    [Y] Print counts of patterns
+   -[no]printinvariant boolean    [Y] Print invariants
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -328,16 +329,16 @@ Done.
 
 <tr>
 <td>-weights</td>
-<td>(no help text) properties value</td>
+<td>Phylip weights file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip dnainvar program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fdnainvar</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

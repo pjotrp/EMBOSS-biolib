@@ -14,9 +14,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip penny program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fpenny</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -27,21 +27,21 @@
 
 <tr>
 <td>-weights</td>
-<td>Weights file</td>
+<td>Phylip weights file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-ancfile</td>
-<td>Ancestral states file</td>
+<td>Phylip ancestral states file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>-mixfile</td>
-<td>Mixture file</td>
+<td>Phylip mix output file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
@@ -97,7 +97,7 @@
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

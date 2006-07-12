@@ -83,6 +83,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "eprotpars.outfile"
   knowntype: "protpars output"
+  information: "Phylip protpars program output file"
 ]
 
 
@@ -125,7 +126,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "eprotpars.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

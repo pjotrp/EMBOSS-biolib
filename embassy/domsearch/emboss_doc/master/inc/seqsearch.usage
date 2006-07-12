@@ -10,13 +10,13 @@ Input mode
          1 : Single sequences
          2 : Multiple sequences (e.g. sequence set or alignment)
 Select mode of operation. [1]: <b>2</b>
-Location of sequences, e.g. DAF files (domain alignment files) (input). [./]: <b>../domainalign-keep/daf</b>
+Domain alignment directories [./]: <b>../domainalign-keep/daf</b>
 Name of BLAST-indexed database to search. [swissprot]: <b>swsmall</b>
 Number of PSIBLAST iterations. [1]: <b></b>
 Threshold E-value for inclusion in family. [0.001]: <b>0.0001</b>
 Maximum number of hits. [1000]: <b>100</b>
-Location of DHF files (domain hits files) (output). [./]: <b></b>
-Name of log file for the build. [seqsearch.log]: <b></b>
+Domain hits file output directory [./]: <b></b>
+Domainatrix log output file [seqsearch.log]: <b></b>
 [blastpgp] WARNING: posFindAlignmentDimensions: Attempting to recover data from multiple alignment file
 
 [blastpgp] WARNING: posProcessAlignment: Alignment recovered successfully
@@ -25,11 +25,11 @@ Name of log file for the build. [seqsearch.log]: <b></b>
 
 [blastpgp] WARNING: posProcessAlignment: Alignment recovered successfully
 
-
-PROCESSING /homes/user/test/qa/domainalign-keep/daf/55074.daf
-blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
 
 PROCESSING /homes/user/test/qa/domainalign-keep/daf/54894.daf
+blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
+
+PROCESSING /homes/user/test/qa/domainalign-keep/daf/55074.daf
 blastpgp -i ./seqsearch-1234567890.1234.seqin -B ./seqsearch-1234567890.1234.seqsin -j 1 -e 0.000100 -b 100 -v 100 -d ../../data/structure/swsmall > ./seqsearch-1234567890.1234.psiout
 
 

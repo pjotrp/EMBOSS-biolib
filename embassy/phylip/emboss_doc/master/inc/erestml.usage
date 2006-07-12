@@ -6,11 +6,11 @@
 
 % <b>erestml </b>
 Restriction site Maximum Likelihood method
-Input file: <b>restml.dat</b>
+Phylip restml program input file: <b>restml.dat</b>
 Randomize input order of species [N]: <b></b>
-Output file [erestml.outfile]: <b></b>
+Phylip restml program output file [erestml.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [erestml.treefile]: <b></b>
+Phylip tree output file [erestml.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

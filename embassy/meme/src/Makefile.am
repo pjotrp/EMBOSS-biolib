@@ -4,7 +4,7 @@ SUBDIRS = INCLUDE
 
 lib_LTLIBRARIES = libmeme.la
 
-bin_PROGRAMS = meme
+bin_PROGRAMS = omeme
 
 if LOCALLINK
 INCLUDES = -IINCLUDE -I../../../ajax
@@ -35,7 +35,7 @@ libmeme_la_SOURCES = $(MEMESRC)
 
 libmeme_la_LDFLAGS = -version-info 2:3:1
 
-meme_SOURCES = meme.c
+omeme_SOURCES = meme.c
 
 if LOCALLINK
 LDADD = libmeme.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)

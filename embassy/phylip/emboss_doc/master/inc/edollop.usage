@@ -6,10 +6,10 @@
 
 % <b>edollop </b>
 Dollo and polymorphism parsimony algorithm
-Data file to be read in: <b>dollop.dat</b>
-Output file [edollop.outfile]: <b></b>
+Phylip dollop program input file: <b>dollop.dat</b>
+Phylip dollop program output file [edollop.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [edollop.treefile]: <b></b>
+Phylip tree output file [edollop.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

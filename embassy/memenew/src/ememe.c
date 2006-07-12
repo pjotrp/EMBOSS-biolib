@@ -231,7 +231,6 @@ int main(int argc, char **argv)
     /*    ajFmtPrint("\n%S\n", cmd);  */
     system(ajStrGetPtr(cmd));    
 
-
     /* 6. Exit cleanly */
     /* Delete temporary file */
     ajFmtPrintS(&tmp, "rm %S", rnd);

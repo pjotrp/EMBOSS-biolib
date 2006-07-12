@@ -178,6 +178,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "ednaml.outfile"
   knowntype: "dnaml output"
+  information: "Phylip dnaml program output file"
 ]
 
 boolean: printdata  [
@@ -207,7 +208,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "ednaml.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 endsection: output

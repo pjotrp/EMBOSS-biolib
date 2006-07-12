@@ -6,12 +6,12 @@
 
 % <b>eneighbor </b>
 Phylogenies from distance matrix by N-J or UPGMA method
-Distance matrix: <b>neighbor.dat</b>
+Phylip neighbor program input file: <b>neighbor.dat</b>
 Neighbor-joining [Y]: <b></b>
 Outgroup root [N]: <b></b>
-Output file [eneighbor.outfile]: <b></b>
+Phylip neighbor program output file [eneighbor.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [eneighbor.treefile]: <b></b>
+Phylip tree output file [eneighbor.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

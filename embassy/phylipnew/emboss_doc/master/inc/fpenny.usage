@@ -6,8 +6,8 @@
 
 % <b>fpenny </b>
 Penny algorithm, branch-and-bound
-Input file: <b>penny.dat</b>
-Output file [penny.fpenny]: <b></b>
+Phylip character discrete states file: <b>penny.dat</b>
+Phylip penny program output file [penny.fpenny]: <b></b>
 
 
 How many

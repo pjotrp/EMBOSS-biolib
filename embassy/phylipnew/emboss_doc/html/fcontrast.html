@@ -175,8 +175,8 @@ individuals per species it is not a subcase of his model).
 % <b>fcontrast </b>
 Continuous character Contrasts
 Input file: <b>contrast.dat</b>
-Input tree file: <b>contrast.tree</b>
-Output file [contrast.fcontrast]: <b></b>
+Phylip tree file: <b>contrast.tree</b>
+Phylip contrast program output file [contrast.fcontrast]: <b></b>
 
 
 Output written to file "contrast.fcontrast"
@@ -198,17 +198,18 @@ Done.
 <pre>
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file
+  [-outfile]           outfile    [*.fcontrast] Phylip contrast program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -varywithin         boolean    Within-population variation in data
-*  -[no]reg            boolean    Print out correlations and regressions
-*  -writecont          boolean    Print out contrasts
-*  -[no]nophylo        boolean    LRT test of no phylogenetic component, with
-                                  and without VarA
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+   -varywithin         boolean    [N] Within-population variation in data
+*  -[no]reg            boolean    [Y] Print out correlations and regressions
+*  -writecont          boolean    [N] Print out contrasts
+*  -[no]nophylo        boolean    [Y] LRT test of no phylogenetic component,
+                                  with and without VarA
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -250,16 +251,16 @@ Done.
 
 <tr>
 <td>[-intreefile]<br>(Parameter 2)</td>
-<td>(no help text) tree value</td>
+<td>Phylip tree file</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Phylip contrast program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fcontrast</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

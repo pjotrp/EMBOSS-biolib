@@ -1,10 +1,11 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing sequences
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [ednainvar.outfile] Phylip dnainvar program
+                                  output file
 
    Additional (Optional) qualifiers:
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

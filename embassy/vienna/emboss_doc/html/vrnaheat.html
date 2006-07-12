@@ -95,7 +95,20 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with vrnaheat</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaheat -mintemp 30 -maxtemp 120 -step 0.1 -smoothing 4 </b>
+RNA melting
+Input nucleotide sequence: <b>cofold-red.fasta</b>
+Vienna RNAfold output file [red.vrnaheat]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -108,25 +121,28 @@ EDIT HERE
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnaheat] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -mintemp            float      Temperature
-   -maxtemp            float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -smoothing          integer    Parabola fitting value
-   -step               integer    Step size in degrees C
-   -dangles            menu       Method
-   -ssoutfile          outfile    Output file name
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -mintemp            float      [0.0] Temperature (Any numeric value)
+   -maxtemp            float      [100.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -smoothing          integer    [2] Parabola fitting value (Any integer
+                                  value)
+   -step               float      [1.0] Step size in degrees C (Number from
+                                  0.010 to 1000.000)
+   -dangles            menu       [2] Method (Values: 0 (Ignore); 2 (Always
+                                  use dangling energies))
 
    Associated qualifiers:
 
@@ -148,9 +164,6 @@ EDIT HERE
 
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
-
-   "-ssoutfile" associated qualifiers
-   -odirectory         string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -186,9 +199,9 @@ EDIT HERE
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnaheat</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -209,7 +222,7 @@ EDIT HERE
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -287,8 +300,8 @@ EDIT HERE
 <tr>
 <td>-step</td>
 <td>Step size in degrees C</td>
-<td>Integer from 1 to 100</td>
-<td>1</td>
+<td>Number from 0.010 to 1000.000</td>
+<td>1.0</td>
 </tr>
 
 <tr>
@@ -296,13 +309,6 @@ EDIT HERE
 <td>Method</td>
 <td><table><tr><td>0</td> <td><i>(Ignore)</i></td></tr><tr><td>2</td> <td><i>(Always use dangling energies)</i></td></tr></table></td>
 <td>2</td>
-</tr>
-
-<tr>
-<td>-ssoutfile</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td>&nbsp;</td>
 </tr>
 
 </table>
@@ -334,7 +340,16 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: cofold-red.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;red
+AUGAAGAUGA
+</pre>
+</td></tr></table><p>
 
 
 
@@ -362,7 +377,119 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: red.vrnaheat</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+30.0    0.0249224
+30.1    0.0246136
+30.2    0.0243089
+30.3    0.0240069
+30.4    0.0237101
+30.5    0.0234163
+30.6    0.0231268
+30.7    0.0228404
+30.8    0.0225589
+30.9    0.0222815
+31.0    0.0220065
+31.1    0.021735
+31.2    0.0214681
+31.3    0.0212039
+31.4    0.0209434
+31.5    0.0206865
+31.6    0.0204337
+31.7    0.0201827
+31.8    0.0199348
+31.9    0.0196913
+32.0    0.0194505
+32.1    0.0192131
+32.2    0.0189785
+32.3    0.0187473
+32.4    0.0185188
+32.5    0.0182933
+32.6    0.0180709
+32.7    0.0178514
+32.8    0.0176344
+32.9    0.0174205
+33.0    0.0172092
+33.1    0.0170016
+33.2    0.0167953
+33.3    0.0165932
+33.4    0.0163923
+33.5    0.0161944
+33.6    0.0159986
+33.7    0.0158057
+33.8    0.0156164
+33.9    0.0154291
+34.0    0.0152431
+34.1    0.0150599
+34.2    0.0148787
+34.3    0.0147011
+34.4    0.0145247
+34.5    0.0143517
+34.6    0.014181
+34.7    0.0140118
+34.8    0.0138441
+34.9    0.0136778
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+114.9   2.13689e-05
+115.0   2.12864e-05
+115.1   2.11928e-05
+115.2   2.1109e-05
+115.3   2.10593e-05
+115.4   2.09632e-05
+115.5   2.08829e-05
+115.6   2.07866e-05
+115.7   2.07026e-05
+115.8   2.06099e-05
+115.9   2.04914e-05
+116.0   2.04207e-05
+116.1   2.03585e-05
+116.2   2.0273e-05
+116.3   2.01923e-05
+116.4   2.013e-05
+116.5   2.00431e-05
+116.6   1.99869e-05
+116.7   1.98766e-05
+116.8   1.98387e-05
+116.9   1.97431e-05
+117.0   1.96486e-05
+117.1   1.95307e-05
+117.2   1.94705e-05
+117.3   1.93833e-05
+117.4   1.93354e-05
+117.5   1.92382e-05
+117.6   1.92e-05
+117.7   1.91249e-05
+117.8   1.90645e-05
+117.9   1.8945e-05
+118.0   1.88858e-05
+118.1   1.87982e-05
+118.2   1.87032e-05
+118.3   1.86216e-05
+118.4   1.85672e-05
+118.5   1.85041e-05
+118.6   1.84348e-05
+118.7   1.83235e-05
+118.8   1.82862e-05
+118.9   1.81883e-05
+119.0   1.81275e-05
+119.1   1.80642e-05
+119.2   1.79773e-05
+119.3   1.79189e-05
+119.4   1.78418e-05
+119.5   1.77561e-05
+119.6   1.7721e-05
+119.7   1.76402e-05
+119.8   1.75803e-05
+119.9   1.74981e-05
+</pre>
+</td></tr></table><p>
 
 
 

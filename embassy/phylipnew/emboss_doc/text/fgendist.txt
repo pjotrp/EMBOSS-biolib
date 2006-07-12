@@ -151,8 +151,8 @@ Usage
 
 % fgendist 
 Compute genetic distances from gene frequencies
-Input file: gendist.dat
-Output file [gendist.fgendist]: 
+Phylip gendist program input file: gendist.dat
+Phylip gendist program output file [gendist.fgendist]: 
 
 Distances calculated for species
     European     .
@@ -173,12 +173,15 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fgendist] Phylip gendist program output
+                                  file
 
    Additional (Optional) qualifiers:
-   -method             menu       Which method to use
-   -[no]progress       boolean    Print indications of progress of run
-   -lower              boolean    Lower triangular distance matrix
+   -method             menu       [n] Which method to use (Values: n (Nei
+                                  genetic distance); c (Cavalli-Sforza chord
+                                  measure); r (Reynolds genetic distance))
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -lower              boolean    [N] Lower triangular distance matrix
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -200,24 +203,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) File containing one or more sets of data Frequency
-   value(s)
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.fgendist
-   Additional (Optional) qualifiers Allowed values Default
-   -method Which method to use
-   n (Nei genetic distance)
-   c (Cavalli-Sforza chord measure)
-   r (Reynolds genetic distance)
-   n
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   -lower Lower triangular distance matrix Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

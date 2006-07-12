@@ -19,15 +19,16 @@ tree: intreefile [
 	parameter: "Y"
 	nullok: "Y"
 	knowntype: "newick"
+	information: "Phylip tree file (optional)"
 ]
 
 properties: weights [
 	additional: "Y"
 	characters: "01"
-	information: "Weights file"
+	information: "Phylip weights file (optional)"
         length: "$(sequence.length)"
         size: ""
-	help: "Weights file - Ignore sites with weight zero"
+	help: "Weights file - ignore sites with weight zero"
 	nullok: "Y"
 ]
 
@@ -96,6 +97,7 @@ outfile: outtreefile [
 	additional: "Y"
 	extension: "treefile"
 	knowntype: "newick tree"
+	information: "Phylip tree output file (optional)"
 	nullok: "Y"
 ]
 

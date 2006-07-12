@@ -6,9 +6,9 @@
                                   SEQWORDS to search a sequence database.
   [-spfile]            infile     This option specifies the name of the
                                   sequence database (input) to search.
-  [-outfile]           outfile    This option specifies the name of the DHF
-                                  file (domain hits file) (output). A 'domain
-                                  hits file' contains database hits
+  [-outfile]           outfile    [test.hits] This option specifies the name
+                                  of the DHF file (domain hits file) (output).
+                                  A 'domain hits file' contains database hits
                                   (sequences) with domain classification
                                   information, in the DHF format (FASTA-like).
                                   The hits are relatives to a SCOP or CATH

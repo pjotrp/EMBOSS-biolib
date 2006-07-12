@@ -19,15 +19,15 @@ section: input [
 
   infile: constraintfile  [
     parameter: "Y"
-    information: "Constraint file"
-    knowntype: "rna constraint file"
+    information: "Vienna RNA structure contraints file (optional)"
+    knowntype: "rna constraint"
   ]
 
   infile: paramfile [
     nullok: "Y"
     default: ""
-    information: "Parameter file"
-    knowntype: "rna parameter file"
+    information: "Vienna RNA parameters file (optional)"
+    knowntype: "rna parameter"
   ]
 
 endsection: input
@@ -93,7 +93,8 @@ section: output [
 
   outfile: outfile  [
     parameter: "Y"
-    knowntype: "rnaevalpair output"
+    knowntype: "rnaeval output"
+    information: "Vienna RNAeval output file"
   ]
 
 endsection: output

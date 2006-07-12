@@ -201,8 +201,8 @@ that root placement does not affect anything.
 % <b>fprotpars </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
-Input tree file: <b></b>
-Output file [protpars.fprotpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
 
 
 Adding species:
@@ -234,8 +234,8 @@ Trees also written onto file "protpars.treefile"
 % <b>fprotpars -njumble 3 -seed 3 -printdata -ancseq -whichcode m -stepbox -outgrno 2  -thresh -threshold 3 </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
-Input tree file: <b></b>
-Output file [protpars.fprotpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
 
 
 Adding species:
@@ -291,8 +291,8 @@ Trees also written onto file "protpars.treefile"
 % <b>fprotpars -njumble 3 -seed 3 </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars2.dat</b>
-Input tree file: <b></b>
-Output file [protpars2.fprotpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip protpars program output file [protpars2.fprotpars]: <b></b>
 
 Data set # 1:
 
@@ -434,8 +434,8 @@ Trees also written onto file "protpars2.treefile"
 % <b>fprotpars -option </b>
 Protein pasimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
-Input tree file: <b></b>
-Weights file: <b>protparswts.dat</b>
+Phylip tree file (optional): <b></b>
+Phylip weights file (optional): <b>protparswts.dat</b>
 Number of times to randomise [0]: <b></b>
 Species number to use as outgroup [0]: <b></b>
 Use threshold parsimony [N]: <b></b>
@@ -446,9 +446,9 @@ Genetic codes
          F : Fly mitochondrial
          Y : Yeast mitochondrial
 Use which genetic code [Universal]: <b></b>
-Output file [protpars.fprotpars]: <b></b>
+Phylip protpars program output file [protpars.fprotpars]: <b></b>
 Write out trees to tree file [Y]: <b></b>
-Tree file name [protpars.treefile]: <b></b>
+Phylip tree output file (optional) [protpars.treefile]: <b></b>
 Print data at start of run [N]: <b></b>
 Print indications of progress of run [Y]: <b></b>
 Print out tree [Y]: <b></b>
@@ -509,26 +509,32 @@ Trees also written onto file "protpars.treefile"
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fprotpars] Phylip protpars program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -weights            properties Weights file
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -outgrno            integer    Species number to use as outgroup
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -whichcode          menu       Use which genetic code
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -stepbox            boolean    Print steps at each site
-   -ancseq             boolean    Print sequences at all nodes of tree
-*  -[no]dotdiff        boolean    Use dot differencing to display results
+   -weights            properties Phylip weights file (optional)
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 1.000 or more)
+   -whichcode          menu       [Universal] Use which genetic code (Values:
+                                  U (Universal); M (Mitochondrial); V
+                                  (Vertebrate mitochondrial); F (Fly
+                                  mitochondrial); Y (Yeast mitochondrial))
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print steps at each site
+   -ancseq             boolean    [N] Print sequences at all nodes of tree
+*  -[no]dotdiff        boolean    [Y] Use dot differencing to display results
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -589,16 +595,16 @@ Trees also written onto file "protpars.treefile"
 
 <tr>
 <td>[-intreefile]<br>(Parameter 2)</td>
-<td>(no help text) tree value</td>
+<td>Phylip tree file (optional)</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Phylip protpars program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fprotpars</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -609,7 +615,7 @@ Trees also written onto file "protpars.treefile"
 
 <tr>
 <td>-weights</td>
-<td>Weights file</td>
+<td>Phylip weights file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>
@@ -665,7 +671,7 @@ Trees also written onto file "protpars.treefile"
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

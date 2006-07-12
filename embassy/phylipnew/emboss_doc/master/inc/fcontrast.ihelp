@@ -1,16 +1,17 @@
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file
+  [-outfile]           outfile    [*.fcontrast] Phylip contrast program output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -varywithin         boolean    Within-population variation in data
-*  -[no]reg            boolean    Print out correlations and regressions
-*  -writecont          boolean    Print out contrasts
-*  -[no]nophylo        boolean    LRT test of no phylogenetic component, with
-                                  and without VarA
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+   -varywithin         boolean    [N] Within-population variation in data
+*  -[no]reg            boolean    [Y] Print out correlations and regressions
+*  -writecont          boolean    [N] Print out contrasts
+*  -[no]nophylo        boolean    [Y] LRT test of no phylogenetic component,
+                                  with and without VarA
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

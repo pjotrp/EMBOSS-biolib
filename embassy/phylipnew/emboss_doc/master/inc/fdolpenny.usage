@@ -6,8 +6,8 @@
 
 % <b>fdolpenny </b>
 Penny algorithm Dollo or polymorphism
-Input file: <b>dolpenny.dat</b>
-Output file [dolpenny.fdolpenny]: <b></b>
+Phylip character discrete states file: <b>dolpenny.dat</b>
+Phylip dolpenny program output file [dolpenny.fdolpenny]: <b></b>
 
 
 How many

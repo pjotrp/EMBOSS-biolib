@@ -7,10 +7,10 @@
 % <b>fdiscboot -seed 3 </b>
 Bootstrapped discrete sites algorithm
 Input file: <b>discboot.dat</b>
-Output file [discboot.fdiscboot]: <b></b>
-Out ancestor file name [discboot.ancfile]: <b></b>
-Out mix file name [discboot.mixfile]: <b></b>
-Out fact file name [discboot.factfile]: <b></b>
+Phylip seqboot_disc program output file [discboot.fdiscboot]: <b></b>
+Phylip ancestor data output file (optional) [discboot.ancfile]: <b></b>
+Phylip mix data output file (optional) [discboot.mixfile]: <b></b>
+Phylip factor data output file (optional) [discboot.factfile]: <b></b>
 
 
  bootstrap: true

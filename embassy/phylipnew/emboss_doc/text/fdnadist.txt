@@ -199,7 +199,7 @@ Distance methods
          l : LogDet distance
          s : Similarity table
 Choose the method to use [F84 distance model]: 
-Output file [dnadist.fdnadist]: 
+Phylip distance matrix output file [dnadist.fdnadist]: 
 
 Distances calculated for species
     Alpha        ....
@@ -221,26 +221,37 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-   -method             menu       Choose the method to use
-  [-outfile]           outfile    Output file name
+   -method             menu       [F84 distance model] Choose the method to
+                                  use (Values: f (F84 distance model); k
+                                  (Kimura 2-parameter distance); j
+                                  (Jukes-Cantor distance); l (LogDet
+                                  distance); s (Similarity table))
+  [-outfile]           outfile    [*.fdnadist] Phylip distance matrix output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -gamma              menu       Gamma distribution
-*  -ncategories        integer    Number of substitution rate categories
-*  -rate               array      Category rates
+*  -gamma              menu       [No distribution parameters used] Gamma
+                                  distribution (Values: g (Gamma distributed
+                                  rates); i (Gamma+invariant sites); n (No
+                                  distribution parameters used))
+*  -ncategories        integer    [1] Number of substitution rate categories
+                                  (Integer from 1 to 9)
+*  -rate               array      [1.0] Category rates
 *  -categories         properties File of substitution rate categories
    -weights            properties Weights file
-*  -gammacoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-*  -invarfrac          float      Fraction of invariant sites
-*  -ttratio            float      Transition/transversion ratio
-*  -[no]freqsfrom      toggle     Use empirical base frequencies from seqeunce
-                                  input
-*  -basefreq           array      Base frequencies for A C G T/U (use blanks
-                                  to separate)
-   -lower              boolean    Lower triangular distance matrix
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+*  -invarfrac          float      [0.0] Fraction of invariant sites (Number
+                                  from 0.000 to 1.000)
+*  -ttratio            float      [2.0] Transition/transversion ratio (Number
+                                  0.001 or more)
+*  -[no]freqsfrom      toggle     [Y] Use empirical base frequencies from
+                                  seqeunce input
+*  -basefreq           array      [0.25 0.25 0.25 0.25] Base frequencies for A
+                                  C G T/U (use blanks to separate)
+   -lower              boolean    [N] Lower triangular distance matrix
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -278,45 +289,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) File containing one or more sequence alignments Readable
-   sets of sequences
-   -method Choose the method to use
-   f (F84 distance model)
-   k (Kimura 2-parameter distance)
-   j (Jukes-Cantor distance)
-   l (LogDet distance)
-   s (Similarity table)
-   F84 distance model
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.fdnadist
-   Additional (Optional) qualifiers Allowed values Default
-   -gamma Gamma distribution
-   g (Gamma distributed rates)
-   i (Gamma+invariant sites)
-   n (No distribution parameters used)
-   No distribution parameters used
-   -ncategories Number of substitution rate categories Integer from 1 to
-   9 1
-   -rate Category rates List of floating point numbers 1.0
-   -categories File of substitution rate categories Property value(s)
-   -weights Weights file Property value(s)
-   -gammacoefficient Coefficient of variation of substitution rate among
-   sites Number 0.001 or more 1
-   -invarfrac Fraction of invariant sites Number from 0.000 to 1.000 0.0
-   -ttratio Transition/transversion ratio Number 0.001 or more 2.0
-   -[no]freqsfrom Use empirical base frequencies from seqeunce input
-   Toggle value Yes/No Yes
-   -basefreq Base frequencies for A C G T/U (use blanks to separate) List
-   of floating point numbers 0.25 0.25 0.25 0.25
-   -lower Lower triangular distance matrix Boolean value Yes/No No
-   -printdata Print data at start of run Boolean value Yes/No No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

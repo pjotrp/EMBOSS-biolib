@@ -6,15 +6,15 @@
 
 % <b>epenny </b>
 Penny algorithm, branch-and-bound
-Data file: <b>penny.dat</b>
+Phylip penny program input file: <b>penny.dat</b>
 Method
        Wag : Wagner
        Cam : Camin-Sokal
        Mix : Mixed
 Choose the method to use [Wag]: <b></b>
-Output file [epenny.outfile]: <b></b>
+Phylip penny program output file [epenny.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [epenny.treefile]: <b></b>
+Phylip tree output file [epenny.treefile]: <b></b>
 
 
 

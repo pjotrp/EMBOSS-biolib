@@ -44,8 +44,8 @@ Usage
 
 % ffactor 
 Multistate to binary recoding program
-File containing data set: factor.dat
-Output file [factor.ffactor]: 
+Phylip factor program input file: factor.dat
+Phylip factor program output file [factor.ffactor]: 
 
 
 Data matrix written on file "factor.ffactor"
@@ -59,17 +59,18 @@ Done.
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     File containing data set
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Phylip factor program input file
+  [-outfile]           outfile    [*.ffactor] Phylip factor program output
+                                  file
 
    Additional (Optional) qualifiers:
-   -anc                boolean    Put ancestral states in output file
-   -factors            boolean    Put factors information in output file
-   -[no]progress       boolean    Print indications of progress of run
+   -anc                boolean    [N] Put ancestral states in output file
+   -factors            boolean    [N] Put factors information in output file
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers:
-   -outfactorfile      outfile    Factor outfile name
-   -outancfile         outfile    Ancestor outfile name
+   -outfactorfile      outfile    Phylip factor data output file (optional)
+   -outancfile         outfile    Phylip ancestor data output file (optional)
 
    Associated qualifiers:
 
@@ -96,21 +97,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) File containing data set Input file Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.ffactor
-   Additional (Optional) qualifiers Allowed values Default
-   -anc Put ancestral states in output file Boolean value Yes/No No
-   -factors Put factors information in output file Boolean value Yes/No
-   No
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -outfactorfile Factor outfile name Output file
-   -outancfile Ancestor outfile name Output file
 
 Input file format
 
@@ -271,11 +257,11 @@ Output file format
 
   File: factor.ffactor
 
-    4    8
-Alpha     11100000
-Beta      10001001
-Gamma     00011100
-Epsilon   11101010
+    4    5
+Alpha     CA00#
+Beta      BB01%
+Gamma     AB12#
+Epsilon   CA01$
 
   File: factor.factor
 

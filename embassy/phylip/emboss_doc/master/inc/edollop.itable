@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-datafile]<br>(Parameter 1)</td>
-<td>Data file to be read in</td>
+<td>Phylip dollop program input file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -42,7 +42,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip dollop program output file</td>
 <td>Output file</td>
 <td>edollop.outfile</td>
 </tr>
@@ -56,7 +56,7 @@
 
 <tr>
 <td>-treefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file</td>
 <td>Output file</td>
 <td>edollop.treefile</td>
 </tr>

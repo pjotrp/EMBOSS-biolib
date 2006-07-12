@@ -14,28 +14,28 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip seqboot_disc program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fdiscboot</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outancfile]<br>(Parameter 3)</td>
-<td>Out ancestor file name</td>
+<td>Phylip ancestor data output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outmixfile]<br>(Parameter 4)</td>
-<td>Out mix file name</td>
+<td>Phylip mix data output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfactfile]<br>(Parameter 5)</td>
-<td>Out fact file name</td>
+<td>Phylip factor data output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

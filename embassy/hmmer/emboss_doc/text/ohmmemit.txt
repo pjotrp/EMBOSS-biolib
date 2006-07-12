@@ -22,7 +22,7 @@ Usage
 
 % ohmmemit rrm.hmm -seed 1079460101 
 Extract HMM sequences
-Output file [rrm.ohmmemit]: 
+HMMER hmmemit program output file [rrm.ohmmemit]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -30,15 +30,17 @@ Output file [rrm.ohmmemit]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmemit] HMMER hmmemit program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -seed               integer    Random seed
-   -selex              boolean    Output in selex format
-   -consensus          boolean    Output consensus sequence
-   -number             integer    Number of sequences to produce
+   -seed               integer    [0] Random seed (Integer 0 or more)
+   -selex              boolean    [N] Output in selex format
+   -consensus          boolean    [N] Output consensus sequence
+   -number             integer    [10] Number of sequences to produce (Any
+                                  integer value)
 
    Associated qualifiers:
 
@@ -59,19 +61,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) HMM file Input file Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.ohmmemit
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -seed Random seed Integer 0 or more 0
-   -selex Output in selex format Boolean value Yes/No No
-   -consensus Output consensus sequence Boolean value Yes/No No
-   -number Number of sequences to produce Any integer value 10
 
 Input file format
 

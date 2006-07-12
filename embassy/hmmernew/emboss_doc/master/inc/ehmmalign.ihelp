@@ -4,10 +4,10 @@
   [-o]                 align      Multiple sequence alignment output file.
 
    Additional (Optional) qualifiers:
-   -m                  boolean    Include in the alignment only those symbols
-                                  aligned to match states. Do not show symbols
-                                  assigned to insert states.
-   -q                  boolean    Quiet; suppress all output except the
+   -m                  boolean    [N] Include in the alignment only those
+                                  symbols aligned to match states. Do not show
+                                  symbols assigned to insert states.
+   -q                  boolean    [N] Quiet; suppress all output except the
                                   alignment itself. Useful for piping or
                                   redirecting the output.
 

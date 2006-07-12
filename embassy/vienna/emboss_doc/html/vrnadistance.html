@@ -95,7 +95,20 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with vrnadistance</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnadistance -distance "f,h" -doalignment </b>
+RNA distances
+Vienna RNA structures file: <b>rna4.fold</b>
+Vienna RNAfold output file [rna4.vrnadistance]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -106,16 +119,24 @@ EDIT HERE
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-structure]         infile     Structures file
-  [-outfile]           outfile    Output file name
+  [-structure]         infile     Vienna RNA structures file
+  [-outfile]           outfile    [*.vrnadistance] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -distance           menu       Distance types to calculate
-   -compare            menu       Distance types to calculate
-   -schapiro           boolean    Use cost matrix for comparing coarse
+   -distance           menu       [f] Distance types to calculate (Values: f
+                                  (Full (tree)); h (HIT (tree)); w (Weighted
+                                  coarse (tree)); c (Coarse (tree)); F (Full
+                                  (string)); H (HIT (string)); W (Weighted
+                                  coarse (string)); C (Coarse (string)); P
+                                  (Base pair distance))
+   -compare            menu       [p] Distance types to calculate (Values: p
+                                  (Pairwise); m (Distance matrix between all
+                                  structures); f (Compare all structures to
+                                  the first one); c (Compare continuously))
+   -schapiro           boolean    [N] Use cost matrix for comparing coarse
                                   structures
-   -doalignment        boolean    Alignment showing matching substructures
+   -doalignment        boolean    [N] Alignment showing matching substructures
 
    Associated qualifiers:
 
@@ -149,16 +170,16 @@ EDIT HERE
 
 <tr>
 <td>[-structure]<br>(Parameter 1)</td>
-<td>Structures file</td>
+<td>Vienna RNA structures file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnadistance</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -234,7 +255,16 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: rna4.fold</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+((.(((((((.....))))))).))....((..((((.....)))).)).
+.....((((..((((..........)))).)))).....(((....))).
+</pre>
+</td></tr></table><p>
 
 
 
@@ -262,7 +292,21 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: rna4.vrnadistance</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+f: 26  
+(_____(.(((__((((....._____))))_))).))....((..((((.....)))).)).
+_.....(_(((..((((..........)))).)))_)_....__.__(((...._)))_.___
+h: 32  
+(____((U1)((U5_)P7)(U1)P2)(U4)((U2)((U5)P4)(U1)P2)(U1)R1)
+((U5)((U2)((U10)P4)(U1)P4)(U5)_____((U4)P3)(U1)_______R1)
+
+</pre>
+</td></tr></table><p>
 
 
 

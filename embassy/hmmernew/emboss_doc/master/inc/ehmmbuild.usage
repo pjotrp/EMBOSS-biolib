@@ -4,7 +4,7 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild globins50.msf globin.hmm -n globins50 -strategy D </b>
+% <b>ehmmbuild globins50.msf globin.hmm -nhmm globins50 -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment
@@ -55,7 +55,7 @@ hmmbuild  -n globins50  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000 
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild rrm.sto myhmms -n rrm -strategy D </b>
+% <b>ehmmbuild rrm.sto myhmms -nhmm rrm -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment
@@ -106,7 +106,7 @@ hmmbuild  -n rrm  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swe
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild fn3.sto myhmms -n fn3 -strategy D </b>
+% <b>ehmmbuild fn3.sto myhmms -nhmm fn3 -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment
@@ -157,7 +157,7 @@ hmmbuild  -n fn3  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swe
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmbuild pkinase.sto myhmms -n pkinase -strategy D </b>
+% <b>ehmmbuild pkinase.sto myhmms -nhmm pkinase -strategy D </b>
 Build a profile HMM from an alignment.
 
 hmmbuild - build a hidden Markov model from an alignment

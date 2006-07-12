@@ -1,26 +1,30 @@
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-datafile]          infile     Data file
-*  -datasets           integer    Number of sets
-  [-[no]dollo]         boolean    Dollo Parsimony method (else Polymorphism)
-*  -valthresh          float      Threshold value
-  [-outfile]           outfile    Output file name
-  [-[no]trout]         toggle     Create a tree file
-*  -treefile           outfile    Tree file name
+  [-datafile]          infile     Phylip dolpenny program input file
+*  -datasets           integer    [2] Number of sets (Integer 2 or more)
+  [-[no]dollo]         boolean    [Y] Dollo Parsimony method (else
+                                  Polymorphism)
+*  -valthresh          float      [1.0] Threshold value (Number 1.000 or more)
+  [-outfile]           outfile    [edolpenny.outfile] phylip dolpenny program
+                                  output file
+  [-[no]trout]         toggle     [Y] Create a tree file
+*  -treefile           outfile    [edolpenny.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
-   -ancest             boolean    Use ancestral states in input file
-   -multsets           toggle     Analyze multiple data sets
-   -numgroups          integer    How many groups of 100 trees
-   -howoften           integer    How often to report, in trees
+   -ancest             boolean    [N] Use ancestral states in input file
+   -multsets           toggle     [N] Analyze multiple data sets
+   -numgroups          integer    [1000] How many groups of 100 trees (Any
+                                  integer value)
+   -howoften           integer    [100] How often to report, in trees (Any
+                                  integer value)
    -simple             boolean    Branch and bound is simple
-   -printdata          boolean    Print out the data at start of run
-   -progress           boolean    Print indications of progress of run
-   -steps              boolean    Print out steps in each site
-   -statesatnodes      boolean    Print states at all nodes of tree
-   -[no]drawtree       boolean    Draw tree
+   -printdata          boolean    [N] Print out the data at start of run
+   -progress           boolean    [N] Print indications of progress of run
+   -steps              boolean    [N] Print out steps in each site
+   -statesatnodes      boolean    [N] Print states at all nodes of tree
+   -[no]drawtree       boolean    [Y] Draw tree
 
    Advanced (Unprompted) qualifiers:
-   -thresh             toggle     Use Threshold parsimony
+   -thresh             toggle     [N] Use Threshold parsimony
 
    Associated qualifiers:
 

@@ -6,14 +6,14 @@
 
 % <b>contacts </b>
 Generate intra-chain CON files from CCF files.
-Location of CCF files (clean coordinate files) (input) [./]: <b>../pdbplus-keep/</b>
-Name of data file with van der Waals radii [Evdw.dat]: <b></b>
+Clean protein structure coordinates directories [./]: <b>../pdbplus-keep/</b>
+Van der waals radii data file [Evdw.dat]: <b></b>
 Threshold contact distance [1.0]: <b>1</b>
-Location of CON files (contact files) (output) [./]: <b></b>
-Name of log file for the build [contacts.log]: <b></b>
+Structure contacts file output directory [./]: <b></b>
+Domainatrix log output file [contacts.log]: <b></b>
 
-1ii7
 1cs4
+1ii7
 2hhb
 
 </pre></td></tr></table><p>

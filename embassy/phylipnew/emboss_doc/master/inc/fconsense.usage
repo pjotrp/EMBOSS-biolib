@@ -6,8 +6,8 @@
 
 % <b>fconsense </b>
 Majority-rule and strict consensus tree
-Input tree file: <b>consense.dat</b>
-Output file [consense.fconsense]: <b></b>
+Phylip tree file: <b>consense.dat</b>
+Phylip consense program output file [consense.fconsense]: <b></b>
 
 
 Consensus tree written to file "consense.treefile"

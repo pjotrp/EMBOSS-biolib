@@ -22,7 +22,7 @@ Usage
 
 % oalistat ../ohmmalign-keep/globins630.ali 
 Statistics for multiple alignment files
-Output file [globins630.oalistat]: 
+HMMER alistat program output file [globins630.oalistat]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -30,13 +30,14 @@ Output file [globins630.oalistat]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Alignment file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER alistat program input file
+  [-outfile]           outfile    [*.oalistat] HMMER alistat program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -additional         boolean    Show additional information
-   -fast               boolean    Use sampling method
+   -additional         boolean    [N] Show additional information
+   -fast               boolean    [N] Use sampling method
 
    Associated qualifiers:
 
@@ -57,17 +58,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) Alignment file Input file Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.oalistat
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -additional Show additional information Boolean value Yes/No No
-   -fast Use sampling method Boolean value Yes/No No
 
 Input file format
 

@@ -30,7 +30,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>The output consists of four sections: a ranked list of the best scoring sequences, a ranked list of the best scoring domains, alignments for all the best scoring domains, and a histogram of the scores. A sequence score may be higher than a domain score for the same sequence if there is more than one domain in the sequence; the sequence score takes into account all the domains. All sequences scoring above the -E and -T cutoffs are shown in the frst list, then every domain found in this list is shown in the second list of domain hits. If desired, E-value and bit score thresholds may also be applied to the domain list using the -domE and -domT options.</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ehmmsearch</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-hmmfile]<br>(Parameter 1)</td>
-<td>HMM file</td>
+<td>HMMER hidden markov model file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -21,9 +21,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>HMMER hmmalign program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ohmmalign</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -44,14 +44,14 @@
 
 <tr>
 <td>-mapalifile</td>
-<td>Map alignment</td>
+<td>HMMER alignment file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-withalifile</td>
-<td>Heuristic alignment</td>
+<td>HMMER heuristic alignment file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>

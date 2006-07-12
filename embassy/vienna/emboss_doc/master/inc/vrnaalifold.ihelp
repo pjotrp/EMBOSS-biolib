@@ -2,28 +2,36 @@
   [-sequence]          seqset     (Aligned) nucleotide sequence set filename
                                   and optional format, or reference (input
                                   USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnaalifold] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -constraintfile     infile     Constraint file
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -scale              float      Estimate of ensemble free energy
-   -dangles            menu       Method
-   -covariance         float      Weight for covariance
-   -nspenalty          float      Non-compatible sequence penalty
-   -endgaps            boolean    Mark end gaps
-   -most               boolean    Use most informative sequence algorithm
-   -ssoutfile          outfile    Output file name
+   -constraintfile     infile     Vienna RNA structure contraints file
+                                  (optional)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -scale              float      [1.07] Estimate of ensemble free energy (Any
+                                  numeric value)
+   -dangles            menu       [2] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
+   -covariance         float      [1.0] Weight for covariance (Any numeric
+                                  value)
+   -nspenalty          float      [1.0] Non-compatible sequence penalty (Any
+                                  numeric value)
+   -endgaps            boolean    [N] Mark end gaps
+   -most               boolean    [N] Use most informative sequence algorithm
+   -ssoutfile          outfile    Vienna structure postscript output file
 
    Associated qualifiers:
 

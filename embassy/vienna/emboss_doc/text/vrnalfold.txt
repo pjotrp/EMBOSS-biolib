@@ -17,31 +17,47 @@ Algorithm
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with vrnalfold
+
+
+% vrnalfold 
+Calculate locally stable secondary structures of RNAs
+Input nucleotide sequence: tembl:hsts1
+Vienna RNALfold output file [hsts1.vrnalfold]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnalfold] Vienna RNALfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -constraintfile     infile     Constraint file
-   -paramfile          infile     Parameter file
-   -separation         integer    Maximum allowed separation
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -[no]convert        boolean    Convert T to U
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -scale              float      Estimate of ensemble free energy
-   -dangles            menu       Method
+   -constraintfile     infile     Vienna RNA structure contraints file
+                                  (optional)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -separation         integer    [150] Maximum allowed separation (Any
+                                  integer value)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -scale              float      [1.07] Estimate of ensemble free energy (Any
+                                  numeric value)
+   -dangles            menu       [1] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
 
    Associated qualifiers:
 
@@ -79,52 +95,607 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.vrnalfold
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -constraintfile Constraint file Input file Required
-   -paramfile Parameter file Input file Required
-   -separation Maximum allowed separation Any integer value 150
-   -temperature Temperature Any numeric value 37.0
-   -[no]gu Allow GU pairs Boolean value Yes/No Yes
-   -[no]closegu Allow GU pairs at end of helices Boolean value Yes/No Yes
-   -[no]lp Allow lonely pairs Boolean value Yes/No Yes
-   -[no]convert Convert T to U Boolean value Yes/No Yes
-   -nsbases Non-standard bases Any string is accepted An empty string is
-   accepted
-   -[no]tetraloop Stabilizing energies for tetra-loops Boolean value
-   Yes/No Yes
-   -energy Rarely used option to fold sequences from the ABCD... alphabet
-   0 (BP)
-   1 (Any with GC)
-   2 (Any with AU parameters)
-   0
-   -scale Estimate of ensemble free energy Any numeric value 1.07
-   -dangles Method
-   0 (Ignore)
-   1 (Only unpaired bases for just one dangling end)
-   2 (Always use dangling energies 3:Allow coaxial stacking of adjacent
-   helices)
-   1
-
 Input file format
 
    vrnalfold reads any normal sequence USAs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+   'tembl:hsts1' is a sequence entry in the example nucleic acid database
+   'tembl'
+
+  Database entry: tembl:hsts1
+
+ID   HSTS1      standard; DNA; HUM; 18596 BP.
+XX
+AC   D00596;
+XX
+SV   D00596.1
+XX
+DT   17-JUL-1991 (Rel. 28, Created)
+DT   27-OCT-1998 (Rel. 57, Last updated, Version 2)
+XX
+DE   Homo sapiens gene for thymidylate synthase, exons 1, 2, 3, 4, 5, 6, 7,
+DE   complete cds.
+XX
+KW   thymidylate syntase.
+XX
+OS   Homo sapiens (human)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia
+;
+OC   Eutheria; Primates; Catarrhini; Hominidae; Homo.
+XX
+RN   [1]
+RP   1-18596
+RX   MEDLINE; 91056070.
+RA   Kaneda S., Nalbantoglu J., Takeishi K., Shimizu K., Gotoh O., Seno T.,
+RA   Ayusawa D.;
+RT   "Structural and Functional Analysis of the Human Thymidylate Synthase
+RT   Gene";
+RL   J. Biol. Chem. 265:20277-20284(1990).
+XX
+DR   SWISS-PROT; P04818; TYSY_HUMAN.
+XX
+CC   These data kindly submitted in computer readable form by:
+CC   Sumiko Kaneda
+CC   National Institute of Genetics
+CC   1111 Yata
+CC   Mishima 411
+CC   Japan
+CC   Phone:  +81-559-72-2732
+CC   Fax:    +81-559-71-3651
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..18596
+FT                   /chromosome="18"
+FT                   /db_xref="taxon:9606"
+FT                   /sequenced_mol="DNA"
+FT                   /organism="Homo sapiens"
+FT                   /clone="lambdaHTS-1 and lambdaHTS-3"
+FT                   /map="18p11.32"
+FT   repeat_unit     1..148
+FT                   /note="Alu sequence"
+FT   repeat_unit     202..477
+
+
+  [Part of this file has been deleted for brevity]
+
+     ttttgttttt agcttcagcg agaacccaga cctttcccaa agctcaggat tcttcgaaaa     1566
+0
+     gttgagaaaa ttgatgactt caaagctgaa gactttcaga ttgaagggta caatccgcat     1572
+0
+     ccaactatta aaatggaaat ggctgtttag ggtgctttca aaggagctcg aaggatattg     1578
+0
+     tcagtcttta ggggttgggc tggatgccga ggtaaaagtt ctttttgctc taaaagaaaa     1584
+0
+     aggaactagg tcaaaaatct gtccgtgacc tatcagttat taatttttaa ggatgttgcc     1590
+0
+     actggcaaat gtaactgtgc cagttctttc cataataaaa ggctttgagt taactcactg     1596
+0
+     agggtatctg acaatgctga ggttatgaac aaagtgagga gaatgaaatg tatgtgctct     1602
+0
+     tagcaaaaac atgtatgtgc atttcaatcc cacgtactta taaagaaggt tggtgaattt     1608
+0
+     cacaagctat ttttggaata tttttagaat attttaagaa tttcacaagc tattccctca     1614
+0
+     aatctgaggg agctgagtaa caccatcgat catgatgtag agtgtggtta tgaactttaa     1620
+0
+     agttatagtt gttttatatg ttgctataat aaagaagtgt tctgcattcg tccacgcttt     1626
+0
+     gttcattctg tactgccact tatctgctca gttccttcct aaaatagatt aaagaactct     1632
+0
+     ccttaagtaa acatgtgctg tattctggtt tggatgctac ttaaaagagt atattttaga     1638
+0
+     aataatagtg aatatatttt gccctatttt tctcatttta actgcatctt atcctcaaaa     1644
+0
+     tataatgacc atttaggata gagttttttt tttttttttt taaactttta taaccttaaa     1650
+0
+     gggttatttt aaaataatct atggactacc attttgccct cattagcttc agcatggtgt     1656
+0
+     gacttctcta ataatatgct tagattaagc aaggaaaaga tgcaaaacca cttcggggtt     1662
+0
+     aatcagtgaa atatttttcc cttcgttgca taccagatac ccccggtgtt gcacgactat     1668
+0
+     ttttattctg ctaatttatg acaagtgtta aacagaacaa ggaattattc caacaagtta     1674
+0
+     tgcaacatgt tgcttatttt caaattacag tttaatgtct aggtgccagc ccttgatata     1680
+0
+     gctatttttg taagaacatc ctcctggact ttgggttagt taaatctaaa cttatttaag     1686
+0
+     gattaagtag gataacgtgc attgatttgc taaaagaatc aagtaataat tacttagctg     1692
+0
+     attcctgagg gtggtatgac ttctagctga actcatcttg atcggtagga ttttttaaat     1698
+0
+     ccatttttgt aaaactattt ccaagaaatt ttaagccctt tcacttcaga aagaaaaaag     1704
+0
+     ttgttggggc tgagcactta attttcttga gcaggaagga gtttcttcca aacttcacca     1710
+0
+     tctggagact ggtgtttctt tacagattcc tccttcattt ctgttgagta gccgggatcc     1716
+0
+     tatcaaagac caaaaaaatg agtcctgtta acaaccacct ggaacaaaaa cagattttat     1722
+0
+     gcatttatgc tgctccaaga aatgctttta cgtctaagcc agaggcaatt aattaatttt     1728
+0
+     tttttttttg acatggagtc actgtccgtt gcccaggctg cagtgcagtg gcgcaatctt     1734
+0
+     ggctcactgc aacctccacc tcccaggttc aagtgattct cctgcctcag cctcccatgt     1740
+0
+     agctgggatc acaggcacct gccaccatgc ccggctaatt ttttgtattt tttgtagaga     1746
+0
+     cagggtttca ccatgttggc caggctggtc tcaaacacct gacctcaaat gatccacctg     1752
+0
+     cctcagcctc ccaaagtgtt gggattacag gcgtaagcca ccatgcccag ccctgaatta     1758
+0
+     atatttttaa aataagtttg gagactgttg gaaataatag ggcagaggaa catattttac     1764
+0
+     tggctacttg ccagagttag ttaactcatc aaactctttg ataatagttt gacctctgtt     1770
+0
+     ggtgaaaatg agccatgatc tcttgaacat gatcagaata aatgccccag ccacacaatt     1776
+0
+     gtagtccaaa ctttttaggt cactaacttg ctagatggtg ccaggttttt ttgcacaagg     1782
+0
+     agtgcaaatg ttaagatctc cactagtgag gaaaggctag tattacagaa gccttgtcag     1788
+0
+     aggcaattga acctccaagc cctggccctc aggcctgagg attttgatac agacaaactg     1794
+0
+     aagaaccgtt tgttagtgga tattgcaaac aaacaggagt caaagcttgg tgctccacag     1800
+0
+     tctagttcac gagacaggcg tggcagtggc tggcagcatc tcttctcaca ggggccctca     1806
+0
+     ggcacagctt accttgggag gcatgtagga agcccgctgg atcatcacgg gatacttgaa     1812
+0
+     atgctcatgc aggtggtcaa catactcaca caccctagga ggagggaatc agatcggggc     1818
+0
+     aatgatgcct gaagtcagat tattcacgtg gtgctaactt aaagcagaag gagcgagtac     1824
+0
+     cactcaattg acagtgttgg ccaaggctta gctgtgttac catgcgtttc taggcaagtc     1830
+0
+     cctaaacctc tgtgcctcag gtccttttct tctaaaatat agcaatgtga ggtggggact     1836
+0
+     ttgatgacat gaacacacga agtccctctg agaggttttg tggtgccctt taaaagggat     1842
+0
+     caattcagac tctgtaaata tccagaatta tttgggttcc tctggtcaaa agtcagatga     1848
+0
+     atagattaaa atcaccacat tttgtgatct atttttcaag aagcgtttgt attttttcat     1854
+0
+     atggctgcag cagctgccag gggcttgggg tttttttggc aggtagggtt gggagg         1859
+6
+//
 
 Output file format
 
    vrnalfold outputs a graph to the specified graphics device. outputs a
    report format file. The default format is ...
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: hsts1.vrnalfold
+
+.....((..((..((((((((....(((..((.((((((((((((((......))))..)))))))))).)).....((
+(.(..(((......)))..).)))....)))))))))))))..))...((((..((.......))..)))). (-32.8
+0) 18446
+.((((((.((((((........))))))....((((((((....(((..((.((((((((((((((......))))..)
+))))))))).)).....(((.(..(((......)))..).)))....)))))))))))...)))))). (-32.60) 1
+8427
+.((((((((.((((........))))....)))))))). ( -7.80) 18421
+.(((((((((((.....))))......((....((((........)))).........((((.(((((.(....)))))
+).)))).)).......))))))). (-23.40) 18398
+.((((((((......((((.((((.....)))))))).......)))).........)))). (-13.52) 18386
+.((((((...((((...))))...(((((((((((.....))))......((....((((........)))).......
+..((((.(((((.(....)))))).)))).)).......))))))).)))))). (-31.60) 18375
+.(((..(((...(((((((..((((...)))))))))))...((((.....)))).)))..))). (-16.00) 1836
+4
+.((.((((((((((.((.........))))))))))))...((((......((((.((((.....))))))))......
+.))))........)). (-27.52) 18350
+.(((.((((.((((((.........((((....))))....((((((((((.((.........))))))))))))..))
+)))).)))).))). (-27.40) 18313
+.(((((((...((((((((..((((((.((.((...............))..)).)))))).(((((((((.((.....
+....)))))))))))....))))))))..((((.((((.....)))))))).....)))).))). (-43.46) 1829
+3
+.((((((((.(....).))........((((((((..((((((.((.((...............))..)).)))))).(
+((((((((.((.........)))))))))))....)))))))).)))))). (-39.26) 18277
+.((((..((((((..((((......))))..))))))........((((((((..((((((.((.((............
+...))..)).)))))).(((((((((.((.........)))))))))))....))))))))..)))). (-43.06) 1
+8259
+.(((((...(((....)))..))))). (-10.40) 18250
+.(((((((((.....))).....(((((...(((....)))..)))))..........)))))). (-17.10) 1822
+8
+.(((...((...(((.....))).....(((((...(((....)))..)))))....)).))). (-18.60) 18223
+.(((((.........(((((....)))))...((((((........((((((((..(((..........)))..)))))
+))).......(((((...(((....)))..))))).............))).)))...))))). (-42.20) 18162
+.((((((((((..(((....((((......))))((((.(((..(((((....)))))...))).))))......((((
+((((..(((..........)))..)))))))).....)))..)))))))))). (-42.40) 18133
+.(((....))). ( -2.50) 18121
+.((((((((((.((((...))))...(((....))))))))))..............((((......))))...))).
+(-16.70) 18096
+(((((((((...((((.((......))))))...)))).......))))). (-13.41) 18081
+.((..(((((.(((...)))..(((.(((..(((((((((...((((.((......))))))...)))).......)))
+))..(((((......)).)))...))).)))..)))))..)). (-36.71) 18050
+.((((.....(((((((((..(((((((....)))...(.((((((...(((.(((.((((...((((.((......))
+))))...))))..))))))....)))))).)..............))))..))))))))).)))). (-44.20) 180
+29
+((.((.(((...))).)))). ( -6.10) 18018
+.((((.(.(((((....(((((.......)))))....)))))).)))). (-16.80) 17990
+.(((.........((((.((........)))))).(((((....(((((.......)))))....)))))...))). (
+-21.00) 17963
+(((.(((........)))..))). ( -1.20) 17959
+.(((....(((((((((.(..(...)..).))))))).))..))). (-10.00) 17938
+.(((...(....)..(((((((((.(..(...)..).))))))).)).))). (-10.60) 17931
+(((..(((.(((((((.(((.....))).....(((((((((.(..(...)..).))))))).)).))))))))))(.(
+(((((((.((((.(((.....))))))))))).)))).).))). (-34.10) 17913
+.(((..((((((((.(((((....((.(((.((((((.............(((((((.(..(...)..).))))))).(
+(((.((........))))))...)))).))))).))..))))).))..)).))))))). (-43.20) 17898
+.(((((((((((((....))))..)))..((((((.(((.....))).....(((((((((.(..(...)..).)))))
+)).)).)))))))))))). (-29.60) 17894
+(((((.(((..(((......))))))))))). (-13.30) 17876
+.(((((.((((((...........))))))(((((.(((..(((......)))))))))))))))). (-22.30) 17
+846
+.((.((((((((((........))))))....(((..(((((....))))).((..((((((..((.((((.....)))
+).))))))..))..)).........))).......(((((((.(..(...)..).))))))).)))))). (-39.50)
+ 17834
+.((((((((((..((....(((((.((((((...........))))))(((((.(((..(((......)))))))))))
+)))))....))..)))))))))). (-33.10) 17828
+.((((..(((..............((((((........)))))).........(((((....)))))..)))...))))
+. (-20.10) 17818
+.(((((((((((((.....)))))..((((((((((..((....(((((.((((((...........))))))(((((.
+(((..(((......))))))))))))))))....))..))))))))))..........)))))))). (-47.90) 17
+803
+.((((((((((.....((..((((.(((....((((((((((((((.....)))))))....))))))))))))))..)
+)..((((((...........))))))(((((.(((..(((......))))))))))).....)))))))))). (-51.
+40) 17771
+.(((((...((((...........(.((..........)).).....((..((((.(((....((((((((((((((..
+...)))))))....))))))))))))))..))....)))).))))). (-33.30) 17740
+.(((.((......))))). ( -0.50) 17720
+.(((((..........))))). ( -4.10) 17715
+(((....(((..((((.((....)).)))).)))........((....))..))). ( -9.30) 17702
+.((((((((..(.(((((((....(((..((((.((....)).)))).)))........((....))))).)))).)..
+)).)))))). (-18.50) 17685
+.(((((.....))))). ( -1.70) 17667
+.(((((((......(((((....))))).(((((((.((....)).))))))).....(((((.(....(((..((((.
+((....)).)))).))).........).))))).........)))).))). (-27.72) 17640
+.((((.((((...........(((((.....)))))..............(((((((.((....)).))))))))))).
+(((((.(....(((..((((.((....)).)))).))).........).)))))............)))). (-36.82
+) 17619
+(((((.........((((((((...........(((((.....)))))..............(((((((.((....)).
+)))))))))))))))........(((..((((.((....)).)))).)))...........))))). (-38.60) 17
+607
+.(((..(((.(((((((((....((((....)))).))))))))).)))..))). (-12.30) 17572
+.(((((......((((((......(((((((((....((((....)))).))))))))).)))))).((((........
+...(((((.....)))))..............(((((((.((....)).)))))))))))...))))). (-40.90)
+17558
+.(((((..((.((((((......(((....)))......)))))).)).......(((((((((....((((....)))
+).)))))))))...))).)). (-30.20) 17527
+
+
+  [Part of this file has been deleted for brevity]
+
+.((.(((......((((((((....(((((((((.(((....((..(.(((((((.(((.....))).))))))))..)
+)....))).))...)).)))))...(((.((.((....)).)).)))))))..))))....))).)). (-69.10)
+961
+.((((((...((.(((......(((..((.((.((..(((((((((.(((....((..(.(((((((.(((.....)))
+.))))))))..))....))).))...)).)))))..)).)))).)))..))).)))))))). (-63.80)  949
+(((.((.(((((((((((.(((......))).............((....((.(((....((..(.(((((((.(((..
+...))).))))))))..))....))).))...)).))))))))..))).)).))). (-56.20)  943
+.((((..((((((........(((((((.(((......))).............((....((.(((....((..(.(((
+((((.(((.....))).))))))))..))....))).))...)).)))))))))))))..)))). (-61.10)  933
+(((..((....((..(((.(((..((..((....))...))..))).)))..))...))..))). (-17.50)  915
+.((((..(((((.((.........)).).))))..)))). (-13.50)  907
+.(((((....(((((((((..(((((...((((..((((.....(((..((....))...)))))))....))))..))
+).))...))).))))))......))))). (-45.30)  871
+.(((((.(((.(((((((..(((((....(((((((((..(((((...((((..((((.....(((..((....))...
+)))))))....))))..))).))...))).))))))......)))))..))))))).)))))))). (-78.80)  85
+2
+.((.(((((((..((((.((.(((((((((((..(((((..(((((((((((..(((((...((((..........)))
+)..))).))...))).))))))..))..)))))..)))))))).))).)).)))).)))).))).)). (-79.30)
+838
+.((.((((....((((.((.(((.(((((((.(((((((((((..(((((..(((..((((((...((......)).))
+))))..)))..)))))..)))))))).)))(((....))))))))))..))).)))).))....))))..)). (-81.
+40)  827
+.((((((..((...)).)))))). (-12.80)  818
+(((.(.(((((....))))).).))). (-16.10)  802
+.((((((((.(((((.......))))).(((((....))))))))))))). (-27.00)  780
+.((((((...((.((((((((((.(((((....)))))...((((((.......)))))).......)))))))))).)
+))))))). (-42.10)  748
+.(((....(((((......)))))...((.(((((((.(((...(((...(.(((((....))))).)..)))...)))
+.........(((((....))))).))))))).)).))). (-47.40)  720
+.(((.......(((((.((.((((....)))).....(((((......)))))...)).)))))...((.(((((((((
+(.(((((....)))))...((((((.......)))))).......)))))))))).)).....))). (-56.00)  6
+91
+(((((((..(..(((((((((.((.((((....)))).....(((((......)))))...)).)))))..))))....
+)..))))))). (-37.90)  686
+.(((((((.......(((((..((((((((((...))))))....(((((.((.((((....)))).....(((((...
+...)))))...)).)))))..))))..)))))))))))). (-47.01)  657
+((((..(((((((.((((.(.(((..((((....((((....((((((...))))))...))))...((....))....
+.)))).)))).))))))))).))..)))). (-36.80)  641
+(((((..((..(..((((((.(.((((((((((((((((((((..(.(((((((((.((((((....))))......))
+.))).).))))).))))))..)))...))))...)))))))).)))))))..).)).))))). (-50.10)  608
+.(((((.(((.(......)))).))))). ( -5.60)  602
+.((.((((((....)))))).)). ( -8.30)  599
+.(((.............(....)............((.((((((....)))))).)).))). (-12.50)  565
+.(((.............(((((..((........))..))))).((((((....)))))).))). (-13.00)  559
+(((..(((..(((((.(........(((........))).............(....).).)))))....((.((((((
+....)))))).)).))).))). (-19.30)  530
+.(((((...((((...((((..(((..........(((........))).......(((((..((........))..))
+)))..)))..))))...))))))))). (-23.30)  520
+((((((......(.(((.....((((((...(((.((.(((((.(..(....)..)...))))))).))).))))))..
+...(((((.....))))).......)))).....((.((((((....)))))).))..)))))). (-30.50)  487
+.((((.(((((((...((((.....((((((((..........(((((((.(((.((((.((....)))))).))).))
+)..))))....(((((.....)))))................)))))))).)))).))))))))))). (-39.00)
+479
+.(((.....))). ( -3.10)  467
+.(..((.((((....(((....))).....))))))..). (-15.00)  441
+.(((...((....)).........((((....(((....))).....)))).))). (-14.80)  424
+(((((((....((...((....))...))....))))))). ( -8.90)  415
+.(((((.(.((((....)))).)......(((((..(((......................(((....)))...((...
+..)))))..))))).......))))). (-33.70)  395
+(((((.(.((...(((((.....(((((.......))))).((....)).......))))).....(((....)))..)
+).).))))). (-28.50)  390
+.(((.((((.(((.(((...((.(.((((....)))).).)).))).)))..((....)).........)))).))).
+(-26.60)  379
+.(((((............(((.((((.(((...((.(.((((....)))).).)).))).)))).)))))))). (-29
+.10)  366
+.((((((((.....(((((............(((.((((.(((...((.(.((((....)))).).)).))).)))).)
+)))))))....)))))))). (-33.00)  353
+.((.((...((((((..(.(((((((.(((((((..((.(((.((((((..(((((.((..(((.(((..(((.....)
+))))))))..))))))).)).)))).))).)).....))))))).)))))))).)))))).)).)). (-51.70)  3
+23
+.(((((.((((((.....))).....(((((...(((.......)))...)))))....)))))))). (-15.10)
+264
+.((((((.((....((((.((..(((((......(((.....))).....(((((...(((.......)))...)))))
+.)))))...)))))).)))))))). (-31.70)  240
+((......)). ( -0.20)  228
+.((((...(((..........................(((((((.......))))).)).((((((..(((.(((.((.
+.((.(((((......(((.....)))...))))).))..)).)))....)))..))))))...)))..)))). (-36.
+40)  180
+.((((..(((.((((((....(((((((.((....)).)))))))....)))))).)))..........(((((.....
+..))))))))). (-19.00)  150
+.((((((((((((.(((((((((((..((((((((((((((((((((((((((((((((((....(..........)..
+..))))))))))))))............))))))))))))))))))))))))))))))).)))))))))))). (-93.
+50)   95
+.((((((((..(((((((.((((....)).))))))))))))).)))). (-31.00)   54
+.((((..........((((....))))....((((..(((((((.((((....)).))))))))))))).)))). (-3
+3.80)   28
+.(((.....((((...)))).......((((....))))..))). (-10.60)   16
+.(((.(((((.(....).))))).))). (-13.30)    6
+.((((.(((.(((((.(....).))))).))).)))). (-18.40)    1
+CCUGUAGUCCCAGCUACGCGAGAGGCUGAGGCAGCAGAAUUACUUGAACCCAGGAGGCGGAGGUUGCAGUGAGCCGAGA
+UCGCGCCACUGCACUCCAGCCUGGGUGAGAGAGCGAGACUCUGUCUCAAAAAAAAAAAAAAAAGACCGCCAGGGCUCAA
+ACAAAAAACCUCGGAAAAGCCCUGGCGGUCUUUUUUUUUUUUUUUUUUUUUUUUUUUUGGGACAGUCUUGCUCUGUCGC
+CCAGGCUGGAGUACAAUGGUCGGAUCUUGGCUCACUGCAACCUCUGCCUCCCAGGUUCAAGCAAUUCUUCUGCCUCAGC
+CUCCCAAGUAGCCACCACGCCCAGCUAAUUUUUGUACUUUUAGUAGAGACGGGGGUUUCACCAUGUUGUCCAGGCUGGU
+CUUGAACUCCUGACCUCAGGUGAUCCACCCGCCUCGGCCCCCCAAAGUACUAGGAUUACAGGCGUGAGCCACCGCGUCC
+AGCGCCCUGGCGGUUUUUAAUCAAGUAGAAAAGCUGCAUUAUACCACUUGCUUCGGUUGCUUCAGUGAGAACGAAGAAA
+UGGAAAUGCAAAUCCCUUAUUAGUUGUAGGAAACAGAUCUCAAACAGCAGUUUUGUUGACAAGACCGCAGGAAAACGUG
+GGAACUGUGCUGCUGGCUUAGAGAAGGCGCGGUCGACCAGACGGUUCCCAAAGGGCGCAGUCCUUCCCAGCCACCGCAC
+CUGCAUCCAGGUUCCCGGGUUUCCUAAGACUCUCAGCUGUGGCCCUGGGCUCCGUUCUGUGCCACACCCGUGGCUCCUG
+CGUUUCCCCCUGGCGCACGCUCUCUAGAGCGGGGGCCGCCGCGACCCCGCCGAGCAGGAAGAGGCGGAGCGCGGGACGG
+CCGCGGGAAAAGGCGCGCGGAAGGGGUCCUGCCACCGCGCCACUUGGCCUGCCUCCGUCCCGCCGCGCCACUUGGCCUG
+CCUCCGUCCCGCCGCGCCACUUCGCCUGCCUCCGUCCCCCGCCCGCCGCGCCAUGCCUGUGGCCGGCUCGGAGCUGCCG
+CGCCGGCCCUUGCCCCCCGCCGCACAGGAGCGGGACGCCGAGCCGCGUCCGCCGCACGGGGAGCUGCAGUACCUGGGGC
+AGAUCCAACACAUCCUCCGCUGCGGCGUCAGGAAGGACGACCGCACGGGCACCGGCACCCUGUCGGUAUUCGGCAUGCA
+GGCGCGCUACAGCCUGAGAGGUGACGCCGCGGGCCCCUGCGGGACGGGUGGCGGGAAGGAGGGAGGCGCGGCUGGGGAG
+AGCGCUCGGGAGCUGCCGGGCGCUGCGGACCCCGUUUAGUCCUAACCUCAAUCCUGCCAGGGAGGGGACGCAUCGUCCU
+CCUCGCCUUACAGACGCCGAAACGGAGGGUCCCAUUAGGGACGUGACUGGCGCGGGCAACACACACAGCAGCGACAGCC
+GGGAGGUAAGCCGCGUCCCAGCGGCUCCGCGGCCGGGCUCGCAGUCGCCCCAGUGAUGCCGUGGCCCCCGAGGCGGGCG
+UCAUCGGGCAGCGUUUGCCCAGUGCUGGAGGGUUAGGGAGAGCUGCCUGGGCUUGACCGCGCGCCGGUCUCAAAGUCCU
+GGCUUUGGCCCCUCCUCCGUUUUCCCCUGUGGACCAUUCCGCUUCGCAGCGUUUUCAAAAACUGGAGCGAAAGUGAUGU
+GGGCGGGGCAAAGGCGGCGGGAAGAGGACAGCACUGAAGCUGGCGCGGGAACUUGGUUUCCUGGUGGCCUCCCAUCCAA
+UCCCCACGAACCAGCUUUCCUCUUAAACCUUGAAAAGAGAAAUUCGGGAGUUCGAGUUCUUAGUCGUCCUUUCCUCUUU
+CCUUUCCGACAGGAGCACCCCAGGCAAAAAAUGUCUCGCGGGUCAUUGGCGCCAGGCUUUCAGGGGACAGUGGGGCGGG
+GCGGGGUGGGCACAGGACGUUAGGCAGCCGUUGGCCCUCCCUAAGGCCACACCGUCCUGCCGUCCUGGAUCCUGCGCCA
+GCUGCGCGGGGGAGGGGACUCGAAGGUGUGUGAGCCAGGGGCUGACCUUGACCGCUCAGAUAAAUGGAGCGCAGCCUUG
+ACACAGGGGUGGAGGUGGUUUUGAAUGGGGAAACCCAUUCGUGGUGAAGCAGAUUCACUGUAGCUAGCGGAAAAGCCCU
+CCGGCCCACGGACCCAUCUAGAGACGAAUACAUAGCAGCUGCUGUGGCUGAUUGGCGUGGGACAGCGUGGGGAGUUUUG
+UCUGAGGAGAGGGAUCCACUUUUCUGCAGCUCCAAGCCCAGGGGCCUUUGAUGAGCCAUAGACCUCAUUUUUAACCCAC
+CUUUCUGCUUAGACAUUGAGCAAGUUACUUCUCAUAUAGCUUCCCUAUAUGUUAAAAAUGGAGAAAAUAAUGCUUAGUA
+GGCAAUUCUGAUAAAAGCAGGUGCUUGCAAAAAUCUCUCUGUUGUCUGAAUAUAAACUGUACCACAAGCGAGUGCGGAU
+GAACGAGGACUGCAUUUAAAGAUAAGUUUUUACACUUUCAUUUCUCUGUGGCUCGACACUUCUGAUGCCUCCCUUUUUG
+UUCCUGGGACACAUGCUUGGUGUUGUCUUCACACCUUUGUGACAGGAUUAGCACUAGUGGGCAGUGGAUGAUAGCUCCU
+CCUCCCUUUUGCCACAUGUUCAUCCCUGCCCUCGCCACCAUCUCACUGUGUGGAAUUCCUGUGUCCACUGGUCACCGGG
+GCACAGAAGUGCUGUCUCAGCCUGAAUCGGGCCACUGAUGGGACUUGCAGCCUGGGAGCUCCACCGUGAUCUCUGGCCC
+ACUUUGCGGGAGUCUAGGCUUUCUGGAUGCUCCAGGCCUCACGUCCCAGGGCAGUUUUCUUCCCUGAAGAAAGUUGGAU
+GGCAUGAUCUGUCUUCCCAUCUUGAAACCGUAUGGCAAAUUGUUUUUCAGAUGAAUUCCCUCUGCUGACAACCAAACGU
+GUGUUCUGGAAGGGUGUUUUGGAGGAGUUGCUGUGGUUUAUCAAGGUAAAGAAGUCGCUGCUAUUAGAAGUCAGUAGUC
+UGUUCUCAACACAGCAGCCAGUGAGAUCCUUUCAAAACUCAAAGCAGCCAGGUGUGGUGGCUCACGCCUGUAAUCCCAC
+CGCUUUGGGAGGCUGAGUCAGAUCACCUGAGGUUAGGAAUUUGGGACCAGCCUGGCCAACAUGGCGACACCCCAGUCUC
+UACUAAUAACACAAAAAAUUAGCCAGGUGUGCUGGUGCAUGUCUGUAAUCCCAGCUACUCAGGAGGCUGAGGCAUGAGA
+AUUGCUCACGAGGCGGAGGUUGUAGUGAGCUGAGAUCGUGGCACUGUACUCCAGCCUGGCGACAGAGGGAGAACCCAUG
+UCAAAAACAAAAAAAGACACCACCAAAGGUCAAAGCAUAUCAUUCCUCACCCUCAAGCCCUUAGUGGCUCCAUUUCACU
+CAGUAAGAGCCACGGUCCUUAUGGUGUCCGUUUUUCAGCUCUGACCUUAGCUGCUGCUCUCUGCACCACCCUGCUGUUC
+UUGUGAGUUUUUGAGCACACCGGGACAUCCCCACUCCCUGGAACCUUCUUCCCCCACACUUGGCUUCUUCCUUUGAGUC
+UCUACUCCACUCGGGCAAGCCUUCCUAGACCUCCUGAUUUAAAACUGUGACUCUCCCCCAACCUCCUUGGUGUUUCUCC
+GUAGACGAACAUCACCAUCUGAUGUAUGUCAGCCUUUCCCUUCCCCUGUUAGAAGGGGGACAGCAGGUAGUAAAAGUGA
+AAUGUGCUGUAAGCUUUAUGAGGGCAGAGGAUUUGUUUCUCGUGUUCACUGUUGUAUCGCCAGGGCCUCAAACACAGCC
+UGCCACAUAGUAGGAGUCAACAUAUAUUGAUCACUAAAUGUAGAUACCACCUGUGUUCCCAUGUUCAUAUAAAUUCUAG
+AAGAGUCUCUUCAGUAACAAGGUGAACCCCUUCCAGAGGGCUGAGUAGGUACCUCAGGCCGGGGCCAGAGUGCUGUGAA
+GACAGCAGCAGCCCAGACCAAGCUUCUCUGUGUUCCGUGUCCUGGUCUAGAACCAGCGAUGUUCUUUCUGACCAGUGCU
+UUUUGGAAGGUGGCUGAGGUCUGGGCUCAGGUCUGGGCCAUACUAGAAGCUGGGAUCCCUUCUAUAGAGCACUUGGUAU
+GGCUUGUAUGGUCUUGGGGCAAGCCAGACCCAAGCCCUCUUAUCCCAUUUUAGAAAGGGCUUCAAUUUGGAUCCAGCCC
+CAGGUCUGCCUUAGCUCUGUAUUCUUGGGGUAUUUUGUUCUGUAUUGGCCUAUCUUGACUAACAAUGAGCCUUGGAUUU
+GAAACAUAUCAUCAGAAACCUCAGAAGACAACAUUCUUAAACUGGCUAGAGCCUGGUCUGAAUGGAUGAAAAGGAGAGA
+CUUUUGAAGCAAUAUGUAAAAGAUUGAGAAAUGAUUUGUUGGAAAUUUCUCAAUUGGAGAAAUUUCUUUGAUUUGUUGG
+AAAUUUCUUUGAUUCUUUCUCAAUCAAAGAAAAUCGGGACAAACUCAACAAUAGAAAGGGAGGAAGCAAGAUACUCAGA
+AAUAAAAUGCAUUCCCCUGUUUCAACUUAAUGCUUCAAUUCAGGAUUCUAAGGAAUCCUUGCCAGGAAUGUCAGACUCA
+CCUUGAUAGUUGGAGUUACUCCAUUGGUGACUCGAUCAAAUACAGGAGUUGAGGCACCUGCACUGUAAAAUACUGAUUA
+GUCUGAUCAUUAGGAAUAUCCUGUAUGCCAGGUAGAAGAUACAUUGAACAGAUUGCAUGUAGGCAUUAAAUUCAUUUUG
+GGGUAUUACAUAUAGACAACACAUUUCAUUAAGAAACAUAAAACUGUCAGAUCGGUGGAAUACUUAAAAGCACUUGGAG
+GUGUUUAGCCUAAAAAGCUUAGUUGAGGGGAAUGGAAGAAAAGAUCUGGGAGGGUGGUUCCAAAGAAGGGAUCAGACUA
+UCCUAAAGCCCUCAGGAAUCUGGGCUGGGACCACCUACUUAAAGAUAGGAUGGGCAGCUGGGUGUGGUGGCUCACGCCU
+GUAAUCCCAGCACUUCGGGAGGCCGAAGCGGGCGGAUCACCUGAGGUCAGGAGUUCGAGGCCAGCCUGACCAACAUGGA
+GAAACGCUGUCUCUACUAAAAAUACAAAAUUAGCUGGGUGUAGUGGCGCAUGCCUGUAAUCCCAGCUACUCGGGAGGCU
+GAGGCAGGGGAAUCGCUUGAACCUGGGAGGUGGAGGGUGCCGUGAGCCACGAUCGCGCCAUUGCACUCCAGCCUGGGCA
+ACAAGAGCGAAACUCUCAAAAAACAAAAAAAAGGAUGGGUUCCAUAUGGGUGGUGUCAAGUGCCCACCUCCUAGCAAGU
+CAGCAGGGGCCAGAGGCCCUUGUAAGUGGUGUCUCGGGGGGAUCAACUGAGAUGGCUUAAGAUUUACCUGGAUGCCUGC
+UCUGCUCUCCCCAUCUCUUCCAGGGAUCCACAAAUGCUAAAGAGCUGUCUUCCAAGGGAGUGAAAAUCUGGGAUGCCAA
+UGGAUCCCGAGACUUUUUGGACAGCCUGGGAUUCUCCACCAGAGAAGAAGGGGACUUGGGCCCAGUUUAUGGCUUCCAG
+UGGAGGCAUUUUGGGGCAGAAUACAGAGAUAUGGAAUCAGGUGAGGAGAUAGAACAAUGCCUUCCAUUUCCGGGUGCCC
+UUCCUAGCACGUGUUUGCUCCGUUGUUUUAGAUAAGGUCUGGGGGAUGAGUCAAUGUCACAGGAGCUGAUGUAUAGCUU
+UGACCUUGUGAGGGGUGGUGCCAGGUUGAAGCCACAAUUAACGCCUACUGAAGGCCGUUUCACAUCUUUUUUUUUUUUU
+UUUUUUUAAUUAUUAUACUUUAAGUUUUAGGGUACAUGUGCACAAUGUGCAGGUUAGUUACAUAUGUAUACAUGUGCCA
+UGCUGGUGCGCUGCACCACUAACUCACCAUCUAGCAUCAGGUAUAUCUCCCAAUGCUAUCCCUCCCCCCUCCUCCCACC
+CCACAACAUCCCCAGAGUGUGAUGUUCCCCUUCCUGUGUCCAUAUGUUCUCGUUGUUCGAUUCCCACUAUGAGUGAGAA
+UAUGCGGUGUUUGGUUUUUUGUUCUUGCGAUAGUUUACUGAGAAUGAUGAUUUCCAUUUCACCACGUCCCUACAGAGGA
+CAUGAACUCAUCAUUUUUUAUGGCUGCAUAGUAUUCCAUGGUGUAUAUGUGCCACAUUUUCUUAAUCCAGUCUAUCAUG
+UUGGACAUUUGGGUUGGUUCCAAGUCUUUGCCUAUUGUGAAUAGUGCCACAAUAAACAUACGUGUGCAUGUGUCUUUAU
+AGCAGCAUGAUUUAAUAGUCCUUUGGGUAUAUACCCAGUAAUGGGAUGGCUGGGUCAAAUGGUAUUUCUAGUUCUAGAU
+CCCCGAGGAAUCGCCACACUGACUUCCACAAUGGUUGAACUAGUUUACAGUCCCACCAACAGUGUCAAAGUGUCCUAUU
+UCUCCACAUCCUCUCCAGCACCUGUUGUUUCCUGACUUUUUAAUGAUUGCCAUUCUAACUGGUGUGAGAUGGUAUCUCA
+UUGUGGUUUUGAUUUGCGUUUCUCUGAUGGCCAGUGAUGGUGAGCAUUUUUUCAUGUGUUUUUUGGCUGCAUAAAUGUC
+UUCUUUUGAGAAGUGUCUGUUCAUGUCCUUCGCCCACUUUUUGAUGGGGUUGUUUUUUUCUUAUAAAUUUGUUUGAGUU
+CAUUGUAGAUUCUGGAUAUUAGCCCUUUGUCAGAUGAGUAGGUUGCAAAAAUGUUCUCCCAUUUUGUGGGUUGCCUGUU
+CACUCUGAUGGUAGUUUCUUUUGCUGUGCAGAAGCUCUUUAGUUUAAUUAGAUCCCAUUUGUCAAUUUUGGCUUUUGUU
+GCCAUUGCUUUUGGCAUAGGCAUGAAGUCCUUGCCCAUGCCUAUGUCCUGAAUGGUAAUGCCUAGGUUUUCUUCUAGGG
+UUUUUAUGGUUUUAGGUCUAACGUUUAAGUCUUUAAUCCAUCUUGAAUUGAUUUUUGUAUAAGGUGUAAGGAAGGGAUC
+CAGUUUCAGCUUUUUACAUAUGGCUAGCCAGUUUUCCCAGCACCAUUUAUUACAUAGGGAAUCCUUUCCCCAUUGCUUG
+UUUUUCUCAGGUUUGUCAAAGAUCAGAUAGUUGUAGAUAUGCGGCGUUAUUUCUGAGGGCUCUGUUCUGUUCCAUUGAU
+CUAUGUGUCUGUUUUGGUACCAGUACCAUACUGUUUUGGUUACUGUAGCCUUGUAGUAUAGUUUGAAGUCAGGUAGCGU
+GAUGCCUCCAGCUUUGUUCUUUUGGCUUAGGAUUGACUUGGCGAUGCGGGCUCUUUUUUGGUUCCAUAUGAACUUUAAA
+GUAGUUUUUUCCAAUUCUGUGAAGAAAGUCAUUGGUAGCUUGAUGGGGAUGGCAUUGAAUCUAUAAAUUACCUUGGGCA
+GUAUGGCCAUUUUCACGAUAUUGAUUCUUCCUACCCAUGAGCAUGGAAUGGUCUUCCAUUUCUUUGUAUCCUCUUUUAU
+UUCAUUGAGCAGUGGUUUGUAGUUCUCCUUGAAGAGGUCCUUCACAUCCCUUUUAAGGUGGAUUCCUAGGUAUUUUAUU
+CUCUUUGAAGCAAUUGUGAGUGGAAGUUCACUCAUGAUUUGGCUCUCUGUUUGUCUGUUAUUGGUGUAUAAGAAUGCUU
+GUGAUUUUUGCAGAUUGAUUUUAUAUCCUGAGACUUUGCUGAAGCUGCUUAUCAGCUUAAGGAGAUUUUGGGCUGAGAC
+AAUGGGGUUUUCUAGAUAUACAAUCAUGUCGUCUGCAAACAGGGACAAUUUGACUUCCUCUUUUCCUAAUUGAAUACCC
+UUUAUUUCCUUCUCCUGCCUAAUUGCCCUGGCCAGAACUUCCAACACUAUGUUGAAUAGGAGUGGUGAGAGAGGGCAUC
+CCUGUCUUGUGCCAGUUUUCAAAGGGAAUGCUUCCAGUUUUUGCCCAUUCACUAUGAUAUUGGCUGUGGCUUUGUCAUA
+GAUAGCUCUUAUUAUUUUGAAAUAUGUUCCAUCAAUACCUAAUUUAUUGAGAGUUUUUAGCAUGAUGUGUUGUUGAAUU
+UUGUCAAAGGCUUUUUCUGCAUCUAUUGAGAUAAUCAUGUGGUUUUUGUCUUUGGAUCUGUUUAUAUGCUGGAUUACAU
+UUAUUGAUUUGCGUAUAUUGAACCAGCCUUGCAUCCUAGGGAUGAAGCCCACAUGAUCAUGGUGGAUAAGCUUUUUGAU
+GUGCUGCUGGAUUCGGUUUGCCAGUAUUUUAUUGAGGAUUUUUGCAUCAAUGUUCAUCAAGGAUAUUGGUCUAAAAUUC
+UCUUUUUUGGUGUGUCUCUGCCCAGCUUUGGUAUCAGGAUGAUGUUGGCUUCAUAAAAUGAGUUAGGGAGGAUUCCCUC
+UUUUUCUAUUGAUUGGAAUAGUUUCAGAAGGAAUGGUACCAGUUCCUCUUUGUACCUCUGGAGAAUUCGGCUGUGAAUC
+CAUCUGGUCCUGGACUCUCUUUGGUUGGUAAGCUAUUGAUUAUUGCCACAAUUUCAGCUCCUGUUAUUGGUCUAUUCAG
+AGAUUCAACUUCUUCCUGGUUUAGUCUUGGGAGAGUGUAUGUGUCAAGGAAUUUAUCCAUUUCUUCUAGAUUUUCUAGU
+UUAUUUGCGUAGAGGUGUUUGUAGUAAUCUCUGAUGGUAGUUUGUAUUUCUGUGGGAUCGGUGGUGAUAUCCCCUUUAU
+CAUUUUUUAUUGCGUCUAUUUGAUUCUUCUCUUUUUCUUUAUUAGUCUUGCUAGCGGUCUAUAAAUUUUGUUGAUCCUU
+UCAAAAAACCAGCUCCUGGAUUCAUUAAUUUUUUGAAGGGUUUUUUGUGUCUCUAUUUCCUUCAGUUCUGCUCUGAUUU
+UAGUUAUUUCUUGCCUUCUGCUAGCUUUUGAAUAUGUUUGCUCUUGCUUUUCUAGUUCUUUUAAUUGUGAUGUUAGGGU
+GUCAAUUUUGGAUCUUUCCUGCUUUCUCUUGUGGGCAUUUAGUGCUAUAAAUUUCCCUCUACACACUGCUUUGAAUGUG
+UCCCAGAGGUUCUGGUAUGUUGUGUCUUUGUUCUUGUUGGUUUCAAAGAACAUCUUUAUUUCUGCCUUCAUUUCGUUAU
+GUACCCAGUAGUCAUUCAGGAGCAGGUUGUUCAGUUUCCAUGUAGUUGAGCAGUUUUGAGUGAGAUUCUUAAUCCUGAG
+UUCUAGUUUGAUUGCACUGUGGUCUGAGAGAUAGUUUGUUAUAAUUUCUGUUCUUUUACAUUUGCUGAGGAGAGCUUUA
+CUUCCAACUAUGUGGUCGGUUUUGGAAUAGGUGUGGUGUGGUGCUGAAAAAAAUGUAUAUUCUGUUGAUUUGGGAUGGA
+GUUCUGUAGAUGUCUAUUAGGUCUGCUUGGUGCAGAGCUGAGUUCAAUUCCUGGGUAUCCUUGUUGACUUUCUGUCUCG
+UUGAUCUGUGUACUGUUGACAGUGGGUGUUAAAGUCUCCCAUUAUUAAUGUGUGGAGUCUAAGUCUCUUUGUAGGUCAC
+UCAGAUGAUUGGCACUUACUGGGCGCUUGGCACUUUCCAUACUGUGUCAUCGGCAGAUAGCUGCAUGGUUGGUGUUCGU
+GCUGGGGAAUGGGAAGUUCAUCGGUGGGACAAGGACAAAAUGCCCCCAUUGCUUUGUUGUGGCUUUAAUCUCCCUUUCG
+AGGCUGAGCCACAGCGUGCUGUAGGUGGCGCUGCUGUGAAGCGCAGUACCAGGGUCACACUCCACUCCCAGCUCUGCAG
+AGGUGGAGAAAGAAUGAAACAUCUCACUCCUGGACUUCCACUUUCCUGUCACUGUUGGUGUCACCUCUUACUGGAUGUC
+ACAGAGCCCAGCCCCUCCCACCUGUGCCUAGGAAAAGCAGAUGCCACCUUGGAAUGUGGGGUUUGUGUGUGCAAUUUAC
+UAGCUGGGCAGAGACCAGCAACCUGGAGAGCAGGUGUCUCGUCUAAGGGGACAGUCACAUUUCACCUCCAGCCACCUGG
+AGGAAUUUGGGCCUGGUGAUGUCAGAAUUCUUCAAUAAAAGCCUAAAAUCUAUAUUUUAUGUGCGGUCAUGAGAUCUGU
+UAAAUGUUAGCAACUUCAGGAAGUUUAAAAAUGCUGUGUGGACCUAGAAUAGGCAAGUUCUUAAAGGCAGAAAGUGGAA
+UGCUAGUUUCCAGGGACUGGGGAACAGGGAGGAAUGGGGAGUUCAUGUUUAAUGGGCACAGAGGUUUUGUUAGGGAUGA
+CGAAAAAGUUCGGGAGAUGGUGAUGGUGAUGGAGAUGGUGAUGGUGAUGGAGAUGGUGAUGGUGAUGGUGAUGGUGAUG
+GGUGAUGGUGAUGGUGAUGGUGAUGGUGAUGGAGAUGGUGAUGGUGAUGGUGAUGGAGAUGGUGAUGGUGAUGGUGAUG
+GUGAUGGAGAUGGUGAUGGUGAUGGAGAUGGUGAUGGUGAUGGUGAUGGAGAUGGUGAUGGUGAUGGUGAUGGUGAUGG
+UGAUGGUGAUGGUGAUGGAGAUGGAGAUGGUGAUGGUGAUGGUUGCCUAACAUCAGGAACGUGCUUAAUGCUUCUGAAU
+UGCACACAAAAAUGGCAAGUUUAAUAUUAUGUGUACUUUAUCACAAUGAAAAAAGCUGCUGCGUGGGCCAAGUUACUUG
+UGCAGGUAAUGUUCUGCAGGUGGUUGCCUGCACCUCAGUUGUAGGGUGUCCGUAGGAUGUGAGGCCAGUCCCCGGGCUU
+AAUGAUGCUUUAAAUCCUGCCUAGUAUUCAAUUAUUUCUUGUCGCUUAAAAGGCCUAAUAAAAUUAUGGUCUUAGUUUA
+CAGUGGUAUGAAUGCUUAGCUGUUGGAUUUUAGUAGGAAAGUUCGUCCCUUUUUGUUUUUAAUUUUGUUUUACAGAUUC
+ACAGGAAUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUAAUGCACAGAAAGUUUCCCUGGACUCUCUACCCAGUUUCCCC
+AGUGAUAAUAUCUUGGGUAACAUCCUGUAUACAUUCACAUUGGUGCAUUCCUCAGAGUUGUCAGAUUUUGCUAGUUUUA
+CGUGCACUUGUGUAUGUGUGUAUUUGCAAUUUUAGCACGUGUAGACUCUUGUAACCACUACAAUCAAGUUACAGAACUA
+CACUACCAAGGUUCAUCUUUUUAAAAUCUUUGAUGUUACCUUUUUUGGAACAGUGACCAUGAGAGGACUUUCCUCCCAA
+AAUUUUGAAAACUACUGAACCAGAAUAUAGUCUGACACUAAUAGGUAGAAAUUUAACCAAAGGAGAUUAUGAAGCUCUG
+CACUUGAGUUAACAAAAUCACUUCUCAGCUUCCAGUUCCAUCUCAGAAGGAAGGAAAAGGGAUUAAAAAUCCAGAGACC
+AGAAAAUGGGAGCAAAGUACAAGGUGGUGUAAUCAUUACAGAGGUUUCCUGAUGUUUCCAAGUCAGUCGUGUGUUGAGC
+UGCUAAACUCUAAAGUAAUUUUAGGUGGAAUGUUGGAAACAUGCUGCUGAGGUGAUAGAAAGGAAUCCAUGGUCCUCUG
+UUAGUUGGAAAGUAUAUGGAAUACUAUAUUCUACAUAAGAUACAAUACUCUCUGUGAGACAAGGAUAAAGUAGAUUUUG
+UCAGUGAAAUUGUGACAAGAAUCGCUGAUGGGUUUAGAGCCUAAGUUUGCGAGGAGCACUGGAAGAAAUUAAGAUUGUU
+GAGAUUGGAAAGGGUUAGCUAUGGGGGAACAGGAGGAGGUGACUCCAUGACAGACCAAAUAUUCAAAGGACUGUGUAGA
+AGAGGAAAAAGACUUUGUUAGGGCUCCAGAGGACAGAGCCAGGAGUCAGACAGGGCCUUGAACUCAACCCACCGAGAUC
+UGCAAACUUUGCAGGAUGCACCAGAUGUCUUGUAGCCAUGGGUCAAGGGGGGACCCUGGGUAAGAGACUGUAAUAGAUG
+ACCUCUAAGGCCAUCUCAUGACAUGUGUGAUUAAUGUAUGUACCUGUCCUCUCUUUUUGACAAUUCUACAGAUUAUUCA
+GGACAGGGAGUUGACCAACUGCAAAGAGUGAUUGACACCAUCAAAACCAACCCUGACGACAGAAGAAUCAUCAUGUGCG
+CUUGGAAUCCAAGAGGUUGAAAGAACCCCGUCGUCUUCAUUUAUACUAACCAUACUCUUAGAGGGAAGCAAUCUGGUUU
+UGUGCAGAGGCACUGAGGGAGGCAGGACCCUGGGCAACUUCCCCCAGCCACAUGGUUGUGUGACGUUGGGCAAGUCACA
+UUUUGCUGCACUUUCACCUUCAGAUCAUGAGGUUGGGCCCAGAGGAUUUUUUUUUUUUUUUUUUUUUUUGAGACAGAGU
+UUUGCUCUGUUGCCCAGGCUGGAAUGCAACGGCGUGAUCUUGGCUCACUGUAACCUCUGCCUCCUGGGUUCGAGUGAUU
+CUCCUGCCUCAGCCUCCAAGUAGCUGGGAUUACAGCAUGUGCCACCAUGCCUGGCUAAUUUUGUAUUUUUAGUAGAGAC
+GGGUUCACAUGUUGGUCAGGCUGGUCUUGACUCCUGACCCUCAGAUGAUCUGCCUUGCCUCAGCCUCCCAACCGAGUGA
+UCUUAAGUUGUGUAUUAUACUCAUUCUUACACAAAAAGGGCUUUAAAUGCCUAGAAACUACAUGAAGAUGUUAACAUUU
+UAAAUGGAAGCAGAUGAAGUUCCAGCUCGCUGCCACCUCACUAACAUUUUUAACAAUUAUAUUGUAAAAUUCAACUCUA
+CCAGGGUGUAGAGCCAGGUGUGGUGGCUCACACCUGUAAUUCCAACAACUCCAGAGGCCAAGGCGAGAGGAUCAUUUGA
+ACCCACGGAAUUUGAGGCUGUAGUGAGUCAUGAUCACGCCAUUGCACUCCAUCCUGGGCAACAGAGUGAGACCCUGAAU
+AUUUAAAAACAACAACAACAACAAAACUCUAUCAGGAUAUCAUAAGUACUUAGAGUGAAAUACUUGCAUCUGUAAUAGA
+GACUUAUUUUUUUUUUUUUUGAGACACAGUCUCACCCUGUUGCCCAGGCUGGAGUGCAGUGGUUUGAUCUCCGCUCACG
+GCAACCUCCAUCUCCCAGGUUCAAGUGAGUUCCCAUUCCUCAGCCCCAGAGCUGGGACCACAGGCGCGCGAAUUUUUGU
+AUUUUUAGCAGAGACGGGGUUUCACUAUGUUGGCCAGGCUAGUCUCAAACUCAAGUUGGCCUCAAGUGAUCUGCCCACC
+CUGGCGUCCCAGUGUUGGGAUUUCAGGCAUGAGCCACUGUGCCUGGCCAUGUAAUAGAGACUUUUAAUAUAGGAGGGUG
+UACCAGAAGCACCAGUUUCCUGUGGCAAACAGAAUUAUUCCUGCUGUAUUUGUAAUUUGGUGCCACGAGGUAGCCCAGA
+UCCCUUCAGCUCUGAUGGAAGAGCAUUGCUUCAGCCGUAAAUGGACACCUGCAGAAACCUUGCACCGAUGGAUAGUCUC
+CCUCAGCUCCGUGCCAUCGCUGCAGGGGCUGUUAUGGACAUCACUGCAGCCCAGUGGCUCUCUCUCCUGGUCUCCACCA
+UAUGAGUUGGCUUCUGUUUCUCUCCUGUUUUACUUUGCCUUUAGCUGUGGUCUUUCAAACCACCAUCCCUCCUUAUCUU
+CCUCUGCUGGUUCCUCAGAUCUUCCUCUGAUGGCGCUGCCUCCAUGCCAUGCCCUCUGCCAGUUCUAUGUGGUGAACAG
+UGAGCUGUCCUGCCAGCUGUACCAGAGAUCGGGAGACAUGGGCCUCGGUGUGCCUUUCAACAUCGCCAGCUACGCCCUG
+CUCACGUACAUGAUUGCGCACAUCACGGGCCUGAAGGUGGGCUGUCUCGGGAAGGGUGACUUGCCAGCCUACCACAUGA
+GCUCUUCAGUUCUUUAAUAUGGGAAAACAAAUUGCAGAGUUUAGUCUCUGAUUAGCUUUUAAAUUUGAUAUGUGUAAGU
+AAGACAUGAACCAGCUUUUACUUUGAAACCUUCCUUUUCUGGAAGGUUUUCUGGCCCUGUGGUAUAUGCACUAACAGAU
+CUAUACAGGUUGUUUGUGAUACAGCUUCUAUGGAUCUUCUCAAAAGCUAUGCUGAGGUUGGGUAUGGUGGCUCAUGCCU
+GUAAUCCCAGCACUUUGGAAGACUGAGACAGGAGCAAUUGCUUGAGGUCUGGAGUUCAAUACCAGCCUGGGCAACAUAA
+CAAGAUGCUGUUGCUACAAAAAAAUGGAAAAGCUACACUAAAUUAUUUUUUUAAAAAAAGCCUUGCGGUGUCUGCAUAU
+UCUAAUGUUUUUAAAUGAUGUUUUAAAGAAUUGAAACUAACAUACUGUUCUGCUUUCUCCCGGUUUAUAGCCAGGUGAC
+UUUAUACACACUUUGGGAGAUGCACAUAUUUACCUGAAUCACAUCGAGCCACUGAAAAUUCAGGUAAGAAUUAGAUGUU
+AUACUUUUGGGUUUGGUACCUUCUCUUGAUAAAAGGUUGACUGUGGAACAGGUAUCUGCUCAAUGCUGUGUCCAAGAUA
+AAGAUGACUGCUCCAAAUGUGGGGCUUCAGUUUAGGGAGAAGUGGUGGGCAGGUGGGCAGGACAAGGCAGGCAUCUGCC
+UCAGCAACCAUGGCACUUAACUUGUCAGGUGCUGUGAGGUACUAAGCACCAGUACCAGAGAGGGAAGAGCCACAUUCAA
+GCCAGGGGAUUGUCCAAAAGGAGGCAUUUUAACUCAUUUUAACUUGAAGGAGAAUUGAAGUGCAAAUGUUUUUCCUUUU
+CUUUUUUUUUGAGAUGGAGUCUUUCUCUGUCGGCCAGGCUGGAGUGUGCCGUGGUGCGAUCUCAGCUCACUGCAACCUC
+CACCUCCCGGGUUCAAGCAAUUCUUCUGCCUCAGCCUCCCAGGUAGCUGGGAUUACAGGCACAUGCCACCACACCCAGC
+UAAUUUUUUGUAUUAUUAGUAGAGAUGGGGUUUCGUCAUGUUGGCCAGGCUGAUCUCAAACUCCUGACUUCAAGUGUAC
+CACCUGCCUCAGCCUCCGAAAGUUCUGGAAUUACAGGCAUAAGCCACCACCCUGGCCAUAAAUAUUUUUUGUUAAUUUU
+ACAUUAAGUACAAUAUUUAGGUCCAAACUUCAAAAGUCUGUUGAAAUCCCUGAAGUUAUAGCAGCCAACAAUUGAUAUG
+AAAUGGCAAUAAAAAUGUAAGUUCAUCUGCUUCAUGAGCCUUAAGGAAAAAAACUCAGAACCAGACACUUUUUAGCCCC
+UUCCAGGUUAGAUCCAGGUUUUAAAAGUUAUUCCUUUGAGGGAGUUUGGCUGCUUUUGAGUGGAGGUGACUUCAGGCUU
+AUUCUCUCUGGCUCUCUGCUCUGGUCAUUUUUAGACAUAGUAAUAGGUUGUGACCUGUCUUCACAUCCUAAUUGCCACU
+GUCUGUUCAUCCCAGGAAUCCUGGCUUUCAUCCCUUUCUGUUCACUGUCCAUGCAUGUCAUCUUUCCUUCUUUCUGCCA
+GGGACCAGAUGGGUUAGGGAUUGUGAAUUCAAGUAAACGUAGAGCUACUAUGAGUUACAGAUUGACUGUGUUCCUGUCU
+UUAAUAAAUUUGCCAAGAGUGGUUAUAAGAACUUACACCUGAUGAGGCACCAGGCUCCUGAUGCUGUGUAAUGUCACAA
+AAUACCCCUCACUCUCGAUCUGUGCAAGAGAACAGCUGGUUGCGCUCCAAUCAUGUUACAUAACCUACGCGAAGGUAUC
+GACAGGAUCAUACUCCUGUAAAAUAGAACUUUGUUGAUCACAUCCUGUGUACUUGUUUCACGGACAUGAGGAGCAAUUA
+CAACAGGUCGUACAAUUAUGGCAAAAUAAUGGCCUUAUUUUGUUUUUAGCUUCAGCGAGAACCCAGACCUUUCCCAAAG
+CUCAGGAUUCUUCGAAAAGUUGAGAAAAUUGAUGACUUCAAAGCUGAAGACUUUCAGAUUGAAGGGUACAAUCCGCAUC
+CAACUAUUAAAAUGGAAAUGGCUGUUUAGGGUGCUUUCAAAGGAGCUCGAAGGAUAUUGUCAGUCUUUAGGGGUUGGGC
+UGGAUGCCGAGGUAAAAGUUCUUUUUGCUCUAAAAGAAAAAGGAACUAGGUCAAAAAUCUGUCCGUGACCUAUCAGUUA
+UUAAUUUUUAAGGAUGUUGCCACUGGCAAAUGUAACUGUGCCAGUUCUUUCCAUAAUAAAAGGCUUUGAGUUAACUCAC
+UGAGGGUAUCUGACAAUGCUGAGGUUAUGAACAAAGUGAGGAGAAUGAAAUGUAUGUGCUCUUAGCAAAAACAUGUAUG
+UGCAUUUCAAUCCCACGUACUUAUAAAGAAGGUUGGUGAAUUUCACAAGCUAUUUUUGGAAUAUUUUUAGAAUAUUUUA
+AGAAUUUCACAAGCUAUUCCCUCAAAUCUGAGGGAGCUGAGUAACACCAUCGAUCAUGAUGUAGAGUGUGGUUAUGAAC
+UUUAAAGUUAUAGUUGUUUUAUAUGUUGCUAUAAUAAAGAAGUGUUCUGCAUUCGUCCACGCUUUGUUCAUUCUGUACU
+GCCACUUAUCUGCUCAGUUCCUUCCUAAAAUAGAUUAAAGAACUCUCCUUAAGUAAACAUGUGCUGUAUUCUGGUUUGG
+AUGCUACUUAAAAGAGUAUAUUUUAGAAAUAAUAGUGAAUAUAUUUUGCCCUAUUUUUCUCAUUUUAACUGCAUCUUAU
+CCUCAAAAUAUAAUGACCAUUUAGGAUAGAGUUUUUUUUUUUUUUUUUUAAACUUUUAUAACCUUAAAGGGUUAUUUUA
+AAAUAAUCUAUGGACUACCAUUUUGCCCUCAUUAGCUUCAGCAUGGUGUGACUUCUCUAAUAAUAUGCUUAGAUUAAGC
+AAGGAAAAGAUGCAAAACCACUUCGGGGUUAAUCAGUGAAAUAUUUUUCCCUUCGUUGCAUACCAGAUACCCCCGGUGU
+UGCACGACUAUUUUUAUUCUGCUAAUUUAUGACAAGUGUUAAACAGAACAAGGAAUUAUUCCAACAAGUUAUGCAACAU
+GUUGCUUAUUUUCAAAUUACAGUUUAAUGUCUAGGUGCCAGCCCUUGAUAUAGCUAUUUUUGUAAGAACAUCCUCCUGG
+ACUUUGGGUUAGUUAAAUCUAAACUUAUUUAAGGAUUAAGUAGGAUAACGUGCAUUGAUUUGCUAAAAGAAUCAAGUAA
+UAAUUACUUAGCUGAUUCCUGAGGGUGGUAUGACUUCUAGCUGAACUCAUCUUGAUCGGUAGGAUUUUUUAAAUCCAUU
+UUUGUAAAACUAUUUCCAAGAAAUUUUAAGCCCUUUCACUUCAGAAAGAAAAAAGUUGUUGGGGCUGAGCACUUAAUUU
+UCUUGAGCAGGAAGGAGUUUCUUCCAAACUUCACCAUCUGGAGACUGGUGUUUCUUUACAGAUUCCUCCUUCAUUUCUG
+UUGAGUAGCCGGGAUCCUAUCAAAGACCAAAAAAAUGAGUCCUGUUAACAACCACCUGGAACAAAAACAGAUUUUAUGC
+AUUUAUGCUGCUCCAAGAAAUGCUUUUACGUCUAAGCCAGAGGCAAUUAAUUAAUUUUUUUUUUUUUGACAUGGAGUCA
+CUGUCCGUUGCCCAGGCUGCAGUGCAGUGGCGCAAUCUUGGCUCACUGCAACCUCCACCUCCCAGGUUCAAGUGAUUCU
+CCUGCCUCAGCCUCCCAUGUAGCUGGGAUCACAGGCACCUGCCACCAUGCCCGGCUAAUUUUUUGUAUUUUUUGUAGAG
+ACAGGGUUUCACCAUGUUGGCCAGGCUGGUCUCAAACACCUGACCUCAAAUGAUCCACCUGCCUCAGCCUCCCAAAGUG
+UUGGGAUUACAGGCGUAAGCCACCAUGCCCAGCCCUGAAUUAAUAUUUUUAAAAUAAGUUUGGAGACUGUUGGAAAUAA
+UAGGGCAGAGGAACAUAUUUUACUGGCUACUUGCCAGAGUUAGUUAACUCAUCAAACUCUUUGAUAAUAGUUUGACCUC
+UGUUGGUGAAAAUGAGCCAUGAUCUCUUGAACAUGAUCAGAAUAAAUGCCCCAGCCACACAAUUGUAGUCCAAACUUUU
+UAGGUCACUAACUUGCUAGAUGGUGCCAGGUUUUUUUGCACAAGGAGUGCAAAUGUUAAGAUCUCCACUAGUGAGGAAA
+GGCUAGUAUUACAGAAGCCUUGUCAGAGGCAAUUGAACCUCCAAGCCCUGGCCCUCAGGCCUGAGGAUUUUGAUACAGA
+CAAACUGAAGAACCGUUUGUUAGUGGAUAUUGCAAACAAACAGGAGUCAAAGCUUGGUGCUCCACAGUCUAGUUCACGA
+GACAGGCGUGGCAGUGGCUGGCAGCAUCUCUUCUCACAGGGGCCCUCAGGCACAGCUUACCUUGGGAGGCAUGUAGGAA
+GCCCGCUGGAUCAUCACGGGAUACUUGAAAUGCUCAUGCAGGUGGUCAACAUACUCACACACCCUAGGAGGAGGGAAUC
+AGAUCGGGGCAAUGAUGCCUGAAGUCAGAUUAUUCACGUGGUGCUAACUUAAAGCAGAAGGAGCGAGUACCACUCAAUU
+GACAGUGUUGGCCAAGGCUUAGCUGUGUUACCAUGCGUUUCUAGGCAAGUCCCUAAACCUCUGUGCCUCAGGUCCUUUU
+CUUCUAAAAUAUAGCAAUGUGAGGUGGGGACUUUGAUGACAUGAACACACGAAGUCCCUCUGAGAGGUUUUGUGGUGCC
+CUUUAAAAGGGAUCAAUUCAGACUCUGUAAAUAUCCAGAAUUAUUUGGGUUCCUCUGGUCAAAAGUCAGAUGAAUAGAU
+UAAAAUCACCACAUUUUGUGAUCUAUUUUUCAAGAAGCGUUUGUAUUUUUUCAUAUGGCUGCAGCAGCUGCCAGGGGCU
+UGGGGUUUUUUUGGCAGGUAGGGUUGGGAGG
+ (-5376.62)
 
 Data files
 

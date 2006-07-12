@@ -15,7 +15,7 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "Distance matrix"
+  information: "Phylip neighbor program input file"
   knowntype: "neighbor input"
 ]
 
@@ -94,6 +94,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "eneighbor.outfile"
   knowntype: "neighbor output"
+  information: "Phylip neighbor program output file"
 ]
 
 boolean: printdata  [
@@ -123,7 +124,7 @@ boolean: drawtree  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "eneighbor.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

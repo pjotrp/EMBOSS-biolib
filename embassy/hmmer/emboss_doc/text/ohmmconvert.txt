@@ -69,14 +69,16 @@ Convert between HMM formats
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmconvert] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -format             menu       Select format
-   -append             boolean    Append to file
-   -force              boolean    Force overwriting
+   -format             menu       [A] Select format (Values: A (ascii); B
+                                  (binary); G (gcg); X (xsw))
+   -append             boolean    [N] Append to file
+   -force              boolean    [N] Force overwriting
 
    Associated qualifiers:
 
@@ -97,23 +99,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) HMM file Input file Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.ohmmconvert
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -format Select format
-   A (ascii)
-   B (binary)
-   G (gcg)
-   X (xsw)
-   A
-   -append Append to file Boolean value Yes/No No
-   -force Force overwriting Boolean value Yes/No No
 
 Input file format
 

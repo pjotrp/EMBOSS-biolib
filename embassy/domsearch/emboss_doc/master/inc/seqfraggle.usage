@@ -6,12 +6,12 @@
 
 % <b>seqfraggle </b>
 Removes fragment sequences from DHF files.
-Location of DHF files (domain hits files) or other sequence files (input). [./]: <b>../seqsearch-keep</b>
+Domain hits directories [./]: <b>../seqsearch-keep</b>
 Percentage of median length for definition of fragments. [50]: <b>50</b>
-Location of DHF files (domain hits files) (output). [./]: <b></b>
+Domain hits file output directory [./]: <b></b>
 
-Processing /homes/user/test/qa/seqsearch-keep/55074.dhf
 Processing /homes/user/test/qa/seqsearch-keep/54894.dhf
+Processing /homes/user/test/qa/seqsearch-keep/55074.dhf
 
 </pre></td></tr></table><p>
 <p>

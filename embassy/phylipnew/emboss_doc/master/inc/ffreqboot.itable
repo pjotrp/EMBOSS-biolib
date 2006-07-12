@@ -14,9 +14,9 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip seqboot_freq program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ffreqboot</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

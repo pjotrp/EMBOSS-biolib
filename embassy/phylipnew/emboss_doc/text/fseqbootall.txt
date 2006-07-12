@@ -178,7 +178,7 @@ Usage
 % fseqbootall -seed 3 
 Bootstrapped sequences algorithm
 Input (aligned) sequence set: seqboot.dat
-Output file [seqboot.fseqbootall]: 
+Phylip seqboot program output file [seqboot.fseqbootall]: 
 
 
  bootstrap: true
@@ -212,7 +212,8 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-infile]            seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.fseqbootall] Phylip seqboot program
+                                  output file
 
    Additional (Optional) qualifiers (* if not always prompted):
    -categories         properties File of input categories
@@ -220,24 +221,37 @@ Command line arguments
    -ancfile            properties File of ancestors
    -weights            properties Weights file
    -factorfile         properties Factors file
-   -datatype           menu       Choose the datatype
-   -test               menu       Choose test
-*  -regular            toggle     Altered sampling fraction
-*  -fracsample         float      Samples as percentage of sites
-*  -rewriteformat      menu       Output format
-*  -seqtype            menu       Output format
-*  -morphseqtype       menu       Output format
-*  -blocksize          integer    Block size for bootstraping
-*  -reps               integer    How many replicates
-*  -justweights        menu       Write out datasets or just weights
-*  -enzymes            boolean    Is the number of enzymes present in input
-                                  file
-*  -all                boolean    All alleles present at each locus
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -printdata          boolean    Print out the data at start of run
-*  -[no]dotdiff        boolean    Use dot-differencing
-   -[no]progress       boolean    Print indications of progress of run
+   -datatype           menu       [s] Choose the datatype (Values: s
+                                  (Molecular sequences); m (Discrete
+                                  Morphology); r (Restriction Sites); g (Gene
+                                  Frequencies))
+   -test               menu       [b] Choose test (Values: b (Bootstrap); j
+                                  (Jackknife); c (Permute species for each
+                                  character); o (Permute character order); s
+                                  (Permute within species); r (Rewrite data))
+*  -regular            toggle     [N] Altered sampling fraction
+*  -fracsample         float      [100.0] Samples as percentage of sites
+                                  (Number from 0.100 to 100.000)
+*  -rewriteformat      menu       [p] Output format (Values: p (PHYLIP); n
+                                  (NEXUS); x (XML))
+*  -seqtype            menu       [d] Output format (Values: d (dna); p
+                                  (protein); r (rna))
+*  -morphseqtype       menu       [p] Output format (Values: p (PHYLIP); n
+                                  (NEXUS))
+*  -blocksize          integer    [1] Block size for bootstraping (Integer 1
+                                  or more)
+*  -reps               integer    [100] How many replicates (Integer 1 or
+                                  more)
+*  -justweights        menu       [d] Write out datasets or just weights
+                                  (Values: d (Datasets); w (Weights))
+*  -enzymes            boolean    [N] Is the number of enzymes present in
+                                  input file
+*  -all                boolean    [N] All alleles present at each locus
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -printdata          boolean    [N] Print out the data at start of run
+*  -[no]dotdiff        boolean    [Y] Use dot-differencing
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -275,67 +289,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) (Aligned) sequence set filename and optional format, or
-   reference (input USA) Readable set of sequences Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.fseqbootall
-   Additional (Optional) qualifiers Allowed values Default
-   -categories File of input categories Property value(s)
-   -mixfile File of mixtures Property value(s)
-   -ancfile File of ancestors Property value(s)
-   -weights Weights file Property value(s)
-   -factorfile Factors file Property value(s)
-   -datatype Choose the datatype
-   s (Molecular sequences)
-   m (Discrete Morphology)
-   r (Restriction Sites)
-   g (Gene Frequencies)
-   s
-   -test Choose test
-   b (Bootstrap)
-   j (Jackknife)
-   c (Permute species for each character)
-   o (Permute character order)
-   s (Permute within species)
-   r (Rewrite data)
-   b
-   -regular Altered sampling fraction Toggle value Yes/No No
-   -fracsample Samples as percentage of sites Number from 0.100 to
-   100.000 100.0
-   -rewriteformat Output format
-   p (PHYLIP)
-   n (NEXUS)
-   x (XML)
-   p
-   -seqtype Output format
-   d (dna)
-   p (protein)
-   r (rna)
-   d
-   -morphseqtype Output format
-   p (PHYLIP)
-   n (NEXUS)
-   p
-   -blocksize Block size for bootstraping Integer 1 or more 1
-   -reps How many replicates Integer 1 or more 100
-   -justweights Write out datasets or just weights
-   d (Datasets)
-   w (Weights)
-   d
-   -enzymes Is the number of enzymes present in input file Boolean value
-   Yes/No No
-   -all All alleles present at each locus Boolean value Yes/No No
-   -seed Random number seed between 1 and 32767 (must be odd) Integer
-   from 1 to 32767 1
-   -printdata Print out the data at start of run Boolean value Yes/No No
-   -[no]dotdiff Use dot-differencing Boolean value Yes/No Yes
-   -[no]progress Print indications of progress of run Boolean value
-   Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

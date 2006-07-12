@@ -113,7 +113,7 @@ EDIT HERE
 
 % <b>ohmmemit rrm.hmm -seed 1079460101 </b>
 Extract HMM sequences
-Output file [rrm.ohmmemit]: <b></b>
+HMMER hmmemit program output file [rrm.ohmmemit]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -128,15 +128,17 @@ Output file [rrm.ohmmemit]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     HMM file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     HMMER hidden markov model file
+  [-outfile]           outfile    [*.ohmmemit] HMMER hmmemit program output
+                                  file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -seed               integer    Random seed
-   -selex              boolean    Output in selex format
-   -consensus          boolean    Output consensus sequence
-   -number             integer    Number of sequences to produce
+   -seed               integer    [0] Random seed (Integer 0 or more)
+   -selex              boolean    [N] Output in selex format
+   -consensus          boolean    [N] Output consensus sequence
+   -number             integer    [10] Number of sequences to produce (Any
+                                  integer value)
 
    Associated qualifiers:
 
@@ -170,16 +172,16 @@ Output file [rrm.ohmmemit]: <b></b>
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>HMM file</td>
+<td>HMMER hidden markov model file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>HMMER hmmemit program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ohmmemit</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

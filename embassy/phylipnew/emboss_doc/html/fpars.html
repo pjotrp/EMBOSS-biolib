@@ -121,8 +121,8 @@ between Felsenstein and Sober (1986).
 % <b>fpars </b>
 Discrete character parsimony
 Input file: <b>pars.dat</b>
-Input tree file: <b></b>
-Output file [pars.fpars]: <b></b>
+Phylip tree file (optional): <b></b>
+Phylip pars program output file [pars.fpars]: <b></b>
 
 Adding species:
    1. Alpha     
@@ -160,29 +160,33 @@ Done.
 <pre>
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing one or more data sets
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fpars] Phylip pars program output file
 
    Additional (Optional) qualifiers (* if not always prompted):
    -weights            properties Weights file
-   -method             menu       Choose the parsimony method to use
-   -maxtrees           integer    Number of trees to save
-*  -[no]thorough       toggle     More thorough search
-*  -[no]rearrange      boolean    Rearrange on just one best tree
-*  -njumble            integer    Number of times to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-   -outgrno            integer    Species number to use as outgroup
-   -thresh             toggle     Use threshold parsimony
-*  -threshold          float      Threshold value
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -stepbox            boolean    Print steps at each site
-   -ancseq             boolean    Print states at all nodes of tree
-*  -[no]dotdiff        boolean    Use dot differencing to display results
+   -method             menu       [Wagner] Choose the parsimony method to use
+                                  (Values: w (Wagner); c (Camin-Sokal))
+   -maxtrees           integer    [100] Number of trees to save (Integer from
+                                  1 to 1000000)
+*  -[no]thorough       toggle     [Y] More thorough search
+*  -[no]rearrange      boolean    [Y] Rearrange on just one best tree
+*  -njumble            integer    [0] Number of times to randomise (Integer 0
+                                  or more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -thresh             toggle     [N] Use threshold parsimony
+*  -threshold          float      [1] Threshold value (Number 1.000 or more)
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -stepbox            boolean    [N] Print steps at each site
+   -ancseq             boolean    [N] Print states at all nodes of tree
+*  -[no]dotdiff        boolean    [Y] Use dot differencing to display results
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -227,16 +231,16 @@ Done.
 
 <tr>
 <td>[-intreefile]<br>(Parameter 2)</td>
-<td>(no help text) tree value</td>
+<td>Phylip tree file (optional)</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Phylip pars program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.fpars</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -324,7 +328,7 @@ Done.
 
 <tr>
 <td>-outtreefile</td>
-<td>Tree file name</td>
+<td>Phylip tree output file (optional)</td>
 <td>Output file</td>
 <td>&nbsp;</td>
 </tr>

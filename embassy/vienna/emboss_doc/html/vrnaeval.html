@@ -95,7 +95,21 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with vrnaeval</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaeval </b>
+RNA eval
+Input nucleotide sequence: <b>evalrna.fasta</b>
+Vienna RNA structure contraints file (optional): <b>eval1.con</b>
+Vienna RNAeval output file [eval.vrnaeval]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -108,19 +122,26 @@ EDIT HERE
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-constraintfile]    infile     Constraint file
-  [-outfile]           outfile    Output file name
+  [-constraintfile]    infile     Vienna RNA structure contraints file
+                                  (optional)
+  [-outfile]           outfile    [*.vrnaeval] Vienna RNAeval output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]convert        boolean    Convert T to U
-   -[no]tetraloop      boolean    Stabilising energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -dangles            menu       Method
-   -logml              boolean    Use log scale for multiloop energies
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]convert        boolean    [Y] Convert T to U
+   -[no]tetraloop      boolean    [Y] Stabilising energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (No stabilising
+                                  energies for dangling ends); 1 (Use
+                                  stabilising energies for dangling ends); 2
+                                  (Dangling energies as in a partition
+                                  function 3:Allow coaxial stacking of
+                                  adjacent helices))
+   -logml              boolean    [N] Use log scale for multiloop energies
 
    Associated qualifiers:
 
@@ -177,16 +198,16 @@ EDIT HERE
 
 <tr>
 <td>[-constraintfile]<br>(Parameter 2)</td>
-<td>Constraint file</td>
+<td>Vienna RNA structure contraints file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
+<td>Vienna RNAeval output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnaeval</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -207,7 +228,7 @@ EDIT HERE
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -283,7 +304,21 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: evalrna.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;eval
+GGGGCCCCC</pre>
+</td></tr></table><p>
+<p><h3>File: eval1.con</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+(...)....
+</pre>
+</td></tr></table><p>
 
 
 
@@ -311,7 +346,16 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eval.vrnaeval</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+GGGGCCCCC
+(...).... (  4.90)
+</pre>
+</td></tr></table><p>
 
 
 

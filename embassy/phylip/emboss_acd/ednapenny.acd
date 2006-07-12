@@ -83,6 +83,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "ednapenny.outfile"
   knowntype: "dnapenny output"
+  information: "Phylip dnapenny program output file"
 ]
 
 boolean: printdata  [
@@ -124,7 +125,7 @@ toggle: trout  [
 outfile: treefile  [
   standard: "$(trout)"
   default: "ednapenny.treefile"
-  information: "Tree file name"
+  information: "Phylip tree output file"
   knowntype: "newick tree"
 ]
 

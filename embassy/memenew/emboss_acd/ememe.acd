@@ -31,7 +31,7 @@ infile: bfile
   additional: "Y"
   default: ""
   nullok: "Y"
-  information: "Name of background Markov model file"
+  information: "MEME background Markov model file (optional)"
   help: "The name of the file containing the background model for sequences.  The background model is the model of random sequences used by MEME.  The background model is used by MEME 1) during EM as the 'null model', 2) for calculating the log likelihood ratio of a motif, 3) for calculating the significance (E-value) of a motif, and, 4) for creating the position-specific scoring matrix (log-odds matrix). See application documentation for more information."
   knowntype: "background markov model meme"
 ]
@@ -41,7 +41,7 @@ infile: plib
   additional: "Y"
   default: ""
   nullok: "Y"
-  information: "Name of Dirichlet prior file"
+  information: "MEME dirichlet prior file (optional)"
   help: "The name of the file containing the Dirichlet prior in the format of file prior30.plib"
   knowntype: "dirichlet prior meme"
 ]
@@ -345,7 +345,7 @@ section: output
 outfile: outfile
 [
   parameter: "Y"
-  information: "Output file."
+  information: "MEME program output file"
   knowntype: "meme output"
 ]
 

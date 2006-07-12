@@ -95,7 +95,23 @@ EDIT HERE
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with vrnaevalpair</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>vrnaevalpair </b>
+RNA eval with cofold
+Input nucleotide sequence: <b>cofold-red.fasta</b>
+Vienna RNA structure contraints file: <b>cofold-red.con</b>
+Second nucleotide sequence: <b>cofold-blue.fasta</b>
+Second vienna RNA structure contraints file: <b>cofold-blue.con</b>
+Vienna RNAeval output file [red.vrnaevalpair]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -108,22 +124,28 @@ EDIT HERE
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-aconstraintfile]   infile     Constraint file
+  [-aconstraintfile]   infile     Vienna RNA structure contraints file
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-bconstraintfile]   infile     Constraint file
-  [-outfile]           outfile    Output file name
+  [-bconstraintfile]   infile     Second vienna RNA structure contraints file
+  [-outfile]           outfile    [*.vrnaevalpair] Vienna RNAeval output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]convert        boolean    Convert T to U
-   -[no]tetraloop      boolean    Stabilising energies for tetra-loops
-   -energy             menu       Rarely used option to fold sequences from
-                                  the ABCD... alphabet
-   -dangles            menu       Method
-   -logml              boolean    Use log scale for multiloop energies
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]convert        boolean    [Y] Convert T to U
+   -[no]tetraloop      boolean    [Y] Stabilising energies for tetra-loops
+   -energy             menu       [0] Rarely used option to fold sequences
+                                  from the ABCD... alphabet (Values: 0 (BP); 1
+                                  (Any with GC); 2 (Any with AU parameters))
+   -dangles            menu       [1] Method (Values: 0 (No stabilising
+                                  energies for dangling ends); 1 (Use
+                                  stabilising energies for dangling ends); 2
+                                  (Dangling energies as in a partition
+                                  function 3:Allow coaxial stacking of
+                                  adjacent helices))
+   -logml              boolean    [N] Use log scale for multiloop energies
 
    Associated qualifiers:
 
@@ -196,7 +218,7 @@ EDIT HERE
 
 <tr>
 <td>[-aconstraintfile]<br>(Parameter 2)</td>
-<td>Constraint file</td>
+<td>Vienna RNA structure contraints file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -210,16 +232,16 @@ EDIT HERE
 
 <tr>
 <td>[-bconstraintfile]<br>(Parameter 4)</td>
-<td>Constraint file</td>
+<td>Second vienna RNA structure contraints file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 5)</td>
-<td>Output file name</td>
+<td>Vienna RNAeval output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vrnaevalpair</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -240,7 +262,7 @@ EDIT HERE
 
 <tr>
 <td>-paramfile</td>
-<td>Parameter file</td>
+<td>Vienna RNA parameters file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -316,7 +338,35 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: cofold-red.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;red
+AUGAAGAUGA
+</pre>
+</td></tr></table><p>
+<p><h3>File: cofold-red.con</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+....((((..
+</pre>
+</td></tr></table><p>
+<p><h3>File: cofold-blue.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;blue
+CUGUCUGUCUUGAGACA
+</pre>
+</td></tr></table><p>
+<p><h3>File: cofold-blue.con</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+..))))(((....))).
+</pre>
+</td></tr></table><p>
 
 
 
@@ -344,7 +394,16 @@ outputs a report format file. The default format is ...
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: red.vrnaevalpair</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+AUGAAGAUGA&amp;CUGUCUGUCUUGAGACA
+....((((..&amp;..))))(((....))). ( -4.40)
+</pre>
+</td></tr></table><p>
 
 
 

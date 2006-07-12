@@ -17,33 +17,48 @@ Algorithm
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with vrnasubopt
+
+
+% vrnasubopt 
+Calculate RNA suboptimals
+Input nucleotide sequence: rna1.seq
+Vienna RNAfold output file [rna1.vrnasubopt]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.vrnasubopt] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -constraintfile     infile     Constraint file
-   -paramfile          infile     Parameter file
-   -temperature        float      Temperature
-   -[no]gu             boolean    Allow GU pairs
-   -[no]closegu        boolean    Allow GU pairs at end of helices
-   -[no]lp             boolean    Allow lonely pairs
-   -nsbases            string     Non-standard bases
-   -[no]tetraloop      boolean    Stabilizing energies for tetra-loops
-   -erange             float      Calculate suboptimal structures within
-                                  erange of the mfe
-   -prange             float      Only print structures with energy within
-                                  prange of the mfe
-   -sort               boolean    Sort structures by energy
-   -logml              boolean    logarithmic energy function for multi-loops
-   -dangles            menu       Method
-   -nrandom            integer    number of random suboptimal structures
+   -constraintfile     infile     Vienna RNA structure contraints file
+                                  (optional)
+   -paramfile          infile     Vienna RNA parameters file (optional)
+   -temperature        float      [37.0] Temperature (Any numeric value)
+   -[no]gu             boolean    [Y] Allow GU pairs
+   -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
+   -[no]lp             boolean    [Y] Allow lonely pairs
+   -nsbases            string     Non-standard bases (Any string is accepted)
+   -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -erange             float      [1.0] Calculate suboptimal structures within
+                                  erange of the mfe (Any numeric value)
+   -prange             float      [0.0] Only print structures with energy
+                                  within prange of the mfe (Any numeric value)
+   -sort               boolean    [N] Sort structures by energy
+   -logml              boolean    [N] Logarithmic energy function for
+                                  multi-loops
+   -dangles            menu       [2] Method (Values: 0 (Ignore); 1 (Only
+                                  unpaired bases for just one dangling end); 2
+                                  (Always use dangling energies); 3 (Allow
+                                  coaxial stacking of adjacent helices))
+   -nrandom            integer    [0] Number of random suboptimal structures
+                                  (Any integer value)
 
    Associated qualifiers:
 
@@ -81,52 +96,35 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.vrnasubopt
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -constraintfile Constraint file Input file Required
-   -paramfile Parameter file Input file Required
-   -temperature Temperature Any numeric value 37.0
-   -[no]gu Allow GU pairs Boolean value Yes/No Yes
-   -[no]closegu Allow GU pairs at end of helices Boolean value Yes/No Yes
-   -[no]lp Allow lonely pairs Boolean value Yes/No Yes
-   -nsbases Non-standard bases Any string is accepted An empty string is
-   accepted
-   -[no]tetraloop Stabilizing energies for tetra-loops Boolean value
-   Yes/No Yes
-   -erange Calculate suboptimal structures within erange of the mfe Any
-   numeric value 1.0
-   -prange Only print structures with energy within prange of the mfe Any
-   numeric value 0.0
-   -sort Sort structures by energy Boolean value Yes/No No
-   -logml logarithmic energy function for multi-loops Boolean value
-   Yes/No No
-   -dangles Method
-   0 (Ignore)
-   1 (Only unpaired bases for just one dangling end)
-   2 (Always use dangling energies 3:Allow coaxial stacking of adjacent
-   helices)
-   2
-   -nrandom number of random suboptimal structures Any integer value 0
-
 Input file format
 
    vrnasubopt reads any normal sequence USAs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: rna1.seq
+
+>rna1
+CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA
 
 Output file format
 
    vrnasubopt outputs a graph to the specified graphics device. outputs a
    report format file. The default format is ...
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: rna1.vrnasubopt
+
+> rna1 [100]
+CACTACTCCAAGGACCGTATCTTTCTCAGTGCGACAGTAA   -380    100
+...(((((....)).((((.((.....))))))...))).  -2.80
+...(((((....)).(((((........)))))...))).  -3.80
+...(((((....)..(((((........)))))..)))).  -3.10
+.(((..((....)).((((.((.....))))))..)))..  -2.80
+.(((..((....)).(((((........)))))..)))..  -3.80
+......((....)).(((((........))))).......  -3.10
+...............(((((........))))).......  -3.30
 
 Data files
 

@@ -11,14 +11,14 @@ section: input [
 
 infile: infile  [
   parameter: "Y"
-  information: "Continuous character frequency file"
-  knowntype: "continuous character frequency file"
+  knowntype: "continuous character frequency"
+  information: "Phylip continuous character frequency file"
 ]
 
 infile: treefile  [
   parameter: "Y"
-  information: "Newick tree file"
-  knowntype: "Newick tree"
+  knowntype: "newick tree"
+  information: "Phylip tree file"
 ]
 
 
@@ -46,6 +46,7 @@ outfile: outfile  [
   parameter: "Y"
   default: "econtrast.outfile"
   knowntype: "contrast output"
+  information: "Phylip contrast program output file"
 ]
 
 boolean: corplusreg  [

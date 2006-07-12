@@ -53,7 +53,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Sequence filename and optional format, or
                                   reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.crystalball] Output file name
 
    Additional (Optional) qualifiers:
    -competition        boolean    Who else is working with this target?
@@ -110,33 +110,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence filename and optional format, or reference
-   (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.crystalball
-   Additional (Optional) qualifiers Allowed values Default
-   -competition Who else is working with this target? Boolean value
-   Yes/No No
-   -rdtime Total research and development time to bring a drug for this
-   target to market. Boolean value Yes/No No
-   -rdcost Total cost of our research and development effort. Boolean
-   value Yes/No No
-   -animalstudies What will we learn from the animal studies? Boolean
-   value Yes/No No
-   -clinicaltrials Detail all of the surprises we'll get from the
-   clinical trials. Boolean value Yes/No No
-   -fdaproblems List all of the issues the FDA will raise with our
-   paperwork. Boolean value Yes/No No
-   -fdatime How long will the FDA take to render a decision? Boolean
-   value Yes/No No
-   -profit How much will we make after the drug gets to market? Boolean
-   value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -everythingelse Tell us everything else we'd really like to know now
-   rather than later Boolean value Yes/No No
 
 Input file format
 

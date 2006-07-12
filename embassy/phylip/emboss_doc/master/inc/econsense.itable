@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>New Hampshire standard form tree file</td>
+<td>Phylip tree file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -28,7 +28,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip consense program output file</td>
 <td>Output file</td>
 <td>econsense.outfile</td>
 </tr>
@@ -42,9 +42,9 @@
 
 <tr>
 <td>[-treefile]<br>(Parameter 4)</td>
-<td>Tree file</td>
+<td>Phylip tree output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.econsense</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

@@ -208,8 +208,8 @@ order of these pairs in the input tree file, in odd ways.
 
 % <b>ftreedist </b>
 Distances between trees
-Input tree file: <b>treedist.dat</b>
-Output file [treedist.ftreedist]: <b></b>
+Phylip tree file: <b>treedist.dat</b>
+Phylip treedist program output file [treedist.ftreedist]: <b></b>
 
 
 Output written to file "treedist.ftreedist"
@@ -229,8 +229,8 @@ Done.
 
 % <b>ftreedist -dtype s </b>
 Distances between trees
-Input tree file: <b>treedist2.dat</b>
-Output file [treedist2.ftreedist]: <b></b>
+Phylip tree file: <b>treedist2.dat</b>
+Phylip treedist program output file [treedist2.ftreedist]: <b></b>
 
 
 Output written to file "treedist2.ftreedist"
@@ -251,16 +251,24 @@ Done.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file
+  [-outfile]           outfile    [*.ftreedist] Phylip treedist program output
+                                  file
 
    Additional (Optional) qualifiers:
-   -dtype              menu       Distance type
-   -pairing            menu       Tree pairing method
-   -style              menu       Distances output option
-   -noroot             boolean    Trees to be treated as rooted
-   -outgrno            integer    Species number to use as outgroup
-   -[no]progress       boolean    Print indications of progress of run
+   -dtype              menu       [b] Distance type (Values: s (Symmetric
+                                  difference); b (Branch score distance))
+   -pairing            menu       [a] Tree pairing method (Values: a
+                                  (Distances between adjacent pairs in tree
+                                  file); p (Distances between all possible
+                                  pairs in tree file))
+   -style              menu       [v] Distances output option (Values: f (Full
+                                  matrix); v (One pair per line, verbose); s
+                                  (One pair per line, sparse))
+   -noroot             boolean    [N] Trees to be treated as rooted
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -295,16 +303,16 @@ Done.
 
 <tr>
 <td>[-intreefile]<br>(Parameter 1)</td>
-<td>(no help text) tree value</td>
+<td>Phylip tree file</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip treedist program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.ftreedist</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

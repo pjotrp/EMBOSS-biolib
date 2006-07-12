@@ -1,0 +1,20 @@
+<b>Here is a sample session with omeme</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>omeme -protein </b>
+Motif detection
+Input sequence(s): <b>memepep.dat</b>
+Motif Distribution
+      oops : Oops Distribution
+     zoops : Zoops Distribution
+       tcm : TCM Distribution
+Model to use [zoops]: <b></b>
+Maximum number of motifs to find [1]: <b>3</b>
+MEME program output file [carp_rhich.omeme]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

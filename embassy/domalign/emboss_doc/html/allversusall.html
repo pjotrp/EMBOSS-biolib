@@ -176,42 +176,45 @@ ALLVERSUSALL uses a residue substitution matrix.
 
 <pre>
    Standard (Mandatory) qualifiers:
-  [-seqinpath]         dirlist    This option specifies the location of
-                                  sequence files (input)
-  [-datoutdir]         outdir     This option specifies the location of
+  [-seqinpath]         dirlist    [./] (no help text) dirlist value
+  [-datoutdir]         outdir     [./] This option specifies the location of
                                   sequence similarity data files (output).
-   -logfile            outfile    This option specifies the name of
-                                  ALLVERSUSALL log file (output). The log file
-                                  contains messages about any errors arising
-                                  while ALLVERSUSALL ran.
+   -logfile            outfile    [allversusall.log] This option specifies the
+                                  name of ALLVERSUSALL log file (output). The
+                                  log file contains messages about any errors
+                                  arising while ALLVERSUSALL ran.
 
    Additional (Optional) qualifiers:
-   -matrix             matrixf    This option specifies the residue
-                                  substitution matrix that is used for
+   -matrix             matrixf    [EBLOSUM62] This option specifies the
+                                  residue substitution matrix that is used for
                                   sequence comparison.
-   -gapopen            float      This option specifies the gap insertion
-                                  penalty. The gap insertion penalty is the
-                                  score taken away when a gap is created. The
-                                  best value depends on the choice of
-                                  comparison matrix. The default value assumes
-                                  you are using the EBLOSUM62 matrix for
-                                  protein sequences, and the EDNAFULL matrix
-                                  for nucleotide sequences.
-   -gapextend          float      This option specifies the gap extension
-                                  penalty. The gap extension, penalty is added
-                                  to the standard gap penalty for each base
-                                  or residue in the gap. This is how long gaps
-                                  are penalized. Usually you will expect a
-                                  few long gaps rather than many short gaps,
-                                  so the gap extension penalty should be lower
-                                  than the gap penalty. An exception is where
-                                  one or both sequences are single reads with
-                                  possible sequencing errors in which case
-                                  you would expect many single base gaps. You
-                                  can get this result by setting the gap open
+   -gapopen            float      [10.0 for any sequence] This option
+                                  specifies the gap insertion penalty. The gap
+                                  insertion penalty is the score taken away
+                                  when a gap is created. The best value
+                                  depends on the choice of comparison matrix.
+                                  The default value assumes you are using the
+                                  EBLOSUM62 matrix for protein sequences, and
+                                  the EDNAFULL matrix for nucleotide
+                                  sequences. (Floating point number from 1.0
+                                  to 100.0)
+   -gapextend          float      [0.5 for any sequence] This option specifies
+                                  the gap extension penalty. The gap
+                                  extension, penalty is added to the standard
+                                  gap penalty for each base or residue in the
+                                  gap. This is how long gaps are penalized.
+                                  Usually you will expect a few long gaps
+                                  rather than many short gaps, so the gap
+                                  extension penalty should be lower than the
+                                  gap penalty. An exception is where one or
+                                  both sequences are single reads with
+                                  possible sequencing errors in which case you
+                                  would expect many single base gaps. You can
+                                  get this result by setting the gap open
                                   penalty to zero (or very low) and using the
                                   gap extension penalty to control gap
-                                  scoring.
+                                  scoring. (Floating point number from 0.0 to
+                                  10.0)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -246,7 +249,7 @@ ALLVERSUSALL uses a residue substitution matrix.
 
 <tr>
 <td>[-seqinpath]<br>(Parameter 1)</td>
-<td>This option specifies the location of sequence files (input)</td>
+<td>(no help text) dirlist value</td>
 <td>Directory with files</td>
 <td>./</td>
 </tr>
@@ -315,7 +318,7 @@ An example of interactive use of ALLVERSUSALL is shown below.
 
 % <b>allversusall </b>
 Sequence similarity data from all-versus-all comparison.
-Location of sequence files (input [./]: <b>allversusall/</b>
+Sequence directories [./]: <b>allversusall/</b>
 Location of sequence similarity data files (output) [./]: <b></b>
 Name allversusall log file (output) [allversusall.log]: <b></b>
 
@@ -522,10 +525,12 @@ None.
 
 <!-- AUTHORS -->
 <a name="13.0"><br><br><br><H2> 13.0  AUTHORS                   </H2></a>
-Jon Ison <a href="mailto:jison@rfcgr.mrc.ac.uk">(jison@rfcgr.mrc.ac.uk)</a>
+Jon Ison <a href="mailto:jison@ebi.ac.uk">(jison@ebi.ac.uk)</a>
 <br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+The European Bioinformatics Institute 
+Wellcome Trust Genome Campus 
+Cambridge CB10 1SD 
+UK 
 
 
 

@@ -6,11 +6,11 @@
 
 % <b>efitch </b>
 Fitch-Margoliash and Least-Squares Distance Methods
-Data file: <b>fitch.dat</b>
+Phylip fitch program input file: <b>fitch.dat</b>
 Outgroup root [N]: <b></b>
-Output file [efitch.outfile]: <b></b>
+Phylip fitch program output file [efitch.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Tree file name [fitch.treefile]: <b></b>
+Phylip tree output file [fitch.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

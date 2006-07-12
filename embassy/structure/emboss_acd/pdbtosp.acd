@@ -13,8 +13,7 @@ section: input [
 ]
 
   infile: infile [
-    information: "Name of raw swissprot:PDB equivalence file
-                  (input)"
+    information: "Swissprot:pdb equivalence table file"
     help: "This option specifies the name of raw swissprot:PDB
            equivalence file (input). HETPARSE parses this file, which is
            available at URL http://www.expasy.ch/cgi-bin/lists?pdbtosp.txt"
@@ -30,13 +29,12 @@ section: output [
 ]
 
   outfile: outfile [
-    information: "Name of swissprot:PDB equivalence file
-                  (EMBL-like format output)"
+    information: "Swissprot:pdb equivalence output file"
     help: "This option specifies the name of swissprot:PDB equivalence
            file (EMBL-like format). This is the PDBTOSP output file."
     default: "Epdbtosp.dat"
     parameter: "Y"
-    knowntype: "swissprot pdb equivalence file"
+    knowntype: "swissprot pdb equivalence"
   ]
 
 endsection: output

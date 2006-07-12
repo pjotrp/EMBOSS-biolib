@@ -7,7 +7,7 @@
 % <b>fseqbootall -seed 3 </b>
 Bootstrapped sequences algorithm
 Input (aligned) sequence set: <b>seqboot.dat</b>
-Output file [seqboot.fseqbootall]: <b></b>
+Phylip seqboot program output file [seqboot.fseqbootall]: <b></b>
 
 
  bootstrap: true

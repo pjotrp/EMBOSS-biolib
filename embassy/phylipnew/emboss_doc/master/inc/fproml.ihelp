@@ -1,44 +1,56 @@
    Standard (Mandatory) qualifiers:
   [-sequence]          seqsetall  File containing one or more sequence
                                   alignments
-  [-intreefile]        tree       (no help text) tree value
-  [-outfile]           outfile    Output file name
+  [-intreefile]        tree       Phylip tree file (optional)
+  [-outfile]           outfile    [*.fproml] Phylip proml program output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -ncategories        integer    Number of substitution rate categories
+   -ncategories        integer    [1] Number of substitution rate categories
+                                  (Integer from 1 to 9)
 *  -rate               array      Rate for each category
 *  -categories         properties File of substitution rate categories
    -weights            properties Weights file
-*  -lengths            boolean    Use branch lengths from user trees
-   -model              menu       Probability model for amino acid change
-   -gamma              menu       Rate variation among sites
-*  -gammacoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-*  -ngammacat          integer    Number of categories (1-9)
-*  -invarcoefficient   float      Coefficient of variation of substitution
-                                  rate among sites
-*  -ninvarcat          integer    Number of categories (1-9) including one for
-                                  invariant sites
-*  -invarfrac          float      Fraction of invariant sites
-*  -nhmmcategories     integer    Number of HMM rate categories
-*  -hmmrates           array      HMM category rates
-*  -hmmprobabilities   array      Probability for each HMM category
-*  -adjsite            boolean    Rates at adjacent sites correlated
-*  -lambda             float      Mean block length of sites having the same
-                                  rate
-*  -njumble            integer    Number of times to randomise, choose 0 if
-                                  you don't want to randomise
-*  -seed               integer    Random number seed between 1 and 32767 (must
-                                  be odd)
-*  -global             boolean    Global rearrangements
-   -outgrno            integer    Species number to use as outgroup
-   -[no]rough          boolean    Speedier but rougher analysis
-   -[no]trout          toggle     Write out trees to tree file
-*  -outtreefile        outfile    Tree file name
-   -printdata          boolean    Print data at start of run
-   -[no]progress       boolean    Print indications of progress of run
-   -[no]treeprint      boolean    Print out tree
-   -hypstate           boolean    Reconstruct hypothetical sequence
+*  -lengths            boolean    [N] Use branch lengths from user trees
+   -model              menu       [Jones-Taylor-Thornton] Probability model
+                                  for amino acid change (Values: j
+                                  (Jones-Taylor-Thornton); h (Henikoff/Tillier
+                                  PMBs); d (Dayhoff PAM))
+   -gamma              menu       [Constant rate] Rate variation among sites
+                                  (Values: g (Gamma distributed rates); i
+                                  (Gamma+invariant sites); h (User defined HMM
+                                  of rates); n (Constant rate))
+*  -gammacoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+*  -ngammacat          integer    [1] Number of categories (1-9) (Integer from
+                                  1 to 9)
+*  -invarcoefficient   float      [1] Coefficient of variation of substitution
+                                  rate among sites (Number 0.001 or more)
+*  -ninvarcat          integer    [1] Number of categories (1-9) including one
+                                  for invariant sites (Integer from 1 to 9)
+*  -invarfrac          float      [0.0] Fraction of invariant sites (Number
+                                  from 0.000 to 1.000)
+*  -nhmmcategories     integer    [1] Number of HMM rate categories (Integer
+                                  from 1 to 9)
+*  -hmmrates           array      [1.0] HMM category rates
+*  -hmmprobabilities   array      [1.0] Probability for each HMM category
+*  -adjsite            boolean    [N] Rates at adjacent sites correlated
+*  -lambda             float      [1.0] Mean block length of sites having the
+                                  same rate (Number 1.000 or more)
+*  -njumble            integer    [0] Number of times to randomise, choose 0
+                                  if you don't want to randomise (Integer 0 or
+                                  more)
+*  -seed               integer    [1] Random number seed between 1 and 32767
+                                  (must be odd) (Integer from 1 to 32767)
+*  -global             boolean    [N] Global rearrangements
+   -outgrno            integer    [0] Species number to use as outgroup
+                                  (Integer 0 or more)
+   -[no]rough          boolean    [Y] Speedier but rougher analysis
+   -[no]trout          toggle     [Y] Write out trees to tree file
+*  -outtreefile        outfile    Phylip tree output file (optional)
+   -printdata          boolean    [N] Print data at start of run
+   -[no]progress       boolean    [Y] Print indications of progress of run
+   -[no]treeprint      boolean    [Y] Print out tree
+   -hypstate           boolean    [N] Reconstruct hypothetical sequence
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

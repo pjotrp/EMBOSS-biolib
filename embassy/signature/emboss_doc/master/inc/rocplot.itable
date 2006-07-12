@@ -56,7 +56,7 @@
 
 <tr>
 <td>-outfile</td>
-<td>This option specifies the name of summary file (output). A text file summarising the analysis.</td>
+<td>This option specifies the name of the summary file (output). A text file summarising the analysis.</td>
 <td>Output file</td>
 <td>_summary</td>
 </tr>
@@ -100,7 +100,7 @@
 
 <tr>
 <td>-logfile</td>
-<td>Name of error log file (output).</td>
+<td>Output file name</td>
 <td>Output file</td>
 <td>rocplot.log</td>
 </tr>

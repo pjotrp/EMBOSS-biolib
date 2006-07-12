@@ -1,0 +1,243 @@
+
+                                   emast 
+
+
+
+Function
+
+   Motif detection
+
+Description
+
+   EMBASSY MEME is a suite of application wrappers to the original meme
+   v3.0.14 applications written by Timothy Bailey. meme v3.0.14 must be
+   installed on the same system as EMBOSS and the location of the meme
+   executables must be defined in your path for EMBASSY MEME to work.
+
+   Usage:
+   ememe [options] mfile outfile
+
+   The outfile parameter is new to EMBASSY MEME. The output is always
+   written to .
+
+   MAST: Motif Alignment and Search Tool
+
+   MAST is a tool for searching biological sequence databases for
+   sequences that contain one or more of a group of known motifs.
+
+   A motif is a sequence pattern that occurs repeatedly in a group of
+   related protein or DNA sequences. Motifs are represented as
+   position-dependent scoring matrices that describe the score of each
+   possible letter at each position in the pattern. Individual motifs may
+   not contain gaps. Patterns with variable-length gaps must be split
+   into two or more separate motifs before being submitted as input to
+   MAST.
+
+   MAST takes as input a file containing the descriptions of one or more
+   motifs and searches a sequence database that you select for sequences
+   that match the motifs. The motif file can be the output of the MEME
+   motif discovery tool or any file in the appropriate format.
+
+   MAST outputs three things:
+     * 1. The names of the high-scoring sequences sorted by the strength
+       of the combined match of the sequence to all of the motifs in the
+       group.
+     * 2. Motif diagrams showing the order and spacing of the motifs
+       within each matching sequence.
+     * 3. Detailed annotation of each matching sequence showing the
+       sequence and the locations and strengths of matches to the motifs.
+
+   MAST works by calculating match scores for each sequence in the
+   database compared with each of the motifs in the group of motifs you
+   provide. For each sequence, the match scores are converted into
+   various types of p-values and these are used to determine the overall
+   match of the sequence to the group of motifs and the probable order
+   and spacing of occurrences of the motifs in the sequence.
+
+Algorithm
+
+   Please read the file README distributed with the original MEME.
+
+Usage
+
+   Here is a sample session with emast
+
+
+% emast ex1.html ex1.out 
+Motif detection
+Print results for sequences with E-value [10]: 
+Show motif matches with p-value < mt [0.0001]: 
+
+
+   Go to the input files for this example
+   Go to the output files for this example
+
+  EXAMPLES:
+
+   Please note the examples below are unedited excerpts of the original
+   MEME documentation. Bear in mind the EMBASSY and original MEME options
+   may differ in practice (see "1. Command-line arguments").
+
+   The following examples assume that file "meme.results" is the output
+   of a MEME run containing at least 3 motifs and file SwissProt is a
+   copy of the Swiss-Prot database on your local disk. DNA_DB is a copy
+   of a DNA database on your local disk.
+
+   1) Annotate the training set:
+   mast meme.results
+
+   2) Find sequences matching the motif and annotate them in the
+   SwissProt database:
+   mast meme.results -d SwissProt
+
+   3) Show sequences with weaker combined matches to motifs.
+   mast meme.results -d SwissProt -ev 200
+
+   4) Indicate weaker matches to single motifs in the annotation so that
+   sequences with weak matches to the motifs (but perhaps with the
+   "correct" order and spacing) can be seen:
+   mast meme.results -d SwissProt -w
+
+   5) Include a nominal order and spacing of the first three motifs in
+   the calculation of the sequence p-values to increase the sensitivity
+   of the search for matching sequences:
+   mast meme.results -d SwissProt -diag "9-[2]-61-[1]-62-[3]-91"
+
+   6) Use only the first and third motifs in the search:
+   mast meme.results -d SwissProt -m 1 -m 3
+
+   7) Use only the first two motifs in the search:
+   mast meme.results -d SwissProt -c 2
+
+   8) Search DNA sequences using protein motifs, adjusting p-values and
+   E-values for each sequence by that sequence's composition:
+   mast meme.results -d DNA_DB -dna -comp
+
+Command line arguments
+
+   Where possible, the same command-line qualifier names and parameter
+   order is used as in the original mast. There are however several
+   unavoidable differences and these are clearly documented in the
+   "Notes" section below.
+
+   Most of the options in the original mast are given in ACD as
+   "advanced" or "additional" options. -options must be specified on the
+   command-line in order to be prompted for a value for "additional"
+   options but "advanced" options will never be prompted for.
+
+   Please note that one only of -stdin or -d should be specified. If you
+   set both, then -d will be used. This behaviour could have been
+   enforced at the level of the ACD file by using an ACD select: or list:
+   type but this would have been inconsistent with the original meme,
+   which has two separate options.
+
+   Standard (Mandatory) qualifiers:
+  [-mfile]             infile     If -d  is not given, MAST looks
+                                  for database specified inside of .
+   -ev                 float      [10] Print results for sequences with
+                                  E-value (Any numeric value)
+   -mt                 float      [0.0001] Show motif matches with p-value <
+                                  mt (Any numeric value)
+  [-outfile]           outfile    [*.emast] MAST program output file
+
+   Additional (Optional) qualifiers:
+   -d                  infile     If -d  is not given, MAST looks
+                                  for database specified inside of .
+   -a                  infile     Input file  is assumed to contain
+                                  motifs in the format output by
+                                  bin/make_logodds and  is their alphabet;
+                                  -d  or -stdin must be specified
+                                  when this option is used.
+   -bfile              infile     The random model uses the letter frequencies
+                                  given in  instead of the
+                                  non-redundant database frequencies. The
+                                  format of  is the same as that for
+                                  the MEME -bfile opton; see the MEME
+                                  documentation for details. Sample files are
+                                  given in directory tests: tests/nt.freq and
+                                  tests/na.freq in the MEME distribution.)
+   -smax               integer    [-1] Print results for no more than
+                                  sequences (Any integer value)
+   -stdin              boolean    [N] The default is to read the database
+                                  specified inside .
+   -text               boolean    [N] Default is hypertext (HTML) format
+   -dna                boolean    [N] Translate DNA sequences to protein
+   -comp               boolean    [N] The random model uses the letter
+                                  frequencies in the current target sequence
+                                  instead of the non-redundant database
+                                  frequencies. This causes p-values and
+                                  E-values to be compensated individually for
+                                  the actual composition of each sequence in
+                                  the database. This option can increase
+                                  search time substantially due to the need to
+                                  compute a different score distribution for
+                                  each high-scoring sequence.
+   -rank               integer    [-1] Print results starting with  best
+                                  (Any integer value)
+   -best               boolean    [N] Include only the best motif in diagrams
+   -remcorr            boolean    [N] Remove highly correlated motifs from
+                                  query
+   -brief              boolean    [N] Brief output: do not print
+                                  documentation.
+   -b                  boolean    [N] Print only sections I and II
+   -nostatus           boolean    [N] Do not print progress report
+   -hitlist            boolean    [N] If you specify the -hitlist switch to
+                                  MAST, the motif 'diagram' takes the form of
+                                  a comma separated list of motif occurrences
+                                  ('hits'). Each 'hit' has the format:
+
+                                  where  is the strand (+ or - for
+                                  DNA, blank for protein),  is the
+                                  motif number,  is the starting
+                                  position of the hit,  is the ending
+                                  position of the hit, and  is the
+                                  position p-value of the hit.
+
+   Advanced (Unprompted) qualifiers:
+   -c                  integer    [-1] Only use the first  motifs (Any
+                                  integer value)
+   -sep                boolean    [N] Score reverse complement DNA strand as a
+                                  separate sequence
+   -norc               boolean    [N] Do not score reverse complement DNA
+                                  strand
+   -w                  boolean    [N] Show weak matches (mt as motif file name.
+ (Any string
+                                  is accepted)
+   -df                 string     Print  as database name. (Any string is
+                                  accepted)
+   -minseqs            integer    [-1] Lower bound on number of sequences in
+                                  db (Any integer value)
+   -mev                float      [-1] Use only motifs with E-values less than
+                                   (Any numeric value)
+   -m                  integer    [-1] Overrides value set by using -mev. (Any
+                                  integer value)
+   -diag               string     See on-line documentation for a valid
+                                  example. (Any string is accepted)
+
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write standard output
+   -filter             boolean    Read standard input, write standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+
+Input file format
+
+   emast reads any normal sequence USAs.
+
+  Input files for usage example
+
+  File: ex1.html

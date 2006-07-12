@@ -18,6 +18,7 @@ integer: spp [
 tree: intreefile [
 	parameter: "Y"
 	knowntype: "newick"
+	information: "Phylip tree file"
 ]
 
 
@@ -80,5 +81,6 @@ outfile: outtreefile [
   parameter: "Y"
   extension: "treefile"
   knowntype: "newick tree"
+  information: "PHYLIP tree output file"
 ]
 endsection: output

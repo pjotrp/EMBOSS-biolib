@@ -22,7 +22,7 @@ Usage
 
 % ohmmfetch ../ohmmindex-keep/myhmms 7LES_DROME/1799-1891 
 Extract HMM from a database
-Output file [outfile.ohmmfetch]: 
+HMMER hidden markov model output file [outfile.ohmmfetch]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -30,9 +30,10 @@ Output file [outfile.ohmmfetch]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-database]          string     Database name
-  [-name]              string     Entry name
-  [-outfile]           outfile    Output file name
+  [-database]          string     Database name (Any string is accepted)
+  [-name]              string     Entry name (Any string is accepted)
+  [-outfile]           outfile    [*.ohmmfetch] HMMER hidden markov model
+                                  output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -55,20 +56,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-database]
-   (Parameter 1) Database name Any string is accepted An empty string is
-   accepted
-   [-name]
-   (Parameter 2) Entry name Any string is accepted An empty string is
-   accepted
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.ohmmfetch
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
