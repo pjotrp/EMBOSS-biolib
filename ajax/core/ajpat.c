@@ -469,9 +469,14 @@ void ajPatlistRegexDel (AjPPatlistRegex* pthys)
     thys = *pthys;
 
     while (ajListPop(thys->Patlist, (void **)&patternregex))
+    {
+	ajDebug("ajPatlistRegexDel list size: %d\n",
+		ajListLength(thys->Patlist));
 	ajPatternRegexDel(&patternregex);
+    }
     if (thys->Iter)
 	ajListIterFree (&thys->Iter);
+    ajListFree(&thys->Patlist);
 
     AJFREE(*pthys);
 
@@ -497,6 +502,7 @@ void ajPatlistSeqDel (AjPPatlistSeq* pthys)
 	ajPatternSeqDel(&patternseq);
     if (thys->Iter)
 	ajListIterFree (&thys->Iter);
+    ajListFree(&thys->Patlist);
 
     AJFREE(*pthys);
 
