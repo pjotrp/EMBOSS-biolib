@@ -5318,16 +5318,16 @@ void ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
     ajint mw;
     ajuint crc;
 
-    outseq = ajSeqoutNew();
 
-    outseq->File = outf;
-    ajStrAssignS(&outseq->Seq,seq);
-
-    crc = ajSeqstrCalcCrc(outseq->Seq);
-    mw = (ajint) (0.5+ajSeqstrCalcMolwt(outseq->Seq));
-    ajFmtPrintF(outseq->File,
+    crc = ajSeqstrCalcCrc(seq);
+    mw = (ajint) (0.5+ajSeqstrCalcMolwt(seq));
+    ajFmtPrintF(outf,
 		"%-5sSEQUENCE %5d AA; %6d MW;  %08X CRC32;\n",
-		prefix, ajStrGetLen(outseq->Seq), mw, crc);
+		prefix, ajStrGetLen(seq), mw, crc);
+
+    outseq = ajSeqoutNewF(outf);
+
+    ajStrAssignS(&outseq->Seq,seq);
 
     seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
     strcpy(sf->endstr, "");
