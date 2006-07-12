@@ -54,7 +54,7 @@ my %progdir = ();   # key=program name,
 my $embassy;	    # name of current EMBASSY directory being done,
                     # "" if not an EMBASSY program
 my $docdir;	    # name of directory holding the set of EMBASSY programs
-                    # being done
+                    # being done for local distribution
 
 # read in from the EMBOSS application 'wossname'
 # group names, application name and which application is in which groups
@@ -98,6 +98,7 @@ my $scripts = "$distribtop/scripts";
  
 # where the web pages live
 my $doctop = "$cvsdoc/master/emboss/apps";
+my $sfdoctop = "$ENV{HOME}/sfdoc/apps/cvs";
 
 my @embassylist = ("appendixd",
 		   "domainatrix",
@@ -108,6 +109,7 @@ my @embassylist = ("appendixd",
 		   "hmmer",
 		   "hmmernew",
 		   "meme",
+		   "memenew",
 		   "mse",
 		   "myemboss", # we avoid documenting these examples
 		   "phylip",
@@ -215,6 +217,61 @@ sub htmlsource ( $$ ) {
     close X;
     close H;
     return 1;
+}
+
+######################################################################
+# 
+# Name: cleantext
+# 
+# Description: 
+#	removes unwanted acdtable output from text documentation
+# 
+# Args: 
+# 	$afile - first filename
+#
+# Returns:
+# Warning: 
+#	uses temporary filename 'z.z'
+# 
+######################################################################
+sub cleantext ( $ ) {
+    my ($afile) = @_;
+    if(-e $afile) {
+	open (X, $afile);
+	open (Z, ">z.z");
+	my $acdtable = 0;
+	while (<X>) {
+	    if($acdtable) {
+		if(/^Input file format$/) {
+		    $acdtable = 0;
+		}
+		if(/^Output file format$/) {
+		    $acdtable = 0;
+		}
+
+		if(/^Data files$/) {
+		    $acdtable = 0;
+		}
+
+	    }
+	    else {
+		if(/^\s+Standard \(Mandatory\) qualifiers Allowed values Default/) {
+		    $acdtable = 1;
+		}
+	    }
+	    if(!$acdtable) { print Z }
+	}
+    }
+    close X;
+    close Z;
+    open (X, ">$afile");
+    open (Z, "z.z");
+    while (<Z>) {
+	print X;
+    }
+    close X;
+    close Z;
+
 }
 
 ######################################################################
@@ -540,9 +597,9 @@ sub getprogramnames ( ) {
 # 
 ######################################################################
 
-sub createnewdocumentation ( $$ ) {
+sub createnewdocumentation ( $$$ ) {
 
-    my ($thisprogram, $progdocdir) = @_;
+    my ($thisprogram, $progdocdir, $sfprogdocdir) = @_;
     my $ans;
     my $indexfile = "$progdocdir/index.html";
 
@@ -624,9 +681,9 @@ REMEMBER TO EDIT THESE FILES:
 # 
 ######################################################################
 
-sub createnewdocumentationembassy ( $$ ) {
+sub createnewdocumentationembassy ( $$$ ) {
 
-    my ($thisprogram, $progdocdir) = @_;
+    my ($thisprogram, $progdocdir, $sfprogdocdir) = @_;
     my $ans;
     my $indexfile = "$progdocdir/index.html";
 
@@ -742,7 +799,7 @@ sub checkhistoryfile ( $$ ) {
 
 # check to see if the include file has changed
     if (! -e "$histfile") {
-	open (HIST, ">$histfile") || die "Cannot open $histfile";
+	open (HIST, ">$histfile") || die "Cannot open distribution $histfile";
 	print HIST "\n";
 	close HIST;
     }
@@ -773,7 +830,7 @@ sub checkcommentfile ( $$ ) {
 
 # check to see if the include file has changed
     if (! -e "$commentfile") {
-	open (HIST, ">$commentfile") || die "Cannot open $commentfile";
+	open (HIST, ">$commentfile") || die "Cannot open distribution $commentfile";
 	print HIST "None\n";
 	close HIST;
     }
@@ -837,6 +894,7 @@ if(!defined($singlepackage) && !defined($singleapp)) {
 foreach $docdir (@doclist) {
     if ($docdir =~ /embassy\/(.*)/) {
 	$embassy = $1;
+	$sfdocdir = "$sfdoctop/embassy/$embassy/";
 	if(defined($singlepackage) && $embassy ne $singlepackage) {next}
 	print LOG "embassy $embassy\n";
 	$eindex =  "$cvsedoc/$embassy/emboss_doc/master/inc/apps.itable";
@@ -857,6 +915,7 @@ href=\"ftp://emboss.open-bio.org/pub/EMBOSS/\">current $embassy release</a></h3>
 	}
     }
     else {			# main EMBOSS applications
+	$sfdocdir = "$sfdoctop/emboss/apps/";
 	if(defined($singlepackage)) {next}
 	$embassy = "";
 	$eindex = "";
@@ -878,6 +937,7 @@ href=\"ftp://emboss.open-bio.org/pub/EMBOSS/\">current $embassy release</a></h3>
 # if this is a non-EMBASSY program then add it to the index.html file
 	if (!defined($embassyprogs{$thisprogram})) {
 	    $progdocdir = $docdir;
+	    $sfprogdocdir = $sfdocdir;
 	    if(!defined($singleapp)) {
 		print INDEX
 "<tr>
@@ -892,6 +952,7 @@ $progs{$thisprogram}
 # update the embassy index here -
 # or just use the %embassyprogs array to make a list?
 	    $progdocdir = "$cvsedoc/$embassyprogs{$thisprogram}/emboss_doc/master";
+	    $sfprogdocdir = "$sfdoctop/embassy/$embassyprogs{$thisprogram}";
 	    if(!defined($singleapp)) {
 		print EINDEX
 "<tr>
@@ -908,28 +969,40 @@ $progs{$thisprogram}
 	if (!defined($embassyprogs{$thisprogram})) {
 	    if (-e "$progdocdir/$thisprogram.html") {
 ###	  print "$progdocdir/$thisprogram.html found\n";
+		if (-e "$sfprogdocdir/$thisprogram.html") {
+		    system("diff -b $progdocdir/$thisprogram.html $sfprogdocdir/$thisprogram.html > z.z");
+		    $s = (-s "z.z");
+		    if ($s) {
+			print LOG "** $sfprogdocdir/$thisprogram.html differences ** size:$s\n";
+			
+		    }
+		}
+		else {
+			print LOG "** $sfprogdocdir/$thisprogram.html missing\n";
+		}
 	    }
 	    else {
 # optionally create the documentation and edit it,
 #	  or abort and do the next program
 ###	  print "$progdocdir/$thisprogram.html missing - EMBOSS\n";
-		if (!createnewdocumentation($thisprogram, $progdocdir)) {next;}
+		if (!createnewdocumentation($thisprogram, $progdocdir, $sfprogdocdir)) {next;}
 	    }
 	    $progdone{$thisprogram} = 1;
 	}
 	else {
 	    $progdir{$thisprogram} = $embassyprogs{$thisprogram};
 	    $edir = "$cvsedoc/$progdir{$thisprogram}/emboss_doc/master";
+	    $sfedir = "$sfdoctop/embassy/$progdir{$thisprogram}";
 	    if(-e "$edir/$thisprogram.html") {
 ###	  print "$edir/$thisprogram.html found\n";
 	    }
 	    else {
 ###	  print "$progdocdir/$thisprogram.html missing - EMBASSY $embassyprogs{$thisprogram}\n";
-		print STDERR "Missing embassy documentation $progdocdir/$thisprogram.html\n";
+		print STDERR "Missing embassy documentation $edir/$thisprogram.html\n";
 		print STDERR "docdir: $docdir\n";
 		print STDERR "progdocdir: $progdocdir\n";
 		print STDERR "embassyprogs: $embassyprogs{$thisprogram}\n";
-		if (!createnewdocumentationembassy($thisprogram, $edir)) {next;}
+		if (!createnewdocumentationembassy($thisprogram, $edir, $sfedir)) {next;}
 	    }
 	    $progdone{$thisprogram} = 1;
 	}
@@ -1054,6 +1127,7 @@ $progs{$thisprogram}
 	    print "lynx error $status $dochtml/$thisprogram.html";
 	}
 	else {
+	    cleantext("x.x");
 	    filediff ("$doctext/$thisprogram.txt", "x.x");
 	}
 
@@ -1128,6 +1202,7 @@ while (<GRPSTD>) {
 close GRPSTD;
 
 $docdir = "$cvsdoc/master/emboss/apps";
+$sfdocdir = "$sfdoctop/apps/cvs";
 
 open ( SUM, ">g.g") || die "cannot open temporary groups summary file";
 
