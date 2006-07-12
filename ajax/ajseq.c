@@ -5659,6 +5659,7 @@ AjPSeqout ajSeqoutNewF(AjPFile file)
 
     pthis = ajSeqoutNew();
     pthis->Knownfile = file;
+    pthis->File = file;
 
     return pthis;
 }
@@ -5738,6 +5739,11 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 	ajSeqDel(&seq);
     ajListDel(&seqout->Savelist);
     ajFeattabOutDel(&seqout->Ftquery);
+
+    if(seqout->Knownfile)
+	seqout->File = NULL;
+    else
+	ajFileClose(&seqout->File);
 
     AJFREE(seqout->Accuracy);
     AJFREE(*Pseqout);
