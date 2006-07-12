@@ -66,7 +66,7 @@ while (<>) {
 	if($isembassy) {$embassy{$index} .= $_}
 	else {$apps{$index} .= $_}
     }
-    elsif (/^[+](\S+)\s+[\(]([a-z]+)[\)]$/) {
+    elsif (/^[+](\S+)\s+[\(]([a-zA-Z0-9]+)[\)]$/) {
 	$embassycnt++;
 	$index = "$2 $1";
 	$embassy{$index} = $_;
