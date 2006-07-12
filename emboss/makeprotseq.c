@@ -215,6 +215,7 @@ static void makeprotseq_parse_pepstats (AjPList* list,AjPFile data)
 {
     AjPStr line = ajStrNew();
     AjPStr ch;
+    AjPStr chcopy = NULL;
     const AjPStr tok;
     double value = 0.0;
     ajint count = 0;
@@ -243,8 +244,11 @@ static void makeprotseq_parse_pepstats (AjPList* list,AjPFile data)
 	count = (ajint) (value * 100) +
 	    ((value - (int) value ) >= 0.5 ? 1 : 0);
 	for (i=0;i<count;i++)
-	    ajListstrPush (*list,ch);
+	{
+	    chcopy = ajStrNewS(ch);
+	    ajListstrPush (*list,chcopy);
+	}
+	ajStrDel(&ch);
     }
-
     return;
 }
