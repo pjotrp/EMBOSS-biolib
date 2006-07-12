@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     ajint   smax     = 0;
     float   ev       = 0.0;
     float   mt       = 0.0;
-    AjBool  stdin    = ajFalse;
+    AjBool  isstdin    = ajFalse;
     AjBool  text     = ajFalse;
     AjBool  dna      = ajFalse;
     AjBool  comp     = ajFalse;
@@ -84,7 +84,7 @@ int main(int argc, char **argv)
     smax     = ajAcdGetInt("smax");
     ev       = ajAcdGetFloat("ev");
     mt       = ajAcdGetFloat("mt");
-    stdin    = ajAcdGetBool("stdin");
+    isstdin    = ajAcdGetBool("stdin");
     text     = ajAcdGetBool("text");
     dna      = ajAcdGetBool("dna");
     comp     = ajAcdGetBool("comp");
@@ -132,15 +132,15 @@ int main(int argc, char **argv)
 	ajStrAssignC(&cmd, "mast");
     ajFmtPrintAppS(&cmd, " %s ", ajFileName(mfile));
 
-    /* Warn user if both d and stdin are specified and use only d */
-    if(d && stdin)
+    /* Warn user if both d and isstdin are specified and use only d */
+    if(d && isstdin)
 	ajWarn("Database options < -d > and < -stdin > were both set, only < -d > will be used!");
     if(d)
 	ajFmtPrintAppS(&cmd, " -d %s ", ajFileName(d));
-    else if(stdin)
+    else if(isstdin)
 	ajFmtPrintAppS(&cmd, " -stdin ");
     /* Presume 'a' is a file .. it doesn't say in the MAST docs ! */
-    if((d || stdin) && a)
+    if((d || isstdin) && a)
 	ajFmtPrintAppS(&cmd, " -a %s ", ajFileName(a));
     if(b)
 	ajFmtPrintAppS(&cmd, " -b ");
