@@ -35,6 +35,8 @@ int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPRegexp patexp;
+    AjPPatlistRegex plist = NULL;
+    AjPPatternRegex pat = NULL;
     AjPReport report;
     AjPFeattable feat=NULL;
     AjPFeature sf = NULL;
@@ -50,7 +52,7 @@ int main(int argc, char **argv)
 
     report = ajAcdGetReport("outfile");
     seqall = ajAcdGetSeqall("sequence");
-    patexp = ajAcdGetRegexpSingle("pattern");
+    plist = ajAcdGetRegexp("pattern");
 
     ajFmtPrintAppS (&tmpstr, "Pattern: %S\n", ajAcdGetValue("pattern"));
     ajReportSetHeader (report, tmpstr);
@@ -63,28 +65,33 @@ int main(int argc, char **argv)
 	ajDebug("Testing '%s' len: %d %d\n",
 		ajSeqGetNameC(seq), ajSeqGetLen(seq), ajStrGetLen(str));
         feat = ajFeattableNewProt(ajSeqGetNameS(seq));
-
-	while(ajStrGetLen(str) && ajRegExec(patexp, str))
+	while(ajPatlistRegexGetNext(plist,&pat))
 	{
-	    ioff = ajRegOffset(patexp);
-	    ilen = ajRegLenI(patexp, 0);
-	    if(ioff || ilen)
+	    patexp = ajPatternRegexGetCompiled(pat);
+	    while(ajStrGetLen(str) && ajRegExec(patexp, str))
 	    {
-		ajRegSubI(patexp, 0, &substr);
-		ajRegPost(patexp, &tmpstr);
-		ajStrAssignS(&str, tmpstr);
-		ipos += ioff;
-		sf = ajFeatNewII (feat,ipos,ipos+ilen-1);
-		ipos += ilen;
-	    }
-	    else
-	    {
-		ipos++;
-		ajStrCutStart(&str, 1);
+		ioff = ajRegOffset(patexp);
+		ilen = ajRegLenI(patexp, 0);
+		if(ioff || ilen)
+		{
+		    ajRegSubI(patexp, 0, &substr);
+		    ajRegPost(patexp, &tmpstr);
+		    ajStrAssignS(&str, tmpstr);
+		    ipos += ioff;
+		    sf = ajFeatNewII (feat,ipos,ipos+ilen-1);
+		    ajFmtPrintS (&tmpstr,"*pat %S", ajPatternRegexGetName(pat));
+		    ajFeatTagAdd (sf,NULL,tmpstr);
+		    ipos += ilen;
+		}
+		else
+		{
+		    ipos++;
+		    ajStrCutStart(&str, 1);
+		}
 	    }
 	}
-        (void) ajReportWrite (report,feat,seq);
-        ajFeattableDel(&feat);
+	(void) ajReportWrite (report,feat,seq);
+	ajFeattableDel(&feat);
     }
 
     ajReportClose(report);
@@ -92,11 +99,11 @@ int main(int argc, char **argv)
 
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
-    ajRegFree(&patexp);
 
     ajStrDel(&str);
     ajStrDel(&tmpstr);
     ajStrDel(&substr);
+    ajPatlistRegexDel(&plist);
 
     embExit();
 

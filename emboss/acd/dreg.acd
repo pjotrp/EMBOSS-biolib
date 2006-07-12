@@ -29,6 +29,7 @@ section: output [
 
   report: outfile  [
     parameter: "Y"
+    taglist: "str:pat=Pattern_name"
     rformat: "seqtable"
   ]
 
