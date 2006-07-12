@@ -40,7 +40,8 @@ pkgdata_DATA =  abiview.1.abiview.gif chaos.1.chaos.gif cirdna.1.cirdna.gif \
 	hmoment.html iep.html index.html infoalign.html \
 	information_group.html infoseq.html \
 	isochore.html jembossctl.html
-pkgdata2_DATA = lindna.html listor.html marscan.html maskfeat.html \
+pkgdata2_DATA = lindna.html listor.html makenucseq.html makeprotseq.html \
+	marscan.html maskfeat.html \
 	maskseq.html matcher.html megamerger.html \
 	menus_group.html merger.html msbar.html \
 	mwcontam.html mwfilter.html \

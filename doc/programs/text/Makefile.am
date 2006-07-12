@@ -18,6 +18,7 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	getorf.txt helixturnhelix.txt hmoment.txt \
 	iep.txt infoalign.txt infoseq.txt isochore.txt
 pkgdata2_DATA = jembossctl.txt lindna.txt listor.txt \
+	makenucseq.txt makeprotseq.txt \
 	marscan.txt maskfeat.txt maskseq.txt matcher.txt \
 	megamerger.txt merger.txt msbar.txt \
 	mwcontam.txt mwfilter.txt \
