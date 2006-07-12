@@ -53,19 +53,19 @@ sub runtest ($) {
 	open (TEST, "valgrind/$name.valgrind") ||
 	    die "Failed to open valgrind/$name.valgrind";
 	while (<TEST>) {
-	    if (/definitely lost: +(\d+) bytes in (\d+) blocks/) {
+	    if (/definitely lost: +([\d,]+) bytes in ([\d,]+) blocks/) {
 		$defbytes=$1;
 		$defblocks=$2;
 	    }
-	    if (/possibly lost: +(\d+) bytes in (\d+) blocks/) {
+	    if (/possibly lost: +([\d,]+) bytes in ([\d,]+) blocks/) {
 		$posbytes=$1;
 		$posblocks=$2;
 	    }
-	    if (/still reachable: +(\d+) bytes in (\d+) blocks/) {
+	    if (/still reachable: +([\d,]+) bytes in ([\d,]+) blocks/) {
 		$rembytes=$1;
 		$remblocks=$2;
 	    }
-	    if (/ERROR SUMMARY: +(\d+) errors from (\d+) contexts/) {
+	    if (/ERROR SUMMARY: +([\d,]+) errors from ([\d,]+) contexts/) {
 		$errcount=$1;
 		$errcontexts=$2;
 	    }
