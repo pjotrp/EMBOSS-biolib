@@ -149,14 +149,19 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
     roottmp     = ajStrNew();
     tmpstr      = ajStrNew();
     
+    ajDebug("given  docroot '%S'\n", *docroot);
     ajNamGetValueC("docroot", &roottmp);
+    ajDebug("defined docroot '%S'\n", roottmp);
 
     /* look at EMBOSS doc files */
 
     /* try to open the installed doc directory */
-    if(!ajStrGetLen(roottmp))
+    if(ajStrGetLen(roottmp))
+	ajStrAssignS(docroot, roottmp);
+    else
     {
 	ajNamRootInstall(&docrootinst);
+	ajFileDirFix(&docrootinst);
 
 	if(is_windows)
 	{
@@ -170,8 +175,8 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 	    ajStrAppendC(&docrootinst,"doc");
 	}
 	else
-	    ajFmtPrintS(docroot, "%Sshare%sEMBOSS%sdoc%s",
-			docrootinst,SLASH_STRING,SLASH_STRING,SLASH_STRING);
+	    ajFmtPrintAppS(&docrootinst, "share%sEMBOSS%sdoc%s",
+			SLASH_STRING,SLASH_STRING,SLASH_STRING);
 
 	ajFileDirFix(&docrootinst);
 
@@ -183,6 +188,7 @@ static void tfm_FindAppDocRoot(AjPStr* docroot, AjBool html)
 			SLASH_STRING);
     }
     ajFileDirFix(docroot);
+    ajDebug("installed docroot '%S'\n", *docroot);
 
     if(!ajFileDir(docroot) && !is_windows)
     {
