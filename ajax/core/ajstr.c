@@ -1987,6 +1987,7 @@ AjBool ajStrAssignC(AjPStr* Pstr, const char* txt)
 
     if (!txt) {
 	*Pstr = ajStrNewResLenC("", 1, 0);
+	return ret;
     }
 
     i = strlen(txt);
