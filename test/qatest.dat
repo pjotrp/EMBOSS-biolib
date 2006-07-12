@@ -8419,8 +8419,8 @@ IN tembl:paamir
 IN ggtacc
 IN
 FI paamir.dreg
-FZ = 551
-FP /     1       6 ggtacc\n/
+FZ = 577
+FP /      1       6 regex1       ggtacc\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -11404,8 +11404,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 100k_rat.preg
-FZ = 553
-FP /^    390     393 IAQA\n/
+FZ = 579
+FP /^    390     393 regex1       IAQA\n/
 //
 
 ID prettyplot-ex
@@ -16660,7 +16660,7 @@ FP 0 /Died: /
 FI stdout
 FZ > 43000
 FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
-FP 2 /^ +-explode/
+FP 1 /^ +-explode/
 //
 
 ID tfscan-ex
@@ -21454,11 +21454,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI 54894.disc
 FC = 107
-FZ = 14810
+FZ = 14558
 FP /Length\s+94\n/
 FI 55074.disc
 FC = 265
-FZ = 38174
+FZ = 38268
 FP /Length\s+252\n/
 //
 
@@ -23495,31 +23495,6 @@ FC = 5
 FP 2 /^./
 //
 
-ID fcontrast-reg
-AB phylipnew
-AA fcontrast
-CL -reg
-CC The -reg option is not yet giving the expected results
-CC when compared to phylip 3.6
-IN ../../data/evolution/contrast.dat
-IN ../../data/evolution/contrast.tree
-IN
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI contrast.fcontrast
-FC = 27
-FP /^   3.35832   0.89706\n/
-FP /^    1.0000    0.4319\n/
-FP /^    1.0000    0.6566\n/
-FI stdout
-FC = 7
-FP 3 /^./
-//
-
 ID fdiscboot-ex
 AB phylipnew
 AA fdiscboot
@@ -25077,16 +25052,16 @@ FC = 0
 //
 
 
-ID vrnainverse-ex
+ID vrnainverse-ex1
 AB vienna
 AA vrnainverse
-TI 120
-CL -repeats 3 -succeed
+CL -repeats 3
+TI 500
 IN ../../data/rna3.fold
 IN
 FI rna3.vrnainverse
 FC = 3
-FP 3 /^[ACGU]{76}   [0-9][0-9]\n/
+FP 3 /^[ACGU]{76}   [0-9][0-9](   d = [0-9.]+)?\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25100,12 +25075,13 @@ FC = 0
 ID vrnainverse-ex2
 AB vienna
 AA vrnainverse
-CL -folding partition -repeats 3
+TI 500
+CL -repeats 3 -succeed
 IN ../../data/rna3.fold
 IN
 FI rna3.vrnainverse
 FC = 3
-FP 3 /^[ACGU]{76}   [0-9][0-9]  \(0\.[0-9][0-9][0-9][0-9][0-9][0-9]\)\n/
+FP 3 /^[ACGU]{76}   [0-9][0-9]\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
