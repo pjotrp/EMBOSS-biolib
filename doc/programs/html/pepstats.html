@@ -88,7 +88,7 @@ medium.
 % <b>pepstats </b>
 Protein statistics
 Input protein sequence(s): <b>tsw:laci_ecoli</b>
-Output file [laci_ecoli.pepstats]: <b></b>
+Pepstats program output file [laci_ecoli.pepstats]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -103,12 +103,13 @@ Output file [laci_ecoli.pepstats]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.pepstats] Pepstats program output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   Molecular weight data for amino acids
-   -[no]termini        boolean    Include charge at N and C terminus
+   -aadata             datafile   [Eamino.dat] Molecular weight data for amino
+                                  acids
+   -[no]termini        boolean    [Y] Include charge at N and C terminus
 
    Associated qualifiers:
 
@@ -166,9 +167,9 @@ Output file [laci_ecoli.pepstats]: <b></b>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Pepstats program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.pepstats</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -359,10 +360,12 @@ F = Phe		4		1.111  		0.309
 G = Gly		22		6.111  		0.728  	
 H = His		7		1.944  		0.972  	
 I = Ile		18		5.000  		1.111  	
+J = ---		0		0.000  		0.000  	
 K = Lys		11		3.056  		0.463  	
 L = Leu		40		11.111 		1.502  	
 M = Met		10		2.778  		1.634  	
 N = Asn		12		3.333  		0.775  	
+O = ---		0		0.000  		0.000  	
 P = Pro		14		3.889  		0.748  	
 Q = Gln		28		7.778  		1.994  	
 R = Arg		19		5.278  		1.077  	

@@ -63,7 +63,7 @@ This does not skip any sequences. It is exactly equivalent to seqret:
 Reads and writes (returns) sequences, skipping first few
 Input (gapped) sequence(s): <b>tembl:eclac*</b>
 Number of sequences to skip at start [0]: <b></b>
-Output sequence [eclac.fasta]: <b></b>
+output sequence(s) [eclac.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -80,7 +80,7 @@ This skips the first input sequence, writing out the others:
 % <b>skipseq -skip 1 </b>
 Reads and writes (returns) sequences, skipping first few
 Input (gapped) sequence(s): <b>tembl:eclac*</b>
-Output sequence [eclac.fasta]: <b></b>
+output sequence(s) [eclac.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -94,9 +94,10 @@ Output sequence [eclac.fasta]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-   -skip               integer    Number of sequences to skip at start
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+   -skip               integer    [0] Number of sequences to skip at start
+                                  (Any integer value)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -175,7 +176,7 @@ Output sequence [eclac.fasta]: <b></b>
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -561,6 +562,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

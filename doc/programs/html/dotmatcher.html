@@ -89,21 +89,27 @@ Created dotmatcher.ps
                                   reference (input USA)
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
-*  -graph              graph      Graph type
-*  -xygraph            xygraph    Graph type
+*  -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+*  -xygraph            xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -matrixfile         matrix     This is the scoring matrix file used when
+   -matrixfile         matrix     [EBLOSUM62 for protein, EDNAFULL for DNA]
+                                  This is the scoring matrix file used when
                                   comparing sequences. By default it is the
                                   file 'EBLOSUM62' (for proteins) or the file
                                   'EDNAFULL' (for nucleic sequences). These
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
-   -windowsize         integer    Window size over which to test threshhold
-   -threshold          integer    Threshold
+   -windowsize         integer    [10] Window size over which to test
+                                  threshhold (Integer 3 or more)
+   -threshold          integer    [23] Threshold (Integer 0 or more)
 
    Advanced (Unprompted) qualifiers:
-   -stretch            toggle     Display a non-proportional graph
+   -stretch            toggle     [N] Display a non-proportional graph
 
    Associated qualifiers:
 

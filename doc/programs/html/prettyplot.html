@@ -80,24 +80,33 @@ Created prettyplot.ps
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
-   -graph              graph      Graph type
+   -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -matrixfile         matrix     This is the scoring matrix file used when
+   -matrixfile         matrix     [EBLOSUM62 for protein, EDNAFULL for DNA]
+                                  This is the scoring matrix file used when
                                   comparing sequences. By default it is the
                                   file 'EBLOSUM62' (for proteins) or the file
                                   'EDNAFULL' (for nucleic sequences). These
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
-   -residuesperline    integer    The number of residues to be displayed on
-                                  each line
-   -resbreak           integer    Residues before a space
-   -[no]ccolours       boolean    Colour residues by their consensus value.
-   -cidentity          string     Colour to display identical residues (RED)
-   -csimilarity        string     Colour to display similar residues (GREEN)
-   -cother             string     Colour to display other residues (BLACK)
-   -docolour           boolean    Colour residues by table oily, amide etc.
-   -[no]title          boolean    Do not display the title
+   -residuesperline    integer    [50] The number of residues to be displayed
+                                  on each line (Any integer value)
+   -resbreak           integer    [Same as -residuesperline to give no breaks]
+                                  Residues before a space (Integer 1 or more)
+   -[no]ccolours       boolean    [Y] Colour residues by their consensus
+                                  value.
+   -cidentity          string     [RED] Colour to display identical residues
+                                  (RED) (Any string is accepted)
+   -csimilarity        string     [GREEN] Colour to display similar residues
+                                  (GREEN) (Any string is accepted)
+   -cother             string     [BLACK] Colour to display other residues
+                                  (BLACK) (Any string is accepted)
+   -docolour           boolean    [N] Colour residues by table oily, amide
+                                  etc.
+   -[no]title          boolean    [Y] Do not display the title
    -shade              string     Set to BPLW for normal shading
                                   (black, pale, light, white)
                                   so for pair = 1.5,1.0,0.5 and shade = BPLW
@@ -107,22 +116,30 @@ Created prettyplot.ps
                                   0.5 to 1.0 ... WHEAT (L)
                                   under 0.5 .... WHITE (W)
                                   The only four letters allowed are BPLW, in
-                                  any order.
-   -pair               array      Values to represent identical similar
-                                  related
-   -identity           integer    Only match those which are identical in all
-                                  sequences.
-   -[no]box            boolean    Display prettyboxes
-   -boxcol             boolean    Colour the background in the boxes
-   -boxcolval          string     Colour to be used for background. (GREY)
-   -[no]name           boolean    Display the sequence names
-   -maxnamelen         integer    Margin size for the sequence name.
-   -[no]number         boolean    Display the residue number
-   -[no]listoptions    boolean    Display the date and options used
-   -plurality          float      Plurality check value (totweight/2)
-   -consensus          boolean    Display the consensus
-   -[no]collision      boolean    Allow collisions in calculating consensus
-   -alternative        selection  0:Normal collision check. (default)
+                                  any order. (Any string up to 4 characters,
+                                  matching regular expression
+                                  /^([BPLW]{4})?$/)
+   -pair               array      [1.5,1.0,0.5] Values to represent identical
+                                  similar related
+   -identity           integer    [0] Only match those which are identical in
+                                  all sequences. (Integer 0 or more)
+   -[no]box            boolean    [Y] Display prettyboxes
+   -boxcol             boolean    [N] Colour the background in the boxes
+   -boxcolval          string     [GREY] Colour to be used for background.
+                                  (GREY) (Any string is accepted)
+   -[no]name           boolean    [Y] Display the sequence names
+   -maxnamelen         integer    [10] Margin size for the sequence name. (Any
+                                  integer value)
+   -[no]number         boolean    [Y] Display the residue number
+   -[no]listoptions    boolean    [Y] Display the date and options used
+   -plurality          float      [Half the total sequence weighting]
+                                  Plurality check value (totweight/2) (Any
+                                  numeric value)
+   -consensus          boolean    [N] Display the consensus
+   -[no]collision      boolean    [Y] Allow collisions in calculating
+                                  consensus
+   -alternative        selection  [0] Values are 0:Normal collision check.
+                                  (default)
                                   1:Compares identical scores with the max
                                   score found. So if any other residue matches
                                   the identical score then a collision has
@@ -134,8 +151,9 @@ Created prettyplot.ps
                                   consensus.If any of these give a top score
                                   for matching or identical scores then a
                                   collision has occured.
-   -showscore          integer    Print residue scores
-   -portrait           boolean    Set page to Portrait
+   -showscore          integer    [-1] Print residue scores (Any integer
+                                  value)
+   -portrait           boolean    [N] Set page to Portrait
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -375,7 +393,7 @@ The only four letters allowed are BPLW, in any order.</td>
 
 <tr>
 <td>-alternative</td>
-<td>0:Normal collision check. (default)
+<td>Values are 0:Normal collision check. (default)
 1:Compares identical scores with the max score found. So if any other residue matches the identical score then a collision has occurred.
 2:If another residue has a greater than or equal to matching score and these do not match then a collision has occurred.
 3:Checks all those not in the current consensus.If any of these give a top score for matching or identical scores then a collision has occured.</td>

@@ -75,15 +75,20 @@ Created pepnet.ps
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Protein sequence filename and optional
                                   format, or reference (input USA)
-   -graph              graph      Graph type
+   -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -squares            string     By default the aliphatic residues ILVM are
-                                  marked with squares.
-*  -diamonds           string     By default the residues DENQST are marked
-                                  with diamonds.
-*  -octags             string     By default the positively charged residues
-                                  HKR are marked with octagons.
+*  -squares            string     [ILVM] By default the aliphatic residues
+                                  ILVM are marked with squares. (Any string is
+                                  accepted)
+*  -diamonds           string     [DENQST] By default the residues DENQST are
+                                  marked with diamonds. (Any string is
+                                  accepted)
+*  -octags             string     [HKR] By default the positively charged
+                                  residues HKR are marked with octagons. (Any
+                                  string is accepted)
 
    Advanced (Unprompted) qualifiers:
    -amphipathic        toggle     If this is true then the residues ACFGILMVWY

@@ -16,9 +16,9 @@
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
    -gapopen            float      [@($(acdprotein)? 50.0 : 50.0 )] Gap opening
-                                  penalty (Number from 0.000 to 100.000
+                                  penalty (Number from 0.000 to 100.000)
    -gapextend          float      [@($(acdprotein)? 5.0 : 5.0)] Gap extension
-                                  penalty (Number from 0.000 to 10.000
+                                  penalty (Number from 0.000 to 10.000)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

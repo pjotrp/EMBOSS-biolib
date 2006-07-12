@@ -53,7 +53,7 @@ Usage
 % pepstats 
 Protein statistics
 Input protein sequence(s): tsw:laci_ecoli
-Output file [laci_ecoli.pepstats]: 
+Pepstats program output file [laci_ecoli.pepstats]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -63,12 +63,13 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.pepstats] Pepstats program output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   Molecular weight data for amino acids
-   -[no]termini        boolean    Include charge at N and C terminus
+   -aadata             datafile   [Eamino.dat] Molecular weight data for amino
+                                  acids
+   -[no]termini        boolean    [Y] Include charge at N and C terminus
 
    Associated qualifiers:
 
@@ -105,19 +106,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.pepstats
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -aadata Molecular weight data for amino acids Data file Eamino.dat
-   -[no]termini Include charge at N and C terminus Boolean value Yes/No
-   Yes
 
 Input file format
 
@@ -261,10 +249,12 @@ F = Phe         4               1.111           0.309
 G = Gly         22              6.111           0.728
 H = His         7               1.944           0.972
 I = Ile         18              5.000           1.111
+J = ---         0               0.000           0.000
 K = Lys         11              3.056           0.463
 L = Leu         40              11.111          1.502
 M = Met         10              2.778           1.634
 N = Asn         12              3.333           0.775
+O = ---         0               0.000           0.000
 P = Pro         14              3.889           0.748
 Q = Gln         28              7.778           1.994
 R = Arg         19              5.278           1.077

@@ -60,8 +60,9 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-   -minweight          float      Minimum scoring weight value for the
-                                  predicted cleavage site
+   -minweight          float      [3.5] Minimum scoring weight value for the
+                                  predicted cleavage site (Number from 0.000
+                                  to 100.000)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers:
@@ -111,20 +112,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -minweight Minimum scoring weight value for the predicted cleavage
-   site Number from 0.000 to 100.000 3.5
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   -prokaryote Specifies the sequence is prokaryotic and changes the
-   default scoring data file name Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

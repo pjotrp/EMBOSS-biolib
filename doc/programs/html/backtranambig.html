@@ -61,7 +61,7 @@ codons.  The default genetic code is the standard ('Universal') code.
 % <b>backtranambig </b>
 Back translate a protein sequence to ambiguous codons
 Input (gapped) protein sequence: <b>tsw:opsd_human</b>
-Output sequence [opsd_human.fasta]: <b></b>
+(gapped) nucleotide output sequence [opsd_human.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -75,11 +75,27 @@ Output sequence [opsd_human.fasta]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) protein sequence filename and
                                   optional format, or reference (input USA)
-  [-outfile]           seqout     (Gapped) nucleotide sequence filename and
-                                  optional format (output USA)
+  [-outfile]           seqout     [<sequence>.<format>] (Gapped) nucleotide
+                                  sequence filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers:
-   -table              menu       Genetic code to use
+   -table              menu       [0] Genetic code to use (Values: 0
+                                  (Standard); 1 (Standard (with alternative
+                                  initiation codons)); 2 (Vertebrate
+                                  Mitochondrial); 3 (Yeast Mitochondrial); 4
+                                  (Mold, Protozoan, Coelenterate Mitochondrial
+                                  and Mycoplasma/Spiroplasma); 5
+                                  (Invertebrate Mitochondrial); 6 (Ciliate
+                                  Macronuclear and Dasycladacean); 9
+                                  (Echinoderm Mitochondrial); 10 (Euplotid
+                                  Nuclear); 11 (Bacterial); 12 (Alternative
+                                  Yeast Nuclear); 13 (Ascidian Mitochondrial);
+                                  14 (Flatworm Mitochondrial); 15
+                                  (Blepharisma Macronuclear); 16
+                                  (Chlorophycean Mitochondrial); 21 (Trematode
+                                  Mitochondrial); 22 (Scenedesmus obliquus);
+                                  23 (Thraustochytrium Mitochondrial))
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -148,7 +164,7 @@ Output sequence [opsd_human.fasta]: <b></b>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>(Gapped) nucleotide sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

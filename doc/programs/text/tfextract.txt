@@ -72,7 +72,7 @@ Usage
 
 % tfextract 
 Extract data from TRANSFAC
-Full pathname of transfac SITE.DAT: site.dat
+Transfac database sites file: site.dat
 
    Go to the input files for this example
    Go to the output files for this example
@@ -80,7 +80,7 @@ Full pathname of transfac SITE.DAT: site.dat
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Full pathname of transfac SITE.DAT
+  [-infile]            infile     Transfac database sites file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -99,14 +99,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) Full pathname of transfac SITE.DAT Input file Required
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

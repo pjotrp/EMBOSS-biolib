@@ -98,14 +98,16 @@ Created dotpath.ps
                                   reference (input USA)
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
-   -wordsize           integer    Word size
-   -graph              graph      Graph type
+   -wordsize           integer    [4] Word size (Integer 2 or more)
+   -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -overlaps           boolean    Displays the overlapping matches (in red) as
-                                  well as the minimal set of non-overlapping
-                                  matches
-   -[no]boxit          boolean    Draw a box around dotplot
+   -overlaps           boolean    [N] Displays the overlapping matches (in
+                                  red) as well as the minimal set of
+                                  non-overlapping matches
+   -[no]boxit          boolean    [Y] Draw a box around dotplot
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

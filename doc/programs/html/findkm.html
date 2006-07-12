@@ -44,7 +44,7 @@ Menten constant (Km) and the maximum velocity (Vmax) of the reaction.
 
 % <b>findkm -graph cps </b>
 Find Km and Vmax for an enzyme reaction
-Enter name of file containing data: <b>enztest.dat</b>
+Enzyme kinetics data (application-specific) file: <b>enztest.dat</b>
 Output file [enztest.findkm]: <b></b>
 
 Created findkm.ps
@@ -59,13 +59,16 @@ Created findkm.ps
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Enter name of file containing data
-  [-outfile]           outfile    Output file name
-   -graphlb            xygraph    Graph type
+  [-infile]            infile     Enzyme kinetics data (application-specific)
+                                  file
+  [-outfile]           outfile    [*.findkm] Output file name
+   -graphlb            xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]plot           boolean    S/V vs S
+   -[no]plot           boolean    [Y] S/V vs S
 
    Associated qualifiers:
 
@@ -108,7 +111,7 @@ Created findkm.ps
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Enter name of file containing data</td>
+<td>Enzyme kinetics data (application-specific) file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -117,7 +120,7 @@ Created findkm.ps
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.findkm</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>

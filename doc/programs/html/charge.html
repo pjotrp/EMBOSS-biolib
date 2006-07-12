@@ -69,15 +69,18 @@ Output file [hbb_human.charge]: <b></b>
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-seqall]            seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-*  -graph              xygraph    Graph type
-*  -outfile            outfile    Output file name
+*  -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+*  -outfile            outfile    [*.charge] Output file name
 
    Additional (Optional) qualifiers:
-   -window             integer    Window
+   -window             integer    [5] Window (Integer 1 or more)
 
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   Amino acid property data file name
-   -plot               toggle     Produce graphic
+   -aadata             datafile   [Eamino.dat] Amino acids properties and
+                                  molecular weight data file
+   -plot               toggle     [N] Produce graphic
 
    Associated qualifiers:
 
@@ -152,7 +155,7 @@ Output file [hbb_human.charge]: <b></b>
 <td>-outfile</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.charge</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -176,7 +179,7 @@ Output file [hbb_human.charge]: <b></b>
 
 <tr>
 <td>-aadata</td>
-<td>Amino acid property data file name</td>
+<td>Amino acids properties and molecular weight data file</td>
 <td>Data file</td>
 <td>Eamino.dat</td>
 </tr>

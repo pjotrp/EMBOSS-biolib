@@ -306,7 +306,7 @@ Usage
 % emowse 
 Protein identification by mass spectrometry
 Input protein sequence(s): tsw:*
-Name of molecular weight data file: test.mowse
+Peptide molecular weight values file: test.mowse
 Whole sequence molwt [0]: 
 Output file [100k_rat.emowse]: 
 
@@ -318,18 +318,25 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-infile]            infile     Name of molecular weight data file
-   -weight             integer    Whole sequence molwt
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Peptide molecular weight values file
+   -weight             integer    [0] Whole sequence molwt (Any integer value)
+  [-outfile]           outfile    [*.emowse] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   Molecular weight data for amino acids
-   -frequencies        datafile   Frequencies file
-   -enzyme             menu       Enzyme or reagent
-   -pcrange            integer    Allowed whole sequence weight variability
-   -tolerance          float      Tolerance
-   -partials           float      Partials factor
+   -aadata             datafile   [Eamino.dat] Amino acids properties and
+                                  molecular weight data file
+   -frequencies        datafile   [Efreqs.dat] Amino acid frequencies data
+                                  file
+   -enzyme             menu       [1] Enzyme or reagent (Values: 1 (Trypsin);
+                                  2 (Lys-C); 3 (Arg-C); 4 (Asp-N); 5
+                                  (V8-bicarb); 6 (V8-phosph); 7
+                                  (Chymotrypsin); 8 (CNBr))
+   -pcrange            integer    [25] Allowed whole sequence weight
+                                  variability (Integer from 0 to 75)
+   -tolerance          float      [0.1] Tolerance (Number from 0.100 to 1.000)
+   -partials           float      [0.4] Partials factor (Number from 0.100 to
+                                  1.000)
 
    Associated qualifiers:
 
@@ -366,35 +373,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-infile]
-   (Parameter 2) Name of molecular weight data file Input file Required
-   -weight Whole sequence molwt Any integer value 0
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.emowse
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -aadata Molecular weight data for amino acids Data file Eamino.dat
-   -frequencies Frequencies file Data file Efreqs.dat
-   -enzyme Enzyme or reagent
-   1 (Trypsin)
-   2 (Lys-C)
-   3 (Arg-C)
-   4 (Asp-N)
-   5 (V8-bicarb)
-   6 (V8-phosph)
-   7 (Chymotrypsin)
-   8 (CNBr)
-   1
-   -pcrange Allowed whole sequence weight variability Integer from 0 to
-   75 25
-   -tolerance Tolerance Number from 0.100 to 1.000 0.1
-   -partials Partials factor Number from 0.100 to 1.000 0.4
 
 Input file format
 

@@ -17,7 +17,7 @@
    -percent            float      [100.0] This is the threshold of the
                                   percentage ambiguity in the window required
                                   in order to trim a sequence. (Any numeric
-                                  value
+                                  value)
    -strict             boolean    [N] In nucleic sequences, trim off not only
                                   N's and X's, but also the nucleotide IUPAC
                                   ambiguity codes M, R, W, S, Y, K, V, H, D

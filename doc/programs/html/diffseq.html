@@ -78,8 +78,8 @@ long.
 Find differences between nearly identical sequences
 Word size [10]: <b></b>
 Output report [ap000504.diffseq]: <b></b>
-Output features [AP000504.diffgff]: <b></b>
-Second output features [AF129756.diffgff]: <b></b>
+Features output [AP000504.diffgff]: <b></b>
+Second features output [AF129756.diffgff]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -95,7 +95,7 @@ Second output features [AF129756.diffgff]: <b></b>
                                   reference (input USA)
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
-   -wordsize           integer    The similar regions between the two
+   -wordsize           integer    [10] The similar regions between the two
                                   sequences are found by creating a hash table
                                   of 'wordsize'd subsequences. 10 is a
                                   reasonable default. Making this value larger
@@ -106,15 +106,16 @@ Second output features [AF129756.diffgff]: <b></b>
                                   This value may be made smaller (4?) to
                                   improve the resolution of nearby
                                   differences, but the program will go much
-                                  slower.
+                                  slower. (Integer 2 or more)
   [-outfile]           report     Output report file name
-  [-aoutfeat]          featout    File for output of first sequence's features
-  [-boutfeat]          featout    File for output of second sequence's
-                                  features
+  [-aoutfeat]          featout    [$(asequence.name).diffgff] File for output
+                                  of first sequence's features
+  [-boutfeat]          featout    [$(bsequence.name).diffgff] File for output
+                                  of second sequence's features
 
    Additional (Optional) qualifiers:
-   -globaldifferences  boolean    Normally this program will find regions of
-                                  identity that are the length of the
+   -globaldifferences  boolean    [N] Normally this program will find regions
+                                  of identity that are the length of the
                                   specified word-size or greater and will then
                                   report the regions of difference between
                                   these matching regions. This works well and

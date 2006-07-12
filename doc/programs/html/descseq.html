@@ -107,15 +107,17 @@ Alter the name or description of a sequence.
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -name               string     Name of the sequence
-   -description        string     Description of the sequence
+   -name               string     Name of the sequence (Any string is
+                                  accepted)
+   -description        string     Description of the sequence (Any string is
+                                  accepted)
 
    Advanced (Unprompted) qualifiers:
-   -append             boolean    This allows you to append the name or
+   -append             boolean    [N] This allows you to append the name or
                                   description you have given on to the end of
                                   the existing name or description of the
                                   sequence.
@@ -186,7 +188,7 @@ Alter the name or description of a sequence.
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -373,6 +375,16 @@ None noted.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

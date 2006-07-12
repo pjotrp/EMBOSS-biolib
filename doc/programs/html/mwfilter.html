@@ -55,9 +55,9 @@ aids in database searching for protein identification.
 
 % <b>mwfilter </b>
 Filter noisy molwts from mass spec output
-Molecular weight file input: <b>molwts.dat</b>
+Molecular weights file: <b>molwts.dat</b>
 Ppm tolerance [50.0]: <b></b>
-Output file [molwts.mwfilter]: <b></b>
+Molecular weights output file [molwts.mwfilter]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -69,15 +69,16 @@ Output file [molwts.mwfilter]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Molecular weight file input
-   -tolerance          float      Ppm tolerance
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Molecular weights file
+   -tolerance          float      [50.0] Ppm tolerance (Any numeric value)
+  [-outfile]           outfile    [*.mwfilter] Molecular weights output file
 
    Additional (Optional) qualifiers:
-   -showdel            boolean    Output deleted mwts
+   -showdel            boolean    [N] Output deleted mwts
 
    Advanced (Unprompted) qualifiers:
-   -datafile           datafile   Data file of noisy molecular weights
+   -datafile           datafile   [Emwfilter.dat] Molecular weight standards
+                                  data file
 
    Associated qualifiers:
 
@@ -111,7 +112,7 @@ Output file [molwts.mwfilter]: <b></b>
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Molecular weight file input</td>
+<td>Molecular weights file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -125,9 +126,9 @@ Output file [molwts.mwfilter]: <b></b>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Molecular weights output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.mwfilter</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -151,7 +152,7 @@ Output file [molwts.mwfilter]: <b></b>
 
 <tr>
 <td>-datafile</td>
-<td>Data file of noisy molecular weights</td>
+<td>Molecular weight standards data file</td>
 <td>Data file</td>
 <td>Emwfilter.dat</td>
 </tr>

@@ -28,7 +28,6 @@ Usage
 Nucleic acid pattern search
 Input nucleotide sequence(s): tembl:hhtetra
 Search pattern: AAGCTT
-Number of mismatches [0]: 
 Output report [hhtetra.fuzznuc]: 
 
    Go to the input files for this example
@@ -39,7 +38,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -pattern            string     The standard IUPAC one-letter codes for the
+   -pattern            pattern    The standard IUPAC one-letter codes for the
                                   nucleotides are used.
                                   The symbol `n' is used for a position where
                                   any nucleotide is accepted.
@@ -68,12 +67,11 @@ Command line arguments
                                   A period ends the pattern. (Optional in
                                   fuzznuc).
                                   For example, [CG](5)TG{A}N(1,5)C
-   -mismatch           integer    Number of mismatches
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -complement         boolean    Search complementary strand
+   -complement         boolean    [0] Search complementary strand
 
    Associated qualifiers:
 
@@ -92,6 +90,11 @@ Command line arguments
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-pattern" associated qualifiers
+   -pformat            string     File format
+   -pmismatch          integer    Pattern mismatch
+   -pname              string     Pattern base name
 
    "-outfile" associated qualifiers
    -rformat2           string     Report format
@@ -117,35 +120,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -pattern The standard IUPAC one-letter codes for the nucleotides are
-   used. The symbol `n' is used for a position where any nucleotide is
-   accepted. Ambiguities are indicated by listing the acceptable
-   nucleotides for a given position, between square parentheses `[ ]'.
-   For example: [ACG] stands for A or C or G. Ambiguities are also
-   indicated by listing between a pair of curly brackets `{ }' the
-   nucleotides that are not accepted at a given position. For example:
-   {AG} stands for any nucleotides except A and G. Each element in a
-   pattern is separated from its neighbor by a `-'. (Optional in
-   fuzznuc). Repetition of an element of the pattern can be indicated by
-   following that element with a numerical value or a numerical range
-   between parenthesis. Examples: N(3) corresponds to N-N-N, N(2,4)
-   corresponds to N-N or N-N-N or N-N-N-N. When a pattern is restricted
-   to either the 5' or 3' end of a sequence, that pattern either starts
-   with a `<' symbol or respectively ends with a `>' symbol. A period
-   ends the pattern. (Optional in fuzznuc). For example,
-   [CG](5)TG{A}N(1,5)C Any string is accepted An empty string is accepted
-   -mismatch Number of mismatches Integer 0 or more 0
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -complement Search complementary strand Boolean value Yes/No No
 
 Input file format
 
@@ -327,15 +301,16 @@ Output file format
 # Sequence: HHTETRA     from: 1   to: 1272
 # HitCount: 2
 #
-# Pattern: AAGCTT
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 AAGCTT
+#
 # Complement: No
 #
 #=======================================
 
-  Start     End Mismatch Sequence
-      1       6        . aagctt
-   1267    1272        . aagctt
+  Start     End Pattern_name Mismatch Sequence
+      1       6 pattern1            . aagctt
+   1267    1272 pattern1            . aagctt
 
 #---------------------------------------
 #---------------------------------------

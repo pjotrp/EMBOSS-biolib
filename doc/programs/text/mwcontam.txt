@@ -24,9 +24,9 @@ Usage
 
 % mwcontam 
 Shows molwts that match across a set of files
-Comma separated file list: ../data/mw2.dat,mw3.dat
+Molecular weights file list: ../data/mw2.dat,mw3.dat
 Ppm tolerance [50.0]: 
-Output file [outfile.mwcontam]: 
+Molecular weights output file [outfile.mwcontam]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -34,9 +34,9 @@ Output file [outfile.mwcontam]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-files]             filelist   Comma separated file list
-   -tolerance          float      Ppm tolerance
-  [-outfile]           outfile    Output file name
+  [-files]             filelist   Molecular weights file list
+   -tolerance          float      [50.0] Ppm tolerance (Any numeric value)
+  [-outfile]           outfile    [*.mwcontam] Molecular weights output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -59,18 +59,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-files]
-   (Parameter 1) Comma separated file list Comma-separated file list
-   comma-separated file list
-   -tolerance Ppm tolerance Any numeric value 50.0
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.mwcontam
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

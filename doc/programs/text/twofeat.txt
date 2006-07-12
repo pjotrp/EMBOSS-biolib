@@ -87,7 +87,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-   -atype              string     By default every feature in the feature
+   -atype              string     [*] By default every feature in the feature
                                   table is allowed. You can set this to be any
                                   feature type you wish to allow.
                                   See http://www3.ebi.ac.uk/Services/WebFeat/
@@ -99,8 +99,8 @@ Command line arguments
                                   If you wish to allow more than one type,
                                   separate their names with the character '|',
                                   eg:
-                                  *UTR | intron
-   -btype              string     By default every feature in the feature
+                                  *UTR | intron (Any string is accepted)
+   -btype              string     [*] By default every feature in the feature
                                   table is allowed. You can set this to be any
                                   feature type you wish to allow.
                                   See http://www3.ebi.ac.uk/Services/WebFeat/
@@ -112,17 +112,20 @@ Command line arguments
                                   If you wish to allow more than one type,
                                   separate their names with the character '|',
                                   eg:
-                                  *UTR | intron
-   -minrange           integer    If this is greater or equal to 'maxrange',
-                                  then no min or max range is specified
-   -maxrange           integer    If this is less than or equal to 'minrange',
-                                  then no min or max range is specified
+                                  *UTR | intron (Any string is accepted)
+   -minrange           integer    [0] If this is greater or equal to
+                                  'maxrange', then no min or max range is
+                                  specified (Any integer value)
+   -maxrange           integer    [0] If this is less than or equal to
+                                  'minrange', then no min or max range is
+                                  specified (Any integer value)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -asource            string     By default any feature source in the feature
-                                  table is allowed. You can set this to match
-                                  any feature source you wish to allow.
+   -asource            string     [*] By default any feature source in the
+                                  feature table is allowed. You can set this
+                                  to match any feature source you wish to
+                                  allow.
                                   The source name is usually either the name
                                   of the program that detected the feature or
                                   it is the feature table (eg: EMBL) that the
@@ -131,15 +134,19 @@ Command line arguments
                                   If you wish to allow more than one source,
                                   separate their names with the character '|',
                                   eg:
-                                  gene* | embl
-   -asense             menu       By default any feature sense is allowed. You
-                                  can set this to match the required sense.
-   -aminscore          float      If this is greater than or equal to the
-                                  maximum score, then any score is allowed.
-   -amaxscore          float      If this is less than or equal to the maximum
-                                  score, then any score is permitted.
-   -atag               string     Tags are the types of extra values that a
-                                  feature may have. For example in the EMBL
+                                  gene* | embl (Any string is accepted)
+   -asense             menu       [0] By default any feature sense is allowed.
+                                  You can set this to match the required
+                                  sense. (Values: 0 (Any sense); + (Forward
+                                  sense); - (Reverse sense))
+   -aminscore          float      [0.0] If this is greater than or equal to
+                                  the maximum score, then any score is
+                                  allowed. (Any numeric value)
+   -amaxscore          float      [0.0] If this is less than or equal to the
+                                  maximum score, then any score is permitted.
+                                  (Any numeric value)
+   -atag               string     [*] Tags are the types of extra values that
+                                  a feature may have. For example in the EMBL
                                   feature table, a 'CDS' type of feature may
                                   have the tags '/codon', '/codon_start',
                                   '/db_xref', '/EC_number', '/evidence',
@@ -158,12 +165,12 @@ Command line arguments
                                   If you wish to allow more than one tag,
                                   separate their names with the character '|',
                                   eg:
-                                  gene | label
-   -avalue             string     Tag values are the values associated with a
-                                  feature tag. Tags are the types of extra
-                                  values that a feature may have. For example
-                                  in the EMBL feature table, a 'CDS' type of
-                                  feature may have the tags '/codon',
+                                  gene | label (Any string is accepted)
+   -avalue             string     [*] Tag values are the values associated
+                                  with a feature tag. Tags are the types of
+                                  extra values that a feature may have. For
+                                  example in the EMBL feature table, a 'CDS'
+                                  type of feature may have the tags '/codon',
                                   '/codon_start', '/db_xref', '/EC_number',
                                   '/evidence', '/exception', '/function',
                                   '/gene', '/label', '/map', '/note',
@@ -182,10 +189,11 @@ Command line arguments
                                   If you wish to allow more than one tag
                                   value, separate their names with the
                                   character '|', eg:
-                                  pax* | 10
-   -bsource            string     By default any feature source in the feature
-                                  table is allowed. You can set this to match
-                                  any feature source you wish to allow.
+                                  pax* | 10 (Any string is accepted)
+   -bsource            string     [*] By default any feature source in the
+                                  feature table is allowed. You can set this
+                                  to match any feature source you wish to
+                                  allow.
                                   The source name is usually either the name
                                   of the program that detected the feature or
                                   it is the feature table (eg: EMBL) that the
@@ -194,15 +202,19 @@ Command line arguments
                                   If you wish to allow more than one source,
                                   separate their names with the character '|',
                                   eg:
-                                  gene* | embl
-   -bsense             menu       By default any feature sense is allowed. You
-                                  can set this to match the required sense.
-   -bminscore          float      If this is greater than or equal to the
-                                  maximum score, then any score is allowed.
-   -bmaxscore          float      If this is less than or equal to the maximum
-                                  score, then any score is permitted.
-   -btag               string     Tags are the types of extra values that a
-                                  feature may have. For example in the EMBL
+                                  gene* | embl (Any string is accepted)
+   -bsense             menu       [0] By default any feature sense is allowed.
+                                  You can set this to match the required
+                                  sense. (Values: 0 (Any sense); + (Forward
+                                  sense); - (Reverse sense))
+   -bminscore          float      [0.0] If this is greater than or equal to
+                                  the maximum score, then any score is
+                                  allowed. (Any numeric value)
+   -bmaxscore          float      [0.0] If this is less than or equal to the
+                                  maximum score, then any score is permitted.
+                                  (Any numeric value)
+   -btag               string     [*] Tags are the types of extra values that
+                                  a feature may have. For example in the EMBL
                                   feature table, a 'CDS' type of feature may
                                   have the tags '/codon', '/codon_start',
                                   '/db_xref', '/EC_number', '/evidence',
@@ -221,12 +233,12 @@ Command line arguments
                                   If you wish to allow more than one tag,
                                   separate their names with the character '|',
                                   eg:
-                                  gene | label
-   -bvalue             string     Tag values are the values associated with a
-                                  feature tag. Tags are the types of extra
-                                  values that a feature may have. For example
-                                  in the EMBL feature table, a 'CDS' type of
-                                  feature may have the tags '/codon',
+                                  gene | label (Any string is accepted)
+   -bvalue             string     [*] Tag values are the values associated
+                                  with a feature tag. Tags are the types of
+                                  extra values that a feature may have. For
+                                  example in the EMBL feature table, a 'CDS'
+                                  type of feature may have the tags '/codon',
                                   '/codon_start', '/db_xref', '/EC_number',
                                   '/evidence', '/exception', '/function',
                                   '/gene', '/label', '/map', '/note',
@@ -245,36 +257,46 @@ Command line arguments
                                   If you wish to allow more than one tag
                                   value, separate their names with the
                                   character '|', eg:
-                                  pax* | 10
-   -overlap            menu       This allows you to specify the allowed
+                                  pax* | 10 (Any string is accepted)
+   -overlap            menu       [A] This allows you to specify the allowed
                                   overlaps of the features A and B.
                                   You can allow any or no overlaps, specify
                                   that they must or must not overlap, that one
                                   must or must not be wholly enclosed within
-                                  another feature.
-   -rangetype          menu       This allows you to specify the positions
+                                  another feature. (Values: A (Any); O
+                                  (Overlap required); NO (No overlaps are
+                                  allowed); NW (Overlap required but not
+                                  within); AW (A must be all within B); BW (B
+                                  must be all within A))
+   -rangetype          menu       [N] This allows you to specify the positions
                                   from which the allowed minimum or maximum
                                   distance between the features is measured
-   -sense              menu       This allows you to specify the required
+                                  (Values: N (From nearest ends); L (From left
+                                  ends); R (From right ends); F (From
+                                  furthest ends))
+   -sense              menu       [A] This allows you to specify the required
                                   sense that the two features must be on. This
                                   is ignored (always 'Any') when looking at
-                                  protein sequence features.
-   -order              menu       This allows you to specify the required
+                                  protein sequence features. (Values: A (Any
+                                  sense); S (Same sense); O (Opposite sense))
+   -order              menu       [A] This allows you to specify the required
                                   order of the two features. The order is
                                   measured from the start positions of the
                                   features. This criterion is always applied
                                   despite the specified overlap type required.
-   -twoout             toggle     If you set this to be true, then the two
+                                  (Values: A (Any); AB (Feature A then
+                                  feature B); BA (Feature B then feature A))
+   -twoout             toggle     [N] If you set this to be true, then the two
                                   features themselves will be written out. If
                                   it is left as false, then a single feature
                                   will be written out covering the two
                                   features you found.
-*  -typeout            string     If you have specified that the pairs of
-                                  features that are found should be reported
-                                  as one feature in the ouput, then you can
-                                  specify the 'type' name of the new feature
-                                  here. By default every feature in the
-                                  feature table is allowed. See
+*  -typeout            string     [misc_feature] If you have specified that
+                                  the pairs of features that are found should
+                                  be reported as one feature in the ouput,
+                                  then you can specify the 'type' name of the
+                                  new feature here. By default every feature
+                                  in the feature table is allowed. See
                                   http://www3.ebi.ac.uk/Services/WebFeat/ for
                                   a list of the EMBL feature types and see
                                   Appendix A of the Swissprot user manual in
@@ -282,6 +304,7 @@ Command line arguments
                                   list of the Swissprot feature types. If you
                                   specify an invalid feature type name, then
                                   the default name 'misc_feature' is used.
+                                  (Any string is accepted)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -326,169 +349,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence(s) filename and optional format, or reference
-   (input USA) Readable sequence(s) Required
-   -atype By default every feature in the feature table is allowed. You
-   can set this to be any feature type you wish to allow. See
-   http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature
-   types and see Appendix A of the Swissprot user manual in
-   http://www.expasy.ch/txt/userman.txt for a list of the Swissprot
-   feature types. The type may be wildcarded by using '*'. If you wish to
-   allow more than one type, separate their names with the character '|',
-   eg: *UTR | intron Any string is accepted *
-   -btype By default every feature in the feature table is allowed. You
-   can set this to be any feature type you wish to allow. See
-   http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature
-   types and see Appendix A of the Swissprot user manual in
-   http://www.expasy.ch/txt/userman.txt for a list of the Swissprot
-   feature types. The type may be wildcarded by using '*'. If you wish to
-   allow more than one type, separate their names with the character '|',
-   eg: *UTR | intron Any string is accepted *
-   -minrange If this is greater or equal to 'maxrange', then no min or
-   max range is specified Any integer value 0
-   -maxrange If this is less than or equal to 'minrange', then no min or
-   max range is specified Any integer value 0
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   -asource By default any feature source in the feature table is
-   allowed. You can set this to match any feature source you wish to
-   allow. The source name is usually either the name of the program that
-   detected the feature or it is the feature table (eg: EMBL) that the
-   feature came from. The source may be wildcarded by using '*'. If you
-   wish to allow more than one source, separate their names with the
-   character '|', eg: gene* | embl Any string is accepted *
-   -asense By default any feature sense is allowed. You can set this to
-   match the required sense.
-   0 (Any sense)
-   + (Forward sense)
-   - (Reverse sense)
-   0
-   -aminscore If this is greater than or equal to the maximum score, then
-   any score is allowed. Any numeric value 0.0
-   -amaxscore If this is less than or equal to the maximum score, then
-   any score is permitted. Any numeric value 0.0
-   -atag Tags are the types of extra values that a feature may have. For
-   example in the EMBL feature table, a 'CDS' type of feature may have
-   the tags '/codon', '/codon_start', '/db_xref', '/EC_number',
-   '/evidence', '/exception', '/function', '/gene', '/label', '/map',
-   '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo',
-   '/standard_name', '/translation', '/transl_except', '/transl_table',
-   or '/usedin'. Some of these tags also have values, for example '/gene'
-   can have the value of the gene name. By default any feature tag in the
-   feature table is allowed. You can set this to match any feature tag
-   you wish to allow. The tag may be wildcarded by using '*'. If you wish
-   to allow more than one tag, separate their names with the character
-   '|', eg: gene | label Any string is accepted *
-   -avalue Tag values are the values associated with a feature tag. Tags
-   are the types of extra values that a feature may have. For example in
-   the EMBL feature table, a 'CDS' type of feature may have the tags
-   '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence',
-   '/exception', '/function', '/gene', '/label', '/map', '/note',
-   '/number', '/partial', '/product', '/protein_id', '/pseudo',
-   '/standard_name', '/translation', '/transl_except', '/transl_table',
-   or '/usedin'. Only some of these tags can have values, for example
-   '/gene' can have the value of the gene name. By default any feature
-   tag value in the feature table is allowed. You can set this to match
-   any feature tag value you wish to allow. The tag value may be
-   wildcarded by using '*'. If you wish to allow more than one tag value,
-   separate their names with the character '|', eg: pax* | 10 Any string
-   is accepted *
-   -bsource By default any feature source in the feature table is
-   allowed. You can set this to match any feature source you wish to
-   allow. The source name is usually either the name of the program that
-   detected the feature or it is the feature table (eg: EMBL) that the
-   feature came from. The source may be wildcarded by using '*'. If you
-   wish to allow more than one source, separate their names with the
-   character '|', eg: gene* | embl Any string is accepted *
-   -bsense By default any feature sense is allowed. You can set this to
-   match the required sense.
-   0 (Any sense)
-   + (Forward sense)
-   - (Reverse sense)
-   0
-   -bminscore If this is greater than or equal to the maximum score, then
-   any score is allowed. Any numeric value 0.0
-   -bmaxscore If this is less than or equal to the maximum score, then
-   any score is permitted. Any numeric value 0.0
-   -btag Tags are the types of extra values that a feature may have. For
-   example in the EMBL feature table, a 'CDS' type of feature may have
-   the tags '/codon', '/codon_start', '/db_xref', '/EC_number',
-   '/evidence', '/exception', '/function', '/gene', '/label', '/map',
-   '/note', '/number', '/partial', '/product', '/protein_id', '/pseudo',
-   '/standard_name', '/translation', '/transl_except', '/transl_table',
-   or '/usedin'. Some of these tags also have values, for example '/gene'
-   can have the value of the gene name. By default any feature tag in the
-   feature table is allowed. You can set this to match any feature tag
-   you wish to allow. The tag may be wildcarded by using '*'. If you wish
-   to allow more than one tag, separate their names with the character
-   '|', eg: gene | label Any string is accepted *
-   -bvalue Tag values are the values associated with a feature tag. Tags
-   are the types of extra values that a feature may have. For example in
-   the EMBL feature table, a 'CDS' type of feature may have the tags
-   '/codon', '/codon_start', '/db_xref', '/EC_number', '/evidence',
-   '/exception', '/function', '/gene', '/label', '/map', '/note',
-   '/number', '/partial', '/product', '/protein_id', '/pseudo',
-   '/standard_name', '/translation', '/transl_except', '/transl_table',
-   or '/usedin'. Only some of these tags can have values, for example
-   '/gene' can have the value of the gene name. By default any feature
-   tag value in the feature table is allowed. You can set this to match
-   any feature tag value you wish to allow. The tag value may be
-   wildcarded by using '*'. If you wish to allow more than one tag value,
-   separate their names with the character '|', eg: pax* | 10 Any string
-   is accepted *
-   -overlap This allows you to specify the allowed overlaps of the
-   features A and B. You can allow any or no overlaps, specify that they
-   must or must not overlap, that one must or must not be wholly enclosed
-   within another feature.
-   A  (Any)
-   O  (Overlap required)
-   NO (No overlaps are allowed)
-   NW (Overlap required but not within)
-   AW (A must be all within B)
-   BW (B must be all within A)
-   A
-   -rangetype This allows you to specify the positions from which the
-   allowed minimum or maximum distance between the features is measured
-   N (From nearest ends)
-   L (From left ends)
-   R (From right ends)
-   F (From furthest ends)
-   N
-   -sense This allows you to specify the required sense that the two
-   features must be on. This is ignored (always 'Any') when looking at
-   protein sequence features.
-   A (Any sense)
-   S (Same sense)
-   O (Opposite sense)
-   A
-   -order This allows you to specify the required order of the two
-   features. The order is measured from the start positions of the
-   features. This criterion is always applied despite the specified
-   overlap type required.
-   A  (Any)
-   AB (Feature A then feature B)
-   BA (Feature B then feature A)
-   A
-   -twoout If you set this to be true, then the two features themselves
-   will be written out. If it is left as false, then a single feature
-   will be written out covering the two features you found. Toggle value
-   Yes/No No
-   -typeout If you have specified that the pairs of features that are
-   found should be reported as one feature in the ouput, then you can
-   specify the 'type' name of the new feature here. By default every
-   feature in the feature table is allowed. See
-   http://www3.ebi.ac.uk/Services/WebFeat/ for a list of the EMBL feature
-   types and see Appendix A of the Swissprot user manual in
-   http://www.expasy.ch/txt/userman.txt for a list of the Swissprot
-   feature types. If you specify an invalid feature type name, then the
-   default name 'misc_feature' is used. Any string is accepted
-   misc_feature
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

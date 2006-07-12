@@ -84,8 +84,8 @@ Running this program may be the job of your system manager.
 
 % <b>rebaseextract </b>
 Extract data from REBASE
-Full pathname of WITHREFM file: <b>withrefm</b>
-Full pathname of PROTO file: <b>proto</b>
+REBASE database withrefm file: <b>withrefm</b>
+REBASE database proto file: <b>proto</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -98,13 +98,13 @@ Full pathname of PROTO file: <b>proto</b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Full pathname of WITHREFM file
-  [-protofile]         infile     Full pathname of PROTO file
+  [-infile]            infile     REBASE database withrefm file
+  [-protofile]         infile     REBASE database proto file
 
    Additional (Optional) qualifiers:
-   -[no]equivalences   boolean    This option calculates an embossre.equ file
-                                  using restriction enzyme prototypes in the
-                                  withrefm file.
+   -[no]equivalences   boolean    [Y] This option calculates an embossre.equ
+                                  file using restriction enzyme prototypes in
+                                  the withrefm file.
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers: (none)
@@ -136,14 +136,14 @@ Full pathname of PROTO file: <b>proto</b>
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Full pathname of WITHREFM file</td>
+<td>REBASE database withrefm file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-protofile]<br>(Parameter 2)</td>
-<td>Full pathname of PROTO file</td>
+<td>REBASE database proto file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>

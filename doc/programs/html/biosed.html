@@ -100,16 +100,19 @@ Replace or delete sequence sections
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-   -target             string     Sequence section to match
-*  -replace            string     Replacement sequence section
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+   -target             string     [N] Sequence section to match (Any string is
+                                  accepted)
+*  -replace            string     [A] Replacement sequence section (Any string
+                                  is accepted)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -position           integer    Sequence position to match
+   -position           integer    [0] Sequence position to match (Integer 0 or
+                                  more)
 
    Advanced (Unprompted) qualifiers:
-   -delete             toggle     Delete the target sequence sections
+   -delete             toggle     [N] Delete the target sequence sections
 
    Associated qualifiers:
 
@@ -191,7 +194,7 @@ Replace or delete sequence sections
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -509,6 +512,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

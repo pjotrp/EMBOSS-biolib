@@ -116,14 +116,14 @@ The slow-accurate method is fine for short sequences but will be VERY SLOW for m
 <tr>
 <td>-pwgapopen</td>
 <td>The penalty for opening a gap in the pairwise alignments.</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>10.0</td>
 </tr>
 
 <tr>
 <td>-pwgapextend</td>
 <td>The penalty for extending a gap by 1 residue in the pairwise alignments.</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>0.1</td>
 </tr>
 

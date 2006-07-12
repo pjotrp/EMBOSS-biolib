@@ -41,12 +41,14 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
-   -graph              xygraph    Graph type
+  [-outfile]           outfile    [*.isochore] Output file name
+   -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -window             integer    Window size
-   -shift              integer    Shift increment
+   -window             integer    [1000] Window size (Integer 1 or more)
+   -shift              integer    [100] Shift increment (Integer 1 or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -93,21 +95,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.isochore
-   -graph Graph type EMBOSS has a list of known devices, including ps,
-   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
-   Additional (Optional) qualifiers Allowed values Default
-   -window Window size Integer 1 or more 1000
-   -shift Shift increment Integer 1 or more 100
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

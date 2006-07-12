@@ -29,13 +29,13 @@
                                   consensus. The default plurality is taken as
                                   50% of the total weight of all the
                                   sequences in the alignment. (Number from
-                                  0.000 to 100.000
+                                  0.000 to 100.000)
    -identity           float      [0.0] Provides the facility of setting the
                                   required number of identities at a position
                                   for it to give a consensus. Therefore, if
                                   this is set to 100% only columns of
                                   identities contribute to the consensus.
-                                  (Number from 0.000 to 100.000
+                                  (Number from 0.000 to 100.000)
    -only               boolean    [N] This is a way of shortening the command
                                   line if you only want a few things to be
                                   displayed. Instead of specifying:

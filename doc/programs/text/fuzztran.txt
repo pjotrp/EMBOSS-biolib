@@ -29,7 +29,6 @@ Usage
 Protein pattern search after translation
 Input nucleotide sequence(s): tembl:rnops
 Search pattern: RA
-Number of mismatches [0]: 
 Translation frames
          1 : 1
          2 : 2
@@ -72,7 +71,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -pattern            string     The standard IUPAC one-letter codes for the
+   -pattern            pattern    The standard IUPAC one-letter codes for the
                                   amino acids are used.
                                   The symbol `x' is used for a position where
                                   any amino acid is accepted.
@@ -101,12 +100,29 @@ Command line arguments
                                   A period ends the pattern. (Optional in
                                   fuzztran).
                                   For example, [DE](2)HS{P}X(2)PX(2,4)C
-   -mismatch           integer    Number of mismatches
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers:
-   -frame              menu       Frame(s) to translate
-   -table              menu       Code to use
+   -frame              menu       [1] Frame(s) to translate (Values: 1 (1); 2
+                                  (2); 3 (3); F (Forward three frames); -1
+                                  (-1); -2 (-2); -3 (-3); R (Reverse three
+                                  frames); 6 (All six frames))
+   -table              menu       [0] Code to use (Values: 0 (Standard); 1
+                                  (Standard (with alternative initiation
+                                  codons)); 2 (Vertebrate Mitochondrial); 3
+                                  (Yeast Mitochondrial); 4 (Mold, Protozoan,
+                                  Coelenterate Mitochondrial and
+                                  Mycoplasma/Spiroplasma); 5 (Invertebrate
+                                  Mitochondrial); 6 (Ciliate Macronuclear and
+                                  Dasycladacean); 9 (Echinoderm
+                                  Mitochondrial); 10 (Euplotid Nuclear); 11
+                                  (Bacterial); 12 (Alternative Yeast Nuclear);
+                                  13 (Ascidian Mitochondrial); 14 (Flatworm
+                                  Mitochondrial); 15 (Blepharisma
+                                  Macronuclear); 16 (Chlorophycean
+                                  Mitochondrial); 21 (Trematode
+                                  Mitochondrial); 22 (Scenedesmus obliquus);
+                                  23 (Thraustochytrium Mitochondrial))
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -126,6 +142,11 @@ Command line arguments
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-pattern" associated qualifiers
+   -pformat            string     File format
+   -pmismatch          integer    Pattern mismatch
+   -pname              string     Pattern base name
 
    "-outfile" associated qualifiers
    -rformat2           string     Report format
@@ -151,67 +172,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -pattern The standard IUPAC one-letter codes for the amino acids are
-   used. The symbol `x' is used for a position where any amino acid is
-   accepted. Ambiguities are indicated by listing the acceptable amino
-   acids for a given position, between square parentheses `[ ]'. For
-   example: [ALT] stands for Ala or Leu or Thr. Ambiguities are also
-   indicated by listing between a pair of curly brackets `{ }' the amino
-   acids that are not accepted at a gven position. For example: {AM}
-   stands for any amino acid except Ala and Met. Each element in a
-   pattern is separated from its neighbor by a `-'. (Optional in
-   fuzztran) Repetition of an element of the pattern can be indicated by
-   following that element with a numerical value or a numerical range
-   between parenthesis. Examples: x(3) corresponds to x-x-x, x(2,4)
-   corresponds to x-x or x-x-x or x-x-x-x. When a pattern is restricted
-   to either the N- or C-terminal of a sequence, that pattern either
-   starts with a `<' symbol or respectively ends with a `>' symbol. A
-   period ends the pattern. (Optional in fuzztran). For example,
-   [DE](2)HS{P}X(2)PX(2,4)C Any string is accepted An empty string is
-   accepted
-   -mismatch Number of mismatches Integer 0 or more 0
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   -frame Frame(s) to translate
-   1  (1)
-   2  (2)
-   3  (3)
-   F  (Forward three frames)
-   -1 (-1)
-   -2 (-2)
-   -3 (-3)
-   R  (Reverse three frames)
-   6  (All six frames)
-   1
-   -table Code to use
-   0 (Standard)
-   1 (Standard (with alternative initiation codons))
-   2 (Vertebrate Mitochondrial)
-   3 (Yeast Mitochondrial)
-   4 (Mold, Protozoan, Coelenterate Mitochondrial and
-   Mycoplasma/Spiroplasma)
-   5 (Invertebrate Mitochondrial)
-   6 (Ciliate Macronuclear and Dasycladacean)
-   9 (Echinoderm Mitochondrial)
-   10 (Euplotid Nuclear)
-   11 (Bacterial)
-   12 (Alternative Yeast Nuclear)
-   13 (Ascidian Mitochondrial)
-   14 (Flatworm Mitochondrial)
-   15 (Blepharisma Macronuclear)
-   16 (Chlorophycean Mitochondrial)
-   21 (Trematode Mitochondrial)
-   22 (Scenedesmus obliquus)
-   23 (Thraustochytrium Mitochondrial)
-   0
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
@@ -421,23 +381,23 @@ Output file format
 # Sequence: RNOPS     from: 1   to: 1493
 # HitCount: 9
 #
-# Pattern: RA
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 RA
 # TransTable: 0
 # Frames: F
 #
 #=======================================
 
-  Start     End   Score Mismatch  Frame PStart   PEnd Translation
-     97     102       2        .      1     33     34 RA
-    133     138       2        .      1     45     46 RA
-    421     426       2        .      1    141    142 RA
-    625     630       2        .      1    209    210 RA
-    835     840       2        .      1    279    280 RA
-    919     924       2        .      1    307    308 RA
-    227     232       2        .      2     76     77 RA
-    752     757       2        .      2    251    252 RA
-     72      77       2        .      3     24     25 RA
+  Start     End   Score Pattern_name Mismatch  Frame PStart   PEnd Translation
+     97     102       2 pattern1            .      1     33     34 RA
+    133     138       2 pattern1            .      1     45     46 RA
+    421     426       2 pattern1            .      1    141    142 RA
+    625     630       2 pattern1            .      1    209    210 RA
+    835     840       2 pattern1            .      1    279    280 RA
+    919     924       2 pattern1            .      1    307    308 RA
+    227     232       2 pattern1            .      2     76     77 RA
+    752     757       2 pattern1            .      2    251    252 RA
+     72      77       2 pattern1            .      3     24     25 RA
 
 #---------------------------------------
 #---------------------------------------

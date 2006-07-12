@@ -14,7 +14,7 @@
                                   integer value)
 
    Advanced (Unprompted) qualifiers:
-   -baseline           float      [0.35] Graph marker line (Any numeric value
+   -baseline           float      [0.35] Graph marker line (Any numeric value)
    -plot               toggle     [N] Produce graphic
    -double             boolean    [N] Plot two graphs
 

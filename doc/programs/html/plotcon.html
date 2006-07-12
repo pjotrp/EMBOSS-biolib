@@ -116,13 +116,17 @@ Created plotcon.ps
 <pre>
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     File containing a sequence alignment
-   -winsize            integer    Number of columns to average alignment
+   -winsize            integer    [4] Number of columns to average alignment
                                   quality over. The larger this value is, the
-                                  smoother the plot will be.
-   -graph              xygraph    Graph type
+                                  smoother the plot will be. (Any integer
+                                  value)
+   -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -scorefile          matrix     This is the scoring matrix file used when
+   -scorefile          matrix     [EBLOSUM62 for protein, EDNAFULL for DNA]
+                                  This is the scoring matrix file used when
                                   comparing sequences. By default it is the
                                   file 'EBLOSUM62' (for proteins) or the file
                                   'EDNAFULL' (for nucleic sequences). These

@@ -61,8 +61,8 @@ Reports STOP codons and ORF statistics of a protein
 Input protein sequence(s): <b>paamir.pep</b>
 Minimum ORF Length to report [100]: <b></b>
 Output file [paamir_1.checktrans]: <b></b>
-Output sequence [paamir_1.fasta]: <b></b>
-Output features [paamir_1.gff]: <b></b>
+output sequence(s) [paamir_1.fasta]: <b></b>
+Features output [paamir_1.gff]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -76,13 +76,15 @@ Output features [paamir_1.gff]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-   -orfml              integer    Minimum ORF Length to report
-  [-outfile]           outfile    Output file name
-  [-outseq]            seqoutall  Sequence file to hold output ORF sequences
-  [-outfeat]           featout    File for output features
+   -orfml              integer    [100] Minimum ORF Length to report (Integer
+                                  1 or more)
+  [-outfile]           outfile    [*.checktrans] Output file name
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence file to hold
+                                  output ORF sequences
+  [-outfeat]           featout    [unknown.gff] File for output features
 
    Additional (Optional) qualifiers:
-   -[no]addlast        boolean    An asterisk in the protein sequence
+   -[no]addlast        boolean    [Y] An asterisk in the protein sequence
                                   indicates the position of a STOP codon.
                                   Checktrans assumes that all ORFs end in a
                                   STOP codon. Forcing the sequence to end with
@@ -177,14 +179,14 @@ Output features [paamir_1.gff]: <b></b>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.checktrans</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outseq]<br>(Parameter 3)</td>
 <td>Sequence file to hold output ORF sequences</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>

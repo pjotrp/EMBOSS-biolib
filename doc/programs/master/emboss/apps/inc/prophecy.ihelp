@@ -9,9 +9,10 @@
                                   string is accepted)
 *  -threshold          integer    [75] Enter threshold reporting percentage
                                   (Integer from 1 to 100)
-*  -open               float      [3.0] Gap opening penalty (Any numeric value
+*  -open               float      [3.0] Gap opening penalty (Any numeric
+                                  value)
 *  -extension          float      [0.3] Gap extension penalty (Any numeric
-                                  value
+                                  value)
   [-outfile]           outfile    [*.prophecy] Output file name
 
    Additional (Optional) qualifiers: (none)

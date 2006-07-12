@@ -51,7 +51,7 @@ Usage
 % megamerger tembl:ap000504 tembl:af129756 
 Merge two large overlapping nucleic acid sequences
 Word size [20]: 
-Output sequence [ap000504.merged]: 
+output sequence [ap000504.merged]: 
 Output file [ap000504.megamerger]: report
 
    Go to the input files for this example
@@ -64,14 +64,14 @@ Command line arguments
                                   format, or reference (input USA)
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-   -wordsize           integer    Word size
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
-  [-outfile]           outfile    Output file name
+   -wordsize           integer    [20] Word size (Integer 2 or more)
+  [-outseq]            seqout     [.] Sequence filename and
+                                  optional format (output USA)
+  [-outfile]           outfile    [*.megamerger] Output file name
 
    Additional (Optional) qualifiers:
-   -prefer             boolean    When a mismatch between the two sequence is
-                                  discovered, one or other of the two
+   -prefer             boolean    [N] When a mismatch between the two sequence
+                                  is discovered, one or other of the two
                                   sequences must be used to create the merged
                                   sequence over this mismatch region. The
                                   default action is to create the merged
@@ -146,30 +146,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-asequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-bsequence]
-   (Parameter 2) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   -wordsize Word size Integer 2 or more 20
-   [-outseq]
-   (Parameter 3) Sequence filename and optional format (output USA)
-   Writeable sequence <sequence>.format
-   [-outfile]
-   (Parameter 4) Output file name Output file <sequence>.megamerger
-   Additional (Optional) qualifiers Allowed values Default
-   -prefer When a mismatch between the two sequence is discovered, one or
-   other of the two sequences must be used to create the merged sequence
-   over this mismatch region. The default action is to create the merged
-   sequence using the sequence where the mismatch is closest to that
-   sequence's centre. If this option is used, then the first sequence
-   (seqa) will always be used in preference to the other sequence when
-   there is a mismatch. Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

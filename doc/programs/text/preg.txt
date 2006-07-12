@@ -671,7 +671,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-pattern]           regexp     Regular expression pattern
+  [-pattern]           regexp     Any regular epression pattern is accepted
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
@@ -693,6 +693,10 @@ Command line arguments
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-pattern" associated qualifiers
+   -pformat2           string     File format
+   -pname2             string     Pattern base name
 
    "-outfile" associated qualifiers
    -rformat3           string     Report format
@@ -718,20 +722,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-pattern]
-   (Parameter 2) Regular expression pattern Any regular epression pattern
-   is accepted Required
-   [-outfile]
-   (Parameter 3) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

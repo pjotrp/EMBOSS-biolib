@@ -112,13 +112,14 @@ Output file [outfile.whichdb]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-entry]             string     ID or Accession number
-*  -outfile            outfile    Output file name
+  [-entry]             string     ID or Accession number (Any string is
+                                  accepted)
+*  -outfile            outfile    [*.whichdb] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -get                toggle     Retrieve sequences
-   -showall            boolean    Show failed attempts
+   -get                toggle     [N] Retrieve sequences
+   -showall            boolean    [N] Show failed attempts
 
    Associated qualifiers:
 
@@ -161,7 +162,7 @@ Output file [outfile.whichdb]: <b></b>
 <td>-outfile</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.whichdb</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -260,7 +261,7 @@ qanxflatall:hsfau1
 # Trying 'tpir:hsfau1'
 # Failed 'tpir:hsfau1'
 # Trying 'qasrswww:hsfau1'
-qasrswww:hsfau1
+# Failed 'qasrswww:hsfau1'
 # Trying 'qanxfasta:hsfau1'
 # Failed 'qanxfasta:hsfau1'
 # Trying 'qanxgcgall:hsfau1'

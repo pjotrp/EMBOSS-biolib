@@ -1,18 +1,20 @@
 
-                                  dbxflat
-                                      
-                                  Function
-                                      
-             Database b+tree indexing for flat file databases 
+                                  dbxflat 
 
-                                Description
+
+
+Function
+
+   Database b+tree indexing for flat file databases
+
+Description
 
    dbxflat indexes a flat file database of one or more files, and builds
-    EMBOSS B+tree format index files. These indexes allow access of flat
-                           files larger than 2Gb.
+   EMBOSS B+tree format index files. These indexes allow access of flat
+   files larger than 2Gb.
 
-    Having created the EMBOSS indexes for this file, a database can then
-         be defined in the file emboss.defaults as something like:
+   Having created the EMBOSS indexes for this file, a database can then
+   be defined in the file emboss.defaults as something like:
 DB embl [
    type: N
    dbalias: embl   (see below)
@@ -23,22 +25,22 @@ DB embl [
    indexdirectory: /data/embl/indexes
 ]
 
-    The index file 'basename' given to dbxflat must match the DB name in
-     the definition. If not, then a 'dbalias' line must be given which
-                   specifies the basename of the indexes.
+   The index file 'basename' given to dbxflat must match the DB name in
+   the definition. If not, then a 'dbalias' line must be given which
+   specifies the basename of the indexes.
 
-                               Fields Indexed
+  Fields Indexed
 
-    By default, dbxflat will index the ID name and the accession number
-                               (if present).
-      If they are present in your database, you may also specify that
-     dbxflat should index the Sequence Version and GI, the words in the
-    description, the keywords and the organism words using the '-fields'
-                   qualifier with the appropriate values.
+   By default, dbxflat will index the ID name and the accession number
+   (if present).
+   If they are present in your database, you may also specify that
+   dbxflat should index the Sequence Version and GI, the words in the
+   description, the keywords and the organism words using the '-fields'
+   qualifier with the appropriate values.
 
-                                   Usage
+Usage
 
-                   Here is a sample session with dbxflat
+   Here is a sample session with dbxflat
 
 
 % dbxflat 
@@ -62,23 +64,23 @@ Index fields [id,acc]:
 
 Processing file /homes/user/test/embl/rod.dat
 
-                  Go to the output files for this example
+   Go to the output files for this example
 
-                             Global Parameters
+Global Parameters
 
-     dbxflat requires that two global parameters be defined in the file
-                        emboss.defaults. These are:
+   dbxflat requires that two global parameters be defined in the file
+   emboss.defaults. These are:
 SET PAGESIZE 2048
 SET CACHESIZE 200
 
-    The above values are recommended for most systems. The PAGESIZE is a
-    multiple of the size of disc pages the operating system buffers. The
-     CACHESIZE is the number of disc pages dbxflat is allowed to cache.
+   The above values are recommended for most systems. The PAGESIZE is a
+   multiple of the size of disc pages the operating system buffers. The
+   CACHESIZE is the number of disc pages dbxflat is allowed to cache.
 
-                                 Resources
+Resources
 
    dbxflat will ask you for the name of a resource definition in the file
-               emboss.defaults. This will be something like:
+   emboss.defaults. This will be something like:
 RES embl [
    type: Index
    idlen:  15
@@ -90,24 +92,36 @@ RES embl [
 ]
 
    The length definitions are the maximum lengths of 'words' in the field
-      being indexed. Longer words will be truncated to the value set.
+   being indexed. Longer words will be truncated to the value set.
 
-                           Command line arguments
+Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-dbname]            string     Basename for index files
-  [-dbresource]        string     Resource name
-   -idformat           menu       Entry format
-   -filenames          string     Wildcard database filename
-   -directory          directory  Database directory
-   -fields             menu       Index fields
+  [-dbname]            string     Basename for index files (Any string from 2
+                                  to 19 characters, matching regular
+                                  expression /[A-z][A-z0-9_]+/)
+  [-dbresource]        string     Resource name (Any string from 2 to 19
+                                  characters, matching regular expression
+                                  /[A-z][A-z0-9_]+/)
+   -idformat           menu       [SWISS] Entry format (Values: EMBL (EMBL);
+                                  SWISS (Swiss-Prot, SpTrEMBL, TrEMBLnew); GB
+                                  (Genbank, DDBJ); REFSEQ (Refseq))
+   -filenames          string     [*.dat] Wildcard database filename (Any
+                                  string is accepted)
+   -directory          directory  [.] Database directory
+   -fields             menu       [id,acc] Index fields (Values: id (ID); acc
+                                  (Accession number); sv (Sequence Version and
+                                  GI); des (Description); key (Keywords); org
+                                  (Taxonomy))
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -release            string     Release number
-   -date               string     Index date
-   -exclude            string     Wildcard filename(s) to exclude
-   -indexoutdir        outdir     Index directory
+   -release            string     [0.0] Release number (Any string up to 9
+                                  characters)
+   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
+   -exclude            string     Wildcard filename(s) to exclude (Any string
+                                  is accepted)
+   -indexoutdir        outdir     [.] Index file output directory
 
    Associated qualifiers: (none)
    General qualifiers:
@@ -125,46 +139,14 @@ RES embl [
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-dbname]
-   (Parameter 1) Basename for index files Any string from 2 to 19
-   characters, matching regular expression /[A-z][A-z0-9_]+/ Required
-   [-dbresource]
-   (Parameter 2) Resource name Any string from 2 to 19 characters,
-   matching regular expression /[A-z][A-z0-9_]+/ Required
-   -idformat Entry format
-   EMBL   (EMBL)
-   SWISS  (Swiss-Prot, SpTrEMBL, TrEMBLnew)
-   GB     (Genbank, DDBJ)
-   REFSEQ (Refseq)
-   SWISS
-   -filenames Wildcard database filename Any string is accepted *.dat
-   -directory Database directory Directory .
-   -fields Index fields
-   id  (ID)
-   acc (Accession number)
-   sv  (Sequence Version and GI)
-   des (Description)
-   key (Keywords)
-   org (Taxonomy)
-   id,acc
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -release Release number Any string up to 9 characters 0.0
-   -date Index date Date string dd/mm/yy 00/00/00
-   -exclude Wildcard filename(s) to exclude Any string is accepted An
-   empty string is accepted
-   -indexoutdir Index directory Output directory .
+Input file format
 
-                             Input file format
+   dbxflat reads any normal sequence USAs.
 
-                  dbxflat reads any normal sequence USAs.
+Output file format
 
-                             Output file format
-
-    dbxflat creates one summary file for the database and two files for
-                            each field indexed.
+   dbxflat creates one summary file for the database and two files for
+   each field indexed.
 
      * dbalias.ent is the master file containing the names of the files
        that have been indexed. It is an ASCII file. This file also
@@ -174,9 +156,9 @@ RES embl [
      * dbalias.pxid is an ASCII file containing information regarding the
        structure of the ID name index.
 
-                       Output files for usage example
+  Output files for usage example
 
-                               File: embl.ent
+  File: embl.ent
 
 # Number of files: 1
 # Release: 0.0
@@ -184,7 +166,7 @@ RES embl [
 Single filename database
 rod.dat
 
-                              File: embl.pxac
+  File: embl.pxac
 
 Order     71
 Fill      47
@@ -196,7 +178,7 @@ Fill2     99
 Count     2
 Kwlimit   15
 
-                              File: embl.pxid
+  File: embl.pxid
 
 Order     71
 Fill      47
@@ -208,69 +190,69 @@ Fill2     99
 Count     2
 Kwlimit   15
 
-                               File: embl.xac
+  File: embl.xac
 
    This file contains non-printing characters and so cannot be displayed
-                                   here.
+   here.
 
-                               File: embl.xid
+  File: embl.xid
 
    This file contains non-printing characters and so cannot be displayed
-                                   here.
+   here.
 
-                                 Data files
+Data files
 
-                                   None.
+   None.
 
-                                   Notes
+Notes
 
    The indexing system has been designed to allow on-the-fly updating of
-     indexes. This feature is, however, not implemented in the current
-           version. It will be made available in future releases.
+   indexes. This feature is, however, not implemented in the current
+   version. It will be made available in future releases.
 
-                                 References
+References
 
-                                   None.
+   None.
 
-                                  Warnings
+Warnings
 
-                                   None.
+   None.
 
-                         Diagnostic Error Messages
+Diagnostic Error Messages
 
-                                   None.
+   None.
 
-                                Exit status
+Exit status
 
-                       It always exits with status 0.
+   It always exits with status 0.
 
-                                 Known bugs
+Known bugs
 
-                                   None.
+   None.
 
-                                  See also
+See also
 
-     Program name                     Description
-     dbiblast     Index a BLAST database
-     dbifasta     Database indexing for fasta file databases
-     dbiflat      Index a flat file database
-     dbigcg       Index a GCG formatted database
-     dbxfasta     Database b+tree indexing for fasta file databases
-     dbxgcg       Database b+tree indexing for GCG formatted databases
+   Program name                     Description
+   dbiblast     Index a BLAST database
+   dbifasta     Database indexing for fasta file databases
+   dbiflat      Index a flat file database
+   dbigcg       Index a GCG formatted database
+   dbxfasta     Database b+tree indexing for fasta file databases
+   dbxgcg       Database b+tree indexing for GCG formatted databases
 
-                                 Author(s)
+Author(s)
 
-                       Alan Bleasby (ajb © ebi.ac.uk)
-      European Bioinformatics Institute, Wellcome Trust Genome Campus,
-                      Hinxton, Cambridge CB10 1SD, UK
+   Alan Bleasby (ajb © ebi.ac.uk)
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
-                                  History
+History
 
-                                Target users
+Target users
 
-    This program is intended to be used by everyone and everything, from
-                      naive users to embedded scripts.
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
 
-                                  Comments
+Comments
 
-                                    None
+   None

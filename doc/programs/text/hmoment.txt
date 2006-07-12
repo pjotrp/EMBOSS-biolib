@@ -57,18 +57,22 @@ Command line arguments
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-seqall]            seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-*  -graph              xygraph    Graph type
-*  -outfile            outfile    Output file name
+*  -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+*  -outfile            outfile    [*.hmoment] Output file name
 
    Additional (Optional) qualifiers:
-   -window             integer    Window
-   -aangle             integer    Alpha helix angle (degrees)
-   -bangle             integer    Beta sheet angle (degrees)
+   -window             integer    [10] Window (Any integer value)
+   -aangle             integer    [100] Alpha helix angle (degrees) (Any
+                                  integer value)
+   -bangle             integer    [160] Beta sheet angle (degrees) (Any
+                                  integer value)
 
    Advanced (Unprompted) qualifiers:
-   -baseline           float      Graph marker line
-   -plot               toggle     Produce graphic
-   -double             boolean    Plot two graphs
+   -baseline           float      [0.35] Graph marker line (Any numeric value)
+   -plot               toggle     [N] Produce graphic
+   -double             boolean    [N] Plot two graphs
 
    Associated qualifiers:
 
@@ -114,23 +118,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-seqall]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -graph Graph type EMBOSS has a list of known devices, including ps,
-   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
-   -outfile Output file name Output file <sequence>.hmoment
-   Additional (Optional) qualifiers Allowed values Default
-   -window Window Any integer value 10
-   -aangle Alpha helix angle (degrees) Any integer value 100
-   -bangle Beta sheet angle (degrees) Any integer value 160
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -baseline Graph marker line Any numeric value 0.35
-   -plot Produce graphic Toggle value Yes/No No
-   -double Plot two graphs Boolean value Yes/No No
 
 Input file format
 

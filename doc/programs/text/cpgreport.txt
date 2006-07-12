@@ -40,7 +40,7 @@ Usage
 Reports all CpG rich regions
 CpG score [17]: 
 Output file [rnu68037.cpgreport]: 
-Output features [rnu68037.gff]: 
+Features output [rnu68037.gff]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -50,11 +50,12 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -score              integer    This sets the score for each CG sequence
-                                  found. A value of 17 is more sensitive, but
-                                  28 has also been used with some success.
-  [-outfile]           outfile    Output file name
-  [-outfeat]           featout    File for output features
+   -score              integer    [17] This sets the score for each CG
+                                  sequence found. A value of 17 is more
+                                  sensitive, but 28 has also been used with
+                                  some success. (Integer from 1 to 200)
+  [-outfile]           outfile    [*.cpgreport] Output file name
+  [-outfeat]           featout    [unknown.gff] File for output features
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -101,23 +102,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -score This sets the score for each CG sequence found. A value of 17
-   is more sensitive, but 28 has also been used with some success.
-   Integer from 1 to 200 17
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.cpgreport
-   [-outfeat]
-   (Parameter 3) File for output features Writeable feature table
-   unknown.gff
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

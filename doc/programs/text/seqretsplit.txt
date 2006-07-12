@@ -53,7 +53,7 @@ Usage
 
 % seqretsplit tembl:hsfa* 
 Reads and writes (returns) sequences in individual files
-Output sequence [hsfau.fasta]: 
+output sequence(s) [hsfau.fasta]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -68,8 +68,8 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [.] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -120,19 +120,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Sequence set(s) filename and optional format (output
-   USA) Writeable sequence(s) <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -feature Use feature information Boolean value Yes/No No
-   -firstonly Read one sequence and stop Boolean value Yes/No No
 
 Input file format
 
@@ -261,6 +248,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

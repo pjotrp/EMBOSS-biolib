@@ -23,7 +23,7 @@ Usage
 
 % pasteseq tsw:amir_pseae tsw:flav_nossm -pos=67 
 Insert one sequence into another
-Output sequence [amir_pseae.fasta]: 
+output sequence [amir_pseae.fasta]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -55,12 +55,12 @@ Command line arguments
   [-asequence]         sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
   [-bsequence]         sequence   Sequence to insert
-   -pos                integer    The position in the main input sequence to
-                                  insert after.
+   -pos                integer    [$(asequence.end)] The position in the main
+                                  input sequence to insert after.
                                   To insert before the start use the position
-                                  0.
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+                                  0. (Integer 0 or more)
+  [-outseq]            seqout     [.] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -124,23 +124,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-asequence]
-   (Parameter 1) (Gapped) sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-bsequence]
-   (Parameter 2) Sequence to insert Readable sequence Required
-   -pos The position in the main input sequence to insert after. To
-   insert before the start use the position 0. Integer 0 or more
-   $(asequence.end)
-   [-outseq]
-   (Parameter 3) Sequence filename and optional format (output USA)
-   Writeable sequence <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
@@ -307,6 +290,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

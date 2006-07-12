@@ -88,7 +88,7 @@ In this case the excluded sequences (myg_phyca and lgb2_luplu) are not saved to 
 Exclude a set of sequences and write out the remaining ones
 Input (gapped) sequence(s): <b>globins.fasta</b>
 Sequence names to exclude: <b>myg_phyca,lgb2_luplu</b>
-Output sequence [hbb_human.fasta]: <b>mydata.seq</b>
+output sequence(s) [hbb_human.fasta]: <b>mydata.seq</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -106,7 +106,7 @@ Here is an example where the sequences to be excluded are saved to another file:
 Exclude a set of sequences and write out the remaining ones
 Input (gapped) sequence(s): <b>globins.fasta</b>
 Sequence names to exclude: <b>hb*</b>
-Output sequence [hbb_human.fasta]: <b>mydata.seq</b>
+output sequence(s) [hbb_human.fasta]: <b>mydata.seq</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -139,14 +139,15 @@ Output sequence [hbb_human.fasta]: <b>mydata.seq</b>
                                   myseq, hs*, one two three
                                   a file containing a list of sequence names
                                   can be specified by giving the file name
-                                  preceeded by a '@', eg: '@names.dat'
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+                                  preceeded by a '@', eg: '@names.dat' (Any
+                                  string is accepted)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -junkoutseq         seqoutall  This file collects the sequences which you
-                                  have excluded from the main output file of
-                                  sequences.
+   -junkoutseq         seqoutall  [/dev/null] This file collects the sequences
+                                  which you have excluded from the main
+                                  output file of sequences.
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -240,7 +241,7 @@ a file containing a list of sequence names can be specified by giving the file n
 <td>[-outseq]<br>(Parameter 3)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -505,6 +506,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

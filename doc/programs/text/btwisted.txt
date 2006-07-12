@@ -28,12 +28,14 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.btwisted] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -angledata          datafile   File containing base pair twist angles
-   -energydata         datafile   File containing base pair stacking energies
+   -angledata          datafile   [Eangles.dat] DNA base pair twist angle data
+                                  file
+   -energydata         datafile   [Eenergy.dat] DNA base pair stacking
+                                  energies data file
 
    Associated qualifiers:
 
@@ -70,20 +72,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.btwisted
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -angledata File containing base pair twist angles Data file
-   Eangles.dat
-   -energydata File containing base pair stacking energies Data file
-   Eenergy.dat
 
 Input file format
 

@@ -44,7 +44,7 @@ Usage
 
 % entret tembl:hsfau 
 Reads and writes (returns) flatfile entries
-Output file [hsfau.entret]: 
+Full text of a sequence database entry output file [hsfau.entret]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -54,7 +54,8 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.entret] Full text of a sequence database
+                                  entry output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -95,17 +96,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence(s) filename and optional format, or reference
-   (input USA) Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.entret
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -firstonly Read one sequence and stop Boolean value Yes/No No
 
 Input file format
 
@@ -337,6 +327,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

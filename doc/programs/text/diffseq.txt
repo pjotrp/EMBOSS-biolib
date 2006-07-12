@@ -43,8 +43,8 @@ Usage
 Find differences between nearly identical sequences
 Word size [10]: 
 Output report [ap000504.diffseq]: 
-Output features [AP000504.diffgff]: 
-Second output features [AF129756.diffgff]: 
+Features output [AP000504.diffgff]: 
+Second features output [AF129756.diffgff]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -56,7 +56,7 @@ Command line arguments
                                   reference (input USA)
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
-   -wordsize           integer    The similar regions between the two
+   -wordsize           integer    [10] The similar regions between the two
                                   sequences are found by creating a hash table
                                   of 'wordsize'd subsequences. 10 is a
                                   reasonable default. Making this value larger
@@ -67,15 +67,16 @@ Command line arguments
                                   This value may be made smaller (4?) to
                                   improve the resolution of nearby
                                   differences, but the program will go much
-                                  slower.
+                                  slower. (Integer 2 or more)
   [-outfile]           report     Output report file name
-  [-aoutfeat]          featout    File for output of first sequence's features
-  [-boutfeat]          featout    File for output of second sequence's
-                                  features
+  [-aoutfeat]          featout    [$(asequence.name).diffgff] File for output
+                                  of first sequence's features
+  [-boutfeat]          featout    [$(bsequence.name).diffgff] File for output
+                                  of second sequence's features
 
    Additional (Optional) qualifiers:
-   -globaldifferences  boolean    Normally this program will find regions of
-                                  identity that are the length of the
+   -globaldifferences  boolean    [N] Normally this program will find regions
+                                  of identity that are the length of the
                                   specified word-size or greater and will then
                                   report the regions of difference between
                                   these matching regions. This works well and
@@ -165,42 +166,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-asequence]
-   (Parameter 1) Sequence filename and optional format, or reference
-   (input USA) Readable sequence Required
-   [-bsequence]
-   (Parameter 2) Sequence filename and optional format, or reference
-   (input USA) Readable sequence Required
-   -wordsize The similar regions between the two sequences are found by
-   creating a hash table of 'wordsize'd subsequences. 10 is a reasonable
-   default. Making this value larger (20?) may speed up the program
-   slightly, but will mean that any two differences within 'wordsize' of
-   each other will be grouped as a single region of difference. This
-   value may be made smaller (4?) to improve the resolution of nearby
-   differences, but the program will go much slower. Integer 2 or more 10
-   [-outfile]
-   (Parameter 3) Output report file name Report output file
-   [-aoutfeat]
-   (Parameter 4) File for output of first sequence's features Writeable
-   feature table $(asequence.name).diffgff
-   [-boutfeat]
-   (Parameter 5) File for output of second sequence's features Writeable
-   feature table $(bsequence.name).diffgff
-   Additional (Optional) qualifiers Allowed values Default
-   -globaldifferences Normally this program will find regions of identity
-   that are the length of the specified word-size or greater and will
-   then report the regions of difference between these matching regions.
-   This works well and is what most people want if they are working with
-   long overlapping nucleic acid sequences. You are usually not
-   interested in the non-overlapping ends of these sequences. If you have
-   protein sequences or short RNA sequences however, you will be
-   interested in differences at the very ends . It this option is set to
-   be true then the differences at the ends will also be reported.
-   Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

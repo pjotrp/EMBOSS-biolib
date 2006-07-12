@@ -29,11 +29,12 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -wordsize           integer    Word size
-  [-outfile]           outfile    Output file name
+   -wordsize           integer    [4] Word size (Integer 2 or more)
+  [-outfile]           outfile    [*.wordcount] Output file name
 
    Additional (Optional) qualifiers:
-   -mincount           integer    Minimum word count to report
+   -mincount           integer    [1] Minimum word count to report (Integer 1
+                                  or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -71,18 +72,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -wordsize Word size Integer 2 or more 4
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.wordcount
-   Additional (Optional) qualifiers Allowed values Default
-   -mincount Minimum word count to report Integer 1 or more 1
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

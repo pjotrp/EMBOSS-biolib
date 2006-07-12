@@ -103,7 +103,7 @@
                                   consensus. The default plurality is taken as
                                   50% of the total weight of all the
                                   sequences in the alignment. (Number from
-                                  0.000 to 100.000
+                                  0.000 to 100.000)
    -setcase            float      [@( $(sequence.totweight) / 2)] Sets the
                                   threshold for the scores of the positive
                                   matches above which the consensus is in
@@ -111,13 +111,13 @@
                                   in lower-case. By default this is set to be
                                   half of the (weight-adjusted) number of
                                   sequences in the alignment. (Any numeric
-                                  value
+                                  value)
    -identity           float      [0.0] Provides the facility of setting the
                                   required number of identities at a position
                                   for it to give a consensus. Therefore, if
                                   this is set to 100% only columns of
                                   identities contribute to the consensus.
-                                  (Number from 0.000 to 100.000
+                                  (Number from 0.000 to 100.000)
    -[no]gaps           boolean    [Y] If this option is true then gap
                                   characters can appear in the consensus. The
                                   alternative is 'N' for nucleotide, or 'X'

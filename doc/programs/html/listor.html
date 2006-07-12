@@ -84,7 +84,7 @@ Write the logical OR of two lists:
 
 % <b>listor ../data/file2 </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -100,7 +100,7 @@ Write the logical AND of two lists:
 
 % <b>listor ../data/file2 -operator and </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -116,7 +116,7 @@ Write the logical XOR of two lists:
 
 % <b>listor ../data/file2 -operator xor </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -132,7 +132,7 @@ Write the logical NOT of two lists:
 
 % <b>listor ../data/file2 -operator not </b>
 Write a list file of the logical OR of two sets of sequences
-Output file [file1.list]: <b></b>
+List of USAs output file [file1.list]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -149,12 +149,12 @@ Output file [file1.list]: <b></b>
                                   or reference (input USA)
   [-secondsequences]   seqset     Sequence set filename and optional format,
                                   or reference (input USA)
-  [-outfile]           outfile    The list of sequence names will be written
-                                  to this list file
+  [-outfile]           outfile    [*.listor] The list of sequence names will
+                                  be written to this list file
 
    Additional (Optional) qualifiers:
-   -operator           menu       The following logical operators combine the
-                                  sequences in the following ways:
+   -operator           menu       [OR] The following logical operators combine
+                                  the sequences in the following ways:
                                   OR - gives all that occur in one set or the
                                   other
                                   AND - gives only those which occur in both
@@ -163,7 +163,11 @@ Output file [file1.list]: <b></b>
                                   set or the other, but not in both
                                   NOT - gives those which occur in the first
                                   set except for those that also occur in the
-                                  second
+                                  second (Values: O (OR - merger of both
+                                  sets); A (AND - only those in both sets); X
+                                  (XOR - only those not in both sets); N (NOT
+                                  - those of the first set that are not in the
+                                  second))
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -246,7 +250,7 @@ Output file [file1.list]: <b></b>
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>The list of sequence names will be written to this list file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.listor</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -472,6 +476,16 @@ None.
 <tr>
 <td><a href="extractseq.html">extractseq</a></td>
 <td>Extract regions from a sequence</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

@@ -42,13 +42,14 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-   -enzymes            string     Comma separated enzyme list
+   -enzymes            string     [all] Comma separated enzyme list (Any
+                                  string is accepted)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -sshow              boolean    Display untranslated sequence
-   -tshow              boolean    Display translated sequence
+   -sshow              boolean    [N] Display untranslated sequence
+   -tshow              boolean    [N] Display translated sequence
 
    Associated qualifiers:
 
@@ -92,19 +93,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   -enzymes Comma separated enzyme list Any string is accepted all
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -sshow Display untranslated sequence Boolean value Yes/No No
-   -tshow Display translated sequence Boolean value Yes/No No
 
 Input file format
 

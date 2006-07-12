@@ -788,7 +788,7 @@ Extract an entry from a database and write it to a file:
 % <b>seqret </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.fasta]: <b></b>
+output sequence(s) [hsfau.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -820,7 +820,7 @@ seqret does not read in features by default because this results in slightly fas
 % <b>seqret -feature </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.fasta]: <b>embl::hsfau.embl</b>
+output sequence(s) [hsfau.fasta]: <b>embl::hsfau.embl</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -837,7 +837,7 @@ Display the contents of the sequence on the screen:
 % <b>seqret </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.fasta]: <b>stdout</b>
+output sequence(s) [hsfau.fasta]: <b>stdout</b>
 
 >HSFAU X65923.1 H.sapiens fau mRNA
 ttcctctttctcgactccatcttcgcggtagctgggaccgccgttcagtcgccaatatgc
@@ -865,7 +865,7 @@ Write the result in GCG format by using the qualifier '-osformat'.
 % <b>seqret -osf gcg </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.gcg]: <b></b>
+output sequence(s) [hsfau.gcg]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -898,7 +898,7 @@ Write the result in GCG format by specifying the format in the output USA at the
 % <b>seqret </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.fasta]: <b>gcg::hsfau.gcg</b>
+output sequence(s) [hsfau.fasta]: <b>gcg::hsfau.gcg</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -915,7 +915,7 @@ Write the reverse-complement of a sequence:
 % <b>seqret -srev </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.fasta]: <b></b>
+output sequence(s) [hsfau.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -932,7 +932,7 @@ Extract the bases between the positions starting at 5 and ending at 25:
 % <b>seqret -sbegin 5 -send 25 </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.fasta]: <b></b>
+output sequence(s) [hsfau.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -949,7 +949,7 @@ Extract the bases between the positions starting at 5 and ending at 5 bases befo
 % <b>seqret -sbegin 5 -send -5 </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hsfau</b>
-Output sequence [hsfau.fasta]: <b></b>
+output sequence(s) [hsfau.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -966,7 +966,7 @@ Read all entries in the database 'tembl' that start with 'hs' and write them to 
 % <b>seqret </b>
 Reads and writes (returns) sequences
 Input (gapped) sequence(s): <b>tembl:hs*</b>
-Output sequence [hs989235.fasta]: <b>hsall.seq</b>
+output sequence(s) [hs989235.fasta]: <b>hsall.seq</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -981,8 +981,8 @@ Output sequence [hs989235.fasta]: <b>hsall.seq</b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -1056,7 +1056,7 @@ Output sequence [hs989235.fasta]: <b>hsall.seq</b>
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -1588,6 +1588,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

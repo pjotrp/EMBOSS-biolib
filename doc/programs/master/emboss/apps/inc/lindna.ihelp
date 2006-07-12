@@ -24,31 +24,31 @@
    -ticklines          boolean    [N] Vertical lines at the ruler's ticks
    -textheight         float      [1.0] Height of text. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -textlength         float      [1.0] Length of text. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -margin             float      [1.0] Width of left margin. This is the
                                   region left to the groups where the names of
                                   the groups are displayed. Enter a number
                                   <1.0 or >1.0 to decrease or increase the
-                                  size, respectively (Number 0.000 or more
+                                  size, respectively (Number 0.000 or more)
    -tickheight         float      [1.0] Height of ticks. Enter a number <1.0
                                   or >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -blockheight        float      [1] Height of blocks. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -rangeheight        float      [1.0] Height of range ends. Enter a number
                                   <1.0 or >1.0 to decrease or increase the
-                                  size, respectively (Number 0.000 or more
+                                  size, respectively (Number 0.000 or more)
    -gapgroup           float      [1.0] Space between groups. Enter a number
                                   <1.0 or >1.0 to decrease or increase the
-                                  size, respectively (Number 0.000 or more
+                                  size, respectively (Number 0.000 or more)
    -postext            float      [1.0] Space between text and ticks, blocks,
                                   and ranges. Enter a number <1.0 or >1.0 to
                                   decrease or increase the size, respectively
-                                  (Number 0.000 or more
+                                  (Number 0.000 or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

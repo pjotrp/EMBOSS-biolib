@@ -42,14 +42,14 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-   -window             integer    Window size
-  [-outfile]           outfile    Output file name
+   -window             integer    [28] Window size (Integer from 7 to 28)
+  [-outfile]           outfile    [*.pepcoil] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]coil           boolean    Report coiled coil regions
-   -frame              boolean    Show coil frameshifts
-   -[no]other          boolean    Report non coiled coil regions
+   -[no]coil           boolean    [Y] Report coiled coil regions
+   -frame              boolean    [Yes if -coil is true] Show coil frameshifts
+   -[no]other          boolean    [Y] Report non coiled coil regions
 
    Associated qualifiers:
 
@@ -86,20 +86,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -window Window size Integer from 7 to 28 28
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.pepcoil
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -[no]coil Report coiled coil regions Boolean value Yes/No Yes
-   -frame Show coil frameshifts Boolean value Yes/No Yes if -coil is true
-   -[no]other Report non coiled coil regions Boolean value Yes/No Yes
 
 Input file format
 

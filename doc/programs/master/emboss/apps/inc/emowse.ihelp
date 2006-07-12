@@ -17,9 +17,9 @@
                                   (Chymotrypsin); 8 (CNBr))
    -pcrange            integer    [25] Allowed whole sequence weight
                                   variability (Integer from 0 to 75)
-   -tolerance          float      [0.1] Tolerance (Number from 0.100 to 1.000
+   -tolerance          float      [0.1] Tolerance (Number from 0.100 to 1.000)
    -partials           float      [0.4] Partials factor (Number from 0.100 to
-                                  1.000
+                                  1.000)
 
    Associated qualifiers:
 

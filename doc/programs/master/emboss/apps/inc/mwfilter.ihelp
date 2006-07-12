@@ -1,6 +1,6 @@
    Standard (Mandatory) qualifiers:
   [-infile]            infile     Molecular weights file
-   -tolerance          float      [50.0] Ppm tolerance (Any numeric value
+   -tolerance          float      [50.0] Ppm tolerance (Any numeric value)
   [-outfile]           outfile    [*.mwfilter] Molecular weights output file
 
    Additional (Optional) qualifiers:

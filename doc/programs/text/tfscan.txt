@@ -63,14 +63,16 @@ Command line arguments
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -menu               menu       Select class
-*  -custom             datafile   Name of data file
-   -mismatch           integer    Number of mismatches
-  [-outfile]           outfile    Output file name
+   -menu               menu       [V] Select class (Values: F (fungi); I
+                                  (insect); P (plant); V (vertebrate); O
+                                  (other); C (Custom))
+*  -custom             datafile   Transfac database data file (optional)
+   -mismatch           integer    [0] Number of mismatches (Integer 0 or more)
+  [-outfile]           outfile    [*.tfscan] Output file name
 
    Additional (Optional) qualifiers:
-   -minlength          integer    Display matches equal to or above this
-                                  length
+   -minlength          integer    [1] Display matches equal to or above this
+                                  length (Integer 1 or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -108,28 +110,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -menu Select class
-   F (fungi)
-   I (insect)
-   P (plant)
-   V (vertebrate)
-   O (other)
-   C (Custom)
-   V
-   -custom Name of data file Data file File in the data file path
-   -mismatch Number of mismatches Integer 0 or more 0
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.tfscan
-   Additional (Optional) qualifiers Allowed values Default
-   -minlength Display matches equal to or above this length Integer 1 or
-   more 1
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

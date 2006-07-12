@@ -102,8 +102,8 @@ These files names will be long (and therefore descriptive).
 
 % <b>cutgextract </b>
 Extract data from CUTG
-CUTG directory [.]: <b>data</b>
-Output file [outfile.cutgextract]: <b></b>
+Codon usage directories [.]: <b>data</b>
+General log output file [outfile.cutgextract]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -116,20 +116,23 @@ Output file [outfile.cutgextract]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-directory]         dirlist    CUTG directory
-  [-outfile]           outfile    Output file name
+  [-directory]         dirlist    [.] Codon usage directories
+  [-outfile]           outfile    [*.cutgextract] General log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -release            string     CUTG release
-   -wildspec           string     Type of codon file
-   -species            string     Species wildcard
-   -allrecords         boolean    Include all records, including those with
-                                  warnings
+   -release            string     CUTG release (Any string is accepted)
+   -wildspec           string     [*.codon] Type of codon file (Any string is
+                                  accepted)
+   -species            string     [*] Species wildcard (Any string is
+                                  accepted)
+   -allrecords         boolean    [N] Include all records, including those
+                                  with warnings
    -filename           string     Single output filename to override automatic
                                   one file for each species. Leave blank to
                                   generate the filenames. Specify a filename
                                   to combine several species into one file.
+                                  (Any string is accepted)
 
    Associated qualifiers:
 
@@ -163,16 +166,16 @@ Output file [outfile.cutgextract]: <b></b>
 
 <tr>
 <td>[-directory]<br>(Parameter 1)</td>
-<td>CUTG directory</td>
+<td>Codon usage directories</td>
 <td>Directory with files</td>
 <td>.</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>General log output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.cutgextract</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

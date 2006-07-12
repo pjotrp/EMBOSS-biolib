@@ -52,7 +52,6 @@ depending on the complexity of the search pattern specified.
 Nucleic acid pattern search
 Input nucleotide sequence(s): <b>tembl:hhtetra</b>
 Search pattern: <b>AAGCTT</b>
-Number of mismatches [0]: <b></b>
 Output report [hhtetra.fuzznuc]: <b></b>
 
 </pre></td></tr></table><p>
@@ -67,7 +66,7 @@ Output report [hhtetra.fuzznuc]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -pattern            string     The standard IUPAC one-letter codes for the
+   -pattern            pattern    The standard IUPAC one-letter codes for the
                                   nucleotides are used.
                                   The symbol `n' is used for a position where
                                   any nucleotide is accepted.
@@ -96,12 +95,11 @@ Output report [hhtetra.fuzznuc]: <b></b>
                                   A period ends the pattern. (Optional in
                                   fuzznuc).
                                   For example, [CG](5)TG{A}N(1,5)C
-   -mismatch           integer    Number of mismatches
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -complement         boolean    Search complementary strand
+   -complement         boolean    [0] Search complementary strand
 
    Associated qualifiers:
 
@@ -120,6 +118,11 @@ Output report [hhtetra.fuzznuc]: <b></b>
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-pattern" associated qualifiers
+   -pformat            string     File format
+   -pmismatch          integer    Pattern mismatch
+   -pname              string     Pattern base name
 
    "-outfile" associated qualifiers
    -rformat2           string     Report format
@@ -174,15 +177,8 @@ Repetition of an element of the pattern can be indicated by following that eleme
 When a pattern is restricted to either the 5' or 3' end of a sequence, that pattern either starts with a `<' symbol or respectively ends with a `>' symbol.
 A period ends the pattern. (Optional in fuzznuc).
 For example, [CG](5)TG{A}N(1,5)C</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
-</tr>
-
-<tr>
-<td>-mismatch</td>
-<td>Number of mismatches</td>
-<td>Integer 0 or more</td>
-<td>0</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
@@ -423,15 +419,16 @@ By default <b>fuzznuc</b> writes a 'seqtable' report file.
 # Sequence: HHTETRA     from: 1   to: 1272
 # HitCount: 2
 #
-# Pattern: AAGCTT
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 AAGCTT
+# 
 # Complement: No
 #
 #=======================================
 
-  Start     End Mismatch Sequence
-      1       6        . aagctt
-   1267    1272        . aagctt
+  Start     End Pattern_name Mismatch Sequence
+      1       6 pattern1            . aagctt
+   1267    1272 pattern1            . aagctt
 
 #---------------------------------------
 #---------------------------------------

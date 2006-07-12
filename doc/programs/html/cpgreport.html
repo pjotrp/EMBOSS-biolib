@@ -71,7 +71,7 @@ primary exons.
 Reports all CpG rich regions
 CpG score [17]: <b></b>
 Output file [rnu68037.cpgreport]: <b></b>
-Output features [rnu68037.gff]: <b></b>
+Features output [rnu68037.gff]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -86,11 +86,12 @@ Output features [rnu68037.gff]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -score              integer    This sets the score for each CG sequence
-                                  found. A value of 17 is more sensitive, but
-                                  28 has also been used with some success.
-  [-outfile]           outfile    Output file name
-  [-outfeat]           featout    File for output features
+   -score              integer    [17] This sets the score for each CG
+                                  sequence found. A value of 17 is more
+                                  sensitive, but 28 has also been used with
+                                  some success. (Integer from 1 to 200)
+  [-outfile]           outfile    [*.cpgreport] Output file name
+  [-outfeat]           featout    [unknown.gff] File for output features
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -166,7 +167,7 @@ Output features [rnu68037.gff]: <b></b>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.cpgreport</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>

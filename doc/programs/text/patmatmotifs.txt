@@ -87,10 +87,10 @@ Command line arguments
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers:
-   -full               boolean    Provide full documentation for matching
+   -full               boolean    [N] Provide full documentation for matching
                                   patterns
-   -[no]prune          boolean    Ignore simple patterns. If this is true then
-                                  these simple post-translational
+   -[no]prune          boolean    [Y] Ignore simple patterns. If this is true
+                                  then these simple post-translational
                                   modification sites are not reported:
                                   myristyl, asn_glycosylation,
                                   camp_phospho_site, pkc_phospho_site,
@@ -139,22 +139,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   -full Provide full documentation for matching patterns Boolean value
-   Yes/No No
-   -[no]prune Ignore simple patterns. If this is true then these simple
-   post-translational modification sites are not reported: myristyl,
-   asn_glycosylation, camp_phospho_site, pkc_phospho_site,
-   ck2_phospho_site, and tyr_phospho_site. Boolean value Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

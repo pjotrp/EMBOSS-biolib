@@ -59,8 +59,8 @@ Display information on a sequence:
 % <b>infoseq tembl:paamir </b>
 Displays some simple information about sequences
 
-# USA             Name        Accession Type Length  %GC   Description
-tembl-id:PAAMIR   PAAMIR        X13776	N    2167	 66.54 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
+USA                      Name           Accession      Type Length %GC    Description 
+tembl-id:PAAMIR          PAAMIR         X13776         N    2167   66.54  Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 
 </pre></td></tr></table><p>
 <p>
@@ -77,8 +77,8 @@ Don't display the USA of a sequence:
 % <b>infoseq tembl:paamir -nousa </b>
 Displays some simple information about sequences
 
-# Name        Accession Type Length  %GC   Description
-PAAMIR        X13776	N    2167	 66.54 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
+Name           Accession      Type Length %GC    Description 
+PAAMIR         X13776         N    2167   66.54  Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 
 </pre></td></tr></table><p>
 <p>
@@ -95,7 +95,8 @@ Display only the name and length of a sequence:
 % <b>infoseq tembl:paamir -only -name -length </b>
 Displays some simple information about sequences
 
-PAAMIR        2167
+Name           Length 
+PAAMIR         2167   
 
 </pre></td></tr></table><p>
 <p>
@@ -112,6 +113,7 @@ Display only the description of a sequence:
 % <b>infoseq tembl:paamir -only -desc </b>
 Displays some simple information about sequences
 
+Description 
 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation
 
 </pre></td></tr></table><p>
@@ -129,7 +131,8 @@ Display the type of a sequence:
 % <b>infoseq tembl:paamir -only -type </b>
 Displays some simple information about sequences
 
-N
+Type 
+N    
 
 </pre></td></tr></table><p>
 <p>
@@ -148,7 +151,7 @@ Displays some simple information about sequences
 
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>USA</th><th>Name</th><th>Accession</th><th>Type</th><th>Length</th><th>%GC</th><th>Description</th></tr>
-<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>2167</td><td>66.54 </td><td>Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation</td></tr>
+<tr><td>tembl-id:PAAMIR</td><td>PAAMIR</td><td>X13776</td><td>N</td><td>2167</td><td>66.54</td><td>Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidase regulation</td></tr>
 </table>
 
 </pre></td></tr></table><p>
@@ -165,30 +168,48 @@ Displays some simple information about sequences
                                   format, or reference (input USA)
 
    Additional (Optional) qualifiers:
-   -outfile            outfile    If you enter the name of a file here then
-                                  this program will write the sequence details
-                                  into that file.
-   -html               boolean    Format output as an HTML table
+   -outfile            outfile    [stdout] If you enter the name of a file
+                                  here then this program will write the
+                                  sequence details into that file.
+   -html               boolean    [N] Format output as an HTML table
 
    Advanced (Unprompted) qualifiers:
-   -only               boolean    This is a way of shortening the command line
-                                  if you only want a few things to be
+   -[no]columns        boolean    [Y] Set this option on (Y) to print the
+                                  sequence information into neat, aligned
+                                  columns in the output file. Alternatively,
+                                  leave it unset (N), in which case the
+                                  information records will be delimited by a
+                                  character, which you may specify by using
+                                  the -delimiter option. In other words, if
+                                  -columns is set on, the -delimiter option is
+                                  overriden.
+   -delimiter          string     [|] This string, which is usually a single
+                                  character only, is used to delimit
+                                  individual records in the text output file.
+                                  It could be a space character, a tab
+                                  character, a pipe character or any other
+                                  character or string. (Any string is
+                                  accepted)
+   -only               boolean    [N] This is a way of shortening the command
+                                  line if you only want a few things to be
                                   displayed. Instead of specifying:
                                   '-nohead -noname -noacc -notype -nopgc
                                   -nodesc'
                                   to get only the length output, you can
                                   specify
                                   '-only -length'
-   -heading            boolean    Display column headings
-   -usa                boolean    Display the USA of the sequence
-   -name               boolean    Display 'name' column
-   -accession          boolean    Display 'accession' column
-   -gi                 boolean    Display 'GI' column
-   -version            boolean    Display 'version' column
-   -type               boolean    Display 'type' column
-   -length             boolean    Display 'length' column
-   -pgc                boolean    Display 'percent GC content' column
-   -description        boolean    Display 'description' column
+   -[no]heading        boolean    [Y] Display column headings
+   -usa                boolean    [@(!$(only))] Display the USA of the
+                                  sequence
+   -name               boolean    [@(!$(only))] Display 'name' column
+   -accession          boolean    [@(!$(only))] Display 'accession' column
+   -gi                 boolean    [N] Display 'GI' column
+   -version            boolean    [N] Display 'version' column
+   -type               boolean    [@(!$(only))] Display 'type' column
+   -length             boolean    [@(!$(only))] Display 'length' column
+   -pgc                boolean    [@(!$(only))] Display 'percent GC content'
+                                  column
+   -description        boolean    [@(!$(only))] Display 'description' column
 
    Associated qualifiers:
 
@@ -271,6 +292,20 @@ Displays some simple information about sequences
 </tr>
 
 <tr>
+<td>-[no]columns</td>
+<td>Set this option on (Y) to print the sequence information into neat, aligned columns in the output file. Alternatively, leave it unset (N), in which case the information records will be delimited by a character, which you may specify by using the -delimiter option. In other words, if -columns is set on, the -delimiter option is overriden.</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-delimiter</td>
+<td>This string, which is usually a single character only, is used to delimit individual records in the text output file. It could be a space character, a tab character, a pipe character or any other character or string.</td>
+<td>Any string is accepted</td>
+<td>|</td>
+</tr>
+
+<tr>
 <td>-only</td>
 <td>This is a way of shortening the command line if you only want a few things to be displayed. Instead of specifying:
 '-nohead -noname -noacc -notype -nopgc -nodesc'
@@ -281,10 +316,10 @@ to get only the length output, you can specify
 </tr>
 
 <tr>
-<td>-heading</td>
+<td>-[no]heading</td>
 <td>Display column headings</td>
 <td>Boolean value Yes/No</td>
-<td>@(!$(only))</td>
+<td>Yes</td>
 </tr>
 
 <tr>

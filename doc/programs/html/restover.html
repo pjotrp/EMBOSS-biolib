@@ -80,27 +80,30 @@ Output file [hsfau.restover]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-seqcomp]           string     Overlap sequence
-  [-outfile]           outfile    Output file name
+  [-seqcomp]           string     Overlap sequence (Any string is accepted)
+  [-outfile]           outfile    [*.restover] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -datafile           datafile   Alternative RE data file
-   -min                integer    Minimum cuts per RE
-   -max                integer    Maximum cuts per RE
-   -single             boolean    Force single site only cuts
-   -threeprime         boolean    Use 3' overhang e.g. BamHI has CTAG as a 5'
-                                  overhang, and ApaI has CCGG as 3' overhang.
-   -[no]blunt          boolean    Allow blunt end cutters
-   -[no]sticky         boolean    Allow sticky end cutters
-   -[no]ambiguity      boolean    Allow ambiguous matches
-   -plasmid            boolean    Allow circular DNA
-   -[no]commercial     boolean    Only enzymes with suppliers
-   -html               boolean    Create HTML output
-   -[no]limit          boolean    Limits reports to one isoschizomer
-   -alphabetic         boolean    Sort output alphabetically
-   -fragments          boolean    Show fragment lengths
-   -name               boolean    Show sequence name
+   -datafile           datafile   Restriction enzyme data file (optional)
+   -min                integer    [1] Minimum cuts per RE (Integer from 1 to
+                                  1000)
+   -max                integer    [2000000000] Maximum cuts per RE (Integer up
+                                  to 2000000000)
+   -single             boolean    [N] Force single site only cuts
+   -threeprime         boolean    [N] Use 3' overhang e.g. BamHI has CTAG as a
+                                  5' overhang, and ApaI has CCGG as 3'
+                                  overhang.
+   -[no]blunt          boolean    [Y] Allow blunt end cutters
+   -[no]sticky         boolean    [Y] Allow sticky end cutters
+   -[no]ambiguity      boolean    [Y] Allow ambiguous matches
+   -plasmid            boolean    [N] Allow circular DNA
+   -[no]commercial     boolean    [Y] Only enzymes with suppliers
+   -html               boolean    [N] Create HTML output
+   -[no]limit          boolean    [Y] Limits reports to one isoschizomer
+   -alphabetic         boolean    [N] Sort output alphabetically
+   -fragments          boolean    [N] Show fragment lengths
+   -name               boolean    [N] Show sequence name
 
    Associated qualifiers:
 
@@ -166,7 +169,7 @@ Output file [hsfau.restover]: <b></b>
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.restover</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -187,7 +190,7 @@ Output file [hsfau.restover]: <b></b>
 
 <tr>
 <td>-datafile</td>
-<td>Alternative RE data file</td>
+<td>Restriction enzyme data file (optional)</td>
 <td>Data file</td>
 <td><i>File in the data file path</i></td>
 </tr>

@@ -68,7 +68,7 @@ not necessary for you to use this utility all of the time.
 
 % <b>noreturn abc.dat </b>
 Removes carriage return from ASCII files
-Output file [abc.noreturn]: <b></b>
+ASCII text output file [abc.noreturn]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -82,13 +82,15 @@ Output file [abc.noreturn]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Input file
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     ASCII text file
+  [-outfile]           outfile    [*.noreturn] ASCII text output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -system             menu       Target operating system for end-of-line
-                                  format
+   -system             menu       [unix] Target operating system for
+                                  end-of-line format (Values: unix (Unix/Linux
+                                  systems); pc (Windows/DOS); mac (Apple
+                                  Macintosh))
 
    Associated qualifiers:
 
@@ -123,16 +125,16 @@ Output file [abc.noreturn]: <b></b>
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>Input file</td>
+<td>ASCII text file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>ASCII text output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.noreturn</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -293,6 +295,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

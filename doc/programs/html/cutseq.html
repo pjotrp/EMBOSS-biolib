@@ -98,14 +98,16 @@ End of region to delete [1290]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
-   -from               integer    This is the start position (inclusive) of
-                                  the section of the sequence that you wish to
-                                  remove.
-   -to                 integer    This is the end position (inclusive) of the
-                                  section of the sequence that you wish to
-                                  remove.
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+   -from               integer    [Start of sequence (0)] This is the start
+                                  position (inclusive) of the section of the
+                                  sequence that you wish to remove. (Any
+                                  integer value)
+   -to                 integer    [End of sequence (0)] This is the end
+                                  position (inclusive) of the section of the
+                                  sequence that you wish to remove. (Any
+                                  integer value)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -189,7 +191,7 @@ End of region to delete [1290]: <b></b>
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -531,6 +533,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

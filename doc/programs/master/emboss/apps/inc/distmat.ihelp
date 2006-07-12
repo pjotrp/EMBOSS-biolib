@@ -16,7 +16,7 @@
                                   if the sequences are proteins.
 *  -gapweight          float      [0.] Option to weight gaps in the
                                   uncorrected (nucleotide) and Jukes-Cantor
-                                  distance methods. (Any numeric value
+                                  distance methods. (Any numeric value)
 *  -position           integer    [123] Choose base positions to analyse in
                                   each codon i.e. 123 (all bases), 12 (the
                                   first two bases), 1, 2, or 3 individual
@@ -29,7 +29,7 @@
                                   in the Jin-Nei Gamma distance calculation.
                                   The suggested value to be used is 1.0 (Jin
                                   et al.) and this is the default. (Any
-                                  numeric value
+                                  numeric value)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

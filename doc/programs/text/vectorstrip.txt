@@ -55,11 +55,11 @@ Usage
 % vectorstrip @vecseqs.list 
 Strips out DNA between a pair of vector sequences
 Are your vector sequences in a file? [Y]: 
-Name of vectorfile: vectors
+Cloning vector definition file (optional): vectors
 Max allowed % mismatch [10]: 
 Show only the best hits (minimise mismatches)? [Y]: 
 Output file [pbluescript.vectorstrip]: vector.strip
-Output sequence [pbluescript.fasta]: vector.fasta
+output sequence(s) [pbluescript.fasta]: vector.fasta
 
    Go to the input files for this example
    Go to the output files for this example
@@ -69,16 +69,17 @@ Command line arguments
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-[no]vectorfile]    toggle     Are your vector sequences in a file?
-*  -vectorsfile        infile     Name of vectorfile
-   -mismatch           integer    Max allowed % mismatch
-   -[no]besthits       boolean    Show only the best hits (minimise
+  [-[no]vectorfile]    toggle     [Y] Are your vector sequences in a file?
+*  -vectorsfile        infile     Cloning vector definition file (optional)
+   -mismatch           integer    [10] Max allowed % mismatch (Any integer
+                                  value)
+   -[no]besthits       boolean    [Y] Show only the best hits (minimise
                                   mismatches)?
-*  -linkera            string     The 5' sequence
-*  -linkerb            string     The 3' sequence
-  [-outfile]           outfile    Output file name
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+*  -linkera            string     The 5' sequence (Any string is accepted)
+*  -linkerb            string     The 3' sequence (Any string is accepted)
+  [-outfile]           outfile    [*.vectorstrip] Output file name
+  [-outseq]            seqoutall  [.] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -129,31 +130,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-[no]vectorfile]
-   (Parameter 2) Are your vector sequences in a file? Toggle value Yes/No
-   Yes
-   -vectorsfile Name of vectorfile Input file Required
-   -mismatch Max allowed % mismatch Any integer value 10
-   -[no]besthits Show only the best hits (minimise mismatches)? Boolean
-   value Yes/No Yes
-   -linkera The 5' sequence Any string is accepted An empty string is
-   accepted
-   -linkerb The 3' sequence Any string is accepted An empty string is
-   accepted
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.vectorstrip
-   [-outseq]
-   (Parameter 4) Sequence set(s) filename and optional format (output
-   USA) Writeable sequence(s) <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
@@ -336,6 +312,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

@@ -94,15 +94,15 @@ Reverse and complement a sequence
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) nucleotide sequence(s) filename and
                                   optional format, or reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]reverse        boolean    Set this to be false if you do not wish to
-                                  reverse the output sequence
-   -[no]complement     boolean    Set this to be false if you do not wish to
-                                  complement the output sequence
+   -[no]reverse        boolean    [Y] Set this to be false if you do not wish
+                                  to reverse the output sequence
+   -[no]complement     boolean    [Y] Set this to be false if you do not wish
+                                  to complement the output sequence
 
    Associated qualifiers:
 
@@ -171,7 +171,7 @@ Reverse and complement a sequence
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -457,6 +457,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

@@ -35,16 +35,19 @@ Command line arguments
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-seqall]            seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-   -letters            string     Residue letters
-*  -graph              xygraph    Graph type
-*  -outfile            outfile    Output file name
+   -letters            string     [gc] Residue letters (Any string is
+                                  accepted)
+*  -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+*  -outfile            outfile    [*.freak] Output file name
 
    Additional (Optional) qualifiers:
-   -step               integer    Stepping value
-   -window             integer    Averaging window
+   -step               integer    [1] Stepping value (Any integer value)
+   -window             integer    [30] Averaging window (Any integer value)
 
    Advanced (Unprompted) qualifiers:
-   -plot               toggle     Produce graphic
+   -plot               toggle     [N] Produce graphic
 
    Associated qualifiers:
 
@@ -90,21 +93,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-seqall]
-   (Parameter 1) Sequence(s) filename and optional format, or reference
-   (input USA) Readable sequence(s) Required
-   -letters Residue letters Any string is accepted gc
-   -graph Graph type EMBOSS has a list of known devices, including ps,
-   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
-   -outfile Output file name Output file <sequence>.freak
-   Additional (Optional) qualifiers Allowed values Default
-   -step Stepping value Any integer value 1
-   -window Averaging window Any integer value 30
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -plot Produce graphic Toggle value Yes/No No
 
 Input file format
 

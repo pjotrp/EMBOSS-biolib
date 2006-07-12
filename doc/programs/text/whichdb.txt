@@ -68,13 +68,14 @@ Output file [outfile.whichdb]:
 Command line arguments
 
    Standard (Mandatory) qualifiers (* if not always prompted):
-  [-entry]             string     ID or Accession number
-*  -outfile            outfile    Output file name
+  [-entry]             string     ID or Accession number (Any string is
+                                  accepted)
+*  -outfile            outfile    [*.whichdb] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -get                toggle     Retrieve sequences
-   -showall            boolean    Show failed attempts
+   -get                toggle     [N] Retrieve sequences
+   -showall            boolean    [N] Show failed attempts
 
    Associated qualifiers:
 
@@ -95,17 +96,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-entry]
-   (Parameter 1) ID or Accession number Any string is accepted An empty
-   string is accepted
-   -outfile Output file name Output file <sequence>.whichdb
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -get Retrieve sequences Toggle value Yes/No No
-   -showall Show failed attempts Boolean value Yes/No No
 
 Input file format
 
@@ -162,7 +152,7 @@ qanxflatall:hsfau1
 # Trying 'tpir:hsfau1'
 # Failed 'tpir:hsfau1'
 # Trying 'qasrswww:hsfau1'
-qasrswww:hsfau1
+# Failed 'qasrswww:hsfau1'
 # Trying 'qanxfasta:hsfau1'
 # Failed 'qanxfasta:hsfau1'
 # Trying 'qanxgcgall:hsfau1'

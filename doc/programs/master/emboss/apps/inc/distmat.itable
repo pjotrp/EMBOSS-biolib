@@ -49,7 +49,7 @@
 <tr>
 <td>-gapweight</td>
 <td>Option to weight gaps in the uncorrected (nucleotide) and Jukes-Cantor distance methods.</td>
-<td>Any numeric value)</td>
+<td>Any numeric value</td>
 <td>0.</td>
 </tr>
 
@@ -70,7 +70,7 @@
 <tr>
 <td>-parametera</td>
 <td>User defined parameter 'a' to be use in the Jin-Nei Gamma distance calculation. The suggested value to be used is 1.0 (Jin et al.) and this is the default.</td>
-<td>Any numeric value)</td>
+<td>Any numeric value</td>
 <td>1.0</td>
 </tr>
 

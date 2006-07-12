@@ -44,27 +44,30 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-seqcomp]           string     Overlap sequence
-  [-outfile]           outfile    Output file name
+  [-seqcomp]           string     Overlap sequence (Any string is accepted)
+  [-outfile]           outfile    [*.restover] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -datafile           datafile   Alternative RE data file
-   -min                integer    Minimum cuts per RE
-   -max                integer    Maximum cuts per RE
-   -single             boolean    Force single site only cuts
-   -threeprime         boolean    Use 3' overhang e.g. BamHI has CTAG as a 5'
-                                  overhang, and ApaI has CCGG as 3' overhang.
-   -[no]blunt          boolean    Allow blunt end cutters
-   -[no]sticky         boolean    Allow sticky end cutters
-   -[no]ambiguity      boolean    Allow ambiguous matches
-   -plasmid            boolean    Allow circular DNA
-   -[no]commercial     boolean    Only enzymes with suppliers
-   -html               boolean    Create HTML output
-   -[no]limit          boolean    Limits reports to one isoschizomer
-   -alphabetic         boolean    Sort output alphabetically
-   -fragments          boolean    Show fragment lengths
-   -name               boolean    Show sequence name
+   -datafile           datafile   Restriction enzyme data file (optional)
+   -min                integer    [1] Minimum cuts per RE (Integer from 1 to
+                                  1000)
+   -max                integer    [2000000000] Maximum cuts per RE (Integer up
+                                  to 2000000000)
+   -single             boolean    [N] Force single site only cuts
+   -threeprime         boolean    [N] Use 3' overhang e.g. BamHI has CTAG as a
+                                  5' overhang, and ApaI has CCGG as 3'
+                                  overhang.
+   -[no]blunt          boolean    [Y] Allow blunt end cutters
+   -[no]sticky         boolean    [Y] Allow sticky end cutters
+   -[no]ambiguity      boolean    [Y] Allow ambiguous matches
+   -plasmid            boolean    [N] Allow circular DNA
+   -[no]commercial     boolean    [Y] Only enzymes with suppliers
+   -html               boolean    [N] Create HTML output
+   -[no]limit          boolean    [Y] Limits reports to one isoschizomer
+   -alphabetic         boolean    [N] Sort output alphabetically
+   -fragments          boolean    [N] Show fragment lengths
+   -name               boolean    [N] Show sequence name
 
    Associated qualifiers:
 
@@ -101,36 +104,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-seqcomp]
-   (Parameter 2) Overlap sequence Any string is accepted An empty string
-   is accepted
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.restover
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -datafile Alternative RE data file Data file File in the data file
-   path
-   -min Minimum cuts per RE Integer from 1 to 1000 1
-   -max Maximum cuts per RE Integer up to 2000000000 2000000000
-   -single Force single site only cuts Boolean value Yes/No No
-   -threeprime Use 3' overhang e.g. BamHI has CTAG as a 5' overhang, and
-   ApaI has CCGG as 3' overhang. Boolean value Yes/No No
-   -[no]blunt Allow blunt end cutters Boolean value Yes/No Yes
-   -[no]sticky Allow sticky end cutters Boolean value Yes/No Yes
-   -[no]ambiguity Allow ambiguous matches Boolean value Yes/No Yes
-   -plasmid Allow circular DNA Boolean value Yes/No No
-   -[no]commercial Only enzymes with suppliers Boolean value Yes/No Yes
-   -html Create HTML output Boolean value Yes/No No
-   -[no]limit Limits reports to one isoschizomer Boolean value Yes/No Yes
-   -alphabetic Sort output alphabetically Boolean value Yes/No No
-   -fragments Show fragment lengths Boolean value Yes/No No
-   -name Show sequence name Boolean value Yes/No No
 
 Input file format
 

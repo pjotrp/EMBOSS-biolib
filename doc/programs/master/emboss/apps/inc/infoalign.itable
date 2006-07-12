@@ -55,14 +55,14 @@
 <tr>
 <td>-plurality</td>
 <td>Set a cut-off for the % of positive scoring matches below which there is no consensus. The default plurality is taken as 50% of the total weight of all the sequences in the alignment.</td>
-<td>Number from 0.000 to 100.000)</td>
+<td>Number from 0.000 to 100.000</td>
 <td>50.0</td>
 </tr>
 
 <tr>
 <td>-identity</td>
 <td>Provides the facility of setting the required number of identities at a position for it to give a consensus. Therefore, if this is set to 100% only columns of identities contribute to the consensus.</td>
-<td>Number from 0.000 to 100.000)</td>
+<td>Number from 0.000 to 100.000</td>
 <td>0.0</td>
 </tr>
 

@@ -129,8 +129,10 @@ To extract all of the CDS, mRNA and the protein translations:
 % <b>coderet </b>
 Extract CDS, mRNA and translations from feature tables
 Input nucleotide sequence(s): <b>tembl:X03487</b>
-Output sequence [hsferg1.fasta]: <b></b>
 Output file [hsferg1.coderet]: <b></b>
+Coding nucleotide output sequence(s) (optional) [hsferg1.cds]: <b></b>
+Messenger RNA nucleotide output sequence(s) (optional) [hsferg1.mrna]: <b></b>
+Translated coding protein output sequence(s) (optional) [hsferg1.prot]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -147,8 +149,8 @@ To only extract the mRNA sequence:
 % <b>coderet -nocds -notranslation </b>
 Extract CDS, mRNA and translations from feature tables
 Input nucleotide sequence(s): <b>tembl:X03487</b>
-Output sequence [hsferg1.fasta]: <b></b>
 Output file [hsferg1.coderet]: <b></b>
+Messenger RNA nucleotide output sequence(s) (optional) [hsferg1.mrna]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -163,16 +165,16 @@ Output file [hsferg1.coderet]: <b></b>
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.coderet] Output file name
+  [-cdsoutseq]         seqoutall  [<sequence>.<format>] Coding nucleotide
+                                  output sequence(s) (optional)
+  [-mrnaoutseq]        seqoutall  Messenger RNA nucleotide output sequence(s)
+                                  (optional)
+  [-translationoutseq] seqoutall  Translated coding protein output sequence(s)
+                                  (optional)
 
    Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers:
-   -[no]cds            boolean    Extract CDS sequences
-   -[no]mrna           boolean    Extract mrna sequences
-   -[no]translation    boolean    Extract translated sequences
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-seqall" associated qualifiers
@@ -191,20 +193,44 @@ Output file [hsferg1.coderet]: <b></b>
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
 
-   "-outseq" associated qualifiers
-   -osformat2          string     Output seq format
-   -osextension2       string     File name extension
-   -osname2            string     Base file name
-   -osdirectory2       string     Output directory
-   -osdbname2          string     Database name to add
-   -ossingle2          boolean    Separate file for each entry
-   -oufo2              string     UFO features
-   -offormat2          string     Features format
-   -ofname2            string     Features file name
-   -ofdirectory2       string     Output directory
-
    "-outfile" associated qualifiers
-   -odirectory3        string     Output directory
+   -odirectory2        string     Output directory
+
+   "-cdsoutseq" associated qualifiers
+   -osformat3          string     Output seq format
+   -osextension3       string     File name extension
+   -osname3            string     Base file name
+   -osdirectory3       string     Output directory
+   -osdbname3          string     Database name to add
+   -ossingle3          boolean    Separate file for each entry
+   -oufo3              string     UFO features
+   -offormat3          string     Features format
+   -ofname3            string     Features file name
+   -ofdirectory3       string     Output directory
+
+   "-mrnaoutseq" associated qualifiers
+   -osformat4          string     Output seq format
+   -osextension4       string     File name extension
+   -osname4            string     Base file name
+   -osdirectory4       string     Output directory
+   -osdbname4          string     Database name to add
+   -ossingle4          boolean    Separate file for each entry
+   -oufo4              string     UFO features
+   -offormat4          string     Features format
+   -ofname4            string     Features file name
+   -ofdirectory4       string     Output directory
+
+   "-translationoutseq" associated qualifiers
+   -osformat5          string     Output seq format
+   -osextension5       string     File name extension
+   -osname5            string     Base file name
+   -osdirectory5       string     Output directory
+   -osdbname5          string     Database name to add
+   -ossingle5          boolean    Separate file for each entry
+   -oufo5              string     UFO features
+   -offormat5          string     Features format
+   -ofname5            string     Features file name
+   -ofdirectory5       string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -239,17 +265,31 @@ Output file [hsferg1.coderet]: <b></b>
 </tr>
 
 <tr>
-<td>[-outseq]<br>(Parameter 2)</td>
-<td>Sequence filename and optional format (output USA)</td>
-<td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
-<td>[-outfile]<br>(Parameter 3)</td>
-<td>Output file name</td>
-<td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.coderet</td>
+<td>[-cdsoutseq]<br>(Parameter 3)</td>
+<td>Coding nucleotide output sequence(s) (optional)</td>
+<td>Writeable sequence(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-mrnaoutseq]<br>(Parameter 4)</td>
+<td>Messenger RNA nucleotide output sequence(s) (optional)</td>
+<td>Writeable sequence(s)</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>[-translationoutseq]<br>(Parameter 5)</td>
+<td>Translated coding protein output sequence(s) (optional)</td>
+<td>Writeable sequence(s)</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -269,24 +309,7 @@ Output file [hsferg1.coderet]: <b></b>
 </tr>
 
 <tr>
-<td>-[no]cds</td>
-<td>Extract CDS sequences</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
-</tr>
-
-<tr>
-<td>-[no]mrna</td>
-<td>Extract mrna sequences</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
-</tr>
-
-<tr>
-<td>-[no]translation</td>
-<td>Extract translated sequences</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
+<td colspan=4>(none)</td>
 </tr>
 
 </table>
@@ -410,7 +433,7 @@ directly from the translation sequence held in the feature table.
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: hsferg1.fasta</h3>
+<p><h3>File: hsferg1.cds</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &gt;x03487_cds_1
@@ -424,6 +447,11 @@ ctggccactgacaaaaatgacccccatttgtgtgacttcattgagacacattacctgaat
 gagcaggtgaaagccatcaaagaattgggtgaccacgtgaccaacttgcgcaagatggga
 gcgcccgaatctggcttggcggaatatctctttgacaagcacaccctgggagacagtgat
 aatgaaagctaa
+</pre>
+</td></tr></table><p>
+<p><h3>File: hsferg1.mrna</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
 &gt;x03487_mrna_1
 cagacgttcttcgccgagagtcgtcggggtttcctgcttcaacagtgcttggacggaacc
 cggcgctcgttccccaccccggccggccgcccatagccagccctccgtcgacctcttcac
@@ -431,6 +459,11 @@ cgcaccctcggactgccccaaggcccccgccgccgctccagcgccgcgcagccaccgccg
 ccgccgccgcctctccttagtcgccgccatgacgaccgcgtccacctcgcaggtgcgcca
 gaactaccaccaggactcagaggccgccatcaaccgccagatcaacctggagctctacgc
 ctcctacgtttacctgtccatg
+</pre>
+</td></tr></table><p>
+<p><h3>File: hsferg1.prot</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
 &gt;x03487_pro_1
 MTTASTSQVRQNYHQDSEAAINRQINLELYASYVYLSMSYYFDRDDVALKNFAKYFLHQS
 HEEREHAEKLMKLQNQRGGRIFLQDIKKPDCDDWESGLNAMECALHLEKNVNQSLLELHK
@@ -449,18 +482,6 @@ NES
 
 <a name="output.2"></a>
 <h3>Output files for usage example 2</h3>
-<p><h3>File: hsferg1.fasta</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-<pre>
-&gt;x03487_mrna_1
-cagacgttcttcgccgagagtcgtcggggtttcctgcttcaacagtgcttggacggaacc
-cggcgctcgttccccaccccggccggccgcccatagccagccctccgtcgacctcttcac
-cgcaccctcggactgccccaaggcccccgccgccgctccagcgccgcgcagccaccgccg
-ccgccgccgcctctccttagtcgccgccatgacgaccgcgtccacctcgcaggtgcgcca
-gaactaccaccaggactcagaggccgccatcaaccgccagatcaacctggagctctacgc
-ctcctacgtttacctgtccatg
-</pre>
-</td></tr></table><p>
 <p><h3>File: hsferg1.coderet</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>

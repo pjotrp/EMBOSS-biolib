@@ -13,7 +13,12 @@
 <td align=left valign=middle>
 <b><font size="+6">
 dbxflat
-<!--#include file"header2.inc" -->
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
 
 <H2>
     Function
@@ -175,19 +180,31 @@ value set.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-dbname]            string     Basename for index files
-  [-dbresource]        string     Resource name
-   -idformat           menu       Entry format
-   -filenames          string     Wildcard database filename
-   -directory          directory  Database directory
-   -fields             menu       Index fields
+  [-dbname]            string     Basename for index files (Any string from 2
+                                  to 19 characters, matching regular
+                                  expression /[A-z][A-z0-9_]+/)
+  [-dbresource]        string     Resource name (Any string from 2 to 19
+                                  characters, matching regular expression
+                                  /[A-z][A-z0-9_]+/)
+   -idformat           menu       [SWISS] Entry format (Values: EMBL (EMBL);
+                                  SWISS (Swiss-Prot, SpTrEMBL, TrEMBLnew); GB
+                                  (Genbank, DDBJ); REFSEQ (Refseq))
+   -filenames          string     [*.dat] Wildcard database filename (Any
+                                  string is accepted)
+   -directory          directory  [.] Database directory
+   -fields             menu       [id,acc] Index fields (Values: id (ID); acc
+                                  (Accession number); sv (Sequence Version and
+                                  GI); des (Description); key (Keywords); org
+                                  (Taxonomy))
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -release            string     Release number
-   -date               string     Index date
-   -exclude            string     Wildcard filename(s) to exclude
-   -indexoutdir        outdir     Index directory
+   -release            string     [0.0] Release number (Any string up to 9
+                                  characters)
+   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
+   -exclude            string     Wildcard filename(s) to exclude (Any string
+                                  is accepted)
+   -indexoutdir        outdir     [.] Index file output directory
 
    Associated qualifiers: (none)
    General qualifiers:
@@ -296,7 +313,7 @@ value set.
 
 <tr>
 <td>-indexoutdir</td>
-<td>Index directory</td>
+<td>Index file output directory</td>
 <td>Output directory</td>
 <td>.</td>
 </tr>

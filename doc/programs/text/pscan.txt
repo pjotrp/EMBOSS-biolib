@@ -65,9 +65,11 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-   -emin               integer    Minimum number of elements per fingerprint
-   -emax               integer    Maximum number of elements per fingerprint
-  [-outfile]           outfile    Output file name
+   -emin               integer    [2] Minimum number of elements per
+                                  fingerprint (Integer from 1 to 20)
+   -emax               integer    [20] Maximum number of elements per
+                                  fingerprint (Integer up to 20)
+  [-outfile]           outfile    [*.pscan] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -106,20 +108,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -emin Minimum number of elements per fingerprint Integer from 1 to 20
-   2
-   -emax Maximum number of elements per fingerprint Integer up to 20 20
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.pscan
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

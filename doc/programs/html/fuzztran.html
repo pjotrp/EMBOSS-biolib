@@ -55,7 +55,6 @@ depending on the complexity of the search pattern specified.
 Protein pattern search after translation
 Input nucleotide sequence(s): <b>tembl:rnops</b>
 Search pattern: <b>RA</b>
-Number of mismatches [0]: <b></b>
 Translation frames
          1 : 1
          2 : 2
@@ -102,7 +101,7 @@ Output report [rnops.fuzztran]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-   -pattern            string     The standard IUPAC one-letter codes for the
+   -pattern            pattern    The standard IUPAC one-letter codes for the
                                   amino acids are used.
                                   The symbol `x' is used for a position where
                                   any amino acid is accepted.
@@ -131,12 +130,29 @@ Output report [rnops.fuzztran]: <b></b>
                                   A period ends the pattern. (Optional in
                                   fuzztran).
                                   For example, [DE](2)HS{P}X(2)PX(2,4)C
-   -mismatch           integer    Number of mismatches
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers:
-   -frame              menu       Frame(s) to translate
-   -table              menu       Code to use
+   -frame              menu       [1] Frame(s) to translate (Values: 1 (1); 2
+                                  (2); 3 (3); F (Forward three frames); -1
+                                  (-1); -2 (-2); -3 (-3); R (Reverse three
+                                  frames); 6 (All six frames))
+   -table              menu       [0] Code to use (Values: 0 (Standard); 1
+                                  (Standard (with alternative initiation
+                                  codons)); 2 (Vertebrate Mitochondrial); 3
+                                  (Yeast Mitochondrial); 4 (Mold, Protozoan,
+                                  Coelenterate Mitochondrial and
+                                  Mycoplasma/Spiroplasma); 5 (Invertebrate
+                                  Mitochondrial); 6 (Ciliate Macronuclear and
+                                  Dasycladacean); 9 (Echinoderm
+                                  Mitochondrial); 10 (Euplotid Nuclear); 11
+                                  (Bacterial); 12 (Alternative Yeast Nuclear);
+                                  13 (Ascidian Mitochondrial); 14 (Flatworm
+                                  Mitochondrial); 15 (Blepharisma
+                                  Macronuclear); 16 (Chlorophycean
+                                  Mitochondrial); 21 (Trematode
+                                  Mitochondrial); 22 (Scenedesmus obliquus);
+                                  23 (Thraustochytrium Mitochondrial))
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -156,6 +172,11 @@ Output report [rnops.fuzztran]: <b></b>
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-pattern" associated qualifiers
+   -pformat            string     File format
+   -pmismatch          integer    Pattern mismatch
+   -pname              string     Pattern base name
 
    "-outfile" associated qualifiers
    -rformat2           string     Report format
@@ -210,15 +231,8 @@ Repetition of an element of the pattern can be indicated by following that eleme
 When a pattern is restricted to either the N- or C-terminal of a sequence, that pattern either starts with a `<' symbol or respectively ends with a `>' symbol.
 A period ends the pattern. (Optional in fuzztran).
 For example, [DE](2)HS{P}X(2)PX(2,4)C</td>
-<td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
-</tr>
-
-<tr>
-<td>-mismatch</td>
-<td>Number of mismatches</td>
-<td>Integer 0 or more</td>
-<td>0</td>
+<td>Property value(s)</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
@@ -489,23 +503,23 @@ By default <b>fuzztran</b> writes a 'table' report file.
 # Sequence: RNOPS     from: 1   to: 1493
 # HitCount: 9
 #
-# Pattern: RA
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 RA
 # TransTable: 0
 # Frames: F
 #
 #=======================================
 
-  Start     End   Score Mismatch  Frame PStart   PEnd Translation
-     97     102       2        .      1     33     34 RA         
-    133     138       2        .      1     45     46 RA         
-    421     426       2        .      1    141    142 RA         
-    625     630       2        .      1    209    210 RA         
-    835     840       2        .      1    279    280 RA         
-    919     924       2        .      1    307    308 RA         
-    227     232       2        .      2     76     77 RA         
-    752     757       2        .      2    251    252 RA         
-     72      77       2        .      3     24     25 RA         
+  Start     End   Score Pattern_name Mismatch  Frame PStart   PEnd Translation
+     97     102       2 pattern1            .      1     33     34 RA         
+    133     138       2 pattern1            .      1     45     46 RA         
+    421     426       2 pattern1            .      1    141    142 RA         
+    625     630       2 pattern1            .      1    209    210 RA         
+    835     840       2 pattern1            .      1    279    280 RA         
+    919     924       2 pattern1            .      1    307    308 RA         
+    227     232       2 pattern1            .      2     76     77 RA         
+    752     757       2 pattern1            .      2    251    252 RA         
+     72      77       2 pattern1            .      3     24     25 RA         
 
 #---------------------------------------
 #---------------------------------------

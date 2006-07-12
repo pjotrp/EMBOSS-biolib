@@ -56,9 +56,9 @@ opposite orientations.
 
 % <b>primersearch tembl:z52466 </b>
 Searches DNA sequences for matches with primer pairs
-Primer file: <b>primers</b>
+Primer pairs file: <b>primers</b>
 Allowed percent mismatch [0]: <b></b>
-Output file [hsa203yc1.primersearch]: <b></b>
+Whitehead primer3_core program output file [hsa203yc1.primersearch]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -74,9 +74,9 @@ Here we run the same example but allowing 20% mismatch between the primers and t
 
 % <b>primersearch tembl:z52466 </b>
 Searches DNA sequences for matches with primer pairs
-Primer file: <b>primers</b>
+Primer pairs file: <b>primers</b>
 Allowed percent mismatch [0]: <b>20</b>
-Output file [hsa203yc1.primersearch]: <b></b>
+Whitehead primer3_core program output file [hsa203yc1.primersearch]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -91,9 +91,11 @@ Output file [hsa203yc1.primersearch]: <b></b>
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-infile]            infile     Primer file
-  [-mismatchpercent]   integer    Allowed percent mismatch
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Primer pairs file
+  [-mismatchpercent]   integer    [0] Allowed percent mismatch (Any integer
+                                  value)
+  [-outfile]           outfile    [*.primersearch] Whitehead primer3_core
+                                  program output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -153,7 +155,7 @@ Output file [hsa203yc1.primersearch]: <b></b>
 
 <tr>
 <td>[-infile]<br>(Parameter 2)</td>
-<td>Primer file</td>
+<td>Primer pairs file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -167,9 +169,9 @@ Output file [hsa203yc1.primersearch]: <b></b>
 
 <tr>
 <td>[-outfile]<br>(Parameter 4)</td>
-<td>Output file name</td>
+<td>Whitehead primer3_core program output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.primersearch</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

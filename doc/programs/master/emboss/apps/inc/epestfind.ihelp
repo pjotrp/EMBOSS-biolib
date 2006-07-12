@@ -22,7 +22,7 @@
                                   value is set to +5.0 based on experimental
                                   data. Alterations are not recommended since
                                   significance is a matter of biology, not
-                                  mathematics. (Number from -55.00 to 55.00
+                                  mathematics. (Number from -55.00 to 55.00)
 
    Advanced (Unprompted) qualifiers:
    -[no]potential      boolean    [Y] Decide whether potential PEST motifs

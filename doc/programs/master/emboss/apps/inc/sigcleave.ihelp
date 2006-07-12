@@ -3,7 +3,7 @@
                                   format, or reference (input USA)
    -minweight          float      [3.5] Minimum scoring weight value for the
                                   predicted cleavage site (Number from 0.000
-                                  to 100.000
+                                  to 100.000)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers:

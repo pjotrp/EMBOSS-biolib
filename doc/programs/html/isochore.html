@@ -72,12 +72,14 @@ Created isochore.ps
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
-   -graph              xygraph    Graph type
+  [-outfile]           outfile    [*.isochore] Output file name
+   -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -window             integer    Window size
-   -shift              integer    Shift increment
+   -window             integer    [1000] Window size (Integer 1 or more)
+   -shift              integer    [100] Shift increment (Integer 1 or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -147,7 +149,7 @@ Created isochore.ps
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.isochore</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>

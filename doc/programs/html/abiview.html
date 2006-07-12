@@ -53,8 +53,8 @@ It also writes out the sequence to an output sequence file.
 
 % <b>abiview -graph cps </b>
 Reads ABI file and display the trace
-ABI trace file: <b>abiview.abi</b>
-Output sequence [abiview.fasta]: <b></b>
+ABI sequencing trace file: <b>abiview.abi</b>
+nucleotide output sequence [abiview.fasta]: <b></b>
 
 Created abiview.ps
 
@@ -70,24 +70,31 @@ Created abiview.ps
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     ABI trace file
-  [-outseq]            seqout     Nucleotide sequence filename and optional
-                                  format (output USA)
-   -graph              xygraph    Graph type
+  [-infile]            infile     ABI sequencing trace file
+  [-outseq]            seqout     [<sequence>.<format>] Nucleotide sequence
+                                  filename and optional format (output USA)
+   -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -startbase          integer    First base to report or display
-   -endbase            integer    Last sequence base to report or display. If
-                                  the default is set to zero then the value of
-                                  this is taken as the maximum number of
-                                  bases.
-   -yticks             boolean    Display y-axis ticks
-   -[no]sequence       boolean    Display the sequence on the graph
-   -window             integer    Sequence display window size
-   -bases              string     Base graphs to be displayed
+   -startbase          integer    [0] First base to report or display (Integer
+                                  0 or more)
+   -endbase            integer    [0] Last sequence base to report or display.
+                                  If the default is set to zero then the
+                                  value of this is taken as the maximum number
+                                  of bases. (Any integer value)
+   -yticks             boolean    [N] Display y-axis ticks
+   -[no]sequence       boolean    [Y] Display the sequence on the graph
+   -window             integer    [40] Sequence display window size (Any
+                                  integer value)
+   -bases              string     [GATC] Base graphs to be displayed (Any
+                                  string is accepted, matching regular
+                                  expression /[GATC]+/)
 
    Advanced (Unprompted) qualifiers:
-   -separate           boolean    Separate the trace graphs for the 4 bases
+   -separate           boolean    [N] Separate the trace graphs for the 4
+                                  bases
 
    Associated qualifiers:
 
@@ -139,7 +146,7 @@ Created abiview.ps
 
 <tr>
 <td>[-infile]<br>(Parameter 1)</td>
-<td>ABI trace file</td>
+<td>ABI sequencing trace file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -148,7 +155,7 @@ Created abiview.ps
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Nucleotide sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>

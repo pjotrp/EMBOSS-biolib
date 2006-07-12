@@ -51,7 +51,7 @@ Usage
 % cons 
 Creates a consensus from multiple alignments
 Input (aligned) sequence set: dna.msf
-Output sequence [dna.fasta]: aligned.cons
+output sequence [dna.fasta]: aligned.cons
 
    Go to the input files for this example
    Go to the output files for this example
@@ -60,32 +60,37 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     File containing a sequence alignment.
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+  [-outseq]            seqout     [.] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -datafile           matrix     This is the scoring matrix file used when
+   -datafile           matrix     [EBLOSUM62 for protein, EDNAFULL for DNA]
+                                  This is the scoring matrix file used when
                                   comparing sequences. By default it is the
                                   file 'EBLOSUM62' (for proteins) or the file
                                   'EDNAFULL' (for nucleic sequences). These
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
-   -plurality          float      Set a cut-off for the number of positive
-                                  matches below which there is no consensus.
-                                  The default plurality is taken as half the
-                                  total weight of all the sequences in the
-                                  alignment.
-   -identity           integer    Provides the facility of setting the
+   -plurality          float      [Half the total sequence weighting] Set a
+                                  cut-off for the number of positive matches
+                                  below which there is no consensus. The
+                                  default plurality is taken as half the total
+                                  weight of all the sequences in the
+                                  alignment. (Any numeric value)
+   -identity           integer    [0] Provides the facility of setting the
                                   required number of identities at a site for
                                   it to give a consensus at that position.
                                   Therefore, if this is set to the number of
                                   sequences in the alignment only columns of
                                   identities contribute to the consensus.
-   -setcase            float      Sets the threshold for the positive matches
-                                  above which the consensus is is upper-case
-                                  and below which the consensus is in
-                                  lower-case.
-   -name               string     Name of the consensus sequence
+                                  (Integer 0 or more)
+   -setcase            float      [@( $(sequence.totweight) / 2)] Sets the
+                                  threshold for the positive matches above
+                                  which the consensus is is upper-case and
+                                  below which the consensus is in lower-case.
+                                  (Any numeric value)
+   -name               string     Name of the consensus sequence (Any string
+                                  is accepted)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -132,37 +137,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) File containing a sequence alignment. Readable set of
-   sequences Required
-   [-outseq]
-   (Parameter 2) Sequence filename and optional format (output USA)
-   Writeable sequence <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   -datafile This is the scoring matrix file used when comparing
-   sequences. By default it is the file 'EBLOSUM62' (for proteins) or the
-   file 'EDNAFULL' (for nucleic sequences). These files are found in the
-   'data' directory of the EMBOSS installation. Comparison matrix file in
-   EMBOSS data path EBLOSUM62 for protein
-   EDNAFULL for DNA
-   -plurality Set a cut-off for the number of positive matches below
-   which there is no consensus. The default plurality is taken as half
-   the total weight of all the sequences in the alignment. Any numeric
-   value Half the total sequence weighting
-   -identity Provides the facility of setting the required number of
-   identities at a site for it to give a consensus at that position.
-   Therefore, if this is set to the number of sequences in the alignment
-   only columns of identities contribute to the consensus. Integer 0 or
-   more 0
-   -setcase Sets the threshold for the positive matches above which the
-   consensus is is upper-case and below which the consensus is in
-   lower-case. Any numeric value @( $(sequence.totweight) / 2)
-   -name Name of the consensus sequence Any string is accepted An empty
-   string is accepted
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

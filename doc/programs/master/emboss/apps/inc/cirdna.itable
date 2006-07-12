@@ -70,7 +70,7 @@
 <tr>
 <td>-originangle</td>
 <td>Position in degrees of the molecule's origin on the circle</td>
-<td>Number from 0.000 to 360.000)</td>
+<td>Number from 0.000 to 360.000</td>
 <td>90</td>
 </tr>
 
@@ -112,49 +112,49 @@
 <tr>
 <td>-textheight</td>
 <td>Height of text. Enter a number <1.0 or >1.0 to decrease or increase the size, respectively</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-textlength</td>
 <td>Length of text. Enter a number <1.0 or >1.0 to decrease or increase the size, respectively</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-tickheight</td>
 <td>Height of ticks. Enter a number <1.0 or >1.0 to decrease or increase the size, respectively</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-blockheight</td>
 <td>Height of blocks. Enter a number <1.0 or >1.0 to decrease or increase the size, respectively</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-rangeheight</td>
 <td>Height of range ends. Enter a number <1.0 or >1.0 to decrease or increase the size, respectively</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-gapgroup</td>
 <td>Space between groups. Enter a number <1.0 or >1.0 to decrease or increase the size, respectively</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-postext</td>
 <td>Space between text and ticks, blocks, and ranges. Enter a number <1.0 or >1.0 to decrease or increase the size, respectively</td>
-<td>Number 0.000 or more)</td>
+<td>Number 0.000 or more</td>
 <td>1.0</td>
 </tr>
 

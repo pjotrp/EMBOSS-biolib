@@ -18,7 +18,7 @@
                                   or more)
    -originangle        float      [90] Position in degrees of the molecule's
                                   origin on the circle (Number from 0.000 to
-                                  360.000
+                                  360.000)
    -[no]intersymbol    boolean    [Y] Horizontal junctions between blocks
    -intercolour        integer    [1] Colour of junctions between blocks
                                   (enter a colour number) (Integer from 0 to
@@ -29,26 +29,26 @@
    -ticklines          boolean    [N] Vertical lines at the ruler's ticks
    -textheight         float      [1.0] Height of text. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -textlength         float      [1.0] Length of text. Enter a number <1.0 or
                                   >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -tickheight         float      [1.0] Height of ticks. Enter a number <1.0
                                   or >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -blockheight        float      [1.0] Height of blocks. Enter a number <1.0
                                   or >1.0 to decrease or increase the size,
-                                  respectively (Number 0.000 or more
+                                  respectively (Number 0.000 or more)
    -rangeheight        float      [1.0] Height of range ends. Enter a number
                                   <1.0 or >1.0 to decrease or increase the
-                                  size, respectively (Number 0.000 or more
+                                  size, respectively (Number 0.000 or more)
    -gapgroup           float      [1.0] Space between groups. Enter a number
                                   <1.0 or >1.0 to decrease or increase the
-                                  size, respectively (Number 0.000 or more
+                                  size, respectively (Number 0.000 or more)
    -postext            float      [1.0] Space between text and ticks, blocks,
                                   and ranges. Enter a number <1.0 or >1.0 to
                                   decrease or increase the size, respectively
-                                  (Number 0.000 or more
+                                  (Number 0.000 or more)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

@@ -80,14 +80,14 @@
 <tr>
 <td>-tolerance</td>
 <td>Tolerance</td>
-<td>Number from 0.100 to 1.000)</td>
+<td>Number from 0.100 to 1.000</td>
 <td>0.1</td>
 </tr>
 
 <tr>
 <td>-partials</td>
 <td>Partials factor</td>
-<td>Number from 0.100 to 1.000)</td>
+<td>Number from 0.100 to 1.000</td>
 <td>0.4</td>
 </tr>
 

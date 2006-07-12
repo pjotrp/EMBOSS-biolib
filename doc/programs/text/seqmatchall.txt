@@ -42,7 +42,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqset     Sequence set filename and optional format,
                                   or reference (input USA)
-   -wordsize           integer    Word size
+   -wordsize           integer    [4] Word size (Integer 2 or more)
   [-outfile]           align      Output alignment file name
 
    Additional (Optional) qualifiers: (none)
@@ -90,18 +90,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Sequence set filename and optional format, or reference
-   (input USA) Readable set of sequences Required
-   -wordsize Word size Integer 2 or more 4
-   [-outfile]
-   (Parameter 2) Output alignment file name Alignment output file
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

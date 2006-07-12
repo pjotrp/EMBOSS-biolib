@@ -96,7 +96,7 @@ Database directory [.]: <b>embl</b>
 Wildcard database filename [*.seq]: <b></b>
 Release number [0.0]: <b></b>
 Index date [00/00/00]: <b></b>
-Output file [outfile.dbigcg]: <b></b>
+General log output file [outfile.dbigcg]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -110,26 +110,38 @@ Output file [outfile.dbigcg]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-dbname]            string     Database name
-   -idformat           menu       Entry format
-   -directory          directory  Database directory
-   -filenames          string     Wildcard database filename
-   -release            string     Release number
-   -date               string     Index date
-   -outfile            outfile    Output file name
+  [-dbname]            string     Database name (Any string from 2 to 19
+                                  characters, matching regular expression
+                                  /[A-z][A-z0-9_]+/)
+   -idformat           menu       [EMBL] Entry format (Values: EMBL (EMBL);
+                                  SWISS (Swiss-Prot, SpTrEMBL, TrEMBLnew);
+                                  GENBANK (Genbank, DDBJ); PIR (NBRF))
+   -directory          directory  [.] Database directory
+   -filenames          string     [*.seq] Wildcard database filename (Any
+                                  string is accepted)
+   -release            string     [0.0] Release number (Any string up to 9
+                                  characters)
+   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
+   -outfile            outfile    [*.dbigcg] General log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -fields             menu       Index fields
-   -exclude            string     Wildcard filename(s) to exclude
-   -maxindex           integer    Maximum index length
-   -sortoptions        string     Sort options, typically '-T .' to use
-                                  current directory for work files and '-k
-                                  1,1' to force GNU sort to use the first
-                                  field
-   -[no]systemsort     boolean    Use system sort utility
-   -[no]cleanup        boolean    Clean up temporary files
-   -indexoutdir        outdir     Index directory
+   -fields             menu       [acc] Index fields (Values: acc (acnum
+                                  accession number index); sv (seqvn sequence
+                                  version and gi number index); des (des
+                                  description index); key (keyword keywords
+                                  index); org (taxon taxonomy and organism
+                                  index))
+   -exclude            string     Wildcard filename(s) to exclude (Any string
+                                  is accepted)
+   -maxindex           integer    [0] Maximum index length (Integer 0 or more)
+   -sortoptions        string     [-T . -k 1,1] Sort options, typically '-T .'
+                                  to use current directory for work files and
+                                  '-k 1,1' to force GNU sort to use the first
+                                  field (Any string is accepted)
+   -[no]systemsort     boolean    [Y] Use system sort utility
+   -[no]cleanup        boolean    [Y] Clean up temporary files
+   -indexoutdir        outdir     [.] Index file output directory
 
    Associated qualifiers:
 
@@ -205,9 +217,9 @@ Output file [outfile.dbigcg]: <b></b>
 
 <tr>
 <td>-outfile</td>
-<td>Output file name</td>
+<td>General log output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.dbigcg</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -270,7 +282,7 @@ Output file [outfile.dbigcg]: <b></b>
 
 <tr>
 <td>-indexoutdir</td>
-<td>Index directory</td>
+<td>Index file output directory</td>
 <td>Output directory</td>
 <td>.</td>
 </tr>

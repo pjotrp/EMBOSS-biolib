@@ -62,15 +62,17 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+  [-outseq]            seqout     [.] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -name               string     Name of the sequence
-   -description        string     Description of the sequence
+   -name               string     Name of the sequence (Any string is
+                                  accepted)
+   -description        string     Description of the sequence (Any string is
+                                  accepted)
 
    Advanced (Unprompted) qualifiers:
-   -append             boolean    This allows you to append the name or
+   -append             boolean    [N] This allows you to append the name or
                                   description you have given on to the end of
                                   the existing name or description of the
                                   sequence.
@@ -119,23 +121,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   [-outseq]
-   (Parameter 2) Sequence filename and optional format (output USA)
-   Writeable sequence <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   -name Name of the sequence Any string is accepted An empty string is
-   accepted
-   -description Description of the sequence Any string is accepted An
-   empty string is accepted
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -append This allows you to append the name or description you have
-   given on to the end of the existing name or description of the
-   sequence. Boolean value Yes/No No
 
 Input file format
 
@@ -215,6 +200,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

@@ -3,9 +3,9 @@
                                   reference (input USA)
   [-infile]            infile     Profile or weight matrix file
    -gapopen            float      [1.0] Gap opening coefficient (Number from
-                                  0.000 to 100.000
+                                  0.000 to 100.000)
    -gapextend          float      [1.0] Gap extension coefficient (Number from
-                                  0.000 to 100.000
+                                  0.000 to 100.000)
   [-outfile]           align      Output alignment file name
 
    Additional (Optional) qualifiers: (none)

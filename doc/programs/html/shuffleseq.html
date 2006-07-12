@@ -52,7 +52,7 @@ This makes two randomised copies of the input sequence:
 % <b>shuffleseq -shuffle 2 </b>
 Shuffles a set of sequences maintaining composition
 Input sequence(s): <b>tembl:mmam</b>
-Output sequence [mmam.fasta]: <b></b>
+output sequence(s) [mmam.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -67,12 +67,12 @@ Output sequence [mmam.fasta]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -shuffle            integer    Number of shuffles
+   -shuffle            integer    [1] Number of shuffles (Any integer value)
 
    Associated qualifiers:
 
@@ -141,7 +141,7 @@ Output sequence [mmam.fasta]: <b></b>
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

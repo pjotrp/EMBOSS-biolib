@@ -85,11 +85,11 @@ illustrated in the examples below.
 % <b>vectorstrip @vecseqs.list </b>
 Strips out DNA between a pair of vector sequences
 Are your vector sequences in a file? [Y]: <b></b>
-Name of vectorfile: <b>vectors</b>
+Cloning vector definition file (optional): <b>vectors</b>
 Max allowed % mismatch [10]: <b></b>
 Show only the best hits (minimise mismatches)? [Y]: <b></b>
 Output file [pbluescript.vectorstrip]: <b>vector.strip</b>
-Output sequence [pbluescript.fasta]: <b>vector.fasta</b>
+output sequence(s) [pbluescript.fasta]: <b>vector.fasta</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -104,16 +104,17 @@ Output sequence [pbluescript.fasta]: <b>vector.fasta</b>
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-[no]vectorfile]    toggle     Are your vector sequences in a file?
-*  -vectorsfile        infile     Name of vectorfile
-   -mismatch           integer    Max allowed % mismatch
-   -[no]besthits       boolean    Show only the best hits (minimise
+  [-[no]vectorfile]    toggle     [Y] Are your vector sequences in a file?
+*  -vectorsfile        infile     Cloning vector definition file (optional)
+   -mismatch           integer    [10] Max allowed % mismatch (Any integer
+                                  value)
+   -[no]besthits       boolean    [Y] Show only the best hits (minimise
                                   mismatches)?
-*  -linkera            string     The 5' sequence
-*  -linkerb            string     The 3' sequence
-  [-outfile]           outfile    Output file name
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+*  -linkera            string     The 5' sequence (Any string is accepted)
+*  -linkerb            string     The 3' sequence (Any string is accepted)
+  [-outfile]           outfile    [*.vectorstrip] Output file name
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -191,7 +192,7 @@ Output sequence [pbluescript.fasta]: <b>vector.fasta</b>
 
 <tr>
 <td>-vectorsfile</td>
-<td>Name of vectorfile</td>
+<td>Cloning vector definition file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -228,14 +229,14 @@ Output sequence [pbluescript.fasta]: <b>vector.fasta</b>
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.vectorstrip</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outseq]<br>(Parameter 4)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -530,6 +531,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

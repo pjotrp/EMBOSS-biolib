@@ -54,11 +54,11 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-seqall]            seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.chips] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]sum            boolean    Sum codons over all sequences
+   -[no]sum            boolean    [Y] Sum codons over all sequences
 
    Associated qualifiers:
 
@@ -95,17 +95,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-seqall]
-   (Parameter 1) Nucleotide sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) Output file name Output file <sequence>.chips
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -[no]sum Sum codons over all sequences Boolean value Yes/No Yes
 
 Input file format
 

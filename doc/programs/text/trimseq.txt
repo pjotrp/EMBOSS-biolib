@@ -90,33 +90,34 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [.] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -window             integer    This determines the size of the region that
-                                  is considered when deciding whether the
+   -window             integer    [1] This determines the size of the region
+                                  that is considered when deciding whether the
                                   percentage of ambiguity is greater than the
                                   threshold. A value of 5 means that a region
                                   of 5 letters in the sequence is shifted
                                   along the sequence from the ends and
                                   trimming is done only if there is a greater
                                   or equal percentage of ambiguity than the
-                                  threshold percentage.
-   -percent            float      This is the threshold of the percentage
-                                  ambiguity in the window required in order to
-                                  trim a sequence.
-   -strict             boolean    In nucleic sequences, trim off not only N's
-                                  and X's, but also the nucleotide IUPAC
+                                  threshold percentage. (Any integer value)
+   -percent            float      [100.0] This is the threshold of the
+                                  percentage ambiguity in the window required
+                                  in order to trim a sequence. (Any numeric
+                                  value)
+   -strict             boolean    [N] In nucleic sequences, trim off not only
+                                  N's and X's, but also the nucleotide IUPAC
                                   ambiguity codes M, R, W, S, Y, K, V, H, D
                                   and B. In protein sequences, trim off not
                                   only X's but also B and Z.
-   -star               boolean    In protein sequences, trim off not only X's,
-                                  but also the *'s
+   -star               boolean    [N] In protein sequences, trim off not only
+                                  X's, but also the *'s
 
    Advanced (Unprompted) qualifiers:
-   -[no]left           boolean    Trim at the start
-   -[no]right          boolean    Trim at the end
+   -[no]left           boolean    [Y] Trim at the start
+   -[no]right          boolean    [Y] Trim at the end
 
    Associated qualifiers:
 
@@ -162,32 +163,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Sequence set(s) filename and optional format (output
-   USA) Writeable sequence(s) <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   -window This determines the size of the region that is considered when
-   deciding whether the percentage of ambiguity is greater than the
-   threshold. A value of 5 means that a region of 5 letters in the
-   sequence is shifted along the sequence from the ends and trimming is
-   done only if there is a greater or equal percentage of ambiguity than
-   the threshold percentage. Any integer value 1
-   -percent This is the threshold of the percentage ambiguity in the
-   window required in order to trim a sequence. Any numeric value 100.0
-   -strict In nucleic sequences, trim off not only N's and X's, but also
-   the nucleotide IUPAC ambiguity codes M, R, W, S, Y, K, V, H, D and B.
-   In protein sequences, trim off not only X's but also B and Z. Boolean
-   value Yes/No No
-   -star In protein sequences, trim off not only X's, but also the *'s
-   Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -[no]left Trim at the start Boolean value Yes/No Yes
-   -[no]right Trim at the end Boolean value Yes/No Yes
 
 Input file format
 
@@ -348,6 +323,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

@@ -109,7 +109,7 @@ Input (gapped) sequence: <b>tembl:hsfau1</b>
      Begin at position [start]: <b>1913</b>
        End at position [end]: <b>1915</b>
         Reverse strand [N]: <b></b>
-Output file [hsfau1.yank]: <b>cds.list</b>
+List of USAs output file [hsfau1.yank]: <b>cds.list</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -125,11 +125,11 @@ Output file [hsfau1.yank]: <b>cds.list</b>
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) sequence filename and optional
                                   format, or reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.yank] List of USAs output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -newfile            boolean    Overwrite existing output file
+   -newfile            boolean    [N] Overwrite existing output file
 
    Associated qualifiers:
 
@@ -186,9 +186,9 @@ Output file [hsfau1.yank]: <b>cds.list</b>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>List of USAs output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.yank</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -475,6 +475,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

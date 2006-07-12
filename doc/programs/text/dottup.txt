@@ -56,15 +56,19 @@ Command line arguments
                                   reference (input USA)
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
-   -wordsize           integer    Word size
-*  -graph              graph      Graph type
-*  -xygraph            xygraph    Graph type
+   -wordsize           integer    [10] Word size (Integer 2 or more)
+*  -graph              graph      [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
+*  -xygraph            xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -[no]boxit          boolean    Draw a box around dotplot
+*  -[no]boxit          boolean    [Y] Draw a box around dotplot
 
    Advanced (Unprompted) qualifiers:
-   -stretch            toggle     Use non-proportional axes
+   -stretch            toggle     [N] Use non-proportional axes
 
    Associated qualifiers:
 
@@ -132,25 +136,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-asequence]
-   (Parameter 1) Sequence filename and optional format, or reference
-   (input USA) Readable sequence Required
-   [-bsequence]
-   (Parameter 2) Sequence filename and optional format, or reference
-   (input USA) Readable sequence Required
-   -wordsize Word size Integer 2 or more 10
-   -graph Graph type EMBOSS has a list of known devices, including ps,
-   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
-   -xygraph Graph type EMBOSS has a list of known devices, including ps,
-   hpgl, hp7470, hp7580, meta, cps, x11, tekt, tek, none, data, xterm,
-   png EMBOSS_GRAPHICS value, or x11
-   Additional (Optional) qualifiers Allowed values Default
-   -[no]boxit Draw a box around dotplot Boolean value Yes/No Yes
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -stretch Use non-proportional axes Toggle value Yes/No No
 
 Input file format
 

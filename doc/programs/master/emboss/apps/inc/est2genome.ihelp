@@ -48,7 +48,7 @@
                                   If you have a machine with plenty of memory
                                   you can raise this parameter (but do not
                                   exceed the machine's physical RAM) (Any
-                                  numeric value
+                                  numeric value)
    -shuffle            integer    [0] Shuffle (Any integer value)
    -seed               integer    [20825] Random number seed (Any integer
                                   value)

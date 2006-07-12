@@ -55,7 +55,7 @@
    -[no]listoptions    boolean    [Y] Display the date and options used
    -plurality          float      [Half the total sequence weighting]
                                   Plurality check value (totweight/2) (Any
-                                  numeric value
+                                  numeric value)
    -consensus          boolean    [N] Display the consensus
    -[no]collision      boolean    [Y] Allow collisions in calculating
                                   consensus

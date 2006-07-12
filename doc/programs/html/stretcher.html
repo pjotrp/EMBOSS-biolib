@@ -108,14 +108,17 @@ Output alignment [hba_human.stretcher]: <b></b>
   [-outfile]           align      Output alignment file name
 
    Additional (Optional) qualifiers:
-   -datafile           matrix     This is the scoring matrix file used when
+   -datafile           matrix     [EBLOSUM62 for protein, EDNAFULL for DNA]
+                                  This is the scoring matrix file used when
                                   comparing sequences. By default it is the
                                   file 'EBLOSUM62' (for proteins) or the file
                                   'EDNAFULL' (for nucleic sequences). These
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
-   -gapopen            integer    Gap penalty
-   -gapextend          integer    Gap length penalty
+   -gapopen            integer    [12 for protein, 16 for nucleic] Gap penalty
+                                  (Positive integer)
+   -gapextend          integer    [2 for protein, 4 for nucleic] Gap length
+                                  penalty (Positive integer)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:

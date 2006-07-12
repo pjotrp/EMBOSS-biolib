@@ -28,7 +28,6 @@ Usage
 Protein pattern search
 Input protein sequence(s): tsw:*
 Search pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-Number of mismatches [0]: 
 Output report [100k_rat.fuzzpro]: 
 
    Go to the input files for this example
@@ -39,7 +38,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-   -pattern            string     The standard IUPAC one-letter codes for the
+   -pattern            pattern    The standard IUPAC one-letter codes for the
                                   amino acids are used.
                                   The symbol `x' is used for a position where
                                   any amino acid is accepted.
@@ -68,7 +67,6 @@ Command line arguments
                                   A period ends the pattern. (Optional in
                                   fuzzpro).
                                   For example, [DE](2)HS{P}X(2)PX(2,4)C
-   -mismatch           integer    Number of mismatches
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
@@ -90,6 +88,11 @@ Command line arguments
    -ufo1               string     UFO features
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
+
+   "-pattern" associated qualifiers
+   -pformat            string     File format
+   -pmismatch          integer    Pattern mismatch
+   -pname              string     Pattern base name
 
    "-outfile" associated qualifiers
    -rformat2           string     Report format
@@ -115,36 +118,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -pattern The standard IUPAC one-letter codes for the amino acids are
-   used. The symbol `x' is used for a position where any amino acid is
-   accepted. Ambiguities are indicated by listing the acceptable amino
-   acids for a given position, between square parentheses `[ ]'. For
-   example: [ALT] stands for Ala or Leu or Thr. Ambiguities are also
-   indicated by listing between a pair of curly brackets `{ }' the amino
-   acids that are not accepted at a given position. For example: {AM}
-   stands for any amino acid except Ala and Met. Each element in a
-   pattern is separated from its neighbor by a `-'. (Optional in
-   fuzzpro). Repetition of an element of the pattern can be indicated by
-   following that element with a numerical value or a numerical range
-   between parenthesis. Examples: x(3) corresponds to x-x-x, x(2,4)
-   corresponds to x-x or x-x-x or x-x-x-x. When a pattern is restricted
-   to either the N- or C-terminal of a sequence, that pattern either
-   starts with a `<' symbol or respectively ends with a `>' symbol. A
-   period ends the pattern. (Optional in fuzzpro). For example,
-   [DE](2)HS{P}X(2)PX(2,4)C Any string is accepted An empty string is
-   accepted
-   -mismatch Number of mismatches Integer 0 or more 0
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
@@ -227,12 +200,12 @@ Output file format
 # Sequence: 100K_RAT     from: 1   to: 889
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -241,12 +214,12 @@ Output file format
 # Sequence: 5H1D_FUGRU     from: 1   to: 379
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -255,37 +228,23 @@ Output file format
 # Sequence: ACT1_FUGRU     from: 1   to: 375
 # HitCount: 1
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
-     53      63        . YVGDEAQSKRG
+  Start     End Pattern_name Mismatch Sequence
+     53      63 pattern1            . YVGDEAQSKRG
 
 
   [Part of this file has been deleted for brevity]
 
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
-
-#---------------------------------------
-#---------------------------------------
-#=======================================
-#
-# Sequence: OPS2_PATYE     from: 1   to: 399
-# HitCount: 0
-#
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
-#
-#=======================================
-
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -294,12 +253,12 @@ Output file format
 # Sequence: OPS2_SCHGR     from: 1   to: 380
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------
@@ -308,12 +267,26 @@ Output file format
 # Sequence: AQP1_HUMAN     from: 1   to: 269
 # HitCount: 0
 #
-# Pattern: [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
-# Mismatch: 0
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
 #
 #=======================================
 
-  Start     End Mismatch Sequence
+  Start     End Pattern_name Mismatch Sequence
+
+#---------------------------------------
+#---------------------------------------
+#=======================================
+#
+# Sequence: IFNA2_HUMAN     from: 1   to: 188
+# HitCount: 0
+#
+# Pattern_name Mismatch Pattern
+# pattern1            0 [FY]-[LIV]-G-[DE]-E-A-Q-x-[RKQ](2)-G
+#
+#=======================================
+
+  Start     End Pattern_name Mismatch Sequence
 
 #---------------------------------------
 #---------------------------------------

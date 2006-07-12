@@ -31,7 +31,7 @@ Usage
 % union 
 Reads sequence fragments and builds one sequence
 Input (gapped) sequence(s): @cds.list
-Output sequence [hsfau1.fasta]: 
+output sequence [hsfau1.fasta]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -41,11 +41,18 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+  [-outseq]            seqout     [.] Sequence filename and
+                                  optional format (output USA)
 
-   Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers: (none)
+   Additional (Optional) qualifiers:
+   -overlapfile        outfile    [*.union] Sequence overlaps output file
+                                  (optional)
+
+   Advanced (Unprompted) qualifiers:
+   -feature            boolean    [N] Use feature information
+   -source             boolean    [N] Create source features
+   -findoverlap        boolean    [N] Look for overlaps when joining
+
    Associated qualifiers:
 
    "-sequence" associated qualifiers
@@ -76,6 +83,9 @@ Command line arguments
    -ofname2            string     Features file name
    -ofdirectory2       string     Output directory
 
+   "-overlapfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write standard output
@@ -90,18 +100,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Sequence filename and optional format (output USA)
-   Writeable sequence <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
@@ -178,6 +176,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

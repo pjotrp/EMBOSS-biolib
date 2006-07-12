@@ -79,7 +79,7 @@ sequences and writes it out.
 Writes one sequence from a multiple set of sequences
 Input (gapped) sequence(s): <b>tembl:eclac*</b>
 The number of the sequence to output [1]: <b>2</b>
-Output sequence [eclac.fasta]: <b></b>
+output sequence [eclac.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -94,9 +94,10 @@ Output sequence [eclac.fasta]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-   -number             integer    The number of the sequence to output
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+   -number             integer    [1] The number of the sequence to output
+                                  (Integer 1 or more)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -174,7 +175,7 @@ Output sequence [eclac.fasta]: <b></b>
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -380,6 +381,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

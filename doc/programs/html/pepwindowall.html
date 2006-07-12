@@ -69,11 +69,13 @@ Created pepwindowall.ps
 </H2>
    Standard (Mandatory) qualifiers:
   [-sequences]         seqset     File containing a sequence alignment
-  [-graph]             xygraph    Graph type
+  [-graph]             xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
+                                  (ps, hpgl, hp7470, hp7580, meta, cps, x11,
+                                  tekt, tek, none, data, xterm, png)
 
    Additional (Optional) qualifiers:
-   -datafile           datafile   Aaindex database file
-   -length             integer    Window size
+   -datafile           datafile   [Enakai.dat] AAINDEX entry data file
+   -length             integer    [7] Window size (Integer from 1 to 200)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -151,7 +153,7 @@ Created pepwindowall.ps
 
 <tr>
 <td>-datafile</td>
-<td>Aaindex database file</td>
+<td>AAINDEX entry data file</td>
 <td>Data file</td>
 <td>Enakai.dat</td>
 </tr>

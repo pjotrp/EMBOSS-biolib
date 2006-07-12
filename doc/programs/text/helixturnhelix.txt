@@ -37,9 +37,12 @@ Command line arguments
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers:
-   -mean               float      Mean value
-   -sd                 float      Standard Deviation value
-   -minsd              float      Minimum SD
+   -mean               float      [238.71] Mean value (Number from 1.000 to
+                                  10000.000)
+   -sd                 float      [293.61] Standard Deviation value (Number
+                                  from 1.000 to 10000.000)
+   -minsd              float      [2.5] Minimum SD (Number from 0.000 to
+                                  100.000)
    -eightyseven        boolean    Use the old (1987) weight data
 
    Advanced (Unprompted) qualifiers: (none)
@@ -85,20 +88,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Protein sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   -mean Mean value Number from 1.000 to 10000.000 238.71
-   -sd Standard Deviation value Number from 1.000 to 10000.000 293.61
-   -minsd Minimum SD Number from 0.000 to 100.000 2.5
-   -eightyseven Use the old (1987) weight data Boolean value Yes/No No
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

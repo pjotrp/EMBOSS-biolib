@@ -171,33 +171,34 @@ Trim ambiguous bits off the ends of sequences
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -window             integer    This determines the size of the region that
-                                  is considered when deciding whether the
+   -window             integer    [1] This determines the size of the region
+                                  that is considered when deciding whether the
                                   percentage of ambiguity is greater than the
                                   threshold. A value of 5 means that a region
                                   of 5 letters in the sequence is shifted
                                   along the sequence from the ends and
                                   trimming is done only if there is a greater
                                   or equal percentage of ambiguity than the
-                                  threshold percentage.
-   -percent            float      This is the threshold of the percentage
-                                  ambiguity in the window required in order to
-                                  trim a sequence.
-   -strict             boolean    In nucleic sequences, trim off not only N's
-                                  and X's, but also the nucleotide IUPAC
+                                  threshold percentage. (Any integer value)
+   -percent            float      [100.0] This is the threshold of the
+                                  percentage ambiguity in the window required
+                                  in order to trim a sequence. (Any numeric
+                                  value)
+   -strict             boolean    [N] In nucleic sequences, trim off not only
+                                  N's and X's, but also the nucleotide IUPAC
                                   ambiguity codes M, R, W, S, Y, K, V, H, D
                                   and B. In protein sequences, trim off not
                                   only X's but also B and Z.
-   -star               boolean    In protein sequences, trim off not only X's,
-                                  but also the *'s
+   -star               boolean    [N] In protein sequences, trim off not only
+                                  X's, but also the *'s
 
    Advanced (Unprompted) qualifiers:
-   -[no]left           boolean    Trim at the start
-   -[no]right          boolean    Trim at the end
+   -[no]left           boolean    [Y] Trim at the start
+   -[no]right          boolean    [Y] Trim at the end
 
    Associated qualifiers:
 
@@ -265,7 +266,7 @@ Trim ambiguous bits off the ends of sequences
 <td>[-outseq]<br>(Parameter 2)</td>
 <td>Sequence set(s) filename and optional format (output USA)</td>
 <td>Writeable sequence(s)</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -539,6 +540,16 @@ None noted.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

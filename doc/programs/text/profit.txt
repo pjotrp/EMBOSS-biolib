@@ -66,7 +66,7 @@ Output file [outfile.prophecy]:
 
 % profit 
 Scan a sequence or database with a matrix or profile
-Profile or matrix file: outfile.prophecy
+Profile or weight matrix file: outfile.prophecy
 Input sequence(s): tsw:*
 Output file [outfile.profit]: 
 
@@ -76,10 +76,10 @@ Output file [outfile.profit]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-infile]            infile     Profile or matrix file
+  [-infile]            infile     Profile or weight matrix file
   [-sequence]          seqall     Sequence(s) filename and optional format, or
                                   reference (input USA)
-  [-outfile]           outfile    Output file name
+  [-outfile]           outfile    [*.profit] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -118,19 +118,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-infile]
-   (Parameter 1) Profile or matrix file Input file Required
-   [-sequence]
-   (Parameter 2) Sequence(s) filename and optional format, or reference
-   (input USA) Readable sequence(s) Required
-   [-outfile]
-   (Parameter 3) Output file name Output file <sequence>.profit
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

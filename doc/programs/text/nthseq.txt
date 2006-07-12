@@ -43,7 +43,7 @@ Usage
 Writes one sequence from a multiple set of sequences
 Input (gapped) sequence(s): tembl:eclac*
 The number of the sequence to output [1]: 2
-Output sequence [eclac.fasta]: 
+output sequence [eclac.fasta]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -53,9 +53,10 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-   -number             integer    The number of the sequence to output
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+   -number             integer    [1] The number of the sequence to output
+                                  (Integer 1 or more)
+  [-outseq]            seqout     [.] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -103,19 +104,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -number The number of the sequence to output Integer 1 or more 1
-   [-outseq]
-   (Parameter 2) Sequence filename and optional format (output USA)
-   Writeable sequence <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
@@ -225,6 +213,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

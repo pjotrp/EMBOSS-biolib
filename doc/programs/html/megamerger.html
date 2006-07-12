@@ -79,7 +79,7 @@ final merged sequence is that sequence whose mismatch region is furthest from th
 % <b>megamerger tembl:ap000504 tembl:af129756 </b>
 Merge two large overlapping nucleic acid sequences
 Word size [20]: <b></b>
-Output sequence [ap000504.merged]: <b></b>
+output sequence [ap000504.merged]: <b></b>
 Output file [ap000504.megamerger]: <b>report</b>
 
 </pre></td></tr></table><p>
@@ -97,14 +97,14 @@ Output file [ap000504.megamerger]: <b>report</b>
                                   format, or reference (input USA)
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-   -wordsize           integer    Word size
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
-  [-outfile]           outfile    Output file name
+   -wordsize           integer    [20] Word size (Integer 2 or more)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
+  [-outfile]           outfile    [*.megamerger] Output file name
 
    Additional (Optional) qualifiers:
-   -prefer             boolean    When a mismatch between the two sequence is
-                                  discovered, one or other of the two
+   -prefer             boolean    [N] When a mismatch between the two sequence
+                                  is discovered, one or other of the two
                                   sequences must be used to create the merged
                                   sequence over this mismatch region. The
                                   default action is to create the merged
@@ -216,14 +216,14 @@ Output file [ap000504.megamerger]: <b>report</b>
 <td>[-outseq]<br>(Parameter 3)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 4)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.megamerger</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

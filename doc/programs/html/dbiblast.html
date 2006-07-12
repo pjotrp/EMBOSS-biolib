@@ -130,7 +130,7 @@ Sequence type [unknown]: <b></b>
          2 : formatdb
          0 : unknown
 Blast index version [unknown]: <b></b>
-Output file [outfile.dbiblast]: <b></b>
+General log output file [outfile.dbiblast]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -144,28 +144,39 @@ Output file [outfile.dbiblast]: <b></b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-dbname]            string     Database name
-   -directory          directory  Database directory
-   -filenames          string     Wildcard database filename
-   -release            string     Release number
-   -date               string     Index date
-   -seqtype            menu       Sequence type
-   -blastversion       menu       Blast index version
-   -outfile            outfile    Output file name
+  [-dbname]            string     Database name (Any string from 2 to 19
+                                  characters, matching regular expression
+                                  /[A-z][A-z0-9_]+/)
+   -directory          directory  [.] Database directory
+   -filenames          string     [Database name] Wildcard database filename
+                                  (Any string is accepted)
+   -release            string     [0.0] Release number (Any string up to 9
+                                  characters)
+   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
+   -seqtype            menu       [unknown] Sequence type (Values: N
+                                  (nucleic); P (protein); ? (unknown))
+   -blastversion       menu       [unknown] Blast index version (Values: 1
+                                  (wublast and setdb/pressdb); 2 (formatdb); 0
+                                  (unknown))
+   -outfile            outfile    [*.dbiblast] General log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -fields             menu       Index fields
-   -exclude            string     Wildcard filename(s) to exclude
-   -sortoptions        string     Sort options, typically '-T .' to use
-                                  current directory for work files and '-k
-                                  1,1' to force GNU sort to use the first
-                                  field
-   -maxindex           integer    Maximum index length
-   -[no]systemsort     boolean    Use system sort utility
-   -[no]cleanup        boolean    Clean up temporary files
+   -fields             menu       [acc] Index fields (Values: acc (acnum
+                                  accession number index); sv (seqvn sequence
+                                  version and gi number index); des (des
+                                  description index))
+   -exclude            string     Wildcard filename(s) to exclude (Any string
+                                  is accepted)
+   -sortoptions        string     [-T . -k 1,1] Sort options, typically '-T .'
+                                  to use current directory for work files and
+                                  '-k 1,1' to force GNU sort to use the first
+                                  field (Any string is accepted)
+   -maxindex           integer    [0] Maximum index length (Integer 0 or more)
+   -[no]systemsort     boolean    [Y] Use system sort utility
+   -[no]cleanup        boolean    [Y] Clean up temporary files
    -sourcefile         boolean    Use FASTA source file
-   -indexoutdir        outdir     Index directory
+   -indexoutdir        outdir     [.] Index file output directory
 
    Associated qualifiers:
 
@@ -248,9 +259,9 @@ Output file [outfile.dbiblast]: <b></b>
 
 <tr>
 <td>-outfile</td>
-<td>Output file name</td>
+<td>General log output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.dbiblast</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -320,7 +331,7 @@ Output file [outfile.dbiblast]: <b></b>
 
 <tr>
 <td>-indexoutdir</td>
-<td>Index directory</td>
+<td>Index file output directory</td>
 <td>Output directory</td>
 <td>.</td>
 </tr>

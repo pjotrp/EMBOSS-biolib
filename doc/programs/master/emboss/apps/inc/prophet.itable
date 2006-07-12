@@ -22,14 +22,14 @@
 <tr>
 <td>-gapopen</td>
 <td>Gap opening coefficient</td>
-<td>Number from 0.000 to 100.000)</td>
+<td>Number from 0.000 to 100.000</td>
 <td>1.0</td>
 </tr>
 
 <tr>
 <td>-gapextend</td>
 <td>Gap extension coefficient</td>
-<td>Number from 0.000 to 100.000)</td>
+<td>Number from 0.000 to 100.000</td>
 <td>1.0</td>
 </tr>
 

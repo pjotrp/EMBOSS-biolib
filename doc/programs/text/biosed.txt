@@ -55,16 +55,19 @@ Command line arguments
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqall     (Gapped) sequence(s) filename and optional
                                   format, or reference (input USA)
-   -target             string     Sequence section to match
-*  -replace            string     Replacement sequence section
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+   -target             string     [N] Sequence section to match (Any string is
+                                  accepted)
+*  -replace            string     [A] Replacement sequence section (Any string
+                                  is accepted)
+  [-outseq]            seqout     [.] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -position           integer    Sequence position to match
+   -position           integer    [0] Sequence position to match (Integer 0 or
+                                  more)
 
    Advanced (Unprompted) qualifiers:
-   -delete             toggle     Delete the target sequence sections
+   -delete             toggle     [N] Delete the target sequence sections
 
    Associated qualifiers:
 
@@ -110,20 +113,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   -target Sequence section to match Any string is accepted N
-   -replace Replacement sequence section Any string is accepted A
-   [-outseq]
-   (Parameter 2) Sequence filename and optional format (output USA)
-   Writeable sequence <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   -position Sequence position to match Integer 0 or more 0
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -delete Delete the target sequence sections Toggle value Yes/No No
 
 Input file format
 

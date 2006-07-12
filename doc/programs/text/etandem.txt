@@ -54,16 +54,19 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-   -minrepeat          integer    Minimum repeat size
-   -maxrepeat          integer    Maximum repeat size
+   -minrepeat          integer    [10] Minimum repeat size (Integer, 2 or
+                                  higher)
+   -maxrepeat          integer    [Same as -minrepeat] Maximum repeat size
+                                  (Integer, same as -minrepeat or higher)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -threshold          integer    Threshold score
+   -threshold          integer    [20] Threshold score (Any integer value)
    -mismatch           boolean    Allow N as a mismatch
    -uniform            boolean    Allow uniform consensus
-   -origfile           outfile    Output file name
+   -origfile           outfile    [*.etandem] Sanger Centre program tandem
+                                  output file (optional)
 
    Associated qualifiers:
 
@@ -110,23 +113,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) Nucleotide sequence filename and optional format, or
-   reference (input USA) Readable sequence Required
-   -minrepeat Minimum repeat size Integer, 2 or higher 10
-   -maxrepeat Maximum repeat size Integer, same as -minrepeat or higher
-   Same as -minrepeat
-   [-outfile]
-   (Parameter 2) Output report file name Report output file
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -threshold Threshold score Any integer value 20
-   -mismatch Allow N as a mismatch Boolean value Yes/No No
-   -uniform Allow uniform consensus Boolean value Yes/No No
-   -origfile Output file name Output file <sequence>.etandem
 
 Input file format
 

@@ -28,8 +28,8 @@ Usage
 Finds all exact matches of a given size between 2 sequences
 Word size [4]: 
 Output alignment [hba_human.wordmatch]: 
-Output features [HBA_HUMAN.gff]: 
-Second output features [HBB_HUMAN.gff]: 
+Features output [HBA_HUMAN.gff]: 
+Second features output [HBB_HUMAN.gff]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -41,10 +41,10 @@ Command line arguments
                                   reference (input USA)
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
-   -wordsize           integer    Word size
+   -wordsize           integer    [4] Word size (Integer 2 or more)
   [-outfile]           align      Output alignment file name
-  [-aoutfeat]          featout    Output features UFO
-  [-boutfeat]          featout    Output features UFO
+  [-aoutfeat]          featout    [unknown.gff] Output features UFO
+  [-boutfeat]          featout    [unknown.gff] Output features UFO
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -123,25 +123,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-asequence]
-   (Parameter 1) Sequence filename and optional format, or reference
-   (input USA) Readable sequence Required
-   [-bsequence]
-   (Parameter 2) Sequence filename and optional format, or reference
-   (input USA) Readable sequence Required
-   -wordsize Word size Integer 2 or more 4
-   [-outfile]
-   (Parameter 3) Output alignment file name Alignment output file
-   [-aoutfeat]
-   (Parameter 4) Output features UFO Writeable feature table unknown.gff
-   [-boutfeat]
-   (Parameter 5) Output features UFO Writeable feature table unknown.gff
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

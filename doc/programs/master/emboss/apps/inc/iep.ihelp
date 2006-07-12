@@ -16,7 +16,7 @@
 
    Advanced (Unprompted) qualifiers:
    -step               float      [.5] Step value for pH (Number from 0.010 to
-                                  1.000
+                                  1.000)
    -plot               toggle     [N] Plot charge vs pH
    -[no]report         toggle     [Y] Write results to a file
 

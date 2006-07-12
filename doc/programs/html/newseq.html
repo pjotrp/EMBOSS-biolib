@@ -74,7 +74,7 @@ Type of sequence
          P : Protein
 Type of sequence [N]: <b>p</b>
 Enter the sequence: <b>KKKEERADLIAY</b>
-Output sequence [outfile.fasta]: <b>swiss::mycc.pep</b>
+output sequence [outfile.fasta]: <b>swiss::mycc.pep</b>
 
 </pre></td></tr></table><p>
 <p>
@@ -90,10 +90,12 @@ Output sequence [outfile.fasta]: <b>swiss::mycc.pep</b>
   [-name]              string     The name of of the sequence should be a
                                   single word that you will use to identify
                                   the sequence. It should have no (or few)
-                                  punctuation characters in it.
+                                  punctuation characters in it. (Any string is
+                                  accepted)
   [-description]       string     Enter any description of the sequence that
-                                  you require.
-  [-type]              menu       Type of sequence
+                                  you require. (Any string is accepted)
+  [-type]              menu       [N] Type of sequence (Values: N (Nucleic); P
+                                  (Protein))
   [-sequence]          string     The sequence itself.
                                   Because of the limitation of the operating
                                   system, you will only be able to type in a
@@ -102,9 +104,10 @@ Output sequence [outfile.fasta]: <b>swiss::mycc.pep</b>
                                   The keyboard will beep at you when you have
                                   reached this limit and you will not be able
                                   to press the RETURN/ENTER key until you have
-                                  deleted a few characters.
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+                                  deleted a few characters. (Any string is
+                                  accepted)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -182,7 +185,7 @@ The keyboard will beep at you when you have reached this limit and you will not 
 <td>[-outseq]<br>(Parameter 5)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -335,6 +338,16 @@ None.
 <tr>
 <td><a href="listor.html">listor</a></td>
 <td>Write a list file of the logical OR of two sets of sequences</td>
+</tr>
+
+<tr>
+<td><a href="makenucseq.html">makenucseq</a></td>
+<td>Creates random nucleotide sequences</td>
+</tr>
+
+<tr>
+<td><a href="makeprotseq.html">makeprotseq</a></td>
+<td>Creates random protein sequences</td>
 </tr>
 
 <tr>

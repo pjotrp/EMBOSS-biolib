@@ -15,12 +15,12 @@
                                   the melting point and other properties along
                                   the sequence. (Integer 1 or more)
    -dnaconc            float      [50.] Enter DNA concentration (nM) (Number
-                                  from 1.000 to 100000.000
+                                  from 1.000 to 100000.000)
    -saltconc           float      [50.] Enter salt concentration (mM) (Number
-                                  from 1.000 to 1000.000
+                                  from 1.000 to 1000.000)
 *  -mintemp            float      [55.] Enter a minimum value for the
                                   temperature scale (y-axis) of the plot.
-                                  (Number from 0.000 to 150.000
+                                  (Number from 0.000 to 150.000)
 *  -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
                                   tekt, tek, none, data, xterm, png)
@@ -34,11 +34,11 @@
 *  -formamide          float      [0.] This specifies the percent formamide to
                                   be used in calculations (it is ignored
                                   unless -product is used). (Number from 0.000
-                                  to 100.000
+                                  to 100.000)
 *  -mismatch           float      [0.] This specifies the percent mismatch to
                                   be used in calculations (it is ignored
                                   unless -product is used). (Number from 0.000
-                                  to 100.000
+                                  to 100.000)
 *  -prodlen            integer    [Window size (20)] This specifies the
                                   product length to be used in calculations
                                   (it is ignored unless -product is used).
@@ -49,7 +49,7 @@
 *  -temperature        float      [25.] If -thermo has been specified then
                                   this specifies the temperature at which to
                                   calculate the DeltaG, DeltaH and DeltaS
-                                  values. (Number from 0.000 to 100.000
+                                  values. (Number from 0.000 to 100.000)
 
    Advanced (Unprompted) qualifiers:
    -rna                boolean    This specifies that the sequence is an RNA

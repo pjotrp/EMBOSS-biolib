@@ -54,15 +54,15 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     (Gapped) nucleotide sequence(s) filename and
                                   optional format, or reference (input USA)
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+  [-outseq]            seqoutall  [.] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -[no]reverse        boolean    Set this to be false if you do not wish to
-                                  reverse the output sequence
-   -[no]complement     boolean    Set this to be false if you do not wish to
-                                  complement the output sequence
+   -[no]reverse        boolean    [Y] Set this to be false if you do not wish
+                                  to reverse the output sequence
+   -[no]complement     boolean    [Y] Set this to be false if you do not wish
+                                  to complement the output sequence
 
    Associated qualifiers:
 
@@ -108,21 +108,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) nucleotide sequence(s) filename and optional
-   format, or reference (input USA) Readable sequence(s) Required
-   [-outseq]
-   (Parameter 2) Sequence set(s) filename and optional format (output
-   USA) Writeable sequence(s) <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   (none)
-   Advanced (Unprompted) qualifiers Allowed values Default
-   -[no]reverse Set this to be false if you do not wish to reverse the
-   output sequence Boolean value Yes/No Yes
-   -[no]complement Set this to be false if you do not wish to complement
-   the output sequence Boolean value Yes/No Yes
 
 Input file format
 
@@ -313,6 +298,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence

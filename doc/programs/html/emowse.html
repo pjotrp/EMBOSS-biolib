@@ -388,7 +388,7 @@ masses, even with generous allowance for error.
 % <b>emowse </b>
 Protein identification by mass spectrometry
 Input protein sequence(s): <b>tsw:*</b>
-Name of molecular weight data file: <b>test.mowse</b>
+Peptide molecular weight values file: <b>test.mowse</b>
 Whole sequence molwt [0]: <b></b>
 Output file [100k_rat.emowse]: <b></b>
 
@@ -405,18 +405,25 @@ Output file [100k_rat.emowse]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-infile]            infile     Name of molecular weight data file
-   -weight             integer    Whole sequence molwt
-  [-outfile]           outfile    Output file name
+  [-infile]            infile     Peptide molecular weight values file
+   -weight             integer    [0] Whole sequence molwt (Any integer value)
+  [-outfile]           outfile    [*.emowse] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   Molecular weight data for amino acids
-   -frequencies        datafile   Frequencies file
-   -enzyme             menu       Enzyme or reagent
-   -pcrange            integer    Allowed whole sequence weight variability
-   -tolerance          float      Tolerance
-   -partials           float      Partials factor
+   -aadata             datafile   [Eamino.dat] Amino acids properties and
+                                  molecular weight data file
+   -frequencies        datafile   [Efreqs.dat] Amino acid frequencies data
+                                  file
+   -enzyme             menu       [1] Enzyme or reagent (Values: 1 (Trypsin);
+                                  2 (Lys-C); 3 (Arg-C); 4 (Asp-N); 5
+                                  (V8-bicarb); 6 (V8-phosph); 7
+                                  (Chymotrypsin); 8 (CNBr))
+   -pcrange            integer    [25] Allowed whole sequence weight
+                                  variability (Integer from 0 to 75)
+   -tolerance          float      [0.1] Tolerance (Number from 0.100 to 1.000)
+   -partials           float      [0.4] Partials factor (Number from 0.100 to
+                                  1.000)
 
    Associated qualifiers:
 
@@ -473,7 +480,7 @@ Output file [100k_rat.emowse]: <b></b>
 
 <tr>
 <td>[-infile]<br>(Parameter 2)</td>
-<td>Name of molecular weight data file</td>
+<td>Peptide molecular weight values file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -489,7 +496,7 @@ Output file [100k_rat.emowse]: <b></b>
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.emowse</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -510,14 +517,14 @@ Output file [100k_rat.emowse]: <b></b>
 
 <tr>
 <td>-aadata</td>
-<td>Molecular weight data for amino acids</td>
+<td>Amino acids properties and molecular weight data file</td>
 <td>Data file</td>
 <td>Eamino.dat</td>
 </tr>
 
 <tr>
 <td>-frequencies</td>
-<td>Frequencies file</td>
+<td>Amino acid frequencies data file</td>
 <td>Data file</td>
 <td>Efreqs.dat</td>
 </tr>

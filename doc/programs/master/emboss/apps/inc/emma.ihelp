@@ -120,10 +120,10 @@
                                   (e.g. >100) long (e.g. >1000 residue)
                                   sequences.
 *  -pwgapopen          float      [10.0] The penalty for opening a gap in the
-                                  pairwise alignments. (Number 0.000 or more
+                                  pairwise alignments. (Number 0.000 or more)
 *  -pwgapextend        float      [0.1] The penalty for extending a gap by 1
                                   residue in the pairwise alignments. (Number
-                                  0.000 or more
+                                  0.000 or more)
 *  -ktup               integer    [1 for protein, 2 for nucleic] This is the
                                   size of exactly matching fragment that is
                                   used. INCREASE for speed (max= 2 for

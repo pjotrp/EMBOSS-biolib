@@ -285,7 +285,7 @@ Multiple substitution correction methods for proteins
          1 : Jukes-Cantor
          2 : Kimura Protein
 Method to use [0]: <b>2</b>
-Output file [pax.distmat]: <b></b>
+Phylip distance matrix output file [pax.distmat]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -299,30 +299,36 @@ Output file [pax.distmat]: <b></b>
 <pre>
    Standard (Mandatory) qualifiers (* if not always prompted):
   [-sequence]          seqset     File containing a sequence alignment.
-*  -nucmethod          menu       Multiple substitution correction methods for
-                                  nucleotides.
-*  -protmethod         menu       Multiple substitution correction methods for
-                                  proteins.
-  [-outfile]           outfile    Output file name
+*  -nucmethod          menu       [0] Multiple substitution correction methods
+                                  for nucleotides. (Values: 0 (Uncorrected);
+                                  1 (Jukes-Cantor); 2 (Kimura); 3 (Tamura); 4
+                                  (Tajima-Nei); 5 (Jin-Nei Gamma))
+*  -protmethod         menu       [0] Multiple substitution correction methods
+                                  for proteins. (Values: 0 (Uncorrected); 1
+                                  (Jukes-Cantor); 2 (Kimura Protein))
+  [-outfile]           outfile    [*.distmat] Phylip distance matrix output
+                                  file
 
    Additional (Optional) qualifiers (* if not always prompted):
-*  -ambiguous          boolean    Option to use the ambiguous codes in the
-                                  calculation of the Jukes-Cantor method or if
-                                  the sequences are proteins.
-*  -gapweight          float      Option to weight gaps in the uncorrected
-                                  (nucleotide) and Jukes-Cantor distance
-                                  methods.
-*  -position           integer    Choose base positions to analyse in each
-                                  codon i.e. 123 (all bases), 12 (the first
-                                  two bases), 1, 2, or 3 individual bases.
-*  -calculatea         boolean    This will force the calculation of parameter
-                                  'a' in the Jin-Nei Gamma distance
+*  -ambiguous          boolean    [N] Option to use the ambiguous codes in the
+                                  calculation of the Jukes-Cantor method or
+                                  if the sequences are proteins.
+*  -gapweight          float      [0.] Option to weight gaps in the
+                                  uncorrected (nucleotide) and Jukes-Cantor
+                                  distance methods. (Any numeric value)
+*  -position           integer    [123] Choose base positions to analyse in
+                                  each codon i.e. 123 (all bases), 12 (the
+                                  first two bases), 1, 2, or 3 individual
+                                  bases. (Any integer value)
+*  -calculatea         boolean    [N] This will force the calculation of
+                                  parameter 'a' in the Jin-Nei Gamma distance
                                   calculation, otherwise the default is 1.0
                                   (see -parametera option).
-*  -parametera         float      User defined parameter 'a' to be use in the
-                                  Jin-Nei Gamma distance calculation. The
-                                  suggested value to be used is 1.0 (Jin et
-                                  al.) and this is the default.
+*  -parametera         float      [1.0] User defined parameter 'a' to be use
+                                  in the Jin-Nei Gamma distance calculation.
+                                  The suggested value to be used is 1.0 (Jin
+                                  et al.) and this is the default. (Any
+                                  numeric value)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -394,9 +400,9 @@ Output file [pax.distmat]: <b></b>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
+<td>Phylip distance matrix output file</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.distmat</td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

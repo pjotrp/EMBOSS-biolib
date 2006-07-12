@@ -90,16 +90,19 @@ Output report [hhtetra.tan]: <b></b>
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-   -minrepeat          integer    Minimum repeat size
-   -maxrepeat          integer    Maximum repeat size
+   -minrepeat          integer    [10] Minimum repeat size (Integer, 2 or
+                                  higher)
+   -maxrepeat          integer    [Same as -minrepeat] Maximum repeat size
+                                  (Integer, same as -minrepeat or higher)
   [-outfile]           report     Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -threshold          integer    Threshold score
+   -threshold          integer    [20] Threshold score (Any integer value)
    -mismatch           boolean    Allow N as a mismatch
    -uniform            boolean    Allow uniform consensus
-   -origfile           outfile    Output file name
+   -origfile           outfile    [*.etandem] Sanger Centre program tandem
+                                  output file (optional)
 
    Associated qualifiers:
 
@@ -225,9 +228,9 @@ Output report [hhtetra.tan]: <b></b>
 
 <tr>
 <td>-origfile</td>
-<td>Output file name</td>
+<td>Sanger Centre program tandem output file (optional)</td>
 <td>Output file</td>
-<td><i>&lt;sequence&gt;</i>.etandem</td>
+<td>&nbsp;</td>
 </tr>
 
 </table>

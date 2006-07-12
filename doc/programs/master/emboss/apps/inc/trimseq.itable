@@ -35,7 +35,7 @@
 <tr>
 <td>-percent</td>
 <td>This is the threshold of the percentage ambiguity in the window required in order to trim a sequence.</td>
-<td>Any numeric value)</td>
+<td>Any numeric value</td>
 <td>100.0</td>
 </tr>
 

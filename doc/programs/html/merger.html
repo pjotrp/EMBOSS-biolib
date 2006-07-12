@@ -102,9 +102,9 @@ the best results with a set of poor quality EST test sequences.
 % <b>merger </b>
 Merge two overlapping sequences
 Input sequence: <b>tembl:eclacy</b>
-Second nucleotide sequence: <b>tembl:eclaca</b>
+Second sequence: <b>tembl:eclaca</b>
 Output alignment [eclacy.merger]: <b></b>
-Output sequence [eclacy.fasta]: <b></b>
+output sequence [eclacy.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -133,18 +133,21 @@ into the correct orientation to make it join. For example:
   [-bsequence]         sequence   Sequence filename and optional format, or
                                   reference (input USA)
   [-outfile]           align      Output alignment file name
-  [-outseq]            seqout     Sequence filename and optional format
-                                  (output USA)
+  [-outseq]            seqout     [<sequence>.<format>] Sequence filename and
+                                  optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -datafile           matrixf    This is the scoring matrix file used when
+   -datafile           matrixf    [EBLOSUM62 for protein, EDNAFULL for DNA]
+                                  This is the scoring matrix file used when
                                   comparing sequences. By default it is the
                                   file 'EBLOSUM62' (for proteins) or the file
                                   'EDNAFULL' (for nucleic sequences). These
                                   files are found in the 'data' directory of
                                   the EMBOSS installation.
-   -gapopen            float      Gap opening penalty
-   -gapextend          float      Gap extension penalty
+   -gapopen            float      [@($(acdprotein)? 50.0 : 50.0 )] Gap opening
+                                  penalty (Number from 0.000 to 100.000)
+   -gapextend          float      [@($(acdprotein)? 5.0 : 5.0)] Gap extension
+                                  penalty (Number from 0.000 to 10.000)
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -255,7 +258,7 @@ into the correct orientation to make it join. For example:
 <td>[-outseq]<br>(Parameter 4)</td>
 <td>Sequence filename and optional format (output USA)</td>
 <td>Writeable sequence</td>
-<td><i>&lt;sequence&gt;</i>.<i>format</i></td>
+<td>&nbsp;</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

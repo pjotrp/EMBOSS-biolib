@@ -12,7 +12,7 @@
    -window             integer    [30] Averaging window (Any integer value)
    -uncommon           boolean    [N] Show common codon usage
    -minimum            float      [.15] Minimum value for a common codon
-                                  (Number from 0.000 to 0.990
+                                  (Number from 0.000 to 0.990)
    -[no]plot           toggle     [Y] Produce plot
 
    Associated qualifiers:

@@ -34,7 +34,7 @@ Usage
 % backtranseq 
 Back translate a protein sequence
 Input (gapped) protein sequence: tsw:opsd_human
-Output sequence [opsd_human.fasta]: 
+(gapped) nucleotide output sequence [opsd_human.fasta]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -47,7 +47,7 @@ Output sequence [opsd_human.fasta]:
 % backtranseq -cfile Edrome.cut 
 Back translate a protein sequence
 Input (gapped) protein sequence: tsw:ach2_drome
-Output sequence [ach2_drome.fasta]: 
+(gapped) nucleotide output sequence [ach2_drome.fasta]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -57,11 +57,12 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          sequence   (Gapped) protein sequence filename and
                                   optional format, or reference (input USA)
-  [-outfile]           seqout     (Gapped) nucleotide sequence filename and
-                                  optional format (output USA)
+  [-outfile]           seqout     [.] (Gapped) nucleotide
+                                  sequence filename and optional format
+                                  (output USA)
 
    Additional (Optional) qualifiers:
-   -cfile              codon      Codon usage table name
+   -cfile              codon      [Ehuman.cut] Codon usage table name
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -111,19 +112,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) protein sequence filename and optional format,
-   or reference (input USA) Readable sequence Required
-   [-outfile]
-   (Parameter 2) (Gapped) nucleotide sequence filename and optional
-   format (output USA) Writeable sequence <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   -cfile Codon usage table name Codon usage file in EMBOSS data path
-   Ehuman.cut
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 

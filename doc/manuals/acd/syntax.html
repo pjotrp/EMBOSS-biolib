@@ -2795,6 +2795,7 @@ minseqs: 1<br>
 maxseqs: <i>(INT_MAX)</i><br>
 nulldefault: N<br>
 nullok: N<br>
+aligned: N<br>
 
  </p>
  </td>
@@ -7258,6 +7259,18 @@ Select one [blosum] : PAM
   </td>
  </tr>
 
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>aligned: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Sequences are aligned<br>Default: N</p>
+  </td>
+ </tr>
+
 </table>
 
 <a name=table44>&nbsp;</a>
@@ -9731,10 +9744,10 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>&nbsp;</p>
   </td>
   <td>
-  <p>-pmismatch: <i>string<i></p>
+  <p>-pmismatch: <i>integer<i></p>
   </td>
   <td>
-  <p>Pattern mismatch<br>Default: ""</p>
+  <p>Pattern mismatch<br>Default: </p>
   </td>
  </tr>
 
@@ -10684,7 +10697,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10708,7 +10721,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10732,7 +10745,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10780,7 +10793,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10804,7 +10817,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10828,7 +10841,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10852,7 +10865,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10876,7 +10889,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 
@@ -10900,7 +10913,7 @@ of the prefix ' <i>no</i>' to the qualifier <i>-options</i> (giving
   <p>-oformat: <i>string<i></p>
   </td>
   <td>
-  <p>Output format specific to this output type<br>Default: ""</p>
+  <p>Output format specific to this data type<br>Default: ""</p>
   </td>
  </tr>
 

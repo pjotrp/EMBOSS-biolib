@@ -50,7 +50,7 @@ Usage
 Exclude a set of sequences and write out the remaining ones
 Input (gapped) sequence(s): globins.fasta
 Sequence names to exclude: myg_phyca,lgb2_luplu
-Output sequence [hbb_human.fasta]: mydata.seq
+output sequence(s) [hbb_human.fasta]: mydata.seq
 
    Go to the input files for this example
    Go to the output files for this example
@@ -65,7 +65,7 @@ Output sequence [hbb_human.fasta]: mydata.seq
 Exclude a set of sequences and write out the remaining ones
 Input (gapped) sequence(s): globins.fasta
 Sequence names to exclude: hb*
-Output sequence [hbb_human.fasta]: mydata.seq
+output sequence(s) [hbb_human.fasta]: mydata.seq
 
    Go to the output files for this example
 
@@ -90,14 +90,15 @@ Command line arguments
                                   myseq, hs*, one two three
                                   a file containing a list of sequence names
                                   can be specified by giving the file name
-                                  preceeded by a '@', eg: '@names.dat'
-  [-outseq]            seqoutall  Sequence set(s) filename and optional format
-                                  (output USA)
+                                  preceeded by a '@', eg: '@names.dat' (Any
+                                  string is accepted)
+  [-outseq]            seqoutall  [.] Sequence set(s)
+                                  filename and optional format (output USA)
 
    Additional (Optional) qualifiers:
-   -junkoutseq         seqoutall  This file collects the sequences which you
-                                  have excluded from the main output file of
-                                  sequences.
+   -junkoutseq         seqoutall  [/dev/null] This file collects the sequences
+                                  which you have excluded from the main
+                                  output file of sequences.
 
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
@@ -156,32 +157,6 @@ Command line arguments
    -error              boolean    Report errors
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
-
-   Standard (Mandatory) qualifiers Allowed values Default
-   [-sequence]
-   (Parameter 1) (Gapped) sequence(s) filename and optional format, or
-   reference (input USA) Readable sequence(s) Required
-   [-exclude]
-   (Parameter 2) Enter a list of sequence names or accession numbers to
-   exclude from the sequences read in. The excluded sequences will be
-   written to the file specified in the 'junkout' parameter. The
-   remainder will be written out to the file specified in the 'outseq'
-   parameter. The list of sequence names can be separated by either
-   spaces or commas. The sequence names can be wildcarded. The sequence
-   names are case independent. An example of a list of sequences to be
-   excluded is: myseq, hs*, one two three a file containing a list of
-   sequence names can be specified by giving the file name preceeded by a
-   '@', eg: '@names.dat' Any string is accepted An empty string is
-   accepted
-   [-outseq]
-   (Parameter 3) Sequence set(s) filename and optional format (output
-   USA) Writeable sequence(s) <sequence>.format
-   Additional (Optional) qualifiers Allowed values Default
-   -junkoutseq This file collects the sequences which you have excluded
-   from the main output file of sequences. Writeable sequence(s)
-   /dev/null
-   Advanced (Unprompted) qualifiers Allowed values Default
-   (none)
 
 Input file format
 
@@ -340,6 +315,8 @@ See also
    extractfeat  Extract features from a sequence
    extractseq   Extract regions from a sequence
    listor       Write a list file of the logical OR of two sets of sequences
+   makenucseq   Creates random nucleotide sequences
+   makeprotseq  Creates random protein sequences
    maskfeat     Mask off features of a sequence
    maskseq      Mask off regions of a sequence
    newseq       Type in a short new sequence
