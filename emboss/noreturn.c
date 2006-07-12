@@ -106,6 +106,7 @@ int main(int argc, char **argv)
     }
     
     ajStrDel(&line);
+    ajStrDel(&system);
     ajFileClose(&inf);
     ajFileClose(&outf);
 

@@ -344,8 +344,6 @@ int main(int argc, char **argv)
 	ajIntDel(&liststart);
 	ajIntDel(&listend);
 	
-	
-
 	ajIntDel(&localMax);
 	ajIntDel(&back);
 	ajInt2dDel(&matrix);
@@ -355,6 +353,9 @@ int main(int argc, char **argv)
 	
     }
     /* JISON new block */
+    if(seqout)
+	ajSeqWriteClose(seqout);
+
     ajSeqDel(&tempseq);
     ajSeqoutDel(&seqout);
 
@@ -365,6 +366,7 @@ int main(int argc, char **argv)
     ajSeqCvtDel(&cvt);
     
     ajStrDel(&nseq);
+    ajStrDel(&tempname);
     
     embExit();
     

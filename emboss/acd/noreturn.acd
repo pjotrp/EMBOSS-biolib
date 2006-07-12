@@ -25,6 +25,8 @@ list: system [
   information: "Target operating system for end-of-line format"
   values: "unix:Unix/Linux systems;pc:Windows/DOS;mac:Apple Macintosh"
   default: "unix"
+  minimum: "1"
+  maximum: "1"
 ]
 
 endsection: advanced

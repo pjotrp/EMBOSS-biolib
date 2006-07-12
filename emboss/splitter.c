@@ -108,12 +108,12 @@ int main(int argc, char **argv)
                 }
               }
             }
-
+	    ajFeattableDel(&old_feattable);
             ajListIterFree(&iter);
           }
         else
           {
-            AjPStr outseq_name = ajStrNew ();
+            ajStrAssignC(&outseq_name, "");
 
             if (!addover)
 	    {
@@ -147,6 +147,11 @@ int main(int argc, char **argv)
       }
 
     ajSeqWriteClose(seqout);
+    ajSeqallDel(&seqall);
+    ajSeqoutDel(&seqout);
+    ajSeqDel(&seq);
+    ajStrDel(&origid);
+    ajStrDel(&outseq_name);
 
     ajExit();
 
@@ -245,7 +250,11 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
     splitter_AddSubSeqFeat(subseq->Fttable,start,end,seq);
   ajSeqAssignNameS(subseq, name);
   splitter_write(seqout,subseq,start,end,seq);
+
   ajStrDel(&str);
+  ajSeqDel(&subseq);
+
+  return;
 }
 
 
@@ -264,8 +273,8 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
 static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajint start,
                                    ajint end, const AjPSeq oldseq)
 {
-  AjPFeattable old_feattable;
-  AjIList iter;
+  AjPFeattable old_feattable = NULL;
+  AjIList iter = NULL;
 
   old_feattable = ajSeqGetFeatCopy(oldseq);
   iter = ajListIterRead(old_feattable->Features);
@@ -297,6 +306,6 @@ static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajint start,
 
     ajFeattableAdd(ftable, copy);
   }
-
+  ajFeattableDel(&old_feattable);
   ajListIterFree(&iter);
 }

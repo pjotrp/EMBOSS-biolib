@@ -174,6 +174,9 @@ int main(int argc, char **argv)
 
     ajReportClose(report);
     ajReportDel(&report);
+    ajPatlistSeqDel(&plist);
+    ajFeattableDel(&seqtab);
+    ajFeattableDel(&tab);
 
     ajTrnDel(&trantable);
     ajExit();

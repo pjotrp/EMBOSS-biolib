@@ -200,11 +200,14 @@ int main(int argc, char **argv)
     ajFeattableDel(&TabRpt);
     
     ajSeqDel(&a);
+    ajSeqallDel(&seqall);
+
     ajStrDel(&rname);
     ajStrDel(&substr);
     ajListDel(&pa);
     ajListDel(&l);
     ajStrDel(&menu);
+    ajStrDel(&rag);
 
     if(outf)
 	ajFileClose(&outf);
