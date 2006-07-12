@@ -10030,7 +10030,11 @@ static void acdSetPattern(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
-    
+
+    ajStrDel(&patname);
+    ajStrDel(&fmt);
+    ajStrDel(&type);
+
     /* regexps have special set attributes the same as strings */
     
     thys->SAttr = acdAttrListCount(acdCalcRegexp);
@@ -10287,7 +10291,7 @@ static void acdSetRange(AcdPAcd thys)
 
 AjPPatlistRegex ajAcdGetRegexp(const char *token)
 {
-    return acdGetValueSingle(token, "regexp");
+    return acdGetValueRef(token, "regexp");
 }
 
 
@@ -10436,6 +10440,10 @@ static void acdSetRegexp(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
+    ajStrDel(&patname);
+    ajStrDel(&fmt);
+    ajStrDel(&type);
+
     /* regexps have special set attributes the same as strings */
     
     thys->SAttr = acdAttrListCount(acdCalcRegexp);
@@ -10443,7 +10451,7 @@ static void acdSetRegexp(AcdPAcd thys)
     thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
     
     ajStrFromInt(&thys->SetStr[0], ajStrGetLen(acdReply));
-    
+
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
     
@@ -21568,7 +21576,7 @@ static const AjPStr acdPromptDatafile(AcdPAcd thys)
 
 
 
-/* @funcstatic acdPromptmatrix *************************************************
+/* @funcstatic acdPromptMatrix *************************************************
 **
 ** Sets the default prompt for this ACD object to be an input data
 ** file with "first", "second" etc. added.
@@ -22558,9 +22566,6 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
     ajStrDel(&validstr);
     ajStrDel(&value);
 
-    if(ok)
-	acdLog("Before return val[0] '%S'\n", val[0]);
-    
     if(!ok)
 	return NULL;
     
@@ -25264,7 +25269,7 @@ static void acdValidKnowntype(const AcdPAcd thys)
 	       typeok = ajTrue;
 
 	if (ajStrMatchC(acdKnownType, "frequencies"))
-	    if(ajCharMatchC(acdType[thys->Type].Name, "frequiencies") ||
+	    if(ajCharMatchC(acdType[thys->Type].Name, "frequencies") ||
 	       ajCharMatchC(acdType[thys->Type].Name, "outfreq"))
 	       typeok = ajTrue;
 
