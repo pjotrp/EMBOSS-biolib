@@ -117,7 +117,7 @@ void embComComplexity(const char *seq,const char *name,
 		      float *MedValue)
 {
 
-    float  *ComplexOfSeq;
+    float  *ComplexOfSeq = NULL;
     float  Freq[4];
 
     ajint NumOfWin;
@@ -249,6 +249,12 @@ void embComComplexity(const char *seq,const char *name,
 	AJFREE(SetSeqSim);
 	AJFREE(SetUjSim);
     }
+
+
+    for(i=0;i<NumOfWin;i++)
+	AJFREE(RealUjValue[i].Ujwin);
+
+    AJFREE(RealUjValue);
 
     return;
 }
@@ -1168,6 +1174,7 @@ static void comCalcUj2(ajint lwin, ajint jlen,const char *win,float *Ujvalue)
 
     ajint unlikej_mer = 0;
     ajint k;
+    ajint i;
     float z = 0.0;
     float n = 0.0;
     AjPStr *str;
@@ -1190,6 +1197,9 @@ static void comCalcUj2(ajint lwin, ajint jlen,const char *win,float *Ujvalue)
 	z=((float)(unlikej_mer)/(float)(njmer));
 
     *Ujvalue = z;
+
+    for(i=0;i<njmer;i++)
+	ajStrDel(&str[i]);
 
     AJFREE(str);
 
