@@ -12,9 +12,9 @@ endif
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -lajax
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../ajax/.libs -L../../../nucleus/.libs -L../../../plplot/.libs -lplplot -lajax -lnucleus
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lajax
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lplplot -lajax -lnucleus
 endif
 else
 AM_CFLAGS =
