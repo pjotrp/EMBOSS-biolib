@@ -9,7 +9,7 @@ bin_PROGRAMS = vrnaalifold vrnacofoldpf vrnaevalpair vrnainverse \
 
 
 if LOCALLINK
-INCLUDES = -I../H -I../../../ajax
+INCLUDES = -I../H -I../../../ajax -I../../../nucleus -I../../../plplot
 else
 INCLUDES = -I../H -I${embprefix}/include
 endif

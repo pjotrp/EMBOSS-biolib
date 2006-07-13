@@ -4,7 +4,7 @@
 bin_PROGRAMS = topo
 
 if LOCALLINK
-INCLUDES = -I../h -I../../../ajax -I../../../plplot
+INCLUDES = -I../h -I../../../ajax -I../../../plplot -I../../../nucleus
 else
 INCLUDES = -I../h -I${embprefix}/include
 endif

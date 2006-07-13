@@ -4,7 +4,7 @@
 bin_PROGRAMS = mse
 
 if LOCALLINK
-INCLUDES = -I../h -I../../../ajax
+INCLUDES = -I../h -I../../../ajax -I../../../nucleus -I../../../plplot
 else
 INCLUDES = -I../h -I${embprefix}/include
 endif
