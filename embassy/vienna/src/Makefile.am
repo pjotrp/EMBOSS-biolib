@@ -36,7 +36,7 @@ VIENNALIBSRC = dist_vars.c fold_vars.c part_func.c eread_epars.c \
 
 noinst_HEADERS = intloops.h list.h
 
-EXTRA_DIST = circfold.inc
+EXTRA_DIST = circfold.inc config.h
 
 libviennarna_la_SOURCES = $(VIENNALIBSRC)
 
