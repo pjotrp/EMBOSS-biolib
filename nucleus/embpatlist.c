@@ -126,7 +126,7 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     if (reverse)
     {
         revseq = ajSeqNewS (seq);
-        ajSeqReverseDo(revseq);
+        ajSeqReverseForce(revseq);
         ajStrAssignEmptyS(&seqstr, ajSeqStr(revseq));
     }
     else
@@ -194,7 +194,7 @@ void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
     if (reverse)
     {
         revseq = ajSeqNewS (seq);
-        ajSeqReverseDo(revseq);
+        ajSeqReverseForce(revseq);
         ajStrAssignS(&seqstr, ajSeqStr(revseq));
     }
     else
