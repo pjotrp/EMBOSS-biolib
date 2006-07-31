@@ -809,6 +809,10 @@ static ajint namMethod2Scope(const AjPStr method)
 	result = (METHOD_ENTRY | METHOD_QUERY);
     else if(!ajStrCmpC(method, "srswww"))
 	result = METHOD_ENTRY;
+    else if(!ajStrCmpC(method, "dbfetch"))
+	result = METHOD_ENTRY;
+    else if(!ajStrCmpC(method, "mrs"))
+	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "url"))
 	result = METHOD_ENTRY;
     else if(!ajStrCmpC(method, "app"))
