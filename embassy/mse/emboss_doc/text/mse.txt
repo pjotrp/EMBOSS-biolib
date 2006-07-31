@@ -9,11 +9,10 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   This is a port of Will Gilbert's MSE multiple sequence editor from the
+   original C code.
 
 Algorithm
-
-   **************** EDIT HERE ****************
 
 Usage
 
@@ -146,7 +145,7 @@ MSFM3      ACGTACGTACGTACGTACGT
 
 Data files
 
-   **************** EDIT HERE ****************
+   None.
 
 Notes
 

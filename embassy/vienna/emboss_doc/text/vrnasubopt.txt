@@ -9,11 +9,12 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   This is a port of the Vienna RNA package program RNAsubopt.
 
 Algorithm
 
-   **************** EDIT HERE ****************
+   See the original documentation for the Vienna RNA package
+   http://www.tbi.univie.ac.at/~ivo/RNA/
 
 Usage
 
@@ -128,7 +129,8 @@ CACTACTCCAAGGACCGTATCTTTCTCAGTGCGACAGTAA   -380    100
 
 Data files
 
-   **************** EDIT HERE ****************
+   See the original documentation for the Vienna RNA package
+   http://www.tbi.univie.ac.at/~ivo/RNA/
 
 Notes
 

@@ -9,11 +9,12 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   EMBASSY MEME is a port of the original meme v3.0.1 applications
+   written by Timothy Bailey.
 
 Algorithm
 
-   **************** EDIT HERE ****************
+   Please read the file README distributed with the original MEME.
 
 Usage
 
@@ -360,7 +361,7 @@ meme -protein
 
 Data files
 
-   **************** EDIT HERE ****************
+   None
 
 Notes
 

@@ -9,11 +9,12 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   This is a port of the Vienna RNA package program RNAheat.
 
 Algorithm
 
-   **************** EDIT HERE ****************
+   See the original documentation for the Vienna RNA package
+   http://www.tbi.univie.ac.at/~ivo/RNA/
 
 Usage
 
@@ -220,7 +221,8 @@ Output file format
 
 Data files
 
-   **************** EDIT HERE ****************
+   For details of Vienna RNA file formats, see the original documentation
+   http://www.tbi.univie.ac.at/~ivo/RNA/
 
 Notes
 
