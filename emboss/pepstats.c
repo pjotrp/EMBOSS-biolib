@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     char *prop[]=
     {
 	"Tiny\t\t(A+C+G+S+T)\t\t","Small\t\t(A+B+C+D+G+N+P+S+T+V)\t",
-	"Aliphatic\t(I+L+V)\t\t\t","Aromatic\t(F+H+W+Y)\t\t",
+	"Aliphatic\t(A+I+L+V)\t\t","Aromatic\t(F+H+W+Y)\t\t",
 	"Non-polar\t(A+C+F+G+I+L+M+P+V+W+Y)\t",
 	"Polar\t\t(D+E+H+K+N+Q+R+S+T+Z)\t","Charged\t\t(B+D+E+H+K+R+Z)\t\t",
 	"Basic\t\t(H+K+R)\t\t\t","Acidic\t\t(B+D+E+Z)\t\t"
