@@ -9,11 +9,13 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   EMBASSY HMMER is a port of the original hmmer v2.2.1 applications
+   written by Sean Eddy.
 
 Algorithm
 
-   **************** EDIT HERE ****************
+   Please read the Userguide.pdf distributed with the original HMMER and
+   included in the EMBASSY HMMER distribution under the DOCS directory.
 
 Usage
 
@@ -273,7 +275,7 @@ ATSCIANYENTEGNGHVVPV
 
 Data files
 
-   **************** EDIT HERE ****************
+   None.
 
 Notes
 

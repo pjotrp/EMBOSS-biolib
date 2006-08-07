@@ -9,11 +9,16 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   The original sim4 program was developed by Florea et al. for aligning
+   cdna/est sequence to genomic sequences.
+
+   The program is available for download from http://globin.cse.psu.edu/
 
 Algorithm
 
-   **************** EDIT HERE ****************
+   Florea L, Hartzell G, Zhang Z, Rubin GM, Miller W. "A computer program
+   for aligning a cDNA sequence with a genomic DNA sequence." Genome Res
+   1998 Sep;8(9):967-74
 
 Usage
 
@@ -487,8 +492,6 @@ seq2 = HSNFG9 (HSNFG9), 33760 bp
 408-487  (27391-27469)   88%
 
 Data files
-
-   **************** EDIT HERE ****************
 
 Notes
 
