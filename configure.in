@@ -131,6 +131,10 @@ if test "`uname`" = "FreeBSD"; then
 CFLAGS="$CFLAGS -O2"
 fi
 
+
+
+else
+
 dnl Intel MacOSX requires reduced optimisation for PCRE code
 if test "`uname -a | grep Darwin`"; then
   if test "`uname -a | grep i386`"; then
@@ -138,11 +142,10 @@ if test "`uname -a | grep Darwin`"; then
   else
     CFLAGS="$CFLAGS -O2"
   fi
-fi
-
-
 else
 CFLAGS="$CFLAGS -O2"
+fi
+
 fi
 dnl End of Optimisation tests
 
