@@ -113,6 +113,10 @@ int main(int argc, char **argv)
     ajFileClose(&pfile);
     ajFileClose(&outfile);
 
+    ajSeqallDel(&seqall);
+    ajSeqoutDel(&seqout);
+    ajSeqDel(&seq);
+
     ajExit();
 
     return 0;
