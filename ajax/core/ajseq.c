@@ -1509,7 +1509,17 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
     {
 	/*ajFmtPrintS(&thys->Usa, "%S::%S (%S)",
 	  thys->Formatstr, thys->Filename, thys->Entryname);*/
-	if(ajStrGetLen(thys->Entryname))
+	if(ajStrMatchC(thys->Formatstr, "text"))
+	    if(thys->Reversed)
+	    {
+		ajStrAssignS(&tmpstr, thys->Seq);
+		ajSeqstrReverse(&tmpstr);
+		ajFmtPrintS(usa, "asis::%S", tmpstr);
+		ajStrDel(&tmpstr);
+	    }
+	    else
+		ajFmtPrintS(usa, "asis::%S", thys->Seq);
+	else if(ajStrGetLen(thys->Entryname))
 	    ajFmtPrintS(usa, "%S::%S:%S", thys->Formatstr,
 			thys->Filename,thys->Entryname);
 	else
