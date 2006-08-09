@@ -90,29 +90,32 @@ int main(int argc, char **argv)
 	pos = 0;
 
         if (source)
-          {
+	{
             old_feattable = ajSeqGetFeatCopy(seq);
             iter = ajListIterRead(old_feattable->Features);
 
-            while(ajListIterMore(iter)) {
-              gf = ajListIterNext (iter);
-              type = ajFeatGetType(gf);
-              origid = ajStrNewC("origid");
+            while(ajListIterMore(iter))
+	    {
+		gf = ajListIterNext (iter);
+		type = ajFeatGetType(gf);
+		origid = ajStrNewC("origid");
 
-              if (ajStrMatchC(type, "source")) {
-                if (ajFeatGetTag(gf,origid,1,&outseq_name)) {
-                  splitter_ProcessChunk (seqout,seq,
-					 ajFeatGetStart(gf)-1,
-					 ajFeatGetEnd(gf)-1,
-                                         outseq_name, feature);
-                }
-              }
-            }
+		if (ajStrMatchC(type, "source"))
+		{
+		    ajDebug("ajFeatGetTag '%S', 1\n", origid);
+		    if (ajFeatGetTag(gf,origid,1,&outseq_name)) {
+			splitter_ProcessChunk (seqout,seq,
+					       ajFeatGetStart(gf)-1,
+					       ajFeatGetEnd(gf)-1,
+					       outseq_name, feature);
+		    }
+		}
+	    }
 	    ajFeattableDel(&old_feattable);
             ajListIterFree(&iter);
-          }
+	}
         else
-          {
+	{
             ajStrAssignC(&outseq_name, "");
 
             if (!addover)
@@ -126,7 +129,7 @@ int main(int argc, char **argv)
 					   outseq_name, feature);
 		    pos += size-overlap;
 		}
-             }
+	    }
 	    else
 	    {
 		while(pos+size+overlap < len-1)
@@ -239,6 +242,9 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
 
   AjPFeattable new_feattable = NULL;
   AjPSeq subseq = ajSeqNew ();
+
+  ajDebug("splitter_ProcessChunk %d..%d '%S' %B\n",
+	  start, end, name, feature);
 
   new_feattable = ajFeattableNew(name);
   subseq->Fttable = new_feattable;
