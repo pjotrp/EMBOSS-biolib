@@ -62,7 +62,8 @@ int main(int argc, char **argv)
         embPatlistSeqSearch(tab,seq,plist,ajFalse);
         if (sc)
             embPatlistSeqSearch (tab,seq,plist,ajTrue);
-        ajReportWrite(report,tab,seq);
+        if(ajFeattableSize(tab))
+	    ajReportWrite(report,tab,seq);
         ajFeattableDel(&tab);
     }
 

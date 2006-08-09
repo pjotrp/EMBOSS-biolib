@@ -156,7 +156,8 @@ int main(int argc, char **argv)
 	    ajSeqDel(&pseq);
 	}
 
-	ajReportWrite(report, seqtab, seq);
+	if(ajFeattableSize(seqtab))
+	    ajReportWrite(report, seqtab, seq);
 	ajStrDel(&text);
     }
 

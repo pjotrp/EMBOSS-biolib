@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     AjPFeattable tab = NULL;
     AjPReport report = NULL;
     AjPStr tmpstr = NULL;
-
+ 
     AjPPatlistSeq plist = NULL;
 
     embInit("fuzzpro", argc, argv);
@@ -53,10 +53,10 @@ int main(int argc, char **argv)
     {
 	tab = ajFeattableNewProt(ajSeqGetNameS(seq));
         embPatlistSeqSearch(tab,seq,plist,ajFalse);
-        ajReportWrite(report,tab,seq);
+	if(ajFeattableSize(tab))
+	    ajReportWrite(report,tab,seq);
         ajFeattableDel(&tab);
     }
-
 
     ajPatlistSeqDel(&plist);
 
