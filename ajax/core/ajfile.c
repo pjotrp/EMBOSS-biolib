@@ -6041,6 +6041,7 @@ static void fileBuffLineDel(AjPFileBuff thys)
 	ajStrDel(&thys->Curr->Line);
 	AJFREE(thys->Curr);
 	thys->Curr = NULL;
+	thys->Last = saveprev;
 	--thys->Size;
 	thys->Pos = thys->Size;
 	return;
