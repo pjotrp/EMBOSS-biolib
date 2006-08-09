@@ -5922,6 +5922,8 @@ AjBool ajFeatGetNoteI(const AjPFeature thys, const AjPStr name, ajint count,
 **
 ** Returns the nth value of a named feature tag.
 **
+** If not found as a tag, also searches for a named note
+**
 ** @param [r] thys [const AjPFeature] Feature object
 ** @param [r] name [const AjPStr] Tag name
 ** @param [r] num [ajint] Tag number
@@ -5937,6 +5939,13 @@ AjBool ajFeatGetTag(const AjPFeature thys, const AjPStr name, ajint num,
     AjIList iter     = NULL;
     FeatPTagval item = NULL;
     ajint inum       = 0;
+    AjBool isnote;
+    ajint noteposcolon=0;
+    ajint noteposvalue=0;
+
+    isnote = ajStrMatchC(name, "note");
+    noteposcolon = ajStrGetLen(name) + 1;
+    noteposvalue = ajStrGetLen(name) + 3;
 
     if(thys->Tags)
     {
@@ -5950,6 +5959,20 @@ AjBool ajFeatGetTag(const AjPFeature thys, const AjPStr name, ajint num,
 		if (num == inum)
 		{
 		    ajStrAssignS(val, item->Value);
+		    ajListIterFree(&iter);
+		    return ajTrue;
+		}
+	    }
+	    else if (!isnote &&
+		     ajStrMatchCaseC(item->Tag, "note") &&
+		     ajStrGetCharFirst(item->Value) == '*' &&
+		     ajCharPrefixCaseS(ajStrGetPtr(item->Value)+1, name) &&
+		     ajStrGetCharPos(item->Value, noteposcolon) == ':')
+	    {
+		inum++;
+		if (num == inum)
+		{
+		    ajStrAssignSubS(val, item->Value, noteposvalue, -1);
 		    ajListIterFree(&iter);
 		    return ajTrue;
 		}
