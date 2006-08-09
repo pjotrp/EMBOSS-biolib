@@ -8419,8 +8419,49 @@ IN tembl:paamir
 IN ggtacc
 IN
 FI paamir.dreg
-FZ = 577
+FC = 29
 FP /      1       6 regex1       ggtacc\n/
+FP 1 /^# Total sequences: 1\n/
+FP 1 /^# Total hitcount: 1\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID dreg-test-fwd
+AP dreg
+CL -rformat listfile
+IN asis::caaggttccaacc
+IN aa
+IN test.out
+FI test.out
+FC = 31
+FP 2 /^asis::/
+FP 1 /^asis::caaggttccaacc\[2\:3\]\n/
+FP 1 /^asis::caaggttccaacc\[10\:11\]\n/
+FP 1 /^# Total sequences: 1\n/
+FP 1 /^# Total hitcount: 2\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID dreg-test-rev
+AP dreg
+CL -rformat listfile -srev
+IN asis::caaggttccaacc
+IN aa
+IN test.out
+FI test.out
+FC = 31
+FP 1 /^asis::/
+FP 1 /^asis::caaggttccaacc\[7:8\:r\]\n/
+FP 1 /^# Total sequences: 1\n/
+FP 1 /^# Total hitcount: 1\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -9704,10 +9745,32 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hhtetra.fuzznuc
-FZ = 717
+FC = 33
 FP /^# HitCount: 2\n/
 FP /^      1       6 pattern1            . aagctt\n/
 FP /^   1267    1272 pattern1            . aagctt\n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 2\n/
+//
+
+ID fuzznuc-rev
+AP fuzznuc
+CL -complement
+IN asis::GATAAAAAAAAAAAAAAAAAAAAAAAAGATAAAATATCGATA
+IN GATA
+IN test.out
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test.out
+FC = 33
+FP /^# HitCount: 2\n/
+FP /^      1       6 pattern1            . aagctt\n/
+FP /^   1267    1272 pattern1            . aagctt\n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 2\n/
 //
 
 ID fuzzpro-ex
@@ -9721,12 +9784,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 100k_rat.fuzzpro
-FZ = 33232
+FC = 105
 FP 6 /^# HitCount: 1\n/
 FP 6 /^# HitCount: [1-9]\d*/
 FP /^     53      63 pattern1            . YVGDEAQSKRG\n/
 FP 3 /^     53      63 pattern1            . YVGDEAQSKRG\n/
 FP 3 /^     55      65 pattern1            . YVGDEAQSKRG\n/
+FP /^# Total sequences: 6\n/
+FP /^# Total hitcount: 6\n/
 //
 
 ID fuzztran-ex
@@ -9743,7 +9808,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI rnops.fuzztran
-FZ = 1392
+FC = 42
 FP /^# HitCount: 9\n/
 FP /^    919     924       2 pattern1            .      1    307    308 RA         \n/
 FP /^    752     757       2 pattern1            .      2    251    252 RA         \n/
@@ -9751,6 +9816,8 @@ FP /^     72      77       2 pattern1            .      3     24     25 RA      
 FP 6 /^.* 1 +\d+ +\d+ RA +\n/
 FP 2 /^.* 2 +\d+ +\d+ RA +\n/
 FP 1 /^.* 3 +\d+ +\d+ RA +\n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 9\n/
 //
 
 ID feat-embl
@@ -9879,9 +9946,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI amic_pseae.garnier
-FZ = 3329
+FC = 82
 FP /^#  Residue totals: H:111   E: 98   T: 81   C: 94\n/
 FP /RADAL\nhelix               HHHHHH            HHHH H     HHHHHH \n/
+FP 1 /^# Total sequences: 1\n/
+FP 1 /^# Total hitcount: 111\n/
 //
 
 ID garnier-range
@@ -9895,10 +9964,12 @@ FP 0 /Error: /
 FP 0 /Died: /
 FC = 2
 FI amic_pseae.garnier
-FZ = 1228
+FC = 48
 FP /^#  Residue totals: H: 17   E: 21   T: 22   C: 10\n/
 FP /RADAL\nhelix               HHHHHH            HHHH H     HHHHHH \n/
 FP /^turns       T TTT  TT   TT\n/
+FP 1 /^# Total sequences: 1\n/
+FP 1 /^# Total hitcount: 26\n/
 //
 
 ID garnier-short
@@ -10407,7 +10478,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.pepstats
-FZ = 1500
+FZ = 1502
 FP /^Molecular weight = 38563\.97/
 FP /^Average Residue Weight  = 107\.122\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
@@ -11010,12 +11081,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 100k_rat.patmatdb 
-FZ = 1350
+FC = 78
 FP /^# Sequence: HD_FUGRU     from: 1   to: 3148\n# HitCount: 1\n/
 FP /^Length = 4\n/
 FP /^Start = position 1038 of sequence\n/
 FP /^End = position 1041 of sequence\n/
 FP /^STPASSTTSSAVDP\n/
+FP /^# Total sequences: 3\n/
+FP /^# Total hitcount: 3\n/
 //
 
 # change the example (was an arabidopsis entry)
@@ -11404,8 +11477,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 100k_rat.preg
-FZ = 579
+FC = 29
 FP /^    390     393 regex1       IAQA\n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 1\n/
 //
 
 ID prettyplot-ex
@@ -11736,8 +11811,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.recoder
-FZ = 3280
+FC = 70
 FP 3 / +77 +81 . +EcoRII +CCWGG +78 +P.P +C->[ACGT]\n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 34\n/
 //
 
 ID recoder-seqs
@@ -11755,9 +11832,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.recoder
-FZ = 5131
+FC = 106
 FP 3 / +77 +81 . +EcoRII +CCWGG +78 +P.P +C->[ACGT]\n/
 FP /# 61 +AGCTCTTTGT CCGCGCCCAG GAGCTACACA CCTTCGAGGT GACCGGCCAG GAAACGGTCG \n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 34\n/
 //
 
 # make bamhi explicit in reply to prompt
@@ -16253,8 +16332,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.silent 
-FZ = 962
+FC = 37
 FP /^ +272 +267 Rev +HindIII +AAGCTT +268 +A.A +Yes +A->T\n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 1\n/
 //
 
 ID silent-seqs
@@ -16271,9 +16352,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.silent 
-FZ = 2802
+FC = 73
 FP /^ +272 +267 Rev +HindIII +AAGCTT +268 +A.A +Yes +A->T\n/
 FP /^\n/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 1\n/
 //
 
 ID sixpack-ex
@@ -16334,10 +16417,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.sirna
-FZ = 7286
+FC = 112
 FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 85\n/
 FI hsfau.fasta
-FZ = 6035
+FC = 170
 FP /aaaagtgagaggtcagactccta/
 //
 
@@ -16354,8 +16439,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.sirna
-FZ = 7783
+FC = 116
 FP /\(AA\)GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 85\n/
 FI hsfau.fasta
 FZ = 6035
 FP /aaaagtgagaggtcagactccta/
@@ -16696,8 +16783,10 @@ FI stdout
 FZ = 16
 FP /^Created tmap.ps\n/
 FI tmap.res
-FZ = 1524
+FZ = 1649
 FP 2 /^     43      69        1 YMFLLIVLGFPINFLTLYVTVQHKKLR\n/
+FP /^# Total sequences: 2\n/
+FP /^# Total hitcount: 14\n/
 FI tmap.ps
 FZ = 39837
 FP /^%%Title: PLplot Graph\n/
@@ -17019,12 +17108,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau.twofeat
-FZ = 652
+FZ = 776
 FP /484     509   0.000    484    489    509    509/
+FP /^# Total sequences: 1\n/
+FP /^# Total hitcount: 1\n/
 //
 
 ID twofeat-ex2
-UC The -twoout option makes the output report give the pairs of features found. The ouput report format type has been changed to display the full original pairs of faetures in GFF format.
+UC The -twoout option makes the output report give the pairs of features found. The ouput report format type has been changed to display the full original pairs of features in GFF format.
 AP twofeat
 CL -twoout -rformat gff tembl:hsfau
 IN polyA_signal
