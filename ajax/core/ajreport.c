@@ -59,6 +59,7 @@ typedef struct ReportSFormat
     AjBool Showseq;
     AjBool Nuc;
     AjBool Prot;
+    AjBool Showheader;
     void (*Write) (AjPReport outrpt,
 		   const AjPFeattable ftable, const AjPSeq seq);
 } ReportOFormat;
@@ -131,51 +132,53 @@ static ReportOFormat reportFormat[] =
 /*   Name         Description */
 /*       Alias MinTags  Showseq  Nuc      Prot     Function */
    /* standard feature formats */
+/*    {"unknown",   "Unknown feature format",
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, AJFALSE, reportWriteSimple},*/
     {"embl",      "EMBL feature format",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteEmbl},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, AJFALSE, reportWriteEmbl},
     {"genbank",   "Genbank feature format",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, reportWriteGenbank},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, AJFALSE, reportWriteGenbank},
     {"gff",       "GFF feature format",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteGff},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, reportWriteGff},
     {"pir",       "PIR feature format",
-	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  reportWritePir},
+	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  AJFALSE, reportWritePir},
     {"swiss",     "Swissprot feature format",
-	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  reportWriteSwiss},
+	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  AJFALSE, reportWriteSwiss},
     /* trace  for debug */
     {"trace",     "Debugging trace of full internal data content",
-	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTrace},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTrace},
     /* list file for input to other programs */
     {"listfile",  "EMBOSS list file of sequence USAs with ranges",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteListFile},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteListFile},
     /* feature reports */
     {"dbmotif",   "Motif database hits",
-	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDbMotif},
     {"diffseq",   "Differences between a pair of sequences",
-	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  reportWriteDiffseq},
 /*    cirdna/lindna input format - looks horrible in those programs */
 /*    {"draw",      "",
 	 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteDraw},*/
     {"excel",     "Tab-delimited file for import to Microsoft Excel",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteExcel},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, reportWriteExcel},
     {"feattable", "EMBL format feature table with internal tags",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteFeatTable},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, reportWriteFeatTable},
     {"motif",     "Motif report",
-	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  reportWriteMotif},
     {"nametable", "Simple table with sequence name",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteNameTable},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteNameTable},
     {"regions",   "Annotated sequence regions",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteRegions},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteRegions},
     {"seqtable",  "Simple table with sequence on each line",
-	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSeqTable},
+	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSeqTable},
     {"simple",    "Simple report",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSimple},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSimple},
     {"srs",       "Simple report format for SRS",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteSrs},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSrs},
     {"table",     "Simple table",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTable},
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTable},
     {"tagseq",    "Sequence with features marked below",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  reportWriteTagseq},
-    {NULL, NULL, AJFALSE, 0, AJFALSE, AJFALSE, AJFALSE, NULL}
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTagseq},
+    {NULL, NULL, AJFALSE, 0, AJFALSE, AJFALSE, AJFALSE, AJFALSE, NULL}
 };
 
 
@@ -1074,12 +1077,21 @@ static void reportWriteListFile(AjPReport thys,
 	ajFmtPrintS(&tmpstr, "[");
 
 	if(istart)
-	    ajFmtPrintAppS(&tmpstr, "%d", istart);
-
+	{
+	    if(feature->Strand == '-')
+		ajFmtPrintAppS(&tmpstr, "%d", ajSeqGetLen(seq) - istart + 1);
+	    else
+		ajFmtPrintAppS(&tmpstr, "%d", istart);
+	}
 	ajFmtPrintAppS(&tmpstr, ":");
 
 	if(iend)
-	    ajFmtPrintAppS(&tmpstr, "%d", iend);
+	{
+	    if(feature->Strand == '-')
+		ajFmtPrintAppS(&tmpstr, "%d", ajSeqGetLen(seq) - iend + 1);
+	    else
+		ajFmtPrintAppS(&tmpstr, "%d", iend);
+	}
 
 	if(feature->Strand == '-')
 	    ajFmtPrintAppS(&tmpstr, ":r");
@@ -2111,7 +2123,7 @@ void ajReportDel(AjPReport* pthys)
     ajFeattableDel(&thys->Fttable);
     ajFeattabOutDel(&thys->Ftquery);
 
-    ajReportClose(thys);
+    ajFileClose(&thys->File);
 
     AJFREE(*pthys);
 
@@ -2337,7 +2349,8 @@ AjPReport ajReportNew(void)
 
     AJNEW0(pthis);
 
-    pthis->Count     = 0;
+    pthis->CountSeq  = 0;
+    pthis->CountHit  = 0;
     pthis->Name      = ajStrNew();
     pthis->Formatstr = ajStrNew();
     pthis->Format    = 0;
@@ -2401,7 +2414,21 @@ void ajReportWrite(AjPReport thys, const AjPFeattable ftable, const AjPSeq seq)
 
 void ajReportClose(AjPReport thys)
 {
-    ajDebug("ajReportClose '%F'\n", thys->File);
+    ajDebug("ajReportClose '%F' CountSeq %d CountHit %d\n",
+	    thys->File, thys->CountSeq, thys->CountHit);
+
+    if(!thys->File)	     /* already closed, nothing to write to */
+	return;
+
+    if(!thys->Format)
+	if(!ajReportFindFormat(thys->Formatstr, &thys->Format))
+	    ajDie("unknown report format '%S'", thys->Formatstr);
+
+    if(reportFormat[thys->Format].Showheader) {
+	if(!thys->CountSeq)
+	    ajReportWriteHeader(thys, NULL, NULL);
+	ajReportWriteTail(thys, NULL, NULL);
+    }
 
     ajFileClose(&thys->File);
 
@@ -2483,7 +2510,7 @@ void ajReportWriteHeader(AjPReport thys,
     
     /* Header for the top of the file (first call for report only) */
     
-    if(!thys->Count)
+    if(!thys->CountSeq)
     {
 	ajFmtPrintF(outf, "########################################\n");
 	ajFmtPrintF(outf, "# Program: %S\n", ajAcdGetProgram());
@@ -2532,20 +2559,26 @@ void ajReportWriteHeader(AjPReport thys,
     
     if(!doSingle || thys->Multi)
 	ajFmtPrintF(outf, "#=======================================\n#\n");
+ 
+    if(seq)
+    {
+	ajFmtPrintF(outf, "# Sequence: %S     from: %d   to: %d\n",
+		    ajReportSeqName(thys, seq),
+		    ajSeqGetBegin(seq) + ajSeqGetOffset(seq),
+		    ajSeqGetEnd(seq) + ajSeqGetOffset(seq));
     
-    ajFmtPrintF(outf, "# Sequence: %S     from: %d   to: %d\n",
-		ajReportSeqName(thys, seq),
-		ajSeqGetBegin(seq) + ajSeqGetOffset(seq),
-		ajSeqGetEnd(seq) + ajSeqGetOffset(seq));
-    
-    if(thys->Showacc)
-	ajFmtPrintF(outf, "# Accession: %S\n", ajSeqGetAccS(seq));
-    if(thys->Showdes)
-	ajFmtPrintF(outf, "# Description: %S\n", ajSeqGetDescS(seq));
-    
-    ajFmtPrintF(outf, "# HitCount: %d\n",
-		ajFeattableSize(ftable));
-    
+	if(thys->Showacc)
+	    ajFmtPrintF(outf, "# Accession: %S\n", ajSeqGetAccS(seq));
+	if(thys->Showdes)
+	    ajFmtPrintF(outf, "# Description: %S\n", ajSeqGetDescS(seq));
+    }
+
+    if(ftable)
+    {
+	ajFmtPrintF(outf, "# HitCount: %d\n",
+		    ajFeattableSize(ftable));
+    }
+
     if(ajStrGetLen(thys->Header))
     {
 	ajStrAssignS(&tmpstr, thys->Header);
@@ -2578,8 +2611,9 @@ void ajReportWriteHeader(AjPReport thys,
     else
 	ajFmtPrintF(outf, "########################################\n\n");
     
-    ++thys->Count;
-    
+    ++thys->CountSeq;
+    thys->CountHit += ajFeattableSize(ftable);
+
     ajStrDel(&tmpstr);
     AJFREE(today);
     
@@ -2614,31 +2648,39 @@ void ajReportWriteTail(AjPReport thys,
     else
 	ajFmtPrintF(outf, "\n########################################\n");
 
-    if(ajStrGetLen(thys->SubTail))
+    if(ftable)
     {
-	ajStrAssignS(&tmpstr, thys->SubTail);
-	ajStrExchangeCC(&tmpstr, "\n", "\1# ");
-	ajStrExchangeCC(&tmpstr, "\1", "\n");
-	ajStrTrimEndC(&tmpstr, " ");
-	ajFmtPrintF(outf, "#\n");
-	ajFmtPrintF(outf, "# %S", tmpstr);
-	if(!ajStrSuffixC(tmpstr, "\n#"))
-	    ajFmtPrintF(outf, "\n#");
-	ajFmtPrintF(outf, "\n");
-	ajStrDel(&thys->SubTail);
-    }
+	if(ajStrGetLen(thys->SubTail))
+	{
+	    ajStrAssignS(&tmpstr, thys->SubTail);
+	    ajStrExchangeCC(&tmpstr, "\n", "\1# ");
+	    ajStrExchangeCC(&tmpstr, "\1", "\n");
+	    ajStrTrimEndC(&tmpstr, " ");
+	    ajFmtPrintF(outf, "#\n");
+	    ajFmtPrintF(outf, "# %S", tmpstr);
+	    if(!ajStrSuffixC(tmpstr, "\n#"))
+		ajFmtPrintF(outf, "\n#");
+	    ajFmtPrintF(outf, "\n");
+	    ajStrDel(&thys->SubTail);
+	}
 
-    if(ajStrGetLen(thys->Tail))
+	if(ajStrGetLen(thys->Tail))
+	{
+	    ajStrAssignS(&tmpstr, thys->Tail);
+	    ajStrExchangeCC(&tmpstr, "\n", "\1# ");
+	    ajStrExchangeCC(&tmpstr, "\1", "\n");
+	    ajStrTrimEndC(&tmpstr, " ");
+	    ajFmtPrintF(outf, "#\n");
+	    ajFmtPrintF(outf, "# %S", tmpstr);
+	    if(!ajStrSuffixC(tmpstr, "\n#"))
+		ajFmtPrintF(outf, "\n#");
+	    ajFmtPrintF(outf, "\n");
+	}
+    }
+    else
     {
-	ajStrAssignS(&tmpstr, thys->Tail);
-	ajStrExchangeCC(&tmpstr, "\n", "\1# ");
-	ajStrExchangeCC(&tmpstr, "\1", "\n");
-	ajStrTrimEndC(&tmpstr, " ");
-	ajFmtPrintF(outf, "#\n");
-	ajFmtPrintF(outf, "# %S", tmpstr);
-	if(!ajStrSuffixC(tmpstr, "\n#"))
-	    ajFmtPrintF(outf, "\n#");
-	ajFmtPrintF(outf, "\n");
+	ajFmtPrintF(outf, "# Total sequences: %d\n", thys->CountSeq);
+	ajFmtPrintF(outf, "# Total hitcount: %d\n", thys->CountHit);
     }
 
     if(!doSingle || thys->Multi)

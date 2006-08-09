@@ -45,7 +45,8 @@ extern "C"
 ** @attr Showscore [AjBool] Report score (if optional for format)
 ** @attr Multi [AjBool] if true, assume >1 sequence
 ** @attr Mintags [ajint] Minimum number of tags to report
-** @attr Count [ajint] Number of sequences reported so far
+** @attr CountSeq [ajint] Number of sequences reported so far
+** @attr CountHit [ajint] Number of features reported so far
 **
 ** @new ajReportNew Default constructor
 ** @delete ajReportDel Default destructor
@@ -78,7 +79,8 @@ typedef struct AjSReport {
   AjBool Showscore;
   AjBool Multi;
   ajint Mintags;
-  ajint Count;
+  ajint CountSeq;
+  ajint CountHit;
 } AjOReport;
 
 #define AjPReport AjOReport*
