@@ -6524,12 +6524,12 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
 
     if(ajStrGetLen(qry->Id))
 	ajFmtPrintAppS(&get,
-		       "&query=%S",
+		       "&query=id:%S",
 		       qry->Id);
     else if(ajStrGetLen(qry->Acc))
     {
     	ajFmtPrintAppS(&get,
-		       "&query=%S",
+		       "&query=ac:%S",
 		       qry->Acc);
 	return ajFalse;
     }
