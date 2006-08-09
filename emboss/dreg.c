@@ -48,6 +48,7 @@ int main(int argc, char **argv)
     ajint ioff;
     ajint ipos;
     ajint ilen;
+    ajint adj;
 
     embInit("dreg", argc, argv);
 
@@ -60,6 +61,16 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
+	if(ajSeqIsReversed(seq))
+	    adj = ajSeqGetLen(seq) - ajSeqGetOffend(seq);
+	else
+	    adj = ajSeqGetOffset(seq);
+	ajDebug("begin:%d end:%d len:%d offset:%d offend:%d "
+		"rev:%B nuc:%B adj:%d",
+	       ajSeqGetBegin(seq), ajSeqGetEnd(seq), ajSeqGetLen(seq),
+	       ajSeqGetOffset(seq), ajSeqGetOffend(seq),
+	       ajSeqIsReversed(seq), ajSeqIsNuc(seq), adj);
+
 	ipos  = 1;
 	ajStrAssignS(&str, ajSeqGetSeqS(seq));
 	ajStrFmtUpper(&str);
@@ -69,6 +80,7 @@ int main(int argc, char **argv)
 	feat = ajFeattableNewDna(ajSeqGetNameS(seq));
 	while(ajPatlistRegexGetNext(plist,&pat))
 	{
+
 	    patexp = ajPatternRegexGetCompiled(pat);
 	    while(ajStrGetLen(str) && ajRegExec(patexp, str))
 	    {
@@ -81,8 +93,15 @@ int main(int argc, char **argv)
 		    ajRegPost(patexp, &tmpstr);
 		    ajStrAssignS(&str, tmpstr);
 		    ipos += ioff;
-		    sf = ajFeatNewII (feat,ipos,ipos+ilen-1);
-		    ajFmtPrintS (&tmpstr,"*pat %S", ajPatternRegexGetName(pat));
+		    if(ajSeqIsReversed(seq)) {
+			sf = ajFeatNewIIRev (feat, adj - ipos + ilen-1,
+					     adj - ipos);
+		    }
+		    else {
+			sf = ajFeatNewII (feat,ipos,ipos+ilen-1);
+		    }
+		    ajFmtPrintS (&tmpstr,"*pat %S",
+				 ajPatternRegexGetName(pat));
 		    ajFeatTagAdd (sf,NULL,tmpstr);
 		    ipos += ilen;
 		}
@@ -93,7 +112,9 @@ int main(int argc, char **argv)
 		}
 	    }
 	}
-        (void) ajReportWrite (report,feat,seq);
+	if(ajFeattableSize(feat))
+	    (void) ajReportWrite (report,feat,seq);
+
         ajFeattableDel(&feat);
     }
 
