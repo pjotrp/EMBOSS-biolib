@@ -122,6 +122,9 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     AjPStr seqstr    = NULL;
     AjPStr tmp       = ajStrNew();
     AjPRegexp patexp = ajPatternRegexGetCompiled(pat);
+    ajint adj;
+
+    adj = ajSeqGetEnd(seq);
 
     if (reverse)
     {
@@ -145,7 +148,8 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
 	    ajStrAssignS(&seqstr, tmp);
 	    pos += off;
             if (reverse)
-                sf = ajFeatNewIIRev (ftable,pos,pos+len-1);
+                sf = ajFeatNewIIRev (ftable, adj - pos - len + 2,
+				     adj - pos + 1);
             else
 	        sf = ajFeatNewII (ftable,pos,pos+len-1);
 	    pos += len;
@@ -171,7 +175,7 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
 ** @param [r] seq [const AjPSeq] Sequence to search
 ** @param [r] pat [const AjPPatternSeq] Pattern to search with
 ** @param [r] reverse [AjBool] Search reverese sequence as well
-** @return [void]
+** @return [void]  
 ** @@
 ******************************************************************************/
 void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
@@ -188,6 +192,9 @@ void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
     AjPStr seqstr  = ajStrNew();
     AjPStr seqname = ajStrNew();
     AjPStr tmp     = ajStrNew();
+    ajint adj;
+
+    adj = ajSeqGetEnd(seq);
 
     ajStrAssignC(&seqname,ajSeqName(seq));
     pattern = ajPatternSeqGetCompiled(pat);
@@ -207,12 +214,15 @@ void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
                        ajPatternSeqGetMismatch(pat),&hits,&tidy);
 
     ajDebug ("embPatternSeqSearch: found %d hits\n",hits);
-    ajListReverse(list);
+    if(!reverse)
+	ajListReverse(list);
+
     for(i=0;i<hits;++i)
     {
         ajListPop(list,(void **)&m);
         if (reverse)
-            sf = ajFeatNewIIRev(ftable, m->start, m->start + m->len - 1);
+            sf = ajFeatNewIIRev(ftable, adj - m->start - m->len + 2,
+				adj - m->start + 1);
         else
             sf = ajFeatNewII(ftable, m->start, m->start + m->len - 1);
 
