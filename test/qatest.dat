@@ -9765,12 +9765,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI test.out
-FC = 33
-FP /^# HitCount: 2\n/
-FP /^      1       6 pattern1            . aagctt\n/
-FP /^   1267    1272 pattern1            . aagctt\n/
+FC = 37
+FP /^# HitCount: 4\n/
+FP /^      1       4 pattern1            . GATA\n/
+FP /^     28      31 pattern1            . GATA\n/
+FP /^     39      42 pattern1            . GATA\n/
+FP /^     38      35 pattern1            . GATA\n/
 FP /^# Total sequences: 1\n/
-FP /^# Total hitcount: 2\n/
+FP /^# Total hitcount: 4\n/
 //
 
 ID fuzzpro-ex
