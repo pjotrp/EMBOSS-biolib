@@ -130,7 +130,7 @@ static char* reportCharname(const AjPReport thys);
 static ReportOFormat reportFormat[] =
 {
 /*   Name         Description */
-/*       Alias MinTags  Showseq  Nuc      Prot     Function */
+/*       Alias MinTags Showseq Nuc     Prot     Header   Function */
    /* standard feature formats */
 /*    {"unknown",   "Unknown feature format",
 	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, AJFALSE, reportWriteSimple},*/
