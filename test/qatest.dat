@@ -17115,7 +17115,7 @@ FP /^# Total hitcount: 1\n/
 //
 
 ID twofeat-ex2
-UC The -twoout option makes the output report give the pairs of features found. The ouput report format type has been changed to display the full original pairs of features in GFF format.
+UC The -twoout option makes the output report give the pairs of features found. The output report format type has been changed to display the full original pairs of features in GFF format.
 AP twofeat
 CL -twoout -rformat gff tembl:hsfau
 IN polyA_signal
@@ -17134,7 +17134,7 @@ FP /polyA_signal/
 //
 
 ID union-ex
-UC the file 'cds.list' contains a list of the regions making up the coding sequence of 'embl:hsfau':
+UC The file 'cds.list' contains a list of the regions making up the coding sequence of 'embl:hsfau':
 AP union
 IN @../../data/cds.list
 IN
