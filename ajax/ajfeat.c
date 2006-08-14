@@ -684,9 +684,18 @@ AjBool ajFeattabOutOpen(AjPFeattabOut thys, const AjPStr ufo)
     if (thys->Handle)
 	return ajTrue;
 
-    if (!ajStrGetLen(thys->Filename))
+    if (ajStrGetLen(thys->Filename))
+    {
+	if(!featFindOutFormat (thys->Formatstr, &thys->Format))
+	    ajErr("unknown output feature format '%S' "
+		  "will write as gff instead\n",
+		  thys->Formatstr );
+    }
+    else
+    {
 	if (!featoutUfoProcess (thys, ufo))
 	    return ajFalse;
+    }
 
     /*ajDebug("trying to open dir:'%S' file:'%S' fmt:'%S'\n",
 	    thys->Directory, thys->Filename, thys->Formatstr);*/
