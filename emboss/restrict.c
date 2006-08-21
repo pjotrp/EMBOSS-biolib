@@ -543,13 +543,18 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 	    continue;
 
 	if(m->forward)
+	{
 	    cend = m->start + ajStrGetLen(m->pat) - 1;
-	else
-	    cend = m->start - ajStrGetLen(m->pat) + 1;
-	
-
-	gf = ajFeatNewII (TabRpt,
+	    gf = ajFeatNewII (TabRpt,
 			   m->start, cend);
+	}
+	else
+	{
+	    cend = m->start - ajStrGetLen(m->pat) + 1;
+	    gf = ajFeatNewIIRev(TabRpt,
+			   m->start, cend);
+	}
+
 	ajFmtPrintS(&tmpStr, "*enzyme %S", m->cod);
 	ajFeatTagAdd(gf,  NULL, tmpStr);
 	ajFmtPrintS(&tmpStr, "*site %S", m->pat);
