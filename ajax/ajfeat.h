@@ -93,6 +93,7 @@ void          ajFeattableAdd (AjPFeattable thys, AjPFeature feature) ;
 ajint         ajFeattableBegin (const AjPFeattable thys);
 void          ajFeattableClear (AjPFeattable thys);
 AjPFeattable  ajFeattableCopy (const AjPFeattable orig);
+AjPFeattable  ajFeattableCopyLimit (const AjPFeattable orig, ajint limit);
 void          ajFeattableDel (AjPFeattable *pthis) ;
 ajint         ajFeattableEnd (const AjPFeattable thys);
 const AjPStr  ajFeattableGetName (const AjPFeattable thys);
