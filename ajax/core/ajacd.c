@@ -2505,6 +2505,8 @@ AcdOQual acdQualReport[] =
     {"rdesshow",   "N", "boolean", "Show description in the report"},
     {"rscoreshow", "Y", "boolean", "Show the score in the report"},
     {"rusashow",   "N", "boolean", "Show the full USA in the report"},
+    {"rmaxall",    "0", "integer", "Maximum total hits to report"},
+    {"rmaxseq",    "0", "integer", "Maximum hits to report for one sequence"},
     {NULL, NULL, NULL, NULL}
 };
 
@@ -10597,6 +10599,10 @@ static void acdSetReport(AcdPAcd thys)
 			  &val->Showscore, &acdReplyDef);
 	    acdQualToBool(thys, "rusashow", ajFalse,
 			  &val->Showusa, &acdReplyDef);
+	    acdQualToInt(thys, "rmaxall", ajFalse,
+			  &val->MaxHitAll, &acdReplyDef);
+	    acdQualToInt(thys, "rmaxseq", ajFalse,
+			  &val->MaxHitSeq, &acdReplyDef);
     
 	    /* test acdc-reportbadtaglist */
 	    if(!ajReportSetTags(val, taglist))
