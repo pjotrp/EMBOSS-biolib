@@ -62,8 +62,8 @@ int main(int argc, char **argv)
     float gapopen;
     float gapextend;
 
-    ajint maxarr = 1000;
-    ajint len;
+    ajulong maxarr = 1000;
+    ajulong len;
 
     float score;
     ajint begina;
@@ -113,6 +113,9 @@ int main(int argc, char **argv)
 	lena = ajSeqGetLen(a);
 	ajSeqTrim(b);
 	lenb = ajSeqGetLen(b);
+
+	if(lenb > (ULONG_MAX/(ajulong)(lena+1)))
+	   ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
 
 	len = lena*lenb;
 

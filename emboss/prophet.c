@@ -93,8 +93,8 @@ int main(int argc, char **argv)
 
     const char *p;
 
-    ajint maxarr = 1000;
-    ajint alen;
+    ajulong maxarr = 1000;
+    ajulong alen;
     float *path;
     ajint *compass;
 
@@ -153,6 +153,9 @@ int main(int argc, char **argv)
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 	len = ajStrGetLen(substr);
+
+	if(len > (ULONG_MAX/(ajulong)(mlen+1)))
+	    ajFatal("Sequences too big. Try 'supermatcher'");
 
 	alen = len*mlen;
 	if(alen>maxarr)
