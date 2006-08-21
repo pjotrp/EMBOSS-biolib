@@ -1149,12 +1149,20 @@ AjPFeature ajFeatNewII(AjPFeattable thys,
 
     AjPFeature ret = NULL ;
 
+    ajDebug("ajFeatNewII %d %d\n", Start, End);
+
     if(!featTypeMiscfeat)
 	featTypeMiscfeat = ajStrNewC("misc_feature");
 
-    ret = featFeatNew(thys,source,featTypeMiscfeat,
-		      Start,End,score,strand,frame,
-		      0,0,0,NULL, NULL,flags);
+    if(Start > End)
+	ret = featFeatNew(thys,source,featTypeMiscfeat,
+			  Start,End,score,'-',frame,
+			  0,0,0,NULL, NULL,flags);
+    else
+	ret = featFeatNew(thys,source,featTypeMiscfeat,
+			  Start,End,score,strand,frame,
+			  0,0,0,NULL, NULL,flags);
+
     return ret;
 }
 
@@ -1185,7 +1193,13 @@ AjPFeature ajFeatNewIIRev(AjPFeattable thys,
 {
     AjPFeature ret = NULL ;
 
-    ret = ajFeatNewII(thys,Start,End);
+    ajDebug("ajFeatNewIIRev %d %d\n", Start, End);
+
+    if(Start > End)
+	ret = ajFeatNewII(thys,Start,End);
+    else
+	ret = ajFeatNewII(thys,End,Start);
+
     ret->Strand = '-';
 
     return ret;
@@ -1431,6 +1445,8 @@ static AjPFeature featFeatNew(AjPFeattable thys,
     AjPFeature ret          = NULL;
     static ajint maxexon    = 0;
     
+    ajDebug("featFeatNew %d %d '%c'\n", Start, End, strand);
+
     if(!featDefSource)
 	ajStrAssignS(&featDefSource, ajAcdGetProgram());
     
@@ -7965,6 +7981,55 @@ AjPFeattable ajFeattableCopy(const AjPFeattable orig)
     iter = ajListIterRead(orig->Features);
 
     while(ajListIterMore(iter))
+    {
+	featorig = ajListIterNext(iter);
+	feat = ajFeatCopy(featorig);
+	ajFeattableAdd(ret, feat);
+    }
+    ajListIterFree(&iter);
+
+    return ret;
+}
+
+
+
+
+/* @func ajFeattableCopyLimit *************************************************
+**
+** Makes a copy of a feature table using only a limited number of features.
+**
+** For cases where we need a copy we can safely change and/or delete.
+**
+** @param [r]   orig  [const AjPFeattable]  Original feature table
+** @param [r]   limit  [ajint]  Limit to number of features copied
+** @return [AjPFeattable] Feature table copy of the original
+** @@
+******************************************************************************/
+
+AjPFeattable ajFeattableCopyLimit(const AjPFeattable orig, ajint limit)
+{
+    AjPFeattable ret = NULL;
+    AjIList iter;
+    AjPFeature featorig;
+    AjPFeature feat = NULL;
+    ajint ift = 0;
+
+    if(!orig)
+	return NULL;
+
+    ret = featTableNew();
+
+    ajStrAssignS(&ret->Seqid, orig->Seqid);
+    ajStrAssignS(&ret->Type, orig->Type);
+    ret->DefFormat = orig->DefFormat;
+    ret->Start     = orig->Start;
+    ret->End       = orig->End;
+    ret->Len       = orig->Len;
+    ret->Groups    = orig->Groups;
+
+    iter = ajListIterRead(orig->Features);
+
+    while(ajListIterMore(iter) && (ift++ < limit))
     {
 	featorig = ajListIterNext(iter);
 	feat = ajFeatCopy(featorig);
