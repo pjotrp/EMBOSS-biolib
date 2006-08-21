@@ -482,11 +482,12 @@ public class ParseAcd
   private void setGuiHandleNumber(String dataType, ApplicationFields appF)
   {
 
-    if ( dataType.startsWith("datafile") || dataType.startsWith("featout")||
-         dataType.startsWith("string")   || dataType.startsWith("seqout") ||
-         dataType.startsWith("outfile")  || dataType.startsWith("matrix") ||
-         dataType.startsWith("infile")   || dataType.startsWith("regexp") ||
-         dataType.startsWith("codon")    || dataType.startsWith("dirlist") )
+    if ( dataType.startsWith("datafile") || dataType.startsWith("featout") ||
+         dataType.startsWith("string")   || dataType.startsWith("seqout")  ||
+         dataType.startsWith("outfile")  || dataType.startsWith("matrix")  ||
+         dataType.startsWith("infile")   || dataType.startsWith("regexp")  ||
+         dataType.startsWith("codon")    || dataType.startsWith("dirlist") ||
+         dataType.startsWith("pattern"))
     {
       appF.setGuiHandleNumber(ntextf);
       ntextf++;

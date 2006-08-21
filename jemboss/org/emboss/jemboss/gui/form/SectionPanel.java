@@ -387,7 +387,7 @@ public class SectionPanel
         }
         else if(att.startsWith("dirlist") || att.startsWith("string") ||
                 att.startsWith("infile")  || att.startsWith("regexp") ||
-                att.startsWith("featout") )
+                att.startsWith("featout") || att.startsWith("pattern"))
         {
           if(parseAcd.isDefaultParamValueStr(nf)) 
             if( !(parseAcd.getDefaultParamValueStr(nf).startsWith("@") ||

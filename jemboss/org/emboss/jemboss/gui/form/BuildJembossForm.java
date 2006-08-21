@@ -740,10 +740,10 @@ public class BuildJembossForm implements ActionListener
         else
           options = options.concat(" -" + val + " data");
       }
-      if ( att.startsWith("dirlist")|| att.startsWith("featout")||
-           att.startsWith("string")  || att.startsWith("seqout") ||
-           att.startsWith("outfile") || att.startsWith("codon") ||
-           att.startsWith("regexp") )
+      if ( att.startsWith("dirlist") || att.startsWith("featout") ||
+           att.startsWith("string")  || att.startsWith("seqout")  ||
+           att.startsWith("outfile") || att.startsWith("codon")   ||
+           att.startsWith("regexp")  || att.startsWith("pattern"))
       {
         if(!(textf[h].getText()).equals("") && textf[h].isVisible()
                                             && textf[h].isEnabled()) 
