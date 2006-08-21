@@ -38,8 +38,8 @@ static void fuzztran_SourceFeature(const AjPFeattable thys, const AjPSeq pseq,
 
 int main(int argc, char **argv)
 {
-    AjPSeqall seqall;
-    AjPSeq seq;
+    AjPSeqall seqall = NULL;
+    AjPSeq seq = NULL;
     AjPReport report = NULL;
     AjPFeattable tab = NULL;
     AjPFeattable seqtab = NULL;
@@ -59,6 +59,7 @@ int main(int argc, char **argv)
     ajint end;
 
     AjPStr tmpstr = NULL;
+    AjBool writeok = ajTrue;
 
     embInit("fuzztran", argc, argv);
 
@@ -77,7 +78,8 @@ int main(int argc, char **argv)
 
     trantable = ajTrnNewI(table);
 
-    while(ajSeqallNext(seqall,&seq))
+    writeok=ajTrue;
+    while(writeok && ajSeqallNext(seqall,&seq))
     {
 	begin = ajSeqallBegin(seqall);
 	end   = ajSeqallEnd(seqall);
@@ -157,7 +159,7 @@ int main(int argc, char **argv)
 	}
 
 	if(ajFeattableSize(seqtab))
-	    ajReportWrite(report, seqtab, seq);
+	    writeok = ajReportWrite(report, seqtab, seq);
 	ajStrDel(&text);
     }
 

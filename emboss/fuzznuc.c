@@ -35,13 +35,14 @@
 
 int main(int argc, char **argv)
 {
-    AjPSeqall seqall;
-    AjPSeq seq;
+    AjPSeqall seqall = NULL;
+    AjPSeq seq = NULL;
     AjPFeattable tab = NULL;
     AjPReport report = NULL;
     AjPStr tmpstr = NULL;
 
     AjBool sc;
+    AjBool writeok = ajTrue;
 
     AjPPatlistSeq plist = NULL;
 
@@ -56,14 +57,15 @@ int main(int argc, char **argv)
     ajFmtPrintAppS(&tmpstr, "\nComplement: %B\n", sc);
     ajReportSetHeader(report, tmpstr);
 
-    while(ajSeqallNext(seqall,&seq))
+    writeok=ajTrue;
+    while (writeok && ajSeqallNext(seqall,&seq))
     {
 	tab = ajFeattableNewDna(ajSeqGetNameS(seq));
         embPatlistSeqSearch(tab,seq,plist,ajFalse);
         if (sc)
             embPatlistSeqSearch (tab,seq,plist,ajTrue);
         if(ajFeattableSize(tab))
-	    ajReportWrite(report,tab,seq);
+	    writeok = ajReportWrite(report,tab,seq);
         ajFeattableDel(&tab);
     }
 
