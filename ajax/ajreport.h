@@ -81,6 +81,8 @@ typedef struct AjSReport {
   ajint Mintags;
   ajint CountSeq;
   ajint CountHit;
+  ajint MaxHitAll;
+  ajint MaxHitSeq;
 } AjOReport;
 
 #define AjPReport AjOReport*
@@ -107,19 +109,27 @@ AjPReport    ajReportNew (void);
 AjBool       ajReportOpen (AjPReport thys, const AjPStr name);
 void         ajReportPrintFormat (AjPFile outf, AjBool full);
 const AjPStr ajReportSeqName (const AjPReport thys, const AjPSeq seq);
+void         ajReportAppendHeader (AjPReport thys, const AjPStr header);
+void         ajReportAppendHeaderC (AjPReport thys, const char* header);
 void         ajReportSetHeader (AjPReport thys, const AjPStr header);
 void         ajReportSetHeaderC (AjPReport thys, const char* header);
+void         ajReportAppendSubHeader (AjPReport thys, const AjPStr header);
+void         ajReportAppendSubHeaderC (AjPReport thys, const char* header);
 void         ajReportSetSubHeader (AjPReport thys, const AjPStr header);
 void         ajReportSetSubHeaderC (AjPReport thys, const char* header);
 AjBool       ajReportSetTags (AjPReport thys, const AjPStr taglist);
+void         ajReportAppendTail (AjPReport thys, const AjPStr tail);
+void         ajReportAppendTailC (AjPReport thys, const char* tail);
 void         ajReportSetTail (AjPReport thys, const AjPStr tail);
 void         ajReportSetTailC (AjPReport thys, const char* tail);
+void         ajReportAppendSubTail (AjPReport thys, const AjPStr tail);
+void         ajReportAppendSubTailC (AjPReport thys, const char* tail);
 void         ajReportSetSubTail (AjPReport thys, const AjPStr tail);
 void         ajReportSetSubTailC (AjPReport thys, const char* tail);
 void         ajReportSetType (AjPReport thys,
 			      const AjPFeattable ftable, const AjPSeq seq);
 AjBool       ajReportValid (AjPReport thys);
-void         ajReportWrite (AjPReport thys,
+AjBool       ajReportWrite (AjPReport thys,
 			    const AjPFeattable ftable,  const AjPSeq seq);
 void         ajReportWriteHeader (AjPReport thys,
 				  const AjPFeattable ftable, const AjPSeq seq);
