@@ -30,19 +30,19 @@ extern "C"
 ** @alias AjODomNode
 ** @alias AjPDomNode
 **
-** @attr name [AjPStr] Undocumented
-** @attr value [AjPStr] Undocumented
-** @attr type [ajuint] Undocumented
-** @attr parentnode [struct AjSDomNode*] Undocumented
-** @attr childnodes [struct AjSDomNodeList*] Undocumented
-** @attr firstchild [struct AjSDomNode*] Undocumented
-** @attr lastchild [struct AjSDomNode*] Undocumented
-** @attr previoussibling [struct AjSDomNode*] Undocumented
-** @attr nextsibling [struct AjSDomNode*] Undocumented
-** @attr attributes [struct AjSDomNodeList*] Undocumented
-** @attr ownerdocument [struct AjSDomNode*] Undocumented
-** @attr subtreeModified [ajuint] Undocumented
-** @attr sub [union] Undocumented
+** @attr name [AjPStr] name of node
+** @attr value [AjPStr] value associated with name
+** @attr type [ajuint] type of node
+** @attr parentnode [struct AjSDomNode*] ancestor
+** @attr childnodes [struct AjSDomNodeList*] children
+** @attr firstchild [struct AjSDomNode*] first child in list
+** @attr lastchild [struct AjSDomNode*] last child in list
+** @attr previoussibling [struct AjSDomNode*] last node at this level
+** @attr nextsibling [struct AjSDomNode*] next node at this level
+** @attr attributes [struct AjSDomNodeList*] attributes
+** @attr ownerdocument [struct AjSDomNode*] document owner
+** @attr subtreeModified [ajuint] internal flag
+** @attr sub [union] substructure depending on node type
 **
 ******************************************************************************/
 
@@ -140,9 +140,9 @@ typedef struct AjSDomNode
 ** @alias AjODomNodeEntry
 ** @alias AjPDomNodeEntry
 **
-** @attr prev [struct AjSDomNodeEntry*] Undocumented
-** @attr next [struct AjSDomNodeEntry*] Undocumented
-** @attr node [AjPDomNode] Undocumented
+** @attr prev [struct AjSDomNodeEntry*] previous node
+** @attr next [struct AjSDomNodeEntry*] next node
+** @attr node [AjPDomNode] linked list node
 **
 ******************************************************************************/
 
@@ -165,14 +165,14 @@ typedef struct AjSDomNodeEntry
 ** @alias AjODomNodeList
 ** @alias AjPDomNodeList
 **
-** @attr ownerdocument [AjPDomNode] Undocumented
-** @attr ownerelement [AjPDomNode] Undocumented
-** @attr length [ajint] Undocumented
-** @attr first [AjPDomNodeEntry] Undocumented
-** @attr last [AjPDomNodeEntry] Undocumented
-** @attr filter [ajuint] Undocumented
-** @attr list [struct AjSDomNodeList*] Undocumented
-** @attr table [AjPTable] Undocumented
+** @attr ownerdocument [AjPDomNode] document owner
+** @attr ownerelement [AjPDomNode] element owner
+** @attr length [ajint] length
+** @attr first [AjPDomNodeEntry] first in list
+** @attr last [AjPDomNodeEntry] last in list
+** @attr filter [ajuint] filter
+** @attr list [struct AjSDomNodeList*] list
+** @attr table [AjPTable] fast lookup table
 **
 ******************************************************************************/
 
