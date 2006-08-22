@@ -268,7 +268,7 @@ void          ajGraphSetXTitleC (AjPGraph thys, const char *title);
 void          ajGraphSetYTitle  (AjPGraph thys, const AjPStr title);
 void          ajGraphSetYTitleC (AjPGraph thys, const char *title);
 void          ajGraphxySetGaps(AjPGraph thys, AjBool overlap);
-void          ajGraphPartCircle(PLFLT xcentre, PLFLT ycentre, float radius,
+void          ajGraphPartCircle(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
 				PLFLT StartAngle, PLFLT EndAngle);
 PLFLT         *ajComputeCoord(PLFLT xcentre, PLFLT ycentre, PLFLT Radius,
 			      PLFLT Angle);
