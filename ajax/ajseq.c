@@ -6135,6 +6135,7 @@ AjBool ajIsAccession(const AjPStr accnum)
 **
 ** Revised for new Swiss-Prot accession number format AnXXXn
 ** Revised for REFSEQ accession number format NM_nnnnnn
+** Revised for protein ID format XXXnnnnnn.nnn
 **
 ** @param [r] sv [const AjPStr] String to be tested
 ** @return [const AjPStr] accession number part of the string if successful
@@ -6171,8 +6172,12 @@ const AjPStr ajIsSeqversion(const AjPStr sv)
     {					/* EMBL/GenBank AAnnnnnn */
         ajStrAppendK(&seqVersionAccnum, *cp);
 	cp++;
-
-	if(*cp == '_')		/* REFSEQ NM_nnnnnn */
+	if(isalpha((ajint)*cp))
+	{			/* EMBL/GenBank protein_id AAAnnnnnn */
+	    ajStrAppendK(&seqVersionAccnum, *cp);
+	    cp++;
+	}
+	else if(*cp == '_')		/* REFSEQ NM_nnnnnn */
 	{
 	    ajStrAppendK(&seqVersionAccnum, *cp);
 	    cp++;
