@@ -92,6 +92,7 @@ static AjPStr tmpfd  = NULL;
 static AjPStr tmpac  = NULL;
 static AjPStr tmpsv  = NULL;
 static AjPStr tmpgi  = NULL;
+static AjPStr tmpdb  = NULL;
 
 static EmbPEntry dbiblastEntry = NULL;
 static AjPList* fdl   = NULL;
@@ -663,6 +664,7 @@ int main(int argc, char **argv)
     ajStrDel(&tmpdes);
     ajStrDel(&tmpfd);
     ajStrDel(&tmpgi);
+    ajStrDel(&tmpdb);
     ajStrDel(&tmpac);
     ajStrDel(&tmpsv);
     ajRegFree(&wrdexp);
@@ -1166,10 +1168,11 @@ static AjBool dbiblast_parseNcbi(const AjPStr line, AjPFile * alistfile,
     ajStrAssignC(&tmpac,"");
     ajStrAssignC(&tmpsv,"");
     ajStrAssignC(&tmpgi,"");
+    ajStrAssignC(&tmpdb,"");
 
     ajFmtPrintS(&t,">%S",line);
 
-    if(!ajSeqParseNcbi(t,id,&tmpac,&tmpsv,&tmpgi,&tmpdes))
+    if(!ajSeqParseNcbi(t,id,&tmpac,&tmpsv,&tmpgi,&tmpdb,&tmpdes))
 	return ajFalse;
 
     if(ajStrGetLen(tmpac))

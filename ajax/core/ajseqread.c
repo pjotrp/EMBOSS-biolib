@@ -540,6 +540,7 @@ static AjBool     seqSelexReadBlock(SeqPSelex *thys, AjBool *named, ajint n,
 static AjBool     seqSetInFormat(const AjPStr format);
 static void       seqSetName(AjPStr* name, const AjPStr str);
 static void       seqSetNameFile(AjPStr* name, const AjPSeqin seqin);
+static void       seqSetNameNospace(AjPStr* name, const AjPStr str);
 static void       seqStockholmCopy(AjPSeq *thys, SeqPStockholm stock, ajint n);
 static void       seqSvSave(AjPSeq thys, const AjPStr sv);
 static void       seqTaxSave(AjPSeq thys, const AjPStr tax);
@@ -1884,7 +1885,7 @@ static ajint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
 	seqin->Format = format;
 	ajStrAssignC(&seqin->Formatstr, seqInFormatDef[format].Name);
 	ajStrAssignC(&thys->Formatstr, seqInFormatDef[format].Name);
-	ajStrAssignS(&thys->Db, seqin->Db);
+	ajStrAssignEmptyS(&thys->Db, seqin->Db);
 	ajStrAssignS(&thys->Entryname, seqin->Entryname);
 	ajStrAssignS(&thys->Filename, seqin->Filename);
 
@@ -2211,7 +2212,7 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    seqSetName(&thys->Name, id);
+    seqSetNameNospace(&thys->Name, id);
 
     if(ajStrGetLen(sv))
 	seqSvSave(thys, sv);
@@ -2666,6 +2667,7 @@ static AjBool seqReadNcbi(AjPSeq thys, AjPSeqin seqin)
     AjPStr acc       = NULL;
     AjPStr sv        = NULL;
     AjPStr gi        = NULL;
+    AjPStr db        = NULL;
     AjPStr desc      = NULL;
 
     AjPFileBuff buff;
@@ -2688,7 +2690,7 @@ static AjBool seqReadNcbi(AjPSeq thys, AjPSeqin seqin)
     ajStrAssignC(&desc,"");
 
 
-    if(!ajSeqParseNcbi(seqReadLine,&id,&acc,&sv,&gi,&desc))
+    if(!ajSeqParseNcbi(seqReadLine,&id,&acc,&sv,&gi,&db,&desc))
     {
 	ajFileBuffReset(buff);
 	ajStrDel(&id);
@@ -2699,8 +2701,15 @@ static AjBool seqReadNcbi(AjPSeq thys, AjPSeqin seqin)
 	return ajFalse;
     }
 
-    ajDebug("parsed id '%S' acc '%S' sv '%S' gi '%S' desc '%S'\n",
-	    id, acc, sv, gi, desc);
+    ajDebug("parsed id '%S' acc '%S' sv '%S' gi '%S' db '%S' (%S) desc '%S'\n",
+	    id, acc, sv, gi, db, thys->Setdb, desc);
+
+    if(ajStrGetLen(db))
+    {
+	ajStrAssignEmptyS(&thys->Setdb, db);
+	ajStrAssignEmptyS(&thys->Db, db);
+	ajDebug("set setdb '%S' db '%S'\n", thys->Setdb, thys->Db);
+    }
     if(ajStrGetLen(gi))
 	ajStrAssignS(&thys->Gi, gi);
 
@@ -5442,7 +5451,7 @@ static AjBool seqReadCodata(AjPSeq thys, AjPSeqin seqin)
     ajStrTokenNextParse(&handle, &token);	/* 'ENTRY' */
     ajStrTokenNextParse(&handle, &token);	/* entry name */
 
-    seqSetName (&thys->Name, token);
+    seqSetName(&thys->Name, token);
 
     ok = ajFileBuffGetStore(buff, &seqReadLine,
 			    seqin->Text, &thys->TextPtr);
@@ -8591,6 +8600,36 @@ static void seqSetName(AjPStr* name, const AjPStr str)
 
 
 
+/* @funcstatic seqSetNameNospace **********************************************
+**
+** Sets the name for a sequence object by applying simple conversion
+** rules to the input which could be, for example, the name from a
+** FASTA format file.
+**
+** @param [u] name [AjPStr*] Sequence name derived.
+** @param [r] str [const AjPStr] User supplied name.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqSetNameNospace(AjPStr* name, const AjPStr str)
+{
+    ajStrAssignS(name, str);
+    if(!ajStrIsWord(str))
+    {
+	ajDebug("seqSetNameNospace non-word '%S'\n", str);
+	ajStrRemoveWhite(name);
+	ajStrExchangeKK(name, ' ', '_');
+	ajDebug("seqSetNameNospace cleaned '%S'\n", *name);
+    }
+
+    ajDebug("seqSetNameNospace '%S' result: '%S'\n", str, *name);
+    return;
+}
+
+
+
+
 /* @funcstatic seqSetNameFile *************************************************
 **
 ** Sets the name for a sequence object by applying simple conversion
@@ -9417,6 +9456,7 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
 {
     AjPStrTok handle = NULL;
     AjPStr token     = NULL;
+    AjPStr token2    = NULL;
     AjPStr str       = NULL;
     AjBool ok = ajFalse;
 
@@ -9431,16 +9471,18 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
     ajStrTokenNextParseC(&handle, " \t\n\r", id);
 
     ok = ajStrTokenNextParse(&handle, &token);
+    ajStrAssignS(&token2, token);
+    ajStrRemoveSetC(&token2, "()");
 
-    if(ok && ajIsSeqversion(token))
+    if(ok && ajIsSeqversion(token2))
     {
-        ajStrAssignS(acc, ajIsSeqversion(token));
-	ajStrAssignS(sv, token);
+        ajStrAssignS(acc, ajIsSeqversion(token2));
+	ajStrAssignS(sv, token2);
 	ajStrTokenNextParseC(&handle, "\n\r", desc);
     }
-    else if(ok && ajIsAccession(token))
+    else if(ok && ajIsAccession(token2))
     {
-	ajStrAssignS(acc, token);
+	ajStrAssignS(acc, token2);
         ajStrAssignC(sv, "");
 	ajStrTokenNextParseC(&handle, "\n\r", desc);
     }
@@ -9457,6 +9499,7 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
     }
 
     ajStrDel(&token); /* duplicate of accession or description */
+    ajStrDel(&token2);
     ajStrTokenDel(&handle);
     ajStrDel(&str);
     ajDebug("result id: '%S' acc: '%S' desc: '%S'\n", *id, *acc, *desc);
@@ -9474,7 +9517,7 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
 ** Tries to cope with the amazing variety of identifiers NCBI inflicts
 ** on us all - see the BLAST document README.formatdb from NCBI for
 ** some of the gory detail, and look at some real files for clues
-** to what can really happen. Sadly,' real files' also includes
+** to what can really happen. Sadly,'real files' also includes
 ** internal IDs in blast databases reformatted by formatdb.
 **
 ** @param [r] instr [const AjPStr]   fasta line.
@@ -9482,13 +9525,14 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
 ** @param [w] acc [AjPStr*]  accession number.
 ** @param [w] sv [AjPStr*]  sequence version number.
 ** @param [w] gi [AjPStr*]  GI version number.
+** @param [w] db [AjPStr*]  NCBI database name
 ** @param [w] desc [AjPStr*] description.
 ** @return [AjBool] ajTrue if ncbi format
 ** @@
 ******************************************************************************/
 
 AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
-		      AjPStr* sv, AjPStr* gi, AjPStr* desc)
+		      AjPStr* sv, AjPStr* gi, AjPStr* db, AjPStr* desc)
 {
     AjPStrTok idhandle = NULL;
     AjPStrTok handle   = NULL;
@@ -9503,6 +9547,8 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
     ajint  i;
     ajint  nt;
     AjBool ret = ajFalse;
+
+    ajStrAssignC(db, "");
 
     /* NCBI's list of standard identifiers June 2001
      ** ftp://ncbi.nlm.nih.gov/blast/db/README.formatdb
@@ -9638,8 +9684,9 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 	ajStrTokenNextParse(&handle, &numtoken); /* number */
 	ajStrInsertC(&reststr, 0, ">");
 
-	if(ajSeqParseNcbi(reststr,id,acc,sv,gi,desc))
+	if(ajSeqParseNcbi(reststr,id,acc,sv,gi,db,desc))
 	{
+	    ajStrAssignEmptyS(db, token);
 	    /* recursive ... */
 	    /* ajDebug("ajSeqParseNcbi recursive success\n"); */
 	    /* ajDebug("found pref: '%S' id: '%S', acc: '%S' "
@@ -9675,6 +9722,9 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
     if(!strcmp(q,"bbs") || !strcmp(q,"lcl"))
     {
+	if(!strcmp(q, "lcl"))
+	    ajStrAssignS(db, prefix);
+
         /* ajDebug("bbs or lcl prefix\n"); */
 	ajStrTokenNextParse(&handle, id);
 	ajStrAssignC(acc,"");
@@ -9693,8 +9743,10 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
     if(!strcmp(q,"gnl") || !strcmp(q,"pat"))
     {
-        /* ajDebug("gnl or pat or pdb prefix\n"); */
+	/* ajDebug("gnl or pat prefix\n"); */
 	ajStrTokenNextParse(&handle, &token);
+        if(!strcmp(q,"gnl"))
+	   ajStrAssignS(db, token);
 	ajStrTokenNextParse(&handle, id);
 	ajStrAssignC(acc,"");		/* no accession number */
 	ajStrAssignS(desc, reststr);
@@ -9713,6 +9765,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
     if(!strcmp(q,"pdb"))
     {
+	ajStrAssignS(db, prefix);
         /* ajDebug("gnl or pat or pdb prefix\n"); */
 	ajStrTokenNextParse(&handle, id);
 	if(ajStrTokenNextParse(&handle, &token))
@@ -9736,9 +9789,11 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
 
     if(!strcmp(q,"gb") || !strcmp(q,"emb") || !strcmp(q,"dbj")
+       || !strcmp(q,"tpd") || !strcmp(q,"tpd") || !strcmp(q,"tpg")
        || !strcmp(q,"sp") || !strcmp(q,"ref"))
     {
         /* ajDebug("gb,emb,dbj,sp,ref prefix\n"); */
+	ajStrAssignS(db, prefix);
 	ajStrTokenNextParse(&handle, &token);
 	vacc = ajIsSeqversion(token);
 	if(vacc)
@@ -9770,6 +9825,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
     if(!strcmp(q,"pir") || !strcmp(q,"prf"))
     {
+	ajStrAssignS(db, prefix);
         /* ajDebug("pir,prf prefix\n"); */
 	ajStrTokenNextParse(&handle, id);
 	ajStrAssignS(desc, reststr);
@@ -9813,6 +9869,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
     for(i=0;i<nt-2;++i)
 	ajStrTokenNextParse(&handle, &token);
 
+    ajStrAssignS(db, token);
     ajStrTokenNextParse(&handle, &token);
     /* ajDebug("token acc: '%S'\n", token); */
     vacc = ajIsSeqversion(token);

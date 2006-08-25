@@ -24,7 +24,7 @@
 **
 ** EMBOSS/Staden/EMBLCD indexing
 **
-** This version reads a flat file database, in fsata format,
+** This version reads a flat file database, in fasta format,
 ** and writes entryname and field (e.g. accession) index files.
 **
 ** It needs to know the format in order to
@@ -444,7 +444,7 @@ static AjPRegexp dbifasta_getExpr(const AjPStr idformat, ajint *type)
     else if(ajStrMatchC(idformat,"idacc"))
     {
 	*type = FASTATYPE_IDACC;
-	exp   = ajRegCompC("^>([.A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9_-]+)");
+	exp   = ajRegCompC("^>([.A-Za-z0-9_-]+)+[ \t]+\\(?([A-Za-z0-9_-]+)\\)?");
     }
     else if(ajStrMatchC(idformat,"accid"))
     {
@@ -517,6 +517,7 @@ static AjBool dbifasta_ParseFasta(AjPFile libr, ajint* dpos,
     static AjPStr tmpac  = NULL;
     static AjPStr tmpsv  = NULL;
     static AjPStr tmpgi  = NULL;
+    static AjPStr tmpdb  = NULL;
     static AjPStr tmpdes = NULL;
     static AjPStr tmpfd  = NULL;
     static AjPStr rline  = NULL;
@@ -579,6 +580,7 @@ static AjBool dbifasta_ParseFasta(AjPFile libr, ajint* dpos,
 
     ajStrAssignC(&tmpsv, "");
     ajStrAssignC(&tmpgi, "");
+    ajStrAssignC(&tmpdb, "");
     ajStrAssignC(&tmpdes, "");
     ajStrAssignC(&tmpac, "");
     ajStrAssignC(id, "");
@@ -601,7 +603,7 @@ static AjBool dbifasta_ParseFasta(AjPFile libr, ajint* dpos,
 	ajRegPost(exp, &tmpdes);
 	break;
     case FASTATYPE_NCBI:
-	if(!ajSeqParseNcbi(rline,id,&tmpac,&tmpsv,&tmpgi,&tmpdes))
+	if(!ajSeqParseNcbi(rline,id,&tmpac,&tmpsv,&tmpgi,&tmpdb,&tmpdes))
 	{
 	    ajStrDelStatic(&tmpac);
 	    return ajFalse;
@@ -712,6 +714,7 @@ static AjBool dbifasta_ParseFasta(AjPFile libr, ajint* dpos,
     ajStrDelStatic(&tmpac);
     ajStrDelStatic(&tmpsv);
     ajStrDelStatic(&tmpgi);
+    ajStrDelStatic(&tmpdb);
     ajStrDelStatic(&tmpdes);
 
     ipos = ajFileTell(libr);

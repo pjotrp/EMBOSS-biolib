@@ -145,6 +145,7 @@ static void       seqDbName(AjPStr* name, const AjPStr db);
 static void       seqDeclone(AjPSeqout outseq);
 static AjBool     seqFileReopen(AjPSeqout outseq);
 static void       seqFormatDel(SeqPSeqFormat* pformat);
+static AjBool     seqNcbiKnowndb(const AjPStr dbname);
 static AjBool     seqoutUfoLocal(const AjPSeqout thys);
 static AjBool     seqoutUsaProcess(AjPSeqout thys);
 static void       seqsetClone(AjPSeqout outseq, const AjPSeqset seq, ajint i);
@@ -836,6 +837,31 @@ static void seqWriteFasta(AjPSeqout outseq)
 }
 
 
+/* @funcstatic seqNcbiKnowndb *************************************************
+**
+** Tests whether a database name is valid for use in NCBI ids.
+**
+** @param [r] dbname [const AjPStr] Database name
+** @return [AjBoo] True if found
+** @@
+******************************************************************************/
+
+static AjBool seqNcbiKnowndb(const AjPStr dbname)
+{
+    static char* ncbidbs[] = {
+	"gb", "emb", "dbj",		/* big three, listed by NCBI for nr */
+	"sp", "ref", "pir", "prf",	/* others listed by NCBI for nr */
+	"tpd", "tpe", "tpg",		/* third party annotation */
+	NULL
+    };
+    ajint i;
+
+    for (i=0;ncbidbs[i];i++) {
+	if(ajStrMatchC(dbname, ncbidbs[i]))
+	    return ajTrue;
+    }
+    return ajFalse;
+}
 
 
 /* @funcstatic seqWriteNcbi ***************************************************
@@ -855,25 +881,52 @@ static void seqWriteNcbi(AjPSeqout outseq)
     AjPStr seq = NULL;
     ajint linelen     = 60;
     ajint iend;
-
-    if(ajStrGetLen(outseq->Gi))
-	ajFmtPrintF(outseq->File, ">gi|%S|gnl|", outseq->Gi);
-    else
-	ajFmtPrintF(outseq->File, ">gnl|");
+    AjPStr version = NULL;
+    AjPStr dbname = NULL;
+    static ajint blordnum=0;
 
     if(ajStrGetLen(outseq->Setdb))
-	ajFmtPrintF(outseq->File, "%S|", outseq->Setdb);
+	ajStrAssignS(&dbname, outseq->Setdb);
     else if(ajStrGetLen(outseq->Db))
-	ajFmtPrintF(outseq->File, "%S|", outseq->Db);
+	ajStrAssignS(&dbname, outseq->Db);
     else
-	ajFmtPrintF(outseq->File, "unk|");
+	ajStrAssignC(&dbname, "unk");
 
-    ajFmtPrintF(outseq->File, "%S", outseq->Name);
 
     if(ajStrGetLen(outseq->Sv))
-	ajFmtPrintF(outseq->File, " (%S)", outseq->Sv);
+	ajStrAssignS(&version, outseq->Sv);
     else if(ajStrGetLen(outseq->Acc))
-	ajFmtPrintF(outseq->File, " (%S)", outseq->Acc);
+	ajStrAssignS(&version, outseq->Acc);
+    else
+	ajStrAssignC(&version, "");
+
+    if(ajStrGetLen(outseq->Gi) &&
+       !ajStrGetLen(outseq->Db) &&
+       ajStrMatchCaseS(outseq->Gi, outseq->Name))
+    {
+	    ajFmtPrintF(outseq->File, ">gi|%S", outseq->Gi);
+    }
+    else {
+	if(ajStrGetLen(outseq->Gi))
+	    ajFmtPrintF(outseq->File, ">gi|%S|", outseq->Gi);
+	else
+	    ajFmtPrintF(outseq->File, ">");
+
+	if(seqNcbiKnowndb(dbname))
+	    ajFmtPrintF(outseq->File, "%S|%S|", dbname, version);
+	else if(ajStrMatchCaseC(dbname, "lcl"))
+	    ajFmtPrintF(outseq->File, "%S|", dbname);
+	else if(ajStrMatchCaseC(dbname, "BL_ORD_ID"))
+	    ajFmtPrintF(outseq->File, "gnl|%S|%d ", dbname, blordnum++);
+	else
+	    ajFmtPrintF(outseq->File, "gnl|%S|", dbname);
+
+	if (!ajStrMatchCaseS(version, outseq->Name))
+	    ajFmtPrintF(outseq->File, "%S", outseq->Name);
+    }
+
+    if(ajStrGetLen(version) && !seqNcbiKnowndb(dbname))
+	ajFmtPrintF(outseq->File, " (%S)", version);
 
     if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
@@ -889,6 +942,8 @@ static void seqWriteNcbi(AjPSeqout outseq)
     }
 
     ajStrDel(&seq);
+    ajStrDel(&dbname);
+    ajStrDel(&version);
 
     return;
 }

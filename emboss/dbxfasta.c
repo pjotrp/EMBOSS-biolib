@@ -274,7 +274,7 @@ static AjPRegexp dbxfasta_getExpr(const AjPStr idformat, ajint *type)
     else if(ajStrMatchC(idformat,"idacc"))
     {
 	*type = FASTATYPE_IDACC;
-	exp   = ajRegCompC("^>([.A-Za-z0-9_-]+)+[ \t]+([A-Za-z0-9_-]+)");
+	exp   = ajRegCompC("^>([.A-Za-z0-9_-]+)+[ \t]+\\(?([A-Za-z0-9_-]+)\\)?");
     }
     else if(ajStrMatchC(idformat,"accid"))
     {
@@ -336,6 +336,7 @@ static AjBool dbxfasta_ParseFasta(EmbPBtreeEntry entry, AjPRegexp typeexp,
     static AjPStr ac  = NULL;
     static AjPStr sv  = NULL;
     static AjPStr gi  = NULL;
+    static AjPStr db  = NULL;
     static AjPStr de  = NULL;
 
     static AjPStr tmpfd  = NULL;
@@ -362,6 +363,7 @@ static AjBool dbxfasta_ParseFasta(EmbPBtreeEntry entry, AjPRegexp typeexp,
     
     ajStrAssignC(&sv, "");
     ajStrAssignC(&gi, "");
+    ajStrAssignC(&db, "");
     ajStrAssignC(&de, "");
     ajStrAssignC(&ac, "");
     ajStrAssignC(&entry->id, "");
@@ -384,7 +386,7 @@ static AjBool dbxfasta_ParseFasta(EmbPBtreeEntry entry, AjPRegexp typeexp,
 	ajRegPost(typeexp, &de);
 	break;
     case FASTATYPE_NCBI:
-	if(!ajSeqParseNcbi(line,&entry->id,&ac,&sv,&gi,
+	if(!ajSeqParseNcbi(line,&entry->id,&ac,&sv,&gi,&db,
 			   &de))
 	    return ajFalse;
 	break;
@@ -445,6 +447,7 @@ static AjBool dbxfasta_ParseFasta(EmbPBtreeEntry entry, AjPRegexp typeexp,
     ajStrDelStatic(&ac);
     ajStrDelStatic(&sv);
     ajStrDelStatic(&gi);
+    ajStrDelStatic(&db);
     ajStrDelStatic(&de);
 
     return ajTrue;
