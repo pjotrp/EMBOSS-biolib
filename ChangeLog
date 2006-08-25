@@ -1,3 +1,82 @@
+Version 4.1.0
+	Modified NCBI/FASTA format to preserve the database name from the
+	NCBI style ID. The database name is reported in one of the many
+	and varied NCBI syntax variants, depending on whether there is a
+	version or accession number, and whether there is an EMBOSS
+	database name also involved (for example, an entry in a file
+	indexed with dbxfasta or dbifasta)
+
+	Modified "pearson" sequence format to keep the FASTA file ID
+	complete. For historical reasons GCG-style dbname:id syntax was
+	still having the db part trimmed. This will still be trimmed from
+	fasta or ncbi format.
+
+	The report for digest has Cterm and Nterm columns capitalised to
+	match the rest of the report.
+
+	The list file Cut.index for codon usage tables was changed to
+	remove old file names (commented out list at the end) and to
+	remove underscores from the species names.
+
+	Programs water, needle, merger and prophet calculate an internal
+	path size from the lengths of the input sequences. For sequences
+	that are too long, a fatal error is produced. But if the sequences
+	are extremely long, the test failed and the program gave a
+	segmentation fault. This fix tests in a different way that will
+	catch all cases. (added as a fix to 4.0.0)
+
+	The new MRS access method used a general search. This gave strange
+	results when the ID or accession appeared in any other entry. It
+	appears that MRS can search for id or accession only. This worked
+	on the main MRS server at least. (added as a fix to 4.0.0)
+
+	New database access methods MRS and DBFETCH need to be explicitly
+	turned on so that showdb can report them. (added as a fix to
+	4.0.0)
+
+	When deleting the last line of buffered input, failed to reset the
+	pointer to the last buffered line. This only affected debug
+	traces. Unfortunately, the ajFileBuffClear function does call the
+	debug trace. In practice we have only seen this bug when
+	processing sequence data in EMBL format from an MRS server. (added
+	as a fix to 4.0.0)
+
+	Pattern and regular expression searches failed to correctly
+	reverse a nucleotide sequence. The change is to use
+	ajSeqReverseForce (always reverses the sequence provided) instead
+	of ajSeqReverseDo (which only reverses if the reverse flag is
+	set). (added as a fix to 4.0.0)
+
+	Reports in list format failed to write a usable USA for "asis"
+	sequence input, and incorrectly reported reverse strand nucleotide
+	features. (added as a fix to 4.0.0)
+
+	The lists files Matrices.nucleotide, Matrices.protein and
+	Matrices.proteinstructure now have comment headers explaining
+	their format.  Fixed issues with nucleotide features in the
+	reverse direction in reports. The start/end positions were stored
+	the wrong way around and then reversed again when repiorted in one
+	of the report formats. However, reporting as EMBL features showed
+	the incorrect storage. ajFeatNewII now checks start/end and
+	reverses the feature if start is ggreater than end. ajFeatNewIIRev
+	sets the reverse strand and also checks that the start position is
+	greater than (or equal to) the end position (added as a fix to 4.0.0)
+
+	To reduce the size of very large reports, for example when fuzznuc
+	or fuzzpro run over very large databases, new qualifiers are added
+	to report output. -rmaxseq gived the maximum hits for any one
+	sequence, -maxall gives the total maximum number of hits. The
+	report tail contains a record of the number of hits reported and
+	found. The qualifiers are intended for web interfaces to control
+	the maximum output they need to report. When the maximum hits
+	figure is reached, ajReportWrite returns false so that programs
+	can terminate at that point. (added as a fix to 4.0.0)
+
+	Reports now write a header and tail when closed, to make sure that
+	all programs will wrirte something to the report file. The default
+	header contains the command line provenance, the tail contains the
+	number of sequences and hits. (added as a fix to 4.0.0)
+
 Version 4.0.0
 	The format of the knowntypes.standard file in the emboss/acd
 	directory has changed to list the knowntype first, then the
