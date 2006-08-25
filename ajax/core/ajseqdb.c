@@ -6608,7 +6608,6 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     ajint iport;
     ajint proxyPort;
     FILE *fp;
-    ajint ipos;
     AjPSeqQuery qry;
 
     iport = 80;
@@ -6630,14 +6629,7 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
 	ajFmtPrintS(&get, "GET %S HTTP/%S\n", urlget, httpver);
 
     /* replace %s in the "GET" command  with the ID */
-    ipos = ajStrFindC(get, "%s");
-    while(ipos >= 0)
-    {
-	ajDebug("get '%S' qryid '%S'\n", get, qry->Id);
-	ajFmtPrintS(&urlget, ajStrGetPtr(get), ajStrGetPtr(qry->Id));
-	ajStrAssignS(&get, urlget);
-	ipos = ajStrFindC(get, "%s");
-    }
+    ajStrExchangeCS(&get, "%s", qry->Id);
 
     /* finally we have set the GET command */
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
