@@ -1195,7 +1195,7 @@ AjPFeature ajFeatNewIIRev(AjPFeattable thys,
 
     ajDebug("ajFeatNewIIRev %d %d\n", Start, End);
 
-    if(Start > End)
+    if(Start >= End)
 	ret = ajFeatNewII(thys,Start,End);
     else
 	ret = ajFeatNewII(thys,End,Start);
