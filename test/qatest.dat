@@ -15139,7 +15139,7 @@ AP seqret
 CL ../../data/testids.ncbi:BLAST test.out -auto
 FI test.out
 FP 1 /^>/
-FP /^>blast formatdb /
+FP /^>Blast formatdb /
 FP /^BLAST$/
 FZ = 46
 //
@@ -15153,9 +15153,9 @@ AP seqret
 CL ../../data/testids.ncbi:GENBANK test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>gb\|G12345\|GENBANK \(G12345\) genbank /
+FP /^>gb\|G12345\|GENBANK genbank /
 FP /^GENBANK$/
-FZ = 70
+FZ = 61
 //
 
 ID seqret-ncbiout-embl
@@ -15163,9 +15163,9 @@ AP seqret
 CL ../../data/testids.ncbi:EMBL test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>emb\|E12345\|EMBL \(E12345\) embl /
+FP /^>emb\|E12345\|EMBL embl /
 FP /^EMBL$/
-FZ = 62
+FZ = 53
 //
 
 ID seqret-ncbiout-ddbj
@@ -15173,9 +15173,9 @@ AP seqret
 CL ../../data/testids.ncbi:DDBJ test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>dbj\|D12345\|DDBJ \(D12345\) DDBJ /
+FP /^>dbj\|D12345\|DDBJ DDBJ /
 FP /^DDB-$/
-FZ = 62
+FZ = 53
 //
 
 ID seqret-ncbiout-pir
@@ -15203,9 +15203,9 @@ AP seqret
 CL ../../data/testids.ncbi:SWISS_PRT test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>sp\|P01234\|SWISS_PRT \(P01234\) swissprot /
+FP /^>sp\|P01234\|SWISS_PRT swissprot /
 FP /^SWISSPR-T$/
-FZ = 76
+FZ = 67
 //
 
 ID seqret-ncbiout-pdb
@@ -15253,9 +15253,9 @@ AP seqret
 CL ../../data/testids.ncbi:REF_12345 test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>ref\|NP_007225[.]1\|REF_12345 \(NP_007225[.]1\) NCBI /
+FP /^>ref\|NP_007225[.]1\|REF_12345 NCBI /
 FP /^REFSEQ$/
-FZ = 72
+FZ = 58
 //
 
 ID seqret-ncbiout-ref2
@@ -15263,9 +15263,9 @@ AP seqret
 CL ../../data/testids.ncbi:NM_012488.1 test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>ref\|NM_012488[.]1\|NM_012488[.]1 \(NM_012488[.]1\) NCBI /
+FP /^>ref\|NM_012488[.]1\| NCBI /
 FP /^REFSEQ$/
-FZ = 88
+FZ = 63
 //
 
 ID seqret-ncbiout-lcl
@@ -15293,9 +15293,9 @@ AP seqret
 CL ../../data/testids.ncbi:GIGENBANK test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>gi\|123456\|gb\|G67890\|GIGENBANK \(G67890\) gi /
+FP /^>gi\|123456\|gb\|G67890\|GIGENBANK gi /
 FP /^GIGENBANK$/
-FZ = 74
+FZ = 65
 //
 
 ID seqret-ncbiout-gisp
@@ -15303,9 +15303,9 @@ AP seqret
 CL ../../data/testids.ncbi:GISWISS_PRT test.out -osf ncbi -auto
 FI test.out
 FP 1 /^>/
-FP /^>gi\|234567\|sp\|P01234\|GISWISS_PRT \(P01234\) gi /
+FP /^>gi\|234567\|sp\|P01234\|GISWISS_PRT gi /
 FP /^GISWISSPR-T$/
-FZ = 80
+FZ = 71
 //
 
 ID seqret-ncbiout-gnlblast
