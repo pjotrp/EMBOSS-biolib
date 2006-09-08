@@ -900,6 +900,9 @@ static void seqWriteNcbi(AjPSeqout outseq)
     else
 	ajStrAssignC(&version, "");
 
+    ajDebug("seqWriteNcbi version '%S' dbname: '%S' KnownDb: %B\n",
+	    version, dbname, seqNcbiKnowndb(dbname));
+
     if(ajStrGetLen(outseq->Gi) &&
        !ajStrGetLen(outseq->Db) &&
        ajStrMatchCaseS(outseq->Gi, outseq->Name))
@@ -907,10 +910,9 @@ static void seqWriteNcbi(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, ">gi|%S", outseq->Gi);
     }
     else {
+	ajFmtPrintF(outseq->File, ">");
 	if(ajStrGetLen(outseq->Gi))
-	    ajFmtPrintF(outseq->File, ">gi|%S|", outseq->Gi);
-	else
-	    ajFmtPrintF(outseq->File, ">");
+	    ajFmtPrintF(outseq->File, "gi|%S|", outseq->Gi);
 
 	if(seqNcbiKnowndb(dbname))
 	    ajFmtPrintF(outseq->File, "%S|%S|", dbname, version);
