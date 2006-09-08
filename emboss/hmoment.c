@@ -287,11 +287,19 @@ static float hmoment_calchm(const char *p, int pos, int window, ajint angle)
     double tangle;
     double hm;
 
+/*
+** B interpolated from D and N using Dayhoff frequencies
+** Z interpolated from E and Q using Dayhoff frequencies
+** J interpolated from I and L using Dayhoff frequencies
+** X average of all using Dayhoff frequencies
+** O and U set to X due to lack of available data
+*/
     double hydata[]=
     {
-	.62, -100., .29, -.90, -.74, 1.19, .48, -.4, 1.38, -100., -1.5, 1.06,
-	0.64, -.78, -100., 0.12, -.85, -2.53, -.18, -.05, -100., 1.08, .81,
-	-100., .26, -100.
+	 0.62, -0.84,  0.29, -0.90, -0.74,  1.19,  0.48, -0.40, /* ABCDEFGH */
+	 1.38,  1.18, -1.50,  1.06,  0.64, -0.78, -0.68,  0.12, /* IJKLMNOP */
+	-0.85, -2.53, -0.18, -0.05, -0.68,  1.08,  0.81, -0.68, /* QRSTUVWX */
+	 0.26, -0.78			/* YZ */
     };
 
     sumsin = sumcos = (double)0.;
