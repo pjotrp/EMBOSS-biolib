@@ -30,6 +30,11 @@
 #include <string.h>
 #include <ctype.h>
 
+char dayhoffstr[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+float dayhoff[] = {
+    8.6, 0.0, 2.9, 5.5, 6.0, 3.6, 8.4, 2.0, 4.5, 0.0, 6.6, 7.4, 1.7,
+    4.3, 0.0, 5.2, 3.9, 4.9, 7.0, 6.1, 0.0, 6.6, 1.3, 0.9, 3.4, 0.0
+};
 
 
 
@@ -807,6 +812,78 @@ AjBool embPropTransition(char base1, char base2)
     return (u1 == u2);
 }
 
+/* @func embPropFixF *********************************************************
+**
+** Fix for missing properties data in a float array
+**
+** @param [u] matrix [float []] Matrix
+** @param [r] missing [float] Missing data value
+** @return [void]
+******************************************************************************/
+
+void embPropFixF(float matrix[], float missing)
+{
+    ajint i;
+
+    float mtot = 0.0;
+    float dtot = 0.0;
+
+    for(i=0;i<26;i++)
+    {
+	if(matrix[i] == missing)
+	{
+	    switch (i)
+	    {
+	    case 1:			/* B */
+		matrix[i] = ((matrix[3] * dayhoff[3]) +
+			     (matrix[13] * dayhoff[13])) /
+				 (dayhoff[3] + dayhoff[13]);
+		ajDebug("Missing %d '%c' %f %f => %f\n",
+			i, dayhoffstr[i], matrix[3], matrix[13], matrix[i]);
+		break;
+	    case 9:			/* J */
+		matrix[i] = ((matrix[8] * dayhoff[8]) +
+			     (matrix[11] * dayhoff[11])) /
+				 (dayhoff[8] + dayhoff[11]);
+		ajDebug("Missing %d '%c' %f %f => %f\n",
+			i, dayhoffstr[i], matrix[8], matrix[11], matrix[i]);
+		break;
+	    case 25:			/* Z */
+		matrix[i] = ((matrix[4] * dayhoff[4]) +
+			     (matrix[16] * dayhoff[16])) /
+				 (dayhoff[4] + dayhoff[16]);
+		ajDebug("Missing %d '%c' %f %f => %f\n",
+			i, dayhoffstr[i], matrix[4], matrix[16], matrix[i]);
+		break;
+	    default:
+		ajDebug("Missing %d '%c' unknown\n", i, dayhoffstr[i]);
+		break;
+	    }
+	}
+	else
+	{
+	    if(dayhoff[i] > 0.0)
+	    {
+		dtot += dayhoff[i];
+		mtot += matrix[i] * dayhoff[i];
+	    }
+	}
+    }
+    mtot /= dtot;
+
+    for(i=0;i<26;i++)
+    {
+	if(matrix[i] == missing)
+	{
+	    matrix[i] = mtot;
+	    ajDebug("Missing %d '%c' unknown %f\n",
+		    i, dayhoffstr[i], matrix[i]);
+	}
+    }
+
+
+    return;
+}
 /* @func embPropExit *********************************************************
 **
 ** Cleanup of properties data
