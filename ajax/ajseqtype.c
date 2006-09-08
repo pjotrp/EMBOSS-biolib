@@ -127,10 +127,11 @@ static AjPRegexp seqtypeRegRnaGap   = NULL;
 
 
 
-
-char seqCharProt[]  = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyBJOUXZbjouxz*?";
+/*
+char seqCharProt[]  = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwyBUXZbuxz*?";
+*/
 char seqCharProtPure[]  = "ACDEFGHIKLMNPQRSTVWYacdefghiklmnpqrstvwy";
-char seqCharProtAmbig[] = "BUXZbuxz?";
+char seqCharProtAmbig[] = "BJOUXZbjouxz?"; /* convert unwanted ones to Xx */
 char seqCharProtStop[]  = "*";
 char seqCharNuc[]       = "ACGTUacgtuBDHKMNRSVWXYbdhkmnrsvwxy?";
 char seqCharNucPure[]   = "ACGTUacgtu";
@@ -218,13 +219,13 @@ static SeqOType seqType[] =
     {"gapproteinphylo", AJTRUE,  AJTRUE,  ISPROT, NULL,  NULL,
 	 seqTypeCharProtGapPhylo,
 	 "protein sequence with gaps, stops and queries"},
-    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?*Uu", "XXXx",
+    {"proteinstandard",AJFALSE, AJTRUE,  ISPROT, "?*UuJjOo", "XXXxXxXx",
 	 seqTypeCharProt,
 	 "protein sequence with no selenocysteine"},
-    {"stopproteinstandard",AJFALSE, AJTRUE, ISPROT, "?Uu", "XXx",
+    {"stopproteinstandard",AJFALSE, AJTRUE, ISPROT, "?UuJjOo", "XXxXxXx",
 	 seqTypeCharProtStop,
 	 "protein sequence with a possible stop but no selenocysteine"},
-    {"gapproteinstandard", AJTRUE,  AJTRUE, ISPROT, "?*Uu", "XXXx",
+    {"gapproteinstandard", AJTRUE,  AJTRUE, ISPROT, "?*UuJjOo", "XXXxXxXx",
 	 seqTypeCharProtGap,
 	 "protein sequence with gaps but no selenocysteine"},
     {NULL,             AJFALSE, AJTRUE,  ISANY,  NULL,  NULL,
@@ -1468,7 +1469,7 @@ static AjPRegexp seqTypeCharDnaGap(void)
     if(!seqtypeRegDnaGap)
     {
 	regstr = ajStrNewRes(256);
-	ajFmtPrintS(&regstr, "([^%s%s%s]+)",
+	ajFmtPrintS(&regstr, "([^%s%s]+)",
 		    seqCharNucDna,
 		    seqCharGap);
 	seqtypeRegDnaGap = ajRegComp(regstr);
@@ -1495,7 +1496,7 @@ static AjPRegexp seqTypeCharRnaGap(void)
     if(!seqtypeRegRnaGap)
     {
 	regstr = ajStrNewRes(256);
-	ajFmtPrintS(&regstr, "([^%s%s%s]+)",
+	ajFmtPrintS(&regstr, "([^%s%s]+)",
 		    seqCharNucRna,
 		    seqCharGap);
 	seqtypeRegRnaGap = ajRegComp(regstr);
@@ -1694,7 +1695,7 @@ static AjPRegexp seqTypeCharProtStopGap(void)
     if(!seqtypeRegProtStop)
     {
 	regstr = ajStrNewRes(256);
-	ajFmtPrintS(&regstr, "([^%s%s%s]+)",
+	ajFmtPrintS(&regstr, "([^%s%s%s%s]+)",
 		    seqCharProtPure,
 		    seqCharProtAmbig,
 		    seqCharProtStop,
