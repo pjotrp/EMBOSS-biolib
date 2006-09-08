@@ -20,6 +20,8 @@
 ** Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 ******************************************************************************/
 
+#include <limits.h>
+#include <float.h>
 #include "emboss.h"
 
 #define AZ 28
@@ -146,7 +148,7 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
     AjPStrTok token;
     ajint line = 0;
     const char *ptr;
-
+    ajint i;
 
     if(!file)
 	return 0;
@@ -156,7 +158,9 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
     buf2   = ajStrNew();
     description = ajStrNew();
 
-
+    for (i=0;i<26;i++) {
+	matrix[i] = FLT_MIN;
+    }
 
     while(ajFileGets(file,&buffer))
     {
@@ -244,6 +248,8 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
 	    ajStrTokenDel(&token);
 	}
     }
+
+    embPropFixF(matrix, FLT_MIN);
 
     ajStrDel(&buffer);
     ajStrDel(&description);
