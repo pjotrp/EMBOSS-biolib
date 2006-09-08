@@ -89,6 +89,7 @@ int main(int argc, char **argv)
     ajint minlen;
     float minobsexp;
     float minpc;
+    AjBool doplot;
 
     ajint window;
     ajint shift;
@@ -114,6 +115,7 @@ int main(int argc, char **argv)
     minobsexp = ajAcdGetFloat("minoe");
     minlen    = ajAcdGetInt("minlen");
     minpc     = ajAcdGetFloat("minpc");
+    doplot    = ajAcdGetToggle("plot");
     mult      = ajAcdGetGraphxy ("graph");
     doobsexp  = ajAcdGetBool("obsexp");
     docg      = ajAcdGetBool("cg");
@@ -161,10 +163,11 @@ int main(int argc, char **argv)
 			 ajStrGetPtr(bases), ajSeqName(seq), minlen, minobsexp,
 			 minpc, featout);
 
-
-	cpgplot_plotit(ajSeqName(seq), begin, len, shift, obsexp, xypc, thresh,
-		       ajStrGetPtr(bases), obsexpmax, plstart, plend,
-		       doobsexp, docg, dopc, mult);
+	if(doplot)
+	    cpgplot_plotit(ajSeqName(seq), begin, len, shift,
+			   obsexp, xypc, thresh,
+			   ajStrGetPtr(bases), obsexpmax, plstart, plend,
+			   doobsexp, docg, dopc, mult);
 
 	ajStrDel(&strand);
     }
@@ -535,6 +538,8 @@ static void cpgplot_plotit(const char *seq,
     float min = 0.;
     float max = 0.;
 
+    ajint igraph=0;
+
     if(doobsexp)
     {
 	tmGraph2 = ajGraphPlpDataNew();
@@ -565,7 +570,7 @@ static void cpgplot_plotit(const char *seq,
 	ajGraphxySetYRangeII(graphs,0,(ajint)(obsexpmax+1.0));
 
 	ajGraphPlpDataCalcXY(tmGraph2,len,(float)begin,1.0,obsexp);
-	ajGraphDataAdd(graphs,tmGraph2);
+	ajGraphDataReplaceI(graphs,tmGraph2,igraph++);
 	tmGraph2 = NULL;
     }
 
@@ -598,7 +603,7 @@ static void cpgplot_plotit(const char *seq,
 	ajGraphxySetYRangeII(graphs,0,100);
 
 	ajGraphPlpDataCalcXY(tmGraph3,len,(float)begin,1.0,xypc);
-	ajGraphDataAdd(graphs,tmGraph3);
+	ajGraphDataReplaceI(graphs,tmGraph3,igraph++);
 	tmGraph3 = NULL;
     }
 
@@ -635,7 +640,7 @@ static void cpgplot_plotit(const char *seq,
 			       0.0,1.0);
 
 	ajGraphPlpDataCalcXY(tmGraph,len,(float)begin,1.0,tmp);
-	ajGraphDataAdd(graphs,tmGraph);
+	ajGraphDataReplaceI(graphs,tmGraph,igraph++);
 	tmGraph = NULL;
     }
 
@@ -644,7 +649,7 @@ static void cpgplot_plotit(const char *seq,
     {
 	ajGraphSetTitleC(graphs,seq);
 	ajGraphxySetOverLap(graphs,ajFalse);
-	ajGraphxyDisplay(graphs, AJTRUE);
+	ajGraphxyDisplay(graphs, AJFALSE);
     }
 
 
