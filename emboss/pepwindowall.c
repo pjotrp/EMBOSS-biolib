@@ -189,8 +189,15 @@ int main(int argc, char **argv)
 }
 
 
-
-
+/* @funcstatic pepwindowall_getnakaidata **************************************
+**
+** Read the NAKAI (AAINDEX) data file
+**
+** @param [u] file [AjPFile] Input file
+** @param [w] matrix [float[]] Data values for each amino acid
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
 static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
 {
     AjPStr buffer = NULL;
@@ -201,7 +208,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
     ajint line = 0;
     const char *ptr;
     ajint cols;
-
+    ajint i;
 
     if(!file)
 	return 0;
@@ -211,6 +218,10 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
     buffer = ajStrNew();
     buf2   = ajStrNew();
 
+
+    for (i=0;i<26;i++) {
+	matrix[i] = FLT_MIN;
+    }
 
     while(ajFileGets(file,&buffer))
     {
@@ -299,6 +310,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
 	}
     }
 
+    embPropFixF(matrix, FLT_MIN);
 
     ajStrDel(&buffer);
     ajStrDel(&buf2);
