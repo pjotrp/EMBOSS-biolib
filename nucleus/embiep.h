@@ -9,7 +9,7 @@ extern "C"
 #define EMBIEPSIZE 28			/* Usual alpha plus two array */
 #define EMBIEPCYSTEINE 2	      /* Array index for C */
 #define EMBIEPLYSINE 10		      /* Array index for K */
-#define EMBIEPAMINO 26			/* Amino rerminus array index  */
+#define EMBIEPAMINO 26			/* Amino terminus array index  */
 #define EMBIEPCARBOXYL 27		/* Carboxyl terminus array index */
 
 
