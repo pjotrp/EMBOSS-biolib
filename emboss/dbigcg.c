@@ -1013,7 +1013,7 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 	taxexp = ajRegCompC(" *([^;.\n\r()]+)");
 
     if(!idexp)
-	idexp = ajRegCompC("^ID   ([^ \t]+)");
+	idexp = ajRegCompC("^ID   ([^ \t;]+)");
 
     rpos = ajFileTell(libr);
     while(ajFileGets(libr, &rline) && ajStrGetCharFirst(rline)!='>')

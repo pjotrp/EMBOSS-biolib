@@ -769,7 +769,7 @@ static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 	taxexp = ajRegCompC(" *([^;.\n\r()]+)");
 
     if(!idexp)
-	idexp = ajRegCompC("^ID   ([^ \t]+)");
+	idexp = ajRegCompC("^ID   ([^ \t;]+)");
 
     rpos = ajFileTell(infr);
     while(ajFileGets(infr, &rline))
