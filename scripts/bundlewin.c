@@ -550,8 +550,13 @@ static int header_exports(char *dir, FILE *fp)
 
     while((dp=readdir(indir)))
     {
+#ifndef CYGWIN
 	if(!dp->d_ino || !strcmp(dp->d_name,".")  || !strcmp(dp->d_name,".."))
 	    continue;
+#else
+	if(!strcmp(dp->d_name,".")  || !strcmp(dp->d_name,".."))
+	    continue;
+#endif
 	len = strlen(dp->d_name);
 	if(len > 2 && !strcmp(dp->d_name + len - 2, ".h"))
 	{
@@ -824,8 +829,13 @@ static int copy_apps(char *basedir, listnode *head)
 
     while((dp=readdir(indir)))
     {
+#ifndef CYGWIN
 	if(!dp->d_ino || !strcmp(dp->d_name,".")  || !strcmp(dp->d_name,".."))
 	    continue;
+#else
+	if(!strcmp(dp->d_name,".")  || !strcmp(dp->d_name,".."))
+	    continue;
+#endif
 	len = strlen(dp->d_name);
 	if(len > 2)
 	{
@@ -1111,8 +1121,13 @@ static void read_prognames(char *basedir, int napps, char ***names)
     
     while((dp=readdir(indir)))
     {
+#ifndef CYGWIN
 	if(!dp->d_ino || !strcmp(dp->d_name,".")  || !strcmp(dp->d_name,".."))
 	    continue;
+#else
+	if(!strcmp(dp->d_name,".")  || !strcmp(dp->d_name,".."))
+	    continue;
+#endif
 	len = strlen(dp->d_name);
 	if(len > 2 && !strcmp(dp->d_name + len - 2, ".c"))
 	{
