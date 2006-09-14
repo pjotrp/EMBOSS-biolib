@@ -1,4 +1,11 @@
 Version 4.1.0
+
+	Program tfm looks in the obsolete install directory with the -html
+	option. Changed to find the embassy package name from the
+	installed ACD file and then to find the installed HTML file. If
+	EMBOSS has not been installed, will also search the original
+	source files.
+
 	Modified NCBI/FASTA format to preserve the database name from the
 	NCBI style ID. The database name is reported in one of the many
 	and varied NCBI syntax variants, depending on whether there is a
