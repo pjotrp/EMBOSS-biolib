@@ -41,7 +41,7 @@ rehash
 
 4. Documentation
 Please read the Userguide.pdf distributed with the original HMMER 
-and included in the EMBASSY HMMER distribution under the DOCS directory.
+and included in the EMBASSY HMMER distribution in the top-level directory.
 The first 3 chapters (Introduction, Installation and Tutorial) are 
 particularly useful.
 
