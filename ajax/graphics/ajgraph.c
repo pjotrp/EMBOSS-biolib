@@ -4692,6 +4692,41 @@ ajint ajGraphDataReplace(AjPGraph thys, AjPGraphPlpData graphdata)
 
 
 
+/* @func ajGraphDataReplaceI ************************************************
+**
+** Replace one of the graph structures in the multiple graph structure.
+**
+** The graphdata now belongs to the graph - do not delete it while
+** the graph is using it.
+**
+** @param [u] thys [AjPGraph] multiple graph structure.
+** @param [u] graphdata [AjPGraphPlpData] graph to be added.
+** @param [r] num [ajint] number within multiple graph.
+** @return [ajint] 1 if graph added successfully else 0;
+** @@
+******************************************************************************/
+
+ajint ajGraphDataReplaceI(AjPGraph thys, AjPGraphPlpData graphdata, ajint num)
+{
+    if (thys->plplot)
+    {
+	if(thys->plplot->numofgraphs > num) {
+	    ajGraphPlpDataDel(&(thys->plplot->graphs)[num]);
+	    (thys->plplot->graphs)[num] = graphdata;
+	}
+	else if(thys->plplot->numofgraphs < thys->plplot->numofgraphsmax)
+	{
+	    (thys->plplot->graphs)[thys->plplot->numofgraphs++] = graphdata;
+	}
+
+	thys->plplot->minmaxcalc = 0;
+    }
+    return 1;
+}
+
+
+
+
 /* @func ajGraphNew ***********************************************************
 **
 ** Create a structure to hold a general graph.

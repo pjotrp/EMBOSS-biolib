@@ -201,6 +201,8 @@ void          ajGraphPlpDataSetXY (AjPGraphPlpData graphdata,
 				   const float *x, const float *y);
 ajint         ajGraphDataAdd (AjPGraph thys, AjPGraphPlpData graphdata);
 ajint         ajGraphDataReplace (AjPGraph thys, AjPGraphPlpData graphdata);
+ajint         ajGraphDataReplaceI (AjPGraph thys, AjPGraphPlpData graphdata,
+				  ajint num);
 AjPGraphPlpData  ajGraphPlpDataNew (void);
 AjPGraphPlpData  ajGraphPlpDataNewI (ajint numsets);
 void          ajGraphPlpDataSetSubTitle  (AjPGraphPlpData graphdata,
