@@ -163,6 +163,7 @@ static void       seqWriteFasta(AjPSeqout outseq);
 static void       seqWriteFitch(AjPSeqout outseq);
 static void       seqWriteGcg(AjPSeqout outseq);
 static void       seqWriteGenbank(AjPSeqout outseq);
+static void       seqWriteGifasta(AjPSeqout outseq);
 static void       seqWriteGff(AjPSeqout outseq);
 static void       seqWriteHennig86(AjPSeqout outseq);
 static void       seqWriteIg(AjPSeqout outseq);
@@ -255,6 +256,9 @@ static SeqOOutFormat seqOutFormat[] =
     {"ncbi",       "NCBI fasta format with NCBI-style IDs",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteNcbi},
+    {"gifasta",    "NCBI fasta format with NCBI-style IDs using GI number",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGifasta},
     {"nbrf",       "NBRF/PIR entry format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteNbrf},
@@ -842,7 +846,7 @@ static void seqWriteFasta(AjPSeqout outseq)
 ** Tests whether a database name is valid for use in NCBI ids.
 **
 ** @param [r] dbname [const AjPStr] Database name
-** @return [AjBoo] True if found
+** @return [AjBool] True if found
 ** @@
 ******************************************************************************/
 
@@ -950,6 +954,97 @@ static void seqWriteNcbi(AjPSeqout outseq)
     return;
 }
 
+
+
+
+/* @funcstatic seqWriteGifasta ************************************************
+**
+** Writes a sequence in NCBI format using only the GI number
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteGifasta(AjPSeqout outseq)
+{
+
+    ajint i;
+    ajint ilen;
+    AjPStr seq = NULL;
+    ajint linelen     = 60;
+    ajint iend;
+    AjPStr version = NULL;
+    AjPStr dbname = NULL;
+    static ajint blordnum=0;
+
+    if(ajStrGetLen(outseq->Setdb))
+	ajStrAssignS(&dbname, outseq->Setdb);
+    else if(ajStrGetLen(outseq->Db))
+	ajStrAssignS(&dbname, outseq->Db);
+    else
+	ajStrAssignC(&dbname, "unk");
+
+
+    if(ajStrGetLen(outseq->Sv))
+	ajStrAssignS(&version, outseq->Sv);
+    else if(ajStrGetLen(outseq->Acc))
+	ajStrAssignS(&version, outseq->Acc);
+
+    else
+	ajStrAssignC(&version, "");
+
+    ajDebug("seqWriteGifasta version '%S' dbname: '%S' KnownDb: %B\n",
+	    version, dbname, seqNcbiKnowndb(dbname));
+
+    if(ajStrGetLen(outseq->Gi) &&
+       !ajStrGetLen(outseq->Db) &&
+       ajStrMatchCaseS(outseq->Gi, outseq->Name))
+    {
+	    ajFmtPrintF(outseq->File, ">gi|%S", outseq->Gi);
+    }
+    else {
+	ajFmtPrintF(outseq->File, ">");
+	if(ajStrGetLen(outseq->Gi))
+	    ajFmtPrintF(outseq->File, "gi|%S|", outseq->Gi);
+	else
+	    ajFmtPrintF(outseq->File, "gi|000000|");
+
+	if(seqNcbiKnowndb(dbname))
+	    ajFmtPrintF(outseq->File, "%S|%S|", dbname, version);
+	else if(ajStrMatchCaseC(dbname, "lcl"))
+	    ajFmtPrintF(outseq->File, "%S|", dbname);
+	else if(ajStrMatchCaseC(dbname, "BL_ORD_ID"))
+	    ajFmtPrintF(outseq->File, "gnl|%S|%d ", dbname, blordnum++);
+	else
+	    ajFmtPrintF(outseq->File, "gnl|%S|", dbname);
+
+	if (!ajStrMatchCaseS(version, outseq->Name))
+	    ajFmtPrintF(outseq->File, "%S", outseq->Name);
+    }
+
+    if(ajStrGetLen(version) && !seqNcbiKnowndb(dbname))
+	ajFmtPrintF(outseq->File, " (%S)", version);
+
+    if(ajStrGetLen(outseq->Desc))
+	ajFmtPrintF(outseq->File, " %S", outseq->Desc);
+
+    ajFmtPrintF(outseq->File, "\n");
+
+    ilen = ajStrGetLen(outseq->Seq);
+    for(i=0; i < ilen; i += linelen)
+    {
+	iend = AJMIN(ilen-1, i+linelen-1);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
+	ajFmtPrintF(outseq->File, "%S\n", seq);
+    }
+
+    ajStrDel(&seq);
+    ajStrDel(&dbname);
+    ajStrDel(&version);
+
+    return;
+}
 
 
 
