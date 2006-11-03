@@ -42,6 +42,8 @@ typedef struct SeqSAccess SeqSAccess;
 ** @attr Org [AjPStr] Taxonomy Wildcard
 ** @attr Sv [AjPStr] SeqVersion Wildcard
 ** @attr Gi [AjPStr] GenInfo Identifier Wildcard
+** @attr CaseId [AjBool] True if ID match is case-sensitive
+** @attr HasAcc [AjBool] True if entries have acc field
 ** @attr Wild [AjBool] True if query contains '*' or '?'
 ** @attr Method [AjPStr] Name of access method
 ** @attr Formatstr [AjPStr] Name of input sequence format
@@ -83,6 +85,8 @@ typedef struct AjSSeqQuery {
   AjPStr Org;
   AjPStr Sv;
   AjPStr Gi;
+  AjBool CaseId;
+  AjBool HasAcc;
   AjBool Wild;
   AjPStr Method;
   AjPStr Formatstr;
@@ -154,6 +158,7 @@ typedef struct AjSSeqQuery {
 ** @attr Filebuff [AjPFileBuff] Input sequence buffered file
 ** @attr Search [AjBool] Search for more entries (always true?)
 ** @attr Single [AjBool] Read single entries
+** @attr CaseId [AjBool] Id case sensitive (default false)
 ** @attr Features [AjBool] true: read features if any
 ** @attr IsNuc [AjBool] true: known to be nucleic
 ** @attr IsProt [AjBool] true: known to be protein
@@ -200,6 +205,7 @@ typedef struct AjSSeqin {
   AjPFileBuff Filebuff;
   AjBool Search;
   AjBool Single;
+  AjBool CaseId;
   AjBool Features;
   AjBool IsNuc;
   AjBool IsProt;
@@ -251,7 +257,6 @@ typedef struct AjSSeqin {
 ** @attr Rev [AjBool] true: to be reverse-complemented
 ** @attr Reversed [AjBool] true: has been reverse-complemented
 ** @attr Trimmed [AjBool] true: has been trimmed
-** @attr Garbage [AjBool] Flag for garbage collection
 ** @attr Begin [ajint] start position (processed on reading)
 ** @attr End [ajint] end position (processed on reading)
 ** @attr Offset [ajint] offset from start
@@ -296,8 +301,6 @@ typedef struct AjSSeqin {
 ** @modify ajSeqReverse Reverse complements a nucleotide sequence
 ** @modify ajSeqRevOnly Reverses a sequence (does not complement)
 ** @modify ajSeqCompOnly Complements a nucleotide sequence (does not reverse)
-** @modify ajSeqGarbageOn Sets Garbage to True.
-** @modify ajSeqGarbageOff Sets Garbage to False.
 ** @cast ajSeqChar Returns the actual char* holding the sequence.
 ** @cast ajSeqCharCopy Returns a copy of the sequence as char*.
 ** @cast ajSeqCharCopyL Returns a copy of the sequence as char* with
@@ -309,7 +312,6 @@ typedef struct AjSSeqin {
 ** @cast ajSeqEnd Returns the sequence end position
 ** @cast ajSeqCheckGcg Calculates the GCG checksum for a sequence.
 ** @cast ajSeqNum Convert sequence to numbers
-** @cast ajSeqIsGarbage Returns the Garbage element.
 ** @use ajSeqIsNuc tests whether a sequence is nucleotide
 ** @use ajSeqIsProt tests whether a sequence is protein
 ** @output ajSeqWrite Master sequence output routine
@@ -335,7 +337,6 @@ typedef struct AjSSeq {
   AjBool Rev;
   AjBool Reversed;
   AjBool Trimmed;
-  AjBool Garbage;
   ajint Begin;
   ajint End;
   ajint Offset;
@@ -384,7 +385,10 @@ typedef struct AjSSeq {
 ** @attr Len [ajint] Maximum sequence length
 ** @attr Begin [ajint] start position
 ** @attr End [ajint] end position
+** @attr Offset [ajint] offset from start
+** @attr Offend [ajint] offset from end 
 ** @attr Rev [AjBool] true: reverse-complemented
+** @attr Trimmed [AjBool] true: has been trimmed
 ** @attr Totweight [float] total weight (usually 1.0 * Size)
 ** @attr Type [AjPStr] Type N or P
 ** @attr EType [AjEnum] enum type obsolete
@@ -420,7 +424,10 @@ typedef struct AjSSeqset {
   ajint Len;
   ajint Begin;
   ajint End;
+  ajint Offset;
+  ajint Offend;
   AjBool Rev;
+  AjBool Trimmed;
   float Totweight;
   AjPStr Type;
   AjEnum EType;
