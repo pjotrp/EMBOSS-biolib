@@ -253,13 +253,13 @@ static void digest_print_hits(AjPList l, AjPFile outf, ajint be, const char *s)
 	ajFmtPrintF(outf,"%-8d%-8d%-10.3f ",fr->start+be,fr->end+be,
 		    fr->molwt);
 	if(fr->start>0)
-	    ajFmtPrintF(outf,"(%c) ",*(s+(fr->start+be-1)-1));
+	    ajFmtPrintF(outf,"(%c) ",*(s+(fr->start)-1));
 	else
 	    ajFmtPrintF(outf," () ");
 
 	ajFmtPrintF(outf,"%-.38s ",ajStrGetPtr(t));
 	if(fr->end<len-1)
-	    ajFmtPrintF(outf,"(%c) ",*(s+(fr->end+be)));
+	    ajFmtPrintF(outf,"(%c) ",*(s+(fr->end+1)));
 	else
 	    ajFmtPrintF(outf," () ");
 
@@ -311,13 +311,13 @@ static void digest_report_hits(AjPReport report, const AjPSeq seq,
 	ajFeatTagAdd(gf,  NULL, tmpStr);
 	if(fr->start>0)
 	{
-	    ajFmtPrintS(&tmpStr, "*cterm %c", *(s+(fr->start+be-1)-1));
+	    ajFmtPrintS(&tmpStr, "*cterm %c", *(s+(fr->start)-1));
 	    ajFeatTagAdd(gf,  NULL, tmpStr);
 	}
 
 	if(fr->end<len-1)
 	{
-	    ajFmtPrintS(&tmpStr, "*nterm %c", *(s+(fr->end+be)));
+	    ajFmtPrintS(&tmpStr, "*nterm %c", *(s+(fr->end+1)));
 	    ajFeatTagAdd(gf,  NULL, tmpStr);
 	}
 
