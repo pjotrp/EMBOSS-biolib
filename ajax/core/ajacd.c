@@ -51,9 +51,10 @@
 #define	ACD_SEQ_PROTEIN 3
 #define	ACD_SEQ_NUCLEIC 4
 #define	ACD_SEQ_NAME 5
-#define	ACD_SEQ_WEIGHT 6
-#define	ACD_SEQ_COUNT 7
-#define	ACD_SEQ_MULTICOUNT 8
+#define	ACD_SEQ_USA 6
+#define	ACD_SEQ_WEIGHT 7
+#define	ACD_SEQ_COUNT 8
+#define	ACD_SEQ_MULTICOUNT 9
 
 #define USED_GET 1
 #define USED_ACD 2
@@ -845,6 +846,7 @@ static AjBool    acdTestStdout(void);
 static void      acdTestUnknown(const AjPStr name, const AjPStr alias,
 				ajint pnum);
 static AjBool    acdTextFormat(AjPStr* text);
+static void      acdTextTrim(AjPStr* text);
 static void      acdTokenToLowerS(AjPStr *token, ajint* number);
 static AjBool    acdUserGet(const AcdPAcd thys, AjPStr* reply);
 static AjBool    acdUserGetPrompt(const AcdPAcd thys, const char* assocqual,
@@ -2091,6 +2093,8 @@ static AcdOAttr acdCalcSeq[] =
 	 "Boolean, indicates if sequence is DNA"},
     {"name", VT_STR, "",
 	 "The name/ID/accession of the sequence"},
+    {"usa", VT_STR, "",
+	 "The USA of the sequence"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -2109,6 +2113,8 @@ static AcdOAttr acdCalcSeqall[] =
 	 "Boolean, indicates if sequence is DNA"},
     {"name", VT_STR, "",
 	 "The name/ID/accession of the sequence"},
+    {"usa", VT_STR, "",
+	 "The USA of the sequence"},
     {NULL, VT_NULL, NULL,
 	 NULL}
 };
@@ -2127,6 +2133,8 @@ static AcdOAttr acdCalcSeqset[] =
 	 "Boolean, indicates if sequence set is DNA"},
     {"name", VT_STR, "",
 	 "The name of the sequence set"},
+    {"usa", VT_STR, "",
+	 "The USA of the sequence"},
     {"totweight", VT_FLOAT, "",
 	 "Float, total sequence weight for a set"},
     {"count", VT_INT, "",
@@ -2149,6 +2157,8 @@ static AcdOAttr acdCalcSeqsetall[] =
 	 "Boolean, indicates if sequence set is DNA"},
     {"name", VT_STR, "",
 	 "The name of the sequence set"},
+    {"usa", VT_STR, "",
+	 "The USA of the sequence"},
     {"totweight", VT_FLOAT, "",
 	 "Float, total sequence weight for each set"},
     {"count", VT_INT, "",
@@ -2370,6 +2380,7 @@ AcdOQual acdQualFeatout[] =
 AcdOQual acdQualGraph[] =
 {
     {"gprompt",   "N", "boolean", "Graph prompting"},
+    {"gdesc",     "",  "string",  "Graph description"},
     {"gtitle",    "",  "string",  "Graph title"},
     {"gsubtitle", "",  "string",  "Graph subtitle"},
     {"gxtitle",   "",  "string",  "Graph x axis title"},
@@ -2382,6 +2393,7 @@ AcdOQual acdQualGraph[] =
 AcdOQual acdQualGraphxy[] =
 {
     {"gprompt",   "N", "boolean", "Graph prompting"},
+    {"gdesc",     "",  "string",  "Graph description"},
     {"gtitle",    "",  "string",  "Graph title"},
     {"gsubtitle", "",  "string",  "Graph subtitle"},
     {"gxtitle",   "",  "string",  "Graph x axis title"},
@@ -2971,31 +2983,34 @@ typedef struct AcdSValid
 
 AcdOValid acdValue[] =
 {
-    {"sequence",  acdHelpValidSeq,      acdHelpExpectSeq},
-    {"seqset",    acdHelpValidSeq,      acdHelpExpectSeq},
-    {"seqall",    acdHelpValidSeq,      acdHelpExpectSeq},
-    {"seqout",    acdHelpValidSeqout,   acdHelpExpectSeqout},
-    {"seqoutset", acdHelpValidSeqout,   acdHelpExpectSeqout},
-    {"seqoutall", acdHelpValidSeqout,   acdHelpExpectSeqout},
-    {"outfile",   acdHelpValidOut,      acdHelpExpectOut},
-    {"infile",    acdHelpValidIn,       acdHelpExpectIn},
-    {"datafile",  acdHelpValidData,     acdHelpExpectData},
+    {"align",     acdHelpValidOut,      acdHelpExpectOut},
     {"codon",     acdHelpValidCodon,    acdHelpExpectCodon},
+    {"datafile",  acdHelpValidData,     acdHelpExpectData},
     {"dirlist",   acdHelpValidDirlist,  acdHelpExpectDirlist},
+    {"featout",   acdHelpValidFeatout,  acdHelpExpectFeatout},
     {"filelist",  acdHelpValidFilelist, acdHelpExpectFilelist},
-    {"list",      acdHelpValidList,     NULL},
-    {"select",    acdHelpValidSelect,   NULL},
-    {"graph",     acdHelpValidGraph,    acdHelpExpectGraph},
-    {"xygraph",   acdHelpValidGraph,    acdHelpExpectGraph},
-    {"regexp",    acdHelpValidRegexp,   acdHelpExpectRegexp},
-    {"string",    acdHelpValidString,   acdHelpExpectString},
-    {"integer",   acdHelpValidInt,      acdHelpExpectInt},
     {"float",     acdHelpValidFloat,    acdHelpExpectFloat},
+    {"graph",     acdHelpValidGraph,    acdHelpExpectGraph},
+    {"infile",    acdHelpValidIn,       acdHelpExpectIn},
+    {"integer",   acdHelpValidInt,      acdHelpExpectInt},
+    {"list",      acdHelpValidList,     NULL},
     {"matrix",    acdHelpValidMatrix,   acdHelpExpectMatrix},
     {"matrixf",   acdHelpValidMatrix,   acdHelpExpectMatrix},
+    {"outfile",   acdHelpValidOut,      acdHelpExpectOut},
+    {"regexp",    acdHelpValidRegexp,   acdHelpExpectRegexp},
+    {"report",    acdHelpValidOut,      acdHelpExpectOut},
+    {"select",    acdHelpValidSelect,   NULL},
+    {"seqall",    acdHelpValidSeq,      acdHelpExpectSeq},
+    {"seqset",    acdHelpValidSeq,      acdHelpExpectSeq},
+    {"seqsetall", acdHelpValidSeq,      acdHelpExpectSeq},
+    {"sequence",  acdHelpValidSeq,      acdHelpExpectSeq},
+    {"seqout",    acdHelpValidSeqout,   acdHelpExpectSeqout},
+    {"seqoutall", acdHelpValidSeqout,   acdHelpExpectSeqout},
+    {"seqoutset", acdHelpValidSeqout,   acdHelpExpectSeqout},
+    {"string",    acdHelpValidString,   acdHelpExpectString},
     {"range",     acdHelpValidRange,    acdHelpExpectRange},
-    {"featout",   acdHelpValidFeatout,  acdHelpExpectFeatout},
-    {NULL,        NULL}
+    {"xygraph",   acdHelpValidGraph,    acdHelpExpectGraph},
+    {NULL,        NULL, NULL}
 };
 
 
@@ -8032,6 +8047,9 @@ static void acdSetGraph(AcdPAcd thys)
     ajStrAssignC(&thys->ValStr, "graph definition");
     if(val)
     {
+	if(acdGetValueAssoc(thys, "gdesc", &title))
+	    ajCall("ajGraphDesc",val,title);
+    
 	if(acdGetValueAssoc(thys, "gtitle", &title))
 	    ajCall("ajGraphTitle",val,title);
     
@@ -8199,6 +8217,9 @@ static void acdSetGraphxy(AcdPAcd thys)
     
     if(val)
     {
+	if(acdGetValueAssoc(thys, "gdesc", &title))
+	    ajCall("ajGraphDesc",val,title);
+    
 	if(acdGetValueAssoc(thys, "gtitle", &title))
 	    ajCall("ajGraphTitle",val,title);
 
@@ -10024,7 +10045,7 @@ static void acdSetPattern(AcdPAcd thys)
 	if(ok && !val)
 	{
 	    acdBadVal(thys, required,
-		      "Bad regular expression pattern:\n   '%S'",
+		      "Bad pattern definition:\n   '%S'",
 		      acdReply);
 	    ok = ajFalse;
 	}	
@@ -11187,6 +11208,7 @@ static void acdSetSeq(AcdPAcd thys)
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(val));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
+    ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqGetUsa(val));
     
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
@@ -11476,6 +11498,7 @@ static void acdSetSeqall(AcdPAcd thys)
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(seq));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(seq));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], seq->Name);
+    ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqallGetUsa(val));
     
     acdInFileSave(ajSeqallGetNameSeq(val), ajTrue);
 
@@ -11765,6 +11788,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC],
 		  ajSeqsetIsNuc(val[0]));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val[0]->Name);
+    ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqsetGetUsa(val[0]));
     ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
 		   ajSeqsetTotweight(val[0]), 3);
     ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val[0]));
@@ -12631,6 +12655,7 @@ static void acdSetSeqset(AcdPAcd thys)
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqsetIsProt(val));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqsetIsNuc(val));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
+    ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqsetGetUsa(val));
     ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
 		   ajSeqsetTotweight(val), 3);
     ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val));
@@ -13893,16 +13918,21 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
     
     ajFmtPrintS(&line, "%c %-20S %-10S ", flag, name, type);
 
-    acdHelpExpect(thys, ajFalse, &text);
-    if(ajStrGetLen(text))
+    if(!acdDoTable)
     {
-	ajStrInsertC(&text, 0, "[");
-       ajStrAppendC(&text, "] ");
+	acdHelpExpect(thys, ajFalse, &text);
+	if(ajStrGetLen(text))
+	{
+	    ajStrInsertC(&text, 0, "[");
+	    ajStrAppendC(&text, "] ");
+	}
     }
     acdHelpText(thys, &text);
     if(ajStrGetLen(text))
        ajStrAppendC(&text, " ");
-    acdHelpValid(thys, ajFalse, &text);
+    if(!acdDoTable)
+	acdHelpValid(thys, ajFalse, &text);
+
     ajStrRemoveWhite(&text);
     acdTextFormat(&text);
     ajStrFmtWrapLeft(&text, 45, 34);
@@ -14462,8 +14492,6 @@ static void acdHelpValidList(const AcdPAcd thys, AjBool table, AjPStr* str)
     static AjPStr desc = NULL;
     static AjPStr line = NULL;
 
-    static char* white = " \t\n\r";
-
     acdAttrValueStr(thys, "delimiter", ";", &delim);
 
     acdAttrValueStr(thys, "value", "", &value);
@@ -14484,8 +14512,8 @@ static void acdHelpValidList(const AcdPAcd thys, AjBool table, AjPStr* str)
 	codehandle = ajStrTokenNewC(line, ajStrGetPtr(codedelim));
 	ajStrTokenNextParse(&codehandle, &code);
 	ajStrTokenNextParseC(&codehandle, ajStrGetPtr(delim), &desc);
-	ajStrTrimC(&code, white);
-	ajStrTrimC(&desc, white);
+	acdTextTrim(&code);
+	acdTextTrim(&desc);
 	if(table)
 	    ajFmtPrintAppS(str, "<tr><td>%S</td> <td><i>(%S)</i></td></tr>",
 			   code, desc);
@@ -14639,15 +14667,11 @@ static void acdHelpExpectSeq(const AcdPAcd thys, AjBool table, AjPStr* str)
 
 static void acdHelpExpectSeqout(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    static ajint icall = 0;
+    if(table)
+	ajFmtPrintAppS(str, "<i>&lt;*&gt;</i>.<i>format</i>");
+    else
+	ajFmtPrintAppS(str, "<sequence>.<format>");
 
-    if(!icall++)
-    {
-	if(table)
-	    ajFmtPrintAppS(str, "<i>&lt;*&gt;</i>.<i>format</i>");
-	else
-	    ajFmtPrintAppS(str, "<sequence>.<format>");
-    }
     return;
 }
 
@@ -14667,15 +14691,10 @@ static void acdHelpExpectSeqout(const AcdPAcd thys, AjBool table, AjPStr* str)
 
 static void acdHelpExpectOut(const AcdPAcd thys, AjBool table, AjPStr* str)
 {
-    static ajint icall = 0;
-
-    if(!icall++)
-    {
-	if(table)
-	    ajFmtPrintAppS(str, "<i>&lt;*&gt;</i>.%S", acdProgram);
-	else
-	    ajFmtPrintAppS(str, "*.%S", acdProgram);
-    }
+    if(table)
+	ajFmtPrintAppS(str, "<i>&lt;*&gt;</i>.%S", acdProgram);
+    else
+	ajFmtPrintAppS(str, "*.%S", acdProgram);
 
     return;
 }
@@ -15075,7 +15094,8 @@ static void acdHelpExpect(const AcdPAcd thys, AjBool table, AjPStr* str)
 	if(ajCharMatchC(acdType[thys->Type].Name, acdValue[i].Name))
 	{
 	    /* Calling funclist acdValue() */
-	    if(acdValue[i].Expect) acdValue[i].Expect(thys, table, str);
+	    if(acdValue[i].Expect)
+		acdValue[i].Expect(thys, table, str);
 	    break;
 	}
 
@@ -15225,6 +15245,7 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
 	iter = ajListIterRead(tablist);
 	while((item = ajListIterNext(iter)))
 	{
+	    acdTextTrim(&item->Help);
 	    ajUser("<tr>");
 	    ajUser("<td>%S</td>", item->Qual);
 	    ajUser("<td>%S</td>", item->Help);
@@ -15322,7 +15343,6 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist, char flag)
 {    
     AcdPTableItem item;
     
-    static AjPStr name    = NULL;
     static AjPStr nostr   = NULL;
     static AjPStr nullstr = NULL;
     static AjPStr type    = NULL;
@@ -15375,11 +15395,6 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist, char flag)
      **  warning - don't try acdVarResolve here because we have not yet
      **  read in the data and things like calculated attributes do not exist
      */
-    
-    if(thys->Level == ACD_PARAM)
-	ajFmtPrintS(&name, "[-%S%S]", nostr, thys->Name);
-    else
-	ajFmtPrintS(&name, "-%S%S", nostr, thys->Name);
     
     acdHelpValid(thys, ajTrue, &item->Valid);
     acdHelpText(thys, &item->Help);
@@ -23458,6 +23473,30 @@ static AjBool acdTextFormat(AjPStr* text)
     ajStrExchangeCC(text, " \\ ", "\n");
 
     return ajTrue;
+}
+
+
+
+
+/* @funcstatic acdTextTrim**************************************************
+**
+** Trims white space. For HTML output, replaces angled brackets
+**
+** @param [u] text [AjPStr*] Text to be processed
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdTextTrim(AjPStr* text)
+{
+    ajStrTrimC(text, " \t\n\r");
+    if(acdDoTable)
+    {
+	ajStrExchangeCC(text, "<", "&lt;");
+	ajStrExchangeCC(text, ">", "&gt;");
+    }
+
+    return;
 }
 
 
