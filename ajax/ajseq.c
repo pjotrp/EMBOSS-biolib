@@ -431,8 +431,6 @@ AjPSeq ajSeqNewRes(size_t size)
     pthis->Keylist = ajListstrNew();
     pthis->Taxlist = ajListstrNew();
 
-    pthis->Garbage = ajFalse;
-
     return pthis;
 }
 
@@ -483,7 +481,6 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
     pthis->Rev      = seq->Rev;
     pthis->Reversed = seq->Reversed;
     pthis->Trimmed  = seq->Trimmed;
-    pthis->Garbage  = seq->Garbage;
 
     pthis->Begin  = seq->Begin;
     pthis->End    = seq->End;
@@ -4008,6 +4005,42 @@ const AjPStr ajSeqsetGetFormat(const AjPSeqset thys)
 
 
 
+/* @func ajSeqsetGetOffend ****************************************************
+**
+** Returns the sequence set offend value.
+** This is the number of positions removed from the original end.
+**
+** @param [r] seq [const AjPSeqset] Sequence set object
+** @return [ajint] Sequence offend.
+** @@
+******************************************************************************/
+
+ajint ajSeqsetGetOffend(const AjPSeqset seq)
+{
+    return seq->Offend;
+}
+
+
+
+
+/* @func ajSeqsetGetOffset ****************************************************
+**
+** Returns the sequence set offset value.
+** This is the number of positions removed from the original end.
+**
+** @param [r] seq [const AjPSeqset] Sequence set object
+** @return [ajint] Sequence offset.
+** @@
+******************************************************************************/
+
+ajint ajSeqsetGetOffset(const AjPSeqset seq)
+{
+    return seq->Offset;
+}
+
+
+
+
 /* @func ajSeqsetGetRange *****************************************************
 **
 ** Returns the sequence range for a sequence set
@@ -4259,8 +4292,50 @@ void ajSeqsetTrim(AjPSeqset seqset)
 {
     ajint i;
 
+    ajint begin;
+    ajint end;
+    ajint jbegin;
+    ajint jend;
+
+    if(seqset->Trimmed)
+    {
+	ajWarn("Sequence set '%S' already trimmed", ajSeqsetGetName(seqset));
+	return;
+    }
+
+    ajDebug("ajSeqsetTrim len: %d begin: %d end: %d\n",
+	    seqset->Len, seqset->Begin, seqset->End);
     for(i=0; i < seqset->Size; i++)
 	ajSeqTrim(seqset->Seq[i]);
+
+    jbegin = seqset->Begin;
+    if(jbegin > 0)
+	jbegin--;
+    jend = seqset->End;
+    if(jend > 0)
+	jend--;
+
+    begin = 1 + ajMathPosI(seqset->Len, 0, jbegin);
+    end   = 1 + ajMathPosI(seqset->Len, begin-1, jend);
+
+    if(seqset->End)
+    {
+	if(end < begin)
+	    return;
+	seqset->Offend = seqset->Len - end;
+	seqset->End    = 0;
+	seqset->Len = end;
+    }
+
+    if(seqset->Begin)
+    {
+	seqset->Offset = begin-1;
+	seqset->Begin = 0;
+	seqset->Len -= begin;
+    }
+
+    ajDebug("ajSeqsetTrim result len: %d begin: %d end: %d\n",
+	    seqset->Len, seqset->Begin, seqset->End);
 
     return;
 }
@@ -4640,8 +4715,7 @@ AjBool ajSeqsetIsProt(const AjPSeqset thys)
 	return ajFalse;
 
     seq = thys->Seq[0];
-    if(ajSeqTypeAnyprotS(seq->Seq))
-	return ajFalse;
+    return ajSeqIsProt(seq);
 
     return ajTrue;
 }
@@ -5087,24 +5161,6 @@ AjBool ajSeqNumS(const AjPStr seq, const AjPSeqCvt cvt, AjPStr* numseq)
 
     return ajTrue;
 }
-
-
-
-
-/* @func ajSeqIsGarbage *******************************************************
-**
-** Returns the Garbage element of an Seq object.
-**
-** @param [r] seq [const AjPSeq] Sequence.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqIsGarbage(const AjPSeq seq)
-{
-    return seq->Garbage;
-}
-
 
 
 
@@ -5783,6 +5839,12 @@ AjBool ajSeqTrim(AjPSeq thys)
     ajint jbegin;
     ajint jend;
 
+    ajDebug("ajSeqTrim '%S'\n", thys->Seq);
+    ajDebug("ajSeqTrim 'Rev:%B Reversed:%B Begin:%d End:%d "
+	    "Offset:%d Offend:%d Len:%d\n",
+	    thys->Rev, thys->Reversed, thys->Begin, thys->End,
+	    thys->Offset, thys->Offend, thys->Seq->Len);
+
     if(thys->Trimmed)
     {
 	ajWarn("Sequence '%s' already trimmed", ajSeqName(thys));
@@ -5791,6 +5853,12 @@ AjBool ajSeqTrim(AjPSeq thys)
 
     if(thys->Rev)
 	ajSeqReverseDo(thys);
+
+    ajDebug("ajSeqTrim '%S'\n", thys->Seq);
+    ajDebug("ajSeqTrim 'Rev:%B Reversed:%B Begin:%d End:%d "
+	   "Offset:%d Offend:%d Len:%d okay:%B\n",
+	    thys->Rev, thys->Reversed, thys->Begin, thys->End,
+	    thys->Offset, thys->Offend, thys->Seq->Len, okay);
 
     jbegin = thys->Begin;
     if(jbegin > 0)
@@ -5831,6 +5899,12 @@ AjBool ajSeqTrim(AjPSeq thys)
     if(okay && thys->Fttable)
 	okay = ajFeattableTrimOff(thys->Fttable, thys->Offset, thys->Seq->Len);
 
+    ajDebug("ajSeqTrim '%S'\n", thys->Seq);
+    ajDebug("ajSeqTrim 'Rev:%B Reversed:%B Begin:%d End:%d "
+	    "Offset:%d Offend:%d Len:%d okay:%B\n",
+	    thys->Rev, thys->Reversed, thys->Begin, thys->End,
+	    thys->Offset, thys->Offend, thys->Seq->Len, okay);
+    
     return okay;
 }
 
@@ -6440,43 +6514,3 @@ ajuint __deprecated ajSeqCrc(const AjPStr seq)
 {
     return ajSeqstrCalcCrc(seq);
 }
-
-
-/* @func ajSeqGarbageOn *******************************************************
-**
-** Sets Garbage element of a Seq object to True.
-**
-** @param [u] thys [AjPSeq *] Sequence
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqGarbageOn(AjPSeq *thys)
-{
-    (*thys)->Garbage = ajTrue;
-    
-    return;
-}
-
-
-
-
-/* @func ajSeqGarbageOff ******************************************************
-**
-** Sets Garbage element of a Seq object to False.
-**
-** @param [u] thys [AjPSeq *] Sequence
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqGarbageOff(AjPSeq *thys)
-{
-    (*thys)->Garbage = ajFalse;
-    
-    return;
-}
-
-
-
-

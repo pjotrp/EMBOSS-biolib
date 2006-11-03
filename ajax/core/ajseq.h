@@ -183,6 +183,8 @@ ajint        ajSeqsetEnd (const AjPSeqset seq);
 ajint        ajSeqsetFill (AjPSeqset seq);
 const AjPStr ajSeqsetGetFormat (const AjPSeqset thys);
 const AjPStr ajSeqsetGetName (const AjPSeqset thys);
+ajint        ajSeqsetGetOffend(const AjPSeqset seq);
+ajint        ajSeqsetGetOffset(const AjPSeqset seq);
 ajint        ajSeqsetGetRange (const AjPSeqset thys, ajint* begin, ajint* end);
 const AjPSeq ajSeqsetGetSeq (const AjPSeqset thys, ajint i);
 AjPSeq*      ajSeqsetGetSeqArray(const AjPSeqset thys);
@@ -320,9 +322,6 @@ void         __deprecated ajSeqCompOnlyStr (AjPStr* thys);
 
 float        __deprecated ajSeqMW (const AjPStr seq);
 ajuint       __deprecated ajSeqCrc(const AjPStr seq );
-
-void         __deprecated ajSeqGarbageOn(AjPSeq *thys);
-void         __deprecated ajSeqGarbageOff(AjPSeq *thys);
 
 /*
 ** End of prototype definitions
