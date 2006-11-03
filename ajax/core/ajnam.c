@@ -176,6 +176,7 @@ NamOAttr namDbAttrs[] =
     {"appentry", "", "external commandline for 'methodentry' (APP, EXTERNAL)"},
     {"appquery", "", "external commandline for 'methodquery' (APP, EXTERNAL)"},
 
+    {"caseidmatch", "N", "match exact case of entry identifier"},
     {"command", "", "command line to return entry/ies"},
     {"comment", "", "text comment for the DB definition"},
     {"dbalias", "", "database name to be used by access method if different"},
@@ -189,6 +190,7 @@ NamOAttr namDbAttrs[] =
     {"formatentry", "", "database entry format for 'methodentry' access"},
     {"formatquery", "", "database entry format for 'methodall' access"},
 
+    {"hasaccession", "Y", "database has an acc field as an alternate id"},
     {"httpversion", "", "HTTP version for GET requests (URL, SRSWWW)"},
     {"identifier", "", "standard identifier (defaults to name)"},
     {"indexdirectory", "", "Index directory, defaults to data 'directory'"},
@@ -272,8 +274,10 @@ typedef struct NamSEntry
 
 static ajint  namDbAttr(const AjPStr thys);
 static ajint  namDbAttrC(const char* str);
-static AjBool namDbSetAttr(const AjPStr* dbattr, const char* attrib,
-			   AjPStr* qrystr);
+static AjBool namDbSetAttrBool(const AjPStr* dbattr, const char* attrib,
+			       AjBool* qrybool);
+static AjBool namDbSetAttrStr(const AjPStr* dbattr, const char* attrib,
+			      AjPStr* qrystr);
 static void   namDebugDatabase(const AjPStr* dbattr);
 static void   namDebugResource(const AjPStr* dbattr);
 static void   namDebugVariables(void);
@@ -2413,19 +2417,21 @@ AjBool ajNamDbData(AjPSeqQuery qry)
 
     /* general defaults */
 
-    namDbSetAttr(dbattr, "type", &qry->DbType);
-    namDbSetAttr(dbattr, "method", &qry->Method);
-    namDbSetAttr(dbattr, "format", &qry->Formatstr);
-    namDbSetAttr(dbattr, "app", &qry->Application);
-    namDbSetAttr(dbattr, "directory", &qry->IndexDir);
-    namDbSetAttr(dbattr, "indexdirectory", &qry->IndexDir);
-    namDbSetAttr(dbattr, "indexdirectory", &qry->Directory);
-    namDbSetAttr(dbattr, "directory", &qry->Directory);
-    namDbSetAttr(dbattr, "exclude", &qry->Exclude);
-    namDbSetAttr(dbattr, "filename", &qry->Filename);
-    namDbSetAttr(dbattr, "fields", &qry->DbFields);
-    namDbSetAttr(dbattr, "proxy", &qry->DbProxy);
-    namDbSetAttr(dbattr, "httpversion", &qry->DbHttpVer);
+    namDbSetAttrStr(dbattr, "type", &qry->DbType);
+    namDbSetAttrStr(dbattr, "method", &qry->Method);
+    namDbSetAttrStr(dbattr, "format", &qry->Formatstr);
+    namDbSetAttrStr(dbattr, "app", &qry->Application);
+    namDbSetAttrStr(dbattr, "directory", &qry->IndexDir);
+    namDbSetAttrStr(dbattr, "indexdirectory", &qry->IndexDir);
+    namDbSetAttrStr(dbattr, "indexdirectory", &qry->Directory);
+    namDbSetAttrStr(dbattr, "directory", &qry->Directory);
+    namDbSetAttrStr(dbattr, "exclude", &qry->Exclude);
+    namDbSetAttrStr(dbattr, "filename", &qry->Filename);
+    namDbSetAttrStr(dbattr, "fields", &qry->DbFields);
+    namDbSetAttrStr(dbattr, "proxy", &qry->DbProxy);
+    namDbSetAttrStr(dbattr, "httpversion", &qry->DbHttpVer);
+    namDbSetAttrBool(dbattr, "caseidmatch", &qry->CaseId);
+    namDbSetAttrBool(dbattr, "hasaccession", &qry->HasAcc);
     /*
        ajDebug("ajNamDbQuery DbName '%S'\n", qry->DbName);
        ajDebug("    Id '%S' Acc '%S' Des '%S'\n",
@@ -2476,22 +2482,22 @@ AjBool ajNamDbQuery(AjPSeqQuery qry)
     if(!ajSeqQueryIs(qry))   /* must have a method for all entries */
     {
 
-	namDbSetAttr(dbattr, "methodall", &qry->Method);
-	namDbSetAttr(dbattr, "formatall", &qry->Formatstr);
-	namDbSetAttr(dbattr, "appall", &qry->Application);
+	namDbSetAttrStr(dbattr, "methodall", &qry->Method);
+	namDbSetAttrStr(dbattr, "formatall", &qry->Formatstr);
+	namDbSetAttrStr(dbattr, "appall", &qry->Application);
 	qry->Type = QRY_ALL;
     }
     else		      /* must be able to query the database */
     {
-	namDbSetAttr(dbattr, "methodquery", &qry->Method);
-	namDbSetAttr(dbattr, "formatquery", &qry->Formatstr);
-	namDbSetAttr(dbattr, "appquery", &qry->Application);
+	namDbSetAttrStr(dbattr, "methodquery", &qry->Method);
+	namDbSetAttrStr(dbattr, "formatquery", &qry->Formatstr);
+	namDbSetAttrStr(dbattr, "appquery", &qry->Application);
 
 	if(!ajSeqQueryWild(qry)) /* ID - single entry may be available */
 	{
-	    namDbSetAttr(dbattr, "methodentry", &qry->Method);
-	    namDbSetAttr(dbattr, "formatentry", &qry->Formatstr);
-	    namDbSetAttr(dbattr, "appentry", &qry->Application);
+	    namDbSetAttrStr(dbattr, "methodentry", &qry->Method);
+	    namDbSetAttrStr(dbattr, "formatentry", &qry->Formatstr);
+	    namDbSetAttrStr(dbattr, "appentry", &qry->Application);
 	    qry->Type = QRY_ENTRY;
 	}
 	else
@@ -2517,9 +2523,9 @@ AjBool ajNamDbQuery(AjPSeqQuery qry)
 
 
 
-/* @funcstatic namDbSetAttr ***************************************************
+/* @funcstatic namDbSetAttrStr ************************************************
 **
-** Sets a named attribute value from an attribute list.
+** Sets a named string attribute value from an attribute list.
 **
 ** @param [r] dbattr [const AjPStr*] Attribute definitions.
 ** @param [r] attrib [const char*] Attribute name.
@@ -2528,8 +2534,8 @@ AjBool ajNamDbQuery(AjPSeqQuery qry)
 ** @@
 ******************************************************************************/
 
-static AjBool namDbSetAttr(const AjPStr* dbattr, const char* attrib,
-			    AjPStr* qrystr)
+static AjBool namDbSetAttrStr(const AjPStr* dbattr, const char* attrib,
+			      AjPStr* qrystr)
 {
     ajint i;
 
@@ -2547,6 +2553,52 @@ static AjBool namDbSetAttr(const AjPStr* dbattr, const char* attrib,
     namVarResolve(qrystr);
 
     return ajTrue;
+}
+
+
+
+
+/* @funcstatic namDbSetAttrBool ***********************************************
+**
+** Sets a named boolean attribute value from an attribute list.
+**
+** @param [r] dbattr [const AjPStr*] Attribute definitions.
+** @param [r] attrib [const char*] Attribute name.
+** @param [w] qrybool [AjBool*] Returned attribute value.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool namDbSetAttrBool(const AjPStr* dbattr, const char* attrib,
+			       AjBool* qrybool)
+{
+    AjBool ret = ajTrue;
+    ajint i;
+    AjPStr tmpstr = NULL;
+
+    i = namDbAttrC(attrib);
+
+    if(i < 0)
+	ajFatal("unknown attribute '%s' requested",  attrib);
+
+    if(!ajStrGetLen(dbattr[i]))
+    {
+	ajStrAssignC(&tmpstr, namDbAttrs[i].Defval);
+	ret = ajFalse;
+    }
+    else
+    {
+	ajStrAssignS(&tmpstr, dbattr[i]);
+	ret = ajTrue;
+    }
+
+    /* ajDebug("namDbSetAttr('%S')\n", *qrystr); */
+
+    namVarResolve(&tmpstr);
+    ajStrToBool(tmpstr, qrybool);
+    ajStrDel(&tmpstr);
+
+    return ret;
 }
 
 
