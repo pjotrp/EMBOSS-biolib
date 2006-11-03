@@ -310,7 +310,7 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
     AjBool uppertri = ajFalse;
 
     if(!floatexp)
-	floatexp = ajRegCompC("^\\s*([0-9]+[.][0-9]*)\\s+(([0-9]+)[^0-9.])?");
+	floatexp = ajRegCompC("^\\s*([0-9]+[.]?[0-9]*)\\s+(([0-9]+)[^0-9.])?");
 
     distfile = ajFileNewIn(filename);
 
@@ -635,7 +635,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
     float** pvals = NULL;
 
     if(!floatexp)
-	floatexp = ajRegCompC("^\\s*([-]?[0-9]+[.][0-9]*)\\s+");
+	floatexp = ajRegCompC("^\\s*([-]?[0-9]+[.]?[0-9]*)\\s+");
     if(!intexp)
 	intexp = ajRegCompC("^\\s*([1-9][0-9]*)(\\s+[0-9\\s]*)$");
     if(!indivexp)
