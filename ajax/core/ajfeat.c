@@ -5733,6 +5733,218 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 
 
 
+/* @func ajFeatLocMark *******************************************************
+**
+** Returns a sequence entry coverted to lower case where a feature
+** location matches.
+**
+** @param [u] seq [AjPStr*] Upper case sequence
+** @param [r] line [const AjPStr] location
+** @return [AjBool] true on success
+** @@
+******************************************************************************/
+
+AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
+{
+    char *p;
+    const char *cp;
+    const char *cq;
+    char *sp;
+    
+    ajint len;
+    ajint i;
+    ajint off;
+
+    AjPRegexp exp_ndotn = NULL;
+    AjPRegexp exp_brnbr = NULL;
+
+    AjPRegexp exp_compbrndashnbr = NULL;
+    AjPRegexp exp_joinbr = NULL;
+    AjPStrTok handle     = NULL;
+    
+    AjBool isglobcomp = ajFalse;
+    AjBool docomp     = ajFalse;
+    AjBool dbentry    = ajFalse;
+    
+    ajint begin = 0;
+    ajint end   = 0;
+    
+    sp   = ajStrGetuniquePtr(seq);
+    if(!featLocStr)
+    {
+	featLocStr   = ajStrNew();
+	featLocToken = ajStrNew();
+	featLocDb    = ajStrNew();
+    }
+    
+    ajStrAssignS(&featLocStr,line);    
+    
+    /* Remove chevrons */
+    p   = ajStrGetuniquePtr(&featLocStr);
+    len = ajStrGetLen(featLocStr);
+    for(i=0;i<len;++i)
+    {
+	if(*p=='<' || *p=='>')
+	    *p=' ';
+	++p;
+    }
+    
+    ajStrRemoveWhiteExcess(&featLocStr);
+    
+    /* Replace sites by a single location */
+    p   = ajStrGetuniquePtr(&featLocStr);
+    len = ajStrGetLen(featLocStr);
+    while(*p)
+    {
+	if(*p=='^')
+	{
+	    *(p++)=' ';
+	    while(*p>='0' && *p<='9')
+		*(p++) = ' ';
+	}
+	else
+	    ++p;
+    }
+    ajStrRemoveWhiteExcess(&featLocStr);
+    
+    
+    /* Replace any x.y with x */
+    exp_ndotn = ajRegCompC("([0-9]+)[.]([0-9]+)");
+    p = ajStrGetuniquePtr(&featLocStr);
+    while(ajRegExec(exp_ndotn,featLocStr))
+    {
+	off = ajRegOffset(exp_ndotn);
+	while(p[off]!='.')
+	    ++off;
+	p[off++] = ' ';
+	while(p[off]>='0' && p[off]<='9')
+	    p[off++] = ' ';
+    }
+    ajRegFree(&exp_ndotn);
+    ajStrRemoveWhiteExcess(&featLocStr);
+    
+    /* Replace any (n) with n */
+    exp_brnbr = ajRegCompC("[(]([0-9]+)[)]");
+    p = ajStrGetuniquePtr(&featLocStr);
+    while(ajRegExec(exp_brnbr,featLocStr))
+    {
+	off = ajRegOffset(exp_brnbr);
+	p[off++] = ' ';
+	while(p[off]!=')')
+	    ++off;
+	p[off++] = ' ';
+    }
+    ajRegFree(&exp_brnbr);
+    ajStrRemoveWhiteExcess(&featLocStr);
+    
+    /* See if its a global complement and remove complement enclosure */
+    if(ajStrPrefixC(featLocStr,"complement("))
+    {
+	len = ajStrGetLen(featLocStr);
+	ajStrAssignSubS(&featLocStr,featLocStr,11,len-2);
+	isglobcomp = ajTrue;
+    }
+    
+    /* Replace .. with - */
+    p = ajStrGetuniquePtr(&featLocStr);
+    while(*p)
+    {
+	if(*p=='.' && *(p+1)=='.')
+	{
+	    *p     = '-';
+	    *(p+1) = ' ';
+	}
+	++p;
+    }
+    
+    ajStrRemoveWhiteExcess(&featLocStr);
+    
+    
+    /* Replace complement(n-n) with ^n-n */
+    exp_compbrndashnbr = ajRegCompC("complement[(]([A-Za-z0-9:.]+)"
+				    "[-]([0-9]+)[)]");
+    
+    p = ajStrGetuniquePtr(&featLocStr);
+    while(ajRegExec(exp_compbrndashnbr,featLocStr))
+    {
+	off = ajRegOffset(exp_compbrndashnbr);
+	for(i=0;i<10;++i)
+	    p[off++] = ' ';
+	p[off] = '^';
+	while(p[off]!=')')
+	    ++off;
+	p[off++] = ' ';
+    }
+    ajStrRemoveWhiteExcess(&featLocStr);
+    ajRegFree(&exp_compbrndashnbr);
+    
+    
+    /* Check for only one "join" */
+    exp_joinbr = ajRegCompC("join[(]");
+    i=0;
+    while(ajRegExec(exp_joinbr,featLocStr))
+    {
+	off = ajRegOffset(exp_joinbr);
+	++i;
+	if(off)
+	{
+	    featWarn("Too many joins");
+	    return ajFalse;
+	}
+	len = ajStrGetLen(featLocStr);
+	ajStrAssignSubS(&featLocStr,featLocStr,5,len-2);
+    }
+    ajRegFree(&exp_joinbr);
+    
+    
+    /* Construct the sequence */
+    handle = ajStrTokenNewC(featLocStr,",");
+    while(ajStrTokenNextParse(&handle,&featLocToken))
+    {
+	cp = ajStrGetPtr(featLocToken);
+	if(*cp=='^')
+	{
+	    ++cp;
+	    docomp = ajTrue;
+	}
+	else
+	    docomp = ajFalse;
+	
+	cq=cp;
+	dbentry = ajFalse;
+	while(*cq)
+	    if(*(cq++)==':')
+	    {
+		dbentry = ajTrue;
+		break;
+	    }
+	
+	if(!dbentry)			/* something in this sequence */
+	{
+	    if(sscanf(cp,"%d-%d",&begin,&end)!=2)
+	    {
+		if(*cp>='0' && *cp<='9')
+		{
+		    if(sscanf(cp,"%d",&begin)==1)
+			end = begin;
+		    else
+		    {
+			featWarn("LocToSeq: Unpaired range");
+			return ajFalse;
+		    }
+		}
+	    }
+	    ajStrFmtLowerSub(seq,--begin,--end);
+	}
+	
+    }
+    ajStrTokenDel(&handle);
+
+    return ajTrue;
+}
+
+
+
 /* @func ajFeatGetLocs ********************************************************
 **
 ** Returns location information from catenated sequence entry

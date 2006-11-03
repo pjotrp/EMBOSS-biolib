@@ -65,6 +65,7 @@ AjBool        ajFeatIsCompMult (const AjPFeature gf);
 AjBool        ajFeatIsLocal (const AjPFeature gf);
 AjBool        ajFeatIsLocalRange (const AjPFeature gf, ajint start, ajint end);
 AjBool        ajFeatIsMultiple (const AjPFeature gf);
+AjBool        ajFeatLocMark(AjPStr *seq, const AjPStr line);
 AjBool        ajFeatLocToSeq(const AjPStr seq, const AjPStr line, AjPStr *res,
 			     const AjPStr usa);
 AjPFeature    ajFeatNew (AjPFeattable thys,
