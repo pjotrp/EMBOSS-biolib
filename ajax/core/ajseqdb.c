@@ -929,7 +929,8 @@ static AjBool seqCdAll(AjPSeqin seqin)
     ajStrDelStatic(&divfile);
     ajCharDel(&name);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -2159,7 +2160,8 @@ static AjBool seqEntrezQryNext(AjPSeqQuery qry, AjPSeqin seqin)
     ajStrDel(&tmpstr);
     ajStrDel(&seqline);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -2544,7 +2546,8 @@ static AjBool seqSeqhoundQryNext(AjPSeqQuery qry, AjPSeqin seqin)
 
     ajStrDel(&giline);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     ajDebug("seqSeqhoundQryNext success: null gilist '%S' QryData '%S'\n",
 	    gilist, (AjPStr) qry->QryData);
@@ -2595,14 +2598,14 @@ static AjBool seqAccessSrs(AjPSeqin seqin)
     {
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-id:%S]",
 		    qry->Application, qry->DbAlias, qry->Id);
-	if(ajStrMatchS(qry->Id, qry->Acc)) /* or accnumber */
+	if(qry->HasAcc && ajStrMatchS(qry->Id, qry->Acc)) /* or accnumber */
 	    ajFmtPrintAppS(&seqin->Filename, "|[%S-acc:%S]'|",
 			   qry->DbAlias, qry->Id);
 	else				/* just the ID query */
 	    ajFmtPrintAppS(&seqin->Filename, "'|",
 			   qry->DbAlias, qry->Id);
     }
-    else if(ajStrGetLen(qry->Acc))
+    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	ajFmtPrintS(&seqin->Filename, "%S -e '[%S-acc:%S]'|",
 		    qry->Application, qry->DbAlias, qry->Acc);
     else if(ajStrGetLen(qry->Gi))	      /* do any SRS servers support GI? How? */
@@ -2633,7 +2636,8 @@ static AjBool seqAccessSrs(AjPSeqin seqin)
     }
     ajStrAssignS(&seqin->Db, qry->DbName);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -2669,14 +2673,14 @@ static AjBool seqAccessSrsfasta(AjPSeqin seqin)
     {
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-id:%S]",
 		    qry->Application, qry->DbAlias, qry->Id);
-	if(ajStrMatchS(qry->Id, qry->Acc))
+	if(qry->HasAcc && ajStrMatchS(qry->Id, qry->Acc))
 	    ajFmtPrintAppS(&seqin->Filename, "|[%S-acc:%S]'|",
 			   qry->DbAlias, qry->Id);
 	else				/* just the ID query */
 	    ajFmtPrintAppS(&seqin->Filename, "'|",
 			   qry->DbAlias, qry->Id);
     }
-    else if(ajStrGetLen(qry->Acc))
+    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	ajFmtPrintS(&seqin->Filename, "%S -d -sf fasta '[%S-acc:%S]'|",
 		    qry->Application, qry->DbAlias, qry->Acc);
     else if(ajStrGetLen(qry->Gi))
@@ -2714,7 +2718,8 @@ static AjBool seqAccessSrsfasta(AjPSeqin seqin)
 
     ajStrAssignS(&seqin->Db, qry->DbName);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -2773,11 +2778,11 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
     {
 	ajFmtPrintAppS(&get, "+[%S-id:%S]",
 		       qry->DbAlias, qry->Id);
-	if(ajStrMatchS(qry->Id, qry->Acc))
+	if(qry->HasAcc && ajStrMatchS(qry->Id, qry->Acc))
 	    ajFmtPrintAppS(&get, "|[%S-acc:%S]",
 			   qry->DbAlias, qry->Id);
     }
-    else if(ajStrGetLen(qry->Acc))
+    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	ajFmtPrintAppS(&get, "+[%S-acc:%S]",
 		       qry->DbAlias, qry->Acc);
     else if(ajStrGetLen(qry->Gi))
@@ -2845,7 +2850,8 @@ static AjBool seqAccessSrswww(AjPSeqin seqin)
 
     ajStrAssignS(&seqin->Db, qry->DbName);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -3409,7 +3415,8 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 
     ajStrAssignS(&seqin->Db, qry->DbName);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     ajStrDel(&name);
 /*    ajStrDel(&wildname);*/
@@ -3485,7 +3492,8 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
     if(!ajListLength(qryd->List))
 	return ajFalse;
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -3580,7 +3588,8 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
 
     ajBtreeIdDel(&entry);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -3701,7 +3710,8 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     AjPStr   kwid  = NULL;
 
     
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     qryd = qry->QryData;
 
@@ -4056,7 +4066,8 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
 
     seqEmbossGcgLoadBuff(seqin);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -4856,7 +4867,8 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
     if(!ajListLength(qryd->List))
 	return ajFalse;
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -4878,7 +4890,8 @@ static AjBool seqCdQryQuery(AjPSeqQuery qry)
 {
     SeqPCdQry qryd;
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     if(ajStrGetLen(qry->Id))
 	if(seqCdIdxQuery(qry))
@@ -5011,7 +5024,8 @@ static AjBool seqCdQryNext(AjPSeqQuery qry)
 
     AJFREE(entry);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -5065,7 +5079,8 @@ static AjBool seqBlastQryNext(AjPSeqQuery qry)
 
     AJFREE(entry);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -5746,7 +5761,8 @@ static AjBool seqGcgAll(AjPSeqin seqin)
     }
     seqGcgLoadBuff(seqin);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -6276,7 +6292,8 @@ static AjBool seqBlastAll(AjPSeqin seqin)
     qryd->idnum++;
     ajStrAssignS(&seqin->Db, qry->DbName);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -6462,7 +6479,8 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     ajStrDel(&proxyName);
     ajStrDel(&httpver);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -6580,7 +6598,8 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
     ajStrDel(&proxyName);
     ajStrDel(&httpver);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -6674,7 +6693,8 @@ static AjBool seqAccessUrl(AjPSeqin seqin)
     ajStrDel(&proxyName);
     ajStrDel(&httpver);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
@@ -7172,7 +7192,8 @@ static AjBool seqAccessApp(AjPSeqin seqin)
 
     ajStrDel(&pipename);
 
-    qry->QryDone = ajTrue;
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
 
     return ajTrue;
 }
