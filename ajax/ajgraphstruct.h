@@ -109,6 +109,7 @@ typedef struct AjSGraphPlpData {
 ** @attr minmaxcalc [AjBool] Set true when (xy)start/end are set
 ** @attr isdata [AjBool] True for a data type graph
 ** @attr displaytype [ajint] Displaytype index to graphType
+** @attr desc [AjPStr] Plot description, used to set default title
 ** @attr title [AjPStr] Plot title
 ** @attr subtitle [AjPStr] Plot subtitle
 ** @attr xaxis [AjPStr] Plot x axis title
@@ -136,6 +137,7 @@ typedef struct AjSGraphPlp {
   AjBool minmaxcalc;
   AjBool isdata;
   ajint displaytype;
+  AjPStr desc;
   AjPStr title;
   AjPStr subtitle;
   AjPStr xaxis;
@@ -168,6 +170,6 @@ enum AjEGraphColours {BLACK, RED, YELLOW, GREEN, AQUAMARINE,
 		      CYAN, TURQUOISE, MAGENTA, SALMON, WHITE};
 
 
-#define NCOLS 16
+#define MAXCOL 15
 
 #endif /* ajgraphstruct_h */
