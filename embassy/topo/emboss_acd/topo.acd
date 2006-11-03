@@ -276,6 +276,7 @@ section: output [
 
   graph: graph [
     standard: "Y"
+    gdesc: "Membrane topology"
   ]
 
 endsection: output
