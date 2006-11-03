@@ -1,4 +1,113 @@
 Version 4.1.0
+	The -sid qualifier now overwrites the sequence id if used. The
+	-sid value will be used for creating the output filename and for
+	reporting the sequence identifier in output files. For more than
+	one sequence as input currently the same ID is used. We may change
+	this in future to generate new IDs from this base name.
+
+	New sequence format gifasta is the same as "ncbi" but uses the GI
+	number as the identifier. Because the output is the same for both
+	formats we have to require -sformat gifasta to be on the
+	commandline. The default for such files will remain "ncbi" as the
+	automatically processed format. On output if there is no GI number
+	a dummy value of "000000" is currently used.
+
+	coderet now writes non-coding sequence to a new output file.
+
+	New feature function ajFeatLocMark marks selected features as
+	lower case. Used by coderet to report non-coding regions.
+
+	The help output now correctly reports output sequence default
+	filenames.
+
+	Phylip input distance matrices now allow integer values to be
+	treated as reals, although there is a possible confusion over
+	integer replicate values so the use of a trailing ".0" is strongly
+	recommended.
+	
+	Sequences with NCBI deflines and no ID after the final "|" were
+	using the version part of the seqversion ("1" from "AB123456.1")
+	instead of the "AB123456" part to set the ID.
+
+	Graph titles were not standard on the general "graph" type output,
+	but are consistent for xygraph outputs. A new attribute gdesc
+	defines a prefix for graph titles which can be appended to by the
+	calling program, usually with a description of the input (sequence
+	USA, input filename). A new call ajGraphSetTitlePlus defines the
+	text to add to the gdesc as "[gdesc] of [text]". All graphs were
+	standardized except pepinfo which has 10 subplot titles already in
+	the intended format. This will be corrected later to have standard
+	main titles and shorter subplot titles.
+
+	The version of plplot we use has a bug in calculating character
+	sizes where the origin in user units is not the default of
+	(0,0). This has been fixed in the plgchrW and plstrlW functions in
+	the copy that is included with EMBOSS.
+
+	Dreg and preg ignored sequence begin and end positions. Both
+	programs now use the embpatlist function calls to process sequence
+	ranges.
+
+	Fuzznuc, fuzzpro and fuzztran lost the ability to use the sequence
+	begin and end positions when we switched to pattern lists. This
+	has been restored in the pattern list processing code.
+	
+	The logfile caused a file close error if it was read only (beause
+	it had not been successfully opened). Opening the logfile now
+	tests the file is writable and ignores logging for a read-only file.
+
+	More case-sensitive sequence comparison and matching functions
+	added to be consistent about providing both versions.
+
+	A few sequence databases have no accession number. For these a new
+	database attribute hasaccession: "N" in emboss.default prevents
+	EMBOSS trying to search the ACC field in addition to the ID field.
+
+	A few databases with duplicate IDs should be treated as
+	case-sensitive. The original example was a pdbprot database,
+	containing FASTA format sequences of individual chains from PDB
+	entries. In PDB, the entry itself is a 4-character string, and the
+	chain is a single character A through Z. When an entry has more
+	than 26 chains, the next 26 are labelled a through z. Pdbprot
+	appends these as _A, _B, etc. PDBPROT is available from some
+	public SRS servers - see the official list at
+	http://downloads.lionbio.co.uk/publicsrs.html.
+	This is resolved by adding a new database attribute caseidmatch in
+	emboss.default. A value of "Y" will force EMBOSS to exactly match
+	the case of the whole ID. This is done by post-processing and
+	rejecting entries with an ID that fails to match.
+	
+	The run date included in report output has changed format to have
+	the day first and to lose the leading zero when the day is 1st to
+	9th of the month.
+
+	Program cpgplot can run on more than one input sequence, but the
+	plot failed on the second sequence. Fixing this required adding a
+	new function ajGraphDataReplaceI to replace the 1st, 2nd 3rd,
+	etc. subgraph. Some memory cleanup was also added to remove
+	the replaced graph data objects.
+
+	Programs pepwindow and pepwindowall can now process any
+	protein sequence. In previous versions pepwindow was restricted to
+	pureprotein (no ambiguity codes) while pepwindowall accepted any
+	protein sequence (it has to handle gaps) but was using a score of
+	zero for unknown amino acid residues. Changed so that missing amino
+	acid values can be filled in using Dayhoff frequency weighted
+	averages for B, J and Z and an overall average for X, J and O.
+
+	Program octanol can accept any protein sequence. Interpolated
+	values are used for B, Z and J. An average over all values is used
+	for X and also for O and U where there is no data. Interpolations
+	and averages used the Dayhoff amino acid frequencies.
+
+	Program iep can accept any protein sequence. Ambiguity codes B and
+	Z are resolved by converting to the carboxylic acid (D or E) or
+	amide (N or Q) according to the Dayhoff amino acid frequencies,
+	giving a consistent value for any input protein.
+
+	Sequence set type testing was checking whether the seqset is
+	defined as protein but ignoring the type of the first
+	sequence. This is now fixed.
 
 	Program tfm looks in the obsolete install directory with the -html
 	option. Changed to find the embassy package name from the
@@ -19,7 +128,8 @@ Version 4.1.0
 	fasta or ncbi format.
 
 	The report for digest has Cterm and Nterm columns capitalised to
-	match the rest of the report.
+	match the rest of the report. Sequence ranges now give correct
+	cterm and nterm results.
 
 	The list file Cut.index for codon usage tables was changed to
 	remove old file names (commented out list at the end) and to
