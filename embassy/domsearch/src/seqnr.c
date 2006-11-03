@@ -87,7 +87,7 @@ int main(int argc, char **argv)
     AjPSeqset  seqset    = NULL;    /* Seqset (re-used).                     */
     AjPSeqin   seqin     = NULL;    /* Seqin (re-used).                      */
     AjPList    seq_list  = NULL;    /* Main list for redundancy removal.     */
-    AjPSeq     seq_tmp   = NULL;    /* Temp. pointer for making seq_list.    */
+    EmbPDmxNrseq seq_tmp = NULL;    /* Temp. pointer for making seq_list.    */
     ajint      seq_siz   = 0;       /* Size of seq_list.                     */
     AjPInt     keep      = NULL;    /* 1: Sequence in seq_list was classed as
 				       non-redundant, 0: redundant.          */
@@ -199,9 +199,10 @@ int main(int argc, char **argv)
 	{
 	    for(x=0; x<infhits->N; x++)
 	    {
-		seq_tmp = ajSeqNew();
-		ajStrAssignS(&seq_tmp->Acc,infhits->hits[x]->Acc);
-		ajStrAssignS(&seq_tmp->Seq,infhits->hits[x]->Seq);
+		AJNEW0(seq_tmp);
+		seq_tmp->Seq = ajSeqNew();
+		ajStrAssignS(&seq_tmp->Seq->Acc,infhits->hits[x]->Acc);
+		ajStrAssignS(&seq_tmp->Seq->Seq,infhits->hits[x]->Seq);
 		ajListPushApp(seq_list,seq_tmp);		
 	    }
 	} 
@@ -209,9 +210,10 @@ int main(int argc, char **argv)
 	{	 
 	    for(x=0;x<ajSeqsetSize(seqset);x++)
 	    {
-		seq_tmp = ajSeqNew();
-		ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-		ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
+		AJNEW0(seq_tmp);
+		seq_tmp->Seq = ajSeqNew();
+		ajStrAssignS(&seq_tmp->Seq->Acc, ajSeqsetAcc(seqset, x));
+		ajStrAssignC(&seq_tmp->Seq->Seq, ajSeqsetSeq(seqset, x));
 		ajListPushApp(seq_list,seq_tmp);		
 	    }
 	    ajSeqsetDel(&seqset);
@@ -287,10 +289,11 @@ int main(int argc, char **argv)
 		{
 		    for(x=0; x<hitlist->N; x++)
 		    {
-			seq_tmp = ajSeqNew();
-			ajStrAssignS(&seq_tmp->Acc,hitlist->hits[x]->Acc);
-			ajStrAssignS(&seq_tmp->Seq,hitlist->hits[x]->Seq);
-			ajSeqGarbageOn(&seq_tmp);
+			AJNEW0(seq_tmp);
+			seq_tmp->Seq = ajSeqNew();
+			seq_tmp->Garbage = ajTrue;
+			ajStrAssignS(&seq_tmp->Seq->Acc,hitlist->hits[x]->Acc);
+			ajStrAssignS(&seq_tmp->Seq->Seq,hitlist->hits[x]->Seq);
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
 		    embHitlistDel(&hitlist);
@@ -299,10 +302,11 @@ int main(int argc, char **argv)
 		{	 
 		    for(x=0;x<ajSeqsetSize(seqset);x++)
 		    {
-			seq_tmp = ajSeqNew();
-			ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-			ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
-			ajSeqGarbageOn(&seq_tmp);
+			AJNEW0(seq_tmp);
+			seq_tmp->Seq = ajSeqNew();
+			seq_tmp->Garbage = ajTrue;
+			ajStrAssignS(&seq_tmp->Seq->Acc, ajSeqsetAcc(seqset, x));
+			ajStrAssignC(&seq_tmp->Seq->Seq, ajSeqsetSeq(seqset, x));
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
 		    ajSeqsetDel(&seqset);
@@ -380,12 +384,13 @@ int main(int argc, char **argv)
 		{
 		    for(x=0; x<scopalg->N; x++)
 		    {
-			seq_tmp = ajSeqNew();
-			ajStrAssignS(&seq_tmp->Acc,scopalg->Codes[x]);
-			ajStrAssignS(&seq_tmp->Seq,scopalg->Seqs[x]);
+			AJNEW0(seq_tmp);
+			seq_tmp->Seq = ajSeqNew();
+			seq_tmp->Garbage = ajTrue;
+			ajStrAssignS(&seq_tmp->Seq->Acc,scopalg->Codes[x]);
+			ajStrAssignS(&seq_tmp->Seq->Seq,scopalg->Seqs[x]);
 			/* Remove gap char's & whitespace. */
-			ajStrRemoveGap(&seq_tmp->Seq);  
-			ajSeqGarbageOn(&seq_tmp);
+			ajStrRemoveGap(&seq_tmp->Seq->Seq);  
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
 		    ajDmxScopalgDel(&scopalg);
@@ -394,10 +399,11 @@ int main(int argc, char **argv)
 		{	 
 		    for(x=0;x<ajSeqsetSize(seqset);x++)
 		    {
-			seq_tmp = ajSeqNew();
-			ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-			ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
-			ajSeqGarbageOn(&seq_tmp);
+			AJNEW0(seq_tmp);
+			seq_tmp->Seq = ajSeqNew();
+			seq_tmp->Garbage = ajTrue;
+			ajStrAssignS(&seq_tmp->Seq->Acc, ajSeqsetAcc(seqset, x));
+			ajStrAssignC(&seq_tmp->Seq->Seq, ajSeqsetSeq(seqset, x));
 			ajListPushApp(seq_list,seq_tmp);		
 		    }
 		    ajSeqsetDel(&seqset);
@@ -448,7 +454,10 @@ int main(int argc, char **argv)
 	ajStrDel(&inname);
 
 	while(ajListPop(seq_list, (void **) &seq_tmp))
-	    ajSeqDel(&seq_tmp);
+	{
+	    ajSeqDel(&seq_tmp->Seq);
+	    AJFREE(seq_tmp);
+	}
 	ajListDel(&seq_list);
 	ajIntDel(&keep);	
 	ajIntDel(&nokeep);	

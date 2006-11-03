@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     AjIList    iter      = NULL; /* Iterator for domain list.                */    
     AjPInt     keep      = NULL; /*1: This sequence was kept after.          */
                                  /* redundancy removal, 0: it was discarded. */
-    AjPSeq     seq       = NULL; /* A temporary pointer.                     */
+    EmbPDmxNrseq nrseq   = NULL; /* A temporary pointer.                     */
     AjPMatrixf matrix    = NULL; /* Substitution matrix.                     */
     AjPDomain  domain    = NULL; /* Pointer to domain structure.             */
     AjPDomain  domain_tmp= NULL; /* Pointer to domain structure.             */
@@ -224,9 +224,10 @@ int main(int argc, char **argv)
 			ret=embDmxSeqNR(list_seqs, &keep, &nsetnr, matrix, 
 					gapopen, gapextend,thresh, ajFalse);
 		    else
-			ret=embDmxSeqNRRange(list_seqs, &keep, &nsetnr, matrix, 
+			ret=embDmxSeqNRRange(list_seqs, &keep,
+					     &nsetnr, matrix, 
 					     gapopen, gapextend,threshlow, 
-					     threshup, ajFalse);		    
+					     threshup, ajFalse);
 
 
 		    if(!ret)
@@ -298,8 +299,11 @@ int main(int argc, char **argv)
 
 		/* Free up the seqs list and create a new one. */
 		iter=ajListIterRead(list_seqs);
-		while((seq=(AjPSeq)ajListIterNext(iter)))
-		    ajSeqDel(&seq);
+		while((nrseq=(EmbPDmxNrseq)ajListIterNext(iter)))
+		{
+		    ajSeqDel(&nrseq->Seq);
+		    AJFREE(nrseq);
+		}
 		ajListIterFree(&iter);	
 		ajListDel(&list_seqs);	    
 	    }
@@ -331,16 +335,17 @@ int main(int argc, char **argv)
 	/* Add a new sequence to the list - only ever one chain (chain 0) 
 	   for domain files. */
 	nset++;
-	seq=ajSeqNew();
+	AJNEW0(nrseq);
+	nrseq->Seq=ajSeqNew();
 
 	/* pdb sequence has priority. */
         if((ajStrGetLen(ajDomainGetSeqPdb(domain)))==0)
-            ajStrAssignS(&seq->Seq, ajDomainGetSeqSpr(domain));
+            ajStrAssignS(&nrseq->Seq->Seq, ajDomainGetSeqSpr(domain));
         else
-            ajStrAssignS(&seq->Seq, ajDomainGetSeqPdb(domain));
+            ajStrAssignS(&nrseq->Seq->Seq, ajDomainGetSeqPdb(domain));
 
-	ajStrAssignS(&seq->Name, ajDomainGetPdb(domain));
-	ajListPushApp(list_seqs,seq);	
+	ajStrAssignS(&nrseq->Seq->Name, ajDomainGetPdb(domain));
+	ajListPushApp(list_seqs,nrseq);	
 
 
 	/* Add the current domain structure to the list. */
@@ -372,7 +377,7 @@ int main(int argc, char **argv)
 			gapextend,thresh, ajFalse);		
 	else
 	    embDmxSeqNRRange(list_seqs, &keep, &nsetnr, matrix, gapopen, 
-			     gapextend,threshlow, threshup, ajFalse);		
+			     gapextend,threshlow, threshup, ajFalse);
 
 	/* Write file with domain entries that are retained. */
 	for(iter=ajListIterRead(list_domain), x=0;
@@ -413,8 +418,11 @@ int main(int argc, char **argv)
     
     /* Free up the seqs list. */
     iter=ajListIterRead(list_seqs);
-    while((seq=(AjPSeq)ajListIterNext(iter)))
-	ajSeqDel(&seq);
+    while((nrseq=(EmbPDmxNrseq)ajListIterNext(iter)))
+    {
+	ajSeqDel(&nrseq->Seq);
+	AJFREE(nrseq);
+    }
     ajListIterFree(&iter);	
     ajListDel(&list_seqs);	    
     
