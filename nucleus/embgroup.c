@@ -197,6 +197,8 @@ AjBool embGrpGetEmbassy(const AjPStr appname, AjPStr* embassyname)
     AjPStr acdrootdir  = NULL;
     AjPStr acdrootinst = NULL;
     AjPStr acdpack     = NULL;
+    AjPFile acdfile     = NULL;
+    AjPStr filename    = NULL;
     AjBool ok = ajFalse;
 
     /* look at all EMBOSS ACD files */
@@ -229,7 +231,13 @@ AjBool embGrpGetEmbassy(const AjPStr appname, AjPStr* embassyname)
     }
     
     /* normal EMBOSS ACD */
-    ok = grpGetAcdByname(appname, acdroot, embassyname);
+    ajFmtPrintS(&filename, "%S%S.acd", acdroot, appname);
+    acdfile = ajFileNewIn(filename);
+    if(acdfile) {
+	grpParseEmbassy(acdfile, embassyname);
+	ajFileClose(&acdfile);
+	ok = ajTrue;
+    }
 
     if(!ok)
     {
@@ -245,6 +253,7 @@ AjBool embGrpGetEmbassy(const AjPStr appname, AjPStr* embassyname)
     ajStrDel(&acdrootdir);
     ajStrDel(&acdrootinst);
     ajStrDel(&acdpack);
+    ajStrDel(&filename);
 
     ajDebug("embGrpGetEmbassy ok:%B embassy '%S'\n",
 	    ok, *embassyname);
