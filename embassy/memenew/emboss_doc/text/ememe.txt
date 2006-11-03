@@ -425,7 +425,7 @@ Usage
    Here is a sample session with ememe
 
 
-% ememe crp0.s -mod oops -pal ex1.html 
+% ememe crp0.s  -mod oops -revcomp ex2.html 
 Motif detection
 
    Go to the input files for this example
@@ -434,20 +434,12 @@ Motif detection
    Example 2
 
 
-% ememe crp0.s  -mod oops -revcomp ex2.html 
-Motif detection
-
-   Go to the output files for this example
-
-   Example 3
-
-
 % ememe crp0.s -mod oops -revcomp -w 20 ex3.html 
 Motif detection
 
    Go to the output files for this example
 
-   Example 4
+   Example 3
 
 
 % ememe INO_up800.s -mod anr -revcomp -bfile memenew/yeast.nc.6.freq ex4.html 
@@ -456,7 +448,7 @@ Motif detection
    Go to the input files for this example
    Go to the output files for this example
 
-   Example 5
+   Example 4
 
 
 % ememe lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex5.html 
@@ -465,7 +457,7 @@ Motif detection
    Go to the input files for this example
    Go to the output files for this example
 
-   Example 6
+   Example 5
 
 
 % ememe farntrans5.s -mod anr -maxw 40 -maxsites 50 ex6.html 
@@ -474,7 +466,7 @@ Motif detection
    Go to the input files for this example
    Go to the output files for this example
 
-   Example 7
+   Example 6
 
 
 % ememe farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex7.html 
@@ -482,7 +474,7 @@ Motif detection
 
    Go to the output files for this example
 
-   Example 8
+   Example 7
 
 
 % ememe farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 ex8.html 
@@ -490,13 +482,21 @@ Motif detection
 
    Go to the output files for this example
 
-   Example 9
+   Example 8
 
 
 % ememe adh.s -mod zoops -nmotifs 20 -evt 0.01  ex9.html 
 Motif detection
 
    Go to the input files for this example
+   Go to the output files for this example
+
+   Example 9
+
+
+% ememe crp0.s -mod oops -pal ex1.html 
+Motif detection
+
    Go to the output files for this example
 
   EXAMPLES:
@@ -1010,7 +1010,7 @@ GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTGGAAAGTATTGAAAGTTAAT
 T
 TGTGAGTGGTCGCACATATCCTGTT
 
-  Input files for usage example 4
+  Input files for usage example 3
 
   File: INO_up800.s
 
@@ -1228,7 +1228,7 @@ tttttc  0.00190678897202784
 tttttg  0.00124276713890848
 tttttt  0.00570057577663487
 
-  Input files for usage example 5
+  Input files for usage example 4
 
   File: lipocalin.s
 
@@ -1263,7 +1263,7 @@ ECSELSMVADKTEKAGEYSVTYDGFNTFTIPKTDYDNFLMAHLINEKDGETFQLMGLYGREPDLSSDIKERFAKLCEEH
 G
 ILRENIIDLSNANRCLQARE
 
-  Input files for usage example 6
+  Input files for usage example 5
 
   File: farntrans5.s
 
@@ -1312,7 +1312,7 @@ KEDTITWLLH RQVSSHGCMK FESELNASYD QSDDGGFQGR ENKFADTCYA FWCLNSLHLL
 TKDWKMLCQT ELVTNYLLDR TQKTLTGGFS KNDEEDADLY HSCLGSAALA LIEGKFNGEL
 CIPQEIFNDF SKRCCF
 
-  Input files for usage example 9
+  Input files for usage example 8
 
   File: adh.s
 
@@ -1506,4 +1506,4 @@ Output file format
 
   Output files for usage example
 
-  File: ex1.html
+  File: ex2.html

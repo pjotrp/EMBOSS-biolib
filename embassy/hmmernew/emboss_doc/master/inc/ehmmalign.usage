@@ -4,7 +4,7 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmalign ../ehmmcalibrate-ex1-keep/globino.hmm globins630.fa globins630.ali </b>
+% <b>ehmmalign ../ehmmcalibrate-ex-keep/globino.hmm globins630.fa globins630.ali </b>
 Align sequences to an HMM profile
 
 hmmalign - align sequences to an HMM profile
@@ -12,13 +12,13 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:             ../ehmmcalibrate-ex1-keep/globino.hmm
+HMM file:             ../ehmmcalibrate-ex-keep/globino.hmm
 Sequence file:        ./ehmmalign-1234567890.1234
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Alignment saved in file globins630.ali
 
-hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex1-keep/globino.hmm ./ehmmalign-1234567890.1234
+hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex-keep/globino.hmm ./ehmmalign-1234567890.1234
 
 
 </pre></td></tr></table><p>

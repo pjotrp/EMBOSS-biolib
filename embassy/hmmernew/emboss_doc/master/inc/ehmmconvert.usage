@@ -4,7 +4,7 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmconvert ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmconvert -format G </b>
+% <b>ehmmconvert ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert -format G </b>
 Convert between profile HMM file formats
 
 hmmconvert - convert between profile HMM file formats
@@ -12,7 +12,7 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Input HMM file:           ../ehmmcalibrate-ex1-keep/globino.hmm
+Input HMM file:           ../ehmmcalibrate-ex-keep/globino.hmm
 Output HMM file:          globino.ehmmconvert
 Converting to:            GCG Profile .prf
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,7 +21,7 @@ Converting to:            GCG Profile .prf
 
 1 HMM(s) converted and written to globino.ehmmconvert
 
-hmmconvert -p  -F  ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmconvert
+hmmconvert -p  -F  ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert
 
 
 </pre></td></tr></table><p>

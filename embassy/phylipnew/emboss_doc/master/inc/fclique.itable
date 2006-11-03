@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Phylip clique program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.fclique</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -71,7 +71,7 @@
 <td>-outtreefile</td>
 <td>Phylip tree output file (optional)</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.fclique</td>
 </tr>
 
 <tr>

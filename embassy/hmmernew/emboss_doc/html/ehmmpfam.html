@@ -138,7 +138,7 @@ Where possible, the same command-line qualifier names and parameter order is use
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File of HMMs.
   [-seqfile]           seqall     File of sequences.
-   -a                  integer    [0] Limits the alignment output to the <n>
+   -a                  integer    [100] Limits the alignment output to the <n>
                                   best scoring domains. -A0 shuts off the
                                   alignment output and can be used to reduce
                                   the size of output files. (Any integer
@@ -361,14 +361,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-a</td>
-<td>Limits the alignment output to the <n> best scoring domains. -A0 shuts off the alignment output and can be used to reduce the size of output files.</td>
+<td>Limits the alignment output to the &lt;n&gt; best scoring domains. -A0 shuts off the alignment output and can be used to reduce the size of output files.</td>
 <td>Any integer value</td>
-<td>0</td>
+<td>100</td>
 </tr>
 
 <tr>
 <td>-e</td>
-<td>Set the E-value cutoff for the per-sequence ranked hit list to <x>, where <x> is a positive real number. The default is 10.0. Hits with E-values better than (less than) this threshold will be shown.</td>
+<td>Set the E-value cutoff for the per-sequence ranked hit list to &lt;x&gt;, where &lt;x&gt; is a positive real number. The default is 10.0. Hits with E-values better than (less than) this threshold will be shown.</td>
 <td>Any numeric value</td>
 <td>10.</td>
 </tr>
@@ -377,7 +377,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>There is a separate output report for each sequence in seqfile. This report consists of three sections: a ranked list of the best scoring HMMs, a list of the best scoring domains in order of their occurrence in the sequence, and alignments for all the best scoring domains.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmpfam</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -395,14 +395,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-t</td>
-<td>Set the bit score cutoff for the per-sequence ranked hit list to <x>, where <x> is a real number. The default is negative infinity; by default, the threshold is controlled by E-value and not by bit score. Hits with bit scores better than (greater than) this threshold will be shown.</td>
+<td>Set the bit score cutoff for the per-sequence ranked hit list to &lt;x&gt;, where &lt;x&gt; is a real number. The default is negative infinity; by default, the threshold is controlled by E-value and not by bit score. Hits with bit scores better than (greater than) this threshold will be shown.</td>
 <td>Any numeric value</td>
 <td>-1000000.</td>
 </tr>
 
 <tr>
 <td>-z</td>
-<td>Calculate the E-value scores as if we had seen a sequence database of <n> sequences. The default is arbitrarily set to 59021, the size of Swissprot 34.</td>
+<td>Calculate the E-value scores as if we had seen a sequence database of &lt;n&gt; sequences. The default is arbitrarily set to 59021, the size of Swissprot 34.</td>
 <td>Any integer value</td>
 <td>59021</td>
 </tr>
@@ -436,35 +436,35 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-cutga</td>
-<td>Use Pfam GA (gathering threshold) score cutoffs. Equivalent to -globT <GA1> -domT <GA2>, but the GA1 and GA2 cutoffs are read from each HMM in the input HMM database individually. hmmbuild puts these cutoffs there if the alignment file was annotated in a Pfam-friendly alignment format (extended SELEX or Stockholm format) and the optional GA annotation line was present. If these cutoffs are not set in the HMM file, -cut ga doesn't work.</td>
+<td>Use Pfam GA (gathering threshold) score cutoffs. Equivalent to -globT &lt;GA1&gt; -domT &lt;GA2&gt;, but the GA1 and GA2 cutoffs are read from each HMM in the input HMM database individually. hmmbuild puts these cutoffs there if the alignment file was annotated in a Pfam-friendly alignment format (extended SELEX or Stockholm format) and the optional GA annotation line was present. If these cutoffs are not set in the HMM file, -cut ga doesn't work.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-cuttc</td>
-<td>Use Pfam TC (trusted cutoff) score cutoffs. Equivalent to -globT <TC1> -domT <TC2>, but the TC1 and TC2 cutoffs are read from each HMM in hmmfile individually. hmmbuild puts these cutoffs there if the alignment file was annotated in a Pfam-friendly alignment format (extended SELEX or Stockholm format) and the optional TC annotation line was present. If these cutoffs are not set in the HMM file, -cut tc doesn't work.</td>
+<td>Use Pfam TC (trusted cutoff) score cutoffs. Equivalent to -globT &lt;TC1&gt; -domT &lt;TC2&gt;, but the TC1 and TC2 cutoffs are read from each HMM in hmmfile individually. hmmbuild puts these cutoffs there if the alignment file was annotated in a Pfam-friendly alignment format (extended SELEX or Stockholm format) and the optional TC annotation line was present. If these cutoffs are not set in the HMM file, -cut tc doesn't work.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-cutnc</td>
-<td>Use Pfam NC (noise cutoff) score cutoffs. Equivalent to -globT <NC1> -domT <NC2>, but the NC1 and NC2 cutoffs are read from each HMM in hmmfile individually. hmmbuild puts these cutoffs there if the alignment file was annotated in a Pfam-friendly alignment format (extended SELEX or Stockholm format) and the optional NC annotation line was present. If these cutoffs are not set in the HMM file, -cut nc doesn't work.</td>
+<td>Use Pfam NC (noise cutoff) score cutoffs. Equivalent to -globT &lt;NC1&gt; -domT &lt;NC2&gt;, but the NC1 and NC2 cutoffs are read from each HMM in hmmfile individually. hmmbuild puts these cutoffs there if the alignment file was annotated in a Pfam-friendly alignment format (extended SELEX or Stockholm format) and the optional NC annotation line was present. If these cutoffs are not set in the HMM file, -cut nc doesn't work.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-dome</td>
-<td>Set the E-value cutoff for the per-domain ranked hit list to <x>, where <x> is a positive real number. The default is infinity; by default, all domains in the sequences that passed the frst threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list.</td>
+<td>Set the E-value cutoff for the per-domain ranked hit list to &lt;x&gt;, where &lt;x&gt; is a positive real number. The default is infinity; by default, all domains in the sequences that passed the frst threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list.</td>
 <td>Any numeric value</td>
 <td>1000000.</td>
 </tr>
 
 <tr>
 <td>-domt</td>
-<td>Set the bit score cutoff for the per-domain ranked hit list to <x>, where <x> is a real number. The default is negative infinity; by default, all domains in the sequences that passed the frst threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list. Important note: only one domain in a sequence is absolutely controlled by this parameter, or by --domT. The second and subsequent domains in a sequence have a de facto bit score threshold of 0 because of the details of how HMMER works. HMMER requires at least one pass through the main model per sequence; to do more than one pass (more than one domain) the multidomain alignment must have a better score than the single domain alignment, and hence the extra domains must contribute positive score. See the Users' Guide for more detail.</td>
+<td>Set the bit score cutoff for the per-domain ranked hit list to &lt;x&gt;, where &lt;x&gt; is a real number. The default is negative infinity; by default, all domains in the sequences that passed the frst threshold will be reported in the second list, so that the number of domains reported in the per-sequence list is consistent with the number that appear in the per-domain list. Important note: only one domain in a sequence is absolutely controlled by this parameter, or by --domT. The second and subsequent domains in a sequence have a de facto bit score threshold of 0 because of the details of how HMMER works. HMMER requires at least one pass through the main model per sequence; to do more than one pass (more than one domain) the multidomain alignment must have a better score than the single domain alignment, and hence the extra domains must contribute positive score. See the Users' Guide for more detail.</td>
 <td>Any numeric value</td>
 <td>-1000000.</td>
 </tr>
@@ -548,7 +548,7 @@ MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455

@@ -31,8 +31,10 @@
                                   numeric value)
    -endgaps            boolean    [N] Mark end gaps
    -most               boolean    [N] Use most informative sequence algorithm
-   -dotoutfile         outfile    Vienna dotplot postscript output file
-   -ssoutfile          outfile    Vienna structure postscript output file
+   -dotoutfile         outfile    [*.vrnaalifoldpf] Vienna dotplot postscript
+                                  output file
+   -ssoutfile          outfile    [*.vrnaalifoldpf] Vienna structure
+                                  postscript output file
 
    Associated qualifiers:
 

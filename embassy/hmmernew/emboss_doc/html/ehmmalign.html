@@ -111,7 +111,7 @@ Please read the Userguide.pdf distributed with the original HMMER and included i
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmalign ../ehmmcalibrate-ex1-keep/globino.hmm globins630.fa globins630.ali </b>
+% <b>ehmmalign ../ehmmcalibrate-ex-keep/globino.hmm globins630.fa globins630.ali </b>
 Align sequences to an HMM profile
 
 hmmalign - align sequences to an HMM profile
@@ -119,13 +119,13 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:             ../ehmmcalibrate-ex1-keep/globino.hmm
+HMM file:             ../ehmmcalibrate-ex-keep/globino.hmm
 Sequence file:        ./ehmmalign-1234567890.1234
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Alignment saved in file globins630.ali
 
-hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex1-keep/globino.hmm ./ehmmalign-1234567890.1234
+hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex-keep/globino.hmm ./ehmmalign-1234567890.1234
 
 
 </pre></td></tr></table><p>
@@ -146,7 +146,8 @@ Where possible, the same command-line qualifier names and parameter order is use
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File containing a HMM profile
   [-seqfile]           seqset     File containing a (set of) sequence(s)
-  [-o]                 align      Multiple sequence alignment output file.
+  [-o]                 align      [*.ehmmalign] Multiple sequence alignment
+                                  output file.
 
    Additional (Optional) qualifiers:
    -m                  boolean    [N] Include in the alignment only those
@@ -258,7 +259,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>[-o]<br>(Parameter 3)</td>
 <td>Multiple sequence alignment output file.</td>
 <td>Alignment output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmalign</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -340,7 +341,7 @@ Automatic processing of gzipped files is not supported.
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-<p><h3>File: ../ehmmcalibrate-ex1-keep/globino.hmm</h3>
+<p><h3>File: ../ehmmcalibrate-ex-keep/globino.hmm</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 HMMER2.0  [2.3.2]
@@ -351,9 +352,9 @@ RF    no
 CS    no
 MAP   yes
 COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex1-keep/globin.hmm
+COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455

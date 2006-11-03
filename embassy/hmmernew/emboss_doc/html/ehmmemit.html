@@ -116,7 +116,7 @@ Please read the Userguide.pdf distributed with the original HMMER and included i
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmemit ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmemit -c N -n 10 </b>
+% <b>ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmemit -c N -n 10 </b>
 Generate sequences from a profile HMM.
 
 hmmemit - generate sequences from a profile HMM
@@ -124,14 +124,14 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:             ../ehmmcalibrate-ex1-keep/globino.hmm
+HMM file:             ../ehmmcalibrate-ex-keep/globino.hmm
 Number of seqs:       10
 Random seed:          0
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Output saved in file globino.ehmmemit
 
-hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex1-keep/globino.hmm
+hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm
 
 
 </pre></td></tr></table><p>
@@ -150,7 +150,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-   Standard (Mandatory) qualifiers:
+   Standard (Mandatory) qualifiers (* if not always prompted):
   [-hmmfile]           infile     File containing one or more HMMs.
    -c                  boolean    [N] Predict a single majority-rule consensus
                                   sequence instead of sampling sequences from
@@ -163,7 +163,7 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   of generated sequences; when this happens,
                                   insert-generated residues are simply shown
                                   as 'x'.
-   -nseq               integer    [10] Generate <n> sequences. Default is 10.
+*  -nseq               integer    [10] Generate <n> sequences. Default is 10.
                                   (Any integer value)
   [-o]                 outfile    [*.ehmmemit] File of synthetic sequences.
 
@@ -223,14 +223,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-c</td>
-<td>Predict a single majority-rule consensus sequence instead of sampling sequences from the HMM's probability distribution. Highly conserved residues (p >= 0.9 for DNA, p >= 0.5 for protein) are shown in upper case; others are shown in lower case. Some insert states may become part of the majority rule consensus, because they are used in >= 50% of generated sequences; when this happens, insert-generated residues are simply shown as 'x'.</td>
+<td>Predict a single majority-rule consensus sequence instead of sampling sequences from the HMM's probability distribution. Highly conserved residues (p &gt;= 0.9 for DNA, p &gt;= 0.5 for protein) are shown in upper case; others are shown in lower case. Some insert states may become part of the majority rule consensus, because they are used in &gt;= 50% of generated sequences; when this happens, insert-generated residues are simply shown as 'x'.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-nseq</td>
-<td>Generate <n> sequences. Default is 10.</td>
+<td>Generate &lt;n&gt; sequences. Default is 10.</td>
 <td>Any integer value</td>
 <td>10</td>
 </tr>
@@ -239,7 +239,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>[-o]<br>(Parameter 2)</td>
 <td>File of synthetic sequences.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmemit</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -270,7 +270,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-seed</td>
-<td>Set the random seed to <n>, where <n> is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmemit on the same HMM will give slightly different results. You can use this option to generate reproducible results.</td>
+<td>Set the random seed to &lt;n&gt;, where &lt;n&gt; is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmemit on the same HMM will give slightly different results. You can use this option to generate reproducible results.</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
@@ -313,7 +313,7 @@ Automatic processing of gzipped files is not supported.
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-<p><h3>File: ../ehmmcalibrate-ex1-keep/globino.hmm</h3>
+<p><h3>File: ../ehmmcalibrate-ex-keep/globino.hmm</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 HMMER2.0  [2.3.2]
@@ -324,9 +324,9 @@ RF    no
 CS    no
 MAP   yes
 COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex1-keep/globin.hmm
+COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455

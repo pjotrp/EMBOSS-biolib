@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Phylip treedist program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ftreedistpair</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

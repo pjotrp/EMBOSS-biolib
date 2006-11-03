@@ -69,8 +69,10 @@ Command line arguments
    -[no]progress       boolean    [Y] Print indications of progress of run
 
    Advanced (Unprompted) qualifiers:
-   -outfactorfile      outfile    Phylip factor data output file (optional)
-   -outancfile         outfile    Phylip ancestor data output file (optional)
+   -outfactorfile      outfile    [*.ffactor] Phylip factor data output file
+                                  (optional)
+   -outancfile         outfile    [*.ffactor] Phylip ancestor data output file
+                                  (optional)
 
    Associated qualifiers:
 

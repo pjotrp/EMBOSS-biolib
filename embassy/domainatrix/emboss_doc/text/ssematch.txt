@@ -258,13 +258,13 @@ C  -4  -4   2  -7
                                   classification and other data for domains
                                   from SCOP or CATH, in DCF format
                                   (EMBL-like).
-  [-outsefile]         outfile    This option specifies the name of the file
-                                  containing top-scoring domains for secondary
-                                  structure element-based alinnment (output).
-                                  A 'domain classification file' contains
-                                  classification and other data for domains
-                                  from SCOP or CATH, in DCF format
-                                  (EMBL-like).
+  [-outsefile]         outfile    [*.ssematch] This option specifies the name
+                                  of the file containing top-scoring domains
+                                  for secondary structure element-based
+                                  alinnment (output). A 'domain classification
+                                  file' contains classification and other
+                                  data for domains from SCOP or CATH, in DCF
+                                  format (EMBL-like).
    -logfile            outfile    [ssematch.log] This option specifies the
                                   name of the ssematch log file (output).
 

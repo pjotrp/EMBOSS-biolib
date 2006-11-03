@@ -97,9 +97,10 @@ Command line arguments
    -weighting          menu       [G] Select weighting (Values: B (Blosum); G
                                   (Gerstein/Sonnhammer/Chothia); K
                                   (Krogh/Mitchison); N (None); V (Voronoi))
-   -resavefile         outfile    elex alignment output file (optional)
-   -cfile              outfile    HMMER emission and transition count output
-                                  file (optional)
+   -resavefile         outfile    [*.ohmmbuild] elex alignment output file
+                                  (optional)
+   -cfile              outfile    [*.ohmmbuild] HMMER emission and transition
+                                  count output file (optional)
 
    Associated qualifiers:
 
@@ -276,7 +277,7 @@ CS    yes
 MAP   yes
 COM   ohmmbuild ../../data/hmm/globins50.msf globin.hmm -auto
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 5854
 XT      -8455     -4      0      *  -8455     -4      0      *
 NULT      -4  -8455

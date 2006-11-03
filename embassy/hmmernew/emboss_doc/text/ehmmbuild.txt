@@ -469,27 +469,27 @@ Command line arguments
                                   (Blosum); G (Gerstein/Sonnhammer/Chothia); K
                                   (Krogh/Mitchison); W (Henikoff); V
                                   (Sibbald/Argos Voronoi); N (None))
-   -o                  outfile    Re-save the starting alignment to file, in
-                                  Stockholm format. The columns which were
-                                  assigned to match states will be marked with
-                                  x's in an RF annotation line. If either the
-                                  -hand or -fast construction options were
-                                  chosen, the alignment may have been slightly
-                                  altered to be compatible with Plan 7
-                                  transitions, so saving the final alignment
-                                  and comparing to the starting alignment can
-                                  let you view these alterations. See the
-                                  User's Guide for more information on this
-                                  arcane side effect.
-   -cfile              outfile    Save the observed emission and transition
-                                  counts to file after the architecture has
-                                  been determined (e.g. after residues/gaps
-                                  have been assigned to match, delete, and
-                                  insert states). This option is used in HMMER
-                                  development for generating data files
-                                  useful for training new Dirichlet priors.
-                                  The format of count files is documented in
-                                  the User's Guide.
+   -o                  outfile    [*.ehmmbuild] Re-save the starting alignment
+                                  to file, in Stockholm format. The columns
+                                  which were assigned to match states will be
+                                  marked with x's in an RF annotation line. If
+                                  either the -hand or -fast construction
+                                  options were chosen, the alignment may have
+                                  been slightly altered to be compatible with
+                                  Plan 7 transitions, so saving the final
+                                  alignment and comparing to the starting
+                                  alignment can let you view these
+                                  alterations. See the User's Guide for more
+                                  information on this arcane side effect.
+   -cfile              outfile    [*.ehmmbuild] Save the observed emission and
+                                  transition counts to file after the
+                                  architecture has been determined (e.g. after
+                                  residues/gaps have been assigned to match,
+                                  delete, and insert states). This option is
+                                  used in HMMER development for generating
+                                  data files useful for training new Dirichlet
+                                  priors. The format of count files is
+                                  documented in the User's Guide.
 
    Associated qualifiers:
 
@@ -1056,7 +1056,7 @@ COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.6200
 00 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmn
 ew/globins50.msf
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -1224,7 +1224,7 @@ MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --s
 wentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -1392,7 +1392,7 @@ MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --s
 wentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -1560,7 +1560,7 @@ MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --s
 wentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455

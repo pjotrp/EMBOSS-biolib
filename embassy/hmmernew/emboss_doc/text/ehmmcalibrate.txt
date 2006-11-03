@@ -39,7 +39,7 @@ Usage
    Here is a sample session with ehmmcalibrate
 
 
-% ehmmcalibrate ../ehmmbuild-ex1-keep/globin.hmm globino.hmm -seed 1 
+% ehmmcalibrate ../ehmmbuild-ex-keep/globin.hmm globino.hmm -seed 1 
 Calibrate HMM search statistics
 
 hmmcalibrate -- calibrate HMM search statistics
@@ -47,7 +47,7 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:                 ../ehmmbuild-ex1-keep/globin.hmm
+HMM file:                 ../ehmmbuild-ex-keep/globin.hmm
 Length distribution mean: 350
 Length distribution s.d.: 350
 Number of samples:        5000
@@ -62,7 +62,7 @@ max    :    -8.753000
 //
 
 hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbu
-ild-ex1-keep/globin.hmm
+ild-ex-keep/globin.hmm
 
 
    Go to the input files for this example
@@ -174,8 +174,9 @@ Command line arguments
                                   option to generate reproducible results for
                                   different hmmcalibrate runs on the same
                                   HMM. (Integer 0 or more)
-   -histfile           outfile    Save a histogram of the scores and the
-                                  fitted theoretical curve to file.
+   -histfile           outfile    [*.ehmmcalibrate] Save a histogram of the
+                                  scores and the fitted theoretical curve to
+                                  file.
 
    Associated qualifiers:
 
@@ -219,7 +220,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../ehmmbuild-ex1-keep/globin.hmm
+  File: ../ehmmbuild-ex-keep/globin.hmm
 
 HMMER2.0  [2.3.2]
 NAME  globins50
@@ -232,7 +233,7 @@ COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.6200
 00 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmn
 ew/globins50.msf
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -400,7 +401,7 @@ MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --s
 wentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -574,9 +575,9 @@ COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.6200
 00 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmn
 ew/globins50.msf
 COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehm
-mbuild-ex1-keep/globin.hmm
+mbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455
@@ -744,7 +745,7 @@ wentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehm
 mbuild-ex4-keep/myhmms
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455

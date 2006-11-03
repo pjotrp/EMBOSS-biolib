@@ -39,7 +39,7 @@ Usage
    Here is a sample session with ehmmemit
 
 
-% ehmmemit ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmemit -c N -n 10 
+% ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmemit -c N -n 10 
 Generate sequences from a profile HMM.
 
 hmmemit - generate sequences from a profile HMM
@@ -47,15 +47,15 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:             ../ehmmcalibrate-ex1-keep/globino.hmm
+HMM file:             ../ehmmcalibrate-ex-keep/globino.hmm
 Number of seqs:       10
 Random seed:          0
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 Output saved in file globino.ehmmemit
 
-hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex1-keep/globino.
-hmm
+hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.h
+mm
 
 
    Go to the input files for this example
@@ -73,7 +73,7 @@ Command line arguments
    specified on the command-line in order to be prompted for a value for
    them).
 
-   Standard (Mandatory) qualifiers:
+   Standard (Mandatory) qualifiers (* if not always prompted):
   [-hmmfile]           infile     File containing one or more HMMs.
    -c                  boolean    [N] Predict a single majority-rule consensus
                                   sequence instead of sampling sequences from
@@ -86,7 +86,7 @@ Command line arguments
                                   of generated sequences; when this happens,
                                   insert-generated residues are simply shown
                                   as 'x'.
-   -nseq               integer    [10] Generate  sequences. Default is 10.
+*  -nseq               integer    [10] Generate  sequences. Default is 10.
                                   (Any integer value)
   [-o]                 outfile    [*.ehmmemit] File of synthetic sequences.
 
@@ -146,7 +146,7 @@ Input file format
 
   Input files for usage example
 
-  File: ../ehmmcalibrate-ex1-keep/globino.hmm
+  File: ../ehmmcalibrate-ex-keep/globino.hmm
 
 HMMER2.0  [2.3.2]
 NAME  globins50
@@ -159,9 +159,9 @@ COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.6200
 00 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmn
 ew/globins50.msf
 COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehm
-mbuild-ex1-keep/globin.hmm
+mbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455

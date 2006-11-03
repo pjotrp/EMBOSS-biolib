@@ -34,9 +34,10 @@
    -weighting          menu       [G] Select weighting (Values: B (Blosum); G
                                   (Gerstein/Sonnhammer/Chothia); K
                                   (Krogh/Mitchison); N (None); V (Voronoi))
-   -resavefile         outfile    elex alignment output file (optional)
-   -cfile              outfile    HMMER emission and transition count output
-                                  file (optional)
+   -resavefile         outfile    [*.ohmmbuild] elex alignment output file
+                                  (optional)
+   -cfile              outfile    [*.ohmmbuild] HMMER emission and transition
+                                  count output file (optional)
 
    Associated qualifiers:
 

@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnafold</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -130,7 +130,7 @@
 <td>-ssoutfile</td>
 <td>Vienna structure postscript output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnafold</td>
 </tr>
 
 </table>

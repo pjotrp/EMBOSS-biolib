@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>HMMER hmmcalibrate program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ohmmcalibrate</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -88,7 +88,7 @@
 <td>-histogramfile</td>
 <td>HMMER histogram output file (optional)</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ohmmcalibrate</td>
 </tr>
 
 </table>

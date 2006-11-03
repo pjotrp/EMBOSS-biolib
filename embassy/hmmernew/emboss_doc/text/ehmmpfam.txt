@@ -75,7 +75,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File of HMMs.
   [-seqfile]           seqall     File of sequences.
-   -a                  integer    [0] Limits the alignment output to the
+   -a                  integer    [100] Limits the alignment output to the
                                   best scoring domains. -A0 shuts off the
                                   alignment output and can be used to reduce
                                   the size of output files. (Any integer
@@ -305,7 +305,7 @@ wentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehm
 mbuild-ex4-keep/myhmms
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4
 NULT      -4  -8455

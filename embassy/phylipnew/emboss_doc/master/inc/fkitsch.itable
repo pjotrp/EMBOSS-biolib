@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Phylip kitsch program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.fkitsch</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -92,7 +92,7 @@
 <td>-outtreefile</td>
 <td>Phylip tree output file (optional)</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.fkitsch</td>
 </tr>
 
 <tr>

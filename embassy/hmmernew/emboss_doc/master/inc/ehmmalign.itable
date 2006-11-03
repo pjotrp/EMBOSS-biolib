@@ -23,7 +23,7 @@
 <td>[-o]<br>(Parameter 3)</td>
 <td>Multiple sequence alignment output file.</td>
 <td>Alignment output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmalign</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

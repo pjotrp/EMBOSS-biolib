@@ -9,7 +9,7 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:                   ../ehmmcalibrate-ex1-keep/globino.hmm [globins50]
+HMM file:                   ../ehmmcalibrate-ex-keep/globino.hmm [globins50]
 Sequence database:          ../../data/hmmnew/Artemia.fa
 per-sequence score cutoff:  &gt;= -1000000.0
 per-domain score cutoff:    &gt;= -1000000.0

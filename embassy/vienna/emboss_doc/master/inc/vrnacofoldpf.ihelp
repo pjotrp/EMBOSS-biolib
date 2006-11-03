@@ -29,8 +29,10 @@
                                   (Always use dangling energies); 3 (Allow
                                   coaxial stacking of adjacent helices))
    -paired             boolean    [N] Calculate probabilities of base pairing
-   -ssoutfile          outfile    Vienna structure postscript output file
-   -dotoutfile         outfile    Vienna dotplot postscript output file
+   -ssoutfile          outfile    [*.vrnacofoldpf] Vienna structure postscript
+                                  output file
+   -dotoutfile         outfile    [*.vrnacofoldpf] Vienna dotplot postscript
+                                  output file
 
    Associated qualifiers:
 

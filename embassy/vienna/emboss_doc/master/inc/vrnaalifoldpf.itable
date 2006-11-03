@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnaalifoldpf</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -151,14 +151,14 @@
 <td>-dotoutfile</td>
 <td>Vienna dotplot postscript output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnaalifoldpf</td>
 </tr>
 
 <tr>
 <td>-ssoutfile</td>
 <td>Vienna structure postscript output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnaalifoldpf</td>
 </tr>
 
 </table>

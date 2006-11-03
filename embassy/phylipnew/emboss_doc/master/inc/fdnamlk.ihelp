@@ -45,7 +45,8 @@
 *  -global             boolean    [N] Global rearrangements
 *  -lengths            boolean    [N] Use branch lengths from user trees
    -[no]trout          toggle     [Y] Write out trees to tree file
-*  -outtreefile        outfile    Phylip tree output file (optional)
+*  -outtreefile        outfile    [*.fdnamlk] Phylip tree output file
+                                  (optional)
    -printdata          boolean    [N] Print data at start of run
    -[no]progress       boolean    [Y] Print indications of progress of run
    -[no]treeprint      boolean    [Y] Print out tree

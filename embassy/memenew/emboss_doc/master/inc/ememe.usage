@@ -4,7 +4,7 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe crp0.s -mod oops -pal ex1.html </b>
+% <b>ememe crp0.s  -mod oops -revcomp ex2.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -17,7 +17,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe crp0.s  -mod oops -revcomp ex2.html </b>
+% <b>ememe crp0.s -mod oops -revcomp -w 20 ex3.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -30,12 +30,12 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe crp0.s -mod oops -revcomp -w 20 ex3.html </b>
+% <b>ememe INO_up800.s -mod anr -revcomp -bfile memenew/yeast.nc.6.freq ex4.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#output.3">Go to the output files for this example</a><p><p>
+<a href="#input.3">Go to the input files for this example</a><br><a href="#output.3">Go to the output files for this example</a><p><p>
 <p>
 <b>Example 4</b>
 <p>
@@ -43,7 +43,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe INO_up800.s -mod anr -revcomp -bfile memenew/yeast.nc.6.freq ex4.html </b>
+% <b>ememe lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex5.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -56,7 +56,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex5.html </b>
+% <b>ememe farntrans5.s -mod anr -maxw 40 -maxsites 50 ex6.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -69,12 +69,12 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe farntrans5.s -mod anr -maxw 40 -maxsites 50 ex6.html </b>
+% <b>ememe farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex7.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#input.6">Go to the input files for this example</a><br><a href="#output.6">Go to the output files for this example</a><p><p>
+<a href="#output.6">Go to the output files for this example</a><p><p>
 <p>
 <b>Example 7</b>
 <p>
@@ -82,7 +82,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex7.html </b>
+% <b>ememe farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 ex8.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -95,12 +95,12 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 ex8.html </b>
+% <b>ememe adh.s -mod zoops -nmotifs 20 -evt 0.01  ex9.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#output.8">Go to the output files for this example</a><p><p>
+<a href="#input.8">Go to the input files for this example</a><br><a href="#output.8">Go to the output files for this example</a><p><p>
 <p>
 <b>Example 9</b>
 <p>
@@ -108,9 +108,9 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe adh.s -mod zoops -nmotifs 20 -evt 0.01  ex9.html </b>
+% <b>ememe crp0.s -mod oops -pal ex1.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#input.9">Go to the input files for this example</a><br><a href="#output.9">Go to the output files for this example</a><p><p>
+<a href="#output.9">Go to the output files for this example</a><p><p>

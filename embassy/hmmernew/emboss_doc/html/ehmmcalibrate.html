@@ -114,7 +114,7 @@ Please read the Userguide.pdf distributed with the original HMMER and included i
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmcalibrate ../ehmmbuild-ex1-keep/globin.hmm globino.hmm -seed 1 </b>
+% <b>ehmmcalibrate ../ehmmbuild-ex-keep/globin.hmm globino.hmm -seed 1 </b>
 Calibrate HMM search statistics
 
 hmmcalibrate -- calibrate HMM search statistics
@@ -122,7 +122,7 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:                 ../ehmmbuild-ex1-keep/globin.hmm
+HMM file:                 ../ehmmbuild-ex-keep/globin.hmm
 Length distribution mean: 350
 Length distribution s.d.: 350
 Number of samples:        5000
@@ -136,7 +136,7 @@ lambda :     0.267496
 max    :    -8.753000
 //
 
-hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex1-keep/globin.hmm
+hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 
 
 </pre></td></tr></table><p>
@@ -251,8 +251,9 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   option to generate reproducible results for
                                   different hmmcalibrate runs on the same
                                   HMM. (Integer 0 or more)
-   -histfile           outfile    Save a histogram of the scores and the
-                                  fitted theoretical curve to file.
+   -histfile           outfile    [*.ehmmcalibrate] Save a histogram of the
+                                  scores and the fitted theoretical curve to
+                                  file.
 
    Associated qualifiers:
 
@@ -298,7 +299,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>[-hmmfileout]<br>(Parameter 2)</td>
 <td>File containing an HMM with EVD parameters.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmcalibrate</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -326,21 +327,21 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-fixed</td>
-<td>Fix the length of the random sequences to <n>, where <n> is a positive (and reasonably sized) integer. The default is instead to generate sequences with a variety of different lengths, controlled by a Gaussian (normal) distribution.</td>
+<td>Fix the length of the random sequences to &lt;n&gt;, where &lt;n&gt; is a positive (and reasonably sized) integer. The default is instead to generate sequences with a variety of different lengths, controlled by a Gaussian (normal) distribution.</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
 
 <tr>
 <td>-mean</td>
-<td>Set the mean length of the synthetic sequences to <x>, where <x> is a positive real number. The default is 350.</td>
+<td>Set the mean length of the synthetic sequences to &lt;x&gt;, where &lt;x&gt; is a positive real number. The default is 350.</td>
 <td>Any numeric value</td>
 <td>350.0</td>
 </tr>
 
 <tr>
 <td>-num</td>
-<td>Set the number of synthetic sequences to <n>, where <n> is a positive integer. If <n> is less than about 1000, the ft to the EVD may fail. Higher numbers of <n> will give better determined EVD parameters. The default is 5000; it was empirically chosen as a tradeoff between accuracy and computation time.</td>
+<td>Set the number of synthetic sequences to &lt;n&gt;, where &lt;n&gt; is a positive integer. If &lt;n&gt; is less than about 1000, the ft to the EVD may fail. Higher numbers of &lt;n&gt; will give better determined EVD parameters. The default is 5000; it was empirically chosen as a tradeoff between accuracy and computation time.</td>
 <td>Integer 0 or more</td>
 <td>5000</td>
 </tr>
@@ -354,14 +355,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-sd</td>
-<td>Set the standard deviation of the synthetic sequence length distribution to <x>, where <x> is a positive real number. The default is 350. Note that the Gaussian is left-truncated so that no sequences have lengths <= 0.</td>
+<td>Set the standard deviation of the synthetic sequence length distribution to &lt;x&gt;, where &lt;x&gt; is a positive real number. The default is 350. Note that the Gaussian is left-truncated so that no sequences have lengths &lt;= 0.</td>
 <td>Number 0.000 or more</td>
 <td>350.0</td>
 </tr>
 
 <tr>
 <td>-seed</td>
-<td>Set the random seed to <n>, where <n> is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmcalibrate on the same HMM will give slightly different results. You can use this option to generate reproducible results for different hmmcalibrate runs on the same HMM.</td>
+<td>Set the random seed to &lt;n&gt;, where &lt;n&gt; is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmcalibrate on the same HMM will give slightly different results. You can use this option to generate reproducible results for different hmmcalibrate runs on the same HMM.</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
@@ -370,7 +371,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>-histfile</td>
 <td>Save a histogram of the scores and the fitted theoretical curve to file.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmcalibrate</td>
 </tr>
 
 </table>
@@ -412,7 +413,7 @@ Automatic processing of gzipped files is not supported.
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-<p><h3>File: ../ehmmbuild-ex1-keep/globin.hmm</h3>
+<p><h3>File: ../ehmmbuild-ex-keep/globin.hmm</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 HMMER2.0  [2.3.2]
@@ -424,7 +425,7 @@ CS    no
 MAP   yes
 COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455
@@ -537,7 +538,7 @@ CS    no
 MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455
@@ -676,9 +677,9 @@ RF    no
 CS    no
 MAP   yes
 COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex1-keep/globin.hmm
+COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455
@@ -791,7 +792,7 @@ MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455

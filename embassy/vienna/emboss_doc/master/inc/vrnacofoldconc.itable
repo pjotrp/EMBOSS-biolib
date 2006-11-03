@@ -30,7 +30,7 @@
 <td>[-outfile]<br>(Parameter 4)</td>
 <td>Vienna RNAfold output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -151,42 +151,42 @@
 <td>-ssoutfile</td>
 <td>Output file name</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>
 
 <tr>
 <td>-aoutfile</td>
 <td>First (a) vienna dotplot output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>
 
 <tr>
 <td>-aaoutfile</td>
 <td>Second (a-a) vienna dotplot output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>
 
 <tr>
 <td>-boutfile</td>
 <td>Third (b) vienna dotplot output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>
 
 <tr>
 <td>-bboutfile</td>
 <td>Fourth (b-b) vienna dotplot output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>
 
 <tr>
 <td>-aboutfile</td>
 <td>Fifth (a-b) vienna dotplot output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>
 
 </table>

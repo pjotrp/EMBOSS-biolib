@@ -16,7 +16,8 @@
    -sd                 float      [350.] Standard deviation of syntheic
                                   sequences (Any numeric value)
    -seed               integer    [0] Random seed (Integer 0 or more)
-   -histogramfile      outfile    HMMER histogram output file (optional)
+   -histogramfile      outfile    [*.ohmmcalibrate] HMMER histogram output
+                                  file (optional)
 
    Associated qualifiers:
 

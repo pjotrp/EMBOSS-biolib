@@ -44,7 +44,7 @@
 <td>[-treefile]<br>(Parameter 4)</td>
 <td>Phylip tree output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.econsense</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

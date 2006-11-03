@@ -1,7 +1,7 @@
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File of HMMs.
   [-seqfile]           seqall     File of input sequences.
-   -a                  integer    [0] Limits the alignment output to the <n>
+   -a                  integer    [100] Limits the alignment output to the <n>
                                   best scoring domains. -A0 shuts off the
                                   alignment output and can be used to reduce
                                   the size of output files. (Any integer

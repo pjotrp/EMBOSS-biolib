@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ohmmbuild</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -179,14 +179,14 @@
 <td>-resavefile</td>
 <td>elex alignment output file (optional)</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ohmmbuild</td>
 </tr>
 
 <tr>
 <td>-cfile</td>
 <td>HMMER emission and transition count output file (optional)</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ohmmbuild</td>
 </tr>
 
 </table>

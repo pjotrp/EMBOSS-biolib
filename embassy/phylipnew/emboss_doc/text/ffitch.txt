@@ -180,7 +180,8 @@ Command line arguments
 *  -global             boolean    [N] Global rearrangements
    -replicates         boolean    [N] Subreplicates
    -[no]trout          toggle     [Y] Write out trees to tree file
-*  -outtreefile        outfile    Phylip tree output file (optional)
+*  -outtreefile        outfile    [*.ffitch] Phylip tree output file
+                                  (optional)
    -printdata          boolean    [N] Print data at start of run
    -[no]progress       boolean    [Y] Print indications of progress of run
    -[no]treeprint      boolean    [Y] Print out tree

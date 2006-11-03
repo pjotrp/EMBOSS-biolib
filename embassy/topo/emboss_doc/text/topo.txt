@@ -1,6 +1,7 @@
 
-   [an error has occurred processing this directive] topo [an error has
-   occurred processing this directive]
+                                   topo 
+
+
 
 Function
 
@@ -16,11 +17,11 @@ Usage
 
    Here is a sample session with topo.
 
-% topo sw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr 
+% topo sw:aqp1_human -signa -prol=UM -cys=cg -gly=sr -acid=dr
 -basic=db -ohaa=da -araa=dg
 
 Draws an image of a transmembrane protein
-Display on device [xwin]: 
+Display on device [xwin]:
 Transmembrane Sections: 18 35 49 67 94 115 136 156 165 184 211 232
 First membrane from the outside [Y]: n
 Signatue Sections: 74 82 sy 189 189 hm 239 239 sa 157 157 sa 262 262 sa

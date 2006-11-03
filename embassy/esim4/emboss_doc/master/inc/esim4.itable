@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Sim4 program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.esim4</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -83,7 +83,7 @@
 
 <tr>
 <td>-weight</td>
-<td>Weight value (H) (undocumented). 0 uses a default, >0 is a value</td>
+<td>Weight value (H) (undocumented). 0 uses a default, &gt;0 is a value</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>

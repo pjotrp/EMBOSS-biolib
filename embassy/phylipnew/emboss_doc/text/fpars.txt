@@ -101,7 +101,7 @@ Command line arguments
    -thresh             toggle     [N] Use threshold parsimony
 *  -threshold          float      [1] Threshold value (Number 1.000 or more)
    -[no]trout          toggle     [Y] Write out trees to tree file
-*  -outtreefile        outfile    Phylip tree output file (optional)
+*  -outtreefile        outfile    [*.fpars] Phylip tree output file (optional)
    -printdata          boolean    [N] Print data at start of run
    -[no]progress       boolean    [Y] Print indications of progress of run
    -[no]treeprint      boolean    [Y] Print out tree

@@ -589,7 +589,7 @@ Please read the file README distributed with the original MEME.
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe crp0.s -mod oops -pal ex1.html </b>
+% <b>ememe crp0.s  -mod oops -revcomp ex2.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -602,7 +602,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe crp0.s  -mod oops -revcomp ex2.html </b>
+% <b>ememe crp0.s -mod oops -revcomp -w 20 ex3.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -615,12 +615,12 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe crp0.s -mod oops -revcomp -w 20 ex3.html </b>
+% <b>ememe INO_up800.s -mod anr -revcomp -bfile memenew/yeast.nc.6.freq ex4.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#output.3">Go to the output files for this example</a><p><p>
+<a href="#input.3">Go to the input files for this example</a><br><a href="#output.3">Go to the output files for this example</a><p><p>
 <p>
 <b>Example 4</b>
 <p>
@@ -628,7 +628,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe INO_up800.s -mod anr -revcomp -bfile memenew/yeast.nc.6.freq ex4.html </b>
+% <b>ememe lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex5.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -641,7 +641,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex5.html </b>
+% <b>ememe farntrans5.s -mod anr -maxw 40 -maxsites 50 ex6.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -654,12 +654,12 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe farntrans5.s -mod anr -maxw 40 -maxsites 50 ex6.html </b>
+% <b>ememe farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex7.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#input.6">Go to the input files for this example</a><br><a href="#output.6">Go to the output files for this example</a><p><p>
+<a href="#output.6">Go to the output files for this example</a><p><p>
 <p>
 <b>Example 7</b>
 <p>
@@ -667,7 +667,7 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex7.html </b>
+% <b>ememe farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 ex8.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
@@ -680,12 +680,12 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 ex8.html </b>
+% <b>ememe adh.s -mod zoops -nmotifs 20 -evt 0.01  ex9.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#output.8">Go to the output files for this example</a><p><p>
+<a href="#input.8">Go to the input files for this example</a><br><a href="#output.8">Go to the output files for this example</a><p><p>
 <p>
 <b>Example 9</b>
 <p>
@@ -693,12 +693,12 @@ Motif detection
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ememe adh.s -mod zoops -nmotifs 20 -evt 0.01  ex9.html </b>
+% <b>ememe crp0.s -mod oops -pal ex1.html </b>
 Motif detection
 
 </pre></td></tr></table><p>
 <p>
-<a href="#input.9">Go to the input files for this example</a><br><a href="#output.9">Go to the output files for this example</a><p><p>
+<a href="#output.9">Go to the output files for this example</a><p><p>
 
 
 <h3>  EXAMPLES: </h3>
@@ -1149,7 +1149,7 @@ will never be prompted for.
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>MEME program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ememe</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -1181,7 +1181,7 @@ will never be prompted for.
 
 <tr>
 <td>-nmotifs</td>
-<td>The number of *different* motifs to search for. MEME will search for and output <n> motifs.</td>
+<td>The number of *different* motifs to search for. MEME will search for and output &lt;n&gt; motifs.</td>
 <td>Any integer value</td>
 <td>1</td>
 </tr>
@@ -1202,7 +1202,7 @@ will never be prompted for.
 
 <tr>
 <td>-evt</td>
-<td>Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs <n> have been found.</td>
+<td>Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs &lt;n&gt; have been found.</td>
 <td>Any numeric value</td>
 <td>-1</td>
 </tr>
@@ -1313,14 +1313,14 @@ will never be prompted for.
 
 <tr>
 <td>-maxiter</td>
-<td>The number of iterations of EM to run from any starting point. EM is run for <n> iterations or until convergence (see -distance, below) from each starting point.</td>
+<td>The number of iterations of EM to run from any starting point. EM is run for &lt;n&gt; iterations or until convergence (see -distance, below) from each starting point.</td>
 <td>Any integer value</td>
 <td>50</td>
 </tr>
 
 <tr>
 <td>-distance</td>
-<td>The convergence criterion. MEME stops iterating EM when the change in the motif frequency matrix is less than <a>. (Change is the euclidean distance between two successive frequency matrices.)</td>
+<td>The convergence criterion. MEME stops iterating EM when the change in the motif frequency matrix is less than &lt;a&gt;. (Change is the euclidean distance between two successive frequency matrices.)</td>
 <td>Any numeric value</td>
 <td>0.001</td>
 </tr>
@@ -1341,14 +1341,14 @@ will never be prompted for.
 
 <tr>
 <td>-spmap</td>
-<td>The type of mapping function to use. uni: Use prior when converting a substring to an estimate of theta. Default -spfuzz <a>: 0.5. pam: Use columns of PAM <a> matrix when converting a substring to an estimate of theta. Default -spfuzz <a>: 120 (PAM 120). See the application documentation for more information.</td>
+<td>The type of mapping function to use. uni: Use prior when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 0.5. pam: Use columns of PAM &lt;a&gt; matrix when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 120 (PAM 120). See the application documentation for more information.</td>
 <td>Choose from selection list of values</td>
 <td>uni</td>
 </tr>
 
 <tr>
 <td>-cons</td>
-<td>Override the sampling of starting points and just use a starting point derived from <string>. This is useful when an actual occurrence of a motif is known and can be used as the starting point for finding the motif. See the application documentation for more information.</td>
+<td>Override the sampling of starting points and just use a starting point derived from &lt;string&gt;. This is useful when an actual occurrence of a motif is known and can be used as the starting point for finding the motif. See the application documentation for more information.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -1362,7 +1362,7 @@ will never be prompted for.
 
 <tr>
 <td>-p</td>
-<td>Only values of >0 will be applied. The -p <np> argument causes a version of MEME compiled for a parallel CPU architecture to be run. (By placing <np> in quotes you may pass installation specific switches to the 'mpirun' command. The number of processors to run on must be the first argument following -p).</td>
+<td>Only values of &gt;0 will be applied. The -p &lt;np&gt; argument causes a version of MEME compiled for a parallel CPU architecture to be run. (By placing &lt;np&gt; in quotes you may pass installation specific switches to the 'mpirun' command. The number of processors to run on must be the first argument following -p).</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -1376,7 +1376,7 @@ will never be prompted for.
 
 <tr>
 <td>-sf</td>
-<td>Print <sf> as name of sequence file</td>
+<td>Print &lt;sf&gt; as name of sequence file</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -1475,8 +1475,8 @@ TGTGAGTGGTCGCACATATCCTGTT
 </pre>
 </td></tr></table><p>
 
-<a name="input.4"></a>
-<h3>Input files for usage example 4</h3>
+<a name="input.3"></a>
+<h3>Input files for usage example 3</h3>
 <p><h3>File: INO_up800.s</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
@@ -1698,8 +1698,8 @@ tttttt	0.00570057577663487
 </pre>
 </td></tr></table><p>
 
-<a name="input.5"></a>
-<h3>Input files for usage example 5</h3>
+<a name="input.4"></a>
+<h3>Input files for usage example 4</h3>
 <p><h3>File: lipocalin.s</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
@@ -1726,8 +1726,8 @@ ILRENIIDLSNANRCLQARE
 </pre>
 </td></tr></table><p>
 
-<a name="input.6"></a>
-<h3>Input files for usage example 6</h3>
+<a name="input.5"></a>
+<h3>Input files for usage example 5</h3>
 <p><h3>File: farntrans5.s</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
@@ -1779,8 +1779,8 @@ CIPQEIFNDF SKRCCF
 </pre>
 </td></tr></table><p>
 
-<a name="input.9"></a>
-<h3>Input files for usage example 9</h3>
+<a name="input.8"></a>
+<h3>Input files for usage example 8</h3>
 <p><h3>File: adh.s</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
@@ -1919,7 +1919,7 @@ include file="inc/reportformats.ihtml"
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: ex1.html</h3>
+<p><h3>File: ex2.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2030,7 +2030,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.2"></a>
 <h3>Output files for usage example 2</h3>
-<p><h3>File: ex2.html</h3>
+<p><h3>File: ex3.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2141,7 +2141,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.3"></a>
 <h3>Output files for usage example 3</h3>
-<p><h3>File: ex3.html</h3>
+<p><h3>File: ex4.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2252,7 +2252,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.4"></a>
 <h3>Output files for usage example 4</h3>
-<p><h3>File: ex4.html</h3>
+<p><h3>File: ex5.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2363,7 +2363,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.5"></a>
 <h3>Output files for usage example 5</h3>
-<p><h3>File: ex5.html</h3>
+<p><h3>File: ex6.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2474,7 +2474,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.6"></a>
 <h3>Output files for usage example 6</h3>
-<p><h3>File: ex6.html</h3>
+<p><h3>File: ex7.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2585,7 +2585,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.7"></a>
 <h3>Output files for usage example 7</h3>
-<p><h3>File: ex7.html</h3>
+<p><h3>File: ex8.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2696,7 +2696,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.8"></a>
 <h3>Output files for usage example 8</h3>
-<p><h3>File: ex8.html</h3>
+<p><h3>File: ex9.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>
@@ -2807,7 +2807,7 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <a name="output.9"></a>
 <h3>Output files for usage example 9</h3>
-<p><h3>File: ex9.html</h3>
+<p><h3>File: ex1.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <HTML>

@@ -46,7 +46,8 @@
                                   (Integer 0 or more)
    -[no]rough          boolean    [Y] Speedier but rougher analysis
    -[no]trout          toggle     [Y] Write out trees to tree file
-*  -outtreefile        outfile    Phylip tree output file (optional)
+*  -outtreefile        outfile    [*.fproml] Phylip tree output file
+                                  (optional)
    -printdata          boolean    [N] Print data at start of run
    -[no]progress       boolean    [Y] Print indications of progress of run
    -[no]treeprint      boolean    [Y] Print out tree

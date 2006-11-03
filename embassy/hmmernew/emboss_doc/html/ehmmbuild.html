@@ -543,27 +543,27 @@ Where possible, the same command-line qualifier names and parameter order is use
                                   (Blosum); G (Gerstein/Sonnhammer/Chothia); K
                                   (Krogh/Mitchison); W (Henikoff); V
                                   (Sibbald/Argos Voronoi); N (None))
-   -o                  outfile    Re-save the starting alignment to file, in
-                                  Stockholm format. The columns which were
-                                  assigned to match states will be marked with
-                                  x's in an RF annotation line. If either the
-                                  -hand or -fast construction options were
-                                  chosen, the alignment may have been slightly
-                                  altered to be compatible with Plan 7
-                                  transitions, so saving the final alignment
-                                  and comparing to the starting alignment can
-                                  let you view these alterations. See the
-                                  User's Guide for more information on this
-                                  arcane side effect.
-   -cfile              outfile    Save the observed emission and transition
-                                  counts to file after the architecture has
-                                  been determined (e.g. after residues/gaps
-                                  have been assigned to match, delete, and
-                                  insert states). This option is used in HMMER
-                                  development for generating data files
-                                  useful for training new Dirichlet priors.
-                                  The format of count files is documented in
-                                  the User's Guide.
+   -o                  outfile    [*.ehmmbuild] Re-save the starting alignment
+                                  to file, in Stockholm format. The columns
+                                  which were assigned to match states will be
+                                  marked with x's in an RF annotation line. If
+                                  either the -hand or -fast construction
+                                  options were chosen, the alignment may have
+                                  been slightly altered to be compatible with
+                                  Plan 7 transitions, so saving the final
+                                  alignment and comparing to the starting
+                                  alignment can let you view these
+                                  alterations. See the User's Guide for more
+                                  information on this arcane side effect.
+   -cfile              outfile    [*.ehmmbuild] Save the observed emission and
+                                  transition counts to file after the
+                                  architecture has been determined (e.g. after
+                                  residues/gaps have been assigned to match,
+                                  delete, and insert states). This option is
+                                  used in HMMER development for generating
+                                  data files useful for training new Dirichlet
+                                  priors. The format of count files is
+                                  documented in the User's Guide.
 
    Associated qualifiers:
 
@@ -642,7 +642,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>[-hmmfile]<br>(Parameter 2)</td>
 <td>HMMER hidden markov model output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmbuild</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -684,14 +684,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-pamwgt</td>
-<td>Controls the weight <x> on a PAM-based prior. Only has effect if -pam option is also in use. <x> is a positive real number, 20.0 by default. <x> is the number of 'pseudocounts' contriubuted by the heuristic prior. Very high values of <x> can force a scoring system that is entirely driven by the substitution matrix, making HMMER somewhat approximate Gribskov profiles.</td>
+<td>Controls the weight &lt;x&gt; on a PAM-based prior. Only has effect if -pam option is also in use. &lt;x&gt; is a positive real number, 20.0 by default. &lt;x&gt; is the number of 'pseudocounts' contriubuted by the heuristic prior. Very high values of &lt;x&gt; can force a scoring system that is entirely driven by the substitution matrix, making HMMER somewhat approximate Gribskov profiles.</td>
 <td>Any numeric value</td>
 <td>20.0</td>
 </tr>
 
 <tr>
 <td>-pbswitch</td>
-<td>For alignments with a very large number of sequences, the GSC, BLOSUM, and Voronoi weighting schemes are slow; they're O(N^2) for N sequences. Henikoff position-based weights (PB weights) are more effcient. At or above a certain threshold sequence number <n> hmmbuild will switch from GSC, BLOSUM, or Voronoi weights to PB weights. To disable this switching behavior (at the cost of compute time, set <n> to be something larger than the number of sequences in your alignment. <n> is a positive integer; the default is 1000.</td>
+<td>For alignments with a very large number of sequences, the GSC, BLOSUM, and Voronoi weighting schemes are slow; they're O(N^2) for N sequences. Henikoff position-based weights (PB weights) are more effcient. At or above a certain threshold sequence number &lt;n&gt; hmmbuild will switch from GSC, BLOSUM, or Voronoi weights to PB weights. To disable this switching behavior (at the cost of compute time, set &lt;n&gt; to be something larger than the number of sequences in your alignment. &lt;n&gt; is a positive integer; the default is 1000.</td>
 <td>Any integer value</td>
 <td>1000</td>
 </tr>
@@ -719,7 +719,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-gapmax</td>
-<td>Controls the -fast model construction algorithm, but if -fast is not being used, has no effect. If a column has more than a fraction <x> of gap symbols in it, it gets assigned to an insert column. <x> is a frequency from 0 to 1, and by default is set to 0.5. Higher values of <x> mean more columns get assigned to consensus, and models get longer; smaller values of <x> mean fewer columns get assigned to consensus, and models get smaller.</td>
+<td>Controls the -fast model construction algorithm, but if -fast is not being used, has no effect. If a column has more than a fraction &lt;x&gt; of gap symbols in it, it gets assigned to an insert column. &lt;x&gt; is a frequency from 0 to 1, and by default is set to 0.5. Higher values of &lt;x&gt; mean more columns get assigned to consensus, and models get longer; smaller values of &lt;x&gt; mean fewer columns get assigned to consensus, and models get smaller.</td>
 <td>Any numeric value</td>
 <td>0.5</td>
 </tr>
@@ -733,7 +733,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-sidlevel</td>
-<td>Controls both the determination of effective sequence number and the behavior of the -wblosum weighting option. The sequence alignment is clustered by percent identity, and the number of clusters at a cutoff threshold of <x> is used to determine the effective sequence number. Higher values of <x> give more clusters and higher effective sequence numbers; lower values of <x> give fewer clusters and lower effective sequence numbers. <x> is a fraction from 0 to 1, and by default is set to 0.62 (corresponding to the clustering level used in constructing the BLOSUM62 substitution matrix).</td>
+<td>Controls both the determination of effective sequence number and the behavior of the -wblosum weighting option. The sequence alignment is clustered by percent identity, and the number of clusters at a cutoff threshold of &lt;x&gt; is used to determine the effective sequence number. Higher values of &lt;x&gt; give more clusters and higher effective sequence numbers; lower values of &lt;x&gt; give fewer clusters and lower effective sequence numbers. &lt;x&gt; is a fraction from 0 to 1, and by default is set to 0.62 (corresponding to the clustering level used in constructing the BLOSUM62 substitution matrix).</td>
 <td>Any numeric value</td>
 <td>0.62</td>
 </tr>
@@ -747,14 +747,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 
 <tr>
 <td>-swentry</td>
-<td>Controls the total probability that is distributed to local entries into the model, versus starting at the beginning of the model as in a global alignment. <x> is a probability from 0 to 1, and by default is set to 0.5. Higher values of <x> mean that hits that are fragments on their left (N or 5'-terminal) side will be penalized less, but complete global alignments will be penalized more. Lower values of <x> mean that fragments on the left will be penalized more, and global alignments on this side will be favored. This option only affects the confgurations that allow local alignments, e.g. -s and -f; unless one of these options is also activated, this option has no effect. You have independent control over local/global alignment behavior for the N/C (5'/3') termini of your target sequences using --swentry and --swexit.</td>
+<td>Controls the total probability that is distributed to local entries into the model, versus starting at the beginning of the model as in a global alignment. &lt;x&gt; is a probability from 0 to 1, and by default is set to 0.5. Higher values of &lt;x&gt; mean that hits that are fragments on their left (N or 5'-terminal) side will be penalized less, but complete global alignments will be penalized more. Lower values of &lt;x&gt; mean that fragments on the left will be penalized more, and global alignments on this side will be favored. This option only affects the confgurations that allow local alignments, e.g. -s and -f; unless one of these options is also activated, this option has no effect. You have independent control over local/global alignment behavior for the N/C (5'/3') termini of your target sequences using --swentry and --swexit.</td>
 <td>Any numeric value</td>
 <td>0.5</td>
 </tr>
 
 <tr>
 <td>-swexit</td>
-<td>Controls the total probability that is distributed to local exits from the model, versus ending an alignment at the end of the model as in a global alignment. <x> is a probability from 0 to 1, and by default is set to 0.5. Higher values of <x> mean that hits that are fragments on their right (C or 3'-terminal) side will be penalized less, but complete global alignments will be penalized more. Lower values of <x> mean that fragments on the right will be penalized more, and global alignments on this side will be favored. This option only affects the confgurations that allow local alignments, e.g. -s and -f; unless one of these options is also activated, this option has no effect. You have independent control over local/global alignment behavior for the N/C (5'/3') termini of your target sequences using -swentry and -swexit.</td>
+<td>Controls the total probability that is distributed to local exits from the model, versus ending an alignment at the end of the model as in a global alignment. &lt;x&gt; is a probability from 0 to 1, and by default is set to 0.5. Higher values of &lt;x&gt; mean that hits that are fragments on their right (C or 3'-terminal) side will be penalized less, but complete global alignments will be penalized more. Lower values of &lt;x&gt; mean that fragments on the right will be penalized more, and global alignments on this side will be favored. This option only affects the confgurations that allow local alignments, e.g. -s and -f; unless one of these options is also activated, this option has no effect. You have independent control over local/global alignment behavior for the N/C (5'/3') termini of your target sequences using -swentry and -swexit.</td>
 <td>Any numeric value</td>
 <td>0.5</td>
 </tr>
@@ -777,14 +777,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>-o</td>
 <td>Re-save the starting alignment to file, in Stockholm format. The columns which were assigned to match states will be marked with x's in an RF annotation line. If either the -hand or -fast construction options were chosen, the alignment may have been slightly altered to be compatible with Plan 7 transitions, so saving the final alignment and comparing to the starting alignment can let you view these alterations. See the User's Guide for more information on this arcane side effect.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmbuild</td>
 </tr>
 
 <tr>
 <td>-cfile</td>
 <td>Save the observed emission and transition counts to file after the architecture has been determined (e.g. after residues/gaps have been assigned to match, delete, and insert states). This option is used in HMMER development for generating data files useful for training new Dirichlet priors. The format of count files is documented in the User's Guide.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmbuild</td>
 </tr>
 
 </table>
@@ -1316,7 +1316,7 @@ CS    no
 MAP   yes
 COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455
@@ -1429,7 +1429,7 @@ CS    no
 MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455
@@ -1542,7 +1542,7 @@ CS    no
 MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455
@@ -1655,7 +1655,7 @@ CS    no
 MAP   yes
 COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto
 NSEQ  90
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 8325
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455

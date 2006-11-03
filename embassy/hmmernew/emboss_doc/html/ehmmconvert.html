@@ -111,7 +111,7 @@ Please read the Userguide.pdf distributed with the original HMMER and included i
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmconvert ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmconvert -format G </b>
+% <b>ehmmconvert ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert -format G </b>
 Convert between profile HMM file formats
 
 hmmconvert - convert between profile HMM file formats
@@ -119,7 +119,7 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Input HMM file:           ../ehmmcalibrate-ex1-keep/globino.hmm
+Input HMM file:           ../ehmmcalibrate-ex-keep/globino.hmm
 Output HMM file:          globino.ehmmconvert
 Converting to:            GCG Profile .prf
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -128,7 +128,7 @@ Converting to:            GCG Profile .prf
 
 1 HMM(s) converted and written to globino.ehmmconvert
 
-hmmconvert -p  -F  ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmconvert
+hmmconvert -p  -F  ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert
 
 
 </pre></td></tr></table><p>
@@ -203,7 +203,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 <td>[-newhmmfile]<br>(Parameter 2)</td>
 <td>HMM output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmconvert</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -265,7 +265,7 @@ Automatic processing of gzipped files is not supported.
 
 <a name="input.1"></a>
 <h3>Input files for usage example </h3>
-<p><h3>File: ../ehmmcalibrate-ex1-keep/globino.hmm</h3>
+<p><h3>File: ../ehmmcalibrate-ex-keep/globino.hmm</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
 HMMER2.0  [2.3.2]
@@ -276,9 +276,9 @@ RF    no
 CS    no
 MAP   yes
 COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf
-COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex1-keep/globin.hmm
+COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 9858
 XT      -8455     -4  -1000  -1000  -8455     -4  -8455     -4 
 NULT      -4  -8455

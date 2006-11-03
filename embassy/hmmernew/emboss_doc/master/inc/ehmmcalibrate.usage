@@ -4,7 +4,7 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>ehmmcalibrate ../ehmmbuild-ex1-keep/globin.hmm globino.hmm -seed 1 </b>
+% <b>ehmmcalibrate ../ehmmbuild-ex-keep/globin.hmm globino.hmm -seed 1 </b>
 Calibrate HMM search statistics
 
 hmmcalibrate -- calibrate HMM search statistics
@@ -12,7 +12,7 @@ HMMER 2.3.2 (Oct 2003)
 Copyright (C) 1992-2003 HHMI/Washington University School of Medicine
 Freely distributed under the GNU General Public License (GPL)
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-HMM file:                 ../ehmmbuild-ex1-keep/globin.hmm
+HMM file:                 ../ehmmbuild-ex-keep/globin.hmm
 Length distribution mean: 350
 Length distribution s.d.: 350
 Number of samples:        5000
@@ -26,7 +26,7 @@ lambda :     0.267496
 max    :    -8.753000
 //
 
-hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex1-keep/globin.hmm
+hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex-keep/globin.hmm
 
 
 </pre></td></tr></table><p>

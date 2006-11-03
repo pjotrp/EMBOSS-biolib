@@ -1,7 +1,8 @@
    Standard (Mandatory) qualifiers:
   [-hmmfile]           infile     File containing a HMM profile
   [-seqfile]           seqset     File containing a (set of) sequence(s)
-  [-o]                 align      Multiple sequence alignment output file.
+  [-o]                 align      [*.ehmmalign] Multiple sequence alignment
+                                  output file.
 
    Additional (Optional) qualifiers:
    -m                  boolean    [N] Include in the alignment only those

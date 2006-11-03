@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Phylip factor program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ffactor</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -56,14 +56,14 @@
 <td>-outfactorfile</td>
 <td>Phylip factor data output file (optional)</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ffactor</td>
 </tr>
 
 <tr>
 <td>-outancfile</td>
 <td>Phylip ancestor data output file (optional)</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ffactor</td>
 </tr>
 
 </table>

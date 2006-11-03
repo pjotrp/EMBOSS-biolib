@@ -2,9 +2,12 @@
   [-infile]            discretestates (no help text) discretestates value
   [-outfile]           outfile    [*.fdiscboot] Phylip seqboot_disc program
                                   output file
-  [-outancfile]        outfile    Phylip ancestor data output file (optional)
-  [-outmixfile]        outfile    Phylip mix data output file (optional)
-  [-outfactfile]       outfile    Phylip factor data output file (optional)
+  [-outancfile]        outfile    [*.fdiscboot] Phylip ancestor data output
+                                  file (optional)
+  [-outmixfile]        outfile    [*.fdiscboot] Phylip mix data output file
+                                  (optional)
+  [-outfactfile]       outfile    [*.fdiscboot] Phylip factor data output file
+                                  (optional)
 
    Additional (Optional) qualifiers (* if not always prompted):
    -mixfile            properties File of mixtures

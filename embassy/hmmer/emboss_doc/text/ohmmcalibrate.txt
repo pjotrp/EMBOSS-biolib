@@ -46,7 +46,8 @@ Command line arguments
    -sd                 float      [350.] Standard deviation of syntheic
                                   sequences (Any numeric value)
    -seed               integer    [0] Random seed (Integer 0 or more)
-   -histogramfile      outfile    HMMER histogram output file (optional)
+   -histogramfile      outfile    [*.ohmmcalibrate] HMMER histogram output
+                                  file (optional)
 
    Associated qualifiers:
 
@@ -150,7 +151,7 @@ MAP   yes
 COM   ohmmbuild ../../data/hmm/globins50.msf globin.hmm -auto
 COM   ohmmcalibrate globin.hmm -seed 1079460101 -auto
 NSEQ  50
-DATE  Fri Jul 15 12:00:00 2005
+DATE  Sat Jul 15 12:00:00 2006
 CKSUM 5854
 XT      -8455     -4      0      *  -8455     -4      0      *
 NULT      -4  -8455

@@ -1,4 +1,4 @@
-   Standard (Mandatory) qualifiers:
+   Standard (Mandatory) qualifiers (* if not always prompted):
   [-hmmfile]           infile     File containing one or more HMMs.
    -c                  boolean    [N] Predict a single majority-rule consensus
                                   sequence instead of sampling sequences from
@@ -11,7 +11,7 @@
                                   of generated sequences; when this happens,
                                   insert-generated residues are simply shown
                                   as 'x'.
-   -nseq               integer    [10] Generate <n> sequences. Default is 10.
+*  -nseq               integer    [10] Generate <n> sequences. Default is 10.
                                   (Any integer value)
   [-o]                 outfile    [*.ehmmemit] File of synthetic sequences.
 

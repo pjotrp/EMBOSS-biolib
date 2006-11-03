@@ -50,8 +50,9 @@
                                   option to generate reproducible results for
                                   different hmmcalibrate runs on the same
                                   HMM. (Integer 0 or more)
-   -histfile           outfile    Save a histogram of the scores and the
-                                  fitted theoretical curve to file.
+   -histfile           outfile    [*.ehmmcalibrate] Save a histogram of the
+                                  scores and the fitted theoretical curve to
+                                  file.
 
    Associated qualifiers:
 

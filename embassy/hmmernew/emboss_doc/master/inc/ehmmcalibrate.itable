@@ -16,7 +16,7 @@
 <td>[-hmmfileout]<br>(Parameter 2)</td>
 <td>File containing an HMM with EVD parameters.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmcalibrate</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -44,21 +44,21 @@
 
 <tr>
 <td>-fixed</td>
-<td>Fix the length of the random sequences to <n>, where <n> is a positive (and reasonably sized) integer. The default is instead to generate sequences with a variety of different lengths, controlled by a Gaussian (normal) distribution.</td>
+<td>Fix the length of the random sequences to &lt;n&gt;, where &lt;n&gt; is a positive (and reasonably sized) integer. The default is instead to generate sequences with a variety of different lengths, controlled by a Gaussian (normal) distribution.</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
 
 <tr>
 <td>-mean</td>
-<td>Set the mean length of the synthetic sequences to <x>, where <x> is a positive real number. The default is 350.</td>
+<td>Set the mean length of the synthetic sequences to &lt;x&gt;, where &lt;x&gt; is a positive real number. The default is 350.</td>
 <td>Any numeric value</td>
 <td>350.0</td>
 </tr>
 
 <tr>
 <td>-num</td>
-<td>Set the number of synthetic sequences to <n>, where <n> is a positive integer. If <n> is less than about 1000, the ft to the EVD may fail. Higher numbers of <n> will give better determined EVD parameters. The default is 5000; it was empirically chosen as a tradeoff between accuracy and computation time.</td>
+<td>Set the number of synthetic sequences to &lt;n&gt;, where &lt;n&gt; is a positive integer. If &lt;n&gt; is less than about 1000, the ft to the EVD may fail. Higher numbers of &lt;n&gt; will give better determined EVD parameters. The default is 5000; it was empirically chosen as a tradeoff between accuracy and computation time.</td>
 <td>Integer 0 or more</td>
 <td>5000</td>
 </tr>
@@ -72,14 +72,14 @@
 
 <tr>
 <td>-sd</td>
-<td>Set the standard deviation of the synthetic sequence length distribution to <x>, where <x> is a positive real number. The default is 350. Note that the Gaussian is left-truncated so that no sequences have lengths <= 0.</td>
+<td>Set the standard deviation of the synthetic sequence length distribution to &lt;x&gt;, where &lt;x&gt; is a positive real number. The default is 350. Note that the Gaussian is left-truncated so that no sequences have lengths &lt;= 0.</td>
 <td>Number 0.000 or more</td>
 <td>350.0</td>
 </tr>
 
 <tr>
 <td>-seed</td>
-<td>Set the random seed to <n>, where <n> is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmcalibrate on the same HMM will give slightly different results. You can use this option to generate reproducible results for different hmmcalibrate runs on the same HMM.</td>
+<td>Set the random seed to &lt;n&gt;, where &lt;n&gt; is a positive integer. The default is to use time() to generate a different seed for each run, which means that two different runs of hmmcalibrate on the same HMM will give slightly different results. You can use this option to generate reproducible results for different hmmcalibrate runs on the same HMM.</td>
 <td>Integer 0 or more</td>
 <td>0</td>
 </tr>
@@ -88,7 +88,7 @@
 <td>-histfile</td>
 <td>Save a histogram of the scores and the fitted theoretical curve to file.</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ehmmcalibrate</td>
 </tr>
 
 </table>

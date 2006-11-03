@@ -16,7 +16,7 @@
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>MEME program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ememe</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -48,7 +48,7 @@
 
 <tr>
 <td>-nmotifs</td>
-<td>The number of *different* motifs to search for. MEME will search for and output <n> motifs.</td>
+<td>The number of *different* motifs to search for. MEME will search for and output &lt;n&gt; motifs.</td>
 <td>Any integer value</td>
 <td>1</td>
 </tr>
@@ -69,7 +69,7 @@
 
 <tr>
 <td>-evt</td>
-<td>Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs <n> have been found.</td>
+<td>Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs &lt;n&gt; have been found.</td>
 <td>Any numeric value</td>
 <td>-1</td>
 </tr>
@@ -180,14 +180,14 @@
 
 <tr>
 <td>-maxiter</td>
-<td>The number of iterations of EM to run from any starting point. EM is run for <n> iterations or until convergence (see -distance, below) from each starting point.</td>
+<td>The number of iterations of EM to run from any starting point. EM is run for &lt;n&gt; iterations or until convergence (see -distance, below) from each starting point.</td>
 <td>Any integer value</td>
 <td>50</td>
 </tr>
 
 <tr>
 <td>-distance</td>
-<td>The convergence criterion. MEME stops iterating EM when the change in the motif frequency matrix is less than <a>. (Change is the euclidean distance between two successive frequency matrices.)</td>
+<td>The convergence criterion. MEME stops iterating EM when the change in the motif frequency matrix is less than &lt;a&gt;. (Change is the euclidean distance between two successive frequency matrices.)</td>
 <td>Any numeric value</td>
 <td>0.001</td>
 </tr>
@@ -208,14 +208,14 @@
 
 <tr>
 <td>-spmap</td>
-<td>The type of mapping function to use. uni: Use prior when converting a substring to an estimate of theta. Default -spfuzz <a>: 0.5. pam: Use columns of PAM <a> matrix when converting a substring to an estimate of theta. Default -spfuzz <a>: 120 (PAM 120). See the application documentation for more information.</td>
+<td>The type of mapping function to use. uni: Use prior when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 0.5. pam: Use columns of PAM &lt;a&gt; matrix when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 120 (PAM 120). See the application documentation for more information.</td>
 <td>Choose from selection list of values</td>
 <td>uni</td>
 </tr>
 
 <tr>
 <td>-cons</td>
-<td>Override the sampling of starting points and just use a starting point derived from <string>. This is useful when an actual occurrence of a motif is known and can be used as the starting point for finding the motif. See the application documentation for more information.</td>
+<td>Override the sampling of starting points and just use a starting point derived from &lt;string&gt;. This is useful when an actual occurrence of a motif is known and can be used as the starting point for finding the motif. See the application documentation for more information.</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>
@@ -229,7 +229,7 @@
 
 <tr>
 <td>-p</td>
-<td>Only values of >0 will be applied. The -p <np> argument causes a version of MEME compiled for a parallel CPU architecture to be run. (By placing <np> in quotes you may pass installation specific switches to the 'mpirun' command. The number of processors to run on must be the first argument following -p).</td>
+<td>Only values of &gt;0 will be applied. The -p &lt;np&gt; argument causes a version of MEME compiled for a parallel CPU architecture to be run. (By placing &lt;np&gt; in quotes you may pass installation specific switches to the 'mpirun' command. The number of processors to run on must be the first argument following -p).</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
@@ -243,7 +243,7 @@
 
 <tr>
 <td>-sf</td>
-<td>Print <sf> as name of sequence file</td>
+<td>Print &lt;sf&gt; as name of sequence file</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
 </tr>

@@ -31,12 +31,17 @@
                                   (Always use dangling energies); 3 (Allow
                                   coaxial stacking of adjacent helices))
    -paired             boolean    [N] Calculate probabilities of base pairing
-   -ssoutfile          outfile    Output file name
-   -aoutfile           outfile    First (a) vienna dotplot output file
-   -aaoutfile          outfile    Second (a-a) vienna dotplot output file
-   -boutfile           outfile    Third (b) vienna dotplot output file
-   -bboutfile          outfile    Fourth (b-b) vienna dotplot output file
-   -aboutfile          outfile    Fifth (a-b) vienna dotplot output file
+   -ssoutfile          outfile    [*.vrnacofoldconc] Output file name
+   -aoutfile           outfile    [*.vrnacofoldconc] First (a) vienna dotplot
+                                  output file
+   -aaoutfile          outfile    [*.vrnacofoldconc] Second (a-a) vienna
+                                  dotplot output file
+   -boutfile           outfile    [*.vrnacofoldconc] Third (b) vienna dotplot
+                                  output file
+   -bboutfile          outfile    [*.vrnacofoldconc] Fourth (b-b) vienna
+                                  dotplot output file
+   -aboutfile          outfile    [*.vrnacofoldconc] Fifth (a-b) vienna
+                                  dotplot output file
 
    Associated qualifiers:
 

@@ -23,7 +23,7 @@
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>HMMER hmmpfam program output file</td>
 <td>Output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.ohmmpfam</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
