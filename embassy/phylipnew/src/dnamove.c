@@ -124,9 +124,9 @@ long *zeros;                                          /*treeread variables*/
 pointptr treenode;   /* pointers to all nodes in tree */
 double threshold;
 double *threshwt;
-boolean reversed[11];
-boolean graphic[11];
-unsigned char chh[11];
+boolean reversed[13];
+boolean graphic[13];
+unsigned char chh[13];
 howtree how;
 gbases *garbage;
 char *progname;
