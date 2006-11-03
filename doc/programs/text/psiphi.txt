@@ -16,8 +16,6 @@ Description
 
 Algorithm
 
-   **************** EDIT HERE ****************
-
 Usage
 
    Here is a sample session with psiphi
@@ -44,7 +42,7 @@ Command line arguments
    -finishresiduenumber integer    [1] Last residue in chain for which torsion
                                   angles should be calculated (1 = last
                                   residue) (Any integer value)
-  [-outfile]           report     Output report file name
+  [-outfile]           report     [*.psiphi] Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -59,6 +57,8 @@ Command line arguments
    -rdesshow2          boolean    Show description in the report
    -rscoreshow2        boolean    Show the score in the report
    -rusashow2          boolean    Show the full USA in the report
+   -rmaxall2           integer    Maximum total hits to report
+   -rmaxseq2           integer    Maximum hits to report for one sequence
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -363,7 +363,7 @@ Output file format
 
 ########################################
 # Program: psiphi
-# Rundate: Sat Jul 15 2006 12:00:00
+# Rundate: Sat 15 Jul 2006 12:00:00
 # Commandline: psiphi
 #    [-infile] ../../data/1hmp_a.ccf
 #    -chainnumber

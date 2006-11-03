@@ -92,7 +92,7 @@ Created tmap.ps
    -graph              xygraph    [$EMBOSS_GRAPHICS value, or x11] Graph type
                                   (ps, hpgl, hp7470, hp7580, meta, cps, x11,
                                   tekt, tek, none, data, xterm, png)
-  [-outfile]           report     Output report file name
+  [-outfile]           report     [*.tmap] Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers: (none)
@@ -116,6 +116,7 @@ Created tmap.ps
 
    "-graph" associated qualifiers
    -gprompt            boolean    Graph prompting
+   -gdesc              string     Graph description
    -gtitle             string     Graph title
    -gsubtitle          string     Graph subtitle
    -gxtitle            string     Graph x axis title
@@ -132,6 +133,8 @@ Created tmap.ps
    -rdesshow2          boolean    Show description in the report
    -rscoreshow2        boolean    Show the score in the report
    -rusashow2          boolean    Show the full USA in the report
+   -rmaxall2           integer    Maximum total hits to report
+   -rmaxseq2           integer    Maximum hits to report for one sequence
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -176,7 +179,7 @@ Created tmap.ps
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output report file name</td>
 <td>Report output file</td>
-<td>&nbsp;</td>
+<td><i>&lt;*&gt;</i>.tmap</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -341,7 +344,7 @@ SQ   SEQUENCE   348 AA;  38892 MW;  07443BEA CRC32;
 <pre>
 ########################################
 # Program: tmap
-# Rundate: Sat Jul 15 2006 12:00:00
+# Rundate: Sat 15 Jul 2006 12:00:00
 # Commandline: tmap
 #    [-sequences] tsw:opsd_human
 #    -outfile tmap.res
@@ -383,6 +386,11 @@ SQ   SEQUENCE   348 AA;  38892 MW;  07443BEA CRC32;
     282     302        7 NFGPIFMTIPAFFAKSAAIYN
 
 #---------------------------------------
+#---------------------------------------
+
+#---------------------------------------
+# Total_sequences: 2
+# Total_hitcount: 14
 #---------------------------------------
 </pre>
 </td></tr></table><p>

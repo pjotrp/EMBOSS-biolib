@@ -6,7 +6,7 @@
 <pre>
 ########################################
 # Program: tmap
-# Rundate: Sat Jul 15 2006 12:00:00
+# Rundate: Sat 15 Jul 2006 12:00:00
 # Commandline: tmap
 #    [-sequences] tsw:opsd_human
 #    -outfile tmap.res
@@ -48,6 +48,11 @@
     282     302        7 NFGPIFMTIPAFFAKSAAIYN
 
 #---------------------------------------
+#---------------------------------------
+
+#---------------------------------------
+# Total_sequences: 2
+# Total_hitcount: 14
 #---------------------------------------
 </pre>
 </td></tr></table><p>

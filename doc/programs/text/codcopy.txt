@@ -9,11 +9,12 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   Copies a codon usage table. This program supports all available codon
+   usage input and output formats. Rather than a copy utility, it is
+   intended as a format conversion utility so that codon usage data can
+   be exported to other applications that support only a single format.
 
 Algorithm
-
-   **************** EDIT HERE ****************
 
 Usage
 
@@ -150,7 +151,7 @@ TGA    *     0.286     0.902   1443
 
 Data files
 
-   **************** EDIT HERE ****************
+   None
 
 Notes
 
@@ -209,7 +210,9 @@ See also
 
 Author(s)
 
-   **************** EDIT HERE ****************
+   Peter Rice (pmr © ebi.ac.uk)
+   Informatics Division, European Bioinformatics Institute, Wellcome
+   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 History
 

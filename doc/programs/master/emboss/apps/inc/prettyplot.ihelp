@@ -27,7 +27,6 @@
                                   (BLACK) (Any string is accepted)
    -docolour           boolean    [N] Colour residues by table oily, amide
                                   etc.
-   -[no]title          boolean    [Y] Do not display the title
    -shade              string     Set to BPLW for normal shading
                                   (black, pale, light, white)
                                   so for pair = 1.5,1.0,0.5 and shade = BPLW
@@ -97,6 +96,7 @@
 
    "-graph" associated qualifiers
    -gprompt            boolean    Graph prompting
+   -gdesc              string     Graph description
    -gtitle             string     Graph title
    -gsubtitle          string     Graph subtitle
    -gxtitle            string     Graph x axis title

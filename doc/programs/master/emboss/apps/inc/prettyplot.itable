@@ -82,13 +82,6 @@
 </tr>
 
 <tr>
-<td>-[no]title</td>
-<td>Do not display the title</td>
-<td>Boolean value Yes/No</td>
-<td>Yes</td>
-</tr>
-
-<tr>
 <td>-shade</td>
 <td>Set to BPLW for normal shading
 (black, pale, light, white)

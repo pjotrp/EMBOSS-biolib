@@ -14,8 +14,6 @@ Description
 
 Algorithm
 
-   **************** EDIT HERE ****************
-
 Usage
 
    Here is a sample session with makenucseq
@@ -332,8 +330,6 @@ ctcgcccccgcccgcgaccgagtcgcgctcgacacggtcgcg
 
 Data files
 
-   **************** EDIT HERE ****************
-
 Notes
 
    None.
@@ -391,7 +387,8 @@ See also
 
 Author(s)
 
-   **************** EDIT HERE ****************
+   This application was contributed by Henrikki Almusa, Medicel,
+   Helsinki, Finland
 
 History
 
