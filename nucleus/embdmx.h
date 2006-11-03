@@ -36,6 +36,23 @@ extern "C"
 #ifndef embdmx_h
 #define embdmx_h
 
+/* @data EmbPDmxNrseq *********************************************************
+**
+** NUCLEUS data structure for non-redundant sequence testing
+**
+** @attr Garbage [AjBool] True if sequence is to be ignored
+** @attr Seq [AjPSeq] Sequence to be tested for redundancy
+** @@
+******************************************************************************/
+
+typedef struct EmbSDmxNrseq {
+  AjBool Garbage;
+  AjPSeq Seq;
+} EmbODmxNrseq;
+#define EmbPDmxNrseq EmbODmxNrseq*
+
+
+
 
 
 /*****************************************************************************/

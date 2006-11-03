@@ -1203,7 +1203,7 @@ AjBool embDmxScophitMergeInsertThisTargetBoth(const AjPList list,
 ** 
 ** The set output will always contain at least 1 sequence.
 ** 
-** @param [r] input  [const AjPList]    List of ajPSeq's 
+** @param [r] input  [const AjPList]    List of EmbPDmxNrseq objects
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the 
                                   sequence was retained
 ** @param [w] nset   [ajint*]     Number of non-garbage sequences in nr set 
@@ -1247,7 +1247,7 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
     AjPStr m = NULL;	  /* Passed as arg but not used here */
     AjPStr n = NULL;	  /* Passed as arg but not used here */
 
-    AjPSeq      *inseqs = NULL;	 /* Array containing input sequences */
+    EmbPDmxNrseq *inseqs = NULL;	 /* Array containing input sequences */
     AjPInt      lens    = NULL;	 /* 1: Lengths of sequences* in input list */
     AjPFloat2d  scores  = NULL;
     AjPSeqCvt   cvt     = 0;
@@ -1279,7 +1279,7 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
     /* Create an ajint array to hold lengths of sequences */
     lens = ajIntNewL(nin);
     for(x=0; x<nin; x++)
-	ajIntPut(&lens,x,ajSeqGetLen(inseqs[x]));
+	ajIntPut(&lens,x,ajSeqGetLen(inseqs[x]->Seq));
 
 
     /* Set the keep array elements to 1 */
@@ -1297,12 +1297,12 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
 	{
 	    /* DIAGNOSTICS 
 	       ajFmtPrint("x=%d y=%d\nComparing\n%S\nto\n%S\n\n", 
-		       x, y, inseqs[x]->Seq, inseqs[y]->Seq);*/
+		       x, y, inseqs[x]->Seq->Seq, inseqs[y]->Seq->Seq);*/
 	    
 	    
 
 	    /* Process w/o alignment identical sequences */
-	    if(ajStrMatchS(inseqs[x]->Seq, inseqs[y]->Seq))
+	    if(ajStrMatchS(inseqs[x]->Seq->Seq, inseqs[y]->Seq->Seq))
 	    {
 /*  DIAGNOSTICS		printf("Score=%f\n", 100.0);  */
 		
@@ -1321,8 +1321,8 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
 		maxarr=len;
 	    }
 
-	    p = ajSeqChar(inseqs[x]);
-	    q = ajSeqChar(inseqs[y]);
+	    p = ajSeqChar(inseqs[x]->Seq);
+	    q = ajSeqChar(inseqs[y]->Seq);
 
 	    ajStrAssignC(&m,"");
 	    ajStrAssignC(&n,"");
@@ -1348,11 +1348,11 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
 	    embAlignPathCalc(p,q,ajIntGet(lens,x),ajIntGet(lens,y), gapopen,
 			     gapextend,path,sub,cvt,compass,show);
 
-	    embAlignScoreNWMatrix(path,inseqs[x],inseqs[y],sub,cvt,
+	    embAlignScoreNWMatrix(path,inseqs[x]->Seq,inseqs[y]->Seq,sub,cvt,
 				  ajIntGet(lens,x), ajIntGet(lens,y),gapopen,
 				  compass,gapextend,&start1,&start2);
 
-	    embAlignWalkNWMatrix(path,inseqs[x],inseqs[y],&m,&n,
+	    embAlignWalkNWMatrix(path,inseqs[x]->Seq,inseqs[y]->Seq,&m,&n,
 				 ajIntGet(lens,x),ajIntGet(lens,y),
 				 &start1,&start2,gapopen,gapextend,cvt,
 				 compass,sub);
@@ -1402,7 +1402,8 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
 			ajIntPut(keep,y,0);
 		}
 		/* If just one is garbage, set non-garbage sequence as redundant */
-		else if(CheckGarbage && ((inseqs[x]->Garbage) || (inseqs[y]->Garbage)))
+		else if(CheckGarbage &&
+			((inseqs[x]->Garbage) || (inseqs[y]->Garbage)))
 		{
 		    if(inseqs[x]->Garbage)
 			ajIntPut(keep,y,0);
@@ -1449,7 +1450,7 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
 	for(y=x+1; y<nin; y++)
 	{
 /*DIAGNOSTICS	    ajFmtPrint("x=%d y=%d\nComparing\n%S\nto\n%S\n\n", 
-		       x, y, inseqs[x]->Seq, inseqs[y]->Seq);        */
+		       x, y, inseqs[x]->Seq->Seq, inseqs[y]->Seq->Seq);        */
 	}
     }
     
@@ -1485,7 +1486,7 @@ AjBool embDmxSeqNR(const AjPList input, AjPInt *keep, ajint *nset,
 ** data structure is set.  If the CheckGarbage argument is set OFF (False) 
 ** the shortest sequence is marked as redundant as normal.
 **
-** @param [r] input  [const AjPList]    List of ajPSeq's
+** @param [r] input  [const AjPList]    List of EmbPDmxNrseq objects
 ** @param [w] keep   [AjPInt*]    0: rejected (redundant) sequence, 1: the
                                   sequence was retained
 ** @param [w] nset   [ajint*]     Number of non-garbage sequences in nr set.
@@ -1530,7 +1531,7 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
     AjPStr m = NULL;	/* Passed as arg but not used here */
     AjPStr n = NULL;	/* Passed as arg but not used here */
 
-    AjPSeq *inseqs = NULL;	/* Array containing input sequences */
+    EmbPDmxNrseq *inseqs = NULL;	/* Array containing input sequences */
     AjPInt lens    = NULL;	/* 1: Lengths of sequences* in input list */
     AjPFloat2d  scores = NULL;
     AjPSeqCvt cvt = 0;
@@ -1564,7 +1565,7 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
     /* Create an ajint array to hold lengths of sequences */
     lens = ajIntNewL(nin);
     for(x=0; x<nin; x++)
-	ajIntPut(&lens,x,ajSeqGetLen(inseqs[x]));
+	ajIntPut(&lens,x,ajSeqGetLen(inseqs[x]->Seq));
 
 
     /* Set the keep array elements to 1 */
@@ -1582,7 +1583,7 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 	for(y=x+1; y<nin; y++)
 	{
 	    /* Process w/o alignment identical sequences */
-	    if(ajStrMatchS(inseqs[x]->Seq, inseqs[y]->Seq))
+	    if(ajStrMatchS(inseqs[x]->Seq->Seq, inseqs[y]->Seq->Seq))
 	    {
 		ajFloat2dPut(&scores,x,y,(float)100.0);
 		continue;
@@ -1599,8 +1600,8 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 		maxarr=len;
 	    }
 
-	    p = ajSeqChar(inseqs[x]);
-	    q = ajSeqChar(inseqs[y]);
+	    p = ajSeqChar(inseqs[x]->Seq);
+	    q = ajSeqChar(inseqs[y]->Seq);
 
 	    ajStrAssignC(&m,"");
 	    ajStrAssignC(&n,"");
@@ -1626,11 +1627,11 @@ AjBool embDmxSeqNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 	    embAlignPathCalc(p,q,ajIntGet(lens,x),ajIntGet(lens,y), gapopen,
 			     gapextend,path,sub,cvt,compass,show);
 
-	    embAlignScoreNWMatrix(path,inseqs[x],inseqs[y],sub,cvt,
+	    embAlignScoreNWMatrix(path,inseqs[x]->Seq,inseqs[y]->Seq,sub,cvt,
 				  ajIntGet(lens,x), ajIntGet(lens,y),gapopen,
 				  compass,gapextend,&start1,&start2);
 
-	    embAlignWalkNWMatrix(path,inseqs[x],inseqs[y],&m,&n,
+	    embAlignWalkNWMatrix(path,inseqs[x]->Seq,inseqs[y]->Seq,&m,&n,
 				 ajIntGet(lens,x),ajIntGet(lens,y),
 				 &start1,&start2,gapopen,gapextend,cvt,
 				 compass,sub);
