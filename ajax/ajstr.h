@@ -155,8 +155,12 @@ AjBool     ajCharMatchC(const char* txt1, const char* txt2);
 AjBool     ajCharMatchCaseC(const char* txt1, const char* txt2);
 AjBool     ajCharMatchWildC(const char* txt1, const char* txt2);
 AjBool     ajCharMatchWildS(const char* txt, const AjPStr str);
+AjBool     ajCharMatchWildCaseC(const char* txt1, const char* txt2);
+AjBool     ajCharMatchWildCaseS(const char* txt, const AjPStr str);
 AjBool     ajCharMatchWildNextC(const char* txt1, const char* txt2);
 AjBool     ajCharMatchWildWordC(const char* str, const char* txt);
+AjBool     ajCharMatchWildNextCaseC(const char* txt1, const char* txt2);
+AjBool     ajCharMatchWildWordCaseC(const char* str, const char* txt);
 AjBool     ajCharPrefixC(const char* txt, const char* pref);
 AjBool     ajCharPrefixS(const char* txt, const AjPStr pref);
 AjBool     ajCharPrefixCaseC(const char* txt, const char* pref);
@@ -172,6 +176,7 @@ AjBool     ajCharSuffixCaseS(const char* txt, const AjPStr suff);
 int        ajCharCmpCase(const char* txt1, const char* txt2);
 int        ajCharCmpCaseLen(const char* txt1, const char* txt2, size_t len);
 ajint      ajCharCmpWild(const char* txt1, const char* txt2);
+ajint      ajCharCmpWildCase(const char* txt1, const char* txt2);
 
 /* parsing */
 
@@ -372,8 +377,12 @@ AjBool     ajStrMatchCaseC  (const AjPStr thys, const char* text);
 AjBool     ajStrMatchCaseS  (const AjPStr thys, const AjPStr str);
 AjBool     ajStrMatchWildC  (const AjPStr thys, const char* text);
 AjBool     ajStrMatchWildS  (const AjPStr thys, const AjPStr wild);
+AjBool     ajStrMatchWildCaseC  (const AjPStr thys, const char* text);
+AjBool     ajStrMatchWildCaseS  (const AjPStr thys, const AjPStr wild);
 AjBool     ajStrMatchWildWordC (const AjPStr str, const char* text);
 AjBool     ajStrMatchWildWordS (const AjPStr str, const AjPStr text);
+AjBool     ajStrMatchWildWordCaseC (const AjPStr str, const char* text);
+AjBool     ajStrMatchWildWordCaseS (const AjPStr str, const AjPStr text);
 AjBool     ajStrMatchWordAllS(const AjPStr str, const AjPStr str2);
 AjBool     ajStrMatchWordOneS(const AjPStr str, const AjPStr str2);
 AjBool     ajStrPrefixC(const AjPStr str, const char* txt2);
@@ -387,13 +396,16 @@ AjBool     ajStrSuffixCaseS (const AjPStr str, const AjPStr pref);
 
 /* comparison (sorting) */
 
-int        ajStrCmpC  (const AjPStr thys, const char *text);
+int        ajStrCmpC(const AjPStr thys, const char *text);
 int        ajStrCmpS(const AjPStr str, const AjPStr str2);
+int        ajStrCmpCaseC (const AjPStr thys, const char *text);
 int        ajStrCmpCaseS (const AjPStr str1, const AjPStr str2);
 ajint      ajStrCmpLenC (const AjPStr thys, const char *text, size_t len);
 int        ajStrCmpLenS(const AjPStr str, const AjPStr str2, size_t len);
 int        ajStrCmpWildC (const AjPStr thys, const char* text);
 int        ajStrCmpWildS (const AjPStr thys, const AjPStr str);
+int        ajStrCmpWildCaseC (const AjPStr thys, const char* text);
+int        ajStrCmpWildCaseS (const AjPStr thys, const AjPStr str);
 int        ajStrVcmp  (const void* str1, const void* str2);
 
 /* comparison (search) */

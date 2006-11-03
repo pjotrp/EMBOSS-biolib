@@ -485,10 +485,16 @@ void __deprecated ajCharToUpper(char* txt)
 ** @nam3rule  Suffix        Compare end of string to given suffix.
 ** @nam4rule  MatchCase   Case-insensitive comparison.
 ** @nam4rule  MatchWild   Comparison using wildcard characters.
+** @nam5rule  MatchWildCase   Case-insensitive comparison using
+**                            wildcard characters.
 ** @nam5rule  MatchWildNext   Comparison using wildcard characters to
 **                            next word in a string
+** @nam6rule  MatchWildNextCase   Case-insensitive comparison using
+**                           wildcard characters to next word in a string
 ** @nam5rule  MatchWildWord   Comparison using wildcard characters to
 **                          whole words within a string.
+** @nam6rule  MatchWildWordCase   Case-insensitive comparison using
+**                         wildcard characters to whole words within a string.
 ** @nam4rule  PrefixCase  Case-insensitive comparison.
 ** @nam4rule  SuffixCase  Case-insensitive comparison.
 **
@@ -628,6 +634,50 @@ AjBool ajCharMatchWildS(const char* txt, const AjPStr str)
     return ajCharMatchWildC(txt, str->Ptr);
 }
 
+/* @func ajCharMatchWildCaseC *************************************************
+**
+** Simple case-sensitive test for matching two text strings using 
+** wildcard characters. 
+**
+** @param [r] txt [const char*] String
+** @param [r] txt2 [const char*] Text
+** @return [AjBool] ajTrue if the strings match
+** @@
+******************************************************************************/
+
+AjBool ajCharMatchWildCaseC(const char* txt, const char* txt2)
+{
+    ajint i;
+
+    i = ajCharCmpWildCase(txt, txt2);
+
+
+    ajDebug("ajCharMatchWildCaseC '%s' '%s' cmp: %d\n",
+	    txt, txt2, i);
+
+
+    if(i)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+/* @func ajCharMatchWildCaseS *************************************************
+**
+** Simple case-sensitive test for matching a text string and a string using
+** wildcard characters.
+**
+** @param [r] txt [const char*] String
+** @param [r] str [const AjPStr] Wildcard text
+** @return [AjBool] ajTrue if the strings match
+** @@
+******************************************************************************/
+
+AjBool ajCharMatchWildCaseS(const char* txt, const AjPStr str)
+{
+    return ajCharMatchWildCaseC(txt, str->Ptr);
+}
+
 /* @obsolete ajStrMatchWildCO
 ** @rename ajCharMatchWildS
 */
@@ -757,6 +807,125 @@ AjBool ajCharMatchWildNextC(const char* txt, const char* txt2)
 
 
 
+/* @func ajCharMatchWildNextCaseC *********************************************
+**
+** Test for matching the next 'word' in two text strings using 
+** wildcard characters, case-sensitive.
+**
+** @param [r] txt [const char*] String
+** @param [r] txt2 [const char*] Text
+** @return [AjBool] ajTrue if found
+** @@
+******************************************************************************/
+
+AjBool ajCharMatchWildNextCaseC(const char* txt, const char* txt2)
+{
+    const char* cp;
+    const char* cq;
+    const char* savecp;
+    char lastch = '\0';
+    
+    ajDebug("ajCharMatchWildNextCaseC '%s' '%s'\n", txt, txt2);
+
+    cp = txt2;
+    cq = txt;
+    
+    if(!*cp && !*cq)
+	return ajTrue; /* both empty */
+
+    if(!*cp)
+	return ajFalse;	/* no query text */
+    
+    while(*cp && !isspace((int) *cp))
+    {
+	if(!*cq && *cp != '*')
+	    return ajFalse;
+
+	switch(*cp)
+	{
+	case '?':		/* skip next character and continue */
+	    lastch = *cq;
+	    cp++;
+	    cq++;
+	    break;
+	case '*':
+	    cp++;		 /* recursive call to test the rest */
+	    if(!*cp)
+	    {
+		ajDebug("...matches at end +%d '%s' +%d '%s'\n",
+			 (cq - txt), cq, (cp - txt2), cp);
+		return ajTrue;	 /* just match the rest */
+	    }
+
+	    if(!*cq)		 /* no more string to compare */
+	    {
+		savecp = cp;
+		while(*cp == '*') {
+		    savecp = cp++;	/* may be ***... savecp is last '*' */
+		}
+		if(!*cp) return ajTrue;
+		return ajCharMatchWildNextC(cq,savecp);
+	    }
+
+	    while(*cq)
+	    {		 /* wildcard in mid name, look for the rest */
+		if(ajCharMatchWildNextC(cq, cp)) /* recursive + repeats */
+		    return ajTrue;
+		ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
+			 (cq - txt), cq, (cp - txt2), cp);
+		cq++;
+	    }
+
+	    return ajFalse;	  /* if we're still here, it failed */
+
+	    /* always returns once '*' is found */
+
+	default:	 /* for all other characters, keep checking */
+	    if(*cp != *cq)
+		return ajFalse;
+
+	    cp++;
+	    if(*cq)
+	    {
+		lastch = *cq;
+		cq++;
+	    }
+	}
+    }
+
+    ajDebug("...done comparing at +%d '%s' +%d '%s' lastch '%c'\n",
+	     (cq - txt), cq, (cp - txt2), cp, lastch);
+    
+    if(!isalnum((int) lastch))
+    {
+	ajDebug("not a word boundary at '%c'\n", lastch);
+	return ajFalse;
+    }
+    
+    if(*cp)
+    {
+	ajDebug("...incomplete cp, FAILED\n");
+	return ajFalse ;
+    }
+    
+    if(*cq)
+    {
+	if(isalnum((int) *cq))
+	{
+	    ajDebug("word continues, failed\n");
+	    return ajFalse;
+	}
+	ajDebug("word end ... success\n");
+	return ajTrue;
+    }
+    
+    ajDebug("...all finished and matched\n");
+    
+    return ajTrue;
+}
+
+
+
 /* @func ajCharMatchWildWordC *************************************************
 **
 ** Case-insensitive test for matching a text string 'word' against a 
@@ -803,6 +972,68 @@ AjBool ajCharMatchWildWordC(const char* txt, const char* txt2)
 	    {				/* start of word */
 		word = ajTrue;
 		if(ajCharMatchWildNextC(cq, txt2))
+		    return ajTrue;
+	    }
+	}
+	else
+	{
+	    if(!isalnum((int) *cq))
+		word = ajFalse;
+	}
+
+	cq++;
+    }
+
+    return ajFalse;
+}
+
+
+/* @func ajCharMatchWildWordCaseC *********************************************
+**
+** Case-sensitive test for matching a text string 'word' against a 
+** text string using wildcard characters.
+**
+** 'Word' is defined as starting and ending with an alphanumeric character
+** (A-Z a-z 0-9) with no white space.
+**
+** The query text can use '*' or '?' as a wildcard.
+**
+** @param [r] txt [const char*] String
+** @param [r] txt2 [const char*] Wildcard word
+** @return [AjBool] ajTrue if found
+** @@
+******************************************************************************/
+
+AjBool ajCharMatchWildWordCaseC(const char* txt, const char* txt2)
+{
+    const char* cp;
+    const char* cq;
+    AjBool word = ajFalse;
+
+    ajDebug("ajCharMatchWildWordCaseC('%s', '%s')\n", txt, txt2);
+
+    cp = txt2;
+    cq = txt;
+
+    if(!*cp && !*cq)
+	return ajTrue;
+
+    if(!*cp)
+	return ajFalse;
+
+    ajDebug("something to test, continue...\n");
+
+    /* unlike ajCharMatchWild, we step through the string (str) not the
+       query (text) */
+
+    while(*cq)
+    {
+	if(!word)
+	{
+	    if(isalnum((int) *cq))
+	    {				/* start of word */
+		word = ajTrue;
+		if(ajCharMatchWildNextCaseC(cq, txt2))
 		    return ajTrue;
 	    }
 	}
@@ -1138,6 +1369,8 @@ AjBool ajCharSuffixCaseS(const char* txt, const AjPStr str)
 ** @nam3rule  Cmp           Compare two complete strings & return sort order.
 ** @nam4rule  CmpCase     Case-insensitive comparison.
 ** @nam4rule  CmpWild     Comparison using wildcard characters.
+** @nam5rule  CmpWildCase Case-insensitive comparison using
+**                        wildcard characters.
 **
 ** @argrule   * txt [const char*] Character string
 ** @argrule   * txt2 [const char*] Comparison string
@@ -1345,6 +1578,108 @@ int ajCharCmpWild(const char* txt, const char* txt2)
     return 0;
 }
 
+
+/* @func ajCharCmpWildCase ****************************************************
+**
+** Finds the sort-order (case sensitive) of two text strings using
+** wildcard characters. 
+**
+** @param [r] txt [const char*] String
+** @param [r] txt2 [const char*] Text
+** @return [int]  -1 if first string should sort before second, +1 if the
+**         second string should sort first. 0 if they are identical
+**         in length and content.
+** @@
+******************************************************************************/
+
+int ajCharCmpWildCase(const char* txt, const char* txt2)
+{
+    const char* cp;
+    const char* cq;
+    
+    ajDebug("ajCharCmpWildCase('%s', '%s')\n", txt, txt2);
+
+    cp = txt2;
+    cq = txt;
+    
+    if(!*cp && !*cq)
+	return 0;
+
+    if(!*cp)
+	return -1;
+    
+    /*ajDebug("something to test, continue...\n");*/
+    
+    while(*cp)
+    {
+	if(!*cq && *cp != '*')
+	    return 1;
+
+	switch(*cp)
+	{
+	case '?':		/* skip next character and continue */
+	    cp++;
+	    cq++;
+	    break;
+	case '*':
+	    cp++;
+	    if(!*cp)
+	    {
+		/* ajDebug("...matches at end +%d '%s' +%d '%s'\n",
+		   (cq - str), cq, (cp - text), cp);*/
+		return 0;		/* just match the rest */
+	    }
+
+	    if(!*cq)
+	    {
+		/*ajDebug("...test match to null string just in case\n");*/
+		return ajCharCmpWildCase(cq, cp);
+	    }
+
+	    while(*cq)
+	    {		 /* wildcard in mid name, look for the rest */
+		if(ajCharMatchWildCaseC(cq, cp))
+		    return 0; /* recursive + repeats */
+		/* ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
+		   (cq - str), cq, (cp - text), cp);*/
+		cq++;
+	    }
+
+	    return 1;
+
+	    /* always returns once '*' is found */
+
+	default:	 /* for all other characters, keep checking */
+	    if(*cp != *cq)
+	    {
+		if(*cp > *cq)
+		    return -1;
+		else
+		    return 1;
+	    }
+	    cp++;
+	    if(*cq)
+		cq++;
+	}
+    }
+
+    /*ajDebug("...done comparing at +%d '%s' +%d '%s'\n",
+      (cq - str), cq, (cp - text), cp);*/
+    if(*cp)
+    {
+	/*ajDebug("...incomplete cp, FAILED\n");*/
+	return -1 ;
+    }
+
+    if(*cq)
+    {
+	/*ajDebug("...incomplete cq, FAILED\n");*/
+	return 1;
+    }
+    /*ajDebug("...all finished and matched\n");*/
+    
+    return 0;
+}
 
 /* @obsolete ajStrCmpWildCC
 ** @rename ajCharCmpWild
@@ -7418,7 +7753,11 @@ AjBool __deprecated ajStrWrapLeft(AjPStr* pthis, ajint width, ajint left)
 ** @nam3rule  Match          Compare two complete strings.
 ** @nam4rule  MatchCase      Case-insensitive comparison.
 ** @nam4rule  MatchWild      Comparison using wildcard characters.
+** @nam5rule  MatchWildCase  Case-insensitive comparison
+**                           using wildcard characters.
 ** @nam5rule  MatchWildWord  Case-insensitive wildcard comparison of 
+**                           first words within two strings.
+** @nam6rule  MatchWildWordCase  Case-insensitive wildcard comparison of 
 **                           first words within two strings.
 ** @nam4rule  MatchWord      Comparison using whole words.
 ** @nam5rule  MatchWordOne   Comparison using whole words matching any one.
@@ -7591,6 +7930,42 @@ AjBool __deprecated ajStrMatchWild(const AjPStr str, const AjPStr str2)
 
 
 
+/* @func ajStrMatchWildCaseC **************************************************
+**
+** Simple case-sensitive test for matching a string and a text string using
+** wildcard characters.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] Wildcard text
+** @return [AjBool] ajTrue if the strings match
+** @@
+******************************************************************************/
+
+AjBool ajStrMatchWildCaseC(const AjPStr str, const char* txt2)
+{
+    return ajCharMatchWildCaseC(str->Ptr, txt2);
+}
+
+
+
+
+/* @func ajStrMatchWildCaseS **************************************************
+**
+** Simple case-sensitive test for matching two strings using wildcard 
+** characters.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const AjPStr] Wildcard string
+** @return [AjBool] ajTrue if two strings match
+** @@
+******************************************************************************/
+
+AjBool ajStrMatchWildCaseS(const AjPStr str, const AjPStr str2)
+{
+    return ajCharMatchWildCaseC(str->Ptr, str2->Ptr);
+}
+
+
 /* @func ajStrMatchWildWordC **************************************************
 **
 ** Case-insensitive test for matching a text string "word" against a string
@@ -7634,6 +8009,53 @@ AjBool ajStrMatchWildWordC(const AjPStr str, const char* txt2)
 AjBool ajStrMatchWildWordS(const AjPStr str, const AjPStr str2)
 {
     return ajCharMatchWildWordC(str->Ptr, str2->Ptr);
+}
+
+
+
+/* @func ajStrMatchWildWordCaseC **********************************************
+**
+** Case-sensitive test for matching a text string "word" against a string
+** using wildcard characters. 
+**
+** 'Word' is defined as starting and ending with an alphanumeric character
+** (A-Z a-z 0-9) with no white space.
+**
+** The query text can use '*' or '?' as a wildcard.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] Text
+** @return [AjBool] ajTrue if found
+** @@
+******************************************************************************/
+
+AjBool ajStrMatchWildWordCaseC(const AjPStr str, const char* txt2)
+{
+    return ajCharMatchWildWordCaseC(str->Ptr, txt2);
+}
+
+
+
+
+/* @func ajStrMatchWildWordCaseS **********************************************
+**
+** Case-sensitive test for matching a string "word" against a string
+** using wildcard characters. 
+**
+** 'Word' is defined as starting and ending with an alphanumeric character
+** (A-Z a-z 0-9) with no white space.
+**
+** The query text can use '*' or '?' as a wildcard.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const AjPStr] Text
+** @return [AjBool]  ajTrue if found
+** @@
+******************************************************************************/
+
+AjBool ajStrMatchWildWordCaseS(const AjPStr str, const AjPStr str2)
+{
+    return ajCharMatchWildWordCaseC(str->Ptr, str2->Ptr);
 }
 
 
@@ -7964,6 +8386,8 @@ AjBool ajStrSuffixCaseS(const AjPStr str, const AjPStr str2)
 ** @nam3rule  Cmp           Compare two complete strings & return sort order.
 ** @nam4rule  CmpCase     Case-insensitive comparison.
 ** @nam4rule  CmpWild     Comparison using wildcard characters.
+** @nam5rule  CmpWildCase Case-insensitive comparison
+**                         using wildcard characters.
 ** @nam3rule  Vcmp     Compare string using void arguments.
 **
 ** @argrule Cmp str [const AjPStr] String to compare
@@ -8176,6 +8600,45 @@ int ajStrCmpWildC(const AjPStr str, const char* txt2)
 int ajStrCmpWildS(const AjPStr str, const AjPStr str2)
 {
     return ajCharCmpWild(str->Ptr, str2->Ptr);
+}
+
+/* @func ajStrCmpWildCaseC ****************************************************
+**
+** Finds the sort-order (case sensitive) of string and a text string using 
+** wildcard characters. 
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] Wildcard text
+** @return [int]  -1 if first string should sort before second, +1 if the
+**         second string should sort first. 0 if they are identical
+**         in length and content.
+** @@
+******************************************************************************/
+
+int ajStrCmpWildCaseC(const AjPStr str, const char* txt2)
+{
+    return ajCharCmpWildCase(str->Ptr, txt2);
+}
+
+
+
+
+/* @func ajStrCmpWildCaseS ****************************************************
+**
+** Finds the sort-order (case sensitive) of two strings using wildcard 
+** characters. 
+**
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const AjPStr] Wildcard string
+** @return [int]  -1 if first string should sort before second, +1 if the
+**         second string should sort first. 0 if they are identical
+**         in length and content.
+** @@
+******************************************************************************/
+
+int ajStrCmpWildCaseS(const AjPStr str, const AjPStr str2)
+{
+    return ajCharCmpWildCase(str->Ptr, str2->Ptr);
 }
 
 /* @obsolete ajStrCmpWild
