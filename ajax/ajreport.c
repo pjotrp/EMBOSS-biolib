@@ -47,6 +47,7 @@
 ** @attr Showseq [AjBool] ajTrue if sequence is to be included
 ** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
 ** @attr Prot [AjBool] ajTrue if format can work with protein sequences
+** @attr Showheader [AjBool] ajTrue if header appears in output
 ** @attr Write [(void*)] Function to write report
 ******************************************************************************/
 
@@ -2777,7 +2778,7 @@ void ajReportSetHeaderC(AjPReport thys, const char* header)
 
 
 
-/* @func ajReportSetHeader ****************************************************
+/* @func ajReportApppendHeader ************************************************
 **
 ** Defines a feature report header
 **
@@ -2847,7 +2848,7 @@ void ajReportSetSubHeader(AjPReport thys, const AjPStr header)
 
 
 
-/* @func ajReportAppendSubHeaderC *********************************************
+/* @func ajReportSetSubHeaderC ************************************************
 **
 ** Appends to a feature report subheader
 **
@@ -2866,7 +2867,7 @@ void ajReportSetSubHeaderC(AjPReport thys, const char* header)
 
 
 
-/* @func ajReportSetSubHeader *************************************************
+/* @func ajReportAppendSubHeader **********************************************
 **
 ** Defines a feature report subheader
 **

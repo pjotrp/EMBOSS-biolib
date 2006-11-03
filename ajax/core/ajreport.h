@@ -47,6 +47,8 @@ extern "C"
 ** @attr Mintags [ajint] Minimum number of tags to report
 ** @attr CountSeq [ajint] Number of sequences reported so far
 ** @attr CountHit [ajint] Number of features reported so far
+** @attr MaxHitAll [ajint] Maximum number of hits to report overall
+** @attr MaxHitSeq [ajint] Maximum number of hits to report for each sequence
 **
 ** @new ajReportNew Default constructor
 ** @delete ajReportDel Default destructor
