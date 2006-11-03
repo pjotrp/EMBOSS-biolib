@@ -106,7 +106,7 @@ void embPatlistRegexSearch (AjPFeattable ftable, const AjPSeq seq,
 ** @param [w] ftable [AjPFeattable] Table of found features
 ** @param [r] seq [const AjPSeq] Sequence to search
 ** @param [r] pat [const AjPPatternRegex] Pattern to search with
-** @param [r] reverse [AjBool] Search reverese sequence as well
+** @param [r] reverse [AjBool] Sequence has been reversed
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -117,23 +117,28 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     ajint off;
     ajint len;
     AjPFeature sf    = NULL;
-    AjPSeq revseq    = NULL;
+    /*AjPSeq revseq    = NULL;*/
     AjPStr substr    = NULL;
     AjPStr seqstr    = NULL;
+    AjPStr tmpstr = NULL;
     AjPStr tmp       = ajStrNew();
     AjPRegexp patexp = ajPatternRegexGetCompiled(pat);
     ajint adj;
 
     adj = ajSeqGetEnd(seq);
+    pos = ajSeqGetBegin(seq);
 
+/* this code is to reverse the sequence */
+/*
     if (reverse)
     {
         revseq = ajSeqNewS (seq);
         ajSeqReverseForce(revseq);
-        ajStrAssignEmptyS(&seqstr, ajSeqStr(revseq));
+        ajStrAssignSubS(&seqstr, ajSeqStr(revseq), pos-1, adj-1);
     }
-    else
-        ajStrAssignEmptyS(&seqstr, ajSeqStr(seq));
+*/
+    ajStrAssignSubS(&seqstr, ajSeqStr(seq), pos-1, adj-1);
+
     ajStrFmtUpper(&seqstr);
 
     while(ajStrGetLen(seqstr) && ajRegExec(patexp, seqstr))
@@ -152,6 +157,9 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
 				     adj - pos + 1);
             else
 	        sf = ajFeatNewII (ftable,pos,pos+len-1);
+	    ajFmtPrintS (&tmpstr,"*pat %S",
+			 ajPatternRegexGetName(pat));
+	    ajFeatTagAdd (sf,NULL,tmpstr);
 	    pos += len;
 	}
 	else
@@ -160,10 +168,10 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
 	    ajStrCutStart(&seqstr, 1);
 	}
     }
-
+/*
     if (reverse)
         ajSeqDel(&revseq);
-
+*/
     return;
 }
 
@@ -193,7 +201,9 @@ void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
     AjPStr seqname = ajStrNew();
     AjPStr tmp     = ajStrNew();
     ajint adj;
+    ajint begin;
 
+    begin = ajSeqGetBegin(seq);
     adj = ajSeqGetEnd(seq);
 
     ajStrAssignC(&seqname,ajSeqName(seq));
@@ -202,15 +212,15 @@ void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
     {
         revseq = ajSeqNewS (seq);
         ajSeqReverseForce(revseq);
-        ajStrAssignS(&seqstr, ajSeqStr(revseq));
+        ajStrAssignSubS(&seqstr, ajSeqStr(revseq),begin-1,adj-1);
     }
     else
-        ajStrAssignS(&seqstr, ajSeqStr(seq));
+        ajStrAssignSubS(&seqstr, ajSeqStr(seq),begin-1,adj-1);
 
     ajStrFmtUpper(&seqstr);
     ajDebug("embPatternSeqSearch '%S' protein: %B reverse: %B\n",
 	    pattern->pattern, pat->Protein, reverse);
-    embPatFuzzSearchII(pattern,1,seqname,seqstr,list,
+    embPatFuzzSearchII(pattern,begin,seqname,seqstr,list,
                        ajPatternSeqGetMismatch(pat),&hits,&tidy);
 
     ajDebug ("embPatternSeqSearch: found %d hits\n",hits);
