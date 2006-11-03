@@ -1966,11 +1966,22 @@ c_plgchrW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy)
 {
     PLFLT diag;
 
+/* this has a bug: plP_wcmmx is the millimeter position and includes
+   the offset if the window origin is not (0,0). We need the true
+   scale */
+
+
+/*
     if (dx == 0.0 && dy !=0.0) diag = plsc->chrdef/plP_wcmmx(1.0);
     else if (dy == 0.0 && dx !=0.0) diag = plsc->chrdef/plP_wcmmy(1.0);
     else diag = sqrt( (plsc->chrdef/plP_wcmmx(1.0)) * (plsc->chrdef/plP_wcmmx(1.0)) 
 		      + (plsc->chrdef/plP_wcmmy(1.0)) * (plsc->chrdef/plP_wcmmy(1.0)) );
 
+*/
+    if (dx == 0.0 && dy !=0.0) diag = plsc->chrdef/plsc->wmxscl;
+    else if (dy == 0.0 && dx !=0.0) diag = plsc->chrdef/plsc->wmyscl;
+    else diag = sqrt( (plsc->chrdef/plsc->wmxscl) * (plsc->chrdef/plsc->wmxscl) 
+		      + (plsc->chrdef/plsc->wmyscl) * (plsc->chrdef/plsc->wmyscl) );
     return diag;
 }
 

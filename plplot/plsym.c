@@ -1024,10 +1024,22 @@ c_plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
 {
     PLFLT diag;
 
+/* this has a bug: plP_wcmmx is the millimeter position and includes
+   the offset if the window origin is not (0,0). We need the true
+   scale */
+
+
+/*
     if (dx == 0.0 && dy !=0.0) diag = plstrl(text)/plP_wcmmy(1.0);
     else if (dy == 0.0 && dx !=0.0) diag = plstrl(text)/plP_wcmmx(1.0);
     else diag = sqrt( (plstrl(text)/plP_wcmmx(1.0)) * (plstrl(text)/plP_wcmmx(1.0)) + 
 		      (plstrl(text)/plP_wcmmy(1.0)) * (plstrl(text)/plP_wcmmy(1.0)) );
+*/
+
+    if (dx == 0.0 && dy !=0.0) diag = plstrl(text)/plsc->wmxscl;
+    else if (dy == 0.0 && dx !=0.0) diag = plstrl(text)/plsc->wmyscl;
+    else diag = sqrt( (plstrl(text)/plsc->wmxscl) * (plstrl(text)/plsc->wmxscl) + 
+		      (plstrl(text)/plsc->wmyscl) * (plstrl(text)/plsc->wmyscl) );
 
     return diag;
 }
