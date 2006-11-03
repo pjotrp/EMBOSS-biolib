@@ -319,7 +319,7 @@ IN
 FI act1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5222
+FC = 5223
 FP 49 /^acdProcess/
 FI stderr
 FC = 2
@@ -385,7 +385,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help
 FI stderr
-FZ = 1426
+FZ = 1437
 FP 3 / qualifiers:\n/
 FP 4 / qualifiers:/
 FP 1 /^ +\[-asequence\] +sequence +Sequence filename and optional format, or\n/
@@ -403,7 +403,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest -help -verbose
 FI stderr
-FZ = 4388
+FZ = 4399
 FP 26 /   boolean /
 FP  7 /   integer /
 FP 26 /   string /
@@ -2334,7 +2334,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI cirdna.ps
-FZ = 23067
+FC = 735
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stdout
@@ -2987,9 +2987,10 @@ FP /^TAG    \*     0.072     0.228    365\n/
 
 
 ID coderet-ex
-UC To extract all of the CDS, mRNA and the protein translations:
+UC To extract all of the CDS, mRNA, non-coding and the protein translations:
 AP coderet
 IN tembl:X03487
+IN
 IN
 IN
 IN
@@ -3005,16 +3006,20 @@ FI hsferg1.mrna
 FP /^>x03487_mrna_1\ncagacgttcttcgccgagagtcgtcggggttt/
 FI hsferg1.prot
 FP /^>x03487_pro_1\nMTTASTSQVRQNYHQDSEAAINRQINLELYASYVYLSMS/
+FI hsferg1.noncoding
+FP /^>x03487_noncoding_501\ngtgagcgcgggc/
 FI hsferg1.coderet
 FC = 3
-FP /     1     1     1     3 HSFERG1\n/
+FP /     1     1     2     1     5 HSFERG1\n/
 //
 
 ID coderet-ex2
 UC To only extract the mRNA sequence:
 AP coderet
-CL -nocds -notranslation
+CL -nocds -notranslation -norest
 IN tembl:X03487
+IN
+IN
 IN
 IN
 FI stderr
@@ -4373,7 +4378,7 @@ FP /# Date: 15\/07\/06\n/
 FP /# Files: 1\n/
 FP /#   File 1: .*/rod.dat\n/
 FP /# Fields: 2\n/
-FP /# Rundate: Sat Jul 15 2006 12:00:00\n/
+FP /# Rundate: Sat 15 Jul 2006 12:00:00\n/
 FP 1 /^Index \S+ maxlen \d+ items \d+\n/
 FP 1 /^filename: /
 //
@@ -4413,7 +4418,7 @@ FP /# Date: 15\/07\/06\n/
 FP /# Files: 1\n/
 FP /#   File 1: .*/rod.dat\n/
 FP /# Fields: 2\n/
-FP /# Rundate: Sat Jul 15 2006 12:00:00\n/
+FP /# Rundate: Sat 15 Jul 2006 12:00:00\n/
 FP 1 /^Index \S+ maxlen \d+ items \d+\n/
 FP 1 /^filename: /
 //
@@ -8210,6 +8215,25 @@ FC = 36
 
 
 
+ID digest-range
+AP digest
+CL -sbegin 10 -send 250
+IN tsw:opsd_human
+IN
+IN
+FI stderr
+FC = 11
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI opsd_human.digest
+FP /^    246     248    346\.378 K      E      AEK\s*\n/
+FP /yields 8 fragments/
+FC = 32
+//
+
+
+
 ID distmat-ex
 AP distmat
 CC Example file missing test/data/pax.align
@@ -8257,7 +8281,7 @@ FC = 1
 FP /Created dotmatcher1.dat\n/
 FI dotmatcher1.dat
 FC = 30
-FP /^Text2 x1 73.000000 y1 163.5[0-9]+ colour 0 size 1.000000 Dotmatcher: HBA_HUMAN vs HBB_HUMAN\n/
+FP /^Text2 x1 73.000000 y1 163.5[0-9]+ colour 0 size 1.000000 Dotmatcher: tsw-id:HBA_HUMAN vs tsw-id:HBB_HUMAN\n/
 //
 
 ID dotmatcher-stretchdata
@@ -8273,7 +8297,7 @@ FC = 1
 FP /Created dotmatcher1.dat\n/
 FI dotmatcher1.dat
 FC = 27
-FP /^##Title Dotmatcher: HBA_HUMAN vs HBB_HUMAN\n/
+FP /^##Title Dotmatcher: tsw-id:HBA_HUMAN vs tsw-id:HBB_HUMAN\n/
 FP /^##XminA 1.000000 XmaxA 141.000000 YminA 1.000000 YmaxA 146.000000\n/
 FP /^##Xmin 1.000000 Xmax 141.000000 Ymin 1.000000 Ymax 146.000000\n/
 FP /^##ScaleXmin 1.000000 ScaleXmax 141.000000 ScaleYmin 1.000000 ScaleYmax 146.000000\n/
@@ -10354,7 +10378,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI lindna.ps
-FZ = 14370
+FC = 518
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11152,14 +11176,64 @@ FI stdout
 FZ = 19
 FP /^Created pepinfo.ps\n/
 FI opsd_human.pepinfo 
-FZ = 202670
+FC = 4248
 FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 3 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FZ = 758243
+FC = 25434
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 2\n/
+//
+
+ID pepinfo-plot1
+AP pepinfo
+CL -nohydropathyplot
+IN tsw:opsd_human
+IN cps
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FZ = 19
+FP /^Created pepinfo.ps\n/
+FI opsd_human.pepinfo 
+FC = 3186
+FP 3 /^\s+4\s+T\s+1\n/
+FP 6 /^\s+4\s+T\s+0\n/
+FP 0 /^\s+4\s+T\s+0\.000\n/
+FI pepinfo.ps
+FC = 23905
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+//
+
+ID pepinfo-plot2
+AP pepinfo
+CL -nogeneralplot
+IN tsw:opsd_human
+IN cps
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FZ = 19
+FP /^Created pepinfo.ps\n/
+FI opsd_human.pepinfo 
+FC = 1062
+FP 0 /^\s+4\s+T\s+1\n/
+FP 0 /^\s+4\s+T\s+0\n/
+FP 3 /^\s+4\s+T\s+0\.000\n/
+FI pepinfo.ps
+FC = 1618
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
 //
 
 ID pepnet-ex
@@ -11178,7 +11252,7 @@ FI stdout
 FZ = 18
 FP /^Created pepnet.ps\n/
 FI pepnet.ps
-FZ = 12979
+FC = 508
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11190,7 +11264,6 @@ CL -sask -graph data
 IN tsw:gcn4_yeast
 IN 253
 IN 274
-IN cps
 FI stdout
 FC = 1
 FP /^Created pepnet1.dat\n/
@@ -11200,7 +11273,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pepnet1.dat
-FC = 104
+FC = 103
 FP /^Text1 x1 139.599991 y1 93.500000 colour 1 size 0.750000 D\n/
 FP /^Rectangle x1 134.499985 y1 85.430000 x2 137.499985 y2 88.430000 colour 9\n/
 //
@@ -11218,7 +11291,7 @@ FI stdout
 FZ = 20
 FP /^Created pepwheel.ps\n/
 FI pepwheel.ps
-FZ = 13599
+FC = 559
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11235,7 +11308,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pepwheel1.dat
-FC = 138
+FC = 137
 FP /^Text1 x1 -?0.000000 y1 0.453300 colour 9 size 1.000000 V\n/
 FP /^Rectangle x1 -0.025000 y1 0.431300 x2 0.025000 y2 0.481300 colour 9\n/
 //
@@ -11535,23 +11608,23 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI prettyplot1.dat
-FC = 602
-FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 -10.000000 y1 43.599998 colour 0 size 8.000000 Consensus\n/
-FP /^Text1 x1 59.000000 y1 53.500000 colour 0 size 8.000000 50\n/
-FP /^Text1 x1 9.000000 y1 53.500000 colour 0 size 8.000000 A\n/
+FC = 601
+FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 -10.000000 y1 42.599998 colour 0 size 8.000000 Consensus\n/
+FP /^Text1 x1 59.000000 y1 52.500000 colour 0 size 8.000000 50\n/
+FP /^Text1 x1 9.000000 y1 52.500000 colour 0 size 8.000000 A\n/
 FI prettyplot2.dat
 FC = 862
-FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 1.000000 y1 56.799999 colour 0 size 8.000000 K\n/
+FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 1.000000 y1 55.799999 colour 0 size 8.000000 K\n/
 FI prettyplot3.dat
 FC = 815
-FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 2.000000 y1 43.599998 colour 0 size 8.000000 H\n/
+FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 2.000000 y1 42.599998 colour 0 size 8.000000 H\n/
 FI prettyplot4.dat
 FC = 181
-FP /^Text1 x1 -10.000000 y1 50.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
-FP /^Text1 x1 1.000000 y1 70.000000 colour 0 size 8.000000 N\n/
+FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 1.000000 y1 69.000000 colour 0 size 8.000000 N\n/
 //
 
 ID prettyseq-ex
@@ -14942,7 +15015,7 @@ FP 5 /^>ECLAC/
 FP 5 /^>/
 //
 
-ID seqretall-ex1
+ID seqretall-ex2
 AP seqret
 CL -auto tembl:eclacz test.out -osf fasta
 FI test.out
@@ -21981,7 +22054,7 @@ FP /^408-487  \(27391-27469\)   88%\n/
 #    date info. to output files. 
 ####################################################
 
-ID ehmmbuild-ex1-keep
+ID ehmmbuild-ex-keep
 AB hmmernew
 RQ hmmer
 AA ehmmbuild
@@ -22081,13 +22154,13 @@ FP /^CKSUM 4536\n/
 //
 
 ## Specify seed to get consistent output.
-ID ehmmcalibrate-ex1-keep
+ID ehmmcalibrate-ex-keep
 AB hmmernew
 RQ hmmer
 AA ehmmcalibrate
 TI 120
 DL keep
-CL ../ehmmbuild-ex1-keep/globin.hmm globino.hmm -seed 1
+CL ../ehmmbuild-ex-keep/globin.hmm globino.hmm -seed 1
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -22096,12 +22169,12 @@ FP 0 /Died: /
 FP /Calibrate HMM search statistics\n/
 FI stdout
 FC =21
-FP /^hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex1-keep/globin.hmm\n/
-FP /^HMM file:                 ../ehmmbuild-ex1-keep/globin.hmm\n/
+FP /^hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex-keep/globin.hmm\n/
+FP /^HMM file:                 ../ehmmbuild-ex-keep/globin.hmm\n/
 FI globino.hmm
 FC =449
 FP /^COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf\n/
-FP /^COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex1-keep/globin.hmm\n/
+FP /^COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm\n/
 FP /^CKSUM 9858\n/
 //
 
@@ -22140,7 +22213,7 @@ AB hmmernew
 RQ hmmer
 AA ehmmsearch
 DL keep
-CL ../ehmmcalibrate-ex1-keep/globino.hmm ../../data/hmmnew/Artemia.fa globino.ehmmsearch -a 100
+CL ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/Artemia.fa globino.ehmmsearch -a 100
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -22149,10 +22222,10 @@ FP 0 /Died: /
 FP /^Search a sequence database with a profile HMM\n/
 FI stdout
 FC =3
-FP /^hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --domE 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex1-keep/globino.hmm ../../data/hmmnew/Artemia.fa > globino.ehmmsearch\n/
+FP /^hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --domE 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/Artemia.fa > globino.ehmmsearch\n/
 FI globino.ehmmsearch
 FC =216
-FP /^HMM file:                   ../ehmmcalibrate-ex1-keep/globino.hmm \[globins50\]\n/
+FP /^HMM file:                   ../ehmmcalibrate-ex-keep/globino.hmm \[globins50\]\n/
 FP /^     Total hits:           1\n/
 FP /^     Total hits:           9\n/
 //
@@ -22185,7 +22258,7 @@ AB hmmernew
 RQ hmmer
 AA ehmmalign
 DL keep
-CL ../ehmmcalibrate-ex1-keep/globino.hmm ../../data/hmmnew/globins630.fa globins630.ali
+CL ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/globins630.fa globins630.ali
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -22195,7 +22268,7 @@ FP 0 /Died: /
 FI stdout
 FC =13
 ## This is not the full command-line so as to avoid checking against a (variable) temp. file name.
-FP /^hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex1-keep/globino.hmm/
+FP /^hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex-keep/globino.hmm/
 FP /^Alignment saved in file globins630.ali\n/
 FI globins630.ali
 FC =3150
@@ -22208,7 +22281,7 @@ AB hmmernew
 RQ hmmer
 AA ehmmconvert
 DL keep
-CL ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmconvert -format G
+CL ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert -format G
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -22217,7 +22290,7 @@ FP 0 /Died: /
 FP /^Convert between profile HMM file formats\n/
 FI stdout
 FC =16
-FP /^hmmconvert -p  -F  ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmconvert\n/
+FP /^hmmconvert -p  -F  ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert\n/
 FP /^1 HMM\(s\) converted and written to globino.ehmmconvert\n/
 FI globino.ehmmconvert
 FC =169
@@ -22230,7 +22303,7 @@ AB hmmernew
 RQ hmmer
 AA ehmmemit
 DL keep
-CL ../ehmmcalibrate-ex1-keep/globino.hmm globino.ehmmemit -c N -n 10
+CL ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmemit -c N -n 10
 FI stderr
 FC =1
 FP 0 /Warning: /
@@ -22239,7 +22312,7 @@ FP 0 /Died: /
 FP /^Generate sequences from a profile HMM.\n/
 FI stdout
 FC =14
-FP /^hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex1-keep/globino.hmm\n/
+FP /^hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm\n/
 FP /^Output saved in file globino.ehmmemit\n/
 FI globino.ehmmemit
 FC =40
@@ -22791,7 +22864,7 @@ FP 3 /^MOTIF/
 #    to the output files. 
 #######################################
 
-ID ememe-ex1-keep
+ID ememe-keep
 AB memenew
 RQ meme
 AA ememe
@@ -22963,13 +23036,13 @@ FP /^2BHD_STREX               1.0000    255  3BHD_COMTE               1.0000    
 FP /^ADH_DROME                1.0000    255  AP27_MOUSE               1.0000    244  \n/
 //
 
-ID emast-ex1-ex
+ID emast-ex
 AB memenew
 RQ meme
 AA emast
-## PP cp ../ememe-ex1-keep/ex1.html .
-## Cannot use ouptput of ememe-ex1-keep test as input,
-## because temporary sequence file named in /ememe-ex1-keep/ex1.html
+## PP cp ../ememe-keep/ex1.html .
+## Cannot use ouptput of ememe-keep test as input,
+## because temporary sequence file named in /ememe-keep/ex1.html
 ## after "DATAFILE" will have been deleted.
 ## Instead use data/memenew/ex1.html which names the sequence file "crp0.s"
 ## which must be copied to the test directory. 
@@ -25319,7 +25392,7 @@ FC = 0
 //
 
 
-ID vrnainverse-ex1
+ID vrnainverse-ex
 AB vienna
 AA vrnainverse
 CL -repeats 3
