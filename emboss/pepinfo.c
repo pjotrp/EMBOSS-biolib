@@ -378,9 +378,9 @@ int main(int argc, char **argv)
     if(numGraphs)
     {
 	if(do_general || do_seq)
-	    ajGraphNewPage(ajFalse);
+	    ajGraphNewPage(graphs, ajFalse);
 
-	ajGraphSetCharSize(0.50);
+	ajGraphSetCharScale(0.50);
 	ajGraphSetTitleC(graphs,"Pepinfo");
 
 	ajGraphxyDisplay(graphs,AJTRUE);

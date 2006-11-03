@@ -172,7 +172,7 @@ int main(int argc, char **argv)
     ajGraphxySetYEnd(graph,100.0);
     ajGraphSetTitleC(graph,"Wobble bases");
     
-    ajGraphSetCharSize(0.7);
+    ajGraphSetCharScale(0.7);
     
     ajGraphxyDisplay(graph,ajTrue);
     

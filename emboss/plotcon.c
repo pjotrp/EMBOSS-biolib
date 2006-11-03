@@ -217,7 +217,7 @@ int main(int argc, char **argv)
 
     /*************** End of Loop ***************/
 
-    ajGraphSetCharSize(0.50);
+    ajGraphSetCharScale(0.50);
     gdata = ajGraphPlpDataNewI(ajSeqsetLen(seqset));
 
 

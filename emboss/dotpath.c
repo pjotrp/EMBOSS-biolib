@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     
     ajGraphTextMid(max*0.5,(ajSeqGetLen(seq2))+(xmargin*0.5),
 		   ajGraphGetTitleC(graph));
-    ajGraphSetCharSize(0.5);
+    ajGraphSetCharScale(0.5);
     
     /* display the overlapping matches in red */
     if(overlaps && ajListLength(matchlist))

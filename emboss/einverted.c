@@ -111,6 +111,9 @@ int main(int argc, char **argv)
     AjPSeqall seqall = NULL;
     AjPSeq sequence = NULL;
     AjPStr nseq = NULL;
+    AjBool rev = ajFalse;
+    AjBool comp = ajFalse;
+    ajint ioffset = 0;
 
     /* JISON new variables */
     AjPList listseq = NULL;
@@ -147,12 +150,18 @@ int main(int argc, char **argv)
 	liststart = ajIntNew();
 	listend   = ajIntNew();
 	
+	ajSeqTrim(sequence);
 	length = ajSeqGetLen(sequence);
 	ajSeqNum(sequence, cvt, &nseq);
 	sq = ajStrGetPtr(nseq);
-	
+	rev = ajSeqIsReversed(sequence);
+	if(rev)
+	    ioffset = ajSeqGetOffend(sequence);
+	else
+	    ioffset = ajSeqGetOffset(sequence);
+
 	ajDebug("sequence length: %d\n", length);
-	
+
 	/*
 	 ** build revmatch etc. to be a,t,g,c matched to reverse sequence
 	 ** ending in MAXSAVE ROGUE values
@@ -327,18 +336,26 @@ int main(int argc, char **argv)
 
 	/* JISON new block */
 	temppos=0;
+	comp = rev;
 	while(ajListstrPop(listseq, &tempstr))
 	{
-	    ajFmtPrintS(&tempname, "%S_%d_%d",
-			ajSeqGetNameS(sequence),
-			ajIntGet(liststart, temppos),
-			ajIntGet(listend, temppos));
+	    if(rev)
+		ajFmtPrintS(&tempname, "%S_%d_%d_rev",
+			    ajSeqGetNameS(sequence),
+			    ioffset + length + 1 - ajIntGet(listend, temppos),
+			    ioffset + length + 1 - ajIntGet(liststart, temppos));
+	    else
+		ajFmtPrintS(&tempname, "%S_%d_%d",
+			    ajSeqGetNameS(sequence),
+			    ioffset+ajIntGet(liststart, temppos),
+			    ioffset+ajIntGet(listend, temppos));
 	    ajSeqAssignNameS(tempseq, tempname);
 	    ajSeqAssignSeqS(tempseq, tempstr);
 	    if(seqout)
 		ajSeqWrite(seqout, tempseq);
 	    ajStrDel(&tempstr);
 	    temppos++;
+	    comp = !comp;
 	}	    
 	ajListstrDel(&listseq);
 	ajIntDel(&liststart);
@@ -410,12 +427,22 @@ static void einverted_report(ajint max, ajint imax, const AjPSeq seq,
     /* JISON new variables */
     AjPStr regionA=NULL;
     AjPStr regionB=NULL;
+    AjBool rev = ajFalse;
+    ajint ioffset = 0;
+    ajint length = 0;
     
 
     AJCNEW(align1,2*maxsave);
     AJCNEW(align2,2*maxsave);
 
     ajDebug("report (%d %d)\n", max, imax);
+
+    rev = ajSeqIsReversed(seq);
+    if(rev)
+    ioffset = ajSeqGetOffend(seq);
+    else
+	ioffset = ajSeqGetOffset(seq);
+    length = ajSeqGetLen(seq);
 
     /* reconstruct maximum path */
     t1 = (matrix->Ptr[imax % maxsave]->Ptr);
@@ -475,8 +502,10 @@ static void einverted_report(ajint max, ajint imax, const AjPSeq seq,
     regionB = ajStrNew();
     ajIntPut(liststart, *pos, *align2);
     
-
-    ajFmtPrintF(outfile, "%8d ", *align2); /* NB *jp is 1+coord */
+    if(rev)				/* NB *jp is 1+coord */
+	ajFmtPrintF(outfile, "%8d ", ioffset + length + 1 - *align2);
+    else
+	ajFmtPrintF(outfile, "%8d ", ioffset + *align2);/* NB *jp is 1+coord */
     for(jp = align2; *jp; ++jp)
 	if(*jp == *(jp+1))
 	    ajFmtPrintF(outfile, "-");
@@ -486,7 +515,10 @@ static void einverted_report(ajint max, ajint imax, const AjPSeq seq,
 	    ajStrAppendK(&regionA, base[(ajint)sq[*jp-1]]); /* JISON */
 	}
     
-    ajFmtPrintF(outfile, " %-8d\n", *(jp-1));
+    if(rev)
+	ajFmtPrintF(outfile, " %-8d\n", ioffset + length + 1 - *(jp-1));
+    else
+	ajFmtPrintF(outfile, " %-8d\n", ioffset+*(jp-1));
 
     /* JISON new block */
     ajIntPut(listend, *pos, *(jp-1)); 
@@ -505,7 +537,10 @@ static void einverted_report(ajint max, ajint imax, const AjPSeq seq,
 
     ajIntPut(listend, *pos, *align1 + 1); /* JISON */
 
-    ajFmtPrintF(outfile, "%8d ", *align1 + 1);
+    if(rev)
+	ajFmtPrintF(outfile, "%8d ", ioffset + length + 1 - *align1 - 1);
+    else
+	ajFmtPrintF(outfile, "%8d ", ioffset + *align1 + 1);
     for(ip = align1; *ip; ++ip)
 	if(*ip == *(ip+1))
 	    ajFmtPrintF(outfile, "-");
@@ -519,7 +554,10 @@ static void einverted_report(ajint max, ajint imax, const AjPSeq seq,
     ajListstrPushApp(*listseq, regionA);
     ajListstrPushApp(*listseq, regionB);
     
-    ajFmtPrintF(outfile, " %-8d\n", *(ip-1)+1);
+    if(rev)
+	ajFmtPrintF(outfile, " %-8d\n", ioffset + length + 1 - *(ip-1) -1);
+    else
+	ajFmtPrintF(outfile, " %-8d\n", ioffset + *(ip-1)+1);
 
     /* JISON new block */
     ajIntPut(liststart, *pos, *(ip-1)+1);  

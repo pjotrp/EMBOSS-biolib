@@ -142,22 +142,23 @@ int main(int argc, char **argv)
 
 	}
 
-	if(!plot)
+	if(outf)
 	{
 	    ajFmtPrintF(outf,"CHARGE of %s from %d to %d: window %d\n\n",sname,
 			beg+1,end+1,window);
-	    ajFmtPrintF(outf,"Position\tCharge\n");
+	    ajFmtPrintF(outf,"Position\tResidue\tCharge\n");
 	    for(i=0;i<limit;++i)
-		ajFmtPrintF(outf,"%d\t\t%.3lf\n",(int)x[i],y[i]);
+		ajFmtPrintF(outf,"%d\t\t%c\t%.3lf\n",
+			    (int)x[i],ajStrGetCharPos(str,i),y[i]);
 	}
-	else
+	if(plot)
 	{
 	    ajGraphSetMulti(graph,1);
 	    ajGraphxySetOverLap(graph,ajFalse);
 	    ajGraphSetXTitleC(graph,"Position");
 	    ajGraphSetYTitleC(graph,"Charge");
 	    charge_addgraph(graph,limit,x,y,ymax,ymin,window,sname);
-	    if(limit>0)
+	    if(limit > 1)
 		ajGraphxyDisplay(graph,ajFalse);
 	}
 

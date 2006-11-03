@@ -330,15 +330,21 @@ int main(int argc, char **argv)
     DrawLength = 800;
     Border = TickHeight+50+TextLength;
     Width = DrawLength + 2*Border;
-    Width*=(640.0/480.0);		/* to get a circle, not an oval */
+    Width*=(640.0/480.0*1.1);		/* to get a circle, not an oval */
     Height = DrawLength + 2*Border;
-    ajGraphOpenWin(graph, 0, Width, 0, Height);
+
+    ajGraphSetTitlePlus(graph, ajFileGetName(infile));
+
+/*    ajGraphOpenWin(graph, -5.0, Width+5.0, -5.0, Height+5.0);*/
+/*    ajGraphOpenWin(graph, 0, Width, 0, Height);*/
+
+    ajGraphOpenWin(graph, 0, Width, 0, Height*1.1);
 
     /* coordinates of the circle's center */
-    xDraw = 1.0*Width/2;
-    yDraw = 1.0*Height/2;
+    xDraw = Width/2.0;
+    yDraw = Height/2.0;
     /* radius of the outermost circle */
-    Radius = RadiusMax = 1.0*DrawLength/2;
+    Radius = RadiusMax = DrawLength/2.0;
 
 
     /* read the contents of the groups */
@@ -415,6 +421,7 @@ int main(int argc, char **argv)
     charsize = cirdna_TextRuler(Start, End, GapSize, TextLength, TextHeight,
 				PosTicks, NumGroups, NumLabels);
     if( charsize<minsize ) minsize = charsize;
+    ajDebug("Calculated charsize: %f minsize:%f\n", charsize, minsize);
     for(i=0; i<NumGroups; i++)
     {
 	charsize = cirdna_TextGroup(TextHeight, TextLength, Name[i],
@@ -425,6 +432,7 @@ int main(int argc, char **argv)
 	    minsize = charsize;
     }
     ajGraphSetDefCharSize(minsize);
+    ajDebug("Initial charsize: %f\n", minsize);
 
 
     /* find whether horizontal text strings overlap within a group */
@@ -483,6 +491,7 @@ int main(int argc, char **argv)
     charsize = cirdna_TextRulerStr(Start, End, GapSize,
 				   (TotalHeight/DrawRadius),
 				   PosTicks, NumGroups, NumLabels);
+    ajDebug("Resized calculated charsize: %f minsize:%f\n", charsize, minsize);
     if(charsize<minsize)
 	minsize = charsize;
     for(i=0; i<NumGroups; i++)
@@ -495,6 +504,7 @@ int main(int argc, char **argv)
 	    minsize = charsize;
     }
     ajGraphSetDefCharSize(minsize);
+    ajDebug("Resized charsize: %f\n", minsize);
 
 
     /* the ruler having been resized, recompute its height */
@@ -592,7 +602,7 @@ int main(int argc, char **argv)
 
 /* @funcstatic cirdna_TextRuler ***********************************************
 **
-** compute the character size that fits all elements of the ruler
+** Compute the character size that fits all elements of the ruler
 ** provided that the height and the length of all strings are at
 ** most TextHeight and TextLength, respectively
 **

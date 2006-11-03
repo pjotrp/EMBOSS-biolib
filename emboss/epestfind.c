@@ -746,7 +746,7 @@ int main(int argc, char **argv)
     }
 
     ajGraphDataAdd(graph, plot);
-    ajGraphSetCharSize(0.50);
+    ajGraphSetCharScale(0.50);
     ajGraphSetTitleC(graph, "PEST-find");
     ajGraphxyDisplay(graph, AJTRUE);
     ajGraphCloseWin();

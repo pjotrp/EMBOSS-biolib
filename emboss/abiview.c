@@ -280,7 +280,7 @@ int main(int argc, char **argv)
 	    }
 
 
-	    ajGraphNewPage(ajFalse);	/* display new page  */
+	    ajGraphNewPage(graphs,ajFalse);	/* display new page  */
 	}
 
 	nstart = nstop-1;

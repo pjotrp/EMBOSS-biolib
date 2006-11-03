@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 		   total+ymargin);
     ajGraphTextMid((total+xmargin)*0.5,(total+ymargin)*0.9,
 		   ajGraphGetTitleC(graph));
-    ajGraphSetCharSize(0.3);
+    ajGraphSetCharScale(0.3);
     
     
     for(i=0;i<ajSeqsetSize(seqset);i++)

@@ -82,12 +82,6 @@ section: additional [
     default: "N"
   ]
 
-  boolean: title [
-    additional: "Y"
-    information: "Do not display the title"
-    default: "Y"
-  ]
-
   string: shade [
     additional: "Y"
     information: "Shading"
@@ -241,6 +235,7 @@ section: output [
 
   graph: graph [
     standard: "Y"
+    gdesc: "Pretty plot"
   ]
 
 endsection: output

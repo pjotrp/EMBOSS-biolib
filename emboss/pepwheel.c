@@ -60,7 +60,6 @@ int main(int argc, char **argv)
     AjPStr octags   = NULL;
     AjBool wheel;
     AjBool amphipathic;
-    AjPStr txt = NULL;
     AjPGraph  graph=0;
     AjBool first;
     AjBool startloop;
@@ -127,8 +126,6 @@ int main(int argc, char **argv)
 
 
     substr = ajStrNew();
-    txt    = ajStrNew();
-
 
     begin = ajSeqGetBegin(seq);
     end   = ajSeqGetEnd(seq);
@@ -139,13 +136,9 @@ int main(int argc, char **argv)
     ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
     len = ajStrGetLen(substr);
 
-    ajFmtPrintS(&txt,"PEPWHEEL of %s from %d to %d",ajSeqGetNameC(seq),
-		begin,end);
+    ajGraphSetTitlePlus(graph, ajSeqGetUsa(seq));
 
     ajGraphOpenWin(graph,xmin,xmax,ymin,ymax);
-
-    ajGraphSetFore(AJB_BLACK);
-    ajGraphText(0.0,0.64,ajStrGetPtr(txt),0.5);
 
     ajGraphSetFore(AJB_BLACK);
 
@@ -204,7 +197,6 @@ int main(int argc, char **argv)
 
     ajStrDel(&strand);
     ajStrDel(&substr);
-    ajStrDel(&txt);
 
     ajSeqDel(&seq);
 

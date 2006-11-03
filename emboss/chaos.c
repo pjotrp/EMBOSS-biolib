@@ -2,10 +2,6 @@
 ** @author Ian Longden
 ** @@
 ** Chaos produces a chaos plot.
-** The original application is part of the ACEDB genome database
-** package, written by ** Richard Durbin (MRC LMB, UK)
-** rd@mrc-lmba.cam.ac.uk, and Jean Thierry-Mieg (CRBM du CNRS,
-** France) mieg@crbm1.cnusc.fr
 **
 ** This program is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU General Public License
@@ -58,6 +54,8 @@ int main(int argc, char **argv)
 
     sequence = ajAcdGetSeq("sequence");
     graph = ajAcdGetGraph("graph");
+
+    ajGraphSetTitlePlus(graph, ajSeqGetUsa(sequence));
 
     ajGraphOpenWin(graph,-0.1,1.4,-0.1,1.1);
 
@@ -117,7 +115,7 @@ int main(int argc, char **argv)
     ajGraphTextStart(1.0,1.0,"G");
 
 
-    ajGraphSetCharSize(0.5);
+    ajGraphSetCharScale(0.5);
     sprintf(line,"A %d",a);
     ajGraphTextStart(1.1,0.75,line);
     sprintf(line,"C %d",c);

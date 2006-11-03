@@ -278,7 +278,10 @@ int main(int argc, char **argv)
     Margin = 50*ajAcdGetFloat("margin");
     Width = DrawLength + 2*Border + Margin;
     Height = DrawLength + 2*Border;
-    ajGraphOpenWin(graph, 0, Width, 0, Height);
+
+    ajGraphSetTitlePlus(graph, ajFileGetName(infile));
+
+    ajGraphOpenWin(graph, 0, Width, 0, Height*1.1);
 
     /* read the start and end positions */
     lindna_ReadInput(infile, &Start, &End);
@@ -288,7 +291,7 @@ int main(int argc, char **argv)
     **  the molecule to window's size
     */
     RealLength = (End - Start) + 1;
-    ReduceCoef = 1.0 *RealLength / DrawLength;
+    ReduceCoef = RealLength / DrawLength;
 
 
     /* coordinates of the origin */

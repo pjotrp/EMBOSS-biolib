@@ -275,10 +275,12 @@ int main(int argc, char **argv)
 
 	ystart = 75.0;
 
+	ajGraphSetTitlePlus(graph, ajSeqGetUsa(seq));
+
 	ajGraphOpenWin(graph,-1.0, (float)numres+10.0, 0.0, ystart+5.0);
 
-	ajGraphTextMid((numres+10.0)/2.0, ystart+2.5,
-		       ajGraphGetTitleC(graph));
+/*	ajGraphTextMid((numres+10.0)/2.0, ystart+2.5,
+		       ajGraphGetTitleC(graph));*/
 
 	ajGraphGetOut(&fxp,&fyp,&ixlen,&iylen,&ixoff,&iyoff);
 
@@ -305,7 +307,7 @@ int main(int argc, char **argv)
 		((float)ixlen/ ((float)(numres)*(currentheight+1.0)))
 		    /currentheight;
 	}
-	ajGraphSetCharSize(((float)ixlen/((float)(numres)*
+	ajGraphSetCharScale(((float)ixlen/((float)(numres)*
 					  (currentheight+1.0)))/currentheight);
 	ajGraphGetCharSize(&defheight,&currentheight);
 
@@ -339,7 +341,7 @@ int main(int argc, char **argv)
 			y1 = ystart-5.0;
 
 		    y1 = y1-(yincr*(5.0));
-		    ajGraphNewPage(AJFALSE);
+		    ajGraphNewPage(graph,AJFALSE);
 		}
 		count = 1;
 	    }

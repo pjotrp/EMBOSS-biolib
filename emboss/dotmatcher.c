@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 			0.0-(xmargin*0.75),(ajSeqGetLen(seq)),
 			ajGraphGetYTitleC(graph),0.5);
 
-	ajGraphSetCharSize(0.5);
+	ajGraphSetCharScale(0.5);
 	ajGraphTextMid(max*0.5,(ajSeqGetLen(seq2))+xmargin-(onefifth*3),
 		       ajGraphGetSubTitleC(graph));
     }

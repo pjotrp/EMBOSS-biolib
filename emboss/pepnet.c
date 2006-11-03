@@ -120,25 +120,20 @@ int main(int argc, char **argv)
     ajStrFmtUpper(&strand);
     ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 
-    ajGraphSetBackWhite();
+    ajGraphSetTitlePlus(graph, ajSeqGetUsa(seq));
 
+    ajGraphSetBackWhite();
 
     ajGraphOpenWin(graph, xmin,xmax,ymin,ymax);
 
     for(count=begin-1,r=0;count<end;count+=231)
     {
 	if (count > begin)
-	    ajGraphNewPage(1);
+	    ajGraphNewPage(graph, 1);
 	pstart=count;
 	pstop = AJMIN(end-1, count+230);
 
-	ajFmtPrintS(&txt,"PEPNET of %s from %d to %d",ajSeqGetNameC(seq),
-		    pstart+1,pstop+1);
-
-
-	ajGraphSetFore(RED);
-	ajGraphText(75.0,110.0,ajStrGetPtr(txt),0.5);
-	ajGraphSetCharSize(0.75);
+	ajGraphSetCharScale(0.75);
 
 	xstart = 145.0;
 	ystart =  80.0;

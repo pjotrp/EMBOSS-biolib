@@ -15,8 +15,6 @@
 **
 ** -docolour    Colour residues by table oily, amide, basic etc. (FALSE)
 **
-** -title       Display a title.     (TRUE)
-**
 ** -shade       Colour residues by shades. (BLPW)
 **              B-Black L-Brown P-Wheat W-White
 **
@@ -95,7 +93,7 @@ static void  prettyplot_fillinboxes(ajint length, ajint numseq,
 				    ajint seqstart,ajint seqend, 
 				    ajint numres, ajint resbreak,
 				    AjBool boxit, AjBool boxcol, 
-				    AjBool consensus,AjBool title,
+				    AjBool consensus,
 				    float xmid, float ystart, float yincr, 
 				    const AjPSeqCvt cvt);
 
@@ -129,7 +127,6 @@ int main(int argc, char **argv)
     AjBool colourbyconsensus;
     AjBool colourbyresidues;
     AjBool colourbyshade = AJFALSE;
-    AjBool title;
     AjBool boxit;
     AjBool boxcol;
     AjBool portrait;
@@ -143,7 +140,6 @@ int main(int argc, char **argv)
     AjPStr ssimilarity = NULL;
     AjPStr sother = NULL;
     AjPStr sboxcolval = NULL;
-    AjPStr titlestr = NULL;
     AjPStr options = NULL;
     /*    ajint showscore = 0; */
     ajint iboxcolval = 0;
@@ -180,6 +176,7 @@ int main(int argc, char **argv)
     AjBool iscons = ajFalse;
     ajint currentstate = 0;
     ajint oldfg = 0;
+    float fold = 0.0;
     ajint *colmat = 0;
     ajint *shadecolour = 0;
     float identthresh = 1.5;
@@ -204,6 +201,7 @@ int main(int argc, char **argv)
     ajint endseq;
     ajint newILend = 0;
     ajint newILstart;
+    ajint offset = 0;
 
     ajGraphInit("prettyplot", argc, argv);
 
@@ -217,13 +215,17 @@ int main(int argc, char **argv)
     graph             = ajAcdGetGraph("graph");
     colourbyconsensus = ajAcdGetBool("ccolours");
     colourbyresidues  = ajAcdGetBool("docolour");
-    title             = ajAcdGetBool("title");
     shade             = ajAcdGetString("shade");
     pair              = ajAcdGetArray("pair");
     identity          = ajAcdGetInt("identity");
     boxit             = ajAcdGetBool("box");
 
     ajtime = ajTimeTodayF("daytime");
+
+    ajSeqsetTrim(seqset);
+    offset = ajSeqsetGetOffset(seqset);
+
+    ajGraphSetTitlePlus(graph, ajSeqsetGetUsa(seqset));
 
     if(boxit)
     {
@@ -443,27 +445,25 @@ int main(int argc, char **argv)
 
     ajGraphGetCharSize(&defheight,&currentheight);
  
-    ajGraphSetCharSize(((float)ixlen/((float)(numres+charlen)*
-				      (currentheight+1.0)))/currentheight);
+    ajGraphSetCharScale(((float)ixlen/((float)(numres+charlen)*
+				       (currentheight+1.0)))/currentheight);
 
     ajGraphGetCharSize(&defheight,&currentheight);
 
     yincr = (currentheight +3.0)*0.3;
 
 /*
-** If we have titles (we usually do) set the title and subtitle text
-** and make space for them
+** If we have titles (now the standard graph title and subtitle)
+** leave 5 rows of space for them
 */
-    if(!title)
-	y = ystart;
-    else
+    y=ystart-6.0;
+
+    if(ajStrGetLen(options))
     {
-	y=ystart-5.0;
-	ajFmtPrintS(&titlestr, "%S %D", ajSeqsetGetUsa(seqset), ajtime);
-	ajGraphTextMid(xmid,ystart,
-			ajStrGetPtr(titlestr));
+	fold = ajGraphSetCharScale(1.0);
 	ajGraphTextMid(xmid,1.0,
-			ajStrGetPtr(options));
+		       ajStrGetPtr(options));
+	ajGraphSetCharScale(fold);
     }
 
 /* if sequences per page not set then calculate it */
@@ -795,10 +795,7 @@ int main(int argc, char **argv)
 	    if(y<yincr*((float)numseq+2.0+((float)consensus*2)))
 	    {
 		/* full page - print it */
-		if(!title)
-		    y = ystart;
-		else
-		    y=ystart-5.0;
+		y=ystart-6.0;
 
 		startseq = 0;
 		endseq = seqperpage;
@@ -808,7 +805,7 @@ int main(int argc, char **argv)
 		{
 		    /* AJB */
 		    /*if(startseq != 0)
-		    	ajGraphNewPage(AJFALSE);*/
+		    	ajGraphNewPage(graph, AJFALSE);*/
 
 		    /*ajDebug("Inner loop: startseq: %d numseq: %d endseq: %d\n",
 			    startseq, numseq, endseq);*/
@@ -818,11 +815,11 @@ int main(int argc, char **argv)
 					   startseq,endseq,
 					   newILstart,newILend,
 					   numres,resbreak,
-					   boxit,boxcol,consensus,title,
+					   boxit,boxcol,consensus,
 					   xmid, ystart,yincr,cvt);
 		    startseq = endseq;
 		    endseq += seqperpage;
-		    ajGraphNewPage(AJFALSE);
+		    ajGraphNewPage(graph, AJFALSE);
 		}
 	    }
 
@@ -989,7 +986,7 @@ int main(int argc, char **argv)
     while(startseq < numseq)
     {
 	if(startseq)
-	    ajGraphNewPage(AJFALSE);
+	    ajGraphNewPage(graph, AJFALSE);
 
 	/*ajDebug("Final loop: startseq: %d numseq: %d endseq: %d\n",
 		startseq, numseq, endseq);*/
@@ -999,7 +996,7 @@ int main(int argc, char **argv)
 			       startseq,endseq,
 			       newILstart,newILend,
 			       numres,resbreak,
-			       boxit,boxcol,consensus,title,
+			       boxit,boxcol,consensus,
 			       xmid,ystart,yincr,cvt);
 	startseq = endseq;
 	endseq += seqperpage;
@@ -1041,8 +1038,6 @@ int main(int argc, char **argv)
     AJFREE(identical);
     AJFREE(matching);
     AJFREE(colcheck);
-
-    ajStrDel(&titlestr);
 
     ajSeqsetDel(&seqset);
     ajMatrixDel(&cmpmatrix);
@@ -1109,7 +1104,6 @@ static ajint prettyplot_calcseqperpage(float yincr,float y,AjBool consensus)
 ** @param [r] boxcol [AjBool] If true, colour the background in each box
 ** @param [r] consensus [AjBool] If true, include consensus sequence
 **                               on last line
-** @param [r] title [AjBool] kPrint a graph title
 ** @param [r] xmid [float] Horizontal mid point
 ** @param [r] ystart [float] Vertical start. 1.0 is the top.
 ** @param [r] yincr [float] Vertical increment to next row
@@ -1124,7 +1118,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 				   ajint start, ajint end,
 				   ajint numres, ajint resbreak,
 				   AjBool boxit, AjBool boxcol, 
-				   AjBool consensus, AjBool title,
+				   AjBool consensus,
 				   float xmid, float ystart, float yincr,
 				   const AjPSeqCvt cvt)
 {
@@ -1154,8 +1148,8 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    start, end, seqstart, seqend);
     ajDebug("fillinboxes numres: %d resbreak: %d\n",
 	    numres, resbreak);
-    ajDebug("fillinboxes boxit: %B boxcol: %B consensus: %B title: %B\n",
-	    boxit, boxcol, consensus, title);
+    ajDebug("fillinboxes boxit: %B boxcol: %B consensus: %B \n",
+	    boxit, boxcol, consensus);
     ajDebug("fillinboxes xmid: %.3f ystart:%.3f yincr: %.3f\n",
 	    xmid, ystart, yincr);
 */
@@ -1164,10 +1158,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 
     if(boxit && boxcol)
     {
-	if(!title)
-	    y = ystart;
-	else
-	    y = ystart-5.0;
+	y = ystart-6.0;
 	for(k=start; k< end; k++)
 	{
 	    if(countforgap >= resbreak)
@@ -1180,10 +1171,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 		y = y-(yincr*((float)numseq+2.0+((float)consensus*2)));
 		if(y<yincr*((float)numseq+2.0+((float)consensus*2)))
 		{
-		    if(!title)
-			y = ystart;
-		    else
-			y = ystart-5.0;
+		    y = ystart-6.0;
 		}
 		count = 1;
 		gapcount = 0;
@@ -1209,10 +1197,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 
     count = 0;
     gapcount = countforgap = 0;
-    if(!title)
-	y = ystart;
-    else
-	y = ystart-5.0;
+    y = ystart-6.0;
 
     ajGraphGetCharSize(&defcs,&curcs);
 
@@ -1258,14 +1243,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    y = y-(yincr*((float)numseq+2.0+((float)consensus*2)));
 	    if(y<yincr*((float)numseq+2.0+((float)consensus*2)))
 	    {
-		if(!title)
-		    y = ystart;
-		else
-		{
-		    y = ystart-5.0;
-		    ajGraphTextMid(xmid,ystart,
-				    ajStrGetPtr(seqset->Usa));
-		}
+		y = ystart-6.0;
 	    }
 
 	    count = 0;
@@ -1370,10 +1348,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    count = 0;
 	    gapcount = countforgap = 0;
 
-	    if(!title)
-		y = ystart;
-	    else
-		y = ystart-5.0;
+	    y = ystart-6.0;
 
 	    for(k=start; k< end; k++)
 	    {

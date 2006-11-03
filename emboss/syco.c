@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     if(plot)
     {
         graph = ajAcdGetGraphxy("graph");
-	ajGraphSetCharSize(0.60);
+	ajGraphSetCharScale(0.60);
     }
     
     
