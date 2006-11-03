@@ -131,7 +131,7 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    }
 	    $dtypedefname = "";
 	    ($dtype, $dattrs, $dtypeb, $ddefine) =
-		$rest =~ /^\s*([^\{]*)\{([^\}]+)[\}]([^;]*)[;]\s*([\#]define[^\n]+)?/os;
+		$rest =~ /^\s*([^\{]*)\{(.*?)\n[\}]([^;]*)[;]\s*([\#]define[^\n]+)?/os;
 
 	    print "Data type $name\n";
 	    print $OFILE "<hr><h2>Data type ".srsdref($name)."</h2>\n";
@@ -159,6 +159,10 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 
 	    $icc=0;
 	    @lattrs = ();
+###	    print STDERR "old dattrs '$dattrs'\n";
+	    $dattrs =~ s/struct\s+[\{][^\}]+[\}]\s+[^;]+;\s+//g;
+	    $dattrs =~ s/union\s+[\{][^\}]+[\}]/union /g;
+###	    print STDERR "mod dattrs '$dattrs'\n";
 	    while ($dattrs =~ /([^;]+)[;]\s*([\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/][^\n]*[\n])?/gos) {
 		$dattr = $1;
 		$dcc = $2;
@@ -641,7 +645,7 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 			print "bad datatype name '$name' typedef is '$dtypedefname'\n";
 		    }
 		    if ($atype ne $dattrtype) {
-			print "bad cast <$atype> <$dattrtype>\n";
+			print "bad datatype cast <$atype> <$dattrtype>\n";
 		    }
 		}
 	    }
