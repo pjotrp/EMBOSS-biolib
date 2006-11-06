@@ -243,6 +243,8 @@ static ajint octanol_getwhitewimbleydata(AjPFile file, float matrix[],
 	s1 = ajStrGetPtr(buffer);
 	if(*s1 == '#')			/* ignore lines */
 	    continue;
+	if(!ajStrGetLen(buffer))
+	  continue;
 
 	token = ajStrTokenNewS(buffer,delim);
 	cols = ajStrParseCountS(buffer,delim);
@@ -255,6 +257,7 @@ static ajint octanol_getwhitewimbleydata(AjPFile file, float matrix[],
 	matpos = (ajint)s1[0];
 	matpos -= 97;
 
+	ajDebug("octanol buf2 %d '%c' matpos %d\n", s1[0], s1[0], matpos);
 	ajStrTokenNextParseS(&token,delim,&buf2); /* get interface value */
 	ajStrToFloat(buf2,&matrix[matpos]);
 
