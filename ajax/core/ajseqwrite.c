@@ -274,6 +274,9 @@ static SeqOOutFormat seqOutFormat[] =
     {"ddbj",       "Genbank/DDBJ entry format (alias)",
 	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGenbank}, /* alias for genbank */
+    {"refseq",     "Genbank entry format (alias)",
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGenbank}, /* alias for genbank */
     {"gff",        "GFF feature file with sequence in the header",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteGff},
@@ -811,8 +814,15 @@ static void seqWriteFasta(AjPSeqout outseq)
     AjPStr seq = NULL;
     ajint linelen     = 60;
     ajint iend;
+    AjPStr db = NULL;
 
-    seqDbName(&outseq->Name, outseq->Setdb);
+    ajStrAssignS(&db, outseq->Setoutdb);
+    /* ajStrAssignEmptyS(&db, outseq->Db);*/
+
+    ajDebug("seqWriteFasta outseq Db '%S' Setdb '%S' Setoutdb '%S' Name '%S'\n",
+	    outseq->Db, outseq->Setdb, outseq->Setoutdb, outseq->Name);
+
+    seqDbName(&outseq->Name, db);
 
     ajFmtPrintF(outseq->File, ">%S", outseq->Name);
 
@@ -836,6 +846,7 @@ static void seqWriteFasta(AjPSeqout outseq)
     }
 
     ajStrDel(&seq);
+    ajStrDel(&db);
 
     return;
 }
@@ -889,6 +900,7 @@ static void seqWriteNcbi(AjPSeqout outseq)
     AjPStr dbname = NULL;
     static ajint blordnum=0;
 
+    ajDebug("seqWriteNcbi SetDb '%S' Db '%S'\n", outseq->Setdb, outseq->Db);
     if(ajStrGetLen(outseq->Setdb))
 	ajStrAssignS(&dbname, outseq->Setdb);
     else if(ajStrGetLen(outseq->Db))
@@ -921,6 +933,8 @@ static void seqWriteNcbi(AjPSeqout outseq)
 	if(seqNcbiKnowndb(dbname))
 	    ajFmtPrintF(outseq->File, "%S|%S|", dbname, version);
 	else if(ajStrMatchCaseC(dbname, "lcl"))
+	    ajFmtPrintF(outseq->File, "%S|", dbname);
+	else if(ajStrMatchCaseC(dbname, "bbs"))
 	    ajFmtPrintF(outseq->File, "%S|", dbname);
 	else if(ajStrMatchCaseC(dbname, "BL_ORD_ID"))
 	    ajFmtPrintF(outseq->File, "gnl|%S|%d ", dbname, blordnum++);
@@ -4947,6 +4961,10 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajint ilen;
     ajint i;
 
+    ajDebug("seqClone out Setdb '%S' Db '%S' seq Setdb '%S' Db '%S'\n",
+	    outseq->Setdb, outseq->Db,
+	    seq->Setdb, seq->Db);
+
     iend = ajStrGetLen(seq->Seq);
 
     if(seq->Begin)
@@ -4961,6 +4979,12 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
 	ajDebug("seqClone end: %d\n", iend);
     }
 
+    /* first reset the SetDb value if we got one from -osdbname */
+    if(ajStrGetLen(outseq->Setoutdb))
+      ajStrAssignS(&outseq->Setdb, outseq->Setoutdb);
+ 
+    /* Now fill in missing values */
+
     ajStrAssignEmptyS(&outseq->Name, seq->Name);
     ajStrAssignEmptyS(&outseq->Acc, seq->Acc);
     ajListstrClone(seq->Acclist, outseq->Acclist);
@@ -4973,6 +4997,7 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajStrAssignEmptyS(&outseq->Type, seq->Type);
     ajStrAssignEmptyS(&outseq->Informatstr, seq->Formatstr);
     ajStrAssignEmptyS(&outseq->Entryname, seq->Entryname);
+    ajStrAssignEmptyS(&outseq->Setdb, seq->Setdb);
     ajStrAssignEmptyS(&outseq->Db, seq->Db);
 
     AJFREE(outseq->Accuracy);
@@ -5031,6 +5056,10 @@ static void seqAllClone(AjPSeqout outseq, const AjPSeq seq)
     ajint ilen;
     ajint i;
 
+    ajDebug("seqAllClone out Setdb '%S' Db '%S' seq Setdb '%S' Db '%S'\n",
+	    outseq->Setdb, outseq->Db,
+	    seq->Setdb, seq->Db);
+
     iend = ajStrGetLen(seq->Seq);
 
     if(seq->Begin)
@@ -5046,6 +5075,12 @@ static void seqAllClone(AjPSeqout outseq, const AjPSeq seq)
     }
     ajDebug("ajSeqAllClone outseq->Type '%S' seq->Type '%S'\n",
 	    outseq->Type, seq->Type);
+
+ 
+    ajStrAssignS(&outseq->Setdb, seq->Setdb);
+    /* replace this with anything from -osdbname which takes precedence */
+    if(ajStrGetLen(outseq->Setoutdb))
+      ajStrAssignS(&outseq->Setdb, outseq->Setoutdb);
     ajStrAssignS(&outseq->Db, seq->Db);
     ajStrAssignS(&outseq->Name, seq->Name);
     ajStrAssignS(&outseq->Acc, seq->Acc);
@@ -5135,6 +5170,7 @@ static void seqDeclone(AjPSeqout outseq)
     AjPStr ptr = NULL;
 
     ajStrSetClear(&outseq->Db);
+    ajStrSetClear(&outseq->Setdb);
     ajStrSetClear(&outseq->Name);
     ajStrSetClear(&outseq->Acc);
     ajStrSetClear(&outseq->Sv);
