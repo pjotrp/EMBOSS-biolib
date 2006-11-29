@@ -136,8 +136,7 @@ typedef struct AjSSeqQuery {
 ** @attr Acc [AjPStr] Sequence accession number (replace on reading)
 ** @attr Inputtype [AjPStr] Sequence type from ACD
 ** @attr Type [AjPStr] Sequence type N or P
-** @attr Db [AjPStr] Database name (replace on reading)
-** @attr Setdb [AjPStr] Database name for output (replace on reading)
+** @attr Db [AjPStr] Database name (from commandline, replace on reading)
 ** @attr Full [AjPStr] Full name
 ** @attr Date [AjPStr] Date
 ** @attr Desc [AjPStr] One-line description
@@ -184,7 +183,6 @@ typedef struct AjSSeqin {
   AjPStr Inputtype;
   AjPStr Type;
   AjPStr Db;
-  AjPStr Setdb;
   AjPStr Full;
   AjPStr Date;
   AjPStr Desc;
@@ -263,7 +261,7 @@ typedef struct AjSSeqin {
 ** @attr Offend [ajint] offset from end 
 ** @attr Weight [float] Weight from multiple alignment
 ** @attr Fpos [ajlong] File position (fseek) for USA
-** @attr Usa [AjPStr] USA fo re-reading
+** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
 ** @attr Formatstr [AjPStr] Input format name
 ** @attr Format [AjEnum] Input format enum
