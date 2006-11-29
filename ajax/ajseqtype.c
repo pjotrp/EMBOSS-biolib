@@ -1081,6 +1081,9 @@ static AjBool seqTypeStopTrimS(AjPStr* pthys)
 
 void ajSeqSetNuc(AjPSeq thys)
 {
+    if(ajStrMatchC(thys->Type, "N"))
+      return;
+
     ajStrAssignC(&thys->Type, "N");
     if(thys->Fttable)
 	ajFeattableSetNuc(thys->Fttable);
@@ -1108,6 +1111,9 @@ void ajSeqSetNuc(AjPSeq thys)
 
 void ajSeqSetProt(AjPSeq thys)
 {
+    if(ajStrMatchC(thys->Type, "P"))
+      return;
+
     ajStrAssignC(&thys->Type, "P");
     if(thys->Fttable)
 	ajFeattableSetProt(thys->Fttable);
