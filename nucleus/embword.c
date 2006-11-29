@@ -536,11 +536,11 @@ void embWordMatchListConvToFeat(const AjPList list,
 **
 ** @param [u] table [AjPTable*] table to be created or updated.
 ** @param [r] seq [const AjPSeq] Sequence to be "worded"
-** @return [ajint] 1 if successful 0 if not.
+** @return [AjBool] ajTrue if successful
 ** @@
 ******************************************************************************/
 
-ajint embWordGetTable(AjPTable *table, const AjPSeq seq)
+AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
 {
     const char * startptr;
     ajint i;
@@ -561,8 +561,8 @@ ajint embWordGetTable(AjPTable *table, const AjPSeq seq)
 
     if(ajSeqGetLen(seq) < wordLength)
     {
-	ajErr("wordsize = %d, sequence length = %d",
-	      wordLength, ajSeqGetLen(seq));
+	ajDebug("sequence too short: wordsize = %d, sequence length = %d",
+	       wordLength, ajSeqGetLen(seq));
 	return ajFalse;
     }
 
@@ -930,10 +930,9 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 
     if(ajSeqGetLen(seq2) < wordLength)
     {
-	ajErr("ERROR: Sequence length = %d and word length = %d.\n",
-	      ajSeqGetLen(seq2), wordLength);
-	ajErr("sequence length must be larger than word length");
-	return NULL;
+	ajWarn("ERROR: Sequence %S length %d less than word length %d",
+	       ajSeqGetUsa(seq2), ajSeqGetLen(seq2), wordLength);
+	return hitlist;
     }
     startptr = ajSeqGetSeqC(seq2);
     ilast    = ajSeqGetLen(seq2) - wordLength;
@@ -956,7 +955,7 @@ AjPList embWordBuildMatchTable(const AjPTable seq1MatchTable,
 	    newlist = wordmatch->list;
 
 	    if(!ajListLength(newlist))
-		ajErr("ERROR: newlist is empty??????\n");
+		ajWarn("ERROR: newlist is empty\n");
 
 	    newiter = ajListIterRead(newlist);
 
