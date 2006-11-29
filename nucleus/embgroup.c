@@ -177,7 +177,7 @@ void embGrpGetProgGroups(AjPList glist, AjPList alpha, char * const env[],
 
 
 
-/* @func embGrpGetProgGroups **************************************************
+/* @func embGrpGetEmbassy *****************************************************
 **
 ** Optionally constructs a path to the directory of normal EMBOSS or
 ** embassy ACD files. Calls grpGetAcdFiles to construct lists of the
@@ -265,13 +265,13 @@ AjBool embGrpGetEmbassy(const AjPStr appname, AjPStr* embassyname)
 
 /* @funcstatic grpGetAcdByname ************************************************
 **
-** Given a directory from main package or
-** EMBASSY sources, it searches for directories
-** of ACD files and passes processing on to grpGetAcdFiles
+** Given a directory from main package or EMBASSY sources, it searches
+** for directories of ACD files and passes processing on to
+** grpGetAcdFiles
 **
-** @param [r] acddir [const AjPStr] path of directory holding ACD files
-**                                  to read in
 ** @param [r] appname [const AjPStr] Application name
+** @param [r] acddir [const AjPStr] Path of directory holding ACD files
+**                                  to read in
 ** @param [w] embassyname [AjPStr*] Embassy package name
 **                                  or empty string for main package
 ** @return [AjBool] ajTrue if an ACD file was found
@@ -494,6 +494,7 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 
     closedir(dirp);
     ajStrDel(&applpath);
+    ajStrDel(&keywords);
 
     return;
 }
@@ -976,6 +977,8 @@ static void grpSplitList(AjPList groups, const AjPStr value, AjBool explode,
 
     ajStrTokenDel(&tokenhandle);
     ajStrDel(&tmpstr);
+    ajStrDel(&substr);
+    ajStrDel(&keystr);
 
     return;
 }
@@ -1531,6 +1534,8 @@ void embGrpOutputProgsList(AjPFile outfile, const AjPList progslist,
 
     ajListIterFree(&piter);
 
+    ajStrDel(&keystr);
+
     return;
 }
 
@@ -1589,6 +1594,7 @@ void embGrpProgsListDel(AjPList *progslist)
 	ajStrDel(&(gl->name));
 	ajStrDel(&(gl->doc));
 	ajStrDel(&(gl->package));
+	ajStrDel(&(gl->keywords));
 	embGrpGroupsListDel(&(gl->groups));
 	AJFREE(gl);
     }
@@ -1696,7 +1702,10 @@ void embGrpKeySearchProgs(AjPList newlist,
     embGrpSortGroupsList(newlist);
 
     ajStrDel(&gname);
+    ajStrDel(&name);
+    ajStrDel(&doc);
     ajStrDel(&keystr);
+    ajStrDel(&keywords);
 
     return;
 }

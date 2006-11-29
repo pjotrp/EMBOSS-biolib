@@ -96,6 +96,9 @@ void embPatlistRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     // ajDebug ("embPatlistSearchListRegex: Done search '%S'\n",tmp);
 
     ajPatlistRegexRewind(plist);
+
+    ajStrDel(&tmp);
+
     return;
 }
 
@@ -172,6 +175,12 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     if (reverse)
         ajSeqDel(&revseq);
 */
+
+    ajStrDel(&tmpstr);
+    ajStrDel(&tmp);
+    ajStrDel(&substr);
+    ajStrDel(&seqstr);
+
     return;
 }
 
@@ -252,13 +261,19 @@ void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
 
     if (reverse)
         ajSeqDel(&revseq);
+
+    ajStrDel(&seqname);
+    ajStrDel(&seqstr);
+    ajStrDel(&tmp);
+    ajListDel(&list);
+
     return;
 }
 
 
 /* @func embPatternSeqCompile *************************************************
 **
-** Adds compiled pattern into AjPPattern. Return true if succeed.
+** Adds compiled pattern into AjPPattern.
 **
 ** @param [w] pat [AjPPatternSeq] Pattern for compiling
 ** @return [AjBool] True, if compilation succeeded
@@ -270,12 +285,12 @@ AjBool embPatternSeqCompile (AjPPatternSeq pat)
     AjBool embType;
     AjPStr pattern = NULL;
 
-    ajStrAssignEmptyS(&pattern,ajPatternSeqGetPattern(pat));
+    ajStrAssignS(&pattern,ajPatternSeqGetPattern(pat));
     ajStrFmtUpper(&pattern);
     ajDebug("embPatlistSeqCompile: name %S, pattern %S\n",
             ajPatternSeqGetName(pat),pattern);
 
-    embpat = ajPPatCompNew();
+    embpat = ajPatCompNew();
     if (ajPatternSeqGetProtein(pat))
 	embType=ajTrue;
     else
@@ -285,11 +300,13 @@ AjBool embPatternSeqCompile (AjPPatternSeq pat)
     {
 	ajDebug("embPatlistSeqCompile: Illegal pattern %S: '%S'\n",
 		ajPatternSeqGetName(pat),ajPatternSeqGetPattern(pat));
-	ajPPatCompDel(&embpat);
+	ajPatCompDel(&embpat);
+	ajStrDel(&pattern);
 	return ajFalse;
     }
     embPatCompileII(embpat,ajPatternSeqGetMismatch(pat));
     ajPatternSeqSetCompiled(pat,embpat);
+    ajStrDel(&pattern);
 
     return ajTrue;
 }
