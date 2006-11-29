@@ -460,7 +460,8 @@ static EmbPEntry dbigcg_nextentry(AjPFile libr, AjPFile libs,
 
     if(ajStrSuffixC(id,"_0") ||
        ajStrSuffixC(id,"_00") ||
-       ajStrSuffixC(id,"_000"))
+       ajStrSuffixC(id,"_000") ||
+       ajStrSuffixC(id,"_0000"))
     {
 	p  = strrchr(ajStrGetPtr(tmpline2),'_');
 	*p = '\0';
