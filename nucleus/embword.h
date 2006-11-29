@@ -79,7 +79,7 @@ AjPList embWordBuildMatchTable (const AjPTable seq1MatchTable,
 void    embWordClear (void);
 void    embWordExit(void);
 void    embWordFreeTable(AjPTable *table);
-ajint   embWordGetTable (AjPTable *table, const AjPSeq seq);
+AjBool  embWordGetTable (AjPTable *table, const AjPSeq seq);
 void    embWordLength (ajint wordlen);
 AjBool  embWordMatchIter (AjIList iter, ajint* start1, ajint* start2,
 			  ajint* len);
