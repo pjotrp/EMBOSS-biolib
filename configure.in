@@ -379,6 +379,16 @@ fi
 #fi
 
 
+dnl Test if --enable-gccprofile given if so
+dnl set "-pg"
+
+if test "${with_gccprofile}" != "no" ; then
+     CFLAGS = "$CFLAGS -pg"
+     LDFLAGS = "$LDFLAGS -pg"
+fi          
+#fi
+
+
 dnl Test if --enable-debug given
 AC_ARG_ENABLE(warnings,
 [  --enable-warnings          warnings (-Wall option on gcc compiler)])
