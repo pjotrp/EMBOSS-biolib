@@ -244,7 +244,15 @@ int main(int argc, char **argv)
 
     embBtreeEntryDel(&entry);
     ajStrDel(&tmpstr);
-    
+    ajStrDel(&filename);
+    ajStrDel(&exclude);
+    ajStrDel(&dbname);
+    ajStrDel(&dbrs);
+    ajStrDel(&release);
+    ajStrDel(&datestr);
+    ajStrDel(&directory);
+    ajStrDel(&indexdir);
+    ajStrDel(&dbtype);    
 
     nfields = 0;
     while(fieldarray[nfields])
@@ -255,7 +263,8 @@ int main(int argc, char **argv)
     ajBtreeIdDel(&idobj);
     ajBtreePriDel(&priobj);
     ajBtreeHybDel(&hyb);
-    
+
+
     ajExit();
 
     return 0;
