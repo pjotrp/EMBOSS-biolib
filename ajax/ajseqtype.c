@@ -1275,7 +1275,7 @@ static char seqTypeTest(const AjPStr thys, AjPRegexp badchars)
 	return ret;
 
     /*ajDebug("seqTypeTest, Sequence '%S'\n", thys);*/
-    if(!ajRegExecB(badchars, thys))
+    if(!ajRegExec(badchars, thys))
 	return ret;
 
     ajRegSubI(badchars, 1, &tmpstr);
