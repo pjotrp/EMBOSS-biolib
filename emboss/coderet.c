@@ -224,7 +224,8 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(logf, "%6d", ntran);
 	}
 
-	ajFmtPrintF(logf, "%6d %s\n", ncds+nmrna+nrestall+ntran, ajSeqName(seq));
+	ajFmtPrintF(logf, "%6d %s\n",
+		    ncds+nmrna+nrestall+ntran, ajSeqName(seq));
     }
 
 
@@ -234,16 +235,20 @@ int main(int argc, char **argv)
 	ajSeqWriteClose(seqoutmrna);
     if(seqoutprot)
 	ajSeqWriteClose(seqoutprot);
+    if(seqoutrest)
+	ajSeqWriteClose(seqoutrest);
 
 
     ajStrDel(&cds);
     ajStrDel(&mrna);
     ajStrDel(&usa);
+    ajStrDel(&copyseq);
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
     ajSeqoutDel(&seqoutcds);
     ajSeqoutDel(&seqoutmrna);
     ajSeqoutDel(&seqoutprot);
+    ajSeqoutDel(&seqoutrest);
     ajFileClose(&logf);
 
     ajExit();

@@ -552,6 +552,7 @@ int main(int argc, char **argv)
 
     ajStrDel(&PosTicks);
     ajStrDel(&PosBlocks);
+    ajStrDel(&BlockType);
 
     /* close the graphical window */
     ajGraphCloseWin();
