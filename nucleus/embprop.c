@@ -816,7 +816,7 @@ AjBool embPropTransition(char base1, char base2)
 **
 ** Fix for missing properties data in a float array
 **
-** @param [u] matrix [float []] Matrix
+** @param [u] matrix [float[]] Matrix
 ** @param [r] missing [float] Missing data value
 ** @return [void]
 ******************************************************************************/
