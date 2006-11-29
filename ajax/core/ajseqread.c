@@ -7557,15 +7557,6 @@ static ajint seqAppend(AjPStr* pseq, const AjPStr line)
     ajStrKeepSetAlphaC(&tmpstr, "*.~?#+-");
     ajStrAppendS(pseq, tmpstr);
 
-/*
-    while(ajStrGetLen(tmpstr) && ajRegExec(seqexp, tmpstr))
-    {
-	ajRegSubI(seqexp, 0, &token);
-	ajStrAppendS(pseq, token);
-	i += ajStrGetLen(token);
-	ajRegPost(seqexp, &tmpstr);
-    }
-*/
     ret = ajStrGetLen(*pseq);
     ajStrDel(&tmpstr);
 
@@ -7649,17 +7640,7 @@ static ajint seqAppendCommented(AjPStr* pseq, AjBool* incomment,
 	    ajDebug("done %B '%S'\n", *incomment, tmpstr);
     }
 
-    
 
-/*
-    while(ajStrGetLen(tmpstr) && ajRegExec(seqexp, tmpstr))
-    {
-	ajRegSubI(seqexp, 0, &token);
-	ajStrAppendS(pseq, token);
-	i += ajStrGetLen(token);
-	ajRegPost(seqexp, &tmpstr);
-    }
-*/
     ret = ajStrGetLen(*pseq);
     ajStrDel(&tmpstr);
 
