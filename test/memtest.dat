@@ -82,11 +82,11 @@ dbigcgmem2 = dbigcg -nosystemsort -dir ../pir -file '*.seq' -index ./output -id 
 #dbxblastlist =test= dbxblast -dir ../data -file 'swsplit.00.pin,swsplit.01.pin,swsplit.02.pin,swsplit.03.pin,swsplit.04.pin' -index ./output -dbres swnew -dbname swsplit -auto
 #dbxblastwild =test= dbxblast -dir ../data -file swsplit.*.pin -index ./output -dbres swnew -dbname swsplit -auto
 #dbxblastwildstar =test= dbxblast -dir ../data -file swsplit.*.* -index ./output -dbres swnew -dbname swsplit -auto
-dbxfasta =test= dbxfasta -dir ../wormpep -file wormpep -index ./output -id idacc -dbres swnew -dbname worm -auto
-dbxflat =test= dbxflat -dir ../swiss -file seq.dat -index ./output -id swiss -dbres swnew -dbname swiss -auto
-dbxgcg =test= dbxgcg -dir ../embl -file '*.seq' -index ./output -id embl -dbres embl -dbname embl -auto
-dbxgcg2 =test= dbxgcg -dir ../pir -file '*.seq' -index ./output -id pir -dbres pir -dbname pir -auto
-dbxgcg3 =test= dbxgcg -dir ../pir -file '*.seq' -index ./output -id pir -dbres pir -dbname pir -fields "id,acc,des,key,org" -auto
+dbxfasta = dbxfasta -dir ../wormpep -file wormpep -index ./output -id idacc -dbres swnew -dbname worm -auto
+dbxflat = dbxflat -dir ../swiss -file seq.dat -index ./output -id swiss -dbres swnew -dbname swiss -auto
+dbxgcg = dbxgcg -dir ../embl -file '*.seq' -index ./output -id embl -dbres embl -dbname embl -auto
+dbxgcg2 = dbxgcg -dir ../pir -file '*.seq' -index ./output -id pir -dbres pir -dbname pir -auto
+dbxgcg3 = dbxgcg -dir ../pir -file '*.seq' -index ./output -id pir -dbres pir -dbname pir -fields "id,acc,des,key,org" -auto
 #
 degapseq = degapseq ../data/globins.msf -auto
 descseq = descseq -desc 'Test' tsw:opsd_human -auto
