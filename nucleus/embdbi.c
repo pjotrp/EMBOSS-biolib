@@ -23,6 +23,7 @@
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <math.h>
 #else
 #include "win32.h"
 #include "dirent_w32.h"
@@ -31,6 +32,7 @@
 #include <errno.h>
 
 static AjPStr dbiCmdStr    = NULL;
+static AjPStr dbiCmdStr2    = NULL;
 static AjPStr dbiDirFix    = NULL;
 static AjPStr dbiWildFname = NULL;
 static AjPStr dbiInFname   = NULL;
@@ -274,8 +276,8 @@ AjPList embDbiFileList(const AjPStr dir, const AjPStr wildfile, AjBool trim)
     int i;
     AjBool d;
 
-    ajDebug("embDbiFileList dir '%S' wildfile '%S'\n",
-	    dir, wildfile);
+    ajDebug("embDbiFileList dir '%S' wildfile '%S' maxsize %Ld\n",
+	    dir, wildfile, (ajlong) INT_MAX);
 
     ajStrAssignS(&dbiWildFname,wildfile);
 
@@ -344,9 +346,11 @@ AjPList embDbiFileList(const AjPStr dir, const AjPStr wildfile, AjBool trim)
 	}
 
 	dirsize++;
-	ajDebug("accept '%S'\n", s2);
 	name = NULL;
 	ajFmtPrintS(&name, "%S%S", dbiDirFix, s2);
+	if(ajFileLength(name) > (ajlong) INT_MAX)
+	  ajDie("File '%S' too large for DBI indexing", name);
+	ajDebug("accept '%S' (%Ld)\n", s2, ajFileLength(name));
 	ajListstrPushApp(retlist, name);
     }
 
@@ -392,8 +396,8 @@ AjPList embDbiFileListExc(const AjPStr dir, const AjPStr wildfile,
     ajint dirsize;
     AjPStr name = NULL;
 
-    ajDebug("embDbiFileListExc dir '%S' wildfile '%S' exclude '%S'\n",
-	    dir, wildfile, exclude);
+    ajDebug("embDbiFileListExc dir '%S' wildfile '%S' exclude '%S' maxsize %Ld\n",
+	    dir, wildfile, exclude, (ajlong) INT_MAX);
 
     if(ajStrGetLen(dir))
 	ajStrAssignS(&dbiDirFix, dir);
@@ -430,9 +434,11 @@ AjPList embDbiFileListExc(const AjPStr dir, const AjPStr wildfile,
 	    continue;
 
 	dirsize++;
-	ajDebug("accept '%S'\n", dbiInFname);
 	name = NULL;
 	ajFmtPrintS(&name, "%S%S", dbiDirFix, dbiInFname);
+	if(ajFileLength(name) > (ajlong) INT_MAX)
+	  ajDie("File '%S' too large for DBI indexing", name);
+	ajDebug("accept '%S' (%Ld)\n", dbiInFname, ajFileLength(name));
 	ajListstrPushApp(retlist, name);
     }
 
@@ -620,7 +626,10 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 {
     ajint i;
     AjPStr dir = NULL;
-    
+    ajint j;
+    ajint isplit;
+    ajint nsplit;
+
 #ifndef WIN32
     static char *prog = "env LC_ALL=C sort";
 
@@ -658,17 +667,69 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	    embDbiRmFileI(dbname, ext1, i, cleanup);
 	}
 
-	ajFmtPrintS(&dbiCmdStr, "%S%s -m -o %S.%s %S",
-		    dir,prog,dbname,ext2,sortopt);
 
-	for(i=1; i<=nfiles; i++)
+	nsplit = (int) sqrt(nfiles);
+	ajDebug("embDbiSortFile nfiles:%d split:%d\n", nfiles, nsplit);
+
+	/* file merge in groups if more than 24 files ... avoids huge merges */
+
+	if(nsplit < 2)		/* up to 3 source files */
+	{
+	  ajFmtPrintS(&dbiCmdStr, "%S%s -m -o %S.%s %S",
+		      dir,prog,dbname,ext2,sortopt);
+
+	  for(i=1; i<=nfiles; i++)
 	    ajFmtPrintAppS(&dbiCmdStr, " %S%03d.%s.srt", dbname, i, ext1);
 
-	embDbiSysCmd(dbiCmdStr);
+	  embDbiSysCmd(dbiCmdStr);
 
-	ajFmtPrintS(&dbiSortExt, "%s.srt ", ext1);
-	for(i=1; i<=nfiles; i++)
+	  ajFmtPrintS(&dbiSortExt, "%s.srt ", ext1);
+	  for(i=1; i<=nfiles; i++)
 	    embDbiRmFileI(dbname, ajStrGetPtr(dbiSortExt), i, cleanup);
+
+	}
+	else
+	{
+	  ajFmtPrintS(&dbiCmdStr2, "%S%s -m -o %S.%s %S",
+		    dir,prog,dbname,ext2,sortopt);
+
+	  isplit = 0;
+	  for(i=1; i<=nfiles; i+=nsplit)
+	  {
+	    isplit++;
+	    ajFmtPrintAppS(&dbiCmdStr2, " %S%03d.%s.mrg1",
+			   dbname, isplit, ext2);
+
+	    /* Now we make that .mrg1 file */
+
+	    ajFmtPrintS(&dbiCmdStr, "%S%s -m -o %S%03d.%s.mrg1 %S",
+			dir,prog,dbname,isplit,ext2,sortopt);
+
+	    for(j=0; j<nsplit; j++)
+	    {
+	      if((i+j) <= nfiles)
+		ajFmtPrintAppS(&dbiCmdStr, " %S%03d.%s.srt",
+			       dbname, i+j, ext1);
+	    }
+
+	    embDbiSysCmd(dbiCmdStr);
+
+	    ajFmtPrintS(&dbiSortExt, "%s.srt ", ext1);
+	    for(j=0; j<nsplit; j++)
+	    {
+	      if((i+j) <= nfiles)
+		embDbiRmFileI(dbname, ajStrGetPtr(dbiSortExt), (i+j), cleanup);
+	    }
+
+	  }
+
+	  embDbiSysCmd(dbiCmdStr2);
+	  ajFmtPrintS(&dbiSortExt, "%s.mrg1", ext2);
+	  for(j=1; j<=isplit; j++)
+	  {
+	    embDbiRmFileI(dbname, ajStrGetPtr(dbiSortExt), j, cleanup);
+	  }
+	}
     }
     else
     {
@@ -1254,19 +1315,21 @@ ajint embDbiSortWriteEntry(AjPFile entFile, ajint maxidlen,
     {
 	ajRegExec(dbiRegEntryIdSort, dbiRdLine);
 	ajRegSubI(dbiRegEntryIdSort, 1, &dbiIdStr);
-	if(ajStrMatchCaseS(dbiIdStr, dbiLastId))
-	{
-	    ajWarn("Duplicate ID skipped: '%S' "
-		   "All hits will point to first ID found",
-		   dbiIdStr);
-	    continue;
-	}
 	ajRegSubI(dbiRegEntryIdSort, 2, &dbiTmpStr);
 	ajStrToInt(dbiTmpStr, &rpos);
 	ajRegSubI(dbiRegEntryIdSort, 3, &dbiTmpStr);
 	ajStrToInt(dbiTmpStr, &spos);
 	ajRegSubI(dbiRegEntryIdSort, 4, &dbiTmpStr);
 	ajStrToInt(dbiTmpStr, &filenum);
+	if(ajStrMatchCaseS(dbiIdStr, dbiLastId))
+	{
+	  ajDebug("Duplicate ID '%S' filenum: %d",
+		  dbiIdStr, filenum);
+	  ajWarn("Duplicate ID skipped: '%S' "
+		 "All hits will point to first ID found",
+		 dbiIdStr);
+	  continue;
+	}
 	embDbiWriteEntryRecord(entFile, maxidlen, dbiIdStr,
 			       rpos, spos, filenum);
 	ajStrAssignS(&dbiLastId, dbiIdStr);
@@ -1938,6 +2001,7 @@ void embDbiLogFinal(AjPFile logfile, ajint maxindex, const ajint* maxFieldLen,
 void embDbiExit(void)
 {
     ajStrDel(&dbiCmdStr);
+    ajStrDel(&dbiCmdStr2);
     ajStrDel(&dbiDirFix);
     ajStrDel(&dbiWildFname);
     ajStrDel(&dbiInFname);
