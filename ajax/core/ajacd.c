@@ -11205,8 +11205,8 @@ static void acdSetSeq(AcdPAcd thys)
     ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqGetBegin(val));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqGetEnd(val));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqGetLen(val));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(val));
+    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(val));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
     ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqGetUsa(val));
     
@@ -11495,8 +11495,8 @@ static void acdSetSeqall(AcdPAcd thys)
     ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqallBegin(val));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqallEnd(val));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqGetLen(seq));
-    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(seq));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(seq));
+    ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(seq));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], seq->Name);
     ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqallGetUsa(val));
     
@@ -25406,11 +25406,12 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     AjPStr knownRootInst = NULL;
     AjPStr knownPack     = NULL;
     AjPStr knownLine     = NULL;
-    AjPRegexp knownxp    = NULL;
+    AjBool ok            = ajFalse;
     AjPStr knownName     = NULL;
     AjPStr knownName2     = NULL;
     AjPStr knownType     = NULL;
     AjPStr knownDesc     = NULL;
+    AjPStr knownRest     = NULL;
     ajint iline = 0;
 
     ajNamRootPack(&knownPack);
@@ -25449,7 +25450,6 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     else
 	acdLog("Knowntypes file %F used\n", knownFile);
     
-    knownxp = ajRegCompC("([^ ]+) +([^ ]+) +([^ ].*)");
     while(knownFile && ajFileReadLine(knownFile, &knownLine))
     {
 	iline++;
@@ -25457,11 +25457,11 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
 	{
 	    ajStrRemoveWhite(&knownLine);
 
-	    if(ajRegExec(knownxp, knownLine))
+	    ok = ajStrExtractWord(knownLine, &knownRest, &knownName);
+	    if(ok)
+	      ok = ajStrExtractWord(knownRest, &knownDesc, &knownType);
+	    if(ok)
 	    {
-		ajRegSubI(knownxp, 1, &knownName);
-		ajRegSubI(knownxp, 2, &knownType);
-		ajRegSubI(knownxp, 3, &knownDesc);
 		ajStrExchangeKK(&knownName, '_', ' ');
 		if(ajStrMatchCaseC(knownType, "infile") ||
 		   ajStrMatchCaseC(knownType, "filelist") ||
@@ -25496,7 +25496,6 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     ajStrDel(&knownName);
     ajStrDel(&knownType);
     ajStrDel(&knownDesc);
-    ajRegFree(&knownxp);
     return;
 }
 
