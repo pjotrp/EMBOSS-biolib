@@ -33,7 +33,7 @@ typedef struct AjSPatBYPNode
 
 /* @data AjPPatComp **********************************************************
 **
-** NUCLEUS data structure that holds all needed datas for compiling and
+** AJAX data structure that holds all needed data for compiling and
 ** searching. Not including mismatch number.
 **
 ** @alias AjSPatComp
@@ -266,8 +266,8 @@ ajint ajPatlistRegexGetSize(const AjPPatlistRegex plist);
 ajint ajPatlistRegexDoc(AjPPatlistRegex thys, AjPStr* pdoc);
 ajint ajPatlistSeqDoc(AjPPatlistSeq thys, AjPStr* pdoc);
 
-AjPPatComp	ajPPatCompNew (void);
-void		ajPPatCompDel (AjPPatComp* pthys);
+AjPPatComp	ajPatCompNew (void);
+void		ajPatCompDel (AjPPatComp* pthys);
 ajint ajPatternRegexType(const AjPStr type);
 
 /*

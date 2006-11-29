@@ -170,10 +170,7 @@ void ajPatternSeqDel (AjPPatternSeq* pthys)
     ajStrDel(&thys->Name);
     ajStrDel(&thys->Pattern);
 
-    if (&thys->Compiled)
-	ajDebug ("Pattern still has compiled pattern in causing memory leak. ",
-		 "Use embRemoveCompiledPatterns to remove it.\n");
-
+    ajPatCompDel((AjPPatComp*) &thys->Compiled);
     AJFREE (*pthys);
 
     return;
@@ -858,14 +855,14 @@ void ajPatlistAddRegex (AjPPatlistRegex thys, AjPPatternRegex pat)
     return;
 }
 
-/* @func ajPPatCompNew *******************************************************
+/* @func ajPatCompNew *******************************************************
 **
 ** Create prosite pattern structure.
 **
 ** @return [AjPPatComp] pattern structure
 ** @@
 ******************************************************************************/
-AjPPatComp ajPPatCompNew ()
+AjPPatComp ajPatCompNew (void)
 {
     AjPPatComp pthis;
 
@@ -877,7 +874,7 @@ AjPPatComp ajPPatCompNew ()
     return pthis;
 }
 
-/* @func ajPPatCompDel *******************************************************
+/* @func ajPatCompDel *******************************************************
 **
 ** Delete prosite pattern structure.
 **
@@ -886,17 +883,22 @@ AjPPatComp ajPPatCompNew ()
 ** @return [void]
 ** @@
 ******************************************************************************/
-void ajPPatCompDel (AjPPatComp *pthys)
+void ajPatCompDel (AjPPatComp *pthys)
 {
     int i;
 
-    AjPPatComp pthis = *pthys;
-    ajStrDel(&pthis->pattern);
-    ajStrDel(&pthis->regex);
+    AjPPatComp thys = *pthys;
+    ajStrDel(&thys->pattern);
+    ajStrDel(&thys->regex);
 
-    if(pthis->type==6)
-	for(i=0;i<pthis->m;++i)
-	    AJFREE(pthis->skipm[i]);
+    if(thys->buf)
+      AJFREE(thys->buf);
+    if(thys->sotable)
+      AJFREE(thys->sotable);
+
+    if(thys->type==6)
+	for(i=0;i<thys->m;++i)
+	    AJFREE(thys->skipm[i]);
 
     AJFREE(*pthys);
 
@@ -906,7 +908,7 @@ void ajPPatCompDel (AjPPatComp *pthys)
 
 /* @func ajPatternRegexType ***************************************************
 **
-** Returns type assocaited with a named type of regular expression
+** Returns type associated with a named type of regular expression
 **
 ** @param [r] type [const AjPStr] Regular expression type
 ** @return [ajint] Type number, defaults to 0 (string)
