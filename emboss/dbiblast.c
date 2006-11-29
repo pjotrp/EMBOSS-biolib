@@ -1022,7 +1022,9 @@ static AjBool dbiblast_blastopenlib(const AjPStr name, AjBool usesrc,
 	rdtmp2 = ret->DateLen;
 	ajStrAssignResC(&ret->Date, rdtmp2+1, "");
 	dbiblast_memfreadS(&ret->Date,(size_t)1,(size_t)rdtmp2,ret->TFile);
-	ajDebug("datelen: %d rdtmp: %d date_str: '%S'\n",
+	ajStrSetValid(&ret->Date);
+	ret->DateLen = ajStrGetLen(ret->Date);
+	ajDebug("datelen: %d rdtmp: %d date: '%S'\n",
 		ret->DateLen, rdtmp2, ret->Date);
 	ret->HeaderLen += 4 + rdtmp2;
     }
