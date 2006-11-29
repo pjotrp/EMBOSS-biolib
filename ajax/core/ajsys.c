@@ -575,7 +575,7 @@ AjBool ajSysArglist(const AjPStr cmdline, char** pgm, char*** arglist)
 	    if(ajRegLenI(argexp, i))
 	    {
 		ajRegSubI(argexp, i, &argstr);
-		ajDebug("parsed [%d] '%S'\n", i, argstr);
+		/*ajDebug("parsed [%d] '%S'\n", i, argstr);*/
 		break;
 	    }
 	}
