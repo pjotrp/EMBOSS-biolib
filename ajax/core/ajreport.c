@@ -2778,7 +2778,7 @@ void ajReportSetHeaderC(AjPReport thys, const char* header)
 
 
 
-/* @func ajReportApppendHeader ************************************************
+/* @func ajReportAppendHeader *************************************************
 **
 ** Defines a feature report header
 **
