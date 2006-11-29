@@ -254,6 +254,7 @@ AjBool     ajStrCutRange(AjPStr* Pstr, ajint pos1, ajint pos2);
 AjBool     ajStrCutStart(AjPStr* Pstr, size_t len);
 AjBool     ajStrKeepRange(AjPStr* Pstr, ajint pos1, ajint pos2);
 AjBool     ajStrKeepSetC(AjPStr* Pstr, const char* txt);
+AjBool     ajStrKeepSetAlpha(AjPStr* Pstr);
 AjBool     ajStrKeepSetAlphaC(AjPStr* Pstr, const char* txt);
 AjBool     ajStrQuoteStrip(AjPStr *Pstr);
 AjBool     ajStrQuoteStripAll(AjPStr *Pstr);
@@ -282,10 +283,14 @@ AjBool     ajStrExchangeSC(AjPStr* Pstr, const AjPStr str,
 			   const char* txtnew);
 AjBool     ajStrExchangeSS(AjPStr* Pstr, const AjPStr str,
 			   const AjPStr strnew);
-AjBool     ajStrExchangeSetCC(AjPStr* Pstr, const char* oldc,
+AjBool     ajStrExchangeSetCC(AjPStr* Pstr, const char* txt,
 			      const char* newc);
 AjBool     ajStrExchangeSetSS(AjPStr* Pstr, const AjPStr str,
 			    const AjPStr strnew);
+AjBool     ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt,
+				  const char chr);
+AjBool     ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str,
+				  const char chr);
 AjBool     ajStrRandom(AjPStr *s);
 AjBool     ajStrReverse(AjPStr* Pstr);
 
@@ -297,6 +302,10 @@ AjBool     ajStrHasParentheses(const AjPStr str);
 AjBool     ajStrIsAlnum (const AjPStr str);
 AjBool     ajStrIsAlpha (const AjPStr str);
 AjBool     ajStrIsBool (const AjPStr str);
+AjBool     ajStrIsCharsetC(const AjPStr str, const char* txt);
+AjBool     ajStrIsCharsetS(const AjPStr str, const AjPStr str2);
+AjBool     ajStrIsCharsetCaseC(const AjPStr str, const char* txt);
+AjBool     ajStrIsCharsetCaseS(const AjPStr str, const AjPStr str2);
 AjBool     ajStrIsDouble (const AjPStr str);
 AjBool     ajStrIsFloat (const AjPStr str);
 AjBool     ajStrIsHex (const AjPStr str);
@@ -418,6 +427,10 @@ ajint      ajStrFindAnyK(const AjPStr str, char chr);
 ajint      ajStrFindAnyS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindCaseC (const AjPStr str, const char* txt);
 ajint      ajStrFindCaseS (const AjPStr str, const AjPStr str2);
+ajint      ajStrFindRestC (const AjPStr str, const char* txt);
+ajint      ajStrFindRestS (const AjPStr str, const AjPStr str2);
+ajint      ajStrFindRestCaseC (const AjPStr str, const char* txt);
+ajint      ajStrFindRestCaseS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindlastC(const AjPStr str, const char* txt);
 ajint      ajStrFindlastS(const AjPStr str, const AjPStr str2);
 
