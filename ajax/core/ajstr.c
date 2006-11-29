@@ -2941,8 +2941,6 @@ AjBool ajStrAppendS(AjPStr* Pstr, const AjPStr str)
     if(thys)
     {
 	j = AJMAX(thys->Res, thys->Len+str->Len+1);
-	if(j > thys->Res && thys->Res > LONGSTR)
-	    j = j + j/2;
     }
     else
 	j = str->Len+1;
@@ -3105,8 +3103,6 @@ AjBool ajStrAppendSubS(AjPStr* Pstr, const AjPStr str, ajint pos1, ajint pos2)
     if(thys)
     {
 	j = AJMAX(thys->Res, thys->Len+ilen+1);
-	if(j > thys->Res && thys->Res > LONGSTR)
-	    j = j + j/2;
     }
     else
 	j = ilen+1;
@@ -3933,6 +3929,43 @@ AjBool ajStrKeepSetC(AjPStr* Pstr, const char* txt)
     return ajTrue;
 }
 
+/* @func ajStrKeepSetS ***************************************************
+**
+** Removes all characters from a string that are not in a given set.
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @param [r] str [const AjPStr] Character set to keep
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepSetS(AjPStr* Pstr, const AjPStr str)
+{
+    AjPStr thys;
+    char *p;
+    char *q;
+    const char* txt;
+
+    thys = ajStrGetuniqueStr(Pstr);
+    txt = ajStrGetPtr(str);
+
+    p = thys->Ptr;
+    q = thys->Ptr;
+
+    while(*p)
+    {
+	if(strchr(txt, *p))
+	    *q++=*p;
+	p++;
+    }
+
+    *q='\0';
+    thys->Len = q - thys->Ptr;
+
+    if(!thys->Len) return ajFalse;
+    return ajTrue;
+}
+
 /* @obsolete ajStrKeepC
 ** @rename ajStrKeepSetC
 */
@@ -3942,6 +3975,42 @@ AjBool __deprecated ajStrKeepC(AjPStr* s, const char* charset)
     return ajStrKeepSetC (s, charset);
 }
 
+/* @func ajStrKeepSetAlpha ****************************************************
+**
+** Removes all characters from a string that are not alphabetic.
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @return [AjBool] ajTrue if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepSetAlpha(AjPStr* Pstr)
+{
+    AjPStr thys;
+    char *p;
+    char *q;
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    p = thys->Ptr;
+    q = thys->Ptr;
+
+    while(*p)
+    {
+	if(isalpha((ajint)*p))
+	    *q++=*p;
+	p++;
+    }
+
+    *q='\0';
+    thys->Len = q - thys->Ptr;
+
+    if(!thys->Len) return ajFalse;
+    return ajTrue;
+}
+
+
+
 /* @func ajStrKeepSetAlphaC ***************************************************
 **
 ** Removes all characters from a string that are not alphabetic and
@@ -3949,7 +4018,7 @@ AjBool __deprecated ajStrKeepC(AjPStr* s, const char* charset)
 **
 ** @param [u] Pstr [AjPStr *] String to clean.
 ** @param [r] txt [const char*] Non-alphabetic character set to keep
-** @return [AjBool] ajTrue if string was reallocated
+** @return [AjBool] ajTrue if string is not empty
 ** @@
 ******************************************************************************/
 
@@ -4098,9 +4167,8 @@ AjBool ajStrRemoveGap(AjPStr* Pstr)
     for(i=0;i<len;++i)
     {
 	c = *(p++);
-	if((c=='O') || (c=='o'))	/* O is a gap character for Phylip */
-	    --thys->Len;
-	else if((c>='A' && c<='Z') || (c>='a' && c<='z') || (c=='*'))
+	/* O is a gap character for Phylip ... but now valid for proteins */
+	if((c>='A' && c<='Z') || (c>='a' && c<='z') || (c=='*'))
 	    *(q++) = c;
 	else
 	    --thys->Len;
@@ -4744,7 +4812,7 @@ AjBool __deprecated ajStrTruncate(AjPStr* Pstr, ajint pos)
 
 /* @section substitution
 **
-** Functions for subsitutions of characters or regions (substrings)
+** Functions for substitutions of characters or regions (substrings)
 ** within a string.
 **
 ** @fdata      [AjPStr]
@@ -4754,7 +4822,7 @@ AjBool __deprecated ajStrTruncate(AjPStr* Pstr, ajint pos)
 **                               strings.
 ** @nam3rule  Random             Randomly rearrange characters.
 ** @nam3rule  Reverse            Reverse order of characters.
-** @nam4rule  ExchangeSet      Substitute character(s) in a string with
+** @nam4rule  ExchangeSet        Substitute character(s) in a string with
 **                               other character(s).
 **
 ** @argrule * Pstr [AjPStr*] String to be edited
@@ -5071,6 +5139,7 @@ AjBool ajStrExchangeSetSS(AjPStr* Pstr, const AjPStr str, const AjPStr strnew)
 }
 
 
+
 /* @obsolete ajStrConvert
 ** @rename ajStrExchangeSetSS
 */
@@ -5081,6 +5150,62 @@ AjBool __deprecated ajStrConvert(AjPStr* pthis, const AjPStr oldc,
     return ajStrExchangeSetSS(pthis, oldc, newc);
 }
 
+
+
+/* @func ajStrExchangeSetRestCK ***********************************************
+**
+** Replace all occurrences in a string of one set of characters with
+** a substitute character
+**
+** @param [w] Pstr [AjPStr*] String
+** @param [r] txt [const char*] Wanted characters
+** @param [r] chr [char] Replacement character
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chr)
+{
+    char filter[256] = {'\0'};		/* should make all zero */
+
+    const char *co;
+    char* cp;
+    AjPStr thys;
+
+    co = txt;
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    while(*co)
+    {
+	filter[(ajint)*co++] = chr;
+    }
+
+    for(cp = thys->Ptr; *cp; cp++)
+	if(!filter[(ajint)*cp])
+	    *cp = chr;
+
+    return ajTrue;
+}
+
+
+
+/* @func ajStrExchangeSetRestSK ***********************************************
+**
+** Replace all occurrences in a string not in one set of characters with
+** a substitute character.
+**
+** @param [w] Pstr [AjPStr*] String
+** @param [r] str [const AjPStr] Wanted characters
+** @param [r] chr [char] Replacement character
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str, char chr)
+{
+    return ajStrExchangeSetRestCK(Pstr, str->Ptr, chr);
+}
 
 
 /* @func ajStrRandom **********************************************************
@@ -5198,14 +5323,16 @@ AjBool __deprecated ajStrRev(AjPStr* pthis)
 ** @nam4rule   HasWild        Contains wildcard character(s).
 ** @nam3rule   Is     Check whether string value represents a datatype or is
 **                    of a certain character composition.
+** @nam4rule   IsAlnum        Alphanumeric characters only.
+** @nam4rule   IsAlpha        Alphabetic characters only.
 ** @nam4rule   IsBool         Represents Boolean value.
+** @nam4rule   IsCharset      Specified characters only.
+** @nam5rule   IsCharsetCase  Specified characters only.
 ** @nam4rule   IsDouble       Represents double value.
 ** @nam4rule   IsFloat        Represents float value.
 ** @nam4rule   IsHex          Represents hex value.
 ** @nam4rule   IsInt          Represents integer value.
 ** @nam4rule   IsLong         Represents long value.
-** @nam4rule   IsAlnum        Alphanumeric characters only.
-** @nam4rule   IsAlpha        Alphabetic characters only.
 ** @nam4rule   IsLower        No uppercase alphabetic characters.
 ** @nam4rule   IsNum          Decimal digits only.
 ** @nam4rule   IsUpper        No lowercase alphabetic characters.
@@ -5215,6 +5342,7 @@ AjBool __deprecated ajStrRev(AjPStr* pthis)
 ** @nam3rule   Whole          Specified range covers whole string. 
 **
 ** @argrule * str [const AjPStr] String
+** @arg2rule S str2 [const AjPStr] String
 ** @argrule Whole pos1 [ajint] Start position, negative values count from end
 ** @argrule Whole pos2 [ajint] End position, negative values count from end
 ** @argrule CountC txt [const char*] Text to count
@@ -5463,6 +5591,163 @@ AjBool ajStrIsBool(const AjPStr str)
 	return ajTrue;
 
     return ajFalse;
+}
+
+
+
+
+/* @func ajStrIsCharsetC ******************************************************
+**
+** Test whether a string contains specified characters only.
+** 
+** @param [r] str [const AjPStr] String
+** @param [r] txt [const char*] Character set to test
+** @return [AjBool] ajTrue if the string is entirely composed of characters
+**                  in the specified set
+** @cre an empty string returns ajFalse
+** @@
+******************************************************************************/
+
+AjBool ajStrIsCharsetC(const AjPStr str, const char* txt)
+{
+    char filter[256] = {'\0'};		/* should make all zero */
+    const char* cp;
+    const char* cq;
+
+    if(!str)
+	return ajFalse;
+
+    if(!str->Len)
+	return ajFalse;
+
+    cq = txt;
+    while (*cq)
+      filter[(int)*cq++] = 1;
+
+    cp = ajStrGetPtr(str);
+
+    while(*cp)
+      if(!filter[(int)*cp++])
+	    return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajStrIsCharsetS ******************************************************
+**
+** Test whether a string contains specified characters only.
+** 
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const char*] Character set to test
+** @return [AjBool] ajTrue if the string is entirely composed of characters
+**                  in the specified set
+** @cre an empty string returns ajFalse
+** @@
+******************************************************************************/
+
+AjBool ajStrIsCharsetS(const AjPStr str, const AjPStr str2)
+{
+    char filter[256] = {'\0'};		/* should make all zero */
+    const char* cp;
+    const char* cq = ajStrGetPtr(str2);
+
+    if(!str)
+	return ajFalse;
+
+    if(!str->Len)
+	return ajFalse;
+
+    while (*cq)
+      filter[(int)*cq++] = 1;
+
+    cp = ajStrGetPtr(str);
+
+    while(*cp)
+      if(!filter[(int)*cp++])
+	    return ajFalse;
+
+    return ajTrue;
+}
+
+
+/* @func ajStrIsCharsetCaseC **************************************************
+**
+** Test whether a string contains specified characters only.
+** The test is case-insensitive
+** 
+** @param [r] str [const AjPStr] String
+** @param [r] txt [const char*] Character set to test
+** @return [AjBool] ajTrue if the string is entirely composed of characters
+**                  in the specified set
+** @cre an empty string returns ajFalse
+** @@
+******************************************************************************/
+
+AjBool ajStrIsCharsetCaseC(const AjPStr str, const char* txt)
+{
+    char filter[256] = {'\0'};		/* should make all zero */
+    const char* cp;
+    const char* cq = txt;
+
+    if(!str)
+	return ajFalse;
+
+    if(!str->Len)
+	return ajFalse;
+
+    while (*cq)
+      filter[(int)*cq++] = 1;
+
+    cp = ajStrGetPtr(str);
+
+    while(*cp)
+      if(!filter[toupper((int)*cp++)])
+	    return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @func ajStrIsCharsetCaseS **************************************************
+**
+** Test whether a string contains specified characters only.
+** The test is case-insensitive
+** 
+** @param [r] str [const AjPStr] String
+** @param [r] str2 [const char*] Character set to test
+** @return [AjBool] ajTrue if the string is entirely composed of characters
+**                  in the specified set
+** @cre an empty string returns ajFalse
+** @@
+******************************************************************************/
+
+AjBool ajStrIsCharsetCaseS(const AjPStr str, const AjPStr str2)
+{
+    char filter[256] = {'\0'};		/* should make all zero */
+    const char* cp;
+    const char* cq = ajStrGetPtr(str2);
+
+    if(!str)
+	return ajFalse;
+
+    if(!str->Len)
+	return ajFalse;
+
+    while (*cq)
+      filter[(int)*cq++] = 1;
+
+    cp = ajStrGetPtr(str);
+
+    while(*cp)
+      if(!filter[toupper((int)*cp++)])
+	    return ajFalse;
+
+    return ajTrue;
 }
 
 
@@ -6547,6 +6832,7 @@ AjBool __deprecated ajStrModL(AjPStr* pthis, size_t size)
 AjBool ajStrSetResRound(AjPStr* Pstr, size_t size)
 {
     AjPStr thys;
+    size_t trysize;
     size_t roundsize;
 
     if(!*Pstr)
@@ -6557,10 +6843,27 @@ AjBool ajStrSetResRound(AjPStr* Pstr, size_t size)
     }
 
     thys = *Pstr;
-    if((thys->Use > 1 || thys->Res < (ajint)size))
+
+    trysize = size;
+    if(thys->Res < size)
     {
-	roundsize = ajRound(size, STRSIZE);
+	if(trysize >= LONGSTR)
+	{
+	    while(trysize<size)
+	      trysize+=trysize;
+	  roundsize = ajRound(trysize, LONGSTR);
+	}
+	else
+	  roundsize = ajRound(trysize, STRSIZE);
+
 	strCloneL(Pstr, roundsize);
+	return ajTrue;
+	
+    }
+
+    if(thys->Use > 1)
+    {
+	strCloneL(Pstr, size);
 	return ajTrue;
     }
 
@@ -8696,6 +8999,8 @@ int __deprecated ajStrCmp(const void* str, const void* str2)
 **                          within another string. 
 ** @nam4rule  FindAny       Any in a set of characters (FindSet?)
 ** @nam4rule  FindCase      Case insensitive
+** @nam4rule  FindRest      Any not in a set of characters
+** @nam5rule  FindRestCase  Any not in a set of characters, case insensitive
 ** @nam3rule  Findlast      Locate last occurence of a string
 **
 ** @argrule * str [const AjPStr] String
@@ -8913,6 +9218,103 @@ ajint __deprecated ajStrFindCase(const AjPStr str, const AjPStr str2)
 }
 
 
+/* @func ajStrFindRestC *******************************************************
+**
+** Finds the first occurrence in a string of any character not in a second 
+** (text) string.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] text to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindRestC(const AjPStr str, const char* txt2)
+{
+    ajint i;
+
+    i = strspn(str->Ptr, txt2);
+    if(i == str->Len)
+	return -1;
+    return i;
+}
+
+
+
+
+/* @func ajStrFindRestS *******************************************************
+**
+** Finds the first occurrence in a string of any character not in a second 
+** (text) string.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] text to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindRestS(const AjPStr str, const AjPStr str2)
+{
+  return ajStrFindRestC(str, str2->Ptr);
+}
+
+
+
+
+/* @func ajStrFindRestCaseC ***************************************************
+**
+** Finds the first occurrence in a string of any character not in a second 
+** (text) string (case-insensitive).
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] text to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindRestCaseC(const AjPStr str, const char* txt2)
+{
+    ajint i;
+    AjPStr tmpstr = ajStrNewS(str);
+    AjPStr tmptxt = ajStrNewC(txt2);
+
+    ajStrFmtUpper(&tmptxt);
+    ajStrFmtUpper(&tmpstr);
+
+    i = strspn(tmpstr->Ptr, tmptxt->Ptr);
+    ajStrDel(&tmpstr);
+    ajStrDel(&tmptxt);
+    if(i == str->Len)
+	return -1;
+    return i;
+}
+
+
+
+
+/* @func ajStrFindRestCaseS ***************************************************
+**
+** Finds the first occurrence in a string of any character not in a second 
+** (text) string (case-insensitive).
+**
+** @param [r] str [const AjPStr] String
+** @param [r] txt2 [const char*] text to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindRestCaseS(const AjPStr str, const AjPStr str2)
+{
+  return ajStrFindRestCaseC(str, str2->Ptr);
+}
+
+
+
+
 /* @func ajStrFindlastC *******************************************************
 **
 ** Finds the last occurrence in a string of a second (text) string.
@@ -9051,9 +9453,7 @@ ajint ajStrFindlastS(const AjPStr str, const AjPStr str2)
 **
 ** Returns a word from the start of a string, and the remainder of the string
 **
-** @param [r] str [const AjPStr] String to be parsed (first call) or
-**        NULL for followup calls using the same string, as for the
-**        C RTL function strtok which is eventually called.
+** @param [r] str [const AjPStr] String to be parsed
 ** @param [w] Prest [AjPStr*] Remainder of string
 ** @param [w] Pword [AjPStr*] First word of string
 ** @return [AjBool] True if parsing succeeded
@@ -9104,9 +9504,7 @@ AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
 ** Returns a word from the start of a string, and the remainder of the string.
 ** Leading spaces are skipped.
 **
-** @param [r] str [const AjPStr] String to be parsed (first call) or
-**        NULL for followup calls using the same string, as for the
-**        C RTL function strtok which is eventually called.
+** @param [r] str [const AjPStr] String to be parsed
 ** @param [w] Prest [AjPStr*] Remainder of string
 ** @param [w] Pword [AjPStr*] First word of string
 ** @return [AjBool] True if parsing succeeded
