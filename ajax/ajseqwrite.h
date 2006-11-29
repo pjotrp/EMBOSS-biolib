@@ -24,8 +24,9 @@ extern "C"
 ** @attr Type [AjPStr] Type N or P
 ** @attr EType [AjEnum] unused, obsolete
 ** @attr Outputtype [AjPStr] Output sequence known type
-** @attr Db [AjPStr] Database name from input
-** @attr Setdb [AjPStr] Database name from command line
+** @attr Db [AjPStr] Database name from input name
+** @attr Setdb [AjPStr] Database name from input command line
+** @attr Setoutdb [AjPStr] Database name from command line
 ** @attr Full [AjPStr] Full name
 ** @attr Date [AjPStr] Date
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
@@ -82,6 +83,7 @@ typedef struct AjSSeqout {
   AjPStr Outputtype;
   AjPStr Db;
   AjPStr Setdb;
+  AjPStr Setoutdb;
   AjPStr Full;
   AjPStr Date;
   AjPStr Doc;
