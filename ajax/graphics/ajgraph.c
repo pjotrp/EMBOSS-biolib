@@ -1897,6 +1897,7 @@ void ajGraphTrace(const AjPGraph thys)
 
     ajDebug("\n(b) Strings with values\n");
 
+    ajDebug("Desc '%S'\n", thys->plplot->desc);
     ajDebug("Title '%S'\n", thys->plplot->title);
     ajDebug("Subtitle '%S'\n", thys->plplot->subtitle);
     ajDebug("Xaxis '%S'\n", thys->plplot->xaxis);
@@ -4598,6 +4599,7 @@ void ajGraphxyDel(AjPGraph* pthis)
 		ajGraphPlpDataDel(&graphdata);
 	    }
 	}
+	ajStrDel(&thys->plplot->desc);
 	ajStrDel(&thys->plplot->title);
 	ajStrDel(&thys->plplot->subtitle);
 	ajStrDel(&thys->plplot->xaxis);
