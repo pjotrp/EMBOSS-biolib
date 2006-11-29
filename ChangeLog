@@ -1,4 +1,55 @@
 Version 4.1.0
+	Word-based algorithms complained if a sequnece was shorter than
+	the wordsize. This was a problem for database searches with some
+	short sequences present. They now run silently and simply return
+	no word matches.
+
+	The EMBL format sequence entry parser was able to read swissprot
+	sequence data, but not the feature table. Efficiency improvements
+	to set the sequence type to nucleotide for EMBL entries showed
+	that swissprot entries were being read by the EMBL parser. A test
+	for swissprot protein information on the ID line should redifrect
+	these entries to the swissprot parser. In previous release the
+	seuqnece type was not set, so there was no problem with the
+	sequence type - although feature lines may not have been readable
+	form swissprot format flat files. Database definitions specify the
+	swiss or embl format so they are not affected.
+
+	Large sequences were running very slowly. This was traced to the
+	way sequence types are tested using regular expressions processed
+	by calls to the PCRE library. These calls were replaced by simple
+	string functions as they are only testing that a sequence is
+	entirely composed of characteres from an allowed set. An
+	additional speedup was achieved by defining only upper case
+	characters as required (almost halving the nuber of tests) and
+	testing the upper case version of the sequence characters.
+
+	Sequence translation was relatively slow, at least on very large
+	sequences. Profiling with gprof indicated some changed to reduce
+	the number of string handling calls (each was very fast, but
+	there was a very large number of calls. The internal tables were
+	resized (from 15 elements to 16) for more efficient mapping.
+
+	Parsing NCBI format ID lines saves the database. This is available
+	for writing NCBI formatted output ID lines, but is not to be used
+	in reporting the USA.
+
+	Added "refseq" as a sequence and feature format. Initially a
+	simple alias of GenBank but we may let them diverge later.
+
+	REFSEQ entries have their own idea of what a ProteinID in the
+	feature table looks like, as they use REFSEQP protein IDs.
+	Validation now allows the third character to be an underscore.
+
+	Large numbers of database files could make the dbi indexing
+	programs (dbiflat, dbifasta, dbigcg, dbiblast) fail at the sort
+	merge stage when the index files are combined. The sort merge is
+	now in 2 steps to limit the number of open files required in the
+	system sort utility.
+
+	Added a script emblsplit.pl to split EMBL and UniProt database files
+	into 2Gbyte chunks.
+
 	The -sid qualifier now overwrites the sequence id if used. The
 	-sid value will be used for creating the output filename and for
 	reporting the sequence identifier in output files. For more than
@@ -52,7 +103,7 @@ Version 4.1.0
 	begin and end positions when we switched to pattern lists. This
 	has been restored in the pattern list processing code.
 	
-	The logfile caused a file close error if it was read only (beause
+	The logfile caused a file close error if it was read only (because
 	it had not been successfully opened). Opening the logfile now
 	tests the file is writable and ignores logging for a read-only file.
 
