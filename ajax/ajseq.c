@@ -2797,7 +2797,7 @@ const AjPStr __deprecated ajSeqGetUsa(const AjPSeq seq)
 ** @nam4rule IsReversed Sequence is reversed
 ** @nam4rule IsTrimmed Sequence is trimmed to a subsequence
 **
-** @suffix True Sequence proerties relative to the original sequence
+** @suffix True Sequence properties relative to the original sequence
 **
 ** @argrule Is seq [const AjPSeq] Sequence
 **
@@ -5675,6 +5675,7 @@ AjPSeqout ajSeqoutNew(void)
 
     pthis->Db    = ajStrNew();
     pthis->Setdb = ajStrNew();
+    pthis->Setoutdb = ajStrNew();
     pthis->Full  = ajStrNew();
     pthis->Date  = ajStrNew();
     pthis->Doc   = ajStrNew();
@@ -5774,6 +5775,7 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
     ajStrDel(&seqout->Outputtype);
     ajStrDel(&seqout->Db);
     ajStrDel(&seqout->Setdb);
+    ajStrDel(&seqout->Setoutdb);
     ajStrDel(&seqout->Full);
     ajStrDel(&seqout->Date);
     ajStrDel(&seqout->Doc);
