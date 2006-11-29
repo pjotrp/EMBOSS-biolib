@@ -63,7 +63,6 @@ AjPRegexp ajRegCompCaseC (const char* exp);
 /* execute expression match */
 
 AjBool ajRegExec (AjPRegexp prog, const AjPStr str);
-AjBool ajRegExecB (AjPRegexp prog, const AjPStr str);
 AjBool ajRegExecC (AjPRegexp prog, const char* str);
 
 /* test substrings */
