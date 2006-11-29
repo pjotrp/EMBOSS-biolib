@@ -11924,7 +11924,7 @@ static void acdSetSeqout(AcdPAcd thys)
 	    ajSeqoutUsa(&val, acdReply);	/* resets the AjPSeqout */
 	    val->Features = osfeat;
 	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setoutdb);
     
 	    acdOutDirectory(&val->Directory);
 	    acdLog("acdSetSeqout features: %B dir '%S'\n",
@@ -12115,7 +12115,7 @@ static void acdSetSeqoutall(AcdPAcd thys)
 	    ajSeqoutUsa(&val, acdReply);
 	    val->Features = osfeat;
 	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
-	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setoutdb);
 	    acdOutDirectory(&val->Directory);
 	    acdLog("acdSetSeqoutall features: %B\n", val->Features);
 
@@ -12305,7 +12305,7 @@ static void acdSetSeqoutset(AcdPAcd thys)
 	    val = ajSeqoutNew();		/* set the default value */
     
 	    ajSeqoutUsa(&val, acdReply);
-	    acdGetValueAssoc(thys, "osdbname", &val->Setdb);
+	    acdGetValueAssoc(thys, "osdbname", &val->Setoutdb);
 	    val->Features = osfeat;
 	    acdGetValueAssoc(thys, "osdirectory", &val->Directory);
 	    acdOutDirectory(&val->Directory);
