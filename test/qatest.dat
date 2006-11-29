@@ -3020,8 +3020,6 @@ CL -nocds -notranslation -norest
 IN tembl:X03487
 IN
 IN
-IN
-IN
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -9574,6 +9572,21 @@ FP /^    494     529      26      6      6     94.4 ccctaa   \n/
 FP /^    568     597      24      6      5    100.0 aaccct   \n/
 //
 
+ID extractalign-ex
+UC Extract the region from position 10 to 20:
+AP extractalign
+CL ../../data/dna.msf result.seq -regions '11-30'
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI result.seq
+FZ = 84
+FP /^GTACGTACGT----ACGTAC\n/
+FP 3 /^>/
+//
+
 ID extractfeat-ex
 UC To write out the exons of a sequence: 
 AP extractfeat
@@ -12184,10 +12197,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 6
+FC = 7
 FP /^seqmatchall/
 FP /^supermatcher/
 FP /^water/
+FP /^wordfinder/
 FP /^wordmatch/
 //
 
@@ -24041,7 +24055,7 @@ FC = 89
 FP /^        1           0.264            0.522\n/
 FP /^        2           2.000\n/
 FP /^Ln Likelihood =   -60.78[0-9][0-9][0-9]\n/
-FP /^ +2 +Gamma +4.529[0-9][0-9] +0.90[78][09][02]\n/
+FP /^ +2 +Gamma +4.529[0-9][0-9] +0.90[78][09][92]\n/
 FP /^             1121121111 111\n/
 FI dnaml.treefile
 FC = 2
