@@ -400,6 +400,9 @@ static FeatOInFormat featInFormatDef[] =
     {"ddbj",          AJTRUE,  AJTRUE,  AJFALSE, AJFALSE,
 	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl,
 	 "embl/genbank/ddbj format"},
+    {"refseq",        AJTRUE,  AJTRUE,  AJFALSE, AJFALSE,
+	 featReadEmbl,    featRegInitEmbl,    featDelRegEmbl,
+	 "embl/genbank/ddbj format"},
     {"gff",           AJFALSE, AJTRUE,  AJTRUE,  AJFALSE,
 	 featReadGff,     featRegInitGff,     featDelRegGff,
 	 "GFF version 1 or 2"},
@@ -506,6 +509,9 @@ static FeatOOutFormat featOutFormatDef[] =
     {"ddbj",      AJFALSE, AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteDdbj,
 	 "ddbj format"},
+    {"refseq",    AJTRUE,  AJTRUE,    AJFALSE,
+	 featVocabInitEmbl,  ajFeattableWriteGenbank,
+	 "genbank format"},
     {"gff",       AJFALSE, AJTRUE,    AJTRUE,
 	 featVocabInitGff,   ajFeattableWriteGff,
 	 "GFF version 2"},
@@ -9701,8 +9707,14 @@ static AjBool featTagSpecialAllProteinid(const AjPStr val)
 	{
 	    i++;
 	    icp = *cp;
-	    if(i <= 3) {
-		if(!isalpha(icp) || !isupper(icp))
+	    if(i <= 3)
+	    {
+	      if(icp == '_')
+	      {
+		if(i!=3)
+		  break;
+	      }
+	      else if(!isalpha(icp) || !isupper(icp))
 		    break;
 	    }
 	    else if(*cp == '.')
@@ -11298,6 +11310,9 @@ void ajFeatExit(void)
 
     ajStrTableFree(&FeatTypeTableGff);
     ajStrTableFree(&FeatTagsTableGff);
+
+    ajStrTableFree(&FeatTypeTableGffprotein);
+    ajStrTableFree(&FeatTagsTableGffprotein);
 
     ajStrTableFree(&FeatTypeTableSwiss);
     ajStrTableFree(&FeatTagsTableSwiss);
