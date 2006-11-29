@@ -6927,6 +6927,7 @@ static AjBool featVocabRead(const char* name,
     ajStrDel(&req);
     ajStrDel(&tag);
     ajStrDel(&type);
+    ajStrDel(&intids);
     
     return ajTrue;    
 }
