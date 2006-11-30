@@ -6397,7 +6397,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     ajDebug("seqReadEmbl first line '%S'\n", seqReadLine);
 
     if(!ajStrPrefixC(seqReadLine, "ID   ") ||
-       ajStrFindC(seqReadLine, " PRT; "))
+       ajStrFindC(seqReadLine, " PRT; ")>= 0)
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
