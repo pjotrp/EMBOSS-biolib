@@ -192,7 +192,9 @@ int main(int argc, char **argv)
 				   alpha,frags,nameit);
 	    ajStrDel(&name);
 	}
-
+	else
+	    ajReportSetTailC(report,"");
+	
 	ajReportWrite(report, TabRpt, seq);
 	ajFeattableDel(&TabRpt);
 
