@@ -9492,8 +9492,8 @@ AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
     ajStrAssignSubS(Pword, str, 0, i);
     ajStrAssignSubS(Prest, str, j, str->Len);
 
-    ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
-	    i, j, str->Len, *Pword);
+    /*ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
+      i, j, str->Len, *Pword);*/
     return ajTrue;
 }
 
@@ -9552,8 +9552,8 @@ AjBool ajStrExtractWord(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
     ajStrAssignSubS(Pword, str, istart, i);
     ajStrAssignSubS(Prest, str, j, str->Len);
 
-    ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
-	    i, j, str->Len, *Pword);
+    /*ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
+      i, j, str->Len, *Pword);*/
     return ajTrue;
 }
 
