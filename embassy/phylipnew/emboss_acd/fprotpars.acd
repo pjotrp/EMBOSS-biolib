@@ -1,5 +1,5 @@
 application: fprotpars [
-  documentation: "Protein pasimony algorithm"
+  documentation: "Protein parsimony algorithm"
   groups: "Phylogeny:Molecular sequence"
   embassy: "phylipnew"
 ]
