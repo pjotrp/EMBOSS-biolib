@@ -37,7 +37,7 @@ dan dbiblast dbifasta dbiflat dbigcg \
 dbxfasta dbxflat dbxgcg \
 degapseq descseq diffseq digest distmat \
 dotmatcher dotpath dottup dreg \
-einverted embossdata embossversion emma \
+edialign einverted embossdata embossversion emma \
 emowse entret epestfind eprimer3 \
 equicktandem est2genome etandem \
 extractfeat extractseq \
@@ -120,6 +120,7 @@ dotmatcher_SOURCES = dotmatcher.c
 dotpath_SOURCES = dotpath.c
 dottup_SOURCES = dottup.c
 dreg_SOURCES = dreg.c
+edialign_SOURCES = edialign.c
 einverted_SOURCES = einverted.c
 embossdata_SOURCES = embossdata.c
 emma_SOURCES = emma.c
