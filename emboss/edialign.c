@@ -1676,13 +1676,13 @@ int main(int argc, char **argv)
 
 
 
-
+/*
     if( argnum == 1 )
     {
 	printf("\n     Program terminated normally\n");
 	printf("     Results are contained in file `%s' \n \n \n", itname);
     }
-
+*/
 
     av_dia_num = 2 * dia_num ;
     av_dia_num = av_dia_num / ( seqnum * ( seqnum - 1) ) ;
