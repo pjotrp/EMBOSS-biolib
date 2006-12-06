@@ -371,7 +371,7 @@ AjBool ajDomNodeHasChildNodes(const AjPDomNode node);
 
 
 ajint ajDomWrite(const AjPDomDocument node, AjPFile outf);
-
+ajint ajDomWriteIndent(const AjPDomDocument node, AjPFile outf, ajint indent);
 
 
 
