@@ -40,7 +40,7 @@ dotmatcher dotpath dottup dreg \
 edialign einverted embossdata embossversion emma \
 emowse entret epestfind eprimer3 \
 equicktandem est2genome etandem \
-extractfeat extractseq \
+extractalign extractfeat extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
 iep infoalign infoseq isochore \
@@ -69,8 +69,8 @@ tcode textsearch tfextract tfm tfscan \
 tmap tranalign transeq \
 trimest trimseq twofeat \
 union vectorstrip \
-water whichdb wobble wordcount \
-wordmatch wossname \
+water whichdb wobble \
+wordcount wordfinder wordmatch wossname \
 yank
 
 INCLUDES = -I$(top_srcdir)/nucleus -I$(top_srcdir)/ajax -I$(top_srcdir)/plplot
@@ -132,6 +132,7 @@ equicktandem_SOURCES = equicktandem.c
 est2genome_SOURCES = est2genome.c
 etandem_SOURCES = etandem.c
 embossversion_SOURCES = embossversion.c
+extractalign_SOURCES = extractalign.c
 extractfeat_SOURCES = extractfeat.c
 extractseq_SOURCES = extractseq.c
 findkm_SOURCES = findkm.c
@@ -237,6 +238,7 @@ water_SOURCES = water.c
 whichdb_SOURCES = whichdb.c
 wobble_SOURCES = wobble.c
 wordcount_SOURCES = wordcount.c
+wordfinder_SOURCES = wordfinder.c
 wordmatch_SOURCES = wordmatch.c
 wossname_SOURCES = wossname.c
 yank_SOURCES = yank.c
