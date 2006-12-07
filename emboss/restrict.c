@@ -1,4 +1,4 @@
- /* @source restrict application
+/* @source restrict application
  **
  ** Reports restriction enzyme cleavage sites
  ** @author Copyright (C) Alan Bleasby (ableasby@hgmp.mrc.ac.uk)
@@ -167,6 +167,11 @@ int main(int argc, char **argv)
 	ajFileSeek(enzfile,0L,0);
 
 	TabRpt = ajFeattableNewSeq(seq);
+
+	if(frags)
+	  ajReportSetTailC(report, "Fragment lengths:\n");
+	else
+	  ajReportSetTailC(report, "");
 
 	l = ajListNew();
 	hits = embPatRestrictMatch(seq,begin,end,enzfile,enzymes,sitelen,
@@ -584,14 +589,13 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
     }
 
 
+    /* reuse for report tail */
     ajStrAssignC(&tmpStr, "");
 
 
     if(frags)
     {
-        ajStrAssignC(&tmpStr, "");
 	ajSortIntInc(fa,fn);
-	ajFmtPrintAppS(&tmpStr,"Fragment lengths:\n");
 
 	if(!fn || (fn==1 && plasmid))
 	    ajFmtPrintAppS(&tmpStr,"    %d\n",end-begin+1);
@@ -768,8 +772,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
     if(ifrag)
 	ajStrAppendS(&tmpStr,fragStr);
     
-    ajReportSetTail (report, tmpStr);
-
+    ajReportAppendTail (report, tmpStr);
     
 
     for(i=0;i<hits;++i)
