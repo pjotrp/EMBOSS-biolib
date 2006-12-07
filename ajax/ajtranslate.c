@@ -315,9 +315,9 @@ AjPTrn ajTrnNew(const AjPStr trnFileName)
     pthis->Title    = ajStrNew();
 
     /* initialise the GC and Starts tables */
-    for(i=0; i<15; i++)
-	for(j=0; j<15; j++)
-	    for(k=0; k<15; k++)
+    for(i=0; i<16; i++)
+	for(j=0; j<16; j++)
+	    for(k=0; k<16; k++)
 	    {
 		pthis->GC[i][j][k] = 'X';
 		pthis->Starts[i][j][k] = '-';
@@ -822,13 +822,27 @@ void ajTrnC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
 {
     ajint i;
     ajint lenmod3;
+    const char *cp = str;
+    AjPStr transtr = NULL;
+    char *cq;
+    ajint trnlen;
 
     lenmod3 = len - (len % 3);
+    trnlen = lenmod3/3;
+
+    transtr = ajStrNewRes(trnlen+1);
+    cq = ajStrGetuniquePtr(&transtr);
 
     for(i=0; i < lenmod3; i+=3)
-	ajStrAppendK(pep, trnObj->GC[trnconv[(ajint)str[i]]]
-		                 [trnconv[(ajint)str[i+1]]]
-		                 [trnconv[(ajint)str[i+2]]]);
+    {
+        *cq++ =  trnObj->GC[trnconv[(ajint)*cp]]
+	  [trnconv[(ajint)*(cp+1)]]
+	  [trnconv[(ajint)*(cp+2)]];
+	cp+=3;
+    }
+    ajStrSetValidLen(&transtr, trnlen);
+    ajStrAppendS(pep, transtr);
+    ajStrDel(&transtr);
 
     return;
 }
@@ -860,13 +874,27 @@ void ajTrnRevC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
 {
     ajint i;
     ajint end;
+    const char *cp = str;
+    AjPStr transtr = NULL;
+    char *cq;
+    ajint trnlen;
 
     end = (len/3)*3-1;
+    trnlen = end/3;
+
+    transtr = ajStrNewRes(trnlen+1);
+    cq = ajStrGetuniquePtr(&transtr);
 
     for(i=end; i>1; i-=3)
-	ajStrAppendK(pep, trnObj->GC[trncomp[(ajint)str[i]]]
-		                 [trncomp[(ajint)str[i-1]]]
-		                 [trncomp[(ajint)str[i-2]]]);
+    {
+	*cq++ = trnObj->GC[trncomp[(ajint)*cp]]
+	  [trncomp[(ajint)*(cp+1)]]
+	  [trncomp[(ajint)*(cp+2)]];
+	cp+=3;
+    }
+    ajStrSetValidLen(&transtr, trnlen);
+    ajStrAppendS(pep, transtr);
+    ajStrDel(&transtr);
 
     return;
 }
@@ -1693,9 +1721,11 @@ static AjBool trnComplete(AjPTrn thys)
     ajint codonval[4];
     char aa;
     ajint code[4] = {1, 2, 4, 8};
-    char *nuccodes = "ACGTMRWSYKVHDBN";
-    ajint ambigcodes[] = {1, 2, 4, 8, 3, 5, 6, 9, 10, 12, 7, 11, 13, 14, 15};
-    ajint trncodes[] = {14, 0, 1, 4, 2, 5, 7, 10, 3, 6, 8, 11, 9, 12, 13, 14};
+    char *nuccodes = "ACGTMRWSYKVHDBN";	/* only used in ajDebug printout */
+    ajint ambigcodes[] = { 1,  2,  4,  8,  3,  5,  6,  9,
+			  10, 12,  7, 11, 13, 14, 15};
+    ajint trncodes[] = {14,  0,  1,  4,  2,  5,  7, 10,
+			 3,  6,  8, 11,  9, 12, 13, 14};
     char aalist[65] = "";
 
     for(i=0;i<4;i++)
@@ -1790,7 +1820,8 @@ static AjBool trnComplete(AjPTrn thys)
 	}
 	jfirst = jj;
 	kfirst = kk;
-	ajDebug("ambig aa: %c codonval %2d %2d %2d trn %2d %2d %2d ijk %d%d%d '%s' '%s'\n",
+	ajDebug("ambig aa: %c codonval %2d %2d %2d "
+		"trn %2d %2d %2d ijk %d%d%d '%s' '%s'\n",
 		aa, codonval[0], codonval[1], codonval[2],
 		trncodes[codonval[0]],
 		trncodes[codonval[1]],
