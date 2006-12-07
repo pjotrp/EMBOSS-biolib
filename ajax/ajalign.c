@@ -733,7 +733,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     isnuc = ajSeqIsNuc(data->Seq[0]);
     ident = (float) data->NumId / (float) data->LenAli;
 	
-    ajDebug("# Consens: '%S'\n\n", cons);
+    /*ajDebug("# Consens: '%S'\n\n", cons);*/
 
     if(markx == 1)
     {
@@ -750,7 +750,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 	alignSim(&cons, ':', '.', ' ', ' ');
     }
 
-    ajDebug("# Modcons: '%S'\n\n", cons);
+    /*ajDebug("# Modcons: '%S'\n\n", cons);*/
     ajDebug("# Nali:%d nseq:%d\n", nali, nseq);
 	
     ajDebug("# AliData [%d] len %d \n", iali, ilen);
@@ -758,10 +758,11 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     {
 	incs[iseq] = alignSeqIncrement(data, iseq);
 	ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
-	ajDebug("#   Seq[%d]'%S'\n",
-		iseq, ajSeqGetSeqS(data->Seq[iseq]));
+	/*ajDebug("#   Seq[%d]'%S'\n",
+	  iseq, ajSeqGetSeqS(data->Seq[iseq]));*/
     }
 
+    /*
     for(iseq=0; iseq < nseq; iseq++)
     {
 	ajDebug("#   Seq[%d]  Len:%d Start:%d End:%d Rev:%B Off:%d\n",
@@ -770,6 +771,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		data->Rev[iseq],
 		data->Offset[iseq]);
     }
+    */
 
     if(markx==10)
     {
@@ -1155,11 +1157,11 @@ static void alignWriteSimple(AjPAlign thys)
 	ajAlignSetSubStandard(thys, iali);
 	ajAlignWriteHeader(thys);
 	
-	ajDebug("# Consens: '%S'\n\n", cons);
+	/*ajDebug("# Consens: '%S'\n\n", cons);*/
 	
 	alignSim(&cons, '|', ':', '.', ' ');
 	
-	ajDebug("# Modcons: '%S'\n\n", cons);
+	/*ajDebug("# Modcons: '%S'\n\n", cons);*/
 	ajDebug("# Nali:%d nseq:%d\n", nali, nseq);
 	
 	ajDebug("# AliData [%d] len %d \n", iali, ilen);
@@ -1167,9 +1169,11 @@ static void alignWriteSimple(AjPAlign thys)
 	{
 	    incs[iseq] = alignSeqIncrement(data, iseq);
 	    ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
-	    ajDebug("#   Seq[%d]'%S'\n",
-		    iseq, ajSeqGetSeqS(data->Seq[iseq]));
+	    /* ajDebug("#   Seq[%d]'%S'\n",
+	       iseq, ajSeqGetSeqS(data->Seq[iseq]));*/
 	}
+
+	/*
 	for(iseq=0; iseq < nseq; iseq++)
 	{
 	    ajDebug("#   Seq[%d]  Len:%d Start:%d End:%d Rev:%B\n",
@@ -1177,6 +1181,7 @@ static void alignWriteSimple(AjPAlign thys)
 		    data->Start[iseq], data->End[iseq],
 		    data->Rev[iseq]);
 	}
+	*/
 	
 	for(i=0; i < ilen; i += iwidth)
 	{	    
@@ -1417,12 +1422,12 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 	ajAlignSetSubStandard(thys, iali);
 	ajAlignWriteHeader(thys);
 	
-	ajDebug("# Consens: '%S'\n\n", cons);
+	/*ajDebug("# Consens: '%S'\n\n", cons);*/
 	
 	if(pair)
 	    alignSim(&cons, '|', ':', '.', ' ');
 	
-	ajDebug("# Modcons: '%S'\n\n", cons);
+	/*ajDebug("# Modcons: '%S'\n\n", cons);*/
 	ajDebug("# Nali:%d nseq:%d\n", nali, nseq);
 	
 	ajDebug("# AliData [%d] len %d \n", iali, ilen);
@@ -1431,16 +1436,18 @@ static void alignWriteSrsAny(AjPAlign thys, ajint imax, AjBool mark)
 	{
 	    incs[iseq] = alignSeqIncrement(data, iseq);
 	    ipos[iseq] = alignSeqBegin(data, iseq)-incs[iseq];
-	    ajDebug("#   Seq[%d] Off:%d Sta:%d End:%d '%S'\n",
+	    /*ajDebug("#   Seq[%d] Off:%d Sta:%d End:%d '%S'\n",
 		    iseq, data->Offset[iseq], data->Start[iseq],
-		    data->End[iseq], ajSeqGetSeqS(data->Seq[iseq]));
+		    data->End[iseq], ajSeqGetSeqS(data->Seq[iseq]));*/
 	}
-	
+
+	/*
 	for(iseq=0; iseq < nseq; iseq++)
 	    ajDebug("#   Seq[%d] Start:%d End:%d Rev:%B\n",
 		    iseq, data->Start[iseq], data->End[iseq],
 		    data->Rev[iseq]);
-	
+	*/
+
 	for(i=0; i < ilen; i += iwidth)
 	{	    
 	    for(iseq=0; iseq < nseq; iseq++)
@@ -1771,7 +1778,7 @@ AjBool ajAlignDefineSS(AjPAlign thys, AjPSeq seqa, AjPSeq seqb)
 
     ajListPushApp(thys->Data, data);
 
-    ajAlignTraceT(thys, "ajAlignDefineSS result");
+    /*ajAlignTraceT(thys, "ajAlignDefineSS result");*/
 
     return ajTrue;
 }
@@ -2165,7 +2172,7 @@ void ajAlignWrite(AjPAlign thys)
 {
     ajDebug("ajAlignWrite\n");
 
-    ajAlignTraceT(thys, "ajAlignWrite start");
+    /*ajAlignTraceT(thys, "ajAlignWrite start");*/
 
     if(!thys->Format)
 	if(!ajAlignFindFormat(thys->Formatstr, &thys->Format))
@@ -3795,7 +3802,7 @@ static void alignSim(AjPStr* pmark, const char idch, const char simch,
     ajint ilen;
     char c;
 
-    ajDebug("alignSim '%S'\n", *pmark);
+    /*ajDebug("alignSim '%S'\n", *pmark);*/
 
     ajStrGetuniqueStr(pmark);
 
@@ -3814,7 +3821,7 @@ static void alignSim(AjPStr* pmark, const char idch, const char simch,
 	    ajStrPasteCountK(pmark, i,gapch, 1);
     }
 
-    ajDebug("  result '%S'\n", *pmark);
+    /*ajDebug("  result '%S'\n", *pmark);*/
 
     return;
 }
