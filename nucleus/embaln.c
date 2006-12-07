@@ -2072,8 +2072,8 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 		pmax = path[i*width+j];
 		xpos = j;
 		ypos = i;
-		ajDebug("pmax %.2f xpos: %d ypos: %d path[%d]\n",
-			pmax, xpos, ypos, i*width+j);
+		/*ajDebug("pmax %.2f xpos: %d ypos: %d path[%d]\n",
+		  pmax, xpos, ypos, i*width+j);*/
 	    }
 
     p = ajSeqChar(a);
@@ -2089,9 +2089,9 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 
     while(xpos>=0 && ypos && path[ypos*width+xpos] >0.)
     {
-	ajDebug("(*) '%c' '%c' xpos: %d ypos: %d path[%d] %.2f\n",
+      /*ajDebug("(*) '%c' '%c' xpos: %d ypos: %d path[%d] %.2f\n",
 	  p[xpos], q[ypos], xpos, ypos,
-	  ypos*width+xpos, path[ypos*width+xpos]);
+	  ypos*width+xpos, path[ypos*width+xpos]);*/
 
 	if(!compass[ypos*width+xpos])	/* diagonal */
         {
@@ -2124,15 +2124,15 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 	    t = xpos2-1;
 	    while(1)
             {
-		ajDebug("(1) ypos: %d * %d + %d\n",
-		  ypos, width, ix);
-		ajDebug("(1) path[%d] = %.2f gapcnt: %.0f\n",
-		  ypos*width+ix, path[ypos*width+ix], gapcnt);
+	        /*ajDebug("(1) ypos: %d * %d + %d\n",
+		  ypos, width, ix);*/
+		/*ajDebug("(1) path[%d] = %.2f gapcnt: %.0f\n",
+		ypos*width+ix, path[ypos*width+ix], gapcnt);*/
 
 		bimble = path[ypos*width+ix]-gapopen-(gapcnt*gapextend)+match;
 
-		ajDebug("(1) fabs(%.2f - %.2f) = %.2f\n",
-		  score, bimble, fabs((double)score-(double)bimble));
+		/*ajDebug("(1) fabs(%.2f - %.2f) = %.2f\n",
+		  score, bimble, fabs((double)score-(double)bimble));*/
 
 		if(fabs((double)score-(double)bimble)<0.1)
 		    break;
@@ -2164,15 +2164,15 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 	    t  = iy+1;
 	    while(1)
 	    {
-		ajDebug("(2) %d * %d + xpos: %d\n",
-		  iy, width, xpos);
-		ajDebug("(2) path[%d] = %.2f gapcnt: %.0f\n",
-		  iy*width+xpos, path[iy*width+xpos], gapcnt);
+	        /*ajDebug("(2) %d * %d + xpos: %d\n",
+		  iy, width, xpos);*/
+		/*ajDebug("(2) path[%d] = %.2f gapcnt: %.0f\n",
+		  iy*width+xpos, path[iy*width+xpos], gapcnt);*/
 
 		bimble = path[iy*width+xpos]-gapopen-(gapcnt*gapextend)+match;
 
-		ajDebug("(2) fabs(%.2f - %.2f) = %.2f\n",
-		  score, bimble, fabs((double)score-(double)bimble));
+		/*ajDebug("(2) fabs(%.2f - %.2f) = %.2f\n",
+		  score, bimble, fabs((double)score-(double)bimble));*/
 
 		if(fabs((double)score-(double)bimble)<0.1)
 		    break;
@@ -2198,7 +2198,7 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 
 
 	    ypos = iy;
-	    ajDebug("ypos => %d\n", ypos);
+	    /*ajDebug("ypos => %d\n", ypos);*/
 	    xpos2--;
 	    continue;
         }
