@@ -382,7 +382,7 @@ dnl fi
 dnl Test if --enable-gccprofile given if so
 dnl set "-pg"
 
-if test "${with_gccprofile}" != "no" ; then
+if test "${with_gccprofile}" = "yes" ; then
      CFLAGS="$CFLAGS -pg"
      LDFLAGS="$LDFLAGS -pg"
 fi          
