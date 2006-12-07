@@ -5841,10 +5841,11 @@ AjBool ajSeqTrim(AjPSeq thys)
     ajint jbegin;
     ajint jend;
 
-    ajDebug("ajSeqTrim '%S'\n", thys->Seq);
-    ajDebug("ajSeqTrim 'Rev:%B Reversed:%B Begin:%d End:%d "
+    /*ajDebug("ajSeqTrim '%S'\n", thys->Seq);*/
+    ajDebug("ajSeqTrim '%S' Rev:%B Reversed:%B Begin:%d End:%d "
 	    "Offset:%d Offend:%d Len:%d\n",
-	    thys->Rev, thys->Reversed, thys->Begin, thys->End,
+	    ajSeqGetNameS(thys), thys->Rev, thys->Reversed,
+	    thys->Begin, thys->End,
 	    thys->Offset, thys->Offend, thys->Seq->Len);
 
     if(thys->Trimmed)
@@ -5856,8 +5857,8 @@ AjBool ajSeqTrim(AjPSeq thys)
     if(thys->Rev)
 	ajSeqReverseDo(thys);
 
-    ajDebug("ajSeqTrim '%S'\n", thys->Seq);
-    ajDebug("ajSeqTrim 'Rev:%B Reversed:%B Begin:%d End:%d "
+    /*ajDebug("ajSeqTrim '%S'\n", thys->Seq);*/
+    ajDebug("ajSeqTrim Rev:%B Reversed:%B Begin:%d End:%d "
 	   "Offset:%d Offend:%d Len:%d okay:%B\n",
 	    thys->Rev, thys->Reversed, thys->Begin, thys->End,
 	    thys->Offset, thys->Offend, thys->Seq->Len, okay);
@@ -5901,7 +5902,7 @@ AjBool ajSeqTrim(AjPSeq thys)
     if(okay && thys->Fttable)
 	okay = ajFeattableTrimOff(thys->Fttable, thys->Offset, thys->Seq->Len);
 
-    ajDebug("ajSeqTrim '%S'\n", thys->Seq);
+    /*ajDebug("ajSeqTrim '%S'\n", thys->Seq);*/
     ajDebug("ajSeqTrim 'Rev:%B Reversed:%B Begin:%d End:%d "
 	    "Offset:%d Offend:%d Len:%d okay:%B\n",
 	    thys->Rev, thys->Reversed, thys->Begin, thys->End,
