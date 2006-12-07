@@ -2265,3 +2265,35 @@ void ajSeqTypeExit(void)
     ajCharDel(&seqNewGapChars);
     return;
 }
+
+/* @section unused ************************************************************
+**
+** @fdata [none]
+**
+** @nam4rule TypeUnused Contains dummy calls to unused functions to keep
+**                 compilers happy
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
+ 
+
+
+/* @func ajSeqTypeUnused ******************************************************
+**
+** Dummy function to catch all unused functions defined in the ajseqtype
+** source file.
+**
+** @return [void]
+**
+******************************************************************************/
+
+void ajSeqTypeUnused(void)
+{
+    AjPStr ajpstr=NULL;
+    AjPRegexp ajpregexp = NULL;
+
+    seqTypeTest(ajpstr, ajpregexp);
+    return;
+}
