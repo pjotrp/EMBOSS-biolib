@@ -256,7 +256,7 @@ int main(int argc, char **argv)
     portrait    = ajAcdGetBool("portrait");
     collision   = ajAcdGetBool("collision");
     listoptions = ajAcdGetBool("listoptions");
-    altstr = ajAcdGetSelectI("alternative",1);
+    altstr = ajAcdGetListI("alternative",1);
     cmpmatrix   = ajAcdGetMatrix("matrixfile");
 
     ajStrToInt(altstr, &alternative);

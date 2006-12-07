@@ -187,7 +187,7 @@ section: additional [
       default: "Y"
     ]
 
-    selection: alternative [
+    list: alternative [
       additional: "Y"
       information: "Use alternative collisions routine"
       values: "0:Normal collision check. (default); 1:Compares
