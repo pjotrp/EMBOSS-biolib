@@ -49,9 +49,6 @@
 
 #include "ajax.h"
 
-#define ajLASTFWD  0	/* For iteration shows direction of last walk */
-#define ajLASTBACK 1
-
 static ajint listNewCnt     = 0;
 static ajint listDelCnt     = 0;
 static ajint listMaxNum     = 0;
@@ -1480,7 +1477,7 @@ AjIList ajListIter(AjPList thys)
 
     AJNEW0(iter);
     iter->Head = thys;
-    iter->Dir  = ajLASTFWD;
+    iter->Back = ajFalse;
     iter->Here = thys->First;
     iter->Orig = thys->First;
     iter->Modify = ajTrue;
@@ -1513,7 +1510,7 @@ AjIList ajListIterRead(const AjPList thys)
 
     AJNEW0(iter);
     iter->Head = (AjPList) thys;
-    iter->Dir  = ajLASTFWD;
+    iter->Back = ajFalse;
     iter->Here = thys->First;
     iter->Orig = thys->First;
     iter->Modify = ajFalse;
@@ -1554,7 +1551,7 @@ AjIList ajListIterBack(AjPList thys)
 
     AJNEW0(iter);
     iter->Head = thys;
-    iter->Dir = ajLASTBACK;
+    iter->Back = ajTrue;
     iter->Here = tmp->Next;
     iter->Modify = ajTrue;
 
@@ -1593,7 +1590,7 @@ AjIList ajListIterBackRead(const AjPList thys)
 
     AJNEW0(iter);
     iter->Head = (AjPList) thys;
-    iter->Dir = ajLASTBACK;
+    iter->Back = ajTrue;
     iter->Here = tmp->Next;
     iter->Modify = ajFalse;
 
@@ -1684,7 +1681,7 @@ AjBool ajListIterMore(const AjIList iter)
 
     p = iter->Here;
 
-    if(iter->Dir == ajLASTFWD)
+    if(!iter->Back)
     {
 	if(!p->Next)
 	    return ajFalse;
@@ -1741,19 +1738,23 @@ void* ajListIterNext(AjIList iter)
     AjPListNode p;
     void *ret;
 
-    if(!ajListIterMore(iter))
+    if(!iter)
 	return NULL;
 
     p = iter->Here;
 
-    if(iter->Dir == ajLASTFWD)
+    if(!iter->Back)
     {
+	if(!p->Next)
+	    return NULL;
 	ret = p->Item;
 	iter->Here = p->Next;
     }
     else
     {
-	iter->Dir = ajLASTFWD;
+	if(!p->Next->Next || !p->Next->Next->Next)
+	  return NULL;
+	iter->Back = ajFalse;
 	ret = p->Next->Item;
 	iter->Here = p->Next->Next;
     }
@@ -1778,16 +1779,19 @@ void* ajListIterBackNext(AjIList iter)
     AjPListNode p;
     void* ret;
 
-    if(!ajListIterBackMore(iter))
+    if(!iter)
 	return NULL;
 
     p = iter->Here;
 
-    if(iter->Dir == ajLASTFWD)
+    if(!p->Prev)
+      return NULL;
+
+    if(!iter->Back)
     {
 	ret = p->Prev->Prev->Item;
 	iter->Here = p->Prev->Prev;
-	iter->Dir = ajLASTBACK;
+	iter->Back = ajTrue;
     }
     else
     {
@@ -1821,7 +1825,7 @@ void ajListRemove(AjIList iter)
 
     p = iter->Here;
 
-    if(iter->Dir == ajLASTFWD)
+    if(!iter->Back)
     {
 	if(!p->Prev)
 	    ajFatal("Attempt to delete from unused iterator\n");
@@ -1869,7 +1873,7 @@ void ajListstrRemove(AjIList iter)
 
     p = iter->Here;
 
-    if(iter->Dir == ajLASTFWD)
+    if(!iter->Back)
     {
 	if(!p->Prev)
 	    ajFatal("Attempt to delete from unused iterator\n");
@@ -1928,7 +1932,7 @@ void ajListInsert(AjIList iter, void* x)
     p = iter->Here;
 
 
-    if(iter->Dir == ajLASTFWD)
+    if(!iter->Back)
     {
 	if(!p->Prev)
 	    listInsertNode(&list->First,x);
@@ -1989,7 +1993,7 @@ void ajListstrInsert(AjIList iter, AjPStr x)
     p = iter->Here;
 
 
-    if(iter->Dir == ajLASTFWD)
+    if(!iter->Back)
     {
 	if(!p->Prev)
 	    listInsertNode(&list->First,x);
@@ -2089,8 +2093,9 @@ void ajListIterTrace(const AjIList thys)
 	return;
     }
 
-    ajDebug("\nIterator Head %x Here %x Dir %d Modify %B Len: %d\n",thys->Head,
-	    thys->Here,thys->Dir,thys->Modify, thys->Head->Count);
+    ajDebug("\nIterator Head %x Here %x Back %B Modify %B Len: %d\n",
+	    thys->Head,thys->Here,thys->Back,
+	    thys->Modify, thys->Head->Count);
 
     return;
 }
@@ -2112,8 +2117,8 @@ void ajListstrIterTrace(const AjIList thys)
     if(!thys)
 	return;
 
-    ajDebug("\nIterator Head %x Here %x Dir %d Item %S\n",thys->Head,
-	    thys->Here,thys->Dir,(AjPStr)thys->Here->Item);
+    ajDebug("\nIterator Head %x Here %x Back %B Item %S\n",
+	    thys->Head, thys->Here,thys->Back,(AjPStr)thys->Here->Item);
 
     return;
 }

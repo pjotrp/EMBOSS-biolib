@@ -104,14 +104,15 @@ typedef struct AjSList {
 ** @attr Head [AjPList] Head of list
 ** @attr Here [AjPListNode] Current list node
 ** @attr Orig [AjPListNode] First list node
-** @attr Dir [AjBool] Direction of last iterative move
+** @attr Back [AjBool] Direction of last iterative move, true if reading back
 ** @attr Modify [AjBool] Allows iterator to modify the sequence
 **
 ** @new ajListIter Default constructor
 ** @new ajListIterRead Default constructor for a read-only list iterator
 ** @cast ajListIterDone Tests whether an iterator is finished.
 ** @delete ajListIterFree Deletes a list iterator.
-** @modify ajListIterNext Returns next item using iterator, or steps off the end.
+** @modify ajListIterNext Returns next item using iterator,
+**                        or steps off the end.
 ** @modify ajListRemove Removes an item at the current iterator.
 ** @modify ajListstrRemove Removes an AjPStr item at the current iterator.
 ** @modify ajListInsert Inserts an item at the current iterator.
@@ -126,7 +127,7 @@ typedef struct AjSIList {
   AjPList Head ;
   AjPListNode Here;
   AjPListNode Orig;
-  AjBool Dir;
+  AjBool Back;
   AjBool Modify;
 } AjOIList;
 
