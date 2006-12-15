@@ -16639,7 +16639,7 @@ FP /^           R  Q  H  G  R  G  T  A  P  M  S  A  N  S  L  L  G  S  L  R    F2
 FP /^            A  S  M  G  G  G  P  L  P  [*]  A  P  T  R  C  S  A  A  C  A   F3\n/
 FP /^     1261 ccgccagcatgggcgggggaccgctcccatgagcgccaactcgctgctcggcagcctgcg 1320\n/
 FI paamir.fasta
-FZ = 9444
+FZ = 9445
 FP /^>PAAMIR_2_ORF4  Translation of PAAMIR in frame 2, ORF 4, threshold 1, 210aa\n/
 FP /^PRRLVRQHGRGTAPMSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPPP\n/
 FP 67 /^>/
@@ -17126,7 +17126,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI amir.pep
-FZ = 2460
+FZ = 2461
 FP /^>PAAMIR_1/
 FP /^>PAAMIR_2/
 FP /^>PAAMIR_3/
@@ -17161,7 +17161,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI amir.pep
-FZ = 4921
+FZ = 4922
 FP /^>PAAMIR_1/
 FP /^>PAAMIR_2/
 FP /^>PAAMIR_3/
