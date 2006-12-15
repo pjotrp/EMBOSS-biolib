@@ -229,7 +229,7 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 		$dattr =~ s/^\s+//gos;
 		$dattr =~ s/\s+$//gos;
 		$dattr =~ s/\s+/ /gos;
-		$dattr =~ s/ [*]/* /gos;
+		$dattr =~ s/ ([*]+)/$1 /gos;
 		push @lattrs, $dattr;
 		if (defined($dcc) && $dcc ne "") {
 		    $icc++;
@@ -630,8 +630,8 @@ while ($source =~ m"[\/][*][^*]*[*]+([^\/*][^*]*[*]+)*[\/]"gos) {
 	    if ($#lattrs >= 0) {
 		$dattr = shift @lattrs;
 ###	    print STDERR "dattr: '$dattr'\n";
-		if ($dattr =~ /.*[\(][*][^\)]+\)/) {
-		    ($dattrtype,$dattrname) = $dattr =~ /(.*\S)\s*[\(][*]([^\)]+)\)/;
+		if ($dattr =~ /.*[\(][*]+[^\)]+\)/) {
+		    ($dattrtype,$dattrname) = $dattr =~ /(.*\S)\s*[\(][*]+([^\)]+)\)/;
 		    $dattrtype="(".$dattrtype."*)";
 		}
 		else {
