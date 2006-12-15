@@ -569,6 +569,7 @@ See also
    matcher      Finds the best local alignments between two sequences
    seqmatchall  All-against-all comparison of a set of sequences
    supermatcher Match large sequences against one or more other sequences
+   wordfinder   Match large sequences against one or more other sequences
    wordmatch    Finds all exact matches of a given size between 2 sequences
 
    matcher is a local alignment program that gives as good an alignment

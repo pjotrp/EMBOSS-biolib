@@ -228,6 +228,7 @@ See also
    matcher      Finds the best local alignments between two sequences
    supermatcher Match large sequences against one or more other sequences
    water        Smith-Waterman local alignment
+   wordfinder   Match large sequences against one or more other sequences
    wordmatch    Finds all exact matches of a given size between 2 sequences
 
    polydot will give a graphical view of the same matches.

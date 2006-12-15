@@ -88,7 +88,8 @@ Usage
 
    Here is a sample session with coderet
 
-   To extract all of the CDS, mRNA and the protein translations:
+   To extract all of the CDS, mRNA, non-coding and the protein
+   translations:
 
 
 % coderet 
@@ -98,6 +99,7 @@ Output file [hsferg1.coderet]:
 Coding nucleotide output sequence(s) (optional) [hsferg1.cds]: 
 Messenger RNA nucleotide output sequence(s) (optional) [hsferg1.mrna]: 
 Translated coding protein output sequence(s) (optional) [hsferg1.prot]: 
+Non-coding nucleotide output sequence(s) (optional) [hsferg1.noncoding]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -107,7 +109,7 @@ Translated coding protein output sequence(s) (optional) [hsferg1.prot]:
    To only extract the mRNA sequence:
 
 
-% coderet -nocds -notranslation 
+% coderet -nocds -notranslation -norest 
 Extract CDS, mRNA and translations from feature tables
 Input nucleotide sequence(s): tembl:X03487
 Output file [hsferg1.coderet]: 
@@ -363,11 +365,20 @@ HEEREHAEKLMKLQNQRGGRIFLQDIKKPDCDDWESGLNAMECALHLEKNVNQSLLELHK
 LATDKNDPHLCDFIETHYLNEQVKAIKELGDHVTNLRKMGAPESGLAEYLFDKHTLGDSD
 NES
 
+  File: hsferg1.noncoding
+
+>x03487_noncoding_1
+agnncaaacctnagctccgccagagcgcgcgaggcctccagcggccgcccctcccccaca
+gcaggggcggggntcccgcgcccaccggaaggagcgggctcggggcgggcggcgctgatt
+ggccggggcgggcctgacgccgacgcggctataagagaccacaagcgacccgcagggc
+>x03487_noncoding_501
+gtgagcgcgggc
+
   File: hsferg1.coderet
 
-   CDS  mRNA Trans Total Sequence
- ===== ===== ===== ===== ========
-     1     1     1     3 HSFERG1
+   CDS  mRNA non-c Trans Total Sequence
+ ===== ===== ===== ===== ===== ========
+     1     1     2     1     5 HSFERG1
 
   Output files for usage example 2
 

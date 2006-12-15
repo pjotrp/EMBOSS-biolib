@@ -93,7 +93,8 @@ pkgdata2_DATA = lindna.html listor.html makenucseq.html makeprotseq.html \
 	utils_database_indexing_group.html utils_misc_group.html \
 	vectorstrip.html \
 	water.html whichdb.html wobble.html \
-	wordcount.html wordmatch.html wossname.html yank.html \
+	wordcount.html wordfinder.html wordmatch.html \
+	wossname.html yank.html \
 	emboss_icon.jpg
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/html/emboss/apps

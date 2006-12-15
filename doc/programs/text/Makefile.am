@@ -44,7 +44,8 @@ pkgdata2_DATA = jembossctl.txt lindna.txt listor.txt \
 	tranalign.txt transeq.txt trimest.txt trimseq.txt \
 	twofeat.txt union.txt vectorstrip.txt \
 	water.txt whichdb.txt wobble.txt \
-	wordcount.txt wordmatch.txt wossname.txt yank.txt
+	wordcount.txt wordfinder.txt wordmatch.txt \
+	wossname.txt yank.txt
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/doc/programs/text
 pkgdata2dir=$(prefix)/share/$(PACKAGE)/doc/programs/text

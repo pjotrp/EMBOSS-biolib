@@ -100,6 +100,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   EPAM70
   EPAM80
   EPAM90
+  edialignmat
   Eenergy.dat
   EDNAMAT
   Etags.swiss
@@ -126,6 +127,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   ENUC.4.4
   Etags.embl
   Etags.gff3
+  tp400_trans
   Etags.gff
   Etags.pir
   EPAM100
@@ -179,6 +181,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Etcode.dat
   Ehth.dat
   Etags.emboss
+  tp400_dna
   Ebases.iub
   Efeatures.gff
   Efeatures.pir
@@ -216,6 +219,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Eantigenic.dat
   Efeatures.swiss
   Eembl.ior
+  tp400_prot
   Eprior30.plib
   Esig.euk
   Esig.pro

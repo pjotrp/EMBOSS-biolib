@@ -466,6 +466,7 @@ See also
    seqmatchall  All-against-all comparison of a set of sequences
    supermatcher Match large sequences against one or more other sequences
    water        Smith-Waterman local alignment
+   wordfinder   Match large sequences against one or more other sequences
 
 Author(s)
 

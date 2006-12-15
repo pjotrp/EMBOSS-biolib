@@ -2,67 +2,61 @@
 
 <HEAD>
   <TITLE>
-  EMBOSS: extractseq
+  EMBOSS: extractalign
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
 
 <!--#include file="header1.inc" -->
-extractseq
+extractalign
 <!--#include file="header2.inc" -->
 
 <H2>
     Function
 </H2>
-<!--#include file="inc/extractseq.ione" -->
+<!--#include file="inc/extractalign.ione" -->
 
 <H2>
     Description
 </H2>
 
-<b>extractseq</b> allows you to specify one or more regions of a sequence to
-extract sub-sequences from to build up a contiguous resulting sequence. 
+<b>extractalign</b> allows you to specify one or more regions of a
+sequence alignment to extract sub-sequences from to build up a
+resulting sub-sequence alignment.
 
-<p>
-
-This is modelled on the cell's process of splicing out exons from
-mRNA, but the program is generally applicable to any cutting and
-splicing or editing operation on a single sequence. 
-
-<p>
-
-<b>extractseq</b> reads in a sequence and a set of regions of that
-sequence as specified by pairs of start and end positions (either on the
-command-line or contained in a file) and writes out the specified
+<b>extractakign</b> reads in a sequence alignment and a set of regions
+of that alignment as specified by pairs of start and end positions
+(either on the command-line or contained in a file) using gapped
+alignment positions as the coordinates, and writes out the specified
 regions of the input sequence in the order in which they have been
 specified.  Thus, if the sequence "AAAGGGTTT" has been input and the
 regions: "7-9, 3-4" have been specified, then the output sequence will
-be: "TTTAG". 
+be: "TTTAG".
 
 <H2>
     Usage
 </H2>
-<!--#include file="inc/extractseq.usage" -->
+<!--#include file="inc/extractalign.usage" -->
 
 <H2>
     Command line arguments
 </H2>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-<!--#include file="inc/extractseq.ihelp" -->
+<!--#include file="inc/extractalign.ihelp" -->
 </pre>
 </td></tr></table>
 <P>
-<!--#include file="inc/extractseq.itable" -->
+<!--#include file="inc/extractalign.itable" -->
 
 <H2>
     Input file format
 </H2>
 
-<b>extractseq</b> reads a normal sequence USA.
+<b>extractalign</b> reads a normal sequence USA.
 
 <p>
-<!--#include file="inc/extractseq.input" -->
+<!--#include file="inc/extractalign.input" -->
 
 <p>
 
@@ -105,7 +99,7 @@ An example range file is:
 The output is a normal sequence file.
 
 <p>
-<!--#include file="inc/extractseq.output" -->
+<!--#include file="inc/extractalign.output" -->
 <p>
 
 If the option '-separate' is used then each specified region is written
@@ -186,18 +180,18 @@ None noted.
     Comments
 </H2>
 
-<!--#include file="inc/extractseq.isee" -->
+<!--#include file="inc/extractalign.isee" -->
 
 <H2>
     Author(s)
 </H2>
 
-<!--#include file="inc/gwilliam.address" -->
+<!--#include file="inc/price.address" -->
 
 <H2>
     History
 </H2>
-<!--#include file="inc/extractseq.history" -->
+<!--#include file="inc/extractalign.history" -->
 
 <H2>
     Target users
@@ -207,7 +201,7 @@ None noted.
 <H2>
     Comments
 </H2>
-<!--#include file="inc/extractseq.comment" -->
+<!--#include file="inc/extractalign.comment" -->
 
 
 </BODY>
