@@ -1,5 +1,18 @@
 Version 4.1.0
-	Word-based algorithms complained if a sequnece was shorter than
+	Wordfinder is a new application to find word-based matches of
+	limited size. It is based on code from supermatcher. The inputs
+	are reversed so the query sequence set (unaligned) is compared to
+	a streamed database of sequences. (Supermatcher should perhaps
+	have its inputs in this order too). Limits are provided for the
+	length of the word match and the length of the alignment. The
+	default gap penalties are also increased to limit the gaps allowed
+	in alignment.
+
+	Word-based algorithms found too many matches where both sequences
+	contains runs of X (protein) or N (nucleotide). These are now
+	ignored when building the word table.
+
+	Word-based algorithms complained if a sequence was shorter than
 	the wordsize. This was a problem for database searches with some
 	short sequences present. They now run silently and simply return
 	no word matches.
@@ -23,6 +36,13 @@ Version 4.1.0
 	additional speedup was achieved by defining only upper case
 	characters as required (almost halving the nuber of tests) and
 	testing the upper case version of the sequence characters.
+
+	Sequence translation in the reverse direction adds extra amino
+	acids for partial codons. In the forward direction the overhang
+	was miscalculated so these codons were missed. No users have
+	complained, probably because in most cases they are translated as
+	'X' (it needs a 4-base wobble in the code to convert the first 2
+	bases of a codon into a single amino acid).
 
 	Sequence translation was relatively slow, at least on very large
 	sequences. Profiling with gprof indicated some changed to reduce
@@ -841,7 +861,7 @@ Version 2.10.0
 	noreturn can write files for PC or Mac file systems using a new
 	-system qualifier.
 
-	FASTA format sequence files with a seqeunce ID starting P1; were
+	FASTA format sequence files with a sequence ID starting P1; were
 	assumed to be PIR format. These can now be read as FASTA, assuming
 	that PIR format has already beed tested for.
 
