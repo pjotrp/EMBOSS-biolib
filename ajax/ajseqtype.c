@@ -1307,7 +1307,7 @@ static char seqTypeTest(const AjPStr thys, AjPRegexp badchars)
 ** Returns an invalid character for failure, or a null character for success.
 **
 ** @param [r] thys [const AjPStr] Sequence string
-** @param [u] goodchars [const AjPStr] String of
+** @param [r] goodchars [const AjPStr] String of
 **                                 sequence characters allowed
 ** @return [char] invalid character if any.
 ******************************************************************************/
@@ -2266,18 +2266,6 @@ void ajSeqTypeExit(void)
     return;
 }
 
-/* @section unused ************************************************************
-**
-** @fdata [none]
-**
-** @nam4rule TypeUnused Contains dummy calls to unused functions to keep
-**                 compilers happy
-**
-** @valrule * [void]
-** @fcategory misc
-**
-******************************************************************************/
- 
 
 
 /* @func ajSeqTypeUnused ******************************************************
