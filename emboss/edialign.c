@@ -277,15 +277,31 @@ float sf_mat_thr = 0;
 
 
 
-
+/* @datastatic edialignPositionSet ********************************************
+**
+** Dialign positionset structure
+**
+** @attr pos [ajint*] Positions array
+** @attr nbr [ajint] Size of position array
+******************************************************************************/
 
 typedef struct
 {
     ajint *pos;
     ajint nbr;
-} positionSet;
+} edialignPositionSet;
 
 
+
+/* @datastatic edialignSequence ***********************************************
+**
+** Dialign sequence structure
+**
+** @attr longueur       [ajint]  Length
+** @attr aligSetNbr     [ajint*] Numbers of sets
+** @attr predAligSetPos [ajint*] Predicted alignment set positions
+** @attr succAligSetPos [ajint*] Successful alignment set positions
+******************************************************************************/
 
 
 typedef struct {
@@ -294,17 +310,38 @@ typedef struct {
     ajint *aligSetNbr;
     ajint *predAligSetPos;
     ajint *succAligSetPos;
-} sequence;
+} edialignSequence;
 
 
+
+
+/* @datastatic edialignCLOSURE ************************************************
+**
+** Dialign closure structure
+**
+** @attr seqNbr     [ajint] Numbers of sequences
+** @attr seq [edialignSequence*] Sequences
+** @attr maxLong [ajint] Maximum long
+** @attr aligSet [edialignPositionSet*] Alignment sets
+** @attr nbrAligSets [ajint] Number of alignment sets
+** @attr oldNbrAligSets [ajint] Old number of alignment sets
+** @attr predFrontier [ajint**] Predicted boundaries
+** @attr succFrontier [ajint**] Successful boundaries
+** @attr topolog [ajint*] Topologies
+** @attr gauche1 [ajint*] Left end in 1
+** @attr gauche2 [ajint*] Left end in 2
+** @attr droite1 [ajint*] Right end in 1
+** @attr droite2 [ajint*] Right end in 2
+** @attr pos_ [ajint**] Positions
+******************************************************************************/
 
 
 typedef struct {
     ajint seqNbr;
-    sequence *seq;
+    edialignSequence *seq;
     ajint maxLong;
 
-    positionSet *aligSet;
+    edialignPositionSet *aligSet;
     ajint nbrAligSets;
     ajint oldNbrAligSets;
 
@@ -318,7 +355,7 @@ typedef struct {
     ajint *droite2;
     ajint **pos_;
 
-} CLOSURE;
+} edialignCLOSURE;
 
 
 
@@ -418,7 +455,7 @@ struct subtree
 
 
 char DEBUG=0;
-CLOSURE *clos;         /* closure data structure for GABIOS-LIB */
+edialignCLOSURE *clos;         /* closure data structure for GABIOS-LIB */
 
 
 
@@ -428,29 +465,31 @@ static void *edialign_allouer(size_t taille);
 static void *edialign_reallouer(void *pointeur, size_t taille);
 static void edialign_liberer(void *pointeur);
 static void edialign_liberer_mat(void **pointeur, size_t nb_lig);
-static void edialign_realloc_closure(CLOSURE *clos);
+static void edialign_realloc_closure(edialignCLOSURE *clos);
 static void **edialign_recallouer_mat(void **pointeur, size_t t_elt,
 				      size_t anc_nb_lig, 
 				      size_t nb_lig, size_t nb_col);
 static void edialign_erreur(char *message);
 static ajint edialign_word_count(char *str);
 static void edialign_rel_wgt_calc(ajint l1, ajint l2, float **rel_wgt);
-static void edialign_wgt_prnt_prot( );
+static void edialign_wgt_prnt_prot(void);
 static ajint edialign_mini2(ajint a, ajint b);
 static ajint edialign_mini3(ajint a, ajint b, ajint c);
 static float edialign_mot_dist_factor(ajint offset , float parameter);
 static float edialign_maxf2(float a, float b);
-static void edialign_wgt_prnt( );
+static void edialign_wgt_prnt(void);
 static void edialign_regex_parse(char *mot_regex);
 static void edialign_seq_parse(char *mot_regex);
-static void edialign_seq_shift();
+static void edialign_seq_shift(void);
 static void edialign_matrix_read(FILE *fp_mat);
-static void edialign_mem_alloc( );
+static void edialign_mem_alloc(void);
 static ajint edialign_multi_anc_read(char *file_name);
 static void edialign_exclude_frg_read( char *file_name , int ***exclude_list);
 static void edialign_tp400_read(ajint w_type, double **pr_ptr);
-static CLOSURE *edialign_newAligGraphClosure(ajint nbreseq, ajint *longseq,
-					     ajint nbreancr, ajint **ancrages);
+static edialignCLOSURE *edialign_newAligGraphClosure(ajint nbreseq,
+						     ajint *longseq,
+						     ajint nbreancr,
+						     ajint **ancrages);
 static ajint edialign_translate(char c1, char c2 ,char c3, ajint seqno,
 				ajint pos);
 
@@ -468,8 +507,8 @@ static void edialign_ow_bubble_sort( int number , struct multi_frag *dp );
 static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs);
 static void edialign_print_fragments(struct multi_frag *d , FILE *fp_ff2 );
 static void edialign_throw_out( float *weight_sum );
-static void edialign_sel_test();
-static void edialign_av_tree_print();
+static void edialign_sel_test(void);
+static void edialign_av_tree_print(void);
 static void edialign_subst_mat( char *file_name, int fragno ,
 			       struct multi_frag *frg );
 static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
@@ -482,7 +521,7 @@ static void edialign_bubble_sort(ajint number, struct multi_frag *dp);
 
 
 #if 0
-static void regex_format_complain();
+static void regex_format_complain(void);
 #endif
 
 
@@ -1740,9 +1779,11 @@ int main(int argc, char **argv)
 **
 ** edialign_computeClosure
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @return [void]
 *****************************************************************************/
 
-static void edialign_computeClosure(CLOSURE *clos)
+static void edialign_computeClosure(edialignCLOSURE *clos)
 {
     ajint **Succ;
     ajint **Pred;
@@ -1914,9 +1955,13 @@ static void edialign_computeClosure(CLOSURE *clos)
 **
 ** edialign_moveAligSet
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @param [r] n1 [ajint] Undocumented
+** @param [r] n2 [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
-static void edialign_moveAligSet(CLOSURE *clos, ajint n1, ajint n2)
+static void edialign_moveAligSet(edialignCLOSURE *clos, ajint n1, ajint n2)
 {
     ajint x;
     ajint k;
@@ -1943,9 +1988,13 @@ static void edialign_moveAligSet(CLOSURE *clos, ajint n1, ajint n2)
 **
 ** edialign_read_closure
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @param [r] nbreancr [ajint] Undocumented
+** @param [w] ancrages [ajint**] Undocumented
+** @return [void]
 *****************************************************************************/
 
-static void edialign_read_closure(CLOSURE *clos, ajint nbreancr,
+static void edialign_read_closure(edialignCLOSURE *clos, ajint nbreancr,
 				  ajint **ancrages)
 {
     ajint x;
@@ -1979,9 +2028,13 @@ static void edialign_read_closure(CLOSURE *clos, ajint nbreancr,
 **
 ** edialign_init_closure
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @param [r] nbreancr [ajint] Undocumented
+** @param [w] ancrages [ajint**] Undocumented
+** @return [void]
 *****************************************************************************/
 
-static void edialign_init_closure(CLOSURE *clos, ajint nbreancr,
+static void edialign_init_closure(edialignCLOSURE *clos, ajint nbreancr,
 				  ajint **ancrages)
 {
     ajint x;
@@ -2018,9 +2071,11 @@ static void edialign_init_closure(CLOSURE *clos, ajint nbreancr,
 **
 ** edialign_alloc_closure
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @return [void]
 *****************************************************************************/
 
-static void edialign_alloc_closure(CLOSURE *clos)
+static void edialign_alloc_closure(edialignCLOSURE *clos)
 {
     ajlong na;
     ajint x;
@@ -2036,8 +2091,9 @@ static void edialign_alloc_closure(CLOSURE *clos)
 							  clos->seqNbr+1);
 
     /* sera re'alloue' */
-    clos->aligSet = (positionSet *) edialign_allouer((clos->maxLong+2) *
-						     sizeof(positionSet));
+    clos->aligSet =
+	(edialignPositionSet *) edialign_allouer((clos->maxLong+2) *
+						 sizeof(edialignPositionSet));
 
     for(na=0; na <= clos->maxLong+1; na++)
 	clos->aligSet[na].pos = (ajint *) edialign_allouer(clos->seqNbr *
@@ -2074,9 +2130,11 @@ static void edialign_alloc_closure(CLOSURE *clos)
 **
 ** edialign_free_closure. Unused.
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @return [void]
 *****************************************************************************/
 
-static void edialign_free_closure(CLOSURE *clos)
+static void edialign_free_closure(edialignCLOSURE *clos)
 {
     ajlong na;
     ajint x;
@@ -2114,9 +2172,11 @@ static void edialign_free_closure(CLOSURE *clos)
 **
 ** edialign_realloc_closure
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @return [void]
 *****************************************************************************/
 
-static void edialign_realloc_closure(CLOSURE *clos)
+static void edialign_realloc_closure(edialignCLOSURE *clos)
 {
     ajint na;
 
@@ -2136,9 +2196,9 @@ static void edialign_realloc_closure(CLOSURE *clos)
 				    clos->nbrAligSets+2,
 				    clos->seqNbr+1);
 
-	clos->aligSet = (positionSet *)
+	clos->aligSet = (edialignPositionSet *)
 	    edialign_reallouer(clos->aligSet, (clos->nbrAligSets+2) *
-		      sizeof(positionSet));
+		      sizeof(edialignPositionSet));
 
 	for(na=clos->oldNbrAligSets+2; na <= clos->nbrAligSets+1; na++)
 	{
@@ -2159,9 +2219,14 @@ static void edialign_realloc_closure(CLOSURE *clos)
 **
 ** edialign_print_aligSets. Unused.
 **
+** @param [w] clos [edialignCLOSURE*] Closure
+** @param [r] nseq [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_print_aligSets(CLOSURE *clos, ajint nseq, ajint i)
+static ajint edialign_print_aligSets(edialignCLOSURE *clos,
+				     ajint nseq, ajint i)
 {
     ajint n;
     ajint ng;
@@ -2209,15 +2274,22 @@ static ajint edialign_print_aligSets(CLOSURE *clos, ajint nseq, ajint i)
 **
 ** edialign_init_seq
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] nbreseq [ajint] Undocumented
+** @param [w] longseq [ajint*] Undocumented
+** @return [void]
 *****************************************************************************/
 
-static void edialign_init_seq(CLOSURE *clos, ajint nbreseq, ajint *longseq)
+static void edialign_init_seq(edialignCLOSURE *clos,
+			      ajint nbreseq, ajint *longseq)
 {
     ajint x;
 
     clos->seqNbr = nbreseq;
 
-    clos->seq = (sequence *) edialign_allouer(clos->seqNbr * sizeof(sequence));
+    clos->seq =
+	(edialignSequence *) edialign_allouer(clos->seqNbr *
+					      sizeof(edialignSequence));
 
     for (x=clos->maxLong=0; x < clos->seqNbr; x++)
     {
@@ -2237,9 +2309,11 @@ static void edialign_init_seq(CLOSURE *clos, ajint nbreseq, ajint *longseq)
 **
 ** edialign_desinit_seq. Unused.
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
-static void edialign_desinit_seq(CLOSURE *clos)
+static void edialign_desinit_seq(edialignCLOSURE *clos)
 {
 
     edialign_liberer(clos->seq);
@@ -2255,13 +2329,21 @@ static void edialign_desinit_seq(CLOSURE *clos)
 **
 ** edialign_newAligGraphClosure
 **
+** @param [r] nbreseq [ajint] Undocumented
+** @param [w] longseq [ajint*] Undocumented
+** @param [r] nbreancr [ajint] Undocumented
+** @param [w] ancrages [ajint**] Undocumented
+** @return [edialignCLOSURE*] Undocumented
 *****************************************************************************/
 
-static CLOSURE *edialign_newAligGraphClosure(ajint nbreseq, ajint *longseq,
-					     ajint nbreancr, ajint **ancrages)
+static edialignCLOSURE* edialign_newAligGraphClosure(ajint nbreseq,
+						     ajint *longseq,
+						     ajint nbreancr,
+						     ajint **ancrages)
 {
 
-    CLOSURE *clos = (CLOSURE *) edialign_allouer(sizeof(CLOSURE));
+    edialignCLOSURE *clos =
+	(edialignCLOSURE *) edialign_allouer(sizeof(edialignCLOSURE));
 
     edialign_init_seq(clos, nbreseq, longseq);
 
@@ -2280,9 +2362,11 @@ static CLOSURE *edialign_newAligGraphClosure(ajint nbreseq, ajint *longseq,
 **
 ** edialign_freeAligGraphClosure. Unused.
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
-static void edialign_freeAligGraphClosure(CLOSURE *clos)
+static void edialign_freeAligGraphClosure(edialignCLOSURE *clos)
 {
     edialign_free_closure(clos);
 
@@ -2301,9 +2385,16 @@ static void edialign_freeAligGraphClosure(CLOSURE *clos)
 **
 ** edialign_addAlignedPositions
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] seq1 [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] seq2 [ajint] Undocumented
+** @param [r] j [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_addAlignedPositions(CLOSURE *clos, ajint seq1, ajint i,
+static ajint edialign_addAlignedPositions(edialignCLOSURE *clos,
+					  ajint seq1, ajint i,
 					  ajint seq2, ajint j)
 {
     ajint n;
@@ -2566,9 +2657,16 @@ static ajint edialign_addAlignedPositions(CLOSURE *clos, ajint seq1, ajint i,
 **
 ** edialign_path
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @param [r] j [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_path(CLOSURE *clos, ajint x, ajint i, ajint y, ajint j)
+static ajint edialign_path(edialignCLOSURE *clos,
+			   ajint x, ajint i, ajint y, ajint j)
 {
     ajint n2;
     ajint k;
@@ -2598,9 +2696,16 @@ static ajint edialign_path(CLOSURE *clos, ajint x, ajint i, ajint y, ajint j)
 **
 ** edialign_alignedPositions
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @param [r] j [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_alignedPositions(CLOSURE *clos, ajint x, ajint i,
+static ajint edialign_alignedPositions(edialignCLOSURE *clos,
+				       ajint x, ajint i,
 				       ajint y, ajint j)
 {
 
@@ -2616,9 +2721,16 @@ static ajint edialign_alignedPositions(CLOSURE *clos, ajint x, ajint i,
 **
 ** edialign_alignablePositions
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @param [r] j [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_alignablePositions(CLOSURE *clos, ajint x, ajint i,
+static ajint edialign_alignablePositions(edialignCLOSURE *clos,
+					 ajint x, ajint i,
 					 ajint y, ajint j)
 {
 
@@ -2635,9 +2747,17 @@ static ajint edialign_alignablePositions(CLOSURE *clos, ajint x, ajint i,
 **
 ** edialign_addAlignedSegments
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @param [r] j [ajint] Undocumented
+** @param [r] l [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_addAlignedSegments(CLOSURE *clos, ajint x, ajint i,
+static ajint edialign_addAlignedSegments(edialignCLOSURE *clos,
+					 ajint x, ajint i,
 					 ajint y, ajint j, ajint l)
 {
     ajint k;
@@ -2655,9 +2775,17 @@ static ajint edialign_addAlignedSegments(CLOSURE *clos, ajint x, ajint i,
 **
 ** edialign_alignableSegments
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @param [r] j [ajint] Undocumented
+** @param [r] l [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_alignableSegments(CLOSURE *clos, ajint x, ajint i,
+static ajint edialign_alignableSegments(edialignCLOSURE *clos,
+					ajint x, ajint i,
 					ajint y, ajint j, ajint l)
 {
     ajint k;
@@ -2676,9 +2804,17 @@ static ajint edialign_alignableSegments(CLOSURE *clos, ajint x, ajint i,
 **
 ** edialign_alignedSegments. Unused.
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @param [r] j [ajint] Undocumented
+** @param [r] l [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_alignedSegments(CLOSURE *clos, ajint x, ajint i, ajint y,
+static ajint edialign_alignedSegments(edialignCLOSURE *clos,
+				      ajint x, ajint i, ajint y,
 				      ajint j, ajint l)
 {
     ajint k;
@@ -2694,13 +2830,20 @@ static ajint edialign_alignedSegments(CLOSURE *clos, ajint x, ajint i, ajint y,
 
 
  /* on suppose que x!=y */
+
 /* @funcstatic edialign_predFrontier **********************************
 **
 ** edialign_predFrontier
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_predFrontier(CLOSURE *clos, ajint x, ajint i, ajint y)
+static ajint edialign_predFrontier(edialignCLOSURE *clos,
+				   ajint x, ajint i, ajint y)
 {
     ajint n;
     ajint k;
@@ -2724,13 +2867,20 @@ static ajint edialign_predFrontier(CLOSURE *clos, ajint x, ajint i, ajint y)
 
 
  /* on suppose que x!=y */
+
 /* @funcstatic edialign_succFrontier ****************************************
 **
 ** edialign_succFrontier
 **
+** @param [w] clos [edialignCLOSURE*] Undocumented
+** @param [r] x [ajint] Undocumented
+** @param [r] i [ajint] Undocumented
+** @param [r] y [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
-static ajint edialign_succFrontier(CLOSURE *clos, ajint x, ajint i, ajint y)
+static ajint edialign_succFrontier(edialignCLOSURE *clos,
+				   ajint x, ajint i, ajint y)
 {
     ajint n;
     ajint k;
@@ -2757,6 +2907,13 @@ static ajint edialign_succFrontier(CLOSURE *clos, ajint x, ajint i, ajint y)
 **
 ** edialign_anchor_check
 **
+** @param [r] s1 [ajint] Undocumented
+** @param [r] s2 [ajint] Undocumented
+** @param [r] b1 [ajint] Undocumented
+** @param [r] b2 [ajint] Undocumented
+** @param [r] l [ajint] Undocumented
+** @param [r] scr [float] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_anchor_check(ajint s1, ajint s2, ajint b1, ajint b2,
@@ -2843,6 +3000,8 @@ static void edialign_anchor_check(ajint s1, ajint s2, ajint b1, ajint b2,
 **
 ** edialign_multi_anc_read
 **
+** @param [u] file_name [char*] File name
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_multi_anc_read(char *file_name)
@@ -2924,6 +3083,12 @@ static ajint edialign_multi_anc_read(char *file_name)
 **
 ** edialign_frag_chain
 **
+** @param [r] n1 [ajint] Undocumented
+** @param [r] n2 [ajint] Undocumented
+** @param [u] fp1 [FILE*] Undocumented
+** @param [u] fp_m [FILE*] Undocumented
+** @param [u] number [ajint*] Undocumented
+** @return [float] Undocumented
 *****************************************************************************/
 
 static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
@@ -3891,6 +4056,8 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 **
 ** edialign_num_test
 **
+** @param [u] cp [char*] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_num_test( char *cp )
@@ -3922,6 +4089,9 @@ static ajint edialign_num_test( char *cp )
 **
 ** edialign_minf2
 **
+** @param [r] a [float] Undocumented
+** @param [r] b [float] Undocumented
+** @return [float] Undocumented
 *****************************************************************************/
 
 static float edialign_minf2(float a, float b)
@@ -3939,6 +4109,9 @@ static float edialign_minf2(float a, float b)
 **
 ** edialign_maxf2
 **
+** @param [r] a [float] Undocumented
+** @param [r] b [float] Undocumented
+** @return [float] Undocumented
 *****************************************************************************/
 
 static float edialign_maxf2(float a, float b)
@@ -3956,6 +4129,9 @@ static float edialign_maxf2(float a, float b)
 **
 ** edialign_mini2
 **
+** @param [r] a [ajint] Undocumented
+** @param [r] b [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_mini2(ajint a, ajint b)
@@ -3973,6 +4149,9 @@ static ajint edialign_mini2(ajint a, ajint b)
 **
 ** edialign_maxi2
 **
+** @param [r] a [ajint] Undocumented
+** @param [r] b [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_maxi2(ajint a, ajint b)
@@ -3990,6 +4169,10 @@ static ajint edialign_maxi2(ajint a, ajint b)
 **
 ** edialign_mini3
 **
+** @param [r] a [ajint] Undocumented
+** @param [r] b [ajint] Undocumented
+** @param [r] c [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_mini3(ajint a, ajint b, ajint c)
@@ -4005,6 +4188,9 @@ static ajint edialign_mini3(ajint a, ajint b, ajint c)
 **
 ** edialign_minf
 **
+** @param [u] a [float*] Undocumented
+** @param [r] b [float] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_minf(float *a, float b)
@@ -4023,6 +4209,9 @@ static void edialign_minf(float *a, float b)
 **
 ** edialign_mini
 **
+** @param [u] a [ajint*] Undocumented
+** @param [r] b [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_mini(ajint *a, ajint b)
@@ -4041,6 +4230,9 @@ static void edialign_mini(ajint *a, ajint b)
 **
 ** edialign_maxf. Unused.
 **
+** @param [u] a [float*] Undocumented
+** @param [r] b [float] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_maxf(float *a, float b)
@@ -4059,6 +4251,9 @@ static void edialign_maxf(float *a, float b)
 **
 ** edialign_maxi
 **
+** @param [u] a [ajint*] Undocumented
+** @param [r] b [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_maxi(ajint *a, ajint b)
@@ -4076,6 +4271,8 @@ static void edialign_maxi(ajint *a, ajint b)
 **
 ** edialign_invert
 **
+** @param [r] c1 [char] Undocumented
+** @return [char] Undocumented
 *****************************************************************************/
 
 static char edialign_invert ( char c1 )
@@ -4101,6 +4298,12 @@ static char edialign_invert ( char c1 )
 **
 ** edialign_translate
 **
+** @param [r] c1 [char] Undocumented
+** @param [r] c2 [char] Undocumented
+** @param [r] c3 [char] Undocumented
+** @param [r] seqno [ajint] Undocumented
+** @param [r] pos [ajint] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_translate(char c1, char c2 ,char c3, ajint seqno,
@@ -4211,6 +4414,8 @@ static ajint edialign_translate(char c1, char c2 ,char c3, ajint seqno,
 **
 ** edialign_int_test. Unused.
 **
+** @param [r] f [float] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_int_test(float f)
@@ -4231,6 +4436,9 @@ static ajint edialign_int_test(float f)
 **
 ** edialign_change
 **
+** @param [u] a [struct multi_frag*] Undocumented
+** @param [u] b [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_change(struct multi_frag *a, struct multi_frag *b)
@@ -4260,6 +4468,9 @@ static void edialign_change(struct multi_frag *a, struct multi_frag *b)
 **
 ** edialign_pair_change. Unused.
 **
+** @param [u] a [struct seq_pair*] Undocumented
+** @param [u] b [struct seq_pair*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_pair_change(struct seq_pair *a, struct seq_pair *b)
@@ -4281,6 +4492,9 @@ static void edialign_pair_change(struct seq_pair *a, struct seq_pair *b)
 **
 ** edialign_ow_bubble_sort
 **
+** @param [r] number [int] Undocumented
+** @param [u] dp [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_ow_bubble_sort( int number , struct multi_frag *dp )
@@ -4334,6 +4548,9 @@ static void edialign_ow_bubble_sort( int number , struct multi_frag *dp )
 **
 ** edialign_bubble_sort
 **
+** @param [r] number [ajint] Undocumented
+** @param [u] dp [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_bubble_sort(ajint number , struct multi_frag *dp )
@@ -4384,6 +4601,10 @@ static void edialign_bubble_sort(ajint number , struct multi_frag *dp )
 **
 ** edialign_change_struct_el
 **
+** @param [u] a [struct multi_frag**] Undocumented
+** @param [r] l [ajint] Undocumented
+** @param [r] r [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_change_struct_el(struct multi_frag **a, ajint l, ajint r)
@@ -4404,6 +4625,9 @@ static void edialign_change_struct_el(struct multi_frag **a, ajint l, ajint r)
 **
 ** edialign_change_first
 **
+** @param [u] a [struct multi_frag*] Undocumented
+** @param [u] b [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_change_first(struct multi_frag *a, struct multi_frag *b)
@@ -4465,6 +4689,10 @@ static void edialign_change_first(struct multi_frag *a, struct multi_frag *b)
 **
 ** edialign_quicksort_ow
 **
+** @param [u] array [struct multi_frag**] Undocumented
+** @param [r] left [ajint] Undocumented
+** @param [r] right [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_quicksort_ow(struct multi_frag **array, ajint left,
@@ -4503,6 +4731,10 @@ static void edialign_quicksort_ow(struct multi_frag **array, ajint left,
 **
 ** edialign_quicksort_weight
 **
+** @param [u] array [struct multi_frag**] Undocumented
+** @param [r] left [ajint] Undocumented
+** @param [r] right [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_quicksort_weight(struct multi_frag **array, ajint left,
@@ -4539,6 +4771,10 @@ static void edialign_quicksort_weight(struct multi_frag **array, ajint left,
 **
 ** edialign_assemble_list
 **
+** @param [u] array [struct multi_frag**] Undocumented
+** @param [u] dp [struct multi_frag*] Undocumented
+** @param [r] number [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_assemble_list(struct multi_frag **array,
@@ -4571,6 +4807,10 @@ static void edialign_assemble_list(struct multi_frag **array,
 **
 ** edialign_frag_sort
 **
+** @param [r] number [ajint] Undocumented
+** @param [u] dp [struct multi_frag*] Undocumented
+** @param [r] olw [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_frag_sort(ajint number , struct multi_frag *dp ,
@@ -4607,6 +4847,9 @@ static void edialign_frag_sort(ajint number , struct multi_frag *dp ,
 **
 ** edialign_ow_add
 **
+** @param [u] sm1 [struct multi_frag*] Undocumented
+** @param [u] sm2 [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_ow_add( struct multi_frag *sm1 , struct multi_frag *sm2 )
@@ -4699,9 +4942,10 @@ static void edialign_ow_add( struct multi_frag *sm1 , struct multi_frag *sm2 )
 **
 ** edialign_seq_shift
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_seq_shift()
+static void edialign_seq_shift(void)
 {
     ajint i;
     ajint hv;
@@ -4720,6 +4964,9 @@ static void edialign_seq_shift()
 **
 ** edialign_filter
 **
+** @param [u] number [ajint*] Undocumented
+** @param [u] diagonal [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_filter(ajint *number, struct multi_frag *diagonal)
@@ -4852,9 +5099,10 @@ static void edialign_filter(ajint *number, struct multi_frag *diagonal)
 **
 ** edialign_sel_test
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_sel_test()
+static void edialign_sel_test(void)
 {
     ajint hv;
     struct multi_frag *hp;   
@@ -4880,6 +5128,8 @@ static void edialign_sel_test()
 **
 ** edialign_throw_out
 **
+** @param [u] weight_sum [float*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_throw_out( float *weight_sum )
@@ -4930,13 +5180,16 @@ static void edialign_throw_out( float *weight_sum )
 
 /* @funcstatic edialign_new_shift ********************************************
 **
-** edialign_new_shift
+** shifts the elements of sequence s starting with  position p 
+** for dif elements to the right
 **
+** @param [r] s [ajint] Undocumented
+** @param [r] p [ajint] Undocumented
+** @param [r] dif [ajint] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_new_shift(ajint s, ajint p, ajint dif)
-/* shifts the elements of sequence s starting with  position p 
-   for dif elements to the right */
 {
     ajint hv;
     ajint shift_dif; /* length of a gap (if existing) between position hv
@@ -4961,6 +5214,14 @@ static void edialign_new_shift(ajint s, ajint p, ajint dif)
 **
 ** edialign_wgt_type_count
 **
+** @param [r] num [ajint] Undocumented
+** @param [r] e_len [ajint] Undocumented
+** @param [u] plus_cnt [ajint*] Undocumented
+** @param [u] minus_cnt [ajint*] Undocumented
+** @param [u] nuc_cnt [ajint*] Undocumented
+** @param [u] frg_inv [ajint*] Undocumented
+** @param [u] dia [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_wgt_type_count(ajint num , ajint e_len, ajint *plus_cnt,
@@ -5004,6 +5265,13 @@ static void edialign_wgt_type_count(ajint num , ajint e_len, ajint *plus_cnt,
 **
 ** edialign_plot_calc
 **
+** @param [r] num [ajint] Undocumented
+** @param [r] e_len [ajint] Undocumented
+** @param [u] w_count [float*] Undocumented
+** @param [u] pl [float*] Undocumented
+** @param [u] dia [struct multi_frag*] Undocumented
+** @param [u] fp_csc [FILE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_plot_calc(ajint num , ajint e_len, float *w_count,
@@ -5076,9 +5344,10 @@ static void edialign_plot_calc(ajint num , ajint e_len, float *w_count,
 **
 ** edialign_av_tree_print
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_av_tree_print()
+static void edialign_av_tree_print(void)
 {
     ajint i;
     ajint j;
@@ -5269,6 +5538,10 @@ static void edialign_av_tree_print()
 **
 ** edialign_print_log
 **
+** @param [u] d [struct multi_frag*] Undocumented
+** @param [u] fp_l [FILE*] Undocumented
+** @param [u] fp_fs [FILE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
@@ -5499,6 +5772,8 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 **
 ** edialign_word_count
 **
+** @param [u] str [char*] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_word_count( char *str )
@@ -5533,6 +5808,9 @@ static ajint edialign_word_count( char *str )
 **
 ** edialign_exclude_frg_read
 **
+** @param [u] file_name [char*] Undocumented
+** @param [u] exclude_list [int***] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
@@ -5614,6 +5892,9 @@ static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
 **
 ** edialign_ws_remove
 **
+** @param [u] str [char*] Undocumented
+=============================
+** @return [void]
 *****************************************************************************/
 
 static void edialign_ws_remove( char *str )
@@ -5635,6 +5916,8 @@ static void edialign_ws_remove( char *str )
 **
 ** edialign_n_clean
 **
+** @param [u] str [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_n_clean( char *str )
@@ -5666,6 +5949,8 @@ static void edialign_n_clean( char *str )
 **
 ** edialign_fasta_test
 **
+** @param [u] seq_file [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_fasta_test( char *seq_file )
@@ -5710,6 +5995,11 @@ static void edialign_fasta_test( char *seq_file )
 **
 ** edialign_seq_read. unused.
 **
+** @param [u] seq_file [char*] Undocumented
+** @param [u] sq [char* [MAX_SEQNUM]] Undocumented
+** @param [u] sqn [char**] Undocumented
+** @param [u] fsqn [char**] Undocumented
+** @return [ajint] Undocumented
 *****************************************************************************/
 
 static ajint edialign_seq_read(char *seq_file, char *sq[MAX_SEQNUM] ,
@@ -5847,6 +6137,8 @@ static ajint edialign_seq_read(char *seq_file, char *sq[MAX_SEQNUM] ,
 **
 ** edialign_matrix_read
 **
+** @param [u] fp_mat [FILE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_matrix_read( FILE *fp_mat )
@@ -5892,6 +6184,9 @@ static void edialign_matrix_read( FILE *fp_mat )
 **
 ** edialign_tp400_read
 **
+** @param [r] w_type [ajint] Undocumented
+** @param [u] pr_ptr [double**] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_tp400_read( ajint w_type , double **pr_ptr )
@@ -5982,6 +6277,10 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 **
 ** edialign_subst_mat
 **
+** @param [u] file_name [char*] Undocumented
+** @param [r] fragno [int] Undocumented
+** @param [u] frg [struct multi_frag*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_subst_mat( char *file_name, int fragno ,
@@ -6089,6 +6388,9 @@ static void edialign_subst_mat( char *file_name, int fragno ,
 **
 ** edialign_print_fragments
 **
+** @param [u] d [struct multi_frag*] Undocumented
+** @param [u] fp_ff2 [FILE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_print_fragments(struct multi_frag *d , FILE *fp_ff2 )
@@ -6149,6 +6451,8 @@ static void edialign_print_fragments(struct multi_frag *d , FILE *fp_ff2 )
 **
 ** edialign_weight_print
 **
+** @param [u] wgt [float**] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_weight_print( float **wgt )
@@ -6179,6 +6483,15 @@ static void edialign_weight_print( float **wgt )
 **
 ** edialign_ali_arrange
 **
+** @param [r] fragno [ajint] Undocumented
+** @param [u] d [struct multi_frag*] Undocumented
+** @param [u] fp [FILE*] Undocumented
+** @param [u] seqout [AjPSeqout] Undocumented
+** @param [u] fp3 [FILE*] Undocumented
+** @param [u] fp4 [FILE*] Undocumented
+** @param [u] fp_col_score [FILE*] Undocumented
+** @param [r] isprot [AjBool] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
@@ -6896,6 +7209,9 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 **
 ** edialign_para_print
 **
+** @param [u] s_f [char*] Undocumented
+** @param [u] fpi [FILE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_para_print( char *s_f, FILE *fpi )
@@ -7016,6 +7332,9 @@ static void edialign_para_print( char *s_f, FILE *fpi )
 **
 ** edialign_para_read
 **
+** @param [r] num [int] Undocumented
+** @param [u] arg [char**] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_para_read( int num , char ** arg )      
@@ -7482,6 +7801,8 @@ static void edialign_para_read( int num , char ** arg )
 **
 ** edialign_erreur
 **
+** @param [u] message [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_erreur(char *message)
@@ -7496,9 +7817,11 @@ static void edialign_erreur(char *message)
 **
 ** edialign_allouer
 **
+** @param [r] taille [size_t] Undocumented
+** @return [void*] Undocumented
 *****************************************************************************/
 
-static void *edialign_allouer(size_t taille)
+static void* edialign_allouer(size_t taille)
 {
     void *pointeur;
 
@@ -7520,9 +7843,12 @@ static void *edialign_allouer(size_t taille)
 **
 ** edialign_reallouer
 **
+** @param [u] pointeur [void*] Undocumented
+** @param [r] taille [size_t] Undocumented
+** @return [void*] Undocumented
 *****************************************************************************/
 
-static void *edialign_reallouer(void *pointeur, size_t taille)
+static void* edialign_reallouer(void *pointeur, size_t taille)
 {
     void *p;
 
@@ -7543,6 +7869,8 @@ static void *edialign_reallouer(void *pointeur, size_t taille)
 **
 ** edialign_liberer
 **
+** @param [d] pointeur [void*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_liberer(void *pointeur)
@@ -7560,9 +7888,13 @@ static void edialign_liberer(void *pointeur)
 **
 ** edialign_callouer_mat
 **
+** @param [r] t_elt [size_t] Undocumented
+** @param [r] nb_lig [size_t] Undocumented
+** @param [r] nb_col [size_t] Undocumented
+** @return [void**] Undocumented
 *****************************************************************************/
 
-static void **edialign_callouer_mat(size_t t_elt, size_t nb_lig, size_t nb_col)
+static void** edialign_callouer_mat(size_t t_elt, size_t nb_lig, size_t nb_col)
 {
     void **pointeur;
     ajint i;
@@ -7582,9 +7914,15 @@ static void **edialign_callouer_mat(size_t t_elt, size_t nb_lig, size_t nb_col)
 **
 ** edialign_recallouer_mat
 **
+** @param [u] pointeur [void**] Undocumented
+** @param [r] t_elt [size_t] Undocumented
+** @param [r] anc_nb_lig [size_t] Undocumented
+** @param [r] nb_lig [size_t] Undocumented
+** @param [r] nb_col [size_t] Undocumented
+** @return [void**] Undocumented
 *****************************************************************************/
 
-static void **edialign_recallouer_mat(void **pointeur, size_t t_elt,
+static void** edialign_recallouer_mat(void **pointeur, size_t t_elt,
 				      size_t anc_nb_lig, 
 				      size_t nb_lig, size_t nb_col)
 {
@@ -7612,9 +7950,15 @@ static void **edialign_recallouer_mat(void **pointeur, size_t t_elt,
 **
 ** edialign_recallouer_mat2
 **
+** @param [u] pointeur [void**] Undocumented
+** @param [r] t_elt [size_t] Undocumented
+** @param [r] anc_nb_lig [size_t] Undocumented
+** @param [r] nb_lig [size_t] Undocumented
+** @param [r] nb_col [size_t] Undocumented
+** @return [void**] Undocumented
 *****************************************************************************/
 
-static void **edialign_recallouer_mat2(void **pointeur, size_t t_elt, 
+static void** edialign_recallouer_mat2(void **pointeur, size_t t_elt, 
 				       size_t anc_nb_lig, size_t nb_lig,
 				       size_t nb_col)
 {
@@ -7642,6 +7986,9 @@ static void **edialign_recallouer_mat2(void **pointeur, size_t t_elt,
 **
 ** edialign_liberer_mat
 **
+** @param [d] pointeur [void**] Undocumented
+** @param [r] nb_lig [size_t] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_liberer_mat(void **pointeur, size_t nb_lig)
@@ -7664,9 +8011,12 @@ static void edialign_liberer_mat(void **pointeur, size_t nb_lig)
 **
 ** edialign_ouvrir. unused
 **
+** @param [u] nomfich [char*] Undocumented
+** @param [u] mode [char*] Undocumented
+** @return [FILE*] Undocumented
 *****************************************************************************/
 
-FILE *edialign_ouvrir(char *nomfich, char *mode)
+static FILE* edialign_ouvrir(char *nomfich, char *mode)
 {
     FILE *f;
 
@@ -7686,6 +8036,8 @@ FILE *edialign_ouvrir(char *nomfich, char *mode)
 **
 ** edialign_fermer. unused
 **
+** @param [d] f [FILE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_fermer(FILE *f)
@@ -7703,6 +8055,9 @@ static void edialign_fermer(FILE *f)
 **
 ** edialign_fcopie. unused
 **
+** @param [u] fdestination [FILE*] Undocumented
+** @param [u] fsource [FILE*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_fcopie(FILE *fdestination, FILE *fsource)
@@ -7723,6 +8078,8 @@ static void edialign_fcopie(FILE *fdestination, FILE *fsource)
 **
 ** edialign_strmin. unused
 **
+** @param [u] p [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_strmin(char *p)
@@ -7742,9 +8099,11 @@ static void edialign_strmin(char *p)
 **
 ** edialign_strmax. unused
 **
+** @param [u] p [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
-static void edialign_strmaj(char *p)
+static void edialign_strmax(char *p)
 {
     char c;
 
@@ -7762,6 +8121,8 @@ static void edialign_strmaj(char *p)
 **
 ** edialign_regex_complain
 **
+** @param [u] regex [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_regex_complain( char *regex )
@@ -7779,6 +8140,8 @@ static void edialign_regex_complain( char *regex )
 **
 ** edialign_struc_check
 **
+** @param [u] regex [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_struc_check( char *regex )
@@ -7829,6 +8192,8 @@ static void edialign_struc_check( char *regex )
 **
 ** edialign_regex_parse
 **
+** @param [u] mot_regex [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_regex_parse(char *mot_regex)
@@ -7931,6 +8296,8 @@ static void edialign_regex_parse(char *mot_regex)
 **
 ** edialign_seq_parse
 **
+** @param [u] mot_regex [char*] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_seq_parse(char *mot_regex)
@@ -8007,9 +8374,10 @@ static void edialign_seq_parse(char *mot_regex)
 **
 ** edialign_regex_format_complain
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_regex_format_complain()
+static void edialign_regex_format_complain(void)
 { 
     printf("\n \n   Arguments in command line don't make sense! \n");
     printf("   (Motifs not properly specified) \n \n");
@@ -8034,6 +8402,9 @@ static void edialign_regex_format_complain()
 **
 ** edialign_mot_dist_factor
 **
+** @param [r] offset [ajint] Undocumented
+** @param [r] parameter [float] Undocumented
+** @return [float] Undocumented
 *****************************************************************************/
 
 static float edialign_mot_dist_factor(ajint offset , float parameter)
@@ -8057,6 +8428,10 @@ static float edialign_mot_dist_factor(ajint offset , float parameter)
 **
 ** edialign_rel_wgt_calc
 **
+** @param [r] l1 [ajint] Undocumented
+** @param [r] l2 [ajint] Undocumented
+** @param [u] rel_wgt [float**] Undocumented
+** @return [void]
 *****************************************************************************/
 
 static void edialign_rel_wgt_calc(ajint l1, ajint l2, float **rel_wgt)
@@ -8143,9 +8518,10 @@ static void edialign_rel_wgt_calc(ajint l1, ajint l2, float **rel_wgt)
 **
 ** edialign_wgt_prnt_prot
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_wgt_prnt_prot( )
+static void edialign_wgt_prnt_prot(void)
 {
     ajint  i;
     ajint j; 
@@ -8167,9 +8543,10 @@ static void edialign_wgt_prnt_prot( )
 **
 ** edialign_wgt_prnt_dna
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_wgt_prnt_dna( )
+static void edialign_wgt_prnt_dna(void)
 {
     ajint i;
     ajint j;
@@ -8192,9 +8569,10 @@ static void edialign_wgt_prnt_dna( )
 **
 ** edialign_wgt_prnt_trans
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_wgt_prnt_trans( )
+static void edialign_wgt_prnt_trans(void)
 {
     ajint i;
     ajint j; 
@@ -8216,9 +8594,10 @@ static void edialign_wgt_prnt_trans( )
 **
 ** edialign_wgt_prnt
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_wgt_prnt( )
+static void edialign_wgt_prnt(void)
 {
     if (wgt_type == 0 )  
 	edialign_wgt_prnt_prot( );
@@ -8238,9 +8617,10 @@ static void edialign_wgt_prnt( )
 **
 ** edialign_mem_alloc
 **
+** @return [void]
 *****************************************************************************/
 
-static void edialign_mem_alloc( )
+static void edialign_mem_alloc(void)
 {
     /* allocates memory for `tp400_xxx', `wgt_xxx' */ 
 
