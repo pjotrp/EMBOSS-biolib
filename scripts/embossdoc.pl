@@ -1919,11 +1919,37 @@ while ($source =~ m"[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/]"gos) {
 	    if ($acnt == $#largs) {
 		if ($largs[$#largs] ne "void") {
 		    print "bad last argument: $largs[$#largs]\n";
+		    if(!$acnt) {
+			for ($ii=0;$ii<=$#largs;$ii++) {
+			    ($itcast,$itname) = ($largs[$ii] =~ /(\S.*\S)\s+(\S+)/);
+			    if($itcast =~ /[*]/)
+			    {
+				print "** \@param [u] $itname [$itcast] Undocumented\n";
+			    }
+			    else
+			    {
+				print "** \@param [r] $itname [$itcast] Undocumented\n";
+			    }
+			}
+		    }
 		}
 	    }
 	    if ($acnt < $#largs) {   # allow one remaining
 		$w=$#largs+1;
 		print "bad \@param list $acnt found $w wanted\n";
+		if(!$acnt) {
+		    for ($ii=0;$ii<=$#largs;$ii++) {
+			($itcast,$itname) = ($largs[$ii] =~ /(\S.*\S)\s+(\S+)/);
+			if($itcast =~ /[*]/)
+			{
+			    print "** \@param [u] $itname [$itcast] Undocumented\n";
+			}
+			else
+			{
+			    print "** \@param [r] $itname [$itcast] Undocumented\n";
+			}
+		    }
+		}
 	    }
 	    if(!defined($ftype)) {$ftype = "unknown"}
 	    if (!$rtype && $ftype ne "void") {print "bad missing \@return\n"}
