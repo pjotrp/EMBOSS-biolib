@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>fprotpars </b>
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
 Phylip tree file (optional): <b></b>
 Phylip protpars program output file [protpars.fprotpars]: <b></b>
@@ -38,7 +38,7 @@ Trees also written onto file "protpars.treefile"
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>fprotpars -njumble 3 -seed 3 -printdata -ancseq -whichcode m -stepbox -outgrno 2  -thresh -threshold 3 </b>
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
 Phylip tree file (optional): <b></b>
 Phylip protpars program output file [protpars.fprotpars]: <b></b>
@@ -95,7 +95,7 @@ Trees also written onto file "protpars.treefile"
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>fprotpars -njumble 3 -seed 3 </b>
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars2.dat</b>
 Phylip tree file (optional): <b></b>
 Phylip protpars program output file [protpars2.fprotpars]: <b></b>
@@ -238,7 +238,7 @@ Trees also written onto file "protpars2.treefile"
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>fprotpars -option </b>
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): <b>protpars.dat</b>
 Phylip tree file (optional): <b></b>
 Phylip weights file (optional): <b>protparswts.dat</b>

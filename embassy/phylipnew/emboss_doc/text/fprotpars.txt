@@ -5,7 +5,7 @@
 
 Function
 
-   Protein pasimony algorithm
+   Protein parsimony algorithm
 
 Description
 
@@ -133,7 +133,7 @@ Usage
 
 
 % fprotpars 
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): protpars.dat
 Phylip tree file (optional): 
 Phylip protpars program output file [protpars.fprotpars]: 
@@ -163,7 +163,7 @@ Trees also written onto file "protpars.treefile"
 
 % fprotpars -njumble 3 -seed 3 -printdata -ancseq -whichcode m -stepbox -outgrn
 o 2  -thresh -threshold 3 
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): protpars.dat
 Phylip tree file (optional): 
 Phylip protpars program output file [protpars.fprotpars]: 
@@ -215,7 +215,7 @@ Trees also written onto file "protpars.treefile"
 
 
 % fprotpars -njumble 3 -seed 3 
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): protpars2.dat
 Phylip tree file (optional): 
 Phylip protpars program output file [protpars2.fprotpars]: 
@@ -354,7 +354,7 @@ Trees also written onto file "protpars2.treefile"
 
 
 % fprotpars -option 
-Protein pasimony algorithm
+Protein parsimony algorithm
 Input (aligned) protein sequence set(s): protpars.dat
 Phylip tree file (optional): 
 Phylip weights file (optional): protparswts.dat

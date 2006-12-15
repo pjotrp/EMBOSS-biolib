@@ -441,7 +441,7 @@ See also
    ffreqboot    Bootstrapped genetic frequencies algorithm
    fproml       Protein phylogeny by maximum likelihood
    fpromlk      Protein phylogeny by maximum likelihood
-   fprotpars    Protein pasimony algorithm
+   fprotpars    Protein parsimony algorithm
    frestboot    Bootstrapped restriction sites algorithm
    frestdist    Distance matrix from restriction sites or fragments
    frestml      Restriction site maximum Likelihood method
