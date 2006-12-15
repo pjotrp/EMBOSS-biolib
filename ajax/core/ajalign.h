@@ -108,6 +108,7 @@ void         ajAlignDel (AjPAlign* pthys);
 void         ajAlignExit(void);
 AjBool       ajAlignFindFormat (const AjPStr format, ajint* iformat);
 AjBool       ajAlignFormatDefault (AjPStr* pformat);
+ajint        ajAlignGetLen(const AjPAlign thys);
 const char*  ajAlignGetFilename(const AjPAlign thys);
 const AjPStr ajAlignGetFormat(const AjPAlign thys);
 AjPAlign     ajAlignNew (void);
