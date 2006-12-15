@@ -1895,7 +1895,7 @@ void embAlignPathCalcFast(const char *a, const char *b, ajint lena, ajint lenb,
     for(j=0;j<width;++j)
 	maxb[j] = path[j]-(gapopen);
 
-    ajDebug("2   %d %d\n",lena,lenb);
+    /* ajDebug("2   %d %d\n",lena,lenb);*/
 
     /* now step through and build the path matrix */
     i = 1;
@@ -2060,9 +2060,9 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 
 
     /* ajDebug extra */
-    ajDebug("SeqA '%s' %d %d\n", ajSeqGetNameS(a), ajSeqGetLen(a), lena);
-    ajDebug("SeqB '%s' %d %d\n", ajSeqGetNameS(b), ajSeqGetLen(b), lenb);
-    ajDebug("start1: %d start2: %d width; %d\n", *start1, *start2, width);
+    ajDebug("SeqA '%S' %d %d\n", ajSeqGetNameS(a), ajSeqGetLen(a), lena);
+    ajDebug("SeqB '%S' %d %d\n", ajSeqGetNameS(b), ajSeqGetLen(b), lenb);
+    ajDebug("start1: %d start2: %d width: %d\n", *start1, *start2, width);
 
     pmax = (float) (-1*INT_MAX);
     for(i=0;i<lena;++i)
@@ -2101,13 +2101,15 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 	       sub[ajSeqCvtK(cvt,p[ypos])][ajSeqCvtK(cvt,q[xpos2])]
 	       != path[(ypos)*width+xpos])
 	    {
-		ajDebug("(*) '%c' '%c' xpos: %d xpos2: %d ypos: %d path[%d]"
-		       " %.2f != %.2f + %.2f\n",
-		       p[xpos], q[ypos], xpos, xpos2, ypos,
-		       ypos*width+xpos, path[ypos*width+xpos],
-		       path[(ypos-1)*width+xpos],
-		       sub[ajSeqCvtK(cvt,p[ypos])][ajSeqCvtK(cvt,q[xpos2])]);
-		ajFatal("SW: Error walking match");
+		/* ajDebug("(*) '%c' '%c' '%c' "
+			"xpos: %d xpos2: %d ypos: %d path[%d]"
+			" %.2f != path[%d] %.2f + matrix %.2f\n",
+			p[xpos], q[xpos2], q[ypos], xpos, xpos2, ypos,
+			ypos*width+xpos, path[ypos*width+xpos],
+			(ypos-1)*width+xpos, path[(ypos-1)*width+xpos],
+		       sub[ajSeqCvtK(cvt,p[ypos])][ajSeqCvtK(cvt,q[xpos2])]);*/
+		ajFatal("SW: Error walking match xpos: %d ypos: %d",
+			xpos, ypos);
 	    }
 
 	    wscore += sub[ajSeqCvtK(cvt,p[--ypos])][ajSeqCvtK(cvt,q[--xpos2])];
@@ -2150,7 +2152,7 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 
 	    xpos2 = t;
 	    xpos  = ix;
-	    ajDebug("xpos => %d\n", xpos);
+	    /*ajDebug("xpos => %d\n", xpos);*/
 	    continue;
         }
 
@@ -2231,7 +2233,7 @@ float embAlignScoreSWMatrixFast(const float *path, const ajint *compass,
 ** @param [r] cvt [const AjPSeqCvt] Conversion array for AjPMatrixf
 ** @param [w] start1 [ajint *] start of alignment in first sequence
 ** @param [w] start2 [ajint *] start of alignment in second sequence
-** @param [r] width [ajint] width of path matrix
+** @param [r] pathwidth [ajint] width of path matrix
 **
 ** @return [void]
 ******************************************************************************/
@@ -2243,7 +2245,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 			      AjPStr *n, ajint lena, ajint lenb,
 			      float * const *sub, const AjPSeqCvt cvt,
 			      ajint *start1, ajint *start2,
-			      ajint width)
+			      ajint pathwidth)
 {
     ajint i;
     ajint j;
@@ -2264,8 +2266,16 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     const char *q;
 
     float ic;
+    ajint width;
 
     ajDebug("embAlignWalkSWMatrixFast\n");
+
+    width = pathwidth;
+
+    if(lena < width)
+	width = lena;
+    if(lenb < width)
+	width = lenb;
 
     /* Get maximum path score and save position */
     pmax = (float) (-1*INT_MAX);
@@ -2525,7 +2535,7 @@ void embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 	    for(column=0;column<seqlen;++column)
 		ajFmtPrintAppS(&outstr,"%6.2f ",
 			       path[row*seqlen+column]);
-	    ajDebug("%S\n", outstr);
+	    /*ajDebug("%S\n", outstr);*/
 	}
     }
 
@@ -3319,12 +3329,16 @@ void embAlignReportGlobal(AjPAlign align,
 			     ajSeqIsReversed(seqa));
     ajSeqAssignNameS(res1, ajSeqGetNameS(seqa));
     ajSeqAssignUsaS(res1, ajSeqGetUsaS(seqa));
+    ajSeqAssignAccS(res1, ajSeqGetAccS(seqa));
+    ajSeqAssignDescS(res1, ajSeqGetDescS(seqa));
 
     res2   = ajSeqNewRangeCI(ajStrGetPtr(fb), ajStrGetLen(fb),
 			     ajSeqGetOffset(seqb), ajSeqGetOffend(seqb),
 			     ajSeqIsReversed(seqb));
     ajSeqAssignNameS(res2, ajSeqGetNameS(seqb));
     ajSeqAssignUsaS(res2, ajSeqGetUsaS(seqb));
+    ajSeqAssignAccS(res2, ajSeqGetAccS(seqb));
+    ajSeqAssignDescS(res2, ajSeqGetDescS(seqb));
 
     ajSeqGapStandard(res1, '-');
     ajSeqGapStandard(res2, '-');
@@ -3413,25 +3427,15 @@ void embAlignReportLocal(AjPAlign align,
 	    ajSeqGetLen(seqa), ajSeqGetLen(seqb),
 	    ajSeqGetOffset(seqa), ajSeqGetOffset(seqb),
 	    ajSeqGetOffend(seqa), ajSeqGetOffend(seqb));
-/*
-    res1   = ajSeqNew();
-    res2   = ajSeqNew();
 
-    ajSeqAssignNameS(res1, ajSeqGetNameS(seqa));
-    ajSeqAssignNameS(res2, ajSeqGetNameS(seqb));
-    ajSeqAssignUsaS(res1, ajSeqGetUsaS(seqa));
-    ajSeqAssignUsaS(res2, ajSeqGetUsaS(seqb));
-    ajSeqAssignSeqS(res1, m);
-    ajSeqAssignSeqS(res2, n);
-
-    ajAlignDefineSS(align, res1, res2);
-*/
     res1   = ajSeqNewRangeCI(ajStrGetPtr(m), ajStrGetLen(m),
 			     start1+ajSeqGetOffset(seqa),
 			     offend1+ajSeqGetOffend(seqa),
 			     ajSeqIsReversed(seqa));
     ajSeqAssignNameS(res1, ajSeqGetNameS(seqa));
     ajSeqAssignUsaS(res1, ajSeqGetUsaS(seqa));
+    ajSeqAssignAccS(res1, ajSeqGetAccS(seqa));
+    ajSeqAssignDescS(res1, ajSeqGetDescS(seqa));
 
     res2   = ajSeqNewRangeCI(ajStrGetPtr(n), ajStrGetLen(n),
 			     start2+ajSeqGetOffset(seqb),
@@ -3439,6 +3443,8 @@ void embAlignReportLocal(AjPAlign align,
 			     ajSeqIsReversed(seqb));
     ajSeqAssignNameS(res2, ajSeqGetNameS(seqb));
     ajSeqAssignUsaS(res2, ajSeqGetUsaS(seqb));
+    ajSeqAssignAccS(res2, ajSeqGetAccS(seqb));
+    ajSeqAssignDescS(res2, ajSeqGetDescS(seqb));
 
     ajSeqGapStandard(res1, '-');
     ajSeqGapStandard(res2, '-');
@@ -3448,17 +3454,6 @@ void embAlignReportLocal(AjPAlign align,
     ajAlignSetGapR(align, gapopen, gapextend);
     ajAlignSetScoreR(align, score);
     ajAlignSetMatrixFloat(align, matrix);
-/*
-    end1 = start1 - ajStrCalcCountK(m, '-') + ajStrGetLen(m);
-    end2 = start2 - ajStrCalcCountK(n, '-') + ajStrGetLen(n);
-    ajAlignSetRange(align,
-		    start1, end1+1,
-                    ajSeqGetLen(seqa)-ajSeqGapCount(seqa),
-                    offset1,
-		    start2, end2+1,
-                    ajSeqGetLen(seqb)-ajSeqGapCount(seqb),
-                    offset2);
-*/
 
     ajSeqDel(&res1);
     ajSeqDel(&res2);
