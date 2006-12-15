@@ -4824,6 +4824,8 @@ AjBool __deprecated ajStrTruncate(AjPStr* Pstr, ajint pos)
 ** @nam3rule  Reverse            Reverse order of characters.
 ** @nam4rule  ExchangeSet        Substitute character(s) in a string with
 **                               other character(s).
+** @nam5rule  ExchangeSetRest    Substitute character(s) in a string with
+**                               other character(s).
 **
 ** @argrule * Pstr [AjPStr*] String to be edited
 ** @arg1rule C txt [const char*] Text to be replaced
@@ -5159,12 +5161,12 @@ AjBool __deprecated ajStrConvert(AjPStr* pthis, const AjPStr oldc,
 **
 ** @param [w] Pstr [AjPStr*] String
 ** @param [r] txt [const char*] Wanted characters
-** @param [r] chr [char] Replacement character
+** @param [r] chrnew [char] Replacement character
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
 
-AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chr)
+AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chrnew)
 {
     char filter[256] = {'\0'};		/* should make all zero */
 
@@ -5178,12 +5180,12 @@ AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chr)
 
     while(*co)
     {
-	filter[(ajint)*co++] = chr;
+	filter[(ajint)*co++] = chrnew;
     }
 
     for(cp = thys->Ptr; *cp; cp++)
 	if(!filter[(ajint)*cp])
-	    *cp = chr;
+	    *cp = chrnew;
 
     return ajTrue;
 }
@@ -5197,14 +5199,14 @@ AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chr)
 **
 ** @param [w] Pstr [AjPStr*] String
 ** @param [r] str [const AjPStr] Wanted characters
-** @param [r] chr [char] Replacement character
+** @param [r] chrnew [char] Replacement character
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
 
-AjBool ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str, char chr)
+AjBool ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str, char chrnew)
 {
-    return ajStrExchangeSetRestCK(Pstr, str->Ptr, chr);
+    return ajStrExchangeSetRestCK(Pstr, str->Ptr, chrnew);
 }
 
 
@@ -5347,6 +5349,10 @@ AjBool __deprecated ajStrRev(AjPStr* pthis)
 ** @argrule Whole pos2 [ajint] End position, negative values count from end
 ** @argrule CountC txt [const char*] Text to count
 ** @argrule CountK chr [char] Character to count
+** @argrule IsCharsetC txt [const char*] Characters to test
+** @argrule IsCharsetS str2 [const AjPStr] Characters to test
+** @argrule IsCharsetCaseC txt [const char*] Characters to test
+** @argrule IsCharsetCaseS str2 [const AjPStr] Characters to test
 **
 ** @valrule * [AjBool] Result of query
 ** @valrule *Count [ajint] Number of occurrences
@@ -5641,7 +5647,7 @@ AjBool ajStrIsCharsetC(const AjPStr str, const char* txt)
 ** Test whether a string contains specified characters only.
 ** 
 ** @param [r] str [const AjPStr] String
-** @param [r] str2 [const char*] Character set to test
+** @param [r] str2 [const AjPStr] Character set to test
 ** @return [AjBool] ajTrue if the string is entirely composed of characters
 **                  in the specified set
 ** @cre an empty string returns ajFalse
@@ -5719,7 +5725,7 @@ AjBool ajStrIsCharsetCaseC(const AjPStr str, const char* txt)
 ** The test is case-insensitive
 ** 
 ** @param [r] str [const AjPStr] String
-** @param [r] str2 [const char*] Character set to test
+** @param [r] str2 [const AjPStr] Character set to test
 ** @return [AjBool] ajTrue if the string is entirely composed of characters
 **                  in the specified set
 ** @cre an empty string returns ajFalse
@@ -9249,7 +9255,7 @@ ajint ajStrFindRestC(const AjPStr str, const char* txt2)
 ** (text) string.
 **
 ** @param [r] str [const AjPStr] String
-** @param [r] txt2 [const char*] text to find
+** @param [r] str2 [const AjPStr] text to find
 ** @return [ajint] Position of the start of text in string if found.
 **                Or -1 for text not found.
 ** @@
@@ -9301,7 +9307,7 @@ ajint ajStrFindRestCaseC(const AjPStr str, const char* txt2)
 ** (text) string (case-insensitive).
 **
 ** @param [r] str [const AjPStr] String
-** @param [r] txt2 [const char*] text to find
+** @param [r] str2 [const AjPStr] text to find
 ** @return [ajint] Position of the start of text in string if found.
 **                Or -1 for text not found.
 ** @@
