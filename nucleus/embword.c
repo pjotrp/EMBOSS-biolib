@@ -544,20 +544,23 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
 {
     const char * startptr;
     ajint i;
+    ajint j;
     ajint ilast;
     ajint *k;
     EmbPWord rec;
     char* key;
 
-    ajint iwatch[] = {-1};
-    ajint iw;
-    AjBool dowatch;
     size_t wordsize = wordLength+1;
+    char skipchar;
+
+    skipchar = 'X';
+    if(ajSeqIsNuc(seq))
+	skipchar = 'N';
 
     assert(wordLength > 0);
 
-    ajDebug("embWordGetTable seq.len %d wordlength %d\n",
-	     ajSeqGetLen(seq), wordLength);
+    ajDebug("embWordGetTable seq.len %d wordlength %d skipchar '%c'\n",
+	     ajSeqGetLen(seq), wordLength, skipchar);
 
     if(ajSeqGetLen(seq) < wordLength)
     {
@@ -578,13 +581,49 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
     i = 0;
     ilast = ajSeqGetLen(seq) - wordLength;
 
+    j=0;
+    while(j<wordLength)
+    {
+	if((char)toupper((ajint)startptr[j]) == skipchar)
+	{
+	    ajDebug("Skip '%c' at start from %d",
+		    skipchar, i+j+1);
+	    while((char)toupper((ajint)startptr[j]) == skipchar)
+	    {
+		i++;
+		startptr++;
+	    }
+	    ajDebug(" to %d\n",
+		    i+j);
+	    j = 0;
+	    if(i > ilast) {
+		ajDebug("sequence has no word without ambiguity code '%c'\n",
+			skipchar);
+		return ajFalse;
+	    }
+	}
+	else
+	    j++;
+    }
+
+
+
     while(i <= ilast)
     {
-	dowatch = ajFalse;
-	iw = 0;
-	while(iwatch[iw] >= 0)
-	    if(iwatch[iw++] == i)
-		dowatch = ajTrue;
+	j = wordLength - 1;
+	if((char)toupper((ajint)startptr[j]) == skipchar)
+	{
+	    ajDebug("Skip '%c' from %d", skipchar, j);
+	    while((char)toupper((ajint)startptr[j]) == skipchar)
+	    {
+		i++;
+		startptr++;
+	    }
+	    i += j;
+	    startptr += j;
+	    ajDebug(" to %d\n", i);
+	    continue;
+	}
 
 	rec = (EmbPWord) ajTableGet(*table, startptr);
 
@@ -593,9 +632,6 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
 	{
 	    /* if yes increment count */
 	    rec->count++;
-	    if(dowatch)
-		ajDebug("   %.*s exists %d times\n",
-			 wordLength, startptr, rec->count);
 	}
 	else
 	{
