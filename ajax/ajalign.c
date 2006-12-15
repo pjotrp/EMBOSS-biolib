@@ -1987,6 +1987,46 @@ AjBool ajAlignFormatDefault(AjPStr* pformat)
 
 
 
+/* @func ajAlignGetLen ********************************************************
+**
+** Returns the filename for an alignment. If the alignment has more than one
+** subalignment, returns the total.
+**
+** @param [r] thys [const AjPAlign] Alignment object.
+** @return [ajint] Alignment length.
+** @@
+******************************************************************************/
+
+ajint ajAlignGetLen(const AjPAlign thys)
+{
+    ajint ret = 0;
+    ajint i;
+    ajint nali;
+
+    AlignPData* pdata = NULL;
+    AlignPData data = NULL;
+
+    if(!thys)
+	return 0;
+    if(!thys->Data)
+	return 0;
+
+    nali = ajListToArray(thys->Data, (void***) &pdata);
+    for(i=0; i<nali; i++)
+    {
+	data = pdata[i];
+	ret += data->LenAli;
+    }
+
+    AJFREE(pdata);
+     
+    return ret;
+}
+
+
+
+
+
 /* @func ajAlignGetFilename ***************************************************
 **
 ** Returns the filename for an alignment.
@@ -2447,7 +2487,7 @@ void ajAlignSetHeaderC(AjPAlign thys, const char* header)
 void ajAlignSetHeaderApp(AjPAlign thys, const AjPStr header)
 {
     if(ajStrGetLen(thys->Header) && ajStrGetCharLast(thys->Header) != '\n')
-	ajStrAppendC(&thys->Header, "/n");
+	ajStrAppendC(&thys->Header, "\n");
 
     ajStrAppendS(&thys->Header, header);
 
@@ -2519,7 +2559,7 @@ void ajAlignSetTailC(AjPAlign thys, const char* tail)
 void ajAlignSetTailApp(AjPAlign thys, const AjPStr tail)
 {
     if(ajStrGetLen(thys->Tail) && ajStrGetCharLast(thys->Tail) != '\n')
-	ajStrAppendC(&thys->Tail, "/n");
+	ajStrAppendC(&thys->Tail, "\n");
 
     ajStrAppendS(&thys->Tail, tail);
 
@@ -2588,7 +2628,7 @@ void ajAlignSetSubTailC(AjPAlign thys, const char* tail)
 void ajAlignSetSubTailApp(AjPAlign thys, const AjPStr tail)
 {
     if(ajStrGetLen(thys->SubTail) && ajStrGetCharLast(thys->SubTail) != '\n')
-	ajStrAppendC(&thys->SubTail, "/n");
+	ajStrAppendC(&thys->SubTail, "\n");
 
     ajStrAppendS(&thys->SubTail, tail);
 
@@ -2663,7 +2703,7 @@ void ajAlignSetSubHeaderC(AjPAlign thys, const char* subheader)
 void ajAlignSetSubHeaderApp(AjPAlign thys, const AjPStr subheader)
 {
     if(ajStrGetLen(thys->SubHeader) && ajStrGetCharLast(thys->SubHeader) != '\n')
-	ajStrAppendC(&thys->SubHeader, "/n");
+	ajStrAppendC(&thys->SubHeader, "\n");
 
     ajStrAppendS(&thys->SubHeader, subheader);
 
@@ -2690,7 +2730,7 @@ void ajAlignSetSubHeaderApp(AjPAlign thys, const AjPStr subheader)
 void ajAlignSetSubHeaderPre(AjPAlign thys, const AjPStr subheader)
 {
     if(ajStrGetLen(thys->SubHeader) && ajStrGetCharLast(subheader) != '\n')
-	ajStrInsertC(&thys->SubHeader, 0, "/n");
+	ajStrInsertC(&thys->SubHeader, 0, "\n");
 
     ajStrInsertS(&thys->SubHeader, 0, subheader);
 
