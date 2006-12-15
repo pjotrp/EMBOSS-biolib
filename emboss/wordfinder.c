@@ -25,6 +25,13 @@
 #include <math.h>
 
 
+/*
+** Notes:
+** Specific requests to search for word-based matches with 15-35 identical
+** residues ungapped, and then to check that these are the only significant
+** matches by checking for general homology, for example histones matching.
+** Intended for use in widely divergent species.
+*/
 
 
 /* @datastatic concat *********************************************************
@@ -111,8 +118,12 @@ int main(int argc, char **argv)
 
     float gapopen;
     float gapextend;
-    float score;
-
+    float score = 0.0;
+    ajint matchscore = 0;
+    ajint limitmatch;
+    ajint limitalign;
+    ajint lowmatch;
+    ajint lowalign;
 
     ajint trgbegin;
     ajint i;
@@ -130,6 +141,7 @@ int main(int argc, char **argv)
     AjPAlign align = NULL;
     ajint imatches = 0;
     ajint itrg = 0;
+    AjPStr tmpstr = NULL;
 
     embInit("wordfinder", argc, argv);
 
@@ -139,6 +151,10 @@ int main(int argc, char **argv)
     gapopen   = ajAcdGetFloat("gapopen");
     gapextend = ajAcdGetFloat("gapextend");
     wordlen   = ajAcdGetInt("wordlen");
+    limitmatch = ajAcdGetInt("limitmatch");
+    limitalign = ajAcdGetInt("limitalign");
+    lowmatch = ajAcdGetInt("lowmatch");
+    lowalign = ajAcdGetInt("lowalign");
     align     = ajAcdGetAlign("outfile");
     errorf    = ajAcdGetOutfile("errorfile");
     width     = ajAcdGetInt("width");	/* not the same as awidth */
@@ -175,7 +191,7 @@ int main(int argc, char **argv)
 	trglen = ajSeqGetLen(trgseq);
 
 	ajDebug("Read '%S'\n", ajSeqGetNameS(trgseq));
-
+	ajSeqTrace(trgseq);
 	if(embWordGetTable(&seq1MatchTable, trgseq)) /* get table of words */
 	{
 	    for(k=0;k<ajSeqsetSize(qryseqs);k++)
@@ -194,11 +210,24 @@ int main(int argc, char **argv)
 		ajStrAssignC(&nqry,"");
 
 
-		if(!wordfinder_findstartpoints(seq1MatchTable,qryseq, trgseq,
-					       &qrystart, &trgstart,
-					       &qryend, &trgend,
-					       width))
+		matchscore = wordfinder_findstartpoints(seq1MatchTable,
+							qryseq, trgseq,
+							&qrystart, &trgstart,
+							&qryend, &trgend,
+							width);
+		if(!matchscore ||
+		   (limitmatch && (matchscore > limitmatch)) ||
+		   (matchscore < lowmatch))
 		{
+		    if(matchscore)
+		    {
+			ajUser("Match limits (%d..%d) exclude '%S' '%S' %d\n",
+			       lowmatch, limitmatch,
+			       ajSeqGetNameS(qryseq),
+			       ajSeqGetNameS(trgseq),
+			       matchscore);
+		    }
+
 		    trgstart = 0;
 		    trgend   = trglen-1;
 		    qrystart = (ajint)(width/2);
@@ -228,8 +257,8 @@ int main(int argc, char **argv)
 			trgstart, trgend, (trgend - trgstart + 1), trglen,
 			qrystart, qryend, (qryend - qrystart + 1), qrylen);
 
-		embAlignPathCalcFast(&ptrg[trgstart],&qqry[qrystart],
-				     trgend-trgstart+1,qryend-qrystart+1,
+		embAlignPathCalcFast(&qqry[qrystart],&ptrg[trgstart],
+				     qryend-qrystart+1,trgend-trgstart+1,
 				     gapopen,gapextend,path,sub,cvt,
 				     compass,show,width);
 
@@ -276,14 +305,33 @@ int main(int argc, char **argv)
 					 ajSeqGetNameC(trgseq),
 					 qrybegin,trgbegin);
 		    embAlignReportLocal(align,
-					trgseq, qryseq,
+					qryseq, trgseq,
 					nqry,mtrg,
 					qrystart,trgstart,
 					gapopen, gapextend,
 					score,matrix,
 					qrybegin, trgbegin);
-		    ajAlignWrite(align);
+		    if((limitalign && (ajAlignGetLen(align) > limitalign)) ||
+		       (ajAlignGetLen(align) < lowalign))
+		    {
+			imatches--;
+			ajUser("Align limits (%d..%d) excludes '%S' '%S' %d\n",
+			       lowalign, limitalign,
+			       ajSeqGetNameS(qryseq),
+			       ajSeqGetNameS(trgseq),
+			       ajAlignGetLen(align));
+		    }
+		    else
+		    {
+			ajFmtPrintS(&tmpstr, "\nWordscore:%d", matchscore);
+			ajAlignSetSubHeader(align, tmpstr);
+			ajFmtPrintS(&tmpstr, "Alignlength:%d",
+				    ajAlignGetLen(align));
+			ajAlignSetSubHeaderApp(align, tmpstr);
+			ajAlignWrite(align);
+		    }
 		    ajAlignReset(align);
+		    ajStrDel(&tmpstr);
 		}
 		ajStrDel(&nqry);
 	    }
@@ -555,5 +603,5 @@ static ajint wordfinder_findstartpoints(AjPTable seq1MatchTable,
 	    *qrystart, *qryend, ajSeqGetLen(qryseq),
 	    *trgstart, *trgend, ajSeqGetLen(trgseq));
 
-    return 1;
+    return max;
 }
