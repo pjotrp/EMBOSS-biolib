@@ -874,23 +874,23 @@ void ajTrnRevC(const AjPTrn trnObj, const char *str, ajint len, AjPStr *pep)
 {
     ajint i;
     ajint end;
-    const char *cp = str;
+    const char *cp;
     AjPStr transtr = NULL;
     char *cq;
     ajint trnlen;
 
     end = (len/3)*3-1;
-    trnlen = end/3;
-
+    trnlen = (end+1)/3;
+    cp = &str[end];
     transtr = ajStrNewRes(trnlen+1);
     cq = ajStrGetuniquePtr(&transtr);
 
     for(i=end; i>1; i-=3)
     {
 	*cq++ = trnObj->GC[trncomp[(ajint)*cp]]
-	  [trncomp[(ajint)*(cp+1)]]
-	  [trncomp[(ajint)*(cp+2)]];
-	cp+=3;
+	  [trncomp[(ajint)*(cp-1)]]
+	  [trncomp[(ajint)*(cp-2)]];
+	cp-=3;
     }
     ajStrSetValidLen(&transtr, trnlen);
     ajStrAppendS(pep, transtr);
@@ -1367,14 +1367,13 @@ ajint ajTrnCDangle(const AjPTrn trnObj, const char *seq, ajint len,
 
     if(frame > 0)
     {					/* forward 3 frames */
-	end = (len/3)*3 + frame-1;
+	end = frame + ((len-frame+1)/3)*3 - 1;
 	dangle = len - end;
     }
     else if(frame <= -4)		/* alternative reverse frames */
 	dangle = (len+frame+4)%3;
     else				/* standard reverse frames */
 	dangle = -frame-1;
-
 
     /* translate any dangling pair of bases at the end */
     if(dangle == 2)
