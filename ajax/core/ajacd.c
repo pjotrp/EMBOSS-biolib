@@ -25496,6 +25496,7 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     ajStrDel(&knownName);
     ajStrDel(&knownType);
     ajStrDel(&knownDesc);
+    ajStrDel(&knownRest);
     return;
 }
 
