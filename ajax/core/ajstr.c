@@ -4915,7 +4915,7 @@ AjBool ajStrExchangeCS(AjPStr* Pstr, const char* txt,
     {
 	while(cycle)
 	{
-	    pos = ajStrFindC(thys, txt);
+	    pos = ajStrFindC(*Pstr, txt);
 	    if(pos >= 0)
 	    {
 		ajStrCutRange(Pstr,pos,pos+tlen-1);
@@ -4995,7 +4995,7 @@ AjBool ajStrExchangeSC(AjPStr* Pstr, const AjPStr str,
     {
 	while(cycle)
 	{
-	    pos = ajStrFindS(thys, str);
+	    pos = ajStrFindS(*Pstr, str);
 	    if(pos >= 0)
 	    {
 		ajStrCutRange(Pstr,pos,pos+str->Len-1);
