@@ -4854,13 +4854,10 @@ AjBool __deprecated ajStrTruncate(AjPStr* Pstr, ajint pos)
 AjBool ajStrExchangeCC(AjPStr* Pstr, const char* txt,
 			 const char* txtnew)
 {    
-    AjPStr thys;
     AjBool cycle = ajTrue;
     ajint pos    = 0;
     ajint tlen = strlen(txt);
 
-    thys = ajStrGetuniqueStr(Pstr);
-    
     if(*txt)
     {
 	while(cycle)
@@ -4904,13 +4901,10 @@ AjBool __deprecated ajStrSubstituteCC(AjPStr* pthis, const char* replace,
 AjBool ajStrExchangeCS(AjPStr* Pstr, const char* txt,
 		       const AjPStr strnew)
 {    
-    AjPStr thys;
     AjBool cycle = ajTrue;
     ajint pos    = 0;
     ajint tlen = strlen(txt);
 
-    thys = ajStrGetuniqueStr(Pstr);
-    
     if(*txt)
     {
 	while(cycle)
@@ -4985,12 +4979,9 @@ AjBool __deprecated ajStrSubstituteKK(AjPStr* pthis, char replace, char putin)
 AjBool ajStrExchangeSC(AjPStr* Pstr, const AjPStr str,
 		       const char* txtnew)
 {    
-    AjPStr thys;
     AjBool cycle = ajTrue;
     ajint pos    = 0;
 
-    thys = ajStrGetuniqueStr(Pstr);
-    
     if(str->Len)
     {
 	while(cycle)
@@ -5022,17 +5013,14 @@ AjBool ajStrExchangeSC(AjPStr* Pstr, const AjPStr str,
 
 AjBool ajStrExchangeSS(AjPStr* Pstr, const AjPStr str, const AjPStr strnew)
 {    
-    AjPStr thys;
     AjBool cycle = ajTrue;
     ajint pos    = 0;
-    
-    thys = ajStrGetuniqueStr(Pstr);
     
     if(str->Len !=0)
     {
 	while(cycle)
 	{
-	    pos = ajStrFindC(thys, str->Ptr);
+	    pos = ajStrFindC(*Pstr, str->Ptr);
 	    if(pos >= 0)
 	    {
 		ajStrCutRange(Pstr,pos,pos+str->Len-1);
