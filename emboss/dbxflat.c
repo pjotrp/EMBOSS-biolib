@@ -440,7 +440,9 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 	if(!ajFileReadLine(inf,&line))
 	    ret = ajFalse;
     }
-    
+
+    ajStrDel(&line);
+    ajStrDel(&sumline);
     
     return ret;
 }
