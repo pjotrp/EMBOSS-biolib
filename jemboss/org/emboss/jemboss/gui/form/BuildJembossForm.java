@@ -23,10 +23,27 @@
 package org.emboss.jemboss.gui.form;
 
 import java.awt.*;
-import javax.swing.*;
+
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+import javax.swing.WindowConstants;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
-import java.net.URL;
 import org.apache.regexp.*;
 
 import java.util.Hashtable;
@@ -1112,7 +1129,7 @@ public class BuildJembossForm implements ActionListener
 * @return String command line to use
 *
 */
-  private String getCommand()
+/*  private String getCommand()
   {
 
     String command = embossBin.concat(applName);
@@ -1126,7 +1143,7 @@ public class BuildJembossForm implements ActionListener
       command = command.concat(options + " -stdout -auto");
 
     return command;
-  }
+  }*/
 
 
 /**
