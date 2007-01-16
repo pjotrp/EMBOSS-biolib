@@ -224,7 +224,7 @@ char* ajCharNewRes(size_t size)
 ** @rename ajCharNewRes
 */
 
-char __deprecated * ajCharNewL(size_t size) {
+char __deprecated *ajCharNewL(size_t size) {
     return ajCharNewRes(size);
 }
 
@@ -292,7 +292,7 @@ char* ajCharNewResS(const AjPStr str, size_t size)
 ** @replace ajStrNewResS (1,2/2,1)
 */
 
-char __deprecated * ajCharNewLS(size_t size, const AjPStr thys) {
+char __deprecated *ajCharNewLS(size_t size, const AjPStr thys) {
     return ajCharNewResS(thys, size);
 }
 
@@ -5039,7 +5039,8 @@ AjBool ajStrExchangeSS(AjPStr* Pstr, const AjPStr str, const AjPStr strnew)
 ** @rename ajStrExchangeSS
 */
 
-AjBool ajStrSubstitute(AjPStr* pthis, const AjPStr replace, const AjPStr putin)
+AjBool __deprecated ajStrSubstitute(AjPStr* pthis,
+				    const AjPStr replace, const AjPStr putin)
 {    
     return ajStrExchangeSS(pthis, replace, putin);
 }
@@ -5380,7 +5381,7 @@ ajint ajStrCalcCountC(const AjPStr str, const char* txt)
 ** @rename ajStrCalcCountC
 */
 
-ajint ajStrCountC(const AjPStr str, const char* txt)
+ajint __deprecated ajStrCountC(const AjPStr str, const char* txt)
 {
     return ajStrCalcCountC(str, txt);
 }
@@ -6384,7 +6385,7 @@ const char* ajStrGetPtr(const AjPStr str)
 ** @rename ajStrGetPtr
 */
 
-const char __deprecated * ajStrStr(const AjPStr thys)
+const char __deprecated *ajStrStr(const AjPStr thys)
 {
     return ajStrGetPtr(thys);
 }
@@ -6648,7 +6649,7 @@ char* ajStrGetuniquePtr(AjPStr *Pstr)
 ** @rename ajStrGetuniquePtr
 */
 
-char __deprecated * ajStrStrMod(AjPStr *pthis)
+char __deprecated *ajStrStrMod(AjPStr *pthis)
 {
     return ajStrGetuniquePtr(pthis);
 }
@@ -6693,7 +6694,7 @@ AjPStr ajStrGetuniqueStr(AjPStr* Pstr)
 ** @rename ajStrGetUniqueStr
 */
 
-AjBool ajStrMod(AjPStr* pthis)
+AjBool __deprecated ajStrMod(AjPStr* pthis)
 {
     AjBool ret = ajTrue;
     if ((*pthis)->Use == 1)
@@ -11189,7 +11190,8 @@ const AjPStr __deprecated ajStrNull(void)
 
 
 /* @obsolete ajStrArrayDel
-** @remove Make a local copy if needed - no need for full set of array functions
+** @remove Make a local copy if needed -
+**         no need for full set of array functions
 */
 
 void __deprecated ajStrArrayDel(AjPStr** pthis)
