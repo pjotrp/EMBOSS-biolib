@@ -747,9 +747,9 @@ static void      acdParseAttributes(const AcdPAcd acd,
 static void      acdParseName(AjPList listwords, AjPStr* pword);
 static AjPStr    acdParseValue(AjPList listwords);
 static void      acdPretty(const char *fmt, ...);
-static void      acdPrettyShift();
+static void      acdPrettyShift(void);
 static void      acdPrettyWrap(ajint left, const char *fmt, ...);
-static void      acdPrettyUnShift();
+static void      acdPrettyUnShift(void);
 static void      acdPrintCalcattr(AjPFile outf, const char* acdtype,
 				  const AcdOAttr calcattr[]);
 static void      acdProcess(void);
@@ -11492,8 +11492,8 @@ static void acdSetSeqall(AcdPAcd thys)
     thys->SetAttr = &acdCalcSeqall[0];
     thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
     
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqallBegin(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqallEnd(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqallGetseqBegin(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqallGetseqEnd(val));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqGetLen(seq));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqIsNuc(seq));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqIsProt(seq));
@@ -11780,9 +11780,9 @@ static void acdSetSeqsetall(AcdPAcd thys)
     thys->SetAttr = &acdCalcSeqsetall[0];
     thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
     
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetBegin(val[0]));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetEnd(val[0]));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetLen(val[0]));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetGetBegin(val[0]));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetGetEnd(val[0]));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetGetLen(val[0]));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN],
 		  ajSeqsetIsProt(val[0]));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC],
@@ -11791,7 +11791,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
     ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqsetGetUsa(val[0]));
     ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
 		   ajSeqsetTotweight(val[0]), 3);
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val[0]));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetGetSize(val[0]));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_MULTICOUNT], nsets);
     
     acdInFileSave(ajSeqsetGetName(val[0]), ajTrue);
@@ -12649,16 +12649,16 @@ static void acdSetSeqset(AcdPAcd thys)
     thys->SetAttr = &acdCalcSeqset[0];
     thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
     
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetBegin(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetEnd(val));
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetLen(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_BEGIN], ajSeqsetGetBegin(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_END], ajSeqsetGetEnd(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_LENGTH], ajSeqsetGetLen(val));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_PROTEIN], ajSeqsetIsProt(val));
     ajStrFromBool(&thys->SetStr[ACD_SEQ_NUCLEIC], ajSeqsetIsNuc(val));
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], val->Name);
     ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqsetGetUsa(val));
     ajStrFromFloat(&thys->SetStr[ACD_SEQ_WEIGHT],
 		   ajSeqsetTotweight(val), 3);
-    ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetSize(val));
+    ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetGetSize(val));
     
     acdInFileSave(ajSeqsetGetName(val), ajTrue);
     
