@@ -249,6 +249,8 @@ void            ajDomElementRemoveAttribute(AjPDomElement element,
 void            ajDomElementRemoveAttributeC(AjPDomElement element,
 					     const char *name);
 
+AjPDomNode ajDomElementRemoveAttributeNode(AjPDomElement element,
+					   AjPDomNode oldattr);
 AjPDomNode     ajDomElementGetAttributeNode(const AjPDomElement element,
 					    const AjPStr name);
 AjPDomNode     ajDomElementGetAttributeNodeC(const AjPDomElement element,

@@ -167,6 +167,7 @@ AjBool        ajGraphSet (AjPGraph thys, const AjPStr type);
 void          ajGraphSetBackBlack (void);
 void          ajGraphSetBackWhite (void);
 float         ajGraphSetCharScale (float scale);
+void          ajGraphSetDesc(AjPGraph thys, const AjPStr title);
 void          ajGraphSetDevice(const AjPGraph thys);
 void          ajGraphSetDir(AjPGraph thys, const AjPStr txt);
 ajint         ajGraphSetFillPat (ajint style);

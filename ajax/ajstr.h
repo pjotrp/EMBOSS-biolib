@@ -254,6 +254,7 @@ AjBool     ajStrCutRange(AjPStr* Pstr, ajint pos1, ajint pos2);
 AjBool     ajStrCutStart(AjPStr* Pstr, size_t len);
 AjBool     ajStrKeepRange(AjPStr* Pstr, ajint pos1, ajint pos2);
 AjBool     ajStrKeepSetC(AjPStr* Pstr, const char* txt);
+AjBool     ajStrKeepSetS(AjPStr* Pstr, const AjPStr str);
 AjBool     ajStrKeepSetAlpha(AjPStr* Pstr);
 AjBool     ajStrKeepSetAlphaC(AjPStr* Pstr, const char* txt);
 AjBool     ajStrQuoteStrip(AjPStr *Pstr);
@@ -715,7 +716,6 @@ ajint      __deprecated ajStrTokenCount(const AjPStr line, const char *delim);
 ajint      __deprecated ajStrTokenCountR(const AjPStr line, const char *delim);
 AjPStrTok  __deprecated ajStrTokenInit (const AjPStr thys, const char *delim);
 AjBool     __deprecated ajStrTokenRest (AjPStr* pthis, AjPStrTok* ptoken);
-void       __deprecated ajStrTokenTrace (const AjPStrTok tok);
 
 /*#define    MAJSTRLEN(str) str->Len*/
 const char __deprecated *MAJSTRSTR(const AjPStr thys);
