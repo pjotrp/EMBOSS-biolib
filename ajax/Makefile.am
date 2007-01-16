@@ -22,7 +22,7 @@ if ISCYGWIN
 AM_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import -L../plplot -lplplot
 endif
 
-## PCRE stuff (evrsion 4.3)
+## PCRE stuff (version 4.3)
 
 POSIX_MALLOC_THRESHOLD = @POSIX_MALLOC_THRESHOLD@
 PCRELIBVERSION = @PCRE_LIB_VERSION@
