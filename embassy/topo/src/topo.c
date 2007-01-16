@@ -849,7 +849,8 @@ int main(int argc, char * argv[])
     AJFREE(iend);
     ajSeqDel(&sequence);
     ajRangeDel(&regions);
-    ajRangeDel(&sigregions);
+    if (ajspnum)
+      ajRangeDel(&sigregions);
     ajStrDel(&listcys);
     ajStrDel(&listgly);
     ajStrDel(&listacid);
