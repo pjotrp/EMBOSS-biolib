@@ -153,7 +153,8 @@ embassy_install()
   echo
   echo "EMBASSY packages can optionally be installed along with"
   echo "the EMBOSS applications, see:"
-  echo "http://emboss.sourceforge.net/apps/#Embassy"
+  echo "http://emboss.sourceforge.net/apps/release/version/embassy"
+  echo "where 'version' corresponds to the EMBOSS version e.g. 4.0"
   echo
   echo "--------------------------------------------------------------"
   echo
@@ -800,7 +801,7 @@ AIX="n"
 MACOSX="n"
 if [ "$PLAT" = "1" ]; then
   PLATFORM="linux"
-  AUTH_TYPE_TMP=1
+  AUTH_TYPE_TMP=3
 elif [ "$PLAT" = "2" ]; then
   PLATFORM="aix"
   AIX="y"
