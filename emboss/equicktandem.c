@@ -206,7 +206,7 @@ int main(int argc, char **argv)
 ** Prints the original output format, but simply returns if the
 ** output file is NULL.
 **
-** Sets the printed region to 'Z' to exlucde it from further analysis.
+** Sets the printed region to 'Z' to exclude it from further analysis.
 **
 ** @param [u] outf [AjPFile] Undocumented
 ** @param [r] begin [ajint] Undocumented
