@@ -328,7 +328,6 @@ AjBool  ajBaseAa1ToAa3(char aa1, AjPStr *aa3)
 }
 
 
-
 /* @func ajBaseProb **********************************************************
 **
 ** Returns an element of the base match probability array
@@ -357,6 +356,42 @@ float  ajBaseProb(ajint base1, ajint base2)
 
 
 
+
+
+/* @func ajBaseComp ********************************************************
+**
+** Complements a nucleotide base.
+**
+** @param [r] base [char] Base character.
+** @return [char] Complementary base.
+** @@
+******************************************************************************/
+
+char ajBaseComp(char base)
+{
+    static char fwd[]="ACGTURYWSMKBDHVNXacgturywsmkbdhvnx";
+    static char rev[]="TGCAAYRWSKMVHDBNXtgcaayrwskmvhdbnx";
+    char *cp;
+    char *cq;
+
+    cp = strchr(fwd,base);
+    if(cp)
+    {
+	cq = cp - fwd + rev;
+	return *cq;
+    }
+
+    return base;
+}
+
+
+/* @obsolete ajSeqBaseComp
+** @rename ajBaseComp
+*/
+char __deprecated ajSeqBaseComp(char base)
+{
+    return ajBaseComp(base);
+}
 
 /* @func ajBaseExit ***********************************************************
 **
