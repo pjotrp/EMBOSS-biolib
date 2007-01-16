@@ -79,7 +79,7 @@ static AjBool twofeat_MatchFeature(const AjPFeature gf,
 static AjBool twofeat_MatchPatternTags(const AjPFeature feat,
 				       const AjPStr tpattern,
 				       const AjPStr vpattern);
-static PHit twofeat_HitsNew();
+static PHit twofeat_HitsNew(void);
 static void twofeat_HitsDel(PHit *pthis);
 static ajint twofeat_get_overlap_type(const AjPStr overlap);
 static ajint twofeat_get_range_type(const AjPStr rangetype);
@@ -698,7 +698,7 @@ static AjBool twofeat_MatchPatternTags(const AjPFeature feat,
 ** @@
 ******************************************************************************/
 
-static PHit twofeat_HitsNew()
+static PHit twofeat_HitsNew(void)
 {
     PHit pthis;
     AJNEW0(pthis);
