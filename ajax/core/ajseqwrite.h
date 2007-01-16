@@ -124,8 +124,11 @@ typedef struct AjSSeqout {
 ** Prototype definitions
 */
 
-void         ajSeqAllWrite (AjPSeqout outseq, const AjPSeq seq);
-AjBool       ajSeqFileNewOut (AjPSeqout seqout, const AjPStr name);
+void         __deprecated ajSeqAllWrite (AjPSeqout outseq, const AjPSeq seq);
+void         ajSeqoutWriteSeq (AjPSeqout outseq, const AjPSeq seq);
+AjBool       ajSeqoutOpenFilename (AjPSeqout seqout, const AjPStr name);
+AjBool       __deprecated ajSeqFileNewOut (AjPSeqout seqout,
+					   const AjPStr name);
 ajint        ajSeqoutCheckGcg (const AjPSeqout outseq);
 void         ajSeqoutClear (AjPSeqout thys);
 void         ajSeqoutCount(const AjPSeqout seqout, ajint* b);
@@ -135,21 +138,23 @@ void         ajSeqoutDel (AjPSeqout* thys);
 AjBool       ajSeqOutFormatDefault (AjPStr* pformat);
 AjBool       ajSeqOutFormatSingle (AjPStr format);
 AjPSeqout    ajSeqoutNew (void);
-AjPSeqout    ajSeqoutNewF (AjPFile file);
+AjPSeqout    ajSeqoutNewFile (AjPFile file);
+AjPSeqout    __deprecated ajSeqoutNewF (AjPFile file);
 AjBool       ajSeqoutOpen (AjPSeqout thys);
 AjBool       ajSeqOutSetFormat (AjPSeqout thys, const AjPStr format);
 AjBool       ajSeqOutSetFormatC (AjPSeqout thys, const char* format);
 void         ajSeqoutTrace (const AjPSeqout seq);
 void         ajSeqPrintOutFormat (AjPFile outf, AjBool full);
 void         ajSeqoutUsa (AjPSeqout* pthis, const AjPStr Usa);
-void         ajSeqsetWrite (AjPSeqout seqout, const AjPSeqset seq);
-void         ajSeqWrite (AjPSeqout seqout, const AjPSeq seq);
-void         ajSeqWriteClose (AjPSeqout outseq);
+void         ajSeqoutWriteSet (AjPSeqout seqout, const AjPSeqset seq);
+void         __deprecated ajSeqWrite (AjPSeqout seqout, const AjPSeq seq);
+void         ajSeqoutClose (AjPSeqout outseq);
+void         __deprecated ajSeqWriteClose (AjPSeqout outseq);
 void         ajSeqWriteExit(void);
 void         ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
 void         ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
-
-
+void        __deprecated ajSeqWrite(AjPSeqout outseq, const AjPSeq seq);
+void        __deprecated ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq);
 /*
 ** End of prototype definitions
 */
