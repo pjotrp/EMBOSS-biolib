@@ -79,7 +79,8 @@ int main(int argc, char **argv)
 	p = ajSeqsetSeq(seqset,i);
 	if(strlen(p)!=mlen)
 	{
-	    ajWarn("Sequence lengths are not equal!");
+	    ajWarn("Sequence lengths are not equal: expect %d '%S' is %d",
+		   mlen, ajSeqsetGetseqNameS(seqset, i), p);
 	    break;
 	}
     }
