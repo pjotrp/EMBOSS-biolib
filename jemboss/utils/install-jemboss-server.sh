@@ -1050,7 +1050,7 @@ if [ "$AUTH" = "y" ]; then
     UUIDTMP="506"
   fi
 
-  echo "Provide the UID of the account (non-priveleged) to run Tomcat,"
+  echo "Provide the UID of the account (non-privileged) to run Tomcat,"
   echo "it has to be greater than 100 [$UUIDTMP]:"
   read UUID
 
@@ -1593,7 +1593,7 @@ if [ "$AUTH" = "y" ]; then
   echo "1. As root:"
   echo "   chown root $EMBOSS_INSTALL/bin/jembossctl"
   echo "   chmod u+s $EMBOSS_INSTALL/bin/jembossctl"
-  echo "2. Ensure that tomcat is running as the non-priveliged user,"
+  echo "2. Ensure that tomcat is running as the non-privileged user,"
   echo "   with the same UID (i.e. $UUID) that was given to this script"
   echo "   (and NOT as root!)."
   echo "3. Use the tomstop & tomstart scripts in this directory"
