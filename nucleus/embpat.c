@@ -3819,7 +3819,7 @@ ajint embPatRestrictMatch(const AjPSeq seq, ajint begin, ajint end,
 
 	cp = ajStrGetPtr(enz->pat);
 
-	if(*cp>='A' && *p<='Z')
+	if(*cp>='A' && *cp<='Z')
 	    hassup = ajTrue;
 	else
 	    hassup = ajFalse;
