@@ -33,7 +33,8 @@
 
 
 
-static void remap_read_equiv(AjPFile *equfile, AjPTable *table);
+static void remap_read_equiv(AjPFile *equfile, AjPTable *table,
+			     AjBool commercial);
 static void remap_RemoveMinMax(AjPList restrictlist,
 			       AjPTable hittable, ajint mincuts,
 			       ajint maxcuts);
@@ -240,7 +241,7 @@ int main(int argc, char **argv)
 	    if(!equfile)
 		limit = ajFalse;
 	    else
-		remap_read_equiv(&equfile, &retable);
+		remap_read_equiv(&equfile, &retable, commercial);
 	}
 
 	ajFileSeek(enzfile, 0L, 0);
@@ -1007,11 +1008,13 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
 **
 ** @param [u] equfile [AjPFile*] file to read then close.
 ** @param [wP] table [AjPTable*] table to write to.
+** @param [r] commercial [AjBool] supplier test for asterisk removal
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void remap_read_equiv(AjPFile *equfile, AjPTable *table)
+static void remap_read_equiv(AjPFile *equfile, AjPTable *table,
+			     AjBool commercial)
 {
     AjPStr line;
     AjPStr key;
@@ -1031,6 +1034,8 @@ static void remap_read_equiv(AjPFile *equfile, AjPTable *table)
         key = ajStrNewC(p);
         p = ajSysStrtok(NULL," \t\n");
         value = ajStrNewC(p);
+	if(!commercial)
+	    ajStrTrimEndC(&value,"*");
         ajTablePut(*table,(const void *)key, (void *)value);
     }
 

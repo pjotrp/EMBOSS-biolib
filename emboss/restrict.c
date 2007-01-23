@@ -50,7 +50,8 @@ static void restrict_printHits(AjPFile outf, AjPList l, const AjPStr name,
 			       const AjPTable table,
 			       AjBool alpha, AjBool frags,
 			       AjBool nameit);
-static void restrict_read_equiv(AjPFile equfile, AjPTable table);
+static void restrict_read_equiv(AjPFile equfile, AjPTable table,
+				AjBool commercial);
 static void restrict_read_file_of_enzyme_names(AjPStr *enzymes);
 static ajint restrict_enzcompare(const void *a, const void *b);
 
@@ -153,7 +154,7 @@ int main(int argc, char **argv)
 	    limit = ajFalse;
 	else
 	{
-	    restrict_read_equiv(equfile,table);
+	    restrict_read_equiv(equfile,table,commercial);
 	    ajFileClose(&equfile);
 	}
     }
@@ -538,6 +539,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 		ajStrAssignS(&m->cod,value);
 	    ajListPushApp(l,(void *)m);
 	}
+
     
     if(alpha && limit)
 	ajListSort2(l,embPatRestrictNameCompare, embPatRestrictStartCompare);
@@ -801,11 +803,14 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 **
 ** @param [u] equfile [AjPFile] equivalent name file
 ** @param [w] table [AjPTable]  equivalent names
+** @param [r] commercial [AjBool] only commercial suppliers (for asterisk
+**                                removal
 ** @@
 ******************************************************************************/
 
 
-static void restrict_read_equiv(AjPFile equfile, AjPTable table)
+static void restrict_read_equiv(AjPFile equfile, AjPTable table,
+				AjBool commercial)
 {
     AjPStr line;
     AjPStr key;
@@ -826,6 +831,8 @@ static void restrict_read_equiv(AjPFile equfile, AjPTable table)
 	key   = ajStrNewC(p);
 	p     = ajSysStrtok(NULL," \t\n");
 	value = ajStrNewC(p);
+	if(!commercial)
+	    ajStrTrimEndC(&value,"*");
 	ajTablePut(table,(const void *)key, (void *)value);
     }
 
