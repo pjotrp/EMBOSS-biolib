@@ -1,6 +1,6 @@
 application: vrnaduplex [
   documentation: "RNA duplex calculation"
-  groups: "Nucleic:RNA folding"
+  groups: "Nucleic:RNA folding, Nucleic:2D structure"
   gui: "yes"
   batch: "yes"
   cpu: "medium"
