@@ -16,7 +16,7 @@
 #include "dmalloc.h"
 #endif
 /*@unused@*/
-static const char rcsid[] = "$Id: utils.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static const char rcsid[] = "$Id: utils.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
 
 #define PRIVATE  static
 #define PUBLIC
@@ -33,6 +33,12 @@ PUBLIC char  *time_stamp(void);
 PUBLIC char  *random_string(int l, const char symbols[]);
 PUBLIC int    hamming(const char *s1, const char *s2);
 PUBLIC char  *get_line(FILE *fp);
+void *xrealloc (void *p, unsigned size);
+PUBLIC void init_rand(void);
+PUBLIC char *pack_structure(const char *struc);
+PUBLIC char *unpack_structure(const char *packed);
+PUBLIC short *make_pair_table(const char *structure);
+PUBLIC int bp_distance(const char *str1, const char *str2);
 
 PUBLIC unsigned short xsubi[3];
 

@@ -52,19 +52,19 @@ extern "C"
 ** @alias AjSScophit
 ** @alias AjOScophit
 **
-** @attr Type    [ajint]   Type, either ajSCOP (1) or ajCATH (2).
+** @attr Type    [ajuint]   Type, either ajSCOP (1) or ajCATH (2).
 ** @attr Class [AjPStr] Class name
 ** @attr  Architecture  [AjPStr]    CATH classification.
 ** @attr  Topology     [AjPStr]    CATH classification.
 ** @attr Fold [AjPStr] Fold name
 ** @attr Superfamily [AjPStr] Superfamily name
 ** @attr Family [AjPStr] Family name
-** @attr Sunid_Family [ajint] Domain identifier of node (e.g. family or 
+** @attr Sunid_Family [ajuint] Domain identifier of node (e.g. family or 
 ** superfamily) represented.
 ** @attr Seq [AjPStr] Sequence as string
-** @attr Start [ajint] Start of sequence or signature alignment 
+** @attr Start [ajuint] Start of sequence or signature alignment 
 **	 relative to full length swissprot sequence
-** @attr End [ajint] End of sequence or signature alignment relative 
+** @attr End [ajuint] End of sequence or signature alignment relative 
 **	 to full length swissprot sequence
 ** @attr Acc [AjPStr] Accession number of sequence entry
 ** @attr Spr [AjPStr] Swissprot code of sequence entry
@@ -73,7 +73,7 @@ extern "C"
 ** @attr Typesbj [AjPStr] Bibliographic information ... subjective
 ** @attr Model [AjPStr] String for model type (HMM, Gribskov etc)
 ** @attr Group [AjPStr] 'REDUNDANT' or 'NON_REDUNDANT'
-** @attr Rank [ajint] Rank order of hit
+** @attr Rank [ajuint] Rank order of hit
 ** @attr Score [float] Score of hit
 ** @attr Eval [float] E-value of hit
 ** @attr Pval [float] p-value of hit
@@ -134,17 +134,17 @@ extern "C"
 
 typedef struct AjSScophit
 {
-    ajint     Type;
+    ajuint     Type;
     AjPStr    Class;
     AjPStr    Architecture;
     AjPStr    Topology;
     AjPStr    Fold;
     AjPStr    Superfamily;
     AjPStr    Family;
-    ajint     Sunid_Family;
+    ajuint     Sunid_Family;
     AjPStr    Seq;
-    ajint     Start;
-    ajint     End;
+    ajuint     Start;
+    ajuint     End;
     AjPStr    Acc;
     AjPStr    Spr;
     AjPStr    Dom;        
@@ -152,7 +152,7 @@ typedef struct AjSScophit
     AjPStr    Typesbj;
     AjPStr    Model;
     AjPStr    Group;
-    ajint     Rank;
+    ajuint     Rank;
     float     Score;
     float    Eval;
     float    Pval;
@@ -160,8 +160,9 @@ typedef struct AjSScophit
     AjBool    Target;
     AjBool    Target2;
     AjBool    Priority;
-} AjOScophit;
+} AjOScophit, *AjXScophit ;
 #define AjPScophit AjOScophit*
+#define AjPPScophit AjXScophit*
 
 
 
@@ -182,16 +183,16 @@ typedef struct AjSScophit
 ** @alias AjSScopalg
 ** @alias AjOScopalg
 **
-** @attr Type    [ajint]   Type of domains, either ajSCOP (1) or ajCATH (2).
+** @attr Type    [ajuint]   Type of domains, either ajSCOP (1) or ajCATH (2).
 ** @attr Class [AjPStr] Class name
 ** @attr  Architecture [AjPStr]    CATH classification.
 ** @attr  Topology     [AjPStr]    CATH classification.
 ** @attr Fold [AjPStr] Fold name
 ** @attr Superfamily [AjPStr] Superfamily name
 ** @attr Family [AjPStr] Family name (SCOP only)
-** @attr Sunid_Family [ajint] SCOP sunid for family
-** @attr width [ajint] Width (residues) of widest part of alignment
-** @attr N [ajint] No. of sequences in alignment
+** @attr Sunid_Family [ajuint] SCOP sunid for family
+** @attr width [ajuint] Width (residues) of widest part of alignment
+** @attr N [ajuint] No. of sequences in alignment
 ** @attr Codes [AjPStr*] Array of domain id codes of sequences
 ** @attr Seqs [AjPStr*] Array of sequences
 ** @attr Post_similar [AjPStr] Post_similar line from alignment
@@ -221,16 +222,16 @@ typedef struct AjSScophit
 ****************************************************************************/
 typedef struct AjSScopalg
 {
-    ajint   Type;
+    ajuint   Type;
     AjPStr   Class;
     AjPStr  Architecture;   
     AjPStr  Topology;      
     AjPStr   Fold;
     AjPStr   Superfamily;
     AjPStr   Family;
-    ajint    Sunid_Family;
-    ajint    width;
-    ajint    N;
+    ajuint    Sunid_Family;
+    ajuint    width;
+    ajuint    N;
     AjPStr  *Codes;
     AjPStr  *Seqs;
     AjPStr   Post_similar;
@@ -254,7 +255,7 @@ typedef struct AjSScopalg
 void          ajDmxDummyFunction(void);
 AjPScophit    ajDmxScophitNew(void);
 void          ajDmxScophitDel(AjPScophit *pthis);
-void          ajDmxScophitDelWrap(const void  **ptr);
+void          ajDmxScophitDelWrap(void  **ptr);
 AjPList       ajDmxScophitListCopy(const AjPList ptr);
 
 AjBool        ajDmxScophitCheckTarget(const AjPScophit ptr);

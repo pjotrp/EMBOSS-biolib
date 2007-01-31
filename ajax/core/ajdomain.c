@@ -104,7 +104,7 @@ typedef struct AjSScopcla
 
 /* @datastatic AjPScopdes *****************************************************
 **
-** Nucleus Scopdes object.
+** AJAX Scopdes object.
 **
 ** Holds SCOP database data from raw file (dir.des.scop.txt from SCOP authors)
 **
@@ -135,7 +135,8 @@ typedef struct AjSScopdes
     AjPStr Sccs;
     AjPStr Entry;
     AjPStr Desc;
-} AjOScopdes,*AjPScopdes;
+} AjOScopdes;
+#define AjPScopdes AjOScopdes*
 
 
 
@@ -143,7 +144,7 @@ typedef struct AjSScopdes
 
 /* @datastatic AjPCathDom *****************************************************
 **
-** Nucleus CathDom object
+** AJAX CathDom object
 **
 ** Holds CATH database data from domlist.v2.4. This file only contains
 ** domain information for proteins that have 2 or more domains. 
@@ -171,7 +172,8 @@ typedef struct AjSCathDom
    AjPStr *Start;
    AjPStr *End;          
    ajint  NSegment;
-} AjOCathDom, *AjPCathDom;
+} AjOCathDom;
+#define AjPCathDom AjOCathDom*
 
 
 
@@ -179,7 +181,7 @@ typedef struct AjSCathDom
 
 /* @datastatic AjPCathName ****************************************************
 **
-** Nucleus CathName object
+** AJAX CathName object
 **
 ** Holds CATH database data from CAT.names.all.v2.4. This file contains
 ** a description of each level in the CATH hierarchy. 
@@ -203,7 +205,8 @@ typedef struct AjSCathName
 {
     AjPStr Id;
     AjPStr Desc;          
-} AjOCathName, *AjPCathName;
+} AjOCathName;
+#define AjPCathName AjOCathName*
 
 
 
@@ -222,17 +225,17 @@ static AjPScopdes    domainScopdesNew(void);
 static void          domainScopdesDel(AjPScopdes *ptr);
 static AjPScopdes    domainScopdesRead(AjPFile inf, const AjPStr entry);
 static AjPScopdes    domainScopdesReadC(AjPFile inf, const char *entry);
-static ajint         domainScopdesBinSearch(ajint id, const AjPScopdes *arr,
+static ajint         domainScopdesBinSearch(ajint id, AjPScopdes const *arr,
 					    ajint siz);
 
 static ajint         domainScopdesCompSunid(const void *scop1,
 					    const void *scop2);
 
 static ajint         domainCathNameBinSearch(const AjPStr id,
-					     const AjPCathName *arr,
+					     AjPCathName const *arr,
 					     ajint siz);
 static ajint         domainCathDomBinSearch(const AjPStr id,
-					    const AjPCathDom *arr,
+					    AjPCathDom const *arr,
 					    ajint siz);
 static ajint         domainSortDomainID(const void *DomID1,
 					const void *DomID2);
@@ -673,7 +676,7 @@ static void domainScopclaDel(AjPScopcla *thys)
 ** domainScopdesCompSunid).
 **
 ** @param [r] id  [ajint]        Search value of Sunid
-** @param [r] arr [const AjPScopdes*] Array of Scopdes objects
+** @param [r] arr [AjPScopdes const *] Array of Scopdes objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first Scopdes object found with a Sunid 
@@ -681,7 +684,7 @@ static void domainScopclaDel(AjPScopcla *thys)
 ** @@
 ****************************************************************************/
 
-static ajint domainScopdesBinSearch(ajint id, const AjPScopdes *arr, ajint siz)
+static ajint domainScopdesBinSearch(ajint id, AjPScopdes const *arr, ajint siz)
 {
     int l;
     int m;
@@ -763,11 +766,11 @@ static void domainScopdesDel(AjPScopdes *ptr)
 
 static ajint domainScopdesCompSunid(const void *scop1, const void *scop2)
 {
-    AjPScopdes p = NULL;
-    AjPScopdes q = NULL;
+    const AjPScopdes p = NULL;
+    const AjPScopdes q = NULL;
 
-    p = (*  (AjPScopdes*)scop1);
-    q = (*  (AjPScopdes*)scop2);
+    p = (*  (AjPScopdes const *)scop1);
+    q = (*  (AjPScopdes const *)scop2);
     
     if(p->Sunid < q->Sunid)
 	return -1;
@@ -786,14 +789,14 @@ static ajint domainScopdesCompSunid(const void *scop1, const void *scop2)
 ** case-insensitive search.
 **
 ** @param [r] id  [const AjPStr]       Search term
-** @param [r] arr [const AjPCathName*] Array of CathName objects
+** @param [r] arr [AjPCathName const *] Array of CathName objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first CathName object found with an CATH Id code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
-static ajint domainCathNameBinSearch(const AjPStr id, const AjPCathName *arr,
+static ajint domainCathNameBinSearch(const AjPStr id, AjPCathName const *arr,
 				     ajint siz)
 {
     int l;
@@ -828,14 +831,14 @@ static ajint domainCathNameBinSearch(const AjPStr id, const AjPCathName *arr,
 ** case-insensitive search.
 **
 ** @param [r] id  [const AjPStr]       Search term
-** @param [r] arr [const AjPCathDom*] Array of AjPCathDom objects
+** @param [r] arr [AjPCathDom const *] Array of AjPCathDom objects
 ** @param [r] siz [ajint]        Size of array
 **
 ** @return [ajint] Index of first AjPCathDom object found with an domain code
 ** matching id, or -1 if id is not found.
 ** @@
 ****************************************************************************/
-static ajint domainCathDomBinSearch(const AjPStr id, const AjPCathDom *arr,
+static ajint domainCathDomBinSearch(const AjPStr id, AjPCathDom const *arr,
 				    ajint siz)
 {
     int l;
@@ -1019,11 +1022,11 @@ static void domainCathNameDel(AjPCathName *ptr)
 ****************************************************************************/
 static ajint domainSortNameId(const void *cath1, const void *cath2)
 {
-    AjPCathName p  = NULL;
-    AjPCathName q  = NULL;
+    const AjPCathName p = NULL;
+    const AjPCathName q = NULL;
 
-    p = (*(AjPCathName*)cath1);
-    q = (*(AjPCathName*)cath2);
+    p = (*(AjPCathName const *)cath1);
+    q = (*(AjPCathName const *)cath2);
     
     return ajStrCmpS(p->Id, q->Id);
 }
@@ -1045,11 +1048,11 @@ static ajint domainSortNameId(const void *cath1, const void *cath2)
 ****************************************************************************/
 static ajint domainSortDomainID(const void *DomID1, const void *DomID2)
 {
-    AjPCathDom p  = NULL;
-    AjPCathDom q  = NULL;
+    const AjPCathDom p = NULL;
+    const AjPCathDom q = NULL;
 
-    p = (*(AjPCathDom*)DomID1);
-    q = (*(AjPCathDom*)DomID2);
+    p = (*(AjPCathDom const *)DomID1);
+    q = (*(AjPCathDom const *)DomID2);
     
     return ajStrCmpS(p->DomainID, q->DomainID);
 
@@ -1418,7 +1421,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 	/* Binary search of Search_DomainIDPtr over array of 
 	   CathDom objects */
 	idxCathDom = domainCathDomBinSearch(Search_DomainIDPtr, 
-					 CathDomArray, dimCathDom); 
+					    CathDomArray, dimCathDom); 
 	/* sorted by AjPStr Id */
 	if(idxCathDom != -1		/*match found*/)
 	{
@@ -3146,11 +3149,11 @@ AjBool ajScopCopy(AjPScop *to, const AjPScop from)
 ****************************************************************************/
 ajint ajScopMatchSunid(const void *entry1, const void *entry2)
 {
-    AjPScop p = NULL;
-    AjPScop q = NULL;
+    const AjPScop p = NULL;
+    const AjPScop q = NULL;
 
-    p = (*(AjPScop*)entry1);
-    q = (*(AjPScop*)entry2);
+    p = (*(AjPScop const *)entry1);
+    q = (*(AjPScop const *)entry2);
    
 
     if(p->Sunid_Family < q->Sunid_Family)
@@ -3180,11 +3183,11 @@ ajint ajScopMatchSunid(const void *entry1, const void *entry2)
 
 ajint ajScopMatchScopid(const void *hit1, const void *hit2)
 {
-    AjPScop p = NULL;
-    AjPScop q = NULL;
+    const AjPScop p = NULL;
+    const AjPScop q = NULL;
 
-    p = (*(AjPScop*)hit1);
-    q = (*(AjPScop*)hit2);
+    p = (*(AjPScop const *)hit1);
+    q = (*(AjPScop const *)hit2);
     
     return ajStrCmpS(p->Entry, q->Entry);
 }
@@ -3208,11 +3211,11 @@ ajint ajScopMatchScopid(const void *hit1, const void *hit2)
 
 ajint ajScopMatchPdbId(const void *hit1, const void *hit2)
 {
-    AjPScop p = NULL;
-    AjPScop q = NULL;
+    const AjPScop p = NULL;
+    const AjPScop q = NULL;
 
-    p = (*(AjPScop*)hit1);
-    q = (*(AjPScop*)hit2);
+    p = (*(AjPScop const *)hit1);
+    q = (*(AjPScop const *)hit2);
     
     return ajStrCmpS(p->Pdb, q->Pdb);
 }
@@ -3236,11 +3239,11 @@ ajint ajScopMatchPdbId(const void *hit1, const void *hit2)
 
 ajint ajCathMatchPdbId(const void *hit1, const void *hit2)
 {
-    AjPCath p = NULL;
-    AjPCath q = NULL;
+    const AjPCath p = NULL;
+    const AjPCath q = NULL;
 
-    p = (*(AjPCath*)hit1);
-    q = (*(AjPCath*)hit2);
+    p = (*(AjPCath const *)hit1);
+    q = (*(AjPCath const *)hit2);
     
     return ajStrCmpS(p->Pdb, q->Pdb);
 }

@@ -30,7 +30,7 @@
 static void tfscan_print_hits(const AjPStr name, AjPList *l, ajint hits,
 			      AjPFile outf, ajint begin, ajint end,
 			      const AjPTable t, const AjPSeq seq,
-			      ajint minlength,
+			      ajuint minlength,
 			      const AjPTable btable);
 
 
@@ -119,10 +119,10 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	begin=ajSeqallBegin(seqall);
-	end=ajSeqallEnd(seqall);
-	ajStrAssignC(&name,ajSeqName(seq));
-	strand=ajSeqStrCopy(seq);
+	begin=ajSeqallGetseqBegin(seqall);
+	end=ajSeqallGetseqEnd(seqall);
+	ajStrAssignC(&name,ajSeqGetNameC(seq));
+	strand=ajSeqGetSeqCopyS(seq);
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 	ajStrFmtUpper(&substr);
@@ -159,10 +159,10 @@ int main(int argc, char **argv)
 	    {
 		key = ajStrNewC(ajStrGetPtr(pname));
 		value = ajStrNewC(ajStrGetPtr(acc));
-		ajTablePut(atable,(const void *)key,(void *)value);
+		ajTablePut(atable,(void *)key,(void *)value);
 		key = ajStrNewC(ajStrGetPtr(pname));
 		value = ajStrNewC(ajStrGetPtr(bf));
-		ajTablePut(btable,(const void *)key,(void *)value);
+		ajTablePut(btable,(void *)key,(void *)value);
 	    }
 	    sum += v;
 	}
@@ -208,7 +208,7 @@ int main(int argc, char **argv)
 ** @param [r] end [ajint] sequence end
 ** @param [r] t [const AjPTable] table of accession numbers
 ** @param [r] seq [const AjPSeq] test sequence
-** @param [r] minlength [ajint] minimum length of pattern
+** @param [r] minlength [ajuint] minimum length of pattern
 ** @param [r] btable [const AjPTable] BF lines from transfac (if any)
 ** @@
 ******************************************************************************/
@@ -216,7 +216,7 @@ int main(int argc, char **argv)
 static void tfscan_print_hits(const AjPStr name, AjPList *l,
 			      ajint hits, AjPFile outf,
 			      ajint begin, ajint end, const AjPTable t,
-			      const AjPSeq seq, ajint minlength,
+			      const AjPSeq seq, ajuint minlength,
 			      const  AjPTable btable)
 {
     ajint i;
@@ -249,7 +249,7 @@ static void tfscan_print_hits(const AjPStr name, AjPList *l,
 	
 	ajStrAssignS(&lastnam,m->seqname);
 
-	ajStrAssignSubC(&s,ajSeqChar(seq),m->start-1,m->start+m->len-2);
+	ajStrAssignSubC(&s,ajSeqGetSeqC(seq),m->start-1,m->start+m->len-2);
 
 	if(ajStrGetLen(s) >= minlength)
 	    ajFmtPrintF(outf,"%-20s %-8s %-5d %-5d %s\n",ajStrGetPtr(m->seqname),

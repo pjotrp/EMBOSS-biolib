@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     float *curve;
     float *bend;
     const char *ptr;
-    ajint i;
+    ajuint i;
     ajint k;
     ajint j;
     char residue[2];
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
     float fxp;
     float fyp;
     float yincr;
-    float y1;
+    float yy1;
     ajint ixlen;
     ajint iylen;
     ajint ixoff;
@@ -95,6 +95,7 @@ int main(int argc, char **argv)
     ajint iend;
     ajint ilen;
     AjPStr sstr = NULL;
+    ajint ipos;
     float dx;
     float dy;
     float rxsum;
@@ -113,7 +114,7 @@ int main(int argc, char **argv)
     ibeg = ajSeqGetBegin(seq);
     iend = ajSeqGetEnd(seq);
 
-    ajStrAssignSubS(&sstr, ajSeqStr(seq), ibeg-1, iend-1);
+    ajStrAssignSubS(&sstr, ajSeqGetSeqS(seq), ibeg-1, iend-1);
     ilen = ajStrGetLen(sstr);
 
     AJCNEW0(iseq,ilen+1);
@@ -275,7 +276,7 @@ int main(int argc, char **argv)
 
 	ystart = 75.0;
 
-	ajGraphSetTitlePlus(graph, ajSeqGetUsa(seq));
+	ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
 	ajGraphOpenWin(graph,-1.0, (float)numres+10.0, 0.0, ystart+5.0);
 
@@ -314,9 +315,9 @@ int main(int argc, char **argv)
 	yincr = (currentheight +3.0)*0.3;
 
 	if(!title)
-	    y1 = ystart;
+	    yy1 = ystart;
 	else
-	    y1 = ystart-5.0;
+	    yy1 = ystart-5.0;
 
 	count = 1;
 
@@ -327,43 +328,48 @@ int main(int argc, char **argv)
 
 	ptr = ajStrGetPtr(sstr);
 
-	y1 = y1-(yincr*(5.0));
+	yy1 = yy1-(yincr*(5.0));
 	for(i=1;i<=ajStrGetLen(sstr);i++)
 	{
 	    if(count > numres)
 	    {
-		y1 = y1-(yincr*(5.0));
-		if(y1<1.0)
+		yy1 = yy1-(yincr*(5.0));
+		if(yy1<1.0)
 		{
 		    if(!title)
-			y1=ystart;
+			yy1=ystart;
 		    else
-			y1 = ystart-5.0;
+			yy1 = ystart-5.0;
 
-		    y1 = y1-(yincr*(5.0));
+		    yy1 = yy1-(yincr*(5.0));
 		    ajGraphNewPage(graph,AJFALSE);
 		}
 		count = 1;
 	    }
 	    residue[0] = *ptr;
 
-	    ajGraphTextEnd((float)(count)+2.0,y1,residue);
+	    ajGraphTextEnd((float)(count)+2.0,yy1,residue);
 
 	    if(i>1 && i < ajStrGetLen(sstr))
 	    {
-		yp1 = y1+yincr + (bend[i]*bendfactor);
-		yp2 = y1+yincr + (bend[i+1]*bendfactor);
+		yp1 = yy1+yincr + (bend[i]*bendfactor);
+		yp2 = yy1+yincr + (bend[i+1]*bendfactor);
 		ajGraphLine((float)count+1.5,yp1,(float)(count)+2.5,yp2);
 	    }
 
-	    if(i>(ajint)rcurve+5 && i< ajStrGetLen(sstr)-(ajint)rcurve-7)
+	    ipos = ajStrGetLen(sstr)-(ajint)rcurve-7;
+	    if(ipos < 0)
+		ipos = 0;
+
+	    if(i>(ajuint)rcurve+5 && i< (ajuint) ipos)
 	    {
-		yp1 = y1+yincr + (curve[i]*curvefactor);
-		yp2 = y1+yincr + (curve[i+1]*curvefactor);
+		yp1 = yy1+yincr + (curve[i]*curvefactor);
+		yp2 = yy1+yincr + (curve[i+1]*curvefactor);
 		ajGraphLine((float)count+1.7,yp1,(float)(count)+2.3,yp2);
 	    }
 
-	    ajGraphLine((float)count+1.5,y1+yincr,(float)(count)+2.5,y1+yincr);
+	    ajGraphLine((float)count+1.5,yy1+yincr,
+			(float)(count)+2.5,yy1+yincr);
 
 	    count++;
 	    ptr++;

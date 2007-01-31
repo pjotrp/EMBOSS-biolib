@@ -138,7 +138,9 @@ static int depth(struct loop *lp);
 static logical connected_connection(struct connection *cp, struct connection *cpnext);
 static int    find_ic_middle(int icstart, int icend, struct connection *anchor_connection, struct connection *acp, struct loop *lp);
 
-
+int naview_xy_coordinates(short *pair_table, float *X, float *Y);
+
+
 int naview_xy_coordinates(short *pair_table, float *X, float *Y) {
   int i;
   

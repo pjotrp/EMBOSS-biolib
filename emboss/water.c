@@ -42,8 +42,8 @@ int main(int argc, char **argv)
 
     AjBool  show = ajFalse;
 
-    ajint lena;
-    ajint lenb;
+    ajuint lena;
+    ajuint lenb;
 
     const char *p;
     const char *q;
@@ -118,9 +118,6 @@ int main(int argc, char **argv)
 	   ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
 
 	len = lena*lenb;
-
-	if(len < 0)
-	    ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
 
 	if(len>maxarr)
 	{

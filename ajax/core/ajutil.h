@@ -14,8 +14,8 @@ extern "C"
 */
 
 void   ajExit (void);
-ajint  ajExitAbort (void);
-ajint  ajExitBad (void);
+void   ajExitAbort (void);
+void   ajExitBad (void);
 void   ajLogInfo (void);
 AjBool ajUtilBigendian (void);
 void   ajUtilCatch (void);

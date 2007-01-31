@@ -123,8 +123,8 @@ void         ajAlignSetGapI (AjPAlign thys, ajint gappen, ajint extpen);
 void         ajAlignSetGapR (AjPAlign thys, float gappen, float extpen);
 void         ajAlignSetMatrixName (AjPAlign thys, const AjPStr matrix);
 void         ajAlignSetMatrixNameC (AjPAlign thys, const char* matrix);
-void         ajAlignSetMatrixInt (AjPAlign thys, const AjPMatrix matrix);
-void         ajAlignSetMatrixFloat (AjPAlign thys, const AjPMatrixf matrix);
+void         ajAlignSetMatrixInt (AjPAlign thys, AjPMatrix matrix);
+void         ajAlignSetMatrixFloat (AjPAlign thys, AjPMatrixf matrix);
 AjBool       ajAlignSetRange (AjPAlign thys,
 			      ajint start1, ajint end1,
 			      ajint len1, ajint off1,

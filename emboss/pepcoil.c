@@ -129,10 +129,10 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 
-	strand = ajSeqStrCopy(seq);
+	strand = ajSeqGetSeqCopyS(seq);
 	ajStrFmtUpper(&strand);
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 
 	for(i=0;i<len;++i) ajIntPut(&parray,i,i);
 
-	ajFmtPrintF(outf,"PEPCOIL of %s\n",ajSeqName(seq));
+	ajFmtPrintF(outf,"PEPCOIL of %s\n",ajSeqGetNameC(seq));
 	ajFmtPrintF(outf,"   using a window of %d residues\n\n",window);
 	iscoil = (ajFloatGet(probs,0) >= 0.5);
 	startcoil = 0;

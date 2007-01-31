@@ -42,14 +42,14 @@ int global = 0;
 ** @alias DbxflatSParser
 ** @alias DbxflatOParser
 **
-** @attr Name [char*] Parser name
+** @attr Name [const char*] Parser name
 ** @attr Parser [(AjBool*)] Parser function
 ** @@
 ******************************************************************************/
 
 typedef struct DbxflatSParser
 {
-    char* Name;
+    const char* Name;
     AjBool (*Parser) (EmbPBtreeEntry entry, AjPFile inf);
 } DbxflatOParser;
 #define DbxflatPParser DbxflatOParser*

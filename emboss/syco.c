@@ -59,7 +59,7 @@ int main(int argc, char **argv)
     AjPGraph graph = NULL;
     AjPGraphPlpData this = NULL;
 
-    char *frames[]=
+    const char *frames[]=
     {
 	"Frame 1","Frame 2","Frame 3"
     };

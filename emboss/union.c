@@ -148,8 +148,8 @@ int main(int argc, char **argv)
     if (feature)
 	seqout->Features = AJTRUE;
 */
-    ajSeqWrite (seqout, uniseq);
-    ajSeqWriteClose (seqout);
+    ajSeqoutWriteSeq(seqout, uniseq);
+    ajSeqoutClose(seqout);
 
     if (overlap_file) {
       ajFileClose (&overlap_file);
@@ -177,12 +177,12 @@ static ajulong union_GetOverlap (const AjPSeq first_seq,
   const AjPStr first_seq_str = ajSeqGetSeqS(first_seq);
   const AjPStr second_seq_str = ajSeqGetSeqS(second_seq);
 
-  int i = ajSeqGetLen(first_seq);
+  ajint i = ajSeqGetLen(first_seq);
 
   const char * first_str = ajStrGetPtr(first_seq_str);
   const char * second_str = ajStrGetPtr(second_seq_str);
 
-  if (i > ajStrGetLen(second_seq_str)) {
+  if (i > (ajint)ajStrGetLen(second_seq_str)) {
     i = ajStrGetLen(second_seq_str);
   }
 

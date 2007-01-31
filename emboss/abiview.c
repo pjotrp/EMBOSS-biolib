@@ -31,13 +31,12 @@ static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs,
 					    ajint nstart, ajint nstop,
 					    const AjPShort  basePositions,
 					    ajint base,
-					    ajint colour, AjBool overlay,
+					    ajint colour,
 					    float tmax, ajint* ntrace);
 
 static AjPGraphPlpData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
 						ajint nstop,
 						const AjPShort basePositions,
-						AjBool overlay,
 						const AjPStr nseq,
 						float tmax, ajint nt);
 
@@ -185,8 +184,8 @@ int main(int argc, char **argv)
     tmax = 0.;
     for(iloop=0;iloop<numPoints;iloop++)
 	for(ibase=0;ibase<4;ibase++)
-	    if(tmax < (float)ajInt2dGet(trace,ibase,iloop))
-		tmax = (float)ajInt2dGet(trace,ibase,iloop);
+	    if(tmax < ajInt2dGet(trace,ibase,iloop))
+		tmax = ajInt2dGet(trace,ibase,iloop);
 
 
     /* setup graph parameters */
@@ -224,25 +223,25 @@ int main(int argc, char **argv)
 
 	if(graph1)
 	    gd1 = abiview_graphDisplay(graphs,trace,nstart,nstop,basePositions,
-				       0,abiview_getResColour(res1),overlay,
+				       0,abiview_getResColour(res1),
 				       tmax,&ntrace);
 
 	ntrace = strace;
 	if(graph2)
 	    gd2 = abiview_graphDisplay(graphs,trace,nstart,nstop,basePositions,
-				       1,abiview_getResColour(res2),overlay,
+				       1,abiview_getResColour(res2),
 				       tmax,&ntrace);
 	ntrace = strace;
 
 	if(graph3)
 	    gd3 = abiview_graphDisplay(graphs,trace,nstart,nstop,basePositions,
-				       2,abiview_getResColour(res3),overlay,
+				       2,abiview_getResColour(res3),
 				       tmax,&ntrace);
 	ntrace = strace;
 
 	if(graph4)
 	    gd4 = abiview_graphDisplay(graphs,trace,nstart,nstop,basePositions,
-				       3,abiview_getResColour(res4),overlay,
+				       3,abiview_getResColour(res4),
 				       tmax,&ntrace);
 
 
@@ -251,7 +250,7 @@ int main(int argc, char **argv)
 	{
 	    if(!overlay)
 		gd5 = abiview_graphTextDisplay(graphs,nstart,nstop,
-					       basePositions,overlay,nseq,
+					       basePositions,nseq,
 					       tmax,strace);
 	    else
 		abiview_TextDisplay(graphs,nstart,nstop,nseq,tmax);
@@ -307,8 +306,8 @@ int main(int argc, char **argv)
     ajSeqAssignNameS(seqo,fname);
     ajSeqAssignSeqS(seqo,nseq);
     ajSeqSetRange(seqo,base_start,ajSeqGetEnd(seqo));
-    ajSeqWrite(seqout,seqo);
-    ajSeqWriteClose(seqout);
+    ajSeqoutWriteSeq(seqout,seqo);
+    ajSeqoutClose(seqout);
     ajStrDel(&nseq);
     ajSeqDel(&seqo);
     ajSeqoutDel(&seqout);
@@ -334,7 +333,6 @@ int main(int argc, char **argv)
 ** @param [r] basePositions [const AjPShort] Number of bases
 ** @param [r] base [ajint] Base number
 ** @param [r] colour [ajint] Colour code
-** @param [r] overlay [AjBool] Overlay plot
 ** @param [r] tmax [float] Maximum
 ** @param [w] nt [ajint*] Number of nucleotides
 ** @return [AjPGraphPlpData] graph data object
@@ -346,7 +344,7 @@ static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs,
 					    ajint nstart, ajint nstop,
 					    const AjPShort  basePositions,
 					    ajint base, ajint colour,
-					    AjBool overlay, float tmax,
+					    float tmax,
 					    ajint* nt)
 {
     ajint i;
@@ -374,7 +372,7 @@ static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs,
 	{
 	    gdata->x[*nt-bstart] = (float)i + (float)(*nt+1-lastbP)/
 		(float)(bP-lastbP);
-	    gdata->y[*nt-bstart] = (float)ajInt2dGet(trace,base,*nt);
+	    gdata->y[*nt-bstart] = ajInt2dGet(trace,base,*nt);
 	    *nt = *nt+1;
 	}
 	lastbP = bP;
@@ -402,7 +400,6 @@ static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs,
 ** @param [r] nstart [ajint] Start
 ** @param [r] nstop [ajint] Stop
 ** @param [r] basePositions [const AjPShort] Base positions
-** @param [r] overlay [AjBool] Overlay
 ** @param [r] nseq [const AjPStr] Sequence number
 ** @param [r] tmax [float] Maximum
 ** @param [r] nt [ajint] Nt data
@@ -413,7 +410,7 @@ static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs,
 static AjPGraphPlpData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
 					     ajint nstop,
 					     const AjPShort basePositions,
-					     AjBool overlay, const AjPStr nseq,
+					     const AjPStr nseq,
 					     float tmax, ajint nt)
 {
     ajint i;

@@ -125,13 +125,13 @@ static AjBool              nexusParseUnaligned(AjPNexus thys, AjPList list);
 static AjBool              nexusGetBool(AjPStr src, AjPRegexp exp,
 					ajint isub, AjBool* dest);
 static AjBool              nexusGetInt(AjPStr src, AjPRegexp exp,
-				       ajint isub, ajint* dest);
+				       ajint isub, ajuint* dest);
 static AjBool              nexusGetChar(AjPStr src, AjPRegexp exp,
 				       ajint isub, char* dest);
 static AjBool              nexusGetStr(AjPStr src, AjPRegexp exp,
 				       ajint isub, AjPStr* dest);
 static ajint               nexusGetArray(AjPStr src, AjPRegexp exp,
-					 ajint isub, AjPStr** dest);
+					 AjPStr** dest);
 static AjBool              nexusVocab(const char* title, const AjPStr src,
 				      const char* vocab[]);
 static AjBool              nexusSetSequences(AjPNexus thys);
@@ -827,7 +827,7 @@ static AjBool nexusParseTaxa(AjPNexus thys, AjPList list)
 {
     AjPStr command = NULL;
     AjPStr cmdstr = NULL;
-    ajint i;
+    ajuint i;
 
     static AjPRegexp dimexp = NULL;
     static AjPRegexp taxlabexp = NULL;
@@ -862,7 +862,7 @@ static AjBool nexusParseTaxa(AjPNexus thys, AjPList list)
 		ajDebug("nexusParseTaxa failed: dimension Ntax not found\n");
 		return ajFalse;
 	    }
-	    i = nexusGetArray(cmdstr, taxlabexp, 0, &thys->Taxa->TaxLabels);
+	    i = nexusGetArray(cmdstr, taxlabexp, &thys->Taxa->TaxLabels);
 	    if (i != thys->Taxa->Ntax)
 	    {
 		ajDebug("nexusParseTaxa failed: Ntax %d read %d TaxLabels\n",
@@ -897,7 +897,7 @@ static AjBool nexusParseCharacters(AjPNexus thys, AjPList list, AjBool newtaxa)
 {
     AjPStr command = NULL;
     AjPStr cmdstr = NULL;
-    ajint i;
+    ajuint i;
 
     static AjPRegexp newlinexp = NULL;
     static AjPRegexp dimexp1 = NULL;
@@ -1010,7 +1010,7 @@ static AjBool nexusParseCharacters(AjPNexus thys, AjPList list, AjBool newtaxa)
 	{
 	    if (!thys->Taxa)
 		thys->Taxa = nexusTaxaNew();
-	    i = nexusGetArray(cmdstr, taxlabexp, 0, &thys->Taxa->TaxLabels);
+	    i = nexusGetArray(cmdstr, taxlabexp, &thys->Taxa->TaxLabels);
 	    if (i != thys->Taxa->Ntax)
 	    {
 		ajDebug("nexusParseCharacters "
@@ -1021,22 +1021,22 @@ static AjBool nexusParseCharacters(AjPNexus thys, AjPList list, AjBool newtaxa)
 	}
 	else if (ajStrMatchCaseC(command, "charstatelabels"))
 	{
-	    i = nexusGetArray(cmdstr, chstlabexp, 0,
+	    i = nexusGetArray(cmdstr, chstlabexp,
 			    &thys->Characters->CharStateLabels);
 	}
 	else if (ajStrMatchCaseC(command, "charlabels"))
 	{
-	    i = nexusGetArray(cmdstr, chlabexp, 0,
+	    i = nexusGetArray(cmdstr, chlabexp,
 			    &thys->Characters->CharLabels);
 	}
 	else if (ajStrMatchCaseC(command, "statelabels"))
 	{
-	    i = nexusGetArray(cmdstr, chstlabexp, 0,
+	    i = nexusGetArray(cmdstr, chstlabexp,
 			    &thys->Characters->StateLabels);
 	}
 	else if (ajStrMatchCaseC(command, "matrix"))
 	{
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Characters->Matrix);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Characters->Matrix);
 	}
 	else if (ajStrMatchCaseC(command, "options")) /* not 1997 standard */
 	{
@@ -1142,7 +1142,7 @@ static AjBool nexusParseUnaligned(AjPNexus thys, AjPList list)
 	}
 	else if (ajStrMatchCaseC(command, "matrix"))
 	{
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Unaligned->Matrix);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Unaligned->Matrix);
 	}
 	else
 	{
@@ -1168,7 +1168,7 @@ static AjBool nexusParseDistances(AjPNexus thys, AjPList list)
 {
     AjPStr command = NULL;
     AjPStr cmdstr = NULL;
-    ajint i;
+    ajuint i;
 
     static AjPRegexp newlinexp = NULL;
     static AjPRegexp dimexp1 = NULL;
@@ -1234,7 +1234,7 @@ static AjBool nexusParseDistances(AjPNexus thys, AjPList list)
 	{
 	    if (!thys->Taxa)
 		thys->Taxa = nexusTaxaNew();
-	    i = nexusGetArray(cmdstr, taxlabexp, 0, &thys->Taxa->TaxLabels);
+	    i = nexusGetArray(cmdstr, taxlabexp, &thys->Taxa->TaxLabels);
 	    if (i != thys->Taxa->Ntax)
 	    {
 		ajDebug("nexusParseCharacters failed: "
@@ -1244,7 +1244,7 @@ static AjBool nexusParseDistances(AjPNexus thys, AjPList list)
 	    }
 	}
 	else if (ajStrMatchCaseC(command, "matrix"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Characters->Matrix);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Characters->Matrix);
 	else
 	{
 	    ajDebug("nexusParseDistances unknown command '%S' ignored\n",
@@ -1283,23 +1283,23 @@ static AjBool nexusParseSets(AjPNexus thys, AjPList list)
     {
 	ajDebug("nexusParseSets %S: '%S'\n", command, cmdstr);
 	if (ajStrMatchCaseC(command, "charset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Sets->CharSet);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Sets->CharSet);
 	else if (ajStrMatchCaseC(command, "stateset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Sets->StateSet);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Sets->StateSet);
 	else if (ajStrMatchCaseC(command, "changeset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Sets->ChangeSet);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Sets->ChangeSet);
 	else if (ajStrMatchCaseC(command, "taxset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Sets->TaxSet);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Sets->TaxSet);
 	else if (ajStrMatchCaseC(command, "treeset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Sets->TreeSet);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Sets->TreeSet);
 	else if (ajStrMatchCaseC(command, "charpartition"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Sets->CharPartition);
 	else if (ajStrMatchCaseC(command, "taxpartition"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Sets->TaxPartition);
 	else if (ajStrMatchCaseC(command, "treepartition"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Sets->TreePartition);
 	else
 	{
@@ -1361,32 +1361,32 @@ static AjBool nexusParseAssumptions(AjPNexus thys, AjPList list)
 			   nexusAssumptionsGapMode);
 	}
 	else if (ajStrMatchCaseC(command, "usertype"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Assumptions->UserType);
 	else if (ajStrMatchCaseC(command, "typeset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Assumptions->TypeSet);
 	else if (ajStrMatchCaseC(command, "wtset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Assumptions->WtSet);
 	else if (ajStrMatchCaseC(command, "exset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Assumptions->ExSet);
 	else if (ajStrMatchCaseC(command, "ancstates"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Assumptions->AncStates);
 	else if (ajStrMatchCaseC(command, "taxset")) /* not 1997 standard */
 	{
 	    if (!thys->Sets)
 		thys->Sets = nexusSetsNew();
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Sets->TaxSet);
 	}
 	else if (ajStrMatchCaseC(command, "charset")) /* not 1997 standard */
 	{
 	    if (!thys->Sets)
 		thys->Sets = nexusSetsNew();
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Sets->CharSet);
 	}
 	else
@@ -1426,13 +1426,13 @@ static AjBool nexusParseCodons(AjPNexus thys, AjPList list)
     while (nexusCommand(list, &command, &cmdstr))
     {
 	if (ajStrMatchCaseC(command, "codonposset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Codons->CodonPosSet);
 	else if (ajStrMatchCaseC(command, "geneticcode"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Codons->GeneticCode);
 	else if (ajStrMatchCaseC(command, "codeset"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0,
+	    i = nexusGetArray(cmdstr, newlinexp,
 			      &thys->Codons->CodeSet);
 	else
 	{
@@ -1471,9 +1471,9 @@ static AjBool nexusParseTrees(AjPNexus thys, AjPList list)
     while (nexusCommand(list, &command, &cmdstr))
     {
 	if (ajStrMatchCaseC(command, "translate"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Trees->Translate);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Trees->Translate);
 	else if (ajStrMatchCaseC(command, "tree"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Trees->Tree);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Trees->Tree);
 	else
 	{
 	    ajDebug("nexusParseTrees unknown command '%S' ignored\n",
@@ -1511,9 +1511,9 @@ static AjBool nexusParseNotes(AjPNexus thys, AjPList list)
     while (nexusCommand(list, &command, &cmdstr))
     {
 	if (ajStrMatchCaseC(command, "text"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Notes->Text);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Notes->Text);
 	else if (ajStrMatchCaseC(command, "picture"))
-	    i = nexusGetArray(cmdstr, newlinexp, 0, &thys->Notes->Picture);
+	    i = nexusGetArray(cmdstr, newlinexp, &thys->Notes->Picture);
 	else
 	{
 	    ajDebug("nexusParseNotes unknown command '%S' ignored\n",
@@ -1532,12 +1532,11 @@ static AjBool nexusParseNotes(AjPNexus thys, AjPList list)
 **
 ** @param [w] src [AjPStr] Command string
 ** @param [u] exp [AjPRegexp] Compiled regular expression for parsing
-** @param [r] isub [ajint] Substring number to extract
 ** @param [w] dest [AjPStr**] Array generated
 ** @return [ajint] Number of strings returned
 ******************************************************************************/
 
-static ajint nexusGetArray(AjPStr src, AjPRegexp exp, ajint isub,
+static ajint nexusGetArray(AjPStr src, AjPRegexp exp,
 			    AjPStr** dest)
 {
     AjPList strlist;
@@ -1619,17 +1618,17 @@ static AjBool nexusGetChar(AjPStr src, AjPRegexp exp, ajint isub, char* dest)
 ** @param [w] src [AjPStr] Command string
 ** @param [u] exp [AjPRegexp] Compiled regular expression for parsing
 ** @param [r] isub [ajint] Substring number to extract
-** @param [w] dest [ajint*] Integer generated
+** @param [w] dest [ajuint*] Integer generated
 ** @return [AjBool] ajTrue on success
 ******************************************************************************/
 
-static AjBool nexusGetInt(AjPStr src, AjPRegexp exp, ajint isub, ajint* dest)
+static AjBool nexusGetInt(AjPStr src, AjPRegexp exp, ajint isub, ajuint* dest)
 {
     static AjPStr tmpstr = NULL;
     if (ajRegExec(exp, src))
     {
 	ajRegSubI(exp, isub, &tmpstr);
-	return (ajStrToInt(tmpstr, dest));
+	return (ajStrToUint(tmpstr, dest));
     }
     return ajFalse;
 }
@@ -2132,11 +2131,11 @@ AjPStr* ajNexusGetTaxa(const AjPNexus thys)
 ** Returns the number of taxa
 **
 ** @param [r] thys [const AjPNexus] Nexus object
-** @return [ajint] Number of taxa
+** @return [ajuint] Number of taxa
 ** @@
 ******************************************************************************/
 
-ajint ajNexusGetNtaxa(const AjPNexus thys)
+ajuint ajNexusGetNtaxa(const AjPNexus thys)
 {
     if (thys->Taxa)
 	return thys->Taxa->Ntax;
@@ -2182,7 +2181,7 @@ static AjBool nexusSetSequences(AjPNexus thys)
     AjPStr rdline = NULL;
     AjPStr seqstr = NULL;
     AjBool havetaxa = ajFalse;
-    ajint itax=0;
+    ajuint itax=0;
     AjPRegexp word;
     char gapch;
 

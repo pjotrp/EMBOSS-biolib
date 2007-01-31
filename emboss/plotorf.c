@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     ajint i;
     ajint j;
 
-    char *ftit[6]=
+    const char *ftit[6]=
     {
 	"F1","F2","F3","R1","R2","R3"
     };

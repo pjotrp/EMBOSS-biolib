@@ -48,9 +48,9 @@ int main(int argc, char **argv)
     float matrix2[AZ];
     float err2[AZ];		/* octanol values   */
     AjPSeq seq;
-    ajint llen;
-    ajint i;
-    ajint j;
+    ajuint llen;
+    ajuint i;
+    ajuint j;
     AjPGraphPlpData graphdata;
     AjPGraphPlpData graphdata2;
     AjPGraphPlpData graphdata3;
@@ -77,10 +77,14 @@ int main(int argc, char **argv)
     float ymin3 = 64000.;
     float ymax3 = -64000.;
     float v;
+    float flen;
+    ajuint ilen;
 
     ajGraphInit("octanol", argc, argv);
 
     seq = ajAcdGetSeq("sequence");
+    ilen = ajSeqGetLen(seq);
+    flen = ajSeqGetLen(seq);
 
     mult = ajAcdGetGraphxy("graph");
     datafile  = ajAcdGetDatafile("datafile");
@@ -93,7 +97,7 @@ int main(int argc, char **argv)
 				    &err2[0]))
 	ajFatal("Could not read data file");
 
-    graphdata = ajGraphPlpDataNewI(ajSeqGetLen(seq)-llen);
+    graphdata = ajGraphPlpDataNewI(ilen-llen);
     ajGraphPlpDataSetColour(graphdata,GREEN);
 
     if(interface)
@@ -104,7 +108,7 @@ int main(int argc, char **argv)
     }
 
 
-    graphdata3 = ajGraphPlpDataNewI(ajSeqGetLen(seq)-llen);
+    graphdata3 = ajGraphPlpDataNewI(ilen-llen);
     ajGraphPlpDataSetColour(graphdata3,BLACK);
 
     if(difference)
@@ -114,7 +118,7 @@ int main(int argc, char **argv)
 	ajGraphPlpDataSetTypeC(graphdata3,"2D Plot");
     }
 
-    graphdata2 = ajGraphPlpDataNewI(ajSeqGetLen(seq)-llen);
+    graphdata2 = ajGraphPlpDataNewI(ilen-llen);
     ajGraphPlpDataSetColour(graphdata2,RED);
 
     if(octanol)
@@ -126,8 +130,7 @@ int main(int argc, char **argv)
 	ajGraphPlpDataSetTypeC(graphdata3,"Overlay 2D Plot");
     }
 
-
-    ajGraphAddLine(mult,0.0,0.0,(float)ajSeqGetLen(seq),0.0,BLACK);
+    ajGraphAddLine(mult,0.0,0.0,flen,0.0,BLACK);
 
     midpoint = ((float)llen+1.0)/2.0;
 
@@ -141,7 +144,7 @@ int main(int argc, char **argv)
 	total2 += matrix2[ajAZToInt(s1[j])];
     }
 
-    for(i=0;i<ajSeqGetLen(seq)-llen;i++)
+    for(i=0;i<ilen-llen;i++)
     {
 	v = graphdata->x[i] = (float)i+midpoint;
 	xmin1 = (xmin1<v) ? xmin1 : v;
@@ -187,7 +190,7 @@ int main(int argc, char **argv)
     min = min*1.1;
     max = max*1.1;
 
-    ajGraphxySetMaxMin(mult,0.0,(float)ajSeqGetLen(seq),min,max);
+    ajGraphxySetMaxMin(mult,0.0,flen,min,max);
     ajGraphPlpDataSetMaxima(graphdata,xmin1,xmax1,ymin1,ymax1);
     ajGraphPlpDataSetMaxima(graphdata2,xmin2,xmax2,ymin2,ymax2);
     ajGraphPlpDataSetMaxima(graphdata3,xmin3,xmax3,ymin3,ymax3);

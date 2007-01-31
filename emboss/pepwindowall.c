@@ -50,12 +50,12 @@ int main(int argc, char **argv)
     const char *seq;
     const char *s1;
     ajint *position;
-    ajint i;
-    ajint j;
-    ajint k;
-    ajint w;
+    ajuint i;
+    ajuint j;
+    ajuint k;
+    ajuint w;
     ajint a;
-    ajint midpoint,llen,maxlen;
+    ajuint midpoint,llen, maxlen, maxsize;
     float total;
     float matrix[AZ];
     float min = 555.5;
@@ -66,6 +66,7 @@ int main(int argc, char **argv)
     float ymax = -64000.;
     ajint beg;
     ajint end;
+    float flen;
 
     ajGraphInit("pepwindowall", argc, argv);
 
@@ -77,24 +78,27 @@ int main(int argc, char **argv)
     if(!pepwindowall_getnakaidata(datafile,&matrix[0]))
 	ajExitBad();
 
-    maxlen   = ajSeqsetLen(seqset);
+    maxlen   = ajSeqsetGetLen(seqset);
     aa0str   = ajStrNewRes(maxlen);
     midpoint = (ajint)((llen+1)/2);
+    flen = ajSeqsetGetLen(seqset);
+    maxsize = ajSeqsetGetSize(seqset);
 
-    AJCNEW(position, ajSeqsetLen(seqset));
+    AJCNEW(position, maxlen);
 
-    for(i=0;i<ajSeqsetSize(seqset);i++)
+    for(i=0;i<maxsize;i++)
     {
-	seq = ajSeqsetSeq(seqset, i);
+	seq = ajSeqsetGetseqSeqC(seqset, i);
 	ajStrSetClear(&aa0str);
 
-	graphdata = ajGraphPlpDataNewI(ajSeqsetLen(seqset));
+
+	graphdata = ajGraphPlpDataNewI(maxlen);
 	ajGraphPlpDataSetTypeC(graphdata,"Overlay 2D Plot");
 	ymin = 64000.;
 	ymax = -64000.;
 
 
-	for(k=0;k<ajSeqsetLen(seqset) ;k++)
+	for(k=0;k<maxlen ;k++)
 	    graphdata->x[k] = FLT_MIN;
 
 	s1 = seq;
@@ -150,7 +154,7 @@ int main(int argc, char **argv)
 	while(graphdata->x[end--]<0.00001)
 	    --graphdata->numofpoints;
 
-	end = ajSeqsetLen(seqset)-1;
+	end = maxlen-1;
 	while(!graphdata->x[end])
 	    --end;
 
@@ -170,7 +174,7 @@ int main(int argc, char **argv)
     ajGraphxySetGaps(mult,AJTRUE);
     ajGraphxySetOverLap(mult,AJTRUE);
 
-    ajGraphxySetMaxMin(mult,0.0,(float)ajSeqsetLen(seqset),min,max);
+    ajGraphxySetMaxMin(mult,0.0,flen,min,max);
     ajGraphSetTitleC(mult,"Pepwindowall");
 
 

@@ -50,7 +50,7 @@ int main(int argc, char **argv)
     ajint     word        = 2;
     AjPFile   outfile     = NULL;
     AjPFile   compdata    = NULL;
-    ajint     window      = 0;
+    ajuint     window      = 0;
     ajint     pos         = 0;
     const     char *s     = NULL;
     ajlong    result      = 0;
@@ -250,7 +250,9 @@ int main(int argc, char **argv)
 	else {
 	    steps--;
 
-	    for(pos=ringsize+1; pos <= ajSeqGetLen(seq)-word+1; pos += increment)
+	    for(pos=ringsize+1;
+		pos <= (ajint)ajSeqGetLen(seq)-word+1;
+		pos += increment)
 	    {
 		ajDebug("loop d pos:%d steps:%Ld\n",
 			pos, steps);

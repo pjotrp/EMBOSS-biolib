@@ -63,10 +63,10 @@
 
 
 static EmbPEntry dbigcg_nextentry(AjPFile libr, AjPFile libs,
-				  ajint ifile, const AjPStr idformat,
+				  ajuint ifile, const AjPStr idformat,
 				  AjBool systemsort,
 				  AjPStr const * fields, ajint* maxFieldLen,
-				  ajint* maxidlen, ajint* countfield,
+				  ajuint* maxidlen, ajuint* countfield,
 				  AjPFile elistfile, AjPFile* alistfile);
 static AjBool dbigcg_gcgopenlib(const AjPStr lname,
 				AjPFile* libr, AjPFile* lib);
@@ -74,12 +74,12 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
 			      AjPFile libr, AjPFile libs,
 			      AjPFile* alistfile,
 			      AjBool systemsort, AjPStr const * fields,
-			      ajint* maxFieldLen, ajint* countfield,
+			      ajint* maxFieldLen, ajuint* countfield,
 			      AjPStr * libstr, AjPList* fdl);
 static ajint dbigcg_pirgetent(const AjPStr idformat,
 			      AjPFile libr, AjPFile libs, AjPFile* alistfile,
 			      AjBool systemsort, AjPStr const * fields,
-			      ajint* maxFieldLen, ajint* countfield,
+			      ajint* maxFieldLen, ajuint* countfield,
 			      AjPStr* libstr, AjPList* fdl);
 static ajint dbigcg_gcgappent(AjPFile libr, AjPFile libs,
 			      AjPRegexp rexp, AjPRegexp sexp,
@@ -88,17 +88,17 @@ static ajint dbigcg_gcgappent(AjPFile libr, AjPFile libs,
 static AjBool dbigcg_ParseEmbl(AjPFile libr,
 			       AjPFile* alistfile,
 			       AjBool systemsort, AjPStr const * fields,
-			       ajint* maxFieldLen, ajint* countfield,
+			       ajint* maxFieldLen, ajuint* countfield,
 			       AjPStr *id, AjPList* fdl);
 static AjBool dbigcg_ParsePir(AjPFile libr,
 			      AjPFile* alistfile,
 			      AjBool systemsort, AjPStr const * fields,
-			      ajint* maxFieldLen, ajint* countfield,
+			      ajint* maxFieldLen, ajuint* countfield,
 			      AjPStr *id, AjPList* fdl);
 static AjBool dbigcg_ParseGenbank(AjPFile libr,
 				  AjPFile* alistfile,
 				  AjBool systemsort, AjPStr const * fields,
-				  ajint* maxFieldLen, ajint* countfield,
+				  ajint* maxFieldLen, ajuint* countfield,
 				  AjPStr *id, AjPList* fdl);
 
 
@@ -110,7 +110,7 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 **
 ** @alias SParser
 **
-** @attr Name [char*] Parser name
+** @attr Name [const char*] Parser name
 ** @attr GcgFormat [AjBool] If true, use GCG format, if false, use NBRF
 ** @attr Parser [(AjBool*)] Parser function
 ** @@
@@ -118,12 +118,12 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 
 typedef struct SParser
 {
-    char* Name;
+    const char* Name;
     AjBool GcgFormat;
     AjBool (*Parser) (AjPFile libr,
 		      AjPFile* alistfile,
 		      AjBool systemsort, AjPStr const * fields,
-		      ajint* maxFieldLen, ajint* countfield,
+		      ajint* maxFieldLen, ajuint* countfield,
 		      AjPStr *id, AjPList* fdl);
 } OParser;
 
@@ -158,8 +158,8 @@ int main(int argc, char **argv)
     AjBool cleanup;
 
     ajint maxindex;
-    ajint maxidlen = 0;
-    ajint maxlen;
+    ajuint maxidlen = 0;
+    ajuint maxlen;
 
     AjPFile elistfile  = NULL;
     AjPFile* alistfile = NULL;
@@ -182,8 +182,8 @@ int main(int argc, char **argv)
 
     EmbPEntry entry;
 
-    ajint idCount = 0;
-    ajint idDone;
+    ajuint idCount = 0;
+    ajuint idDone;
     AjPList listInputFiles = NULL;
     void ** inputFiles = NULL;
     ajint nfiles;
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 
     ajint filesize;
     short recsize;
-    ajint maxfilelen = 20;
+    ajuint maxfilelen = 20;
     char date[4] =
     {
 	0,0,0,0
@@ -210,9 +210,9 @@ int main(int argc, char **argv)
     ajint nfields = 0;
 
     AjPFile logfile = NULL;
-    ajint* countField = NULL;
-    ajint* fieldTot = NULL;
-    ajint idCountFile = 0;
+    ajuint* countField = NULL;
+    ajuint* fieldTot = NULL;
+    ajuint idCountFile = 0;
     ajint i;
 
     embInit("dbigcg", argc, argv);
@@ -357,7 +357,12 @@ int main(int argc, char **argv)
         if(maxindex)
 	    maxlen = maxindex;
 	else
-	    maxlen = maxFieldLen[ifield];
+	{
+	    if(maxFieldLen[ifield] >= 0)
+		maxlen = maxFieldLen[ifield];
+	    else
+		maxlen = - maxFieldLen[ifield];
+	}
 
         if(systemsort)
 	    fieldTot[ifield] = embDbiSortWriteFields(dbname, release,
@@ -395,13 +400,13 @@ int main(int argc, char **argv)
 **
 ** @param [u] libr [AjPFile] Reference file
 ** @param [u] libs [AjPFile] Sequence file
-** @param [r] ifile [ajint] File number.
+** @param [r] ifile [ajuint] File number.
 ** @param [r] idformat [const AjPStr] Id format in GCG file
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr const*] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
-** @param [w] maxidlen [ajint*] Maximum entry ID length
-** @param [w] countfield [ajint*] Number of tokens for each field
+** @param [w] maxidlen [ajuint*] Maximum entry ID length
+** @param [w] countfield [ajuint*] Number of tokens for each field
 ** @param [u] elistfile [AjPFile] entry file
 ** @param [u] alistfile [AjPFile*] field data files array
 ** @return [EmbPEntry] Entry data object.
@@ -409,10 +414,10 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static EmbPEntry dbigcg_nextentry(AjPFile libr, AjPFile libs,
-				  ajint ifile, const AjPStr idformat,
+				  ajuint ifile, const AjPStr idformat,
 				  AjBool systemsort,
 				  AjPStr const * fields, ajint* maxFieldLen,
-				  ajint* maxidlen, ajint* countfield,
+				  ajuint* maxidlen, ajuint* countfield,
 				  AjPFile elistfile, AjPFile* alistfile)
 {
     static EmbPEntry ret = NULL;
@@ -555,7 +560,7 @@ static AjBool dbigcg_gcgopenlib(const AjPStr lname,
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr const*] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
-** @param [w] countfield [ajint*] Number of tokens for each field
+** @param [w] countfield [ajuint*] Number of tokens for each field
 ** @param [w] libstr [AjPStr*] ID
 ** @param [w] fdl [AjPList*] Lists of field tokens
 ** @return [ajint] Sequence length
@@ -566,7 +571,7 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
 			      AjPFile libr, AjPFile libs,
 			      AjPFile* alistfile,
 			      AjBool systemsort, AjPStr const * fields,
-			      ajint* maxFieldLen, ajint* countfield,
+			      ajint* maxFieldLen, ajuint* countfield,
 			      AjPStr* libstr, AjPList* fdl)
 {
     static AjPStr gcgtype   = NULL;
@@ -707,7 +712,7 @@ static ajint dbigcg_gcggetent(const AjPStr idformat,
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr const*] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
-** @param [w] countfield [ajint*] Number of tokens for each field
+** @param [w] countfield [ajuint*] Number of tokens for each field
 ** @param [w] libstr [AjPStr*] ID
 ** @param [w] fdl [AjPList*] Lists of field tokens
 ** @return [ajint] Sequence length
@@ -718,7 +723,7 @@ static ajint dbigcg_pirgetent(const AjPStr idformat,
 			      AjPFile libr, AjPFile libs,
 			      AjPFile* alistfile,
 			      AjBool systemsort, AjPStr const * fields,
-			      ajint* maxFieldLen, ajint* countfield,
+			      ajint* maxFieldLen, ajuint* countfield,
 			      AjPStr* libstr, AjPList* fdl)
 {
     static AjPStr reflibstr = NULL;
@@ -932,7 +937,7 @@ static ajint dbigcg_gcgappent(AjPFile libr, AjPFile libs,
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr const *] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
-** @param [w] countfield [ajint*] Number of tokens for each field
+** @param [w] countfield [ajuint*] Number of tokens for each field
 ** @param [w] id [AjPStr*] ID
 ** @param [w] fdl [AjPList*] Lists of field tokens
 ** @return [AjBool] ajTrue on success.
@@ -942,7 +947,7 @@ static ajint dbigcg_gcgappent(AjPFile libr, AjPFile libs,
 static AjBool dbigcg_ParseEmbl(AjPFile libr,
 			       AjPFile* alistfile,
 			       AjBool systemsort, AjPStr const * fields,
-			       ajint* maxFieldLen, ajint* countfield,
+			       ajint* maxFieldLen, ajuint* countfield,
 			       AjPStr* id, AjPList* fdl)
 {
     static AjPRegexp typexp = NULL;
@@ -1192,7 +1197,7 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr const *] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
-** @param [w] countfield [ajint*] Number of tokens for each field
+** @param [w] countfield [ajuint*] Number of tokens for each field
 ** @param [w] id [AjPStr*] ID
 ** @param [w] fdl [AjPList*] Lists of field tokens
 ** @return [AjBool] ajTrue on success.
@@ -1202,7 +1207,7 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 static AjBool dbigcg_ParseGenbank(AjPFile libr,
 				  AjPFile* alistfile,
 				  AjBool systemsort, AjPStr const * fields,
-				  ajint* maxFieldLen, ajint* countfield,
+				  ajint* maxFieldLen, ajuint* countfield,
 				  AjPStr* id, AjPList* fdl)
 {
     static AjPRegexp typexp = NULL;
@@ -1464,7 +1469,7 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 ** @param [r] systemsort [AjBool] If ajTrue use system sort, else internal sort
 ** @param [r] fields [AjPStr const *] Field names to be indexed
 ** @param [w] maxFieldLen [ajint*] Maximum field token length
-** @param [w] countfield [ajint*] Number of tokens for each field
+** @param [w] countfield [ajuint*] Number of tokens for each field
 ** @param [w] id [AjPStr*] ID
 ** @param [w] fdl [AjPList*] Lists of field tokens
 ** @return [AjBool] ajTrue on success.
@@ -1475,7 +1480,7 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 static AjBool dbigcg_ParsePir(AjPFile libr,
 			      AjPFile* alistfile,
 			      AjBool systemsort, AjPStr const * fields,
-			      ajint* maxFieldLen, ajint* countfield,
+			      ajint* maxFieldLen, ajuint* countfield,
 			      AjPStr* id, AjPList* fdl)
 {
     static AjPRegexp idexp  = NULL;

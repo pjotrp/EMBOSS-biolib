@@ -15,7 +15,7 @@
 #include  "part_func.h"
 #include  "utils.h"
 /*@unused@*/
-static const char rcsid[] = "$Id: ProfileDist.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static const char rcsid[] = "$Id: ProfileDist.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
 
 #define PUBLIC
 #define PRIVATE        static
@@ -31,6 +31,7 @@ PUBLIC void     free_profile(float *T);
 PRIVATE void    sprint_aligned_bppm(const float *T1, const float *T2);
 PRIVATE double  PrfEditCost(int i, int j, const float *T1, const float *T2);
 PRIVATE double  average(double x, double y);
+PUBLIC void print_bppm(const float *T);
 
 /*---------------------------------------------------------------------------*/
 

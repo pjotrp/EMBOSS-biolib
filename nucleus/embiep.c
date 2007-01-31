@@ -283,7 +283,7 @@ void embIepCompS(const AjPStr str, ajint amino,
 /* @obsolete embIepComp
 ** @replace embIepCompC (1,2,3/1,2,0,0,3)
 */
-void __deprecated embIepComp(const char *s, ajint amino, ajint *c)
+__deprecated void  embIepComp(const char *s, ajint amino, ajint *c)
 {
     embIepCompC(s, amino, 0, 0, c);
     return;
@@ -531,7 +531,7 @@ AjBool embIepIepS(const AjPStr str, ajint amino,
 ** @replace embIepIepC (1,2,3,4/1,2,0,0,3,4)
 */
 
-AjBool __deprecated embIepIEP(const char *s, ajint amino,
+__deprecated AjBool  embIepIEP(const char *s, ajint amino,
 			      double *iep, AjBool termini)
 {
     return embIepIepC(s, amino, 0, 0, iep, termini);

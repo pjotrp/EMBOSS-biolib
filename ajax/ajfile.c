@@ -4949,11 +4949,11 @@ AjPFile ajFileBuffFile(const AjPFileBuff thys)
 void ajFileBuffLoad(AjPFileBuff thys)
 {
     AjPStr rdline = NULL;
-    AjBool stat = ajTrue;
+    AjBool status = ajTrue;
 
-    while(stat)
+    while(status)
     {
-	stat = ajFileBuffGet(thys, &rdline);
+	status = ajFileBuffGet(thys, &rdline);
 	ajDebug("read: <%S>\n", rdline);
     }
 
@@ -5033,7 +5033,7 @@ AjBool ajFileNameDirSet(AjPStr* filename, const AjPStr dir)
 
 AjBool ajFileNameDirSetC(AjPStr* filename, const char* dir)
 {
-    AjPStr tmpnam = NULL;
+    AjPStr tmpname = NULL;
     AjPStr tmpdir = NULL;
 
     if(!dir)
@@ -5055,13 +5055,13 @@ AjBool ajFileNameDirSetC(AjPStr* filename, const char* dir)
 	    return ajFalse;
 	}
 
-	ajRegSubI(fileFilenameExp, 2, &tmpnam);
+	ajRegSubI(fileFilenameExp, 2, &tmpname);
 
 	if(dir[strlen(dir)-1] == SLASH_CHAR)
-	    ajFmtPrintS(filename, "%s%S", dir, tmpnam);
+	    ajFmtPrintS(filename, "%s%S", dir, tmpname);
 	else
-	    ajFmtPrintS(filename, "%s%s%S", dir, SLASH_STRING,tmpnam);
-	ajStrDel(&tmpnam);
+	    ajFmtPrintS(filename, "%s%s%S", dir, SLASH_STRING,tmpname);
+	ajStrDel(&tmpname);
     }
 
     return ajTrue;
@@ -5703,15 +5703,15 @@ ajint ajFileWriteInt8(AjPFile thys, ajlong l)
 **
 ** @param [u] thys [AjPFile] Output file
 ** @param [r] str [const AjPStr] String
-** @param [r] len [ajint] Length (padded) to use in the file
+** @param [r] len [ajuint] Length (padded) to use in the file
 ** @return [ajint] Return value from fwrite
 ** @@
 ******************************************************************************/
 
-ajint ajFileWriteStr(AjPFile thys, const AjPStr str, ajint len)
+ajint ajFileWriteStr(AjPFile thys, const AjPStr str, ajuint len)
 {
     static char buf[256];
-    ajint i;
+    ajuint i;
 
     i = ajStrGetLen(str);
     strcpy(buf, ajStrGetPtr(str));

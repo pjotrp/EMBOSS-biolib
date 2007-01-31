@@ -390,7 +390,7 @@ static void sirna_report(AjPReport report, const AjPSeq seq, AjBool poliii,
     /* now pop off the positive scores and write them to the report object */
     sirna_output(scorelist, TabRpt, seq, context, seqout);
     ajReportWrite(report, TabRpt, seq);
-    ajSeqWriteClose(seqout);
+    ajSeqoutClose(seqout);
 
     ajListFree(&scorelist);
     ajFeattableDel(&TabRpt);
@@ -568,11 +568,11 @@ static void sirna_new_value(AjPList list, ajint pos, ajint score,
 
 static int sirna_compare_score(const void* v1, const void* v2)
 {
-    PValue s1;
-    PValue s2;
+    const PValue s1;
+    const PValue s2;
 
-    s1 = *(PValue *)v1;
-    s2 = *(PValue *)v2;
+    s1 = *(PValue const *)v1;
+    s2 = *(PValue const *)v2;
 
 	
     if(s1->score > s2->score)
@@ -703,7 +703,7 @@ static void sirna_output(const AjPList list,
 	    ajSeqAssignDescS(seq23, desc);
 
 	    ajDebug("Write seq23\n");
-	    ajSeqAllWrite(seqout, seq23);
+	    ajSeqoutWriteSeq(seqout, seq23);
 
 	    /* prepare sequence string for re-use */
 	    ajStrSetClear(&subseq);

@@ -52,23 +52,23 @@ int main(int argc, char **argv)
     regions  = ajAcdGetRange("regions");
     seqout   = ajAcdGetSeqoutall("outseq");
 
-    numseqs = ajSeqsetSize(seqset);
+    numseqs = ajSeqsetGetSize(seqset);
     for(i=0;i<numseqs;i++)
     {
       /*
       **  concatenate all regions from the sequence into the same
       **  sequence
       */
-      seq = ajSeqsetGetSeq(seqset, i);
+      seq = ajSeqsetGetseqSeq(seqset, i);
       newseq = ajSeqNewSeq(seq);
       ajRangeStrExtract(regions, ajSeqGetSeqS(newseq), &newstr);
       ajSeqAssignSeqS(newseq, newstr);
       ajStrSetClear(&newstr);
-      ajSeqAllWrite(seqout, newseq);
+      ajSeqoutWriteSeq(seqout, newseq);
       ajSeqDel(&newseq);
       
     }
-    ajSeqWriteClose(seqout);
+    ajSeqoutClose(seqout);
 
     ajSeqoutDel(&seqout);
 

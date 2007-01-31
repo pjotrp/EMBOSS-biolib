@@ -185,7 +185,6 @@ typedef struct AjSScop
 ** @attr Topology       [AjPStr]  CATH topology name as an AjPStr
 ** @attr Superfamily    [AjPStr]  CATH homologous superfamily name as an AjPStr
 ** @attr Length         [ajint]   No. of residues in domain
-** @attr Chain          [char]    Chain identifier
 ** @attr NSegment       [ajint]   No. of chain segments domain is comprised of
 ** @attr Start          [AjPStr*] PDB residue number of 1st residue in segment 
 ** @attr End            [AjPStr*] PDB residue number of last residue in segment
@@ -206,6 +205,8 @@ typedef struct AjSScop
 **                                    length swissprot sequence.
 ** @attr Endd               [ajint]   End of sequence relative to full length 
 **                                    swissprot sequence.
+** @attr Chain              [char]    Chain identifier
+** @attr Padding            [char[3]] Padding to alignment boundary
 **
 ** 
 ** @new    ajCathNew Default Cath constructor
@@ -235,7 +236,6 @@ typedef struct AjSCath
     AjPStr  Superfamily;    
     
     ajint   Length;         
-    char    Chain;          
     
     ajint   NSegment;       
     AjPStr *Start;      
@@ -255,6 +255,8 @@ typedef struct AjSCath
     AjPStr SeqSpr;	
     ajint  Startd;      
     ajint  Endd;   
+    char   Chain;
+    char   Padding[3];
 } AjOCath;
 #define AjPCath AjOCath*
 

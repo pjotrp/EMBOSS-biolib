@@ -11,7 +11,7 @@ extern "C"
 
 struct binding {
 	struct binding *link;
-	const void *key;
+	void *key;
         void *value;
 };
 
@@ -79,18 +79,19 @@ AjPTable   ajTableNewL (ajint size,
 			unsigned hash(const void *key, unsigned hashsize));
 void       ajTableFree (AjPTable* table);
 void*      ajTableGet  (const AjPTable table, const void *key);
-void*      ajTableKey  (const AjPTable table, const void *key);
+const void* ajTableKey  (const AjPTable table, const void *key);
 ajint      ajTableLength (const AjPTable table);
 void       ajTableMap    (AjPTable table,
 			  void apply(const void *key, void **value, void *cl),
 			  void *cl);
 void       ajTableMapDel (AjPTable table,
-			  void apply(const void **key, void **value, void *cl),
+			  void apply(void **key, void **value, void *cl),
 			  void *cl);
-void*      ajTablePut   (AjPTable table, const void *key,
+void*      ajTablePut   (AjPTable table, void *key,
 			 void *value);
 void*      ajTableRemove (AjPTable table, const void *key);
-void**     ajTableToarray (const AjPTable table, void *end);
+ajuint     ajTableToarray (const AjPTable table,
+			   void*** keyarray, void*** valarray);
 void       ajTableTrace   (const AjPTable table);
 
 ajint      ajStrTableCmp      (const void *x, const void *y);

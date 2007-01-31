@@ -23,7 +23,7 @@
 #endif
 
 /*@unused@*/
-static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.3 2006/04/20 12:57:58 rice Exp $";
+static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.4 2007/01/31 12:47:07 rice Exp $";
 
 #define  PUBLIC
 #define  PRIVATE   static
@@ -138,7 +138,7 @@ int main(int argc, char *argv[])
     update_fold_params();
 
 
-    ajFmtPrintS(&seqstring1,"%s&%s",ajSeqChar(seq1),ajSeqChar(seq2));
+    ajFmtPrintS(&seqstring1,"%s&%s",ajSeqGetSeqC(seq1),ajSeqGetSeqC(seq2));
 
     vienna_GetConstraints(confile1,&constring1);
     vienna_GetConstraints(confile2,&constring2);
@@ -148,7 +148,7 @@ int main(int argc, char *argv[])
 
     cut_point = -1;
 
-    strcpy(fname,ajSeqName(seq1));
+    strcpy(fname,ajSeqGetNameC(seq1));
 
 
     string = tokenize(MAJSTRGETPTR(seqstring1));

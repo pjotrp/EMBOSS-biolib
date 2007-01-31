@@ -73,7 +73,7 @@ static void   codWriteTransterm(const AjPCod thys, AjPFile outf);
 #define AJCODEND  65
 #define AJCODAMINOS 28
 
-static char *spsumcodons[]=
+static const char *spsumcodons[]=
 {
     "CGA","CGC","CGG","CGT","AGA","AGG","CTA","CTC",
     "CTG","CTT","TTA","TTG","TCA","TCC","TCG","TCT",
@@ -85,7 +85,7 @@ static char *spsumcodons[]=
     "ATA","ATC","ATT","ATG","TGG","TAA","TAG","TGA"
 };
 
-static char *spsumaa= "RRRRRRLLLLLLSSSSSSTTTTPPPPAAAAGG"
+static const char *spsumaa= "RRRRRRLLLLLLSSSSSSTTTTPPPPAAAAGG"
                       "GGVVVVKKNNQQHHEEDDYYCCFFIIIMW***";
 
 /* @datastatic CodPInFormat ***************************************************
@@ -95,22 +95,22 @@ static char *spsumaa= "RRRRRRLLLLLLSSSSSSTTTTPPPPAAAAGG"
 ** @alias CodSInFormat
 ** @alias CodOInFormat
 **
-** @attr Name [char*] Format name
+** @attr Name [const char*] Format name
 ** @attr Try [AjBool] If true, try for an unknown input. Duplicate names
 **                    and read-anything formats are set false
-** @attr Desc [char*] Format description
+** @attr Desc [const char*] Format description
 ** @attr Read [(AjBool*)] Input function, returns ajTrue on success
-** @attr Comment [char*] Format comments
+** @attr Comment [const char*] Format comments
 ** @@
 ******************************************************************************/
 
 typedef struct CodSInFormat
 {
-    char *Name;
+    const char *Name;
     AjBool Try;
-    char *Desc;
+    const char *Desc;
     AjBool (*Read) (AjPCod thys, AjPFileBuff inbuff);
-    char *Comment;
+    const char *Comment;
 } CodOInFormat;
 
 #define CodPInFormat CodOInFormat*
@@ -151,16 +151,16 @@ static CodOInFormat codInFormatDef[] = {
 ** @alias CodSOutFormat
 ** @alias CodOOutFormat
 **
-** @attr Name [char*] Format name
-** @attr Desc [char*] Format description
+** @attr Name [const char*] Format name
+** @attr Desc [const char*] Format description
 ** @attr Write[(void*)] Output function
 ** @@
 ******************************************************************************/
 
 typedef struct CodSOutFormat
 {
-    char *Name;
-    char *Desc;
+    const char *Name;
+    const char *Desc;
     void (*Write) (const AjPCod thys, AjPFile outfile);
 } CodOOutFormat;
 
@@ -304,33 +304,33 @@ AjPCod ajCodNewCode(ajint code)
 
 AjPCod ajCodDup(const AjPCod thys)
 {
-    AjPCod dup;
+    AjPCod dupcod;
     ajint  i;
 
-    dup = ajCodNew();
+    dupcod = ajCodNew();
 
-    ajStrAssignS(&dup->Name,thys->Name);
-    ajStrAssignS(&dup->Species,thys->Species);
-    ajStrAssignS(&dup->Division,thys->Division);
-    ajStrAssignS(&dup->Release,thys->Release);
-    ajStrAssignS(&dup->Desc,thys->Desc);
+    ajStrAssignS(&dupcod->Name,thys->Name);
+    ajStrAssignS(&dupcod->Species,thys->Species);
+    ajStrAssignS(&dupcod->Division,thys->Division);
+    ajStrAssignS(&dupcod->Release,thys->Release);
+    ajStrAssignS(&dupcod->Desc,thys->Desc);
 
-    dup->CdsCount = thys->CdsCount;
-    dup->CodonCount = thys->CodonCount;
-    dup->GeneticCode = thys->GeneticCode;
+    dupcod->CdsCount = thys->CdsCount;
+    dupcod->CodonCount = thys->CodonCount;
+    dupcod->GeneticCode = thys->GeneticCode;
 
     for(i=0;i<AJCODSIZE;++i)
     {
-	dup->aa[i]       = thys->aa[i];
-	dup->num[i]      = thys->num[i];
-	dup->tcount[i]   = thys->tcount[i];
-	dup->fraction[i] = thys->fraction[i];
+	dupcod->aa[i]       = thys->aa[i];
+	dupcod->num[i]      = thys->num[i];
+	dupcod->tcount[i]   = thys->tcount[i];
+	dupcod->fraction[i] = thys->fraction[i];
     }
 
     for(i=0;i<AJCODAMINOS;++i)
-	dup->back[i] = thys->back[i];
+	dupcod->back[i] = thys->back[i];
 
-    return dup;
+    return dupcod;
 }
 
 
@@ -958,12 +958,13 @@ void ajCodClearData(AjPCod thys)
 void ajCodCountTriplets(AjPCod thys, const AjPStr s, ajint *c)
 {
     const char *p;
-    ajint  last;
-    ajint  i;
+    ajuint  last;
+    ajuint  i;
     ajint  idx;
 
     p = ajStrGetPtr(s);
     last = ajStrGetLen(s)-2;
+
 
     for(i=0;i<last;i+=3,p+=3,++(*c))
     {
@@ -1269,7 +1270,7 @@ static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff)
 	}
 	if(ajStrGetCharFirst(codReadLine) == '!')
 	    continue;
-	if(ajStrGetLen(codReadLine) == strspn(ajStrGetPtr(codReadLine), "="))
+	if(ajStrFindRestC(codReadLine, "=") == -1)
 	    continue;
 
 	if(icod > 63)			/* ignore second noncoding set */
@@ -1920,10 +1921,10 @@ static AjBool codIsAa(AjPStr* token)
 
 static AjBool codIsAa3(AjPStr* token, ajint* idx)
 {
-    char* cp;
+    const char* cp;
     ajint i;
 
-    static char *tab[]=
+    static const char *tab[]=
     {
 	"Ala","Asx","Cys","Asp","Glu","Phe","Gly","His",
 	"Ile",""   ,"Lys","Leu","Met","Asn",""   ,"Pro",
@@ -1954,7 +1955,7 @@ static AjBool codIsAa3(AjPStr* token, ajint* idx)
 
 /* @funcstatic codIsNumber ****************************************************
 **
-** Checks a string is a codon, makes sure it is an amino acid or a stop (*).
+** Checks a string is numeric.
 **
 ** @param [r] token [const AjPStr] String
 **
@@ -1964,16 +1965,13 @@ static AjBool codIsAa3(AjPStr* token, ajint* idx)
 
 static AjBool codIsNumber(const AjPStr token)
 {
-    const char* cp;
     ajint ilen;
 
     ilen = ajStrGetLen(token);
     if(!ilen)
 	return ajFalse;
 
-    cp = ajStrGetPtr(token);
-
-    if(ilen != strspn(cp, "0123456789"))
+   if(ajStrFindRestC(token, "0123456789") != -1)
 	    return ajFalse;
 
     return ajTrue;
@@ -1993,17 +1991,14 @@ static AjBool codIsNumber(const AjPStr token)
 
 static AjBool codIsNumberF(AjPStr * token)
 {
-    const char* cp;
-    ajint ilen;
+    ajuint ilen;
     AjPStr tmpstr = NULL;
 
     ilen = ajStrGetLen(*token);
     if(!ilen)
 	return ajFalse;
 
-    cp = ajStrGetPtr(*token);
-
-    if(ilen == strspn(cp, "0123456789"))
+    if(ajStrFindRestC(*token, "0123456789") == -1)
 	    return ajTrue;
 
     ajStrAssignS(&tmpstr, *token);
@@ -2048,7 +2043,7 @@ static void codCalcFraction(AjPCod thys)
     ajint icount;
     double fsum = 0.0;
     const char* cp;
-    char* aa = "ACDEFGHIKLMNPQRSTUVWY*";
+    const char* aa = "ACDEFGHIKLMNPQRSTUVWY*";
 
     cp = aa;
     while (*cp)
@@ -2096,7 +2091,7 @@ static void codCalcFraction(AjPCod thys)
 static AjBool codIsFraction(const AjPStr token)
 {
     const char* cp;
-    ajint ilen;
+    ajuint ilen;
     AjBool StartOne = ajFalse;;
 
     ilen = ajStrGetLen(token);
@@ -2156,7 +2151,7 @@ static AjBool codIsFreq(const AjPStr token)
 {
     const char* cp;
     float f;
-    ajint ilen;
+    ajuint ilen;
     
     ilen = ajStrGetLen(token);
     if(!ilen)
@@ -2237,7 +2232,7 @@ void ajCodSetBacktranslate(AjPCod *thys)
 char* ajCodTriplet(ajint idx)
 {
     static char ret[4] = "AAA";
-    char *conv = "ACGT";
+    const char *conv = "ACGT";
 
     char *p;
 
@@ -3626,7 +3621,7 @@ static void codFix(AjPCod thys)
 ** Reports the internal data structures
 **
 ** @param [u] outf [AjPFile] Output file
-** @param [r] full [AjBool] Full report (usually ajFalse)
+** @param [r] full [AjBool] Full report, currently no extra details printed
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -3634,6 +3629,9 @@ static void codFix(AjPCod thys)
 void ajCodPrintFormat(AjPFile outf, AjBool full)
 {
     ajint i = 0;
+
+    if(full)
+	i=0;
 
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# codon usage input formats\n");

@@ -42,8 +42,8 @@ void   embIepPkRead (void);
 double embIepPkToK (double pK);
 double embIepPkFromK (double K);
 
-void   __deprecated embIepComp (const char *s, ajint amino, ajint *c);
-AjBool __deprecated embIepIEP (const char *s, ajint amino,
+__deprecated void    embIepComp (const char *s, ajint amino, ajint *c);
+__deprecated AjBool  embIepIEP (const char *s, ajint amino,
 			       double *iep, AjBool termini);
 /*
 ** End of prototype definitions

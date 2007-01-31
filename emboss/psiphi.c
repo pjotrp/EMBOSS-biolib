@@ -34,11 +34,11 @@ static ajint psiphi_chain_index(ajint selected,
 			 ajint lowest);
 
 static ajint psiphi_first_residue_number(const AjPPdb pdb,
-				  ajint index,
+				  ajint myindex,
 				  ajint startres);
 
 static ajint psiphi_last_residue_number(const AjPPdb pdb,
-				 ajint index,
+				 ajint myindex,
 				 ajint startres,
 				 ajint finishres);
 
@@ -117,7 +117,7 @@ int main( int argc , char **argv )
     ajint lastres     = 0;
 
     /* ...for chains */
-    ajint index             = 0; /* ...into structure object */
+    ajint myindex             = 0; /* ...into structure object */
     ajint lowest      = 0; /* ...in structure file     */
     ajint highest     = 0; /* ...in structure file     */
 
@@ -165,17 +165,17 @@ int main( int argc , char **argv )
     
     /* check and set number of chain to be analysed */
     highest = pdb->Nchn;
-    index = psiphi_chain_index(selected,
+    myindex = psiphi_chain_index(selected,
 			       highest,
 			       lowest);
 
     /* check and set range of residues to be analysed */
     firstres = 
 	psiphi_first_residue_number(pdb,
-				    index,
+				    myindex,
 				    startres);    
     lastres = psiphi_last_residue_number(pdb,
-					 index,
+					 myindex,
 					 startres,
 					 finishres);
     secondres = firstres+1;
@@ -189,11 +189,14 @@ int main( int argc , char **argv )
 
     /* obtain iterator for list of atoms in chain */
     atomlist = 
-	ajListIterRead(pdb->Chains[index]->Atoms);
+	ajListIterRead(pdb->Chains[myindex]->Atoms);
+
+    ajDebug("psiphi pdb Pdb '%S' chain %d Id '%c'\n",
+	    pdb->Pdb, myindex, pdb->Chains[myindex]->Id);
 
     /* obtain sequence from residues in chain */
     seq =
-	ajSeqNewStr(pdb->Chains[index]->Seq);
+	ajSeqNewNameS(pdb->Chains[myindex]->Seq, pdb->Pdb);
 
     resnum = 0;
 
@@ -201,7 +204,7 @@ int main( int argc , char **argv )
     angles = ajFeattableNewSeq(seq);    
 
     /* chain info for head of report */
-    ajFmtPrintS(&header, "Chain: %d", (index+1));
+    ajFmtPrintS(&header, "Chain: %d", (myindex+1));
     ajReportSetHeader(report, header);
 
     /* BEGIN ANALYSIS OF CHAIN HERE */
@@ -438,7 +441,7 @@ static ajint psiphi_chain_index(ajint selected,
 ** check selected lower residue within chain's range and return 1st window res
 **
 ** @param [r] pdb [const AjPPdb] cleaned AjPPdb structure
-** @param [r] index [ajint] number of user-selected chain in
+** @param [r] myindex [ajint] number of user-selected chain in
 **                                    structure
 ** @param [r] startres [ajint] user-selected lower residue
 **                                            number
@@ -446,7 +449,7 @@ static ajint psiphi_chain_index(ajint selected,
 ** @@
 ******************************************************************************/
 static ajint psiphi_first_residue_number (const AjPPdb pdb,
-				   ajint index,
+				   ajint myindex,
 				   ajint startres)
 {
     ajint firstres  = 0;
@@ -455,7 +458,7 @@ static ajint psiphi_first_residue_number (const AjPPdb pdb,
     AjPAtom inlist   = NULL;
     
     /* read first atom in list into memory, but keep it on list */
-    ajListPeek(pdb->Chains[index]->Atoms,
+    ajListPeek(pdb->Chains[myindex]->Atoms,
 	       (void**)&inlist);
 
     /* get number of lowest residue available in chain */
@@ -465,7 +468,7 @@ static ajint psiphi_first_residue_number (const AjPPdb pdb,
     if(startres < lowestres)
     {	
 	ajWarn("No residue %d---number of lowest residue in chain %d is %d.",
-	       startres, index,
+	       startres, myindex,
 	       lowestres );
     }
 
@@ -490,7 +493,7 @@ static ajint psiphi_first_residue_number (const AjPPdb pdb,
 ** check selected upper protein residue within chain's range and return limit
 **
 ** @param [r] pdb [const AjPPdb] cleaned AjPPdb structure
-** @param [r] index [ajint] number of user-selected chain in
+** @param [r] myindex [ajint] number of user-selected chain in
 **                                    structure
 ** @param [r] startres [ajint] user-selected lower residue
 **                                             number
@@ -500,7 +503,7 @@ static ajint psiphi_first_residue_number (const AjPPdb pdb,
 ** @@
 ******************************************************************************/
 static ajint psiphi_last_residue_number(const AjPPdb pdb,
-					ajint index,
+					ajint myindex,
 					ajint startres,
 					ajint finishres)
 {
@@ -509,7 +512,7 @@ static ajint psiphi_last_residue_number(const AjPPdb pdb,
 
     /* get number of highest residue available in chain */
     highres = 
-	pdb->Chains[index]->Nres;
+	pdb->Chains[myindex]->Nres;
 
     /* last residue defaults to end of chain... */
     if(finishres == 1)
@@ -524,7 +527,7 @@ static ajint psiphi_last_residue_number(const AjPPdb pdb,
     else
 	/* ERROR: finish residue too high */ 
 	ajDie("No residue %d---number of highest residue in chain %d is %d.",
-	      finishres, index,
+	      finishres, myindex,
 	      highres );
     
     return lastres;

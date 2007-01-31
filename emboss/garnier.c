@@ -345,12 +345,11 @@ ajint pamh1[MAXSQ];		/* used for kfact replacement */
 
 
 static void garnier_report(AjPReport report, AjPFeattable TabRpt,
-			   const AjPSeq seqobj,
 			   ajint from, ajint to, char *seq,
 			   ajint begin, ajint Idc);
 static void garnier_do(AjPFile outf, ajint s, ajint len,
 		       char *seq, const char *name,
-		       ajint begin, ajint Idc);
+		       ajint Idc);
 static void garnier_makemap (const char *input, ajint *map, ajint n);
 
 
@@ -389,24 +388,24 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 
 	TabRpt = ajFeattableNewSeq(seq);
 
-	strand = ajSeqStrCopy(seq);
+	strand = ajSeqGetSeqCopyS(seq);
 	ajStrFmtUpper(&strand);
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 	len = ajStrGetLen(substr);
 
-	garnier_report(report, TabRpt, seq, 1, len,
+	garnier_report(report, TabRpt, 1, len,
 		       ajStrGetuniquePtr(&substr),begin-1,Idc);
 	if(outf)
 	{
 	    ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 	    garnier_do(outf,0,len,
-		       ajStrGetuniquePtr(&substr),ajSeqName(seq),begin-1,Idc);
+		       ajStrGetuniquePtr(&substr),ajSeqGetNameC(seq),Idc);
 	}
 	ajStrDel(&strand);
 
@@ -442,17 +441,17 @@ int main(int argc, char **argv)
 ** @param [r] to [ajint] Undocumented
 ** @param [u] seq [char*] Undocumented
 ** @param [r] name [const char*] Undocumented
-** @param [r] begin [ajint] Undocumented
 ** @param [r] Idc [ajint] Undocumented
 ** @@
 ******************************************************************************/
 
 
 static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
-		       const char *name, ajint begin, ajint Idc)
+		       const char *name, ajint Idc)
 {
-    char *refstr="\n Please cite:\n Garnier, Osguthorpe and Robson (1978)"
-      " J. Mol. Biol. 120:97-120\n";
+    const char *refstr="\n Please cite:\n"
+	" Garnier, Osguthorpe and Robson (1978)"
+	    " J. Mol. Biol. 120:97-120\n";
 
     ajint i;
     ajint end;
@@ -615,7 +614,6 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
 **
 ** @param [u] report [AjPReport] Undocumented
 ** @param [u] TabRpt [AjPFeattable] Undocumented
-** @param [r] seqobj [const AjPSeq] Undocumented
 ** @param [r] from [ajint] Undocumented
 ** @param [r] to [ajint] Undocumented
 ** @param [w] seq [char*] Undocumented
@@ -625,12 +623,12 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
 ******************************************************************************/
 
 static void garnier_report(AjPReport report, AjPFeattable TabRpt,
-			   const AjPSeq seqobj,
 			   ajint from, ajint to, char *seq,
 			   ajint begin, ajint Idc)
 {
-    char *refstr="\n Please cite:\n Garnier, Osguthorpe and Robson (1978)"
-      " J. Mol. Biol. 120:97-120\n";
+    const char *refstr="\n Please cite:\n"
+	" Garnier, Osguthorpe and Robson (1978)"
+	    " J. Mol. Biol. 120:97-120\n";
 
     ajint i;
     ajint end;

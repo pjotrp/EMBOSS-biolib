@@ -43,7 +43,7 @@ static void remap_CutList(AjPFile outfile,
 	ajint maxcuts);
 static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
 			    AjBool html, const AjPStr enzymes, AjBool blunt,
-			    AjBool sticky, ajint sitelen, AjBool commercial,
+			    AjBool sticky, ajuint sitelen, AjBool commercial,
 			    AjBool ambiguity, AjBool limit,
 			    const AjPTable retable);
 static void remap_DelTable(AjPTable * table);
@@ -394,21 +394,23 @@ int main(int argc, char **argv)
 static void remap_DelTable(AjPTable * table)
 {
 
-    void **array;		/* array for table */
+    void **keyarray = NULL;		/* array for table */
+    void **valarray = NULL;		/* array for table */
     ajint i;
     PValue value;
 
     if(ajTableLength(*table))
     {
-      array = ajTableToarray(*table, NULL);
-      for(i = 0; array[i]; i += 2)
+      ajTableToarray(*table, &keyarray, &valarray);
+      for(i = 0; keyarray[i]; i++)
       {
-          value = (PValue) array[i+1];
+          value = (PValue) valarray[i];
           ajStrDel(&(value->iso));
-          AJFREE(array[i+1]);	/* free the ajint* value */
-	  ajStrDel((AjPStr*)&array[i]);
+          AJFREE(valarray[i]);	/* free the ajint* value */
+	  ajStrDel((AjPStr*)&keyarray[i]);
       }
-      AJFREE(array);
+      AJFREE(keyarray);
+      AJFREE(valarray);
     }
     ajTableFree(table);
 
@@ -464,7 +466,7 @@ static void remap_RemoveMinMax(AjPList restrictlist,
 		ajStrAssignS(&(value->iso), m->iso);
 		keyv = ajStrNew();
 		ajStrAssignS(&keyv,key);
-		ajTablePut(hittable, (const void *)keyv, (void *)value);
+		ajTablePut(hittable, (void *)keyv, (void *)value);
 	    }
 	    else
 		value->count++;
@@ -513,7 +515,8 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
 			  AjBool html, ajint mincuts, ajint maxcuts)
 {
     PValue value;
-    void **array = NULL;		/* array for table */
+    void **keyarray = NULL;		/* array for table */
+    void **valarray = NULL;		/* array for table */
     ajint i;
 
     /* print title */
@@ -530,21 +533,23 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
 
     if(ajTableLength(hittable))
     {
-        array = ajTableToarray(hittable, NULL);
-        qsort(array, ajTableLength(hittable), 2*sizeof (*array), ajStrVcmp);
+        ajTableToarray(hittable, &keyarray, &valarray);
+        qsort(keyarray, ajTableLength(hittable), sizeof (*keyarray),
+	      ajStrVcmp);
 
 	/* enzymes that cut the required number of times */
 	if(html)
 	    ajFmtPrintF(outfile, "<PRE>");
 
-	for(i = 0; array[i]; i += 2)
+	for(i = 0; keyarray[i]; i++)
 	{
-	    value = (PValue) array[i+1];
+	    value = ajTableGet(hittable,keyarray[i]);
 	    if(value->count >= mincuts && value->count <= maxcuts)
 	    ajFmtPrintF(outfile, "%10S\t    %d\t%S\n",
-		    (AjPStr) array[i], value->count,
+		    (AjPStr) keyarray[i], value->count,
 		    value->iso);
         }
+
         ajFmtPrintF(outfile, "\n");
 
         if(html)
@@ -573,12 +578,12 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
 	if(html)
 	    ajFmtPrintF(outfile, "<PRE>");
 
-	for(i = 0; array[i]; i += 2)
+	for(i = 0; keyarray[i]; i++)
 	{
-	    value = (PValue) array[i+1];
+	    value = ajTableGet(hittable,keyarray[i]);
 	    if(value->count < mincuts)
 	    ajFmtPrintF(outfile, "%10S\t    %d\t%S\n",
-			    (AjPStr) array[i], value->count,
+			    (AjPStr) keyarray[i], value->count,
 			    value->iso);
 	}
         ajFmtPrintF(outfile, "\n");
@@ -609,12 +614,12 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
 	if(html)
 	    ajFmtPrintF(outfile, "<PRE>");
 
-	for(i = 0; array[i]; i += 2)
+	for(i = 0; keyarray[i]; i++)
 	{
-	    value = (PValue) array[i+1];
+	    value = (PValue) valarray[i];
 	    if(value->count > maxcuts)
 	    ajFmtPrintF(outfile, "%10S\t    %d\t%S\n",
-			    (AjPStr) array[i], value->count,
+			    (AjPStr) keyarray[i], value->count,
 			    value->iso);
 	}
 
@@ -623,7 +628,8 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
         if(html)
 	    ajFmtPrintF(outfile, "</PRE>\n");
 
-	AJFREE(array);
+	AJFREE(keyarray);
+	AJFREE(valarray);
     }
 
     return;
@@ -642,7 +648,7 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
 ** @param [r] enzymes [const AjPStr] names of enzymes to search for or 'all'
 ** @param [r] blunt [AjBool] Allow blunt cutters
 ** @param [r] sticky [AjBool] Allow sticky cutters
-** @param [r] sitelen [ajint] minimum length of recognition site
+** @param [r] sitelen [ajuint] minimum length of recognition site
 ** @param [r] commercial [AjBool] Allow commercially supplied cutters
 ** @param [r] ambiguity [AjBool] Allow ambiguous patterns
 ** @param [r] limit [AjBool] True if allow isoschizomers
@@ -653,14 +659,15 @@ static void remap_CutList(AjPFile outfile, const AjPTable hittable,
 
 static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
 			    AjBool html, const AjPStr enzymes, AjBool blunt,
-			    AjBool sticky, ajint sitelen, AjBool commercial,
+			    AjBool sticky, ajuint sitelen, AjBool commercial,
 			    AjBool ambiguity, AjBool limit,
 			    const AjPTable retable)
 {
 
     /* for iterating over hittable */
     PValue value;
-    void **array;			/* array for table */
+    void **keyarray = NULL;			/* array for table */
+    void **valarray = NULL;			/* array for table */
     ajint i;
 
     /* list of enzymes that cut */
@@ -707,12 +714,12 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
     nocutlist = ajListstrNew();
 
 
-    array = ajTableToarray(hittable, NULL);
-    for(i = 0; array[i]; i += 2)
+    ajTableToarray(hittable, &keyarray, &valarray);
+    for(i = 0; keyarray[i]; i++)
     {
-        value = (PValue) array[i+1];
+        value = (PValue) valarray[i];
         cutname = ajStrNew();
-        ajStrAssignRef(&cutname, array[i]);
+        ajStrAssignRef(&cutname, keyarray[i]);
         ajListstrPushApp(cutlist, cutname);
 
         /* Add to cutlist all isoschizomers of enzymes that cut */
@@ -729,7 +736,8 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
         ajStrTokenDel(&tok);
     }
     ajStrDel(&code);
-    AJFREE(array);
+    AJFREE(keyarray);
+    AJFREE(valarray);
 
 
 
@@ -1036,7 +1044,7 @@ static void remap_read_equiv(AjPFile *equfile, AjPTable *table,
         value = ajStrNewC(p);
 	if(!commercial)
 	    ajStrTrimEndC(&value,"*");
-        ajTablePut(*table,(const void *)key, (void *)value);
+        ajTablePut(*table,(void *)key, (void *)value);
     }
 
     ajFileClose(equfile);
@@ -1112,7 +1120,7 @@ static int remap_cmpcase(const void* str1, const void* str2)
     const char* cp;
     const char* cq;
 
-    for(cp = (*(AjPStr*)str1)->Ptr, cq = (*(AjPStr*)str2)->Ptr;
+    for(cp = (*(AjPStr const *)str1)->Ptr, cq = (*(AjPStr const *)str2)->Ptr;
 	*cp && *cq; cp++, cq++)
 	if(toupper((ajint) *cp) != toupper((ajint) *cq))
 	{
@@ -1146,6 +1154,8 @@ static int remap_cmpcase(const void* str1, const void* str2)
 
 static void remap_strdel(void** str, void* cl) 
 {
+    (void) cl;				/* make it used */
+
     ajStrDel((AjPStr*)str);
 
     return;
@@ -1306,7 +1316,7 @@ static void remap_RestrictPreferred(const AjPList l, const AjPTable t)
 
 static AjBool remap_Ambiguous(const AjPStr str)
 {
-    ajint ipos;
+    ajuint ipos;
     char chr;
     
     for (ipos=0; ipos<ajStrGetLen(str); ipos++) 

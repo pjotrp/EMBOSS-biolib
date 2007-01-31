@@ -62,7 +62,7 @@ static AjPStr namValNameTmp  = NULL;
 
 static AjBool namListParseOK = AJFALSE;
 
-char* namTypes[] = { "unknown", "SET", "DBNAME", "RESOURCE", "INCLUDE" };
+const char* namTypes[] = { "unknown", "SET", "DBNAME", "RESOURCE", "INCLUDE" };
 
 /* source directory where control and data files can be found */
 
@@ -124,17 +124,17 @@ static AjPRegexp namVarExp  = NULL;
 ** @alias NamSAttr
 ** @alias NamOAttr
 **
-** @attr Name [char*] Attribute name
-** @attr Defval [char*] Default value, usually an empty string
-** @attr Comment [char*] Comment for documentation purposes
+** @attr Name [const char*] Attribute name
+** @attr Defval [const char*] Default value, usually an empty string
+** @attr Comment [const char*] Comment for documentation purposes
 ** @@
 ******************************************************************************/
 
 typedef struct NamSAttr
 {
-    char* Name;
-    char* Defval;
-    char* Comment;
+    const char* Name;
+    const char* Defval;
+    const char* Comment;
 } NamOAttr;
 
 #define NamPAttr NamOAttr*
@@ -149,15 +149,15 @@ typedef struct NamSAttr
 ** @alias NamSValid
 ** @alias NamOValid
 **
-** @attr Name [char*] Attribute name
-** @attr Comment [char*] Comment for documentation purposes
+** @attr Name [const char*] Attribute name
+** @attr Comment [const char*] Comment for documentation purposes
 ** @@
 ******************************************************************************/
 
 typedef struct NamSValid
 {
-    char* Name;
-    char* Comment;
+    const char* Name;
+    const char* Comment;
 } NamOValid;
 
 #define NamPValid NamOValid*
@@ -371,19 +371,21 @@ static void namListMasterDelete(AjPTable table, ajint which)
 {
     ajint i;
     NamPEntry fnew = 0;
-    void **array;
+    void **keyarray = NULL;
+    void **valarray = NULL;
 
     if(!table) return;
 
-    array = ajTableToarray(table, NULL);
+    ajTableToarray(table, &keyarray, &valarray);
 
-    for(i = 0; array[i]; i += 2)
+    for(i = 0; keyarray[i]; i++)
     {
-	AJFREE(array[i]);		/* the key */
-	fnew = (NamPEntry) array[i+1];
+	AJFREE(keyarray[i]);		/* the key */
+	fnew = (NamPEntry) valarray[i];
 	namEntryDelete(&fnew, which);
     }
-    AJFREE(array);
+    AJFREE(keyarray);
+    AJFREE(valarray);
 
     return;
 }
@@ -450,7 +452,9 @@ void ajNamPrintDbAttr(AjPFile outf, AjBool full)
 {
     ajint i;
     AjPStr tmpstr = NULL;
-    ajint maxtmp = 0;
+    ajuint maxtmp = 0;
+
+    (void) full;			/* no extra detail to report */
 
     ajFmtPrintF(outf, "# Database attributes\n");
     ajFmtPrintF(outf, "# %-15s %-12s %s\n", "Attribute", "Default", "Comment");
@@ -489,9 +493,11 @@ void ajNamPrintRsAttr(AjPFile outf, AjBool full)
 {
     ajint i;
     AjPStr tmpstr = NULL;
-    ajint maxtmp = 0;
+    ajuint maxtmp = 0;
 
-    ajFmtPrintF(outf, "# Resource attributes\n");
+    (void) full;			/* no extra detail to report */
+
+   ajFmtPrintF(outf, "# Resource attributes\n");
     ajFmtPrintF(outf, "# %-15s %-12s %s\n", "Attribute", "Default", "Comment");
     ajFmtPrintF(outf, "namRsAttrs {\n");
     for(i=0; namRsAttrs[i].Name; i++)
@@ -577,15 +583,16 @@ static void namListMaster(const AjPTable table, ajint which)
 {
     ajint i;
     NamPEntry fnew;
-    void **array;
+    void **keyarray = NULL;
+    void **valarray = NULL;
     char *key;
 
-    array = ajTableToarray(table, NULL);
+    ajTableToarray(table, &keyarray, &valarray);
 
-    for(i = 0; array[i]; i += 2)
+    for(i = 0; keyarray[i]; i++)
     {
-	fnew =(NamPEntry) array[i+1];
-	key = (char*) array[i];
+	key = (char*) keyarray[i];
+	fnew =(NamPEntry) valarray[i];
 	if(TYPE_DB == which)
 	{
 	    ajUser("DB %S\t *%s*", fnew->name, key);
@@ -603,7 +610,8 @@ static void namListMaster(const AjPTable table, ajint which)
 	    ajUser("ENV %S\t%S\t *%s*",fnew->name,fnew->value,key);
 	}
     }
-    AJFREE(array);
+    AJFREE(keyarray);
+    AJFREE(valarray);
 
     return;
 }
@@ -627,15 +635,16 @@ static void namDebugMaster(const AjPTable table, ajint which)
 {
     ajint i;
     NamPEntry fnew;
-    void **array;
+    void **keyarray = NULL;
+    void **valarray = NULL;
     char *key;
 
-    array = ajTableToarray(table, NULL);
+    ajTableToarray(table, &keyarray, &valarray);
 
-    for(i = 0; array[i]; i += 2)
+    for(i = 0; keyarray[i]; i++)
     {
-	fnew = (NamPEntry) array[i+1];
-	key = (char*) array[i];
+	key = (char*) keyarray[i];
+	fnew = (NamPEntry) valarray[i];
 	if(TYPE_DB == which)
 	{
 	    ajDebug("DB %S\t *%s*\n", fnew->name, key);
@@ -657,7 +666,8 @@ static void namDebugMaster(const AjPTable table, ajint which)
 
     }
 
-    AJFREE(array);
+    AJFREE(keyarray);
+    AJFREE(valarray);
 
     return;
 }
@@ -982,18 +992,20 @@ void ajNamListListDatabases(AjPList dbnames)
 {
     ajint i;
     NamPEntry fnew;
-    void **array;
+    void **keyarray =  NULL;
+    void **valarray =  NULL;
 
-    array = ajTableToarray(namDbMasterTable, NULL);
+    ajTableToarray(namDbMasterTable, &keyarray, &valarray);
     ajDebug("ajNamListListDatabases\n");
 
-    for(i = 0; array[i]; i += 2)
+    for(i = 0; valarray[i]; i++)
     {
-	fnew = (NamPEntry) array[i+1];
+	fnew = (NamPEntry) valarray[i];
 	ajDebug("DB: %S\n", fnew->name);
 	ajListstrPushApp(dbnames, fnew->name);
     }
-    AJFREE(array);
+    AJFREE(keyarray);
+    AJFREE(valarray);
 
     return;
 }
@@ -1014,17 +1026,19 @@ void ajNamListListResources(AjPList rsnames)
 {
     ajint i;
     NamPEntry fnew;
-    void **array;
+    void **keyarray = NULL;
+    void **valarray = NULL;
 
-    array = ajTableToarray(namResMasterTable, NULL);
+    ajTableToarray(namResMasterTable, &keyarray, &valarray);
 
-    for(i = 0; array[i]; i += 2)
+    for(i = 0; valarray[i]; i++)
     {
-	fnew = (NamPEntry) array[i+1];
+	fnew = (NamPEntry) valarray[i];
 	ajDebug("RES: %S\n", fnew->name);
 	ajListstrPushApp(rsnames, fnew->name);
     }
-    AJFREE(array);
+    AJFREE(keyarray);
+    AJFREE(valarray);
 
     return;
 }
@@ -1524,6 +1538,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
     }
 
     ajStrDel(&saveshortname);
+    ajStrTableFree(&Ifiles);
 
     return;
 }
@@ -3034,6 +3049,16 @@ static AjBool namValidResource(const NamPEntry entry)
 
 static AjBool namValidVariable(const NamPEntry entry)
 {
+    AjPStr* attrs;
+
+    attrs = (AjPStr *) entry->data;
+    if(attrs)
+    {			 /* strange - should be nothing for variables */
+	namError("Variable '%S' has a list of attributes",
+		  entry->name);
+	return ajFalse;
+    }
+    
     return ajTrue;
 }
 

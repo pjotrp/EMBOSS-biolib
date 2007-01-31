@@ -80,7 +80,7 @@ void embPatlistRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     AjPRegexp compPat;
     AjPStr tmp = NULL;
 
-    ajStrAssignC(&tmp,ajSeqName(seq));
+    ajStrAssignS(&tmp,ajSeqGetNameS(seq));
     ajDebug ("embPatlistSearchSequence: Searching '%S' for patterns\n",tmp);
     while (ajPatlistRegexGetNext(plist,&patreg))
     {
@@ -137,10 +137,10 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     {
         revseq = ajSeqNewS (seq);
         ajSeqReverseForce(revseq);
-        ajStrAssignSubS(&seqstr, ajSeqStr(revseq), pos-1, adj-1);
+        ajStrAssignSubS(&seqstr, ajSeqGetSeqS(revseq), pos-1, adj-1);
     }
 */
-    ajStrAssignSubS(&seqstr, ajSeqStr(seq), pos-1, adj-1);
+    ajStrAssignSubS(&seqstr, ajSeqGetSeqS(seq), pos-1, adj-1);
 
     ajStrFmtUpper(&seqstr);
 
@@ -198,9 +198,9 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
 void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
 			  const AjPPatternSeq pat, AjBool reverse)
 {
-    void *tidy;
-    ajint hits;
-    ajint i;
+    const void *tidy;
+    ajuint hits;
+    ajuint i;
     AjPPatComp pattern;
     EmbPMatMatch m = NULL;
     AjPFeature sf  = NULL;
@@ -215,16 +215,16 @@ void embPatternSeqSearch (AjPFeattable ftable, const AjPSeq seq,
     begin = ajSeqGetBegin(seq);
     adj = ajSeqGetEnd(seq);
 
-    ajStrAssignC(&seqname,ajSeqName(seq));
+    ajStrAssignS(&seqname,ajSeqGetNameS(seq));
     pattern = ajPatternSeqGetCompiled(pat);
     if (reverse)
     {
-        revseq = ajSeqNewS (seq);
+        revseq = ajSeqNewSeq(seq);
         ajSeqReverseForce(revseq);
-        ajStrAssignSubS(&seqstr, ajSeqStr(revseq),begin-1,adj-1);
+        ajStrAssignSubS(&seqstr, ajSeqGetSeqS(revseq),begin-1,adj-1);
     }
     else
-        ajStrAssignSubS(&seqstr, ajSeqStr(seq),begin-1,adj-1);
+        ajStrAssignSubS(&seqstr, ajSeqGetSeqS(seq),begin-1,adj-1);
 
     ajStrFmtUpper(&seqstr);
     ajDebug("embPatternSeqSearch '%S' protein: %B reverse: %B\n",

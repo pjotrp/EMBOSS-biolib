@@ -50,7 +50,7 @@ int main(int argc, char **argv)
 
     AjPSeqall seqall;
     AjPSeq seq;
-    ajint word;
+    ajuint word;
     AjBool zerocount;
     AjBool ignorebz;
     ajint frame;
@@ -59,7 +59,8 @@ int main(int argc, char **argv)
     AjBool reverse;
     AjBool calcfreq;
 
-    ajint pos;
+    ajuint pos;
+    ajuint endpos;
     const char *s;
     ajulong result;
     ajulong *bigarray;
@@ -202,7 +203,11 @@ int main(int argc, char **argv)
 	**  if frame is specified. Stop when less than a word-length from
 	**  the end of the sequence.
 	*/
-	for(pos=frame; pos <= ajSeqGetLen(seq)-word; pos += increment)
+	if(ajSeqGetLen(seq) > word)
+	    endpos = ajSeqGetLen(seq)-word;
+	else
+	    endpos = 1;
+	for(pos=frame; pos <= endpos; pos += increment)
 	{
 	    if(seqisnuc)
 		result = embNmerNuc2int(s, word, pos, &otherflag);

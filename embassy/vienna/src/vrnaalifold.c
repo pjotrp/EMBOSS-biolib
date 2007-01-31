@@ -23,7 +23,7 @@
 #include "aln_util.h"
 extern void  read_parameter_file(AjPFile fname);
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.5 2006/07/12 15:50:46 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.6 2007/01/31 12:47:07 rice Exp $";
 
 #define PRIVATE static
 
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
     if(confile)
 	vienna_GetConstraints(confile,&constring);
 
-    n_seq = ajSeqsetSize(seq);
+    n_seq = ajSeqsetGetSize(seq);
 
     if(n_seq > MAX_NUM_NAMES - 1)
 	ajFatal("[e]RNAalifold is restricted to %d sequences\n",
@@ -193,9 +193,9 @@ int main(int argc, char *argv[])
 
     for(i=0;i<n_seq;++i)
     {
-	tseq  = (AjPSeq) ajSeqsetGetSeq(seq,i);
+	tseq  = (AjPSeq) ajSeqsetGetseqSeq(seq,i);
 	ajSeqGapStandard(tseq, '-');
-	tname = (AjPStr) ajSeqsetName(seq,i);
+	tname = (AjPStr) ajSeqsetGetseqNameS(seq,i);
 	len   = ajSeqGetLen(tseq);
 	AS[i] = (char *) space(len+1);
 	names[i] = (char *) space(ajStrGetLen(tname)+1);

@@ -30,12 +30,10 @@ static void merger_Merge(AjPAlign align, AjPStr *merged,
 			 const char *a, const char *b,
 			 const AjPStr m, const AjPStr n,
 			 ajint start1,
-			 ajint start2, float score, AjBool mark,
-			 const AjPSeqCvt cvt,
-			 const char *namea, const char *nameb, ajint begina,
-			 ajint beginb);
+			 ajint start2,
+			 const char *namea, const char *nameb);
 
-static float merger_quality(const char * seq, ajint pos, ajint window);
+static float merger_quality(const char * seq, ajuint pos, ajuint window);
 
 static AjBool merger_bestquality(const char * a, const char *b,
 				 ajint apos, ajint bpos);
@@ -61,8 +59,8 @@ int main(int argc, char **argv)
 
     AjPStr merged = NULL;
 
-    ajint lena;
-    ajint lenb;
+    ajuint lena;
+    ajuint lenb;
 
     const char   *p;
     const char   *q;
@@ -158,8 +156,8 @@ int main(int argc, char **argv)
     ** now construct the merged sequence, uppercase the bits of the two
     ** input sequences which are used in the merger
     */
-    merger_Merge(align, &merged,p,q,m,n,start1,start2,score,1,cvt,
-		 ajSeqGetNameC(a),ajSeqGetNameC(b),begina,beginb);
+    merger_Merge(align, &merged,p,q,m,n,start1,start2,
+		 ajSeqGetNameC(a),ajSeqGetNameC(b));
 
     embAlignReportGlobal(align, a, b, m, n,
 			 start1, start2, gapopen, gapextend,
@@ -170,8 +168,8 @@ int main(int argc, char **argv)
 
     /* write the merged sequence */
     ajSeqAssignSeqS(a, merged);
-    ajSeqWrite(seqout, a);
-    ajSeqWriteClose(seqout);
+    ajSeqoutWriteSeq(seqout, a);
+    ajSeqoutClose(seqout);
     ajSeqoutDel(&seqout);
 
     ajSeqDel(&a);
@@ -208,13 +206,8 @@ int main(int argc, char **argv)
 ** @param [r] n [const AjPStr] Walk alignment for second sequence
 ** @param [r] start1 [ajint] start of alignment in first sequence
 ** @param [r] start2 [ajint] start of alignment in second sequence
-** @param [r] score [float] alignment score from AlignScoreX
-** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] cvt [const AjPSeqCvt] conversion table for matrix
 ** @param [r] namea [const char *] name of first sequence
 ** @param [r] nameb [const char *] name of second sequence
-** @param [r] begina [ajint] first sequence offset
-** @param [r] beginb [ajint] second sequence offset
 **
 ** @return [void]
 ******************************************************************************/
@@ -222,10 +215,8 @@ int main(int argc, char **argv)
 static void merger_Merge(AjPAlign align, AjPStr *ms,
 			 const char *a, const char *b,
 			 const AjPStr m, const AjPStr n, ajint start1,
-			 ajint start2, float score, AjBool mark,
-			 const AjPSeqCvt cvt,
-			 const char *namea, const char *nameb,
-			 ajint begina, ajint beginb)
+			 ajint start2,
+			 const char *namea, const char *nameb)
 {
     ajint apos;
     ajint bpos;
@@ -517,16 +508,18 @@ static AjBool merger_bestquality(const char * a, const char *b,
 ** SEQUENCE READS
 **
 ** @param [r] seq [const char*] Sequence
-** @param [r] pos [ajint] Position
-** @param [r] window [ajint] Window size
+** @param [r] pos [ajuint] Position
+** @param [r] window [ajuint] Window size
 ** @return [float] quality of the window
 **
 ******************************************************************************/
 
-static float merger_quality(const char * seq, ajint pos, ajint window)
+static float merger_quality(const char * seq, ajuint pos, ajuint window)
 {
     ajint value = 0;
-    ajint i;
+    ajuint i;
+    ajint j;
+    ajint jlast;
 
     for(i=pos; i<pos+window && i < strlen(seq); i++)
 	if(strchr("aAcCgGtTuU", seq[i]))
@@ -535,12 +528,12 @@ static float merger_quality(const char * seq, ajint pos, ajint window)
 	else if(strchr("mrwsykvhdbMRWSYKVHDB", seq[i]))
 	    /* ambiguous bases count for only one point */
 	    value++;
-
-    for(i=pos-1; i>pos-window && i>=0; i--)
-	if(strchr("aAcCgGtTuU", seq[i]))
+    jlast = pos-window;
+    for(j=pos-1; j>jlast && j>=0; j--)
+	if(strchr("aAcCgGtTuU", seq[j]))
 	    /* good bases count for two points */
 	    value+=2;
-	else if(strchr("mrwsykvhdbMRWSYKVHDB", seq[i]))
+	else if(strchr("mrwsykvhdbMRWSYKVHDB", seq[j]))
 	    /* ambiguous bases count for only one point */
 	    value++;
 

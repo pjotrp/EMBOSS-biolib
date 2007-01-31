@@ -77,7 +77,7 @@ static ajint cutgextract_readcodons(AjPFile inf, AjBool allrecords,
 
 int main(int argc, char **argv)
 {
-    char *codons[]=
+    const char *codons[]=
     {
 	"TAG","TAA","TGA","GCG","GCA","GCT","GCC","TGT", /* 00-07 */
 	"TGC","GAT","GAC","GAA","GAG","TTT","TTC","GGT", /* 08-15 */
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
 	"ACC","GTA","GTT","GTC","GTG","TGG","TAT","TAC"	 /* 56-63 */
     };
 
-    char *aa=
+    const char *aa=
 	"***AAAACCDDEEFFGGGGHHIIIKKLLLLLLMNNPPPPQQRRRRRRSSSSSSTTTTVVVVWYY";
 
     const char* thiscodon = NULL;
@@ -110,7 +110,8 @@ int main(int argc, char **argv)
     ajint x = 0;
     ajint savecount[3];
 
-    AjPStr *array = NULL;
+    AjPStr *keyarray = NULL;
+    CutgPValues *valarray = NULL;
     AjPCod codon  = NULL;
     ajint sum = 0;
     char c;
@@ -185,7 +186,7 @@ int main(int argc, char **argv)
 		AJNEW0(value);
 		ajStrAssignS(&value->Species,species);
 		ajStrAssignS(&value->Division, division);
-		ajTablePut(table,(const void *)key,(void *)value);
+		ajTablePut(table,(void *)key,(void *)value);
 	    }
 	    for(k=0;k<3;k++)
 		savecount[k] = value->Count[k];
@@ -212,13 +213,13 @@ int main(int argc, char **argv)
 	ajFileClose(&inf);
     }
 
-    array = (AjPStr *) ajTableToarray(table,NULL);
+    ajTableToarray(table,(void***) &keyarray, (void***) &valarray);
 
     i = 0;
-    while(array[i])
+    while(keyarray[i])
     {
-	key   = array[i++];
-	value = (CutgPValues) array[i++];
+	key   = keyarray[i];
+	value = (CutgPValues) valarray[i++];
 	codon = ajCodNew();
 	sum   = 0;
 	for(j=0;j<CODONS;++j)
@@ -279,6 +280,9 @@ int main(int argc, char **argv)
 	AJFREE(value);
 	ajCodDel(&codon);
     }
+
+    AJFREE(keyarray);
+    AJFREE(valarray);
 
     ajTableFree(&table);
     ajListDel(&flist);

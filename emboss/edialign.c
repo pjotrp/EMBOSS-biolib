@@ -96,7 +96,8 @@ float mot_factor , mot_offset_factor , max_mot_offset ;
 
 ajint wgt_type_plot = 0 , motifs = 0 ; 
 ajint bubblesort = 0 , cd_gobics = 0 ; 
-ajint nas = 0 , ref_seq = 0 , i_max ; 
+ajint nas = 0 , ref_seq = 0;
+ajuint i_max ; 
 ajint speed_optimized = 0 ; 
 ajint online = 0 ; 
 ajint time_stamps = 0 ; 
@@ -109,12 +110,12 @@ ajint quali_num = 1 ;
 ajint wgt_plot = 0 ; 
 ajint self_comparison = 0;
 short exclude_frg = 0; 
-ajint ***exclude_list ;
+ajint ***gl_exclude_list ;
 ajint max_sim_score = -2000 ; 
 ajint sf_mat = 0 ; 
 char nuc1, nuc2, nuc3 ;
 short crick_strand = 0;
-ajint frg_count = 0; 
+ajint gl_frg_count = 0; 
 ajint dna_speed = 0;
 char pst_name[NAME_LEN];
 ajint cont_it = 1 , wgt_type = 0  ;
@@ -139,7 +140,7 @@ ajint afc_file = 0;
 ajint afc_filex = 0;
 ajint dia_pa_file = 0;
 ajint frag_file = 0;
-ajint argnum;
+ajuint argnum;
 ajint standard_out = 0;
 ajint plot_num = 4 ;
 ajint default_name = 1;
@@ -179,7 +180,7 @@ float **pair_score;
 short **cont_it_p; 
 float score;
 ajint maxlen;              /* maximum length of sequences */
-ajint seqnum;              /* number of sequences */
+ajuint seqnum;              /* number of sequences */
 ajint *num_dia_bf;         /* num_dia_bf[ istep ] = number of diagonals from
                             all pairwise alignments BEFORE FILTER
                             PROCEDURE in iteration step `istep' */     
@@ -195,7 +196,7 @@ float weight_sum_bf;     /* sum of weights  of diagonals in multiple
 float weight_sum_af;     /* sum of weights  of diagonals in multiple 
                             alignment after fliter procedure*/
 float threshold = 0.0 ;  /* threshold T */
-ajint num_dia_p;           /* number of diagonals in pairwise alignment */ 
+ajuint num_dia_p;           /* number of diagonals in pairwise alignment */ 
 ajint long_output = 0;     /* if long_output = 1, a log-file is produced.  */   
 ajint frg_mult_file = 0 ; 
 ajint frg_mult_file_v = 0 ; 
@@ -229,7 +230,7 @@ char input_name[NAME_LEN];
 char tmp_str[NAME_LEN];
 char output_name[NAME_LEN];
 char printname[NAME_LEN];
-char mot_regex[MAX_REGEX] ; 
+char gl_mot_regex[MAX_REGEX] ; 
 
 char *par_file;
 
@@ -400,6 +401,7 @@ struct pair_frag
    sel:         1, if accepted in filter proces, 0 else
    trans:       translation
    cs:          crick strand 
+   Padding:     padding to alignment boundary
    it:          iteration step 
    *next:       next diagonal 
    */
@@ -415,6 +417,7 @@ struct multi_frag
     short sel;
     short trans;
     short cs;
+    short Padding;
     struct multi_frag *next;
     struct multi_frag *pred;
 };
@@ -455,7 +458,7 @@ struct subtree
 
 
 char DEBUG=0;
-edialignCLOSURE *clos;         /* closure data structure for GABIOS-LIB */
+edialignCLOSURE *gabiosclos;         /* closure data structure for GABIOS-LIB */
 
 
 
@@ -469,17 +472,18 @@ static void edialign_realloc_closure(edialignCLOSURE *clos);
 static void **edialign_recallouer_mat(void **pointeur, size_t t_elt,
 				      size_t anc_nb_lig, 
 				      size_t nb_lig, size_t nb_col);
-static void edialign_erreur(char *message);
+static void edialign_erreur(const char *message);
 static ajint edialign_word_count(char *str);
 static void edialign_rel_wgt_calc(ajint l1, ajint l2, float **rel_wgt);
 static void edialign_wgt_prnt_prot(void);
 static ajint edialign_mini2(ajint a, ajint b);
+static ajuint edialign_minu2(ajint a, ajint b);
 static ajint edialign_mini3(ajint a, ajint b, ajint c);
 static float edialign_mot_dist_factor(ajint offset , float parameter);
 static float edialign_maxf2(float a, float b);
 static void edialign_wgt_prnt(void);
 static void edialign_regex_parse(char *mot_regex);
-static void edialign_seq_parse(char *mot_regex);
+static void edialign_seq_parse(char *mot_regex_unused);
 static void edialign_seq_shift(void);
 static void edialign_matrix_read(FILE *fp_mat);
 static void edialign_mem_alloc(void);
@@ -501,9 +505,8 @@ static void edialign_filter(ajint *number, struct multi_frag *diagonal);
 static void edialign_para_print( char *s_f, FILE *fpi );
 
 static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
-				 ajint *number);
+				 ajuint *number);
 static void edialign_ow_add( struct multi_frag *sm1 , struct multi_frag *sm2 );
-static void edialign_ow_bubble_sort( int number , struct multi_frag *dp );
 static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs);
 static void edialign_print_fragments(struct multi_frag *d , FILE *fp_ff2 );
 static void edialign_throw_out( float *weight_sum );
@@ -511,7 +514,7 @@ static void edialign_sel_test(void);
 static void edialign_av_tree_print(void);
 static void edialign_subst_mat( char *file_name, int fragno ,
 			       struct multi_frag *frg );
-static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
+static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 				 FILE *fp, AjPSeqout seqout, FILE *fp3 ,
 				 FILE *fp4 ,
 				 FILE *fp_col_score,AjBool isprot);
@@ -534,7 +537,7 @@ static void regex_format_complain(void);
 
 int main(int argc, char **argv)
 {
-    ajint k;
+    ajuint k;
     ajint dia_counter;
     ajint tmpi1;
     ajint tmpi2 ;
@@ -557,13 +560,14 @@ int main(int argc, char **argv)
     char itname4[NAME_LEN];
     char dialign_dir[NAME_LEN];
 
-    ajint i;
-    ajint j;
-    ajint n;
+    ajuint i;
+    ajuint j;
+    ajuint n;
     ajint len;
     
-    ajint hv;
+    ajuint hv;
 
+    ajint ii;
 
     FILE *fp_ali = NULL;
 /*    FILE *fp2 = NULL;*/
@@ -585,17 +589,17 @@ int main(int argc, char **argv)
     AjPStr linkage;
     AjPFile outfile = NULL;
     AjBool isprot;
-    ajint s_len;
+    ajuint s_len;
     char s_str[SEQ_NAME_LEN+3];
     AjPSeqout seqout = NULL;
     
     embInit("edialign", argc, argv);
 
     seqset    = ajAcdGetSeqset("sequences");
-    nucmode   = ajAcdGetListI("nucmode",1);
+    nucmode   = ajAcdGetListSingle("nucmode");
     revcomp   = ajAcdGetBool("revcomp");
-    overlapw  = ajAcdGetSelectI("overlapw",1);
-    linkage   = ajAcdGetListI("linkage",1);
+    overlapw  = ajAcdGetSelectSingle("overlapw");
+    linkage   = ajAcdGetListSingle("linkage");
     lmax      = ajAcdGetInt("maxfragl");
     dna_speed = !!ajAcdGetBool("fragmat");
     
@@ -611,8 +615,8 @@ int main(int argc, char **argv)
     outfile   = ajAcdGetOutfile("outfile");
     seqout    = ajAcdGetSeqoutall("outseq");
 
-    ajSeqsetToUpper(seqset);
-    n = ajSeqsetSize(seqset);
+    ajSeqsetFmtUpper(seqset);
+    n = ajSeqsetGetSize(seqset);
 
     AJCNEW0(seq,n);
     AJCNEW0(seq_name,n);
@@ -623,7 +627,7 @@ int main(int argc, char **argv)
     
     for(i=0;i<n;++i)
     {
-	pseq = ajSeqsetGetSeq(seqset,i);
+	pseq = ajSeqsetGetseqSeq(seqset,i);
 	len = ajSeqGetLen(pseq);
 	seqlen[i] = len;
 	if(ajSeqIsProt(pseq))
@@ -632,7 +636,7 @@ int main(int argc, char **argv)
 	AJCNEW(seq[i],len+1);
 	strcpy(seq[i],ajSeqGetSeqC(pseq));
 	
-	sname = ajSeqsetName(seqset,i);
+	sname = ajSeqsetGetseqNameS(seqset,i);
 	len = ajStrGetLen(sname);
 	AJCNEW(seq_name[i],SEQ_NAME_LEN+3);
 	AJCNEW(full_name[i],len+1);
@@ -810,7 +814,7 @@ int main(int argc, char **argv)
     seqnum = edialign_seq_read( seq_file , seq , seq_name , full_name ) ;
 */
     if ( motifs )
-	edialign_regex_parse( mot_regex ) ; 
+	edialign_regex_parse( gl_mot_regex ) ; 
 
 
     if( ( seqnum == 2 ) && ( iter_cond_prob == 0 ) ) 
@@ -924,7 +928,7 @@ int main(int argc, char **argv)
     av_len = av_len / seqnum;
 
     if ( motifs )
-	edialign_seq_parse( mot_regex ) ; 
+	edialign_seq_parse( gl_mot_regex ) ; 
   
     edialign_seq_shift();
 
@@ -1047,7 +1051,7 @@ int main(int argc, char **argv)
 
     if( exclude_frg )
     { 
-	if((exclude_list = (int ***) calloc(seqnum,
+	if((gl_exclude_list = (int ***) calloc(seqnum,
 					    sizeof(int **) )) == NULL)
 	{
 	    printf(" problems with memory allocation for "
@@ -1056,25 +1060,25 @@ int main(int argc, char **argv)
 	} 
 
 	for(i = 0 ; i < seqnum ; i++ ) 
-	    if( ( exclude_list[ i ] =
+	    if( ( gl_exclude_list[ i ] =
 		 (int **) calloc( seqnum , sizeof(int *) )) == NULL)
 	    {
 		printf(" problems with memory allocation for "
-		       "'exclude_list' \n \n");
+		       "'gl_exclude_list' \n \n");
 		exit(1);
 	    } 
   
 	for(i = 0 ; i < seqnum ; i++ ) 
 	    for(j = 0 ; j < seqnum ; j++ ) 
-		if( ( exclude_list[ i ][ j ]  =
+		if( ( gl_exclude_list[ i ][ j ]  =
 		     (int *) calloc( seqlen[ i ] + 1 , sizeof(int) )) == NULL)
 		{
 		    printf(" problems with memory allocation for "
-			   "'exclude_list' \n \n");
+			   "'gl_exclude_list' \n \n");
 		    exit(1);
 		} 
 
-	edialign_exclude_frg_read ( input_name , exclude_list ) ;
+	edialign_exclude_frg_read ( input_name , gl_exclude_list ) ;
     }
 
 
@@ -1166,7 +1170,7 @@ int main(int argc, char **argv)
 	fp_mot = fopen( mot_file_name , "w" );
       
 	fprintf(fp_mot,"\n #  %s \n\n   " , input_line );
-	fprintf(fp_mot," motif: %s \n\n", mot_regex ); 
+	fprintf(fp_mot," motif: %s \n\n", gl_mot_regex ); 
 	fprintf(fp_mot," max offset for motifs = %d \n\n",
 		(int) max_mot_offset ); 
 	fprintf(fp_mot," the following fragments contain the motif: \n\n" ); 
@@ -1193,7 +1197,7 @@ int main(int argc, char **argv)
 
 
 
-    clos = edialign_newAligGraphClosure(seqnum, seqlen, 0, NULL);
+    gabiosclos = edialign_newAligGraphClosure(seqnum, seqlen, 0, NULL);
 
     if( (open_pos = (int *** ) calloc( seqnum , sizeof(int **))) == NULL)
     {
@@ -1225,8 +1229,8 @@ int main(int argc, char **argv)
 
     for( i = 0 ; i <seqnum ; i++)
 	for( j = 0 ; j <seqnum ; j++)
-	    for( hv = 1 ; hv <= seqlen[i] ; hv++)
-		open_pos[i][j][hv] = 1;
+	    for( ii = 1 ; ii <= seqlen[i] ; ii++)
+		open_pos[i][j][ii] = 1;
 
 
     /**************************************
@@ -1240,52 +1244,54 @@ int main(int argc, char **argv)
 
     if( wgt_type > 1 ) 
 	for(hv=0;hv<seqnum;hv++)
-	    for(i=1;i<=seqlen[hv]-2;i++)
+	    for(ii=1;ii<=seqlen[hv]-2;ii++)
 	    {
-		if(edialign_translate(seq[hv][i],seq[hv][i+1],seq[hv][i+2],hv,
-				      i ) == -1)
+		if(edialign_translate(seq[hv][ii],seq[hv][ii+1],
+				      seq[hv][ii+2],hv,
+				      ii ) == -1)
 		    exit(1);
 
 
-		amino[hv][i] = edialign_translate(seq[hv][i],seq[hv][i+1],
-					 seq[hv][i+2],hv,i);
+		amino[hv][ii] = edialign_translate(seq[hv][ii],
+						   seq[hv][ii+1],
+						   seq[hv][ii+2],hv,ii);
    
 		if( crick_strand )
 		{ 
-		    nuc1 = edialign_invert( seq[hv][i+2] );
-		    nuc2 = edialign_invert( seq[hv][i+1] );
-		    nuc3 = edialign_invert( seq[hv][i] );
+		    nuc1 = edialign_invert( seq[hv][ii+2] );
+		    nuc2 = edialign_invert( seq[hv][ii+1] );
+		    nuc3 = edialign_invert( seq[hv][ii] );
  
-		    amino_c[hv][i] = edialign_translate( nuc1 , nuc2 , nuc3 ,
-							hv , i);
+		    amino_c[hv][ii] = edialign_translate( nuc1 , nuc2 , nuc3 ,
+							hv , ii);
 		}
 	    }
 
 
     if( wgt_type == 0 ) 
 	for(hv=0;hv<seqnum;hv++)
-	    for(i=1;i<=seqlen[hv];i++)
+	    for(ii=1;ii<=seqlen[hv];ii++)
 	    {
-		if( seq[hv][i] == 'C' ) amino[hv][i] = 1;           
-		if( seq[hv][i] == 'S' ) amino[hv][i] = 2;           
-		if( seq[hv][i] == 'T' ) amino[hv][i] = 3;           
-		if( seq[hv][i] == 'P' ) amino[hv][i] = 4;           
-		if( seq[hv][i] == 'A' ) amino[hv][i] = 5;           
-		if( seq[hv][i] == 'G' ) amino[hv][i] = 6;           
-		if( seq[hv][i] == 'N' ) amino[hv][i] = 7;           
-		if( seq[hv][i] == 'D' ) amino[hv][i] = 8;           
-		if( seq[hv][i] == 'E' ) amino[hv][i] = 9;           
-		if( seq[hv][i] == 'Q' ) amino[hv][i] = 10;           
-		if( seq[hv][i] == 'H' ) amino[hv][i] = 11;           
-		if( seq[hv][i] == 'R' ) amino[hv][i] = 12;           
-		if( seq[hv][i] == 'K' ) amino[hv][i] = 13;           
-		if( seq[hv][i] == 'M' ) amino[hv][i] = 14;           
-		if( seq[hv][i] == 'I' ) amino[hv][i] = 15;           
-		if( seq[hv][i] == 'L' ) amino[hv][i] = 16;           
-		if( seq[hv][i] == 'V' ) amino[hv][i] = 17;           
-		if( seq[hv][i] == 'F' ) amino[hv][i] = 18;           
-		if( seq[hv][i] == 'Y' ) amino[hv][i] = 19;           
-		if( seq[hv][i] == 'W' ) amino[hv][i] = 20;           
+		if( seq[hv][ii] == 'C' ) amino[hv][ii] = 1;           
+		if( seq[hv][ii] == 'S' ) amino[hv][ii] = 2;           
+		if( seq[hv][ii] == 'T' ) amino[hv][ii] = 3;           
+		if( seq[hv][ii] == 'P' ) amino[hv][ii] = 4;           
+		if( seq[hv][ii] == 'A' ) amino[hv][ii] = 5;           
+		if( seq[hv][ii] == 'G' ) amino[hv][ii] = 6;           
+		if( seq[hv][ii] == 'N' ) amino[hv][ii] = 7;           
+		if( seq[hv][ii] == 'D' ) amino[hv][ii] = 8;           
+		if( seq[hv][ii] == 'E' ) amino[hv][ii] = 9;           
+		if( seq[hv][ii] == 'Q' ) amino[hv][ii] = 10;           
+		if( seq[hv][ii] == 'H' ) amino[hv][ii] = 11;           
+		if( seq[hv][ii] == 'R' ) amino[hv][ii] = 12;           
+		if( seq[hv][ii] == 'K' ) amino[hv][ii] = 13;           
+		if( seq[hv][ii] == 'M' ) amino[hv][ii] = 14;           
+		if( seq[hv][ii] == 'I' ) amino[hv][ii] = 15;           
+		if( seq[hv][ii] == 'L' ) amino[hv][ii] = 16;           
+		if( seq[hv][ii] == 'V' ) amino[hv][ii] = 17;           
+		if( seq[hv][ii] == 'F' ) amino[hv][ii] = 18;           
+		if( seq[hv][ii] == 'Y' ) amino[hv][ii] = 19;           
+		if( seq[hv][ii] == 'W' ) amino[hv][ii] = 20;           
 	    }
 
 
@@ -2919,24 +2925,24 @@ static ajint edialign_succFrontier(edialignCLOSURE *clos,
 static void edialign_anchor_check(ajint s1, ajint s2, ajint b1, ajint b2,
 				  ajint l, float scr)
 {
-
+    (void) scr;				/* make it used */
     if(  
        ( s1 < 1 ) || 
-       ( s1 > seqnum ) 
+       ( s1 > (ajint) seqnum ) 
        )
     { 
 	ajFatal(" \n\n  wrong sequence # %d in anchoring file\n\n"
-		"  data set consists only of %d sequences \n\n",
+		"  data set consists only of %u sequences \n\n",
 		s1,seqnum);
     }  
 
     if(  
        ( s2 < 1 ) || 
-       ( s2 > seqnum )  
+       ( s2 > (ajint) seqnum )  
        )
     { 
 	ajFatal(" \n\n  wrong sequence # %d in anchoring file\n\n"
-		"  data set consists only of %d sequences \n\n",
+		"  data set consists only of %u sequences \n\n",
 		s2,seqnum );
     }
 
@@ -3087,12 +3093,12 @@ static ajint edialign_multi_anc_read(char *file_name)
 ** @param [r] n2 [ajint] Undocumented
 ** @param [u] fp1 [FILE*] Undocumented
 ** @param [u] fp_m [FILE*] Undocumented
-** @param [u] number [ajint*] Undocumented
+** @param [u] number [ajuint*] Undocumented
 ** @return [float] Undocumented
 *****************************************************************************/
 
 static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
-				 ajint *number)
+				 ajuint *number)
 {
     /* pairwise alignment */ 
 
@@ -3181,6 +3187,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
     FILE *nd_fp;
 
 
+    (void) fp_m;			/* make it used */
 
     /*
        printf( "\n  in frag_chain: iter = %d wgt_type = %d  \n\n", istep ,
@@ -3289,8 +3296,8 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 
     for( hv = 1 ; hv <= seqlen[ n1 ] ; hv++ )
     {
-	lb_int[ hv ] = edialign_predFrontier( clos , n1 , hv , n2 );
-	ub_int[ hv ] = edialign_succFrontier( clos , n1 , hv , n2 );
+	lb_int[ hv ] = edialign_predFrontier( gabiosclos , n1 , hv , n2 );
+	ub_int[ hv ] = edialign_succFrontier( gabiosclos , n1 , hv , n2 );
 	if (lb_int[ hv ] != ub_int[ hv ])
 	{
 	    lb_int[ hv ]++;
@@ -3313,14 +3320,14 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 	    if( new_region )
 	    {
 
-		diff2 = ( edialign_succFrontier(clos, n1, i , n2) 
-			 - edialign_predFrontier(clos, n1, i , n2) -1 );
+		diff2 = ( edialign_succFrontier(gabiosclos, n1, i , n2) 
+			 - edialign_predFrontier(gabiosclos, n1, i , n2) -1 );
 
 		if ( diff2 < 0 )
 		    diff2 = 0;
 
-		diff1 = ( edialign_succFrontier(clos, n2, lb_int[i] , n1)  
-			 - edialign_predFrontier(clos, n2, lb_int[i] , n1)
+		diff1 = ( edialign_succFrontier(gabiosclos, n2, lb_int[i] , n1)  
+			 - edialign_predFrontier(gabiosclos, n2, lb_int[i] , n1)
 			 -1 ) ;
 		if ( diff1 < 0 )
 		    diff1 = 0;
@@ -3403,7 +3410,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 			start_a = 0 ; 
 
 		if( exclude_frg ) 
-		    if( j == exclude_list[ n1 ][ n2 ][ i ] ) 
+		    if( j == gl_exclude_list[ n1 ][ n2 ][ i ] ) 
 			start_a = 0 ; 
 
 		if( start_a )
@@ -3625,7 +3632,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 				    start_a = start_a + start_pep_c ;
 
 				if( exclude_frg ) 
-				    if(exclude_list[ n1 ][ n2 ][ i + k ] == j +
+				    if(gl_exclude_list[ n1 ][ n2 ][ i + k ] == j +
 				       k )
 					start_a = 0 ; 
  
@@ -4145,6 +4152,39 @@ static ajint edialign_mini2(ajint a, ajint b)
 
 
 
+/* @funcstatic edialign_minu2 ******************************************
+**
+** edialign_mini2
+**
+** @param [r] a [ajint] Undocumented
+** @param [r] b [ajint] Undocumented
+** @return [ajuint] Undocumented
+*****************************************************************************/
+
+static ajuint edialign_minu2(ajint a, ajint b)
+{
+    ajuint ia;
+    ajuint ib;
+
+    if(a<0)
+	ia = 0;
+    else
+	ia = a;
+
+    if(b<0)
+	ib = 0;
+    else
+	ib = b;
+
+    if(a<b)
+	return ia;
+
+    return ib;
+}
+
+
+
+
 /* @funcstatic edialign_maxi2 ******************************************
 **
 ** edialign_maxi2
@@ -4267,6 +4307,26 @@ static void edialign_maxi(ajint *a, ajint b)
 
 
 
+/* @funcstatic edialign_maxu ************************************************
+**
+** edialign_maxu
+**
+** @param [u] a [ajuint*] Undocumented
+** @param [r] b [ajuint] Undocumented
+** @return [void]
+*****************************************************************************/
+
+static void edialign_maxu(ajuint *a, ajuint b)
+{
+    if (*a < b)
+	*a = b;
+
+    return;
+}
+
+
+
+
 /* @funcstatic edialign_invert **********************************************
 **
 ** edialign_invert
@@ -4313,6 +4373,9 @@ static ajint edialign_translate(char c1, char c2 ,char c3, ajint seqno,
   
 
     ajint  amac = 0;				/* resulting amino acid */
+
+    (void) seqno;			/* make it used */
+    (void) pos;				/* make it used */
 
     if(c1 == 'T')
     {
@@ -4947,7 +5010,7 @@ static void edialign_ow_add( struct multi_frag *sm1 , struct multi_frag *sm2 )
 
 static void edialign_seq_shift(void)
 {
-    ajint i;
+    ajuint i;
     ajint hv;
   
     for(i = 0 ; i < seqnum ; i++)
@@ -4976,8 +5039,8 @@ static void edialign_filter(ajint *number, struct multi_frag *diagonal)
        is consistent, it is included into the alignment and the frontiers 
        in clos (when GABIOS is used) are changed accordingly */
 
-    ajint i;
-    ajint j;
+    ajuint i;
+    ajuint j;
     ajint hv;
     ajint ab[2];
     ajint as[2];
@@ -5038,14 +5101,15 @@ static void edialign_filter(ajint *number, struct multi_frag *diagonal)
 		fclose(fp_st);
 	    }
 
-	test = edialign_alignableSegments(clos, as[0], ab[0], as[1], ab[1],
+	test = edialign_alignableSegments(gabiosclos,
+					  as[0], ab[0], as[1], ab[1],
 					  aext);
        
 	if(test) /* i.e current diagonal consistent with the diagonals
 		    already included into the alignment */
 	{
 
-	    edialign_addAlignedSegments(clos, as[0], ab[0], as[1], ab[1],
+	    edialign_addAlignedSegments(gabiosclos, as[0], ab[0], as[1], ab[1],
 					aext);
   
 	    if( istep )  
@@ -5234,6 +5298,8 @@ static void edialign_wgt_type_count(ajint num , ajint e_len, ajint *plus_cnt,
     ajint s1;
     ajint pos;
     
+    (void) e_len;			/* make it used */
+
     for( dc = 0 ; dc < num ; dc++ )
     {
 
@@ -5349,13 +5415,13 @@ static void edialign_plot_calc(ajint num , ajint e_len, float *w_count,
 
 static void edialign_av_tree_print(void)
 {
-    ajint i;
-    ajint j;
+    ajuint i;
+    ajuint j;
     ajint k;
-    ajint connect;
+    ajuint connect;
     ajint max_pair[2];
-    ajint m1;
-    ajint m2;
+    ajuint m1;
+    ajuint m2;
     struct subtree *all_clades;
     double **clade_similarity;
     double new_similarity = 0.; 
@@ -5546,8 +5612,8 @@ static void edialign_av_tree_print(void)
 
 static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 {
-    ajint i;
-    ajint j;
+    ajuint i;
+    ajuint j;
     ajint pv;
     ajint percent;
     ajint this_frag_trans;
@@ -5587,7 +5653,7 @@ static void edialign_print_log(struct multi_frag *d,FILE *fp_l,FILE *fp_fs)
 	    while(diagonal != NULL)
 	    {
 		frg_count++ ;
-		if( diagonal->s[0] == i && diagonal->s[1] == j)
+		if( diagonal->s[0] == (ajint)i && diagonal->s[1] == (ajint)j)
 		{
 		    if(diagonal->sel)
 		    {
@@ -5780,7 +5846,7 @@ static ajint edialign_word_count( char *str )
 {
 
     short word = 0 ; 
-    ajint i ; 
+    ajuint i ; 
     ajint word_len = 0 ; 
 
     for( i = 0 ; i < strlen( str ) - 1  ; i++ )
@@ -5822,8 +5888,8 @@ static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
     ajint len;
     ajint beg1;
     ajint beg2;
-    ajint seq1;
-    ajint seq2; 
+    ajuint seq1;
+    ajuint seq2; 
 
     strcpy( exclude_file_name , file_name );
     strcat( exclude_file_name , ".xfr" );
@@ -6286,8 +6352,11 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 static void edialign_subst_mat( char *file_name, int fragno ,
 			       struct multi_frag *frg )
 {
-
-    ajint s0 , s1 , i , j , frg_count ; 
+    ajint ii;
+    ajuint i;
+    ajuint j;
+    ajuint s0, s1;
+    ajint frg_count ; 
     short a0 , a1 ; 
     ajint ****sbsmt ;
     struct multi_frag *frag ; 
@@ -6344,10 +6413,10 @@ static void edialign_subst_mat( char *file_name, int fragno ,
     for( frg_count = 0 ; frg_count < fragno ; frg_count++ )
     {
 	if( frag->weight > sf_mat_thr )
-	    for( i = 0 ; i < frag->ext ; i++ )
+	    for( ii = 0 ; ii < frag->ext ; ii++ )
 	    {
-		a0 = amino[ frag->s[0] ][ frag->b[0] + i ] ; 
-		a1 = amino[ frag->s[1] ][ frag->b[1] + i ] ; 
+		a0 = amino[ frag->s[0] ][ frag->b[0] + ii ] ; 
+		a1 = amino[ frag->s[1] ][ frag->b[1] + ii ] ; 
 		s0 = frag->s[0] ; 
 		s1 = frag->s[1] ;
 		sbsmt[ s0 ][ s1 ][ a0 ][ a1 ]++ ;
@@ -6402,8 +6471,8 @@ static void edialign_print_fragments(struct multi_frag *d , FILE *fp_ff2 )
     {
 	if( fragment->it )
 	{
-	    frg_count++ ;
-	    fprintf( fp_ff2, "%6d) ", frg_count );
+	    gl_frg_count++ ;
+	    fprintf( fp_ff2, "%6d) ", gl_frg_count );
 	    fprintf( fp_ff2, "seq: %3d %3d  ", fragment->s[0] + 1 ,
 		    fragment->s[1] + 1 );
 	    fprintf( fp_ff2, "beg: %7d %7d ", fragment->b[0] ,
@@ -6483,7 +6552,7 @@ static void edialign_weight_print( float **wgt )
 **
 ** edialign_ali_arrange
 **
-** @param [r] fragno [ajint] Undocumented
+** @param [r] ifragno [ajint] Undocumented
 ** @param [u] d [struct multi_frag*] Undocumented
 ** @param [u] fp [FILE*] Undocumented
 ** @param [u] seqout [AjPSeqout] Undocumented
@@ -6494,15 +6563,22 @@ static void edialign_weight_print( float **wgt )
 ** @return [void]
 *****************************************************************************/
 
-static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
+static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 				 FILE *fp, AjPSeqout seqout, FILE *fp3 ,
 				 FILE *fp4 ,
 				 FILE *fp_col_score, AjBool isprot)
 {
-    ajint block_no, char_no ;
-    ajint shift_cond, endlen;
-    ajint  p, pn, i, j, k, l, hv,  lc,  max_p;
-    ajint b1, b2, s1, s2, e, dif, sv, lv, add, msf_lines;
+    ajint block_no;
+    ajuint char_no ;
+    ajint shift_cond;
+    ajuint endlen;
+    ajuint hv;
+    ajuint i, j, p;
+    ajint ii;
+    ajint pn, k, l, lc;
+    ajuint max_p;
+    ajuint sv, s1, s2;
+    ajint b1, b2, e, dif, lv, add, msf_lines;
     AjPSeq eseq = NULL;
     
     char sim_char;
@@ -6530,6 +6606,8 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
     ajint **inv_shift;     
     ajint char_per_line; /* number of residues per line in output file */
     char aligned; 
+    ajuint fragno = ifragno;
+
     char_per_line = ( ( PAPER_WIDTH - 18 ) / 11) * 10;
 
     dia = d;
@@ -6586,7 +6664,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 	}
 
 
-    if( fragno >= 0 )
+    if( ifragno >= 0 )
     {
 
 	for(hv=0;hv<seqnum;hv++)
@@ -6635,7 +6713,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 	}  
 
 	for(i=0;i<seqnum;i++)
-	    for(hv=0;hv<b_len[i];hv++)
+	    for(hv=0;hv<(ajuint) b_len[i];hv++)
 		shift[i][ begin[i]+hv ] = hv;
 
 	shift_cond = 1;
@@ -6675,7 +6753,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 	endlen = 0;
 
 	for(hv=0;hv<seqnum;hv++)
-	    edialign_maxi(&endlen,shift[hv][ end[hv]-1 ] + 1);  
+	    edialign_maxu(&endlen,shift[hv][ end[hv]-1 ] + 1);  
 
 	for(hv=0;hv<seqnum;hv++)
 	    if( (endseq[hv] = calloc(endlen, sizeof(char) )) == NULL )
@@ -6757,8 +6835,8 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
    
 
 	for(hv=0 ; hv<seqnum ; hv++)
-	    for(p=1 ; p <= seqlen[hv] ; p++)
-		inv_shift[hv][ shift[hv][p] ] = p; 
+	    for(ii=1 ; ii <= seqlen[hv] ; ii++)
+		inv_shift[hv][ shift[hv][ii] ] = ii;
 
 	for(hv=0;hv<seqnum;hv++)
 	    if( (hseq[hv] = calloc( (maxlen+1), sizeof(char) )) == NULL )
@@ -6777,18 +6855,18 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 		endseq[hv][i] = gap_char;
 
 	for(hv=0;hv<seqnum;hv++)
-	    for(i=begin[hv];i<end[hv];i++)
+	    for(i=begin[hv];i<(ajuint) end[hv];i++)
 		hseq[hv][i] = tolower(seq[hv][i]);
 
 	for( hv = 0 ; hv < fragno ; hv++ )
 	    for(k=0;k<2;k++)
-		for(i = fragments[hv].b[k] ; i < fragments[hv].b[k] +
-		    fragments[hv].ext ; i++)
-		    hseq[ fragments[hv].s[k]][i] = seq[fragments[hv].s[k]][i];
+		for(ii = fragments[hv].b[k] ;  ii < fragments[hv].b[k] +
+		    fragments[hv].ext ; ii++)
+		    hseq[ fragments[hv].s[k]][ii] = seq[fragments[hv].s[k]][ii];
 
 	for(hv=0;hv<seqnum;hv++)
-	    for(i = begin[hv] ; i < end[hv] ; i++)
-		endseq[hv][ shift[hv][i] ] = hseq[hv][i];
+	    for(ii = begin[hv] ; ii < end[hv] ; ii++)
+		endseq[hv][ shift[hv][ii] ] = hseq[hv][ii];
 
 	for(i=0;i<endlen;i++)
 	    clear_seq[i] = ' ';
@@ -6814,10 +6892,10 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 		    if( endseq[s2][p] != tolower( endseq[s2][p] ) )
 			/* endseq[s2][p] capital letter */ 
 		    {
-			aligned = edialign_alignedPositions(clos,s1,
+			aligned = edialign_alignedPositions(gabiosclos,s1,
 							    inv_shift[s1][p],
 							    s2,
-						   edialign_succFrontier(clos,
+						   edialign_succFrontier(gabiosclos,
 									 s1,
 							    inv_shift[s1][p],
 							    s2));
@@ -6868,7 +6946,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 		fprintf(fp,"%8d  ", first_pos[hv]);
 
 
-		for(i=0;i<edialign_mini2(char_per_line,endlen-k*char_per_line);
+		for(i=0;i<edialign_minu2(char_per_line,endlen-k*char_per_line);
 		    i++)
 		{
 		    if(!(i%10))fprintf(fp, " ");
@@ -6880,7 +6958,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 	    }
 
 	    fprintf(fp,"         ");
-	    for( i = 0 ; i < edialign_mini2(char_per_line , endlen-k*
+	    for( i = 0 ; i < edialign_minu2(char_per_line , endlen-k*
 					    char_per_line )
 		; i++ )
 	    {
@@ -6897,7 +6975,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 		for( pn = 0 ; pn < plot_num ; pn ++ ) 
 		{ 
 		    fprintf(fp,"                      ");
-		    for(i=0;i<edialign_mini2(char_per_line,endlen-k*
+		    for(i=0;i<edialign_minu2(char_per_line,endlen-k*
 					     char_per_line);i++)
 		    {
 			if( !(i%10) )fprintf(fp, " ");
@@ -6921,7 +6999,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 		}
             
 		fprintf(fp,"          ");
-		for( i = 0 ; i < edialign_mini2(char_per_line,endlen-k*
+		for( i = 0 ; i < edialign_minu2(char_per_line,endlen-k*
 						char_per_line);
 		    i++ )
 		{ 
@@ -6996,7 +7074,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 			fprintf(fp," ");
 		    }
             
-		    for(i=0; i < edialign_mini2(char_per_line,endlen-k*
+		    for(i=0; i < edialign_minu2(char_per_line,endlen-k*
 						char_per_line);
 			i++ )
 		    { 
@@ -7065,7 +7143,7 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 		    ajSeqSetProt(eseq);
 		else
 		    ajSeqSetNuc(eseq);
-		ajSeqWrite(seqout,eseq);
+		ajSeqoutWriteSeq(seqout,eseq);
 		ajSeqDel(&eseq);
 	    }
 	    
@@ -7095,9 +7173,9 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 	    fprintf(fp4,"DIALIGN 2.1 multiple sequence alignment \n\n");
 	    fprintf(fp4,"// \n\n\n");
           
-	    while( block_no * 60 < endlen )
+	    while( block_no * 60 < (ajint) endlen )
 	    {
-		char_no = edialign_mini2( 60 ,  ( endlen - block_no * 60 ) ) ;
+		char_no = edialign_minu2( 60 ,  ( endlen - block_no * 60 ) ) ;
 		for( sv = 0 ; sv < seqnum ; sv++ )
 		{
 		    fprintf(fp4,"%s ", seq_name[sv] );
@@ -7216,8 +7294,9 @@ static void edialign_ali_arrange(ajint fragno , struct multi_frag *d,
 
 static void edialign_para_print( char *s_f, FILE *fpi )
 {
-    ajint hv;
+    ajuint hv;
    
+    (void) s_f;				/* make it used */
 
     {
 	if(cd_gobics)
@@ -7801,11 +7880,11 @@ static void edialign_para_read( int num , char ** arg )
 **
 ** edialign_erreur
 **
-** @param [u] message [char*] Undocumented
+** @param [u] message [const char*] Undocumented
 ** @return [void]
 *****************************************************************************/
 
-static void edialign_erreur(char *message)
+static void edialign_erreur(const char *message)
 {
     ajFatal("%s\n", message);
 }
@@ -7898,10 +7977,11 @@ static void** edialign_callouer_mat(size_t t_elt, size_t nb_lig, size_t nb_col)
 {
     void **pointeur;
     ajint i;
+    ajint imax = nb_lig;
 
     pointeur = (void **) edialign_allouer(nb_lig * sizeof(void *));
 
-    for (i=0; i < nb_lig; i++)
+    for (i=0; i < imax; i++)
 	pointeur[i] = (void *) edialign_allouer(nb_col * t_elt);
 
     return(pointeur);
@@ -7926,7 +8006,7 @@ static void** edialign_recallouer_mat(void **pointeur, size_t t_elt,
 				      size_t anc_nb_lig, 
 				      size_t nb_lig, size_t nb_col)
 {
-    ajint i;
+    size_t i;
 
     if (anc_nb_lig == nb_lig)
 	return(pointeur);
@@ -7993,7 +8073,7 @@ static void** edialign_recallouer_mat2(void **pointeur, size_t t_elt,
 
 static void edialign_liberer_mat(void **pointeur, size_t nb_lig)
 {
-    ajint i;
+    size_t i;
 
     for (i=0; i < nb_lig; i++)
 	edialign_liberer(pointeur[i]);
@@ -8121,11 +8201,11 @@ static void edialign_strmax(char *p)
 **
 ** edialign_regex_complain
 **
-** @param [u] regex [char*] Undocumented
+** @param [r] regex [const char*] Undocumented
 ** @return [void]
 *****************************************************************************/
 
-static void edialign_regex_complain( char *regex )
+__noreturn static void edialign_regex_complain( const char *regex )
 {
     printf("\n   bracket structure in regular expression makes no sense \n");
     printf("\n          %s  \n\n", regex) ; 
@@ -8198,7 +8278,7 @@ static void edialign_struc_check( char *regex )
 
 static void edialign_regex_parse(char *mot_regex)
 {
-    ajint i;
+    ajuint i;
     ajint p;
     ajint mp = 0; 
     ajint in_bracket = 0;  
@@ -8296,18 +8376,20 @@ static void edialign_regex_parse(char *mot_regex)
 **
 ** edialign_seq_parse
 **
-** @param [u] mot_regex [char*] Undocumented
+** @param [u] mot_regex_unused [char*] Undocumented
 ** @return [void]
 *****************************************************************************/
 
-static void edialign_seq_parse(char *mot_regex)
+static void edialign_seq_parse(char *mot_regex_unused)
 { 
-    ajint sn;
+    ajuint sn;
     ajint ok; 
     ajint sp;
     ajint rp;
     ajint hv;
     ajint match = 0;
+
+    (void) mot_regex_unused;		/* make it used */
 
     max_mot_offset = sqrt(-log(0.1) *  10 / mot_factor) * mot_offset_factor; 
 

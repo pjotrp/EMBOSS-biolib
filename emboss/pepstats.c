@@ -43,7 +43,7 @@
 
 int main(int argc, char **argv)
 {
-    char *prop[]=
+    const char *prop[]=
     {
 	"Tiny\t\t(A+C+G+S+T)\t\t","Small\t\t(A+B+C+D+G+N+P+S+T+V)\t",
 	"Aliphatic\t(A+I+L+V)\t\t","Aromatic\t(F+H+W+Y)\t\t",
@@ -100,9 +100,9 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(a,&seq))
     {
-	be = ajSeqallBegin(a);
-	en = ajSeqallEnd(a);
-	ajStrAssignSubC(&substr,ajSeqChar(seq),be-1,en-1);
+	be = ajSeqallGetseqBegin(a);
+	en = ajSeqallGetseqEnd(a);
+	ajStrAssignSubC(&substr,ajSeqGetSeqC(seq),be-1,en-1);
 	len = en-be+1;
 
 
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
 	if(!termini)
 	    c[EMBIEPAMINO]=c[EMBIEPCARBOXYL]=0;
 
-	ajFmtPrintF(outf,"PEPSTATS of %s from %d to %d\n\n",ajSeqName(seq),
+	ajFmtPrintF(outf,"PEPSTATS of %s from %d to %d\n\n",ajSeqGetNameC(seq),
 		    be,en);
 
 	ajFmtPrintF(outf,"Molecular weight = %-10.2f\t\tResidues = %-6d\n",

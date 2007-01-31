@@ -53,7 +53,7 @@ struct DNAB
 
 static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven);
 static void helixturnhelix_print_hits(AjPList ajb,
-				      ajint n, float minsd, ajint lastcol,
+				      ajint n, ajint lastcol,
 				      AjBool eightyseven, AjPFile outf);
 static void helixturnhelix_report_hits(AjPList ajb, ajint lastcol,
 				       AjPFeattable TabRpt);
@@ -139,11 +139,11 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 	n = 0;
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 
 
-	strand = ajSeqStrCopy(seq);
+	strand = ajSeqGetSeqCopyS(seq);
 	ajStrFmtUpper(&strand);
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
@@ -167,7 +167,7 @@ int main(int argc, char **argv)
 	    if(thissd>minsd)
 	    {
 		AJNEW(lp);
-		lp->name = ajStrNewC(ajSeqName(seq));
+		lp->name = ajStrNewC(ajSeqGetNameC(seq));
 		lp->seq  = ajStrNew();
 		sp = begin - 1 + i;
 		lp->pos = sp+1;
@@ -198,7 +198,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(outf, "\nHELIXTURNHELIX: Nucleic Acid Binding "
 			"Domain search\n\n");
 	    ajFmtPrintF(outf,"\nHits above +%.2f SD (%.2f)\n",minsd,minscore);
-	    helixturnhelix_print_hits(ajb, n, minsd, lastcol,
+	    helixturnhelix_print_hits(ajb, n, lastcol,
 				      eightyseven, outf);
 	}
     
@@ -251,13 +251,15 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
     float exptot;
     ajint rt;
 
-    ajint i;
-    ajint j;
+    ajuint i;
+    ajuint j;
+    ajuint maxi;
+    ajuint maxj;
     ajint c = 0;
     ajint v;
 
-    ajint d1;
-    ajint d2;
+    ajuint d1;
+    ajuint d2;
 
     ajint **mat;
 
@@ -313,7 +315,11 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 	    ajInt2dPut(matrix,d1,c++,v);
 	}
 
-	for(i=0,rt=0;i<c-2;++i)
+	if(c>1)
+	    maxi = c-2;
+	else
+	    maxi=0;
+	for(i=0,rt=0;i<maxi;++i)
 	    rt += ajInt2dGet(*matrix,d1,i);
 
 	if(rt!=ajInt2dGet(*matrix,d1,c-2))
@@ -350,7 +356,11 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 	expected *= 0.0001;
 	exptot += expected;
 
-	for(j=0;j<c-2;++j)
+	if(c>1)
+	    maxj = c-2;
+	else
+	    maxj=0;
+	for(j=0;j<maxj;++j)
 	{
 	    if(!mat[i][j]) pee=(1.0<1.0/((sample+1.0)*expected)) ? 1.0 :
 		1.0/((sample+1.0)*expected);
@@ -387,7 +397,6 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 **
 ** @param [u] ajb [AjPList] Undocumented
 ** @param [r] n [ajint] Undocumented
-** @param [r] minsd [float] Undocumented
 ** @param [r] lastcol [ajint] Undocumented
 ** @param [r] eightyseven [AjBool] Undocumented
 ** @param [u] outf [AjPFile] Undocumented
@@ -396,53 +405,53 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 
 
 static void helixturnhelix_print_hits(AjPList ajb, ajint n,
-				      float minsd, ajint lastcol,
+				      ajint lastcol,
 				      AjBool eightyseven, AjPFile outf)
 {
     DNAB     **lp;
 
-    AjPInt hp    = NULL;
+    AjPUint hp    = NULL;
     AjPFloat hsd = NULL;
 
     ajint   i;
 
     AJCNEW(lp, n);
 
-    hp  = ajIntNew();
+    hp  = ajUintNew();
     hsd = ajFloatNew();
 
     for(i=0;i<n;++i)
     {
 	if(!ajListPop(ajb,(void **)&lp[i]))
-	    ajFatal("Poppa doesn't live here anymore");
-	ajIntPut(&hp,i,i);
+	    ajFatal("List ended prematurely");
+	ajUintPut(&hp,i,i);
 	ajFloatPut(&hsd,i,lp[i]->sd);
     }
-    ajSortFloatDecI(ajFloatFloat(hsd),ajIntInt(hp),n);
+    ajSortFloatDecI(ajFloatFloat(hsd),ajUintUint(hp),n);
     ajFloatDel(&hsd);
 
     for(i=0;i<n;++i)
     {
 	ajFmtPrintF(outf,"\nScore %d (+%.2f SD) in %s at residue %d\n",
-		   lp[ajIntGet(hp,i)]->wt,lp[ajIntGet(hp,i)]->sd,
-		    ajStrGetPtr(lp[ajIntGet(hp,i)]->name),
-		   lp[ajIntGet(hp,i)]->pos);
+		   lp[ajUintGet(hp,i)]->wt,lp[ajUintGet(hp,i)]->sd,
+		    ajStrGetPtr(lp[ajUintGet(hp,i)]->name),
+		   lp[ajUintGet(hp,i)]->pos);
 	ajFmtPrintF(outf,"\n Sequence:  %s\n",
-		    ajStrGetPtr(lp[ajIntGet(hp,i)]->seq));
+		    ajStrGetPtr(lp[ajUintGet(hp,i)]->seq));
 
 	if(eightyseven)
 	{
 	    ajFmtPrintF(outf,"            |                  |\n");
 	    ajFmtPrintF(outf,"%13d                  %d\n",
-			lp[ajIntGet(hp,i)]->pos,
-			lp[ajIntGet(hp,i)]->pos+lastcol-1);
+			lp[ajUintGet(hp,i)]->pos,
+			lp[ajUintGet(hp,i)]->pos+lastcol-1);
 	}
 	else
 	{
 	    ajFmtPrintF(outf,"            |                    |\n");
 	    ajFmtPrintF(outf,"%13d                    %d\n",
-			lp[ajIntGet(hp,i)]->pos,
-			lp[ajIntGet(hp,i)]->pos+lastcol-1);
+			lp[ajUintGet(hp,i)]->pos,
+			lp[ajUintGet(hp,i)]->pos+lastcol-1);
 	}
     }
 
@@ -453,7 +462,7 @@ static void helixturnhelix_print_hits(AjPList ajb, ajint n,
 	ajStrDel(&lp[i]->seq);
     }
     AJFREE(lp);
-    ajIntDel(&hp);
+    ajUintDel(&hp);
 
     return;
 }
@@ -477,7 +486,7 @@ static void helixturnhelix_report_hits(AjPList ajb,
 {
     DNAB     **lp = NULL;
 
-    AjPInt   hp  = NULL;
+    AjPUint   hp  = NULL;
     AjPFloat hsd = NULL;
 
     ajint n;
@@ -491,35 +500,35 @@ static void helixturnhelix_report_hits(AjPList ajb,
     if(!fthit)
 	ajStrAssignC(&fthit, "hit");
 
-    hp  = ajIntNew();
+    hp  = ajUintNew();
     hsd = ajFloatNew();
 
     n = ajListToArray(ajb, (void***) &lp);
 
     if(!n)
     {
-	ajIntDel(&hp);
+	ajUintDel(&hp);
 	ajFloatDel(&hsd);
 	return;
     }
 
     for(i=0;i<n;++i)
     {
-	ajIntPut(&hp,i,i);
+	ajUintPut(&hp,i,i);
 	ajFloatPut(&hsd,i,lp[i]->sd);
     }
-    ajSortFloatDecI(ajFloatFloat(hsd),ajIntInt(hp),n);
+    ajSortFloatDecI(ajFloatFloat(hsd),ajUintUint(hp),n);
     ajFloatDel(&hsd);
 
     for(i=0;i<n;++i)
     {
         gf = ajFeatNewProt(TabRpt, NULL, fthit,
-			   lp[ajIntGet(hp,i)]->pos,
-			   lp[ajIntGet(hp,i)]->pos+lastcol-1,
-			   lp[ajIntGet(hp,i)]->wt);
-	ajFmtPrintS(&tmpStr, "*pos %d", lp[ajIntGet(hp,i)]->pos);
+			   lp[ajUintGet(hp,i)]->pos,
+			   lp[ajUintGet(hp,i)]->pos+lastcol-1,
+			   lp[ajUintGet(hp,i)]->wt);
+	ajFmtPrintS(&tmpStr, "*pos %d", lp[ajUintGet(hp,i)]->pos);
 	ajFeatTagAdd(gf, NULL, tmpStr);
-	ajFmtPrintS(&tmpStr, "*sd %.2f", lp[ajIntGet(hp,i)]->sd);
+	ajFmtPrintS(&tmpStr, "*sd %.2f", lp[ajUintGet(hp,i)]->sd);
 	ajFeatTagAdd(gf, NULL, tmpStr);
 
     }
@@ -533,7 +542,7 @@ static void helixturnhelix_report_hits(AjPList ajb,
 
 
     AJFREE(lp);
-    ajIntDel(&hp);
+    ajUintDel(&hp);
 
     return;
 }

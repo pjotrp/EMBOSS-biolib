@@ -2496,8 +2496,8 @@ static void btreeGetKeys(AjPBtcache cache, unsigned char *buf,
 
 static ajint btreeIdCompare(const void *a, const void *b)
 {
-    return strcmp((*(AjPBtId*)a)->id->Ptr,
-		  (*(AjPBtId*)b)->id->Ptr);
+    return strcmp((*(AjPBtId const *)a)->id->Ptr,
+		  (*(AjPBtId const *)b)->id->Ptr);
 }
 
 
@@ -2516,7 +2516,7 @@ static ajint btreeIdCompare(const void *a, const void *b)
 
 static ajint btreeNumIdCompare(const void *a, const void *b)
 {
-    return (*(AjPBtNumId*)a)->offset - (*(AjPBtNumId*)b)->offset;
+    return (*(AjPBtNumId const *)a)->offset - (*(AjPBtNumId const *)b)->offset;
 }
 
 
@@ -5642,10 +5642,12 @@ static void btreeJoinLeaves(AjPBtcache cache)
 AjPBtWild ajBtreeWildNew(AjPBtcache cache, const AjPStr wild)
 {
     AjPBtWild thys = NULL;
-    
+
+    (void) cache;			/* make it used */
+
     AJNEW0(thys);
 
-    thys->id   = ajStrNewC(wild->Ptr);
+    thys->id   = ajStrNewS(wild);
     ajStrTrimC(&thys->id,"*"); /* Need to revisit this */
     thys->list = ajListNew();
 
@@ -5706,7 +5708,9 @@ void ajBtreeWildDel(AjPBtWild *thys)
 AjPBtKeyWild ajBtreeKeyWildNew(AjPBtcache cache, const AjPStr wild)
 {
     AjPBtKeyWild thys = NULL;
-    
+
+    (void) cache;			/* make it used */
+
     AJNEW0(thys);
 
     thys->keyword = ajStrNewC(wild->Ptr);
@@ -7313,8 +7317,8 @@ static ajint btreeNumInPriBucket(AjPBtcache cache, ajlong pageno)
 
 static ajint btreeKeywordCompare(const void *a, const void *b)
 {
-    return strcmp((*(AjPBtPri*)a)->keyword->Ptr,
-		  (*(AjPBtPri*)b)->keyword->Ptr);
+    return strcmp((*(AjPBtPri const *)a)->keyword->Ptr,
+		  (*(AjPBtPri const *)b)->keyword->Ptr);
 }
 
 
@@ -8921,8 +8925,8 @@ static AjPBtpage btreeSplitSecLeaf(AjPBtcache cache, AjPBtpage spage)
 
 static ajint btreeKeywordIdCompare(const void *a, const void *b)
 {
-    return strcmp((*(AjPStr*)a)->Ptr,
-		  (*(AjPStr*)b)->Ptr);
+    return strcmp((*(AjPStr const *)a)->Ptr,
+		  (*(AjPStr const *)b)->Ptr);
 }
 
 
@@ -11924,6 +11928,8 @@ static void btreeStrDel(void** pentry, void* cl)
 {
     AjPStr str = NULL;
 
+    (void) cl;				/* make it used */
+
     str = *((AjPStr *)pentry);
     ajStrDel(&str);
 
@@ -11947,6 +11953,8 @@ static void btreeIdDelFromList(void** pentry, void* cl)
 {
     AjPBtId id = NULL;
 
+    (void) cl;				/* make it used */
+
     id = *((AjPBtId *)pentry);
     ajBtreeIdDel(&id);
 
@@ -11969,8 +11977,8 @@ static void btreeIdDelFromList(void** pentry, void* cl)
 
 static ajint btreeOffsetCompare(const void *a, const void *b)
 {
-    return (*(AjPBtId*)a)->offset -
-		  (*(AjPBtId*)b)->offset;
+    return (*(AjPBtId const *)a)->offset -
+		  (*(AjPBtId const *)b)->offset;
 }
 
 
@@ -11989,8 +11997,8 @@ static ajint btreeOffsetCompare(const void *a, const void *b)
 
 static ajint btreeDbnoCompare(const void *a, const void *b)
 {
-    return (*(AjPBtId*)a)->dbno -
-		  (*(AjPBtId*)b)->dbno;
+    return (*(AjPBtId const *)a)->dbno -
+		  (*(AjPBtId const *)b)->dbno;
 }
 
 
@@ -14111,6 +14119,7 @@ static void btreeGetNumKeys(AjPBtcache cache, unsigned char *buf,
 
     /* ajDebug("In btreeGetNumKeys\n"); */
 
+    (void) cache;			/* make it used */
 
     karray = *keys;
     parray = *ptrs;
@@ -15944,6 +15953,8 @@ void ajBtreeInsertNum(AjPBtcache cache, const AjPBtNumId num, AjPBtpage page)
     ajint i;
 
     /* ajDebug("In ajBtreeInsertNum\n"); */
+
+    (void) page;			/* make it used */
 
     key = num->offset;
 

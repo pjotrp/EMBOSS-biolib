@@ -56,13 +56,13 @@ static void twofeat_rippledown(const AjPFeattable tabA,
 			       const AjPFeattable tabB,
 			       ajint overlapi, ajint minrange,
 			       ajint maxrange, ajint
-			       rangetypei, ajint sensei, ajint orderi,
+			       rangetypei, ajint sensei,
 			       AjPFeattable outtab,
 			       AjBool twoout, const AjPStr typeout);
 static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
 				  PHit *detail, ajint overlapi,
 				  ajint minrange, ajint maxrange, ajint
-				  rangetypei, ajint sensei, ajint orderi);
+				  rangetypei, ajint sensei);
 static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
 			      const AjPStr typeout, AjPFeattable outtab);
 static void twofeat_find_features(const AjPSeq seq, AjPFeattable tab,
@@ -222,9 +222,9 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
     {
 
-	ajStrAssignC(&seqname, ajSeqName(seq));
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	ajStrAssignC(&seqname, ajSeqGetNameC(seq));
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 
 	/* make new feature table for A */
         if(!tabA)
@@ -258,7 +258,7 @@ int main(int argc, char **argv)
 	    **  the results
 	    */
 	    twofeat_rippledown(tabA, tabB, overlapi, minrange, maxrange,
-			       rangetypei, sensei, orderi, outtab, twoout,
+			       rangetypei, sensei, outtab, twoout,
 			       typeout);
 
 	    /* write features and tidy up */
@@ -313,7 +313,6 @@ int main(int argc, char **argv)
 ** @param [r] maxrange [ajint] max distance allowed
 ** @param [r] rangetypei [ajint] where to measure the distance from
 ** @param [r] sensei [ajint] sense relationships allowed
-** @param [r] orderi [ajint] order relationships allowed
 ** @param [u] outtab [AjPFeattable] output feature table
 ** @param [r] twoout [AjBool] True=write both features, else make a single one
 ** @param [r] typeout [const AjPStr] if a single feature, this is its type name
@@ -325,7 +324,7 @@ static void twofeat_rippledown(const AjPFeattable tabA,
 			       const AjPFeattable tabB,
 			       ajint overlapi, ajint minrange,
 			       ajint maxrange, ajint rangetypei,
-			       ajint sensei, ajint orderi,
+			       ajint sensei,
 			       AjPFeattable outtab, AjBool twoout,
 			       const AjPStr typeout)
 {
@@ -371,7 +370,7 @@ static void twofeat_rippledown(const AjPFeattable tabA,
 		    */
                     if(twofeat_check_match(gfA, gfB, &detail, overlapi,
 					   minrange, maxrange, rangetypei,
-					   sensei, orderi))
+					   sensei))
                         /* push details on hitlist */
                         ajListPush(hitlist, detail);
                 }
@@ -749,7 +748,6 @@ static void twofeat_HitsDel(PHit *pthis)
 ** @param [r] maxrange [ajint] max distance allowed
 ** @param [r] rangetypei [ajint] where to measure the distance from
 ** @param [r] sensei [ajint] sense relationships allowed
-** @param [r] orderi [ajint] order relationships allowed
 ** @return [AjBool] True if got a match
 ** @@
 ******************************************************************************/
@@ -757,7 +755,7 @@ static void twofeat_HitsDel(PHit *pthis)
 static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
 				  PHit *detail, ajint overlapi,
 				  ajint minrange, ajint maxrange, ajint
-				  rangetypei, ajint sensei, ajint orderi)
+				  rangetypei, ajint sensei)
 {
     ajint distance = 0;
     ajint sA;

@@ -22,7 +22,7 @@
 
 
 
-static char *testset[] =
+static const char *testset[] =
 {
     "GAN","GAATTC","CCSGG","GANTC","GABNNNNNVTC","GA", "GANN","TC"
 };

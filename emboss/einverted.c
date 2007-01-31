@@ -69,7 +69,7 @@ static char base[] = "acgt-" ;
 
 static const char *sq ;
 static ajint *revmatch[5] ;
-static ajint length ;
+static ajint seqlength ;
 static AjPInt2d matrix=NULL;
 
 
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
     seqout    = ajAcdGetSeqout("outseq");
     
 
-    cvt    = ajSeqCvtNew("ACGT");
+    cvt    = ajSeqcvtNewEndC("ACGT");
 
     while(ajSeqallNext(seqall, &sequence))
     {
@@ -151,8 +151,8 @@ int main(int argc, char **argv)
 	listend   = ajIntNew();
 	
 	ajSeqTrim(sequence);
-	length = ajSeqGetLen(sequence);
-	ajSeqNum(sequence, cvt, &nseq);
+	seqlength = ajSeqGetLen(sequence);
+	ajSeqConvertNum(sequence, cvt, &nseq);
 	sq = ajStrGetPtr(nseq);
 	rev = ajSeqIsReversed(sequence);
 	if(rev)
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 	else
 	    ioffset = ajSeqGetOffset(sequence);
 
-	ajDebug("sequence length: %d\n", length);
+	ajDebug("sequence length: %d\n", seqlength);
 
 	/*
 	 ** build revmatch etc. to be a,t,g,c matched to reverse sequence
@@ -168,10 +168,10 @@ int main(int argc, char **argv)
 	 */
 	for(i = 5; i--;)
 	{
-	    AJCNEW(revmatch[i],(length+maxsave));
+	    AJCNEW(revmatch[i],(seqlength+maxsave));
 	    ip = revmatch[i];
 
-	    for(j = length; j--; )
+	    for(j = seqlength; j--; )
 		*ip++ = mismatch;
 
 	    for(j = maxsave; j--;)
@@ -179,7 +179,7 @@ int main(int argc, char **argv)
 	}
 	
 	cp = ajStrGetPtr(nseq);
-	for(j = length; j--;)		/* reverse order important here */
+	for(j = seqlength; j--;)		/* reverse order important here */
 	    switch(*cp++)
 	    {
 	    case 0:
@@ -210,7 +210,7 @@ int main(int argc, char **argv)
 	}
 	
 	
-	for(i = 0; i < length+maxsave; ++i) /* +MAXSAVE to report at end */
+	for(i = 0; i < seqlength+maxsave; ++i) /* +MAXSAVE to report at end */
 	{
 	    irel = i % maxsave;
 
@@ -238,7 +238,7 @@ int main(int argc, char **argv)
 		}
 	    }
 
-	    if(i >= length)		/* report only */
+	    if(i >= seqlength)		/* report only */
 		continue;
 
 	    if(i == 0)
@@ -247,7 +247,7 @@ int main(int argc, char **argv)
 		t0 = (matrix->Ptr[(i-1)%maxsave]->Ptr) - 1; /* NB offset by 1 */
 
 	    t1 = (matrix->Ptr[irel]->Ptr);
-	    memcpy(t1, &revmatch[(ajint)sq[i]][length-i],
+	    memcpy(t1, &revmatch[(ajint)sq[i]][seqlength-i],
 		   (maxsave-1)*sizeof(ajint));
 	    t1[maxsave-2] = t1[maxsave-1] = rogue;
 
@@ -259,7 +259,7 @@ int main(int argc, char **argv)
 #ifdef TEST
 	    ajDebug("\n%2d %c: ", i, base[(ajint)sq[i]]);
 
-	    for(j = length-i; --j;)
+	    for(j = seqlength-i; --j;)
 		ajDebug("      ");
 	    ajDebug(" ");
 
@@ -342,8 +342,8 @@ int main(int argc, char **argv)
 	    if(rev)
 		ajFmtPrintS(&tempname, "%S_%d_%d_rev",
 			    ajSeqGetNameS(sequence),
-			    ioffset + length + 1 - ajIntGet(listend, temppos),
-			    ioffset + length + 1 - ajIntGet(liststart, temppos));
+			    ioffset + seqlength + 1 - ajIntGet(listend, temppos),
+			    ioffset + seqlength + 1 - ajIntGet(liststart, temppos));
 	    else
 		ajFmtPrintS(&tempname, "%S_%d_%d",
 			    ajSeqGetNameS(sequence),
@@ -352,7 +352,7 @@ int main(int argc, char **argv)
 	    ajSeqAssignNameS(tempseq, tempname);
 	    ajSeqAssignSeqS(tempseq, tempstr);
 	    if(seqout)
-		ajSeqWrite(seqout, tempseq);
+		ajSeqoutWriteSeq(seqout, tempseq);
 	    ajStrDel(&tempstr);
 	    temppos++;
 	    comp = !comp;
@@ -371,7 +371,7 @@ int main(int argc, char **argv)
     }
     /* JISON new block */
     if(seqout)
-	ajSeqWriteClose(seqout);
+	ajSeqoutClose(seqout);
 
     ajSeqDel(&tempseq);
     ajSeqoutDel(&seqout);
@@ -380,7 +380,7 @@ int main(int argc, char **argv)
     ajSeqallDel(&seqall);
     ajSeqDel(&sequence);
     ajFileClose(&outfile);
-    ajSeqCvtDel(&cvt);
+    ajSeqcvtDel(&cvt);
     
     ajStrDel(&nseq);
     ajStrDel(&tempname);

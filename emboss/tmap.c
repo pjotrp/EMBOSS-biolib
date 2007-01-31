@@ -92,7 +92,7 @@ static float **profile;
 /* P values and spans */
 
 static ajint pp_antal=2;
-static ajint span[2] = { 15, 4 };
+static ajint glspan[2] = { 15, 4 };
 
 static float P[2][26] =
 {
@@ -164,16 +164,16 @@ static char **s = NULL;            /* Sequences  */
 static ajint *relc = NULL;
 static ajint *reln = NULL;
 
-static ajint nr;
-static ajint pos;
-static ajint poss;
+static ajint glnr;
+static ajint glpos;
+static ajuint glposs;
 
 static float *norm_skillnad = NULL;
 
 static ajint tm_number;
 static ajint **tm_segment = NULL;
-static ajint *npos = NULL;
-static ajint *cpos = NULL;
+static ajint *glnpos = NULL;
+static ajint *glcpos = NULL;
 
 static ajint *pred_mode = NULL;
 static ajint e_spann_min;
@@ -228,6 +228,7 @@ int main(int argc, char **argv)
 
     ajint i;
     ajint j;
+    ajuint jj;
     float m_limit;
     float ml_limit;
     float e_limit;
@@ -249,67 +250,67 @@ int main(int argc, char **argv)
     me_limit = 1.10;
 
 
-    nr = ajSeqsetSize(seqset);
-    poss = ajSeqsetLen(seqset);
-    ajDebug("tmap nr: %d poss %d\n", nr, poss);
+    glnr = ajSeqsetGetSize(seqset);
+    glposs = ajSeqsetGetLen(seqset);
+    ajDebug("tmap nr: %d poss %d\n", glnr, glposs);
 
-    AJCNEW0(s, nr);
+    AJCNEW0(s, glnr);
     ajDebug("tmap s %x \n", s);
-    for(i=0;i<nr;i++)
+    for(i=0;i<glnr;i++)
     {
-	AJCNEW0(s[i], poss+1);
+	AJCNEW0(s[i], glposs+1);
 	ajDebug("tmap s[%d] %x \n", i, s[i]);
     }
 
-    AJCNEW0(relc, poss+1);
-    AJCNEW0(reln, poss+1);
-    AJCNEW0(ali_ok, poss+1);
-    AJCNEW0(npos, poss+1);
-    AJCNEW0(cpos, poss+1);
+    AJCNEW0(relc, glposs+1);
+    AJCNEW0(reln, glposs+1);
+    AJCNEW0(ali_ok, glposs+1);
+    AJCNEW0(glnpos, glposs+1);
+    AJCNEW0(glcpos, glposs+1);
 
-    AJCNEW0(norm_skillnad, nr);
+    AJCNEW0(norm_skillnad, glnr);
 
-    nr--;
+    glnr--;
 
-    for(i=0;i<=nr;i++)
+    for(i=0;i<=glnr;i++)
     {
 	const char *temp;
 
-	ajSeqsetToUpper(seqset);
-	temp = ajSeqsetSeq(seqset, i);
-	for(j=0;j<poss;j++)
-	    s[i][j+1] =  temp[j];
+	ajSeqsetFmtUpper(seqset);
+	temp = ajSeqsetGetseqSeqC(seqset, i);
+	for(jj=0;jj<glposs;jj++)
+	    s[i][jj+1] =  temp[jj];
     }
 
-    if(!nr)
+    if(!glnr)
 	norm_skillnad[0] = 1;
     else
-	tmap_weights(s,poss,nr,norm_skillnad);
+	tmap_weights(s,glposs,glnr,norm_skillnad);
 
     ajDebug("tmap pp_antal: %d\n", pp_antal);
     AJCNEW0(profile, pp_antal);
     for(i=0;i<pp_antal; i++)
-	AJCNEW0(profile[i], poss+1);
+	AJCNEW0(profile[i], glposs+1);
 
     for(j=0; j<pp_antal; j++)
     {
-	tmap_align_rel(nr,poss,span[j]);
-	tmap_profile2(j,nr, poss, span[j]);
+	tmap_align_rel(glnr,glposs,glspan[j]);
+	tmap_profile2(j,glnr, glposs, glspan[j]);
     }
 
-    tm_number = tmap_pred1(m_limit,ml_limit,e_limit,nr);
+    tm_number = tmap_pred1(m_limit,ml_limit,e_limit,glnr);
 
     ajDebug("tmap tm_number: %d\n", tm_number);
     AJCNEW0(tm_segment, tm_number+1);
     for(i=0;i<=tm_number;i++)
 	AJCNEW0(tm_segment[i], 2);
 
-    tmap_present3p(tm_number, npos, cpos, poss, nr, seqset, report);
+    tmap_present3p(tm_number, glnpos, glcpos, glposs, glnr, seqset, report);
 
     for(j=1; j<=tm_number; j++)
     {
-	tm_segment[j][0] = npos[j]+N_SPANN;
-	tm_segment[j][1] = cpos[j]-C_SPANN;
+	tm_segment[j][0] = glnpos[j]+N_SPANN;
+	tm_segment[j][1] = glcpos[j]-C_SPANN;
     }
 
     tmap_plot2(mult);
@@ -320,16 +321,16 @@ int main(int argc, char **argv)
     ajReportClose(report);
     ajReportDel(&report);
 
-/* note: nr is one less than it was at the start */
+/* note: glnr is one less than it was at the start */
 
-    for(i=0;i<=nr;i++)
+    for(i=0;i<=glnr;i++)
 	AJFREE(s[i]);
     AJFREE(s);
     AJFREE(relc);
     AJFREE(reln);
     AJFREE(ali_ok);
-    AJFREE(npos);
-    AJFREE(cpos);
+    AJFREE(glnpos);
+    AJFREE(glcpos);
     AJFREE(norm_skillnad);
     for(i=0;i<pp_antal; i++)
 	AJFREE(profile[i]);
@@ -531,7 +532,7 @@ static void tmap_present3p(ajint antal, const ajint *npos, const ajint *cpos,
     ajStrAssignC(&hdr, "");
     ajReportSetHeader(report, hdr);
 
-    seq = ajSeqNewRes(ajSeqsetSize(seqset));
+    seq = ajSeqNewRes(ajSeqsetGetSize(seqset));
     ajSeqSetProt(seq);
     ajSeqAssignNameC(seq, "Consensus");
     ajSeqAssignSeqS(seq, cons);
@@ -550,7 +551,7 @@ static void tmap_present3p(ajint antal, const ajint *npos, const ajint *cpos,
 
     for(j=0; j<=nr; j++)
     {
-	cseq = ajSeqsetGetSeq(seqset, j);
+	cseq = ajSeqsetGetseqSeq(seqset, j);
 	feat = ajFeattableNewSeq(cseq);
 	tmap_refpos2(j, poss);
 	ajStrAssignC(&hdr, "");
@@ -591,6 +592,8 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 {
     ajint i;
     ajint j;
+    ajuint ii;
+    ajuint jj;
     ajint k;
     ajint tm_ant;
     ajint flag;
@@ -618,8 +621,8 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
     ajint stopptmp;
     ajint temp;
 
-    AJCNEW0(hitposs, poss+1);
-    AJCNEW0(pred_mode, poss+1);
+    AJCNEW0(hitposs, glposs+1);
+    AJCNEW0(pred_mode, glposs+1);
 
     ajDebug("tmap pred_mode tm_number:%d\n", tm_number);
 
@@ -627,31 +630,31 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 	pred_mode[i] = 0;
 
     /* Find peak values */
-    for(i=1; i<=poss; i++)
-	if(profile[0][i]>m_limit)
-	    hitposs[i] = 1;
+    for(jj=1; jj<=glposs; jj++)
+	if(profile[0][jj]>m_limit)
+	    hitposs[jj] = 1;
 	else
-	    hitposs[i] = 0;
+	    hitposs[jj] = 0;
 
 
     /* Smoothing: Disregard 1 or 2 consecutive positions in vector hitposs[] */
-    for(i=3; i<=poss-1; i++)
-	if((hitposs[i-2]==1) && (hitposs[i+1]==1))
-	    hitposs[i] = hitposs[i-1]=1;
-    for(i=2; i<=poss-1; i++)
-	if((hitposs[i-1]==1) && (hitposs[i+1]==1))
-	    hitposs[i] = 1;
+    for(ii=3; ii<=glposs-1; ii++)
+	if((hitposs[ii-2]==1) && (hitposs[ii+1]==1))
+	    hitposs[ii] = hitposs[ii-1]=1;
+    for(ii=2; ii<=glposs-1; ii++)
+	if((hitposs[ii-1]==1) && (hitposs[ii+1]==1))
+	    hitposs[ii] = 1;
 
 
-    AJCNEW0(start, poss+1);
-    AJCNEW0(stopp, poss+1);
-    AJCNEW0(start_e_pos, poss+1);
-    AJCNEW0(stopp_e_pos, poss+1);
+    AJCNEW0(start, glposs+1);
+    AJCNEW0(stopp, glposs+1);
+    AJCNEW0(start_e_pos, glposs+1);
+    AJCNEW0(stopp_e_pos, glposs+1);
 
     /* Transform hitposs[] to TM vector */
-    for(i=0; i<=poss; i++)
-	npos[i]=cpos[i]=0;
-    tm_ant = tmap_vec_to_stst(hitposs,start,stopp,poss);
+    for(ii=0; ii<=glposs; ii++)
+	glnpos[ii]=glcpos[ii]=0;
+    tm_ant = tmap_vec_to_stst(hitposs,start,stopp,glposs);
 
     for(i=1; i<=tm_ant; i++) {
 	ajDebug("tmap pred_mode[%d]\n", i);
@@ -671,7 +674,7 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 	    count2 = 0;
 
 	    count = stopp[i]-start[i]+1;
-	    for(j=stopp[i]+1; j<=poss && profile[0][j]>mx_limit; j++)
+	    for(j=stopp[i]+1; j<=(ajint)glposs && profile[0][j]>mx_limit; j++)
 		if(profile[0][j]>mx_limit)
 		    count++;
 	    tempC = j-1;
@@ -685,7 +688,7 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 	    count2 = 0;
 	    if(count>8)
 		if(mitt>8)
-		    for(j=mitt-8; j<=mitt+8 && j<=poss; j++)
+		    for(j=mitt-8; j<=mitt+8 && j<=(ajint)glposs; j++)
 			if(tmap_all_charged(j,nr))
 			    count2++;
 
@@ -722,7 +725,7 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 
 
     stopp[0] = 0;
-    start[tm_ant+1] = pos;
+    start[tm_ant+1] = glpos;
 
 
     for(i=1; i<=tm_ant; i++)
@@ -740,7 +743,7 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 			start[i]--;
 		    else
 		    {
-			if((stopp[i]<poss) && (profile[0][stopp[i]+1]>
+			if((stopp[i]<(ajint)glposs) && (profile[0][stopp[i]+1]>
 						 ml_limit) &&
 			    (stopp[i]<start[i+1]-FORLN))
 			    stopp[i]++;
@@ -749,8 +752,9 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 		    }
 		}
 		else
-		    if((stopp[i]<poss) && (profile[0][stopp[i]+1]>ml_limit)
-			&& (stopp[i]<start[i+1]-FORLN))
+		    if((stopp[i]<(ajint) glposs) &&
+			(profile[0][stopp[i]+1]>ml_limit) &&
+			(stopp[i]<start[i+1]-FORLN))
 			stopp[i]++;
 		    else
 		    {
@@ -781,7 +785,7 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 	if(start[i]>N_FOSFAT)
 	    start[i]-=N_FOSFAT;
 
-	if(stopp[i]<poss-C_FOSFAT)
+	if(stopp[i]<(ajint)glposs-C_FOSFAT)
 	    stopp[i]+=C_FOSFAT;
     }
 
@@ -834,7 +838,7 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 
     /* Check for Pe values */
 
-    for(i=20; i<=poss-20; i++)
+    for(i=20; i<=(ajint) glposs-20; i++)
     {
 	starttmp = tmap_peak1(i-19,i,profile[1]);
 	stopptmp = tmap_peak1(i+1,i+20,profile[1]);
@@ -970,8 +974,8 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 
     for(i=1; i<=tm_ant; i++)
     {
-	npos[i] = start[i];
-	cpos[i] = stopp[i];
+	glnpos[i] = start[i];
+	glcpos[i] = stopp[i];
     }
 
     AJFREE(hitposs);
@@ -1153,30 +1157,30 @@ static ajint tmap_vec_to_stst(ajint *vec, ajint *start, ajint *stopp,
 {
     ajint flagga;
     ajint i;
-    ajint index;
+    ajint myindex;
 
     flagga=0;
-    index=0;
+    myindex=0;
 
     for(i=1; i<=length; i++)
     {
 	if((vec[i]==1) && (flagga==0))
 	{
 	    flagga = 1;
-	    start[++index]=i;
+	    start[++myindex]=i;
 	}
 
 	if((vec[i]==0) && (flagga==1))
 	{
 	    flagga = 0;
-	    stopp[index]=i-1;
+	    stopp[myindex]=i-1;
 	}
     }
 
     if(flagga==1)
-	stopp[index] = length;
+	stopp[myindex] = length;
 
-    return index;
+    return myindex;
 }
 
 
@@ -1350,12 +1354,12 @@ static void tmap_plot2(AjPGraph mult)
   AjPGraphPlpData graphdata = NULL;
   float max = -10.0;
   float min = 10.0;
-  ajint i;
+  ajuint i;
   ajint j;
 
   for(j=0;j<pp_antal;j++)
   {
-    for(i=1; i<=poss; i++)
+    for(i=1; i<=glposs; i++)
     {
       if(profile[j][i] != FLT_MIN)
       {
@@ -1368,9 +1372,9 @@ static void tmap_plot2(AjPGraph mult)
     graphdata = ajGraphPlpDataNew();
     ajGraphPlpDataSetTypeC(graphdata,"Overlay 2D Plot");
 
-    ajGraphPlpDataCalcXY(graphdata,poss,0.0,1.0,&profile[j][0]);
+    ajGraphPlpDataCalcXY(graphdata,glposs,0.0,1.0,&profile[j][0]);
 
-    ajGraphPlpDataSetMaxima(graphdata,0.,(float)poss,min,max);
+    ajGraphPlpDataSetMaxima(graphdata,0.,(float)glposs,min,max);
 
     ajGraphPlpDataSetXTitleC(graphdata,"Residue no.");
     ajGraphPlpDataSetYTitleC(graphdata,"");
@@ -1391,13 +1395,13 @@ static void tmap_plot2(AjPGraph mult)
 
   max = max*1.1;
 
-  ajGraphxySetMaxMin(mult,0.0,(float)poss,min,max);
+  ajGraphxySetMaxMin(mult,0.0,(float)glposs,min,max);
   ajGraphSetTitleC(mult,"Tmap");
 
   max = max *0.95;
 
-  for(i=1; i<=tm_number; i++)
-    ajGraphAddRect(mult,(float)tm_segment[i][0],max,(float)tm_segment[i][1],
+  for(j=1; j<=tm_number; j++)
+    ajGraphAddRect(mult,(float)tm_segment[j][0],max,(float)tm_segment[j][1],
 		      max+((max-min)*0.01),BLACK,1);
 
   ajGraphxyDisplay(mult,AJFALSE);

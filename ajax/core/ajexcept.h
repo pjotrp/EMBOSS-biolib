@@ -15,13 +15,13 @@ extern "C"
 **
 ** Exception data structure
 **
-** @attr reason [char*] Reason for the exception
+** @attr reason [const char*] Reason for the exception
 ** @@
 ******************************************************************************/
 
 typedef struct Except_T
 {
-    char *reason;
+    const char *reason;
 } Except_T;
 
 /* @data Except_Frame ********************************************************

@@ -389,7 +389,7 @@ ajint       ajFileWriteChar (AjPFile thys, const char* str, ajint len);
 ajint       ajFileWriteInt2 (AjPFile thys, short i);
 ajint       ajFileWriteInt4 (AjPFile thys, ajint i);
 ajint       ajFileWriteInt8 (AjPFile thys, ajlong i);
-ajint       ajFileWriteStr  (AjPFile thys, const AjPStr str, ajint len);
+ajint       ajFileWriteStr  (AjPFile thys, const AjPStr str, ajuint len);
 
 void        ajOutfileClose(AjPOutfile* pthis);
 void        ajOutfileDel(AjPOutfile* pthis);

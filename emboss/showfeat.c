@@ -174,11 +174,11 @@ int main(int argc, char **argv)
 		ajFmtPrintF(outfile, "=");
 
 	    ajFmtPrintF(outfile, "| ");
-	    if(beg != 0 || end+1 != ajSeqGetLen(seq))
-		ajFmtPrintF(outfile, "%d-%d of %d\n", beg+1, end+1,
+	    if(beg != 0 || end+1 != (ajint)ajSeqGetLen(seq))
+		ajFmtPrintF(outfile, "%d-%d of %u\n", beg+1, end+1,
 			    ajSeqGetLen(seq));
 	    else
-		ajFmtPrintF(outfile, "%d\n", ajSeqGetLen(seq));
+		ajFmtPrintF(outfile, "%u\n", ajSeqGetLen(seq));
 	}
 
 
@@ -273,9 +273,9 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
     AjPStr tagsout   = NULL;
     AjPStr posout    = NULL;
 
-    ajint  count;	/* annotation range count */
-    ajint  rstart;	/* annotation range start */
-    ajint  rend;	/* annotation range end */
+    ajuint  count;	/* annotation range count */
+    ajuint  rstart;	/* annotation range start */
+    ajuint  rend;	/* annotation range end */
     AjPStr ann_text;	/* annotation range text */
 
     AjBool gotoutput = ajFalse;		 /* have a line to output */
@@ -336,7 +336,8 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 
 
 	    /* check that the feature is within the range we wish to display */
-	    if(beg+1 > ajFeatGetEnd(gf) || end+1 < ajFeatGetStart(gf))
+	    if(beg+1 > (ajint)ajFeatGetEnd(gf) || 
+	       end+1 < (ajint)ajFeatGetStart(gf))
 		continue;
 
             /* ignore remote IDs */
@@ -436,7 +437,7 @@ static void showfeat_ShowFeatSeq(AjPFile outfile, const AjPSeq seq, ajint beg,
 
 	    /* check that the feature is within the range we wish to
                display */
-	        if(beg+1 > rend || end+1 < rstart)
+	        if(beg+1 > (ajint) rend || end+1 < (ajint) rstart)
 		    continue;
 
                 /* get the annotation text */                 
@@ -668,12 +669,12 @@ static ajint showfeat_CompareFeatSource(const void * a, const void * b)
 {
     ajint val;
 
-    AjPFeature c;
-    AjPFeature d;
+    const AjPFeature c;
+    const AjPFeature d;
 
 
-    c = *(AjPFeature *)a;
-    d = *(AjPFeature *)b;
+    c = *(AjPFeature const *)a;
+    d = *(AjPFeature const *)b;
 
     /* sort by strand */
     if(ajFeatGetStrand(c) == ajFeatGetStrand(d))
@@ -720,11 +721,11 @@ static ajint showfeat_CompareFeatType(const void * a, const void * b)
 {
     ajint val;
 
-    AjPFeature c;
-    AjPFeature d;
+    const AjPFeature c;
+    const AjPFeature d;
 
-    c = *(AjPFeature *)a;
-    d = *(AjPFeature *)b;
+    c = *(AjPFeature const *)a;
+    d = *(AjPFeature const *)b;
 
     /* sort by strand */
     if(ajFeatGetStrand(c) == ajFeatGetStrand(d))
@@ -768,11 +769,11 @@ static ajint showfeat_CompareFeatPos(const void * a, const void * b)
 {
     ajint val;
 
-    AjPFeature c;
-    AjPFeature d;
+    const AjPFeature c;
+    const AjPFeature d;
 
-    c = *(AjPFeature *)a;
-    d = *(AjPFeature *)b;
+    c = *(AjPFeature const *)a;
+    d = *(AjPFeature const *)b;
 
     /* sort by strand */
     if(ajFeatGetStrand(c) == ajFeatGetStrand(d))

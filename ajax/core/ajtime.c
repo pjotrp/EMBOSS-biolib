@@ -35,15 +35,15 @@
 ** @alias TimeSFormat
 ** @alias TimeOFormat
 **
-** @attr Name [char*] format name
-** @attr Format [char*] C run time library time format string
+** @attr Name [const char*] format name
+** @attr Format [const char*] C run time library time format string
 ** @@
 ******************************************************************************/
 
 typedef struct TimeSFormat
 {
-    char* Name;
-    char* Format;
+    const char* Name;
+    const char* Format;
 } TimeOFormat;
 #define TimePFormat TimeOFormat*
 
@@ -66,7 +66,7 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
 };
 
 
-
+static const char* TimeFormat(const char *timefmt);
 
 /* @func ajTimeTodayRef *******************************************************
 **
@@ -131,15 +131,15 @@ AjPTime ajTimeToday(void)
 ** AJAX function to return the ANSI C format for an AJAX time string
 **
 ** @param [r] timefmt [const char*] AJAX time format
-** @return [char*] ANSI C time format, or NULL if none found
+** @return [const char*] ANSI C time format, or NULL if none found
 ** @@
 ******************************************************************************/
 
-static char* TimeFormat(const char *timefmt)
+static const char* TimeFormat(const char *timefmt)
 {
     ajint i;
     AjBool ok    = ajFalse;
-    char *format = NULL ;
+    const char *format = NULL ;
 
     for(i=0; timeFormat[i].Name; i++)
 	if(ajCharMatchCaseC(timefmt, timeFormat[i].Name))

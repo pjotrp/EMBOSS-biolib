@@ -28,8 +28,7 @@
 
 
 
-static void digest_report_hits(AjPReport report, const AjPSeq seq,
-			       AjPFeattable TabRpt,
+static void digest_report_hits(AjPFeattable TabRpt,
 			       AjPList l, ajint be, const char *s);
 static void digest_print_hits(AjPList l, AjPFile outf, ajint be,
 			      const char *s);
@@ -121,7 +120,7 @@ int main(int argc, char **argv)
 
 	embPropAminoRead(mfptr);
 
-	embPropCalcFragments(ajStrGetPtr(substr),n,be,&l,&pa,
+	embPropCalcFragments(ajStrGetPtr(substr),n,&l,&pa,
 			     unfavoured,overlap,
 			     allpartials,&ncomp,&npart,&rname,
 			     nterm, cterm, dorag);
@@ -150,7 +149,7 @@ int main(int argc, char **argv)
 			"Complete digestion with %S yields %d fragments",
 			rname,ncomp);
 	    ajReportSetHeader(report, tmpStr);
-	    digest_report_hits(report, a, TabRpt,l,be, ajStrGetPtr(substr));
+	    digest_report_hits(TabRpt,l,be, ajStrGetPtr(substr));
 	    ajReportWrite(report, TabRpt, a);
 	    ajFeattableClear(TabRpt);
 	}
@@ -170,7 +169,7 @@ int main(int argc, char **argv)
 			rname,npart);
 	    ajFmtPrintAppS(&tmpStr,"Only overlapping partials shown:\n");
 	    ajReportSetHeader(report, tmpStr);
-	    digest_report_hits(report, a, TabRpt, pa,be,ajStrGetPtr(substr));
+	    digest_report_hits(TabRpt, pa,be,ajStrGetPtr(substr));
 	    ajReportWrite(report, TabRpt, a);
 	    ajFeattableClear(TabRpt);
 	}
@@ -190,7 +189,7 @@ int main(int argc, char **argv)
 			rname,npart);
 	    ajFmtPrintAppS(&tmpStr,"All partials shown:\n");
 	    ajReportSetHeader(report, tmpStr);
-	    digest_report_hits(report, a, TabRpt, pa,be, ajStrGetPtr(substr));
+	    digest_report_hits(TabRpt, pa,be, ajStrGetPtr(substr));
 	    ajReportWrite(report, TabRpt, a);
 	    ajFeattableClear(TabRpt);
 	}
@@ -281,8 +280,6 @@ static void digest_print_hits(AjPList l, AjPFile outf, ajint be, const char *s)
 **
 ** Undocumented.
 **
-** @param [w] report [AjPReport] report
-** @param [r] seq [const AjPSeq] sequence object
 ** @param [u] TabRpt [AjPFeattable] feature table object to store results
 ** @param [u] l [AjPList] Undocumented
 ** @param [r] be [ajint] Undocumented
@@ -290,8 +287,7 @@ static void digest_print_hits(AjPList l, AjPFile outf, ajint be, const char *s)
 ** @@
 ******************************************************************************/
 
-static void digest_report_hits(AjPReport report, const AjPSeq seq,
-			       AjPFeattable TabRpt, AjPList l, ajint be,
+static void digest_report_hits(AjPFeattable TabRpt, AjPList l, ajint be,
 			       const char* s)
 {
     AjPFeature gf = NULL;

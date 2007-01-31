@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     firstonly = ajAcdGetBool("firstonly");
     while(ajSeqallNext(seqall,&seq))
     {
-	ajFmtPrintF(outf,"%S",ajSeqGetEntry(seq));
+	ajFmtPrintF(outf,"%S",ajSeqGetEntryS(seq));
 	if(firstonly)
 	    break;
     }

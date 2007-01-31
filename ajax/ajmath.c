@@ -38,6 +38,7 @@
 #define AjRandomTiny 1.0e-17
 #define AJCRC64LEN 256
 
+static ajulong seqCrcTable[256];
 
 
 
@@ -47,6 +48,7 @@ static double aj_rand_poly[101];
 static double aj_rand_other;
 
 
+static void spcrc32gen(void);
 static void spcrc64calctab(unsigned long long *crctab);
 
 
@@ -358,7 +360,9 @@ void ajRandomSeed(void)
 
 ajint ajRandomNumber(void)
 {
-    return (ajint) (floor(ajRandomNumberD()*32768.0));
+    ajlong lret = 0;
+    lret =  (floor(ajRandomNumberD()*32768.0));
+    return (ajint) lret;
 }
 
 
@@ -491,6 +495,77 @@ static void spcrc64calctab(unsigned long long *crctab)
 
 
 
+/* @func ajSp32Crc ************************************************************
+**
+** Calculates the SwissProt style CRC32 checksum for a protein sequence.
+** This seems to be a bit reversal of a standard CRC32 checksum.
+**
+** @param [r] seq [const AjPStr] Sequence as a string
+** @return [ajuint] CRC32 checksum.
+** @@
+******************************************************************************/
+
+ajuint ajSp32Crc(const AjPStr seq)
+{
+    register ajulong crc;
+    ajint c;
+    const char* cp;
+    static ajint calls = 0;
+
+    if(!calls)
+    {
+	spcrc32gen();
+	calls = 1;
+    }
+
+    cp = ajStrGetPtr(seq);
+
+    crc = 0xFFFFFFFFL;
+    while( *cp )
+    {
+	c = toupper((ajint) *cp);
+	crc = ((crc >> 8) & 0x00FFFFFFL) ^ seqCrcTable[ (crc^c) & 0xFF ];
+	cp++;
+    }
+    ajDebug("CRC32 calculated %08lX\n", crc);
+
+    return( crc );
+}
+
+
+/* @funcstatic spcrc32gen *****************************************************
+**
+** Generates data for a CRC32 calculation in a static data structure.
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void spcrc32gen(void)
+{
+    ajulong crc;
+    ajulong poly;
+    ajint   i;
+    ajint   j;
+
+    poly = 0xEDB88320L;
+    for(i=0; i<256; i++)
+    {
+	crc = i;
+	for(j=8; j>0; j--)
+	    if(crc&1)
+		crc = (crc >> 1) ^ poly;
+	    else
+		crc >>= 1;
+
+	seqCrcTable[i] = crc;
+    }
+
+    return;
+}
+
+
+
 /* @func ajSp64Crc *********************************************************
 **
 ** Calculate 64-bit crc
@@ -535,13 +610,13 @@ unsigned long long ajSp64Crc(const AjPStr thys)
 ** Converts a string position into a true position. If ipos is negative,
 ** it is counted from the end of the string rather than the beginning.
 **
-** @param [r] len [ajint] String length.
+** @param [r] len [ajuint] String length.
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
-** @return [ajint] string position between 0 and (length minus 1).
+** @return [ajuint] string position between 0 and (length minus 1).
 ** @@
 ******************************************************************************/
 
-ajint ajMathPos(ajint len, ajint ipos)
+ajuint ajMathPos(ajuint len, ajint ipos)
 {
     return ajMathPosI(len, 0, ipos);
 }
@@ -558,16 +633,16 @@ ajint ajMathPos(ajint len, ajint ipos)
 ** Usually this is the start position when the end of a range
 ** is being tested.
 **
-** @param [r] len [ajint] maximum length.
-** @param [r] imin [ajint] Start position (0 start, no negative values).
+** @param [r] len [ajuint] maximum length.
+** @param [r] imin [ajuint] Start position (0 start, no negative values).
 ** @param [r] ipos [ajint] Position (0 start, negative from the end).
-** @return [ajint] string position between 0 and (length minus 1).
+** @return [ajuint] string position between 0 and (length minus 1).
 ** @@
 ******************************************************************************/
 
-ajint ajMathPosI(ajint len, ajint imin, ajint ipos)
+ajuint ajMathPosI(ajuint len, ajuint imin, ajint ipos)
 {
-    ajint jpos;
+    ajuint jpos;
 
     if(ipos < 0)
 	jpos = len + ipos;
@@ -591,5 +666,132 @@ ajint ajMathPosI(ajint len, ajint imin, ajint ipos)
 }
 
 
+/* @func ajNumLengthDouble ****************************************************
+**
+** Returns the length of a number written as an integer
+**
+** @param [r] dnumber [double] Double precision value
+** @return [ajuint] Number of digits
+** @@
+******************************************************************************/
+
+ajuint ajNumLengthDouble(double dnumber)
+{
+    ajuint ilen = 1;
+    ajuint maxnum = UINT_MAX/10;
+    ajuint i;
+    double dblabs = abs(dnumber);
+
+    if(dnumber < 0.0) ilen++;		/* space for the sign */
+
+    if(dblabs < 1.0)
+	return ilen;
+
+    for(i=10;i<maxnum;i*=10)
+    {
+	if(dblabs >= i)
+	    ilen++;
+	else
+	    break;
+    }
+    return ilen;
+}
+
+
+/* @func ajNumLengthFloat ****************************************************
+**
+** Returns the length of a number written as an integer
+**
+** @param [r] fnumber [float] Single precision value
+** @return [ajuint] Number of digits
+** @@
+******************************************************************************/
+
+ajuint ajNumLengthFloat(float fnumber)
+{
+    ajuint ilen = 1;
+    ajuint maxnum = UINT_MAX/10;
+    ajuint i;
+    float fltabs = abs(fnumber);
+
+    if(fnumber < 0.0) ilen++;		/* space for the sign */
+
+    if(fltabs < 1.0)
+	return ilen;
+
+    for(i=10;i<maxnum;i*=10)
+    {
+	if(fltabs >= i)
+	    ilen++;
+	else
+	    break;
+    }
+    return ilen;
+}
+
+
+/* @func ajNumLengthInt ****************************************************
+**
+** Returns the length of a number written as an integer
+**
+** @param [r] inumber [ajint] Integer
+** @return [ajuint] Number of digits
+** @@
+******************************************************************************/
+
+ajuint ajNumLengthInt(ajint inumber)
+{
+    ajuint ilen = 1;
+    ajuint maxnum = UINT_MAX/10;
+    ajuint i;
+    ajuint iabs;
+
+    if(inumber < 0) iabs = -inumber;
+    else iabs = inumber;
+
+    if(!iabs)
+	return ilen;
+
+    if(inumber < 0) ilen++;		/* space for the sign */
+
+    for(i=10;i<maxnum;i*=10)
+    {
+	if(iabs >= i)
+	    ilen++;
+	else
+	    break;
+    }
+    return ilen;
+}
+
+
+
+/* @func ajNumLengthUint ****************************************************
+**
+** Returns the length of a number written as an integer
+**
+** @param [r] inumber [ajuint] Unsigned integer
+** @return [ajuint] Number of digits
+** @@
+******************************************************************************/
+
+ajuint ajNumLengthUint(ajuint inumber)
+{
+    ajuint ilen = 1;
+    ajuint maxnum = UINT_MAX/10;
+    ajuint i;
+
+    if(!inumber)
+	return ilen;
+
+    for(i=10;i<maxnum;i*=10)
+    {
+	if(inumber < i)
+	    ilen++;
+	else
+	    return ilen;
+    }
+    return ilen;
+}
 
 

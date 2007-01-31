@@ -173,6 +173,8 @@ static void stssearch_primTest(void **x,void *cl)
     AjBool testd;
     ajint ioff;
 
+    (void) cl;				/* make it used */
+
     p = (Primer*) x;
     primdata = *p;
 

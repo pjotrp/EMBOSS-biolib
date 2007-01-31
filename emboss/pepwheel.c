@@ -94,10 +94,10 @@ int main(int argc, char **argv)
     float ang;
     float radius;
     float wradius;
-    float x1;
-    float x2;
-    float y1;
-    float y2;
+    float xx1;
+    float xx2;
+    float yy1;
+    float yy2;
 
 
     ajGraphInit("pepwheel", argc, argv);
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
     ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
     len = ajStrGetLen(substr);
 
-    ajGraphSetTitlePlus(graph, ajSeqGetUsa(seq));
+    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
     ajGraphOpenWin(graph,xmin,xmax,ymin,ymax);
 
@@ -166,18 +166,18 @@ int main(int argc, char **argv)
 		{
 		    if(wheel)
 		    {
-			ajPolToRec(wradius-wheelgap,oldangle,&x1,&y1);
-			ajPolToRec(wradius,angle,&x2,&y2);
-			ajGraphLine(x1,y1,x2,y2);
+			ajPolToRec(wradius-wheelgap,oldangle,&xx1,&yy1);
+			ajPolToRec(wradius,angle,&xx2,&yy2);
+			ajGraphLine(xx1,yy1,xx2,yy2);
 		    }
 		    startloop=ajFalse;
 		}
 		else
 		    if(wheel)
 		    {
-			ajPolToRec(wradius,oldangle,&x1,&y1);
-			ajPolToRec(wradius,angle,&x2,&y2);
-			ajGraphLine(x1,y1,x2,y2);
+			ajPolToRec(wradius,oldangle,&xx1,&yy1);
+			ajPolToRec(wradius,angle,&xx2,&yy2);
+			ajGraphLine(xx1,yy1,xx2,yy2);
 		    }
 	    }
 	    pepwheel_plotresidue(*(ajStrGetPtr(substr)+lc),radius+resgap,angle,

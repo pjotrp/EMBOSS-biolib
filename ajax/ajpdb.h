@@ -58,17 +58,18 @@ extern "C"
 ** @attr  Gpn     [ajint]  Group number. 
 ** @attr  Idx     [ajint]  Residue number - index into sequence.
 ** @attr  Pdb     [AjPStr] Residue number string from the original PDB file.
-** @attr  Id1     [char]   Standard residue identifier or 'X' for unknown 
-**        types or '.' for heterogens and water. 
 ** @attr  Id3     [AjPStr] Residue or group identifier. 
-** @attr  Type    [char]   'P' (protein atom), 'H' ("heterogens") or 'W' 
-**        (water).
 ** @attr  Atm     [AjPStr] Atom identifier. 
 ** @attr  X       [float]  X coordinate. 
 ** @attr  Y       [float]  Y coordinate. 
 ** @attr  Z       [float]  Z coordinate. 
 ** @attr  O       [float]  Occupancy. 
 ** @attr  B       [float]  B value thermal factor. 
+** @attr  Id1     [char]   Standard residue identifier or 'X' for unknown 
+**        types or '.' for heterogens and water. 
+** @attr  Type    [char]   'P' (protein atom), 'H' ("heterogens") or 'W' 
+**        (water).
+** @attr  Padding [char[2]] Padding to alignment boundary
 ** 
 ** 
 ** @new     ajAtomNew Default Atom constructor.
@@ -94,15 +95,16 @@ typedef struct AjSAtom
     ajint   Gpn;    
     ajint   Idx;    
     AjPStr  Pdb;          
-    char    Id1;    
     AjPStr  Id3;         
-    char    Type;  
     AjPStr  Atm;         
     float   X;     
     float   Y;     
     float   Z;     
     float   O;     
     float   B;     
+    char    Id1;    
+    char    Type;  
+    char    Padding[2];
 } AjOAtom;
 #define AjPAtom AjOAtom*
 
@@ -130,26 +132,17 @@ typedef struct AjSAtom
 **    polypeptide sequence (the Seq element of an AjSChain object). Idx numbers
 **    start at 1 and run sequentially.
 ** @attr Pdb [AjPStr]	Residue number string from the original PDB file.
-** @attr Id1 [char] 	Standard 1-letter residue identifier or 'X' for
-**                       unknown types.
 ** @attr Id3 [AjPStr]	3-letter residue identifier code.
 ** @attr  eNum    [ajint]  Element serial number (for secondary structure 
 **        from the PDB file).
 ** @attr  eId     [AjPStr] Element identifier (for secondary structure from 
 **        the PDB file).
-** @attr  eType   [char]   Element type COIL ('C'), HELIX ('H'), SHEET ('E')
-**        or TURN ('T'). Has a default value of COIL (for secondary structure
-**         from the PDB file).
 ** @attr  eClass  [ajint]  Class of helix, an int from 1-10,  from 
 **	  http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html 
           (for secondary structure from the PDB file).
 **
 ** @attr  eStrideNum   [ajint]  Number of the element: sequential count from 
 **        N-term (for secondary structure from STRIDE).
-** @attr  eStrideType  [char]   Element type:  ALPHA HELIX ('H'), 3-10 HELIX
-**       ('G'), PI-HELIX ('I'), EXTENDED CONFORMATION ('E'), ISOLATED BRIDGE 
-**       ('B' or 'b'), TURN ('T') or COIL (none of the above) ('C') (for 
-**       secondary structure from STRIDE).
 ** @attr  Phi     [float]  Phi angle. 
 ** @attr  Psi     [float]  Psi angle. 
 ** @attr  Area    [float]  Residue solvent accessible area. 
@@ -164,6 +157,16 @@ typedef struct AjSAtom
 ** @attr  npol_rel  [float]  Relative accessibility, nonpolar atoms. 
 ** @attr  pol_abs   [float]  Absolute accessibility, polar atoms. 
 ** @attr  pol_rel   [float]  Relative accessibility, polar atoms. 
+** @attr Id1 [char] 	Standard 1-letter residue identifier or 'X' for
+**                       unknown types.
+** @attr  eType   [char]   Element type COIL ('C'), HELIX ('H'), SHEET ('E')
+**        or TURN ('T'). Has a default value of COIL (for secondary structure
+**         from the PDB file).
+** @attr  eStrideType  [char]   Element type:  ALPHA HELIX ('H'), 3-10 HELIX
+**       ('G'), PI-HELIX ('I'), EXTENDED CONFORMATION ('E'), ISOLATED BRIDGE 
+**       ('B' or 'b'), TURN ('T') or COIL (none of the above) ('C') (for 
+**       secondary structure from STRIDE).
+** @attr Padding [char[1]] Padding to alignment boundary
 **
 **
 ** @new     ajResidueNew Default Residue constructor.
@@ -212,15 +215,12 @@ typedef struct AjSResidue
     ajint    Chn;
     ajint    Idx;
     AjPStr   Pdb;
-    char     Id1;
     AjPStr   Id3;    
 
     ajint    eNum;  
     AjPStr   eId;   
-    char     eType;    
     ajint    eClass;   
     ajint    eStrideNum; 
-    char     eStrideType;
     float    Phi;
     float    Psi;
     float    Area;
@@ -235,6 +235,10 @@ typedef struct AjSResidue
     float    npol_rel;    
     float    pol_abs;  
     float    pol_rel;  
+    char     Id1;
+    char     eType;    
+    char     eStrideType;
+    char     Padding[1];
 } AjOResidue, *AjPResidue;
 
 
@@ -259,8 +263,6 @@ typedef struct AjSResidue
 **
 **
 **
-** @attr  Id          [char]     Chain id, ('.' if one wasn't specified in 
-**                               the PDB file).
 ** @attr  Nres        [ajint]    No. of amino acid residues.
 ** @attr  Nlig        [ajint]    No. of groups which are non-covalently 
 **                               associated with the chain, excluding water 
@@ -276,6 +278,9 @@ typedef struct AjSResidue
 **                               associated with a chain.
 ** @attr  Residues    [AjPList]  List of Residue objects for (potentially multiple
 **                               models) of the polypeptide chain. 
+** @attr  Id          [char]     Chain id, ('.' if one wasn't specified in 
+**                               the PDB file).
+** @attr Padding [char[3]] Padding to alignment boundary
 **
 **
 ** 
@@ -286,7 +291,6 @@ typedef struct AjSResidue
 
 typedef struct AjSChain
 {
-    char     Id;       
     ajint    Nres;   
     ajint    Nlig;   
     ajint    numHelices; 
@@ -294,6 +298,8 @@ typedef struct AjSChain
     AjPStr   Seq;      
     AjPList  Atoms;    
     AjPList  Residues;    
+    char     Id;
+    char     Padding[3];
 } AjOChain;
 #define AjPChain AjOChain*
 
@@ -508,11 +514,12 @@ typedef struct AjSHet
 **
 **
 **
-** @attr  Id1  [char]     Standard residue identifier or 'X' for unknown.
 ** @attr  Id3  [AjPStr]   3 character residue identifier.
 ** @attr  N    [ajint]    Nummber of atoms in residue. 
 ** @attr  Atm  [AjPStr*]  Array of atom identifiers.
 ** @attr  Rad  [float*]   Array of van der Waals radii.
+** @attr  Id1  [char]     Standard residue identifier or 'X' for unknown.
+** @attr  Padding [char[3]] Padding to alignment boundary
 ** 
 ** 
 ** 
@@ -524,11 +531,12 @@ typedef struct AjSHet
 
 typedef struct AjSVdwres
 {
-    char     Id1;     
     AjPStr   Id3;     
     ajint    N;       
     AjPStr  *Atm;     
     float   *Rad;     
+    char     Id1;
+    char     Padding[3];
 } AjOVdwres;
 #define AjPVdwres AjOVdwres*
 
@@ -598,19 +606,20 @@ typedef struct AjSVdwall
 ** @attr  Ligid [AjPStr]   Ligand id code. 
 ** @attr  Chn1  [ajint]    Chain number 1 (first chain)
 ** @attr  Chn2  [ajint]    Chain number 2 (second chain if available)
-** @attr  Chid1 [char]     Chain identifier 1 (first chain)
-** @attr  Chid2 [char]     Chain identifier 2 (second chain if available)
 ** @attr  Nres1 [ajint]    Number of residues in chain/domain 1 
 ** @attr  Nres2 [ajint]    Number of residues in chain/domain 2 
 ** @attr  Seq1  [AjPStr]   The sequence of the first domain or chain.
 ** @attr  Seq2  [AjPStr]   The sequence of the second domain or chain. 
-** @attr  Mat   [AjPInt2d] Contact map. 
+** @attr  Mat   [AjPUint2d] Contact map. 
 ** @attr  Dim   [ajint]    Dimension of contact map. 
 ** @attr  Ncon  [ajint]    No. of contacts (1's in contact map). 
 ** @attr  en    [ajint]    Entry number. 
 ** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
 ** @attr  sn    [ajint]    Site number (ajLIGAND only)
 ** @attr  Desc  [AjPStr]   Description of ligand (ajLIGAND only)
+** @attr  Chid1 [char]     Chain identifier 1 (first chain)
+** @attr  Chid2 [char]     Chain identifier 2 (second chain if available)
+** @attr  Padding [char[2]] Padding to alignment boundary
 ** 
 ** 
 ** @new     ajCmapNew Default Cmap constructor.
@@ -639,14 +648,12 @@ typedef struct AjSCmap
 
     ajint     Chn1;
     ajint     Chn2;
-    char      Chid1;
-    char      Chid2;
     ajint     Nres1;
     ajint     Nres2;
     AjPStr    Seq1;    
     AjPStr    Seq2;    
 
-    AjPInt2d  Mat;    
+    AjPUint2d Mat;    
     ajint     Dim;    
     ajint     Ncon;   
 
@@ -654,6 +661,9 @@ typedef struct AjSCmap
     ajint     ns;
     ajint     sn;
     AjPStr    Desc;
+    char      Chid1;
+    char      Chid2;
+    char      Padding[2];
 } AjOCmap;
 #define AjPCmap AjOCmap*
 
@@ -822,7 +832,7 @@ ajint       ajResidueSSEnv(const AjPResidue res, char *SEnv,AjPFile logf);
 /* ======================================================================= */
 AjPPdbtosp   ajPdbtospNew(ajint n);
 void         ajPdbtospDel(AjPPdbtosp *ptr);
-ajint        ajPdbtospArrFindPdbid(const AjPPdbtosp *arr,
+ajint        ajPdbtospArrFindPdbid(AjPPdbtosp const *arr,
 				   ajint siz, const AjPStr id);
 
 

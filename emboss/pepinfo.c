@@ -31,15 +31,14 @@
 
 
 
-static void pepinfo_plotHistInt2(AjPHist hist, const AjPSeq seq,
+static void pepinfo_plotHistInt2(AjPHist hist,
 				 const ajint * results, ajint hist_num,
 				 const char* header,
 				 const char* xtext, const char * ytext);
-static void pepinfo_plotGraph2Float(AjPGraph graphs, const AjPSeq seq,
+static void pepinfo_plotGraph2Float(AjPGraph graphs,
 				    const float * results,
 				    const char* title_text,
-				    const char * xtext, const char * ytext,
-				    ajint plotcolour);
+				    const char * xtext, const char * ytext);
 static void pepinfo_printFloatResults(AjPFile outfile, const AjPSeq seq,
 				      const float * results,
 				      const char* header);
@@ -110,7 +109,7 @@ int main(int argc, char **argv)
     AjPList aa_props;
     AjPList aa_hydro;
 
-    char * propertyTitles[] =
+    const char * propertyTitles[] =
     {
 	"Tiny",
 	"Small",
@@ -123,7 +122,7 @@ int main(int argc, char **argv)
 	"Negative"
     };
 
-    char * hydroTitles[] =
+    const char * hydroTitles[] =
     {
 	"Kyte & Doolittle hydropathy parameters",
 	"OHM  Hydropathy parameters (Sweet & Eisenberg)",
@@ -262,7 +261,7 @@ int main(int argc, char **argv)
 			propertyTitles[i], ajSeqGetNameC(inseq), seq_begin,
 			seq_end);
 	    ajFmtPrintS(&tmpb,  "%s residues", propertyTitles[i]);
-	    pepinfo_plotHistInt2(hist, inseq, iv[i], i,
+	    pepinfo_plotHistInt2(hist, iv[i], i,
 				 ajStrGetPtr(tmpa), ajStrGetPtr(tmpb), "");
 	}
 
@@ -366,9 +365,8 @@ int main(int argc, char **argv)
 			"Hydropathy plot of residues %d to %d of sequence "
 			"%s using %s",seq_begin, seq_end, ajSeqGetNameC(inseq),
 			hydroTitles[i]);
-	    pepinfo_plotGraph2Float(graphs, inseq, pf[i], ajStrGetPtr(tmpa),
-				    "Residue Number", "Hydropathy value",
-				    BLACK);
+	    pepinfo_plotGraph2Float(graphs, pf[i], ajStrGetPtr(tmpa),
+				    "Residue Number", "Hydropathy value");
 	}
 
 	for(i=0; i<3; i++)
@@ -484,21 +482,18 @@ static void pepinfo_printFloatResults(AjPFile outfile, const AjPSeq seq,
 ** Create and add graph from set of results to graph set.
 **
 ** @param [u] graphs [AjPGraph] Graphs set to add new graph to.
-** @param [r] seq     [const AjPSeq]  Sequence
 ** @param [r] results [const float*]  array of results.
 ** @param [r] title_text [const char*] title for graph
 ** @param [r] xtext      [const char*] x label.
 ** @param [r] ytext      [const char*] y label.
-** @param [r] plotcolour [ajint]   Pen colour to plot the graph in.
 ** @return [void]
 **
 ******************************************************************************/
 
-static void pepinfo_plotGraph2Float(AjPGraph graphs, const AjPSeq seq,
+static void pepinfo_plotGraph2Float(AjPGraph graphs,
 				    const float * results,
 				    const  char * title_text,
-				    const char * xtext, const char * ytext,
-				    ajint plotcolour)
+				    const char * xtext, const char * ytext)
 {
 
     AjPGraphPlpData plot;
@@ -540,7 +535,6 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs, const AjPSeq seq,
 ** Add a histogram data to the set set.
 **
 ** @param [u] hist   [AjPHist] Histogram set to add new set to.
-** @param [r] seq     [const AjPSeq]  Sequence
 ** @param [r] results [const ajint*]  array of results.
 ** @param [r] hist_num [ajint] the number of the histogram set.
 ** @param [r] header  [const char*] title.
@@ -551,7 +545,7 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs, const AjPSeq seq,
 ******************************************************************************/
 
 static void pepinfo_plotHistInt2(AjPHist hist,
-				 const AjPSeq seq, const ajint * results,
+				 const ajint * results,
 				 ajint hist_num, const char * header,
 				 const char * xtext, const char * ytext)
 {

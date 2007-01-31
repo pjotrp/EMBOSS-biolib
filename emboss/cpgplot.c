@@ -27,11 +27,11 @@
 
 
 
-static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
+static void cpgplot_findbases(const AjPStr substr, ajint len,
 			      ajint window, ajint shift, float *obsexp,
 			      float *xypc, const AjPStr bases,
 			      float *obsexpmax,
-			      ajint *plstart, ajint *plend);
+			      ajint *plstart, ajint *plotend);
 
 static void cpgplot_countbases(const char *seq, const char *bases,
 			       ajint window,
@@ -50,11 +50,10 @@ static void cpgplot_reportislands(AjPFile outf, const AjBool *thresh,
 				  ajint minlen, ajint begin, ajint len);
 
 static void cpgplot_plotit(const char *seq,
-			   ajint begin, ajint len, ajint shift,
+			   ajint begin, ajint len,
 			   const float *obsexp, const float *xypc,
 			   const AjBool *thresh,
-			   const char *bases, float obsexpmax, ajint plstart,
-			   ajint plend, AjBool doobsexp,
+			   float obsexpmax, AjBool doobsexp,
 			   AjBool docg, AjBool dopc, AjPGraph mult);
 
 static void cpgplot_dumpfeatout(AjPFeattabOut featout, const AjBool *thresh,
@@ -93,8 +92,8 @@ int main(int argc, char **argv)
 
     ajint window;
     ajint shift;
-    ajint plstart;
-    ajint plend;
+    ajint plotstart;
+    ajint plotend;
 
     float  *xypc   = NULL;
     float  *obsexp = NULL;
@@ -132,9 +131,9 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
-	strand = ajSeqStrCopy(seq);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
+	strand = ajSeqGetSeqCopyS(seq);
 	ajStrFmtUpper(&strand);
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),--begin,--end);
@@ -155,19 +154,19 @@ int main(int argc, char **argv)
 
 
 
-	cpgplot_findbases(substr, begin, len, window, shift, obsexp, xypc,
-			  bases, &obsexpmax, &plstart, &plend);
+	cpgplot_findbases(substr, len, window, shift, obsexp, xypc,
+			  bases, &obsexpmax, &plotstart, &plotend);
 
 
 	cpgplot_identify(outf, obsexp, xypc, thresh, 0, len, shift,
-			 ajStrGetPtr(bases), ajSeqName(seq), minlen, minobsexp,
+			 ajStrGetPtr(bases), ajSeqGetNameC(seq),
+			 minlen, minobsexp,
 			 minpc, featout);
 
 	if(doplot)
-	    cpgplot_plotit(ajSeqName(seq), begin, len, shift,
+	    cpgplot_plotit(ajSeqGetNameC(seq), begin, len,
 			   obsexp, xypc, thresh,
-			   ajStrGetPtr(bases), obsexpmax, plstart, plend,
-			   doobsexp, docg, dopc, mult);
+			   obsexpmax, doobsexp, docg, dopc, mult);
 
 	ajStrDel(&strand);
     }
@@ -203,7 +202,6 @@ int main(int argc, char **argv)
 ** Undocumented.
 **
 ** @param [r] substr [const AjPStr] Undocumented
-** @param [r] begin [ajint] Undocumented
 ** @param [r] len [ajint] Undocumented
 ** @param [r] window [ajint] Undocumented
 ** @param [r] shift [ajint] Undocumented
@@ -211,16 +209,16 @@ int main(int argc, char **argv)
 ** @param [w] xypc [float*] Undocumented
 ** @param [r] bases [const AjPStr] Undocumented
 ** @param [w] obsexpmax [float*] Undocumented
-** @param [w] plstart [ajint*] Undocumented
-** @param [w] plend [ajint*] Undocumented
+** @param [w] plotstart [ajint*] Undocumented
+** @param [w] plotend [ajint*] Undocumented
 ** @@
 ******************************************************************************/
 
-static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
+static void cpgplot_findbases(const AjPStr substr, ajint len,
 			      ajint window, ajint shift, float *obsexp,
 			      float *xypc, const AjPStr bases,
 			      float *obsexpmax,
-			      ajint *plstart, ajint *plend)
+			      ajint *plotstart, ajint *plotend)
 {
     float cxpy;
     float cxf;
@@ -229,7 +227,7 @@ static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
 
 
     float obs;
-    float exp;
+    float expect;
     ajint i;
     ajint j = 0;
     ajint offset;
@@ -240,7 +238,7 @@ static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
     windowf    = (float)window;
     *obsexpmax = 0.0;
     offset     = window/2;
-    *plstart   = offset;
+    *plotstart   = offset;
     q          = ajStrGetPtr(bases);
 
     for(i=0; i<(len-window+1);i+=shift)
@@ -250,18 +248,18 @@ static void cpgplot_findbases(const AjPStr substr, ajint begin, ajint len,
 	cpgplot_countbases(p, q, window, &cxf, &cyf, &cxpy);
 
 	obs = cxpy;
-	exp = (cxf*cyf)/windowf;
-	if(!exp)
+	expect = (cxf*cyf)/windowf;
+	if(!expect)
 	    obsexp[j]=0.0;
 	else
 	{
-	    obsexp[j] = obs/exp;
+	    obsexp[j] = obs/expect;
 	    *obsexpmax = (*obsexpmax > obsexp[j]) ? *obsexpmax : obsexp[j];
 	}
 	xypc[j] = (cxf/windowf)*100.0 + (cyf/windowf)*100.0;
     }
 
-    *plend = j;
+    *plotend = j;
 
     return;
 }
@@ -506,14 +504,10 @@ static void cpgplot_reportislands(AjPFile outf, const AjBool *thresh,
 ** @param [r] seq [const char*] Undocumented
 ** @param [r] begin [ajint] Undocumented
 ** @param [r] len [ajint] Undocumented
-** @param [r] shift [ajint] Undocumented
 ** @param [r] obsexp [const float*] Undocumented
 ** @param [r] xypc [const float*] Undocumented
 ** @param [r] thresh [const AjBool*] Undocumented
-** @param [r] bases [const char*] Undocumented
 ** @param [r] obsexpmax [float] Undocumented
-** @param [r] plstart [ajint] Undocumented
-** @param [r] plend [ajint] Undocumented
 ** @param [r] doobsexp [AjBool] Undocumented
 ** @param [r] docg [AjBool] Undocumented
 ** @param [r] dopc [AjBool] Undocumented
@@ -522,11 +516,11 @@ static void cpgplot_reportislands(AjPFile outf, const AjBool *thresh,
 ******************************************************************************/
 
 static void cpgplot_plotit(const char *seq,
-			   ajint begin, ajint len, ajint shift,
+			   ajint begin, ajint len,
 			   const float *obsexp, const float *xypc,
 			   const AjBool *thresh,
-			   const char *bases, float obsexpmax, ajint plstart,
-			   ajint plend, AjBool doobsexp, AjBool docg,
+			   float obsexpmax,
+			   AjBool doobsexp, AjBool docg,
 			   AjBool dopc, AjPGraph graphs)
 
 {

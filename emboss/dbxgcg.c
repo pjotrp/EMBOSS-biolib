@@ -76,7 +76,7 @@ static ajlong dbxgcg_gcgappent(AjPFile infr, AjPFile infs,
 ** @alias DbxgcgSParser
 ** @alias DbxgcgOParser
 **
-** @attr Name [char*] Parser name
+** @attr Name [const char*] Parser name
 ** @attr GcgType [AjBool] Gcg type parser if true, PIR type if false
 ** @attr Parser [(AjBool*)] Parser function
 ** @@
@@ -84,7 +84,7 @@ static ajlong dbxgcg_gcgappent(AjPFile infr, AjPFile infs,
 
 typedef struct DbxgcgSParser
 {
-    char* Name;
+    const char* Name;
     AjBool GcgType;
     AjBool (*Parser) (EmbPBtreeEntry entry, AjPFile infr, AjPStr *reflibstr);
 } DbxgcgOParser;

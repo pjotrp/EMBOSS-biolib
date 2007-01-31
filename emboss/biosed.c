@@ -73,10 +73,10 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall,&seq))
     {
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 
-	p = ajSeqChar(seq);
+	p = ajSeqGetSeqC(seq);
 	ajStrAssignSubC(&substr,p,begin-1,end-1);
 	ajStrFmtUpper(&substr);
 
@@ -86,12 +86,12 @@ int main(int argc, char **argv)
 	    biosed_delete(&substr,target,targetpos, begin);
 
 	ajSeqAssignSeqS(seq,substr);
-	ajSeqAllWrite(outseq,seq);
+	ajSeqoutWriteSeq(outseq,seq);
     }
 
     ajStrDel(&substr);
     ajStrDel(&str);
-    ajSeqWriteClose(outseq);
+    ajSeqoutClose(outseq);
 
     ajExit();
 

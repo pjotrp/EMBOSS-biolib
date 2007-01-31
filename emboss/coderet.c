@@ -125,10 +125,10 @@ int main(int argc, char **argv)
 
 	    for(i=0;i<ncds;++i)
 	    {
-		ret = ajFeatLocToSeq(ajSeqStr(seq),cdslines[i],&cds,usa);
+		ret = ajFeatLocToSeq(ajSeqGetSeqS(seq),cdslines[i],&cds,usa);
 		if(!ret)
 		{
-		    ajWarn("Cannot extract %s\n",ajSeqName(seq));
+		    ajWarn("Cannot extract %s\n",ajSeqGetNameC(seq));
 		    continue;
 		}
 		coderet_put_seq(seq,cds,i,"cds",0,seqoutcds);
@@ -145,10 +145,10 @@ int main(int argc, char **argv)
 
 	    for(i=0;i<nmrna;++i)
 	    {
-		ret = ajFeatLocToSeq(ajSeqStr(seq),mrnalines[i],&mrna,usa);
+		ret = ajFeatLocToSeq(ajSeqGetSeqS(seq),mrnalines[i],&mrna,usa);
 		if(!ret)
 		{
-		    ajWarn("Cannot extract %s",ajSeqName(seq));
+		    ajWarn("Cannot extract %s",ajSeqGetNameC(seq));
 		    continue;
 		}
 		coderet_put_seq(seq,mrna,i,"mrna",0,seqoutmrna);
@@ -225,18 +225,18 @@ int main(int argc, char **argv)
 	}
 
 	ajFmtPrintF(logf, "%6d %s\n",
-		    ncds+nmrna+nrestall+ntran, ajSeqName(seq));
+		    ncds+nmrna+nrestall+ntran, ajSeqGetNameC(seq));
     }
 
 
     if(seqoutcds)
-	ajSeqWriteClose(seqoutcds);
+	ajSeqoutClose(seqoutcds);
     if(seqoutmrna)
-	ajSeqWriteClose(seqoutmrna);
+	ajSeqoutClose(seqoutmrna);
     if(seqoutprot)
-	ajSeqWriteClose(seqoutprot);
+	ajSeqoutClose(seqoutprot);
     if(seqoutrest)
-	ajSeqWriteClose(seqoutrest);
+	ajSeqoutClose(seqoutrest);
 
 
     ajStrDel(&cds);
@@ -282,10 +282,10 @@ static void coderet_put_seq(const AjPSeq seq, const AjPStr strseq,
     fn = ajStrNew();
 
 
-    ajFmtPrintS(&fn,"%S_%s_%d",ajSeqGetAcc(seq),name,n+1);
+    ajFmtPrintS(&fn,"%S_%s_%d",ajSeqGetAccS(seq),name,n+1);
     ajStrFmtLower(&fn);
 
-    nseq = ajSeqNewL(ajStrGetLen(strseq));
+    nseq = ajSeqNewRes(ajStrGetLen(strseq));
     ajSeqAssignNameS(nseq, fn);
     ajSeqAssignEntryS(nseq, fn);
 
@@ -297,7 +297,7 @@ static void coderet_put_seq(const AjPSeq seq, const AjPStr strseq,
     ajSeqAssignSeqS(nseq,strseq);
 
 
-    ajSeqWrite(seqout,nseq);
+    ajSeqoutWriteSeq(seqout,nseq);
 
 
     ajSeqDel(&nseq);
@@ -343,15 +343,15 @@ static void coderet_put_rest(const AjPSeq seq, const AjPStr copyseq,
 	{
 	    if(isup)
 	    {
-		ajFmtPrintS(&fn,"%S_%s_%d",ajSeqGetAcc(seq),name,i+1);
+		ajFmtPrintS(&fn,"%S_%s_%d",ajSeqGetAccS(seq),name,i+1);
 		ajStrFmtLower(&fn);
-		nseq = ajSeqNewL(j-i);
+		nseq = ajSeqNewRes(j-i);
 		ajSeqAssignNameS(nseq, fn);
 		ajSeqAssignEntryS(nseq, fn);
 		ajSeqSetNuc(nseq);
 		ajStrAssignSubS(&subseq, strseq, i, j-1);
 		ajSeqAssignSeqS(nseq,subseq);
-		ajSeqWrite(seqout,nseq);
+		ajSeqoutWriteSeq(seqout,nseq);
 		ajSeqDel(&nseq);
 		isup = ajFalse;
 	    }
@@ -370,10 +370,10 @@ static void coderet_put_rest(const AjPSeq seq, const AjPStr copyseq,
 
     if(isup)
     {
-	ajFmtPrintS(&fn,"%S_%s_%d",ajSeqGetAcc(seq),name,i+1);
+	ajFmtPrintS(&fn,"%S_%s_%d",ajSeqGetAccS(seq),name,i+1);
 	ajStrFmtLower(&fn);
 
-	nseq = ajSeqNewL(j-i);
+	nseq = ajSeqNewRes(j-i);
 	ajSeqAssignNameS(nseq, fn);
 	ajSeqAssignEntryS(nseq, fn);
 
@@ -383,7 +383,7 @@ static void coderet_put_rest(const AjPSeq seq, const AjPStr copyseq,
 	ajSeqAssignSeqS(nseq,subseq);
 
 
-	ajSeqWrite(seqout,nseq);
+	ajSeqoutWriteSeq(seqout,nseq);
 
 	ajSeqDel(&nseq);
     }

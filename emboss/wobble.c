@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     ajint i;
     ajint j;
 
-    char *ftit[6]=
+    const char *ftit[6]=
     {
 	"F1","F2","F3","R1","R2","R3"
     };
@@ -295,7 +295,7 @@ static void wobble_calcpc(const char *seq, const char *rev,
 static void wobble_checkstring(AjPStr *str)
 {
     AjPStr tmp;
-    static char *bases="GCAT";
+    static const char *bases="GCAT";
     ajint i;
 
     tmp = ajStrNewC("");

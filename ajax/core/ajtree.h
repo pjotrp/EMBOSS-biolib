@@ -30,20 +30,20 @@ enum AjETreeType {ajETreeAny, ajETreeStr};
 ** @new ajTreeNew Creates a new general tree.
 ** @new ajTreestrNew Creates a new AjPStr tree.
 **
-** @attr Right [const struct AjSTree*] Next tree node
-** @attr Left  [const struct AjSTree*] Previous tree node
-** @attr Up    [const struct AjSTree*] Parent tree node
-** @attr Down  [const struct AjSTree*] First child tree node
+** @attr Right [struct AjSTree*] Next tree node
+** @attr Left  [struct AjSTree*] Previous tree node
+** @attr Up    [struct AjSTree*] Parent tree node
+** @attr Down  [struct AjSTree*] First child tree node
 ** @attr Type [AjEnum] Tree type (any, string, etc.)
 ** @attr Data [void*] Data value
 ** @@
 ******************************************************************************/
 
 typedef struct AjSTree {
-  const struct AjSTree* Right;
-  const struct AjSTree* Left;
-  const struct AjSTree* Up;
-  const struct AjSTree* Down;
+  struct AjSTree* Right;
+  struct AjSTree* Left;
+  struct AjSTree* Up;
+  struct AjSTree* Down;
   AjEnum Type;
   void* Data;
 } AjOTree;
@@ -65,18 +65,26 @@ AjPTree ajTreeCopy(const AjPTree thys);
 void    ajTreeDel(AjPTree* pthis);
 void    ajTreeExit(void);
 void    ajTreeFree(AjPTree* pthis);
-ajint   ajTreeLength(const AjPTree thys);
+AjPTree ajTreeFollow(const AjPTree thys, const AjPTree parent);
+ajuint  ajTreeLength(const AjPTree thys);
 void    ajTreeMap(AjPTree thys, void apply(void** x, void* cl), void* cl);
 AjPTree ajTreeNew(void);
+AjBool  ajTreestrAddData(AjPTree thys, AjPStr data);
 AjPTree ajTreestrCopy(const AjPTree thys);
 void    ajTreestrDel(AjPTree* pthis);
 void    ajTreestrFree(AjPTree* pthis);
-ajint   ajTreestrLength(const AjPTree thys);
+ajuint  ajTreestrLength(const AjPTree thys);
 void    ajTreestrMap(AjPTree thys, void apply(AjPStr* x, void* cl), void* cl);
 AjPTree ajTreestrNew(void);
-ajint   ajTreestrToArray(const AjPTree thys, AjPStr** array);
-ajint   ajTreeToArray(const AjPTree thys, void*** array);
+ajuint  ajTreestrToArray(const AjPTree thys, AjPStr** array);
+ajuint  ajTreeToArray(const AjPTree thys, void*** array);
 void    ajTreeTrace(const AjPTree thys);
+void    ajTreestrTrace(const AjPTree thys);
+
+AjPTree ajTreeDown(const AjPTree thys);
+AjPTree ajTreeNext(const AjPTree thys);
+AjPTree ajTreePrev(const AjPTree thys);
+AjPTree ajTreeUp(const AjPTree thys);
 
 void    ajTreeDummyFunction(void);
 

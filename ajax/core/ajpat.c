@@ -32,15 +32,15 @@
 ** @alias PatSTypes
 ** @alias PatOTypes
 **
-** @attr Name [char*] Type name
-** @attr Desc [char*] Type description
+** @attr Name [const char*] Type name
+** @attr Desc [const char*] Type description
 ** @@
 ******************************************************************************/
 
 typedef struct PatSRegTypes
 {
-    char *Name;
-    char *Desc;
+    const char *Name;
+    const char *Desc;
 } PatORegTypes;
 
 #define PatPRegTypes PatORegTypes*
@@ -527,7 +527,7 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
     AjPStr line = NULL;
     AjPStr name = NULL;
     AjPFile infile = NULL;
-    AjPRegexp misreg = NULL;
+    AjPRegexp mismreg = NULL;
     AjPStr patstr = NULL;
     AjPStr pat = NULL;
     ajint mismatch = 0;
@@ -547,7 +547,7 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
 
 	while (ajFileGetsTrim(infile,&line))
 	{
-	    AjPRegexp misreg = ajRegCompC("<mismatch=(\\d+)>");
+	    mismreg = ajRegCompC("<mismatch=(\\d+)>");
 	    if (ajStrGetCharFirst(line) == '>')
 	    {
 		if (ajStrGetLen(name))
@@ -559,11 +559,11 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
 		    mismatch=mismatches;
 		}
 		ajStrCutStart(&line,1);
-		if (ajRegExec(misreg,line))
+		if (ajRegExec(mismreg,line))
 		{
-		    ajRegSubI(misreg,1,&name);
+		    ajRegSubI(mismreg,1,&name);
 		    ajStrToInt(name,&mismatch);
-		    ajStrTruncateLen(&line,ajRegOffset(misreg));
+		    ajStrTruncateLen(&line,ajRegOffset(mismreg));
 		    ajStrTrimWhiteEnd(&line);
 		}
 		ajStrAssignS (&name,line);
@@ -574,7 +574,7 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
 	}
 	pattern = ajPatternSeqNewList(patlist,name,pat,mismatch);
 	ajFileClose(&infile);
-	ajRegFree(&misreg);
+	ajRegFree(&mismreg);
     }
     else
     {
@@ -885,7 +885,7 @@ AjPPatComp ajPatCompNew (void)
 ******************************************************************************/
 void ajPatCompDel (AjPPatComp *pthys)
 {
-    int i;
+    ajuint i;
 
     AjPPatComp thys = *pthys;
     ajStrDel(&thys->pattern);

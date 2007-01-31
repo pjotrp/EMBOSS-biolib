@@ -378,11 +378,10 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     */
     char white[] = " \t\n\r!@#$%^&()_+=|\\~`{[}]:;\"'<,>.?/";
 
-    ajDebug("ajTrnReadFile\n");
+    ajDebug("ajTrnReadFile %F\n", trnFile);
 
     while(ajFileReadLine(trnFile, &trnLine))
     {
-	ajDebug("Line: '%S'\n", trnLine);
 	trnNoComment(&trnLine);
 	if(ajStrGetLen(trnLine))
 	{
@@ -398,7 +397,6 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     /* title */
     while(ajFileReadLine(trnFile, &trnLine))
     {
-	ajDebug("Line: '%S'\n", trnLine);
 	trnNoComment(&trnLine);
 	if(ajStrGetLen(trnLine))
 	{
@@ -410,7 +408,6 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     /* rest */
     while(ajFileReadLine(trnFile, &trnLine))
     {
-	ajDebug("Line: '%S'\n", trnLine);
 	trnNoComment(&trnLine);
 	if(ajStrGetLen(trnLine))
 	{
@@ -1481,7 +1478,7 @@ AjPSeq ajTrnSeqOrig(const AjPTrn trnObj, const AjPSeq seq, ajint frame)
     ** if there are any dangling bases, then attempt to
     ** translate them
     */
-    ajTrnStrDangle(trnObj, ajSeqStr(seq), frame, &trn);
+    ajTrnStrDangle(trnObj, ajSeqGetSeqS(seq), frame, &trn);
 
     /*
     ** if frame is 4, 5 or 6 then reverse the peptide for displaying beneath
@@ -1640,7 +1637,7 @@ AjPStr ajTrnName(ajint trnFileNameInt)
 {
     static AjPStr ret;
     static AjPStr unknown = NULL;
-    AjPFile index = NULL;
+    AjPFile indexf = NULL;
     static AjPStr indexfname = NULL;
     AjPStr line = NULL;
     static AjPTable trnCodes = NULL;
@@ -1658,11 +1655,11 @@ AjPStr ajTrnName(ajint trnFileNameInt)
 	    indexfname = ajStrNewC("EGC.index");
 	trnCodes = ajStrTableNew(20);
 
-	ajFileDataNew(indexfname, &index);
-	if(!index)
+	ajFileDataNew(indexfname, &indexf);
+	if(!indexf)
 	    return unknown;
 
-	while(ajFileReadLine(index, &line))
+	while(ajFileReadLine(indexf, &line))
 	{
 	    ajStrTrimWhite(&line);
 	    if(ajStrGetCharFirst(line) == '#')
@@ -1674,7 +1671,7 @@ AjPStr ajTrnName(ajint trnFileNameInt)
 	    tok1 = NULL;
 	    tok2 = NULL;
 	}
-	ajFileClose(&index);
+	ajFileClose(&indexf);
     }
 
     ajFmtPrintS(&tmpstr, "%d", trnFileNameInt);
@@ -1715,12 +1712,11 @@ static AjBool trnComplete(AjPTrn thys)
     ajint jfirst = 0;
     ajint kfirst = 0;
     ajint newkfirst;
-    char* bases = "ACGT";
+    const char* bases = "ACGT";
     char newaa[] = "X";
     ajint codonval[4];
     char aa;
     ajint code[4] = {1, 2, 4, 8};
-    char *nuccodes = "ACGTMRWSYKVHDBN";	/* only used in ajDebug printout */
     ajint ambigcodes[] = { 1,  2,  4,  8,  3,  5,  6,  9,
 			  10, 12,  7, 11, 13, 14, 15};
     ajint trncodes[] = {14,  0,  1,  4,  2,  5,  7, 10,
@@ -1792,9 +1788,6 @@ static AjBool trnComplete(AjPTrn thys)
 			codonval[0] |= code[i];
 			codonval[1] |= code[j];
 			codonval[2] |= code[k];
-			ajDebug("'%c' at %d%d%d codonval: %2d %2d %2d\n",
-				aa, i, j, k,
-				codonval[0], codonval[1], codonval[2]);
 		    }
 		    else
 		    {
@@ -1807,8 +1800,6 @@ static AjBool trnComplete(AjPTrn thys)
 				jj = j;
 				kk = k;
 				strcat(aalist, newaa);
-				ajDebug("newaa '%s' at %d%d%d\n",
-					newaa, i, j, k);
 			    }
 			}
 		    }
@@ -1819,36 +1810,9 @@ static AjBool trnComplete(AjPTrn thys)
 	}
 	jfirst = jj;
 	kfirst = kk;
-	ajDebug("ambig aa: %c codonval %2d %2d %2d "
-		"trn %2d %2d %2d ijk %d%d%d '%s' '%s'\n",
-		aa, codonval[0], codonval[1], codonval[2],
-		trncodes[codonval[0]],
-		trncodes[codonval[1]],
-		trncodes[codonval[2]],
-		ifirst, jfirst, kfirst, newaa, aalist);
 	thys->GC[trncodes[codonval[0]]]
 	    [trncodes[codonval[1]]]
 		[trncodes[codonval[2]]] = aa;
-    }
-
-
-    ajDebug("           ");
-    for (i=0;i<15;i++)
-    {
-	ajDebug(" %c", nuccodes[i]);
-    }
-    ajDebug("\n");
-    for (i=0;i<15;i++)
-    {
-	for (j=0;j<15;j++)
-	{
-	    ajDebug("%2d %2d %c %c :", i, j, nuccodes[i], nuccodes[j]);
-	    for (k=0;k<15;k++)
-	    {
-		ajDebug(" %c", thys->GC[i][j][k]);
-	    }
-	    ajDebug("\n");
-	}
     }
 
     return ajTrue;

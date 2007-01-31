@@ -60,9 +60,9 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	beg = ajSeqallBegin(seqall);
-	end = ajSeqallEnd(seqall);
-	ajStrAssignSubS(&substr,ajSeqStr(seq),beg-1,end-1);
+	beg = ajSeqallGetseqBegin(seqall);
+	end = ajSeqallGetseqEnd(seqall);
+	ajStrAssignSubS(&substr,ajSeqGetSeqS(seq),beg-1,end-1);
 	ajStrFmtUpper(&substr);
 	ajCodCountTriplets(codon,substr,&ccnt);
 	if(!sum)
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 	    ajCodCalculateUsage(codon,ccnt);
 	    Nc = ajCodCalcNc(codon);
 	    
-	    ajFmtPrintF(outf,"%-20s Nc = %.3f\n",ajSeqName(seq),Nc);
+	    ajFmtPrintF(outf,"%-20s Nc = %.3f\n",ajSeqGetNameC(seq),Nc);
 	    ajCodClearData(codon);
 	}
     }

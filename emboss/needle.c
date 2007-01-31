@@ -40,8 +40,8 @@ int main(int argc, char **argv)
     AjPStr n;
     AjPStr ss;
 
-    ajint    lena;
-    ajint    lenb;
+    ajuint    lena;
+    ajuint    lenb;
 
     const char   *p;
     const char   *q;
@@ -111,9 +111,6 @@ int main(int argc, char **argv)
 	   ajFatal("Sequences too big. Try 'stretcher' or 'supermatcher'");
 
 	len = lena*lenb;
-
-	if(len < 0)
-	    ajFatal("Sequences too big. Try 'stretcher' or 'supermatcher'");
 
 	if(len>maxarr)
 	{

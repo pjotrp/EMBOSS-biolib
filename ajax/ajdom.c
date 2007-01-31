@@ -41,7 +41,7 @@ static void            domUpdateNode(AjPDomNode node);
 static AjPDomNode      domDoRemoveChild(AjPDomNode node, AjPDomNode child);
 static void            domRemoveFromMap(AjPDomNodeList list,
 					const AjPDomNode key);
-static void            domAddToMap(AjPDomNodeList list, const AjPDomNode key,
+static void            domAddToMap(AjPDomNodeList list, AjPDomNode key,
 				   AjPDomNodeEntry val);
 
 
@@ -142,13 +142,13 @@ static void domRemoveFromMap(AjPDomNodeList list, const AjPDomNode key)
 ** Add a key/value pair to a DOM nodelist 
 **
 ** @param [w] list [AjPDomNodeList] node list
-** @param [r] key [const AjPDomNode] key
+** @param [o] key [AjPDomNode] key
 ** @param [u] val [AjPDomNodeEntry] value
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void domAddToMap(AjPDomNodeList list, const AjPDomNode key,
+static void domAddToMap(AjPDomNodeList list, AjPDomNode key,
 			AjPDomNodeEntry val)
 {
     if(!list->table)
@@ -905,7 +905,9 @@ AjPDomDocument ajDomImplementationCreateDocument(const AjPStr uri,
 						 AjPDomDocumentType doctype)
 {
     const char *p = NULL;
-    
+
+    (void) uri;				/* temporary use */
+
     if(qualname)
         p = qualname->Ptr;
 
@@ -1223,14 +1225,14 @@ AjPDomNode ajDomNodeMapRemoveItemC(AjPDomNodeMap map, const char *name)
 ** Return the node in the map at a given index
 **
 ** @param [r] map [const AjPDomNodeMap] map
-** @param [r] index [ajint] index
+** @param [r] indexnum [ajint] index
 ** @return [AjPDomNode] node or NULL
 ** @@
 ******************************************************************************/
 
-AjPDomNode ajDomNodeMapItem(const AjPDomNodeMap map, ajint index)
+AjPDomNode ajDomNodeMapItem(const AjPDomNodeMap map, ajint indexnum)
 {
-    return ajDomNodeListItem(map,index);
+    return ajDomNodeListItem(map,indexnum);
 }
 
 
@@ -1241,24 +1243,24 @@ AjPDomNode ajDomNodeMapItem(const AjPDomNodeMap map, ajint index)
 ** Filter nodelist item
 **
 ** @param [r] list [const AjPDomNodeList] list
-** @param [r] index [ajint] index
+** @param [r] indexnum [ajint] index
 ** @param [r] nodetype [ajuint] nodetype
 ** @return [AjPDomNode] node or NULL
 ** @@
 ******************************************************************************/
 
 static AjPDomNode domNodeListItemFiltered(const AjPDomNodeList list,
-					  ajint index, ajuint nodetype)
+					  ajint indexnum, ajuint nodetype)
 {
     AjPDomNodeEntry e = NULL;
     
-    if(list && index >= 0 && index < list->length)
+    if(list && indexnum >= 0 && indexnum < list->length)
 	for(e=list->first; e; e=e->next)
 	    if(e->node->type == nodetype)
 	    {
-		if(!index)
+		if(!indexnum)
 		    return e->node;
-		--index;
+		--indexnum;
 	    }
 
     return NULL;
@@ -1272,23 +1274,23 @@ static AjPDomNode domNodeListItemFiltered(const AjPDomNodeList list,
 ** Return the node in the list at a given index
 **
 ** @param [r] list [const AjPDomNodeList] list
-** @param [r] index [ajint] index
+** @param [r] indexnum [ajint] index
 ** @return [AjPDomNode] node or NULL
 ** @@
 ******************************************************************************/
 
-AjPDomNode ajDomNodeListItem(const AjPDomNodeList list, ajint index)
+AjPDomNode ajDomNodeListItem(const AjPDomNodeList list, ajint indexnum)
 {
     AjPDomNodeEntry e = NULL;
 
     if(list)
     {
 	if(list->filter)
-	    return domNodeListItemFiltered(list->list,index,list->filter);
+	    return domNodeListItemFiltered(list->list,indexnum,list->filter);
 
-	if(index >= 0 && index < list->length)
-	    for(e=list->first; e; e=e->next, --index)
-		if(!index)
+	if(indexnum >= 0 && indexnum < list->length)
+	    for(e=list->first; e; e=e->next, --indexnum)
+		if(!indexnum)
 		    return e->node;
     }
 

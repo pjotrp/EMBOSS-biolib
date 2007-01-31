@@ -95,14 +95,14 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	beg = ajSeqallBegin(seqall);
-	end = ajSeqallEnd(seqall);
+	beg = ajSeqallGetseqBegin(seqall);
+	end = ajSeqallGetseqEnd(seqall);
 	len = end-beg+1;
 
 	limit = len-window+1;
-	sname = ajSeqName(seq);
+	sname = ajSeqGetNameC(seq);
 
-	ajStrAssignSubC(&str,ajSeqChar(seq),--beg,--end);
+	ajStrAssignSubC(&str,ajSeqGetSeqC(seq),--beg,--end);
 	ajStrFmtUpper(&str);
 	p = ajStrGetPtr(str);
 

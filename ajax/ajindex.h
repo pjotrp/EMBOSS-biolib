@@ -101,8 +101,8 @@ typedef struct AjSBtMem
 ** Btree ID
 **
 ** @attr id [AjPStr] Unique ID
-** @attr dbno [ajint] Database file number
-** @attr dups [ajint] Duplicates
+** @attr dbno [ajuint] Database file number
+** @attr dups [ajuint] Duplicates
 ** @attr offset [ajlong] Offset within database file (ftello)
 ** @attr refoffset [ajlong] Offset within reference database file (ftello)
 ******************************************************************************/
@@ -110,8 +110,8 @@ typedef struct AjSBtMem
 typedef struct AjSBtId
 {
     AjPStr id;
-    ajint  dbno;
-    ajint  dups;
+    ajuint  dbno;
+    ajuint  dups;
     ajlong offset;
     ajlong refoffset;
 } AjOBtId;

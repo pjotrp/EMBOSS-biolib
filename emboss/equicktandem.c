@@ -111,8 +111,8 @@ int main(int argc, char **argv)
     ajStrAssignSubS(&substr,str,begin,end);
     ajSeqAssignSeqS(sequence,substr);
 
-    cvt = ajSeqCvtNewText("ACGTN");
-    ajSeqNum(sequence, cvt, &tseq);
+    cvt = ajSeqcvtNewNumberC("ACGTN");
+    ajSeqConvertNum(sequence, cvt, &tseq);
     sq = ajStrGetuniquePtr(&tseq);
 
     /* careful - sequence can be shorter than the maximum repeat length */
@@ -186,7 +186,7 @@ int main(int argc, char **argv)
     ajFeattableDel(&tab);
     ajSeqDel(&sequence);
     ajSeqDel(&saveseq);
-    ajSeqCvtDel(&cvt);
+    ajSeqcvtDel(&cvt);
 
     ajStrDel(&str);
     ajStrDel(&substr);

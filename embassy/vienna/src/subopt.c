@@ -1,5 +1,8 @@
 /*
   $Log: subopt.c,v $
+  Revision 1.2  2007/01/31 12:47:07  rice
+  compiler warnings (prototypes, unsigned, etc.)
+
   Revision 1.1  2005/10/13 13:00:44  ajb
   First draft
 
@@ -80,7 +83,7 @@
 #define PRIVATE	  static
 
 /*@unused@*/
-PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.1 2005/10/13 13:00:44 ajb Exp $";
+PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.2 2007/01/31 12:47:07 rice Exp $";
 
 /*Typedefinitions ---------------------------------------------------------- */
 
@@ -118,7 +121,7 @@ PUBLIC   SOLUTION *subopt (char *seq, char *sequence, int delta, FILE *fp);
 PRIVATE  int  best_attainable_energy(STATE * state);
 PRIVATE  void scan_interval(int i, int j, int array_flag, STATE * state);
 PRIVATE  void free_interval_node(/*@only@*/ INTERVAL * node);
-PRIVATE  void free_state_node(/*@only@*/ STATE * node);
+PRIVATE  void free_state_node(/*@only@*/ void * node);
 PRIVATE  void push_back(STATE * state);
 PRIVATE  char* get_structure(STATE * state);
 PRIVATE  int compare(const void *solution1, const void *solution2);
@@ -213,12 +216,13 @@ free_interval_node(INTERVAL * node)
 /*---------------------------------------------------------------------------*/
 
 PRIVATE void
-free_state_node(STATE * node)
+free_state_node(void * node)
 {
-  free(node->structure);
-  if (node->Intervals)
-    lst_kill(node->Intervals, lst_freenode);
-  lst_freenode(node);
+    STATE *snode = (STATE*) node;
+  free(snode->structure);
+  if (snode->Intervals)
+    lst_kill(snode->Intervals, lst_freenode);
+  lst_freenode(snode);
 }
 
 /*---------------------------------------------------------------------------*/

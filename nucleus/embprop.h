@@ -60,7 +60,7 @@ typedef struct EmbSPropFrag	/* Enzyme digestion structure */
 
 void    embPropAminoRead (AjPFile fp);
 /* void    embPropAminoRead (void); */
-void 	embPropCalcFragments (const char *s, ajint n, ajint begin,
+void 	embPropCalcFragments (const char *s, ajint n,
 			      AjPList *l, AjPList *pa,
 			      AjBool unfavoured, AjBool overlap,
 			      AjBool allpartials, ajint *ncomp, ajint *npart,

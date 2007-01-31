@@ -444,7 +444,7 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 	    ajStrAppendC(&progpath, dp->d_name);
 
 	    /* does it end with ".acd" ? */
-	    if(ajStrFindlastC(progpath, ".acd") == ajStrGetLen(progpath)-4)
+	    if(ajStrSuffixC(progpath, ".acd"))
 	    {
 		/* see if it is a normal file */
 		if(ajSysIsRegular(ajStrGetPtr(progpath)))
@@ -812,8 +812,8 @@ static AjPStr grpParseValueRB(AjPStrTok* tokenhandle, const char* delim)
     AjBool done   = ajFalse;
     AjBool rightb = ajFalse;
 
-    char *quotes    = "\"'{(<";
-    char *endquotes = "\"'})>";
+    const char *quotes    = "\"'{(<";
+    const char *endquotes = "\"'})>";
 
     if(!ajStrTokenNextParseC(tokenhandle, delim, &grpStr1))
 	return NULL;
@@ -1378,8 +1378,8 @@ void embGrpSortProgsList(AjPList progslist)
 
 ajint embGrpCompareTwoGnodes(const void * a, const void * b)
 {
-    return ajStrCmpCaseS((*(EmbPGroupTop *)a)->name,
-			 (*(EmbPGroupTop *)b)->name);
+    return ajStrCmpCaseS((*(EmbPGroupTop const *)a)->name,
+			 (*(EmbPGroupTop const *)b)->name);
 }
 
 
@@ -1398,8 +1398,8 @@ ajint embGrpCompareTwoGnodes(const void * a, const void * b)
 
 ajint embGrpCompareTwoPnodes(const void * a, const void * b)
 {
-    return ajStrCmpCaseS((*(EmbPGroupProg *)a)->name,
-			 (*(EmbPGroupProg *)b)->name);
+    return ajStrCmpCaseS((*(EmbPGroupProg const *)a)->name,
+			 (*(EmbPGroupProg const *)b)->name);
 }
 
 
@@ -1859,7 +1859,7 @@ void embGrpProgsMakeUnique(AjPList list)
 
     old = ajStrNewC("");
 
-    iter = ajListIterRead(list);
+    iter = ajListIter(list);
     while((l = ajListIterNext(iter)) != NULL)
     {
 
@@ -1911,7 +1911,7 @@ void embGrpGroupMakeUnique(AjPList list)
 
     old = ajStrNewC("");
 
-    iter = ajListIterRead(list);
+    iter = ajListIter(list);
     while((l = ajListIterNext(iter)) != NULL)
     {
 

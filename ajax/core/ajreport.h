@@ -106,7 +106,7 @@ AjBool       ajReportFindFormat (const AjPStr format, ajint* iformat);
 AjBool       ajReportFormatDefault (AjPStr* pformat);
 ajint        ajReportLists (const AjPReport thys,
 			    AjPStr** types, AjPStr** names,
-			    AjPStr** prints, ajint** tagsizes);
+			    AjPStr** prints, ajuint** tagsizes);
 AjPReport    ajReportNew (void);
 AjBool       ajReportOpen (AjPReport thys, const AjPStr name);
 void         ajReportPrintFormat (AjPFile outf, AjBool full);

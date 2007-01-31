@@ -80,9 +80,9 @@ void embPropAminoRead(AjPFile mfptr)
     AjPStr  line  = NULL;
     AjPStr  delim = NULL;
 #ifndef WIN32
-    static char *delimstr=" :\t\n";
+    static const char *delimstr=" :\t\n";
 #else
-    static char *delimstr=" :\t\n\r";
+    static const char *delimstr=" :\t\n\r";
 #endif
     const char *p;
 
@@ -105,7 +105,7 @@ void embPropAminoRead(AjPFile mfptr)
 
 	cols = ajStrParseCountC(line,ajStrGetPtr(delim));
 	EmbPropTable[ajAZToInt(toupper((ajint)*p))] =
-	    ajArrDoubleLine(line,ajStrGetPtr(delim),cols,2,cols);
+	    ajArrDoubleLine(line,ajStrGetPtr(delim),2,cols);
     }
 
 
@@ -268,7 +268,6 @@ const char* embPropIntToThree(ajint c)
 **
 ** @param [r] s [const char *] sequence
 ** @param [r] n [ajint] "enzyme" number
-** @param [r] begin [ajint] sequence offset
 ** @param [w] l [AjPList *] list to push hits to
 ** @param [w] pa [AjPList *] list to push partial hits to
 ** @param [r] unfavoured [AjBool] allow unfavoured cuts
@@ -286,30 +285,30 @@ const char* embPropIntToThree(ajint c)
 ** @@
 ******************************************************************************/
 
-void embPropCalcFragments(const char *s, ajint n, ajint begin,
+void embPropCalcFragments(const char *s, ajint n,
 			  AjPList *l, AjPList *pa,
 			  AjBool unfavoured, AjBool overlap,
 			  AjBool allpartials, ajint *ncomp, ajint *npart,
 			  AjPStr *rname, AjBool nterm, AjBool cterm,
 			  AjBool dorag)
 {
-    static char *PROPENZReagent[]=
+    static const char *PROPENZReagent[]=
     {
 	"Trypsin","Lys-C","Arg-C","Asp-N","V8-bicarb","V8-phosph",
 	"Chymotrypsin","CNBr"
     };
 
-    static char *PROPENZSite[]=
+    static const char *PROPENZSite[]=
     {
 	"KR","K","R","D","E","DE","FYWLM","M"
     };
 
-    static char *PROPENZAminoCarboxyl[]=
+    static const char *PROPENZAminoCarboxyl[]=
     {
 	"CC","C","C","N","C","CC","CCCCC","C"
     };
 
-    static char *PROPENZUnfavoured[]=
+    static const char *PROPENZUnfavoured[]=
     {
 	"KRIFLP","P","P","","KREP","P","P",""
     };
@@ -572,7 +571,8 @@ void embPropCalcFragments(const char *s, ajint n, ajint begin,
 
 static ajint propFragCompare(const void *a, const void *b)
 {
-    return (ajint)((*(EmbPPropFrag *)b)->molwt - (*(EmbPPropFrag *)a)->molwt);
+    return (ajint)((*(EmbPPropFrag const *)b)->molwt -
+		   (*(EmbPPropFrag const *)a)->molwt);
 }
 
 
@@ -603,7 +603,7 @@ AjPStr embPropProtGaps(AjPSeq seq, ajint pad)
 	ajStrAppendC(&temp, " ");
 
 
-    for(p=ajSeqChar(seq); *p; p++)
+    for(p=ajSeqGetSeqC(seq); *p; p++)
     {
 	ajStrAppendK(&temp, *p);
 	ajStrAppendC(&temp, "  ");
@@ -641,7 +641,7 @@ AjPStr embPropProt1to3(AjPSeq seq, ajint pad)
 	ajStrAppendC(&temp, " ");
 
 
-    for(p=ajSeqChar(seq); *p; p++)
+    for(p=ajSeqGetSeqC(seq); *p; p++)
     {
 	if(*p == '*')
 	    ajStrAppendC(&temp, "***");
@@ -678,7 +678,10 @@ AjPStr embPropProt1to3(AjPSeq seq, ajint pad)
 
 AjBool embPropPurine(char base)
 {
-    return (strchr(propPurines, (ajint)base) != NULL);
+    if(strchr(propPurines, (ajint)base))
+	return ajTrue;
+
+    return ajFalse;
 }
 
 
@@ -696,7 +699,10 @@ AjBool embPropPurine(char base)
 
 AjBool embPropPyrimidine(char base)
 {
-    return (strchr(propPyrimidines, (ajint)base) != NULL);
+    if(strchr(propPyrimidines, (ajint)base))
+	return ajTrue;
+
+    return ajFalse;
 }
 
 
@@ -717,31 +723,31 @@ AjBool embPropPyrimidine(char base)
 
 AjBool embPropTransversion(char base1, char base2)
 {
-    AjBool u1;
-    AjBool u2;
-    AjBool y1;
-    AjBool y2;
+    AjBool bu1;
+    AjBool bu2;
+    AjBool by1;
+    AjBool by2;
 
-    u1 = embPropPurine(base1);
-    u2 = embPropPurine(base2);
+    bu1 = embPropPurine(base1);
+    bu2 = embPropPurine(base2);
 
-    y1 = embPropPyrimidine(base1);
-    y2 = embPropPyrimidine(base2);
+    by1 = embPropPyrimidine(base1);
+    by2 = embPropPyrimidine(base2);
 
-    ajDebug("base1 py = %d, pu = %d", u1, y1);
-    ajDebug("base2 py = %d, pu = %d", u2, y2);
+    ajDebug("base1 py = %b, pu = %b", bu1, by1);
+    ajDebug("base2 py = %b, pu = %b", bu2, by2);
 
 
     /* not a purine or a pyrimidine - ambiguous - return ajFalse */
-    if(!u1 && !y1)
+    if(!bu1 && !by1)
 	return ajFalse;
 
-    if(!u2 && !y2)
+    if(!bu2 && !by2)
 	return ajFalse;
 
-    ajDebug("embPropTransversion result = %d", (u1 != u2));
+    ajDebug("embPropTransversion result = %d", (bu1 != bu2));
 
-    return (u1 != u2);
+    return (bu1 != bu2);
 }
 
 
@@ -762,25 +768,25 @@ AjBool embPropTransversion(char base1, char base2)
 
 AjBool embPropTransition(char base1, char base2)
 {
-    AjBool u1;
-    AjBool u2;
-    AjBool y1;
-    AjBool y2;
+    AjBool bu1;
+    AjBool bu2;
+    AjBool by1;
+    AjBool by2;
 
-    u1 = embPropPurine(base1);
-    u2 = embPropPurine(base2);
+    bu1 = embPropPurine(base1);
+    bu2 = embPropPurine(base2);
 
-    y1 = embPropPyrimidine(base1);
-    y2 = embPropPyrimidine(base2);
+    by1 = embPropPyrimidine(base1);
+    by2 = embPropPyrimidine(base2);
 
-    ajDebug("base1 py = %d, pu = %d", u1, y1);
-    ajDebug("base2 py = %d, pu = %d", u2, y2);
+    ajDebug("base1 py = %b, pu = %b", bu1, by1);
+    ajDebug("base2 py = %b, pu = %b", bu2, by2);
 
     /* not a purine or a pyrimidine - ambiguous - return ajFalse */
-    if(!u1 && !y1)
+    if(!bu1 && !by1)
 	return ajFalse;
 
-    if(!u2 && !y2)
+    if(!bu2 && !by2)
 	return ajFalse;
 
     /* no change - return ajFalse */
@@ -795,21 +801,21 @@ AjBool embPropTransition(char base1, char base2)
 	return ajFalse;
 
     /* C to Y, T to Y, A to R, G to R - ambiguous - not a transition */
-    if(u1 && tolower((int)base2) == 'r')
+    if(bu1 && tolower((int)base2) == 'r')
 	return ajFalse;
 
-    if(u2 && tolower((int)base1) == 'r')
+    if(bu2 && tolower((int)base1) == 'r')
 	return ajFalse;
 
-    if(y1 && tolower((int)base2) == 'y')
+    if(by1 && tolower((int)base2) == 'y')
 	return ajFalse;
 
-    if(y2 && tolower((int)base1) == 'y')
+    if(by2 && tolower((int)base1) == 'y')
 	return ajFalse;
 
-    ajDebug("embPropTransition result = %d", (u1 == u2));
+    ajDebug("embPropTransition result = %b", (bu1 == bu2));
 
-    return (u1 == u2);
+    return (bu1 == bu2);
 }
 
 /* @func embPropFixF *********************************************************

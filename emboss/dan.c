@@ -29,7 +29,7 @@
 
 
 
-static void dan_reportgc(AjPReport report, const AjPSeq seq,
+static void dan_reportgc(const AjPSeq seq,
 			 AjPFeattable TabRpt, ajint window,
 			 ajint shift, float formamide, float mismatch,
 			 ajint prodLen, float dna, float salt,
@@ -49,7 +49,6 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 		       ajint *npoints);
 
 static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
-		       const float *cga, const float *tpa,
 		       ajint npoints, ajint ibegin, ajint iend,
 		       AjPGraph mult, float mintemp);
 
@@ -148,8 +147,8 @@ int main(int argc, char **argv)
 	npoints = 0;
 	strand  = ajSeqGetSeqCopyS(seq);
 	len     = ajStrGetLen(strand);
-	begin   = ajSeqallBegin(seqall);
-	end     = ajSeqallEnd(seqall);
+	begin   = ajSeqallGetseqBegin(seqall);
+	end     = ajSeqallGetseqEnd(seqall);
 
 	TabRpt = ajFeattableNewSeq(seq);
 
@@ -174,13 +173,13 @@ int main(int argc, char **argv)
 		       prodLen,DNAConc,saltConc, temperature, isDNA, isProduct,
 		       doThermo, outf, doplot, xa, ta, tpa, cga, &npoints);
 
-	dan_reportgc(report, seq, TabRpt,
+	dan_reportgc(seq, TabRpt,
 		     window,shift,formamide,mismatch,
 		     prodLen,DNAConc,saltConc, temperature, isDNA, isProduct,
 		     doThermo, doplot, xa, ta, tpa, cga, &npoints);
 
 	if(doplot)
-	    dan_plotit(seq,xa,ta,cga,tpa,npoints,begin,end, mult,
+	    dan_plotit(seq,xa,ta,npoints,begin,end, mult,
 		       mintemp);
 
 	dan_unfmall(xa, ta, tpa, cga);
@@ -342,7 +341,6 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 **
 ** Undocumented
 **
-** @param [u] report [AjPReport] Undocumented
 ** @param [r] seq [const AjPSeq] Undocumented
 ** @param [u] TabRpt [AjPFeattable] Undocumented
 ** @param [r] window [ajint] Undocumented
@@ -366,8 +364,7 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 ******************************************************************************/
 
 
-static void dan_reportgc(AjPReport report,
-			 const AjPSeq seq, AjPFeattable TabRpt,
+static void dan_reportgc(const AjPSeq seq, AjPFeattable TabRpt,
 			 ajint window,
 			 ajint shift, float formamide, float mismatch,
 			 ajint prodLen, float dna, float salt,
@@ -510,8 +507,6 @@ static void dan_unfmall(float *xa, float *ta, float *tpa, float *cga)
 ** @param [r] seq [const AjPSeq] Undocumented
 ** @param [r] xa [const float*] Undocumented
 ** @param [r] ta [const float*] Undocumented
-** @param [r] cga [const float*] Undocumented
-** @param [r] tpa [const float*] Undocumented
 ** @param [r] npoints [ajint] Undocumented
 ** @param [r] ibegin [ajint] Undocumented
 ** @param [r] iend [ajint] Undocumented
@@ -521,7 +516,6 @@ static void dan_unfmall(float *xa, float *ta, float *tpa, float *cga)
 ******************************************************************************/
 
 static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
-		       const float *cga, const float *tpa,
 		       ajint npoints, ajint ibegin, ajint iend,
 		       AjPGraph graphs, float mintemp)
 {

@@ -125,7 +125,7 @@ int main(int argc, char **argv)
 
     ajint begina;
     ajint i;
-    ajint k;
+    ajuint k;
     ajint beginb;
     ajint start1 = 0;
     ajint start2 = 0;
@@ -185,9 +185,9 @@ int main(int argc, char **argv)
 	    ajErr("Could not generate table for %s\n",
 		  ajSeqGetNameC(a));
 
-	for(k=0;k<ajSeqsetSize(seq2);k++)
+	for(k=0;k<ajSeqsetGetSize(seq2);k++)
 	{
-	    b      = ajSeqsetGetSeq(seq2, k);
+	    b      = ajSeqsetGetseqSeq(seq2, k);
 	    lenb   = ajSeqGetLen(b);
 	    beginb = 1 + ajSeqGetOffset(b);
 
@@ -265,8 +265,7 @@ int main(int argc, char **argv)
 
 		ajDebug("Calling embAlignPrintLocal\n");
 		if(outf)
-		    embAlignPrintLocal(outf,ajSeqGetSeqC(a),ajSeqGetSeqC(b),
-				       m,n,start1,start2,
+		    embAlignPrintLocal(outf,m,n,start1,start2,
 				       score,1,sub,cvt,ajSeqGetNameC(a),
 				       ajSeqGetNameC(b),
 				       begina,beginb);
@@ -398,6 +397,8 @@ static void supermatcher_orderandconcat(AjPList list,AjPList ordered)
 static void supermatcher_removelists(void **x,void *cl)
 {
     concat *p;
+
+    (void) cl;				/* make it used */
 
     p = (concat *)*x;
 

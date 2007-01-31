@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	str = ajSeqStrCopy(seq);
+	str = ajSeqGetSeqCopyS(seq);
 	ajStrFmtUpper(&str);
 
 	/* comparing the reg exps to sequence for matches. */

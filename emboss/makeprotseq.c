@@ -132,12 +132,12 @@ int main(int argc, char **argv)
 	ajSeqAssignSeqS(seq, seqstr);
 	ajSeqSetProt(seq);
 
-	ajSeqAllWrite (outseq, seq);
+	ajSeqoutWriteSeq(outseq, seq);
 	ajSeqDel (&seq);
 	ajStrDel (&seqstr);
     }
 
-    ajSeqWriteClose(outseq);
+    ajSeqoutClose(outseq);
     ajListstrFree(&list);
     ajStrDel(&insert);
     // need to free AjPStr* seqr still, how?

@@ -579,6 +579,7 @@ typedef struct real_pcre {
 ** @attr size [size_t] Total that was malloced
 ** @attr options [uschar] Undocumented
 ** @attr start_bits [uschar[32]] Undocumented
+** @attr Padding [uschar[3]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -586,6 +587,7 @@ typedef struct pcre_study_data {
   size_t size;
   uschar options;
   uschar start_bits[32];
+  uschar Padding[3];
 } pcre_study_data;
 
 /* @data compile_data *********************************************************

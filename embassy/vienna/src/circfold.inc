@@ -1,6 +1,7 @@
 /* -*-C-*- */
 /* this file contains code for folding circular RNAs */
 /* it's #include'd into fold.c */
+float circfold(const char *string, char *structure);
 
 float circfold(const char *string, char *structure) {
   /* variant of fold() for circular RNAs */

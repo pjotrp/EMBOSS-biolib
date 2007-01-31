@@ -35,15 +35,15 @@ enum ShowEValtype
 **
 ** @attr seq [const AjPSeq] the sequence
 ** @attr nucleic [AjBool] ajTrue = the sequence is nucleic
-** @attr offset [ajint] offset to start numbering at
-** @attr start [ajint] sequence position to start printing at
-** @attr end [ajint] sequence position to stop printing at
+** @attr offset [ajuint] offset to start numbering at
+** @attr start [ajuint] sequence position to start printing at
+** @attr end [ajuint] sequence position to stop printing at
 **
 ** @cc information about the page layout
 **
-** @attr width [ajint] width of sequence to display on each line
-** @attr length [ajint] length of a page (0 = indefinite)
-** @attr margin [ajint] margin for numbers
+** @attr width [ajuint] width of sequence to display on each line
+** @attr length [ajuint] length of a page (0 = indefinite)
+** @attr margin [ajuint] margin for numbers
 ** @attr html [AjBool] ajTrue = format page for HTML
 ** @@
 ******************************************************************************/
@@ -52,12 +52,12 @@ typedef struct EmbSShow {
   AjPList list;
   const AjPSeq seq;
   AjBool nucleic;
-  ajint offset;
-  ajint start;
-  ajint end;
-  ajint width;
-  ajint length;
-  ajint margin;
+  ajuint offset;
+  ajuint start;
+  ajuint end;
+  ajuint width;
+  ajuint length;
+  ajuint margin;
   AjBool html;
 } EmbOShow;
 #define EmbPShow EmbOShow*
@@ -205,10 +205,10 @@ typedef struct EmbSShowTicknum {
 ** @attr frame [ajint] 1,2,3,-1,-2 or -3 = frame to translate
 ** @attr threeletter [AjBool] ajTrue = display in three letter code
 ** @attr number [AjBool] ajTrue = number the translation
-** @attr tranpos [ajint] store of translation position for numbering
+** @attr tranpos [ajuint] store of translation position for numbering
 ** @attr regions [const AjPRange] only translate in these regions,
 **                                NULL = do all
-** @attr orfminsize [ajint] minimum size of ORF to display
+** @attr orfminsize [ajuint] minimum size of ORF to display
 ** @attr lcinterorf [AjBool] ajTrue = put the inter-orf regions in lower case
 ** @attr firstorf [AjBool] ajTrue = beginning of the seq is a possible ORF
 ** @attr lastorf [AjBool] ajTrue = end of the seq is a possible ORF
@@ -222,9 +222,9 @@ typedef struct EmbSShowTran {
   ajint frame;
   AjBool threeletter;
   AjBool number;
-  ajint tranpos;
+  ajuint tranpos;
   const AjPRange regions;
-  ajint orfminsize;
+  ajuint orfminsize;
   AjBool lcinterorf;
   AjBool firstorf;
   AjBool lastorf;
@@ -262,7 +262,7 @@ typedef struct EmbSShowComp {
 **                        to show cuts that go past the origin in either
 **                        direction
 ** @attr matches [AjPList] list of AjPMatmatch matches
-** @attr hits [ajint]  number of hits in list
+** @attr hits [ajuint]  number of hits in list
 ** @attr sitelist [AjPList] list of EmbSShowREsite
 ** @@
 ******************************************************************************/
@@ -272,7 +272,7 @@ typedef struct EmbSShowRE {
   AjBool flat;
   AjBool plasmid;
   AjPList matches;
-  ajint hits;
+  ajuint hits;
   AjPList sitelist;
 } EmbOShowRE;
 #define EmbPShowRE EmbOShowRE*
@@ -357,9 +357,9 @@ void     embShowAddFT (EmbPShow thys, const AjPFeattable feat);
 void     embShowAddNote (EmbPShow thys, const AjPRange regions);
 void     embShowPrint (AjPFile out, const EmbPShow thys);
 void     embShowUpperRange (AjPStr *line,
-			    const AjPRange upperrange, ajint pos);
+			    const AjPRange upperrange, ajuint pos);
 void     embShowColourRange (AjPStr *line,
-			     const AjPRange colour, ajint pos);
+			     const AjPRange colour, ajuint pos);
 
 /*
 ** End of prototype definitions

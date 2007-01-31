@@ -193,7 +193,8 @@ static ajint ajStrIterPosCopy (const AjIStr itrbeg, AjIStr itrend)
 
 static ajint pestfind_compare_position (const void *one, const void *two)
 {
-    return (*(PestfindPData*)one)->Begin - (*(PestfindPData*)two)->Begin;
+    return (*(PestfindPData const *)one)->Begin -
+	(*(PestfindPData const *)two)->Begin;
 }
 
 
@@ -212,7 +213,8 @@ static ajint pestfind_compare_position (const void *one, const void *two)
 
 static ajint pestfind_compare_length(const void *one, const void *two)
 {
-    return (*(PestfindPData*)two)->Length - (*(PestfindPData*)one)->Length;
+    return (*(PestfindPData const *)two)->Length -
+	(*(PestfindPData const *)one)->Length;
 }
 
 
@@ -234,34 +236,34 @@ static ajint pestfind_compare_length(const void *one, const void *two)
 static ajint pestfind_compare_score(const void *one, const void *two)
 {
     /* one = potential or weak PEST motif */
-    if((*(PestfindPData*)one)->Type == PSTPOT ||
-       (*(PestfindPData*)one)->Type == PSTWEA)
+    if((*(PestfindPData const *)one)->Type == PSTPOT ||
+       (*(PestfindPData const *)one)->Type == PSTWEA)
     {
 	/* two = potential or weak PEST motif */
-	if((*(PestfindPData*)two)->Type == PSTPOT ||
-	   (*(PestfindPData*)two)->Type == PSTWEA)
-	    return (ajint) (((*(PestfindPData*)two)->Pscore) * 1000) - 
-		(ajint) (((*(PestfindPData*)one)->Pscore) * 1000);
+	if((*(PestfindPData const *)two)->Type == PSTPOT ||
+	   (*(PestfindPData const *)two)->Type == PSTWEA)
+	    return (ajint) (((*(PestfindPData const *)two)->Pscore) * 1000) - 
+		(ajint) (((*(PestfindPData const *)one)->Pscore) * 1000);
 
 	/* two = invalid PEST motif */
-	if((*(PestfindPData*)two)->Type == PSTINV)
+	if((*(PestfindPData const *)two)->Type == PSTINV)
 	    return -1;
     }
 
 
     /* Remaining invalid PEST motifs are sorted by position */
     /* one = invalid PEST motif */
-    if((*(PestfindPData*)one)->Type == PSTINV)
+    if((*(PestfindPData const *)one)->Type == PSTINV)
     {
 	/* two = potential or weak PEST motif */
-	if((*(PestfindPData*)two)->Type == PSTPOT ||
-	   (*(PestfindPData*)two)->Type == PSTWEA)
+	if((*(PestfindPData const *)two)->Type == PSTPOT ||
+	   (*(PestfindPData const *)two)->Type == PSTWEA)
 	    return +1;
 
 	/* two = invalid PEST motif */
-	if((*(PestfindPData*)two)->Type == PSTINV)
-	    return (*(PestfindPData*)one)->Begin - 
-		(*(PestfindPData*)two)->Begin;
+	if((*(PestfindPData const *)two)->Type == PSTINV)
+	    return (*(PestfindPData const *)one)->Begin - 
+		(*(PestfindPData const *)two)->Begin;
     }
 
     return 0;

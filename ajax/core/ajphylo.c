@@ -634,6 +634,8 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
     float dval;
     float** pvals = NULL;
 
+    (void) indiv;			/* make it used */
+
     if(!floatexp)
 	floatexp = ajRegCompC("^\\s*([-]?[0-9]+[.]?[0-9]*)\\s+");
     if(!intexp)

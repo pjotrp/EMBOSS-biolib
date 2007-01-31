@@ -46,12 +46,12 @@ int main(int argc, char **argv)
     firstonly = ajAcdGetBool("firstonly");
     while(ajSeqallNext(seqall, &seq))
     {
-	ajSeqAllWrite(seqout, seq);
+	ajSeqoutWriteSeq(seqout, seq);
 	if(firstonly)
 	    break;
     }
 
-    ajSeqWriteClose(seqout);
+    ajSeqoutClose(seqout);
 
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);

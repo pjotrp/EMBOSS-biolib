@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 
     a         = ajAcdGetSeq("sequence");
     outf      = ajAcdGetSeqout("outfile");
-    gctable   = ajAcdGetListI("table",1);
+    gctable   = ajAcdGetListSingle("table");
     ajStrToInt(gctable, &gctablenum);
 
     codon = ajCodNewCode(gctablenum);
@@ -65,11 +65,11 @@ int main(int argc, char **argv)
     ajSeqAssignSeqS (a, back);
     ajSeqSetNuc (a);
 
-    ajSeqWrite(outf,a);
+    ajSeqoutWriteSeq(outf,a);
 
     ajStrDel(&back);
     ajStrDel(&substr);
-    ajSeqWriteClose(outf);
+    ajSeqoutClose(outf);
     ajCodDel(&codon);
 
     ajExit();

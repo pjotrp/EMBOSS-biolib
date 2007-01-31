@@ -68,21 +68,21 @@ typedef struct EmbSDmxNrseq {
 AjPList       embDmxScophitReadAllFasta(AjPFile in);
 
 AjBool        embDmxHitlistToScophits(const AjPList in, 
-				      AjPList *out);
+				      AjPList out);
 
 AjBool        embDmxScophitsToHitlist(const AjPList in, 
-				      AjPHitlist *out, 
+				      EmbPHitlist *out, 
 				      AjIList *iter);
 
-AjBool        embDmxScophitToHit(AjPHit *to, 
+AjBool        embDmxScophitToHit(EmbPHit *to, 
 				 const AjPScophit from);
 
 AjBool        embDmxScophitsAccToHitlist(const AjPList in, 
-					 AjPHitlist *out,   
+					 EmbPHitlist *out,   
 					 AjIList *iter);
 
 AjBool        embDmxHitsWrite(AjPFile outf,
-			      const AjPHitlist hits, 
+			      EmbPHitlist hits, 
 			      ajint maxhits);
 
 AjBool        embDmxScopToScophit(const AjPScop source, 
@@ -95,11 +95,11 @@ AjBool        embDmxScopalgToScop(const AjPScopalg align,
 
 AjBool        embDmxScophitsOverlap(const AjPScophit h1,
 				    const AjPScophit h2, 
-				    ajint n);
+				    ajuint n);
 
 AjBool        embDmxScophitsOverlapAcc(const AjPScophit h1,
 				       const AjPScophit h2, 
-				       ajint n);
+				       ajuint n);
 
 AjPScophit    embDmxScophitMerge(const AjPScophit hit1, 
 				 const AjPScophit hit2);
@@ -132,7 +132,7 @@ AjBool        embDmxScophitMergeInsertOtherTarget(AjPList list,
 						  AjPScophit hit2);
 
 AjBool        embDmxSeqNR(const AjPList input, 
-			  AjPInt *keep, 
+			  AjPUint *keep, 
 			  ajint *nset,
 			  const AjPMatrixf matrix,
 			  float gapopen, 
@@ -141,7 +141,7 @@ AjBool        embDmxSeqNR(const AjPList input,
 			  AjBool CheckGarbage);
 
 AjBool        embDmxSeqNRRange(const AjPList input, 
-			       AjPInt *keep, 
+			       AjPUint *keep, 
 			       ajint *nset,
 			       const AjPMatrixf matrix, 
 			       float gapopen, 

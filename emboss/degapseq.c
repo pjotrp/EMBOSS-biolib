@@ -54,10 +54,10 @@ int main(int argc, char **argv)
 	ajSeqAssignSeqS(seq, str);
 	ajStrDel(&str);
 
-	ajSeqAllWrite(seqout, seq);
+	ajSeqoutWriteSeq(seqout, seq);
     }
 
-    ajSeqWriteClose(seqout);
+    ajSeqoutClose(seqout);
 
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);

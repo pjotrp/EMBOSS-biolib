@@ -13,8 +13,8 @@ extern "C"
 **
 ** NUCLEUS data structure for word matches
 **
-** @attr seq1start [ajint] match start point in original sequence
-** @attr seq2start [ajint] match start point in comparison sequence
+** @attr seq1start [ajuint] match start point in original sequence
+** @attr seq2start [ajuint] match start point in comparison sequence
 ** @attr length [ajint] length of match
 ** @attr sequence [const AjPSeq] need in case we build multiple matches here
 **                         so we know which one the match belongs to
@@ -22,8 +22,8 @@ extern "C"
 ******************************************************************************/
 
 typedef struct EmbSWordMatch {
-  ajint seq1start;
-  ajint seq2start;
+  ajuint seq1start;
+  ajuint seq2start;
   ajint length;
   const AjPSeq sequence;
 } EmbOWordMatch;
@@ -52,24 +52,6 @@ typedef struct EmbSWord {
 
 
 
-/* @data EmbPWord2 ************************************************************
-**
-** NUCLEUS data structure for words (part 2)
-**
-** @attr name [char*] Name
-** @attr fword [EmbPWord] Word structure
-** @@
-******************************************************************************/
-
-typedef struct EmbSWord2 {
-  char *name;
-  EmbPWord fword;
-} EmbOWord2;
-#define EmbPWord2 EmbOWord2*
-
-
-
-
 /*
 ** Prototype definitions
 */
@@ -93,8 +75,7 @@ void    embWordMatchListConvToFeat(const AjPList list,
 				   AjPFeattable *tab1, AjPFeattable *tab2,
 				   const AjPSeq seq1, const AjPSeq seq2);
 
-void    embWordMatchMin(AjPList matchlist, ajint seq1length, int
-        			seq2length);
+void    embWordMatchMin(AjPList matchlist);
 void    embWordUnused(void);
 
 /*

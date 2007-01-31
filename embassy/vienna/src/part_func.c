@@ -7,6 +7,9 @@
 */
 /*
   $Log: part_func.c,v $
+  Revision 1.3  2007/01/31 12:47:07  rice
+  compiler warnings (prototypes, unsigned, etc.)
+
   Revision 1.2  2005/11/01 15:39:10  rice
   compiler warnings
 
@@ -50,7 +53,7 @@
 #include "pair_mat.h"
 
 /*@unused@*/
-static const char rcsid[] UNUSED = "$Id: part_func.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static const char rcsid[] UNUSED = "$Id: part_func.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
 
 #define MAX(x,y) (((x)>(y)) ? (x) : (y))
 #define MIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -781,6 +784,7 @@ PRIVATE void make_ptypes(const short *S, const char *structure) {
   p(S) = exp(-E(S)/kT)/Z
 */
 static void backtrack(int i, int j);
+char *pbacktrack(char *seq);
 
 static char *pstruc;
 static char *sequence;
@@ -929,6 +933,7 @@ static void backtrack(int i, int j) {
     } 
   }
 }
+PUBLIC double mean_bp_dist(int length);
 
 PUBLIC double mean_bp_dist(int length) {
   /* compute the mean base pair distance in the thermodynamic ensemble */

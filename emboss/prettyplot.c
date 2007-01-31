@@ -94,7 +94,7 @@ static void  prettyplot_fillinboxes(ajint length, ajint numseq,
 				    ajint numres, ajint resbreak,
 				    AjBool boxit, AjBool boxcol, 
 				    AjBool consensus,
-				    float xmid, float ystart, float yincr, 
+				    float ystart, float yincr, 
 				    const AjPSeqCvt cvt);
 
 
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
     ajint m2 = 0;
     ajint ms = 0;
     ajint highindex = 0;
-    ajint index;
+    ajint myindex;
     ajint *previous = 0;
     AjBool iscons = ajFalse;
     ajint currentstate = 0;
@@ -210,7 +210,7 @@ int main(int argc, char **argv)
     resbreak = ajAcdGetInt("resbreak");
 
     ajSeqsetFill(seqset);	/* Pads sequence set with gap characters */
-    numseq = ajSeqsetSize(seqset);
+    numseq = ajSeqsetGetSize(seqset);
 
     graph             = ajAcdGetGraph("graph");
     colourbyconsensus = ajAcdGetBool("ccolours");
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
     {
 	AJCNEW(seqboxptr, numseq);
 	for(i=0;i<numseq;i++)
-	    AJCNEW(seqboxptr[i], ajSeqsetLen(seqset));
+	    AJCNEW(seqboxptr[i], ajSeqsetGetLen(seqset));
     }
     boxcol      = ajAcdGetBool("boxcol");
     sboxcolval  = ajAcdGetString("boxcolval");
@@ -246,7 +246,7 @@ int main(int argc, char **argv)
     consensus = ajAcdGetBool("consensus");
     if(consensus)
     {
-	AJCNEW(constr, ajSeqsetLen(seqset)+1);
+	AJCNEW(constr, ajSeqsetGetLen(seqset)+1);
 	constr[0] = '\0';
     }
     shownames   = ajAcdGetBool("name");
@@ -256,7 +256,7 @@ int main(int argc, char **argv)
     portrait    = ajAcdGetBool("portrait");
     collision   = ajAcdGetBool("collision");
     listoptions = ajAcdGetBool("listoptions");
-    altstr = ajAcdGetListI("alternative",1);
+    altstr = ajAcdGetListSingle("alternative");
     cmpmatrix   = ajAcdGetMatrix("matrixfile");
 
     ajStrToInt(altstr, &alternative);
@@ -392,7 +392,7 @@ int main(int argc, char **argv)
 
     AJCNEW(seqcolptr, numseq);
     for(i=0;i<numseq;i++)
-	AJCNEW(seqcolptr[i], ajSeqsetLen(seqset));
+	AJCNEW(seqcolptr[i], ajSeqsetGetLen(seqset));
 
     AJCNEW(seqcharptr, numseq);
     AJCNEW(seqnames, numseq);
@@ -402,10 +402,10 @@ int main(int argc, char **argv)
 
     for(i=0;i<numseq;i++)
     {
-	ajSeqsetToUpper(seqset);
-	seqcharptr[i] =  ajSeqsetSeq(seqset, i);
+	ajSeqsetFmtUpper(seqset);
+	seqcharptr[i] =  ajSeqsetGetseqSeqC(seqset, i);
 	seqnames[i] = 0;
-	ajStrAppendS(&seqnames[i],ajSeqsetName(seqset, i));
+	ajStrAppendS(&seqnames[i],ajSeqsetGetseqNameS(seqset, i));
 	ajStrTruncateLen(&seqnames[i],charlen);
 	previous[i] = 0;
 	seqcount[i] = 0;
@@ -488,7 +488,7 @@ int main(int argc, char **argv)
 ** step through each residue position
 */
 
-    kmax = ajSeqsetLen(seqset) - 1;
+    kmax = ajSeqsetGetLen(seqset) - 1;
     for(k=0; k<= kmax; k++)
     {
 	/* reset column score array */
@@ -506,16 +506,16 @@ int main(int argc, char **argv)
 	/* generate a score for this residue in each sequence */
 	for(i=0;i<numseq;i++)
 	{
-	    m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+	    m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 	    for(j=0;j<numseq;j++)
 	    {
-		m2 = ajSeqCvtK(cvt, seqcharptr[j][k]);
+		m2 = ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]);
 		if(m1 && m2)
 		    score[i] += (float)matrix[m1][m2]*
-			ajSeqsetWeight(seqset, j);
+			ajSeqsetGetseqWeight(seqset, j);
 	    }
 	    if(m1)
-		identical[m1] += ajSeqsetWeight(seqset, i);
+		identical[m1] += ajSeqsetGetseqWeight(seqset, i);
 	}
 
 	/* find the highest score */
@@ -535,15 +535,15 @@ int main(int argc, char **argv)
 	}
 	for(i=0;i<numseq;i++)
 	{
-	    m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+	    m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 
 	    if(!matching[m1])
 	    {
 		for(j=0;j<numseq;j++)
 		{
-		    m2 = ajSeqCvtK(cvt, seqcharptr[j][k]);
+		    m2 = ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]);
 		    if(m1 && m2 && matrix[m1][m2] > 0)
-			matching[m1] += ajSeqsetWeight(seqset, j);
+			matching[m1] += ajSeqsetGetseqWeight(seqset, j);
 		}
 	    }
 	}
@@ -553,13 +553,13 @@ int main(int argc, char **argv)
 	identicalmaxindex = 0;
 	for(i=0;i<numseq;i++)
 	{
-	    m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+	    m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 	    if(identical[m1] > identical[identicalmaxindex])
 		identicalmaxindex = m1;
 	}
 	for(i=0;i<numseq;i++)
 	{
-	    m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+	    m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 	    if(matching[m1] > matching[matchingmaxindex])
 		matchingmaxindex = m1;
 	    else if(matching[m1] ==  matching[matchingmaxindex])
@@ -575,14 +575,14 @@ int main(int argc, char **argv)
 //	    ajUser("Identical----------->");
 //	    for(i=0;i<numseq;i++)
 //	    {
-//		m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+//		m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 //		ajUser("%d %c %f",k+1,seqcharptr[i][k],identical[m1]);
 //	    }
 //	    ajUser("Matching------------>");
 //
 //	    for(i=0;i<numseq;i++)
 //	    {
-//		m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+//		m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 //		ajUser("%d %c %f %d",k+1,seqcharptr[i][k],matching[m1],
 //		       m1==matchingmaxindex);
 //	    }
@@ -595,9 +595,9 @@ int main(int argc, char **argv)
 
 	ajDebug("k:%2d highindex:%2d matching:%4.2f\n",
 		k, highindex,
-		matching[ajSeqCvtK(cvt, seqcharptr[highindex][k])]);
+		matching[ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])]);
 	if(highindex != -1 &&
-	   matching[ajSeqCvtK(cvt, seqcharptr[highindex][k])] >= fplural)
+	   matching[ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])] >= fplural)
 	{
 	    iscons = ajTrue;
 	    boxindex = highindex;
@@ -606,7 +606,7 @@ int main(int argc, char **argv)
 	{
 	    for(i=0;i<numseq;i++)
 	    {
-		m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+		m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 		if(matching[m1] > max)
 		{
 		    max = matching[m1];
@@ -615,7 +615,7 @@ int main(int argc, char **argv)
 		else if(matching[m1] == max)
 		{
 		    if(identical[m1] >
-		       identical[ajSeqCvtK(cvt, seqcharptr[highindex][k])] )
+		       identical[ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])] )
 		    {
 			max = matching[m1];
 			highindex = i;
@@ -623,7 +623,7 @@ int main(int argc, char **argv)
 		}
 	    }
 
-	    if(matching[ajSeqCvtK(cvt, seqcharptr[highindex][k])] >= fplural)
+	    if(matching[ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])] >= fplural)
 	    {
 		iscons = ajTrue;
 		boxindex = highindex;
@@ -646,7 +646,7 @@ int main(int argc, char **argv)
 */
 		    for(i=0;i<numseq;i++)
 		    {
-			m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+			m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 /*
 //			if(showscore==k+1)
 //			    ajUser("col test  %d %c %f %d",k+1,
@@ -664,7 +664,7 @@ int main(int argc, char **argv)
 		{
 		    for(i=0;i<numseq;i++)
 		    {
-			m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+			m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 /*
 //			if(showscore==k+1)
 //			    ajUser("col test (alt=2) %d %c %f",k+1,
@@ -685,21 +685,21 @@ int main(int argc, char **argv)
 		    ** to do this check one is NOT in consensus to see if
 		    ** another score of fplural has been found
 		    */
-		    ms = ajSeqCvtK(cvt, seqcharptr[highindex][k]);
+		    ms = ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k]);
 
 		    for(i=0;i<numseq;i++)
 		    {
-			m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+			m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 			if(ms != m1 && colcheck[m1] == 0.0)
 			    /* NOT in the current consensus */
 			    for(j=0;j<numseq;j++)
 			    {
-				m2 = ajSeqCvtK(cvt, seqcharptr[j][k]);
+				m2 = ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]);
 				if( matrix[ms][m2] < 0.1)
 				{
 				    /* NOT in the current consensus */
 				    if( matrix[m1][m2] > 0.1)
-					colcheck[m1] += ajSeqsetWeight(seqset,
+					colcheck[m1] += ajSeqsetGetseqWeight(seqset,
 								       j);
 				}
 			    }
@@ -707,7 +707,7 @@ int main(int argc, char **argv)
 
 		    for(i=0;i<numseq;i++)
 		    {
-			m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+			m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 /*
 //			if(showscore==k+1)
 //			    ajUser("col test  %d %c %f",k+1,seqcharptr[i][k],
@@ -724,7 +724,7 @@ int main(int argc, char **argv)
 		{
 		    for(i=0;i<numseq;i++)
 		    {
-			m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+			m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 /*
 //			if(showscore==k+1)
 //			    ajUser("col test (alt=2) %d %c %f",k+1,
@@ -751,7 +751,7 @@ int main(int argc, char **argv)
 			    */
 			    for(i=0;i<numseq;i++)
 			    {
-				m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+				m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 				if(identical[m1] >=
 				   identical[identicalmaxindex] &&
 				   m1 != identicalmaxindex)
@@ -811,12 +811,12 @@ int main(int argc, char **argv)
 			    startseq, numseq, endseq);*/
 		    if(endseq>numseq)
 			endseq=numseq;
-		    prettyplot_fillinboxes(numseq,ajSeqsetLen(seqset),
+		    prettyplot_fillinboxes(numseq,ajSeqsetGetLen(seqset),
 					   startseq,endseq,
 					   newILstart,newILend,
 					   numres,resbreak,
 					   boxit,boxcol,consensus,
-					   xmid, ystart,yincr,cvt);
+					   ystart,yincr,cvt);
 		    startseq = endseq;
 		    endseq += seqperpage;
 		    ajGraphNewPage(graph, AJFALSE);
@@ -839,13 +839,13 @@ int main(int argc, char **argv)
 		seqboxptr[j][k] = 0;
 		if(boxindex!=-1)
 		{
-		    index = boxindex;
-		    if(matrix[ajSeqCvtK(cvt, seqcharptr[j][k])]
-		       [ajSeqCvtK(cvt, seqcharptr[index][k])] > 0)
+		    myindex = boxindex;
+		    if(matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
+		       [ajSeqcvtGetCodeK(cvt, seqcharptr[myindex][k])] > 0)
 			part = 1.0;
 		    else
 		    {
-			if(identical[ajSeqCvtK(cvt, seqcharptr[j][k])] >=
+			if(identical[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])] >=
 			   fplural)
 			    part = 1.0;
 			else
@@ -911,10 +911,10 @@ int main(int argc, char **argv)
 	    if(boxit && boxcol)
 		if(boxindex != -1)
 		{
-		    index = boxindex;
-		    if(matrix[ajSeqCvtK(cvt, seqcharptr[j][k])]
-		       [ajSeqCvtK(cvt, seqcharptr[index][k])] > 0
-		       || identical[ajSeqCvtK(cvt, seqcharptr[j][k])] >=
+		    myindex = boxindex;
+		    if(matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
+		       [ajSeqcvtGetCodeK(cvt, seqcharptr[myindex][k])] > 0
+		       || identical[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])] >=
 		       fplural )
 
 			seqboxptr[j][k] |= BOXCOLOURED;
@@ -925,15 +925,15 @@ int main(int argc, char **argv)
 
 
 
-	    if(ajSeqCvtK(cvt, seqcharptr[j][k]))
+	    if(ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]))
 		res[0] = seqcharptr[j][k];
 	    else
 		res[0] = '-';
 
 	    if(colourbyconsensus)
 	    {
-		part = matrix[ajSeqCvtK(cvt, seqcharptr[j][k])]
-		    [ajSeqCvtK(cvt, seqcharptr[highindex][k])];
+		part = matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
+		    [ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])];
 		if(iscons && seqcharptr[highindex][k] == seqcharptr[j][k])
 		    seqcolptr[j][k] = cidentity;
 		else if(part > 0.0)
@@ -942,11 +942,11 @@ int main(int argc, char **argv)
 		    seqcolptr[j][k] = cother;
 	    }
 	    else if(colourbyresidues)
-		seqcolptr[j][k] = colmat[ajSeqCvtK(cvt, seqcharptr[j][k])];
+		seqcolptr[j][k] = colmat[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])];
 	    else if(iscons && colourbyshade)
 	    {
-		part = matrix[ajSeqCvtK(cvt, seqcharptr[j][k])]
-		    [ajSeqCvtK(cvt, seqcharptr[highindex][k])];
+		part = matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
+		    [ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])];
 		if(part >= 1.5)
 		    seqcolptr[j][k] = shadecolour[0];
 		else if(part >= 1.0)
@@ -992,12 +992,12 @@ int main(int argc, char **argv)
 		startseq, numseq, endseq);*/
 	if(endseq>numseq)
 	    endseq = numseq;
-	prettyplot_fillinboxes(numseq,ajSeqsetLen(seqset),
+	prettyplot_fillinboxes(numseq,ajSeqsetGetLen(seqset),
 			       startseq,endseq,
 			       newILstart,newILend,
 			       numres,resbreak,
 			       boxit,boxcol,consensus,
-			       xmid,ystart,yincr,cvt);
+			       ystart,yincr,cvt);
 	startseq = endseq;
 	endseq += seqperpage;
     }
@@ -1104,7 +1104,6 @@ static ajint prettyplot_calcseqperpage(float yincr,float y,AjBool consensus)
 ** @param [r] boxcol [AjBool] If true, colour the background in each box
 ** @param [r] consensus [AjBool] If true, include consensus sequence
 **                               on last line
-** @param [r] xmid [float] Horizontal mid point
 ** @param [r] ystart [float] Vertical start. 1.0 is the top.
 ** @param [r] yincr [float] Vertical increment to next row
 ** @param [r] cvt [const AjPSeqCvt] Conversion table from residue code
@@ -1119,7 +1118,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 				   ajint numres, ajint resbreak,
 				   AjBool boxit, AjBool boxcol, 
 				   AjBool consensus,
-				   float xmid, float ystart, float yincr,
+				   float ystart, float yincr,
 				   const AjPSeqCvt cvt)
 {
     ajint count = 1;
@@ -1267,7 +1266,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	{
 	    for(j=seqstart,l=0; j< seqend; j++,l++)
 	    {
-		if(ajSeqCvtK(cvt, seqcharptr[j][k]))
+		if(ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]))
 		    seqcount[j]++;
 		if(seqboxptr[j][k] & BOXLEF)
 		    ajGraphLine((float)(count+gapcount),y-
@@ -1298,7 +1297,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	{
 	  for(j=seqstart,l=0; j< seqend; j++,l++)
 	  {
-	    if(ajSeqCvtK(cvt, seqcharptr[j][k]))
+	    if(ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]))
 	      seqcount[j]++;
 	  }
 	}
@@ -1371,7 +1370,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 		for(j=seqstart,l=0; j< seqend; j++,l++){
 		    if(seqcolptr[j][k] == w)
 		    {
-			if(ajSeqCvtK(cvt, seqcharptr[j][k]))
+			if(ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]))
 			    res[0] = seqcharptr[j][k];
 			else
 			    res[0] = '-';

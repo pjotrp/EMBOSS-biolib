@@ -74,9 +74,9 @@ int main(int argc, char **argv)
     const char *s1;
     const char *s2;
     char *strret = NULL;
-    ajint i;
-    ajint j;
-    ajint k;
+    ajuint i;
+    ajuint j;
+    ajuint k;
     ajint l;
     ajint abovethresh;
     ajint total;
@@ -86,18 +86,22 @@ int main(int argc, char **argv)
     float thresh;
     AjPGraph graph   = NULL;
     AjPGraph xygraph = NULL;
+    float flen1;
+    float flen2;
+    ajuint len1;
+    ajuint len2;
 
     AjOTime ajtime;
     time_t tim;
     AjBool boxit=AJTRUE;
     /* Different ticks as they need to be different for x and y due to
        length of string being important on x */
-    ajint acceptableticksx[]=
+    ajuint acceptableticksx[]=
     {
 	1,10,50,100,500,1000,1500,10000,
 	500000,1000000,5000000
     };
-    ajint acceptableticks[]=
+    ajuint acceptableticks[]=
     {
 	1,10,50,100,200,500,1000,2000,5000,10000,15000,
 	500000,1000000,5000000
@@ -162,6 +166,10 @@ int main(int argc, char **argv)
     b2 = ajSeqGetBegin(seq2);
     e1 = ajSeqGetEnd(seq);
     e2 = ajSeqGetEnd(seq2);
+    len1 = ajSeqGetLen(seq);
+    len2 = ajSeqGetLen(seq2);
+    flen1 = ajSeqGetLen(seq);
+    flen2 = ajSeqGetLen(seq2);
     
     ajStrAssignSubC(&se1,ajSeqGetSeqC(seq),b1-1,e1-1);
     ajStrAssignSubC(&se2,ajSeqGetSeqC(seq2),b2-1,e2-1);
@@ -173,21 +181,21 @@ int main(int argc, char **argv)
     s2 = ajStrGetPtr(ajSeqGetSeqS(seq2));
     
     
-    aa0str = ajStrNewRes(1+ajSeqGetLen(seq)); /* length plus trailing blank */
-    aa1str = ajStrNewRes(1+ajSeqGetLen(seq2));
+    aa0str = ajStrNewRes(1+len1); /* length plus trailing blank */
+    aa1str = ajStrNewRes(1+len2);
     
     list = ajListNew();
     
     
-    for(i=0;i<ajSeqGetLen(seq);i++)
-	ajStrAppendK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
+    for(i=0;i<len1;i++)
+	ajStrAppendK(&aa0str,(char)ajSeqcvtGetCodeK(cvt, *s1++));
     
-    for(i=0;i<ajSeqGetLen(seq2);i++)
-	ajStrAppendK(&aa1str,(char)ajSeqCvtK(cvt, *s2++));
+    for(i=0;i<len2;i++)
+	ajStrAppendK(&aa1str,(char)ajSeqcvtGetCodeK(cvt, *s2++));
     
-    max= ajSeqGetLen(seq);
-    if(ajSeqGetLen(seq2) > max)
-	max = ajSeqGetLen(seq2);
+    max= len1;
+    if(len2 > max)
+	max = len2;
     
     xmargin = ymargin = max *0.15;
     ticklen = xmargin*0.1;
@@ -208,16 +216,16 @@ int main(int argc, char **argv)
 	ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
 		       0.0-xmargin,(float)max+xmargin);
 
-	ajGraphTextMid(max*0.5,(ajSeqGetLen(seq2))+xmargin-onefifth,
+	ajGraphTextMid(max*0.5,flen2+xmargin-onefifth,
 		       ajGraphGetTitleC(graph));
-	ajGraphTextMid((ajSeqGetLen(seq))*0.5,0.0-(xmargin/2.0),
+	ajGraphTextMid(flen1*0.5,0.0-(xmargin/2.0),
 		       ajGraphGetXTitleC(graph));
-	ajGraphTextLine(0.0-(xmargin*0.75),(ajSeqGetLen(seq2))*0.5,
-			0.0-(xmargin*0.75),(ajSeqGetLen(seq)),
+	ajGraphTextLine(0.0-(xmargin*0.75),flen2*0.5,
+			0.0-(xmargin*0.75),flen1,
 			ajGraphGetYTitleC(graph),0.5);
 
 	ajGraphSetCharScale(0.5);
-	ajGraphTextMid(max*0.5,(ajSeqGetLen(seq2))+xmargin-(onefifth*3),
+	ajGraphTextMid(max*0.5,flen2+xmargin-(onefifth*3),
 		       ajGraphGetSubTitleC(graph));
     }
     
@@ -226,7 +234,7 @@ int main(int argc, char **argv)
     s1= ajStrGetPtr(aa0str);
     s2 = ajStrGetPtr(aa1str);
     
-    for(j=0;j < ajSeqGetLen(seq2)-windowsize;j++)
+    for(j=0;j < len2-windowsize;j++)
     {
 	i =0;
 	total = 0;
@@ -243,7 +251,7 @@ int main(int argc, char **argv)
 	    startj = k-windowsize;
 	}
 
-	while(i < ajSeqGetLen(seq) && k < ajSeqGetLen(seq2))
+	while(i < len1 && k < len2)
 	{
 	    total = total - sub[(ajint)s1[i-windowsize]]
 		[(ajint)s2[k-windowsize]];
@@ -276,7 +284,7 @@ int main(int argc, char **argv)
 				 stretch);
     }
     
-    for(i=0;i < ajSeqGetLen(seq)-windowsize;i++)
+    for(i=0;i < len1-windowsize;i++)
     {
 	j = 0;
 	total = 0;
@@ -293,7 +301,7 @@ int main(int argc, char **argv)
 	    startj = j-windowsize;
 	}
 
-	while(k < ajSeqGetLen(seq) && j < ajSeqGetLen(seq2))
+	while(k < len1 && j < len2)
 	{
 	    total = total - sub[(ajint)s1[k-windowsize]]
 		[(ajint)s2[j-windowsize]];
@@ -328,10 +336,10 @@ int main(int argc, char **argv)
     
     if(boxit && !stretch)
     {
-	ajGraphRect(0.0,0.0,(float)ajSeqGetLen(seq),(float)ajSeqGetLen(seq2));
+	ajGraphRect(0.0,0.0,flen1, flen2);
 
 	i=0;
-	while(acceptableticksx[i]*numbofticks < ajSeqGetLen(seq))
+	while(acceptableticksx[i]*numbofticks < len1)
 	    i++;
 
 	if(i<=13)
@@ -341,21 +349,21 @@ int main(int argc, char **argv)
 	ticklen   = xmargin*0.1;
 	onefifth  = xmargin*0.2;
 
-	if(ajSeqGetLen(seq2)/ajSeqGetLen(seq) > 10 )
+	if(len2/len1 > 10 )
 	{
-	    /* alot smaller then just label start and end */
+	    /* if a lot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
 	    sprintf(ptr,"%d",b1-1);
 	    ajGraphTextMid( 0.0,0.0-(onefifth),ptr);
 
-	    ajGraphLine((float)(ajSeqGetLen(seq)),0.0,
-			(float)ajSeqGetLen(seq),0.0-ticklen);
-	    sprintf(ptr,"%d",ajSeqGetLen(seq)+b1-1);
-	    ajGraphTextMid((float)ajSeqGetLen(seq),0.0-(onefifth),ptr);
+	    ajGraphLine(flen1,0.0,
+			flen1,0.0-ticklen);
+	    sprintf(ptr,"%d",len1+b1-1);
+	    ajGraphTextMid(flen1,0.0-(onefifth),ptr);
 
 	}
 	else
-	    for(k2=0.0;k2<ajSeqGetLen(seq);k2+=tickgap)
+	    for(k2=0.0;k2<len1;k2+=tickgap)
 	    {
 		ajGraphLine(k2,0.0,k2,0.0-ticklen);
 		sprintf(ptr,"%d",(ajint)k2+b1-1);
@@ -363,27 +371,27 @@ int main(int argc, char **argv)
 	    }
 
 	i = 0;
-	while(acceptableticks[i]*numbofticks < ajSeqGetLen(seq2))
+	while(acceptableticks[i]*numbofticks < len2)
 	    i++;
 
 	tickgap   = acceptableticks[i];
 	ticklen   = ymargin*0.01;
 	onefifth  = ymargin*0.02;
 
-	if(ajSeqGetLen(seq)/ajSeqGetLen(seq2) > 10 )
+	if(len1/len2 > 10 )
 	{
-	    /* alot smaller then just label start and end */
+	    /* if a lot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
 	    sprintf(ptr,"%d",b2-1);
 	    ajGraphTextEnd( 0.0-(onefifth),0.0,ptr);
 
-	    ajGraphLine(0.0,(float)ajSeqGetLen(seq2),0.0-ticklen,
-			(float)ajSeqGetLen(seq2));
-	    sprintf(ptr,"%d",ajSeqGetLen(seq2)+b2-1);
-	    ajGraphTextEnd( 0.0-(onefifth),(float)ajSeqGetLen(seq2),ptr);
+	    ajGraphLine(0.0,flen2,0.0-ticklen,
+			flen2);
+	    sprintf(ptr,"%d",len2+b2-1);
+	    ajGraphTextEnd( 0.0-(onefifth),flen2,ptr);
 	}
 	else
-	    for(k2=0.0;k2<ajSeqGetLen(seq2);k2+=tickgap)
+	    for(k2=0.0;k2<len2;k2+=tickgap)
 	    {
 		ajGraphLine(0.0,k2,0.0-ticklen,k2);
 		sprintf(ptr,"%d",(ajint)k2+b2-1);

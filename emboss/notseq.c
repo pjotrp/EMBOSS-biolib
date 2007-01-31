@@ -60,25 +60,25 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	ajStrAssignS(&name, ajSeqGetName(seq));
-	ajStrAssignS(&acc, ajSeqGetAcc(seq));
+	ajStrAssignS(&name, ajSeqGetNameS(seq));
+	ajStrAssignS(&acc, ajSeqGetAccS(seq));
 
 	if(embMiscMatchPattern(name, pattern) ||
 	    embMiscMatchPattern(acc, pattern))
 	{
-	    ajSeqAllWrite(junkout, seq);
+	    ajSeqoutWriteSeq(junkout, seq);
 	    gotone = ajTrue;
 	}
 	else
 	    /* no match, so not excluded */
-	    ajSeqAllWrite(seqout, seq);
+	    ajSeqoutWriteSeq(seqout, seq);
 
 	ajStrSetClear(&name);
 	ajStrSetClear(&acc);
     }
 
-    ajSeqWriteClose(seqout);
-    ajSeqWriteClose(junkout);
+    ajSeqoutClose(seqout);
+    ajSeqoutClose(junkout);
 
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);

@@ -52,7 +52,7 @@ static ajint utilBigendCalled = 0;
 ** @@
 ******************************************************************************/
 
-void ajExit(void)
+__noreturn void  ajExit(void)
 {
 #ifdef WIN32
     WSACleanup();
@@ -81,8 +81,6 @@ void ajExit(void)
     ajMemExit();
     ajMessExit();     /* clears data for ajDebug - do this last!!!  */
     exit(0);
-
-    return;
 }
 
 
@@ -94,15 +92,13 @@ void ajExit(void)
 **
 ** No cleanup or reporting routines are called. Simply crashes.
 **
-** @return [ajint] Exit code
+** @return [void]
 ** @@
 ******************************************************************************/
 
-ajint ajExitBad(void)
+__noreturn void  ajExitBad(void)
 {
     exit(EXIT_FAILURE);
-
-    return EXIT_FAILURE;
 }
 
 
@@ -112,23 +108,21 @@ ajint ajExitBad(void)
 **
 ** Exits without flushing any files. Needed for exit from, for example,
 ** a failed system call (ajFileNewInPipe, and so on) where the parent
-** process has open output files, and the child priocess needs to exit
+** process has open output files, and the child process needs to exit
 ** without affecting them. Failure to exit this way can mean the output
 ** buffer is flushed twice.
 **
-** Calls '-exit' with an unsuccessful code (EXIT_FAILURE defined in stdlib.h).
+** Calls '_exit' with an unsuccessful code (EXIT_FAILURE defined in stdlib.h).
 **
 ** No cleanup or reporting routines are called. Simply crashes.
 **
-** @return [ajint] Exit code
+** @return [void]
 ** @@
 ******************************************************************************/
 
-ajint ajExitAbort(void)
+__noreturn void  ajExitAbort(void)
 {
     _exit(EXIT_FAILURE);
-
-    return EXIT_FAILURE;
 }
 
 
@@ -404,7 +398,7 @@ void ajUtilRevShort(short* sval)
     } data, revdata;
     char* cs;
     char* cd;
-    ajint i;
+    size_t i;
 
     data.s = *sval;
     cs     = data.chars;
@@ -443,7 +437,7 @@ void ajUtilRevInt(ajint* ival)
     } data, revdata;
     char* cs;
     char* cd;
-    ajint i;
+    size_t i;
 
     data.i = *ival;
     cs     = data.chars;
@@ -481,7 +475,7 @@ void ajUtilRevLong(ajlong* lval)
     } data, revdata;
     char* cs;
     char* cd;
-    ajint i;
+    size_t i;
     
     data.l = *lval;
     cs     = data.chars;

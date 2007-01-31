@@ -81,7 +81,7 @@ int main(int argc, char **argv)
 
     len   = end-begin+1;
 
-    dinuc = ajSeqChar(seq);
+    dinuc = ajSeqGetSeqC(seq);
 
     for(i=begin-1; i<end-1; ++i)
     {
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 
     ajFmtPrintF(result, "# Output from BTWISTED\n");
     ajFmtPrintF(result, "# Twisting calculated from %d to %d of %s\n",
-		begin, end, ajSeqName(seq));
+		begin, end, ajSeqGetNameC(seq));
     ajFmtPrintF(result,"Total twist (degrees): %.1f\n", anglesum);
     ajFmtPrintF(result,"Total turns : %.2f\n", twists);
     ajFmtPrintF(result,"Average bases per turn: %.2f\n", basesperturn);
@@ -159,7 +159,7 @@ static AjPTable btwisted_getdinucdata(AjPFile inf)
 	ajStrTokenNextParseC(&token," \n\t\r",&key);
 	valstr = ajStrNew();
 	ajStrTokenNextParseC(&token," \n\t\r",&valstr);
-	ajTablePut(table,(const void *)key,(void *) valstr);
+	ajTablePut(table,(void *)key,(void *) valstr);
 	ajStrTokenDel(&token);
     }
 

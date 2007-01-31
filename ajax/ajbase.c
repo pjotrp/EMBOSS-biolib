@@ -31,7 +31,16 @@ AjIUB aj_base_iubS[256];	/* Base letters and their alternatives */
 ajint aj_base_table[256];	/* Base letter numerical codes         */
 float aj_base_prob[32][32];     /* Assym base probability matches      */
 
-char iubbases[] = "XACMGRSVTWYHKDBN";
+const char* iubbases = "XACMGRSVTWYHKDBN";
+
+static const char *BaseAaTable[]=
+{
+    "ALA","ASX","CYS","ASP","GLU","PHE","GLY","HIS",
+    "ILE","---","LYS","LEU","MET","ASN","---","PRO",
+    "GLN","ARG","SER","THR","---","VAL","TRP","XAA",
+    "TYR","GLX" 
+};
+
 
 AjBool aj_base_I = 0;
 
@@ -312,20 +321,48 @@ AjBool  ajBaseAa1ToAa3(char aa1, AjPStr *aa3)
 {
     ajint idx;
 
-    static char *tab[]=
-    {
-	"ALA","ASX","CYS","ASP","GLU","PHE","GLY","HIS",
-	"ILE","---","LYS","LEU","MET","ASN","---","PRO",
-	"GLN","ARG","SER","THR","SEL","VAL","TRP","XAA",
-	"TYR","GLX"
-    };
-
-    if((idx=ajAZToInt(aa1))>25)
+     if((idx=ajAZToInt(aa1))>25)
 	return ajFalse;
 
-    ajStrAssignC(aa3, tab[idx]);
+    ajStrAssignC(aa3, BaseAaTable[idx]);
     return ajTrue;
 }
+
+
+/* @func ajBaseAa3ToAa1 *******************************************************
+**
+** Takes a 3 character amino acid code and writes a char with the 
+** corresponding single letter code.
+** 
+** @param [w] aa1 [char *]   Single letter identifier of amino acid
+** @param [r] aa3 [const AjPStr]   AjPStr object (3 letter code)
+**
+** @return [AjBool] True on success
+** @@
+****************************************************************************/
+
+AjBool  ajBaseAa3ToAa1(char *aa1, const AjPStr aa3)
+{
+    ajint i;
+    
+    for(i=0; i<26; i++)
+	if(!ajStrCmpC(aa3, BaseAaTable[i]))
+	{
+	    *aa1 = (char) (i + (int) 'A');
+	    return ajTrue;
+	}
+    
+    if(!ajStrCmpC(aa3, "UNK"))
+    {
+	*aa1 = 'X';
+
+	return ajTrue;
+    }	
+    
+    *aa1='X';
+    return ajFalse;
+}
+
 
 
 /* @func ajBaseProb **********************************************************
@@ -388,7 +425,7 @@ char ajBaseComp(char base)
 /* @obsolete ajSeqBaseComp
 ** @rename ajBaseComp
 */
-char __deprecated ajSeqBaseComp(char base)
+__deprecated char  ajSeqBaseComp(char base)
 {
     return ajBaseComp(base);
 }

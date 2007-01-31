@@ -113,26 +113,26 @@ typedef struct AjSFeattabOut {
 **
 ** @attr Seqid [AjPStr] Sequence name
 ** @attr Type [AjPStr] Sequence type: P or N
-** @attr DefFormat [ajint] Original input or 'source' format of feature table
+** @attr DefFormat [ajuint] Original input or 'source' format of feature table
 ** @attr Features [AjPList] List of AjPFeatures...
-** @attr Start [ajint] First position used (like sequence begin)
-** @attr End [ajint] Last position used (like sequence end)
-** @attr Len [ajint] Maximum length
-** @attr Offset [ajint] Offset when trimmed
-** @attr Groups [ajint] Number of current group being added
+** @attr Start [ajuint] First position used (like sequence begin)
+** @attr End [ajuint] Last position used (like sequence end)
+** @attr Len [ajuint] Maximum length
+** @attr Offset [ajuint] Offset when trimmed
+** @attr Groups [ajuint] Number of current group being added
 ** @@
 ******************************************************************************/
 
 typedef struct AjSFeattable {
   AjPStr            Seqid;
   AjPStr            Type;
-  ajint             DefFormat;
+  ajuint            DefFormat;
   AjPList           Features;
-  ajint             Start;
-  ajint             End;
-  ajint             Len;
-  ajint             Offset;
-  ajint             Groups;
+  ajuint            Start;
+  ajuint            End;
+  ajuint            Len;
+  ajuint            Offset;
+  ajuint            Groups;
 }  AjOFeattable;
 
 #define AjPFeattable AjOFeattable*
@@ -179,19 +179,20 @@ typedef struct AjSFeattable {
 ** @attr Source [AjPStr] Source program name (or EMBL)
 ** @attr Type [AjPStr] Feature type (feature key) from internal list
 **                    for protein or nucleotide
-** @attr Start [ajint] Start position
-** @attr End [ajint] End position
-** @attr Start2 [ajint] Second start position - EMBL (a.b)
-** @attr End2 [ajint] Second end position - EMBL ..(a.b)
+** @attr Start [ajuint] Start position
+** @attr End [ajuint] End position
+** @attr Start2 [ajuint] Second start position - EMBL (a.b)
+** @attr End2 [ajuint] Second end position - EMBL ..(a.b)
 ** @attr Score [float] Score or 0.0 if none
 ** @attr Tags [AjPList] Tag-value list (qualifier list)
-** @attr Strand [char] Strand +/- or NULL
 ** @attr Frame [ajint] Frame 1..3, -1..-3 or 0
-** @attr Flags [ajint] Flag bit mask for EMBL location
-** @attr Group [ajint] Group for join/order/one-of
-** @attr Exon [ajint] Exon number
+** @attr Flags [ajuint] Flag bit mask for EMBL location
+** @attr Group [ajuint] Group for join/order/one-of
+** @attr Exon [ajuint] Exon number
 ** @attr Remote [AjPStr] Remote ID - EMBL Remote:a.b
 ** @attr Label [AjPStr] Label name for location - EMBL legacy
+** @attr Strand [char] Strand +/- or NULL
+** @attr Padding [char[3]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -199,20 +200,21 @@ typedef struct AjSFeature {
   AjBool            Protein;
   AjPStr            Source;
   AjPStr            Type;
-  ajint             Start;
-  ajint             End;
-  ajint             Start2;
-  ajint             End2;
+  ajuint            Start;
+  ajuint            End;
+  ajuint            Start2;
+  ajuint            End2;
   float             Score;
   AjPList           Tags;
-  char              Strand;
   ajint             Frame;
-  ajint             Flags;
-  ajint             Group;
-  ajint             Exon;
+  ajuint            Flags;
+  ajuint            Group;
+  ajuint            Exon;
   AjPStr            Remote;
 
   AjPStr            Label;
+  char              Strand;
+  char              Padding[3];
 } AjOFeature;
 
 #define AjPFeature AjOFeature*

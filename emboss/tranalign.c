@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(nucseq, &nseq))
     {
-    	if((pseq = ajSeqsetGetSeq(protseq, proteinseqcount++)) == NULL)
+    	if((pseq = ajSeqsetGetseqSeq(protseq, proteinseqcount++)) == NULL)
     	    ajErr("No guide protein sequence available for "
 		  "nucleic sequence %S",
 		  ajSeqGetNameS(nseq));
@@ -161,8 +161,8 @@ int main(int argc, char **argv)
         ajStrRemoveWhite(&degapstr);
     }
 
-    ajSeqsetWrite(seqout, outseqset);
-    ajSeqWriteClose(seqout);
+    ajSeqoutWriteSet(seqout, outseqset);
+    ajSeqoutClose(seqout);
 
     ajTrnDel(&trnTable);
     ajSeqsetDel(&outseqset);
@@ -195,7 +195,7 @@ static void tranalign_AddGaps(AjPSeq newseq,
 {
 
     AjPStr newstr = NULL;
-    ajint ppos = 0;
+    ajuint ppos = 0;
 
     newstr = ajStrNew();
 

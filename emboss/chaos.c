@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     sequence = ajAcdGetSeq("sequence");
     graph = ajAcdGetGraph("graph");
 
-    ajGraphSetTitlePlus(graph, ajSeqGetUsa(sequence));
+    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(sequence));
 
     ajGraphOpenWin(graph,-0.1,1.4,-0.1,1.1);
 

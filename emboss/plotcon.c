@@ -86,11 +86,11 @@ int main(int argc, char **argv)
 {
 
     AjPSeqset seqset;
-    ajint i;
-    ajint numseq;
-    ajint lenseq;
-    ajint j = 0;
-    ajint k;
+    ajuint i;
+    ajuint numseq;
+    ajuint lenseq;
+    ajuint j = 0;
+    ajuint k;
     AjPMatrix cmpmatrix = 0;
     AjPSeqCvt cvt = 0;
     AjOTime ajtime;
@@ -111,7 +111,7 @@ int main(int argc, char **argv)
     ajint m1 = 0;
     ajint m2 = 0;
     ajint highindex = 0;
-    ajint winsize;	/* window size */
+    ajuint winsize;	/* window size */
     ajint numbins;	/* total no. of bins making up the seq length */
     ajint binup;
     ajint binlo;
@@ -121,14 +121,16 @@ int main(int argc, char **argv)
     AjPGraph graphs = NULL;
     AjPGraphPlpData gdata;
     AjPList list = NULL;
+    float flen;
 
     ajGraphInit("plotcon", argc, argv);
 
     seqset = ajAcdGetSeqset("sequences");
 
     ajSeqsetFill(seqset);               /* Pads seq set with gap characters */
-    numseq = ajSeqsetSize (seqset);
-    lenseq = ajSeqsetLen(seqset);
+    numseq = ajSeqsetGetSize(seqset);
+    lenseq = ajSeqsetGetLen(seqset);
+    flen = ajSeqsetGetLen(seqset);
 
     winsize   = ajAcdGetInt("winsize");
     cmpmatrix = ajAcdGetMatrix("scorefile");
@@ -158,12 +160,12 @@ int main(int argc, char **argv)
 
     for(i=0;i<numseq;i++)
     {
-	ajSeqsetToUpper(seqset);
+	ajSeqsetFmtUpper(seqset);
 
 	/* get sequence as a string */
-	seqcharptr[i] =  ajSeqsetSeq (seqset, i);
+	seqcharptr[i] =  ajSeqsetGetseqSeqC(seqset, i);
 
-	for(j=0;j<ajSeqsetLen(seqset);j++)
+	for(j=0;j<lenseq;j++)
 	    ajFloat2dPut(&score,i,j,0.);
     }
 
@@ -172,22 +174,22 @@ int main(int argc, char **argv)
 
 
     /************** Loop over the sequence set length **************/
-    for(k=0; k< ajSeqsetLen(seqset); k++)
+    for(k=0; k< lenseq; k++)
     {
 	/* Generate a score for each column */
 	for(i=0;i<numseq;i++)
 	{
 	    /* get ajint code from conversion table */
-	    m1 = ajSeqCvtK(cvt, seqcharptr[i][k]);
+	    m1 = ajSeqcvtGetCodeK(cvt, seqcharptr[i][k]);
 
 	    for(j=i+1;j<numseq;j++)
 	    {
-		m2 = ajSeqCvtK(cvt, seqcharptr[j][k]);
+		m2 = ajSeqcvtGetCodeK(cvt, seqcharptr[j][k]);
 		if(m1 && m2)
 		{
-		    contrj = (float)matrix[m1][m2]*ajSeqsetWeight(seqset, j)+
+		    contrj = (float)matrix[m1][m2]*ajSeqsetGetseqWeight(seqset, j)+
 			ajFloat2dGet(score,i,k);
-		    contri = (float)matrix[m1][m2]*ajSeqsetWeight(seqset, i)+
+		    contri = (float)matrix[m1][m2]*ajSeqsetGetseqWeight(seqset, i)+
 			ajFloat2dGet(score,j,k);
 
 		    ajFloat2dPut(&score,i,k,contrj);
@@ -218,7 +220,7 @@ int main(int argc, char **argv)
     /*************** End of Loop ***************/
 
     ajGraphSetCharScale(0.50);
-    gdata = ajGraphPlpDataNewI(ajSeqsetLen(seqset));
+    gdata = ajGraphPlpDataNewI(lenseq);
 
 
     for(bin=0;bin<numbins;bin++)
@@ -234,8 +236,8 @@ int main(int argc, char **argv)
     }
 
 
-    ajGraphArrayMaxMin(gdata->y,ajSeqsetLen(seqset),&ymin,&ymax);
-    ajGraphPlpDataSetMaxima(gdata,0,ajSeqsetLen(seqset),ymin,ymax);
+    ajGraphArrayMaxMin(gdata->y,flen,&ymin,&ymax);
+    ajGraphPlpDataSetMaxima(gdata,0,flen,ymin,ymax);
     
     ajGraphPlpDataSetTypeC(gdata,"2D Plot");
     ajGraphDataAdd(graphs,gdata);

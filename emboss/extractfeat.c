@@ -140,7 +140,7 @@ int main(int argc, char **argv)
 
     }
     
-    ajSeqWriteClose(seqout);
+    ajSeqoutClose(seqout);
     
     
     ajExit();
@@ -523,7 +523,7 @@ static void extractfeat_WriteOut(AjPSeqout seqout, AjPStr *featstr,
 
 
     /* write the new sequence */
-    ajSeqAllWrite(seqout, newseq);
+    ajSeqoutWriteSeq(seqout, newseq);
 
 
     ajSeqDel(&newseq);
@@ -730,19 +730,19 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
         start = 0;
     }
 
-    if(end > ajSeqGetLen(seq)-1)
+    if(end > (ajint) ajSeqGetLen(seq)-1)
     	tmp = ajSeqGetLen(seq)-1;
     else
     	tmp = end;
 
-    if(start <= ajSeqGetLen(seq) && tmp >= 0)
+    if(start <= (ajint) ajSeqGetLen(seq) && tmp >= 0)
     {
         ajDebug("Get subsequence %d-%d\n", start, tmp);
         ajStrAppendSubS(&result, ajSeqGetSeqS(seq), start, tmp);
         ajDebug("result=%S\n", result);
     }
 
-    if(end > ajSeqGetLen(seq)-1)
+    if(end > (ajint) ajSeqGetLen(seq)-1)
     {
         pad = end - ajSeqGetLen(seq)+1;
         if(ajSeqIsNuc(seq))

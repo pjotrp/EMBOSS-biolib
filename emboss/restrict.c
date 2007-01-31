@@ -41,7 +41,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 				ajint sitelen, AjBool limit,
 				const AjPTable table,
 				AjBool alpha, AjBool frags,
-				AjBool nameit, AjBool ifrag);
+				AjBool ifrag);
 static void restrict_printHits(AjPFile outf, AjPList l, const AjPStr name,
 			       ajint hits, ajint begin, ajint end,
 			       AjBool ambiguity, ajint mincut, ajint maxcut,
@@ -163,8 +163,8 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 	ajFileSeek(enzfile,0L,0);
 
 	TabRpt = ajFeattableNewSeq(seq);
@@ -189,7 +189,7 @@ int main(int argc, char **argv)
 				ambiguity,min,max,
 				plasmid,blunt,sticky,sitelen,
 				limit,table,
-				alpha,frags,nameit,ifrag);
+				alpha,frags,ifrag);
 	    if(outf)
 		restrict_printHits(outf,l,name,hits,begin,end,
 				   ambiguity,min,max,
@@ -443,7 +443,6 @@ static void restrict_printHits(AjPFile outf, AjPList l, const AjPStr name,
 ** @param [r] table [const AjPTable] supplier table
 ** @param [r] alpha [AjBool] alphabetic sort
 ** @param [r] frags [AjBool] show fragment lengths
-** @param [r] nameit [AjBool] show name
 ** @param [r] ifrag [AjBool] show fragments for individual REs
 ** @@
 ******************************************************************************/
@@ -456,7 +455,7 @@ static void restrict_reportHits(AjPReport report, const AjPSeq seq,
 				ajint sitelen, AjBool limit,
 				const AjPTable table,
 				AjBool alpha, AjBool frags,
-				AjBool nameit, AjBool ifrag)
+				AjBool ifrag)
 {
     AjPFeature gf  = NULL;
     EmbPMatMatch m = NULL;
@@ -833,7 +832,7 @@ static void restrict_read_equiv(AjPFile equfile, AjPTable table,
 	value = ajStrNewC(p);
 	if(!commercial)
 	    ajStrTrimEndC(&value,"*");
-	ajTablePut(table,(const void *)key, (void *)value);
+	ajTablePut(table,(void *)key, (void *)value);
     }
 
     ajStrDel(&line);
@@ -904,6 +903,6 @@ static void restrict_read_file_of_enzyme_names(AjPStr *enzymes)
 
 static ajint restrict_enzcompare(const void *a, const void *b)
 {
-    return strcmp((*(EmbPMatMatch*)a)->cod->Ptr,
-		  (*(EmbPMatMatch*)b)->cod->Ptr);
+    return strcmp((*(EmbPMatMatch const *)a)->cod->Ptr,
+		  (*(EmbPMatMatch const *)b)->cod->Ptr);
 }

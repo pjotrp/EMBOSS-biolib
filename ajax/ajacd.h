@@ -90,19 +90,19 @@ const AjPStr  ajAcdGetProgram (void);
 AjBool        ajAcdSetControl (const char* optionName);
 void          ajAcdUnused(void);
 
-AjBool        __deprecated ajAcdDebug (void);
-AjBool        __deprecated ajAcdDebugIsSet (void);
-AjBool        __deprecated ajAcdFilter (void);
-AjPPhyloState __deprecated ajAcdGetDiscretestatesI (const char *token,
+__deprecated AjBool         ajAcdDebug (void);
+__deprecated AjBool         ajAcdDebugIsSet (void);
+__deprecated AjBool         ajAcdFilter (void);
+__deprecated AjPPhyloState  ajAcdGetDiscretestatesI (const char *token,
 						    ajint num);
-AjPStr        __deprecated ajAcdGetListI (const char *token, ajint num);
-AjPStr        __deprecated ajAcdGetSelectI (const char *token, ajint num);
-AjPSeqset     __deprecated ajAcdGetSeqsetallI (const char *token, ajint num);
-AjPPhyloTree  __deprecated ajAcdGetTreeI (const char *token, ajint num);
-const char*   __deprecated ajAcdProgram (void);
-void          __deprecated ajAcdProgramS (AjPStr* pgm);
-const AjPStr  __deprecated ajAcdValue (const char* token);
-AjBool        __deprecated ajAcdStdout (void);
+__deprecated AjPStr         ajAcdGetListI (const char *token, ajint num);
+__deprecated AjPStr         ajAcdGetSelectI (const char *token, ajint num);
+__deprecated AjPSeqset      ajAcdGetSeqsetallI (const char *token, ajint num);
+__deprecated AjPPhyloTree   ajAcdGetTreeI (const char *token, ajint num);
+__deprecated const char*    ajAcdProgram (void);
+__deprecated void           ajAcdProgramS (AjPStr* pgm);
+__deprecated const AjPStr   ajAcdValue (const char* token);
+__deprecated AjBool         ajAcdStdout (void);
 
 /*
 ** End of prototype definitions

@@ -78,11 +78,11 @@ static ajint  pdbSortPdbtospPdb(const void *ptr1, const void *ptr2);
 
 static ajint pdbSortPdbtospPdb(const void *ptr1, const void *ptr2)
 {
-    AjPPdbtosp p = NULL;
-    AjPPdbtosp q = NULL;
+    const AjPPdbtosp p = NULL;
+    const AjPPdbtosp q = NULL;
 
-    p = (*(AjPPdbtosp*)ptr1);
-    q = (*(AjPPdbtosp*)ptr2);
+    p = (*(AjPPdbtosp const *)ptr1);
+    q = (*(AjPPdbtosp const *)ptr2);
     
     return ajStrCmpS(p->Pdb, q->Pdb);
 }
@@ -811,8 +811,8 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 			"jison@hgmp.mrc.ac.uk\n", ajFileGetName(inf), temp_id, x, y);
 	    
 	    /* Enter '1' in matrix to indicate contact */
-	    ajInt2dPut(&(ret)->Mat, x-1, y-1, 1);
-	    ajInt2dPut(&(ret)->Mat, y-1, x-1, 1);
+	    ajUint2dPut(&(ret)->Mat, x-1, y-1, 1);
+	    ajUint2dPut(&(ret)->Mat, y-1, x-1, 1);
 	}
 
 	/* LI */
@@ -830,8 +830,8 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    
 	    /* Enter '1' in matrix to indicate contact.  For ligand contacts, 
 	       the first row / column only is used. */
-	    ajInt2dPut(&(ret)->Mat, x-1, 0, 1);
-	    ajInt2dPut(&(ret)->Mat, 0, x-1, 1);
+	    ajUint2dPut(&(ret)->Mat, x-1, 0, 1);
+	    ajUint2dPut(&(ret)->Mat, 0, x-1, 1);
 	}
     }
 
@@ -2683,9 +2683,9 @@ AjPCmap ajCmapNew(ajint n)
     if(n)
     {
 	/* Create the SQUARE contact map */
-	ret->Mat = ajInt2dNewL((ajint)n);
+	ret->Mat = ajUint2dNewL((ajint)n);
 	for(z=0;z<n;++z)
-	    ajInt2dPut(&ret->Mat, z, n-1, (ajint) 0);
+	    ajUint2dPut(&ret->Mat, z, n-1, (ajint) 0);
     }
 
     ret->Dim  = n;
@@ -3094,7 +3094,7 @@ void ajCmapDel(AjPCmap *ptr)
         ajStrDel(&(*ptr)->Desc);
 
     if((*ptr)->Mat)
-	ajInt2dDel(&(*ptr)->Mat);
+	ajUint2dDel(&(*ptr)->Mat);
 
     if((*ptr))
 	AJFREE(*ptr);    
@@ -5758,7 +5758,7 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 ** structures (which of course must first have been sorted). This is a 
 ** case-insensitive search.
 **
-** @param [r] arr [const AjPPdbtosp*] Array of AjOPdbtosp objects
+** @param [r] arr [AjPPdbtosp const *] Array of AjOPdbtosp objects
 ** @param [r] siz [ajint] Size of array
 ** @param [r] id  [const AjPStr]      Search term
 **
@@ -5767,7 +5767,7 @@ AjBool ajPdbChnidToNum(char id, const AjPPdb pdb, ajint *chn)
 ** @@
 ****************************************************************************/
 
-ajint ajPdbtospArrFindPdbid(const AjPPdbtosp *arr, ajint siz, const AjPStr id)
+ajint ajPdbtospArrFindPdbid(AjPPdbtosp const *arr, ajint siz, const AjPStr id)
 {
     int l;
     int m;
@@ -6584,7 +6584,7 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 	for(x=0; x<cmap->Nres1; x++)
 	    for(y=x+1; y<cmap->Nres1; y++)
 	    {	
-		if((ajInt2dGet(cmap->Mat, x, y)==1))
+		if((ajUint2dGet(cmap->Mat, x, y)==1))
 		{
 		    /* Assign residue id. */
 		    if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq1, x), &res1))
@@ -6604,7 +6604,7 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 	for(x=0; x<cmap->Nres1; x++)
 	    for(y=x+1; y<cmap->Nres2; y++)
 	    {	
-		if((ajInt2dGet(cmap->Mat, x, y)==1))
+		if((ajUint2dGet(cmap->Mat, x, y)==1))
 		{
 		    /* Assign residue id. */
 		    if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq1, x), &res1))
@@ -6622,7 +6622,7 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
     else if(cmap->Type ==  ajLIGAND)    
     {
 	for(x=0; x<cmap->Nres1; x++)
-	    if((ajInt2dGet(cmap->Mat, 0, x)==1))
+	    if((ajUint2dGet(cmap->Mat, 0, x)==1))
 	    {
 		/* Assign residue id. */
 		if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq1, x), &res1))

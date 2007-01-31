@@ -189,11 +189,11 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 
-	ajStrAssignC(&pname,ajSeqName(seq));
-	strand = ajSeqStrCopy(seq);
+	ajStrAssignC(&pname,ajSeqGetNameC(seq));
+	strand = ajSeqGetSeqCopyS(seq);
 
 	ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 

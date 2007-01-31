@@ -38,21 +38,21 @@ extern "C"
 
 
 
-/* @data AjPSigpos **********************************************************
+/* @data EmbPSigpos **********************************************************
 **
-** Ajax Sigpos object.
+** Nucleus Sigpos object.
 **
 ** Holds data for compiled signature position
 **
-** AjPSigpos is implemented as a pointer to a C data structure.
+** EmbPSigpos is implemented as a pointer to a C data structure.
 **
-** @alias AjSSigpos
-** @alias AjOSigpos
+** @alias EmbSSigpos
+** @alias EmbOSigpos
 **
 **
 ** 
-** @attr  ngaps [ajint]   No. of gaps 
-** @attr  gsiz  [ajint*]  Gap sizes 
+** @attr  ngaps [ajuint]   No. of gaps 
+** @attr  gsiz  [ajuint*]  Gap sizes 
 ** @attr  gpen  [float*]  Gap penalties 
 ** @attr  subs  [float*]  Residue match values 
 ** 
@@ -60,86 +60,88 @@ extern "C"
 ** @delete embSigposDel Default Sigdat object destructor
 ** @@
 ****************************************************************************/
-typedef struct AJSSigpos
+typedef struct EmbSSigpos
 {
-    ajint    ngaps;      
-    ajint   *gsiz;       
+    ajuint    ngaps;      
+    ajuint   *gsiz;       
     float   *gpen;       
     float   *subs;       
-} AJOSigpos, *AjPSigpos;
+} EmbOSigpos;
+#define EmbPSigpos EmbOSigpos*
 
 
 
 
 
-/* @data AjPSigdat **********************************************************
+/* @data EmbPSigdat **********************************************************
 **
-** Ajax Sigdat object.
+** Nucleus Sigdat object.
 **
 ** Holds empirical data for an (uncompiled) signature position. 
 ** Important: Functions which manipulate this structure rely on the data in 
 ** the gap arrays (gsiz and grfq) being filled in order of increasing gap 
 ** size.
 **
-** AjPSigdat is implemented as a pointer to a C data structure.
+** EmbPSigdat is implemented as a pointer to a C data structure.
 **
-** @alias AjSSigdat
-** @alias AjOSigdat
+** @alias EmbSSigdat
+** @alias EmbOSigdat
 **
 **
 **
-** @attr  nres [ajint]    No. diff. types of residue
-** @attr  rids [AjPChar]  Residue id's 
-** @attr  rfrq [AjPInt]   Residue frequencies 
+** @attr  nres [ajuint]    No. diff. types of residue
+** @attr  rids [AjPChar]   Residue id's 
+** @attr  rfrq [AjPUint]   Residue frequencies 
 ** 
-** @attr  nenv [ajint]    No. diff. types of environment
-** @attr  eids [AjPStr*]  Environment id's
-** @attr  efrq [AjPInt]   Environment frequencies 
+** @attr  nenv [ajuint]    No. diff. types of environment
+** @attr  eids [AjPStr*]   Environment id's
+** @attr  efrq [AjPUint]   Environment frequencies 
 **
-** @attr  ngap [ajint]    No. diff. sizes of empirical gap
-** @attr  gsiz [AjPInt]   Gap sizes 
-** @attr  gfrq [AjPInt]   Frequencies of gaps of each size
-** @attr  wsiz [ajint]    Window size for this gap 
+** @attr  ngap [ajuint]    No. diff. sizes of empirical gap
+** @attr  gsiz [AjPUint]   Gap sizes 
+** @attr  gfrq [AjPUint]   Frequencies of gaps of each size
+** @attr  wsiz [ajuint]    Window size for this gap 
 **
 ** @new embSigdatNew Default Sigdat object constructor
 ** @delete embSigdatDel Default Sigdat object destructor
 ** @@
 ****************************************************************************/
-typedef struct AJSSigdat
+typedef struct EmbSSigdat
 {
-    ajint       nres;         
-    AjPChar     rids;
-    AjPInt      rfrq;         
+    ajuint       nres;         
+    AjPChar      rids;
+    AjPUint      rfrq;         
 
-    ajint       nenv;         
-    AjPStr     *eids;
-    AjPInt      efrq;         
+    ajuint       nenv;         
+    AjPStr      *eids;
+    AjPUint      efrq;         
 
-    ajint       ngap;         
-    AjPInt      gsiz;         
-    AjPInt      gfrq;         
+    ajuint       ngap;         
+    AjPUint      gsiz;         
+    AjPUint      gfrq;         
 
-    ajint       wsiz;         
-} AJOSigdat, *AjPSigdat;
-
-
-
+    ajuint       wsiz;         
+} EmbOSigdat;
+#define EmbPSigdat EmbOSigdat*
 
 
-/* @data AjPSignature *******************************************************
+
+
+
+/* @data EmbPSignature *******************************************************
 **
-** Ajax Signature object.
+** Nucleus Signature object.
 **
-** AjPSignature is implemented as a pointer to a C data structure.
+** EmbPSignature is implemented as a pointer to a C data structure.
 **
-** @alias AjSSignature
-** @alias AjOSignature
+** @alias EmbSSignature
+** @alias EmbOSignature
 **
 ** 
 **
-** @attr  Type         [ajint]       Type, either ajSCOP (1) or ajCATH (2)
+** @attr  Type         [ajuint]       Type, either ajSCOP (1) or ajCATH (2)
 ** for domain signatures, or ajLIGAND (3) for ligand signatures.
-** @attr  Typesig      [ajint]       Type, either aj1D (1) or aj3D (2)
+** @attr  Typesig      [ajuint]       Type, either aj1D (1) or aj3D (2)
 ** for sequence or structure-based signatures respectively. 
 ** @attr  Class        [AjPStr]      SCOP classification.
 ** @attr  Architecture [AjPStr]      CATH classification.
@@ -147,22 +149,22 @@ typedef struct AJSSigdat
 ** @attr  Fold         [AjPStr]      SCOP classification.
 ** @attr  Superfamily  [AjPStr]      SCOP classification.
 ** @attr  Family       [AjPStr]      SCOP classification.
-** @attr  Sunid_Family [ajint]       SCOP sunid for family. 
-** @attr  npos         [ajint]       No. of signature positions.
-** @attr  pos          [AjPSigpos*]  Array of derived data for puropses of 
+** @attr  Sunid_Family [ajuint]       SCOP sunid for family. 
+** @attr  npos         [ajuint]       No. of signature positions.
+** @attr  pos          [EmbPSigpos*]  Array of derived data for puropses of 
 **                                   alignment.
-** @attr  dat          [AjPSigdat*]  Array of empirical data.
+** @attr  dat          [EmbPSigdat*]  Array of empirical data.
 **
 ** @attr  Id    [AjPStr]   Protein id code. 
 ** @attr  Domid [AjPStr]   Domain id code. 
 ** @attr  Ligid [AjPStr]   Ligand id code. 
 ** @attr  Desc  [AjPStr]   Description of ligand (ajLIGAND only)
-** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
-** @attr  sn    [ajint]    Site number (ajLIGAND only)
-** @attr  np    [ajint]    No. of patches (ajLIGAND only)
-** @attr  pn    [ajint]    Patch number (ajLIGAND only)
-** @attr  minpatch  [ajint]   Max. patch size (residues) (ajLIGAND only)
-** @attr  maxgap   [ajint]    Min. gap distance (residues) (ajLIGAND only)
+** @attr  ns    [ajuint]    No. of sites (ajLIGAND only)
+** @attr  sn    [ajuint]    Site number (ajLIGAND only)
+** @attr  np    [ajuint]    No. of patches (ajLIGAND only)
+** @attr  pn    [ajuint]    Patch number (ajLIGAND only)
+** @attr  minpatch  [ajuint]   Max. patch size (residues) (ajLIGAND only)
+** @attr  maxgap   [ajuint]    Min. gap distance (residues) (ajLIGAND only)
 ** @new    embSignatureNew Default Signature constructor
 ** @delete embSignatureDel Default Signature destructor
 ** @output embSignatureWrite Write signature to file.
@@ -191,64 +193,65 @@ typedef struct AJSSigdat
 ** @@
 ****************************************************************************/
 
-typedef struct AjSSignature
+typedef struct EmbSSignature
 {
-    ajint       Type;
-    ajint       Typesig;
+    ajuint      Type;
+    ajuint      Typesig;
     AjPStr      Class;
     AjPStr      Architecture;
     AjPStr      Topology;
     AjPStr      Fold;
     AjPStr      Superfamily;
     AjPStr      Family;
-    ajint       Sunid_Family; 
-    ajint       npos;       
-    AjPSigpos  *pos;        
-    AjPSigdat  *dat;        
+    ajuint      Sunid_Family; 
+    ajuint      npos;       
+    EmbPSigpos *pos;        
+    EmbPSigdat *dat;        
 
     AjPStr    Id;     
     AjPStr    Domid;     
     AjPStr    Ligid;     
     AjPStr    Desc;
-    ajint     ns;
-    ajint     sn;
-    ajint     np;
-    ajint     pn;
-    ajint     minpatch;
-    ajint     maxgap;
-} AjOSignature, *AjPSignature;
+    ajuint    ns;
+    ajuint    sn;
+    ajuint    np;
+    ajuint    pn;
+    ajuint    minpatch;
+    ajuint    maxgap;
+} EmbOSignature;
+#define EmbPSignature EmbOSignature*
 
 
 
 
 
 
-/* @data AjPHit *************************************************************
+/* @data EmbPHit *************************************************************
 **
-** Ajax hit object.
+** Nucleus hit object.
 **
 ** Holds data associated with a protein / domain sequence that is generated 
 ** and or manipulated by the EMBOSS applications seqsearch, seqsort, and 
 ** sigscan.
 **
-** AjPHit is implemented as a pointer to a C data structure.
+** EmbPHit is implemented as a pointer to a C data structure.
 **
-** @alias AjSHit
-** @alias AjOHit
+** @alias EmbSHit
+** @alias EmbOHit
 **
 **
 **
 ** @attr  Seq	   [AjPStr]  Sequence as string.
-** @attr  Start    [ajint]   Start of sequence or signature alignment relative
+** @attr  Start    [ajuint]   Start of sequence or signature alignment relative
 **	           	     to full length swissprot sequence, this is an 
 **		             index so starts at 0. 
-** @attr  End      [ajint]   End of sequence or signature alignment relative
+** @attr  End      [ajuint]   End of sequence or signature alignment relative
 **		             to full length swissprot sequence, this is an
 **         		     index so starts at 0. 
 ** @attr  Acc      [AjPStr]  Accession number of sequence entry.  
 ** @attr  Spr      [AjPStr]  Swissprot code of sequence entry. 
 ** @attr  Dom      [AjPStr]  SCOP or CATH database identifier code of entry. 
-** @attr  Rank     [ajint]   Rank order of hit 	
+** @attr  Rank     [ajuint]   Rank order of hit 	
 ** @attr  Score    [float]   Score of hit 
 ** @attr  Eval     [float]   E-value of hit 
 ** @attr  Pval     [float]   p-value of hit 
@@ -264,7 +267,7 @@ typedef struct AjSSignature
 ** @attr  Target   [AjBool]  Used for garbage collection.
 ** @attr  Target2  [AjBool]  Also used for garbage collection.
 ** @attr  Priority [AjBool]  Also used for garbage collection.
-** @attr  Sig      [AjPSignature] Pointer to signature object for which hit
+** @attr  Sig      [EmbPSignature] Pointer to signature object for which hit
 ** was generated. Used as a pointer only - memory is never freed or allocated
 ** to it.
 **
@@ -287,15 +290,15 @@ typedef struct AjSSignature
 ** @@
 ****************************************************************************/
 
-typedef struct AjSHit
+typedef struct EmbSHit
 {
   AjPStr  Seq;	
-  ajint   Start;      
-  ajint   End;        
+  ajuint  Start;      
+  ajuint  End;        
   AjPStr  Acc;           
   AjPStr  Spr;        
   AjPStr  Dom;        
-  ajint   Rank;       
+  ajuint  Rank;       
   float   Score;      
   float  Eval;       
   float  Pval;       
@@ -309,28 +312,30 @@ typedef struct AjSHit
   AjBool  Target2;    
   AjBool  Priority;   
 
-  AjPSignature Sig;
-} AjOHit, *AjPHit;
+  EmbPSignature Sig;
+} EmbOHit;
+#define EmbPHit EmbOHit*
 
 
 
 
 
-/* @data AjPHitlist *********************************************************
+
+/* @data EmbPHitlist *********************************************************
 **
-** Ajax hitlist object.
+** Nucleus hitlist object.
 **
 ** Holds an array of hit structures and associated SCOP classification 
 ** records.
 **
-** AjPHitlist is implemented as a pointer to a C data structure.
+** EmbPHitlist is implemented as a pointer to a C data structure.
 **
-** @alias AjSHitlist
-** @alias AjOHitlist
+** @alias EmbSHitlist
+** @alias EmbOHitlist
 **
 ** 
 **
-** @attr  Type          [ajint]     Domain type, either ajSCOP (1) or
+** @attr  Type          [ajuint]     Domain type, either ajSCOP (1) or
 **                                  ajCATH (2).
 ** @attr  Class         [AjPStr]    SCOP classification.
 ** @attr  Architecture  [AjPStr]    CATH classification.
@@ -339,10 +344,10 @@ typedef struct AjSHit
 ** @attr  Superfamily   [AjPStr]    SCOP classification.
 ** @attr  Family        [AjPStr]    SCOP classification.
 ** @attr  Model         [AjPStr]    SCOP classification.
-** @attr  Sunid_Family  [ajint]     SCOP sunid for family. 
+** @attr  Sunid_Family  [ajuint]     SCOP sunid for family. 
 ** @attr  Priority      [AjBool]    True if the Hitlist is high priority. 
-** @attr  N             [ajint]     No. of hits. 
-** @attr  hits          [AjPHit*]  Array of hits. 
+** @attr  N             [ajuint]     No. of hits. 
+** @attr  hits          [EmbPHit*]  Array of hits. 
 **
 ** @new    embHitlistNew Default Hitlist constructor
 ** @delete embHitlistDel Default Hitlist destructor
@@ -379,9 +384,9 @@ typedef struct AjSHit
 ** @@
 ****************************************************************************/
 
-typedef struct AjSHitlist
+typedef struct EmbSHitlist
 {
-    ajint    Type;
+    ajuint   Type;
     AjPStr   Class;
     AjPStr   Architecture;
     AjPStr   Topology;
@@ -389,11 +394,12 @@ typedef struct AjSHitlist
     AjPStr   Superfamily;
     AjPStr   Family;
     AjPStr   Model;
-    ajint    Sunid_Family;
+    ajuint   Sunid_Family;
     AjBool   Priority;     
-    ajint    N;            
-    AjPHit  *hits;         
-} AjOHitlist, *AjPHitlist;
+    ajuint   N;            
+    EmbPHit *hits;         
+} EmbOHitlist;
+#define EmbPHitlist EmbOHitlist*
 
 
 
@@ -407,8 +413,8 @@ typedef struct AjSHitlist
 /* ======================================================================= */
 /* =========================== Sigdat object ============================= */
 /* ======================================================================= */
-AjPSigdat    embSigdatNew(ajint nres, ajint ngap);
-void         embSigdatDel(AjPSigdat *pthis);
+EmbPSigdat   embSigdatNew(ajuint nres, ajuint ngap);
+void         embSigdatDel(EmbPSigdat *pthis);
 
 
 
@@ -416,8 +422,8 @@ void         embSigdatDel(AjPSigdat *pthis);
 /* ======================================================================= */
 /* =========================== Sigpos object ============================= */
 /* ======================================================================= */
-AjPSigpos    embSigposNew(ajint ngap);
-void         embSigposDel(AjPSigpos *thys);
+EmbPSigpos   embSigposNew(ajuint ngap);
+void         embSigposDel(EmbPSigpos *thys);
 
 
 
@@ -425,20 +431,21 @@ void         embSigposDel(AjPSigpos *thys);
 /* ======================================================================= */
 /* ========================== Signature object =========================== */
 /* ======================================================================= */
-AjPSignature  embSignatureNew(ajint n);
-void          embSignatureDel(AjPSignature *ptr);
-AjPSignature  embSignatureReadNew(AjPFile inf);
-AjBool        embSignatureWrite(AjPFile outf, const AjPSignature obj);
-AjBool        embSignatureCompile(AjPSignature *S, float gapo, float gape, 	
+EmbPSignature embSignatureNew(ajuint n);
+void          embSignatureDel(EmbPSignature *ptr);
+EmbPSignature embSignatureReadNew(AjPFile inf);
+AjBool        embSignatureWrite(AjPFile outf, const EmbPSignature obj);
+AjBool        embSignatureCompile(EmbPSignature *S, float gapo, float gape,
 				  const AjPMatrixf matrix);
-AjBool        embSignatureAlignSeq(const AjPSignature S, const AjPSeq seq, AjPHit *hit, 
-				   ajint nterm);
-AjBool        embSignatureAlignSeqall(const AjPSignature sig, AjPSeqall db, 
-				      ajint n, AjPHitlist *hitlist, 
-				      ajint nterm);
-AjBool        embSignatureHitsWrite(AjPFile outf, const AjPSignature sig, 
-				    const AjPHitlist hitlist, ajint n);
-AjPHitlist    embSignatureHitsRead(AjPFile inf);
+AjBool        embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
+				   EmbPHit *hit, 
+				   ajuint nterm);
+AjBool        embSignatureAlignSeqall(const EmbPSignature sig, AjPSeqall db, 
+				      ajuint n, EmbPHitlist *hitlist, 
+				      ajuint nterm);
+AjBool        embSignatureHitsWrite(AjPFile outf, const EmbPSignature sig, 
+				    const EmbPHitlist hitlist, ajuint n);
+EmbPHitlist   embSignatureHitsRead(AjPFile inf);
 
 
 
@@ -447,18 +454,18 @@ AjPHitlist    embSignatureHitsRead(AjPFile inf);
 /* ======================================================================= */
 /* ============================= Hit object ============================== */
 /* ======================================================================= */
-AjPHit        embHitNew(void);
+EmbPHit       embHitNew(void);
 
-AjPHit        embHitReadFasta(AjPFile inf);
+EmbPHit       embHitReadFasta(AjPFile inf);
 
-void          embHitDel(AjPHit *ptr);
+void          embHitDel(EmbPHit *ptr);
 
-AjPHit        embHitMerge(const AjPHit hit1, 
-			  const AjPHit hit2);
+EmbPHit       embHitMerge(const EmbPHit hit1, 
+			  const EmbPHit hit2);
 
-AjBool        embHitsOverlap(const AjPHit hit1, 
-			     const AjPHit hit2, 
-			     ajint n);
+AjBool        embHitsOverlap(const EmbPHit hit1, 
+			     const EmbPHit hit2, 
+			     ajuint n);
 
 ajint         embMatchScore(const void *hit1, 
 			    const void *hit2);
@@ -476,31 +483,32 @@ ajint         embMatchSN(const void *hit1,
 /* ======================================================================= */
 /* =========================== Hitlist object ============================ */
 /* ======================================================================= */
-AjPHitlist    embHitlistNew(ajint n);
 
-void          embHitlistDel(AjPHitlist *ptr);
+EmbPHitlist   embHitlistNew(ajuint n);
 
-AjPHitlist    embHitlistRead(AjPFile inf);
+void          embHitlistDel(EmbPHitlist *ptr);
 
-AjPHitlist    embHitlistReadFasta(AjPFile inf);
+EmbPHitlist   embHitlistRead(AjPFile inf);
+
+EmbPHitlist   embHitlistReadFasta(AjPFile inf);
 
 AjBool        embHitlistWrite(AjPFile outf, 
-			      const AjPHitlist obj);
+			      const EmbPHitlist obj);
 
 AjBool        embHitlistWriteSubset(AjPFile outf, 
-				    const AjPHitlist obj, 
-				    const AjPInt ok);
+				    const EmbPHitlist obj, 
+				    const AjPUint ok);
 
 AjBool        embHitlistWriteFasta(AjPFile outf, 
-				   const AjPHitlist obj);
+				   const EmbPHitlist obj);
 
 AjBool        embHitlistWriteSubsetFasta(AjPFile outf, 
-					 const AjPHitlist obj, 
-					 const AjPInt ok);
+					 const EmbPHitlist obj, 
+					 const AjPUint ok);
 
 AjBool        embHitlistWriteHitFasta(AjPFile outf, 
-				      ajint n, 
-				      const AjPHitlist obj);
+				      ajuint n, 
+				      const EmbPHitlist obj);
 
 AjPList       embHitlistReadNode(AjPFile inf, 
 				 const AjPStr fam, 
@@ -514,9 +522,9 @@ AjPList       embHitlistReadNodeFasta(AjPFile inf,
 				      const AjPStr fold, 
 				      const AjPStr klass);
 
-AjBool        embHitlistClassify(const AjPHitlist *hits, 
+AjBool        embHitlistClassify(EmbPHitlist hits, 
 				 const AjPList targets, 
-				 ajint thresh);
+				 ajuint thresh);
 
 ajint         embHitlistMatchFold(const void *hit1, 
 				  const void *hit2);

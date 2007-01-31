@@ -8,6 +8,9 @@
 */
 /*
   $Log: epart_func_co.c,v $
+  Revision 1.3  2007/01/31 12:47:07  rice
+  compiler warnings (prototypes, unsigned, etc.)
+
   Revision 1.2  2005/11/01 15:39:10  rice
   compiler warnings
 
@@ -45,7 +48,7 @@
 #include "ePS_dot.h"
 #include "eco_part_func.h"
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: epart_func_co.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static char rcsid[] UNUSED = "$Id: epart_func_co.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
 
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
 #define eMIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -65,12 +68,16 @@ PUBLIC void compute_probabilities(double *FEAB,double *FEAA,
 				     struct plist  *prAA, struct plist  *prBB,
 				     struct plist  *prA, struct plist  *prB,
 				     int Alength,int Blength, AjPFile outf);
-PUBLIC struct ConcEnt *get_concentrations(double FEAB, double FEAA, double FEBB, double FEA, double FEB, double *startconc, AjPFile outf);
+PUBLIC struct ConcEnt *get_concentrations(double FEAB, double FEAA,
+					  double FEBB, double FEA,
+					  double FEB, double *startconc,
+					  AjPFile outf);
 PUBLIC struct plist *get_plist(struct plist *pl, int length, double cut_off);
 PUBLIC struct plist *get_mfe_plist(struct plist *pl);
-PUBLIC float *get_monomerefreeenergies();
+PUBLIC float *get_monomerefreeenergies(void);
 PUBLIC int make_probsum(int length, char *name, AjPFile outf);
-PRIVATE double *Newton_Conc(double ZAB, double ZAA, double ZBB, double concA, double concB,double* ConcVec);
+PRIVATE double *Newton_Conc(double ZAB, double ZAA, double ZBB,
+			    double concA, double concB,double* ConcVec);
 PRIVATE void  sprintf_bppm(int length, char *structure);
 PRIVATE void  scale_pf_params(unsigned int length);
 PRIVATE void  get_arrays(unsigned int length);
@@ -1377,7 +1384,7 @@ PUBLIC struct plist *get_mfe_plist(struct plist *pl) {
 }
 
 
-PUBLIC float *get_monomerefreeenergies() {
+PUBLIC float *get_monomerefreeenergies(void) {
   /*exports monomere free energies*/
   float *muh;
  

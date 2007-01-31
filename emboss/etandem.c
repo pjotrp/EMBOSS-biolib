@@ -370,8 +370,8 @@ int main(int argc, char **argv)
     ajFmtPrintAppS(&tmpstr, "Uniform: %B\n", uniform);
     ajReportSetHeader(report, tmpstr);
 
-    cvt = ajSeqCvtNewZero("ACGTN");
-    ajSeqNum(sequence, cvt, &nseq);
+    cvt = ajSeqcvtNewC("ACGTN");
+    ajSeqConvertNum(sequence, cvt, &nseq);
 
     AJCNEW(ring, nbase);
 
@@ -517,7 +517,7 @@ int main(int argc, char **argv)
     ajSeqDel(&sequence);
     ajFileClose(&outfile);
 
-    ajSeqCvtDel(&cvt);
+    ajSeqcvtDel(&cvt);
     ajStrDel(&nseq);
     ajStrDel(&tmpstr);
     AJFREE(ring);

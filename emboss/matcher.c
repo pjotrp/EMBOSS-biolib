@@ -254,7 +254,7 @@ AjPSeqCvt cvt = NULL;
 
 static void  matcher_Sim(AjPAlign align,
 			const char A[], const char B[],
-			 const AjPSeq seq1, const AjPSeq seq2, ajint K,
+			 const AjPSeq seq1, const AjPSeq seq2, ajuint K,
 			ajint Q, ajint R, ajint beg, ajint beg2, ajint nseq);
 static ajint matcher_BigPass(const char A[], const char B[],
 			     ajint M, ajint N, ajint K,
@@ -266,8 +266,7 @@ static ajint matcher_SmallPass(const char A[], const char B[],
 static ajint matcher_Diff(const char A[], const char B[],
 			  ajint M, ajint N, ajint tb,
 			  ajint te);
-static ajint matcher_Calcons(const char *aa0, char *seqc0, ajint n0,
-			     const char *aa1, char *seqc1, ajint n1,
+static ajint matcher_Calcons(char *seqc0, char *seqc1,
 			     const ajint *res,
 			     ajint min0, ajint min1,
 			     ajint max0, ajint max1,
@@ -294,7 +293,7 @@ int main(int argc, char **argv)
     const char *s2;
     ajint gdelval;
     ajint ggapval;
-    ajint i;
+    ajuint i;
     ajint K;
 
     AjPAlign align = NULL;
@@ -334,10 +333,10 @@ int main(int argc, char **argv)
     ajStrAppendK(&aa1str,' ');
 
     for(i=0;i<ajSeqGetLen(seq);i++)
-	ajStrAppendK(&aa0str,(char)ajSeqCvtK(cvt, *s1++));
+	ajStrAppendK(&aa0str,(char)ajSeqcvtGetCodeK(cvt, *s1++));
 
     for(i=0;i<ajSeqGetLen(seq2);i++)
-	ajStrAppendK(&aa1str,ajSeqCvtK(cvt, *s2++));
+	ajStrAppendK(&aa1str,ajSeqcvtGetCodeK(cvt, *s2++));
 
     matcher_Sim(align, ajStrGetPtr(aa0str),ajStrGetPtr(aa1str),
 		seq,seq2,
@@ -367,7 +366,7 @@ int main(int argc, char **argv)
 ** @param [r] B [const char*] Sequence B with trailing blank
 ** @param [r] seq0 [const AjPSeq] Sequence A
 ** @param [r] seq1 [const AjPSeq] Sequence B
-** @param [r] K [ajint] Number of best alignments to report
+** @param [r] K [ajuint] Number of best alignments to report
 ** @param [r] Q [ajint] Gap penalty (minus extension penalty)
 ** @param [r] R [ajint] Gap extension penalty
 ** @param [r] beg0 [ajint] Offset of sequence A
@@ -378,7 +377,7 @@ int main(int argc, char **argv)
 
 static void matcher_Sim(AjPAlign align,
 			const char *A,const char *B,
-			const AjPSeq seq0, const AjPSeq seq1,ajint K,ajint Q,
+			const AjPSeq seq0, const AjPSeq seq1,ajuint K,ajint Q,
 			ajint R, ajint beg0, ajint beg1, ajint nseq)
 {
     ajint endi;
@@ -387,8 +386,8 @@ static void matcher_Sim(AjPAlign align,
     ajint starj;		 	/* endpoint and startpoint */
     ajint  score;   			/* the max score in LIST */
     ajint count;			/* maximum size of list */
-    register ajint  i;
-    register ajint j;			/* row and column indices */
+    register ajuint  i;
+    register ajuint j;			/* row and column indices */
     ajint  *S;				/* saving operations for diff */
     ajint nc;
     ajint ns;
@@ -487,8 +486,7 @@ static void matcher_Sim(AjPAlign align,
 	min1 = starj-1;
 	max0 = stari+rl-1;
 	max1 = starj+cl-1;
-	ns=matcher_Calcons(A+1, seqc0, seq0len,
-			   B+1, seqc1, seq1len,
+	ns=matcher_Calcons(seqc0,seqc1,
 			   S, min0, min1, max0, max1, &nc, &nident);
 	percent = (double)nident*100.0/(double)nc;
 
@@ -1504,12 +1502,8 @@ static ajint matcher_Diff(const char *A,const char *B,
 **
 ** Calculate a consensus sequence
 **
-** @param [r] aa0 [const char*] Undocumented
 ** @param [w] seqc0 [char*] Sequence A alignment output
-** @param [r] n0 [ajint] Undocumented
-** @param [r] aa1 [const char*] Undocumented
 ** @param [w] seqc1 [char*] Sequence B alignment output
-** @param [r] n1 [ajint] Undocumented
 ** @param [r] res [const ajint*] Undocumented
 ** @param [r] min0 [ajint] Undocumented
 ** @param [r] min1 [ajint] Undocumented
@@ -1520,8 +1514,7 @@ static ajint matcher_Diff(const char *A,const char *B,
 ** @return [ajint] Undocumented
 ******************************************************************************/
 
-static ajint matcher_Calcons(const char *aa0,char *seqc0,ajint n0,
-			     const char *aa1,char *seqc1,ajint n1,
+static ajint matcher_Calcons(char *seqc0,char *seqc1,
 			     const ajint *res,
 			     ajint min0, ajint min1,
 			     ajint max0, ajint max1,

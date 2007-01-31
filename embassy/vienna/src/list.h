@@ -1,5 +1,8 @@
 /*
   $Log: list.h,v $
+  Revision 1.2  2007/01/31 12:47:07  rice
+  compiler warnings (prototypes, unsigned, etc.)
+
   Revision 1.1  2005/10/13 13:00:44  ajb
   First draft
 
@@ -58,11 +61,11 @@ LIST;
 /*@only@*//*@out@*/ void *lst_newnode (int size);
 void lst_freenode (/*@only@*/ void *node);
 /*@only@*//*@out@*/  LIST *lst_init (void);
-void lst_kill (LIST * l, void (*freeNode) ());
+void lst_kill (LIST * l, void (*freeNode) (void *node));
 void lst_insertafter (LIST * l, /*@keep@*/ void *node, void *after);
 void *lst_deletenext (/*@only@*/ LIST * l, void *node);
 /*@dependent@*/ void *lst_first (LIST * l);
 /*@dependent@*/ void *lst_next (void *prev);
-void lst_mergesort (LIST * l, int (*cmp_func) ());
+void lst_mergesort (LIST * l, int (*cmp_func) (void *, void *));
 
 #endif

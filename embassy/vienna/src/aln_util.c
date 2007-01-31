@@ -17,7 +17,11 @@
 #include "fold_vars.h"
 #include "pair_mat.h"
 /*@unused@*/
-static const char rcsid[] = "$Id: aln_util.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static const char rcsid[] = "$Id: aln_util.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
+
+int read_clustal(FILE *clust, char *AlignedSeqs[], char *names[]);
+char *consensus(const char *AS[]);
+char *consens_mis(const char*AS[]) ;
 
 #define MAX_NUM_NAMES    500
 int read_clustal(FILE *clust, char *AlignedSeqs[], char *names[]) {

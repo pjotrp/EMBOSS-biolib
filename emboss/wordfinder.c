@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 
     ajint trgbegin;
     ajint i;
-    ajint k;
+    ajuint k;
     ajint qrybegin;
     ajint trgstart = 0;
     ajint qrystart = 0;
@@ -194,9 +194,9 @@ int main(int argc, char **argv)
 	ajSeqTrace(trgseq);
 	if(embWordGetTable(&seq1MatchTable, trgseq)) /* get table of words */
 	{
-	    for(k=0;k<ajSeqsetSize(qryseqs);k++)
+	    for(k=0;k<ajSeqsetGetSize(qryseqs);k++)
 	    {
-	        qryseq = ajSeqsetGetSeq(qryseqs, k);
+	        qryseq = ajSeqsetGetseqSeq(qryseqs, k);
 		qrylen   = ajSeqGetLen(qryseq);
 		qrybegin = 1 + ajSeqGetOffset(qryseq);
 
@@ -296,8 +296,6 @@ int main(int argc, char **argv)
 		    ajDebug("Calling embAlignPrintLocal\n");
 		    if(outf)
 		      embAlignPrintLocal(outf,
-					 ajSeqGetSeqC(qryseq),
-					 ajSeqGetSeqC(trgseq),
 					 nqry,mtrg,
 					 qrystart,trgstart,
 					 score,1,sub,cvt,
@@ -458,6 +456,8 @@ static void wordfinder_orderandconcat(AjPList list,AjPList ordered)
 static void wordfinder_removelists(void **x,void *cl)
 {
     concat *p;
+
+    (void) cl;				/* make it used */
 
     p = (concat *)*x;
 

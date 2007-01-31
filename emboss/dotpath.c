@@ -54,12 +54,12 @@ int main(int argc, char **argv)
     ** Different ticks as they need to be different for x and y due to
     ** length of string being important on x
     */
-    ajint acceptableticksx[]=
+    ajuint acceptableticksx[]=
     {
 	1,10,50,100,500,1000,1500,10000,
 	500000,1000000,5000000
     };
-    ajint acceptableticks[]=
+    ajuint acceptableticks[]=
     {
 	1,10,50,100,200,500,1000,2000,5000,10000,15000,
 	500000,1000000,5000000
@@ -79,6 +79,10 @@ int main(int argc, char **argv)
     ajint begin2;
     ajint end1;
     ajint end2;
+    ajuint len1;
+    ajuint len2;
+    float flen1;
+    float flen2;
 
     ajGraphInit("dotpath", argc, argv);
     
@@ -93,7 +97,11 @@ int main(int argc, char **argv)
     begin2 = ajSeqGetBegin(seq2);
     end1   = ajSeqGetEnd(seq1);
     end2   = ajSeqGetEnd(seq2);
-    
+    len1 = ajSeqGetLen(seq1);
+    len2 = ajSeqGetLen(seq2);
+    flen1 = ajSeqGetLen(seq1);
+    flen2 = ajSeqGetLen(seq2);
+
     ajSeqTrim(seq1);
     ajSeqTrim(seq2);
     
@@ -104,16 +112,16 @@ int main(int argc, char **argv)
 	matchlist = embWordBuildMatchTable(seq1MatchTable, seq2, ajTrue);
     }
     
-    max = ajSeqGetLen(seq1);
-    if(ajSeqGetLen(seq2) > max)
-	max = ajSeqGetLen(seq2);
+    max = flen1;
+    if(flen2 > max)
+	max = flen2;
     
     xmargin = ymargin = max * 0.15;
     
     ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
 		   0.0-xmargin,(float)max+xmargin);
     
-    ajGraphTextMid(max*0.5,(ajSeqGetLen(seq2))+(xmargin*0.5),
+    ajGraphTextMid(max*0.5,flen2+(xmargin*0.5),
 		   ajGraphGetTitleC(graph));
     ajGraphSetCharScale(0.5);
     
@@ -126,7 +134,7 @@ int main(int argc, char **argv)
     }
     
     /* get the minimal set of overlapping matches */
-    embWordMatchMin(matchlist, ajSeqGetLen(seq1), ajSeqGetLen(seq2));
+    embWordMatchMin(matchlist);
     
     
     
@@ -136,9 +144,9 @@ int main(int argc, char **argv)
     
     if(boxit)
     {
-	ajGraphRect( 0.0,0.0,(float)ajSeqGetLen(seq1),(float)ajSeqGetLen(seq2));
+	ajGraphRect( 0.0,0.0,flen1,flen2);
 	i = 0;
-	while(acceptableticksx[i]*numbofticks < ajSeqGetLen(seq1))
+	while(acceptableticksx[i]*numbofticks < flen1)
 	    i++;
 
 	if(i<=11)
@@ -148,23 +156,23 @@ int main(int argc, char **argv)
 
 	ticklen = xmargin*0.1;
 	onefifth  = xmargin*0.2;
-	ajGraphTextMid((ajSeqGetLen(seq1))*0.5,0.0-(onefifth*3),
+	ajGraphTextMid(flen1*0.5,0.0-(onefifth*3),
 		       ajGraphGetYTitleC(graph));
 
-	if(ajSeqGetLen(seq2)/ajSeqGetLen(seq1) > 10 )
+	if(len2/len1 > 10 )
 	{
 	    /* a lot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
 	    sprintf(ptr,"%d",ajSeqGetOffset(seq1));
 	    ajGraphTextMid(0.0,0.0-(onefifth),ptr);
 
-	    ajGraphLine((float)(ajSeqGetLen(seq1)),0.0,
-			(float)ajSeqGetLen(seq1),0.0-ticklen);
-	    sprintf(ptr,"%d",ajSeqGetLen(seq1)+ajSeqGetOffset(seq1));
-	    ajGraphTextMid((float)ajSeqGetLen(seq1),0.0-(onefifth),ptr);
+	    ajGraphLine(flen1,0.0,
+			flen1,0.0-ticklen);
+	    sprintf(ptr,"%d",len1+ajSeqGetOffset(seq1));
+	    ajGraphTextMid(flen1,0.0-(onefifth),ptr);
 	}
 	else
-	    for(k=0.0;k<ajSeqGetLen(seq1);k+=tickgap)
+	    for(k=0.0;k<len1;k+=tickgap)
 	    {
 		ajGraphLine(k,0.0,k,0.0-ticklen);
 		sprintf(ptr,"%d",(ajint)k+ajSeqGetOffset(seq1));
@@ -172,30 +180,30 @@ int main(int argc, char **argv)
 	    }
 
 	i = 0;
-	while(acceptableticks[i]*numbofticks < ajSeqGetLen(seq2))
+	while(acceptableticks[i]*numbofticks < len2)
 	    i++;
 
 	tickgap   = acceptableticks[i];
 	ticklen   = ymargin*0.1;
 	onefifth  = ymargin*0.2;
-	ajGraphTextLine(0.0-(onefifth*4),(ajSeqGetLen(seq2))*0.5,
-			0.0-(onefifth*4),(float)ajSeqGetLen(seq2),
+	ajGraphTextLine(0.0-(onefifth*4),flen2*0.5,
+			0.0-(onefifth*4),flen2,
 			ajGraphGetXTitleC(graph),0.5);
 
-	if(ajSeqGetLen(seq1)/ajSeqGetLen(seq2) > 10 )
+	if(len1/len2 > 10 )
 	{
 	    /* a lot smaller then just label start and end */
 	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
 	    sprintf(ptr,"%d",ajSeqGetOffset(seq2));
 	    ajGraphTextEnd( 0.0-(onefifth),0.0,ptr);
 
-	    ajGraphLine(0.0,(float)ajSeqGetLen(seq2),
-			0.0-ticklen,(float)ajSeqGetLen(seq2));
-	    sprintf(ptr,"%d",ajSeqGetLen(seq2)+ajSeqGetOffset(seq2));
-	    ajGraphTextEnd( 0.0-(onefifth),(float)ajSeqGetLen(seq2),ptr);
+	    ajGraphLine(0.0,flen2,
+			0.0-ticklen,flen2);
+	    sprintf(ptr,"%d",len2+ajSeqGetOffset(seq2));
+	    ajGraphTextEnd( 0.0-(onefifth),flen2,ptr);
 	}
 	else
-	    for(k=0.0;k<ajSeqGetLen(seq2);k+=tickgap)
+	    for(k=0.0;k<len2;k+=tickgap)
 	    {
 		ajGraphLine(0.0,k,0.0-ticklen,k);
 		sprintf(ptr,"%d",(ajint)k+ajSeqGetOffset(seq2));
@@ -241,6 +249,8 @@ static void dotpath_drawPlotlines(void *x, void *cl)
     PLFLT y1;
     PLFLT x2;
     PLFLT y2;
+
+    (void) cl;				/* make it used */
 
     p  = (EmbPWordMatch)x;
 

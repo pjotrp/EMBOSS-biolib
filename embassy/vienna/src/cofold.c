@@ -23,7 +23,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: cofold.c,v 1.2 2006/07/03 15:23:07 rice Exp $";
+static char rcsid[] UNUSED = "$Id: cofold.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
 
 #define PAREN
 
@@ -39,7 +39,7 @@ PUBLIC float  cofold(const char *string, char *structure);
 PUBLIC void   free_arrays(void);
 PUBLIC void   initialize_fold(int length);
 PUBLIC void   update_fold_params(void);
-PUBLIC float *get_monomer_mfes();
+PUBLIC float *get_monomer_mfes(void);
 extern int    logML;    /* if nonzero use logarithmic ML energy in
 			     energy_of_struct */
 extern int    uniq_ML;  /* do ML decomposition uniquely (for subopt) */
@@ -58,6 +58,9 @@ inline PRIVATE int  LoopEnergy(int n1, int n2, int type, int type_2,
 			 int si1, int sj1, int sp1, int sq1);
 inline PRIVATE int  HairpinE(int size, int type, int si1, int sj1, const char *string);
 PRIVATE void free_end(int *array, int i, int start);
+void export_cofold_arrays(int **f5_p, int **c_p, int **fML_p, int **fM1_p, 
+			  int **fc_p, int **indx_p, char **ptype_p);
+PUBLIC void get_monomere_mfes(float *e1, float *e2);
 
 #define MAXSECTORS      500     /* dimension for a backtrack array */
 #define LOCALITY        0.      /* locality parameter for base-pairs */

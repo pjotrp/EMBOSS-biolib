@@ -85,10 +85,10 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	pos = ajSeqallBegin(seqall);
-	end = ajSeqallEnd(seqall);
+	pos = ajSeqallGetseqBegin(seqall);
+	end = ajSeqallGetseqEnd(seqall);
 
-	str = ajSeqStrCopy(seq);
+	str = ajSeqGetSeqCopyS(seq);
 	ajStrFmtUpper(&str);
 	p = ajStrGetPtr(str);
 
@@ -127,14 +127,14 @@ int main(int argc, char **argv)
 	if(!plot && c)
 	{
 	    ajFmtPrintF(outf,"FREAK of %s from %d to %d Window %d Step %d\n\n",
-			ajSeqName(seq),pos+1,end+1,window,step);
+			ajSeqGetNameC(seq),pos+1,end+1,window,step);
 	    for(i=0;i<c;++i)
 		ajFmtPrintF(outf,"%-10d %f\n",(ajint)x[i],y[i]);
 	}
 	else if(plot && c)
 	{
 	    fgraph = ajGraphPlpDataNewI(c);
-	    ajGraphSetTitle(graph,ajSeqGetName(seq));
+	    ajGraphSetTitle(graph,ajSeqGetNameS(seq));
 	    ajFmtPrintS(&st,"From %d to %d. Residues:%s Window:%d Step:%d",
 			pos+1,end+1,ajStrGetPtr(bases),window,step);
 	    ajGraphSetSubTitle(graph,st);

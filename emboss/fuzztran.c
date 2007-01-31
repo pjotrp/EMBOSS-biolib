@@ -81,8 +81,8 @@ int main(int argc, char **argv)
     writeok=ajTrue;
     while(writeok && ajSeqallNext(seqall,&seq))
     {
-	begin = ajSeqallBegin(seqall);
-	end   = ajSeqallEnd(seqall);
+	begin = ajSeqallGetseqBegin(seqall);
+	end   = ajSeqallGetseqEnd(seqall);
 	ajStrAssignSubC(&text,ajSeqGetSeqC(seq),begin-1,end-1);
 	ajStrFmtUpper(&text);
 	seqtab = ajFeattableNewDna(ajSeqGetNameS(seq));

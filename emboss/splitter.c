@@ -25,15 +25,14 @@
 
 
 
-static void splitter_write(AjPSeqout seqout, AjPSeq subseq, ajint start,
-			   ajint end, const AjPSeq seq);
-static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajint start,
-                                   ajint end, const AjPSeq oldseq);
+static void splitter_write(AjPSeqout seqout, AjPSeq subseq, const AjPSeq seq);
+static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajuint start,
+                                   ajuint end, const AjPSeq oldseq);
 static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
-                                   ajint start, ajint end, const AjPStr name,
+                                   ajuint start, ajuint end, const AjPStr name,
                                    AjBool feature);
 static void splitter_MakeSubSeqName (AjPStr * name_ptr, const AjPSeq seq,
-                                     ajint start, ajint end);
+                                     ajuint start, ajuint end);
 
 
 
@@ -149,7 +148,7 @@ int main(int argc, char **argv)
           }
       }
 
-    ajSeqWriteClose(seqout);
+    ajSeqoutClose(seqout);
     ajSeqallDel(&seqall);
     ajSeqoutDel(&seqout);
     ajSeqDel(&seq);
@@ -170,16 +169,13 @@ int main(int argc, char **argv)
 **
 ** @param [u] default_seqout [AjPSeqout] Output object
 ** @param [u] subseq [AjPSeq] sequence to write
-** @param [r] start [ajint] start offset
-** @param [r] end [ajint] end offset
 ** @param [r] seq [const AjPSeq] original trimmed sequence
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void splitter_write(AjPSeqout default_seqout,
-                           AjPSeq subseq, ajint start,
-			   ajint end, const AjPSeq seq)
+                           AjPSeq subseq, const AjPSeq seq)
 {
   /* set the description of the subsequence */
   ajSeqAssignDescS(subseq, ajSeqGetDescS(seq));
@@ -187,7 +183,7 @@ static void splitter_write(AjPSeqout default_seqout,
   /* set the type of the subsequence */
   ajSeqType(subseq);
 
-  ajSeqAllWrite (default_seqout, subseq);
+  ajSeqoutWriteSeq(default_seqout, subseq);
 
   return;
 }
@@ -198,24 +194,24 @@ static void splitter_write(AjPSeqout default_seqout,
 **
 ** @param [w] name_ptr [AjPStr*] Undocumented
 ** @param [r] seq [const AjPSeq] Undocumented
-** @param [r] start [ajint] Undocumented
-** @param [r] end [ajint] Undocumented
+** @param [r] start [ajuint] Undocumented
+** @param [r] end [ajuint] Undocumented
 **
 ******************************************************************************/
 
 static void splitter_MakeSubSeqName (AjPStr * name_ptr,
-                                     const AjPSeq seq, ajint start,
-                                     ajint end)
+                                     const AjPSeq seq, ajuint start,
+                                     ajuint end)
 {
   AjPStr value = ajStrNew();
 
   /* create a nice name for the subsequence */
   ajStrAssignS(name_ptr, ajSeqGetNameS(seq));
   ajStrAppendC(name_ptr, "_");
-  ajStrFromInt(&value, ajSeqGetBegin(seq)+start);
+  ajStrFromUint(&value, ajSeqGetBegin(seq)+start);
   ajStrAppendS(name_ptr, value);
   ajStrAppendC(name_ptr, "-");
-  ajStrFromInt(&value, ajSeqGetBegin(seq)+end);
+  ajStrFromUint(&value, ajSeqGetBegin(seq)+end);
   ajStrAppendS(name_ptr, value);
 
   ajStrDel(&value);
@@ -227,15 +223,15 @@ static void splitter_MakeSubSeqName (AjPStr * name_ptr,
 **
 ** @param [u] seqout [AjPSeqout] Undocumented
 ** @param [r] seq [const AjPSeq] Undocumented
-** @param [r] start [ajint] Undocumented
-** @param [r] end [ajint] Undocumented
+** @param [r] start [ajuint] Undocumented
+** @param [r] end [ajuint] Undocumented
 ** @param [r] name [const AjPStr] Undocumented
 ** @param [r] feature [AjBool] Undocumented
 **
 ******************************************************************************/
 
 static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
-                                   ajint start, ajint end, const AjPStr name,
+                                   ajuint start, ajuint end, const AjPStr name,
                                    AjBool feature)
 {
   AjPStr str = ajStrNew();
@@ -255,7 +251,7 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
   if (feature)
     splitter_AddSubSeqFeat(subseq->Fttable,start,end,seq);
   ajSeqAssignNameS(subseq, name);
-  splitter_write(seqout,subseq,start,end,seq);
+  splitter_write(seqout,subseq,seq);
 
   ajStrDel(&str);
   ajSeqDel(&subseq);
@@ -270,14 +266,14 @@ static void splitter_ProcessChunk (AjPSeqout seqout, const AjPSeq seq,
 ** Undocumented
 **
 ** @param [u] ftable [AjPFeattable] Undocumented
-** @param [r] start [ajint] Undocumented
-** @param [r] end [ajint] Undocumented
+** @param [r] start [ajuint] Undocumented
+** @param [r] end [ajuint] Undocumented
 ** @param [r] oldseq [const AjPSeq] Undocumented
 **
 ******************************************************************************/
 
-static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajint start,
-                                   ajint end, const AjPSeq oldseq)
+static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajuint start,
+                                   ajuint end, const AjPSeq oldseq)
 {
   AjPFeattable old_feattable = NULL;
   AjIList iter = NULL;

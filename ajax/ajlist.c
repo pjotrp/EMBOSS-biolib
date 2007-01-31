@@ -51,7 +51,7 @@
 
 static ajint listNewCnt     = 0;
 static ajint listDelCnt     = 0;
-static ajint listMaxNum     = 0;
+static ajuint listMaxNum     = 0;
 static ajint listNodeCnt    = 0;
 static ajint listIterNewCnt = 0;
 static ajint listIterDelCnt = 0;
@@ -190,7 +190,7 @@ void ajListstrPush(AjPList thys, AjPStr x)
 
 void ajListTrace(const AjPList thys)
 {
-    ajint i = 0;
+    ajuint i = 0;
     AjPListNode node;
 
     if(!thys)
@@ -240,7 +240,7 @@ void ajListTrace(const AjPList thys)
 
 void ajListstrTrace(const AjPList thys)
 {
-    ajint i = 0;
+    ajuint i = 0;
     AjPListNode node;
 
     if(!thys)
@@ -593,11 +593,11 @@ AjPList ajListCopy(const AjPList thys)
 **
 ** @param [r] thys [const AjPList] list to be copied
 ** @param [u] newlist [AjPList] (empty) target list
-** @return [ajint] number of nodes.
+** @return [ajuint] number of nodes.
 ** @@
 ******************************************************************************/
 
-ajint ajListstrClone(const AjPList thys, AjPList newlist)
+ajuint ajListstrClone(const AjPList thys, AjPList newlist)
 {
     AjPListNode node;
     ajint ret = 0;
@@ -684,19 +684,19 @@ AjBool ajListLast(const AjPList thys, void** x)
 ** Set pointer to last node's nth data item. 0 <= n < number of elements.
 **
 ** @param [r] thys [const AjPList] List
-** @param [r] n [ajint] element of the list
+** @param [r] n [ajuint] element of the list
 ** @param [w] x [void**] pointer to pointer to data
 ** @return [AjBool] ajTrue on success.
 ** @@
 ******************************************************************************/
 
-AjBool ajListNth(const AjPList thys, ajint n, void** x)
+AjBool ajListNth(const AjPList thys, ajuint n, void** x)
 {
     AjPListNode rest;
-    ajint len;
-    ajint i;
+    ajuint len;
+    ajuint i;
 
-    if(!thys || n<0)
+    if(!thys)
 	return ajFalse;
 
     len = ajListLength(thys);
@@ -947,11 +947,11 @@ void ajListstrReverse(AjPList thys)
 ** get the number of nodes in the linked list.
 **
 ** @param [r] thys [const AjPList] List
-** @return [ajint] Number of nodes in list.
+** @return [ajuint] Number of nodes in list.
 ** @@
 ******************************************************************************/
 
-ajint ajListLength(const AjPList thys)
+ajuint ajListLength(const AjPList thys)
 {
     if(!thys)
 	return 0;
@@ -967,11 +967,11 @@ ajint ajListLength(const AjPList thys)
 ** get the number of nodes in the linked list.
 **
 ** @param [r] thys [const AjPList] List
-** @return [ajint] Number of nodes in list.
+** @return [ajuint] Number of nodes in list.
 ** @@
 ******************************************************************************/
 
-ajint ajListstrLength(const AjPList thys)
+ajuint ajListstrLength(const AjPList thys)
 {
     return ajListLength(thys);
 }
@@ -1070,7 +1070,9 @@ void ajListstrFree(AjPList* pthis)
 	    ajStrDel((AjPStr*) &(*rest)->Item);
 	    AJFREE(*rest);
 	}
+	ajStrDel((AjPStr*) &(*rest)->Item);
     }
+
 
     AJFREE(*rest);
     AJFREE(*pthis);
@@ -1266,11 +1268,11 @@ void ajListstrMapRead(const AjPList thys,
 **
 ** @param [r] thys [const AjPList] List
 ** @param [w] array [void***] Array of pointers to list items.
-** @return [ajint] Size of array of pointers.
+** @return [ajuint] Size of array of pointers.
 ** @@
 ******************************************************************************/
 
-ajint ajListToArray(const AjPList thys, void*** array)
+ajuint ajListToArray(const AjPList thys, void*** array)
 {
     ajint i;
     ajint n;
@@ -1309,11 +1311,11 @@ ajint ajListToArray(const AjPList thys, void*** array)
 ** @param [r] thys [const AjPList] List
 ** @param [w] array [AjPStr**] Array of Strings.
 **
-** @return [ajint] Size of array of pointers.
+** @return [ajuint] Size of array of pointers.
 ** @@
 ******************************************************************************/
 
-ajint ajListstrToArray(const AjPList thys, AjPStr** array)
+ajuint ajListstrToArray(const AjPList thys, AjPStr** array)
 {
     ajint i;
     ajint n;
@@ -1350,12 +1352,12 @@ ajint ajListstrToArray(const AjPList thys, AjPStr** array)
 ** @param [r] thys [const AjPList] List
 ** @param [w] array [AjPStr**] Array of Strings.
 **
-** @return [ajint] Size of array of pointers.
+** @return [ajuint] Size of array of pointers.
 **
 ** @@
 ******************************************************************************/
 
-ajint ajListstrToArrayApp(const AjPList thys, AjPStr** array)
+ajuint ajListstrToArrayApp(const AjPList thys, AjPStr** array)
 {
     ajint i;
     ajint n;
@@ -1509,7 +1511,7 @@ AjIList ajListIterRead(const AjPList thys)
 	return NULL;
 
     AJNEW0(iter);
-    iter->Head = (AjPList) thys;
+    iter->ReadHead = thys;
     iter->Back = ajFalse;
     iter->Here = thys->First;
     iter->Orig = thys->First;
@@ -1589,7 +1591,7 @@ AjIList ajListIterBackRead(const AjPList thys)
     thys->Last->Prev = tmp;
 
     AJNEW0(iter);
-    iter->Head = (AjPList) thys;
+    iter->ReadHead = thys;
     iter->Back = ajTrue;
     iter->Here = tmp->Next;
     iter->Modify = ajFalse;
@@ -1823,12 +1825,18 @@ void ajListRemove(AjIList iter)
 
     /* ajDebug("ajListRemove\n");*/
 
+    if(!iter->Modify)
+    {
+	ajDie("Attempt to modify read-only iterator with ajListRemove\n");
+	return;
+    }
+
     p = iter->Here;
 
     if(!iter->Back)
     {
 	if(!p->Prev)
-	    ajFatal("Attempt to delete from unused iterator\n");
+	    ajDie("Attempt to delete from unused iterator\n");
 
 	if(!p->Prev->Prev)
 	    listNodeDel(&(iter->Head->First));
@@ -2088,14 +2096,21 @@ static AjPListNode listDummyNode(AjPListNode *pnode)
 
 void ajListIterTrace(const AjIList thys)
 {
+    ajuint icount = 0;
+
     if(!thys) {
 	ajDebug("\nIterator NULL\n");
 	return;
     }
 
-    ajDebug("\nIterator Head %x Here %x Back %B Modify %B Len: %d\n",
-	    thys->Head,thys->Here,thys->Back,
-	    thys->Modify, thys->Head->Count);
+    if(thys->Head)
+	icount = thys->Head->Count;
+    else if(thys->ReadHead)
+	icount = thys->ReadHead->Count;
+
+    ajDebug("\nIter Head %x ReadHead %x Here %x Back %B Modify %B Len: %d\n",
+	    thys->Head,thys->ReadHead,thys->Here,thys->Back,
+	    thys->Modify, icount);
 
     return;
 }
@@ -2117,8 +2132,9 @@ void ajListstrIterTrace(const AjIList thys)
     if(!thys)
 	return;
 
-    ajDebug("\nIterator Head %x Here %x Back %B Item %S\n",
-	    thys->Head, thys->Here,thys->Back,(AjPStr)thys->Here->Item);
+    ajDebug("\nIterator Head %x ReadHead %x Here %x Back %B Item %S\n",
+	    thys->Head, thys->ReadHead, thys->Here,thys->Back,
+	    (AjPStr)thys->Here->Item);
 
     return;
 }
@@ -2492,20 +2508,18 @@ void ajListDummyFunction(void** array)
 ** @@
 ******************************************************************************/
 
-void ajListGarbageCollect(AjPList list, void (*destruct)(const void **),
+void ajListGarbageCollect(AjPList list, void (*destruct)(void **),
 			  AjBool (*compar)(const void *))
 {
     AjIList iter = NULL;
     void    *ret;
-    const void **rret;
 
 
     iter = ajListIter(list);
     while((ret=ajListIterNext(iter)))
 	if(compar(ret))
 	{
-	    rret = (const void **)&ret;
-	    destruct(rret);
+	    destruct(&ret);
 	    ajListRemove(iter);
 	}
 

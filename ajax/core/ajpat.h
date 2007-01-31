@@ -40,15 +40,15 @@ typedef struct AjSPatBYPNode
 ** @alias AjOPatComp
 **
 ** @attr pattern [AjPStr] Prosite pattern string
-** @attr type [ajint] Prosite pattern compile type
-** @attr plen [ajint] Prosite pattern length
-** @attr buf [ajint*] Buffer for BMH search
+** @attr type [ajuint] Prosite pattern compile type
+** @attr plen [ajuint] Prosite pattern length
+** @attr buf [ajint*] Buffer for BMH search (can be -1)
 ** @attr off [AjOPatBYPNode[AJALPHA]] Offset buffer for B-Y/P search
 ** @attr sotable [ajuint*] Buffer for SHIFT-OR
 ** @attr solimit [ajuint] Limit for BMH search
-** @attr m [ajint] Real length of pattern (from embPatGetType)
+** @attr m [ajuint] Real length of pattern (from embPatGetType)
 ** @attr regex [AjPStr] PCRE regexp string
-** @attr skipm [ajint**] Skip buffer for Tarhio-Ukkonen
+** @attr skipm [ajuint**] Skip buffer for Tarhio-Ukkonen
 ** @attr amino [AjBool] Must match left begin
 ** @attr carboxyl [AjBool] Must match right
 **
@@ -58,15 +58,15 @@ typedef struct AjSPatBYPNode
 typedef struct AjSPatComp
 {
     AjPStr pattern;
-    ajint type;
-    ajint plen;
+    ajuint type;
+    ajuint plen;
     ajint* buf;
     AjOPatBYPNode off[AJALPHA];
     ajuint* sotable;
     ajuint solimit;
-    ajint m;
+    ajuint m;
     AjPStr regex;
-    ajint** skipm;
+    ajuint** skipm;
     AjBool amino;
     AjBool carboxyl;
 } AjOPatComp;
@@ -191,7 +191,7 @@ typedef struct AjSPatlistSeq {
 **
 ** @attr Patlist [AjPList] List for patterns.
 ** @attr Iter [AjIList] List iterator.
-** @attr Type [ajint] Type of expression
+** @attr Type [ajuint] Type of expression
 **
 ** @new ajPatlistNew Default constructor.
 ** @delete ajPatlistDel Default destructor.
@@ -207,7 +207,7 @@ typedef struct AjSPatlistSeq {
 typedef struct AjSPatlistRegex {
   AjPList Patlist;
   AjIList Iter;
-  ajint Type;
+  ajuint Type;
 } AjOPatlistRegex;
 
 #define AjPPatlistRegex AjOPatlistRegex*

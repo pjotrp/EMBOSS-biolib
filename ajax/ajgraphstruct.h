@@ -13,10 +13,10 @@
 ** @attr type [ajint] Object type in AjEGraphObjectTypes
 ** @attr colour [ajint] See AjEGraphColour for plplot colours
 ** @attr text [AjPStr] Text to plot
-** @attr x1 [float] x start
-** @attr x2 [float] x end
-** @attr y1 [float] y start
-** @attr y2 [float] y end
+** @attr xx1 [float] x start
+** @attr xx2 [float] x end
+** @attr yy1 [float] y start
+** @attr yy2 [float] y end
 ** @attr next [struct AjSGraphPlpObj*] link to next object in the list
 ** @@
 ******************************************************************************/
@@ -25,10 +25,10 @@ typedef struct AjSGraphPlpObj {
   ajint type;
   ajint colour;
   AjPStr text;
-  float x1;
-  float x2;
-  float y1;
-  float y2;
+  float xx1;
+  float xx2;
+  float yy1;
+  float yy2;
   struct AjSGraphPlpObj *next;
 } AjOGraphPlpObj;
 #define AjPGraphPlpObj AjOGraphPlpObj*

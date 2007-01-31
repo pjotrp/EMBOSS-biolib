@@ -311,7 +311,7 @@ static AjPTable redata_supply_table(AjPFile inf)
 	while((c=*q)==' ' || c=='\t' || c=='\n')
 	    ++q;
 	value=ajStrNewC(q);
-	ajTablePut(t,(const void *)key, (void *)value);
+	ajTablePut(t,(void *)key, (void *)value);
     }
 
     ajStrDel(&line);

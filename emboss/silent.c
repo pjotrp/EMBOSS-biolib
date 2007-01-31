@@ -74,6 +74,7 @@ typedef struct AjSRinfo
 ** @attr issilent [AjBool] Undocumented
 ** @attr obase [char] Undocumented
 ** @attr nbase [char] Undocumented
+** @attr Padding [char[2]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct AjSSilent
@@ -87,6 +88,7 @@ typedef struct AjSSilent
     AjBool issilent;
     char   obase;
     char   nbase;
+    char Padding[2];
 } AjOSilent;
 #define AjPSilent AjOSilent*
 
@@ -818,5 +820,5 @@ static void silent_split_hits(AjPList *hits, AjPList *silents,
 
 static ajint silent_basecompare(const void *a, const void *b)
 {
-    return((*(AjPSilent *)a)->base)-((*(AjPSilent *)b)->base);
+    return((*(AjPSilent const *)a)->base)-((*(AjPSilent const *)b)->base);
 }

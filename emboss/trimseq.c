@@ -96,10 +96,10 @@ int main(int argc, char **argv)
 
 	ajStrKeepRange(&str, start, end);
 	ajSeqAssignSeqS(seq, str);
-	ajSeqAllWrite(seqout, seq);
+	ajSeqoutWriteSeq(seqout, seq);
     }
 
-    ajSeqWriteClose(seqout);
+    ajSeqoutClose(seqout);
 
     ajStrDel(&str);
     ajSeqallDel(&seqall);

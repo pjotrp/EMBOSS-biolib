@@ -23,7 +23,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: fold.c,v 1.3 2006/07/03 15:23:07 rice Exp $";
+static char rcsid[] UNUSED = "$Id: fold.c,v 1.4 2007/01/31 12:47:07 rice Exp $";
 
 #define PAREN
 
@@ -60,6 +60,8 @@ inline PRIVATE  int oldLoopEnergy(int i, int j, int p, int q, int type, int type
 inline int  LoopEnergy(int n1, int n2, int type, int type_2,
 			 int si1, int sj1, int sp1, int sq1);
 inline int  HairpinE(int size, int type, int si1, int sj1, const char *string);
+void export_fold_arrays(int **f5_p, int **c_p, int **fML_p, int **fM1_p, 
+			int **indx_p, char **ptype_p);
 
 #define MAXSECTORS      500     /* dimension for a backtrack array */
 #define LOCALITY        0.      /* locality parameter for base-pairs */

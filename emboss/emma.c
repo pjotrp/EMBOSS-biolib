@@ -91,7 +91,7 @@ int main(int argc, char **argv, char **env)
     AjPSeqout fil_file = NULL;
     AjPSeq seq;
 
-    char* prog_default = "clustalw";
+    const char* prog_default = "clustalw";
     AjPStr cmd = NULL;
     AjPStr tmp;
     AjPStr tmpFilename;
@@ -206,7 +206,7 @@ int main(int argc, char **argv, char **env)
 
     fil_file = ajSeqoutNew();
     tmpFilename = ajStrNewRef( emma_getUniqueFileName());
-    if(!ajSeqFileNewOut( fil_file, tmpFilename))
+    if(!ajSeqoutOpenFilename( fil_file, tmpFilename))
 	ajExit();
 
     /* Set output format to fasta */
@@ -221,10 +221,10 @@ int main(int argc, char **argv, char **env)
         */
 	if (!nb)
 	    are_prot  = ajSeqIsProt(seq);
-        ajSeqWrite(fil_file, seq);
+        ajSeqoutWriteSeq(fil_file, seq);
 	++nb;
     }
-    ajSeqWriteClose(fil_file);
+    ajSeqoutClose(fil_file);
 
     if(nb < 2)
 	ajFatal("Multiple alignments need at least two sequences");
@@ -410,10 +410,10 @@ int main(int argc, char **argv, char **env)
 	seqset = ajSeqsetNew();
 	if(ajSeqsetRead(seqset, seqin))
 	{
-	    ajSeqsetWrite(seqout, seqset);
+	    ajSeqoutWriteSet(seqout, seqset);
 
 
-	    ajSeqWriteClose(seqout);
+	    ajSeqoutClose(seqout);
 	    ajSeqinDel(&seqin);
 
 	    /* remove the Usa from the start of the string */
@@ -459,7 +459,7 @@ int main(int argc, char **argv, char **env)
 ** @@
 ******************************************************************************/
 
-static AjPStr emma_getUniqueFileName()
+static AjPStr emma_getUniqueFileName(void)
 {
     static char ext[2] = "A";
     AjPStr filename    = NULL;

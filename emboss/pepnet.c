@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     ajStrFmtUpper(&strand);
     ajStrAssignSubC(&substr,ajStrGetPtr(strand),begin-1,end-1);
 
-    ajGraphSetTitlePlus(graph, ajSeqGetUsa(seq));
+    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
     ajGraphSetBackWhite();
 

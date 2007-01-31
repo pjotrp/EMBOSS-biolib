@@ -28,7 +28,7 @@
 #include "fold_vars.h"
 #include "pair_mat.h"
 /*@unused@*/
-static const char rcsid[] = "$Id: inverse.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static const char rcsid[] = "$Id: inverse.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
 #define PUBLIC
 #define PRIVATE static
 PRIVATE double  adaptive_walk(char *start, const char *target);
@@ -39,6 +39,8 @@ PRIVATE void   make_pairset(void);
 PRIVATE double  mfe_cost(const char *, char*, const char *);
 PRIVATE double  pf_cost(const char *, char *, const char *);
 PRIVATE char  *aux_struct(const char* structure );
+PUBLIC float inverse_fold(char *start, char *structure);
+PUBLIC float inverse_pf_fold(char *start, char *target);
 
 /* for backward compatibility, make sure symbolset can hold 20 characters */
 PRIVATE char   default_alpha[21] = "AUGC"; 

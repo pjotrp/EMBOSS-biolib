@@ -14,13 +14,13 @@ extern "C"
 ** @alias AjPDate
 **
 ** @attr time [struct tm] Time in C standard structure
-** @attr format [char*] Format string if specified
+** @attr format [const char*] Format string if specified
 ** @@
 ******************************************************************************/
 
 typedef struct AjSTime {
   struct tm time;
-  char *format;
+  const char *format;
 } AjOTime, AjODate;
 
 #define AjPTime AjOTime*
