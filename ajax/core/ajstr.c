@@ -82,8 +82,8 @@ static char* strParseCp = NULL;
 /* ======================== private functions ========================= */
 /* ==================================================================== */
 
-static AjPStr strNew(size_t size);
-static void   strCloneL(AjPStr* pthis, size_t size);
+static AjPStr strNew(ajuint size);
+static void   strCloneL(AjPStr* pthis, ajuint size);
 
 static ajlong strAlloc     = 0;
 static ajlong strFree      = 0;

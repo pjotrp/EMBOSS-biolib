@@ -623,7 +623,7 @@ __deprecated AjBool      ajStrMatchWord   (const AjPStr str, const AjPStr text);
 __deprecated AjBool      ajStrMatchWordCC (const char* str, const char* text);
 __deprecated AjBool      ajStrMod (AjPStr* pthis);
 __deprecated AjBool      ajStrModL (AjPStr* pthis, size_t size);
-__deprecated AjBool      ajStrModMinL (AjPStr* pthis, size_t size);
+__deprecated AjBool      ajStrModMinL (AjPStr* pthis, ajuint size);
 __deprecated AjPStr      ajStrNewL (size_t size);
 __deprecated AjBool      ajStrMatch(const AjPStr str, const AjPStr str2);
 __deprecated AjBool      ajStrMatchCase(const AjPStr str, const AjPStr str2);
