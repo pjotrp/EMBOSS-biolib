@@ -848,7 +848,7 @@ char* ajSysStrtokR(char *s, const char *t,  char **ptrptr,
 char* ajSysFgets(char *buf, int size, FILE *fp)
 {
 #ifdef __ppc__
-    int c;
+    int c = 0;
     char *p;
     int cnt;
 
