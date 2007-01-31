@@ -8,18 +8,13 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/eLfold.c)
 AM_INIT_AUTOMAKE(VIENNA, 1.6)
 
-dnl AC_DEFINE(PLD_png,,keep autoheader happy)
-
-dnl create a config.h file (Automake will add -DHAVE_CONFIG_H)
-dnl AC_CONFIG_HEADERS([config.h])
-
-
 AC_PROG_AWK
 dnl Make sure CFLAGS is defined to stop AC_PROC_CC adding -g
 CFLAGS="$CFLAGS "
 AC_PROG_CC
 AC_PROG_CPP
 
+dnl Vienna only ... too many of these in the original code
 if test "$GCC" = yes; then
    AC_DEFINE(UNUSED, __attribute__ ((unused)), avoid warning about unused variab
 les)
@@ -143,7 +138,6 @@ dnl Test for FreeBSD optimisation
 if test "`uname`" = "FreeBSD"; then
 CFLAGS="$CFLAGS -O2"
 fi
-
 
 else
 CFLAGS="$CFLAGS -O2"
@@ -391,7 +385,7 @@ dnl set "-g"
 AC_MSG_CHECKING(for purify)
 #if(purify -version) < /dev/null > /dev/null 2>&1; then
    AC_ARG_ENABLE(purify,
-   [  --enable-purify          purify ])
+   [  --enable-purify         purify ])
 if test "${enable_purify}" = "yes" ; then
      CC="purify --chain-length="20" -best-effort -windows=yes gcc -g"
      LIBTOOL="$LIBTOOL --tag=CC"
@@ -402,9 +396,9 @@ fi
 #fi
 
 
-dnl Test if --enable-debug given
+dnl Test if --enable-warnings given
 AC_ARG_ENABLE(warnings,
-[  --enable-warnings          warnings (-Wall option on compiler)])
+[  --enable-warnings       warnings (-Wall option on gcc compiler)])
 if test "${enable_warnings}" = "yes" ; then
   CFLAGS="$CFLAGS -Wall -fno-strict-aliasing"
 fi          
@@ -416,6 +410,15 @@ if test "$CC" = "cc"; then
   esac
 fi
 AM_CONDITIONAL(PURIFY, test "${enable_purify}" = "yes")
+
+dnl Test if --enable-devwarnings given
+AC_ARG_ENABLE(devwarnings,
+[  --enable-devwarnings    developer warnings (for prototypes on gcc compiler)])
+if test "${enable_devwarnings}" = "yes" ; then
+if test "$CC" = "gcc"; then
+  CFLAGS="$CFLAGS -Wstrict-prototypes -Wmissing-prototypes"
+fi
+fi          
 
 dnl test for cygwin to set AM_LDFLAGS in library & apps Makefile.ams
 AJOSNAME=`uname`
@@ -437,11 +440,6 @@ AM_CONDITIONAL(ISSHARED, test "${enable_shared}" = "yes")
 AC_SUBST(ISAIXIA64)
 
 if test "`uname`" = "AIX"; then
-
-#if test "$host_os" = "aix5.1.0.0"; then
-#	echo $host_os
-#	exit 0
-#fi
 case $host_os in
 	aix5*) needajax=no ;;
 	aix4.3.3*) needajax=yes ;;
