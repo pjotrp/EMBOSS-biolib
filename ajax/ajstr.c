@@ -2010,7 +2010,7 @@ AjPStr ajStrNewResLenC(const char* txt, ajuint size, ajuint len)
 
     minlen = size;
 
-    if((size <= len) || (size == NPOS))
+    if(size <= len)
 	minlen = len+1;
 
     thys = strNew(minlen);
