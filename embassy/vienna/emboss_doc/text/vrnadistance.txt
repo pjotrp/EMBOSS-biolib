@@ -130,6 +130,7 @@ Known bugs
 See also
 
     Program name                       Description
+   einverted      Finds DNA inverted repeats
    vrnaalifold    RNA alignment folding
    vrnaalifoldpf  RNA alignment folding with partition
    vrnacofold     RNA cofolding

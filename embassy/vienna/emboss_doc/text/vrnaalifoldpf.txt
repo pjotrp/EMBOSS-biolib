@@ -431,6 +431,7 @@ Known bugs
 See also
 
     Program name                       Description
+   einverted      Finds DNA inverted repeats
    vrnaalifold    RNA alignment folding
    vrnacofold     RNA cofolding
    vrnacofoldconc RNA cofolding with concentrations

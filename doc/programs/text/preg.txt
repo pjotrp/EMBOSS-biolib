@@ -671,7 +671,7 @@ Command line arguments
    Standard (Mandatory) qualifiers:
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
-  [-pattern]           regexp     Any regular epression pattern is accepted
+  [-pattern]           regexp     Any regular expression pattern is accepted)
   [-outfile]           report     [*.preg] Output report file name
 
    Additional (Optional) qualifiers: (none)

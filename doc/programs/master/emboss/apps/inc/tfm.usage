@@ -205,6 +205,22 @@ emnu             Simple menu of EMBOSS applications
 
 NUCLEIC 2D STRUCTURE
 einverted        Finds DNA inverted repeats
+vrnaalifold      RNA alignment folding
+vrnaalifoldpf    RNA alignment folding with partition
+vrnacofold       RNA cofolding
+vrnacofoldconc   RNA cofolding with concentrations
+vrnacofoldpf     RNA cofolding with partitioning
+vrnadistance     RNA distances
+vrnaduplex       RNA duplex calculation
+vrnaeval         RNA eval
+vrnaevalpair     RNA eval with cofold
+vrnafold         Calculate secondary structures of RNAs
+vrnafoldpf       Secondary structures of RNAs with partition
+vrnaheat         RNA melting
+vrnainverse      RNA sequences matching a structure
+vrnalfold        Calculate locally stable secondary structures of RNAs
+vrnaplot         Plot vrnafold output
+vrnasubopt       Calculate RNA suboptimals
 
 NUCLEIC CODON USAGE
 cai              CAI codon adaptation index

@@ -2,6 +2,11 @@
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Program name</th><th>Description</th></tr>
 <tr>
+<td><a href="/emboss/apps/einverted.html">einverted</a></td>
+<td>Finds DNA inverted repeats</td>
+</tr>
+
+<tr>
 <td><a href="vrnaalifoldpf.html">vrnaalifoldpf</a></td>
 <td>RNA alignment folding with partition</td>
 </tr>

@@ -50,7 +50,7 @@
                                   documentation for more information. (Values:
                                   1 (Family classification scheme); 2 ((Not
                                   yet available)))
-  [-hitsoutfile]       outfile    [hits.dhf] This option specifies the name of
+  [-hitsoutfile]       outfile    [*.rocon] This option specifies the name of
                                   the hits files (output). A 'hits
                                   file'contains a list of hits (e.g. from a
                                   prediction method) that are classified and
