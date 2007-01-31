@@ -1,4 +1,33 @@
 Version 4.1.0
+	Showseq with a sequence end position now stops output at the end
+	of the user-specified range, Previous releases printed the whole
+	of the line with the last base/residue.
+	
+	SRS servers use "gid" as the field name for GI numbers. The field
+	name has been changed to allow GI searches with local SRS and
+	remote SRSWWW access to Genbank.
+
+	A new configure option for developers --enable-devwarnings
+	turns on many more warning messages from the gcc compiler. Not all
+	warnings are useful - the less useful gcc options are documented
+	(and commented out) in the configure.in file devwarnings section.
+	Warnings include missing function prototypes, signed/unsigned
+	comparisons, potential loss of precision in casts, use of global
+	names (index for example) as variables.
+
+	Function names in ajseqwrite.c have been standardised. Old names are
+	still accepted but are marked as "deprecated" and will generate
+	warnings with the gcc compiler (see ajstr below). Other compilers
+	will see no difference.
+
+	Edialign is a new application, a port of the DIALIGN2 program by
+	B. Morgenstern, using an ACD file written by Guy Bottu.  It takes
+	as input nucleic acid or protein sequences and produces as output
+	a multiple sequence alignment. The sequences need not be similar
+	over their complete length, since the program constructs
+	alignments from gapfree pairs of similar segments of the
+	sequences.
+	
 	Wordfinder is a new application to find word-based matches of
 	limited size. It is based on code from supermatcher. The inputs
 	are reversed so the query sequence set (unaligned) is compared to
@@ -34,7 +63,7 @@ Version 4.1.0
 	string functions as they are only testing that a sequence is
 	entirely composed of characteres from an allowed set. An
 	additional speedup was achieved by defining only upper case
-	characters as required (almost halving the nuber of tests) and
+	characters as required (almost halving the number of tests) and
 	testing the upper case version of the sequence characters.
 
 	Sequence translation in the reverse direction adds extra amino
