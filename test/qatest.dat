@@ -2364,7 +2364,6 @@ FP /^Codons not appearing   = 0\n/
 
 ID codcopy-ex
 AP codcopy
-DL keep
 IN Eecoli.cut
 IN
 FI stderr
@@ -8491,6 +8490,37 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
+ID edialign-ex
+AP edialign
+IN ../../data/vtest.seq
+IN
+IN
+FI vtest.fasta
+FC = 12
+FP /ldtapC-LFSDGSPQKAAYVLWDQTILQQDITPLPSHethsaqkgELLAliCglraAKPW\n/
+FP /pghqkghsaeargnrmADQAARKAAITETPDTSTLL-----\n/
+FP /rpgl-CqVFADATPTGWGLVMGHQRMRGTFSAPLPIHta------ELLAa-Cf---ARSR\n/
+FP /SGANIIg-----------------------------------------------------\n/
+FP /----------------TDNSGRTSLYADSPSVPSHLpdrvh\n/
+FP 3 /^>/
+FI vtest.edialign
+FC = 76
+FP 4 /^HTL2 +/
+FP /HTL2 +1   ldtapC-LFS DGSPQKAAYV LWDQTILQQD ITPLPSHeth saqkgELLAl \n/
+FP / +0000000999 9999999999 9999999999 9999999000 0000000000 \n/
+FP / +0000000000 0077777777 7000000000 0000000000 0000000000 \n/
+FP / +0000000000 0000000000 0000000000 0000001111 1111111111 \n/
+FP / +1111110000 0 \n/
+FP /\n/
+FP /\n/
+FP /\n/
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 ID einverted-ex
 AP einverted
 ##
@@ -10503,7 +10533,7 @@ FP 0 /Died: /
 FI makeseq.fasta
 FC = 300
 FP 100 /^>EMBOSS_[0-9][0-9][0-9]/
-FP /\A>EMBOSS_001\ngggcgtctg.*gtcaacttc\ngcgcggcag.*gtgcgcgaa\n/
+FP /\A>EMBOSS_001\ngggcgtctg.*gtcaacttc\ngcgcggcag.*gtgcgcg\n/
 //
 
 ID pepstats-keep
@@ -11861,7 +11891,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 1hmp_a.psiphi 
-FZ = 3990
+FZ = 3996
 FP /     56      56     0\.0  \-139\.15   162\.01\n/
 //
 
@@ -11874,15 +11904,16 @@ PP EMBOSS_DATA=./
 PP export EMBOSS_DATA
 IN ../../data/withrefm
 IN ../../data/proto
-FI embossre.equ
-FZ = 76
-FP 1 /BshI HaeIII/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 DI REBASE
+DF embossre.enz
+DF embossre.equ
+DF embossre.ref
+DF embossre.sup
 //
 
 ID recoder-ex
@@ -12019,7 +12050,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.remap
-FZ = 2057
+FZ = 2410
 FP /^\s+TaqI\s+1\s+\n/
 //
 
@@ -16392,7 +16423,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.showseq 
-FZ = 793
+FZ = 729
 FP 2 /^\s+\|=+\|\n\s+promoter note="/
 OC Note that although we asked for the sequence display to end at
 OC position '100', it has displayed the sequence up to the end of the line
@@ -16433,8 +16464,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.showseq 
-FZ = 143
+FZ = 123
 FP /^          ggtacc/
+FP /^          ctacctggcgagcctggagcacgagcgggttcgcttcgta\n/
 //
 
 ID showseq-ex4
@@ -16448,7 +16480,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI rs24_fugru.showseq
-FZ = 990
+FZ = 892
 FP /^          MAATVT/
 //
 
@@ -16463,7 +16495,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.showseq 
-FZ = 232
+FZ = 212
 FP /^        1 ggtacc/
 //
 
@@ -16478,7 +16510,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.showseq 
-FZ = 233
+FZ = 213
 FP /^      123 ggtacc/
 //
 
@@ -16493,8 +16525,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.showseq 
-FZ = 225
+FZ = 205
 FP /tgctCGAT/
+FP /^          ggtaccgctggccgagcatctgctCGATCACCACCAGCCGGGCGAcgggaactgcacgat\n/
+FP /^          ctacctggcgagcctggagcacgagcgggttcgcttcgta\n/
 //
 
 ID showseq-ex8
@@ -16633,7 +16667,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.sixpack
-FZ = 25535
+FZ = 25376
 FP /^          P  P  A  W  A  G  D  R  S  H  E  R  Q  L  A  A  R  Q  P  A     F1\n/
 FP /^           R  Q  H  G  R  G  T  A  P  M  S  A  N  S  L  L  G  S  L  R    F2\n/
 FP /^            A  S  M  G  G  G  P  L  P  [*]  A  P  T  R  C  S  A  A  C  A   F3\n/
@@ -16657,7 +16691,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI paamir.sixpack
-FZ = 25535
+FZ = 25376
 FP /^          P  P  A  W  A  G  D  R  S  H  E  R  Q  L  A  A  R  Q  P  A     F1\n/
 FP /^           R  Q  H  G  R  G  T  A  P  M  S  A  N  S  L  L  G  S  L  R    F2\n/
 FP /^            A  S  M  G  G  G  P  L  P  [*]  A  P  T  R  C  S  A  A  C  A   F3\n/
@@ -17509,6 +17543,31 @@ FI rnu68037.wordcount
 FZ = 432
 FP /\Actg\s+54\n/
 FP /^aaa\s+1\Z/
+//
+
+ID wordfinder-ex
+TI 400
+AP wordfinder
+CL tembl:eclac tembl:ec* -word 50 
+IN
+IN 3.0
+IN
+FI stderr
+FC = 6
+FP 4 /^Target [0-9]+ EC[A-Z]+ matches 1\n/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout 
+FZ = 0
+FI wordfinder.error
+FC = 0
+FI eclac.wordfinder
+FZ > 71230
+FP /^ECLAC +1 /
+FP /^# Score: 37385\.0/
+FP 5 /^# Score: /
+FP /^ECLACA +1801 [acgt]+ +1832\n/
 //
 
 ID wordmatch-ex
@@ -20758,15 +20817,15 @@ FP 3 /^SECBOTH/
 FP /^SECBOTH        1 1 VAL 78 ILE 81\n/
 FI 1cs4.ccf
 FC = 537
-FZ = 51353
+FZ = 51361
 FP 475 /^AT /
 FI 1ii7.ccf
 FC = 462
-FZ = 44215
+FZ = 44223
 FP 402 /^AT /
 FI 2hhb.ccf
 FC = 5398
-FZ = 533145
+FZ = 533177
 FP 4779 /^AT /
 //
 
@@ -20795,15 +20854,15 @@ FP 1 /^DUPATOMRES/
 FP 5 /^BADINDEX/
 FI 1fx2.ccf
 FC = 2399
-FZ = 235421
+FZ = 235429
 FP 2141 /^AT /
 FI 4at1.ccf
 FC = 8134
-FZ = 808387
+FZ = 808419
 FP 7170 /^AT /
 FI 1cs4.ccf
 FC = 6610
-FZ = 654080
+FZ = 654104
 FP 5843 /^AT /
 //
 
@@ -20847,16 +20906,16 @@ FP 3 /naccess: using defualt vdw.radii\n/
 FP 3 /naccess: using default STD FILE\n/
 FI 1cs4.ccf
 FC = 537
-FZ = 51353
-FP /^SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
+FZ = 51361
+FP /^SQ   SEQUENCE    52 AA;   5817 MW;  D8CCAE0E1FC0849A CRC64;\n/
 FI 1ii7.ccf
 FC = 462
-FZ = 44215
-FP /^SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;\n/
+FZ = 44223
+FP /^SQ   SEQUENCE    65 AA;   7396 MW;  75FBE75B22FD3678 CRC64;\n/
 FI 2hhb.ccf
 FC = 5398
-FZ = 533145
-FP /^SQ   SEQUENCE   141 AA;  15127 MW;  5EC7DB1E CRC32;\n/
+FZ = 533177
+FP /^SQ   SEQUENCE   141 AA;  15127 MW;  34D13618E62A33C1 CRC64;\n/
 //
 
 
@@ -20910,17 +20969,17 @@ FZ = 29889
 FC = 369
 FP /^ATOM\s+31\s+CA\s+PHE\s+A\s\d+\s+60.914 -11.143  59.200  1.00 58.07\s+C\s+\n/
 FI d1cs4a_.ccf
-FZ = 40509
+FZ = 40517
 FC = 418
-FP /SQ   SEQUENCE    52 AA;   5817 MW;  47362A43 CRC32;\n/
+FP /SQ   SEQUENCE    52 AA;   5817 MW;  D8CCAE0E1FC0849A CRC64;\n/
 FI d1ii7a_.ent
 FZ = 29727
 FC = 367
 FP /ATOM      1  N   ASP A   8       7.977  32.254  19.055  1.00 26.65           N  /
 FI d1ii7a_.ccf
-FZ = 39748
+FZ = 39756
 FC = 413
-FP /SQ   SEQUENCE    65 AA;   7396 MW;  0CFB92A3 CRC32;/
+FP /SQ   SEQUENCE    65 AA;   7396 MW;  75FBE75B22FD3678 CRC64;/
 //
 
 ID domainer-keep2
@@ -20954,15 +21013,15 @@ FZ = 123201
 FC = 1521
 FP 1476 /ATOM/
 FI d1cs4a_.ccf
-FZ = 166802
+FZ = 166810
 FC = 1684
-FP /SQ   SEQUENCE   225 AA;  25486 MW;  437C8290 CRC32;\n/
+FP /SQ   SEQUENCE   225 AA;  25486 MW;  F04351B12FCADEE0 CRC64;\n/
 FI d1fx2a_.ent
 FZ = 152928
 FC = 1888
 FP 1856 /ATOM/
 FI d1fx2a_.ccf
-FZ = 209167
+FZ = 209175
 FC = 2110
 FP 235 /RE   /
 FI d4at1b1.ent
@@ -20970,7 +21029,7 @@ FZ = 60183
 FC = 743
 FP 725 /ATOM/
 FI d4at1b1.ccf
-FZ = 82081
+FZ = 82089
 FC = 835
 FP 93 /RE   /
 FI d4at1d1.ent
@@ -20978,7 +21037,7 @@ FZ = 60183
 FC = 743
 FP 725 /ATOM/
 FI d4at1d1.ccf
-FZ = 82081
+FZ = 82089
 FC = 835
 FP 93 /RE   /
 //
@@ -21006,19 +21065,19 @@ FP /^1cs4\n/
 FP /^2hhb\n/
 FI 1cs4.con
 FC = 183
-FZ = 3736
+FZ = 3744
 FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .\n/
 FP /NC   SM 163; LI .\n/
 FP /SM   ASP 46 ; CYS 47\n/
 FI 1ii7.con
 FC = 172
-FZ = 3545
+FZ = 3553
 FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .\n/
 FP /NC   SM 151; LI .\n/
 FP /SM   ASP 49 ; LEU 50\n/
 FI 2hhb.con
 FC = 2696
-FZ = 58326
+FZ = 58358
 FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 141; NRES2 .\n/
 FP /NC   SM 643; LI .\n/
 FP /SM   VAL 1 ; LEU 2\n/
@@ -21050,13 +21109,13 @@ FP /^D1II7A_\n/
 FP /^D1CS4A_\n/
 FI d1cs4a_.con
 FC = 183
-FZ = 3742
+FZ = 3750
 FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 52; NRES2 .\n/
 FP /NC   SM 163; LI .\n/
 FP /SM   ASP 2 ; ILE 3\n/
 FI d1ii7a_.con
 FC = 172
-FZ = 3551
+FZ = 3559
 FP /CN   MO 1; CN1 1; CN2 .; ID1 A; ID2 .; NRES1 65; NRES2 .\n/
 FP /NC   SM 151; LI .\n/
 FP /SM   ASP 49 ; LEU 50\n/
@@ -21084,7 +21143,7 @@ FP 0 /^Error:/
 FP 0 /^Died:/
 FI 2hhb.con
 FC = 274
-FZ = 7000
+FZ = 7096
 FP /CN   MO 1; CN1 1; CN2 2; ID1 A; ID2 B; NRES1 141; NRES2 146\n/
 FP 152 /^SM   /
 FI interface.log
@@ -21119,7 +21178,7 @@ FP 0 /^Error:/
 FP 0 /^Died:/
 FI SITES.con
 FC = 299
-FZ = 5173
+FZ = 5261
 FP 11 /^ID   /
 FP 3 /^LI   ASP 2/
 FP /ID   PDB 1cs4; DOM d1cs4a_; LIG POP;\n/
@@ -21225,7 +21284,7 @@ FZ = 38
 FP 2 /^\/\/\n/
 FI all_s.scop
 FC = 59
-FZ = 1064
+FZ = 1080
 FP 2 /^ID   /
 FI domainseqs.log
 FC = 6
@@ -21256,7 +21315,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI all_nr.scop
 FC = 30
-FZ = 527
+FZ = 535
 FP 1 /^ID/
 FI domainnr.log
 FC = 7
@@ -21309,7 +21368,7 @@ FP 0 /^Error:/
 FP 0 /^Died:/
 FI domainsse.out
 FC = 62
-FZ = 1052
+FZ = 1068
 FP 2 /^ID   /
 FI domainsse.log
 FZ = 0
@@ -21333,11 +21392,11 @@ FP 0 /^Error:/
 FP 0 /^Died:/
 FI res.dcf
 FC = 33
-FZ = 543
+FZ = 551
 FP 1 /^ID /
 FI elm.dcf 
 FC = 33
-FZ = 573
+FZ = 581
 FP 1 /^ID /
 FP /^SE   HH\n/
 FI ssematch.log 
