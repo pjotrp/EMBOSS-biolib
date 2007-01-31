@@ -1259,9 +1259,9 @@ static AjPBucket btreeReadBucket(AjPBtcache cache, ajlong pageno)
 	/* Fill ID objects */
 	ajStrAssignC(&id->id,(const char *)idptr);
 	idptr += (strlen((const char *)idptr) + 1);
-	BT_GETAJINT(idptr,&id->dbno);
+	BT_GETAJUINT(idptr,&id->dbno);
 	idptr += sizeof(ajint);
-	BT_GETAJINT(idptr,&id->dups);
+	BT_GETAJUINT(idptr,&id->dups);
 	idptr += sizeof(ajint);	
 	BT_GETAJLONG(idptr,&id->offset);
 	idptr += sizeof(ajlong);

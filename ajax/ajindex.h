@@ -223,12 +223,15 @@ typedef struct AjSNumBucket
 
 #if defined(LENDIAN)
 #define BT_GETAJINT(p,v) (memcpy((void*)v,(void*)p,sizeof(ajint)))
+#define BT_GETAJUINT(p,v) (memcpy((void*)v,(void*)p,sizeof(ajuint)))
 #define BT_GETAJLONG(p,v) (memcpy((void*)v,(void*)p,sizeof(ajlong)))
 #define BT_SETAJINT(p,v) (memcpy((void*)p,(void*)&v,sizeof(ajint)))
 #define BT_SETAJLONG(p,v) (memcpy((void*)p,(void*)&v,sizeof(ajlong)))
 #else
 #define BT_GETAJINT(p,v) memcpy((void*)v,(void*)p,sizeof(ajint)); \
                          ajUtilRevInt(v)
+#define BT_GETAJUINT(p,v) memcpy((void*)v,(void*)p,sizeof(ajuint)); \
+                         ajUtilRevUint(v)
 #define BT_GETAJLONG(p,v) memcpy((void*)v,(void*)p,sizeof(ajlong)); \
                           ajUtilRevLong(v)
 #define BT_SETAJINT(p,v)  ajUtilRevInt(&v); \
