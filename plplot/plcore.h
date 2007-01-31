@@ -32,8 +32,7 @@ static void	calc_diplt	(void);
 static void	calc_didev	(void);
 static void	calc_diori	(void);
 static void	calc_dimap	(void);
-static void	plgdevlst	(char **, char **, int *, int);
-void plPX_trace (PLStream *pls, FILE* outf);
+static void	plgdevlst	(const char **, const char **, int *, int);
 
 /* Static variables */
 
@@ -110,8 +109,8 @@ PLStream *plsc = &pls0;
 \*--------------------------------------------------------------------------*/
 
 typedef struct {
-   char *pl_MenuStr;
-   char *pl_DevName;
+   const char *pl_MenuStr;
+   const char *pl_DevName;
    int  pl_type;
    void (*pl_init)	(PLStream *);
    void (*pl_line)	(PLStream *, short, short, short, short);

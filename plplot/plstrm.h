@@ -391,6 +391,7 @@ typedef struct {
     PLINT icol0, ncol0, icol1, ncol1, ncp1, curcmap;
 
     PLColor curcolor;
+    char pad[1];
     PLColor *cmap0;
     PLColor *cmap1;
 
@@ -493,7 +494,7 @@ typedef struct {
 /* Variables governing character strings */
 
     char  esc;
-
+    char pad2[3];
 /* Scale factors for characters, symbols, and tick marks. */
 
     PLFLT scale;
@@ -609,6 +610,9 @@ plGinInit(PLGraphicsIn *gin);
 
 void
 plPX_swin(PLStream *pls, const char *window);
+
+void
+plPX_trace (PLStream *pls, FILE* outf);
 
 /* tracing the internals for debugging */
 
