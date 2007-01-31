@@ -39,8 +39,8 @@ static AjPStr seqoutUsaTest = NULL;
 **
 ** Sequence output formats
 **
-** @attr Name [char*] Format name
-** @attr Desc [char*] Format description
+** @attr Name [const char*] Format name
+** @attr Desc [const char*] Format description
 ** @attr Alias [AjBool] Name is an alias for an identical definition
 ** @attr Single [AjBool] Write each sequence to a new file if true (e.g. GCG)
 ** @attr Save [AjBool] Save in memory and write at end (e.g. MSF alignments)
@@ -55,8 +55,8 @@ static AjPStr seqoutUsaTest = NULL;
 
 typedef struct SeqSOutFormat
 {
-    char *Name;
-    char *Desc;
+    const char *Name;
+    const char *Desc;
     AjBool Alias;
     AjBool Single;
     AjBool Save;
@@ -80,13 +80,13 @@ typedef struct SeqSOutFormat
 ** Most output functions generate the sequence header, then build
 ** this data structure for the actual output using function seqWriteSeq
 **
-** @attr linepos [ajint] Undocumented
-** @attr namewidth [ajint] Name format width
-** @attr numline [ajint] Undocumented
-** @attr numwidth [ajint] Number format width
-** @attr spacer [ajint] Undocumented
-** @attr tab [ajint] Undocumented
-** @attr width [ajint] Number of bases per line
+** @attr linepos [ajuint] Undocumented
+** @attr namewidth [ajuint] Name format width
+** @attr numline [ajuint] Undocumented
+** @attr numwidth [ajuint] Number format width
+** @attr spacer [ajint] Spacer - can be negative
+** @attr tab [ajuint] Undocumented
+** @attr width [ajuint] Number of bases per line
 ** @attr baseonlynum [AjBool] Undocumented
 ** @attr degap [AjBool] Remove gap characters
 ** @attr domatch [AjBool] Show matching line
@@ -104,18 +104,19 @@ typedef struct SeqSOutFormat
 ** @attr matchchar [char] matching character
 ** @attr endstr [char[20]] Last line(s)
 ** @attr leftstr [char[20]] string in left margin
+** @attr Padding [char[2]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct SeqSSeqFormat
 {
-    ajint linepos;
-    ajint namewidth;
-    ajint numline;
-    ajint numwidth;
+    ajuint linepos;
+    ajuint namewidth;
+    ajuint numline;
+    ajuint numwidth;
     ajint spacer;
-    ajint tab;
-    ajint width;
+    ajuint tab;
+    ajuint width;
     AjBool baseonlynum;
     AjBool degap;
     AjBool domatch;
@@ -133,6 +134,7 @@ typedef struct SeqSSeqFormat
     char matchchar;
     char endstr[20];
     char leftstr[20];
+    char Padding[2];
 } SeqOSeqFormat;
 
 #define SeqPSeqFormat SeqOSeqFormat*
@@ -495,7 +497,7 @@ AjPSeqout ajSeqoutNewFile(AjPFile file)
 /* @obsolete ajSeqoutNewF
 ** @rename ajSeqoutNewFile
 */
-AjPSeqout __deprecated ajSeqoutNewF(AjPFile file)
+__deprecated AjPSeqout  ajSeqoutNewF(AjPFile file)
 {
     return ajSeqoutNewFile(file);
 }
@@ -642,7 +644,7 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 void ajSeqoutWriteSeq(AjPSeqout outseq, const AjPSeq seq)
 {
     
-    ajDebug("ajSeqoutWriteSeq '%s' len: %d\n",
+    ajDebug("ajSeqoutWriteSeq '%S' len: %d\n",
 	    ajSeqGetNameS(seq), ajSeqGetLen(seq));
     
     if(!outseq->Format)
@@ -720,7 +722,7 @@ void ajSeqoutWriteSeq(AjPSeqout outseq, const AjPSeq seq)
 /* @obsolete ajSeqWrite
 ** @rename ajSeqoutWriteSeq
 */
-void __deprecated ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
+__deprecated void  ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
 {
     ajSeqoutWriteSeq(outseq, seq);
     return;
@@ -730,7 +732,7 @@ void __deprecated ajSeqWrite(AjPSeqout outseq, const AjPSeq seq)
 /* @obsolete ajSeqAllWrite
 ** @rename ajSeqoutWriteSeq
 */
-void __deprecated ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
+__deprecated void  ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
 {
     ajSeqoutWriteSeq(outseq, seq);
     return;
@@ -749,7 +751,7 @@ void __deprecated ajSeqAllWrite(AjPSeqout outseq, const AjPSeq seq)
 
 void ajSeqoutWriteSet(AjPSeqout outseq, const AjPSeqset seq)
 {
-    ajint i = 0;
+    ajuint i = 0;
 
     ajDebug("ajSeqoutWriteSet\n");
 
@@ -830,7 +832,7 @@ void ajSeqoutWriteSet(AjPSeqout outseq, const AjPSeqset seq)
 /* @obsolete ajSeqsetWrite
 ** @rename ajSeqoutWriteSet
 */
-void __deprecated ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
+__deprecated void  ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 {
     ajSeqoutWriteSet(outseq,seq);
 }
@@ -857,7 +859,7 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
     if(!outseq->Savelist)
 	outseq->Savelist = ajListNew();
 
-    listseq = ajSeqNewS(seq);
+    listseq = ajSeqNewSeq(seq);
     ajSeqTrim(listseq);
 
     /* if(listseq->Rev)
@@ -940,11 +942,11 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
 
 static void seqWriteFasta(AjPSeqout outseq)
 {
-    ajint i;
-    ajint ilen;
+    ajuint i;
+    ajuint ilen;
     AjPStr seq = NULL;
-    ajint linelen     = 60;
-    ajint iend;
+    ajuint linelen     = 60;
+    ajuint iend;
     AjPStr db = NULL;
 
     ajStrAssignS(&db, outseq->Setoutdb);
@@ -994,7 +996,7 @@ static void seqWriteFasta(AjPSeqout outseq)
 
 static AjBool seqNcbiKnowndb(const AjPStr dbname)
 {
-    static char* ncbidbs[] = {
+    static const char* ncbidbs[] = {
 	"gb", "emb", "dbj",		/* big three, listed by NCBI for nr */
 	"sp", "ref", "pir", "prf",	/* others listed by NCBI for nr */
 	"tpd", "tpe", "tpg",		/* third party annotation */
@@ -1022,14 +1024,14 @@ static AjBool seqNcbiKnowndb(const AjPStr dbname)
 static void seqWriteNcbi(AjPSeqout outseq)
 {
 
-    ajint i;
-    ajint ilen;
+    ajuint i;
+    ajuint ilen;
     AjPStr seq = NULL;
-    ajint linelen     = 60;
-    ajint iend;
+    ajuint linelen     = 60;
+    ajuint iend;
     AjPStr version = NULL;
     AjPStr dbname = NULL;
-    static ajint blordnum=0;
+    static ajuint blordnum=0;
 
     ajDebug("seqWriteNcbi SetDb '%S' Db '%S'\n", outseq->Setdb, outseq->Db);
     if(ajStrGetLen(outseq->Setdb))
@@ -1114,14 +1116,14 @@ static void seqWriteNcbi(AjPSeqout outseq)
 static void seqWriteGifasta(AjPSeqout outseq)
 {
 
-    ajint i;
-    ajint ilen;
+    ajuint i;
+    ajuint ilen;
     AjPStr seq = NULL;
-    ajint linelen     = 60;
-    ajint iend;
+    ajuint linelen     = 60;
+    ajuint iend;
     AjPStr version = NULL;
     AjPStr dbname = NULL;
-    static ajint blordnum=0;
+    static ajuint blordnum=0;
 
     if(ajStrGetLen(outseq->Setdb))
 	ajStrAssignS(&dbname, outseq->Setdb);
@@ -1205,9 +1207,9 @@ static void seqWriteGifasta(AjPSeqout outseq)
 static void seqWriteGcg(AjPSeqout outseq)
 {
 
-    ajint ilen;
+    ajuint ilen;
     char ctype = 'N';
-    ajint check;
+    ajuint check;
     SeqPSeqFormat sf = NULL;
 
     ilen = ajStrGetLen(outseq->Seq);
@@ -1313,13 +1315,13 @@ static void seqWriteText(AjPSeqout outseq)
 
 static void seqWriteHennig86(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
     char* cp;
     
@@ -1409,17 +1411,17 @@ static void seqWriteHennig86(AjPSeqout outseq)
 
 static void seqWriteMega(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend;
-    ajint wid = 50;
+    ajuint ipos;
+    ajuint iend;
+    ajuint wid = 50;
 
     ajDebug("seqWriteMega list size %d\n", ajListLength(outseq->Savelist));
 
@@ -1428,7 +1430,7 @@ static void seqWriteMega(AjPSeqout outseq)
 	return;
 
     itest = ajListToArray(outseq->Savelist, (void***) &seqs);
-    ajDebug("ajListToArray listed %d items\n", itest);
+    ajDebug("ajListToArray listed %u items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
     {
@@ -1478,13 +1480,13 @@ static void seqWriteMega(AjPSeqout outseq)
 
 static void seqWriteMeganon(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
 
     ajDebug("seqWriteMeganon list size %d\n", ajListLength(outseq->Savelist));
@@ -1537,17 +1539,17 @@ static void seqWriteMeganon(AjPSeqout outseq)
 
 static void seqWriteNexus(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend;
-    ajint wid = 50;
+    ajuint ipos;
+    ajuint iend;
+    ajuint wid = 50;
     
     ajDebug("seqWriteNexus list size %d\n", ajListLength(outseq->Savelist));
     
@@ -1638,13 +1640,13 @@ static void seqWriteNexus(AjPSeqout outseq)
 
 static void seqWriteNexusnon(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
 
     ajDebug("seqWriteNexusnon list size %d\n",
@@ -1722,17 +1724,17 @@ static void seqWriteNexusnon(AjPSeqout outseq)
 
 static void seqWriteJackknifer(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend;
-    ajint wid = 50;
+    ajuint ipos;
+    ajuint iend;
+    ajuint wid = 50;
     static AjPStr tmpid = NULL;
 
     ajDebug("seqWriteJackknifer list size %d\n",
@@ -1792,17 +1794,17 @@ static void seqWriteJackknifer(AjPSeqout outseq)
 
 static void seqWriteJackknifernon(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend;
-    ajint wid = 50;
+    ajuint ipos;
+    ajuint iend;
+    ajuint wid = 50;
     static AjPStr tmpid = NULL;
 
     ajDebug("seqWriteJackknifernon list size %d\n",
@@ -1870,13 +1872,13 @@ static void seqWriteJackknifernon(AjPSeqout outseq)
 
 static void seqWriteTreecon(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
 
     ajDebug("seqWriteTreecon list size %d\n", ajListLength(outseq->Savelist));
@@ -1926,17 +1928,17 @@ static void seqWriteTreecon(AjPSeqout outseq)
 
 static void seqWriteClustal(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend;
-    ajint iwidth = 50;
+    ajuint ipos;
+    ajuint iend;
+    ajuint iwidth = 50;
     
     ajDebug("seqWriteClustal list size %d\n", ajListLength(outseq->Savelist));
     
@@ -2011,18 +2013,18 @@ static void seqWriteClustal(AjPSeqout outseq)
 
 static void seqWriteSelex(AjPSeqout outseq)
 {
-    ajint n;
-    ajint len = 0;
-    ajint i   = 0;
-    ajint j   = 0;
+    ajuint n;
+    ajuint len = 0;
+    ajuint i   = 0;
+    ajuint j   = 0;
     
     AjPSeq seq   = NULL;
     AjPSeq* seqs = NULL;
-    ajint test;
+    ajuint test;
 /*
-    ajint k   = 0;
-    ajint namelen = 0;
-    ajint v       = 0;
+    ajuint k   = 0;
+    ajuint namelen = 0;
+    ajuint v       = 0;
     AjBool sep    = ajFalse;
 */
     AjPStr rfstr  = NULL;
@@ -2030,9 +2032,9 @@ static void seqWriteSelex(AjPSeqout outseq)
     AjPStr ssstr  = NULL;
     const char *p       = NULL;
     AjPStr *names;
-    ajint  extra;
-    ajint  nlen   = 0;
-    ajint  slen   = 0;
+    ajuint  extra;
+    ajuint  nlen   = 0;
+    ajuint  slen   = 0;
     AjPStr *aseqs = NULL;
     
     ajDebug("seqWriteSelex list size %d\n", ajListLength(outseq->Savelist));
@@ -2296,22 +2298,22 @@ static void seqWriteSelex(AjPSeqout outseq)
 
 static void seqWriteMsf(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint checktot = 0;
-    ajint check;
-    ajint itest;
+    ajuint checktot = 0;
+    ajuint check;
+    ajuint itest;
     static AjPStr sbeg = NULL;
     static AjPStr send = NULL;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend;
-    ajint igap;
-    ajint maxnamelen = 10;
+    ajuint ipos;
+    ajuint iend;
+    ajuint igap;
+    ajuint maxnamelen = 10;
     
     ajDebug("seqWriteMsf list size %d\n", ajListLength(outseq->Savelist));
     
@@ -2441,7 +2443,7 @@ static void seqWriteCodata(AjPSeqout outseq)
 {
 
     static SeqPSeqFormat sf = NULL;
-    ajint j;
+    ajuint j;
 
     ajFmtPrintF(outseq->File, "ENTRY           %S \n", outseq->Name);
     if(ajStrGetLen(outseq->Desc))
@@ -2535,14 +2537,14 @@ static void seqWriteNbrf(AjPSeqout outseq)
 static void seqWriteExperiment(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
-    ajint b[5];
+    ajuint b[5];
     static AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
-    ajint ilen;
-    ajint i;
-    ajint j;
-    ajint jend;
+    ajuint ilen;
+    ajuint i;
+    ajuint j;
+    ajuint jend;
     
     if(!ftfmt)
 	ajStrAssignC(&ftfmt, "embl");
@@ -2719,11 +2721,11 @@ static void seqWriteExperiment(AjPSeqout outseq)
 static void seqWriteEmbl(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
-    ajint b[5];
+    ajuint b[5];
     static AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
-    ajint ilen;
+    ajuint ilen;
     AjPStr tmpstr = NULL;
     const AjPStr tmpline = NULL;
     
@@ -2897,12 +2899,12 @@ static void seqWriteEmbl(AjPSeqout outseq)
 static void seqWriteEmblnew(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
-    ajint b[5];
+    ajuint b[5];
     static AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
-    ajint ilen;
-    ajint i;
+    ajuint ilen;
+    ajint ifind;
     AjPStr idstr = NULL;
     AjPStr svstr = NULL;
     AjPStr tmpstr = NULL;
@@ -2920,9 +2922,9 @@ static void seqWriteEmblnew(AjPSeqout outseq)
     if(ajStrGetLen(outseq->Sv))
     {
 	ajStrAssignS(&svstr, outseq->Sv);
-	i = ajStrFindC(svstr, ".");
-	if(i >= 0)
-	    ajStrCutStart(&svstr, i+1);
+	ifind = ajStrFindC(svstr, ".");
+	if(ifind >= 0)
+	    ajStrCutStart(&svstr, ifind+1);
     }
     else
        ajStrAssignC(&svstr, "1");
@@ -3096,13 +3098,13 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 static void seqWriteSwiss(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
-    ajint mw;
+    ajuint mw;
     /*  ajuint crc; old 32-bit crc */
     unsigned long long crc;
     static AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
-    ajint ilen;
+    ajuint ilen;
     
     if(!ftfmt)
 	ajStrAssignC(&ftfmt, "swiss");
@@ -3262,13 +3264,13 @@ static void seqWriteSwiss(AjPSeqout outseq)
 static void seqWriteSwissnew(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
-    ajint mw;
+    ajuint mw;
     /*  ajuint crc; old 32-bit crc */
     unsigned long long crc;
     static AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
-    ajint ilen;
+    ajuint ilen;
     
     if(!ftfmt)
 	ajStrAssignC(&ftfmt, "swiss");
@@ -3435,11 +3437,11 @@ static void seqWriteGenbank(AjPSeqout outseq)
 {
     
     static SeqPSeqFormat sf = NULL;
-    ajint b[5];
+    ajuint b[5];
     static AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
-    ajint ilen;
+    ajuint ilen;
     
     if(!ftfmt)
 	ajStrAssignC(&ftfmt, "genbank");
@@ -3740,11 +3742,11 @@ static void seqWriteFitch(AjPSeqout outseq)
 
 static void seqWriteMase(AjPSeqout outseq)
 {
-    ajint i;
-    ajint ilen;
+    ajuint i;
+    ajuint ilen;
     AjPStr seq = NULL;
-    ajint linelen = 60;
-    ajint iend;
+    ajuint linelen = 60;
+    ajuint iend;
 
     if (!ajFileTell(outseq->File))
 	ajFmtPrintF(outseq->File, ";;Written by EMBOSS on %D\n",
@@ -3783,18 +3785,18 @@ static void seqWriteMase(AjPSeqout outseq)
 
 static void seqWritePhylip(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
-    ajint j    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
+    ajuint j    = 0;
     char *p    = NULL;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend;
+    ajuint ipos;
+    ajuint iend;
     AjPStr tstr = NULL;
     
     ajDebug("seqWritePhylip list size %d\n", ajListLength(outseq->Savelist));
@@ -3867,19 +3869,19 @@ static void seqWritePhylip(AjPSeqout outseq)
 
 static void seqWritePhylipnon(AjPSeqout outseq)
 {
-    ajint isize;
-    ajint ilen = 0;
-    ajint i    = 0;
-    ajint j    = 0;
-    ajint n    = 0;
+    ajuint isize;
+    ajuint ilen = 0;
+    ajuint i    = 0;
+    ajuint j    = 0;
+    ajuint n    = 0;
     char *p = NULL;
     void** seqs = NULL;
     AjPSeq seq;
     AjPSeq* seqarr;
-    ajint itest;
+    ajuint itest;
     static AjPStr sseq = NULL;
-    ajint ipos;
-    ajint iend  = 0;
+    ajuint ipos;
+    ajuint iend  = 0;
     AjPStr tstr = NULL;
     
     ajDebug("seqWritePhylipnon list size %d\n",
@@ -4430,7 +4432,7 @@ void ajSeqoutClose(AjPSeqout seqout)
 /* @obsolete ajSeqWriteClose
 ** @rename ajSeqoutClose
 */
-void __deprecated ajSeqWriteClose(AjPSeqout outseq)
+__deprecated void  ajSeqWriteClose(AjPSeqout outseq)
 {
     ajSeqoutClose(outseq);
 }
@@ -4527,16 +4529,26 @@ AjBool ajSeqoutOpenFilename(AjPSeqout seqout, const AjPStr name)
 
 
 /* @obsolete ajSeqFileNewOut
-** @rename ajSeqoutOpenFile
+** @rename ajSeqoutOpenFilename
 */
-AjBool __deprecated ajSeqFileNewOut(AjPSeqout seqout, const AjPStr name)
+__deprecated AjBool  ajSeqFileNewOut(AjPSeqout seqout, const AjPStr name)
 {
     return ajSeqoutOpenFilename(seqout, name);
 }
 
 
+/* @datasection [AjPStr] Sequence output strings ******************************
+**
+** Function is for manipulating sequence output objects
+**
+** @nam2rule Seqoutstr
+**
+******************************************************************************/
+
 /* @section other *******************************************************
 **
+** @fdata [AjPStr]
+** @fcategory use
 ******************************************************************************/
 
 
@@ -4703,6 +4715,8 @@ void ajSeqPrintOutFormat(AjPFile outf, AjBool full)
 
     ajint i = 0;
 
+    (void) full;	 /* make it used - no extra detail reported */
+
     ajFmtPrintF(outf, "\n");
     ajFmtPrintF(outf, "# sequence output formats\n");
     ajFmtPrintF(outf, "# Alias Alias name\n");
@@ -4865,15 +4879,15 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
 {
     /* code adapted from what readseq did */
     
-    static ajint maxSeqWidth       = 250;
-    static char* defNocountSymbols = "_.-?";
+    static ajuint maxSeqWidth       = 250;
+    static const char* defNocountSymbols = "_.-?";
     
-    ajint i = 0;
-    ajint j = 0;
-    ajint l = 0;
-    ajint ibase    = 0;
-    ajint linesout = 0;
-    ajint seqlen;
+    ajuint i = 0;
+    ajuint j = 0;
+    ajuint l = 0;
+    ajuint ibase    = 0;
+    ajuint linesout = 0;
+    ajuint seqlen;
     const char *seq;
     const char *idword;
     char *cp;
@@ -4883,8 +4897,8 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
     char numform[20];
     char nocountsymbols[20];
     
-    ajint width;
-    ajint l1;
+    ajuint width;
+    ajuint l1;				/* can be negative */
     
     AjPFile file;
     FILE* outf;
@@ -4959,9 +4973,7 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
     while(i < seqlen)
     {
 	
-	if(l1 < 0)
-	    l1 = 0;
-	else if(l1 == 0)
+	if(l1 == 0)
 	{
 	    /* start of a new line */
 	    if(sf->skipbefore)
@@ -5392,7 +5404,7 @@ void ajSeqoutDefName(AjPSeqout thys, const AjPStr setname, AjBool multi)
 	}
     }
 
-    ajDebug("ajSeqoutDefName set to  '%S'\n", thys->Name);
+    ajDebug("ajSeqoutDefName set to '%S'\n", thys->Name);
 
     return;
 }
@@ -5526,12 +5538,12 @@ void ajSeqoutTrace(const AjPSeqout seq)
 ** Counts the numbers of A, C, G and T in a nucleotide sequence.
 **
 ** @param [r] seqout [const AjPSeqout] Sequence output object
-** @param [w] b [ajint*] integer array, minimum size 5, to hold the results.
+** @param [w] b [ajuint*] integer array, minimum size 5, to hold the results.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqoutCount(const AjPSeqout seqout, ajint* b)
+void ajSeqoutCount(const AjPSeqout seqout, ajuint* b)
 {
     const char* cp;
 
@@ -5607,7 +5619,7 @@ void ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
 		"%08X CRC64;\n",
 		crc&0xffffffff);
 
-    outseq = ajSeqoutNewF(outf);
+    outseq = ajSeqoutNewFile(outf);
 
     ajStrAssignS(&outseq->Seq,seq);
 

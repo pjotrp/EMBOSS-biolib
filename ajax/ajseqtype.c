@@ -34,31 +34,31 @@
 ** @alias SeqSType
 ** @alias SeqOType
 **
-** @attr Name [char*] sequence type name
+** @attr Name [const char*] sequence type name
 ** @attr Gaps [AjBool] allow gap characters
 ** @attr Ambig [AjBool] True if ambiguity codes are allowed
-** @attr Type [ajint] enumerated ISANY=0 ISNUC=1 ISPROT=2 
-** @attr ConvertFrom [char*] Convert each of these characters to the
+** @attr Type [ajuint] enumerated ISANY=0 ISNUC=1 ISPROT=2 
+** @attr ConvertFrom [const char*] Convert each of these characters to the
 **                           ConvertTo equivalent
-** @attr ConvertTo [char*] Equivalent for each sequence character in
+** @attr ConvertTo [const char*] Equivalent for each sequence character in
 **                         ConvertFrom
 ** @attr Badchars [(AjPRegexp*)] Test function
 ** @attr Goodchars [(AjPStr*)] Test function
-** @attr Desc [char*] Description for documentation purposes
+** @attr Desc [const char*] Description for documentation purposes
 ** @@
 ******************************************************************************/
 
 typedef struct SeqSType
 {
-    char *Name;
+    const char *Name;
     AjBool Gaps;
     AjBool Ambig;
-    ajint Type;
-    char *ConvertFrom;
-    char *ConvertTo;
+    ajuint Type;
+    const char *ConvertFrom;
+    const char *ConvertTo;
     AjPRegexp (*Badchars) (void);
     AjPStr (*Goodchars) (void);
-    char *Desc;
+    const char *Desc;
 } SeqOType;
 
 #define SeqPType SeqOType*
@@ -78,7 +78,7 @@ static char* seqNewGapChars = NULL;
 */
 
 static AjBool     seqFindType(const AjPStr type_name, ajint* typenum);
-static void       seqGapSL(AjPStr* seq, char gapc, char padc, ajint ilen);
+static void       seqGapSL(AjPStr* seq, char gapc, char padc, ajuint ilen);
 static AjBool     seqTypeFix(AjPSeq thys, ajint itype);
 static AjBool     seqTypeFixReg(AjPSeq thys, ajint itype, char fixchar);
 static void       seqTypeSet(AjPSeq thys, const AjPStr Type);
@@ -979,16 +979,16 @@ void ajSeqGapS(AjPStr* seq, char gapc)
 ** @param [u] seq [AjPStr*] String of sequence characters
 ** @param [r] gapc [char] Standard gap character
 ** @param [r] padc [char] Gap character for ends of sequence
-** @param [r] ilen [ajint] Sequence length. Expanded if longer than
+** @param [r] ilen [ajuint] Sequence length. Expanded if longer than
 **                       current length
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqGapSL(AjPStr* seq, char gapc, char padc, ajint ilen)
+static void seqGapSL(AjPStr* seq, char gapc, char padc, ajuint ilen)
 {
-    ajint i;
-    static ajint igap;
+    ajuint i;
+    static ajuint igap;
     char* cp;
     char endc = gapc;
     
@@ -1213,11 +1213,14 @@ void ajSeqType(AjPSeq thys)
 
 void ajSeqPrintType(AjPFile outf, AjBool full)
 {
-    ajint i;
+    ajuint i;
     AjPStr tmpstr = NULL;
-    ajint maxtmp = 0;
+    ajuint maxtmp = 0;
 
-    char* typeName[] = {"ANY", "NUC", "PRO"};
+    const char* typeName[] = {"ANY", "NUC", "PRO"};
+
+
+    (void) full;	    /* make used - no extra detail reported */
 
     ajFmtPrintF(outf, "\n# Sequence Types\n");
     ajFmtPrintF(outf, "# Name                 Gap Ambig N/P "

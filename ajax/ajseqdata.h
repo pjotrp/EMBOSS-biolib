@@ -257,8 +257,8 @@ typedef struct AjSSeqin {
 ** @attr Trimmed [AjBool] true: has been trimmed
 ** @attr Begin [ajint] start position (processed on reading)
 ** @attr End [ajint] end position (processed on reading)
-** @attr Offset [ajint] offset from start
-** @attr Offend [ajint] offset from end 
+** @attr Offset [ajuint] offset from start
+** @attr Offend [ajuint] offset from end 
 ** @attr Weight [float] Weight from multiple alignment
 ** @attr Fpos [ajlong] File position (fseek) for USA
 ** @attr Usa [AjPStr] USA for re-reading
@@ -273,7 +273,7 @@ typedef struct AjSSeqin {
 ** @attr Taxlist [AjPList] Taxonomy list (just species for now)
 ** @attr Seq [AjPStr] The sequence
 ** @attr Fttable [AjPFeattable] Feature table
-** @attr Accuracy [ajint*] Accuracy values (one per base) from base calling
+** @attr Accuracy [ajuint*] Accuracy values (one per base) from base calling
 **
 ** @new ajSeqNew Default constructor
 ** @new ajSeqNewL Constructor with expected maximum size.
@@ -337,8 +337,8 @@ typedef struct AjSSeq {
   AjBool Trimmed;
   ajint Begin;
   ajint End;
-  ajint Offset;
-  ajint Offend;
+  ajuint Offset;
+  ajuint Offend;
   float Weight;
   ajlong Fpos;
   AjPStr Usa;
@@ -353,7 +353,7 @@ typedef struct AjSSeq {
   AjPList Taxlist;
   AjPStr Seq;
   AjPFeattable Fttable;
-  ajint* Accuracy;
+  ajuint* Accuracy;
 } AjOSeq;
 
 #define AjPSeq AjOSeq*
@@ -379,12 +379,12 @@ typedef struct AjSSeq {
 ** @other AjPSeq Sequences
 ** @other AjPSeqall Sequence streams
 **
-** @attr Size [ajint] Number of sequences
-** @attr Len [ajint] Maximum sequence length
+** @attr Size [ajuint] Number of sequences
+** @attr Len [ajuint] Maximum sequence length
 ** @attr Begin [ajint] start position
 ** @attr End [ajint] end position
-** @attr Offset [ajint] offset from start
-** @attr Offend [ajint] offset from end 
+** @attr Offset [ajuint] offset from start
+** @attr Offend [ajuint] offset from end 
 ** @attr Rev [AjBool] true: reverse-complemented
 ** @attr Trimmed [AjBool] true: has been trimmed
 ** @attr Totweight [float] total weight (usually 1.0 * Size)
@@ -418,12 +418,12 @@ typedef struct AjSSeq {
 ******************************************************************************/
 
 typedef struct AjSSeqset {
-  ajint Size;
-  ajint Len;
+  ajuint Size;
+  ajuint Len;
   ajint Begin;
   ajint End;
-  ajint Offset;
-  ajint Offend;
+  ajuint Offset;
+  ajuint Offend;
   AjBool Rev;
   AjBool Trimmed;
   float Totweight;
