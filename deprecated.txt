@@ -1,0 +1,615 @@
+#ajacd
+ajAcdGetDiscretestatesI =ajAcdGetDiscretestatesSingle 1,2 1
+ajAcdGetDiscretestatesI @ajAcdGetDiscretestatesSingle
+ajAcdGetListI =ajAcdGetListSingle 1,2 1
+ajAcdGetListI @ajAcdGetListSingle
+ajAcdGetSelectI =ajAcdGetSelectSingle 1,2 1
+ajAcdGetSelectI @ajAcdGetSelectSingle
+ajAcdGetSeqsetallI =ajAcdGetSeqsetallSingle 1,2 1
+ajAcdGetSeqsetallI @ajAcdGetSeqsetallSingle
+ajAcdGetTreeI =ajAcdGetTreeSingle 1,2 1
+ajAcdGetTreeI @ajAcdGetTreeSingle
+ajAcdValue ajAcdGetValue
+ajAcdDebug -
+ajAcdDebugIsSet -
+ajAcdFilter -
+ajAcdStdout -
+ajAcdProgramS -
+ajAcdProgram -
+#ajalign
+#ajarr
+#ajassert
+#ajbase
+ajSeqBaseComp ajBaseComp
+#ajcall
+#ajcod
+#ajdan
+#ajdmx
+#ajdomain
+#ajdom
+#ajexcept
+#ajfeat
+#ajfile
+#ajfmt
+#ajgraph
+#ajgraphxml
+#ajhist
+#ajindex
+#ajjava
+#ajlist
+#ajmath
+#ajmatrices
+#ajmem
+#ajmess
+#ajnam
+#ajnexus
+#ajpat
+#ajpdb
+#ajpdbio
+#ajphylo
+#ajrange
+#ajreg
+#ajreport
+#ajseqabi
+#ajseq
+ajSeqNewC ajSeqNewNameC
+ajSeqNewStr ajSeqNewNameS
+ajSeqNewRange ajSeqNewRangeS
+ajSeqNewRangeCI =ajSeqNewRangeC 1,2,3,4,5 1,3,4,5
+ajSeqNewRangeCI @ajSeqNewRangeC
+ajSeqNewL ajSeqNewRes
+ajSeqNewS ajSeqNewSeq
+ajSeqAssAccC ajSeqAssignAccC
+ajSeqAssAcc ajSeqAssignAccS
+ajSeqAssDescC ajSeqAssignDescC
+ajSeqAssDesc ajSeqAssignDescS
+ajSeqAssEntryC ajSeqAssignEntryC
+ajSeqAssEntry ajSeqAssignEntryS
+ajSeqAssFileC ajSeqAssignFileC
+ajSeqAssFile ajSeqAssignFileS
+ajSeqAssFullC ajSeqAssignFullC
+ajSeqAssFull ajSeqAssignFullS
+ajSeqAssGiC ajSeqAssignGiC
+ajSeqAssGi ajSeqAssignGiS
+ajSeqAssName ajSeqAssignNameS
+ajSeqAssNameC ajSeqAssignNameS
+ajSeqAssSeq ajSeqAssignSeqS
+ajSeqAssSeqC ajSeqAssignSeqC
+ajSeqAssSeqCI =ajSeqAssignSeqC 1,2,3 1,2
+ajSeqAssSeqCI @ajSeqAssignSeqC
+ajSeqAssSvC ajSeqAssignSvC
+ajSeqAssSv ajSeqAssignSvS
+ajSeqAssUfoC ajSeqAssignUfoC
+ajSeqAssUfo ajSeqAssignUfoS
+ajSeqAssUsaC ajSeqAssignUsaC
+ajSeqAssUsa ajSeqAssignUsaS
+ajSeqDefName =ajSeqSetName 1,2,ajFalse 1,2
+ajSeqDefName =ajSeqSetNameMulti 1,2,ajTrue 1,2
+ajSeqDefName @ajSeqSetName_or_@ajSeqSetNameMulti
+ajSeqSetRangeDir =ajSeqSetRange 1,2,3,ajFalse 1,2,3
+ajSeqSetRangeDir =ajSeqSetRangeRev 1,2,3,ajTrue 1,2,3
+ajSeqSetRangeDir @ajSeqSetRange_or_@ajSeqSetRangeRev
+ajSeqMod ajSeqSetUnique
+ajSeqReplace ajSeqAssignSeqS
+ajSeqReplaceC ajSeqAssignSeqC
+ajSeqMakeUsa -
+ajSeqMakeUsaS -
+ajSeqComplementOnly ajSeqComplement
+ajSeqCompOnly ajSeqComplement
+ajSeqToLower ajSeqFmtLower
+ajSeqToUpper ajSeqFmtUpper
+ajSeqFill ajSeqGapFill
+ajSeqReverse ajSeqReverseDo
+ajSeqRevOnly ajSeqReverseOnly
+ajSeqGetAcc ajSeqGetAccS
+ajSeqBegin ajSeqGetBegin
+ajSeqTrueBegin ajSeqGetBeginTrue
+ajSeqGetDesc ajSeqGetDescS
+ajSeqEnd ajSeqGetEnd
+ajSeqTrueEnd ajSeqGetEndTrue
+ajSeqGetEntry ajSeqGetEntryS
+ajSeqCopyFeat ajSeqGetFeatCopy
+ajSeqGetGi ajSeqGetGiS
+ajSeqLen ajSeqGetLen
+ajSeqTrueLen ajSeqGetLenTrue
+ajSeqName ajSeqGetNameC
+ajSeqGetName ajSeqGetNameS
+ajSeqOffend ajSeqGetOffend
+ajSeqOffset ajSeqGetOffset
+ajSeqGetReverse ajSeqGetRev
+ajSeqGetReversed ajSeqIsReversed
+ajSeqStr ajSeqGetSeqS
+ajSeqChar ajSeqGetSeqC
+ajSeqCharCopy ajSeqGetSeqCopyC
+ajSeqStrCopy ajSeqGetSeqCopyS
+ajSeqCharCopyL =ajSeqGetSeqCopyC 1,2 1,ajSeqGetLen[2]
+ajSeqCharCopyL @ajSeqGetSeqCopyC
+ajSeqGetSv ajSeqGetSvS
+ajSeqGetTax ajSeqGetTaxS
+ajSeqGetUsa ajSeqGetUsaS
+ajSeqRev ajSeqIsReversed
+ajSeqNum ajSeqConvertNum
+ajSeqCheckGcg ajSeqCalcCheckgcg
+ajSeqCount ajSeqCalcCount
+ajSeqPos =ajMathPos 1,2 'ajSeqGetLen[1]',2
+ajSeqPos @ajMathPos
+ajSeqPosI =ajMathPosI 1,2,3 'ajSeqGetLen[1]',2,3
+ajSeqPosI @ajMathPosI
+ajSeqPosII ajMathPosI
+ajSeqTruePosI ajSeqCalcTrueposMin
+ajSeqTruePosII ajMathPosI
+ajSeqTruePos ajSeqCalcTruepos
+ajSeqGapCount ajSeqCountGaps
+ajSeqTraceT ajSeqTraceTitle
+ajSeqallReverse -
+ajSeqallToLower -
+ajSeqallToUpper -
+ajSeqallBegin ajSeqallGetseqBegin
+ajSeqallEnd ajSeqallGetseqEnd
+ajSeqallLen ajSeqallGetseqLen
+ajSeqallGetNameSeq ajSeqallGetseqName
+ajSeqallGetRange ajSeqallGetseqRange
+ajSeqsetToLower ajSeqsetFmtLower
+ajSeqsetToUpper ajSeqsetFmtUpper
+ajSeqsetBegin ajSeqsetGetBegin
+ajSeqsetEnd ajSeqsetGetEnd
+ajSeqsetLen ajSeqsetGetLen
+ajSeqsetGetName ajSeqsetGetNameS
+ajSeqsetGetSeqArray ajSeqsetGetSeqarray
+ajSeqsetSize ajSeqsetGetSize
+ajSeqsetTotweight ajSeqsetGetTotweight
+ajSeqsetAcc ajSeqsetGetseqAccS
+ajSeqsetName ajSeqsetGetseqNameS
+ajSeqsetGetSeq ajSeqsetGetseqSeq
+ajSeqsetSeq ajSeqsetGetseqSeqC
+ajSeqsetWeight ajSeqsetGetseqWeight
+ajSeqNumS ajSeqstrConvertNum
+ajSeqCvtTrace ajSeqcvtTrace
+ajSeqCvtNewZero ajSeqcvtNewC
+ajSeqCvtNew ajSeqcvtNewEndC
+ajSeqCvtNewText ajSeqcvtNewNumberC
+ajSeqCvtNewZeroS ajSeqcvtNewStr
+ajSeqCvtNewZeroSS ajSeqcvtNewStrAsym
+ajSeqCvtDel ajSeqcvtDel
+ajSeqCvtK ajSeqcvtGetCodeK
+ajSeqCvtKS ajSeqcvtGetCodeS
+ajSeqCvtKSRow ajSeqcvtGetCodeS
+ajSeqCvtKSColumn ajSeqcvtGetCodeAsymS
+ajSeqCvtLen ajSeqcvtGetLen
+ajIsAccession ajSeqtestIsAccession
+ajIsSeqversion ajSeqtestIsSeqversion
+ajSeqMW ajSeqstrCalcMolwt
+ajSeqGapCountS ajSeqstrCountGaps
+ajSeqstrComplementOnly ajSeqstrComplement
+ajSeqCompOnlyStr ajSeqstrComplement
+ajSeqReverseStr ajSeqstrReverse
+ajSeqCrc ajSeqstrCalcCrc
+ajSeqGapStandardS -
+ajSeqCalcCrc -
+#ajseqdb
+#ajseqread
+#ajseqtype
+#ajseqwrite
+ajSeqoutNewF ajSeqoutNewFile
+ajSeqWrite ajSeqoutWriteSeq
+ajSeqAllWrite ajSeqoutWriteSeq
+ajSeqsetWrite ajSeqoutWriteSet
+ajSeqWriteClose ajSeqoutClose
+ajSeqFileNewOut ajSeqoutOpenFilename
+#ajsort
+#ajstr
+ajCharNew ajCharNewS
+ajCharNewL ajCharNewRes
+ajCharNewLS =ajStrNewResS 1,2 2,1
+ajCharNewLS @ajStrNewResS
+ajCharFree ajCharDel
+ajCharToLower ajCharFmtLower
+ajCharToUpper ajCharFmtUpper
+ajStrMatchCC ajCharMatchC
+ajStrMatchCaseCC ajCharMatchCaseC
+ajStrMatchWildCC ajCharMatchWildC
+ajStrMatchWildCO ajCharMatchWildS
+ajStrMatchWordCC ajCharMatchWildWordS
+ajStrPrefixCC ajCharPrefixC
+ajStrPrefixCO ajCharPrefixS
+ajStrPrefixCaseCC ajCharPrefixCaseC
+ajStrPrefixCaseCO ajCharPrefixCaseS
+ajStrSuffixCC ajCharSuffixC
+ajStrSuffixCO ajCharSuffixS
+ajStrCmpCaseCC ajCharCmpCase
+ajStrNCmpCaseCC ajCharCmpCaseLen
+ajStrCmpWildCC ajCharCmpWild
+ajStrTokCC ajCharParseC
+ajStrDup ajStrNewRef
+ajStrNewL ajStrNewRes
+ajStrNewCL ajStrNewResC
+ajStrNewCIL ajStrNewResLenC
+ajStrDelReuse ajStrDelStatic
+ajStrAssC ajStrAssignC
+ajStrAssK ajStrAssignK
+ajStrAssS ajStrAssignS
+ajStrAssI =ajStrAssignS 1,2,3 1,2
+ajStrAssI @ajStrAssignS
+ajStrSetC ajStrAssignEmptyC
+ajStrSet ajStrAssignEmptyS
+ajStrAssCI ajStrAssignLenC
+ajStrCopy ajStrAssignRef
+ajStrAssCL =ajStrAssignResC 1,2,3 1,3,2
+ajStrAssCL @ajStrAssignResC
+ajStrAssL =ajStrAssignResS 1,2,3 1,3,2
+ajStrAssL @ajStrAssignResS
+ajStrAssSubC ajStrAssignSubC
+ajStrAssSub ajStrAssignSubS
+ajStrAppC ajStrAppendC
+ajStrAppK ajStrAppendK
+ajStrApp ajStrAppendS
+ajStrAppKI ajStrAppendCountK
+ajStrAppCI ajStrAppendLenC
+ajStrAppSub ajStrAppendSubS
+ajStrInsert ajStrInsertS
+ajStrReplaceS ajStrPasteS
+ajStrReplaceK ajStrPasteCountK
+ajStrReplaceC ajStrPasteMaxC
+ajStrReplace ajStrPasteMaxS
+ajStrUncomment ajStrCutComments
+ajStrUncommentStart ajStrCutCommentsStart
+ajStrTrim =ajStrCutStart 1,+ 1,2
+ajStrTrim =ajStrCutEnd 1,- 1,-2
+ajStrTrim @ajStrCutStart_or_@ajStrCutEnd
+ajStrCut ajStrCutRange
+ajStrSub ajStrKeepRange
+ajStrKeepC ajStrKeepSetC
+ajStrKeepAlphaC ajStrKeepSetAlphaC
+ajStrDegap ajStrRemoveGap
+ajStrRemoveNewline ajStrRemoveLastNewline
+ajStrRemoveCharsC ajStrRemoveSetC
+ajStrClean ajStrRemoveWhite
+ajStrCleanWhite ajStrRemoveWhiteExcess
+ajStrWildPrefix ajStrRemoveWild
+ajStrChomp ajStrTrimWhite
+ajStrChompC ajStrTrimC
+ajStrChop =ajStrCutEnd 1 1,'1'
+ajStrChop @ajStrCutEnd
+ajStrChompEnd ajStrTrimWhiteEnd
+ajStrTruncate ajStrTruncateLen
+ajStrSubstituteCC ajStrExchangeCC
+ajStrSubstituteKK ajStrExchangeKK
+ajStrSubstitute ajStrExchangeSS
+ajStrConvertCC ajStrExchangeSetCC
+ajStrConvert ajStrExchangeSetSS
+ajStrRev ajStrReverse
+ajStrCountC ajStrCalcCountC
+ajStrCountK ajStrCalcCountK
+ajStrParentheses ajStrHasParentheses
+ajStrIsSpace ajStrIsWhite
+ajStrChar =ajStrGetCharFirst 1,'0' 1
+ajStrChar =ajStrGetCharLast 1,'-1' 1
+ajStrChar =ajStrGetCharPos 1,2 1,2
+ajStrChar @ajStrGetCharFirst_or_@ajStrGetCharLast_or_@ajStrGetCharPos
+ajStrLen ajStrGetLen
+MAJSTRLEN MAJSTRGETLEN
+ajStrStr ajStrGetPtr
+MAJSTRSTR MAJSTRGETPTR
+ajStrSize ajStrGetRes
+MAJSTRSIZE MAJSTRGETRES
+ajStrRoom ajStrGetRoom
+ajStrRef ajStrGetUse
+MAJSTRREF MAJSTRGETUSE
+ajStrStrMod ajStrGetuniquePtr
+ajStrMod ajStrGetUniqueStr
+ajStrClear ajStrSetClear
+ajStrModL ajStrSetRes
+ajStrModMinL ajStrSetResRound
+ajStrFix ajStrSetValid
+ajStrFixI ajStrSetValidLen
+ajStrFromDoubleE ajStrFromDoubleExp
+ajStrBlock ajStrFmtBlock
+ajStrToLower ajStrFmtLower
+ajStrToLowerII ajStrFmtLowerSub
+ajStrQuote ajStrFmtQuote
+ajStrToTitle ajStrFmtTitle
+ajStrToUpper ajStrFmtUpper
+ajStrToUpperII ajStrFmtUpperII
+ajStrWrap ajStrFmtWrap
+ajStrWrapLeft ajStrFmtWrapLeft
+ajStrMatch ajStrMatchS
+ajStrMatchCase ajStrMatchCaseS
+ajStrMatchWild ajStrMatchWildS
+ajStrMatchWord ajStrMatchWildWordS
+ajStrPrefix ajStrPrefixS
+ajStrPrefixCase ajStrPrefixCaseS
+ajStrSuffix ajStrSuffixS
+ajStrNCmpC ajStrCmpLenC
+ajStrCmpO ajStrCmpS
+ajStrCmpCase ajStrCmpCaseS
+ajStrNCmpO ajStrCmpLenS
+ajStrCmpWild ajStrCmpWildS
+ajStrCmp ajStrVcmp
+ajStrFind ajStrFindS
+ajStrFindK ajStrFindAnyK
+ajStrFindCase ajStrFindCaseS
+ajStrRFindC ajStrFindlastC
+ajStrTokC ajStrParseC
+ajStrTokenCount ajStrParseCountC
+ajStrTokenCountR ajStrParseCountMultiC
+ajStrListToArray ajStrParseSplit
+ajStrTok ajStrParseWhite
+ajStrFill =ajStrAppendCountK 1,2,3 1,3,*
+ajStrFill @ajStrAppendCountK
+ajStrPos =ajMathPos 1,2 'ajStrGetLen[1]',2
+ajStrPos @ajMathPos
+ajStrPosI =ajMathPosI 1,2,3 'ajStrGetLen[1]',2,3
+ajStrPosI @ajMathPosI
+ajStrPosII ajMathPosI
+ajCharPos =ajMathPos 1,2 'strlen[1]',2
+ajCharPos @ajMathPos
+ajStrIter ajStrIterNew
+ajStrIterBack ajStrIterNewBack
+ajStrIterFree ajStrIterDel
+ajStrIterBackDone ajStrIterDoneBack
+ajStrIterBackNext ajStrIterNextBack
+ajStrIterMore =ajStrIterDone 1 !1
+ajStrIterMore @ajStrIterDone
+ajStrIterMoreBack ajStrIterDoneBack
+ajStrTokenInit ajStrTokenNewC
+ajStrTokenClear ajStrTokenDel
+ajStrTokenAss ajStrTokenAssignC
+ajStrDelim =ajStrTokenNextFind 1,2,n 2,1
+ajStrDelim =ajStrTokenNextFindC 1,2,3 2,3,1
+ajStrDelim @ajStrTokenNextFind_or_@ajStrTokenNextFindC
+ajStrToken =ajStrTokenNextParse 1,2,n 2,1
+ajStrToken =ajStrTokenNextParseC 1,2,3 2,3,1
+ajStrToken @ajStrTokenNextParse_or_@ajStrTokenNextParseC
+ajStrTokenRest =ajStrTokenRestParse 1,2 2,1
+ajStrTokenRest @ajStrTokenRestParse
+ajStrNull -
+ajStrArrayDel -
+ajStrAss =ajStrAssignC 1,n 1,'""'
+ajStrAss =ajStrAssignRef 1,2 1,2
+ajStrAss @ajStrAssignC_or_@ajStrAssignRef
+ajStrCopyC =ajStrDel 1,n 1
+ajStrCopyC =ajStrAssignC 1,2 1,2
+ajStrCopyC @ajStrDel_or_@ajStrAssignC
+#ajsys
+#ajtable
+#ajtime
+#ajtranslate
+#ajtree
+#ajutil
+#ajvector
+#pcre
+#pcre_chartables
+#pcre_get
+#pcreposix
+#pcre_printint
+#pcre_study
+#embaln
+#embcom
+#embcons
+#embdata
+#embdbi
+#embdmx
+#embdomain
+#embest
+#embexit
+#embgroup
+#embiep
+embIepComp =embIepCompC 1,2,3 1,2,0,0,3
+embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
+#embindex
+#embinit
+#embmat
+#embmisc
+#embmol
+#embnmer
+#embpat
+#embpatlist
+#embpdb
+#embprop
+#embread
+#embshow
+#embsig
+#embword
+#embxyz
+#aaindexextract
+#abiview
+#acdc
+#acdlog
+#acdpretty
+#acdtable
+#acdtrace
+#acdvalid
+#ajtest
+#antigenic
+#backtranambig
+#backtranseq
+#banana
+#biosed
+#btwisted
+#cai
+#chaos
+#charge
+#checktrans
+#chips
+#cirdna
+#codcmp
+#codcopy
+#coderet
+#complex
+#compseq
+#cons
+#corbatest
+#cpgplot
+#cpgreport
+#cusp
+#cutgextract
+#cutseq
+#dan
+#dbiblast
+#dbifasta
+#dbiflat
+#dbigcg
+#dbxfasta
+#dbxflat
+#dbxgcg
+#degapseq
+#demoalign
+#demofeatures
+#demolist
+#demoreport
+#demosequence
+#demostring
+#demostringnew
+#demotable
+#descseq
+#diffseq
+#digest
+#distmat
+#dotmatcher
+#dotpath
+#dottup
+#dreg
+#edialign
+#einverted
+#embossdata
+#embossversion
+#emma
+#emowse
+#entrails
+#entret
+#epestfind
+#eprimer3
+#equicktandem
+#est2genome
+#etandem
+#extractalign
+#extractfeat
+#extractseq
+#findkm
+#freak
+#fuzznuc
+#fuzzpro
+#fuzztran
+#garnier
+#geecee
+#getorf
+#giep
+#helixturnhelix
+#histogramtest
+#hmoment
+#iep
+#infoalign
+#infoseq
+#intconv
+#isochore
+#jembossctl
+#lindna
+#listor
+#makenucseq
+#makeprotseq
+#marscan
+#maskfeat
+#maskseq
+#matcher
+#megamerger
+#merger
+#msbar
+#mwcontam
+#mwfilter
+#needle
+#newcoils
+#newcpgreport
+#newcpgseek
+#newseq
+#noreturn
+#notseq
+#nthseq
+#octanol
+#oddcomp
+#origsplitter
+#origunion
+#palindrome
+#pasteseq
+#patmatdb
+#patmatmotifs
+#patmattest
+#pepcoil
+#pepinfo
+#pepnet
+#pepstats
+#pepwheel
+#pepwindowall
+#pepwindow
+#plotcon
+#plotorf
+#polydot
+#preg
+#prettyplot
+#prettyseq
+#prima
+#primers
+#primersearch
+#printsextract
+#profit
+#prophecy
+#prophet
+#prosextract
+#pscan
+#psiphi
+#rebaseextract
+#recoder
+#redata
+#remap
+#restover
+#restrict
+#revseq
+#seealso
+#seqinfo
+#seqmatchall
+#seqretall
+#seqretallfeat
+#seqret
+#seqretset
+#seqretsingle
+#seqretsplit
+#seqrettype
+#showalign
+#showdb
+#showfeat
+#showorf
+#showseq
+#shuffleseq
+#sigcleave
+#silent
+#sirna
+#sixpack
+#skipseq
+#splitter
+#stretcher
+#stretcherlong
+#stssearch
+#supermatcher
+#syco
+#tcode
+#testplot
+#textsearch
+#tfextract
+#tfm
+#tfscan
+#tmap
+#tranalign
+#transeq
+#treetypedisplay
+#trimest
+#trimseq
+#twofeat
+#union
+#vectorstrip
+#water
+#whichdb
+#wobble
+#wordcount
+#wordfinder
+#wordmatch
+#wossname
+#yank
