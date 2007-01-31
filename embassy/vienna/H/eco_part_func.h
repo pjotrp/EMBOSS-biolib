@@ -20,7 +20,7 @@ extern  void compute_probabilities(double *FEAB,double *FEAA,
 				     struct plist  *prA, struct plist  *prB,
 				     int Alength,int Blength,AjPFile outf);
 
-extern float *get_monomerefreeenergies();
+extern float *get_monomerefreeenergies(void);
 
 typedef struct ConcEnt {
   double A0;    /*start concentration A*/
