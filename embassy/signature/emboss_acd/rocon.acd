@@ -115,7 +115,8 @@ section: output [
            run on the files to perform Receiver Operator Characteristic
            (ROC) analysis on the hits."
     knowntype: "hits"
-    default: "hits.dhf"
+    name: "hits"
+    extension: "dhf"
   ]
 
 endsection: output
