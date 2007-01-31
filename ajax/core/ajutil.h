@@ -25,6 +25,8 @@ void   ajUtilRev8 (ajlong* i);
 void   ajUtilRevInt(ajint* sval);
 void   ajUtilRevShort(short* ival);
 void   ajUtilRevLong(ajlong* lval);
+void   ajUtilRevUint(ajuint* ival);
+
 AjBool ajUtilUid (AjPStr* dest);
 
 /*
