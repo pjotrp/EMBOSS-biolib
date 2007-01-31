@@ -29,7 +29,7 @@ pkgdata_DATA =  abiview.1.abiview.gif banana.1.banana.gif \
 	dbxgcg.html degapseq.html descseq.html \
 	diffseq.html digest.html display_group.html distmat.html \
 	dotmatcher.html dotpath.html dottup.html dreg.html \
-	einverted.html embossdata.html \
+	edialign.html einverted.html embossdata.html \
 	embossversion.html emma.html emowse.html \
 	entret.html enzyme_kinetics_group.html \
 	epestfind.html eprimer3.html equicktandem.html \
