@@ -531,45 +531,6 @@ void ajUtilRevLong(ajlong* lval)
 
 
 
-
-/* @func ajUtilRevUint ********************************************************
-**
-** Reverses the byte order in an integer.
-**
-** @param [u] ival [ajuint*] Unsigned integer in wrong byte order.
-**                        Returned in correct order.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajUtilRevUint(ajuint* ival)
-{
-    union lbytes
-    {
-	char chars[8];
-	ajuint i;
-    } data, revdata;
-    char* cs;
-    char* cd;
-    size_t i;
-
-    data.i = *ival;
-    cs     = data.chars;
-    cd     = &revdata.chars[sizeof(ajuint)-1];
-    for(i=0; i < sizeof(ajuint); i++)
-    {
-	*cd = *cs++;
-	--cd;
-    }
-
-    *ival = revdata.i;
-
-    return;
-}
-
-
-
-
 /* @func ajUtilCatch **********************************************************
 **
 ** Dummy function to be called in special cases so it can be used when

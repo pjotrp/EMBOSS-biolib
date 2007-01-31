@@ -23,7 +23,6 @@ void   ajUtilRev2 (short* i);
 void   ajUtilRev4 (ajint* i);
 void   ajUtilRev8 (ajlong* i);
 void   ajUtilRevInt(ajint* sval);
-void   ajUtilRevUint(ajuint* sval);
 void   ajUtilRevShort(short* ival);
 void   ajUtilRevLong(ajlong* lval);
 void   ajUtilRevUint(ajuint* ival);
