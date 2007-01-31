@@ -30,7 +30,7 @@
 #define DATANAME  "REBASE/embossre.enz"
 #define DATANAME2 "REBASE/embossre.ref"
 #define DATANAME3 "REBASE/embossre.sup"
-#define DATANAME4 "embossre.equ"
+#define DATANAME4 "REBASE/embossre.equ"
 #define EQUGUESS  5000
 #define SUPGUESS  10000
 
@@ -201,7 +201,7 @@ int main(int argc, char **argv)
 	    value = ajStrNewC(sptr);
 	    ajStrRemoveWhiteExcess(&value);
 	    ajFmtScanS(line,"%S",&key);
-	    ajTablePut(ptable,(const void *)key, (void *)value);
+	    ajTablePut(ptable,(void *)key, (void *)value);
 	}
     }
     
@@ -318,7 +318,7 @@ int main(int argc, char **argv)
 	}
 
 	ajStrAssignS(&hstr1,code);
-	ajTablePut(hassuptable,(const void *)hstr1, (void *)hstr2);
+	ajTablePut(hassuptable,(void *)hstr1, (void *)hstr2);
 
 	ajFmtPrintF(outf2,"%s\n",ajStrGetPtr(code));
 	ajFmtPrintF(outf2,"%s\n",ajStrGetPtr(tit));
@@ -369,7 +369,8 @@ int main(int argc, char **argv)
 	    ajListPop(equ2,(void **)&equstr2);
 
 	    if(!(hstr2=ajTableGet(hassuptable,(const void *)equstr2)))
-		ajFatal("Expected supplier value not found");
+		ajFatal("Expected supplier value not found for '%S' (enzyme '%S')",
+			equstr1,equstr2);
 	    if(ajStrMatchC(hstr2,"N"))
 		ajStrAppendC(&equstr2,"*");
 
