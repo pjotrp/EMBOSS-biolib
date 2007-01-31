@@ -21,6 +21,12 @@ struct hash_table {
   HASH_TABLE_ENTRY **table;	/* array of entry pointers */
 };
 
+int hash(
+  char *seq_name, 
+  int col, 
+  int n
+);
+
 HASH_TABLE hash_create(
   int n
 );
@@ -40,4 +46,4 @@ extern BOOLEAN hash_lookup(
   int col,              /* column number */
   HASH_TABLE ht         /* the hash table */
 );
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/hash.h,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/hash.h,v 1.2 2007/01/31 12:53:19 rice Exp $ */

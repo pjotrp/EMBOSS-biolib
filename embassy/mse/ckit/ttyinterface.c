@@ -289,9 +289,11 @@ SeqSpec *GetSeqSpec(char *prompt, char *dclSymbol, char *defaultDB)
 char tempSpec[128], line[128];
 SeqSpec *spec;
 
-extern Boolean GetOSSymbol(), SetOSSymbol();            /* VMS.c     */
+extern Boolean GetOSSymbol(char* , char*); /* VMS.c     */
+extern Boolean SetOSSymbol(char* , char*);      /* VMS.c     */
 extern SeqSpec *NewSeqSpec(void);                         /* SeqSpec.c */
-extern void  MakeSeqSpec();                               /* SeqSpec.c */
+extern void  MakeSeqSpec(SeqSpec* spec,	/* SeqSpec.c */
+			 char* line, char* defaultDB);
 
 /*
 ** First check to see if we have not exceeded our allowed tries.

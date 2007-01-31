@@ -54,8 +54,53 @@ Char ch;
   double like, bestyet;
   node *there;
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+double randum(long *seed);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputoptions(void);
+void getinput(void);
+void getdata(void);
+void add(node *below, node *newtip,node * newfork);
+void re_move(node **item, node **fork);
+void scrunchtraverse(node *u,node **closest,double *tmax);
+void combine(node *a, node *b);
+void scrunch(node *s);
+void secondtraverse(node *a,node *q,node *u,node *v,
+                    long i,long j,long k,double *sum);
+void firstraverse(node *q_, node *r,double *sum);
+void sumtraverse(node *q, double *sum);
+void evaluate(node *r);
+void tryadd(node *p, node **item,node **nufork);
+void addpreorder(node *p, node *item, node *nufork);
+void tryrearr(node *p,node **r,boolean *success);
+void repreorder(node *p,node **r,boolean *success);
+void rearrange(node **r_);
+void findch(Char c);
+void addelement(node **p, long *nextnode,long *lparens,boolean *names);
+void treeread(void);
+void coordinates(node *p, long *tipy);
+void drawline(long i, double scale);
+void printree(void);
+void treeout(node *p);
+void dtraverse(node *q);
+void describe(void);
+void copynode(node *c, node *d);
+void copy_(pointptr a, pointptr b);
+void maketree(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile inf;
 AjPFile treef;
@@ -144,12 +189,7 @@ int i;
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -185,8 +225,7 @@ char *perm;
 }
 
 
-double randum(seed)
-long *seed;
+double randum(long *seed)
 {
   /* random number generator -- slow but machine independent */
   long i, j, k, sum;
@@ -221,14 +260,13 @@ long *seed;
   return x;
 }  /* randum */
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {/* convert a character to upper case -- either ASCII or EBCDIC */
     *ch = islower((int)*ch) ? toupper((int)*ch) :((int)*ch);
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* read species number */
   fscanf(infile, "%ld", &numsp);
@@ -236,7 +274,7 @@ void getnums()
   numsp2 = numsp * 2 - 1;
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   long i, inseed0=0;
@@ -464,7 +502,7 @@ void doinit(int argc, char *argv[])
 
 }  /* doinit */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* read options information */
   Char ch;
@@ -507,13 +545,13 @@ void inputoptions()
   fprintf(outfile, " allowed\n\n");
 }  /* inputoptions */
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   inputoptions();
 }  /* getinput */
 
-void getdata()
+void getdata(void)
 {
   /* read in distance matrix */
   long i, j, k, columns, n;
@@ -642,8 +680,7 @@ void getdata()
   }
 }  /* getdata */
 
-void add(below, newtip, newfork)
-node *below, *newtip, *newfork;
+void add(node *below, node *newtip,node * newfork)
 {
   /* inserts the nodes newfork and its left descendant, newtip,
      to the tree.  below becomes newfork's right descendant */
@@ -661,8 +698,7 @@ node *below, *newtip, *newfork;
   root->back = NULL;
 }  /* add */
 
-void re_move(item, fork)
-node **item, **fork;
+void re_move(node **item, node **fork)
 {
   /* removes nodes item and its ancestor, fork, from the tree.
      the new descendant of fork's ancestor is made to be
@@ -696,9 +732,7 @@ node **item, **fork;
   (*item)->back = NULL;
 }  /* remove */
 
-void scrunchtraverse(u,closest,tmax)
-node *u,**closest;
-double *tmax;
+void scrunchtraverse(node *u,node **closest,double *tmax)
 {
   /* traverse to find closest node to the current one */
   if (!u->sametime) {
@@ -715,8 +749,7 @@ double *tmax;
   }
 }  /* scrunchtraverse */
 
-void combine(a, b)
-node *a, *b;
+void combine(node *a, node *b)
 {
   /* put node b into the set having the same time as a */
   if (a->weight + b->weight <= 0.0)
@@ -727,8 +760,7 @@ node *a, *b;
   b->sametime = true;
 }  /* combine */
 
-void scrunch(s)
-node *s;
+void scrunch(node *s)
 {
   /* see if nodes can be combined to prevent negative lengths */
 /* Local variables for scrunch: */
@@ -750,10 +782,8 @@ node *s;
   } while (found);
 }  /* scrunch */
 
-void secondtraverse(a,q,u,v,i,j,k,sum)
-node *a,*q,*u,*v;
-long i,j,k;
-double *sum;
+void secondtraverse(node *a,node *q,node *u,node *v,
+		    long i,long j,long k,double *sum)
 {
   /* recalculate distances, add to sum */
   long l;
@@ -793,9 +823,7 @@ double *sum;
   }
 }  /* secondtraverse */
 
-void firstraverse(q_, r,sum)
-node *q_,*r;
-double *sum;
+void firstraverse(node *q_, node *r,double *sum)
 {  /* firsttraverse                              */
    /* go through tree calculating branch lengths */
   /* Local variables for firstraverse: */
@@ -831,9 +859,7 @@ double *sum;
   secondtraverse(r,q,u,v,i,j,k,sum);
 }  /* firstraverse */
 
-void sumtraverse(q, sum)
-node *q;
-double *sum;
+void sumtraverse(node *q, double *sum)
 {
   /* traverse to finish computation of sum of squares */
   long i, j;
@@ -853,8 +879,7 @@ double *sum;
   (*sum) += u->w[j - 1] * (TEMP * TEMP) + v->w[i - 1] * (TEMP1 * TEMP1);
 }  /* sumtraverse */
 
-void evaluate(r)
-node *r;
+void evaluate(node *r)
 {
   /* fill in times and evaluate sum of squares for tree */
   /* Local variables for evaluate: */
@@ -872,8 +897,7 @@ node *r;
 }  /* evaluate */
 
 
-void tryadd(p, item,nufork)
-node *p,**item,**nufork;
+void tryadd(node *p, node **item,node **nufork)
 {
   /* temporarily adds one fork and one tip to the tree.
      if the location where they are added yields greater
@@ -888,8 +912,7 @@ node *p,**item,**nufork;
   re_move(item, nufork);
 }  /* tryadd */
 
-void addpreorder(p, item, nufork)
-node *p, *item, *nufork;
+void addpreorder(node *p, node *item, node *nufork)
 {
   /* traverses a binary tree, calling PROCEDURE tryadd
      at a node before calling tryadd at its descendants */
@@ -903,9 +926,7 @@ node *p, *item, *nufork;
   }
 }  /* addpreorder */
 
-void tryrearr(p,r,success)
-node *p,**r;
-boolean *success;
+void tryrearr(node *p,node **r,boolean *success)
 {
   /* evaluates one rearrangement of the tree.
      if the new tree has greater "likelihood" than the old
@@ -942,9 +963,7 @@ boolean *success;
   like = oldlike;
 }  /* tryrearr */
 
-void repreorder(p,r,success)
-node *p,**r;
-boolean *success;
+void repreorder(node *p,node **r,boolean *success)
 {
   /* traverses a binary tree, calling PROCEDURE tryrearr
      at a node before calling tryrearr at its descendants */
@@ -957,8 +976,7 @@ boolean *success;
   }
 }  /* repreorder */
 
-void rearrange(r_)
-node **r_;
+void rearrange(node **r_)
 {
   /* traverses the tree (preorder), finding any local
      rearrangement which decreases the number of steps.
@@ -975,8 +993,7 @@ node **r_;
   }
 }  /* rearrange */
 
-void findch(c)
-Char c;
+void findch(Char c)
 {
   /* scan forward until find character c */
   boolean done;
@@ -1019,10 +1036,7 @@ Char c;
   }
 }  /* findch */
 
-void addelement(p, nextnode,lparens,names)
-node **p;
-long *nextnode,*lparens;
-boolean *names;
+void addelement(node **p, long *nextnode,long *lparens,boolean *names)
 {
   /* recursive procedure adds nodes to user-defined tree */
   node *q;
@@ -1101,7 +1115,7 @@ boolean *names;
   putchar('\n');
 }  /* addelement */
 
-void treeread()
+void treeread(void)
 {
   /* read in user-defined tree and set it up */
   long nextnode, lparens;
@@ -1121,9 +1135,7 @@ void treeread()
   getc(infile);
 }  /* treeread */
 
-void coordinates(p, tipy)
-node *p;
-long *tipy;
+void coordinates(node *p, long *tipy)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -1152,9 +1164,7 @@ long *tipy;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-long i;
-double scale;
+void drawline(long i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q, *r, *first=NULL, *last=NULL;
@@ -1232,7 +1242,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
  /* prints out diagram of the tree */
  /* Local variables for printree: */
@@ -1257,8 +1267,7 @@ void printree()
   putc('\n', outfile);
 }  /* printree */
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   long i, n, w;
@@ -1310,8 +1319,7 @@ node *p;
   }
 }  /* treeout */
 
-void dtraverse(q)
-node *q;
+void dtraverse(node *q)
 {
   /* print table of lengths etc. */
   long i;
@@ -1332,7 +1340,7 @@ node *q;
     dtraverse(q->next->next->back);
 }  /* dtraverse */
 
-void describe()
+void describe(void)
 {
   /* prints table of lengths, times, sum of squares, etc. */
   long i, j;
@@ -1369,8 +1377,7 @@ void describe()
 }  /* describe */
 
 
-void copynode(c, d)
-node *c, *d;
+void copynode(node *c, node *d)
 {
   /* make a copy of a node */
 
@@ -1386,8 +1393,7 @@ node *c, *d;
   d->ymax = c->ymax;
 }  /* copynode */
 
-void copy_(a, b)
-pointptr a, b;
+void copy_(pointptr a, pointptr b)
 {
   /* make a copy of a tree */
   short i, j=0;
@@ -1427,7 +1433,7 @@ pointptr a, b;
 }  /* copy */
 
 
-void maketree()
+void maketree(void)
 {
   /* constructs a binary tree from the pointers in treenode.
      adds each node at location which yields highest "likelihood"
@@ -1555,9 +1561,7 @@ void maketree()
 }  /* maketree */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* Fitch-Margoliash criterion with contemporary tips */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -1606,8 +1610,7 @@ Char *argv[];
 }  /* Fitch-Margoliash criterion with contemporary tips */
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1623,8 +1626,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1635,14 +1637,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

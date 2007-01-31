@@ -11,6 +11,7 @@
 #include "seqentry.h"
 /*#include "smgmacros.h"*/
 #include "macros.h"
+#include "ckittypes.h"
 #include "ckit.h"
 #include <curses.h>
 

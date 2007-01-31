@@ -9,7 +9,7 @@
  ************************************************************/
 
 /* funcs.h 
- * RCS $Id: funcs.h,v 1.3 2006/05/19 11:33:12 rice Exp $
+ * RCS $Id: funcs.h,v 1.4 2007/01/31 12:53:19 rice Exp $
  *
  * Declarations of external functions in HMMER.
  */            
@@ -206,6 +206,9 @@ extern void PrintPlan7Stats(FILE *fp, struct plan7_s *hmm, char **dsq,
 			    int nseq, struct p7trace_s **tr);
 extern int  DegenerateSymbolScore(float *p, float *null, int ambig);
 extern void Plan9toPlan7(struct plan9_s *hmm, struct plan7_s **ret_plan7);
+extern void Plan7ESTConfig(struct plan7_s *hmm, int *aacode, float **estmodel, 
+			   float dna2, float dna4);
+
 
 /* 
  * from plan9.c
@@ -287,6 +290,7 @@ extern void GetRankedHit(struct tophit_s *h, int rank,
 extern int    TophitsMaxName(struct tophit_s *h);
 extern void   FullSortTophits(struct tophit_s *h);
 extern void   TophitsReport(FILE* fp,struct tophit_s *h, double E, int nseq);
+int hit_comparison(const void *vh1, const void *vh2);
 
 /* from trace.c
  * Support for traceback (state path) structure

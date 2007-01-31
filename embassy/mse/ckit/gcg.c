@@ -34,7 +34,7 @@ int gcgNames;
 */
 
 extern CharPtrFunc NextCode;                  /* NextSeqEntry.c */
-extern ProcPtr SetDBPointers;             /* ReadEntry.c    */
+extern ProcPtrSeq SetDBPointers;             /* ReadEntry.c    */
 
 extern int codeLength;
 extern int dbINXFile;

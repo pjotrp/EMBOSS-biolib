@@ -118,7 +118,7 @@ int main(int argc, char **argv)
 	    ajFatal("SeqsetRead failed in seqsearch_psialigned");
 	
 	ok = ajFalse;
-	if(ajSeqsetSize(seqset))
+	if(ajSeqsetGetSize(seqset))
 	    ok = ajTrue;
 	
 	ajFileClose(&inf);
@@ -138,11 +138,11 @@ int main(int argc, char **argv)
 
 	
 	/* 1.  Create list of sequences from the main input directory. */
-	for(x=0;x<ajSeqsetSize(seqset);x++)
+	for(x=0;x<ajSeqsetGetSize(seqset);x++)
 	{
 	    seq_tmp = ajSeqNew();
-	    ajStrAssignS(&seq_tmp->Acc, ajSeqsetAcc(seqset, x));
-	    ajStrAssignC(&seq_tmp->Seq, ajSeqsetSeq(seqset, x));
+	    ajStrAssignS(&seq_tmp->Acc, ajSeqsetGetseqAccS(seqset, x));
+	    ajStrAssignC(&seq_tmp->Seq, ajSeqsetGetseqSeqC(seqset, x));
 	    ajListPushApp(seq_list,seq_tmp);		
 	}
     
@@ -164,8 +164,8 @@ int main(int argc, char **argv)
 	for(x=0; x<seq_list_siz; x++)
 	    for(y=x+1; y<seq_list_siz; y++)
 		ajFmtPrintF(outf, "%d %S : %d %S : %.2f\n", 
-			    x+1, ajSeqsetName(seqset, x), 
-			    y+1, ajSeqsetName(seqset, y), 
+			    x+1, ajSeqsetGetseqNameS(seqset, x), 
+			    y+1, ajSeqsetGetseqNameS(seqset, y), 
 			    ajFloat2dGet(scores, x, y));
 	
 	ajSeqsetDel(&seqset);

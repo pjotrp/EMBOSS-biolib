@@ -104,6 +104,23 @@ void treeconstruct(void);
 void maketriad(node **, long);
 void newdnamove_hyptrav(node *, long *, long, long, boolean,
                         pointarray);
+void prepare_node(node *p);
+void dnamove_copynode(node *fromnode, node *tonode);
+node *copytrav(node *p);
+void chucktree(node *p);
+void numdesctrav(node *p);
+void copytree(void);
+void makeweights(void);
+void add_at(node *below, node *newtip, node *newfork);
+void add_before(node *atnode, node *newtip);
+void add_child(node *parent, node *newchild);
+void newdnamove_hyptrav(node *r_, long *hypset_,
+			long b1, long b2, boolean bottom_,
+                        pointarray treenode);
+void newdnamove_hypstates(long chars, node *root, pointarray treenode);
+void consolidatetree(long index);
+void fliptrav(node *p, boolean recurse);
+
 /* function prototypes */
 #endif
 
@@ -356,7 +373,7 @@ void chucktree(node *p)
 } /* chucktree */
 
 
-void copytree()
+void copytree(void)
 {
   /* Make a complete copy of the current tree for undo purposes */
   if (whichtree == 1)
@@ -408,7 +425,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     if(thresh)  threshold = ajAcdGetFloat("threshold");
  
 
-    initialtree = ajAcdGetListI("initialtree", 1);
+    initialtree = ajAcdGetListSingle("initialtree");
 
     if(ajStrMatchC(initialtree, "a")) how = arb;
     if(ajStrMatchC(initialtree, "u")) how = use;
@@ -433,7 +450,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 }  /* emboss_getoptions */
 
 
-void inputoptions()
+void inputoptions(void)
 {
   /* input the information on the options */
   long i;
@@ -451,7 +468,7 @@ void inputoptions()
 }  /* inputoptions */
 
 
-void allocrest()
+void allocrest(void)
 {
   long i;
 
@@ -469,7 +486,7 @@ void allocrest()
   location = (long *)Malloc(chars*sizeof(long));  /* from dnapars */
 }  /* allocrest */
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   long i;
@@ -494,7 +511,7 @@ void makeweights()
 }  /* makeweights */
 
 
-void doinput()
+void doinput(void)
 {
   /* reads the input data */
   inputnumbersseq(seqsets[0], &spp, &chars, &nonodes, 1);
@@ -509,7 +526,7 @@ void doinput()
 }  /* doinput */
 
 
-void configure()
+void configure(void)
 {
   /* configure to machine -- set up special characters */
   chartype a;
@@ -1229,7 +1246,7 @@ void dnamove_drawline(long i)
   putchar('\n');
 }  /* dnamove_drawline */
 
-void dnamove_printree()
+void dnamove_printree(void)
 {
   /* prints out diagram of the tree */
   long tipy;
@@ -1323,7 +1340,7 @@ void dnamove_printree()
 }  /* dnamove_printree */
 
 
-void arbitree()
+void arbitree(void)
 {
   long i;
   root = treenode[0];
@@ -1334,7 +1351,7 @@ void arbitree()
 }  /* arbitree */
 
 
-void yourtree()
+void yourtree(void)
 {
   long i, j;
   boolean ok;
@@ -1420,7 +1437,7 @@ void initdnamovenode(node **p, node **grbg, node *q, long len, long nodei,
 } /* initdnamovenode */
 
 
-void buildtree()
+void buildtree(void)
 {
   long i, nextnode;
   node *p;
@@ -1476,7 +1493,7 @@ void buildtree()
 }  /* buildtree */
 
 
-void setorder()
+void setorder(void)
 {
   /* sets in order of number of members */
   sett[0] = 1L << ((long)A);
@@ -1519,7 +1536,7 @@ void setorder()
 }  /* setorder */
 
 
-void mincomp()
+void mincomp(void)
 {
   /* computes for each site the minimum number of steps
      necessary to accomodate those species already
@@ -1594,7 +1611,7 @@ void consolidatetree(long index)
 } /* consolidatetree */
 
 
-void rearrange()
+void rearrange(void)
 {
   long i, j, maxinput;
   boolean ok1, ok2;
@@ -1677,7 +1694,7 @@ void rearrange()
 }  /* rearrange */
 
 
-void dnamove_nextinc()
+void dnamove_nextinc(void)
 {
   /* show next incompatible site */
   long disp0;
@@ -1697,7 +1714,7 @@ void dnamove_nextinc()
   dnamove_printree();
 }  /* dnamove_nextinc */
 
-void dnamove_nextchar()
+void dnamove_nextchar(void)
 {
   /* show next site */
   display = true;
@@ -1707,7 +1724,7 @@ void dnamove_nextchar()
   dnamove_printree();
 }  /* dnamove_nextchar */
 
-void dnamove_prevchar()
+void dnamove_prevchar(void)
 {
   /* show previous site */
   display = true;
@@ -1717,7 +1734,7 @@ void dnamove_prevchar()
   dnamove_printree();
 }  /* dnamove_prevchar */
 
-void dnamove_show()
+void dnamove_show(void)
 {
   long i;
   boolean ok;
@@ -1769,7 +1786,7 @@ void addpreorder(node *p, node *item_, node *nufork_, double *place)
 }  /* addpreorder */
 
 
-void try()
+void try(void)
 {
   /* Remove node, try it in all possible places */
   double *place;
@@ -1872,7 +1889,7 @@ void try()
 }  /* try */
 
 
-void undo()
+void undo(void)
 {
   boolean btemp;
 
@@ -1932,7 +1949,7 @@ void treewrite(boolean done)
 /* treewrite */
 
 
-void clade()
+void clade(void)
 {
   /* pick a subtree and show only that on screen */
   long i;
@@ -2046,7 +2063,7 @@ void flip(long atnode)
 }  /* flip */
 
 
-void changeoutgroup()
+void changeoutgroup(void)
 {
   long i;
   boolean ok;
@@ -2071,7 +2088,7 @@ void changeoutgroup()
 }  /* changeoutgroup */
 
 
-void redisplay()
+void redisplay(void)
 {
   boolean done = false;
   waswritten = false;
@@ -2189,7 +2206,7 @@ void redisplay()
 }  /* redisplay */
 
 
-void treeconstruct()
+void treeconstruct(void)
 {
   /* constructs a binary tree from the pointers in treenode. */
   int i;

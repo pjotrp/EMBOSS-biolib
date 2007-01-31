@@ -150,7 +150,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
         usertree = true;
     }
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
 
     if(ajStrMatchC(method, "w")) allwagner = true;
     else if(ajStrMatchC(method, "c")) allsokal = true;

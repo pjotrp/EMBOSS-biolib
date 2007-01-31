@@ -63,11 +63,74 @@ longer seed;
 short *enterorder;
 short *weight, *alias, *aliasweight;
 
+
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void setuptree(tree *a);
+void getdata(void);
+void sitesort(void);
+void sitecombine(void);
+void sitescrunch(void);
+void makeweights(void);
+void makevalues(void);
+void getinput(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
+/* prototypes in restml2.c */
+
+double randum(short *seed);
+void copymatrix(transmatrix tomat,transmatrix frommat);
+void setuppi(void);
+void maketrans(double p);
+void branchtrans(short i, double p);
+double evaluate(tree *tr);
+void nuview(node *p);
+void makenewv(node *p);
+void update(node *p);
+void smooth(node *p);
+void hookup(node *p, node *q);
+void insert_(node *p, node *q);
+void re_move(node **p, node **q);
+void copynode(node *c, node *d);
+void copy_(tree *a, tree *b);
+void buildnewtip(short m, tree *tr);
+void buildsimpletree(tree *tr);
+void addtraverse(node *p, node *q, boolean contin);
+void rearrange(node *p);
+void coordinates(node *p, double lengthsum, short *tipy,
+                 double *tipmax,double *x);
+void drawline(short i, double scale);
+void printree(void);
+double sigma(node *q,double *sumlr);
+void describe(node *p);
+void summarize(void);
+void treeout(node *p);
+void getch(Char *c);
+void findch(Char c,short *lparens,short *rparens);
+void processlength(node *p);
+void addelement(node *p, short *nextnode,short *lparens,short *rparens,
+                boolean *names,boolean *nolengths);
+void treeread(void);
+void travinit(node *p);
+void travsp(node *p);
+void treevaluate(void);
 void maketree(void);
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
   AjPFile outf;
   AjPFile treef;
   AjPFile inf;
@@ -201,15 +264,14 @@ char *perm;
 }
 */
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
     *ch = (isupper ((int)*ch) ? ((int)*ch) : toupper((int)*ch));
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* read and print out numbers of species and sites */
   fscanf(infile, "%hd%hd%hd", &numsp, &sites, &enzymes);
@@ -220,7 +282,7 @@ void getnums()
   numsp2 = numsp * 2 - 2;
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   short i, inseed0=0;
@@ -560,7 +622,7 @@ void doinit(int argc, char *argv[])
 }  /* doinit */
 
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, 0 or 1 */
   Char ch;
@@ -597,7 +659,7 @@ void inputweights()
   weights = true;
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of sites */
   short i, j;
@@ -616,7 +678,7 @@ void printweights()
   fprintf(outfile, "\n\n");
 }  /* printweights */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* read the options information */
   Char ch;
@@ -680,8 +742,7 @@ void inputoptions()
     printweights();
 }  /* inputoptions */
 
-void setuptree(a)
-tree *a;
+void setuptree(tree *a)
 {
   /* set up data structures for a tree */
   short i, j;
@@ -706,7 +767,7 @@ tree *a;
 }  /* setuptree */
 
 
-void getdata()
+void getdata(void)
 {
   /* read the species and sites data */
   short i, j, k, l, sitesread, sitesnew=0;
@@ -832,7 +893,7 @@ void getdata()
   }
 }  /* getdata */
 
-void sitesort()
+void sitesort(void)
 {
   /* Shell sort keeping alias, aliasweight in same order */
   short gap, i, j, jj, jg, k, itemp;
@@ -873,7 +934,7 @@ void sitesort()
   }
 }  /* sitesort */
 
-void sitecombine()
+void sitecombine(void)
 {
   /* combine sites that have identical patterns */
   short i, j, k;
@@ -900,7 +961,7 @@ void sitecombine()
   }
 }  /* sitecombine */
 
-void sitescrunch()
+void sitescrunch(void)
 {
   /* move so positively weighted sites come first */
   short i, j, itemp;
@@ -939,7 +1000,7 @@ void sitescrunch()
   }
 }  /* sitescrunch */
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   short i,j;
@@ -1000,7 +1061,7 @@ void makeweights()
   }
 }  /* makeweights */
 
-void makevalues()
+void makevalues(void)
 {
   /* set up fractional likelihoods at tips */
   short i, j, k, l, m;
@@ -1051,7 +1112,7 @@ void makevalues()
 }  /* makevalues */
 
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -1061,9 +1122,7 @@ void getinput()
 }  /* getinput */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* maximum likelihood phylogenies from restriction sites */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -1112,8 +1171,7 @@ exit(0);
   misc. support routines.  Some of these should eventually be removed
 */
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1129,8 +1187,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1141,14 +1198,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,x);

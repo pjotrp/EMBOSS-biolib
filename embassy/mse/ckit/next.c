@@ -39,7 +39,7 @@
 #include "ckit.h"
 #include "ttyinterface.h"
 
-int main()
+int main(int argc, char* argv[])
 {
 SeqSpec *wildSpec;
 SeqEntry *seq;

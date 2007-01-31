@@ -51,7 +51,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     phylofreq = ajAcdGetFrequencies("infile");
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
     if(ajStrMatchC(method, "n")) nei = true;
     else if(ajStrMatchC(method, "c")) cavalli = true;
     else if(ajStrMatchC(method, "r")) reynolds = true;

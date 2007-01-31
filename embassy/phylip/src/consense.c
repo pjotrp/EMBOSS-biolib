@@ -44,6 +44,29 @@ Static long **order, **order2, lasti;
 Static double **timesseen, **tmseen2, **times2; /* how often they're seen */
 Static long *fullset;
 Static node *garbage;
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+
+void openfile(FILE **fp,
+	      char *filename, char *mode, char *application, char *perm);
+void getch(Char *c, short *parens);
+void dupname(Char name[nmlngth], node *p, boolean *found);
+void addelement(node **p, node *q, Char *ch, short *parens, short *nextnode);
+void initreenode(node *p);
+void rehash(void);
+void enterset(node *r);
+void compress(short *n);
+void sort(short n);
+void eliminate(short *n, short *n2, long *fullset);
+void printset(short n);
+
+void bigsubset(long *st, short n);
+void recontraverse(node **p, long *st, short n, short *nextnode);
+void reconstruct(short n);
+void coordinates(node *p, short *tipy);
+void drawline(short i);
+void printree(void);
+void treeout(node *p);
+void consensus(void);
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
@@ -86,12 +109,8 @@ AjPFile inf;
 }
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp, filename, mode, application, perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,
+	      char *filename, char *mode, char *application, char *perm)
 {
   FILE *of;
   char file[100];
@@ -123,8 +142,7 @@ char *perm;
 }
 
 
-Static Void gnu(p)
-node **p;
+Static Void gnu(node **p)
 {
   /* this and the following are do-it-yourself garbage collectors.
      Make a new node or pull one off the garbage list */
@@ -138,8 +156,7 @@ node **p;
 }  /* gnu */
 
 
-Static Void chuck(p)
-node *p;
+Static Void chuck(node *p)
 {
   /* collect garbage on p -- put it on front of garbage list */
   p->next = garbage;
@@ -147,8 +164,7 @@ node *p;
 }  /* chuck */
 
 
-Static Void gdispose(p)
-node *p;
+Static Void gdispose(node *p)
 {
   /* go through tree throwing away nodes */
   node *q, *r;
@@ -168,7 +184,7 @@ node *p;
 
 #ifdef OLDOPTIONS
 
-Static Void getoptions()
+Static Void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -304,9 +320,7 @@ Static Void getoptions()
 }  /* getoptions */
 #endif
 
-void getch(c, parens)
-Char *c;
-short *parens;
+void getch(Char *c, short *parens)
 {
   /* get next nonblank character */
   do {
@@ -322,9 +336,7 @@ short *parens;
     (*parens)--;
 }  /* getch */
 
-Static Void setupnode(p, i)
-node *p;
-short i;
+Static Void setupnode(node *p, short i)
 {
   /* initialization of node pointers, variables */
 
@@ -334,10 +346,7 @@ short i;
   p->tip = false;
 }  /* setupnode */
 
-void dupname(name, p, found)
-Char name[nmlngth];
-node *p;
-boolean *found;
+void dupname(Char name[nmlngth], node *p, boolean *found)
 {
   /* search for a duplicate name recursively */
   if (p) {
@@ -355,10 +364,7 @@ boolean *found;
   }
 }
 
-void addelement(p, q, ch, parens, nextnode)
-node **p, *q;
-Char *ch;
-short *nextnode, *parens;
+void addelement(node **p, node *q, Char *ch, short *parens, short *nextnode)
 {
   /* recursive procedure adds nodes to user-defined tree */
   node *r, *pfirst;
@@ -493,8 +499,7 @@ short *nextnode, *parens;
 }  /* addelement */
 
 
-void initreenode(p)
-node *p;
+void initreenode(node *p)
 {
   /* traverse tree and assign tips to treenode */
   node *q;
@@ -513,7 +518,7 @@ node *p;
 } /* initreenode */
 
 
-Static Void treeread()
+Static Void treeread(void)
 {
   /* read in user-defined tree and set it up */
   char ch;
@@ -545,8 +550,7 @@ Static Void treeread()
 }  /* treeread */
 
 
-Static Void reroot(outgroup)
-node *outgroup;
+Static Void reroot(node *outgroup)
 {
   /* reorients tree, putting outgroup in desired position. */
   short i;
@@ -590,7 +594,7 @@ node *outgroup;
   outgroup->back = q;
 }  /* reroot */
 
-void rehash()
+void rehash(void)
 {
   long *s, k;
   short i, j;
@@ -629,8 +633,7 @@ void rehash()
 }  /* rehash */
 
 
-void enterset(r)
-node *r;
+void enterset(node *r)
 {
   long *s, i, j, start;
   double times, ss, n;
@@ -696,8 +699,7 @@ node *r;
 }  /* enterset */
 
 
-Static Void accumulate(r_)
-node *r_;
+Static Void accumulate(node *r_)
 {
   node *r;
   node *q;
@@ -748,8 +750,7 @@ node *r_;
 #define over            5
 
 
-void compress(n)
-short *n;
+void compress(short *n)
 {
   /* push all the nonempty subsets to the front end of their array */
   short i, j;
@@ -776,8 +777,7 @@ short *n;
 }  /* compress */
 
 
-void sort(n)
-short n;
+void sort(short n)
 {
   /* Shell sort keeping grouping, timesseen in same order */
   short gap, i, j;
@@ -807,9 +807,7 @@ short n;
 }  /* sort */
 
 
-void eliminate(n, n2, fullset)
-short *n, *n2;
-long *fullset;
+void eliminate(short *n, short *n2, long *fullset)
 {
   /* eliminate groups incompatible with preceding ones */
   short i, j, k;
@@ -862,8 +860,7 @@ long *fullset;
 }  /* eliminate */
 
 
-void printset(n)
-short n;
+void printset(short n)
 {
   /* print out a set of species */
   short i, j, k, size;
@@ -901,9 +898,7 @@ short n;
 }  /* printset */
 
 
-void bigsubset(st, n)
-long *st;
-short n;
+void bigsubset(long *st, short n)
 {
   /* find a maximal subset of st among the groupings */
   short i, j;
@@ -945,11 +940,7 @@ short n;
 }  /* bigsubset */
 
 
-void recontraverse(p, st, n, nextnode)
-node **p;
-long *st;
-short n;
-short *nextnode;
+void recontraverse(node **p, long *st, short n, short *nextnode)
 {
   /* traverse to add next node of consensus tree */
   short i, j=0, k, l;
@@ -1036,8 +1027,7 @@ short *nextnode;
 }  /* recontraverse */
 
 
-void reconstruct(n)
-short n;
+void reconstruct(short n)
 {
   /* reconstruct tree from the subsets */
   short nextnode;
@@ -1051,9 +1041,7 @@ short n;
 }  /* reconstruct */
 
 
-void coordinates(p, tipy)
-node *p;
-short *tipy;
+void coordinates(node *p, short *tipy)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -1089,8 +1077,7 @@ short *tipy;
 }  /* coordinates */
 
 
-void drawline(i)
-short i;
+void drawline(short i)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q;
@@ -1170,7 +1157,7 @@ short i;
 }  /* drawline */
 
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
   short i;
@@ -1202,8 +1189,7 @@ void printree()
 #undef down
 #undef over
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   short i, n=0;
@@ -1265,11 +1251,11 @@ node *p;
 }  /* treeout */
 
 
-void consensus()
+void consensus(void)
 {
   short i;
   short n, n2;
-short tipy;
+  short tipy;
 
   n2 = 0;
   compress(&n);
@@ -1311,9 +1297,7 @@ short tipy;
 }  /* consensus */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  
 /*char infilename[100], outfilename[100], trfilename[100];*/
 #ifdef MAC
@@ -1390,8 +1374,7 @@ Char *argv[];
 }  /* main */
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1407,8 +1390,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1419,14 +1401,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long  x;
+MALLOCRETURN *mymalloc(long  x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1, x);

@@ -263,19 +263,19 @@ FILE *enzFile;
 
 } /* End of Show GCGEnzymes */
 
-#include "ckittypes.h"
+#include "seqspec.h"
 
 static int errors = 0;
-static ProcPtr procNotify=NULL;
-static ProcPtr procError=NULL;
-static ProcPtr procFatal=NULL;
+static ProcPtrChar procNotify=NULL;
+static ProcPtrChar procError=NULL;
+static ProcPtrChar procFatal=NULL;
 
-void Notify(ProcPtr pNotify, ProcPtr pError, ProcPtr pFatal);
+void Notify(ProcPtrChar pNotify, ProcPtrChar pError, ProcPtrChar pFatal);
  int ClearErrors(void);
  int Errors(void);
 void PostError(Choice severity, char *errMsg);
 
-void Notify(ProcPtr pNotify, ProcPtr pError, ProcPtr pFatal)
+void Notify(ProcPtrChar pNotify, ProcPtrChar pError, ProcPtrChar pFatal)
 {
 	procNotify = pNotify;
 	procError = pError;

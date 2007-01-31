@@ -64,17 +64,17 @@
 **
 ** @attr  seqmat_score [AjPFloat]  Array of scores - residue convervation 
 ** @attr seqvar_score [AjPFloat]   Array of scores - residue variability 
-** @attr post_similar [AjPInt]     Array of scores - stamp pij value      
-** @attr positions [AjPInt]        Array of integers from 'Position' line in 
+** @attr post_similar [AjPUint]    Array of scores - stamp pij value      
+** @attr positions [AjPUint]       Array of integers from 'Position' line in 
 **  alignment, used for manual specification of signature positions.
 ** @attr ncon_score  [AjPFloat]    Array of scores based on number of contacts
 ** @attr ccon_score [AjPFloat]     Array of scores based on convervation of 
 ** 			           contacts. 
-** @attr nccon_score [AjPInt]      Array of total score based on convervation 
+** @attr nccon_score [AjPUint]     Array of total score based on convervation 
 				   and number of contacts.
-** @attr combi_score  [AjPInt]     Array of total score based on users scoring 
+** @attr combi_score  [AjPUint]    Array of total score based on users scoring 
 				   criteria.
-** @attr ncon_thresh [AjPInt]      Array of positions with > threshold number 
+** @attr ncon_thresh [AjPUint]     Array of positions with > threshold number 
 				   of contacts 
 ** @attr seqmat_do  [AjBool]       Whether to use score based on residue 
 **                                 convervation.
@@ -104,13 +104,13 @@ typedef struct AjSScorealg
 {   
     AjPFloat  seqmat_score;
     AjPFloat  seqvar_score;
-    AjPInt    post_similar;
-    AjPInt    positions;
+    AjPUint    post_similar;
+    AjPUint    positions;
     AjPFloat  ncon_score;
     AjPFloat  ccon_score;
-    AjPInt    nccon_score;
-    AjPInt    combi_score;
-    AjPInt    ncon_thresh;
+    AjPUint    nccon_score;
+    AjPUint    combi_score;
+    AjPUint    ncon_thresh;
     AjBool    seqmat_do;
     AjBool    seqvar_do;
     AjBool    filterpsim;
@@ -139,68 +139,68 @@ static void  siggen_ScorealgDel(AjPScorealg *pthis);
 static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
 				  AjPScorealg *scores, 
 				  AjPMatrixf mat, 
-				  AjPInt2d seq_pos);
+				  AjPUint2d seq_pos);
 
 static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, 
 				  AjPScorealg *scores, 
-				  AjPInt2d seq_pos);
+				  AjPUint2d seq_pos);
 
 static AjBool  siggen_ScoreNcon(AjPScopalg alg, 
 				AjPScorealg *scores, 
 				AjPCmap *cmaps, 
-				AjPInt2d seq_pos, 
-				AjPInt *atom_idx, 	
+				AjPUint2d seq_pos, 
+				AjPUint *atom_idx, 	
 				AjBool *noca);
 
 static AjBool  siggen_ScoreCcon(AjPScopalg alg, 
 				AjPScorealg *scores, 
 				AjPCmap *cmaps, 
-				AjPInt2d seq_pos, 	
-				AjPInt *atom_idx, 
+				AjPUint2d seq_pos, 	
+				AjPUint *atom_idx, 
 				AjBool *noca);
 
-static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg, 
+static EmbPSignature  siggen_SigSelectSeq(AjPScopalg alg, 
 					 AjPScorealg scores, 
-					 AjPInt2d seq_pos, 
+					 AjPUint2d seq_pos, 
 					 ajint sig_sparse,
 					 float *spar_check, 
 					 ajint wsiz);
 
-static AjPSignature  siggen_SigSelect(AjPScopalg alg, 
+static EmbPSignature  siggen_SigSelect(AjPScopalg alg, 
 				      AjPScorealg scores, 
-				      AjPInt2d seq_pos, 
+				      AjPUint2d seq_pos, 
 				      ajint sig_sparse, 
 				      AjPCmap *cmaps,
-				      AjPInt *atom_idx, 
+				      AjPUint *atom_idx, 
 				      float *spar_check, 
 				      ajint wsiz);
 
 static AjBool siggen_CalcSeqpos(AjPScopalg alg, 
-				AjPInt2d *seq_pos);
+				AjPUint2d *seq_pos);
 
 static AjBool siggen_ScoreAlignment(AjPScorealg *scores, 
 				    AjPScopalg alg, 
 				    AjPCmap *cmaps, 
 				    AjPMatrixf  mat, 
 				    AjBool *noca, 
-				    AjPInt2d seq_pos, 
-				    AjPInt *atom_idx);
+				    AjPUint2d seq_pos, 
+				    AjPUint *atom_idx);
 
 static AjBool siggen_ScoreAlignmentSeq(AjPScorealg *scores, 
 				       AjPScopalg alg, 
 				       AjPMatrixf  mat, 
-				       AjPInt2d seq_pos);
+				       AjPUint2d seq_pos);
 
-static AjPSignature siggen_SigSelectManual(AjPScopalg alg, 
+static EmbPSignature siggen_SigSelectManual(AjPScopalg alg, 
 					   AjPScorealg *scores, 
-					   AjPInt2d seq_pos, 
+					   AjPUint2d seq_pos, 
 					   float *spar_check,
 					   ajint wsiz);
 
 static AjBool siggen_Con_Thresh(AjPScopalg alg, AjPScorealg *scores,
 				AjPCmap *cmaps, ajint conthresh,
-				AjBool *noca, AjPInt2d seq_pos, 
-				AjPInt *atom_idx);
+				AjBool *noca, AjPUint2d seq_pos, 
+				AjPUint *atom_idx);
 
 
 
@@ -242,11 +242,11 @@ int main(ajint argc, char **argv)
 
     AjPList     list          =NULL;   /* List of files in align directory. */
     AjPMatrixf  mat           =NULL;
-    AjPInt2d    seq_pos       =NULL;   /* Numbering of sequence according to 
+    AjPUint2d    seq_pos       =NULL;   /* Numbering of sequence according to 
 					  alignment. */
 
 
-    AjPSignature sig=NULL;             /* Signature. */
+    EmbPSignature sig=NULL;            /* Signature. */
     AjPScopalg  alg           =NULL;   /* Pointer to Scopalg structure. */
     AjPScorealg scores        =NULL;   /* Pointer to Scorealg structure. */
     AjPCmap    *cmaps         =NULL;   /* Array of pointers to Cmap structs */
@@ -290,7 +290,7 @@ int main(ajint argc, char **argv)
 					    the alignment contained an NOCA 
 					    grouyp in the original pdb
 					    file. */
-    AjPInt     *atom_idx=NULL;          /* Indices into the full
+    AjPUint     *atom_idx=NULL;          /* Indices into the full
 					   length sequences for
 					   sequences in the alignment
 					   (alignment sequences are
@@ -444,13 +444,13 @@ int main(ajint argc, char **argv)
 
 	/*      ajFmtPrint("6\n");fflush(stdout); */
 
-        /* Allocate array of AjPInt for indeces into sequences. */
+        /* Allocate array of AjPUint for indeces into sequences. */
 	if(ajStrGetCharFirst(*conoption) != '5')
 	{
 	    AJCNEW0(atom_idx, alg->N);
 	    
 	    for(x=0; x<alg->N; ++x)
-		atom_idx[x] = ajIntNew();
+		atom_idx[x] = ajUintNew();
         }
 	
 
@@ -546,7 +546,7 @@ int main(ajint argc, char **argv)
                     continue;
                 }
                 
-		ajIntPut(&atom_idx[x], nres, -1);
+		ajUintPut(&atom_idx[x], nres, -1);
 		
     
                 ajPdbDel(&pdb);
@@ -635,7 +635,7 @@ int main(ajint argc, char **argv)
 		    if(ajStrGetCharFirst(*conoption) != '5')
 		    {
 			for(x=0; x<alg->N; ++x)
-			    ajIntDel(&atom_idx[x]);
+			    ajUintDel(&atom_idx[x]);
 			AJFREE(atom_idx);
 			AJFREE(noca);
 			AJFREE(cmaps);
@@ -661,7 +661,7 @@ int main(ajint argc, char **argv)
 		    if(ajStrGetCharFirst(*conoption) != '5')
 		    {
 			for(x=0; x<alg->N; ++x)
-			    ajIntDel(&atom_idx[x]);
+			    ajUintDel(&atom_idx[x]);
 			AJFREE(atom_idx);
 			AJFREE(noca);
 			AJFREE(cmaps);
@@ -678,7 +678,7 @@ int main(ajint argc, char **argv)
 
 	/*      ajFmtPrint("15\n");fflush(stdout); */
 
-	ajInt2dDel(&seq_pos);    
+	ajUint2dDel(&seq_pos);    
 
 
         
@@ -833,7 +833,7 @@ int main(ajint argc, char **argv)
 	if(ajStrGetCharFirst(*conoption) != '5')
 	{
 	    for(x=0; x<alg->N; ++x)
-		ajIntDel(&atom_idx[x]);
+		ajUintDel(&atom_idx[x]);
 	    AJFREE(atom_idx);
 	    AJFREE(noca);
 	    AJFREE(cmaps);
@@ -896,7 +896,7 @@ int main(ajint argc, char **argv)
 ** @param [r] alg     [AjPScopalg]   Alignment
 ** @param [w] scores  [AjPScorealg*] Scores for alignment
 ** @param [r] mat     [AjPMatrixf]   Subsitution matrix
-** @param [r] seq_pos [AjPInt2d]     Index for alignment
+** @param [r] seq_pos [AjPUint2d]     Index for alignment
 **
 ** @return [AjBool] True on succcess
 ** @@
@@ -905,7 +905,7 @@ int main(ajint argc, char **argv)
 static AjBool  siggen_ScoreSeqMat(AjPScopalg alg, 
 				  AjPScorealg *scores, 
 				  AjPMatrixf mat, 
-				  AjPInt2d seq_pos)
+				  AjPUint2d seq_pos)
 {
     ajint       memb_cnt     =0;  /* Counter for members of the family
 				     (alignment). */
@@ -930,7 +930,7 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
         if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
 	    ((*scores)->filtercon == ajTrue)  && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
 	   ||
            (((*scores)->filterpsim == ajTrue) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
@@ -939,7 +939,7 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
 	    ((*scores)->filtercon == ajTrue) && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
@@ -967,8 +967,8 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
 
 
                         /* Assign score form matrix to variable val. */
-                        val = (sub[ajSeqCvtK(cvt, (ajStrGetCharPos(alg->Seqs[memb_cnt], 
-                            post_cnt)))][ajSeqCvtK(cvt, 
+                        val = (sub[ajSeqcvtGetCodeK(cvt, (ajStrGetCharPos(alg->Seqs[memb_cnt], 
+                            post_cnt)))][ajSeqcvtGetCodeK(cvt, 
                             (ajStrGetCharPos(alg->Seqs[res_cnt], post_cnt)))]);
 
 
@@ -1005,13 +1005,13 @@ static AjBool  siggen_ScoreSeqMat(AjPScopalg alg,
 **
 ** @param [r] alg     [AjPScopalg]   Alignment
 ** @param [w] scores  [AjPScorealg*] Scores for alignment
-** @param [r] seq_pos [AjPInt2d]     Index for alignment
+** @param [r] seq_pos [AjPUint2d]     Index for alignment
 **
 ** @return [AjBool] True on succcess
 ** @@
 *****************************************************************************/
 static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores, 
-				  AjPInt2d seq_pos)
+				  AjPUint2d seq_pos)
 {
     ajint       memb_cnt     =0;    /* Counter for members of the family (alignment). */
 
@@ -1051,7 +1051,7 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
         if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
            ((*scores)->filtercon == ajTrue) && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
 	   ||
            (((*scores)->filterpsim == ajTrue) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
@@ -1060,7 +1060,7 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
            ((*scores)->filtercon == ajTrue) && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
@@ -1265,8 +1265,8 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
 ** @param [r] alg      [AjPScopalg]     Alignment
 ** @param [w] scores   [AjPScorealg*]   Scores for alignment
 ** @param [r] cmaps    [AjPCmap*]       Residue contacts
-** @param [r] seq_pos  [AjPInt2d]       Index for alignment
-** @param [r] atom_idx [AjPInt*]        Index residue positions.
+** @param [r] seq_pos  [AjPUint2d]       Index for alignment
+** @param [r] atom_idx [AjPUint*]        Index residue positions.
 ** @param [r] noca     [AjBool*]        Whether residues possess a CA atom.
 **
 ** @return [AjBool] True on succcess
@@ -1275,8 +1275,8 @@ static AjBool  siggen_ScoreSeqVar(AjPScopalg alg, AjPScorealg *scores,
 static AjBool  siggen_ScoreNcon(AjPScopalg alg, 
 				AjPScorealg *scores, 
 				AjPCmap *cmaps, 
-				AjPInt2d seq_pos, 
-				AjPInt *atom_idx, 
+				AjPUint2d seq_pos, 
+				AjPUint *atom_idx, 
 				AjBool *noca)
 {
 
@@ -1291,14 +1291,14 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
     ajint       idx_atomidx  =0;    /* Index into atom_idx array.            */
     float       av_ncon      =0;    /* Counter to hold average no. of contacts. */
     AjIStr      iter         =NULL; /* Iterator for post_similar string.     */
-    AjPInt2d    align_ncon   =NULL; /* Matrix of number of contacts for every
+    AjPUint2d    align_ncon   =NULL; /* Matrix of number of contacts for every
 				       residue.                              */
 
     
     
 
     /* Allocate memory for the align_ncon array . */
-    align_ncon = ajInt2dNewL((ajint)alg->width);        
+    align_ncon = ajUint2dNewL((ajint)alg->width);        
 
 
     /* Assign iterator for post_similar line. */
@@ -1307,7 +1307,7 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
 
     /* Create arrays of size width. */
     for(x = 0; x < alg->N; x++)
-        ajInt2dPut(&align_ncon, x, alg->width-1, (ajint) 0);
+        ajUint2dPut(&align_ncon, x, alg->width-1, (ajint) 0);
 
 
     
@@ -1324,11 +1324,11 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
 	      /*	      ajFmtPrint(">");fflush(stdout); */
 
                 /* Check if position in contact map is 1 (i.e. contact). */
-                if(ajInt2dGet(cmaps[memb_cnt]->Mat, xmat_cnt, ymat_cnt) == 1)
+                if(ajUint2dGet(cmaps[memb_cnt]->Mat, xmat_cnt, ymat_cnt) == 1)
                     nconcount++;
             }
             /* Put nconcounter value into array. */
-            ajInt2dPut(&align_ncon, memb_cnt, xmat_cnt, nconcount);
+            ajUint2dPut(&align_ncon, memb_cnt, xmat_cnt, nconcount);
             nconcount = 0;
         }
     }
@@ -1341,7 +1341,7 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
         if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
             ((*scores)->filtercon == ajTrue) && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||   
            (((*scores)->filterpsim == ajTrue) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
@@ -1350,7 +1350,7 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
             ((*scores)->filtercon == ajTrue) && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
@@ -1366,13 +1366,13 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
 	      ajFmtPrint(".");
 	      fflush(stdout); */
 
-                if((idx_seqpos = ajInt2dGet(seq_pos, memb_cnt, post_cnt))==-1)
+                if((idx_seqpos = ajUint2dGet(seq_pos, memb_cnt, post_cnt))==-1)
                     continue;
                 
                 /* Assign position of atom_idx array to idx_atomidx. */
                 else
 		  {
-                    if((idx_atomidx = ajIntGet(atom_idx[memb_cnt], idx_seqpos))==-1)
+                    if((idx_atomidx = ajUintGet(atom_idx[memb_cnt], idx_seqpos))==-1)
 		      ajFatal("Oh no! Gap not detectd in seq_pos but -1 found in idx_atomidx");
 		  }
 
@@ -1386,14 +1386,14 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
                 if(noca[memb_cnt] == ajTrue)
                 {
 		  /*		  ajFmtPrint("!");		fflush(stdout); */
-                    nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, idx_atomidx);
+                    nconpos_cnt += ajUint2dGet(align_ncon, memb_cnt, idx_atomidx);
                 }
                 
                 /* Else continue as normal. */
                 else
                 {
 		  /*		  ajFmtPrint("*");		fflush(stdout); */
-                    nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, (idx_atomidx - 1));
+                    nconpos_cnt += ajUint2dGet(align_ncon, memb_cnt, (idx_atomidx - 1));
                 }
             }
 
@@ -1413,7 +1413,7 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
 
 
     /* Free memory for matrix and iterator. */
-    ajInt2dDel(&align_ncon);
+    ajUint2dDel(&align_ncon);
     ajStrIterDel(&iter);
 
 
@@ -1436,14 +1436,14 @@ static AjBool  siggen_ScoreNcon(AjPScopalg alg,
 ** @param [w] scores  [AjPScorealg*]   Scores for alignment
 
 ** @param [r] cmaps   [AjPCmap*]       Residue contacts
-** @param [r] seq_pos [AjPInt2d]       Index for alignment
+** @param [r] seq_pos [AjPUint2d]       Index for alignment
 **
 ** @return [AjBool] True on succcess
 ** @@
 *****************************************************************************/
 static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores, 
 				AjPCmap *cmaps, 
-				AjPInt2d seq_pos, AjPInt *atom_idx, 
+				AjPUint2d seq_pos, AjPUint *atom_idx, 
 				AjBool *noca)
 {
 
@@ -1463,17 +1463,17 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
 
     float       sum          =0;    /* Variable to hold nsite calculation. */
     AjIStr      iter         =NULL; /* Iterator for post_similar string. */
-    AjPInt2d    con_contact  =NULL; /* Matrix of conserv of contacts for every residue. */
-    AjPInt      con_line     =NULL; /* Temp storage of line. */
-    AjPInt      atomidx_size =NULL; /* Array of sizes of atom_idx arrays. */
+    AjPUint2d    con_contact  =NULL; /* Matrix of conserv of contacts for every residue. */
+    AjPUint      con_line     =NULL; /* Temp storage of line. */
+    AjPUint      atomidx_size =NULL; /* Array of sizes of atom_idx arrays. */
     
 
 
     
     /*Allocate memory for arrays . */
-    con_contact    = ajInt2dNewL((ajint)alg->width);    
-    con_line       = ajIntNewL((ajint)alg->width);
-    atomidx_size   = ajIntNewL((ajint)alg->N);
+    con_contact    = ajUint2dNewL((ajint)alg->width);    
+    con_line       = ajUintNewL((ajint)alg->width);
+    atomidx_size   = ajUintNewL((ajint)alg->N);
 
     
     for(memb_cnt = 0; memb_cnt<alg->N;memb_cnt++)
@@ -1482,9 +1482,9 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
         {
             for(x=0; x<=alg->width;x++)
             {
-                if(ajIntGet(atom_idx[memb_cnt], x) == -1)
+                if(ajUintGet(atom_idx[memb_cnt], x) == -1)
                 {
-                    ajIntPut(&atomidx_size, memb_cnt, x);
+                    ajUintPut(&atomidx_size, memb_cnt, x);
                     break;
                 }
                 else
@@ -1496,9 +1496,9 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
         {
             for(x=0; x<alg->width;x++)
             {
-                if(ajIntGet(atom_idx[memb_cnt], x) == -1)
+                if(ajUintGet(atom_idx[memb_cnt], x) == -1)
                 {
-                    ajIntPut(&atomidx_size, memb_cnt, x);
+                    ajUintPut(&atomidx_size, memb_cnt, x);
                     break;
                 }
                 else
@@ -1516,11 +1516,11 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
     
     /* Create arrays of size width. */
     for(x = 0; x < alg->width; x++)
-        ajInt2dPut(&con_contact, x, alg->width-1, 0);
+        ajUint2dPut(&con_contact, x, alg->width-1, 0);
 
 
     /* Create arrays of size width. */
-    ajIntPut(&con_line, alg->width-1, 0);
+    ajUintPut(&con_line, alg->width-1, 0);
 
 
 
@@ -1531,7 +1531,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
         if(((ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') && 
 	    ((*scores)->filterpsim == ajTrue) &&
            ((*scores)->filtercon == ajTrue) && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
           ||
            (((*scores)->filterpsim == ajTrue) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) == '1') &&
@@ -1540,7 +1540,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
            ((*scores)->filtercon == ajTrue) && 
-	    (ajIntGet((*scores)->ncon_thresh, post_cnt) == 1))
+	    (ajUintGet((*scores)->ncon_thresh, post_cnt) == 1))
            ||
            (((*scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, post_cnt) != '-') && 
@@ -1548,7 +1548,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
         {
             /* Create array of size width. */
             for(x = 0; x < alg->width; x++)
-                ajIntPut(&con_line, x, 0); 
+                ajUintPut(&con_line, x, 0); 
             nsite = 0;
             num = 0;
 
@@ -1561,7 +1561,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
                 for(y_cnt = 0; y_cnt < cmaps[memb_cnt]->Dim; y_cnt++)
                 {
                     /*Check to see if alignment position is a gap*/
-                    if((idx_seqpos=ajInt2dGet(seq_pos,memb_cnt,post_cnt))==-1)
+                    if((idx_seqpos=ajUint2dGet(seq_pos,memb_cnt,post_cnt))==-1)
                         {
                             printf("Error! found a '-' in siggen_ScoreCcon function\n");
                             continue; 
@@ -1569,22 +1569,22 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
                     
                     /* Assign position of atom_idx array to idx_atomidx. */
                     else
-                        idx_atomidx = ajIntGet(atom_idx[memb_cnt], idx_seqpos);
+                        idx_atomidx = ajUintGet(atom_idx[memb_cnt], idx_seqpos);
 
                     if(noca[memb_cnt] == ajTrue)
                     {
                         /*Check if position in contact map is 1 (i.e. contact). */
-                        if(ajInt2dGet(cmaps[memb_cnt]->Mat, (idx_atomidx), 
+                        if(ajUint2dGet(cmaps[memb_cnt]->Mat, (idx_atomidx), 
 				      y_cnt)==1)
                         {
                             /* Assign number of elements in atom_idx array to 
 			       size. */
-                            size = ajIntGet(atomidx_size, memb_cnt);
+                            size = ajUintGet(atomidx_size, memb_cnt);
                             /* determine position of ymat_cnt in atom_idx array. */
                             for(atomidx_cnt=0; atomidx_cnt<size; atomidx_cnt++)
                             {
                                 /* Assign value from atom_idx to variable. */
-                                idx_atomidx = ajIntGet(atom_idx[memb_cnt], 
+                                idx_atomidx = ajUintGet(atom_idx[memb_cnt], 
 						       atomidx_cnt);
 
 
@@ -1595,7 +1595,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
 					seqpos_cnt++)
                                     {
                                         /* Assign value from seq_pos to variable. */
-                                        idx_seqpos=ajInt2dGet(seq_pos, memb_cnt,
+                                        idx_seqpos=ajUint2dGet(seq_pos, memb_cnt,
 							      seqpos_cnt);
                                     
                                         /* Check if seq_pos element contains the
@@ -1611,16 +1611,16 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
                                             temp = seqpos_cnt; /* !!idx_seqpos*/
                                     
                                             /* increment the number if sites counter. */
-                                            if(ajIntGet(con_line, temp) == 0)
+                                            if(ajUintGet(con_line, temp) == 0)
                                                 nsite++;
 
                                             /* Increment element of con_line. */
-                                            ajIntInc(&con_line, (ajint) temp);
+                                            ajUintInc(&con_line, (ajint) temp);
 
                                             /* !!idx_seqpos*/
-                                            ajInt2dPut(&con_contact, post_cnt, 
+                                            ajUint2dPut(&con_contact, post_cnt, 
 						       seqpos_cnt, 
-                                                       (ajIntGet(con_line, seqpos_cnt)));
+                                                       (ajUintGet(con_line, seqpos_cnt)));
                                             break;
                                         }
                                 
@@ -1637,17 +1637,17 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
                     {
                         /*Check if position in contact map is 1 (i.e. contact). */
                         /* -1 as atom_idx counts from 1 NOT ZERO!!. */
-                        if(ajInt2dGet(cmaps[memb_cnt]->Mat, (idx_atomidx-1), 
+                        if(ajUint2dGet(cmaps[memb_cnt]->Mat, (idx_atomidx-1), 
 				      y_cnt)==1)
                         {
                             /* Assign number of elements in atom_idx array to size. */
-                            size = ajIntGet(atomidx_size, memb_cnt);
+                            size = ajUintGet(atomidx_size, memb_cnt);
 
                             /* determine position of ymat_cnt in atom_idx array. */
                             for(atomidx_cnt=0; atomidx_cnt<size; atomidx_cnt++)
                             {
                                 /* Assign value from atom_idx to variable. */
-                                idx_atomidx = ajIntGet(atom_idx[memb_cnt], 
+                                idx_atomidx = ajUintGet(atom_idx[memb_cnt], 
 						       atomidx_cnt);
 				
                                 /* Find position where value of y_cnt appears. */
@@ -1658,7 +1658,7 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
 					seqpos_cnt++)
                                     {
                                         /* Assign value from seq_pos to variable. */
-                                        idx_seqpos=ajInt2dGet(seq_pos, memb_cnt,
+                                        idx_seqpos=ajUint2dGet(seq_pos, memb_cnt,
 							      seqpos_cnt);
                                     
                                         /* Check if seq_pos element contains the 
@@ -1674,15 +1674,15 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
                                             temp = seqpos_cnt; /* !!idx_seqpos*/
                                     
                                             /* Increment the number if sites counter. */
-                                            if(ajIntGet(con_line, temp) == 0)
+                                            if(ajUintGet(con_line, temp) == 0)
                                                 nsite++;
 
                                             /* Increment element of con_line. */
-                                            ajIntInc(&con_line, (ajint) temp);
+                                            ajUintInc(&con_line, (ajint) temp);
 					    
-                                            ajInt2dPut(&con_contact, post_cnt,
+                                            ajUint2dPut(&con_contact, post_cnt,
 						       seqpos_cnt, 
-                                                       (ajIntGet(con_line, seqpos_cnt)));
+                                                       (ajUintGet(con_line, seqpos_cnt)));
                                             break;
                                         }
                                 
@@ -1701,8 +1701,8 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
             {
                 /* Divide number of sequences making a contact with a particular */
                 /* residue by the total no. of sequences.                        */
-                if(ajIntGet(con_line, p)!=0)
-                    sum += ((float)(ajIntGet(con_line, p)/((float)(ajint)alg->N)));
+                if(ajUintGet(con_line, p)!=0)
+                    sum += ((float)(ajUintGet(con_line, p)/((float)(ajint)alg->N)));
 
             }
 
@@ -1718,9 +1718,9 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
     
 
     /* Free memory for arrays and iterator. */
-    ajIntDel(&con_line);
-    ajIntDel(&atomidx_size);
-    ajInt2dDel(&con_contact);
+    ajUintDel(&con_line);
+    ajUintDel(&atomidx_size);
+    ajUint2dDel(&con_contact);
     ajStrIterDel(&iter);
 
 
@@ -1743,24 +1743,24 @@ static AjBool  siggen_ScoreCcon(AjPScopalg alg, AjPScorealg *scores,
 **
 ** @param [r] alg        [AjPScopalg]  Alignment 
 ** @param [r] scores     [AjPScorealg] Scores for alignment
-** @param [r] seq_pos    [AjPInt2d]    Index for alignment
+** @param [r] seq_pos    [AjPUint2d]    Index for alignment
 ** @param [r] sig_sparse [ajint]       Sparsity of signature
 ** @param [r] cmaps      [AjPCmap *]   Contact maps.  
-** @param [r] atom_idx   [AjPInt *]    Index residue positions.
+** @param [r] atom_idx   [AjPUint *]    Index residue positions.
 ** @param [r] spar_check [float *]     Sparsity check array.
 ** @param [r] wsiz       [ajint]       Window size 
 ** 
-** @return [AjPSignature] Pointer to Signature structure or NULL on failure
+** @return [EmbPSignature] Pointer to Signature structure or NULL on failure
 ** @@
 *****************************************************************************/
-static AjPSignature  siggen_SigSelect(AjPScopalg alg, 
-				      AjPScorealg scores, 
-				      AjPInt2d seq_pos, 
-				      ajint sig_sparse, 
-				      AjPCmap *cmaps, 
-				      AjPInt *atom_idx, 
-				      float *spar_check, 
-				      ajint wsiz)
+static EmbPSignature  siggen_SigSelect(AjPScopalg alg, 
+				       AjPScorealg scores, 
+				       AjPUint2d seq_pos, 
+				       ajint sig_sparse, 
+				       AjPCmap *cmaps, 
+				       AjPUint *atom_idx, 
+				       float *spar_check, 
+				       ajint wsiz)
 {
     ajint       nseqs=0;                /* Number of sequences. */
     ajint       idx              =0;    /* Index.               */
@@ -1803,16 +1803,16 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     AjPFloat    ncon_normal      =NULL; /* Array of floats for normalised ncon_score. */
     AjPFloat    ccon_normal      =NULL; /* Array of floats for normalised ccon_score. */
     AjPFloat    total_score      =NULL; /* Array of floats for total normalised scores. */
-    AjPInt      keyres_pos       =NULL; /* Total_score array, sorted in ascending order. */
-    AjPInt      post_sim         =NULL; /* Array for positions in post_similar line. */
-    AjPInt      seq_len          =NULL; /* Array of length of each seq, as in alignment . */
-    AjPInt      fullseq_len      =NULL; /* Array of length of each seq, as in original seq . */
-    AjPInt      rand_pos         =NULL; /* Array of positions for random selection . */
-    AjPInt      temp_rand        =NULL; /* Array of positions for random selection . */
-    AjPInt2d    keyres_seq       =NULL; /* Total_score array, sorted in ascending order. */
-    AjPInt2d    atomres_seq      =NULL; /* Total_score array, sorted in ascending order. */
+    AjPUint      keyres_pos       =NULL; /* Total_score array, sorted in ascending order. */
+    AjPUint      post_sim         =NULL; /* Array for positions in post_similar line. */
+    AjPUint      seq_len          =NULL; /* Array of length of each seq, as in alignment . */
+    AjPUint      fullseq_len      =NULL; /* Array of length of each seq, as in original seq . */
+    AjPUint      rand_pos         =NULL; /* Array of positions for random selection . */
+    AjPUint      temp_rand        =NULL; /* Array of positions for random selection . */
+    AjPUint2d    keyres_seq       =NULL; /* Total_score array, sorted in ascending order. */
+    AjPUint2d    atomres_seq      =NULL; /* Total_score array, sorted in ascending order. */
     AjPStr      *seq_array       =NULL; /* Arrays of sequence (w/o gaps) from alignment. */
-    AjPSignature sig=NULL;              /* Signature. */
+    EmbPSignature sig=NULL;              /* Signature. */
     float       spar             =0.0;
     
     double      rn               = 0;   
@@ -1835,15 +1835,15 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     ncon_normal         =  ajFloatNewL(alg->width);
     ccon_normal         =  ajFloatNewL(alg->width);
     total_score         =  ajFloatNewL(alg->width);
-    keyres_pos          =  ajIntNewL(alg->width);    
+    keyres_pos          =  ajUintNewL(alg->width);    
 
 
-    post_sim            =  ajIntNewL(alg->width);
-    rand_pos            =  ajIntNewL(alg->width);
-    keyres_seq          =  ajInt2dNew();    
-    atomres_seq         =  ajInt2dNew();    
-    seq_len             =  ajIntNewL(alg->N);    
-    fullseq_len         =  ajIntNewL(alg->N);    
+    post_sim            =  ajUintNewL(alg->width);
+    rand_pos            =  ajUintNewL(alg->width);
+    keyres_seq          =  ajUint2dNew();    
+    atomres_seq         =  ajUint2dNew();    
+    seq_len             =  ajUintNewL(alg->N);    
+    fullseq_len         =  ajUintNewL(alg->N);    
     
 
     /* Initialise array elements to zero. */
@@ -1854,9 +1854,9 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     ajFloatPut(&ccon_normal, alg->width-1, (float) 0.0);
     ajFloatPut(&total_score, alg->width-1, (float) 0.0);
 
-    ajIntPut(&keyres_pos, alg->width-1, (ajint) 0);
-    ajIntPut(&post_sim, alg->width-1, (ajint) 0);
-    ajIntPut(&rand_pos, alg->width-1, (ajint) 0);
+    ajUintPut(&keyres_pos, alg->width-1, (ajint) 0);
+    ajUintPut(&post_sim, alg->width-1, (ajint) 0);
+    ajUintPut(&rand_pos, alg->width-1, (ajint) 0);
 
     nseqs=ajDmxScopalgGetseqs(alg, &seq_array);
 
@@ -2015,7 +2015,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 	
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
@@ -2024,7 +2024,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
@@ -2049,7 +2049,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
@@ -2058,7 +2058,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
@@ -2088,7 +2088,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
@@ -2097,7 +2097,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
@@ -2124,7 +2124,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
         if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 	    ((scores)->filterpsim == ajTrue) &&
            ((scores)->filtercon == ajTrue) && 	
-	    (ajIntGet((scores)->ncon_thresh, cnt) == 1))
+	    (ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	   ||
            (((scores)->filterpsim == ajTrue) && 
 	    (ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
@@ -2133,7 +2133,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
            (((scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
            ((scores)->filtercon == ajTrue) && 
-	    (ajIntGet((scores)->ncon_thresh, cnt) == 1))
+	    (ajUintGet((scores)->ncon_thresh, cnt) == 1))
            ||
            (((scores)->filterpsim == ajFalse) && 
 	    (ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
@@ -2180,17 +2180,17 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     for(x=0; x<alg->width; x++)
     {
         /* Initialise post_sim array to zero. */
-        ajIntPut(&post_sim, x, x);
+        ajUintPut(&post_sim, x, x);
         
         /* Check if filtersim and filtercon are true and that ncon_thresh and 
 	   post_similar = 1, if so incrememnt num_aligned. */
         if((ajStrGetCharPos(alg->Post_similar, x) == '1') && 
 	   ((scores)->filterpsim == ajTrue) &&
            ((scores)->filtercon == ajTrue) && 
-	   (ajIntGet((scores)->ncon_thresh, x) == 1))
+	   (ajUintGet((scores)->ncon_thresh, x) == 1))
             {
 		num_aligned++;
-		ajIntPut(&rand_pos, j++, x);
+		ajUintPut(&rand_pos, j++, x);
 	    }
 	
         else if(((scores)->filterpsim == ajTrue) && 
@@ -2198,16 +2198,16 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
            ((scores)->filtercon == ajFalse))
 	    {
 		num_aligned++;
-		ajIntPut(&rand_pos, j++, x);
+		ajUintPut(&rand_pos, j++, x);
 	    }
 	
         else if(((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, x) != '-') && 
            ((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, x) == 1))
+		(ajUintGet((scores)->ncon_thresh, x) == 1))
             {
 		num_aligned++;
-		ajIntPut(&rand_pos, j++, x);
+		ajUintPut(&rand_pos, j++, x);
 	    }
 	
         else if(((scores)->filterpsim == ajFalse) && 
@@ -2216,7 +2216,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
            ((scores)->filtercon == ajFalse))
 	{
             num_aligned++;
-	    ajIntPut(&rand_pos, j++, x);
+	    ajUintPut(&rand_pos, j++, x);
 	}
     }    
 
@@ -2233,12 +2233,12 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
                 /* Swap elements j and j+1 via hold/hold_pos variables. */
                 hold = ajFloatGet(total_score, j);
 
-                hold_pos = ajIntGet(post_sim, j);
+                hold_pos = ajUintGet(post_sim, j);
                 ajFloatPut(&total_score, j, (ajFloatGet(total_score, (j+1))));
 
-                ajIntPut(&post_sim, j, (ajIntGet(post_sim, (j+1))));
+                ajUintPut(&post_sim, j, (ajUintGet(post_sim, (j+1))));
                 ajFloatPut(&total_score, (j+1), hold);
-                ajIntPut(&post_sim, (j+1), hold_pos);
+                ajUintPut(&post_sim, (j+1), hold_pos);
             }           
 
         }
@@ -2253,27 +2253,27 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
                 single_rescount++;
             }
 
-        ajIntPut(&seq_len, memb_cnt, single_rescount);
+        ajUintPut(&seq_len, memb_cnt, single_rescount);
     }
 
     /* Determinine actual length of each sequence from dimensions of cmap, NOT
        the STAMP alignment. */
     for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)
     {
-        ajIntPut(&fullseq_len, memb_cnt, cmaps[memb_cnt]->Dim);
+        ajUintPut(&fullseq_len, memb_cnt, cmaps[memb_cnt]->Dim);
         res_count += cmaps[memb_cnt]->Dim;
     }
     
 
     /* Initialise keyres_seq array to zero. */
     for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)
-        for(i=0; i<ajIntGet(seq_len, memb_cnt); i++)
-            ajInt2dPut(&keyres_seq, memb_cnt, i, 0);
+        for(i=0; i<ajUintGet(seq_len, memb_cnt); i++)
+            ajUint2dPut(&keyres_seq, memb_cnt, i, 0);
 
     /* Initialise atomres_seq array to zero. */
     for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)
-        for(i=0; i<ajIntGet(fullseq_len, memb_cnt); i++)
-            ajInt2dPut(&atomres_seq, memb_cnt, i, 0);    
+        for(i=0; i<ajUintGet(fullseq_len, memb_cnt); i++)
+            ajUint2dPut(&atomres_seq, memb_cnt, i, 0);    
     
     /* Calculate the number of positions the signature should have. Determine 
        no. of positions the signature will have. */
@@ -2295,9 +2295,9 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
        identified above. */
 
     /* Assign temp array and initialise. */
-    temp_rand =  ajIntNewL(num_aligned);
+    temp_rand =  ajUintNewL(num_aligned);
     for(i=0;i<num_aligned;i++)
-        ajIntPut(&temp_rand, i, -1);
+        ajUintPut(&temp_rand, i, -1);
     
     if(scores->random == ajTrue)
     {    
@@ -2311,7 +2311,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
             /* Check number hasn't already been put into array. */
             for(i=0;i<num_aligned;i++)
             {
-                if(ajIntGet(temp_rand, i) == irn)
+                if(ajUintGet(temp_rand, i) == irn)
                 {
                     already_done = ajTrue;
                     break;
@@ -2323,7 +2323,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 
             /* If number not already in array, then put it in. */
             if(already_done == ajFalse)
-                ajIntPut(&temp_rand, rand_cnt++, irn);
+                ajUintPut(&temp_rand, rand_cnt++, irn);
 
             /* Number already in array so continue and choose another. */
             else
@@ -2340,8 +2340,8 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
         /* Copy the random numbers to the last 'num_aligned' positions of the 
 	   post_sim array. */
         for(i=0;i<num_aligned;i++)
-            ajIntPut(&post_sim, ((alg->width) - i), 
-		     ajIntGet(rand_pos, ajIntGet(temp_rand, i)));
+            ajUintPut(&post_sim, ((alg->width) - i), 
+		     ajUintGet(rand_pos, ajUintGet(temp_rand, i)));
         
     }
 
@@ -2368,17 +2368,17 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 	    ajFloatDel(&ncon_normal);
 	    ajFloatDel(&ccon_normal);
 	    ajFloatDel(&total_score);
-	    ajIntDel(&keyres_pos);   
-	    ajIntDel(&post_sim);     
-	    ajIntDel(&rand_pos);     
-	    ajIntDel(&temp_rand);     
-	    ajInt2dDel(&keyres_seq);
-	    ajIntDel(&seq_len);
+	    ajUintDel(&keyres_pos);   
+	    ajUintDel(&post_sim);     
+	    ajUintDel(&rand_pos);     
+	    ajUintDel(&temp_rand);     
+	    ajUint2dDel(&keyres_seq);
+	    ajUintDel(&seq_len);
 	    for(x=0;x<nseqs;x++)
 		ajStrDel(&seq_array[x]);
 	    AJFREE(seq_array);
-	    ajInt2dDel(&atomres_seq);
-	    ajIntDel(&fullseq_len);
+	    ajUint2dDel(&atomres_seq);
+	    ajUintDel(&fullseq_len);
 	    return NULL;
 	}
 	
@@ -2395,7 +2395,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
         {
             /* Put a '1' in keyres_pos array at position corresponding to 
 	       position in post_sim array. */
-            ajIntPut(&keyres_pos, ajIntGet(post_sim, i), 1);
+            ajUintPut(&keyres_pos, ajUintGet(post_sim, i), 1);
 
         }
     }
@@ -2409,7 +2409,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
         {
             /* Put a '1' in keyres_pos array at position corresponding to 
 	       position in post_sim array. */
-            ajIntPut(&keyres_pos, ajIntGet(post_sim, i), 1);
+            ajUintPut(&keyres_pos, ajUintGet(post_sim, i), 1);
         }
     }    
 
@@ -2419,15 +2419,15 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     /* Fill 2d array with positions of each key res w.r.t. alignment seq. */
     for(i=0; i<alg->width; i++)
     {
-        if(ajIntGet(keyres_pos, i) == 1)
+        if(ajUintGet(keyres_pos, i) == 1)
         {
             for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)            
             {
                 /* Check to see if alignment position is a gap. */
-                if((idx=ajInt2dGet(seq_pos, memb_cnt, i))==-1)
+                if((idx=ajUint2dGet(seq_pos, memb_cnt, i))==-1)
                     continue;
                 else
-                    ajInt2dPut(&keyres_seq, memb_cnt, idx, 1); 
+                    ajUint2dPut(&keyres_seq, memb_cnt, idx, 1); 
             }
         }
     }
@@ -2437,12 +2437,12 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
        w.r.t. the original sequence . */
     for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)
     {            
-        for(x=0; x<ajIntGet(seq_len, memb_cnt); x++)
+        for(x=0; x<ajUintGet(seq_len, memb_cnt); x++)
         {
-            if(ajInt2dGet(keyres_seq, memb_cnt, x)==1)
+            if(ajUint2dGet(keyres_seq, memb_cnt, x)==1)
             {
-                atomidx = ajIntGet(atom_idx[memb_cnt], x);
-                ajInt2dPut(&atomres_seq, memb_cnt, (atomidx-1), 1);
+                atomidx = ajUintGet(atom_idx[memb_cnt], x);
+                ajUint2dPut(&atomres_seq, memb_cnt, (atomidx-1), 1);
             }
         }
     }
@@ -2478,20 +2478,20 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     /* Write signature structure. */
     for(j=0; j<alg->N; j++)
     {   
-        for(npos=0, gsiz=0, i=0, imax=ajIntGet(fullseq_len, j); 
+        for(npos=0, gsiz=0, i=0, imax=ajUintGet(fullseq_len, j); 
             i<imax; 
             i++)       
         {
             /* The position is a signature position. */
-            if(ajInt2dGet(atomres_seq, j, i) == 1)
+            if(ajUint2dGet(atomres_seq, j, i) == 1)
             {
                 /*Process gap. */
                 for(done=ajFalse,x=0;x<sig->dat[npos]->ngap;x++)
                 {
                     /*The gap length is NOT new*/
-                    if((ajIntGet(sig->dat[npos]->gsiz, x)==gsiz))
+                    if((ajUintGet(sig->dat[npos]->gsiz, x)==gsiz))
                     {
-                        ajIntInc(&sig->dat[npos]->gfrq, x);
+                        ajUintInc(&sig->dat[npos]->gfrq, x);
                         done=ajTrue;
                         break;
 
@@ -2504,9 +2504,9 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
                 if(!done)
                 {
                     sig->dat[npos]->ngap++;
-                    ajIntPut(&sig->dat[npos]->gsiz, sig->dat[npos]->ngap-1, 
+                    ajUintPut(&sig->dat[npos]->gsiz, sig->dat[npos]->ngap-1, 
                              gsiz);
-                    ajIntPut(&sig->dat[npos]->gfrq, sig->dat[npos]->ngap-1, 
+                    ajUintPut(&sig->dat[npos]->gfrq, sig->dat[npos]->ngap-1, 
                              (ajint) 1);
                 }    
 
@@ -2527,12 +2527,12 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     /* Write residue id into signature structure. */
     for(j=0; j<alg->N; j++)
     {
-        for(npos=0, i=0, imax=ajIntGet(seq_len, j); 
+        for(npos=0, i=0, imax=ajUintGet(seq_len, j); 
             i<imax; 
             i++)       
         {
             /* The position is a signature position. */
-            if(ajInt2dGet(keyres_seq, j, i) == 1)
+            if(ajUint2dGet(keyres_seq, j, i) == 1)
             {
                 /*Process residue*/
                 for(done=ajFalse,x=0;x<sig->dat[npos]->nres;x++)
@@ -2541,7 +2541,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
                     if((ajChararrGet(sig->dat[npos]->rids, x))
                        ==ajStrGetCharPos(seq_array[j], i))
                     {
-                        ajIntInc(&sig->dat[npos]->rfrq, x);
+                        ajUintInc(&sig->dat[npos]->rfrq, x);
                         done=ajTrue;
                         break;
                     }
@@ -2555,7 +2555,7 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
                     ajChararrPut(&sig->dat[npos]->rids, sig->dat[npos]->nres-1,
                                  ajStrGetCharPos(seq_array[j], i));
 
-                    ajIntPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
+                    ajUintPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
                             (ajint) 1);
                 }    
                 
@@ -2576,19 +2576,19 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
             for(i=0; i<(sig->dat[x]->ngap-1);i++)
             {    
                 /* Check if element i is > than element i+1. */
-                if(ajIntGet(sig->dat[x]->gsiz, i) > ajIntGet(sig->dat[x]->gsiz, i+1))
+                if(ajUintGet(sig->dat[x]->gsiz, i) > ajUintGet(sig->dat[x]->gsiz, i+1))
                 {       
                     /* Swap elements i and i+1 via y/hold_pos variables. */
-                    j        = ajIntGet(sig->dat[x]->gsiz, i);
-                    hold_pos = ajIntGet(sig->dat[x]->gfrq, i);
+                    j        = ajUintGet(sig->dat[x]->gsiz, i);
+                    hold_pos = ajUintGet(sig->dat[x]->gfrq, i);
 
-                    ajIntPut(&sig->dat[x]->gsiz, i, 
-			     ajIntGet(sig->dat[x]->gsiz, i+1));
-                    ajIntPut(&sig->dat[x]->gfrq, i,
-			     ajIntGet(sig->dat[x]->gfrq, i+1));
+                    ajUintPut(&sig->dat[x]->gsiz, i, 
+			     ajUintGet(sig->dat[x]->gsiz, i+1));
+                    ajUintPut(&sig->dat[x]->gfrq, i,
+			     ajUintGet(sig->dat[x]->gfrq, i+1));
                 
-                    ajIntPut(&sig->dat[x]->gsiz, i+1, j);
-                    ajIntPut(&sig->dat[x]->gfrq, i+1, hold_pos);
+                    ajUintPut(&sig->dat[x]->gsiz, i+1, j);
+                    ajUintPut(&sig->dat[x]->gfrq, i+1, hold_pos);
                 }               
             }
     }
@@ -2602,17 +2602,17 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
     ajFloatDel(&ncon_normal);
     ajFloatDel(&ccon_normal);
     ajFloatDel(&total_score);
-    ajIntDel(&keyres_pos);   
-    ajIntDel(&post_sim);     
-    ajIntDel(&rand_pos);     
-    ajIntDel(&temp_rand);     
-    ajInt2dDel(&keyres_seq);
-    ajIntDel(&seq_len);
+    ajUintDel(&keyres_pos);   
+    ajUintDel(&post_sim);     
+    ajUintDel(&rand_pos);     
+    ajUintDel(&temp_rand);     
+    ajUint2dDel(&keyres_seq);
+    ajUintDel(&seq_len);
     for(x=0;x<nseqs;x++)
         ajStrDel(&seq_array[x]);
     AJFREE(seq_array);
-    ajInt2dDel(&atomres_seq);
-    ajIntDel(&fullseq_len);
+    ajUint2dDel(&atomres_seq);
+    ajUintDel(&fullseq_len);
 
     return sig;
 }
@@ -2630,8 +2630,8 @@ static AjPSignature  siggen_SigSelect(AjPScopalg alg,
 ** @param [r] cmaps    [AjPCmap*]       Residue contacts
 ** @param [r] mat      [AjPMatrixf]     Subsitution matrix
 ** @param [r] noca     [AjBool *]       Bool array for NOCA groups
-** @param [r] seq_pos  [AjPInt2d]       Index for alignment
-** @param [r] atom_idx [AjPInt *]       Index residue positions.
+** @param [r] seq_pos  [AjPUint2d]       Index for alignment
+** @param [r] atom_idx [AjPUint *]       Index residue positions.
 **
 ** @return [AjBool] True on succcess
 ** @@
@@ -2641,8 +2641,8 @@ static AjBool siggen_ScoreAlignment(AjPScorealg *scores,
 				    AjPCmap *cmaps, 
 				    AjPMatrixf  mat, 
 				    AjBool *noca,
-				    AjPInt2d seq_pos,
-				    AjPInt *atom_idx)
+				    AjPUint2d seq_pos,
+				    AjPUint *atom_idx)
 {
     /*Check args. */
     if( !(*scores) || !alg || !mat || !seq_pos || !atom_idx || !noca)
@@ -2692,13 +2692,13 @@ static AjBool siggen_ScoreAlignment(AjPScorealg *scores,
 ** Reads a Scopalg object and calculates an index for the alignment.
 **
 ** @param [r] alg     [AjPScopalg]   Alignment
-** @param [w] seq_pos [AjPInt2d*]    Index for alignment
+** @param [w] seq_pos [AjPUint2d*]    Index for alignment
 **
 ** @return [AjBool] True on succcess
 ** @@
 ******************************************************************************/
 static AjBool siggen_CalcSeqpos(AjPScopalg alg, 
-				AjPInt2d *seq_pos)
+				AjPUint2d *seq_pos)
 {
     ajint  z        =0;     /* Loop counter.                                 */
     ajint  memb_cnt =0;     /* Counter for members of the family alignment). */   
@@ -2715,12 +2715,12 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg,
     /* This section determines the position of each aligned residue 
        in its original protein sequence. Allocate memory for the seq_pos 
        array. */
-    *seq_pos    = ajInt2dNewL((ajint)alg->N);    
+    *seq_pos    = ajUint2dNewL((ajint)alg->N);    
 
     
     /*Set reserved size. */
     for(z = 0; z < alg->N; z++)
-        ajInt2dPut(seq_pos, z, alg->width, (ajint) 0);
+        ajUint2dPut(seq_pos, z, alg->width, (ajint) 0);
 
 
 
@@ -2742,11 +2742,11 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg,
             {
                 /* For every position in alignment assign position of residue 
 		   from its respective sequence. */
-                ajInt2dPut(seq_pos, memb_cnt, wid_cnt, seq_cnt);
+                ajUint2dPut(seq_pos, memb_cnt, wid_cnt, seq_cnt);
                 seq_cnt++;
             }
             else
-                ajInt2dPut(seq_pos, memb_cnt, wid_cnt, -1);
+                ajUint2dPut(seq_pos, memb_cnt, wid_cnt, -1);
             
             
             ajStrIterNext(iter);                                   
@@ -2775,8 +2775,8 @@ static AjBool siggen_CalcSeqpos(AjPScopalg alg,
 ** @param [r] cmaps       [AjPCmap*]     Residue contacts
 ** @param [r] conthresh   [ajint]        contact threshold
 ** @param [r] noca        [AjBool *]     Bool array for NOCA groups
-** @param [r] seq_pos     [AjPInt2d]     Index for alignment
-** @param [r] atom_idx    [AjPInt *]     Index residue positions.
+** @param [r] seq_pos     [AjPUint2d]     Index for alignment
+** @param [r] atom_idx    [AjPUint *]     Index residue positions.
 **
 ** @return [AjBool] True on succcess
 ** @@
@@ -2786,8 +2786,8 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
 				AjPCmap *cmaps, 
 				ajint conthresh, 
 				AjBool *noca, 
-				AjPInt2d seq_pos,
-				AjPInt *atom_idx)
+				AjPUint2d seq_pos,
+				AjPUint *atom_idx)
 {
 
     ajint       memb_cnt     =0;    /* Counter for members of the family (alignment). */
@@ -2802,12 +2802,12 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
     ajint       con_counter  =0;    /* Counter. */
     float       av_ncon      =0;    /* Counter to hold average no. of contacts. */
     AjIStr      iter         =NULL; /* Iterator for post_similar string. */
-    AjPInt2d    align_ncon   =NULL; /* Matrix of number of contacts for every residue. */
+    AjPUint2d    align_ncon   =NULL; /* Matrix of number of contacts for every residue. */
 
 
 
     /* Allocate memory for the align_ncon array . */
-    align_ncon = ajInt2dNewL((ajint)alg->width);        
+    align_ncon = ajUint2dNewL((ajint)alg->width);        
 
 
     /* Assign iterator for post_similar line. */
@@ -2816,7 +2816,7 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
 
     /* Create arrays of size width. */
     for(x = 0; x < alg->N; x++)
-        ajInt2dPut(&align_ncon, x, alg->width-1, (ajint) 0);
+        ajUint2dPut(&align_ncon, x, alg->width-1, (ajint) 0);
 
 
     
@@ -2830,14 +2830,14 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
             for(ymat_cnt = 0; ymat_cnt < cmaps[memb_cnt]->Dim; ymat_cnt++)
             {
                 /* Check if position in contact map is 1 (i.e. contact). */
-                if(ajInt2dGet(cmaps[memb_cnt]->Mat, xmat_cnt, ymat_cnt) == 1)
+                if(ajUint2dGet(cmaps[memb_cnt]->Mat, xmat_cnt, ymat_cnt) == 1)
                 {
                     /* Increment ncon counter. */
                     nconcount++;
                 }
             }
             /* Put nconcounter value into array. */
-            ajInt2dPut(&align_ncon, memb_cnt, xmat_cnt, nconcount);
+            ajUint2dPut(&align_ncon, memb_cnt, xmat_cnt, nconcount);
             nconcount = 0;
         }
     }
@@ -2858,24 +2858,24 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
             for(memb_cnt = 0; memb_cnt < alg->N; memb_cnt++)
             {
                 /*Check to see if alignment position is a gap*/
-                if((idx_seqpos=ajInt2dGet(seq_pos, memb_cnt, post_cnt))==-1)
+                if((idx_seqpos=ajUint2dGet(seq_pos, memb_cnt, post_cnt))==-1)
                     continue;
                 
                 /* Assign position of atom_idx array to idx_atomidx. */
                 else
-                    idx_atomidx = ajIntGet(atom_idx[memb_cnt], idx_seqpos);
+                    idx_atomidx = ajUintGet(atom_idx[memb_cnt], idx_seqpos);
                                 
                 /* If noca is true, increment counter into align_ncon array by 1  
 		   to take into account extra 'residue' not present in alignment. */
                 if(noca[memb_cnt] == ajTrue)
                 {
-                    nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, idx_atomidx);
+                    nconpos_cnt += ajUint2dGet(align_ncon, memb_cnt, idx_atomidx);
                 }
                 
                 /* Else continue as normal. */
                 else
                 {
-                    nconpos_cnt += ajInt2dGet(align_ncon, memb_cnt, 
+                    nconpos_cnt += ajUint2dGet(align_ncon, memb_cnt, 
 					      (idx_atomidx - 1));
                 }
             }
@@ -2891,13 +2891,13 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
             if((av_ncon > (float)conthresh) || (av_ncon == (float)conthresh))
             {
                 /* Assign '1' into position post_cnt of ncon_thresh array. */
-                ajIntPut(&(*scores)->ncon_thresh, post_cnt, 1);
+                ajUintPut(&(*scores)->ncon_thresh, post_cnt, 1);
                 con_counter++;
             }
 
             /* Else put '0' into array at position post_cnt. */
             else
-                ajIntPut(&(*scores)->ncon_thresh, post_cnt, 0);
+                ajUintPut(&(*scores)->ncon_thresh, post_cnt, 0);
         }
     }
 
@@ -2917,7 +2917,7 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
 
 
     /* Free memory for matrix and iterator. */
-    ajInt2dDel(&align_ncon);
+    ajUint2dDel(&align_ncon);
     ajStrIterDel(&iter);
 
 
@@ -2937,16 +2937,16 @@ static AjBool siggen_Con_Thresh(AjPScopalg alg,
 **
 ** @param [r] alg        [AjPScopalg]  Alignment 
 ** @param [r] scores     [AjPScorealg] Scores for alignment
-** @param [r] seq_pos    [AjPInt2d]    Index for alignment
+** @param [r] seq_pos    [AjPUint2d]    Index for alignment
 ** @param [r] sig_sparse [ajint]       Sparsity of signature
 ** @param [r] spar_check [float *]     Sparsity check array.
 ** @param [r] wsiz       [ajint]       Window size 
-** @return [AjPSignature] Pointer to Signature structure or NULL on failure
+** @return [EmbPSignature] Pointer to Signature structure or NULL on failure
 ** @@
 ******************************************************************************/
-static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg, 
+static EmbPSignature  siggen_SigSelectSeq(AjPScopalg alg, 
 					 AjPScorealg scores, 
-					 AjPInt2d seq_pos,
+					 AjPUint2d seq_pos,
 					 ajint sig_sparse,
 					 float *spar_check, 
 					 ajint wsiz)
@@ -2986,14 +2986,14 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     AjPFloat    ncon_normal      =NULL; /* Array of floats for normalised ncon_score. */
     AjPFloat    ccon_normal      =NULL; /* Array of floats for normalised ccon_score. */
     AjPFloat    total_score      =NULL; /* Array of floats for total normalised scores. */
-    AjPInt      keyres_pos       =NULL; /* Total_score array, sorted in ascending order. */
-    AjPInt      post_sim         =NULL; /* Array for positions in post_similar line. */
-    AjPInt      seq_len          =NULL; /* Array of length of each seq, as in alignment . */
-    AjPInt      rand_pos         =NULL; /* Array of positions for random selection . */
-    AjPInt      temp_rand        =NULL; /* Array of positions for random selection . */
-    AjPInt2d    keyres_seq       =NULL; /* Total_score array, sorted in ascending order. */
+    AjPUint      keyres_pos       =NULL; /* Total_score array, sorted in ascending order. */
+    AjPUint      post_sim         =NULL; /* Array for positions in post_similar line. */
+    AjPUint      seq_len          =NULL; /* Array of length of each seq, as in alignment . */
+    AjPUint      rand_pos         =NULL; /* Array of positions for random selection . */
+    AjPUint      temp_rand        =NULL; /* Array of positions for random selection . */
+    AjPUint2d    keyres_seq       =NULL; /* Total_score array, sorted in ascending order. */
     AjPStr      *seq_array       =NULL; /* Arrays of sequence (w/o gaps) from alignment. */
-    AjPSignature sig=NULL;              /* Signature. */
+    EmbPSignature sig=NULL;              /* Signature. */
     float       spar             =0.0;
     
     double      rn               = 0;   
@@ -3025,13 +3025,13 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     ncon_normal         =  ajFloatNewL(alg->width);
     ccon_normal         =  ajFloatNewL(alg->width);
     total_score         =  ajFloatNewL(alg->width);
-    keyres_pos          =  ajIntNewL(alg->width);    
+    keyres_pos          =  ajUintNewL(alg->width);    
 
 
-    post_sim            =  ajIntNewL(alg->width);
-    rand_pos            =  ajIntNewL(alg->width);
-    keyres_seq          =  ajInt2dNew();    
-    seq_len             =  ajIntNewL(alg->N);    
+    post_sim            =  ajUintNewL(alg->width);
+    rand_pos            =  ajUintNewL(alg->width);
+    keyres_seq          =  ajUint2dNew();    
+    seq_len             =  ajUintNewL(alg->N);    
     
 
     /* Initialise array elements to zero. */
@@ -3042,9 +3042,9 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     ajFloatPut(&ccon_normal, alg->width-1, (float) 0.0);
     ajFloatPut(&total_score, alg->width-1, (float) 0.0);
 
-    ajIntPut(&keyres_pos, alg->width-1, (ajint) 0);
-    ajIntPut(&post_sim, alg->width-1, (ajint) 0);
-    ajIntPut(&rand_pos, alg->width-1, (ajint) 0);
+    ajUintPut(&keyres_pos, alg->width-1, (ajint) 0);
+    ajUintPut(&post_sim, alg->width-1, (ajint) 0);
+    ajUintPut(&rand_pos, alg->width-1, (ajint) 0);
 
     nseqs=ajDmxScopalgGetseqs(alg, &seq_array);
 
@@ -3134,7 +3134,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 	
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
@@ -3143,7 +3143,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
@@ -3170,7 +3170,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	    if(((ajStrGetCharPos(alg->Post_similar, cnt) == '1') && 
 		((scores)->filterpsim == ajTrue) &&
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajTrue) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) == '1') &&
@@ -3179,7 +3179,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
 		((scores)->filtercon == ajTrue) && 
-		(ajIntGet((scores)->ncon_thresh, cnt) == 1))
+		(ajUintGet((scores)->ncon_thresh, cnt) == 1))
 	       ||
 	       (((scores)->filterpsim == ajFalse) && 
 		(ajStrGetCharPos(alg->Post_similar, cnt) != '-') && 
@@ -3227,10 +3227,10 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     for(x=0; x<alg->width; x++)
     {
         /* initialise post_sim array to zero. */
-        ajIntPut(&post_sim, x, x);
+        ajUintPut(&post_sim, x, x);
         
 	/* New stuff for randomising. */
-        ajIntPut(&rand_pos, j++, x);
+        ajUintPut(&rand_pos, j++, x);
 	rand_num++;
 	
 
@@ -3261,12 +3261,12 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
                 /* Swap elements j and j+1 via hold/hold_pos variables. */
                 hold = ajFloatGet(total_score, j);
 
-                hold_pos = ajIntGet(post_sim, j);
+                hold_pos = ajUintGet(post_sim, j);
                 ajFloatPut(&total_score, j, (ajFloatGet(total_score, (j+1))));
 
-                ajIntPut(&post_sim, j, (ajIntGet(post_sim, (j+1))));
+                ajUintPut(&post_sim, j, (ajUintGet(post_sim, (j+1))));
                 ajFloatPut(&total_score, (j+1), hold);
-                ajIntPut(&post_sim, (j+1), hold_pos);
+                ajUintPut(&post_sim, (j+1), hold_pos);
             }           
 
         }
@@ -3281,14 +3281,14 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
                 single_rescount++;
             }
 
-        ajIntPut(&seq_len, memb_cnt, single_rescount);
+        ajUintPut(&seq_len, memb_cnt, single_rescount);
     }
 
     /* Determinine actual length of each sequence from dimensions of cmap, NOT 
        the STAMP alignment. */
     for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)
     {
-	len = ajIntGet(seq_len, memb_cnt);
+	len = ajUintGet(seq_len, memb_cnt);
 	
 	res_count += len;
     }
@@ -3296,8 +3296,8 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 
     /* Initialise keyres_seq array to zero. */
     for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)
-        for(i=0; i<ajIntGet(seq_len, memb_cnt); i++)
-            ajInt2dPut(&keyres_seq, memb_cnt, i, 0);
+        for(i=0; i<ajUintGet(seq_len, memb_cnt); i++)
+            ajUint2dPut(&keyres_seq, memb_cnt, i, 0);
 
 
     
@@ -3319,9 +3319,9 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
        positions identified above. */
 
     /* Assign temp array and initialise. */
-    temp_rand =  ajIntNewL(num_aligned);
+    temp_rand =  ajUintNewL(num_aligned);
     for(i=0;i<num_aligned;i++)
-        ajIntPut(&temp_rand, i, -1);
+        ajUintPut(&temp_rand, i, -1);
     
     if(scores->random == ajTrue)
     {    
@@ -3338,7 +3338,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
             /* Check number hasn't already been put into array. */
             for(i=0;i<rand_num;i++) 
             {
-                if(ajIntGet(temp_rand, i) == irn)
+                if(ajUintGet(temp_rand, i) == irn)
                 {
                     already_done = ajTrue;
                     break;
@@ -3350,7 +3350,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 
             /* If number not already in array, then put it in. */
             if(already_done == ajFalse)
-                ajIntPut(&temp_rand, rand_cnt++, irn);
+                ajUintPut(&temp_rand, rand_cnt++, irn);
 
             /* Number already in array so continue and choose another. */
             else
@@ -3363,18 +3363,18 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     
         /* Diagnostic to sort temp_rand and check all number are present. */
         /*for(i=0;i<num_aligned;i++)
-          ajSortIntInc((ajint *) ajIntInt(temp_rand), num_aligned);
+          ajSortIntInc((ajint *) ajUintInt(temp_rand), num_aligned);
           
           printf("sorted temp_rand\n");
           for(i=0;i<num_aligned;i++)
-          ajFmtPrint("%4d\n", ajIntGet(temp_rand, i));*/
+          ajFmtPrint("%4d\n", ajUintGet(temp_rand, i));*/
         
         
         /* Copy the random numbers to the last 'num_aligned' positions */
         /* of the post_sim array. */
         for(i=0;i<num_aligned;i++)
-            ajIntPut(&post_sim, ((alg->width) - i), 
-		     ajIntGet(rand_pos, ajIntGet(temp_rand, i)));
+            ajUintPut(&post_sim, ((alg->width) - i), 
+		     ajUintGet(rand_pos, ajUintGet(temp_rand, i)));
         
     }
 
@@ -3400,12 +3400,12 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	    ajFloatDel(&ncon_normal);
 	    ajFloatDel(&ccon_normal);
 	    ajFloatDel(&total_score);
-	    ajIntDel(&keyres_pos);   
-	    ajIntDel(&post_sim);     
-	    ajIntDel(&rand_pos);     
-	    ajIntDel(&temp_rand);     
-	    ajInt2dDel(&keyres_seq);
-	    ajIntDel(&seq_len);
+	    ajUintDel(&keyres_pos);   
+	    ajUintDel(&post_sim);     
+	    ajUintDel(&rand_pos);     
+	    ajUintDel(&temp_rand);     
+	    ajUint2dDel(&keyres_seq);
+	    ajUintDel(&seq_len);
 	    for(x=0;x<nseqs;x++)
 		ajStrDel(&seq_array[x]);
 	    AJFREE(seq_array);
@@ -3426,7 +3426,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
         {
             /* Put a '1' in keyres_pos array at position corresponding to 
 	       position in post_sim array. */
-            ajIntPut(&keyres_pos, ajIntGet(post_sim, i), 1);
+            ajUintPut(&keyres_pos, ajUintGet(post_sim, i), 1);
 
         }
     }
@@ -3440,7 +3440,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
         {
             /* Put a '1' in keyres_pos array at position corresponding to 
 	       position in post_sim array. */
-            ajIntPut(&keyres_pos, ajIntGet(post_sim, i), 1);
+            ajUintPut(&keyres_pos, ajUintGet(post_sim, i), 1);
         }
     }    
 
@@ -3450,17 +3450,17 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     {
 	for(i=0; i<alg->width; i++)
 	{
-	    if(ajIntGet(keyres_pos, i) == 1)
+	    if(ajUintGet(keyres_pos, i) == 1)
 	    {
 		randpos_cnt++;
 		
 		for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)            
 		{
 		    /*Check to see if alignment position is a gap*/
-		    if((idx=ajInt2dGet(seq_pos, memb_cnt, i))==-1)
+		    if((idx=ajUint2dGet(seq_pos, memb_cnt, i))==-1)
 			continue;
 		    else
-			ajInt2dPut(&keyres_seq, randpos_cnt, idx, 1); 
+			ajUint2dPut(&keyres_seq, randpos_cnt, idx, 1); 
 		}
 	    }
 	}
@@ -3470,15 +3470,15 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     	/* Fill 2d array with positions of each key res w.r.t. alignment seq. */
 	for(i=0; i<alg->width; i++)
 	{
-	    if(ajIntGet(keyres_pos, i) == 1)
+	    if(ajUintGet(keyres_pos, i) == 1)
 	    {
 		for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)            
 		{
 		    /* Check to see if alignment position is a gap. */
-		    if((idx=ajInt2dGet(seq_pos, memb_cnt, i))==-1)
+		    if((idx=ajUint2dGet(seq_pos, memb_cnt, i))==-1)
 			continue;
 		    else
-			ajInt2dPut(&keyres_seq, memb_cnt, idx, 1); 
+			ajUint2dPut(&keyres_seq, memb_cnt, idx, 1); 
 		}
 	    }
 	}
@@ -3520,21 +3520,21 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	for(j=0; j<alg->N; j++)
 	{			
 	    randpos_cnt = 1;
-	    for(npos=0, gsiz=0, i=0, imax=ajIntGet(seq_len, j); 
+	    for(npos=0, gsiz=0, i=0, imax=ajUintGet(seq_len, j); 
 		i<imax; 
 		i++)       
 	    {
 
 		/* The position is a signature position. */
-		if(ajInt2dGet(keyres_seq, j, i) == randpos_cnt)
+		if(ajUint2dGet(keyres_seq, j, i) == randpos_cnt)
 		{
 		    /*Process gap. */
 		    for(done=ajFalse,x=0;x<sig->dat[randpos_cnt-1]->ngap;x++)
 		    {
 			/*The gap length is NOT new*/
-			if((ajIntGet(sig->dat[randpos_cnt-1]->gsiz, x)==gsiz))
+			if((ajUintGet(sig->dat[randpos_cnt-1]->gsiz, x)==gsiz))
 			{
-			    ajIntInc(&sig->dat[randpos_cnt-1]->gfrq, x);
+			    ajUintInc(&sig->dat[randpos_cnt-1]->gfrq, x);
 			    done=ajTrue;
 			    break;
 
@@ -3547,10 +3547,10 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 		    if(!done)
 		    {
 			sig->dat[randpos_cnt-1]->ngap++;
-			ajIntPut(&sig->dat[randpos_cnt-1]->gsiz, 
+			ajUintPut(&sig->dat[randpos_cnt-1]->gsiz, 
 				 sig->dat[randpos_cnt-1]->ngap-1, 
 				 gsiz);
-			ajIntPut(&sig->dat[randpos_cnt-1]->gfrq, 
+			ajUintPut(&sig->dat[randpos_cnt-1]->gfrq, 
 				 sig->dat[randpos_cnt-1]->ngap-1, 
 				 (ajint) 1);
 		    }    
@@ -3563,9 +3563,9 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 
 
 
-		else if(ajInt2dGet(keyres_seq, j, i) > randpos_cnt)
+		else if(ajUint2dGet(keyres_seq, j, i) > randpos_cnt)
 		{
-		    rand_total = ajInt2dGet(keyres_seq, j, i);
+		    rand_total = ajUint2dGet(keyres_seq, j, i);
 		    
 
 		    for(p=1;p<100;p++)
@@ -3586,9 +3586,9 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 		    for(done=ajFalse,x=0;x<sig->dat[rand_total-1]->ngap;x++)
 		    {
 			/*The gap length is NOT new*/
-			if((ajIntGet(sig->dat[rand_total-1]->gsiz, x)==new_gsiz))
+			if((ajUintGet(sig->dat[rand_total-1]->gsiz, x)==new_gsiz))
 			{
-			    ajIntInc(&sig->dat[rand_total-1]->gfrq, x);
+			    ajUintInc(&sig->dat[rand_total-1]->gfrq, x);
 			    done=ajTrue;
 			    break;
 
@@ -3601,10 +3601,10 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 		    if(!done)
 		    {
 			sig->dat[rand_total-1]->ngap++;
-			ajIntPut(&sig->dat[rand_total-1]->gsiz, 
+			ajUintPut(&sig->dat[rand_total-1]->gsiz, 
 				 sig->dat[rand_total-1]->ngap-1, 
 				 new_gsiz);
-			ajIntPut(&sig->dat[rand_total-1]->gfrq, 
+			ajUintPut(&sig->dat[rand_total-1]->gfrq, 
 				 sig->dat[rand_total-1]->ngap-1, 
 				 (ajint) 1);
 		    }    
@@ -3613,7 +3613,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 		    /* Set variables*/
 		    gsiz=0;
 		    npos++;
-		    randpos_cnt = ajInt2dGet(keyres_seq, j, i);
+		    randpos_cnt = ajUint2dGet(keyres_seq, j, i);
 		    randpos_cnt++;
 		}
 
@@ -3633,12 +3633,12 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	{
 	    randpos_cnt = 1;
 	    
-	    for(npos=0, i=0, imax=ajIntGet(seq_len, j); 
+	    for(npos=0, i=0, imax=ajUintGet(seq_len, j); 
 		i<imax; 
 		i++)       
 	    {
 		/* The position is a signature position. */
-		if(ajInt2dGet(keyres_seq, j, i) == randpos_cnt)
+		if(ajUint2dGet(keyres_seq, j, i) == randpos_cnt)
 		{
 		    /* Process residue. */
 		    for(done=ajFalse,x=0;x<sig->dat[randpos_cnt-1]->nres;x++)
@@ -3647,7 +3647,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			if((ajChararrGet(sig->dat[randpos_cnt-1]->rids, x))
 			   ==ajStrGetCharPos(seq_array[j], i))
 			{
-			    ajIntInc(&sig->dat[randpos_cnt-1]->rfrq, x);
+			    ajUintInc(&sig->dat[randpos_cnt-1]->rfrq, x);
 			    done=ajTrue;
 			    break;
 			}
@@ -3662,7 +3662,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 				     sig->dat[randpos_cnt-1]->nres-1, 	
 				     ajStrGetCharPos(seq_array[j], i));
 
-			ajIntPut(&sig->dat[randpos_cnt-1]->rfrq, 
+			ajUintPut(&sig->dat[randpos_cnt-1]->rfrq, 
 				 sig->dat[randpos_cnt-1]->nres-1, 
 				 (ajint) 1);
 		    }    
@@ -3672,9 +3672,9 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 		    randpos_cnt++;
 		}
 
-		else if(ajInt2dGet(keyres_seq, j, i) > randpos_cnt)
+		else if(ajUint2dGet(keyres_seq, j, i) > randpos_cnt)
 		{
-		    rand_total = ajInt2dGet(keyres_seq, j, i);
+		    rand_total = ajUint2dGet(keyres_seq, j, i);
 		    /*Process residue*/
 		    for(done=ajFalse,x=0;x<sig->dat[rand_total-1]->nres;x++)
 			/*The residue id is NOT new*/
@@ -3682,7 +3682,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			if((ajChararrGet(sig->dat[rand_total-1]->rids, x))
 			   ==ajStrGetCharPos(seq_array[j], i))
 			{
-			    ajIntInc(&sig->dat[rand_total-1]->rfrq, x);
+			    ajUintInc(&sig->dat[rand_total-1]->rfrq, x);
 			    done=ajTrue;
 			    break;
 			}
@@ -3697,14 +3697,14 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 				     sig->dat[rand_total-1]->nres-1, 	
 				     ajStrGetCharPos(seq_array[j], i));
 
-			ajIntPut(&sig->dat[rand_total-1]->rfrq, 
+			ajUintPut(&sig->dat[rand_total-1]->rfrq, 
 				 sig->dat[rand_total-1]->nres-1, 
 				 (ajint) 1);
 		    }    
                 
 
 		    npos++;
-		    randpos_cnt = ajInt2dGet(keyres_seq, j, i);
+		    randpos_cnt = ajUint2dGet(keyres_seq, j, i);
 		    randpos_cnt++;
 		}
 
@@ -3720,21 +3720,21 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	/* Write signature structure. */
 	for(j=0; j<alg->N; j++)
 	{				
-	    for(npos=0, gsiz=0, i=0, imax=ajIntGet(seq_len, j); 
+	    for(npos=0, gsiz=0, i=0, imax=ajUintGet(seq_len, j); 
 		i<imax; 
 		i++)       
 	    {
 
 		/* The position is a signature position. */
-		if(ajInt2dGet(keyres_seq, j, i) == 1)
+		if(ajUint2dGet(keyres_seq, j, i) == 1)
 		{
 		    /*Process gap. */
 		    for(done=ajFalse,x=0;x<sig->dat[npos]->ngap;x++)
 		    {
 			/*The gap length is NOT new*/
-			if((ajIntGet(sig->dat[npos]->gsiz, x)==gsiz))
+			if((ajUintGet(sig->dat[npos]->gsiz, x)==gsiz))
 			{
-			    ajIntInc(&sig->dat[npos]->gfrq, x);
+			    ajUintInc(&sig->dat[npos]->gfrq, x);
 			    done=ajTrue;
 			    break;
 
@@ -3747,9 +3747,9 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 		    if(!done)
 		    {
 			sig->dat[npos]->ngap++;
-			ajIntPut(&sig->dat[npos]->gsiz, sig->dat[npos]->ngap-1, 
+			ajUintPut(&sig->dat[npos]->gsiz, sig->dat[npos]->ngap-1, 
 				 gsiz);
-			ajIntPut(&sig->dat[npos]->gfrq, sig->dat[npos]->ngap-1, 
+			ajUintPut(&sig->dat[npos]->gfrq, sig->dat[npos]->ngap-1, 
 				 (ajint) 1);
 		    }    
 
@@ -3771,12 +3771,12 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 	for(j=0; j<alg->N; j++)
 	{
 	    /* seq_len changed to fullseq_len. */
-	    for(npos=0, i=0, imax=ajIntGet(seq_len, j); 
+	    for(npos=0, i=0, imax=ajUintGet(seq_len, j); 
 		i<imax; 
 		i++)       
 	    {
 		/* The position is a signature position. */
-		if(ajInt2dGet(keyres_seq, j, i) == 1)
+		if(ajUint2dGet(keyres_seq, j, i) == 1)
 		{
 		    /*Process residue*/
 		    for(done=ajFalse,x=0;x<sig->dat[npos]->nres;x++)
@@ -3785,7 +3785,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			if((ajChararrGet(sig->dat[npos]->rids, x))
 			   ==ajStrGetCharPos(seq_array[j], i))
 			{
-			    ajIntInc(&sig->dat[npos]->rfrq, x);
+			    ajUintInc(&sig->dat[npos]->rfrq, x);
 			    done=ajTrue;
 			    break;
 			}
@@ -3799,7 +3799,7 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 			ajChararrPut(&sig->dat[npos]->rids, sig->dat[npos]->nres-1,         
 				     ajStrGetCharPos(seq_array[j], i));
 
-			ajIntPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
+			ajUintPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
 				 (ajint) 1);
 		    }    
                 
@@ -3826,19 +3826,19 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
             for(i=0; i<(sig->dat[x]->ngap-1);i++)
             {    
                 /* Check if element i is > than element i+1. */
-                if(ajIntGet(sig->dat[x]->gsiz, i) > ajIntGet(sig->dat[x]->gsiz, i+1))
+                if(ajUintGet(sig->dat[x]->gsiz, i) > ajUintGet(sig->dat[x]->gsiz, i+1))
                 {       
                     /* Swap elements i and i+1 via y/hold_pos variables. */
-                    j        = ajIntGet(sig->dat[x]->gsiz, i);
-                    hold_pos = ajIntGet(sig->dat[x]->gfrq, i);
+                    j        = ajUintGet(sig->dat[x]->gsiz, i);
+                    hold_pos = ajUintGet(sig->dat[x]->gfrq, i);
 
-                    ajIntPut(&sig->dat[x]->gsiz, i, 
-			     ajIntGet(sig->dat[x]->gsiz, i+1));
-                    ajIntPut(&sig->dat[x]->gfrq, i, 
-			     ajIntGet(sig->dat[x]->gfrq, i+1));
+                    ajUintPut(&sig->dat[x]->gsiz, i, 
+			     ajUintGet(sig->dat[x]->gsiz, i+1));
+                    ajUintPut(&sig->dat[x]->gfrq, i, 
+			     ajUintGet(sig->dat[x]->gfrq, i+1));
                 
-                    ajIntPut(&sig->dat[x]->gsiz, i+1, j);
-                    ajIntPut(&sig->dat[x]->gfrq, i+1, hold_pos);
+                    ajUintPut(&sig->dat[x]->gsiz, i+1, j);
+                    ajUintPut(&sig->dat[x]->gfrq, i+1, hold_pos);
                 }               
             }
     }
@@ -3851,12 +3851,12 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
     ajFloatDel(&ncon_normal);
     ajFloatDel(&ccon_normal);
     ajFloatDel(&total_score);
-    ajIntDel(&keyres_pos);   
-    ajIntDel(&post_sim);     
-    ajIntDel(&rand_pos);     
-    ajIntDel(&temp_rand);     
-    ajInt2dDel(&keyres_seq);
-    ajIntDel(&seq_len);
+    ajUintDel(&keyres_pos);   
+    ajUintDel(&post_sim);     
+    ajUintDel(&rand_pos);     
+    ajUintDel(&temp_rand);     
+    ajUint2dDel(&keyres_seq);
+    ajUintDel(&seq_len);
     for(x=0;x<nseqs;x++)
         ajStrDel(&seq_array[x]);
     AJFREE(seq_array);
@@ -3873,16 +3873,16 @@ static AjPSignature  siggen_SigSelectSeq(AjPScopalg alg,
 **
 ** @param [r] alg        [AjPScopalg ]   Alignment
 ** @param [w] scores     [AjPScorealg*]  Scores for alignment
-** @param [r] seq_pos    [AjPInt2d]      Index for alignment
+** @param [r] seq_pos    [AjPUint2d]      Index for alignment
 ** @param [w] spar_check [float *]       Sparsity of signature
 ** @param [r] wsiz       [ajint]         Window size 
 ** 
 ** @return [AjBool] True on succcess
 ** @@
 ****************************************************************************/
-static AjPSignature siggen_SigSelectManual(AjPScopalg alg, 
+static EmbPSignature siggen_SigSelectManual(AjPScopalg alg, 
 					   AjPScorealg *scores, 
-					   AjPInt2d seq_pos,
+					   AjPUint2d seq_pos,
 					   float *spar_check,
 					   ajint wsiz)
 { 
@@ -3903,13 +3903,13 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     float       val          =0.0;  /* Temp. val.                          */
     AjBool      done         =ajFalse;  /*Flag.                            */
     AjPFloat    total_score  =NULL; /* Total normalised scores.            */
-    AjPInt      keyres_pos   =NULL; /* Total_score array, sorted in ascending order.*/
-    AjPInt      post_sim     =NULL; /* Positions in post_similar line.     */
-    AjPInt      seq_len      =NULL; /* Length of each seq, as in alignment.*/
-    AjPInt      fullseq_len  =NULL; /* Length of each seq, as in original seq . */
-    AjPInt2d    keyres_seq   =NULL; /* Total_score array, sorted in ascending order. */
+    AjPUint      keyres_pos   =NULL; /* Total_score array, sorted in ascending order.*/
+    AjPUint      post_sim     =NULL; /* Positions in post_similar line.     */
+    AjPUint      seq_len      =NULL; /* Length of each seq, as in alignment.*/
+    AjPUint      fullseq_len  =NULL; /* Length of each seq, as in original seq . */
+    AjPUint2d    keyres_seq   =NULL; /* Total_score array, sorted in ascending order. */
     AjPStr      *seq_array   =NULL; /* Sequence (w/o gaps) from alignment. */
-    AjPSignature sig=NULL;          /* Signature.                          */
+    EmbPSignature sig=NULL;          /* Signature.                          */
 
     
 
@@ -3927,20 +3927,20 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     
     /* Create arrays. */
     total_score         =  ajFloatNewL(alg->width);
-    keyres_pos          =  ajIntNewL(alg->width);    
+    keyres_pos          =  ajUintNewL(alg->width);    
 
 
-    post_sim            =  ajIntNewL(alg->width);
-    keyres_seq          =  ajInt2dNew();    
-    seq_len             =  ajIntNewL(alg->N);    
-    fullseq_len         =  ajIntNewL(alg->N);    
+    post_sim            =  ajUintNewL(alg->width);
+    keyres_seq          =  ajUint2dNew();    
+    seq_len             =  ajUintNewL(alg->N);    
+    fullseq_len         =  ajUintNewL(alg->N);    
     
 
     /* Initialise array elements to zero. */
     ajFloatPut(&total_score, alg->width-1, (float) 0.0);
 
-    ajIntPut(&keyres_pos, alg->width-1, (ajint) 0);
-    ajIntPut(&post_sim, alg->width-1, (ajint) 0);
+    ajUintPut(&keyres_pos, alg->width-1, (ajint) 0);
+    ajUintPut(&post_sim, alg->width-1, (ajint) 0);
 
     nseqs=ajDmxScopalgGetseqs(alg, &seq_array);
 
@@ -3962,7 +3962,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     for(i=0; i<alg->width; i++)
 	/* Check manual position line is 1. */	
 	if(ajStrGetCharPos(alg->Positions, i)=='1')
-	    ajIntPut(&post_sim, alg->width-i, i);
+	    ajUintPut(&post_sim, alg->width-i, i);
 
 
     /* Determine average number of residues for each sequence from ALIGNMENT. */
@@ -3973,14 +3973,14 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
 	  if(ajStrGetCharPos(alg->Seqs[memb_cnt], i) != 'X')  /* Andy */
                 single_rescount++;
 
-        ajIntPut(&seq_len, memb_cnt, single_rescount);
+        ajUintPut(&seq_len, memb_cnt, single_rescount);
     }
 
 
     /* Initialise keyres_seq array to zero. */
     for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)
-        for(i=0; i<ajIntGet(seq_len, memb_cnt); i++)
-            ajInt2dPut(&keyres_seq, memb_cnt, i, 0);
+        for(i=0; i<ajUintGet(seq_len, memb_cnt); i++)
+            ajUint2dPut(&keyres_seq, memb_cnt, i, 0);
 
     
     /* Calculate the number of positions the signature has. */
@@ -4002,22 +4002,22 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     {
 	/* Put a '1' in keyres_pos array at position corresponding to position 
 	   in post_sim array. */
-	ajIntPut(&keyres_pos, ajIntGet(post_sim, i), 1);
+	ajUintPut(&keyres_pos, ajUintGet(post_sim, i), 1);
     }
      
 
     /* Fill 2d array with positions of each key res w.r.t. alignment seq. */
     for(i=0; i<alg->width; i++)
     {
-        if(ajIntGet(keyres_pos, i) == 1)
+        if(ajUintGet(keyres_pos, i) == 1)
         {
             for(memb_cnt=0; memb_cnt<alg->N; memb_cnt++)            
             {
                 /* Check to see if alignment position is a gap. */
-                if((idx=ajInt2dGet(seq_pos, memb_cnt, i))==-1)
+                if((idx=ajUint2dGet(seq_pos, memb_cnt, i))==-1)
                     continue;
                 else
-                    ajInt2dPut(&keyres_seq, memb_cnt, idx, 1); 
+                    ajUint2dPut(&keyres_seq, memb_cnt, idx, 1); 
             }
         }
     }
@@ -4051,20 +4051,20 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     /* Write signature structure. */
     for(j=0; j<alg->N; j++)
     {   
-        for(npos=0, gsiz=0, i=0, imax=ajIntGet(fullseq_len, j); 
+        for(npos=0, gsiz=0, i=0, imax=ajUintGet(fullseq_len, j); 
             i<imax; 
             i++)       
         {
             /* The position is a signature position. */
-            if(ajInt2dGet(keyres_seq, j, i) == 1)
+            if(ajUint2dGet(keyres_seq, j, i) == 1)
             {
                 /*Process gap. */
                 for(done=ajFalse,x=0;x<sig->dat[npos]->ngap;x++)
                 {
                     /* The gap length is NOT new. */
-                    if((ajIntGet(sig->dat[npos]->gsiz, x)==gsiz))
+                    if((ajUintGet(sig->dat[npos]->gsiz, x)==gsiz))
                     {
-                        ajIntInc(&sig->dat[npos]->gfrq, x);
+                        ajUintInc(&sig->dat[npos]->gfrq, x);
                         done=ajTrue;
                         break;
 
@@ -4076,9 +4076,9 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
                 if(!done)
                 {
                     sig->dat[npos]->ngap++;
-                    ajIntPut(&sig->dat[npos]->gsiz, sig->dat[npos]->ngap-1, 
+                    ajUintPut(&sig->dat[npos]->gsiz, sig->dat[npos]->ngap-1, 
                              gsiz);
-                    ajIntPut(&sig->dat[npos]->gfrq, sig->dat[npos]->ngap-1, 
+                    ajUintPut(&sig->dat[npos]->gfrq, sig->dat[npos]->ngap-1, 
                              (ajint) 1);
                 }    
 
@@ -4100,12 +4100,12 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
     /* Write residue id into signature structure. */
     for(j=0; j<alg->N; j++)
     {
-        for(npos=0, i=0, imax=ajIntGet(seq_len, j); 
+        for(npos=0, i=0, imax=ajUintGet(seq_len, j); 
             i<imax; 
             i++)       
         {
             /* The position is a signature position. */
-            if(ajInt2dGet(keyres_seq, j, i) == 1)
+            if(ajUint2dGet(keyres_seq, j, i) == 1)
             {
                 /* Process residue. */
                 for(done=ajFalse,x=0;x<sig->dat[npos]->nres;x++)
@@ -4114,7 +4114,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
                     if((ajChararrGet(sig->dat[npos]->rids, x))
                        ==ajStrGetCharPos(seq_array[j], i))
                     {
-                        ajIntInc(&sig->dat[npos]->rfrq, x);
+                        ajUintInc(&sig->dat[npos]->rfrq, x);
                         done=ajTrue;
                         break;
                     }
@@ -4128,7 +4128,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
                     ajChararrPut(&sig->dat[npos]->rids, sig->dat[npos]->nres-1,         
                                  ajStrGetCharPos(seq_array[j], i));
 
-                    ajIntPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
+                    ajUintPut(&sig->dat[npos]->rfrq, sig->dat[npos]->nres-1, 
                             (ajint) 1);
                 }    
                 
@@ -4152,20 +4152,20 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
             for(i=0; i<(sig->dat[x]->ngap-1);i++)
             {    
                 /* Check if element i is > than element i+1. */
-                if(ajIntGet(sig->dat[x]->gsiz, i) 
-		   > ajIntGet(sig->dat[x]->gsiz, i+1))
+                if(ajUintGet(sig->dat[x]->gsiz, i) 
+		   > ajUintGet(sig->dat[x]->gsiz, i+1))
                 {       
                     /* Swap elements i and i+1 via y/hold_pos variables. */
-                    j        = ajIntGet(sig->dat[x]->gsiz, i);
-                    hold_pos = ajIntGet(sig->dat[x]->gfrq, i);
+                    j        = ajUintGet(sig->dat[x]->gsiz, i);
+                    hold_pos = ajUintGet(sig->dat[x]->gfrq, i);
 
-                    ajIntPut(&sig->dat[x]->gsiz, i, 
-			     ajIntGet(sig->dat[x]->gsiz, i+1));
-                    ajIntPut(&sig->dat[x]->gfrq, i, 
-			     ajIntGet(sig->dat[x]->gfrq, i+1));
+                    ajUintPut(&sig->dat[x]->gsiz, i, 
+			     ajUintGet(sig->dat[x]->gsiz, i+1));
+                    ajUintPut(&sig->dat[x]->gfrq, i, 
+			     ajUintGet(sig->dat[x]->gfrq, i+1));
                 
-                    ajIntPut(&sig->dat[x]->gsiz, i+1, j);
-                    ajIntPut(&sig->dat[x]->gfrq, i+1, hold_pos);
+                    ajUintPut(&sig->dat[x]->gsiz, i+1, j);
+                    ajUintPut(&sig->dat[x]->gfrq, i+1, hold_pos);
                 }               
             }         
     }
@@ -4176,10 +4176,10 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
 
     /* Tidy up. */
     ajFloatDel(&total_score);
-    ajIntDel(&keyres_pos);   
-    ajIntDel(&post_sim);     
-    ajInt2dDel(&keyres_seq);
-    ajIntDel(&seq_len);
+    ajUintDel(&keyres_pos);   
+    ajUintDel(&post_sim);     
+    ajUint2dDel(&keyres_seq);
+    ajUintDel(&seq_len);
     for(x=0;x<nseqs;x++)
         ajStrDel(&seq_array[x]);
     AJFREE(seq_array);
@@ -4198,7 +4198,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
 ** @param [w] scores  [AjPScorealg*]   Scores for alignment
 ** @param [r] alg     [AjPScopalg ]    Alignment
 ** @param [r] mat     [AjPMatrixf]     Subsitution matrix
-** @param [r] seq_pos [AjPInt2d]       Index for alignment
+** @param [r] seq_pos [AjPUint2d]       Index for alignment
 **
 ** @return [AjBool] True on succcess
 ** @@
@@ -4206,7 +4206,7 @@ static AjPSignature siggen_SigSelectManual(AjPScopalg alg,
 static AjBool siggen_ScoreAlignmentSeq(AjPScorealg *scores, 
 				       AjPScopalg alg, 
 				       AjPMatrixf  mat, 
-				       AjPInt2d seq_pos)
+				       AjPUint2d seq_pos)
 {
     /*Check args. */
     if( !(*scores) || !alg || !mat || !seq_pos)
@@ -4262,21 +4262,21 @@ static AjPScorealg siggen_ScorealgNew(ajint len)
 	ajFloatPut(&ret->seqvar_score, len-1, (float)0.0);
 
 
-        ret->ncon_thresh = ajIntNewL((ajint)len);
-	ajIntPut(&ret->ncon_thresh , len-1, (ajint)0);
+        ret->ncon_thresh = ajUintNewL((ajint)len);
+	ajUintPut(&ret->ncon_thresh , len-1, (ajint)0);
 
-	ret->post_similar = ajIntNewL((ajint)len);
-	ajIntPut(&ret->post_similar , len-1, (ajint)0);
-	ret->positions = ajIntNewL((ajint)len);
-	ajIntPut(&ret->positions, len-1, (ajint)0);
+	ret->post_similar = ajUintNewL((ajint)len);
+	ajUintPut(&ret->post_similar , len-1, (ajint)0);
+	ret->positions = ajUintNewL((ajint)len);
+	ajUintPut(&ret->positions, len-1, (ajint)0);
 	ret->ncon_score   = ajFloatNewL((ajint)len);
 	ajFloatPut(&ret->ncon_score , len-1, (float)0.0);
 	ret->ccon_score   = ajFloatNewL((ajint)len);
 	ajFloatPut(&ret->ccon_score  , len-1, (float)0.0);
-	ret->nccon_score = ajIntNewL((ajint)len);
-	ajIntPut(&ret->nccon_score, len-1, (ajint)0);
-	ret->combi_score  = ajIntNewL((ajint)len);
-	ajIntPut(&ret->combi_score, len-1, (ajint)0);
+	ret->nccon_score = ajUintNewL((ajint)len);
+	ajUintPut(&ret->nccon_score, len-1, (ajint)0);
+	ret->combi_score  = ajUintNewL((ajint)len);
+	ajUintPut(&ret->combi_score, len-1, (ajint)0);
     }
 
     
@@ -4314,13 +4314,13 @@ static void siggen_ScorealgDel(AjPScorealg *pthis)
     ajFloatDel(&(*pthis)->seqmat_score);
     ajFloatDel(&(*pthis)->seqvar_score);
 
-    ajIntDel(&(*pthis)->post_similar);
-    ajIntDel(&(*pthis)->positions);
+    ajUintDel(&(*pthis)->post_similar);
+    ajUintDel(&(*pthis)->positions);
     ajFloatDel(&(*pthis)->ncon_score);
     ajFloatDel(&(*pthis)->ccon_score);
-    ajIntDel(&(*pthis)->nccon_score);
-    ajIntDel(&(*pthis)->combi_score);
-    ajIntDel(&(*pthis)->ncon_thresh);
+    ajUintDel(&(*pthis)->nccon_score);
+    ajUintDel(&(*pthis)->combi_score);
+    ajUintDel(&(*pthis)->ncon_thresh);
 
     AJFREE(*pthis);    
     *pthis = NULL;

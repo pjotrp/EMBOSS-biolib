@@ -9,8 +9,8 @@
 
 #include "meme.h"
 
-extern double atof();
-extern int atoi();
+/*extern double atof();*/
+/*extern int atoi();*/
 /*extern double sqrt();*/
 
 /* list of alphas in table */
@@ -240,4 +240,4 @@ extern double chiq(
   double x2 = (cbrt(chisq/v) - (1 - tnv)) / sqrt(tnv);
   return log_Q(x2);
 }
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/chi.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/chi.c,v 1.2 2007/01/31 12:53:19 rice Exp $ */

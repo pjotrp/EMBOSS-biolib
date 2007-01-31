@@ -14,7 +14,7 @@
 
 #ifndef __lint
 static const char rcsid[] =
-"$Id: prnt.c,v 1.4 2006/02/22 15:02:27 rice Exp $";
+"$Id: prnt.c,v 1.5 2007/01/31 12:53:19 rice Exp $";
 #endif
 
 /* XXX */
@@ -39,7 +39,7 @@ static const char* revlabel(AjPSeq  s);
 #define  SEQ_FROM(s) ((s)->Offset)
 #define  SEQ_TO(s)   ((s)->Offend)
 #define  SEQ_HEAD(s) (MAJSTRGETPTR((s)->Name))
-#define  SEQ_NAME(s) (MAJSTRGETPTR(ajSeqGetUsa(s)))
+#define  SEQ_NAME(s) (MAJSTRGETPTR(ajSeqGetUsaS(s)))
 
 static void print_align_header_n(AjPSeq seq1, AjPSeq seq2, argv_scores_t *ds, int n)
 {

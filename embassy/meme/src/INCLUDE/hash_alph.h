@@ -254,7 +254,7 @@ extern char *get_alphabet(
   int *p[MAXASCII]		/* permutation and substitution matrix */
 );
 
-extern void setup_hash_dnab2protb();
+extern void setup_hash_dnab2protb(void);
 
 extern void invcomp_dna(
   char *sequence,                       /* DNAB sequence */
@@ -270,4 +270,4 @@ extern int *dhash_it(
 
 #endif
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/hash_alph.h,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/hash_alph.h,v 1.2 2007/01/31 12:53:19 rice Exp $ */

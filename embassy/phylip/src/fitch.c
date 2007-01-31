@@ -51,8 +51,68 @@ short *enterorder;
 tree curtree, priortree, bestree, bestree2;
 Char ch;
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,
+	      char *application,char *perm);
+double randum(short *seed);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputoptions(void);
+Static void getinput(void);
+void setuptree(tree *a);
+void getdata(void);
+void hookup(node *p, node *q);
+void secondtraverse(node *q, double y, short *nx,double *sum);
+void firsttraverse(node *p, short *nx,double *sum);
+double evaluate(tree *t);
+void nudists(node *x, node *y);
+void makedists(node *p);
+void makebigv(node *p);
+void correctv(node *p);
+void alter(node *x, node *y);
+void nuview(node *p);
+void update(node *p);
+void smooth(node *p);
+void filltraverse(node *pb, node *qb,boolean contin);
+void fillin(node *pa, node *qa,boolean contin);
+void insert_(node *p, node *q, boolean contin_);
+void copynode(node *c, node *d);
+void copy_(tree *a, tree *b);
+void setuptip(short m,tree *t);
+void buildnewtip(short m, tree *t,short nextsp);
+void buildsimpletree(tree *t,short nextsp);
+void addtraverse(node *p, node *q, boolean contin, short *numtrees,
+                 boolean *succeeded);
+void re_move(node **p, node **q);
+void rearrange(node *p, short *numtrees,short *nextsp,boolean *succeeded);
+void coordinates(node *p, double lengthsum, short *tipy,double *tipmax);
+void drawline(short i, double scale);
+void printree(void);
+void treeout(node *p);
+void describe(node *p);
+void summarize(short numtrees);
+void getch(Char *c);
+void findch(Char c, short *lparens,short *rparens);
+void processlength(node *p);
+void addelement(node *p,short *nextnode,short *lparens,short *rparens,
+                boolean *names,boolean *nolengths);
+void treeread(void);
+void nodeinit(node *p);
+void initrav(node *p);
+void treevaluate(void);
+void  maketree(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long  x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile inf;
 AjPFile treef;
@@ -148,12 +208,7 @@ int i;
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -189,8 +244,7 @@ char *perm;
 }
 
 
-double randum(seed)
-short *seed;
+double randum(short *seed)
 {
   /* random number generator -- slow but machine independent */
   short i,j,k,sum;
@@ -226,15 +280,14 @@ short *seed;
   return x;
 }  /* randum */
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
   /* convert a character to upper case -- either ASCII or EBCDIC */
    *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* read species number */
   fscanf(infile, "%hd", &numsp);
@@ -243,7 +296,7 @@ void getnums()
   numsp2 = numsp * 2 - 2;
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   short i, inseed0=0;
@@ -593,7 +646,7 @@ void doinit(int argc, char *argv[])
 }  /* doinit */
 
 
-void inputoptions()
+void inputoptions(void)
 {
   /* read options information */
   Char ch;
@@ -636,7 +689,7 @@ void inputoptions()
 }  /* inputoptions */
 
 
-Static void getinput()
+Static void getinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -648,8 +701,7 @@ Static void getinput()
 #define over            60
 
 
-void setuptree(a)
-tree *a;
+void setuptree(tree *a)
 {
   /* initialize a tree */
   short i=0, j=0;
@@ -673,7 +725,7 @@ tree *a;
   a->start = a->nodep[0];
 }  /* setuptree */
 
-void getdata()
+void getdata(void)
 {
   /* read in distance matrix */
   short i=0, j=0, k=0, columns=0;
@@ -749,8 +801,7 @@ void getdata()
   putc('\n', outfile);
 }  /* getdata */
 
-void hookup(p, q)
-node *p, *q;
+void hookup(node *p, node *q)
 {
   /* hook together two nodes */
   p->back = q;
@@ -759,13 +810,11 @@ node *p, *q;
 
 
 
-void secondtraverse(q, y, nx,sum)
-node *q;
-double y;
-short *nx;          /* comes from firsttraverse                              */
-double *sum;        /* comes from evaluate via firsttraverse                 */
+void secondtraverse(node *q, double y, short *nx,double *sum)
 {
-  /* from each of those places go back to all others */
+    /*short *nx; */          /* comes from firsttraverse       */
+    /*double *sum; */        /* comes from evaluate via firsttraverse      */
+    /* from each of those places go back to all others */
   double z=0.0, TEMP=0.0;
 
   z = y + q->v;
@@ -778,10 +827,7 @@ double *sum;        /* comes from evaluate via firsttraverse                 */
   }
 }  /* secondtraverse */
 
-void firsttraverse(p, nx,sum)
-node *p;
-short *nx;
-double *sum;
+void firsttraverse(node *p, short *nx,double *sum)
 {
   /* go through tree calculating branch lengths */
   if (p->tip) {
@@ -794,8 +840,7 @@ double *sum;
   }
 }  /* firsttraverse */
 
-double evaluate(t)
-tree *t;
+double evaluate(tree *t)
 {
   double sum=0.0;
   short nx=0;
@@ -808,8 +853,7 @@ tree *t;
   return (-sum);
 }  /* evaluate */
 
-void nudists(x, y)
-node *x, *y;
+void nudists(node *x, node *y)
 {
   /* compute distance between an interior node and tips */
   short nq=0, nr=0, nx=0, ny=0;
@@ -846,8 +890,7 @@ node *x, *y;
 }  /* nudists */
 
 
-void makedists(p)
-node *p;
+void makedists(node *p)
 {
   /* compute distances among three neighbors of a node */
   short i=0, nr=0, ns=0;
@@ -872,8 +915,7 @@ node *p;
   }
 }  /* makedists */
 
-void makebigv(p)
-node *p;
+void makebigv(node *p)
 {
   /* make new branch length */
   short i=0;
@@ -893,8 +935,7 @@ node *p;
   }
 }  /* makebigv */
 
-void correctv(p)
-node *p;
+void correctv(node *p)
 {
   /* iterate branch lengths if some are to be zero */
   node *q, *r, *temp;
@@ -931,8 +972,7 @@ node *p;
   }
 }  /* correctv */
 
-void alter(x, y)
-node *x, *y;
+void alter(node *x, node *y)
 {
   /* traverse updating these views */
   nudists(x, y);
@@ -942,8 +982,7 @@ node *x, *y;
   }
 }  /* alter */
 
-void nuview(p)
-node *p;
+void nuview(node *p)
 {
   /* renew information about subtrees */
   short i=0;
@@ -961,8 +1000,7 @@ node *p;
   }
 }  /* nuview */
 
-void update(p)
-node *p;
+void update(node *p)
 {
   /* update branch lengths around a node */
 
@@ -976,8 +1014,7 @@ node *p;
   nuview(p);
 }  /* update */
 
-void smooth(p)
-node *p;
+void smooth(node *p)
 {
   /* go through tree getting new branch lengths and views */
   if (p->tip)
@@ -987,9 +1024,7 @@ node *p;
   smooth(p->next->next->back);
 }  /* smooth */
 
-void filltraverse(pb, qb,contin)
-node *pb, *qb;
-boolean contin;
+void filltraverse(node *pb, node *qb,boolean contin)
 {
   if (qb->tip)
     return;
@@ -1005,9 +1040,7 @@ boolean contin;
     nudists(qb->next->next->back, pb);
 }  /* filltraverse */
 
-void fillin(pa, qa,contin)
-node *pa, *qa;
-boolean contin;
+void fillin(node *pa, node *qa,boolean contin)
 {
   if (!pa->tip) {
     fillin(pa->next->back, qa, contin);
@@ -1016,9 +1049,7 @@ boolean contin;
   filltraverse(pa, qa, contin);
 }  /* fillin */
 
-void insert_(p, q, contin_)
-node *p, *q;
-boolean contin_;
+void insert_(node *p, node *q, boolean contin_)
 {
   /* put p and q together and iterate info. on resulting tree */
   short i=0;
@@ -1039,8 +1070,7 @@ boolean contin_;
   }
 }  /* insert */
 
-void copynode(c, d)
-node *c, *d;
+void copynode(node *c, node *d)
 {
   /* make a copy of a node */
 
@@ -1056,8 +1086,7 @@ node *c, *d;
   d->ymax = c->ymax;
 }  /* copynode */
 
-void copy_(a, b)
-tree *a, *b;
+void copy_(tree *a, tree *b)
 {
   /* make a copy of a tree */
   short i, j=0;
@@ -1100,9 +1129,7 @@ tree *a, *b;
   b->start = a->start;
 }  /* copy */
 
-void setuptip(m,t)
-short m;
-tree *t;
+void setuptip(short m,tree *t)
 {
   /* initialize branch lengths and views in a tip */
   short i=0;
@@ -1133,10 +1160,7 @@ tree *t;
   free(n);
 }  /* setuptip */
 
-void buildnewtip(m, t,nextsp)
-short m;
-tree *t;
-short nextsp;
+void buildnewtip(short m, tree *t,short nextsp)
 {
   /* initialize and hook up a new tip */
   node *p;
@@ -1145,9 +1169,7 @@ short nextsp;
   hookup(t->nodep[m - 1], p);
 }  /* buildnewtip */
 
-void buildsimpletree(t,nextsp)
-tree *t;
-short nextsp;
+void buildsimpletree(tree *t,short nextsp)
 {
   /* make and initialize a three-species tree */
   setuptip(enterorder[0], t);
@@ -1158,10 +1180,8 @@ short nextsp;
           false);
 }  /* buildsimpletree */
 
-void addtraverse(p, q, contin, numtrees,succeeded)
-node *p, *q;
-boolean contin,*succeeded;
-short *numtrees;
+void addtraverse(node *p, node *q, boolean contin, short *numtrees,
+		 boolean *succeeded)
 {
  /* traverse through a tree, finding best place to add p */
   insert_(p, q, true);
@@ -1178,8 +1198,7 @@ short *numtrees;
 }  /* addtraverse */
 
 
-void re_move(p, q)
-node **p, **q;
+void re_move(node **p, node **q)
 {
   /* re_move p and record in q where it was */
   *q = (*p)->next->back;
@@ -1190,10 +1209,7 @@ node **p, **q;
   update((*q)->back);
 }  /* re_move */
 
-void rearrange(p, numtrees,nextsp,succeeded)
-node *p;
-short *numtrees,*nextsp;
-boolean *succeeded;
+void rearrange(node *p, short *numtrees,short *nextsp,boolean *succeeded)
 {
   node *q, *r;
   if (!p->tip && !p->back->tip) {
@@ -1233,11 +1249,7 @@ boolean *succeeded;
 }  /* rearrange */
 
 
-void coordinates(p, lengthsum, tipy,tipmax)
-node *p;
-double lengthsum;
-short *tipy;
-double *tipmax;
+void coordinates(node *p, double lengthsum, short *tipy,double *tipmax)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -1271,9 +1283,7 @@ double *tipmax;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-short i;
-double scale;
+void drawline(short i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q;
@@ -1363,7 +1373,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
   short i=0;
@@ -1384,8 +1394,7 @@ void printree()
 }  /* printree */
 
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   short i=0, n=0, w=0;
@@ -1440,8 +1449,7 @@ node *p;
   }
 }  /* treeout */
 
-void describe(p)
-node *p;
+void describe(node *p)
 {
   /* print out information for one branch */
   short i=0;
@@ -1461,8 +1469,7 @@ node *p;
   }
 }  /* describe */
 
-void summarize(numtrees)
-short numtrees;
+void summarize(short numtrees)
 {
   /* print out branch lengths etc. */
   short i, j, totalnum;
@@ -1499,8 +1506,7 @@ short numtrees;
 }  /* summarize */
 
 
-void getch(c)
-Char *c;
+void getch(Char *c)
 {
   /* get next nonblank character */
   do {
@@ -1514,9 +1520,7 @@ Char *c;
   } while (*c == ' ');
 }  /* getch */
 
-void findch(c, lparens,rparens)
-Char c;
-short *lparens,*rparens;
+void findch(Char c, short *lparens,short *rparens)
 {
   /* skip forward in user tree until find character c */
   boolean done;
@@ -1565,8 +1569,7 @@ short *lparens,*rparens;
   }
 }  /* findch */
 
-void processlength(p)
-node *p;
+void processlength(node *p)
 {
   short digit, ordzero;
   double valyew, divisor;
@@ -1599,11 +1602,8 @@ node *p;
 
 #undef point
 
-void addelement(p,nextnode,lparens,rparens,names,nolengths)
-node *p;
-short *nextnode,*lparens,*rparens;
-boolean *names;                             /* a boolean array               */
-boolean *nolengths;
+void addelement(node *p,short *nextnode,short *lparens,short *rparens,
+		boolean *names,boolean *nolengths)
 {
                                             /* add one node to the user tree */
   node *q;
@@ -1680,7 +1680,7 @@ boolean *nolengths;
   }
 }  /* addelement */
 
-void treeread()
+void treeread(void)
 {
   /* read in a user tree */
   node *p;
@@ -1717,8 +1717,7 @@ void treeread()
   free(names);
 }  /* treeread */
 
-void nodeinit(p)
-node *p;
+void nodeinit(node *p)
 {
   /* initialize a node */
   short i, j;
@@ -1736,8 +1735,7 @@ node *p;
     p->back->v = 1.0;
 }  /* nodeinit */
 
-void initrav(p)
-node *p;
+void initrav(node *p)
 {
   /* traverse to initialize */
   if (p->tip)
@@ -1747,7 +1745,7 @@ node *p;
   initrav(p->next->next->back);
 }  /* initrav */
 
-void treevaluate()
+void treevaluate(void)
 {
   /* evaluate user-defined tree, iterating branch lengths */
   short i;
@@ -1765,7 +1763,7 @@ void treevaluate()
 }  /* treevaluate */
 
 
-void  maketree()
+void  maketree(void)
 {
   /* contruct the tree */
   short nextsp,numtrees;
@@ -1892,9 +1890,7 @@ void  maketree()
 }  /* maketree */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {
   int i;
   /*char infilename[100],outfilename[100],trfilename[100];*/
@@ -1946,8 +1942,7 @@ Char *argv[];
   exit(0);
 }
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1963,8 +1958,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1975,14 +1969,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long  x;
+MALLOCRETURN *mymalloc(long  x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,x);

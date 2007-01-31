@@ -27,7 +27,7 @@ ajint numwts;
 void   init_protmats(void);
 //void   getoptions(void);
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
-void   initmemrates(); 
+void   initmemrates(void); 
 void   makeprotfreqs(void);
 void   allocrest(void); 
 void   doinit(void);
@@ -601,7 +601,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     }
 
 
-    model = ajAcdGetListI("model", 1);
+    model = ajAcdGetListSingle("model");
 
     if(ajStrMatchC(model, "j")) usejtt = true;
     if(ajStrMatchC(model, "h")) usepmb = true;
@@ -625,7 +625,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     phyloratecat = ajAcdGetProperties("categories");      
 
 
-    gammamethod = ajAcdGetListI("gamma", 1);
+    gammamethod = ajAcdGetListSingle("gamma");
 
     if(ajStrMatchC(gammamethod, "n")) {
       rrate      = (double *) Malloc(rcategs*sizeof(double));
@@ -726,7 +726,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 }  /* emboss_getoptions */
 
 
-void initmemrates() 
+void initmemrates(void) 
 {
    probcat = (double *) Malloc(rcategs * sizeof(double));
    rrate = (double *) Malloc(rcategs * sizeof(double));
@@ -826,7 +826,7 @@ void input_protdata(AjPSeqset seqset, long chars)
     headings(chars, "Sequences", "---------");
   for(i=0;i<spp;i++){
     initnameseq(seqset, i);   
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
+    strncpy(&y[i][0],ajSeqsetGetseqSeqC(seqset, i),chars);
     y[i][chars] = '\0';
   }
 

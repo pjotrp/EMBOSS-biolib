@@ -102,7 +102,7 @@ int main(int argc, char **argv)
     AjPList    list_seqs = NULL; /* List of sequences for a family.          */
     AjPList    list_domain = NULL;/* List of domain structures for a family. */
     AjIList    iter      = NULL; /* Iterator for domain list.                */    
-    AjPInt     keep      = NULL; /*1: This sequence was kept after.          */
+    AjPUint    keep      = NULL; /*1: This sequence was kept after.          */
                                  /* redundancy removal, 0: it was discarded. */
     EmbPDmxNrseq nrseq   = NULL; /* A temporary pointer.                     */
     AjPMatrixf matrix    = NULL; /* Substitution matrix.                     */
@@ -137,7 +137,7 @@ int main(int argc, char **argv)
        file */
     msg       = ajStrNew();
     last_node  = ajStrNew();
-    keep = ajIntNew();  	    
+    keep = ajUintNew();  	    
     ajStrAssignC(&last_node,"!!!!!");
 
 
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
 		    {
 			ajStrDel(&last_node);
 			ajStrDel(&msg);
-			ajIntDel(&keep);	
+			ajUintDel(&keep);	
 			ajMatrixfDel(&matrix);
 			ajFileClose(&errf);    
 			ajFileClose(&domain_outf);	    
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 		    for(iter=ajListIterRead(list_domain), x=0;
 			(domain_tmp=(AjPDomain)ajListIterNext(iter));
 			x++)
-			if(ajIntGet(keep,x))
+			if(ajUintGet(keep,x))
 			    ajDomainWrite(domain_outf, domain_tmp);
 			else
 			    ajDomainWrite(red_outf, domain_tmp);
@@ -264,7 +264,7 @@ int main(int argc, char **argv)
 		    for(iter=ajListIterRead(list_domain), x=0;
 			(domain_tmp=(AjPDomain)ajListIterNext(iter));
 			x++)
-			if(ajIntGet(keep,x))
+			if(ajUintGet(keep,x))
 			    ajFmtPrintF(errf, "%S\n", 
 					ajDomainGetId(domain_tmp));
 		    
@@ -275,7 +275,7 @@ int main(int argc, char **argv)
 		    for(iter=ajListIterRead(list_domain), x=0;
 			(domain_tmp=(AjPDomain)ajListIterNext(iter));
 			x++)
-			if(!(ajIntGet(keep,x)))
+			if(!(ajUintGet(keep,x)))
 			    ajFmtPrintF(errf, "%S\n", 
 					ajDomainGetId(domain_tmp));
 		    ajListIterFree(&iter);	
@@ -383,7 +383,7 @@ int main(int argc, char **argv)
 	for(iter=ajListIterRead(list_domain), x=0;
 	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
 	    x++)
-	    if(ajIntGet(keep,x))
+	    if(ajUintGet(keep,x))
 		ajDomainWrite(domain_outf, domain_tmp);
 	    else
 		ajDomainWrite(red_outf, domain_tmp);
@@ -396,14 +396,14 @@ int main(int argc, char **argv)
 	for(iter=ajListIterRead(list_domain), x=0;
 	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
 	    x++)
-	    if(ajIntGet(keep,x))
+	    if(ajUintGet(keep,x))
 		ajFmtPrintF(errf, "%S\n", ajDomainGetId(domain_tmp));
 	ajListIterFree(&iter);	
 	ajFmtPrintF(errf, "Rejected\n");
 	for(iter=ajListIterRead(list_domain), x=0;
 	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
 	    x++)
-	    if(!(ajIntGet(keep,x)))
+	    if(!(ajUintGet(keep,x)))
 		ajFmtPrintF(errf, "%S\n", ajDomainGetId(domain_tmp));
 	ajListIterFree(&iter);	
     }
@@ -429,7 +429,7 @@ int main(int argc, char **argv)
     
     /* Tidy up. */
     ajMatrixfDel(&matrix);
-    ajIntDel(&keep);	
+    ajUintDel(&keep);	
     ajStrDel(&last_node);
     ajStrDel(&msg);
     ajFileClose(&errf);    

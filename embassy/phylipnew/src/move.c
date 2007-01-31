@@ -154,7 +154,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     threshold = ajAcdGetFloat("threshold");
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
 
     if(ajStrMatchC(method, "w")) allwagner = true;
     else if(ajStrMatchC(method, "c")) allsokal = true;
@@ -162,7 +162,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       mixture = allwagner = true; 
       phylomix = ajAcdGetProperties("mixfile");
     }
-    initialtree = ajAcdGetListI("initialtree", 1);
+    initialtree = ajAcdGetListSingle("initialtree");
 
 
     if(ajStrMatchC(initialtree, "a")) how = arb;

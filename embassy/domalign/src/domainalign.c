@@ -1342,7 +1342,7 @@ static void domainalign_keepsinglets(AjPDomain domain,
 {
     AjPStr      temp2     = NULL;   /* A temporary string. */
     AjPFile     singf     = NULL;   /* File pointer for singlets file. */
-    AjPHitlist  hitlist   = NULL;   /* Hitlist object for output of data. */
+    EmbPHitlist  hitlist   = NULL;   /* Hitlist object for output of data. */
     
     temp2    = ajStrNew();
 

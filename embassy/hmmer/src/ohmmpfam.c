@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmpfam --pvm runs the PVM version.
  *    
- * RCS $Id: ohmmpfam.c,v 1.3 2006/04/20 12:49:54 rice Exp $
+ * RCS $Id: ohmmpfam.c,v 1.4 2007/01/31 12:53:19 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -290,23 +290,23 @@ int main(int argc, char **argv)
 
     while (ajSeqallNext(seqall,&ajseq)) 
     {
-	ajStrAssignS(&ajstr,ajSeqStr(ajseq));
+	ajStrAssignS(&ajstr,ajSeqGetSeqS(ajseq));
 	ajStrRemoveGap(&ajstr);
 
 	sqinfo.flags = 0;
 	sqinfo.len = ajStrGetLen(ajstr);
 	sqinfo.flags |= SQINFO_LEN;
 
-	strcpy(sqinfo.name,ajStrGetPtr(ajSeqGetName(ajseq)));
+	strcpy(sqinfo.name,ajStrGetPtr(ajSeqGetNameS(ajseq)));
 	sqinfo.flags |= SQINFO_NAME;
 
 	if(ajStrGetLen(ajseq->Desc)>63)
 	{
-	    strncpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)),63);
+	    strncpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDescS(ajseq)),63);
 	    sqinfo.desc[63]='\0';
 	}
 	else
-	    strcpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDesc(ajseq)));
+	    strcpy(sqinfo.desc,ajStrGetPtr(ajSeqGetDescS(ajseq)));
 	sqinfo.flags |= SQINFO_DESC;
 
 	seq = ajCharNewRes(sqinfo.len +1);

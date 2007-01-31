@@ -144,7 +144,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     phyloanc = ajAcdGetProperties("ancfile");
     if(phyloanc) ancvar = true;
 
-    initialtree = ajAcdGetListI("initialtree", 1);
+    initialtree = ajAcdGetListSingle("initialtree");
 
     if(ajStrMatchC(initialtree, "a")) how = arb;
     if(ajStrMatchC(initialtree, "u")) how = use;
@@ -158,7 +158,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     if(phylofact) factors = true;
 
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
 
     if(ajStrMatchC(method, "d")) dollo = true;
     else dollo = false;

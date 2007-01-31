@@ -68,6 +68,15 @@ Static  vecrec **Comp2;
 Static  long tcount;
 Static  aPtr Temp, Processed, Rarer2;
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,
+	      char *application,char *perm);
+void nunode(node **p);
+void NewLine(long i, long j);
+void uppercase(Char *ch);
+void inputnumbers(void);
+void getoptions(void);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 void emboss_getoptions(char *pgm, int argc, char *argv[]){
 AjPFile outf;
@@ -113,12 +122,7 @@ AjPFile inf;
 }
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -153,8 +157,7 @@ char *perm;
     strcpy(perm,file);
 }
 
-Static Void gnu(p)
-vecrec **p;
+Static Void gnu(vecrec **p)
 {  /* this and the following are do-it-yourself garbage collectors.
      Make a new node or pull one off the garbage list */
 
@@ -162,15 +165,14 @@ vecrec **p;
     *p = garbage;
     garbage = garbage->next;
   } else {
-    *p = (vecrec *)Malloc((long)sizeof(vecrec));
-    (*p)->vec = (aPtr)Malloc((long)NumChars*sizeof(boolean));
+    *p = (vecrec *)mymalloc((long)sizeof(vecrec));
+    (*p)->vec = (aPtr)Malloc(NumChars*sizeof(boolean));
   }
   (*p)->next = NULL;
 }  /* gnu */
 
 
-Static Void chuck(p)
-vecrec *p;
+Static Void chuck(vecrec *p)
 {  /* collect garbage on p -- put it on front of garbage list */
 
  p->next = garbage;
@@ -178,8 +180,7 @@ vecrec *p;
 }  /* chuck */
 
 
-void nunode(p)
-node **p;
+void nunode(node **p)
 {  /* replacement for NEW */
   *p = (node *)Malloc((long)sizeof(node));
   (*p)->next = NULL;
@@ -192,8 +193,7 @@ node **p;
 }  /* nunode */
 
 
-void NewLine(i, j)
-long i, j;
+void NewLine(long i, long j)
 {
   /* goes to new line if i MOD j is zero */
   long k;
@@ -206,13 +206,12 @@ long i, j;
 }  /* NewLine */
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
    *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
-void inputnumbers()
+void inputnumbers(void)
 {
   /* set variables */
   fscanf(infile, "%ld%ld", &NumSpp, &NumChars);
@@ -221,7 +220,7 @@ void inputnumbers()
 	    NumSpp, NumChars);
 }  /* inputnumbers */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -372,7 +371,7 @@ void getoptions()
 }  /* getoptions */
 
 
-Static Void setuptree()
+Static Void setuptree(void)
 {
   /* initialization of tree pointers, variables */
   long i;
@@ -406,7 +405,7 @@ Static void doinit(int argc, char *argv[])
 }  /* doinit */
 
 
-Local Void inputancestors()
+Local Void inputancestors(void)
 {
   /* reads the ancestral states for each character */
   long i;
@@ -442,7 +441,7 @@ Local Void inputancestors()
   getc(infile);
 }  /* inputancestors */
 
-Local Void printancestors()
+Local Void printancestors(void)
 {
   /* print out list of ancestral states */
   long i;
@@ -462,7 +461,7 @@ Local Void printancestors()
   fprintf(outfile, "\n\n");
 }  /* printancestor */
 
-Local Void inputfactors()
+Local Void inputfactors(void)
 {
   /* reads the factor symbols */
   long i;
@@ -488,7 +487,7 @@ Local Void inputfactors()
   Factors = true;
 }  /* inputfactors */
 
-Local Void printfactors()
+Local Void printfactors(void)
 {
   /* print out list of factor symbols */
   long i;
@@ -506,7 +505,7 @@ Local Void printfactors()
 
 }  /* printfactors */
 
-Local Void inputweights()
+Local Void inputweights(void)
 {
   /* input the character weights, 0-9 and A-Z for weights 0 - 35 */
   Char ch;
@@ -543,7 +542,7 @@ Local Void inputweights()
   weights = true;
 }  /* inputweights */
 
-Local Void printweights()
+Local Void printweights(void)
 {
   /* print out the weights of characters */
   long i, j, k;
@@ -568,7 +567,7 @@ Local Void printweights()
 }  /* printweights */
 
 
-Static Void ReadData()
+Static Void ReadData(void)
 {
   /* reads the species names and character data */
   long i, j, Extranum;
@@ -704,8 +703,7 @@ Static Void ReadData()
 }  /* ReadData */
 
 
-Local boolean Compatible(ch1, ch2)
-long ch1, ch2;
+Local boolean Compatible(long ch1, long ch2)
 {
   /* TRUE if two characters ch1 < ch2 are compatible */
   long i, j, k;
@@ -760,8 +758,7 @@ long ch1, ch2;
 }  /* Compatible */
 
 
-Static Void SetUp(Comp)
-vecrec **Comp;
+Static Void SetUp(vecrec **Comp)
 {
   /* sets up the compatibility matrix */
   long i, j;
@@ -807,8 +804,7 @@ vecrec **Comp;
 
 
 
-Local Void Intersect(V1, V2, V3)
-boolean *V1, *V2, *V3;
+Local Void Intersect(boolean *V1, boolean *V2, boolean *V3)
 {
   /* takes the logical intersection V1 AND V2 */
   long i;
@@ -817,8 +813,7 @@ boolean *V1, *V2, *V3;
     V3[i] = (V1[i] && V2[i]);
 }  /* Intersect */
 
-Local long CountStates(V)
-boolean *V;
+Local long CountStates(boolean *V)
 {
   /* counts the 1's in V */
   long i, TempCount;
@@ -831,9 +826,8 @@ boolean *V;
   return TempCount;
 }  /* CountStates */
 
-Local Void Gen1(i, CurSize, aChars, Candidates, Excluded)
-long i, CurSize;
-boolean *aChars, *Candidates, *Excluded;
+Local Void Gen1(long i, long CurSize,
+		boolean *aChars, boolean *Candidates, boolean *Excluded)
 {
   /* finds largest size cliques and prints them out */
   long CurSize2, j, k, Actual, Possible;
@@ -893,8 +887,7 @@ boolean *aChars, *Candidates, *Excluded;
 }  /* Gen1 */
 
 
-Local boolean Ingroupstate(i)
-long i;
+Local boolean Ingroupstate(long i)
 {
   /* the ingroup state for the i-th character */
   boolean outstate;
@@ -910,7 +903,7 @@ long i;
   return (!outstate);
 }  /* Ingroupstate */
 
-Local Void makeset()
+Local Void makeset(void)
 {
   /* make up set of species for given set of characters */
   long i, j, k, m;
@@ -939,10 +932,7 @@ Local Void makeset()
   free(st);
 }  /* makeset */
 
-Local Void Init(ChOrder, Count, MaxChars,aChars)
-long *ChOrder, *Count;
-long *MaxChars;
-aPtr aChars;
+Local Void Init(long *ChOrder, long *Count, long *MaxChars,aPtr aChars)
 {
   /* initialize vectors and character count */
   long i, j, temp;
@@ -964,9 +954,7 @@ aPtr aChars;
   }
 }  /*Init */
 
-Local Void ChSort(ChOrder, Count, MaxChars)
-long *ChOrder, *Count;
-long MaxChars;
+Local Void ChSort(long *ChOrder, long *Count, long MaxChars)
 {
   /* sorts the characters by number of ingroup states */
   long j, temp;
@@ -986,8 +974,7 @@ long MaxChars;
   }
 }  /* ChSort */
 
-Local Void PrintClique(aChars)
-boolean *aChars;
+Local Void PrintClique(boolean *aChars)
 {
   /* prints the characters in a clique */
   long i, j;
@@ -1022,9 +1009,7 @@ boolean *aChars;
 }  /* PrintClique */
 
 
-Local Void bigsubset(st, n)
-long *st;
-long n;
+Local Void bigsubset(long *st, long n)
 {
   /* find a maximal subset of st among the groupings */
   long i, j;
@@ -1063,11 +1048,7 @@ long n;
   free(su);
 }  /* bigsubset */
 
-Local Void recontraverse(p, st, n, MaxChars)
-node **p;
-long *st;
-long n;
-long MaxChars;
+Local Void recontraverse(node **p, long *st, long n, long MaxChars)
 {
   /* traverse to reconstruct the tree from the characters */
   long i, j, k, maxpos;
@@ -1164,8 +1145,7 @@ long MaxChars;
   free(st2);
 }  /* recontraverse */
 
-Local Void reconstruct(n,MaxChars)
-long n,MaxChars;
+Local Void reconstruct(long n,long MaxChars)
 {  /* reconstruct tree from the subsets */
   long i;
   long *s;
@@ -1190,8 +1170,7 @@ long n,MaxChars;
   free(s);
 }  /* reconstruct */
 
-Local Void reroot(outgroup)
-node *outgroup;
+Local Void reroot(node *outgroup)
 {
   /* reorients tree, putting outgroup in desired position. */
   long i;
@@ -1235,10 +1214,7 @@ node *outgroup;
   outgroup->back = q;
 }  /* reroot */
 
-Local Void coordinates(p, tipy,MaxChars)
-node *p;
-long *tipy;
-long MaxChars;
+Local Void coordinates(node *p, long *tipy, long MaxChars)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -1275,8 +1251,7 @@ long MaxChars;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-Local Void drawline(i)
-long i;
+Local Void drawline(long i)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q;
@@ -1434,7 +1409,7 @@ long i;
   free(poslist);
 }  /* drawline */
 
-Local Void printree()
+Local Void printree(void)
 {
   /* prints out diagram of the tree */
   long tipy;
@@ -1464,9 +1439,7 @@ Local Void printree()
   fprintf(outfile, "\nremember: this is an unrooted tree!\n\n");
 }  /* printree */
 
-Local Void treeout(p, tcount)
-node *p;
-long tcount;
+Local Void treeout(node *p, long tcount)
 {
   /* write out file with representation of final tree */
   long i, n;
@@ -1514,9 +1487,8 @@ long tcount;
     fprintf(treefile, "%7.4f\n", 1.0 / tcount);
 }  /* treeout */
 
-Local Void DoAll(Chars_, Processed, Rarer_, tcount)
-boolean *Chars_, *Processed, *Rarer_;
-long tcount;
+Local Void DoAll(boolean *Chars_, boolean *Processed, boolean *Rarer_,
+		 long tcount)
 {
   /* print out a clique and its tree */
   long i, j;
@@ -1565,9 +1537,8 @@ long tcount;
   free(grouping);
 }  /* DoAll */
 
-Local Void Gen2(i, CurSize, aChars, Candidates, Excluded)
-long i, CurSize;
-boolean *aChars, *Candidates, *Excluded;
+Local Void Gen2(long i, long CurSize,
+		boolean *aChars, boolean *Candidates, boolean *Excluded)
 {
   /* finds largest size cliques and prints them out */
   long CurSize2, j, k, Actual, Possible;
@@ -1623,8 +1594,7 @@ boolean *aChars, *Candidates, *Excluded;
 }  /* Gen2 */
 
 
-Static Void GetMaxCliques(Comp_)
-vecrec **Comp_;
+Static Void GetMaxCliques(vecrec **Comp_)
 {
   /* recursively generates the largest cliques */
   long i;
@@ -1670,9 +1640,7 @@ vecrec **Comp_;
 }  /* GetMaxCliques */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* Main Program */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -1726,8 +1694,7 @@ Char *argv[];
 }
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register long ch;
 
@@ -1743,8 +1710,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register long ch;
 
@@ -1755,15 +1721,14 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc((size_t)x);

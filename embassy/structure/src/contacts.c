@@ -352,7 +352,8 @@ static AjBool contacts_WriteFile(AjPFile logf,
 
     /* EX */
     ajFmtPrintF(outf, "%-5s%s%.1f; %s%.1f; NMOD %d; NCHA %d\n", 
-		"EX", "THRESH ", thresh, "IGNORE ", ignore, pdb->Nmod, pdb->Nchn);
+		"EX", "THRESH ", thresh, "IGNORE ",
+		ignore, pdb->Nmod, pdb->Nchn);
     ajFmtPrintF(outf, "XX\n");
 
 
@@ -391,7 +392,8 @@ static AjBool contacts_WriteFile(AjPFile logf,
 	    /* CN */
 	    ajFmtPrintF(outf, "%-5sMO %d; CN1 %d; CN2 .; ID1 %c; ID2 .; "
 			"NRES1 %d; NRES2 .\n",
-			"CN", x+1, y+1, pdb->Chains[y]->Id, pdb->Chains[y]->Nres);
+			"CN", x+1, y+1,
+			pdb->Chains[y]->Id, pdb->Chains[y]->Nres);
 	    ajFmtPrintF(outf, "XX\n");  
 	    
 
@@ -410,7 +412,7 @@ static AjBool contacts_WriteFile(AjPFile logf,
 	    }
 	    else
 	    {
-		/* Allocate memory for the contact map (a SQUARE 2d int array). */
+		/* Allocate memory for the contact map (SQUARE 2d int array) */
 		mat = ajInt2dNewL((ajint)pdb->Chains[y]->Nres);   	
 
 		for(z=0;z<pdb->Chains[y]->Nres;++z)
@@ -418,8 +420,8 @@ static AjBool contacts_WriteFile(AjPFile logf,
 	    
 		/* Calculate the contact map. */
 		if(!contacts_ContactMapCalc(&mat, &ncon, pdb->Chains[y]->Nres, 
-					    thresh, ignore, x+1, y+1, pdb, vdw, 
-					    skip))
+					    thresh, ignore, x+1, y+1,
+					    pdb, vdw, skip))
 		{
 		    ajFmtPrintF(logf, "ERROR  Calculating contact map\n");
 		    ajInt2dDel(&mat);
@@ -570,15 +572,15 @@ static AjBool contacts_ContactMapWrite(AjPFile outf,
 ** @param [r] thresh [float]      Threshold distance at which contact between 
 **                                two residues is defined.
 ** @param [r] ignore [float]      Threshold "ignore" distance - this is a 
-**                                speed-up.  Contact is not checked for between 
-**                                residues with CA atoms a further distance 
-**                                apart than this.
+**                                speed-up.  Contact is not checked for
+**                                between residues with CA atoms a further 
+**                                distance apart than this.
 ** @param [r] mod    [ajint]      Model number
 ** @param [r] chn    [ajint]      Chain number
 ** @param [r] pdb    [AjPPdb]     Pdb object
 ** @param [r] vdw    [AjPVdwall]  Vdwall object
 ** @param [r] skip   [AjBool]     Whether to calculate contacts between 
-**                                residue adjacenet in sequence.
+**                                residues adjacent in sequence.
 ** 
 ** @return [AjBool] True if file was succesfully written.
 ** @@
@@ -604,7 +606,7 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat,
     
     ajint    idxfirst = 0;    /* Index in <arr> of first atom belonging to 
 				 model <mod>.                                */
-    ajint    idxlast  = 0;    /* Index in <arr> of last atom belonging to 	
+    ajint    idxlast  = 0;    /* Index in <arr> of last atom belonging to
 				 model <mod>.                                */
     
     ajint    resfirst = 0;    /* Residue number of first atom belonging 
@@ -626,7 +628,6 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat,
     float    dis      = 0.0;  /* Inter-atomic distance.                      */
     ajint    offset   = 0;
     
-
 
     /* Error checking on args. */
     if(!mat || !pdb || !chn || !mod)
@@ -740,8 +741,9 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat,
 		{
 		    if(arr[idx2]->Idx != res2)
 			break;
-		    
-		    if((dis = embAtomDistance(arr[idx1], arr[idx2], vdw))<=thresh)
+
+		    dis = embAtomDistance(arr[idx1], arr[idx2], vdw);
+		    if(dis<=thresh)
 		    {
 			/* Increment no. contacts and write contact map. */
 			(*ncon)++;
@@ -753,11 +755,11 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat,
 			else
 			{
 			    ajInt2dPut(mat, arr[idx1]->Idx-1, 
-				       arr[idx2]->Idx-1, (ajint) 1);
+				       arr[idx2]->Idx-1, 1);
 			    ajInt2dPut(mat, arr[idx2]->Idx-1, 
-				       arr[idx1]->Idx-1, (ajint) 1); 
+				       arr[idx1]->Idx-1, 1); 
 			}
-			
+
 			done=ajTrue;
 			break;
 		    }

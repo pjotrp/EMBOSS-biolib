@@ -107,7 +107,7 @@ static void     seqwords_TermsDel(AjPTerms *pthis);
 
 static AjBool   seqwords_keysearch(AjPFile inf,
 				   AjPTerms terms,
-				   AjPHitlist *hits);
+				   EmbPHitlist *hits);
 
 
 
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
     AjPFile     sp_inf =NULL;	/* File pointer for swissprot database.      */
     AjPFile     outf   =NULL;	/* File pointer for output file.             */
     AjPTerms    keyptr =NULL;	/* Pointer to terms structure.               */
-    AjPHitlist  hitptr =NULL;	/* Pointer to hitlist structure.             */
+    EmbPHitlist  hitptr =NULL;	/* Pointer to hitlist structure.             */
     
 
 
@@ -404,14 +404,14 @@ static AjBool seqwords_TermsRead(AjPFile inf,
 **
 ** @param [r] inf   [AjPFile]     File pointer to swissprot database
 ** @param [r] terms [AjPTerms]    Terms object pointer
-** @param [w] hits  [AjPHitlist*] Hitlist object pointer
+** @param [w] hits  [EmbPHitlist*] Hitlist object pointer
 **
 ** @return [AjBool] True on success
 ** @@
 ******************************************************************************/
 static AjBool seqwords_keysearch(AjPFile inf, 
 				 AjPTerms terms,
-				 AjPHitlist *hits)
+				 EmbPHitlist *hits)
 {
     AjPStr   line           =NULL;	/* Line of text. */
     AjPStr   id             =NULL;	/* Line of text. */

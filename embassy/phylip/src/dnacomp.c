@@ -92,11 +92,70 @@ Char ch;
   node *temp, *temp1;
 
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void emboss_getnums(void);
+void emboss_inputoptions(void);
+void emboss_inputdata(void);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void gnu(gbases **p);
+void chuck(gbases *p);
+double randum(short *seed);
+void uppercase(Char *ch);
+void getoptions(void);
+void inputnumbers(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void inputdata(void);
+void sitesort(void);
+void sitecombine(void);
+void sitescrunch(void);
+void makeweights(void);
+void makevalues(void);
+void doinput(void);
+void mincomp(short n);
+void fillin(node *p, node *left, node *rt);
+void preorder(node *p);
+void add(node *below, node *newtip, node *newfork);
+void re_move(node **item, node **fork);
+void evaluate(node *r);
+void postorder(node *p);
+void reroot(node *outgroup);
+void savetraverse(node *p);
+void savetree(void);
+void findtree(boolean *found,short *pos);
+void addtree(short pos);
+void tryadd(node *p,node **item,node **nufork);
+void addpreorder(node *p, node *item, node *nufork);
+void tryrearr(node *p,boolean *success);
+void repreorder(node *p,boolean *success);
+void rearrange(node **r);
+void findch(Char c);
+void addelement(node **p, short *nextnode, short *lparens, boolean *names);
+void treeread(void);
+void coordinates(node *p, short *tipy);
+void drawline(short i, double scale);
+void printree(void);
+void ancestset(short *a, short *b, short *c);
+void hyprint(short b1, short b2, struct LOC_hyptrav *hyptrav_vars);
+void hyptrav(node *r_,short * hypset_, short b1, short b2, boolean bottom_);
+void hypstates(void);
+void treeout(node *p);
+void describe(void);
+void maketree(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
 AjPSeqset seqset;
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile treef;
 int temp;
@@ -162,27 +221,30 @@ long inseed0;
 
 }
 
-void emboss_getnums(){
+void emboss_getnums(void)
+{
   int begin2,end2;
 
   /* REMOVE AFTER ALL INPUT GONE */
   /*  fscanf(infile, "%hd%hd", &spp, &chars);*/
 
-  ajSeqsetToUpper(seqset);
-  spp = ajSeqsetSize (seqset);
+  ajSeqsetFmtUpper(seqset);
+  spp = ajSeqsetGetSize(seqset);
   chars = ajSeqsetGetRange(seqset,&begin2,&end2);
   if (printdata)
     fprintf(outfile, "%2hd species, %3hd sites\n", spp, chars);
   putc('\n', outfile);
   nonodes = spp * 2 - 1;
 }
-void emboss_inputoptions(){
+void emboss_inputoptions(void)
+{
 int i;
 
  for (i = 0; i < chars; i++)
     weight[i] = 1;
 }
-void emboss_inputdata(){
+void emboss_inputdata(void)
+{
   int i,j;
   int ilen;
 
@@ -204,12 +266,12 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<spp;i++){
-    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
-    strncpy(&nayme[i][0],ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetGetseqNameS(seqset, i));
+    strncpy(&nayme[i][0],ajStrGetPtr(ajSeqsetGetseqNameS(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	nayme[i][j] = ' ';
-    /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
+    /*    ajUser("%s/n",ajSeqsetGetseqNameS(seqset, i));*/
+    strncpy(&y[i][0],ajSeqsetGetseqSeqC(seqset, i),chars);
     y[i][chars] = '\0';
     if(printdata)
       fprintf(outfile, "%.10s\t%s\n",&nayme[i][0],&y[i][0]);
@@ -218,12 +280,7 @@ void emboss_inputdata(){
  
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -260,8 +317,7 @@ char *perm;
 
 
 
-void gnu(p)
-gbases **p;
+void gnu(gbases **p)
 {
   /* this and the following are do-it-yourself garbage collectors.
      Make a new node or pull one off the garbage list */
@@ -276,8 +332,7 @@ gbases **p;
 }  /* gnu */
 
 
-void chuck(p)
-gbases *p;
+void chuck(gbases *p)
 {
   /* collect garbage on p -- put it on front of garbage list */
   p->next = garbage;
@@ -285,8 +340,7 @@ gbases *p;
 }  /* chuck */
 
 
-double randum(seed)
-short *seed;
+double randum(short *seed)
 {
   /* random number generator -- slow but machine independent */
   short i, j, k, sum;
@@ -322,15 +376,14 @@ short *seed;
 }  /* randum */
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
     *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   short i, inseed0=0;
@@ -515,7 +568,7 @@ void getoptions()
   }
 }  /* getoptions */
 
-void inputnumbers()
+void inputnumbers(void)
 {
   /* input the numbers of species and of characters */
   fscanf(infile, "%hd%hd", &spp, &chars);
@@ -526,7 +579,7 @@ void inputnumbers()
 }  /* inputnumbers */
 
 
-/*void doinit()*/
+/*void doinit(void)*/
 void doinit(int argc, char *argv[])
 {
   /* initializes variables */
@@ -555,7 +608,7 @@ void doinit(int argc, char *argv[])
   }
 }  /* doinit */
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, 0-9 and A-Z for weights
     0 - 35 */
@@ -593,7 +646,7 @@ void inputweights()
   weights = true;
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of sites */
   short i, j, k;
@@ -617,7 +670,7 @@ void printweights()
   putc('\n', outfile);
 }  /* printweights */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* input the information on the options */
   Char ch;
@@ -664,7 +717,7 @@ void inputoptions()
     printweights();
 }  /* inputoptions */
 
-void inputdata()
+void inputdata(void)
 {
   /* input the names and sequences for each species */
   short i, j, k, l, basesread, basesnew=0;
@@ -779,7 +832,7 @@ void inputdata()
   putc('\n', outfile);
 }  /* inputdata */
 
-void sitesort()
+void sitesort(void)
 {
   /* Shell sort keeping sites, weights in same order */
   short gap, i, j, jj, jg, k, itemp;
@@ -815,7 +868,7 @@ void sitesort()
   }
 }  /* sitesort */
 
-void sitecombine()
+void sitecombine(void)
 {
   /* combine sites that have identical patterns */
   short i, j, k;
@@ -843,7 +896,7 @@ void sitecombine()
   }
 }  /* sitecombine */
 
-void sitescrunch()
+void sitescrunch(void)
 {
   /* move so one representative of each pattern of
     sites comes first */
@@ -881,7 +934,7 @@ void sitescrunch()
   }
 }  /* sitescrunch */
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   short i;
@@ -903,7 +956,7 @@ void makeweights()
     location[alias[i - 1] - 1] = i;
 }  /* makeweights */
 
-void makevalues()
+void makevalues(void)
 {
   /* set up fractional likelihoods at tips */
   short i, j;
@@ -1030,7 +1083,7 @@ void makevalues()
 }  /* makevalues */
 
 
-void doinput()
+void doinput(void)
 {
   /* reads the input data */
   /*  inputoptions();
@@ -1047,8 +1100,7 @@ void doinput()
 
 
 
-void mincomp(n)
-short n;
+void mincomp(short n)
 {
   /* computes for each site the minimum number of steps
     necessary to accomodate those species already
@@ -1101,8 +1153,7 @@ short n;
     necsteps[i] *= weight[i];
 }  /* mincomp */
 
-void fillin(p, left, rt)
-node *p, *left, *rt;
+void fillin(node *p, node *left, node *rt)
 {
   /* sets up for each node in the tree the base sequence
      at that point and counts the changes.  The program
@@ -1134,8 +1185,7 @@ node *p, *left, *rt;
   }
 }  /* fillin */
 
-void preorder(p)
-node *p;
+void preorder(node *p)
 {
   /* recompute number of steps in preorder taking both ancestoral and
      descendent steps into account */
@@ -1147,8 +1197,7 @@ node *p;
   preorder(p->next->next->back);
 }  /* preorder */
 
-void add(below, newtip, newfork)
-node *below, *newtip, *newfork;
+void add(node *below, node *newtip, node *newfork)
 {
   /* inserts the nodes newfork and its left descendant, newtip,
     to the tree.  below becomes newfork's right descendant */
@@ -1173,8 +1222,7 @@ node *below, *newtip, *newfork;
     preorder(newfork->back);
 }  /* add */
 
-void re_move(item, fork)
-node **item, **fork;
+void re_move(node **item, node **fork)
 {
   /* removes nodes item and its ancestor, fork, from the tree.
     the new descendant of fork's ancestor is made to be
@@ -1213,8 +1261,7 @@ node **item, **fork;
     preorder(other->back);
 }  /* re_move */
 
-void evaluate(r)
-node *r;
+void evaluate(node *r)
 {
   /* determines the number of steps needed for a tree. this is
     the minimum number of steps needed to evolve sequences on
@@ -1245,8 +1292,7 @@ node *r;
   like = sum;
 }  /* evaluate */
 
-void postorder(p)
-node *p;
+void postorder(node *p)
 {
   /* traverses a binary tree, calling PROCEDURE fillin at a
      node's descendants before calling fillin at the node */
@@ -1257,8 +1303,7 @@ node *p;
   fillin(p, p->next->back, p->next->next->back);
 }  /* postorder */
 
-void reroot(outgroup)
-node *outgroup;
+void reroot(node *outgroup)
 {
   /* reorients tree, putting outgroup in desired position. */
   node *p, *q;
@@ -1277,8 +1322,7 @@ node *outgroup;
 
 
 
-void savetraverse(p)
-node *p;
+void savetraverse(node *p)
 {
   /* sets BOOLEANs that indicate which way is down */
   p->bottom = true;
@@ -1290,7 +1334,7 @@ node *p;
   savetraverse(p->next->next->back);
 }  /* savetraverse */
 
-void savetree()
+void savetree(void)
 {
   /* record in place where each species has to be
     added to reconstruct this tree */
@@ -1328,9 +1372,7 @@ void savetree()
   }
 }  /* savetree */
 
-void findtree(found,pos)
-boolean *found;
-short *pos;
+void findtree(boolean *found,short *pos)
 {
   /* finds tree given by ARRAY place in ARRAY
     bestrees by binary search */
@@ -1365,8 +1407,7 @@ short *pos;
     (*pos)++;
 }  /* findtree */
 
-void addtree(pos)
-short pos;
+void addtree(short pos)
 {
   /* puts tree from ARRAY place in its proper position
     in ARRAY bestrees */
@@ -1379,8 +1420,7 @@ short pos;
   nextree++;
 }  /* addtree */
 
-void tryadd(p,item,nufork)
-node *p,**item,**nufork;
+void tryadd(node *p,node **item,node **nufork)
 {
   /* temporarily adds one fork and one tip to the tree.
     if the location where they are added yields greater
@@ -1434,8 +1474,7 @@ node *p,**item,**nufork;
   }
 }  /* tryadd */
 
-void addpreorder(p, item, nufork)
-node *p, *item, *nufork;
+void addpreorder(node *p, node *item, node *nufork)
 {
   /* traverses a binary tree, calling PROCEDURE tryadd
     at a node before calling tryadd at its descendants */
@@ -1450,9 +1489,7 @@ node *p, *item, *nufork;
 }  /* addpreorder */
 
 
-void tryrearr(p,success)
-node *p;
-boolean *success;
+void tryrearr(node *p,boolean *success)
 {
   /* evaluates one rearrangement of the tree.
     if the new tree has greater "likelihood" than the old
@@ -1498,9 +1535,7 @@ boolean *success;
   bestyet = like;
 }  /* tryrearr */
 
-void repreorder(p,success)
-node *p;
-boolean *success;
+void repreorder(node *p,boolean *success)
 {
   /* traverses a binary tree, calling PROCEDURE tryrearr
     at a node before calling tryrearr at its descendants */
@@ -1513,8 +1548,7 @@ boolean *success;
   }
 }  /* repreorder */
 
-void rearrange(r)
-node **r;
+void rearrange(node **r)
 {
   /* traverses the tree (preorder), finding any local
     rearrangement which decreases the number of steps.
@@ -1528,8 +1562,7 @@ node **r;
   }
 }  /* rearrange */
 
-void findch(c)
-Char c;
+void findch(Char c)
 {
   /* scan forward until find character c */
   boolean done;
@@ -1570,10 +1603,7 @@ Char c;
   }
 }  /* findch */
 
-void addelement(p, nextnode,lparens,names)
-node **p;
-short *nextnode,*lparens;
-boolean *names;
+void addelement(node **p, short *nextnode, short *lparens, boolean *names)
 {
   /* recursive procedure adds nodes to user-defined tree */
   node *q;
@@ -1652,7 +1682,7 @@ boolean *names;
   putchar('\n');
 }  /* addelement */
 
-void treeread()
+void treeread(void)
 {
   /* read in user-defined tree and set it up */
   short nextnode, lparens,i;
@@ -1672,9 +1702,7 @@ void treeread()
 }  /* treeread */
 
 
-void coordinates(p, tipy)
-node *p;
-short *tipy;
+void coordinates(node *p, short *tipy)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -1703,9 +1731,7 @@ short *tipy;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-short i;
-double scale;
+void drawline(short i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q, *r, *first=NULL, *last=NULL;
@@ -1785,7 +1811,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
   short i,tipy;
@@ -1808,8 +1834,7 @@ void printree()
 }  /* printree */
 
 
-void ancestset(a, b, c)
-short *a, *b, *c;
+void ancestset(short *a, short *b, short *c)
 {
   /* make the set of ancestral states below nodes
     whose base sets are a and b */
@@ -1820,9 +1845,7 @@ short *a, *b, *c;
 
 
 
-void hyprint(b1, b2, hyptrav_vars)
-short b1, b2;
-struct LOC_hyptrav *hyptrav_vars;
+void hyprint(short b1, short b2, struct LOC_hyptrav *hyptrav_vars)
 {
   /* print out states in sites b1 through b2 at node */
   short i, j, k, n;
@@ -1886,11 +1909,7 @@ struct LOC_hyptrav *hyptrav_vars;
   putc('\n', outfile);
 }  /* hyprint */
 
-void hyptrav(r_, hypset_, b1, b2, bottom_)
-node *r_;
-short *hypset_;
-short b1, b2;
-boolean bottom_;
+void hyptrav(node *r_,short * hypset_, short b1, short b2, boolean bottom_)
 {
   /*  compute, print out states at one interior node */
   struct LOC_hyptrav Vars;
@@ -1945,7 +1964,7 @@ boolean bottom_;
   chuck(ancset);
 }  /* hyptrav */
 
-void hypstates()
+void hypstates(void)
 {
   /* fill in and describe states at interior nodes */
   short i, n;
@@ -1967,8 +1986,7 @@ void hypstates()
 }  /* hypstates */
 
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   short i, n;
@@ -2009,7 +2027,7 @@ node *p;
     fprintf(treefile, ";\n");
 }  /* treeout */
 
-void describe()
+void describe(void)
 {
   /* prints ancestors, steps and table of numbers of steps in
     each site and table of compatibilities */
@@ -2091,7 +2109,7 @@ void describe()
 
 
 
-void maketree()
+void maketree(void)
 {
   /* constructs a binary tree from the pointers in treenode.
     adds each node at location which yields highest "likelihood"
@@ -2310,9 +2328,7 @@ void maketree()
 }  /* maketree */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* DNA compatibility by uphill search */
 /*char infilename[100],outfilename[100],trfilename[100];*/
   /* reads in spp, chars, and the data. Then calls maketree to
@@ -2384,8 +2400,7 @@ Char *argv[];
   exit(0);
 }  /* DNA compatibility by uphill search */
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -2401,8 +2416,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -2413,14 +2427,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

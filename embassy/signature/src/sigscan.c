@@ -47,21 +47,20 @@
 
 
 
-
 /******************************************************************************
 **
 ** PROTOTYPES  
 **
 ******************************************************************************/
 static AjBool sigscan_SignatureAlignWrite(AjPFile outf, 
-					  AjPSignature sig, 
-					  AjPHitlist hits);
+					  EmbPSignature sig, 
+					  EmbPHitlist hits);
 
 static AjBool sigscan_SignatureAlignWriteBlock(AjPFile outf,
-					       AjPSignature sig,
-					       AjPHitlist hits);
+					       EmbPSignature sig,
+					       EmbPHitlist hits);
 
-
+void sigscan_dummy_function(void);
 
 
 
@@ -87,10 +86,10 @@ int main(int argc, char **argv)
 
     ajint        nhits=0;         /* Max. no. of hits to write to
 				     output files*/
-    AjPHitlist   hits=NULL;       /* Hitlist to stores hits from signature-
+    EmbPHitlist   hits=NULL;      /* Hitlist to stores hits from signature-
 				     sequence matches.                       */
 
-    AjPSignature sig=NULL;        /* Signature data structure.               */
+    EmbPSignature sig=NULL;       /* Signature data structure.               */
     AjPStr       *nterm=NULL;     /* Holds N-terminal matching options from 
 				     acd.                                    */
     ajint         ntopt=0;        /* N-terminal option as int. */
@@ -204,16 +203,16 @@ int main(int argc, char **argv)
 ** are given for all sequences in the same block.
 **
 ** @param [w] outf [AjPFile]      Output file stream
-** @param [r] sig  [AjPSignature] Signature object pointer
-** @param [r] hits [AjPHitlist]   Hitlist objects with hits from scan
+** @param [r] sig  [EmbPSignature] Signature object pointer
+** @param [r] hits [EmbPHitlist]   Hitlist objects with hits from scan
 **
 ** @return [AjBool] True if file was written
 ** @@
 ******************************************************************************/
 
 static AjBool sigscan_SignatureAlignWrite(AjPFile outf, 
-					  AjPSignature sig, 
-					  AjPHitlist hits)
+					  EmbPSignature sig, 
+					  EmbPHitlist hits)
 {
     /*
     ** A line of the alignment (including accession number, a space and the 
@@ -335,16 +334,16 @@ static AjBool sigscan_SignatureAlignWrite(AjPFile outf,
 ** printed out for each sequence in its own block.
 **
 ** @param [w] outf [AjPFile]      Output file stream
-** @param [r] sig  [AjPSignature] Signature object pointer
-** @param [r] hits [AjPHitlist]   Hitlist objects with hits from scan
+** @param [r] sig  [EmbPSignature] Signature object pointer
+** @param [r] hits [EmbPHitlist]   Hitlist objects with hits from scan
 **
 ** @return [AjBool] True if file was written
 ** @@
 ******************************************************************************/
 
 static AjBool sigscan_SignatureAlignWriteBlock(AjPFile outf,
-					       AjPSignature sig, 
-					       AjPHitlist hits)
+					       EmbPSignature sig, 
+					       EmbPHitlist hits)
 {
     /*
     ** A line of the alignment (including accession number, a space and the 

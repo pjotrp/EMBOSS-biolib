@@ -70,10 +70,70 @@ steptr numsteps, numsone, numszero;
 gbit *garbage;
 long bits =  (8*sizeof(long) - 1);
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void gnu(gbit **p);
+void chuck(gbit *p);
+double randum(long *seed);
+void uppercase(Char *ch);
+void newline(long i, long j, long k);
+void getoptions(void);
+void inputnumbers(void);
+Static void doinit(int argc, char *argv[]);
+void inputmixture(void);
+void printmixture(void);
+void inputweights(void);
+void printweights(void);
+void inputancestors(void);
+void printancestors(void);
+void inputoptions(void);
+void inputdata(void);
+void doinput(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
+/* prototypes from mix2.c */
+
+void add(node *below, node *newtip, node *newfork);
+void re_move(node **item, node **fork);
+void fillin(node *p);
+void count(long *stps);
+void postorder(node *p);
+void cpostorder(node *p);
+void evaluate(node *r);
+void reroot(node *outgroup);
+void savetraverse(node *p);
+void savetree(void);
+void findtree(long *pos,boolean *found);
+void addtree(long *pos);
+void tryadd(node *p, node **item,node **nufork);
+void addpreorder(node *p, node *item, node *nufork);
+void tryrearr(node *p, node **r,boolean *success);
+void repreorder(node *p, node **r,boolean *success);
+void rearrange(node **r);
+void findch(Char c);
+void addelement(node **p, long *nextnode, long *lparens,boolean *naymes);
+void treeread(void);
+void coordinates(node *p, long *tipy);
+void drawline(long i, double scale);
+void printree(void);
+void filltrav(node *r);
+void hyprint(node *r,
+             boolean bottom,boolean nonzero,boolean unknown,boolean maybe,
+             gbit *zerobelow,gbit *onebelow);
+void hyptrav(node *r, bitptr dohyp,boolean unknown);
+void hypstates(void);
+void treeout(node *p);
+void describe(void);
 void maketree(void);
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile inf;
 AjPFile treef;
@@ -162,12 +222,7 @@ int i;
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -202,8 +257,7 @@ char *perm;
     strcpy(perm,file);
 }
 
-void gnu(p)
-gbit **p;
+void gnu(gbit **p)
 {
   /* this and the following are do-it-yourself garbage collectors.
      Make a new node or pull one off the garbage list */
@@ -218,8 +272,7 @@ gbit **p;
 }  /* gnu */
 
 
-void chuck(p)
-gbit *p;
+void chuck(gbit *p)
 {
   /* collect garbage on p -- put it on front of garbage list */
   p->next = garbage;
@@ -227,8 +280,7 @@ gbit *p;
 }  /* chuck */
 
 
-double randum(seed)
-long *seed;
+double randum(long *seed)
 {
   /* random number generator -- slow but machine independent */
   long i, j, k, sum;
@@ -264,14 +316,12 @@ long *seed;
 }  /* randum */
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
      *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
-void newline(i, j, k)
-long i, j, k;
+void newline(long i, long j, long k)
 {
   /* go to new line if i is a multiple of j, indent k spaces */
   long m;
@@ -284,7 +334,7 @@ long i, j, k;
 }  /* newline */
 
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   long i, inseed0=0;
@@ -512,7 +562,7 @@ void getoptions()
   allsokal = (!allwagner && !mixture);
 }  /* getoptions */
 
-void inputnumbers()
+void inputnumbers(void)
 {
   /* input the numbers of species and of characters */
   fscanf(infile, "%ld%ld", &spp, &chars);
@@ -566,7 +616,7 @@ Static void doinit(int argc, char *argv[])
   }
 }  /* doinit */
 
-void inputmixture()
+void inputmixture(void)
 {
   /* input mixture of methods */
   long i, j, k;
@@ -614,7 +664,7 @@ void inputmixture()
   getc(infile);
 }  /* inputmixture */
 
-void printmixture()
+void printmixture(void)
 {
   /* print out list of parsimony methods */
   long i, k, l;
@@ -641,7 +691,7 @@ void printmixture()
   fprintf(outfile, "\n\n");
 }  /* printmixture */
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, 0-9 and A-Z for weights 0 - 35 */
   Char ch;
@@ -683,7 +733,7 @@ void inputweights()
   weights = true;
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of characters */
   long i, j, k;
@@ -707,7 +757,7 @@ void printweights()
   putc('\n', outfile);
 }  /* printweights */
 
-void inputancestors()
+void inputancestors(void)
 {
   /* reads the ancestral states for each character */
   long i;
@@ -766,7 +816,7 @@ void inputancestors()
   getc(infile);
 }  /* inputancestors */
 
-void printancestors()
+void printancestors(void)
 {
   /* print out list of ancestral states */
   long i;
@@ -788,7 +838,7 @@ void printancestors()
   fprintf(outfile, "\n\n");
 }  /* printancestor */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* input the information on the options */
   Char ch;
@@ -907,7 +957,7 @@ void inputoptions()
   }
 }  /* inputoptions */
 
-void inputdata()
+void inputdata(void)
 {
   /* input the names and character state data for species */
   long i, j, l;
@@ -1021,16 +1071,14 @@ void inputdata()
 }  /* inputdata */
 
 
-void doinput()
+void doinput(void)
 {
   /* reads the input data */
   inputoptions();
   inputdata();
 }  /* doinput */
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* Mixed parsimony by uphill search */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -1099,8 +1147,7 @@ Char *argv[];
 }  /* Mixed parsimony by uphill search */
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1116,8 +1163,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1128,15 +1174,14 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc((size_t)x);

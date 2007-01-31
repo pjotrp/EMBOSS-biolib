@@ -37,10 +37,12 @@ void   describe(void);
 void   initdollopnode(node **, node **, node *, long, long, long *,
             long *, initops, pointarray, pointarray, Char *, Char *, char **);
 void   maketree(void);
+void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 /* function prototypes */
 #endif
 
-Char infilename[FNMLNGTH], intreename[FNMLNGTH], weightfilename[FNMLNGTH], ancfilename[FNMLNGTH];
+Char infilename[FNMLNGTH], intreename[FNMLNGTH];
+Char weightfilename[FNMLNGTH], ancfilename[FNMLNGTH];
 
 const char* outfilename;
 const char* outtreename;
@@ -148,7 +150,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     }
 
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
 
     if(ajStrMatchC(method, "d")) dollo = true;
     else dollo = false;

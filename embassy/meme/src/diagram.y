@@ -28,7 +28,10 @@ spacer		: NUMBER		{ space[norder] = $1; }
 
 %%
 /* read an integer of single character from the buffer named "diagram" */
-int yylex() {
+int yylex(void);
+void yyerror(char *s);
+
+int yylex(void) {
   int c;
   int is_number = 0;
   int number = 0;

@@ -117,6 +117,7 @@ static void do_form_menu(int type, ITEM *item);
 static int form_virtualize(int c);
 static void update_dir_menu(int type, MENU **pmenu, int preserve);
 static int sortfilename(struct file **s1,struct file **s2);
+static ITEM **populate_menu(int type, WINDOW *w, ITEM *item);
 
 
 /* useful definitions */

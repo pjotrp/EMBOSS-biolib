@@ -69,9 +69,71 @@ extern FILE       *infile, *outfile, *treefile;
 extern double      extrapol;
 extern longer      seed;
 
+double randum(short *seed);
+void copymatrix(transmatrix tomat,transmatrix frommat);
+void setuppi(void);
+void maketrans(double p);
+void branchtrans(short i, double p);
+double evaluate(tree *tr);
+void nuview(node *p);
+void makenewv(node *p);
+void update(node *p);
+void smooth(node *p);
+void hookup(node *p, node *q);
+void insert_(node *p, node *q);
+void re_move(node **p, node **q);
+void copynode(node *c, node *d);
+void copy_(tree *a, tree *b);
+void buildnewtip(short m, tree *tr);
+void buildsimpletree(tree *tr);
+void addtraverse(node *p, node *q, boolean contin);
+void rearrange(node *p);
+void coordinates(node *p, double lengthsum, short *tipy,
+                 double *tipmax,double *x);
+void drawline(short i, double scale);
+void printree(void);
+double sigma(node *q,double *sumlr);
+void describe(node *p);
+void summarize(void);
+void treeout(node *p);
+void getch(Char *c);
+void findch(Char c,short *lparens,short *rparens);
+void processlength(node *p);
+void addelement(node *p, short *nextnode,short *lparens,short *rparens,
+                boolean *names,boolean *nolengths);
+void treeread(void);
+void travinit(node *p);
+void travsp(node *p);
+void treevaluate(void);
+void maketree(void);
 
-double randum(seed)
-short *seed;
+/* prototypes in restml.c */
+
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE** fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void setuptree(tree *a);
+void getdata(void);
+void sitesort(void);
+void sitecombine(void);
+void sitescrunch(void);
+void makeweights(void);
+void makevalues(void);
+void getinput(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
+
+double randum(short *seed)
 {
   /* random number generator -- slow but machine independent */
   short i, j, k, sum;
@@ -107,8 +169,7 @@ short *seed;
 }  /* randum */
 
 
-void copymatrix(tomat,frommat)
-     transmatrix frommat,tomat;
+void copymatrix(transmatrix tomat,transmatrix frommat)
 {
   int i,j;
   for (i=0;i<=sitelength;++i){
@@ -117,7 +178,7 @@ void copymatrix(tomat,frommat)
   }
 }
 
-void setuppi()
+void setuppi(void)
 {
   /* set up equilibrium probabilities of being a given
      number of bases away from a restriction site */
@@ -134,8 +195,7 @@ void setuppi()
     pie[i] /= sum;
 }  /* setuppi */
 
-void maketrans(p)
-double p;
+void maketrans(double p)
 {
   /* make transition matrix, product matrix with change
      probability p.  Put the results in tempmatrix, tempprod */
@@ -177,9 +237,7 @@ double p;
   }
 }  /* maketrans */
 
-void branchtrans(i, p)
-short i;
-double p;
+void branchtrans(short i, double p)
 {
   /* make branch transition matrix, product matrices for branch
      i with probability of change p*/
@@ -188,8 +246,7 @@ double p;
   copymatrix(curtree.transprod[i - 1], tempprod);
 }  /* branchtrans */
 
-double evaluate(tr)
-tree *tr;
+double evaluate(tree *tr)
 {
   /* evaluates the likelihood, using info. at one branch */
   double sum, sum2, y, liketerm, like0, lnlike0=0, term;
@@ -243,8 +300,7 @@ tree *tr;
   return sum;
 }  /* evaluate */
 
-void nuview(p)
-node *p;
+void nuview(node *p)
 {
   /* recompute fractional likelihoods for one part of tree */
   short i, j, k, lowlim;
@@ -289,8 +345,7 @@ free(tempr);
 }  /* nuview */
 
 
-void makenewv(p)
-node *p;
+void makenewv(node *p)
 {
   /* EM algorithm improvement of a branch length */
   short i, j, k, lowlim, it, ite;
@@ -369,8 +424,7 @@ node *p;
   branchtrans(p->branchnum, y);
 }  /* makenewv */
 
-void update(p)
-node *p;
+void update(node *p)
 {
   /* improve branch length and views for one branch */
 
@@ -382,8 +436,7 @@ node *p;
     makenewv(p);
 }  /* update */
 
-void smooth(p)
-node *p;
+void smooth(node *p)
 {
   /* update nodes throughout the tree, recursively */
   update(p);
@@ -394,16 +447,14 @@ node *p;
   }
 }  /* smooth */
 
-void hookup(p, q)
-node *p, *q;
+void hookup(node *p, node *q)
 {
   /* connect two nodes */
   p->back = q;
   q->back = p;
 }  /* hookup */
 
-void insert_(p, q)
-node *p, *q;
+void insert_(node *p, node *q)
 {
   /* insert a subtree into a branch, improve lengths in tree */
   short i, m, n;
@@ -442,8 +493,7 @@ node *p, *q;
   }
 }  /* insert */
 
-void re_move(p, q)
-node **p, **q;
+void re_move(node **p, node **q)
 {
   /* remove p and record in q where it was */
   *q = (*p)->next->back;
@@ -457,8 +507,7 @@ node **p, **q;
   update((*q)->back);
 }  /* re_move */
 
-void copynode(c, d)
-node *c, *d;
+void copynode(node *c, node *d)
 {
   /* copy a node */
 
@@ -473,8 +522,7 @@ node *c, *d;
   d->ymax = c->ymax;
 }  /* copynode */
 
-void copy_(a, b)
-tree *a, *b;
+void copy_(tree *a, tree *b)
 {
   /* copy a tree */
   short i,j;
@@ -521,9 +569,7 @@ tree *a, *b;
   b->start = a->start;
 }  /* copy */
 
-void buildnewtip(m, tr)
-short m;
-tree *tr;
+void buildnewtip(short m, tree *tr)
 {
   /* set up a new tip and interior node it is connected to */
   node *p;
@@ -539,8 +585,7 @@ tree *tr;
   p->back->branchnum = m;
 }  /* buildnewtip */
 
-void buildsimpletree(tr)
-tree *tr;
+void buildsimpletree(tree *tr)
 {
   /* set up and adjust branch lengths of a three-species tree */
   hookup(tr->nodep[enterorder[0] - 1], tr->nodep[enterorder[1] - 1]);
@@ -553,9 +598,7 @@ tree *tr;
   insert_(tr->nodep[enterorder[2] - 1]->back, tr->nodep[enterorder[1] - 1]);
 }  /* buildsimpletree */
 
-void addtraverse(p, q, contin)
-node *p, *q;
-boolean contin;
+void addtraverse(node *p, node *q, boolean contin)
 {
 /*int i;*/
 double like;
@@ -575,8 +618,7 @@ double like;
   }
 }  /* addtraverse */
 
-void rearrange(p)
-node *p;
+void rearrange(node *p)
 {
   /* rearranges the tree, globally or locally */
   node *q, *r;
@@ -619,12 +661,8 @@ node *p;
 }  /* rearrange */
 
 
-void coordinates(p, lengthsum, tipy,tipmax,x)
-node *p;
-double lengthsum;
-short *tipy;
-double *tipmax, *x;
-
+void coordinates(node *p, double lengthsum, short *tipy,
+		 double *tipmax,double *x)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -660,9 +698,7 @@ double *tipmax, *x;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-short i;
-double scale;
+void drawline(short i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q;
@@ -750,7 +786,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
   short tipy,i;
@@ -770,9 +806,7 @@ void printree()
 }  /* printree */
 
 
-double sigma(q,sumlr)
-node *q;
-double *sumlr;
+double sigma(node *q,double *sumlr)
 {
   /* get 1.95996 * approximate standard error of branch length */
 double sump, sumr, sums, sumc, p, pover3, pijk, Qjk, liketerm, f;
@@ -889,8 +923,7 @@ free(curveP);
     return -1.0;
 }  /* sigma */
 
-void describe(p)
-node *p;
+void describe(node *p)
 {
   /* print out information on one branch */
   double sumlr;
@@ -941,7 +974,7 @@ node *p;
   }
 }  /* describe */
 
-void summarize()
+void summarize(void)
 {
   /* print out information on branches of tree */
 
@@ -964,8 +997,7 @@ void summarize()
   fprintf(outfile, "     ** = significantly positive, P < 0.01\n\n\n");
 }  /* summarize */
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   short i, n, w;
@@ -1029,8 +1061,7 @@ node *p;
 }  /* treeout */
 
 
-void getch(c)
-Char *c;
+void getch(Char *c)
 {
   /* get next nonblank character */
   do {
@@ -1044,9 +1075,7 @@ Char *c;
   } while (*c == ' ');
 }  /* getch */
 
-void findch(c,lparens,rparens)
-Char c;
-short *lparens,*rparens;
+void findch(Char c,short *lparens,short *rparens)
 {
   /* read forward to next occurrence of character c */
   boolean done;
@@ -1098,8 +1127,7 @@ short *lparens,*rparens;
   }
 }  /* findch */
 
-void processlength(p)
-node *p;
+void processlength(node *p)
 {
   short digit, ordzero;
   double valyew, divisor;
@@ -1131,11 +1159,8 @@ node *p;
 }  /* processlength */
 
 
-void addelement(p, nextnode,lparens,rparens,names,nolengths)
-node *p;
-short *nextnode,*lparens,*rparens;
-boolean *names, *nolengths;
-
+void addelement(node *p, short *nextnode,short *lparens,short *rparens,
+		boolean *names,boolean *nolengths)
 {
   /* add one node to user-defined tree */
   node *q=NULL;
@@ -1233,7 +1258,7 @@ boolean *names, *nolengths;
   }
 }  /* addelement */
 
-void treeread()
+void treeread(void)
 {
   /* read a user-defined tree */
 /* Local variables for treeread: */
@@ -1278,8 +1303,7 @@ void treeread()
 }  /* treeread */
 
 
-void travinit(p)
-node *p;
+void travinit(node *p)
 {
   /* traverse to set up initial values */
   if (p == NULL)
@@ -1295,8 +1319,7 @@ node *p;
 }  /* travinit */
 
 
-void travsp(p)
-node *p;
+void travsp(node *p)
 {
   /* traverse to find tips */
   if (p == curtree.start)
@@ -1310,7 +1333,7 @@ node *p;
 }  /* travsp */
 
 
-void treevaluate()
+void treevaluate(void)
 {
   /* find maximum likelihood branch lengths of user tree */
   short i;
@@ -1329,7 +1352,7 @@ void treevaluate()
 }  /* treevaluate */
 
 
-void maketree()
+void maketree(void)
 {
   /* construct and rearrange tree */
   short i, j, k, num;

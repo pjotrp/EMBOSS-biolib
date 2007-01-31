@@ -132,11 +132,11 @@ int main(int argc, char **argv)
        USA which MEME would not understand. */
     ajStrAssignC(&rnd, ajFileTempName(NULL));
     rndo = ajSeqoutNew();
-    if(!ajSeqFileNewOut(rndo, rnd))
+    if(!ajSeqoutOpenFilename(rndo, rnd))
 	ajFatal("Terminal ajSeqFileNewOut failure. Email EMBOSS helpdesk!\n");
     ajSeqOutSetFormatC(rndo, "fasta");
-    ajSeqsetWrite(rndo, dataset);
-    ajSeqWriteClose(rndo);
+    ajSeqoutWriteSet(rndo, dataset);
+    ajSeqoutClose(rndo);
     ajSeqoutDel(&rndo);
 
 

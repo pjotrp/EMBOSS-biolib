@@ -24,7 +24,7 @@
  *      Packaged for squid, Thu Oct  1 10:07:11 1992
  *      ANSI conversion in full swing, Mon Jul 12 12:22:21 1993
  *
- * RCS $Id: sqio.c,v 1.3 2006/06/23 08:56:35 ajb Exp $
+ * RCS $Id: sqio.c,v 1.4 2007/01/31 12:53:19 rice Exp $
  */
 
 #include "ajax.h"
@@ -40,6 +40,8 @@
 #include "squid.h"
 
 extern void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info);
+void emboss_rseqs(AjPSeqset seqset, char ***ret_rseqs, SQINFO **ret_sqinfo,
+		  int *ret_num);
 
 #ifdef MEMDEBUG
 #include "dbmalloc.h"

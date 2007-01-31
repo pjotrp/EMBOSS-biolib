@@ -20,6 +20,7 @@
 #include <string.h>
 #include <ctype.h>
 
+#include "funcs.h"
 #include "squid.h"
 #include "config.h"
 #include "structs.h"
@@ -28,6 +29,9 @@
 #ifdef MEMDEBUG
 #include "dbmalloc.h"
 #endif
+
+extern void EBanner(AjPFile fp, char *banner);
+
 
 /* Function: Banner()
  * 

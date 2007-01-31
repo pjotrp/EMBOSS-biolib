@@ -127,7 +127,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     seqset = ajAcdGetSeqset("sequence");
 
-    test = ajAcdGetListI("test", 1);
+    test = ajAcdGetListSingle("test");
     
     if(ajStrMatchC(test, "b")) {
       bootstrap = true;
@@ -157,12 +157,12 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
     if(rewrite) {
-        outputformat = ajAcdGetListI("rewriteformat", 1);
+        outputformat = ajAcdGetListSingle("rewriteformat");
 	if(ajStrMatchC(outputformat, "n")) nexus = true;
 	else if(ajStrMatchC(outputformat, "x")) xml = true;
         
         if( (nexus) || (xml) ) {
-          typeofseq = ajAcdGetListI("seqtype", 1);
+          typeofseq = ajAcdGetListSingle("seqtype");
           if(ajStrMatchC(typeofseq, "d"))  seq = dna;
           else if(ajStrMatchC(typeofseq, "r")) seq = rna;
           else if(ajStrMatchC(typeofseq, "p")) seq = protein;
@@ -182,7 +182,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
         if(phyloratecat) categories = true;
         
         if(!permute) {
-          justweights = ajAcdGetListI("justweights", 1); 
+          justweights = ajAcdGetListSingle("justweights"); 
           if(ajStrMatchC(justweights, "j")) justwts = true;
         }
 
@@ -212,8 +212,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 void seqboot_inputnumbersseq(AjPSeqset seqset)
 {
   /* read numbers of species and of sites */
-  spp = ajSeqsetSize(seqset);
-  sites = ajSeqsetLen(seqset);
+  spp = ajSeqsetGetSize(seqset);
+  sites = ajSeqsetGetLen(seqset);
   loci = sites;
   maxalleles = 1;
 
@@ -357,7 +357,7 @@ void seqboot_inputdataseq(AjPSeqset seqset)
     i = 1;
     while (i <= spp) {
       initnameseq(seqset, i-1);
-      str = ajSeqStr(ajSeqsetGetSeq(seqset, i-1));
+      str = ajSeqGetSeqS(ajSeqsetGetseqSeq(seqset, i-1));
       j=0;
       done = false;
       while (!done) {

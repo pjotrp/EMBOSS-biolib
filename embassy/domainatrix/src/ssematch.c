@@ -517,9 +517,10 @@ static AjPSeq ssematch_convertbases(AjPStr qs)
     char       base;    
     AjPSeq     tmp_seq   = NULL;   
     AjPStr     tmp_str   = NULL;   
+    AjPStr name_str = NULL;
 
     /* Iterate through letters of string*/
-    /* StrIterGetC:returns Current text string within iterator, char* */
+    /* StrIterGetK:returns Current text string within iterator, char* */
     /* helices H, G, I -> G & I are changed to H 
        extended conformation -> E stays as E
        bridge B/b, turn T, coil C -> all changed to L */
@@ -544,13 +545,15 @@ static AjPSeq ssematch_convertbases(AjPStr qs)
     while(ajStrIterNext(iter));
     
 
-    tmp_seq = ajSeqNewStr(tmp_str);
+    ajStrAssignC(&name_str, "convertbases");
+    tmp_seq = ajSeqNewNameS(tmp_str, name_str);
 
 
     /* Tidy up */
     ajStrIterDel(&iter);
     ajStrDel(&tmp_str);
-    
+    ajStrDel(&name_str);
+
     return tmp_seq;
 }
 

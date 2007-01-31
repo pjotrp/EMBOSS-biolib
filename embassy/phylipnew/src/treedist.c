@@ -930,19 +930,19 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     if(outgrno != 0) outgropt = true;
     else outgrno = 1;
 
-    disttype = ajAcdGetListI("dtype", 1);
+    disttype = ajAcdGetListSingle("dtype");
 
     if(ajStrMatchC(disttype, "s")) dtype = PHYLIPSYMMETRIC;
     else dtype = PHYLIPBSD;
 
     noroot = !ajAcdGetBool("noroot");
 
-    tree_p = ajAcdGetListI("pairing", 1);
+    tree_p = ajAcdGetListSingle("pairing");
 
     if(ajStrMatchC(tree_p, "a")) tree_pairing = ADJACENT_PAIRS;
     else if(ajStrMatchC(tree_p, "p")) tree_pairing = ALL_IN_FIRST;
 
-    style = ajAcdGetListI("style", 1); 
+    style = ajAcdGetListSingle("style"); 
     if(ajStrMatchC(style, "f")) output_scheme = FULL_MATRIX;
     else if(ajStrMatchC(style, "s")) output_scheme = SPARSE;
     else if(ajStrMatchC(style, "v")) output_scheme = VERBOSE;

@@ -53,9 +53,9 @@
 ** PROTOTYPES  
 **
 ******************************************************************************/
-static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
-					       AjPHitlist hit, 
-					       AjPFile psif);
+static EmbPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
+						EmbPHitlist hit, 
+						AjPFile psif);
 
 static AjPFile seqsearch_psialigned(AjPStr seqname, 
 				    AjPScopalg *scopalg,  
@@ -66,7 +66,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
 				    AjPStr database);
 
 static AjPFile seqsearch_psisingle(AjPStr seqname, 
-				   AjPHitlist *hit,
+				   EmbPHitlist *hit,
 				   AjPStr *psiname, 
 				   ajint niter, 
 				   ajint maxhits, 
@@ -123,11 +123,11 @@ int main(int argc, char **argv)
 				      identical hits.                        */
     
     AjPScopalg scopalg   = NULL;   /* Scop alignment from input file.        */
-    AjPHitlist scophit   = NULL;   /* Hitlist of single hit from input file 
+    EmbPHitlist scophit   = NULL;  /* Hitlist of single hit from input file 
 				      (singlets).                            */
     
-    AjPHitlist tmphitlist = NULL;
-    AjPHitlist hitlist   = NULL;   /* Hitlist object for holding results of 
+    EmbPHitlist tmphitlist = NULL;
+    EmbPHitlist hitlist   = NULL;  /* Hitlist object for holding results of 
                                       PSIBLAST hits.                         */
     
     AjIList    iter       = NULL;
@@ -237,7 +237,7 @@ int main(int argc, char **argv)
 	       by end. */
 
 	    ajListPushApp(listin,tmphitlist);
-	    embDmxHitlistToScophits(listin, &listout);
+	    embDmxHitlistToScophits(listin, listout);
 	    ajListSort3(listout,ajDmxScophitCompAcc, ajDmxScophitCompStart, 
 			ajDmxScophitCompEnd);
           
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
 
 		/* Free listin. */
 		iter=ajListIterRead(listin); 
-		while((tmphitlist=(AjPHitlist)ajListIterNext(iter)))
+		while((tmphitlist=(EmbPHitlist)ajListIterNext(iter)))
 		    embHitlistDel(&tmphitlist);
 		ajListDel(&listin);
 		ajListIterFree(&iter);
@@ -317,7 +317,7 @@ int main(int argc, char **argv)
 
 	    /* Free listin. */
 	    iter=ajListIterRead(listin); 
-	    while((tmphitlist=(AjPHitlist)ajListIterNext(iter)))
+	    while((tmphitlist=(EmbPHitlist)ajListIterNext(iter)))
 		embHitlistDel(&tmphitlist);
 	    ajListDel(&listin);
 	    ajListIterFree(&iter);
@@ -478,7 +478,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     if((*scopalg))
 	nseqs = (*scopalg)->N;
     else
-	nseqs = ajSeqsetSize(seqset);
+	nseqs = ajSeqsetGetSize(seqset);
 
     ajFmtPrintF(seqsinf,"\n");
     for(x=0;x<nseqs;x++)
@@ -486,8 +486,8 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
 	    ajFmtPrintF(seqsinf,"%S %S\n", (*scopalg)->Codes[x], 
 			(*scopalg)->Seqs[x]);
 	else
-	    ajFmtPrintF(seqsinf,"%S %s\n", ajSeqsetName(seqset, x), 
-			ajSeqsetSeq(seqset, x));
+	    ajFmtPrintF(seqsinf,"%S %s\n", ajSeqsetGetseqNameS(seqset, x), 
+			ajSeqsetGetseqSeqC(seqset, x));
     
 
     
@@ -501,9 +501,9 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     
     else
     {
-	ajStrAssignC(&degap, ajSeqsetSeq(seqset, 0));
+	ajStrAssignC(&degap, ajSeqsetGetseqSeqC(seqset, 0));
 	ajStrRemoveGap(&degap);
-	ajFmtPrintF(seqinf,"> %S\n%s\n", ajSeqsetName(seqset, 0), degap);
+	ajFmtPrintF(seqinf,"> %S\n%s\n", ajSeqsetGetseqNameS(seqset, 0), degap);
     }
     
     
@@ -559,7 +559,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
 ** database. The psiblast output file is created and a pointer to it provided.
 **
 ** @param [r] seqname    [AjPStr]      Full name of sequence file 
-** @param [r] hit        [AjPHitlist]  Hitlist of single hit
+** @param [r] hit        [EmbPHitlist]  Hitlist of single hit
 ** @param [r] psiname    [AjPStr *]    Name of psiblast output file created
 ** @param [r] niter      [ajint]       No. psiblast iterations
 ** @param [r] maxhits    [ajint]       Maximum number of hits to generate
@@ -576,7 +576,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
 ** and modify this function accordingly - not urgent.
 ******************************************************************************/
 static AjPFile seqsearch_psisingle(AjPStr seqname, 
-				   AjPHitlist *hit, 
+				   EmbPHitlist *hit, 
 				   AjPStr *psiname, 
 				   ajint niter, 
 				   ajint maxhits, 
@@ -637,7 +637,7 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
     if((*hit))
 	ajFmtPrintF(seqinf,">\n%S\n",(*hit)->hits[0]->Seq);
     else
-	ajFmtPrintF(seqinf,">\n%S\n",ajSeqStr(seq));
+	ajFmtPrintF(seqinf,">\n%S\n",ajSeqGetSeqS(seq));
     
     /* Close psiblast input file before psiblast opens them. */
     ajFileClose(&seqinf);
@@ -675,17 +675,17 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
 ** hits.
 **
 ** @param [r] scopalg   [AjPScopalg]  Alignment    
-** @param [r] scophit   [AjPHitlist]  Hit 
+** @param [r] scophit   [EmbPHitlist]  Hit 
 ** @param [r] psif      [AjPFile]     psiblast output file 
 **
-** @return [AjPHitlist] Pointer to Hitlist object
+** @return [EmbPHitlist] Pointer to Hitlist object
 **                      (or NULL if 0 hits were found)
 ** @@
 ** 
 ******************************************************************************/
-static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, 
-					       AjPHitlist scophit, 
-					       AjPFile psif)
+static EmbPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg, 
+						EmbPHitlist scophit, 
+						AjPFile psif)
 {
     /* 
      ** The hits are organised into blocks, each block contains hits to 
@@ -712,7 +712,7 @@ static AjPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
     float   eval       = 0;
     float   score      = 0;
 
-    AjPHitlist hitlist = NULL;  /* Hitlist object for holding results 
+    EmbPHitlist hitlist = NULL; /* Hitlist object for holding results 
                                    of PSIBLAST hits*/
     
     /* Allocate strings etc. */

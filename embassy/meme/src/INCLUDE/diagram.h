@@ -33,8 +33,7 @@ char diagram[MAXLO];
 #if defined(__STDC__) || defined(__cplusplus)
 extern int yyparse(void);
 #else
-extern int yyparse();
+extern int yyparse(void);
 #endif
-
 
 #endif

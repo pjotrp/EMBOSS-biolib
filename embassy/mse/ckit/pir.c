@@ -29,7 +29,7 @@
 */
 
 extern CharPtrFunc NextCode;              /* NextSeqEntry.c */
-extern ProcPtr SetDBPointers;             /* ReadEntry.c    */
+extern ProcPtrSeq SetDBPointers;             /* ReadEntry.c    */
 
 extern int dbIndex;                       /* VDB.c       */
 extern int dbType, dbFormat, entries;     /* VDB.c       */

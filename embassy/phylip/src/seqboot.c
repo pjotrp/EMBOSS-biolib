@@ -39,10 +39,33 @@ Static Char **nodep;
 Static double **nodef;
 Static long **sppord;
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+double randum(long *seed);
+void getoptions(void);
+Local Void getnums(void);
+Local Void inputfactors(void);
+Local Void printfactors(void);
+Local Void inputweights(void);
+Local Void printweights(void);
+Local Void inputoptions(void);
+Local Void inputdata(void);
+Static Void doinput(int argc, char *argv[]);
+Local Void bootweights(void);
+void sppermute(long n);
+void writedata(void);
+Static Void bootwrite(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
   AjPFile outf;
 /*  AjPFile treef;*/
   AjPFile inf;
@@ -115,12 +138,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[]){
 }
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -155,14 +173,12 @@ char *perm;
     strcpy(perm,file);
 }
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {  /* convert ch to upper case -- either ASCII or EBCDIC */
    *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
-double randum(seed)
-long *seed;
+double randum(long *seed)
 {
   /* random number generator -- slow but machine independent */
   long i, j, k, sum;
@@ -199,7 +215,7 @@ long *seed;
 
 
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   long i, inseed, reps0;
@@ -345,7 +361,7 @@ void getoptions()
 	    VERSION);
 }  /* getoptions */
 
-Local Void getnums()
+Local Void getnums(void)
 {
   /* read numbers of species and of sites */
   long i;
@@ -384,7 +400,7 @@ Local Void getnums()
   }
 }  /* getnums */
 
-Local Void inputfactors()
+Local Void inputfactors(void)
 {
   long i, j, factor_run=0;
   Char ch, prevch;
@@ -421,7 +437,7 @@ Local Void inputfactors()
   getc(infile);
 }  /* inputfactors */
 
-Local Void printfactors()
+Local Void printfactors(void)
 {
   long i, j;
 
@@ -439,7 +455,7 @@ Local Void printfactors()
   fprintf(outfile, "\n\n");
 }  /* printfactors */
 
-Local Void inputweights()
+Local Void inputweights(void)
 {
   /* input the character weights, 0 or 1 */
   Char ch;
@@ -468,7 +484,7 @@ Local Void inputweights()
   getc(infile);
 }  /* inputweights */
 
-Local Void printweights()
+Local Void printweights(void)
 {
   /* print out the weights of sites */
   long i, j;
@@ -488,7 +504,7 @@ Local Void printweights()
   fprintf(outfile, "\n\n");
 }  /* printweights */
 
-Local Void inputoptions()
+Local Void inputoptions(void)
 {
   /* input the information on the options */
   Char ch;
@@ -582,7 +598,7 @@ Local Void inputoptions()
 }  /* inputoptions */
 
 
-Local Void inputdata()
+Local Void inputdata(void)
 {
   /* input the names and sequences for each species */
   long i, j, k, l, m, n, basesread, basesnew=0;
@@ -779,7 +795,7 @@ Static Void doinput(int argc, char *argv[])
   inputdata();
 }  /* doinput */
 
-Local Void bootweights()
+Local Void bootweights(void)
 {
   /* sets up weights by resampling data */
   long i, j, k;
@@ -839,8 +855,7 @@ Local Void bootweights()
   }
 }  /* bootweights */
 
-void sppermute(n)
-long n;
+void sppermute(long n)
 { 
 
   long i, j, k;
@@ -853,7 +868,7 @@ long n;
 }  /* sppermute */
 
 
-void writedata()
+void writedata(void)
 {
   /* write out one set of bootstrapped sequences */
   long i, j, k, l, m, n, n2;
@@ -934,7 +949,7 @@ void writedata()
 }  /* writedata*/
 
 
-Static Void bootwrite()
+Static Void bootwrite(void)
 {
   /* does bootstrapping and writes out data sets */
   long rr, repdiv10;
@@ -955,9 +970,7 @@ Static Void bootwrite()
 }  /* bootwrite */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* Read in sequences or frequencies and bootstrap or jackknife them */
 /*char infilename[100],outfilename[100];*/
 #ifdef MAC
@@ -982,8 +995,7 @@ Char *argv[];
 }
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -999,8 +1011,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1011,14 +1022,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
   printf("Error allocating memory\n");
   exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
   MALLOCRETURN *mem;
   mem = (MALLOCRETURN *)calloc(1,x);

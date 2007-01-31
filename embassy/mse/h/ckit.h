@@ -7,9 +7,9 @@
 **
 ****************************************************************************/
 #include <stdio.h>
-#include "ckittypes.h"
 #include "seqspec.h"
 #include "seqentry.h"
+#include "ckittypes.h"
 
 /*
 ** NextSeqEntry.c
@@ -30,7 +30,9 @@ extern     void  ShowGCGEnzymes(char *enzFName, Boolean doSchiz, Choice *where);
 ** Error.c
 */
 
-extern void Notify(ProcPtr pNotify, ProcPtr pError, ProcPtr pFatal);
+extern void Notify(ProcPtrChar pNotify,
+		   ProcPtrChar pError,
+		   ProcPtrChar pFatal);
 extern void PostError(Choice severity, char *errMsg);
 extern  int ClearErrors(void);
 extern  int Errors(void);
@@ -67,8 +69,10 @@ extern  Boolean  SetDataBase(char *dbName);
 ** Sequence.c
 */
 
+extern     int  CheckSum(char *strand);
 extern     int  CheckSeq(char *strand);
 extern    char  CompBase(char base);
+extern    long  DeGap(char * strand);
 extern    char *RevComp(char *strand, Choice type);
 extern    char *DNAtoRNA(char *strand);
 extern    char *RNAtoDNA(char *strand);

@@ -194,7 +194,7 @@ int main(int argc, char **argv)
 	    /* Create seqset with input sequences. */
 	    for(i=0; i<scopalg->N; i++)
             {
-		seq = ajSeqNewStr(scopalg->Seqs[i]);
+		seq = ajSeqNewNameS(scopalg->Seqs[i], scopalg->Codes[i]);
 		ajStrAssignS(&seq->Acc,scopalg->Codes[i]);
 		
                 ajSeqsetApp(seqset,seq);
@@ -228,10 +228,10 @@ int main(int argc, char **argv)
 	    else
 	    {
 		ajFmtPrintF(seqsf, "\n"); 
-		for(i=0;i<ajSeqsetSize(seqset);++i)
+		for(i=0;i<ajSeqsetGetSize(seqset);++i)
 		    ajFmtPrintF(seqsf,"%S_%d   %s\n", 
-				ajSeqsetName(seqset, i),	
-				ajSeqsetSeq(seqset, i));
+				ajSeqsetGetseqNameS(seqset, i),	
+				ajSeqsetGetseqSeqC(seqset, i));
 		ajFmtPrintF(seqsf,"\n");
 	    }
 	    ajFileClose(&seqsf);
@@ -244,7 +244,7 @@ int main(int argc, char **argv)
 	    if(scopalg)
 		ajFmtPrintF(seqf,">\n%S\n", scopalg->Seqs[0]);
 	    else
-		ajFmtPrintF(seqf,"\n%s\n",  ajSeqsetSeq(seqset, 0));
+		ajFmtPrintF(seqf,"\n%s\n",  ajSeqsetGetseqSeqC(seqset, 0));
 	    ajFileClose(&seqf);
 
 
@@ -363,16 +363,16 @@ static void libgen_simple_matrix(AjPSeqset seqset,
     ajint *matrix[LIBGEN_AZ+2];
     AjPStr cons=NULL;
     
-    nseqs = ajSeqsetSize(seqset);
+    nseqs = ajSeqsetGetSize(seqset);
     if(nseqs<2)
         ajFatal("Insufficient sequences (%d) to create a matrix",nseqs);
 
-    mlen = ajSeqsetLen(seqset);
+    mlen = ajSeqsetGetLen(seqset);
     
     /* Check sequences are the same length. Warn if not. */
     for(i=0;i<nseqs;++i)
     {
-        p = ajSeqsetSeq(seqset,i);
+        p = ajSeqsetGetseqSeqC(seqset,i);
         if(strlen(p)!=mlen)
             ajWarn("Sequence lengths are not equal!");
     }
@@ -383,7 +383,7 @@ static void libgen_simple_matrix(AjPSeqset seqset,
     /* Load matrix. */
     for(i=0;i<nseqs;++i)
     {
-        p = ajSeqsetSeq(seqset,i);      
+        p = ajSeqsetGetseqSeqC(seqset,i);      
         len = strlen(p);
         for(j=0;j<len;++j)
         {
@@ -504,8 +504,8 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
     ajMatrixfRead(&matrix,mname);
     ajStrDel(&mname);
                  
-    nseqs = ajSeqsetSize(seqset);
-    mlen  = ajSeqsetLen(seqset);
+    nseqs = ajSeqsetGetSize(seqset);
+    mlen  = ajSeqsetGetLen(seqset);
 
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
@@ -521,7 +521,7 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
         gsum=0;
         for(j=0;j<nseqs;++j)
         {
-            p=ajSeqsetSeq(seqset,j);
+            p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
             if(ajAZToInt(p[i])!=27)  /* If not a gap. */
@@ -548,8 +548,8 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
         q=valid;
         while(*q)
         {
-            mmax=(mmax>sub[ajSeqCvtK(cvt,*p)][ajSeqCvtK(cvt,*q)]) ? mmax :
-                sub[ajSeqCvtK(cvt,*p)][ajSeqCvtK(cvt,*q)];
+            mmax=(mmax>sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)]) ? mmax :
+                sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
             ++q;
         }
         ++p;
@@ -568,10 +568,10 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
     for(i=0;i<mlen;++i)
         for(j=0;j<nseqs;++j)
         {
-            p=ajSeqsetSeq(seqset,j);
+            p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            weights[i][ajAZToInt(p[i])] += ajSeqsetWeight(seqset,j);
+            weights[i][ajAZToInt(p[i])] += ajSeqsetGetseqWeight(seqset,j);
         }
 
 
@@ -609,7 +609,7 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             while(*q)
             {
                 score = weights[i][ajAZToInt(*q)];
-                score *= (float)(sub[ajSeqCvtK(cvt,*p)][ajSeqCvtK(cvt,*q)]);
+                score *= (float)(sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)]);
                 sum += score;
                 ++q;
             }
@@ -726,8 +726,8 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
     AjPSeqCvt cvt=NULL;
     
 
-    nseqs = ajSeqsetSize(seqset);
-    mlen  = ajSeqsetLen(seqset);
+    nseqs = ajSeqsetGetSize(seqset);
+    mlen  = ajSeqsetGetLen(seqset);
 
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
@@ -742,7 +742,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
         gsum=0;
         for(j=0;j<nseqs;++j)
         {
-            p=ajSeqsetSeq(seqset,j);
+            p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
             if(ajAZToInt(p[i])!=27)
@@ -768,8 +768,8 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
         q=valid;
         while(*q)
         {
-            mmax=(mmax>sub[ajSeqCvtK(cvt,*p)][ajSeqCvtK(cvt,*q)]) ? mmax :
-                sub[ajSeqCvtK(cvt,*p)][ajSeqCvtK(cvt,*q)];
+            mmax=(mmax>sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)]) ? mmax :
+                sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
             ++q;
         }
         ++p;
@@ -788,10 +788,10 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
     for(i=0;i<mlen;++i)
         for(j=0;j<nseqs;++j)
         {
-            p=ajSeqsetSeq(seqset,j);
+            p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            weights[i][ajAZToInt(p[i])] += ajSeqsetWeight(seqset,j);
+            weights[i][ajAZToInt(p[i])] += ajSeqsetGetseqWeight(seqset,j);
         }
 
     px = -INT_MAX;
@@ -839,7 +839,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
             while(*q)
             {
                 score = weights[i][ajAZToInt(*q)];
-                score *= sub[ajSeqCvtK(cvt,*p)][ajSeqCvtK(cvt,*q)];
+                score *= sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
                 sum += score;
                 ++q;
             }

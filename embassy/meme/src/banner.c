@@ -11,10 +11,11 @@
 */
 
 #include "meme.h"
+#include "banner.h"
 #include "projrel.h"
 
 
-void PSTARRS()
+void PSTARRS(void)
 {
     int i;
 
@@ -27,7 +28,7 @@ void PSTARRS()
 
 
 
-extern void banner(
+void banner(
   char *program			/* name of program */
 ) 
 {
@@ -60,4 +61,4 @@ extern void banner(
   PSTARRS();
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/banner.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/banner.c,v 1.2 2007/01/31 12:53:19 rice Exp $ */

@@ -65,6 +65,41 @@ extern tree curtree,bestree,bestree2;
 extern FILE *infile, *outfile, *treefile;
 extern longer seed;
 
+double randum(short *seed);
+void inittable(void);
+double evaluate(node *p, boolean saveit);
+void nuview(node *p);
+void getthree(node *p);
+void makenewv(node *p);
+void update(node *p);
+void smooth(node *p, boolean doupdate);
+void hookup(node *p, node *q);
+void in_sert(node *p, node *q);
+void re_move(node **p, node **q);
+void copynode(node *c, node *d);
+void copy_(tree *a, tree *b);
+void buildnewtip(short m, tree *tr);
+void buildsimpletree(tree *tr);
+void addtraverse(node *p, node *q, boolean contin);
+void rearrange(node *p);
+void coordinates(node *p, double lengthsum,short *tipy,double *tipmax);
+void drawline(short i, double scale);
+void printree(void);
+void sigma(node *p, double *sumlr, double *s1, double *s2);
+void describe(node *p);
+void summarize(void);
+void treeout(node *p);
+void getch(Char *c);
+void findch(Char c,short *lparens,short *rparens);
+void processlength(node *p);
+void addelement(node *p, short *nextnode,short *lparens,short *rparens,
+                boolean *names,boolean *nolengths);
+void treeread(void);
+void nodeinit(node *p);
+void initrav(node *p);
+void treevaluate(void);
+void maketree(void);
+
 /* Local variables for maketree, propagated globally for c version: */
 short k, nextsp, numtrees, which, maxwhich;
 double dummy, tdelta, lnlike, slope, curv, maxlogl;
@@ -75,8 +110,7 @@ valrec **tbl;
 Char ch;
 short col;
 
-double randum(seed)
-short *seed;
+double randum(short *seed)
 {  /* randum -- slow but machine independent */
   /* random number generator -- slow but machine independent */
   short i, j, k, sum;
@@ -111,7 +145,7 @@ short *seed;
   return x;
 }  /* randum */
 
-void inittable()
+void inittable(void)
 {
   /* Define a lookup table. Precompute values and store them in a table */
   short i;
@@ -126,9 +160,7 @@ void inittable()
   }
 }  /* inittable */
 
-double evaluate(p, saveit)
-node *p;
-boolean saveit;
+double evaluate(node *p, boolean saveit)
 {
   static contribarr like,nulike,term,clai;
   double sum, sum2, sumc, y, lz, y1, z1zz, z1yy, prod12, prod1, prod2, prod3,
@@ -223,8 +255,7 @@ boolean saveit;
   return sum;
 }  /* evaluate */
 
-void nuview(p)
-node *p;
+void nuview(node *p)
 {
   short i, j;
   double lw1, lw2, yy1, yy2, ww1zz1, vv1zz1, ww2zz2, vv2zz2, vzsumr1,
@@ -288,8 +319,7 @@ node *p;
   }
 }  /* nuview */
 
-void getthree(p)
-node *p;
+void getthree(node *p)
 {
   /* compute likelihood, slope, curvature at a new triple of points */
   double tt, td;
@@ -325,8 +355,7 @@ node *p;
 }  /* getthree */
 
 
-void makenewv(p)
-node *p;
+void makenewv(node *p)
 {
   short it, imin, imax, i;
   double tt, oldlike, yold, yorig, ymin, ymax, s32, s21;
@@ -410,8 +439,7 @@ node *p;
   p->back->v = p->v;
 }  /* makenewv */
 
-void update(p)
-node *p;
+void update(node *p)
 {
   if (!p->tip)
     nuview(p);
@@ -421,9 +449,7 @@ node *p;
     makenewv(p);
 }  /* update */
 
-void smooth(p, doupdate)
-node *p;
-boolean doupdate;
+void smooth(node *p, boolean doupdate)
 {
   if (doupdate)
     update (p);
@@ -434,15 +460,13 @@ boolean doupdate;
   nuview(p);
 }  /* smooth */
 
-void hookup(p, q)
-node *p, *q;
+void hookup(node *p, node *q)
 {
   p->back = q;
   q->back = p;
 }  /* hookup */
 
-void in_sert(p, q)
-node *p, *q;
+void in_sert(node *p, node *q)
 {
   short i;
   node *r;
@@ -464,8 +488,7 @@ node *p, *q;
   }
 }  /* in_sert */
 
-void re_move(p, q)
-node **p, **q;
+void re_move(node **p, node **q)
 {
   /* remove p and record in q where it was */
   *q = (*p)->next->back;
@@ -476,8 +499,7 @@ node **p, **q;
   update((*q)->back);
 }  /* re_move */
 
-void copynode(c, d)
-node *c, *d;
+void copynode(node *c, node *d)
 {
   int i, j;
 
@@ -493,8 +515,7 @@ node *c, *d;
   d->ymax = c->ymax;
 }  /* copynode */
 
-void copy_(a, b)
-tree *a, *b;
+void copy_(tree *a, tree *b)
 {
   short i, j=0;
   node *p, *q;
@@ -534,9 +555,7 @@ tree *a, *b;
   b->start = a->start;
 }  /* copy */
 
-void buildnewtip(m, tr)
-short m;
-tree *tr;
+void buildnewtip(short m, tree *tr)
 {
   node *p;
 
@@ -546,8 +565,7 @@ tree *tr;
   p->back->v = 0.1;
 }  /* buildnewtip */
 
-void buildsimpletree(tr)
-tree *tr;
+void buildsimpletree(tree *tr)
 {
   hookup(tr->nodep[enterorder[0] - 1], tr->nodep[enterorder[1] - 1]);
   tr->nodep[enterorder[0] - 1]->v = 0.1;
@@ -559,9 +577,7 @@ tree *tr;
 }  /* buildsimpletree */
 
 
-void addtraverse(p, q, contin)
-node *p, *q;
-boolean contin;
+void addtraverse(node *p, node *q, boolean contin)
 {
   in_sert(p, q);
   numtrees++;
@@ -574,8 +590,7 @@ boolean contin;
   }
 }  /* addtraverse */
 
-void rearrange(p)
-node *p;
+void rearrange(node *p)
 {
   /* rearranges the tree, globally or locally */
   node *q, *r;
@@ -613,11 +628,7 @@ node *p;
 }  /* rearrange */
 
 
-void coordinates(p, lengthsum,tipy,tipmax)
-node *p;
-double lengthsum;
-short *tipy;
-double *tipmax;
+void coordinates(node *p, double lengthsum,short *tipy,double *tipmax)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -656,9 +667,7 @@ double *tipmax;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-short i;
-double scale;
+void drawline(short i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q;
@@ -749,7 +758,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
 /* Local variables for printree: */
@@ -775,9 +784,7 @@ void printree()
 
 /* Local variables for describe: */
 
-void sigma(p, sumlr, s1, s2)
-node *p;
-double *sumlr, *s1, *s2;
+void sigma(node *p, double *sumlr, double *s1, double *s2)
 {
   /* compute standard deviation */
   double tt, aa, s32, s21;
@@ -805,8 +812,7 @@ double *sumlr, *s1, *s2;
   }
 }  /* sigma */
 
-void describe(p)
-node *p;
+void describe(node *p)
 {
   /* print out information for one branch */
   short i;
@@ -848,7 +854,7 @@ node *p;
   }
 }  /* describe */
 
-void summarize()
+void summarize(void)
 {
   /* print out branch length information and node numbers */
   short i, j, mx;
@@ -933,8 +939,7 @@ void summarize()
   putc('\n', outfile);
 }  /* summarize */
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   short i, n, w;
@@ -997,8 +1002,7 @@ node *p;
 }  /* treeout */
 
 
-void getch(c)
-Char *c;
+void getch(Char *c)
 {
   /* get next nonblank character */
   do {
@@ -1012,9 +1016,7 @@ Char *c;
   } while (*c == ' ');
 }  /* getch */
 
-void findch(c,lparens,rparens)
-Char c;
-short *lparens,*rparens;
+void findch(Char c,short *lparens,short *rparens)
 {
   /* scan forward until find character c */
   boolean done;
@@ -1055,8 +1057,7 @@ short *lparens,*rparens;
 
 
 
-void processlength(p)
-node *p;
+void processlength(node *p)
 {
   short digit, ordzero;
   double valyew, divisor;
@@ -1088,10 +1089,8 @@ node *p;
 }  /* processlength */
 
 
-void addelement(p, nextnode,lparens,rparens,names,nolengths)
-node *p;
-short *nextnode,*lparens,*rparens;
-boolean *names, *nolengths;
+void addelement(node *p, short *nextnode,short *lparens,short *rparens,
+		boolean *names,boolean *nolengths)
 {
   node *q;
   short i, n;
@@ -1164,7 +1163,7 @@ boolean *names, *nolengths;
   }
 }  /* addelement */
 
-void treeread()
+void treeread(void)
 {
   short nextnode, lparens, rparens;
   boolean *names, nolengths;
@@ -1197,8 +1196,7 @@ void treeread()
   free(names);
 }  /* treeread */
 
-void nodeinit(p)
-node *p;
+void nodeinit(node *p)
 {
   node *q, *r;
   short i, j;
@@ -1224,8 +1222,7 @@ node *p;
     p->back->v = 0.1;
 }  /* nodeinit */
 
-void initrav(p)
-node *p;
+void initrav(node *p)
 {
   if (p->tip)
     nodeinit(p->back);
@@ -1235,7 +1232,7 @@ node *p;
   }
 }  /* initrav */
 
-void treevaluate()
+void treevaluate(void)
 {
   short i;
 
@@ -1247,7 +1244,7 @@ void treevaluate()
 }  /* treevaluate */
 
 
-void maketree()
+void maketree(void)
 {
   short i, j, k, num;
   double sum, sum2, sd;

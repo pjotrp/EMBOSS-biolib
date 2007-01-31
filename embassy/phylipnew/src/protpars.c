@@ -370,7 +370,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     if(thresh)  threshold = ajAcdGetFloat("threshold");
     
 
-    codestr = ajAcdGetListI("whichcode",1);
+    codestr = ajAcdGetListSingle("whichcode");
     
     if(ajStrMatchCaseC(codestr, "u")) whichcode = universal;
     else if (ajStrMatchCaseC(codestr, "m")) whichcode = mito;
@@ -525,7 +525,7 @@ void protinputdata(AjPSeqset seqset)
     headings(chars, "Sequences", "---------");
   for (i=1; i <= spp; i++) {
     initnameseq(seqset, i-1);
-    str = ajSeqStr(ajSeqsetGetSeq(seqset, i-1));
+    str = ajSeqGetSeqS(ajSeqsetGetseqSeq(seqset, i-1));
     j =  0;
     while (j < chars) {
         charstate = ajStrGetCharPos(str, j);

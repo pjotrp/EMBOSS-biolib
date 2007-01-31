@@ -250,13 +250,13 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     phylotrees = ajAcdGetTree("intreefile");
  
-    plottercode = ajAcdGetListI("plotter", 1);
+    plottercode = ajAcdGetListSingle("plotter");
     
     getplotter(ajStrGetCharFirst(plottercode));
 
-    labeldirection = ajAcdGetListI("labeldirection", 1);
+    labeldirection = ajAcdGetListSingle("labeldirection");
 
-    getpreviewer = ajAcdGetListI("previewer", 1);
+    getpreviewer = ajAcdGetListSingle("previewer");
 
     if(ajStrMatchC(getpreviewer, "n")) {
       preview = false;
@@ -613,7 +613,7 @@ void getparms(char numtochange)
     break;
 
   case 'P':
-    plottercode = ajAcdGetListI("plotter", 1);
+    plottercode = ajAcdGetListSingle("plotter");
     getplotter(ajStrGetCharFirst(plottercode));
     break;
 

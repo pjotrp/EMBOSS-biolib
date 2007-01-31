@@ -119,7 +119,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       justwts = true;
     }
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
 
     if(ajStrMatchC(method, "d")) dollo = true;
     else dollo = false;

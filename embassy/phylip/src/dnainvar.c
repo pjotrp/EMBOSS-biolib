@@ -32,11 +32,47 @@ Static long *weight,*alias,*aliasweight;
 long f[(long)ww - (long)xx + 1][(long)ww - (long)xx + 1]
        [(long)ww - (long)xx + 1]; /* made global from being local to makeinv */
 
+void emboss_inputoptions(void);
+void emboss_inputdata(void);
+void emboss_getnums(void);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void inputdata(void);
+void sitesort(void);
+void sitecombine(void);
+void sitescrunch(void);
+void makeweights(void);
+void doinput(void);
+void prntpatterns(void);
+void makesymmetries(void);
+void prntsymbol(simbol s);
+void prntsymmetries(void);
+void tabulate(long mm, long nn, long pp, long qq,
+              double *mr, double *nr, double *pr, double *qr);
+void writename(long m);
+void writetree(long i, long j, long k, long l);
+void exacttest(long m, long n);
+void invariants(void);
+void makeinv(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
 AjPSeqset seqset;
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 
 
@@ -58,13 +94,15 @@ AjPFile outf;
   printinv = true;
 }
 
-void emboss_inputoptions(){
+void emboss_inputoptions(void)
+{
 int i;
 
  for (i = 0; i < sites; i++)
     weight[i] = 1;
 }
-void emboss_inputdata(){
+void emboss_inputdata(void)
+{
   int i,j;
   int ilen;
 
@@ -86,26 +124,27 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<numsp;i++){
-    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
-    strncpy(&nayme[i][0],ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetGetseqNameS(seqset, i));
+    strncpy(&nayme[i][0],ajStrGetPtr(ajSeqsetGetseqNameS(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	nayme[i][j] = ' ';
-    /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),sites);
+    /*    ajUser("%s/n",ajSeqsetGetseqName(seqset, i));*/
+    strncpy(&y[i][0],ajSeqsetGetseqSeqC(seqset, i),sites);
     y[i][sites] = '\0';
     if(printdata)
       fprintf(outfile, "%.10s\t%s\n",&nayme[i][0],&y[i][0]);
   }
 }
 
-void emboss_getnums(){
+void emboss_getnums(void)
+{
   int begin2,end2;
 
   /* REMOVE AFTER ALL INPUT GONE */
   /*  fscanf(infile, "%hd%hd", &spp, &sites);*/
 
-  ajSeqsetToUpper(seqset);
-  numsp = ajSeqsetSize (seqset);
+  ajSeqsetFmtUpper(seqset);
+  numsp = ajSeqsetGetSize(seqset);
   sites = ajSeqsetGetRange(seqset,&begin2,&end2);
   if (numsp > maxsp){
     printf("TOO MANY SPECIES: only 4 allowed\n");
@@ -116,12 +155,7 @@ void emboss_getnums(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -158,14 +192,13 @@ char *perm;
 }
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
    *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* input number of species, number of sites */
   fscanf(infile, "%ld%ld", &numsp, &sites);
@@ -176,7 +209,7 @@ void getnums()
     fprintf(outfile, "%4ld Species, %4ld Sites\n", numsp, sites);
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -303,7 +336,7 @@ void getoptions()
 }  /* getoptions */
 
 
-/*void doinit()*/
+/*void doinit(void)*/
 void doinit(int argc, char *argv[])
 {
   /* initializes variables */
@@ -324,7 +357,7 @@ void doinit(int argc, char *argv[])
 }  /* doinit*/
 
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, which must be 0 or 1 */
   Char ch;
@@ -353,7 +386,7 @@ void inputweights()
   weights = true;
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of sites */
   long i, j, k;
@@ -377,7 +410,7 @@ void printweights()
   putc('\n', outfile);
 }  /* printweights */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* input the information on the options */
   Char ch;
@@ -427,7 +460,7 @@ void inputoptions()
     printweights();
 }  /* inputoptions */
 
-void inputdata()
+void inputdata(void)
 {
   /* Input the names and sequences for each species */
   long i, j, k, l, basesread, basesnew=0;
@@ -555,7 +588,7 @@ void inputdata()
   putc('\n', outfile);
 }  /* inputdata */
 
-void sitesort()
+void sitesort(void)
 {
   /* Shell sort keeping sites, weights in same order */
   long gap, i, j, jj, jg, k, itemp;
@@ -592,7 +625,7 @@ void sitesort()
   }
 }  /* sitesort */
 
-void sitecombine()
+void sitecombine(void)
 {
   /* combine sites that have identical patterns */
   long i, j, k;
@@ -619,7 +652,7 @@ void sitecombine()
   }
 }  /* sitecombine */
 
-void sitescrunch()
+void sitescrunch(void)
 {
   /* Bubble sort so positively weighted sites come first */
   long i, j, itemp;
@@ -657,7 +690,7 @@ void sitescrunch()
   }
 }  /* sitescrunch */
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   long i;
@@ -677,7 +710,7 @@ void makeweights()
 }  /* makeweights */
 
 
-void doinput()
+void doinput(void)
 {  /* getinput */
   /* reads the input data */
   /*  if (!anerror)
@@ -692,7 +725,7 @@ void doinput()
 
 
 
-void prntpatterns()
+void prntpatterns(void)
 {
   /* print out patterns */
   long i, j;
@@ -712,7 +745,7 @@ void prntpatterns()
   putc('\n', outfile);
 }  /* prntpatterns */
 
-void makesymmetries()
+void makesymmetries(void)
 {
   /* get frequencies of symmetrized patterns */
   long i, j;
@@ -767,8 +800,7 @@ void makesymmetries()
   }
 }  /* makesymmetries */
 
-void prntsymbol(s)
-simbol s;
+void prntsymbol(simbol s)
 {
   /* print 1, 2, 3, 4 as appropriate */
   switch (s) {
@@ -791,7 +823,7 @@ simbol s;
   }
 }  /* prntsymbol */
 
-void prntsymmetries()
+void prntsymmetries(void)
 {
   /* print out symmetrized pattern numbers */
   /*  simbol s1, s2, s3;*/
@@ -825,9 +857,8 @@ void prntsymmetries()
 }  /* prntsymmetries */
 
 
-void tabulate(mm, nn, pp, qq, mr,nr,pr,qr)
-long mm, nn, pp, qq;
-double *mr,*nr,*pr,*qr;
+void tabulate(long mm, long nn, long pp, long qq,
+	      double *mr, double *nr, double *pr, double *qr)
 {
   /* make quadratic invariant, table, chi-square */
   long total;
@@ -857,8 +888,7 @@ double *mr,*nr,*pr,*qr;
 }  /* tabulate */
 
 
-void writename(m)
-long m;
+void writename(long m)
 {
   /* write out a species name */
   long i, n;
@@ -872,8 +902,7 @@ long m;
     putc(nayme[m - 1][i], outfile);
 }  /* writename */
 
-void writetree(i, j, k, l)
-long i, j, k, l;
+void writetree(long i, long j, long k, long l)
 {
   /* write out tree topology ((i,j),(k,l)) using names */
   fprintf(outfile, "((");
@@ -887,8 +916,7 @@ long i, j, k, l;
   fprintf(outfile, "))\n");
 }  /* writetree */
 
-void exacttest(m, n)
-long m, n;
+void exacttest(long m, long n)
 {
   /* exact binomial test that m <= n */
   long i;
@@ -909,7 +937,7 @@ long m, n;
     fprintf(outfile, "               no\n");
 }  /* exacttest */
 
-void invariants()
+void invariants(void)
 {
   /* compute invariants */
   long  m, n, p, q;
@@ -1118,7 +1146,7 @@ void invariants()
   fprintf(outfile, "  Tree III: %15.1f\n\n", L1 - L2);
 }  /* invariants */
 
-void makeinv()
+void makeinv(void)
 {
   /* print out patterns and compute invariants */
 
@@ -1130,9 +1158,7 @@ void makeinv()
 }  /* makeinv */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* DNA Invariants */
 /*char infilename[100],outfilename[100];*/
 #ifdef MAC
@@ -1181,8 +1207,7 @@ Char *argv[];
   exit(0);
 }  /* DNA Invariants */
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1198,8 +1223,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1210,14 +1234,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

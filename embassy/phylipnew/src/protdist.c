@@ -543,7 +543,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
 
-    model = ajAcdGetListI("method", 1);
+    model = ajAcdGetListSingle("method");
 
     if(ajStrMatchC(model, "j")) usejtt = true;
     else if(ajStrMatchC(model, "h")) usepmb = true;
@@ -553,7 +553,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     else if(ajStrMatchC(model, "c")) catmodel = true;
    
     if(catmodel) {     
-      whichcodestr = ajAcdGetListI("whichcode",1);
+      whichcodestr = ajAcdGetListSingle("whichcode");
     
       if(ajStrMatchCaseC(whichcodestr, "u")) whichcode = universal;
       else if (ajStrMatchCaseC(whichcodestr, "c")) whichcode = ciliate;
@@ -574,7 +574,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
     if(!kimura && !similarity) {
-      gammamethod = ajAcdGetListI("gamma", 1);
+      gammamethod = ajAcdGetListSingle("gamma");
 
       if(ajStrMatchC(gammamethod, "g")) {
          gama = true;
@@ -757,7 +757,7 @@ void protdist_inputdata(AjPSeqset seqset)
   i = 1;
   while (i <= spp) {
     initnameseq(seqset, i-1);
-    str = ajSeqStr(ajSeqsetGetSeq(seqset, i-1));
+    str = ajSeqGetSeqS(ajSeqsetGetseqSeq(seqset, i-1));
       j = 0;
       done = false;
       while (!done) {

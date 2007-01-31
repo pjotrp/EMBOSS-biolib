@@ -9,8 +9,8 @@
 **  William A. Gilbert, Whitehead Institute
 **
 ****************************************************************************/
+#include "boolean.h"
 #include "seqdef.h"
-#include "ckittypes.h"
 
 typedef struct SeqSpec SeqSpec;
 struct SeqSpec {
@@ -23,6 +23,7 @@ struct SeqSpec {
   Boolean isWildFile;     /* TRUE if FILE contains Wild card characters     */
    Choice format;         /* Sequence format for user-entry file            */
 };
+#include "ckittypes.h"
 
 
 #endif

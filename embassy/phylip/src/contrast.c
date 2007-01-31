@@ -42,8 +42,40 @@ Static Char ch;
 tree curtree;
 long contno;
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void getdata(void);
+void doinit(int argc, char *argv[]);
+void setuptree(tree *a);
+void hookup(node *p, node *q);
+void setuptip(long m, tree *t);
+void getch(Char *c);
+void findch(Char c, long *lparens,long *rparens);
+void findeither(long *lparens,long *rparens,boolean *rtparen);
+void processlength(node *p);
+void addelement(node *p, long *nextnode,long *lparens,long *rparens,
+                boolean *names);
+void treeread(void);
+void initcontrasts(void);
+void contbetween(node *p, node *q);
+void nuview(node *p);
+void makecontrasts(node *p);
+void writecontrasts(void);
+void regressions(void);
+void maketree(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile inf;
 AjPFile trf;
@@ -72,12 +104,7 @@ AjPFile trf;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -110,15 +137,14 @@ char *perm;
 
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
   /* convert a character to upper case -- either ASCII or EBCDIC */
     *ch = isupper((int)*ch) ? ((int)*ch) :toupper((int)*ch);
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* read species numbers and number of characters */
   fscanf(infile, "%ld%ld", &numsp, &chars);
@@ -126,7 +152,7 @@ void getnums()
   numsp2 = numsp * 2 - 1;
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -215,7 +241,7 @@ void getoptions()
   } while (!done);
 }  /* getoptions */
 
-void getdata()
+void getdata(void)
 {
   /* read species data */
   long i, j, l;
@@ -278,8 +304,7 @@ void doinit(int argc, char *argv[])
 }  /* doinit */
 
 
-void setuptree(a)
-tree *a;
+void setuptree(tree *a)
 {
   /* initialize a tree */
   long i, j;
@@ -309,17 +334,14 @@ tree *a;
   }
 }  /* setuptree */
 
-void hookup(p, q)
-node *p, *q;
+void hookup(node *p, node *q)
 {
   /* hook together two nodes */
   p->back = q;
   q->back = p;
 }  /* hookup */
 
-void setuptip(m, t)
-long m;
-tree *t;
+void setuptip(long m, tree *t)
 {
   /* initialize branch lengths and views in a tip */
   node *with;
@@ -332,8 +354,7 @@ tree *t;
 }  /* setuptip */
 
 
-void getch(c)
-Char *c;
+void getch(Char *c)
 {
   /* get next nonblank character */
   do {
@@ -347,9 +368,7 @@ Char *c;
   } while (*c == ' ');
 }  /* getch */
 
-void findch(c, lparens,rparens)
-Char c;
-long *lparens,*rparens;
+void findch(Char c, long *lparens,long *rparens)
 {
   /* skip forward in user tree until find character c */
   boolean done;
@@ -391,9 +410,7 @@ long *lparens,*rparens;
   }
 }  /* findch */
 
-void findeither(lparens,rparens,rtparen)
-long *lparens,*rparens;
-boolean *rtparen;
+void findeither(long *lparens,long *rparens,boolean *rtparen)
 {
   /* find either a rt paren or a comma */
   boolean done;
@@ -431,8 +448,7 @@ boolean *rtparen;
 }  /* findeither */
 
 
-void processlength(p)
-node *p;
+void processlength(node *p)
 {
   long digit, ordzero;
   double valyew, divisor;
@@ -463,10 +479,8 @@ node *p;
 }  /* processlength */
 
 
-void addelement(p, nextnode,lparens,rparens,names)
-node *p;
-long *nextnode,*lparens,*rparens;
-boolean *names;
+void addelement(node *p, long *nextnode,long *lparens,long *rparens,
+		boolean *names)
 {
   /* add one node to the user tree */
   node *q;
@@ -537,7 +551,7 @@ boolean *names;
     processlength(p);
 }  /* addelement */
 
-void treeread()
+void treeread(void)
 {
   /* read in a user tree */
   /* Local variables for treeread: */
@@ -572,7 +586,7 @@ void treeread()
   free(names);
 }  /* treeread */
 
-void initcontrasts()
+void initcontrasts(void)
 {
   /* compute the contrasts */
   long i, j;
@@ -583,8 +597,7 @@ void initcontrasts()
   contno = 1;
 }  /* initcontrasts */
 
-void contbetween(p, q)
-node *p, *q;
+void contbetween(node *p, node *q)
 {
   /* compute one contrast */
   long i;
@@ -599,8 +612,7 @@ node *p, *q;
   contno++;
 }  /* contbetween */
 
-void nuview(p)
-node *p;
+void nuview(node *p)
 {
   /* renew information about subtrees */
   long j;
@@ -622,8 +634,7 @@ node *p;
   p->deltav = v1 * f1;
 }  /* nuview */
 
-void makecontrasts(p)
-node *p;
+void makecontrasts(node *p)
 {
   /* compute the contrasts, recursively */
   if (p->tip)
@@ -634,7 +645,7 @@ node *p;
   contbetween(p->next->back, p->next->next->back);
 }  /* makecontrasts */
 
-void writecontrasts()
+void writecontrasts(void)
 {
   /* write out the contrasts */
   long i, j;
@@ -650,7 +661,7 @@ void writecontrasts()
   }
 }  /* writecontrasts */
 
-void regressions()
+void regressions(void)
 {
   /* compute regressions and correlations among contrasts */
   long i, j, k;
@@ -701,7 +712,7 @@ void regressions()
 }  /* regressions */
 
 
-void maketree()
+void maketree(void)
 {
   /* set up the tree and use it */
   long which;
@@ -732,9 +743,7 @@ void maketree()
 }  /* maketree */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* main program */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -767,8 +776,7 @@ Char *argv[];
   exit(0);
 }
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -784,8 +792,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -796,14 +803,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,(size_t)x);

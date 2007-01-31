@@ -106,13 +106,13 @@ int main(int argc, char **argv)
        USA which HMMER would not understand. */
     ajStrAssignC(&rnd, ajFileTempName(NULL));
     rndo = ajSeqoutNew();
-    if(!ajSeqFileNewOut(rndo, rnd))
+    if(!ajSeqoutOpenFilename(rndo, rnd))
 	ajFatal("Terminal ajSeqFileNewOut failure. Email EMBOSS helpdesk!\n");
     ajSeqOutSetFormatC(rndo, "fasta");
 
     while(ajSeqallNext(seqfile, &seq))
-	ajSeqWrite(rndo, seq);
-    ajSeqWriteClose(rndo);
+	ajSeqoutWriteSeq(rndo, seq);
+    ajSeqoutClose(rndo);
     ajSeqoutDel(&rndo);
 
 

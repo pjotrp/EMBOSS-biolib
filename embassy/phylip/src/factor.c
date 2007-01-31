@@ -48,8 +48,33 @@ Static Char  *ancsymbol;   /* Ancestral state  */
   Char pair[maxstates][2];
   node *nodes[maxstates];
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getoptions(void);
+void nextch(Char *ch);
+void readtree(void);
+void attachnodes(node *poynter,Char *otherone);
+void maketree(node *poynter, Char *otherone);
+void construct(void);
+void numberedges(node *poynter,short *edgenum);
+void factortree(void);
+void dotrees(void);
+void writech(Char ch, short *chposition);
+Local Void writefactors(short *chposition);
+void writeancestor(short *chposition);
+void doeu(short *chposition,short eu);
+void dodatamatrix(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile inf;
 
@@ -71,12 +96,7 @@ AjPFile inf;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -112,13 +132,12 @@ char *perm;
     strcpy(perm,file);
 }
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
    *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -188,15 +207,14 @@ void getoptions()
   }
 }  /* getoptions */
 
-void nextch(ch)
-Char *ch;
+void nextch(Char *ch)
 {
   *ch = ' ';
   while (*ch == ' ' && !eoln(infile))
     *ch = getc(infile);
 }  /* nextch */
 
-void readtree()
+void readtree(void)
 {
   /* Reads a single character-state tree; puts adjacent symbol
      pairs into array 'pairs' */
@@ -225,9 +243,7 @@ void readtree()
 
 }  /* readtree */
 
-void attachnodes(poynter,otherone)
-node *poynter;
-Char *otherone;
+void attachnodes(node *poynter,Char *otherone)
 {
   /* Makes linked list of all nodes to which passed node is
      ancestral.  First such node is 'descendant'; second
@@ -268,9 +284,7 @@ Char *otherone;
   }
 }  /* attachnodes */
 
-void maketree(poynter, otherone)
-node *poynter;
-Char *otherone;
+void maketree(node *poynter, Char *otherone)
 {
   /* Recursively attach nodes */
   if (poynter == NULL )
@@ -280,7 +294,7 @@ Char *otherone;
   maketree(poynter->sibling, otherone);
 }  /* maketree */
 
-void construct()
+void construct(void)
 {
   /* Puts tree together from array 'pairs' */
   Char rootstate;
@@ -362,9 +376,7 @@ void construct()
 }  /* construct */
 
 
-void numberedges(poynter,edgenum)
-node *poynter;
-short *edgenum;
+void numberedges(node *poynter,short *edgenum)
 {
   /* Assign to each node a number for the edge below it.
      The root is zero */
@@ -376,7 +388,7 @@ short *edgenum;
   numberedges(poynter->sibling, edgenum);
 }  /* numberedges */
 
-void factortree()
+void factortree(void)
 {
   /* Generate the string of 0's and 1's that will be
      substituted for each symbol of the multistate char. */
@@ -399,7 +411,7 @@ void factortree()
 }  /* factortree */
 
 
-void dotrees()
+void dotrees(void)
 {
   /* Process character-state trees */
   short lastchar;
@@ -440,9 +452,7 @@ void dotrees()
 
 
 
-void writech(ch, chposition)
-Char ch;
-short *chposition;
+void writech(Char ch, short *chposition)
 {
   /* Writes a single character to output */
   if (*chposition > maxoutput) {
@@ -453,8 +463,7 @@ short *chposition;
   (*chposition)++;
 }  /* writech */
 
-Local Void writefactors(chposition)
-short *chposition;
+Local Void writefactors(short *chposition)
 {  /* Writes 'FACTORS' line */
 
   short i, charindex;
@@ -478,8 +487,7 @@ short *chposition;
   putc('\n', outfile);
 }  /* writefactors */
 
-void writeancestor(chposition)
-short *chposition;
+void writeancestor(short *chposition)
 {
   /* Writes 'ANCESTOR' line */
   short i, charindex;
@@ -502,8 +510,7 @@ short *chposition;
   putc('\n', outfile);
 }  /* writeancestor */
 
-void doeu(chposition,eu)
-short *chposition,eu;
+void doeu(short *chposition,short eu)
 {
   /* Writes factored data for a single species  */
   short i, charindex, place;
@@ -560,7 +567,7 @@ short *chposition,eu;
 }  /* doeu */
 
 
-void dodatamatrix()
+void dodatamatrix(void)
 {
   /* Reads species information and write factored data set */
   short charindex, totalfactors,eu,chposition;
@@ -593,9 +600,7 @@ void dodatamatrix()
 }  /* dodatamatrix */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {
 /*char infilename[100],outfilename[100];*/
 #ifdef MAC
@@ -624,8 +629,7 @@ Char *argv[];
 }  /* factor */
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -641,8 +645,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -653,14 +656,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

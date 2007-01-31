@@ -208,11 +208,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     phylotrees = ajAcdGetTree("intreefile");
  
-    plottercode = ajAcdGetListI("plotter", 1);
+    plottercode = ajAcdGetListSingle("plotter");
     
     getplotter(ajStrGetCharFirst(plottercode));
 
-    getpreviewer = ajAcdGetListI("previewer", 1);
+    getpreviewer = ajAcdGetListSingle("previewer");
 
     if(ajStrMatchC(getpreviewer, "n")) {
       preview = false;
@@ -231,7 +231,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     else grows = vertical;
 
 
-    getstyle = ajAcdGetListI("style", 1);
+    getstyle = ajAcdGetListSingle("style");
     if(ajStrMatchC(getstyle, "c")) style = cladogram;
     else if(ajStrMatchC(getstyle, "p")) style = phenogram;
     else if(ajStrMatchC(getstyle, "e")) style = eurogram;
@@ -281,7 +281,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     pagey = ((double)m * (papery-vpmargin)+vpmargin);
  
 
-    getnodeposition = ajAcdGetListI("nodeposition", 1);
+    getnodeposition = ajAcdGetListSingle("nodeposition");
 
     if(ajStrMatchC(getnodeposition, "i"))  nodeposition = intermediate;
     else if(ajStrMatchC(getnodeposition, "w")) nodeposition = weighted;

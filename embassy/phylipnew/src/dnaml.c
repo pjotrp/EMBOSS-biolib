@@ -34,7 +34,7 @@ void   doinit(void);
 void   inputoptions(void);
 void   makeweights(void);
 void   getinput(void);
-void   initmemrates(); 
+void   initmemrates(void); 
 void   inittable_for_usertree(char *);
 void   inittable(void);
 double evaluate(node *, boolean);
@@ -68,6 +68,8 @@ void   treevaluate(void);
 void   maketree(void);
 void   clean_up(void);
 void   reallocsites(void);
+void globrearrange(void) ;
+
 /* function prototypes */
 #endif
 
@@ -257,7 +259,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     phyloratecat = ajAcdGetProperties("categories");      
 
-    gammamethod = ajAcdGetListI("gamma", 1);
+    gammamethod = ajAcdGetListSingle("gamma");
 
     if(ajStrMatchC(gammamethod, "n")) {
       rrate      = (double *) Malloc(rcategs*sizeof(double));
@@ -1320,7 +1322,7 @@ void addtraverse(node *p, node *q, boolean contin)
 }  /* addtraverse */
 
 
-void globrearrange() 
+void globrearrange(void) 
 {
   /* does global rearrangements */
   tree globtree;

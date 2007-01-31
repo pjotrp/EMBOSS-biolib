@@ -11,7 +11,7 @@
 /* sqerror.c
  * 
  * error handling for the squid library
- * RCS $Id: sqerror.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: sqerror.c,v 1.2 2007/01/31 12:53:19 rice Exp $
  */
 
 				/* a global errno equivalent */
@@ -20,6 +20,11 @@ int squid_errno;
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+
+#include "config.h"
+#include "structs.h"
+#include "squid.h"
+#include "sqfuncs.h"
 
 #ifdef MEMDEBUG
 #include "dbmalloc.h"

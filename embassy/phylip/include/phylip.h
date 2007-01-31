@@ -172,9 +172,9 @@ typedef unsigned char boolean;
 #ifdef MAC
 MALLOCRETURN    *mymalloc(long);
 #else
-MALLOCRETURN    *mymalloc();
+MALLOCRETURN    *mymalloc(long);
 #endif
-int      eof();
-int      eoln();
-void     memerror();
+int      eof(FILE*);
+int      eoln(FILE*);
+void     memerror(void);
 

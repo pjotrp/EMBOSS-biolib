@@ -51,13 +51,45 @@ double sumweightrat;                  /* these values were propogated  */
 double *weightrat;                    /* to global values from the     */
 valrec tbl[maxcategs];                /* procedure makedists.          */
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void emboss_getnums(void);
+void emboss_inputoptions(void);
+void emboss_inputdata(void);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputcategories(void);
+void printcategories(void);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void getbasefreqs(void);
+void inputdata(void);
+void sitesort(void);
+void sitecombine(void);
+void sitescrunch(void);
+void makeweights(void);
+void makevalues(void);
+void empiricalfreqs(void);
+void getinput(void);
+void inittable(void);
+void makev(short m, short n, double *v);
+void makedists(void);
+void writedists(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void printcategories();
-void printweights();
 
 AjPSeqset seqset;
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPStr *methodlist;
 AjPStr *matrixlist;
 AjPFile outf;
@@ -113,16 +145,18 @@ AjPFile outf;
     lower = true;
 }
 
-void emboss_getnums(){
+void emboss_getnums(void)
+{
   /*short begin,end;*/
   int begin2,end2;
 
-  ajSeqsetToUpper(seqset);
-  numsp = ajSeqsetSize (seqset);
+  ajSeqsetFmtUpper(seqset);
+  numsp = ajSeqsetGetSize(seqset);
   sites = ajSeqsetGetRange(seqset,&begin2,&end2);
 }
 
-void emboss_inputoptions(){
+void emboss_inputoptions(void)
+{
   /*Char ch;*/
   boolean ctg;
   int i;
@@ -158,7 +192,8 @@ void emboss_inputoptions(){
     printweights();
 }
 
-void emboss_inputdata(){
+void emboss_inputdata(void)
+{
   int i,j;
   int ilen;
 
@@ -180,12 +215,12 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<numsp;i++){
-    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
-    strncpy(nodep[i]->nayme,ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetGetseqNameS(seqset, i));
+    strncpy(nodep[i]->nayme,ajStrGetPtr(ajSeqsetGetseqNameS(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	nodep[i]->nayme[j] = ' ';
-    /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),sites);
+    /*    ajUser("%s/n",ajSeqsetGetseqNameS(seqset, i));*/
+    strncpy(&y[i][0],ajSeqsetGetseqSeqC(seqset, i),sites);
     y[i][sites] = '\0';
     /*    if(i>0){
       for(k=0;k<sites;k++){
@@ -200,12 +235,7 @@ void emboss_inputdata(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -241,20 +271,19 @@ char *perm;
 }
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {  /* convert ch to upper case -- either ASCII or EBCDIC */
    *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* input number of species, number of sites */
   fscanf(infile, "%hd%hd", &numsp, &sites);
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   short i;
@@ -475,7 +504,7 @@ void getoptions()
 }  /* getoptions */
 
 
-/*void doinit()*/
+/*void doinit(void)*/
 void doinit(int argc, char *argv[])
 {
   /* initializes variables */
@@ -493,7 +522,7 @@ void doinit(int argc, char *argv[])
   }
 }  /* doinit */
 
-void inputcategories()
+void inputcategories(void)
 {
   /* reads the categories for each site */
   short i;
@@ -515,7 +544,7 @@ void inputcategories()
   getc(infile);
 }  /* inputcategories */
 
-void printcategories()
+void printcategories(void)
 {
   /* print out list of categories of sites */
   short i, j;
@@ -536,7 +565,7 @@ void printcategories()
 
 }  /* printcategories */
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, 0 or 1 */
   Char ch;
@@ -568,7 +597,7 @@ void inputweights()
   getc(infile);
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of sites */
   short i, j;
@@ -587,7 +616,7 @@ void printweights()
   fprintf(outfile, "\n\n");
 }  /* printweights */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* read options information */
   Char ch;
@@ -677,7 +706,7 @@ void inputoptions()
     printweights();
 }  /* inputoptions */
 
-void getbasefreqs()
+void getbasefreqs(void)
 {
   /* compute or read in base frequencies */
   double aa, bb;
@@ -733,7 +762,7 @@ void getbasefreqs()
       xv * (1.0 - freqa * freqa - freqc * freqc - freqg * freqg - freqt * freqt);
 }  /* getbasefreqs */
 
-void inputdata()
+void inputdata(void)
 {
   /* Input the names and sequences for each species */
   short i, j, k, l, basesread, basesnew=0;
@@ -848,7 +877,7 @@ void inputdata()
   putc('\n', outfile);
 }  /* inputdata */
 
-void sitesort()
+void sitesort(void)
 {
   /* Shell sort of sites lexicographically */
   short gap, i, j, jj, jg, k, itemp;
@@ -884,7 +913,7 @@ void sitesort()
   }
 }  /* sitesort */
 
-void sitecombine()
+void sitecombine(void)
 {
   /* combine sites that have identical patterns */
   short i, j, k;
@@ -912,7 +941,7 @@ void sitecombine()
   }
 }  /* sitecombine */
 
-void sitescrunch()
+void sitescrunch(void)
 {
   /* move so one representative of each pattern of
      sites comes first */
@@ -950,7 +979,7 @@ void sitescrunch()
   }
 }  /* sitescrunch */
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   short i;
@@ -980,7 +1009,7 @@ void makeweights()
     weight[location[ally[i] - 1] - 1] += oldweight[i];
 }  /* makeweights */
 
-void makevalues()
+void makevalues(void)
 {
   /* set up fractional likelihoods at tips */
   short i, j, k;
@@ -1099,7 +1128,7 @@ void makevalues()
   }
 }  /* makevalues */
 
-void empiricalfreqs()
+void empiricalfreqs(void)
 {
   /* Get empirical base frequencies from the data */
   short i, j, k;
@@ -1136,7 +1165,7 @@ void empiricalfreqs()
 }  /* empiricalfreqs */
 
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   /*  inputoptions();*/
@@ -1155,7 +1184,7 @@ void getinput()
 
 
 
-void inittable()
+void inittable(void)
 {
   /* Define a lookup table. Precompute values and store in a table */
   short i;
@@ -1167,9 +1196,7 @@ void inittable()
 }  /* inittable */
 
 
-void makev(m, n, v)
-short m, n;
-double *v;
+void makev(short m, short n, double *v)
 {
   /* compute one distance */
   short i, it, numerator=0, denominator=0, num1, num2, idx;
@@ -1350,7 +1377,7 @@ double *v;
 }  /* makev */
 
 
-void makedists()
+void makedists(void)
 {
   /* compute distance matrix */
   short i, j;
@@ -1390,7 +1417,7 @@ void makedists()
     free(nodep[i]->x);
 }  /* makedists */
 
-void writedists()
+void writedists(void)
 {
   /* write out distances */
   short i, j, k;
@@ -1422,9 +1449,7 @@ void writedists()
 }  /* writedists */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* DNA Distances by Maximum Likelihood */
 /*char infilename[100],outfilename[100];*/
 #ifdef MAC
@@ -1470,8 +1495,7 @@ Char *argv[];
   exit(0);
 }  /* DNA Distances by Maximum Likelihood */
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1487,8 +1511,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1499,14 +1522,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

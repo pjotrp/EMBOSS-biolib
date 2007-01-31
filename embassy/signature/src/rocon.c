@@ -57,14 +57,14 @@ int main(int argc, char **argv)
 {
     /* Variable declarations */
     AjPFile      hitsin      = NULL;  /* (ACD) DHF file (hits input).       */
-    AjPHitlist   hitsin_l    = NULL;  /* For contents of hitsin.            */
+    EmbPHitlist   hitsin_l    = NULL;  /* For contents of hitsin.            */
     AjPList      hitsin_tmp  = NULL;  /* For managing hitsin_l              */
     ajint        nhitsin     = 0;     /* No. of hits in hitsin.             */
     
 
     AjPFile      validin     = NULL;  /* (ACD) DHF file (validation input). */
     AjPList      validin_l   = NULL;  /* For contents of validin.           */
-    AjPHitlist   validin_tmp = NULL;  /* For managing validin_l.            */ 
+    EmbPHitlist   validin_tmp = NULL; /* For managing validin_l.            */ 
 
     AjPFile      hitsout     = NULL;  /* (ACD) Hits file (output).          */
     AjPStr      *mode        = NULL;  /* (ACD) Mode of operation            */
@@ -129,7 +129,7 @@ int main(int argc, char **argv)
     /* Classify hits & sort results for output. */
     if(moden==1)
     {
-	if(!(embHitlistClassify(&hitsin_l, validin_l, thresh)))
+	if(!(embHitlistClassify(hitsin_l, validin_l, thresh)))
 	    ajFatal("embHitlistClassify failed\n");
     }
 

@@ -27,6 +27,7 @@ void phyFillScreenColor();
 #include "phylip.h"
 
 static void emboss_printtreenode(node *p, node* root);
+long countsemic(char *treestr);
 
 #if defined(OSX_CARBON) && defined(__MWERKS__)
 boolean fixedpath = false;
@@ -777,8 +778,8 @@ void inputnumbersseq(AjPSeqset seqset,
     /* input the numbers of species and of characters */
     /* revised for EMBOSS to take numbers from seqset input */
 
-    ajSeqsetToUpper(seqset);
-    *spp = ajSeqsetSize(seqset);
+    ajSeqsetFmtUpper(seqset);
+    *spp = ajSeqsetGetSize(seqset);
     *chars = ajSeqsetGetRange(seqset,&begin2,&end2);
  
     *nonodes = *spp * 2 - n;
@@ -1080,7 +1081,7 @@ void initnameseq(AjPSeqset set, long i)
 {
   /* read in species name */
   long j;
-  AjPStr names = ajStrNewS(ajSeqGetName(ajSeqsetGetSeq(set, i)));
+  AjPStr names = ajStrNewS(ajSeqGetNameS(ajSeqsetGetseqSeq(set, i)));
 
   for (j = 0; j < nmlngth; j++) {
     if (j < ajStrGetLen(names))

@@ -26,6 +26,7 @@
 #include "seqentry.h"
 #include "seqsymbols.h"
 #include "macros.h"
+#include "ckit.h"
 
 /*
 ** Global variables, also used by NextSeqEntry.c
@@ -34,7 +35,7 @@
 char headerLine[513];              /* Used by both ReadEntry and NextSeqEntry */
 FILE *userFile;                    /* Currently open user file             */
 
-ProcPtr SetDBPointers = NULL;
+ProcPtrSeq SetDBPointers = NULL;
 ProcPtr SeekSeq = NULL;
 ProcPtr SeekRef = NULL;
 
@@ -46,23 +47,6 @@ extern int dbSEQFile, dbREFFile;          /* files desc numbers of above file po
 ** Useful functions used by this file.
 */
 
-extern     char *StrToUpper(char *);                       /* Strings.c  */
-extern     char *StrToLower(char *);                       /* Strings.c  */
-extern     char *StrCollapse(char *);                      /* Strings.c  */
-extern     char *StrTrim(char *);                          /* Strings.c  */
-extern     char *StrIndex(char *,char *);                  /* Strings.c  */
-extern  Boolean  StrIsBlank(char *);                       /* Strings.c  */
-extern     char *StrChange(char *, char, char);            /* Strings.c  */
-extern     void  PostError(int, char *);                   /* Error.c    */
-extern SeqEntry *NewSeqEntry(void);                        /* SeqEntry.c */
-extern     char *MakeSeqDesc(SeqEntry *seq);               /* SeqEntry.c */
-extern     char *DNAtoRNA(char *);                         /* Sequence.c */
-extern     char *RNAtoDNA(char *);                         /* Sequence.c */
-extern     char *NucToProtein(int, char *, long *);        /* Sequence.c */
-extern      int  CheckSum(char *);                         /* Sequence.c */
-extern      int  CompBase(char);                           /* Sequence.c */
-extern     char *DePath(char *);                           /* VMS.c      */
-extern     void DeleteSeqEntry(SeqEntry *seq);
 
 /*
 **  Function declarations and prototypes for this file.  This file has only

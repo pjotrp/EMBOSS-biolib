@@ -30,6 +30,7 @@ boolean compatible(long, long);
 void elimboth(long);
 void enternohash(group_type*, long*);
 void enterpartition (group_type*, long*);
+void phylipcompress(long *n);
 
 /* begin hash table code */
 

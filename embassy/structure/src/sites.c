@@ -194,7 +194,7 @@ static   AjBool      sites_HeterogenContactsWrite(AjPFile outf,
 static AjBool    sites_HeterogenContactsWriteOld(AjPFile funky_out, 
 						 AjPDbase dbase);
 
-
+void sites_Dummy (void);
 
 
 /* @prog sites *************************************************************

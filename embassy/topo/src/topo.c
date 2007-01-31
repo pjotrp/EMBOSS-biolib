@@ -23,22 +23,22 @@ void  truncup(const int num,const int istart,const int iend,
 	      float *off,const float wide,char *strand,int *syms)  ;
 /*void  selectsym(int ndev,int symx);*/
 void  checkcys(AjBool outstart,const int symcys,const int tmcount,
-	       const int length,int *istart,
-	       int *iend,char *strand,int *syms) ;
+	       const int length,ajuint *istart,
+	       ajuint *iend,char *strand,int *syms) ;
 void  checklca(const int symlcharge,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms);
+	       ajuint *istart,ajuint *iend,char *strand,int *syms);
 void  checklcb(const int symlcharge,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms);
+	       ajuint *istart,ajuint *iend,char *strand,int *syms);
 void  checkla(const int symlcharge,const int tmcount,
-	      int *istart,int *iend,char *strand,int *syms);
+	      ajuint *istart,ajuint *iend,char *strand,int *syms);
 void  checkloh(const int symloh,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms);
+	       ajuint *istart,ajuint *iend,char *strand,int *syms);
 void  checklar(const int symlar,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms);
+	       ajuint *istart,ajuint *iend,char *strand,int *syms);
 void  checklpro(const int symlpro,const int tmcount,
-		int *istart,int *iend,char *strand,int *syms);
+		ajuint *istart,ajuint *iend,char *strand,int *syms);
 void  checkgly(AjBool outstart,const int symgly,const int tmcount,int length,
-	       int *istart,int *iend,char *strand,int *syms);
+	       ajuint *istart,ajuint *iend,char *strand,int *syms);
 void  topoMembrane(void);
 void  topoMembrane2(void);
 void  topoMembrane3(void);
@@ -162,9 +162,9 @@ void  ball5down(const int i,const int j,const float x,
 		char *strand,int *syms)  ;
 void  ball5up(const int i,const int j,const float x,
 	      char *strand,int *syms)  ;
-void  conup(float *hold,const int i,const int is,int *ie,
+void  conup(float *hold,const int i,const ajuint is,ajuint *ie,
 	    char *strand,int *syms)  ;
-void  condown(float *hold1,const int i,const int is,int *ie,
+void  condown(float *hold1,const int i,const ajuint is,ajuint *ie,
 	      char *strand,int *syms) ;
 void  condownsmall(const int is,int *ie,char *strand,int *syms)  ;
 void  conupbig2(const int is,int *ie,char *strand,int *syms)  ;
@@ -173,6 +173,13 @@ void  condownbig3(const int is,int *ie,char *strand,int *syms)  ;
 void  sheetdown(const int page,const int i,const int istart,
 		const int nchain,float *off,
 		float *hold,const float wide,char *strand,int *syms) ;
+int getValFromStr(AjPStr str);
+void topoMoveTo(const float x, float y);
+void topoDraw(const float x, float y);
+void topoCentre(const float x, float y);
+void topoCurve(float rad, float junk, float junk2);
+void topoPlotText(char *text);
+void topoNewColour(int col);
  
 
 
@@ -303,8 +310,8 @@ int main(int argc, char * argv[])
     int   i,tmcount,tmcount2,nsecs,nsece,nchain,length;
     int   j,iex,iex2;
     int   gap,page,pages,stsp;
-    int   *istart = NULL;
-    int   *iend = NULL;
+    ajuint   *istart = NULL;
+    ajuint   *iend = NULL;
     int   *syms = NULL;
     int   gaps ;
     int   symcys,symgly,symlchargea,symlchargeb ;
@@ -316,8 +323,6 @@ int main(int argc, char * argv[])
     int ii;
     int minstart;
     int minend;
-    int *isigstart = NULL;
-    int *isigend = NULL;
     int maxtm;
 
     /* acd defs */
@@ -336,20 +341,21 @@ int main(int argc, char * argv[])
     AjPStr listaro;
     AjPStr listpro;
     AjBool doend = ajTrue;
+    ajuint isigstart, isigend;
 
     ajGraphInitP ("topo", argc, argv, "TOPO");
   
     sequence = ajAcdGetSeq("sequence");
     graph  = ajAcdGetGraph("graph");
 
-    ajGraphSetTitlePlus(graph, ajSeqGetUsa(sequence));
+    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(sequence));
 
     ajGraphOpenWin(graph,0.0,150.0,0.0,100.0);
     ajGraphSetCharScale(0.5);
 
     sq.seq[0] = ' '; /* hopefully sort out the fortran to c offset worrys :) */
 
-    strcpy(&sq.seq[1],ajSeqChar(sequence));
+    strcpy(&sq.seq[1],ajSeqGetSeqC(sequence));
     length = strlen(sq.seq);
 
     if(sq.seq[length] == '*')
@@ -378,9 +384,9 @@ int main(int argc, char * argv[])
 
     regions = ajAcdGetRange ("sections");
     tmcount = ajRangeNumber(regions);
-    istart = (int *) AJALLOC((tmcount+1)*sizeof(int)); 
-    iend = (int *) AJALLOC((tmcount+1)*sizeof(int));  
-    ajRangeValues(regions,tmcount,istart,iend); /* again offset by 1 */
+    istart = (ajuint *) AJALLOC((tmcount+1)*sizeof(ajuint)); 
+    iend = (ajuint *) AJALLOC((tmcount+1)*sizeof(ajuint));  
+    ajRangeValues(regions,tmcount,&istart[0],&iend[0]); /* again offset by 1*/
     for(i=0;i<=tmcount;i++){
 	ajRangeValues(regions,i,
 		      &istart[i+1],&iend[i+1]); /* again offset by 1 */
@@ -469,25 +475,21 @@ int main(int argc, char * argv[])
 	/* num num code sets */
 	sigregions = ajAcdGetRange ("sigrange");
 	ii = ajRangeNumber(sigregions);
-	isigstart = (int *) AJALLOC(sizeof(int));         
-	isigend = (int *) AJALLOC(sizeof(int));               
 	for(i=0;i<ii;i++){
 	    AjPStr val = NULL;
-	    ajRangeValues(sigregions,i,isigstart,isigend);
+	    ajRangeValues(sigregions,i,&isigstart,&isigend);
 	    if(ajRangeText(sigregions,i,&val)){
 		symsign = getValFromStr(val);
 	    }
 	    else{
 		symsign = 1;
 	    }
-	    for(j=*isigstart;j<=*isigend ;j++)
+	    for(j=isigstart;j<=isigend ;j++)
 	    {
 		syms[j]=symsign ;
 	    }  /*end for*/
 	    ajStrDel(&val);
 	}
-	AJFREE(isigstart);
-	AJFREE(isigend);
     }
     
 /*c determine if this is a draft plot */ 
@@ -958,7 +960,8 @@ void  truncup(const int num,const int istart,const int iend,
 ******************************************************************************/
 
 void  checkcys(AjBool outstart,const int symcys,const int tmcount,
-	       const int length,int *istart,int *iend,char *strand,int *syms)
+	       const int length,ajuint *istart,ajuint *iend,
+	       char *strand,int *syms)
 {
  
  
@@ -1210,7 +1213,7 @@ void  checkcys(AjBool outstart,const int symcys,const int tmcount,
 ******************************************************************************/
 
 void  checklca(const int symlcharge,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms)  {
+	       ajuint *istart,ajuint *iend,char *strand,int *syms)  {
 /*#include "common.inc" */ 
   int    i,k ;
  
@@ -1230,7 +1233,7 @@ void  checklca(const int symlcharge,const int tmcount,
 ******************************************************************************/
 
 void  checklcb(const int symlcharge,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms)  {
+	       ajuint *istart,ajuint *iend,char *strand,int *syms)  {
 /*#include "common.inc" */ 
   int    i,k ;
  
@@ -1251,7 +1254,7 @@ void  checklcb(const int symlcharge,const int tmcount,
 ******************************************************************************/
 
 void  checkla(const int symlamine,const int tmcount,
-	      int *istart,int *iend,char *strand,int *syms)  {
+	      ajuint *istart,ajuint *iend,char *strand,int *syms)  {
 /*#include "common.inc" */ 
   int    i,k ;
  
@@ -1271,7 +1274,7 @@ void  checkla(const int symlamine,const int tmcount,
 ******************************************************************************/
 
 void  checkloh(const int symloh,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms)
+	       ajuint *istart,ajuint *iend,char *strand,int *syms)
 {
 /*#include "common.inc" */ 
   int    i,k ;
@@ -1293,7 +1296,7 @@ void  checkloh(const int symloh,const int tmcount,
 ******************************************************************************/
 
 void  checklar(const int symlar,const int tmcount,
-	       int *istart,int *iend,char *strand,int *syms)
+	       ajuint *istart,ajuint *iend,char *strand,int *syms)
 {
 /*#include "common.inc" */ 
   int    i,k ;
@@ -1316,7 +1319,7 @@ void  checklar(const int symlar,const int tmcount,
 ******************************************************************************/
 
 void  checklpro(const int symlpro,const int tmcount,
-		int *istart,int *iend,char *strand,int *syms){
+		ajuint *istart,ajuint *iend,char *strand,int *syms){
   int    i,k ;
  
   for(k=1;k<=tmcount ;k++)
@@ -1334,7 +1337,7 @@ void  checklpro(const int symlpro,const int tmcount,
 ******************************************************************************/
 
 void  checkgly(AjBool outstart,const int symgly,const int tmcount,int length,
-	       int *istart,int *iend,char *strand,int *syms)
+	       ajuint *istart,ajuint *iend,char *strand,int *syms)
 {
   int    i,k,count,pass = 0 ;
   float       rcount ;
@@ -7424,7 +7427,7 @@ void  ball5up(const int istart,const int j,const float x,
 **
 ******************************************************************************/
 
-void  conup(float *hold,const int i,const int is,int *ie,
+void  conup(float *hold,const int i,const ajuint is,ajuint *ie,
 	    char *strand,int *syms)
 {
  
@@ -8038,7 +8041,7 @@ void  conup(float *hold,const int i,const int is,int *ie,
 **
 ******************************************************************************/
 
-void  condown(float *hold1,const int i,const int is,int *ie,
+void  condown(float *hold1,const int i,const ajuint is,ajuint *ie,
 	      char *strand,int *syms)
 {
  

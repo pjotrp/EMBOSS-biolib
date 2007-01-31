@@ -143,11 +143,44 @@ static double pamprobs[20][20] =
        -0.00084536, 0.01631369, 0.00095063,-0.09570217, 0.06480321}
     };
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void emboss_getnums(void);
+void emboss_inputdata(void);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void inputnumbers(void);
+void getoptions(void);
+void transition(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void inputdata(void);
+void doinput(void);
+void code(void);
+Static Void cats(void);
+void maketrans(void);
+void givens(double (*a)[20], long i, long j, long n,
+	    double ctheta, double stheta, boolean left);
+void coeffs(double x, double y, double *c, double *s,double accuracy);
+void tridiag(double (*a)[20], long n,double accuracy);
+void shiftqr(double (*a)[20], long n, double accuracy);
+void qreigen(double (*prob)[20], long n);
+void pameigen(void);
+void predict(long nb1, long nb2);
+void makedists(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
 AjPSeqset seqset;
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPStr *methodlist;
 AjPStr *categlist;
 AjPStr *genlist;
@@ -219,13 +252,15 @@ AjPFile outf;
   progress = ajAcdGetBool("progress");
 
 }
-void emboss_getnums(){
+
+void emboss_getnums(void)
+{
 /*  short begin,end;*/
   int begin2,end2;
   int i;
   
-  ajSeqsetToUpper(seqset);
-  spp = ajSeqsetSize (seqset);
+  ajSeqsetFmtUpper(seqset);
+  spp = ajSeqsetGetSize(seqset);
   chars = ajSeqsetGetRange(seqset,&begin2,&end2);
 
   if (printdata)
@@ -246,7 +281,8 @@ void emboss_getnums(){
 
 }
 
-void emboss_inputdata(){
+void emboss_inputdata(void)
+{
   int i,j,l,k;
   int ilen;
   const char *temp;
@@ -272,12 +308,12 @@ void emboss_inputdata(){
   }
 
   for(i=0;i<spp;i++){
-    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
-    strncpy(nayme[i],ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetGetseqNameS(seqset, i));
+    strncpy(nayme[i],ajStrGetPtr(ajSeqsetGetseqNameS(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	nayme[i][j] = ' ';
-    /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
-    temp = ajSeqsetSeq(seqset, i);
+    /*    ajUser("%s/n",ajSeqsetGetseqNameS(seqset, i));*/
+    temp = ajSeqsetGetseqSeqC(seqset, i);
     for(j=0;j<chars;j++){
       switch (temp[j]) {
       case 'A':
@@ -523,12 +559,7 @@ void emboss_inputdata(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -565,14 +596,13 @@ char *perm;
 
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
  (*ch) = (isupper((int)*ch) ? ((int)*ch) : toupper((int)*ch));
 }  /* uppercase */
 
 
-void inputnumbers()
+void inputnumbers(void)
 {
   /* input the numbers of species and of characters */
   long i;
@@ -597,7 +627,7 @@ void inputnumbers()
 
 }  /* inputnumbers */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -845,7 +875,7 @@ void getoptions()
   } while (!done);
 }  /* getoptions */
 
-void transition()
+void transition(void)
 {
   /* calculations related to transition-transversion ratio */
   double aa, bb, freqr, freqy, freqgr, freqty;
@@ -880,7 +910,7 @@ void doinit(int argc, char *argv[])
 
 
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, 0-9 and A-Z for weights 10 - 35 */
   Char ch;
@@ -922,7 +952,7 @@ void inputweights()
   weights = true;
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of sites */
   long i, j, k;
@@ -946,7 +976,7 @@ void printweights()
   putc('\n', outfile);
 }  /* printweights */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* input the information on the options */
   Char ch;
@@ -998,7 +1028,7 @@ void inputoptions()
     printweights();
 }  /* inputoptions */
 
-void inputdata()
+void inputdata(void)
 {
   /* input the names and sequences for each species */
   long i, j, k, l, aasread, aasnew=0;
@@ -1337,7 +1367,7 @@ void inputdata()
 }  /* inputdata */
 
 
-void doinput()
+void doinput(void)
 {
   /* reads the input data */
   /*  inputoptions();
@@ -1346,7 +1376,7 @@ void doinput()
 }  /* doinput */
 
 
-void code()
+void code(void)
 {
   /* make up table of the code 1 = u, 2 = c, 3 = a, 4 = g */
   long n;
@@ -1442,7 +1472,7 @@ void code()
 }  /* code */
 
 
-Static Void cats()
+Static Void cats(void)
 {
   /* define categories of amino acids */
   aas b;
@@ -1498,7 +1528,7 @@ Static Void cats()
 }  /* cats */
 
 
-void maketrans()
+void maketrans(void)
 {
   /* Make up transition probability matrix from code and category tables */
   long i, j, k, m, n, s, nb1, nb2;
@@ -1584,11 +1614,8 @@ void maketrans()
 
 
 
-void givens(a, i, j, n, ctheta, stheta, left)
-double (*a)[20];
-long i, j, n;
-double ctheta, stheta;
-boolean left;
+void givens(double (*a)[20], long i, long j, long n,
+	    double ctheta, double stheta, boolean left)
 {
   /* Givens transform at i,j for 1..n with angle theta */
   long k;
@@ -1607,9 +1634,7 @@ boolean left;
   }
 }  /* givens */
 
-void coeffs(x, y, c, s,accuracy)
-double x, y, *c, *s;
-double accuracy;
+void coeffs(double x, double y, double *c, double *s,double accuracy)
 {
   /* compute cosine and sine of theta */
   double root;
@@ -1624,10 +1649,7 @@ double accuracy;
   }
 }  /* coeffs */
 
-void tridiag(a, n,accuracy)
-double (*a)[20];
-long n;
-double accuracy;
+void tridiag(double (*a)[20], long n,double accuracy)
 {
   /* Givens tridiagonalization */
   long i, j;
@@ -1643,10 +1665,7 @@ double accuracy;
   }
 }  /* tridiag */
 
-void shiftqr(a, n, accuracy)
-double (*a)[20];
-long n;
-double accuracy;
+void shiftqr(double (*a)[20], long n, double accuracy)
 {
   /* QR eigenvalue-finder */
   long i, j;
@@ -1677,9 +1696,7 @@ double accuracy;
 }  /* shiftqr */
 
 
-void qreigen(prob, n)
-double (*prob)[20];
-long n;
+void qreigen(double (*prob)[20], long n)
 {
   /* QR eigenvector/eigenvalue method for symmetric matrix */
   double accuracy;
@@ -1703,7 +1720,7 @@ long n;
 }  /* qreigen */
 
 
-void pameigen()
+void pameigen(void)
 {
   /* eigenanalysis for PAM matrix, precomputed */
   memcpy(prob,pamprobs,sizeof(pamprobs));
@@ -1712,8 +1729,7 @@ void pameigen()
 }  /* pameigen */
 
 
-void predict(nb1, nb2)
-long nb1, nb2;
+void predict(long nb1, long nb2)
 {
   /* make contribution to prediction of this aa pair */
   long m;
@@ -1730,7 +1746,7 @@ long nb1, nb2;
 }  /* predict */
 
 
-void makedists()
+void makedists(void)
 {
   /* compute the distances */
   long i, j, k, m, n, iterations, nb1, nb2;
@@ -1903,9 +1919,7 @@ void makedists()
 }  /* makedists */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* ML Protein distances by PAM or categories model */
 /*  char infilename[100],outfilename[100];*/
 #ifdef MAC
@@ -1951,8 +1965,7 @@ Char *argv[];
   exit(0);
 }  /* Protein distances */
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1966,8 +1979,7 @@ FILE *f;
   }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1978,14 +1990,13 @@ FILE *f;
     return (ch == '\n');
   }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

@@ -50,11 +50,39 @@ Static long *enterorder;
 /* Local variables for maketree, propagated globally for C version: */
 node **cluster;
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+double randum(long *seed);
+void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputoptions(void);
+void getinput(void);
+void setuptree(tree *a);
+void getdata(void);
+Local Void hookup(node *p, node *q);
+void coordinates(node *p, double lengthsum,long *tipy,double *tipmax);
+void drawline(long i, double scale);
+void printree(void);
+void describe(node *p);
+void summarize(void);
+void treeout(node *p);
+void nodelabel(boolean isnode);
+Local Void jointree(void);
+void maketree(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
 
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
 AjPSeqset seqset;
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile inf;
 AjPFile treef;
@@ -125,12 +153,7 @@ int i;
 
 
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -168,8 +191,7 @@ char *perm;
 
 
 
-double randum(seed)
-long *seed;
+double randum(long *seed)
 {
   /* random number generator -- slow but machine independent */
   long i, j, k, sum;
@@ -208,14 +230,13 @@ long *seed;
 
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
     *ch = isupper((int)*ch) ? ((int)*ch) : toupper((int)*ch);
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* read species numbers or number of bootstrap data sets */
   fscanf(infile, "%ld", &numsp);
@@ -224,7 +245,7 @@ void getnums()
   numsp2 = numsp * 2 - 2;
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   long i, inseed0=0;
@@ -415,7 +436,7 @@ void doinit(int argc, char *argv[])
 }  /* doinit */
 
 
-void inputoptions()
+void inputoptions(void)
 {
   /* read options information */
   Char ch;
@@ -452,7 +473,7 @@ void inputoptions()
 }  /* inputoptions */
 
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -461,8 +482,7 @@ void getinput()
 
 
 
-void setuptree(a)
-tree *a;
+void setuptree(tree *a)
 {
   /* initialize a tree */
   long i, j;
@@ -501,7 +521,7 @@ tree *a;
   a->start = a->nodep[0];
 }  /* setuptree */
 
-void getdata()
+void getdata(void)
 {
   /* read in distance matrix */
   long i, j, k, columns;
@@ -575,8 +595,7 @@ void getdata()
   putc('\n', outfile);
 }  /* getdata */
 
-Local Void hookup(p, q)
-node *p, *q;
+Local Void hookup(node *p, node *q)
 {
   /* hook together two nodes */
   p->back = q;
@@ -584,11 +603,7 @@ node *p, *q;
 }  /* hookup */
 
 
-void coordinates(p, lengthsum,tipy,tipmax)
-node *p;
-double lengthsum;
-long *tipy;
-double *tipmax;
+void coordinates(node *p, double lengthsum,long *tipy,double *tipmax)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -626,9 +641,7 @@ double *tipmax;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-long i;
-double scale;
+void drawline(long i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q;
@@ -718,7 +731,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
 
@@ -737,8 +750,7 @@ void printree()
 }  /* printree */
 
 
-void describe(p)
-node *p;
+void describe(node *p)
 {
   /* print out information for one branch */
   long i;
@@ -758,7 +770,7 @@ node *p;
   }
 }  /* describe */
 
-void summarize()
+void summarize(void)
 {
   /* print out branch lengths etc. */
   putc('\n', outfile);
@@ -777,8 +789,7 @@ void summarize()
   fprintf(outfile, "\n\n");
 }  /* summarize */
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   long i, n, w;
@@ -833,8 +844,7 @@ node *p;
   }
 }  /* treeout */
 
-void nodelabel(isnode)
-boolean isnode;
+void nodelabel(boolean isnode)
 {
   if (isnode)
     printf("NODE");
@@ -842,7 +852,7 @@ boolean isnode;
     printf("OTU ");
 }  /* nodelabel */
 
-Local Void jointree()
+Local Void jointree(void)
 {
   /* calculate the tree */
   long nc, nextnode, mini=0, minj=0, i, j, ia, ja, ii, jj, nude, iter;
@@ -1017,7 +1027,7 @@ Local Void jointree()
 }  /* jointree */
 
 
-void maketree()
+void maketree(void)
 {
   /* construct the tree */
   long i, j, k;
@@ -1060,9 +1070,7 @@ void maketree()
 }  /* maketree */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* main program */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -1113,8 +1121,7 @@ Char *argv[];
   exit(0);
 }
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1130,8 +1137,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1142,14 +1148,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

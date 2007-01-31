@@ -1,6 +1,7 @@
 /* regress.c */
 #include "macros.h"
 
+#include "regress.h"
 /*
 	regress
 

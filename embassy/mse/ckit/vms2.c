@@ -2,6 +2,7 @@
 #include <string.h>
 #include "seqentry.h"
 #include "ckittypes.h"
+#include "ckit.h"
 #include "macros.h"
 
 char *SeqToSpecName(SeqEntry *, int);
@@ -86,12 +87,6 @@ static char outFileName[SIZE];    /* Static because it's the return value */
 
 FILE *outFile, *inFile;
 
-/*
-** External function declarations and prototypes
-*/
-
-extern char *StrIndex(), *StrCollapse(), *StrToUpper(), *GetTime();
-extern char *StrChange(), *DecodeType(int), *GetTime();
 
 /*
 ** Process available text for formats which allow freely formated text.

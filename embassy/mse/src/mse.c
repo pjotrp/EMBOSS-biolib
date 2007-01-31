@@ -28,13 +28,15 @@
 
 #include "mse.h"         /* MSE global variables and definitions  */
 
-extern long DeGap(char * strand);
-
-
 /*FILE *debug;*/
 int DEFAULTFORMAT;
 /*AjPStr FORMATSTR=NULL;*/
 char **envptr;
+
+void LoadSeqWithseqset(AjPSeqset seqset);
+void DoSave(char *FName, AjPSeqout outseq);
+void Initscr(void);
+
 
 
 void LoadSeqWithseqset(AjPSeqset seqset){
@@ -50,8 +52,8 @@ void LoadSeqWithseqset(AjPSeqset seqset){
 
   strcpy(FOSSName,ajStrGetPtr(seqset->Usa));
   ajDebug("FOSSName = %s \n",FOSSName);
-  for(i=0;i<ajSeqsetSize(seqset);i++){
-    seq = ajSeqsetSeq (seqset, i);
+  for(i=0;i<ajSeqsetGetSize(seqset);i++){
+    seq = ajSeqsetGetseqSeqC(seqset, i);
     Strand = i+1;
 
     OkToEdit[Strand] = 1;
@@ -74,7 +76,7 @@ void LoadSeqWithseqset(AjPSeqset seqset){
     Seq[Strand].Circular = 0;
     Seq[Strand].Format = DefFormat;
 
-    tempname = ajSeqsetName(seqset,i);
+    tempname = ajSeqsetGetseqNameS(seqset,i);
     Seq[Strand].Name = CALLOC(ajStrGetLen(tempname)+1,char);
     strcpy(Seq[Strand].Name,ajStrGetPtr(tempname));
 
@@ -114,17 +116,17 @@ void DoSave(char *FName, AjPSeqout outseq)
       
     myoutseq = ajSeqoutNew();
     myoutseq->Format = DEFAULTFORMAT;
-    ajSeqFileNewOut(outseq, ajname);
+    ajSeqoutOpenFilename(outseq, ajname);
   }    
   for(i=1;i<NOS && OkToEdit[i]; i++){
     seqnew = ajSeqNewNameC(Seq[i].Mem, Seq[i].Name);
     ajSeqAssignEntryC(seqnew, Seq[i].Name);
     ajSeqAssignDescC(seqnew, Seq[i].Desc);
-    ajSeqAllWrite(myoutseq, seqnew);
+    ajSeqoutWriteSeq(myoutseq, seqnew);
     ajSeqDel(&seqnew);
   }
 
-  ajSeqWriteClose(outseq);
+  ajSeqoutClose(outseq);
   if ( !StrIsBlank(FName) ) {
     ajSeqoutDel(&myoutseq);
   }
@@ -134,7 +136,7 @@ void DoSave(char *FName, AjPSeqout outseq)
 
 }
 
-void Initscr(){
+void Initscr(void){
 
   ajDebug("MSE Initscr Display = initscr()\n");
   Display = initscr();
@@ -181,7 +183,8 @@ AjPSeqout outseq;
 	(void) Initscr();
 
 	MSEInit();
-	Notify((ProcPtr)ShowError,(ProcPtr)ShowError,(ProcPtr)ShowError);
+	Notify((ProcPtrChar)ShowError,(ProcPtrChar)ShowError,
+	       (ProcPtrChar)ShowError);
 
 	*OneLine = EOS;
 	Start = 1;
@@ -2540,12 +2543,12 @@ void DoWrite( int Start, int Finish, char *FName )
 
     myoutseq = ajSeqoutNew();
     myoutseq->Format = DEFAULTFORMAT;
-    ajSeqFileNewOut(myoutseq, ajname);
+    ajSeqoutOpenFilename(myoutseq, ajname);
 
     seqnew = ajSeqNewNameC(Seq[Strand].Mem, Seq[Strand].Name);
     ajSeqAssignEntryC(seqnew, Seq[Strand].Name);
     ajSeqAssignDescC(seqnew, Seq[Strand].Desc);
-    ajSeqWrite(myoutseq, seqnew);
+    ajSeqoutWriteSeq(myoutseq, seqnew);
 
     Seq[Strand].Mem  = sChar;
     Seq[Strand].Mem[f] = fChar;

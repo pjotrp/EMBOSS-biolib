@@ -26,7 +26,7 @@ ajint numwts;
 void   init_protmats(void);
 //void   getoptions(void);
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
-void   initmemrates(); 
+void   initmemrates(void); 
 void   makeprotfreqs(void);
 void   allocrest(void);
 void   doinit(void);
@@ -481,7 +481,7 @@ static double pamprobmat[20][20] =
    0.002309205802479111, 0.0005926106991001195}};
 
 
-void init_protmats()
+void init_protmats(void)
 {
   long l, m;
 
@@ -593,7 +593,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     }
 
 
-    model = ajAcdGetListI("model", 1);
+    model = ajAcdGetListSingle("model");
 
     if(ajStrMatchC(model, "j")) usejtt = true;
     if(ajStrMatchC(model, "h")) usepmb = true;
@@ -617,7 +617,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     phyloratecat = ajAcdGetProperties("categories");      
 
 
-    gammamethod = ajAcdGetListI("gamma", 1);
+    gammamethod = ajAcdGetListSingle("gamma");
 
     if(ajStrMatchC(gammamethod, "n")) {
       rrate      = (double *) Malloc(rcategs*sizeof(double));
@@ -713,13 +713,13 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     init_protmats();
 }  /* emboss_getoptions */
 
-void initmemrates() 
+void initmemrates(void) 
 {
    probcat = (double *) Malloc(rcategs * sizeof(double));
    rrate = (double *) Malloc(rcategs * sizeof(double));
 }
 
-void makeprotfreqs()
+void makeprotfreqs(void)
 {
   /* calculate amino acid frequencies based on eigmat */
   long i, mineig;
@@ -734,7 +734,7 @@ void makeprotfreqs()
 } /* makeprotfreqs */
 
 
-void allocrest()
+void allocrest(void)
 {
   long i;
 
@@ -752,7 +752,7 @@ void allocrest()
 }  /* allocrest */
 
 
-void doinit()
+void doinit(void)
 { /* initializes variables */
   inputnumbersseq(seqsets[0], &spp, &sites, &nonodes2, 2);
 
@@ -771,7 +771,7 @@ void doinit()
 }  /* doinit */
 
 
-void inputoptions()
+void inputoptions(void)
 {
   long i;
 
@@ -813,7 +813,7 @@ void input_protdata(AjPSeqset seqset, long chars)
     headings(chars, "Sequences", "---------");
   for(i=0;i<spp;i++){
     initnameseq(seqset, i);
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
+    strncpy(&y[i][0],ajSeqsetGetseqSeqC(seqset, i),chars);
     /*y[i][chars] = '\0';*/ /* no trailing null - just the characters */
   }
   if (!printdata)
@@ -843,7 +843,7 @@ void input_protdata(AjPSeqset seqset, long chars)
 }  /* input_protdata */
 
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   long i;
@@ -1031,7 +1031,7 @@ void alloc_pmatrix(long sib)
 }  /* alloc_pmatrix */
 
 
-void prot_inittable()
+void prot_inittable(void)
 {
   /* Define a lookup table. Precompute values and print them out in tables */
   /* Allocate memory for the pmatrices, dpmatices and ddpmatrices          */
@@ -1130,7 +1130,7 @@ void prot_inittable()
 }  /* prot_inittable */
 
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   if (!justwts || firstset)
@@ -1623,7 +1623,7 @@ double prot_evaluate(node *p, boolean saveit)
 }  /* prot_evaluate */
 
 
-void treevaluate()
+void treevaluate(void)
 {
   /* evaluate a user tree */
   long i;
@@ -1788,7 +1788,7 @@ void addtraverse(node *p, node *q, boolean contin)
 }  /* addtraverse */
 
 
-void globrearrange() 
+void globrearrange(void) 
 {
   /* does global rearrangements */
   tree globtree;
@@ -1981,7 +1981,7 @@ void proml_coordinates(node *p, double lengthsum, long *tipy,
 }  /* proml_coordinates */
 
 
-void proml_printree()
+void proml_printree(void)
 {
   /* prints out diagram of the tree2 */
   long tipy;
@@ -2155,7 +2155,7 @@ void rectrav(node *p, long m, long n)
 }  /* rectrav */
 
 
-void summarize()
+void summarize(void)
 {
   /* print out branch length information and node numbers */
   long i, j, mm=0, num_sibs;
@@ -2520,7 +2520,7 @@ void free_all_protx (long nonodes, pointarray treenode)
 }  /* free_all_protx */
 
 
-void maketree()
+void maketree(void)
 {
   long i, j, k, l;
   long num_sibs;
@@ -2781,7 +2781,7 @@ void maketree()
 }  /* maketree */
 
 
-void clean_up()
+void clean_up(void)
 {
   /* Free and/or close stuff */
   long i;

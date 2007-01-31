@@ -89,17 +89,75 @@ short *category, *weight, *alias, *ally, *location, *aliasweight;
 
 contribarr *contribution;
 lf l0gf;
-/************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void getbasefreqs();
+
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void emboss_inputdata(void);
+void emboss_getnums(void);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void getbasefreqs(void);
 void setuptree(tree *a);
-void makeweights();
-void makevalues();
-Local Void empiricalfreqs();
+void getdata(void);
+void sitesort(void);
+void sitecombine(void);
+void sitescrunch(void);
+void makeweights(void);
+void makevalues(void);
+Local Void empiricalfreqs(void);
+void getinput(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long  x);
+
+/* dnaml2.c prototypes */
+
+double randum(short *seed);
+void inittable(void);
+double evaluate(node *p, boolean saveit);
+void nuview(node *p);
+void getthree(node *p);
+void makenewv(node *p);
+void update(node *p);
+void smooth(node *p, boolean doupdate);
+void hookup(node *p, node *q);
+void in_sert(node *p, node *q);
+void re_move(node **p, node **q);
+void copynode(node *c, node *d);
+void copy_(tree *a, tree *b);
+void buildnewtip(short m, tree *tr);
+void buildsimpletree(tree *tr);
+void addtraverse(node *p, node *q, boolean contin);
+void rearrange(node *p);
+void coordinates(node *p, double lengthsum,short *tipy,double *tipmax);
+void drawline(short i, double scale);
+void printree(void);
+void sigma(node *p, double *sumlr, double *s1, double *s2);
+void describe(node *p);
+void summarize(void);
+void treeout(node *p);
+void getch(Char *c);
+void findch(Char c,short *lparens,short *rparens);
+void processlength(node *p);
+void addelement(node *p, short *nextnode,short *lparens,short *rparens,
+                boolean *names,boolean *nolengths);
+void treeread(void);
+void nodeinit(node *p);
+void initrav(node *p);
+void treevaluate(void);
 void maketree(void);
+/************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
 AjPSeqset seqset;
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile treef;
 AjPStr valstr;
@@ -261,7 +319,8 @@ int scanned;
   putchar('\n');
 }
 
-void emboss_inputdata(){
+void emboss_inputdata(void)
+{
  int i,j;
  int ilen;
 
@@ -291,11 +350,11 @@ void emboss_inputdata(){
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<numsp;i++){
-    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
-    strncpy(curtree.nodep[i]->nayme,ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetGetseqNameS(seqset, i));
+    strncpy(curtree.nodep[i]->nayme,ajStrGetPtr(ajSeqsetGetseqNameS(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	curtree.nodep[i]->nayme[j] = ' ';
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),sites);
+    strncpy(&y[i][0],ajSeqsetGetseqSeqC(seqset, i),sites);
     y[i][sites] = '\0';
     if(printdata)
       fprintf(outfile, "%.10s\t%s\n",curtree.nodep[i]->nayme,&y[i][0]);
@@ -327,14 +386,15 @@ void emboss_inputdata(){
   }
 }
 
-void emboss_getnums(){
+void emboss_getnums(void)
+{
   int begin2,end2;
 
   /* REMOVE AFTER ALL INPUT GONE */
   /*  fscanf(infile, "%hd%hd", &spp, &sites);*/
 
-  ajSeqsetToUpper(seqset);
-  numsp = ajSeqsetSize (seqset);
+  ajSeqsetFmtUpper(seqset);
+  numsp = ajSeqsetGetSize(seqset);
   sites = ajSeqsetGetRange(seqset,&begin2,&end2);
   if (printdata)
     fprintf(outfile, "%4hd Species, %4hd Sites\n\n", numsp, sites);
@@ -344,12 +404,7 @@ void emboss_getnums(){
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -389,15 +444,14 @@ char *perm;
 
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {
   /* convert ch to upper case -- either ASCII or EBCDIC */
    *ch = isupper((int)*ch) ? (int)*ch : toupper((int)*ch);
 }  /* uppercase */
 
 #ifdef OLDOPTIONS
-Local Void getnums()
+Local Void getnums(void)
 {
   /* input number of species, number of sites */
   fprintf(outfile, "\n\n");
@@ -408,7 +462,7 @@ Local Void getnums()
   numsp2 = numsp * 2 - 2;
 }  /* getnums */
 #endif
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   short i, inseed0=0;
@@ -726,7 +780,7 @@ if (!didchangecat){
 }  /* getoptions */
 
 
-/*void doinit()*/
+/*void doinit(void)*/
 void doinit(int argc, char *argv[])
 {
   /* initializes variables */
@@ -787,7 +841,7 @@ void doinit(int argc, char *argv[])
 
 
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, 0 or 1 */
   Char ch;
@@ -824,7 +878,7 @@ void inputweights()
   weights = true;
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of sites */
   short i, j;
@@ -843,7 +897,7 @@ void printweights()
   fprintf(outfile, "\n\n");
 }  /* printweights */
 
-void inputoptions()
+void inputoptions(void)
 {
   Char ch;
   short i, extranum, cursp, curst;
@@ -908,7 +962,7 @@ void inputoptions()
     printweights();
 }  /* inputoptions */
 
-void getbasefreqs()
+void getbasefreqs(void)
 {
   double aa, bb;
 
@@ -945,8 +999,7 @@ void getbasefreqs()
       xv * (1.0 - freqa * freqa - freqc * freqc - freqg * freqg - freqt * freqt);
 }  /* getbasefreqs */
 
-void setuptree(a)
-tree *a;
+void setuptree(tree *a)
 {
   short i, j;
   node *p;
@@ -969,7 +1022,7 @@ tree *a;
   a->start = a->nodep[0];
 }  /* setuptree */
 
-void getdata()
+void getdata(void)
 {
   /* read sequences */
   short i, j, k, l, basesread, basesnew=0;
@@ -1092,7 +1145,7 @@ void getdata()
   }
 }  /* getdata */
 
-void sitesort()
+void sitesort(void)
 {
   /* Shell sort keeping sites, weights in same order */
   short gap, i, j, jj, jg, k, itemp;
@@ -1129,7 +1182,7 @@ void sitesort()
   }
 }  /* sitesort */
 
-void sitecombine()
+void sitecombine(void)
 {
   /* combine sites that have identical patterns */
   short i, j, k;
@@ -1158,7 +1211,7 @@ void sitecombine()
   }
 }  /* sitecombine */
 
-void sitescrunch()
+void sitescrunch(void)
 {
   /* move so positively weighted sites come first */
   short i, j, itemp;
@@ -1197,7 +1250,7 @@ void sitescrunch()
   }
 }  /* sitescrunch */
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   int i,j,k;
@@ -1279,7 +1332,7 @@ void makeweights()
   }
 }  /* makeweights */
 
-void makevalues()
+void makevalues(void)
 {
   /* set up fractional likelihoods at tips */
   short i, j, k, l;
@@ -1397,7 +1450,7 @@ void makevalues()
   }
 }  /* makevalues */
 
-Local Void empiricalfreqs()
+Local Void empiricalfreqs(void)
 {
   /* Get empirical base frequencies from the data */
   short i, j, k;
@@ -1434,7 +1487,7 @@ Local Void empiricalfreqs()
 }  /* empiricalfreqs */
 
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -1450,9 +1503,7 @@ void getinput()
 }  /* getinput */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* DNA Maximum Likelihood */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -1502,8 +1553,7 @@ Char *argv[];
   exit(0);
 }  /* DNA Maximum Likelihood */
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -1519,8 +1569,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -1531,14 +1580,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long  x;
+MALLOCRETURN *mymalloc(long  x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)calloc(1,x);

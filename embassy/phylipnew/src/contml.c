@@ -129,7 +129,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
         lengths = ajAcdGetBool("lengths");
     }
 
-   datatype = ajAcdGetListI("datatype", 1);
+   datatype = ajAcdGetListSingle("datatype");
    if(ajStrMatchC(datatype, "c")) contchars = true;
 
    outgrno = ajAcdGetInt("outgrno");

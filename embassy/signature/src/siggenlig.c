@@ -49,7 +49,7 @@
 ******************************************************************************/
 AjBool siggenlig_assign_env(AjPResidue residue, AjPStr *OEnv,
 			    ajint envdefi, AjPFile logf);
-void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap,
+void siggenlig_new_sig_from_cmap(EmbPSignature *sig, AjPCmap cmap,
 				 ajint patchsize, ajint gapdistance,
 				 ajint typei);
 AjPPdb siggenlig_read_ccf(AjPCmap cmap, AjPDir ccfd, AjPDir ccfp);
@@ -99,10 +99,10 @@ int main(ajint argc, char **argv)
 				     file (input).*/
     AjIList iter         = NULL;  /* Iterator for cmap_list.  */
     
-    AjPSignature    sig  = NULL;  /* Full-length or patch signature.  */
+    EmbPSignature    sig  = NULL; /* Full-length or patch signature.  */
     AjPList    sig_list  = NULL;  /* List of signatures.  */
-    AjPSigdat    sigdat  = NULL;  /* Raw signature position.  */
-    AjPSigdat sigdat_tmp = NULL;  /* Raw signature position.  */
+    EmbPSigdat    sigdat  = NULL; /* Raw signature position.  */
+    EmbPSigdat sigdat_tmp = NULL; /* Raw signature position.  */
     AjPList sigdat_list  = NULL;  /* List of signature positions.  */
     
     ajint             x  = 0;     /* Loop counter.  */
@@ -186,7 +186,7 @@ int main(ajint argc, char **argv)
 
 	    for(firstpos = ajTrue, prevpos=0, x=0; x<cmap->Dim; x++)
 	    {
-		if((ajInt2dGet(cmap->Mat, 0, x)))
+		if((ajUint2dGet(cmap->Mat, 0, x)))
 		{
 		    /* Always 1 residue and 1 gap for these signature
                        positions. */
@@ -197,7 +197,7 @@ int main(ajint argc, char **argv)
 		    {
 			ajChararrPut(&sigdat->rids, 0,
 				     ajStrGetCharPos(cmap->Seq1, x));
-			ajIntPut(&sigdat->rfrq, 0, 1);
+			ajUintPut(&sigdat->rfrq, 0, 1);
 		    }
 		    /* 3D signature */
 		    else
@@ -213,7 +213,7 @@ int main(ajint argc, char **argv)
 				    ajStrAssignC(&OEnv, "*");
 				
 				ajStrAssignS(&sigdat->eids[0], OEnv);
-				ajIntPut(&sigdat->efrq, 0, 1);
+				ajUintPut(&sigdat->efrq, 0, 1);
 				foundresidue=ajTrue;
 				break;
 			    } /* if(residue->Idx == x+1) */
@@ -223,11 +223,11 @@ int main(ajint argc, char **argv)
 			ajListIterFree(&iter_residue);
 		    }
 		    if(firstpos)
-			ajIntPut(&sigdat->gsiz, 0, x);
+			ajUintPut(&sigdat->gsiz, 0, x);
 		    else
-			ajIntPut(&sigdat->gsiz, 0, x-prevpos-1);
+			ajUintPut(&sigdat->gsiz, 0, x-prevpos-1);
 
-		    ajIntPut(&sigdat->gfrq, 0, 1);
+		    ajUintPut(&sigdat->gfrq, 0, 1);
 
 		    ajListPushApp(sigdat_list, sigdat);
 		    prevpos=x;
@@ -283,7 +283,7 @@ int main(ajint argc, char **argv)
 		x<cmap->Dim;
 		x++)
 	    {
-		iscontact = ajInt2dGet(cmap->Mat, 0, x);
+		iscontact = ajUint2dGet(cmap->Mat, 0, x);
 
 		if(iscontact)
 		{
@@ -295,7 +295,7 @@ int main(ajint argc, char **argv)
 		    {
 			ajChararrPut(&sigdat->rids, 0,
 				     ajStrGetCharPos(cmap->Seq1, x));
-			ajIntPut(&sigdat->rfrq, 0, 1);
+			ajUintPut(&sigdat->rfrq, 0, 1);
 		    }
 		    /* 3D signature */
 		    else
@@ -310,7 +310,7 @@ int main(ajint argc, char **argv)
 							  envdefi, logf)))
 				    ajStrAssignC(&OEnv, "*");
 				ajStrAssignS(&sigdat->eids[0], OEnv);
-				ajIntPut(&sigdat->efrq, 0, 1);
+				ajUintPut(&sigdat->efrq, 0, 1);
 
 				foundresidue=ajTrue;
 				break;
@@ -323,10 +323,10 @@ int main(ajint argc, char **argv)
 		    
 		    
 		    if(firstpos)
-			ajIntPut(&sigdat->gsiz, 0, 0);
+			ajUintPut(&sigdat->gsiz, 0, 0);
 		    else
-			ajIntPut(&sigdat->gsiz, 0, x-prevpos-1);
-		    ajIntPut(&sigdat->gfrq, 0, 1);
+			ajUintPut(&sigdat->gsiz, 0, x-prevpos-1);
+		    ajUintPut(&sigdat->gfrq, 0, 1);
 		  
 
 
@@ -356,7 +356,7 @@ int main(ajint argc, char **argv)
 			    /* Set gap distance for current position,
 			       i.e. the first position in the next
 			       putative signature, to 0 */
-			    ajIntPut(&sigdat->gsiz, 0, 0);
+			    ajUintPut(&sigdat->gsiz, 0, 0);
 			}
 			else
 			{
@@ -498,7 +498,7 @@ AjPPdb siggenlig_read_ccf(AjPCmap cmap,  AjPDir ccfd,  AjPDir ccfp)
 
 
 
-void siggenlig_new_sig_from_cmap(AjPSignature *sig, AjPCmap cmap,
+void siggenlig_new_sig_from_cmap(EmbPSignature *sig, AjPCmap cmap,
 				 ajint patchsize, ajint gapdistance,
 				 ajint typei)
 {

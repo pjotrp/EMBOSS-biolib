@@ -54,18 +54,18 @@
 ** PROTOTYPES  
 **
 ******************************************************************************/
-static void seqfraggle_getlengths(AjPHitlist hitlist, 
-			   ajint *num_hits, 
-			   AjPInt *seq_len_sort, 
-			   AjPInt *seq_len, 
-			   AjPInt *seq_ok);
+static void seqfraggle_getlengths(EmbPHitlist hitlist, 
+				  ajint *num_hits, 
+				  AjPUint *seq_len_sort, 
+				  AjPUint *seq_len, 
+				  AjPUint *seq_ok);
 
 static void seqfraggle_getlengths_other(AjPStr temp,
 				 AjPSeqset *seqset, 
 				 ajint *num_hits, 
-				 AjPInt *seq_len_sort, 
-				 AjPInt *seq_len, 
-				 AjPInt *seq_ok);
+				 AjPUint *seq_len_sort, 
+				 AjPUint *seq_len, 
+				 AjPUint *seq_ok);
 
 
 
@@ -97,16 +97,16 @@ int main(int argc, char **argv)
     float       score       = 0.0;   /* Float for storing length/median value*/
     
     
-    AjPInt      seq_len_sort= NULL;  /* Array to hold length of each hit seq.*/
-    AjPInt      seq_len     = NULL;  /* Array to hold sorted lengths.        */
-    AjPInt      seq_ok      = NULL;  /* Array indicating if length is > thresh 
+    AjPUint     seq_len_sort= NULL;  /* Array to hold length of each hit seq.*/
+    AjPUint     seq_len     = NULL;  /* Array to hold sorted lengths.        */
+    AjPUint     seq_ok      = NULL;  /* Array indicating if length is > thresh 
 					If seq_ok array element == 1 then the 
 					sequence is output.                  */
 
     AjPFile     hitsPtr     = NULL;  /* Pointer to hits file.                */
     AjPFile     dhfoutPtr   = NULL;  /* Pointer to hits output file.         */
      
-    AjPHitlist  hitlist     = NULL;  /* Hitlist structure.                   */
+    EmbPHitlist  hitlist    = NULL;  /* Hitlist structure.                   */
 
     AjPSeqset   seqset      = NULL;
     AjPSeqout   seqout      = NULL;
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
             /* Calculate median length. 
 	       Reorder seq_len_sort array into ascending order. */
             for(x=0;x<num_hits;x++)
-                ajSortIntInc((ajint *) ajIntInt(seq_len_sort), num_hits);
+                ajSortIntInc((ajint *) ajUintUint(seq_len_sort), num_hits);
 
         
             /* If num_hits == even then the median = average of middle two 
@@ -179,15 +179,15 @@ int main(int argc, char **argv)
             if((num_hits % 2) == 0)
             {
                 mid = (num_hits / 2);
-                median = (((ajIntGet(seq_len_sort, mid-1))
-			   + (ajIntGet(seq_len_sort, mid))) / 2); 
+                median = (((ajUintGet(seq_len_sort, mid-1))
+			   + (ajUintGet(seq_len_sort, mid))) / 2); 
             }
 
             /* else if num == odd number, then median = middle value. */ 
             else
             {
                 mid = (num_hits / 2);
-                median = ajIntGet(seq_len_sort, mid); 
+                median = ajUintGet(seq_len_sort, mid); 
             }
         
 
@@ -195,12 +195,13 @@ int main(int argc, char **argv)
             /* Create array of 1's and 0's. */
             for(x=0;x<num_hits;x++)
             {
-                score = ((((float)ajIntGet(seq_len, x) / (float)median)) * 100);
+                score = ((((float)ajUintGet(seq_len, x) /
+			   (float)median)) * 100);
                 if(score < thresh) 
-                    ajIntPut(&seq_ok, x, 0);
+                    ajUintPut(&seq_ok, x, 0);
                 else if(score >= thresh)
                 {
-                    ajIntPut(&seq_ok, x, 1);
+                    ajUintPut(&seq_ok, x, 1);
                     y++;
                 }
             }
@@ -238,18 +239,18 @@ int main(int argc, char **argv)
 	    if(num_hits > 1)
 	    {
 		for(x=0; x<num_hits; x++)
-		    if(ajIntGet(seq_ok, x) == 1)
+		    if(ajUintGet(seq_ok, x) == 1)
 		    {
-			tmpseq = ajSeqsetGetSeq(seqset, x);
-			ajSeqWrite(seqout, tmpseq);
+			tmpseq = ajSeqsetGetseqSeq(seqset, x);
+			ajSeqoutWriteSeq(seqout, tmpseq);
 		    }
 	    }
 	    else
 	    {
 		for(x=0; x<num_hits; x++)
 		{
-		    tmpseq = ajSeqsetGetSeq(seqset, x);
-		    ajSeqWrite(seqout, tmpseq);
+		    tmpseq = ajSeqsetGetseqSeq(seqset, x);
+		    ajSeqoutWriteSeq(seqout, tmpseq);
 		}
 	    }
 	}
@@ -257,11 +258,11 @@ int main(int argc, char **argv)
 
 	/* Close input and output files and tidy up. */
 	if(seq_len)
-	    ajIntDel(&seq_len);
+	    ajUintDel(&seq_len);
 	if(seq_len_sort)
-	    ajIntDel(&seq_len_sort);
+	    ajUintDel(&seq_len_sort);
 	if(seq_ok)
-	    ajIntDel(&seq_ok);
+	    ajUintDel(&seq_ok);
 	if(seqset)
 	    ajSeqsetDel(&seqset);
 	if(hitlist)
@@ -293,20 +294,20 @@ int main(int argc, char **argv)
 **
 ** Gets lengths of sequences.
 **
-** @param [r] hitlist      [AjPHitlist]  Input sequence file name.
+** @param [r] hitlist      [EmbPHitlist]  Input sequence file name.
 ** @param [w] num_hits     [ajint *]     Number of sequences. 
-** @param [w] seq_len_sort [AjPInt *]    Lengths of sequences (sorted).
-** @param [w] seq_len      [AjPInt *]    Lengths of sequences.
-** @param [w] seq_ok       [AjPInt *]    Whether length is permitted.
+** @param [w] seq_len_sort [AjPUint *]    Lengths of sequences (sorted).
+** @param [w] seq_len      [AjPUInt *]    Lengths of sequences.
+** @param [w] seq_ok       [AjPUInt *]    Whether length is permitted.
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
-static void seqfraggle_getlengths(AjPHitlist hitlist, 
+static void seqfraggle_getlengths(EmbPHitlist hitlist, 
 				  ajint *num_hits, 
-				  AjPInt *seq_len_sort, 
-				  AjPInt *seq_len, 
-				  AjPInt *seq_ok)
+				  AjPUint *seq_len_sort, 
+				  AjPUint *seq_len, 
+				  AjPUint *seq_ok)
 {
     ajint len = 0;     /* Length of sequence hit                 */
     ajint x   = 0;     /* Loop counters                          */
@@ -316,19 +317,19 @@ static void seqfraggle_getlengths(AjPHitlist hitlist,
 
     if(hitlist->N > 1)
     {
-	*seq_len_sort = ajIntNewL(hitlist->N);
-	*seq_len      = ajIntNewL(hitlist->N);
-	*seq_ok       = ajIntNewL(hitlist->N);
+	*seq_len_sort = ajUintNewL(hitlist->N);
+	*seq_len      = ajUintNewL(hitlist->N);
+	*seq_ok       = ajUintNewL(hitlist->N);
 
-	ajIntPut(seq_len_sort, hitlist->N-1, 0);  
-	ajIntPut(seq_len, hitlist->N-1, 0);       
-	ajIntPut(seq_ok, hitlist->N-1, 0);
+	ajUintPut(seq_len_sort, hitlist->N-1, 0);  
+	ajUintPut(seq_len, hitlist->N-1, 0);       
+	ajUintPut(seq_ok, hitlist->N-1, 0);
 
 	for(x=0; x<hitlist->N; x++)
 	{
 	    len = hitlist->hits[x]->End - (hitlist->hits[x]->Start-1);
-	    ajIntPut(seq_len, x, len);
-	    ajIntPut(seq_len_sort, x, len);
+	    ajUintPut(seq_len, x, len);
+	    ajUintPut(seq_len_sort, x, len);
 	}
 	
 	return;    
@@ -349,20 +350,20 @@ static void seqfraggle_getlengths(AjPHitlist hitlist,
 ** @param [r] temp         [AjPStr]      Input sequence file name.
 ** @param [w] seqset       [AjPSeqset *] Sequences.
 ** @param [w] num_hits     [ajint *]     Number of sequences. 
-** @param [w] seq_len_sort [AjPInt *]    Lengths of sequences (sorted).
-** @param [w] seq_len      [AjPInt *]    Lengths of sequences.
-** @param [w] seq_ok       [AjPInt *]    Whether length is permitted.
+** @param [w] seq_len_sort [AjPUint *]    Lengths of sequences (sorted).
+** @param [w] seq_len      [AjPUint *]    Lengths of sequences.
+** @param [w] seq_ok       [AjPUint *]    Whether length is permitted.
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
 static void seqfraggle_getlengths_other(AjPStr temp,  
-				 AjPSeqset *seqset,
-				 ajint *num_hits,
-				 AjPInt *seq_len_sort,
-				 AjPInt *seq_len,
-				 AjPInt *seq_ok)
+					AjPSeqset *seqset,
+					ajint *num_hits,
+					AjPUint *seq_len_sort,
+					AjPUint *seq_len,
+					AjPUint *seq_ok)
 {
     ajint           len       = 0;        /* Length of sequence hit          */
     ajint           x         = 0;        /* Loop counters                   */
@@ -382,26 +383,26 @@ static void seqfraggle_getlengths_other(AjPStr temp,
 	ajFatal("SeqsetRead failed in seqsearch_psialigned");
 
     
-    *num_hits = ajSeqsetSize(*seqset);
+    *num_hits = ajSeqsetGetSize(*seqset);
     
 
     if(*num_hits > 1)
     {
-	*seq_len_sort = ajIntNewL(*num_hits);
-	*seq_len      = ajIntNewL(*num_hits);
-	*seq_ok       = ajIntNewL(*num_hits);
+	*seq_len_sort = ajUintNewL(*num_hits);
+	*seq_len      = ajUintNewL(*num_hits);
+	*seq_ok       = ajUintNewL(*num_hits);
 
-	ajIntPut(seq_len_sort, *num_hits-1, 0);  
-	ajIntPut(seq_len, *num_hits-1, 0);       
-	ajIntPut(seq_ok, *num_hits-1, 0);
+	ajUintPut(seq_len_sort, *num_hits-1, 0);  
+	ajUintPut(seq_len, *num_hits-1, 0);       
+	ajUintPut(seq_ok, *num_hits-1, 0);
 
 	for(x=0; x<*num_hits; x++)
 	{
-	    tmpseq = ajSeqsetGetSeq(*seqset, x);
+	    tmpseq = ajSeqsetGetseqSeq(*seqset, x);
 	    
     	    len = ajSeqGetLen(tmpseq);
-	    ajIntPut(seq_len, x, len);
-	    ajIntPut(seq_len_sort, x, len);
+	    ajUintPut(seq_len, x, len);
+	    ajUintPut(seq_len_sort, x, len);
 	}
 	
 	ajSeqinDel(&seqin);

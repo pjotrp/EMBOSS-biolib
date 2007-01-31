@@ -62,6 +62,69 @@ extern            longer seed;
 #define down            2
 #define over            60
 
+double randum(short *seed);
+void exmake(double lz, short n);
+double evaluate(node *p);
+void nuview(node *p);
+void getthree(node *p);
+void makenewv(node *p);
+void update(node *p);
+void smooth(node *p);
+void add(node *below, node *newtip, node *newfork);
+void re_move(node **item, node **fork);
+void copynode(node *c, node *d);
+void copy_(tree *a, tree *b);
+void tryadd(node *p, node **item,node **nufork);
+void addpreorder(node *p, node *item_, node *nufork_);
+void tryrearr(node *p, boolean *success);
+void repreorder(node *p, boolean *success);
+Local Void rearrange(node **r);
+void getch(Char *c);
+void findch(Char c,short *rparens);
+void processlength(node *p);
+void addelement(node **p, short *nextnode,short *lparens,short *rparens,
+                boolean *names);
+void tymetrav(node *p, double *x);
+void treeread(void);
+void coordinates(node *p, short *tipy);
+void drawline(short i,double  scale);
+void printree(void);
+void describe(node *p);
+void summarize(void);
+void treeout(node *p);
+void nodeinit(node *p);
+void initrav(node *p);
+void travinit(node *p);
+void travsp(node *p);
+void treevaluate(void);
+void maketree(void);
+
+/* prototypes from dnaml.c */
+
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void emboss_inputdata(void);
+void emboss_getnums(void);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void uppercase(Char *ch);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputoptions(void);
+void getbasefreqs(void);
+void setuptree(tree *a);
+void getdata(void);
+void sitesort(void);
+void sitecombine(void);
+void sitescrunch(void);
+void makeweights(void);
+void makevalues(void);
+void getinput(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long  x);
 
 /* Local variables for maketree, propagated globally for C version: */
 short    k, which, maxwhich,col;
@@ -74,10 +137,10 @@ double  expon1i[maxcategories], expon1v[maxcategories],
 node    *there;
 double  **l0gf;
 Char ch;
-void setuptree(tree *a);
 
-double randum(seed)
-short *seed;
+
+
+double randum(short *seed)
 {
   /* random number generator -- slow but machine independent */
   short i, j, k, sum;
@@ -113,9 +176,7 @@ short *seed;
 }  /* randum */
 
 
-void exmake(lz, n)
-double lz;
-short n;
+void exmake(double lz, short n)
 {
   /* pretabulate tables of exponentials so need not do for each site */
   short i;
@@ -138,8 +199,7 @@ short n;
   }
 }  /* exmake */
 
-double evaluate(p)
-node *p;
+double evaluate(node *p)
 {
   double sum, sum2, sumc, y, lz, y1, z1zz, z1yy, prod12, prod1, prod2, prod3,
 	 sumterm, lterm;
@@ -238,8 +298,7 @@ node *p;
   return sum;
 }  /* evaluate */
 
-void nuview(p)
-node *p;
+void nuview(node *p)
 {
   short i, j;
   double lw, ww1, ww2, zz1, zz2, vv1, vv2, yy1, yy2, sum1, sum2, sumr1, sumr2,
@@ -311,8 +370,7 @@ node *p;
   }
 }  /* nuview */
 
-void getthree(p)
-node *p;
+void getthree(node *p)
 {
   /* compute likelihood, slope, curvature at a new triple of points */
   double tt, td;
@@ -353,8 +411,7 @@ node *p;
 }  /* getthree */
 
 
-void makenewv(p)
-node *p;
+void makenewv(node *p)
 {
   /* improve a node time */
   short it, imin, imax, i;
@@ -458,8 +515,7 @@ node *p;
   smoothed = smoothed && done;
 }  /* makenewv */
 
-void update(p)
-node *p;
+void update(node *p)
 {
   /* improve time and recompute views at a node */
   if (p == NULL)
@@ -485,8 +541,7 @@ node *p;
   nuview(p->next->next);
 }  /* update */
 
-void smooth(p)
-node *p;
+void smooth(node *p)
 {
   if (p == NULL)
     return;
@@ -499,8 +554,7 @@ node *p;
   update(p);
 }  /* smooth */
 
-void add(below, newtip, newfork)
-node *below, *newtip, *newfork;
+void add(node *below, node *newtip, node *newfork)
 {
   /* inserts the nodes newfork and its descendant, newtip, in the tree. */
   short i;
@@ -556,8 +610,7 @@ node *below, *newtip, *newfork;
   }
 }  /* add */
 
-void re_move(item, fork)
-node **item, **fork;
+void re_move(node **item, node **fork)
 {
   /* removes nodes item and its ancestor, fork, from the tree.
     the new descendant of fork's ancestor is made to be
@@ -591,8 +644,7 @@ node **item, **fork;
   (*item)->back = NULL;
 }  /* remove */
 
-void copynode(c, d)
-node *c, *d;
+void copynode(node *c, node *d)
 {
   short i, j;
 
@@ -609,8 +661,7 @@ node *c, *d;
   d->initialized = c->initialized;
 }  /* copynode */
 
-void copy_(a, b)
-tree *a, *b;
+void copy_(tree *a, tree *b)
 {
   short i, j=0;
   node *p, *q;
@@ -650,9 +701,7 @@ tree *a, *b;
   b->root = a->root;
 }  /* copy */
 
-void tryadd(p, item,nufork)
-node *p,**item,**nufork;
-
+void tryadd(node *p, node **item,node **nufork)
 {
   /* temporarily adds one fork and one tip to the tree.
     if the location where they are added yields greater
@@ -671,8 +720,7 @@ node *p,**item,**nufork;
   re_move(item,nufork);
 }  /* tryadd */
 
-void addpreorder(p, item_, nufork_)
-node *p, *item_, *nufork_;
+void addpreorder(node *p, node *item_, node *nufork_)
 {
   /* traverses a binary tree, calling PROCEDURE tryadd
     at a node before calling tryadd at its descendants */
@@ -690,9 +738,7 @@ node *p, *item_, *nufork_;
 }  /* addpreorder */
 
 
-void tryrearr(p, success)
-node *p;
-boolean *success;
+void tryrearr(node *p, boolean *success)
 {
   /* evaluates one rearrangement of the tree.
     if the new tree has greater likelihood than the old
@@ -725,9 +771,7 @@ boolean *success;
   }
 }  /* tryrearr */
 
-void repreorder(p, success)
-node *p;
-boolean *success;
+void repreorder(node *p, boolean *success)
 {
   /* traverses a binary tree, calling PROCEDURE tryrearr
     at a node before calling tryrearr at its descendants */
@@ -742,8 +786,7 @@ boolean *success;
     repreorder(p->next->next->back,success);
 }  /* repreorder */
 
-Local Void rearrange(r)
-node **r;
+Local Void rearrange(node **r)
 {
   /* traverses the tree (preorder), finding any local
     rearrangement which decreases the number of steps.
@@ -757,8 +800,7 @@ node **r;
   }
 }  /* rearrange */
 
-void getch(c)
-Char *c;
+void getch(Char *c)
 {
   /* get next nonblank character */
   do {
@@ -772,9 +814,7 @@ Char *c;
   } while (*c == ' ');
 }  /* getch */
 
-void findch(c,rparens)
-Char c;
-short *rparens;
+void findch(Char c,short *rparens)
 {
   /* scan forward until find character c */
   boolean done;
@@ -810,8 +850,7 @@ short *rparens;
 }  /* findch */
 
 
-void processlength(p)
-node *p;
+void processlength(node *p)
 {
   short digit, ordzero;
   double valyew, divisor;
@@ -837,10 +876,8 @@ node *p;
   p->v = valyew / divisor / fracchange;
 }  /* processlength */
 
-void addelement(p, nextnode,lparens,rparens,names)
-node **p;
-short *nextnode,*lparens,*rparens;
-boolean *names;
+void addelement(node **p, short *nextnode,short *lparens,short *rparens,
+		boolean *names)
 {
   /* recursive procedure adds nodes to user-defined tree */
   node *q;
@@ -924,9 +961,7 @@ boolean *names;
   exit(-1);
 }  /* addelement */
 
-void tymetrav(p, x)
-node *p;
-double *x;
+void tymetrav(node *p, double *x)
 {
   /* set up times of nodes */
   if (!p->tip) {
@@ -938,7 +973,7 @@ double *x;
     (*x)    -= p->v;
 }  /* tymetrav */
 
-void treeread()
+void treeread(void)
 {
   /* read in user-defined tree and set it up */
   short nextnode, lparens, rparens;
@@ -964,9 +999,7 @@ void treeread()
   free(names);
 }  /* treeread */
 
-void coordinates(p, tipy)
-node *p;
-short *tipy;
+void coordinates(node *p, short *tipy)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -995,9 +1028,7 @@ short *tipy;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-short i;
-double scale;
+void drawline(short i,double  scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q, *r, *first=NULL, *last=NULL;
@@ -1082,7 +1113,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
  /* Local variables for printree: */
@@ -1109,8 +1140,7 @@ void printree()
 #undef down
 #undef over
 
-void describe(p)
-node *p;
+void describe(node *p)
 {
   short i;
   double v;
@@ -1138,7 +1168,7 @@ node *p;
   }
 }  /* describe */
 
-void summarize()
+void summarize(void)
 {
   short i, j, mx;
   double mode, sum;
@@ -1211,8 +1241,7 @@ void summarize()
   free(mp);
 }  /* summarize */
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   short i, n, w;
@@ -1267,8 +1296,7 @@ node *p;
 }  /* treeout */
 
 
-void nodeinit(p)
-node *p;
+void nodeinit(node *p)
 {
   /* set up times at one node */
   node *q, *r;
@@ -1288,8 +1316,7 @@ node *p;
   p->next->next->v = r->v;
 }  /* nodeinit */
 
-void initrav(p)
-node *p;
+void initrav(node *p)
 {
   /* traverse to set up times throughout tree */
   if (p->tip)
@@ -1300,8 +1327,7 @@ node *p;
 }  /* initrav */
 
 
-void travinit(p)
-node *p;
+void travinit(node *p)
 {
   /* traverse to set up initial values */
   if (p == NULL)
@@ -1316,8 +1342,7 @@ node *p;
   p->initialized = true;
 }  /* travinit */
 
-void travsp(p)
-node *p;
+void travsp(node *p)
 {
   /* traverse to find tips */
   if (p == curtree.root)
@@ -1330,7 +1355,7 @@ node *p;
   }
 }  /* travsp */
 
-void treevaluate()
+void treevaluate(void)
 {
   /* evaluate likelihood of tree, after iterating branch lengths */
   short i;
@@ -1352,7 +1377,7 @@ void treevaluate()
 }  /* treevaluate */
 
 
-void maketree()
+void maketree(void)
 {
   /* constructs a binary tree from the pointers in curtree.nodep,
     adds each node at location which yields highest likelihood

@@ -8,8 +8,8 @@
 #ifndef MPMYID_H
 #define MPMYID_H
 
-extern int mpNodes();
-extern int mpMyID();
+extern int mpNodes(void);
+extern int mpMyID(void);
 extern void mpReduceAdd(int *data);
 extern void mpBroadcast(void *data, int bytes, int broadcaster);
 

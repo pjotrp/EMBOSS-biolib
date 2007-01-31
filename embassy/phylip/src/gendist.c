@@ -26,8 +26,27 @@ Static naym *nayms;
 Static boolean all, cavalli, lower, nei, reynolds,  mulsets, ibmpc,
 	       vt52, ansi, firstset, progress;
 
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+Static Void uppercase(Char *ch);
+void getnums(void);
+void getoptions(void);
+void doinit(int argc, char *argv[]);
+void getalleles(void);
+void getdata(void);
+void getinput(void);
+void makedists(void);
+void writedists(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile inf;
 AjPStr *methodlist;
@@ -67,12 +86,7 @@ AjPStr *methodlist;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -108,21 +122,20 @@ char *perm;
 }
 
 
-Static Void uppercase(ch)
-Char *ch;
+Static Void uppercase(Char *ch)
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
    *ch = (islower((int)*ch) ?  toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
 
-void getnums()
+void getnums(void)
 {
   /* read number of species and loci for first data set */
   /*short i;*/
   fscanf(infile, "%hd%hd", &numsp, &loci);
 }  /* getnums */
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -255,7 +268,7 @@ void doinit(int argc, char *argv[])
 }  /* doinit */
 
 
-void getalleles()
+void getalleles(void)
 {
   short i, cursp, curloc;
 
@@ -285,7 +298,7 @@ void getalleles()
   df = totalleles - loci;
 }  /* getalleles */
 
-void getdata()
+void getdata(void)
 {
   /* read allele frequencies */
   short i, j, k, m, n, p;
@@ -340,7 +353,7 @@ void getdata()
 }  /* getdata */
 
 
-void getinput()
+void getinput(void)
 {
   /* read the input data */
   getalleles();
@@ -348,7 +361,7 @@ void getinput()
 }  /* getinput */
 
 
-void makedists()
+void makedists(void)
 {
   short i, j, k;
   double s, s1, s2, s3, f;
@@ -398,7 +411,7 @@ void makedists()
   }
 }  /* makedists */
 
-void writedists()
+void writedists(void)
 {
   short i, j, k;
 
@@ -422,9 +435,7 @@ void writedists()
 }  /* writedists */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* main program */
 /*char infilename[100],outfilename[100];*/
 #ifdef MAC
@@ -460,8 +471,7 @@ Char *argv[];
 }
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -477,8 +487,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -489,14 +498,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc(x);

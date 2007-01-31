@@ -8,28 +8,8 @@
 #include <string.h>
 #include "ckittypes.h"
 #include "seqdef.h"
+#include "ckit.h"
 
-/*
-** External functions used by this file.
-*/
-
-extern char *StrToUpper(char *);                           /* Strings.c */
-extern char *StrCollapse(char *);                          /* Strings.c */
-extern char *StrChange(char *, char, char);                /* Strings.c */
-
-
-/*
-** Function declaration and prototypes for this file
-*/
-
- int  CheckSum(char *strand);
-long  DeGap(char *strand);
-char  CompBase(char base);
-char *RevComp(char *strand, Choice type);
-char *DNAtoRNA(char *strand);
-char *RNAtoDNA(char *strand);
-long NucToProtein(Choice geneticCode, char *strand);
-double Weight(char *strand, Choice type);
 
 /********************************  Methods  ********************************/
 /**  CheckSum ***************************************************************
@@ -208,7 +188,7 @@ char *RNAtoDNA(char *strand)
 **
 *****************************************************************************/
 
-long NucToProtein(Choice sgCode, char *strand)
+long NucToProtein(Choice sgCode, char *strand, long *length)
 
 {
 
@@ -264,6 +244,7 @@ int nNuc[3], nAlt;
 	base = 0;
 	pStrand=strand;
 	seqLength = strlen(strand);
+        *length = seqLength;
 	while( base <= seqLength-3 ) {
 	  for ( index=0, i=0; i<3; i++)
 	    if ( (pPos = strchr(nonAmbigBases,strand[base+i])) )
@@ -359,10 +340,10 @@ char *pSeq, test;
 double *w;                                              
 
 double total;        
-int i, lenght;
+int i, length;
 
 	total = 0.0;
-	lenght = 0;
+	length = 0;
 
 	protein = (type <= PROTEIN ) ? 1 : 0;
 
@@ -374,15 +355,15 @@ int i, lenght;
 	  for(i=0; names[i]; i++)
 	    if ( test == names[i] ) break;
 
-	  if ( test ^= '-' ) lenght++;          /* Don't count gaps       */
+	  if ( test ^= '-' ) length++;          /* Don't count gaps       */
 	  total += w[i];
 	}
 
 	/* Remove "water" for each peptide nucleotide bond */
 
-	total -= (lenght-1) * 18.015;
+	total -= (length-1) * 18.015;
 
-	return((lenght > 0) ? total : 0.0);
+	return((length > 0) ? total : 0.0);
 
 } /* End of Weight */
 

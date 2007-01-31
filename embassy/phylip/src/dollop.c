@@ -38,6 +38,14 @@ typedef struct gbit {
   struct gbit *next;
 } gbit;
 
+/* Local variables for hyptrav: */
+struct LOC_hyptrav {
+  struct LOC_hypstates *LINK;
+  node *r;
+  boolean bottom, nonzero;
+  gbit *zerobelow, *onebelow;
+} ;
+
 Static node *root;
 Static FILE *infile, *outfile, *treefile;
 Static long spp, nonodes, chars, words, inseed, col, datasets, ith, j,
@@ -77,9 +85,63 @@ Char ch;
 boolean *naymes;
 steptr numsone, numszero;
 bitptr steps;
+
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+void gnu(gbit **p);
+void chuck(gbit *p);
+double randum(long *seed);
+void uppercase(Char *ch);
+void newline(long i, long j, long k);
+void getoptions(void);
+void inputnumbers(void);
+void doinit(int argc, char *argv[]);
+void inputweights(void);
+void printweights(void);
+void inputancestors(void);
+void printancestors(void);
+void inputoptions(void);
+void inputdata(void);
+void doinput(void);
+void add(node *below, node *newtip, node *newfork);
+void re_move(node **item, node **fork);
+void fillin(node *p);
+void correct(node *p);
+void postorder(node *p,steptr numsone,steptr numszero);
+void count(node *p, steptr numsone,steptr numszero);
+void preorder(node *p, steptr numsone,steptr numszero);
+void evaluate(node *r);
+void savetree(void);
+void findtree(long *pos,boolean *found);
+void addtree(long *pos);
+void tryadd(node *p, node **item,node **nufork);
+void addpreorder(node *p, node *item_, node *nufork_);
+void tryrearr(node *p,node **r,boolean *success);
+void repreorder(node *p,node **r,boolean *success);
+void rearrange(node **r_);
+void findch(Char c);
+void addelement(node **p, long *nextnode,long *lparens,boolean *naymes);
+void treeread(void);
+void coordinates(node *p,long *tipy);
+void drawline(long i, double scale);
+void printree(void);
+void filltrav(node *r);
+void hyprint(struct LOC_hyptrav *Hyptrav,boolean *unknown,bitptr dohyp);
+void hyptrav(node *r_,boolean *unknown,bitptr dohyp);
+void hypstates(void);
+void treeout(node *p);
+void describe(void);
+void maketree(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile treef;
 AjPFile inf;
@@ -171,12 +233,7 @@ long inseed0;
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
 
 
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -214,8 +271,7 @@ char *perm;
 }
 
 
-void gnu(p)
-gbit **p;
+void gnu(gbit **p)
 {
   /* this and the following are do-it-yourself garbage collectors.
      Make a new node or pull one off the garbage list */
@@ -230,16 +286,14 @@ gbit **p;
 }  /* gnu */
 
 
-void chuck(p)
-gbit *p;
+void chuck(gbit *p)
 {
   /* collect garbage on p -- put it on front of garbage list */
   p->next = garbage;
   garbage = p;
 }  /* chuck */
 
-double randum(seed)
-long *seed;
+double randum(long *seed)
 {
   /* random number generator -- slow but machine independent */
   long i, j, k, sum;
@@ -276,14 +330,12 @@ long *seed;
 
 
 
-void uppercase(ch)
-Char *ch;
+void uppercase(Char *ch)
 {  /* convert a character to upper case -- either ASCII or EBCDIC */
   *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 
-void newline(i, j, k)
-long i, j, k;
+void newline(long i, long j, long k)
 {
   /* go to new line if i is a multiple of j, indent k spaces */
   long m;
@@ -296,7 +348,7 @@ long i, j, k;
 }  /* newline */
 
 
-void getoptions()
+void getoptions(void)
 {
   /* interactively set options */
   long i, inseed0=0;
@@ -488,7 +540,7 @@ void getoptions()
   }
 }  /* getoptions */
 
-void inputnumbers()
+void inputnumbers(void)
 {
   /* input the numbers of species and of characters */
   fscanf(infile, "%ld%ld", &spp, &chars);
@@ -534,7 +586,7 @@ void doinit(int argc, char *argv[])
   }
 }  /* doinit */
 
-void inputweights()
+void inputweights(void)
 {
   /* input the character weights, 0-9 and A-Z for weights 0 - 35 */
   Char ch;
@@ -571,7 +623,7 @@ void inputweights()
   weights = true;
 }  /* inputweights */
 
-void printweights()
+void printweights(void)
 {
   /* print out the weights of characters */
   long i, j, k;
@@ -595,7 +647,7 @@ void printweights()
   putc('\n', outfile);
 }  /* printweights */
 
-void inputancestors()
+void inputancestors(void)
 {
   /* reads the ancestral states for each character */
   long i;
@@ -649,7 +701,7 @@ void inputancestors()
   getc(infile);
 }  /* inputancestors */
 
-void printancestors()
+void printancestors(void)
 {
   /* print out list of ancestral states */
   long i;
@@ -671,7 +723,7 @@ void printancestors()
   fprintf(outfile, "\n\n");
 }  /* printancestor */
 
-void inputoptions()
+void inputoptions(void)
 {
   /* input the information on the options */
   Char ch;
@@ -755,7 +807,7 @@ void inputoptions()
   }
 }  /* inputoptions */
 
-void inputdata()
+void inputdata(void)
 {
   /* input the names and character state data for species */
   long i, j, l;
@@ -865,7 +917,7 @@ void inputdata()
 }  /* inputdata */
 
 
-void doinput()
+void doinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -873,8 +925,7 @@ void doinput()
 }  /* doinput */
 
 
-void add(below, newtip, newfork)
-node *below, *newtip, *newfork;
+void add(node *below, node *newtip, node *newfork)
 {
   /* inserts the nodes newfork and its left descendant, newtip,
      to the tree.  below becomes newfork's right descendant */
@@ -892,8 +943,7 @@ node *below, *newtip, *newfork;
   root->back = NULL;
 }  /* add */
 
-void re_move(item, fork)
-node **item, **fork;
+void re_move(node **item, node **fork)
 {
   /* removes nodes item and its ancestor, fork, from the tree.
      the new descendant of fork's ancestor is made to be
@@ -927,8 +977,7 @@ node **item, **fork;
   (*item)->back = NULL;
 }  /* re_move */
 
-void fillin(p)
-node *p;
+void fillin(node *p)
 {
   /* Sets up for each node in the tree two statesets.
      stateone and statezero are the sets of character
@@ -948,8 +997,7 @@ node *p;
   }
 }  /* fillin */
 
-void correct(p)
-node *p;
+void correct(node *p)
 {  /* get final states for intermediate nodes */
   long i;
   long z0, z1, s0, s1, temp;
@@ -980,9 +1028,7 @@ node *p;
 }  /* correct */
 
 
-void postorder(p,numsone,numszero)
-node *p;
-steptr numsone,numszero;
+void postorder(node *p,steptr numsone,steptr numszero)
 {
   /* traverses a binary tree, calling PROCEDURE fillin at a
      node's descendants before calling fillin at the node */
@@ -994,9 +1040,7 @@ steptr numsone,numszero;
 }  /* postorder */
 
 
-void count(p, numsone,numszero)
-node *p;
-steptr numsone,numszero;
+void count(node *p, steptr numsone,steptr numszero)
 {
   /* counts the number of steps in a fork of the tree.
      The program spends much of its time in this PROCEDURE */
@@ -1031,9 +1075,7 @@ steptr numsone,numszero;
   }
 }  /* count */
 
-void preorder(p, numsone,numszero)
-node *p;
-steptr numsone,numszero;
+void preorder(node *p, steptr numsone,steptr numszero)
 {
   /* go back up tree setting up and counting interior node
      states */
@@ -1047,8 +1089,7 @@ steptr numsone,numszero;
     count(p, numsone,numszero);
 }  /* preorder */
 
-void evaluate(r)
-node *r;
+void evaluate(node *r)
 {
   /* Determines the number of losses or polymorphisms needed
      for a tree. This is the minimum number needed to evolve
@@ -1106,7 +1147,7 @@ node *r;
 }  /* evaluate */
 
 
-void savetree()
+void savetree(void)
 {
   /* record in place where each species has to be
      added to reconstruct this tree */
@@ -1141,9 +1182,7 @@ void savetree()
   }
 }  /* savetree */
 
-void findtree(pos,found)
-long *pos;
-boolean *found;
+void findtree(long *pos,boolean *found)
 {
   /* finds tree given by ARRAY place in ARRAY
      bestrees by binary search */
@@ -1178,8 +1217,7 @@ boolean *found;
     (*pos)++;
 }  /* findtree */
 
-void addtree(pos)
-long *pos;
+void addtree(long *pos)
 {
   /* puts tree from ARRAY place in its proper position
      in ARRAY bestrees */
@@ -1192,9 +1230,7 @@ long *pos;
   nextree++;
 }  /* addtree */
 
-void tryadd(p, item,nufork)
-node *p;
-node **item,**nufork;
+void tryadd(node *p, node **item,node **nufork)
 {
   /* temporarily adds one fork and one tip to the tree.
      if the location where they are added yields greater
@@ -1230,8 +1266,7 @@ node **item,**nufork;
   re_move(item, nufork);
 }  /* tryadd */
 
-void addpreorder(p, item_, nufork_)
-node *p, *item_, *nufork_;
+void addpreorder(node *p, node *item_, node *nufork_)
 {
   /* traverses a binary tree, calling PROCEDURE tryadd
      at a node before calling tryadd at its descendants */
@@ -1248,10 +1283,7 @@ node *p, *item_, *nufork_;
 }  /* addpreorder */
 
 
-void tryrearr(p, r,success)
-node *p;
-node **r;
-boolean *success;
+void tryrearr(node *p,node **r,boolean *success)
 {
   /* evaluates one rearrangement of the tree.
      if the new tree has greater "likelihood" than the old
@@ -1283,10 +1315,7 @@ boolean *success;
   }
 }  /* tryrearr */
 
-void repreorder(p,r,success)
-node *p;
-node **r;
-boolean *success;
+void repreorder(node *p,node **r,boolean *success)
 {
   /* traverses a binary tree, calling PROCEDURE tryrearr
      at a node before calling tryrearr at its descendants */
@@ -1299,8 +1328,7 @@ boolean *success;
   }
 }  /* repreorder */
 
-void rearrange(r_)
-node **r_;
+void rearrange(node **r_)
 {
   /* traverses the tree (preorder), finding any local
      rearrangement which decreases the number of steps.
@@ -1316,8 +1344,7 @@ node **r_;
 }  /* rearrange */
 
 
-void findch(c)
-Char c;
+void findch(Char c)
 {
   /* scan forward until find character c */
   boolean done;
@@ -1358,10 +1385,7 @@ Char c;
   }
 }  /* findch */
 
-void addelement(p, nextnode,lparens,naymes)
-node **p;
-long *nextnode,*lparens;
-boolean *naymes;
+void addelement(node **p, long *nextnode,long *lparens,boolean *naymes)
 {
   /* recursive procedure adds nodes to user-defined tree */
   node *q;
@@ -1434,7 +1458,7 @@ boolean *naymes;
   putchar('\n');
 }  /* addelement */
 
-void treeread()
+void treeread(void)
 {
   /* read in user-defined tree and set it up */
  /* Char ch;*/
@@ -1455,9 +1479,7 @@ void treeread()
 }  /* treeread */
 
 
-void coordinates(p,tipy)
-node *p;
-long *tipy;
+void coordinates(node *p,long *tipy)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -1486,9 +1508,7 @@ long *tipy;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-void drawline(i, scale)
-long i;
-double scale;
+void drawline(long i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q, *r, *first=NULL, *last=NULL;
@@ -1568,7 +1588,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-void printree()
+void printree(void)
 {
   /* prints out diagram of the tree */
   long tipy        = 1;
@@ -1589,8 +1609,7 @@ void printree()
 
 
 
-void filltrav(r)
-node *r;
+void filltrav(node *r)
 {
   /* traverse to fill in interior node states */
   if (r->tip)
@@ -1600,18 +1619,7 @@ node *r;
   fillin(r);
 }  /* filltrav */
 
-/* Local variables for hyptrav: */
-struct LOC_hyptrav {
-  struct LOC_hypstates *LINK;
-  node *r;
-  boolean bottom, nonzero;
-  gbit *zerobelow, *onebelow;
-} ;
-
-void hyprint(Hyptrav,unknown,dohyp)
-struct LOC_hyptrav *Hyptrav;
-boolean *unknown;
-bitptr dohyp;
+void hyprint(struct LOC_hyptrav *Hyptrav,boolean *unknown,bitptr dohyp)
 {
   /* print out states at node */
   long i, j, k;
@@ -1662,10 +1670,7 @@ bitptr dohyp;
   putc('\n', outfile);
 }  /* hyprint */
 
-void hyptrav(r_,unknown,dohyp)
-node *r_;
-boolean *unknown;
-bitptr dohyp;
+void hyptrav(node *r_,boolean *unknown,bitptr dohyp)
 {
   /*  compute, print out states at one interior node */
   struct LOC_hyptrav HypVars;
@@ -1701,7 +1706,7 @@ bitptr dohyp;
   chuck(HypVars.onebelow);
 }  /* hyptrav */
 
-void hypstates()
+void hypstates(void)
 {
   boolean unknown  = false;
   bitptr dohyp;
@@ -1733,8 +1738,7 @@ void hypstates()
   free(dohyp);
 }  /* hypstates */
 
-void treeout(p)
-node *p;
+void treeout(node *p)
 {
   /* write out file with representation of final tree */
   long i, n;
@@ -1775,7 +1779,7 @@ node *p;
     fprintf(treefile, ";\n");
 }  /* treeout */
 
-void describe()
+void describe(void)
 {
   /* prints ancestors, steps and table of numbers of steps in
      each character */
@@ -1841,7 +1845,7 @@ void describe()
 }  /* describe */
 
 
-void maketree()
+void maketree(void)
 {
   /* constructs a binary tree from the pointers in treenode.
      adds each node at location which yields highest "likelihood"
@@ -2030,9 +2034,7 @@ void maketree()
 }  /* maketree */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* Dollo or polymorphism parsimony by uphill search */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -2105,8 +2107,7 @@ Char *argv[];
 }  /* Dollo or polymorphism parsimony by uphill search */
 
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -2122,8 +2123,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -2134,14 +2134,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc((size_t)x);

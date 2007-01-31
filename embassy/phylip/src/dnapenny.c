@@ -123,13 +123,70 @@ static char suppset[] =          /* this was previously a function. */
    (1 << ((Char)C))|(1 << ((Char)G))|(1 << ((Char)U)) | (1 << ((Char)O)),
    (1 << ((Char)A))|(1 << ((Char)C))|(1 << ((Char)G)) | (1 << ((Char)U)) | (1 << ((Char)O))};
 
+
+void emboss_getoptions(char *pgm, int argc, char *argv[]);
+void emboss_inputoptions(void);
+void emboss_getnums(void);
+void emboss_inputdata(void);
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm);
+Static Void gnu(gbases **p);
+Static Void chuck(gbases *p);
+
+#ifdef OLDOPTIONS
+Static Void uppercase(Char *ch);
+Local Void inputnumbers(void);
+Local Void getoptions(void);
+Local Void inputweights(void);
+Local Void printweights(void);
+Local Void inputoptions(void);
+Local Void inputdata(void);
+#endif
+
+Static void doinit(int argc, char *argv[]);
+Local Void sitesort(void);
+Local Void sitecombine(void);
+Local Void sitescrunch(void);
+Local Void makeweights(void);
+Local Void makevalues(void);
+Static Void doinput(void);
+Local Void fillin(node *p, node *left, node *rt);
+Local Void preorder(node *p);
+Local Void add(node **below, node **newtip, node **newfork);
+Local Void re_move(node **item, node **fork);
+Local Void supplement(node *r);
+Local Void evaluate(node *r);
+Local Void postorder(node *p);
+Local Void addtraverse(node *p, node *item, node *fork,
+                       short *m,short *n,valptr valyew,placeptr place);
+Local Void shellsort(double *a, short *b, short n);
+Local Void addit(short m);
+Local Void reroot(node *outgroup);
+Local Void coordinates(node *p, short *tipy);
+Local Void drawline(short i, double scale);
+Local Void printree(void);
+Local Void ancestset(char *a, char *b, char *c);
+Local Void hyprint(short b1, short b2, boolean *bottom,
+                   struct LOC_hyptrav *HyptravVars);
+Local Void hyptrav(node *r_, char *hypset_, short b1, short b2,
+                   boolean *bottom);
+Local Void hypstates(void);
+Local Void treeout(node *p);
+Local Void describe(void);
+Static Void maketree(void);
+int main(int argc, Char *argv[]);
+int eof(FILE *f);
+int eoln(FILE *f);
+void memerror(void);
+MALLOCRETURN *mymalloc(long x);
+
 /************ EMBOSS GET OPTIONS ROUTINES ******************************/
-/*Local Void makeweights();
-  Local Void makevalues();*/
+/*Local Void makeweights(void);
+  Local Void makevalues(void);*/
 
 AjPSeqset seqset;
 
-void emboss_getoptions(char *pgm, int argc, char *argv[]){
+void emboss_getoptions(char *pgm, int argc, char *argv[])
+{
 AjPFile outf;
 AjPFile treef;
 
@@ -191,25 +248,28 @@ AjPFile treef;
   }
 }
 
-void emboss_inputoptions(){
+void emboss_inputoptions(void)
+{
 int i;
 
  for (i = 0; i < chars; i++)
     weight[i] = 1;
 }
 
-void emboss_getnums(){
+void emboss_getnums(void)
+{
   int begin2,end2;
 
-  ajSeqsetToUpper(seqset);
-  spp = ajSeqsetSize (seqset);
+  ajSeqsetFmtUpper(seqset);
+  spp = ajSeqsetGetSize(seqset);
   chars = ajSeqsetGetRange(seqset,&begin2,&end2);
   if (printdata)
     fprintf(outfile, "%4hd Species, %4hd Sites\n", spp, chars);
   nonodes = spp * 2 - 1;
 }
 
-void emboss_inputdata(){
+void emboss_inputdata(void)
+{
 int j;
 int ilen;
 
@@ -231,12 +291,12 @@ int ilen;
     fprintf(outfile, "---------\n\n");
   }
   for(i=0;i<spp;i++){
-    ilen = ajStrGetLen(ajSeqsetName(seqset, i));
-    strncpy(&name[i][0],ajStrGetPtr(ajSeqsetName(seqset, i)),ilen);
+    ilen = ajStrGetLen(ajSeqsetGetseqNameS(seqset, i));
+    strncpy(&name[i][0],ajStrGetPtr(ajSeqsetGetseqNameS(seqset, i)),ilen);
     for (j=ilen;j<nmlngth;j++)
 	name[i][j] = ' ';
-    /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
-    strncpy(&y[i][0],ajSeqsetSeq(seqset, i),chars);
+    /*    ajUser("%s/n",ajSeqsetGetseqNameS(seqset, i));*/
+    strncpy(&y[i][0],ajSeqsetGetseqSeqC(seqset, i),chars);
     for(j=0;j<chars;j++){
       if(y[i][j] == 'T')
         y[i][j] = 'U';
@@ -249,12 +309,7 @@ int ilen;
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/
  
-void openfile(fp,filename,mode,application,perm)
-FILE **fp;
-char *filename;
-char *mode;
-char *application;
-char *perm;
+void openfile(FILE **fp,char *filename,char *mode,char *application,char *perm)
 {
   FILE *of;
   char file[100];
@@ -293,8 +348,7 @@ char *perm;
 
 
 
-Static Void gnu(p)
-gbases **p;
+Static Void gnu(gbases **p)
 {
   /* this and the following are do-it-yourself garbage collectors.
      Make a new node or pull one off the garbage list */
@@ -309,8 +363,7 @@ gbases **p;
 }  /* gnu */
 
 
-Static Void chuck(p)
-gbases *p;
+Static Void chuck(gbases *p)
 {
   /* collect garbage on p -- put it on front of garbage list */
   p->next = garbage;
@@ -319,15 +372,14 @@ gbases *p;
 
 
 #ifdef OLDOPTIONS
-Static Void uppercase(ch)
-Char *ch;
+Static Void uppercase(Char *ch)
 {
     *ch = (islower ((int)*ch) ? toupper((int)*ch) : ((int)*ch));
 }  /* uppercase */
 #endif
 
 #ifdef OLDOPTIONS
-Local Void inputnumbers()
+Local Void inputnumbers(void)
 {
   /* input the numbers of species and of characters */
   fscanf(infile, "%hd%hd", &spp, &chars);
@@ -342,7 +394,7 @@ Local Void inputnumbers()
 #endif
 
 #ifdef OLDOPTIONS
-Local Void getoptions()
+Local Void getoptions(void)
 {
   /* interactively set options */
   Char ch;
@@ -537,7 +589,7 @@ Local Void getoptions()
 #endif
 
 Static void doinit(int argc, char *argv[])
-     /*Static Void doinit()*/
+     /*Static Void doinit(void)*/
 {
   /* initializes variables */
   short i, j;
@@ -568,7 +620,7 @@ Static void doinit(int argc, char *argv[])
 
 
 #ifdef OLDOPTIONS
-Local Void inputweights()
+Local Void inputweights(void)
 {
   /* input the character weights, 0-9 and A-Z for weights
      0 - 35 */
@@ -613,7 +665,7 @@ Local Void inputweights()
 #endif
 
 #ifdef OLDOPTIONS
-Local Void printweights()
+Local Void printweights(void)
 {
   /* print out the weights of sites */
   short i, j, k;
@@ -639,7 +691,7 @@ Local Void printweights()
 #endif
 
 #ifdef OLDOPTIONS
-Local Void inputoptions()
+Local Void inputoptions(void)
 {
   /* input the information on the options */
   Char ch;
@@ -693,7 +745,7 @@ Local Void inputoptions()
 #endif
 
 #ifdef OLDOPTIONS
-Local Void inputdata()
+Local Void inputdata(void)
 {
   /* input the names and sequences for each species */
   short i, j, k, l, basesread, basesnew=0;
@@ -805,7 +857,7 @@ Local Void inputdata()
 }  /* inputdata */
 #endif
 
-Local Void sitesort()
+Local Void sitesort(void)
 {
   /* Shell sort keeping sites, weights in same order */
   short gap, i, j, jj, jg, k, itemp;
@@ -841,7 +893,7 @@ Local Void sitesort()
   }
 }  /* sitesort */
 
-Local Void sitecombine()
+Local Void sitecombine(void)
 {
   /* combine sites that have identical patterns */
   short i, j, k;
@@ -869,7 +921,7 @@ Local Void sitecombine()
   }
 }  /* sitecombine */
 
-Local Void sitescrunch()
+Local Void sitescrunch(void)
 {
   /* move so positively weighted sites come first */
   short i, j, itemp;
@@ -906,7 +958,7 @@ Local Void sitescrunch()
   }
 }  /* sitescrunch */
 
-Local Void makeweights()
+Local Void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   short i;
@@ -935,7 +987,7 @@ Local Void makeweights()
   }
 }  /* makeweights */
 
-Local Void makevalues()
+Local Void makevalues(void)
 {
   /* set up fractional likelihoods at tips */
   short i, j;
@@ -1061,7 +1113,7 @@ Local Void makevalues()
 }  /* makevalues */
 
 
-Static Void doinput()
+Static Void doinput(void)
 {
   /* reads the input data */
   /*  inputoptions();
@@ -1075,8 +1127,7 @@ Static Void doinput()
 
 
 
-Local Void fillin(p, left, rt)
-node *p, *left, *rt;
+Local Void fillin(node *p, node *left, node *rt)
 {
   /* sets up for each node in the tree the base sequence
      at that point and counts the changes.  The program
@@ -1108,8 +1159,7 @@ node *p, *left, *rt;
   }
 }  /* fillin */
 
-Local Void preorder(p)
-node *p;
+Local Void preorder(node *p)
 {
   /* recompute number of steps in preorder taking both ancestoral and
      descendent steps into account */
@@ -1121,9 +1171,7 @@ node *p;
   preorder(p->next->next->back);
 }  /* preorder */
 
-Local Void add(below, newtip, newfork)
-node **below, **newtip, **newfork;
-
+Local Void add(node **below, node **newtip, node **newfork)
 {
   /* inserts the nodes newfork and its left descendant, newtip,
      to the tree.  below becomes newfork's right descendant.
@@ -1147,8 +1195,7 @@ node **below, **newtip, **newfork;
     preorder((*newfork)->back);
 }  /* add */
 
-Local Void re_move(item, fork)
-node **item, **fork;
+Local Void re_move(node **item, node **fork)
 {
   /* removes nodes item and its ancestor, fork, from the tree.
      the new descendant of fork's ancestor is made to be
@@ -1189,8 +1236,7 @@ node **item, **fork;
 }  /* re_move */
 
 
-Local Void supplement(r)
-node *r;
+Local Void supplement(node *r)
 {
   /* determine minimum number of steps more which will
      be added when rest of species are put in tree */
@@ -1225,8 +1271,7 @@ node *r;
   }
 }  /* supplement */
 
-Local Void evaluate(r)
-node *r;
+Local Void evaluate(node *r)
 {
   /* determines the number of steps needed for a tree. this is
      the minimum number of steps needed to evolve sequences on
@@ -1248,8 +1293,7 @@ node *r;
   like = sum;
 }  /* evaluate */
 
-Local Void postorder(p)
-node *p;
+Local Void postorder(node *p)
 {
   /* traverses a binary tree, calling PROCEDURE fillin at a
      node's descendants before calling fillin at the node */
@@ -1262,11 +1306,8 @@ node *p;
 
 
 
-Local Void addtraverse(p, item, fork, m,n,valyew,place)
-node *p, *item, *fork;
-short *m,*n;
-valptr valyew;
-placeptr place;
+Local Void addtraverse(node *p, node *item, node *fork,
+		       short *m,short *n,valptr valyew,placeptr place)
 {
   /* traverse all places to add item */
   if (done)
@@ -1304,10 +1345,7 @@ placeptr place;
   }
 }  /* addtraverse */
 
-Local Void shellsort(a, b, n)
-double *a;
-short *b;
-short n;
+Local Void shellsort(double *a, short *b, short n)
 {
   /* Shell sort keeping a, b in same order */
   short gap, i, j, itemp;
@@ -1333,8 +1371,7 @@ short n;
   }
 }  /* shellsort */
 
-Local Void addit(m)
-short m;
+Local Void addit(short m)
 {
   /* adds the species one by one, recursively */
   short n;
@@ -1428,8 +1465,7 @@ short m;
   free(bestplace);
 }  /* addit */
 
-Local Void reroot(outgroup)
-node *outgroup;
+Local Void reroot(node *outgroup)
 {
   /* reorients tree, putting outgroup in desired position. */
   node *p, *q, *newbottom, *oldbottom;
@@ -1455,9 +1491,7 @@ node *outgroup;
 }  /* reroot */
 
 
-Local Void coordinates(p, tipy)
-node *p;
-short *tipy;
+Local Void coordinates(node *p, short *tipy)
 {
   /* establishes coordinates of nodes */
   node *q, *first, *last;
@@ -1486,9 +1520,7 @@ short *tipy;
   p->ymax = last->ymax;
 }  /* coordinates */
 
-Local Void drawline(i, scale)
-short i;
-double scale;
+Local Void drawline(short i, double scale)
 {
   /* draws one row of the tree diagram by moving up tree */
   node *p, *q, *r, *first=NULL, *last=NULL;
@@ -1568,7 +1600,7 @@ double scale;
   putc('\n', outfile);
 }  /* drawline */
 
-Local Void printree()
+Local Void printree(void)
 {
   /* prints out diagram of the tree */
 /* Local variables for printree: */
@@ -1594,8 +1626,7 @@ Local Void printree()
 
 
 
-Local Void ancestset(a, b, c)
-char *a, *b, *c;
+Local Void ancestset(char *a, char *b, char *c)
 {
   /* make the set of ancestral states below nodes
      whose base sets are a and b */
@@ -1605,10 +1636,8 @@ char *a, *b, *c;
 }  /* ancestset */
 
 
-Local Void hyprint(b1, b2, bottom,HyptravVars)
-short b1, b2;
-boolean *bottom;
-struct LOC_hyptrav *HyptravVars;
+Local Void hyprint(short b1, short b2, boolean *bottom,
+		   struct LOC_hyptrav *HyptravVars)
 {
   /* print out states in sites b1 through b2 at node */
   short i, j, k, n;
@@ -1672,11 +1701,8 @@ struct LOC_hyptrav *HyptravVars;
 }  /* hyprint */
 
 
-Local Void hyptrav(r_, hypset_, b1, b2, bottom)
-node *r_;
-char *hypset_;
-short b1, b2;
-boolean *bottom;
+Local Void hyptrav(node *r_, char *hypset_, short b1, short b2,
+		   boolean *bottom)
 {
   /*  compute, print out states at one interior node */
   struct LOC_hyptrav Vars;
@@ -1730,7 +1756,7 @@ boolean *bottom;
   chuck(ancset);
 }  /* hyptraVars */
 
-Local Void hypstates()
+Local Void hypstates(void)
 {
   /* fill in and describe states at interior nodes */
   boolean bottom;
@@ -1753,8 +1779,7 @@ Local Void hypstates()
   free(nothing);
 }  /* hypstates */
 
-Local Void treeout(p)
-node *p;
+Local Void treeout(node *p)
 {
   /* write out file with representation of final tree */
   short i, n;
@@ -1795,7 +1820,7 @@ node *p;
     fprintf(treefile, ";\n");
 }  /* treeout */
 
-Local Void describe()
+Local Void describe(void)
 {
   /* prints ancestors, steps and table of numbers of steps in
      each site */
@@ -1843,7 +1868,7 @@ Local Void describe()
 }  /* describe */
 
 
-Static Void maketree()
+Static Void maketree(void)
 {
   /* tree construction recursively by branch and bound */
   short i, j, k;
@@ -1934,9 +1959,7 @@ Static Void maketree()
 }  /* maketree */
 
 
-int main(argc, argv)
-int argc;
-Char *argv[];
+int main(int argc, Char *argv[])
 {  /* Penny's branch-and-bound method for DNA sequences */
 /*char infilename[100],outfilename[100],trfilename[100];*/
 #ifdef MAC
@@ -2011,8 +2034,7 @@ Char *argv[];
   exit(0);
 }  /* Penny's branch-and-bound method for DNA sequences */
 
-int eof(f)
-FILE *f;
+int eof(FILE *f)
 {
     register int ch;
 
@@ -2028,8 +2050,7 @@ FILE *f;
 }
 
 
-int eoln(f)
-FILE *f;
+int eoln(FILE *f)
 {
     register int ch;
 
@@ -2040,14 +2061,13 @@ FILE *f;
     return (ch == '\n');
 }
 
-void memerror()
+void memerror(void)
 {
 printf("Error allocating memory\n");
 exit(-1);
 }
 
-MALLOCRETURN *mymalloc(x)
-long x;
+MALLOCRETURN *mymalloc(long x)
 {
 MALLOCRETURN *mem;
 mem = (MALLOCRETURN *)malloc((size_t)x);

@@ -336,7 +336,7 @@ int main(ajint argc, char **argv)
 	{
 	    sites_arr = ajIntNew();
 	    for(nsites=0, y=0; y<cmap_arr[x]->Dim; y++)
-		if(ajInt2dGet(cmap_arr[x]->Mat, x, 0))
+		if(ajUint2dGet(cmap_arr[x]->Mat, x, 0))
 		{
 		    ajIntPut(&sites_arr, nsites, y+1);
 		    nsites++;
@@ -579,7 +579,7 @@ int main(ajint argc, char **argv)
 
 /* @func CalcScoringMatrix ****************************************************
 ** Calculates a matrix of 3d-1d scores
-** @param [r] CountMat [AjPInt2d]    Matrix of raw counts
+** @param [r] CountMat [AjPUint2d]    Matrix of raw counts
 ** @return [float]
 ** @@
 ******************************************************************************/

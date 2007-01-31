@@ -620,8 +620,8 @@ static AjBool domainseqs_FindDomainLimits(AjPSeq sp_seq,
 	*start = 0;
     }
 
-    apos = start1 + ajStrGetLen(m) - ajSeqGapCountS(m);
-    bpos = start2 + ajStrGetLen(n) - ajSeqGapCountS(n);
+    apos = start1 + ajStrGetLen(m) - ajSeqstrCountGaps(m);
+    bpos = start2 + ajStrGetLen(n) - ajSeqstrCountGaps(n);
 
     ajStrAppendS(&fa, m);
     ajStrAppendS(&fb, n);

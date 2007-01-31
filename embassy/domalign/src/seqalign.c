@@ -64,68 +64,68 @@ int main(int argc, char **argv)
     AjPList  inseqs    = NULL;  /* Directory of input sequences. Is made to 
 				   point to inseqsdhf or inseqsdaf. */
     AjPList  inseqsdhf = NULL;  /* Directory of DAF file (domain alignment 
-				   file) or singlet  sequence files (input).   */
+				   file) or singlet  sequence files (input). */
     AjPList  inseqsdaf = NULL;  /* Directory of DAF file (domain alignment 
-				   file) or singlet  sequence files (input).   */
+				   file) or singlet  sequence files (input). */
 
-    AjPStr  inname     = NULL;  /* Full name of the current DAF or singlet file*/
-    AjPFile inf        = NULL;  /* DAF or singlet file (input)                 */
+    AjPStr  inname     = NULL;  /* Full name of current DAF or singlet file  */
+    AjPFile inf        = NULL;  /* DAF or singlet file (input)               */
 
 
-    AjPDir dhfin       = NULL;  /* Directory of domain hits files (input).     */
-    AjPFile hitsinf    = NULL;  /* Current domain hits file.                   */
-    AjPStr hitsname    = NULL;  /* Name of current domain hits file.           */
+    AjPDir dhfin       = NULL;  /* Directory of domain hits files (input).   */
+    AjPFile hitsinf    = NULL;  /* Current domain hits file.                 */
+    AjPStr hitsname    = NULL;  /* Name of current domain hits file.         */
 
-    AjPDir  dafout     = NULL;  /* Directory of domain alignment files (output)*/
+    AjPDir  dafout     = NULL;  /* Directory of domain alignment outfiles    */
 
-    AjPStr  tmp_name   = NULL;  /* Random name for temp. files.                */
+    AjPStr  tmp_name   = NULL;  /* Random name for temp. files.              */
 
-    AjPStr  clustin1   = NULL;  /* Name of clustalw input alignment file.      */
-    AjPFile clustinf1  = NULL;  /* Clustalw input alignment file (CLUSTAL format) */
-    AjPStr  clustin2   = NULL;  /* Name of clustalw input sequence file.       */
-    AjPFile clustinf2  = NULL;  /* Clustalw input sequence file                */
+    AjPStr  clustin1   = NULL;  /* Name of clustalw input alignment file.    */
+    AjPFile clustinf1  = NULL;  /* Clustalw input align file (CLUSTAL fmt)   */
+    AjPStr  clustin2   = NULL;  /* Name of clustalw input sequence file.     */
+    AjPFile clustinf2  = NULL;  /* Clustalw input sequence file              */
 
     AjPStr  clustout   = NULL;  /* Name of clustalw file that will be created, 
 				   will be reformated into domain alignment 
-				   format                                      */
-    AjPStr  clustdnd   = NULL;  /* the name of the Clustal tree file (delete)  */
+				   format                                    */
+    AjPStr  clustdnd   = NULL;  /* the name of the Clustal tree file (delete)*/
 
-    AjPFile    logf    = NULL;  /* Log file pointer                            */
+    AjPFile    logf    = NULL;  /* Log file pointer                          */
 
-    ajint x=0;                  /* Loop counter                                */
-    AjPStr  cmd        = NULL;  /* Executable command                          */
+    ajint x=0;                  /* Loop counter                              */
+    AjPStr  cmd        = NULL;  /* Executable command                        */
    
-    AjPFile alg_in     = NULL;  /* the alignment file for reading              */
-    AjPFile alg_out    = NULL;  /* the alignment file for writing              */
-    AjPStr outname     = NULL;  /* Name of domain alignment file (output).     */
+    AjPFile alg_in     = NULL;  /* the alignment file for reading            */
+    AjPFile alg_out    = NULL;  /* the alignment file for writing            */
+    AjPStr outname     = NULL;  /* Name of domain alignment file (output).   */
 
     AjPStr  line       = NULL;
     
     AjPScopalg scopalign = NULL; /* Scopalg object for input alignmennt 
-				    (domain alignment file)                    */
-    AjPSeqset seqset_a   = NULL; /* Seqset for input alignment                 */
-    AjPSeqin  seqin_a    = NULL; /* Seqin for input alignment                  */
+				    (domain alignment file)                  */
+    AjPSeqset seqset_a   = NULL; /* Seqset for input alignment               */
+    AjPSeqin  seqin_a    = NULL; /* Seqin for input alignment                */
 
     AjPScophit hit_sing  = NULL; /* Hit for input hit sequences (domain hits 
-				    file)                                      */
-    AjPSeq    seq_sing   = NULL; /* Seq for input singlet sequence             */
-    AjPSeqin  seqin_sing = NULL; /* Seqin for input singlet sequence           */
+				    file)                                    */
+    AjPSeq    seq_sing   = NULL; /* Seq for input singlet sequence           */
+    AjPSeqin  seqin_sing = NULL; /* Seqin for input singlet sequence         */
 
-    AjPHitlist hitlist_h = NULL; /* Hitlist for input hit sequences (domain 
-				    hits file)                                 */
-    AjPSeqset seqset_h   = NULL; /* Seqset for input hit sequences             */
-    AjPSeqin  seqin_h    = NULL; /* Seqin for input hit sequences              */
+    EmbPHitlist hitlist_h = NULL; /* Hitlist for input hit sequences (domain 
+				    hits file)                               */
+    AjPSeqset seqset_h   = NULL; /* Seqset for input hit sequences           */
+    AjPSeqin  seqin_h    = NULL; /* Seqin for input hit sequences            */
 
-    AjPStr      *amode   = NULL; /* Mode of operation from acd                 */
+    AjPStr      *amode   = NULL; /* Mode of operation from acd               */
     ajint     amoden     = 0;    /* Program mode, 1: MODE_STAMP, 
-				    2: MODE_TCOFFEE (not yet implemented)      */
+				    2: MODE_TCOFFEE (not yet implemented)    */
 
     AjPStr   *mode       = NULL; /* 
 				  ** Mode of operation from ACD: 
 				  ** 1: Single sequences,
 				  ** 2: Sequence sets
 				  */
-    ajint      modei     = 0;    /* ACD mode as int                            */
+    ajint      modei     = 0;    /* ACD mode as int                          */
 
     AjPStr    tmp1      = NULL;
     AjPStr    tmp2      = NULL;
@@ -194,7 +194,8 @@ int main(int argc, char **argv)
 	if((inf = ajFileNewIn(inname)) == NULL)
 	{
 	    ajWarn("Could not open seed alignment file %S", inname);
-	    ajFmtPrintF(logf, "//\nCould not open seed alignment file %S\n", inname);
+	    ajFmtPrintF(logf, "//\nCould not open seed alignment file %S\n",
+			inname);
 	    continue;
 	}
 
@@ -227,7 +228,7 @@ int main(int argc, char **argv)
 		if(!(ajSeqsetRead(seqset_a, seqin_a)))
 		    ajFatal("SeqsetRead failed in seqsearch_psialigned");
 
-		if(ajSeqsetSize(seqset_a))
+		if(ajSeqsetGetSize(seqset_a))
 		    ok = ajTrue;
 	    }
 	    else
@@ -259,10 +260,10 @@ int main(int argc, char **argv)
 		ajDmxScopalgWriteFasta(scopalign,clustinf1);  
 	    else
 	    {
-		for(x=0;x<ajSeqsetSize(seqset_a);++x)
-		    ajFmtPrintF(clustinf1,">%S_%d\n%s\n",
-				ajSeqsetName(seqset_a, x), x, 
-				ajSeqsetSeq(seqset_a, x));
+		for(x=0;x<ajSeqsetGetSize(seqset_a);++x)
+		    ajFmtPrintF(clustinf1,">%S_%d\n%S\n",
+				ajSeqsetGetseqNameS(seqset_a, x), x, 
+				ajSeqsetGetseqSeqS(seqset_a, x));
 		ajFmtPrintF(clustinf1,"\n");
 	    }
 	    ajFileClose(&clustinf1);
@@ -285,7 +286,7 @@ int main(int argc, char **argv)
 	
 		if(!(ajSeqRead(seq_sing, seqin_sing)))
 		    ajFatal("SeqRead failed in seqsearch_psialigned");
-		if(MAJSTRGETLEN(ajSeqStr(seq_sing)))
+		if(MAJSTRGETLEN(ajSeqGetSeqS(seq_sing)))
 		    ok = ajTrue;
 	    }
 	    else
@@ -370,7 +371,7 @@ int main(int argc, char **argv)
 	    if(!(ajSeqsetRead(seqset_h, seqin_h)))
 		ajFatal("SeqsetRead failed in seqsearch_psialigned");
 	    
-	    if(ajSeqsetSize(seqset_h) >= 1)
+	    if(ajSeqsetGetSize(seqset_h) >= 1)
 		ok2 = ajTrue;
 	}
 	else 
@@ -437,8 +438,8 @@ int main(int argc, char **argv)
 	    {
 		/* The '0' is just for consistency with the other inputs. */
 		ajFmtPrintF(clustinf2,">%s_0\n",
-			    ajSeqName(seq_sing));
-		ajFmtPrintF(clustinf2,"%S\n", ajSeqStr(seq_sing));
+			    ajSeqGetNameC(seq_sing));
+		ajFmtPrintF(clustinf2,"%S\n", ajSeqGetSeqS(seq_sing));
 	    }
 	}
 	
@@ -467,11 +468,11 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	    for(x=0;x<ajSeqsetSize(seqset_h);++x)
+	    for(x=0;x<ajSeqsetGetSize(seqset_h);++x)
 	    {
 		ajFmtPrintF(clustinf2,">%S_%d\n",
-			    ajSeqsetName(seqset_h, x), x);
-		ajFmtPrintF(clustinf2,"%S\n", ajSeqsetSeq(seqset_h, x));
+			    ajSeqsetGetseqNameS(seqset_h, x), x);
+		ajFmtPrintF(clustinf2,"%S\n", ajSeqsetGetseqSeqC(seqset_h, x));
 	    }	
 	}
 	

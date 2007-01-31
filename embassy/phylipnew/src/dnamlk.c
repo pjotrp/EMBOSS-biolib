@@ -32,7 +32,7 @@ ajint numwts;
 /* function prototypes */
 //void   getoptions(void);
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
-void   initmemrates(); 
+void   initmemrates(void); 
 void   allocrest(void);
 void   doinit(void);
 void   inputoptions(void);
@@ -234,7 +234,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     phyloratecat = ajAcdGetProperties("categories");      
 
-    gammamethod = ajAcdGetListI("gamma", 1);
+    gammamethod = ajAcdGetListSingle("gamma");
 
     if(ajStrMatchC(gammamethod, "n")) {
       rrate      = (double *) Malloc(rcategs*sizeof(double));
@@ -374,7 +374,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
 }  /* emboss_getoptions */
 
-void initmemrates() 
+void initmemrates(void)
 {
    probcat = (double *) Malloc(rcategs * sizeof(double));
    rrate = (double *) Malloc(rcategs * sizeof(double));

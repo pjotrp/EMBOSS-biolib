@@ -86,7 +86,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     while (phylotrees[trees_in])
 	trees_in++;
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
     if (ajStrMatchC(method, "strict")) strict = true;
     else if(ajStrMatchC(method, "mr")) mr = true;
     else if(ajStrMatchC(method, "mre")) mre = true;

@@ -132,12 +132,12 @@ int main(int argc, char **argv)
     AjPList      sigin   = NULL;   /* Signature input file names.            */
     AjPStr       signame = NULL;   /* Name of signature file.                */
     AjPFile      sigf    = NULL;   /* Signature input file.                  */
-    AjPSignature sig     = NULL;   /* Signature.                             */
+    EmbPSignature sig    = NULL;   /* Signature.                             */
     AjPList      siglist = NULL;   /* List of signatures.                    */
     AjIList      sigiter = NULL;   /* Iterator for siglist.                  */
     AjBool       sigok  = ajFalse; /* True if signature processed ok.        */
     
-    AjPHit       hit = NULL;      /* Hit to store signature-sequence match.  */
+    EmbPHit      hit = NULL;      /* Hit to store signature-sequence match.  */
     AjPList      hits = NULL;     /* List of hits */
 
 
@@ -241,7 +241,7 @@ int main(int argc, char **argv)
 	hits = ajListNew();
 	sigiter = ajListIter(siglist);
 	
-	while((sig = (AjPSignature) ajListIterNext(sigiter)))
+	while((sig = (EmbPSignature) ajListIterNext(sigiter)))
 	{
 	    if(embSignatureAlignSeq(sig, seq, &hit, ntermi))
 	    {
@@ -272,9 +272,9 @@ int main(int argc, char **argv)
 
 	
 	/* Write ligand hits & alignment files (output)  */	
-	hitsf    = ajFileNewOutDir(hitsdir, ajSeqGetName(seq));
-	alignf   = ajFileNewOutDir(aligndir, ajSeqGetName(seq));
-	resultsf = ajFileNewOutDir(resultsdir, ajSeqGetName(seq));
+	hitsf    = ajFileNewOutDir(hitsdir, ajSeqGetNameS(seq));
+	alignf   = ajFileNewOutDir(aligndir, ajSeqGetNameS(seq));
+	resultsf = ajFileNewOutDir(resultsdir, ajSeqGetNameS(seq));
 	
 
 	
@@ -401,7 +401,7 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 
     AjIList iter    = NULL;	
     AjIList itersig = NULL;
-    AjPHit hit = NULL;
+    EmbPHit hit = NULL;
     ajint hitcnt=0;      /* Counter for current hit */
     AjPStr label = NULL;
     
@@ -424,7 +424,7 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
     
 	
     iter = ajListIter(hits);
-    while((hit = (AjPHit) ajListIterNext(iter)))
+    while((hit = (EmbPHit) ajListIterNext(iter)))
     {
 	if((wid1=MAJSTRGETLEN(hit->Sig->Ligid))>mwid1)
 	    mwid1 = wid1; 
@@ -453,7 +453,7 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
     
     /* Main loop for printing alignment. */
     iter = ajListIter(hits);
-    while((hit = (AjPHit) ajListIterNext(iter)))
+    while((hit = (EmbPHit) ajListIterNext(iter)))
     {
 	/* Get pointer to sequence & alignment string. */
 	ptrp = ajStrGetPtr(hit->Seq);
@@ -549,11 +549,11 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 {
     ajint x = 0;
     
-    AjPHit hit       = NULL;
-    AjPSignature sig = NULL;
+    EmbPHit hit       = NULL;
+    EmbPSignature sig = NULL;
     
-    AjPSignature *sigarr = NULL;
-    AjPHit *hitarr = NULL;
+    EmbPSignature *sigarr = NULL;
+    EmbPHit *hitarr = NULL;
     ajint  sizarr=0;
     
         
@@ -735,11 +735,11 @@ AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n,
 {
 /* AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList siglist,
                                    AjPList hits, ajint n, AjBool DOSEQ) */
-    AjPHit hit       = NULL;
-    AjPSignature sig = NULL;
+    EmbPHit hit       = NULL;
+    EmbPSignature sig = NULL;
     
-    /* AjPSignature *sigarr = NULL; */
-    AjPHit *hitarr = NULL;
+    /* EmbPSignature *sigarr = NULL; */
+    EmbPHit *hitarr = NULL;
     ajint  sizarr=0;
     
         
@@ -850,7 +850,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 { 
     AjPList ret         = NULL;
     AjIList iter        = NULL;   /* Iterator. */
-    AjPHit  hit         = NULL;   
+    EmbPHit  hit         = NULL;   
     AjPStr  prev_ligand = NULL;
     AjPLighit lighit    = NULL;
     float  score        = 0.0;
@@ -867,7 +867,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 
     iter = ajListIter(hits);
 
-    while((hit = (AjPHit) ajListIterNext(iter)))
+    while((hit = (EmbPHit) ajListIterNext(iter)))
     {
 	/* New ligand */
 	if((!ajStrMatchS(hit->Sig->Ligid, prev_ligand)))
@@ -949,7 +949,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 { 
     AjPList ret         = NULL;
     AjIList iter        = NULL;   /* Iterator. */
-    AjPHit  hit         = NULL;   
+    EmbPHit  hit         = NULL;   
     AjPStr  prev_ligand = NULL;
     AjPLighit lighit    = NULL;
 
@@ -974,7 +974,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 
 
     /* Hits are already sorted by ligid & site number */
-    while((hit = (AjPHit) ajListIterNext(iter)))
+    while((hit = (EmbPHit) ajListIterNext(iter)))
     {
 	/* ajFmtPrint("Current hit: %S (ligid: %S, sn: %d) score: %f\n", 
 		   hit->Acc, hit->Sig->Ligid, hit->Sig->sn, hit->Score); */

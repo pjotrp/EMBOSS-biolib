@@ -32,7 +32,7 @@
  * 
  * SELEX format is documented in Docs/formats.tex.
  ****************************************************************************
- * RCS $Id: interleaved.c,v 1.5 2006/05/19 11:33:03 rice Exp $
+ * RCS $Id: interleaved.c,v 1.6 2007/01/31 12:53:19 rice Exp $
  */
 
 #include "ajax.h"
@@ -513,10 +513,10 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     ajSeqsetFill(seqset);
     
     fmt = ajSeqsetGetFormat(seqset);
-    n = ajSeqsetSize(seqset);
-    ajSeqsetToUpper(seqset);
+    n = ajSeqsetGetSize(seqset);
+    ajSeqsetFmtUpper(seqset);
 
-    maxlen = ajSeqsetLen(seqset);
+    maxlen = ajSeqsetGetLen(seqset);
 
 
     /* First allocate and copy sequences */
@@ -524,7 +524,7 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     for(i=0;i<n;++i)
     {
 	seqs[i] = ajCharNewRes(maxlen+1);
-	strcpy(seqs[i],ajSeqChar(ajSeqsetGetSeq(seqset,i)));
+	strcpy(seqs[i],ajSeqGetSeqC(ajSeqsetGetseqSeq(seqset,i)));
     }
 
     info->sqinfo = (SQINFO *) calloc (sizeof(SQINFO), n);
@@ -550,14 +550,14 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     for(i=0;i<n;++i)
     {
 	info->sqinfo[i].flags = 0;
-	info->wgt[i] = ajSeqsetWeight(seqset,i);
+	info->wgt[i] = ajSeqsetGetseqWeight(seqset,i);
     }
     info->nseq = n;
     info->alen = maxlen;
 
     for(i=0;i<n;++i)
     {
-	seq = ajSeqsetGetSeq(seqset,i);
+	seq = ajSeqsetGetseqSeq(seqset,i);
 	if((len=ajStrGetLen(ajSeqGetNameS(seq))))
 	{
 	    if(len>= SQINFO_NAMELEN)
@@ -577,7 +577,7 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
 	    info->sqinfo[i].flags |= SQINFO_ACC;
 	}
     }
-    seq = ajSeqsetGetSeq(seqset,0);
+    seq = ajSeqsetGetseqSeq(seqset,0);
     info->cs = ajCharNewS(ajSeqGetSeqS(seq));
     info->name = ajCharNewS(ajSeqGetNameS(seq));
     info->acc = ajCharNewS(ajSeqGetAccS(seq));
@@ -622,7 +622,7 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
 
 	for(i=0;i<n;++i)
 	{
-	    seq = ajSeqsetGetSeq(seqset,i);
+	    seq = ajSeqsetGetseqSeq(seqset,i);
 	    sqdata = seq->Selexdata->sq;
 	    if((len=ajStrGetLen(sqdata->name)))
 	    {
@@ -708,9 +708,9 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
 	    info->sqinfo[i].type = kAmino;
 	info->sqinfo[i].flags |= SQINFO_TYPE;
 
-	seq = ajSeqsetGetSeq(seqset,i);
+	seq = ajSeqsetGetseqSeq(seqset,i);
 	
-	p = ajSeqChar(seq);
+	p = ajSeqGetSeqC(seq);
 	cnt = 0;
 	while((c=*p))
 	{

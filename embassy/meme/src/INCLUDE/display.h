@@ -45,8 +45,8 @@ void print_env(
   FILE *debug_file
 );
 
-void print_meme_doc();
+void print_meme_doc(void);
 
 #endif
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/display.h,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/INCLUDE/display.h,v 1.2 2007/01/31 12:53:19 rice Exp $ */

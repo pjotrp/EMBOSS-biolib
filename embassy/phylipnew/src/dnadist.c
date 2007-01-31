@@ -126,7 +126,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
       justwts = true;
     }
 
-    method = ajAcdGetListI("method", 1);
+    method = ajAcdGetListSingle("method");
 
     if(ajStrMatchC(method, "f")) {
       f84 = true;
@@ -144,7 +144,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
     if( (f84) || (kimura) || (jukes) ) {
-      gammamethod = ajAcdGetListI("gamma", 1);
+      gammamethod = ajAcdGetListSingle("gamma");
       if(ajStrMatchC(gammamethod, "g")) { 
         gama = true;
         cvi = ajAcdGetFloat("gammacoefficient");

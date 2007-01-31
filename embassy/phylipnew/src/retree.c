@@ -398,7 +398,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     else if(ajStrMatchC(initialtree, "u")) how = use;
     else if(ajStrMatchC(initialtree, "s")) how = spec;
 
-    format = ajAcdGetListI("format", 1);
+    format = ajAcdGetListSingle("format");
     if(ajStrMatchC(format, "n")) nexus = true;
     else if(ajStrMatchC(format, "x")) xmltree = true;
 
