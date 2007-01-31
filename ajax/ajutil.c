@@ -398,7 +398,7 @@ void ajUtilRevShort(short* sval)
     } data, revdata;
     char* cs;
     char* cd;
-    size_t i;
+    ajuint i;
 
     data.s = *sval;
     cs     = data.chars;
@@ -437,12 +437,50 @@ void ajUtilRevInt(ajint* ival)
     } data, revdata;
     char* cs;
     char* cd;
-    size_t i;
+    ajuint i;
 
     data.i = *ival;
     cs     = data.chars;
     cd     = &revdata.chars[sizeof(ajint)-1];
     for(i=0; i < sizeof(ajint); i++)
+    {
+	*cd = *cs++;
+	--cd;
+    }
+
+    *ival = revdata.i;
+
+    return;
+}
+
+
+
+
+/* @func ajUtilRevUint ********************************************************
+**
+** Reverses the byte order in an unsigned integer.
+**
+** @param [u] ival [ajuint*] Unsigned integer in wrong byte order.
+**                        Returned in correct order.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajUtilRevUint(ajuint* ival)
+{
+    union lbytes
+    {
+	char chars[8];
+	ajuint i;
+    } data, revdata;
+    char* cs;
+    char* cd;
+    ajuint i;
+
+    data.i = *ival;
+    cs     = data.chars;
+    cd     = &revdata.chars[sizeof(ajuint)-1];
+    for(i=0; i < sizeof(ajuint); i++)
     {
 	*cd = *cs++;
 	--cd;
@@ -475,7 +513,7 @@ void ajUtilRevLong(ajlong* lval)
     } data, revdata;
     char* cs;
     char* cd;
-    size_t i;
+    ajuint i;
     
     data.l = *lval;
     cs     = data.chars;
