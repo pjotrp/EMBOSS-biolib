@@ -75,10 +75,6 @@ int main(int argc, char **argv)
     float max;
     char ptr[10];
     ajint oldcolour = -1;
-    ajint begin1;
-    ajint begin2;
-    ajint end1;
-    ajint end2;
     ajuint len1;
     ajuint len2;
     float flen1;
@@ -93,10 +89,6 @@ int main(int argc, char **argv)
     graph    = ajAcdGetGraph("graph");
     boxit    = ajAcdGetBool("boxit");
     
-    begin1 = ajSeqGetBegin(seq1);
-    begin2 = ajSeqGetBegin(seq2);
-    end1   = ajSeqGetEnd(seq1);
-    end2   = ajSeqGetEnd(seq2);
     len1 = ajSeqGetLen(seq1);
     len2 = ajSeqGetLen(seq2);
     flen1 = ajSeqGetLen(seq1);

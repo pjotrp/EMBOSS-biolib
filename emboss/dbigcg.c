@@ -1502,13 +1502,12 @@ static AjBool dbigcg_ParsePir(AjPFile libr,
     static ajint desfield = -1;
     static ajint keyfield = -1;
     static ajint taxfield = -1;
-    static ajint svnfield = -1;
     static AjBool reset = AJTRUE;
 
     if(!fields)
     {
 	reset = ajTrue;
-	accfield = svnfield = desfield = keyfield = taxfield = -1;
+	accfield = desfield = keyfield = taxfield = -1;
 	return ajFalse;
     }
 
@@ -1521,7 +1520,10 @@ static AjBool dbigcg_ParsePir(AjPFile libr,
 	    if(ajStrMatchCaseC(fields[numFields], "acc"))
 		accfield=numFields;
 	    else if(ajStrMatchCaseC(fields[numFields], "sv"))
-		svnfield=numFields;
+	    {
+		++numFields;
+		continue;
+	    }
 	    else if(ajStrMatchCaseC(fields[numFields], "des"))
 		desfield=numFields;
 	    else if(ajStrMatchCaseC(fields[numFields], "key"))

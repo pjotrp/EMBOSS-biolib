@@ -43,7 +43,6 @@ int main(int argc, char **argv)
     AjPStr str = NULL;
     AjPStr tmpstr = NULL;
     AjPStr substr = NULL;
-    ajint ipos;
     ajint adj;
 
     embInit("dreg", argc, argv);
@@ -67,7 +66,6 @@ int main(int argc, char **argv)
 	       ajSeqGetOffset(seq), ajSeqGetOffend(seq),
 	       ajSeqIsReversed(seq), ajSeqIsNuc(seq), adj);
 
-	ipos  = 1;
 	ajStrAssignS(&str, ajSeqGetSeqS(seq));
 	ajStrFmtUpper(&str);
 	ajDebug("Testing '%s' len: %d %d regex %x\n",
