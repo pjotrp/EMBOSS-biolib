@@ -732,7 +732,7 @@ static AjBool arrChararrResize(AjPChar *thys, ajuint size)
 
     *thys = ajChararrNewL(s);
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -789,7 +789,7 @@ static AjBool arrIntResize(AjPInt *thys, ajuint size)
 
     *thys = ajIntNewL(s);
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -885,7 +885,7 @@ static AjBool arrUintResize(AjPUint *thys, ajuint size)
 
     *thys = ajUintNewL(s);
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -1138,7 +1138,7 @@ static AjBool arrFloatResize(AjPFloat *thys, ajuint size)
 
     *thys = ajFloatNewL(s);
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -1391,7 +1391,7 @@ static AjBool arrDoubleResize(AjPDouble *thys, ajuint size)
 
     *thys = ajDoubleNewL(s);
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -1643,7 +1643,7 @@ static AjBool arrShortResize(AjPShort *thys, ajuint size)
 
     *thys = ajShortNewL(s);
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -1895,7 +1895,7 @@ static AjBool arrLongResize(AjPLong *thys, ajuint size)
 
     *thys = ajLongNewL(s);
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -2518,7 +2518,7 @@ static AjBool arrInt2dResize(AjPInt2d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPInt*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -2834,7 +2834,7 @@ static AjBool arrInt3dResize(AjPInt3d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPInt2d*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -3214,7 +3214,7 @@ static AjBool arrUint2dResize(AjPUint2d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPUint*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -3527,7 +3527,7 @@ static AjBool arrUint3dResize(AjPUint3d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPUint2d*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -3864,7 +3864,7 @@ static AjBool arrFloat2dResize(AjPFloat2d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPFloat*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -4177,7 +4177,7 @@ static AjBool arrFloat3dResize(AjPFloat3d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPFloat2d*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -4513,7 +4513,7 @@ static AjBool arrDouble2dResize(AjPDouble2d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPDouble*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -4825,7 +4825,7 @@ static AjBool arrDouble3dResize(AjPDouble3d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPDouble2d*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -5161,7 +5161,7 @@ static AjBool arrShort2dResize(AjPShort2d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPShort*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -5474,7 +5474,7 @@ static AjBool arrShort3dResize(AjPShort3d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPShort2d*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -5810,7 +5810,7 @@ static AjBool arrLong2dResize(AjPLong2d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPLong*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
@@ -6123,7 +6123,7 @@ static AjBool arrLong3dResize(AjPLong3d *thys, ajuint size)
     nthys->Ptr = AJALLOC0(s*sizeof(AjPLong2d*));
     nthys->Res = s;
 
-    if(size <= p->Len)
+    if(size < p->Len)
 	limit = size+1;
     else
 	limit = p->Len;
