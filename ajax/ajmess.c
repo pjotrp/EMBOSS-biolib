@@ -662,8 +662,8 @@ void ajVErr(const char *format, va_list args)
 
 __noreturn void  ajDie(const char *format, ...)
 {
-    const const char *prefix   = DIE_PREFIX;
-    const const char *mesg_buf = NULL;
+    const char *prefix   = DIE_PREFIX;
+    const char *mesg_buf = NULL;
     va_list args;
 
     ++errorCount;
