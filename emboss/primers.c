@@ -534,11 +534,13 @@ int main(int argc, char **argv)
 
 /* tidy up */
     ajStrDel(&result);
+    ajSeqallDel(&sequence);
     ajSeqDel(&seq);
     ajStrDel(&strand);
     ajStrDel(&substr);
     ajFileClose(&outfile);
     ajStrDel(&taskstr);
+    ajRangeDel(&target);
 
     ajExit();
     return 0;
