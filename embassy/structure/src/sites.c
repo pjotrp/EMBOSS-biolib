@@ -304,7 +304,7 @@ int main(ajint argc, char **argv)
     AjPList list_seqs   = NULL;   /* List of sequences  */
     AjPStr  tmpseq      = NULL;   /* Temp. Seq for creating list_seqs */
     
-
+    AjPStr pdbstr = NULL; 		/* for pushing on to the list */
 
     
     /* READ ACD FILE */
@@ -483,7 +483,9 @@ int main(ajint argc, char **argv)
 	    for(cnt_chains=0, i=0; i<pdb->Nchn; i++)
 	    {
 		/*pdb file is already open and the object exists*/
-		ajListPushApp(list_pdbscopids, pdb->Pdb);
+		pdbstr = NULL;
+		ajStrAssignS(&pdbstr, pdb->Pdb);
+		ajListPushApp(list_pdbscopids, pdbstr);
 		ajChararrPut(&arr_chains, cnt_chains, pdb->Chains[i]->Id);
 		ajIntPut(&arr_nres, cnt_chains, pdb->Chains[i]->Nres);
 		++cnt_chains;
@@ -689,6 +691,7 @@ int main(ajint argc, char **argv)
 
     /* MEMORY MANAGEMENT */
     ajListDel(&prot);
+    ajListDel(&pdbdomList);
     ajDirDel(&dom);
     ajFileClose(&dcf_fptr);
     ajFileClose(&het_fptr);
