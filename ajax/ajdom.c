@@ -2659,7 +2659,6 @@ void ajDomNodePrintNode(const AjPDomNode node)
 AjPDomNode ajDomNodeInsertBefore(AjPDomNode node, AjPDomNode newchild,
 				 AjPDomNode refchild)
 {
-    AjPDomNodeEntry e = NULL;
     AjPDomNode n = NULL;
     AjPDomNode nxt = NULL;
     
@@ -2707,7 +2706,7 @@ AjPDomNode ajDomNodeInsertBefore(AjPDomNode node, AjPDomNode newchild,
 
     domDoRemoveChild(node,newchild);
 
-    if(!(e=ajDomNodeListInsert(node->childnodes,newchild,refchild)))
+    if(!(ajDomNodeListInsert(node->childnodes,newchild,refchild)))
 	return NULL;
 
     if(!node->firstchild)
