@@ -5657,7 +5657,7 @@ ajint  ajPdbGetEStrideType(const AjPPdb obj, ajint chn, AjPStr *EStrideType)
     }
     
     /* Set all positions to . */
-    ajStrAppendCountK(EStrideType,  (const char) '.', obj->Chains[idx]->Nres);   
+    ajStrAppendCountK(EStrideType, '.', obj->Chains[idx]->Nres);   
 
     iter=ajListIterRead(obj->Chains[idx]->Residues); 
     while((tmp=(AjPResidue)ajListIterNext(iter)))
@@ -6126,9 +6126,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
     
     AjIList    iter        = NULL;
     AjPAtom    atm         = NULL;
-    AjPAtom    atm2        = NULL;
     AjPResidue res         = NULL;
-    AjPResidue res2        = NULL;
     AjBool     found_start = ajFalse;
     AjBool     found_end   = ajFalse;    
 
@@ -6195,7 +6193,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
     
     /* Write sequence to domain coordinate file */
     ajFmtPrintF(outf, "XX\n");	
-    ajFmtPrintF(outf, "%-5s[1]\n", "CN");	
+    ajFmtPrintF(outf, "%-5s[1]\n", "CN");
     ajFmtPrintF(outf, "XX\n");	
     
     ajFmtPrintF(outf, "%-5sID %c; NR %d; NL 0; NH 0; NE 0;\n", 
@@ -6286,7 +6284,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 	
 		    
 	/* Assign pointer for this chain */
-	res2 = res;
+	/* res2 = res;   but it's never used */
     }
     
     ajListIterFree(&iter);			
@@ -6339,8 +6337,8 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 		    atm->B);
 	
 	/* Assign pointer for this chain */
-	atm2 = atm;
-    }
+	/* atm2 = atm; but it's never used */
+     }
     
     ajListIterFree(&iter);			
     
