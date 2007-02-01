@@ -71,7 +71,6 @@ int main(int argc, char **argv, char **env)
 
     AjPStr m1str = NULL;
     AjPStr m2str = NULL;
-    AjPStr m3str = NULL;
     char   m1c   = '\0';
     char   m2c   = '\0';
 
@@ -107,7 +106,6 @@ int main(int argc, char **argv, char **env)
     pwdstr = ajStrNew();
     m1str  = ajStrNew();
     m2str  = ajStrNew();
-    m3str  = ajStrNew();
 
 
     seqall = ajAcdGetSeqall("sequence");

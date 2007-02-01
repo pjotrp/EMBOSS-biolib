@@ -3110,7 +3110,6 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
     ajint mot_match[ MAX_DIA * 3 ]; 
 
     ajint mot_match_num;
-    ajint mot_offset; 
 
     float mot_wgt_sum;
     float this_mot_wgt ;
@@ -3146,8 +3145,6 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
     ajint start_dna   = 0;
     ajint start_dna1;
     ajint trpl_start;
-    ajint match;       /* number of matches or sum of similarity values 
-                        in a given diagonal */
     ajint trans;
     ajint crick_wgt = 0;
     ajint match_p;
@@ -3416,7 +3413,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 		if( start_a )
 		{
 
-		    match = 0;
+		    /*match = 0;*/
 		    match_d = 0;
 		    match_p = 0;
 		    match_p_c = 0;
@@ -3467,7 +3464,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 				if( k >= mot_len )  
 				    if( mot_match[ k - mot_len + 1] )
 				    {
-					mot_offset = ( i - j ) ;
+					/*mot_offset = ( i - j ) ;*/
 					this_mot_wgt = edialign_mot_dist_factor
 					    ((i-j),
 					     mot_offset_factor); 
@@ -5044,7 +5041,6 @@ static void edialign_filter(ajint *number, struct multi_frag *diagonal)
     ajint hv;
     ajint ab[2];
     ajint as[2];
-    ajint ae[2];
     ajint aext;
     ajint nv;
     float awgt ; 
@@ -5082,8 +5078,8 @@ static void edialign_filter(ajint *number, struct multi_frag *diagonal)
 	as[1] = dia->s[1];	    /* 2. sequence of n-th diagonal */
 	aext  = dia->ext;		/* length of n-th diagonal */
 	awgt  = dia->weight;		/* length of n-th diagonal */
-	ae[0] = ab[0] + aext - 1; /* end of n-th diagonal in 1. sequence */
-	ae[1] = ab[1]+aext-1; /* end of n-th diagonal in 2. sequence */
+	/*ae[0] = ab[0] + aext - 1;*/ /* end of n-th diagonal in 1. sequence */
+	/*ae[1] = ab[1]+aext-1;*/ /* end of n-th diagonal in 2. sequence */
 
 
 	if( print_status )
@@ -7929,9 +7925,6 @@ static void* edialign_allouer(size_t taille)
 
 static void* edialign_reallouer(void *pointeur, size_t taille)
 {
-    void *p;
-
-    p = pointeur;
 
     pointeur = (void *) realloc(pointeur, taille);
 
@@ -8491,13 +8484,13 @@ static void edialign_regex_format_complain(void)
 
 static float edialign_mot_dist_factor(ajint offset , float parameter)
 {
-    float mdf , parameter2, factor1 ;
+    float mdf , parameter2;
     ajint offset2 ; 
 
     offset2 = offset * offset ;
     parameter2 = parameter * parameter ;
 
-    factor1 = (float) offset2 / (parameter2 * 10);
+    /* factor1 = (float) offset2 / (parameter2 * 10); */
     mdf = exp(-(offset2) / (parameter2 * 10)); 
 
     return mdf ;
