@@ -92,13 +92,10 @@ int main(int argc, char **argv)
     const char *aa=
 	"***AAAACCDDEEFFGGGGHHIIIKKLLLLLLMNNPPPPQQRRRRRRSSSSSSTTTTVVVVWYY";
 
-    const char* thiscodon = NULL;
-
     AjPFile inf     = NULL;
     AjPFile outf    = NULL;
     char *entryname = NULL;
     AjPStr fname    = NULL;
-    AjPStr line     = NULL;
     AjPStr key      = NULL;
     AjPStr tmpkey   = NULL;
     AjBool allrecords = AJFALSE;
@@ -132,7 +129,6 @@ int main(int argc, char **argv)
 
     embInit("cutgextract",argc,argv);
 
-    line   = ajStrNew();
     tmpkey = ajStrNew();
     fname  = ajStrNew();
 
@@ -227,7 +223,6 @@ int main(int argc, char **argv)
 	    sum += value->Count[j];
 	    x = ajCodIndexC(codons[j]);
 	    codon->num[x] = value->Count[j];
-	    thiscodon = codons[x];
 
 	    c = aa[j];
 	    if(c=='*')
