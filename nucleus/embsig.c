@@ -1535,8 +1535,6 @@ EmbPHit embHitReadFasta(AjPFile inf)
     const AjPStr token  = NULL;
     AjPStr    line      = NULL;    /* Line of text */
     AjPStr    subline   = NULL;
-    AjBool    ok        = ajFalse; /* Line was not NULL */
-    
 
 
     /* Allocate strings */
@@ -1544,7 +1542,7 @@ EmbPHit embHitReadFasta(AjPFile inf)
     subline  = ajStrNew();
 
 
-    while((ok = ajFileReadLine(inf,&line)))
+    while((ajFileReadLine(inf,&line)))
     {
 	if(ajStrPrefixC(line,">"))
 	{

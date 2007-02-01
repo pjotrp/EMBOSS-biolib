@@ -1718,12 +1718,10 @@ static void showFillTran(const EmbPShow thys,
     ajuint i;
     ajint j;
     ajint orflast;
-    ajuint width;
 
     ajDebug("showFillTran\n");
 
     line = ajStrNewRes(81);
-    width = last - pos + 1;
 
     /*
     **  do a quick check that we have a nucleic sequence - else just
@@ -2027,9 +2025,6 @@ static void showFillREupright(const EmbPShow thys,
     AjPStr tick = NULL;			/* tick "|" string */
     ajint ln;
     AjPStr sajb = NULL;
-    ajuint width;
-
-    width = last - pos + 1;
 
     linelist = ajListstrNew();
     baseline = ajStrNew();

@@ -370,7 +370,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
 
 
     /* positions of first use of a residue in the aa line */
-    ajint firstaa[256];
+    /* ajint firstaa[256]; Now usused */
 
     /*
     ** NB '-' and '*' are valid characters,
@@ -477,8 +477,10 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     dlen = ajStrGetLen(aaline);
 
     /* initialise first use of aa array */
+    /* Now usused 
     for(i=0; i<256; i++)
 	firstaa[i] = -1;
+    */
 
     for(i=0; i<dlen; i++)
     {

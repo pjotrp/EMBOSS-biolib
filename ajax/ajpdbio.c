@@ -1424,7 +1424,6 @@ static AjBool WriteHeterogen(AjPFile outf, const AjPPdb pdb, ajint mod)
 {
     AjIList  iter = NULL;
     AjPAtom  atm  = NULL;
-    AjPAtom  atm2 = NULL;
     ajint acnt;
     
 
@@ -1479,7 +1478,7 @@ static AjBool WriteHeterogen(AjPFile outf, const AjPPdb pdb, ajint mod)
 			atm->B,
 			" ", 
 			*ajStrGetPtr(atm->Atm));
-	atm2 = atm;
+/*	atm2 = atm; Unused variable */
     }
 
     
@@ -3449,14 +3448,10 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile logf)
     ajint  j=0;			/* Loop counter */
     ajint  mod=0;		/* Model number */
     char   id=' ';		/* Chain id */
-    AjBool doneoneter=ajFalse;	/*True if we have read in at least one TER 
-				  record for this model */
 
     AjBool done=ajFalse;  /*True if we have assigned a chain id for this 
 			    line */
     ajint  this=0;	  /* Chain number of last line read in */
-    ajint  prev=-1;	  /* Chain number of last line read in before the 
-			     TER record */
     ajint  chn=0;	  /* Chain number as index (starting from 0) */
     AjPInt gpns=NULL;	  /* Gives the correct group number 
 			     for groups that could not be identified as 
@@ -3465,8 +3460,6 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile logf)
     ajint  gpn=0;	  /* Current group number */
     ajint  offset=0;	  /* Offset for finding correct value for gpns (for 
 			     use with files with a single chain only */
-    AjBool doneter=ajFalse; /*True if we have read a TER record for this 
-			      chain */
     AjBool *chndone=NULL;   /* Array whose elements are TRUE if we have 
 			       already read a line in belonging to the 
 			       appropriate chain for this model*/
@@ -3558,9 +3551,10 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile logf)
 			    }
 			}	
 		    }
+/* Unused
 		    else 
 			doneter=ajFalse; 
-
+*/
 
 		    done=ajTrue;
 		    break;
@@ -3692,20 +3686,20 @@ static AjBool NumberChains(AjPPdbfile pdbfile, AjPFile logf)
 	{
 	    mod++;
 
- 	    doneter=ajFalse; 
+/* 	    doneter=ajFalse;  Unused variable */
 	    for(j=0;j<pdbfile->nchains; j++)
 		chndone[j]=ajFalse;
 
-	    doneoneter=ajFalse;
+/*	    doneoneter=ajFalse; Unused variable */
 	}
 	else if(pdbfile->linetype[i]==PDBPARSE_TER)
 	{
 	    chndone[this-1]=ajTrue;
 	    
 
-	    prev = this;
-	    doneoneter=ajTrue;
-	    doneter=ajTrue; 
+/*	    prev = this; Unused variable */
+/*	    doneoneter=ajTrue; Unused variable */
+/*	    doneter=ajTrue; Unused variable */
 	}	
 
 	
