@@ -2493,7 +2493,7 @@ static AjPFeature featPirFromLine(AjPFeattable thys,
     ajStrExchangeCC(&typstr, " ", "_");
     
     featTypePirIn(&typstr);
-    ajStrRemoveWhite(&notestr);
+    ajStrRemoveWhiteExcess(&notestr);
     
     /* decode the position(s) */
     
@@ -2535,7 +2535,7 @@ static AjPFeature featPirFromLine(AjPFeattable thys,
 	    while(ajRegExec(PirRegexCom, temp))
 	    {
 		ajRegSubI(PirRegexCom, 1, &comstr);
-		ajStrRemoveWhite(&comstr);
+		ajStrRemoveWhiteExcess(&comstr);
 		ajFeatTagAdd(gf, tagcomm, comstr);
 		ajRegPost(PirRegexCom, &temp);
 	    }
@@ -3145,7 +3145,7 @@ static AjPFeature featEmblFromLine(AjPFeattable thys,
     if(!origline)		/* we are only cleaning up */
 	return gf;
     
-    ajStrRemoveWhite(&featProcessLine);
+    ajStrRemoveWhiteExcess(&featProcessLine);
 
     if(newft) 		/* if new feature initialise for it */
     {
@@ -3241,8 +3241,8 @@ static AjPFeature featEmblProcess(AjPFeattable thys, const AjPStr feature,
     ajint itags = 0;
     const AjPStr tmpft = NULL;
     
-    ajStrRemoveWhiteExcess(loc);	/* no white space needed */
-    ajStrRemoveWhite(tags);		/* single spaces only */
+    ajStrRemoveWhite(loc);	/* no white space needed */
+    ajStrRemoveWhiteExcess(tags);		/* single spaces only */
 
     /* ajDebug("cleaned feat loc: '%S'\n            tags: '%S'\n",
      *loc, *tags);*/
@@ -5541,7 +5541,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	++p;
     }
     
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     /* Replace sites by a single location */
     p   = ajStrGetuniquePtr(&featLocStr);
@@ -5557,7 +5557,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	else
 	    ++p;
     }
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     
     /* Replace any x.y with x */
@@ -5573,7 +5573,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	    p[off++] = ' ';
     }
     ajRegFree(&exp_ndotn);
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     /* Replace any (n) with n */
     exp_brnbr = ajRegCompC("[(]([0-9]+)[)]");
@@ -5587,7 +5587,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	p[off++] = ' ';
     }
     ajRegFree(&exp_brnbr);
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     /* See if its a global complement and remove complement enclosure */
     if(ajStrPrefixC(featLocStr,"complement("))
@@ -5609,7 +5609,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	++p;
     }
     
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     
     /* Replace complement(n-n) with ^n-n */
@@ -5627,7 +5627,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
 	    ++off;
 	p[off++] = ' ';
     }
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     ajRegFree(&exp_compbrndashnbr);
     
     
@@ -5739,7 +5739,6 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
     char *p;
     const char *cp;
     const char *cq;
-    char *sp;
     
     ajint len;
     ajint i;
@@ -5752,14 +5751,12 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
     AjPRegexp exp_joinbr = NULL;
     AjPStrTok handle     = NULL;
     
-    AjBool isglobcomp = ajFalse;
-    AjBool docomp     = ajFalse;
     AjBool dbentry    = ajFalse;
     
     ajint begin = 0;
     ajint end   = 0;
     
-    sp   = ajStrGetuniquePtr(seq);
+    ajStrGetuniquePtr(seq);
     if(!featLocStr)
     {
 	featLocStr   = ajStrNew();
@@ -5779,7 +5776,7 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
 	++p;
     }
     
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     /* Replace sites by a single location */
     p   = ajStrGetuniquePtr(&featLocStr);
@@ -5795,7 +5792,7 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
 	else
 	    ++p;
     }
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     
     /* Replace any x.y with x */
@@ -5811,7 +5808,7 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
 	    p[off++] = ' ';
     }
     ajRegFree(&exp_ndotn);
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     /* Replace any (n) with n */
     exp_brnbr = ajRegCompC("[(]([0-9]+)[)]");
@@ -5825,14 +5822,13 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
 	p[off++] = ' ';
     }
     ajRegFree(&exp_brnbr);
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     /* See if its a global complement and remove complement enclosure */
     if(ajStrPrefixC(featLocStr,"complement("))
     {
 	len = ajStrGetLen(featLocStr);
 	ajStrAssignSubS(&featLocStr,featLocStr,11,len-2);
-	isglobcomp = ajTrue;
     }
     
     /* Replace .. with - */
@@ -5847,7 +5843,7 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
 	++p;
     }
     
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     
     
     /* Replace complement(n-n) with ^n-n */
@@ -5865,7 +5861,7 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
 	    ++off;
 	p[off++] = ' ';
     }
-    ajStrRemoveWhiteExcess(&featLocStr);
+    ajStrRemoveWhite(&featLocStr);
     ajRegFree(&exp_compbrndashnbr);
     
     
@@ -5895,10 +5891,7 @@ AjBool ajFeatLocMark(AjPStr *seq, const AjPStr line)
 	if(*cp=='^')
 	{
 	    ++cp;
-	    docomp = ajTrue;
 	}
-	else
-	    docomp = ajFalse;
 	
 	cq=cp;
 	dbentry = ajFalse;
@@ -6003,7 +5996,7 @@ ajuint ajFeatGetLocs(const AjPStr str, AjPStr **cds, const char *type)
 	    ajStrAppendC(&(*cds)[nc],cp+21);
 	    ++i;
 	}
-	ajStrRemoveWhiteExcess(&(*cds)[nc]);
+	ajStrRemoveWhite(&(*cds)[nc]);
     }
     
     
@@ -6450,7 +6443,7 @@ ajuint ajFeatGetTrans(const AjPStr str, AjPStr **cds)
 	}
 	p = ajStrGetuniquePtr(&(*cds)[nc]);
 	p[ajStrGetLen((*cds)[nc])-2] = ' ';
-	ajStrRemoveWhiteExcess(&(*cds)[nc]);
+	ajStrRemoveWhite(&(*cds)[nc]);
     }
     
     
@@ -6698,7 +6691,7 @@ static AjBool featVocabRead(const char* name,
     while(ajFileReadLine(TagsFile,&line))
     {
 	linecount++;
-	ajStrRemoveWhite(&line);
+	ajStrRemoveWhiteExcess(&line);
 	if(ajStrGetLen(line) && ajStrCmpLenC(line,"#",1)) /* skip comments */
 	{
 	    tagname = NULL;		/* create a new tag */
@@ -6791,7 +6784,7 @@ static AjBool featVocabRead(const char* name,
     typecount = 0;
     while(ajFileReadLine(TypeFile,&line))
     {
-	ajStrRemoveWhite(&line);
+	ajStrRemoveWhiteExcess(&line);
 	if(ajStrCmpLenC(line,"#",1)) /* if a comment skip it */
 	{
 	    if(featFeatType(line, &type, &intids, &tag, &req))
@@ -9773,7 +9766,7 @@ static AjBool featTagSpecialAllReplace (AjPStr* pval)
        ajStrGetCharFirst(*pval), ajStrGetCharLast(*pval));
        */
 
-    ajStrRemoveWhiteExcess(pval);   /* remove wrapping spaces in long seq. */
+    ajStrRemoveWhite(pval);   /* remove wrapping spaces in long seq. */
 
     if(ajRegExec(featRegTagReplace, *pval))
 	ret = ajTrue;	    /* substring 1 has the matched sequence */
@@ -9812,7 +9805,7 @@ static AjBool featTagSpecialAllTranslation(AjPStr* pval)
     AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
-    ajStrRemoveWhiteExcess(pval);   /* remove wrapping spaces in long seq. */
+    ajStrRemoveWhite(pval);   /* remove wrapping spaces in long seq. */
     cp = ajStrGetPtr(*pval);
 
     if(saveit)
@@ -10049,7 +10042,7 @@ static void featLocEmblWrapC (AjPStr *ploc, ajuint margin,
     left = strlen(prefix);
     width = margin - left;	    /* available width for printing */
 
-    ajStrRemoveWhiteExcess(ploc);	     /* no white space in locations */
+    ajStrRemoveWhite(ploc);	     /* no white space in locations */
     len = ajStrGetLen(*ploc);
 
     k = width;			/* for safety - will be set in time */
@@ -10127,7 +10120,7 @@ static void featTagEmblWrapC(AjPStr *pval, ajuint margin, const char* prefix,
     left = strlen(prefix);
     width = margin - left;	    /* available width for printing */
 
-    ajStrRemoveWhite(pval);			/* single spaces only */
+    ajStrRemoveWhiteExcess(pval);	/* single spaces only */
     len = ajStrGetLen(*pval);
 
     k = width;			/* for safety - will be set in time */
@@ -10650,7 +10643,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
 		break;
 	    case CASE2('T','E') :     /* no space, no quotes, wrap at margin */
 		/* ajDebug("case text\n"); */
-		ajStrRemoveWhiteExcess(&featValTmp);
+		ajStrRemoveWhite(&featValTmp);
 		ajFmtPrintAppS(&featOutStr, "=%S\n", featValTmp);
 		break;
 	    case CASE2('V','O') :	     /* no value, so an error here */
@@ -10664,7 +10657,7 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
 	    case CASE2('Q','W') :	   /* escape quotes, remove space */
 		/* ajDebug("case qword\n"); */
 		featTagQuoteEmbl(&featValTmp);
-		ajStrRemoveWhiteExcess(&featValTmp);	/* no white space needed */
+		ajStrRemoveWhite(&featValTmp);	/* no white space needed */
 		ajFmtPrintAppS(&featOutStr, "=%S\n", featValTmp);
 		break;
 	    default:
@@ -11066,7 +11059,7 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
 		break;
 	    case CASE2('T','E') : /* no space, no quotes, wrap at margin */
 		/*ajDebug("case text\n");*/
-		ajStrRemoveWhiteExcess(&featValTmp);
+		ajStrRemoveWhite(&featValTmp);
 		ajFmtPrintAppS(&featOutStr, " %S", featValTmp);
 		break;
 	    case CASE2('Q','T') :	/* escape quotes, wrap at space */
@@ -11077,7 +11070,7 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
 	    case CASE2('Q','W') :	/* escape quotes, remove space */
 		/*ajDebug("case qtext\n");*/
 		featTagQuoteGff(&featValTmp);
-		ajStrRemoveWhiteExcess(&featValTmp);
+		ajStrRemoveWhite(&featValTmp);
 		ajFmtPrintAppS(&featOutStr, " %S", featValTmp);
 		break;
 	    case CASE2('Q', 'S') :	/* special regexp, quoted */
