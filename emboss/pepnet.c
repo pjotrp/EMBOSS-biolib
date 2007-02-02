@@ -75,7 +75,6 @@ int main(int argc, char **argv)
     float ch = 1.8;
     float xinc;
     float yinc;
-    ajint fno;
     AjPStr fstr = NULL;
 
     float x;
@@ -106,7 +105,6 @@ int main(int argc, char **argv)
 
     substr = ajStrNew();
     txt    = ajStrNew();
-    fno    = 1;
     fstr   = ajStrNew();
 
 

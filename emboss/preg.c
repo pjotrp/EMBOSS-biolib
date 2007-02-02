@@ -41,7 +41,6 @@ int main(int argc, char **argv)
     AjPStr str = NULL;
     AjPStr tmpstr = NULL;
     AjPStr substr = NULL;
-    ajint ipos;
  
     embInit("preg", argc, argv);
 
@@ -54,7 +53,6 @@ int main(int argc, char **argv)
 
     while(ajSeqallNext(seqall, &seq))
     {
-	ipos = 1;
 	ajStrAssignS(&str, ajSeqGetSeqS(seq));
 	ajStrFmtUpper(&str);
 	ajDebug("Testing '%s' len: %d %d\n",

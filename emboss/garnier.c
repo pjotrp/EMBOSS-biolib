@@ -652,7 +652,6 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
     ajint j;
     ajint k;
     ajint l0;
-    ajint l1;
     ajint idc;
     ajint dcs;
     ajint dch;
@@ -764,7 +763,6 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
     
     testch = ' ';
     l0 = begin+1;
-    l1 = 0;
     
     for(i=0; i<=n0; i++)
 	if(i==n0 || type[i] != testch)

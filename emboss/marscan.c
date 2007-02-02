@@ -146,7 +146,6 @@ int main(int argc, char **argv)
     ajuint    i;
     ajint    begin;
     ajint    end;
-    ajint    adj;
 
     EmbPMatMatch aptr = NULL;
 
@@ -226,7 +225,6 @@ int main(int argc, char **argv)
 	end   = ajSeqallGetseqEnd(seqall);
 	ajStrAssignSubC(&text, ajSeqGetSeqC(seq), begin-1, end-1);
 	ajStrFmtUpper(&text);
-	adj = begin+end+1;
 
 	embPatFuzzSearch(type16, begin, pattern16, seqname,
 			 text, l16, plen16, mismatch16, amino16, carboxyl16,

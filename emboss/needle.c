@@ -62,8 +62,6 @@ int main(int argc, char **argv)
     ajulong len;			
 
     float score;
-    ajint begina;
-    ajint beginb;
 
     AjBool dobrief = ajTrue;
 
@@ -99,7 +97,6 @@ int main(int argc, char **argv)
     sub = ajMatrixfArray(matrix);
     cvt = ajMatrixfCvt(matrix);
 
-    begina = ajSeqGetBegin(a)+ajSeqGetOffset(a);
     lena = ajSeqGetLen(a);
 
     while(ajSeqallNext(seqall,&b))
@@ -123,7 +120,6 @@ int main(int argc, char **argv)
 	    maxarr=len;
 	}
 
-	beginb=ajSeqGetBegin(b)+ajSeqGetOffset(b);
 
 	p = ajSeqGetSeqC(a);
 	q = ajSeqGetSeqC(b);

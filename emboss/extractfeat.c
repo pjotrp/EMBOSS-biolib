@@ -558,7 +558,6 @@ static void extractfeat_BeforeAfter(const AjPSeq seq, AjPStr * featstr,
 				    AjBool sense)
 
 {
-    const AjPStr str = NULL;			/* sequence string */
     ajint start;
     ajint end;
     ajint featlen;
@@ -575,8 +574,6 @@ static void extractfeat_BeforeAfter(const AjPSeq seq, AjPStr * featstr,
      ** of the feature
      */
 
-
-    str = ajSeqGetSeqS(seq);     /* NB don't alter this sequence string */
 
     /*
     ** get start and end positions to truncate featstr at or to

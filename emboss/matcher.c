@@ -390,10 +390,8 @@ static void matcher_Sim(AjPAlign align,
     register ajuint j;			/* row and column indices */
     ajint  *S;				/* saving operations for diff */
     ajint nc;
-    ajint ns;
     ajint nident;			/* for display */
     vertexptr cur; 			/* temporary pointer */
-    double percent;
     ajint seq0len;
     ajint seq1len;
 
@@ -486,9 +484,9 @@ static void matcher_Sim(AjPAlign align,
 	min1 = starj-1;
 	max0 = stari+rl-1;
 	max1 = starj+cl-1;
-	ns=matcher_Calcons(seqc0,seqc1,
-			   S, min0, min1, max0, max1, &nc, &nident);
-	percent = (double)nident*100.0/(double)nc;
+	matcher_Calcons(seqc0,seqc1,
+			S, min0, min1, max0, max1, &nc, &nident);
+	/* percent = (double)nident*100.0/(double)nc; Unused */
 
 	ajDebug("Matcher min: %d %d max: %d %d beg: %d %d nc: %d\n",
 		min0, min1, max0, max1, beg0, beg1, nc);

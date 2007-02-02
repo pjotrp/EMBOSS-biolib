@@ -56,7 +56,6 @@ int main(int argc, char **argv)
     ajint zend;
     ajint seqlength;
     AjPStr tmpstr = NULL;
-    AjPFeature gf;
     AjPStr fthit = NULL;
 
     embInit("patmatdb", argc, argv);
@@ -108,8 +107,8 @@ int main(int argc, char **argv)
 	    */
 	    end	= 1+embPatMatchGetEnd(match, i);
 
-	    gf = ajFeatNewProt(tab, NULL, fthit, start, end,
-			       (float) length);
+	    ajFeatNewProt(tab, NULL, fthit, start, end,
+			  (float) length);
 
 	    if(start-5<0)
 		zstart = 0;

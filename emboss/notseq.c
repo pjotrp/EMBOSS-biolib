@@ -47,7 +47,6 @@ int main(int argc, char **argv)
     AjPStr pattern = NULL;
     AjPStr name = NULL;
     AjPStr acc  = NULL;
-    AjBool gotone=ajFalse;
 
     embInit("notseq", argc, argv);
 
@@ -65,10 +64,7 @@ int main(int argc, char **argv)
 
 	if(embMiscMatchPattern(name, pattern) ||
 	    embMiscMatchPattern(acc, pattern))
-	{
 	    ajSeqoutWriteSeq(junkout, seq);
-	    gotone = ajTrue;
-	}
 	else
 	    /* no match, so not excluded */
 	    ajSeqoutWriteSeq(seqout, seq);

@@ -102,7 +102,6 @@ int main(int argc, char **argv)
     float *y;
     AjPFloat2d score = NULL;
     float *sumscore  = 0;
-    float scoremax   = 0;
     float ymin;
     float ymax;
     float contri = 0;
@@ -110,7 +109,6 @@ int main(int argc, char **argv)
     ajint **matrix;
     ajint m1 = 0;
     ajint m2 = 0;
-    ajint highindex = 0;
     ajuint winsize;	/* window size */
     ajint numbins;	/* total no. of bins making up the seq length */
     ajint binup;
@@ -210,11 +208,6 @@ int main(int argc, char **argv)
 		for(bin=binlo;bin<binup;bin++)
 		    sumscore[binmid] += ajFloat2dGet(score,i,bin);
 	}
-
-	/* find the highest score */
-	highindex = -1;
-	scoremax = -3;
-
     }
 
     /*************** End of Loop ***************/

@@ -330,7 +330,6 @@ static void newcpgreport_identify(AjPFile outf, const float *obsexp,
 
     ajint i;
     ajint pos;
-    ajint posmin;
 
     ajint sumlen;
     ajint first;
@@ -340,7 +339,7 @@ static void newcpgreport_identify(AjPFile outf, const float *obsexp,
 	thresh[i] = ajFalse;
 
     sumlen=0;
-    posmin = begin;
+
     for(pos=0,first=0;pos<(len-avwindow*shift);pos+=shift)
     {
 	sumpc = sumobsexp = 0.0;

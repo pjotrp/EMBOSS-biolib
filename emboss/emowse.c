@@ -306,7 +306,6 @@ static AjBool emowse_molwt_outofrange(double thys, double given, double range)
 
 static ajint emowse_read_data(AjPFile inf, EmbPMdata** data)
 {
-    ajint c;
     AjPStr str = NULL;
     double v;
     AjPStrTok token = NULL;
@@ -314,7 +313,6 @@ static ajint emowse_read_data(AjPFile inf, EmbPMdata** data)
     AjPList l;
     ajint n;
 
-    c   = 0;
     str = ajStrNew();
     l   = ajListNew();
 
@@ -1185,7 +1183,6 @@ static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
 {
     PHits hits   = NULL;
     AjIList iter = NULL;
-    ajint n;
     ajint c;
     ajint i;
     ajint j;
@@ -1202,7 +1199,6 @@ static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
     nmarray = ajFloatNew();
     substr  = ajStrNew();
 
-    n = ajListLength(hlist);
     ajListReverse(hlist);
 
 
