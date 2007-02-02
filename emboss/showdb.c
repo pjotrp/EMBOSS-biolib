@@ -123,7 +123,6 @@ int main(int argc, char **argv)
     domethod  = ajAcdGetBool("methods");
     docomment = ajAcdGetBool("comment");
     dorelease = ajAcdGetBool("release");
-    /* only      = ajAcdGetBool("only"); Unused! */
     
     dbnames = ajListstrNew();
     
