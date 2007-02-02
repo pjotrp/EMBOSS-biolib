@@ -3465,158 +3465,45 @@ void embAlignReportLocal(AjPAlign align,
 ** Print a profile alignment
 ** Nucleotides or proteins as needed.
 **
-** @param [u] thys [AjPAlign] Alignment object
-** @param [r] seqset [const AjPSeqset] Aligned sequence set
+** @param [u] align [AjPAlign] Alignment object
 ** @param [r] m [const AjPStr] Walk alignment for first sequence
 ** @param [r] n [const AjPStr] Walk alignment for second sequence
 ** @param [r] start1 [ajint] start of alignment in first sequence
 ** @param [r] start2 [ajint] start of alignment in second sequence
 ** @param [r] score [float] alignment score from AlignScoreX
-** @param [r] mark [AjBool] mark matches and conservatives
-** @param [r] fmatrix [float * const *] profile
 ** @param [r] namea [const char *] name of first sequence
 ** @param [r] nameb [const char *] name of second sequence
-** @param [r] begina [ajint] first sequence offset
-** @param [r] beginb [ajint] second sequence offset
 **
 ** @return [void]
 ******************************************************************************/
 
-void embAlignReportProfile(AjPAlign thys, const AjPSeqset seqset,
+void embAlignReportProfile(AjPAlign align,
 			   const AjPStr m, const AjPStr n,
-			   ajint start1, ajint start2, float score,
-			   AjBool mark,
-			   float * const *fmatrix, const char *namea,
-			   const char *nameb, ajint begina, ajint beginb)
+			   ajint start1, ajint start2,
+			   float score,
+			   const char *namea, const char *nameb)
 {
-    const AjPStr fa;
-    const AjPStr fb;
-    AjPStr fm;
-    AjPStr ap;
-    AjPStr bp;
-    AjPStr mp;
+    AjPSeq seqm = NULL;
+    AjPSeq seqn = NULL;
+    AjPStr seqname = NULL;
 
-    ajint i;
-    ajint olen;
-    const char *p;
-    const char *q;
-    const char *r = NULL;
+    ajuint mlen = ajStrGetLen(m);
+    ajuint slen = ajStrGetLen(n);
 
-    float match = 0.0;
+    ajStrAssignC(&seqname, namea);
+    seqm=ajSeqNewNameS(m, seqname);
 
-    ajint acnt;
-    ajint bcnt;
-    ajint aend;
-    ajint bend;
+    ajStrAssignC(&seqname, nameb);
+    seqn=ajSeqNewNameS(n, seqname); 
 
-    ajint len;
-    ajint pos;
-    ajint cpos;
+    ajAlignDefineSS(align, seqm, seqn);
+    ajAlignSetScoreR(align, score);
+    ajAlignSetRange(align, 
+		    start1, start1+mlen-1, mlen, 1,
+		    start2, start2+slen-1, slen, 1);
 
-    fm = ajStrNewC("");
-    ap = ajStrNewC("");
-    bp = ajStrNewC("");
-    mp = ajStrNewC("");
-
-
-    /* Now deal with the alignment overlap */
-    p    = ajStrGetPtr(m);
-    q    = ajStrGetPtr(n);
-    olen = (ajint) strlen(p);
-    fa   = m;
-    fb   = n;
-
-
-    cpos = start1;
-    --cpos;
-
-    if(mark)
-    {
-	for(i=0;i<olen;++i)
-	{
-	    if(p[i]!='.')
-		++cpos;
-
-	    if(p[i]=='.' || q[i]=='.')
-	    {
-		ajStrAppendC(&fm," ");
-		continue;
-	    }
-	    match=fmatrix[cpos][ajAZToInt(q[i])];
-
-	    if(p[i]==q[i])
-	    {
-		ajStrAppendC(&fm,"|");
-		continue;
-	    }
-
-	    if(match>0.0)
-		ajStrAppendC(&fm,":");
-	    else
-		ajStrAppendC(&fm," ");
-	}
-    }
-
-    /* Get start residues */
-    p    = ajStrGetPtr(fa);
-    q    = ajStrGetPtr(fb);
-    acnt = begina+start1;
-    bcnt = beginb+start2;
-
-    len = ajStrGetLen(fa);
-    pos = 0;
-    if(mark) r=ajStrGetPtr(fm);
-
-
-    /* Add header stuff here */
-
-    while(pos<len)
-    {
-	if(pos+45 < len)
-	{
-	    ajStrAssignSubC(&ap,p,pos,pos+45-1);
-	    ajStrAssignSubC(&bp,q,pos,pos+45-1);
-	    if(mark)
-		ajStrAssignSubC(&mp,r,pos,pos+45-1);
-	    for(i=0,aend=acnt,bend=bcnt;i<45;++i)
-	    {
-		if(p[pos+i]!=' ' && p[pos+i]!='.')
-		    ++aend;
-
-		if(q[pos+i]!=' ' && q[pos+i]!='.')
-		    ++bend;
-	    }
-
-	    acnt = aend;
-	    bcnt = bend;
-
-	    pos += 45;
-	    continue;
-	}
-
-	ajStrAssignC(&ap,&p[pos]);
-	ajStrAssignC(&bp,&q[pos]);
-	if(mark)
-	    ajStrAssignC(&mp,&r[pos]);
-	for(i=0,aend=acnt,bend=bcnt;i<45 && p[pos+i];++i)
-	{
-	    if(p[pos+i]!=' ' && p[pos+i]!='.')
-		++aend;
-
-	    if(q[pos+i]!=' ' && q[pos+i]!='.')
-		++bend;
-	}
-
-	acnt = aend;
-	bcnt = bend;
-
-	pos  = len;
-    }
-
-    ajStrDel(&mp);
-    ajStrDel(&bp);
-    ajStrDel(&ap);
-    ajStrDel(&fm);
+    ajSeqDel(&seqm);
+    ajSeqDel(&seqn);
 
     return;
 }

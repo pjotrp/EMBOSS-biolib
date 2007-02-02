@@ -71,12 +71,11 @@ void embAlignReportLocal (AjPAlign align,
 			  float gapopen, float gapextend,
 			  float score, AjPMatrixf matrix,
 			  ajint offset1, ajint offset2);
-void embAlignReportProfile(AjPAlign align, const AjPSeqset seqset,
+void embAlignReportProfile(AjPAlign align,
 			   const AjPStr m, const AjPStr n,
 			   ajint start1, ajint start2,
-			   float score, AjBool mark,
-			   float * const *fmatrix, const char *namea,
-			   const char *nameb, ajint begina, ajint beginb);
+			   float score,
+			   const char *namea, const char *nameb);
 
 float embAlignScoreNWMatrix(const float *path, const AjPSeq a, const AjPSeq b,
 			    float * const *fmatrix,
