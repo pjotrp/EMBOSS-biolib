@@ -700,9 +700,6 @@ static void reportWriteDraw(AjPReport thys,
     AjPFile outf;
     AjIList iterft     = NULL;
     AjPFeature feature = NULL;
-    ajuint istart  = 0;
-    ajuint iend    = 0;
-    float score   = 0.0;
     AjPStr subseq = NULL;
     ajuint ntags;
     static AjPStr* tagtypes = NULL;
@@ -714,8 +711,6 @@ static void reportWriteDraw(AjPReport thys,
     ajint jenz = -1;
     ajint j5 = -1;
     ajint j3 = -1;
-    ajint j5rev = -1;
-    ajint j3rev = -1;
     ajuint jstart;
     ajuint jend;
     outf = thys->File;
@@ -732,10 +727,6 @@ static void reportWriteDraw(AjPReport thys,
 	    j5 = j;
 	if(ajStrMatchCaseC(tagnames[j], "3prime"))
 	    j3 = j;
-	if(ajStrMatchCaseC(tagnames[j], "5prime_rev"))
-	    j5rev = j;
-	if(ajStrMatchCaseC(tagnames[j], "3prime_rev"))
-	    j3rev = j;
     }
 
     ajFmtPrintF(outf, "Start %d\n", 
@@ -750,11 +741,6 @@ static void reportWriteDraw(AjPReport thys,
     while(ajListIterMore(iterft))
     {
 	feature = (AjPFeature)ajListIterNext(iterft);
-
-	istart = feature->Start;
-	iend = feature->End;
-
-	score = feature->Score;
 
 	ajFmtPrintF(outf, "label\n");
 	if (j5 >= 0)
@@ -1976,8 +1962,6 @@ static void reportWriteTagseq(AjPReport thys,
     ajuint j = 0;
     ajuint i = 0;
     AjPStr tagval = NULL;
-    ajuint jwid = 6;
-    ajuint jmin = 6;	 /* minimum width for printing special tags */
     AjPStr* seqmarkup;
     AjPStr seqnumber = NULL;
     ajuint seqbeg;
@@ -2001,7 +1985,6 @@ static void reportWriteTagseq(AjPReport thys,
     
     for(j=0; j < ntags; j++)
     {
-	jwid = AJMAX(jmin, ajStrGetLen(tagprints[j]));
 	ajStrAppendCountK(&seqmarkup[j], ' ', seqlen);
     }
     

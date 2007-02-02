@@ -98,20 +98,13 @@ typedef struct EstSSavePair
     ajint col;
     ajint row;
 } EstOSavePair;
-
 #define EstPSavePair EstOSavePair*
-
-
-
-
-#define LIMIT_RPAIR_SIZE 10000
 
 static EstPSavePair rpair  = NULL;
 static ajint rpairs        = 0;
 static ajint rpair_size    = 0;
 static ajint rpairs_sorted = 0;
 
-static ajint limit_rpair_size = LIMIT_RPAIR_SIZE;
 static ajint lsimmat[256][256];
 static AjBool verbose;
 static AjBool debug;
@@ -2046,11 +2039,14 @@ static ajint estSavePairCmp( const void *a, const void *b )
 ** @@
 ******************************************************************************/
 
-static void estPairInit( ajint max_bytes )
+static void estPairInit(ajint max_bytes)
 {
-
-    limit_rpair_size = max_bytes/sizeof(EstPSavePair);
+    ajint maxpairs = max_bytes/sizeof(EstOSavePair);
     estPairFree();
+
+    rpair_size = maxpairs;
+ 
+    AJCNEW0(rpair, rpair_size);
 
     return;
 }
@@ -2098,23 +2094,9 @@ static void estPairFree(void)
 
 static ajint estDoNotForget( ajint col, ajint row )
 {
-
-/*
-    if(rpairs >= limit_rpair_size)
-    {
-	ajErr("rpairs %d beyond maximum %d", rpairs+1, limit_rpair_size);
-	ajErr("increase space threshold to repeat this search");
-	return 0;		     /# failure - ran out of memory #/
-    }
-*/
     if( rpairs >= rpair_size )
     {
 	rpair_size = (rpairs == 0 ? 10000 : 2*rpairs);
-
-/*
-	if(rpair_size > limit_rpair_size) /# enforce the limit #/
-	    rpair_size = limit_rpair_size;
-*/
 
 	ajDebug("Rpair resize: %d to %d\n", rpairs, rpair_size);
 	AJCRESIZE(rpair, rpair_size);

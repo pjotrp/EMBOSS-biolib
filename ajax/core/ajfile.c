@@ -5740,9 +5740,7 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
     AjPRegexp preexp = NULL;
     AjPRegexp endexp = NULL;
     ajint ifound = 0;
-    AjBool found;
     
-    found = ajFalse;
     lptr = thys->Curr;
     
     preexp = ajRegCompC("<[Pp][Rr][Ee]>");
@@ -5769,7 +5767,6 @@ AjBool ajFileBuffStripHtmlPre(AjPFileBuff thys)
 	return ajFalse;
     }
 
-    found = ajFalse;
     lptr=thys->Curr;
     
 

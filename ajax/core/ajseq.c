@@ -371,8 +371,7 @@ __deprecated AjPSeq  ajSeqNewRange(const AjPStr seq,
 __deprecated AjPSeq  ajSeqNewRangeCI(const char* seq, ajint len,
 				    ajint offset, ajint offend, AjBool rev)
 {
-    static ajint savelen;
-    savelen = len;
+    (void)len;
     return ajSeqNewRangeC(seq, offset, offend, rev);
 }
 
@@ -1737,8 +1736,7 @@ __deprecated void  ajSeqReplaceC(AjPSeq thys, const char* seq)
 
 __deprecated void  ajSeqMakeUsa(AjPSeq thys, const AjPSeqin seqin)
 {
-    const AjPSeqin saveseqin;
-    saveseqin = seqin;
+    (void)seqin;
     seqMakeUsa(thys, &thys->Usa);
     return;
 }
@@ -1750,8 +1748,7 @@ __deprecated void  ajSeqMakeUsa(AjPSeq thys, const AjPSeqin seqin)
 __deprecated void  ajSeqMakeUsaS(const AjPSeq thys,
 				const AjPSeqin seqin, AjPStr* usa)
 {
-    const AjPSeqin saveseqin;
-    saveseqin = seqin;
+    (void)seqin;
     seqMakeUsa(thys, usa);
     return;
 }

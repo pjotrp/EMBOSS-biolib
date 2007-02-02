@@ -523,7 +523,6 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
 				AjBool protein, ajint mismatches)
 {
     AjPPatlistSeq patlist = NULL;
-    AjPPatternSeq pattern;
     AjPStr line = NULL;
     AjPStr name = NULL;
     AjPFile infile = NULL;
@@ -552,8 +551,8 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
 	    {
 		if (ajStrGetLen(name))
 		{
-		    pattern = ajPatternSeqNewList(patlist,name,pat,
-						  mismatch);
+		    ajPatternSeqNewList(patlist,name,pat,
+					mismatch);
 		    ajStrSetClear(&name);
 		    ajStrSetClear(&pat);
 		    mismatch=mismatches;
@@ -572,13 +571,13 @@ AjPPatlistSeq ajPatlistSeqRead (const AjPStr patspec,
 	    else
 		ajStrAppendS (&pat,line);
 	}
-	pattern = ajPatternSeqNewList(patlist,name,pat,mismatch);
+	ajPatternSeqNewList(patlist,name,pat,mismatch);
 	ajFileClose(&infile);
 	ajRegFree(&mismreg);
     }
     else
     {
-	pattern = ajPatternSeqNewList(patlist,patname,patstr,mismatches);
+	ajPatternSeqNewList(patlist,patname,patstr,mismatches);
     }
 
     ajStrDel(&name);
@@ -606,7 +605,6 @@ AjPPatlistRegex ajPatlistRegexRead (const AjPStr patspec,
 				    ajint type, AjBool upper, AjBool lower)
 {
     AjPPatlistRegex patlist = NULL;
-    AjPPatternRegex pattern;
     AjPStr line = NULL;
     AjPStr pat  = NULL;
     AjPStr name = NULL;
@@ -631,7 +629,7 @@ AjPPatlistRegex ajPatlistRegexRead (const AjPStr patspec,
 			ajStrFmtLower(&pat);
 		    if(upper)
 			ajStrFmtUpper(&pat);
-		    pattern = ajPatternRegexNewList(patlist,name,pat);
+		    ajPatternRegexNewList(patlist,name,pat);
 		    ajStrSetClear(&name);
 		    ajStrSetClear(&pat);
 		}
@@ -641,7 +639,7 @@ AjPPatlistRegex ajPatlistRegexRead (const AjPStr patspec,
 	    else
 		ajStrAppendS (&pat,line);
 	}
-	pattern = ajPatternRegexNewList(patlist,name,pat);
+	ajPatternRegexNewList(patlist,name,pat);
     }
     else
     {
@@ -650,7 +648,7 @@ AjPPatlistRegex ajPatlistRegexRead (const AjPStr patspec,
 	    ajStrFmtLower(&pat);
 	if(upper)
 	    ajStrFmtUpper(&pat);
-	pattern = ajPatternRegexNewList(patlist,patname,pat);
+	ajPatternRegexNewList(patlist,patname,pat);
     }
 
     ajFileClose(&infile);

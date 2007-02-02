@@ -3006,7 +3006,6 @@ static AjBool namValidResource(const NamPEntry entry)
     ajint iattr = 0;
     ajint j;
     AjPStr* attrs;
-    AjBool hastype = ajFalse;
     AjBool ok;
 
     attrs = (AjPStr *) entry->data;
@@ -3021,8 +3020,6 @@ static AjBool namValidResource(const NamPEntry entry)
 	if(attrs[j])
 	{
 	    iattr++;
-	    if(ajCharPrefixC(namDbAttrs[j].Name, "type"))
-		hastype=ajTrue;
 	}
 
     ok = ajTrue;

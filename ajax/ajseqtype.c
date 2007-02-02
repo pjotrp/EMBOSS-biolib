@@ -381,8 +381,6 @@ static AjBool seqTypeTestI(AjPSeq thys, ajint itype)
 
 static AjBool seqTypeFix(AjPSeq thys, ajint itype)
 {
-    AjBool ret = ajFalse;
-
     ajDebug("seqTypeFix '%s'\n", seqType[itype].Name);
 
     /*
@@ -393,7 +391,7 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
 	ajStrRemoveGap(&thys->Seq);
 
     if (ajCharMatchC(seqType[itype].Name, "pureprotein"))
-	    seqTypeStopTrimS(&thys->Seq);
+	seqTypeStopTrimS(&thys->Seq);
 
     if(seqType[itype].Ambig)
     {
@@ -404,17 +402,17 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
 	{
 	case ISPROT:
 	    if (ajCharMatchC(seqType[itype].Name, "protein"))
-	    seqTypeStopTrimS(&thys->Seq);
-	    ret = seqTypeFixReg(thys, itype, 'X');
+		seqTypeStopTrimS(&thys->Seq);
+	    seqTypeFixReg(thys, itype, 'X');
 	    break;
 	case ISNUC:
-	    ret = seqTypeFixReg(thys, itype, 'N');
+	    seqTypeFixReg(thys, itype, 'N');
 	    break;
 	case ISANY:
 	    if(ajSeqIsNuc(thys))
-		ret = seqTypeFixReg(thys, itype, 'N');
+		seqTypeFixReg(thys, itype, 'N');
 	    else
-		ret = seqTypeFixReg(thys, itype, 'X');
+		seqTypeFixReg(thys, itype, 'X');
 	    break;
 	default:
 	    ajDie("Unknown sequence type code for '%s'", seqType[itype].Name);
@@ -423,7 +421,7 @@ static AjBool seqTypeFix(AjPSeq thys, ajint itype)
     }
 
     if (ajCharMatchC(seqType[itype].Name, "pureprotein"))
-	    seqTypeStopTrimS(&thys->Seq);
+	seqTypeStopTrimS(&thys->Seq);
 
     return seqTypeTestI(thys, itype);
 }

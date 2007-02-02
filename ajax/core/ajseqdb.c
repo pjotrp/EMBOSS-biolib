@@ -3354,7 +3354,6 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 /*    AjBool del = ajFalse;*/
     
     ajint i;
-    ajint n;
     
     AjPStr *filestrings = NULL;
     AjPStr *reffilestrings = NULL;
@@ -3371,9 +3370,9 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
     ajDebug("B+tree All index directory '%S'\n", qry->IndexDir);
 
 
-    n = ajBtreeReadEntries(qry->DbAlias->Ptr,qry->IndexDir->Ptr,
-			   qry->Directory->Ptr,
-			   &filestrings,&reffilestrings);
+    ajBtreeReadEntries(qry->DbAlias->Ptr,qry->IndexDir->Ptr,
+		       qry->Directory->Ptr,
+		       &filestrings,&reffilestrings);
 
 
     list = ajListstrNew();
