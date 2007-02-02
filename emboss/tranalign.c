@@ -158,7 +158,7 @@ int main(int argc, char **argv)
             ajSeqDel(&newseq);
         }
 
-        ajStrRemoveWhite(&degapstr);
+        ajStrRemoveWhiteExcess(&degapstr);
     }
 
     ajSeqoutWriteSet(seqout, outseqset);

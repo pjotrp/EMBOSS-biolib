@@ -445,7 +445,7 @@ static ajint silent_restr_read(AjPList *relist,const AjPStr enzymes)
     {
 	ne = ajArrCommaList(enzymes,&ea);
         for(i=0;i<ne;++i)
-	    ajStrRemoveWhiteExcess(&ea[i]);
+	    ajStrRemoveWhite(&ea[i]);
 
         if(ajStrMatchCaseC(ea[0],"all"))
             isall = ajTrue;

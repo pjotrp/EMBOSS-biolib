@@ -263,8 +263,8 @@ ajStrKeepAlphaC ajStrKeepSetAlphaC
 ajStrDegap ajStrRemoveGap
 ajStrRemoveNewline ajStrRemoveLastNewline
 ajStrRemoveCharsC ajStrRemoveSetC
-ajStrClean ajStrRemoveWhite
-ajStrCleanWhite ajStrRemoveWhiteExcess
+ajStrCleanWhite ajStrRemoveWhite
+ajStrClean ajStrRemoveWhiteExcess
 ajStrWildPrefix ajStrRemoveWild
 ajStrChomp ajStrTrimWhite
 ajStrChompC ajStrTrimC
@@ -586,7 +586,6 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #skipseq
 #splitter
 #stretcher
-#stretcherlong
 #stssearch
 #supermatcher
 #syco

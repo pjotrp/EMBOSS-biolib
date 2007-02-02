@@ -1,4 +1,14 @@
 Version 4.1.0
+	Two string functions had their names reversed. ajStrRemoveWhite is
+	to remove all white space from a string, ajStrRemoveWhiteExcess is
+	to remove white space from the ends and replace internal
+	whitespace with single spaces. When function names were
+	standardized these names were reversed. As function calls were
+	converted automatically EMBOSS code worked as before, but
+	developers will notice the functions to not behave as
+	expected. This is now corrected, and all existing calls in the
+	EMBOSS code have been checked and converted.
+	
 	Showseq with a sequence end position now stops output at the end
 	of the user-specified range, Previous releases printed the whole
 	of the line with the last base/residue.
