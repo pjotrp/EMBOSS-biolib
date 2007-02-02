@@ -2918,7 +2918,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 		    return ajFalse;
 		}
 	    }
-	    ajStrRemoveWhite(&line);
+	    ajStrRemoveWhiteExcess(&line);
 	    p = ajStrGetPtr(line);
 	    if(!*p || *p=='#')
 		continue;
@@ -2933,7 +2933,7 @@ static AjBool seqReadSelex(AjPSeq thys, AjPSeqin seqin)
 	ok = ajTrue;
 	while(ok && ajFileBuffGet(buff,&line))
 	{
-	    ajStrRemoveWhite(&line);
+	    ajStrRemoveWhiteExcess(&line);
 	    p = ajStrGetPtr(line);
 	    if(*p=='#')
 		continue;
@@ -3501,13 +3501,13 @@ static AjBool seqSelexHeader(SeqPSelex *thys, const AjPStr line,
     else if(ajStrPrefixC(line,"#=DE"))
     {
 	ajStrAssignC(&pthis->de,ajStrGetPtr(line)+5);
-	ajStrRemoveWhite(&pthis->de);
+	ajStrRemoveWhiteExcess(&pthis->de);
 	return ajTrue;
     }
     else if(ajStrPrefixC(line,"#=AU"))
     {
 	ajStrAssignC(&pthis->au,ajStrGetPtr(line)+5);
-	ajStrRemoveWhite(&pthis->au);
+	ajStrRemoveWhiteExcess(&pthis->au);
 	return ajTrue;
     }
     else if(ajStrPrefixC(line,"#=GA"))
@@ -4150,7 +4150,6 @@ static AjBool seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin)
     ajuint jseq      = 0;
     ajuint len       = 0;
     ajuint ilen      = 0;
-    ajuint maxlen    = 0;
     AjPFileBuff buff;
 
     AjPTable phytable        = NULL;
@@ -4260,8 +4259,6 @@ static AjBool seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin)
 		    ajDebug("read to len %d\n", ilen);
 		    if (done)
 		    {
-			if(!jseq)
-			    maxlen = ilen;
 			jseq++;
 		    }
 		}
@@ -4959,7 +4956,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 	{
 	   if (ilen < 0)
 	   {
-	       ajStrRemoveWhite(&seqReadLine);
+	       ajStrRemoveWhiteExcess(&seqReadLine);
 	       if (!ajStrGetLen(seqReadLine))	/* empty line after a sequence */
 	       {
 		   ok = ajFileBuffGetStore(buff, &seqReadLine,
@@ -4976,7 +4973,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 	   }
 	   else
 	   {
-	       ajStrRemoveWhiteExcess(&seqReadLine);
+	       ajStrRemoveWhite(&seqReadLine);
 	       ilen += ajStrGetLen(seqReadLine);
 	       seqAppend(&phyitem->Seq, seqReadLine);
 	       
@@ -5235,7 +5232,6 @@ static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 {
     ajuint bufflines = 0;
     AjBool ok       = ajFalse;
-    ajuint iseq;
     ajuint i;
     AjPFileBuff buff;
     AjPStr* seqs = NULL;
@@ -5247,7 +5243,6 @@ static AjBool seqReadNexus(AjPSeq thys, AjPSeqin seqin)
 
     if(!seqin->Data)			/* first time - read the data */
     {
-	iseq = 0;
 	seqin->multidone = ajFalse;
 
 	ajFileBuffBuff(buff);
@@ -5815,9 +5810,9 @@ static AjBool seqReadMase(AjPSeq thys, AjPSeqin seqin)
 				seqin->Text, &thys->TextPtr);
     }
 
-    ajStrRemoveWhite(&seqReadLine);
+    ajStrRemoveWhiteExcess(&seqReadLine);
     seqSetName(&thys->Name, seqReadLine);
-    ajStrRemoveWhite(&des);
+    ajStrRemoveWhiteExcess(&des);
     ajSeqAssignDescS(thys, des);
 
     ok = ajFileBuffGetStore(buff, &seqReadLine,
@@ -8697,7 +8692,7 @@ static void seqSetName(AjPStr* name, const AjPStr str)
     {
 	ajDebug("seqSetName non-word '%S'\n", str);
 	ajStrAssignS(name, str);
-	ajStrRemoveWhite(name);
+	ajStrRemoveWhiteExcess(name);
 	ajStrExchangeKK(name, ' ', '_');
 	ajDebug("seqSetName cleaned '%S'\n", *name);
     }
@@ -8728,7 +8723,7 @@ static void seqSetNameNospace(AjPStr* name, const AjPStr str)
     if(!ajStrIsWord(str))
     {
 	ajDebug("seqSetNameNospace non-word '%S'\n", str);
-	ajStrRemoveWhite(name);
+	ajStrRemoveWhiteExcess(name);
 	ajStrExchangeKK(name, ' ', '_');
 	ajDebug("seqSetNameNospace cleaned '%S'\n", *name);
     }
