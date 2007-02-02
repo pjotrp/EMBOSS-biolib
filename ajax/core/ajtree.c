@@ -227,7 +227,10 @@ ajuint ajTreestrLength(const AjPTree thys)
 
 void ajTreeFree(AjPTree* pthis)
 {
-    AjPTree thys;
+    AjPTree topnode = NULL;
+    AjPTree next    = NULL;
+    AjPTree tree    = NULL;
+    AjPTree parent  = NULL;
 
     if(!pthis)
 	return;
@@ -237,8 +240,53 @@ void ajTreeFree(AjPTree* pthis)
 
     treeDelCnt++;
 
-    thys = *pthis;
+    topnode = *pthis;
 
+    tree = ajTreeDown(topnode);
+
+    while(tree && tree != topnode)
+    {
+	/* if we can go down, simply do so */
+	next = ajTreeDown(tree);
+	if(next)
+	{
+	    tree = next;
+	    continue;
+	}
+
+	/* if we can go right, remove the node we left */
+	next = ajTreeNext(tree);
+	if(next)
+	{
+	    AJFREE(tree->Data);
+	    AJFREE(tree);
+	    tree = next;
+	    continue;
+	}
+
+	/* if we can go up, remove the node we left */
+	/* if not, we are at the top of the whole tree */
+	next = ajTreeUp(tree);
+	AJFREE(tree->Data);
+	AJFREE(tree);
+	tree = next;
+    }
+
+    /* remove the top (sub) node */
+    if(tree)
+    {
+	parent = tree->Up;
+	if(parent)
+	{
+	    if(parent->Down == tree)
+		parent->Down = tree->Right;
+	    if(tree->Left)
+		tree->Left->Right = tree->Right;
+	}
+	AJFREE(tree->Data);
+	AJFREE(tree);
+    }
+    AJFREE(*pthis);
 
     return;
 }
@@ -260,8 +308,10 @@ void ajTreeFree(AjPTree* pthis)
 
 void ajTreestrFree(AjPTree* pthis)
 {
-    AjPTree thys;
-    AjPTree tree;
+    AjPTree topnode = NULL;
+    AjPTree next    = NULL;
+    AjPTree tree    = NULL;
+    AjPTree parent  = NULL;
 
     if(!pthis)
 	return;
@@ -271,15 +321,52 @@ void ajTreestrFree(AjPTree* pthis)
 
     treeDelCnt++;
 
-    thys = *pthis;
+    topnode = *pthis;
 
-    tree = ajTreeFollow(NULL, thys);
-    while(tree)
+    tree = ajTreeDown(topnode);
+
+    while(tree && tree != topnode)
     {
-	ajStrDel((AjPStr*) &tree->Data);
-	tree = ajTreeFollow(tree, thys);
+	/* if we can go down, simply do so */
+	next = ajTreeDown(tree);
+	if(next)
+	{
+	    tree = next;
+	    continue;
+	}
+
+	/* if we can go right, remove the node we left */
+	next = ajTreeNext(tree);
+	if(next)
+	{
+	    ajStrDel((AjPStr*)&tree->Data);
+	    AJFREE(tree);
+	    tree = next;
+	    continue;
+	}
+
+	/* if we can go up, remove the node we left */
+	/* if not, we are at the top of the whole tree */
+	next = ajTreeUp(tree);
+	ajStrDel((AjPStr*)&tree->Data);
+	AJFREE(tree);
+	tree = next;
     }
 
+    /* remove the top (sub) node */
+    if(tree)
+    {
+	parent = tree->Up;
+	if(parent)
+	{
+	    if(parent->Down == tree)
+		parent->Down = tree->Right;
+	    if(tree->Left)
+		tree->Left->Right = tree->Right;
+	}
+	ajStrDel((AjPStr*)&tree->Data);
+	AJFREE(tree);
+    }
     AJFREE(*pthis);
 
     return;
@@ -304,17 +391,62 @@ void ajTreestrFree(AjPTree* pthis)
 
 void ajTreeDel(AjPTree* pthis)
 {
-    AjPTree tree;
+    AjPTree topnode = NULL;
+    AjPTree next    = NULL;
+    AjPTree tree    = NULL;
+    AjPTree parent  = NULL;
 
     if(!pthis)
 	return;
+
     if(!*pthis)
 	return;
 
     treeDelCnt++;
 
-    tree = *pthis;
+    topnode = *pthis;
 
+    tree = ajTreeDown(topnode);
+
+    while(tree && tree != topnode)
+    {
+	/* if we can go down, simply do so */
+	next = ajTreeDown(tree);
+	if(next)
+	{
+	    tree = next;
+	    continue;
+	}
+
+	/* if we can go right, remove the node we left */
+	next = ajTreeNext(tree);
+	if(next)
+	{
+	    AJFREE(tree);
+	    tree = next;
+	    continue;
+	}
+
+	/* if we can go up, remove the node we left */
+	/* if not, we are at the top of the whole tree */
+	next = ajTreeUp(tree);
+	AJFREE(tree);
+	tree = next;
+    }
+
+    /* remove the top (sub) node */
+    if(tree)
+    {
+	parent = tree->Up;
+	if(parent)
+	{
+	    if(parent->Down == tree)
+		parent->Down = tree->Right;
+	    if(tree->Left)
+		tree->Left->Right = tree->Right;
+	}
+	AJFREE(tree);
+    }
     AJFREE(*pthis);
 
     return;
