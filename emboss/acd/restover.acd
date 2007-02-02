@@ -118,11 +118,6 @@ section: output [
     information: "Show fragment lengths"
   ]
 
-  boolean: name [
-    default: "N"
-    information: "Show sequence name"
-  ]
-
   outfile: outfile [
     parameter: "Y"
     knowntype: "restover output"

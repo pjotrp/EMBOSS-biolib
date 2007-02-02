@@ -116,7 +116,6 @@ int main(int argc, char **argv)
     commercial = ajAcdGetBool("commercial");
     limit      = ajAcdGetBool("limit");
     frags      = ajAcdGetBool("fragments");
-    /* nameit     = ajAcdGetBool("name"); Unused! */
     dfile      = ajAcdGetDatafile("datafile");
 
     if(single)
@@ -393,6 +392,7 @@ static void restover_printHits(const AjPSeq seq, const AjPStr seqcmp,
 	}
 
 	/* I am not sure what fragments are doing so I left it in ...*/
+	/* used in the report tail in restrict - restover does much the same */
 	if(m->cut3 || m->cut4)
 	{
 	    if(frags)
