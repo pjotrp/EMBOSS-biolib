@@ -268,7 +268,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	{
 	    ok = ajTrue;
 	    ajStrAssignC(&type,ajStrGetPtr(line)+5);
-	    ajStrRemoveWhite(&type);
+	    ajStrRemoveWhiteExcess(&type);
 	}
     	else if(ajStrPrefixC(line,"# SI"))
 	{
@@ -277,7 +277,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
     	else if(ajStrPrefixC(line,"# CL"))
 	{
 	    ajStrAssignC(&class,ajStrGetPtr(line)+5);
-	    ajStrRemoveWhite(&class);
+	    ajStrRemoveWhiteExcess(&class);
 	}
 	else if(ajStrPrefixC(line,"# FO"))
 	{
@@ -288,7 +288,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 		    break;
 		ajStrAppendC(&fold,ajStrGetPtr(line)+5);
 	    }
-	    ajStrRemoveWhite(&fold);
+	    ajStrRemoveWhiteExcess(&fold);
 	}
 	else if(ajStrPrefixC(line,"# SF"))
 	{
@@ -299,7 +299,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 		    break;
 		ajStrAppendC(&super,ajStrGetPtr(line)+5);
 	    }
-	    ajStrRemoveWhite(&super);
+	    ajStrRemoveWhiteExcess(&super);
 	}
 	else if(ajStrPrefixC(line,"# FA"))
 	{
@@ -310,7 +310,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 		    break;
 		ajStrAppendC(&family,ajStrGetPtr(line)+5);
 	    }
-	    ajStrRemoveWhite(&family);
+	    ajStrRemoveWhiteExcess(&family);
 	}
 	else if(ajStrPrefixC(line,"# AR"))
 	{
@@ -321,7 +321,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 		    break;
 		ajStrAppendC(&arch,ajStrGetPtr(line)+5);
 	    }
-	    ajStrRemoveWhite(&arch);
+	    ajStrRemoveWhiteExcess(&arch);
 	}
 	else if(ajStrPrefixC(line,"# TP"))
 	{
@@ -332,7 +332,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 		    break;
 		ajStrAppendC(&topo,ajStrGetPtr(line)+5);
 	    }
-	    ajStrRemoveWhite(&topo);
+	    ajStrRemoveWhiteExcess(&topo);
 	}
 	else if(ajStrPrefixC(line,"# XX"))
 	    continue;
@@ -1580,7 +1580,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
 	    /* Process the last hit */
 	    if(donefirst)
 	    {
-		ajStrRemoveWhiteExcess(&hit->Seq);
+		ajStrRemoveWhite(&hit->Seq);
 		ajStrDel(&line);
 		ajStrDel(&subline);
 		ajStrDel(&type);
@@ -1696,7 +1696,7 @@ AjPScophit ajDmxScophitReadFasta(AjPFile inf)
     /* EOF therefore process last hit */
     if(donefirst)
     {
-	ajStrRemoveWhiteExcess(&hit->Seq);
+	ajStrRemoveWhite(&hit->Seq);
 	ajStrDel(&line);
 	ajStrDel(&subline);
 	ajStrDel(&type);

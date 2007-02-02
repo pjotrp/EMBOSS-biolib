@@ -1991,7 +1991,7 @@ AjPList  embDmxScophitReadAllFasta(AjPFile inf)
 	    if(donefirst)
 	    {
 		if(MAJSTRGETLEN(hit->Seq))
-		    ajStrRemoveWhiteExcess(&hit->Seq);
+		    ajStrRemoveWhite(&hit->Seq);
 		ajListPushApp(tmplist, hit);
 	    }
 	    
@@ -2100,7 +2100,7 @@ AjPList  embDmxScophitReadAllFasta(AjPFile inf)
     /* EOF therefore process last hit */
     if((!ok) && (parseok))
     {
-	ajStrRemoveWhiteExcess(&hit->Seq);
+	ajStrRemoveWhite(&hit->Seq);
 	ajListPushApp(tmplist, hit);
     }
 

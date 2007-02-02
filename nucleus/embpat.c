@@ -560,7 +560,7 @@ AjPStr embPatPrositeToRegExpEnds (const AjPStr s, AjBool start, AjBool end)
     c = ajStrNew();
     ajStrAssignS(&c, s);
     ajStrFmtUpper(&c);
-    ajStrRemoveWhite(&c);
+    ajStrRemoveWhiteExcess(&c);
     ch[1]='\0';
 
     p = ajStrGetPtr(c);
@@ -1984,7 +1984,7 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
     repeat=*amino=*carboxyl=*fclass=*ajcompl=*dontcare=*range=ajFalse;
 
     ajStrAssignS(&tmppat, pat);
-    ajStrRemoveWhite(&tmppat);
+    ajStrRemoveWhiteExcess(&tmppat);
     patAminoCarboxyl(tmppat,cleanpat, amino,carboxyl);
     ajStrDel(&tmppat);
 
@@ -3771,7 +3771,7 @@ ajuint embPatRestrictMatch(const AjPSeq seq, ajuint begin, ajuint end,
 	ne = ajArrCommaList(enzymes,&ea);
 	for(i=0;i<ne;++i)
 	{
-	    ajStrRemoveWhiteExcess(&ea[i]);
+	    ajStrRemoveWhite(&ea[i]);
 	    ajStrFmtUpper(&ea[i]);
 	}
 

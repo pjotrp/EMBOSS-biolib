@@ -2513,7 +2513,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 		    /* Assign residue type */ 
 		    ajStrAssignSubS(&pdbfile->rtype[i], 
 				pdbfile->lines[i], 17, 19);
-		    ajStrRemoveWhiteExcess(&pdbfile->rtype[i]);
+		    ajStrRemoveWhite(&pdbfile->rtype[i]);
 
 		    /* JONNEW */
 		    if(ajStrMatchC(pdbfile->rtype[i], "HOH"))
@@ -2693,7 +2693,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 		}
 		else	
 		{
-		    ajStrRemoveWhite(&(pdbfile->compnd));
+		    ajStrRemoveWhiteExcess(&(pdbfile->compnd));
 		    /* i will get incremented in main loop */
 		    i--;		
 		    break;
@@ -2715,7 +2715,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 		}
 		else	
 		{
-		    ajStrRemoveWhite(&(pdbfile->source));
+		    ajStrRemoveWhiteExcess(&(pdbfile->source));
 		    /* i will get incremented in main loop */
 		    i--;		
 		    break;
@@ -2782,25 +2782,25 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    elm = ElementNew();
 
 	    ajStrAssignSubS(&tmpstr, pdbfile->lines[i], 7, 9);
-	    ajStrRemoveWhiteExcess(&tmpstr);
+	    ajStrRemoveWhite(&tmpstr);
 	    ajFmtScanS(tmpstr, "%d", &elm->elementNum);
 	    
 	    ajStrAssignSubS(&elm->elementId, pdbfile->lines[i], 11, 13);
-	    ajStrRemoveWhiteExcess(&elm->elementId);
+	    ajStrRemoveWhite(&elm->elementId);
 
 	    elm->elementType = 'H';
 
 	    ajStrAssignSubS(&elm->initResName, pdbfile->lines[i], 15, 17);
-	    ajStrRemoveWhiteExcess(&elm->initResName);
+	    ajStrRemoveWhite(&elm->initResName);
 
 	    ajStrAssignSubS(&elm->initSeqNum, pdbfile->lines[i], 21, 25);
-	    ajStrRemoveWhiteExcess(&elm->initSeqNum);
+	    ajStrRemoveWhite(&elm->initSeqNum);
 
 	    ajStrAssignSubS(&elm->endResName, pdbfile->lines[i], 27, 29);
-	    ajStrRemoveWhiteExcess(&elm->endResName);
+	    ajStrRemoveWhite(&elm->endResName);
 
 	    ajStrAssignSubS(&elm->endSeqNum, pdbfile->lines[i], 33, 37);
-	    ajStrRemoveWhiteExcess(&elm->endSeqNum);
+	    ajStrRemoveWhite(&elm->endSeqNum);
 
 	    elm->chainId = ajStrGetCharPos(pdbfile->lines[i], 19);
 	    
@@ -2814,7 +2814,7 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    
 	    
 	    ajStrAssignSubS(&tmpstr, pdbfile->lines[i], 38, 39);
-	    ajStrRemoveWhiteExcess(&tmpstr);
+	    ajStrRemoveWhite(&tmpstr);
 	    ajFmtScanS(tmpstr, "%d", &elm->helixClass);
 	    
 
@@ -2841,11 +2841,11 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    elm = ElementNew();
 
 	    ajStrAssignSubS(&tmpstr, pdbfile->lines[i], 7, 9);
-	    ajStrRemoveWhiteExcess(&tmpstr);
+	    ajStrRemoveWhite(&tmpstr);
 	    ajFmtScanS(tmpstr, "%d", &elm->elementNum);
 
 	    ajStrAssignSubS(&elm->elementId, pdbfile->lines[i], 11, 13);
-	    ajStrRemoveWhiteExcess(&elm->elementId);
+	    ajStrRemoveWhite(&elm->elementId);
 
 	    if(!ajStrMatchS(elm->elementId, LastSheetId))
 		doneFirstStrand=ajFalse;		
@@ -2853,16 +2853,16 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    elm->elementType = 'E';
 
 	    ajStrAssignSubS(&elm->initResName, pdbfile->lines[i], 17, 19);
-	    ajStrRemoveWhiteExcess(&elm->initResName);
+	    ajStrRemoveWhite(&elm->initResName);
 
 	    ajStrAssignSubS(&elm->initSeqNum, pdbfile->lines[i], 22, 26);
-	    ajStrRemoveWhiteExcess(&elm->initSeqNum);
+	    ajStrRemoveWhite(&elm->initSeqNum);
 
 	    ajStrAssignSubS(&elm->endResName, pdbfile->lines[i], 28, 30);
-	    ajStrRemoveWhiteExcess(&elm->endResName);
+	    ajStrRemoveWhite(&elm->endResName);
 
 	    ajStrAssignSubS(&elm->endSeqNum, pdbfile->lines[i], 33, 37);
-	    ajStrRemoveWhiteExcess(&elm->endSeqNum);
+	    ajStrRemoveWhite(&elm->endSeqNum);
 
 	    elm->chainId = ajStrGetCharPos(pdbfile->lines[i], 21);
 	    if(elm->chainId != ajStrGetCharPos(pdbfile->lines[i], 32))
@@ -2920,25 +2920,25 @@ static AjBool FirstPass(AjPPdbfile pdbfile, AjPFile logf, AjPElements *elms,
 	    elm = ElementNew();
 
 	    ajStrAssignSubS(&tmpstr, pdbfile->lines[i], 7, 9);
-	    ajStrRemoveWhiteExcess(&tmpstr);
+	    ajStrRemoveWhite(&tmpstr);
 	    ajFmtScanS(tmpstr, "%d", &elm->elementNum);
 
 	    ajStrAssignSubS(&elm->elementId, pdbfile->lines[i], 11, 13);
-	    ajStrRemoveWhiteExcess(&elm->elementId);
+	    ajStrRemoveWhite(&elm->elementId);
 
 	    elm->elementType = 'T';
 
 	    ajStrAssignSubS(&elm->initResName, pdbfile->lines[i], 15, 17);
-	    ajStrRemoveWhiteExcess(&elm->initResName);
+	    ajStrRemoveWhite(&elm->initResName);
 
 	    ajStrAssignSubS(&elm->initSeqNum, pdbfile->lines[i], 20, 24);
-	    ajStrRemoveWhiteExcess(&elm->initSeqNum);
+	    ajStrRemoveWhite(&elm->initSeqNum);
 
 	    ajStrAssignSubS(&elm->endResName, pdbfile->lines[i], 26, 28);
-	    ajStrRemoveWhiteExcess(&elm->endResName);
+	    ajStrRemoveWhite(&elm->endResName);
 
 	    ajStrAssignSubS(&elm->endSeqNum, pdbfile->lines[i], 31, 35);
-	    ajStrRemoveWhiteExcess(&elm->endSeqNum);
+	    ajStrRemoveWhite(&elm->endSeqNum);
 
 	    elm->chainId = ajStrGetCharPos(pdbfile->lines[i], 19);
 	    if(elm->chainId != ajStrGetCharPos(pdbfile->lines[i], 30))
@@ -4043,7 +4043,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 	    {
 		ajStrAssignSubS(&pdbfile->atype[i], 
 			    pdbfile->lines[i], 12, 15);
-		ajStrRemoveWhiteExcess(&pdbfile->atype[i]);
+		ajStrRemoveWhite(&pdbfile->atype[i]);
 		if(!msgdone)
 		{
 		    ajFmtPrintF(logf, "%-15s%d\n", "ATOMCOL12", i+1);
@@ -4054,7 +4054,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
 	    {
 		ajStrAssignSubS(&pdbfile->atype[i], 
 			    pdbfile->lines[i], 13, 15);
-		ajStrRemoveWhiteExcess(&pdbfile->atype[i]);
+		ajStrRemoveWhite(&pdbfile->atype[i]);
 	    }
 	   
 	}

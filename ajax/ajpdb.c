@@ -705,7 +705,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	{    
 	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&seq1,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&seq1);
+	    ajStrRemoveWhite(&seq1);
 	}
 
 	/* S2 */
@@ -713,7 +713,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	{    
 	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&seq2,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&seq2);
+	    ajStrRemoveWhite(&seq2);
 	}
 	/* NC */	    
 	else if((ajStrPrefixC(line, "NC")) && 
@@ -1363,7 +1363,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	{
 	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&(ret)->Chains[nc-1]->Seq);
+	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;
 	}
 
@@ -1812,7 +1812,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 	{
 	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&(ret)->Chains[nc-1]->Seq);
+	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;
 	}
 
@@ -2196,7 +2196,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	{
 	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&(ret)->Chains[nc-1]->Seq);
+	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;
 	}
 

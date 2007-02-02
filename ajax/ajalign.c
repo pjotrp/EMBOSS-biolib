@@ -1561,7 +1561,7 @@ static void alignWriteTCoffee (AjPAlign thys)
     ajFmtPrintF (outf, "%d\n", nseq); /* number of sequences */
     for (iseq=0; iseq < nseq; iseq++) {
 	ajStrAssignS(&sseq,ajSeqGetSeqS(pdata[0]->Seq[iseq]));
-	ajStrRemoveWhiteExcess(&sseq);
+	ajStrRemoveWhite(&sseq);
 	ajStrExchangeCC(&sseq, "-","");
 	/* <seqname> <seqlen> <sequence> */
 	ajFmtPrintF(outf, "%S %d %S\n",

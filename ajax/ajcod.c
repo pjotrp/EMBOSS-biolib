@@ -1260,7 +1260,7 @@ static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff)
 
     while(ajFileBuffGet(inbuff,&codReadLine))
     {
-	ajStrRemoveWhite(&codReadLine);
+	ajStrRemoveWhiteExcess(&codReadLine);
 	if(!ajStrGetLen(codReadLine))
 	    continue;
 	if(ajStrGetCharFirst(codReadLine) == '#')
@@ -1426,7 +1426,7 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
     ajStrTokenNextParse(&handle, &tok);
     if(!ajStrGetLen(tok))
 	return ajFalse;
-    ajStrRemoveWhite(&tok);
+    ajStrRemoveWhiteExcess(&tok);
     ajStrAssignS(&thys->Species, tok);
 
     ajStrTokenNextParseC(&handle, "]: ", &tok);
@@ -1593,7 +1593,7 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
 
     ajFileBuffGet(inbuff,&line);
     ajFileBuffGet(inbuff,&line);
-    ajStrRemoveWhite(&line);
+    ajStrRemoveWhiteExcess(&line);
 
     if(ajStrPrefixC(line, "Codon usage for "))
     {
@@ -1603,24 +1603,24 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
 	{
 	    ajStrAssignSubS(&thys->Species, line, 0, i-1);
 	    ajStrAssignSubS(&tok1, line, i+1, -1);
-	    ajStrRemoveWhite(&tok1);
+	    ajStrRemoveWhiteExcess(&tok1);
 	    if(codIsNumber(tok1))
 		ajStrToInt(tok1, &thys->CdsCount);
 	}
     }
     ajFileBuffGet(inbuff,&line);
-    ajStrRemoveWhite(&line);
+    ajStrRemoveWhiteExcess(&line);
     if(ajStrPrefixC(line, "from "))
     {
 	ajStrCutStart(&line, 5);
-	ajStrRemoveWhite(&line);
+	ajStrRemoveWhiteExcess(&line);
 	i = ajStrFindlastC(line, ":");
 	if(i>0)
 	{
 	    ajStrAssignSubS(&tok1, line, 0, i-1);
 	    ajStrAssignSubS(&tok2, line, i+1, -1);
-	    ajStrRemoveWhite(&tok1);
-	    ajStrRemoveWhite(&tok2);
+	    ajStrRemoveWhiteExcess(&tok1);
+	    ajStrRemoveWhiteExcess(&tok2);
 	    i = ajStrFindC(tok1, "/");
 	    if(i>0)
 	    {
@@ -1682,7 +1682,7 @@ static AjBool codReadGcg(AjPCod thys, AjPFileBuff inbuff)
 	}
 	if(header)
 	{
-	    ajStrRemoveWhite(&line);
+	    ajStrRemoveWhiteExcess(&line);
 	    if(!ajStrGetLen(line))
 		continue;
 	    if(ajStrGetCharFirst(line) == '!')
@@ -1799,49 +1799,49 @@ static AjBool codCommentProcess(AjPCod thys, const AjPStr ccline)
     if(ajStrPrefixC(codTmpLine, "#Species:"))
     {
 	ajStrCutStart(&codTmpLine, 9);
-	ajStrRemoveWhite(&codTmpLine);
+	ajStrRemoveWhiteExcess(&codTmpLine);
 	ajStrAssignS(&thys->Species, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#Division:"))
     {
 	ajStrCutStart(&codTmpLine, 10);
-	ajStrRemoveWhite(&codTmpLine);
+	ajStrRemoveWhiteExcess(&codTmpLine);
 	ajStrAssignS(&thys->Division, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#Release:"))
     {
 	ajStrCutStart(&codTmpLine, 9);
-	ajStrRemoveWhite(&codTmpLine);
+	ajStrRemoveWhiteExcess(&codTmpLine);
 	ajStrAssignS(&thys->Release, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#Description:"))
     {
 	ajStrCutStart(&codTmpLine, 13);
-	ajStrRemoveWhite(&codTmpLine);
+	ajStrRemoveWhiteExcess(&codTmpLine);
 	ajStrAssignS(&thys->Desc, codTmpLine);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#CdsCount:"))
     {
 	ajStrCutStart(&codTmpLine, 10);
-	ajStrRemoveWhite(&codTmpLine);
+	ajStrRemoveWhiteExcess(&codTmpLine);
 	ajStrToInt(codTmpLine, &thys->CdsCount);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#CodonCount:"))
     {
 	ajStrCutStart(&codTmpLine, 12);
-	ajStrRemoveWhite(&codTmpLine);
+	ajStrRemoveWhiteExcess(&codTmpLine);
 	ajStrToInt(codTmpLine, &thys->CodonCount);
 	return ajTrue;
     }
     else if(ajStrPrefixC(codTmpLine, "#GeneticCode:"))
     {
 	ajStrCutStart(&codTmpLine, 13);
-	ajStrRemoveWhite(&codTmpLine);
+	ajStrRemoveWhiteExcess(&codTmpLine);
 	ajStrToInt(codTmpLine, &thys->GeneticCode);
     }
 

@@ -2220,7 +2220,7 @@ float* ajArrFloatLine(const AjPStr line, const char *delim,
     tmpline = ajStrNew();
     ajStrAssignS(&tmpline,line);
     
-    ajStrRemoveWhite(&tmpline);
+    ajStrRemoveWhiteExcess(&tmpline);
 
     t     = ajStrTokenNewC(tmpline, delim);
     tmp   = ajStrNew();

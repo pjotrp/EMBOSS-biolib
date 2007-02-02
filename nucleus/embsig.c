@@ -1549,7 +1549,7 @@ EmbPHit embHitReadFasta(AjPFile inf)
 	    /* Process the last hit */
 	    if(donefirst)
 	    {
-		ajStrRemoveWhiteExcess(&hit->Seq);
+		ajStrRemoveWhite(&hit->Seq);
 		ajStrDel(&line);
 		ajStrDel(&subline);
 		return hit;
@@ -1640,7 +1640,7 @@ EmbPHit embHitReadFasta(AjPFile inf)
     /* EOF therefore process last hit */
     if(donefirst)
     {
-	ajStrRemoveWhiteExcess(&hit->Seq);
+	ajStrRemoveWhite(&hit->Seq);
 	ajStrDel(&line);
 	ajStrDel(&subline);
 	return hit;
@@ -1722,17 +1722,17 @@ EmbPHitlist embHitlistRead(AjPFile inf)
 	else if(ajStrPrefixC(line,"CL"))
 	{
 	    ajStrAssignC(&class,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&class);
+	    ajStrRemoveWhiteExcess(&class);
 	}
 	else if(ajStrPrefixC(line,"AR"))
 	{
 	    ajStrAssignC(&arch,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&arch);
+	    ajStrRemoveWhiteExcess(&arch);
 	}
 	else if(ajStrPrefixC(line,"TP"))
 	{
 	    ajStrAssignC(&top,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&top);
+	    ajStrRemoveWhiteExcess(&top);
 	}
 	else if(ajStrPrefixC(line,"FO"))
 	{
@@ -1743,7 +1743,7 @@ EmbPHitlist embHitlistRead(AjPFile inf)
 		    break;
 		ajStrAppendC(&fold,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&fold);
+	    ajStrRemoveWhiteExcess(&fold);
 	}
 	else if(ajStrPrefixC(line,"SF"))
 	{
@@ -1754,7 +1754,7 @@ EmbPHitlist embHitlistRead(AjPFile inf)
 		    break;
 		ajStrAppendC(&super,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&super);
+	    ajStrRemoveWhiteExcess(&super);
 	}
 	else if(ajStrPrefixC(line,"FA"))
 	{
@@ -1765,7 +1765,7 @@ EmbPHitlist embHitlistRead(AjPFile inf)
 		    break;
 		ajStrAppendC(&family,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&family);
+	    ajStrRemoveWhiteExcess(&family);
 	}
 	else if(ajStrPrefixC(line,"NS"))
 	{
@@ -1812,27 +1812,27 @@ EmbPHitlist embHitlistRead(AjPFile inf)
 	else if(ajStrPrefixC(line,"AC"))
 	{
 	    ajStrAssignC(&(ret)->hits[n-1]->Acc,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&(ret)->hits[n-1]->Acc);
+	    ajStrRemoveWhiteExcess(&(ret)->hits[n-1]->Acc);
 	}
 	else if(ajStrPrefixC(line,"SP"))
 	{
 	    ajStrAssignC(&(ret)->hits[n-1]->Spr,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&(ret)->hits[n-1]->Spr);
+	    ajStrRemoveWhiteExcess(&(ret)->hits[n-1]->Spr);
 	}
 	else if(ajStrPrefixC(line,"DO"))
 	{
 	    ajStrAssignC(&(ret)->hits[n-1]->Dom,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&(ret)->hits[n-1]->Dom);
+	    ajStrRemoveWhiteExcess(&(ret)->hits[n-1]->Dom);
 	}
 /*	else if(ajStrPrefixC(line,"TY"))
 	{
 	    ajStrAssignC(&(ret)->hits[n-1]->Typeobj,ajStrGetPtr(line)+3);	
-	    ajStrRemoveWhite(&(ret)->hits[n-1]->Typeobj);		
+	    ajStrRemoveWhiteExcess(&(ret)->hits[n-1]->Typeobj);		
 	}  */
 	else if(ajStrPrefixC(line,"MO"))
 	{
 	    ajStrAssignC(&(ret)->hits[n-1]->Model,ajStrGetPtr(line)+3);	
-	    ajStrRemoveWhite(&(ret)->hits[n-1]->Model);		
+	    ajStrRemoveWhiteExcess(&(ret)->hits[n-1]->Model);		
 	}
 	else if(ajStrPrefixC(line,"RA"))
 	    ajFmtScanS(line, "%*s %u %*s %u", &(ret)->hits[n-1]->Start,
@@ -1843,7 +1843,7 @@ EmbPHitlist embHitlistRead(AjPFile inf)
 	{
 	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->hits[n-1]->Seq,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&(ret)->hits[n-1]->Seq);
+	    ajStrRemoveWhite(&(ret)->hits[n-1]->Seq);
 	    continue;
 	}
 	
@@ -1919,7 +1919,7 @@ EmbPHitlist embHitlistReadFasta(AjPFile inf)
 	    if(donefirst)
 	    {
 		if(MAJSTRGETLEN(hit->Seq))
-		    ajStrRemoveWhiteExcess(&hit->Seq);
+		    ajStrRemoveWhite(&hit->Seq);
 		ajListPushApp(tmplist, hit);
 	    }
 	    
@@ -2073,7 +2073,7 @@ EmbPHitlist embHitlistReadFasta(AjPFile inf)
     /* EOF therefore process last hit */
     if((!ok) && (parseok))
     {
-	ajStrRemoveWhiteExcess(&hit->Seq);
+	ajStrRemoveWhite(&hit->Seq);
 	ajListPushApp(tmplist, hit);
 	hitlist->N = ajListToArray(tmplist, (void ***)&hitlist->hits);
 	ajStrDel(&subline);
@@ -3017,17 +3017,17 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
 	else if(ajStrPrefixC(line,"CL"))
 	{
 	    ajStrAssignC(&class,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&class);
+	    ajStrRemoveWhiteExcess(&class);
 	}
 	else if(ajStrPrefixC(line,"AR"))
 	{
 	    ajStrAssignC(&arch,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&arch);
+	    ajStrRemoveWhiteExcess(&arch);
 	}
 	else if(ajStrPrefixC(line,"TP"))
 	{
 	    ajStrAssignC(&top,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&top);
+	    ajStrRemoveWhiteExcess(&top);
 	}
 	else if(ajStrPrefixC(line,"FO"))
 	{
@@ -3038,7 +3038,7 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
 		    break;
 		ajStrAppendC(&fold,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&fold);
+	    ajStrRemoveWhiteExcess(&fold);
 	}
 	else if(ajStrPrefixC(line,"SF"))
 	{
@@ -3049,7 +3049,7 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
 		    break;
 		ajStrAppendC(&super,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&super);
+	    ajStrRemoveWhiteExcess(&super);
 	}
 	else if(ajStrPrefixC(line,"FA"))
 	{
@@ -3060,7 +3060,7 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
 		    break;
 		ajStrAppendC(&family,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&family);
+	    ajStrRemoveWhiteExcess(&family);
 	}
 	else if(ajStrPrefixC(line,"NP"))
 	{
@@ -3429,17 +3429,17 @@ EmbPHitlist embSignatureHitsRead(AjPFile inf)
 	else if(ajStrPrefixC(line,"CL"))
 	{
 	    ajStrAssignC(&class,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&class);
+	    ajStrRemoveWhiteExcess(&class);
 	}
 	else if(ajStrPrefixC(line,"AR"))
 	{
 	    ajStrAssignC(&arch,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&arch);
+	    ajStrRemoveWhiteExcess(&arch);
 	}
 	else if(ajStrPrefixC(line,"TP"))
 	{
 	    ajStrAssignC(&top,ajStrGetPtr(line)+3);
-	    ajStrRemoveWhite(&top);
+	    ajStrRemoveWhiteExcess(&top);
 	}
 	else if(ajStrPrefixC(line,"FO"))
 	{
@@ -3450,7 +3450,7 @@ EmbPHitlist embSignatureHitsRead(AjPFile inf)
 		    break;
 		ajStrAppendC(&fold,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&fold);
+	    ajStrRemoveWhiteExcess(&fold);
 	}
 	else if(ajStrPrefixC(line,"SF"))
 	{
@@ -3461,7 +3461,7 @@ EmbPHitlist embSignatureHitsRead(AjPFile inf)
 		    break;
 		ajStrAppendC(&super,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&super);
+	    ajStrRemoveWhiteExcess(&super);
 	}
 	else if(ajStrPrefixC(line,"FA"))
 	{
@@ -3472,7 +3472,7 @@ EmbPHitlist embSignatureHitsRead(AjPFile inf)
 		    break;
 		ajStrAppendC(&family,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&family);
+	    ajStrRemoveWhiteExcess(&family);
 	}
 	else if(ajStrPrefixC(line,"HI"))
 	{

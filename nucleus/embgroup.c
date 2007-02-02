@@ -961,12 +961,12 @@ static void grpSplitList(AjPList groups, const AjPStr value, AjBool explode,
 	    if(!colon)
 	    {
 		ajStrExchangeSetCC(&copystr, ":", " ");
-		ajStrRemoveWhite(&copystr);
+		ajStrRemoveWhiteExcess(&copystr);
 	    }
 	    else
 	    {
 		/* tidy up spurious spaces around the colon */
-		ajStrRemoveWhite(&copystr);
+		ajStrRemoveWhiteExcess(&copystr);
 		ajStrExchangeCC(&copystr, " :", ":");
 		ajStrExchangeCC(&copystr, ": ", ":");
 	    }

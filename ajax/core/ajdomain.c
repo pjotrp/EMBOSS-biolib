@@ -447,7 +447,7 @@ static AjPScopdes domainScopdesReadC(AjPFile inf, const char *entry)
     ajRegSubI(rexp,3,&tmp);
     ajRegSubI(rexp,4,&tmp);
     ajRegPost(rexp,&ret->Desc);
-    ajStrRemoveWhite(&ret->Desc);
+    ajStrRemoveWhiteExcess(&ret->Desc);
 
     return ret;
 }
@@ -1824,7 +1824,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 		    break;
 		ajStrAppendC(&architecture,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&architecture);
+	    ajStrRemoveWhiteExcess(&architecture);
 	}
 	else if(ajStrPrefixC(line,"TP"))
 	{
@@ -1835,7 +1835,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 		    break;
 		ajStrAppendC(&topology,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&topology);
+	    ajStrRemoveWhiteExcess(&topology);
 	}
 	else if(ajStrPrefixC(line,"SF"))
 	{
@@ -1846,7 +1846,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 		    break;
 		ajStrAppendC(&superfamily,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&superfamily);
+	    ajStrRemoveWhiteExcess(&superfamily);
 	}
 	else if(ajStrPrefixC(line,"NR"))  
 	{
@@ -1888,7 +1888,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 	{
 	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&SeqPdb,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&SeqPdb);
+	    ajStrRemoveWhite(&SeqPdb);
 	    continue;
 	}
 	/* Sequence from swissprot */
@@ -1896,7 +1896,7 @@ AjPList   ajCathReadAllRawNew(AjPFile cathf, AjPFile domf, AjPFile namesf,
 	{
 	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&SeqSpr,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&SeqSpr);
+	    ajStrRemoveWhite(&SeqSpr);
 	    continue;
 	}
 	
@@ -2611,7 +2611,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 		    break;
 		ajStrAppendC(&fold,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&fold);
+	    ajStrRemoveWhiteExcess(&fold);
 	}
 	else if(ajStrPrefixC(line,"SF"))
 	{
@@ -2622,7 +2622,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 		    break;
 		ajStrAppendC(&super,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&super);
+	    ajStrRemoveWhiteExcess(&super);
 	}
 	else if(ajStrPrefixC(line,"FA"))
 	{
@@ -2633,7 +2633,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 		    break;
 		ajStrAppendC(&family,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&family);
+	    ajStrRemoveWhiteExcess(&family);
 	}
 	else if(ajStrPrefixC(line,"DO"))
 	{
@@ -2644,7 +2644,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 		    break;
 		ajStrAppendC(&domain,ajStrGetPtr(line)+3);
 	    }
-	    ajStrRemoveWhite(&domain);
+	    ajStrRemoveWhiteExcess(&domain);
 	}
 	else if(ajStrPrefixC(line,"NC"))
 	{
@@ -2697,7 +2697,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	{
 	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&SeqPdb,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&SeqPdb);
+	    ajStrRemoveWhite(&SeqPdb);
 	    continue;
 	}
 	/* Sequence from swissprot */
@@ -2705,7 +2705,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	{
 	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&SeqSpr,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&SeqSpr);
+	    ajStrRemoveWhite(&SeqSpr);
 	    continue;
 	}
 	
@@ -2726,7 +2726,7 @@ AjPScop ajScopReadCNew(AjPFile inf, const char *entry)
 	{
 	    while((ok=ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&sss,ajStrGetPtr(line));
-	    ajStrRemoveWhiteExcess(&sss);
+	    ajStrRemoveWhite(&sss);
 	    continue;
 	}
 
