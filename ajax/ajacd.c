@@ -70,6 +70,7 @@ static AjBool acdDoTable = AJFALSE;
 static AjBool acdDoTrace = AJFALSE;
 static AjBool acdDoValid = AJFALSE;
 static AjBool acdVerbose = AJFALSE;
+static AjBool acdCommandLine = AJTRUE;
 static AjBool acdAuto = AJFALSE;
 static AjBool acdFilter = AJFALSE;
 static AjBool acdOptions = AJFALSE;
@@ -13930,7 +13931,7 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
     if(!acdDoTable)
 	acdHelpValid(thys, ajFalse, &text);
 
-    ajStrRemoveWhite(&text);
+    ajStrRemoveWhiteExcess(&text);
     acdTextFormat(&text);
     ajStrFmtWrapLeft(&text, 45, 34);
     ajStrAppendS(&line, text);
@@ -18490,6 +18491,12 @@ AjBool ajAcdSetControl(const char* optionName)
 	return ajTrue;
     }
 
+    if(!ajCharCmpCase(optionName, "acdnocommandline"))
+    {
+	acdCommandLine = ajFalse;
+	return ajTrue;
+    }
+
     /* program source error */
     ajDie("Unknown ajAcdSetControl control option '%s'", optionName);
 
@@ -18753,8 +18760,8 @@ static void acdArgsParse(ajint argc, char * const argv[])
 ** @fdata [none]
 **
 ** @nam3rule Get Return data as a string
-** @nam4rule GetCmdline Return the full commandline equiovalent
-** @nam4rule GetInputs Return the full commandline equiovalent
+** @nam4rule GetCmdline Return the full commandline equivalent
+** @nam4rule GetInputs Return the full commandline equivalent
 ** @nam4rule GetProgram Return the program name
 **
 ** @valrule * [const AjPStr]
@@ -24094,6 +24101,9 @@ void ajAcdExit(AjBool silent)
 {
     AcdPAcd pa;
     static AjBool staySilent = AJFALSE;
+    AjPFile cmdlogfile = NULL;
+    AjPStr  cmdlog     = NULL;
+    AjPStr  cmdstr     = NULL;
 
     if(silent)
 	staySilent = ajTrue;
@@ -24128,6 +24138,28 @@ void ajAcdExit(AjBool silent)
 		       pa->Name, pa->ValStr, pa->Assoc);
 	}
     }
+
+
+    /* report the command line to a log if requested.
+     ** added mainly to log command lines for the QA tests
+     ** so they can also be used in memory leak tests
+     **
+     ** Need to test acdProgram is still set - acdc calls this twice
+     */
+
+    if(acdCommandLine &&
+       ajStrGetLen(acdProgram) &&
+       ajNamGetValueC("acdcommandlinelog", &cmdlog))
+    {
+	cmdlogfile = ajFileNewApp(cmdlog);
+	ajStrAssignS(&cmdstr, acdArgSave);
+	if(ajStrGetLen(acdInputSave))
+	    ajStrAppendS(&cmdstr, acdInputSave);
+	ajStrRemoveWhiteExcess(&cmdstr);
+	ajFmtPrintF(cmdlogfile, "%S %S\n", acdProgram, cmdstr);
+	ajFileClose(&cmdlogfile);
+    }
+
 
     /*
     ** clean up memory:
@@ -24372,6 +24404,9 @@ static void acdValidRelation(const AcdPAcd thys)
 
     tmpstr = acdAttrValue(thys, "relations");
 
+    if(!ajStrGetLen(tmpstr))
+	return;
+
     return;
 }
 
@@ -24557,7 +24592,6 @@ static void acdValidQual(AcdPAcd thys)
     static AjBool seqoutMulti  = AJFALSE;
     static AjBool featMulti    = AJFALSE;
     static AjBool featoutMulti = AJFALSE;
-    AjBool okinfo = ajFalse;
 
     if(!acdDoValid)
 	return;
@@ -24733,9 +24767,7 @@ static void acdValidQual(AcdPAcd thys)
 	{
 	    if(ajStrGetLen(tmpinfo))
 	    {
-		if(ajStrMatchS(tmpinfo, tmpstandard))
-		    okinfo = ajTrue;
-		else
+		if(!ajStrMatchS(tmpinfo, tmpstandard))
 		    acdWarn("Information string for '%S' not standard '%S'",
 			    thys->Name, tmpstandard);
 	    }
@@ -25569,7 +25601,7 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
 	iline++;
 	if(ajStrCutComments(&knownLine))
 	{
-	    ajStrRemoveWhite(&knownLine);
+	    ajStrRemoveWhiteExcess(&knownLine);
 
 	    ok = ajStrExtractWord(knownLine, &knownRest, &knownName);
 	    if(ok)
@@ -25645,7 +25677,7 @@ static void acdValidApplGroup(const AjPStr groups)
     while(ajRegExec(grpexp, tmpGroups))
     {
 	ajRegSubI(grpexp, 1, &grpName);
-	ajStrRemoveWhite(&grpName);
+	ajStrRemoveWhiteExcess(&grpName);
 	grpDesc = ajTableGet(acdGrpTable, grpName);
 	if(!grpDesc)
 	    acdErrorValid("Unknown group '%S' for application", grpName);
@@ -25692,7 +25724,7 @@ static void acdValidApplKeywords(const AjPStr keys)
     while(ajRegExec(keyexp, tmpKeys))
     {
 	ajRegSubI(keyexp, 1, &keyName);
-	ajStrRemoveWhite(&keyName);
+	ajStrRemoveWhiteExcess(&keyName);
 	keyDesc = ajTableGet(keyTable, keyName);
 	if(!keyDesc)
 	    acdErrorValid("Unknown keyword '%S' for application", keyName);
@@ -25769,7 +25801,7 @@ static AjPTable acdReadGroups(void)
     {
 	if(ajStrCutComments(&grpLine))
 	{
-	    ajStrRemoveWhite(&grpLine);
+	    ajStrRemoveWhiteExcess(&grpLine);
 
 	    if(ajRegExec(grpxp, grpLine))
 	    {
@@ -25868,7 +25900,7 @@ static AjPTable acdReadKeywords(void)
     {
 	if(ajStrCutComments(&keyLine))
 	{
-	    ajStrRemoveWhite(&keyLine);
+	    ajStrRemoveWhiteExcess(&keyLine);
 
 	    if(ajRegExec(keyxp, keyLine))
 	    {
@@ -25972,7 +26004,7 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
     {
 	if(ajStrCutComments(&sectLine))
 	{
-	    ajStrRemoveWhite(&sectLine);
+	    ajStrRemoveWhiteExcess(&sectLine);
 
 	    if(ajRegExec(sectxp, sectLine))
 	    {
