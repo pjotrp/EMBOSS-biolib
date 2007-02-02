@@ -34,6 +34,8 @@
 
 int main(int argc, char **argv)
 {
+    ajAcdSetControl("acdnocommandline");
+
     if(argc < 2)
 	ajFatal("Error - must specify an application to compile\n");
     else

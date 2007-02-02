@@ -41,6 +41,8 @@ int main(int argc, char **argv)
 	ajFatal("Error - must specify an application to compile\n");
 
     ajAcdSetControl("acdvalid");
+    ajAcdSetControl("acdnocommandline");
+
     ajGraphInit(argv[1], argc-1, &argv[1]);
 
     ajAcdExit(ajTrue);		/* turn off the 'never used' ACD warnings */
