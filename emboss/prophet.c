@@ -415,6 +415,10 @@ static void prophet_scan_profile(const AjPStr substr, const AjPStr name,
        ajStrGetPtr(pname),1,begin); */
 
     /* JISON new block */
+    embAlignReportProfile(align, *m, *n, start1, start2,
+			  score,
+			  ajStrGetPtr(pname), ajStrGetPtr(name));
+/*
     seqm=ajSeqNewNameS((const AjPStr)*m, (const AjPStr)pname);
     seqn=ajSeqNewNameS((const AjPStr)*n, (const AjPStr)name); 
     ajAlignDefineSS(align, seqm, seqn);
@@ -422,6 +426,7 @@ static void prophet_scan_profile(const AjPStr substr, const AjPStr name,
     ajAlignSetRange(align, 
 		    start1, start1+mlen-1, mlen, 1,
 		    start2, start2+slen-1, slen, 1);
+*/
     ajAlignWrite(align);
     ajSeqDel(&seqm);
     ajSeqDel(&seqn);
