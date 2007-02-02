@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 	{
             while((ajFileReadLine(ssin,&line)) && !ajStrPrefixC(line,"XX"))
                 ajStrAppendS(&qss,line);
-            ajStrRemoveWhiteExcess(&qss);
+            ajStrRemoveWhite(&qss);
 
             /* Convert this string to 3-letter code & then to AjPSeq object. */
             q3ss = ssematch_convertbases(qss);

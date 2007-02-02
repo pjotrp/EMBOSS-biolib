@@ -70,7 +70,7 @@ AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring)
 	if((seqlen))
 	{
 	    ajStrAssignS(&cleanstr,seqstr);
-	    ajStrRemoveWhiteExcess(&cleanstr);
+	    ajStrRemoveWhite(&cleanstr);
 	}
 
 	conlen = ajStrGetLen(conline);
