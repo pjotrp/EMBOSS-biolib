@@ -398,7 +398,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 		    ajStrAppendS(&sumline,line);
 		    ret = ajFileReadLine(inf,&line);
 		}
-		ajStrRemoveWhite(&sumline);
+		ajStrRemoveWhiteExcess(&sumline);
 		embBtreeGenBankKW(sumline,entry->kw,entry->kwlen);
 		continue;
 	    }
@@ -413,7 +413,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 		    ajStrAppendS(&sumline,line);
 		    ret = ajFileReadLine(inf,&line);
 		}
-		ajStrRemoveWhite(&sumline);
+		ajStrRemoveWhiteExcess(&sumline);
 		embBtreeGenBankDE(sumline,entry->de,entry->delen);
 		continue;
 	    }
@@ -429,7 +429,7 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 		    ajStrAppendS(&sumline,line);
 		    ret = ajFileReadLine(inf,&line);
 		}
-		ajStrRemoveWhite(&sumline);
+		ajStrRemoveWhiteExcess(&sumline);
 		embBtreeGenBankTX(sumline,entry->tx,entry->txlen);
 		continue;
 	    }
