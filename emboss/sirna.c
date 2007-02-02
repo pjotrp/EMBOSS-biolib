@@ -139,8 +139,6 @@ static void sirna_report(AjPReport report, const AjPSeq seq, AjBool poliii,
     ajint position;
     ajint i;
     ajint j;
-    ajint window_start;
-    ajint window_end;
     ajint window_len = 23; /* the length of the required siRNA region */
     ajint shift = 1;	       /* want to evaluate at each position */
     ajint count_gc;	     /* number of G + C bases in the window */
@@ -214,9 +212,6 @@ static void sirna_report(AjPReport report, const AjPSeq seq, AjBool poliii,
     e = (ajSeqGetEnd(seq) - window_len); /* last position a window can start */
     for(position=CDS_begin; position < e; position+=shift)
     {
-	window_start = position;
-	window_end   = position + window_len -1;
-
 	/* initialise score */
 	score = 0;
 

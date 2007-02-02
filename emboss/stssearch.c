@@ -165,8 +165,6 @@ static void stssearch_primTest(void **x,void *cl)
     Primer* p;
     Primer primdata;
 
-    static ajint calls = 0;
-
     AjBool testa;
     AjBool testb;
     AjBool testc;
@@ -182,8 +180,6 @@ static void stssearch_primTest(void **x,void *cl)
 
     if(!(ntests % 1000))
 	ajDebug("completed tests: %d\n", ntests);
-
-    calls = 1;
 
     testa = ajRegExec(primdata->Prima, seqstr);
 

@@ -523,7 +523,6 @@ static ajint wordfinder_findstartpoints(AjPTable seq1MatchTable,
 					ajint *qryend,	ajint *trgend,
 					ajint width)
 {
-    ajint hwidth = 0;
     ajint max = -10;
     ajint offset = 0;
     AjPList matchlist = NULL;
@@ -570,10 +569,6 @@ static ajint wordfinder_findstartpoints(AjPTable seq1MatchTable,
     ajListFree(&ordered);
     embWordMatchListDelete(&matchlist);	/* free the match structures */
 
-
-    hwidth = (ajint) width/2;
-
-    /*offset+=hwidth;*/
 
     if(offset > 0)
     {

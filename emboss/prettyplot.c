@@ -131,7 +131,6 @@ int main(int argc, char **argv)
     AjBool boxcol;
     AjBool portrait;
     AjBool collision;
-    AjBool okay = AJTRUE;
     ajint identity;
     AjBool listoptions;
     ajint alternative;
@@ -179,9 +178,9 @@ int main(int argc, char **argv)
     float fold = 0.0;
     ajint *colmat = 0;
     ajint *shadecolour = 0;
-    float identthresh = 1.5;
-    float simthresh = 1.0;
-    float relthresh = 0.5;
+    /* float identthresh = 1.5; */
+    /* float simthresh = 1.0; */
+    /* float relthresh = 0.5; */
     float part = 0.0;
     const char *cptr;
     ajint resbreak;
@@ -201,7 +200,6 @@ int main(int argc, char **argv)
     ajint endseq;
     ajint newILend = 0;
     ajint newILstart;
-    ajint offset = 0;
 
     ajGraphInit("prettyplot", argc, argv);
 
@@ -223,7 +221,7 @@ int main(int argc, char **argv)
     ajtime = ajTimeTodayF("daytime");
 
     ajSeqsetTrim(seqset);
-    offset = ajSeqsetGetOffset(seqset);
+    /* offset = ajSeqsetGetOffset(seqset); Unused */
 
     ajGraphSetTitlePlus(graph, ajSeqsetGetUsa(seqset));
 
@@ -282,9 +280,9 @@ int main(int argc, char **argv)
 
     /* pair is an array of three non-negative floats */
 
-    identthresh = ajFloatGet(pair,0);
-    simthresh = ajFloatGet(pair,1);
-    relthresh = ajFloatGet(pair,2);
+    /* identthresh = ajFloatGet(pair,0); Unused */
+    /* simthresh = ajFloatGet(pair,1); Unused */
+    /* relthresh = ajFloatGet(pair,2); Unused */
 
     /*
     ** shade is a formatted 4-character string. Characters BLPW only.
@@ -293,7 +291,6 @@ int main(int argc, char **argv)
 
     if(ajStrGetLen(shade))
     {
-	okay = ajTrue;
 	AJCNEW(shadecolour,4);
 	cptr = ajStrGetPtr(shade);
 	for(i=0;i<4;i++){
@@ -305,8 +302,6 @@ int main(int argc, char **argv)
 		shadecolour[i] = WHEAT;
 	    else if(cptr[i]== 'W' || cptr[i]== 'w')
 		shadecolour[i] = WHITE;
-	    else
-		okay = ajFalse;
 	}
 
 	colourbyconsensus = colourbyresidues = ajFalse;
@@ -1136,7 +1131,6 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
     char res[2]=" ";
     AjPStr strcon = NULL;
     char numberstring[10];
-    ajint thiscol = 0;
     float defcs = 0.;
     float curcs = 0.;
 
@@ -1177,7 +1171,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    }
 	    count++;
 	    countforgap++;
-	    thiscol = ajGraphGetColour();
+	    /* thiscol = ajGraphGetColour(); Unused */
 
 	    for(j=seqstart,l=0;j<seqend;j++,l++)
 		if(seqboxptr[j][k] & BOXCOLOURED)

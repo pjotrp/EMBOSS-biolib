@@ -73,7 +73,6 @@ int main(int argc, char **argv)
     AjBool plasmid;
     AjBool threeprime;
     AjBool commercial;
-    AjBool nameit;
     AjBool html;
     AjBool limit;
     AjBool frags;
@@ -117,7 +116,7 @@ int main(int argc, char **argv)
     commercial = ajAcdGetBool("commercial");
     limit      = ajAcdGetBool("limit");
     frags      = ajAcdGetBool("fragments");
-    nameit     = ajAcdGetBool("name");
+    /* nameit     = ajAcdGetBool("name"); Unused! */
     dfile      = ajAcdGetDatafile("datafile");
 
     if(single)

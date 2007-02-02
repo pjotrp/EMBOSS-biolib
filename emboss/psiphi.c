@@ -145,7 +145,6 @@ int main( int argc , char **argv )
     /* output report file for torsion angles */
     AjPReport report    = NULL;
     AjPFeattable angles = NULL;
-    AjPFeature curft    = NULL;
 
     embInit( "psiphi", argc ,argv );
 
@@ -282,10 +281,7 @@ int main( int argc , char **argv )
 	psi = psiphi_psival(atoms);
     else
 	psi = FUnavailableAngle;
-    curft = psiphi_write_psi_phi(angles,
-				 cpos,
-				 phi,
-				 psi);
+    psiphi_write_psi_phi(angles,cpos,phi,psi);
 
     /* loop through list until last residue to be analysed */
     prevres = resnum;
@@ -307,10 +303,7 @@ int main( int argc , char **argv )
 		psi = psiphi_psival(atoms);
 	    else
 		psi = FUnavailableAngle;
-	    curft = psiphi_write_psi_phi(angles,
-					 cpos,
-					 phi,
-					 psi);
+	    psiphi_write_psi_phi(angles,cpos,phi,psi);
 
 	    psiphi_shift_residues(atoms, known);
 	}
@@ -347,10 +340,10 @@ int main( int argc , char **argv )
 	else
 	    psi = FUnavailableAngle;
 
-	curft = psiphi_write_psi_phi(angles,
-				     cpos,
-				     phi,
-				     psi);
+	psiphi_write_psi_phi(angles,
+			     cpos,
+			     phi,
+			     psi);
 	cpos++;
 	psiphi_shift_residues(atoms,
 			      known);
@@ -361,10 +354,10 @@ int main( int argc , char **argv )
     {
 	phi = psiphi_phival(atoms);
 	psi = FUnavailableAngle;
-	curft   = psiphi_write_psi_phi(angles,
-				       cpos,
-				       phi,
-				       psi);
+	psiphi_write_psi_phi(angles,
+			     cpos,
+			     phi,
+			     psi);
     }
     /* END ANALYSIS OF CHAIN HERE */
 

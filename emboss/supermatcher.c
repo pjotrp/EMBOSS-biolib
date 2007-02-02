@@ -463,7 +463,6 @@ static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
 					  ajint *start2, ajint *end1,
 					  ajint *end2, ajint width)
 {
-    ajint hwidth = 0;
     ajint max = -10;
     ajint offset = 0;
     AjPList matchlist = NULL;
@@ -510,10 +509,6 @@ static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
     ajListFree(&ordered);
     embWordMatchListDelete(&matchlist);	/* free the match structures */
 
-
-    hwidth = (ajint) width/2;
-
-    /*offset+=hwidth;*/
 
     if(offset > 0)
     {

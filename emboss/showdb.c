@@ -79,7 +79,6 @@ int main(int argc, char **argv)
     AjBool dodefined;
     AjBool dorelease;
     AjBool docomment;
-    AjBool only;
 
     AjPFile outfile = NULL;
     AjPStr onedbname   = NULL;		/* user-specified single database */
@@ -124,7 +123,7 @@ int main(int argc, char **argv)
     domethod  = ajAcdGetBool("methods");
     docomment = ajAcdGetBool("comment");
     dorelease = ajAcdGetBool("release");
-    only      = ajAcdGetBool("only");
+    /* only      = ajAcdGetBool("only"); Unused! */
     
     dbnames = ajListstrNew();
     

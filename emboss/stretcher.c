@@ -148,15 +148,16 @@ int main(int argc, char **argv)
     ajint ggapval;
     ajuint i;
     ajint gscore;
-    float percent;
+    /* float percent; */
     AjPAlign align   = NULL;
     AjPSeqset seqset = NULL;
 
     AjPSeq res0 = NULL;
     AjPSeq res1 = NULL;
+    /*
     ajint beg0;
     ajint beg1;
-
+    */
 
     embInit("stretcher", argc, argv);
 
@@ -177,8 +178,10 @@ int main(int argc, char **argv)
 
     ajSeqTrim(glseq0);
     ajSeqTrim(glseq1);
+    /*
     beg0 = 1 + ajSeqGetOffset(glseq0);
     beg1 = 1 + ajSeqGetOffset(glseq1);
+    */
 
     ajSeqFmtUpper(glseq0);
     ajSeqFmtUpper(glseq1);
@@ -214,7 +217,7 @@ int main(int argc, char **argv)
 			      (gdelval-ggapval),ggapval,glres,&nres);
 
     glnc = stretcher_Calcons(ajSeqGetLen(glseq0),ajSeqGetLen(glseq1),glres);
-    percent = (double)nd*100.0/(double)glnc;
+    /* percent = (double)nd*100.0/(double)glnc; */
 
 /*
     seqset = ajSeqsetNew();

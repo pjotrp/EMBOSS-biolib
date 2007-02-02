@@ -176,11 +176,9 @@ static ajint *glnpos = NULL;
 static ajint *glcpos = NULL;
 
 static ajint *pred_mode = NULL;
-static ajint e_spann_min;
 static ajint e_spann_max;
 
 static float mx_limit;
-static float me_limit;
 
 static ajint *ali_ok = NULL;
 
@@ -239,7 +237,6 @@ int main(int argc, char **argv)
     mult   = ajAcdGetGraphxy("graph");
     report = ajAcdGetReport("outfile");
 
-    e_spann_min = E_SPANN_MIN;
     e_spann_max = E_SPANN_MAX;
 
     m_limit  = 1.23;
@@ -247,7 +244,7 @@ int main(int argc, char **argv)
     e_limit  = 1.07;
 
     mx_limit = 1.18;
-    me_limit = 1.10;
+    /* me_limit = 1.10; Unused */
 
 
     glnr = ajSeqsetGetSize(seqset);

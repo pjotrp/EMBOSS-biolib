@@ -84,7 +84,7 @@ static void twofeat_HitsDel(PHit *pthis);
 static ajint twofeat_get_overlap_type(const AjPStr overlap);
 static ajint twofeat_get_range_type(const AjPStr rangetype);
 static ajint twofeat_get_sense_type(const AjPStr sense);
-static ajint twofeat_get_order_type(const AjPStr order);
+/* static ajint twofeat_get_order_type(const AjPStr order); */
 
 
 
@@ -139,7 +139,6 @@ int main(int argc, char **argv)
     ajint overlapi;
     ajint rangetypei;
     ajint sensei;
-    ajint orderi;
 
     /* output */
     AjBool twoout;
@@ -215,7 +214,7 @@ int main(int argc, char **argv)
     overlapi = twofeat_get_overlap_type(overlap);
     rangetypei = twofeat_get_range_type(rangetype);
     sensei = twofeat_get_sense_type(sense);
-    orderi = twofeat_get_order_type(order);
+    /* orderi = twofeat_get_order_type(order); Unused */
 
     seqname = ajStrNew();
 
@@ -1037,7 +1036,7 @@ static ajint twofeat_get_sense_type(const AjPStr sense)
 
 
 
-
+#if 0
 /* @funcstatic twofeat_get_order_type *********************************
 **
 ** converts the order code to an integer
@@ -1063,3 +1062,4 @@ static ajint twofeat_get_order_type(const AjPStr order)
 
     return -1;
 }
+#endif

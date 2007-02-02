@@ -498,14 +498,12 @@ static AjBool recoder_checkPat(const EmbPMatMatch match,
 			       ajint begin, ajint end)
 {
     ajint mpos;
-    ajint rmpos;
 
     ajint min = INT_MAX;             /* reverse sense intentional! */
     ajint max = -INT_MAX;
 
 
     mpos  = match->start;         /* start posn of match in seq */
-    rmpos = radj-mpos-match->len; /* start posn of match in rev seq */
 
     if(rlp->ncuts==4)             /* test if cut site is within seq */
     {
