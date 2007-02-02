@@ -63,10 +63,9 @@ static void supermatcher_matchListOrder(void **x,void *cl);
 static void supermatcher_orderandconcat(AjPList list,AjPList ordered);
 static void supermatcher_removelists(void **x,void *cl);
 static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
-					  const AjPSeq b,
-					  const AjPSeq a, ajint *start1,
-					  ajint *start2, ajint *end1,
-					  ajint *end2, ajint width);
+					  const AjPSeq b, const AjPSeq a,
+					  ajint *start1, ajint *start2,
+					  ajint *end1, ajint *end2);
 static void supermatcher_findmax(void **x,void *cl);
 
 
@@ -203,8 +202,7 @@ int main(int argc, char **argv)
 
 	    if(!supermatcher_findstartpoints(seq1MatchTable,b,a,
 					     &start1, &start2,
-					     &end1, &end2,
-					     width))
+					     &end1, &end2))
 	    {
 		start1 = 0;
 		end1   = lena-1;
@@ -452,7 +450,6 @@ static void supermatcher_findmax(void **x,void *cl)
 ** @param [w] start2 [ajint*] start in sequence 2
 ** @param [w] end1 [ajint*] end in sequence 1
 ** @param [w] end2 [ajint*] end in sequence 2
-** @param [r] width [ajint] width
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -461,7 +458,7 @@ static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
 					  const AjPSeq b,
 					  const AjPSeq a, ajint *start1,
 					  ajint *start2, ajint *end1,
-					  ajint *end2, ajint width)
+					  ajint *end2)
 {
     ajint max = -10;
     ajint offset = 0;

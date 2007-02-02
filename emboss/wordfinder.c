@@ -61,10 +61,9 @@ static void wordfinder_matchListOrder(void **x,void *cl);
 static void wordfinder_orderandconcat(AjPList list,AjPList ordered);
 static void wordfinder_removelists(void **x,void *cl);
 static ajint wordfinder_findstartpoints(AjPTable seq1MatchTable,
-					  const AjPSeq b,
-					  const AjPSeq a, ajint *trgstart,
-					  ajint *qrystart, ajint *trgend,
-					  ajint *qryend, ajint width);
+					const AjPSeq b, const AjPSeq a,
+					ajint *trgstart, ajint *qrystart,
+					ajint *trgend, ajint *qryend);
 static void wordfinder_findmax(void **x,void *cl);
 
 
@@ -213,8 +212,7 @@ int main(int argc, char **argv)
 		matchscore = wordfinder_findstartpoints(seq1MatchTable,
 							qryseq, trgseq,
 							&qrystart, &trgstart,
-							&qryend, &trgend,
-							width);
+							&qryend, &trgend);
 		if(!matchscore ||
 		   (limitmatch && (matchscore > limitmatch)) ||
 		   (matchscore < lowmatch))
@@ -511,7 +509,6 @@ static void wordfinder_findmax(void **x,void *cl)
 ** @param [w] trgstart [ajint*] start in sequence 1
 ** @param [w] qryend [ajint*] end in sequence 2
 ** @param [w] trgend [ajint*] end in sequence 1
-** @param [r] width [ajint] width
 ** @return [ajint] Undocumented
 ** @@
 ******************************************************************************/
@@ -520,8 +517,7 @@ static ajint wordfinder_findstartpoints(AjPTable seq1MatchTable,
 					const AjPSeq qryseq,
 					const AjPSeq trgseq,
 					ajint *qrystart, ajint *trgstart,
-					ajint *qryend,	ajint *trgend,
-					ajint width)
+					ajint *qryend,	ajint *trgend)
 {
     ajint max = -10;
     ajint offset = 0;
