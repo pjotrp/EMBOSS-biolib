@@ -428,7 +428,7 @@ static ajint recoder_readRE(AjPList *relist, const AjPStr enzymes)
 	ne=ajArrCommaList(enzymes,&ea);  /* no. of RE's specified */
                                          /* ea points to enzyme list */
         for(i=0;i<ne;++i)
-	    ajStrRemoveWhiteExcess(&ea[i]);     /* remove all whitespace */
+	    ajStrRemoveWhite(&ea[i]);     /* remove all whitespace */
 
         if(ajStrMatchCaseC(ea[0],"all"))
             isall = ajTrue;

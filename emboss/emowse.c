@@ -322,7 +322,7 @@ static ajint emowse_read_data(AjPFile inf, EmbPMdata** data)
 	    AJNEW0(ptr);
 	    ptr->mwt = v;
 	    ptr->sdata=ajStrNew();
-	    ajStrRemoveWhite(&str);
+	    ajStrRemoveWhiteExcess(&str);
 	    token = ajStrTokenNewC(str," \t\r\n");
 	    ajStrTokenNextParseC(&token," \t\r\n",&ptr->sdata);
 	    ajStrTokenNextParseC(&token," \t\r\n",&ptr->sdata);
@@ -1065,7 +1065,7 @@ static AjBool emowse_comp_search(const AjPStr substr, const char *s)
 
 
     t = ajStrNewC(s);
-    ajStrRemoveWhiteExcess(&t);
+    ajStrRemoveWhite(&t);
 
     p    = ajStrGetPtr(t);
     qpos = 0;

@@ -176,7 +176,7 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
 	else if(line == 1)
 	{
 	    line++;
-	    ajStrRemoveWhite(&buffer);
+	    ajStrRemoveWhiteExcess(&buffer);
 
 	    token = ajStrTokenNewS(buffer,delim);
 
@@ -216,7 +216,7 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
 	{
 	    line++;
 
-	    ajStrRemoveWhite(&buffer);
+	    ajStrRemoveWhiteExcess(&buffer);
 	    token = ajStrTokenNewS(buffer,delim);
 
 	    ajStrTokenNextParseS(&token,delim,&buf2);

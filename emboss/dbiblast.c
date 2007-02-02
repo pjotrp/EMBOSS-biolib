@@ -463,7 +463,7 @@ int main(int argc, char **argv)
     if(ajStrMatchC(datestr, "00/00/00"))
 	ajFmtPrintS(&datestr, "%D", ajTimeTodayRefF("dbindex"));
 
-    ajStrRemoveWhiteExcess(&dbname);		/* used for temp filenames */
+    ajStrRemoveWhite(&dbname);		/* used for temp filenames */
     embDbiDateSet(datestr, date);
     idlist = ajListNew();
     
@@ -1300,14 +1300,12 @@ static AjBool dbiblast_parseGcg(const AjPStr line, AjPFile * alistfile,
     char* ac;
     static ajint numFields;
     static ajint accfield = -1;
-    static ajint desfield = -1;
-    static ajint svnfield = -1;
     static AjBool reset = AJTRUE;
 
     if(!fields)
     {
 	reset = ajTrue;
-	accfield = svnfield = desfield = -1;
+	accfield = -1;
 	return ajFalse;
     }
 
@@ -1319,12 +1317,9 @@ static AjBool dbiblast_parseGcg(const AjPStr line, AjPFile * alistfile,
 	    countfield[numFields]=0;
 	    if(ajStrMatchCaseC(fields[numFields], "acc"))
 		accfield=numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "sv"))
-		svnfield=numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "des"))
-		desfield=numFields;
-	    else
-		ajWarn("EMBL parsing unknown field '%S' ignored",
+	    else if(!ajStrMatchCaseC(fields[numFields], "sv") &&
+		    !ajStrMatchCaseC(fields[numFields], "des"))
+		ajWarn("GCG ID parsing unknown field '%S' ignored",
 		       fields[numFields]);
 
 	    numFields++;
@@ -1395,14 +1390,12 @@ static AjBool dbiblast_parseSimple(const AjPStr line,
     char* ac;
     static ajint numFields;
     static ajint accfield = -1;
-    static ajint desfield = -1;
-    static ajint svnfield = -1;
     static AjBool reset = AJTRUE;
 
     if(!fields)
     {
 	reset = ajTrue;
-	accfield = svnfield = desfield = -1;
+	accfield = -1;
 	return ajFalse;
     }
 
@@ -1413,12 +1406,9 @@ static AjBool dbiblast_parseSimple(const AjPStr line,
 	{
 	    if(ajStrMatchCaseC(fields[numFields], "acc"))
 		accfield=numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "sv"))
-		svnfield=numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "des"))
-		desfield=numFields;
-	    else
-		ajWarn("EMBL parsing unknown field '%S' ignored",
+	    else if(!ajStrMatchCaseC(fields[numFields], "sv") &&
+		    !ajStrMatchCaseC(fields[numFields], "des"))
+		ajWarn("Simple ID parsing unknown field '%S' ignored",
 		       fields[numFields]);
 	    numFields++;
 	}
@@ -1482,10 +1472,6 @@ static AjBool dbiblast_parseId(const AjPStr line, AjPFile * alistfile,
 			       AjPList * myfdl)
 {
     static AjPRegexp idexp = NULL;
-    static ajint numFields;
-    static ajint accfield = -1;
-    static ajint desfield = -1;
-    static ajint svnfield = -1;
     static AjBool reset = AJTRUE;
 
     (void) alistfile;
@@ -1497,27 +1483,11 @@ static AjBool dbiblast_parseId(const AjPStr line, AjPFile * alistfile,
     if(!fields)
     {
 	reset = ajTrue;
-	accfield = svnfield = desfield = -1;
 	return ajFalse;
     }
 
     if(reset)
     {
-	numFields = 0;
-	while(fields[numFields])
-	{
-	    if(ajStrMatchCaseC(fields[numFields], "acc"))
-		accfield=numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "sv"))
-		svnfield=numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "des"))
-		desfield=numFields;
-	    else
-		ajWarn("EMBL parsing unknown field '%S' ignored",
-		       fields[numFields]);
-
-	    numFields++;
-	}
 	reset = ajFalse;
     }
 
@@ -1564,10 +1534,6 @@ static AjBool dbiblast_parseUnknown(const AjPStr line,
 				    AjPList* myfdl)
 {
     static ajint called = 0;
-    static ajint numFields;
-    static ajint accfield=-1;
-    static ajint desfield=-1;
-    static ajint svnfield=-1;
     static AjBool reset = AJTRUE;
 
     (void) line;
@@ -1581,27 +1547,11 @@ static AjBool dbiblast_parseUnknown(const AjPStr line,
     if(!fields)
     {
 	reset = ajTrue;
-	accfield = svnfield = desfield = -1;
 	return ajFalse;
     }
 
     if(reset)
     {
-	numFields = 0;
-	while(fields[numFields])
-	{
-	    if(ajStrMatchCaseC(fields[numFields], "acc"))
-		accfield = numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "sv"))
-		svnfield = numFields;
-	    else if(ajStrMatchCaseC(fields[numFields], "des"))
-		desfield = numFields;
-	    else
-		ajWarn("EMBL parsing unknown field '%S' ignored",
-		       fields[numFields]);
-
-	    numFields++;
-	}
 	reset = ajFalse;
     }
 

@@ -145,7 +145,7 @@ int main(int argc, char **argv)
     allrecords = ajAcdGetBool("allrecords");
 
     ajStrInsertC(&release, 0, "CUTG");
-    ajStrRemoveWhiteExcess(&release);
+    ajStrRemoveWhite(&release);
 
     while(ajListPop(flist,(void **)&entry))
     {

@@ -762,7 +762,7 @@ static void remap_NoCutList(AjPFile outfile, const AjPTable hittable,
 	{
 	    isall = ajFalse;
 	    for(i=0; i<ne; ++i)
-		ajStrRemoveWhiteExcess(&ea[i]);
+		ajStrRemoveWhite(&ea[i]);
 	}
     }
 

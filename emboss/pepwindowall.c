@@ -237,7 +237,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
 	else if(line == 1)
 	{
 	    line++;
-            ajStrRemoveWhite(&buffer);
+            ajStrRemoveWhiteExcess(&buffer);
 	    token = ajStrTokenNewS(buffer,delim);
 	    cols = ajStrParseCountS(buffer,delim);
 	    ajDebug("num of cols = %d\n",cols);
@@ -277,7 +277,7 @@ static AjBool pepwindowall_getnakaidata(AjPFile file, float matrix[])
 	else if(line == 2)
 	{
 	    line++;
-	    ajStrRemoveWhite(&buffer);
+	    ajStrRemoveWhiteExcess(&buffer);
 	    token = ajStrTokenNewS(buffer,delim);
 	    cols  = ajStrParseCountS(buffer,delim);
 	    ajStrTokenNextParseS(&token,delim,&buf2);

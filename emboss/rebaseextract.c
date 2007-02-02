@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 	    
 	    key   = ajStrNew();
 	    value = ajStrNewC(sptr);
-	    ajStrRemoveWhiteExcess(&value);
+	    ajStrRemoveWhite(&value);
 	    ajFmtScanS(line,"%S",&key);
 	    ajTablePut(ptable,(void *)key, (void *)value);
 	}
@@ -213,7 +213,7 @@ int main(int argc, char **argv)
 
     while(ajStrGetLen(line))
     {
-	ajStrRemoveWhite(&line);
+	ajStrRemoveWhiteExcess(&line);
 	ajFmtPrintF(outf3,"%s\n",ajStrGetPtr(line));
 	if(!ajFileReadLine(inf,&line))
 	    ajFatal("Unexpected EOF");
