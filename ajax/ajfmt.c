@@ -1132,7 +1132,6 @@ void ajFmtPuts(const char* str, ajint len, int put(int c, void* cl), void* cl,
 		const ajuint* flags, ajint width, ajint precision)
 {
     ajuint minusflag = flags['-'];
-    ajuint zeroflag = flags['0'];
 
     assert(len >= 0);
     assert(flags);
@@ -1145,9 +1144,6 @@ void ajFmtPuts(const char* str, ajint len, int put(int c, void* cl), void* cl,
 	minusflag = 1;
 	width = -width;
     }
-
-    if(precision >= 0)
-	zeroflag = 0;
 
     if(precision >= 0 && precision < len)
 	len = precision;
@@ -2933,7 +2929,7 @@ static void scvt_p(const char *fmt, const char **pos, VALIST ap, ajint width,
 {
     const char *p;
     const char *q;
-    void *val;
+    void **val;
     static const char *wspace = " \n\t";
     static const char *dig = "0123456789abcdefABCDEFx";
     ajint c = 0;
@@ -2959,11 +2955,11 @@ static void scvt_p(const char *fmt, const char **pos, VALIST ap, ajint width,
     {
 	if(convert)
 	{
-	    val = (void *) va_arg(VA_V(ap), void *);
+	    val = (void **) va_arg(VA_V(ap), void **);
 	    ajStrAssignSubC(&t,p,0,q-p-1);
 	    if(sscanf(ajStrGetPtr(t),"%lx",&n)!=1)
 		return;
-	    val = (void *)n;
+	    *val = (void *)n;
 	}
 
 	*pos = q;
