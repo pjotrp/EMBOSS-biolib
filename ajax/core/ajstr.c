@@ -3581,7 +3581,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam4rule  RemoveNonseq     Remove non-sequence characters
 **                               (all chars except alphabetic & '*')
 ** @nam4rule  RemoveSet        Remove a set of characters.
-** @nam4rule  RemoveWhite      Remove whitespace characters.
+** @nam4rule  RemoveWhite      Remove all whitespace characters.
 ** @nam5rule  RemoveWhiteExcess  Remove excess whitespace only.
 ** @nam4rule  RemoveWild       Remove characters after a wildcard.
 ** @nam3rule  Trim               Remove region(s) of a given character
@@ -4318,6 +4318,54 @@ __deprecated void  ajStrRemoveCharsC(AjPStr* pthis, const char *strng)
 
 /* @func ajStrRemoveWhite *****************************************************
 **
+** Removes all whitespace characters from a string.
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrRemoveWhite(AjPStr* Pstr)
+{
+    AjPStr thys;
+    ajuint i = 0;
+    ajuint j = 0;
+    ajuint len;
+    char *p;
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    p   = thys->Ptr;
+    len = thys->Len;
+
+    for(i=0;i<len;++i)
+	if(p[i]=='\t' || p[i]=='\n' || p[i]=='\r')
+	    p[i]=' ';
+
+    for(i=0;i<len;++i)
+	if(p[i]!=' ')
+	    p[j++]=p[i];
+	else
+	    --thys->Len;
+
+    p[j]='\0';
+
+    if(!thys->Len) return ajFalse;
+
+    return ajTrue;
+}
+
+/* @obsolete ajStrCleanWhite
+** @rename ajStrRemoveWhite
+*/
+
+__deprecated AjBool  ajStrCleanWhite(AjPStr* s)
+{
+    return ajStrRemoveWhite(s);
+}
+
+/* @func ajStrRemoveWhiteExcess ***********************************************
+**
 ** Removes excess whitespace characters from a string.
 **
 ** Leading/trailing whitespace removed. Multiple spaces replaced by single
@@ -4328,7 +4376,7 @@ __deprecated void  ajStrRemoveCharsC(AjPStr* pthis, const char *strng)
 ** @@
 ******************************************************************************/
 
-AjBool ajStrRemoveWhite(AjPStr* Pstr)
+AjBool ajStrRemoveWhiteExcess(AjPStr* Pstr)
 {
     AjBool ret      = ajFalse;
     AjPStr thys;
@@ -4353,7 +4401,7 @@ AjBool ajStrRemoveWhite(AjPStr* Pstr)
     /* tabs converted to spaces */
     
     for(i=0;i<len;++i)
-	if(p[i]=='\t')
+	if(p[i]=='\t' || p[i]=='\n' || p[i]=='\r')
 	    p[i]=' ';
     
     /* remove leading spaces */
@@ -4432,58 +4480,10 @@ AjBool ajStrRemoveWhite(AjPStr* Pstr)
 
 
 /* @obsolete ajStrClean
-** @rename ajStrRemoveWhite
-*/
-
-__deprecated AjBool  ajStrClean(AjPStr* s)
-{
-    return ajStrRemoveWhite(s);
-}
-
-/* @func ajStrRemoveWhiteExcess ***********************************************
-**
-** Removes all whitespace characters from a string.
-**
-** @param [u] Pstr [AjPStr *] String to clean.
-** @return [AjBool] ajTrue if string was reallocated
-** @@
-******************************************************************************/
-
-AjBool ajStrRemoveWhiteExcess(AjPStr* Pstr)
-{
-    AjPStr thys;
-    ajuint i = 0;
-    ajuint j = 0;
-    ajuint len;
-    char *p;
-
-    thys = ajStrGetuniqueStr(Pstr);
-
-    p   = thys->Ptr;
-    len = thys->Len;
-
-    for(i=0;i<len;++i)
-	if(p[i]=='\t' || p[i]=='\n' || p[i]=='\r')
-	    p[i]=' ';
-
-    for(i=0;i<len;++i)
-	if(p[i]!=' ')
-	    p[j++]=p[i];
-	else
-	    --thys->Len;
-
-    p[j]='\0';
-
-    if(!thys->Len) return ajFalse;
-
-    return ajTrue;
-}
-
-/* @obsolete ajStrCleanWhite
 ** @rename ajStrRemoveWhiteExcess
 */
 
-__deprecated AjBool  ajStrCleanWhite(AjPStr* s)
+__deprecated AjBool ajStrClean(AjPStr* s)
 {
     return ajStrRemoveWhiteExcess(s);
 }
@@ -4850,16 +4850,20 @@ AjBool ajStrExchangeCC(AjPStr* Pstr, const char* txt,
     AjBool cycle = ajTrue;
     ajint findpos    = 0;
     ajuint tlen = strlen(txt);
+    ajuint newlen = strlen(txtnew);
+    ajint lastpos = -1;			/* make sure we don't loop forever */
 
     if(*txt)
     {
 	while(cycle)
 	{
 	    findpos = ajStrFindC(*Pstr, txt);
-	    if(findpos >= 0)
+	    if(findpos > lastpos)
 	    {
 		ajStrCutRange(Pstr,findpos,findpos+tlen-1);
 		ajStrInsertC(Pstr,findpos,txtnew);
+		if(newlen >= tlen)	/* could be replace "-" with "" */
+		    lastpos = findpos;	/*  else we have to move on */
 	    }
 	    else
 		cycle = ajFalse;
