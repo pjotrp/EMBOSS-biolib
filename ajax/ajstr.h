@@ -265,6 +265,7 @@ AjBool     ajStrRemoveLastNewline(AjPStr* Pstr);
 AjBool     ajStrRemoveSetC(AjPStr* Pstr, const char *txt);
 AjBool     ajStrRemoveWhite(AjPStr* Pstr);
 AjBool     ajStrRemoveWhiteExcess(AjPStr* Pstr);
+AjBool     ajStrRemoveWhiteSpaces(AjPStr* Pstr);
 AjBool     ajStrRemoveWild(AjPStr* Pstr);
 AjBool     ajStrTrimC (AjPStr* pthis, const char* txt);
 AjBool     ajStrTrimEndC (AjPStr* Pstr, const char* txt);

@@ -3583,6 +3583,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam4rule  RemoveSet        Remove a set of characters.
 ** @nam4rule  RemoveWhite      Remove all whitespace characters.
 ** @nam5rule  RemoveWhiteExcess  Remove excess whitespace only.
+** @nam5rule  RemoveWhiteSpaces  Remove excess space characters only.
 ** @nam4rule  RemoveWild       Remove characters after a wildcard.
 ** @nam3rule  Trim               Remove region(s) of a given character
 **                               composition only from start and / or end
@@ -4487,6 +4488,121 @@ __deprecated AjBool ajStrClean(AjPStr* s)
 {
     return ajStrRemoveWhiteExcess(s);
 }
+
+/* @func ajStrRemoveWhiteSpaces ***********************************************
+**
+** Removes excess space characters from a string.
+**
+** Leading/trailing whitespace removed. Multiple spaces replaced by single
+** spaces. Tabes converted to spaces. Newlines left unchanged
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrRemoveWhiteSpaces(AjPStr* Pstr)
+{
+    AjBool ret      = ajFalse;
+    AjPStr thys;
+
+    ajuint i = 0;
+    ajuint j = 0;
+    ajuint len;
+    char *p;
+
+    /* $$$ need to clean up extra strlen calls here */
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    p = thys->Ptr;
+    
+    /* if string was already empty, no need to do anything */
+    
+    len = thys->Len;
+    if(!len)
+	return ajFalse;
+    
+    /* tabs converted to spaces */
+    
+    for(i=0;i<len;++i)
+	if(p[i]=='\t')
+	    p[i]=' ';
+    
+    /* remove leading spaces */
+    
+    i = 0;
+    while(p[i])
+    {
+	if(p[i]!=' ')
+	    break;
+	++i;
+	--len;
+    }
+    
+    if(i)
+    {
+	len++;
+	memmove(p,&p[i], len);
+	len=strlen(p);
+	if(!len)
+	{			    /* if that emptied it, so be it */
+	    thys->Len = 0;
+	    return ajFalse;
+	}
+    }
+    
+    /* remove newline at the end (if any) */
+    
+    if(p[len-1]=='\n')
+    {
+	--len;
+	p[len]='\0';
+    }
+    
+    if(!len)
+    {				    /* if that emptied it, so be it */
+	thys->Len = 0;
+	return ajFalse;
+    }
+    
+    /* clean up any space at the end */
+
+    for(i=len;i>0;--i)
+	if(p[i-1]!=' ')
+	    break;
+
+    p[i]='\0';
+    
+    len=strlen(p);
+    
+    for(i=j=0;i<len;++i)
+    {
+	if(p[i]!=' ')
+	{
+	    p[j++]=p[i];
+	    continue;
+	}
+	p[j++]=' ';
+
+	for(++i;;++i)
+	    if(p[i]!=' ')
+	    {
+		p[j++]=p[i];
+		break;
+	    }
+    }
+    
+    p[j]='\0';
+
+    thys->Len = j;
+
+    if(!ajStrGetLen(thys))
+	return ajFalse;
+
+    return ret;
+}
+
 
 /* @func ajStrRemoveWild ******************************************************
 **
@@ -7636,7 +7752,7 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
     AjPStr thys;
 
     if(val)
-	i = ajNumLengthUint(val) + 2;
+	i = ajNumLengthUint(val) + 1;
     else
 	i = 2;
 
@@ -8043,7 +8159,7 @@ AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint margin)
     ajuint i   = 0;
     ajuint j;
     ajuint isp = 0;
-    
+
     /* ajDebug("ajStrFmtWrapLeft %d %d\n'%S'\n", width, margin, *Pstr); */
 
     len = 1 + (*Pstr)->Len + (margin + 1) * (*Pstr)->Len / width;
