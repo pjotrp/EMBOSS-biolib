@@ -786,7 +786,7 @@ ajuint ajNumLengthUint(ajuint inumber)
 
     for(i=10;i<maxnum;i*=10)
     {
-	if(inumber < i)
+	if(inumber >= i)
 	    ilen++;
 	else
 	    return ilen;
