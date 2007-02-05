@@ -477,7 +477,7 @@ void ajTableMap(AjPTable table,
 ** in an unspecified order.
 **
 ** Keys in the table can be deleted - for example a function to delete
-** a table entry. See ajTableMapfor a function that is read-only
+** a table entry. See ajTableMap for a function that is read-only
 **
 ** @param [u] table [AjPTable] Table.
 ** @param [f] apply [void function] function to be applied
