@@ -13931,7 +13931,7 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
     if(!acdDoTable)
 	acdHelpValid(thys, ajFalse, &text);
 
-    ajStrRemoveWhiteExcess(&text);
+    ajStrRemoveWhiteSpaces(&text);
     acdTextFormat(&text);
     ajStrFmtWrapLeft(&text, 45, 34);
     ajStrAppendS(&line, text);
@@ -23442,7 +23442,7 @@ static void acdPretty(const char *fmt, ...)
 /* @funcstatic acdPrettyWrap **************************************************
 **
 ** Writes a pretty formatted version of the .acd syntax
-** lien to the .acdpretty file
+** line to the .acdpretty file
 **
 ** @param [r] left [ajint] Extra left margin for follow-on lines
 ** @param [r] fmt [const char*] Format with ajFmt extensions
@@ -24158,6 +24158,8 @@ void ajAcdExit(AjBool silent)
 	ajStrRemoveWhiteExcess(&cmdstr);
 	ajFmtPrintF(cmdlogfile, "%S %S\n", acdProgram, cmdstr);
 	ajFileClose(&cmdlogfile);
+	ajStrDel(&cmdlog);
+	ajStrDel(&cmdstr);
     }
 
 
