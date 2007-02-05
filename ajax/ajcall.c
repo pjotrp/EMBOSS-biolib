@@ -17,6 +17,7 @@ static AjPTable callTable = NULL;
 
 static ajint callCmpStr(const void *x, const void *y);
 static unsigned callStrHash(const void *key, unsigned hashsize);
+static void callItemDel(void** key, void** value, void* cl);
 
 
 
@@ -140,6 +141,36 @@ void* ajCall(const char *name, ...)
     return retval;
 }
 
+
+/* @funcstatic callItemDel ****************************************************
+**
+** Delete an entry in the call table.
+**
+** @param [d] key [void**] Standard argument. Table key.
+** @param [d] value [void**] Standard argument. Table item.
+** @param [u] cl [void*] Standard argument. Usually NULL.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void callItemDel(void** key, void** value, void* cl)
+{
+    char *p;
+
+    (void) value;
+    (void) cl;
+
+    p = (char*) *key;
+
+    AJFREE(p);
+ 
+    *key = NULL;
+    *value = NULL;
+
+    return;
+}
+
+
 /* @func ajCallExit ***********************************************************
 **
 ** Cleans up calls register internal memory
@@ -150,6 +181,8 @@ void* ajCall(const char *name, ...)
 
 void ajCallExit(void)
 {
+    ajTableMapDel(callTable, callItemDel, NULL);
+
     ajTableFree(&callTable);
     return;
 }
