@@ -5400,7 +5400,7 @@ static AjBool acdUserGetPrompt(const AcdPAcd thys, const char* assocqual,
 
 /* @funcstatic acdUserSavereply ***********************************************
 **
-** Save the reply from a prompt to the user
+** Save the reply from prompting the user
 **
 ** @param [r] thys [const AcdPAcd] ACD object for current item.
 ** @param [r] assocqual [const char*] Associated qualifier
@@ -5413,6 +5413,7 @@ static void acdUserSavereply(const AcdPAcd thys, const char* assocqual,
 			     AjBool userset, const AjPStr reply)
 {
     AjPStr qualname = NULL;
+
     if(assocqual)
     {
 	ajStrAssignS(&qualname, thys->Name);
@@ -5438,7 +5439,14 @@ static void acdUserSavereply(const AcdPAcd thys, const char* assocqual,
 	ajStrAppendK(&acdInputSave, '-');
 	ajStrAppendS(&acdInputSave, qualname);
 	ajStrAppendK(&acdInputSave, ' ');
-	ajStrAppendS(&acdInputSave, reply);
+	if(ajStrIsWord(reply) && (ajStrFindAnyC(reply, "*?") < 0))
+	    ajStrAppendS(&acdInputSave, reply);
+	else
+	{
+	    ajStrAppendK(&acdInputSave, '\"');
+	    ajStrAppendS(&acdInputSave, reply);
+	    ajStrAppendK(&acdInputSave, '\"');
+	}
     }
 
     ajStrDel(&qualname);
@@ -18613,6 +18621,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
     AjPStr param = NULL;
     AjPStr token = NULL;
     AjPStr master = NULL;
+    AjPStr argvalstr = NULL;
     
     acdLog("ArgsParse\n=========\n");
     
@@ -18636,7 +18645,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	cp = argv[i];
 	if((i+1) < argc) cq = argv[i+1];
 	else cq = NULL;
-	
+
 	if(acdArgSave)
 	    ajStrAppendK(&acdArgSave, '\n');
 
@@ -18713,7 +18722,15 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	    {
 		i++;
 		ajStrAppendK(&acdArgSave, ' ');
-		ajStrAppendC(&acdArgSave, cq);
+		if(ajStrIsWord(value) &&
+		   (ajStrFindAnyC(value, "*?") < 0))
+		    ajStrAppendS(&acdArgSave, value);
+		else
+		{
+		    ajStrAppendK(&acdArgSave, '\"');
+		    ajStrAppendS(&acdArgSave, value);
+		    ajStrAppendK(&acdArgSave, '\"');
+		}
 	    }
 	}
 	else		    /* not a qualifier - assume a parameter */
@@ -18729,7 +18746,17 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		       iparam, acd->Name, param);
 		acdDef(acd, param);
 		acdParamSet[iparam-1] = ajTrue;
-		ajStrAppendC(&acdArgSave, cp);
+		ajStrAssignC(&argvalstr, cp);
+		if(ajStrIsWord(argvalstr) &&
+		   (ajStrFindAnyC(argvalstr, "*?") < 0))
+		    ajStrAppendS(&acdArgSave, argvalstr);
+		else
+		{
+		    ajStrAppendK(&acdArgSave, '\"');
+		    ajStrAppendS(&acdArgSave, argvalstr);
+		    ajStrAppendK(&acdArgSave, '\"');
+		}
+		ajStrDel(&argvalstr);
 	    }
 	    else		 /* missing value "." or "" ignored */
 	    {
@@ -18738,7 +18765,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		ajStrAssignC(&param, "");
 		acdDef(acd, param);
 		acdParamSet[iparam-1] = ajTrue;
-		ajStrAppendC(&acdArgSave, "cp");
+		ajStrAppendC(&acdArgSave, "\"\"");
 	    }
 	}
 	i++;
@@ -24154,7 +24181,10 @@ void ajAcdExit(AjBool silent)
 	cmdlogfile = ajFileNewApp(cmdlog);
 	ajStrAssignS(&cmdstr, acdArgSave);
 	if(ajStrGetLen(acdInputSave))
+	{
+	    ajStrAppendK(&cmdstr, ' ');
 	    ajStrAppendS(&cmdstr, acdInputSave);
+	}
 	ajStrRemoveWhiteExcess(&cmdstr);
 	ajFmtPrintF(cmdlogfile, "%S %S\n", acdProgram, cmdstr);
 	ajFileClose(&cmdlogfile);
