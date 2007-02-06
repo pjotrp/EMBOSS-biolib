@@ -12248,7 +12248,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.seqmatchall
-FZ = 1608
+FZ = 1610
 FP /^  1832 ECLAC +[+] +5646..7477     ECLACA +[+] +1..1832\n/
 FP /^  1113 ECLAC +[+] +49..1161     ECLACI +[+] +1..1113\n/
 FP /^  1500 ECLAC +[+] +4305..5804     ECLACY +[+] +1..1500\n/
@@ -17721,7 +17721,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclac.seqmatchall
-FZ = 1608
+FZ = 1610
 FP /^  1832 ECLAC +[+] +5646..7477     ECLACA +[+] +1..1832\n/
 FP /^  1113 ECLAC +[+] +49..1161     ECLACI +[+] +1..1113\n/
 FP /^  1500 ECLAC +[+] +4305..5804     ECLACY +[+] +1..1500\n/
@@ -23114,7 +23114,7 @@ AB memenew
 RQ meme
 AA emast
 ## PP cp ../ememe-keep/ex1.html .
-## Cannot use ouptput of ememe-keep test as input,
+## Cannot use output of ememe-keep test as input,
 ## because temporary sequence file named in /ememe-keep/ex1.html
 ## after "DATAFILE" will have been deleted.
 ## Instead use data/memenew/ex1.html which names the sequence file "crp0.s"
