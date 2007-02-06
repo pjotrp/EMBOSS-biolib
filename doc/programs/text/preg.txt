@@ -743,8 +743,8 @@ Output file format
 # Program: preg
 # Rundate: Sat 15 Jul 2006 12:00:00
 # Commandline: preg
-#    -sequence tsw:*_rat
-#    -pattern IA[QWF]A
+#    -sequence "tsw:*_rat"
+#    -pattern "IA[QWF]A"
 # Report_format: seqtable
 # Report_file: 100k_rat.preg
 ########################################
