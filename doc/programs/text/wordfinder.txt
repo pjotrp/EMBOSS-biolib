@@ -336,7 +336,7 @@ Output file format
 # Rundate: Sat 15 Jul 2006 12:00:00
 # Commandline: wordfinder
 #    [-asequence] tembl:eclac
-#    [-bsequence] tembl:ec*
+#    [-bsequence] "tembl:ec*"
 #    -wordlen 50
 #    -gapextend 3.0
 # Align_format: simple
