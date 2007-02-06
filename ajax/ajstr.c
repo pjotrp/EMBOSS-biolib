@@ -4967,19 +4967,21 @@ AjBool ajStrExchangeCC(AjPStr* Pstr, const char* txt,
     ajint findpos    = 0;
     ajuint tlen = strlen(txt);
     ajuint newlen = strlen(txtnew);
-    ajint lastpos = -1;			/* make sure we don't loop forever */
+    ajint lastpos = 0;			/* make sure we don't loop forever */
+
+    if(!tlen && !newlen)
+	return ajFalse;
 
     if(*txt)
     {
 	while(cycle)
 	{
 	    findpos = ajStrFindC(*Pstr, txt);
-	    if(findpos > lastpos)
+	    if(findpos >= lastpos)
 	    {
 		ajStrCutRange(Pstr,findpos,findpos+tlen-1);
 		ajStrInsertC(Pstr,findpos,txtnew);
-		if(newlen >= tlen)	/* could be replace "-" with "" */
-		    lastpos = findpos;	/*  else we have to move on */
+		lastpos = findpos+newlen;
 	    }
 	    else
 		cycle = ajFalse;
@@ -5017,16 +5019,22 @@ AjBool ajStrExchangeCS(AjPStr* Pstr, const char* txt,
     AjBool cycle = ajTrue;
     ajint findpos    = 0;
     ajuint tlen = strlen(txt);
+    ajuint newlen = strnew->Len;
+    ajint lastpos = 0;			/* make sure we don't loop forever */
+
+    if(!tlen && !newlen)
+	return ajFalse;
 
     if(*txt)
     {
 	while(cycle)
 	{
 	    findpos = ajStrFindC(*Pstr, txt);
-	    if(findpos >= 0)
+	    if(findpos >= lastpos)
 	    {
 		ajStrCutRange(Pstr,findpos,findpos+tlen-1);
 		ajStrInsertS(Pstr,findpos,strnew);
+		lastpos = findpos+newlen;
 	    }
 	    else
 		cycle = ajFalse;
