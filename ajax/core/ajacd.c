@@ -5439,7 +5439,7 @@ static void acdUserSavereply(const AcdPAcd thys, const char* assocqual,
 	ajStrAppendK(&acdInputSave, '-');
 	ajStrAppendS(&acdInputSave, qualname);
 	ajStrAppendK(&acdInputSave, ' ');
-	if(ajStrIsWord(reply) && (ajStrFindAnyC(reply, "*?") < 0))
+	if(ajStrIsWord(reply) && (ajStrFindAnyC(reply, "*?[]") < 0))
 	    ajStrAppendS(&acdInputSave, reply);
 	else
 	{
@@ -18723,7 +18723,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		i++;
 		ajStrAppendK(&acdArgSave, ' ');
 		if(ajStrIsWord(value) &&
-		   (ajStrFindAnyC(value, "*?") < 0))
+		   (ajStrFindAnyC(value, "*?[]") < 0))
 		    ajStrAppendS(&acdArgSave, value);
 		else
 		{
@@ -18748,7 +18748,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		acdParamSet[iparam-1] = ajTrue;
 		ajStrAssignC(&argvalstr, cp);
 		if(ajStrIsWord(argvalstr) &&
-		   (ajStrFindAnyC(argvalstr, "*?") < 0))
+		   (ajStrFindAnyC(argvalstr, "*?[]") < 0))
 		    ajStrAppendS(&acdArgSave, argvalstr);
 		else
 		{
