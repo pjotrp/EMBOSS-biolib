@@ -140,11 +140,4 @@
 <td>No</td>
 </tr>
 
-<tr>
-<td>-name</td>
-<td>Show sequence name</td>
-<td>Boolean value Yes/No</td>
-<td>No</td>
-</tr>
-
 </table>
