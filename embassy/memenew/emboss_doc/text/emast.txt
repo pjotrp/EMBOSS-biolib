@@ -236,7 +236,9 @@ Command line arguments
 
 Input file format
 
-   emast reads any normal sequence USAs.
+
+
+
 
   Input files for usage example
 
