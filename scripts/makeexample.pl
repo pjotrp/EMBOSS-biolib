@@ -769,6 +769,7 @@ sub writeUsage {
     $usage =~ s/seqsearch\-[0-9]+[.][0-9]+[.]/seqsearch-1234567890.1234./go;
     $usage =~ s/hmmalign\-[0-9]+[.][0-9]+/hmmalign-1234567890.1234/go;
     $usage =~ s/hmmpfam\-[0-9]+[.][0-9]+/hmmpfam-1234567890.1234/go;
+
     print OUT $usage;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
@@ -813,6 +814,7 @@ sub writeOutput {
     $output =~ s/seqsearch\-[0-9]+[.][0-9]+[.]/seqsearch-1234567890.1234./go;
     $output =~ s/hmmalign\-[0-9]+[.][0-9]+/hmmalign-1234567890.1234/go;
     $output =~ s/hmmpfam\-[0-9]+[.][0-9]+/hmmpfam-1234567890.1234/go;
+    $output =~ s/Time 0\.00[1-5][0-9][0-9][0-9] secs\./Time 0.001999 secs./go;
     print OUT $output;
     close(OUT);
     chmod 0664, $out;	# rw-rw-r--
@@ -900,19 +902,29 @@ sub displayFile {
 # convert <, >, & to HTML codes if the file is not a .html file
     if ($path !~ /.html$/) {
         foreach my $l (@lines) {
-            $l =~ s/&/&amp;/g;
-            $l =~ s/</&lt;/g;
-            $l =~ s/>/&gt;/g;
+            $l =~ s/[&]/&amp;/g;
+            $l =~ s/[<]/&lt;/g;
+            $l =~ s/[>]/&gt;/g;
         }
     }
 
 # if file is too long, cut out the middle bit;
     if ($#lines > $MaxLines) {
         for ($count = 0; $count < $MaxLines/2; $count++) {
+	    if ($path =~ /.html$/) {
+		$lines[$count] =~ s/[&]/&amp;/g;
+		$lines[$count] =~ s/[<]/&lt;/g;
+		$lines[$count] =~ s/[>]/&gt;/g;
+	    }
             $result .= $lines[$count];
         }
         $result .= "\n\n<font color=red>  [Part of this file has been deleted for brevity]</font>\n\n";
         for ($count = $#lines - $MaxLines/2; $count <= $#lines; $count++) {
+	    if ($path =~ /.html$/) {
+		$lines[$count] =~ s/[&]/&amp;/g;
+		$lines[$count] =~ s/[<]/&lt;/g;
+		$lines[$count] =~ s/[>]/&gt;/g;
+	    }
             $result .= $lines[$count];
         }
     }
