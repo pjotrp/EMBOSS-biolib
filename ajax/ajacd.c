@@ -4977,6 +4977,9 @@ static AjBool acdTestQualC(const char *name)
 	{
 	    qa = acdTestAssoc(savepa, qstr, qnostr);
 	    ajStrDel(&ambigList);
+	    ajStrDel(&qstr);
+	    ajStrDel(&qnostr);
+	    ajStrDel(&qmaster);
 	    if(qa)
 		return ajTrue;
 	    else
@@ -4989,6 +4992,9 @@ static AjBool acdTestQualC(const char *name)
 	       name, ambigList);
 	       ajStrDel(&ambigList); */
 	    ajStrDel(&ambigList);
+	    ajStrDel(&qstr);
+	    ajStrDel(&qnostr);
+	    ajStrDel(&qmaster);
 	    return ajFalse;
 	}
     }
@@ -5001,6 +5007,9 @@ static AjBool acdTestQualC(const char *name)
 	    {
 		acdLog("   *matched* '%S'\n", pa->Name);
 		ajStrDel(&ambigList);
+		ajStrDel(&qstr);
+		ajStrDel(&qnostr);
+		ajStrDel(&qmaster);
 		return ajTrue;
 	    }
 	    if(ajStrPrefixS(pa->Name, qstr))
@@ -5015,6 +5024,9 @@ static AjBool acdTestQualC(const char *name)
 	if(ifound == 1)
 	{
 	    ajStrDel(&ambigList);
+	    ajStrDel(&qstr);
+	    ajStrDel(&qnostr);
+	    ajStrDel(&qmaster);
 	    return ajTrue;
 	}
 
@@ -5023,11 +5035,17 @@ static AjBool acdTestQualC(const char *name)
 	    /* ajWarn("Ambiguous qualifier '%s' (%S)", name, ambigList);
 	       ajStrDel(&ambigList); */
 	    ajStrDel(&ambigList);
+	    ajStrDel(&qstr);
+	    ajStrDel(&qnostr);
+	    ajStrDel(&qmaster);
 	    return ajFalse;
 	}
     }
     
     ajStrDel(&ambigList);
+    ajStrDel(&qstr);
+    ajStrDel(&qnostr);
+    ajStrDel(&qmaster);
     return ajFalse;
 }
 
@@ -10204,7 +10222,8 @@ static void acdSetProperties(AcdPAcd thys)
     }
 
     thys->Value = val;
-   
+    ajStrDel(&propchars);
+
     return;
 }
 
@@ -11663,6 +11682,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
 
     nsets = ajListToArray(seqlist,(void***) &sets);
     val   = (AjPSeqset*) sets;
+    ajListFree(&seqlist);
 
     acdInFileSave(ajSeqsetGetNameS(val[0]), ajTrue); /* save sequence name */
     
@@ -12681,7 +12701,9 @@ static void acdSetSeqset(AcdPAcd thys)
 
 /* @func ajAcdGetSeqsetall ****************************************************
 **
-** Returns an item of type Seqset as defined in a named ACD item.
+** Returns an item of type Seqset array as defined in a named ACD item.
+** The array is terminated by a NULL.
+**
 ** Called by the application after all ACD values have been set,
 ** and simply returns what the ACD item already has.
 **
@@ -15838,11 +15860,12 @@ static AjBool acdSetQualDefBool(AcdPAcd thys,
 				const char* name, AjBool value)
 {
     AjPStr *attrstr;
-    static AjPStr qname = NULL;
+    AjPStr qname = NULL;
     AcdPAcd acd;
 
     ajStrAssignC(&qname, name);
     acd = acdFindQualAssoc(thys, qname, NULL, 0);
+    ajStrDel(&qname);
     if(!acd)
 	return ajFalse;
 
@@ -18611,6 +18634,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
     ajint itestparam = 0;
     ajint jtestparam = 0;
     AcdPAcd acd;
+    AcdPAcd acd2;
     
     const char *cp;
     const char *cq;
@@ -18698,13 +18722,13 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		    itestparam++)
 		{
 		    acdLog("test [%d] '%S'\n", itestparam, qual);
-		    acd = acdFindQualDetail(qual, NULL, NULL,
+		    acd2 = acdFindQualDetail(qual, NULL, NULL,
 					    itestparam, &jtestparam);
-		    if(acd)
+		    if(acd2)
 		    {
-			acdDef(acd, value);
+			acdDef(acd2, value);
 			acdLog("set next qualifier -%S[%d] (param %d) = %S\n",
-			       acd->Name, acd->PNum, jparam, value);
+			       acd2->Name, acd2->PNum, jparam, value);
 		    }
 		    else
 			acdLog("no -%S[%d]\n", qual, itestparam);
@@ -18721,12 +18745,35 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	    if(j==2)
 	    {
 		i++;
-		ajStrAppendK(&acdArgSave, ' ');
-		if(ajStrIsWord(value) &&
-		   (ajStrFindAnyC(value, "*?[]") < 0))
-		    ajStrAppendS(&acdArgSave, value);
+	    }
+	    ajStrAssignS(&argvalstr, value);
+	    if(!strcmp(acdType[acd->Type].Name, "boolean") ||
+	       !strcmp(acdType[acd->Type].Name, "toggle"))
+	    {
+		if(ajStrMatchS(qual, noqual))
+		{
+		    if(ajStrMatchC(value, "Y"))
+			ajStrAssignC(&argvalstr, "");
+		}
 		else
 		{
+		    if(ajStrMatchC(value, "N"))
+			ajStrAssignC(&argvalstr, "");
+		}
+	    }
+	    if(ajStrGetLen(value)) {
+		if(ajStrIsWord(value) &&
+		   (ajStrFindAnyC(value, "*?[]") < 0))
+		{
+		    if(ajStrGetLen(argvalstr)) /* empty booleans */
+		    {
+			ajStrAppendK(&acdArgSave, ' ');
+			ajStrAppendS(&acdArgSave, argvalstr);
+		    }
+		}
+		else
+		{
+		    ajStrAppendK(&acdArgSave, ' ');
 		    ajStrAppendK(&acdArgSave, '\"');
 		    ajStrAppendS(&acdArgSave, value);
 		    ajStrAppendK(&acdArgSave, '\"');
@@ -18756,7 +18803,6 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		    ajStrAppendS(&acdArgSave, argvalstr);
 		    ajStrAppendK(&acdArgSave, '\"');
 		}
-		ajStrDel(&argvalstr);
 	    }
 	    else		 /* missing value "." or "" ignored */
 	    {
@@ -18776,6 +18822,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
     ajStrDel(&value);
     ajStrDel(&param);
     ajStrDel(&token);
+    ajStrDel(&argvalstr);
     
     return;
 }
@@ -18983,6 +19030,8 @@ static ajint acdIsQual(const char* arg, const char* arg2,
     acdLog("acdIsQual '%s' '%s'\n", arg, arg2);
     cp = arg;
     *number = 0;
+    *acd = NULL;
+
     ajStrDel(pmaster);
 
     if(!strcmp(cp, "-"))	       /* stdin or stdout parameter */
