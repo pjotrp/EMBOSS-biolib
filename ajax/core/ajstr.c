@@ -6211,12 +6211,10 @@ AjBool ajStrIsWhite(const AjPStr str)
 
 AjBool ajStrIsWild(const AjPStr str)
 {
-    static AjPRegexp wildexp = NULL;
+    if(ajStrFindAnyC(str, "*?") >= 0)
+	return ajTrue;
 
-    if(!wildexp)
-	wildexp = ajRegCompC("([*?])");
-
-    return ajRegExec(wildexp, str);
+    return ajFalse;
 }
 
 
