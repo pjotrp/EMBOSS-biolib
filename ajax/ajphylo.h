@@ -231,6 +231,8 @@ AjPPhyloDist   ajPhyloDistRead (const AjPStr filename, ajint size,
 				AjBool missing);
 void           ajPhyloDistTrace (const AjPPhyloDist thys);
 
+void           ajPhyloExit(void);
+
 void           ajPhyloFreqDel (AjPPhyloFreq* pthis);
 AjPPhyloFreq   ajPhyloFreqNew (void);
 AjPPhyloFreq   ajPhyloFreqRead (const AjPStr filename, AjBool contchar,
@@ -251,6 +253,7 @@ AjPPhyloState* ajPhyloStateRead (const AjPStr filename,
 void           ajPhyloStateTrace (const AjPPhyloState thys);
 
 void           ajPhyloTreeDel (AjPPhyloTree* pthis);
+void           ajPhyloTreeDelarray(AjPPhyloTree** pthis);
 AjPPhyloTree   ajPhyloTreeNew (void);
 AjPPhyloTree*  ajPhyloTreeRead (const AjPStr filename, ajint size);
 void           ajPhyloTreeTrace (const AjPPhyloTree thys);

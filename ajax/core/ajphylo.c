@@ -25,6 +25,20 @@
 #include "ajax.h"
 
 
+static AjPRegexp phyloRegDistFloat = NULL;
+static AjPRegexp phyloRegFreqFloat = NULL;
+static AjPRegexp phyloRegFreqInt   = NULL;
+static AjPRegexp phyloRegFreqIndiv = NULL;
+static AjPRegexp phyloRegPropProp = NULL;
+static AjPRegexp phyloRegStateState  = NULL;
+static AjPRegexp phyloRegStateInt    = NULL;
+static AjPRegexp phyloRegStateChar   = NULL;
+static AjPRegexp phyloRegTreeTree   = NULL;
+static AjPRegexp phyloRegTreeRoot   = NULL;
+static AjPRegexp phyloRegTreeUnroot = NULL;
+static AjPRegexp phyloRegTreeMulti  = NULL;
+static AjPRegexp phyloRegTreeQuart  = NULL;
+static AjPRegexp phyloRegTreeLength  = NULL;
 
 /* @func ajPhyloDistNew ******************************************************
 **
@@ -274,6 +288,35 @@ void ajPhyloTreeDel(AjPPhyloTree* pthis)
 
 
 
+/* @func ajPhyloTreeDelarray **************************************************
+**
+** Destructor for AjPPhyloTree array
+**
+** @param [d] pthis [AjPPhyloTree*] Trees object
+** @return [void]
+******************************************************************************/
+
+void ajPhyloTreeDelarray(AjPPhyloTree** pthis)
+{
+    ajuint i = 0;
+
+    if(!pthis) return;
+    if(!*pthis) return;
+
+    while((*pthis)[i])
+    {
+	ajPhyloTreeDel(&(*pthis)[i]);
+	i++;
+    }
+
+    AJFREE(*pthis);
+
+    return;
+}
+
+
+
+
 /* @func ajPhyloDistRead ******************************************************
 **
 ** Reads phylogenetic distance matrix from a file
@@ -290,7 +333,6 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
     AjPPhyloDist ret   = NULL;
     AjPFile distfile   = NULL;
     AjPStr rdline      = NULL;
-    AjPRegexp floatexp = NULL;
     ajint count;
     ajint irow;
     ajint icol;
@@ -309,8 +351,9 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
     AjBool lowertri = ajFalse;
     AjBool uppertri = ajFalse;
 
-    if(!floatexp)
-	floatexp = ajRegCompC("^\\s*([0-9]+[.]?[0-9]*)\\s+(([0-9]+)[^0-9.])?");
+    if(!phyloRegDistFloat)
+	phyloRegDistFloat =
+	    ajRegCompC("^\\s*([0-9]+[.]?[0-9]*)\\s+(([0-9]+)[^0-9.])?");
 
     distfile = ajFileNewIn(filename);
 
@@ -348,7 +391,7 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
     while(!done && ajFileGets(distfile, &rdline))
     {
 	/*ajDebug("DistRead line: %S", rdline); */
-	if(!i || !ajRegExec(floatexp, rdline))
+	if(!i || !ajRegExec(phyloRegDistFloat, rdline))
 	{
 	    if(ajStrGetLen(rdline) < 11)	/* skip this line? */
 		continue;
@@ -432,11 +475,11 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
 	    }
 	}
 
-	while(ajRegExec(floatexp, rdline))
+	while(ajRegExec(phyloRegDistFloat, rdline))
 	{
-	    ajRegSubI(floatexp, 1, &tmpval);
+	    ajRegSubI(phyloRegDistFloat, 1, &tmpval);
 	    ajStrToFloat(tmpval, &dval);
-	    ajRegSubI(floatexp, 3, &tmpval);
+	    ajRegSubI(phyloRegDistFloat, 3, &tmpval);
 	    if(ajStrGetLen(tmpval))
 	    {
 		ajStrToInt(tmpval, &ival);
@@ -469,7 +512,7 @@ AjPPhyloDist ajPhyloDistRead(const AjPStr filename, ajint size, AjBool missing)
 	    icol++;
 	    if(i == count)
 		i = 0;
-	    ajRegPost(floatexp, &tmpstr);
+	    ajRegPost(phyloRegDistFloat, &tmpstr);
 	    ajStrAssignS(&rdline, tmpstr);
 	    /*ajDebug("irow: %d icol: %d\n", irow, icol);*/
 	}
@@ -599,9 +642,6 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 			     AjBool contchar, AjBool genedata, AjBool indiv)
 {
     AjPPhyloFreq ret   = NULL;
-    AjPRegexp floatexp = NULL;
-    AjPRegexp intexp   = NULL;
-    AjPRegexp indivexp = NULL;
 
     AjPFile freqfile = NULL;
     AjPStr rdline    = NULL;
@@ -636,12 +676,13 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 
     (void) indiv;			/* make it used */
 
-    if(!floatexp)
-	floatexp = ajRegCompC("^\\s*([-]?[0-9]+[.]?[0-9]*)\\s+");
-    if(!intexp)
-	intexp = ajRegCompC("^\\s*([1-9][0-9]*)(\\s+[0-9\\s]*)$");
-    if(!indivexp)
-	indivexp = ajRegCompC("^(\\S.........)\\s+([1-9][0-9]*)\\s*$");
+    if(!phyloRegFreqFloat)
+	phyloRegFreqFloat = ajRegCompC("^\\s*([-]?[0-9]+[.]?[0-9]*)\\s+");
+    if(!phyloRegFreqInt)
+	phyloRegFreqInt = ajRegCompC("^\\s*([1-9][0-9]*)(\\s+[0-9\\s]*)$");
+    if(!phyloRegFreqIndiv)
+	phyloRegFreqIndiv =
+	    ajRegCompC("^(\\S.........)\\s+([1-9][0-9]*)\\s*$");
 
     freqfile = ajFileNewIn(filename);
 
@@ -652,25 +693,25 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 
     /* process header */
 
-    if(!ajRegExec(intexp, rdline))
+    if(!ajRegExec(phyloRegFreqInt, rdline))
     {
 	ajErr("Frequencies file %S: Bad header line '%S'",
 	      filename, rdline);
 	return NULL;
     }
 
-    ajRegSubI(intexp, 1, &tmpval);
+    ajRegSubI(phyloRegFreqInt, 1, &tmpval);
     ajStrToInt(tmpval, &count);
-    ajRegSubI(intexp, 2, &tmpstr);
+    ajRegSubI(phyloRegFreqInt, 2, &tmpstr);
 
-    if(!ajRegExec(intexp, tmpstr))
+    if(!ajRegExec(phyloRegFreqInt, tmpstr))
     {
 	ajErr("Frequencies file %S: Bad header line '%S'",
 	      filename, rdline);
 	return NULL;
     }
 
-    ajRegSubI(intexp, 1, &tmpval);
+    ajRegSubI(phyloRegFreqInt, 1, &tmpval);
     ajStrToInt(tmpval, &len);
  
     ret = ajPhyloFreqNew();
@@ -682,7 +723,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
     /* process alleles counts, if any */
 
     ajFileGets(freqfile, &rdline);
-    if(ajRegExec(intexp, rdline))	/* allele counts */
+    if(ajRegExec(phyloRegFreqInt, rdline))	/* allele counts */
     {
 	if(contchar)
 	{
@@ -693,22 +734,22 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 	ajStrAssignS(&tmpline, rdline);
 	for(i=0; i < len; i++)
 	{
-	    if(!ajRegExec(intexp, rdline))
+	    if(!ajRegExec(phyloRegFreqInt, rdline))
 	    {
 		ajErr("Frequencies file %S: Bad allele header,"
 		      " expected %d allele counts, found %d",
 		      filename, len, i);
 		return NULL;
 	    }
-	    ajRegSubI(intexp, 1, &tmpval);
+	    ajRegSubI(phyloRegFreqInt, 1, &tmpval);
 	    ajStrToInt(tmpval, &ret->Allele[i]);
-	    ajRegSubI(intexp, 2, &tmpstr);
+	    ajRegSubI(phyloRegFreqInt, 2, &tmpstr);
 	    ajStrAssignS(&rdline, tmpstr);
 
 	    nfreq += ret->Allele[i];	/* assume all values */
 	}
 
-	if(ajRegExec(intexp, rdline))
+	if(ajRegExec(phyloRegFreqInt, rdline))
 	{
 	    ajErr("Frequencies file %S: Bad allele header,"
 		  " more than expected %d allele counts",
@@ -748,7 +789,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 	    ret->Allele[i] = 2;
 	}
 
-	if(ajRegExec(indivexp, rdline))
+	if(ajRegExec(phyloRegFreqIndiv, rdline))
 	{
 	    ret->Within = ajTrue;
 	    AJCNEW0(ret->Individuals, count);
@@ -768,7 +809,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 	totsp   = 0;
 	while(!done)
 	{
-	    if(ajRegExec(indivexp, rdline))
+	    if(ajRegExec(phyloRegFreqIndiv, rdline))
 	    {
 		irow++;
 		if(irow && icol != nfreq)
@@ -776,9 +817,9 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 			  " for '%S', expected %d",
 			  filename, icol, ret->Names[irow], nfreq);
 
-		ajRegSubI(indivexp, 1, &ret->Names[irow]);
+		ajRegSubI(phyloRegFreqIndiv, 1, &ret->Names[irow]);
 		ajStrTrimWhiteEnd(&ret->Names[irow]);
-		ajRegSubI(indivexp, 2, &tmpval);
+		ajRegSubI(phyloRegFreqIndiv, 2, &tmpval);
 		ajStrToInt(tmpval, &ret->Individuals[irow]);
 		nfreq = ret->Individuals[irow]*len;
 		totfreq += nfreq;
@@ -787,12 +828,12 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 		icol = 0;
 	    }
 	    
-	    while(ajRegExec(floatexp, rdline))
+	    while(ajRegExec(phyloRegFreqFloat, rdline))
 	    {
-		ajRegSubI(floatexp, 1, &tmpval);
+		ajRegSubI(phyloRegFreqFloat, 1, &tmpval);
 		ajStrToFloat(tmpval, &dval);
 		pvals[irow][icol] = dval;
-		ajRegPost(floatexp, &tmpstr);
+		ajRegPost(phyloRegFreqFloat, &tmpstr);
 		ajStrAssignS(&rdline, tmpstr);
 		icol++;
 		ipos++;
@@ -832,7 +873,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
     while(!done)
     {
 	/*ajDebug("FreqRead line: %S", rdline);*/
-	if(!ajRegExec(floatexp, rdline))
+	if(!ajRegExec(phyloRegFreqFloat, rdline))
 	{
 	    irow++;
 	    if(irow == 1)
@@ -894,12 +935,12 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 	    ipos = irow * nfreq;
 	}
 
-	while(ajRegExec(floatexp, rdline))
+	while(ajRegExec(phyloRegFreqFloat, rdline))
 	{
-	    ajRegSubI(floatexp, 1, &tmpval);
+	    ajRegSubI(phyloRegFreqFloat, 1, &tmpval);
 	    ajStrToFloat(tmpval, &dval);
 	    ret->Data[ipos] = dval;
-	    ajRegPost(floatexp, &tmpstr);
+	    ajRegPost(phyloRegFreqFloat, &tmpstr);
 	    ajStrAssignS(&rdline, tmpstr);
 	    icol++;
 	    ipos++;
@@ -1078,7 +1119,6 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
     AjPPhyloProp ret  = NULL;
     AjPFile propfile  = NULL;
     AjPList proplist  = NULL;
-    AjPRegexp propexp = NULL;
     AjBool propok     = ajFalse;
     AjPStr token      = NULL;
     void ** props     = NULL;
@@ -1097,7 +1137,10 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	ajFmtPrintS(&proppat, "\\S+");
     else
 	ajFmtPrintS(&proppat, "[%S]+", propchars);
-    propexp = ajRegComp(proppat);
+
+    ajRegFree(&phyloRegPropProp);
+	
+    phyloRegPropProp = ajRegComp(proppat);
 
     ajDebug("ajPhyloPropRead '%S' propchars: '%S' len: %d size: %d\n",
 	    filename, propchars, len, size);
@@ -1120,9 +1163,9 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	}
 	ajStrAssignS(&rdline, filename);
 	/*ajStrFmtUpper(&rdline);*/ /* keep to catch names without '.' */
-	if(!ajRegExec(propexp, rdline))
+	if(!ajRegExec(phyloRegPropProp, rdline))
 	    return NULL;
-	ajRegSubI(propexp, 0, &token);
+	ajRegSubI(phyloRegPropProp, 0, &token);
 	if(!ajStrMatchS(rdline, token))
 	    return NULL;
 	dosize = 1;
@@ -1153,12 +1196,12 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	    {
 		ajStrFmtUpper(&rdline);
 		cp = ajStrGetPtr(rdline);
-		while(cp && ajRegExecC(propexp, cp))
+		while(cp && ajRegExecC(phyloRegPropProp, cp))
 		{
-		    ajRegSubI(propexp, 0, &token);
+		    ajRegSubI(phyloRegPropProp, 0, &token);
 		    ajStrAppendS(&propstr, token);
 		    ilen += ajStrGetLen(token);
-		    ajRegPostC(propexp, &cp);
+		    ajRegPostC(phyloRegPropProp, &cp);
 		}
 
 		if(ilen == len)
@@ -1265,9 +1308,6 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
 {
     AjPPhyloState* ret  = NULL;
     AjPPhyloState state = NULL;
-    AjPRegexp stateexp  = NULL;
-    AjPRegexp intexp    = NULL;
-    AjPRegexp charexp   = NULL;
 
     AjPFile statefile = NULL;
     AjPList statelist = NULL;
@@ -1285,17 +1325,20 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
     const char* cp;
     void **states = NULL;
 
-    if(!intexp)
-	intexp = ajRegCompC("^\\s+([1-9][0-9]*)\\s+([1-9][0-9]*)\\s+([1-9][0-9]*)?\\s*$");
+    if(!phyloRegStateInt)
+	phyloRegStateInt =
+	    ajRegCompC("^\\s+([1-9][0-9]*)\\s+([1-9][0-9]*)"
+		       "\\s+([1-9][0-9]*)?\\s*$");
 
-    if(!stateexp)
-	stateexp = ajRegCompC("^(\\S.........)\\s*(\\S.*)$");
+    if(!phyloRegStateState)
+	phyloRegStateState = ajRegCompC("^(\\S.........)\\s*(\\S.*)$");
 
     if(ajStrMatchC(statechars, ""))
 	ajFmtPrintS(&charpat, "\\S+");
     else
 	ajFmtPrintS(&charpat, "[%S]+", statechars);
-    charexp = ajRegComp(charpat);
+    ajRegFree(&phyloRegStateChar);
+    phyloRegStateChar = ajRegComp(charpat);
 
     statelist = ajListNew();
 
@@ -1307,20 +1350,20 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
     while(ajFileGets(statefile, &rdline))
     {
 	
-	if(!ajRegExec(intexp, rdline))
+	if(!ajRegExec(phyloRegStateInt, rdline))
 	{
 	    ajErr("Discrete states file %S: Bad header line '%S'",
 		  filename, rdline);
 	    return NULL;
 	}
 	
-	ajRegSubI(intexp, 1, &tmpval);
+	ajRegSubI(phyloRegStateInt, 1, &tmpval);
 	ajStrToInt(tmpval, &size);
 	
-	ajRegSubI(intexp, 2, &tmpval);
+	ajRegSubI(phyloRegStateInt, 2, &tmpval);
 	ajStrToInt(tmpval, &len);
 	
-	ajRegSubI(intexp, 3, &tmpval);
+	ajRegSubI(phyloRegStateInt, 3, &tmpval);
 	if(ajStrGetLen(tmpval))
 	    ajStrToInt(tmpval, &count);
 	else
@@ -1339,22 +1382,22 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
 	i    = 0;
 	while(ajFileGets(statefile, &rdline))
 	{
-	    if(ilen == 0 && ajRegExec(stateexp, rdline))
+	    if(ilen == 0 && ajRegExec(phyloRegStateState, rdline))
 	    {
-		ajRegSubI(stateexp, 1, &state->Names[i]);
+		ajRegSubI(phyloRegStateState, 1, &state->Names[i]);
 		ajStrTrimWhiteEnd(&state->Names[i]);
-		ajRegSubI(stateexp, 2, &tmpstr);
+		ajRegSubI(phyloRegStateState, 2, &tmpstr);
 		ajStrAssignS(&rdline, tmpstr);
 	    }
 	    
 	    ajStrFmtUpper(&rdline);
 	    cp = ajStrGetPtr(rdline);
-	    while(cp && ajRegExecC(charexp, cp))
+	    while(cp && ajRegExecC(phyloRegStateChar, cp))
 	    {
-		ajRegSubI(charexp, 0, &token);
+		ajRegSubI(phyloRegStateChar, 0, &token);
 		ajStrAppendS(&state->Str[i], token);
 		ilen += ajStrGetLen(token);
-		ajRegPostC(charexp, &cp);
+		ajRegPostC(phyloRegStateChar, &cp);
 	    }
 
 	    if(ilen == len)
@@ -1446,25 +1489,19 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
     AjPStr pretoken  = NULL;
     AjPStr posttoken = NULL;
 
-    static AjPRegexp treeexp   = NULL;
-    static AjPRegexp rootexp   = NULL;
-    static AjPRegexp unrootexp = NULL;
-    static AjPRegexp multiexp  = NULL;
-    static AjPRegexp quartexp  = NULL;
-    static AjPRegexp lengthexp  = NULL;
     
-    if(!treeexp)			/* tree definition */
-	treeexp = ajRegCompC("\\S+");
-    if(!rootexp)			/* (a,b) node to be trimmed */
-	rootexp = ajRegCompC("^(.+)(\\([^\\)]+\\))");
-    if(!unrootexp)			/* remaining unrooted (a,b,c); */
-	unrootexp = ajRegCompC("^\\([^,]*,[^,]*,.*\\);$");
-    if(!multiexp)			/* multifurcating (a,b,c) anywhere */
-	multiexp = ajRegCompC("^\\([^,]*,[^,]*,.*\\)$");
-    if(!quartexp)			/* unrooted quartet ((a,b),(c,d)); */
-	quartexp = ajRegCompC("^\\(\\.*\\)\\);$");
-    if(!lengthexp)			/* unrooted quartet ((a,b),(c,d)); */
-	lengthexp = ajRegCompC(":[0-9][0-9.]*");
+    if(!phyloRegTreeTree)		/* tree definition */
+	phyloRegTreeTree = ajRegCompC("\\S+");
+    if(!phyloRegTreeRoot)		/* (a,b) node to be trimmed */
+	phyloRegTreeRoot = ajRegCompC("^(.+)(\\([^\\)]+\\))");
+    if(!phyloRegTreeUnroot)	     /* remaining unrooted (a,b,c); */
+	phyloRegTreeUnroot = ajRegCompC("^\\([^,]*,[^,]*,.*\\);$");
+    if(!phyloRegTreeMulti)	 /* multifurcating (a,b,c) anywhere */
+	phyloRegTreeMulti = ajRegCompC("^\\([^,]*,[^,]*,.*\\)$");
+    if(!phyloRegTreeQuart)		 /* unrooted quartet ((a,b),(c,d)); */
+	phyloRegTreeQuart = ajRegCompC("^\\(\\.*\\)\\);$");
+    if(!phyloRegTreeLength)	 /* unrooted quartet ((a,b),(c,d)); */
+	phyloRegTreeLength = ajRegCompC(":[0-9][0-9.]*");
 
     treelist = ajListNew();
     count = size;
@@ -1508,17 +1545,17 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 		}
 		cp = ajStrGetPtr(rdline);
 		/*ajDebug("ajPhyloTreeRead rdline '%S'\n", rdline);*/
-		while(cp && ajRegExecC(treeexp, cp))
+		while(cp && ajRegExecC(phyloRegTreeTree, cp))
 		{
 		    if(!size && !headcount && !ajStrGetLen(tree->Tree))
 		    {
 			count++;
 			ajDebug("ajPhyloTreeRead count++ %d\n", count);
 		    }
-		    ajRegSubI(treeexp, 0, &token);
+		    ajRegSubI(phyloRegTreeTree, 0, &token);
 		    ajStrAppendS(&tree->Tree, token);
 		    ajDebug("ajPhyloTreeRead token '%S'\n", token);
-		    ajRegPostC(treeexp, &cp);
+		    ajRegPostC(phyloRegTreeTree, &cp);
 		}
 
 		if(ajStrGetCharLast(tree->Tree) == ';')
@@ -1533,25 +1570,25 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 			tree->Tree);
 		tree->Size = 1 + ajStrCalcCountK(tree->Tree, ',');
 		tree->BaseBifurcated = ajTrue;
-		if(ajRegExec(quartexp, tree->Tree))
+		if(ajRegExec(phyloRegTreeQuart, tree->Tree))
 		{
 		    tree->BaseBifurcated = ajFalse; /* but rooted for phylip */
 		    tree->BaseQuartet = ajTrue;
 		}
-		if(ajRegExec(lengthexp, tree->Tree))
+		if(ajRegExec(phyloRegTreeLength, tree->Tree))
 		{
 		    tree->HasLengths = ajTrue;
 		}
 		tree->Multifurcated = ajFalse;
 		ajStrAssignS(&treecopy, tree->Tree);
-		while(ajRegExec(rootexp, treecopy))
+		while(ajRegExec(phyloRegTreeRoot, treecopy))
 		{
-		    ajRegSubI(rootexp, 1, &pretoken);
-		    ajRegSubI(rootexp, 2, &token);
-		    ajRegPost(rootexp, &posttoken);
+		    ajRegSubI(phyloRegTreeRoot, 1, &pretoken);
+		    ajRegSubI(phyloRegTreeRoot, 2, &token);
+		    ajRegPost(phyloRegTreeRoot, &posttoken);
 		    ajDebug("ajPhyloTreeRead root match '%S': '%S'\n",
 			    treecopy, token);
-		    if(ajRegExec(multiexp, token))
+		    if(ajRegExec(phyloRegTreeMulti, token))
 		    {
 			tree->Multifurcated = ajTrue;
 			ajDebug("ajPhyloTree multifurcated node '%S'\n",
@@ -1561,7 +1598,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 		    ajStrAppendS(&treecopy, posttoken);
 		}
 
-		if(ajRegExec(unrootexp, treecopy))
+		if(ajRegExec(phyloRegTreeUnroot, treecopy))
 		    tree->BaseBifurcated = ajFalse;
 		ajDebug("ajPhyloTreeRead tree '%S' rooted: %B "
 			"basetrifurcated: %B"
@@ -1602,8 +1639,15 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
         ajFileClose(&treefile);
 	ajListToArray(treelist, (void***) &ret);
 	/*ret = (AjPPhyloTree*) trees;*/
+	ajListFree(&treelist);
     }
     
+    ajStrDel(&rdline);
+    ajStrDel(&token);
+    ajStrDel(&treecopy);
+    ajStrDel(&pretoken);
+    ajStrDel(&posttoken);
+
     return ret;
 }
 
@@ -1631,3 +1675,30 @@ void ajPhyloTreeTrace(const AjPPhyloTree thys)
 
 
 
+/* @func ajPhyloExit ********************************************************
+**
+** Cleans up phylogenetic data internal memory
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajPhyloExit(void)
+{
+    ajRegFree(&phyloRegDistFloat);
+    ajRegFree(&phyloRegFreqFloat);
+    ajRegFree(&phyloRegFreqInt);
+    ajRegFree(&phyloRegFreqIndiv);
+    ajRegFree(&phyloRegPropProp);
+    ajRegFree(&phyloRegStateState);
+    ajRegFree(&phyloRegStateInt);
+    ajRegFree(&phyloRegStateChar);
+    ajRegFree(&phyloRegTreeTree);
+    ajRegFree(&phyloRegTreeRoot);
+    ajRegFree(&phyloRegTreeUnroot);
+    ajRegFree(&phyloRegTreeMulti);
+    ajRegFree(&phyloRegTreeQuart);
+    ajRegFree(&phyloRegTreeLength);
+
+    return;
+}
