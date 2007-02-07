@@ -866,7 +866,7 @@ foreach $test (@ARGV) {
 	$singleapp = $test;
 	###print STDERR "Singleapp '$singleapp'\n";
     }
-    else {print STDERR "+++ only on application name allowed\n;usage()"}
+    else {print STDERR "+++ only one application name allowed\n;usage()"}
 }
 
 $cvscommit = $doccreate;
