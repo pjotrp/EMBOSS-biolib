@@ -11891,7 +11891,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 1hmp_a.psiphi 
-FZ = 3996
+FZ = 4003
 FP /     56      56     0\.0  \-139\.15   162\.01\n/
 //
 
@@ -25184,13 +25184,13 @@ IN ../../data/cofold-blue.fasta
 IN ../../data/cofold-conc.dat
 IN
 FI red.vrnacofoldconc
-FC = 17
+FC = 15
 FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
 FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
 FP /^Expinit2 = 0.513986\n/
 FP /^tab = -1.738299\ttaa = 4.679345\ttbb = -12.558919\n/
 FP /^-5.884889\t-0.208509\t-16.658920\t-0.003662\t-4.266495\n/
-FP /^10.000000\t+0.000000\t+0.000000\t+4.053814\t+0.000000\t+1.892373\t+0.000000 f\n/
+FP /^10.000000\t+10.000000\t+0.844630\t+3.676596\t+4.491062\t+1.802178\t+0.173246 f\n/
 FI red.ssps
 FC = 131
 FP /^%%Pages: 1\n/
