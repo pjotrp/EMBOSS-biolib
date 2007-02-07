@@ -138,7 +138,7 @@ void          ajTrnAltRevSeq (const AjPTrn trnObj, const AjPSeq seq,
 			      AjPStr *pep);
 void          ajTrnCFrame (const AjPTrn trnObj, const char *seq, ajint len,
 			   ajint frame, AjPStr *pep);
-AjPStr        ajTrnName(ajint trnFileNameInt);
+const AjPStr  ajTrnName(ajint trnFileNameInt);
 void          ajTrnStrFrame (const AjPTrn trnObj, const AjPStr seq,
 			     ajint frame, AjPStr *pep);
 void          ajTrnSeqFrame (const AjPTrn trnObj, const AjPSeq seq,
