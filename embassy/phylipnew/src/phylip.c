@@ -111,7 +111,10 @@ void countup(long *loopcount, long maxcount)
 void emboss_openfile(AjPFile outfile, FILE **fp, const char **perm)
 {
     if (outfile)
+    {
 	*fp = ajFileFp(outfile);
+	outfile->fp = NULL;
+    }
     else
 	*fp = NULL;
     ajDebug("phylip emboss_openfile '%F'\n",

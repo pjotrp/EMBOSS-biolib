@@ -618,7 +618,8 @@ int main(int argc, char **argv)
     ajStrDel(&hitsname);
     ajStrDel(&line);
     ajStrDel(&cmd);
-    ajListDel(&inseqs);
+    ajListstrFree(&inseqsdhf);
+    ajListstrFree(&inseqsdaf);
     ajDirDel(&dafout);
     ajStrDel(&tmp_name);
     ajStrDel(&clustin1);

@@ -2528,6 +2528,7 @@ void hyptrav(node *r_, long *hypset_, long b1, long b2, boolean bottom_,
     } while (q != Vars.r);
   }
   chuckbase(ancset, garbage);
+  free(tempnuc);
 }  /* hyptrav */
 
 

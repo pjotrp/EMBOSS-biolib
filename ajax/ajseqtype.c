@@ -2255,12 +2255,14 @@ void ajSeqTypeExit(void)
     ajStrDel(&seqtypeCharsetDnaGap);
     ajStrDel(&seqtypeCharsetNuc);
     ajStrDel(&seqtypeCharsetNucGap);
+    ajStrDel(&seqtypeCharsetNucGapPhylo);
     ajStrDel(&seqtypeCharsetNucPure);
     ajStrDel(&seqtypeCharsetProt);
     ajStrDel(&seqtypeCharsetProtAny);
     ajStrDel(&seqtypeCharsetProtGap);
     ajStrDel(&seqtypeCharsetProtPure);
     ajStrDel(&seqtypeCharsetProtStop);
+    ajStrDel(&seqtypeCharsetProtStopGap);
     ajStrDel(&seqtypeCharsetRnaGap);
 
     ajCharDel(&seqNewGapChars);

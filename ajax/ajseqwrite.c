@@ -2307,9 +2307,9 @@ static void seqWriteMsf(AjPSeqout outseq)
     ajuint checktot = 0;
     ajuint check;
     ajuint itest;
-    static AjPStr sbeg = NULL;
-    static AjPStr send = NULL;
-    static AjPStr sseq = NULL;
+    AjPStr sbeg = NULL;
+    AjPStr send = NULL;
+    AjPStr sseq = NULL;
     ajuint ipos;
     ajuint iend;
     ajuint igap;
@@ -2421,7 +2421,9 @@ static void seqWriteMsf(AjPSeqout outseq)
 	ajSeqDel(&seq);
     ajListDel(&outseq->Savelist);
     
-    
+    ajStrDel(&sbeg);
+    ajStrDel(&send);
+    ajStrDel(&sseq);
     AJFREE(seqs);
     
     return;
@@ -2518,6 +2520,7 @@ static void seqWriteNbrf(AjPSeqout outseq)
     strcpy(sf->endstr, "*\n");
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
+    ajStrDel(&ftfmt);
 
     return;
 }
@@ -2702,7 +2705,8 @@ static void seqWriteExperiment(AjPSeqout outseq)
     
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
-    
+    ajStrDel(&ftfmt);
+
     return;
 }
 
@@ -2722,7 +2726,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
     ajuint b[5];
-    static AjPStr ftfmt = NULL;
+    AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
     ajuint ilen;
@@ -2735,6 +2739,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
     if(ajStrMatchC(outseq->Type, "P"))
     {
 	seqWriteSwiss(outseq);
+	ajStrDel(&ftfmt);
 	return;
     }
     
@@ -2880,6 +2885,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
     seqFormatDel(&sf);
 
     ajStrDel(&tmpstr);
+    ajStrDel(&ftfmt);
 
     return;
 }
@@ -2900,7 +2906,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 {
     static SeqPSeqFormat sf = NULL;
     ajuint b[5];
-    static AjPStr ftfmt = NULL;
+    AjPStr ftfmt = NULL;
     AjIList it;
     AjPStr cur;
     ajuint ilen;
@@ -3079,6 +3085,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
     ajStrDel(&tmpstr);
+    ajStrDel(&ftfmt);
 
     return;
 }
@@ -3245,7 +3252,8 @@ static void seqWriteSwiss(AjPSeqout outseq)
     
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
-    
+    ajStrDel(&ftfmt);
+
     return;
 }
 
@@ -3417,7 +3425,8 @@ static void seqWriteSwissnew(AjPSeqout outseq)
     
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
-    
+    ajStrDel(&ftfmt);
+
     return;
 }
 
@@ -3590,7 +3599,8 @@ static void seqWriteGenbank(AjPSeqout outseq)
     
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
-    
+    ajStrDel(&ftfmt);
+
     return;
 }
 
@@ -3666,7 +3676,9 @@ static void seqWriteGff(AjPSeqout outseq)
 		   outseq->Ufo);
 
     }
-    
+
+    ajStrDel(&ftfmt);
+
     return;
 }
 
@@ -4601,6 +4613,8 @@ AjBool ajSeqOutSetFormat(AjPSeqout thys, const AjPStr format)
 
     ajStrAssignEmptyS(&thys->Formatstr, fmt);
     ajDebug("... output format set to '%S'\n", fmt);
+
+    ajStrDel(&fmt);
 
     return ajTrue;
 }

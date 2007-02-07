@@ -4725,12 +4725,12 @@ void ajSeqsetDel(AjPSeqset *Pseq)
 
 void ajSeqsetDelarray(AjPSeqset **PPseq)
 {
-    ajint i = 0;
+    ajuint i = 0;
 
     if(!PPseq || !*PPseq)
 	return;
 
-    while(*PPseq[i])
+    while((*PPseq)[i])
     {
 	ajSeqsetDel(&(*PPseq)[i]);
 	i++;

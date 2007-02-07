@@ -411,9 +411,10 @@ int main(int argc, char **argv)
 
     AJFREE(bigarray);
     ajStrDel(&dispseq);
+    ajStrDel(&strother);
 
     if(have_exp_freq)
-	ajTableFree(&exptable);
+	ajStrTableFree(&exptable);
  
 
     ajExit();
@@ -551,11 +552,12 @@ static void compseq_readexpfreq(AjPTable *exptable, AjPFile infile,
 	ajStrTokenNextParse(&tokens, &value);
 
 	ajTablePut(*exptable, key, value);
-
+	ajStrTokenDel(&tokens);
     }
 
 
     ajStrDel(&line);
+    ajStrDel(&sizestr);
     ajStrTokenDel(&tokens);
 
     return;

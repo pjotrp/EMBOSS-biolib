@@ -23,6 +23,7 @@ typedef boolean *boolptr;
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 //void   getoptions(void);
 void   allocrest(void);
+void   deallocrest(void);
 void   doinit(void);
 void   initdnacompnode(node **, node **, node *, long, long, long *,
                long *, initops, pointarray, pointarray, Char *, Char *, char **);
@@ -230,6 +231,29 @@ void allocrest()
   location = (steptr)Malloc(chars*sizeof(long));
   place = (long *)Malloc((2*spp-1)*sizeof(long));
   in_tree = (boolptr)Malloc(chars*sizeof(boolean));
+}  /* allocrest */
+
+
+void deallocrest()
+{
+  long i;
+
+  for (i = 0; i < spp; i++)
+    free(y[i]);
+  free(y);
+  for (i = 0; i < maxtrees; i++)
+    free(bestrees[i].btree);
+  free(bestrees);
+  free(nayme);
+  free(weight);
+  free(oldweight);
+  free(enterorder);
+  free(necsteps);
+  free(alias);
+  free(ally);
+  free(location);
+  free(place);
+  free(in_tree);
 }  /* allocrest */
 
 
@@ -1064,8 +1088,13 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+
+  ajSeqsetDelarray(&seqsets);
+  ajPhyloPropDel(&phyloweights);
+  ajPhyloTreeDelarray(&phylotrees);
+  ajFileClose(&embossoutfile);
+  ajFileClose(&embossouttree);
+  deallocrest();
   exxit(0);
   return 0;
 }  /* DNA compatibility by uphill search */
-
-

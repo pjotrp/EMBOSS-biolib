@@ -147,6 +147,7 @@ static void mwcontam_readdata(AjPList files, AjPList **lists,
 	    ajListPushApp((*lists)[i],(void *)ptr);
 	}
 	ajFileClose(&inf);
+	ajStrDel(&thysf);
     }
 
     ajStrDel(&line);

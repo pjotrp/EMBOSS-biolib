@@ -65,6 +65,12 @@ int main(int argc, char **argv)
     ajAlignClose(align);
 
     ajAlignDel(&align);
+    ajSeqsetDel(&seqset);
+
+    if(dofloat)
+	ajMatrixDel(&imat);
+    else
+	ajMatrixfDel(&fmat);
 
     ajExit();
 

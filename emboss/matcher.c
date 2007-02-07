@@ -509,6 +509,8 @@ static void matcher_Sim(AjPAlign align,
 	ajSeqAssignUsaS(res1, ajSeqGetUsaS(seq1));
 
 	ajAlignDefineSS(align, res0, res1);
+	ajSeqDel(&res0);
+	ajSeqDel(&res1);
 
 	ajAlignSetGapI(align, Q+R, R);
 	ajAlignSetScoreI(align, score);
@@ -571,8 +573,6 @@ static void matcher_Sim(AjPAlign align,
 	AJFREE(LIST[i]);
     AJFREE(LIST);
 
-    ajSeqDel(&res0);
-    ajSeqDel(&res1);
 
     AJFREE(seqc0);
     AJFREE(seqc1);

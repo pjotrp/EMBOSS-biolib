@@ -1569,7 +1569,7 @@ static char* seqCdIdxName(ajuint ipos, SeqPCdFile fil)
 	seqCdMaxNameSize = nameSize;
 	if(seqCdName)
 	    ajCharDel(&seqCdName);
-	seqCdName = ajCharNewRes(seqCdMaxNameSize);
+	seqCdName = ajCharNewRes(seqCdMaxNameSize+1);
     }
 
     seqCdFileSeek(fil, ipos);
@@ -1603,7 +1603,7 @@ static void seqCdIdxLine(SeqPCdIdx idxLine, ajuint ipos, SeqPCdFile fil)
 	seqCdMaxNameSize = nameSize;
 	if(seqCdName)
 	    ajCharDel(&seqCdName);
-	seqCdName = ajCharNewRes(seqCdMaxNameSize);
+	seqCdName = ajCharNewRes(seqCdMaxNameSize+1);
     }
 
     seqCdFileSeek(fil, ipos);
@@ -1643,7 +1643,7 @@ static char* seqCdTrgName(ajuint ipos, SeqPCdFile fil)
 	seqCdMaxNameSize = nameSize;
 	if(seqCdName)
 	    ajCharDel(&seqCdName);
-	seqCdName = ajCharNewRes(seqCdMaxNameSize);
+	seqCdName = ajCharNewRes(seqCdMaxNameSize+1);
     }
 
     seqCdFileSeek(fil, ipos);
@@ -1673,17 +1673,16 @@ static char* seqCdTrgName(ajuint ipos, SeqPCdFile fil)
 
 static void seqCdTrgLine(SeqPCdTrg trgLine, ajuint ipos, SeqPCdFile fil)
 {
-    static ajint maxNameSize = 0;
-    ajint nameSize;
+    ajuint nameSize;
 
     nameSize = fil->RecSize-8;
 
-    if(maxNameSize < nameSize)
+    if(seqCdMaxNameSize < nameSize)
     {
-	maxNameSize = nameSize;
+	seqCdMaxNameSize = nameSize;
 	if(seqCdName)
 	    ajCharDel(&seqCdName);
-	seqCdName = ajCharNewRes(maxNameSize);
+	seqCdName = ajCharNewRes(seqCdMaxNameSize+1);
     }
 
     seqCdFileSeek(fil, ipos);

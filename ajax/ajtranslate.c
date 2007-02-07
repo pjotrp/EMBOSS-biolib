@@ -187,7 +187,6 @@ static ajint trncomp[] =
 
 static AjPStr trnResidueStr = NULL;
 
-
 static void trnNoComment(AjPStr* text);
 
 static AjBool trnComplete(AjPTrn thys);
@@ -637,7 +636,6 @@ AjPSeq ajTrnNewPep(const AjPSeq nucleicSeq, ajint frame)
 
 const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 {
-    static AjPStr trnResidue = NULL;
     const char * res;
     char store[2];
 
@@ -648,9 +646,9 @@ const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 	                 [trnconv[(ajint)res[1]]]
 	                 [trnconv[(ajint)res[2]]];
 
-    ajStrAssignC(&trnResidue, store);
+    ajStrAssignC(&trnResidueStr, store);
 
-    return trnResidue;
+    return trnResidueStr;
 }
 
 
@@ -670,7 +668,6 @@ const AjPStr ajTrnCodon(const AjPTrn trnObj, const AjPStr codon)
 
 const AjPStr ajTrnRevCodon(const AjPTrn trnObj, const AjPStr codon)
 {
-    static AjPStr trnResidue = NULL;
     const char * res;
     char store[2];
 
@@ -681,9 +678,9 @@ const AjPStr ajTrnRevCodon(const AjPTrn trnObj, const AjPStr codon)
 	                 [trncomp[(ajint)res[1]]]
 	                 [trncomp[(ajint)res[0]]];
 
-    ajStrAssignC(&trnResidue, store);
+    ajStrAssignC(&trnResidueStr, store);
 
-    return trnResidue;
+    return trnResidueStr;
 }
 
 
@@ -733,7 +730,6 @@ const AjPStr ajTrnCodonC(const AjPTrn trnObj, const char *codon)
 
 const AjPStr ajTrnRevCodonC(const AjPTrn trnObj, const char *codon)
 {
-    static AjPStr trnResidue = NULL;
     char store[2];
 
 
@@ -742,9 +738,9 @@ const AjPStr ajTrnRevCodonC(const AjPTrn trnObj, const char *codon)
 	                 [trncomp[(ajint)codon[0]]];
     store[1] = '\0';
 
-    ajStrAssignC(&trnResidue, store);
+    ajStrAssignC(&trnResidueStr, store);
 
-    return trnResidue;
+    return trnResidueStr;
 }
 
 
@@ -1631,11 +1627,11 @@ ajint ajTrnStartStopC(const AjPTrn trnObj, const char *codon, char *aa)
 ** something else
 **
 ** @param [r] trnFileNameInt [ajint] translation table file name number
-** @return [AjPStr] Genetic code description
+** @return [const AjPStr] Genetic code description
 ** @@
 ******************************************************************************/
 
-AjPStr ajTrnName(ajint trnFileNameInt)
+const AjPStr ajTrnName(ajint trnFileNameInt)
 {
     static AjPStr ret;
     static AjPStr unknown = NULL;

@@ -2165,6 +2165,9 @@ void ajNexusTrace(const AjPNexus thys)
 
 AjPStr* ajNexusGetTaxa(const AjPNexus thys)
 {
+    if(!thys)
+	return NULL;
+
     if (thys->Taxa)
 	return thys->Taxa->TaxLabels;
 
@@ -2182,6 +2185,9 @@ AjPStr* ajNexusGetTaxa(const AjPNexus thys)
 
 ajuint ajNexusGetNtaxa(const AjPNexus thys)
 {
+    if(!thys)
+	return 0;
+
     if (thys->Taxa)
 	return thys->Taxa->Ntax;
 
@@ -2201,6 +2207,9 @@ ajuint ajNexusGetNtaxa(const AjPNexus thys)
 
 AjPStr* ajNexusGetSequences(AjPNexus thys)
 {
+    if(!thys)
+	return NULL;
+
     nexusSetSequences(thys);
     if (thys->Characters)
 	return thys->Characters->Sequences;
@@ -2231,6 +2240,9 @@ static AjBool nexusSetSequences(AjPNexus thys)
     char gapch;
 
     ajDebug("nexusSetSequences\n");
+
+    if(!thys)
+	return ajFalse;
 
 
     if (!thys->Characters)		/* no characters defined */

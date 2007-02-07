@@ -461,16 +461,15 @@ static void showalign_MakeAll(const AjPSeq ref,
     char *s;
     const char *r;
 
+    /* if not changing the case, do nothing */
+    if(!similarcase)
+	return;
+
     sstr = ajSeqGetSeqCopyS(seq);
     lenseq = ajSeqGetLen(seq);
     lenref = ajSeqGetLen(ref);
     s = ajStrGetuniquePtr(&sstr);
     r = ajSeqGetSeqC(ref);
-
-
-    /* if not changing the case, do nothing */
-    if(!similarcase)
-	return;
 
     for(i=0; i<lenref; i++)
 	if(s[i] != '-')
@@ -488,6 +487,7 @@ static void showalign_MakeAll(const AjPSeq ref,
 		s[i] = tolower((int)s[i]);	/* dissimilar to lowercase */;
 
     ajSeqAssignSeqS(seq, sstr);
+    ajStrDel(&sstr);
     return;
 }
 
@@ -534,6 +534,7 @@ static void showalign_MakeIdentity(const AjPSeq ref, AjPSeq seq)
 		s[i] = '.';
 
     ajSeqAssignSeqS(seq, sstr);
+    ajStrDel(&sstr);
     return;
 }
 
@@ -669,6 +670,7 @@ static void showalign_MakeSimilar(const AjPSeq ref, AjPSeq seq,
 		s[i] = '.';
 
     ajSeqAssignSeqS(seq, sstr);
+    ajStrDel(&sstr);
     return;
 }
 
@@ -710,6 +712,7 @@ static void showalign_MakeDissimilar(const AjPSeq ref, AjPSeq seq,
 		s[i] = '.';
 
     ajSeqAssignSeqS(seq, sstr);
+    ajStrDel(&sstr);
     return;
 }
 
