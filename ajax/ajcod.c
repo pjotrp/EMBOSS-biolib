@@ -1551,7 +1551,7 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
     AjPStr  tok1 = NULL;
     AjPStr  tok2 = NULL;
     AjPStr  tok3 = NULL;
-    AjPStr tok4 = NULL;
+    AjPStr  tok4 = NULL;
     ajint i;
     ajint c;
     ajint idx;
@@ -1648,7 +1648,13 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
 	}
     }
 
+    ajStrDel(&tok1);
+    ajStrDel(&tok2);
+    ajStrDel(&tok3);
+    ajStrDel(&tok4);
     ajStrDel(&line);
+    ajStrTokenDel(&handle);
+    ajTrnDel(&trn);
 
     return ajTrue;
 }
@@ -1713,6 +1719,8 @@ static AjBool codReadGcg(AjPCod thys, AjPFileBuff inbuff)
     }
 
     ajStrDel(&line);
+    ajStrDel(&saveheader);
+    ajStrDel(&tok1);
 
     if(header)
 	return ajFalse;
@@ -2780,6 +2788,8 @@ static void codWriteGcg(const AjPCod thys, AjPFile outf)
 	}
 	c0++;
     }
+
+    ajStrDel(&ThreeAa);
     return;
 }
 

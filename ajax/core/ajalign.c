@@ -479,12 +479,14 @@ static void alignWriteSeqformat(AjPAlign thys, ajint iali, const char* sqfmt)
 	ajSeqAssignSeqS(seq, tmpstr);
 	ajSeqoutWriteSeq(seqout, seq);
 	ajSeqDel(&seq);
+	ajStrDel(&tmpstr);
     }
 
     ajSeqoutClose(seqout);
     seqout->File = NULL;
 
     ajSeqoutDel(&seqout);
+    AJFREE(pdata);
 
     return;
 }
