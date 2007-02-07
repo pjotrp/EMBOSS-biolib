@@ -64,6 +64,7 @@ __noreturn void  ajExit(void)
     ajFileExit();
     ajFeatExit();
     ajSeqExit();
+    ajPhyloExit();
     ajAlignExit();
     ajReportExit();
     ajAcdExit(ajFalse);
