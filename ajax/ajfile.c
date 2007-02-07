@@ -1079,6 +1079,7 @@ void ajOutfileClose(AjPOutfile* pthis)
 	return;
 
     fileClose(thys->File);
+    AJFREE(thys->File);
     ajStrDel(&thys->Type);
     ajStrDel(&thys->Formatstr);
     AJFREE(*pthis);
@@ -1266,10 +1267,13 @@ static void fileClose(AjPFile thys)
     if(thys->Handle)
     {
 	ajDebug("closing file '%F'\n", thys);
-	if(thys->fp != stdout && thys->fp != stderr)
+	if(thys->fp)
 	{
-	    if(fclose(thys->fp))
-		ajFatal("File close problem in fileClose");
+	    if(thys->fp != stdout && thys->fp != stderr)
+	    {
+		if(fclose(thys->fp))
+		    ajFatal("File close problem in fileClose");
+	    }
 	}
 	thys->Handle = 0;
 
