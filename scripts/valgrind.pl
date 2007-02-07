@@ -16,12 +16,13 @@ sub runtest ($) {
     my $posbytes = 0;
     my $rembytes = 0;
     my $errcount = 0;
-    my $timeout = 600;
+    my $timeout = 1500;
     my $timealarm = 0;
 
     if (defined($tests{$name})) {
 	if (defined($testcheck{$name})) {
-	    $myvalgpath = "../../emboss/";
+#	    $myvalgpath = "../../emboss/";
+	    $myvalgpath = "/homes/pmr/check/bin/";
 	}
 	else {
 	    $myvalgpath = $valgpath;
@@ -106,9 +107,43 @@ else {
     $valgpath = "";
 }
 
-open (MEMTEST, "../memtest.dat");
+
+$testfile = "../memtest.dat";
+@dotest = ();
+$blocksize=1;
+$blockcount = 0;
+$block = 1;
+$dolist=0;
+$doall = 0;
+
+foreach $test (@ARGV) {
+    if ($test =~ /^-(.*)/) {
+	$arg=$1;
+	if ($arg =~ /testfile=(\S+)/) {$testfile=$1}
+#    elsif ($arg =~ /logfile=(\S+)/) {$logfile=">$1"} # append to logfile
+	elsif ($arg eq "list") {
+	    $dolist = 1;
+	}
+	elsif ($arg eq "all") {
+	    $doall=1;
+	}
+	elsif ($arg =~ /block=(\d+)/) {
+	    $block=$1;
+	    $i=0;
+	    $blocksize=10;
+	    $blockcount=0;
+	}
+	else {print STDERR "+++ unknown option '$arg'\n"; usage()}
+    }
+    else {
+	$test =~ s/\/$//;
+	push @dotest, $test;
+    }
+}
+
+open (MEMTEST, "$testfile") || die "failed to open test file $testfile";
 while (<MEMTEST>) {
-    if (/^[#]/) {next}
+    if (/^[\#]/) {next}
     if (/(\S+) += +(\S.*)/) {
 	$tests{$1}="$2";
     }
@@ -119,6 +154,12 @@ while (<MEMTEST>) {
 }
 close MEMTEST;
 
+if($doall || $dolist) {
+    foreach $x (sort (keys (%tests))) {
+	push @dotest, $x;
+    }
+}
+
 $valgopts = "--leak-check=yes --show-reachable=yes --num-callers=15 --verbose --log-fd=9 --error-limit=no --leak-resolution=high";
 ## --leak-check=yes       Test for memory leaks at end
 ## --show-reachable=yes   Show allocated memory still reachable
@@ -128,47 +169,24 @@ $valgopts = "--leak-check=yes --show-reachable=yes --num-callers=15 --verbose --
 ## --error-limit=no       Don't stop after 300 errors
 ## --leak-resolution=high Report alternate backtraces
 
-@dotest = @ARGV;
-
 $SIG{ALRM} = sub { print STDERR "+++ timeout handler\n"; die "memtest timeout" };
-foreach $name (@dotest) {
-    if ($name =~ /^-(\S+)$/) {
-	$arg = $1;
-	if ($arg eq "all") {
-	    foreach $x (sort (keys (%tests))) {
-		runtest($x);
-	    }
-	    exit;
-	}
-	elsif ($arg eq "list") {
-	    foreach $x (sort (keys (%tests))) {
-		printf "%-15s %s\n", $x, $tests{$x};
-	    }
-	    exit;
-	}
-	elsif ($arg =~ /block=(\d+)/) {
-	    $block=$1;
-	    $i=0;
-	    $blocksize=10;
-	    $blockcount=0;
-	    foreach $x (sort (keys (%tests))) {
-		if (!$i) {
-		    $blockcount++;
-		}
-		$i++;
-		if ($i >= $blocksize) {$i=0}
-		if ($blockcount == $block) {
-		    runtest($x);
-		}
-	    }
-	    exit;
+
+$i=0;
+foreach $x (@dotest) {
+    if (!$i) {
+	$blockcount++;
+    }
+    $i++;
+    if ($i >= $blocksize) {$i=0}
+    if ($blockcount == $block) {
+	if($dolist) {
+	    printf "%-15s %s\n", $x, $tests{$x};
 	}
 	else {
-	    print STDERR "Invalid argument $name (ignored)\n";
-	    next;
+	    runtest($x);
 	}
+	$blockcount = 0;
     }
-    runtest ($name);
 }
 
 exit();
