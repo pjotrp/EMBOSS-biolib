@@ -5271,12 +5271,12 @@ __deprecated AjBool  ajStrConvert(AjPStr* pthis, const AjPStr oldc,
 **
 ** @param [w] Pstr [AjPStr*] String
 ** @param [r] txt [const char*] Wanted characters
-** @param [r] chrnew [char] Replacement character
+** @param [r] chrnew [const char] Replacement character
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
 
-AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chrnew)
+AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, const char chrnew)
 {
     char filter[256] = {'\0'};		/* should make all zero */
 
@@ -5309,12 +5309,13 @@ AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chrnew)
 **
 ** @param [w] Pstr [AjPStr*] String
 ** @param [r] str [const AjPStr] Wanted characters
-** @param [r] chrnew [char] Replacement character
+** @param [r] chrnew [const char] Replacement character
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
 
-AjBool ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str, char chrnew)
+AjBool ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str,
+			      const char chrnew)
 {
     return ajStrExchangeSetRestCK(Pstr, str->Ptr, chrnew);
 }
@@ -7565,7 +7566,7 @@ AjBool ajStrFromDouble(AjPStr* Pstr, double val, ajint precision)
     else
 	i = precision + 4;
 
-    ret = ajStrSetRes(Pstr, i);
+    ret = ajStrSetRes(Pstr, (ajuint)i);
     thys = *Pstr;
 
     sprintf(fmt, "%%.%df", precision);
@@ -7606,7 +7607,7 @@ AjBool ajStrFromDoubleExp(AjPStr* Pstr, double val, ajint precision)
     else
 	i = precision + 8;
 
-    ret = ajStrSetRes(Pstr, i);
+    ret = ajStrSetRes(Pstr, (ajuint)i);
     thys = *Pstr;
 
     sprintf(fmt, "%%.%de", precision);

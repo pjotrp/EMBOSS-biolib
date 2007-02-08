@@ -3726,7 +3726,8 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
 {
     AlignPData thys;
     ajint i;
-
+    AjPSeq *freeptr = NULL;
+    
     thys = *pthys;
 
     AJFREE(thys->Start);
@@ -3748,7 +3749,8 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
 	    ajSeqDel(&thys->RealSeq[i]);
         }
     AJFREE(thys->RealSeq);
-    AJFREE(thys->Seq);
+    freeptr = (AjPSeq *) thys->Seq;
+    AJFREE(freeptr);
     AJFREE(*pthys);
 
     return;
@@ -3939,7 +3941,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    const char **seqcharptr;
+    char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -4009,7 +4011,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
     {
-	seqcharptr[iseq] =  ajSeqGetSeqC(alignSeq(thys, iseq, iali));
+	seqcharptr[iseq] =  (char *) ajSeqGetSeqC(alignSeq(thys, iseq, iali));
     }
 
     /* For each position in the alignment, calculate consensus character */
@@ -4587,7 +4589,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    const char **seqcharptr;
+    char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -4597,7 +4599,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AjBool isident;
     AjBool issim;
     AjBool isgap;
-    const AjPSeq* seqs;
+    AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
     AjPStr debugstr1=NULL;
     AjPStr debugstr2=NULL;
@@ -4647,8 +4649,8 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
     {
-	seqcharptr[iseq] =  ajSeqsetGetseqSeqC(thys, iseq);
-	seqs[iseq] =  ajSeqsetGetseqSeq(thys, iseq);
+	seqcharptr[iseq] =  (char *) ajSeqsetGetseqSeqC(thys, iseq);
+	seqs[iseq]       =  (AjPSeq) ajSeqsetGetseqSeq(thys, iseq);
     }
     
     /* For each position in the alignment, calculate consensus character */
