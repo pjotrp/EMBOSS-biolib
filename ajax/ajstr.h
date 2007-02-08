@@ -539,7 +539,7 @@ AjBool     ajStrTokenRestParse(AjPStrTok* Ptoken, AjPStr* Pstr);
 
 /* =====================================================================
 ** Deprecated functions - renamed or replaced
-__deprecated ** The  tag is used by the gcc compiler to report calls
+** __deprecated The  tag is used by the gcc compiler to report calls
 ** for other compilers it is defined as an empty string (i.e. removed)
 ** ===================================================================== */
 
