@@ -411,7 +411,6 @@ AjBool     ajStrSuffixCaseS (const AjPStr str, const AjPStr pref);
 
 int        ajStrCmpC(const AjPStr thys, const char *text);
 int        ajStrCmpS(const AjPStr str, const AjPStr str2);
-int        ajStrCmpCaseC (const AjPStr thys, const char *text);
 int        ajStrCmpCaseS (const AjPStr str1, const AjPStr str2);
 ajint      ajStrCmpLenC (const AjPStr thys, const char *text, ajuint len);
 int        ajStrCmpLenS(const AjPStr str, const AjPStr str2, ajuint len);
