@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     maxlen   = ajSeqsetGetLen(seqset);
     aa0str   = ajStrNewRes(maxlen);
     midpoint = (ajint)((llen+1)/2);
-    flen = ajSeqsetGetLen(seqset);
+    flen     = (float) ajSeqsetGetLen(seqset);
     maxsize = ajSeqsetGetSize(seqset);
 
     AJCNEW(position, maxlen);
@@ -168,8 +168,8 @@ int main(int argc, char **argv)
 	ajGraphDataAdd(mult,graphdata);
     }
 
-    min = min*1.1;
-    max = max*1.1;
+    min = min * (float) 1.1;
+    max = max * (float) 1.1;
 
     ajGraphxySetGaps(mult,AJTRUE);
     ajGraphxySetOverLap(mult,AJTRUE);
