@@ -249,7 +249,7 @@ int main(int argc, char **argv)
 	AJCNEW0(countField, nfields);
 	AJCNEW0(fieldTot, nfields);
 	for(ifield=0; ifield < nfields; ifield++)
-	    maxFieldLen[ifield] = -maxindex;
+	    maxFieldLen[ifield] = (ajint)maxindex * -1; /* -maxindex illegal */
 
 	if(systemsort)
 	    AJCNEW(alistfile, nfields);
@@ -774,9 +774,9 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		    q = p;
 		    while(isdigit((int)*(--q)));
 		    ++q;
-		    ajStrAssignSubC(&tmpstr,q,0,p-q-1);
+		    ajStrAssignSubC(&tmpstr,q,0,(ajint)(p-q-1));
 		    ajStrToInt(tmpstr,&lo);
-		    fieldwidth = p-q;
+		    fieldwidth = (ajint) (p-q);
 		    ajFmtPrintS(&format,"%%S%%0%dd",fieldwidth);
 
 		    ++p;
@@ -784,7 +784,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		    while(!isdigit((int)*q))
 			++q;
 		    sscanf(q,"%d",&hi);
-		    ajStrAssignSubC(&prefix,p,0,q-p-1);
+		    ajStrAssignSubC(&prefix,p,0,(ajint)(q-p-1));
 	    
 		    if(systemsort)
 		    {

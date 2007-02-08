@@ -352,8 +352,8 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 	if(!mat[i][d2-1])
 	    continue;
 
-	expected = mat[i][c-1];
-	expected *= 0.0001;
+	expected = (float)mat[i][c-1];
+	expected = (float) ((double)expected * 0.0001);
 	exptot += expected;
 
 	if(c>1)
@@ -362,8 +362,9 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 	    maxj=0;
 	for(j=0;j<maxj;++j)
 	{
-	    if(!mat[i][j]) pee=(1.0<1.0/((sample+1.0)*expected)) ? 1.0 :
-		1.0/((sample+1.0)*expected);
+	    if(!mat[i][j])
+		pee=((float)1.0<(float)1.0/((sample+(float)1.0)*expected)) ?
+		    (float)1.0 : (float)1.0/((sample+(float)1.0)*expected);
 	    else
 		pee = ((float)mat[i][j])/(sample*expected);
 	    mat[i][j]=(ajint)((double)100.0*log(pee));
@@ -525,7 +526,7 @@ static void helixturnhelix_report_hits(AjPList ajb,
         gf = ajFeatNewProt(TabRpt, NULL, fthit,
 			   lp[ajUintGet(hp,i)]->pos,
 			   lp[ajUintGet(hp,i)]->pos+lastcol-1,
-			   lp[ajUintGet(hp,i)]->wt);
+			   (float) lp[ajUintGet(hp,i)]->wt);
 	ajFmtPrintS(&tmpStr, "*pos %d", lp[ajUintGet(hp,i)]->pos);
 	ajFeatTagAdd(gf, NULL, tmpStr);
 	ajFmtPrintS(&tmpStr, "*sd %.2f", lp[ajUintGet(hp,i)]->sd);
