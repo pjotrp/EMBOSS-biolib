@@ -116,7 +116,6 @@ AjBool       ajSeqstrConvertNum(const AjPStr seq, const AjPSeqCvt cvt,
 AjPFeattable ajSeqGetFeatCopy (const AjPSeq thys);
 void         ajSeqCalcCount (const AjPSeq thys, ajint *b);
 __deprecated ajuint       ajSeqCalcCrc(const AjPSeq seq );
-ajuint       ajSeqstrCalcCrc(const AjPStr seq );
 ajuint       ajSeqstrCountGaps(const AjPStr str);
 void         ajSeqcvtDel (AjPSeqCvt* thys);
 ajint        ajSeqcvtGetCodeK (const AjPSeqCvt thys, char ch);
@@ -202,7 +201,6 @@ __deprecated AjBool       ajSeqNum (const AjPSeq thys, const AjPSeqCvt cvt,
 		       AjPStr *numseq);
 __deprecated AjBool       ajSeqNumS (const AjPStr thys, const AjPSeqCvt cvt,
 			AjPStr *numseq);
-AjBool       ajSeqIsGarbage(const AjPSeq thys);
 AjBool       ajSeqIsReversedTrue(const AjPSeq seq);
 AjBool       ajSeqIsReversed (const AjPSeq thys);
 AjBool       ajSeqIsTrimmed (const AjPSeq thys);
