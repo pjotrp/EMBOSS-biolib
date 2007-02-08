@@ -360,9 +360,7 @@ void ajRandomSeed(void)
 
 ajint ajRandomNumber(void)
 {
-    ajlong lret = 0;
-    lret =  (floor(ajRandomNumberD()*32768.0));
-    return (ajint) lret;
+    return  (ajint) ((double)(floor(ajRandomNumberD()*32768.0)));
 }
 
 
@@ -529,7 +527,7 @@ ajuint ajSp32Crc(const AjPStr seq)
     }
     ajDebug("CRC32 calculated %08lX\n", crc);
 
-    return( crc );
+    return (ajuint) crc;
 }
 
 
@@ -680,7 +678,9 @@ ajuint ajNumLengthDouble(double dnumber)
     ajuint ilen = 1;
     ajuint maxnum = UINT_MAX/10;
     ajuint i;
-    double dblabs = abs(dnumber);
+    double dblabs;
+
+    dblabs = (double) ((int)abs((int)dnumber));
 
     if(dnumber < 0.0) ilen++;		/* space for the sign */
 
@@ -712,7 +712,9 @@ ajuint ajNumLengthFloat(float fnumber)
     ajuint ilen = 1;
     ajuint maxnum = UINT_MAX/10;
     ajuint i;
-    float fltabs = abs(fnumber);
+    float fltabs;
+
+    fltabs = (float) ((int)abs((int)fnumber));
 
     if(fnumber < 0.0) ilen++;		/* space for the sign */
 
