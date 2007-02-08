@@ -572,8 +572,10 @@ AjBool embWordGetTable(AjPTable *table, const AjPSeq seq)
     EmbPWord rec;
     char* key;
 
-    size_t wordsize = wordLength+1;
+    ajuint wordsize;
     char skipchar;
+
+    wordsize = wordLength+1;
 
     skipchar = 'X';
     if(ajSeqIsNuc(seq))

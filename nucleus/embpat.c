@@ -167,7 +167,7 @@ AjPStr embPatSeqCreateRegExpC(const char *ptr, AjBool protein)
     char match2[2] = " ";
     const char* optr = ptr;
 
-    regexp = ajStrNewRes(strlen(ptr) * 4); /* just a rough guess */
+    regexp = ajStrNewRes((ajuint)strlen(ptr) * 4); /* just a rough guess */
 
     while(*ptr != '\0')
     {

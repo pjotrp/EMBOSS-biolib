@@ -32,8 +32,12 @@
 
 char dayhoffstr[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 float dayhoff[] = {
-    8.6, 0.0, 2.9, 5.5, 6.0, 3.6, 8.4, 2.0, 4.5, 0.0, 6.6, 7.4, 1.7,
-    4.3, 0.0, 5.2, 3.9, 4.9, 7.0, 6.1, 0.0, 6.6, 1.3, 0.9, 3.4, 0.0
+    (float) 8.6, (float) 0.0, (float) 2.9, (float) 5.5, (float) 6.0,
+    (float) 3.6, (float) 8.4, (float) 2.0, (float) 4.5, (float) 0.0,
+    (float) 6.6, (float) 7.4, (float) 1.7, (float) 4.3, (float) 0.0,
+    (float) 5.2, (float) 3.9, (float) 4.9, (float) 7.0, (float) 6.1,
+    (float) 0.0, (float) 6.6, (float) 1.3, (float) 0.9, (float) 3.4,
+    (float) 0.0
 };
 
 

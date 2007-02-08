@@ -19,11 +19,11 @@
 ******************************************************************************/
 
 #include "emboss.h"
+#include <math.h>
 #ifndef WIN32
 #include <dirent.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <math.h>
 #else
 #include "win32.h"
 #include "dirent_w32.h"
@@ -762,7 +762,7 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	}
 
 
-	nsplit = sqrt(nfiles);
+	nsplit = (ajuint) sqrt(nfiles);
 	ajDebug("embDbiSortFile nfiles:%d split:%d\n", nfiles, nsplit);
 
 	/* file merge in groups if more than 24 files ... avoids huge merges */

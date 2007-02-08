@@ -67,7 +67,7 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 
     AjPSeqCvt cvt  = 0;
     AjPFloat score = NULL;
-    const char **seqcharptr;
+    char **seqcharptr;
     char res;
     char nocon = '-';
 
@@ -88,7 +88,7 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 	nocon = 'X';
 
     for(i=0;i<nseqs;i++)		/* get sequence as string */
-	seqcharptr[i] =  ajSeqsetGetseqSeqC(seqset, i);
+	seqcharptr[i] =  (char *) ajSeqsetGetseqSeqC(seqset, i);
 
     for(k=0; k< mlen; k++)
     {
