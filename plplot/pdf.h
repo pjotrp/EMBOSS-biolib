@@ -53,10 +53,10 @@ typedef struct {
 /* Info for the i/o device.  Only used by Tcl/TK/dp drivers for now */
 
 typedef struct {
-    int   fd;				/* I/O device file descriptor */
     FILE  *file;			/* File handle */
     char  *fileName;			/* Fifo or socket name (if needed) */
     char  *fileHandle;			/* Handle for use from interpreter */
+    int   fd;				/* I/O device file descriptor */
     int   type;				/* Communication channel type */
     char  *typeName;			/* As above, but in string form */
 } PLiodev;

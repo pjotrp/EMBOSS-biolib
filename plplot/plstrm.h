@@ -384,6 +384,8 @@ typedef struct {
 /* Misc control information */
 
     PLINT ipls, level, verbose, debug, initialized;
+    char pad1x[4];
+    
     char *program;
 
 /* Colormaps */
@@ -391,7 +393,7 @@ typedef struct {
     PLINT icol0, ncol0, icol1, ncol1, ncp1, curcmap;
 
     PLColor curcolor;
-    char pad[1];
+    char pad2x[5];
     PLColor *cmap0;
     PLColor *cmap1;
 
@@ -411,6 +413,7 @@ typedef struct {
     PLINT dev_fill0, dev_fill1, dev_di, dev_flush, dev_swin;
 
     char DevName[80];
+    char pad3x[4];
     FILE *OutFile;
     char *BaseName, *FileName;
     char *Ext;
@@ -419,6 +422,7 @@ typedef struct {
     PDFstrm *pdfs;
 
     PLINT dev_npts;
+    char pad4x[4];
     short *dev_x, *dev_y;
 
     void *dev;
@@ -464,7 +468,7 @@ typedef struct {
     int  bufmax, dp, server_nokill;
 
 /* Plot buffer settings */
-
+    char pad5x[4];
     FILE *plbufFile;
     int  plbufOwner;
 

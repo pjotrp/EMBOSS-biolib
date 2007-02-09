@@ -279,6 +279,7 @@ typedef struct {
 typedef struct {
     PLFLT *f;
     PLINT nx, ny, nz;
+    char Padding[4];
 } PLfGrid;
 
 /*
@@ -305,6 +306,7 @@ typedef struct {
 typedef struct {
     PLFLT *xg, *yg, *zg;
     PLINT nx, ny, nz;
+    char Padding[4];
 } PLcGrid;
 
 /*
