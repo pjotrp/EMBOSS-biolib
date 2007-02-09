@@ -67,10 +67,10 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 
     AjPSeqCvt cvt  = 0;
     AjPFloat score = NULL;
-    char **seqcharptr;
+    const char **seqcharptr;
     char res;
     char nocon = '-';
-
+    void *freeptr;
 
     matrix  = ajMatrixArray(cmpmatrix);
     cvt     = ajMatrixCvt(cmpmatrix);	/* return conversion table */
@@ -88,7 +88,7 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 	nocon = 'X';
 
     for(i=0;i<nseqs;i++)		/* get sequence as string */
-	seqcharptr[i] =  (char *) ajSeqsetGetseqSeqC(seqset, i);
+	seqcharptr[i] =  ajSeqsetGetseqSeqC(seqset, i);
 
     for(k=0; k< mlen; k++)
     {
@@ -205,7 +205,8 @@ void embConsCalc(const AjPSeqset seqset,const AjPMatrix cmpmatrix,
 	ajStrAppendK(cons,res);
     }
 
-    AJFREE(seqcharptr);
+    freeptr = (void *) seqcharptr;
+    AJFREE(freeptr);
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&score);
