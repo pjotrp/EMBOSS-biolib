@@ -15,16 +15,18 @@ extern "C"
 **
 ** NUCLEUS data structure for pattern matches
 **
-** @attr number [ajuint] Number of matches
 ** @attr start [ajuint*] Match start positions
 ** @attr len [ajuint*] Match lengths
+** @attr number [ajuint] Number of matches
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct EmbSPatMatch {
-  ajuint number;
   ajuint *start;
   ajuint *len;
+  ajuint number;
+  char Padding[4];
 } EmbOPatMatch;
 #define EmbPPatMatch EmbOPatMatch*
 
@@ -40,7 +42,6 @@ typedef struct EmbSPatMatch {
 ** @attr bin [AjPStr] Binary converted site
 ** @attr len [ajuint] Pattern length
 ** @attr blunt [AjBool] Blunt true, sticky false
-** @attr ncuts [ajuint] Number of cuts
 ** @attr cut1 [ajint] First  3' cut
 ** @attr cut2 [ajint] First  5' cut
 ** @attr cut3 [ajint] Second 3' cut
@@ -50,6 +51,8 @@ typedef struct EmbSPatMatch {
 ** @attr meth [AjPStr] Methylation
 ** @attr sou [AjPStr] Source
 ** @attr sup [AjPStr] Suppliers
+** @attr ncuts [ajuint] Number of cuts
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -60,7 +63,6 @@ typedef struct EmbSPatRestrict
     AjPStr bin;
     ajuint  len;
     AjBool blunt;
-    ajuint  ncuts;
     ajint  cut1;
     ajint  cut2;
     ajint  cut3;
@@ -70,6 +72,8 @@ typedef struct EmbSPatRestrict
     AjPStr meth;
     AjPStr sou;
     AjPStr sup;
+    ajuint  ncuts;
+    char Padding[4];
 } EmbOPatRestrict;
 #define EmbPPatRestrict EmbOPatRestrict*
 

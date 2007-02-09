@@ -20,11 +20,12 @@ typedef ajuint *PMAT_INT[26];
 ** @attr cod [AjPStr] gc line
 ** @attr acc [AjPStr] gx line
 ** @attr tit [AjPStr] gt line
-** @attr n [ajuint] Number of motifs in fingerprint
 ** @attr len [ajuint*] Lengths of motifs
 ** @attr thresh [ajuint*] % of maximum score for matrix
 ** @attr max [ajuint*] Maximum score for matrix
 ** @attr matrix [PMAT_INT*] Matrices
+** @attr n [ajuint] Number of motifs in fingerprint
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -33,11 +34,12 @@ typedef struct EmbSMatPrints
     AjPStr cod;
     AjPStr acc;
     AjPStr tit;
-    ajuint    n;
     ajuint    *len;
     ajuint    *thresh;
     ajuint    *max;
-    PMAT_INT *matrix;
+    PMAT_INT  *matrix;
+    ajuint    n;
+    char      Padding[4];
 } EmbOMatPrint;
 #define EmbPMatPrints EmbOMatPrint*
 

@@ -51,10 +51,12 @@ extern "C"
 **
 **
 ** 
-** @attr  ngaps [ajuint]   No. of gaps 
-** @attr  gsiz  [ajuint*]  Gap sizes 
-** @attr  gpen  [float*]  Gap penalties 
-** @attr  subs  [float*]  Residue match values 
+
+** @attr  gsiz    [ajuint*] Gap sizes 
+** @attr  gpen    [float*]  Gap penalties 
+** @attr  subs    [float*]  Residue match values 
+** @attr  ngaps   [ajuint]  No. of gaps 
+** @attr  Padding [char[4]] Padding to alignment boundary
 ** 
 ** @new embSigposNew Default Sigdat object constructor
 ** @delete embSigposDel Default Sigdat object destructor
@@ -62,10 +64,11 @@ extern "C"
 ****************************************************************************/
 typedef struct EmbSSigpos
 {
-    ajuint    ngaps;      
     ajuint   *gsiz;       
     float   *gpen;       
     float   *subs;       
+    ajuint  ngaps;      
+    char    Padding[4];
 } EmbOSigpos;
 #define EmbPSigpos EmbOSigpos*
 
@@ -89,17 +92,17 @@ typedef struct EmbSSigpos
 **
 **
 **
-** @attr  nres [ajuint]    No. diff. types of residue
 ** @attr  rids [AjPChar]   Residue id's 
 ** @attr  rfrq [AjPUint]   Residue frequencies 
 ** 
+** @attr  nres [ajuint]    No. diff. types of residue
 ** @attr  nenv [ajuint]    No. diff. types of environment
 ** @attr  eids [AjPStr*]   Environment id's
 ** @attr  efrq [AjPUint]   Environment frequencies 
 **
-** @attr  ngap [ajuint]    No. diff. sizes of empirical gap
 ** @attr  gsiz [AjPUint]   Gap sizes 
 ** @attr  gfrq [AjPUint]   Frequencies of gaps of each size
+** @attr  ngap [ajuint]    No. diff. sizes of empirical gap
 ** @attr  wsiz [ajuint]    Window size for this gap 
 **
 ** @new embSigdatNew Default Sigdat object constructor
@@ -108,18 +111,19 @@ typedef struct EmbSSigpos
 ****************************************************************************/
 typedef struct EmbSSigdat
 {
-    ajuint       nres;         
+
     AjPChar      rids;
     AjPUint      rfrq;         
-
+    ajuint       nres;
     ajuint       nenv;         
     AjPStr      *eids;
     AjPUint      efrq;         
 
-    ajuint       ngap;         
+
     AjPUint      gsiz;         
     AjPUint      gfrq;         
 
+    ajuint       ngap;         
     ajuint       wsiz;         
 } EmbOSigdat;
 #define EmbPSigdat EmbOSigdat*
@@ -266,8 +270,9 @@ typedef struct EmbSSignature
 **                           'NON_REDUNDANT' 
 ** @attr  Target   [AjBool]  Used for garbage collection.
 ** @attr  Target2  [AjBool]  Also used for garbage collection.
-** @attr  Priority [AjBool]  Also used for garbage collection.
 ** @attr  Sig      [EmbPSignature] Pointer to signature object for which hit
+** @attr  Priority [AjBool]  Also used for garbage collection.
+** @attr  Padding  [char[4]]  Padding to alignment boundary
 ** was generated. Used as a pointer only - memory is never freed or allocated
 ** to it.
 **
@@ -310,9 +315,10 @@ typedef struct EmbSHit
   AjPStr  Group;      
   AjBool  Target;     
   AjBool  Target2;    
-  AjBool  Priority;   
 
   EmbPSignature Sig;
+  AjBool  Priority;
+  char    Padding[4];
 } EmbOHit;
 #define EmbPHit EmbOHit*
 
@@ -335,8 +341,6 @@ typedef struct EmbSHit
 **
 ** 
 **
-** @attr  Type          [ajuint]     Domain type, either ajSCOP (1) or
-**                                  ajCATH (2).
 ** @attr  Class         [AjPStr]    SCOP classification.
 ** @attr  Architecture  [AjPStr]    CATH classification.
 ** @attr  Topology      [AjPStr]    CATH classification.
@@ -346,8 +350,11 @@ typedef struct EmbSHit
 ** @attr  Model         [AjPStr]    SCOP classification.
 ** @attr  Sunid_Family  [ajuint]     SCOP sunid for family. 
 ** @attr  Priority      [AjBool]    True if the Hitlist is high priority. 
-** @attr  N             [ajuint]     No. of hits. 
+
 ** @attr  hits          [EmbPHit*]  Array of hits. 
+** @attr  Type          [ajuint]     Domain type, either ajSCOP (1) or
+**                                  ajCATH (2).
+** @attr  N             [ajuint]    No. of hits. 
 **
 ** @new    embHitlistNew Default Hitlist constructor
 ** @delete embHitlistDel Default Hitlist destructor
@@ -386,7 +393,6 @@ typedef struct EmbSHit
 
 typedef struct EmbSHitlist
 {
-    ajuint   Type;
     AjPStr   Class;
     AjPStr   Architecture;
     AjPStr   Topology;
@@ -396,8 +402,9 @@ typedef struct EmbSHitlist
     AjPStr   Model;
     ajuint   Sunid_Family;
     AjBool   Priority;     
-    ajuint   N;            
     EmbPHit *hits;         
+    ajuint   Type;
+    ajuint   N;            
 } EmbOHitlist;
 #define EmbPHitlist EmbOHitlist*
 

@@ -103,14 +103,16 @@ typedef struct EmbSShow {
 **    |
 **   etc.
 **
-** @attr type [int] Type of information (enumerated list)
 ** @attr info [void*] Information descriptor (set of available descriptors)
+** @attr type [ajint] Type of information (enumerated list)
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct EmbSShowInfo {
-  int type;
   void * info;
+  ajint type;
+  char Padding[4];
 } EmbOShowInfo;
 #define EmbPShowInfo EmbOShowInfo*
 
@@ -213,6 +215,7 @@ typedef struct EmbSShowTicknum {
 ** @attr firstorf [AjBool] ajTrue = beginning of the seq is a possible ORF
 ** @attr lastorf [AjBool] ajTrue = end of the seq is a possible ORF
 ** @attr showframe [AjBool] ajTrue = write the frame number
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -229,6 +232,7 @@ typedef struct EmbSShowTran {
   AjBool firstorf;
   AjBool lastorf;
   AjBool showframe;
+  char   Padding[4];
 } EmbOShowTran;
 #define EmbPShowTran EmbOShowTran*
 
@@ -257,11 +261,11 @@ typedef struct EmbSShowComp {
 **
 ** @attr sense [ajint]  1 or -1 = sense to display
 ** @attr flat [AjBool] ajTrue = display in flat format with recognition sites
+** @attr matches [AjPList] list of AjPMatmatch matches
 ** @attr plasmid [AjBool] ajTrue = Circular (plasmid) sequence. Needed so
 **                        that when we display sequences we can decide whether
 **                        to show cuts that go past the origin in either
 **                        direction
-** @attr matches [AjPList] list of AjPMatmatch matches
 ** @attr hits [ajuint]  number of hits in list
 ** @attr sitelist [AjPList] list of EmbSShowREsite
 ** @@
@@ -270,8 +274,8 @@ typedef struct EmbSShowComp {
 typedef struct EmbSShowRE {
   ajint sense;
   AjBool flat;
-  AjBool plasmid;
   AjPList matches;
+  AjBool plasmid;
   ajuint hits;
   AjPList sitelist;
 } EmbOShowRE;
@@ -318,14 +322,16 @@ typedef struct EmbSShowNote {
 **
 ** NUCLEUS data structure for Restriction Enzyme cut site position list node
 **
-** @attr pos [ajint] cut site position
 ** @attr name [AjPStr] name of Restriction Enzyme
+** @attr pos [ajint] cut site position
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct EmbSShowREsite {
-  ajint pos;
   AjPStr name;
+  ajint pos;
+  char Padding[4];
 } EmbOShowREsite;
 #define EmbPShowREsite EmbOShowREsite*
 

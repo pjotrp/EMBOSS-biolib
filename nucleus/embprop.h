@@ -48,6 +48,7 @@ typedef struct EmbSPropFrag	/* Enzyme digestion structure */
     ajint     end;
     double    molwt;
     AjBool    isfrag;
+    char      Padding[4];
 } EmbOPropFrag;
 #define EmbPPropFrag EmbOPropFrag*
 

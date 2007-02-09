@@ -17,6 +17,7 @@ extern "C"
 ** @attr field [char*] field token
 ** @attr entry [char*] entry name
 ** @attr nid [ajuint] entry number
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -24,6 +25,7 @@ typedef struct EmbSField {
   char* field;
   char* entry;
   ajuint nid;
+  char Padding[4];
 } EmbOField;
 #define EmbPField EmbOField*
 

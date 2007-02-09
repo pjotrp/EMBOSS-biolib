@@ -40,14 +40,17 @@ extern "C"
 **
 ** NUCLEUS data structure for non-redundant sequence testing
 **
-** @attr Garbage [AjBool] True if sequence is to be ignored
+
 ** @attr Seq [AjPSeq] Sequence to be tested for redundancy
+** @attr Garbage [AjBool] True if sequence is to be ignored
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct EmbSDmxNrseq {
-  AjBool Garbage;
   AjPSeq Seq;
+  AjBool Garbage;
+  char Padding[4];
 } EmbODmxNrseq;
 #define EmbPDmxNrseq EmbODmxNrseq*
 

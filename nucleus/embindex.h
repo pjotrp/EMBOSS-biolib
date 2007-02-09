@@ -73,6 +73,7 @@ extern "C"
 ** @attr txfill [ajuint] Undocumented
 ** @attr txsecorder [ajuint] Undocumented
 ** @attr txsecfill [ajuint] Undocumented
+** @attr Padding [ajuint] Padding to alignment boundary
 ** @attr idcache [AjPBtcache] Undocumented
 ** @attr accache [AjPBtcache] Undocumented
 ** @attr svcache [AjPBtcache] Undocumented
@@ -144,7 +145,8 @@ typedef struct EmbSBtreeEntry
     ajuint txfill;
     ajuint txsecorder;
     ajuint txsecfill;
-
+    ajuint Padding;
+    
     AjPBtcache idcache;
     AjPBtcache accache;
     AjPBtcache svcache;
