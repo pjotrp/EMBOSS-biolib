@@ -27,12 +27,13 @@ extern "C"
 **                    all possible characters.
 ** @attr len [ajint] Number of characters defined
 ** @attr missing [ajint] Index of the missing character value
-** @attr bases [AjPStr] The bases which can be converted
 ** @attr nrlabels [ajint] Number of row labels
+** @attr bases [AjPStr] The bases which can be converted
 ** @attr rlabels [AjPStr*] Row labels 
-** @attr nclabels [ajint] Number of column labels
 ** @attr clabels [AjPStr*] Column labels 
 ** @attr table [char*] Binary character value for each character in bases
+** @attr nclabels [ajint] Number of column labels
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -40,12 +41,13 @@ typedef struct AjSSeqCvt {
   ajint size;
   ajint len;
   ajint missing;
-  AjPStr bases;
   ajint nrlabels;
+  AjPStr bases;
   AjPStr* rlabels;
-  ajint nclabels;
   AjPStr* clabels;
   char *table;
+  ajint nclabels;
+  char Padding[4];
 } AjOSeqCvt;
 
 #define AjPSeqCvt AjOSeqCvt*

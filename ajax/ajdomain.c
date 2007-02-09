@@ -117,24 +117,26 @@ typedef struct AjSScopcla
 **
 **
 **
-** @attr Sunid [ajint]  SCOP sunid for node.
 ** @attr Type [AjPStr]  Type of node, either 'px' (domain data), 'cl' (class),
 **                      'cf' (fold), 'sf' (superfamily), 'fa' (family), 'dm' 
 **                      (domain) or 'sp' (species).
 ** @attr Sccs [AjPStr]  Scop compact classification string.
 ** @attr Entry [AjPStr] Domain identifer code (or '-' if Type!='px').
 ** @attr Desc [AjPStr]  Description in english of the node.
+** @attr Sunid [ajint]  SCOP sunid for node.
+** @attr Padding [char[4]]  Padding to alignment boundary
 **
 ** @@
 ****************************************************************************/
 
 typedef struct AjSScopdes
 {
-    ajint  Sunid;
     AjPStr Type;
     AjPStr Sccs;
     AjPStr Entry;
     AjPStr Desc;
+    ajint  Sunid;
+    char Padding[4];
 } AjOScopdes;
 #define AjPScopdes AjOScopdes*
 
@@ -162,6 +164,7 @@ typedef struct AjSScopdes
 ** @attr Start [AjPStr*]   PDB residue number of first residue in segment
 ** @attr End [AjPStr*]      PDB residue number of last residue in segment
 ** @attr NSegment [ajint]  No. of chain segments domain is comprised of
+** @attr Padding [char[4]]  Padding to alignment boundary
 **
 **  @@
 ****************************************************************************/
@@ -172,6 +175,7 @@ typedef struct AjSCathDom
    AjPStr *Start;
    AjPStr *End;          
    ajint  NSegment;
+   char Padding[4];
 } AjOCathDom;
 #define AjPCathDom AjOCathDom*
 

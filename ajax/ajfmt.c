@@ -2189,15 +2189,16 @@ ajint ajFmtScanF(AjPFile thys, const char* fmt, ...)
     ajint   n;
     FILE* file;
 
-    if(!thys)
-	return 0;
-
-    file = ajFileFp(thys);
 
 #if defined(__amd64__) || defined(__EM64T__) || \
     defined(__PPC__) && defined(_CALL_SYSV)
     va_list save_ap;
 #endif
+
+    if(!thys)
+	return 0;
+
+    file = ajFileFp(thys);
 
     va_start(ap, fmt);
 

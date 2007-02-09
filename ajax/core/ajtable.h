@@ -43,22 +43,24 @@ struct binding {
 ** @cast ajTableLength Returns the number of keys in a table.
 ** @output ajTableTrace Writes debug messages to trace the contents of a table.
 **
-** @attr size [ajint] Size - number of hash buckets
 ** @attr cmp [(ajint*)] Compare function (0 for match, -1 or +1 if not matched)
 ** @attr hash [(unsigned*)] Hash function
 ** @attr length [ajint] Number of entries
 ** @attr timestamp [unsigned] Time stamp
 ** @attr buckets [struct binding**] Buckets
+** @attr size [ajint] Size - number of hash buckets
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct AjSTable {
-  ajint size;
   ajint (*cmp)(const void *x, const void *y);
   unsigned (*hash)(const void *key, unsigned hashsize);
   ajint length;
   unsigned timestamp;
   struct binding **buckets;
+  ajint size;
+  char Padding[4];
 } AjOTable;
 
 #define AjPTable AjOTable*

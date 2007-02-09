@@ -22,7 +22,6 @@ extern "C"
 ** @attr Tax [AjPStr] Main taxonomy (species)
 ** @attr Desc [AjPStr] One-line description
 ** @attr Type [AjPStr] Type N or P
-** @attr EType [AjEnum] unused, obsolete
 ** @attr Outputtype [AjPStr] Output sequence known type
 ** @attr Db [AjPStr] Database name from input name
 ** @attr Setdb [AjPStr] Database name from input command line
@@ -40,6 +39,7 @@ extern "C"
 ** @attr FtFilename [AjPStr] Feature output filename (if not in UFO)
 ** @attr Informatstr [AjPStr] Input format
 ** @attr Formatstr [AjPStr] Output format
+** @attr EType [AjEnum] unused, obsolete
 ** @attr Format [AjEnum] Output format index
 ** @attr Filename [AjPStr] Output filename (if not in USA)
 ** @attr Directory [AjPStr] Output firectory
@@ -53,10 +53,11 @@ extern "C"
 ** @attr Single [AjBool] If true, single sequence in each file (-ossingle)
 ** @attr Features [AjBool] If true, save features with sequence or in file
 ** @attr Extension [AjPStr] File extension
-** @attr Count [ajint] Number of sequences
 ** @attr Accuracy [ajint*] Accuracy values (one per base) from base calling
 ** @attr Savelist [AjPList] Previous sequences saved for later output
 **                          (e.g. MSF format)
+** @attr Count [ajint] Number of sequences
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajSeqoutNew Default constructor
 ** @delete ajSeqoutDel Default destructor
@@ -79,7 +80,6 @@ typedef struct AjSSeqout {
   AjPStr Tax;
   AjPStr Desc;
   AjPStr Type;
-  AjEnum EType;
   AjPStr Outputtype;
   AjPStr Db;
   AjPStr Setdb;
@@ -97,6 +97,7 @@ typedef struct AjSSeqout {
   AjPStr FtFilename;
   AjPStr Informatstr;
   AjPStr Formatstr;
+  AjEnum EType;
   AjEnum Format;
   AjPStr Filename;
   AjPStr Directory;
@@ -110,9 +111,10 @@ typedef struct AjSSeqout {
   AjBool Single;
   AjBool Features;
   AjPStr Extension;
-  ajint Count;
   ajint* Accuracy;
   AjPList Savelist;
+  ajint Count;
+  char Padding[4];
 } AjOSeqout;
 
 #define AjPSeqout AjOSeqout*

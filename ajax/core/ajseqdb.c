@@ -78,15 +78,17 @@ static ajuint seqCdMaxNameSize = 0;
 ** @alias SeqSCdDiv
 ** @alias SeqOCdDiv
 **
-** @attr DivCode [ajuint] Division code
 ** @attr FileName [AjPStr] Filename(s)
+** @attr DivCode [ajuint] Division code
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct SeqSCdDiv
 {
-    ajuint DivCode;
     AjPStr FileName;
+    ajuint DivCode;
+    char Padding[4];
 } SeqOCdDiv;
 
 #define SeqPCdDiv SeqOCdDiv*
@@ -194,16 +196,18 @@ typedef struct SeqSCdFile
 ** @alias SeqSCdHit
 ** @alias SeqOCdHit
 **
-** @attr NHits [ajuint] Number of hits in HitList array
 ** @attr HitList [ajuint*] Array of hits, as record numbers in the
 **                         entrynam file
+** @attr NHits [ajuint] Number of hits in HitList array
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct SeqSCdHit
 {
-    ajuint NHits;
     ajuint* HitList;
+    ajuint NHits;
+    char Padding[4];
 } SeqOCdHit;
 
 #define SeqPCdHit SeqOCdHit*
@@ -222,7 +226,7 @@ typedef struct SeqSCdHit
 ** @attr SeqOffset [ajuint] Sequence file offset (if any) (see DivCode)
 ** @attr EntryName [AjPStr] Entry ID - the file is sorted by these
 ** @attr DivCode [short] Division file record
-** @attr SPadding [short] Padding to alignment boundary
+** @attr Padding [char[6]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -232,7 +236,7 @@ typedef struct SeqSCdIdx
     ajuint SeqOffset;
     AjPStr EntryName;
     short DivCode;
-    short SPadding;
+    char Padding[6];
 } SeqOCdIdx;
 
 #define SeqPCdIdx SeqOCdIdx*
@@ -288,11 +292,11 @@ typedef struct SeqSCdTrg
 ** @attr div [ajuint] current division number
 ** @attr maxdiv [ajuint] max division number
 ** @attr type [ajuint] BLAST type
-** @attr idnum [ajuint] current BLAST entry offset
 ** @attr libr [AjPFile] main data reference or BLAST header
 ** @attr libs [AjPFile] sequence or BLAST compressed sequence
 ** @attr libt [AjPFile] blast table
 ** @attr libf [AjPFile] blast FASTA source data
+** @attr idnum [ajuint] current BLAST entry offset
 ** @attr TopHdr [ajuint] BLAST table headers offset
 ** @attr TopCmp [ajuint] BLAST table sequence offset
 ** @attr TopAmb [ajuint] BLAST table ambiguities offset
@@ -302,6 +306,7 @@ typedef struct SeqSCdTrg
 ** @attr Skip [AjBool*] skip file(s) in division.lkp
 ** @attr idxLine [SeqPCdIdx] entryname.idx input line
 ** @attr Samefile [AjBool] true if the same file is passed to ajFileBuffSetFile
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -326,13 +331,13 @@ typedef struct SeqSCdQry
     ajuint maxdiv;
 
     ajuint type;
-    ajuint idnum;
 
     AjPFile libr;
     AjPFile libs;
     AjPFile libt;
     AjPFile libf;
 
+    ajuint idnum;
     ajuint TopHdr;
     ajuint TopCmp;
     ajuint TopAmb;
@@ -343,6 +348,7 @@ typedef struct SeqSCdQry
     AjBool* Skip;
     SeqPCdIdx idxLine;
     AjBool Samefile;
+    char Padding[4];
 } SeqOCdQry;
 
 #define SeqPCdQry SeqOCdQry*
@@ -379,6 +385,7 @@ typedef struct SeqSCdQry
 ** @attr List [AjPList] List of files
 ** @attr Skip [AjBool*] files numbers to exclude
 ** @attr Samefile [AjBool] true if the same file is passed to ajFileBuffSetFile
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -410,6 +417,7 @@ typedef struct SeqSEmbossQry
     AjPList List;
     AjBool *Skip;
     AjBool Samefile;
+    char Padding[4];
 } SeqOEmbossQry;
 
 #define SeqPEmbossQry SeqOEmbossQry*

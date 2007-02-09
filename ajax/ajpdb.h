@@ -131,10 +131,10 @@ typedef struct AjSAtom
 ** @attr  Idx [ajint]	Residue number. Can be used to index into the 
 **    polypeptide sequence (the Seq element of an AjSChain object). Idx numbers
 **    start at 1 and run sequentially.
-** @attr Pdb [AjPStr]	Residue number string from the original PDB file.
-** @attr Id3 [AjPStr]	3-letter residue identifier code.
 ** @attr  eNum    [ajint]  Element serial number (for secondary structure 
 **        from the PDB file).
+** @attr Pdb [AjPStr]	Residue number string from the original PDB file.
+** @attr Id3 [AjPStr]	3-letter residue identifier code.
 ** @attr  eId     [AjPStr] Element identifier (for secondary structure from 
 **        the PDB file).
 ** @attr  eClass  [ajint]  Class of helix, an int from 1-10,  from 
@@ -214,11 +214,12 @@ typedef struct AjSResidue
     ajint    Mod;
     ajint    Chn;
     ajint    Idx;
+    ajint    eNum;  
     AjPStr   Pdb;
     AjPStr   Id3;    
 
-    ajint    eNum;  
     AjPStr   eId;   
+
     ajint    eClass;   
     ajint    eStrideNum; 
     float    Phi;
@@ -280,7 +281,7 @@ typedef struct AjSResidue
 **                               models) of the polypeptide chain. 
 ** @attr  Id          [char]     Chain id, ('.' if one wasn't specified in 
 **                               the PDB file).
-** @attr Padding [char[3]] Padding to alignment boundary
+** @attr Padding [char[7]] Padding to alignment boundary
 **
 **
 ** 
@@ -299,7 +300,7 @@ typedef struct AjSChain
     AjPList  Atoms;    
     AjPList  Residues;    
     char     Id;
-    char     Padding[3];
+    char     Padding[7];
 } AjOChain;
 #define AjPChain AjOChain*
 
@@ -330,13 +331,14 @@ typedef struct AjSChain
 ** @attr  Nmod    [ajint]   No. of models (always 1 for XRAY structures).
 ** @attr  Nchn    [ajint]   No. polypeptide chains.
 ** @attr  Chains  [AjPChain*] Array of pointers to AjSChain structures.
-** @attr  Ngp     [ajint]   No. groups that could not be uniquely 
-**                          associated with a chain in the SEQRES records.
 ** @attr  gpid    [AjPChar] Array of chain (group) id's for groups that 
 **                          could not be uniquely associated with a chain.
 ** @attr  Groups  [AjPList] List of Atom objects for groups that could not 
 **                          be uniquely associated with a chain.
 ** @attr  Water   [AjPList] List of Atom objects for water molecules.
+** @attr  Ngp     [ajint]   No. groups that could not be uniquely 
+**                          associated with a chain in the SEQRES records.
+** @attr  Padding [char[4]] Padding to alignment boundary
 **
 ** 
 ** 
@@ -405,10 +407,11 @@ typedef struct AjSPdb
     ajint      Nmod;      
     ajint      Nchn;      
     AjPChain  *Chains;    
-    ajint      Ngp;       
     AjPChar    gpid;	
     AjPList    Groups;    
     AjPList    Water;     
+    ajint      Ngp;
+    char       Padding[4];
 } AjOPdb;
 #define AjPPdb AjOPdb*
 
@@ -431,11 +434,12 @@ typedef struct AjSPdb
 **
 **
 **
-** @attr  abv [AjPStr]  3-letter abbreviation of heterogen.
-** @attr  syn [AjPStr]  Synonym.
-** @attr  ful [AjPStr]  Full name. 
-** @attr  cnt [ajint]   No. of occurences (files) of this heterogen in a 
-**                      directory.
+** @attr  abv     [AjPStr]  3-letter abbreviation of heterogen.
+** @attr  syn     [AjPStr]  Synonym.
+** @attr  ful     [AjPStr]  Full name. 
+** @attr  cnt     [ajint]   No. of occurences (files) of this heterogen in a 
+**                          directory.
+** @attr  Padding [char[4]] Padding to alignment boundary
 ** 
 ** 
 ** 
@@ -451,6 +455,7 @@ typedef struct AjSHetent
     AjPStr   syn;   
     AjPStr   ful;   
     ajint    cnt;   
+    char     Padding[4];
 } AjOHetent;
 #define AjPHetent AjOHetent*
 
@@ -470,8 +475,10 @@ typedef struct AjSHetent
 ** @alias AjSHet
 ** @alias AjOHet
 **
-** @attr  n        [ajint]      Number of entries.
+
 ** @attr  entries  [AjPHetent*] Array of entries. 
+** @attr  n        [ajint]      Number of entries.
+** @attr  Padding  [char[4]]    Padding to alignment boundary
 **
 **
 ** 
@@ -490,8 +497,10 @@ typedef struct AjSHetent
 
 typedef struct AjSHet
 {
-    ajint         n;   
+
     AjPHetent *entries;
+    ajint     n;   
+    char      Padding[4];
 } AjOHet;
 #define AjPHet AjOHet*
 
@@ -515,9 +524,9 @@ typedef struct AjSHet
 **
 **
 ** @attr  Id3  [AjPStr]   3 character residue identifier.
-** @attr  N    [ajint]    Nummber of atoms in residue. 
 ** @attr  Atm  [AjPStr*]  Array of atom identifiers.
 ** @attr  Rad  [float*]   Array of van der Waals radii.
+** @attr  N    [ajint]    Nummber of atoms in residue. 
 ** @attr  Id1  [char]     Standard residue identifier or 'X' for unknown.
 ** @attr  Padding [char[3]] Padding to alignment boundary
 ** 
@@ -532,9 +541,9 @@ typedef struct AjSHet
 typedef struct AjSVdwres
 {
     AjPStr   Id3;     
-    ajint    N;       
     AjPStr  *Atm;     
     float   *Rad;     
+    ajint    N;
     char     Id1;
     char     Padding[3];
 } AjOVdwres;
@@ -559,8 +568,10 @@ typedef struct AjSVdwres
 **
 **
 **
-** @attr  N    [ajint]      Number of residues.
-** @attr  Res  [AjPVdwres*]  Array of Vdwres structures.
+
+** @attr  Res     [AjPVdwres*] Array of Vdwres structures.
+** @attr  N       [ajint]      Number of residues.
+** @attr  Padding [char[4]]    Padding to alignment boundary
 ** 
 **
 ** 
@@ -574,8 +585,9 @@ typedef struct AjSVdwres
 
 typedef struct AjSVdwall
 {
-    ajint       N;    
     AjPVdwres  *Res;  
+    ajint       N;    
+    char        Padding[4];
 } AjOVdwall;
 #define AjPVdwall AjOVdwall*
 
@@ -599,7 +611,7 @@ typedef struct AjSVdwall
 ** @alias AjOCmap
 **
 **
-** @attr  Type  [ajint]    Type of contact, either ajINTRA, ajINTER or ajLIGAND
+
 ** for intra-chain, inter-chain and chain-ligand contacts respectively.
 ** @attr  Id    [AjPStr]   Protein id code. 
 ** @attr  Domid [AjPStr]   Domain id code. 
@@ -616,10 +628,11 @@ typedef struct AjSVdwall
 ** @attr  en    [ajint]    Entry number. 
 ** @attr  ns    [ajint]    No. of sites (ajLIGAND only)
 ** @attr  sn    [ajint]    Site number (ajLIGAND only)
+** @attr  Type  [ajint]    Type of contact, either ajINTRA, ajINTER or ajLIGAND
 ** @attr  Desc  [AjPStr]   Description of ligand (ajLIGAND only)
 ** @attr  Chid1 [char]     Chain identifier 1 (first chain)
 ** @attr  Chid2 [char]     Chain identifier 2 (second chain if available)
-** @attr  Padding [char[2]] Padding to alignment boundary
+** @attr  Padding [char[6]] Padding to alignment boundary
 ** 
 ** 
 ** @new     ajCmapNew Default Cmap constructor.
@@ -641,10 +654,11 @@ typedef struct AjSVdwall
 
 typedef struct AjSCmap
 {
-    ajint     Type;
+
     AjPStr    Id;     
     AjPStr    Domid;     
     AjPStr    Ligid;     
+
 
     ajint     Chn1;
     ajint     Chn2;
@@ -660,10 +674,11 @@ typedef struct AjSCmap
     ajint     en;
     ajint     ns;
     ajint     sn;
+    ajint     Type;
     AjPStr    Desc;
     char      Chid1;
     char      Chid2;
-    char      Padding[2];
+    char      Padding[6];
 } AjOCmap;
 #define AjPCmap AjOCmap*
 
@@ -686,10 +701,11 @@ typedef struct AjSCmap
 ** 
 ** 
 **
-** @attr  Pdb  [AjPStr]   PDB code
-** @attr  n    [ajint]    No. entries for this pdb code 
-** @attr  Acc  [AjPStr*]  Accession numbers 
-** @attr  Spr  [AjPStr*]  Swissprot codes 
+** @attr  Pdb     [AjPStr]   PDB code
+** @attr  Acc     [AjPStr*]  Accession numbers 
+** @attr  Spr     [AjPStr*]  Swissprot codes 
+** @attr  n       [ajint]    No. entries for this pdb code
+** @attr  Padding [char[4]]  Padding to alignment boundary
 ** 
 ** 
 ** 
@@ -717,9 +733,10 @@ typedef struct AjSCmap
 typedef struct AjSPdbtosp
 {   	
     AjPStr   Pdb;
-    ajint    n;  
     AjPStr  *Acc;
     AjPStr  *Spr;
+    ajint    n;  
+    char Padding[4];
 } AjOPdbtosp;
 #define AjPPdbtosp AjOPdbtosp*
 

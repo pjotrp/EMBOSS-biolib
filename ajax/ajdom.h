@@ -32,7 +32,6 @@ extern "C"
 **
 ** @attr name [AjPStr] name of node
 ** @attr value [AjPStr] value associated with name
-** @attr type [ajuint] type of node
 ** @attr parentnode [struct AjSDomNode*] ancestor
 ** @attr childnodes [struct AjSDomNodeList*] children
 ** @attr firstchild [struct AjSDomNode*] first child in list
@@ -41,8 +40,9 @@ extern "C"
 ** @attr nextsibling [struct AjSDomNode*] next node at this level
 ** @attr attributes [struct AjSDomNodeList*] attributes
 ** @attr ownerdocument [struct AjSDomNode*] document owner
-** @attr subtreeModified [ajuint] internal flag
 ** @attr sub [union] substructure depending on node type
+** @attr type [ajuint] type of node
+** @attr subtreeModified [ajuint] internal flag
 **
 ******************************************************************************/
 
@@ -50,7 +50,7 @@ typedef struct AjSDomNode
 {
     AjPStr name;
     AjPStr value;
-    ajuint type;
+
     struct AjSDomNode     *parentnode;
     struct AjSDomNodeList *childnodes;
     struct AjSDomNode     *firstchild;
@@ -62,7 +62,7 @@ typedef struct AjSDomNode
 
     struct AjSDomNode     *ownerdocument;
 
-    ajuint subtreeModified;
+
 
     union 
     {
@@ -76,6 +76,7 @@ typedef struct AjSDomNode
 	    AjPStr version;
 	    AjPStr encoding;
 	    ajint standalone;
+	    char  Padding[4];
 	} Document;
 
 	struct
@@ -96,15 +97,17 @@ typedef struct AjSDomNode
 	struct
 	{
 	    AjPStr name;
-	    ajint specified;
 	    AjPStr value;
 	    struct AjSDomNode *ownerelement;
+	    ajint specified;
+	    char Padding[4];
 	} Attr;
 
 	struct
 	{
 	    AjPStr data;
 	    ajint length;
+            char Padding[4];
 	} CharacterData;
 
 	struct
@@ -126,6 +129,10 @@ typedef struct AjSDomNode
 	    AjPStr data;
 	} ProcessingInstruction;
     } sub;
+
+    ajuint type;
+    ajuint subtreeModified;
+
 } AjODomNode;
 
 #define AjPDomNode AjODomNode*
@@ -167,9 +174,9 @@ typedef struct AjSDomNodeEntry
 **
 ** @attr ownerdocument [AjPDomNode] document owner
 ** @attr ownerelement [AjPDomNode] element owner
-** @attr length [ajint] length
 ** @attr first [AjPDomNodeEntry] first in list
 ** @attr last [AjPDomNodeEntry] last in list
+** @attr length [ajint] length
 ** @attr filter [ajuint] filter
 ** @attr list [struct AjSDomNodeList*] list
 ** @attr table [AjPTable] fast lookup table
@@ -180,9 +187,9 @@ typedef struct AjSDomNodeList
 {
     AjPDomNode ownerdocument;
     AjPDomNode ownerelement;
-    ajint length;
     AjPDomNodeEntry first;
     AjPDomNodeEntry last;
+    ajint length;
     ajuint filter;
     struct AjSDomNodeList *list;
     AjPTable table;

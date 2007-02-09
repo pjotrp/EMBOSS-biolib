@@ -24,7 +24,6 @@ extern "C"
 ** @attr Name [AjPStr] As "Source" for features, usually empty
 ** @attr Type [AjPStr] "P" Protein or "N" Nucleotide
 ** @attr Formatstr [AjPStr] Report format (-rformat)
-** @attr Format [AjEnum] Report format (index number)
 ** @attr Fttable [AjPFeattable] Feature table to use (obsolete?)
 ** @attr Ftquery [AjPFeattabOut] Output definition for features
 ** @attr Extension [AjPStr] Output file extension
@@ -49,6 +48,7 @@ extern "C"
 ** @attr CountHit [ajint] Number of features reported so far
 ** @attr MaxHitAll [ajint] Maximum number of hits to report overall
 ** @attr MaxHitSeq [ajint] Maximum number of hits to report for each sequence
+** @attr Format [AjEnum] Report format (index number)
 **
 ** @new ajReportNew Default constructor
 ** @delete ajReportDel Default destructor
@@ -60,7 +60,6 @@ typedef struct AjSReport {
   AjPStr Name;
   AjPStr Type;
   AjPStr Formatstr;
-  AjEnum Format;
   AjPFeattable Fttable;
   AjPFeattabOut Ftquery;
   AjPStr Extension;
@@ -85,6 +84,7 @@ typedef struct AjSReport {
   ajint CountHit;
   ajint MaxHitAll;
   ajint MaxHitSeq;
+  AjEnum Format;
 } AjOReport;
 
 #define AjPReport AjOReport*

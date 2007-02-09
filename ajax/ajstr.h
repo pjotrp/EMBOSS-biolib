@@ -40,19 +40,21 @@ extern "C"
 **
 ** @attr Res [ajuint] Reserved bytes (usable for expanding in place)
 ** @attr Len [ajuint] Length of current string, excluding NULL at end
+** @attr Ptr [char*] The string, as a NULL-terminated C string.
 ** @attr Use [ajuint] Use count: 1 for single reference, more if several
 **                   pointers share the same string.
 **                   Must drop to 0 before deleting. Modifying means making
 **                   a new string if not 1.
-** @attr Ptr [char*] The string, as a NULL-terminated C string.
+** @attr Padding [ajint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct AjSStr {
   ajuint Res;
   ajuint Len;
-  ajuint Use;
   char *Ptr;
+  ajuint Use;
+  ajint Padding;
 } AjOStr;
 #define AjPStr AjOStr*
 typedef AjPStr* AjPPStr;
@@ -104,6 +106,7 @@ typedef struct AjSStrIter {
 ** @attr String [AjPStr] String
 ** @attr Delim [AjPStr] Delimiter set for ajStrToken
 ** @attr Pos [ajuint] Position in string
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajStrTokenInit Generates a string token parser object
 ** @delete ajStrTokenClear Destroys a string token parser
@@ -114,6 +117,7 @@ typedef struct AjSStrTok {
   AjPStr String;
   AjPStr Delim;
   ajuint Pos;
+  char Padding[4];
 } AjOStrTok;
 
 #define AjPStrTok AjOStrTok*

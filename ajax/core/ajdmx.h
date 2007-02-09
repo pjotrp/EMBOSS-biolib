@@ -52,13 +52,13 @@ extern "C"
 ** @alias AjSScophit
 ** @alias AjOScophit
 **
-** @attr Type    [ajuint]   Type, either ajSCOP (1) or ajCATH (2).
 ** @attr Class [AjPStr] Class name
 ** @attr  Architecture  [AjPStr]    CATH classification.
 ** @attr  Topology     [AjPStr]    CATH classification.
 ** @attr Fold [AjPStr] Fold name
 ** @attr Superfamily [AjPStr] Superfamily name
 ** @attr Family [AjPStr] Family name
+** @attr Type    [ajuint]   Type, either ajSCOP (1) or ajCATH (2).
 ** @attr Sunid_Family [ajuint] Domain identifier of node (e.g. family or 
 ** superfamily) represented.
 ** @attr Seq [AjPStr] Sequence as string
@@ -82,6 +82,7 @@ extern "C"
 **	 from a list of Scophit objects
 ** @attr Target2 [AjBool] Also used for garbage collection
 ** @attr Priority [AjBool] True if the Scop hit is high priority
+** @attr Padding [char[4]] Padding to alignment boundary
 ** 
 ** 
 ** 
@@ -134,13 +135,14 @@ extern "C"
 
 typedef struct AjSScophit
 {
-    ajuint     Type;
+
     AjPStr    Class;
     AjPStr    Architecture;
     AjPStr    Topology;
     AjPStr    Fold;
     AjPStr    Superfamily;
     AjPStr    Family;
+    ajuint     Type;
     ajuint     Sunid_Family;
     AjPStr    Seq;
     ajuint     Start;
@@ -160,6 +162,7 @@ typedef struct AjSScophit
     AjBool    Target;
     AjBool    Target2;
     AjBool    Priority;
+    char      Padding[4];
 } AjOScophit, *AjXScophit ;
 #define AjPScophit AjOScophit*
 #define AjPPScophit AjXScophit*
@@ -183,7 +186,6 @@ typedef struct AjSScophit
 ** @alias AjSScopalg
 ** @alias AjOScopalg
 **
-** @attr Type    [ajuint]   Type of domains, either ajSCOP (1) or ajCATH (2).
 ** @attr Class [AjPStr] Class name
 ** @attr  Architecture [AjPStr]    CATH classification.
 ** @attr  Topology     [AjPStr]    CATH classification.
@@ -192,6 +194,7 @@ typedef struct AjSScophit
 ** @attr Family [AjPStr] Family name (SCOP only)
 ** @attr Sunid_Family [ajuint] SCOP sunid for family
 ** @attr width [ajuint] Width (residues) of widest part of alignment
+** @attr Type    [ajuint]   Type of domains, either ajSCOP (1) or ajCATH (2).
 ** @attr N [ajuint] No. of sequences in alignment
 ** @attr Codes [AjPStr*] Array of domain id codes of sequences
 ** @attr Seqs [AjPStr*] Array of sequences
@@ -222,20 +225,21 @@ typedef struct AjSScophit
 ****************************************************************************/
 typedef struct AjSScopalg
 {
-    ajuint   Type;
-    AjPStr   Class;
+
+    AjPStr  Class;
     AjPStr  Architecture;   
     AjPStr  Topology;      
-    AjPStr   Fold;
-    AjPStr   Superfamily;
-    AjPStr   Family;
-    ajuint    Sunid_Family;
-    ajuint    width;
-    ajuint    N;
+    AjPStr  Fold;
+    AjPStr  Superfamily;
+    AjPStr  Family;
+    ajuint  Sunid_Family;
+    ajuint  width;
+    ajuint  Type;
+    ajuint  N;
     AjPStr  *Codes;
     AjPStr  *Seqs;
-    AjPStr   Post_similar;
-    AjPStr   Positions;
+    AjPStr  Post_similar;
+    AjPStr  Positions;
 }AjOScopalg;
 #define AjPScopalg AjOScopalg*
 

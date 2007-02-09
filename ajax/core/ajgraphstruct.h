@@ -38,8 +38,8 @@ typedef struct AjSGraphPlpObj {
 ** Graph data object. Substructure of AjPGraphPlp.
 **
 ** @attr x [float*] x coordinates
-** @attr xcalc [AjBool] if x calculated then delete after
 ** @attr y [float*] y coordinates
+** @attr xcalc [AjBool] if x calculated then delete after
 ** @attr ycalc [AjBool] as with x. So we do not delete data if it was
 **                      passed as a ptr
 ** @attr numofpoints [ajint] Number of points in x and y
@@ -65,8 +65,8 @@ typedef struct AjSGraphPlpObj {
 
 typedef struct AjSGraphPlpData {
   float *x;
-  AjBool xcalc;
   float *y;
+  AjBool xcalc;
   AjBool ycalc;
   ajint numofpoints;
   ajint numofobjects;
@@ -152,16 +152,19 @@ typedef struct AjSGraphPlp {
 **
 ** Graph object.
 **
-** @attr numsets [ajint] Number of sets in a multiple graph
 ** @attr plplot [AjPGraphPlp] PlPlot graph object
 ** @attr xml [AjPGraphXml] XML graph object
+** @attr numsets [ajint] Number of sets in a multiple graph
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct AjSGraph {
-    ajint numsets;
+
     AjPGraphPlp plplot;
     AjPGraphXml xml;
+    ajint numsets;
+    char Padding[4];
 } AjOGraph;
 #define AjPGraph AjOGraph*
 

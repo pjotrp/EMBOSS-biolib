@@ -34,8 +34,9 @@ enum AjETreeType {ajETreeAny, ajETreeStr};
 ** @attr Left  [struct AjSTree*] Previous tree node
 ** @attr Up    [struct AjSTree*] Parent tree node
 ** @attr Down  [struct AjSTree*] First child tree node
-** @attr Type [AjEnum] Tree type (any, string, etc.)
 ** @attr Data [void*] Data value
+** @attr Type [AjEnum] Tree type (any, string, etc.)
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -44,8 +45,9 @@ typedef struct AjSTree {
   struct AjSTree* Left;
   struct AjSTree* Up;
   struct AjSTree* Down;
-  AjEnum Type;
   void* Data;
+  AjEnum Type;
+  char Padding[4];
 } AjOTree;
 
 #define AjPTree AjOTree*

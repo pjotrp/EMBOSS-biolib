@@ -454,24 +454,27 @@ static void        featGffProcessTagval(AjPFeature gf,
 ** @alias FeatOOutFormat
 **
 ** @attr Name [const char*] Format name
-** @attr Alias [AjBool] True if name is an alias for an identical definition
+
 ** @attr Dna [AjBool] True if suitable for nucleotide data
 ** @attr Prot [AjBool] True if suitable for protein data
 ** @attr VocInit [(AjBool*)] Function to initialise vocabulary
 ** @attr Write [(AjBool*)] Function to write data
 ** @attr Desc [const char*] Description
+** @attr Alias [AjBool] True if name is an alias for an identical definition
+** @attr Padding [ajint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct FeatSOutFormat
 {
     const char* Name;
-    AjBool Alias;
     AjBool Dna;
     AjBool Prot;
     AjBool (*VocInit) (void);
     AjBool (*Write) (const AjPFeattable thys, AjPFile file);
     const char* Desc;
+    AjBool Alias;
+    ajint Padding;
 } FeatOOutFormat;
 #define FeatPOutFormat FeatOOutFormat*
 
@@ -493,40 +496,40 @@ static FeatOOutFormat featOutFormatDef[] =
     /* Name       Alias    Nucleotide Prot
          VocInit             WriteFunction
 	 Description*/
-    {"unknown",   AJFALSE, AJFALSE,   AJFALSE,
+    {"unknown", AJFALSE,   AJFALSE,
 	 NULL,               feattableWriteUnknown,
-	 "unknown format"},
-    {"embl",      AJFALSE, AJTRUE,    AJFALSE,
+	 "unknown format", AJFALSE, 0},
+    {"embl",      AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteEmbl,
-	 "embl format"},
-    {"genbank",   AJFALSE, AJTRUE,    AJFALSE,
+	 "embl format", AJFALSE, 0},
+    {"genbank",   AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteGenbank,
-	 "genbank format"},
-    {"gb",        AJTRUE,  AJTRUE,    AJFALSE,
+	 "genbank format", AJFALSE, 0},
+    {"gb",        AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteGenbank,
-	 "genbank format"},
-    {"ddbj",      AJFALSE, AJTRUE,    AJFALSE,
+	 "genbank format", AJTRUE, 0},
+    {"ddbj",      AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteDdbj,
-	 "ddbj format"},
-    {"refseq",    AJTRUE,  AJTRUE,    AJFALSE,
+	 "ddbj format", AJFALSE, 0},
+    {"refseq",    AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteGenbank,
-	 "genbank format"},
-    {"gff",       AJFALSE, AJTRUE,    AJTRUE,
+	 "genbank format", AJTRUE, 0},
+    {"gff",       AJTRUE,    AJTRUE,
 	 featVocabInitGff,   ajFeattableWriteGff,
-	 "GFF version 2"},
-    {"pir",       AJFALSE, AJFALSE,   AJTRUE,
+	 "GFF version 2", AJFALSE, 0},
+    {"pir",       AJFALSE,   AJTRUE,
 	 featVocabInitPir,   ajFeattableWritePir,
-	 "PIR format"},
-    {"swiss",     AJFALSE, AJFALSE,   AJTRUE,
+	 "PIR format", AJFALSE, 0},
+    {"swiss",     AJFALSE,   AJTRUE,
 	 featVocabInitSwiss, ajFeattableWriteSwiss,
-	 "SwissProt format"},
-    {"sw",        AJTRUE,  AJFALSE,   AJTRUE,
+	 "SwissProt format", AJFALSE, 0},
+    {"sw",        AJFALSE,   AJTRUE,
 	 featVocabInitSwiss, ajFeattableWriteSwiss,
-	 "SwissProt format"},
-    {"swissprot", AJTRUE,  AJFALSE,   AJTRUE,
+	 "SwissProt format", AJTRUE, 0},
+    {"swissprot", AJFALSE,   AJTRUE,
 	 featVocabInitSwiss, ajFeattableWriteSwiss,
-	 "SwissProt format"},
-    {NULL, AJFALSE, AJFALSE, AJFALSE, NULL, NULL, NULL}
+	 "SwissProt format", AJFALSE, 0},
+    {NULL, AJFALSE, AJFALSE, NULL, NULL, NULL, AJFALSE, 0}
 };
 
 static FeatPOutFormat featOutFormat = featOutFormatDef;

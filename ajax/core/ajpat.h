@@ -19,15 +19,17 @@ extern "C"
 **
 ** AJAX data structure for nodes in Baeza-Yates & Perleberg algorithm
 **
-** @attr offset [ajint] Offset
 ** @attr next [struct AjSPatBYPNode*] Pointer to next node
+** @attr offset [ajint] Offset
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct AjSPatBYPNode
 {
-    ajint offset;
     struct AjSPatBYPNode *next;
+    ajint offset;
+    char  Padding[4];
 } AjOPatBYPNode;
 #define AjPPatBYPNode AjOPatBYPNode*
 
@@ -122,6 +124,7 @@ typedef struct AjSPatternSeq {
 ** @attr Pattern [AjPStr] Pattern in string format.
 ** @attr Compiled [AjPRegexp] Compiled version of the pattern.
 ** @attr Type [ajint] Type.
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajPatternRegexNew Default constructor
 ** @delete ajPatternRegexDel Default destructor
@@ -137,6 +140,7 @@ typedef struct AjSPatternRegex {
   AjPStr    Pattern;
   AjPRegexp Compiled;
   ajint     Type;
+  char      Padding[4];
 } AjOPatternRegex;
 
 #define AjPPatternRegex AjOPatternRegex*
@@ -160,6 +164,7 @@ typedef struct AjSPatternRegex {
 ** @attr Patlist [AjPList] List for patterns.
 ** @attr Iter [AjIList] List iterator.
 ** @attr Protein [AjBool] True if protein
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajPatlistNew Default constructor.
 ** @delete ajPatlistDel Default destructor.
@@ -176,6 +181,7 @@ typedef struct AjSPatlistSeq {
   AjPList Patlist;
   AjIList Iter;
   AjBool Protein;
+  char   Padding[4];
 } AjOPatlistSeq;
 
 #define AjPPatlistSeq AjOPatlistSeq*
@@ -192,6 +198,7 @@ typedef struct AjSPatlistSeq {
 ** @attr Patlist [AjPList] List for patterns.
 ** @attr Iter [AjIList] List iterator.
 ** @attr Type [ajuint] Type of expression
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajPatlistNew Default constructor.
 ** @delete ajPatlistDel Default destructor.
@@ -208,6 +215,7 @@ typedef struct AjSPatlistRegex {
   AjPList Patlist;
   AjIList Iter;
   ajuint Type;
+  char Padding[4];
 } AjOPatlistRegex;
 
 #define AjPPatlistRegex AjOPatlistRegex*

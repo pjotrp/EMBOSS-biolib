@@ -44,9 +44,6 @@
 ** @alias AlignSData
 ** @alias AlignOData
 **
-** @attr Nseqs [ajint] Number of sequences, size of each array. This is
-**                     duplicated in the AjPAlign object but is useful
-**                     here for constructor and destructor efficiency.
 ** @attr Start [ajint*] Start position for each sequence
 ** @attr End [ajint*] End position for each sequence
 ** @attr Len [ajint*] Original length for each sequence
@@ -72,12 +69,15 @@
 ** @attr NumGap [ajint] Number of gap positions, usually calculated
 ** @attr Score [AjPStr] Score to be reported - stored as a string for output
 **                      set by functions using ajint or float input
+** @attr Nseqs [ajint] Number of sequences, size of each array. This is
+**                     duplicated in the AjPAlign object but is useful
+**                     here for constructor and destructor efficiency.
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct AlignSData
 {
-    ajint  Nseqs;
     ajint* Start;
     ajint* End;
     ajint* Len;
@@ -92,6 +92,8 @@ typedef struct AlignSData
     ajint NumSim;
     ajint NumGap;
     AjPStr Score;
+    ajint  Nseqs;
+    char Padding[4];
 } AlignOData;
 
 #define AlignPData AlignOData*
@@ -110,12 +112,13 @@ typedef struct AlignSData
 **
 ** @attr Name [const char*] format name
 ** @attr Desc [const char*] Format description
+** @attr Write [(void*)] Function to write alignment
 ** @attr Alias [AjBool] Name is an alias for an identical definition
 ** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
 ** @attr Prot [AjBool] ajTrue if format can work with protein sequences
 ** @attr Minseq [ajint] Minimum number of sequences, 2 for pairwise
 ** @attr Maxseq [ajint] Maximum number of sequences, 2 for pairwise
-** @attr Write [(void*)] Function to write alignment
+** @attr Padding [ajint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -123,12 +126,13 @@ typedef struct AlignSFormat
 {
     const char *Name;
     const char *Desc;
+    void (*Write) (AjPAlign thys);
     AjBool Alias;
     AjBool Nuc;
     AjBool Prot;
     ajint Minseq;
     ajint Maxseq;
-    void (*Write) (AjPAlign thys);
+    ajint  Padding;
 } AlignOFormat;
 
 #define AlignPFormat AlignOFormat*
@@ -191,45 +195,45 @@ static AlignOFormat alignFormat[] = {
   /* name       description */
   /*   Alias    dna      protein min max function */
   /* standard sequence formats */
-  {"unknown",   "Unknown format",
-       AJFALSE, AJFALSE, AJFALSE, 0, 0, alignWriteSimple},
-  {"fasta",     "Fasta format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, alignWriteFasta},
-  {"a2m",     "A2M (fasta) format sequence",
-       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteFasta}, /* same as fasta */
-  {"msf",       "MSF format sequence",
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, alignWriteMsf},
+  {"unknown",   "Unknown format", alignWriteSimple,
+       AJFALSE, AJFALSE, AJFALSE, 0, 0, 0},
+  {"fasta",     "Fasta format sequence", alignWriteFasta,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"a2m",     "A2M (fasta) format sequence", alignWriteFasta,
+      AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0}, /* same as fasta */
+  {"msf",       "MSF format sequence", alignWriteMsf,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
   /* trace  for debug */
-  {"trace",     "Debugging trace of full internal data content",
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, alignWriteTrace},
+  {"trace", "Debugging trace of full internal data content", alignWriteTrace,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
   /* alignment formats */
-  {"markx0",    "Pearson MARKX0 format",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX0},
-  {"markx1",    "Pearson MARKX1 format",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX1},
-  {"markx2",    "Pearson MARKX2 format",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX2},
-  {"markx3",    "Pearson MARKX3 format",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX3},
-  {"markx10",   "Pearson MARKX10 format",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteMarkX10},
-  {"match",     "Start and end of matches between pairs of sequences",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteMatch},
-  {"multiple",  "Simple multiple alignment",
-       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, alignWriteSimple},
-  {"pair",      "Simple pairwise alignment",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteSimple},
-  {"simple",    "Simple multiple alignment",
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, alignWriteSimple},
-  {"score",     "Score values for pairs of sequences",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteScore},
-  {"srs",       "Simple multiple sequence format for SRS",
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, alignWriteSrs},
-  {"srspair",   "Simple pairwise sequence format for SRS",
-       AJFALSE, AJTRUE,  AJTRUE,  2, 2, alignWriteSrsPair},
-  {"tcoffee",   "TCOFFEE program format",
-       AJFALSE, AJTRUE,  AJTRUE,  0, 0, alignWriteTCoffee},
-  {NULL, NULL, AJFALSE, AJFALSE, AJFALSE, 0, 0, NULL}
+  {"markx0",    "Pearson MARKX0 format", alignWriteMarkX0,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"markx1",    "Pearson MARKX1 format", alignWriteMarkX1,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"markx2",    "Pearson MARKX2 format", alignWriteMarkX2,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"markx3",    "Pearson MARKX3 format", alignWriteMarkX3,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"markx10",   "Pearson MARKX10 format", alignWriteMarkX10,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"match","Start and end of matches between pairs of sequences",alignWriteMatch,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"multiple",  "Simple multiple alignment", alignWriteSimple,
+       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0},
+  {"pair",      "Simple pairwise alignment", alignWriteSimple,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"simple",    "Simple multiple alignment", alignWriteSimple,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"score",     "Score values for pairs of sequences", alignWriteScore,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"srs",       "Simple multiple sequence format for SRS", alignWriteSrs,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"srspair",   "Simple pairwise sequence format for SRS", alignWriteSrsPair,
+       AJFALSE, AJTRUE,  AJTRUE,  2, 2, 0},
+  {"tcoffee",   "TCOFFEE program format", alignWriteTCoffee,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {NULL, NULL, NULL, AJFALSE, AJFALSE, AJFALSE, 0, 0, 0}
 };
 
 

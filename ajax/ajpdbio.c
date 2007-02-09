@@ -55,7 +55,6 @@
 **
 **
 **
-** @attr elementNum [ajint]    Serial number of the element (columns 8 - 10) 
 ** @attr elementId [AjPStr]    Element identifier (columns 12 - 14) 
 **                             SHEET ('E') or TURN ('T') 
 ** @attr initResName [AjPStr]  Name of first residue in each element (columns 
@@ -73,11 +72,12 @@
 **                             or 32 - 36 (TURN)  )
 ** @attr helixClass [ajint]    Classes of helices (columns 39 - 40),
 **                             an int from 1-10 from
+** @attr elementNum [ajint]    Serial number of the element (columns 8 - 10)
 ** @attr elementType [char]    Element type COIL ('C'), HELIX ('H'),
 ** @attr chainId [char]        Chain identifiers for chains containing the
 **                             elements (column 20 (HELIX & TURN)
 **                             or 22 (SHEET) )
-** @attr Padding [char[2]]     Padding to alignment boundary
+** @attr Padding [char[6]]     Padding to alignment boundary
 **
 ** http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html<br>
 ** 
@@ -98,7 +98,6 @@
 ****************************************************************************/
 typedef struct AjSElement
 {
-    ajint    elementNum; 
     AjPStr   elementId;  
     AjPStr   initResName;     
 				
@@ -106,9 +105,11 @@ typedef struct AjSElement
     AjPStr   endResName;    
     AjPStr   endSeqNum;     
     ajint    helixClass;    
+    ajint    elementNum; 
+
     char     elementType; 
     char     chainId;
-    char     Padding[2];
+    char     Padding[6];
 }AjOElement, *AjPElement;
 
 
@@ -138,8 +139,9 @@ typedef struct AjSElement
 ****************************************************************************/
 typedef struct AjSElements
 {
-    ajint      n;            
     AjPElement *elms;        
+    ajint      n;            
+    char       Padding[4];
 }
 AjOElements, *AjPElements;
 
@@ -173,9 +175,6 @@ AjOElements, *AjPElements;
 ** @attr source [AjPStr]      Text from SOURCE records 
 ** @attr reso [float]         Resolution of structure 
 ** @attr method [ajint]       Structural method,  either ajXRAY or ajNMR 
-** @attr ngroups [ajint]      Number of groups (non-protein groups that
-**                            could not be associated with a chain in the
-**                            SEQRES section 
 ** @attr gpid [AjPChar]       Array of chain (group) id's for groups that
 **                            cannot be associated with a chain in the SEQRES
 **                            section 
@@ -205,8 +204,6 @@ AjOElements, *AjPElements;
 ** @attr chid [AjPChar]       Array of chain id's for chains from SEQRES
 **                            records
 ** 
-** @attr nlines [ajint]       Number of lines in the pdb file and size of the
-**                            following arrays
 ** @attr lines [AjPStr*]      Array of lines in the pdb file 
 ** @attr linetype [ajint*]    Array of int's describing the lines, have values
 **	                      of PDBPARSE_IGNORE (do not consider this line
@@ -273,6 +270,11 @@ AjOElements, *AjPElements;
 **	 http://www.rcsb.org/pdb/docs/format/pdbguide2.2/guide2.2_frame.html 
 **                             (see below). Has a value of 0 (printed out as 
 **                             '.') for non-helical elements.
+** @attr nlines [ajint]       Number of lines in the pdb file and size of the
+**                            following arrays
+** @attr ngroups [ajint]      Number of groups (non-protein groups that
+**                            could not be associated with a chain in the
+**                            SEQRES section 
 ** @@
 ******************************************************************************/
 
@@ -287,7 +289,7 @@ typedef struct AjSPdbfile
     AjPStr    source;	   
     float     reso;	   
     ajint     method;      
-    ajint     ngroups;   
+
     AjPChar   gpid;	       
     ajint     idxfirst;   
 
@@ -306,7 +308,6 @@ typedef struct AjSPdbfile
     AjPChar    chid;	  
 
 
-    ajint      nlines;   
     AjPStr    *lines;    
     ajint     *linetype; 
     ajint     *chnn;
@@ -328,6 +329,8 @@ typedef struct AjSPdbfile
     AjPStr   *elementId;   
     char     *elementType; 
     ajint    *helixClass;  
+    ajint    nlines;
+    ajint    ngroups;   
 }AjOPdbfile, *AjPPdbfile;
 
 

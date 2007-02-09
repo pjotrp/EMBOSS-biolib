@@ -44,7 +44,6 @@ typedef struct SeqSAccess SeqSAccess;
 ** @attr Gi [AjPStr] GenInfo Identifier Wildcard
 ** @attr CaseId [AjBool] True if ID match is case-sensitive
 ** @attr HasAcc [AjBool] True if entries have acc field
-** @attr Wild [AjBool] True if query contains '*' or '?'
 ** @attr Method [AjPStr] Name of access method
 ** @attr Formatstr [AjPStr] Name of input sequence format
 ** @attr IndexDir [AjPStr] Index directory
@@ -57,11 +56,13 @@ typedef struct SeqSAccess SeqSAccess;
 ** @attr Field [AjPStr] Query field
 ** @attr QryString [AjPStr] Query term
 ** @attr Application [AjPStr] External application command
-** @attr Type [enum AjEQryType] Enumerated query type
 ** @attr Fpos [ajlong] File position from fseek
+** @attr Type [enum AjEQryType] Enumerated query type
 ** @attr QryDone [AjBool] Has the query been done yet
 ** @attr Access [SeqSAccess*] Access function : see ajseqread.h
 ** @attr QryData [void*] Private data for access function
+** @attr Wild [AjBool] True if query contains '*' or '?'
+** @attr Padding [char [4]] Padding to alignment boundary
 **
 ** @new ajSeqQueryNew Default constructor
 ** @delete ajSeqQueryDel Default destructor
@@ -87,7 +88,6 @@ typedef struct AjSSeqQuery {
   AjPStr Gi;
   AjBool CaseId;
   AjBool HasAcc;
-  AjBool Wild;
   AjPStr Method;
   AjPStr Formatstr;
   AjPStr IndexDir;
@@ -100,11 +100,13 @@ typedef struct AjSSeqQuery {
   AjPStr Field;
   AjPStr QryString;
   AjPStr Application;
-  enum AjEQryType Type;
   ajlong Fpos;
+  enum AjEQryType Type;
   AjBool QryDone;
   SeqSAccess* Access;
   void* QryData;
+  AjBool Wild;
+  char Padding[4];
 } AjOSeqQuery;
 
 #define AjPSeqQuery AjOSeqQuery*
@@ -144,14 +146,12 @@ typedef struct AjSSeqQuery {
 ** @attr Inseq [AjPStr] Temporary input sequence holder
 ** @attr Begin [ajint] Start position
 ** @attr End [ajint] End position
-** @attr Rev [AjBool] Reverse/complement if true
 ** @attr List [AjPList] List of USAs to be read
 ** @attr Usa [AjPStr] USA for the sequence
 ** @attr Ufo [AjPStr] UFO for features (if any)
 ** @attr Fttable [AjPFeattable] Input feature table (why in AjPSeqin?)
 ** @attr Ftquery [AjPFeattabIn] Feature table input spec
 ** @attr Formatstr [AjPStr] Sequence input format name
-** @attr Format [AjEnum] Sequence input format enum
 ** @attr Filename [AjPStr] Original filename
 ** @attr Entryname [AjPStr] Entry name
 ** @attr Filebuff [AjPFileBuff] Input sequence buffered file
@@ -171,9 +171,12 @@ typedef struct AjSSeqQuery {
 **                     sequence and we need to reuse it in a Next loop
 ** @attr Filecount [ajint] Number of files read - used by seqsetall input
 ** @attr Fileseqs [ajint] Number of seqs in file - used by seqsetall input
+** @attr Rev [AjBool] Reverse/complement if true
 ** @attr Fpos [ajlong] File position (fseek) for building USA
 ** @attr Query [AjPSeqQuery] Query data - see AjPSeqQuery
 ** @attr Data [void*] Format data for reuse, e.g. multiple sequence input
+** @attr Format [AjEnum] Sequence input format enum
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -190,14 +193,12 @@ typedef struct AjSSeqin {
   AjPStr Inseq;
   ajint Begin;
   ajint End;
-  AjBool Rev;
   AjPList List;
   AjPStr Usa;
   AjPStr Ufo;
   AjPFeattable Fttable;
   AjPFeattabIn Ftquery;
   AjPStr Formatstr;
-  AjEnum Format;
   AjPStr Filename;
   AjPStr Entryname;
   AjPFileBuff Filebuff;
@@ -216,9 +217,12 @@ typedef struct AjSSeqin {
   ajint Count;
   ajint Filecount;
   ajint Fileseqs;
+  AjBool Rev;
   ajlong Fpos;
   AjPSeqQuery Query;
   void *Data;
+  AjEnum Format;
+  char Padding[4];
 } AjOSeqin;
 
 #define AjPSeqin AjOSeqin*
@@ -245,7 +249,6 @@ typedef struct AjSSeqin {
 ** @attr Gi [AjPStr] GI NCBI version number
 ** @attr Tax [AjPStr] Main taxonomy (species)
 ** @attr Type [AjPStr] Type N or P
-** @attr EType [AjEnum] unused, obsolete
 ** @attr Db [AjPStr] Database name from input
 ** @attr Setdb [AjPStr] Database name from command line
 ** @attr Full [AjPStr] Full name
@@ -264,7 +267,6 @@ typedef struct AjSSeqin {
 ** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
 ** @attr Formatstr [AjPStr] Input format name
-** @attr Format [AjEnum] Input format enum
 ** @attr Filename [AjPStr] Original filename
 ** @attr Entryname [AjPStr] Entryname (ID)
 ** @attr TextPtr [AjPStr] Full text
@@ -274,6 +276,8 @@ typedef struct AjSSeqin {
 ** @attr Seq [AjPStr] The sequence
 ** @attr Fttable [AjPFeattable] Feature table
 ** @attr Accuracy [ajuint*] Accuracy values (one per base) from base calling
+** @attr Format [AjEnum] Input format enum
+** @attr EType [AjEnum] unused, obsolete
 **
 ** @new ajSeqNew Default constructor
 ** @new ajSeqNewL Constructor with expected maximum size.
@@ -325,7 +329,6 @@ typedef struct AjSSeq {
   AjPStr Gi;
   AjPStr Tax;
   AjPStr Type;
-  AjEnum EType;
   AjPStr Db;
   AjPStr Setdb;
   AjPStr Full;
@@ -344,7 +347,6 @@ typedef struct AjSSeq {
   AjPStr Usa;
   AjPStr Ufo;
   AjPStr Formatstr;
-  AjEnum Format;
   AjPStr Filename;
   AjPStr Entryname;
   AjPStr TextPtr;
@@ -354,6 +356,8 @@ typedef struct AjSSeq {
   AjPStr Seq;
   AjPFeattable Fttable;
   ajuint* Accuracy;
+  AjEnum Format;
+  AjEnum EType;
 } AjOSeq;
 
 #define AjPSeq AjOSeq*
@@ -387,11 +391,10 @@ typedef struct AjSSeq {
 ** @attr Offend [ajuint] offset from end 
 ** @attr Rev [AjBool] true: reverse-complemented
 ** @attr Trimmed [AjBool] true: has been trimmed
-** @attr Totweight [float] total weight (usually 1.0 * Size)
 ** @attr Type [AjPStr] Type N or P
+** @attr Totweight [float] total weight (usually 1.0 * Size)
 ** @attr EType [AjEnum] enum type obsolete
 ** @attr Formatstr [AjPStr] Input format name
-** @attr Format [AjEnum] Input format enum
 ** @attr Filename [AjPStr] Original filename
 ** @attr Full [AjPStr] Full name
 ** @attr Name [AjPStr] Name
@@ -399,6 +402,8 @@ typedef struct AjSSeq {
 ** @attr Ufo [AjPStr] UFO for re-reading
 ** @attr Seq [AjPSeq*] Sequence array (see Size)
 ** @attr Seqweight [float*] Sequence weights (see also AjPSeq)
+** @attr Format [AjEnum] Input format enum
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajSeqsetNew Default constructor
 ** @delete ajSeqsetDel Default destructor
@@ -426,11 +431,10 @@ typedef struct AjSSeqset {
   ajuint Offend;
   AjBool Rev;
   AjBool Trimmed;
-  float Totweight;
   AjPStr Type;
+  float Totweight;
   AjEnum EType;
   AjPStr Formatstr;
-  AjEnum Format;
   AjPStr Filename;
   AjPStr Full;
   AjPStr Name;
@@ -438,6 +442,8 @@ typedef struct AjSSeqset {
   AjPStr Ufo;
   AjPSeq* Seq;
   float* Seqweight;
+  AjEnum Format;
+  char Padding[4];
 } AjOSeqset;
 
 #define AjPSeqset AjOSeqset*
@@ -469,6 +475,7 @@ typedef struct AjSSeqset {
 ** @attr Rev [AjBool] if true: reverse-complement
 ** @attr Returned [AjBool] if true: Seq object has been returned to a new owner
 **                         and is not to be deleted by the destructor
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -480,6 +487,7 @@ typedef struct AjSSeqall {
   ajint End;
   AjBool Rev;
   AjBool Returned;
+  char Padding[4];
 } AjOSeqall;
 
 #define AjPSeqall AjOSeqall*

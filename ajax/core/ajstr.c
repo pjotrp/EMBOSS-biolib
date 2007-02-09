@@ -71,7 +71,7 @@ static void* memmove(void *dst, const void* src, size_t len)
 #define NULL_USE 1
 char charNULL[1] = "";
 
-AjOStr strONULL = { 1, 0, NULL_USE, charNULL}; /* use set to avoid changes */
+AjOStr strONULL = { 1,0,charNULL,NULL_USE,0}; /* use set to avoid changes */
 AjPStr strPNULL = &strONULL;
 
 
@@ -9771,7 +9771,7 @@ AjBool ajStrExtractWord(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
 
 const AjPStr ajStrParseC(const AjPStr str, const char* txtdelim)
 {
-    static AjOStr strParseStr = { 1, 0, 0, NULL};
+    static AjOStr strParseStr = { 1, 0, NULL, 0, 0};
     static AjPStr strp = &strParseStr;
 
     if(!strp->Ptr)

@@ -23,10 +23,11 @@ extern "C"
 **
 ** @attr Size [ajint] Size - number of rows and number of columns
 ** @attr HasReplicates [AjBool] Has (some) replicates data in file
-** @attr HasMissing [AjBool] Has missing data in file
 ** @attr Names [AjPStr*] Row names, NULL at end
 ** @attr Data [float*] Distance matrix Size*Size with diagnoal 0.0
 ** @attr Replicates [ajint*] Replicate count default=1 missing=0
+** @attr HasMissing [AjBool] Has missing data in file
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -34,10 +35,11 @@ typedef struct AjSPhyloDist
 {
     ajint Size;
     AjBool HasReplicates;
-    AjBool HasMissing;
     AjPStr* Names;
     float* Data;
     ajint* Replicates;
+    AjBool HasMissing;
+    char Padding[4];
 } AjOPhyloDist;
 
 #define AjPPhyloDist AjOPhyloDist*
@@ -60,7 +62,6 @@ typedef struct AjSPhyloDist
 ** @attr Len [ajint] Number of values per name
 **                    may be more than 1 per locus
 ** @attr ContChar [AjBool] Continuous character data if true
-** @attr Within [AjBool] Individual data within species if true
 ** @attr Names [AjPStr*] Row names array (size is Size)
 **
 ** @cc row grouping - multiple individual values for one 'species'
@@ -79,6 +80,8 @@ typedef struct AjSPhyloDist
 ** @attr Allele [ajint*] Allele count 2 or more per locus
 **                     array size is Loci
 ** @attr Data [float*] Frequency for each allele for each Name
+** @attr Within [AjBool] Individual data within species if true
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -88,7 +91,7 @@ typedef struct AjSPhyloFreq
     ajint Loci;
     ajint Len;
     AjBool ContChar;
-    AjBool Within;
+
     AjPStr* Names;
 
     ajint* Species;
@@ -97,6 +100,9 @@ typedef struct AjSPhyloFreq
     ajint* Locus;
     ajint* Allele;
     float* Data;
+
+    AjBool Within;
+    char Padding[4];
 } AjOPhyloFreq;
 
 #define AjPPhyloFreq AjOPhyloFreq*
@@ -163,10 +169,11 @@ typedef struct AjSPhyloProp
 **
 ** @attr Len [ajint] string length
 ** @attr Size [ajint] number of strings
-** @attr Count [ajint] number of enzymes for restriction data
 ** @attr Characters [AjPStr] The allowed state characters
 ** @attr Names [AjPStr*] The names
 ** @attr Str [AjPStr*] The original string(s)
+** @attr Count [ajint] number of enzymes for restriction data
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -174,10 +181,11 @@ typedef struct AjSPhyloState
 {
     ajint Len;
     ajint Size;
-    ajint Count;
     AjPStr Characters;
     AjPStr* Names;
     AjPStr* Str;
+    ajint Count;
+    char Padding[4];
 } AjOPhyloState;
 
 #define AjPPhyloState AjOPhyloState*

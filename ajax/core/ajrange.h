@@ -34,20 +34,22 @@ extern "C"
 ** @use ajRangeOrdered Test if ranges are in ascending non-overlapping order
 ** @use ajRangeDefault Test if the default range has been set
 **
-** @attr n [ajuint] Number of ranges
 ** @attr start [ajuint*] From positions
 ** @attr end [ajuint*] End positions
 ** @attr text [AjPStr*] Associated text for each range
+** @attr n [ajuint] Number of ranges
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 
 typedef struct AjSRange
 {
-    ajuint n;
     ajuint *start;
     ajuint *end;
     AjPStr *text;
+    ajuint n;
+    char Padding[4];
 } AjORange;
 #define AjPRange AjORange*
 

@@ -98,6 +98,7 @@ static const char *spsumaa= "RRRRRRLLLLLLSSSSSSTTTTPPPPAAAAGG"
 ** @attr Name [const char*] Format name
 ** @attr Try [AjBool] If true, try for an unknown input. Duplicate names
 **                    and read-anything formats are set false
+** @attr Padding [ajint] Padding to alignment boundary
 ** @attr Desc [const char*] Format description
 ** @attr Read [(AjBool*)] Input function, returns ajTrue on success
 ** @attr Comment [const char*] Format comments
@@ -108,6 +109,7 @@ typedef struct CodSInFormat
 {
     const char *Name;
     AjBool Try;
+    ajint Padding;
     const char *Desc;
     AjBool (*Read) (AjPCod thys, AjPFileBuff inbuff);
     const char *Comment;
@@ -118,29 +120,29 @@ typedef struct CodSInFormat
 static CodOInFormat codInFormatDef[] = {
 /* "Name",      Try      "Description" */
 /*     ReadFunction      "Comment" */
-  {"emboss",    AJTRUE,  "EMBOSS codon usage file",
+  {"emboss",    AJTRUE, 0, "EMBOSS codon usage file",
        codReadEmboss,    "All numbers read, #comments for extras"},
-  {"cut",       AJFALSE, "EMBOSS codon usage file",
+  {"cut",       AJFALSE, 0, "EMBOSS codon usage file",
        codReadEmboss,    "Same as EMBOSS, output default format is 'cut'"},
-  {"gcg",       AJTRUE,  "GCG codon usage file",
+  {"gcg",       AJTRUE,  0, "GCG codon usage file",
        codReadGcg,       "All numbers read, #comments for extras"},
-  {"cutg",      AJTRUE,  "CUTG codon usage file",
+  {"cutg",      AJTRUE,  0, "CUTG codon usage file",
        codReadCutg,      "All numbers (cutgaa) read or fraction calculated, extras in first line"},
-  {"cutgaa",    AJFALSE, "CUTG codon usage file with aminoacids",
+  {"cutgaa",    AJFALSE, 0, "CUTG codon usage file with aminoacids",
        codReadCutg,      "Cutg with all numbers"},
-  {"spsum",     AJTRUE,  "CUTG species summary file",
+  {"spsum",     AJTRUE,  0, "CUTG species summary file",
        codReadSpsum,     "Number only, species and CDSs in header"},
-  {"cherry",    AJFALSE, "Mike Cherry codonusage database file",
+  {"cherry",    AJFALSE, 0, "Mike Cherry codonusage database file",
        codReadGcg,       "GCG format with species and CDSs in header"},
-  {"transterm", AJFALSE, "TransTerm database file",
+  {"transterm", AJFALSE, 0, "TransTerm database file",
        codReadGcg, "GCG format with no extras"},
-  {"codehop",   AJTRUE,  "FHCRC codehop program codon usage file",
+  {"codehop",   AJTRUE,  0, "FHCRC codehop program codon usage file",
        codReadCodehop,   "Freq only, extras at end"},
-  {"staden",    AJTRUE,  "Staden package codon usage file with numbers",
+  {"staden",    AJTRUE,  0, "Staden package codon usage file with numbers",
       codReadStaden,     "Number only, no extras."},
-  {"numstaden", AJFALSE, "Staden package codon usage file with numbers",
+  {"numstaden", AJFALSE, 0, "Staden package codon usage file with numbers",
       codReadStaden,     "Number only, no extras. Obsolete name for 'staden'"},
-  {NULL, 0, NULL, NULL, NULL}
+  {NULL, 0, 0, NULL, NULL, NULL}
 };
 
 
