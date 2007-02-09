@@ -4324,7 +4324,8 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
     ajint mlen = 0;            /*Min. possible length of the alignment of the 
 				    signature */
     float score=0;             /*Score for alignment */
-
+    double td;
+    
     /* CHECK ARGS AND CREATE STRINGS */
     if(!S || !seq || !hit)
 	return ajFalse;
@@ -4547,7 +4548,8 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
     ** (row) corresponding to the last cell in the path matrix which was
     ** assigned
     */
-    sidx = (ajuint) floor((double)(this/nres));
+    td = floor((double)(this/nres));
+    sidx = (ajuint) td;
 
     thisp = this - (sidx * nres);
     
@@ -4580,7 +4582,8 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 
     for(this=path[max].prev; sidx>0; this=path[this].prev)
     {
-	sidx = (ajuint) floor((double)(this/nres));
+	td = floor((double)(this/nres));
+	sidx = (ajuint) td;
 	thisp= this - (sidx * nres);
 	alg[thisp] = '*';
     }

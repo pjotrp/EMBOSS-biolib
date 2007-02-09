@@ -723,7 +723,8 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
     ajuint j;
     ajuint isplit;
     ajuint nsplit;
-
+    double td;
+    
 #ifndef WIN32
     static const char *prog = "env LC_ALL=C sort";
 
@@ -762,7 +763,9 @@ void embDbiSortFile(const AjPStr dbname, const char* ext1, const char* ext2,
 	}
 
 
-	nsplit = (ajuint) sqrt(nfiles);
+	td = sqrt(nfiles);
+	nsplit = (ajuint) td;
+	
 	ajDebug("embDbiSortFile nfiles:%d split:%d\n", nfiles, nsplit);
 
 	/* file merge in groups if more than 24 files ... avoids huge merges */

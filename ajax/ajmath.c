@@ -360,7 +360,13 @@ void ajRandomSeed(void)
 
 ajint ajRandomNumber(void)
 {
-    return  (ajint) ((double)(floor(ajRandomNumberD()*32768.0)));
+    double td;
+    ajint  rn;
+    
+    td = floor(ajRandomNumberD()*32768.0);
+    rn = (ajint) td;
+
+    return rn;
 }
 
 

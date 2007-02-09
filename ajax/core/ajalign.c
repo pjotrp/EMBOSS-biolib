@@ -3726,7 +3726,7 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
 {
     AlignPData thys;
     ajint i;
-    AjPSeq *freeptr = NULL;
+    void *freeptr = NULL;
     
     thys = *pthys;
 
@@ -3749,7 +3749,7 @@ static void alignDataDel(AlignPData* pthys, AjBool external)
 	    ajSeqDel(&thys->RealSeq[i]);
         }
     AJFREE(thys->RealSeq);
-    freeptr = (AjPSeq *) thys->Seq;
+    freeptr = (void *)thys->Seq;
     AJFREE(freeptr);
     AJFREE(*pthys);
 
@@ -3941,7 +3941,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    char **seqcharptr;
+    const char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -3956,6 +3956,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     AlignPData data = NULL;
     AjPStr debugstr1 = NULL;
     AjPStr debugstr2 = NULL;
+    void *freeptr;
     
     
     debugstr1=ajStrNew();
@@ -4011,7 +4012,7 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
     {
-	seqcharptr[iseq] =  (char *) ajSeqGetSeqC(alignSeq(thys, iseq, iali));
+	seqcharptr[iseq] = ajSeqGetSeqC(alignSeq(thys, iseq, iali));
     }
 
     /* For each position in the alignment, calculate consensus character */
@@ -4295,8 +4296,10 @@ static void alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
     
     /* ajDebug("ret ident:%d sim:%d gap:%d len:%d\n",
 	    *retident, *retsim, *retgap, *retlen); */
-    
-    AJFREE(seqcharptr);
+
+    freeptr = (void *) seqcharptr;
+    AJFREE(freeptr);
+
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&posScore);
@@ -4589,7 +4592,7 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     float himatch = 0.0;	/* highest match score (often used) */
     
-    char **seqcharptr;
+    const char **seqcharptr;
     char res;
     char nocon;
     char gapch;
@@ -4599,11 +4602,11 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     AjBool isident;
     AjBool issim;
     AjBool isgap;
-    AjPSeq* seqs;
+    const AjPSeq* seqs;
     ajint numres;		 /* number of residues (not spaces) */
     AjPStr debugstr1=NULL;
     AjPStr debugstr2=NULL;
-    
+    void *freeptr;
     
     debugstr1=ajStrNew();
     debugstr2=ajStrNew();
@@ -4649,8 +4652,8 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
     {
-	seqcharptr[iseq] =  (char *) ajSeqsetGetseqSeqC(thys, iseq);
-	seqs[iseq]       =  (AjPSeq) ajSeqsetGetseqSeq(thys, iseq);
+	seqcharptr[iseq] =  ajSeqsetGetseqSeqC(thys, iseq);
+	seqs[iseq]       =  ajSeqsetGetseqSeq(thys, iseq);
     }
     
     /* For each position in the alignment, calculate consensus character */
@@ -4863,9 +4866,14 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     
     /* ajDebug("ret ident:%d sim:%d gap:%d len:%d\n",
 	    *retident, *retsim, *retgap, *retlen); */
-    
-    AJFREE(seqs);
-    AJFREE(seqcharptr);
+
+
+    freeptr = (void *) seqs;
+    AJFREE(freeptr);
+
+    freeptr = (void *) seqcharptr;
+    AJFREE(freeptr);
+
     AJFREE(matching);
     AJFREE(identical);
     ajFloatDel(&posScore);
