@@ -200,6 +200,7 @@ static void messDump(const char *message);
 ** @attr progname [char*] Name of executable reporting error
 ** @attr filename [char*] Filename where error was reported
 ** @attr line_num [ajint] line number of file where error was reported.
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -208,11 +209,12 @@ typedef struct MessSErrorInfo
     char* progname;
     char* filename;
     ajint line_num;
+    char Padding[4];
 } MessOErrorInfo;
 
 #define MessPErrorInfo MessOErrorInfo*
 
-static MessOErrorInfo messageG = {NULL, NULL, 0};
+static MessOErrorInfo messageG = {NULL, NULL, 0, ""};
 
 static ajint messGetErrorLine(void);
 static char *messGetErrorFile(void);
