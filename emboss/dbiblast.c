@@ -101,8 +101,8 @@ static AjPList* fdl   = NULL;
 **
 ** DbiBlast in-memory file
 **
-** @attr IsMem [AjBool] True if in memory mapped
 ** @attr File [AjPFile] Ajax file
+** @attr IsMem [AjBool] True if in memory mapped
 ** @attr Fd [ajint] Unix file descriptor (integer)
 ** @attr Pos [ajlong] Position in file/memory
 ** @attr Size [ajlong] Size of file/memory
@@ -112,8 +112,8 @@ static AjPList* fdl   = NULL;
 
 typedef struct SMemFile
 {
-  AjBool IsMem;
   AjPFile File;
+  AjBool IsMem;
   ajint Fd;
   ajlong Pos;
   ajlong Size;
@@ -138,7 +138,6 @@ typedef struct SMemFile
 ** @attr DateLen [ajint] length of database date string
 ** @attr LineLen [ajint] length of database lines
 ** @attr HeaderLen [ajint] bytes before tables start 
-** @attr Size [ajint] number of database entries
 ** @attr CompLen [ajint] length of compressed seq file
 ** @attr MaxSeqLen [ajint] max. entry length
 ** @attr TotLen [ajint] number of bases or residues in database
@@ -156,6 +155,8 @@ typedef struct SMemFile
 ** @attr Title [AjPStr] database title
 ** @attr Date [AjPStr] database date
 ** @attr Name [AjPStr] database base file name
+** @attr Size [ajint] number of database entries
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct SBlastDb
@@ -168,7 +169,6 @@ typedef struct SBlastDb
   ajint DateLen;
   ajint LineLen;
   ajint HeaderLen;
-  ajint Size;
   ajint CompLen;
   ajint MaxSeqLen;
   ajint TotLen;
@@ -186,6 +186,8 @@ typedef struct SBlastDb
   AjPStr Title;
   AjPStr Date;
   AjPStr Name;
+  ajint Size;
+  char Padding[4];
 } OBlastDb;
 
 #define PBlastDb OBlastDb*
@@ -203,6 +205,7 @@ typedef struct SBlastDb
 ** @attr IsProtein [AjBool] true for protein
 ** @attr IsBlast2 [AjBool] blast2.x or blast 1.x
 ** @attr Type [ajint] enumerated type
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct SBlastType
@@ -213,6 +216,7 @@ typedef struct SBlastType
   AjBool  IsProtein;
   AjBool IsBlast2;
   ajint   Type;
+  char Padding[4];
 } OBlastType;
 
 #define PBlastType OBlastType*
@@ -224,11 +228,11 @@ enum blastdbtype {BLAST1P, BLAST1N, BLAST2P, BLAST2N};
 
 static OBlastType blasttypes[] =
 {
-  {"atb", "ahd", "bsq",	AJTRUE,  AJFALSE, BLAST1P},
-  {"ntb", "nhd", "csq", AJFALSE, AJFALSE, BLAST1N},
-  {"pin", "phr", "psq", AJTRUE,  AJTRUE, BLAST2P},
-  {"nin", "nhr", "nsq", AJFALSE, AJTRUE, BLAST2N},
-  {NULL, NULL, NULL, 0, 0, 0}
+  {"atb", "ahd", "bsq",	AJTRUE,  AJFALSE, BLAST1P, ""},
+  {"ntb", "nhd", "csq", AJFALSE, AJFALSE, BLAST1N, ""},
+  {"pin", "phr", "psq", AJTRUE,  AJTRUE, BLAST2P, ""},
+  {"nin", "nhr", "nsq", AJFALSE, AJTRUE, BLAST2N, ""},
+  {NULL, NULL, NULL, 0, 0, 0, ""}
 };
 
 

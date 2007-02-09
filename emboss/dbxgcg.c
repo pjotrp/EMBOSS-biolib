@@ -78,6 +78,7 @@ static ajlong dbxgcg_gcgappent(AjPFile infr, AjPFile infs,
 **
 ** @attr Name [const char*] Parser name
 ** @attr GcgType [AjBool] Gcg type parser if true, PIR type if false
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @attr Parser [(AjBool*)] Parser function
 ** @@
 ******************************************************************************/
@@ -86,6 +87,7 @@ typedef struct DbxgcgSParser
 {
     const char* Name;
     AjBool GcgType;
+    char   Padding[4];
     AjBool (*Parser) (EmbPBtreeEntry entry, AjPFile infr, AjPStr *reflibstr);
 } DbxgcgOParser;
 #define DbxgcgPParser DbxgcgOParser*
@@ -95,11 +97,11 @@ typedef struct DbxgcgSParser
 
 static DbxgcgOParser parser[] =
 {
-    {"EMBL", AJTRUE, dbxgcg_ParseEmbl},
-    {"SWISS", AJTRUE, dbxgcg_ParseEmbl},
-    {"GENBANK", AJTRUE, dbxgcg_ParseGenbank},
-    {"PIR", AJFALSE, dbxgcg_ParsePir},
-    {NULL, 0, NULL}
+    {"EMBL", AJTRUE, "", dbxgcg_ParseEmbl},
+    {"SWISS", AJTRUE, "", dbxgcg_ParseEmbl},
+    {"GENBANK", AJTRUE, "", dbxgcg_ParseGenbank},
+    {"PIR", AJFALSE, "", dbxgcg_ParsePir},
+    {NULL, 0, "", NULL}
 };
 
 

@@ -112,6 +112,7 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 **
 ** @attr Name [const char*] Parser name
 ** @attr GcgFormat [AjBool] If true, use GCG format, if false, use NBRF
+** @attr Padding [ajint] Padding to alignment boundary
 ** @attr Parser [(AjBool*)] Parser function
 ** @@
 ******************************************************************************/
@@ -120,6 +121,7 @@ typedef struct SParser
 {
     const char* Name;
     AjBool GcgFormat;
+    ajint  Padding;
     AjBool (*Parser) (AjPFile libr,
 		      AjPFile* alistfile,
 		      AjBool systemsort, AjPStr const * fields,
@@ -132,11 +134,11 @@ typedef struct SParser
 
 static OParser parser[] =
 {
-    { "EMBL", AJTRUE, dbigcg_ParseEmbl },
-    { "SWISS", AJTRUE, dbigcg_ParseEmbl },
-    { "GENBANK", AJTRUE, dbigcg_ParseGenbank },
-    { "PIR", AJFALSE, dbigcg_ParsePir },
-    { NULL, 0, NULL }
+    { "EMBL", AJTRUE, 0, dbigcg_ParseEmbl },
+    { "SWISS", AJTRUE, 0, dbigcg_ParseEmbl },
+    { "GENBANK", AJTRUE, 0, dbigcg_ParseGenbank },
+    { "PIR", AJFALSE, 0, dbigcg_ParsePir },
+    { NULL, 0, 0, NULL }
 };
 
 
