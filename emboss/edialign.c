@@ -284,12 +284,14 @@ float sf_mat_thr = 0;
 **
 ** @attr pos [ajint*] Positions array
 ** @attr nbr [ajint] Size of position array
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct
 {
     ajint *pos;
     ajint nbr;
+    char Padding[4];
 } edialignPositionSet;
 
 
@@ -298,16 +300,17 @@ typedef struct
 **
 ** Dialign sequence structure
 **
-** @attr longueur       [ajint]  Length
-** @attr aligSetNbr     [ajint*] Numbers of sets
-** @attr predAligSetPos [ajint*] Predicted alignment set positions
-** @attr succAligSetPos [ajint*] Successful alignment set positions
+** @attr longueur       [ajint]   Length
+** @attr Padding        [char[4]] Padding to alignment boundary
+** @attr aligSetNbr     [ajint*]  Numbers of sets
+** @attr predAligSetPos [ajint*]  Predicted alignment set positions
+** @attr succAligSetPos [ajint*]  Successful alignment set positions
 ******************************************************************************/
 
 
 typedef struct {
     ajint longueur;
-
+    char  Padding[4];
     ajint *aligSetNbr;
     ajint *predAligSetPos;
     ajint *succAligSetPos;
@@ -320,8 +323,8 @@ typedef struct {
 **
 ** Dialign closure structure
 **
-** @attr seqNbr     [ajint] Numbers of sequences
 ** @attr seq [edialignSequence*] Sequences
+** @attr seqNbr [ajint] Numbers of sequences
 ** @attr maxLong [ajint] Maximum long
 ** @attr aligSet [edialignPositionSet*] Alignment sets
 ** @attr nbrAligSets [ajint] Number of alignment sets
@@ -338,8 +341,9 @@ typedef struct {
 
 
 typedef struct {
-    ajint seqNbr;
+
     edialignSequence *seq;
+    ajint seqNbr;
     ajint maxLong;
 
     edialignPositionSet *aligSet;
@@ -380,11 +384,11 @@ struct pair_frag
     ajint b2;
     ajint ext;
     float weight;
-    short trans;
-    short cs;
     struct pair_frag *prec;
     struct pair_frag *last;
     float sum;
+    short trans;
+    short cs;
 };
 
 
@@ -452,6 +456,7 @@ struct subtree
     ajint *member;
     char *name;
     float depth;
+    char Padding[4];
 };         
 
 
