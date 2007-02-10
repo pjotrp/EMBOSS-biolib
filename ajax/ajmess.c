@@ -1655,8 +1655,8 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
     ipos  = 0;
     
 
-    ajDebug("ajUserGet buffer len: %d res: %d ptr: %x\n",
-	     ajStrGetLen(thys), ajStrGetRes(thys), thys->Ptr);
+    /*ajDebug("ajUserGet buffer len: %d res: %d ptr: %x\n",
+	     ajStrGetLen(thys), ajStrGetRes(thys), thys->Ptr);*/
 
     if(feof(stdin))
 	ajFatal("END-OF-FILE reading from user\n");
@@ -1694,14 +1694,14 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
 	{
 	    ajStrSetRes(pthis, ajStrGetRes(thys)+fileBuffSize);
 	    thys = *pthis;
-	    ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
+	    /*ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
 		    "Size: %d\n",
-		    jlen, ipos, isize, ilen, ajStrGetRes(thys));
+		    jlen, ipos, isize, ilen, ajStrGetRes(thys));*/
 	    ipos += jlen;
 	    buff = ajStrGetuniquePtr(pthis);
 	    isize = ajStrGetRes(thys) - ipos;
-	    ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
-		    ipos, isize, ajStrGetRes(thys));
+	    /* ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
+		    ipos, isize, ajStrGetRes(thys)); */
 
 	}
 	else
