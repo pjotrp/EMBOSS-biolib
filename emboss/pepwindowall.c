@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     maxlen   = ajSeqsetGetLen(seqset);
     aa0str   = ajStrNewRes(maxlen);
     midpoint = (ajint)((llen+1)/2);
-    flen     = (float) ajSeqsetGetLen(seqset);
+    flen     = ajSeqsetGetLen(seqset);
     maxsize = ajSeqsetGetSize(seqset);
 
     AJCNEW(position, maxlen);
