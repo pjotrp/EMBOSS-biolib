@@ -7,7 +7,19 @@
 # Valgrind is free software, with documentation online at
 # http://devel-home.kde.org/~sewardj/docs/index.html
 #
-# Valgrind requires EMBOSS built with shared libraries
+# Valgrind requires EMBOSS built without shared libraries
+
+%precommands = (
+		"domainalign-qa1" => "mkdir daf",
+		"seqnr-qa1" => "mkdir hitsnr;mkdir hitsred",
+		"sigscanlig-qa1" => "mkdir lhf;mkdir aln;mkdir results",
+		"ohmmindex-qa1" => "cp ../../qa/ohmm-own-keep/myhmms .",
+		"ohmmcalibrate-qa1" => "cp ../../qa/ohmmbuild-ex-keep/globin.hmm .",
+
+		"ohmmcalibrate-qa2" => "cp ../../qa/ohmm-own-keep/myhmms .",
+		"ohmmcalibrate-qa3" => "cp ../../qa/ohmm-own-keep/myhmms .",
+		"" => ""
+		);
 
 sub runtest ($) {
     my ($name) = @_;
@@ -16,9 +28,9 @@ sub runtest ($) {
     my $posbytes = 0;
     my $rembytes = 0;
     my $errcount = 0;
-    my $timeout = 1500;
+    my $timeout = 1800;
     my $timealarm = 0;
-
+    my $testkeep = $dokeep;
     if (defined($tests{$name})) {
 	if (defined($testcheck{$name})) {
 #	    $myvalgpath = "../../emboss/";
@@ -30,9 +42,21 @@ sub runtest ($) {
 	    print "Running valgrind $valgopts $myvalgpath$tests{$name}\n";
 
 	eval {
+	    $sysstat = system( "rm -rf $name");
+	    $status = $sysstat >> 8;
+	    if ($status) {
+		$testerr = "failed to delete old directory $name, status $status\n";
+		print STDERR $testerr;
+	    }
+	    if(-e "$name" && -d "$name") { system ("rm -rf $name");}
+	    mkdir ("$name", 0777);
+	    chdir $name;
+	    if(defined($precommands{$name})) {
+		system ("$precommands{$name}");
+	    }
 	    $status = 0;
 	    alarm($timeout);
-	    $sysstat = system ("EMBOSSRC=.. ;export EMBOSSRC ;EMBOSS_RCHOME=N ;export EMBOSS_RCHOME ;valgrind $valgopts $myvalgpath$tests{$name} 9> valgrind/$name.valgrind" );
+	    $sysstat = system ("EMBOSSRC=../.. ;export EMBOSSRC ;EMBOSS_RCHOME=N ;export EMBOSS_RCHOME ;valgrind $valgopts $myvalgpath$tests{$name} 9> ../valgrind/$name.valgrind" );
 	    alarm(0);
 	    $status = $sysstat >> 8;
 	};
@@ -46,6 +70,7 @@ sub runtest ($) {
 	    }
 	}
     
+	chdir "..";
 	if ($timealarm) {
 	    print STDERR "Valgrind test $name timed out\n";
 	    return -1;
@@ -73,10 +98,12 @@ sub runtest ($) {
 	}
 	if ($status) {
 	    print STDERR "Valgrind test $name returned status $status\n";
+	    $testkeep=1;
 	}
 	else {
 	    if ($errcount){
 		print STDERR "Valgrind test $name errors $errcount [$errcontexts]\n";
+		$testkeep=1;
 	    }
 	    elsif ($defbytes){
 		print STDERR "Valgrind test $name leak $defbytes [$defblocks] (possibly $posbytes [$posblocks]) bytes, still reachable $rembytes bytes [$remblocks]\n";
@@ -87,6 +114,9 @@ sub runtest ($) {
 	    else {
 		print STDERR "Valgrind test $name OK (all clean)\n";
 	    }
+	}
+	if(!$testkeep) {
+	    system "rm -rf $name";
 	}
 	return $status;
     }
@@ -115,7 +145,7 @@ $blockcount = 0;
 $block = 1;
 $dolist=0;
 $doall = 0;
-
+$dokeep=0;
 foreach $test (@ARGV) {
     if ($test =~ /^-(.*)/) {
 	$arg=$1;
@@ -124,9 +154,8 @@ foreach $test (@ARGV) {
 	elsif ($arg eq "list") {
 	    $dolist = 1;
 	}
-	elsif ($arg eq "all") {
-	    $doall=1;
-	}
+	elsif ($arg eq "all") {$doall=1;}
+	elsif ($arg eq "keep") {$dokeep=1;}
 	elsif ($arg =~ /block=(\d+)/) {
 	    $block=$1;
 	    $i=0;
