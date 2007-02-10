@@ -5441,9 +5441,9 @@ static void acdUserSavereply(const AcdPAcd thys, const char* assocqual,
 
     if(assocqual)
     {
-	ajStrAssignS(&qualname, thys->Name);
+	ajStrAssignC(&qualname, assocqual);
 	ajStrAppendK(&qualname, '_');
-	ajStrAppendC(&qualname, assocqual);
+	ajStrAppendS(&qualname, thys->Name);
     }
     else
 	ajStrAssignS(&qualname, thys->Name);
@@ -6878,7 +6878,7 @@ static void acdSetDirlist(AcdPAcd thys)
 
 	    if(!ok)
 		acdBadVal(thys, required,
-			  "Unable to open file '%S' for input",
+			  "Unable to open directories '%S' for input",
 			  acdReply);
 	}
 	else
@@ -9258,10 +9258,15 @@ static void acdSetOutdir(AcdPAcd thys)
 
 	if(ajStrGetLen(acdReply))
 	{
+	    ajDebug("acdSetOutdir start reply '%S' dopath:%B ok:%B\n",
+		    acdReply, dopath,ok);
 	    if(dopath)
 		ok = ajFileDirPath(&acdReply);
 	    else
 		ok = ajFileDir(&acdReply);
+
+	    ajDebug("acdSetOutdir dir done reply '%S' dopath:%B ok:%B\n",
+		    acdReply, dopath,ok);
 	    if (ok)
 	    {
 		val = ajDiroutNewS(acdReply, ext);
@@ -9270,7 +9275,7 @@ static void acdSetOutdir(AcdPAcd thys)
 	    }
 	    if(!ok)
 		acdBadVal(thys, required,
-			  "Unable to open directory '%S'",
+			  "Unable to open output directory '%S'",
 			  acdReply);
 	}
 	else
@@ -18757,34 +18762,32 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	    if(!strcmp(acdType[acd->Type].Name, "boolean") ||
 	       !strcmp(acdType[acd->Type].Name, "toggle"))
 	    {
-		if(ajStrMatchS(qual, noqual))
+		if(ajStrMatchS(qual, noqual)) /* -boolqual */
 		{
 		    if(ajStrMatchC(value, "Y"))
 			ajStrAssignC(&argvalstr, "");
 		}
-		else
-		{
-		    if(ajStrMatchC(value, "N"))
+		else if(ajStrMatchC(value, "N")) /* -noboolqual */
 			ajStrAssignC(&argvalstr, "");
-		}
-	    }
-	    if(ajStrGetLen(value)) {
-		if(ajStrIsWord(value) &&
-		   (ajStrFindAnyC(value, "*?[]") < 0))
-		{
-		    if(ajStrGetLen(argvalstr)) /* empty booleans */
-		    {
-			ajStrAppendK(&acdArgSave, ' ');
-			ajStrAppendS(&acdArgSave, argvalstr);
-		    }
-		}
-		else
+
+		if(ajStrGetLen(argvalstr)) /* non-trivial boolean values */
 		{
 		    ajStrAppendK(&acdArgSave, ' ');
-		    ajStrAppendK(&acdArgSave, '\"');
-		    ajStrAppendS(&acdArgSave, value);
-		    ajStrAppendK(&acdArgSave, '\"');
+		    ajStrAppendS(&acdArgSave, argvalstr);
 		}
+	    }
+	    else if(ajStrIsWord(value) &&
+		    (ajStrFindAnyC(value, "*?[]") < 0))
+	    {
+		ajStrAppendK(&acdArgSave, ' ');
+		ajStrAppendS(&acdArgSave, value);
+	    }
+	    else if(ajStrMatchS(qual, noqual)) /* not -nomissfile */
+	    {
+		ajStrAppendK(&acdArgSave, ' ');
+		ajStrAppendK(&acdArgSave, '\"');
+		ajStrAppendS(&acdArgSave, value);
+		ajStrAppendK(&acdArgSave, '\"');
 	    }
 	}
 	else		    /* not a qualifier - assume a parameter */
