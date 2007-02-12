@@ -42,11 +42,12 @@
 typedef struct DNAB DNAB;
 struct DNAB
 {
-    ajint pos;
     AjPStr name;
     AjPStr seq;
+    ajint pos;
     float sd;
     ajint wt;
+    char Padding[4];
 };
 
 
