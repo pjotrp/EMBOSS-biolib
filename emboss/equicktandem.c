@@ -260,7 +260,8 @@ static void equicktandem_report(AjPFeattable tab, ajint begin)
 
 
     gf = ajFeatNew(tab, NULL, rpthit,
-		   1+maxback-sq+begin, 1+maxfront-sq+begin,
+		   1+(ajint)(maxback-sq)+begin,
+		   1+(ajint)(maxfront-sq)+begin,
 		   (float) max, '+', 0);
 
     ajFeatTagAddCC(gf, "rpt_type", "TANDEM");
