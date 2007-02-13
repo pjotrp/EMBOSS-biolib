@@ -240,9 +240,11 @@ static void digest_print_hits(AjPList l, AjPFile outf, ajint be, const char *s)
     EmbPPropFrag fr;
     AjPStr t;
     ajint len;
-
+    size_t stlen;
+    
     t   = ajStrNew();
-    len = strlen(s);
+    stlen = strlen(s);
+    len = (ajint) stlen;
 
     ajFmtPrintF(outf,
 		"Start   End     Molwt      Sequence (up to 38 residues)\n");
@@ -295,9 +297,11 @@ static void digest_report_hits(AjPFeattable TabRpt, AjPList l, ajint be,
     AjPStr t;
     ajint len;
     AjPStr tmpStr = NULL;
-
+    size_t stlen;
+    
     t   = ajStrNew();
-    len = strlen(s);
+    stlen = strlen(s);
+    len = (ajint) stlen;
 
     while(ajListPop(l,(void **)&fr))
     {

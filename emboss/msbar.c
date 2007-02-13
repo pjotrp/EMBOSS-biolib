@@ -178,7 +178,8 @@ static void msbar_blockmutn(AjPStr *str, AjBool isnuc, AjPStr const *blocklist,
     ajint opt;
     double xlen;
     double xdiff;
-
+    double td;
+    
     while(blocklist[++i])
     {
 	ajDebug("Next block mutation operation = %S\n", blocklist[i]);
@@ -193,7 +194,8 @@ static void msbar_blockmutn(AjPStr *str, AjBool isnuc, AjPStr const *blocklist,
 	/* if 'Any' required, then choose which one */
 	if(opt == 1)
 	{
-	    opt = ajRandomNumberD() * 5;
+	    td = ajRandomNumberD() * 5.;
+	    opt = (ajint) td;
 	    opt += 2;
 	}
 
@@ -205,10 +207,11 @@ static void msbar_blockmutn(AjPStr *str, AjBool isnuc, AjPStr const *blocklist,
 	{
 	    if(min < 3) min = 3;
 	    xlen = ajStrGetLen(*str);
-	    rposstart = ajRandomNumberD() * xlen/3.0;
+	    td = ajRandomNumberD() * xlen/3.0;
+	    rposstart = (ajint) td;
 	    xdiff = max - min;
-	    rposend = rposstart + (min/3) + ajRandomNumberD() *
-		xdiff/3.0;
+	    td = ajRandomNumberD() * xdiff/3.0;
+	    rposend = rposstart + (min/3) + (ajint)td;
 	    rposstart *= 3;
 	    rposend *= 3;
 	    rposend--;
@@ -216,10 +219,11 @@ static void msbar_blockmutn(AjPStr *str, AjBool isnuc, AjPStr const *blocklist,
 	else
 	{
 	    xlen = ajStrGetLen(*str);
-	    rposstart = ajRandomNumberD() * xlen;
+	    td = ajRandomNumberD() * xlen;
+	    rposstart = (ajint) td;
 	    xdiff = max - min;
-	    rposend = rposstart + min + ajRandomNumberD() *
-		xdiff;
+	    td = ajRandomNumberD() * xdiff;
+	    rposend = rposstart + min + (ajint) td;
 	}
 
 
@@ -260,13 +264,15 @@ static void msbar_blockmutn(AjPStr *str, AjBool isnuc, AjPStr const *blocklist,
 	    if(inframe)
 	    {
 		xlen = ajStrGetLen(*str);
-		rpos2 = ajRandomNumberD() * xlen/3.0;
+		td = ajRandomNumberD() * xlen/3.0;
+		rpos2 = (ajint) td;
 		rpos2 *= 3;
 	    }
 	    else
 	    {
 		xlen = ajStrGetLen(*str);
-		rpos2 = ajRandomNumberD() * xlen;
+		td = ajRandomNumberD() * xlen;
+		rpos2 = (ajint) td;
 	    }
 	    ajDebug("block move from %d to %d to position %d\n",
 			   rposstart, rposend, rpos2);
@@ -299,7 +305,8 @@ static void msbar_codonmutn(AjPStr *str, AjBool isnuc, AjPStr const *codonlist,
     ajint i = -1;
     ajint opt;
     double xlen;
-
+    double td;
+    
     while(codonlist[++i])
     {
 	ajDebug("Next codon mutation operation = %S\n", codonlist[i]);
@@ -314,7 +321,8 @@ static void msbar_codonmutn(AjPStr *str, AjBool isnuc, AjPStr const *codonlist,
 	/* if 'Any' required, then choose which one */
 	if(opt == 1)
 	{
-	    opt = ajRandomNumberD() * 5;
+	    td = ajRandomNumberD() * 5.;
+	    opt = (ajint) td;
 	    opt += 2;
 	}
 
@@ -323,13 +331,15 @@ static void msbar_codonmutn(AjPStr *str, AjBool isnuc, AjPStr const *codonlist,
 	if(inframe)
 	{
 	    xlen = ajStrGetLen(*str);
-	    rpos = ajRandomNumberD() * xlen/3.0;
+	    td = ajRandomNumberD() * xlen/3.0;
+	    rpos = (ajint) td;
 	    rpos *= 3;
 	}
 	else
 	{
 	    xlen = ajStrGetLen(*str);
-	    rpos = ajRandomNumberD() * xlen;
+	    td = ajRandomNumberD() * xlen;
+	    rpos = (ajint) td;
 	}
 
 	if(opt == 2)
@@ -368,13 +378,15 @@ static void msbar_codonmutn(AjPStr *str, AjBool isnuc, AjPStr const *codonlist,
 	    if(inframe)
 	    {
 		xlen = ajStrGetLen(*str);
-		rpos2 = ajRandomNumberD() * xlen/3.0;
+		td = ajRandomNumberD() * xlen/3.0;
+		rpos2 = (ajint) td;
 		rpos2 *= 3;
 	    }
 	    else
 	    {
 		xlen = ajStrGetLen(*str);
-		rpos2 = ajRandomNumberD() * xlen;
+		td = ajRandomNumberD() * xlen;
+		rpos2 = (ajint) td;
 	    }
 	    ajDebug("codon move from %d to %d\n", rpos, rpos2);
 	    msbar_Move(str, rpos, rpos+2, rpos2);
@@ -405,7 +417,8 @@ static void msbar_pointmutn(AjPStr *str, AjBool isnuc, AjPStr const *pointlist)
     ajint rpos, rpos2;
     ajint opt;
     double xlen;
-
+    double td;
+    
     while(pointlist[++i])
     {
 	ajDebug("Next point mutation operation = %S\n", pointlist[i]);
@@ -419,14 +432,16 @@ static void msbar_pointmutn(AjPStr *str, AjBool isnuc, AjPStr const *pointlist)
 	/* if 'Any' required, then choose which one */
 	if(opt == 1)
 	{
-	    opt = ajRandomNumberD() * 5;
+	    td = ajRandomNumberD() * 5.;
+	    opt = (ajint) td;
 	    opt += 2;
 	}
 
 	/* get a random position in the sequence (0 to ajStrLen - 1) */
 	xlen = ajStrGetLen(*str);
-	rpos = ajRandomNumberD() * xlen;
-
+	td = ajRandomNumberD() * xlen;
+	rpos = (ajint) td;
+	
 	if(opt == 2)
 	{
 	    /* Insert */
@@ -464,7 +479,8 @@ static void msbar_pointmutn(AjPStr *str, AjBool isnuc, AjPStr const *pointlist)
 	{
 	    /* Move */
 	    xlen = ajStrGetLen(*str);
-	    rpos2 = ajRandomNumberD() * xlen;
+	    td = ajRandomNumberD() * xlen;
+	    rpos2 = (ajint) td;
 	    ajDebug("Point move from %d to %d\n", rpos, rpos2);
 	    msbar_Move(str, rpos, rpos, rpos2);
 	}
@@ -495,7 +511,8 @@ static void msbar_Insert(AjPStr *str, AjBool isnuc, ajint start, ajint end)
     ajint count;
     ajint r;
     double xlen;
-
+    double td;
+    
     count = end - start +1;
 
     while(count--)
@@ -503,13 +520,15 @@ static void msbar_Insert(AjPStr *str, AjBool isnuc, ajint start, ajint end)
 	if(isnuc)
 	{
 	    xlen = strlen(nuc);
-	    r = ajRandomNumberD() * xlen;
+	    td = ajRandomNumberD() * xlen;
+	    r = (ajint) td;
 	    ajStrAppendK(&ins, nuc[r]);
 	}
 	else
 	{
 	    xlen = strlen(prot);
-	    r = ajRandomNumberD() * xlen;
+	    td = ajRandomNumberD() * xlen;
+	    r = (ajint) td;
 	    ajStrAppendK(&ins, prot[r]);
 	}
     }

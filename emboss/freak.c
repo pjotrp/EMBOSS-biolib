@@ -144,8 +144,8 @@ int main(int argc, char **argv)
 	    ajGraphxySetXEnd(graph,x[c-1]);
 	    ajGraphxySetYStart(graph,0.);
 	    ajGraphxySetYEnd(graph,y[c-1]);
-	    ajGraphxySetXRangeII(graph,x[0],x[c-1]);
-	    ajGraphxySetYRangeII(graph,0.,y[c-1]);
+	    ajGraphxySetXRangeII(graph,(ajint)x[0],(ajint)x[c-1]);
+	    ajGraphxySetYRangeII(graph,0,(ajint)y[c-1]);
 	    ajGraphPlpDataSetMaxMin(fgraph,x[0],x[c-1],0.,1.0);
 	    ajGraphArrayMaxMin(y,c,&min,&max);
 	    ajGraphPlpDataSetMaxima(fgraph,x[0],x[c-1],min,max);
