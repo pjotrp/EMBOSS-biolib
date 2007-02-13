@@ -120,7 +120,9 @@ int main(int argc, char **argv)
     AjPGraphPlpData gdata;
     AjPList list = NULL;
     float flen;
-
+    ajuint tui;
+    void *freeptr;
+    
     ajGraphInit("plotcon", argc, argv);
 
     seqset = ajAcdGetSeqset("sequences");
@@ -128,8 +130,10 @@ int main(int argc, char **argv)
     ajSeqsetFill(seqset);               /* Pads seq set with gap characters */
     numseq = ajSeqsetGetSize(seqset);
     lenseq = ajSeqsetGetLen(seqset);
-    flen = ajSeqsetGetLen(seqset);
 
+    tui = ajSeqsetGetLen(seqset);
+    flen = (float) tui;
+    
     winsize   = ajAcdGetInt("winsize");
     cmpmatrix = ajAcdGetMatrix("scorefile");
 
@@ -229,7 +233,7 @@ int main(int argc, char **argv)
     }
 
 
-    ajGraphArrayMaxMin(gdata->y,flen,&ymin,&ymax);
+    ajGraphArrayMaxMin(gdata->y,(ajint)flen,&ymin,&ymax);
     ajGraphPlpDataSetMaxima(gdata,0,flen,ymin,ymax);
     
     ajGraphPlpDataSetTypeC(gdata,"2D Plot");
@@ -246,7 +250,8 @@ int main(int argc, char **argv)
     AJFREE(x);
     AJFREE(y);
     AJFREE(sumscore);
-    AJFREE(seqcharptr);
+    freeptr = (void *) seqcharptr;
+    AJFREE(freeptr);
     ajListDel(&list);
     ajFloat2dDel(&score);
 

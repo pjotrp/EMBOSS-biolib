@@ -98,8 +98,8 @@ int main(int argc, char **argv)
 	energysum += val;
     }
 
-    twists        = anglesum / 360.0 ;
-    basesperturn  = (float) len * 360.0 /anglesum;
+    twists        = anglesum / (float)360.0 ;
+    basesperturn  = (float) len * (float)360.0 /anglesum;
     energyperbase = energysum/(float) (len-1);
 
     ajFmtPrintF(result, "# Output from BTWISTED\n");
