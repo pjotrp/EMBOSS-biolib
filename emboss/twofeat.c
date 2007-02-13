@@ -37,6 +37,7 @@
 ** @attr Start [ajint] Undocumented
 ** @attr End [ajint] Undocumented
 ** @attr distance [ajint] Undocumented
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct SHit
@@ -46,6 +47,7 @@ typedef struct SHit
     ajint Start;
     ajint End;
     ajint distance;	   
+    char  Padding[4];
 } OHit;
 #define PHit OHit*
 
@@ -155,7 +157,8 @@ int main(int argc, char **argv)
     
     ajint    begin;
     ajint    end;
-
+    float tf;
+    
 
     embInit("twofeat", argc, argv);
 
@@ -166,8 +169,12 @@ int main(int argc, char **argv)
     asource   = ajAcdGetString("asource");
     atype     = ajAcdGetString("atype");
     asense    = ajAcdGetListSingle("asense");
-    aminscore = ajAcdGetFloat("aminscore");
-    amaxscore = ajAcdGetFloat("amaxscore");
+
+    tf = ajAcdGetFloat("aminscore");
+    aminscore = (ajint) tf;
+    tf = ajAcdGetFloat("amaxscore");
+    amaxscore = (ajint) tf;
+    
     atag      = ajAcdGetString("atag");
     avalue    = ajAcdGetString("avalue");
     
@@ -175,8 +182,12 @@ int main(int argc, char **argv)
     bsource   = ajAcdGetString("bsource");
     btype     = ajAcdGetString("btype");
     bsense    = ajAcdGetListSingle("bsense");
-    bminscore = ajAcdGetFloat("bminscore");
-    bmaxscore = ajAcdGetFloat("bmaxscore");
+
+    tf = ajAcdGetFloat("bminscore");
+    bminscore = (ajint) tf;
+    tf = ajAcdGetFloat("bmaxscore");
+    bmaxscore = (ajint) tf;
+
     btag      = ajAcdGetString("btag");
     bvalue    = ajAcdGetString("bvalue");
 
@@ -236,11 +247,13 @@ int main(int argc, char **argv)
 
 	/* go through seq's features adding those that match A to table A */
         twofeat_find_features(seq, tabA, begin, end, asource, atype, asensei,
-			      aminscore, amaxscore, atag, avalue);
+			      (float)aminscore, (float)amaxscore, atag,
+			      avalue);
         
 	/* go through seq's features adding those that match B to table B */
         twofeat_find_features(seq, tabB, begin, end, bsource, btype, bsensei,
-			      bminscore, bmaxscore, btag, bvalue);
+			      (float)bminscore, (float)bmaxscore, btag,
+			      bvalue);
 
 
         ajDebug("No of hits in tabA: %d\n", ajFeattableSize(tabA));
