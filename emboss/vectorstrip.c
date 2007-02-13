@@ -34,7 +34,6 @@
 **
 ** @attr patstr [AjPStr] Undocumented
 ** @attr origpat [AjPStr] Undocumented
-** @attr type [ajuint] Undocumented
 ** @attr len [ajuint] Undocumented
 ** @attr real_len [ajuint] Undocumented
 ** @attr amino [AjBool] Undocumented
@@ -42,6 +41,7 @@
 ** @attr buf [ajint*] Undocumented
 ** @attr sotable [ajuint*] Undocumented
 ** @attr solimit [ajuint] Undocumented
+** @attr type [ajuint] Undocumented
 ** @attr off [EmbOPatBYPNode[AJALPHA]] Undocumented
 ** @attr re [AjPStr] Undocumented
 ** @attr skipm [ajuint**] Undocumented
@@ -52,15 +52,14 @@ typedef struct clip_pattern
 {
     AjPStr patstr;
     AjPStr origpat;
-    ajuint type;
     ajuint len;
     ajuint real_len;
     AjBool amino;
     AjBool carboxyl;
-
     ajint* buf;
     ajuint* sotable;
     ajuint solimit;
+    ajuint type;
     EmbOPatBYPNode off[AJALPHA];
     AjPStr re;
     ajuint** skipm;
@@ -115,7 +114,7 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 				     const AjPList threelist,
 				     const AjPSeq sequence, AjPSeqout seqout,
 				     AjPFile outf);
-static void vectorstrip_scan_sequence(Vector vector, AjPSeqout seqout,
+static void vectorstrip_scan_sequence(const Vector vector, AjPSeqout seqout,
 				      AjPFile outf, AjPSeq sequence,
 				      ajint mis_per, AjBool besthits);
 static void vectorstrip_ccs_pattern(const AjPStr pattern, AjPList hitlist,
