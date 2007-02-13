@@ -637,6 +637,7 @@ static double compseq_getexpfreqprot(const AjPStr dispseq, ajint word,
     ajint offset = 0;
     const char *s;
     AjBool otherflag;
+    ajulong tul;
     
     result = 1.0;
 
@@ -645,7 +646,8 @@ static double compseq_getexpfreqprot(const AjPStr dispseq, ajint word,
     for(i=0; i<word; i++)
     {
         /* get the value of the next residue in dispseq */
-        offset = embNmerProt2int(s, 1, i, &otherflag, ignorebz);
+        tul = embNmerProt2int(s, 1, i, &otherflag, ignorebz);
+	offset = (ajint) tul;
         result *= (double)calcfreq_array[offset]/(double)calcfreq_total;
     }
     return result;

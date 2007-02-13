@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     ajulong alen;
     float *path;
     ajint *compass;
-
+    size_t stlen;
 
     embInit("prophet", argc, argv);
 
@@ -158,8 +158,9 @@ int main(int argc, char **argv)
 	alen = len*mlen;
 	if(alen>maxarr)
 	{
-	    AJCRESIZE(path,alen);
-	    AJCRESIZE(compass,alen);
+	    stlen = (size_t) alen;
+	    AJCRESIZE(path,stlen);
+	    AJCRESIZE(compass,stlen);
 	    maxarr=alen;
 	}
 
@@ -174,7 +175,7 @@ int main(int argc, char **argv)
 	/* JISON new call and reset align */
 	prophet_scan_profile(substr,name,pname,mlen,fmatrix,
 			     align,cons,opencoeff,
-			     extendcoeff,path,compass,&m,&n,len); 
+			     extendcoeff,path,compass,&m,&n,(ajint)len); 
 	ajAlignReset(align);
 	
 	ajStrDel(&strand);
