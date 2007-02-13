@@ -172,7 +172,7 @@ int main(int argc, char **argv)
     ajGraphxySetYEnd(graph,100.0);
     ajGraphSetTitleC(graph,"Wobble bases");
     
-    ajGraphSetCharScale(0.7);
+    ajGraphSetCharScale((float)0.7);
     
     ajGraphxyDisplay(graph,ajTrue);
     
@@ -231,10 +231,13 @@ static void wobble_calcpc(const char *seq, const char *rev,
     ajint nb;
     ajint cds;
     ajint z;
-
+    size_t stlen;
+    
     limit = window*3;
 
-    len = strlen(seq);
+    stlen = strlen(seq);
+    len = (ajint) stlen;
+    
     if(n<3)
     {
 	p = seq;

@@ -45,7 +45,8 @@ int main(int argc, char **argv)
     ajint end;
 
     float Nc;
-
+    double td;
+    
 
     embInit("chips", argc, argv);
 
@@ -68,7 +69,8 @@ int main(int argc, char **argv)
 	if(!sum)
 	{
 	    ajCodCalculateUsage(codon,ccnt);
-	    Nc = ajCodCalcNc(codon);
+	    td = ajCodCalcNc(codon);
+	    Nc = (float) td;
 	    
 	    ajFmtPrintF(outf,"%-20s Nc = %.3f\n",ajSeqGetNameC(seq),Nc);
 	    ajCodClearData(codon);
@@ -78,7 +80,8 @@ int main(int argc, char **argv)
     if(sum)
     {
 	ajCodCalculateUsage(codon,ccnt);
-	Nc = ajCodCalcNc(codon);
+	td = ajCodCalcNc(codon);
+	Nc = (float) td;
 	
 	ajFmtPrintF(outf,"# CHIPS codon usage statistics\n\n");
 	ajFmtPrintF(outf,"Nc = %.3f\n",Nc);

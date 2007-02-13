@@ -279,7 +279,7 @@ int main(int argc, char **argv)
 
     ajGraphSetTitlePlus(graph, ajFileGetName(infile));
 
-    ajGraphOpenWin(graph, 0, Width, 0, Height*1.1);
+    ajGraphOpenWin(graph, 0, Width, 0, Height*(float)1.1);
 
     /* read the start and end positions */
     lindna_ReadInput(infile, &Start, &End);
@@ -581,7 +581,7 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 
     string = ajStrNew();
 
-    ajStrFromInt(&string, Start);
+    ajStrFromInt(&string, (ajint)Start);
     if(TextOri=='H')
 	charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
 					ajStrGetPtr(string), TextHeight);
@@ -607,7 +607,7 @@ static float lindna_TextRuler(float Start, float End, ajint GapSize,
 	}
     }
 
-    ajStrFromInt(&string, End);
+    ajStrFromInt(&string, (ajint)End);
     if(TextOri=='H')
 	charsize = ajGraphFitTextOnLine(0, 0, TextLength, 0,
 					ajStrGetPtr(string), TextHeight);
@@ -657,7 +657,7 @@ static float lindna_HeightRuler(float Start, float End, ajint GapSize,
 	RulerHeight += ajGraphTextHeight(0, 0, 1, 0);
     else
     {
-	ajStrFromInt(&string, Start);
+	ajStrFromInt(&string, (ajint)Start);
 	ajStrAppendS(&totalstring, string);
 	ajStrAppendC(&totalstring, ";");
 	for(i=GapSize, j=0; i<End; i+=GapSize, j++) if(i>Start)
@@ -666,7 +666,7 @@ static float lindna_HeightRuler(float Start, float End, ajint GapSize,
 	    ajStrAppendS(&totalstring, string);
 	    ajStrAppendC(&totalstring, ";");
 	}
-	ajStrFromInt(&string, End);
+	ajStrFromInt(&string, (ajint)End);
 	ajStrAppendS(&totalstring, string);
 	ajStrAppendC(&totalstring, ";");
 	RulerHeight += lindna_VerTextSeqHeightMax(totalstring, postext, j);
@@ -720,7 +720,7 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
     ajGraphDrawLine(xDraw, yDraw, xDraw+DrawLength, yDraw);
 
     /* set the molecule's start */
-    ajStrFromInt(&string, Start);
+    ajStrFromInt(&string, (ajint)Start);
     if(TickLines)
 	ajGraphDrawLine(xDraw, Border, xDraw, yDraw);
     lindna_DrawTicks(xDraw, yDraw, TickHeight, 0.0, string,
@@ -733,21 +733,21 @@ static void lindna_DrawRuler(float xDraw, float yDraw, float Start, float End,
 	{
 	    ajStrFromInt(&string, i);
 	    if(TickLines)
-		ajGraphDrawLine(xDraw+1.0*(i-Start)/ReduceCoef,
-				Border, xDraw+1.0*(i-Start)/ReduceCoef,
+		ajGraphDrawLine(xDraw+(float)1.0*(i-Start)/ReduceCoef,
+				Border, xDraw+(float)1.0*(i-Start)/ReduceCoef,
 				yDraw);
 	    lindna_DrawTicks(xDraw, yDraw, TickHeight,
-			     1.0*(i-Start)/ReduceCoef, string,
+			     (float)1.0*(i-Start)/ReduceCoef, string,
 			     postext, TextOri, 1, 0, Colour);
 	}
     }
 
     /* set the molecule's end */
-    ajStrFromInt(&string, End);
+    ajStrFromInt(&string, (ajint)End);
     if(TickLines)
-	ajGraphDrawLine(xDraw+1.0*RealLength/ReduceCoef, Border,
-			xDraw+1.0*RealLength/ReduceCoef, yDraw);
-    lindna_DrawTicks(xDraw, yDraw, TickHeight, 1.0*RealLength/ReduceCoef,
+	ajGraphDrawLine(xDraw+(float)1.0*RealLength/ReduceCoef, Border,
+			xDraw+(float)1.0*RealLength/ReduceCoef, yDraw);
+    lindna_DrawTicks(xDraw, yDraw, TickHeight,(float)1.0*RealLength/ReduceCoef,
 		     string, postext, TextOri, 1, 0,
 		     Colour);
 
@@ -841,7 +841,7 @@ static void lindna_DrawBlocks(float xDraw, float yDraw, float BlockHeight,
     float y2Blocks;
 
     x1Blocks = xDraw+From;
-    y1Blocks = yDraw+(1.0*BlockHeight/2);
+    y1Blocks = yDraw+((float)1.0*BlockHeight/(float)2.);
     x2Blocks = xDraw+To;
     y2Blocks = y1Blocks-BlockHeight;
 
@@ -919,7 +919,7 @@ static void lindna_DrawRanges(float xDraw, float yDraw, float RangeHeight,
     y1Ranges = yDraw;
     x2Ranges = xDraw+To;
     y2Ranges = y1Ranges;
-    yupper   = yDraw+(1.0*RangeHeight/2);
+    yupper   = yDraw+((float)1.0*RangeHeight/(float)2.);
 
     ajGraphSetFore(Colour);
 
@@ -1001,7 +1001,7 @@ static void lindna_InterBlocks(float xDraw, float yDraw, float BlockHeight,
     float y2Inter;
 
     x1Inter = xDraw+From;
-    y1Inter = yDraw+(1.0*BlockHeight/2);
+    y1Inter = yDraw+((float)1.0*BlockHeight/(float)2.);
     x2Inter = xDraw+To;
     y2Inter = y1Inter-BlockHeight;
 
@@ -1046,7 +1046,7 @@ static void lindna_DrawArrowHeadsOnLine(float xDraw, float yDraw, float Height,
 {
     float middle;
 
-    middle = 1.0*Height/2;
+    middle = (float)1.0*Height/(float)2.;
 
     if(Way==1)
     {
@@ -1083,7 +1083,7 @@ static void lindna_DrawBracketsOnLine(float xDraw, float yDraw, float Height,
 {
     float middle;
 
-    middle = 1.0*Height/2;
+    middle = (float)1.0*Height/(float)2.;
 
     if(Way==1)
     {
@@ -1119,7 +1119,7 @@ static void lindna_DrawBarsOnLine(float xDraw, float yDraw, float Height)
 {
     float middle;
 
-    middle = 1.0*Height/2;
+    middle = (float)1.0*Height/(float)2.;
 
     ajGraphDrawLine(xDraw, yDraw-middle, xDraw, yDraw+middle);
 
@@ -1307,13 +1307,15 @@ static void lindna_VerTextSeq(float x, float y, const AjPStr Name,
 	    token = ajStrParseC(Name, ";");
 	else
 	    token = ajStrParseC(NULL, ";");
-	ajGraphDrawTextOnLine(x-1.0*NumNames*stringHeight/2+1.0*
-			      stringHeight/2+1.0*i*stringHeight,
-			      y+postext, x-1.0*NumNames*stringHeight/2+1.0*
-			      stringHeight/2+1.0*i*stringHeight,
+	ajGraphDrawTextOnLine(x-(float)1.0*NumNames*stringHeight/(float)2.+
+			      (float)1.0*
+			      stringHeight/(float)2.+(float)1.0*i*stringHeight,
+			      y+postext, x-(float)1.0*NumNames*
+			      stringHeight/(float)2.+(float)1.0*
+			      stringHeight/(float)2.+(float)1.0*i*stringHeight,
 			      y+postext+stringHeight,
 			      ajStrGetPtr(token),
-			      0.0);
+			      (float)0.0);
     }
 
     return;
@@ -1645,8 +1647,8 @@ static float lindna_HeightGroup(float postext,
 
 	if(ajStrMatchCaseC(Style[i], "Block"))
 	{
-	    uheight = 1.0*BlockHeight/2;
-	    lheight = 1.0*BlockHeight/2;
+	    uheight = (float)1.0*BlockHeight/(float)2.;
+	    lheight = (float)1.0*BlockHeight/(float)2.;
 
 	    if(TextOri[i]=='H')
 		uheight+=lindna_HorTextPileHeight(postext, NumNames[i]);
@@ -1661,8 +1663,8 @@ static float lindna_HeightGroup(float postext,
 
 	if(ajStrMatchCaseC(Style[i], "Range"))
 	{
-	    uheight = 1.0*RangeHeight/2;
-	    lheight = 1.0*RangeHeight/2;
+	    uheight = (float)1.0*RangeHeight/(float)2.;
+	    lheight = (float)1.0*RangeHeight/(float)2.;
 
 	    if(TextOri[i]=='H')
 		uheight+=lindna_HorTextPileHeight(postext, NumNames[i]);
@@ -1824,7 +1826,7 @@ static ajint lindna_OverlapTextGroup(AjPStr const *Name, AjPStr const *Style,
 	    }
 	}
     }
-    AdjustMax = 0.0;
+    AdjustMax = 0;
 
     for(i=0; i<NumLabels; i++)
 	if(Adjust[i]>AdjustMax)
