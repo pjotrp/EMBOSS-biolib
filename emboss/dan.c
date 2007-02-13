@@ -97,7 +97,8 @@ int main(int argc, char **argv)
     static float *cga = NULL;
     static ajint npoints;
     ajint n;
-
+    ajint ti;
+    
 
     ajGraphInit("dan", argc, argv);
 
@@ -114,12 +115,14 @@ int main(int argc, char **argv)
 
     formamide = ajAcdGetFloat("formamide");
     mismatch  = ajAcdGetFloat("mismatch");
-    prodLen   = ajAcdGetInt("prodLen");
+    ti        = ajAcdGetInt("prodLen");
+
+    prodLen = (float) ti;
 
     if(!isProduct)
     {
 	formamide = mismatch = 0.0;
-	prodLen   = window;
+	prodLen   = (float) window;
     }
 
     temperature = ajAcdGetFloat("temperature");
@@ -170,13 +173,14 @@ int main(int argc, char **argv)
 	if(outf)
 	    dan_findgc(strand, begin, end,
 		       window,shift,formamide,mismatch,
-		       prodLen,DNAConc,saltConc, temperature, isDNA, isProduct,
+		       (ajint)prodLen,DNAConc,saltConc,
+		       temperature, isDNA, isProduct,
 		       doThermo, outf, doplot, xa, ta, tpa, cga, &npoints);
 
 	dan_reportgc(seq, TabRpt,
 		     window,shift,formamide,mismatch,
-		     prodLen,DNAConc,saltConc, temperature, isDNA, isProduct,
-		     doThermo, doplot, xa, ta, tpa, cga, &npoints);
+		     (ajint)prodLen,DNAConc,saltConc, temperature, isDNA,
+		     isProduct, doThermo, doplot, xa, ta, tpa, cga, &npoints);
 
 	if(doplot)
 	    dan_plotit(seq,xa,ta,npoints,begin,end, mult,
@@ -285,16 +289,17 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 
 	xa[*np]  = (float)(i+1);
 	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
-	cga[*np] = 100.0 * ajMeltGC(substr, window);
+	cga[*np] = (float)100.0 * ajMeltGC(substr, window);
 
 	if(dothermo)
 	{
-	    DeltaG = -1. * ajMeltEnergy(substr, (iend-ibegin)+1, shift, isDNA,
-					ajFalse, &DeltaH, &DeltaS);
+	    DeltaG = (float)-1. * ajMeltEnergy(substr, (iend-ibegin)+1,
+					       shift, isDNA, ajFalse, &DeltaH,
+					       &DeltaS);
 
-	    DeltaH = -1. * DeltaH;
-	    DeltaS = -1. * DeltaS;
-	    DeltaG = DeltaH - 0.001*DeltaS*(273.15+temperature);
+	    DeltaH = (float)-1. * DeltaH;
+	    DeltaS = (float)-1. * DeltaS;
+	    DeltaG = DeltaH - (float)0.001*DeltaS*((float)273.15+temperature);
 	}
 
 	if(!doplot)
@@ -313,9 +318,11 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 
 	if(isproduct)
 	{
-	    TmP1 = 81.5 + 16.6 * (float)log10((double)(salt/1000.0)) + 0.41 *
+	    TmP1 = (float)81.5 + (float)16.6 *
+		(float)log10((double)(salt/(float)1000.0)) + (float)0.41 *
 		cga[*np];
-	    TmP2 = -(0.65 * formamide) - (675.0/fprodlen) - mismatch;
+	    TmP2 = -((float)0.65 * formamide) - ((float)675.0/fprodlen) -
+		mismatch;
 	    tpa[*np] = TmP1 + TmP2;
 	    if(!doplot)
 		ajFmtPrintF(outf," Tm(prod)=%1.1f",tpa[*np]);
@@ -324,7 +331,7 @@ static void dan_findgc(const AjPStr strand, ajint begin, ajint end,
 	    ajFmtPrintF(outf,"\n");
 
 	if(doplot)
-	    xa[*np] += fwindow / 2.0;
+	    xa[*np] += fwindow / (float)2.0;
 
 	++(*np);
     }
@@ -418,16 +425,16 @@ static void dan_reportgc(const AjPSeq seq, AjPFeattable TabRpt,
 
 	xa[*np]  = (float)(i+1);
 	ta[*np]  = ajTm(substr, (iend-ibegin)+1, shift, salt, dna, isDNA);
-	cga[*np] = 100.0 * ajMeltGC(substr, window);
+	cga[*np] = (float) 100.0 * ajMeltGC(substr, window);
 
 	if(dothermo)
 	{
-	    DeltaG = -1. * ajMeltEnergy(substr, (iend-ibegin)+1, shift, isDNA,
-					ajFalse, &DeltaH, &DeltaS);
-
-	    DeltaH = -1. * DeltaH;
-	    DeltaS = -1. * DeltaS;
-	    DeltaG = DeltaH - 0.001*DeltaS*(273.15+temperature);
+	    DeltaG = (float)-1. * ajMeltEnergy(substr, (iend-ibegin)+1, shift,
+					       isDNA, ajFalse, &DeltaH,
+					       &DeltaS);
+	    DeltaH = (float)-1. * DeltaH;
+	    DeltaS = (float)-1. * DeltaS;
+	    DeltaG = DeltaH - (float)0.001*DeltaS*((float)273.15+temperature);
 	}
 
 	if(!doplot)
@@ -450,9 +457,11 @@ static void dan_reportgc(const AjPSeq seq, AjPFeattable TabRpt,
 	}
 	if(isproduct)
 	{
-	    TmP1 = 81.5 + 16.6 * (float)log10((double)(salt/1000.0)) + 0.41 *
+	    TmP1 = (float)81.5 + (float)16.6 *
+		(float)log10((double)(salt/(float)1000.0)) + (float)0.41 *
 		cga[*np];
-	    TmP2 = -(0.65 * formamide) - (675.0/fprodlen) - mismatch;
+	    TmP2 = -((float)0.65 * formamide) - ((float)675.0/fprodlen) -
+		mismatch;
 	    tpa[*np] = TmP1 + TmP2;
 	    if(!doplot)
 	    {
@@ -462,7 +471,7 @@ static void dan_reportgc(const AjPSeq seq, AjPFeattable TabRpt,
 	}
 
 	if(doplot)
-	    xa[*np] += fwindow / 2.0;
+	    xa[*np] += fwindow / (float)2.0;
 
 	++(*np);
     }
@@ -540,8 +549,8 @@ static void dan_plotit(const AjPSeq seq, const float *xa, const float *ta,
     ajGraphSetXTitleC(graphs,"Base number");
     ajGraphSetYTitleC(graphs,"Melt temp (C)");
 
-    ajGraphxySetXStart(graphs,ibegin);
-    ajGraphxySetXEnd(graphs,iend);
+    ajGraphxySetXStart(graphs,(float)ibegin);
+    ajGraphxySetXEnd(graphs,(float)iend);
     ajGraphxySetYStart(graphs,0.0);
     ajGraphxySetYEnd(graphs,100.0);
     ajGraphxySetXRangeII(graphs,ibegin,iend);
