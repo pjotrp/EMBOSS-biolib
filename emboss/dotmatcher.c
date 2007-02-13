@@ -138,7 +138,8 @@ int main(int argc, char **argv)
     float x2 = 0.;
     float y1 = 0.;
     float y2 = 0.;
-
+    ajuint tui;
+    
     se1 = ajStrNew();
     se2 = ajStrNew();
 
@@ -168,8 +169,10 @@ int main(int argc, char **argv)
     e2 = ajSeqGetEnd(seq2);
     len1 = ajSeqGetLen(seq);
     len2 = ajSeqGetLen(seq2);
-    flen1 = ajSeqGetLen(seq);
-    flen2 = ajSeqGetLen(seq2);
+    tui   = ajSeqGetLen(seq);
+    flen1 = (float) tui;
+    tui   = ajSeqGetLen(seq2);
+    flen2 = (float) tui;
     
     ajStrAssignSubC(&se1,ajSeqGetSeqC(seq),b1-1,e1-1);
     ajStrAssignSubC(&se2,ajSeqGetSeqC(seq2),b2-1,e2-1);
@@ -193,13 +196,13 @@ int main(int argc, char **argv)
     for(i=0;i<len2;i++)
 	ajStrAppendK(&aa1str,(char)ajSeqcvtGetCodeK(cvt, *s2++));
     
-    max= len1;
+    max = (float)len1;
     if(len2 > max)
-	max = len2;
+	max = (float) len2;
     
-    xmargin = ymargin = max *0.15;
-    ticklen = xmargin*0.1;
-    onefifth  = xmargin*0.2;
+    xmargin = ymargin = max *(float)0.15;
+    ticklen = xmargin*(float)0.1;
+    onefifth  = xmargin*(float)0.2;
     
     subt = ajStrNewC((strret=
 		      ajFmtString("(windowsize = %d, threshold = %3.2f  %D)",
@@ -213,19 +216,19 @@ int main(int argc, char **argv)
     
     if(!stretch)
     {
-	ajGraphOpenWin(graph, 0.0-ymargin,(max*1.35)+ymargin,
-		       0.0-xmargin,(float)max+xmargin);
+	ajGraphOpenWin(graph, (float)0.0-ymargin,(max*(float)1.35)+ymargin,
+		       (float)0.0-xmargin,(float)max+xmargin);
 
-	ajGraphTextMid(max*0.5,flen2+xmargin-onefifth,
+	ajGraphTextMid(max*(float)0.5,flen2+xmargin-onefifth,
 		       ajGraphGetTitleC(graph));
-	ajGraphTextMid(flen1*0.5,0.0-(xmargin/2.0),
+	ajGraphTextMid(flen1*(float)0.5,(float)0.0-(xmargin/(float)2.0),
 		       ajGraphGetXTitleC(graph));
-	ajGraphTextLine(0.0-(xmargin*0.75),flen2*0.5,
-			0.0-(xmargin*0.75),flen1,
+	ajGraphTextLine((float)0.0-(xmargin*(float)0.75),flen2*(float)0.5,
+			(float)0.0-(xmargin*(float)0.75),flen1,
 			ajGraphGetYTitleC(graph),0.5);
 
 	ajGraphSetCharScale(0.5);
-	ajGraphTextMid(max*0.5,flen2+xmargin-(onefifth*3),
+	ajGraphTextMid(max*(float)0.5,flen2+xmargin-(onefifth*(float)3.),
 		       ajGraphGetSubTitleC(graph));
     }
     
@@ -343,59 +346,59 @@ int main(int argc, char **argv)
 	    i++;
 
 	if(i<=13)
-	    tickgap = acceptableticksx[i];
+	    tickgap = (float)acceptableticksx[i];
 	else
-	    tickgap = acceptableticksx[10];
-	ticklen   = xmargin*0.1;
-	onefifth  = xmargin*0.2;
+	    tickgap = (float)acceptableticksx[10];
+	ticklen   = xmargin*(float)0.1;
+	onefifth  = xmargin*(float)0.2;
 
 	if(len2/len1 > 10 )
 	{
 	    /* if a lot smaller then just label start and end */
-	    ajGraphLine(0.0,0.0,0.0,0.0-ticklen);
+	    ajGraphLine((float)0.0,(float)0.0,(float)0.0,(float)0.0-ticklen);
 	    sprintf(ptr,"%d",b1-1);
-	    ajGraphTextMid( 0.0,0.0-(onefifth),ptr);
+	    ajGraphTextMid((float)0.0,(float)0.0-(onefifth),ptr);
 
-	    ajGraphLine(flen1,0.0,
-			flen1,0.0-ticklen);
+	    ajGraphLine(flen1,(float)0.0,
+			flen1,(float)0.0-ticklen);
 	    sprintf(ptr,"%d",len1+b1-1);
-	    ajGraphTextMid(flen1,0.0-(onefifth),ptr);
+	    ajGraphTextMid(flen1,(float)0.0-(onefifth),ptr);
 
 	}
 	else
 	    for(k2=0.0;k2<len1;k2+=tickgap)
 	    {
-		ajGraphLine(k2,0.0,k2,0.0-ticklen);
+		ajGraphLine(k2,(float)0.0,k2,(float)0.0-ticklen);
 		sprintf(ptr,"%d",(ajint)k2+b1-1);
-		ajGraphTextMid( k2,0.0-(onefifth),ptr);
+		ajGraphTextMid(k2,(float)0.0-(onefifth),ptr);
 	    }
 
 	i = 0;
 	while(acceptableticks[i]*numbofticks < len2)
 	    i++;
 
-	tickgap   = acceptableticks[i];
-	ticklen   = ymargin*0.01;
-	onefifth  = ymargin*0.02;
+	tickgap   = (float)acceptableticks[i];
+	ticklen   = ymargin*(float)0.01;
+	onefifth  = ymargin*(float)0.02;
 
 	if(len1/len2 > 10 )
 	{
 	    /* if a lot smaller then just label start and end */
-	    ajGraphLine(0.0,0.0,0.0-ticklen,0.0);
+	    ajGraphLine((float)0.0,(float)0.0,(float)0.0-ticklen,(float)0.0);
 	    sprintf(ptr,"%d",b2-1);
-	    ajGraphTextEnd( 0.0-(onefifth),0.0,ptr);
+	    ajGraphTextEnd((float)0.0-(onefifth),(float)0.0,ptr);
 
-	    ajGraphLine(0.0,flen2,0.0-ticklen,
+	    ajGraphLine((float)0.0,flen2,(float)0.0-ticklen,
 			flen2);
 	    sprintf(ptr,"%d",len2+b2-1);
-	    ajGraphTextEnd( 0.0-(onefifth),flen2,ptr);
+	    ajGraphTextEnd((float)0.0-(onefifth),flen2,ptr);
 	}
 	else
 	    for(k2=0.0;k2<len2;k2+=tickgap)
 	    {
-		ajGraphLine(0.0,k2,0.0-ticklen,k2);
+		ajGraphLine((float)0.0,k2,(float)0.0-ticklen,k2);
 		sprintf(ptr,"%d",(ajint)k2+b2-1);
-		ajGraphTextEnd( 0.0-(onefifth),k2,ptr);
+		ajGraphTextEnd((float)0.0-(onefifth),k2,ptr);
 	    }
     }
     
