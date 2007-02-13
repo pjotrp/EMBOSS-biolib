@@ -452,7 +452,7 @@ int main(int argc, char **argv)
 	AJCNEW0(countField, nfields);
 	AJCNEW0(fieldTot, nfields);
 	for(ifield=0; ifield < nfields; ifield++)
-	    maxFieldLen[ifield] = -maxindex;
+	    maxFieldLen[ifield] = (ajint) maxindex * -1;
 
 	if(systemsort)
 	    AJCNEW(alistfile, nfields);
@@ -1681,7 +1681,7 @@ static size_t dbiblast_memfread(void* dest, size_t size, size_t num_items,
     {					/* memory mapped */
 	i = size * num_items;
 	memcpy(dest, &mf->Mem[mf->Pos], i);
-	mf->Pos += i;
+	mf->Pos += (ajulong) i;
 	return i;
     }
 
