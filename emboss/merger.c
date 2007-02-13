@@ -79,6 +79,7 @@ int main(int argc, char **argv)
     float gapextend;
     ajulong maxarr = 1000;
     ajulong len;		  /* arbitrary. realloc'd if needed */
+    size_t  stlen;
 
     float score;
     ajint begina;
@@ -131,8 +132,9 @@ int main(int argc, char **argv)
 	ajDebug("merger: resize path, len to %d (%d * $d)\n",
 		len, lena, lenb);
 
-        AJCRESIZE(path,len);
-        AJCRESIZE(compass,len);
+	stlen = (size_t) len;
+        AJCRESIZE(path,stlen);
+        AJCRESIZE(compass,stlen);
         maxarr=len;
     }
 
@@ -228,7 +230,8 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
     char *q;
 
     ajint olen;				/* length of walk alignment */
-
+    size_t tt;
+    
     /* lengths of the sequences after the aligned region */
     ajint alen;
     ajint blen;
@@ -379,9 +382,12 @@ static void merger_Merge(AjPAlign align, AjPStr *ms,
     }
 
     /* output the right hand side */
-    alen = strlen(&a[apos]);
-    blen = strlen(&b[bpos]);
+    tt = strlen(&a[apos]);
+    alen = (ajint) tt;
 
+    tt = strlen(&b[bpos]);
+    blen = (ajint) tt;
+    
     if(alen > blen)
     {
 	ajStrAppendC(ms, &a[apos]);
@@ -520,7 +526,8 @@ static float merger_quality(const char * seq, ajuint pos, ajuint window)
     ajuint i;
     ajint j;
     ajint jlast;
-
+    float tf;
+    
     for(i=pos; i<pos+window && i < strlen(seq); i++)
 	if(strchr("aAcCgGtTuU", seq[i]))
 	    /* good bases count for two points */
@@ -537,6 +544,8 @@ static float merger_quality(const char * seq, ajuint pos, ajuint window)
 	    /* ambiguous bases count for only one point */
 	    value++;
 
-    return (double)value/(double)(window*2+1);
+    tf = (float) ((double)value/((double)window*2.+1.));
+    
+    return tf;
 }
 
