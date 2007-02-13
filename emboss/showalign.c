@@ -58,6 +58,7 @@
 **                          for sort order 
 ** @attr idcount [ajint] count of identical residues for stats
 ** @attr simcount [ajint] count of similar residues for stats
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct AjSOrder
@@ -66,6 +67,7 @@ typedef struct AjSOrder
     ajint similarity;
     ajint idcount;
     ajint simcount;
+    char Padding[4];
 } AjOOrder;
 #define AjPOrder AjOOrder*
 
@@ -217,7 +219,7 @@ int main(int argc, char **argv)
     ** change the % identity to the number of identical sequences at a
     ** position required for consensus
     */
-    ident = ajSeqsetGetSize(seqset) * identity / 100;
+    ident = ajSeqsetGetSize(seqset) * (ajint)identity / 100;
 
     /* get the consensus sequence */
     embConsCalc(seqset, matrix, ajSeqsetGetSize(seqset), ajSeqsetGetLen(seqset),
