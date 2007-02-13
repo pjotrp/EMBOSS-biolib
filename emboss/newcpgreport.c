@@ -225,7 +225,7 @@ static void newcpgreport_findbases(const AjPStr substr, ajint len,
 	    obsexp[j]  = obs/expect;
 	    *obsexpmax = (*obsexpmax > obsexp[j]) ? *obsexpmax : obsexp[j];
 	}
-	xypc[j] = (cxf/windowf)*100.0 + (cyf/windowf)*100.0;
+	xypc[j] = (cxf/windowf)*(float)100.0 + (cyf/windowf)*(float)100.0;
     }
 
     *plotend = j;
@@ -531,7 +531,7 @@ static void newcpgreport_compisl(AjPFile outf, const char *p, ajint begin1,
     }
 
     sumcg = C + G;
-    pcg   = ((float)sumcg/(float)len) * 100.;
+    pcg   = ((float)sumcg/(float)len) * (float)100.;
     oe    = (float)(CG * len)/(float)(C * G);
 
     ajFmtPrintF(outf,"FT                    /Sum C+G=%d\n",sumcg);
