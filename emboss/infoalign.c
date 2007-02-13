@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     ** change the % identity to the number of identical sequences at a
     ** position required for consensus
     */
-    ident = ajSeqsetGetSize(seqset) * identity / 100;
+    ident = ajSeqsetGetSize(seqset) * (ajint)identity / 100;
 
     /* get the consensus sequence */
     embConsCalc(seqset, matrix, ajSeqsetGetSize(seqset), ajSeqsetGetLen(seqset),
@@ -676,7 +676,8 @@ static void infoalign_Compare(const AjPSeq ref, const AjPSeq seq,
     *seqlength   = *idcount + *simcount + *difcount;
     *alignlength = end-begin+1;
 
-    *change = (float)(*alignlength - *idcount)*100.0/(float)(*alignlength);
+    *change = (float)(*alignlength - *idcount)*(float)100.0/
+	(float)(*alignlength);
 
     return;
 }

@@ -58,13 +58,15 @@ int main(int argc, char **argv)
     float total;
     float flen;
     ajuint ilen;
-
+    ajuint tui;
+    
     ajGraphInit("pepwindow", argc, argv);
 
-    seq = ajAcdGetSeq("sequence");
+    seq  = ajAcdGetSeq("sequence");
     ilen = ajSeqGetLen(seq);
-    flen = ajSeqGetLen(seq);
-
+    tui  = ajSeqGetLen(seq);
+    flen = (float) tui;
+    
     mult     = ajAcdGetGraphxy("graph");
     datafile = ajAcdGetDatafile("datafile");
     llen     = ajAcdGetInt("length");
@@ -110,8 +112,8 @@ int main(int argc, char **argv)
 
     ajGraphPlpDataSetMaxima(graphdata,0.,flen,min,max);
 
-    min = min*1.1;
-    max = max*1.1;
+    min = min*(float)1.1;
+    max = max*(float)1.1;
 
     ajGraphPlpDataSetMaxMin(graphdata,0.0,flen,min,max);
     ajGraphxySetMaxMin(mult,0.0,flen,min,max);

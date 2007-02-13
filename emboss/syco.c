@@ -120,7 +120,7 @@ int main(int argc, char **argv)
     if(plot)
     {
         graph = ajAcdGetGraphxy("graph");
-	ajGraphSetCharScale(0.60);
+	ajGraphSetCharScale((float)0.60);
     }
     
     
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
 	    for(j=0;j<w;j+=3)
 	    {
 		idx = ajCodIndexC(&p[pos+j]);
-		sum += cdup->tcount[idx];
+		sum += (float)(cdup->tcount[idx]);
 	    }
 	    xarr[base][i] = (float)(beg+startp);
 	    farr[base][i] = (float)exp((double)((double)sum/(double)w));
@@ -224,7 +224,7 @@ int main(int argc, char **argv)
 		for(i=0;i<count;++i)
 		    if(unc[base][i])
 			ajGraphPlpDataAddLine(this,xarr[base][i],1.,
-					      xarr[base][i],1.005,3);
+					      xarr[base][i],(float)1.005,3);
 	    }
 
 

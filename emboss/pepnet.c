@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 
     float xstart;
     float ystart;
-    float ch = 1.8;
+    float ch = (float)1.8;
     float xinc;
     float yinc;
     AjPStr fstr = NULL;
@@ -136,8 +136,8 @@ int main(int argc, char **argv)
 	xstart = 145.0;
 	ystart =  80.0;
 
-	yinc = ch * 2.5;
-	xinc = yinc / 2.5;
+	yinc = ch * (float)2.5;
+	xinc = yinc / (float)2.5;
 
 	x = xstart;
 
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 	    if(x < 10.0*xinc)
 	    {
 		x = xstart;
-		ystart -= 7.5*yinc;
+		ystart -= (float)7.5*yinc;
 	    }
 	    y=ystart;
 
@@ -167,7 +167,7 @@ int main(int argc, char **argv)
 		++r;
 		++lc;
 	    }
-	    y=ystart+yinc/2.0;
+	    y=ystart+yinc/(float)2.0;
 
 	    for(j=4;j<7;++j)
 	    {
@@ -219,11 +219,13 @@ static void pepnet_drawocta(float x, float y, float size)
 {
     static float polyx[]=
     {
-	-0.05, 0.05, 0.1, 0.1, 0.05, -0.05, -0.1, -0.1, -0.05
+	(float)-0.05, (float)0.05, (float)0.1, (float)0.1, (float)0.05,
+	(float)-0.05, (float)-0.1, (float)-0.1, (float)-0.05
     };
     static float polyy[]=
     {
-	0.1, 0.1, 0.05, -0.05, -0.1, -0.1, -0.05, 0.05, 0.1
+	(float)0.1, (float)0.1, (float)0.05, (float)-0.05, (float)-0.1,
+	(float)-0.1, (float)-0.05, (float)0.05, (float)0.1
     };
 
     ajint i;
@@ -265,19 +267,19 @@ static void pepnet_plotresidue(char c, float x, float y, const char *squares,
     if(strstr(squares,cs))
     {
 	ajGraphSetFore(BLUE);
-	ajGraphBox(x-1.5,y-1.32,3.0);
+	ajGraphBox(x-(float)1.5,y-(float)1.32,(float)3.0);
     }
 
     if(strstr(octags,cs))
     {
 	ajGraphSetFore(BLUEVIOLET);
-	pepnet_drawocta(x,y+0.225,20.0);
+	pepnet_drawocta(x,y+(float)0.225,(float)20.0);
     }
 
     if(strstr(diamonds,cs))
     {
 	ajGraphSetFore(RED);
-	ajGraphDia(x-2.5,y-2.25,5.0);
+	ajGraphDia(x-(float)2.5,y-(float)2.25,(float)5.0);
     }
 
     ajGraphText(x,y,cs,0.5);
