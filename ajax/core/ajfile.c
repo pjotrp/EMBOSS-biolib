@@ -61,6 +61,7 @@ static AjPStr filePackTmp = NULL;
 static AjPStr fileDirfixTmp = NULL;
 static AjPStr fileCwd = NULL;
 static AjPStr fileTmpStr = NULL;
+static AjPStr fileTempFilename = NULL;
 
 static AjPRegexp fileUserExp = NULL;
 static AjPRegexp fileWildExp = NULL;
@@ -2457,6 +2458,7 @@ void ajFileExit(void)
     ajStrDel(&fileDirfixTmp);
     ajStrDel(&fileCwd);
     ajStrDel(&fileTmpStr);
+    ajStrDel(&fileTempFilename);
 
     ajRegFree(&fileUserExp);
     ajRegFree(&fileWildExp);
@@ -3699,6 +3701,46 @@ AjBool ajFileBuffGet(AjPFileBuff thys, AjPStr* pdest)
     ajlong fpos = 0;
 
     return ajFileBuffGetL(thys, pdest, &fpos);
+}
+
+
+
+
+/* @func ajFileBuffGetTrim ****************************************************
+**
+** Reads a line from a buffered file. If the buffer has data, reads from the
+** buffer. If the buffer is exhausted, reads from the file. If the file is
+** exhausted, sets end of file and returns. If end of file was already set,
+** looks for another file to open.
+**
+** @param [u] thys [AjPFileBuff] Buffered input file.
+** @param [w] pdest [AjPStr*] Buffer to hold results.
+** @return [AjBool] ajTrue if data was read.
+** @category modify [AjPFileBuff] Reads a line from a buffered file.
+** @@
+******************************************************************************/
+
+AjBool ajFileBuffGetTrim(AjPFileBuff thys, AjPStr* pdest)
+{
+    AjBool ret;
+    ajlong fpos = 0;
+    AjPStr dest;
+
+    ret = ajFileBuffGetL(thys, pdest, &fpos);
+    
+    /* trim any trailing newline */
+
+    dest = *pdest;
+
+    /*ajDebug("Remove carriage-return characters from PC-style files\n");*/
+    if(ajStrGetCharLast(dest) == '\n')
+	ajStrCutEnd(pdest, 1);
+
+    /* PC files have \r\n Macintosh files have just \r : this fixes both */
+    if(ajStrGetCharLast(dest) == '\r')
+	ajStrCutEnd(pdest, 1);
+
+    return ret;
 }
 
 
@@ -5517,14 +5559,13 @@ const char* ajFileTempName(const char *dir)
 #else
     struct  stat buf;
 #endif
-    static  AjPStr dt = NULL;
     AjPStr  direct;
     ajint   retry;
     AjBool  ok;
     AjPFile outf;
     
-    if(!dt)
-	dt     = ajStrNew();
+    if(!fileTempFilename)
+	fileTempFilename = ajStrNew();
     
     direct = ajStrNew();
     
@@ -5536,38 +5577,41 @@ const char* ajFileTempName(const char *dir)
     
     
     
-    ajFmtPrintS(&dt,"%S%S-%d.%d",direct,ajAcdGetProgram(),time(0),
+    ajFmtPrintS(&fileTempFilename,
+		"%S%S-%d.%d",direct,ajAcdGetProgram(),time(0),
 		ajRandomNumber());
     
     retry = 5;
     ok    = ajTrue;
     
 #if defined(AJ_IRIXLF)
-    while(!stat64(ajStrGetPtr(dt),&buf) && retry)
+    while(!stat64(ajStrGetPtr(fileTempFilename),&buf) && retry)
 #else
-	while(!stat(ajStrGetPtr(dt),&buf) && retry)
+	while(!stat(ajStrGetPtr(fileTempFilename),&buf) && retry)
 #endif
 	{
-	    ajFmtPrintS(&dt,"%S%S-%d.%d",direct,ajAcdGetProgram(),time(0),
+	    ajFmtPrintS(&fileTempFilename,
+			"%S%S-%d.%d",direct,ajAcdGetProgram(),time(0),
 			ajRandomNumber());
 	    --retry;
 	}
     
     if(!retry)
     {
-	ajDebug("Cannot find a unique filename [last try %S]\n",dt);
+	ajDebug("Cannot find a unique filename [last try %S]\n",
+		fileTempFilename);
 	ok = ajFalse;
     }
     
-    if(!(outf = ajFileNewOut(dt)))
+    if(!(outf = ajFileNewOut(fileTempFilename)))
     {
-	ajDebug("Cannot write to file %S\n",dt);
+	ajDebug("Cannot write to file %S\n",fileTempFilename);
 	ok = ajFalse;
     }
     else
     {
 	ajFileClose(&outf);
-	unlink(ajStrGetPtr(dt));
+	unlink(ajStrGetPtr(fileTempFilename));
     }
     
     ajStrDel(&direct);
@@ -5575,7 +5619,7 @@ const char* ajFileTempName(const char *dir)
     if(!ok)
 	return NULL;
     
-    return ajStrGetPtr(dt);
+    return ajStrGetPtr(fileTempFilename);
 }
 
 
