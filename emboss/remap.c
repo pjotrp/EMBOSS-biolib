@@ -1246,7 +1246,7 @@ static void remap_RestrictPreferred(const AjPList l, const AjPTable t)
     AjBool found;		/* name found in isoschizomer list */
         	    
     /* for parsing value->iso string */
-    AjPStrTok tok;
+    AjPStrTok tok = NULL;
     char tokens[] = " ,";
     AjPStr code = NULL;
 
@@ -1260,8 +1260,10 @@ static void remap_RestrictPreferred(const AjPList l, const AjPTable t)
     	value = ajTableGet(t, m->cod);
     	if(value) 
     	{
-    	    newiso = ajStrNew();
+    	    ajStrAssignC(&newiso, "");
+
 	    /* parse isoschizomer names from m->iso */
+	    ajStrTokenDel(&tok);
             tok = ajStrTokenNewC(m->iso,  tokens);
             while(ajStrTokenNextParseC(&tok, tokens, &code))
             {
@@ -1302,6 +1304,7 @@ static void remap_RestrictPreferred(const AjPList l, const AjPTable t)
     ajListIterFree(&iter);     
     ajStrDel(&newiso);
     ajStrDel(&code);
+    ajStrTokenDel(&tok);
 
     return; 
 }

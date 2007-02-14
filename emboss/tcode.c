@@ -135,8 +135,7 @@ int main(int argc, char **argv)
     plot     = ajAcdGetToggle("plot");
     step     = ajAcdGetInt("step");
     
-    if(plot)
-        graph = ajAcdGetGraphxy("graph");
+    graph = ajAcdGetGraphxy("graph");
 
 
     testcodes = ajFloatNew();
@@ -225,14 +224,24 @@ int main(int argc, char **argv)
 	ajFeattableClear(ftable);
     }
 
+    tcode_del(&table1);
 
     ajFloatDel(&testcodes);
     ajIntDel(&from);
     ajIntDel(&to);
-    tcode_del(&table1);
     ajStrDel(&substr);
-    
-    ajExit();
+
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    if(!plot)
+	ajReportClose(report);
+    ajReportDel(&report);
+    ajFileClose(&datafile);
+    ajFeattableDel(&ftable);
+    ajGraphxyDel(&graph);
+
+    embExit();
+
     return 0;
 }
 

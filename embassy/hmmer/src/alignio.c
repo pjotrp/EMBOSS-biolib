@@ -10,7 +10,7 @@
 
 /* alignio.c
  * SRE, Mon Jul 12 11:57:37 1993
- * RCS $Id: alignio.c,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: alignio.c,v 1.3 2007/02/14 16:33:03 rice Exp $
  * 
  * Input/output of sequence alignments.
  */
@@ -98,7 +98,7 @@ FreeAlignment(char **aseqs, AINFO *ainfo)
   if (ainfo->rf   != NULL) free(ainfo->rf);
   if (ainfo->name != NULL) free(ainfo->name);
   if (ainfo->desc != NULL) free(ainfo->desc);
-/*  if (ainfo->acc  != NULL) free(ainfo->acc);*/
+  if (ainfo->acc  != NULL) free(ainfo->acc);
   if (ainfo->au   != NULL) free(ainfo->au);
 
   free(ainfo->sqinfo);

@@ -218,6 +218,7 @@ void
 FreePlan7(struct plan7_s *hmm)
 {
   if (hmm->name    != NULL) free(hmm->name);
+  if (hmm->acc     != NULL) free(hmm->acc);
   if (hmm->desc    != NULL) free(hmm->desc);
   if (hmm->rf      != NULL) free(hmm->rf);
   if (hmm->cs      != NULL) free(hmm->cs);

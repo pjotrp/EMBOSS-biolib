@@ -72,11 +72,11 @@ extern int PNGHeight;
 int main(int argc, char **argv)
 {
 
-    AjPSeq inseq;
-    AjPFile outfile;
+    AjPSeq inseq = NULL;
+    AjPFile outfile = NULL;
     ajint hwindow;
-    AjPFile aa_properties;
-    AjPFile aa_hydropathy;
+    AjPFile aa_properties = NULL;
+    AjPFile aa_hydropathy = NULL;
 
     AjBool do_seq;
     AjBool do_general;
@@ -106,8 +106,8 @@ int main(int argc, char **argv)
     ajint numGraphs = 0;
 
     /*   Data_table aa_props, aa_hydro, aa_acc;*/
-    AjPList aa_props;
-    AjPList aa_hydro;
+    AjPList aa_props = NULL;
+    AjPList aa_hydro = NULL;
 
     const char * propertyTitles[] =
     {
@@ -139,9 +139,6 @@ int main(int argc, char **argv)
     ajGraphInit("pepinfo", argc, argv);
 
     aj_hist_mark=NOY;
-
-    aa_props = ajListNew();
-    aa_hydro = ajListNew();
 
     /* Get parameters */
     inseq         = ajAcdGetSeq("sequence");
@@ -210,23 +207,25 @@ int main(int argc, char **argv)
 			{
 			    ajErr("value is not integer ..%s..\n",
 				  ajStrGetPtr(value));
-			    ajExit();
+			    embExit();
 			}
 		    }
 		    else
 		    {
 			ajErr("At position %d in seq, couldn't find key "
 			      "%s in table", j, ajStrGetPtr(key));
-			ajExit();
+			embExit();
 		    }
 		}
 	    }
 	    else
 	    {
 		ajErr("No more tables in list\n");
-		ajExit();
+		embExit();
 	    }
 	}
+
+	ajListIterFree(&listIter);
 
 	/* print out results */
 
@@ -272,10 +271,6 @@ int main(int argc, char **argv)
 	for(i = 0; i < 9; i++)
 	    AJFREE(iv[i]);
 
-
-	/* Delete Data tables*/
-	embDataListDel(&aa_props);
-
 	/*delete hist object*/
 	ajHistDelete(&hist);
     }
@@ -302,7 +297,7 @@ int main(int argc, char **argv)
 	    if(ajListIterDone(listIter))
 	    {
 		ajErr("No more tables in list\n");
-		ajExit();
+		embExit();
 	    }
 
 	    /* Get next table of parameters */
@@ -330,14 +325,14 @@ int main(int argc, char **argv)
 		    {
 			ajErr("At position %d in seq, couldn't find key %s",
 			       k, ajStrGetPtr(key));
-			ajExit();
+			embExit();
 		    }
 
 		    if(!ajStrIsFloat(value))
 		    {
 			ajErr("value is not float ..%s..",
 			      ajStrGetPtr(value));
-			ajExit();
+		       embExit();
 		    }
 		    ajStrToFloat(value, &num);
 		    total +=num;
@@ -350,12 +345,15 @@ int main(int argc, char **argv)
 		pfloat[cnt++] = 0.00;
 	}
 
+	ajListIterFree(&listIter);
+
 	/* Print out results */
 
 	for(i=0; i<3; i++)
 	{
 	    ajFmtPrintS(&tmpa,  "Results from %s", hydroTitles[i]);
-	    pepinfo_printFloatResults(outfile, inseq, pf[i], ajStrGetPtr(tmpa));
+	    pepinfo_printFloatResults(outfile, inseq, pf[i],
+				      ajStrGetPtr(tmpa));
 	}
 
 	/*Plot results*/
@@ -385,12 +383,24 @@ int main(int argc, char **argv)
     }
 
     if(do_plot)
-    {
 	ajGraphCloseWin();
-	ajGraphxyDel(&graphs);
-    }
 
-    ajExit();
+    ajSeqDel(&inseq);
+    ajFileClose(&outfile);
+    ajFileClose(&aa_properties);
+    ajFileClose(&aa_hydropathy);
+    ajGraphxyDel(&graphs);
+    ajHistDelete(&hist);
+
+    /* Delete Data tables*/
+    embDataListDel(&aa_props);
+    embDataListDel(&aa_hydro);
+
+    ajStrDel(&tmpa);
+    ajStrDel(&tmpb);
+    ajStrDel(&key);
+
+    embExit();
 
     return 0;
 }

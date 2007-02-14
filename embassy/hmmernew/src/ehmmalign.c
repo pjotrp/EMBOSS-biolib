@@ -149,6 +149,7 @@ int main(int argc, char **argv)
     ajSeqsetDel(&seqfile);
     ajFileClose(&mapali);
     ajFileClose(&withali);
+    ajAlignClose(o);
     ajAlignDel(&o);
 
     
@@ -165,8 +166,7 @@ int main(int argc, char **argv)
     ajStrDel(&tmp);
     ajStrDel(&fmt);
     ajStrDel(&rnd);
-
-    ajExit();
+    embExit();
 
     return 0;
 }

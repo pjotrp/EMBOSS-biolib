@@ -45,6 +45,15 @@ static AjPRegexp dbxgcg_gcg_rexp = NULL;
 static AjPRegexp dbxgcg_gcg_sexp = NULL;
 static AjPRegexp dbxgcg_splitexp = NULL;
 
+static AjPRegexp dbxgcg_pir_idexp  = NULL;
+static AjPRegexp dbxgcg_pir_acexp  = NULL;
+static AjPRegexp dbxgcg_pir_ac2exp = NULL;
+static AjPRegexp dbxgcg_pir_keyexp = NULL;
+static AjPRegexp dbxgcg_pir_taxexp = NULL;
+static AjPRegexp dbxgcg_pir_tax2exp = NULL;
+static AjPRegexp dbxgcg_pir_wrdexp = NULL;
+static AjPRegexp dbxgcg_pir_phrexp = NULL;
+static AjPRegexp dbxgcg_pir_pirexp = NULL;
 
 static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 			       AjPStr *reflibstr);
@@ -333,9 +342,21 @@ int main(int argc, char **argv)
     ajRegFree(&dbxgcg_embl_wrdexp);
     ajRegFree(&dbxgcg_embl_phrexp);
     ajRegFree(&dbxgcg_embl_taxexp);
+
     ajRegFree(&dbxgcg_gcg_rexp);
     ajRegFree(&dbxgcg_gcg_sexp);
+
     ajRegFree(&dbxgcg_splitexp);
+
+    ajRegFree(&dbxgcg_pir_idexp);
+    ajRegFree(&dbxgcg_pir_acexp);
+    ajRegFree(&dbxgcg_pir_ac2exp);
+    ajRegFree(&dbxgcg_pir_keyexp);
+    ajRegFree(&dbxgcg_pir_taxexp);
+    ajRegFree(&dbxgcg_pir_tax2exp);
+    ajRegFree(&dbxgcg_pir_wrdexp);
+    ajRegFree(&dbxgcg_pir_phrexp);
+    ajRegFree(&dbxgcg_pir_pirexp);
 
     ajExit();
 
@@ -572,14 +593,13 @@ static ajlong dbxgcg_gcggetent(EmbPBtreeEntry entry, AjPFile infs,
 static ajlong dbxgcg_pirgetent(EmbPBtreeEntry entry, AjPFile infs,
 			       AjPFile infr, const AjPStr dbtype)
 {
-    static AjPStr reflibstr = NULL;
+    AjPStr reflibstr = NULL;
     ajint i;
     static ajint called  = 0;
     static ajint iparser = -1;
-    static AjPRegexp pirexp = NULL;
     ajlong gcglen;
-    static AjPStr rline = NULL;
-    static AjPStr sline = NULL;
+    AjPStr rline = NULL;
+    AjPStr sline = NULL;
     ajlong spos = 0;
 
     if(!called)
@@ -600,11 +620,8 @@ static ajlong dbxgcg_pirgetent(EmbPBtreeEntry entry, AjPFile infs,
     if(parser[iparser].GcgType)
 	return 0;
 
-    if(!pirexp)
-	pirexp = ajRegCompC("^>..;([^ \t\n]+)");
-
-    ajStrAssignC(&sline, "");
-    ajStrAssignC(&rline, "");
+    if(!dbxgcg_pir_pirexp)
+	dbxgcg_pir_pirexp = ajRegCompC("^>..;([^ \t\n]+)");
 
     /* skip to seqid first line */
     while(ajStrGetCharFirst(sline)!='>')
@@ -614,7 +631,7 @@ static ajlong dbxgcg_pirgetent(EmbPBtreeEntry entry, AjPFile infs,
     ajDebug("dbxgcg_pirgetent .seq (%S) %Ld '%S' \n",
 	    dbtype, ajFileTell(infs), sline);
 
-    ajRegExec(pirexp, sline);
+    ajRegExec(dbxgcg_pir_pirexp, sline);
 
     /* skip to refid first line */
     while(ajStrGetCharFirst(rline)!='>')
@@ -626,9 +643,9 @@ static ajlong dbxgcg_pirgetent(EmbPBtreeEntry entry, AjPFile infs,
 
     /* get the encoding/sequence length info */
 
-    ajRegExec(pirexp, rline);
-    ajRegSubI(pirexp, 1, &reflibstr);
-    ajRegSubI(pirexp, 1, &entry->id);
+    ajRegExec(dbxgcg_pir_pirexp, rline);
+    ajRegSubI(dbxgcg_pir_pirexp, 1, &reflibstr);
+    ajRegSubI(dbxgcg_pir_pirexp, 1, &entry->id);
 
     ajDebug("dbigcg_pirgetent seqid '%S' spos: %Ld\n",
 	    entry->id, ajFileTell(infs));
@@ -657,6 +674,10 @@ static ajlong dbxgcg_pirgetent(EmbPBtreeEntry entry, AjPFile infs,
 	ajFileSeek(infs, spos, 0);
 
     ajDebug("dbxgcg_pirgetent end spos %Ld line '%S'\n", spos, sline);
+
+    ajStrDel(&rline);
+    ajStrDel(&sline);
+    ajStrDel(&reflibstr);
 
     return gcglen;
 }
@@ -1177,45 +1198,37 @@ static AjBool dbxgcg_ParseGenbank(EmbPBtreeEntry entry, AjPFile infr,
 static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 			       AjPStr *id)
 {
-    static AjPRegexp idexp  = NULL;
-    static AjPRegexp acexp  = NULL;
-    static AjPRegexp ac2exp = NULL;
-    static AjPRegexp keyexp = NULL;
-    static AjPRegexp taxexp = NULL;
-    static AjPRegexp tax2exp = NULL;
-    static AjPRegexp wrdexp = NULL;
-    static AjPRegexp phrexp = NULL;
     ajlong rpos;
-    static AjPStr tmpstr  = NULL;
-    static AjPStr tmpline = NULL;
-    static AjPStr rline   = NULL;
-    static AjPStr tmpfd   = NULL;
+    AjPStr tmpstr  = NULL;
+    AjPStr tmpline = NULL;
+    AjPStr rline   = NULL;
+    AjPStr tmpfd   = NULL;
 
     AjPStr str = NULL;
 
-    if(!wrdexp)
-	wrdexp = ajRegCompC("([A-Za-z0-9_]+)");
+    if(!dbxgcg_pir_wrdexp)
+	dbxgcg_pir_wrdexp = ajRegCompC("([A-Za-z0-9_]+)");
 
-    if(!idexp)
-	idexp = ajRegCompC("^>..;([^;.\n\r]+)");
+    if(!dbxgcg_pir_idexp)
+	dbxgcg_pir_idexp = ajRegCompC("^>..;([^;.\n\r]+)");
 
-    if(!phrexp)				/* allow . for "sp." */
-	phrexp = ajRegCompC(" *([^,;\n\r]+)");
+    if(!dbxgcg_pir_phrexp)				/* allow . for "sp." */
+	dbxgcg_pir_phrexp = ajRegCompC(" *([^,;\n\r]+)");
 
-    if(!tax2exp)				/* allow . for "sp." */
-	tax2exp = ajRegCompC(" *([^,;\n\r()]+)");
+    if(!dbxgcg_pir_tax2exp)				/* allow . for "sp." */
+	dbxgcg_pir_tax2exp = ajRegCompC(" *([^,;\n\r()]+)");
 
-    if(!acexp)
-	acexp = ajRegCompC("^C;Accession:");
+    if(!dbxgcg_pir_acexp)
+	dbxgcg_pir_acexp = ajRegCompC("^C;Accession:");
 
-    if(!ac2exp)
-	ac2exp = ajRegCompC("([A-Za-z0-9]+)");
+    if(!dbxgcg_pir_ac2exp)
+	dbxgcg_pir_ac2exp = ajRegCompC("([A-Za-z0-9]+)");
 
-    if(!taxexp)
-	taxexp = ajRegCompC("^C;Species:");
+    if(!dbxgcg_pir_taxexp)
+	dbxgcg_pir_taxexp = ajRegCompC("^C;Species:");
 
-    if(!keyexp)
-	keyexp = ajRegCompC("^C;Keywords:");
+    if(!dbxgcg_pir_keyexp)
+	dbxgcg_pir_keyexp = ajRegCompC("^C;Keywords:");
 
     rpos = ajFileTell(infr);
 
@@ -1226,16 +1239,16 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
     ajDebug("line-2 '%S'\n", rline);
     if(entry->do_description)
     {
-	while(ajRegExec(wrdexp, rline))
+	while(ajRegExec(dbxgcg_pir_wrdexp, rline))
 	{
-	    ajRegSubI(wrdexp, 1, &tmpfd);
+	    ajRegSubI(dbxgcg_pir_wrdexp, 1, &tmpfd);
 	    ajDebug("++des '%S'\n", tmpfd);
 
 	    str = ajStrNew();
 	    ajStrAssignS(&str,tmpfd);
 	    ajListPush(entry->de,(void *)str);
 
-	    ajRegPost(wrdexp, &rline);
+	    ajRegPost(dbxgcg_pir_wrdexp, &rline);
 	}
     }
 
@@ -1244,12 +1257,12 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
         rpos = ajFileTell(infr);
 	ajStrAssignS(&tmpstr,rline);
 
-	if(ajRegExec(acexp, rline))
+	if(ajRegExec(dbxgcg_pir_acexp, rline))
 	{
-	    ajRegPost(acexp, &tmpline);
-	    while(ajRegExec(ac2exp, tmpline))
+	    ajRegPost(dbxgcg_pir_acexp, &tmpline);
+	    while(ajRegExec(dbxgcg_pir_ac2exp, tmpline))
 	    {
-		ajRegSubI(ac2exp, 1, &tmpfd);
+		ajRegSubI(dbxgcg_pir_ac2exp, 1, &tmpfd);
 		ajDebug("++acc '%S'\n", tmpfd);
 
 		if(entry->do_accession)
@@ -1259,18 +1272,18 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 		    ajListPush(entry->ac,(void *)str);
 		}
 
-		ajRegPost(ac2exp, &tmpline);
+		ajRegPost(dbxgcg_pir_ac2exp, &tmpline);
 	    }
 	}
 
 	if(entry->do_keyword)
 	{
-	    if(ajRegExec(keyexp, rline))
+	    if(ajRegExec(dbxgcg_pir_keyexp, rline))
 	    {
-		ajRegPost(keyexp, &tmpline);
-		while(ajRegExec(phrexp, tmpline))
+		ajRegPost(dbxgcg_pir_keyexp, &tmpline);
+		while(ajRegExec(dbxgcg_pir_phrexp, tmpline))
 		{
-		    ajRegSubI(phrexp, 1, &tmpfd);
+		    ajRegSubI(dbxgcg_pir_phrexp, 1, &tmpfd);
 		    ajDebug("++key '%S'\n", tmpfd);
 		    ajStrTrimWhiteEnd(&tmpfd);
 
@@ -1278,19 +1291,19 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 		    ajStrAssignS(&str,tmpfd);
 		    ajListPush(entry->kw,(void *)str);
 
-		    ajRegPost(phrexp, &tmpline);
+		    ajRegPost(dbxgcg_pir_phrexp, &tmpline);
 		}
 	    }
 	}
 
 	if(entry->do_taxonomy)
 	{
-	    if(ajRegExec(taxexp, rline))
+	    if(ajRegExec(dbxgcg_pir_taxexp, rline))
 	    {
-		ajRegPost(taxexp, &tmpline);
-		while(ajRegExec(tax2exp, tmpline))
+		ajRegPost(dbxgcg_pir_taxexp, &tmpline);
+		while(ajRegExec(dbxgcg_pir_tax2exp, tmpline))
 		{
-		    ajRegSubI(tax2exp, 1, &tmpfd);
+		    ajRegSubI(dbxgcg_pir_tax2exp, 1, &tmpfd);
 		    ajStrTrimWhiteEnd(&tmpfd);
 		    ajDebug("++tax '%S'\n", tmpfd);
 
@@ -1298,7 +1311,7 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 		    ajStrAssignS(&str,tmpfd);
 		    ajListPush(entry->tx,(void *)str);
 
-		    ajRegPost(tax2exp, &tmpline);
+		    ajRegPost(dbxgcg_pir_tax2exp, &tmpline);
 		}
 	    }
 	}
@@ -1312,6 +1325,11 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 
     if(rpos)
 	ajFileSeek(infr, rpos, 0);
+
+    ajStrDel(&rline);
+    ajStrDel(&tmpstr);
+    ajStrDel(&tmpline);
+    ajStrDel(&tmpfd);
 
     return ajFalse;
 }

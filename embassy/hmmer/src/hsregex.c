@@ -18,7 +18,7 @@
  * Thanks, Henry!
  *  
  * SRE, Fri Aug 28 11:10:17 1998
- * RCS $Id: hsregex.c,v 1.2 2005/11/01 15:39:41 rice Exp $
+ * RCS $Id: hsregex.c,v 1.3 2007/02/14 16:33:03 rice Exp $
  *****************************************************************/    
 
 /* Copyright (c) 1986, 1993, 1995 by University of Toronto.
@@ -204,19 +204,19 @@ static void regoptail(struct comp *cp, char *p, char *val);
  * of the structure of the compiled regexp.
  */
 sqd_regexp *
-sqd_regcomp(exp)
-const char *exp;
+sqd_regcomp(expr)
+const char *expr;
 {
 	register sqd_regexp *r;
 	register char *scan;
 	int flags;
 	struct comp co;
 
-	if (exp == NULL)
+	if (expr == NULL)
 		FAIL("NULL argument to sqd_regcomp");
 
 	/* First pass: determine size, legality. */
-	co.regparse = (char *)exp;
+	co.regparse = (char *)expr;
 	co.regnpar = 1;
 	co.regsize = 0L;
 	co.regdummy[0] = NOTHING;
@@ -236,7 +236,7 @@ const char *exp;
 		FAIL("out of space");
 
 	/* Second pass: emit code. */
-	co.regparse = (char *)exp;
+	co.regparse = (char *)expr;
 	co.regnpar = 1;
 	co.regcode = r->program;
 	regc(&co, SQD_REGMAGIC);

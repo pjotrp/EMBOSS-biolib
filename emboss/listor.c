@@ -63,8 +63,8 @@ int main(int argc, char **argv)
     ajint tmp1;
     ajint tmp2 = 0;
     ajint i;
-    AjPStr * operator;
-    ajint Operator;
+    AjPStr operator;
+    ajint OperatorCode=0;
 
 
     embInit("listor", argc, argv);
@@ -72,26 +72,26 @@ int main(int argc, char **argv)
     seq1     = ajAcdGetSeqset("firstsequences");
     seq2     = ajAcdGetSeqset("secondsequences");
     list     = ajAcdGetOutfile("outfile");
-    operator = ajAcdGetList("operator");
+    operator = ajAcdGetListSingle("operator");
 
     /* get the operator value */
-    switch(ajStrGetPtr(operator[0])[0])
+    switch(ajStrGetCharFirst(operator))
     {
     case 'O':
-	Operator = L_OR;
+	OperatorCode = L_OR;
 	break;
     case 'A':
-	Operator = L_AND;
+	OperatorCode = L_AND;
 	break;
     case 'X':
-	Operator = L_XOR;
+	OperatorCode = L_XOR;
 	break;
     case 'N':
-	Operator = L_NOT;
+	OperatorCode = L_NOT;
 	break;
     default:
-	ajFatal("Invalid operator type: %S", operator[0]);
-	exit(0);
+	ajFatal("Invalid operator type: %S", operator);
+	embExitBad();
     }
 
 
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
     }
 
     /* output the required entries to the list file */
-    listor_Output(list, Operator, seq1, seq2, hits1, hits2, n1, n2);
+    listor_Output(list, OperatorCode, seq1, seq2, hits1, hits2, n1, n2);
 
 
     AJFREE(lengths1);
@@ -175,8 +175,12 @@ int main(int argc, char **argv)
     AJFREE(hits1);
     AJFREE(hits2);
     ajFileClose(&list);
+    ajStrDel(&operator);
 
-    ajExit();
+    ajSeqsetDel(&seq1);
+    ajSeqsetDel(&seq2);
+
+    embExit();
 
     return 0;
 }

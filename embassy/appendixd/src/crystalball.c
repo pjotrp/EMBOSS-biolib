@@ -97,6 +97,7 @@ int main(int argc, char **argv)
       ajFmtPrintF (outf, "Everything else: Trust me, you really don't want to know just now!\n");
 
     ajFileClose (&outf);
+    ajSeqDel(&seq);
 
     ajExit ();
     return 0;

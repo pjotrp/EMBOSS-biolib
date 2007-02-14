@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 	P7ASCII, P7BINARY, GCGPROFILE, BICPROFILE
     } 
     outfmt;			/* output format */
-    AjPStr *ajfmt;
+    AjPStr ajfmt;
     AjBool ajappend=ajFalse;
     AjBool ajforce=ajFalse;
     AjPStr instr;
@@ -77,7 +77,7 @@ int main(int argc, char **argv)
     do_append = FALSE;
     do_force  = FALSE;
 
-    ajfmt = ajAcdGetList("format");
+    ajfmt    = ajAcdGetListSingle("format");
     ajappend = ajAcdGetBool("append");
     ajforce  = ajAcdGetBool("force");
     inf      = ajAcdGetInfile("infile");
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     else
 	do_force=FALSE;
 
-    ajc = *ajStrGetPtr(ajfmt[0]);
+    ajc = ajStrGetCharFirst(ajfmt);
     if(ajc=='A')
 	outfmt = P7ASCII;
     else if(ajc=='B')

@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     AjPStr name   = NULL;
     AjPStr acc    = NULL;
     AjPStr bf     = NULL;
-    AjPStr *menu;
+    AjPStr menu;
     AjPStr pattern  = NULL;
     AjPStr opattern = NULL;
     AjPStr pname    = NULL;
@@ -75,6 +75,7 @@ int main(int argc, char **argv)
     ajint sum;
     ajint v;
 
+    char cp;
     const char *p;
 
 
@@ -84,25 +85,25 @@ int main(int argc, char **argv)
     outf       = ajAcdGetOutfile("outfile");
     mismatch   = ajAcdGetInt("mismatch");
     minlength  = ajAcdGetInt("minlength");
-    menu       = ajAcdGetList("menu");
+    menu       = ajAcdGetListSingle("menu");
 
     pname = ajStrNew();
-    p=ajStrGetPtr(*menu);
+    cp=ajStrGetCharFirst(menu);
 
-    if(*p=='F')
+    if(cp=='F')
 	ajStrAssignC(&pname,"tffungi");
-    else if(*p=='I')
+    else if(cp=='I')
 	ajStrAssignC(&pname,"tfinsect");
-    else if(*p=='O')
+    else if(cp=='O')
 	ajStrAssignC(&pname,"tfother");
-    else if(*p=='P')
+    else if(cp=='P')
 	ajStrAssignC(&pname,"tfplant");
-    else if(*p=='V')
+    else if(cp=='V')
 	ajStrAssignC(&pname,"tfvertebrate");
-    else if(*p=='C')
+    else if(cp=='C')
 	inf = ajAcdGetDatafile("custom");
 
-    if(*p!='C')
+    if(cp!='C')
     {
 	ajFileDataNew(pname,&inf);
 	if(!inf)
@@ -182,13 +183,19 @@ int main(int argc, char **argv)
     ajStrDel(&name);
     ajStrDel(&acc);
     ajStrDel(&pname);
+    ajStrDel(&opattern);
+    ajStrDel(&bf);
     ajStrDel(&pattern);
     ajStrDel(&substr);
     ajSeqDel(&seq);
     ajFileClose(&inf);
     ajFileClose(&outf);
 
-    ajExit();
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+    ajStrDel(&menu);
+
+    embExit();
 
     return 0;
 }

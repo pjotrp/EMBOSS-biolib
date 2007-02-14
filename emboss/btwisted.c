@@ -76,6 +76,9 @@ int main(int argc, char **argv)
     angletable  = btwisted_getdinucdata(angles);
     energytable = btwisted_getdinucdata(energies);
 
+    ajFileClose(&angles);
+    ajFileClose(&energies);
+
     begin = ajSeqGetBegin(seq);
     end   = ajSeqGetEnd(seq);
 
@@ -112,15 +115,14 @@ int main(int argc, char **argv)
     ajFmtPrintF(result,"Average stacking energy per dinucleotide: %.2f\n",
 		energyperbase);
 
-    ajFileClose(&angles);
-    ajFileClose(&result);
-
     ajStrTableFree(&angletable);
     ajStrTableFree(&energytable);
 
     ajStrDel(&nucs);
+    ajFileClose(&result);
+    ajSeqDel(&seq);
 
-    ajExit ();
+    embExit ();
 
     return 0;
 }
@@ -132,8 +134,8 @@ int main(int argc, char **argv)
 **
 ** Undocumented.
 **
-** @param [u] inf [AjPFile] Undocumented
-** @return [AjPTable] Undocumented
+** @param [u] inf [AjPFile] Data file
+** @return [AjPTable] Data values table
 ** @@
 ******************************************************************************/
 

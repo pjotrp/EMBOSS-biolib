@@ -268,7 +268,14 @@ int main(int argc, char **argv)
 	}
 	idCount += idCountFile;
 	if(systemsort)
+	{
 	    embDbiSortClose(&elistfile, alistfile, nfields);
+	    AJFREE(entry);
+	}
+	else
+	{
+	    embDbiEntryDel(&dbifastaEntry);
+	}
 	embDbiLogFile(logfile, curfilename, idCountFile, fields,
 		      countField, nfields);
     }

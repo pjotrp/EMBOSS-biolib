@@ -102,10 +102,13 @@ int main(int argc, char **argv)
     while(ajSeqallNext(seqall, &seq))
 	sirna_report(report, seq, poliii, aa, tt, polybase, context, seqout);
 
+    ajSeqallDel(&seqall);
     ajSeqDel(&seq);
     ajReportClose(report);
+    ajSeqoutDel(&seqout);
+    ajReportDel(&report);
 
-    ajExit();
+    embExit();
 
     return 0;
 }
@@ -385,9 +388,9 @@ static void sirna_report(AjPReport report, const AjPSeq seq, AjBool poliii,
     /* now pop off the positive scores and write them to the report object */
     sirna_output(scorelist, TabRpt, seq, context, seqout);
     ajReportWrite(report, TabRpt, seq);
-    ajSeqoutClose(seqout);
 
-    ajListFree(&scorelist);
+    ajSeqoutClose(seqout);
+    ajListFreeData(&scorelist);
     ajFeattableDel(&TabRpt);
     ajStrDel(&newstr);
 

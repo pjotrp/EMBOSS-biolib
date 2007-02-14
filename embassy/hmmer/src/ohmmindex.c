@@ -13,7 +13,7 @@
  * 
  * Create a GSI index file for an HMM database.
  * 
- * RCS $Id: ohmmindex.c,v 1.3 2006/04/20 12:49:54 rice Exp $
+ * RCS $Id: ohmmindex.c,v 1.4 2007/02/14 16:33:03 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
 #include "squid.h"
 #include "config.h"
@@ -66,17 +67,21 @@ int main(int argc, char **argv)
     char    *hmmtail;			/* HMMfile without directory path  */
     char    *gsifile;			/* GSI file to write               */
     HMMFILE *hmmfp;			/* opened hmm file pointer         */
-    FILE    *outfp;			/* open gsifile for writing        */
+    FILE    *outfp = NULL;		/* open gsifile for writing        */
     struct plan7_s     *hmm;		/* a hidden Markov model           */
     int     idx, nhmm;			/* counter over HMMs               */
     int     nkeys;			/* number of keys                  */
     long    offset;			/* offset in HMM file              */
     struct gsikey_s *keylist;		/* list of keys                    */
     char    fname[GSI_KEYSIZE];
+    int i;
 
     AjPFile inf=NULL;
     AjPStr  instr=NULL;
   
+    for(i=0;i<GSI_KEYSIZE;i++)
+	fname[i] = '\0';
+
 #ifdef MEMDEBUG
     unsigned long histid1, histid2, orig_size, current_size;
     orig_size = malloc_inuse(&histid1);
@@ -114,7 +119,6 @@ int main(int argc, char **argv)
 		gsifile);	/* shouldn't happen */
     if ((outfp = fopen(gsifile, "wb")) == NULL)
 	ajFatal("GSI file %s couldn't be opened for writing", gsifile); 
-
     keylist = MallocOrDie(sizeof(struct gsikey_s) * KEYBLOCK);
 
     /*********************************************** 
@@ -147,12 +151,14 @@ int main(int argc, char **argv)
 	if (strlen(hmm->name) >= GSI_KEYSIZE) 
 	    ajWarn("HMM name %s is too long to be indexed: must be < %d\n",
 		   GSI_KEYSIZE);
+	for(i=0;i<GSI_KEYSIZE;i++)
+	    keylist[nkeys].key[i] = '\0';
 	strncpy(keylist[nkeys].key, hmm->name, GSI_KEYSIZE-1);
 	keylist[nkeys].key[GSI_KEYSIZE-1] = '\0';
 	keylist[nkeys].filenum = 1;
 	keylist[nkeys].offset  = offset;
 	nkeys++;
-	if (nkeys % KEYBLOCK == 0)	
+	if (nkeys % KEYBLOCK == 0)
 	    keylist = ReallocOrDie(keylist, sizeof(struct gsikey_s) *
 				   (nkeys + KEYBLOCK));
 
@@ -198,7 +204,6 @@ int main(int argc, char **argv)
 	hmmtail[GSI_KEYSIZE-1] = '\0';
     }
     strcpy(fname, hmmtail);
-
     GSIWriteHeader(outfp, 1, nkeys);
     /* this line is unused, so doesn't matter */
     GSIWriteFileRecord(outfp, fname, 1, 0);
@@ -214,11 +219,11 @@ int main(int argc, char **argv)
      * Exit
      ***********************************************/
 
+    if (fclose(outfp) != 0) PANIC;
+    SqdClean();
     free(hmmtail);
     free(gsifile);
     free(keylist);
-    if (fclose(outfp) != 0) PANIC;
-    SqdClean();
 
 #ifdef MEMDEBUG
     current_size = malloc_inuse(&histid2);

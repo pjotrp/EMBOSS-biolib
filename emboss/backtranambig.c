@@ -63,16 +63,19 @@ int main(int argc, char **argv)
     ajCodBacktranslateAmbig(&back,substr,codon);
 
     ajSeqAssignSeqS (a, back);
-    ajSeqSetNuc (a);
+    ajSeqSetNuc(a);
 
     ajSeqoutWriteSeq(outf,a);
+    ajSeqoutClose(outf);
 
     ajStrDel(&back);
     ajStrDel(&substr);
-    ajSeqoutClose(outf);
+    ajSeqoutDel(&outf);
     ajCodDel(&codon);
+    ajStrDel(&gctable);
+    ajSeqDel(&a);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

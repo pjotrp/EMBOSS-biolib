@@ -325,6 +325,10 @@ int main(int argc, char **argv)
 	    embDbiSortClose(&elistfile, alistfile, nfields);
 	    AJFREE(entry);
 	}
+	else
+	{
+	    embDbiEntryDel(&dbiflatEntry);
+	}
 	embDbiLogFile(logfile, curfilename, idCountFile, fields,
 		      countField, nfields);
     }
@@ -942,6 +946,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
     }
 
     ajStrDel(&tmpacnum);
+    ajStrDel(&tmpstr);
 
     return ajTrue;
 }

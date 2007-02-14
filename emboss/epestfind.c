@@ -616,7 +616,8 @@ int main(int argc, char **argv)
 	if((pstdat->Type) == PSTINV)
 	    ajFmtPrintF(outf, "\n");
     }
-    
+    ajListIterFree(&itrlst);
+
     /* Display map. */
     if(dspmap)
     {
@@ -688,6 +689,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(outf, "\n");
     }
     ajFileClose(&outf);			/* Close the output file. */
+    ajListIterFree(&itrlst);
     
     /* Display graphics. */
     plot = ajGraphPlpDataNew();
@@ -746,6 +748,7 @@ int main(int argc, char **argv)
 				  "inv.");
 	}
     }
+    ajListIterFree(&itrlst);
 
     ajGraphDataAdd(graph, plot);
     ajGraphSetCharScale(0.50);
@@ -772,8 +775,12 @@ int main(int argc, char **argv)
     ajListIterFree(&itrlst);	/* Delete the result list iterator. */
     ajStrIterDel(&itrbeg); 	/* Delete the iterator of the outer loop. */
     ajStrIterDel(&itrend); 	/* Delete the iterator of the inner loop. */
-    
-    ajExit();
+
+    ajSeqDel(&seq);
+    ajFileClose(&mfptr);
+    ajFileClose(&outf);
+
+    embExit();
 
     return 0;
 }

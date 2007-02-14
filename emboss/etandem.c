@@ -228,6 +228,10 @@ static void etandem_basicReport(AjPFeattable tab, AjPFile outfile,
     if(outfile)
       ajFmtPrintF(outfile, "%S\n", constr);
 
+    ajStrDel(&rpthit);
+    ajStrDel(&s);
+    ajStrDel(&constr);
+
     return;
 }
 
@@ -523,7 +527,7 @@ int main(int argc, char **argv)
     ajStrDel(&tmpstr);
     AJFREE(ring);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

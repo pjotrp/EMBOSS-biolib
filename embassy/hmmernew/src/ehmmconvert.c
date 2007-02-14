@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 {
     /* ACD data item variables */
     AjPFile oldhmmfile = NULL;
-    AjPStr     *format = NULL;
+    AjPStr      format = NULL;
     AjPFile newhmmfile = NULL;
 
     /* Housekeeping variables */
@@ -54,7 +54,7 @@ int main(int argc, char **argv)
     embInitP("ehmmconvert",argc,argv,"HMMERNEW");
 
     oldhmmfile = ajAcdGetInfile("oldhmmfile");
-    format     = ajAcdGetList("format");
+    format     = ajAcdGetListSingle("format");
     newhmmfile = ajAcdGetOutfile("newhmmfile");
 
 
@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     ajFmtPrintS(&cmd, "hmmconvert");
 
     /* ACD option only allows one selection */
-    option = ajStrGetCharFirst(format[0]);
+    option = ajStrGetCharFirst(format);
     if(option == 'A')
 	ajStrAppendC(&cmd, " -a ");
     else if(option == 'B')
@@ -110,8 +110,9 @@ int main(int argc, char **argv)
     /* 4. Exit cleanly */
     ajStrDel(&cmd);
     ajStrDel(&tmp);
+    ajStrDel(&format);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

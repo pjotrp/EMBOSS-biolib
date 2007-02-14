@@ -1,0 +1,7 @@
+Version 0.1.0
+	Modified the Malloc function to intialise all memory to
+	zero. Binary files with character strings were giving errors in
+	valgrind memory leak testing because bytes after the null
+	character were "uninitialised". Naturally anything reading these
+	files will have stopped at the null character so this will make no
+	difference to the results.

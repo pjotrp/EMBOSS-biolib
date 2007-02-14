@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     {
 	ajSeqoutClose(seqout);
 	ajFatal("No such sequence - only %d sequences were input.", count);
-	return 1;
+	embExitBad();
     }
 
     ajSeqoutWriteSeq(seqout, seq);

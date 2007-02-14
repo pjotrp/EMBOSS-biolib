@@ -20,7 +20,10 @@ int main(int argc, char **argv)
     ajSeqoutWriteSeq(seqout, seq);
     ajSeqoutClose(seqout);
 
-    ajExit ();
+    ajSeqoutDel(&seqout);
+    ajSeqDel(&seq);
+
+    embExit();
 
     return 0;
 }

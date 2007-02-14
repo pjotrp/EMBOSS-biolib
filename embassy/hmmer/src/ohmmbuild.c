@@ -12,7 +12,7 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ohmmbuild.c,v 1.3 2006/04/20 12:49:54 rice Exp $
+ * RCS $Id: ohmmbuild.c,v 1.4 2007/02/14 16:33:03 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -184,21 +184,21 @@ int main(int argc, char **argv)
 
 
     char ajstrat='\0';
-    AjPStr *ajstrategy=NULL;
+    AjPStr  ajstrategy=NULL;
     AjPFile  rsname=NULL;
     AjPFile  cfname=NULL;
     AjBool  ajappend=ajFalse;
     AjBool  ajamino=ajFalse;
     AjBool  ajnucleic=ajFalse;
     AjBool  ajbinary=ajFalse;
-    AjPStr  *ajcstrategy=NULL;
+    AjPStr  ajcstrategy=NULL;
     char    ajcstrat='\0';
     AjBool  ajeff=ajFalse;
     AjPFile  nuname=NULL;
     AjPFile  paname=NULL;
     AjPFile  prname=NULL;
     AjBool  ajmore=ajFalse;
-    AjPStr  *ajwtt=NULL;
+    AjPStr  ajwtt=NULL;
     char    ajwt='\0';
     AjPSeqset seqset=NULL;
     AjPFile outf=NULL;
@@ -241,8 +241,8 @@ int main(int argc, char **argv)
 
     embInitP("ohmmbuild",argc,argv,"HMMER");
 
-    ajstrategy = ajAcdGetList("strategy");
-    ajstrat = *ajStrGetPtr(*ajstrategy);
+    ajstrategy = ajAcdGetListSingle("strategy");
+    ajstrat = ajStrGetCharFirst(ajstrategy);
     if(ajstrat=='M')
 	cfg_strategy = P7_FS_CONFIG;
     else if(ajstrat=='G')
@@ -281,8 +281,8 @@ int main(int argc, char **argv)
 	cfile = ajCharNewS(ajFileGetName(cfname));
     ajFileClose(&cfname);
 
-    ajcstrategy = ajAcdGetList("cstrategy");
-    ajcstrat = *ajStrGetPtr(*ajcstrategy);
+    ajcstrategy = ajAcdGetListSingle("cstrategy");
+    ajcstrat = ajStrGetCharFirst(ajcstrategy);
     if(ajcstrat=='F')
 	c_strategy = P7_FAST_CONSTRUCTION;
     else if(ajcstrat=='H')
@@ -320,8 +320,8 @@ int main(int argc, char **argv)
     else
 	verbose=FALSE;
 
-    ajwtt = ajAcdGetList("weighting");
-    ajwt = *ajStrGetPtr(*ajwtt);
+    ajwtt = ajAcdGetListSingle("weighting");
+    ajwt = ajStrGetCharFirst(ajwtt);
     if(ajwt=='B')
 	w_strategy = WGT_BLOSUM;
     else if(ajwt=='G')
@@ -706,8 +706,17 @@ int main(int argc, char **argv)
 	fprintf(stderr, "[No memory leaks.]\n");
 #endif
 
+    ajStrDel(&ajstrategy);
+    ajStrDel(&ajcstrategy);
+    ajStrDel(&ajwtt);
+    ajSeqsetDel(&seqset);
+    AJFREE(seqfile);
+    AJFREE(align_ofile);
+    AJFREE(cfile);
 
-    ajExit();
+    ajFileClose(&outf);
+
+    embExit();
     return 0;
 }
 

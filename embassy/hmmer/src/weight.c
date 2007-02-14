@@ -12,7 +12,7 @@
  * SRE, Thu Mar  3 07:56:01 1994
  * 
  * Calculate weights for sequences in an alignment.
- * RCS $Id: weight.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+ * RCS $Id: weight.c,v 1.2 2007/02/14 16:33:03 rice Exp $
  */
 
 #include <ctype.h>
@@ -464,7 +464,7 @@ FilterAlignment(char **aseq, int nseq, AINFO *ainfo, float cutoff,
   int    *list;
   float   ident;
   int     i,j, idx;
-  int     remove;
+  int     doremove;
 
 				/* find which seqs to keep (list) */
 				/* diff matrix; allow ragged ends */
@@ -473,20 +473,20 @@ FilterAlignment(char **aseq, int nseq, AINFO *ainfo, float cutoff,
   nnew = 0;
   for (i = 0; i < nseq; i++)
     {
-      remove = FALSE;
+      doremove = FALSE;
       for (j = 0; j < nnew; j++)
 	{
 	  ident = PairwiseIdentity(aseq[i], aseq[list[j]]);
 	  if (ident > cutoff)
 	    { 
-	      remove = TRUE; 
+	      doremove = TRUE; 
 	      printf("removing %12s -- fractional identity %.2f to %s\n", 
 		     ainfo->sqinfo[i].name, ident,
 		     ainfo->sqinfo[list[j]].name); 
 	      break; 
 	    }
 	}
-      if (remove == FALSE) list[nnew++] = i;
+      if (doremove == FALSE) list[nnew++] = i;
     }
 
 				/* make new alignment */

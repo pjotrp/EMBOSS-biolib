@@ -32,7 +32,7 @@
  * 
  * SELEX format is documented in Docs/formats.tex.
  ****************************************************************************
- * RCS $Id: interleaved.c,v 1.6 2007/01/31 12:53:19 rice Exp $
+ * RCS $Id: interleaved.c,v 1.7 2007/02/14 16:33:03 rice Exp $
  */
 
 #include "ajax.h"
@@ -165,7 +165,7 @@ dataline_clustal(char *buf, char *expected_name)
 {
   while (*buf && isspace((int)*buf)) buf++;
   if (*buf == '\0' || strchr(commentsyms, *buf) != NULL) 
-    return 0;			/* blank or comment */
+      return 0;			/* blank or comment */
   if (expected_name != NULL && strncmp(buf, expected_name, strlen(expected_name) == 0))
     return 1;			/* matches expected seq name, definitely data */
   for (; *buf != '\0'; buf++)
@@ -724,6 +724,7 @@ void emboss_copy(AjPSeqset seqset, char ***retseqs, AINFO *info)
     
 
     *retseqs = seqs;
-    
+    ajStrDel(&tmpstr);
+
     return;
 }

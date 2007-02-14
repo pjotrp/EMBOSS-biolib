@@ -10,7 +10,7 @@
 
 /* alphabet.c
  * Configuration of the global symbol alphabet information.
- * RCS $Id: alphabet.c,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: alphabet.c,v 1.3 2007/02/14 16:33:03 rice Exp $
  */
 
 #include <stdlib.h>
@@ -26,7 +26,7 @@
 #include "dbmalloc.h"
 #endif
 
-static void set_degenerate(char iupac, char *syms);
+static void set_degenerate(char iupacset, char *syms);
 
 
 /* Function: DetermineAlphabet()
@@ -397,11 +397,11 @@ DefaultCodonBias(float *codebias)
  *           Degenerate[][] global for the alphabet.
  */
 static void 
-set_degenerate(char iupac, char *syms)
+set_degenerate(char iupacset, char *syms)
 {
-  DegenCount[strchr(Alphabet,iupac)-Alphabet] = strlen(syms);
+  DegenCount[strchr(Alphabet,iupacset)-Alphabet] = strlen(syms);
   while (*syms) {
-    Degenerate[strchr(Alphabet,iupac)-Alphabet]
+    Degenerate[strchr(Alphabet,iupacset)-Alphabet]
               [strchr(Alphabet,*syms)-Alphabet] = 1;
     syms++;
   }

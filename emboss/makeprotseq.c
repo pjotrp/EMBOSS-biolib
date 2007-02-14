@@ -138,11 +138,12 @@ int main(int argc, char **argv)
     }
 
     ajSeqoutClose(outseq);
+    ajSeqoutDel(&outseq);
     ajListstrFree(&list);
     ajStrDel(&insert);
-    // need to free AjPStr* seqr still, how?
+    AJFREE(seqr);
 
-    ajExit();
+    embExit();
     return 0;
 }
 
@@ -250,5 +251,6 @@ static void makeprotseq_parse_pepstats (AjPList* list,AjPFile data)
 	}
 	ajStrDel(&ch);
     }
+    ajStrDel(&line);
     return;
 }

@@ -23,9 +23,9 @@
  *
  * Matches up with my Perl scripts that create GSI files.
  * 
- * RCS $Id: gsi.c,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: gsi.c,v 1.3 2007/02/14 16:33:03 rice Exp $
  */
-
+#include "ajax.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -189,6 +189,7 @@ GSIWriteHeader(FILE *fp, int nfiles, long nkeys)
   char       key[GSI_KEYSIZE];
   sqd_uint16 f1;
   sqd_uint32 f2;
+  int i;
 
   /* beware potential range errors here! should check.
    */
@@ -196,6 +197,9 @@ GSIWriteHeader(FILE *fp, int nfiles, long nkeys)
   f2 = (sqd_uint32) nkeys;
   f1 = sre_htons(f1);
   f2 = sre_htonl(f2);
+
+  for(i=0;i<GSI_KEYSIZE; i++)
+      key[i] = '\0';
   strcpy(key, "GSI");
 
   if (fwrite(key,   1, GSI_KEYSIZE, fp) < GSI_KEYSIZE) PANIC;
@@ -261,7 +265,7 @@ GSIWriteKeyRecord(FILE *fp, char *key, int fileidx, long offset)
   f2 = (sqd_uint32) offset;
   f1 = sre_htons(f1);
   f2 = sre_htonl(f2);
-  
+
   if (fwrite(key, 1, GSI_KEYSIZE, fp) < GSI_KEYSIZE) PANIC;
   if (fwrite(&f1, 2,  1, fp) < 1) PANIC;
   if (fwrite(&f2, 4,  1, fp) < 1) PANIC;

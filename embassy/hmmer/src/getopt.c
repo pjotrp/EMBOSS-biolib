@@ -8,7 +8,7 @@
  *     for details.
  *****************************************************************/
 
-/* RCS $Id: getopt.c,v 1.1 2001/07/29 14:13:49 ajb Exp $
+/* RCS $Id: getopt.c,v 1.2 2007/02/14 16:33:03 rice Exp $
  */
 
 #include <stdio.h>
@@ -77,7 +77,7 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
   int i;
   int arglen;
   int nmatch;
-  static int optind   = 1;        /* init to 1 on first call  */
+  static int optindex   = 1;        /* init to 1 on first call  */
   static char *optptr = NULL;     /* ptr to next valid switch */
   int opti=0;
 
@@ -85,9 +85,9 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
    * A '-' by itself is an argument (e.g. "read from stdin")
    * not an option.
    */
-  if (optind >= argc || argv[optind][0] != '-' || strcmp(argv[optind], "-") == 0)
+  if (optindex >= argc || argv[optindex][0] != '-' || strcmp(argv[optindex], "-") == 0)
     { 
-      *ret_optind  = optind; 
+      *ret_optind  = optindex; 
       *ret_optarg  = NULL; 
       *ret_optname = NULL; 
       return 0; 
@@ -96,10 +96,10 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
   /* Check to see if we're being told that this is the end
    * of the options with the special "--" flag.
    */
-  if (strcmp(argv[optind], "--") == 0)
+  if (strcmp(argv[optindex], "--") == 0)
     { 
-      optind++;
-      *ret_optind  = optind; 
+      optindex++;
+      *ret_optind  = optindex; 
       *ret_optname = NULL;
       *ret_optarg  = NULL; 
       return 0; 
@@ -112,18 +112,18 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
    * as long as they don't have arguments.
    */
 				/* full option */
-  if (optptr == NULL && strncmp(argv[optind], "--", 2) == 0)
+  if (optptr == NULL && strncmp(argv[optindex], "--", 2) == 0)
     {
       /* Use optptr to parse argument in options of form "--foo=666"
        */
-      if ((optptr = strchr(argv[optind], '=')) != NULL)
+      if ((optptr = strchr(argv[optindex], '=')) != NULL)
 	{ *optptr = '\0'; optptr++; }
 
-      arglen = strlen(argv[optind]);
+      arglen = strlen(argv[optindex]);
       nmatch = 0;
       for (i = 0; i < nopts; i++)
 	if (opt[i].single == FALSE && 
-	    strncmp(opt[i].name, argv[optind], arglen) == 0)
+	    strncmp(opt[i].name, argv[optindex], arglen) == 0)
 	  { 
 	    nmatch++;
 	    opti = i;
@@ -131,9 +131,9 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
 	  }
       if (nmatch > 1 && arglen != strlen(opt[i].name)) 
 	Die("Option \"%s\" is ambiguous; please be more specific.\n%s",
-	    argv[optind], usage);
+	    argv[optindex], usage);
       if (nmatch == 0)
-	Die("No such option \"%s\".\n%s", argv[optind], usage);
+	Die("No such option \"%s\".\n%s", argv[optindex], usage);
 
       *ret_optname = opt[opti].name;
 
@@ -145,14 +145,14 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
 	    {			/* --foo=666 style */
 	      *ret_optarg = optptr;
 	      optptr = NULL;
-	      optind++;
+	      optindex++;
 	    }
-	  else if (optind+1 >= argc)
+	  else if (optindex+1 >= argc)
 	    Die("Option %s requires an argument\n%s", opt[opti].name, usage);
 	  else			/* "--foo 666" style */
 	    {
-	      *ret_optarg = argv[optind+1];
-	      optind+=2;
+	      *ret_optarg = argv[optindex+1];
+	      optindex+=2;
 	    }
 	}
       else  /* sqdARG_NONE */
@@ -160,14 +160,14 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
 	  if (optptr != NULL) 
 	    Die("Option %s does not take an argument\n%s", opt[opti].name, usage);
 	  *ret_optarg = NULL;
-	  optind++;
+	  optindex++;
 	}
     }
   else				/* else, a single letter option "-o" */
     {
 				/* find the option */
       if (optptr == NULL) 
-	optptr = argv[optind]+1;
+	optptr = argv[optindex]+1;
       for (opti = -1, i = 0; i < nopts; i++)
 	if (opt[i].single == TRUE && *optptr == opt[i].name[1])
 	  { opti = i; break; }
@@ -181,12 +181,12 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
 	  if (*(optptr+1) != '\0')   /* attached argument */
 	    {
 	      *ret_optarg = optptr+1;
-	      optind++;
+	      optindex++;
 	    }
-	  else if (optind+1 < argc) /* unattached argument */
+	  else if (optindex+1 < argc) /* unattached argument */
 	    {
-	      *ret_optarg = argv[optind+1];
-	      optind+=2;	      
+	      *ret_optarg = argv[optindex+1];
+	      optindex+=2;	      
 	    }
 	  else Die("Option %s requires an argument\n%s", opt[opti].name, usage);
 
@@ -199,7 +199,7 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
 	    optptr++; 
 	  else
 	    {
-	      optind++;                /* move to next field */
+	      optindex++;                /* move to next field */
 	      optptr = NULL;
 	    }
 	}
@@ -222,7 +222,7 @@ Getopt(int argc, char **argv, struct opt_s *opt, int nopts, char *usage,
       /* sqdARG_STRING is always ok, no type check necessary */
     }
 
-  *ret_optind = optind;
+  *ret_optind = optindex;
   return 1;
 }
 
@@ -244,20 +244,20 @@ struct opt_s OPTIONS[] = {
 int
 main(int argc, char **argv)
 {
-  int   optind;
+  int   optindex;
   char *optarg;
   char *optname;
 
   while (Getopt(argc, argv, OPTIONS, NOPTIONS, "Usage/help here",
-		&optind, &optname, &optarg))
+		&optindex, &optname, &optarg))
     {
       printf("Option:   index: %d name: %s argument: %s\n",
-	     optind, optname, optarg);
+	     optindex, optname, optarg);
     }
-  while (optind < argc)
+  while (optindex < argc)
     {
-      printf("Argument: index: %d name: %s\n", optind, argv[optind]);
-      optind++;
+      printf("Argument: index: %d name: %s\n", optindex, argv[optindex]);
+      optindex++;
     }
 
 

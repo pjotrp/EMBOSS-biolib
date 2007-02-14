@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     const AjPSeq pseq;		/* next protein sequence use in alignment */
     AjPTrn trnTable;
     AjPSeq pep;			/* translation of nseq */
-    AjPStr *tablelist;
+    AjPStr tablelist;
     ajint table;
     AjPSeqset outseqset;	/* set of aligned nucleic sequences */
     ajint proteinseqcount = 0;
@@ -64,14 +64,14 @@ int main(int argc, char **argv)
 
     nucseq    = ajAcdGetSeqall("asequence");
     protseq   = ajAcdGetSeqset("bsequence");
-    tablelist = ajAcdGetList("table");
+    tablelist = ajAcdGetListSingle("table");
     seqout    = ajAcdGetSeqoutset("outseq");
 
     outseqset = ajSeqsetNew();
     degapstr  = ajStrNew();
 
     /* initialise the translation table */
-    ajStrToInt(tablelist[0], &table);
+    ajStrToInt(tablelist, &table);
     trnTable = ajTrnNewI(table);
 
     ajSeqsetFill(protseq);
@@ -167,8 +167,15 @@ int main(int argc, char **argv)
     ajTrnDel(&trnTable);
     ajSeqsetDel(&outseqset);
     ajStrDel(&degapstr);
+    ajStrDel(&degapstr2);
 
-    ajExit();
+    ajSeqallDel(&nucseq);
+    ajSeqDel(&nseq);
+    ajSeqoutDel(&seqout);
+    ajSeqsetDel(&protseq);
+    ajStrDel(&tablelist);
+
+    embExit();
 
     return 0;
 }

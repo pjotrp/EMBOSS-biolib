@@ -200,6 +200,8 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajFileClose(&inf);
 
+    ajAlignClose(align);
+    ajAlignDel(&align);
     ajSeqallDel(&seqall);
     embExit();
 

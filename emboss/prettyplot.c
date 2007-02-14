@@ -75,14 +75,14 @@
 const char **seqcharptr;
 ajint **seqcolptr;
 ajint **seqboxptr;
-ajint *seqcount = 0;
+ajint *seqcount = NULL;
 ajint charlen;
 AjBool shownames;
 AjBool shownumbers;
 AjPSeqset seqset;
 AjPStr *seqnames;
 ajint numgaps;
-char *constr = 0;
+char *constr = NULL;
 
 
 
@@ -1012,6 +1012,9 @@ int main(int argc, char **argv)
     ajStrDel(&ssimilarity);
     ajStrDel(&sother);
     ajStrDel(&options);
+    ajStrDel(&altstr);
+
+    ajStrDel(&matcodes);
 
     for(i=0;i<numseq;i++)
     {
@@ -1046,6 +1049,7 @@ int main(int argc, char **argv)
     ajStrDel(&sother);
     ajFloatDel(&pair);
     ajTimeDel(&ajtime);
+    AJFREE(constr);
 
     embExit();
 

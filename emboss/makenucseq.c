@@ -134,9 +134,12 @@ int main(int argc, char **argv)
     }
 
     ajSeqoutClose(outseq);
+    ajSeqoutDel(&outseq);
     ajListstrFree(&list);
     ajStrDel(&insert);
-    // need to free AjPStr* seqr still, how?
+ 
+    ajCodDel(&codondata);
+    AJFREE(seqr);
 
     ajExit();
     return 0;

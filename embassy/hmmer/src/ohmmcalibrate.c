@@ -14,7 +14,7 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ohmmcalibrate.c,v 1.3 2006/04/20 12:49:54 rice Exp $
+ * RCS $Id: ohmmcalibrate.c,v 1.4 2007/02/14 16:33:03 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -103,9 +103,9 @@ static void main_loop_pvm(AjPFile outf,HMMFILE *hmmfp, FILE *hfp, int seed,
 int main(int argc, char **argv)
 {
     char    *hmmfile;			/* HMM file to open                */
-    char    *tmpfile;			/* temporary calibrated HMM file   */
+    char    *tempfile;			/* temporary calibrated HMM file   */
     HMMFILE *hmmfp;			/* opened hmm file pointer         */
-    FILE    *outfp;			/* for writing HMM(s) into tmpfile */
+    FILE    *outfp;			/* for writing HMM(s) into tempfile */
     char    *mode;			/* write mode, "w" or "wb"         */
     struct plan7_s     *hmm;		/* the hidden Markov model         */
     int     idx;			/* counter over sequences          */
@@ -221,12 +221,12 @@ int main(int argc, char **argv)
      * because it'll put the file in /tmp and we won't
      * necessarily be able to rename() it from there.
      */
-    tmpfile = MallocOrDie(strlen(hmmfile) + 5);
-    strcpy(tmpfile, hmmfile);
-    strcat(tmpfile, ".xxx");		/* could be more inventive here... */
-    if (FileExists(tmpfile))
+    tempfile = MallocOrDie(strlen(hmmfile) + 5);
+    strcpy(tempfile, hmmfile);
+    strcat(tempfile, ".xxx");		/* could be more inventive here... */
+    if (FileExists(tempfile))
 	ajFatal("temporary file %s already exists; please delete it first",
-		tmpfile);
+		tempfile);
     if (hmmfp->is_binary)
 	mode = "wb";
     else
@@ -281,10 +281,10 @@ int main(int argc, char **argv)
     if (hfp != NULL) fclose(hfp);
     HMMFileRewind(hmmfp);
 
-    if (FileExists(tmpfile))
-	ajFatal("Temporary file %s appeared during the run.", tmpfile);
-    if ((outfp = fopen(tmpfile, mode)) == NULL)
-	ajFatal("Temporary file %s couldn't be opened for writing.", tmpfile); 
+    if (FileExists(tempfile))
+	ajFatal("Temporary file %s appeared during the run.", tempfile);
+    if ((outfp = fopen(tempfile, mode)) == NULL)
+	ajFatal("Temporary file %s couldn't be opened for writing.",tempfile); 
   
     for (idx = 0; idx < nhmm; idx++)
     {
@@ -303,7 +303,7 @@ int main(int argc, char **argv)
 	hmm->flags |= PLAN7_STATS;
 	Plan7ComlogAppend(hmm, argc, argv);
 
-	/* Save HMM to tmpfile
+	/* Save HMM to tempfile
 	 */
 	if (hmmfp->is_binary) WriteBinHMM(outfp, hmm);
 	else                  WriteAscHMM(outfp, hmm); 
@@ -313,7 +313,7 @@ int main(int argc, char **argv)
   
     /*****************************************************************
      * Now, carefully remove original file and replace it
-     * with the tmpfile. Note the protection from signals;
+     * with the tempfile. Note the protection from signals;
      * we wouldn't want a user to ctrl-C just as we've deleted
      * their HMM file but before the new one is moved.
      *****************************************************************/
@@ -325,14 +325,14 @@ int main(int argc, char **argv)
     if (sigaddset(&blocksigs, SIGINT) != 0) PANIC;
     if (sigprocmask(SIG_BLOCK, &blocksigs, NULL) != 0)   PANIC;
     if (remove(hmmfile) != 0)                            PANIC;
-    if (rename(tmpfile, hmmfile) != 0)                   PANIC;
+    if (rename(tempfile, hmmfile) != 0)                   PANIC;
     if (sigprocmask(SIG_UNBLOCK, &blocksigs, NULL) != 0) PANIC;
 
     /***********************************************
      * Exit
      ***********************************************/
 
-    free(tmpfile);
+    free(tempfile);
     SqdClean();
 #ifdef MEMDEBUG
     current_size = malloc_size(&histid2);

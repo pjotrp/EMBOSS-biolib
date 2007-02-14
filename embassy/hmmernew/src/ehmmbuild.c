@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     AjPFile         pam = NULL;
     float        pamwgt = 0.0;
     AjPStr         nhmm = NULL;
-    AjPStr    *strategy = NULL;
+    AjPStr     strategy = NULL;
     ajint      pbswitch = 0;
     float       archpri = 0.0;
     AjBool      binary  = ajFalse;
@@ -55,7 +55,7 @@ int main(int argc, char **argv)
     float       swentry = 0.0;
     float        swexit = 0.0;
     AjBool    verbosity = ajFalse;
-    AjPStr   *weighting = NULL;
+    AjPStr    weighting = NULL;
     AjPFile     hmmfile = NULL;
     AjPFile           o = NULL;
     AjPFile       cfile = NULL;
@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     pam       = ajAcdGetInfile("pam");
     pamwgt    = ajAcdGetFloat("pamwgt");
     nhmm      = ajAcdGetString("nhmm");
-    strategy  = ajAcdGetList("strategy");
+    strategy  = ajAcdGetListSingle("strategy");
     pbswitch  = ajAcdGetInt("pbswitch");
     archpri   = ajAcdGetFloat("archpri");
     binary    = ajAcdGetBool("binary");
@@ -95,7 +95,7 @@ int main(int argc, char **argv)
     swentry   = ajAcdGetFloat("swentry");
     swexit    = ajAcdGetFloat("swexit");
     verbosity = ajAcdGetBool("verbosity");
-    weighting = ajAcdGetList("weighting");
+    weighting = ajAcdGetListSingle("weighting");
     hmmfile   = ajAcdGetOutfile("hmmfile");
     o         = ajAcdGetOutfile("o");
     cfile     = ajAcdGetOutfile("cfile");
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
     ajFmtPrintAppS(&cmd, " -n %S ", nhmm);
 
     /* ACD option only allows one selection */
-    option = ajStrGetCharFirst(strategy[0]);
+    option = ajStrGetCharFirst(strategy);
     if(option == 'F')
 	ajStrAppendC(&cmd, " -f ");
     else if(option == 'G')
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
 	ajStrAppendC(&cmd, " --verbose ");
 
     /* ACD option only allows one selection */
-    option = ajStrGetCharFirst(weighting[0]);
+    option = ajStrGetCharFirst(weighting);
     if(option == 'B')
 	ajStrAppendC(&cmd, " --wblosum ");
     else if(option == 'G')
@@ -228,8 +228,10 @@ int main(int argc, char **argv)
     ajStrDel(&tmp);
     ajStrDel(&fmt);
     ajStrDel(&hmmfilename);
+    ajStrDel(&strategy);
+    ajStrDel(&weighting);
     
-    ajExit();
+    embExit();
 
     return 0;
 }

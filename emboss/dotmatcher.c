@@ -445,6 +445,7 @@ int main(int argc, char **argv)
 		x2 = ppt->x2+b1-1;
 		y2 = ppt->y2+b2-1;
 		ajGraphAddLine(xygraph,x1,y1,x2,y2,0);
+		AJFREE(ppt);
 	    }
 	    ajListIterFree(&iter);
 	}

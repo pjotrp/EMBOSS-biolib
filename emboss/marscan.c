@@ -301,21 +301,39 @@ int main(int argc, char **argv)
 
     }
 
-    if(type16==6)
+    if(skipm16)
+    {
 	for(i=0;i<m16;++i)
 	    AJFREE(skipm16[i]);
+	AJFREE(skipm16);
+    }
 
-    if(type16rev==6)
-	for(i=0;i<m16rev;++i) AJFREE(skipm16rev[i]);
+    if(skipm16rev)
+    {
+	for(i=0;i<m16rev;++i)
+	    AJFREE(skipm16rev[i]);
+	AJFREE(skipm16rev);
+    }
 
-    if(type8==6)
+    if(skipm8)
+    {
 	for(i=0;i<m8;++i)
 	    AJFREE(skipm8[i]);
+	AJFREE(skipm8);
+    }
 
-    if(type8rev==6)
+    if(skipm8rev)
+    {
 	for(i=0;i<m8rev;++i)
 	    AJFREE(skipm8rev[i]);
+	AJFREE(skipm8rev);
+    }
 
+    AJFREE(sotable16);
+    AJFREE(sotable16rev);
+    AJFREE(sotable8);
+    AJFREE(sotable8rev);
+ 
 /*
     if(tidy16)
 	AJFREE(tidy16);
@@ -703,6 +721,10 @@ static void marscan_output_stored_match(AjBool stored_match,
 
     ajFmtPrintS(&tmp, "*end16bp %d", e16);
     ajFeatTagAdd(feature, NULL, tmp);
+
+    ajStrDel(&source);
+    ajStrDel(&type);
+    ajStrDel(&tmp);
 
     return;
 }

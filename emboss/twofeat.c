@@ -65,8 +65,8 @@ static AjBool twofeat_check_match(AjPFeature gfA, AjPFeature gfB,
 				  PHit *detail, ajint overlapi,
 				  ajint minrange, ajint maxrange, ajint
 				  rangetypei, ajint sensei);
-static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
-			      const AjPStr typeout, AjPFeattable outtab);
+static void twofeat_report_hits(const AjPList hitlist, AjBool twoout,
+				const AjPStr typeout, AjPFeattable outtab);
 static void twofeat_find_features(const AjPSeq seq, AjPFeattable tab,
 				  ajint begin, ajint end, const AjPStr source,
 				  const AjPStr type, ajint sense,
@@ -275,13 +275,7 @@ int main(int argc, char **argv)
 
 	    /* write features and tidy up */
 	    ajReportWrite(report, outtab, seq);        
-
-	    /*
-	    ** try not deleting - now works OK - not sure why it fails in
-	    ** ajExit if this is included
-	    ** ajDebug("ajFeattableDel(&outtab)\n");
-	    ** ajFeattableDel(&outtab);
-	    */
+	    ajFeattableDel(&outtab);
 	}
 	
 
@@ -293,11 +287,30 @@ int main(int argc, char **argv)
     
     ajStrDel(&seqname);
     ajSeqDel(&seq);
+    ajSeqallDel(&seqall);
+
+    ajStrDel(&asource);
+    ajStrDel(&atype);
+    ajStrDel(&asense);
+    ajStrDel(&atag);
+    ajStrDel(&avalue);
+
+    ajStrDel(&bsource);
+    ajStrDel(&btype);
+    ajStrDel(&bsense);
+    ajStrDel(&btag);
+    ajStrDel(&bvalue);
+
+    ajStrDel(&overlap);
+    ajStrDel(&rangetype);
+    ajStrDel(&sense);
+    ajStrDel(&order);
+    ajStrDel(&typeout);
 
     ajReportClose(report);
-    ajReportDel(&report);    
+    ajReportDel(&report);
 
-    ajExit();
+    embExit();
 
     return 0;
 }
@@ -393,7 +406,7 @@ static void twofeat_rippledown(const AjPFeattable tabA,
     }
 
     /* Put hits in outtab */
-    twofeat_sort_hits(hitlist, twoout, typeout, outtab);
+    twofeat_report_hits(hitlist, twoout, typeout, outtab);
 
 
     ajListFree(&hitlist);
@@ -404,7 +417,7 @@ static void twofeat_rippledown(const AjPFeattable tabA,
 
 
 
-/* @funcstatic twofeat_sort_hits ***********************************
+/* @funcstatic twofeat_report_hits ***********************************
 **
 ** Outputs the pairs of hits to the output feature table
 **
@@ -416,8 +429,8 @@ static void twofeat_rippledown(const AjPFeattable tabA,
 ** @@
 ******************************************************************************/
 
-static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
-			      const AjPStr typeout, AjPFeattable outtab)
+static void twofeat_report_hits(const AjPList hitlist, AjBool twoout,
+				const AjPStr typeout, AjPFeattable outtab)
 {
     char strand;
     ajint frame = 0;
@@ -446,8 +459,8 @@ static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
 
         if(twoout)
 	{
-            ajFeattableAdd(outtab, detail->gfA);
-            ajFeattableAdd(outtab, detail->gfB);
+            ajFeattableAdd(outtab, ajFeatCopy(detail->gfA));
+            ajFeattableAdd(outtab, ajFeatCopy(detail->gfB));
     
         }
 	else
@@ -476,6 +489,8 @@ static void twofeat_sort_hits(const AjPList hitlist, AjBool twoout,
 
             ajFmtPrintS(&tmp, "*endB %d", ajFeatGetEnd(detail->gfB));
             ajFeatTagAdd(feature, NULL, tmp);
+
+	    ajStrDel(&tmp);
 	}
 
         /* delete hit */

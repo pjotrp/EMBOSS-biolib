@@ -13,7 +13,7 @@
  * my library of extra string functions. Some for portability
  * across UNIXes
  *
- * RCS $Id: sre_string.c,v 1.2 2004/06/14 14:43:30 rice Exp $
+ * RCS $Id: sre_string.c,v 1.3 2007/02/14 16:33:03 rice Exp $
  */
 
 #include <stdio.h>
@@ -117,6 +117,7 @@ sre_malloc(char *file, int line, size_t size)
 
   if ((ptr = malloc (size)) == NULL)
     Die("malloc of %d bytes failed: file %s line %d", size, file, line);
+  memset(ptr, 0, size);
   return ptr;
 }
 
