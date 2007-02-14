@@ -1681,7 +1681,7 @@ static size_t dbiblast_memfread(void* dest, size_t size, size_t num_items,
     {					/* memory mapped */
 	i = size * num_items;
 	memcpy(dest, &mf->Mem[mf->Pos], i);
-	mf->Pos += (ajulong) i;
+	mf->Pos += (ajlong) i;
 	return i;
     }
 
