@@ -88,7 +88,7 @@ typedef struct AjSPatComp
 ** @attr Pattern [AjPStr] Pattern in string format.
 ** @attr Compiled [void*] Compiled version of the pattern.
 ** @attr Protein [AjBool] True if protein pattern
-** @attr Mismatch [ajint] Mismatch value.
+** @attr Mismatch [ajuint] Mismatch value.
 **
 ** @new ajPatternSeqNew Default constructor
 ** @delete ajPatternSeqDel Default destructor
@@ -105,7 +105,7 @@ typedef struct AjSPatternSeq {
   AjPStr Pattern;
   void* Compiled;
   AjBool Protein;
-  ajint Mismatch;
+  ajuint Mismatch;
 } AjOPatternSeq;
 
 #define AjPPatternSeq AjOPatternSeq*
@@ -123,7 +123,7 @@ typedef struct AjSPatternSeq {
 ** @attr Name [AjPStr] Name.
 ** @attr Pattern [AjPStr] Pattern in string format.
 ** @attr Compiled [AjPRegexp] Compiled version of the pattern.
-** @attr Type [ajint] Type.
+** @attr Type [ajuint] Type.
 ** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajPatternRegexNew Default constructor
@@ -139,7 +139,7 @@ typedef struct AjSPatternRegex {
   AjPStr    Name;
   AjPStr    Pattern;
   AjPRegexp Compiled;
-  ajint     Type;
+  ajuint    Type;
   char      Padding[4];
 } AjOPatternRegex;
 
@@ -225,13 +225,13 @@ typedef struct AjSPatlistRegex {
 */
 
 AjPPatternSeq ajPatternSeqNewList (AjPPatlistSeq plist, const AjPStr name,
-				   const AjPStr pat, ajint mismatch);
+				   const AjPStr pat, ajuint mismatch);
 void ajPatternSeqDel (AjPPatternSeq* pthys);
 const AjPStr ajPatternSeqGetName (const AjPPatternSeq thys);
 const AjPStr ajPatternSeqGetPattern (const AjPPatternSeq thys);
 AjPPatComp ajPatternSeqGetCompiled (const AjPPatternSeq thys);
 AjBool ajPatternSeqGetProtein (const AjPPatternSeq thys);
-ajint ajPatternSeqGetMismatch (const AjPPatternSeq thys);
+ajuint ajPatternSeqGetMismatch (const AjPPatternSeq thys);
 void ajPatternSeqSetCompiled (AjPPatternSeq thys, void* pat);
 void ajPatternSeqDebug (const AjPPatternSeq pat);
 
@@ -242,23 +242,25 @@ void ajPatternRegexDel (AjPPatternRegex* pthys);
 const AjPStr ajPatternRegexGetName (const AjPPatternRegex thys);
 const AjPStr ajPatternRegexGetPattern (const AjPPatternRegex thys);
 AjPRegexp ajPatternRegexGetCompiled (const AjPPatternRegex thys);
-ajint ajPatternRegexGetType (const AjPPatternRegex thys);
+ajuint ajPatternRegexGetType (const AjPPatternRegex thys);
 void ajPatternRegexSetCompiled (AjPPatternRegex thys, AjPRegexp pat);
 void ajPatternRegexDebug (const AjPPatternRegex pat);
 
 /* Patlist handling functions */
 AjPPatlistSeq ajPatlistSeqNewType (AjBool Protein);
-AjPPatlistRegex ajPatlistRegexNewType (ajint type);
+AjPPatlistRegex ajPatlistRegexNewType (ajuint type);
 AjPPatlistRegex ajPatlistRegexNew (void);
 AjPPatlistSeq ajPatlistSeqNew (void);
 void ajPatlistSeqDel (AjPPatlistSeq* pthys);
 void ajPatlistRegexDel (AjPPatlistRegex* pthys);
 AjPPatlistRegex ajPatlistRegexRead(const AjPStr patspec,
 				   const AjPStr patname,
-				   ajint type, AjBool upper, AjBool lower);
+				   const AjPStr fmt,
+				   ajuint type, AjBool upper, AjBool lower);
 AjPPatlistSeq ajPatlistSeqRead(const AjPStr patspec,
 			       const AjPStr patname,
-			       AjBool protein, ajint mismatches);
+			       const AjPStr fmt,
+			       AjBool protein, ajuint mismatches);
 AjBool ajPatlistRegexGetNext (AjPPatlistRegex thys,
 			      AjPPatternRegex* pattern);
 AjBool ajPatlistSeqGetNext (AjPPatlistSeq thys,
@@ -269,14 +271,14 @@ void ajPatlistSeqRemoveCurrent (AjPPatlistSeq thys);
 void ajPatlistRegexRemoveCurrent (AjPPatlistRegex thys);
 void ajPatlistAddRegex (AjPPatlistRegex thys, AjPPatternRegex pat);
 void ajPatlistAddSeq (AjPPatlistSeq thys, AjPPatternSeq pat);
-ajint ajPatlistSeqGetSize(const AjPPatlistSeq plist);
-ajint ajPatlistRegexGetSize(const AjPPatlistRegex plist);
-ajint ajPatlistRegexDoc(AjPPatlistRegex thys, AjPStr* pdoc);
-ajint ajPatlistSeqDoc(AjPPatlistSeq thys, AjPStr* pdoc);
+ajuint ajPatlistSeqGetSize(const AjPPatlistSeq plist);
+ajuint ajPatlistRegexGetSize(const AjPPatlistRegex plist);
+ajuint ajPatlistRegexDoc(AjPPatlistRegex thys, AjPStr* pdoc);
+ajuint ajPatlistSeqDoc(AjPPatlistSeq thys, AjPStr* pdoc);
 
 AjPPatComp	ajPatCompNew (void);
 void		ajPatCompDel (AjPPatComp* pthys);
-ajint ajPatternRegexType(const AjPStr type);
+ajuint ajPatternRegexType(const AjPStr type);
 
 /*
 ** End of prototype definitions
