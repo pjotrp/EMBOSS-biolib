@@ -256,7 +256,7 @@ static void cpgplot_findbases(const AjPStr substr, ajint len,
 	    obsexp[j] = obs/expect;
 	    *obsexpmax = (*obsexpmax > obsexp[j]) ? *obsexpmax : obsexp[j];
 	}
-	xypc[j] = (cxf/windowf)*100.0 + (cyf/windowf)*100.0;
+	xypc[j] = (cxf/windowf)*(float)100.0 + (cyf/windowf)*(float)100.0;
     }
 
     *plotend = j;
@@ -307,9 +307,9 @@ static void cpgplot_countbases(const char *seq, const char *bases,
 
         if(!(15-codea))   /* look for ambiguity code 'N' */
         {
-	    *cx = *cx + 0.25;
+	    *cx = *cx + (float)0.25;
 	    if(!(15-codeb))
-		*cxpy = *cxpy + 0.0625;
+		*cxpy = *cxpy + (float)0.0625;
         }
         else
         {
@@ -629,9 +629,9 @@ static void cpgplot_plotit(const char *seq,
 	ajGraphxySetXRangeII(graphs,begin,begin+len-1);
 	ajGraphxySetYRangeII(graphs,0,2);
 	ajGraphPlpDataSetMaxMin(tmGraph,(float)begin,(float)(begin+len-1),
-			       0.0,1.2);
+			       (float) 0.0, (float) 1.2);
 	ajGraphPlpDataSetMaxima(tmGraph,(float)begin,(float)(begin+len-1),
-			       0.0,1.0);
+			       (float) 0.0, (float) 1.0);
 
 	ajGraphPlpDataCalcXY(tmGraph,len,(float)begin,1.0,tmp);
 	ajGraphDataReplaceI(graphs,tmGraph,igraph++);

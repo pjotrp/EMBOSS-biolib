@@ -395,11 +395,14 @@ static float pepcoil_probcoil(float score)
 {
     float gcc;
     float gg;
+    double td;
+    
+    td = ajGaussProb((float)1.63,(float)0.24,score);
+    gcc = (float) td;
+    td  = ajGaussProb((float)0.77,(float)0.20,score);
+    gg  = (float) td;
 
-    gcc = ajGaussProb(1.63,0.24,score);
-    gg  = ajGaussProb(0.77,0.20,score);
-
-    return gcc/(30.0*gg + gcc);
+    return gcc/((float)30.0*gg + gcc);
 }
 
 

@@ -190,7 +190,7 @@ int main(int argc, char **argv)
 	AJCNEW0(countField, nfields);
 	AJCNEW0(fieldTot, nfields);
 	for(ifield=0; ifield < nfields; ifield++)
-	    maxFieldLen[ifield] = -maxindex;
+	    maxFieldLen[ifield] = (ajint)maxindex * -1;
 
 	if(systemsort)
 	    AJCNEW(alistfile, nfields);

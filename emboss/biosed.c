@@ -140,7 +140,7 @@ static void biosed_replace(AjPStr *substr,
     {
 	q = p;
 	p += (targetpos - begin);
-	end = p - q - 1;
+	end = (ajint)(p - q) - 1;
 	if(ajCharPrefixS(p, target)) {
 	    if(end > -1)
 	    {
@@ -156,7 +156,7 @@ static void biosed_replace(AjPStr *substr,
     else {
 	while((q=strstr(p,v)))
 	{
-	    end = q-p-1;
+	    end = (ajint)(q-p) - 1;
 	    
 	    if(end > -1)
 	    {
@@ -216,8 +216,9 @@ static void biosed_delete(AjPStr *substr, const AjPStr target,
     {
 	q = p;
 	p += (targetpos - begin);
-	end = p - q - 1;
-	if(ajCharPrefixS(p, target)) {
+	end = (ajint)(p - q) - 1;
+	if(ajCharPrefixS(p, target))
+	{
 	    if(end > -1)
 	    {
 		ajStrAssignSubC(&tmp,q,0,end);
@@ -227,7 +228,8 @@ static void biosed_delete(AjPStr *substr, const AjPStr target,
 	    ajStrAssignS(substr,tmp);
 	}
     }
-    else {
+    else
+    {
 	while((q=strstr(p,v)))
 	{
 	    t = q + tlen;

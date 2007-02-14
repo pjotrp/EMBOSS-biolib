@@ -200,7 +200,8 @@ int main(int argc, char **argv)
     ajint endseq;
     ajint newILend = 0;
     ajint newILstart;
-
+    void *freeptr;
+    
     ajGraphInit("prettyplot", argc, argv);
 
     seqset   = ajAcdGetSeqset("sequences");
@@ -273,10 +274,10 @@ int main(int argc, char **argv)
     if(portrait)
     {
 	ajGraphSetOri(1);
-	ystart = 75.0;
+	ystart = (float) 75.0;
     }
     else
-	ystart = 75.0;
+	ystart = (float) 75.0;
 
     /* pair is an array of three non-negative floats */
 
@@ -415,11 +416,11 @@ int main(int argc, char **argv)
 
     ajGraphGetCharSize(&defheight,&currentheight);
 
-    xmin = -charlen - 2.0;
-    xmax = (float)numres+11.0+(float)(numres/resbreak);
-    xmid = (xmax + xmin)/2.0;
+    xmin = -charlen - (float)2.0;
+    xmax = (float)numres+(float)11.0+(float)(numres/resbreak);
+    xmid = (xmax + xmin)/(float)2.0;
     ajGraphOpenWin(graph, xmin, xmax,
-		   0.0, ystart+1.0);
+		   (float)0.0, ystart+(float)1.0);
  
     ajGraphGetOut(&fxp,&fyp,&ixlen,&iylen,&ixoff,&iyoff);
 
@@ -441,17 +442,18 @@ int main(int argc, char **argv)
     ajGraphGetCharSize(&defheight,&currentheight);
  
     ajGraphSetCharScale(((float)ixlen/((float)(numres+charlen)*
-				       (currentheight+1.0)))/currentheight);
+				       (currentheight+(float)1.0)))/
+			currentheight);
 
     ajGraphGetCharSize(&defheight,&currentheight);
 
-    yincr = (currentheight +3.0)*0.3;
+    yincr = (currentheight + (float)3.0)*(float)0.3;
 
 /*
 ** If we have titles (now the standard graph title and subtitle)
 ** leave 5 rows of space for them
 */
-    y=ystart-6.0;
+    y=ystart-(float)6.0;
 
     if(ajStrGetLen(options))
     {
@@ -786,11 +788,11 @@ int main(int argc, char **argv)
 	if(count >= numres )
 	{
 	    /* check y position for next set */
-	    y=y-(yincr*((float)numseq+2.0+((float)consensus*2)));
-	    if(y<yincr*((float)numseq+2.0+((float)consensus*2)))
+	    y=y-(yincr*((float)numseq+(float)2.0+((float)consensus*(float)2)));
+	    if(y<yincr*((float)numseq+(float)2.0+((float)consensus*(float)2)))
 	    {
 		/* full page - print it */
-		y=ystart-6.0;
+		y=ystart-(float)6.0;
 
 		startseq = 0;
 		endseq = seqperpage;
@@ -870,7 +872,7 @@ int main(int argc, char **argv)
 			{
 			    /*draw hori line */
 			    seqboxptr[j][k] |= BOXTOP;
-			    currentstate = part;
+			    currentstate = (ajint) part;
 			}
 		    }
 
@@ -927,7 +929,7 @@ int main(int argc, char **argv)
 
 	    if(colourbyconsensus)
 	    {
-		part = matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
+		part = (float) matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
 		    [ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])];
 		if(iscons && seqcharptr[highindex][k] == seqcharptr[j][k])
 		    seqcolptr[j][k] = cidentity;
@@ -940,7 +942,7 @@ int main(int argc, char **argv)
 		seqcolptr[j][k] = colmat[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])];
 	    else if(iscons && colourbyshade)
 	    {
-		part = matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
+		part = (float) matrix[ajSeqcvtGetCodeK(cvt, seqcharptr[j][k])]
 		    [ajSeqcvtGetCodeK(cvt, seqcharptr[highindex][k])];
 		if(part >= 1.5)
 		    seqcolptr[j][k] = shadecolour[0];
@@ -1028,7 +1030,8 @@ int main(int argc, char **argv)
     AJFREE(colmat);
     AJFREE(shadecolour);
 
-    AJFREE(seqcharptr);
+    freeptr = (void *) seqcharptr;
+    AJFREE(freeptr);
 
     AJFREE(identical);
     AJFREE(matching);
@@ -1071,7 +1074,8 @@ static ajint prettyplot_calcseqperpage(float yincr,float y,AjBool consensus)
 
     while(yep>0.0)
     {
-	yep = y-(yincr*((float)numallowed+2.0+((float)consensus*2)));
+	yep = y-(yincr*((float)numallowed+(float)2.0+((float)consensus*
+						      (float)2)));
 	numallowed++;
     }
 
@@ -1151,7 +1155,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 
     if(boxit && boxcol)
     {
-	y = ystart-6.0;
+	y = ystart-(float)6.0;
 	for(k=start; k< end; k++)
 	{
 	    if(countforgap >= resbreak)
@@ -1161,10 +1165,12 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    }
 	    if(count >= numres+1 )
 	    {
-		y = y-(yincr*((float)numseq+2.0+((float)consensus*2)));
-		if(y<yincr*((float)numseq+2.0+((float)consensus*2)))
+		y = y-(yincr*((float)numseq+(float)2.0+((float)consensus*
+							(float)2)));
+		if(y<yincr*((float)numseq+(float)2.0+((float)consensus*
+						      (float)2)))
 		{
-		    y = ystart-6.0;
+		    y = ystart-(float)6.0;
 		}
 		count = 1;
 		gapcount = 0;
@@ -1176,10 +1182,11 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    for(j=seqstart,l=0;j<seqend;j++,l++)
 		if(seqboxptr[j][k] & BOXCOLOURED)
 		{
-		    ajGraphRectFill((float)(count+gapcount-1)+1.0,
-				    y-(yincr*(l+0.5)),
-				    (float)(count+gapcount-1),
-				    y-(yincr*(l-0.5)));
+		    ajGraphRectFill((float)(count+gapcount-(float)1)+
+				    (float)1.0,
+				    y-(yincr*((float)l+(float)0.5)),
+				    (float)(count+gapcount-(float)1),
+				    y-(yincr*((float)l-(float)0.5)));
 		}
 	}
     }
@@ -1190,18 +1197,19 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 
     count = 0;
     gapcount = countforgap = 0;
-    y = ystart-6.0;
+    y = ystart-(float)6.0;
 
     ajGraphGetCharSize(&defcs,&curcs);
 
     if(shownames)
     {
 	for(i=seqstart,l=0;i<seqend;i++,l++)
-	    ajGraphTextStart(-charlen,y-(yincr*l),ajStrGetPtr(seqnames[i]));
+	    ajGraphTextStart((float)-charlen,y-(yincr*l),
+			     ajStrGetPtr(seqnames[i]));
 
 	if(consensus && (numseq==seqend))
-	    ajGraphTextStart(-charlen,y-(yincr*((seqend-seqstart)+1)),
-			     ajStrGetPtr(strcon));
+	    ajGraphTextStart((float)-charlen,y-(yincr*((seqend-seqstart)+
+					   (float)1)),ajStrGetPtr(strcon));
 
     }
 
@@ -1220,23 +1228,24 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 		for(j=seqstart,l=0;j<seqend;j++,l++)
 		{
 		    sprintf(numberstring,"%d",seqcount[j]);
-		    ajGraphTextStart((float)(count+numgaps)+5.0,
-				      y-(yincr*l),numberstring);
+		    ajGraphTextStart((float)(count+numgaps)+(float)5.0,
+				      y-(yincr*(float)l),numberstring);
 		}
 
 		if(consensus && (numseq==seqend))
 		{
 		    sprintf(numberstring,"%d",k);
-		    ajGraphTextStart((float)(count+numgaps)+5.0,
-				      y-(yincr*(l+1)),
+		    ajGraphTextStart((float)(count+numgaps)+(float)5.0,
+				      y-(yincr*((float)l+(float)1)),
 				      numberstring);
 		}
 	    }
 
-	    y = y-(yincr*((float)numseq+2.0+((float)consensus*2)));
-	    if(y<yincr*((float)numseq+2.0+((float)consensus*2)))
+	    y = y-(yincr*((float)numseq+(float)2.0+((float)consensus*
+						    (float)2)));
+	    if(y<yincr*((float)numseq+(float)2.0+((float)consensus*(float)2)))
 	    {
-		y = ystart-6.0;
+		y = ystart-(float)6.0;
 	    }
 
 	    count = 0;
@@ -1244,11 +1253,11 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    if(shownames)
 	    {
 		for(i=seqstart,l=0;i<seqend;i++,l++)
-		    ajGraphTextStart(-charlen,y-(yincr*l),
+		    ajGraphTextStart((float)-charlen,y-(yincr*l),
 				     ajStrGetPtr(seqnames[i]));
 
 		if(consensus &&(numseq==seqend))
-		    ajGraphTextStart(-charlen,
+		    ajGraphTextStart((float)-charlen,
 				      y-(yincr*((seqend-seqstart)+1)),
 				      ajStrGetPtr(strcon));
 	    }
@@ -1264,27 +1273,27 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 		    seqcount[j]++;
 		if(seqboxptr[j][k] & BOXLEF)
 		    ajGraphLine((float)(count+gapcount),y-
-				(yincr*((float)l+0.5)),
+				(yincr*((float)l+(float)0.5)),
 				(float)(count+gapcount),
-				y-(yincr*((float)l-0.5)));
+				y-(yincr*((float)l-(float)0.5)));
 
 		if(seqboxptr[j][k] & BOXTOP)
 		    ajGraphLine((float)(count+gapcount),y-
-				(yincr*((float)l-0.5)),
-				(float)(count+gapcount)+1.0,
-				y-(yincr*((float)l-0.5)));
+				(yincr*((float)l-(float)0.5)),
+				(float)(count+gapcount)+(float)1.0,
+				y-(yincr*((float)l-(float)0.5)));
 
 		if(seqboxptr[j][k] & BOXBOT)
 		    ajGraphLine((float)(count+gapcount),y-
-				(yincr*((float)l+0.5)),
-				(float)(count+gapcount)+1.0,
-				y-(yincr*((float)l+0.5)));
+				(yincr*((float)l+(float)0.5)),
+				(float)(count+gapcount)+(float)1.0,
+				y-(yincr*((float)l+(float)0.5)));
 
 		if(seqboxptr[j][k] & BOXRIG)
-		    ajGraphLine((float)(count+gapcount)+1.0,y-
-				(yincr*((float)l+0.5)),
-				(float)(count+gapcount)+1.0,
-				y-(yincr*((float)l-0.5)));
+		    ajGraphLine((float)(count+gapcount)+(float)1.0,y-
+				(yincr*((float)l+(float)0.5)),
+				(float)(count+gapcount)+(float)1.0,
+				y-(yincr*((float)l-(float)0.5)));
 	    }
 	}
 	else if(shownumbers)	/* usually set in the boxit block */
@@ -1308,15 +1317,16 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	for(j=seqstart,l=0;j<seqend;j++,l++)
 	{
 	    sprintf(numberstring,"%d",seqcount[j]);
-	    ajGraphTextStart((float)(count+numgaps)+5.0,y-(yincr*l),
+	    ajGraphTextStart((float)(count+numgaps)+(float)5.0,y-(yincr*l),
 			      numberstring);
 	}
 
 	if(consensus && (numseq==seqend))
 	{
 	    sprintf(numberstring,"%d",k);
-	    ajGraphTextStart((float)(count+numgaps)+5.0,y-(yincr*(l+1)),
-			      numberstring);
+	    ajGraphTextStart((float)(count+numgaps)+(float)5.0,
+			     y-(yincr*(l+(float)1)),
+			     numberstring);
 	}
     }
 
@@ -1341,7 +1351,7 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 	    count = 0;
 	    gapcount = countforgap = 0;
 
-	    y = ystart-6.0;
+	    y = ystart-(float)6.0;
 
 	    for(k=start; k< end; k++)
 	    {
@@ -1353,8 +1363,8 @@ static void prettyplot_fillinboxes(ajint numseq, ajint length,
 
 		if(count >= numres )
 		{
-		    y=y-(yincr*((float)(seqend-seqstart)+2.0+
-				((float)consensus*2)));
+		    y=y-(yincr*((float)(seqend-seqstart)+(float)2.0+
+				((float)consensus*(float)2)));
 		    count = 0;
 		    gapcount = 0;
 		}
