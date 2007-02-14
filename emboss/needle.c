@@ -72,6 +72,8 @@ int main(int argc, char **argv)
 
     AjPStr tmpstr = NULL;
 
+    size_t stlen;
+
     embInit("needle", argc, argv);
 
     matrix    = ajAcdGetMatrixf("datafile");
@@ -111,10 +113,11 @@ int main(int argc, char **argv)
 
 	if(len>maxarr)
 	{
-	    AJCRESIZETRY(path,len);
+	    stlen = (size_t) len;
+	    AJCRESIZETRY(path,stlen);
 	    if(!path)
 		ajDie("Sequences too big. Try 'stretcher'");
-	    AJCRESIZETRY(compass,len);
+	    AJCRESIZETRY(compass,stlen);
 	    if(!compass)
 		ajDie("Sequences too big. Try 'stretcher'");
 	    maxarr=len;
