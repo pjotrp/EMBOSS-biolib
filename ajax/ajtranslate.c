@@ -132,7 +132,7 @@
 #define TGCFILE "EGC.0"
 #define TGC "EGC."
 
-
+static AjPTable trnCodes = NULL;
 
 
 /* table to convert character of base to translation array element value */
@@ -206,7 +206,10 @@ void ajTrnDel(AjPTrn* pthis)
 {
     AjPTrn thys;
 
+    if(!pthis) return;
+
     thys = *pthis;
+    if(!thys) return;
 
     ajStrDel(&thys->FileName);
     ajStrDel(&thys->Title);
@@ -247,7 +250,7 @@ AjPTrn ajTrnNewC(const char * filename)
 **
 ** Initialises translation. Reads a translation data file called 'EGC.x'
 ** where 'x' is supplied as an ajint parameter in the range 0 to 15.
-** ajTrnDel(AjPTrn); should be called when translation has ceased.
+** ajTrnDel should be called when translation has ceased.
 **
 ** @param [r] trnFileNameInt [ajint] translation table file name number
 ** @return [AjPTrn] Translation object
@@ -1633,12 +1636,11 @@ ajint ajTrnStartStopC(const AjPTrn trnObj, const char *codon, char *aa)
 
 const AjPStr ajTrnName(ajint trnFileNameInt)
 {
-    static AjPStr ret;
-    static AjPStr unknown = NULL;
+    const AjPStr ret = NULL;
+    AjPStr unknown = NULL;
     AjPFile indexf = NULL;
-    static AjPStr indexfname = NULL;
+    AjPStr indexfname = NULL;
     AjPStr line = NULL;
-    static AjPTable trnCodes = NULL;
     AjPStr tmpstr = NULL;
     AjPStr tok1 = NULL;
     AjPStr tok2 = NULL;
@@ -1675,8 +1677,12 @@ const AjPStr ajTrnName(ajint trnFileNameInt)
     ajFmtPrintS(&tmpstr, "%d", trnFileNameInt);
     ret = (AjPStr) ajTableGet(trnCodes, tmpstr);
 
+    ajStrDel(&unknown);
+    ajStrDel(&indexfname);
     ajStrDel(&tok1);
     ajStrDel(&tok2);
+    ajStrDel(&line);
+    ajStrDel(&tmpstr);
     ajStrTokenDel(&handle);
 
     if(ret)
@@ -1831,6 +1837,7 @@ static AjBool trnComplete(AjPTrn thys)
 void ajTrnExit(void)
 {
     ajStrDel(&trnResidueStr);
+    ajStrTableFree(&trnCodes);
 
     return;
 }

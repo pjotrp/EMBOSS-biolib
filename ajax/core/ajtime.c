@@ -49,6 +49,7 @@ typedef struct TimeSFormat
 
 
 static AjPTime timeTodayData = NULL;
+static AjPTime timeTodaySaved = NULL;
 
 
 static TimeOFormat timeFormat[] =  /* formats for strftime */
@@ -78,20 +79,19 @@ static const char* TimeFormat(const char *timefmt);
 
 const AjPTime ajTimeTodayRef(void)
 {
-    static AjPTime thys = NULL;
     time_t tim;
     
     tim = time(0);
 
-    if(!thys)
-	AJNEW0(thys);
+    if(!timeTodaySaved)
+	AJNEW0(timeTodaySaved);
 
-    if(!ajTimeLocal(tim,thys))
+    if(!ajTimeLocal(tim,timeTodaySaved))
         return NULL;
 
-    thys->format = NULL;
+    timeTodaySaved->format = NULL;
 
-    return thys;
+    return timeTodaySaved;
 }
 
 
@@ -431,6 +431,7 @@ void ajTimeDel(AjPTime *thys)
 void ajTimeExit(void)
 {
     ajTimeDel(&timeTodayData);
+    ajTimeDel(&timeTodaySaved);
 
     return;
 }

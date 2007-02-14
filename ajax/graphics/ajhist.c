@@ -48,7 +48,7 @@ ajint aj_hist_mark=GRAPH_HIST;
 
 void ajHistDisplay(const AjPHist hist)
 {
-    PLFLT *data    = NULL;
+    PLFLT *data    = NULL;		/* points to data in hist */
     PLFLT *totals  = NULL;
     PLFLT *totals2 = NULL;
     float ptsperbin;
@@ -337,10 +337,10 @@ void ajHistDisplay(const AjPHist hist)
 		}
 	    }
 	}
-	AJFREE(totals);
-	if(hist->displaytype == HIST_SEPARATE)
-	    AJFREE(totals2);
     }
+
+    AJFREE(totals);
+    AJFREE(totals2);
 
     return;
 }
@@ -381,23 +381,30 @@ void ajHistClose(void)
 void ajHistDelete(AjPHist* phist)
 {
     ajint i;
-    AjPHist hist = *phist;
+    AjPHist hist;
 
-    if (!hist)
-	return;
+    if(!phist) return;
+
+    hist = *phist;
+    if (!hist)	return;
 
     for(i=0;i<hist->numofsets; i++)
     {
 	if(hist->hists[i]->deletedata)
+	{
+	    ajStrDel(&hist->hists[i]->title);
+	    ajStrDel(&hist->hists[i]->xaxis);
+	    ajStrDel(&hist->hists[i]->yaxis);
 	    AJFREE(hist->hists[i]->data);
+	}
 	AJFREE((hist->hists[i]));
     }
     AJFREE(hist->hists);
 
-    AJFREE(hist->title);
-    AJFREE(hist->xaxis);
-    AJFREE(hist->yaxisleft);
-    AJFREE(hist->yaxisright);
+    ajStrDel(&hist->title);
+    ajStrDel(&hist->xaxis);
+    ajStrDel(&hist->yaxisleft);
+    ajStrDel(&hist->yaxisright);
 
     AJFREE(*phist);
     return;

@@ -654,13 +654,6 @@ ajuint ajMathPosI(ajuint len, ajuint imin, ajint ipos)
 	jpos = ipos;
 
     if(jpos >= len)
-    {
-	ajUtilCatch();
-	/* ajDebug("strPosII ilen: %d imin: %d ipos: %d jpos: %d\n",
-		ilen, imin, ipos, jpos); */
-    }
-
-    if(jpos >= len)
 	jpos = len - 1;
 
     if(jpos < imin)

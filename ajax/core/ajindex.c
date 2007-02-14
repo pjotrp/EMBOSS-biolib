@@ -14368,15 +14368,13 @@ static void btreeNumBucketDel(AjPNumBucket *thys)
 
     pthis = *thys;
 
-    if(pthis->Nentries)
+    if(pthis->NumId)
     {
 	for(i=0;i<pthis->Nentries;++i)
 	    AJFREE(pthis->NumId[i]);
-    
 	AJFREE(pthis->NumId);
     }
-    
-    
+
     AJFREE(pthis);
 
     *thys = NULL;
@@ -14630,7 +14628,7 @@ static AjPNumBucket btreeNumBucketNew(ajint n)
 
     if(n)
     {
-	AJCNEW0(bucket->NumId,n);
+	AJCNEW0(bucket->NumId,n+1);
 	for(i=0;i<n;++i)
 	    AJNEW0(bucket->NumId[i]);
     }

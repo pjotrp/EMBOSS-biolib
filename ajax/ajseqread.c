@@ -501,7 +501,7 @@ static void       seqListNoComment(AjPStr* text);
 static AjBool     seqListProcess(AjPSeq thys, AjPSeqin seqin,
 				 const AjPStr usa);
 static void       seqMsfDataDel(SeqPMsfData* pthys);
-static void       seqMsfDataTrace(SeqPMsfData thys);
+static void       seqMsfDataTrace(const SeqPMsfData thys);
 static void       seqMsfItemDel(SeqPMsfItem* pthys);
 static void       seqMsfTabDel(void **key, void **value, void *cl);
 static void       seqMsfTabList(const void *key, void **value, void *cl);
@@ -867,7 +867,7 @@ void ajSeqinDel(AjPSeqin* pthis)
     ajStrDel(&thys->Desc);
     ajStrDel(&thys->Doc);
 
-    ajListFree(&thys->List);
+    ajListFreeData(&thys->List);
 
     ajStrDel(&thys->Usa);
     ajStrDel(&thys->Ufo);
@@ -1213,7 +1213,6 @@ AjPSeqall ajSeqallFile(const AjPStr usa)
 
 AjBool ajSeqallNext(AjPSeqall seqall, AjPSeq* retseq)
 {
-
     if(!seqall->Count)
     {
 	seqall->Count = 1;
@@ -6217,12 +6216,12 @@ static void seqMsfTabList(const void* key, void** value, void* cl)
 **
 ** Debug trace report for SeqPMsfData objects
 **
-** @param [r] thys [SeqPMsfData] MSF data object
+** @param [r] thys [const SeqPMsfData] MSF data object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqMsfDataTrace(SeqPMsfData thys)
+static void seqMsfDataTrace(const SeqPMsfData thys)
 {
     ajuint i;
 
@@ -9102,7 +9101,7 @@ void ajSeqQueryDel(AjPSeqQuery* pthis)
     ajStrDel(&thys->Field);
     ajStrDel(&thys->QryString);
     ajStrDel(&thys->Application);
- 
+
     if(thys->QryData)
     {
 	if(thys->Access->AccessFree)
@@ -9288,7 +9287,10 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 		    thys->Acc);
 
 	    if(ajStrMatchWildS(accstr, thys->Acc))
+	    {
+		ajListIterFree(&iter);
 		return ajTrue;
+	    }
 	}
 	tested = ajTrue;
 	ajDebug("acc test failed\n");
@@ -9309,7 +9311,10 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 		    thys->Org);
 
 	    if(ajStrMatchWildS(taxstr, thys->Org))
+	    {
+		ajListIterFree(&iter);
 		return ajTrue;
+	    }
 	}
 	tested = ajTrue;
 	ajDebug("org test failed\n");
@@ -9335,7 +9340,10 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 		    thys->Key);
 
 	    if(ajStrMatchWildS(keystr, thys->Key))
+	    {
+		ajListIterFree(&iter);
 		return ajTrue;
+	    }
 	}
 	tested = ajTrue;
 	ajDebug("key test failed\n");

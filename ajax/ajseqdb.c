@@ -855,6 +855,8 @@ static AjBool seqAccessFreeEmblcd(void* qry)
     qryd->libr=0;
     qryd->libs=0;
 
+    ajListFreeData(&qryd->List);
+
     seqCdQryClose(query);
 
     return retval;
@@ -4149,12 +4151,12 @@ static void seqEmbossGcgLoadBuff(AjPSeqin seqin)
 
 static AjBool seqEmbossGcgReadRef(AjPSeqin seqin)
 {
-    static AjPStr line = NULL;
+    AjPStr line = NULL;
     AjPSeqQuery qry;
     SeqPEmbossQry qryd;
     ajlong rpos;
-    static AjPStr id       = NULL;
-    static AjPStr idc      = NULL;
+    AjPStr id       = NULL;
+    AjPStr idc      = NULL;
     AjBool ispir           = ajFalse;
     AjBool continued       = ajFalse;
     AjBool testcontinue    = ajFalse;
@@ -4227,12 +4229,18 @@ static AjBool seqEmbossGcgReadRef(AjPSeqin seqin)
 		if(!ajStrPrefixS(idc,id))
 		{
 		    ajFileSeek(qryd->libr, rpos, 0);
+		    ajStrDel(&line);
+		    ajStrDel(&id);
+		    ajStrDel(&idc);
 		    return ajTrue;
 		}
 	    }
 	    else
 	    {
 		ajFileSeek(qryd->libr, rpos, 0);
+		ajStrDel(&line);
+		ajStrDel(&id);
+		ajStrDel(&idc);
 		return ajTrue;
 	    }
 	}
@@ -4250,6 +4258,9 @@ static AjBool seqEmbossGcgReadRef(AjPSeqin seqin)
     /* at end of file */
 
     ajFileClose(&qryd->libr);
+    ajStrDel(&line);
+    ajStrDel(&id);
+    ajStrDel(&idc);
 
     return ajTrue;
 }
@@ -4453,6 +4464,8 @@ static AjBool seqEmbossGcgReadSeq(AjPSeqin seqin)
 	    }
 	}
     }
+    ajStrDel(&gcgtype);
+    ajStrDel(&line);
 
     return ajTrue;
 }

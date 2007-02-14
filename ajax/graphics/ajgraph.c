@@ -1093,6 +1093,7 @@ static void GraphClose(void)
 	ajStrDel(&graphData->FName);
 	ajStrDel(&graphData->Ext);
 	AJFREE(graphData);
+ 	plend();
     }
     else
     {
@@ -4591,7 +4592,8 @@ void ajGraphxyDel(AjPGraph* pthis)
 	    graphdata = (thys->plplot->graphs)[i];
 	    if (graphdata)
 	    {
-		ajDebug("ajGraphxyDel graphs[%d]\n", i);
+		ajDebug("ajGraphxyDel graphs[%d] xcalc:%B ycalc:%B\n",
+			i, graphdata->xcalc, graphdata->ycalc);
 
 		if(!graphdata->xcalc)
 		    AJFREE(graphdata->x);
@@ -4643,8 +4645,8 @@ static void GraphPlpDataInit(AjPGraphPlpData graphdata)
 	    graphdata->title, graphdata->subtitle,
 	    graphdata->xaxis, graphdata->yaxis);
 
-    graphdata->x = 0;
-    graphdata->y = 0;
+    graphdata->x = NULL;
+    graphdata->y = NULL;
     graphdata->xcalc = ajTrue;
     graphdata->ycalc = ajTrue;
     ajStrAssignEmptyC(&graphdata->title,"");
@@ -4733,6 +4735,14 @@ void ajGraphPlpDataCalcXY(AjPGraphPlpData graphdata, ajint numofpoints,
     ajint i;
     PLFLT x = 0.0;
 
+    if(!graphdata->xcalc)
+	AJFREE(graphdata->x);
+    if(!graphdata->ycalc)
+	AJFREE(graphdata->y);
+
+    graphdata->xcalc = ajFalse;	 /* i.e. OK to delete at the end as it */
+    graphdata->ycalc = ajFalse;	 /* is our own copy */
+
     AJCNEW(graphdata->x, numofpoints);
     AJCNEW(graphdata->y, numofpoints);
 
@@ -4742,9 +4752,6 @@ void ajGraphPlpDataCalcXY(AjPGraphPlpData graphdata, ajint numofpoints,
 	graphdata->y[i] = y[i];
 	x += incr;
     }
-
-    graphdata->ycalc = ajTrue;	 /* i.e. OK to delete at the end as it
-				    is our own copy */
 
     graphdata->numofpoints = numofpoints;
 
@@ -4819,9 +4826,14 @@ AjPGraphPlpData ajGraphPlpDataNewI(ajint numofpoints)
     AJNEW0(graphdata);
 
     GraphPlpDataInit(graphdata);
-    AJCNEW0(graphdata->x, numofpoints);
-    AJCNEW0(graphdata->y, numofpoints);
+
     graphdata->numofpoints = numofpoints;
+
+    graphdata->xcalc = ajFalse;
+    AJCNEW0(graphdata->x, numofpoints);
+
+    graphdata->ycalc = ajFalse;
+    AJCNEW0(graphdata->y, numofpoints);
 
     return graphdata;
 }
