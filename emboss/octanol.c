@@ -79,12 +79,14 @@ int main(int argc, char **argv)
     float v;
     float flen;
     ajuint ilen;
-
+    ajuint tui;
+    
     ajGraphInit("octanol", argc, argv);
 
     seq = ajAcdGetSeq("sequence");
     ilen = ajSeqGetLen(seq);
-    flen = ajSeqGetLen(seq);
+    tui  = ajSeqGetLen(seq);
+    flen = (float) tui;
 
     mult = ajAcdGetGraphxy("graph");
     datafile  = ajAcdGetDatafile("datafile");
@@ -132,7 +134,7 @@ int main(int argc, char **argv)
 
     ajGraphAddLine(mult,0.0,0.0,flen,0.0,BLACK);
 
-    midpoint = ((float)llen+1.0)/2.0;
+    midpoint = ((float)llen+(float)1.0)/(float)2.0;
 
     ajSeqFmtLower(seq);
 
@@ -187,8 +189,8 @@ int main(int argc, char **argv)
 
 	s1++;
     }
-    min = min*1.1;
-    max = max*1.1;
+    min = min*(float)1.1;
+    max = max*(float)1.1;
 
     ajGraphxySetMaxMin(mult,0.0,flen,min,max);
     ajGraphPlpDataSetMaxima(graphdata,xmin1,xmax1,ymin1,ymax1);

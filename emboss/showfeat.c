@@ -523,10 +523,13 @@ static void showfeat_WriteFeat(AjPStr line, char strand, ajint fstart,
     ajint len;
     ajint pos1;
     ajint pos2;
-
+    float tf;
+    
     len  = end-beg+1;
-    pos1 = ((float)(fstart-beg)/(float)len)*width-1;
-    pos2 = ((float)(fend-beg)/(float)len)*width-1;
+    tf = ((float)(fstart-beg)/(float)len)*width-(float)1;
+    pos1 = (ajint) tf;
+    tf = ((float)(fend-beg)/(float)len)*width-(float)1;
+    pos2 = (ajint) tf;
 
     /* write the '-'s */
     for(i=pos1; i<pos2; i++)

@@ -107,6 +107,8 @@ int main(int argc, char **argv)
     char res3;
     char res4;
 
+    ajint ti;
+
     /* BYTE[i] is a byte mask for byte i */
     const ajlong BYTE[] = { 0x000000ff };
 
@@ -185,7 +187,11 @@ int main(int argc, char **argv)
     for(iloop=0;iloop<numPoints;iloop++)
 	for(ibase=0;ibase<4;ibase++)
 	    if(tmax < ajInt2dGet(trace,ibase,iloop))
-		tmax = ajInt2dGet(trace,ibase,iloop);
+	    {
+		ti = ajInt2dGet(trace,ibase,iloop);
+		tmax = (float) ti;
+	    }
+    
 
 
     /* setup graph parameters */
@@ -351,7 +357,8 @@ static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs,
     ajshort bP;
     ajshort lastbP;
     ajint bstart;
-
+    ajint ti;
+    
     AjPGraphPlpData gdata;
 
 
@@ -372,15 +379,16 @@ static AjPGraphPlpData abiview_graphDisplay(AjPGraph graphs,
 	{
 	    gdata->x[*nt-bstart] = (float)i + (float)(*nt+1-lastbP)/
 		(float)(bP-lastbP);
-	    gdata->y[*nt-bstart] = ajInt2dGet(trace,base,*nt);
+	    ti = ajInt2dGet(trace,base,*nt);
+	    gdata->y[*nt-bstart] = (float)ti;
 	    *nt = *nt+1;
 	}
 	lastbP = bP;
     }
 
     ajGraphPlpDataSetColour(gdata,colour);
-    ajGraphPlpDataSetMaxMin(gdata,(float)nstart+1.,
-                           (float)nstop,0.,tmax+80.);
+    ajGraphPlpDataSetMaxMin(gdata,(float)nstart+(float)1.,
+                           (float)nstop,(float)0.,tmax+(float)80.);
 
     /* add graph to list in a multiple graph */
     ajGraphDataAdd(graphs,gdata);
@@ -428,11 +436,12 @@ static AjPGraphPlpData abiview_graphTextDisplay(AjPGraph graphs, ajint nstart,
     {
 	*res = ajStrGetCharPos(nseq,i);
 	colres = abiview_getResColour(*res);
-	ajGraphPlpDataAddText(gdata,(float)i+1.,tmax+75.,colres,res);
+	ajGraphPlpDataAddText(gdata,(float)i+(float)1.,tmax+(float)75.,colres,
+			      res);
     }
 
     ajGraphPlpDataSetMaxMin(gdata,(float)nstart+1,
-			   (float)nstop,tmax+70.,tmax+80.);
+			   (float)nstop,tmax+(float)70.,tmax+(float)80.);
 
     /* add graph to list in a multiple graph */
     ajGraphDataAdd(graphs,gdata);
@@ -470,7 +479,7 @@ static void abiview_TextDisplay(AjPGraph graphs, ajint nstart, ajint nstop,
     {
 	*res = ajStrGetCharPos(nseq,i);
 	colres = abiview_getResColour(*res);
-	ajGraphAddText(graphs,(float)i+1.,tmax+30.,colres,res);
+	ajGraphAddText(graphs,(float)i+(float)1.,tmax+(float)30.,colres,res);
     }
 
     return;
