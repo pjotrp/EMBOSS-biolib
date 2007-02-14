@@ -27,8 +27,8 @@
 #include <math.h>
 
 
-#define sinf(x) (float)sin((double)x)
-#define cosf(x) (float)cos((double)x)
+#define sinfban(x) (float)sin((double)x)
+#define cosfban(x) (float)cos((double)x)
 
 
 
@@ -53,10 +53,10 @@ int main(int argc, char **argv)
     float rcurve;
     float bendscale;
     float curvescale;
-    float twistsum = 0.0;
-    float pi       = 3.14159;
-    float pifac    = (pi/180.0);
-    float pi2      = pi/2.0;
+    float twistsum = (float) 0.0;
+    float pi       = (float) 3.14159;
+    float pifac    = (pi/(float) 180.0);
+    float pi2      = pi/(float) 2.0;
     ajint *iseq    = NULL;
     float *x;
     float *y;
@@ -102,7 +102,7 @@ int main(int argc, char **argv)
     float rysum;
     float yp1;
     float yp2;
-
+    double td;
 
     ajGraphInit("banana", argc, argv);
     seq    = ajAcdGetSeq("sequence");
@@ -201,10 +201,10 @@ int main(int argc, char **argv)
     for(i=1;i<ajStrGetLen(sstr)-1;i++)
     {
 	twistsum += twist[iseq[i]][iseq[i+1]][iseq[i+2]];
-	dx = (roll[iseq[i]][iseq[i+1]][iseq[i+2]]*sinf(twistsum)) +
-	    (tilt[iseq[i]][iseq[i+1]][iseq[i+2]]*sinf(twistsum-pi2));
-	dy = roll[iseq[i]][iseq[i+1]][iseq[i+2]]*cosf(twistsum) +
-	    tilt[iseq[i]][iseq[i+1]][iseq[i+2]]*cosf(twistsum-pi2);
+	dx = (roll[iseq[i]][iseq[i+1]][iseq[i+2]]*sinfban(twistsum)) +
+	    (tilt[iseq[i]][iseq[i+1]][iseq[i+2]]*sinfban(twistsum-pi2));
+	dy = roll[iseq[i]][iseq[i+1]][iseq[i+2]]*cosfban(twistsum) +
+	    tilt[iseq[i]][iseq[i+1]][iseq[i+2]]*cosfban(twistsum-pi2);
 
 	x[i+1] = x[i]+dx;
 	y[i+1] = y[i]+dy;
@@ -220,31 +220,35 @@ int main(int argc, char **argv)
 	    rxsum+=x[i+k];
 	    rysum+=y[i+k];
 	}
-	rxsum+=(x[i+5]*0.5);
-	rysum+=(y[i+5]*0.5);
-	rxsum+=(x[i-5]*0.5);
-	rysum+=(y[i-5]*0.5);
+	rxsum+=(x[i+5]*(float)0.5);
+	rysum+=(y[i+5]*(float)0.5);
+	rxsum+=(x[i-5]*(float)0.5);
+	rysum+=(y[i-5]*(float)0.5);
 
-	xave[i] = rxsum*0.1;
-	yave[i] = rysum*0.1;
+	xave[i] = rxsum*(float)0.1;
+	yave[i] = rysum*(float)0.1;
     }
 
     for(i=(ajint)rbend+1;i<=ajStrGetLen(sstr)-(ajint)rbend-1;i++)
     {
-	bend[i] = sqrt(((x[i+(ajint)rbend]-x[i-(ajint)rbend])*
-			(x[i+(ajint)rbend]-x[i-(ajint)rbend])) +
-		       ((y[i+(ajint)rbend]-y[i-(ajint)rbend])*
-			(y[i+(ajint)rbend]-y[i-(ajint)rbend])));
+	td = sqrt(((x[i+(ajint)rbend]-x[i-(ajint)rbend])*
+		   (x[i+(ajint)rbend]-x[i-(ajint)rbend])) +
+		  ((y[i+(ajint)rbend]-y[i-(ajint)rbend])*
+		   (y[i+(ajint)rbend]-y[i-(ajint)rbend])));
+	bend[i] = (float) td;
 	bend[i]*=bendscale;
     }
 
     for(i=(ajint)rcurve+6;i<=ajStrGetLen(sstr)-(ajint)rcurve-6;i++)
-	curve[i] = sqrt(((xave[i+(ajint)rcurve]-
-			  xave[i-(ajint)rcurve])*(xave[i+(ajint)rcurve]-
-						xave[i-(ajint)rcurve]))+
-			((yave[i+(ajint)rcurve]-yave[i-(ajint)rcurve])*
-			 (yave[i+(ajint)rcurve]-yave[i-(ajint)rcurve])));
-
+    {
+	td = sqrt(((xave[i+(ajint)rcurve]-
+		    xave[i-(ajint)rcurve])*(xave[i+(ajint)rcurve]-
+					    xave[i-(ajint)rcurve]))+
+		  ((yave[i+(ajint)rcurve]-yave[i-(ajint)rcurve])*
+		   (yave[i+(ajint)rcurve]-yave[i-(ajint)rcurve])));
+	curve[i] = (float) td;
+    }
+    
 
     if(outf)
     {
@@ -278,7 +282,8 @@ int main(int argc, char **argv)
 
 	ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
-	ajGraphOpenWin(graph,-1.0, (float)numres+10.0, 0.0, ystart+5.0);
+	ajGraphOpenWin(graph,(float)-1.0, (float)numres+(float)10.0,
+		       (float)0.0, ystart+(float)5.0);
 
 /*	ajGraphTextMid((numres+10.0)/2.0, ystart+2.5,
 		       ajGraphGetTitleC(graph));*/
@@ -303,21 +308,22 @@ int main(int argc, char **argv)
 	ajGraphGetCharSize(&defheight,&currentheight);
 	if(!currentheight)
 	{
-	    defheight = currentheight = 4.440072;
+	    defheight = currentheight = (float) 4.440072;
 	    currentheight = defheight *
-		((float)ixlen/ ((float)(numres)*(currentheight+1.0)))
+		((float)ixlen/ ((float)(numres)*(currentheight+(float)1.0)))
 		    /currentheight;
 	}
 	ajGraphSetCharScale(((float)ixlen/((float)(numres)*
-					  (currentheight+1.0)))/currentheight);
+					  (currentheight+(float)1.0)))/
+			    currentheight);
 	ajGraphGetCharSize(&defheight,&currentheight);
 
-	yincr = (currentheight +3.0)*0.3;
+	yincr = (currentheight + (float)3.0)*(float)0.3;
 
 	if(!title)
 	    yy1 = ystart;
 	else
-	    yy1 = ystart-5.0;
+	    yy1 = ystart-(float)5.0;
 
 	count = 1;
 
@@ -328,33 +334,34 @@ int main(int argc, char **argv)
 
 	ptr = ajStrGetPtr(sstr);
 
-	yy1 = yy1-(yincr*(5.0));
+	yy1 = yy1-(yincr*((float)5.0));
 	for(i=1;i<=ajStrGetLen(sstr);i++)
 	{
 	    if(count > numres)
 	    {
-		yy1 = yy1-(yincr*(5.0));
+		yy1 = yy1-(yincr*((float)5.0));
 		if(yy1<1.0)
 		{
 		    if(!title)
 			yy1=ystart;
 		    else
-			yy1 = ystart-5.0;
+			yy1 = ystart-(float)5.0;
 
-		    yy1 = yy1-(yincr*(5.0));
+		    yy1 = yy1-(yincr*((float)5.0));
 		    ajGraphNewPage(graph,AJFALSE);
 		}
 		count = 1;
 	    }
 	    residue[0] = *ptr;
 
-	    ajGraphTextEnd((float)(count)+2.0,yy1,residue);
+	    ajGraphTextEnd((float)(count)+(float)2.0,yy1,residue);
 
 	    if(i>1 && i < ajStrGetLen(sstr))
 	    {
 		yp1 = yy1+yincr + (bend[i]*bendfactor);
 		yp2 = yy1+yincr + (bend[i+1]*bendfactor);
-		ajGraphLine((float)count+1.5,yp1,(float)(count)+2.5,yp2);
+		ajGraphLine((float)count+(float)1.5,yp1,
+			    (float)(count)+(float)2.5,yp2);
 	    }
 
 	    ipos = ajStrGetLen(sstr)-(ajint)rcurve-7;
@@ -365,11 +372,12 @@ int main(int argc, char **argv)
 	    {
 		yp1 = yy1+yincr + (curve[i]*curvefactor);
 		yp2 = yy1+yincr + (curve[i+1]*curvefactor);
-		ajGraphLine((float)count+1.7,yp1,(float)(count)+2.3,yp2);
+		ajGraphLine((float)count+(float)1.7,yp1,
+			    (float)(count)+(float)2.3,yp2);
 	    }
 
-	    ajGraphLine((float)count+1.5,yy1+yincr,
-			(float)(count)+2.5,yy1+yincr);
+	    ajGraphLine((float)count+(float)1.5,yy1+yincr,
+			(float)(count)+(float)2.5,yy1+yincr);
 
 	    count++;
 	    ptr++;

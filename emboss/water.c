@@ -77,6 +77,7 @@ int main(int argc, char **argv)
     float idx  = 0.;
     float simx = 0.;
 
+    size_t stlen;
 
     embInit("water", argc, argv);
     
@@ -121,10 +122,11 @@ int main(int argc, char **argv)
 
 	if(len>maxarr)
 	{
-	    AJCRESIZE(path,len);
+	    stlen = (size_t) len;
+	    AJCRESIZE(path,stlen);
 	    if(!path)
 		ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
-	    AJCRESIZE(compass,len);
+	    AJCRESIZE(compass,stlen);
 	    if(!compass)
 		ajFatal("Sequences too big. Try 'matcher' or 'supermatcher'");
 	    maxarr=len;
