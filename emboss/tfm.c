@@ -345,7 +345,7 @@ static void tfm_FixImages(AjPStr *line, const AjPStr path)
 
     ajStrAppendS(&newpath,path);
 
-    ajStrAssignSubC(&pre,q,0,p-q+4);
+    ajStrAssignSubC(&pre,q,0,(ajint)(p-q)+4);
     p += 5;
     while(*p && *p!='"')
     {

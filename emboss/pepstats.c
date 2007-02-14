@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     embPropAminoRead(mfptr);
 
 
-    if(!embReadAminoDataFloatC(DAYHOFF_FILE,&dhstat,0.001))
+    if(!embReadAminoDataFloatC(DAYHOFF_FILE,&dhstat,(float)0.001))
 	ajFatal("Set the EMBOSS_DATA environment variable");
 
     AJCNEW (c, EMBIEPSIZE);
