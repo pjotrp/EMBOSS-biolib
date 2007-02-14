@@ -146,6 +146,7 @@ void        ajListDel   (AjPList *list);
 void        ajListExit (void);
 AjBool      ajListFirst (const AjPList thys, void** x);
 void        ajListFree   (AjPList *list);
+void        ajListFreeData   (AjPList *list);
 void        ajListGarbageCollect (AjPList list,
 				  void (*destruct)(void **),
 				  AjBool (*compar)(const void *));

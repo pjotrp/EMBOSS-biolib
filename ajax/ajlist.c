@@ -1033,6 +1033,60 @@ void ajListFree(AjPList* pthis)
 
 
 
+/* @func ajListFreeData *******************************************************
+**
+** Free all nodes in the list. Free all the data values.
+** For more complex data objects use ajListMap with a routine to
+** free the object memory.
+**
+** @param [d] pthis [AjPList*] List
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajListFreeData(AjPList* pthis)
+{
+    AjPListNode next;
+    AjPListNode *rest;
+    AjPList thys;
+
+    if(!pthis)
+	return;
+
+    if(!*pthis)
+	return;
+
+    listDelCnt++;
+
+    thys = *pthis;
+    rest = &thys->First;
+
+    if(!thys->Count)
+    {
+	AJFREE(thys->Last);
+	AJFREE(*pthis);
+	return;
+    }
+
+    /* free the data for each node (just a simple free) */
+    /* as we free the nodes */
+
+    for( ; (*rest)->Next; *rest = next)
+    {
+	AJFREE((*rest)->Item);
+	next = (*rest)->Next;
+	AJFREE(*rest);
+    }
+
+    AJFREE(*rest);
+    AJFREE(*pthis);
+
+    return;
+}
+
+
+
+
 /* @func ajListstrFree ********************************************************
 **
 ** Free all nodes in a string list.
