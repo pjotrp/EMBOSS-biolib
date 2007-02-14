@@ -1531,6 +1531,8 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
     if(!ilines)
 	return ajFalse;
 
+    ajTrnDel(&trn);
+
     return ajTrue;
 }
 
@@ -2666,6 +2668,7 @@ static void codWriteCherry(const AjPCod thys, AjPFile outf)
     ajStrDel(&species);
     ajStrDel(&release);
     ajStrDel(&division);
+    ajStrDel(&ThreeAa);
 
     return;
 }
@@ -2735,6 +2738,8 @@ static void codWriteTransterm(const AjPCod thys, AjPFile outf)
 	}
 	c0++;
     }
+
+    ajStrDel(&ThreeAa);
 
     return;
 }
