@@ -99,63 +99,63 @@ static float P[2][26] =
     /* Pm values */
     
     {
-	1.409446,
-	0.000000,
-	1.068500,
-	0.192356,
-	0.174588,
-	1.965858,
-	1.058479,
-	0.587963,
-	1.990336,
-	0.000000,
-	0.180983,
-	1.701726,
-	1.500664,
-	0.433590,
-	0.000000,
-	0.518571,
-	0.344232,
-	0.239737,
-	0.774442,
-	0.828131,
-	0.000000,
-	1.694256,
-	1.314157,
-	0.000000,
-	0.979187,
-	0.000000
+	(float) 1.409446,
+	(float) 0.000000,
+	(float) 1.068500,
+	(float) 0.192356,
+	(float) 0.174588,
+	(float) 1.965858,
+	(float) 1.058479,
+	(float) 0.587963,
+	(float) 1.990336,
+	(float) 0.000000,
+	(float) 0.180983,
+	(float) 1.701726,
+	(float) 1.500664,
+	(float) 0.433590,
+	(float) 0.000000,
+	(float) 0.518571,
+	(float) 0.344232,
+	(float) 0.239737,
+	(float) 0.774442,
+	(float) 0.828131,
+	(float) 0.000000,
+	(float) 1.694256,
+	(float) 1.314157,
+	(float) 0.000000,
+	(float) 0.979187,
+	(float) 0.000000
     },
 	    
 	    /* Pe values */
 	    
 	{
-	    0.887866,
-	    0.000000,
-	    0.842097,
-	    0.739931,
-	    0.804004,
-	    1.102175,
-	    0.919923,
-	    1.117477,
-	    1.103394,
-	    0.000000,
-	    1.178047,
-	    0.997766,
-	    1.171823,
-	    1.103455,
-	    0.000000,
-	    0.881061,
-	    0.889218,
-	    1.519044,
-	    0.919717,
-	    0.881105,
-	    0.000000,
-	    0.869741,
-	    1.450220,
-	    0.000000,
-	    1.314105,
-	    0.000000
+	    (float) 0.887866,
+	    (float) 0.000000,
+	    (float) 0.842097,
+	    (float) 0.739931,
+	    (float) 0.804004,
+	    (float) 1.102175,
+	    (float) 0.919923,
+	    (float) 1.117477,
+	    (float) 1.103394,
+	    (float) 0.000000,
+	    (float) 1.178047,
+	    (float) 0.997766,
+	    (float) 1.171823,
+	    (float) 1.103455,
+	    (float) 0.000000,
+	    (float) 0.881061,
+	    (float) 0.889218,
+	    (float) 1.519044,
+	    (float) 0.919717,
+	    (float) 0.881105,
+	    (float) 0.000000,
+	    (float) 0.869741,
+	    (float) 1.450220,
+	    (float) 0.000000,
+	    (float) 1.314105,
+	    (float) 0.000000
 	}
 };
 
@@ -239,11 +239,11 @@ int main(int argc, char **argv)
 
     e_spann_max = E_SPANN_MAX;
 
-    m_limit  = 1.23;
-    ml_limit = 1.17;
-    e_limit  = 1.07;
+    m_limit  = (float) 1.23;
+    ml_limit = (float) 1.17;
+    e_limit  = (float) 1.07;
 
-    mx_limit = 1.18;
+    mx_limit = (float) 1.18;
     /* me_limit = 1.10; Unused */
 
 
@@ -617,7 +617,8 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
     ajint starttmp;
     ajint stopptmp;
     ajint temp;
-
+    float tf;
+    
     AJCNEW0(hitposs, glposs+1);
     AJCNEW0(pred_mode, glposs+1);
 
@@ -885,7 +886,8 @@ static ajint tmap_pred1(float m_limit, float ml_limit, float e_limit, ajint nr)
 
     for(i=1; i<=tm_ant; i++)
     {
-	length=tmap_length1(nr,start[i],stopp[i]);
+	tf = tmap_length1(nr,start[i],stopp[i]);
+	length = (ajint) tf;
 	for(j=10; j>=2; j--)
 	{
 	    if(length>=j*M_SPANN+(j-1)*(N_SPANN+C_SPANN-1))
@@ -1386,20 +1388,20 @@ static void tmap_plot2(AjPGraph mult)
 
 
   if(min > 0.0)
-    min = min*0.9;
+    min = min*(float)0.9;
   else
-    min = min*1.1;
+    min = min*(float)1.1;
 
-  max = max*1.1;
+  max = max*(float)1.1;
 
   ajGraphxySetMaxMin(mult,0.0,(float)glposs,min,max);
   ajGraphSetTitleC(mult,"Tmap");
 
-  max = max *0.95;
+  max = max * (float)0.95;
 
   for(j=1; j<=tm_number; j++)
     ajGraphAddRect(mult,(float)tm_segment[j][0],max,(float)tm_segment[j][1],
-		      max+((max-min)*0.01),BLACK,1);
+		      max+((max-min)*(float)0.01),BLACK,1);
 
   ajGraphxyDisplay(mult,AJFALSE);
   ajGraphCloseWin();
