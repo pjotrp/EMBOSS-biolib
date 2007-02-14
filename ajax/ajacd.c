@@ -294,6 +294,7 @@ static AcdOAttrAlias acdAttrAlias[] = {
 **
 ** @attr Name [const char*] Attribute name
 ** @attr Type [enum AcdEValtype] Type code
+** @attr Padding [ajint] padding to alignment boundary
 ** @attr Default [const char*] Default value as a string for help
 **                             and documentation
 ** @attr Help [const char*] Descriptive short text for documentation
@@ -8293,7 +8294,7 @@ static void acdSetGraphxy(AcdPAcd thys)
 **
 ** @param [r] token [const char*] Text token name
 ** @return [AjPFile] File object. The file was already opened by
-**         acdSetOutfile so this just returns the pointer.
+**         acdSetInfile so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
@@ -10075,7 +10076,7 @@ static void acdSetPattern(AcdPAcd thys)
 	}
 
 	if(ok)
-	    val = ajPatlistSeqRead(acdReply, patname,
+	    val = ajPatlistSeqRead(acdReply, patname, fmt,
 				   isprotein, mismatch);
 
 	if(ok && !val)
@@ -10485,7 +10486,7 @@ static void acdSetRegexp(AcdPAcd thys)
 	    ajStrFmtLower(&acdReply);
 
 	if(ok)
-	    val = ajPatlistRegexRead(acdReply, patname,
+	    val = ajPatlistRegexRead(acdReply, patname, fmt,
 				     itype, upper, lower);
 
 	if(ok && !val)
