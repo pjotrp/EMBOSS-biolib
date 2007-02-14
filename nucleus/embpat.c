@@ -2042,19 +2042,22 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
 
 		if(*p=='('||*p=='['||*p=='{'||*p=='}'||*p==')')
 		{
-		    ajWarn("Illegal pattern. Nesting not allowed");
+		    ajWarn("Illegal pattern. Nesting '%c' in [] not allowed",
+			   *p);
 		    return ajFalse;
 		}
 
 		if(!isalpha((ajuint)*p))
 		{
-		    ajWarn("Illegal pattern. Non alpha character");
+		    ajWarn("Illegal pattern. Non alpha character '%c'",
+			   *p);
 		    return ajFalse;
 		}
 
 		if((protein&&*p=='X')||(!protein&&*p=='N'))
 		{
-		    ajWarn("Illegal pattern. Dontcare in []");
+		    ajWarn("Illegal pattern. Dontcare character '%c' in []",
+			   *p);
 		    return ajFalse;
 		}
 
@@ -2063,7 +2066,7 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
 
 	    if(!*p)
 	    {
-		ajWarn("Illegal pattern. Missing ]");
+		ajWarn("Illegal pattern. Missing ']'");
 		return ajFalse;
 	    }
 
@@ -2091,19 +2094,21 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
 
 		if(*p=='('||*p=='['||*p=='{'||*p==']'||*p==')')
 		{
-		    ajWarn("Illegal pattern. Nesting not allowed");
+		    ajWarn("Illegal pattern. Nesting '%c' in {} not allowed.",
+			   *p);
 		    return ajFalse;
 		}
 
 		if(!isalpha((ajuint)*p))
 		{
-		    ajWarn("Illegal pattern. Non alpha character");
+		    ajWarn("Illegal pattern. Non alpha character '%c'", *p);
 		    return ajFalse;
 		}
 
 		if((protein&&*p=='X')||(!protein&&*p=='N'))
 		{
-		    ajWarn("Illegal pattern. Dontcare in {}");
+		    ajWarn("Illegal pattern. Ambiguous character '%c' in {}",
+			   *p);
 		    return ajFalse;
 		}
 
@@ -2112,7 +2117,7 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
 
 	    if(!*p)
 	    {
-		ajWarn("Illegal pattern. Missing }");
+		ajWarn("Illegal pattern. Missing '}'");
 		return ajFalse;
 	    }
 
@@ -2129,7 +2134,7 @@ AjBool embPatClassify(const AjPStr pat, AjPStr *cleanpat,
 	    continue;
 	}
 
-	ajWarn("Illegal character [%c]",*p);
+	ajWarn("Illegal character '%c'",*p);
 	return ajFalse;
     }
 
@@ -3173,7 +3178,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 
     ajuint **skipm;
 
-    AjPStr cleanpattern;
+    AjPStr cleanpattern = NULL;
 
     cleanpattern = ajStrNew();
 
@@ -3199,6 +3204,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 			       0,amino,carboxyl,l,
 			       patname,begin);
         AJFREE(buf);
+        ajStrDel(&cleanpattern);
 	return hits;
     }
 
@@ -3212,6 +3218,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 			       ajStrGetLen(text),plen,mismatch,off,buf,l,
 			       amino,carboxyl,cleanpattern);
 	AJFREE(buf);
+        ajStrDel(&cleanpattern);
 	return hits;
     }
 
@@ -3225,6 +3232,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 			      begin,plen,sotable,solimit,l,
 			      amino,carboxyl);
 	AJFREE(sotable);
+        ajStrDel(&cleanpattern);
 	return hits;
     }
 
@@ -3251,6 +3259,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 			       amino,carboxyl);
 
 	AJFREE(sotable);
+        ajStrDel(&cleanpattern);
 	return hits;
     }
 
@@ -3282,6 +3291,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 	embPatMatchDel(&ppm);
 	hits = n;
 	ajStrDel(&regexp);
+        ajStrDel(&cleanpattern);
 	return hits;
     }
 
@@ -3304,6 +3314,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 	    AJFREE(skipm[i]);
 
 	AJFREE(skipm);
+        ajStrDel(&cleanpattern);
 	return hits;
     }
 
@@ -3314,6 +3325,7 @@ ajuint embPatVariablePattern(const AjPStr pattern,
 			    begin,mismatch,patname);
     AJFREE(sotable);
 
+    ajStrDel(&cleanpattern);
     return hits;
 }
 
@@ -3607,8 +3619,6 @@ ajuint embPatRestrictRestrict(AjPList l, ajuint hits, AjBool isos,
 	    tc = v;
 	}
 	hits = nc;
-	ajListDel(&tlist);
-	ajListDel(&newlist);
 
     }
     else
@@ -3627,6 +3637,8 @@ ajuint embPatRestrictRestrict(AjPList l, ajuint hits, AjBool isos,
 	ajListSort2(l,embPatRestrictNameCompare, embPatRestrictStartCompare);
 
     ajStrDel(&ps);
+    ajListDel(&tlist);
+    ajListDel(&newlist);
 
     return hits;
 }
