@@ -69,7 +69,8 @@ typedef struct EmbSMdata
 ** @attr score [double] Score
 ** @attr mwt [double] Molecular weight
 ** @attr frags [EmbPMolFrag*] Fragment data
-** @attr nf [ajint] Number found?
+** @attr nf [ajint] Number of fragments
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct SHits
@@ -82,6 +83,7 @@ typedef struct SHits
     double mwt;
     EmbPMolFrag* frags;
     ajint    nf;
+    char Padding[4];
 } OHits;
 #define PHits OHits*
 
@@ -652,7 +654,7 @@ static ajint emowse_get_index(double actmw, double maxmw, double minmw,
 
 	    }
 
-	    if(abs(mw2-actmw)>abs(mw1-actmw))
+	    if(abs((int)(mw2-actmw))>abs((int)(mw1-actmw)))
 		break;
 	    else
 	    {
@@ -833,12 +835,15 @@ static void emowse_mreverse(char *s)
     ajint len;
     char *p;
     AjPStr rev;
-
+    size_t stlen;
+    
     rev = ajStrNewC(s);
     ajStrReverse(&rev);
     p = ajStrGetuniquePtr(&rev);
 
-    len = strlen(s);
+    stlen = strlen(s);
+    len   = (ajint) stlen;
+    
     for(i=0;i<len;++i)
     {
 	if(p[i]==']')
@@ -1268,7 +1273,7 @@ static void emowse_print_hits(AjPFile outf, AjPList hlist, ajint dno,
 		ajFmtPrintF(outf,"\n");
 	    }
 	    else
-		ajFloatPut(&nmarray,nmn++,data[i]->mwt);
+		ajFloatPut(&nmarray,nmn++,(float)data[i]->mwt);
 	}
 	if(nmn)
 	{
