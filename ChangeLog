@@ -1,4 +1,33 @@
 Version 4.1.0
+	Pattern files and regular expression files now use the -pformat
+	and -pname associated qualifiers which weere ignored when they
+	first appeared in 4.0.0. Pattern file formats are "fasta" for the
+	original format in 4.0.0 with FASTA style identifiers, and
+	"simple" for files with a single pattern on each line. The format
+	defaults to testing the first character for a '>'. The pattern
+	name is used to set a name of "name1", "name2" and so on if no
+	name is in the FASTA file. By default patterns are called
+	pattern1, regular expressions are called "regex1".
+
+	Added a new function to read from a buffered file and trim
+	newlines. It was not needed before because input functions were
+	doing their own trimming.
+
+	Valgrind memory leak tests now cover all QA tests. The command
+	line is captured and used to generate test cases. Script
+	valgrind.pl knows about the few cases that need input files copied
+	and preprocesses them by name. A few tests can be flagged as
+	ignored. This is intended for tests known to run for a very long
+	time under valgrind. Memory leaks are fixed for all programs in
+	the main EMBOSS package and for the most used ones in the EMBRASSY
+	packages.
+
+	A new environment variable ACDCOMMANDLINELOG takes a filename as
+	its value. This saves the command line equivalent of a program
+	run, converting user responses to prompts into their command line
+	equivalents. A number of bugs in command line saving for report
+	headers were identifier and fixed.
+
 	Two string functions had their names reversed. ajStrRemoveWhite is
 	to remove all white space from a string, ajStrRemoveWhiteExcess is
 	to remove white space from the ends and replace internal
