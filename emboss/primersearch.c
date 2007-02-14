@@ -49,11 +49,12 @@
 ** @attr mm [ajuint] Undocumented
 ** @attr buf [ajint*] Undocumented
 ** @attr sotable [ajuint*] Undocumented
-** @attr solimit [ajuint] Undocumented
 ** @attr off [EmbOPatBYPNode[AJALPHA]] Undocumented
 ** @attr re [AjPStr] Undocumented
 ** @attr skipm [ajuint**] Undocumented
 ** @attr tidy [const void*] Undocumented
+** @attr solimit [ajuint] Undocumented
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct primerguts
@@ -70,11 +71,13 @@ typedef struct primerguts
 
     ajint* buf;
     ajuint* sotable;
-    ajuint solimit;
+
     EmbOPatBYPNode off[AJALPHA];
     AjPStr re;
     ajuint** skipm;
     const void* tidy;
+    ajuint solimit;
+    char Padding[4];
 } *PGuts;
 
 
@@ -96,6 +99,7 @@ typedef struct primerguts
 ** @attr amplen [ajuint] Undocumented
 ** @attr forward_mismatch [ajuint] Undocumented
 ** @attr reverse_mismatch [ajuint] Undocumented
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct primerhit
@@ -110,6 +114,7 @@ typedef struct primerhit
     ajuint amplen;
     ajuint forward_mismatch;
     ajuint reverse_mismatch;
+    char Padding[4];
 } *PHit;
 
 

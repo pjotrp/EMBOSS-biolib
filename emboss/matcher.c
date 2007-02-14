@@ -228,14 +228,16 @@ static ajint qr;			/* qr = q + r */
 ** @alias ONE
 ** @alias pairptr
 **
-** @attr COL [ajint] Undocumented
 ** @attr NEXT [struct ONE*] Undocumented
+** @attr COL [ajint] Undocumented
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct ONE
 {
-    ajint COL;
     struct ONE  *NEXT;
+    ajint COL;
+    char Padding[4];
 } pair;
 #define pairptr pair*
 

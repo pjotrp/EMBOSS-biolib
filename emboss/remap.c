@@ -64,14 +64,16 @@ static void remap_GetFrames(AjPStr const *framelist, AjBool *frames);
 ** @alias SValue
 ** @alias OValue
 **
-** @attr count [ajint] Undocumented
 ** @attr iso [AjPStr] Undocumented
+** @attr count [ajint] Undocumented
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct SValue
 {
-    ajint  count;
     AjPStr iso;
+    ajint  count;
+    char   Padding[4];
 } OValue;
 #define PValue OValue*
 

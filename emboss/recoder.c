@@ -47,6 +47,7 @@
 ** @attr cut2 [ajint] Undocumented
 ** @attr cut3 [ajint] Undocumented
 ** @attr cut4 [ajint] Undocumented
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct AjSRinfo
@@ -58,6 +59,7 @@ typedef struct AjSRinfo
     ajint cut2;
     ajint cut3;
     ajint cut4;
+    char Padding[4];
 } AjORinfo;
 #define AjPRinfo AjORinfo*
 
@@ -79,7 +81,7 @@ typedef struct AjSRinfo
 ** @attr reaa [AjPStr] Undocumented
 ** @attr obase [char] Undocumented
 ** @attr nbase [char] Undocumented
-** @attr Padding [char[2]] Padding to alignment boudnary
+** @attr Padding [char[6]] Padding to alignment boudnary
 ******************************************************************************/
 
 typedef struct Mutant
@@ -92,7 +94,7 @@ typedef struct Mutant
     AjPStr reaa;
     char   obase;
     char   nbase;
-    char   Padding[2];
+    char   Padding[6];
 } OMutant;
 #define Mutant OMutant*
 
