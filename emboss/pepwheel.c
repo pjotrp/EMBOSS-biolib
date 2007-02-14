@@ -76,15 +76,15 @@ int main(int argc, char **argv)
     ajint j;
     ajint k;
 
-    float xmin = -1.0;
-    float xmax =  1.0;
-    float ymin = -0.75;
-    float ymax =  0.75;
+    float xmin = (float) -1.0;
+    float xmax = (float)  1.0;
+    float ymin = (float) -0.75;
+    float ymax = (float)  0.75;
 
-    float minresplot = 36.0;
-    float resgap =     0.0533;
-    float wheelgap =   0.00;
-    float nresgap =    0.08;
+    float minresplot = (float) 36.0;
+    float resgap =     (float) 0.0533;
+    float wheelgap =   (float) 0.00;
+    float nresgap =    (float) 0.08;
 
 
 
@@ -142,12 +142,14 @@ int main(int argc, char **argv)
 
     ajGraphSetFore(AJB_BLACK);
 
-    ang = (360.0 / (float)steps) * (float)turns;
+    ang = ((float)360.0 / (float)steps) * (float)turns;
 
     first = ajTrue;
-    angle = 90.0 + ang;
-    if(end-begin > (ajint)minresplot) wradius = 0.2;
-    else                            wradius = 0.40;
+    angle = (float) 90.0 + ang;
+    if(end-begin > (ajint)minresplot)
+	wradius = (float) 0.2;
+    else
+	wradius = (float) 0.40;
 
     for(i=0,lc=0,radius=wradius+wheelgap;i<len;i+=steps)
     {
@@ -226,12 +228,14 @@ static void pepwheel_drawocta(float x, float y, float size)
 {
     static float polyx[]=
     {
-	-0.05, 0.05, 0.1, 0.1, 0.05, -0.05, -0.1, -0.1, -0.05
+	(float)-0.05, (float)0.05, (float)0.1, (float)0.1, (float)0.05,
+	(float)-0.05, (float)-0.1, (float)-0.1, (float)-0.05
     }
     ;
     static float polyy[]=
     {
-	0.1, 0.1, 0.05, -0.05, -0.1, -0.1, -0.05, 0.05, 0.1
+	(float)0.1, (float)0.1, (float)0.05, (float)-0.05, (float)-0.1,
+	(float)-0.1, (float)-0.05, (float)0.05, (float)0.1
     }
     ;
     ajint i;
@@ -288,19 +292,19 @@ static void pepwheel_plotresidue(char c, float r, float a, const char *squares,
     if(strstr(squares,cs))
     {
 	ajGraphSetFore(AJB_BLUE);
-	ajGraphBox(x-0.025,y-0.022,0.05);
+	ajGraphBox(x-(float)0.025,y-(float)0.022,(float)0.05);
     }
 
     if(strstr(octags,cs))
     {
 	ajGraphSetFore(AJB_BLACK);
-	pepwheel_drawocta(x,y+0.003,0.28);
+	pepwheel_drawocta(x,y+(float)0.003,(float)0.28);
     }
 
     if(strstr(diamonds,cs))
     {
 	ajGraphSetFore(AJB_RED);
-	ajGraphDia(x-0.042,y-0.04,0.085);
+	ajGraphDia(x-(float)0.042,y-(float)0.04,(float)0.085);
     }
 
     ajGraphText(x,y,cs,0.5);
