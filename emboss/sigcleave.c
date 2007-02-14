@@ -456,12 +456,12 @@ static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
 		if(j==10 || j==12)
 		{
 		    if(!(ajint)mat[i][j])
-			mat[i][j] = 1.0e-10;
+			mat[i][j] = (float) 1.0e-10;
 		}
 		else
 		{
 		    if(!(ajint)mat[i][j])
-			mat[i][j] = 1.0;
+			mat[i][j] = (float) 1.0;
 		}
 
 		mat[i][j] = (float)(log((double)(mat[i][j]/expected)));

@@ -208,11 +208,12 @@ static void plotorf_norfs(const char *seq, const char *rev,
     AjBool inframe;
     ajint po;
     const char *p;
+    size_t stlen;
 
-
-
-    len = strlen(seq);
-
+    
+    stlen = strlen(seq);
+    len   = (ajint) stlen;
+    
     if(n<3)
     {
 	p  = seq;

@@ -635,7 +635,7 @@ static void sirna_output(const AjPList list,
 	       value->GCcount); */
 
 	    gf = ajFeatNew(TabRpt, source, type, value->pos+1,
-			   value->pos+23, value->score, '+', 0);
+			   value->pos+23, (float)value->score, '+', 0);
 
 	    ajFmtPrintS(&tmpStr, "*gc %4.1f",
 			((float)value->GCcount*100.0)/20.0);

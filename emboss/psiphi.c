@@ -628,7 +628,7 @@ static float psiphi_phival (AjPAtom const * atoms)
 			    atoms[ECPrimeCurr]->Y,
 			    atoms[ECPrimeCurr]->Z);
 		
-    phi = -1.0 *
+    phi = (float) -1.0 *
 	aj3dVectorDihedralAngle(vec1To2,
 				vec3To2,
 				vec3To4);
@@ -689,7 +689,7 @@ static float psiphi_psival (AjPAtom const * atoms)
 			    atoms[ENNext]->X,
 			    atoms[ENNext]->Y,
 			    atoms[ENNext]->Z);
-    psi = -1.0 *
+    psi = (float) -1.0 *
 	aj3dVectorDihedralAngle(vec1To2,
 				vec3To2,
 				vec3To4);
