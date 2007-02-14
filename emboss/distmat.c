@@ -825,7 +825,7 @@ static AjPFloat2d distmat_TajimaNei(char* const * seqcharptr,
 		    if(!strchr("-NXWMKBVDH",tj))
 		    {
 			slen = ajInt2dGet(len,i,j)+1;
-			ajInt2dPut(&len,i,j,slen);
+			ajInt2dPut(&len,i,j,(ajint)slen);
 			if(strchr("G",ti))
 			{
 			    val = ajInt3dGet(cbase,i,j,3)+1;
@@ -905,7 +905,7 @@ static AjPFloat2d distmat_TajimaNei(char* const * seqcharptr,
 		fj  = ajInt3dGet(cbase,j,i,bs);
 		fij = 0.;
 		if(fi != 0. && fj != 0.)
-		    fij = (fi+fj)/(2.*slen);
+		    fij = (fi+fj)/((float)2.*slen);
 		fij2 += fij*fij;
 	    }
 
@@ -923,18 +923,18 @@ static AjPFloat2d distmat_TajimaNei(char* const * seqcharptr,
 		    cj2 = ajInt3dGet(cbase,i,j,bs1);
 
 		    if(fij !=0.)
-			h += (0.5*fij*fij)/((ci1+cj1)/(2.*slen) *
-					    (ci2+cj2)/(2.*slen));
+			h += ((float)0.5*fij*fij)/((ci1+cj1)/((float)2.*slen) *
+					    (ci2+cj2)/((float)2.*slen));
 
 		    pair++;
 		}
 	    }
 
 	    m = ajFloat2dGet(match,i,j); /* no. matches */
-	    D = 1. - m/slen;
-	    b = 0.5*(1-fij2+((D*D)/h));
+	    D = (float)1. - m/slen;
+	    b = (float)0.5*(1-fij2+((D*D)/h));
 
-	    ajFloat2dPut(&matchTN,i,j, (-b*log(1.-(D/b))) );
+	    ajFloat2dPut(&matchTN,i,j, (float) (-b*log(1.-(D/b))) );
 	}
 
 
@@ -984,7 +984,8 @@ static AjPFloat2d distmat_JinNei(char* const * seqcharptr,
     float Q;
 
     float X1;
-
+    ajint ti;
+    
 
     AjPFloat2d matDist = NULL;
     AjPFloat2d cval    = NULL;
@@ -1032,7 +1033,7 @@ static AjPFloat2d distmat_JinNei(char* const * seqcharptr,
 		    tranv = 0;
 		    distmat_checkSubs(t1,t2,&trans,&tranv);
 		    distmat_checkRY(t1,t2,&trans,&tranv);
-		    av+= ((float)trans + (2.*(float)tranv));
+		    av+= ((float)trans + ((float)2.*(float)tranv));
 
 		    trans+= ajInt2dGet(Ptrans,i,j);
 		    tranv+= ajInt2dGet(Qtranv,i,j);
@@ -1041,7 +1042,7 @@ static AjPFloat2d distmat_JinNei(char* const * seqcharptr,
 		    ajInt2dPut(&Qtranv,i,j,tranv);
 		}
 	    }
-	    xlen = slen;
+	    xlen = (float) slen;
 	    ajFloat2dPut(&avL,i,j,av/xlen);
 	}
 
@@ -1050,7 +1051,8 @@ static AjPFloat2d distmat_JinNei(char* const * seqcharptr,
 	for(i=0;i<nseqs;i++)
 	    for(j=i+1;j<nseqs;j++)
 	    {
-		xlen = ajInt2dGet(len,i,j);
+		ti = ajInt2dGet(len,i,j);
+		xlen = (float) ti;
 
 /* This makes no sense - av gets overwritten */
 /*
@@ -1085,11 +1087,17 @@ static AjPFloat2d distmat_JinNei(char* const * seqcharptr,
     for(i=0;i<nseqs;i++)
 	for(j=i+1;j<nseqs;j++)
 	{
-	    xlen = ajInt2dGet(len,i,j);
-	    X1 = ajInt2dGet(Ptrans,i,j);
+	    ti = ajInt2dGet(len,i,j);
+	    xlen = (float) ti;
+	    
+	    ti = ajInt2dGet(Ptrans,i,j);
+	    X1 = (float) ti;
+	    
 	    P = X1/xlen;
 
-	    X1 = ajInt2dGet(Qtranv,i,j);
+	    ti = ajInt2dGet(Qtranv,i,j);
+	    X1 = (float) ti;
+	    
 	    Q = X1/xlen;
 
 	    if(calc_a)
@@ -1156,9 +1164,9 @@ static AjPFloat2d distmat_JukesCantor(const AjPFloat2d match,
     AjPFloat2d matchJC = NULL;
 
 
-    b = 19./20.;
+    b = (float)(19./20.);
     if(nuc)
-	b = 3./4.;
+	b = (float) (3./4.);
 
     matchJC = ajFloat2dNew();
     for(j=0;j<nseqs;++j)
@@ -1174,7 +1182,7 @@ static AjPFloat2d distmat_JukesCantor(const AjPFloat2d match,
 
 	    D = 1 - (m/((float)mlen-g+(g*gapwt)));
 
-	    ajFloat2dPut(&matchJC,j,i, (-b * log(1. - (D/b))) );
+	    ajFloat2dPut(&matchJC,j,i, (-b * log((float)1. - (D/b))) );
 	}
 
 
@@ -1306,20 +1314,20 @@ static float distmat_checkambigProt(ajint t1, ajint t2)
 {
     float n;
 
-    n = 0.;
+    n = (float)0.;
 
     if( !strchr("X",t1) && t1 == t2 )
-	n = 1.0;
+	n = (float)1.0;
     else if(((strchr("B",t1) && strchr("DN",t2)) ||
               (strchr("B",t2) && strchr("DN",t1))) )
-	n = 0.5;
+	n = (float)0.5;
     else if(((strchr("Z",t1) && strchr("EQ",t2)) ||
               (strchr("Z",t2) && strchr("EQ",t1))) )
-	n = 0.5;
+	n = (float)0.5;
     else if( strchr("X",t1) && strchr("X",t2) )
-	n = 0.0025;
+	n = (float)0.0025;
     else if( strchr("X",t1) || strchr("X",t2) )
-	n = 0.05;
+	n = (float)0.05;
 
     return n;
 }
@@ -1345,7 +1353,7 @@ static float distmat_checkambigNuc(char m1, char m2)
     AjPRegexp rexp = NULL;
     AjBool pmatch = ajFalse;
 
-    float i;
+    ajuint i;
     float n;
     ajint len1;
     ajint len2;
@@ -1366,7 +1374,7 @@ static float distmat_checkambigNuc(char m1, char m2)
     ** for each base code in 1 cf. base code
     ** for seq 2 to see if there is a match
     */
-    for(i = 0;i < len1;i++)
+    for(i = 0;i < (ajuint) len1;i++)
     {
 	b = ajStrNew();
 	ajStrAssignSubS(&b,b1,i,i);
@@ -1383,7 +1391,7 @@ static float distmat_checkambigNuc(char m1, char m2)
     ajStrDel(&b2);
 
     if(pmatch)
-	n = (1./len1)*(1./len2);
+	n = ((float)1./len1)*((float)1./len2);
     else
 	n = 0.;
 
@@ -1539,7 +1547,7 @@ static void distmat_outputDist(AjPFile outf, ajint nseqs,
 		else
 		    D=ajFloat2dGet(match,j,i);
 
-		D=D*100.;
+		D=D*(float)100.;
 		if(D < 10.)
 		    ajFmtPrintF(outf,"  %.2f\t",D);
 		else if(D < 100.)
