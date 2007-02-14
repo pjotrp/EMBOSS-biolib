@@ -243,8 +243,8 @@ int main(int argc, char **argv)
 	hist = ajHistNewG(9, (seq_end - seq_begin+1), graphs);
 	hist->bins = seq_end - seq_begin +1;
 
-	hist->xmin = seq_begin;
-	hist->xmax = seq_end;
+	hist->xmin = (float) seq_begin;
+	hist->xmax = (float) seq_end;
 
 	hist->displaytype=HIST_SEPARATE;
 
@@ -521,7 +521,7 @@ static void pepinfo_plotGraph2Float(AjPGraph graphs,
     ajGraphPlpDataSetMaxima(plot,(float)1,(float)npts,ymin,ymax);
     ajGraphPlpDataSetTypeC(plot,"2D Plot");
 
-    ajGraphPlpDataCalcXY(plot, npts, seq_begin, 1.0, results);
+    ajGraphPlpDataCalcXY(plot, npts, (float)seq_begin, 1.0, results);
     ajGraphDataAdd(graphs, plot);
 
     return;
@@ -558,7 +558,7 @@ static void pepinfo_plotHistInt2(AjPHist hist,
 
     AJCNEW(farray, npts);
     for(i=0; i<npts; i++)
-	farray[i] = results[i];
+	farray[i] = (float) results[i];
 
     ajHistCopyData(hist, hist_num, farray);
 
