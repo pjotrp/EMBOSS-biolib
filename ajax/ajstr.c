@@ -5271,12 +5271,12 @@ __deprecated AjBool  ajStrConvert(AjPStr* pthis, const AjPStr oldc,
 **
 ** @param [w] Pstr [AjPStr*] String
 ** @param [r] txt [const char*] Wanted characters
-** @param [r] chrnew [const char] Replacement character
+** @param [r] chrnew [char] Replacement character
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
 
-AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, const char chrnew)
+AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chrnew)
 {
     char filter[256] = {'\0'};		/* should make all zero */
 
@@ -5309,13 +5309,13 @@ AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, const char chrnew)
 **
 ** @param [w] Pstr [AjPStr*] String
 ** @param [r] str [const AjPStr] Wanted characters
-** @param [r] chrnew [const char] Replacement character
+** @param [r] chrnew [char] Replacement character
 ** @return [AjBool] ajTrue if string was reallocated
 ** @@
 ******************************************************************************/
 
 AjBool ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str,
-			      const char chrnew)
+			      char chrnew)
 {
     return ajStrExchangeSetRestCK(Pstr, str->Ptr, chrnew);
 }
@@ -6345,6 +6345,8 @@ AjBool ajStrWhole(const AjPStr str, ajint pos1, ajint pos2)
 
 char ajStrGetCharFirst(const AjPStr str)
 {
+    if(!str)
+	return '\0';
     return str->Ptr[0];
 }
 
@@ -6360,6 +6362,8 @@ char ajStrGetCharFirst(const AjPStr str)
 
 char ajStrGetCharLast(const AjPStr str)
 {
+    if(!str)
+	return '\0';
     if(!str->Len)
 	return '\0';
 

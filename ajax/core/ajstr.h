@@ -294,9 +294,9 @@ AjBool     ajStrExchangeSetCC(AjPStr* Pstr, const char* txt,
 AjBool     ajStrExchangeSetSS(AjPStr* Pstr, const AjPStr str,
 			    const AjPStr strnew);
 AjBool     ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt,
-				  const char chr);
+				  char chr);
 AjBool     ajStrExchangeSetRestSK(AjPStr* Pstr, const AjPStr str,
-				  const char chr);
+				  char chr);
 AjBool     ajStrRandom(AjPStr *s);
 AjBool     ajStrReverse(AjPStr* Pstr);
 
