@@ -67,7 +67,8 @@ int main(int argc, char **argv)
     ajint beg;
     ajint end;
     float flen;
-
+    ajuint tui;
+    
     ajGraphInit("pepwindowall", argc, argv);
 
     seqset   = ajAcdGetSeqset("sequences");
@@ -81,7 +82,8 @@ int main(int argc, char **argv)
     maxlen   = ajSeqsetGetLen(seqset);
     aa0str   = ajStrNewRes(maxlen);
     midpoint = (ajint)((llen+1)/2);
-    flen     = ajSeqsetGetLen(seqset);
+    tui      = ajSeqsetGetLen(seqset);
+    flen     = (float)tui;
     maxsize = ajSeqsetGetSize(seqset);
 
     AJCNEW(position, maxlen);
