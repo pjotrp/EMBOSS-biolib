@@ -273,6 +273,7 @@ AjBool      ajFileBuffGetStore (AjPFileBuff thys, AjPStr* pdest,
 				AjBool store, AjPStr *astr);
 AjBool      ajFileBuffGetStoreL (AjPFileBuff thys, AjPStr* pdest,
 				 ajlong* fpos, AjBool store, AjPStr *astr);
+AjBool      ajFileBuffGetTrim(AjPFileBuff thys, AjPStr* pdest);
 AjBool      ajFileBuffIsBuffered (const AjPFileBuff thys);
 void        ajFileBuffLoad (AjPFileBuff thys);
 void        ajFileBuffLoadC (AjPFileBuff thys, const char* str);
