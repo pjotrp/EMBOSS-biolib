@@ -292,7 +292,7 @@ void ajPhyloTreeDel(AjPPhyloTree* pthis)
 **
 ** Destructor for AjPPhyloTree array
 **
-** @param [d] pthis [AjPPhyloTree*] Trees object
+** @param [d] pthis [AjPPhyloTree**] Trees object array
 ** @return [void]
 ******************************************************************************/
 
