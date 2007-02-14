@@ -143,6 +143,7 @@ AjPFeattabIn  ajFeattabInNewSSF (const AjPStr fmt, const AjPStr name,
 				 const char* type, AjPFileBuff buff);
 AjBool        ajFeattabInSetType(AjPFeattabIn thys, const AjPStr type);
 AjBool        ajFeattabInSetTypeC(AjPFeattabIn thys, const char* type);
+void          ajFeattabOutClear(AjPFeattabOut *thys);
 void          ajFeattabOutDel (AjPFeattabOut* pthis);
 AjPFile       ajFeattabOutFile (const AjPFeattabOut thys);
 AjPStr        ajFeattabOutFilename (const AjPFeattabOut thys);
