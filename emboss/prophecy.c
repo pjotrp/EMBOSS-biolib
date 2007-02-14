@@ -146,7 +146,8 @@ static void prophecy_simple_matrix(const AjPSeqset seqset, AjPFile outf,
     ajint score;
     ajint *matrix[AZ+2];
     AjPStr cons = NULL;
-
+    size_t stlen;
+    
     nseqs = ajSeqsetGetSize(seqset);
     if(nseqs<2)
 	ajFatal("Insufficient sequences (%d) to create a matrix",nseqs);
@@ -168,7 +169,8 @@ static void prophecy_simple_matrix(const AjPSeqset seqset, AjPFile outf,
     for(i=0;i<nseqs;++i)
     {
 	p = ajSeqsetGetseqSeqC(seqset,i);
-	len = strlen(p);
+	stlen = strlen(p);
+	len = (ajint) stlen;
 
 	for(j=0;j<len;++j)
 	{
@@ -562,7 +564,7 @@ static void prophecy_henikoff_profile(const AjPSeqset seqset,
 	while(*q)
 	{
 	    mmax = (mmax>sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)]) ? mmax :
-		sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
+		(ajint)sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
 	    ++q;
 	}
 	++p;
@@ -615,7 +617,7 @@ static void prophecy_henikoff_profile(const AjPSeqset seqset,
     for(i=0;i<mlen;++i)
 	for(j=0;j<HENIKOFF_LENGTH-1;++j)
 	    if(weights[i][j])
-		weights[i][j] = 1.0/(weights[i][j]*(float)pcnt[i]);
+		weights[i][j] = (float)1.0/(weights[i][j]*(float)pcnt[i]);
 
 
     /* Create the profile matrix n*HENIKOFF_LENGTH */

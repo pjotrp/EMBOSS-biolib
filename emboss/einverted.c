@@ -314,7 +314,7 @@ int main(int argc, char **argv)
 		    if(c >= rogue)
 			goto done;
 		    max = c;
-		    jmax = t1 - t1Base;
+		    jmax = (ajint) (t1 - t1Base);
 		}
 	    }
 #endif

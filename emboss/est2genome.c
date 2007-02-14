@@ -229,7 +229,7 @@ int main(int argc, char **argv)
     {
 	ajWarn("increasing space from %.3f to %.3f Mb\n",
 	       megabytes, 1.5e-6*ajSeqGetLen(genome));
-	megabytes = 1.5e-6*ajSeqGetLen(genome);
+	megabytes = (float)1.5e-6*ajSeqGetLen(genome);
     }
 
     /* find the GT/AG splice sites */

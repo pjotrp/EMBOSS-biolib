@@ -168,12 +168,12 @@ int main(int argc, char **argv)
 		for(j=i+1;j<=i+6;++j)
 		    ajFloatPut(&thisap,i+3,ajFloatGet(thisap,i+3) +
 			       ajFloatGet(agp,(ajint) *(p+j)));
-		ajFloatPut(&thisap,i+3,ajFloatGet(thisap,i+3)/7.0);
+		ajFloatPut(&thisap,i+3,ajFloatGet(thisap,i+3)/(float)7.0);
 	    }
 	}
 
 	averap = totap/(float)len;
-	minap  = (averap < 1.0) ? averap : 1.0;
+	minap  = (averap < (float)1.0) ? averap : (float)1.0;
 	lenap  = nhits = maxlen = maxpos = 0;
 
 	for(i=fpos+3;i<=lpos+4;++i)

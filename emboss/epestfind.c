@@ -174,7 +174,7 @@ static ajint ajStrIterPosCopy (const AjIStr itrbeg, AjIStr itrend)
 	ajFatal ("ajStrIterCopyPos: Iterators (AjIStr objects) belong"
 		 " to different AjPStr objects!\n");
 
-    return (itrend->Ptr - itrend->Start);
+    return (ajint) (itrend->Ptr - itrend->Start);
 }
 
 
@@ -422,8 +422,8 @@ int main(int argc, char **argv)
 		    */
 		    if(cnt < win)
 			break;
-		    posbeg = ajStrIterPos(itrbeg);
-		    posend = ajStrIterPos(itrend);
+		    posbeg = (ajint) ajStrIterPos(itrbeg);
+		    posend = (ajint) ajStrIterPos(itrend);
 
 		    if(ajStrIterIsBegin(itrbeg))
 #ifndef PESTFIND_NTERM
