@@ -373,7 +373,7 @@ static void cvt_u(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     if(flags['l'])
 	m  = va_arg(VA_V(ap), unsigned long);
     else if(flags['h'])
-	/* ANSI C converts short to ajint */
+	/* ANSI C converts short to int */
 	m  = va_arg(VA_V(ap), unsigned int);
     else if(flags['L'])
     {
