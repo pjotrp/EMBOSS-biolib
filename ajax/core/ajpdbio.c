@@ -110,7 +110,8 @@ typedef struct AjSElement
     char     elementType; 
     char     chainId;
     char     Padding[6];
-}AjOElement, *AjPElement;
+}AjOElement;
+#define AjPElement AjOElement*
 
 
 
@@ -131,6 +132,7 @@ typedef struct AjSElement
 **
 **
 **
+** @attr elms [AjPElement*] Secondary structure element array
 ** @attr n [ajint] Total no. of secondary structure elements
 **                       (helices, strands or turns) 
 ** @attr elms [AjPElement*] Array of Element objects 
@@ -143,7 +145,8 @@ typedef struct AjSElements
     ajint      n;            
     char       Padding[4];
 }
-AjOElements, *AjPElements;
+AjOElements;
+#define AjPElements AjOElements*
 
 
 
@@ -331,7 +334,8 @@ typedef struct AjSPdbfile
     ajint    *helixClass;  
     ajint    nlines;
     ajint    ngroups;   
-}AjOPdbfile, *AjPPdbfile;
+}AjOPdbfile;
+#define AjPPdbfile AjOPdbfile*
 
 
 
