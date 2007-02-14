@@ -88,12 +88,16 @@ void embPropAminoRead(AjPFile mfptr)
 #else
     static const char *delimstr=" :\t\n\r";
 #endif
-    const char *p;
 
+    const char *p;
+    ajuint i;
     ajint cols = 0;
 
     if(propInit)
 	return;
+
+    for(i=0;i<EMBPROPSIZE;i++)
+	EmbPropTable[i] = 0;
 
     line  = ajStrNew();
     delim = ajStrNewC(delimstr);
@@ -108,7 +112,14 @@ void embPropAminoRead(AjPFile mfptr)
 	    ++p;
 
 	cols = ajStrParseCountC(line,ajStrGetPtr(delim));
-	EmbPropTable[ajAZToInt(toupper((ajint)*p))] =
+	if(EmbPropTable[ajAZToInt(toupper((ajint)*p))])
+	    ajWarn("Amino acid property table duplicate record for '%c'",
+		   *p);
+	i = ajAZToInt(toupper((ajint)*p));
+	if(i >= EMBPROPSIZE)
+	    ajWarn("Amino acid property table bad code '%c', index %u",
+		   *p, i);
+	EmbPropTable[i] =
 	    ajArrDoubleLine(line,ajStrGetPtr(delim),2,cols);
     }
 
@@ -904,9 +915,12 @@ void embPropFixF(float matrix[], float missing)
 void embPropExit(void)
 {
     ajint i;
-    for(i=0;i<EMBPROPSIZE;i++)
+    if(propInit)
     {
-	AJFREE(EmbPropTable[i]);
+	for(i=0;i<EMBPROPSIZE;i++)
+	{
+	    AJFREE(EmbPropTable[i]);
+	}
     }
 
     return;

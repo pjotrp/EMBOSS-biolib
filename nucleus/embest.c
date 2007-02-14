@@ -1884,11 +1884,11 @@ static ajint estAlignMidpt( const AjPSeq est, const AjPSeq genome,
     AJFREE(score2);
     AJFREE(midpt1);
     AJFREE(midpt2);
-    AJFREE(edup);			/* also frees eseq */
-    AJFREE(gdup);			/* also frees edup */
     AJFREE(best_intron_score);
     AJFREE(best_intron_coord);
-
+    AJFREE(best_intron_midpt);
+    ajSeqDel(&gdup);
+    ajSeqDel(&edup);
     return score;
 }
 

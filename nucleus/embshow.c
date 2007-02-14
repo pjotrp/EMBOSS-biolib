@@ -1255,7 +1255,7 @@ void embShowColourRange(AjPStr * line, const AjPRange colour, ajuint pos)
 	    ajStrAssignC(&html, "<font color=");
 	    ajRangeText(colour, i, &col);
 
-	    if(col != NULL && ajStrGetLen(col))
+	    if(ajStrGetLen(col))
 		ajStrAppendS(&html, col);
 	    else
 	    {
@@ -1273,7 +1273,7 @@ void embShowColourRange(AjPStr * line, const AjPRange colour, ajuint pos)
 	    showInsertHTML(line, iend+1, html);
 	}
     }
-
+    ajStrDel(&col);
     ajStrDel(&html);
 
     return;

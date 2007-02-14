@@ -3504,6 +3504,7 @@ void embAlignReportProfile(AjPAlign align,
 
     ajSeqDel(&seqm);
     ajSeqDel(&seqn);
+    ajStrDel(&seqname);
 
     return;
 }
