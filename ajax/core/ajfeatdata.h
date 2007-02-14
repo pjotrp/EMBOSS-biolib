@@ -183,8 +183,8 @@ typedef struct AjSFeattable {
 ** @attr End [ajuint] End position
 ** @attr Start2 [ajuint] Second start position - EMBL (a.b)
 ** @attr End2 [ajuint] Second end position - EMBL ..(a.b)
-** @attr Tags [AjPList] Tag-value list (qualifier list)
 ** @attr Frame [ajint] Frame 1..3, -1..-3 or 0
+** @attr Tags [AjPList] Tag-value list (qualifier list)
 ** @attr Flags [ajuint] Flag bit mask for EMBL location
 ** @attr Group [ajuint] Group for join/order/one-of
 ** @attr Remote [AjPStr] Remote ID - EMBL Remote:a.b
