@@ -593,7 +593,7 @@ static void garnier_do(AjPFile outf, ajint from, ajint to, char *seq,
     ajFmtPrintF(outf," Residue totals: H:%3d   E:%3d   T:%3d   C:%3d\n",
 		iarr[0],iarr[1],iarr[2],iarr[3]);
 
-    fn0 = (float)(n0-16)/100.0;
+    fn0 = (float)(n0-16)/(float)100.0;
     ajFmtPrintF(outf,"        percent: H: %4.1f E: %4.1f T: %4.1f C: %4.1f\n",
 		(float)iarr[0]/fn0,(float)iarr[1]/fn0,(float)iarr[2]/fn0,
 		(float)iarr[3]/fn0);
@@ -810,7 +810,7 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
     ajFmtPrintAppS(&tmpStr,
 		   " Residue totals: H:%3d   E:%3d   T:%3d   C:%3d\n",
 		   iarr[0],iarr[1],iarr[2],iarr[3]);
-    fn0 = (float)(n0-16)/100.0;
+    fn0 = (float)(n0-16)/(float)100.0;
     ajFmtPrintAppS(&tmpStr,
 		   "        percent: H: %4.1f E: %4.1f T: %4.1f C: %4.1f\n",
 		   (float)iarr[0]/fn0,(float)iarr[1]/fn0,(float)iarr[2]/fn0,
