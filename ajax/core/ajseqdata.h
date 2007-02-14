@@ -62,7 +62,7 @@ typedef struct SeqSAccess SeqSAccess;
 ** @attr Access [SeqSAccess*] Access function : see ajseqread.h
 ** @attr QryData [void*] Private data for access function
 ** @attr Wild [AjBool] True if query contains '*' or '?'
-** @attr Padding [char [4]] Padding to alignment boundary
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajSeqQueryNew Default constructor
 ** @delete ajSeqQueryDel Default destructor
