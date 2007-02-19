@@ -9842,6 +9842,72 @@ FP /^# Total_sequences: 1\n/
 FP /^# Total_hitcount: 4\n/
 //
 
+ID fuzznuc-ex2
+AP fuzznuc
+IN tembl:hhtetra
+IN @../../data/nucseq.pat
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hhtetra.fuzznuc
+FC = 33
+FP /^# HitCount: 2\n/
+FP /^    429     448 targetseq           \. cggccctaaccctagcccta\n/
+FP /^    491     510 targetseq           \. cggccctaaccctagcccta\n/
+FP /^# Total_sequences: 1\n/
+FP /^# Total_hitcount: 2\n/
+//
+
+ID fuzznuc-ex3
+AP fuzznuc
+CL -pname test
+IN tembl:hhtetra
+IN @../../data/nucsimple.pat
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hhtetra.fuzznuc
+FC = 46
+FP /^# HitCount: 13\n/
+FP /^    429     438 test1               \. cggccctaac\n/
+FP /^    801     810 test2               \. cctagcccta\n/
+FP 8 /^ +\d+ +\d+ test1 +/
+FP 5 /^ +\d+ +\d+ test2 +/
+FP /^# Total_sequences: 1\n/
+FP /^# Total_hitcount: 13\n/
+//
+
+ID fuzznuc-ex4
+AP fuzznuc
+IN tembl:hhtetra
+IN @../../data/nuc.pat
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI hhtetra.fuzznuc
+FC = 52
+FP /^# HitCount: 19\n/
+FP /^    429     448 pat1                \. cggccctaaccctagcccta\n/
+FP /^    491     510 pat2                \. cggccctaaccctagcccta\n/
+FP /^    535     554 pat2                1 cggccctaaccctaacccta\n/
+FP /^    753     764 pat3                . cggccctaaccc\n/
+FP 8 /^\s+\d+\s+\d+\s+pat3/
+FP 9 /^\s+\d+\s+\d+\s+pat2/
+FP 7 /^\s+\d+\s+\d+\s+pat2\s+1\s+/
+FP 2 /^\s+\d+\s+\d+\s+pat2\s+\.\s+/
+FP /^# Total_sequences: 1\n/
+FP /^# Total_hitcount: 19\n/
+//
+
 ID fuzzpro-ex
 AP fuzzpro
 IN tsw:*
@@ -11652,21 +11718,21 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI prettyplot1.dat
 FC = 601
-FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 -10.000000 y1 49.[12][09][09][09][09][71] colour 0 size 8.000000 LGB2_LUPLU\n/
 FP /^Text1 x1 -10.000000 y1 42.599998 colour 0 size 8.000000 Consensus\n/
 FP /^Text1 x1 59.000000 y1 52.500000 colour 0 size 8.000000 50\n/
 FP /^Text1 x1 9.000000 y1 52.500000 colour 0 size 8.000000 A\n/
 FI prettyplot2.dat
 FC = 862
-FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 -10.000000 y1 49.[12][09][09][09][09][71] colour 0 size 8.000000 LGB2_LUPLU\n/
 FP /^Text1 x1 1.000000 y1 55.799999 colour 0 size 8.000000 K\n/
 FI prettyplot3.dat
 FC = 815
-FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 -10.000000 y1 49.[12][09][09][09][09][71] colour 0 size 8.000000 LGB2_LUPLU\n/
 FP /^Text1 x1 2.000000 y1 42.599998 colour 0 size 8.000000 H\n/
 FI prettyplot4.dat
 FC = 181
-FP /^Text1 x1 -10.000000 y1 49.200001 colour 0 size 8.000000 LGB2_LUPLU\n/
+FP /^Text1 x1 -10.000000 y1 49.[12][09][09][09][09][71] colour 0 size 8.000000 LGB2_LUPLU\n/
 FP /^Text1 x1 1.000000 y1 69.000000 colour 0 size 8.000000 N\n/
 //
 
@@ -16927,7 +16993,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hsfau1.tcode
-FZ = 21740
+FZ = 21866
 FP /^      1     200   0.673 Non-coding/
 FP /^     22     221   0.76[78] No opinion/
 FP /^     37     236   0.951 Coding/
