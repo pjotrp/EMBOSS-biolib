@@ -1,13 +1,22 @@
 #!/usr/bin/perl -w
 
-open (DAT, "../memtest.dat") || die "Cannot open file memtest.dat";
 %cmd = ();
 
+open (DAT, "../memtest.dat") || die "Cannot open file memtest.dat";
 while (<DAT>) {
     if (/^[\#]/) {next}
     if (/^(\S+) = (.*)/) {$cmd{$1} = $2};
     if (/^(\S+) =test= (.*)/) {$cmd{$1} = $2};
 }
+close DAT;
+
+open (DAT, "../qatestcmd.dat") || die "Cannot open file qatestcmd.dat";
+while (<DAT>) {
+    if (/^[\#]/) {next}
+    if (/^(\S+) = (.*)/) {$cmd{$1} = $2};
+    if (/^(\S+) =test= (.*)/) {$cmd{$1} = $2};
+}
+close DAT;
 
 while (<>) {
     if (/^Valgrind test (\S+)/) {
