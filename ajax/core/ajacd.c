@@ -621,8 +621,9 @@ static AjBool    acdDataFilename(AjPStr* datafname,
 static AjBool    acdDef(AcdPAcd thys, const AjPStr value);
 static void      acdDel(AcdPAcd *Pacd);
 static AjBool    acdDefinedEmpty (const AcdPAcd thys);
-static void      acdError(const char* fmt, ...);
-static void      acdErrorAcd(const AcdPAcd thys, const char* fmt, ...);
+__noreturn static void      acdError(const char* fmt, ...);
+__noreturn static void      acdErrorAcd(const AcdPAcd thys,
+					const char* fmt, ...);
 
 /* expression processing */
 
@@ -24009,7 +24010,7 @@ static AjBool acdVocabCheck(const AjPStr str, const char** vocab)
 ** @@
 ******************************************************************************/
 
-static void acdError(const char* fmt, ...)
+__noreturn static void acdError(const char* fmt, ...)
 {
     va_list args ;
     AjPStr errstr = NULL;
@@ -24035,8 +24036,6 @@ static void acdError(const char* fmt, ...)
     ajErr("File %S line %d: %S", acdFName, linenum, errstr);
     ajStrDel(&errstr);
     ajExitBad();
-
-    return;
 }
 
 
@@ -24136,7 +24135,7 @@ static void acdWarn(const char* fmt, ...)
 ** @@
 ******************************************************************************/
 
-static void acdErrorAcd(const AcdPAcd thys, const char* fmt, ...)
+__noreturn static void acdErrorAcd(const AcdPAcd thys, const char* fmt, ...)
 {
     va_list args;
     AjPStr errstr = NULL;
@@ -24151,7 +24150,6 @@ static void acdErrorAcd(const AcdPAcd thys, const char* fmt, ...)
 	  acdFName, thys->LineNum, thys->Name, errstr);
     ajStrDel(&errstr);
     ajExitBad();
-    return;
 }
 
 
