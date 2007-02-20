@@ -137,6 +137,7 @@ typedef struct AjSElement
 **                       (helices, strands or turns) 
 ** @attr elms [AjPElement*] Array of Element objects 
 **
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ****************************************************************************/
 typedef struct AjSElements
