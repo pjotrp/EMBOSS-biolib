@@ -1095,39 +1095,83 @@ Output file format
 
   File: wossname.html
 
+
+
 ACD
 
-   Program name              Description
-   acdc         ACD compiler
-   acdpretty    ACD pretty printing utility
-   acdtable     Creates an HTML table from an ACD file
-   acdtrace     ACD compiler on-screen trace
-   acdvalid     ACD file validation
+ Program name Description
+
+
+  acdc  ACD compiler
+
+
+  acdpretty  ACD pretty
+   printing utility
+
+  acdtable  Creates an HTML table from
+   an ACD file
+
+  acdtrace  ACD compiler on-screen
+   trace
+
+  acdvalid
+    ACD file validation
+
 
 ALIGNMENT CONSENSUS
 
-   Program name                    Description
-   cons         Creates a consensus from multiple alignments
-   megamerger   Merge two large overlapping nucleic acid sequences
-   merger       Merge two overlapping sequences
+ Program name Description
+
+
+  cons  Creates a consensus
+   from multiple alignments
+
+  megamerger  Merge two large
+   overlapping nucleic acid sequences
+
+  merger  Merge two overlapping
+   sequences
+
 
 ALIGNMENT DIFFERENCES
+  [Part of this file has been deleted
+   for brevity]
+ Program name Description
 
-   [Part of this file has been deleted for brevity]
-   Program name                     Description
-   dbiblast     Index a BLAST database
-   dbifasta     Database indexing for fasta file databases
-   dbiflat      Index a flat file database
-   dbigcg       Index a GCG formatted database
-   dbxfasta     Database b+tree indexing for fasta file databases
-   dbxflat      Database b+tree indexing for flat file databases
-   dbxgcg       Database b+tree indexing for GCG formatted databases
+
+    dbiblast  Index a BLAST
+   database
+
+  dbifasta
+    Database indexing for fasta file databases
+
+  dbiflat  Index a flat file
+   database
+
+  dbigcg
+    Index a GCG formatted database
+
+  dbxfasta  Database b+tree indexing
+   for fasta file databases
+
+  dbxflat  Database b+tree indexing for
+   flat file databases
+
+  dbxgcg  Database b+tree indexing for
+   GCG formatted databases
+
 
 UTILS MISC
 
-   Program name                      Description
-   embossdata    Finds or fetches data files read by EMBOSS programs
-   embossversion Writes the current EMBOSS version number
+ Program name Description
+
+
+  embossdata  Finds or
+   fetches data files read by EMBOSS programs
+
+  embossversion  Writes the
+   current EMBOSS version number
+
 
    If the -html, -prelink and -postlink qualifiers are specified, then
    the output will be wrapped in HTML tags, ready for inclusion in a Web

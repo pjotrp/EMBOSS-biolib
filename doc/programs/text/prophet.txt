@@ -357,9 +357,6 @@ HD_FUGRU        2439 PVDFLQEKDVFREFLYR   2455
 
   [Part of this file has been deleted for brevity]
 
-# Gaps:           5/146 ( 3.4%)
-# Score: 170.08
-#
 #
 #=======================================
 
@@ -407,6 +404,10 @@ HBB_HUMAN         99 HVD--DPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAH    146
 globins          156 KYR    158
                      ||.
 HBB_HUMAN        147 KYH    149
+
+
+#---------------------------------------
+#---------------------------------------
 
 Data files
 

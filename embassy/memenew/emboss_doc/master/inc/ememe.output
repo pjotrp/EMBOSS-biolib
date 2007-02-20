@@ -3,12 +3,12 @@
 <h3>Output files for usage example </h3>
 <p><h3>File: ex2.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -57,11 +57,11 @@
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -69,18 +69,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -91,35 +91,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.2"></a>
 <h3>Output files for usage example 2</h3>
 <p><h3>File: ex3.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -168,11 +168,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -180,18 +180,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -202,35 +202,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.3"></a>
 <h3>Output files for usage example 3</h3>
 <p><h3>File: ex4.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -279,11 +279,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -291,18 +291,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -313,35 +313,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.4"></a>
 <h3>Output files for usage example 4</h3>
 <p><h3>File: ex5.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -390,11 +390,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -402,18 +402,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -424,35 +424,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.5"></a>
 <h3>Output files for usage example 5</h3>
 <p><h3>File: ex6.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -501,11 +501,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -513,18 +513,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -535,35 +535,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.6"></a>
 <h3>Output files for usage example 6</h3>
 <p><h3>File: ex7.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -612,11 +612,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -624,18 +624,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -646,35 +646,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.7"></a>
 <h3>Output files for usage example 7</h3>
 <p><h3>File: ex8.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -723,11 +723,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -735,18 +735,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -757,35 +757,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.8"></a>
 <h3>Output files for usage example 8</h3>
 <p><h3>File: ex9.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -834,11 +834,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -846,18 +846,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -868,35 +868,35 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>
 
 <a name="output.9"></a>
 <h3>Output files for usage example 9</h3>
 <p><h3>File: ex1.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<HTML>
-<HEAD>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<TITLE>MEME</TITLE>
-<STYLE type="text/css">
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
+&lt;TITLE&gt;MEME&lt;/TITLE&gt;
+&lt;STYLE type="text/css"&gt;
   TD.invisible { color: '#D5F0FF'; }
   TD.c0 { background: aqua; color: black; }
   TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
@@ -945,11 +945,11 @@ by "n=" rather than "nsites=" in the line preceding the matrix.
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position in the motif, and <I>f</I> is the background frequency of the
-letter (given in the <A HREF=#command_doc>command line summary</A> section.)
-This is the same matrix that is used above in computing the <I>p</I>-values
-of the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of the
-Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif Occurrences</A>
+position in the motif, and &lt;I&gt;f&lt;/I&gt; is the background frequency of the
+letter (given in the &lt;A HREF=#command_doc&gt;command line summary&lt;/A&gt; section.)
+This is the same matrix that is used above in computing the &lt;I&gt;p&lt;/I&gt;-values
+of the occurrences of the motif in the &lt;A HREF=#sites_doc2&gt;Occurrences of the
+Motif&lt;/A&gt; and &lt;A HREF=#diagrams_doc2&gt;Block Diagrams of Motif Occurrences&lt;/A&gt;
 sections.  
 The scoring matrix is printed "sideways"--columns
 correspond to the letters in the alphabet (in the same order as shown in
@@ -957,18 +957,18 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.  The scoring matrix is preceded by a line starting with
 "log-odds matrix:" and containing the length of the alphabet, width
 of the motif, number of characters in the training set, the scoring 
-threshold (obsolete) and the motif <I>E</I>-value.
-<P>
-<B>Note:</B> The probability <I>p</I> used to compute the PSSM
-is <I>not</I> exactly the same as the corresponding value in the 
+threshold (obsolete) and the motif &lt;I&gt;E&lt;/I&gt;-value.
+&lt;P&gt;
+&lt;B&gt;Note:&lt;/B&gt; The probability &lt;I&gt;p&lt;/I&gt; used to compute the PSSM
+is &lt;I&gt;not&lt;/I&gt; exactly the same as the corresponding value in the 
 Position Specific Probability Matrix (PSPM).  
-The values of <I>p</I> used to compute the PSSM take
+The values of &lt;I&gt;p&lt;/I&gt; used to compute the PSSM take
 into account the motif prior, whereas the values in the PSPM are just
-the <I>observed</I> frequencies of letters in the motif sites.
+the &lt;I&gt;observed&lt;/I&gt; frequencies of letters in the motif sites.
 
-<P>
-<LI> <A NAME=pspm_doc2 HREF=#pspm1><H4>
-Position-Specific Probability Matrix</H4></A>
+&lt;P&gt;
+&lt;LI&gt; &lt;A NAME=pspm_doc2 HREF=#pspm1&gt;&lt;H4&gt;
+Position-Specific Probability Matrix&lt;/H4&gt;&lt;/A&gt;
 
 The motif itself is a position-specific probability matrix giving,
 for each position in the pattern, the observed frequency 
@@ -979,21 +979,21 @@ the simplified motif) and rows corresponding to the positions of the motif,
 position one first.
 The motif is preceded by a line starting with
 "letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the <I>E</I>-value of the
+of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
 motif.
-<p>
-<b>Note:</b> Earlier versions
+&lt;p&gt;
+&lt;b&gt;Note:&lt;/b&gt; Earlier versions
 of MEME gave the posterior probabilities--the probability after applying
 a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of <I>possible</I>
+These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
 positions for the motif rather than the actual number of occurrences.
 The output from these earlier versions of MEME can be distinguished
 by "n=" rather than "nsites=" in the line preceding the matrix.
 
-</UL>
-<HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR>
-  <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to top</B></A></TABLE><BR>
-</FORM>
-</BODY>
-</HTML>
+&lt;/UL&gt;
+&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
+  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
+&lt;/FORM&gt;
+&lt;/BODY&gt;
+&lt;/HTML&gt;
 </td></tr></table><p>

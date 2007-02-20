@@ -1507,3 +1507,866 @@ Output file format
   Output files for usage example
 
   File: ex2.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 2
+
+  File: ex3.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 3
+
+  File: ex4.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 4
+
+  File: ex5.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 5
+
+  File: ex6.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 6
+
+  File: ex7.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 7
+
+  File: ex8.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 8
+
+  File: ex9.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+  Output files for usage example 9
+
+  File: ex1.html
+
+   <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"> <HTML>
+   <HEAD> <meta http-equiv="Content-Type" content="text/html;
+   charset=ISO-8859-1"> <TITLE>MEME</TITLE> <STYLE type="text/css">
+   TD.invisible { color: '#D5F0FF'; } TD.c0 { background: aqua; color:
+   black; } TD.cw0 { background: aqua; color: black; font: 50%
+   sans-serif; } TD.c1 { background: blue; color: white; } TD.cw1 {
+   background: blue; color: white; font: 50% sans-serif; } TD.c2 {
+   background: red; color: white; } TD.cw2 { background: red; color:
+   white; font: 50% sans-serif; } TD.c3 { background: fuchsia; color:
+   black; } TD.cw3 { background: fuchsia; color: black; font: 50%
+   sans-serif; } TD.c4 { background: yellow; color: black; } TD.cw4 {
+   background: yellow; color: black; font: 50% sans-serif; } TD.c5 {
+   background: lime; color: black; } TD.cw5 { background: lime; color:
+   black; font: 50% sans-serif; } TD.c6 { background: teal; color: white;
+   } TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
+   TD.c7 { background: #444444; color: white; } TD.cw7 { background:
+   #444444; color: white; font: 50% sans-serif; } TD.c8 { background:
+   green; color: white; } TD.cw8 { background: green; color: white; font:
+   50% sans-serif; } TD.c9 { background: silver; color: black; } TD.cw9 {
+   background: silver; color: black; font: 50% sans-serif; } TD.c10 {
+   background: purple; color: white; } TD.cw10 { background: purple;
+   color: white; font: 50% sans-serif; } TD.c11 { background: olive;
+   color: black; } TD.cw11 { background: olive; color: black; font: 50%
+   sans-serif; } TD.c12 { background: navy; color: white; } TD.cw12 {
+   background: navy; color: white; font: 50% sans-serif; } TD.c13 {
+   background: maroon; color: white; } TD.cw13 { background: maroon;
+   color: white; font: 50% sans-serif; } TD.c14 { background: black;
+   color: white; } TD.cw14 { background: black; color: white; font: 50%
+   sans-serif; } TD.c15 { background: white; color: black; } TD.cw15 {
+   background: white; color: black; font: 50% sans-serif; } B.red {
+   color: red; } TD.red { color: red; } TH.red { color: red; } B.blue {
+   color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
+   B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
+   color: orange; } B.green { color: green; } TD.green { color: green; }
+   [Part of this file has been deleted for brevity] position in the
+   motif, and <I>f</I> is the background frequency of the letter (given
+   in the <A HREF=#command_doc>command line summary</A> section.) This is
+   the same matrix that is used above in computing the <I>p</I>-values of
+   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
+   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
+   Occurrences</A> sections. The scoring matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The scoring matrix is
+   preceded by a line starting with "log-odds matrix:" and containing the
+   length of the alphabet, width of the motif, number of characters in
+   the training set, the scoring threshold (obsolete) and the motif
+   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
+   compute the PSSM is <I>not</I> exactly the same as the corresponding
+   value in the Position Specific Probability Matrix (PSPM). The values
+   of <I>p</I> used to compute the PSSM take into account the motif
+   prior, whereas the values in the PSPM are just the <I>observed</I>
+   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
+   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
+   motif itself is a position-specific probability matrix giving, for
+   each position in the pattern, the observed frequency ("probability")
+   of each possible letter. The probability matrix is printed
+   "sideways"--columns correspond to the letters in the alphabet (in the
+   same order as shown in the simplified motif) and rows corresponding to
+   the positions of the motif, position one first. The motif is preceded
+   by a line starting with "letter-probability matrix:" and containing
+   the length of the alphabet, width of the motif, number of occurrences
+   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
+   Earlier versions of MEME gave the posterior probabilities--the
+   probability after applying a prior on letter frequencies--rather than
+   the observed frequencies. These versions of MEME also gave the number
+   of <I>possible</I> positions for the motif rather than the actual
+   number of occurrences. The output from these earlier versions of MEME
+   can be distinguished by "n=" rather than "nsites=" in the line
+   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
+   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
+   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+
+   The MEME results consist of:
+     * The version of MEME and the date it was released.
+     * The reference to cite if you use MEME in your research.
+     * A description of the sequences you submitted (the "training set")
+       showing the name, "weight" and length of each sequence.
+     * The command line summary detailing the parameters with which you
+       ran MEME.
+     * Information on each of the motifs MEME discovered, including:
+         1. 1.A summary line showing the width, number of occurrences,
+            log likelihood ratio and statistical significance of the
+            motif.
+         2. 2.A simplified position-specific probability matrix.
+         3. 3.A diagram showing the degree of conservation at each motif
+            position.
+         4. 4.A multilevel consensus sequence showing the most conserved
+            letter(s) at each motif position.
+         5. 5.The occurrences of the motif sorted by p-value and aligned
+            with each other.
+         6. 6.Block diagrams of the occurrences of the motif within each
+            sequence in the training set.
+         7. 7.The motif in BLOCKS format.
+         8. 8.A position-specific scoring matrix (PSSM) for use by the
+            MAST database search program.
+         9. 9.The position specific probability matrix (PSPM) describing
+            the
+       motif.
+     * A summary of motifs showing an optimized (non-overlapping) tiling
+       of all of the motifs onto each of the sequences in the training
+       set.
+     * The reason why MEME stopped and the name of the CPU on which it
+       ran.
+     * This explanation of how to interpret MEME results.
+
+Data files
+
+   None.
+
+Notes
+
+  1. Command-line arguments
+
+   The following original MEME options are not supported:
+-h         : Use -help to get help information.
+-dna       : EMBOSS will specify whether sequences use a DNA alphabet
+             automatically.
+-protein   : EMBOSS will specify whether sequences use a protein alphabet
+             automatically.
+
+   The following additional options are provided:
+outfile    : Application output that was normally written to stdout.
+
+   Note: ememe makes a temporary local copy of its input sequence data.
+   You must ensure there is sufficient disk space for this in the
+   directory that ememe is run.
+
+  2. Installing EMBASSY MEME
+
+   The EMBASSY MEME package contains "wrapper" applications providing an
+   EMBOSS-style interface to the applications in the original MEME
+   package version 3.0.14 developed by Timothy L. Bailey. Please read the
+   file README in the EMBASSY MEME package distribution for installation
+   instructions.
+
+  3. Installing original MEME
+
+   To use EMBASSY MEME, you will first need to download and install the
+   original MEME package:
+WWW home:       http://meme.sdsc.edu/meme/
+Distribution:   http://meme.nbcr.net/downloads/old_versions/
+
+   Please read the file README in the the original MEME package
+   distribution for installation instructions.
+
+  4. Setting up MEME
+
+   For the EMBASSY MEME package to work, the directory containing the
+   original MEME executables *must* be in your path. For example if you
+   executables were installed to "/usr/local/meme/bin", then type:
+set path=(/usr/local/meme/bin/ $path)
+rehash
+
+  5. Getting help
+
+   Once you have installed the original MEME, type
+meme > meme.txt
+mast > mast.txt
+
+   to retrieve the meme and mast documentation into text files. The same
+   documentation is given here and in the ememe documentation.
+
+   Please read the 'Notes' section below for a description of the
+   differences between the original and EMBASSY MEME, particularly which
+   application command line options are supported.
+
+References
+
+   (MEME) Timothy L. Bailey and Charles Elkan, "Fitting a mixture model
+   by expectation maximization to discover motifs in biopolymers",
+   Proceedings of the Second International Conference on Intelligent
+   Systems for Molecular Biology, pp. 28-36, AAAI Press, Menlo Park,
+   California, 1994.
+
+   (MAST) Timothy L. Bailey and Michael Gribskov, "Combining evidence
+   using p-values: application to sequence homology searches",
+   Bioinformatics, Vol. 14, pp. 48-54, 1998.
+
+Warnings
+
+  Input data
+
+  Sequence input
+
+   Note: ememe makes a temporary local copy of its input sequence data.
+   You must ensure there is sufficient disk space for this in the
+   directory that ememe is run.
+
+   The user must provide the full filename of a sequence database for the
+   sequence input ("seqset" ACD option), not an indirect reference, e.g.
+   a USA is NOT acceptable. This is because meme (which ememe wraps) does
+   not support USAs, and a full sequence database is too big to write to
+   a temporary file that the original meme would understand.
+
+Diagnostic Error Messages
+
+   None.
+
+Exit status
+
+   It always exits with status 0.
+
+Known bugs
+
+   None.
+
+See also
+
+    Program name                         Description
+   antigenic      Finds antigenic sites in proteins
+   digest         Protein proteolytic enzyme or reagent cleavage digest
+   emast          Motif detection
+   epestfind      Finds PEST motifs as potential proteolytic cleavage sites
+   fuzzpro        Protein pattern search
+   fuzztran       Protein pattern search after translation
+   helixturnhelix Report nucleic acid binding motifs
+   oddcomp        Find protein sequence regions with a biased composition
+   omeme          Motif detection
+   patmatdb       Search a protein sequence with a motif
+   patmatmotifs   Search a PROSITE motif database with a protein sequence
+   pepcoil        Predicts coiled coil regions
+   preg           Regular expression search of a protein sequence
+   pscan          Scans proteins using PRINTS
+   sigcleave      Reports protein signal cleavage sites
+
+Author(s)
+
+   Jon Ison (jison © rfcgr.mrc.ac.uk)
+   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
+   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+
+   This program is an EMBASSY wrapper to a program written by Timothy L.
+   Bailey as part of his meme package.
+
+   Please report any bugs to the EMBOSS bug team in the first instance,
+   not to Timothy L. Bailey.
+
+History
+
+   None.
+
+Target users
+
+   This program is intended to be used by everyone and everything, from
+   naive users to embedded scripts.
