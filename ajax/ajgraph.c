@@ -4430,7 +4430,7 @@ void ajGraphSetTitlePlus(AjPGraph thys, const AjPStr title)
 		       thys->plplot->desc, title);
     else
 	ajFmtPrintS(&thys->plplot->title, "%S of %S",
-		       ajAcdGetProgram, title);
+		       ajAcdGetProgram(), title);
 
     return;
 }
@@ -5977,12 +5977,32 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	ajGraphColourBack();
 	GraphInit(thys);
 	ajGraphColourFore();
+
+	/* first do the main plot title */
+	if((thys->plplot->flags & AJGRAPH_TITLE) &&
+	   ajStrGetLen(thys->plplot->title) <=1)
+	{
+	    ajtime = ajTimeToday();
+	    ajStrAppendC(&thys->plplot->title,
+			     ajFmtString("%S (%D)",
+					 ajAcdGetProgram(),
+					 ajtime));
+	    ajTimeDel(&ajtime);
+	}
+
 	for(i=0;i<thys->plplot->numofgraphs;i++)
 	{
 	    graphdata = (thys->plplot->graphs)[i];
 	    ajGraphPlenv(graphdata->minX, graphdata->maxX,
 			 graphdata->minY, graphdata->maxY,
 			 thys->plplot->flags);
+	    if(!ajStrGetLen(graphdata->title) &&
+	       (thys->plplot->flags & AJGRAPH_TITLE))
+		ajStrAssignS(&graphdata->title, thys->plplot->title);
+	    if(!ajStrGetLen(graphdata->subtitle) &&
+	       (thys->plplot->flags & AJGRAPH_SUBTITLE))
+		ajStrAssignS(&graphdata->subtitle, thys->plplot->subtitle);
+
 	    ajGraphLabel(((thys->plplot->flags & AJGRAPH_X_LABEL) ?
 			  ajStrGetPtr(graphdata->xaxis) : " "),
 			 ((thys->plplot->flags & AJGRAPH_Y_LABEL) ?
