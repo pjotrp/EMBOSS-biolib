@@ -116,10 +116,10 @@ int main(int argc, char **argv)
     outf   = ajAcdGetOutfile("outfile");
     show   = ajAcdGetBool("uncommon");
     min    = ajAcdGetFloat("minimum");
+    graph = ajAcdGetGraphxy("graph");
     
     if(plot)
     {
-        graph = ajAcdGetGraphxy("graph");
 	ajGraphSetCharScale((float)0.60);
     }
     
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 
 	    ajGraphPlpDataSetYTitleC(this,"Gribskov value");
 	    ajGraphPlpDataSetXTitleC(this,"Sequence position");
-	    ajGraphPlpDataSetTitleC(this,frames[base]);
+	    ajGraphPlpDataSetSubTitleC(this,frames[base]);
 	    ajGraphPlpDataAddLine(this,(float)beg,1.0,(float)end,
 				  1.0,4);
 	}
@@ -250,7 +250,8 @@ int main(int argc, char **argv)
 	ajGraphxySetMaxMin(graph,(float)beg,(float)end,miny,maxy);
 	ajGraphxySetYStart(graph,0.0);
 	ajGraphxySetYEnd(graph,2.0);
-	ajGraphSetTitleC(graph,"Gribskov Codon Plot");
+	/* ajGraphSetTitleC(graph,"Gribskov Codon Plot"); */
+	ajGraphSetTitlePlus(graph, ajSeqGetUsaS(a));
 	ajGraphxyDisplay(graph,ajTrue);
     }
     
