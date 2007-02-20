@@ -13,11 +13,14 @@
 		"domainalign-qa1" => "mkdir daf",
 		"seqnr-qa1" => "mkdir hitsnr;mkdir hitsred",
 		"sigscanlig-qa1" => "mkdir lhf;mkdir aln;mkdir results",
+		"ehmmindex-qa1" => "cp ../../qa/ehmmcalibrate-ex2-keep/myhmmso .",
 		"ohmmindex-qa1" => "cp ../../qa/ohmm-own-keep/myhmms .",
 		"ohmmcalibrate-qa1" => "cp ../../qa/ohmmbuild-ex-keep/globin.hmm .",
 
 		"ohmmcalibrate-qa2" => "cp ../../qa/ohmm-own-keep/myhmms .",
 		"ohmmcalibrate-qa3" => "cp ../../qa/ohmm-own-keep/myhmms .",
+		"intconv-qa1" => "cp ../../qa/intconv-check/stdin .",
+		"fmove-qa1" => "cp ../../data/fmove.in .",
 		"" => ""
 		);
 
@@ -31,6 +34,7 @@ sub runtest ($) {
     my $timeout = 1800;
     my $timealarm = 0;
     my $testkeep = $dokeep;
+    my $infile = "";
     if (defined($tests{$name})) {
 	if (defined($testcheck{$name})) {
 #	    $myvalgpath = "../../emboss/";
@@ -54,9 +58,10 @@ sub runtest ($) {
 	    if(defined($precommands{$name})) {
 		system ("$precommands{$name}");
 	    }
+	    if(-e "stdin") { $infile = "< stdin" }
 	    $status = 0;
 	    alarm($timeout);
-	    $sysstat = system ("EMBOSSRC=../.. ;export EMBOSSRC ;EMBOSS_RCHOME=N ;export EMBOSS_RCHOME ;valgrind $valgopts $myvalgpath$tests{$name} 9> ../valgrind/$name.valgrind" );
+	    $sysstat = system ("EMBOSSRC=../.. ;export EMBOSSRC ;EMBOSS_RCHOME=N ;export EMBOSS_RCHOME ;valgrind $valgopts $myvalgpath$tests{$name} $infile 9> ../valgrind/$name.valgrind" );
 	    alarm(0);
 	    $status = $sysstat >> 8;
 	};
