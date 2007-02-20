@@ -265,7 +265,7 @@ int main(int argc, char **argv)
     ajBtreeHybDel(&hyb);
 
 
-    ajExit();
+    embExit();
 
     return 0;
 }

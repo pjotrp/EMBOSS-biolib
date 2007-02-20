@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     ajStrDel(&cpgreportSource);
     ajStrDel(&cpgreportType);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

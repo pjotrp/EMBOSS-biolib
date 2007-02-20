@@ -401,7 +401,7 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
     ajGraphxyDel(&graph);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

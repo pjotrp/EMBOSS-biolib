@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajFileClose(&outf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

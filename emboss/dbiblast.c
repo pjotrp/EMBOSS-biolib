@@ -1645,7 +1645,7 @@ static size_t dbiblast_memfseek(PMemFile mf, ajlong offset, ajint whence)
 	    break;
 	default:
 	    ajErr("invalid memfseek code %d", whence);
-	    exit(0);
+	    embExitBad();
 	}
 	if(mf->Pos > mf->Size)
 	    mf->Pos = mf->Size;

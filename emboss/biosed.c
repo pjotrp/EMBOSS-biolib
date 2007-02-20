@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     ajStrDel(&str);
     ajSeqoutClose(outseq);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

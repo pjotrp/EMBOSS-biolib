@@ -288,7 +288,7 @@ int main(int argc, char **argv)
     ajGraphxyDel(&graphLB);
     ajStrDel(&line);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

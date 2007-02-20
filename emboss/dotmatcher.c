@@ -479,7 +479,7 @@ int main(int argc, char **argv)
 
     AJFREE(strret);			/* created withing ajFmtString */
     
-    ajExit();
+    embExit();
 
     return 0;
 }

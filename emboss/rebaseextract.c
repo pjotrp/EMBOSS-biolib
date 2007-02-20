@@ -405,7 +405,7 @@ int main(int argc, char **argv)
     ajListDel(&equ1);
     ajListDel(&equ2);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

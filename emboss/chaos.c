@@ -150,7 +150,7 @@ int main(int argc, char **argv)
     ajGraphxyDel(&graph);
     ajStrDel(&str);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

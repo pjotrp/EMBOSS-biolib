@@ -251,7 +251,7 @@ int main(int argc, char **argv)
     ajSeqoutDel(&seqoutrest);
     ajFileClose(&logf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

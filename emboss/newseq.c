@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     ajStrDel(&type);
     ajStrDel(&sequence);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

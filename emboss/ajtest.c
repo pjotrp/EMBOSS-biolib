@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     ajStrDel(&kimout);
     ajStrDel(&dir);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

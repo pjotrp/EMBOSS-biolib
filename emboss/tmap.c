@@ -336,7 +336,7 @@ int main(int argc, char **argv)
 	AJFREE(tm_segment[i]);
     AJFREE(tm_segment);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

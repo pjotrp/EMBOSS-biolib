@@ -214,7 +214,7 @@ int main(int argc, char **argv)
     
     ajReportClose(report);
     
-    ajExit();
+    embExit();
 
     return 0;
 }

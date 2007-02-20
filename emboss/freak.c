@@ -173,7 +173,7 @@ int main(int argc, char **argv)
     ajStrDel(&bases);
     ajStrDel(&st);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

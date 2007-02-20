@@ -300,7 +300,7 @@ int main(int argc, char **argv)
 
     ajStrTableFree(&table);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

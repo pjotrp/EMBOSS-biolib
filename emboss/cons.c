@@ -115,7 +115,7 @@ int main(int argc, char **argv)
     ajSeqoutDel(&seqout);
     ajStrDel(&name);
 
-    ajExit ();
+    embExit();
 
     return 0;
 }

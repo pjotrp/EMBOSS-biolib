@@ -214,7 +214,7 @@ int main(int argc, char **argv)
     ajRegFree(&dbxfasta_wrdexp);
     ajRegFree(&typeexp);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

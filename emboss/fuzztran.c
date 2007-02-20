@@ -182,7 +182,7 @@ int main(int argc, char **argv)
     ajFeattableDel(&tab);
 
     ajTrnDel(&trantable);
-    ajExit();
+    embExit();
 
     return 0;
 }

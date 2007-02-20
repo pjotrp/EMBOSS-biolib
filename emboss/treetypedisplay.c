@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     ajGraphCloseWin();
     ajGraphxyDel(&graph);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

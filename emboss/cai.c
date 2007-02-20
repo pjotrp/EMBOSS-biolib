@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     ajSeqDel(&seq);
     ajStrDel(&substr);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

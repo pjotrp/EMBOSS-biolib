@@ -193,7 +193,7 @@ int main(int argc, char **argv)
     ajStrDel(&tseq);
     ajStrDel(&tmpstr);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

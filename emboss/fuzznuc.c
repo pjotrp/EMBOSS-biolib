@@ -78,6 +78,6 @@ int main(int argc, char **argv)
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
 
-    ajExit();
+    embExit();
     return 0;
 }

@@ -542,7 +542,7 @@ int main(int argc, char **argv)
     ajStrDel(&taskstr);
     ajRangeDel(&target);
 
-    ajExit();
+    embExit();
     return 0;
 }
 

@@ -347,7 +347,7 @@ static ajint stretcher_Ealign(const char *A,const char *B,
     if(CC==NULL || DD==NULL || RR==NULL || SS==NULL)
     {
 	ajErr(" cannot allocate llmax arrays\n");
-	exit(1);
+	embExitBad();
     }
 
     c  = stretcher_Align(A,B,M,N,-g,-g);	/* OK, do it */

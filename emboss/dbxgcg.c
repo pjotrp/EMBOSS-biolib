@@ -358,7 +358,7 @@ int main(int argc, char **argv)
     ajRegFree(&dbxgcg_pir_phrexp);
     ajRegFree(&dbxgcg_pir_pirexp);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

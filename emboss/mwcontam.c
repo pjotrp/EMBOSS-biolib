@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     ajListDel(&files);
     ajFileClose(&outf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

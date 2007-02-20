@@ -155,7 +155,7 @@ int main(int argc, char **argv)
     ajStrDel(&origid);
     ajStrDel(&outseq_name);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

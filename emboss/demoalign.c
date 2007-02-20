@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     else
 	ajMatrixfDel(&fmat);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

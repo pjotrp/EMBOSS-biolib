@@ -417,7 +417,7 @@ int main(int argc, char **argv)
 	ajStrTableFree(&exptable);
  
 
-    ajExit();
+    embExit();
 
     return 0;
 }

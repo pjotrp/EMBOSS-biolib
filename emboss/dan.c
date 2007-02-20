@@ -209,7 +209,7 @@ int main(int argc, char **argv)
 
     ajStrDel(&strand);
 
-    ajExit();
+    embExit();
     return 0;
 }
 

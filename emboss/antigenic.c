@@ -329,7 +329,7 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajStrDel(&tmpFeatStr);
 
-    ajExit();
+    embExit();
 
     return 0;
 }
@@ -403,7 +403,7 @@ static void antigenic_readAnti(AjPFloat *agp)
 	if(sscanf(p,"%*s%d%d%d%f%f%f",&v1,&v2,&v3,&vf1,&vf2,&vf3)!=6)
 	{
 	    ajErr("Error in table: %s",p);
-	    exit(0);
+	    embExitBad();
 	}
 
 	ajFloatPut(agp,n,vf3);

@@ -149,7 +149,7 @@ int main(int argc, char **argv)
     ajFileClose(&inf);
     ajFileClose(&outf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

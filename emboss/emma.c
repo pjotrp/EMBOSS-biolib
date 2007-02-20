@@ -205,7 +205,7 @@ int main(int argc, char **argv, char **env)
     fil_file = ajSeqoutNew();
     tmpFilename = emma_getUniqueFileName();
     if(!ajSeqoutOpenFilename( fil_file, tmpFilename))
-	ajExit();
+	embExitBad();
 
     /* Set output format to fasta */
     ajSeqOutSetFormat( fil_file, tmp);
@@ -470,7 +470,7 @@ int main(int argc, char **argv, char **env)
     ajSeqoutDel(&fil_file);
     ajSeqinDel(&seqin);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

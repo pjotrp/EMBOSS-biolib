@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     ajFmtPrintF(outf, "%S\n", ajSeqGetUsaS(seq));
     ajFileClose(&outf);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

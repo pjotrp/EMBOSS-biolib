@@ -657,7 +657,7 @@ int main(int argc, char **argv)
     ajFileClose(&outfile);
     ajStrDel(&taskstr);
     
-    ajExit();
+    embExit();
 
     return 0;
 }

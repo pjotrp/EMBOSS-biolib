@@ -141,7 +141,7 @@ int main(int argc, char **argv)
     ajCodDel(&codondata);
     AJFREE(seqr);
 
-    ajExit();
+    embExit();
     return 0;
 }
 

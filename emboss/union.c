@@ -158,7 +158,7 @@ int main(int argc, char **argv)
     if (overlap_file)
 	ajFileClose (&overlap_file);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

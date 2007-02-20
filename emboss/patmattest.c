@@ -106,7 +106,7 @@ int main(int argc, char **argv)
     ajStrDel(&cutseq);
     ajSeqDel(&seq);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

@@ -45,7 +45,8 @@ int main(int argc, char **argv)
 
     ajCodDel(&cod);
     ajOutfileClose(&codout);
-    ajExit();
+
+    embExit();
 
     return 0;
 }

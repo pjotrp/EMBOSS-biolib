@@ -320,7 +320,7 @@ int main(int argc, char **argv)
     ajStrDel(&fname);
     ajStrDel(&baseN);
 
-    ajExit ();
+    embExit ();
 
     return 0;
 }

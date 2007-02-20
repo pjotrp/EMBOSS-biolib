@@ -712,7 +712,7 @@ int main(int argc, char **argv)
 	printf("\n \n \n    Please set the environmentvariable "
 	       "DIALIGN2_DIR \n");
 	printf("    as described in the README file \n"); 
-	exit(1);
+	embExitBad();
     }
 */
     argnum = argc;
@@ -746,7 +746,7 @@ int main(int argc, char **argv)
 	       "Server): \n\n") ;
 	printf("        http://bibiserv.techfak.uni-bielefeld.de/"
 	       "dialign/ \n\n");    
-	exit(1) ;
+	embExitBad() ;
     }
 */
 
@@ -777,7 +777,7 @@ int main(int argc, char **argv)
 	printf(" is produced. \n");
 	printf("   This can be enforced with option -ta \n\n");
 	printf("   program terminated \n\n\n");
-	exit(1) ;
+	embExitBad() ;
     } 
 
 
@@ -867,7 +867,7 @@ int main(int argc, char **argv)
 
 
 	printf("\n       \n \n \n \n");
-	exit(1);
+	embExitBad();
 */
     }
 
@@ -878,7 +878,7 @@ int main(int argc, char **argv)
     if( (pair_score = (float **) calloc( seqnum , sizeof(float *) )) == NULL)
     {       
 	printf(" problems with memory allocation for `pair_score' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     for(i=0;i<seqnum;i++)
@@ -887,13 +887,13 @@ int main(int argc, char **argv)
 	{       
 	    printf(" problems with memory allocation for "
 		   "`pair_score' !  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
     if(( cont_it_p = (short **) calloc( seqnum , sizeof( short *))) == NULL )
     {
 	printf(" problems with memory allocation for `cont_it_p ' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     for( i = 0 ; i < seqnum ; i++ )  
@@ -902,7 +902,7 @@ int main(int argc, char **argv)
 	{   
 	    printf(" problems with memory allocation for "
 		   "`cont_it_p' !  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
     for( i = 0 ; i < seqnum ; i++ )
@@ -922,7 +922,7 @@ int main(int argc, char **argv)
 	    printf("          Please inspect the sequence file.\n \n ");
 	    printf("\n \n          Program terminated \n \n \n " );     
 
-	    exit(1);
+	    embExitBad();
 	}
  
 	if(maxlen < seqlen[i])
@@ -942,7 +942,7 @@ int main(int argc, char **argv)
 	 (float **) calloc( seqnum , sizeof(float*))) == NULL) 
     {
 	printf("Problems with memory allocation for glob_sim\n"); 
-	exit(1); 
+	embExitBad(); 
     } 
 
     for(i=0;i<seqnum;i++)
@@ -952,7 +952,7 @@ int main(int argc, char **argv)
 	     (float *) calloc( seqnum , sizeof(float))) == NULL) 
 	{ 
 	    printf("Problems with memory allocation for glob_sim \n"); 
-	    exit(1); 
+	    embExitBad(); 
 	} 
  
     }
@@ -979,7 +979,7 @@ int main(int argc, char **argv)
 		   "tp400_trans \n\n" );
 	    printf(" These files should be contained in the DIALIGN "
 		   "package \n\n\n" ) ;
-	    exit(1) ;
+	    embExitBad() ;
 
 
 
@@ -988,7 +988,7 @@ int main(int argc, char **argv)
 	    printf("\n   There is no similarity matrix `%s'. \n", mat_name);
 	    printf("   in the directory \n \n");
 	    printf("           %s\n \n", par_dir);
-	    exit(1);
+	    embExitBad();
 	}
     }
 */
@@ -1008,7 +1008,7 @@ int main(int argc, char **argv)
 	{
 	    printf(" problems with memory allocation");
 	    printf(" for `amino' !  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
     if( wgt_type != 1 )
@@ -1017,7 +1017,7 @@ int main(int argc, char **argv)
 	    {
 		printf(" problems with memory allocation");
 		printf(" for `amino[%d]' !  \n \n", i);
-		exit(1);
+		embExitBad();
 	    }
 
  
@@ -1027,7 +1027,7 @@ int main(int argc, char **argv)
 	{
 	    printf(" problems with memory allocation");
 	    printf(" for `amino_c' !  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	for( i = 0 ; i < seqnum ; i++ )
@@ -1036,7 +1036,7 @@ int main(int argc, char **argv)
 	    {
 		printf(" problems with memory allocation");
 		printf(" for `amino_c[%d]' !  \n \n", i);
-		exit(1);
+		embExitBad();
 	    }
     }
 
@@ -1061,7 +1061,7 @@ int main(int argc, char **argv)
 	{
 	    printf(" problems with memory allocation for "
 		   "'exclude_list' \n \n");
-	    exit(1);
+	    embExitBad();
 	} 
 
 	for(i = 0 ; i < seqnum ; i++ ) 
@@ -1070,7 +1070,7 @@ int main(int argc, char **argv)
 	    {
 		printf(" problems with memory allocation for "
 		       "'gl_exclude_list' \n \n");
-		exit(1);
+		embExitBad();
 	    } 
   
 	for(i = 0 ; i < seqnum ; i++ ) 
@@ -1080,7 +1080,7 @@ int main(int argc, char **argv)
 		{
 		    printf(" problems with memory allocation for "
 			   "'gl_exclude_list' \n \n");
-		    exit(1);
+		    embExitBad();
 		} 
 
 	edialign_exclude_frg_read ( input_name , gl_exclude_list ) ;
@@ -1207,7 +1207,7 @@ int main(int argc, char **argv)
     if( (open_pos = (int *** ) calloc( seqnum , sizeof(int **))) == NULL)
     {
 	printf("Problems with memory allocation for open_pos\n"); 
-	exit(1);
+	embExitBad();
     }
 
     for(i=0;i<seqnum;i++)
@@ -1216,7 +1216,7 @@ int main(int argc, char **argv)
 	     (int ** ) calloc( seqnum , sizeof(int *))) == NULL)
 	{ 
 	    printf("Problems with memory allocation for open_pos\n"); 
-	    exit(1);
+	    embExitBad();
 	}
     }
 
@@ -1228,7 +1228,7 @@ int main(int argc, char **argv)
 		 (int * ) calloc( ( seqlen[i]+2) , sizeof(int) ) ) == NULL)
 	    { 
 		printf("Problems with memory allocation for open_pos\n"); 
-		exit(1);
+		embExitBad();
 	    }
 	}
 
@@ -1254,7 +1254,7 @@ int main(int argc, char **argv)
 		if(edialign_translate(seq[hv][ii],seq[hv][ii+1],
 				      seq[hv][ii+2],hv,
 				      ii ) == -1)
-		    exit(1);
+		    embExitBad();
 
 
 		amino[hv][ii] = edialign_translate(seq[hv][ii],
@@ -1351,7 +1351,7 @@ int main(int argc, char **argv)
 
 
 	edialign_filter( &anc_num , anchor_frg);
-	/*  exit(1) ; 
+	/*  embExitBad() ; 
 	 */
     }
 
@@ -1378,7 +1378,7 @@ int main(int argc, char **argv)
        )
     {
 	printf(" problems with memory allocation for `num_dia_bf' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
 
@@ -1388,7 +1388,7 @@ int main(int argc, char **argv)
        )
     {
 	printf(" problems with memory allocation for `num_dia_af' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
 
@@ -1568,7 +1568,7 @@ int main(int argc, char **argv)
 	if( break1 )
 	{
 	    printf("\n  break1\n");
-	    exit(1) ;
+	    embExitBad() ;
 	}
 
 
@@ -1576,7 +1576,7 @@ int main(int argc, char **argv)
 	   if( pa_only )
 	   {
 	   printf("\n\n istep = %d, pa finished - exit \n\n", istep );       
-	   exit(1);
+	   embExitBad();
 	   }
 	   */
 
@@ -1663,7 +1663,7 @@ int main(int argc, char **argv)
 	   if( pa_only == 0 )
 	   {
 	   printf("\n\n istep = %d, filter finished - exit \n\n", istep );
-	   exit(1);
+	   embExitBad();
 	   }
 	*/
 
@@ -1684,7 +1684,7 @@ int main(int argc, char **argv)
 	if( break2 )
 	{
 	    printf("\n  break2\n");
-	    exit(1) ;
+	    embExitBad() ;
 	}
 
 
@@ -1779,6 +1779,7 @@ int main(int argc, char **argv)
 	printf (" corresponds to %f percent \n\n", perc_pa_time );
     } 
 
+    embExit();
 
     return 0;
 } /* main */
@@ -2971,7 +2972,7 @@ static void edialign_anchor_check(ajint s1, ajint s2, ajint b1, ajint b2,
        printf(" This does not fit into sequence # %d " , s1 );
        printf(" (sequence length = %d) \n\n", seqlen[ s1 - 1 ] ) ; 
        printf("  PROGRAM TERMINATED \n\n" ) ;
-       exit( 1 ) ; 
+       embExitBad() ; 
        } 
        */
 
@@ -3039,7 +3040,7 @@ static ajint edialign_multi_anc_read(char *file_name)
        == NULL) {
 	printf(" problems with memory allocation "
 	       "for `anchor fragments' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     current_frg = anchor_frg ; 
@@ -3223,20 +3224,20 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
     if((ub_int = (int *) calloc( ( seqlen[n1] + 3 ) , sizeof(int) ) ) == NULL)
     {
 	printf("problems with memory allocation for ub_int!  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if((lb_int = (int *) calloc( (seqlen[n1]+3) , sizeof(int) ) ) == NULL)
     {
 	printf("problems with memory allocation for lb_int!  \n \n");
-	exit(1);
+	embExitBad();
     }
  
     if((prec_vec = (struct pair_frag **) 
 	  calloc( (seqlen[n2]+3) , sizeof(struct pair_frag *) ) ) == NULL)
     {
 	printf("problems with memory allocation for prec_vec!  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if( 
@@ -3248,7 +3249,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 	printf("\n \n \n      ATTENTION: \n \n \n");
 	printf("      problems with memory allocation\n");
 	printf("      for diagonals! \n");
-	exit(1);
+	embExitBad();
     }   
 
 
@@ -3260,7 +3261,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 	  calloc( 1 , sizeof(struct pair_frag) ) ) == NULL)
     {
 	printf("problems with memory allocation for diap!  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     for( j = 1 ; j< seqlen[n2]+3 ; j++ )
@@ -3288,7 +3289,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 	    if( wgt_print || wgt_print_x ) { 
 		edialign_wgt_prnt( ) ; 
 		if( wgt_print_x ) 
-		    exit(1) ;
+		    embExitBad() ;
 	    }
 
     } /* if( iter_cond_prob == 0 ) */  
@@ -3693,7 +3694,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 					    fprintf(fp1,"%s\n \n \n \n",
 						    seq_name[n2]);
 
-					    exit(1);
+					    embExitBad();
 					} 
   
 
@@ -3909,7 +3910,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 	    if( ( nd_fp = fopen("nd_file","a")) == NULL)    
 	    {
 		printf("\n\n  nd_fp could not be opened \n\n" );
-		exit(1);
+		embExitBad();
 	    }     
    
 	    fprintf(nd_fp, " %2d/%2d %8d  %8d \n",n1+1,n2+1,mnum,max_nd);
@@ -3944,7 +3945,7 @@ static float edialign_frag_chain(ajint n1, ajint n2, FILE *fp1, FILE *fp_m,
 	     calloc( ( numsubseq + 1 ) , sizeof(struct multi_frag)))  == NULL)
 	{
 	    printf("problems with memory allocation for `pair_dia'!  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 
@@ -5441,18 +5442,18 @@ static void edialign_av_tree_print(void)
 
     if( (clade_similarity = (double **) 
          calloc( seqnum , sizeof( double* ) )) == NULL)
-	exit(1);
+	embExitBad();
 
     for(i = 0 ; i < seqnum ; i++ )
 	if( (clade_similarity[i] = (double *) 
 	     calloc( seqnum , sizeof( double ) )) == NULL)
-	    exit(1);
+	    embExitBad();
 
     if( (string = (char *) 
 	 calloc( seqnum * 100 , sizeof(char) )) == NULL)
     {
         printf(" problems with memory allocation for `string'\n \n");
-        exit(1);
+        embExitBad();
     }
 
 
@@ -5464,7 +5465,7 @@ static void edialign_av_tree_print(void)
              calloc( seqnum , sizeof( int ) )) == NULL)
 	{    
 	    printf(" problems with memory allocation for `all_clades'\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 
@@ -5472,7 +5473,7 @@ static void edialign_av_tree_print(void)
              calloc( seqnum * 100 , sizeof( char ) )) == NULL)
 	{    
 	    printf(" problems with memory allocation for `all_clades'\n \n");
-	    exit(1);
+	    embExitBad();
 	}
          
 	strcpy( all_clades[i].name , seq_name[i] );
@@ -5588,7 +5589,7 @@ static void edialign_av_tree_print(void)
     if( (upg_str = (char *) calloc( i , sizeof(char) )) == NULL)
     {
         printf(" problems with memory allocation for `upg_str'\n \n");
-        exit(1);
+        embExitBad();
     }
 
     for(i = 0 ; i <= strlen( string ) ; i++ )
@@ -5911,7 +5912,7 @@ static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
 		printf ("\n\n exclueded fragment makes no sense!\n\n");
 		printf (" wrong sequence no %d in fragment\n\n", seq1 );
 		printf ("%d %d %d %d %d \n\n ", seq1, seq2, beg1, beg2 , len);
-		exit(1) ;
+		embExitBad() ;
 	    }
  
 	    if( seq2 > seqnum )
@@ -5920,7 +5921,7 @@ static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
 		printf ("    wrong sequence no %d in fragment\n\n", seq2 );
 		printf ("    %d %d %d %d %d \n\n", seq1, seq2, beg1, beg2,
 			len );
-		exit(1) ;
+		embExitBad() ;
 	    }
 
 	    /*
@@ -5936,7 +5937,7 @@ static void edialign_exclude_frg_read( char *file_name , int ***exclude_list)
 		printf ("    doesn't fit into sequence %d:\n", seq1 );
 		printf ("    sequence %d has length =  %d\n\n", seq1 ,
 			seqlen[ seq1 - 1 ] );
-		exit(1) ;
+		embExitBad() ;
 	    }
 
 
@@ -6030,7 +6031,7 @@ static void edialign_fasta_test( char *seq_file )
     if( (fp = fopen( seq_file , "r")) == NULL)
     { 
 	printf("\n\n Cannot find sequence file %s \n\n\n", seq_file );
-	exit(1) ;
+	embExitBad() ;
     }
 
     while( test )
@@ -6082,7 +6083,7 @@ static ajint edialign_seq_read(char *seq_file, char *sq[MAX_SEQNUM] ,
     if( (fp = fopen( seq_file , "r")) == NULL)
     { 
 	printf("\n\n Cannot find sequence file %s \n\n\n", seq_file );
-	exit(1) ;
+	embExitBad() ;
     }
     edialign_fasta_test( seq_file );
 
@@ -6143,7 +6144,7 @@ static ajint edialign_seq_read(char *seq_file, char *sq[MAX_SEQNUM] ,
 	if( sn != 0 ) {
 	    printf("\n\n With option \"self comparison\" input file "
 		   "must contain one single sequence \n\n" ); 
-	    exit(1) ;
+	    embExitBad() ;
 	}
 
 	sq[ 1 ]  = ( char * ) calloc( max_char[ 0 ] + 1 , sizeof ( char ) );
@@ -6307,7 +6308,7 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 	       "\n\n" );
 	printf(" These files should be contained in the DIALIGN package "
 	       "\n\n\n" ) ;
-	exit(1) ;
+	embExitBad() ;
     }
 */
 
@@ -6368,14 +6369,14 @@ static void edialign_subst_mat( char *file_name, int fragno ,
     if( ( sbsmt = (int **** ) calloc( seqnum , sizeof(int ***))) == NULL)
     { 
 	printf("Problems with memory allocation for sbsmt\n");
-	exit(1);
+	embExitBad();
     }
 
     for( i = 0 ; i < seqnum ; i++ ) 
 	if( ( sbsmt[i] = (int *** ) calloc( seqnum , sizeof(int **))) == NULL)
 	{ 
 	    printf("Problems with memory allocation for sbsmt\n");
-	    exit(1);
+	    embExitBad();
 	}
 
     for( i = 0 ; i < seqnum ; i++ )
@@ -6383,7 +6384,7 @@ static void edialign_subst_mat( char *file_name, int fragno ,
 	    if((sbsmt[i][j] = (int ** ) calloc(21,sizeof(int*))) == NULL)
 	    { 
 		printf("Problems with memory allocation for sbsmt\n");
-		exit(1);
+		embExitBad();
 	    }
 
     for( i = 0 ; i < seqnum ; i++ )
@@ -6392,7 +6393,7 @@ static void edialign_subst_mat( char *file_name, int fragno ,
 		if((sbsmt[i][j][a0] = (int *) calloc(21,sizeof(int))) == NULL)
 		{ 
 		    printf("Problems with memory allocation for sbsmt\n");
-		    exit(1);
+		    embExitBad();
 		}
 
     for( i = 0 ; i <seqnum ; i++ )
@@ -6616,44 +6617,44 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
     if((endseq = (char **) calloc( seqnum , sizeof(char *))) == NULL)
     {
 	printf(" problems with memory allocation for `endseq' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if((hseq = (char **) calloc(seqnum , sizeof(char *))) == NULL)
     {
 	printf(" problems with memory allocation for `hseq' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if((begin = (int *) calloc( seqnum , sizeof(int))) == NULL)
     {
 	printf(" problems with memory allocation for `begin' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if((end = (int *) calloc(seqnum , sizeof(int))) == NULL)
     {
 	printf(" problems with memory allocation for `end' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if((b_len = (int *) calloc(seqnum , sizeof(int))) == NULL)
     {
 	printf(" problems with memory allocation for `b_len' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if((first_pos = (int *) calloc(seqnum , sizeof(int))) == NULL)
     {
 	printf(" problems with memory allocation for `first_pos' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     if((shift = (int **) calloc(seqnum , sizeof(int *))) == NULL) 
     {
 	printf("not enough memory available for `shift' !!!!\n");   
 	fprintf(fp,"not enough memory available for `shift' !\n");   
-	exit(1); 
+	embExitBad(); 
     }
 
     for(hv=0 ; hv<seqnum ; hv++)
@@ -6661,7 +6662,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	{
 	    printf("not enough memory available for `shift' !!!!\n");   
 	    fprintf(fp,"not enough memory available for `shift' !\n");   
-	    exit(1); 
+	    embExitBad(); 
 	}
 
 
@@ -6680,7 +6681,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	    {
 		printf("not enough memory available for fragments!\n");   
 		fprintf(fp,"not enough memory available for fragments!\n");   
-		exit(1);
+		embExitBad();
 	    } 
 
 	for( hv = 1 ; hv <= fragno ; hv++)
@@ -6762,7 +6763,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 		printf(" not enough memory available for printing results!\n");
 		fprintf(fp," not enough memory available");   
 		fprintf(fp," for printing results!\n");   
-		exit(1);
+		embExitBad();
 	    }
  
 
@@ -6770,7 +6771,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	{
 	    printf("not enough memory available for `inv_shift' !!!!\n");   
 	    fprintf(fp,"not enough memory available for `inv_shift' !\n");   
-	    exit(1); 
+	    embExitBad(); 
 	}
 
 	for(hv=0 ; hv<seqnum ; hv++)
@@ -6779,14 +6780,14 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	    {
 		printf("not enough memory available for `inv_shift' !!!!\n");
 		fprintf(fp,"not enough memory available for `inv_shift' !\n");
-		exit(1); 
+		embExitBad(); 
 	    }
 
 	if( (clear_seq = (char *) calloc( (endlen+1) , sizeof(char) )) == NULL)
 	{
 	    printf(" problems with memory allocation for `clear_seq' !  "
 		   "\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( (weight_count = 
@@ -6794,20 +6795,20 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	{
 	    printf(" problems with memory allocation for `weight_count' "
 		   "!\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( (plot = (float *) calloc( ( endlen + 2 ) ,sizeof(float) )) == NULL)
 	{
 	    printf(" problems with memory allocation for `plot' ! \n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( (plus_count = 
              (int *) calloc( ( endlen + 2 ) , sizeof( int ) )) == NULL)
 	{
 	    printf(" problems with memory allocation for `plus_count' !\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( (minus_count = 
@@ -6815,14 +6816,14 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	{
 	    printf(" problems with memory allocation for `minus_count' "
 		   "!\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( (nuc_count = 
              (int *) calloc( ( endlen + 2 ) , sizeof( int ) )) == NULL)
 	{
 	    printf(" problems with memory allocation for `nuc_count' !\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( (frg_involved = 
@@ -6830,7 +6831,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	{
 	    printf(" problems with memory allocation for `frg_involved ' "
 		   "!\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
    
@@ -6845,7 +6846,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 		printf("not enough memory available for printing results! \n");
 		fprintf(fp,"not enough memory available");   
 		fprintf(fp," for printing results! \n");   
-		exit(1);
+		embExitBad();
 	    }
 	/*
 	   printf("endlen = %d \n\n", endlen); 
@@ -7504,7 +7505,7 @@ static void edialign_para_read( int num , char ** arg )
 	{
             printf("\n \n   Arguments in command line make no sense! \n \n");
             printf("\n   Unknown option %s \n \n \n \n",  arg[an] );
-            exit(1);
+            embExitBad();
 	}  
 
         if( !strcmp( arg[an] , "-afc") )
@@ -7720,7 +7721,7 @@ static void edialign_para_read( int num , char ** arg )
 		       "\n");
 		printf("   (Name of output file not properly specified) "
 		       "\n \n");
-		exit(1);
+		embExitBad();
 	    }
 	}
 	
@@ -7739,7 +7740,7 @@ static void edialign_para_read( int num , char ** arg )
 		printf("\n \n   Arguments in command line don't make "
 		       "sense! \n");
 		printf("   (max_itnum not properly specified) \n \n");
-		exit(1);
+		embExitBad();
 	    }
 	}
 	
@@ -7757,7 +7758,7 @@ static void edialign_para_read( int num , char ** arg )
 		printf("\n \n   Arguments in command line don't make "
 		       "sense! \n");
 		printf("   (lmax not properly specified) \n \n");
-		exit(1);
+		embExitBad();
 	    }
 	}
 	
@@ -7779,7 +7780,7 @@ static void edialign_para_read( int num , char ** arg )
 		       "sense! \n");
 		printf("   (Number of \"*\" characters not properly "
 		       "specified) \n \n");
-		exit(1);
+		embExitBad();
 	    }
 	}
 	
@@ -7797,7 +7798,7 @@ static void edialign_para_read( int num , char ** arg )
 		printf("\n \n   Arguments in command line don't make "
 		       "sense! \n");
 		printf("   (Speed not properly specified) \n \n");
-		exit(1);
+		embExitBad();
 	    }
 	}
 	
@@ -7817,7 +7818,7 @@ static void edialign_para_read( int num , char ** arg )
 		printf("\n \n   Arguments in command line don't make "
 		       "sense! \n");
 		printf("   (Threshod not properly specified) \n \n");
-		exit(1);
+		embExitBad();
 	    }
 	}
 	
@@ -7838,7 +7839,7 @@ static void edialign_para_read( int num , char ** arg )
 		       "make sense! \n");
 		printf("   (subst. mat. threshod not properly specified) "
 		       "\n \n");
-		exit(1);
+		embExitBad();
 	    }  
 	}
 	
@@ -8208,7 +8209,7 @@ __noreturn static void edialign_regex_complain( const char *regex )
     printf("\n   bracket structure in regular expression makes no sense \n");
     printf("\n          %s  \n\n", regex) ; 
     printf("   program terminated\n\n"); 
-    exit(1);  
+    embExitBad();  
 }
 
 
@@ -8287,7 +8288,7 @@ static void edialign_regex_parse(char *mot_regex)
     {
 	printf(" problems with memory allocation");
 	printf(" for `mot_pos' !  \n \n");
-	exit(1);
+	embExitBad();
     }
 
     for(i = 0; i < seqnum; i++)
@@ -8296,7 +8297,7 @@ static void edialign_regex_parse(char *mot_regex)
 	{
 	    printf(" problems with memory allocation");
 	    printf(" for `mot_pos[%d]' !  \n \n", i);
-	    exit(1);
+	    embExitBad();
 	}
 
 
@@ -8471,7 +8472,7 @@ static void edialign_regex_format_complain(void)
     printf("      <seq>    is the input sequence file and \n");
     printf("      [para]   are (optional)");
     printf(" additional program parameters\n\n" );
-    exit(1);
+    embExitBad();
 }
 #endif
 
@@ -8713,14 +8714,14 @@ static void edialign_mem_alloc(void)
 	{ 
 	    printf(" problems with memory allocation for `tp400_prot' !  "
 		   "\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( ( wgt_prot = (float **) calloc( (max_dia+1) , sizeof(float*) ))
 	   == NULL)
 	{
 	    printf(" problems with memory allocation for `weights' !  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
     }
 
@@ -8732,14 +8733,14 @@ static void edialign_mem_alloc(void)
 	{
 	    printf(" problems with memory allocation for `tp400_dna' !  "
 		   "\n \n");
-	    exit(1);
+	    embExitBad();
 	}
 
 	if( ( wgt_dna = (float **) calloc( (max_dia+1) , sizeof(float*) ))
 	   == NULL)
 	{
 	    printf(" problems with memory allocation for `weights' !  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
     }
 
@@ -8752,14 +8753,14 @@ static void edialign_mem_alloc(void)
 	{
 	    printf(" problems with memory allocation for `tp400_trans' !  "
 		   "\n \n");
-	    exit(1);
+	    embExitBad();
 	}
  
 	if( ( wgt_trans = (float **) calloc( (max_dia+1) , sizeof(float*) ))
 	   == NULL)
 	{
 	    printf(" problems with memory allocation for `weights' !  \n \n");
-	    exit(1);
+	    embExitBad();
 	}
     }
   
@@ -8775,7 +8776,7 @@ static void edialign_mem_alloc(void)
 	    { 
 		printf(" problems with memory allocation for `tp400_prot' !  "
 		       "\n \n");
-		exit(1);
+		embExitBad();
 	    }
 
 	    if( (wgt_prot[i] =
@@ -8783,7 +8784,7 @@ static void edialign_mem_alloc(void)
 	       == NULL)
 	    {
 		printf(" problems with memory allocation for `weights'!\n\n");
-		exit(1);
+		embExitBad();
 	    }
 	}
   
@@ -8796,7 +8797,7 @@ static void edialign_mem_alloc(void)
 	    {
 		printf(" problems with memory allocation for `tp400_dna' !"
 		       "\n \n");
-		exit(1);
+		embExitBad();
 	    }
 
 	    if( (wgt_dna[i] =
@@ -8804,7 +8805,7 @@ static void edialign_mem_alloc(void)
 	       == NULL)
 	    {
 		printf(" problems with memory allocation for `weights'!\n\n");
-		exit(1);
+		embExitBad();
 	    }
 	}
 
@@ -8817,7 +8818,7 @@ static void edialign_mem_alloc(void)
 	    {
 		printf(" problems with memory allocation for `tp400_trans' "
 		       "%d !  \n \n", i);
-		exit(1);
+		embExitBad();
 	    }
 
 	    if( (wgt_trans[i] =
@@ -8825,7 +8826,7 @@ static void edialign_mem_alloc(void)
 	       == NULL)
 	    {
 		printf(" problems with memory allocation for `weights'!\n\n");
-		exit(1);
+		embExitBad();
 	    }
 	}
     }     

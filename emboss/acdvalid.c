@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 
     ajAcdExit(ajTrue);		/* turn off the 'never used' ACD warnings */
 
-    ajExit();
+    embExit();
 
     return 0;
 }

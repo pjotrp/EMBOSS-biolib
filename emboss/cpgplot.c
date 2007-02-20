@@ -189,7 +189,7 @@ int main(int argc, char **argv)
     AJFREE(thresh);
     AJFREE(xypc);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

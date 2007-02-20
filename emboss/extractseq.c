@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     ajStrDel(&newstr);
     ajListstrFree(&strlist);
 
-    ajExit();
+    embExit();
 
     return 0;
 }

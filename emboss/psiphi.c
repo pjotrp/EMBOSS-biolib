@@ -391,7 +391,7 @@ int main( int argc , char **argv )
     ajSeqDel(&seq);
 
     /*  tidy up everything else... */
-    ajExit();
+    embExit();
 
     return 0;
 }
