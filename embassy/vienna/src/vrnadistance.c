@@ -467,7 +467,7 @@ int main(int argc, char *argv[])
 /*    ajFileClose(&sfile); */
 
 
-    ajExit();
+    embExit();
 
     return 0;
 }

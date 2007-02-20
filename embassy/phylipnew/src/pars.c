@@ -1311,7 +1311,7 @@ void maketree()
       printf(
             "\n\nERROR: number of input trees is read incorrectly from %s\n\n",
              intreename);
-      exxit(-1);
+      embExitBad();
     }
     if (numtrees > 2)
       emboss_initseed(inseed, &inseed0, seed);
@@ -1446,6 +1446,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* Discrete character parsimony by uphill search */
 

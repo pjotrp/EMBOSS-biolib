@@ -1,3 +1,4 @@
+#include "emboss.h"
 #include "phylip.h"
 
 #define maxcategories   5    /* maximum number of site types                 */
@@ -120,7 +121,6 @@ void sitescrunch(void);
 void makeweights(void);
 void makevalues(void);
 void getinput(void);
-int main(int argc, Char *argv[]);
 int eof(FILE *f);
 int eoln(FILE *f);
 void memerror(void);
@@ -824,13 +824,13 @@ void findch(Char c,short *rparens)
     if (c == ',') {
       if (ch == '(' || ch == ')' || ch == ';') {
 	printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR MISSING COMMA\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
 	done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ';') {
 	printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR NOT BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else {
 	if (ch == ')') {
 	  done = true;
@@ -840,7 +840,7 @@ void findch(Char c,short *rparens)
     } else if (c == ';') {
       if (ch != ';') {
 	printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	exit(-1);
+	embExitBad();
       } else
 	done = true;
     }
@@ -889,7 +889,7 @@ void addelement(node **p, short *nextnode,short *lparens,short *rparens,
   if (ch == '(') {
     if ((*lparens) >= spp - 1) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     } else {
       (*lparens)++;
       (*nextnode)++;
@@ -935,7 +935,7 @@ void addelement(node **p, short *nextnode,short *lparens,short *rparens,
 	  for (i = 0; i < nmlngth; i++)
 	    putchar(naym[n - 1][i]);
 	  putchar('\n');
-	  exit(-1);
+	  embExitBad();
 	}
       } else
 	n++;
@@ -945,7 +945,7 @@ void addelement(node **p, short *nextnode,short *lparens,short *rparens,
       for (i = 0; i < nmlngth; i++)
 	putchar(str[i]);
       putchar('\n');
-      exit(-1);
+      embExitBad();
     }
   }
   if (!lengths)
@@ -958,7 +958,7 @@ void addelement(node **p, short *nextnode,short *lparens,short *rparens,
   printf("ERROR IN USER TREE: UNMATCHED PARENTHESES\n");
   printf(" OR BRANCH LENGTHS OPTION CHOSEN IN MENU\n");
   printf(" WITH NO INPUT BRANCH LENGTHS\n");
-  exit(-1);
+  embExitBad();
 }  /* addelement */
 
 void tymetrav(node *p, double *x)

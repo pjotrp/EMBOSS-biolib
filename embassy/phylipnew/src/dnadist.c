@@ -192,7 +192,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 }  /* emboss_getoptions */
 
 
-void allocrest()
+void allocrest(void)
 {
   long i;
 
@@ -216,7 +216,7 @@ void allocrest()
 } /* allocrest */
 
 
-void reallocsites() 
+void reallocsites(void) 
 {/* The amount of sites can change between runs 
      this function reallocates all the variables 
      whose size depends on the amount of sites */
@@ -244,7 +244,7 @@ void reallocsites()
 } /* reallocsites */
 
 
-void doinit()
+void doinit(void)
 {
   /* initializes variables */
 
@@ -257,7 +257,7 @@ void doinit()
 
 
 
-void printcategories()
+void printcategories(void)
 { /* print out list of categories of sites */
   long i, j;
 
@@ -277,7 +277,7 @@ void printcategories()
 }  /* printcategories */
 
 
-void inputoptions()
+void inputoptions(void)
 {
   /* read options information */
   long i;
@@ -323,7 +323,7 @@ void inputoptions()
 }  /* inputoptions */
 
 
-void dnadist_sitesort()
+void dnadist_sitesort(void)
 {
   /* Shell sort of sites lexicographically */
   long gap, i, j, jj, jg, k, itemp;
@@ -360,7 +360,7 @@ void dnadist_sitesort()
 }  /* dnadist_sitesort */
 
 
-void dnadist_sitecombine()
+void dnadist_sitecombine(void)
 {
   /* combine sites that have identical patterns */
   long i, j, k;
@@ -389,7 +389,7 @@ void dnadist_sitecombine()
 }  /* dnadist_sitecombine */
 
 
-void dnadist_sitescrunch()
+void dnadist_sitescrunch(void)
 {
   /* move so one representative of each pattern of
      sites comes first */
@@ -427,7 +427,7 @@ void dnadist_sitescrunch()
 }  /* dnadist_sitescrunch */
 
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   long i;
@@ -460,7 +460,7 @@ void makeweights()
 }  /* makeweights */
 
 
-void dnadist_makevalues()
+void dnadist_makevalues(void)
 {
   /* set up fractional likelihoods at tips */
   long i, j, k;
@@ -582,7 +582,7 @@ void dnadist_makevalues()
 }  /* dnadist_makevalues */
 
 
-void dnadist_empiricalfreqs()
+void dnadist_empiricalfreqs(void)
 {
   /* Get empirical base frequencies from the data */
   long i, j, k;
@@ -619,7 +619,7 @@ void dnadist_empiricalfreqs()
 }  /* dnadist_empiricalfreqs */
 
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -671,7 +671,7 @@ void getinput()
 }  /* getinput */
 
 
-void inittable()
+void inittable(void)
 {
   /* Define a lookup table. Precompute values and store in a table */
   long i;
@@ -1001,7 +1001,7 @@ void makev(long m, long n, double *v)
 }  /* makev */
 
 
-void makedists()
+void makedists(void)
 {
   /* compute distance matrix */
   long i, j;
@@ -1046,7 +1046,7 @@ void makedists()
     }
   }
   if (baddists)
-    exxit(-1);
+    embExitBad();
   if (progress) {
     printf("    ");
     for (j = 0; j < nmlngth; j++)
@@ -1061,7 +1061,7 @@ void makedists()
 }  /* makedists */
 
 
-void writedists()
+void writedists(void)
 {
   /* write out distances */
   long i, j, k, n;
@@ -1153,6 +1153,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* DNA Distances by Maximum Likelihood */
 

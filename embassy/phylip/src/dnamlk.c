@@ -260,7 +260,7 @@ int scanned;
     }
     if (!done1){
       ajUser("Error expecting %d space seperated values",categs);
-      ajExit();
+      embExit();
     }
 
 
@@ -280,11 +280,11 @@ int scanned;
     }
     if (!done1){
       ajUser("Error expecting %d space seperated probabilities",categs);
-      ajExit();
+      embExit();
     }
     if (fabs(1.0 - probsum) > 0.001) {
       ajUser("Error probabilities must add up to 1.0, plus or minus 0.001.");
-      ajExit();
+      embExit();
     }
     auto_ = !ajAcdGetToggle("autog");
     if(auto_){
@@ -917,7 +917,7 @@ void inputweights(void)
     else {
       printf("BAD WEIGHT CHARACTER: %c -- WEIGHTS IN DNAMLK MUST BE 0 OR 1\n",
 	     ch);
-      exit(-1);
+      embExitBad();
     }
     weightsum += weight[i];
   }
@@ -959,7 +959,7 @@ void inputoptions(void)
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n",
 	     ith);
-      exit(-1);
+      embExitBad();
     }
     sites = curst;
   }
@@ -976,7 +976,7 @@ void inputoptions(void)
       extranum++;
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -991,7 +991,7 @@ void inputoptions(void)
     else{
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE WHICH STARTS WITH %c\n",
 	     ch);
-      exit(-1);}
+      embExitBad();}
   }
   if (categs > 1) {
     fprintf(outfile, "\nSite category   Rate of change\n\n");
@@ -1079,7 +1079,7 @@ void getdata(void)
 	  if (eof(infile) || eoln(infile)){
 	    printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	    printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	    exit(-1);
+	    embExitBad();
 	  }
 	  naym[i - 1][j] = getc(infile);
 	}
@@ -1106,7 +1106,7 @@ void getdata(void)
 	      ch != '.') {
 	    printf("ERROR: BAD BASE:%c AT POSITION%5hd OF SPECIES %3hd\n",
 		   ch, j, i);
-	    exit(-1);
+	    embExitBad();
 	  }
 	  j++;
 	  if (ch == '.')
@@ -1127,7 +1127,7 @@ void getdata(void)
       getc(infile);
       if ((interleaved && j != basesnew) || ((!interleaved) && j != sites)){
 	printf("ERROR: SEQUENCES OUT OF ALIGNMENT\n");
-	exit(-1);}
+	embExitBad();}
       i++;
     }
     if (interleaved) {
@@ -1578,7 +1578,8 @@ int i;
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+return 0;
 }  /* DNA Maximum Likelihood with molecular clock */
 
 int eof(FILE *f)
@@ -1610,7 +1611,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

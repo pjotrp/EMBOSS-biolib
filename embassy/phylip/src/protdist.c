@@ -893,7 +893,7 @@ void transition(void)
   if (xi < 0.0){
     printf("THIS TRANSITION-TRANSVERSION RATIO IS IMPOSSIBLE WITH");
     printf(" THESE BASE FREQUENCIES\n");
-    exit(-1);}
+    embExitBad();}
 }  /* transition */
 
 
@@ -944,7 +944,7 @@ void inputweights(void)
 	weight[i] = ch - 55;
     } else {
       printf("BAD WEIGHT CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -991,7 +991,7 @@ void inputoptions(void)
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n",
 	     ith+1);
-      exit(-1);
+      embExitBad();
     }
     chars = curchs;
   }
@@ -1005,7 +1005,7 @@ void inputoptions(void)
       extranum++;
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -1022,7 +1022,7 @@ void inputoptions(void)
     else{
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE WHICH STARTS WITH %c\n",
 	     ch);
-      exit(-1);}
+      embExitBad();}
   }
   if (weights)
     printweights();
@@ -1071,7 +1071,7 @@ void inputdata(void)
 	  if (eof (infile) || eoln(infile)){
 	    printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	    printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	    exit(-1);}
+	    embExitBad();}
 	}
       }
       if (interleaved)
@@ -1094,7 +1094,7 @@ void inputdata(void)
 	      charstate == 'O' || charstate == 'U') {
 	    printf("WARNING -- BAD AMINO ACID:%c AT POSITION%5ld OF SPECIES %3ld\n",
 		   charstate, j+1, i);
-	    exit(-1);
+	    embExitBad();
 	  }
 	  j++;
 	  if (charstate == '.') {
@@ -1223,7 +1223,7 @@ void inputdata(void)
       getc(infile);
       if ((interleaved && j != aasnew) || ((!interleaved) && j != chars)){
 	printf("ERROR: SEQUENCES OUT OF ALIGNMENT\n");
-	exit(-1);}
+	embExitBad();}
       i++;
     }
     if (interleaved) {
@@ -1962,7 +1962,8 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* Protein distances */
 
 int eof(FILE *f)
@@ -1993,7 +1994,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

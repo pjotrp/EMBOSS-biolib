@@ -309,12 +309,12 @@ void inputoptions(AjPPhyloState state)
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n",
              ith);
-      exxit(-1);
+      embExitBad();
     }
     if (curenz != enzymes) {
       printf("\nERROR: INCONSISTENT NUMBER OF ENZYMES IN DATA SET %4ld\n",
              ith);
-      exxit(-1);
+      embExitBad();
     }
     sites = curst;
   }
@@ -376,7 +376,7 @@ void restml_inputdata(AjPPhyloState state)
           if (ch != '1' && ch != '0' && ch != '+' && ch != '-' && ch != '?') {
             printf(" ERROR: Bad symbol %c", ch);
             printf(" at position %ld of species %ld\n", j+1, i);
-            exxit(-1);
+            embExitBad();
           }
           if (ch == '1')
             ch = '+';
@@ -1833,5 +1833,6 @@ int main(int argc, Char *argv[])
   fixmacfile(outtreename);
 #endif
   printf("Done.\n\n");
+  embExit();
   return 0;
 }  /* maximum likelihood phylogenies from restriction sites */

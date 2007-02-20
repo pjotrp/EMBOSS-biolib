@@ -2322,7 +2322,7 @@ void maketree()
         printf ("ERROR: trees missing at end of file.\n");
         printf ("\tExpected number of trees:\t\t%ld\n", numtrees);
         printf ("\tNumber of trees actually in file:\t%ld.\n\n", which - 1);
-        exxit(-1);
+        embExitBad();
       }
       curtree.start = curtree.nodep[0]->back;
       treevaluate();
@@ -2407,5 +2407,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* DNA Maximum Likelihood with molecular clock */

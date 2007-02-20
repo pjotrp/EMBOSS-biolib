@@ -615,7 +615,7 @@ void inputweights(void)
         weight[i] = ch - 'S' + 28;
     } else {
       printf("BAD WEIGHT CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -694,7 +694,7 @@ void inputancestors(void)
       }
     } else {
       printf("BAD ANCESTOR STATE: %c AT CHARACTER %4ld\n", ch, i + 1);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -738,7 +738,7 @@ void inputoptions(void)
     fscanf(infile, "%ld%ld", &cursp, &curchs);
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n", ith);
-      exit(-1);
+      embExitBad();
     }
     chars = curchs;
   }
@@ -751,7 +751,7 @@ void inputoptions(void)
       extranum++;
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -764,14 +764,14 @@ void inputoptions(void)
     if (ch != 'A' && ch != 'W') {
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE");
       printf(" WHICH STARTS WITH %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
     if (ch == 'A') {
       avar = true;
       if (!ancvar) {
 	printf("ERROR: ANCESTOR OPTION NOT CHOSEN IN MENU");
 	printf(" WITH OPTION %c IN INPUT\n", ch);
-	exit(-1);
+	embExitBad();
       } else
 	inputancestors();
     }
@@ -780,7 +780,7 @@ void inputoptions(void)
   }
   if (ancvar && !avar) {
     puts("ERROR: ANCESTOR OPTION CHOSEN IN MENU WITH NO OPTION A IN INPUT");
-    exit(-1);
+    embExitBad();
   }
   if (dollo)
     fprintf(outfile, "Dollo");
@@ -853,7 +853,7 @@ void inputdata(void)
 	if (eof(infile) || eoln(infile)){
 	  printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	  printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	  exit(-1);}
+	  embExitBad();}
       }
       if (printdata) {
 	for (j = 0; j < nmlngth; j++)
@@ -882,7 +882,7 @@ void inputdata(void)
 	    charstate != 'P' && charstate != 'B') {
 	  printf("ERROR: BAD CHARACTER STATE: %c ",charstate);
 	  printf("AT CHARACTER %5ld OF SPECIES %3ld\n",j,i);
-	  exit(-1);
+	  embExitBad();
 	}
 	if (printdata) {
 	  newline(j, 55, (int)(nmlngth + 3));
@@ -1355,14 +1355,14 @@ void findch(Char c)
       if (ch == '(' || ch == ')' || ch == ';') {
         printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR MISSING COMMA\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
         done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ';') {
         printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR NOT BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else {
         if (ch == ')')
           done = true;
@@ -1371,7 +1371,7 @@ void findch(Char c)
       if (ch != ';') {
 	printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	exit(-1);
+	embExitBad();
       } else
         done = true;
     }
@@ -1403,7 +1403,7 @@ void addelement(node **p, long *nextnode,long *lparens,boolean *naymes)
   if (ch == '(' ) {
     if ((*lparens) >= spp - 1) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     }
     (*nextnode)++;
     (*lparens)++;
@@ -1445,7 +1445,7 @@ void addelement(node **p, long *nextnode,long *lparens,boolean *naymes)
         for (i = 0; i < nmlngth; i++)
           putchar(nayme[n - 1][i]);
         putchar('\n');
-	exit(-1);
+	embExitBad();
       }
     } else
       n++;
@@ -2103,7 +2103,8 @@ int main(int argc, Char *argv[])
   fixmacfile(infilename);
   fixmacfile(outfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* Dollo or polymorphism parsimony by uphill search */
 
 
@@ -2137,7 +2138,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

@@ -377,7 +377,7 @@ void seqboot_inputdatafreq(AjPPhyloFreq freq)
       x = freq->Data[ipos++];
       if ((unsigned)x > 1.0) {
         printf("GENE FREQ OUTSIDE [0,1] in species %ld\n", i);
-        exxit(-1);
+        embExitBad();
       } else {
         nodef[i - 1][j - 1] = x;
         j++;
@@ -1022,5 +1022,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }

@@ -146,7 +146,7 @@ int main(int argc, char **argv)
     ajStrDel(&cmd);
     ajStrDel(&tmp);
     
-    ajExit();
+    embExit();
 
     return 0;
 }

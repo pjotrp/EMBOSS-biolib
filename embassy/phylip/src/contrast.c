@@ -264,7 +264,7 @@ void getdata(void)
       if ( eof(infile) | eoln(infile)){
 	printf("ERROR: END-OF-LINE OR END-OF-FILE");
         printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	exit(-1);}
+	embExitBad();}
       else if (printdata)
 	putc(nayms[i][j], outfile);
     }
@@ -379,26 +379,26 @@ void findch(Char c, long *lparens,long *rparens)
       if (ch == '(' || ch == ')' || ch == ':' || ch == ';') {
 	printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR MISSING");
         printf(" COMMA\n OR NOT TRIFURCATED BASE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
 	done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ':' || ch == ';') {
 	printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR NOT BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ')') {
 	(*rparens)++;
 	if ((*lparens) > 0 && (*lparens) == (*rparens)) {
 	  if ((*lparens) < numsp - 2) {
 	    printf("\nERROR: UNMATCHED PARENTHESIS OR TOO FEW SPECIES\n");
-	    exit(-1);
+	    embExitBad();
 	  } else if ((*lparens) == numsp - 1) {
 	    getch(&ch);
 	    if (ch != ';') {
 	      printf("\nERROR IN USER TREE: ");
 	      printf("UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	      exit(-1);
+	      embExitBad();
 	    }
 	  }
 	}
@@ -420,7 +420,7 @@ void findeither(long *lparens,long *rparens,boolean *rtparen)
     if (ch == '(' || ch == ':' || ch == ';') {
       printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR MISSING COMMA\n");
       printf(" OR NOT TRIFURCATED BASE\n");
-      exit(-1);
+      embExitBad();
     } else if (ch == ',' || ch == ')')
       done = true;
     else
@@ -431,13 +431,13 @@ void findeither(long *lparens,long *rparens,boolean *rtparen)
     if ((*lparens) > 0 && (*lparens) == (*rparens)) {
       if ((*lparens) < numsp - 2) {
 	printf("\nERROR: UNMATCHED PARENTHESIS OR TOO FEW SPECIES\n");
-	exit(-1);
+	embExitBad();
       } else if ((*lparens) == numsp - 2) {
 	getch(&ch);
 	if (ch != ';') {
 	  printf("\nERROR IN USER TREE:");
           printf(" UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	  exit(-1);
+	  embExitBad();
 	}
       }
     }
@@ -493,7 +493,7 @@ void addelement(node *p, long *nextnode,long *lparens,long *rparens,
     (*lparens)++;
     if ((*lparens) >= numsp) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     } else {
       (*nextnode)++;
       q = curtree.nodep[(*nextnode) - 1];
@@ -533,7 +533,7 @@ void addelement(node *p, long *nextnode,long *lparens,long *rparens,
 	  for (i = 0; i < namelength; i++)
 	    putchar(curtree.nodep[n - 1]->nayme[i]);
 	  putchar('\n');
-	  exit(-1);
+	  embExitBad();
 	}
       } else
 	n++;
@@ -543,7 +543,7 @@ void addelement(node *p, long *nextnode,long *lparens,long *rparens,
       for (i = 0; i < namelength; i++)
 	putchar(str[i]);
       putchar('\n');
-      exit(-1);
+      embExitBad();
     }
     hookup(curtree.nodep[n - 1], p);
   }
@@ -773,7 +773,8 @@ int main(int argc, Char *argv[])
   FClose(infile);
   FClose(outfile);
   FClose(treefile);
-  exit(0);
+  embExit();
+  return 0;
 }
 
 int eof(FILE *f)
@@ -806,7 +807,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

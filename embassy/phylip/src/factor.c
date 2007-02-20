@@ -230,13 +230,13 @@ void readtree(void)
     if (eoln(infile) || (ch != factchar)) {
       printf("CHARACTER%4hd:  ERROR IN CHARACTER STATE TREE FORMAT\n",
 	     charnumber);
-      exit(-1);}
+      embExitBad();}
 
     nextch(&pair[npairs - 1][1]);
     if (eoln(infile) && pair[npairs - 1][1] == ' '){
       printf("CHARACTER%4hd:  ERROR IN CHARACTER STATE TREE FORMAT\n",
 	     charnumber);
-      exit(-1);}
+      embExitBad();}
   }
   fscanf(infile, "%*[^\n]");
   getc(infile);
@@ -265,7 +265,7 @@ void attachnodes(node *poynter,Char *otherone)
 	  while (*otherone != symbarray[k - 1])
 	    k++;
 	  if (nodes[k - offset - 1] != NULL)
-	    exit(-1);
+	    embExitBad();
 	  ptr = (node *)Malloc(sizeof(node));
 	  ptr->ancstr = poynter;
 	  ptr->descendant = NULL;
@@ -324,7 +324,7 @@ void construct(void)
       if (k > nstates) {
 	if (pair[i][j - 1] == '.') {
 	  if (rooted)
-	    exit(-1);
+	    embExitBad();
 	  rooted = true;
 	  ancsymbol[charindex - 1] = '0';
 	  if (j == 1)
@@ -340,7 +340,7 @@ void construct(void)
   }
   if ((rooted && nstates != npairs) ||
       (!rooted && nstates != npairs + 1))
-    exit(-1);
+    embExitBad();
   root = (node *)Malloc(sizeof(node));
   root->state = ' ';
   root->descendant = (node *)Malloc(sizeof(node));
@@ -361,7 +361,7 @@ void construct(void)
       if (nodes[i] == NULL){
 	printf("CHARACTER%4hd:  INVALID CHARACTER STATE TREE DESCRIPTION\n",
 	       charnumber);
-	exit(-1);}
+	embExitBad();}
       else {
 	poynter = nodes[i]->ancstr;
 	while (poynter != root && poynter != nodes[i])
@@ -369,7 +369,7 @@ void construct(void)
 	if (poynter != root){
 	  printf("CHARACTER%4hd:  INVALID CHARACTER STATE TREE DESCRIPTION\n",
 		 charnumber);
-	  exit(-1);}
+	  embExitBad();}
       }
     }
   }
@@ -424,7 +424,7 @@ void dotrees(void)
   while (charnumber < 999) {
     if (charnumber < lastchar) {
       printf("CHARACTER%4hd:  OUT OF ORDER", charnumber);
-      exit(-1);
+      embExitBad();
     }
     charindex++;
     lastindex = charindex;
@@ -552,7 +552,7 @@ void doeu(short *chposition,short eu)
 		 eu,charnum[charindex]);
 	  printf("'%c' IS NOT A DOCUMENTED STATE\n",
 		 multichar[charnum[charindex] - 1]);
-	  exit(-1);
+	  embExitBad();
 	}
       } else {
 	place = chstart[charindex] + numstates[charindex] +
@@ -625,7 +625,8 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* factor */
 
 
@@ -659,7 +660,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

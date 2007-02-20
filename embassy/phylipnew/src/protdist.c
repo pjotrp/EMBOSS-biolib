@@ -645,7 +645,7 @@ void transition()
   if (xi < 0.0){
     printf("THIS TRANSITION-TRANSVERSION RATIO IS IMPOSSIBLE WITH");
     printf(" THESE BASE FREQUENCIES\n");
-    exxit(-1);}
+    embExitBad();}
 }  /* transition */
 
 
@@ -773,7 +773,7 @@ void protdist_inputdata(AjPSeqset seqset)
           printf("         Periods (.) may not be used as gap characters.\n");
           printf("         The correct gap character is (-)\n");
             }
-            exxit(-1);
+            embExitBad();
           }
           j++;
 
@@ -1739,6 +1739,7 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
+  embExit();
   return 0;
 }  /* Protein distances */
 

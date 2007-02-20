@@ -1370,7 +1370,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* main */
 
 
@@ -1404,7 +1405,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long  x)

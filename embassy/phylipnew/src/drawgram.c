@@ -1099,6 +1099,7 @@ int main(int argc, Char *argv[])
   phyRestoreConsoleAttributes();
 #endif
 
+  embExit();
   return 0;
 }
 

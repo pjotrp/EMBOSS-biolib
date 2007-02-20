@@ -236,7 +236,7 @@ int main(int argc, char **argv)
     ajStrDel(&instr);
     ajStrDel(&outstr);
 
-    ajExit();
+    embExit();
   
     return 0;
 }

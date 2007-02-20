@@ -148,7 +148,7 @@ void emboss_getnums(void)
   sites = ajSeqsetGetRange(seqset,&begin2,&end2);
   if (numsp > maxsp){
     printf("TOO MANY SPECIES: only 4 allowed\n");
-    exit(-1);}
+    embExitBad();}
   if (printdata)
     fprintf(outfile, "%4ld Species, %4ld Sites\n", numsp, sites);
 }
@@ -204,7 +204,7 @@ void getnums(void)
   fscanf(infile, "%ld%ld", &numsp, &sites);
   if (numsp > maxsp){
     printf("TOO MANY SPECIES: only 4 allowed\n");
-    exit(-1);}
+    embExitBad();}
   if (printdata)
     fprintf(outfile, "%4ld Species, %4ld Sites\n", numsp, sites);
 }  /* getnums */
@@ -1204,7 +1204,8 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* DNA Invariants */
 
 int eof(FILE *f)
@@ -1237,7 +1238,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

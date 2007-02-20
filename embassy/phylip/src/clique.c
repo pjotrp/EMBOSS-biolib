@@ -434,7 +434,7 @@ Local Void inputancestors(void)
       }
     } else {
       printf("BAD ANCESTOR STATE: %c AT CHARACTER %4ld\n", ch, i + 1);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -534,7 +534,7 @@ Local Void inputweights(void)
 	oldweight[i] = ch - 55;
     } else {
       printf("BAD WEIGHT CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -583,7 +583,7 @@ Static Void ReadData(void)
     fscanf(infile, "%ld%ld", &cursp, &curchs);
     if (cursp != NumSpp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n", ith);
-      exit(-1);
+      embExitBad();
     }
     NumChars = curchs;
   }
@@ -602,7 +602,7 @@ Static Void ReadData(void)
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
       putc('\n', outfile);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -619,7 +619,7 @@ Static Void ReadData(void)
       if (!ancvar) {
 	printf("ERROR: ANCESTOR OPTION NOT CHOSEN IN MENU");
         printf(" WITH OPTION %c IN INPUT\n",ch);
-	exit(-1);
+	embExitBad();
       } else
 	inputancestors();
     }
@@ -631,7 +631,7 @@ Static Void ReadData(void)
   if (ancvar && !avar) {
     printf("ERROR: ANCESTOR OPTION CHOSEN IN MENU");
     printf(" WITH NO OPTION A IN INPUT\n");
-    exit(-1);
+    embExitBad();
   }
   if (weights && printdata)
     printweights();
@@ -660,7 +660,7 @@ Static Void ReadData(void)
       if (eof(infile) || eoln(infile)){
 	printf("ERROR: END-OF-LINE OR END-OF-FILE IN");
 	printf(" THE MIDDLE OF A SPECIES NAME\n");
-	exit(-1);}
+	embExitBad();}
       Nayme[i][j] = getc(infile);
       if (printdata)
 	putc(Nayme[i][j], outfile);
@@ -684,7 +684,7 @@ Static Void ReadData(void)
       if (ch != '0' && ch != '1') {
 	printf("BAD CHARACTER STATE: %c (NOT 0 OR 1)", ch);
 	printf("AT CHARACTER%3ld OF SPECIES%3ld\n", j, i + 1);
-	exit(-1);
+	embExitBad();
       }
       Data[i]->vec[j - 1] = (ch == '1');
     }
@@ -1690,7 +1690,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+   return 0;
 }
 
 
@@ -1724,7 +1725,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 

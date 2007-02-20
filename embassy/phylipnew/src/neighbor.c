@@ -437,7 +437,7 @@ void maketree()
   dist_inputdata(phylodist, replicates, printdata, lower, upper, x, reps);
   if (njoin && (spp < 3)) {
     printf("\nERROR: Neighbor-Joining runs must have at least 3 species\n\n");
-    exxit(-1);
+    embExitBad();
   }
   if (progress)
     putchar('\n');
@@ -507,10 +507,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }
-
-
-
-
-

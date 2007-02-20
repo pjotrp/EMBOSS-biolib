@@ -517,7 +517,7 @@ void inputoptions(void)
     if (cursp != numsp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n",
              ith);
-      exit(-1);
+      embExitBad();
     }
   }
   while (!eoln(infile)) {
@@ -527,7 +527,7 @@ void inputoptions(void)
     uppercase(&ch);
     if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fprintf(outfile, "                  __ __             2\n");
@@ -638,7 +638,7 @@ void getdata(void)
 	if (n > 0 && x < 0) {
 	  printf("NEGATIVE DISTANCE BETWEEN SPECIES%5ld AND %5ld\n",
 		 i + 1, j);
-	  exit(-1);
+	  embExitBad();
 	}
 	treenode[i]->w[j - 1] = n;
 	if (skipother) {
@@ -1004,14 +1004,14 @@ void findch(Char c)
       if (ch == '(' || ch == ')' || ch == ';') {
         printf("\nERROR IN USER TREE: ");
 	printf("UNMATCHED PARENTHESIS OR MISSING COMMA\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
         done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ';') {
         printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR NOT BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else {
         if (ch == ')')
           done = true;
@@ -1020,7 +1020,7 @@ void findch(Char c)
       if (ch != ';') {
         printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	exit(-1);
+	embExitBad();
       } else
         done = true;
     }
@@ -1056,7 +1056,7 @@ void addelement(node **p, long *nextnode,long *lparens,boolean *names)
   if (ch == '(' ) {
     if (*lparens >= numsp - 1) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     }
     (*nextnode)++;
     (*lparens)++;
@@ -1102,7 +1102,7 @@ void addelement(node **p, long *nextnode,long *lparens,boolean *names)
         for (i = 0; i < namelength; i++)
           putchar(nayms[n - 1][i]);
         putchar('\n');
-	exit(-1);
+	embExitBad();
       }
     } else
       n++;
@@ -1606,7 +1606,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* Fitch-Margoliash criterion with contemporary tips */
 
 
@@ -1640,7 +1641,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

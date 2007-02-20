@@ -671,7 +671,7 @@ void mix_addelement(node2 **p, long *nextnode, long *lparens,
   if (ch == '(' ) {
     if ((*lparens) >= spp) {
       printf("\n\nERROR IN USER TREE: Too many left parentheses\n\n");
-      exxit(-1);
+      embExitBad();
     }
     (*nextnode)++;
     q = treenode[(*nextnode) - 1];
@@ -713,7 +713,7 @@ void mix_addelement(node2 **p, long *nextnode, long *lparens,
         for (i = 0; i < nmlngth; i++)
           putchar(nayme[n - 1][i]);
         printf("\n\n");
-        exxit(-1);
+        embExitBad();
       }
     } else
       n++;
@@ -1023,5 +1023,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* Mixed parsimony by uphill search */

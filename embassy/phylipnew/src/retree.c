@@ -1187,7 +1187,7 @@ void yourtree()
       maxinput++;
       if (maxinput == 100) {
         printf("ERROR: too many tries at choosing number\n");
-        exxit(-1);
+        embExitBad();
       }
     } while (!ok);
     maxinput = 1;
@@ -1205,7 +1205,7 @@ void yourtree()
         maxinput++;
         if (maxinput == 100) {
           printf("ERROR: too many tries at choosing option\n");
-          exxit(-1);
+          embExitBad();
         }
       } while (ch != 'A' && ch != 'B');
     }
@@ -1480,7 +1480,7 @@ void rearrange()
           maxinput++;
           if (maxinput == 100) {
             printf("ERROR: too many tries at choosing option\n");
-            exxit(-1);
+            embExitBad();
           }
         } while (ch != 'A' && ch != 'B');
         if (ch == 'A') {
@@ -1952,7 +1952,7 @@ void del_or_restore()
       maxinput++;
       if (maxinput == 100) {
         printf("ERROR: too many tries at choosing option\n");
-        exxit(-1);
+        embExitBad();
       }
     } while (ch != 'D' && ch != 'R');
     if (ch == 'R')
@@ -2643,7 +2643,7 @@ void treewrite(boolean *done)
     maxinput++;
     if (maxinput == 100) {
       fprintf(stderr, "ERROR: too many tries at choosing option\n");
-      exxit(-1);
+      embExitBad();
     }
   } while (ch != 'R' && ch != 'U');
   col = 0;
@@ -2719,7 +2719,7 @@ void getlength(double *length, reslttype *reslt, boolean *hslngth)
     maxinput++;
     if (maxinput == 100) {
       printf("ERROR: too many tries at choosing option\n");
-      exxit(-1);
+      embExitBad();
     }
   } while (1);
   (*length) = valyew;
@@ -2749,7 +2749,7 @@ void changelength()
     maxinput++;
     if (maxinput == 100) {
       printf("ERROR: too many tries at choosing option\n");
-      exxit(-1);
+      embExitBad();
     }
   } while (!ok);
   if (i != 0) {
@@ -2811,7 +2811,7 @@ void changelength()
       maxinput++;
       if (maxinput == 100) {
         printf("ERROR: too many tries at choosing option\n");
-        exxit(-1);
+        embExitBad();
       }
     } while (ch != 'U' && ch != 'u' && ch != 'R' && ch != 'r');
     if (ch == 'R' || ch == 'r') {
@@ -2922,7 +2922,7 @@ void changeoutgroup()
     maxinput++;
     if (maxinput == 100) {
       printf("ERROR: too many tries at choosing option\n");
-      exxit(-1);
+      embExitBad();
     }
   } while (!ok);
   copytree();
@@ -3060,7 +3060,7 @@ void redisplay()
       maxinput++;
       if (maxinput == 100) {
         fprintf(stderr, "ERROR: too many tries at choosing option\n");
-        exxit(-1);
+        embExitBad();
       }
     }
   } while (!done);
@@ -3080,7 +3080,7 @@ void redisplay()
       maxinput++;
       if (maxinput == 100) {
         fprintf(stderr, "ERROR: too many tries at choosing option\n");
-        exxit(-1);
+        embExitBad();
       }
     } while (ch != 'Y' && ch != 'y' && ch != 'N' && ch != 'n');
   }
@@ -3156,6 +3156,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* Retree */
 

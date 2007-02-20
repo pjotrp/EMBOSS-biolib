@@ -1,3 +1,4 @@
+#include "emboss.h"
 #include "phylip.h"
 
 #define maxcategs       9
@@ -1028,13 +1029,13 @@ void findch(Char c,short *lparens,short *rparens)
 	  ch == ';') {
 	printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS");
         printf(" OR MISSING COMMA\n OR NOT TRIFURCATED BASE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
 	done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ':' || ch == ';') {
 	printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR NOT BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ')') {
 	(*rparens)++;
 	if ((*lparens) > 0 && (*lparens) == (*rparens)) {
@@ -1043,7 +1044,7 @@ void findch(Char c,short *lparens,short *rparens)
 	    if (ch != ';') {
 	      printf("\nERROR IN USER TREE:");
 	      printf(" UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	      exit(-1);
+	      embExitBad();
 	    }
 	  }
 	}
@@ -1102,7 +1103,7 @@ void addelement(node *p, short *nextnode,short *lparens,short *rparens,
     (*lparens)++;
     if ((*lparens) > numsp - 2) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     } else {
       (*nextnode)++;
       q = curtree.nodep[(*nextnode) - 1];
@@ -1142,7 +1143,7 @@ void addelement(node *p, short *nextnode,short *lparens,short *rparens,
 	  for (i = 0; i < nmlngth; i++)
 	    putchar(curtree.nodep[n - 1]->nayme[i]);
 	  putchar('\n');
-	  exit(-1);
+	  embExitBad();
 	}
       } else
 	n++;

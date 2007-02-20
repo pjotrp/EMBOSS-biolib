@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.11 2006/05/19 11:31:56 rice Exp $";
+"$Id: sim4.init.c,v 1.12 2007/02/20 09:59:40 rice Exp $";
 #endif         
            
 
@@ -669,6 +669,7 @@ else {
        seq_close(sf1);
        seq_close(sf2);
 #endif
+	embExit();
 
        return 0;
 }

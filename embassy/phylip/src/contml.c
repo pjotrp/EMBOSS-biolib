@@ -542,7 +542,7 @@ void getalleles(void)
     fscanf(infile, "%hd%hd", &cursp, &curloc);
     if (cursp != numsp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n", ith);
-      exit(-1);
+      embExitBad();
     }
     loci = curloc;
   }
@@ -569,7 +569,7 @@ void getalleles(void)
       fscanf(infile, "%hd", &alleles[i - 1]);
       if (alleles[i - 1] <= 0) {
         printf("BAD NUMBER OF ALLELES: %4hd AT LOCUS %3hd\n", alleles[i - 1], i);
-        exit(-1);
+        embExitBad();
       }
       totalleles += alleles[i - 1];
       if (printdata)
@@ -676,7 +676,7 @@ void getdata(void)
 	if ( eof(infile) || eoln(infile)){
 	  printf("ERROR: END-OF-LINE OR END-OF-FILE IN");
 	  printf(" THE MIDDLE OF A SPECIES NAME\n");
-	  exit(-1);}
+	  embExitBad();}
 	else if (printdata)
 	  putc(nayms[i][j], outfile);
       }
@@ -700,7 +700,7 @@ void getdata(void)
 	  if (!contchars && x[i][m - 1] < 0.0) {
 	    printf("\nLOCUS%3hd IN SPECIES%3hd: AN ALLELE", j, i + 1);
 	    printf(" FREQUENCY IS NEGATIVE\n");
-	    exit(-1);
+	    embExitBad();
 	  }
 	  if (printdata) {
 	    fprintf(outfile, "%10.5f", x[i][m - 1]);
@@ -720,7 +720,7 @@ void getdata(void)
 	if (all && fabs(sum - 1.0) > epsilon2) {
 	  printf("\nLOCUS%3hd IN SPECIES%3hd: FREQUENCIES DO NOT ADD UP TO 1\n",
                    j, i + 1);
-          exit(-1);
+          embExitBad();
           }
 	if (!all && !contchars) {
 	  x[i][m - 1] = 1.0 - sum;
@@ -734,7 +734,7 @@ void getdata(void)
 	    } else {
 	      printf("\n LOCUS%3hd IN SPECIES%3hd: ",j, i + 1);
 	      printf("FREQUENCIES ADD UP TO MORE THAN 1\n");
-	      exit(-1);
+	      embExitBad();
 	    }
 	  }
 	  m++;
@@ -813,7 +813,7 @@ void sumlikely(node *p, node *q, double *sum)
   if (vee <= 1.0e-10) {
     printf("ERROR: CHECK FOR TWO IDENTICAL  SPECIES ");
     printf("AND ELIMINATE ONE FROM THE DATA\n");
-    exit(-1);
+    embExitBad();
   }
   sumsq = 0.0;
   if (usertree && which <= maxtrees) {
@@ -1480,13 +1480,13 @@ void findch(Char c, short *lparens, short *rparens)
         printf("\nERROR IN USER TREE: ");
 	printf("UNMATCHED PARENTHESIS OR MISSING COMMA\n");
         printf(" OR NON-TRIFURCATED BASE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
         done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ':' || ch == ';') {
         printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR NON-BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ')') {
         (*rparens)++;
         if ((*lparens) > 0 && (*lparens) == (*rparens)) {
@@ -1499,7 +1499,7 @@ void findch(Char c, short *lparens, short *rparens)
             if (ch != ';') {
               printf( "\nERROR IN USER TREE: ");
 	      printf("UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	      exit(-1);
+	      embExitBad();
             }
           }
         }
@@ -1569,7 +1569,7 @@ void addelement(node *p, short *lparens,short *rparens,short *nextnode,
     (*lparens)++;
     if ((*lparens) > numsp - 2) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     }
     (*nextnode)++;
     q = curtree.nodep[(*nextnode) - 1];
@@ -1608,7 +1608,7 @@ void addelement(node *p, short *lparens,short *rparens,short *nextnode,
           for (i = 0; i < namelength; i++)
             putchar(curtree.nodep[n - 1]->nayme[i]);
           putchar('\n');
-	  exit(-1);
+	  embExitBad();
         }
       } else
         n++;
@@ -1931,7 +1931,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }
 
 
@@ -1965,7 +1966,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

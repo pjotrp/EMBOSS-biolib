@@ -140,7 +140,7 @@ void readtree()
 	  printf("\n\nERROR: Character %d:  bad character state tree format1\n\n",
 		 (int)(cp - ajStrGetPtr(rdline)));
 	  printf("\n\nch: %c\n", ch);
-	  exxit(-1);
+	  embExitBad();
       }
 
 
@@ -157,7 +157,7 @@ void readtree()
       {
 	  printf("\n\nERROR: Character %d:  bad character state tree format2\n\n",
 		 (int)(cp - ajStrGetPtr(rdline)));
-	  exxit(-1);
+	  embExitBad();
       } 
 
       while (*cp && isspace((int)*cp))
@@ -189,7 +189,7 @@ void attachnodes(statenode *poynter, Char *otherone)
               while (*otherone != symbarray[k - 1])
                 k++;
               if (nodes[k - offset - 1] != NULL)
-                exxit(-1);
+                embExitBad();
               ptr = (statenode *)Malloc(sizeof(statenode));
               ptr->ancstr = poynter;
               ptr->descendant = NULL;
@@ -250,7 +250,7 @@ void construct()
       if (k > nstates) {
         if (pair[i][j - 1] == '.') {
           if (rooted)
-            exxit(-1);
+            embExitBad();
           rooted = true;
           ancsymbol[charindex - 1] = '0';
           if (j == 1)
@@ -266,7 +266,7 @@ void construct()
   }
   if ((rooted && nstates != npairs) ||
       (!rooted && nstates != npairs + 1))
-    exxit(-1);
+    embExitBad();
   root = (statenode *)Malloc(sizeof(statenode));
   root->state = ' ';
   root->descendant = (statenode *)Malloc(sizeof(statenode));
@@ -288,7 +288,7 @@ void construct()
         printf(
         "\n\nERROR: Character %ld: invalid character state tree description\n",
                charnumber);
-        exxit(-1);}
+        embExitBad();}
       else {
         poynter = nodes[i]->ancstr;
         while (poynter != root && poynter != nodes[i])
@@ -297,7 +297,7 @@ void construct()
           printf(
           "ERROR: Character %ld: invalid character state tree description\n\n",
                  charnumber);
-          exxit(-1);}
+          embExitBad();}
       }
     }
   }
@@ -357,7 +357,7 @@ void dotrees()
     if (charnumber < lastchar) {
       printf("\n\nERROR: Character state tree");
       printf(" for character %ld: out of order\n\n", charnumber);
-      exxit(-1);
+      embExitBad();
     }
     charindex++;
     lastindex = charindex;
@@ -462,7 +462,7 @@ void doeu(long *chposition, long eu)
         "\n\nERROR: Species name may not contain characters ( ) : ; , [ ] \n");
       printf("       In name of species number %ld there is character %c\n\n",
               i+1, ch);
-      exxit(-1);
+      embExitBad();
     }
   }
   multichar = (Char *)Malloc(nchars*sizeof(Char));
@@ -499,7 +499,7 @@ void doeu(long *chposition, long eu)
                  eu, charnum[charindex]);
           printf("'%c' is not a documented state\n\n",
                  multichar[charnum[charindex] - 1]);
-          exxit(-1);
+          embExitBad();
         }
       } else {
         place = chstart[charindex] + numstates[charindex] +
@@ -571,5 +571,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* factor */

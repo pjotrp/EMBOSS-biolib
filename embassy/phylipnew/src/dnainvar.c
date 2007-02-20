@@ -151,7 +151,7 @@ void doinit()
   inputnumbersseq(seqsets[0], &spp, &sites, &nonodes, 1);
   if (spp > maxsp){
     printf("TOO MANY SPECIES: only 4 allowed\n");
-    exxit(-1);}
+    embExitBad();}
   if (printdata)
     fprintf(outfile, "%2ld species, %3ld  sites\n", spp, sites);
   allocrest();
@@ -714,6 +714,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* DNA Invariants */
 

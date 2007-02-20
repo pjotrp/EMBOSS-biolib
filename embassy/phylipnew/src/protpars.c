@@ -535,7 +535,7 @@ void protinputdata(AjPSeqset seqset)
             charstate == 'O' || charstate == 'U') {
           printf("WARNING -- BAD AMINO ACID:%c",charstate);
           printf(" AT POSITION%5ld OF SPECIES %3ld\n",j,i);
-          exxit(-1);
+          embExitBad();
         }
         j++;
         aa = (charstate == 'A') ?  ala :
@@ -1126,7 +1126,7 @@ void protaddelement(node **p,long *nextnode,long *lparens,boolean *names, char**
   if (ch == '(' ) {
     if ((*lparens) >= spp - 1) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exxit(-1);
+      embExitBad();
     }
     (*nextnode)++;
     (*lparens)++;
@@ -1170,7 +1170,7 @@ void protaddelement(node **p,long *nextnode,long *lparens,boolean *names, char**
         for (i = 0; i < nmlngth; i++)
           putchar(nayme[n - 1][i]);
         putchar('\n');
-        exxit(-1);
+        embExitBad();
       }
     } else
       n++;
@@ -1737,5 +1737,6 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
+  embExit();
   return 0;
 }  /* Protein parsimony by uphill search */

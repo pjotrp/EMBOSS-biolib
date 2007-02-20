@@ -312,7 +312,7 @@ int main(int argc, char *argv[])
     ajFileClose(&outf);
     ajFileClose(&essfile);
     
-    ajExit();
+    embExit();
 
     return 0;
 }

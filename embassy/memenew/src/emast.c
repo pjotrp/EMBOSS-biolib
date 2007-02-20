@@ -240,7 +240,7 @@ int main(int argc, char **argv)
     ajStrDel(&outfilename);
     ajFileClose(&stdoutf);
     
-    ajExit();
+    embExit();
 
     return 0;
 }

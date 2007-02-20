@@ -274,6 +274,7 @@ Loop:
 	UpDate();
 	goto Loop;
 
+embExit();
 return 0;
 
 }  /* End of MSE Main */
@@ -4447,7 +4448,7 @@ void DoRedraw()
 void CleanUp()
 {
 	endwin();
-	exit(0);
+	embExit();
 
 } /* End of cleanup */
 

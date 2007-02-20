@@ -686,7 +686,7 @@ Local Void inputweights(void)
         weight[i] = ch - 55;
     } else {
       printf("BAD WEIGHT CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -737,7 +737,7 @@ Local Void inputoptions(void)
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n",
              ith);
-      exit(-1);
+      embExitBad();
     }
     chars = curchs;
   }
@@ -751,7 +751,7 @@ Local Void inputoptions(void)
       extranum++;
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -768,7 +768,7 @@ Local Void inputoptions(void)
     else {
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE WHICH STARTS WITH %c\n",
 	     ch);
-      exit(-1);}
+      embExitBad();}
   }
   if (weights)
     printweights();
@@ -816,7 +816,7 @@ Local Void inputdata(void)
 	  if ( eof(infile) | eoln(infile)){
 	    printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	    printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	    exit(-1);}
+	    embExitBad();}
         }
       }
       if (interleaved)
@@ -837,7 +837,7 @@ Local Void inputdata(void)
           if ((strchr("ABCDGHKMNRSTUVWXY?O-.",charstate)) == NULL){
             printf("ERROR: BAD BASE:%c AT POSITION%5hd OF SPECIES %3hd\n",
         	   charstate, j, i);
-	    exit(-1);
+	    embExitBad();
           }
           j++;
           if (charstate == '.')
@@ -858,7 +858,7 @@ Local Void inputdata(void)
       getc(infile);
       if ((interleaved && j != basesnew) || ((!interleaved) && j != chars)){
         printf("ERROR: SEQUENCES OUT OF ALIGNMENT\n");
-	exit(-1);}
+	embExitBad();}
       i++;
     }
     if (interleaved) {
@@ -1583,14 +1583,14 @@ Local Void findch(Char c)
     if (c == ',') {
       if (ch == '(' || ch == ')' || ch == ';') {
         printf("\nERROR IN USER TREE%3hd: UNMATCHED PARENTHESIS OR MISSING COMMA\n",  which);
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
         done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ';') {
         printf("\nERROR IN USER TREE%3hd: ",which);
 	printf("UNMATCHED PARENTHESIS OR NON-BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else {
         if (ch == ')')
           done = true;
@@ -1599,7 +1599,7 @@ Local Void findch(Char c)
       if (ch != ';') {
         printf("\nERROR IN USER TREE%3hd: ",which);
 	printf("UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	exit(-1);
+	embExitBad();
       } else
         done = true;
     }
@@ -1635,7 +1635,7 @@ Local Void addelement(node **p,short *nextnode,short *lparens,boolean *names)
   if (ch == '(' ) {
     if ((*lparens) >= spp - 1) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     }
     (*nextnode)++;
     (*lparens)++;
@@ -1679,7 +1679,7 @@ Local Void addelement(node **p,short *nextnode,short *lparens,boolean *names)
         for (i = 0; i < nmlngth; i++)
           putchar(nayme[n - 1][i]);
         putchar('\n');
-	exit(-1);
+	embExitBad();
       }
     } else
       n++;
@@ -2365,7 +2365,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* DNA parsimony by uphill search */
 
 int eof(FILE *f)
@@ -2398,7 +2399,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

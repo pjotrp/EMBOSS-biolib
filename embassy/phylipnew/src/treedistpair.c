@@ -135,7 +135,7 @@ double bsd_tree_diff(group_type **tree1, group_type **tree2,
   if (group_is_null (tree1, 0) || group_is_null (tree2, 0)) {
     printf ("Error computing tree difference between tree %ld and tree %ld\n",
              ntree1, ntree2);
-    exxit(-1);
+    embExitBad();
   }
 
   for (index1 = 0; index1 < patternsz1; index1++) {
@@ -144,7 +144,7 @@ double bsd_tree_diff(group_type **tree1, group_type **tree2,
         printf(
          "Error: tree %ld is missing a length from at least one branch\n",
          ntree1);
-        exxit(-1);
+        embExitBad();
         }
       }
     }
@@ -155,7 +155,7 @@ double bsd_tree_diff(group_type **tree1, group_type **tree2,
         printf(
          "Error: tree %ld is missing a length from at least one branch\n",
          ntree2);
-        exxit(-1);
+        embExitBad();
         }
       }
     }
@@ -1097,6 +1097,7 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(outtreename);
 #endif
+  embExit();
   return 0;
 }  /* main */
 

@@ -280,7 +280,7 @@ void getalleles(void)
     fscanf(infile, "%hd%hd", &cursp, &curloc);
     if (cursp != numsp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n", ith);
-      exit(-1);
+      embExitBad();
     }
     loci = curloc;
   }
@@ -329,7 +329,7 @@ void getdata(void)
 	if (x[i - 1][m - 1] < 0.0) {
 	  printf("\nLOCUS%3hd IN SPECIES%3hd: AN ALLELE", j, i);
 	  printf(" FREQUENCY IS NEGATIVE\n");
-	  exit(-1);
+	  embExitBad();
 	}
 	p++;
 	m++;
@@ -337,14 +337,14 @@ void getdata(void)
       if (all && fabs(sum - 1.0) > epsilon) {
 	printf("\nLOCUS%3hd IN SPECIES%3hd: FREQUENCIES DO NOT ADD UP TO 1\n",
 	       j, i);
-	exit(-1);
+	embExitBad();
       }
       if (!all) {
 	x[i - 1][m - 1] = 1.0 - sum;
 	if (x[i - 1][m - 1] < -epsilon) {
 	  printf("\nLOCUS%3hd IN SPECIES%3hd: ",j,i);
 	  printf("FREQUENCIES ADD UP TO MORE THAN 1\n");
-	  exit(-1);
+	  embExitBad();
 	}
 	m++;
       }
@@ -467,7 +467,8 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }
 
 
@@ -501,7 +502,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

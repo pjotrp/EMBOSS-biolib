@@ -12,7 +12,7 @@
  * SRE, Thu Dec 18 16:05:29 1997 [St. Louis]
  * 
  * main() for aligning a set of sequences to an HMM.
- * RCS $Id: ohmmalign.c,v 1.3 2006/04/20 12:49:54 rice Exp $
+ * RCS $Id: ohmmalign.c,v 1.4 2007/02/20 09:58:04 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */ 
 
@@ -264,7 +264,7 @@ int main(int argc, char **argv)
   else fprintf(stderr, "[No memory leaks.]\n");
 #endif
 
-  ajExit();
+  embExit();
   
   return 0;
 }

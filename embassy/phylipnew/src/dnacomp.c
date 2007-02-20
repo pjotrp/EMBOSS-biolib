@@ -1095,6 +1095,6 @@ int main(int argc, Char *argv[])
   ajFileClose(&embossoutfile);
   ajFileClose(&embossouttree);
   deallocrest();
-  exxit(0);
+  embExit();
   return 0;
 }  /* DNA compatibility by uphill search */

@@ -113,6 +113,6 @@ int main(int argc, char *argv[])
 
     ajStrDel(&eline);
    
-
+    embExit();
     return 0;
 }

@@ -577,7 +577,7 @@ void inputmixture(void)
       wag = false;
     else {
       printf("BAD METHOD: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
     j++;
     if (j > bits) {
@@ -647,7 +647,7 @@ void inputweights(void)
 	weight[i] = ch - 55;
     } else {
       printf("BAD WEIGHT CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -726,7 +726,7 @@ void inputancestors(void)
       }
     } else {
       printf("BAD ANCESTOR STATE: %c AT CHARACTER %4hd\n", ch, i + 1);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -770,7 +770,7 @@ void inputoptions(void)
     fscanf(infile, "%hd%hd", &cursp, &curchs);
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n", ith);
-      exit(-1);
+      embExitBad();
     }
     chars = curchs;
   }
@@ -784,7 +784,7 @@ void inputoptions(void)
       extranum++;
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -797,14 +797,14 @@ void inputoptions(void)
     if (ch != 'A' && ch != 'M' && ch != 'W') {
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE");
       printf(" WHICH STARTS WITH %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
     if (ch == 'A') {
       avar = true;
       if (!ancvar) {
 	printf("ERROR: ANCESTOR OPTION NOT CHOSEN IN MENU");
 	printf(" WITH OPTION %c IN INPUT\n", ch);
-	exit(-1);
+	embExitBad();
       } else
 	inputancestors();
     }
@@ -813,7 +813,7 @@ void inputoptions(void)
       if (!mixture) {
 	printf("ERROR: MIXTURE OPTION NOT CHOSEN IN MENU");
 	printf(" WITH OPTION %c IN INPUT\n", ch);
-	exit(-1);
+	embExitBad();
       } else
 	inputmixture();
     }
@@ -823,12 +823,12 @@ void inputoptions(void)
   if (ancvar && !avar) {
     printf("ERROR: ANCESTOR OPTION CHOSEN IN MENU");
     printf(" WITH NO OPTION A IN INPUT\n");
-    exit(-1);
+    embExitBad();
   }
   if (mixture && !mix) {
     printf("ERROR: MIXTURE OPTION CHOSEN IN MENU");
     printf(" WITH NO OPTION M IN INPUT\n");
-    exit(-1);
+    embExitBad();
   }
   if (weights && printdata)
     printweights();
@@ -916,7 +916,7 @@ void inputdata(void)
 	if (eof(infile) || eoln(infile)){
 	  printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	  printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	  exit(-1);}
+	  embExitBad();}
       }
       if (printdata) {
 	for (j = 0; j < nmlngth; j++)
@@ -947,7 +947,7 @@ void inputdata(void)
 	    charstate != 'P' && charstate != 'B') {
 	  printf("WARNING -- BAD CHARACTER STATE: %c",charstate);
 	  printf(" AT CHARACTER %5hd OF SPECIES %3hd\n", j, i);
-	  exit(-1);
+	  embExitBad();
 	}
 	if (printdata) {
 	  newline(j, 55, (int)(nmlngth + 3));
@@ -1956,7 +1956,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* Penny's branch-and-bound method */
 
 
@@ -1990,7 +1991,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ohmmsearch.c,v 1.5 2007/01/31 12:53:19 rice Exp $
+ * RCS $Id: ohmmsearch.c,v 1.6 2007/02/20 09:58:04 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -486,6 +486,7 @@ int main(int argc, char **argv)
     else
 	fprintf(stderr, "[No memory leaks.]\n");
 #endif
+    embExit();
     return 0;
 }
 

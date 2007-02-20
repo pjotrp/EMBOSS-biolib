@@ -13,7 +13,7 @@
  * 
  * Create a GSI index file for an HMM database.
  * 
- * RCS $Id: ohmmindex.c,v 1.4 2007/02/14 16:33:03 rice Exp $
+ * RCS $Id: ohmmindex.c,v 1.5 2007/02/20 09:58:04 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -235,6 +235,6 @@ int main(int argc, char **argv)
 
     ajStrDel(&instr);
 
-    ajExit();
+    embExit();
     return 0;
 }

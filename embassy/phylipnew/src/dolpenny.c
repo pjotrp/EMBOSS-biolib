@@ -614,5 +614,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* branch-and-bound method for Dollo, polymorphism parsimony */

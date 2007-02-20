@@ -451,7 +451,7 @@ void inputoptions(void)
     if (cursp != numsp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n",
              ith);
-      exit(-1);
+      embExitBad();
     }
   }
   while (!eoln(infile)) {
@@ -461,7 +461,7 @@ void inputoptions(void)
     uppercase(&ch);
     if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   putc('\n', outfile);
@@ -1118,7 +1118,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }
 
 int eof(FILE *f)
@@ -1151,7 +1152,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

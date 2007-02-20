@@ -237,7 +237,7 @@ int main(int argc, char *argv[])
     free(string);
 
 
-    ajExit();
+    embExit();
 
     return 0;
 }

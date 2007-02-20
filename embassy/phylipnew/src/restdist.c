@@ -153,7 +153,7 @@ void inputoptions(AjPPhyloState state)
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4ld\n",
              ith);
-      exxit(-1);
+      embExitBad();
     }
     sites = curst;
 
@@ -215,7 +215,7 @@ void restdist_inputdata(AjPPhyloState state)
           if (ch != '1' && ch != '0' && ch != '+' && ch != '-' && ch != '?') {
             printf(" ERROR -- Bad symbol %c",ch);
             printf(" at position %ld of species %ld\n", j+1, i);
-            exxit(-1);
+            embExitBad();
           }
           if (ch == '1')
             ch = '+';
@@ -370,7 +370,7 @@ void makev(long m, long n, double *v)
     if (exp(-sitelength*1.38629436) > f) {
       printf("\nERROR: Infinite distance between ");
       printf(" species %3ld and %3ld\n", m, n);
-      exxit(-1);
+      embExitBad();
     }
   }
   if (!restsites) {
@@ -527,5 +527,6 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
 #endif
   printf("Done.\n\n");
+  embExit();
   return 0;
 }  /* distances from restriction sites or fragments */

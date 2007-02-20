@@ -124,7 +124,7 @@ void inputdata()
         if (x[i - 1][m - 1] < 0.0) {
           printf("\n\nERROR: Locus %ld in species %ld: an allele", j, i);
           printf(" frequency is negative\n\n");
-          exxit(-1);
+          embExitBad();
         }
  
         m++;
@@ -133,7 +133,7 @@ void inputdata()
         printf(
      "\n\nERROR: Locus %ld in species %ld: frequencies do not add up to 1\n\n",
                j, i);
-        exxit(-1);
+        embExitBad();
       }
     }
   }
@@ -278,5 +278,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }

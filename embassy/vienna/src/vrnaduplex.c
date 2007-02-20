@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 
 
 
-    ajExit();
+    embExit();
 
     return 0;
 }

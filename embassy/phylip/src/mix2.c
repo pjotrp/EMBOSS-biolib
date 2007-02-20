@@ -1,3 +1,4 @@
+#include "emboss.h"
 #include "phylip.h"
 
 /* version 3.572c. (c) Copyright 1993-1995 by Joseph Felsenstein.
@@ -121,7 +122,6 @@ void printancestors(void);
 void inputoptions(void);
 void inputdata(void);
 void doinput(void);
-int main(int argc, Char *argv[]);
 int eof(FILE *f);
 int eoln(FILE *f);
 void memerror(void);
@@ -598,14 +598,14 @@ void findch(Char c)
     if (c == ',') {
       if (ch == '(' || ch == ')' || ch == ';') {
       printf("\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR MISSING COMMA\n");
-      exit(-1);
+      embExitBad();
       } else if (ch == ',')
         done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ';') {
 	printf("\nERROR IN USER TREE: ");
 	printf("UNMATCHED PARENTHESIS OR NOT BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else {
         if (ch == ')')
           done = true;
@@ -614,7 +614,7 @@ void findch(Char c)
       if (ch != ';') {
 	printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	exit(-1);
+	embExitBad();
       } else
         done = true;
     }
@@ -650,7 +650,7 @@ void addelement(node **p, long *nextnode, long *lparens,boolean *naymes)
   if (ch == '(' ) {
     if ((*lparens) >= spp - 1) {
       printf("\nERROR IN USER TREE: TOO MANY LEFT PARENTHESES\n");
-      exit(-1);
+      embExitBad();
     }
     (*nextnode)++;
     (*lparens)++;
@@ -694,7 +694,7 @@ void addelement(node **p, long *nextnode, long *lparens,boolean *naymes)
         for (i = 0; i < nmlngth; i++)
           putchar(nayme[n - 1][i]);
         putchar('\n');
-	exit(-1);
+	embExitBad();
       }
     } else
       n++;

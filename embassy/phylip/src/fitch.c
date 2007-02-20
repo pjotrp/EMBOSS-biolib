@@ -660,7 +660,7 @@ void inputoptions(void)
     fscanf(infile, "%hd", &cursp);
     if (cursp != numsp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n",ith);
-      exit(-1);
+      embExitBad();
     }
   }
   while (!(eoln(infile))) {
@@ -668,7 +668,7 @@ void inputoptions(void)
     uppercase(&ch);
     if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fprintf(outfile, "                  __ __             2\n");
@@ -1532,14 +1532,14 @@ void findch(Char c, short *lparens,short *rparens)
         printf(
              "\nERROR IN USER TREE: UNMATCHED PARENTHESIS OR MISSING COMMA\n");
         printf(" OR NOT TRIFURCATED BASE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ',')
         done = true;
     } else if (c == ')') {
       if (ch == '(' || ch == ',' || ch == ':' || ch == ';') {
         printf("\nERROR IN USER TREE:");
 	printf(" UNMATCHED PARENTHESIS OR NON-BIFURCATED NODE\n");
-	exit(-1);
+	embExitBad();
       } else if (ch == ')') {
         (*rparens)++;
         if (*lparens > 0 && *lparens == *rparens ) {
@@ -1552,7 +1552,7 @@ void findch(Char c, short *lparens,short *rparens)
             if (ch != ';') {
               printf("\nERROR IN USER TREE:");
 	      printf(" UNMATCHED PARENTHESIS OR MISSING SEMICOLON\n");
-	      exit(-1);
+	      embExitBad();
             }
           }
         }
@@ -1658,7 +1658,7 @@ void addelement(node *p,short *nextnode,short *lparens,short *rparens,
           for (i = 0; i < namelength; i++)
             putchar(curtree.nodep[n - 1]->nayme[i]);
           putchar('\n');
-	  exit(-1);
+	  embExitBad();
         }
       } else
         n++;
@@ -1939,7 +1939,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }
 
 int eof(FILE *f)
@@ -1972,7 +1973,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long  x)

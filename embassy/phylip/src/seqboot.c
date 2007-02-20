@@ -477,7 +477,7 @@ Local Void inputweights(void)
     else {
       printf("BAD WEIGHT CHARACTER: %c -- WEIGHTS IN DNABOOT MUST BE 0 OR 1\n",
 	     ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -540,7 +540,7 @@ Local Void inputoptions(void)
     if (ch != 'W' && ch != 'F') {
       if (ch != ' ') {
 	printf("BAD OPTION CHARACTER: %c\n", ch);
-	exit(-1);
+	embExitBad();
       }
       continue;
     }
@@ -569,7 +569,7 @@ Local Void inputoptions(void)
     if (ch != 'W' && ch != 'F'){
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE WHICH STARTS WITH %c\n",
 	       ch);
-      exit(-1);}
+      embExitBad();}
   }
   if (factors && printdata)
     printfactors();
@@ -637,7 +637,7 @@ Local Void inputdata(void)
 	if (eof(infile) || eoln(infile)){
 	  printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	  printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	  exit(-1);
+	  embExitBad();
 	}
 	nayme[i - 1][j] = getc(infile);
       }
@@ -650,7 +650,7 @@ Local Void inputdata(void)
 	fscanf(infile, "%lf", &x);
 	if ((unsigned)x > 1.0) {
 	  printf("GENE FREQ OUTSIDE [0,1], species%3ld\n", i);
-	  exit(-1);
+	  embExitBad();
 	} else {
 	  nodef[i - 1][j - 1] = x;
 	  j++;
@@ -676,7 +676,7 @@ Local Void inputdata(void)
 	  if (eof(infile) || eoln(infile)){
 	    printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	    printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	    exit(-1);
+	    embExitBad();
 	  }
 	  nayme[i - 1][j] = getc(infile);
 	}
@@ -711,7 +711,7 @@ Local Void inputdata(void)
       getc(infile);
       if ((interleaved && j != basesnew) || ((!interleaved) && j != sites)){
 	printf("ERROR: SEQUENCES OUT OF ALIGNMENT\n");
-	exit(-1);}
+	embExitBad();}
       i++;
     }
     if (interleaved) {
@@ -991,7 +991,8 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }
 
 
@@ -1025,7 +1026,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
   printf("Error allocating memory\n");
-  exit(-1);
+  embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

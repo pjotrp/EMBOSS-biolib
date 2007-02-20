@@ -182,7 +182,7 @@ int main(int argc, char **argv)
     ajFileClose(&sp_inf);
     ajFileClose(&outf);
 
-
+    embExit();
     return 0;
 }
 

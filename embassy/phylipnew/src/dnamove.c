@@ -1656,7 +1656,7 @@ void rearrange(void)
           maxinput++;
           if (maxinput == 100) {
             printf("ERROR: too many tries at choosing option\n");
-            exxit(-1);
+            embExitBad();
           }
         } while (ch != 'A' && ch != 'B');
         if (ch == 'A') {
@@ -2275,5 +2275,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  embExit();
   return 0;
 }  /* Interactive DNA parsimony */

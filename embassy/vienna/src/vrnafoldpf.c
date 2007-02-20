@@ -314,7 +314,7 @@ int main(int argc, char *argv[])
     ajFileClose(&essfile);
     ajFileClose(&dotfile);
     
-    ajExit();
+    embExit();
 
     return 0;
 }

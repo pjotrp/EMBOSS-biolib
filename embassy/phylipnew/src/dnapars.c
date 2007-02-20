@@ -1325,7 +1325,7 @@ void maketree()
     if (numtrees > MAXNUMTREES) {
       printf("\nERROR: number of input trees is read incorrectly from %s\n",
         intreename);
-      exxit(-1);
+      embExitBad();
     }
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
@@ -1505,6 +1505,7 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+   embExit();
   return 0;
 }  /* DNA parsimony by uphill search */
 

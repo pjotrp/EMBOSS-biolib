@@ -655,7 +655,7 @@ Local Void inputweights(void)
 	weight[i] = ch - 55;
     } else {
       printf("BAD WEIGHT CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -705,7 +705,7 @@ Local Void inputoptions(void)
     fscanf(infile, "%hd%hd", &cursp, &curchs);
     if (cursp != spp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n",ith);
-      exit(-1);
+      embExitBad();
     }
     chars = curchs;
   }
@@ -720,7 +720,7 @@ Local Void inputoptions(void)
       extranum++;
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -737,7 +737,7 @@ Local Void inputoptions(void)
     else {
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE WHICH STARTS WITH %c\n",
 	     ch);
-      exit(-1);}
+      embExitBad();}
   }
   if (weights)
     printweights();
@@ -784,7 +784,7 @@ Local Void inputdata(void)
 	  if (eof(infile) | eoln(infile)){
 	    printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	    printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	    exit(-1);}
+	    embExitBad();}
 	}
       }
       j = interleaved ? basesread : 0;
@@ -800,7 +800,7 @@ Local Void inputdata(void)
 	  if ((strchr("ABCDGHKMNRSTUVWXY?O-.",charstate)) == NULL){
 	    printf("ERROR: BAD BASE:%c AT POSITION%5hd OF SPECIES %3hd\n",
 		   charstate, j, i);
-	    exit(-1);
+	    embExitBad();
 	  }
 	  j++;
 	  if (charstate == '.')
@@ -821,7 +821,7 @@ Local Void inputdata(void)
       getc(infile);
       if ((interleaved && j != basesnew) || ((!interleaved) && j != chars)){
 	printf("ERROR: SEQUENCES OUT OF ALIGNMENT\n");
-	exit(-1);}
+	embExitBad();}
       i++;
     }
     if (interleaved) {
@@ -2031,7 +2031,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* Penny's branch-and-bound method for DNA sequences */
 
 int eof(FILE *f)
@@ -2064,7 +2065,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

@@ -299,7 +299,6 @@ printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-
-return 0;
+  embExit();
+  return 0;
 }  /* main */
-

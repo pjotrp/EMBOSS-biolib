@@ -23,7 +23,7 @@
 #endif
 
 /*@unused@*/
-static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.4 2007/01/31 12:47:07 rice Exp $";
+static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.5 2007/02/20 09:57:30 rice Exp $";
 
 #define  PUBLIC
 #define  PRIVATE   static
@@ -180,7 +180,7 @@ int main(int argc, char *argv[])
     
     ajFileClose(&outf);
 
-    ajExit();
+    embExit();
     
 
     return 0;

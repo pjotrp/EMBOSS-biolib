@@ -23,7 +23,7 @@
 #include "aln_util.h"
 extern void  read_parameter_file(AjPFile fname);
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.6 2007/01/31 12:47:07 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.7 2007/02/20 09:57:30 rice Exp $";
 
 #define PRIVATE static
 
@@ -329,7 +329,8 @@ int main(int argc, char *argv[])
     ajStrDel(&constring);
     ajFileClose(&outf);
     ajFileClose(&essfile);
-    
+
+    embExit();  
     return 0;
 }
 

@@ -588,7 +588,7 @@ void inputweights(void)
     else {
       printf("BAD WEIGHT CHARACTER: %c -- ",ch);
       printf("WEIGHTS IN DNADIST MUST BE 0 OR 1\n");
-      exit(-1);
+      embExitBad();
     }
     weightsum += oldweight[i];
   }
@@ -631,7 +631,7 @@ void inputoptions(void)
     fscanf(infile, "%hd%hd", &cursp, &cursts);
     if (cursp != numsp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n", ith);
-      exit(-1);
+      embExitBad();
     }
     sites = cursts;
   }
@@ -677,7 +677,7 @@ void inputoptions(void)
       if (!ctgry || categs <= 1) {
         printf("ERROR: CATEGORY OPTION NOT CHOSEN IN MENU");
 	printf(" WITH OPTION %c IN INPUT\n",ch);
-	exit(-1);
+	embExitBad();
       } else
         inputcategories();
     }
@@ -687,7 +687,7 @@ void inputoptions(void)
   if ((categs > 1 || ctgry) && !ctg) {
     printf("ERROR: CATEGORY OPTION CHOSEN IN MENU");
     printf(" WITH NO OPTION C IN INPUT\n");
-    exit(-1);
+    embExitBad();
   } else if (printdata && (categs > 1)) {
     fprintf(outfile, "\nSite category   Rate of change\n\n");
     for (i = 1; i <= categs; i++)
@@ -698,7 +698,7 @@ void inputoptions(void)
   if ((jukes || kimura || jinnei) && freqsfrom) {
     printf("WARNING: CANNOT USE EMPIRICAL BASE FREQUENCIES");
     printf(" WITH JUKES-CANTOR, KIMURA OR JIN/NEI DISTANCES\n");
-    exit(-1);
+    embExitBad();
   }
   if (jukes)
     ttratio = 0.5;
@@ -801,7 +801,7 @@ void inputdata(void)
 	  if (eof(infile) || eoln(infile)){
 	    printf("ERROR: END-OF-LINE OR END-OF-FILE IN");
             printf(" THE MIDDLE OF A SPECIES NAME\n");
-	    exit(-1);}
+	    embExitBad();}
 	  nodep[i - 1]->nayme[j] = getc(infile);
         }
       }
@@ -818,7 +818,7 @@ void inputdata(void)
 	  if (strchr("ABCDGHKMNRSTUVWXY?O-.",charstate) == NULL){
             printf("ERROR: BAD BASE:%c AT POSITION%5hd OF SPECIES %3hd\n",
                    charstate, j, i);
-	    exit(-1);
+	    embExitBad();
           }
           j++;
           if (charstate == '.')
@@ -839,7 +839,7 @@ void inputdata(void)
       getc(infile);
       if ((interleaved && j != basesnew) || ((!interleaved) && j != sites)){
         printf("ERROR: SEQUENCES OUT OF ALIGNMENT\n");
-	exit(-1);}
+	embExitBad();}
       i++;
     }
     if (interleaved) {
@@ -1241,12 +1241,12 @@ void makev(short m, short n, double *v)
   if (jinnei && !jinneiquick) {
     printf("WARNING: CANNOT CALCULATE JIN/NEI DISTANCE\n");
     printf(" WITH PRESENT PROGRAM IF PARTIALLY AMBIGUOUS NUCLEOTIDES\n");
-    exit(-1);
+    embExitBad();
   }
   if (jukesquick && numerator * 4 <= denominator) {
     printf(" WARNING: INFINITE DISTANCE BETWEEN ");
     printf(" SPECIES %3hd AND %3hd\n", m, n);
-    exit(-1);
+    embExitBad();
   }
   if (jukesquick)
     vv = -0.75 * log((4.0 * ((double)numerator / denominator) - 1.0) / 3.0);
@@ -1492,7 +1492,8 @@ int main(int argc, Char *argv[])
 #ifdef MAC
   fixmacfile(outfilename);
 #endif
-  exit(0);
+  embExit();
+  return 0;
 }  /* DNA Distances by Maximum Likelihood */
 
 int eof(FILE *f)
@@ -1525,7 +1526,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)

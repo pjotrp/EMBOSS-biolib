@@ -1457,14 +1457,14 @@ double angleBetVectors(double Xu, double Yu, double Xv, double Yv)
   {
     printf("ERROR: drawtree - division by zero in angleBetVectors()!\n");
     printf("Xu %f Yu %f Xv %f Yv %f\n", Xu, Yu, Xv, Yv);
-    exxit(0);
+    embExitBad();
   }
   cosTheta = dotProd / lengthsProd;
 
   if (cosTheta > 1 || cosTheta < -1)
   {
     printf("ERROR: drawtree - acos of an invalid value in angleBetVectors()!\n");
-    exxit(0);
+    embExitBad();
   }
   theta = acos(cosTheta);
 
@@ -1472,7 +1472,7 @@ double angleBetVectors(double Xu, double Yu, double Xv, double Yv)
   {
     printf("ERROR: theta not supposed to be negative in angleBetVectors()!\n");
     printf("theta = %f\n", theta);
-    exxit(1);
+    embExitBad();
   }
   return theta;
 }  /* angleBetVectors */
@@ -1581,7 +1581,7 @@ double forcePerpendicularOnNode(node *pPivotSubNode, node *pToSubNode,
   {
     printf("ERROR: drawtree - forcePerpendicular applied at an angle should not be less than zero (in forcePerpendicularOnNode()). \n");
     printf("alpha = %f\n", alpha);
-    exxit(1);
+    embExitBad();
   }
   /* correct the sign of the moment */
   forcePerpendicular = signOfMoment(xDelta, yDelta, cosForceAngle, sinForceAngle) 
@@ -1638,7 +1638,7 @@ void pushNodeToStack(stackElemType **ppStackTop, node *pNode)
     /* NULL can be stored in the location, but the location itself can't 
        be NULL! */
     printf("ERROR: drawtree - error using pushNodeToStack(); ppStackTop is NULL.\n");
-    exxit(1);
+    embExitBad();
   }
   pStackElem = (stackElemType*)Malloc( sizeof(stackElemType) );
   pStackElem->pStackElemBack = *ppStackTop;
@@ -1668,7 +1668,7 @@ void popNodeFromStack(stackElemType **ppStackTop, node **ppNode)
   if (ppStackTop == NULL)
   {
     printf("ERROR: drawtree - a call to pop while the stack is empty.\n");
-    exxit(1);
+    embExitBad();
   }
 
   pStackT = *ppStackTop;
@@ -1741,7 +1741,7 @@ double medianOfDistance(node *pRootSubNode, boolean firstRecursiveCallP)
   if (pLink == NULL)
   {
     printf("Fatal ERROR: drawtree - Insufficient Memory in medianOfDistance()!\n");
-    exxit(1);
+    embExitBad();
   }
   pLink->value = distance;
   pLink->pBack = pFrontOfLinkedList;
@@ -1853,12 +1853,12 @@ void leftRightLimits(node *pToSubNode, double *pLeftLimit,
   {
     /* Logically this should not happen.  But we actually can return pi as the limit. */
     printf("ERROR: In leftRightLimits() - Pivoted at a leaf! Unable to calculate left and right limit.\n");
-    exxit(1);
+    embExitBad();
   }
   else if (pToSubNode->back->next->next == pToSubNode->back)
   {
     printf("ERROR: leftRightLimits() - 2-branches-only case not handled!!");
-    exxit(1);
+    embExitBad();
   }
   /* Else, do this */
   pPivotNode = nodep[pToSubNode->back->index-1];
@@ -2494,7 +2494,7 @@ void setup_environment(int argc, Char *argv[])
       (registerbgidriver(Herc_driver) <0)   ||
       (registerbgidriver(CGA_driver) <0)){
     fprintf(stderr,"Graphics error: %s ",grapherrormsg(graphresult()));
-    exxit(-1);}
+    embExitBad();}
 #endif
  
  
@@ -2542,7 +2542,7 @@ void setup_environment(int argc, Char *argv[])
       else if ( isspace((int)*pChar) )
       {
             printf("ERROR: Number of iteration should not contain space!\n");
-            exxit(1);
+            embExitBad();
       }
     }
     sscanf(argv[1], "%li", &maxNumOfIter);
@@ -2645,6 +2645,6 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
-  exxit(0);
-  return 1;
+  embExit();
+  return 0;
 }

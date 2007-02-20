@@ -1020,6 +1020,7 @@ int main(int argc, Char *argv[])
   printf("Done.\n\n");
 #ifdef WIN32
   phyRestoreConsoleAttributes();
-#endif
+#endif 
+  embExit();
   return 0;
 }

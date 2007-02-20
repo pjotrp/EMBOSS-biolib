@@ -650,7 +650,7 @@ void inputweights(void)
     else {
       printf("BAD WEIGHT CHARACTER: %c -- WEIGHTS IN RESTML MUST BE 0 OR 1\n",
              ch);
-      exit(-1);
+      embExitBad();
     }
     weightsum += weight[i];
   }
@@ -693,12 +693,12 @@ void inputoptions(void)
     if (cursp != numsp) {
       printf("\nERROR: INCONSISTENT NUMBER OF SPECIES IN DATA SET %4hd\n",
              ith);
-      exit(-1);
+      embExitBad();
     }
     if (curenz != enzymes) {
       printf("\nERROR: INCONSISTENT NUMBER OF ENZYMES IN DATA SET %4hd\n",
              ith);
-      exit(-1);
+      embExitBad();
     }
     sites = curst;
   }
@@ -715,7 +715,7 @@ void inputoptions(void)
       extranum++;
     else if (ch != ' ') {
       printf("BAD OPTION CHARACTER: %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
   }
   fscanf(infile, "%*[^\n]");
@@ -728,7 +728,7 @@ void inputoptions(void)
     if (ch != 'W') {
       printf("ERROR: INCORRECT AUXILIARY OPTIONS LINE");
       printf(" WHICH STARTS WITH %c\n", ch);
-      exit(-1);
+      embExitBad();
     }
     else
       inputweights();
@@ -807,7 +807,7 @@ void getdata(void)
 	  if (eof(infile) | eoln(infile)){
 	    printf("ERROR: END-OF-LINE OR END-OF-FILE");
 	    printf(" IN THE MIDDLE OF A SPECIES NAME\n");
-	    exit(-1);
+	    embExitBad();
 	  }
 	  curtree.nodep[i - 1]->nayme[j] = getc(infile);
         }
@@ -831,7 +831,7 @@ void getdata(void)
               ch != '.') {
             printf(" WARNING -- BAD SYMBOL %c",ch);
 	    printf(" AT POSITION %5hd OF SPECIES %3hd\n",j,i);
-	    exit(-1);
+	    embExitBad();
           }
           if (ch == '1')
             ch = '+';
@@ -856,7 +856,7 @@ void getdata(void)
       getc(infile);
       if ((interleaved && j != sitesnew ) || ((!interleaved) && j != sites)){
         printf("ERROR: SEQUENCES OUT OF ALIGNMENT\n");
-	exit(-1);}
+	embExitBad();}
       i++;
     }
     if (interleaved) {
@@ -1164,7 +1164,8 @@ int main(int argc, Char *argv[])
   fixmacfile(outfilename);
   fixmacfile(trfilename);
 #endif
-exit(0);
+  embExit();
+  return 0;
 }  /* maximum likelihood phylogenies from restriction sites */
 
 /*
@@ -1201,7 +1202,7 @@ int eoln(FILE *f)
 void memerror(void)
 {
 printf("Error allocating memory\n");
-exit(-1);
+embExitBad();
 }
 
 MALLOCRETURN *mymalloc(long x)
