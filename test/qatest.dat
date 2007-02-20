@@ -20536,6 +20536,7 @@ FP 0 /Died: /
 
 ID intconv-check
 AQ intconv
+DL keep
 CL stdin stdout -auto
 IN int main (int argc, char* argv[]) {
 IN   int number;
