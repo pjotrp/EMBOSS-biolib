@@ -154,14 +154,14 @@ int main(int argc, char **argv)
     }
     else
     {
-	ajFmtPrintF(outf,"Insufficient data points\n");
+	ajErr("Insufficient data points\n");
 	ajExitBad();
 	return 0;
     }
     
     
     
-    if(!plot)
+    if(outf)
 	ajFmtPrintF(outf,"SYCO of %s from %d to %d\n",ajSeqGetNameC(a),beg,
 		    end);
     
@@ -234,7 +234,7 @@ int main(int argc, char **argv)
 	    ajGraphPlpDataAddLine(this,(float)beg,1.0,(float)end,
 				  1.0,4);
 	}
-	else
+	if(outf)
 	{
 	    ajFmtPrintF(outf,"\n\n%s\n",frames[base]);
 	    ajFmtPrintF(outf,"Mid base\tGribskov value\n");
