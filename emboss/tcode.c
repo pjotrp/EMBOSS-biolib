@@ -206,9 +206,7 @@ int main(int argc, char **argv)
 	    ajGraphSetTitleDo(graph, ajTrue);
 	    ajGraphPlpDataSetYTitleC(this,"TESTCODE value");
 	    ajGraphPlpDataSetXTitleC(this,"Sequence mid position");
-
-	    
-	    ajGraphSetTitleC(graph,"Fickett TESTCODE plot");
+	    ajGraphSetTitlePlus(graph, ajSeqGetUsaS(seq));
 
 	    ajGraphPlpDataAddLine(this,this->x[0],(float)0.74,
 				  this->x[npoints-1],
