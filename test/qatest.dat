@@ -16974,10 +16974,8 @@ FP 0 /Died: /
 FI stdout
 FZ = 16
 FP /^Created syco.ps\n/
-FI paamir.syco
-FZ = 0
 FI syco.ps
-FZ = 62558
+FZ = 76061
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -17135,6 +17133,28 @@ FP /^ +T00702; PU.1;Quality: 3; Species: mouse, Mus musculus.\n/
 //
 
 ID tmap-ex
+AP tmap
+CL ../../data/opsd.msf -out tmap.res -graph cps
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FZ = 16
+FP /^Created tmap.ps\n/
+FI tmap.res
+FZ = 2290
+FP 3 /^     43      70        1 YMF.*KLRT\n/
+FP /^# Total_sequences: 3\n/
+FP /^# Total_hitcount: 21\n/
+FI tmap.ps
+FZ = 39613
+FP /^%%Title: PLplot Graph\n/
+FP /^%%Pages: 1\n/
+//
+
+ID tmap-single
 AP tmap
 CL tsw:opsd_human -out tmap.res -graph cps
 FI stderr
@@ -23215,6 +23235,7 @@ FP /^>ce1cg\n/
 ID mse-ex
 AB mse
 AA mse
+DL keep
 CL ../../data/dna.msf msf::mse.msf
 IK :21
 IK :1 up

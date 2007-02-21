@@ -15,7 +15,7 @@ pkgdata_DATA = aaindex1.test prosite.dat prosite.doc prints.test withrefm \
                aligna.dna alignapart.dna alignb.dna \
                aligna.prot alignapart.prot alignb.prot \
                nuc.pat nucseq.pat nucsimple.pat \
-               tranalign.pep tranalign.seq vtest.seq
+               tranalign.pep tranalign.seq vtest.seq opsd.msf
 
 pkgdatadir=$(prefix)/share/$(PACKAGE)/test/data
 
