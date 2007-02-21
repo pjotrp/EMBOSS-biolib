@@ -595,6 +595,7 @@ static AjBool    acdAttrToFloat(const AcdPAcd thys,
 				float *result);
 static AjBool    acdAttrTest(const AcdPAcd thys, const char *attrib);
 static AjBool    acdAttrTestDefined(const AcdPAcd thys, const char *attrib);
+static AjBool    acdAttrTestValue(const AcdPAcd thys,const  char *attrib);
 static AjBool    acdAttrToChar(const AcdPAcd thys,
 			       const char *attr, char defval, char *result);
 static AjBool    acdAttrToInt(const AcdPAcd thys,
@@ -18349,6 +18350,61 @@ static AjBool acdAttrTestDefined(const AcdPAcd thys,const  char *attrib)
 
 
 
+/* @funcstatic acdAttrTestValue ***********************************************
+**
+** Tests for the existence of a named attribute with a simple value
+**
+** @param [r] thys [const AcdPAcd] ACD item
+** @param [r] attrib [const char*] Attribute name
+** @return [AjBool] ajTrue if the named attribute exists
+** @@
+******************************************************************************/
+
+static AjBool acdAttrTestValue(const AcdPAcd thys,const  char *attrib)
+{
+    AcdPAttr attr;
+    AjPStr  *attrstr;
+    AcdPAttr defattr = acdAttrDef;
+    AjPStr  *defstr;
+    ajint i;
+
+    attrstr = thys->AttrStr;
+    defstr = thys->DefStr;
+
+
+    if(acdIsQtype(thys))
+	attr = acdType[thys->Type].Attr;
+    else
+	attr = acdKeywords[thys->Type].Attr;
+
+    i = acdFindAttrC(attr, attrib);
+    if(i >= 0)
+    {
+	if (ajStrGetLen(attrstr[i]) && ajStrFindAnyK(attrstr[i], '$') < 0)
+	    return ajTrue;
+	else
+	    return ajFalse;
+    }
+
+
+    if(thys->DefStr)
+    {
+	i = acdFindAttrC(defattr, attrib);
+	if(i >= 0)
+	{
+	    if (ajStrGetLen(defstr[i]) && ajStrFindAnyK(defstr[i], '$') < 0)
+		return ajTrue;
+	    else
+		return ajFalse;
+	}
+    }
+
+    return ajFalse;
+}
+
+
+
+
 /* @funcstatic acdAttrValue ***************************************************
 **
 ** Returns the string value for a named attribute
@@ -19170,8 +19226,14 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 
 	    if(acdAttrTest(*acd, "nullok"))
 	    {
-		attrok = acdAttrToBool(*acd, "nullok", /* -no for null value */
-				       ajFalse, &nullok);
+		if(acdAttrTestValue(*acd, "nullok"))
+		    attrok = acdAttrToBool(*acd, /* -no for null value */
+					   "nullok", ajFalse, &nullok);
+		else			/* assume it can be true */
+		{
+		    attrok = ajTrue;
+		    nullok = ajTrue;
+		}
 		acdLog("check for nullok, found:%B value:%B\n",
 		       attrok, nullok);
 	    }
