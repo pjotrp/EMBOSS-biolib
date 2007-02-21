@@ -135,8 +135,6 @@ typedef struct AjSElement
 ** @attr elms [AjPElement*] Secondary structure element array
 ** @attr n [ajint] Total no. of secondary structure elements
 **                       (helices, strands or turns) 
-** @attr elms [AjPElement*] Array of Element objects 
-**
 ** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ****************************************************************************/
