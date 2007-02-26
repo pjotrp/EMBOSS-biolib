@@ -87,7 +87,7 @@ aDataPtr Data;
 Matrix Comp;            /* the character compatibility matrix      */
 node *root;
 long **grouping;
-pointptr treenode;   /* pointers to all nodes in tree              */
+pointptr treenode = NULL;   /* pointers to all nodes in tree              */
 vecrec *garbage;
 
 /* these variables are to DoAll in the pascal Version. */
@@ -216,13 +216,16 @@ void clique_setuptree(void)
   /* initialization of tree pointers, variables */
   long i;
 
-  treenode = (pointptr)Malloc((long)spp*sizeof(node *));
+  if(!treenode)
+      treenode = (pointptr)Malloc((long)spp*sizeof(node *));
+
   for (i = 0; i < spp; i++) {
-    treenode[i] = (node *)Malloc((long)sizeof(node));
-    treenode[i]->next = NULL;
-    treenode[i]->back = NULL;
-    treenode[i]->index = i + 1;
-    treenode[i]->tip = false;
+      if(!treenode[i])
+	  treenode[i] = (node *)Malloc((long)sizeof(node));
+      treenode[i]->next = NULL;
+      treenode[i]->back = NULL;
+      treenode[i]->index = i + 1;
+      treenode[i]->tip = false;
   }
 }  /* clique_setuptree */
 
@@ -266,22 +269,22 @@ void clique_inputancestors(void)
   Char ch = ' ';
 
   for (i = 0; i < (chars); i++) {
-  ch = ajStrGetCharPos(phyloanc->Str[0], i);    
-    } while (ch == ' ');
-    switch (ch) {
-    
-    case '1':
-      ancone[i] = true;
-      break;
-
-    case '0':
-      ancone[i] = false;
-      break;
-    
-    default:
-      printf("BAD ANCESTOR STATE: %c AT CHARACTER %4ld\n", ch, i + 1);
-      exxit(-1);
-    }
+      ch = ajStrGetCharPos(phyloanc->Str[0], i);
+      switch (ch) {
+	  
+      case '1':
+	  ancone[i] = true;
+	  break;
+	  
+      case '0':
+	  ancone[i] = false;
+	  break;
+	  
+      default:
+	  printf("BAD ANCESTOR STATE: %c AT CHARACTER %4ld\n", ch, i + 1);
+	  ajExitBad();
+      }
+  }
 
  
 }  /* clique_inputancestors */
@@ -1335,6 +1338,8 @@ int main(int argc, Char *argv[])
    argc = 1;                /* macsetup("Clique","Clique");                */
    argv[0] = "Clique";
 #endif
+  long i;
+
   init(argc, argv);
   emboss_getoptions("fclique",argc,argv);
   ibmpc = IBMCRT;
@@ -1379,6 +1384,13 @@ int main(int argc, Char *argv[])
   phyRestoreConsoleAttributes();
 #endif
   printf("Done.\n\n");
+   if(treenode)
+   {
+       for(i = 0; i < spp; i++)
+	   free(treenode[i]);
+       free(treenode);
+   }
+   ajPhyloStateDelarray(&phylostates);
   embExit();
   return 0;
 }
