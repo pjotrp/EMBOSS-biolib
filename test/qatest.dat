@@ -2100,6 +2100,22 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
+ID backtranseq-nbrf
+UC Using an NBRF format sequence
+AP backtranseq
+IN ../../data/104k.nbrf
+IN
+FI 104k_thean.fasta
+FP /^>104K_THEAN/
+FP /CGCCACCGGCGTGGTG\n/
+FZ = 1092
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 ID banana-data
 AP banana
 CL -outfile banana.data -nograph
@@ -17384,100 +17400,85 @@ FZ = 574
 FP /poly-A tail removed/
 //
 
-# madness - never trims anything
 ID trimseq-ex
 AP trimseq
-CL tembl:hsfau hsfau.seq -window 1 -percent 100
+CL ../../data/untrimmed.seq trim1.seq -window 1 -percent 100
 FI stderr
 FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI hsfau.seq
-FZ = 562
-FP /^>HSFAU /
+FI trim1.seq
+FZ = 528
+FP /^>myseq/
+FP /^ttyyyctttctcgactc/
+FP /ttca-gnntcy\n/
 //
 
 ID trimseq-ex2
 AP trimseq
-CL tembl:hsfau hsfau.seq -window 5 -percent 40
+CL ../../data/untrimmed.seq trim2.seq -window 5 -percent 40
 FI stderr
 FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI hsfau.seq
-FZ = 562
-FP /^>HSFAU /
+FI trim2.seq
+FZ = 523
+FP /^>myseq/
+FP /^ttyyyctttctcgactc/
+FP /ttca-g\n/
 //
+
 
 ID trimseq-ex3
 AP trimseq
-CL tembl:hsfau hsfau.seq -window 20 -percent 80
+CL ../../data/untrimmed.seq trim3.seq -window 5 -percent 50
 FI stderr
 FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI hsfau.seq
-FZ = 562
-FP /^>HSFAU /
+FI trim3.seq
+FZ = 528
+FP /^>myseq/
+FP /^ttyyyctttctcgactc/
+FP /ttca-gnntcy\n/
 //
 
 ID trimseq-ex4
 AP trimseq
-CL tembl:hsfau hsfau.seq -window 20 -percent 10
+CL ../../data/untrimmed.seq trim4.seq -window 5 -percent 50 -strict
 FI stderr
 FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI hsfau.seq
-FZ = 562
-FP /^>HSFAU /
+FI trim4.seq
+FZ = 522
+FP /^>myseq/
+FP /^ctttctcgactc/
+FP /ttca-gnntc\n/
 //
 
 ID trimseq-ex5
 AP trimseq
-CL tembl:hsfau hsfau.seq -window 20 -percent 50 -strict
+CL ../../data/untrimmed.seq trim5.seq -window 5 -percent 50 -strict -noright
 FI stderr
 FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI hsfau.seq
-FZ = 562
-FP /^>HSFAU /
-//
-
-ID trimseq-ex6
-AP trimseq
-CL tembl:hsfau hsfau.seq -window 1 -percent 100 -star
-FI stderr
-FC = 1
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hsfau.seq
-FZ = 562
-FP /^>HSFAU /
-//
-
-ID trimseq-ex7
-AP trimseq
-CL tembl:hsfau hsfau.seq -window 20 -percent 50 -noright
-FI stderr
-FC = 1
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI hsfau.seq
-FZ = 562
-FP /^>HSFAU /
+FI trim5.seq
+FZ = 529
+FP /^>myseq/
+FP /^ctttctcgactc/
+FP /ttca-gnntcynnnnnn\n/
 //
 
 ID twofeat-ex
-UC Without the -twoout option the output report contains just one feature for every pair of features found.
+UC Without the -twoout option the output report contains just one feature
+UC for every pair of features found.
 AP twofeat
 CL tembl:hsfau
 IN polyA_signal
@@ -20395,7 +20396,7 @@ ID complex-check
 AQ complex
 TI 300
 CL -omnia
-IN tembl:*
+IN tembl:hs*
 IN
 IN
 IN
@@ -20410,11 +20411,11 @@ FP 0 /Died: /
 FI complex.ujtable
 FZ = 0
 FI hs989235.complex
-FZ = 3880
-FP /^ +10 +HSHT +1658 +0[.]7314 +\n/
+FZ = 1660
+FP /^ +9 +HSHT +1658 +0[.]7314 +\n/
 FI hs989235.fasta
-FZ = 658123
-FP 45 /^>/
+FZ = 153216
+FP 15 /^>/
 //
 
 ID corbatest-check
@@ -23465,7 +23466,7 @@ AB phylip
 AA ednaml
 ## may need to play with the input file format for this one
 CL -categories -catnum 2 -catvals "1.0 3.2" -catprob "0.4 0.6"
-CL -lambda 1.5 -autog -printdata -progress
+CL -lambda 1.5 -deflambda -printdata -progress
 IN ../../data/evolution/dnaml.dat
 IN
 IN
@@ -23909,15 +23910,14 @@ CL -weights ../../data/evolution/clique.weights
 IN ../../data/evolution/clique.dat
 IN
 FI clique.fclique
-FC = 58
+FC = 35
 FP /^     11223 4\n/
 FP /^Actual Characters: \(  1  4\)\n/
 FP /^Binary Characters: \(  1  2  6\)\n/
-FP 2 /Tree and binary characters:/
+FP 1 /Tree and binary characters:/
 FI clique.treefile
-FC = 2
-FP /^\(\(\(Alpha,Beta\),Gamma\),Delta,Epsilon\)\[0.5000\];\n/
-FP /^\(\(Alpha,Gamma,Epsilon\),Delta,Beta\)\[0.5000\];\n/
+FC = 1
+FP /^\(\(\(\(Alpha,Beta\),Gamma\),Epsilon\),Delta\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -24928,7 +24928,10 @@ IN ../../data/evolution/restdist.dat
 IN
 FI restdist.frestdist
 FC = 6
-FP /^Gamma       0.107681  0.107681  0.000000  0.176484  0.192466\n/
+## This is what we get from a fixed frestdist
+## phylip-3.6b restdist has the same valgrind error
+## Need to check current release to see if it is fixed
+FP /^Gamma       0.119106  0.119106  0.000000  0.192466  0.207319\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
