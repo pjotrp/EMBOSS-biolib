@@ -2213,7 +2213,7 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
     ajDebug("First line: %S\n", seqReadLine);
     if(ajStrGetCharPos(seqReadLine, 3) == ';') /* then it is really PIR format */
     {
-	ajStrAssignSubS(&tmpline,seqReadLine, 3, -1);
+	ajStrAssignSubS(&tmpline,seqReadLine, 4, -1);
 	ajFmtPrintS(&seqReadLine, ">%S",tmpline);
 	ajDebug("PIR format changed line to %S\n", seqReadLine);
 	ajStrDel(&tmpline);
@@ -2524,7 +2524,8 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 	    {		     /* skip reference lines with no prefix */
 		while((ok=ajFileBuffGetStore(buff,&seqReadLine,
 					     seqin->Text, &thys->TextPtr)))
-		    if(ajStrGetCharPos(seqReadLine,1)==';' || ajStrGetCharFirst(seqReadLine)=='>')
+		    if(ajStrGetCharPos(seqReadLine,1)==';' ||
+		       ajStrGetCharFirst(seqReadLine)=='>')
 			break;		/* X; line or next sequence */
 
 		if(ok)
@@ -2558,7 +2559,8 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 	/* SRS 8.1 is even worse - it has a peculiar bug that repeats
 	   the ID line but with a few digits in front, and then repeats the
 	   description */
-	if(ok && !ajStrGetLen(thys->Seq) && (ajStrFindAnyK(seqReadLine, '>') != -1))
+	if(ok && !ajStrGetLen(thys->Seq) &&
+	   (ajStrFindAnyK(seqReadLine, '>') != -1))
 	{
 	    ajStrAssignS(&tmpline, seqReadLine);
 	    ajStrTrimStartC(&tmpline,"0123456789");
@@ -2574,7 +2576,8 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 
     }
 
-    ajStrTrimEndC(&thys->Seq, "*");
+    if(ajStrGetCharLast(thys->Seq) == '*')
+	ajStrCutEnd(&thys->Seq, 1);
 
     if(ok)
 	ajFileBuffClearStore(buff, 1,
