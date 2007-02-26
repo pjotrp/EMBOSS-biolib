@@ -429,12 +429,14 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
 	  q = 'E';
 
 	idx = thys->back[ajAZToInt(q)];
+/*
 	if(thys->aa[idx]==27)
 	{
 	    ajStrAppendC(b,"End");
 	    ++p;
 	    continue;
 	}
+*/
 	ajStrAppendC(b,ajCodTriplet(idx));
 	++p;
     }
@@ -464,6 +466,7 @@ void ajCodBacktranslateAmbig(AjPStr *b, const AjPStr a, const AjPCod thys)
 
     ajStrAssignC(b, "");
 
+    ajDebug("ajCodBacktranslateAmbig '%S'\n", a);
     p = ajStrGetPtr(a);
     while(*p)
     {
