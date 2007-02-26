@@ -127,14 +127,14 @@ section: required [
     knowntype: "phylip probability values"
   ]
 
-  toggle: autog [
+  toggle: deflambda [
     standard: "$(categories)"
     default: "N"
-    information: "Use Default Mean block length of sites"
+    information: "Use default mean block length of sites"
   ]
 
   float: lambda [
-    standard: "@(!$(autog))"
+    standard: "@(!$(deflambda))"
     minimum: "1.0"
     default: "1.0"
     information: "Mean block length of sites having the same

@@ -25,7 +25,7 @@
                                   is accepted)
 *  -catprob            string     Space separated probability values (Any
                                   string is accepted)
-*  -autog              toggle     [N] Use Default Mean block length of sites
+*  -deflambda          toggle     [N] Use default mean block length of sites
 *  -lambda             float      [1.0] Mean block length of sites having the
                                   same rate (greater than 1) (Number 1.000 or
                                   more)

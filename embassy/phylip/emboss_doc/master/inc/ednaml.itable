@@ -118,8 +118,8 @@
 </tr>
 
 <tr>
-<td>-autog</td>
-<td>Use Default Mean block length of sites</td>
+<td>-deflambda</td>
+<td>Use default mean block length of sites</td>
 <td>Toggle value Yes/No</td>
 <td>No</td>
 </tr>
