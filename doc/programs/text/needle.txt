@@ -54,7 +54,7 @@ gap penalty + n * gap length penalty
 
    In a Needleman-Wunsch global alignment, the entire length of each
    sequence is aligned. This can be thought of as an overlap between the
-   two sequences (one can be completely within the otehr, or their ends
+   two sequences (one can be completely within the other, or their ends
    can overlap).
 
    This leaves no penalty for the hanging ends of the overlap. In
