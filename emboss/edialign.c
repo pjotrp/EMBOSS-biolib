@@ -638,7 +638,7 @@ int main(int argc, char **argv)
 	if(ajSeqIsProt(pseq))
 	    isprot = ajTrue;
 
-	AJCNEW(seq[i],len+1);
+	AJCNEW(seq[i],len+2);		/* room to shift */
 	strcpy(seq[i],ajSeqGetSeqC(pseq));
 	
 	sname = ajSeqsetGetseqNameS(seqset,i);
@@ -6758,7 +6758,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	    edialign_maxu(&endlen,shift[hv][ end[hv]-1 ] + 1);  
 
 	for(hv=0;hv<seqnum;hv++)
-	    if( (endseq[hv] = calloc(endlen, sizeof(char) )) == NULL )
+	    if( (endseq[hv] = calloc(endlen+1, sizeof(char) )) == NULL )
 	    {
 		printf(" not enough memory available for printing results!\n");
 		fprintf(fp," not enough memory available");   
