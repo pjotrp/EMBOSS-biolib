@@ -11,7 +11,7 @@ pkgdata_DATA = aaindex1.test prosite.dat prosite.doc prints.test withrefm \
                prot.acedb prot.codata prot.fasta prot.gcg prot.gcg8 \
                prot.ig prot.m-acedb prot.m-codata prot.m-fasta prot.m-nbrf \
                prot.m-ncbi prot.m-swiss prot.nbrf prot.ncbi prot.swiss \
-               prot.text z83307.seq \
+               prot.text z83307.seq 104k.nbrf \
                aligna.dna alignapart.dna alignb.dna \
                aligna.prot alignapart.prot alignb.prot \
                nuc.pat nucseq.pat nucsimple.pat \
