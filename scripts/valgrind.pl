@@ -20,7 +20,12 @@
 		"ohmmcalibrate-qa2" => "cp ../../qa/ohmm-own-keep/myhmms .",
 		"ohmmcalibrate-qa3" => "cp ../../qa/ohmm-own-keep/myhmms .",
 		"intconv-qa1" => "cp ../../qa/intconv-check/stdin .",
-		"fmove-qa1" => "cp ../../data/fmove.in .",
+		"fdnamove-qa1" => "cp ../../data/fmove.in ./stdin",
+		"fdolmove-qa1" => "cp ../../data/fmove.in ./stdin",
+		"fdrawgram-qa1" => "cp ../../data/fdrawgram.in ./stdin",
+		"fmove-qa1" => "cp ../../data/fmove.in ./stdin",
+		"fretree-qa1" => "cp ../../data/fretree.in ./stdin",
+		"mse-qa1" => "cp ../../qa/mse-ex/stdin ./stdin",
 		"" => ""
 		);
 
