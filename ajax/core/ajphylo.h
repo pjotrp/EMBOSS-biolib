@@ -255,6 +255,7 @@ AjPPhyloProp   ajPhyloPropRead (const AjPStr filename, const AjPStr propchars,
 void           ajPhyloPropTrace (const AjPPhyloProp thys);
 
 void           ajPhyloStateDel (AjPPhyloState* pthis);
+void           ajPhyloStateDelarray(AjPPhyloState** pthis);
 AjPPhyloState  ajPhyloStateNew (void);
 AjPPhyloState* ajPhyloStateRead (const AjPStr filename,
 				 const AjPStr statechars);
