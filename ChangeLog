@@ -1,4 +1,14 @@
 Version 4.1.0
+	Backtranseq now keeps stop positions in the sequence and replaces
+	them with the most common stop codon. Previous releases converted
+	stops to 'X' and back translated them as 'NNN'.
+
+	Reading sequences in NBRF (or PIR) format now only removes one '*'
+	from the end, allowing protein sequences to end with a stop codon.
+
+	Reading NBRF format sequences in FASTA format was retaining a ';'
+	in front of the sequence ID. This is now fixed.
+
 	Pattern files and regular expression files now use the -pformat
 	and -pname associated qualifiers which weere ignored when they
 	first appeared in 4.0.0. Pattern file formats are "fasta" for the
