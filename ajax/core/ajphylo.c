@@ -145,14 +145,20 @@ AjPPhyloTree ajPhyloTreeNew(void)
 
 void ajPhyloDistDel(AjPPhyloDist* pthis)
 {
-    AjPPhyloDist thys = *pthis;
+    AjPPhyloDist thys;
     ajint i;
 
+    if(!pthis) return;
+
+    thys = *pthis;
     if(!thys) return;
 
     if(thys->Names)
+    {
 	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Names[i]);
+	AJFREE(thys->Names);
+    }
 
     AJFREE(thys->Data);
     AJFREE(thys->Replicates);
@@ -178,13 +184,17 @@ void ajPhyloFreqDel(AjPPhyloFreq* pthis)
     AjPPhyloFreq thys;
     ajint i;
 
-    thys = *pthis;
+    if(!pthis) return;
 
+    thys = *pthis;
     if(!thys) return;
 
     if(thys->Names)
+    {
 	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Names[i]);
+	AJFREE(thys->Names);
+    }
 
     AJFREE(thys->Locus);
     AJFREE(thys->Allele);
@@ -213,8 +223,9 @@ void ajPhyloPropDel(AjPPhyloProp* pthis)
     AjPPhyloProp thys;
     ajint i;
 
-    thys = *pthis;
+    if(!pthis) return;
 
+    thys = *pthis;
     if(!thys) return;
 
     if(thys->Str)
@@ -241,19 +252,55 @@ void ajPhyloStateDel(AjPPhyloState* pthis)
     AjPPhyloState thys;
     ajint i;
 
-    thys = *pthis;
+    if(!pthis) return;
 
+    thys = *pthis;
     if(!thys) return;
 
     if(thys->Names)
+    {
 	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Names[i]);
+ 	AJFREE(thys->Names);
+   }
 
     if(thys->Str)
+    {
 	for(i=0; i < thys->Size; i++)
 	    ajStrDel(&thys->Str[i]);
+	AJFREE(thys->Str);
+    }
 
     ajStrDel(&thys->Characters);
+    AJFREE(*pthis);
+
+    return;
+
+}
+
+
+
+/* @func ajPhyloStateDelarray *************************************************
+**
+** Destructor for AjPPhyloState array
+**
+** @param [d] pthis [AjPPhyloState**] States object array
+** @return [void]
+******************************************************************************/
+
+void ajPhyloStateDelarray(AjPPhyloState** pthis)
+{
+    ajuint i = 0;
+
+    if(!pthis) return;
+    if(!*pthis) return;
+
+    while((*pthis)[i])
+    {
+	ajPhyloStateDel(&(*pthis)[i]);
+	i++;
+    }
+
     AJFREE(*pthis);
 
     return;
@@ -274,8 +321,9 @@ void ajPhyloTreeDel(AjPPhyloTree* pthis)
 {
     AjPPhyloTree thys;
 
-    thys = *pthis;
+    if(!pthis) return;
 
+    thys = *pthis;
     if(!thys) return;
 
     ajStrDel(&thys->Tree);
@@ -1237,6 +1285,9 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
     }
 
     ajListDel(&proplist);
+    ajStrDel(&proppat);
+    ajStrDel(&token);
+    ajStrDel(&rdline);
 
     ajPhyloPropTrace(ret);
     return ret;
@@ -1426,7 +1477,14 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
     ajFileClose(&statefile);
     ajListToArray(statelist, (void***) &states);
     ret = (AjPPhyloState*) states;
-    
+
+    ajListDel(&statelist);
+    ajStrDel(&tmpval);
+    ajStrDel(&tmpstr);
+    ajStrDel(&rdline);
+    ajStrDel(&charpat);
+    ajStrDel(&token);
+
     return ret;
 }
 
