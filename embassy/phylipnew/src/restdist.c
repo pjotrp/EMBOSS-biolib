@@ -120,7 +120,7 @@ void allocrest()
 
   y = (Char **)Malloc(spp*sizeof(Char *));
   for (i = 0; i < spp; i++)
-    y[i] = (Char *)Malloc(sites*sizeof(Char));
+    y[i] = (Char *)Malloc((sites+1)*sizeof(Char));
   nayme = (naym *)Malloc(spp*sizeof(naym));
   weight = (steptr)Malloc((sites+1)*sizeof(long));
   alias = (steptr)Malloc((sites+1)*sizeof(long));
@@ -358,6 +358,7 @@ void makev(long m, long n, double *v)
   denominator = 0;
   for (i = 0; i < endsite; i++) {
     ii = alias[i];
+    if(!ii) ii=1;	  /* pmr: it could be zero in a simple test */
     if ((y[m-1][ii-1] == '+') || (y[n-1][ii-1] == '+')) {
       denominator += weight[i];
       if ((y[m-1][ii-1] == '+') && (y[n-1][ii-1] == '+')) {

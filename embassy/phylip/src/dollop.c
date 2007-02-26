@@ -167,9 +167,13 @@ long inseed0;
 
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;
+  inf->fp = NULL;
+  ajFileClose(&inf);
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
+  outf->fp = NULL;
+  ajFileClose(&outf);
 
   fprintf(outfile,"\nDollo and polymorphism parsimony algorithm,");
   fprintf(outfile," version %s\n\n",VERSION);
@@ -227,6 +231,8 @@ long inseed0;
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
+    treef->fp = NULL;
+    ajFileClose(&treef);
   }
 }
 
@@ -1214,7 +1220,7 @@ void findtree(long *pos,boolean *found)
       lower = (*pos) + 1;
   }
   if (!(*found) && !below)
-    (*pos)++;
+      (*pos)++;
 }  /* findtree */
 
 void addtree(long *pos)
@@ -2067,7 +2073,7 @@ int main(int argc, Char *argv[])
   }
   bestrees = (long **)Malloc(maxtrees*(sizeof(long *)));
   for (j = 1; j <= maxtrees; j++)
-    bestrees[j - 1] = (long *)Malloc(spp*sizeof(long));
+    bestrees[j - 1] = (long *)Malloc((spp+1)*sizeof(long));
   numsteps = (steptr)Malloc(chars*sizeof(long));
   nayme = (Char **)Malloc(spp*sizeof(Char *));
   for (j = 1; j <= spp; j++)

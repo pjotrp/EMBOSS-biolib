@@ -283,7 +283,7 @@ int scanned;
       ajUser("Error probabilities must add up to 1.0, plus or minus 0.001.");
       embExit();
     }
-    auto_ = !ajAcdGetToggle("autog");
+    auto_ = !ajAcdGetToggle("deflambda");
     if(auto_){
       lambda = ajAcdGetFloat("lambda");
       lambda = 1.0 / lambda;

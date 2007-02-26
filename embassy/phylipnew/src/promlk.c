@@ -755,7 +755,7 @@ void allocrest()
   y     = (Char **)Malloc(spp*sizeof(Char *));
   nayme  = (naym *)Malloc(spp*sizeof(naym));
   for (i = 0; i < spp; i++)
-    y[i] = (char *)Malloc(sites * sizeof(char));
+    y[i] = (char *)Malloc((sites+1) * sizeof(char));
   enterorder  = (long *)Malloc(spp*sizeof(long));
   weight      = (long *)Malloc(sites*sizeof(long));
   category    = (long *)Malloc(sites*sizeof(long));

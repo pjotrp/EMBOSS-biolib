@@ -241,7 +241,7 @@ void allocrest()
   }
   bestrees = (long **)Malloc(maxtrees*sizeof(long *));
   for (i = 1; i <= maxtrees; i++)
-    bestrees[i - 1] = (long *)Malloc(spp*sizeof(long));
+    bestrees[i - 1] = (long *)Malloc((spp+1)*sizeof(long));
   extras = (steptr)Malloc(chars*sizeof(long));
   weight = (steptr)Malloc(chars*sizeof(long));
   threshwt = (double *)Malloc(chars*sizeof(double));

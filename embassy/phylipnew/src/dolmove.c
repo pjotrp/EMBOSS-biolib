@@ -643,7 +643,12 @@ void dolmove_drawline(long i)
   if (i == (long)p->ycoord && (p == root || subtree)) {
     c = overt;
     if (p == root)
-      cc = guess[dispchar - 1];
+    {
+	if(!dispchar) 
+	    cc = guess[0];
+	else
+	    cc = guess[dispchar - 1];
+    }
     else
       cc = p->state;
     if (display) {

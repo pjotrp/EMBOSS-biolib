@@ -170,6 +170,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
+  outf->fp = NULL;
+  ajFileClose(&outf);
+
   usertree = !ajAcdGetToggle("besttree");
   if(!usertree){
     jumble = ajAcdGetToggle("random");
@@ -218,6 +221,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
+    treef->fp = NULL;
+    ajFileClose(&treef);
   }
 }
 
@@ -2605,7 +2610,7 @@ int main(int argc, Char *argv[])
   }
   bestrees = (long **)Malloc(maxtrees*sizeof(long *));
   for (j = 1; j <= maxtrees; j++)
-    bestrees[j - 1] = (long *)Malloc(spp*sizeof(long));
+    bestrees[j - 1] = (long *)Malloc((spp+1)*sizeof(long));
   nayme = (Char **)Malloc(spp*sizeof(Char *));
   for (j = 1; j <= spp; j++)
     nayme[j - 1] = (Char *)Malloc(nmlngth*sizeof(Char));

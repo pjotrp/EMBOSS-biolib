@@ -186,7 +186,7 @@ void allocrest()
 
   y = (Char **)Malloc(spp*sizeof(Char *));
   for (i = 0; i < spp; i++)
-    y[i] = (Char *)Malloc(chars*sizeof(Char));
+    y[i] = (Char *)Malloc((chars+1)*sizeof(Char));
   convtab = (Char **)Malloc(spp*sizeof(Char *));
   for (i = 0; i < spp; i++)
     convtab[i] = (Char *)Malloc(chars*sizeof(Char));
