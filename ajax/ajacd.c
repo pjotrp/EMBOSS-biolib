@@ -7127,6 +7127,8 @@ static void acdSetDiscretestates(AcdPAcd thys)
 	ajStrAssignC(&thys->ValStr, "");
     }
 
+    ajStrDel(&statechars);
+
     thys->Value = val;
    
     return;
