@@ -1,2 +1,5 @@
+	fclique had an error reading the ancestors file. Results now agree
+	with those from the original phylip 3.6 code.
+
 	fdnamove had an internal overflow. Array chh[11] needed at least
 	one extra space.
