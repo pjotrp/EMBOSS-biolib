@@ -1,3 +1,7 @@
+	frestdist had a memory access error reported by valgrind. The same
+	error was found in the original phylip source, and fixed by
+	copying in code changes in phylip 3.66
+
 	fclique had an error reading the ancestors file. Results now agree
 	with those from the original phylip 3.6 code.
 
