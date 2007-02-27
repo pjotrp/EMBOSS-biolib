@@ -75,7 +75,10 @@
 </tr>
 
 <tr>
-<td colspan=4>(none)</td>
+<td>-allsequences</td>
+<td>Show all sequences in output</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
