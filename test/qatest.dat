@@ -2107,8 +2107,8 @@ IN ../../data/104k.nbrf
 IN
 FI 104k_thean.fasta
 FP /^>104K_THEAN/
-FP /CGCCACCGGCGTGGTG\n/
-FZ = 1092
+FP /^GGCATCCTGTGA\n/
+FZ = 2709
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -20590,9 +20590,8 @@ FP 0 /Died: /
 
 ID prima-check
 AQ prima
+CL -minprodlen 200 -maxprodlen 250
 IN tembl:eclaci
-IN
-IN
 IN
 IN
 IN
@@ -20603,8 +20602,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI eclaci.prima
-FZ = 1597
-FP /^3 pairs found\n/
+FZ = 1259
+FP /^2 pairs found\n/
+FP / +266 TTGTCGCGGCGATTAAATCTC +286\s+510 GTACCGTCTTCATGGGAGAAA +530\n/
+FP / +452 CTAATGTTCCGGCGTTATTT +471\s+696 TTTGTTGAAAACCGGACATG +715\n/
 //
 
 ID primers-check
@@ -24931,7 +24932,7 @@ FC = 6
 ## This is what we get from a fixed frestdist
 ## phylip-3.6b restdist has the same valgrind error
 ## Need to check current release to see if it is fixed
-FP /^Gamma       0.119106  0.119106  0.000000  0.192466  0.207319\n/
+FP /^Gamma       0.107681  0.107681  0.000000  0.176484  0.192466\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
