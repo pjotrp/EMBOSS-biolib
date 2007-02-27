@@ -63,6 +63,7 @@ void DoAll(boolean *, boolean *, boolean *, long);
 
 void Gen2(long, long, boolean *, boolean *, boolean *);
 void GetMaxCliques(vecrec **);
+void reallocchars(void);
 /* function prototypes */
 #endif
 
@@ -230,6 +231,22 @@ void clique_setuptree(void)
 }  /* clique_setuptree */
 
 
+void reallocchars(void)
+{
+  long i;
+  Comp = (Matrix)Malloc((long)chars*sizeof(vecrec *));
+  for (i = 0; i < (chars); i++)
+    clique_gnu(&Comp[i]);
+  ancone = (aPtr)Malloc((long)chars*sizeof(boolean));
+  Factor = (Char *)Malloc((long)chars*sizeof(Char));
+  ActChar = (long *)Malloc((long)chars*sizeof(long));
+  oldweight = (long *)Malloc((long)chars*sizeof(long));
+  weight = (long *)Malloc((long)chars*sizeof(long));
+  ActualChars = chars;
+  for (i = 1; i <= (chars); i++)
+    ActChar[i - 1] = i;
+}
+
 void allocrest(void)
 {
   long i;
@@ -333,11 +350,14 @@ void inputoptions(void)
   /* reads the species names and character data */
   long i;
   if(justwts){
+    if(!firstset)
+      samenumspstate(phylostates[ith-1], &chars, ith);
     if(firstset){
       ActualChars = chars;
       for (i = 1; i <= (chars); i++)
         ActChar[i - 1] = i;
-    }
+    } else reallocchars();
+
     for (i = 0; i < (chars); i++)
       oldweight[i] = 1;
     inputweightsstr(phyloweights->Str[ith-1], chars, oldweight, &weights);
@@ -353,8 +373,6 @@ void inputoptions(void)
       clique_printancestors();
     noroot = !(outgropt || ancvar);
   } else {
-    if (!firstset)
-      samenumspstate(phylostates[ith-1], &chars, ith);
     ActualChars = chars;
     for (i = 1; i <= (chars); i++)
       ActChar[i - 1] = i;
