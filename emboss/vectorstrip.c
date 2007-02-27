@@ -116,14 +116,17 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 				     AjPFile outf);
 static void vectorstrip_scan_sequence(const Vector vector, AjPSeqout seqout,
 				      AjPFile outf, AjPSeq sequence,
-				      ajint mis_per, AjBool besthits);
+				      ajint mis_per,
+				      AjBool besthits, AjBool allsequences);
 static void vectorstrip_ccs_pattern(const AjPStr pattern, AjPList hitlist,
 				    const AjPStr seqname, const AjPStr seqstr,
 				    ajint begin, ajuint* hits, ajint mm);
 /* result output */
+static void vectorstrip_print_sequence(const AjPSeq sequence,
+				       ajint start, ajint end, AjPFile outf);
 static void vectorstrip_write_sequence(const AjPSeq sequence,
 				       AjPSeqout seqout,
-				       ajint start, ajint end, AjPFile outf);
+				       ajint start, ajint end);
 static void vectorstrip_print_hits(AjPList l, AjPFile outf, const AjPStr seq,
 				   ajint begin);
 static void vectorstrip_reportseq(const AjPStr seqstr, AjPFile outf);
@@ -149,6 +152,7 @@ int main(int argc, char **argv)
     AjPFile vectorfile;
     AjPList vectorlist = NULL;
     AjBool besthits = AJTRUE;
+    AjBool allsequences;
     Vector vvec;
     /* pattern related */
     AjPStr fiveprime  = NULL;
@@ -165,6 +169,7 @@ int main(int argc, char **argv)
     fiveprime  = ajAcdGetString("linkerA");
     threeprime = ajAcdGetString("linkerB");
     vectorfile = ajAcdGetInfile("vectorsFILE");
+    allsequences = ajAcdGetBool("allsequences");
 
     vectorlist = ajListNew();
 
@@ -200,7 +205,7 @@ int main(int argc, char **argv)
 	{
 	    vvec = ajListIterNext(iter);
 	    vectorstrip_scan_sequence(vvec, seqout, outf, seq, threshold,
-				      besthits);
+				      besthits, allsequences);
 	}
 	ajListIterFree(&iter);
     }
@@ -555,7 +560,8 @@ static void vectorstrip_process_hits(const AjPList fivelist,
     ajListIterFree(&iter);
 
     /* classify the hits */
-    if((ajListLength(fivelist) ==1 && ajListLength(threelist) == 1)
+    if((ajListLength(fivelist) == 1 &&
+	ajListLength(threelist) == 1)
        && ((ajIntGet(three, 0) + (ajint)m->len + 1) == ajIntGet(five, 0)))
 	/* the patterns are identical and only match once in the sequence */
 	type = 1;
@@ -592,14 +598,21 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 		if(ajIntGet(five,i) <= ajIntGet(three,j))
 		{
 		    hit = 1;
-		    vectorstrip_write_sequence(sequence, seqout,
+		    vectorstrip_print_sequence(sequence,
 					       ajIntGet(five,i),
 					       ajIntGet(three,j), outf);
+		    vectorstrip_write_sequence(sequence, seqout,
+					       ajIntGet(five,i),
+					       ajIntGet(three,j));
 		}
 
 	    if(!hit)
-		vectorstrip_write_sequence(sequence, seqout, ajIntGet(five, i),
+	    {
+		vectorstrip_print_sequence(sequence, ajIntGet(five, i),
 					   ajSeqGetEnd(sequence),outf);
+		vectorstrip_write_sequence(sequence, seqout, ajIntGet(five, i),
+					   ajSeqGetEnd(sequence));
+	    }
 	}
 
 	for(i=0; i<ajIntLen(three); i++)
@@ -609,21 +622,36 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 		if(ajIntGet(three,i) >= ajIntGet(five,j))
 		    hit=1;
 	    if(!hit)
-		vectorstrip_write_sequence(sequence, seqout,
+	    {
+		vectorstrip_print_sequence(sequence,
 					   ajSeqGetBegin(sequence),
 					   ajIntGet(three,i),outf);
+		vectorstrip_write_sequence(sequence, seqout,
+					   ajSeqGetBegin(sequence),
+					   ajIntGet(three,i));
+	    }
 	}
 	break;
 
     case 3:
 	for(i=0; i<ajIntLen(five); i++)
-	    vectorstrip_write_sequence(sequence, seqout, ajIntGet(five, i),
+	{
+	    vectorstrip_print_sequence(sequence, ajIntGet(five, i),
 				       ajSeqGetEnd(sequence), outf);
+	    vectorstrip_write_sequence(sequence, seqout, ajIntGet(five, i),
+				       ajSeqGetEnd(sequence));
+	}
 	break;
     case 4:
 	for(j=0; j<ajIntLen(three); j++)
-	    vectorstrip_write_sequence(sequence, seqout, ajSeqGetBegin(sequence),
+	{
+	    vectorstrip_print_sequence(sequence,
+				       ajSeqGetBegin(sequence),
 				       ajIntGet(three, j), outf);
+	    vectorstrip_write_sequence(sequence, seqout,
+				       ajSeqGetBegin(sequence),
+				       ajIntGet(three, j));
+	}
 	break;
 
     default:
@@ -651,12 +679,14 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 ** @param [r] mis_per [ajint] max mismatch percentage
 ** @param [r] besthits [AjBool] stop scanning when we get hits, even if
 **                              mis_per is not reached yet
+** @param [r] sequences [AjBool] report all sequences in the output file
 ** @return [void]
 ******************************************************************************/
 
 static void vectorstrip_scan_sequence(const Vector vector, AjPSeqout seqout,
 				      AjPFile outf, AjPSeq sequence,
-				      ajint mis_per, AjBool besthits)
+				      ajint mis_per,
+				      AjBool besthits, AjBool allsequences)
 {
     ajint begin = 0;
     ajint end = 0;
@@ -689,8 +719,13 @@ static void vectorstrip_scan_sequence(const Vector vector, AjPSeqout seqout,
 				    text, mis_per, begin, besthits);
 
     if(!(ajListLength(fivelist) || ajListLength(threelist)))
+    {
 	ajFmtPrintF(outf, "\nSequence: %s \t Vector: %s\tNo match\n",
 		    ajStrGetPtr(seqname), ajStrGetPtr(vector->name));
+	if(allsequences)
+	    vectorstrip_process_hits(fivelist, threelist, sequence,
+				     seqout, outf);
+    }
     else
     {
 	ajFmtPrintF(outf, "\n\nSequence: %s \t Vector: %s\n",
@@ -787,7 +822,6 @@ static void vectorstrip_ccs_pattern(const AjPStr pattern, AjPList hitlist,
 ** from 5' and 3' ends) are written to outf
 **
 ** @param [r] sequence [const AjPSeq] the entire sequence
-** @param [w] seqout [AjPSeqout] where to write out subsequences
 ** @param [r] start [ajint] start position of desired subsequence relative
 **                          to sequence
 ** @param [r] end [ajint] end position of desired subsequence relative
@@ -796,7 +830,7 @@ static void vectorstrip_ccs_pattern(const AjPStr pattern, AjPList hitlist,
 ** @return [void]
 ******************************************************************************/
 
-static void vectorstrip_write_sequence(const AjPSeq sequence, AjPSeqout seqout,
+static void vectorstrip_print_sequence(const AjPSeq sequence,
 				       ajint start, ajint end, AjPFile outf)
 {
     AjPStr name = NULL;
@@ -824,7 +858,6 @@ static void vectorstrip_write_sequence(const AjPSeq sequence, AjPSeqout seqout,
 	ajStrAppendS(&name, num);
 
 	ajSeqAssignNameS(seqcp, name);
-	ajSeqoutWriteSeq(seqout, seqcp);
 
 	/* report the hit to outf */
 	ajFmtPrintF(outf, "\tfrom %d to %d\n", start, end);
@@ -852,6 +885,59 @@ static void vectorstrip_write_sequence(const AjPSeq sequence, AjPSeqout seqout,
     ajStrDel(&threetrim);
     ajStrDel(&outs);
     ajStrDel(&name);
+    ajStrDel(&num);
+
+    return;
+}
+
+
+
+/* @funcstatic vectorstrip_write_sequence *************************************
+**
+** Details of the output
+** sequence (hit positions, number of mismatches, sequences trimmed
+** from 5' and 3' ends) are written to outf
+**
+** @param [r] sequence [const AjPSeq] the entire sequence
+** @param [w] seqout [AjPSeqout] where to write out subsequences
+** @param [r] start [ajint] start position of desired subsequence relative
+**                          to sequence
+** @param [r] end [ajint] end position of desired subsequence relative
+**                        to sequence
+** @return [void]
+******************************************************************************/
+
+static void vectorstrip_write_sequence(const AjPSeq sequence, AjPSeqout seqout,
+				       ajint start, ajint end)
+{
+    AjPStr name = NULL;
+    AjPStr num  = NULL;
+
+    /* copy the sequence */
+    AjPSeq seqcp     = NULL;
+ 
+    seqcp = ajSeqNewSeq(sequence);
+    name  = ajStrNewS(ajSeqGetNameS(seqcp));
+    num   = ajStrNew();
+
+    if(start <= end)
+    {
+	ajSeqSetRange(seqcp, start, end);
+
+	ajStrAppendC(&name, "_from_");
+	ajStrFromInt(&num, start);
+	ajStrAppendS(&name,num);
+	ajStrAppendC(&name, "_to_");
+	ajStrFromInt(&num, end);
+	ajStrAppendS(&name, num);
+
+	ajSeqAssignNameS(seqcp, name);
+	ajSeqoutWriteSeq(seqout, seqcp);
+
+    }
+
+    ajSeqDel(&seqcp);
+     ajStrDel(&name);
     ajStrDel(&num);
 
     return;
