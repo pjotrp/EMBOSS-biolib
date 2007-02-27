@@ -1,4 +1,14 @@
 Version 4.1.0
+	A new ACD attribute outputmodifier: "Y" identifies qualifiers that
+	cause the kinds of output changes that can break parsers. An
+	obvious example is the -html qualifier on may of the utility
+	programs. This attribute is a warning to wrapper developers and
+	maintainers that they may want to fix the value of this qualifier
+	and not allow users to change it. In some cases (as with toggle
+	qualifiers) it may be useful to wrap each possible value
+	separately. For example, tfm can run as an HTML version (-html)
+	and a text version (-nohtml -nomore).
+
 	Backtranseq now keeps stop positions in the sequence and replaces
 	them with the most common stop codon. Previous releases converted
 	stops to 'X' and back translated them as 'NNN'.

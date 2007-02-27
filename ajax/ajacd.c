@@ -1117,6 +1117,7 @@ enum AcdEDef
     DEF_NEEDED,
     DEF_KNOWNTYPE,
     DEF_RELATIONS,
+    DEF_OUTPUTMODIFIER,
     DEF_STYLE,
     DEF_QUALIFIER,
     DEF_TEMPLATE,
@@ -1162,6 +1163,8 @@ AcdOAttr acdAttrDef[] =
     {"relations", VT_STR, 0, "",
 	 "Relationships between this ACD item and others, "
 	     "defined as specially formatted text"},
+    {"outputmodifier", VT_BOOL, 0, "N",
+	 "Modifies the output in ways that can break parsers"},
     {"style", VT_STR, 0, "",
 	 "Style for SoapLab's ACD files"},
     {"qualifier", VT_STR, 0, "",
