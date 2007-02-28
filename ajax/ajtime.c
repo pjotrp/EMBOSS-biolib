@@ -417,7 +417,21 @@ void ajTimeDel(AjPTime *thys)
 }
 
 
+/* @func ajTimeMake ***********************************************************
+**
+** An AjPTime object version of the mktime function that returns
+** a standard time_t value
+**
+** @param [r] thys [const AjPTime] Time object
+** @return [time_t] Standard time value
+** @@
+******************************************************************************/
 
+time_t ajTimeMake(const AjPTime thys)
+{
+    struct tm tm = thys->time;		/* mktime resets wday and yday */
+    return mktime(&tm);
+}
 
 
 /* @func ajTimeExit ***********************************************************

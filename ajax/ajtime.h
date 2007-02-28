@@ -45,6 +45,7 @@ AjPTime       ajTimeSet(const char *timefmt,
 AjBool        ajTimeSetS(AjPTime thys, const char* timestr);
 AjPTime       ajTimeNew(void);
 void          ajTimeDel(AjPTime *thys);
+time_t        ajTimeMake(const AjPTime thys);
 
 /*
 ** End of prototype definitions
