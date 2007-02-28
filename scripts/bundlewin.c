@@ -909,6 +909,14 @@ static int copy_apps(char *basedir, listnode *head)
 	exit(-1);
     }
 
+    sprintf(command,"cp %s/acd/*.standard %s/win32/acd",dir,basedir);
+    
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
     sprintf(command,"cp %s/emboss/win32/exes/*.exe %s/win32/apps/release",
 	    basedir,basedir);
     
