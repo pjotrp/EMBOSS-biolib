@@ -679,7 +679,7 @@ static void vectorstrip_process_hits(const AjPList fivelist,
 ** @param [r] mis_per [ajint] max mismatch percentage
 ** @param [r] besthits [AjBool] stop scanning when we get hits, even if
 **                              mis_per is not reached yet
-** @param [r] sequences [AjBool] report all sequences in the output file
+** @param [r] allsequences [AjBool] report all sequences in the output file
 ** @return [void]
 ******************************************************************************/
 
@@ -815,7 +815,7 @@ static void vectorstrip_ccs_pattern(const AjPStr pattern, AjPList hitlist,
 /* result output */
 
 
-/* @funcstatic vectorstrip_write_sequence *************************************
+/* @funcstatic vectorstrip_print_sequence *************************************
 **
 ** Details of the output
 ** sequence (hit positions, number of mismatches, sequences trimmed
