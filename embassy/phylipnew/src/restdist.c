@@ -380,7 +380,7 @@ void makev(long m, long n, double *v)
     ii = alias[i+1];
     if ((y[m-1][ii-1] == '+') ||
 	(y[n-1][ii-1] == '+')) {
-      denominator += weight[i=1];
+      denominator += weight[i+1];
       if ((y[m-1][ii-1] == '+') &&
 	  (y[n-1][ii-1] == '+')) {
         numerator += weight[i+1];
