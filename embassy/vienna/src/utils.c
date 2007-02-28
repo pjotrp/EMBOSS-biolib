@@ -15,8 +15,9 @@
 #ifdef WITH_DMALLOC
 #include "dmalloc.h"
 #endif
+#include "emboss.h"
 /*@unused@*/
-static const char rcsid[] = "$Id: utils.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
+static const char rcsid[] = "$Id: utils.c,v 1.4 2007/02/28 11:46:56 rice Exp $";
 
 #define PRIVATE  static
 #define PUBLIC
@@ -95,7 +96,21 @@ PUBLIC void nrerror(const char message[])       /* output message upon error */
 PUBLIC void init_rand(void)
 {
   time_t t;
-  (void) time(&t);
+  AjPStr timestr = NULL;
+  AjPTime timenow = NULL;
+
+  if(ajNamGetValueC("timetoday", &timestr))
+  {
+      timenow = ajTimeNew();
+      ajTimeSetS(timenow, ajStrGetPtr(timestr));
+      t = ajTimeMake(timenow);
+      ajStrDel(&timestr);
+      ajTimeDel(&timenow);
+  }
+  else
+  {
+      (void) time(&t);
+  }
   xsubi[0] = xsubi[1] = xsubi[2] = (unsigned short) t;  /* lower 16 bit */
   xsubi[1] += (unsigned short) ((unsigned)t >> 6);
   xsubi[2] += (unsigned short) ((unsigned)t >> 12);
