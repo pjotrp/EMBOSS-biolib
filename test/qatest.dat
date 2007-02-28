@@ -24932,7 +24932,7 @@ FC = 6
 ## This is what we get from a fixed frestdist
 ## phylip-3.6b restdist has the same valgrind error
 ## Need to check current release to see if it is fixed
-FP /^Gamma       0.107681  0.107681  0.000000  0.176484  0.192466\n/
+FP /^Gamma       0.107681  0.107681  0.000000  0.192466  0.207319\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
