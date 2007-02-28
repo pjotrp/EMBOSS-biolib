@@ -78,8 +78,10 @@ const AjPStr ajBaseCodes(ajint ibase)
 
 ajint ajAZToInt(ajint c)
 {
-    if((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') )
-	return(toupper(c)-(ajint)'A');
+    ajint ic = toupper(c);
+
+    if(ic >= (ajint) 'A' && ic <= (ajint) 'Z')
+	return(ic - (ajint)'A');
 
     return 27;
 }
