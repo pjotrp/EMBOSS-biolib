@@ -5089,7 +5089,7 @@ AjBool ajFileNameDirSetC(AjPStr* filename, const char* dir)
 #ifndef WIN32
 	fileFilenameExp = ajRegCompC("(.*/)?([^/]+)$");
 #else
-	fileFilenameExp = ajRegCompC("(.*\\)?([^\\]+)$");
+	fileFilenameExp = ajRegCompC("(.*\\\\)?([^\\\\]+)$");
 #endif
 
     if(ajRegExec(fileFilenameExp, *filename))
