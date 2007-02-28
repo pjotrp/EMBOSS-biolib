@@ -975,6 +975,7 @@ information: ""<br>
 knowntype: ""<br>
 missing: "N"<br>
 needed: "y"<br>
+outputmodifier: "N"<br>
 parameter: "N"<br>
 prompt: ""<br>
 qualifier: ""<br>
@@ -2989,7 +2990,6 @@ default value is Y (True). The data value is Y for yes and N for
 no.</p>
 
 
-
 <a name="sect2312">&nbsp;</a>
 <a name="fnB1">&nbsp;</a>
 <h4>2.3.1.2 Input<a href="#fn1">[1]</a></h4>
@@ -3872,6 +3872,14 @@ included in a GUI form. Some parameters are available on the command line, but
 are not generally useful to users, or can cause confusion when presented in a
 GUI form with all other options.</p>
 
+<p><i>outputmodifier:</i></p>
+
+<p>Indicates that this qualifier modifies the output in ways that can
+break parsers, for example by changing text output into HTML. Authors
+of wrappers can use this to test for qualifiers that can be hardcoded
+to fix the output syntax and content. Please let the EMBOSS team know
+if any other qualifiers are candidates for marking as output modifiers.
+
 <p><i>code:</i></p>
 
 <p>A code word (no spaces) which is searched for
@@ -4473,6 +4481,12 @@ qualifier. If set to "N" by default, then the default action may be
 the opposite of what the information or help text implies. If the
 value is calculated, the user may need some extra guidance.</p>
 
+<p>The <i>outputmodifier:</i> attribute is set where this parameter
+changes the content or syntax of the output. This is provided for the
+developers of other interfaces and parsers of EMBOSS output so that
+they can fix the value, or provide parsers for each alternative.
+
+
 <h5>Float</h5>
 
 <p>The <i>minimum:</i> and <i>maximum:</i> attributes define the lower
@@ -4542,6 +4556,12 @@ command line option would typically be "-noxxx" where "xxx" is the
 qualifier. If set to "N" by default, then the default action may be
 the opposite of what the information or help text implies. If the
 value is calculated, the user may need some extra guidance.</p>
+
+<p>The <i>outputmodifier:</i> attribute is set where this parameter
+changes the content or syntax of the output. This is provided for the
+developers of other interfaces and parsers of EMBOSS output so that
+they can fix the value, or provide parsers for each alternative.
+
 
 <a name="sect24122">&nbsp;</a>
 <h5>2.4.1.2.2 Input</h5>
