@@ -490,8 +490,6 @@ float ajMeltEnergy2(const char *strand, ajint pos, ajint len, AjBool isDNA,
     AjPStr line = NULL;
     float ident = 0.0;
     float energy;
-    char p1;
-    char p2;
 
     limit = len-1;
 
