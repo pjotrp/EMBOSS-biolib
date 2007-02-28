@@ -61,7 +61,11 @@ static TimeOFormat timeFormat[] =  /* formats for strftime */
     {"time", "%H:%M:%S"},
     {"daytime", "%d-%b-%Y %H:%M"},
     {"log", "%a %b %d %H:%M:%S %Y"},
+#ifndef WIN32
     {"report", "%a %e %b %Y %H:%M:%S"},
+#else
+    {"report", "%a %#d %b %Y %H:%M:%S"},
+#endif
     {"dbindex", "%d/%m/%y"},
     { NULL, NULL}
 };
