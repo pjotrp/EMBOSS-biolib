@@ -24,7 +24,7 @@ typedef struct AjSTime {
 } AjOTime, AjODate;
 
 #define AjPTime AjOTime*
-#define AjPDate AjODate*a
+#define AjPDate AjODate*
 
 
 
