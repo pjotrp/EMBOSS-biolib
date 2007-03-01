@@ -44,16 +44,18 @@
 **
 ** @attr offset [ajint] Undocumented
 ** @attr count [ajint] Undocumented
-** @attr total [ajint] Undocumented
 ** @attr list [AjPList] Undocumented
+** @attr total [ajint] Undocumented
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct concatS
 {
     ajint offset;
     ajint count;
-    ajint total;
     AjPList list;
+    ajint total;
+    char  Padding[4];
 } concat;
 
 

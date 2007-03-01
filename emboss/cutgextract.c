@@ -34,23 +34,25 @@
 **
 ** @attr Count [ajint[CODONS]] Number of occurrences for each codon
 **                             in standard order
-** @attr CdsCount [ajint] Number of CDSs counted
 ** @attr Division [AjPStr] EMBL/GenBank division
 ** @attr Doc [AjPStr] Documentation string
 ** @attr Species [AjPStr] Species
 ** @attr Warn [ajint] Number of warnings issued
 ** @attr Skip [ajint] Number of CDSs skipped
+** @attr CdsCount [ajint] Number of CDSs counted
+** @attr Padding [char [4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct CutgSValues
 {
     ajint Count[CODONS];
-    ajint CdsCount;
     AjPStr Division;
     AjPStr Doc;
     AjPStr Species;
     ajint Warn;
     ajint Skip;
+    ajint CdsCount;
+    char  Padding[4];
 } CutgOValues;
 #define CutgPValues CutgOValues*
 
