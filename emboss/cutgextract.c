@@ -40,7 +40,7 @@
 ** @attr Warn [ajint] Number of warnings issued
 ** @attr Skip [ajint] Number of CDSs skipped
 ** @attr CdsCount [ajint] Number of CDSs counted
-** @attr Padding [char [4]] Padding to alignment boundary
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct CutgSValues

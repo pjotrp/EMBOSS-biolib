@@ -41,7 +41,7 @@
 ** @attr cut2 [ajint] Undocumented
 ** @attr cut3 [ajint] Undocumented
 ** @attr cut4 [ajint] Undocumented
-** @attr Padding [char [4]] Padding to alignment boundary
+** @attr Padding [char[4]] Padding to alignment boundary
 ******************************************************************************/
 
 typedef struct AjSRinfo
