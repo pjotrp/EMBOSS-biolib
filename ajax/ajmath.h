@@ -43,8 +43,8 @@ ajuint             ajMathPosI(ajuint len, ajuint imin, ajint ipos);
 ajuint             ajMathPos(ajuint len, ajint ipos);
 ajuint             ajNumLengthDouble(double dnumber);
 ajuint             ajNumLengthFloat(float fnumber);
-ajuint             ajNumLengthInt(ajint inumber);
-ajuint             ajNumLengthUint(ajuint inumber);
+ajuint             ajNumLengthInt(ajlong inumber);
+ajuint             ajNumLengthUint(ajulong inumber);
 /*
 ** End of prototype definitions
 */

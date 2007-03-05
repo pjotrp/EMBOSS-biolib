@@ -7574,7 +7574,7 @@ AjBool ajStrFromDouble(AjPStr* Pstr, double val, ajint precision)
     thys = *Pstr;
 
     sprintf(fmt, "%%.%df", precision);
-    thys->Len = sprintf(thys->Ptr, fmt, val);
+    ajFmtPrintS(Pstr, fmt, val);
 
     return ret ;
 }
@@ -7615,7 +7615,7 @@ AjBool ajStrFromDoubleExp(AjPStr* Pstr, double val, ajint precision)
     thys = *Pstr;
 
     sprintf(fmt, "%%.%de", precision);
-    thys->Len = sprintf(thys->Ptr, fmt, val);
+    ajFmtPrintS(Pstr, fmt, val);
 
     return ret ;
 }
@@ -7662,7 +7662,7 @@ AjBool ajStrFromFloat(AjPStr* Pstr, float val, ajint precision)
     thys = *Pstr;
 
     sprintf(fmt, "%%.%df", precision);
-    thys->Len = sprintf(thys->Ptr, fmt, val);
+    ajFmtPrintS(Pstr, fmt, val);
 
     return ret;
 }
@@ -7699,7 +7699,7 @@ AjBool ajStrFromInt(AjPStr* Pstr, ajint val)
     ret = ajStrSetRes(Pstr, i);
     thys = *Pstr;
 
-    thys->Len = sprintf(thys->Ptr, "%d", val);
+    ajFmtPrintS(Pstr, "%d", val);
 
     return ret ;
 }
@@ -7736,7 +7736,7 @@ AjBool ajStrFromLong(AjPStr* Pstr, ajlong val)
     ret = ajStrSetRes(Pstr, i);
     thys = *Pstr;
 
-    thys->Len = sprintf(thys->Ptr, "%ld", (long)val);
+    ajFmtPrintS(Pstr, "%ld", (long)val);
 
     return ret;
 }
@@ -7771,6 +7771,7 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
     thys = *Pstr;
 
     thys->Len = sprintf(thys->Ptr, "%u", val);
+    ajFmtPrintS(Pstr, "%u", val);
 
     return ret ;
 }

@@ -674,25 +674,14 @@ ajuint ajMathPosI(ajuint len, ajuint imin, ajint ipos)
 
 ajuint ajNumLengthDouble(double dnumber)
 {
+    double dnum = fabs(dnumber);
     ajuint ilen = 1;
-    ajuint maxnum = UINT_MAX/10;
-    ajuint i;
-    double dblabs;
 
-    dblabs = (double) ((int)abs((int)dnumber));
+    if(dnum >= 10.0)
+	ilen += log10(dnum);
 
-    if(dnumber < 0.0) ilen++;		/* space for the sign */
+    if(dnumber < 0.0) ilen++;
 
-    if(dblabs < 1.0)
-	return ilen;
-
-    for(i=10;i<maxnum;i*=10)
-    {
-	if(dblabs >= i)
-	    ilen++;
-	else
-	    break;
-    }
     return ilen;
 }
 
@@ -708,25 +697,15 @@ ajuint ajNumLengthDouble(double dnumber)
 
 ajuint ajNumLengthFloat(float fnumber)
 {
+    double dnum = fabs(fnumber);
+
     ajuint ilen = 1;
-    ajuint maxnum = UINT_MAX/10;
-    ajuint i;
-    float fltabs;
 
-    fltabs = (float) ((int)abs((int)fnumber));
+    if(dnum >= 10.0)
+	ilen += log10(dnum);
 
-    if(fnumber < 0.0) ilen++;		/* space for the sign */
+    if(fnumber < 0.0) ilen++;
 
-    if(fltabs < 1.0)
-	return ilen;
-
-    for(i=10;i<maxnum;i*=10)
-    {
-	if(fltabs >= i)
-	    ilen++;
-	else
-	    break;
-    }
     return ilen;
 }
 
@@ -735,17 +714,17 @@ ajuint ajNumLengthFloat(float fnumber)
 **
 ** Returns the length of a number written as an integer
 **
-** @param [r] inumber [ajint] Integer
+** @param [r] inumber [ajlong] Integer
 ** @return [ajuint] Number of digits
 ** @@
 ******************************************************************************/
 
-ajuint ajNumLengthInt(ajint inumber)
+ajuint ajNumLengthInt(ajlong inumber)
 {
     ajuint ilen = 1;
-    ajuint maxnum = UINT_MAX/10;
-    ajuint i;
-    ajuint iabs;
+    ajuint maxnum = ULONG_MAX/10;
+    ajulong i;
+    ajulong iabs;
 
     if(inumber < 0) iabs = -inumber;
     else iabs = inumber;
@@ -771,16 +750,16 @@ ajuint ajNumLengthInt(ajint inumber)
 **
 ** Returns the length of a number written as an integer
 **
-** @param [r] inumber [ajuint] Unsigned integer
+** @param [r] inumber [ajulong] Unsigned integer
 ** @return [ajuint] Number of digits
 ** @@
 ******************************************************************************/
 
-ajuint ajNumLengthUint(ajuint inumber)
+ajuint ajNumLengthUint(ajulong inumber)
 {
     ajuint ilen = 1;
-    ajuint maxnum = UINT_MAX/10;
-    ajuint i;
+    ajulong maxnum = ULONG_MAX/10;
+    ajulong i;
 
     if(!inumber)
 	return ilen;
