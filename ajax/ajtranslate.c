@@ -224,8 +224,7 @@ void ajTrnDel(AjPTrn* pthis)
 
 /* @func ajTrnNewC ************************************************************
 **
-** Initialises translation. Reads a translation data file
-** ajTrnDel(AjPTrn); should be called when translation has ceased.
+** Initialises translation. Reads a translation data file.
 **
 ** @param [r] filename [const char*] translation table file name
 ** @return [AjPTrn] Translation object
