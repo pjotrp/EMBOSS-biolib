@@ -7561,11 +7561,8 @@ AjBool ajStrFromDouble(AjPStr* Pstr, double val, ajint precision)
     long long i;
     char fmt[12];
     AjPStr thys;
-    long long ival;
 
-    ival = (long long) fabs(val);
-
-    if(ival)
+    if(val)
 	i = precision + ajNumLengthDouble(val) + 3;
     else
 	i = precision + 4;
@@ -7602,11 +7599,8 @@ AjBool ajStrFromDoubleExp(AjPStr* Pstr, double val, ajint precision)
     long long i;
     char fmt[12];
     AjPStr thys;
-    long long ival;
 
-    ival = (long long) fabs(val);
-
-    if(ival)
+    if(val)
 	i = precision + ajNumLengthDouble(val) + 8;
     else
 	i = precision + 8;
@@ -7649,11 +7643,8 @@ AjBool ajStrFromFloat(AjPStr* Pstr, float val, ajint precision)
     ajuint i;
     char fmt[12];
     AjPStr thys;
-    ajuint ival;
 
-    ival = abs((ajint) val);
-
-    if(ival)
+    if(val)
 	i = precision + ajNumLengthFloat(val) + 4;
     else
 	i = precision + 4;
