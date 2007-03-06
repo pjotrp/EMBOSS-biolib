@@ -674,13 +674,20 @@ ajuint ajMathPosI(ajuint len, ajuint imin, ajint ipos)
 
 ajuint ajNumLengthDouble(double dnumber)
 {
-    double dnum = fabs(dnumber);
+    double dnum;
     ajuint ilen = 1;
+    double td = 0.;
+
+    dnum = fabs(dnumber);
 
     if(dnum >= 10.0)
-	ilen += log10(dnum);
+    {
+	td = log10(dnum);
+	ilen += (ajuint) td;
+    }
 
-    if(dnumber < 0.0) ilen++;
+    if(dnumber < 0.0)
+	ilen++;
 
     return ilen;
 }
@@ -697,14 +704,21 @@ ajuint ajNumLengthDouble(double dnumber)
 
 ajuint ajNumLengthFloat(float fnumber)
 {
-    double dnum = fabs(fnumber);
-
+    double dnum;
     ajuint ilen = 1;
+    double td = 0.;
+    
+    dnum = fabs((double)fnumber);
+
 
     if(dnum >= 10.0)
-	ilen += log10(dnum);
+    {
+	td = log10(dnum);
+	ilen += (ajuint) td;
+    }
 
-    if(fnumber < 0.0) ilen++;
+    if(fnumber < 0.0)
+	ilen++;
 
     return ilen;
 }
@@ -722,17 +736,20 @@ ajuint ajNumLengthFloat(float fnumber)
 ajuint ajNumLengthInt(ajlong inumber)
 {
     ajuint ilen = 1;
-    ajuint maxnum = ULONG_MAX/10;
+    ajulong maxnum = ULONG_MAX/10;
     ajulong i;
     ajulong iabs;
 
-    if(inumber < 0) iabs = -inumber;
-    else iabs = inumber;
+    if(inumber < 0)
+	iabs = -inumber;
+    else
+	iabs = inumber;
 
     if(!iabs)
 	return ilen;
 
-    if(inumber < 0) ilen++;		/* space for the sign */
+    if(inumber < 0)
+	ilen++;		/* space for the sign */
 
     for(i=10;i<maxnum;i*=10)
     {
@@ -741,6 +758,7 @@ ajuint ajNumLengthInt(ajlong inumber)
 	else
 	    break;
     }
+
     return ilen;
 }
 
@@ -771,6 +789,7 @@ ajuint ajNumLengthUint(ajulong inumber)
 	else
 	    return ilen;
     }
+
     return ilen;
 }
 
