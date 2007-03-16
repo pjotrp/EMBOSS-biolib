@@ -1,3 +1,8 @@
+Version 5.0.0
+	libplplot renamed to libeplplot and plplot headers are now installed
+	to include/eplplot. This avoids collisions with later versions of
+	plplot.
+
 Version 4.1.0
 	A new ACD attribute outputmodifier: "Y" identifies qualifiers that
 	cause the kinds of output changes that can break parsers. An
