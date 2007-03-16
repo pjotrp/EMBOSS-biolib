@@ -2,7 +2,7 @@
 
 SUBDIRS = lib
 
-lib_LTLIBRARIES = libplplot.la
+lib_LTLIBRARIES = libeplplot.la
 
 if ISSHARED
 if ISAIXIA64
@@ -34,12 +34,11 @@ linuxvga.c ljiip.c ljii.c next.c null.c pbm.c plbuf.c \
 plmeta.c ps.c tek.c xfig.c xwin.c gdpng.c
 
 
-libplplot_la_SOURCES = $(PLPLOTSRC)
+libeplplot_la_SOURCES = $(PLPLOTSRC)
 
-libplplot_la_LDFLAGS = -version-info 5:0:0
+libeplplot_la_LDFLAGS = -version-info 5:0:0
 
-include_HEADERS = drivers.h pdf.h plcore.h plevent.h plplotP.h plxwd.h \
+pkginclude_HEADERS = drivers.h pdf.h plcore.h plevent.h plplotP.h plxwd.h \
 metadefs.h plConfig.h pldebug.h plplot.h plstrm.h plDevs.h
 
-
-
+pkgincludedir = $(includedir)/eplplot

@@ -9,9 +9,9 @@ endif
 if ISSHARED
 if ISAIXIA64
 if NEEDAJAX
-AM_CFLAGS = -Wl,-G -L../plplot/.libs -L.libs -lajax -lplplot -lm
+AM_CFLAGS = -Wl,-G -L../plplot/.libs -L.libs -lajax -leplplot -lm
 else
-AM_CFLAGS = -Wl,-G -L../plplot/.libs -L.libs -lplplot -lm
+AM_CFLAGS = -Wl,-G -L../plplot/.libs -L.libs -leplplot -lm
 endif
 else
 AM_CFLAGS =
@@ -19,7 +19,7 @@ endif
 endif
 
 if ISCYGWIN
-AM_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import -L../plplot -lplplot
+AM_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import -L../plplot -leplplot
 endif
 
 ## PCRE stuff (version 4.3)

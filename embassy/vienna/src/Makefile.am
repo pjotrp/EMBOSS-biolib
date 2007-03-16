@@ -11,15 +11,15 @@ bin_PROGRAMS = vrnaalifold vrnacofoldpf vrnaevalpair vrnainverse \
 if LOCALLINK
 INCLUDES = -I../H -I../../../ajax -I../../../nucleus -I../../../plplot
 else
-INCLUDES = -I../H -I${embprefix}/include
+INCLUDES = -I../H -I${embprefix}/include -I${embprefix}/include/eplplot
 endif
 
 if ISSHARED
 if ISAIXIA64
 if LOCALLINK
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs -L../../../ajax/.libs -L../../../nucleus/.libs -lnucleus -lajax -lplplot
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L../../../plplot/.libs -L../../../ajax/.libs -L../../../nucleus/.libs -lnucleus -lajax -leplplot
 else
-AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lajax -lplplot
+AM_CFLAGS = -Wl,-bdynamic -Wl,-brtl -L${embprefix}/lib -lnucleus -lajax -leplplot
 endif
 else
 AM_CFLAGS =
@@ -60,7 +60,7 @@ vrnaplot_SOURCES = vrnaplot.c
 vrnasubopt_SOURCES = vrnasubopt.c
 
 if LOCALLINK
-LDADD = libviennarna.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+LDADD = libviennarna.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = libviennarna.la -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+LDADD = libviennarna.la -L${embprefix}/lib -lnucleus -lajax -leplplot $(XLIB)
 endif

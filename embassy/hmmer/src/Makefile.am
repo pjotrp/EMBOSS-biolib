@@ -8,7 +8,7 @@ bin_PROGRAMS = ohmmcalibrate ohmmconvert ohmmemit ohmmfetch ohmmindex \
 if LOCALLINK
 INCLUDES = -IINCLUDE -I../../../ajax
 else
-INCLUDES = -IINCLUDE -I${embprefix}/include
+INCLUDES = -IINCLUDE -I${embprefix}/include -I${embprefix}/include/eplplot
 endif
 
 if ISSHARED
@@ -51,7 +51,7 @@ ohmmsearch_SOURCES    = ohmmsearch.c
 oalistat_SOURCES      = oalistat.c
 
 if LOCALLINK
-LDADD = libhmmer.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+LDADD = libhmmer.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = libhmmer.la -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+LDADD = libhmmer.la -L${embprefix}/lib -lnucleus -lajax -leplplot $(XLIB)
 endif

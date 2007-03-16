@@ -9,7 +9,7 @@ bin_PROGRAMS = omeme
 if LOCALLINK
 INCLUDES = -IINCLUDE -I../../../ajax
 else
-INCLUDES = -IINCLUDE -I${embprefix}/include
+INCLUDES = -IINCLUDE -I${embprefix}/include -I${embprefix}/include/eplplot
 endif
 
 if ISSHARED
@@ -38,7 +38,7 @@ libmeme_la_LDFLAGS = -version-info 2:3:1
 omeme_SOURCES = meme.c
 
 if LOCALLINK
-LDADD = libmeme.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+LDADD = libmeme.la ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = libmeme.la -L${embprefix}/lib -lnucleus -lajax -lplplot $(XLIB)
+LDADD = libmeme.la -L${embprefix}/lib -lnucleus -lajax -leplplot $(XLIB)
 endif

@@ -11,7 +11,7 @@ endif
 endif
 
 if ISCYGWIN
-AM_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import -L../plplot -L../ajax -lplplot -lajax
+AM_LDFLAGS = -no-undefined -Wl,--add-stdcall-alias -Wl,--export-all-symbols -Wl,--enable-auto-import -L../plplot -L../ajax -leplplot -lajax
 endif
 
 
