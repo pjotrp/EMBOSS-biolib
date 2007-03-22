@@ -461,10 +461,13 @@ fi
 fi          
 
 dnl test for cygwin to set AM_LDFLAGS in library & apps Makefile.ams
+dnl but note that MacOSX & SunOS have limited 'expr' applications
 AJOSNAME=`uname`
 iscyg=no
+if test $AJOSNAME != "Darwin" && test $AJOSNAME != "SunOS" ; then
 if test `expr substr $AJOSNAME 1 6` = "CYGWIN"; then
    iscyg=yes
+fi
 fi
 AM_CONDITIONAL(ISCYGWIN, test "$iscyg" = "yes")
 AC_SUBST(ISCYGWIN)
