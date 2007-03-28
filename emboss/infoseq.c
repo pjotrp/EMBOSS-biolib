@@ -67,6 +67,7 @@ int main(int argc, char **argv)
     AjPStr    altacc    = NULL;
     AjPStr    altgi     = NULL;
     AjPStr    altsv     = NULL;
+    AjPStr    altdb     = NULL;
     ajint     length;
     AjBool    type      = ajTrue; /* ajTrue if Protein */
     float     pgc       = 0.0;
@@ -77,6 +78,7 @@ int main(int argc, char **argv)
     const AjPStr gi        = NULL;
     const AjPStr sv        = NULL;
     const AjPStr desc      = NULL;
+    const AjPStr db        = NULL;
     AjBool columns   = ajFalse;   
     AjPStr delimiter = NULL;      
     AjPStr tempstr   = NULL;      
@@ -112,6 +114,7 @@ int main(int argc, char **argv)
     altacc    = ajStrNewC("-");
     altgi     = ajStrNewC("-");
     altsv     = ajStrNewC("-");
+    altdb     = ajStrNewC("-");
     tempstr   = ajStrNew();   
     
 
@@ -215,9 +218,9 @@ int main(int argc, char **argv)
 	    usa = altusa;
 
 	/* db */
-	name = (AjPStr)ajSeqGetDbS(seq);
-	if(ajStrGetLen(name) == 0)
-	    name = altname;
+	db = (AjPStr)ajSeqGetDbS(seq);
+	if(ajStrGetLen(db) == 0)
+	    db = altdb;
 
 	/* name */
 	name = ajSeqGetNameS(seq);
