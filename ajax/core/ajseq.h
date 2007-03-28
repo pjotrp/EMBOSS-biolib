@@ -162,6 +162,8 @@ void         ajSeqGapStandard (AjPSeq thys, char gapch);
 __deprecated void         ajSeqGapStandardS(AjPStr thys, char gapch);
 const char*  ajSeqGetAccC (const AjPSeq thys);
 const AjPStr ajSeqGetAccS (const AjPSeq thys);
+const char*  ajSeqGetDbC (const AjPSeq thys);
+const AjPStr ajSeqGetDbS (const AjPSeq thys);
 const char*  ajSeqGetDescC (const AjPSeq thys);
 const AjPStr ajSeqGetDescS (const AjPSeq thys);
 const char*  ajSeqGetEntryC (const AjPSeq thys);

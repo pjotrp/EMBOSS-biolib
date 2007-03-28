@@ -53,6 +53,7 @@ int main(int argc, char **argv)
     AjBool    doheader;
     AjBool    dotype;
     AjBool    dousa;
+    AjBool    dodb;
     AjBool    doname;
     AjBool    doacc;
     AjBool    dogi;
@@ -94,6 +95,7 @@ int main(int argc, char **argv)
     html      = ajAcdGetBool("html");
     doheader  = ajAcdGetBool("heading");
     dousa     = ajAcdGetBool("usa");
+    dodb      = ajAcdGetBool("database");
     doname    = ajAcdGetBool("name");
     doacc     = ajAcdGetBool("accession");
     dogi      = ajAcdGetBool("gi");
@@ -102,9 +104,9 @@ int main(int argc, char **argv)
     dolength  = ajAcdGetBool("length");
     dopgc     = ajAcdGetBool("pgc");
     dodesc    = ajAcdGetBool("description");
-    columns   = ajAcdGetBool("columns");     
+    columns   = ajAcdGetBool("columns"); 
     delimiter = ajAcdGetString("delimiter"); 
-    
+
     altusa    = ajStrNewC("-");
     altname   = ajStrNewC("-");
     altacc    = ajStrNewC("-");
@@ -148,6 +150,11 @@ int main(int argc, char **argv)
 		if(dousa)
 		    instring = infoseq_printheader(html, instring,
 						   "USA", 25, 
+						   columns, delimiter,
+						   outfile);
+		if(dodb)
+		    instring = infoseq_printheader(html, instring,
+						   "Database", 10, 
 						   columns, delimiter,
 						   outfile);
 		if(doname)
@@ -207,6 +214,11 @@ int main(int argc, char **argv)
 	if(ajStrGetLen(usa) == 0)
 	    usa = altusa;
 
+	/* db */
+	name = (AjPStr)ajSeqGetDbS(seq);
+	if(ajStrGetLen(name) == 0)
+	    name = altname;
+
 	/* name */
 	name = ajSeqGetNameS(seq);
 	if(ajStrGetLen(name) == 0)
@@ -252,6 +264,10 @@ int main(int argc, char **argv)
 	if(dousa)
 	    instring = infoseq_print(html, instring, usa,
 				     ajTrue, 25, columns, 
+				     delimiter, outfile);
+	if(dodb)
+	    instring = infoseq_print(html, instring, db,
+				     ajTrue, 15, columns, 
 				     delimiter, outfile);
 	if(doname)
 	    instring = infoseq_print(html, instring, name,

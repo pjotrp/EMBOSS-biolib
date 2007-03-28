@@ -2458,6 +2458,46 @@ __deprecated ajint  ajSeqTrueBegin(const AjPSeq seq)
     return ajSeqGetBeginTrue(seq);
 }
 
+/* @func ajSeqGetDbC **********************************************************
+**
+** Returns the sequence database name.
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [r] seq [const AjPSeq] Sequence object.
+** @return [const char*] Database name as a character string.
+** @@
+******************************************************************************/
+
+const char* ajSeqGetDbC(const AjPSeq seq)
+{
+    return MAJSTRGETPTR(seq->Db);
+}
+
+
+
+
+/* @func ajSeqGetDbS **********************************************************
+**
+** Returns the sequence database name.
+** Because this is a pointer to the real internal string
+** the caller must take care not to change the character string in any way.
+** If the string is to be changed (case for example) then it must first
+** be copied.
+**
+** @param [r] seq [const AjPSeq] Sequence object.
+** @return [const AjPStr] Database name as a string.
+** @@
+******************************************************************************/
+
+const AjPStr ajSeqGetDbS(const AjPSeq seq)
+{
+    return seq->Db;
+}
+
+
 /* @func ajSeqGetDescC ********************************************************
 **
 ** Returns the sequence description.
@@ -2500,7 +2540,9 @@ const AjPStr ajSeqGetDescS(const AjPSeq seq)
 /* @obsolete ajSeqGetDesc
 ** @rename ajSeqGetDescS
 */
+
 __deprecated const AjPStr  ajSeqGetDesc(const AjPSeq seq)
+
 {
     return seq->Desc;
 }
