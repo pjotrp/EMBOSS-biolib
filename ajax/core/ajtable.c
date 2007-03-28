@@ -515,7 +515,7 @@ void ajTableMapDel(AjPTable table,
 
 /* @func ajTableRemove ********************************************************
 **
-** removes the key-value pair from table and returns the removed
+** Removes the key-value pair from table and returns the removed
 ** value. If table does not hold key, ajTableRemove has no effect
 ** and returns null.
 **
@@ -545,6 +545,52 @@ void * ajTableRemove(AjPTable table, const void *key)
 	{
 	    struct binding *p = *pp;
 	    void *value = p->value;
+	    *pp = p->link;
+	    AJFREE(p);
+	    table->length--;
+	    return value;
+	}
+
+    return NULL;
+}
+
+
+
+
+/* @func ajTableRemoveKey *****************************************************
+**
+** Removes the key-value pair from table and returns the removed
+** value. If table does not hold key, ajTableRemove has no effect
+** and returns null.
+**
+** @param [u] table [AjPTable] Table
+** @param [r] key [const void*] key to be removed
+** @param [w] truekey [void**] true internal key returned, now owned by caller
+** @return [void*] removed value.
+** @error NULL if key not found.
+** @category modify [AjPTable] Removes a key/value pair from a
+**                table, and returns the value.
+** @@
+******************************************************************************/
+
+void * ajTableRemoveKey(AjPTable table, const void *key, void** truekey)
+{
+    ajint i;
+    struct binding **pp;
+
+    if(!table)
+	return NULL;
+    if(!key)
+	return NULL;
+
+    table->timestamp++;
+    i = (*table->hash)(key, table->size);
+    for(pp = &table->buckets[i]; *pp; pp = &(*pp)->link)
+	if((*table->cmp)(key, (*pp)->key) == 0)
+	{
+	    struct binding *p = *pp;
+	    void *value = p->value;
+	    *truekey = p->key;
 	    *pp = p->link;
 	    AJFREE(p);
 	    table->length--;

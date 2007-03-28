@@ -92,6 +92,7 @@ void       ajTableMapDel (AjPTable table,
 void*      ajTablePut   (AjPTable table, void *key,
 			 void *value);
 void*      ajTableRemove (AjPTable table, const void *key);
+void*      ajTableRemoveKey(AjPTable table, const void *key, void** truekey);
 ajuint     ajTableToarray (const AjPTable table,
 			   void*** keyarray, void*** valarray);
 void       ajTableTrace   (const AjPTable table);
