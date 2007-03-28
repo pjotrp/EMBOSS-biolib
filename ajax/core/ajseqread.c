@@ -10137,9 +10137,9 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
     /* restart parsing with only bars */
 
-    ajStrTokenAssignC(&handle,str,"|");
+    ajStrTokenAssignC(&handle,idstr,"|");
     for(i=0;i<nt-2;++i)
-	ajStrTokenNextParse(&handle, &token);
+      ajStrTokenNextParse(&handle, &token);
 
     ajStrAssignS(db, token);
     ajStrTokenNextParse(&handle, &token);
