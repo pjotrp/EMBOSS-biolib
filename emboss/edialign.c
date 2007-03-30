@@ -597,8 +597,12 @@ int main(int argc, char **argv)
     ajuint s_len;
     char s_str[SEQ_NAME_LEN+3];
     AjPSeqout seqout = NULL;
+    AjPStr tnstr = NULL;
     
+
     embInit("edialign", argc, argv);
+
+    tnstr = ajStrNew();
 
     seqset    = ajAcdGetSeqset("sequences");
     nucmode   = ajAcdGetListSingle("nucmode");
@@ -993,12 +997,15 @@ int main(int argc, char **argv)
     }
 */
 
-    fp_matrix = ajFileFp(matfp);
+    ajStrAssignS(&tnstr,ajFileGetName(matfp));
+    ajFileClose(&matfp);
+
+    fp_matrix = fopen(ajStrGetPtr(tnstr),"rb");
 
     if( wgt_type != 1 )
 	edialign_matrix_read( fp_matrix );
 
-    ajFileClose(&matfp);
+
 
     edialign_mem_alloc(  );
 
@@ -1418,7 +1425,10 @@ int main(int argc, char **argv)
   
     if( textual_alignment )
     {
-	fp_ali = ajFileFp(outfile);
+	ajStrAssignS(&tnstr,ajFileGetName(outfile));
+	ajFileClose(&outfile);
+
+	fp_ali = fopen(ajStrGetPtr(tnstr),"wb");
 	/* fp_ali = fopen(itname,"w"); */
     }
     
@@ -1762,8 +1772,7 @@ int main(int argc, char **argv)
 
     if( textual_alignment )
     {
-	ajFileClose(&outfile);
-	/*	fclose(fp_ali);*/
+	fclose(fp_ali);
     }
     
 
@@ -1778,6 +1787,9 @@ int main(int argc, char **argv)
 	printf (" total_pa_time = %f \n", total_pa_time );
 	printf (" corresponds to %f percent \n\n", perc_pa_time );
     } 
+
+
+    ajStrDel(&tnstr);
 
     embExit();
 
@@ -6230,9 +6242,9 @@ static void edialign_matrix_read( FILE *fp_mat )
 	fscanf( fp_mat, "%s\n", dummy);
     }
 
-/*
+
     fclose(fp_mat);
-*/
+
     for( i = 0 ; i <= 20 ; i++ )
     {
 	sim_score[i][0] = 0 ;
@@ -6272,9 +6284,14 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
     ajint sum, len;
     double pr;
     AjPFile etpfile = NULL;
+    AjPStr tnstr = NULL;
     
     FILE *fp;
  
+
+    tnstr = ajStrNew();
+    
+
     if ( w_type == 0 )
     {
 	ajFileDataNewC("tp400_prot",&etpfile);
@@ -6312,8 +6329,11 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
     }
 */
 
-    fp = ajFileFp(etpfile);
-    
+
+
+    ajStrAssignS(&tnstr,ajFileGetName(etpfile));
+    ajFileClose(&etpfile);    
+    fp = fopen(ajStrGetPtr(tnstr),"rb");
 
     if ( fgets( line , MLINE , fp ) == NULL ) 
 	ajFatal("\n\n problem with tp400 file \n\n");
@@ -6333,7 +6353,11 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 
     }
 
-    ajFileClose(&etpfile);
+
+
+    ajStrDel(&tnstr);
+    fclose(fp);
+    
 
     return;
 }
