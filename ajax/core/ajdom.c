@@ -125,11 +125,18 @@ static const char *nodeinfo[] =
 
 static void domRemoveFromMap(AjPDomNodeList list, const AjPDomNode key)
 {
+    AjPDomNode trukey;
+    AjPDomNodeEntry val;
     if(!list->table)
 	return;
 
-    if(ajTableGet(list->table,key))
-	ajTableRemove(list->table,key);
+    val = ajTableRemoveKey(list->table,key, (void**) &trukey);
+
+    if(val)
+    {
+	AJFREE(val);
+	AJFREE(trukey);
+    }
 
     return;
 }
@@ -487,6 +494,8 @@ static AjPDomNodeEntry domDoLookupNode(const AjPDomNodeList list,
 AjPDomNodeEntry ajDomNodeListRemove(AjPDomNodeList list, AjPDomNode child)
 {
     AjPDomNodeEntry e;
+    AjPDomNode trukey;
+    AjPDomNodeEntry val;
 
     if(!list)
     {
@@ -504,7 +513,9 @@ AjPDomNodeEntry ajDomNodeListRemove(AjPDomNodeList list, AjPDomNode child)
     if(!e)
 	return NULL;
 
-    ajTableRemove(list->table,child);
+    val = ajTableRemoveKey(list->table,child, (void**) &trukey);
+    AJFREE(val);
+    AJFREE(trukey);
 
     if(list->first == list->last)
     {
