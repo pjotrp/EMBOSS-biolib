@@ -5551,18 +5551,12 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
     va_end(args) ;
 
     if(!required && !acdAuto)		/* test acdc-badadvanced */
-    {
-	acdReset();
 	ajDie("%S terminated: Bad value for '-%S' and no prompt",
 	      acdProgram, thys->Name);
-    }
 
     if(acdAuto)				/* test acdc-badauto */
-    {
-	acdReset();
 	ajDie("%S terminated: Bad value for '-%S' with -auto defined",
 	      acdProgram, thys->Name);
-    }
 
     return;
 }
