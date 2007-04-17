@@ -135,6 +135,8 @@ static ReportOFormat reportFormat[] =
    /* standard feature formats */
 /*    {"unknown",   "Unknown feature format",
 	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, AJFALSE, reportWriteSimple},*/
+    {"simple",    "Simple report",
+	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSimple},
     {"embl",      "EMBL feature format",
 	 AJFALSE, 0, AJFALSE, AJTRUE,  AJFALSE, AJFALSE, reportWriteEmbl},
     {"genbank",   "Genbank feature format",
@@ -171,8 +173,6 @@ static ReportOFormat reportFormat[] =
 	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteRegions},
     {"seqtable",  "Simple table with sequence on each line",
 	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSeqTable},
-    {"simple",    "Simple report",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSimple},
     {"srs",       "Simple report format for SRS",
 	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  reportWriteSrs},
     {"table",     "Simple table",
