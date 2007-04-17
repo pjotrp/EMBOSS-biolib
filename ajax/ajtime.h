@@ -15,12 +15,14 @@ extern "C"
 **
 ** @attr time [struct tm] Time in C standard structure
 ** @attr format [const char*] Format string if specified
+** @attr uppercase [AjBool] Convert to upper case on output
 ** @@
 ******************************************************************************/
 
 typedef struct AjSTime {
   struct tm time;
   const char *format;
+  AjBool uppercase;
 } AjOTime, AjODate;
 
 #define AjPTime AjOTime*
@@ -44,6 +46,7 @@ AjPTime       ajTimeSet(const char *timefmt,
 			ajint mday, ajint mon, ajint year) ;
 AjBool        ajTimeSetS(AjPTime thys, const char* timestr);
 AjPTime       ajTimeNew(void);
+AjPTime       ajTimeNewTime(const AjPTime thys);
 void          ajTimeDel(AjPTime *thys);
 time_t        ajTimeMake(const AjPTime thys);
 

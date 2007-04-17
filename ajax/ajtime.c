@@ -37,6 +37,7 @@
 **
 ** @attr Name [const char*] format name
 ** @attr Format [const char*] C run time library time format string
+** @attr uppercase [AjBool] Convert to upper case on output
 ** @@
 ******************************************************************************/
 
@@ -44,6 +45,7 @@ typedef struct TimeSFormat
 {
     const char* Name;
     const char* Format;
+    AjBool Uppercase;
 } TimeOFormat;
 #define TimePFormat TimeOFormat*
 
@@ -54,24 +56,25 @@ static AjPTime timeTodaySaved = NULL;
 
 static TimeOFormat timeFormat[] =  /* formats for strftime */
 {
-    {"GFF", "%Y-%m-%d"},
-    {"yyyy-mm-dd", "%Y-%m-%d"},
-    {"dd Mon yyyy", "%d %b %Y"},
-    {"day", "%d-%b-%Y"},
-    {"time", "%H:%M:%S"},
-    {"daytime", "%d-%b-%Y %H:%M"},
-    {"log", "%a %b %d %H:%M:%S %Y"},
+    {"GFF", "%Y-%m-%d", AJFALSE},
+    {"yyyy-mm-dd", "%Y-%m-%d", AJFALSE},
+    {"dd Mon yyyy", "%d %b %Y", AJFALSE},
+    {"day", "%d-%b-%Y", AJFALSE},
+    {"time", "%H:%M:%S", AJFALSE},
+    {"daytime", "%d-%b-%Y %H:%M", AJFALSE},
+    {"log", "%a %b %d %H:%M:%S %Y", AJFALSE},
 #ifndef WIN32
-    {"report", "%a %e %b %Y %H:%M:%S"},
+    {"report", "%a %e %b %Y %H:%M:%S", AJFALSE},
 #else
-    {"report", "%a %#d %b %Y %H:%M:%S"},
+    {"report", "%a %#d %b %Y %H:%M:%S", AJFALSE},
 #endif
-    {"dbindex", "%d/%m/%y"},
-    { NULL, NULL}
+    {"dbindex", "%d/%m/%y", AJFALSE},
+    {"dtline", "%d-%b-%Y", AJTRUE},
+    { NULL, NULL, AJFALSE}
 };
 
 
-static const char* TimeFormat(const char *timefmt);
+static const char* TimeFormat(const char *timefmt, AjBool* makeupper);
 
 /* @func ajTimeTodayRef *******************************************************
 **
@@ -135,11 +138,12 @@ AjPTime ajTimeToday(void)
 ** AJAX function to return the ANSI C format for an AJAX time string
 **
 ** @param [r] timefmt [const char*] AJAX time format
+** @param [w] makeupper [AjBool*] If true, convert time to upper case
 ** @return [const char*] ANSI C time format, or NULL if none found
 ** @@
 ******************************************************************************/
 
-static const char* TimeFormat(const char *timefmt)
+static const char* TimeFormat(const char *timefmt, AjBool* makeupper)
 {
     ajint i;
     AjBool ok    = ajFalse;
@@ -153,10 +157,16 @@ static const char* TimeFormat(const char *timefmt)
 	}
 
     if(ok)
+    {
 	format = timeFormat[i].Format;
+	*makeupper = timeFormat[i].Uppercase;
+    }
     else
+    {
+	*makeupper = ajFalse;
 	ajWarn("Unknown date/time format %s", timefmt);
-  
+    }
+
     return format;
 }
 
@@ -189,7 +199,7 @@ AjPTime ajTimeTodayF(const char* timefmt)
     if(!ajTimeLocal(tim,thys))
         return NULL;
 
-    thys->format = TimeFormat(timefmt);
+    thys->format = TimeFormat(timefmt, &thys->uppercase);
 
     return thys;
 }
@@ -222,7 +232,7 @@ const AjPTime ajTimeTodayRefF(const char* timefmt)
     if(!ajTimeLocal(tim,timeTodayData))
         return NULL;
 
-    timeTodayData->format = TimeFormat(timefmt);
+    timeTodayData->format = TimeFormat(timefmt, &timeTodayData->uppercase);
 
     return timeTodayData;
 }
@@ -391,6 +401,31 @@ AjPTime ajTimeNew(void)
     AjPTime thys = NULL;
 
     AJNEW0(thys);
+
+    return thys ;
+}
+
+
+
+
+/* @func ajTimeNewTime ********************************************************
+**
+** Constructor for AjPTime object, making a copy of an existing time object
+**
+** @param  [r] thys [const AjPTime] Time object to be copied
+** @return [AjPTime] An AjPTime object
+** @@
+******************************************************************************/
+
+AjPTime ajTimeNewTime(const AjPTime src)
+{
+    AjPTime thys = NULL;
+
+    AJNEW0(thys);
+
+    thys->time = src->time;
+    thys->format = src->format;
+    thys->uppercase = src->uppercase;
 
     return thys ;
 }
