@@ -35,6 +35,165 @@ static AjPStr seqTempUsa = NULL;
 
 
 static void seqMakeUsa(const AjPSeq thys, AjPStr* usa);
+static AjBool seqDateSet(AjPTime* date, const AjPStr datestr);
+
+static void seqclsInit(void);
+static void seqdivInit(void);
+static void seqmolInit(void);
+
+static AjPStr seqMoleculeDef = NULL;
+static AjPTable seqTableMol = NULL;
+static AjPTable seqTableMolEmbl = NULL;
+static AjPTable seqTableMolDdbj = NULL;
+static AjPTable seqTableMolGb = NULL;
+
+static AjPStr seqDivisionDef = NULL;
+static AjPTable seqTableDiv = NULL;
+static AjPTable seqTableDivEmbl = NULL;
+static AjPTable seqTableDivDdbj = NULL;
+static AjPTable seqTableDivGb = NULL;
+
+static AjPStr seqClassDef = NULL;
+static AjPTable seqTableCls = NULL;
+static AjPTable seqTableClsEmbl = NULL;
+static AjPTable seqTableClsDdbj = NULL;
+static AjPTable seqTableClsGb = NULL;
+
+/* @datastatic SeqOClass ******************************************************
+**
+** Classes of entries in the sequence databases
+**
+** Reference for this is
+** http://www.ncbi.nlm.nih.gov/HTGS/table1.html
+**
+** @attr Name [const char*] Name used internally
+** @attr Embl [const char*] Name in EMBL
+** @attr Ddbj [const char*] Name in DDBJ
+** @attr Genbank [const char*] Name in Genbank
+** @attr Desc [const char*] Description
+******************************************************************************/
+
+typedef struct SeqSClass {
+  const char* Name;
+  const char* Embl;
+  const char* Ddbj;
+  const char* Genbank;
+  const char* Desc;
+} SeqOClass;
+
+static SeqOClass seqClass[] = {
+/*   Name      Embl   DDBJ   Genbank Description */
+    {"STD", "STD", "", "", "Standard (all other entries)"},
+    {"CON", "CON", "CON", "CON", "Constructed from segment sequences"},
+    {"ANN", "ANN", "", "", "CON entries with own annotation"},
+    {"PAT", "PAT", "PAT", "PAT", "Patent"},
+    {"EST", "EST", "EST", "EST", "Expressed Sequence Tag"},
+    {"GSS", "GSS", "GSS", "GSS", "Genome Survey Sequence"},
+    {"HTC", "HTC", "HTC", "", "High Thoughput CDNA sequencing"},
+    {"HTG", "HTG", "HTG", "HTG", "High Thoughput Genome sequencing"},
+    {"MGA", "MGA", "", "", "Mass Genome Annotation"},
+    {"WGS", "WGS", "", "", "Whole Genome Shotgun"},
+    {"TPA", "TPA", "TPA", "", "Third Party Annotation"},  /* 2 types in DDBJ */
+    {"STS", "STS", "STS", "STS", "Sequence Tagged Site"},
+    {"", "", "", "", ""},
+    {NULL, NULL, NULL, NULL, NULL}
+};
+
+
+
+
+/* @datastatic SeqODivision ***************************************************
+**
+** Taxonomic divisions in the sequence databases
+**
+** Reference for this is
+** http://www.ncbi.nlm.nih.gov/HTGS/table1.html
+**
+** @attr Name [const char*] Name used internally
+** @attr Embl [const char*] Name in EMBL
+** @attr Ddbj [const char*] Name in DDBJ
+** @attr Genbank [const char*] Name in Genbank
+** @attr Desc [const char*] Description
+******************************************************************************/
+
+typedef struct SeqSDivision {
+  const char* Name;
+  const char* Embl;
+  const char* Ddbj;
+  const char* Genbank;
+  const char* Desc;
+} SeqODivision;
+
+static SeqODivision seqDivision[] = {
+/*   Name      Embl   DDBJ   Genbank Description */
+    {"default","UNC", "UNA", "UNA",  "Unclassified"},
+    {"UNC",    "UNC", "",    "",     "Unclassified"},
+    {"UNA",    "UNC", "UNA", "UNA",  "Unannotated"},
+    {"PHG",    "PHG", "PHG", "PHG",  "Bacteriophage"},
+    {"ENV",    "ENV", "",    "",     "Environmental Sample"},
+    {"PLN",    "PLN", "PLN", "PLN",  "Plant"},
+    {"FUN",    "FUN", "",    "PLN",  "Fungal"},
+    {"HUM",    "HUM", "HUM", "PRI",  "Human"},
+    {"INV",    "INV", "INV", "INV",  "Invertebrate"},
+    {"MAM",    "MAM", "MAM", "MAM",  "Other Mammal"},
+    {"VRT",    "VRT", "VRT", "VRT",  "Other Vertebrate"},
+    {"MUS",    "MUS", "ROD", "ROD",  "Mus musculus"},
+    {"PRO",    "PRO", "BCT", "BCT",  "Prokaryote"},
+    {"ROD",    "ROD", "ROD", "ROD",  "Other Rodent"},
+    {"SYN",    "SYN", "SYN", "SYN",  "Synthetic and chimeric"},
+    {"TGN",    "TGN", "",    "",     "Transgenic"},
+    {"VRL",    "VRL", "VRL", "VRL",  "Viral"},
+    {"MAMPRI", "MAM", "",    "PRI",  "Primate"},
+    {"UNCRNA", "UNC", "",    "RNA",  "Structural RNA"}, /* obsolete ? */
+    {"", "", "", "", ""},
+    {NULL, NULL, NULL, NULL, NULL}
+};
+
+
+
+
+/* @datastatic SeqOSeqSMolecule ***********************************************
+**
+** Molecule types in the sequence databases
+**
+** For EMBL and EMBOSS internal, see the
+** feature source qualifier /mol_type values in
+** http://www.ebi.ac.uk/embl/WebFeat/index.html
+**
+** @attr Name [const char*] Name used internally
+** @attr Embl [const char*] Name in EMBL
+** @attr Ddbj [const char*] Name in DDBJ
+** @attr Genbank [const char*] Name in Genbank
+** @attr Desc [const char*] Description
+******************************************************************************/
+
+typedef struct SeqSMolecule {
+  const char* Name;
+  const char* Embl;
+  const char* Ddbj;
+  const char* Genbank;
+  const char* Desc;
+} SeqOMolecule;
+
+static SeqOMolecule seqMolecule[] = {
+/*   Name      Embl   DDBJ   Genbank Description */
+    {"unassigned DNA", "unassigned DNA", "DNA", "DNA", "unassigned DNA"},
+    {"genomic DNA", "genomic DNA", "DNA", "DNA", "genomic DNA"},
+    {"genomic RNA", "genomic RNA", "DNA", "RNA", "genomic RNA"},
+    {"mRNA", "mRNA", "RNA", "RNA", "mRNA"},
+    {"tRNA", "tRNA", "RNA", "RNA", "tRNA"},
+    {"rRNA", "rRNA", "RNA", "RNA", "rRNA"},
+    {"snoRNA", "snoRNA", "RNA", "RNA", "snoRNA"},
+    {"snRNA", "snRNA", "RNA", "RNA", "snRNA"},
+    {"snRNA", "snRNA", "RNA", "RNA", "snRNA"},
+    {"scRNA", "scRNA", "RNA", "RNA", "scRNA"},
+    {"pre-RNA", "pre-RNA", "RNA", "RNA", "pre-RNA"},
+    {"viral cRNA", "viral cRNA", "RNA", "RNA", "viral cRNA"},
+    {"other RNA", "other RNA", "RNA", "RNA", "other RNA"},
+    {"other DNA", "other DNA", "DNA", "DNA", "other DNA"},
+    {"unassigned RNA", "unassigned RNA", "RNA", "RNA", "unassigned RNA"},
+    {NULL, NULL, NULL, NULL, NULL}
+};
 
 
 /* @filesection ajseq ********************************************************
@@ -131,7 +290,6 @@ AjPSeq ajSeqNewNameC(const char* txt, const char* name)
     pthis->Type = ajStrNew();
     pthis->Db   = ajStrNew();
     pthis->Full = ajStrNew();
-    pthis->Date = ajStrNew();
     pthis->Desc = ajStrNew();
     pthis->Doc  = ajStrNew();
     pthis->Usa  = ajStrNew();
@@ -189,7 +347,6 @@ AjPSeq ajSeqNewNameS(const AjPStr str, const AjPStr name)
     pthis->Type = ajStrNew();
     pthis->Db   = ajStrNew();
     pthis->Full = ajStrNew();
-    pthis->Date = ajStrNew();
     pthis->Desc = ajStrNew();
     pthis->Doc  = ajStrNew();
     pthis->Usa  = ajStrNew();
@@ -281,7 +438,6 @@ AjPSeq ajSeqNewRangeC(const char* txt,
     pthis->Type = ajStrNew();
     pthis->Db   = ajStrNew();
     pthis->Full = ajStrNew();
-    pthis->Date = ajStrNew();
     pthis->Desc = ajStrNew();
     pthis->Doc  = ajStrNew();
     pthis->Usa  = ajStrNew();
@@ -399,7 +555,6 @@ AjPSeq ajSeqNewRes(size_t size)
     pthis->Type = ajStrNew();
     pthis->Db   = ajStrNew();
     pthis->Full = ajStrNew();
-    pthis->Date = ajStrNew();
     pthis->Desc = ajStrNew();
     pthis->Doc  = ajStrNew();
     pthis->Usa  = ajStrNew();
@@ -428,6 +583,9 @@ AjPSeq ajSeqNewRes(size_t size)
     pthis->Acclist = ajListstrNew();
     pthis->Keylist = ajListstrNew();
     pthis->Taxlist = ajListstrNew();
+    pthis->Cmtlist = ajListstrNew();
+    pthis->Xreflist = ajListstrNew();
+    pthis->Reflist = ajListNew();
 
     return pthis;
 }
@@ -472,7 +630,6 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
     ajStrAssignS(&pthis->Db, seq->Db);
     ajStrAssignS(&pthis->Setdb, seq->Setdb);
     ajStrAssignS(&pthis->Full, seq->Full);
-    ajStrAssignS(&pthis->Date, seq->Date);
     ajStrAssignS(&pthis->Desc, seq->Desc);
     ajStrAssignS(&pthis->Doc, seq->Doc);
 
@@ -577,7 +734,6 @@ void ajSeqDel(AjPSeq* Pseq)
     ajStrDel(&seq->Db);
     ajStrDel(&seq->Setdb);
     ajStrDel(&seq->Full);
-    ajStrDel(&seq->Date);
     ajStrDel(&seq->Desc);
     ajStrDel(&seq->Doc);
     ajStrDel(&seq->Usa);
@@ -1386,7 +1542,6 @@ void ajSeqClear(AjPSeq seq)
     ajStrSetClear(&seq->Type);
     ajStrSetClear(&seq->Db);
     ajStrSetClear(&seq->Full);
-    ajStrSetClear(&seq->Date);
     ajStrSetClear(&seq->Desc);
     ajStrSetClear(&seq->Doc);
     ajStrSetClear(&seq->Usa);
@@ -4000,9 +4155,6 @@ void ajSeqTrace(const AjPSeq seq)
     if(ajStrGetLen(seq->Full))
 	ajDebug( "  Full name: '%S'\n", seq->Full);
 
-    if(ajStrGetLen(seq->Date))
-	ajDebug( "  Date: '%S'\n", seq->Date);
-
     if(ajStrGetLen(seq->Usa))
 	ajDebug( "  Usa: '%S'\n", seq->Usa);
 
@@ -6597,6 +6749,770 @@ __deprecated ajint  ajSeqCvtLen(const AjPSeqCvt cvt)
 }
 
 
+/* @datasection [AjPSeqDate] sequence dates ***********************************
+**
+** Functions handling sequence dates
+**
+** @nam2rule Seqdate
+**
+******************************************************************************/
+
+/* @section sequence date constructors ****************************************
+**
+** @fdata [AjPSeqDate]
+** @fcategory new
+**
+******************************************************************************/
+
+/* @func ajSeqdateNew *********************************************************
+**
+** Constructor for empty sequence date object
+**
+** @return [AjPSeqDate] Empty sequence date object
+******************************************************************************/
+
+AjPSeqDate ajSeqdateNew(void)
+{
+    AjPSeqDate ret;
+    AJNEW0(ret);
+    return ret;
+}
+
+
+/* @func ajSeqdateNewDate *****************************************************
+**
+** Constructor for copy of a sequence date object
+**
+** @param [r] date [const AjPSeqDate] Sequence date object
+** @return [AjPSeqDate] Empty sequence date object
+******************************************************************************/
+
+AjPSeqDate ajSeqdateNewDate(const AjPSeqDate date)
+{
+    AjPSeqDate ret;
+    AJNEW0(ret);
+
+    if(!date)
+	return ret;
+
+    if(date->CreDate)
+	ret->CreDate = ajTimeNewTime(date->CreDate);
+    if(date->ModDate)
+	ret->ModDate = ajTimeNewTime(date->ModDate);
+    if(date->SeqDate)
+	ret->SeqDate = ajTimeNewTime(date->SeqDate);
+
+    if(date->CreRel)
+	ajStrAssignS(&ret->CreRel, date->CreRel);
+    if(date->ModRel)
+	ajStrAssignS(&ret->ModRel, date->ModRel);
+    if(date->SeqRel)
+	ajStrAssignS(&ret->SeqRel, date->SeqRel);
+    if(date->CreVer)
+	ajStrAssignS(&ret->CreVer, date->CreVer);
+    if(date->ModVer)
+	ajStrAssignS(&ret->ModVer, date->ModVer);
+    if(date->SeqVer)
+	ajStrAssignS(&ret->SeqVer, date->SeqVer);
+
+    return ret;
+}
+
+
+/* @func ajSeqdateDel *********************************************************
+**
+** Deletes a sequence dateobject.
+**
+** @param [d] Pdate [AjPSeqDate*] Sequence date object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqdateDel(AjPSeqDate* Pdate)
+{
+    AjPSeqDate date;
+
+    if(!Pdate)
+	return;
+    if(!*Pdate)
+	return;
+
+    date = *Pdate;
+
+    ajTimeDel(&date->CreDate);
+    ajTimeDel(&date->ModDate);
+    ajTimeDel(&date->SeqDate);
+
+    ajStrDel(&date->CreRel);
+    ajStrDel(&date->ModRel);
+    ajStrDel(&date->SeqRel);
+    ajStrDel(&date->ModVer);
+    ajStrDel(&date->SeqVer);
+
+    AJFREE(*Pdate);
+
+    return;
+};
+
+/* @func ajSeqdateSetCreateS **************************************************
+**
+** Set the sequence creation date
+**
+** @param [w] date [AjPSeqDate] Sequence date
+** @param [r] datestr [const AjPStr] Date string
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+AjBool ajSeqdateSetCreateS(AjPSeqDate date, const AjPStr datestr)
+{
+    if(!date)
+	return ajFalse;
+
+    seqDateSet(&date->CreDate, datestr);
+
+    return ajTrue;
+}
+
+/* @func ajSeqdateSetModifyS **************************************************
+**
+** Set the entry modification date
+**
+** @param [w] date [AjPSeqDate] Sequence date
+** @param [r] datestr [const AjPStr] Date string
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+AjBool ajSeqdateSetModifyS(AjPSeqDate date, const AjPStr datestr)
+{
+    if(!date)
+	return ajFalse;
+
+    seqDateSet(&date->ModDate, datestr);
+
+    return ajTrue;
+}
+
+
+/* @func ajSeqdateSetModseqS **************************************************
+**
+** Set the sequence modification date
+**
+** @param [w] date [AjPSeqDate] Sequence date
+** @param [r] datestr [const AjPStr] Date string
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+AjBool ajSeqdateSetModseqS(AjPSeqDate date, const AjPStr datestr)
+{
+    if(!date)
+	return ajFalse;
+
+    seqDateSet(&date->SeqDate, datestr);
+
+    return ajTrue;
+}
+
+/* @funcstatic seqDateSet *****************************************************
+**
+** Sets a sequence date object
+**
+** @param [w] date [AjPTime*] Sequence date object
+** @param [r] datestr [const AjPStr] Date as a string in EMBL/UniProt style
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+static AjBool seqDateSet(AjPTime* date, const AjPStr datestr)
+{
+    AjPStrTok handle = NULL;
+    AjPStr tmpstr = NULL;
+    const char* months[] = {
+	"JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+	"JUL", "AUG", "SEP", "OCT", "NOV", "DEC", NULL};
+    ajint day;
+    ajint month;
+    ajint year;
+
+    ajStrTokenAssignC(&handle, datestr, "-");
+
+    ajStrTokenNextParse(&handle, &tmpstr);
+    ajStrToInt(tmpstr, &day);
+
+    ajStrTokenNextParse(&handle, &tmpstr);
+    month = 0;
+    while(months[month] && !ajStrMatchC(tmpstr, months[month]))
+	month++;
+
+    if(!months[month])
+	month = 1;
+    else
+	month++;
+
+    ajStrTokenNextParse(&handle, &tmpstr);
+    ajStrToInt(tmpstr, &year);
+    if(year > 1900)
+	year -= 1900;
+    *date = ajTimeSet("dtline", day, month, year);
+
+    ajStrTokenDel(&handle);
+    ajStrDel(&tmpstr);
+
+    return ajTrue;
+}
+
+
+/* @datasection [AjPSeqRef] sequence citations ********************************
+**
+** Functions handling sequence citations
+**
+** @nam2rule Seqref
+**
+******************************************************************************/
+
+/* @section sequence citation constructors ************************************
+**
+** @fdata [AjPSeqRef]
+** @fcategory new
+**
+******************************************************************************/
+
+/* @func ajSeqrefNew *********************************************************
+**
+** Constructor for empty sequence citation object
+**
+** @return [AjPSeqRef] Empty sequence citation object
+******************************************************************************/
+
+AjPSeqRef ajSeqrefNew(void)
+{
+    AjPSeqRef ret;
+    AJNEW0(ret);
+    return ret;
+}
+
+/* @func ajSeqrefNewRef *******************************************************
+**
+** Constructor for copy of a sequence citation object
+**
+** @param [r] date [const AjPSeqDate] Sequence date object
+** @return [AjPSeqDate] Empty sequence date object
+******************************************************************************/
+
+AjPSeqRef ajSeqrefNewRef(const AjPSeqRef ref)
+{
+    AjPSeqRef ret;
+    AJNEW0(ret);
+
+    if(!ref)
+	return ret;
+
+    ajStrAssignS(&ret->Position, ref->Position);
+    ajStrAssignS(&ret->Groupname, ref->Groupname);
+    ajStrAssignS(&ret->Authors, ref->Authors);
+    ajStrAssignS(&ret->Title, ref->Title);
+    ajStrAssignS(&ret->Comment, ref->Comment);
+    ajStrAssignS(&ret->Xref, ref->Xref);
+    ajStrAssignS(&ret->Location, ref->Location);
+    ajStrAssignS(&ret->Loctype, ref->Loctype);
+    ret->Number = ref->Number;
+
+    return ret;
+}
+
+/* @func ajSeqrefAppendAuthors ***********************************************
+**
+** Append to the Authors string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Authors string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefAppendAuthors(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrGetLen(ref->Authors))
+	ajStrAppendK(&ref->Authors, ' ');
+    ajStrAppendS(&ref->Authors, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefAppendComment ***********************************************
+**
+** Append to the Comment string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Comment string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefAppendComment(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrGetLen(ref->Comment))
+	ajStrAppendK(&ref->Comment, ' ');
+    ajStrAppendS(&ref->Comment, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefAppendGroupname **********************************************
+**
+** Append to the group name string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Group name string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefAppendGroupname(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrGetLen(ref->Groupname))
+	ajStrAppendK(&ref->Groupname, ' ');
+    ajStrAppendS(&ref->Groupname, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefAppendLocation ***********************************************
+**
+** Append to the location string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Location string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefAppendLocation(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrGetLen(ref->Location))
+    {
+	if(ajStrGetCharLast(ref->Location) == '.')
+	    ajStrAppendK(&ref->Location, '\n');
+	else if(ajStrGetCharLast(ref->Location) == ';')
+	    ajStrAppendK(&ref->Location, '\n');
+	else
+	    ajStrAppendK(&ref->Location, ' ');
+    }
+    else
+	ajSeqrefSetLoctype(ref, str);
+
+    ajStrAppendS(&ref->Location, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefAppendPosition ***********************************************
+**
+** Append to the position string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Position string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefAppendPosition(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrGetLen(ref->Position))
+	ajStrAppendK(&ref->Position, ' ');
+    ajStrAppendS(&ref->Position, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefAppendTitle **************************************************
+**
+** Append to the title string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Title string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefAppendTitle(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrGetLen(ref->Title))
+	ajStrAppendK(&ref->Title, ' ');
+
+    ajStrAppendS(&ref->Title, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefAppendXref ***********************************************
+**
+** Append to the Cross reference string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Xref string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefAppendXref(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrGetLen(ref->Xref))
+    {
+	if(ajStrGetCharLast(ref->Xref) == '.')
+	    ajStrAppendK(&ref->Xref, '\n');
+	else
+	    ajStrAppendK(&ref->Xref, ' ');
+    }
+
+    ajStrAppendS(&ref->Xref, str);
+
+    return ajTrue;
+}
+
+
+/* @func ajSeqrefFmtAuthorsEmbl ***********************************************
+**
+** Return the Authors string of a citation in EMBL format
+**
+** @param [u] ref [const AjPSeqRef] Sequence citation object
+** @param [w] Pdest [AjPStr*] Authors string in EMBL format
+** @return [AjBool] True if author list exists
+******************************************************************************/
+
+AjBool ajSeqrefFmtAuthorsEmbl(const AjPSeqRef ref, AjPStr* Pdest)
+{
+    ajStrAssignC(Pdest, "");
+
+    if(!ref->Authors)
+	return ajFalse;
+
+    ajStrAssignS(Pdest, ref->Authors);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefFmtAuthorsGb ***********************************************
+**
+** Return the Authors string of a citation in Genbank format
+**
+** @param [u] ref [const AjPSeqRef] Sequence citation object
+** @param [w] Pdest [AjPStr*] Authors string in Genbank format
+** @return [AjBool] True if author list exists
+******************************************************************************/
+
+AjBool ajSeqrefFmtAuthorsGb(const AjPSeqRef ref, AjPStr* Pdest)
+{
+    ajint i;
+    ajint imax;
+    char* cp;
+
+    ajStrAssignC(Pdest, "");
+
+    if(!ref->Authors)
+	return ajFalse;
+
+    ajStrAssignS(Pdest, ref->Authors);
+    i = ajStrFindlastC(*Pdest, ","); /* replace , with and */
+    if(i != -1) {
+	ajStrCutRange(Pdest, i, i);
+	ajStrInsertC(Pdest, i, " and");
+    }
+    cp = ajStrGetuniquePtr(Pdest);
+    imax=ajStrGetLen(*Pdest)-2;
+    for(i=0;i<imax;i++)
+    {
+	if(*cp == ' ' && cp[2] == '.' && isalpha((int)cp[1]))
+	    *cp = ',';
+	cp++;
+    }
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefFmtLocationEmbl **********************************************
+**
+** Return the location string of a citation in EMBL format
+**
+** @param [u] ref [const AjPSeqRef] Sequence citation object
+** @param [w] Pdest [AjPStr*] Authors string in EMBL format
+** @return [AjBool] True if author list exists
+******************************************************************************/
+
+AjBool ajSeqrefFmtLocationEmbl(const AjPSeqRef ref, AjPStr* Pdest)
+{
+    ajStrAssignC(Pdest, "");
+
+    if(!ref->Location)
+	return ajFalse;
+
+    ajStrAssignS(Pdest, ref->Location);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefFmtLocationGb ***********************************************
+**
+** Return the location string of a citation in Genbank format
+**
+** @param [u] ref [const AjPSeqRef] Sequence citation object
+** @param [w] Pdest [AjPStr*] Authors string in Genbank format
+** @return [AjBool] True if author list exists
+******************************************************************************/
+
+AjBool ajSeqrefFmtLocationGb(const AjPSeqRef ref, AjPStr* Pdest)
+{
+    ajStrAssignC(Pdest, "");
+
+    if(!ref->Location)
+	return ajFalse;
+
+    ajStrAssignS(Pdest, ref->Location);
+
+    ajStrExchangeCC(Pdest, "):", "), ");
+    ajStrExchangeCC(Pdest, "(", "\1");
+    ajStrExchangeCC(Pdest, "\1", " (");
+    ajStrExchangeCC(Pdest, "  (", " (");
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefFmtTitleGb ***********************************************
+**
+** Return the title string of a citation in Genbank format
+**
+** @param [u] ref [const AjPSeqRef] Sequence citation object
+** @param [w] Pdest [AjPStr*] Authors string in Genbank format
+** @return [AjBool] True if author list exists
+******************************************************************************/
+
+AjBool ajSeqrefFmtTitleGb(const AjPSeqRef ref, AjPStr* Pdest)
+{
+    ajStrAssignC(Pdest, "");
+
+    if(!ajStrGetLen(ref->Title))
+    {
+	if(ajStrMatchC(ref->Loctype, "submission"))
+	{
+	    ajStrAssignC(Pdest, "Direct Submission");
+	    return ajTrue;
+	}
+	return ajFalse;
+    }
+
+    ajStrAssignS(Pdest, ref->Title);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetAuthors **************************************************
+**
+** Set the Authors string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Authors string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetAuthors(AjPSeqRef ref, const AjPStr str)
+{
+    ajStrAssignS(&ref->Authors, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetComment **************************************************
+**
+** Set the Comment string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Comment string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetComment(AjPSeqRef ref, const AjPStr str)
+{
+    ajStrAssignS(&ref->Comment, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetGroupname *************************************************
+**
+** Set the group name string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Groupname string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetGroupname(AjPSeqRef ref, const AjPStr str)
+{
+    ajStrAssignS(&ref->Groupname, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetLocation **************************************************
+**
+** Set the location string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Location string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetLocation(AjPSeqRef ref, const AjPStr str)
+{
+    ajStrAssignS(&ref->Location, str);
+    ajSeqrefSetLoctype(ref, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetLoctype ***************************************************
+**
+** Set the location type of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Location string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetLoctype(AjPSeqRef ref, const AjPStr str)
+{
+    if(ajStrPrefixC(str, "Submitted "))
+	ajStrAssignC(&ref->Loctype, "submission");
+    else if(ajStrPrefixC(str, "(in) "))
+	ajStrAssignC(&ref->Loctype, "book");
+    else if(ajStrPrefixC(str, "(er) "))
+	ajStrAssignC(&ref->Loctype, "electronic");
+    else if(ajStrPrefixC(str, "Thesis "))
+	ajStrAssignC(&ref->Loctype, "thesis");
+    else if(ajStrPrefixC(str, "Patent "))
+	ajStrAssignC(&ref->Loctype, "patent");
+    else if(ajStrPrefixC(str, "(misc) "))
+	ajStrAssignC(&ref->Loctype, "misc");
+    else
+	ajStrAssignC(&ref->Loctype, "journal");
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetNumber ****************************************************
+**
+** Sets the citation number
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] num [ajuint] Citation number
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetNumber(AjPSeqRef ref, ajuint num)
+{
+    ref->Number = num;
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetPosition **************************************************
+**
+** Set the position string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] pPosition string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetPosition(AjPSeqRef ref, const AjPStr str)
+{
+    ajStrAssignS(&ref->Position, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetTitle *****************************************************
+**
+** Set the title string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Title string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetTitle(AjPSeqRef ref, const AjPStr str)
+{
+    ajStrAssignS(&ref->Title, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefSetXref ******************************************************
+**
+** Set the cross reference string of a citation
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @param [r] str [const AjPStr] Xref string
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefSetXref(AjPSeqRef ref, const AjPStr str)
+{
+    ajStrAssignS(&ref->Xref, str);
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefStandard *****************************************************
+**
+** Standardise internal representation of a sequence reference
+**
+** @param [u] ref [AjPSeqRef] Sequence citation object
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefStandard(AjPSeqRef ref)
+{
+
+    if(ajStrGetCharLast(ref->Xref) == '.')
+	ajStrTrimEndC(&ref->Xref, ".");
+
+    if(ajStrGetCharLast(ref->Location) == '.')
+	ajStrTrimEndC(&ref->Location, ".");
+
+    if(ajStrGetCharLast(ref->Title) == '.')
+	ajStrTrimEndC(&ref->Title, ".");
+    if(ajStrGetCharLast(ref->Title) == ';')
+	ajStrTrimEndC(&ref->Title, ";");
+    ajStrQuoteStrip(&ref->Title);
+
+    if(ajStrGetCharLast(ref->Authors) == ';')
+	ajStrTrimEndC(&ref->Authors, ";");
+
+    return ajTrue;
+}
+
+/* @func ajSeqrefCloneList ****************************************************
+**
+** Copy a list of citations to another list
+**
+** @param [r] src [AjPList] Source list of citations
+** @param [w] dest [AjPList] Destination list of citations
+** @return [AjBool] True on success
+******************************************************************************/
+
+AjBool ajSeqrefCloneList(AjPList src, AjPList dest)
+{
+    AjIList iter;
+    AjPSeqRef refout = NULL;
+    AjPSeqRef refin = NULL;
+
+    if(ajListLength(dest))
+	return ajFalse;
+
+    iter = ajListIterRead(src);
+    while ((refin = (AjPSeqRef) ajListIterNext(iter)))
+    {
+	refout = ajSeqrefNewRef(refin);
+	ajListPushApp(dest, refout);
+    }
+
+    ajListIterFree(&iter);
+
+    return ajTrue;
+}
+
 /* @datasection [AjPStr] string tests *****************************************
 **
 ** Functions handling strings for specialist sequence-related tests
@@ -7118,3 +8034,539 @@ __deprecated ajuint  ajSeqCalcCrc(const AjPSeq seq)
 }
 
 
+/* @funcstatic seqclsInit *****************************************************
+**
+** Initialises the tables of molecule types
+**
+** @return [void]
+******************************************************************************/
+
+static void seqclsInit(void)
+{
+    ajuint i;
+    AjPStr keystr = NULL;
+    AjPStr valstr = NULL;
+    AjPStr keystr2 = NULL;
+
+    if(seqTableCls)
+	return;
+
+    seqTableCls = ajStrTableNewCase(16);
+    seqTableClsEmbl = ajStrTableNewCase(16);
+    seqTableClsDdbj = ajStrTableNewCase(16);
+    seqTableClsGb = ajStrTableNewCase(16);
+
+    seqClassDef = ajStrNewC(seqClass[0].Name);
+
+    for(i=0;seqClass[i].Name;i++)
+    {
+	keystr = ajStrNewC(seqClass[i].Name);
+	ajTablePut(seqTableCls, keystr, &seqClass[i]);
+
+	if(seqClass[i].Embl[0])
+	{
+	    valstr = ajStrNewC(seqClass[i].Embl);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableClsEmbl, valstr, keystr);
+	}
+
+	if(seqClass[i].Ddbj[0])
+	{
+	    valstr = ajStrNewC(seqClass[i].Ddbj);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableClsDdbj, valstr, keystr);
+	}
+
+	if(seqClass[i].Genbank[0])
+	{
+	    valstr = ajStrNewC(seqClass[i].Genbank);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableClsGb, valstr, keystr);
+	}
+    }
+
+    return;
+}
+
+/* @funcstatic seqdivInit *****************************************************
+**
+** Initialises the tables of sequence database divisions
+**
+** @return [void]
+******************************************************************************/
+
+static void seqdivInit(void)
+{
+    ajuint i;
+    AjPStr keystr = NULL;
+    AjPStr valstr = NULL;
+    AjPStr keystr2 = NULL;
+
+    if(seqTableDiv)
+	return;
+
+    seqTableDiv = ajStrTableNewCase(16);
+    seqTableDivEmbl = ajStrTableNewCase(16);
+    seqTableDivDdbj = ajStrTableNewCase(16);
+    seqTableDivGb = ajStrTableNewCase(16);
+
+    seqDivisionDef = ajStrNewC(seqDivision[0].Name);
+
+    for(i=0;seqDivision[i].Name;i++)
+    {
+	keystr = ajStrNewC(seqDivision[i].Name);
+	ajTablePut(seqTableDiv, keystr, &seqDivision[i]);
+
+	if(seqDivision[i].Embl[0])
+	{
+	    valstr = ajStrNewC(seqDivision[i].Embl);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableDivEmbl, valstr, keystr);
+	}
+
+	if(seqDivision[i].Ddbj[0])
+	{
+	    valstr = ajStrNewC(seqDivision[i].Ddbj);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableDivDdbj, valstr, keystr);
+	}
+
+	if(seqDivision[i].Genbank[0])
+	{
+	    valstr = ajStrNewC(seqDivision[i].Genbank);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableDivGb, valstr, keystr);
+	}
+
+    }
+
+    return;
+}
+
+/* @funcstatic seqmolInit *****************************************************
+**
+** Initialises the tables of molecule types
+**
+** @return [void]
+******************************************************************************/
+
+static void seqmolInit(void)
+{
+    ajuint i;
+    AjPStr keystr = NULL;
+    AjPStr valstr = NULL;
+    AjPStr keystr2 = NULL;
+
+    if(seqTableMol)
+	return;
+
+    seqTableMol = ajStrTableNewCase(16);
+    seqTableMolEmbl = ajStrTableNewCase(16);
+    seqTableMolDdbj = ajStrTableNewCase(16);
+    seqTableMolGb = ajStrTableNewCase(16);
+
+    seqMoleculeDef = ajStrNewC(seqMolecule[0].Name);
+
+    for(i=0;seqMolecule[i].Name;i++)
+    {
+	keystr = ajStrNewC(seqMolecule[i].Name);
+	ajTablePut(seqTableMol, keystr, &seqMolecule[i]);
+
+	if(seqMolecule[i].Embl[0])
+	{
+	    valstr = ajStrNewC(seqMolecule[i].Embl);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableMolEmbl, valstr, keystr);
+	}
+
+	if(seqMolecule[i].Ddbj[0])
+	{
+	    valstr = ajStrNewC(seqMolecule[i].Ddbj);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableMolDdbj, valstr, keystr);
+	}
+
+	if(seqMolecule[i].Genbank[0])
+	{
+	    valstr = ajStrNewC(seqMolecule[i].Genbank);
+	    keystr2 = ajStrNewS(valstr);
+	    ajTablePut(seqTableMolGb, valstr, keystr);
+	}
+
+    }
+
+    return;
+}
+
+/* @func ajSeqclsSetEmbl *****************************************************
+**
+** Sets the internal entry class for a sequence
+**
+** @param [u] cls [AjPStr*] Internal entry class name
+** @param [r] clsembl [const AjPStr] EMBL database entry class
+** @return [AjBool] True if a known type
+******************************************************************************/
+
+AjBool ajSeqclsSetEmbl(AjPStr* cls, const AjPStr clsembl)
+{
+    static AjBool called = AJFALSE;
+    const AjPStr clsname = NULL;
+
+    if(!called) {
+	seqclsInit();
+	called = ajTrue;
+    }
+
+    clsname = ajTableGet(seqTableClsEmbl, clsembl);
+    if(!clsname)
+	return ajFalse;
+
+    ajStrAssignS(cls, clsname);
+
+    return ajTrue;
+    
+}
+
+
+/* @func ajSeqclsSetGb *****************************************************
+**
+** Sets the internal entry class for a sequence
+**
+** @param [u] cls [AjPStr*] Internal entry class name
+** @param [r] clsgb [const AjPStr] Genbank database entry class
+** @return [AjBool] True if a known type
+******************************************************************************/
+
+AjBool ajSeqclsSetGb(AjPStr* cls, const AjPStr clsgb)
+{
+    static AjBool called = AJFALSE;
+    const AjPStr clsname = NULL;
+
+    if(!called) {
+	seqclsInit();
+	called = ajTrue;
+    }
+
+    clsname = ajTableGet(seqTableClsGb, clsgb);
+    if(!clsname)
+	return ajFalse;
+
+    ajStrAssignS(cls, clsname);
+
+    return ajTrue;
+    
+}
+
+
+/* @func ajSeqclsGetEmbl ******************************************************
+**
+** Returns the EMBL entry class for a sequence
+**
+** @param [r] cls [const AjPStr] Internal entry class name
+** @return [const char*] EMBL entry class name
+******************************************************************************/
+
+const char* ajSeqclsGetEmbl(const AjPStr cls)
+{
+    static AjBool called = AJFALSE;
+    SeqOClass *clsdef = NULL;
+
+    if(!called)
+    {
+	seqclsInit();
+	called = ajTrue;
+    }
+
+    ajDebug("ajSeqclsGetEmbl '%S'\n", cls);
+
+    if(ajStrGetLen(cls))
+	clsdef = ajTableGet(seqTableCls, cls);
+
+    if(!clsdef)
+	clsdef = ajTableGet(seqTableCls, seqClassDef);
+
+    if(!clsdef)
+	return ajStrGetPtr(seqClassDef);
+
+    ajDebug("ajSeqclsGetEmbl '%S' => '%s'\n",
+	    cls, clsdef->Embl);
+
+    return clsdef->Embl;
+    
+ }
+
+
+/* @func ajSeqdivSetEmbl *****************************************************
+**
+** Sets the internal database division for a sequence
+**
+** @param [u] divi [AjPStr*] Internal database division
+** @param [r] divembl [const AjPStr] EMBL database division
+** @return [AjBool] True if a known type
+******************************************************************************/
+
+AjBool ajSeqdivSetEmbl(AjPStr* divi, const AjPStr divembl)
+{
+    static AjBool called = AJFALSE;
+    const AjPStr divname = NULL;
+
+    if(!called) {
+	seqdivInit();
+	called = ajTrue;
+    }
+
+    divname = ajTableGet(seqTableDivEmbl, divembl);
+    if(!divname)
+	return ajFalse;
+
+    ajStrAssignS(divi, divname);
+
+    return ajTrue;
+    
+}
+
+
+/* @func ajSeqdivSetGb *****************************************************
+**
+** Sets the internal database division for a sequence
+**
+** @param [u] divi [AjPStr*] Internal database division
+** @param [r] divembl [const AjPStr] Genbank database division
+** @return [AjBool] True if a known type
+******************************************************************************/
+
+AjBool ajSeqdivSetGb(AjPStr* divi, const AjPStr divembl)
+{
+    static AjBool called = AJFALSE;
+    const AjPStr divname = NULL;
+
+    if(!called) {
+	seqdivInit();
+	called = ajTrue;
+    }
+
+    divname = ajTableGet(seqTableDivGb, divembl);
+
+    if(!divname)		/* Genbank mixes division and class */
+	divname = ajTableGet(seqTableClsGb, divembl);
+
+    if(!divname)
+	return ajFalse;
+
+    ajStrAssignS(divi, divname);
+
+    return ajTrue;
+    
+}
+
+
+/* @func ajSeqdivGetEmbl ******************************************************
+**
+** Returns the EMBL database division for a sequence
+**
+** @param [r] divi [const AjPStr] Internal database division
+** @return [const char*] EMBL database division
+******************************************************************************/
+
+const char* ajSeqdivGetEmbl(const AjPStr divi)
+{
+    static AjBool called = AJFALSE;
+    SeqODivision *divdef = NULL;
+
+    if(!called)
+    {
+	seqdivInit();
+	called = ajTrue;
+    }
+
+    ajDebug("ajSeqdivGetEmbl '%S'\n", divi);
+
+    if(ajStrGetLen(divi))
+	divdef = ajTableGet(seqTableDiv, divi);
+
+    if(!divdef)
+	divdef = ajTableGet(seqTableDiv, seqDivisionDef);
+
+    if(!divdef)
+	return ajStrGetPtr(seqDivisionDef);
+
+    ajDebug("ajSeqdivGetEmbl '%S' => '%s'\n",
+	    divi, divdef->Embl);
+
+    return divdef->Embl;
+    
+ }
+
+
+/* @func ajSeqdivGetGb ********************************************************
+**
+** Returns the Genbank database division for a sequence
+**
+** @param [r] divi [const AjPStr] Internal database division
+** @return [const char*] Genbank database division
+******************************************************************************/
+
+const char* ajSeqdivGetGb(const AjPStr divi)
+{
+    static AjBool called = AJFALSE;
+    SeqODivision *divdef = NULL;
+
+    if(!called)
+    {
+	seqdivInit();
+	called = ajTrue;
+    }
+
+    ajDebug("ajSeqdivGetGb '%S'\n", divi);
+
+    if(ajStrGetLen(divi))
+	divdef = ajTableGet(seqTableDiv, divi);
+
+    if(!divdef)
+	divdef = ajTableGet(seqTableDiv, seqDivisionDef);
+
+    if(!divdef)
+	return ajStrGetPtr(seqDivisionDef);
+
+    ajDebug("ajSeqdivGetGb '%S' => '%s'\n",
+	    divi, divdef->Genbank);
+
+    return divdef->Genbank;
+    
+}
+
+
+/* @func ajSeqmolSetEmbl *****************************************************
+**
+** Sets the internal molecule type for a sequence
+**
+** @param [u] mol [AjPStr*] Sequence object
+** @param [r] molembl [const AjPStr] Molecule type
+** @return [AjBool] True if a known type
+******************************************************************************/
+
+AjBool ajSeqmolSetEmbl(AjPStr* mol, const AjPStr molembl)
+{
+    static AjBool called = AJFALSE;
+    const AjPStr molname = NULL;
+
+    if(!called) {
+	seqmolInit();
+	called = ajTrue;
+    }
+
+    molname = ajTableGet(seqTableMolEmbl, molembl);
+    if(!molname)
+	return ajFalse;
+
+    ajStrAssignS(mol, molname);
+
+    return ajTrue;
+    
+}
+
+
+/* @func ajSeqmolSetGb *****************************************************
+**
+** Sets the internal molecule type for a sequence
+**
+** @param [u] mol [AjPStr*] Sequence object
+** @param [r] molgb [const AjPStr] Molecule type
+** @return [AjBool] True if a known type
+******************************************************************************/
+
+AjBool ajSeqmolSetGb(AjPStr* mol, const AjPStr molgb)
+{
+    static AjBool called = AJFALSE;
+    const AjPStr molname = NULL;
+
+    if(!called) {
+	seqmolInit();
+	called = ajTrue;
+    }
+
+    molname = ajTableGet(seqTableMolGb, molgb);
+    if(!molname)
+	return ajFalse;
+
+    ajStrAssignS(mol, molname);
+
+    return ajTrue;
+    
+}
+
+
+/* @func ajSeqmolGetEmbl ******************************************************
+**
+** Returns the EMBL molecule type for a sequence
+**
+** @param [r] mol [const AjPStr] Internal molecule type
+** @return [const char*] EMBL molecule type
+******************************************************************************/
+
+const char* ajSeqmolGetEmbl(const AjPStr mol)
+{
+    static AjBool called = AJFALSE;
+    SeqOMolecule *moldef = NULL;
+
+    if(!called)
+    {
+	seqmolInit();
+	called = ajTrue;
+    }
+
+    ajDebug("ajSeqMoleculeGetEmbl '%S'\n", mol);
+
+    if(ajStrGetLen(mol))
+	moldef = ajTableGet(seqTableMol, mol);
+
+    if(!moldef)
+	moldef = ajTableGet(seqTableMol, seqMoleculeDef);
+
+    if(!moldef)
+	return ajStrGetPtr(seqMoleculeDef);
+
+    ajDebug("ajSeqMoleculeGetEmbl '%S' => '%s'\n",
+	    mol, moldef->Embl);
+
+    return moldef->Embl;
+    
+ }
+
+
+/* @func ajSeqmolGetGb ********************************************************
+**
+** Returns the Genbank molecule type for a sequence
+**
+** @param [r] mol [const AjPStr] Internal molecule type
+** @return [const char*] Genbank molecule type
+******************************************************************************/
+
+const char* ajSeqmolGetGb(const AjPStr mol)
+{
+    static AjBool called = AJFALSE;
+    SeqOMolecule *moldef = NULL;
+
+    if(!called)
+    {
+	seqmolInit();
+	called = ajTrue;
+    }
+
+    ajDebug("ajSeqMoleculeGetGb '%S'\n", mol);
+
+    if(ajStrGetLen(mol))
+	moldef = ajTableGet(seqTableMol, mol);
+
+    if(!moldef)
+	moldef = ajTableGet(seqTableMol, seqMoleculeDef);
+
+    if(!moldef)
+	return ajStrGetPtr(seqMoleculeDef);
+
+    ajDebug("ajSeqMoleculeGetGb '%S' => '%s'\n",
+	    mol, moldef->Genbank);
+
+    return moldef->Genbank;
+    
+}

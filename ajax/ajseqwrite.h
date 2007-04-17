@@ -19,17 +19,22 @@ extern "C"
 ** @attr Acc [AjPStr] Accession number (primary only)
 ** @attr Sv [AjPStr] SeqVersion number
 ** @attr Gi [AjPStr] GI NCBI version number
-** @attr Tax [AjPStr] Main taxonomy (species)
 ** @attr Desc [AjPStr] One-line description
+** @attr Tax [AjPStr] Main taxonomy (species)
+** @attr Organelle [AjPStr] Organelle taxonomy
 ** @attr Type [AjPStr] Type N or P
 ** @attr Outputtype [AjPStr] Output sequence known type
+** @attr Molecule [AjPStr] Molecule type
+** @attr Class [AjPStr] Class of entry
+** @attr Division [AjPStr] Database division
 ** @attr Db [AjPStr] Database name from input name
 ** @attr Setdb [AjPStr] Database name from input command line
 ** @attr Setoutdb [AjPStr] Database name from command line
 ** @attr Full [AjPStr] Full name
-** @attr Date [AjPStr] Date
+** @attr Date [AjPSeqDate] Dates
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
 ** @attr Rev [AjBool] true: to be reverse-complemented
+** @attr Circular [AjBool] true: circular nucleotide molecule
 ** @attr Offset [ajint] offset from start
 ** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
@@ -47,6 +52,9 @@ extern "C"
 ** @attr Acclist [AjPList] Secondary accessions
 ** @attr Keylist [AjPList] Keyword list
 ** @attr Taxlist [AjPList] Taxonomy list (just species for now)
+** @attr Reflist [AjPList] References (citations)
+** @attr Cmtlist [AjPList] Comment block list
+** @attr Xreflist [AjPList] Database cross reference list
 ** @attr Seq [AjPStr] The sequence
 ** @attr File [AjPFile] Output file
 ** @attr Knownfile [AjPFile] Already open output file (we don't close this one)
@@ -77,17 +85,22 @@ typedef struct AjSSeqout {
   AjPStr Acc;
   AjPStr Sv;
   AjPStr Gi;
-  AjPStr Tax;
   AjPStr Desc;
+  AjPStr Tax;
+  AjPStr Organelle;
   AjPStr Type;
   AjPStr Outputtype;
+  AjPStr Molecule;
+  AjPStr Class;
+  AjPStr Division;
   AjPStr Db;
   AjPStr Setdb;
   AjPStr Setoutdb;
   AjPStr Full;
-  AjPStr Date;
+  AjPSeqDate Date;
   AjPStr Doc;
   AjBool Rev;
+  AjBool Circular;
   ajint Offset;
   AjPStr Usa;
   AjPStr Ufo;
@@ -105,6 +118,9 @@ typedef struct AjSSeqout {
   AjPList Acclist;
   AjPList Keylist;
   AjPList Taxlist;
+  AjPList Reflist;
+  AjPList Cmtlist;
+  AjPList Xreflist;
   AjPStr Seq;
   AjPFile File;
   AjPFile Knownfile;

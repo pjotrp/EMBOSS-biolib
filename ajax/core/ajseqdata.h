@@ -15,6 +15,78 @@ enum AjEQryType {QRY_UNKNOWN, QRY_ENTRY, QRY_QUERY, QRY_ALL};
 
 typedef struct SeqSAccess SeqSAccess;
 
+/* @data AjPSeqDate ***********************************************************
+**
+** Ajax Sequence dates object.
+**
+** defines the date fields needed to support various standard
+** sequence database entry formats
+**
+** @alias AjSSeqDate
+** @alias AjOSeqDate
+**
+** @attr CreDate [AjPTime] Creation date
+** @attr ModDate [AjPTime] Entry modification date
+** @attr SeqDate [AjPTime] Sequence modification date
+** @attr CreRel [AjPStr] Database release when first released
+** @attr ModRel [AjPStr] Database release when entry last changed
+** @attr SeqRel [AjPStr] Database release when sequence last changed
+** @attr CreVer [AjPStr] Entry version when last changed
+** @attr ModVer [AjPStr] Entry version when last changed
+** @attr SeqVer [AjPStr] Entry version when sequence last changed
+** @@
+******************************************************************************/
+
+typedef struct AjSSeqDate {
+  AjPTime CreDate;
+  AjPTime ModDate;
+  AjPTime SeqDate;
+  AjPStr CreRel;
+  AjPStr ModRel;
+  AjPStr SeqRel;
+  AjPStr CreVer;
+  AjPStr ModVer;
+  AjPStr SeqVer;
+} AjOSeqDate;
+#define AjPSeqDate AjOSeqDate*
+
+/* @data AjPSeqRef ***********************************************************
+**
+** Ajax sequence citation object.
+**
+** defines the fields needed to support various standard
+** entry citation formats
+**
+** @alias AjSSeqRef
+** @alias AjOSeqRef
+**
+** @attr Position [AjPStr] Sequence positions
+** @attr Groupname [AjPStr] Working group or consortium
+** @attr Authors [AjPStr] Author list, comma-delimited
+** @attr Title [AjPStr] Title
+** @attr Comment [AjPStr] Comment
+** @attr Xref [AjPStr] Cross reference
+** @attr Location [AjPStr] Location (journal, book, submission)
+** @attr Loctype [AjPStr] Location type
+** @attr Number [ajuint] Reference number. This may be used in the feature
+**                       table and references can disappear so the position
+**                       in the lst is not enough
+** @@
+******************************************************************************/
+
+typedef struct AjSSeqRef {
+  AjPStr Position;
+  AjPStr Groupname;
+  AjPStr Authors;
+  AjPStr Title;
+  AjPStr Comment;
+  AjPStr Xref;
+  AjPStr Location;
+  AjPStr Loctype;
+  ajuint Number;
+} AjOSeqRef;
+#define AjPSeqRef AjOSeqRef*
+
 /* @data AjPSeqQuery **********************************************************
 **
 ** Ajax Sequence Query object.
@@ -248,16 +320,21 @@ typedef struct AjSSeqin {
 ** @attr Sv [AjPStr] SeqVersion number
 ** @attr Gi [AjPStr] GI NCBI version number
 ** @attr Tax [AjPStr] Main taxonomy (species)
+** @attr Organelle [AjPStr] Organelle taxonomy
 ** @attr Type [AjPStr] Type N or P
+** @attr Molecule [AjPStr] Molecule type
+** @attr Class [AjPStr] Class of entry
+** @attr Division [AjPStr] Database division
 ** @attr Db [AjPStr] Database name from input
 ** @attr Setdb [AjPStr] Database name from command line
 ** @attr Full [AjPStr] Full name
-** @attr Date [AjPStr] Date
+** @attr Date [AjPSeqDate] Creation, modification and sequence mod dates
 ** @attr Desc [AjPStr] One-line description
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
 ** @attr Rev [AjBool] true: to be reverse-complemented
 ** @attr Reversed [AjBool] true: has been reverse-complemented
 ** @attr Trimmed [AjBool] true: has been trimmed
+** @attr Circular [AjBool] true: circular nucleotide molecule
 ** @attr Begin [ajint] start position (processed on reading)
 ** @attr End [ajint] end position (processed on reading)
 ** @attr Offset [ajuint] offset from start
@@ -272,52 +349,15 @@ typedef struct AjSSeqin {
 ** @attr TextPtr [AjPStr] Full text
 ** @attr Acclist [AjPList] Secondary accessions
 ** @attr Keylist [AjPList] Keyword list
-** @attr Taxlist [AjPList] Taxonomy list (just species for now)
+** @attr Taxlist [AjPList] Taxonomy list (organelle, species, taxa)
+** @attr Reflist [AjPList] Reference citation list
+** @attr Cmtlist [AjPList] Comment block list
+** @attr Xreflist [AjPList] Cross reference list
 ** @attr Seq [AjPStr] The sequence
 ** @attr Fttable [AjPFeattable] Feature table
 ** @attr Accuracy [ajuint*] Accuracy values (one per base) from base calling
 ** @attr Format [AjEnum] Input format enum
 ** @attr EType [AjEnum] unused, obsolete
-**
-** @new ajSeqNew Default constructor
-** @new ajSeqNewL Constructor with expected maximum size.
-** @new ajSeqNewS Constructor with sequence object to be cloned.
-** @delete ajSeqDel Default destructor
-** @input ajSeqRead Master sequence input, calls specific functions for
-**                file access type and sequence format.
-** @input ajSeqAllRead Master sequence stream input, reads first sequence
-**                   from an open input stream.
-** @modify ajSeqMod Sets a sequence as modifiable by making its sequence
-**               into a unique AjPStr.
-** @modify ajSeqReplace Replaces a sequence with a string containing a modified
-**                   version.
-** @modify ajSeqReplaceC Replaces a sequence with a char* containing a modified
-**                   version.
-** @modify ajSeqSetRange Sets a sequence using specified start and end
-**                       positions.
-** @modify ajSeqType Sets the sequence type
-** @modify ajSeqSetNuc Sets sequence to be nucleotide
-** @modify ajSeqSetProt Sets sequence to be protein
-** @modify ajSeqToLower Converts a sequence to lower case
-** @modify ajSeqToUpper Converts a sequence to upper case
-** @modify ajSeqReverse Reverse complements a nucleotide sequence
-** @modify ajSeqRevOnly Reverses a sequence (does not complement)
-** @modify ajSeqCompOnly Complements a nucleotide sequence (does not reverse)
-** @cast ajSeqChar Returns the actual char* holding the sequence.
-** @cast ajSeqCharCopy Returns a copy of the sequence as char*.
-** @cast ajSeqCharCopyL Returns a copy of the sequence as char* with
-**                      a specified minimum reserved length.
-** @cast ajSeqStr Returns the actual AjPStr holding the sequence.
-** @cast ajSeqName Returns the sequence name as char*
-** @cast ajSeqLen Returns the sequence length
-** @cast ajSeqBegin Returns the sequence start position
-** @cast ajSeqEnd Returns the sequence end position
-** @cast ajSeqCheckGcg Calculates the GCG checksum for a sequence.
-** @cast ajSeqNum Convert sequence to numbers
-** @use ajSeqIsNuc tests whether a sequence is nucleotide
-** @use ajSeqIsProt tests whether a sequence is protein
-** @output ajSeqWrite Master sequence output routine
-** @output ajSeqTrace Reports the contents of a sequence
 **
 ** @@
 ******************************************************************************/
@@ -328,16 +368,21 @@ typedef struct AjSSeq {
   AjPStr Sv;
   AjPStr Gi;
   AjPStr Tax;
+  AjPStr Organelle;
   AjPStr Type;
+  AjPStr Molecule;
+  AjPStr Class;
+  AjPStr Division;
   AjPStr Db;
   AjPStr Setdb;
   AjPStr Full;
-  AjPStr Date;
+  AjPSeqDate Date;
   AjPStr Desc;
   AjPStr Doc;
   AjBool Rev;
   AjBool Reversed;
   AjBool Trimmed;
+  AjBool Circular;
   ajint Begin;
   ajint End;
   ajuint Offset;
@@ -353,6 +398,9 @@ typedef struct AjSSeq {
   AjPList Acclist;
   AjPList Keylist;
   AjPList Taxlist;
+  AjPList Reflist;
+  AjPList Cmtlist;
+  AjPList Xreflist;
   AjPStr Seq;
   AjPFeattable Fttable;
   ajuint* Accuracy;
