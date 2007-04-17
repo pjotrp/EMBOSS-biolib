@@ -143,6 +143,8 @@ typedef struct AlignSFormat
 static void       alignConsStats(AjPAlign thys, ajint iali, AjPStr *cons,
 				 ajint* retident, ajint* retsim, ajint* retgap,
 				 ajint* retlen);
+static AjBool     alignConsSet(const AjPAlign thys, ajint iali, ajint seqnum,
+			       AjPStr *cons);
 static AlignPData alignData(const AjPAlign thys, ajint iali);
 static void       alignDataDel(AlignPData* pthys, AjBool external);
 static void       alignDiff(AjPStr* pmark, const AjPStr seq, char idchar);
@@ -753,8 +755,12 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
     else if(markx == 2)
     {
 	seq = ajSeqGetSeqS(data->Seq[0]);
-	ajStrAssignS(&cons, ajSeqGetSeqS(data->Seq[1]));
+	alignConsSet(thys, iali, 1, &cons);
+	ajDebug("alignWriteMark(%d)\nseq0:%S\ncons:%S\nseq1:%S\n",
+		markx, seq, cons, ajSeqGetSeqS(data->Seq[1]));
 	alignDiff(&cons, seq, '.');
+	ajDebug("alignWriteMark(%d)\nseq0:%S\ncons:%S\nseq1:%S\n",
+		markx, seq, cons, ajSeqGetSeqS(data->Seq[1]));
     }
     else
     {
@@ -2231,7 +2237,7 @@ void ajAlignWrite(AjPAlign thys)
 {
     ajDebug("ajAlignWrite\n");
 
-    /*ajAlignTraceT(thys, "ajAlignWrite start");*/
+    ajAlignTraceT(thys, "ajAlignWrite start");
 
     if(!thys->Format)
 	if(!ajAlignFindFormat(thys->Formatstr, &thys->Format))
@@ -4884,6 +4890,72 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
     ajStrDel(&debugstr1);
     ajStrDel(&debugstr2);
     ajMatrixDel(&imatrix);
+
+    return ajTrue;    
+}
+
+
+/* @funcstatic alignConsSet ***************************************************
+**
+** Sets consensus to be a copy of a numbered sequence
+**
+** @param [r] thys [const AjPAlign] Alignment object
+** @param [r] iali [ajint] alignment number
+** @param [r] numseq [ajint] Sequence number to use as the consensus
+** @param [w] cons [AjPStr*] the created consensus sequence
+** @return [AjBool] True on success
+******************************************************************************/
+
+static AjBool alignConsSet(const AjPAlign thys, ajint iali,
+			   ajint numseq, AjPStr *cons)
+{
+    ajint   nseqs;
+    ajint   mlen;
+    
+    ajint   kkpos;		/* alignment position loop variable */
+    
+    const char *seqcharptr;
+    char gapch;
+    AjPStr debugstr1=NULL;
+    AjPStr debugstr2=NULL;
+    AlignPData data = NULL;
+    const AjPSeq* seqs;
+    const AjPSeq seq;
+
+    debugstr1=ajStrNew();
+    debugstr2=ajStrNew();
+
+    data = alignData(thys, iali);
+    seqs = alignSeqs(thys, iali);
+
+    nseqs   = thys->Nseqs;
+    mlen    = data->LenAli;
+    
+    ajDebug("alignConsSet iali:%d numseq:%d nseqs:%d mlen:%d\n",
+	    iali, numseq, nseqs, mlen);
+        
+    gapch = '-';
+    
+    seq = seqs[numseq];
+    seqcharptr = ajSeqGetSeqC(seq);
+
+    ajStrAssignC(cons, "");
+
+    /* For each position in the alignment, calculate consensus character */
+    
+    for(kkpos=0; kkpos<data->SubOffset[0]; kkpos++)
+    {
+	ajStrAppendK(cons, gapch);
+    }
+
+    for(kkpos=0; kkpos< mlen; kkpos++)
+    {
+	ajStrAppendK(cons,seqcharptr[kkpos+data->SubOffset[numseq]]);	
+    }
+    
+    /* ajDebug("ret ident:%d sim:%d gap:%d len:%d\n",
+	    *retident, *retsim, *retgap, *retlen); */
+
 
     return ajTrue;    
 }
