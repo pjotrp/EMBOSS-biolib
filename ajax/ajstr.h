@@ -289,6 +289,8 @@ AjBool     ajStrExchangeSC(AjPStr* Pstr, const AjPStr str,
 			   const char* txtnew);
 AjBool     ajStrExchangeSS(AjPStr* Pstr, const AjPStr str,
 			   const AjPStr strnew);
+AjBool     ajStrExchangePosCC(AjPStr* Pstr, ajint ipos, const char* txt,
+			      const char* txtnew);
 AjBool     ajStrExchangeSetCC(AjPStr* Pstr, const char* txt,
 			      const char* newc);
 AjBool     ajStrExchangeSetSS(AjPStr* Pstr, const AjPStr str,
@@ -384,6 +386,7 @@ AjBool     ajStrFmtTitle(AjPStr* Pstr);
 AjBool     ajStrFmtUpper(AjPStr* Pstr);
 AjBool     ajStrFmtUpperSub(AjPStr* Pstr, ajint pos1, ajint pos2);
 AjBool     ajStrFmtWrap(AjPStr* Pstr, ajuint width );
+AjBool     ajStrFmtWrapAt(AjPStr* Pstr, ajuint width, char ch);
 AjBool     ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint left);
 
 /* comparison */

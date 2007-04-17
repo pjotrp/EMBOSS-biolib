@@ -1074,6 +1074,11 @@ AjBool ajCharPrefixC(const char* txt, const char* txt2)
 {
     ajuint ilen;
 
+    if(!txt)
+	return ajFalse;
+    if(!txt2)
+	return ajFalse;
+
     ilen = strlen(txt2);
 
     if(!ilen)				/* no prefix */
@@ -1727,6 +1732,7 @@ AjPStr ajCharParseC (const char* txt, const char* txtdelim)
 	if (!txt)
 	{
 	    ajWarn("Error in ajCharParseC: NULL argument and not initialised");
+	    ajUtilCatch();
 	    return NULL;
 	}
 	strp = ajStrNew();
@@ -4931,12 +4937,14 @@ __deprecated AjBool  ajStrTruncate(AjPStr* Pstr, ajint pos)
 **                               strings.
 ** @nam3rule  Random             Randomly rearrange characters.
 ** @nam3rule  Reverse            Reverse order of characters.
+** @nam4rule  ExchangePos        Substitute character(s) at a set position
 ** @nam4rule  ExchangeSet        Substitute character(s) in a string with
 **                               other character(s).
 ** @nam5rule  ExchangeSetRest    Substitute character(s) in a string with
 **                               other character(s).
 **
 ** @argrule * Pstr [AjPStr*] String to be edited
+** @argrule Pos ipos [ajint] String position to be edited
 ** @arg1rule C txt [const char*] Text to be replaced
 ** @arg1rule K chr [char] Text to be replaced
 ** @arg1rule S str [const AjPStr] Text to be replaced
@@ -5164,6 +5172,34 @@ __deprecated AjBool  ajStrSubstitute(AjPStr* pthis,
 				    const AjPStr replace, const AjPStr putin)
 {    
     return ajStrExchangeSS(pthis, replace, putin);
+}
+
+/* @func ajStrExchangePosCC ***************************************************
+**
+** Replace all occurrences in a string of one substring with another.
+**
+** @param [u] Pstr [AjPStr*]  Target string.
+** @param [r] pos [ajint] Position in the string, negative values are
+**        from the end of the string.
+** @param [r] txt [const char*] string to replace.
+** @param [r] txtnew [const char*] string to insert.
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrExchangePosCC(AjPStr* Pstr, ajint pos, const char* txt,
+			 const char* txtnew)
+{    
+    ajuint tlen = strlen(txt);
+    ajint jpos = ajMathPos((*Pstr)->Len, pos);
+
+    if(ajCharPrefixC(&(*Pstr)->Ptr[jpos], txt))
+    {
+	ajStrCutRange(Pstr,jpos,jpos+tlen-1);
+	ajStrInsertC(Pstr,jpos,txtnew);
+    }
+
+    return ajTrue;
 }
 
 /* @func ajStrExchangeSetCC ***************************************************
@@ -6951,21 +6987,20 @@ AjBool ajStrSetResRound(AjPStr* Pstr, ajuint size)
 
     thys = *Pstr;
 
-    trysize = size;
     if(thys->Res < size)
     {
-	if(trysize >= LONGSTR)
+	if(size >= LONGSTR)
 	{
+	    trysize = thys->Res;
 	    while(trysize<size)
 	      trysize+=trysize;
 	  roundsize = ajRound(trysize, LONGSTR);
 	}
 	else
-	  roundsize = ajRound(trysize, STRSIZE);
+	  roundsize = ajRound(size, STRSIZE);
 
 	strCloneL(Pstr, roundsize);
 	return ajTrue;
-	
     }
 
     if(thys->Use > 1)
@@ -7784,15 +7819,17 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
 ** @nam4rule  FmtQuote    Enclose in double quotes
 ** @nam4rule  FmtTitle    Convert first character of string to uppercase. 
 ** @nam4rule  FmtUpper    Convert to upper case.
-** @nam5rule  FmtUpperSub    Substring only
-** @nam4rule  FmtWrap    Wrap with newlines
-** @nam5rule  FmtWrapLeft    Wrap with newlines and left margin of spaces
+** @nam5rule  FmtUpperSub Substring only
+** @nam4rule  FmtWrap     Wrap with newlines
+** @nam4rule  FmtWrapAt   Wrap with newlines at a preferred character
+** @nam5rule  FmtWrapLeft Wrap with newlines and left margin of spaces
 **
 ** @argrule * Pstr [AjPStr*] String
 ** @argrule FmtBlock len [ajuint] Block length
 ** @argrule Sub pos1 [ajint] Start position, negative value counts from end
 ** @argrule Sub pos2 [ajint] End position, negative value counts from end
 ** @argrule Wrap width [ajuint] Line length
+** @argrule WrapAt ch [ch] Preferred last character on line
 ** @argrule WrapLeft margin [ajuint] Left margin
 **
 ** @valrule * [AjBool] True on success
@@ -8089,7 +8126,10 @@ __deprecated AjBool  ajStrToUpperII(AjPStr* pthis, ajint begin, ajint end)
 **
 ** Formats a string so that it wraps when printed.  
 **
-** Newline characters are inserted, at white space if possible, 
+** Newline characters are inserted, at white space if possible,
+** with a break at whitespace following the preferred character
+** if found, or at the last whitespace, or just at the line width if there
+** is no whitespace found (it does happen with long hyphenated  enzyme names)
 **
 ** @param [u] Pstr [AjPStr*] Target string
 ** @param [r] width [ajuint] Line width
@@ -8100,9 +8140,11 @@ __deprecated AjBool  ajStrToUpperII(AjPStr* pthis, ajint begin, ajint end)
 AjBool ajStrFmtWrap(AjPStr* Pstr, ajuint width )
 {
     AjPStr thys;
-    char* cp;
     char* cq;
     ajuint i;
+    ajuint j;
+    ajuint k;
+    ajuint imax;
 
     if(width > (*Pstr)->Len)		/* already fits on one line */
 	return ajTrue;
@@ -8110,22 +8152,49 @@ AjBool ajStrFmtWrap(AjPStr* Pstr, ajuint width )
     thys = ajStrGetuniqueStr(Pstr);
 
     cq = thys->Ptr;
-    for(i=width; i < thys->Len; i+=width)
+    i=0;
+    imax = thys->Len - width;
+
+    ajDebug("ajStrFmtWrap imax:%u len:%u '%S'\n",
+	   imax, ajStrGetLen(*Pstr), *Pstr);
+
+    while(i < imax)
     {
-	cp = &thys->Ptr[i];
-	while(cp > cq && !isspace((ajint)*cp))
-	    cp--;
+	j = i+width+1;
+	if(j > thys->Len)
+	    j = thys->Len;
 
-	if(cp == cq)
+	k = j;
+
+	while(i < j)
 	{
-	    ajStrInsertC(Pstr, i, "\n");
-	    cp = &thys->Ptr[i+1];
+	    if(isspace((ajint)*cq))
+	    {
+		k = i;
+		if(*cq == '\n')
+		    break;
+	    }
+	    cq++;
+	    i++;
 	}
-	else
-	    *cp = '\n';
-	cq = cp;
-    }
 
+	if(*cq != '\n')
+	{
+	    if(k == j)
+	    {
+		ajStrInsertC(Pstr, k, "\n");
+		imax++;
+	    }
+	    else
+		thys->Ptr[k] = '\n';
+	}
+
+	i=k+1;
+	cq=&thys->Ptr[i];
+	ajDebug("k:%u len:%u i:%u imax:%u '%s'\n",
+	       k, ajStrGetLen(thys)-k-1, i, imax, &thys->Ptr[k+1]);
+    }
+    ajDebug("Done i:%u\n", i);
     return ajTrue;
 }
 
@@ -8139,6 +8208,95 @@ __deprecated AjBool  ajStrWrap(AjPStr* Pstr, ajint width )
 {
     return ajStrFmtWrap(Pstr, width);
 }
+
+/* @func ajStrFmtWrapAt *******************************************************
+**
+** Formats a string so that it wraps when printed.
+** Breaks are at a preferred character (for example ',' for author lists)
+**
+** Newline characters are inserted, at white space if possible,
+** with a break at whitespace following the preferred character
+** if found, or at the last whitespace, or just at the line width if there
+** is no whitespace found (it does happen with long hyphenated  enzyme names)
+**
+** @param [u] Pstr [AjPStr*] Target string
+** @param [r] width [ajuint] Line width
+** @param [r] ch [char] Preferred last character on line
+** @return [AjBool] ajTrue on successful completion else ajFalse;
+** @@
+******************************************************************************/
+
+AjBool ajStrFmtWrapAt(AjPStr* Pstr, ajuint width, char ch)
+{
+    AjPStr thys;
+    char* cq;
+    ajuint i;
+    ajuint j;
+    ajuint k;
+    ajuint kk;
+    ajuint imax;
+
+    if(width > (*Pstr)->Len)		/* already fits on one line */
+	return ajTrue;
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    cq = thys->Ptr;
+    i=0;
+    imax = thys->Len - width;
+
+    ajDebug("ajStrFmtWrapPref '%c' imax:%u len:%u '%S'\n",
+	   ch, imax, ajStrGetLen(*Pstr), *Pstr);
+
+    while(i < imax)
+    {
+	j = i+width+1;
+	if(j > thys->Len)
+	    j = thys->Len;
+
+	k = j;
+	kk = j;
+
+	while(i < j)
+	{
+	    if(isspace((ajint)*cq))
+	    {
+		k = i;
+		if(*cq == '\n')
+		    break;
+		if(i && thys->Ptr[i-1] == ch)
+		    kk = i;
+	    }
+	    cq++;
+	    i++;
+	}
+
+	if(*cq != '\n')
+	{
+	    if(kk < j)
+	    {
+		thys->Ptr[kk] = '\n';
+		k = kk;
+	    }
+	    else if(k == j)
+	    {
+		ajStrInsertC(Pstr, k, "\n");
+		imax++;
+	    }
+	    else
+		thys->Ptr[k] = '\n';
+	}
+
+	i=k+1;
+	cq=&thys->Ptr[i];
+	ajDebug("k:%u len:%u i:%u imax:%u '%s'\n",
+	       k, ajStrGetLen(thys)-k-1, i, imax, &thys->Ptr[k+1]);
+    }
+    ajDebug("Done i:%u\n", i);
+    return ajTrue;
+}
+
+
 
 /* @func ajStrFmtWrapLeft *****************************************************
 **
