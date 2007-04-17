@@ -1395,6 +1395,8 @@ AcdOAttr acdAttrFilelist[] =
 {
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"binary", VT_BOOL, 0, "N",
+	 "File contains binary data"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -1473,6 +1475,8 @@ AcdOAttr acdAttrInfile[] =
 {
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"binary", VT_BOOL, 0, "N",
+	 "File contains binary data"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -1555,6 +1559,8 @@ AcdOAttr acdAttrOutdata[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"binary", VT_BOOL, 0, "N",
+	 "File contains binary data"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -1569,6 +1575,10 @@ AcdOAttr acdAttrOutdir[] =
 	 "Can accept a null filename as 'no file'"},
     {"extension", VT_STR, 0, "",
 	 "Default file extension"},
+    {"binary", VT_BOOL, 0, "N",
+	 "Files contain binary data"},
+    {"temporary", VT_BOOL, 0, "N",
+	 "Scratch directory for temporary files deleted on completion"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -1605,6 +1615,8 @@ AcdOAttr acdAttrOutfile[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"binary", VT_BOOL, 0, "N",
+	 "File contains binary data"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -1619,6 +1631,8 @@ AcdOAttr acdAttrOutfileall[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"binary", VT_BOOL, 0, "N",
+	 "Files contains binary data"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -5537,12 +5551,18 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
     va_end(args) ;
 
     if(!required && !acdAuto)		/* test acdc-badadvanced */
+    {
+	acdReset();
 	ajDie("%S terminated: Bad value for '-%S' and no prompt",
 	      acdProgram, thys->Name);
+    }
 
     if(acdAuto)				/* test acdc-badauto */
+    {
+	acdReset();
 	ajDie("%S terminated: Bad value for '-%S' with -auto defined",
 	      acdProgram, thys->Name);
+    }
 
     return;
 }
@@ -25042,20 +25062,24 @@ static void acdValidQual(AcdPAcd thys)
 	{
 	    if(ajCharMatchC(acdType[thys->Type].Name, "seqall"))
 		acdWarn("Sequence qualifier '%S' is not 'sequence' "
-			"or '*sequence' or 'seqall'",
-			thys->Token);
+			"or '*sequence' or 'seqall'"
+			"(should be '%Ssequence')",
+			thys->Token, thys->Token);
 	    else if(ajCharMatchC(acdType[thys->Type].Name, "seqset"))
 		acdWarn("Sequence qualifier '%S' is not 'sequence' "
-			"or '*sequence' or 'sequences'",
-			thys->Token);
+			"or '*sequence' or 'sequences'"
+			"(should be '%Ssequence')",
+			thys->Token, thys->Token);
 	    else if(ajCharMatchC(acdType[thys->Type].Name, "seqsetall"))
 		acdWarn("Sequence qualifier '%S' is not 'sequence' "
-			"or '*sequence' or 'sequences'",
-			thys->Token);
+			"or '*sequence' or 'sequences'"
+			"(should be '%Ssequence')",
+			thys->Token, thys->Token);
 	    else
 		acdWarn("Sequence qualifier '%S' is not 'sequence' "
-			"or '*sequence'",
-			thys->Token);
+			"or '*sequence'"
+			"(should be '%Ssequence')",
+			thys->Token, thys->Token);
 	}
 	else
 	{
@@ -25115,8 +25139,9 @@ static void acdValidQual(AcdPAcd thys)
 	if(!(ajStrSuffixC(thys->Token, "feature")))
 	{
 	    acdWarn("Feature qualifier '%S' is not 'feature' "
-			"or '*feature'",
-			thys->Token);
+			"or '*feature'"
+			"(should be '%Sfeature')",
+			thys->Token, thys->Token);
 	}
 	else
 	{
@@ -25182,16 +25207,18 @@ static void acdValidQual(AcdPAcd thys)
 	if(ajCharMatchC(acdType[thys->Type].Name, "infile"))
 	{
 	    if(!ajStrSuffixC(thys->Token, "file"))
-		acdWarn("Infile qualifier '%S' is not 'infile' or '*file'",
-			thys->Token);
+		acdWarn("Infile qualifier '%S' is not 'infile' or '*file'"
+			"(should be '%Sfile')",
+			thys->Token, thys->Token);
 	    else
 	    {
 		if((qualCountIn == 1) &&
 		   !ajStrMatchC(thys->Token, "infile") &&
 		   !ajStrSuffixC(thys->Token, "file"))
 		    acdWarn("First input file qualifier '%S' is not "
-			    "'infile' or '*file'",
-			    thys->Token);
+			    "'infile' or '*file'"
+			    "(should be '%Sfile')",
+			    thys->Token, thys->Token);
 	    }
 	}
 	else if(ajCharMatchC(acdType[thys->Type].Name, "filelist"))
@@ -25212,8 +25239,9 @@ static void acdValidQual(AcdPAcd thys)
 		    !ajStrSuffixC(thys->Token, "path") &&
 		    !ajStrSuffixC(thys->Token, "directory"))
 		acdWarn("Directory qualifier '%S' is not '*directory or *dir'"
-			" or *path'",
-			thys->Token);
+			" or *path'"
+			"(should be '%Sdir')",
+			thys->Token, thys->Token);
 	    /* no fixed qualifier name for first input directory */
 	}
 
@@ -25257,8 +25285,9 @@ static void acdValidQual(AcdPAcd thys)
 	qualCountOutfile++;
 	if(ajCharMatchC(acdType[thys->Type].Name, "outfile") &&
 	   !ajStrSuffixC(thys->Token, "file"))
-	    acdWarn("Outfile qualifier '%S' is not 'outfile' or '*file'",
-		    thys->Token);
+	    acdWarn("Outfile qualifier '%S' is not 'outfile' or '*file' "
+		    "(should be '%Sfile')",
+		    thys->Token, thys->Token);
 	else
 	{
 	    if((qualCountOut == 1) &&
@@ -25306,8 +25335,9 @@ static void acdValidQual(AcdPAcd thys)
 	       !ajStrMatchC(thys->Token, "outdir") &&
 	       !ajStrSuffixC(thys->Token, "outdir"))
 		acdWarn("First output directory qualifier '%S' "
-			"is not 'outdir' or '*outdir'",
-			thys->Token);
+			"is not 'outdir' or '*outdir'"
+			"(should be '%Sfile')",
+			thys->Token, thys->Token);
 	}
 	
 	/* still to do - check for type */
@@ -25336,8 +25366,9 @@ static void acdValidQual(AcdPAcd thys)
 	qualCountOut++;
 	qualCountOutfile++;
 	if(!ajStrSuffixC(thys->Token, "file"))
-	    acdWarn("Align qualifier '%S' is not 'outfile' or '*file'",
-		    thys->Token);
+	    acdWarn("Align qualifier '%S' is not 'outfile' or '*file'"
+		    "(should be '%Sfile')",
+		    thys->Token, thys->Token);
 	else
 	{
 	    if((qualCountOut == 1) &&
@@ -25366,8 +25397,9 @@ static void acdValidQual(AcdPAcd thys)
 	qualCountOut++;
 	qualCountOutfile++;
 	if(!ajStrSuffixC(thys->Token, "file"))
-	    acdWarn("Report qualifier '%S' is not 'outfile' or '*file'",
-		    thys->Token);
+	    acdWarn("Report qualifier '%S' is not 'outfile' or '*file'"
+		    "(should be '%Sfile')",
+		    thys->Token, thys->Token);
 	else
 	{
 	    if((qualCountOut == 1) &&
@@ -25410,8 +25442,9 @@ static void acdValidQual(AcdPAcd thys)
 	if(!ajStrSuffixC(thys->Token, "outseq") &&
 	   !ajStrSuffixC(thys->Token, "outfile"))
 	    acdWarn("Sequence output qualifier '%S' is not 'outseq' "
-		    "or '*outseq' or '*outfile'",
-		    thys->Token);
+		    "or '*outseq' or '*outfile'"
+		    "(should be '%Soutseq')",
+		    thys->Token, thys->Token);
 
 	else
 	{
@@ -25466,8 +25499,9 @@ static void acdValidQual(AcdPAcd thys)
 	if(!ajStrMatchC(thys->Token, "outfeat") &&
 	   !ajStrSuffixC(thys->Token, "outfeat"))
 	    acdWarn("Feature output qualifier '%S' is not 'outfeat' "
-		    "or '*outfeat'",
-		    thys->Token);
+		    "or '*outfeat'"
+		    "(should be '%Soutfeat')",
+		    thys->Token, thys->Token);
 
 	else
 	{
@@ -25550,9 +25584,17 @@ static void acdValidKnowntype(const AcdPAcd thys)
     acdKnownType = ajTableGet(acdKnowntypeTypeTable, typestr);
     if (!acdKnownType)
     {
-	if (!ajStrMatchS(typestr, defType))
-	    acdWarn("Knowntype '%S' not defined in knowntypes.standard",
-		    typestr);
+	if(ajStrFindAnyK(typestr, '_') >= 0)
+	{
+		acdWarn("Knowntype '%S' replace underscore(s) with spaces",
+			typestr);
+	}
+	else
+	{
+	    if (!ajStrMatchS(typestr, defType))
+		acdWarn("Knowntype '%S' not defined in knowntypes.standard",
+			typestr);
+	}
 	return;
     }
 
