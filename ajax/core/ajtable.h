@@ -102,6 +102,7 @@ ajint      ajStrTableCmpC     (const void *x, const void *y);
 ajint      ajStrTableCmpCase  (const void *x, const void *y);
 ajint      ajStrTableCmpCaseC (const void *x, const void *y);
 void       ajStrTableFree (AjPTable *table);
+void       ajStrTableFreeKey (AjPTable *table);
 unsigned   ajStrTableHash      (const void *key, unsigned hashsize);
 unsigned   ajStrTableHashC     (const void *key, unsigned hashsize);
 unsigned   ajStrTableHashCase  (const void *key, unsigned hashsize);

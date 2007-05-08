@@ -43,6 +43,7 @@ static size_t tableMaxMem = 0;
 
 
 static void tableStrDel(void** key, void** value, void* cl);
+static void tableStrDelKey(void** key, void** value, void* cl);
 
 
 
@@ -1069,6 +1070,32 @@ void ajStrTableFree(AjPTable* ptable)
 
 
 
+/* @func ajStrTableFreeKey ****************************************************
+**
+** Free string keys in a table and free the table. Use only where the keys
+** in the table are real strings, and not just copies of pointers. Otherwise
+** a call to ajTableFree is enough. The data is simply freed.
+**
+** @param [d] ptable [AjPTable*] Table
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajStrTableFreeKey(AjPTable* ptable)
+{
+    if(!*ptable)
+	return;
+
+    ajTableMapDel(*ptable, tableStrDelKey, NULL);
+
+    ajTableFree(ptable);
+
+    return;
+}
+
+
+
+
 /* @funcstatic tableStrDel ****************************************************
 **
 ** Delete an entry in a string table.
@@ -1089,6 +1116,37 @@ static void tableStrDel(void** key, void** value, void* cl)
     q = (AjPStr) *key;
 
     ajStrDel(&p);
+    ajStrDel(&q);
+
+    *key = NULL;
+    *value = NULL;
+
+    if(!cl)
+	return;
+
+    return;
+}
+
+
+
+
+/* @funcstatic tableStrDelKey *************************************************
+**
+** Delete an entry in a table with a string key and ignore the value.
+**
+** @param [d] key [void**] Standard argument. Table key.
+** @param [d] value [void**] Standard argument. Table item.
+** @param [u] cl [void*] Standard argument. Usually NULL.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void tableStrDelKey(void** key, void** value, void* cl)
+{
+    AjPStr q;
+
+    q = (AjPStr) *key;
+
     ajStrDel(&q);
 
     *key = NULL;
