@@ -4500,7 +4500,7 @@ __deprecated AjBool ajStrClean(AjPStr* s)
 ** Removes excess space characters from a string.
 **
 ** Leading/trailing whitespace removed. Multiple spaces replaced by single
-** spaces. Tabes converted to spaces. Newlines left unchanged
+** spaces. Tabs converted to spaces. Newlines left unchanged
 **
 ** @param [u] Pstr [AjPStr *] String to clean.
 ** @return [AjBool] ajTrue if string was reallocated
@@ -5179,7 +5179,7 @@ __deprecated AjBool  ajStrSubstitute(AjPStr* pthis,
 ** Replace all occurrences in a string of one substring with another.
 **
 ** @param [u] Pstr [AjPStr*]  Target string.
-** @param [r] pos [ajint] Position in the string, negative values are
+** @param [r] ipos [ajint] Position in the string, negative values are
 **        from the end of the string.
 ** @param [r] txt [const char*] string to replace.
 ** @param [r] txtnew [const char*] string to insert.
@@ -5187,11 +5187,11 @@ __deprecated AjBool  ajStrSubstitute(AjPStr* pthis,
 ** @@
 ******************************************************************************/
 
-AjBool ajStrExchangePosCC(AjPStr* Pstr, ajint pos, const char* txt,
+AjBool ajStrExchangePosCC(AjPStr* Pstr, ajint ipos, const char* txt,
 			 const char* txtnew)
 {    
     ajuint tlen = strlen(txt);
-    ajint jpos = ajMathPos((*Pstr)->Len, pos);
+    ajint jpos = ajMathPos((*Pstr)->Len, ipos);
 
     if(ajCharPrefixC(&(*Pstr)->Ptr[jpos], txt))
     {
@@ -7821,7 +7821,7 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
 ** @nam4rule  FmtUpper    Convert to upper case.
 ** @nam5rule  FmtUpperSub Substring only
 ** @nam4rule  FmtWrap     Wrap with newlines
-** @nam4rule  FmtWrapAt   Wrap with newlines at a preferred character
+** @nam5rule  FmtWrapAt   Wrap with newlines at a preferred character
 ** @nam5rule  FmtWrapLeft Wrap with newlines and left margin of spaces
 **
 ** @argrule * Pstr [AjPStr*] String
