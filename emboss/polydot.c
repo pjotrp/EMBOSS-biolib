@@ -119,11 +119,11 @@ int main(int argc, char **argv)
     else
 	tickgap = acceptableticks[13];
     
+    ajGraphSetTitlePlus(graph, ajSeqsetGetUsa(seqset));
+
     ajGraphOpenWin(graph, (float)0.0-xmargin,(total+xmargin)*(float)1.35,
 		   (float)0.0-ymargin,
 		   total+ymargin);
-    ajGraphTextMid((total+xmargin)*(float)0.5,(total+ymargin)*(float)0.9,
-		   ajGraphGetTitleC(graph));
     ajGraphSetCharScale((float)0.3);
     
     
