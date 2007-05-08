@@ -249,6 +249,7 @@ void          ajGraphxySetMaxMin(AjPGraph thys,float xmin,float xmax,
 void          ajGraphSetOut (AjPGraph thys, const AjPStr txt);
 void          ajGraphSetOutC (AjPGraph thys, const char *txt);
 void          ajGraphxySetOverLap (AjPGraph thys, AjBool overlap);
+void          ajGraphSetPage(ajuint width, ajuint height);
 void          ajGraphSetSubTitleDo (AjPGraph thys, AjBool set);
 void          ajGraphSetTitleDo (AjPGraph thys, AjBool set);
 void          ajGraphxySetXBottom (AjPGraph thys, AjBool set);
