@@ -1,7 +1,7 @@
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: 100k_rat.patmatdb </h3>
+<p><h3>File: edd1_rat.patmatdb </h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ########################################
@@ -11,7 +11,7 @@
 #    -sequence "tsw:*"
 #    -motif "st[ty]s"
 # Report_format: dbmotif
-# Report_file: 100k_rat.patmatdb
+# Report_file: edd1_rat.patmatdb
 ########################################
 
 #=======================================
@@ -58,7 +58,7 @@ SNLEVSTTSFLPTP
 #---------------------------------------
 #=======================================
 #
-# Sequence: PAXI_HUMAN     from: 1   to: 557
+# Sequence: PAXI_HUMAN     from: 1   to: 591
 # HitCount: 1
 #
 # Motif: ST[TY]S

@@ -32,23 +32,23 @@
 #
 #=======================================
 
-              10        20        30        40         50
+             10        20        30        40         50 
 HBA_HU LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLSH
        :.: .:. : : ::::  .  : : ::: :. . .: :. .:  : ::: 
 HBB_HU LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST
-             10          20        30        40        50
+            10          20        30        40        50 
 
-                    60        70        80        90     
+                   60        70        80        90      
 HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP
             :. .:: :::::  : .. .::.:..    . ::.::  :: :::
 HBB_HU PDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDP
-               60        70        80        90       100
+              60        70        80        90       100 
 
-         100       110       120       130       140
+        100       110       120       130       140 
 HBA_HU VNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKY
         ::.:: . :.  :: :   :::: : :.  : .: :.  :  ::
 HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
-              110       120       130       140     
+             110       120       130       140      
 
 
 #---------------------------------------
@@ -90,23 +90,23 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
 #
 #=======================================
 
-              10        20        30        40         50
+             10        20        30        40         50 
 HBA_HU LSPADKTNVKAAWGKVGAHAGEYGAEALERMFLSFPTTKTYFPHF-DLSH
        :.: .:. : : ::::  .  : : ::: :. . .: :. .:  : ::: 
 HBB_HU LTPEEKSAVTALWGKV--NVDEVGGEALGRLLVVYPWTQRFFESFGDLST
-             10          20        30        40        50
+            10          20        30        40        50 
 
-                    60        70        80        90     
+                   60        70        80        90      
 HBA_HU -----GSAQVKGHGKKVADALTNAVAHVDDMPNALSALSDLHAHKLRVDP
             :. .:: :::::  : .. .::.:..    . ::.::  :: :::
 HBB_HU PDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSELHCDKLHVDP
-               60        70        80        90       100
+              60        70        80        90       100 
 
-         100       110       120       130       140
+        100       110       120       130       140 
 HBA_HU VNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVSTVLTSKY
         ::.:: . :.  :: :   :::: : :.  : .: :.  :  ::
 HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
-              110       120       130       140     
+             110       120       130       140      
 
 
 #=======================================
@@ -132,11 +132,11 @@ HBB_HU ENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVANALAHKY
 #
 #=======================================
 
-             120   
+            120    
 HBA_HU HLPAEFTPAVHA
        ::  :   :: :
 HBB_HU HLTPEEKSAVTA
-              10   
+             10    
 
 
 #=======================================
@@ -157,11 +157,11 @@ HBB_HU HLTPEEKSAVTA
 #
 #=======================================
 
-            10        20    
+           10        20     
 HBA_HU PADKTNVKAAWGKVGAHAGEY
        :      :   :   : : .:
 HBB_HU PVQAAYQKVVAGVANALAHKY
-          130       140     
+         130       140      
 
 
 #---------------------------------------
