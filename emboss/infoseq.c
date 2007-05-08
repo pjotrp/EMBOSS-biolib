@@ -29,12 +29,12 @@
 
 static AjBool infoseq_printheader(AjBool html,  AjBool instring,
 				  const char *text, 
-				  ajint wid, AjBool columns,
+				  ajuint wid, AjBool columns,
 				  const AjPStr delimiter, 
 				  AjPFile outfile);
 static AjBool infoseq_print(AjBool html, AjBool instring,
-			    const AjPStr str, AjBool 
-			    usewid, ajint wid, AjBool columns,
+			    const AjPStr str, AjBool usewid,
+			    ajuint wid, AjBool columns,
 			    const AjPStr delimiter, AjPFile outfile);
 
 
@@ -117,7 +117,8 @@ int main(int argc, char **argv)
     altdb     = ajStrNewC("-");
     tempstr   = ajStrNew();   
     
-
+    if(ajStrMatchC(delimiter, "\\t"))
+	ajStrAssignK(&delimiter, '\t');
     
 
 
@@ -218,7 +219,7 @@ int main(int argc, char **argv)
 	    usa = altusa;
 
 	/* db */
-	db = (AjPStr)ajSeqGetDbS(seq);
+	db = ajSeqGetDbS(seq);
 	if(ajStrGetLen(db) == 0)
 	    db = altdb;
 
@@ -356,35 +357,49 @@ int main(int argc, char **argv)
 **
 ** Prints out a sequence information record to html or text file. 
 **
-** @param [r] html  [AjBool] Undocumented
-** @param [r] instring [AjBool] Undocumented
-** @param [r] text [const char *] Undocumented
-** @param [r] wid [ajint] Undocumented
-** @param [r] columns [AjBool] Undocumented
-** @param [r] delimiter [const AjPStr] Undocumented
-** @param [u] outfile [AjPFile] Undocumented
+** @param [r] html  [AjBool] HTML output if true, else plain text
+** @param [r] instring [AjBool] Some token already printed (need spaces)
+** @param [r] text [const char *] Text to print
+** @param [r] wid [ajuint] Field width
+** @param [r] columns [AjBool] Print in columns if true
+** @param [r] delimiter [const AjPStr] Delimiter between tokens
+** @param [u] outfile [AjPFile] Output file
 ** @return [AjBool] True on success.
 ** @@
 ******************************************************************************/
 static AjBool infoseq_printheader(AjBool html,  AjBool instring,
 				  const char *text, 
-				  ajint wid, AjBool columns,
+				  ajuint wid, AjBool columns,
 				  const AjPStr delimiter, 
 				  AjPFile outfile)
 {
     /* Suppress delimiter on first call (for first string printed out) */
     static AjBool nodelim = AJTRUE;
+    static AjBool colfull = AJFALSE;
+    ajuint tlen = strlen(text);
     
     /* Reset for each new line */
-    if(instring == ajFalse)
+    if(!instring)
+    {
 	nodelim = ajTrue;
+	colfull = ajFalse;
+    }
 
     if(html)
 	ajFmtPrintF(outfile, "<th>%s</th>", text);
     else
     {
 	if(columns)
-	    ajFmtPrintF(outfile, "%-*s", wid, text); 
+	{
+	    if(colfull)
+		ajFmtPrintF(outfile, " %-*s", wid, text);
+	    else
+		ajFmtPrintF(outfile, "%-*s", wid, text);
+	    if(tlen >= wid)
+		colfull = ajTrue;
+	    else
+		colfull = ajFalse;
+	}
 	else
 	{
 	    if(nodelim)
@@ -413,7 +428,7 @@ static AjBool infoseq_printheader(AjBool html,  AjBool instring,
 ** @param [r] instring [AjBool] Undocumented
 ** @param [r] str [const AjPStr] Undocumented
 ** @param [r] usewid [AjBool] Undocumented
-** @param [r] wid [ajint] Undocumented
+** @param [r] wid [ajuint] Undocumented
 ** @param [r] columns [AjBool] Undocumented
 ** @param [r] delimiter [const AjPStr] Undocumented
 ** @param [u] outfile [AjPFile] Undocumented
@@ -421,15 +436,20 @@ static AjBool infoseq_printheader(AjBool html,  AjBool instring,
 ** @@
 ******************************************************************************/
 static AjBool infoseq_print(AjBool html, AjBool instring, const AjPStr str,
-			    AjBool usewid, ajint wid, AjBool columns,
+			    AjBool usewid, ajuint wid, AjBool columns,
 			    const AjPStr delimiter, AjPFile outfile)
 {
     /* Suppress delimiter on first call (for first string printed out) */
     static AjBool nodelim = AJTRUE;
+    static AjBool colfull = AJFALSE;
+    ajuint tlen = ajStrGetLen(str);
 
     /* Reset for each new line */
     if(instring == ajFalse)
+    {
 	nodelim = ajTrue;
+	colfull = ajFalse;
+    }
    
 
     if(html)
@@ -438,10 +458,20 @@ static AjBool infoseq_print(AjBool html, AjBool instring, const AjPStr str,
     {
 	if(columns)
 	{
+	    if(colfull)
+		ajFmtPrintF(outfile, " ");
 	    if(usewid)
-		ajFmtPrintF(outfile, "%-*S", wid, str); 
+	    {
+		ajFmtPrintF(outfile, "%-*S", wid, str);
+		if(tlen >= wid)
+		    colfull = ajTrue;
+		else
+		    colfull = ajFalse;
+	    }
 	    else
-		ajFmtPrintF(outfile, "%S", str); 
+	    {
+		ajFmtPrintF(outfile, "%S", str);
+	    }
 	}
 	else
 	{
