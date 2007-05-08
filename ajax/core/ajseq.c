@@ -152,7 +152,7 @@ static SeqODivision seqDivision[] = {
 
 
 
-/* @datastatic SeqOSeqSMolecule ***********************************************
+/* @datastatic SeqOMolecule ***************************************************
 **
 ** Molecule types in the sequence databases
 **
@@ -717,6 +717,7 @@ void ajSeqDel(AjPSeq* Pseq)
 {
     AjPSeq seq;
     AjPStr ptr = NULL;
+    AjPSeqRef tmpref = NULL;
 
     seq = Pseq ? *Pseq : 0;
 
@@ -731,6 +732,9 @@ void ajSeqDel(AjPSeq* Pseq)
     ajStrDel(&seq->Gi);
     ajStrDel(&seq->Tax);
     ajStrDel(&seq->Type);
+    ajStrDel(&seq->Molecule);
+    ajStrDel(&seq->Class);
+    ajStrDel(&seq->Division);
     ajStrDel(&seq->Db);
     ajStrDel(&seq->Setdb);
     ajStrDel(&seq->Full);
@@ -759,6 +763,20 @@ void ajSeqDel(AjPSeq* Pseq)
     while(ajListstrPop(seq->Taxlist,&ptr))
 	ajStrDel(&ptr);
     ajListDel(&seq->Taxlist);
+
+    while(ajListPop(seq->Reflist,(void **)&tmpref))
+	ajSeqrefDel(&tmpref);
+    ajListDel(&seq->Reflist);
+
+    while(ajListPop(seq->Cmtlist,(void **)&ptr))
+	ajStrDel(&ptr);
+    ajListDel(&seq->Cmtlist);
+
+    while(ajListPop(seq->Xreflist,(void **)&ptr))
+	ajStrDel(&ptr);
+    ajListDel(&seq->Xreflist);
+
+    ajSeqdateDel(&seq->Date);
 
     AJFREE(*Pseq);
     return;
@@ -1533,6 +1551,7 @@ __deprecated void  ajSeqAssUsa(AjPSeq thys, const AjPStr str)
 void ajSeqClear(AjPSeq seq)
 {
     AjPStr ptr = NULL;
+    AjPSeqRef tmpref = NULL;
 
     ajStrSetClear(&seq->Name);
     ajStrSetClear(&seq->Acc);
@@ -1540,6 +1559,9 @@ void ajSeqClear(AjPSeq seq)
     ajStrSetClear(&seq->Gi);
     ajStrSetClear(&seq->Tax);
     ajStrSetClear(&seq->Type);
+    ajStrSetClear(&seq->Molecule);
+    ajStrSetClear(&seq->Class);
+    ajStrSetClear(&seq->Division);
     ajStrSetClear(&seq->Db);
     ajStrSetClear(&seq->Full);
     ajStrSetClear(&seq->Desc);
@@ -1569,6 +1591,17 @@ void ajSeqClear(AjPSeq seq)
 
     while(ajListstrPop(seq->Taxlist,&ptr))
 	ajStrDel(&ptr);
+
+    while(ajListPop(seq->Reflist,(void **)&tmpref))
+	ajSeqrefDel(&tmpref);
+
+    while(ajListPop(seq->Cmtlist,(void **)&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListPop(seq->Xreflist,(void **)&ptr))
+	ajStrDel(&ptr);
+
+    ajSeqdateDel(&seq->Date);
 
     ajFeattableDel(&seq->Fttable);
 
@@ -4029,6 +4062,24 @@ void ajSeqExit(void)
     ajStrDel(&seqVersionAccnum);
     ajStrDel(&seqTempUsa);
 
+    ajStrDel(&seqMoleculeDef);
+    ajStrDel(&seqDivisionDef);
+    ajStrDel(&seqClassDef);
+
+    ajStrTableFreeKey(&seqTableMol);
+    ajStrTableFreeKey(&seqTableMolEmbl);
+    ajStrTableFreeKey(&seqTableMolDdbj);
+    ajStrTableFreeKey(&seqTableMolGb);
+
+    ajStrTableFreeKey(&seqTableDiv);
+    ajStrTableFreeKey(&seqTableDivEmbl);
+    ajStrTableFreeKey(&seqTableDivDdbj);
+    ajStrTableFreeKey(&seqTableDivGb);
+
+    ajStrTableFreeKey(&seqTableCls);
+    ajStrTableFreeKey(&seqTableClsEmbl);
+    ajStrTableFreeKey(&seqTableClsDdbj);
+    ajStrTableFreeKey(&seqTableClsGb);
 
     return;
 }
@@ -6821,7 +6872,7 @@ AjPSeqDate ajSeqdateNewDate(const AjPSeqDate date)
 
 /* @func ajSeqdateDel *********************************************************
 **
-** Deletes a sequence dateobject.
+** Deletes a sequence date object.
 **
 ** @param [d] Pdate [AjPSeqDate*] Sequence date object
 ** @return [void]
@@ -6846,6 +6897,7 @@ void ajSeqdateDel(AjPSeqDate* Pdate)
     ajStrDel(&date->CreRel);
     ajStrDel(&date->ModRel);
     ajStrDel(&date->SeqRel);
+    ajStrDel(&date->CreVer);
     ajStrDel(&date->ModVer);
     ajStrDel(&date->SeqVer);
 
@@ -7017,6 +7069,40 @@ AjPSeqRef ajSeqrefNewRef(const AjPSeqRef ref)
 
     return ret;
 }
+
+/* @func ajSeqrefDel *********************************************************
+**
+** Deletes a sequence citation object.
+**
+** @param [d] Pref [AjPSeqRef*] Sequence citation object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqrefDel(AjPSeqRef* Pref)
+{
+    AjPSeqRef sref;
+
+    if(!Pref)
+	return;
+    if(!*Pref)
+	return;
+
+    sref = *Pref;
+
+    ajStrDel(&sref->Position);
+    ajStrDel(&sref->Groupname);
+    ajStrDel(&sref->Authors);
+    ajStrDel(&sref->Title);
+    ajStrDel(&sref->Comment);
+    ajStrDel(&sref->Xref);
+    ajStrDel(&sref->Location);
+    ajStrDel(&sref->Loctype);
+
+    AJFREE(*Pref);
+
+    return;
+};
 
 /* @func ajSeqrefAppendAuthors ***********************************************
 **
@@ -8046,7 +8132,6 @@ static void seqclsInit(void)
     ajuint i;
     AjPStr keystr = NULL;
     AjPStr valstr = NULL;
-    AjPStr keystr2 = NULL;
 
     if(seqTableCls)
 	return;
@@ -8061,27 +8146,36 @@ static void seqclsInit(void)
     for(i=0;seqClass[i].Name;i++)
     {
 	keystr = ajStrNewC(seqClass[i].Name);
-	ajTablePut(seqTableCls, keystr, &seqClass[i]);
+	if(ajTableGet(seqTableCls, keystr))
+	    ajStrDel(&keystr);
+	else
+	    ajTablePut(seqTableCls, keystr, &seqClass[i]);
 
 	if(seqClass[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Embl);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableClsEmbl, valstr, keystr);
+	    if(ajTableGet(seqTableClsEmbl, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableClsEmbl, valstr, keystr);
 	}
 
 	if(seqClass[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Ddbj);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableClsDdbj, valstr, keystr);
+	    if(ajTableGet(seqTableClsDdbj, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableClsDdbj, valstr, keystr);
 	}
 
 	if(seqClass[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Genbank);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableClsGb, valstr, keystr);
+	    if(ajTableGet(seqTableClsGb, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableClsGb, valstr, keystr);
 	}
     }
 
@@ -8100,7 +8194,6 @@ static void seqdivInit(void)
     ajuint i;
     AjPStr keystr = NULL;
     AjPStr valstr = NULL;
-    AjPStr keystr2 = NULL;
 
     if(seqTableDiv)
 	return;
@@ -8115,27 +8208,36 @@ static void seqdivInit(void)
     for(i=0;seqDivision[i].Name;i++)
     {
 	keystr = ajStrNewC(seqDivision[i].Name);
-	ajTablePut(seqTableDiv, keystr, &seqDivision[i]);
+	if(ajTableGet(seqTableDiv, keystr))
+	    ajStrDel(&keystr);
+	else
+	    ajTablePut(seqTableDiv, keystr, &seqDivision[i]);
 
 	if(seqDivision[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Embl);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableDivEmbl, valstr, keystr);
+	    if(ajTableGet(seqTableDivEmbl, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableDivEmbl, valstr, keystr);
 	}
 
 	if(seqDivision[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Ddbj);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableDivDdbj, valstr, keystr);
+	    if(ajTableGet(seqTableDivDdbj, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableDivDdbj, valstr, keystr);
 	}
 
 	if(seqDivision[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Genbank);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableDivGb, valstr, keystr);
+	    if(ajTableGet(seqTableDivGb, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableDivGb, valstr, keystr);
 	}
 
     }
@@ -8155,8 +8257,7 @@ static void seqmolInit(void)
     ajuint i;
     AjPStr keystr = NULL;
     AjPStr valstr = NULL;
-    AjPStr keystr2 = NULL;
-
+ 
     if(seqTableMol)
 	return;
 
@@ -8170,27 +8271,36 @@ static void seqmolInit(void)
     for(i=0;seqMolecule[i].Name;i++)
     {
 	keystr = ajStrNewC(seqMolecule[i].Name);
-	ajTablePut(seqTableMol, keystr, &seqMolecule[i]);
+	if(ajTableGet(seqTableMol, keystr))
+	    ajStrDel(&keystr);
+	else
+	    ajTablePut(seqTableMol, keystr, &seqMolecule[i]);
 
 	if(seqMolecule[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Embl);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableMolEmbl, valstr, keystr);
+	    if(ajTableGet(seqTableMolEmbl, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableMolEmbl, valstr, keystr);
 	}
 
 	if(seqMolecule[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Ddbj);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableMolDdbj, valstr, keystr);
+	    if(ajTableGet(seqTableMolDdbj, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableMolDdbj, valstr, keystr);
 	}
 
 	if(seqMolecule[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Genbank);
-	    keystr2 = ajStrNewS(valstr);
-	    ajTablePut(seqTableMolGb, valstr, keystr);
+	    if(ajTableGet(seqTableMolGb, valstr))
+		ajStrDel(&valstr);
+	    else
+		ajTablePut(seqTableMolGb, valstr, keystr);
 	}
 
     }
