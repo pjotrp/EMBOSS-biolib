@@ -7829,7 +7829,7 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
 ** @argrule Sub pos1 [ajint] Start position, negative value counts from end
 ** @argrule Sub pos2 [ajint] End position, negative value counts from end
 ** @argrule Wrap width [ajuint] Line length
-** @argrule WrapAt ch [ch] Preferred last character on line
+** @argrule WrapAt ch [char] Preferred last character on line
 ** @argrule WrapLeft margin [ajuint] Left margin
 **
 ** @valrule * [AjBool] True on success
