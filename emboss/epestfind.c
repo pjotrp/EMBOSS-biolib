@@ -272,16 +272,6 @@ static ajint pestfind_compare_score(const void *one, const void *two)
 
 
 
-#ifdef PLD_png
-
-extern int PNGWidth;
-extern int PNGHeight;
-
-#endif
-
-
-
-
 /* @prog epestfind ***************************************************
 ** Finds PEST motifs as potential proteolytic cleavage sites.
 ********************************************************************/
@@ -351,20 +341,11 @@ int main(int argc, char **argv)
     float  ymax   = +60.0; /* Maximum PEST-find score (graphics y-axis) */
     float  ymin   = -60.0; /* Minimum PEST-find score (graphics y-axis) */
     
-#ifdef PLD_png
-    
-    /*
-       PNGWidth = 1280;
-       PNGHeight = 960;
-       */
-    
-    PNGWidth = 960;
-    PNGHeight = 960;
-    
-#endif
 
     ajGraphInit("epestfind", argc, argv);
-    
+
+    ajGraphSetPage(960, 960);
+
     seq    = ajAcdGetSeq("sequence");
     win    = ajAcdGetInt("window");
     dsppot = ajAcdGetBool("potential");

@@ -53,16 +53,6 @@ static ajint seq_end;
 static ajint win_mid;
 static ajint seq_begin;
 
-#ifdef PLD_png
-
-extern int PNGWidth;
-extern int PNGHeight;
-
-#endif
-
-
-
-
 /* @prog pepinfo **************************************************************
 **
 ** Plots simple amino acid properties in parallel
@@ -129,14 +119,8 @@ int main(int argc, char **argv)
 	"Consensus parameters (Eisenberg et al)"
     };
 
-#ifdef PLD_png
-
-    PNGWidth = 960;
-    PNGHeight = 960;
-
-#endif
-
     ajGraphInit("pepinfo", argc, argv);
+    ajGraphSetPage(960, 960);
 
     aj_hist_mark=NOY;
 
