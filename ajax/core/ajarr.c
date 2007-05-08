@@ -2096,7 +2096,7 @@ ajuint ajArrCommaList(const AjPStr s, AjPStr **a)
 
 
 
-/* @func  ajArrDoubleLine *****************************************************
+/* @func ajArrDoubleLine ******************************************************
 **
 ** Creates a double array from a string of columns
 **
@@ -2125,15 +2125,18 @@ double* ajArrDoubleLine(const AjPStr line, const char *delim,
 
     for(i=0;i<startcol-1;++i)
 	if(!ajStrTokenNextParseC(&t,delim,&tmp))
-	    ajFatal("Token missing");
+	    ajFatal("Token missing %u of %u at start of line:\n%S",
+		    (i+1), (startcol-1), line);
 
     for(i=0;i<ncols;++i)
     {
 	if(!ajStrTokenNextParseC(&t,delim,&tmp))
-	    ajFatal("Token missing");
+	    ajFatal("Token missing %u of %u expected in line:\n%S",
+		    (startcol+i), endcol, line);
 
 	if(!ajStrToDouble(tmp,&ret[i]))
-	    ajFatal("Bad float conversion");
+	    ajFatal("Bad float conversion %u of %u (%S) in line:\n%S",
+		    (startcol+i), endcol, tmp, line);
     }
 
     ajStrDel(&tmp);
@@ -2175,15 +2178,18 @@ ajint* ajArrIntLine(const AjPStr line, const char *delim,
 
     for(i=0;i<startcol-1;++i)
 	if(!ajStrTokenNextParseC(&t,delim,&tmp))
-	    ajFatal("Token missing");
+	    ajFatal("Token missing %u of %u at start of line:\n%S",
+		    (i+1), (startcol-1), line);
 
     for(i=0;i<ncols;++i)
     {
 	if(!ajStrTokenNextParseC(&t,delim,&tmp))
-	    ajFatal("Token missing");
+	    ajFatal("Token missing %u of %u expected in line:\n%S",
+		    (startcol+i), endcol, line);
 
 	if(!ajStrToInt(tmp,&ret[i]))
-	    ajFatal("Bad integer conversion");
+	    ajFatal("Bad integer array conversion %u of %u (%S) in line:\n%S",
+		    (startcol+i), endcol, tmp, line);
     }
 
     ajStrDel(&tmp);
@@ -2195,7 +2201,7 @@ ajint* ajArrIntLine(const AjPStr line, const char *delim,
 
 
 
-/* @func  ajArrFloatLine ******************************************************
+/* @func ajArrFloatLine *******************************************************
 **
 ** Creates a Float array from a string of columns
 **
@@ -2230,15 +2236,18 @@ float* ajArrFloatLine(const AjPStr line, const char *delim,
 
     for(i=0;i<startcol-1;++i)
 	if(!ajStrTokenNextParseC(&t,delim,&tmp))
-	    ajFatal("Token missing");
+	    ajFatal("Token missing %u of %u at start of line:\n%S",
+		    (i+1), (startcol-1), line);
 
     for(i=0;i<ncols;++i)
     {
 	if(!ajStrTokenNextParseC(&t,delim,&tmp))
-	    ajFatal("Token missing");
+	    ajFatal("Token missing %u of %u expected in line:\n%S",
+		    (startcol+i), endcol, line);
 
 	if(!ajStrToFloat(tmp,&ret[i]))
-	    ajFatal("Bad float conversion");
+	    ajFatal("Bad float conversion %u of %u (%S) in line:\n%S",
+		    (startcol+i), endcol, tmp, line);
     }
 
     ajStrDel(&tmp);
