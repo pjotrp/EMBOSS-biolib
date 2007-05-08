@@ -91,7 +91,7 @@ int main(int argc, char **argv)
     ajuint len1;
     ajuint len2;
 
-    AjOTime ajtime;
+    AjPTime ajtime = NULL;
     time_t tim;
     AjBool boxit=AJTRUE;
     /* Different ticks as they need to be different for x and y due to
@@ -158,10 +158,11 @@ int main(int argc, char **argv)
     cvt = ajMatrixCvt(matrix);
     
     thresh = (float)ithresh;
-    
+
+    ajtime = ajTimeNew();
+
     tim = time(0);
-    ajTimeLocal(tim,&ajtime);
-    ajtime.format = 0;
+    ajTimeLocal(tim,ajtime);
     
     b1 = ajSeqGetBegin(seq);
     b2 = ajSeqGetBegin(seq2);
@@ -206,21 +207,18 @@ int main(int argc, char **argv)
     
     subt = ajStrNewC((strret=
 		      ajFmtString("(windowsize = %d, threshold = %3.2f  %D)",
-				  windowsize,thresh,&ajtime)));
+				  windowsize,thresh,ajtime)));
     
     
-    if(!stretch)
-	if( ajStrGetLen(ajGraphGetSubTitle(graph)) <=1)
-	    ajGraphSetSubTitle(graph,subt);
-    
-    
+
     if(!stretch)
     {
+	if( ajStrGetLen(ajGraphGetSubTitle(graph)) <=1)
+	    ajGraphSetSubTitle(graph,subt);
+
 	ajGraphOpenWin(graph, (float)0.0-ymargin,(max*(float)1.35)+ymargin,
 		       (float)0.0-xmargin,(float)max+xmargin);
 
-	ajGraphTextMid(max*(float)0.5,flen2+xmargin-onefifth,
-		       ajGraphGetTitleC(graph));
 	ajGraphTextMid(flen1*(float)0.5,(float)0.0-(xmargin/(float)2.0),
 		       ajGraphGetXTitleC(graph));
 	ajGraphTextLine((float)0.0-(xmargin*(float)0.75),flen2*(float)0.5,
@@ -228,8 +226,6 @@ int main(int argc, char **argv)
 			ajGraphGetYTitleC(graph),0.5);
 
 	ajGraphSetCharScale(0.5);
-	ajGraphTextMid(max*(float)0.5,flen2+xmargin-(onefifth*(float)3.),
-		       ajGraphGetSubTitleC(graph));
     }
     
     

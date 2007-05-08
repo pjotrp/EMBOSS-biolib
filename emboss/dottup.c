@@ -138,8 +138,6 @@ int main(int argc, char **argv)
     ajGraphOpenWin(graph, (float)0.0-ymargin,(max*(float)1.35)+ymargin,
 		   (float)0.0-xmargin,(float)max+xmargin);
 
-    ajGraphTextMid(max*(float)0.5,flen2+(xmargin*(float)0.5),
-		   ajGraphGetTitleC(graph));
     ajGraphSetCharScale(0.5);
 
     if(matchlist)
