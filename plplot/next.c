@@ -1,10 +1,4 @@
-/* All drivers: pls->width now more sensibly handled.  If the driver supports
- * multiple widths, it first checks to see if it has been initialized
- * already (e.g. from the command line) before initializing it.  For drivers
- * that don't support multiple widths, pls->width is ignored.
-*/
-
-/*	next.c
+/* $Id: next.c,v 1.3 2007/05/08 09:09:37 rice Exp $
 
 	PLplot NeXT display driver.
 
@@ -61,8 +55,8 @@ plD_init_nx(PLStream *pls)
 
     dev = plAllocDev(pls);
 
-    dev->xold = UNDEFINED;
-    dev->yold = UNDEFINED;
+    dev->xold = PL_UNDEFINED;
+    dev->yold = PL_UNDEFINED;
     dev->xmin = 0;
     dev->xmax = PSX;
     dev->ymin = 0;
@@ -87,16 +81,16 @@ plD_line_nx(PLStream *pls, short x1a, short y1a, short x2a, short y2a)
     int ori;
 
     if (pls->linepos + 21 > LINELENGTH) {
-	(void) putc('\n', OF);
+	putc('\n', OF);
 	pls->linepos = 0;
     }
     else
-	(void) putc(' ', OF);
+	putc(' ', OF);
 
     pls->bytecnt++;
 
     if (x1 == dev->xold && y1 == dev->yold && ptcnt < 40) {
-	(void) sprintf(outbuf, "%d %d D", x2, y2);
+	sprintf(outbuf, "%d %d D", x2, y2);
 	ptcnt++;
     }
     else {
@@ -112,7 +106,7 @@ plD_line_nx(PLStream *pls, short x1a, short y1a, short x2a, short y2a)
     urx = MAX(urx, x2);
     ury = MAX(ury, y2);
 
-    (void) fprintf(OF, "%s", outbuf);
+    fprintf(OF, "%s", outbuf);
     pls->bytecnt += strlen(outbuf);
     dev->xold = x2;
     dev->yold = y2;
@@ -143,9 +137,9 @@ plD_polyline_nx(PLStream *pls, short *xa, short *ya, PLINT npts)
 void
 plD_eop_nx(PLStream *pls)
 {
-    (void) fprintf(OF, " S\neop\n");
+    fprintf(OF, " S\neop\n");
 
-    (void) pclose(OF);
+    pclose(OF);
 }
 
 /*------------------------------------------------------------------------*\
@@ -159,8 +153,8 @@ plD_bop_nx(PLStream *pls)
 {
     PLDev *dev = (PLDev *) pls->dev;
 
-    dev->xold = UNDEFINED;
-    dev->yold = UNDEFINED;
+    dev->xold = PL_UNDEFINED;
+    dev->yold = PL_UNDEFINED;
 
 /* Pipe output to Preview */
 
@@ -168,87 +162,87 @@ plD_bop_nx(PLStream *pls)
 
 /* Header comments */
 
-    (void) fprintf(OF, "%%!PS-Adobe-2.0 EPSF-2.0\n");
-    (void) fprintf(OF, "%%%%Title: PLplot Graph\n");
-    (void) fprintf(OF, "%%%%Creator: PLplot Version %s\n", PLPLOT_VERSION);
-    (void) fprintf(OF, "%%%%BoundingBox: 0 0 576 576\n");
-    (void) fprintf(OF, "%%%%EndComments\n\n");
+    fprintf(OF, "%%!PS-Adobe-2.0 EPSF-2.0\n");
+    fprintf(OF, "%%%%Title: PLplot Graph\n");
+    fprintf(OF, "%%%%Creator: PLplot Version %s\n", PLPLOT_VERSION);
+    fprintf(OF, "%%%%BoundingBox: 0 0 576 576\n");
+    fprintf(OF, "%%%%EndComments\n\n");
 
 /* Definitions */
 
 /* - eop -  -- end a page */
 
-    (void) fprintf(OF, "/eop\n");
-    (void) fprintf(OF, "   {\n");
-    (void) fprintf(OF, "    showpage\n");
-    (void) fprintf(OF, "   } def\n");
+    fprintf(OF, "/eop\n");
+    fprintf(OF, "   {\n");
+    fprintf(OF, "    showpage\n");
+    fprintf(OF, "   } def\n");
 
 /* Set line parameters */
 
-    (void) fprintf(OF, "/@line\n");
-    (void) fprintf(OF, "   {0 setlinecap\n");
-    (void) fprintf(OF, "    0 setlinejoin\n");
-    (void) fprintf(OF, "    1 setmiterlimit\n");
-    (void) fprintf(OF, "   } def\n");
+    fprintf(OF, "/@line\n");
+    fprintf(OF, "   {0 setlinecap\n");
+    fprintf(OF, "    0 setlinejoin\n");
+    fprintf(OF, "    1 setmiterlimit\n");
+    fprintf(OF, "   } def\n");
 
 /* d @hsize -  horizontal clipping dimension */
 
-    (void) fprintf(OF, "/@hsize   {/hs exch def} def\n");
-    (void) fprintf(OF, "/@vsize   {/vs exch def} def\n");
+    fprintf(OF, "/@hsize   {/hs exch def} def\n");
+    fprintf(OF, "/@vsize   {/vs exch def} def\n");
 
 /* d @hoffset - shift for the plots */
 
-    (void) fprintf(OF, "/@hoffset {/ho exch def} def\n");
-    (void) fprintf(OF, "/@voffset {/vo exch def} def\n");
+    fprintf(OF, "/@hoffset {/ho exch def} def\n");
+    fprintf(OF, "/@voffset {/vo exch def} def\n");
 
 /* s @hscale - scale factors */
 
-    (void) fprintf(OF, "/@hscale  {100 div /hsc exch def} def\n");
-    (void0 fprintf(OF, "/@vscale  {100 div /vsc exch def} def\n");
+    fprintf(OF, "/@hscale  {100 div /hsc exch def} def\n");
+    fprintf(OF, "/@vscale  {100 div /vsc exch def} def\n");
 
 /* Set line width */
 
-    (void) fprintf(OF, "/lw %d def\n", (int) (
+    fprintf(OF, "/lw %d def\n", (int) (
 	(pls->width < MIN_WIDTH) ? DEF_WIDTH :
 	(pls->width > MAX_WIDTH) ? MAX_WIDTH : pls->width));
 
 /* Setup user specified offsets, scales, sizes for clipping */
 
-    (void) fprintf(OF, "/@SetPlot\n");
-    (void) fprintf(OF, "   {\n");
-    (void) fprintf(OF, "    ho vo translate\n");
-    (void) fprintf(OF, "    XScale YScale scale\n");
-    (void) fprintf(OF, "    lw setlinewidth\n");
-    (void) fprintf(OF, "   } def\n");
+    fprintf(OF, "/@SetPlot\n");
+    fprintf(OF, "   {\n");
+    fprintf(OF, "    ho vo translate\n");
+    fprintf(OF, "    XScale YScale scale\n");
+    fprintf(OF, "    lw setlinewidth\n");
+    fprintf(OF, "   } def\n");
 
 /* Setup x & y scales */
 
-    (void) fprintf(OF, "/XScale\n");
-    (void) fprintf(OF, "   {hsc hs mul %d div} def\n", YPSSIZE);
-    (void) fprintf(OF, "/YScale\n");
-    (void) fprintf(OF, "   {vsc vs mul %d div} def\n", XPSSIZE);
+    fprintf(OF, "/XScale\n");
+    fprintf(OF, "   {hsc hs mul %d div} def\n", YPSSIZE);
+    fprintf(OF, "/YScale\n");
+    fprintf(OF, "   {vsc vs mul %d div} def\n", XPSSIZE);
 
 /* Macro definitions of common instructions, to keep output small */
 
-    (void) fprintf(OF, "/M {moveto} def\n");
-    (void) fprintf(OF, "/D {lineto} def\n");
-    (void) fprintf(OF, "/S {stroke} def\n");
-    (void) fprintf(OF, "/Z {stroke newpath} def\n");
-    (void) fprintf(OF, "/F {fill} def\n");
-    (void) fprintf(OF, "/C {setrgbcolor} def\n");
-    (void) fprintf(OF, "/G {setgray} def\n");
-    (void) fprintf(OF, "/W {setlinewidth} def\n");
+    fprintf(OF, "/M {moveto} def\n");
+    fprintf(OF, "/D {lineto} def\n");
+    fprintf(OF, "/S {stroke} def\n");
+    fprintf(OF, "/Z {stroke newpath} def\n");
+    fprintf(OF, "/F {fill} def\n");
+    fprintf(OF, "/C {setrgbcolor} def\n");
+    fprintf(OF, "/G {setgray} def\n");
+    fprintf(OF, "/W {setlinewidth} def\n");
 
 /* Set up the plots */
 
-    (void) fprintf(OF, "@line\n");
-    (void) fprintf(OF, "%d @hsize\n", YSIZE);
-    (void) fprintf(OF, "%d @vsize\n", XSIZE);
-    (void) fprintf(OF, "%d @hoffset\n", YOFFSET);
-    (void) fprintf(OF, "%d @voffset\n", XOFFSET);
-    (void) fprintf(OF, "%d @hscale\n", YSCALE);
-    (void) fprintf(OF, "%d @vscale\n", XSCALE);
-    (void) fprintf(OF, "@SetPlot\n\n");
+    fprintf(OF, "@line\n");
+    fprintf(OF, "%d @hsize\n", YSIZE);
+    fprintf(OF, "%d @vsize\n", XSIZE);
+    fprintf(OF, "%d @hoffset\n", YOFFSET);
+    fprintf(OF, "%d @voffset\n", XOFFSET);
+    fprintf(OF, "%d @hscale\n", YSCALE);
+    fprintf(OF, "%d @vscale\n", XSCALE);
+    fprintf(OF, "@SetPlot\n\n");
     pls->page++;
     pls->linepos = 0;
 }
@@ -280,10 +274,10 @@ plD_state_nx(PLStream *pls, PLINT op)
 	    (pls->width < MIN_WIDTH) ? DEF_WIDTH :
 	    (pls->width > MAX_WIDTH) ? MAX_WIDTH : pls->width;
 
-	(void) fprintf(OF, " S\n%d W", width);
+	fprintf(OF, " S\n%d W", width);
 
-	dev->xold = UNDEFINED;
-	dev->yold = UNDEFINED;
+	dev->xold = PL_UNDEFINED;
+	dev->yold = PL_UNDEFINED;
 	break;
     }
     case PLSTATE_COLOR0:
@@ -306,9 +300,6 @@ plD_esc_nx(PLStream *pls, PLINT op, void *ptr)
 }
 
 #else
-int 
-pldummy_next(void);
-
 int 
 pldummy_next(void)
 {

@@ -1,10 +1,4 @@
-/* All drivers: pls->width now more sensibly handled.  If the driver supports
- * multiple widths, it first checks to see if it has been initialized
- * already (e.g. from the command line) before initializing it.  For drivers
- * that don't support multiple widths, pls->width is ignored.
-*/
-
-/*	dg300.c
+/* $Id: dg300.c,v 1.3 2007/05/08 09:09:37 rice Exp $
 
 	PLplot dg300 device driver.
 */
@@ -14,6 +8,20 @@
 
 #include "plplotP.h"
 #include "drivers.h"
+
+/* Device info */
+const char* plD_DEVICE_INFO_dg300 = "dg300:DG300 Terminal:0:dg300:25:dg300";
+
+void plD_dispatch_init_dg	( PLDispatchTable *pdt );
+
+void plD_init_dg		(PLStream *);
+void plD_line_dg		(PLStream *, short, short, short, short);
+void plD_polyline_dg		(PLStream *, short *, short *, PLINT);
+void plD_eop_dg			(PLStream *);
+void plD_bop_dg			(PLStream *);
+void plD_tidy_dg		(PLStream *);
+void plD_state_dg		(PLStream *, PLINT);
+void plD_esc_dg			(PLStream *, PLINT, void *);
 
 /* top level declarations */
 
@@ -28,6 +36,24 @@ struct termattr {
     unsigned char eor;
 } termattr;
 
+void plD_dispatch_init_dg( PLDispatchTable *pdt )
+{
+#ifndef ENABLE_DYNDRIVERS
+    pdt->pl_MenuStr  = "DG300 Terminal";
+    pdt->pl_DevName  = "dg300";
+#endif
+    pdt->pl_type     = plDevType_Interactive;
+    pdt->pl_seq      = 25;
+    pdt->pl_init     = (plD_init_fp)     plD_init_dg;
+    pdt->pl_line     = (plD_line_fp)     plD_line_dg;
+    pdt->pl_polyline = (plD_polyline_fp) plD_polyline_dg;
+    pdt->pl_eop      = (plD_eop_fp)      plD_eop_dg;
+    pdt->pl_bop      = (plD_bop_fp)      plD_bop_dg;
+    pdt->pl_tidy     = (plD_tidy_fp)     plD_tidy_dg;
+    pdt->pl_state    = (plD_state_fp)    plD_state_dg;
+    pdt->pl_esc      = (plD_esc_fp)      plD_esc_dg;
+}
+
 /*--------------------------------------------------------------------------*\
  * plD_init_dg()
  *
@@ -39,22 +65,21 @@ plD_init_dg(PLStream *pls)
 {
 /* Request terminal configuration report */
 
-    (void) printf("\n\036\107\051\n");
-    (void) scanf("%s", (char *) &termattr);
+    printf("\n\036\107\051\n");
+    scanf("%s", (char *) &termattr);
     while (getchar() != '\n');
     if (!strncmp((char *) &termattr.ram[0], "0000", 4)) {
-	(void)
-	    printf("Please wait while graphics interpreter is downloaded.\n");
+	printf("Please wait while graphics interpreter is downloaded.\n");
 
     /* Need to download graphics interpreter. */
 
-	(void) system("cat  /usr/local/src/g300/g300gci110.tx");
+	system("cat  /usr/local/src/g300/g300gci110.tx");
     }
 
 /* Clear screen, Set pen color to green, Absolute positioning */
 
-    (void) printf("\036\107\063\060\n\036\107\155\061\n\036\107\151\060\n");
-    (void) printf("\036\107\042\061\n");
+    printf("\036\107\063\060\n\036\107\155\061\n\036\107\151\060\n");
+    printf("\036\107\042\061\n");
 
     pls->termin = 1;		/* Is an interactive device */
 
@@ -71,12 +96,9 @@ plD_init_dg(PLStream *pls)
 void
 plD_line_dg(PLStream *pls, short x1a, short y1a, short x2a, short y2a)
 {
-    int xx1 = x1a, yy1 = y1a, xx2 = x2a, yy2 = y2a;
+    int x1 = x1a, y1 = y1a, x2 = x2a, y2 = y2a;
 
-    (void) pls;
-
-    (void) printf("LINE %d %d %d %d\n",
-		  xx1 >> 4, yy1 >> 3, xx2 >> 4, yy2 >> 3);
+    printf("LINE %d %d %d %d\n", x1 >> 4, y1 >> 3, x2 >> 4, y2 >> 3);
 }
 
 /*--------------------------------------------------------------------------*\
@@ -103,12 +125,10 @@ plD_polyline_dg(PLStream *pls, short *xa, short *ya, PLINT npts)
 void
 plD_eop_dg(PLStream *pls)
 {
-    (void) pls;
-
-    (void) putchar('\007');
-    (void) fflush(stdout);
+    putchar('\007');
+    fflush(stdout);
     while (getchar() != '\n');
-    (void) printf("ERASE\n");
+    printf("ERASE\n");
 }
 
 /*--------------------------------------------------------------------------*\
@@ -132,10 +152,8 @@ plD_bop_dg(PLStream *pls)
 void
 plD_tidy_dg(PLStream *pls)
 {
-    (void) pls;
-
-    (void) printf("\036\107\042\060\n");
-    (void) fflush(stdout);
+    printf("\036\107\042\060\n");
+    fflush(stdout);
 }
 
 /*--------------------------------------------------------------------------*\
@@ -147,8 +165,6 @@ plD_tidy_dg(PLStream *pls)
 void 
 plD_state_dg(PLStream *pls, PLINT op)
 {
-    (void) pls;
-    (void) op;
 }
 
 /*--------------------------------------------------------------------------*\
@@ -160,9 +176,6 @@ plD_state_dg(PLStream *pls, PLINT op)
 void
 plD_esc_dg(PLStream *pls, PLINT op, void *ptr)
 {
-    (void) pls;
-    (void) op;
-    (void) ptr;
 }
 
 #else
