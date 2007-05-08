@@ -3377,7 +3377,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI dan1.dat
-FZ = 46560
+FZ = 46589
 FP /^11\.000000\s+64\.921204\n/
 FP /^2158\.000000\s+62\.373310\n/
 FI x13776.dan
@@ -8338,8 +8338,8 @@ FI stdout
 FC = 1
 FP /Created dotmatcher1.dat\n/
 FI dotmatcher1.dat
-FC = 30
-FP /^Text2 x1 73.500000 y1 164.639999 colour 0 size 1.000000 Dotmatcher: tsw-id:HBA_HUMAN vs tsw-id:HBB_HUMAN\n/
+FC = 28
+FP /^Text2 x1 71.000000 y1 -11.025001 colour 0 size 1.000000 HBA_HUMAN\n/
 //
 
 ID dotmatcher-stretchdata
@@ -8412,7 +8412,7 @@ TI 400
 CL tembl:AF129756 tembl:BA000025 -word 20 -graph data
 FI dotpath1.dat
 FP /^Line x1 1.000000 y1 193957.000000 x2 153.000000 y2 194109.000000 colour 0\n/
-FC = 253
+FC = 252
 FI stdout
 FC = 1
 FP /^Created dotpath1.dat\n/
@@ -8430,7 +8430,7 @@ FI stdout
 FZ = 18
 FP /^Created dottup.ps\n/
 FI dottup.ps
-FC = 2537
+FC = 2528
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
@@ -8449,7 +8449,7 @@ FI stdout
 FC = 1
 FP /^Created dottup1.dat\n/
 FI dottup1.dat
-FC = 2283
+FC = 2282
 FP /^Line x1 5287.000000 y1 624.000000 x2 5298.000000 y2 635.000000 colour 0\n/
 FI stderr
 FC = 1
@@ -11680,7 +11680,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI polydot1.dat
-FC = 201
+FC = 200
 FP /^##Screen x1 -163.350006 y1 -163.350006 x2 1690.672485 y2 1252.349976\n/
 FP /^Textline x1 -98.010010 y1 73.000000 x2 -98.010010 y2 146.000000 colour 0 size 0.300000 HBB_HUMAN\n/
 FP /^Rectangle x1 0.000000 y1 156.000000 x2 146.000000 y2 302.000000 colour 0\n/
@@ -14607,7 +14607,7 @@ ID seqret-offset
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat%1833
 FI test.out
-FZ = 13131
+FZ = 12374
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
 FP 5 /^ID/
@@ -14619,7 +14619,7 @@ ID seqret-offset-zero
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat%0
 FI test.out
-FZ = 14178
+FZ = 12941
 FP /^ID   L48662; /
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
@@ -14658,7 +14658,7 @@ ID seqret-query-direct-name2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:Z46957
 FI test.out
-FZ = 3417
+FZ = 3082
 FP /^ID   Z46957; /
 FP 1 /^ID/
 //
@@ -14688,7 +14688,7 @@ ID seqret-query-direct-id2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ID:Z46957
 FI test.out
-FZ = 3417
+FZ = 3082
 FP /^ID   Z46957; /
 FP 1 /^ID/
 //
@@ -14718,7 +14718,7 @@ ID seqret-query-direct-acc2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ACC:Z46957
 FI test.out
-FZ = 3417
+FZ = 3082
 FP /^ID   Z46957; /
 FP 1 /^ID/
 //
@@ -14760,7 +14760,7 @@ ID seqret-query-direct-sv2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:SV:Z46957.1
 FI test.out
-FZ = 3417
+FZ = 3082
 FP /^ID   Z46957; /
 FP 1 /^ID/
 //
@@ -14781,7 +14781,7 @@ ID seqret-query-direct-des
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:*receptor*
 FI test.out
-FZ = 3514
+FZ = 2633
 FP /^ID   U68037; /
 FP 1 /^ID/
 //
@@ -14790,7 +14790,7 @@ ID seqret-query-direct-des2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:*norvegicus*
 FI test.out
-FZ = 15126
+FZ = 12374
 FP /^ID   Z46957; /
 FP 5 /^ID/
 //
@@ -14820,7 +14820,7 @@ ID seqret-query-direct-deswordmid
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:mrna
 FI test.out
-FZ = 7085
+FZ = 6958
 FP /^ID   L48662; /
 FP 3 /^ID/
 //
@@ -14829,7 +14829,7 @@ ID seqret-query-direct-deswordend
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:receptor
 FI test.out
-FZ = 3514
+FZ = 2633
 FP /^ID   U68037; /
 FP 1 /^ID/
 //
@@ -14838,7 +14838,7 @@ ID seqret-query-direct-key
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:KEY:rhodopsin
 FI test.out
-FZ = 3417
+FZ = 3082
 FP /^ID   Z46957; /
 FP 1 /^ID/
 //
@@ -14868,7 +14868,7 @@ ID seqret-query-direct-org2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rattus\*
 FI test.out
-FZ = 15126
+FZ = 12374
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
 FP 5 /^ID/
@@ -14878,7 +14878,7 @@ ID seqret-query-direct-org3
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rodentia
 FI test.out
-FZ = 14178
+FZ = 12941
 FP /^ID   L48662; /
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
@@ -16007,7 +16007,7 @@ ID featseqall-end-embl
 AP seqret
 CL -feat @../../data/eclac.list -send 100 -out test.out -osf embl -auto
 FI test.out
-FZ = 111524
+FZ = 76638
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +caattcaggg tggtgaatgt gaaaccagta acgttatacg +100\n/
@@ -16019,7 +16019,7 @@ ID featseqall-begin-embl
 AP seqret
 CL -feat @../../data/eclac.list -sbegin 51 -send 100 -out test.out -osf embl -auto
 FI test.out
-FZ = 110754
+FZ = 75868
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +ggaagagagt caattcaggg tggtgaatgt gaaaccagta acgttatacg +50/
@@ -16032,7 +16032,7 @@ ID featseqall-rev-embl
 AP seqret
 CL -feat @../../data/eclac.list -sbegin 51 -send 100 -srev -out test.out -osf embl -auto
 FI test.out
-FZ = 110898
+FZ = 76012
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +cgtataacgt tactggtttc acattcacca ccctgaattg actctcttcc +50\n/
@@ -20796,7 +20796,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x51872ll.embl
-FZ = 139397
+FZ = 104511
 FP 3 /^ID   V00/
 FP 5 /^ID   /
 //
