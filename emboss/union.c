@@ -158,6 +158,16 @@ int main(int argc, char **argv)
     if (overlap_file)
 	ajFileClose (&overlap_file);
 
+
+    ajSeqallDel(&seqall);
+    ajSeqoutDel(&seqout);
+    ajSeqDel(&seq);
+    ajSeqDel(&uniseq);
+    ajSeqDel(&prev_seq);
+
+    ajStrDel(&unistr);
+    ajFeattableDel(&old_feattable);
+
     embExit();
 
     return 0;

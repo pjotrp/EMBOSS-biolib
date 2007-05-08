@@ -97,15 +97,22 @@ int main(int argc, char **argv)
     today = ajTimeTodayF("yyyy-mm-dd");
     ajTimeTrace (today);
     ajUser("yyyy-mm-dd Today is '%D'", today);
+    ajTimeDel(&today);
+
     today = ajTimeTodayF("dd Mon yyyy");
     ajTimeTrace (today);
     ajUser("dd Mon yyyy Today is '%D'", today);
+    ajTimeDel(&today);
+
     today = ajTimeTodayF("fred");
     ajTimeTrace (today);
     ajUser("fred Today is '%D'", today);
+    ajTimeDel(&today);
+
     today = ajTimeTodayF("gff");
     ajTimeTrace (today);
     ajUser("gff Today is '%D'", today);
+    ajTimeDel(&today);
 
     ajStrAssignC(&maskstr, "abcdefghijklmnopqrstuvwxyz");
     ajStrAssignS(&masktest, maskstr);
@@ -180,6 +187,13 @@ int main(int argc, char **argv)
     maskend=-2;
     ajStrMask(&masktest, maskbegin, maskend, '.');
     ajUser("Mask %d..%d '%S'", maskbegin, maskend, masktest);
+
+
+    ajStrDel(&instr);
+    ajStrDel(&nustr);
+    ajStrDel(&token);
+    ajStrDel(&maskstr);
+    ajStrDel(&masktest);
 
     embExit();
     return 0;
