@@ -70,7 +70,6 @@
 ** @attr type [ajint]  Type of entry: ajWAPROTEIN or ajWADOMAIN.
 ** @attr het_name [AjPStr] 3-character code of heterogen. 
 ** @attr pdb_name  [AjPStr] Name of PDB file.
-** @attr chainid  [char] Chain identifier. 
 ** @attr Nres [ajint] No. residues in chain. 
 ** @attr Seq [AjPStr] Polypeptide sequence. 
 ** @attr scop_name [AjPStr] 7-character scop id domain name. 
@@ -80,6 +79,7 @@
 **                 clean coordinate file. 
 ** @attr *res_pos2 [AjPStr*] Array of residue positions in PDB file
 **      	    - exist as strings.  No longer used.
+** @attr chainid  [char] Chain identifier. 
 ** @@
 ******************************************************************************/
 
@@ -88,7 +88,6 @@ typedef struct AjSDomConts
   ajint  type;
   AjPStr het_name;
   AjPStr pdb_name;
-  char   chainid;
   ajint  Nres;
   AjPStr Seq;
   AjPStr scop_name;
@@ -96,6 +95,7 @@ typedef struct AjSDomConts
   AjPStr *aa_code;
   AjPInt res_pos;
   AjPStr *res_pos2;
+  char   chainid;
 }AjODomConts, *AjPDomConts;
 
 
