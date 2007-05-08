@@ -310,6 +310,7 @@ static AjBool       featTagSpecialAllCollectiondate(const AjPStr pval);
 static AjBool       featTagSpecialAllConssplice(AjPStr* pval);
 static AjBool       featTagSpecialAllInference(const AjPStr pval);
 static AjBool       featTagSpecialAllLatlon(const AjPStr pval);
+static AjBool       featTagSpecialAllMobile(const AjPStr pval);
 static AjBool       featTagSpecialAllPcrprimers(const AjPStr pval);
 static AjBool       featTagSpecialAllRptunit(const AjPStr val);
 static AjBool       featTagSpecialAllRptunitrange(const AjPStr val);
@@ -590,6 +591,7 @@ static AjPRegexp featRegGroup = NULL;
 
 static AjPRegexp featRegSpecialCompare = NULL;
 static AjPRegexp featRegSpecialEstlen = NULL;
+static AjPRegexp featRegSpecialMobile = NULL;
 static AjPRegexp featRegSpecialTrans = NULL;
 static AjPRegexp featRegSpecialTransBad = NULL;
 static AjPRegexp featRegSpecialTransComp = NULL;
@@ -10012,10 +10014,68 @@ static AjBool featTagSpecialAllCompare(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /cmopare value '%S'\n", val);*/
+	/*ajDebug("bad /compare value '%S'\n", val);*/
 	featWarn("bad /compare value '%S'", val);
     }
     ajStrDel(&numstr);
+
+    return ret;
+}
+
+
+
+
+/* @funcstatic featTagSpecialAllMobile ****************************************
+**
+** Tests a string as a valid internal (EMBL) feature /mobile_element tag
+**
+** The format is a known type and optional :name
+**
+** @param  [r] val [const AjPStr] parameter value
+** @return [AjBool] ajTrue for a valid value, possibly corrected
+**                  ajFalse if invalid, to be converted to default (note) type
+** @@
+******************************************************************************/
+
+static AjBool featTagSpecialAllMobile(const AjPStr val)
+{
+    AjPStr typstr = NULL;
+    AjPStr namstr = NULL;
+    AjBool saveit = ajFalse;
+    AjBool ret = ajFalse;
+    ajuint i;
+
+    const char* elements[] = {
+	"transposon", "retrotransposon", "integron",
+	"insertion sequence", "non-LTR retrotransposon",
+	"SINE", "MITE", "LINE", "other", NULL
+    };
+
+/* value is a type or type:name */
+    if(!featRegSpecialMobile)
+	featRegSpecialMobile = ajRegCompC("^([^:]+)(:(.*))?$");
+
+    if(ajRegExec(featRegSpecialMobile, val))
+    {
+	ajRegSubI(featRegSpecialMobile, 1, &typstr);
+	for(i=0;elements[i];i++)
+	    if(ajStrMatchC(typstr, elements[i])) break;
+	if(elements[i])
+	    ret = ajTrue;
+
+	if(saveit)
+	{
+	    ajRegSubI(featRegSpecialMobile, 3, &namstr);
+	}
+    }
+
+    if(!ret)
+    {
+	/*ajDebug("bad /mobile_element value '%S'\n", val);*/
+	featWarn("bad /mobile_element value '%S'", val);
+    }
+    ajStrDel(&typstr);
+    ajStrDel(&namstr);
 
     return ret;
 }
@@ -10535,6 +10595,9 @@ static AjBool featTagSpecial(AjPStr* pval, const AjPStr tag)
     if(ajStrMatchC(tag, "compare"))
 	return featTagSpecialAllCompare(*pval);
 
+    if(ajStrMatchC(tag, "mobile_element"))
+	return featTagSpecialAllMobile(*pval);
+
     /*ajDebug("Unrecognised special EMBL feature tag '%S'\n", tag);*/
     featWarn("Unrecognised special EMBL feature tag '%S'",   tag);
 
@@ -10638,8 +10701,7 @@ static AjBool featTagGffSpecial(AjPStr* pval, const AjPStr tag)
 ******************************************************************************/
 
 static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
-			 AjPFile file,
-			 const AjPStr Seqid, AjBool IsEmbl)
+			 AjPFile file, const AjPStr Seqid, AjBool IsEmbl)
 {
     AjIList iter   = NULL;
     ajint i        = 0;
@@ -10673,9 +10735,15 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
 	ajFmtPrintS(&preftyptag, "%s                   ", "  ");
     }
     
-    featLocEmblWrapC(&tmploc, 79,	/* was 72 */
-		     ajStrGetPtr(preftyptag),
-		     ajStrGetPtr(preftyploc), &wrapstr);
+    if(IsEmbl)
+	featLocEmblWrapC(&tmploc, 80,
+			 ajStrGetPtr(preftyptag),
+			 ajStrGetPtr(preftyploc), &wrapstr);
+    else
+	featLocEmblWrapC(&tmploc, 79,
+			 ajStrGetPtr(preftyptag),
+			 ajStrGetPtr(preftyploc), &wrapstr);
+
     ajFmtPrintF(file, "%S", wrapstr);
     ajStrDel(&wrapstr);
     
@@ -10765,7 +10833,12 @@ static void featDumpEmbl(const AjPFeature feat, const AjPStr location,
 	    /*ajDebug("no value, hope it is void: '%S'\n", featFmtTmp);*/
 	}
 
-	featTagEmblWrapC(&featOutStr, 80, ajStrGetPtr(preftyptag), &wrapstr);
+	if(IsEmbl)
+	    featTagEmblWrapC(&featOutStr, 80,
+			     ajStrGetPtr(preftyptag), &wrapstr);
+	else
+	    featTagEmblWrapC(&featOutStr, 79,
+			     ajStrGetPtr(preftyptag), &wrapstr);
 	ajFmtPrintF(file, "%S", wrapstr);
 	ajStrDel(&wrapstr);
     }
