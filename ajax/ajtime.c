@@ -37,7 +37,7 @@
 **
 ** @attr Name [const char*] format name
 ** @attr Format [const char*] C run time library time format string
-** @attr uppercase [AjBool] Convert to upper case on output
+** @attr Uppercase [AjBool] Convert to upper case on output
 ** @@
 ******************************************************************************/
 
@@ -412,7 +412,7 @@ AjPTime ajTimeNew(void)
 **
 ** Constructor for AjPTime object, making a copy of an existing time object
 **
-** @param  [r] thys [const AjPTime] Time object to be copied
+** @param  [r] src [const AjPTime] Time object to be copied
 ** @return [AjPTime] An AjPTime object
 ** @@
 ******************************************************************************/
