@@ -188,7 +188,7 @@ NamOAttr namDbAttrs[] =
 
     {"formatall", "", "database entry format for 'methodall' access"},
     {"formatentry", "", "database entry format for 'methodentry' access"},
-    {"formatquery", "", "database entry format for 'methodall' access"},
+    {"formatquery", "", "database query format for 'methodquery' access"},
 
     {"hasaccession", "Y", "database has an acc field as an alternate id"},
     {"httpversion", "", "HTTP version for GET requests (URL, SRSWWW)"},
@@ -1924,7 +1924,7 @@ void ajNamInit(const char* prefix)
     ** Also note that EMBOSS_ROOT must be set for ajNamInit to
     ** work with Windows. This will be done by the Windows
     ** installer but developers must set it manually e,g,
-    **    set EMBOSS_ROOT C:\win32\emboss
+    **    set EMBOSS_ROOT C:\emboss\win32
     */
 #ifdef WIN32    
     WSADATA wsaData;
