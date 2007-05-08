@@ -160,6 +160,7 @@ foreach $test (@ARGV) {
     if ($test =~ /^-(.*)/) {
 	$arg=$1;
 	if ($arg =~ /testfile=(\S+)/) {$testfile=$1}
+	if ($arg =~ /qa/) {$testfile="qatestcmd.dat"}
 #    elsif ($arg =~ /logfile=(\S+)/) {$logfile=">$1"} # append to logfile
 	elsif ($arg eq "list") {
 	    $dolist = 1;
