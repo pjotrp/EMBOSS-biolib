@@ -1,12 +1,12 @@
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: hs989235.esim4</h3>
+<p><h3>File: h45989.esim4</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-seq1 = HS989235, 495 bp
-seq2 = HSNFG9 (HSNFG9), 33760 bp
+seq1 = H45989, 495 bp
+seq2 = Z69719 (Z69719), 33760 bp
 
 1-193  (25686-25874)   92% &lt;-
 194-407  (26279-26492)   98% &lt;-

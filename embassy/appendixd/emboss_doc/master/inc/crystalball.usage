@@ -6,8 +6,8 @@
 
 % <b>crystalball -competition -rdtime -rdcost -animalstudies -clinicaltrials -fdaproblems -fdatime -profit -everythingelse </b>
 Answers every drug discovery question about a sequence.
-Input sequence: <b>tembl:hsfau</b>
-Output file [hsfau.crystalball]: <b></b>
+Input sequence: <b>tembl:x65923</b>
+Output file [x65923.crystalball]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

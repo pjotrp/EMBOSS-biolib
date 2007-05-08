@@ -7,74 +7,79 @@
 <p><h3>Database entry: tsw:aqp1_human</h3>
 <table width="90%"><tr><td bgcolor="#FFCCFF">
 <pre>
-ID   AQP1_HUMAN     STANDARD;      PRT;   269 AA.
-AC   P29972;
-DT   01-APR-1993 (Rel. 25, Created)
-DT   01-APR-1993 (Rel. 25, Last sequence update)
-DT   15-MAR-2004 (Rel. 43, Last annotation update)
-DE   Aquaporin-CHIP (Water channel protein for red blood cells and kidney
-DE   proximal tubule) (Aquaporin 1) (AQP-1) (Urine water channel).
-GN   AQP1 OR CHIP28.
+ID   AQP1_HUMAN              Reviewed;         269 AA.
+AC   P29972; Q8TBI5; Q8TDC1;
+DT   01-APR-1993, integrated into UniProtKB/Swiss-Prot.
+DT   23-JAN-2007, sequence version 3.
+DT   20-MAR-2007, entry version 85.
+DE   Aquaporin-1 (AQP-1) (Aquaporin-CHIP) (Water channel protein for red
+DE   blood cells and kidney proximal tubule) (Urine water channel).
+GN   Name=AQP1; Synonyms=CHIP28;
 OS   Homo sapiens (Human).
 OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi;
-OC   Mammalia; Eutheria; Primates; Catarrhini; Hominidae; Homo.
+OC   Mammalia; Eutheria; Euarchontoglires; Primates; Haplorrhini;
+OC   Catarrhini; Hominidae; Homo.
 OX   NCBI_TaxID=9606;
 RN   [1]
-RP   SEQUENCE FROM N.A., AND PARTIAL SEQUENCE.
+RP   NUCLEOTIDE SEQUENCE [MRNA], AND PARTIAL PROTEIN SEQUENCE.
 RX   MEDLINE=92107900; PubMed=1722319;
 RA   Preston G.M., Agre P.;
-RT   "Isolation of the cDNA for erythrocyte integral membrane protein of
-RT   28 kilodaltons: member of an ancient channel family.";
+RT   "Isolation of the cDNA for erythrocyte integral membrane protein of 28
+RT   kilodaltons: member of an ancient channel family.";
 RL   Proc. Natl. Acad. Sci. U.S.A. 88:11110-11114(1991).
 RN   [2]
-RP   SEQUENCE FROM N.A.
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA].
 RX   MEDLINE=93340184; PubMed=8340403;
 RA   Moon C., Preston G.M., Griffin C.A., Jabs E.W., Agre P.;
 RT   "The human aquaporin-CHIP gene. Structure, organization, and
 RT   chromosomal localization.";
 RL   J. Biol. Chem. 268:15772-15778(1993).
 RN   [3]
-RP   SEQUENCE FROM N.A.
+RP   NUCLEOTIDE SEQUENCE [MRNA].
 RC   TISSUE=Retinal pigment epithelium;
-RX   MEDLINE=96326579; PubMed=8703970;
+RX   MEDLINE=96326579; PubMed=8703970; DOI=10.1016/0005-2736(96)00076-4;
 RA   Ruiz A.C., Bok D.;
 RT   "Characterization of the 3' UTR sequence encoded by the AQP-1 gene in
 RT   human retinal pigment epithelium.";
 RL   Biochim. Biophys. Acta 1282:174-178(1996).
 RN   [4]
-RP   SEQUENCE FROM N.A.
+RP   NUCLEOTIDE SEQUENCE [MRNA].
 RC   TISSUE=Uterus;
 RX   MEDLINE=94290349; PubMed=7517253;
 RA   Li X., Yu H., Koide S.S.;
 RT   "The water channel gene in human uterus.";
 RL   Biochem. Mol. Biol. Int. 32:371-377(1994).
 RN   [5]
-RP   SEQUENCE FROM N.A.
-RX   MEDLINE=22737999; PubMed=12853948;
-RA   Hillier L.W., Fulton R.S., Fulton L.A., Graves T.A., Pepin K.H.,
-RA   Wagner-McPherson C., Layman D., Maas J., Jaeger S., Walker R.,
-RA   Wylie K., Sekhon M., Becker M.C., O'Laughlin M.D., Schaller M.E.,
-RA   Fewell G.A., Delehaunty K.D., Miner T.L., Nash W.E., Cordes M., Du H.,
-RA   Sun H., Edwards J., Bradshaw-Cordum H., Ali J., Andrews S., Isak A.,
-RA   Vanbrunt A., Nguyen C., Du F., Lamar B., Courtney L., Kalicki J.,
+RP   NUCLEOTIDE SEQUENCE [GENOMIC DNA], AND VARIANTS VAL-45 AND ASP-165.
+RA   Rieder M.J., Johanson E.J., da Ponte S.H., Hastings N.C., Ahearn M.O.,
+RA   Bertucci C.B., Wong M.W., Yi Q., Nickerson D.A.;
+RT   "SeattleSNPs. NHLBI HL66682 program for genomic applications, UW-
+RT   FHCRC, Seattle, WA (URL: http://pga.gs.washington.edu).";
+RL   Submitted (MAR-2005) to the EMBL/GenBank/DDBJ databases.
+RN   [6]
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-FT   DOMAIN      156    166       Cytoplasmic.
+FT   TRANSMEM     77     84       Helix B.
+FT   TOPO_DOM     85     94       Cytoplasmic.
+FT   TRANSMEM     95    115       Helix 3.
+FT   TOPO_DOM    116    136       Extracellular.
+FT   TRANSMEM    137    155       Helix 4.
+FT   TOPO_DOM    156    166       Cytoplasmic.
 FT   TRANSMEM    167    183       Helix 5.
-FT   DOMAIN      184    186       Extracellular.
-FT   DOMAIN      187    192       In membrane.
+FT   TOPO_DOM    184    186       Extracellular.
+FT   TOPO_DOM    187    192       In membrane.
 FT   TRANSMEM    193    200       Helix E.
-FT   DOMAIN      201    207       Extracellular.
+FT   TOPO_DOM    201    207       Extracellular.
 FT   TRANSMEM    208    228       Helix 6.
-FT   DOMAIN      229    269       Cytoplasmic.
-FT   SITE         76     78       NPA 1.
-FT   SITE        192    194       NPA 2.
-FT   DOMAIN      159    162       Poly-Arg.
+FT   TOPO_DOM    229    269       Cytoplasmic.
+FT   MOTIF        76     78       NPA 1.
+FT   MOTIF       192    194       NPA 2.
+FT   COMPBIAS    159    162       Poly-Arg.
 FT   SITE         56     56       Substrate discrimination.
 FT   SITE        180    180       Substrate discrimination.
-FT   SITE        189    189       HG(2+)-SENSITIVE RESIDUE.
+FT   SITE        189    189       Hg(2+)-sensitive residue.
 FT   SITE        195    195       Substrate discrimination.
 FT   CARBOHYD     42     42       N-linked (GlcNAc...).
 FT   CARBOHYD    205    205       N-linked (GlcNAc...) (Potential).
@@ -84,27 +89,22 @@ FT                                osmotic water permeability).
 FT                                /FTId=VAR_013279.
 FT   VARIANT      45     45       A -&gt; V (in Co(A-B+) antigen).
 FT                                /FTId=VAR_004400.
-FT   HELIX        10     36
-FT   TURN         41     42
-FT   TURN         44     45
-FT   TURN         49     49
-FT   HELIX        50     66
-FT   HELIX        67     69
-FT   TURN         70     71
-FT   HELIX        77     85
-FT   TURN         86     87
-FT   TURN         90     90
-FT   HELIX        91    113
-FT   HELIX       135    156
-FT   TURN        157    157
-FT   TURN        165    166
-FT   HELIX       168    183
-FT   TURN        184    186
-FT   HELIX       193    203
-FT   TURN        204    204
-FT   HELIX       207    210
-FT   HELIX       211    230
-FT   TURN        231    231
+FT   VARIANT     165    165       G -&gt; D.
+FT                                /FTId=VAR_022318.
+FT   CONFLICT     45     45       A -&gt; T (in Ref. 7; AAH22486).
+FT   HELIX         8     35
+FT   STRAND       37     42
+FT   HELIX        48     65
+FT   STRAND       68     71
+FT   HELIX        76     83
+FT   HELIX        94    114
+FT   TURN        119    122
+FT   STRAND      132    135
+FT   HELIX       136    154
+FT   HELIX       166    182
+FT   TURN        183    185
+FT   HELIX       192    199
+FT   HELIX       207    227
 SQ   SEQUENCE   269 AA;  28526 MW;  BA204D82FB26352E CRC64;
      MASEFKKKLF WRAVVAEFLA TTLFVFISIG SALGFKYPVG NNQTAVQDNV KVSLAFGLSI
      ATLAQSVGHI SGAHLNPAVT LGLLLSCQIS IFRALMYIIA QCVGAIVATA ILSGITSSLT
