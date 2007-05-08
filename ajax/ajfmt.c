@@ -883,6 +883,13 @@ static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
     timeobj   =  va_arg(VA_V(ap), AjPTime);
     mytime = &timeobj->time;
 
+    if(!timeobj)
+    {
+	ajFmtPuts("<null>", 6, put, cl, flags,
+		  width, precision);
+	return;
+    }
+
     if(timeobj->format)
 	strftime(buf,280, timeobj->format,mytime);
     else
@@ -894,6 +901,10 @@ static void cvt_uD(ajint code, VALIST ap, int put(int c, void* cl), void* cl,
 	strftime(buf,280, "%d/%m/", mytime);
 	strcat(buf,yr);
     }
+
+    if(timeobj->uppercase)
+	ajCharFmtUpper(buf);
+
     ajFmtPuts(&buf[0], strlen(buf), put, cl, flags,
 	      width, precision);
 
@@ -1851,7 +1862,8 @@ void ajFmtVfmt(int put(int c, void* cl), void* cl, const char* fmt,
 
 	    /* Calling funclist Fmt_T() */
 
-	    assert(cvt[(int)c]);	/* we need a defined routine */
+	    if(!cvt[(int)c])
+		ajDie("Bad format %%%c", c);
 	    (*cvt[(int)c])(c, VA_P(ap), put, cl, (ajuint *)flags, width,
 			   precision);
 	}
@@ -2327,7 +2339,8 @@ static ajint fmtVscan(const char *thys,const char *fmt,va_list ap)
 	ok = ajTrue;
 
 	/* Calling funclist Fmt_S() */
-	assert(scvt[(int)*q]);
+	if(!scvt[(int)*q])
+	    ajDie("Bad scan format %%%c", q);
 	(*scvt[(int)*q])(q,&p,VA_P(ap),width,convert,&ok);
 
 	if(!ok)
