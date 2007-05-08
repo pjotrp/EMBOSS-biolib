@@ -847,6 +847,7 @@ AjPSeqin ajSeqinNew(void)
 void ajSeqinDel(AjPSeqin* pthis)
 {
     AjPSeqin thys;
+    SeqPListUsa node = NULL;
 
     if(!pthis) return;
 
@@ -867,7 +868,14 @@ void ajSeqinDel(AjPSeqin* pthis)
     ajStrDel(&thys->Desc);
     ajStrDel(&thys->Doc);
 
-    ajListFreeData(&thys->List);
+    while(ajListLength(thys->List))
+    {
+	ajListPop(thys->List, (void**) &node);
+	ajStrDel(&node->Usa);
+	ajStrDel(&node->Formatstr);
+	AJFREE(node);
+    }
+    ajListFree(&thys->List);
 
     ajStrDel(&thys->Usa);
     ajStrDel(&thys->Ufo);
@@ -10564,7 +10572,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
     }
 
     ajStrTokenNextParseC(&handle, "\n\r", &token);
-    ajStrAssignS(desc, token);
+    ajStrAssignS(desc, reststr);
     ajStrTokenDel(&handle);
     ajStrDel(&token);
     /* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
