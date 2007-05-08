@@ -544,6 +544,7 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
     AjPSeqout seqout;
     AjPSeq    seq    = NULL;
     AjPStr    tmpstr = NULL;
+    AjPSeqRef tmpref = NULL;
 
     seqout = *Pseqout;
 
@@ -559,6 +560,9 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
     ajStrDel(&seqout->Desc);
     ajStrDel(&seqout->Type);
     ajStrDel(&seqout->Outputtype);
+    ajStrDel(&seqout->Molecule);
+    ajStrDel(&seqout->Class);
+    ajStrDel(&seqout->Division);
     ajStrDel(&seqout->Db);
     ajStrDel(&seqout->Setdb);
     ajStrDel(&seqout->Setoutdb);
@@ -588,6 +592,18 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 	ajStrDel(&tmpstr);
     ajListDel(&seqout->Taxlist);
 
+    while(ajListPop(seqout->Reflist,(void **)&tmpref))
+	ajSeqrefDel(&tmpref);
+    ajListDel(&seqout->Reflist);
+
+    while(ajListPop(seqout->Cmtlist,(void **)&tmpstr))
+	ajStrDel(&tmpstr);
+    ajListDel(&seqout->Cmtlist);
+
+    while(ajListPop(seqout->Xreflist,(void **)&tmpstr))
+	ajStrDel(&tmpstr);
+    ajListDel(&seqout->Xreflist);
+
     while(ajListPop(seqout->Savelist,(void **)&seq))
 	ajSeqDel(&seq);
     ajListDel(&seqout->Savelist);
@@ -597,6 +613,8 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 	seqout->File = NULL;
     else
 	ajFileClose(&seqout->File);
+
+    ajSeqdateDel(&seqout->Date);
 
     AJFREE(seqout->Accuracy);
     AJFREE(*Pseqout);
@@ -2959,14 +2977,14 @@ static void seqWriteEmblnew(AjPSeqout outseq)
     const AjPSeqRef seqref = NULL;
     const AjPStr tmpline = NULL;
 
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "embl");
-    
     if(ajStrMatchC(outseq->Type, "P"))
     {
 	seqWriteSwiss(outseq);
 	return;
     }
+    
+    if(!ftfmt)
+	ajStrAssignC(&ftfmt, "embl");
     
     if(ajStrGetLen(outseq->Sv))
     {
@@ -3314,6 +3332,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
     ajStrDel(&tmpstr);
+    ajStrDel(&idstr);
     ajStrDel(&ftfmt);
 
     return;
@@ -3509,14 +3528,14 @@ static void seqWriteSwissnew(AjPSeqout outseq)
     AjPStr cur;
     ajuint ilen;
     
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "swiss");
-    
     if(ajStrMatchC(outseq->Type, "N"))
     {
 	seqWriteEmbl(outseq);
 	return;
     }
+    
+    if(!ftfmt)
+	ajStrAssignC(&ftfmt, "swiss");
     
     ajFmtPrintF(outseq->File,
 		"ID   %-10S     Unreviewed;    %7d AA.\n",
