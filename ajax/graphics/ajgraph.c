@@ -35,25 +35,30 @@
 #define AZ 28
 
 
-#ifdef WIN32
 #include "plplotP.h"
-#include "plcore.h"
 
 /*
 ** Andre Blavier:
 ** The following function defs come from the old version of PLPLOT (the one
 ** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
 ** my poor understanding of their purpose and of the meaning of their
-** disappearance in PLPOT 5.1.0
+** disappearance in PLPLOT 5.1.0
+**
+** Peter Rice:
+** Updating to PLPLOT 5.7.2 we still need these to find out how wide a text
+** string is
 */
 
+static PLFLT plstrlW(PLFLT dx, PLFLT dy, const char *text);
+static PLFLT plgchrW(PLFLT dx, PLFLT dy);
+static void plxswin(const char* window);
+static int plfileinfo(char* tmp);
 
-/* @func plstrlW *************************************************************
+
+/* @funcstatic plstrlW ********************************************************
 **
 ** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
 **
-** @param [r] x [PLFLT] Undocumented
-** @param [r] y [PLFLT] Undocumented
 ** @param [r] dx [PLFLT] Undocumented
 ** @param [r] dy [PLFLT] Undocumented
 ** @param [r] text [const char*] Undocumented
@@ -66,7 +71,7 @@
 ** disappearance in PLPLOT 5.1.0
 ******************************************************************************/
 
-PLFLT plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
+static PLFLT plstrlW(PLFLT dx, PLFLT dy, const char *text)
 {
     PLFLT diag;
     /*
@@ -92,12 +97,10 @@ PLFLT plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
 
 
 
-/* @func plgchrW **************************************************************
+/* @funcstatic plgchrW ********************************************************
 **
 ** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
 **
-** @param [r] x [PLFLT] Undocumented
-** @param [r] y [PLFLT] Undocumented
 ** @param [r] dx [PLFLT] Undocumented
 ** @param [r] dy [PLFLT] Undocumented
 ** @return [PLFLT] Undocumented
@@ -109,7 +112,7 @@ PLFLT plstrlW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy, const char *text)
 ** disappearance in PLPOT 5.1.0
 ******************************************************************************/
 
-PLFLT plgchrW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy)
+static PLFLT plgchrW(PLFLT dx, PLFLT dy)
 {
     PLFLT diag;
     /*
@@ -136,58 +139,8 @@ PLFLT plgchrW(PLFLT x, PLFLT y, PLFLT dx, PLFLT dy)
 
 
 
-/* @func plxsfnam *************************************************************
-**
-** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
-**
-** @param [r] fnam [const char*] Undocumented
-** @param [r] ext [const char*] Undocumented
-** @return [void]
-** @@
-** Andre Blavier:
-** The following function defs come from the old version of PLPLOT (the one
-** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
-** my poor understanding of their purpose and of the meaning of their
-** disappearance in PLPOT 5.1.0
-******************************************************************************/
 
-void plxsfnam(const char *fnam, const char* ext)
-{
-    char* str = malloc(strlen(fnam) + strlen(ext) + 1);
-
-    strcpy(str, fnam);
-    strcat(str, ext);
-    plP_sfnam(plsc, str);
-    free(str);
-
-    return;
-}
-
-
-
-
-/* @func plxtrace *************************************************************
-**
-** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
-**
-** @param [u] outf [FILE*] Undocumented
-** @return [void]
-** @@
-** Andre Blavier:
-** The following function defs come from the old version of PLPLOT (the one
-** used in EMBOSS 2.6.0).  I have changed some of them slightly, despite
-** my poor understanding of their purpose and of the meaning of their
-** disappearance in PLPOT 5.1.0
-******************************************************************************/
-
-void plxtrace (FILE* outf)
-{
-    return;
-}
-
-
-
-/* @func plxswin *************************************************************
+/* @funcstatic  plxswin *******************************************************
 **
 ** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
 **
@@ -202,7 +155,7 @@ void plxtrace (FILE* outf)
 ******************************************************************************/
 
 
-void plxswin(const char* window)
+static void plxswin(const char* window)
 {
     if (plsc->plwindow != NULL)
 	free((void *) plsc->plwindow);
@@ -215,7 +168,7 @@ void plxswin(const char* window)
 
 
 
-/* @func plfileinfo ***********************************************************
+/* @funcstatic plfileinfo *****************************************************
 **
 ** Old PLPLOT version function. Obsolete. Needed for EMBOSSWIN compilation
 **
@@ -230,13 +183,13 @@ void plxswin(const char* window)
 ******************************************************************************/
 
 
-int plfileinfo (char* tmp)
+static int plfileinfo (char* tmp)
 {
     
     if (plsc->family && plsc->BaseName != NULL)
     {					/* family names*/
-	(void) sprintf(tmp, "%s.%%0%1dd",
-		       plsc->BaseName, (int) plsc->fflen);
+	(void) sprintf(tmp, "%s.%%0%1dd%s",
+		       plsc->BaseName, (int) plsc->fflen,plsc->Ext);
 	return plsc->member;
     }
     
@@ -251,7 +204,6 @@ int plfileinfo (char* tmp)
 
     return -1;
 }
-#endif	/* WIN32 */
 
 
 
@@ -429,6 +381,7 @@ static GraphOType graphType[] = {
        AJTRUE,  AJTRUE,  GraphxyDisplayToFile, GraphOpenFile,
        "Colour postscript"},
 
+#ifndef WIN32
 #ifndef X_DISPLAY_MISSING /* X11 is  available */
   {"x11",        "xwin",    "null",
        AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
@@ -436,6 +389,7 @@ static GraphOType graphType[] = {
   {"xwindows",   "xwin",    "null",
        AJTRUE,  AJTRUE,  GraphxyDisplayXwin,   GraphOpenXwin,
        "X11 in new window"},
+#endif
 #endif
 
   {"tekt",       "tekt",    "null",
@@ -466,16 +420,22 @@ static GraphOType graphType[] = {
        AJTRUE,  AJFALSE, GraphxyDisplayToData, GraphOpenData,
        "Data file for Staden package"},
 
+#ifndef WIN32
 #ifndef X_DISPLAY_MISSING /* X11 is available */
   {"xterm",      "xterm",   "null",
        AJTRUE,  AJFALSE, GraphxyDisplayXwin,   GraphOpenXwin,
        "Xterm screen graphics"},
+#endif
 #endif
 
 #ifdef PLD_png          /* if png/gd/zlib libraries available for png driver */
   {"png",        "png",     ".png",
        AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
        "PNG graphics files"},
+  {"gif",        "gif",     ".gif",
+       AJTRUE,  AJFALSE, GraphxyDisplayToFile, GraphOpenFile,
+       "GIF graphics files"},
+
 #endif
 
 #ifdef GROUT          /* if gdome2/libxml2/glib libraries available for xml */
@@ -564,7 +524,7 @@ static void GraphDefCharSize(float size)
 static float GraphTextLength(float xx1, float yy1, float xx2, float yy2,
 			     const char *text)
 {
-    return plstrlW(xx1, yy1, xx2-xx1, yy2-yy1, text);
+    return plstrlW(xx2-xx1, yy2-yy1, text);
 }
 
 
@@ -585,7 +545,7 @@ static float GraphTextLength(float xx1, float yy1, float xx2, float yy2,
 
 static float GraphTextHeight(float xx1, float xx2, float yy1, float yy2)
 {
-    return plgchrW(xx1, yy1, xx2-xx1, yy2-yy1);
+    return plgchrW(xx2-xx1, yy2-yy1);
 }
 
 
@@ -1412,7 +1372,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 			   ajtime);
 	    ajTimeDel(&ajtime);
 	}
-   }
+    }
     ajGraphColourBack();
     GraphInit(thys);
     ajGraphColourFore();
@@ -1630,7 +1590,7 @@ AjBool ajGraphSet(AjPGraph thys, const AjPStr type)
     ajint k;
     AjPStr aliases = NULL;
 
-    ajDebug("ajGraphxet '%S'\n", type);
+    ajDebug("ajGraphSet '%S'\n", type);
     for(i=0;graphType[i].Name;i++)
     {
 	if(ajStrMatchCaseC(type, graphType[i].Name))
@@ -1858,24 +1818,6 @@ static void GraphListDevicesarg (const char* name, va_list args)
     return;
 }
 
-
-
-
-/* @func ajGraphTraceInt ******************************************************
-**
-** Writes debug messages to trace the device driver internals graph object.
-**
-** @param [u] outf [FILE*] Output file
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajGraphTraceInt(FILE* outf)
-{
-    plxtrace(outf);
-
-    return;
-}
 
 
 
@@ -3892,6 +3834,7 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
     AjPGraphPlpData graphdata  = NULL;
     AjPGraphPlpObj ptr = NULL;
     AjPStr temp;
+    AjPTime ajtime;
     ajint i,j;
     float minxa = 64000.;
     float minya = 64000.;
@@ -3936,6 +3879,19 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	}
 	else
 	    ajDebug("Writing graph %d data to %S\n",i+1,temp);
+
+	if( ajStrGetLen(thys->plplot->title) <=1)
+	{
+	    ajFmtPrintAppS(&thys->plplot->title,"%S",
+			   ajAcdGetProgram());
+	}
+	if( ajStrGetLen(thys->plplot->subtitle) <=1)
+	{
+	    ajtime = ajTimeTodayF("report");
+	    ajFmtPrintAppS(&thys->plplot->subtitle,"%D",
+			   ajtime);
+	    ajTimeDel(&ajtime);
+	}
 
 	ajFmtPrintF(outf,"##%S\n",graphdata->gtype);
 	ajFmtPrintF(outf,"##Title %S\n",thys->plplot->title);
@@ -8110,6 +8066,24 @@ AjBool ajGraphIsData(const AjPGraph thys)
     return thys->plplot->isdata;
 }
 
+
+/* @func ajGraphSetPage *******************************************************
+**
+** Set the width and height of the plot page.
+**
+** Ignored by most plplot drivers, but wil be used by PNG
+**
+** @param [r] width [ajuint] Page width in pixels
+** @param [r] height [ajuint] Page height in pixels
+**
+******************************************************************************/
+
+void ajGraphSetPage(ajuint width, ajuint height)
+{
+    plspage(0.0, 0.0, width, height, 0, 0);
+
+    return;
+}
 
 
 
