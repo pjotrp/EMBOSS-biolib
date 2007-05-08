@@ -285,9 +285,6 @@ int main(int argc, char **argv)
 	ajGraphOpenWin(graph,(float)-1.0, (float)numres+(float)10.0,
 		       (float)0.0, ystart+(float)5.0);
 
-/*	ajGraphTextMid((numres+10.0)/2.0, ystart+2.5,
-		       ajGraphGetTitleC(graph));*/
-
 	ajGraphGetOut(&fxp,&fyp,&ixlen,&iylen,&ixoff,&iyoff);
 
 	if(ixlen == 0)
