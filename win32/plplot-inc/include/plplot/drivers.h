@@ -1,13 +1,34 @@
-/* $Id: drivers.h,v 1.41 2002/01/19 07:00:40 airwin Exp $
+/* $Id: drivers.h,v 1.2 2007/05/08 09:09:37 rice Exp $
 
 	Contains all prototypes for driver functions.
+
+    Copyright (C) 2004  Andrew Roach
+    Copyright (C) 2005  Thomas J. Duck
+    Copyright (C) 2006  Andrew Ross
+
+    This file is part of PLplot.
+
+    PLplot is free software; you can redistribute it and/or modify
+    it under the terms of the GNU Library General Public License as published
+    by the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    PLplot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with PLplot; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+
 */
 
 #ifndef __DRIVERS_H__
 #define __DRIVERS_H__
 
-#include "plplot/pdf.h"
-#include "plplot/plstrm.h"
+#include "pdf.h"
+#include "plstrm.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -15,22 +36,24 @@ extern "C" {
 
 void plD_dispatch_init_mac8	( PLDispatchTable *pdt );
 void plD_dispatch_init_mac1	( PLDispatchTable *pdt );
+void plD_dispatch_init_aqt	( PLDispatchTable *pdt );
 void plD_dispatch_init_nx	( PLDispatchTable *pdt );
 void plD_dispatch_init_os2	( PLDispatchTable *pdt );
 void plD_dispatch_init_xw	( PLDispatchTable *pdt );
+void plD_dispatch_init_gcw	( PLDispatchTable *pdt );
 void plD_dispatch_init_gnome	( PLDispatchTable *pdt );
 void plD_dispatch_init_tk	( PLDispatchTable *pdt );
 void plD_dispatch_init_vga	( PLDispatchTable *pdt );
 void plD_dispatch_init_mgr	( PLDispatchTable *pdt );
 void plD_dispatch_init_win3	( PLDispatchTable *pdt );
-void plD_dispatch_init_vga	( PLDispatchTable *pdt );
-void plD_dispatch_init_vga	( PLDispatchTable *pdt );
-void plD_dispatch_init_vga	( PLDispatchTable *pdt );
+/*void plD_dispatch_init_vga	( PLDispatchTable *pdt );*/ /* pmr: duplic. */
+/*void plD_dispatch_init_vga	( PLDispatchTable *pdt );*/ /* pmr: duplic. */
+/*void plD_dispatch_init_vga	( PLDispatchTable *pdt );*/ /* pmr: duplic. */
 void plD_dispatch_init_tiff	( PLDispatchTable *pdt );
 void plD_dispatch_init_jpg	( PLDispatchTable *pdt );
 void plD_dispatch_init_jpeg	( PLDispatchTable *pdt );
 void plD_dispatch_init_bmp	( PLDispatchTable *pdt );
-void plD_dispatch_init_vga	( PLDispatchTable *pdt );
+/*void plD_dispatch_init_vga	( PLDispatchTable *pdt );*/ /* pmr: duplic. */
 void plD_dispatch_init_xterm	( PLDispatchTable *pdt );
 void plD_dispatch_init_tekt	( PLDispatchTable *pdt );
 void plD_dispatch_init_tek4107t	( PLDispatchTable *pdt );
@@ -53,10 +76,20 @@ void plD_dispatch_init_hpgl	( PLDispatchTable *pdt );
 void plD_dispatch_init_imp	( PLDispatchTable *pdt );
 void plD_dispatch_init_pbm	( PLDispatchTable *pdt );
 void plD_dispatch_init_png	( PLDispatchTable *pdt );
+void plD_dispatch_init_gif	( PLDispatchTable *pdt );
 void plD_dispatch_init_cgm	( PLDispatchTable *pdt );
 void plD_dispatch_init_null	( PLDispatchTable *pdt );
+void plD_dispatch_init_tkwin	( PLDispatchTable *pdt );
 void plD_dispatch_init_pstex	( PLDispatchTable *pdt );
+void plD_dispatch_init_psttfc	( PLDispatchTable *pdt );
+void plD_dispatch_init_psttfm	( PLDispatchTable *pdt );
 void plD_dispatch_init_ntk	( PLDispatchTable *pdt );
+void plD_dispatch_init_mem	( PLDispatchTable *pdt );
+void plD_dispatch_init_wingcc	( PLDispatchTable *pdt );
+void plD_dispatch_init_wxwidgets	( PLDispatchTable *pdt );
+void plD_dispatch_init_svg	( PLDispatchTable *pdt );
+void plD_dispatch_init_pdf	( PLDispatchTable *pdt );
+void plD_dispatch_init_data	( PLDispatchTable *pdt );
 
 /* Prototypes for plot buffer calls. */
 

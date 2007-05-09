@@ -1,10 +1,12 @@
-/* $Id: disptab.h,v 1.1 2001/08/22 21:21:29 furnish Exp $
+/* $Id: disptab.h,v 1.1 2007/05/08 10:40:21 rice Exp $
 
    Defines the data structure which holds the driver functions.
 */
 
 #ifndef __DISPATCH_H__
 #define __DISPATCH_H__
+
+#include "plConfig.h"
 
 struct PLStream_struct;
 
@@ -73,8 +75,8 @@ typedef void (*plD_state_fp)   (struct PLStream_struct *, PLINT);
 typedef void (*plD_esc_fp)     (struct PLStream_struct *, PLINT, void *);
 
 typedef struct {
-    char *pl_MenuStr;
-    char *pl_DevName;
+    const char *pl_MenuStr;		/* pmr: const */
+    const char *pl_DevName;		/* pmr: const */
     int  pl_type;
     int  pl_seq;
     plD_init_fp     pl_init;
@@ -86,7 +88,5 @@ typedef struct {
     plD_state_fp    pl_state;
     plD_esc_fp     pl_esc;
 } PLDispatchTable;
-
-typedef void (*PLDispatchInit)( PLDispatchTable *pdt );
 
 #endif /* __DISPATCH_H__ */

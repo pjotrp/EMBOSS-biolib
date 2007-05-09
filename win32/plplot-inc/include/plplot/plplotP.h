@@ -1,21 +1,37 @@
-/* $Id: plplotP.h,v 1.58 2002/01/19 08:34:38 mlebrun Exp $
-
-    Copyright (C) 1993, 1994, 1995  by 
-    Maurice J. LeBrun, Geoff Furnish, Tony Richardson.
+/* $Id: plplotP.h,v 1.4 2007/05/08 09:09:37 rice Exp $
 
     Internal (private) macros and prototypes for the PLplot package.  This
     header file must be included before all others, including system header
     files.  This file is typically needed when including driver specific
     header files (e.g. pltkd.h).
 
-    This software may be freely copied, modified and redistributed without
-    fee provided that this copyright notice is preserved intact on all
-    copies and modified copies. 
- 
-    There is no warranty or other guarantee of fitness of this software.
-    It is provided solely "as is". The author(s) disclaim(s) all
-    responsibility and liability with respect to this software's usage or
-    its effect upon hardware or computer systems. 
+    Copyright (C) 1993, 1994, 1995  by
+    Maurice J. LeBrun, Geoff Furnish, Tony Richardson.
+
+    Copyright (C) 2004  Rafael Laboissiere
+    Copyright (C) 2004  Joao Cardoso
+    Copyright (C) 2004  Andrew Roach
+    Copyright (C) 2006  Andrew Ross
+    Copyright (C) 2006  Hazen Babcock
+
+
+    This file is part of PLplot.
+
+    PLplot is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Library Public License as published
+    by the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    PLplot is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Library General Public License for more details.
+
+    You should have received a copy of the GNU Library General Public License
+    along with PLplot; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+
+
 */
 
 #ifndef __PLPLOTP_H__
@@ -28,10 +44,10 @@
  * Fortunately on many systems, that is the default.  To get "everything",
  * one of the following must be defined, as appropriate:
  *
- * _GNU_SOURCE     on Linux (default) 
- * _OSF_SOURCE     on OSF1 (default) 
- * _HPUX_SOURCE    on HP (not default) 
- * _ALL_SOURCE     on AIX (no idea) 
+ * _GNU_SOURCE     on Linux (default)
+ * _OSF_SOURCE     on OSF1 (default)
+ * _HPUX_SOURCE    on HP (not default)
+ * _ALL_SOURCE     on AIX (no idea)
  *
  * To see where these are set, do the following:
  *
@@ -60,7 +76,7 @@
 
 /*--------------------------------------------------------------------------*\
  *	Configuration settings
- * 
+ *
  * Some of the macros set during configuration are described here.
  *
  * If HAVE_TERMIOS_H is set, we employ POSIX.1 tty terminal I/O.  One purpose
@@ -81,7 +97,7 @@
  * drivers, your terminal may be left in a strange state.
 \*--------------------------------------------------------------------------*/
 
-#include "plplot/plConfig.h"
+#include "plConfig.h"
 #ifdef caddr_t
 #undef caddr_t
 #ifndef __USE_BSD
@@ -94,6 +110,44 @@ typedef char * caddr_t;
 #include <ctype.h>
 #include <math.h>
 #include <string.h>
+#include <limits.h>
+#include <float.h>
+#if defined(PLPLOT_WINTK)
+#elif defined(WIN32) &! defined (__GNUC__)
+/* Redefine tmpfile()! (AM)*/
+#define tmpfile w32_tmpfile
+#else
+#include <unistd.h>
+#endif
+
+/* (AM) Define M_PI if the platform does not include it
+   (MSVC for instance) */
+#if !defined(M_PI)
+#define M_PI 3.14159265358979323846
+#endif
+
+#if HAVE_DIRENT_H
+/* The following conditional is a workaround for a bug in the MacOSX system.
+   When  the dirent.h file will be fixed upstream by Apple Inc, this should
+   go away. */
+# ifdef NEED_SYS_TYPE_H
+#   include <sys/types.h>
+# endif
+# include <dirent.h>
+# define NAMLEN(dirent) strlen((dirent)->d_name)
+#else
+# define dirent direct
+# define NAMLEN(dirent) (dirent)->d_namlen
+# if HAVE_SYS_NDIR_H
+#  include <sys/ndir.h>
+# endif
+# if HAVE_SYS_DIR_H
+#  include <sys/dir.h>
+# endif
+# if HAVE_NDIR_H
+#  include <ndir.h>
+# endif
+#endif
 
 /*
  * Macros for file positioning.  I tried switching to f[sg]etpos() because I
@@ -101,7 +155,7 @@ typedef char * caddr_t;
  * always a base type (it may be a struct).  This is a problem because the
  * metafile driver needs to write relative offsets into the file itself.  So
  * instead we use f{seek,tell} at a low level but keep the f[sg]etpos
- * semantics using these macros. 
+ * semantics using these macros.
  */
 
 #ifdef STDC_FPOS_T
@@ -122,17 +176,24 @@ typedef char * caddr_t;
 /* Include all externally-visible definitions and prototypes */
 /* plplot.h also includes some handy system header files */
 
-#include "plplot/plplot.h"
+#include "plplot.h"
 
 /* plstream definition */
 
-#include "plplot/plstrm.h"
+#include "plstrm.h"
 
 /* If not including this file from inside of plcore.h, declare plsc */
 
 #ifndef __PLCORE_H__
-extern PLStream	*plsc;
-#include "plplot/pldebug.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* extern PLStream PLDLLIMPORT *plsc; */
+extern PLDLLIMPEXP_DATA(PLStream *)plsc;
+#ifdef __cplusplus
+}
+#endif
+#include "pldebug.h"
 #endif
 
 /*--------------------------------------------------------------------------*\
@@ -190,7 +251,7 @@ extern PLStream	*plsc;
 
 #define PL_MAXPOLY	256	/* Max segments in polyline or polygon */
 #define PL_NSTREAMS	100	/* Max number of concurrent streams. */
-#define PL_RGB_COLOR	1<<7	/* A hack */
+#define PL_RGB_COLOR	-1	/* A hack */
 
 #define TEXT_MODE	0
 #define GRAPHICS_MODE	1
@@ -198,20 +259,31 @@ extern PLStream	*plsc;
 #define PI		3.1415926535897932384
 #endif
 
-/* These define the metafile & X driver (virtual) coordinate systems */
+/* These define the virtual coordinate system used by the metafile driver.
+   Others are free to use it, or some variation, or define their own. */
+
+/* Note desktop monitors of reasonable quality typically have 0.25 mm spacing
+ * between dots which corresponds to 4.0 dots per mm.  The parameters here
+ * roughly correspond to a 14" monitor at 1024x768 resolution, which should
+ * work fine at other sizes/resolutions.  The number of virtual dots per mm is
+ * scaled by a factor of 32, with pixels scaled accordingly.  The customary
+ * x/y ratio of 4:3 is used.
+ */
 
 #define PIXELS_X	32768		/* Number of virtual pixels in x */
-#define PIXELS_Y	32768		/* Number of virtual pixels in x */
-#define LPAGE_X		254.0		/* Page length in x in virtual mm */
-#define LPAGE_Y		190.5		/* Page length in y in virtual mm */
+#define PIXELS_Y	24576		/* Number of virtual pixels in x */
+#define DPMM		4.		/* dots per mm */
+#define VDPMM	      (DPMM*32)		/* virtual dots per mm */
+#define LPAGE_X	    (PIXELS_X/VDPMM)	/* virtual page length in x in mm (256) */
+#define LPAGE_Y	    (PIXELS_Y/VDPMM)	/* virtual page length in y in mm (192) */
 
 /* This defines the first argument of the plRotPhy invocation that is made
  * in a number of device drivers (e.g., found in ljii.c, ljiip.c, ps.c,
  * and pstex.c) to rotate them "permanently" from portrait mode to non-
  * portrait mode.  ORIENTATION of 1 corresponds to seascape mode (90 deg
- * clockwise rotation from portrait).  This is the traditional value 
- * effectively used in all older versions of PLplot. ORIENTATION of 3 
- * corresponds to landscape mode (90 deg *counter*-clockwise rotation from 
+ * clockwise rotation from portrait).  This is the traditional value
+ * effectively used in all older versions of PLplot. ORIENTATION of 3
+ * corresponds to landscape mode (90 deg *counter*-clockwise rotation from
  * portrait) which is the new default non-portrait orientation. */
 
 #define ORIENTATION	3
@@ -252,7 +324,7 @@ extern PLStream	*plsc;
 
 /*--------------------------------------------------------------------------*\
  * The following environment variables are defined:
- * 
+ *
  *	PLPLOT_BIN      # where to find executables
  *	PLPLOT_LIB      # where to find library files (fonts, maps, etc)
  *	PLPLOT_TCL      # where to find tcl scripts
@@ -294,6 +366,31 @@ extern PLStream	*plsc;
 #define PLPLOT_TCL_ENV          "PLPLOT_TCL"
 #define PLPLOT_HOME_ENV         "PLPLOT_HOME"
 
+/*
+ *   Some stuff that is included (and compiled into) plsym.h
+ *   Other modules might want this, so we will "extern" it
+ *
+ */
+
+#ifndef __PLSYM_H__
+
+typedef struct {
+	unsigned int Hershey;
+	PLUNICODE Unicode;
+	char Font;
+	char padding[3];		/* pad to align */
+} Hershey_to_Unicode_table;
+
+extern int number_of_entries_in_hershey_to_unicode_table;
+extern Hershey_to_Unicode_table hershey_to_unicode_lookup_table[];
+
+
+#endif
+
+/* Greek character translation array (defined in plcore.c) */
+extern const char plP_greek_mnemonic[];
+
+
 /*--------------------------------------------------------------------------*\
  *		Function Prototypes
  *
@@ -312,22 +409,34 @@ pldtik(PLFLT vmin, PLFLT vmax, PLFLT *tick, PLINT *nsubt);
 /* Determines precision of box labels */
 
 void
-pldprec(PLFLT vmin, PLFLT vmax, PLFLT tick, PLINT lf, 
+pldprec(PLFLT vmin, PLFLT vmax, PLFLT tick, PLINT lf,
 	PLINT *mode, PLINT *prec, PLINT digmax, PLINT *scale);
 
 /* Draws a polyline within the clip limits. */
 
 void
 plP_pllclp(PLINT *x, PLINT *y, PLINT npts,
-	   PLINT xmin, PLINT xmax, PLINT ymin, PLINT ymax, 
+	   PLINT xmin, PLINT xmax, PLINT ymin, PLINT ymax,
 	   void (*draw) (short *, short *, PLINT));
 
 /* Fills a polygon within the clip limits. */
 
 void
 plP_plfclp(PLINT *x, PLINT *y, PLINT npts,
-	   PLINT xmin, PLINT xmax, PLINT ymin, PLINT ymax, 
+	   PLINT xmin, PLINT xmax, PLINT ymin, PLINT ymax,
 	   void (*draw) (short *, short *, PLINT));
+
+  /* Clip a polygon to the 3d bounding plane */
+int
+plP_clip_poly(int Ni, PLFLT *Vi[3], int axis, PLFLT dir, PLFLT offset);
+
+/* Stores hex digit value into FCI (font characterization integer). */
+void
+plP_hex2fci(unsigned char hexdigit, unsigned char hexpower, PLUNICODE *pfci);
+
+/* Retrieves hex digit value from FCI (font characterization integer). */
+void
+plP_fci2hex(PLUNICODE fci, unsigned char *phexdigit, unsigned char hexpower);
 
 /* Pattern fills in software the polygon bounded by the input points. */
 
@@ -337,8 +446,8 @@ plfill_soft(short *x, short *y, PLINT npts);
 /* In case of an abort this routine is called.  It just prints out an */
 /* error message and tries to clean up as much as possible. */
 
-void
-plexit(char *errormsg);
+PLDLLIMPEXP void
+plexit(const char *errormsg);		/* pmr: const */
 
 /* Just a front-end to exit().  */
 
@@ -347,13 +456,13 @@ pl_exit(void);
 
 /* A handy way to issue warnings, if need be. */
 
-void
-plwarn(char *errormsg);
+PLDLLIMPEXP void
+plwarn(const char *errormsg);		/* pmr: const */
 
 /* Same as plwarn(), but appends ", aborting plot" to the error message */
 
-void
-plabort(char *errormsg);
+PLDLLIMPEXP void
+plabort(const char *errormsg);		/* pmr: const */
 
 /* Loads either the standard or extended font. */
 
@@ -367,7 +476,7 @@ plfontrel(void);
 
 /* A replacement for strdup(), which isn't portable. */
 
-char *
+char PLDLLIMPEXP *
 plstrdup(const char *src);
 
 /* Bin up cmap 1 space and assign colors to make inverse mapping easy. */
@@ -378,7 +487,7 @@ plcmap1_calc(void);
 /* Draws a slanting tick at position (mx,my) (measured in mm) of */
 /* vector length (dx,dy). */
 
-void 
+void
 plstik(PLFLT mx, PLFLT my, PLFLT dx, PLFLT dy);
 
 /* Prints out a "string" at reference position with physical coordinates */
@@ -397,7 +506,7 @@ plxtik(PLINT x, PLINT y, PLINT below, PLINT above);
 void
 plytik(PLINT x, PLINT y, PLINT left, PLINT right);
 
-  /* Driver interface filter -- 
+  /* Driver interface filter --
      passes all coordinates through a variety of filters. */
 
 void
@@ -422,19 +531,24 @@ typedef struct {
   PLINT y;
   PLINT refx; /* processed ref. point--after justification, displacement, etc, processing */
   PLINT refy;
+  PLUNICODE  unicode_char;   /* an int to hold either a Hershey, ASC-II, or Unicode value for plsym calls */
+  PLUNICODE  *unicode_array;   /* a pointer to an array of ints holding either a Hershey, ASC-II, or Unicode value for cached plsym */
   const char *string; /* text to draw */
+  unsigned short unicode_array_len;	/* pmr: swap to align */
+  char font_face; /* font face OPTIONALLY used for rendering hershey codes */
+  char padding[5];		/* pad to align */
 }EscText;
 
-/* 
+/*
  * structure that contains driver specific information, to be used by plargs.c and anydriver.c,
  * related to plParseDrvOpts() and plHelpDrvOpts()
  */
 
 typedef struct {
-  char *opt;     /* a string with the name of the option */
+  const char *opt;     /* a string with the name of the option */
   PLINT type;    /* the type of the variable to be set, see bellow the available types */
   void *var_ptr; /* a pointer to the variable to be set */
-  char *hlp_msg; /* help message of the option */
+  const char *hlp_msg; /* help message of the option */
 } DrvOpt;
 
   /* the available variable types, DrvOpt.type, for driver specific options */
@@ -450,6 +564,36 @@ plParseDrvOpts(DrvOpt *);
 
 void
 plHelpDrvOpts(DrvOpt *);
+
+  /*
+   * structures to store contour lines
+   */
+
+#define LINE_ITEMS 20
+
+typedef struct cont_line {
+  PLFLT *x;
+  PLFLT *y;
+  PLINT npts;
+  struct cont_line *next;
+} CONT_LINE;
+
+typedef struct cont_level {
+  PLFLT level;
+  struct cont_line *line; /* contour line */
+  struct cont_level *next; /* contour level */
+} CONT_LEVEL;
+
+void
+cont_store(PLFLT **f, PLINT nx, PLINT ny,
+	    PLINT kx, PLINT lx, PLINT ky, PLINT ly,
+	    PLFLT *clevel, PLINT nlevel,
+	    void (*pltr) (PLFLT, PLFLT, PLFLT *, PLFLT *, PLPointer),
+	    PLPointer pltr_data,
+	    CONT_LEVEL **contour);
+
+void
+cont_clean_store(CONT_LEVEL *ct);
 
 /* Get x-y domain in world coordinates for 3d plots */
 
@@ -479,17 +623,17 @@ plP_sclp(PLINT ixmin, PLINT ixmax, PLINT iymin, PLINT iymax);
 
 /* Get physical device limits in physical coordinates */
 
-void
+PLDLLIMPEXP void
 plP_gphy(PLINT *p_ixmin, PLINT *p_ixmax, PLINT *p_iymin, PLINT *p_iymax);
 
 /* Get number of subpages on physical device and current subpage */
 
-void
+PLDLLIMPEXP void
 plP_gsub(PLINT *p_nx, PLINT *p_ny, PLINT *p_cs);
 
 /* Set number of subpages on physical device and current subpage */
 
-void
+PLDLLIMPEXP void
 plP_ssub(PLINT nx, PLINT ny, PLINT cs);
 
 /* Set up plot parameters according to the number of subpages. */
@@ -497,19 +641,9 @@ plP_ssub(PLINT nx, PLINT ny, PLINT cs);
 void
 plP_subpInit(void);
 
-/* Get viewport boundaries in normalized device coordinates */
-
-void
-plP_gvpd(PLFLT *p_xmin, PLFLT *p_xmax, PLFLT *p_ymin, PLFLT *p_ymax);
-
-/* Get viewport boundaries in world coordinates */
-
-void
-plP_gvpw(PLFLT *p_xmin, PLFLT *p_xmax, PLFLT *p_ymin, PLFLT *p_ymax);
-
 /* Get number of pixels to a millimeter */
 
-void
+PLDLLIMPEXP void
 plP_gpixmm(PLFLT *p_x, PLFLT *p_y);
 
 /* All the drivers call this to set physical pixels/mm. */
@@ -517,10 +651,10 @@ plP_gpixmm(PLFLT *p_x, PLFLT *p_y);
 void
 plP_setpxl(PLFLT xpmm0, PLFLT ypmm0);
 
-/* Get background parameters for 3d plot. */
+/* Get background parameters (including line width) for 3d plot. */
 
 void
-plP_gzback(PLINT **zbf, PLINT **zbc, PLFLT **zbt);
+plP_gzback(PLINT **zbf, PLINT **zbc, PLFLT **zbt, PLINT **zbw);
 
 /* Move to physical coordinates (x,y). */
 
@@ -559,7 +693,7 @@ plP_setphy(PLINT xmin, PLINT xmax, PLINT ymin, PLINT ymax);
 
 /* Set up the subpage boundaries according to the current subpage selected */
 
-void
+PLDLLIMPEXP void
 plP_setsub(void);
 
 /* Get the floating point precision (in number of places) in numeric labels. */
@@ -580,7 +714,7 @@ plP_stindex(const char *str1, const char *str2);
 /* Searches string str for first occurence of character chr.  */
 
 PLINT
-plP_strpos(char *str, int chr);
+plP_strpos(const char *str, int chr);
 
 /* Searches string str for character chr (case insensitive). */
 
@@ -638,6 +772,16 @@ plP_mmdcx(PLFLT x);
 
 PLFLT
 plP_mmdcy(PLFLT y);
+
+/* world coords into device coords (x) */
+
+PLFLT
+plP_wcdcx(PLFLT x);
+
+/* world coords into device coords (y) */
+
+PLFLT
+plP_wcdcy(PLFLT y);
 
 /* subpage coords to device coords (x) */
 
@@ -714,16 +858,16 @@ plP_fill(short *x, short *y, PLINT npts);
 /* draw image */
 
 void
-plP_image(PLINT *x, PLINT *y, PLFLT *z, PLINT nx, PLINT ny);
+plP_image(short *x, short *y, unsigned short *z, PLINT nx, PLINT ny, PLFLT xmin, PLFLT ymin, PLFLT dx, PLFLT dy, unsigned short zmin, unsigned short zmax);
 
 /* End of page */
 
-void
+PLDLLIMPEXP void
 plP_eop(void);
 
 /* End of page */
 
-void
+PLDLLIMPEXP void
 plP_bop(void);
 
 /* Tidy up device (flush buffers, close file, etc.) */
@@ -733,7 +877,7 @@ plP_tidy(void);
 
 /* Change state. */
 
-void
+PLDLLIMPEXP void
 plP_state(PLINT op);
 
 /* Escape function, for driver-specific commands. */
@@ -749,12 +893,22 @@ plP_swin(PLWindow *plwin);
 /* Return file pointer to lib file. */
 
 FILE *
-plLibOpen(char *fn);
+plLibOpen(const char *fn);
 
 /* Does required startup initialization of library.  */
 
 void
 pllib_init(void);
+
+/* Does preliminary setup of device driver. */
+
+void
+pllib_devinit(void);
+
+/* Utility to copy one PLColor to another. */
+
+void
+pl_cpcolor(PLColor *to, PLColor *from);
 
 /* Does required startup initialization of a stream.  */
 
@@ -768,7 +922,7 @@ plP_getinitdriverlist(char *names);
 
 /* Checks a give list of device names against active streams and returns the number of matches */
 
-PLINT 
+PLINT
 plP_checkdriverinit( char *names);
 
   /* disable writing to plot buffer and pixmap */
@@ -780,7 +934,78 @@ void
 RestoreWrite2BufferPixmap(void);
 
 void
-grimage(PLINT *x, PLINT *y, PLFLT *z, PLINT nx, PLINT ny);
+grimage(short *x, short *y, unsigned short *z, PLINT nx, PLINT ny);
+
+int PLDLLIMPEXP
+plInBuildTree(void);			/* pmr: fix prototype */
+
+void
+plimageslow(short *x, short *y, unsigned short *data, PLINT nx, PLINT ny,
+	    PLFLT xmin, PLFLT ymin, PLFLT dx, PLFLT dy,
+	    unsigned short zmin,  unsigned short zmax);
+
+typedef struct {
+  PLFLT xmin, ymin, dx, dy;} IMG_DT;
+
+/*
+ * void plfvect()
+ *
+ * Internal routine to plot a vector array with arbitrary coordinate
+ * and vector transformations.
+ * This is not currently intended to be called direct by the user
+ */
+void PLDLLIMPEXP
+plfvect(PLFLT (*plf2eval) (PLINT, PLINT, PLPointer),
+		PLPointer f2evalv_data, PLPointer f2evalc_data,
+		PLINT nx, PLINT ny, PLFLT scale,
+		void (*pltr) (PLFLT, PLFLT, PLFLT *, PLFLT *, PLPointer),
+		PLPointer pltr_data);
+
+/*
+ *  Internal function to get an index to the hershey table
+ */
+int
+plhershey2unicode ( unsigned int in );
+
+/* struct used for FCI to FontName lookups. */
+typedef struct
+{
+   PLUNICODE fci;
+   const unsigned char *pfont;
+} FCI_to_FontName_Table;
+
+/* Internal function to obtain a pointer to a valid font name. */
+const unsigned char *
+plP_FCI2FontName ( PLUNICODE fci,
+		   const FCI_to_FontName_Table lookup[], const int nlookup);
+
+
+/* Internal function to free memory from driver options */
+void
+plP_FreeDrvOpts(void);			/* pmr: fix prototype */
+
+/* Convert a ucs4 unichar to utf8 char string*/
+int
+ucs4_to_utf8(PLUNICODE unichar, char *ptr);
+
+/*
+ * Wrapper functions for the system IO routines fread, fwrite
+ */
+
+/* wraps fwrite */
+
+void
+plio_fwrite(void *, size_t, size_t, FILE *);
+
+/* wraps fread */
+
+void
+plio_fread(void *, size_t, size_t, FILE *);
+
+/* wraps fgets */
+
+void
+plio_fgets(char *, int, FILE *);
 
 #ifdef __cplusplus
 }

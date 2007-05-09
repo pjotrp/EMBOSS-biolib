@@ -1,6 +1,9 @@
 #ifndef __PLCONFIG_H__
 #define __PLCONFIG_H__
-#define LIB_DIR "..\\..\\..\\lib"
-#define BIN_DIR "..\\..\\..\\bin"
-#define PLPLOT_VERSION "5.1.0"
+#define LIB_DIR "..\\lib"
+#define BIN_DIR "..\\bin"
+#define DATA_DIR "..\\lib"
+#define DRV_DIR "..\\lib"
+#define VERSION "5.7.2"
+#define PL_DOUBLE
 #endif

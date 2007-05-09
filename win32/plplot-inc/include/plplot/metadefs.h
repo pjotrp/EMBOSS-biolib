@@ -1,4 +1,4 @@
-/* $Id: metadefs.h,v 1.12 2001/01/27 05:28:29 mlebrun Exp $
+/* $Id: metadefs.h,v 1.2 2007/05/08 09:09:37 rice Exp $
 
 	Geoffrey Furnish
 	5 May 1991
@@ -16,12 +16,12 @@
 */
 
 #define PLMETA_HEADER	"PLPLOT"
-#define PLMETA_VERSION	"1993c"
+#define PLMETA_VERSION	"2005a"
 
 /* These are used by the TK driver client/server code */
 
 #define PLSERV_HEADER	"PLPLOT"
-#define PLSERV_VERSION	"1993b"
+#define PLSERV_VERSION	"2005b"
 
 /* Symbolic constants for old metafile versions (prior to 1992a). */
 /* Now these are stored in the metafile header. */

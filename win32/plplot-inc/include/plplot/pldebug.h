@@ -1,4 +1,4 @@
-/* $Id: pldebug.h,v 1.6 2001/03/17 16:05:25 mlebrun Exp $
+/* $Id: pldebug.h,v 1.2 2007/05/08 09:09:37 rice Exp $
 
     Copyright (C) 1995 by Maurice J. LeBrun
 
@@ -84,6 +84,8 @@ pldebug( const char *label, ... )
 	if (plsc->termin)
 	    c_plgra();
     }
+#else
+    (void) label; 			/* pmr: make it used */
 #endif	/* DEBUG */
 }
 #endif	/* NEED_PLDEBUG */
