@@ -110,7 +110,7 @@ AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
     /* Create an ajint array to hold lengths of sequences */
     lens = ajIntNewL(nin);
     for(x=0; x<nin; x++)
-	ajIntPut(&lens,x,ajSeqLen(inseqs[x]));
+	ajIntPut(&lens,x,ajSeqGetLen(inseqs[x]));
 
 
     /* Set the keep array elements to 1 */
@@ -152,8 +152,8 @@ AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
 		maxarr=len;
 	    }
 
-	    p = (char *) ajSeqChar(inseqs[x]);
-	    q = (char *) ajSeqChar(inseqs[y]);
+	    p = (char *) ajSeqGetSeqC(inseqs[x]);
+	    q = (char *) ajSeqGetSeqC(inseqs[y]);
 
 	    ajStrAssignC(&m,"");
 	    ajStrAssignC(&n,"");
@@ -349,7 +349,7 @@ AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
     /* Create an ajint array to hold lengths of sequences */
     lens = ajIntNewL(nin);
     for(x=0; x<nin; x++)
-	ajIntPut(&lens,x,ajSeqLen(inseqs[x]));
+	ajIntPut(&lens,x,ajSeqGetLen(inseqs[x]));
 
 
     /* Set the keep array elements to 1 */
@@ -384,8 +384,8 @@ AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 		maxarr=len;
 	    }
 
-	    p = (char *) ajSeqChar(inseqs[x]);
-	    q = (char *) ajSeqChar(inseqs[y]);
+	    p = (char *) ajSeqGetSeqC(inseqs[x]);
+	    q = (char *) ajSeqGetSeqC(inseqs[y]);
 
 	    ajStrAssignC(&m,"");
 	    ajStrAssignC(&n,"");
