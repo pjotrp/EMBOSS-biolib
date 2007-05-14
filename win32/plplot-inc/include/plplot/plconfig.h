@@ -4,6 +4,5 @@
 #define BIN_DIR "..\\bin"
 #define DATA_DIR "..\\lib"
 #define DRV_DIR "..\\lib"
-#define VERSION "5.7.2"
-#define PL_DOUBLE
+#define PLPLT_VERSION "5.7.2e"
 #endif
