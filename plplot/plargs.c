@@ -1,4 +1,4 @@
-/* $Id: plargs.c,v 1.4 2007/05/08 09:09:37 rice Exp $
+/* $Id: plargs.c,v 1.5 2007/05/14 14:43:37 ajb Exp $
 
     Copyright 1993, 1994, 1995
     Maurice LeBrun			mjl@dino.ph.utexas.edu
@@ -1371,7 +1371,7 @@ opt_v(const char *opt, const char *myoptarg, void *client_data)
     (void) client_data;
 
     if ( ! mode_quiet)
-	fprintf(stderr, "PLplot library version: %s\n", VERSION);
+	fprintf(stderr, "PLplot library version: %s\n", PLPLT_VERSION);
 
     return 2;
 }

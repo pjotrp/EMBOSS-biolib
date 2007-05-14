@@ -1,4 +1,4 @@
-/* $Id: ps.c,v 1.3 2007/05/08 09:09:37 rice Exp $
+/* $Id: ps.c,v 1.4 2007/05/14 14:44:01 ajb Exp $
 
 	PLplot PostScript device driver.
 
@@ -229,7 +229,7 @@ ps_init(PLStream *pls)
     fprintf(OF, "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%\n");
 
     fprintf(OF, "%%%%Title: PLplot Graph\n");
-    fprintf(OF, "%%%%Creator: PLplot Version %s\n", VERSION);
+    fprintf(OF, "%%%%Creator: PLplot Version %s\n", PLPLT_VERSION);
     fprintf(OF, "%%%%CreationDate: %s\n", ps_getdate());
     fprintf(OF, "%%%%Pages: (atend)\n");
     fprintf(OF, "%%%%EndComments\n\n");

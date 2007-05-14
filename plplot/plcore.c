@@ -1,4 +1,4 @@
-/* $Id: plcore.c,v 1.10 2007/05/08 09:09:37 rice Exp $
+/* $Id: plcore.c,v 1.11 2007/05/14 14:43:51 ajb Exp $
 
 	Central dispatch facility for PLplot.
 	Also contains the PLplot main data structures, external access
@@ -3003,7 +3003,7 @@ plP_fci2hex(PLUNICODE fci, unsigned char *phexdigit, unsigned char hexpower)
 void
 c_plgver(char *p_ver)
 {
-    strcpy(p_ver, VERSION);
+    strcpy(p_ver, PLPLT_VERSION);
 }
 
 /* Set inferior X window */
