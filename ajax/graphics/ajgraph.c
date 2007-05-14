@@ -243,7 +243,7 @@ static void     GraphArrayGaps(ajint numofpoints,
 static void     GraphArrayGapsI(ajint numofpoints, ajint *x, ajint *y);
 static void     GraphCharScale(float size);
 static void     GraphCheckFlags(ajint flags);
-static void     GraphCheckPoints(PLINT n, const PLFLT *x, const PLFLT *y);
+static void     GraphCheckPoints(ajint n, const PLFLT *x, const PLFLT *y);
 static void     GraphClose(void);
 static void     GraphDatafileNext(void);
 static void     GraphDataDraw(const AjPGraphPlpData graphdata);
