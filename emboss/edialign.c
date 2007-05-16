@@ -997,15 +997,21 @@ int main(int argc, char **argv)
     }
 */
 
+/*
+** This section had to be used if the VC++ /MT libs were used instead of
+** the /MD ones
     ajStrAssignS(&tnstr,ajFileGetName(matfp));
     ajFileClose(&matfp);
 
     fp_matrix = fopen(ajStrGetPtr(tnstr),"rb");
+*/
+
+    fp_matrix = ajFileFp(matfp);
 
     if( wgt_type != 1 )
 	edialign_matrix_read( fp_matrix );
 
-
+    ajFileClose(&matfp);
 
     edialign_mem_alloc(  );
 
@@ -1425,10 +1431,14 @@ int main(int argc, char **argv)
   
     if( textual_alignment )
     {
+/*
 	ajStrAssignS(&tnstr,ajFileGetName(outfile));
 	ajFileClose(&outfile);
 
 	fp_ali = fopen(ajStrGetPtr(tnstr),"wb");
+*/
+	fp_ali = ajFileFp(outfile);
+	
 	/* fp_ali = fopen(itname,"w"); */
     }
     
@@ -1772,7 +1782,8 @@ int main(int argc, char **argv)
 
     if( textual_alignment )
     {
-	fclose(fp_ali);
+/*	fclose(fp_ali); */
+	ajFileClose(&outfile);
     }
     
 
@@ -6243,7 +6254,7 @@ static void edialign_matrix_read( FILE *fp_mat )
     }
 
 
-    fclose(fp_mat);
+/*    fclose(fp_mat); */
 
     for( i = 0 ; i <= 20 ; i++ )
     {
@@ -6330,10 +6341,12 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 */
 
 
-
+/*
     ajStrAssignS(&tnstr,ajFileGetName(etpfile));
     ajFileClose(&etpfile);    
     fp = fopen(ajStrGetPtr(tnstr),"rb");
+*/
+    fp = ajFileFp(etpfile);
 
     if ( fgets( line , MLINE , fp ) == NULL ) 
 	ajFatal("\n\n problem with tp400 file \n\n");
@@ -6356,7 +6369,8 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 
 
     ajStrDel(&tnstr);
-    fclose(fp);
+/*    fclose(fp); */
+    ajFileClose(&etpfile);    
     
 
     return;
