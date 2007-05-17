@@ -16,6 +16,7 @@ extern "C"
 ** @attr time [struct tm] Time in C standard structure
 ** @attr format [const char*] Format string if specified
 ** @attr uppercase [AjBool] Convert to upper case on output
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -23,6 +24,7 @@ typedef struct AjSTime {
   struct tm time;
   const char *format;
   AjBool uppercase;
+  char Padding[4];
 } AjOTime, AjODate;
 
 #define AjPTime AjOTime*

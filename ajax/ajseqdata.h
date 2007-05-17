@@ -71,6 +71,7 @@ typedef struct AjSSeqDate {
 ** @attr Number [ajuint] Reference number. This may be used in the feature
 **                       table and references can disappear so the position
 **                       in the lst is not enough
+** @attr Padding [char[4]] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -84,6 +85,7 @@ typedef struct AjSSeqRef {
   AjPStr Location;
   AjPStr Loctype;
   ajuint Number;
+  char Padding[4];
 } AjOSeqRef;
 #define AjPSeqRef AjOSeqRef*
 
@@ -339,7 +341,6 @@ typedef struct AjSSeqin {
 ** @attr End [ajint] end position (processed on reading)
 ** @attr Offset [ajuint] offset from start
 ** @attr Offend [ajuint] offset from end 
-** @attr Weight [float] Weight from multiple alignment
 ** @attr Fpos [ajlong] File position (fseek) for USA
 ** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
@@ -358,6 +359,8 @@ typedef struct AjSSeqin {
 ** @attr Accuracy [ajuint*] Accuracy values (one per base) from base calling
 ** @attr Format [AjEnum] Input format enum
 ** @attr EType [AjEnum] unused, obsolete
+** @attr Weight [float] Weight from multiple alignment
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @@
 ******************************************************************************/
@@ -387,7 +390,6 @@ typedef struct AjSSeq {
   ajint End;
   ajuint Offset;
   ajuint Offend;
-  float Weight;
   ajlong Fpos;
   AjPStr Usa;
   AjPStr Ufo;
@@ -406,6 +408,8 @@ typedef struct AjSSeq {
   ajuint* Accuracy;
   AjEnum Format;
   AjEnum EType;
+  float Weight;
+  char Padding[4];
 } AjOSeq;
 
 #define AjPSeq AjOSeq*

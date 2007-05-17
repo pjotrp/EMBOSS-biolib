@@ -1,4 +1,4 @@
-/* $Id: xfig.c,v 1.3 2007/05/08 09:09:37 rice Exp $
+/* $Id: xfig.c,v 1.4 2007/05/17 10:37:26 ajb Exp $
 
 	PLplot xfig device driver.
 */
@@ -57,8 +57,8 @@ static void proc_str (PLStream *, EscText *);
 
 static int text=0;
 
-static DrvOpt xfig_options[] = {{"text", DRV_INT, &text, "Use Postscript text (text=1|0)"},
-				  {NULL, DRV_INT, NULL, NULL}};
+static DrvOpt xfig_options[] = {{"text", DRV_INT, 0, &text, "Use Postscript text (text=1|0)"},
+				  {NULL, DRV_INT, 0, NULL, NULL}};
 
 void plD_dispatch_init_xfig( PLDispatchTable *pdt )
 {

@@ -532,6 +532,8 @@ typedef struct {
   PLINT refx; /* processed ref. point--after justification, displacement, etc, processing */
   PLINT refy;
   PLUNICODE  unicode_char;   /* an int to hold either a Hershey, ASC-II, or Unicode value for plsym calls */
+  char Padding1[4];
+  
   PLUNICODE  *unicode_array;   /* a pointer to an array of ints holding either a Hershey, ASC-II, or Unicode value for cached plsym */
   const char *string; /* text to draw */
   unsigned short unicode_array_len;	/* pmr: swap to align */
@@ -547,6 +549,7 @@ typedef struct {
 typedef struct {
   const char *opt;     /* a string with the name of the option */
   PLINT type;    /* the type of the variable to be set, see bellow the available types */
+  PLINT Padding;
   void *var_ptr; /* a pointer to the variable to be set */
   const char *hlp_msg; /* help message of the option */
 } DrvOpt;
@@ -575,11 +578,13 @@ typedef struct cont_line {
   PLFLT *x;
   PLFLT *y;
   PLINT npts;
+  char Padding1[4];
   struct cont_line *next;
 } CONT_LINE;
 
 typedef struct cont_level {
   PLFLT level;
+  char Padding1[4];
   struct cont_line *line; /* contour line */
   struct cont_level *next; /* contour level */
 } CONT_LEVEL;
@@ -970,6 +975,7 @@ plhershey2unicode ( unsigned int in );
 /* struct used for FCI to FontName lookups. */
 typedef struct
 {
+   PLINT padding;
    PLUNICODE fci;
    const unsigned char *pfont;
 } FCI_to_FontName_Table;

@@ -1,4 +1,4 @@
-/* $Id: ps.c,v 1.4 2007/05/14 14:44:01 ajb Exp $
+/* $Id: ps.c,v 1.5 2007/05/17 10:37:26 ajb Exp $
 
 	PLplot PostScript device driver.
 
@@ -71,10 +71,10 @@ static int text = 1;
 static int color;
 static int hrshsym = 1;
 
-static DrvOpt ps_options[] = {{"text", DRV_INT, &text, "Use Postscript text (text=0|1)"},
-			      {"color", DRV_INT, &color, "Use color (color=0|1)"},
-			      {"hrshsym", DRV_INT, &hrshsym, "Use Hershey symbol set (hrshsym=0|1)"},
-			      {NULL, DRV_INT, NULL, NULL}};
+static DrvOpt ps_options[] = {{"text", DRV_INT, 0, &text, "Use Postscript text (text=0|1)"},
+			      {"color", DRV_INT, 0, &color, "Use color (color=0|1)"},
+			      {"hrshsym", DRV_INT, 0, &hrshsym, "Use Hershey symbol set (hrshsym=0|1)"},
+			      {NULL, DRV_INT, 0, NULL, NULL}};
 
 static unsigned char 
 plunicode2type1 (const PLUNICODE index,

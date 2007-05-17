@@ -1,4 +1,4 @@
-/* $Id: xwin.c,v 1.7 2007/05/08 09:09:37 rice Exp $
+/* $Id: xwin.c,v 1.8 2007/05/17 10:37:26 ajb Exp $
 
 	PLplot X-windows device driver.
 
@@ -208,12 +208,12 @@ static void  SaveColormap	(Display *display, Colormap colormap);
 static void  PLColor_to_XColor	(PLColor *plcolor, XColor *xcolor);
 static void  PLColor_from_XColor(PLColor *plcolor, XColor *xcolor);
 
-static DrvOpt xwin_options[] = {{"sync", DRV_INT, &synchronize, "Synchronized X server operation (0|1)"},
-				{"nobuffered", DRV_INT, &nobuffered, "Sets unbuffered operation (0|1)"},
-				{"noinitcolors", DRV_INT, &noinitcolors, "Sets cmap0 allocation (0|1)"},
-				{"defvis", DRV_INT, &defaultvisual, "Use the Default Visual (0|1)"},
-				{"usepth", DRV_INT, &usepthreads, "Use pthreads (0|1)"},
-				{NULL, DRV_INT, NULL, NULL}};
+static DrvOpt xwin_options[] = {{"sync", DRV_INT, 0, &synchronize, "Synchronized X server operation (0|1)"},
+				{"nobuffered", DRV_INT, 0, &nobuffered, "Sets unbuffered operation (0|1)"},
+				{"noinitcolors", DRV_INT, 0, &noinitcolors, "Sets cmap0 allocation (0|1)"},
+				{"defvis", DRV_INT, 0, &defaultvisual, "Use the Default Visual (0|1)"},
+				{"usepth", DRV_INT, 0, &usepthreads, "Use pthreads (0|1)"},
+				{NULL, DRV_INT, 0, NULL, NULL}};
 
 void plD_dispatch_init_xw( PLDispatchTable *pdt )
 {

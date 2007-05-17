@@ -1,4 +1,4 @@
-/* $Id: plplot.h,v 1.5 2007/05/08 09:09:37 rice Exp $
+/* $Id: plplot.h,v 1.6 2007/05/17 10:37:26 ajb Exp $
 
     Macros and prototypes for the PLplot package.  This header file must
     be included by all user codes.
@@ -348,6 +348,7 @@ typedef struct {
 typedef struct {
     PLFLT *f;
     PLINT nx, ny, nz;
+    char Padding[4];
 } PLfGrid;
 
 /*
@@ -374,6 +375,7 @@ typedef struct {
 typedef struct {
     PLFLT *xg, *yg, *zg;
     PLINT nx, ny, nz;
+    char Padding[4];
 } PLcGrid;
 
 /*
@@ -400,7 +402,7 @@ typedef struct {
     unsigned char r;		/* red */
     unsigned char g;		/* green */
     unsigned char b;		/* blue */
-    unsigned char padding;		/* pmr:padding to boundary */
+    unsigned char Padding[5];		/* pmr:padding to boundary */
 } PLColor;
 
 /* PLControlPt is how cmap1 control points are represented. */

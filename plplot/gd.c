@@ -1,4 +1,4 @@
-/* $Id: gd.c,v 1.1 2007/05/08 10:46:42 rice Exp $
+/* $Id: gd.c,v 1.2 2007/05/17 10:37:26 ajb Exp $
 
          PNG, GIF, and JPEG device driver based on libgd
 
@@ -369,18 +369,18 @@ plD_init_png_Dev(PLStream *pls)
     FT_Data *FT;
 #endif
 
-    DrvOpt gd_options[] = {{"optimise", DRV_INT, &optimise, "Optimise PNG palette when possible"},
-                              {"def_black15", DRV_INT, &black15, "Define idx 15 as black. If the background is \"whiteish\" (from \"-bg\" option), force index 15 (traditionally white) to be \"black\""},
-                              {"swp_red15", DRV_INT, &red15, "Swap index 1 (usually red) and 1 (usually white); always done after \"black15\"; quite useful for quick changes to web pages"},
+    DrvOpt gd_options[] = {{"optimise", DRV_INT, 0, &optimise, "Optimise PNG palette when possible"},
+                              {"def_black15", DRV_INT, 0, &black15, "Define idx 15 as black. If the background is \"whiteish\" (from \"-bg\" option), force index 15 (traditionally white) to be \"black\""},
+                              {"swp_red15", DRV_INT, 0, &red15, "Swap index 1 (usually red) and 1 (usually white); always done after \"black15\"; quite useful for quick changes to web pages"},
 #if GD2_VERS >= 2
-                              {"8bit", DRV_INT, &palette, "Palette (8 bit) mode"},
-                              {"24bit", DRV_INT, &truecolour, "Truecolor (24 bit) mode"},
+                              {"8bit", DRV_INT, 0, &palette, "Palette (8 bit) mode"},
+                              {"24bit", DRV_INT, 0, &truecolour, "Truecolor (24 bit) mode"},
 #endif
 #ifdef HAVE_FREETYPE
-                              {"text", DRV_INT, &freetype, "Use driver text (FreeType)"},
-                              {"smooth", DRV_INT, &smooth_text, "Turn text smoothing on (1) or off (0)"},
+                              {"text", DRV_INT, 0, &freetype, "Use driver text (FreeType)"},
+                              {"smooth", DRV_INT, 0, &smooth_text, "Turn text smoothing on (1) or off (0)"},
 #endif
-			      {NULL, DRV_INT, NULL, NULL}};
+			      {NULL, DRV_INT, 0, NULL, NULL}};
 
 
 /* Allocate and initialize device-specific data */
@@ -567,13 +567,13 @@ plD_init_gif_Dev(PLStream *pls)
     FT_Data *FT;
 #endif
 
-    DrvOpt gd_options[] = {{"def_black15", DRV_INT, &black15, "Define idx 15 as black. If the background is \"whiteish\" (from \"-bg\" option), force index 15 (traditionally white) to be \"black\""},
-                              {"swp_red15", DRV_INT, &red15, "Swap index 1 (usually red) and 1 (usually white); always done after \"black15\"; quite useful for quick changes to web pages"},
+    DrvOpt gd_options[] = {{"def_black15", DRV_INT, 0, &black15, "Define idx 15 as black. If the background is \"whiteish\" (from \"-bg\" option), force index 15 (traditionally white) to be \"black\""},
+                              {"swp_red15", DRV_INT, 0, &red15, "Swap index 1 (usually red) and 1 (usually white); always done after \"black15\"; quite useful for quick changes to web pages"},
 #ifdef HAVE_FREETYPE
-                              {"text", DRV_INT, &freetype, "Use driver text (FreeType)"},
-                              {"smooth", DRV_INT, &smooth_text, "Turn text smoothing on (1) or off (0)"},
+                              {"text", DRV_INT, 0, &freetype, "Use driver text (FreeType)"},
+                              {"smooth", DRV_INT, 0, &smooth_text, "Turn text smoothing on (1) or off (0)"},
 #endif
-			      {NULL, DRV_INT, NULL, NULL}};
+			      {NULL, DRV_INT, 0, NULL, NULL}};
 
 
 /* Allocate and initialize device-specific data */

@@ -1,4 +1,4 @@
-/* $Id: pdf.h,v 1.4 2007/05/08 09:09:37 rice Exp $
+/* $Id: pdf.h,v 1.5 2007/05/17 10:37:26 ajb Exp $
 
     Copyright (C) 1992 by Maurice J. LeBrun
 
@@ -60,10 +60,10 @@ typedef struct {
 /* Info for the i/o device.  Only used by Tcl/TK/dp drivers for now */
 
 typedef struct {
-    int   fd;				/* I/O device file descriptor */
     FILE  *file;			/* File handle */
     char  *fileName;			/* Fifo or socket name (if needed) */
     char  *fileHandle;			/* Handle for use from interpreter */
+    int   fd;				/* I/O device file descriptor */
     int   type;				/* Communication channel type */
     char  *typeName;			/* As above, but in string form */
 } PLiodev;

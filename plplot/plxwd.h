@@ -1,4 +1,4 @@
-/* $Id: plxwd.h,v 1.3 2007/05/08 09:09:37 rice Exp $
+/* $Id: plxwd.h,v 1.4 2007/05/17 10:37:26 ajb Exp $
 
 	Holds system header includes, prototypes of xwin driver
 	utility functions, and definition of the state structure.
@@ -47,6 +47,7 @@ typedef struct {
     int		ixwd;			/* Specifies xwDisplay number */
     char	*displayName;		/* Name of X display */
     int		screen;			/* X screen */
+    int         Padding1;
     Display	*display;		/* X display */
     Visual	*visual;		/* X Visual */
     GC		gcXor;			/* Graphics context for XOR draws */
@@ -62,6 +63,7 @@ typedef struct {
     XColor	fgcolor;		/* Foreground color (if grayscale) */
     Cursor	xhair_cursor;		/* Crosshair cursor */
     int		rw_cmap;		/* Can we allocate r/w color cells? */
+    int         Padding2;
 } XwDisplay;
 
 /* One of these holds the X driver state information */
@@ -70,6 +72,7 @@ typedef struct {
     XwDisplay	*xwd;			/* Pointer to display info */
 
     int		is_main;		/* Set if the toplevel X window */
+    int         Padding1;
     Window	window;			/* X window id */
     Pixmap	pixmap;			/* Off-screen pixmap */
     GC		gc;			/* Graphics context */
@@ -77,11 +80,13 @@ typedef struct {
 
     long	event_mask;		/* Event mask */
     int		exit_eventloop;		/* Breaks the event loop when set */
+    int         Padding2;
     long	init_width;		/* Initial window width */
     long	init_height;		/* Initial window height */
 
     unsigned	width, height, border;	/* Current window dimensions */
-
+    unsigned    Padding3;
+    
     double	xscale_init;		/* initial pixels/lx (virt. coords) */
     double	yscale_init;		/* initial pixels/ly (virt. coords) */
     double	xscale;			/* as above, but current value */

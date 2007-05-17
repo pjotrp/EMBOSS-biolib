@@ -1,4 +1,4 @@
-/* $Id: plstrm.h,v 1.5 2007/05/08 09:09:37 rice Exp $
+/* $Id: plstrm.h,v 1.6 2007/05/17 10:37:26 ajb Exp $
  *
  *	Contains declarations for PLStream and PLDev structs.
  *	Also prototypes for stream & device utility functions.
@@ -505,6 +505,7 @@ typedef struct {
     PLINT widthset, widthlock;
 
 /* Variables governing arrow */
+    char  padding1[4];
     PLFLT *arrow_x;
     PLFLT *arrow_y;
     PLINT arrow_npts;
@@ -524,6 +525,8 @@ typedef struct {
     PLINT dev_text, dev_xor, dev_clear, dev_fastimg;
 
     char DevName[80];
+    char Padding2[4];
+    
     FILE *OutFile;
     char *BaseName, *FileName;
     char *Ext;				/* pmr: added for EMBOSS */
@@ -532,6 +535,8 @@ typedef struct {
     PDFstrm *pdfs;
 
     PLINT dev_npts;
+    char Padding3[4];
+    
     short *dev_x, *dev_y;
 
   /* variables for plimage() */
@@ -541,7 +546,7 @@ typedef struct {
     unsigned short *dev_z;
     unsigned short dev_zmin, dev_zmax;
     PLINT imclxmin, imclxmax, imclymin, imclymax;
-
+    char Padding4[4];
   /* end of variables for plimage() */
 
     void *dev;
@@ -584,7 +589,7 @@ typedef struct {
     char *geometry;
     long window_id;
     int  nopixmap, db, ext_resize_draw;
-
+    char Padding5[4];
 /* Stuff used by TK, DP drivers */
 
     char *server_name, *server_host, *server_port, *user;
@@ -592,7 +597,8 @@ typedef struct {
     char *auto_path;
     char *tk_file;  /* plserver -file option */
     int  bufmax, dp, server_nokill;
-
+    char Padding6[4];
+    
 /* Plot buffer settings */
 
 #ifdef BUFFERED_FILE
@@ -687,6 +693,9 @@ typedef struct {
   PLINT dev_compression;
   PLINT cfont;
 
+  char Padding7[4];
+    
+
   void *FT;
 
 /* Stuff used by the Tkwin driver for Plframe */
@@ -706,7 +715,8 @@ typedef struct {
  */
 
   PLFLT original_chrdef,original_chrht;
-
+  char Padding8[4];
+    
   /*
    * Pointer to postscript document class used by psttf
    */

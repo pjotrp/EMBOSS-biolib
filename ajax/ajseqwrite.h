@@ -35,7 +35,6 @@ extern "C"
 ** @attr Doc [AjPStr] Obsolete - see TextPtr
 ** @attr Rev [AjBool] true: to be reverse-complemented
 ** @attr Circular [AjBool] true: circular nucleotide molecule
-** @attr Offset [ajint] offset from start
 ** @attr Usa [AjPStr] USA for re-reading
 ** @attr Ufo [AjPStr] UFO for re-reading
 ** @attr Fttable [AjPFeattable] Feature table
@@ -65,7 +64,7 @@ extern "C"
 ** @attr Savelist [AjPList] Previous sequences saved for later output
 **                          (e.g. MSF format)
 ** @attr Count [ajint] Number of sequences
-** @attr Padding [char[4]] Padding to alignment boundary
+** @attr Offset [ajint] offset from start
 **
 ** @new ajSeqoutNew Default constructor
 ** @delete ajSeqoutDel Default destructor
@@ -101,7 +100,6 @@ typedef struct AjSSeqout {
   AjPStr Doc;
   AjBool Rev;
   AjBool Circular;
-  ajint Offset;
   AjPStr Usa;
   AjPStr Ufo;
   AjPFeattable Fttable;
@@ -130,7 +128,7 @@ typedef struct AjSSeqout {
   ajint* Accuracy;
   AjPList Savelist;
   ajint Count;
-  char Padding[4];
+  ajint Offset;
 } AjOSeqout;
 
 #define AjPSeqout AjOSeqout*
