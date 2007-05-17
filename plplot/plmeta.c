@@ -1,4 +1,4 @@
-/* $Id: plmeta.c,v 1.4 2007/05/08 09:09:37 rice Exp $
+/* $Id: plmeta.c,v 1.5 2007/05/17 11:18:41 ajb Exp $
 
     Copyright 1991, 1992, 1993, 1994, 1995
     Geoffrey Furnish			furnish@dino.ph.utexas.edu
@@ -63,6 +63,7 @@ typedef struct {
     FPOS_T lp_offset, index_offset;
 
     int notfirst;
+    char Padding[4];
 } PLmDev;
 
 /* Used for constructing error messages */
