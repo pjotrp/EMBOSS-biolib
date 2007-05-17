@@ -38,6 +38,7 @@
 ** @attr Name [const char*] format name
 ** @attr Format [const char*] C run time library time format string
 ** @attr Uppercase [AjBool] Convert to upper case on output
+** @attr Padding [ajint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -46,6 +47,7 @@ typedef struct TimeSFormat
     const char* Name;
     const char* Format;
     AjBool Uppercase;
+    ajint Padding;
 } TimeOFormat;
 #define TimePFormat TimeOFormat*
 
@@ -56,21 +58,21 @@ static AjPTime timeTodaySaved = NULL;
 
 static TimeOFormat timeFormat[] =  /* formats for strftime */
 {
-    {"GFF", "%Y-%m-%d", AJFALSE},
-    {"yyyy-mm-dd", "%Y-%m-%d", AJFALSE},
-    {"dd Mon yyyy", "%d %b %Y", AJFALSE},
-    {"day", "%d-%b-%Y", AJFALSE},
-    {"time", "%H:%M:%S", AJFALSE},
-    {"daytime", "%d-%b-%Y %H:%M", AJFALSE},
-    {"log", "%a %b %d %H:%M:%S %Y", AJFALSE},
+    {"GFF", "%Y-%m-%d", AJFALSE, 0},
+    {"yyyy-mm-dd", "%Y-%m-%d", AJFALSE, 0},
+    {"dd Mon yyyy", "%d %b %Y", AJFALSE, 0},
+    {"day", "%d-%b-%Y", AJFALSE, 0},
+    {"time", "%H:%M:%S", AJFALSE, 0},
+    {"daytime", "%d-%b-%Y %H:%M", AJFALSE, 0},
+    {"log", "%a %b %d %H:%M:%S %Y", AJFALSE, 0},
 #ifndef WIN32
-    {"report", "%a %e %b %Y %H:%M:%S", AJFALSE},
+    {"report", "%a %e %b %Y %H:%M:%S", AJFALSE, 0},
 #else
-    {"report", "%a %#d %b %Y %H:%M:%S", AJFALSE},
+    {"report", "%a %#d %b %Y %H:%M:%S", AJFALSE, 0},
 #endif
-    {"dbindex", "%d/%m/%y", AJFALSE},
-    {"dtline", "%d-%b-%Y", AJTRUE},
-    { NULL, NULL, AJFALSE}
+    {"dbindex", "%d/%m/%y", AJFALSE, 0},
+    {"dtline", "%d-%b-%Y", AJTRUE, 0},
+    { NULL, NULL, AJFALSE, 0}
 };
 
 
