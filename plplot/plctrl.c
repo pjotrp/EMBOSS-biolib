@@ -1,4 +1,4 @@
-/* $Id: plctrl.c,v 1.10 2007/05/17 11:35:33 ajb Exp $
+/* $Id: plctrl.c,v 1.11 2007/05/17 12:04:46 ajb Exp $
 
 	Misc. control routines, like begin, end, exit, change graphics/text
 	mode, change color.  Includes some spillage from plcore.c.  If you
@@ -1258,6 +1258,7 @@ plLibOpenPdfstrm(const char *fn)		/* pmr: const */
     PDFstrm *file;
     char *fs = NULL, *dn = NULL;
 
+#ifndef WIN32
     /* EMBOSS additions to avoid need for PLPLOT_LIB */
     static const char *prefix = PREFIX;
     static const char *top    = EMBOSS_TOP;
@@ -1282,7 +1283,7 @@ plLibOpenPdfstrm(const char *fn)		/* pmr: const */
             goto done;
     }
     /* End of EMBOSS additions */
-
+#endif
 
 /****   search build tree               ****/
 
