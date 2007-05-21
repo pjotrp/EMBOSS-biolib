@@ -39,6 +39,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;PLD_png&quot;"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;../../plplot-inc/include&quot;;&quot;../../plplot-inc/include/plplot&quot;"
 				PreprocessorDefinitions="POSIX_MALLOC_THRESHOLD=10;HAVE_MEMMOVE;_DEBUG;_POSIX_;WIN32;_USRDLL;AJAXDLL_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
@@ -62,7 +63,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="plplot.lib WS2_32.lib"
+				AdditionalDependencies="bgd.lib plplot.lib WS2_32.lib"
 				OutputFile="$(OutDir)/ajax.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
@@ -126,6 +127,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalOptions="/D &quot;PLD_png&quot;"
 				AdditionalIncludeDirectories="&quot;../../plplot-inc/include&quot;;&quot;../../plplot-inc/include/plplot&quot;"
 				PreprocessorDefinitions="POSIX_MALLOC_THRESHOLD=10;HAVE_MEMMOVE;NDEBUG;_POSIX_;WIN32;_USRDLL;AJAXDLL_EXPORTS;_CRT_SECURE_NO_DEPRECATE"
 				ExceptionHandling="0"
@@ -146,7 +148,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="plplot.lib WS2_32.lib"
+				AdditionalDependencies="bgd.lib plplot.lib WS2_32.lib"
 				OutputFile="$(OutDir)/ajax.dll"
 				LinkIncremental="1"
 				SuppressStartupBanner="true"
