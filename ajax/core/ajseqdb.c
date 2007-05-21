@@ -52,6 +52,7 @@ extern int _open_osfhandle();
 
 static AjBool seqCdReverse = AJFALSE;
 
+static AjPRegexp seqBlastDivExp = NULL;
 static AjPRegexp seqCdDivExp = NULL;
 static AjPRegexp seqRegHttpProxy = NULL;
 static AjPRegexp seqRegHttpUrl = NULL;
@@ -4280,15 +4281,15 @@ static AjBool seqEmbossGcgReadRef(AjPSeqin seqin)
 
 static AjBool seqEmbossGcgReadSeq(AjPSeqin seqin)
 {
-    static AjPStr line = NULL;
+    AjPStr line = NULL;
     AjPSeqQuery qry;
     SeqPEmbossQry qryd;
-    static AjPStr gcgtype    = NULL;
-    static AjPStr tmpstr     = NULL;
-    static AjPStr dstr       = NULL;
-    static AjPStr id         = NULL;
-    static AjPStr idc        = NULL;
-    static AjPStr contseq    = NULL;
+    AjPStr gcgtype    = NULL;
+    AjPStr tmpstr     = NULL;
+    AjPStr dstr       = NULL;
+    AjPStr id         = NULL;
+    AjPStr idc        = NULL;
+    AjPStr contseq    = NULL;
 
     ajint gcglen;
     ajint pos;
@@ -4466,6 +4467,11 @@ static AjBool seqEmbossGcgReadSeq(AjPSeqin seqin)
     }
     ajStrDel(&gcgtype);
     ajStrDel(&line);
+    ajStrDel(&tmpstr);
+    ajStrDel(&dstr);
+    ajStrDel(&id);
+    ajStrDel(&idc);
+    ajStrDel(&contseq);
 
     return ajTrue;
 }
@@ -5952,7 +5958,6 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
     static const char* hdrext[] = {"ahd", "nhd", "phr", "nhr"};
     static const char* tblext[] = {"atb", "ntb", "pin", "nin"};
 
-    static AjPRegexp divexp = NULL;
     short j;
     AjBool isblast2 = ajFalse;
     AjBool isdna    = ajFalse;
@@ -5970,14 +5975,14 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
     ajint MaxSeqLen;			/* max. entry length */
     ajint TotLen;	                /* bases or residues in database */
     ajint CleanCount;			/* count of cleaned 8mers */
-    static AjPStr Title;		/* database title */
-    static AjPStr Date;			/* database date */
+    AjPStr Title=NULL;			/* database title */
+    AjPStr Date=NULL;			/* database date */
 
     SeqPCdQry qryd;
     AjBool bigend = ajTrue;	        /* Blast indices are bigendian */
 
-    if(!divexp)
-	divexp = ajRegCompC("^([^ ]+)( +([^ ]+))?");
+    if(!seqBlastDivExp)
+	seqBlastDivExp = ajRegCompC("^([^ ]+)( +([^ ]+))?");
 
     if(!qry->QryData)
 	if(!seqCdQryOpen(qry))
@@ -5995,7 +6000,6 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
 
     qryd->type = 0;
 
-
     HeaderLen = 0;
 
     seqCdFileSeek(qryd->dfp, (qryd->div - 1)); /* first (only) file */
@@ -6006,15 +6010,15 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
     ajDebug("div: %d namesize: %d name '%s'\n",
 	    qryd->div, qryd->nameSize, qryd->name);
 
-    if(!ajRegExecC(divexp, qryd->name))
+    if(!ajRegExecC(seqBlastDivExp, qryd->name))
     {
 	ajWarn("index division file error '%s'", qryd->name);
 	return ajFalse;
     }
 
 
-    ajRegSubI(divexp, 1, &qryd->datfile);
-    ajRegSubI(divexp, 3, &qryd->seqfile);
+    ajRegSubI(seqBlastDivExp, 1, &qryd->datfile);
+    ajRegSubI(seqBlastDivExp, 3, &qryd->seqfile);
     ajDebug("File(s) '%S' '%S'\n", qryd->datfile, qryd->seqfile);
 
     ajDebug("seqBlastOpen next: %B '%S' '%s'\n",
@@ -6195,6 +6199,9 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
     ajDebug("table file hdr    starts at %d\n", qryd->TopHdr);
     ajDebug("table file amb    starts at %d\n", qryd->TopAmb);
 
+    ajStrDel(&Date);
+    ajStrDel(&Title);
+
     return ajTrue;
 }
 
@@ -6250,8 +6257,9 @@ static ajuint seqCdDivNext(AjPSeqQuery qry)
 
 static AjBool seqBlastLoadBuff(AjPSeqin seqin)
 {
-    static AjPStr hdrstr = NULL;
-    static AjPStr seqstr = NULL;
+    AjBool ret;
+    AjPStr hdrstr = NULL;
+    AjPStr seqstr = NULL;
     AjPSeqQuery qry;
     SeqPCdQry qryd;
 
@@ -6263,7 +6271,12 @@ static AjBool seqBlastLoadBuff(AjPSeqin seqin)
 
     ajDebug("seqBlastLoadBuff libt: %F %d\n", qryd->libt, qryd->idnum);
 
-    return seqBlastReadTable(seqin, &hdrstr, &seqstr);
+    ret = seqBlastReadTable(seqin, &hdrstr, &seqstr);
+
+    ajStrDel(&hdrstr);
+    ajStrDel(&seqstr);
+
+    return ret;
 }
 
 
@@ -7939,12 +7952,14 @@ static AjBool seqBlastReadTable(AjPSeqin seqin, AjPStr* hline,
 
 static void seqBlastStripNcbi(AjPStr* line)
 {
-    static AjPStr tmpline = NULL;
+    AjPStr tmpline = NULL;
 
     ajStrAssignS(&tmpline, *line);
 
     ajFmtPrintS(line, ">%S", tmpline);
     ajDebug("trim to   '%S'\n", tmpline);
+
+    ajStrDel(&tmpline);
 
     return;
 }
@@ -8292,6 +8307,7 @@ static void seqCdTrgDel(SeqPCdTrg* pthys)
 void ajSeqDbExit(void)
 {
     ajRegFree(&seqCdDivExp);
+    ajRegFree(&seqBlastDivExp);
     ajRegFree(&seqRegHttpProxy);
     ajRegFree(&seqRegHttpUrl);
     ajCharDel(&seqCdName);
