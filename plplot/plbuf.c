@@ -1,4 +1,4 @@
-/* $Id: plbuf.c,v 1.3 2007/05/08 09:09:37 rice Exp $
+/* $Id: plbuf.c,v 1.4 2007/05/21 15:43:11 ajb Exp $
 
     Handle plot buffer.
 
@@ -984,6 +984,7 @@ struct _state {
 #ifdef BUFFERED_FILE
     FILE *plbufFile;
 #else
+    char Padding[4];
     void *plbuf_buffer;
     size_t plbuf_buffer_size;
     size_t plbuf_top;
