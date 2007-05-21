@@ -589,19 +589,25 @@ static AjPRegexp featRegQuote = NULL;
 static AjPRegexp featTagTrans = NULL;    
 static AjPRegexp featRegGroup = NULL;
 
+static AjPRegexp featRegSpecialAnticodon = NULL;
+static AjPRegexp featRegSpecialCodon = NULL;
+static AjPRegexp featRegSpecialCodonBad = NULL;
+static AjPRegexp featRegSpecialColdate = NULL;
 static AjPRegexp featRegSpecialCompare = NULL;
+static AjPRegexp featRegSpecialConssplice = NULL;
 static AjPRegexp featRegSpecialEstlen = NULL;
+static AjPRegexp featRegSpecialInference = NULL;
+static AjPRegexp featRegSpecialLatlon = NULL;
 static AjPRegexp featRegSpecialMobile = NULL;
+static AjPRegexp featRegSpecialPrimer = NULL;
+static AjPRegexp featRegSpecialRptRange = NULL;
+static AjPRegexp featRegSpecialRptRangeLab = NULL;
+static AjPRegexp featRegSpecialRptRangeComp = NULL;
+static AjPRegexp featRegSpecialRptunitSeq = NULL;
 static AjPRegexp featRegSpecialTrans = NULL;
 static AjPRegexp featRegSpecialTransBad = NULL;
 static AjPRegexp featRegSpecialTransComp = NULL;
 static AjPRegexp featRegSpecialTransBadComp = NULL;
-static AjPRegexp featRegSpecialAnticodon = NULL;
-static AjPRegexp featRegSpecialRptunitSeq = NULL;
-static AjPRegexp featRegSpecialRptRange = NULL;
-static AjPRegexp featRegSpecialRptRangeLab = NULL;
-static AjPRegexp featRegSpecialRptRangeComp = NULL;
-static AjPRegexp featRegSpecialPrimer = NULL;
 
 /* @datastatic FeatPTypeIn ****************************************************
 **
@@ -8845,7 +8851,6 @@ static AjBool featTagSpecialAllAnticodon(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /anticodon value '%S'\n", val);*/
 	featWarn("bad /anticodon value '%S'",   val);
     }
 
@@ -8869,11 +8874,11 @@ static AjBool featTagSpecialAllAnticodon(const AjPStr val)
 
 static AjBool featTagSpecialAllCitation(const AjPStr val)
 {
-    static AjPStr numstr = NULL;
+/*    AjPStr numstr = NULL;*/
     const char* cp = ajStrGetPtr(val);
     const char* cq;
     ajint i = 0;
-    AjBool saveit = ajFalse;
+/*    AjBool saveit = ajFalse;*/
     AjBool ret = ajFalse;
 
     if(*cp++ == '[')
@@ -8886,8 +8891,10 @@ static AjBool featTagSpecialAllCitation(const AjPStr val)
 	    i++;
 	    cp++;
 	}
-	if(saveit)
-	    ajStrAssignLenC(&numstr, cq,i);
+/*
+//	if(saveit)
+//	    ajStrAssignLenC(&numstr, cq,i);
+*/
 	if(*cp++ == ']')
 	    if(!*cp)
 		ret = ajTrue;
@@ -8897,9 +8904,12 @@ static AjBool featTagSpecialAllCitation(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /citation value '%S'\n", val);*/
 	featWarn("bad /citation value '%S'",   val);
     }
+/*
+//    if(saveit)
+//	ajStrDel(&numstr);
+*/
 
     return ret;
 }
@@ -8923,43 +8933,44 @@ static AjBool featTagSpecialAllCitation(const AjPStr val)
 
 static AjBool featTagSpecialAllCodon(AjPStr* pval)
 {
-    static AjPRegexp exp = NULL;
-    static AjPRegexp badexp = NULL;
-
-    static AjPStr seqstr = NULL;
-    static AjPStr aastr  = NULL;
+    AjPStr seqstr = NULL;
+    AjPStr aastr  = NULL;
     AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
-    if(!exp)
-	exp = ajRegCompC("^[(]seq:\"([acgt][acgt][acgt])\",aa:([^)]+)[)]$");
-    if(!badexp)		       /* sometimes fails to quote sequence */
-	badexp = ajRegCompC("^[(]seq:([acgt][acgt][acgt]),aa:([^)]+)[)]$");
+    if(!featRegSpecialCodon)
+	featRegSpecialCodon =
+	    ajRegCompC("^[(]seq:\"([acgt][acgt][acgt])\",aa:([^)]+)[)]$");
+    if(!featRegSpecialCodonBad)	/* sometimes fails to quote sequence */
+	featRegSpecialCodonBad =
+	    ajRegCompC("^[(]seq:([acgt][acgt][acgt]),aa:([^)]+)[)]$");
 
-    if(ajRegExec(exp, *pval))
+    if(ajRegExec(featRegSpecialCodon, *pval))
     {
 	ret = ajTrue;
 	if(saveit)
 	{
-	    ajRegSubI(exp, 1, &seqstr);
-	    ajRegSubI(exp, 2, &aastr);
+	    ajRegSubI(featRegSpecialCodon, 1, &seqstr);
+	    ajRegSubI(featRegSpecialCodon, 2, &aastr);
 	}
     }
 
-    else if(ajRegExec(badexp, *pval))
+    else if(ajRegExec(featRegSpecialCodonBad, *pval))
     {
 	ret = ajTrue;
-	ajRegSubI(badexp, 1, &seqstr);	/* needed for correction */
-	ajRegSubI(badexp, 2, &aastr);
+	ajRegSubI(featRegSpecialCodonBad, 1, &seqstr);	/* needed correction */
+	ajRegSubI(featRegSpecialCodonBad, 2, &aastr);
 	ajFmtPrintS(pval, "(seq:\"%S\",aa:%S)",seqstr, aastr);
 	featWarn("unquoted /codon value corrected to '%S'", *pval);
     }
 
     if(!ret)
     {
-	/*ajDebug("bad /codon value '%S'\n", *pval);*/
 	featWarn("bad /codon value '%S'",   *pval);
     }
+
+    ajStrDel(&seqstr);
+    ajStrDel(&aastr);
 
     return ret;
 }
@@ -8978,9 +8989,8 @@ static AjBool featTagSpecialAllCodon(AjPStr* pval)
 
 static AjBool featTagSpecialAllCollectiondate(const AjPStr val)
 {
-    static AjPRegexp exp = NULL;
-    static AjPStr daystr = NULL;
-    static AjPStr monstr  = NULL;
+    AjPStr daystr = NULL;
+    AjPStr monstr  = NULL;
     ajint day;
     ajint i;
     AjBool ret = ajFalse;
@@ -8988,14 +8998,15 @@ static AjBool featTagSpecialAllCollectiondate(const AjPStr val)
     const char* months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
 			    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-    if(!exp)
-	exp = ajRegCompC("^((\\d\\d)[-])?(([ADFJMNOS][a-z][a-z])[-])?([12][90]\\d\\d)$");
+    if(!featRegSpecialColdate)
+	featRegSpecialColdate =
+	    ajRegCompC("^((\\d\\d)[-])?(([ADFJMNOS][a-z][a-z])[-])?([12][90]\\d\\d)$");
 
-    if(ajRegExec(exp, val))
+    if(ajRegExec(featRegSpecialColdate, val))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 2, &daystr);
-	ajRegSubI(exp, 4, &monstr);
+	ajRegSubI(featRegSpecialColdate, 2, &daystr);
+	ajRegSubI(featRegSpecialColdate, 4, &monstr);
 	if(ajStrGetLen(daystr))
 	{
 	    if(!ajStrGetLen(monstr))
@@ -9021,9 +9032,11 @@ static AjBool featTagSpecialAllCollectiondate(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /collection_date value '%S'\n", *pval);*/
 	featWarn("bad /collection_date value '%S'", val);
     }
+
+    ajStrDel(&daystr);
+    ajStrDel(&monstr);
 
     return ret;
 }
@@ -9051,18 +9064,17 @@ static AjBool featTagSpecialAllCollectiondate(const AjPStr val)
 
 static AjBool featTagSpecialAllConssplice(AjPStr* pval)
 {
-    static AjPRegexp exp = NULL;
-
-    static AjPStr begstr = NULL;
-    static AjPStr endstr = NULL;
+    AjPStr begstr = NULL;
+    AjPStr endstr = NULL;
     const char* cp;
     const char* cq;
     ajint i;
     AjBool islow = ajFalse;
     AjBool ret = ajFalse;
 
-    if(!exp)
-	exp = ajRegCompC("^[(]5'site:([A-Za-z]+),3'site:([A-Za-z]+)[)]$");
+    if(!featRegSpecialConssplice)
+	featRegSpecialConssplice =
+	    ajRegCompC("^[(]5'site:([A-Za-z]+),3'site:([A-Za-z]+)[)]$");
 
 
     if (ajStrPrefixC(*pval, "(5'site:") && ajStrGetCharLast(*pval) == ')')
@@ -9129,7 +9141,6 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
 
     if(!ret)
     {
-	/*ajDebug("bad /cons_splice value '%S'\n", *pval);*/
 	featWarn("bad /cons_splice value '%S'",   *pval);
 	ajUser("beg: '%S' end: '%S'", begstr, endstr);
     }
@@ -9139,6 +9150,10 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
 	ajFmtPrintS(pval, "(5'site:%S,3'site:%S)", begstr, endstr);
 	featWarn("bad /cons_splice value corrected to '%S'", *pval);
     }
+
+    ajStrDel(&begstr);
+    ajStrDel(&endstr);
+
     return ret;
 }
 
@@ -9161,8 +9176,7 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
 
 static AjBool featTagSpecialAllInference(const AjPStr val)
 {
-    static AjPRegexp exp = NULL;
-    static AjPStr typstr = NULL;
+    AjPStr typstr = NULL;
     ajint i;
     AjBool ret = ajFalse;
     AjBool ok;
@@ -9182,13 +9196,13 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 	NULL
     };
 
-    if(!exp)
-	exp = ajRegCompC("^([^:]+)(:([^:]+):([^:]+))?$");
+    if(!featRegSpecialInference)
+	featRegSpecialInference = ajRegCompC("^([^:]+)(:([^:]+):([^:]+))?$");
 
-    if(ajRegExec(exp, val))
+    if(ajRegExec(featRegSpecialInference, val))
     {
 	ret = ajTrue;
-	ajRegSubI(exp, 1, &typstr);
+	ajRegSubI(featRegSpecialInference, 1, &typstr);
 
 	ok = ajFalse;
 	for(i=0; types[i]; i++)
@@ -9217,10 +9231,10 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /collection_date value '%S'\n", val);*/
 	featWarn("bad /collection_date value '%S'", val);
     }
 
+    ajStrDel(&typstr);
     return ret;
 }
 
@@ -9243,24 +9257,22 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 
 static AjBool featTagSpecialAllLatlon(const AjPStr val)
 {
-    static AjPRegexp latexp = NULL;
     AjPStr labstr = NULL;
     AjBool saveit = ajFalse;
     AjBool ret = ajFalse;
 
-    if(!latexp)
-      latexp = ajRegCompC("^[0-9.]+ [NS] [0-9.]+ [EW]$");
+    if(!featRegSpecialLatlon)
+      featRegSpecialLatlon = ajRegCompC("^[0-9.]+ [NS] [0-9.]+ [EW]$");
 
-    if(ajRegExec(latexp, val))
+    if(ajRegExec(featRegSpecialLatlon, val))
     {
 	ret = ajTrue;
 	if(saveit)
-	    ajRegSubI(latexp, 1, &labstr);
+	    ajRegSubI(featRegSpecialLatlon, 1, &labstr);
     }
 
     if(!ret)
     {
-	/*ajDebug("bad /lat_lon value '%S'\n", val);*/
 	featWarn("bad /lat_lon value '%S'",   val);
     }
 
@@ -9306,7 +9318,6 @@ static AjBool featTagSpecialAllPcrprimers(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /PCR_primers value '%S'\n", val);*/
 	featWarn("bad /PCR_primers value '%S'",   val);
     }
 
@@ -9426,7 +9437,6 @@ static AjBool featTagSpecialAllRptunit(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /rpt_unit value '%S'\n", val);*/
 	featWarn("bad /rpt_unit value '%S'",   val);
     }
 
@@ -9516,7 +9526,6 @@ static AjBool featTagSpecialAllRptunitrange(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /rpt_unit_range value '%S'\n", val);*/
 	featWarn("bad /rpt_unit_tange value '%S'",   val);
     }
 
@@ -9562,7 +9571,6 @@ static AjBool featTagSpecialAllRptunitseq(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /rpt_unit_seq value '%S'\n", val);*/
 	featWarn("bad /rpt_unit_seq value '%S'",   val);
     }
 
@@ -9654,7 +9662,6 @@ static AjBool featTagSpecialAllTranslexcept(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /transl_except value '%S'\n", val);*/
 	featWarn("bad /transl_except value '%S'",   val);
     }
 
@@ -9712,7 +9719,6 @@ static AjBool featTagSpecialAllDbxref(const AjPStr val)
     */
     if(!ret)
     {
-	/*ajDebug("bad /db_xref value '%S'\n", val);*/
 	featWarn("bad /db_xref value '%S'",   val);
     }
 
@@ -9819,7 +9825,6 @@ static AjBool featTagSpecialAllProteinid(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /protein_id value '%S'\n", val);*/
 	featWarn("bad /protein_id value '%S'", val);
     }
 
@@ -9873,7 +9878,6 @@ static AjBool featTagSpecialAllReplace (AjPStr* pval)
 
     if(!ret)
     {
-	/*ajDebug("bad /replace value '%S'\n", *pval);*/
 	featWarn("bad /replace value '%S'",   *pval);
     }
 
@@ -9930,7 +9934,6 @@ static AjBool featTagSpecialAllTranslation(AjPStr* pval)
 
     if(!ret)
     {
-	/*ajDebug("bad /translation value '%S'\n", *pval);*/
 	featWarn("bad /translation value '%S'",   *pval);
     }
 
@@ -9970,7 +9973,6 @@ static AjBool featTagSpecialAllEstimatedlength(AjPStr* pval)
 
     if(!ret)
     {
-	/*ajDebug("bad /estimated_length value '%S'\n", *pval);*/
 	featWarn("bad /estimated_length value '%S' corrected to 'unknown'",
 	       *pval);
 	ajStrAssignC(pval, "unknown");
@@ -10014,7 +10016,6 @@ static AjBool featTagSpecialAllCompare(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /compare value '%S'\n", val);*/
 	featWarn("bad /compare value '%S'", val);
     }
     ajStrDel(&numstr);
@@ -10071,7 +10072,6 @@ static AjBool featTagSpecialAllMobile(const AjPStr val)
 
     if(!ret)
     {
-	/*ajDebug("bad /mobile_element value '%S'\n", val);*/
 	featWarn("bad /mobile_element value '%S'", val);
     }
     ajStrDel(&typstr);
@@ -11533,18 +11533,25 @@ void ajFeatExit(void)
     ajRegFree(&featTagTrans);
     ajRegFree(&featRegGroup);
 
+    ajRegFree(&featRegSpecialAnticodon);
+    ajRegFree(&featRegSpecialCodon);
+    ajRegFree(&featRegSpecialCodonBad);
+    ajRegFree(&featRegSpecialColdate);
     ajRegFree(&featRegSpecialCompare);
+    ajRegFree(&featRegSpecialConssplice);
     ajRegFree(&featRegSpecialEstlen);
+    ajRegFree(&featRegSpecialInference);
+    ajRegFree(&featRegSpecialLatlon);
+    ajRegFree(&featRegSpecialMobile);
+    ajRegFree(&featRegSpecialPrimer);
+    ajRegFree(&featRegSpecialRptRange);
+    ajRegFree(&featRegSpecialRptRangeLab);
+    ajRegFree(&featRegSpecialRptRangeComp);
+    ajRegFree(&featRegSpecialRptunitSeq);
     ajRegFree(&featRegSpecialTrans);
     ajRegFree(&featRegSpecialTransBad);
     ajRegFree(&featRegSpecialTransComp);
     ajRegFree(&featRegSpecialTransBadComp);
-    ajRegFree(&featRegSpecialAnticodon);
-    ajRegFree(&featRegSpecialRptunitSeq);
-    ajRegFree(&featRegSpecialRptRange);
-    ajRegFree(&featRegSpecialRptRangeLab);
-    ajRegFree(&featRegSpecialRptRangeComp);
-    ajRegFree(&featRegSpecialPrimer);
 
     return;
 }
