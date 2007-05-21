@@ -6585,8 +6585,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 
     ajDebug("seqReadEmbl first line '%S'\n", seqReadLine);
 
-    if(!ajStrPrefixC(seqReadLine, "ID   ") ||
-       ajStrFindC(seqReadLine, " PRT; ")>= 0)
+    if(!ajStrPrefixC(seqReadLine, "ID   "))
     {
 	ajFileBuffReset(buff);
 	return ajFalse;
@@ -6631,6 +6630,19 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	ajStrTrimEndC(&token, "BP.");
 	ajStrTrimWhite(&token);
 	ajStrToUint(token, &seqlen);
+    }
+    else		     /* test for a SwissProt/SpTrEMBL entry */
+    {
+	if(ajStrFindC(seqReadLine, " PRT; ")>= 0  ||
+	   ajStrFindC(seqReadLine, " Reviewed; ") >= 0 ||
+	   ajStrFindC(seqReadLine, " Preliminary; ") >= 0 
+	   )
+	{
+	    ajFileBuffReset(buff);
+	    ajStrTokenDel(&handle);
+	    ajStrDel(&token);
+	    return ajFalse;
+	}
     }
 
     ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
