@@ -1,333 +1,76 @@
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: ba000025.diffseq</h3>
+<p><h3>File: x65923.diffseq</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ########################################
 # Program: diffseq
 # Rundate: Sat 15 Jul 2006 12:00:00
 # Commandline: diffseq
-#    [-asequence] tembl:ba000025
-#    [-bsequence] tembl:af129756
+#    [-asequence] tembl:x65923
+#    [-bsequence] tembl:ay411291
 # Report_format: diffseq
-# Report_file: ba000025.diffseq
+# Report_file: x65923.diffseq
 # Additional_files: 2
-# 1: BA000025.diffgff (Feature file for first sequence)
-# 2: AF129756.diffgff (Feature file for second sequence)
+# 1: X65923.diffgff (Feature file for first sequence)
+# 2: AY411291.diffgff (Feature file for second sequence)
 ########################################
 
 #=======================================
 #
-# Sequence: BA000025     from: 1   to: 2229817
-# HitCount: 236
+# Sequence: X65923     from: 1   to: 518
+# HitCount: 1
 #
-# Compare: AF129756     from: 1   to: 184666
+# Compare: AY411291     from: 1   to: 402
 # 
-# BA000025 overlap starts at 193957
-# AF129756 overlap starts at 1
-# 
-# (BA000025) start end length sequence
-# (AF129756) start end length sequence
+# X65923 overlap starts at 57
+# AY411291 overlap starts at 1
 # 
 #
 #=======================================
 
 
-BA000025 194109-194109 Length: 1
+X65923 284-284 Length: 1
+Feature: CDS 57-458 gene='fau' db_xref='GDB:135476' db_xref='GOA:P35544' db_xref='GOA:P62861' db_xref='HGNC:3597' db_xref='UniProtKB/Swiss-Prot:P35544' db_xref='UniProtKB/Swiss-Prot:P62861' protein_id='CAA46716.1'
+Feature: misc_feature 279-458 note='S30 part'
 Sequence: t
 Sequence: c
-AF129756 153-153 Length: 1
-
-BA000025 197911-197914 Length: 4
-Sequence: tcac
-Sequence: 
-Feature: repeat_region 3674-3957 rpt_family='AluSq'
-AF129756 3954 Length: 0
-
-BA000025 198249-198254 Length: 6
-Sequence: tctcaa
-Sequence: cctc
-Feature: repeat_region 4013-4310 rpt_family='AluY'
-AF129756 4289-4292 Length: 4
-
-BA000025 198912-198914 Length: 3
-Sequence: ttt
-Sequence: 
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-
-BA000025 377595-377595 Length: 1
-Sequence: t
-Sequence: c
-Feature: misc_feature 130479-184666 note='Overlap with GenBank entry Y14768.'
-Feature: misc_feature 180792-184666 note='Overlap with cosmid M9A (AC004181).'
-Feature: repeat_region 183369-183665 rpt_family='AluSx'
-Feature: variation 183597-183597 replace='t' note='201G24: c; M9A and Y14768: t'
-AF129756 183597-183597 Length: 1
-
-BA000025 377789-377790 Length: 2
-Sequence: aa
-Sequence: 
-Feature: misc_feature 130479-184666 note='Overlap with GenBank entry Y14768.'
-Feature: misc_feature 180792-184666 note='Overlap with cosmid M9A (AC004181).'
-Feature: repeat_region 183669-183822 rpt_family='FRAM'
-AF129756 183790 Length: 0
-
-BA000025 377931-377931 Length: 1
-Sequence: t
-Sequence: c
-Feature: misc_feature 130479-184666 note='Overlap with GenBank entry Y14768.'
-Feature: misc_feature 180792-184666 note='Overlap with cosmid M9A (AC004181).'
-Feature: repeat_region 183833-184125 rpt_family='AluSg'
-Feature: variation 183931-183931 replace='t' note='210G24: c; M9A and Y14768: t'
-AF129756 183931-183931 Length: 1
-
-BA000025 378423-378423 Length: 1
-Sequence: c
-Sequence: t
-Feature: misc_feature 130479-184666 note='Overlap with GenBank entry Y14768.'
-Feature: misc_feature 180792-184666 note='Overlap with cosmid M9A (AC004181).'
-Feature: repeat_region 184316-184524 rpt_family='LINE2'
-Feature: variation 184423-184423 replace='c' note='201G24: t; M9A and Y14768: c'
-AF129756 184423-184423 Length: 1
+Feature: gene 1-402 gene='FAU' locus_tag='HCM4175'
+AY411291 228-228 Length: 1
 
 #---------------------------------------
 #
-# Overlap_end: 378666 in BA000025
-# Overlap_end: 184666 in AF129756
+# Overlap_end: 458 in X65923
+# Overlap_end: 402 in AY411291
 # 
-# SNP_count: 166
-# Transitions: 113
-# Transversions: 53
+# SNP_count: 1
+# Transitions: 1
+# Transversions: 0
 #
 #---------------------------------------
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 236
+# Total_hitcount: 1
 #---------------------------------------
 </pre>
 </td></tr></table><p>
-<p><h3>File: AF129756.diffgff</h3>
+<p><h3>File: AY411291.diffgff</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
 ##date 2006-07-15
-##Type DNA AF129756
-AF129756	diffseq	conflict	153	153	1.000	+	.	Sequence "AF129756.1" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	4289	4292	1.000	+	.	Sequence "AF129756.2" ; note "BA000025" ; replace "tctcaa"
-AF129756	diffseq	conflict	6882	6882	1.000	+	.	Sequence "AF129756.3" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	7830	7830	1.000	+	.	Sequence "AF129756.4" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	8500	8500	1.000	+	.	Sequence "AF129756.5" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	10945	10962	1.000	+	.	Sequence "AF129756.6" ; note "Insertion of 18 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	10999	11001	1.000	+	.	Sequence "AF129756.7" ; note "BA000025" ; replace "aaa"
-AF129756	diffseq	conflict	12915	12915	1.000	+	.	Sequence "AF129756.8" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	15139	15139	1.000	+	.	Sequence "AF129756.9" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	17192	17192	1.000	+	.	Sequence "AF129756.10" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	19761	19761	1.000	+	.	Sequence "AF129756.11" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	20291	20291	1.000	+	.	Sequence "AF129756.12" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	20462	20462	1.000	+	.	Sequence "AF129756.13" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	25686	25686	1.000	+	.	Sequence "AF129756.14" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	26192	26192	1.000	+	.	Sequence "AF129756.15" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	27227	27227	1.000	+	.	Sequence "AF129756.16" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	27837	27837	1.000	+	.	Sequence "AF129756.17" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	29328	29328	1.000	+	.	Sequence "AF129756.18" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	29458	29458	1.000	+	.	Sequence "AF129756.19" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	29629	29629	1.000	+	.	Sequence "AF129756.20" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	29646	29646	1.000	+	.	Sequence "AF129756.21" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	30838	30838	1.000	+	.	Sequence "AF129756.22" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	31349	31349	1.000	+	.	Sequence "AF129756.23" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	31901	31901	1.000	+	.	Sequence "AF129756.24" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	36682	36682	1.000	+	.	Sequence "AF129756.25" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	38225	38226	1.000	+	.	Sequence "AF129756.26" ; note "Insertion of 2 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	38379	38379	1.000	+	.	Sequence "AF129756.27" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	38537	38537	1.000	+	.	Sequence "AF129756.28" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	39114	39114	1.000	+	.	Sequence "AF129756.29" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	39816	39816	1.000	+	.	Sequence "AF129756.30" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	40807	40807	1.000	+	.	Sequence "AF129756.31" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	40977	40977	1.000	+	.	Sequence "AF129756.32" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	41204	41204	1.000	+	.	Sequence "AF129756.33" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	42548	42548	1.000	+	.	Sequence "AF129756.34" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	45315	45315	1.000	+	.	Sequence "AF129756.35" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	48382	48382	1.000	+	.	Sequence "AF129756.36" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	50635	50635	1.000	+	.	Sequence "AF129756.37" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	50809	50809	1.000	+	.	Sequence "AF129756.38" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	51286	51286	1.000	+	.	Sequence "AF129756.39" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	51645	51645	1.000	+	.	Sequence "AF129756.40" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	52388	52388	1.000	+	.	Sequence "AF129756.41" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	52646	52646	1.000	+	.	Sequence "AF129756.42" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	53596	53596	1.000	+	.	Sequence "AF129756.43" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	53621	53621	1.000	+	.	Sequence "AF129756.44" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	54883	54883	1.000	+	.	Sequence "AF129756.45" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	55377	55377	1.000	+	.	Sequence "AF129756.46" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	55571	55571	1.000	+	.	Sequence "AF129756.47" ; note "SNP in BA000025" ; replace "c"
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-AF129756	diffseq	conflict	135941	135946	1.000	+	.	Sequence "AF129756.156" ; note "BA000025" ; replace "gagtt"
-AF129756	diffseq	conflict	136800	136802	1.000	+	.	Sequence "AF129756.157" ; note "Insertion of 3 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	137143	137143	1.000	+	.	Sequence "AF129756.158" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	137303	137303	1.000	+	.	Sequence "AF129756.159" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	137335	137335	1.000	+	.	Sequence "AF129756.160" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	137597	137597	1.000	+	.	Sequence "AF129756.161" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	137886	137886	1.000	+	.	Sequence "AF129756.162" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	138985	138993	1.000	+	.	Sequence "AF129756.163" ; note "Insertion of 9 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	139070	139070	1.000	+	.	Sequence "AF129756.164" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	140737	140744	1.000	+	.	Sequence "AF129756.165" ; note "BA000025" ; replace "tttttt"
-AF129756	diffseq	conflict	140794	140794	1.000	+	.	Sequence "AF129756.166" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	140979	140979	1.000	+	.	Sequence "AF129756.167" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	144318	144318	1.000	+	.	Sequence "AF129756.168" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	145509	145509	1.000	+	.	Sequence "AF129756.169" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	147960	147960	1.000	+	.	Sequence "AF129756.170" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	147977	147977	1.000	+	.	Sequence "AF129756.171" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	148139	148139	1.000	+	.	Sequence "AF129756.172" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	148568	148568	1.000	+	.	Sequence "AF129756.173" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	149373	149373	1.000	+	.	Sequence "AF129756.174" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	151782	151783	1.000	+	.	Sequence "AF129756.175" ; note "Insertion of 2 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	154604	154604	1.000	+	.	Sequence "AF129756.176" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	155080	155080	1.000	+	.	Sequence "AF129756.177" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	155714	155714	1.000	+	.	Sequence "AF129756.178" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	156664	156664	1.000	+	.	Sequence "AF129756.179" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	156689	156690	1.000	+	.	Sequence "AF129756.180" ; note "Insertion of 2 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	156933	156933	1.000	+	.	Sequence "AF129756.181" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	161113	161113	1.000	+	.	Sequence "AF129756.182" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	161187	161187	1.000	+	.	Sequence "AF129756.183" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	161642	161646	1.000	+	.	Sequence "AF129756.184" ; note "BA000025" ; replace "cctct"
-AF129756	diffseq	conflict	162430	162430	1.000	+	.	Sequence "AF129756.185" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	162692	162692	1.000	+	.	Sequence "AF129756.186" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	166509	166509	1.000	+	.	Sequence "AF129756.187" ; note "BA000025" ; replace "ga"
-AF129756	diffseq	conflict	166756	166756	1.000	+	.	Sequence "AF129756.188" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	167262	167262	1.000	+	.	Sequence "AF129756.189" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	170308	170308	1.000	+	.	Sequence "AF129756.190" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	173995	173995	1.000	+	.	Sequence "AF129756.191" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	175340	175340	1.000	+	.	Sequence "AF129756.192" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	177038	177038	1.000	+	.	Sequence "AF129756.193" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	177393	177393	1.000	+	.	Sequence "AF129756.194" ; note "SNP in BA000025" ; replace "g"
-AF129756	diffseq	conflict	177509	177509	1.000	+	.	Sequence "AF129756.195" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	177681	177681	1.000	+	.	Sequence "AF129756.196" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	177751	177751	1.000	+	.	Sequence "AF129756.197" ; note "SNP in BA000025" ; replace "c"
-AF129756	diffseq	conflict	178054	178054	1.000	+	.	Sequence "AF129756.198" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	179324	179324	1.000	+	.	Sequence "AF129756.199" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	181023	181023	1.000	+	.	Sequence "AF129756.200" ; note "SNP in BA000025" ; replace "a"
-AF129756	diffseq	conflict	181595	181595	1.000	+	.	Sequence "AF129756.201" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	182424	182424	1.000	+	.	Sequence "AF129756.202" ; note "Insertion of 1 bases in AF129756" ; replace ""
-AF129756	diffseq	conflict	182732	182732	1.000	+	.	Sequence "AF129756.203" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	183597	183597	1.000	+	.	Sequence "AF129756.204" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	183931	183931	1.000	+	.	Sequence "AF129756.205" ; note "SNP in BA000025" ; replace "t"
-AF129756	diffseq	conflict	184423	184423	1.000	+	.	Sequence "AF129756.206" ; note "SNP in BA000025" ; replace "c"
+##Type DNA AY411291
+AY411291	diffseq	conflict	228	228	1.000	+	.	Sequence "AY411291.1" ; note "SNP in X65923" ; replace "t"
 </pre>
 </td></tr></table><p>
-<p><h3>File: BA000025.diffgff</h3>
+<p><h3>File: X65923.diffgff</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
 ##date 2006-07-15
-##Type DNA BA000025
-BA000025	diffseq	conflict	194109	194109	1.000	+	.	Sequence "BA000025.1" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	197911	197914	1.000	+	.	Sequence "BA000025.2" ; note "Insertion of 4 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	198249	198254	1.000	+	.	Sequence "BA000025.3" ; note "AF129756" ; replace "cctc"
-BA000025	diffseq	conflict	198912	198914	1.000	+	.	Sequence "BA000025.4" ; note "Insertion of 3 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	200847	200847	1.000	+	.	Sequence "BA000025.5" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	201795	201795	1.000	+	.	Sequence "BA000025.6" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	202273	202273	1.000	+	.	Sequence "BA000025.7" ; note "Insertion of 1 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	202466	202466	1.000	+	.	Sequence "BA000025.8" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	202655	202658	1.000	+	.	Sequence "BA000025.9" ; note "Insertion of 4 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	204951	204953	1.000	+	.	Sequence "BA000025.10" ; note "AF129756" ; replace "tat"
-BA000025	diffseq	conflict	206600	206600	1.000	+	.	Sequence "BA000025.11" ; note "Insertion of 1 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	206868	206868	1.000	+	.	Sequence "BA000025.12" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	208218	208221	1.000	+	.	Sequence "BA000025.13" ; note "Insertion of 4 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	209096	209096	1.000	+	.	Sequence "BA000025.14" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	211149	211149	1.000	+	.	Sequence "BA000025.15" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	213718	213718	1.000	+	.	Sequence "BA000025.16" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	214248	214248	1.000	+	.	Sequence "BA000025.17" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	214419	214419	1.000	+	.	Sequence "BA000025.18" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	219643	219643	1.000	+	.	Sequence "BA000025.19" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	220149	220149	1.000	+	.	Sequence "BA000025.20" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	221316	221319	1.000	+	.	Sequence "BA000025.21" ; note "Insertion of 4 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	221797	221797	1.000	+	.	Sequence "BA000025.22" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	223288	223288	1.000	+	.	Sequence "BA000025.23" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	223418	223418	1.000	+	.	Sequence "BA000025.24" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	223589	223589	1.000	+	.	Sequence "BA000025.25" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	223606	223606	1.000	+	.	Sequence "BA000025.26" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	224798	224798	1.000	+	.	Sequence "BA000025.27" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	225309	225309	1.000	+	.	Sequence "BA000025.28" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	225861	225861	1.000	+	.	Sequence "BA000025.29" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	228039	228040	1.000	+	.	Sequence "BA000025.30" ; note "Insertion of 2 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	230644	230644	1.000	+	.	Sequence "BA000025.31" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	232339	232339	1.000	+	.	Sequence "BA000025.32" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	232497	232497	1.000	+	.	Sequence "BA000025.33" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	233074	233074	1.000	+	.	Sequence "BA000025.34" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	233776	233776	1.000	+	.	Sequence "BA000025.35" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	234767	234767	1.000	+	.	Sequence "BA000025.36" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	235163	235163	1.000	+	.	Sequence "BA000025.37" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	236507	236507	1.000	+	.	Sequence "BA000025.38" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	237760	237762	1.000	+	.	Sequence "BA000025.39" ; note "Insertion of 3 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	238680	238683	1.000	+	.	Sequence "BA000025.40" ; note "Insertion of 4 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	242347	242347	1.000	+	.	Sequence "BA000025.41" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	242637	242638	1.000	+	.	Sequence "BA000025.42" ; note "Insertion of 2 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	244602	244602	1.000	+	.	Sequence "BA000025.43" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	244776	244776	1.000	+	.	Sequence "BA000025.44" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	245253	245253	1.000	+	.	Sequence "BA000025.45" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	246354	246354	1.000	+	.	Sequence "BA000025.46" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	246612	246612	1.000	+	.	Sequence "BA000025.47" ; note "SNP in AF129756" ; replace "g"
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-BA000025	diffseq	conflict	331285	331285	1.000	+	.	Sequence "BA000025.158" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	331547	331547	1.000	+	.	Sequence "BA000025.159" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	331836	331836	1.000	+	.	Sequence "BA000025.160" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	333011	333011	1.000	+	.	Sequence "BA000025.161" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	334349	334356	1.000	+	.	Sequence "BA000025.162" ; note "Insertion of 8 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	334686	334691	1.000	+	.	Sequence "BA000025.163" ; note "AF129756" ; replace "atttttta"
-BA000025	diffseq	conflict	334741	334741	1.000	+	.	Sequence "BA000025.164" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	334926	334926	1.000	+	.	Sequence "BA000025.165" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	337483	337497	1.000	+	.	Sequence "BA000025.166" ; note "Insertion of 15 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	338280	338280	1.000	+	.	Sequence "BA000025.167" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	339471	339471	1.000	+	.	Sequence "BA000025.168" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	339761	339762	1.000	+	.	Sequence "BA000025.169" ; note "Insertion of 2 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	341940	341940	1.000	+	.	Sequence "BA000025.170" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	342102	342102	1.000	+	.	Sequence "BA000025.171" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	342531	342531	1.000	+	.	Sequence "BA000025.172" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	343336	343336	1.000	+	.	Sequence "BA000025.173" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	343800	343801	1.000	+	.	Sequence "BA000025.174" ; note "Insertion of 2 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	348567	348567	1.000	+	.	Sequence "BA000025.175" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	349043	349043	1.000	+	.	Sequence "BA000025.176" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	350892	350892	1.000	+	.	Sequence "BA000025.177" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	352621	352640	1.000	+	.	Sequence "BA000025.178" ; note "Insertion of 20 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	353771	353771	1.000	+	.	Sequence "BA000025.179" ; note "Insertion of 1 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	355093	355093	1.000	+	.	Sequence "BA000025.180" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	355167	355167	1.000	+	.	Sequence "BA000025.181" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	355622	355626	1.000	+	.	Sequence "BA000025.182" ; note "AF129756" ; replace "tctcc"
-BA000025	diffseq	conflict	356410	356410	1.000	+	.	Sequence "BA000025.183" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	356672	356672	1.000	+	.	Sequence "BA000025.184" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	360489	360490	1.000	+	.	Sequence "BA000025.185" ; note "AF129756" ; replace "t"
-BA000025	diffseq	conflict	360737	360737	1.000	+	.	Sequence "BA000025.186" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	361243	361243	1.000	+	.	Sequence "BA000025.187" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	364289	364289	1.000	+	.	Sequence "BA000025.188" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	367976	367976	1.000	+	.	Sequence "BA000025.189" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	369321	369321	1.000	+	.	Sequence "BA000025.190" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	371019	371019	1.000	+	.	Sequence "BA000025.191" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	371374	371374	1.000	+	.	Sequence "BA000025.192" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	371490	371490	1.000	+	.	Sequence "BA000025.193" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	371662	371662	1.000	+	.	Sequence "BA000025.194" ; note "SNP in AF129756" ; replace "g"
-BA000025	diffseq	conflict	371732	371732	1.000	+	.	Sequence "BA000025.195" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	372035	372035	1.000	+	.	Sequence "BA000025.196" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	372964	372964	1.000	+	.	Sequence "BA000025.197" ; note "Insertion of 1 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	373306	373306	1.000	+	.	Sequence "BA000025.198" ; note "SNP in AF129756" ; replace "t"
-BA000025	diffseq	conflict	374230	374231	1.000	+	.	Sequence "BA000025.199" ; note "Insertion of 2 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	375007	375007	1.000	+	.	Sequence "BA000025.200" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	375579	375579	1.000	+	.	Sequence "BA000025.201" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	376341	376352	1.000	+	.	Sequence "BA000025.202" ; note "Insertion of 12 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	376727	376727	1.000	+	.	Sequence "BA000025.203" ; note "SNP in AF129756" ; replace "a"
-BA000025	diffseq	conflict	377379	377381	1.000	+	.	Sequence "BA000025.204" ; note "Insertion of 3 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	377595	377595	1.000	+	.	Sequence "BA000025.205" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	377789	377790	1.000	+	.	Sequence "BA000025.206" ; note "Insertion of 2 bases in BA000025" ; replace ""
-BA000025	diffseq	conflict	377931	377931	1.000	+	.	Sequence "BA000025.207" ; note "SNP in AF129756" ; replace "c"
-BA000025	diffseq	conflict	378423	378423	1.000	+	.	Sequence "BA000025.208" ; note "SNP in AF129756" ; replace "t"
+##Type DNA X65923
+X65923	diffseq	conflict	284	284	1.000	+	.	Sequence "X65923.1" ; note "SNP in AY411291" ; replace "c"
 </pre>
 </td></tr></table><p>
