@@ -378,7 +378,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5223
+FC = 5226
 FP 49 /^acdProcess/
 FI stderr
 FC = 2
@@ -3392,14 +3392,14 @@ ID direct-all
 AP seqret
 CL temblall:* test.out -auto
 FI test.out
-FP 46 /^>/
+FP 47 /^>/
 //
 
 ID direct-filename
 AP seqret
 CL temblvrt:* test.out -auto
 FI test.out
-FP 29 /^>/
+FP 30 /^>/
 //
 
 ID direct-exclude
@@ -4557,19 +4557,19 @@ ID dbiflat-tembl-all
 AP seqret
 CL tembl:* test.out -auto
 FI test.out
-FZ = 2832877
+FZ = 2833393
 FP 3 /^>AF/
 FP 3 /^>M1190/
-FP 46 /^>/
+FP 47 /^>/
 //
 
 ID dbiflat-tembl-wild
 AP seqret
 CL tembl:a* test.out -auto
 FI test.out
-FZ = 321723
+FZ = 322239
 FP 3 /^>AF/
-FP 8 /^>/
+FP 9 /^>/
 //
 
 ID dbiflat-tembl-keywild
@@ -4713,51 +4713,51 @@ FZ = 520
 ## because there is a linefeed in the header binary stuff
 FP s /\A.{300}\001\000est\.dat\000/
 FI entrynam.idx
-FZ = 1128
+FZ = 1146
 FP /\A.{300}AB000095\340/
 FI acnum.hit
-FZ = 896
+FZ = 900
 FP /\A.{300}\001/
 FI acnum.trg
-FZ = 2652
+FZ = 2668
 ## We need the s modifier
 ## because there is a linefeed in the header binary stuff
 FP s /\A.{308}AB000095\001/
 FI des.trg
-FZ = 5808
+FZ = 5889
 FP /\A.{308}1\000/
 FI des.hit
-FZ = 1984
+FZ = 2024
 FP /\A.{300}\006/
 FI keyword.trg
-FZ = 4356
+FZ = 4408
 FP /\A.{308}ACETYLTRANSFERASE\000/
 FI keyword.hit
-FZ = 660
-FP /\A.{300}\014/
+FZ = 664
+FP /\A.{300}\015/
 FI seqvn.trg
-FZ = 1128
+FZ = 1146
 FP /\A.{308}AB000095[.]1\001/
 FI seqvn.hit
-FZ = 484
+FZ = 488
 FP /\A.{300}\001/
 FI taxon.trg
 FP /\A.{308}AFRICAN CLAWED FROG\000/
 FZ = 4780
 FI taxon.hit
-FZ = 2832
-FP /\A.{300}\016/
+FZ = 2896
+FP /\A.{300}\017/
 FI outfile.dbiflat
 FC = 117
 FP /# Fields: 6\n/
 FP /#   Field 6: org\n/
 FP /# Files: 10\n/
-FP /Index acc: maxlen 8 items 147\n/
-FP /Index sv: maxlen 10 items 46\n/
-FP /Index des: maxlen 19 items 204\n/
-FP /Index key: maxlen 44 items 78\n/
+FP /Index acc: maxlen 8 items 148\n/
+FP /Index sv: maxlen 10 items 47\n/
+FP /Index des: maxlen 19 items 207\n/
+FP /Index key: maxlen 44 items 79\n/
 FP /Index org: maxlen 27 items 128\n/
-FP /Total 10 files 46 entries \(0 duplicates\)\n/
+FP /Total 10 files 47 entries \(0 duplicates\)\n/
 FP 5 /^Index \S+ maxlen \d+ items \d+\n/
 FP 10 /^filename: /
 //
@@ -4784,51 +4784,51 @@ FZ = 520
 ## because there is a linefeed in the header binary stuff
 FP s /\A.{300}\001\000est\.dat\000/
 FI entrynam.idx
-FZ = 1128
+FZ = 1146
 FP /\A.{300}AB000095\340/
 FI acnum.hit
-FZ = 896
+FZ = 900
 FP /\A.{300}\001/
 FI acnum.trg
-FZ = 2652
+FZ = 2668
 ## We need the s modifier
 ## because there is a linefeed in the header binary stuff
 FP s /\A.{308}AB000095\001/
 FI des.trg
-FZ = 5808
+FZ = 5889
 FP /\A.{308}1\000/
 FI des.hit
-FZ = 1984
+FZ = 2024
 FP /\A.{300}\006/
 FI keyword.trg
-FZ = 4356
+FZ = 4408
 FP /\A.{308}ACETYLTRANSFERASE\000/
 FI keyword.hit
-FZ = 660
-FP /\A.{300}\014/
+FZ = 664
+FP /\A.{300}\015/
 FI seqvn.trg
-FZ = 1128
+FZ = 1146
 FP /\A.{308}AB000095[.]1\001/
 FI seqvn.hit
-FZ = 484
+FZ = 488
 FP /\A.{300}\001/
 FI taxon.trg
 FP /\A.{308}AFRICAN CLAWED FROG\000/
 FZ = 4780
 FI taxon.hit
-FZ = 2832
-FP /\A.{300}\016/
+FZ = 2896
+FP /\A.{300}\017/
 FI outfile.dbiflat
 FC = 118
 FP /# Fields: 6\n/
 FP /#   Field 6: org\n/
 FP /# Files: 10\n/
-FP /Index acc: maxlen 8 items 147\n/
-FP /Index sv: maxlen 10 items 46\n/
-FP /Index des: maxlen 19 items 204\n/
-FP /Index key: maxlen 44 items 78\n/
+FP /Index acc: maxlen 8 items 148\n/
+FP /Index sv: maxlen 10 items 47\n/
+FP /Index des: maxlen 19 items 207\n/
+FP /Index key: maxlen 44 items 79\n/
 FP /Index org: maxlen 27 items 128\n/
-FP /Total 10 files 46 entries \(0 duplicates\)\n/
+FP /Total 10 files 47 entries \(0 duplicates\)\n/
 FP 5 /^Index \S+ maxlen \d+ items \d+\n/
 FP 10 /^filename: /
 //
@@ -4846,9 +4846,9 @@ ID dbiflat-embl-testexcall
 AP seqret
 CL qanflatexc-id:* test.out -auto
 FI test.out
-FZ = 2827291
+FZ = 2827807
 FP 1 /^>X13776 /
-FP 40 /^>/
+FP 41 /^>/
 //
 
 ID dbiflat-embl-testexcfail
@@ -6727,7 +6727,7 @@ FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
 FP /^Order2    82\n/
 FP /^Fill2     99\n/
-FP /^Count     148\n/
+FP /^Count     149\n/
 FP /^Kwlimit   15\n/
 FI embl.pxde
 FZ = 121
@@ -6738,7 +6738,7 @@ FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
-FP /^Count     397\n/
+FP /^Count     408\n/
 FP /^Kwlimit   15\n/
 FI embl.pxid
 FZ = 119
@@ -6749,7 +6749,7 @@ FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
 FP /^Order2    82\n/
 FP /^Fill2     99\n/
-FP /^Count     45\n/
+FP /^Count     46\n/
 FP /^Kwlimit   15\n/
 FI embl.pxkw
 FZ = 120
@@ -6760,7 +6760,7 @@ FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
-FP /^Count     88\n/
+FP /^Count     89\n/
 FP /^Kwlimit   15\n/
 FI embl.pxsv
 FZ = 119
@@ -6771,7 +6771,7 @@ FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
 FP /^Order2    82\n/
 FP /^Fill2     99\n/
-FP /^Count     45\n/
+FP /^Count     46\n/
 FP /^Kwlimit   15\n/
 FI embl.pxtx
 FZ = 121
@@ -6782,7 +6782,7 @@ FP /^Level     0\n/
 FP /^Cachesize [12]00\n/
 FP /^Order2    71\n/
 FP /^Fill2     106\n/
-FP /^Count     629\n/
+FP /^Count     645\n/
 FP /^Kwlimit   15\n/
 FI embl.xac
 FZ = 22528
@@ -6790,7 +6790,7 @@ FP /\0l48662\0/
 FP /\0z46957\0/
 FP /\0u68037\0/
 FI embl.xde
-FZ = 1337344
+FZ = 1361920
 FP 2 /\0activator\0/
 FI embl.xid
 FZ = 6144
@@ -6798,7 +6798,7 @@ FP /\0l48662\0/
 FP /\0z46957\0/
 FP /\0u68037\0/
 FI embl.xkw
-FZ = 471040
+FZ = 475136
 FP 1 /\0elongation fact\0/
 FI embl.xsv
 FZ = 6144
@@ -6858,19 +6858,19 @@ AP seqret
 CC Fails to fetch all entries in emboss access method
 CL qanxflatall:* test.out -auto
 FI test.out
-FZ = 2832877
+FZ = 2833393
 FP 1 />X13776 /
-FP 46 />/
+FP 47 />/
 //
 
 ID dbxflatall-wild
 AP seqret
 CL qanxflatall:a* test.out -auto
 FI test.out
-FZ = 321723
+FZ = 322239
 FP 3 />AF/
-FP 8 />A/
-FP 8 />/
+FP 9 />A/
+FP 9 />/
 //
 
 ID dbxflatall-keywild
@@ -6895,9 +6895,9 @@ ID dbxflat-embl-testexcall
 AP seqret
 CL qanxflatexc-id:* test.out -auto
 FI test.out
-FZ = 2827291
+FZ = 2827807
 FP 1 /^>X13776 /
-FP 40 /^>/
+FP 41 /^>/
 //
 
 ID dbxflat-embl-testexcfail
@@ -8228,11 +8228,7 @@ FP /EMBOSS_001  \(submitted\)\n/
 
 ID diffseq-ex
 AP diffseq
-## Takes about 3 minutes on original test
-## some systems may need longer.
-## Or we could go for a shorter example ...
-TI 300
-CL tembl:ba000025 tembl:af129756
+CL tembl:x65923 tembl:ay411291
 IN
 IN
 IN
@@ -8242,17 +8238,20 @@ FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI ba000025.diffseq
-FZ = 40453
-FP /^# BA000025 overlap starts at 193957\n/
-FP /^# AF129756 overlap starts at 1\n/
-FP /^BA000025 202655-202658 Length: 4\nSequence: tgtg\n/
-FI AF129756.diffgff
-FZ = 23441
-FP /^AF129756\tdiffseq\tconflict\t10945\t10962\t1\.000\t.*; note "Insertion of 18 bases in AF129756" ; replace ""\n/
-FI BA000025.diffgff
-FZ = 23894
-FP /^BA000025\tdiffseq\tconflict\t200847\t200847\t1\.000\t.*; note "SNP in AF129756" ; replace "t"\n/
+FI x65923.diffseq
+FZ = 1379
+FP /^# X65923 overlap starts at 57\n/
+FP /^# AY411291 overlap starts at 1\n/
+FP /^X65923 284-284 Length: 1\n/
+FP /^Sequence: c\nFeature: gene 1-402 gene='FAU' locus_tag='HCM4175'\n/
+FP /^# Overlap_end: 458 in X65923\n/
+FP /^# Overlap_end: 402 in AY411291\n/
+FI AY411291.diffgff
+FZ = 159
+FP /^AY411291\tdiffseq\tconflict\t228\t228\t1\.000\t[+]\t\.\tSequence "AY411291.1" ; note "SNP in X65923" ; replace "t"/
+FI X65923.diffgff
+FZ = 155
+FP /^X65923\tdiffseq\tconflict\t284\t284\t1\.000\t[+]\t\.\tSequence "X65923.1" ; note "SNP in AY411291" ; replace "c"\n/
 //
 
 ID digest-ex
@@ -10839,7 +10838,7 @@ FC = 275
 ID megamerger-ex
 TI 300
 AP megamerger
-CL tembl:ba000025 tembl:af129756
+CL tembl:v00295 tembl:v00296
 IN
 IN
 IN report
@@ -10849,13 +10848,13 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI report
-FZ = 61234
-FP /^BA000025 overlap starts at 193957\n/
-FP /^AF129756 overlap starts at 1\n/
-FI ba000025.merged
-FZ = 2267067
-FP /^gatctccagagcactcttccctgcagggcaccctcccatcccagactccaggcacctggc\n/
-FP /^catctagggcaaatggtggctgaaagtgaatgagatc\n/
+FZ = 316
+FP /^V00295 overlap starts at 1\n/
+FP /^V00296 overlap starts at 3019\n/
+FI v00295.merged
+FZ = 4659
+FP /^tgtcaaaaataataataaccgggcaggccatgtctgcccgtatttcgcgtaaggaaatcc\n/
+FP /^ggcttaccggaaaaaaga\n/
 //
 
 ID merger-ex
