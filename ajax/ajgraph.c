@@ -6280,25 +6280,25 @@ void ajGraphAddLine(AjPGraph thys, float xx1, float yy1,
 **
 ** Destructor for a graph data object
 **
-** @param [d] thys [AjPGraphPlpData*] Graph data object
+** @param [d] pthys [AjPGraphPlpData*] Graph data object
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajGraphPlpDataDel(AjPGraphPlpData *thys)
+void ajGraphPlpDataDel(AjPGraphPlpData *pthys)
 {
     AjPGraphPlpObj here = NULL;
     AjPGraphPlpObj p    = NULL;
-    AjPGraphPlpData this;
+    AjPGraphPlpData thys;
 
-    this = *thys;
+    thys = *pthys;
 
-    if (!this)
+    if (!thys)
 	return;
 
-    ajDebug("ajGraphPlpDataDel objects:%d\n", this->numofobjects);
+    ajDebug("ajGraphPlpDataDel objects:%d\n", thys->numofobjects);
 
-    here = p = this->Obj;
+    here = p = thys->Obj;
     while(p)
     {
 	p = here->next;
@@ -6306,18 +6306,18 @@ void ajGraphPlpDataDel(AjPGraphPlpData *thys)
 	AJFREE(here);
 	here = p;
     }
-    this->Obj = NULL;
+    thys->Obj = NULL;
 
-    ajStrDel(&this->title);
-    ajStrDel(&this->subtitle);
-    ajStrDel(&this->xaxis);
-    ajStrDel(&this->yaxis);
-    ajStrDel(&this->gtype);
-    AJFREE(this->x);
-    AJFREE(this->y);
-    this->numofobjects = 0;
+    ajStrDel(&thys->title);
+    ajStrDel(&thys->subtitle);
+    ajStrDel(&thys->xaxis);
+    ajStrDel(&thys->yaxis);
+    ajStrDel(&thys->gtype);
+    AJFREE(thys->x);
+    AJFREE(thys->y);
+    thys->numofobjects = 0;
 
-    AJFREE(*thys);
+    AJFREE(*pthys);
 
     return;
 }
