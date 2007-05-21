@@ -465,6 +465,7 @@ int main(int argc, char **argv)
     ajGraphxyDel(&graph);
     ajGraphxyDel(&xygraph);
     ajMatrixDel(&matrix);
+    ajTimeDel(&ajtime);
     
     /* deallocate memory */
     ajStrDel(&aa0str);

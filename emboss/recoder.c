@@ -236,12 +236,14 @@ int main(int argc, char **argv)
     ajStrDel(&revcomp);
     ajStrDel(&enzymes);
     ajStrDel(&sstr);
+    ajStrDel(&tailstr);
 
     ajListDel(&muts);
     ajListDel(&nmuts);
 
     ajReportClose(report);
     ajReportDel(&report);
+    ajTrnDel(&recoderTable);
 
     embExit();
 

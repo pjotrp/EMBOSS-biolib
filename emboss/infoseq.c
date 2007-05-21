@@ -334,17 +334,13 @@ int main(int argc, char **argv)
     ajStrDel(&altname);
     ajStrDel(&altacc);
     ajStrDel(&altsv);
+    ajStrDel(&altdb);
     ajStrDel(&altgi);
     ajStrDel(&delimiter); /* JISON */
     ajStrDel(&tempstr); /* JISON */
 
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
-    ajStrDel(&altusa);
-    ajStrDel(&altname);
-    ajStrDel(&altacc);
-    ajStrDel(&altgi);
-    ajStrDel(&altsv);
 
     embExit();
 

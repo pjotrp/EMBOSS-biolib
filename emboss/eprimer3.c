@@ -656,7 +656,23 @@ int main(int argc, char **argv)
     ajStrDel(&substr);
     ajFileClose(&outfile);
     ajStrDel(&taskstr);
-    
+    ajStrDelarray(&task);
+
+    ajSeqallDel(&sequence);
+    ajSeqDel(&seq);
+
+    ajRangeDel(&included_region);
+    ajRangeDel(&target);
+    ajRangeDel(&excluded_region);
+    ajRangeDel(&product_size_range);
+    ajRangeDel(&internal_oligo_excluded_region);
+
+    ajStrDel(&left_input);
+    ajStrDel(&right_input);
+    ajStrDel(&internal_oligo_input);
+
+    ajFileClose(&mispriming_library);
+
     embExit();
 
     return 0;
@@ -1140,7 +1156,7 @@ static void eprimer3_output_report(AjPFile outfile, const AjPTable table,
                                    ajint numreturn, ajint begin)
 {
     AjPStr key   = NULL;
-    AjPStr error = NULL;
+    AjPStr error = NULL;		/*  value from table - do not delete */
     AjPStr explain    = NULL;
     AjPStr explainstr = NULL;
     AjPStr seqid      = NULL;
@@ -1289,7 +1305,8 @@ static void eprimer3_output_report(AjPFile outfile, const AjPTable table,
   
 
     ajStrDel(&key);
-
+    ajStrDel(&explainstr);
+ 
     return;
 }
 

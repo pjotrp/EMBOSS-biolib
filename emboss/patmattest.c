@@ -106,6 +106,8 @@ int main(int argc, char **argv)
     ajStrDel(&cutseq);
     ajSeqDel(&seq);
 
+    ajFileClose(&outf);
+
     embExit();
 
     return 0;

@@ -370,27 +370,18 @@ int main( int argc , char **argv )
 		  angles,
 		  seq);
 
-    /* clear up windows */
     AJFREE(atoms);
     AJFREE(known);
 
-    /* clear up report objects */
     ajFeattableDel(&angles);
-
-    /* delete the atom list */
     ajListIterFree(&atomlist);
-
-    /* close the input file */
     ajFileClose(&pdbfile);
-
-    /* close the report file */
     ajReportDel(&report);
-
-    /* clear up the structure */
-    /* JISON */ ajPdbDel(&pdb);
+    ajPdbDel(&pdb);
     ajSeqDel(&seq);
 
-    /*  tidy up everything else... */
+    ajStrDel(&header);
+
     embExit();
 
     return 0;

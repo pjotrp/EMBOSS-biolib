@@ -313,10 +313,6 @@ static void diffseq_Diff(const AjPList difflist,
         ajFmtPrintAppS(&tmpstr, "%S overlap starts at %d\n\n",
 			   ajReportSeqName(report, seq2),
 			   over2start);
-        ajFmtPrintAppS(&tmpstr, "(%S) start end length sequence\n"
-			   "(%S) start end length sequence\n\n",
-			   ajReportSeqName(report, seq1),
-			   ajReportSeqName(report, seq2));
     }
     ajReportSetHeader(report, tmpstr);
 

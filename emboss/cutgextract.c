@@ -420,6 +420,7 @@ static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
 	}
 
 	ajStrTokenDel(&handle);
+	ajStrDel(&token);
 	if(!done)
 	    if(!ajFileReadLine(inf,&cutgextractLine))
 		return NULL;
@@ -437,6 +438,7 @@ static char* cutgextract_next(AjPFile inf, const AjPStr wildspecies,
     if(p[strlen(p)-1]=='_')
 	p[strlen(p)-1]='\0';
     ajStrDel(&token);
+    ajStrTokenDel(&handle);
 
     return p;
 }

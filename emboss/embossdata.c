@@ -208,7 +208,10 @@ int main(int argc, char **argv)
 	ajStrDel(&t);
     ajListDel(&rlist);
     ajStrDel(&path);
+    ajStrDel(&hdir);
     ajStrDel(&ddir);
+    ajStrDel(&directory);
+    ajStrDel(&cmd);
     ajStrDel(&filename);
     ajFileClose(&outf);
 

@@ -248,6 +248,7 @@ int main(int argc, char **argv)
     ajStrDel(&sstr);
 
     silent_relistdel(&relist);
+    ajStrDel(&tailstr);
 
     embExit();
 

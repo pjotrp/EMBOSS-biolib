@@ -623,7 +623,9 @@ int main(int argc, char **argv)
     if(systemsort)
 	embDbiRmEntryFile(dbname, cleanup);
     
-    ajListFree(&idlist);
+    ajListMap(idlist, embDbiEntryDelMap, NULL);
+    ajListDel(&idlist);
+    AJFREE(entryIds);
 
     ajStrDelarray(&fields);
 
@@ -635,10 +637,12 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	    ajListDel(&fieldList[i]);
+	    ajListMap(fieldList[i], embDbiFieldDelMap, NULL);
+	    ajListFree(&fieldList[i]);
 	}
     }
     AJFREE(alistfile);
+    AJFREE(fieldList);
     ajStrDel(&version);
     ajStrDel(&seqtype);
     ajFileClose(&elistfile);
@@ -678,10 +682,7 @@ int main(int argc, char **argv)
     ajStrDel(&tmpsv);
     ajRegFree(&wrdexp);
 
-    if(systemsort)
-    {
-	embDbiEntryDel(&dbiblastEntry);
-    }
+    embDbiEntryDel(&dbiblastEntry);
 
     if(fdl)
     {

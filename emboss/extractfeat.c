@@ -142,7 +142,16 @@ int main(int argc, char **argv)
     
     ajSeqoutClose(seqout);
     
-    
+    ajSeqoutDel(&seqout);
+    ajSeqallDel(&seqall);
+    ajSeqDel(&seq);
+
+    ajStrDel(&describe);
+    ajStrDel(&source);
+    ajStrDel(&type);
+    ajStrDel(&tag);
+    ajStrDel(&value);
+
     embExit();
 
     return 0;
@@ -939,8 +948,8 @@ static AjBool extractfeat_MatchPatternTags(const AjPFeature feat,
 					   const AjPStr vpattern)
 {
     AjIList titer;                      /* iterator for feat */
-    static AjPStr tagnam = NULL;        /* tag structure */
-    static AjPStr tagval = NULL;        /* tag structure */
+    AjPStr tagnam = NULL;        /* tag structure */
+    AjPStr tagval = NULL;        /* tag structure */
     AjBool val = ajFalse;               /* returned value */
     AjBool tval;                        /* tags result */
     AjBool vval;                        /* value result */
@@ -984,6 +993,9 @@ static AjBool extractfeat_MatchPatternTags(const AjPFeature feat,
     }
     ajListIterFree(&titer);
 
+    ajStrDel(&tagnam);
+    ajStrDel(&tagval);
+
     return val;
 }
 
@@ -1010,8 +1022,8 @@ static AjBool extractfeat_MatchPatternDescribe(const AjPFeature feat,
 					       AjPStr *strout)
 {
     AjIList titer;                      /* iterator for feat */
-    static AjPStr tagnam = NULL;        /* tag structure */
-    static AjPStr tagval = NULL;        /* tag structure */
+    AjPStr tagnam = NULL;        /* tag structure */
+    AjPStr tagval = NULL;        /* tag structure */
     AjBool val = ajFalse;               /* returned value */
 
 
@@ -1042,6 +1054,10 @@ static AjBool extractfeat_MatchPatternDescribe(const AjPFeature feat,
 
     if(val)
         ajStrAppendC(strout, ") ");
+
+
+    ajStrDel(&tagnam);
+    ajStrDel(&tagval);
 
     return val;
 }

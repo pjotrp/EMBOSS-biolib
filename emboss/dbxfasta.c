@@ -461,11 +461,12 @@ static AjBool dbxfasta_ParseFasta(EmbPBtreeEntry entry, AjPRegexp typeexp,
 	}
 
 
+    ajStrDel(&de);
     ajStrDel(&ac);
     ajStrDel(&sv);
     ajStrDel(&gi);
     ajStrDel(&db);
-    ajStrDel(&de);
+    ajStrDel(&tmpfd);
 
     return ajTrue;
 }

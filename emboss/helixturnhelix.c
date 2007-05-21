@@ -213,7 +213,13 @@ int main(int argc, char **argv)
 	ajFileClose(&outf);
     
     ajReportClose(report);
-    
+
+    ajReportDel(&report);
+    ajSeqallDel(&seqall);
+    ajFeattableDel(&TabRpt);
+    ajStrDel(&strand);
+    ajStrDel(&tmpStr);
+
     embExit();
 
     return 0;
@@ -496,7 +502,7 @@ static void helixturnhelix_report_hits(AjPList ajb,
     AjPFeature gf = NULL;
 
     AjPStr tmpStr = NULL;
-    static AjPStr fthit = NULL;
+    AjPStr fthit = NULL;
     struct DNAB *dnab;
 
     if(!fthit)
@@ -545,6 +551,9 @@ static void helixturnhelix_report_hits(AjPList ajb,
 
     AJFREE(lp);
     ajUintDel(&hp);
+
+    ajStrDel(&fthit);
+    ajStrDel(&tmpStr);
 
     return;
 }
