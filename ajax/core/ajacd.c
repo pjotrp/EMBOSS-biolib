@@ -1082,7 +1082,7 @@ static void acdSetTree(AcdPAcd thys);
 /*
 ** Known item types
 **
-** Each has 1 functions, used below in the definition of "types"
+** Each has 2 functions, used below in the definition of "types"
 ** The first is global, and passes the results to the application.
 ** The other is static and are used in command line and user management
 **
@@ -1199,6 +1199,8 @@ AcdOAttr acdAttrAppl[] =
 	 "Suitability for launching in a GUI"},
     {"batch", VT_STR, 0,"",
 	 "Suitability for running in batch"},
+    {"obsolete", VT_STR, 0,"",
+	 "Reason for obsolete status"},
     {"embassy", VT_STR, 0,"",
 	 "EMBASSY package name"},
     {"external", VT_STR, 0, "",
@@ -8037,6 +8039,7 @@ static void acdSetGraph(AcdPAcd thys)
 	    if(ajNamGetValueC("GRAPHICS",&gdev))
 		acdReplyInit(thys, ajStrGetPtr(gdev), &acdReplyDef);
 	    else
+#ifndef WIN32
 #ifndef X_DISPLAY_MISSING /* X11 is available */
 		acdReplyInit(thys, "x11", &acdReplyDef);
 #else
@@ -8045,6 +8048,9 @@ static void acdSetGraph(AcdPAcd thys)
 #else
 		acdReplyInit(thys, "ps", &acdReplyDef);
 #endif
+#endif
+#else
+	    acdReplyInit(thys, "win3", &acdReplyDef);
 #endif
 	}
 	else				/* leave empty */
@@ -8055,7 +8061,11 @@ static void acdSetGraph(AcdPAcd thys)
 	if(ajNamGetValueC("GRAPHICS",&gdev))
 	    acdReplyInit(thys, ajStrGetPtr(gdev), &acdReplyDef);
 	else
+#ifndef WIN32
 	    acdReplyInit(thys, "x11", &acdReplyDef);
+#else
+	    acdReplyInit(thys, "win3", &acdReplyDef);
+#endif
     }
 
     ajStrDel(&gdev);
