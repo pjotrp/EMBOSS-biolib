@@ -300,13 +300,31 @@ static void copy_plplot_inc(char *basedir)
     char command[MAXNAMLEN];
 
 
-    sprintf(command,"cp -f %s/emboss/win32/plplot-inc/include/plplot/*.h "
+    sprintf(command,"cp -f %s/emboss//plplot/*.h "
 	    "%s/win32/plplot-inc/include/plplot",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
 	exit(-1);
     }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/*.h "
+	    "%s/win32/plplot-inc/include/plplot",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/gd/include/*.h "
+	    "%s/win32/plplot-inc/include/plplot",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
 
     sprintf(command,"cp -f %s/emboss/win32/plplot-inc/lib/Debug/plplot.lib "
 	    "%s/win32/plplot-inc/lib/Debug",basedir,basedir);
@@ -318,6 +336,40 @@ static void copy_plplot_inc(char *basedir)
 
     sprintf(command,"cp -f %s/emboss/win32/plplot-inc/lib/Release/plplot.lib "
 	    "%s/win32/plplot-inc/lib/Release",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/gd/lib/bgd.lib "
+	    "%s/win32/plplot-inc/lib/Debug",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/gd/lib/bgd.lib "
+	    "%s/win32/plplot-inc/lib/Release",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/gd/lib/bgd.dll "
+	    "%s/win32/DLLs/Debug",basedir,basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    sprintf(command,"cp -f %s/emboss/plplotwin/gd/lib/bgd.dll "
+	    "%s/win32/DLLs/Release",basedir,basedir);
     if(system(command))
     {
 	fprintf(stderr,"Can't execute %s\n",command);
