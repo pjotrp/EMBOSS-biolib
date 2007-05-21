@@ -54662,3 +54662,62 @@ SQ   Sequence 73308 BP; 22068 A; 14146 C; 14785 G; 22309 T; 0 other;
      ataaaaaaaa gttatcctat taaaactgat ctcacacatc cgtagagcca ttatcaagtc     73260
      tttctctttg aaacagacag aaatttagtg ttttctcagt cagttaac                  73308
 //
+ID   AY411291; SV 1; linear; genomic DNA; GSS; HUM; 402 BP.
+XX
+AC   AY411291;
+XX
+DT   13-DEC-2003 (Rel. 78, Created)
+DT   17-DEC-2003 (Rel. 78, Last updated, Version 2)
+XX
+DE   Homo sapiens FAU gene, VIRTUAL TRANSCRIPT, partial sequence, genomic survey
+DE   sequence.
+XX
+KW   GSS.
+XX
+OS   Homo sapiens (human)
+OC   Eukaryota; Metazoa; Chordata; Craniata; Vertebrata; Euteleostomi; Mammalia;
+OC   Eutheria; Euarchontoglires; Primates; Haplorrhini; Catarrhini; Hominidae;
+OC   Homo.
+XX
+RN   [1]
+RP   1-402
+RX   DOI; 10.1126/science.1088821.
+RX   PUBMED; 14671302.
+RA   Clark A.G., Glanowski S., Nielson R., Thomas P., Kejariwal A., Todd M.A.,
+RA   Tanenbaum D.M., Civello D.R., Lu F., Murphy B., Ferriera S., Wang G.,
+RA   Zheng X.H., White T.J., Sninsky J.J., Adams M.D., Cargill M.;
+RT   "Inferring nonneutral evolution from human-chimp-mouse orthologous gene
+RT   trios";
+RL   Science 302(5652):1960-1963(2003).
+XX
+RN   [2]
+RP   1-402
+RA   Clark A.G., Glanowski S., Nielson R., Thomas P., Kejariwal A., Todd M.A.,
+RA   Tanenbaum D.M., Civello D.R., Lu F., Murphy B., Ferriera S., Wang G.,
+RA   Zheng X.H., White T.J., Sninsky J.J., Adams M.D., Cargill M.;
+RT   ;
+RL   Submitted (16-NOV-2003) to the EMBL/GenBank/DDBJ databases.
+RL   Celera Genomics, 45 West Gude Drive, Rockville, MD 20850, USA
+XX
+CC   This sequence was made by sequencing genomic exons and ordering
+CC   them based on alignment.
+XX
+FH   Key             Location/Qualifiers
+FH
+FT   source          1..402
+FT                   /organism="Homo sapiens"
+FT                   /mol_type="genomic DNA"
+FT                   /db_xref="taxon:9606"
+FT   gene            <1..>402
+FT                   /gene="FAU"
+FT                   /locus_tag="HCM4175"
+XX
+SQ   Sequence 402 BP; 95 A; 110 C; 129 G; 68 T; 0 other;
+     atgcagctct ttgtccgcgc ccaggagcta cacaccttcg aggtgaccgg ccaggaaacg        60
+     gtcgcccaga tcaaggctca tgtagcctca ctggagggca ttgccccgga agatcaagtc       120
+     gtgctcctgg caggcgcgcc cctggaggat gaggccactc tgggccagtg cggggtggag       180
+     gccctgacta ccctggaagt agcaggccgc atgcttggag gtaaagtcca tggttccctg       240
+     gcccgtgctg gaaaagtgag aggtcagact cctaaggtgg ccaaacagga gaagaagaag       300
+     aagaagacag gtcgggctaa gcggcggatg cagtacaacc ggcgctttgt caacgttgtg       360
+     cccacctttg gcaagaagaa gggccccaat gccaactctt aa                          402
+//
