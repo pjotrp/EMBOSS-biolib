@@ -1960,6 +1960,8 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
 	    thys->Name, thys->Formatstr, thys->Db,
 	    thys->Entryname, thys->Filename);
 
+    ajDebug("Begin:%d End:%d Rev:%B Reversed:%B\n",
+	    thys->Begin, thys->End, thys->Rev, thys->Reversed);
     /* ajSeqTrace(thys); */
 
     if(ajStrGetLen(thys->Db))
@@ -1989,7 +1991,7 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
 
     ajFmtPrintS(&tmpstr, "[");
 
-    if(thys->Rev)
+    if(thys->Reversed)
     {
 	if(thys->End)
 	    ajFmtPrintAppS(&tmpstr, "%d", -thys->End);
