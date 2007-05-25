@@ -1,4 +1,10 @@
 Version 5.0.0
+	A new function ajSystemOut calls a system command, and redirects
+	standard output to a named file.
+	
+	Function names are standardised for the ajtime and ajutil
+	functions.
+
 	New function ajStrTableFreeKey frees only the key from tables
 	where the value is a constant.
 

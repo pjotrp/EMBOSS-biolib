@@ -373,9 +373,27 @@ ajStrCopyC @ajStrDel_or_@ajStrAssignC
 #ajsys
 #ajtable
 #ajtime
+ajTimeSet ajTimeNewDayFmt
+ajTimeToday ajTimeNewToday
+ajTimeTodayF ajTimeNewTodayFmt
+ajTimeMake ajTimeGetTimetype
+ajTimeTodayRef ajTimeRefToday
+ajTimeTodayRefF ajTimeRefTodayFmt
+ajTimeLocal =ajTimeSetLocal 1,2 2,1
+ajTimeLocal @ajTimeSetLocal
 #ajtranslate
 #ajtree
 #ajutil
+ajUtilRevInt ajByteRevInt
+ajUtilRev2 ajByteRev2
+ajUtilRev4 ajByteRevLen4
+ajUtilRev8 ajByteRevLen8
+ajUtilRevLong ajByteRevLong
+ajUtilRevShort ajByteRevShort
+ajUtilRevUint ajByteRevUint
+ajUtilBigendian ajUtilGetBigendian
+ajUtilUid ajUtilGetUid
+ajLogInfo ajUtilLoginfo
 #ajvector
 #pcre
 #pcre_chartables
