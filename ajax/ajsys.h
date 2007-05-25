@@ -40,6 +40,7 @@ AjBool        ajSysIsRegular(const char *s);
 FILE         *ajSysFdopen(ajint filedes, const char *mode);
 void          ajSystem(const AjPStr cl);
 void          ajSystemEnv(const AjPStr cl, char * const env[]);
+void          ajSystemOut(const AjPStr cl, const AjPStr outfname);
 char         *ajSysStrdup(const char *s);
 AjBool        ajSysUnlink(const AjPStr s);
 AjBool        ajSysWhich(AjPStr *exefile);

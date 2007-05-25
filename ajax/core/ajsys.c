@@ -380,6 +380,80 @@ void ajSystem(const AjPStr cl)
 
 
 
+/* @func ajSystemOut **********************************************************
+**
+** Exec a command line as if from the C shell
+**
+** The exec'd program is passed a new argv array in argptr
+**
+** @param [r] cl [const AjPStr] The command line
+** @param [r] outfname [const AjPStr] The output file name
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSystemOut(const AjPStr cl, const AjPStr outfname)
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status;
+    char *pgm;
+    char **argptr;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglist(cl, &pgm, &argptr))
+	return;
+
+    pname = ajStrNew();
+
+    ajStrAssignC(&pname, pgm);
+
+    if(!ajSysWhich(&pname))
+	ajFatal("cannot find program '%S'", pname);
+
+    fflush(stdout);
+
+    pid=fork();
+
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	/* this is the child process */
+
+	freopen(MAJSTRGETPTR(outfname), "wb", stdout);
+	execv(ajStrGetPtr(pname), argptr);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#endif
+    return;
+}
 
 /* @func ajSystemEnv **********************************************************
 **
@@ -465,6 +539,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 
 
 
+
 /* @func ajSysUnlink **********************************************************
 **
 ** Deletes a file or link
@@ -476,6 +551,8 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 
 AjBool ajSysUnlink(const AjPStr s)
 {
+    ajDebug("ajSysUnlink '%S'\n", s);
+
 #ifndef WIN32
     if(!unlink(ajStrGetPtr(s)))
 	return ajTrue;
@@ -483,6 +560,7 @@ AjBool ajSysUnlink(const AjPStr s)
     if(DeleteFile(ajStrGetPtr(s)))
 	return ajTrue;
 #endif
+    ajDebug("ajSysUnlink failed to delete '%S'\n", s);
     return ajFalse;
 }
 
