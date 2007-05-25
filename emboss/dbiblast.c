@@ -465,13 +465,13 @@ int main(int argc, char **argv)
     }
     
     if(ajStrMatchC(datestr, "00/00/00"))
-	ajFmtPrintS(&datestr, "%D", ajTimeTodayRefF("dbindex"));
+	ajFmtPrintS(&datestr, "%D", ajTimeRefTodayFmt("dbindex"));
 
     ajStrRemoveWhite(&dbname);		/* used for temp filenames */
     embDbiDateSet(datestr, date);
     idlist = ajListNew();
     
-    if(ajUtilBigendian())
+    if(ajUtilGetBigendian())
 	readReverse = ajFalse;
     else
 	readReverse = ajTrue;
@@ -1586,7 +1586,7 @@ static void dbiblast_memreadUInt4(PMemFile fd, ajuint *val)
 
     dbiblast_memfread((char *)val,(size_t)4,(size_t)1,fd);
     if(readReverse)
-	ajUtilRev4((ajint *)val);
+	ajByteRevLen4((ajint *)val);
 
     return;
 }

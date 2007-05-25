@@ -1905,7 +1905,7 @@ void embDbiLogHeader(AjPFile logfile, const AjPStr dbname,
     AjPStr dirname = NULL;
     AjPTime today = NULL;
 
-    today =  ajTimeTodayF("report");
+    today =  ajTimeNewTodayFmt("report");
     ajFmtPrintF(logfile, "########################################\n");
     ajFmtPrintF(logfile, "# Program: %S\n", ajAcdGetProgram());
     ajFmtPrintF(logfile, "# Rundate: %D\n", today);

@@ -94,22 +94,22 @@ int main(int argc, char **argv)
     ajUser ("second token '%S'", token);
     ajStrTokenDel(&handle);
 
-    today = ajTimeTodayF("yyyy-mm-dd");
+    today = ajTimeNewTodayFmt("yyyy-mm-dd");
     ajTimeTrace (today);
     ajUser("yyyy-mm-dd Today is '%D'", today);
     ajTimeDel(&today);
 
-    today = ajTimeTodayF("dd Mon yyyy");
+    today = ajTimeNewTodayFmt("dd Mon yyyy");
     ajTimeTrace (today);
     ajUser("dd Mon yyyy Today is '%D'", today);
     ajTimeDel(&today);
 
-    today = ajTimeTodayF("fred");
+    today = ajTimeNewTodayFmt("fred");
     ajTimeTrace (today);
     ajUser("fred Today is '%D'", today);
     ajTimeDel(&today);
 
-    today = ajTimeTodayF("gff");
+    today = ajTimeNewTodayFmt("gff");
     ajTimeTrace (today);
     ajUser("gff Today is '%D'", today);
     ajTimeDel(&today);

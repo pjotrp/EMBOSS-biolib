@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 
     tim = time(0);
 
-    ajTimeLocal(tim,&ajtime);
+    ajTimeSetLocal(&ajtime, tim);
     ajtime.format = 0;
 
     matrix  = ajMatrixArray(cmpmatrix);

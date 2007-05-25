@@ -262,7 +262,7 @@ int main(int argc, char **argv)
     }
 
     if(ajStrMatchC(datestr, "00/00/00"))
-	ajFmtPrintS(&datestr, "%D", ajTimeTodayRefF("dbindex"));
+	ajFmtPrintS(&datestr, "%D", ajTimeRefTodayFmt("dbindex"));
 
     ajStrRemoveWhite(&dbname);		/* used for temp filenames */
     embDbiDateSet(datestr, date);

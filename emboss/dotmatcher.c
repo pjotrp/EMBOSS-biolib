@@ -162,7 +162,7 @@ int main(int argc, char **argv)
     ajtime = ajTimeNew();
 
     tim = time(0);
-    ajTimeLocal(tim,ajtime);
+    ajTimeSetLocal(ajtime, tim);
     
     b1 = ajSeqGetBegin(seq);
     b2 = ajSeqGetBegin(seq2);

@@ -4507,7 +4507,7 @@ AjBool ajFeattableWriteGff(const AjPFeattable Feattab, AjPFile file)
     /* Print header first */
     ajFmtPrintF(file, "##gff-version 2.0\n") ;
     
-    ajFmtPrintF(file, "##date %D\n", ajTimeTodayRefF("GFF")) ;
+    ajFmtPrintF(file, "##date %D\n", ajTimeRefTodayFmt("GFF")) ;
     
     if(ajStrMatchC(Feattab->Type, "N"))
 	ajFmtPrintF(file, "##Type %s %S\n", "DNA",

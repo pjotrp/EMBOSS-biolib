@@ -3521,7 +3521,7 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	    
 	    /* automatic $(today) variable */
 	    ajStrAssignC(&acdStrName, "today");
-	    today = ajTimeToday();
+	    today = ajTimeNewToday();
 	    ajFmtPrintS(&acdStrValue, "%D", today);
 	    ajTimeDel(&today);
 	    acdNewCurr = acdNewVar(acdStrName);

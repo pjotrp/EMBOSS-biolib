@@ -2703,8 +2703,8 @@ static void codWriteTransterm(const AjPCod thys, AjPFile outf)
     AjPStr datestr = NULL;
     AjPStr timestr = NULL;
 
-    ajFmtPrintS(&datestr, "%D", ajTimeTodayRefF("day"));
-    ajFmtPrintS(&timestr, "%D", ajTimeTodayRefF("time"));
+    ajFmtPrintS(&datestr, "%D", ajTimeRefTodayFmt("day"));
+    ajFmtPrintS(&timestr, "%D", ajTimeRefTodayFmt("time"));
 
     ajFmtPrintF(outf, "FISH_TERM version 4.45 run at %S at  %S\n\n",
 		datestr, timestr);

@@ -1367,7 +1367,7 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 	}
 	if( ajStrGetLen(thys->plplot->subtitle) <=1)
 	{
-	    ajtime = ajTimeTodayF("report");
+	    ajtime = ajTimeNewTodayFmt("report");
 	    ajFmtPrintAppS(&thys->plplot->subtitle,"%D",
 			   ajtime);
 	    ajTimeDel(&ajtime);
@@ -1511,7 +1511,7 @@ void ajGraphOpen(AjPGraph thys, PLFLT xmin, PLFLT xmax,
 
 	if( ajStrGetLen(thys->plplot->title) <=1)
 	{
-	    ajtime = ajTimeToday();
+	    ajtime = ajTimeNewToday();
 	    ajStrAppendC(&thys->plplot->title,
 		      ajFmtString("%S (%D)",ajAcdGetProgram(),ajtime));
 	    ajTimeDel(&ajtime);
@@ -3887,7 +3887,7 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	}
 	if( ajStrGetLen(thys->plplot->subtitle) <=1)
 	{
-	    ajtime = ajTimeTodayF("report");
+	    ajtime = ajTimeNewTodayFmt("report");
 	    ajFmtPrintAppS(&thys->plplot->subtitle,"%D",
 			   ajtime);
 	    ajTimeDel(&ajtime);
@@ -5916,7 +5916,7 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	if((thys->plplot->flags & AJGRAPH_TITLE) &&
 	   ajStrGetLen(thys->plplot->title) <=1)
 	{
-	    ajtime = ajTimeToday();
+	    ajtime = ajTimeNewToday();
 	    ajStrAppendC(&thys->plplot->title,
 			     ajFmtString("%S (%D)",
 					 ajAcdGetProgram(),
@@ -5971,7 +5971,7 @@ static void GraphxyGeneral(AjPGraph thys, AjBool closeit)
 	if((thys->plplot->flags & AJGRAPH_TITLE) &&
 	   ajStrGetLen(thys->plplot->title) <=1)
 	{
-	    ajtime = ajTimeToday();
+	    ajtime = ajTimeNewToday();
 	    ajStrAppendC(&thys->plplot->title,
 			     ajFmtString("%S (%D)",
 					 ajAcdGetProgram(),

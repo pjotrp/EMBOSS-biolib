@@ -344,9 +344,9 @@ int main(int argc, char **argv)
             }
             else
     	        ajDie("The program 'primer3_core' must be on the path.\n"
-		      "It is part of the 'primer3' package, version 0.9,\n"
+		      "It is part of the 'primer3' package, version 1.1,\n"
 		      "available from the Whitehead Institute.\n"
-		      "See: http://www-genome.wi.mit.edu/");
+		      "See: http://primer3.sourceforge.net/");
     
             ajStrDel(&program);
 

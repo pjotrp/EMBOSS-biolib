@@ -38,23 +38,36 @@ typedef struct AjSTime {
 */
 
 void          ajTimeExit(void);
-AjBool        ajTimeLocal(const time_t timer, AjPTime thys);
-AjPTime       ajTimeToday (void);
-AjPTime       ajTimeTodayF (const char* timefmt);
-const AjPTime ajTimeTodayRef (void);
-const AjPTime ajTimeTodayRefF (const char* timefmt);
+AjBool        ajTimeSetLocal(AjPTime thys, const time_t timer);
+
+AjPTime       ajTimeNewDayFmt(const char *timefmt,
+			      ajint mday, ajint mon, ajint year) ;
+AjPTime       ajTimeNewToday (void);
+AjPTime       ajTimeNewTodayFmt (const char* timefmt);
+
+void          ajTimeDel(AjPTime *thys);
+
+const AjPTime ajTimeRefToday (void);
+const AjPTime ajTimeRefTodayFmt(const char* timefmt);
+
 void          ajTimeTrace (const AjPTime thys);
-AjPTime       ajTimeSet(const char *timefmt,
-			ajint mday, ajint mon, ajint year) ;
-AjBool        ajTimeSetS(AjPTime thys, const char* timestr);
+AjBool        ajTimeSetC(AjPTime thys, const char* timestr);
+AjBool        ajTimeSetS(AjPTime thys, const AjPStr timestr);
 AjPTime       ajTimeNew(void);
 AjPTime       ajTimeNewTime(const AjPTime thys);
-void          ajTimeDel(AjPTime *thys);
-time_t        ajTimeMake(const AjPTime thys);
+time_t        ajTimeGetTimetype(const AjPTime thys);
 
 /*
 ** End of prototype definitions
 */
+__deprecated AjPTime       ajTimeToday (void);
+__deprecated AjPTime       ajTimeTodayF (const char* timefmt);
+__deprecated const AjPTime ajTimeTodayRef (void);
+__deprecated const AjPTime ajTimeTodayRefF (const char* timefmt);
+__deprecated AjPTime       ajTimeSet(const char *timefmt,
+				     ajint mday, ajint mon, ajint year) ;
+__deprecated time_t        ajTimeMake(const AjPTime thys);
+__deprecated AjBool        ajTimeLocal(const time_t timer, AjPTime thys);
 
 #endif
 

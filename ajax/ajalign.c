@@ -2307,7 +2307,7 @@ void ajAlignWriteHeader(AjPAlign thys)
     {
 	ajFmtPrintF(outf, "########################################\n");
 	ajFmtPrintF(outf, "# Program: %S\n", ajAcdGetProgram());
-	ajFmtPrintF(outf, "# Rundate: %D\n", ajTimeTodayRefF("report"));
+	ajFmtPrintF(outf, "# Rundate: %D\n", ajTimeRefTodayFmt("report"));
 	ajFmtPrintF(outf, "# Commandline: %S\n", ajAcdGetProgram());
 	ajStrAssignS(&tmpstr, ajAcdGetCmdline());
 	if(ajStrGetLen(tmpstr))
