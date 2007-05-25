@@ -6809,7 +6809,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	    ajStrTokenNextParseC(&handle, "\n\r", &token); /* [num] */
 	    ajStrAssignSubS(&tmpstr, token, 1, -2);
 	    ajStrToUint(tmpstr, &refnum);
-	    ajSeqrefSetNumber(seqref, refnum);
+	    ajSeqrefSetnumNumber(seqref, refnum);
 	}
 
 	else if(ajStrPrefixC(seqReadLine, "RG   "))
@@ -7546,7 +7546,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	    ajStrTokenNextParse(&handle, &token); /* 'REFERENCE' */
 	    ajStrTokenNextParse(&handle, &token); /* number */
 	    ajStrToUint(token, &refnum);
-	    ajSeqrefSetNumber(seqref, refnum);
+	    ajSeqrefSetnumNumber(seqref, refnum);
 	    ajStrAssignC(&tmpstr2, "");
 	    while (ajStrTokenNextParse(&handle, &token))
 	    {
