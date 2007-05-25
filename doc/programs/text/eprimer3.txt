@@ -932,23 +932,23 @@ Notes
    but it must be set up on your system and on your path.
 
    The Whitehead Institute program that is run by this program is
-   available from:
-   http://www-genome.wi.mit.edu/genome_software/other/primer3.html
-   (Then see the link 'Get release 0.9')
+   available from: http://primer3.sourceforge.net/
+   (Then see the link Download and then 'Release 1.1')
 
-   The version that is run by this program is 3.0.9 currently available
-   from:
-   http://www-genome.wi.mit.edu/ftp/distribution/software/primer3_0_9_tes
-   t.tar.gz The Whitehead Institute's primer3 program is:
-   Copyright (c) 1996,1997,1998
-   Whitehead Institute for Biomedical Research. All rights reserved.
+   The version that is run by this program is 3.1.1 currently available
+   from: The Whitehead Institute's primer3 program is
+   We request but do not require that use of this software be cited in
+   publications as
 
-   The Whitehead Institute requests that use of this software be cited in
-   publications as:
+   Steve Rozen and Helen J. Skaletsky (2000) Primer3 on the WWW for
+   general users and for biologist programmers. In: Krawetz S, Misener S
+   (eds) Bioinformatics Methods and Protocols: Methods in Molecular
+   Biology. Humana Press, Totowa, NJ, pp 365-386
 
-   Steve Rozen, Helen J. Skaletsky (1996,1997,1998)
-   Primer3. Code available at
-   http://www-genome.wi.mit.edu/genome_software/other/primer3.html
+   Source code available at http://fokker.wi.mit.edu/primer3/. The paper
+   above is available at
+   http://jura.wi.mit.edu/rozen/papers/rozen-and-skaletsky-2000-primer3.p
+   df
 
 References
 
@@ -960,10 +960,10 @@ Warnings
 
 Diagnostic Error Messages
 
-   The message: "EMBOSS An error in eprimer3.c at line 315: The program
+   The message: "EMBOSS An error in eprimer3.c at line 346: The program
    'primer3_core' must be on the path. It is part of the 'primer3'
    package, available from the Whitehead Institute. See:
-   http://www-genome.wi.mit.edu/" is output if you do not have the
+   http://primer3.sourceforge.net/" is output if you do not have the
    Whitehead Institute's primer3 program set up and on your path.
 
 Exit status
