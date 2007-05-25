@@ -734,7 +734,7 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 
     if(!qrycalled)
     {
-	if(ajUtilBigendian())
+	if(ajUtilGetBigendian())
 	    seqCdReverse = ajTrue;
 	qrycalled = 1;
     }
@@ -895,7 +895,7 @@ static AjBool seqCdAll(AjPSeqin seqin)
 
     if(!called)
     {
-	if(ajUtilBigendian())
+	if(ajUtilGetBigendian())
 	    seqCdReverse = ajTrue;
 	called = 1;
     }
@@ -1148,7 +1148,7 @@ static size_t seqCdFileReadInt(ajint* i, SeqPCdFile thys)
     ret = ajFileRead(i, 4, 1, thys->File);
 
     if(seqCdReverse)
-	ajUtilRev4(i);
+	ajByteRevLen4(i);
 
     return ret;
 }
@@ -1175,7 +1175,7 @@ static size_t seqCdFileReadUInt(ajuint* i, SeqPCdFile thys)
     ret = ajFileRead(i, 4, 1, thys->File);
 
     if(seqCdReverse)
-	ajUtilRev4((ajint*)i);
+	ajByteRevLen4((ajint*)i);
 
     return ret;
 }
@@ -1202,7 +1202,7 @@ static size_t seqCdFileReadShort(short* i, SeqPCdFile thys)
     ret = ajFileRead(i, 2, 1, thys->File);
 
     if(seqCdReverse)
-	ajUtilRev2(i);
+	ajByteRevLen2(i);
 
     return ret;
 }
@@ -5269,7 +5269,7 @@ static AjBool seqAccessGcg(AjPSeqin seqin)
 
     if(!qrycalled)
     {
-	if(ajUtilBigendian())
+	if(ajUtilGetBigendian())
 	    seqCdReverse = ajTrue;
 	qrycalled = 1;
     }
@@ -5776,7 +5776,7 @@ static AjBool seqGcgAll(AjPSeqin seqin)
 
     if(!called)
     {
-	if(ajUtilBigendian())
+	if(ajUtilGetBigendian())
 	    seqCdReverse = ajTrue;
 	called = 1;
     }
@@ -5866,7 +5866,7 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 
     if(!qrycalled)
     {
-	if(ajUtilBigendian())
+	if(ajUtilGetBigendian())
 	    seqCdReverse = ajTrue;
 	qrycalled = 1;
     }
@@ -6303,7 +6303,7 @@ static AjBool seqBlastAll(AjPSeqin seqin)
 
     if(!called)
     {
-	if(ajUtilBigendian())
+	if(ajUtilGetBigendian())
 	    seqCdReverse = ajTrue;
 	called = 1;
     }

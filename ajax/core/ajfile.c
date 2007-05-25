@@ -1672,7 +1672,7 @@ ajuint ajFileReadUint(AjPFile thys, AjBool Bigendian)
     ajint ret2;
 
     if(!called)
-	bigend = ajUtilBigendian();
+	bigend = ajUtilGetBigendian();
 
     fread(&ret, 4, 1, thys->fp);
     if(Bigendian && bigend)
@@ -1682,7 +1682,7 @@ ajuint ajFileReadUint(AjPFile thys, AjBool Bigendian)
 
     /*ajDebug("Reversed: %u", ret);*/
     ret2 = (ajint) ret;
-    ajUtilRev4(&ret2);
+    ajByteRevLen4(&ret2);
     ret = (ajuint) ret2;
     /*ajDebug(" => %u\n", ret);*/
 
@@ -2409,6 +2409,8 @@ static DIR* fileOpenDir(AjPStr* dir)
 
     if(moved)
 	ajStrInsertS(dir, 0, fileCwd);
+
+    ajDebug("fileOpenDir opened '%S'\n", *dir);
 
     return opendir(ajStrGetPtr(*dir));
 }
@@ -5686,8 +5688,8 @@ ajint ajFileWriteInt2(AjPFile thys, short i)
     short j;
 
     j = i;
-    if(ajUtilBigendian())
-	ajUtilRev2(&j);
+    if(ajUtilGetBigendian())
+	ajByteRevLen2(&j);
 
     return fwrite(&j, 2, 1, ajFileFp(thys));
 }
@@ -5711,8 +5713,8 @@ ajint ajFileWriteInt4(AjPFile thys, ajint i)
 
     j = i;
 
-    if(ajUtilBigendian())
-	ajUtilRev4(&j);
+    if(ajUtilGetBigendian())
+	ajByteRevLen4(&j);
 
     return fwrite(&j, 4, 1, ajFileFp(thys));
 }
@@ -5736,8 +5738,8 @@ ajint ajFileWriteInt8(AjPFile thys, ajlong l)
 
     j = l;
 
-    if(ajUtilBigendian())
-	ajUtilRev8(&j);
+    if(ajUtilGetBigendian())
+	ajByteRevLen8(&j);
 
     return fwrite(&j, 8, 1, ajFileFp(thys));
 }
