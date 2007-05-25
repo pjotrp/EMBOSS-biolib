@@ -875,7 +875,7 @@ An example of interactive use of DOMAINALIGN is shown below.
 % <b>domainalign </b>
 Generate alignments (DAF file) for nodes in a DCF file.
 Domain classification file: <b>all.scop2</b>
-Domain pdb directory [./]: <b>../domainer-keep2</b>
+Domain pdb directory [./]: <b></b>
 Node at which to remove redundancy
          1 : Class (SCOP)
          2 : Fold (SCOP)
@@ -911,6 +911,15 @@ P(m)  = P value (p=1/10) calculated after Murzin (1993), JMB, 230, 689-694
 Scan d1cs4a_         d1cs4a_            1   9.799   0.001  189  189  189  189  188    0 100.00 100.00 0.00e+00
 Scan d1cs4a_         d1fx2a_            1   6.522   1.343  189  235  225  135  133    0  20.30 100.00 0.00017
 See the file ./domainalign-1234567890.1234.scan
+
+stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
+
+
+sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
+
+
+stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
+
 TRANSFORM R.B. Russell, 1995
  Using PDB files
  Files will not include heteroatoms
@@ -926,13 +935,20 @@ POSTSTAMP, R.B. Russell 1995
  Reading domain descriptors/transformations from the file ./domainalign-1234567890.1234.1
  Reading alignment...
   Reading coordinates...
- Domain   1 ../domainer-keep2//d1cs4a_.ent d1cs4a_
+ Domain   1 /homes/user/test/qa/domainer-keep2//d1cs4a_.ent d1cs4a_
         all residues 189 CAs =>  189 CAs in total
  Transforming coordinates...
- Domain   2 ../domainer-keep2//d1fx2a_.ent d1fx2a__1
+ Domain   2 /homes/user/test/qa/domainer-keep2//d1fx2a_.ent d1fx2a__1
         all residues 235 CAs =>  235 CAs in total
  Transforming coordinates...
  ...done.
+
+transform -f ./domainalign-1234567890.1234.sort -g  -o ./55074.ent
+
+poststamp -f ./domainalign-1234567890.1234.1 -min 0.5
+
+ver2hor -f ./domainalign-1234567890.1234.1.post > ./domainalign-1234567890.1234.out
+
 
 STAMP Structural Alignment of Multiple Proteins
  by Robert B. Russell & Geoffrey J. Barton 
@@ -948,6 +964,17 @@ P(m)  = P value (p=1/10) calculated after Murzin (1993), JMB, 230, 689-694
 Scan d4at1b1         d4at1b1            1   9.799   0.001   93   93   93   93   92    0 100.00 100.00 1.00e-92
 Scan d4at1b1         d4at1d1            1   9.250   0.588   93   93   94   89   88    0 100.00 100.00 1.00e-88
 See the file ./domainalign-1234567890.1234.scan
+
+Processing node 54894
+
+stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
+
+
+sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
+
+
+stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
+
 TRANSFORM R.B. Russell, 1995
  Using PDB files
  Files will not include heteroatoms
@@ -963,40 +990,13 @@ POSTSTAMP, R.B. Russell 1995
  Reading domain descriptors/transformations from the file ./domainalign-1234567890.1234.1
  Reading alignment...
   Reading coordinates...
- Domain   1 ../domainer-keep2//d4at1b1.ent d4at1b1
+ Domain   1 /homes/user/test/qa/domainer-keep2//d4at1b1.ent d4at1b1
         all residues  93 CAs =>   93 CAs in total
  Transforming coordinates...
- Domain   2 ../domainer-keep2//d4at1d1.ent d4at1d1_1
+ Domain   2 /homes/user/test/qa/domainer-keep2//d4at1d1.ent d4at1d1_1
         all residues  93 CAs =>   93 CAs in total
  Transforming coordinates...
  ...done.
-
-stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
-
-
-sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
-
-
-stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
-
-
-transform -f ./domainalign-1234567890.1234.sort -g  -o ./55074.ent
-
-poststamp -f ./domainalign-1234567890.1234.1 -min 0.5
-
-ver2hor -f ./domainalign-1234567890.1234.1.post > ./domainalign-1234567890.1234.out
-
-
-Processing node 54894
-
-stamp -l ./domainalign-1234567890.1234.dom -s -n 2 -slide 5 -prefix ./domainalign-1234567890.1234 -d ./domainalign-1234567890.1234.set
-
-
-sorttrans -f ./domainalign-1234567890.1234.scan -s Sc 2.5 > ./domainalign-1234567890.1234.sort
-
-
-stamp -l ./domainalign-1234567890.1234.sort -prefix ./domainalign-1234567890.1234 > ./domainalign-1234567890.1234.log
-
 
 transform -f ./domainalign-1234567890.1234.sort -g  -o ./54894.ent
 
