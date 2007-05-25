@@ -451,24 +451,16 @@ int main(int argc, char **argv)
 
     /* Remove all temporary files. */
 
-    ajFmtPrintS(&temp, "rm %S", log);
-    ajSystem(temp);
-    ajFmtPrintS(&temp, "rm %S", dom);
-    ajSystem(temp);
-    ajFmtPrintS(&temp, "rm %S", set);
-    ajSystem(temp);
-    ajFmtPrintS(&temp, "rm %S", scan);
-    ajSystem(temp);
-    ajFmtPrintS(&temp, "rm %S", sort);
-    ajSystem(temp);
-    ajFmtPrintS(&temp, "rm %S", out);
-    ajSystem(temp);
+    ajSysUnlink(log);
+    ajSysUnlink(dom);
+    ajSysUnlink(set);
+    ajSysUnlink(scan);
+    ajSysUnlink(sort);
+    ajSysUnlink(out);
     ajStrAssignS(&temp, name);	
     ajStrAppendC(&temp, ".mat");
-    ajFmtPrintS(&temp1, "rm %S", temp);
-    ajSystem(temp1);
+    ajSysUnlink(temp);
     
-
     
 
     /* Tidy up*/
@@ -1047,54 +1039,55 @@ static void domainalign_stamp(AjPDomain prevdomain,
 
     rexp     = ajRegCompC("^(Cluster:)");
 
+    ajDebug("domainalign_stamp name: '%S'\n", name);
     
     /* Call STAMP. */
-    ajFmtPrintS(&exec,	"\nstamp -l %S -s -n 2 -slide 5 -prefix %S -d %S\n", 
+    ajFmtPrintS(&exec,	"stamp -l %S -s -n 2 -slide 5 -prefix %S -d %S",
 		dom, name, set);
-    ajFmtPrint("%S\n", exec);
-    system(ajStrGetPtr(exec));  
+    ajFmtPrint("\n%S\n\n", exec);
+    ajSystem(exec);  
 
+    ajFmtPrintS(&exec, "sorttrans -f %S -s Sc 2.5",
+		scan);
+    ajFmtPrint("\n%S > %S\n\n", exec, sort);
 
-    ajFmtPrintS(&exec, "\nsorttrans -f %S -s Sc 2.5 > %S\n", 
-		scan, sort);
-    ajFmtPrint("%S\n", exec);
-    system(ajStrGetPtr(exec));  
+    ajSystemOut(exec, sort);
 
-    ajFmtPrintS(&exec, "\nstamp -l %S -prefix %S > %S\n", 
-		sort, name, log);
-    ajFmtPrint("%S\n", exec);
-    system(ajStrGetPtr(exec));  
-
+    ajFmtPrintS(&exec, "stamp -l %S -prefix %S",
+		sort, name);
+    ajFmtPrint("\n%S > %S\n\n", exec, log);
+    ajSystemOut(exec, log);
 	
-    ajFmtPrintS(&exec, "\ntransform -f %S -g  -o %S\n", 
+    ajFmtPrintS(&exec, "transform -f %S -g  -o %S",
 		sort, alignc);
-    ajFmtPrint("%S\n", exec);
-    system(ajStrGetPtr(exec));  
+    ajFmtPrint("\n%S\n\n", exec);
+    ajSystem(exec);
     
     
     /* Count the number of clusters in the log file. */
     if(!(clusterf=ajFileNewIn(log)))
-	ajFatal("Could not open log file\n");
+	ajFatal("Could not open log file '%S'\n", log);
     ncluster=0;
     while(ajFileReadLine(clusterf,&line))
 	if(ajRegExec(rexp,line))
 	    ncluster++;
     ajFileClose(&clusterf);	
-    
+
+    ajDebug("ncluster: %d\n", ncluster);
     
     /* Call STAMP ... calculate two fields for structural equivalence using 
        threshold Pij value of 0.5, see stamp manual v4.1 pg 27. */
-    ajFmtPrintS(&exec,"poststamp -f %S.%d -min 0.5\n",
+    ajFmtPrintS(&exec,"poststamp -f %S.%d -min 0.5",
 		name, ncluster);
-    ajFmtPrint("%S\n", exec);
-    system(ajStrGetPtr(exec));
+    ajFmtPrint("%S\n\n", exec);
+    ajSystem(exec);
     
     
     /* Call STAMP ... convert block format alignment into clustal format. */
-    ajFmtPrintS(&exec,"ver2hor -f %S.%d.post > %S\n",
-		name, ncluster, out); 
-    ajFmtPrint("%S\n", exec);
-    system(ajStrGetPtr(exec));
+    ajFmtPrintS(&exec,"ver2hor -f %S.%d.post",
+		name, ncluster); 
+    ajFmtPrint("%S > %S\n\n", exec, out);
+    ajSystemOut(exec, out);
     
     
     /* Process STAMP alignment file and generate alignment file for output. */
@@ -1105,13 +1098,12 @@ static void domainalign_stamp(AjPDomain prevdomain,
     
     for(x=1;x<ncluster+1;x++)
     {
-	ajFmtPrintS(&temp, "rm %S.%d", name, x);
-	ajSystem(temp); 
+	ajFmtPrintS(&temp, "%S.%d", name, x);
+	ajSysUnlink(temp); 
     }
     
-    ajFmtPrintS(&temp, "rm %S.%d.post", name, ncluster);
-    ajSystem(temp); 
-  
+    ajFmtPrintS(&temp, "%S.%d.post", name, ncluster);
+    ajSysUnlink(temp); 
 
     ajStrDel(&exec);
     ajStrDel(&line);
@@ -1157,11 +1149,11 @@ static void domainalign_tcoffee(AjPDomain domain,
        e.g. d1vsc_2.ent. 
        '-outfile' is the clustal format alignment output file. */
 
-    ajFmtPrintS(&exec,"t_coffee -in %S sap_pair > %S", pdbnames, in);
-    ajFmtPrint("%S\n", exec);
-    system(ajStrGetPtr(exec));  
+    ajFmtPrintS(&exec,"t_coffee -in %S sap_pair", pdbnames);
+    ajFmtPrint("%S > %S\n", exec, in);
+    ajSystemOut(exec, in);
 
-    /* Process tcofee alignment file and generate alignment file 
+    /* Process tcoffee alignment file and generate alignment file 
        for output. */
     domainalign_ProcessTcoffeeFile(in, align, domain, noden, logf);
 
