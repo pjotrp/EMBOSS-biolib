@@ -8540,7 +8540,7 @@ IN test.out
 FI test.out
 FC = 31
 FP 1 /^asis::/
-FP 1 /^asis::caaggttccaacc\[7:8\:r\]\n/
+FP 1 /^asis::caaggttccaacc\[6:7\:r\]\n/
 FP 1 /^# Total_sequences: 1\n/
 FP 1 /^# Total_hitcount: 1\n/
 FI stderr
@@ -21666,7 +21666,7 @@ PP mkdir daf
 RQ stamp
 CC requires a modified stamp to be installed
 IN ../../data/structure/all.scop2
-IN ../domainer-keep2
+IN
 IN 4
 IN 1
 IN N
