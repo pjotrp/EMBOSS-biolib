@@ -17,7 +17,7 @@
 #endif
 #include "emboss.h"
 /*@unused@*/
-static const char rcsid[] = "$Id: utils.c,v 1.4 2007/02/28 11:46:56 rice Exp $";
+static const char rcsid[] = "$Id: utils.c,v 1.5 2007/05/25 13:53:11 rice Exp $";
 
 #define PRIVATE  static
 #define PUBLIC
@@ -102,8 +102,8 @@ PUBLIC void init_rand(void)
   if(ajNamGetValueC("timetoday", &timestr))
   {
       timenow = ajTimeNew();
-      ajTimeSetS(timenow, ajStrGetPtr(timestr));
-      t = ajTimeMake(timenow);
+      ajTimeSetS(timenow, timestr);
+      t = ajTimeGetTimetype(timenow);
       ajStrDel(&timestr);
       ajTimeDel(&timenow);
   }

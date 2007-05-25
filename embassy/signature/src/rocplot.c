@@ -2109,7 +2109,7 @@ static AjBool rocplot_write_summary(AjPDir outdir, AjPFile outf, ajint mode,
     }
     
 
-    today = ajTimeTodayF("dd Mon yyyy");
+    today = ajTimeNewTodayFmt("dd Mon yyyy");
     ajFmtPrintF(outf, "rocplot summary file (%D)\n\n", today);
     
     
