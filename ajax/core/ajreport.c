@@ -1041,7 +1041,10 @@ static void reportWriteListFile(AjPReport thys,
     ajuint iend   = 0;
     AjPStr subseq = NULL;
     ajuint i = 0;
+    ajint ipos;
+    ajint jpos;
     AjPStr tmpstr = NULL;
+    AjPStr tmpname = NULL;
 
     outf = thys->File;
     thys->Showusa = ajTrue;		/* so we get a usable USA */
@@ -1063,7 +1066,13 @@ static void reportWriteListFile(AjPReport thys,
 	if(istart)
 	{
 	    if(feature->Strand == '-')
-		ajFmtPrintAppS(&tmpstr, "%d", ajSeqGetLen(seq) - istart + 1);
+	    {
+		if(ajSeqIsReversed(seq))
+		    ajFmtPrintAppS(&tmpstr, "%d", iend);
+		else
+		    ajFmtPrintAppS(&tmpstr, "%d",
+				   ajSeqGetLen(seq) - istart + 1);
+	    }
 	    else
 		ajFmtPrintAppS(&tmpstr, "%d", istart);
 	}
@@ -1072,7 +1081,12 @@ static void reportWriteListFile(AjPReport thys,
 	if(iend)
 	{
 	    if(feature->Strand == '-')
-		ajFmtPrintAppS(&tmpstr, "%d", ajSeqGetLen(seq) - iend + 1);
+	    {
+		if(ajSeqIsReversed(seq))
+		    ajFmtPrintAppS(&tmpstr, "%d", istart);
+		else
+		    ajFmtPrintAppS(&tmpstr, "%d", ajSeqGetLen(seq) - iend + 1);
+	    }
 	    else
 		ajFmtPrintAppS(&tmpstr, "%d", iend);
 	}
@@ -1081,12 +1095,19 @@ static void reportWriteListFile(AjPReport thys,
 	    ajFmtPrintAppS(&tmpstr, ":r");
 	ajFmtPrintAppS(&tmpstr, "]");
 
+	ajStrAssignS(&tmpname, ajSeqGetUsaS(seq));
+	if(ajStrGetCharLast(tmpname) == ']') {
+	    jpos = ajStrGetLen(tmpname);
+	    ipos = ajStrFindlastC(tmpname, "[");
+	    ajStrCutRange(&tmpname, ipos, jpos);
+	}
+
 	if(ajStrGetLen(tmpstr) > 3)
 	    ajFmtPrintF(outf, "%S%S\n",
-			ajReportSeqName(thys, seq), tmpstr);
+			tmpname, tmpstr);
 	else
 	    ajFmtPrintF(outf, "%S\n",
-			ajReportSeqName(thys, seq));
+			tmpname);
 
 	ajStrDelStatic(&tmpstr);
     }
@@ -1096,6 +1117,7 @@ static void reportWriteListFile(AjPReport thys,
     ajListIterFree(&iterft);
     ajStrDel(&subseq);
     ajStrDel(&tmpstr);
+    ajStrDel(&tmpname);
 
     return;
 }
@@ -2537,7 +2559,7 @@ void ajReportWriteHeader(AjPReport thys,
     
     outf = thys->File;
 
-    today =  ajTimeTodayF("report");
+    today =  ajTimeNewTodayFmt("report");
     
     /* Header for the top of the file (first call for report only) */
     
@@ -3180,6 +3202,7 @@ const AjPStr ajReportSeqName(const AjPReport thys, const AjPSeq seq)
 
     return ajSeqGetNameS(seq);
 }
+
 
 
 
