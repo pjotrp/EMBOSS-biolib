@@ -30,21 +30,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#ifndef WIN32
 #include <strings.h>
 #include <unistd.h>
+#endif
+
 #include <sys/stat.h>
+#include <sys/types.h>
+
+#ifndef WIN32
 #include <sys/time.h>
 #include <sys/file.h>
 #include <sys/resource.h>
 #include <sys/param.h>
-#include <sys/types.h>
 #include <sys/wait.h>
-
+#include <sys/ioctl.h>
+#endif
 
 #include <errno.h>
 #include <fcntl.h>
 #include <ctype.h>
-#include <sys/ioctl.h>
+
 
 #ifdef HAVE_JAVA
 #include <jni.h>
@@ -84,12 +91,15 @@
 #include <sys/filio.h>
 #endif
 
+#ifndef WIN32
 #include <pwd.h>
+#endif
+
 #ifndef _XOPEN_SOURCE
 #define _XOPEN_SOURCE
 #endif
 
-#if !defined(__ppc__) && !defined(__FreeBSD__)
+#if !defined(__ppc__) && !defined(__FreeBSD__) && !defined(WIN32)
 #include <crypt.h>
 #endif
 
@@ -421,6 +431,8 @@ static AjBool ajJavaGetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq)
 
 
 
+
+#ifndef WIN32
 
 /* @func Ajax.userInfo ********************************************************
 **
@@ -5376,6 +5388,7 @@ static int java_block(int chan, unsigned long flag)
     return 0;
 }
 
+#endif /* WIN32 */
 
 #endif
 
