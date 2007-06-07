@@ -1429,6 +1429,7 @@ nullok: N<br>
 
   <td>
   <p>
+distancecount (integer)<br>
 distancesize (integer)<br>
 replicates (boolean)<br>
 hasmissing (boolean)<br>
@@ -4790,7 +4791,7 @@ they can fix the value, or provide parsers for each alternative.
   <p>characters: <i>string<i></p>
   </td>
   <td>
-  <p>Allowed discrete state characters (default is '01' for binary characters)<br>Default: "01"</p>
+  <p>Allowed discrete state characters (default is '' for all non-space characters<br>Default: "01"</p>
   </td>
  </tr>
 
@@ -5162,7 +5163,7 @@ they can fix the value, or provide parsers for each alternative.
   <p>characters: <i>string<i></p>
   </td>
   <td>
-  <p>Allowed property characters (default is '' for all characters)<br>Default: ""</p>
+  <p>Allowed property characters (default is '' for all non-space characters)<br>Default: ""</p>
   </td>
  </tr>
 
@@ -8109,6 +8110,18 @@ sequence, the length, the type of sequence (Protein, DNA, RNA etc).</p>
  <tr>
   <td>
   <p>distances</p>
+  </td>
+  <td>
+  <p>distancecount: <i>integer<i></p>
+  </td>
+  <td>
+  <p>Number of distance matrices<br>Default: </p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
   </td>
   <td>
   <p>distancesize: <i>integer<i></p>
