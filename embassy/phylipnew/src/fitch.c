@@ -12,7 +12,7 @@
 #define delta           0.01      /* a not quite so small number */
 #define MAXNUMTREES   100000000 /* a number bigger than conceivable numtrees */
 
-AjPPhyloDist phylodist = NULL;
+AjPPhyloDist* phylodists = NULL;
 AjPPhyloTree* phylotrees;
 
 #ifndef OLDC
@@ -64,7 +64,7 @@ AjPFile embossouttree;
 
 Char infilename[FNMLNGTH], intreename[FNMLNGTH];
 long nonodes2, outgrno, nums, col, datasets, ith, njumble, jumb=0, numtrees;
-long inseed;
+long inseed, nummatrices=0;
 vector *x;
 intvector *reps;
 boolean minev, global, jumble, lengths, usertree, lower, upper, negallowed,
@@ -112,10 +112,10 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
     embInitP (pgm, argc, argv, "PHYLIPNEW");
    
-    phylodist = ajAcdGetDistances("datafile");
+    phylodists = ajAcdGetDistances("datafile");
 
-    //  while (phylodist[nummatrices])
-    //	nummatrices++;
+    while (phylodists[nummatrices])
+    nummatrices++;
 
 
     minev = ajAcdGetBool("minev");
@@ -165,6 +165,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     emboss_openfile(embossoutfile, &outfile, &outfilename);
     if(trout) emboss_openfile(embossouttree, &outtree, &outtreename);
 
+/*
     printf("\n inseed: %ld",(inseed));
     printf("\n global: %s",(global ? "true" : "false"));
     printf("\n jumble: %s",(jumble ? "true" : "false"));
@@ -184,7 +185,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     printf("\n treeprint: %s",(treeprint ? "true" : "false"));
     printf("\n mulsets: %s",(mulsets ? "true" : "false"));
     printf("\n datasets: %ld",(datasets));
-
+*/
 
 }  /* emboss_getoptions */
 
@@ -208,7 +209,7 @@ void doinit()
 {
   /* initializes variables */
 
-  inputnumbers2seq(phylodist, &spp, &nonodes2, 2);
+  inputnumbers2seq(phylodists[0], &spp, &nonodes2, 2);
   alloctree(&curtree.nodep, nonodes2);
   allocd(nonodes2, curtree.nodep);
   allocw(nonodes2, curtree.nodep);
@@ -233,7 +234,7 @@ void inputoptions()
 {
   /* print options information */
   if (!firstset)
-    samenumspseq2(phylodist, ith);
+    samenumspseq2(phylodists[ith-1], ith);
   fprintf(outfile, "\nFitch-Margoliash method version %s\n\n",VERSION);
   if (minev)
     fprintf(outfile, "Minimum evolution method option\n\n");
@@ -896,7 +897,8 @@ void maketree()
   char* treestr;
 
   if (usertree) {
-    dist_inputdata(phylodist, replicates, printdata, lower, upper, x, reps);
+    dist_inputdata(phylodists[ith-1], replicates, printdata,
+		   lower, upper, x, reps);
     setuptree(&curtree, nonodes2);
     for (which = 1; which <= spp; which++)
       setuptipf(which, &curtree);
@@ -928,7 +930,8 @@ void maketree()
     FClose(intree);
   } else {
     if (jumb == 1) {
-      dist_inputdata(phylodist, replicates, printdata, lower, upper, x, reps);
+      dist_inputdata(phylodists[ith-1], replicates, printdata,
+		     lower, upper, x, reps);
       setuptree(&curtree, nonodes2);
       setuptree(&priortree, nonodes2);
       setuptree(&bestree, nonodes2);

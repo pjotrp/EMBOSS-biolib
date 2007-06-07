@@ -9,7 +9,7 @@
    charged for it and provided that this copyright notice is not removed. */
 
 
-AjPPhyloDist phylodist = NULL;
+AjPPhyloDist* phylodists = NULL;
 AjPPhyloTree* phylotrees;
 
 #ifndef OLDC
@@ -76,7 +76,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     if(ajStrMatchC(matrixtype, "l")) lower = true;
     else if(ajStrMatchC(matrixtype, "u")) upper = true;
 
-    phylodist = ajAcdGetDistances("datafile");
+    phylodists = ajAcdGetDistances("datafile");
 
     treetype = ajAcdGetListSingle("treetype");
     if(ajStrMatchC(treetype, "n")) njoin = true;
@@ -140,7 +140,7 @@ void doinit()
   /* initializes variables */
   node *p;
 
-  inputnumbers2seq(phylodist, &spp, &nonodes2, 2);
+  inputnumbers2seq(phylodists[0], &spp, &nonodes2, 2);
   nonodes2 += (njoin ? 0 : 1);
   alloctree(&curtree.nodep, nonodes2+1);
   p = curtree.nodep[nonodes2]->next->next;
@@ -155,7 +155,7 @@ void inputoptions()
   /* read options information */
 
   if (ith != 1)
-    samenumspseq2(phylodist, ith);
+    samenumspseq2(phylodists[ith-1], ith);
   putc('\n', outfile);
   if (njoin)
     fprintf(outfile, " Neighbor-joining method\n");
@@ -434,7 +434,8 @@ void maketree()
   /* construct the tree */
   long i ;
 
-  dist_inputdata(phylodist, replicates, printdata, lower, upper, x, reps);
+  dist_inputdata(phylodists[ith-1], replicates, printdata,
+		 lower, upper, x, reps);
   if (njoin && (spp < 3)) {
     printf("\nERROR: Neighbor-Joining runs must have at least 3 species\n\n");
     embExitBad();
@@ -486,8 +487,8 @@ int main(int argc, Char *argv[])
   doinit();
 
   ith = 1;
-  while (ith <= datasets) {
-    if (datasets > 1) {
+  while (phylodists[ith-1]) {
+    if (ith > 1) {
       fprintf(outfile, "Data set # %ld:\n",ith);
       if (progress)
         printf("Data set # %ld:\n",ith);
