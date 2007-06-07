@@ -1,4 +1,24 @@
 Version 5.0.0
+	Antigenic now accepts any protein sequence as input (earlier
+	versions did not allow ambiguity codes). B and Z are treated as
+	weighted averages of D/N and E/Q. All others are converted to X
+	and treated as a weighted average of all values. The data table
+	used has no information for selenocysteine or pyrrolysine.
+
+	Dottup is corrected to plot only the selected sequence range. The
+	plot lines were 1 residue too long (only noticeable on very short
+	sequences).
+
+	Distance matrix data can now read multiple distance matrices from
+	a single input file. This is used by three programs (fneighbor,
+	ffitch and fkitsch) in the phylipnew EMBASSY package.
+
+	Discrete states input now correctly defaults to all non-space
+	characters if no characters attribute is given in the ACD file.
+	This was the intention, but two programs (fpars and fdiscboot)
+	were instead accepting only 0 and 1. Other phylip programs have
+	their discrete state character set specified in the ACD file.
+
 	A new function ajSystemOut calls a system command, and redirects
 	standard output to a named file.
 	
