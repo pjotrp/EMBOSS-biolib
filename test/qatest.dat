@@ -8429,7 +8429,7 @@ FI stdout
 FZ = 18
 FP /^Created dottup.ps\n/
 FI dottup.ps
-FC = 2528
+FC = 2529
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stderr
@@ -8449,7 +8449,7 @@ FC = 1
 FP /^Created dottup1.dat\n/
 FI dottup1.dat
 FC = 2282
-FP /^Line x1 5287.000000 y1 624.000000 x2 5298.000000 y2 635.000000 colour 0\n/
+FP /^Line x1 5288.000000 y1 625.000000 x2 5298.000000 y2 635.000000 colour 0\n/
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -24573,8 +24573,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 57
-FP 52 /^./
+FC = 15
+FP 11 /^./
 //
 
 ID ffreqboot-ex
@@ -24641,8 +24641,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 61
-FP 55 /^./
+FC = 19
+FP 14 /^./
 //
 
 ID fmix-ex
@@ -24740,8 +24740,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 38
-FP 32 /^./
+FC = 15
+FP 9 /^./
 //
 
 ID fpars-ex
