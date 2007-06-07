@@ -193,7 +193,7 @@ void ajSysArglistFree(char*** PParglist)
 }
 
 
-/* @obsolete ajSysArglistFree
+/* @obsolete ajSysArgListFree
 ** @rename ajSysArglistFree
 */
 
