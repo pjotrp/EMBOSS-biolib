@@ -371,6 +371,10 @@ ajStrCopyC =ajStrDel 1,n 1
 ajStrCopyC =ajStrAssignC 1,2 1,2
 ajStrCopyC @ajStrDel_or_@ajStrAssignC
 #ajsys
+ajSysArglist ajSysArglistBuild
+ajSysArglistFree ajSysArglistFree
+ajSysBasename ajFileNameTrim
+ajSysIsRegular -
 #ajtable
 #ajtime
 ajTimeSet ajTimeNewDayFmt
