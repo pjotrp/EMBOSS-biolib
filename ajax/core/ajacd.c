@@ -1340,7 +1340,7 @@ AcdOAttr acdAttrDiscretestates[] =
     {"size", VT_INT, 0, "1",
 	 "Number of discrete state set"},
     {"characters", VT_STR, 0, "01",
-	 "Allowed discrete state characters (default is '01' for binary characters)"},
+	 "Allowed discrete state characters (default is '' for all non-space characters"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, 0, NULL,
@@ -1728,7 +1728,7 @@ AcdOAttr acdAttrProperties[] =
     {"size", VT_INT, 0, "1",
 	 "Number of property sets"},
     {"characters", VT_STR, 0, "",
-	 "Allowed property characters (default is '' for all characters)"},
+	 "Allowed property characters (default is '' for all non-space characters)"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, 0, NULL,
@@ -2039,6 +2039,8 @@ static AcdOAttr acdCalcDiscrete[] =
 
 static AcdOAttr acdCalcDistances[] =
 {
+    {"distancecount", VT_INT, 0, "",
+	 "Number of distance matrices"},
     {"distancesize", VT_INT, 0, "",
 	 "Number of distance rows"},
     {"replicates", VT_BOOL, 0, "",
@@ -7079,7 +7081,7 @@ static void acdSetDiscretestates(AcdPAcd thys)
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
     acdAttrToInt(thys, "size", 1, &size);
     acdAttrToInt(thys, "length", 1, &len);
-    acdAttrToStr(thys, "characters", "01", &statechars);
+    acdAttrToStr(thys, "characters", "", &statechars);
 
     acdInFilename(&infname);
 
@@ -7163,15 +7165,51 @@ static void acdSetDiscretestates(AcdPAcd thys)
 ** and simply returns what the ACD item already has.
 **
 ** @param [r] token [const char*] Text token name
+** @return [AjPPhyloDist*] Distances object. The string was already set by
+**         acdSetDistances so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPPhyloDist* ajAcdGetDistances(const char *token)
+{
+    return acdGetValueRef(token, "distances");
+}
+
+
+
+
+/* @func ajAcdGetDistancesSingle **********************************************
+**
+** Returns an item of type Distances as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
 ** @return [AjPPhyloDist] Distances object. The string was already set by
 **         acdSetDistances so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPPhyloDist ajAcdGetDistances(const char *token)
+AjPPhyloDist ajAcdGetDistancesSingle(const char *token)
 {
-    return acdGetValueRef(token, "distances");
+    AjPPhyloDist *val;
+    ajint i;
+
+    val = acdGetValueSingle(token, "distances");
+    for(i=0; val[i]; i++)
+	continue;
+
+    if(i > 1)
+	ajWarn("Single list value %s, but can choose %d values",
+	       token, i);
+
+    if(i < 1)
+	ajWarn("Single list value %s, no value found: returning NULL value",
+	       token);
+
+    return val[0];
 }
 
 
@@ -7198,7 +7236,7 @@ AjPPhyloDist ajAcdGetDistances(const char *token)
 
 static void acdSetDistances(AcdPAcd thys)
 {
-    AjPPhyloDist val = NULL;
+    AjPPhyloDist* val = NULL;
 
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
@@ -7209,6 +7247,7 @@ static void acdSetDistances(AcdPAcd thys)
     AjBool nullok = ajFalse;
     ajint size;
     AjBool missing;
+    ajint i;
 
     val = NULL;
 
@@ -7263,16 +7302,20 @@ static void acdSetDistances(AcdPAcd thys)
 
     if(val)
     {
-	ajStrFromInt(&thys->SetStr[0],val->Size); /* string count */
-	ajStrFromBool(&thys->SetStr[1],val->HasReplicates);
-	ajStrFromBool(&thys->SetStr[2],val->HasMissing);
+	for(i=0;val[i];i++)
+	    continue;
+	ajStrFromInt(&thys->SetStr[0],i); /* matrix count */
+	ajStrFromInt(&thys->SetStr[1],val[0]->Size); /* string count */
+	ajStrFromBool(&thys->SetStr[2],val[0]->HasReplicates);
+	ajStrFromBool(&thys->SetStr[3],val[0]->HasMissing);
  	ajStrAssignS(&thys->ValStr, acdReply);
     }
     else
     {
-	ajStrFromInt(&thys->SetStr[0],0); /* string count */
-	ajStrFromBool(&thys->SetStr[1],ajFalse);
+	ajStrFromInt(&thys->SetStr[0],0); /* matrix count */
+	ajStrFromInt(&thys->SetStr[1],0); /* string count */
 	ajStrFromBool(&thys->SetStr[2],ajFalse);
+	ajStrFromBool(&thys->SetStr[3],ajFalse);
 	ajStrAssignC(&thys->ValStr, "");
     }
 
@@ -13231,13 +13274,13 @@ static void acdSetTree(AcdPAcd thys)
 	    continue;
 
 	ajStrFromInt(&thys->SetStr[0],i); /* number of trees */
-	ajStrFromInt(&thys->SetStr[1],val[0]->Size); /* number of trees */
+	ajStrFromInt(&thys->SetStr[1],val[0]->Size);
 	ajStrFromBool(&thys->SetStr[2],val[0]->HasLengths);
 	ajStrAssignS(&thys->ValStr, val[0]->Tree);
     }
     else
     {
-	ajStrFromInt(&thys->SetStr[0],0);
+	ajStrFromInt(&thys->SetStr[0],0); /* number of trees */
 	ajStrFromInt(&thys->SetStr[1],0);
 	ajStrFromBool(&thys->SetStr[2],ajFalse);
 	ajStrAssignC(&thys->ValStr, "");
