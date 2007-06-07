@@ -8710,7 +8710,7 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 			qry->QryString, qry->Field);
 		if(ajStrMatchCaseC(qry->Field, "id"))
 		    ajStrAssignS(&qry->Id, qry->QryString);
-		else if(ajStrMatchCaseC(qry->Field, "acc"))
+		else if(qry->HasAcc && ajStrMatchCaseC(qry->Field, "acc"))
 		    ajStrAssignS(&qry->Acc, qry->QryString);
 		else
 		{
@@ -8743,7 +8743,8 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 	    else
 	    {
 		ajStrAssignS(&qry->Id, qry->QryString);
-		ajStrAssignS(&qry->Acc, qry->QryString);
+		if(qry->HasAcc)
+		    ajStrAssignS(&qry->Acc, qry->QryString);
 		if(seqQueryFieldC(qry, "sv"))
 		    ajStrAssignS(&qry->Sv, qry->QryString);
 	    }
@@ -8822,14 +8823,15 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 	    {
 		if(ajStrGetLen(qry->QryString))
 		{
-		    ajDebug("file QryString '%S' Field '%S' seqQryChr '%S'\n",
-			    qry->QryString, qry->Field, seqQryChr);
+		    ajDebug("file QryString '%S' Field '%S' hasAcc:%B seqQryChr '%S'\n",
+			    qry->QryString, qry->Field, qry->HasAcc, seqQryChr);
 		    if(ajStrGetLen(qry->Field)) /* set by dbname above */
 		    {
 			/* ajDebug("    qry->Field %S\n", qry->Field); */
 			if(ajStrMatchCaseC(qry->Field, "id"))
 			    ajStrAssignS(&qry->Id, qry->QryString);
-			else if(ajStrMatchCaseC(qry->Field, "acc"))
+			else if(qry->HasAcc &&
+				ajStrMatchCaseC(qry->Field, "acc"))
 			    ajStrAssignS(&qry->Acc, qry->QryString);
 			else if(ajStrMatchCaseC(qry->Field, "sv"))
 			    ajStrAssignS(&qry->Sv, qry->QryString);
@@ -8851,7 +8853,8 @@ static AjBool seqUsaProcess(AjPSeq thys, AjPSeqin seqin)
 		    else
 		    {
 			ajStrAssignS(&qry->Id, qry->QryString);
-			ajStrAssignS(&qry->Acc, qry->QryString);
+			if(qry->HasAcc)
+			    ajStrAssignS(&qry->Acc, qry->QryString);
 		    }
 		}
 		accstat = ajSeqAccessFile(seqin);
@@ -9462,6 +9465,7 @@ AjPSeqQuery ajSeqQueryNew(void)
     pthis->QryData = NULL;
     pthis->Fpos    = NULLFPOS;
     pthis->QryDone = ajFalse;
+    pthis->HasAcc  = ajTrue;
 
     return pthis;
 }
@@ -10052,19 +10056,12 @@ void ajSeqQueryTrace(const AjPSeqQuery thys)
 
     if(ajStrGetLen(thys->DbType))
 	ajDebug( "    DbType: '%S' (%d)\n", thys->DbType, thys->Type);
-    ajDebug( "   QryDone: %B\n", thys->QryDone);
 
     if(ajStrGetLen(thys->Id))
 	ajDebug( "    Id: '%S'\n", thys->Id);
 
     if(ajStrGetLen(thys->Acc))
 	ajDebug( "    Acc: '%S'\n", thys->Acc);
-
-    if(ajStrGetLen(thys->Sv))
-	ajDebug( "    Sv: '%S'\n", thys->Sv);
-
-    if(ajStrGetLen(thys->Gi))
-	ajDebug( "    Gi: '%S'\n", thys->Gi);
 
     if(ajStrGetLen(thys->Des))
 	ajDebug( "    Des: '%S'\n", thys->Des);
@@ -10074,6 +10071,15 @@ void ajSeqQueryTrace(const AjPSeqQuery thys)
 
     if(ajStrGetLen(thys->Org))
 	ajDebug( "    Org: '%S'\n", thys->Org);
+
+    if(ajStrGetLen(thys->Sv))
+	ajDebug( "    Sv: '%S'\n", thys->Sv);
+
+    if(ajStrGetLen(thys->Gi))
+	ajDebug( "    Gi: '%S'\n", thys->Gi);
+
+    ajDebug( "    Case-sensitive Id: '%B'\n", thys->CaseId);
+    ajDebug( "   Has accession: %B\n", thys->HasAcc);
 
     if(ajStrGetLen(thys->Method))
 	ajDebug( "    Method: '%S'\n", thys->Method);
@@ -10093,8 +10099,30 @@ void ajSeqQueryTrace(const AjPSeqQuery thys)
     if(ajStrGetLen(thys->Exclude))
 	ajDebug( "    Exclude: '%S'\n", thys->Exclude);
 
+    if(ajStrGetLen(thys->DbFields))
+	ajDebug( "    DbFields: '%S'\n", thys->DbFields);
+
+    if(ajStrGetLen(thys->DbProxy))
+	ajDebug( "    DbProxy: '%S'\n", thys->DbProxy);
+
+    if(ajStrGetLen(thys->DbHttpVer))
+	ajDebug( "    DbHttpVer: '%S'\n", thys->DbHttpVer);
+
+    if(ajStrGetLen(thys->Field))
+	ajDebug( "    Field: '%S'\n", thys->Field);
+
+    if(ajStrGetLen(thys->QryString))
+	ajDebug( "    QryString: '%S'\n", thys->QryString);
+
     if(ajStrGetLen(thys->Application))
 	ajDebug( "    Application: '%S'\n", thys->Application);
+
+    if(ajStrGetLen(thys->Application))
+	ajDebug( "    Application: '%S'\n", thys->Application);
+
+    ajDebug( "   Fpos: %ld\n", thys->Fpos);
+    ajDebug( "   QryDone: %B\n", thys->QryDone);
+    ajDebug( "   Wildcard in query: %B\n", thys->Wild);
 
     if(thys->Access)
 	ajDebug( "    Access: exists\n");

@@ -760,8 +760,8 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 
 	if(qry->Type == QRY_ENTRY)
 	{
-	    ajDebug("entry id: '%S' acc: '%S' gi: '%S'\n",
-		    qry->Id, qry->Acc, qry->Gi);
+	    ajDebug("entry id: '%S' acc: '%S' gi: '%S' hasacc:%B\n",
+		    qry->Id, qry->Acc, qry->Gi, qry->HasAcc);
 	    if(!seqCdQryEntry(qry))
 	    {
 		ajDebug("EMBLCD Entry failed\n");
@@ -769,15 +769,17 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 		    ajDebug("Database Entry id-'%S' not found\n", qry->Id);
 		else if(ajStrGetLen(qry->Gi))
 		    ajDebug("Database Entry gi-'%S' not found\n", qry->Gi);
-		else
+		else if (qry->HasAcc && ajStrGetLen(qry->Acc))
 		    ajDebug("Database Entry acc-'%S' not found\n", qry->Acc);
+		else
+		    ajDebug("Database Entry '%S' not found\n", qry->Id);
 	    }
 	}
 
 	if(qry->Type == QRY_QUERY)
 	{
-	    ajDebug("query id: '%S' acc: '%S' gi: '%S'\n",
-		    qry->Id, qry->Acc, qry->Gi);
+	    ajDebug("query id: '%S' acc: '%S' gi: '%S' hasacc:%B\n",
+		    qry->Id, qry->Acc, qry->Gi, qry->HasAcc);
 	    if(!seqCdQryQuery(qry))
 	    {
 		ajDebug("EMBLCD Query failed\n");
@@ -796,7 +798,7 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 		else if(ajStrGetLen(qry->Org))
 		    ajDebug("Database Query 'org:%S' not found\n", qry->Org);
 		else
-		    ajDebug("Database Query '%S' not found\n", qry->Acc);
+		    ajDebug("Database Query '%S' not found\n", qry->Id);
 	    }
 	}
     }
@@ -1263,7 +1265,7 @@ static ajuint seqCdIdxSearch(SeqPCdIdx idxLine, const AjPStr entry,
     ajStrFmtUpper(&entrystr);
 
     ajDebug("seqCdIdxSearch (entry '%S') records: %d\n",
-	    entry, fil->NRecords);
+	    entrystr, fil->NRecords);
 
     if(fil->NRecords < 1)
 	return -1;
@@ -1906,7 +1908,7 @@ static AjBool seqAccessEntrez(AjPSeqin seqin)
 	    ajFmtPrintAppS(&get, "&term=%S",
 			   qry->Id);
 	}
-	else if(ajStrGetLen(qry->Acc))
+	else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	    ajFmtPrintAppS(&get, "&term=%S[accn]",
 			   qry->Acc);
 	else if(ajStrGetLen(qry->Gi))
@@ -2278,7 +2280,7 @@ static AjBool seqAccessSeqhound(AjPSeqin seqin)
 	    ajFmtPrintAppS(&get, "fnct=SeqHoundFindNameList&pname=%S",
 			   qry->Id);
 	/* Acc FindAccList&pnacc= */
-	else if(ajStrGetLen(qry->Acc))
+	else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	    ajFmtPrintAppS(&get, "fnct=SeqHoundFindAccList&pacc=%S",
 			   qry->Acc);
 	/* Gi Use directly! */
@@ -2937,11 +2939,13 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
 	    {
 		ajDebug("B+tree Entry failed\n");
 		if(qryd->do_id)
-		    ajDebug("Database entry id-'%S' not found\n",qry->Id);
+		    ajDebug("Database entry id:'%S' not found\n",qry->Id);
 		else if(qryd->do_sv)
-		    ajDebug("Database entry gi-'%S' not found\n",qry->Gi);
+		    ajDebug("Database entry gi:'%S' not found\n",qry->Gi);
+		else if(qryd->do_ac)
+		    ajDebug("Database entry acc:'%S' not found\n",qry->Acc);
 		else
-		    ajDebug("Database entry acc-'%S' not found\n",qry->Acc);
+		    ajDebug("Database entry '%S' not found\n",qry->Id);
 	    }
 	}
 
@@ -2952,8 +2956,8 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
 		ajDebug("EMBOSS B+tree Query failed\n");
 		if(ajStrGetLen(qry->Id))
 		    ajDebug("Database Query '%S' not found\n", qry->Id);
-		else if(ajStrGetLen(qry->Acc))
-		    ajDebug("Database Query '%S' not found\n", qry->Acc);
+		else if(qry->HasAcc && ajStrGetLen(qry->Acc))
+		    ajDebug("Database Query acc:'%S' not found\n", qry->Acc);
 		else if(ajStrGetLen(qry->Sv))
 		    ajDebug("Database Query 'sv:%S' not found\n", qry->Sv);
 		else if(ajStrGetLen(qry->Gi))
@@ -2965,7 +2969,7 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
 		else if(ajStrGetLen(qry->Org))
 		    ajDebug("Database Query 'org:%S' not found\n", qry->Org);
 		else
-		    ajDebug("Database Query '%S' not found\n", qry->Acc);
+		    ajDebug("Database Query '%S' not found\n", qry->Id);
 	    }
 	}
     }
@@ -3115,7 +3119,7 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 	qryd->do_id = ajTrue;
     }
     
-    if(ajStrGetLen(qry->Acc))
+    if(qry->HasAcc && ajStrGetLen(qry->Acc))
     {
 	ajStrFmtLower(&qry->Acc);
 	qryd->do_ac = ajTrue;
@@ -3160,8 +3164,8 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 	return ajFalse;
     }
 
-    ajDebug("directory '%S' entry '%S' acc '%S'\n",
-	    qry->IndexDir, qry->Id, qry->Acc);
+    ajDebug("directory '%S' entry '%S' acc '%S' hasacc:%B\n",
+	    qry->IndexDir, qry->Id, qry->Acc, qry->HasAcc);
 
 
     if(qryd->do_id)
@@ -3410,7 +3414,7 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 	if(qry->Exclude)
 	{
 	    ajStrAssignS(&name,filestrings[i]);
-	    ajSysBasename(&name);
+	    ajFileNameTrim(&name);
 	    del = ajFalse;
 	    
 	    handle = ajStrTokenNewC(qry->Exclude," \n");
@@ -3469,7 +3473,8 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
     AjPBtId entry  = NULL;
     SeqPEmbossQry qryd;
     
-    ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+    ajDebug("entry id: '%S' acc: '%S' hasacc:%B\n",
+	    qry->Id, qry->Acc, qry->HasAcc);
 
     qryd = qry->QryData;
 
@@ -4027,7 +4032,7 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
 	    while(!ok)
 	    {
 		ajStrAssignS(&name,qryd->files[i]);
-		ajSysBasename(&name);
+		ajFileNameTrim(&name);
 		handle = ajStrTokenNewC(qry->Exclude," \n");
 		found = ajFalse;
 		while(ajStrToken(&wildname,&handle," \n"))
@@ -4557,8 +4562,8 @@ static AjBool seqCdQryOpen(AjPSeqQuery qry)
 	return ajFalse;
     }
 
-    ajDebug("directory '%S' entry '%S' acc '%S'\n",
-	    qry->IndexDir, qry->Id, qry->Acc);
+    ajDebug("directory '%S' entry '%S' acc '%S' hasacc:%B\n",
+	    qry->IndexDir, qry->Id, qry->Acc, qry->HasAcc);
 
     qry->QryData = AJNEW0(qryd);
     qryd->List = ajListNew();
@@ -4627,7 +4632,8 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
     ajint trghit;
     SeqPCdQry qryd;
 
-    ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+    ajDebug("entry id: '%S' acc: '%S' hasacc:%B\n",
+	    qry->Id, qry->Acc, qry->HasAcc);
 
     qryd = qry->QryData;
 
@@ -4651,6 +4657,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
     }
 
     if(ipos < 0 &&		     /* if needed, search by accnum */
+       qry->HasAcc &&
        ajStrGetLen(qry->Acc) &&
        seqCdTrgOpen(qry->IndexDir, "acnum",
 		    &qryd->trgfp, &qryd->hitfp))
@@ -4723,7 +4730,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		}
 		else
 		    ajDebug("SKIP: seqvn '%S' [file %d]\n",
-			    qry->Acc, qryd->idxLine->DivCode);
+			    qry->Sv, qryd->idxLine->DivCode);
 	    }
 	}
 	seqCdTrgClose(&qryd->trgfp, &qryd->hitfp);
@@ -4765,7 +4772,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		}
 		else
 		    ajDebug("SKIP: seqvn '%S' [file %d]\n",
-			    qry->Acc, qryd->idxLine->DivCode);
+			    qry->Gi, qryd->idxLine->DivCode);
 	    }
 	}
 	seqCdTrgClose(&qryd->trgfp, &qryd->hitfp);
@@ -4807,7 +4814,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		}
 		else
 		    ajDebug("SKIP: des '%S' [file %d]\n",
-			    qry->Acc, qryd->idxLine->DivCode);
+			    qry->Des, qryd->idxLine->DivCode);
 	    }
 	}
 	seqCdTrgClose(&qryd->trgfp, &qryd->hitfp);
@@ -4849,7 +4856,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		}
 		else
 		    ajDebug("SKIP: key '%S' [file %d]\n",
-			    qry->Acc, qryd->idxLine->DivCode);
+			    qry->Key, qryd->idxLine->DivCode);
 	    }
 	}
 	seqCdTrgClose(&qryd->trgfp, &qryd->hitfp);
@@ -4891,7 +4898,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		}
 		else
 		    ajDebug("SKIP: tax '%S' [file %d]\n",
-			    qry->Acc, qryd->idxLine->DivCode);
+			    qry->Org, qryd->idxLine->DivCode);
 	    }
 	}
 	seqCdTrgClose(&qryd->trgfp, &qryd->hitfp);
@@ -5294,14 +5301,16 @@ static AjBool seqAccessGcg(AjPSeqin seqin)
 
 	if(qry->Type == QRY_ENTRY)
 	{
-	    ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+	    ajDebug("entry id: '%S' acc: '%S' hasacc:%B\n",
+		    qry->Id, qry->Acc, qry->HasAcc);
 	    if(!seqCdQryEntry(qry))
 		ajDebug("GCG Entry failed\n");
 	}
 
 	if(qry->Type == QRY_QUERY)
 	{
-	    ajDebug("query id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+	    ajDebug("query id: '%S' acc: '%S' hasacc:%B\n",
+		    qry->Id, qry->Acc, qry->HasAcc);
 	    if(!seqCdQryQuery(qry))
 		ajDebug("GCG Query failed\n");
 	}
@@ -5894,7 +5903,8 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 
 	if(qry->Type == QRY_ENTRY)
 	{
-	    ajDebug("entry id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+	    ajDebug("entry id: '%S' acc: '%S' hasacc:%B\n",
+		    qry->Id, qry->Acc, qry->HasAcc);
 	    if(!seqCdQryEntry(qry))
 	    {
 		ajDebug("BLAST Entry failed\n");
@@ -5903,7 +5913,8 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 
 	if(qry->Type == QRY_QUERY)
 	{
-	    ajDebug("query id: '%S' acc: '%S'\n", qry->Id, qry->Acc);
+	    ajDebug("query id: '%S' acc: '%S' hasacc:%B\n",
+		    qry->Id, qry->Acc, qry->HasAcc);
 	    if(!seqCdQryQuery(qry))
 	    {
 		ajDebug("BLAST Query failed\n");
@@ -6490,7 +6501,7 @@ static AjBool seqAccessDbfetch(AjPSeqin seqin)
     seqHttpVersion(qry, &httpver);
     if(ajStrGetLen(qry->Id))
 	ajStrAssignS(&qryid, qry->Id);
-    else if(ajStrGetLen(qry->Acc))
+    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	ajStrAssignS(&qryid, qry->Acc);
     else {
 	return ajFalse;
@@ -6610,7 +6621,7 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
 	ajFmtPrintAppS(&get,
 		       "&query=id:%S",
 		       qry->Id);
-    else if(ajStrGetLen(qry->Acc))
+    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
     {
     	ajFmtPrintAppS(&get,
 		       "&query=ac:%S",
@@ -7220,7 +7231,7 @@ static AjBool seqAccessApp(AjPSeqin seqin)
 	if(ajStrGetLen(qry->Id))
 	    ajFmtPrintS(&pipename, ajStrGetPtr(qry->Application),
 			ajStrGetPtr(qry->Id));
-	else if(ajStrGetLen(qry->Acc))
+	else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	    ajFmtPrintS(&pipename, ajStrGetPtr(qry->Application),
 			ajStrGetPtr(qry->Acc));
 	else
@@ -7233,7 +7244,7 @@ static AjBool seqAccessApp(AjPSeqin seqin)
 	if(ajStrGetLen(qry->Id))
 	    ajFmtPrintS(&pipename, "%S %S:%S|",
 			qry->Application, qry->DbName, qry->Id);
-	else if(ajStrGetLen(qry->Acc))
+	else if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	    ajFmtPrintS(&pipename, "%S %S:%S|",
 			qry->Application, qry->DbName, qry->Acc);
  	else
@@ -7999,7 +8010,7 @@ static AjBool seqCdTrgQuery(AjPSeqQuery qry)
     if(ajStrGetLen(qry->Gi))
 	ret += seqCdTrgFind(qry, "gi", qry->Gi);
 
-    if(ajStrGetLen(qry->Acc))
+    if(qry->HasAcc && ajStrGetLen(qry->Acc))
 	ret += seqCdTrgFind(qry, "acnum", qry->Acc);
 
 
