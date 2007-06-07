@@ -739,6 +739,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 	{
 	    ajRegExec(regEmblId, rline);
 	    ajRegSubI(regEmblId, 1, myid);
+	    ajStrFmtUpper(myid);
 	    ajDebug("++id '%S'\n", *myid);
 	    ajRegSubI(regEmblId, 3, &tmpfd);
 	    if(svnfield >= 0 && ajStrGetLen(tmpfd))
