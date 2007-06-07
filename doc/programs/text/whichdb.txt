@@ -107,6 +107,8 @@ Output file format
 
   File: outfile.whichdb
 
+# Trying 'qanflatall:x65921'
+qanflatall:x65921
 # Trying 'qangcgall:x65921'
 # Failed 'qangcgall:x65921'
 # Trying 'twp:x65921'

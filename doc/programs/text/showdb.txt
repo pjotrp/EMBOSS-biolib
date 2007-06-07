@@ -86,6 +86,7 @@ genbanksrs       N    OK  -   -   Genbank IDs
 qanfasta         N    OK  OK  OK  FASTA file EMBL rodents
 qanfastaall      N    OK  OK  OK  FASTA file EMBL rodents, all fields indexed
 qanflat          N    OK  OK  OK  EMBL flatfiles
+qanflatall       N    OK  OK  OK  EMBL flatfiles
 qanflatexc       N    OK  OK  OK  EMBL flatfiles, no rodent file
 qanflatinc       N    OK  OK  OK  EMBL flatfiles, only rodent file
 qangcg           N    OK  OK  OK  GCG format EMBL
@@ -200,6 +201,8 @@ index
  qanfastaall N OK   OK   OK   FASTA file EMBL rodents, all fields indexed
 
  qanflat N OK   OK   OK   EMBL flatfiles
+
+ qanflatall N OK   OK   OK   EMBL flatfiles
 
  qanflatexc N OK   OK   OK   EMBL flatfiles, no rodent file
 
@@ -328,6 +331,7 @@ genbanksrs       N    OK  -   -   Genbank IDs
 qanfasta         N    OK  OK  OK  FASTA file EMBL rodents
 qanfastaall      N    OK  OK  OK  FASTA file EMBL rodents, all fields indexed
 qanflat          N    OK  OK  OK  EMBL flatfiles
+qanflatall       N    OK  OK  OK  EMBL flatfiles
 qanflatexc       N    OK  OK  OK  EMBL flatfiles, no rodent file
 qanflatinc       N    OK  OK  OK  EMBL flatfiles, only rodent file
 qangcg           N    OK  OK  OK  GCG format EMBL
@@ -389,6 +393,7 @@ genbanksrs
 qanfasta
 qanfastaall
 qanflat
+qanflatall
 qanflatexc
 qanflatinc
 qangcg
@@ -450,6 +455,7 @@ genbanksrs       N
 qanfasta         N
 qanfastaall      N
 qanflat          N
+qanflatall       N
 qanflatexc       N
 qanflatinc       N
 qangcg           N
@@ -538,6 +544,8 @@ ASTA file EMBL rodents
 qanfastaall      N    OK  OK  OK  emblcd    sv,des            special         F
 ASTA file EMBL rodents, all fields indexed
 qanflat          N    OK  OK  OK  emblcd    -                 special         E
+MBL flatfiles
+qanflatall       N    OK  OK  OK  emblcd    -                 special         E
 MBL flatfiles
 qanflatexc       N    OK  OK  OK  emblcd    -                 special         E
 MBL flatfiles, no rodent file
@@ -695,6 +703,7 @@ genbanksrs       N    OK  -   -   Genbank IDs
 qanfasta         N    OK  OK  OK  FASTA file EMBL rodents
 qanfastaall      N    OK  OK  OK  FASTA file EMBL rodents, all fields indexed
 qanflat          N    OK  OK  OK  EMBL flatfiles
+qanflatall       N    OK  OK  OK  EMBL flatfiles
 qanflatexc       N    OK  OK  OK  EMBL flatfiles, no rodent file
 qanflatinc       N    OK  OK  OK  EMBL flatfiles, only rodent file
 qangcg           N    OK  OK  OK  GCG format EMBL
