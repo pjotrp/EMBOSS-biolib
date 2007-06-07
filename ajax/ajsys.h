@@ -28,15 +28,13 @@ extern "C"
 ** Prototype definitions
 */
 
-AjBool        ajSysArglist (const AjPStr cmdline, char** pgm, char*** arglist);
-void          ajSysArgListFree (char*** arglist);
-void          ajSysBasename(AjPStr *filename);
+AjBool        ajSysArglistBuild (const AjPStr cmdline,
+				 char** Pname, char*** PParglist);
+void          ajSysArglistFree (char*** arglist);
 void          ajSysCanon(AjBool state);
 void          ajSysExit(void);
 char          ajSysItoC(ajint v);
 unsigned char ajSysItoUC(ajint v);
-AjBool        ajSysIsDirectory(const char *s);
-AjBool        ajSysIsRegular(const char *s);
 FILE         *ajSysFdopen(ajint filedes, const char *mode);
 void          ajSystem(const AjPStr cl);
 void          ajSystemEnv(const AjPStr cl, char * const env[]);
@@ -55,6 +53,13 @@ FILE         *ajSysFopen(const char *name, const char *flags);
 ** End of prototype definitions
 */
 
+
+__deprecated void          ajSysBasename(AjPStr *filename);
+__deprecated void          ajSysArgListFree (char*** arglist);
+__deprecated AjBool        ajSysIsDirectory(const char *s);
+__deprecated AjBool        ajSysIsRegular(const char *s);
+__deprecated AjBool        ajSysArglist (const AjPStr cmdline,
+					 char** Pname, char*** PParglist);
 
 /*
 ** S_IFREG is non-ANSI therefore define it here
