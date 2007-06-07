@@ -182,24 +182,7 @@ Phylip distance matrix file: kitsch.dat
 Phylip tree file (optional): 
 Phylip kitsch program output file [kitsch.fkitsch]: 
 
-
- inseed: 0
- jumble: false
- njumble: 1
- lengths: false
- lower: false
- negallowed: false
- power: 2.000000
- replicates: false
- trout: true
- upper: false
- usertree: false
- printdata: false
- progress: true
- treeprint: true
- mulsets: false
- datasets: true
- nummatrices: 0Adding species:
+Adding species:
    1. Bovine
    2. Mouse
    3. Gibbon
@@ -211,31 +194,6 @@ Phylip kitsch program output file [kitsch.fkitsch]:
 Doing global rearrangements
   !-------------!
    .............
-coordinates lengthsum: 0.000000
-Calling coordinates q->v 0.077904
-coordinates lengthsum: 0.077904
-Calling coordinates q->v 0.429227
-coordinates lengthsum: 0.507131
-Calling coordinates q->v 0.066390
-coordinates lengthsum: 0.573520
-Calling coordinates q->v 0.076377
-coordinates lengthsum: 0.649897
-Calling coordinates q->v 0.028355
-coordinates lengthsum: 0.678252
-Calling coordinates q->v 0.134600
-coordinates lengthsum: 0.812852
-Calling coordinates q->v 0.134600
-coordinates lengthsum: 0.812852
-Calling coordinates q->v 0.162955
-coordinates lengthsum: 0.812852
-Calling coordinates q->v 0.239332
-coordinates lengthsum: 0.812852
-Calling coordinates q->v 0.305722
-coordinates lengthsum: 0.812852
-Calling coordinates q->v 0.734948
-coordinates lengthsum: 0.812852
-Calling coordinates q->v 0.812852
-coordinates lengthsum: 0.812852
 
 Output written to file "kitsch.fkitsch"
 

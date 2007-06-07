@@ -94,26 +94,7 @@ Phylip distance matrix file: fitch.dat
 Phylip tree file (optional): 
 Phylip fitch program output file [fitch.ffitch]: 
 
-
- inseed: 0
- global: false
- jumble: false
- njumble: 1
- lengths: false
- lower: false
- negallowed: false
- outgrno: 1
- outgropt: false
- power: 2.000000
- replicates: false
- trout: true
- upper: false
- usertree: false
- printdata: false
- progress: true
- treeprint: true
- mulsets: false
- datasets: 1Adding species:
+Adding species:
    1. Bovine
    2. Mouse
    3. Gibbon
@@ -121,29 +102,6 @@ Phylip fitch program output file [fitch.ffitch]:
    5. Gorilla
    6. Chimp
    7. Human
-coordinates lengthsum: 0.000000
-Calling coordinates q->v 0.769855
-coordinates lengthsum: 0.769855
-Calling coordinates q->v 0.419826
-coordinates lengthsum: 0.419826
-Calling coordinates q->v 0.049859
-coordinates lengthsum: 0.469685
-Calling coordinates q->v 0.021213
-coordinates lengthsum: 0.490898
-Calling coordinates q->v 0.036955
-coordinates lengthsum: 0.527853
-Calling coordinates q->v 0.114487
-coordinates lengthsum: 0.642340
-Calling coordinates q->v 0.154713
-coordinates lengthsum: 0.682566
-Calling coordinates q->v 0.156803
-coordinates lengthsum: 0.647701
-Calling coordinates q->v 0.292085
-coordinates lengthsum: 0.761771
-Calling coordinates q->v 0.355371
-coordinates lengthsum: 0.775198
-Calling coordinates q->v 0.916745
-coordinates lengthsum: 0.916745
 
 Output written to file "fitch.ffitch"
 

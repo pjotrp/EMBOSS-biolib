@@ -218,7 +218,7 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax,
   /* establishes coordinates of nodes */
   node *q, *first, *last;
 
-  printf("coordinates lengthsum: %f\n", lengthsum);
+  /*printf("coordinates lengthsum: %f\n", lengthsum);*/
   if (p->tip) {
     p->xcoord = (long)(over * lengthsum + 0.5);
     p->ycoord = *tipy;
@@ -231,8 +231,8 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax,
   }
   q = p->next;
    do {
-     if (q->back)
-       printf("Calling coordinates q->v %f\n", q->v);
+     /*if (q->back)
+       printf("Calling coordinates q->v %f\n", q->v);*/
      if (q->back)
        coordinates(q->back, lengthsum + q->v, tipy,tipmax, start, njoin);
     q = q->next;

@@ -154,7 +154,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     emboss_openfile(embossoutfile, &outfile, &outfilename);
     if(trout) emboss_openfile(embossouttree, &outtree, &outtreename);
 
-
+/*
 
     printf("\n inseed: %ld",(inseed));
     printf("\n jumble: %s",(jumble ? "true" : "false"));
@@ -174,7 +174,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     printf("\n datasets: %s",(datasets ? "true" : "false"));
     printf("\n nummatrices: %d",(nummatrices));
 
-
+*/
 
 }  /* emboss_getoptions */
 
@@ -253,10 +253,10 @@ void input_data()
     curtree.nodep[i]->d[i] = 0.0;
     curtree.nodep[i]->w[i] = 0.0;
     curtree.nodep[i]->weight = 0.0;
-    initnamedist(phylodists[i], i);
+    initnamedist(phylodists[ith-1], i);
     for (j = 1; j <= (spp); j++) {
-      curtree.nodep[i]->d[j - 1] = phylodists[i]->Data[ipos];
-      curtree.nodep[i]->w[j - 1] = phylodists[i]->Replicates[ipos++];
+      curtree.nodep[i]->d[j - 1] = phylodists[ith-1]->Data[ipos];
+      curtree.nodep[i]->w[j - 1] = phylodists[ith-1]->Replicates[ipos++];
     }
   }
 
