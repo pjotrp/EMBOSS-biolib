@@ -328,7 +328,7 @@ char* ajCharNewResLenC(const char* txt, ajuint size, ajuint len)
     return cp;
 }
 
-/* @section destructors
+/* @section destructors *******************************************************
 **
 ** Functions for destruction of C-type (char*) strings.
 **
@@ -474,7 +474,7 @@ __deprecated void  ajCharToUpper(char* txt)
 
 
 
-/* @section comparison
+/* @section comparison ********************************************************
 **
 ** Functions for comparing C-type (char*) strings.
 **
@@ -1695,7 +1695,7 @@ __deprecated ajint  ajStrCmpWildCC(const char* str, const char* text)
     return ajCharCmpWild (str, text);
 }
 
-/* @section parsing functions
+/* @section parsing functions *************************************************
 **
 ** Simple token parsing of strings
 **
@@ -1785,7 +1785,7 @@ __deprecated const AjPStr  ajStrTokCC (const char* txt, const char* delim)
 
 
 
-/* @section constructors 
+/* @section constructors ******************************************************
 **
 ** Functions for constructing string objects, possibly with a starting string. 
 **
@@ -2101,7 +2101,7 @@ static AjPStr strNew(ajuint size)
 
 
 
-/* @section destructors
+/* @section destructors *******************************************************
 **
 ** Functions for destruction of string objects.
 **
@@ -2279,7 +2279,7 @@ void ajStrDelarray(AjPStr** PPstr)
 }
 
 
-/* @section assignment
+/* @section assignment ********************************************************
 **
 ** Functions for assigning a string.
 **
@@ -2798,7 +2798,7 @@ __deprecated AjBool  ajStrAssSub(AjPStr* pthis, const AjPStr src,
 }
 
 
-/* @section combination functions.
+/* @section combination functions *********************************************
 **
 ** Functions for appending, inserting or overwriting a string
 ** or substring to another.
@@ -3557,7 +3557,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 }
 
 
-/* @section cut
+/* @section cutting ***********************************************************
 **
 ** Functions for removing characters or regions (substrings) from a string.
 **
@@ -4925,7 +4925,7 @@ __deprecated AjBool  ajStrTruncate(AjPStr* Pstr, ajint pos)
 }
 
 
-/* @section substitution
+/* @section substitution ******************************************************
 **
 ** Functions for substitutions of characters or regions (substrings)
 ** within a string.
@@ -5457,7 +5457,7 @@ __deprecated AjBool  ajStrRev(AjPStr* pthis)
     return ajStrReverse(pthis);
 }
 
-/* @section query
+/* @section query *************************************************************
 **
 ** Functions for querying the properties of strings.
 **
@@ -6332,7 +6332,7 @@ AjBool ajStrWhole(const AjPStr str, ajint pos1, ajint pos2)
 
 
 
-/* @section element retrieval
+/* @section element retrieval *************************************************
 **
 ** Functions for returning elements of a string object.
 **
@@ -6744,7 +6744,7 @@ AjBool ajStrGetValid(const AjPStr str)
 
 
 
-/* @section modifiable string retrieval
+/* @section modifiable string retrieval ***************************************
 **
 ** Functions for returning elements of a string object.
 **
@@ -6851,7 +6851,7 @@ __deprecated AjBool  ajStrMod(AjPStr* pthis)
     return ret;
 }
 
-/* @section element assignment
+/* @section element assignment ************************************************
 **
 ** Functions for assigning elements of a string object.
 **
@@ -7119,7 +7119,7 @@ __deprecated void  ajStrFixI(AjPStr* pthis, ajint ilen)
     return;
 }
 
-/* @section string to datatype conversion functions 
+/* @section string to datatype conversion functions ***************************
 **
 ** Functions for converting strings to other datatypes.
 **
@@ -7519,7 +7519,7 @@ AjBool ajStrToUint(const AjPStr str, ajuint* Pval)
 
 
 
-/* @section datatype to string conversion functions 
+/* @section datatype to string conversion functions ***************************
 **
 ** Functions for converting datatypes to strings.
 **
@@ -7805,7 +7805,7 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
 
 
 
-/* @section formatting
+/* @section formatting ********************************************************
 **
 ** Functions for formatting strings.
 **
@@ -8393,7 +8393,7 @@ __deprecated AjBool  ajStrWrapLeft(AjPStr* pthis, ajint width, ajint left)
     return ajStrFmtWrapLeft(pthis, width, left);
 }
 
-/* @section comparison
+/* @section comparison ********************************************************
 **
 ** Functions for comparing strings 
 **
@@ -9025,7 +9025,7 @@ AjBool ajStrSuffixCaseS(const AjPStr str, const AjPStr str2)
 }
 
 
-/* @section comparison (sorting)
+/* @section comparison (sorting) **********************************************
 **
 ** Functions for sorting strings.
 **
@@ -9334,7 +9334,7 @@ __deprecated int  ajStrCmp(const void* str, const void* str2)
 
 
 
-/* @section comparison (search) functions
+/* @section comparison (search) functions *************************************
 **
 ** Functions for finding substrings or characters in strings.
 **
@@ -9759,7 +9759,7 @@ ajint ajStrFindlastS(const AjPStr str, const AjPStr str2)
 }
 
 
-/* @section parsing functions
+/* @section parsing functions *************************************************
 **
 ** Functions for parsing tokens from strings.
 **
@@ -10211,7 +10211,7 @@ __deprecated const AjPStr  ajStrTok(const AjPStr str)
     return ajStrParseWhite(str);
 }
 
-/* @section debug
+/* @section debugging *********************************************************
 **
 ** Functions for reporting of a string object.
 **
@@ -10376,7 +10376,7 @@ void ajStrTraceTitle(const AjPStr str, const char* title)
 
 
 
-/* @section exit
+/* @section exit **************************************************************
 **
 ** Functions called on exit from the program by ajExit to do
 ** any necessary cleanup and to report internal statistics to the debug file
@@ -10485,7 +10485,7 @@ __deprecated ajint  ajCharPos(const char* thys, ajint ipos)
 **
 ******************************************************************************/
 
-/* @section constructors
+/* @section constructors ******************************************************
 **
 ** @fdata [AjIStr]
 **
@@ -10571,7 +10571,7 @@ __deprecated AjIStr  ajStrIterBack(const AjPStr str)
     return ajStrIterNewBack(str);
 }
 
-/* @section destructors
+/* @section destructors *******************************************************
 ** @fdata [AjIStr]
 **
 ** @nam4rule Del Destructor
@@ -10611,7 +10611,7 @@ __deprecated void  ajStrIterFree(AjIStr* iter)
     ajStrIterDel(iter);
 }
 
-/* @section tests
+/* @section tests *************************************************************
 ** @fdata [AjIStr]
 ** @nam4rule   Done      Check whether iteration has ended (no more
 **                             characters).
@@ -10663,13 +10663,11 @@ __deprecated AjBool  ajStrIterBackDone(AjIStr iter)
     return ajStrIterDoneBack(iter);
 }
 
-/* @section resets
+/* @section resets ************************************************************
 ** @fdata [AjIStr]
 **
-** @nam4rule   Begin     Check whether iterator is at start (first
-**                             character).
-** @nam4rule   End       Check whether iterator is at end (last
-**                             character).
+** @nam4rule   Begin     Resets iterator to start (first character).
+** @nam4rule   End       Resets iterator to end (last character).
 ** @argrule * iter [AjIStr] String iterator
 **
 ** @valrule * [void]
@@ -10706,7 +10704,8 @@ void ajStrIterEnd(AjIStr iter)
     iter->Ptr = iter->End;
 }
 
-/* @section attributes
+/* @section attributes ********************************************************
+**
 ** @fdata [AjIStr]
 **
 ** @nam4rule Get Return element
@@ -10749,7 +10748,7 @@ char ajStrIterGetK(const AjIStr iter)
 }
 
 
-/* @section modifiers
+/* @section modifiers *********************************************************
 **
 ** @fdata [AjIStr]
 **
@@ -10780,7 +10779,7 @@ void ajStrIterPutK(AjIStr iter, char chr)
 
 
 
-/* @section stepping
+/* @section stepping **********************************************************
 **
 ** @fdata [AjIStr]
 **
@@ -10876,7 +10875,7 @@ __deprecated AjBool  ajStrIterMoreBack(AjIStr iter)
 **
 ******************************************************************************/
 
-/* @section constructors
+/* @section constructors ******************************************************
 **
 ** @fdata [AjPStrTok]
 **
@@ -10954,7 +10953,7 @@ AjPStrTok ajStrTokenNewS(const AjPStr str, const AjPStr strdelim)
 }
 
 
-/* @section destructors
+/* @section destructors *******************************************************
 **
 ** @fdata [AjPStrTok]
 **
@@ -11003,7 +11002,7 @@ __deprecated void  ajStrTokenClear(AjPStrTok* token)
 }
 
 
-/* @section assignment
+/* @section assignment ********************************************************
 **
 ** @fdata [AjPStrTok]
 **
@@ -11130,7 +11129,7 @@ AjBool ajStrTokenAssignS(AjPStrTok* Ptoken, const AjPStr str,
     return ajTrue;
 }
 
-/* @section reset
+/* @section reset *************************************************************
 **
 ** @fdata [AjPStrTok]
 **
@@ -11173,7 +11172,7 @@ void ajStrTokenReset(AjPStrTok* Ptoken)
 
 
 
-/* @section debug
+/* @section debugging *********************************************************
 **
 ** @fdata [AjPStrTok]
 **
@@ -11213,7 +11212,7 @@ void ajStrTokenTrace(const AjPStrTok token)
 
 
 
-/* @section parsing
+/* @section parsing ***********************************************************
 **
 ** @fdata [AjPStrTok]
 **
