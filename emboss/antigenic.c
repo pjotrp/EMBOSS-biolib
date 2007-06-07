@@ -408,15 +408,18 @@ static void antigenic_readAnti(AjPFloat *agp)
 
 	ajFloatPut(agp,n,vf3);
 
-	deltae  += v1;
-	deltas  += v2;
-	deltap  += v3;
-	deltaaf += vf1;
-	deltasf += vf2;
+	if(*q != 'B' && *q != 'X' && *q != 'Z')
+	{
+	    deltae  += v1;
+	    deltas  += v2;
+	    deltap  += v3;
+	    deltaaf += vf1;
+	    deltasf += vf2;
+	    if(fabs((double) (vf2-vf1 / vf3)) > 0.02)
+		ajErr("propensity != afreq/sfreq in line\n%s",
+		      p);
+	}
 
-	if(fabs((double) (vf2-vf1 / vf3)) > 0.02)
-	    ajErr("propensity != afreq/sfreq in line\n%s",
-		  p);
     }
 
 
