@@ -447,7 +447,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 
 	dup2(pipefds[1], 1);
 	close(pipefds[1]);
-	ajSysArglist(fileNameTmp, &pgm, &arglist);
+	ajSysArglistBuild(fileNameTmp, &pgm, &arglist);
 	ajDebug("execvp ('%S', NULL)\n", fileNameTmp);
 	execvp(pgm, arglist);
 	ajErr("execvp ('%S', NULL) failed: '%s'\n",
@@ -2690,8 +2690,20 @@ AjBool ajFileStat(const AjPStr fname, ajint mode)
     return ajFalse;
 }
 
+/* @func ajFileNameValid ******************************************************
+**
+** Returns true if file exists and is readable by the user
+**
+** @param [r] fname [const AjPStr] Filename.
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
 
 
+AjBool ajFileNameValid (const AjPStr fname)
+{
+    return ajFileStat(fname, AJ_FILE_R);
+}
 
 /* @func ajFileLength *********************************************************
 **
