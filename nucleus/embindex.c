@@ -695,7 +695,7 @@ ajuint embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
     for(i=0;i<nfiles;++i)
     {
 	ajListPop(lfiles,(void **)&file);
-	ajSysBasename(&file);
+	ajFileNameTrim(&file);
 	for(j=0;j<nremove && ! ajStrMatchWildS(file,removelist[j]);++j);
 	if(j == nremove)
 	    ajListPushApp(lfiles,(void *)file);
@@ -965,7 +965,7 @@ ajuint embBtreeGetFiles(EmbPBtreeEntry entry, const AjPStr fdirectory,
     for(i=0;i<nfiles;++i)
     {
 	ajListPop(entry->files,(void **)&file);
-	ajSysBasename(&file);
+	ajFileNameTrim(&file);
 	for(j=0;j<nremove && !ajStrMatchWildS(file,removelist[j]);++j);
 	if(j == nremove)
 	{

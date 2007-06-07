@@ -447,7 +447,7 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 	    if(ajStrSuffixC(progpath, ".acd"))
 	    {
 		/* see if it is a normal file */
-		if(ajSysIsRegular(ajStrGetPtr(progpath)))
+		if(ajFileNameValid(progpath))
 		{
 		    /* open the file and parse it */
 		    if((file = ajFileNewIn(progpath)) != NULL)

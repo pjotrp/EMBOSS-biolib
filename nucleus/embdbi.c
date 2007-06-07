@@ -866,7 +866,7 @@ void embDbiSysCmd(const AjPStr cmdstr)
     ajint status;
 
     ajDebug("forking '%S'", cmdstr);
-    ajSysArglist(cmdstr, &pgm, &arglist);
+    ajSysArglistBuild(cmdstr, &pgm, &arglist);
 
     pid = fork();
     if(pid==-1)
@@ -885,7 +885,7 @@ void embDbiSysCmd(const AjPStr cmdstr)
 		break;
     }
 
-    ajSysArgListFree(&arglist);
+    ajSysArglistFree(&arglist);
     ajCharDel(&pgm);
 
 #else

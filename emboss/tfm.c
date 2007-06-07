@@ -174,7 +174,7 @@ static void tfm_FindAppDocRoot(const AjPStr program,
 	{
 	    ajFileDirFix(&docrootinst);
 	    ajFmtPrintS(&tmpstr,"%Sdoc",docrootinst);
-	    if(!ajSysIsDirectory(ajStrGetPtr(tmpstr)))
+	    if(!ajFileDir(&tmpstr))
 	    {
 		ajFileDirUp(&docrootinst);
 		ajFileDirUp(&docrootinst);
