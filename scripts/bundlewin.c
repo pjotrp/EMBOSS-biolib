@@ -97,6 +97,7 @@ static int  copy_apps(char *basedir, listnode *head);
 static void copy_data(char *basedir);
 static void copy_doc(char *basedir);
 static void copy_test(char *basedir);
+static void copy_jemboss(char *basedir);
 
 static void create_directories(char *basedir);
 static int header_exports(char *dir, FILE *fp);
@@ -160,7 +161,7 @@ int main(int argc, char **argv)
     copy_data(basedir);
     copy_doc(basedir);
     copy_test(basedir);
-
+    copy_jemboss(basedir);
 
 
     /* Construct exports file (ajaxdll.def) */
@@ -470,6 +471,24 @@ static void copy_doc(char *basedir)
     char command[MAXNAMLEN];
 
     sprintf(command,"cp -dfpR %s/emboss/doc %s/win32",basedir,
+	    basedir);
+    if(system(command))
+    {
+	fprintf(stderr,"Can't execute %s\n",command);
+	exit(-1);
+    }
+
+    return;
+}
+
+
+
+
+static void copy_jemboss(char *basedir)
+{
+    char command[MAXNAMLEN];
+
+    sprintf(command,"cp -dfpR %s/emboss/jemboss %s/win32",basedir,
 	    basedir);
     if(system(command))
     {
