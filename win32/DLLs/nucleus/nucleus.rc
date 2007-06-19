@@ -65,8 +65,8 @@ LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,8
- PRODUCTVERSION 2,10,0,0
+ FILEVERSION 5,0,0,1
+ PRODUCTVERSION 5,0,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -81,15 +81,15 @@ BEGIN
     BEGIN
         BLOCK "080904b0"
         BEGIN
-            VALUE "Comments", "Based on EMBOSS 2.10.0"
-            VALUE "CompanyName", "EMBNet"
-            VALUE "FileDescription", "nucleus Dynamic Link Library"
-            VALUE "FileVersion", "1, 0, 0, 8"
+            VALUE "Comments", "From EMBOSS 5.0.0"
+            VALUE "CompanyName", "EBI"
+            VALUE "FileDescription", "NUCLEUS Dynamic Link Library"
+            VALUE "FileVersion", "5, 0, 0, 1"
             VALUE "InternalName", "nucleus"
-            VALUE "LegalCopyright", "GNU GPL -- Copyright © André Blavier 2005"
+            VALUE "LegalCopyright", "GNU GPL -- Copyright © Alan Bleasby 2007"
             VALUE "OriginalFilename", "nucleus.dll"
             VALUE "ProductName", "EMBOSS nucleus library"
-            VALUE "ProductVersion", "2, 10, 0, 0"
+            VALUE "ProductVersion", "5, 0, 0, 0"
         END
     END
     BLOCK "VarFileInfo"
