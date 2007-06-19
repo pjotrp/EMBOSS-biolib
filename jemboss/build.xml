@@ -15,6 +15,7 @@
     <property name="build.compiler" value="modern" />
     <property name="classpath" value="" />
     <property name="src.dir" value="" />
+    <property name="emboss.data" value="../data" />
     <property name="docs.dir" value="docs" />
 
     <property name="packages" value="org.*" />
@@ -103,6 +104,15 @@
         <include name="resources/**"/>
       </fileset>
     </copy>
+
+
+    <jar
+      jarfile="${jar.dir}/resources/resources.jar"
+      basedir="${emboss.data}"
+      includes="EPAM* EBLOSUM* ENUC*"
+    >
+    </jar>
+
 
     <jar
       jarfile="${jar.dir}/${name}.jar"
