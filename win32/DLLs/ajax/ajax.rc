@@ -86,7 +86,7 @@ BEGIN
             VALUE "FileDescription", "AJAX Dynamic Link Library"
             VALUE "FileVersion", "5, 0, 0, 1"
             VALUE "InternalName", "ajax"
-            VALUE "LegalCopyright", "GNU GPL -- Copyright © Alan Bleasby 2007"
+            VALUE "LegalCopyright", "GNU LGPL -- Copyright © Alan Bleasby 2007"
             VALUE "OriginalFilename", "ajax.dll"
             VALUE "ProductName", "EMBOSS ajax library"
             VALUE "ProductVersion", "5, 0, 0, 0"

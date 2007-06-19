@@ -86,7 +86,7 @@ BEGIN
             VALUE "FileDescription", "NUCLEUS Dynamic Link Library"
             VALUE "FileVersion", "5, 0, 0, 1"
             VALUE "InternalName", "nucleus"
-            VALUE "LegalCopyright", "GNU GPL -- Copyright © Alan Bleasby 2007"
+            VALUE "LegalCopyright", "GNU LGPL -- Copyright © Alan Bleasby 2007"
             VALUE "OriginalFilename", "nucleus.dll"
             VALUE "ProductName", "EMBOSS nucleus library"
             VALUE "ProductVersion", "5, 0, 0, 0"
