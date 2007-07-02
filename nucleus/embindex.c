@@ -1252,6 +1252,9 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
 					     entry->idsecorder, slevel,
 					     entry->idsecfill, count,
 					     entry->kwlen);
+	if(!entry->idcache)
+	    ajFatal("Cannot open ID index");
+	
 	ajBtreeCreateRootNode(entry->idcache,0L);
     }
 
@@ -1265,6 +1268,9 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
 					     entry->acsecorder, slevel,
 					     entry->acsecfill, count,
 					     entry->kwlen);
+	if(!entry->accache)
+	    ajFatal("Cannot open ACC index");
+
 	ajBtreeCreateRootNode(entry->accache,0L);
     }
 
@@ -1277,6 +1283,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
 					     entry->svsecorder, slevel,
 					     entry->svsecfill, count,
 					     entry->kwlen);
+	if(!entry->svcache)
+	    ajFatal("Cannot open SV index");
+
+
 	ajBtreeCreateRootNode(entry->svcache,0L);
     }
 
@@ -1291,6 +1301,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
 					     entry->kwsecorder, slevel,
 					     entry->kwsecfill, count,
 					     entry->kwlen);
+	if(!entry->kwcache)
+	    ajFatal("Cannot open KW index");
+
+
 	ajBtreeCreateRootNode(entry->kwcache,0L);
     }
     
@@ -1304,6 +1318,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
 					     entry->desecorder, slevel,
 					     entry->desecfill, count,
 					     entry->delen);
+	if(!entry->decache)
+	    ajFatal("Cannot open DE index");
+
+
 	ajBtreeCreateRootNode(entry->decache,0L);
     }
     
@@ -1317,6 +1335,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
 					     entry->txsecorder, slevel,
 					     entry->txsecfill, count,
 					     entry->txlen);
+	if(!entry->txcache)
+	    ajFatal("Cannot open TX index");
+
+
 	ajBtreeCreateRootNode(entry->txcache,0L);
     }
     
