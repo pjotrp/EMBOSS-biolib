@@ -67,6 +67,7 @@ static AjPStr seqQryChr       = NULL;
 static AjPStr seqQryDb        = NULL;
 static AjPStr seqQryList      = NULL;
 static AjPStr seqReadLine     = NULL;
+static AjPStr seqAppendRestStr = NULL;
 
 static AjPRegexp seqRegUsaAsis  = NULL;
 static AjPRegexp seqRegUsaDb    = NULL;
@@ -75,7 +76,7 @@ static AjPRegexp seqRegUsaId    = NULL;
 static AjPRegexp seqRegUsaList  = NULL;
 static AjPRegexp seqRegUsaRange = NULL;
 static AjPRegexp seqRegUsaWild  = NULL;
-
+static AjBool seqDoWarnAppend = AJFALSE;
 
 
 /* @datastatic SeqPInFormat ***************************************************
@@ -478,6 +479,7 @@ static AjBool     seqReadAbi(AjPSeq thys, AjPSeqin seqin);
 
 static void       seqAccSave(AjPSeq thys, const AjPStr acc);
 static ajuint     seqAppend(AjPStr* seq, const AjPStr line);
+static const AjPStr seqAppendWarn(AjPStr* seq, const AjPStr line);
 static ajuint     seqAppendCommented(AjPStr* seq, AjBool* incomment,
 				     const AjPStr line);
 static AjBool     seqClustalReadseq(const AjPStr seqReadLine,
@@ -2211,6 +2213,7 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
     ajlong fposb    = 0;
     AjBool ok       = ajTrue;
     AjPStr tmpline = NULL;
+    const AjPStr badstr = NULL;
 
     ajDebug("seqReadFasta\n");
 
@@ -2277,7 +2280,10 @@ static AjBool seqReadFasta(AjPSeq thys, AjPSeqin seqin)
 				 seqin->Text, &thys->TextPtr);
 	while(ok && !ajStrPrefixC(seqReadLine, ">"))
 	{
-	    seqAppend(&thys->Seq, seqReadLine);
+	    badstr = seqAppendWarn(&thys->Seq, seqReadLine);
+	    if(badstr)
+		ajWarn("Sequence '%S' has bad character(s) '%S'",
+			   thys->Name, badstr);
 	    bufflines++;
 	    ajDebug("++fasta append line '%S'\n", seqReadLine);
 	    ok = ajFileBuffGetStoreL(buff, &seqReadLine, &fposb,
@@ -2723,7 +2729,7 @@ static AjBool seqReadNcbi(AjPSeq thys, AjPSeqin seqin)
 
     ajuint bufflines = 0;
     AjBool ok;
-
+    const AjPStr badstr = NULL;
 
     buff = seqin->Filebuff;
 
@@ -2785,7 +2791,10 @@ static AjBool seqReadNcbi(AjPSeq thys, AjPSeqin seqin)
 				seqin->Text, &thys->TextPtr);
 	while(ok && !ajStrPrefixC(seqReadLine, ">"))
 	{
-	    seqAppend(&thys->Seq, seqReadLine);
+	    badstr = seqAppendWarn(&thys->Seq, seqReadLine);
+	    if(badstr)
+		ajWarn("Sequence '%S' has bad character(s) '%S'",
+			   thys->Name, badstr);
 	    bufflines++;
 	    ok = ajFileBuffGetStore(buff, &seqReadLine,
 				    seqin->Text, &thys->TextPtr);
@@ -8218,6 +8227,54 @@ static ajuint seqAppendCommented(AjPStr* pseq, AjBool* incomment,
     return ret;
 }
 
+/* @funcstatic seqAppendWarn ***************************************************
+**
+** Appends sequence characters in the input line to a growing sequence.
+**
+** Non sequence characters are reported in the return value
+** if EMBOSS_SEQWARN is set
+**
+** @param [u] pseq [AjPStr*] Sequence as a string
+** @param [r] line [const AjPStr] Input line.
+** @return [const AjPStr] Any rejected non-space characters
+** @@
+******************************************************************************/
+
+static const AjPStr seqAppendWarn(AjPStr* pseq, const AjPStr line)
+{
+    AjPStr tmpstr = NULL;
+
+    if(!seqAppendRestStr) {
+	if(ajNamGetValueC("seqwarn", &tmpstr))
+	    ajStrToBool(tmpstr, &seqDoWarnAppend);
+    }
+
+    ajStrAssignS(&tmpstr, line);
+
+    if(seqDoWarnAppend)
+    {
+	ajStrKeepSetAlphaRestC(&tmpstr, "*.~?#+-", &seqAppendRestStr);
+	ajStrAppendS(pseq, tmpstr);
+
+	ajStrDel(&tmpstr);
+
+	if(!ajStrGetLen(seqAppendRestStr))
+	    return NULL;
+
+	return seqAppendRestStr;
+    }
+
+    ajStrKeepSetAlphaC(&tmpstr, "*.~?#+-");
+    ajStrAppendS(pseq, tmpstr);
+
+    ajStrDel(&tmpstr);
+
+    return NULL;
+}
+
+
+
+
 /* @funcstatic seqGcgRegInit **************************************************
 **
 ** Initialises regular expressions for GCG and MSF format parsing
@@ -10804,6 +10861,7 @@ void ajSeqReadExit(void)
     ajStrDel(&seqQryChr);
     ajStrDel(&seqQryDb);
     ajStrDel(&seqQryList);
+    ajStrDel(&seqAppendRestStr);
 
     ajStrDel(&seqReadLine);
 
