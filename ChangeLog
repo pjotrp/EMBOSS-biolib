@@ -1,4 +1,25 @@
 Version 5.0.0
+	Warning messages are available for sequence formats that do not
+	allow additional characters. The environment variable
+	EMBOSS_SEQWARN needs to be set to "Y" to enable warnings. For
+	example, EMBL format allows numbers in the sequence records. Fasta
+	and related formats now warn for any characters that are not
+	whitespace and not known sequence characters. These warnings are
+	controlled by an environment variable so they can be disabled (or
+	enabled) for specific installations and/or wrappers. We expect
+	many cut-and-paste inputs can generate warnings. EMBOSS will
+	normally silently remove non-sequence characters.
+
+	Regular expression pattern file names (for dreg and preg) were
+	converted to upper case if the ACD file required the patterns to
+	be upper case.
+
+	The EMBOSS commandline now accepts gnu-style syntax with
+	--qualifier (we allow one or two '-' characters). Users who tried
+	this syntax were confused because EMBOSS treated --qualifier as a
+	parameter. In many cases it was used as the output filename, which
+	would give no error message but make it hard to find the output.
+	
 	Antigenic now accepts any protein sequence as input (earlier
 	versions did not allow ambiguity codes). B and Z are treated as
 	weighted averages of D/N and E/Q. All others are converted to X
@@ -22,7 +43,7 @@ Version 5.0.0
 	A new function ajSystemOut calls a system command, and redirects
 	standard output to a named file.
 	
-	Function names are standardised for the ajtime and ajutil
+	Function names are standardised for the ajsys, ajtime and ajutil
 	functions.
 
 	New function ajStrTableFreeKey frees only the key from tables
