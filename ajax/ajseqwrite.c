@@ -156,6 +156,7 @@ static AjBool     seqNcbiKnowndb(const AjPStr dbname);
 static AjBool     seqoutUfoLocal(const AjPSeqout thys);
 static AjBool     seqoutUsaProcess(AjPSeqout thys);
 static void       seqsetClone(AjPSeqout outseq, const AjPSeqset seq, ajint i);
+static AjBool     seqoutFindOutFormat(const AjPStr format, ajint* iformat);
 
 static void       seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf);
 static void       seqWriteAcedb(AjPSeqout outseq);
@@ -198,7 +199,6 @@ static void       seqWriteTreecon(AjPSeqout outseq);
 
 
 
-
 /* @funclist seqOutFormat *****************************************************
 **
 ** Functions to write each sequence format
@@ -214,7 +214,7 @@ static SeqOOutFormat seqOutFormat[] =
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteFasta}, /* internal default
 							writes FASTA */
-    /* set 'fasta' in ajSeqOutFormatDefault */
+    /* set 'fasta' in ajSeqoutstrGetFormatDefault */
     {"gcg",        "GCG sequence format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGcg},
@@ -513,6 +513,48 @@ __deprecated AjPSeqout  ajSeqoutNewF(AjPFile file)
     return ajSeqoutNewFile(file);
 }
 
+/* @func ajSeqoutNewFormatC ****************************************************
+**
+** Creates a new sequence output object with a specified format.
+**
+** @param [r] txt [const char*] Output sequence format
+** @return [AjPSeqout] New sequence output object.
+** @@
+******************************************************************************/
+
+AjPSeqout ajSeqoutNewFormatC(const char* txt)
+{
+    AjPSeqout thys;
+
+    thys = ajSeqoutNew();
+
+    ajSeqoutSetFormatC(thys, txt);
+
+    return thys;
+}
+
+
+/* @func ajSeqoutNewFormatS ****************************************************
+**
+** Creates a new sequence output object with a specified format.
+**
+** @param [r] str [AjPStr] Output sequence format
+** @return [AjPSeqout] New sequence output object.
+** @@
+******************************************************************************/
+
+AjPSeqout ajSeqoutNewFormatS(const AjPStr str)
+{
+    AjPSeqout thys;
+
+    thys = ajSeqoutNew();
+
+    ajSeqoutSetFormatS(thys, str);
+
+    return thys;
+}
+
+
 /* @section destructors ***************************************
 **
 ** Destruction destroys all internal data structures and frees the
@@ -677,7 +719,7 @@ void ajSeqoutWriteSeq(AjPSeqout outseq, const AjPSeq seq)
 	    ajSeqGetNameS(seq), ajSeqGetLen(seq));
     
     if(!outseq->Format)
-	if(!ajSeqFindOutFormat(outseq->Formatstr, &outseq->Format))
+	if(!seqoutFindOutFormat(outseq->Formatstr, &outseq->Format))
 	    ajErr("unknown output format '%S'", outseq->Formatstr);
     
     ajDebug("ajSeqoutWriteSeq %d '%s' single: %B feat: %B Save: %B\n",
@@ -695,7 +737,7 @@ void ajSeqoutWriteSeq(AjPSeqout outseq, const AjPSeq seq)
 	return;
     }
            
-    ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
+    ajSeqoutSetNameDefaultS(outseq, !outseq->Single, outseq->Entryname);
     if(outseq->Fttable)
 	ajFeatDefName(outseq->Fttable, outseq->Name);
 
@@ -785,7 +827,7 @@ void ajSeqoutWriteSet(AjPSeqout outseq, const AjPSeqset seq)
     ajDebug("ajSeqoutWriteSet\n");
 
     if(!outseq->Format)
-	if(!ajSeqFindOutFormat(outseq->Formatstr, &outseq->Format))
+	if(!seqoutFindOutFormat(outseq->Formatstr, &outseq->Format))
 	    ajErr("unknown output format '%S'", outseq->Formatstr);
 
     ajDebug("ajSeqoutWriteSet %d '%s' single: %B feat: %B Save: %B\n",
@@ -805,7 +847,7 @@ void ajSeqoutWriteSet(AjPSeqout outseq, const AjPSeqset seq)
 	    continue;
 	}
 
-	ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
+	ajSeqoutSetNameDefaultS(outseq, !outseq->Single, outseq->Entryname);
 	if(outseq->Fttable)
 	    ajFeatDefName(outseq->Fttable, outseq->Name);
 
@@ -867,6 +909,117 @@ __deprecated void  ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq)
 }
 
 
+/* @section non-standard output ************************************************
+**
+** Writes a sequence string in SWISSPROT format with a user-defined line code
+**
+** @fdata [AjPSeqout]
+** @fcategory output
+**
+** @nam3rule Dump Print sequence to an output file
+** @nam4rule Swisslike  Dump in swissprot-like format with a user-defined
+**                      sequence line code
+**
+** @argrule Dump outseq [AjPSeqout] Sequence output object
+** @argrule Dump seq [const AjPStr] Sequence string
+** @argrule Swisslike prefix [const char*] Line prefix code
+**
+** @valrule * [void]
+******************************************************************************/
+
+
+/* @func ajSeqoutDumpSwisslike *************************************************
+**
+** Writes a sequence in SWISSPROT format with a user-defined line code
+**
+** @param [w] outseq [AjPSeqout] Sequence output object
+** @param [r] seq [const AjPStr] sequence
+** @param [r] prefix [const char *] line prefix code - should be 2 characters
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutDumpSwisslike(AjPSeqout outseq,
+			   const AjPStr seq, const char *prefix)
+{
+    static SeqPSeqFormat sf = NULL;
+    AjPFile outf = outseq->File;
+    ajint mw;
+    unsigned long long crc;
+
+    crc = ajSp64Crc(seq);
+    mw = (ajint) (0.5+ajSeqstrCalcMolwt(seq));
+    ajFmtPrintF(outf,
+		"%-5sSEQUENCE %5d AA; %6d MW;  %08X",
+		prefix, ajStrGetLen(seq), mw, 
+		(crc>>32)&0xffffffff);
+
+    ajFmtPrintF(outf,
+		"%08X CRC64;\n",
+		crc&0xffffffff);
+
+    ajStrAssignS(&outseq->Seq,seq);
+
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
+    strcpy(sf->endstr, "");
+    sf->tab    = 4;
+    sf->spacer = 11;
+    sf->width  = 60;
+
+    seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
+
+    return;
+}
+
+
+/* @obsolete ajSeqWriteXyz
+** @replace ajSeqoutDumpSwisslike (1,2,3/2,1,3)
+*/
+
+__deprecated void ajSeqWriteXyz(AjPFile outf, const AjPStr seq,
+				const char *prefix)
+{
+    AjPSeqout outseq;
+    outseq = ajSeqoutNewFile(outf);
+    ajSeqoutDumpSwisslike(outseq, seq, prefix);
+    ajSeqoutDel(&outseq);
+    return;
+}
+
+
+/* @obsolete ajSssWriteXyz
+** @remove No longer called ... see ajSeqWriteSwisslike
+*/
+
+__deprecated void ajSssWriteXyz(AjPFile outf, const AjPStr seq,
+				const char *prefix)
+{
+    AjPSeqout outseq        = NULL;
+    static SeqPSeqFormat sf = NULL;
+
+    outseq = ajSeqoutNew();
+
+    outseq->File = outf;
+    ajStrAssignS(&outseq->Seq,seq);
+
+    ajFmtPrintF(outseq->File,
+		"%-5sSEQUENCE %5d AA;\n",
+		prefix, ajStrGetLen(outseq->Seq));
+
+    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
+    strcpy(sf->endstr, "");
+    sf->tab    = 4;
+    sf->spacer = 11;
+    sf->width  = 60;
+
+    seqWriteSeq(outseq, sf);
+    seqFormatDel(&sf);
+
+    return;
+}
+
+
 /* @funcstatic seqWriteListAppend *********************************************
 **
 ** Add the latest sequence to the output list. If we are in single
@@ -907,7 +1060,7 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
     if(outseq->Single)
     {
 	ajDebug("single sequence mode: write immediately\n");
-	ajSeqoutDefName(outseq, outseq->Entryname, !outseq->Single);
+	ajSeqoutSetNameDefaultS(outseq, !outseq->Single, outseq->Entryname);
 	if(outseq->Fttable)
 	    ajFeatDefName(outseq->Fttable, outseq->Name);
 	/* Calling funclist seqOutFormat() */
@@ -1254,7 +1407,7 @@ static void seqWriteGcg(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, "!!NA_SEQUENCE 1.0\n\n");
 
     ajSeqGapS(&outseq->Seq, '.');
-    check = ajSeqoutCheckGcg(outseq);
+    check = ajSeqoutGetCheckgcg(outseq);
 
     if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "%S\n\n", outseq->Desc);
@@ -2748,7 +2901,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	}
     }
 
-    ajSeqoutCount(outseq, b);
+    ajSeqoutGetBasecount(outseq, b);
     ajFmtPrintF(outseq->File,
 		"SQ   Sequence %d BP; %d A; %d C; %d G; %d T; %d other;\n",
 		ajStrGetLen(outseq->Seq), b[0], b[1], b[2], b[3], b[4]);
@@ -2926,7 +3079,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 		   outseq->Ufo);
     }
     
-    ajSeqoutCount(outseq, b);
+    ajSeqoutGetBasecount(outseq, b);
     ajFmtPrintF(outseq->File,
 		"SQ   Sequence %d BP; %d A; %d C; %d G; %d T; %d other;\n",
 		ajStrGetLen(outseq->Seq), b[0], b[1], b[2], b[3], b[4]);
@@ -3315,7 +3468,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, "XX\n", cur);
     }
     
-    ajSeqoutCount(outseq, b);
+    ajSeqoutGetBasecount(outseq, b);
     ajFmtPrintF(outseq->File,
 		"SQ   Sequence %d BP; %d A; %d C; %d G; %d T; %d other;\n",
 		ajStrGetLen(outseq->Seq), b[0], b[1], b[2], b[3], b[4]);
@@ -3948,7 +4101,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
     }
 /* no longer used by GenBank */
 /*    
-    ajSeqoutCount(outseq, b);
+    ajSeqoutGetBasecount(outseq, b);
     if(b[4])
 	ajFmtPrintF(outseq->File,
 		    "BASE COUNT   %6d a %6d c %6d g %6d t %6d others\n",
@@ -4667,709 +4820,6 @@ static void seqWriteDebug(AjPSeqout outseq)
 
 
 
-/* @funcstatic seqoutUfoLocal *************************************************
-**
-** Tests whether a sequence output object will write features to the
-** sequence output file. The alternative is to use a separate UFO.
-**
-** @param [r] thys [const AjPSeqout] Sequence output object.
-** @return [AjBool] ajTrue if the features will be written to the sequence
-** @@
-******************************************************************************/
-
-static AjBool seqoutUfoLocal(const AjPSeqout thys)
-{
-    ajDebug("seqoutUfoLocal Features %B Ufo %d '%S'\n",
-	    thys->Features, ajStrGetLen(thys->Ufo), thys->Ufo);
-
-    if(thys->Features && !ajStrGetLen(thys->Ufo))
-	return ajTrue;
-
-    return ajFalse;
-}
-
-
-
-
-/* @funcstatic seqoutUsaProcess ***********************************************
-**
-** Converts a USA Universal Sequence Address into an open output file.
-**
-** First tests for format:: and sets this if it is found
-**
-** Then looks for file:id and opens the file.
-** In this case the file position is not known and sequence reading
-** will have to scan for the entry/entries we need.
-**
-** @param [u] thys [AjPSeqout] Sequence output definition.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-static AjBool seqoutUsaProcess(AjPSeqout thys)
-{    
-    AjBool fmtstat;
-    AjBool regstat;
-    
-#ifdef __CYGWIN__
-    AjPStr usatmp = NULL;
-#endif
-
-    ajDebug("seqoutUsaProcess\n");
-    if(!seqoutRegFmt)
-#ifndef WIN32
-	seqoutRegFmt = ajRegCompC("^([A-Za-z0-9]*)::?(.*)$");
-    /* \1 format */
-    /* \2 remainder */
-#else
-    /* Windows file names can start with e.g.: 'C:\' */
-    /* -> Require that format names have at least 2 letters */
-    seqoutRegFmt = ajRegCompC("^([A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]*)::?(.*)$");
-    /* \1 format */
-    /* \2 remainder */
-#endif
-
-
-    if(!seqoutRegId)			  /* \1 is filename \3 is the qryid */
-	seqoutRegId = ajRegCompC("^(.*)$");
-    
-    ajStrAssignS(&seqoutUsaTest, thys->Usa);
-
-#ifdef __CYGWIN__
-    if(*(ajStrGetPtr(seqoutUsaTest)+1)==':')
-    {
-	usatmp = ajStrNew();
-        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrGetPtr(seqoutUsaTest),
-		    ajStrGetPtr(seqoutUsaTest)+2);
-        ajStrAssignRef(&seqoutUsaTest,usatmp);
-        ajStrDel(&usatmp);
-    }
-#endif
-
-    ajDebug("output USA to test: '%S'\n\n", seqoutUsaTest);
-    
-    fmtstat = ajRegExec(seqoutRegFmt, seqoutUsaTest);
-    ajDebug("format regexp: %B\n", fmtstat);
-    
-    if(fmtstat)
-    {
-	ajRegSubI(seqoutRegFmt, 1, &thys->Formatstr);
-	ajStrAssignEmptyC(&thys->Formatstr, seqOutFormat[0].Name);
-	/* default  unknown */
-
-	ajRegSubI(seqoutRegFmt, 2, &seqoutUsaTest);
-	ajDebug("found format %S\n", thys->Formatstr);
-	if(!ajSeqFindOutFormat(thys->Formatstr, &thys->Format))
-	{
-	    ajDebug("unknown format '%S'\n", thys->Formatstr);
-	    return ajFalse;
-	}
-    }
-    else
-	ajDebug("no format specified in USA\n");
-
-    ajDebug("\n");
-    
-    regstat = ajRegExec(seqoutRegId, seqoutUsaTest);
-    ajDebug("file:id regexp: %B\n", regstat);
-    
-    if(regstat)
-    {
-	ajRegSubI(seqoutRegId, 1, &thys->Filename);
-	ajDebug("found filename %S single: %B dir: '%S'\n",
-		thys->Filename, thys->Single, thys->Directory);
-	if(thys->Single)
-	    ajDebug("single output file per sequence, open later\n");
-	else
-	{
-	    if(thys->Knownfile)
-		thys->File = thys->Knownfile;
-	    else
-		thys->File = ajFileNewOutD(thys->Directory, thys->Filename);
-
-	    if(!thys->File)
-	    {
-		if(ajStrGetLen(thys->Directory))
-		    ajErr("failed to open filename '%S' in directory '%S'",
-			  thys->Filename, thys->Directory);
-		else
-		    ajErr("failed to open filename '%S'", thys->Filename);
-
-		return ajFalse;
-	    }
-	}
-    }
-    else
-	ajDebug("no filename specified\n");
-
-    ajDebug("\n");
-    
-    return ajTrue;
-}
-
-
-
-
-/* @section sequence output opening *****************************************
-**
-** These functions use the contents of a sequence output object and
-** update them.
-**
-** @fdata [AjPSeqout]
-** @fcategory modify
-**
-** @nam3rule Clear Reset output object
-** @nam3rule Close Close output file
-** @nam3rule Open Open output file
-** @nam4rule OpenFilename Open named output file
-**
-** @argrule * seqout [AjPSeqout] Sequence output object
-** @argrule OpenFilename name [const AjPStr] Output filename
-**
-** @valrule * [void]
-** @valrule *Open [AjBool] True on success
-**
-******************************************************************************/
-
-
-
-
-/* @func ajSeqoutClear ********************************************************
-**
-** Clears a Sequence output object back to "as new" condition
-**
-** @param [u] seqout [AjPSeqout] Sequence output object
-** @category modify [AjPSeqout] Resets ready for reuse.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqoutClear(AjPSeqout seqout)
-{
-
-    AjPStr ptr = NULL;
-
-    ajDebug("ajSeqoutClear called\n");
-
-    ajStrSetClear(&seqout->Name);
-    ajStrSetClear(&seqout->Acc);
-    ajStrSetClear(&seqout->Sv);
-    ajStrSetClear(&seqout->Gi);
-    ajStrSetClear(&seqout->Tax);
-    ajStrSetClear(&seqout->Desc);
-    ajStrSetClear(&seqout->Type);
-    ajStrSetClear(&seqout->Outputtype);
-    ajStrSetClear(&seqout->Full);
-    ajStrSetClear(&seqout->Doc);
-    ajStrSetClear(&seqout->Usa);
-    ajStrSetClear(&seqout->Ufo);
-    ajStrSetClear(&seqout->Informatstr);
-    ajStrSetClear(&seqout->Formatstr);
-    ajStrSetClear(&seqout->Filename);
-    ajStrSetClear(&seqout->Directory);
-    ajStrSetClear(&seqout->Entryname);
-    ajStrSetClear(&seqout->Extension);
-    ajStrSetClear(&seqout->Seq);
-    seqout->EType  = 0;
-    seqout->Rev    = ajFalse;
-    seqout->Format = 0;
-
-    if(seqout->File)
-    {
-	if(seqout->Knownfile)
-	    seqout->File = NULL;
-	else
-	    ajFileClose(&seqout->File);
-    }
-
-    seqout->Count    = 0;
-    seqout->Single   = ajFalse;
-    seqout->Features = ajFalse;
-
-    while(ajListstrPop(seqout->Acclist,&ptr))
-	ajStrDel(&ptr);
-
-    while(ajListstrPop(seqout->Keylist,&ptr))
-	ajStrDel(&ptr);
-
-    while(ajListstrPop(seqout->Taxlist,&ptr))
-	ajStrDel(&ptr);
-
-    ajFeattabOutClear(&seqout->Ftquery);
-    AJFREE(seqout->Accuracy);
-
-    return;
-}
-
-
-
-/* @func ajSeqoutClose ******************************************************
-**
-** Close a sequence output file. For formats that save everything up
-** and write at the end, call the Write function first.
-**
-** @param [u] seqout [AjPSeqout] Sequence output
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqoutClose(AjPSeqout seqout)
-{
-
-    ajDebug("ajSeqoutClose '%F'\n", seqout->File);
-
-    if(seqOutFormat[seqout->Format].Save)
-    {
-	/* Calling funclist seqOutFormat() */
-	seqOutFormat[seqout->Format].Write(seqout);
-    }
-
-    if(seqout->Knownfile)
-	seqout->File = NULL;
-    else
-	ajFileClose(&seqout->File);
-
-    return;
-}
-
-
-/* @obsolete ajSeqWriteClose
-** @rename ajSeqoutClose
-*/
-__deprecated void  ajSeqWriteClose(AjPSeqout outseq)
-{
-    ajSeqoutClose(outseq);
-}
-
-
-
-/* @func ajSeqoutOpen *********************************************************
-**
-** If the file is not yet open, calls seqoutUsaProcess to convert the USA into
-** an open output file stream.
-**
-** Returns the results in the AjPSeqout object.
-**
-** @param [w] seqout [AjPSeqout] Sequence output object.
-** @return [AjBool] ajTrue on success.
-** @category modify [AjPSeqout] If the file is not yet open, calls
-**                seqoutUsaProcess
-** @@
-******************************************************************************/
-
-AjBool ajSeqoutOpen(AjPSeqout seqout)
-{
-    AjBool ret = ajFalse;
-
-    if(seqout->Ftquery)
-	ajDebug("ajSeqoutOpen dir '%S' qrydir '%S'\n",
-		seqout->Directory, seqout->Ftquery->Directory);
-    else
-	ajDebug("ajSeqoutOpen dir '%S' (no ftquery)\n",
-		seqout->Directory);
-
-    ret = seqoutUsaProcess(seqout);
-
-    if(!ret)
-	return ajFalse;
-
-    if(!seqout->Features)
-	return ret;
-
-    ajStrAssignEmptyS(&seqout->Ftquery->Seqname, seqout->Name);
-    ajFeattabOutSetBasename(seqout->Ftquery, seqout->Filename);
-    ret = ajFeattabOutSet(seqout->Ftquery, seqout->Ufo);
-
-    return ret;
-}
-
-
-
-
-
-/* @func ajSeqoutOpenFilename *************************************************
-**
-** Opens an output file for sequence writing. 'stdout' and 'stderr' are
-** special cases using standard output and standard error respectively.
-**
-** @param [u] seqout [AjPSeqout] Sequence output object.
-** @param [r] name [const AjPStr] Output filename.
-** @return [AjBool] ajTrue on success.
-** @category modify [AjPSeqout] Opens an output file for sequence
-**                writing.
-** @@
-******************************************************************************/
-
-AjBool ajSeqoutOpenFilename(AjPSeqout seqout, const AjPStr name)
-{
-    AjBool single;
-    AjBool features;
-
-    single   = seqout->Single;
-    features = seqout->Features;
-
-    if(ajStrMatchCaseC(name, "stdout"))
-	single = ajFalse;
-    if(ajStrMatchCaseC(name, "stderr"))
-	single = ajFalse;
-
-    if(single)
-    {				     /* ok, but nothing to open yet */
-	ajStrAssignEmptyS(&seqout->Extension, seqout->Formatstr);
-	return ajTrue;
-    }
-    else
-    {
-	seqout->File = ajFileNewOut(name);
-	if(seqout->File)
-	    return ajTrue;
-    }
-
-    if(features)
-	ajWarn("ajSeqFileNewOut features not yet implemented");
-
-    return ajFalse;
-}
-
-
-/* @obsolete ajSeqFileNewOut
-** @rename ajSeqoutOpenFilename
-*/
-__deprecated AjBool  ajSeqFileNewOut(AjPSeqout seqout, const AjPStr name)
-{
-    return ajSeqoutOpenFilename(seqout, name);
-}
-
-
-/* @datasection [AjPStr] Sequence output strings ******************************
-**
-** Function is for manipulating sequence output objects
-**
-** @nam2rule Seqoutstr
-**
-******************************************************************************/
-
-/* @section other *******************************************************
-**
-** @fdata [AjPStr]
-** @fcategory use
-******************************************************************************/
-
-
-/* @func ajSeqOutFormatSingle *************************************************
-**
-** Checks whether an output format should go to single files, rather than
-** all sequences being written to one file. Some formats do not work when
-** more than one sequence is writte to a file. Obvious examples are plain
-** text and GCG formats.
-**
-** @param [u] format [AjPStr] Output format required.
-** @return [AjBool] ajTrue if separate file is needed for each sequence.
-** @@
-******************************************************************************/
-
-AjBool ajSeqOutFormatSingle(AjPStr format)
-{
-    ajint iformat;
-
-    if(!ajSeqFindOutFormat(format, &iformat))
-    {
-	ajErr("Unknown output format '%S'", format);
-	return ajFalse;
-    }
-
-    return seqOutFormat[iformat].Single;
-}
-
-
-
-
-/* @func ajSeqOutSetFormat ****************************************************
-**
-** Sets the output format. Currently hard coded but will be replaced
-** in future by a variable.
-**
-** @param [u] thys [AjPSeqout] Sequence output object.
-** @param [r] format [const AjPStr] Output format.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqOutSetFormat(AjPSeqout thys, const AjPStr format)
-{
-    AjPStr fmt = NULL;
-
-    ajDebug("ajSeqOutSetFormat '%S'\n", format);
-    ajStrAssignS(&fmt, format);
-    ajSeqOutFormatDefault(&fmt);
-
-    ajStrAssignEmptyS(&thys->Formatstr, fmt);
-    ajDebug("... output format set to '%S'\n", fmt);
-
-    ajStrDel(&fmt);
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ajSeqOutSetFormatC ***************************************************
-**
-** Sets the output format. Currently hard coded but will be replaced
-** in future by a variable.
-**
-** @param [u] thys [AjPSeqout] Sequence output object.
-** @param [r] format [const char *] Output format.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqOutSetFormatC(AjPSeqout thys, const char* format)
-{
-    AjPStr fmt = NULL;
-    AjBool ret;
-
-    fmt = ajStrNewC(format);
-    ret = ajSeqOutSetFormat(thys,fmt);
-    ajStrDel(&fmt);
-
-    return ret;
-}
-
-
-
-
-/* @func ajSeqOutFormatDefault ************************************************
-**
-** Sets the default output format.
-** Checks the _OUTFORMAT variable,
-** and uses FASTA if no other definition is found.
-**
-** @param [w] pformat [AjPStr*] Default output format.
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqOutFormatDefault(AjPStr* pformat)
-{
-
-    if(ajStrGetLen(*pformat))
-	ajDebug("... output format '%S'\n", *pformat);
-    else
-    {
-	/* ajStrAssignEmptyC(pformat, seqOutFormat[0].Name);*/
-	if (ajNamGetValueC("outformat", pformat))
-	    ajDebug("ajSeqOutFormatDefault '%S' from EMBOSS_OUTFORMAT\n",
-		     *pformat);
-	else
-	{
-	    ajStrAssignEmptyC(pformat, "fasta"); /* use the real name */
-	    ajDebug("... output format not set, default to '%S'\n", *pformat);
-	}
-    }
-
-    return ajTrue;
-}
-
-
-
-
-/* @func ajSeqoutUsa **********************************************************
-**
-** Creates or resets a sequence output object using a new Universal
-** Sequence Address
-**
-** @param [u] pthis [AjPSeqout*] Sequence output object.
-** @param [r] Usa [const AjPStr] USA
-** @return [void]
-** @category modify [AjPSeqout] Resets using a new USA
-** @@
-******************************************************************************/
-
-void ajSeqoutUsa(AjPSeqout* pthis, const AjPStr Usa)
-{
-    AjPSeqout thys;
-
-    if(!*pthis)
-	thys = *pthis = ajSeqoutNew();
-    else
-    {
-	thys = *pthis;
-	ajSeqoutClear(thys);
-    }
-
-    ajStrAssignS(&thys->Usa, Usa);
-
-    return;
-}
-
-
-
-/* @func ajSeqPrintOutFormat **************************************************
-**
-** Reports the internal data structures
-**
-** @param [u] outf [AjPFile] Output file
-** @param [r] full [AjBool] Full report (usually ajFalse)
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqPrintOutFormat(AjPFile outf, AjBool full)
-{
-
-    ajint i = 0;
-
-    (void) full;	 /* make it used - no extra detail reported */
-
-    ajFmtPrintF(outf, "\n");
-    ajFmtPrintF(outf, "# sequence output formats\n");
-    ajFmtPrintF(outf, "# Alias Alias name\n");
-    ajFmtPrintF(outf, "# Single: If true, write each sequence to new file\n");
-    ajFmtPrintF(outf, "# Save: If true, save sequences, write when closed\n");
-    ajFmtPrintF(outf, "# Nuc   Can read nucleotide input\n");
-    ajFmtPrintF(outf, "# Pro   Can read protein input\n");
-    ajFmtPrintF(outf, "# Feat  Can read feature annotation\n");
-    ajFmtPrintF(outf, "# Gap   Can read gap characters\n");
-    ajFmtPrintF(outf, "# Mset  Can read seqsetall (multiple seqsets)\n");
-    ajFmtPrintF(outf, "# Name          Alias Single Save  Pro  Nuc Feat  "
-		"Gap MSet Description\n");
-    ajFmtPrintF(outf, "\n");
-    ajFmtPrintF(outf, "OutFormat {\n");
-    for(i=0; seqOutFormat[i].Name; i++)
-    {
-	ajFmtPrintF(outf,
-		    "  %-15s %3B    %3B  %3B  %3B  %3B  %3B  %3B  %3B \"%s\"\n",
-		    seqOutFormat[i].Name,
-		    seqOutFormat[i].Alias,
-		    seqOutFormat[i].Single,
-		    seqOutFormat[i].Save,
-		    seqOutFormat[i].Nucleotide,
-		    seqOutFormat[i].Protein,
-		    seqOutFormat[i].Feature,
-		    seqOutFormat[i].Gap,
-		    seqOutFormat[i].Multiset,
-		    seqOutFormat[i].Desc);
-    }
-    ajFmtPrintF(outf, "}\n\n");
-
-    return;
-}
-
-
-
-
-/* @func ajSeqFindOutFormat ***************************************************
-**
-** Looks for the specified output format in the internal definitions and
-** returns the index.
-**
-** @param [r] format [const AjPStr] Format required.
-** @param [w] iformat [ajint*] Index
-** @return [AjBool] ajTrue on success.
-** @@
-******************************************************************************/
-
-AjBool ajSeqFindOutFormat(const AjPStr format, ajint* iformat)
-{
-
-    AjPStr tmpformat = NULL;
-    ajint i = 0;
-
-    if(!ajStrGetLen(format))
-    {
-	if (ajNamGetValueC("outformat", &tmpformat))
-	    ajDebug("ajSeqFindOutFormat '%S' from EMBOSS_OUTFORMAT\n",
-		    tmpformat);
-	else
-	    return ajFalse;
-
-    }
-    else
-	ajStrAssignS(&tmpformat, format);
-
-    ajStrFmtLower(&tmpformat);
-
-    while(seqOutFormat[i].Name)
-    {
-	if(ajStrMatchCaseC(tmpformat, seqOutFormat[i].Name))
-	{
-	    *iformat = i;
-	    ajStrDel(&tmpformat);
-	    return ajTrue;
-	}
-	i++;
-    }
-
-    ajStrDel(&tmpformat);
-
-    return ajFalse;
-}
-
-
-
-
-/* @funcstatic seqSeqFormat ***************************************************
-**
-** Initialises sequence output formatting parameters.
-**
-** @param [r] seqlen [ajint] Sequence length
-** @param [u] psf [SeqPSeqFormat*] Sequence format object
-** @return [void]
-** @@
-******************************************************************************/
-
-static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf)
-{
-    char numform[20];
-    SeqPSeqFormat sf;
-    ajint i;
-    ajint j;
-
-    j = 1;
-
-    for(i = seqlen; i; i /= 10)
-	j++;
-
-    sprintf(numform, "%d", seqlen);
-    ajDebug("seqSeqFormat numwidth old: %d new: %d\n", strlen(numform)+1, j);
-
-    if(!*psf)
-    {
-	sf = AJNEW0(*psf);
-	sf->namewidth = 8;
-	sf->spacer    = 0;
-	sf->width     = 50;
-	sf->tab       = 0;
-	sf->numleft   = ajFalse;
-	sf->numright  = sf->numleft = sf->numjust = ajFalse;
-	sf->nameright = sf->nameleft = ajFalse;
-	sf->numline   = 0;
-	sf->linepos   = 0;
-
-	sf->skipbefore  = ajFalse;
-	sf->skipafter   = ajFalse;
-	sf->isactive    = ajFalse;
-	sf->baseonlynum = ajFalse;
-	sf->gapchar     = '-';
-	sf->matchchar   = '.';
-	sf->noleaves    = sf->domatch = sf->degap = ajFalse;
-	sf->pretty = ajFalse;
-	strcpy(sf->endstr, "");
-	/*sf->interline = 1;*/
-    }
-    else
-	sf = *psf;
-
-    sf->numwidth = j;		    /* or 8 as a reasonable minimum */
-
-    return;
-}
-
-
-
-
 /* @funcstatic seqWriteSeq ****************************************************
 **
 ** Writes an output sequence. The format and all other information is
@@ -5579,11 +5029,793 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
 
 
 
+/* @funcstatic seqoutUfoLocal *************************************************
+**
+** Tests whether a sequence output object will write features to the
+** sequence output file. The alternative is to use a separate UFO.
+**
+** @param [r] thys [const AjPSeqout] Sequence output object.
+** @return [AjBool] ajTrue if the features will be written to the sequence
+** @@
+******************************************************************************/
+
+static AjBool seqoutUfoLocal(const AjPSeqout thys)
+{
+    ajDebug("seqoutUfoLocal Features %B Ufo %d '%S'\n",
+	    thys->Features, ajStrGetLen(thys->Ufo), thys->Ufo);
+
+    if(thys->Features && !ajStrGetLen(thys->Ufo))
+	return ajTrue;
+
+    return ajFalse;
+}
+
+
+
+
+/* @funcstatic seqoutUsaProcess ***********************************************
+**
+** Converts a USA Universal Sequence Address into an open output file.
+**
+** First tests for format:: and sets this if it is found
+**
+** Then looks for file:id and opens the file.
+** In this case the file position is not known and sequence reading
+** will have to scan for the entry/entries we need.
+**
+** @param [u] thys [AjPSeqout] Sequence output definition.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqoutUsaProcess(AjPSeqout thys)
+{    
+    AjBool fmtstat;
+    AjBool regstat;
+    
+#ifdef __CYGWIN__
+    AjPStr usatmp = NULL;
+#endif
+
+    ajDebug("seqoutUsaProcess\n");
+    if(!seqoutRegFmt)
+#ifndef WIN32
+	seqoutRegFmt = ajRegCompC("^([A-Za-z0-9]*)::?(.*)$");
+    /* \1 format */
+    /* \2 remainder */
+#else
+    /* Windows file names can start with e.g.: 'C:\' */
+    /* -> Require that format names have at least 2 letters */
+    seqoutRegFmt = ajRegCompC("^([A-Za-z0-9][A-Za-z0-9][A-Za-z0-9]*)::?(.*)$");
+    /* \1 format */
+    /* \2 remainder */
+#endif
+
+
+    if(!seqoutRegId)			  /* \1 is filename \3 is the qryid */
+	seqoutRegId = ajRegCompC("^(.*)$");
+    
+    ajStrAssignS(&seqoutUsaTest, thys->Usa);
+
+#ifdef __CYGWIN__
+    if(*(ajStrGetPtr(seqoutUsaTest)+1)==':')
+    {
+	usatmp = ajStrNew();
+        ajFmtPrintS(&usatmp,"/cygdrive/%c/%s",*ajStrGetPtr(seqoutUsaTest),
+		    ajStrGetPtr(seqoutUsaTest)+2);
+        ajStrAssignRef(&seqoutUsaTest,usatmp);
+        ajStrDel(&usatmp);
+    }
+#endif
+
+    ajDebug("output USA to test: '%S'\n\n", seqoutUsaTest);
+    
+    fmtstat = ajRegExec(seqoutRegFmt, seqoutUsaTest);
+    ajDebug("format regexp: %B\n", fmtstat);
+    
+    if(fmtstat)
+    {
+	ajRegSubI(seqoutRegFmt, 1, &thys->Formatstr);
+	ajStrAssignEmptyC(&thys->Formatstr, seqOutFormat[0].Name);
+	/* default  unknown */
+
+	ajRegSubI(seqoutRegFmt, 2, &seqoutUsaTest);
+	ajDebug("found format %S\n", thys->Formatstr);
+	if(!seqoutFindOutFormat(thys->Formatstr, &thys->Format))
+	{
+	    ajDebug("unknown format '%S'\n", thys->Formatstr);
+	    return ajFalse;
+	}
+    }
+    else
+	ajDebug("no format specified in USA\n");
+
+    ajDebug("\n");
+    
+    regstat = ajRegExec(seqoutRegId, seqoutUsaTest);
+    ajDebug("file:id regexp: %B\n", regstat);
+    
+    if(regstat)
+    {
+	ajRegSubI(seqoutRegId, 1, &thys->Filename);
+	ajDebug("found filename %S single: %B dir: '%S'\n",
+		thys->Filename, thys->Single, thys->Directory);
+	if(thys->Single)
+	    ajDebug("single output file per sequence, open later\n");
+	else
+	{
+	    if(thys->Knownfile)
+		thys->File = thys->Knownfile;
+	    else
+		thys->File = ajFileNewOutD(thys->Directory, thys->Filename);
+
+	    if(!thys->File)
+	    {
+		if(ajStrGetLen(thys->Directory))
+		    ajErr("failed to open filename '%S' in directory '%S'",
+			  thys->Filename, thys->Directory);
+		else
+		    ajErr("failed to open filename '%S'", thys->Filename);
+
+		return ajFalse;
+	    }
+	}
+    }
+    else
+	ajDebug("no filename specified\n");
+
+    ajDebug("\n");
+    
+    return ajTrue;
+}
+
+
+
+
+/* @section sequence output opening *****************************************
+**
+** These functions use the contents of a sequence output object and
+** update them.
+**
+** @fdata [AjPSeqout]
+** @fcategory modify
+**
+** @nam3rule Clear Reset output object
+** @nam4rule ClearUsa Reset output object and set new Usa
+** @nam3rule Close Close output file
+** @nam3rule Open Open output file
+** @nam4rule OpenFilename Open named output file
+**
+** @argrule * seqout [AjPSeqout] Sequence output object
+** @argrule OpenFilename name [const AjPStr] Output filename
+** @argrule ClearUsa usa [const AjPStr] Uniform sequence address
+**
+** @valrule * [void]
+** @valrule *Open [AjBool] True on success
+**
+******************************************************************************/
+
+
+
+
+/* @func ajSeqoutClear ********************************************************
+**
+** Clears a Sequence output object back to "as new" condition
+**
+** @param [u] seqout [AjPSeqout] Sequence output object
+** @category modify [AjPSeqout] Resets ready for reuse.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutClear(AjPSeqout seqout)
+{
+
+    AjPStr ptr = NULL;
+
+    ajDebug("ajSeqoutClear called\n");
+
+    ajStrSetClear(&seqout->Name);
+    ajStrSetClear(&seqout->Acc);
+    ajStrSetClear(&seqout->Sv);
+    ajStrSetClear(&seqout->Gi);
+    ajStrSetClear(&seqout->Tax);
+    ajStrSetClear(&seqout->Desc);
+    ajStrSetClear(&seqout->Type);
+    ajStrSetClear(&seqout->Outputtype);
+    ajStrSetClear(&seqout->Full);
+    ajStrSetClear(&seqout->Doc);
+    ajStrSetClear(&seqout->Usa);
+    ajStrSetClear(&seqout->Ufo);
+    ajStrSetClear(&seqout->Informatstr);
+    ajStrSetClear(&seqout->Formatstr);
+    ajStrSetClear(&seqout->Filename);
+    ajStrSetClear(&seqout->Directory);
+    ajStrSetClear(&seqout->Entryname);
+    ajStrSetClear(&seqout->Extension);
+    ajStrSetClear(&seqout->Seq);
+    seqout->EType  = 0;
+    seqout->Rev    = ajFalse;
+    seqout->Format = 0;
+
+    if(seqout->File)
+    {
+	if(seqout->Knownfile)
+	    seqout->File = NULL;
+	else
+	    ajFileClose(&seqout->File);
+    }
+
+    seqout->Count    = 0;
+    seqout->Single   = ajFalse;
+    seqout->Features = ajFalse;
+
+    while(ajListstrPop(seqout->Acclist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListstrPop(seqout->Keylist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListstrPop(seqout->Taxlist,&ptr))
+	ajStrDel(&ptr);
+
+    ajFeattabOutClear(&seqout->Ftquery);
+    AJFREE(seqout->Accuracy);
+
+    return;
+}
+
+
+
+/* @func ajSeqoutClearUsa *****************************************************
+**
+** Creates or resets a sequence output object using a new Universal
+** Sequence Address
+**
+** @param [u] seqout [AjPSeqout] Sequence output object.
+** @param [r] usa [const AjPStr] USA
+** @return [void]
+** @category modify [AjPSeqout] Resets using a new USA
+** @@
+******************************************************************************/
+
+void ajSeqoutClearUsa(AjPSeqout seqout, const AjPStr usa)
+{
+    ajSeqoutClear(seqout);
+
+    ajStrAssignS(&seqout->Usa, usa);
+
+    return;
+}
+
+
+/* @obsolete ajSeqoutUsa
+** @rename ajSeqoutClearUsa
+*/
+
+__deprecated void ajSeqoutUsa(AjPSeqout* pthis, const AjPStr Usa)
+{
+    ajSeqoutClearUsa(*pthis, Usa);
+    return;
+}
+
+/* @func ajSeqoutClose ******************************************************
+**
+** Close a sequence output file. For formats that save everything up
+** and write at the end, call the Write function first.
+**
+** @param [u] seqout [AjPSeqout] Sequence output
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutClose(AjPSeqout seqout)
+{
+
+    ajDebug("ajSeqoutClose '%F'\n", seqout->File);
+
+    if(seqOutFormat[seqout->Format].Save)
+    {
+	/* Calling funclist seqOutFormat() */
+	seqOutFormat[seqout->Format].Write(seqout);
+    }
+
+    if(seqout->Knownfile)
+	seqout->File = NULL;
+    else
+	ajFileClose(&seqout->File);
+
+    return;
+}
+
+
+/* @obsolete ajSeqWriteClose
+** @rename ajSeqoutClose
+*/
+__deprecated void  ajSeqWriteClose(AjPSeqout outseq)
+{
+    ajSeqoutClose(outseq);
+}
+
+
+
+/* @func ajSeqoutOpen *********************************************************
+**
+** If the file is not yet open, calls seqoutUsaProcess to convert the USA into
+** an open output file stream.
+**
+** Returns the results in the AjPSeqout object.
+**
+** @param [w] seqout [AjPSeqout] Sequence output object.
+** @return [AjBool] ajTrue on success.
+** @category modify [AjPSeqout] If the file is not yet open, calls
+**                seqoutUsaProcess
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutOpen(AjPSeqout seqout)
+{
+    AjBool ret = ajFalse;
+
+    if(seqout->Ftquery)
+	ajDebug("ajSeqoutOpen dir '%S' qrydir '%S'\n",
+		seqout->Directory, seqout->Ftquery->Directory);
+    else
+	ajDebug("ajSeqoutOpen dir '%S' (no ftquery)\n",
+		seqout->Directory);
+
+    ret = seqoutUsaProcess(seqout);
+
+    if(!ret)
+	return ajFalse;
+
+    if(!seqout->Features)
+	return ret;
+
+    ajStrAssignEmptyS(&seqout->Ftquery->Seqname, seqout->Name);
+    ajFeattabOutSetBasename(seqout->Ftquery, seqout->Filename);
+    ret = ajFeattabOutSet(seqout->Ftquery, seqout->Ufo);
+
+    return ret;
+}
+
+
+
+
+
+/* @func ajSeqoutOpenFilename *************************************************
+**
+** Opens an output file for sequence writing. 'stdout' and 'stderr' are
+** special cases using standard output and standard error respectively.
+**
+** @param [u] seqout [AjPSeqout] Sequence output object.
+** @param [r] name [const AjPStr] Output filename.
+** @return [AjBool] ajTrue on success.
+** @category modify [AjPSeqout] Opens an output file for sequence
+**                writing.
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutOpenFilename(AjPSeqout seqout, const AjPStr name)
+{
+    AjBool single;
+    AjBool features;
+
+    single   = seqout->Single;
+    features = seqout->Features;
+
+    if(ajStrMatchCaseC(name, "stdout"))
+	single = ajFalse;
+    if(ajStrMatchCaseC(name, "stderr"))
+	single = ajFalse;
+
+    if(single)
+    {				     /* ok, but nothing to open yet */
+	ajStrAssignEmptyS(&seqout->Extension, seqout->Formatstr);
+	return ajTrue;
+    }
+    else
+    {
+	seqout->File = ajFileNewOut(name);
+	if(seqout->File)
+	    return ajTrue;
+    }
+
+    if(features)
+	ajWarn("ajSeqFileNewOut features not yet implemented");
+
+    return ajFalse;
+}
+
+
+/* @obsolete ajSeqFileNewOut
+** @rename ajSeqoutOpenFilename
+*/
+__deprecated AjBool  ajSeqFileNewOut(AjPSeqout seqout, const AjPStr name)
+{
+    return ajSeqoutOpenFilename(seqout, name);
+}
+
+
+/* @section set ***************************************************************
+**
+** @fdata [AjPSeqout]
+** @fcategory modify
+**
+** @nam3rule Set Set values
+** @nam4rule Format Set output format
+** @nam4rule Name Set output name
+** @nam5rule NameDefault Set output name to default if not already set
+**
+** @suffix C [char*] C character string
+** @suffix S [AjPStr] string object
+**
+** @argrule Set seqout [AjPSeqout] Sequence output object
+** @argrule NameDefault multi [AjBool] True if number is to be appended
+** @argrule C txt [const char*] Format name
+** @argrule S str [const AjPStr] Format name
+**
+** @valrule * [AjBool] True on success
+**
+******************************************************************************/
+
+/* @func ajSeqoutSetFormatC ***************************************************
+**
+** Sets the output format. Currently hard coded but will be replaced
+** in future by a variable.
+**
+** @param [u] seqout [AjPSeqout] Sequence output object.
+** @param [r] txt [const char *] Output format.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutSetFormatC(AjPSeqout seqout, const char* txt)
+{
+    AjPStr fmt = NULL;
+    AjBool ret;
+
+    fmt = ajStrNewC(txt);
+    ret = ajSeqoutSetFormatS(seqout,fmt);
+    ajStrDel(&fmt);
+
+    return ret;
+}
+
+/* @obsolete ajSeqOutSetFormatC
+** @rename ajSeqoutSetFormatC
+*/
+
+__deprecated AjBool ajSeqOutSetFormatC(AjPSeqout thys, const char* txt)
+{
+    return ajSeqoutSetFormatC(thys, txt);
+}
+
+/* @func ajSeqoutSetFormatS ****************************************************
+**
+** Sets the output format. Currently hard coded but will be replaced
+** in future by a variable.
+**
+** @param [u] seqout [AjPSeqout] Sequence output object.
+** @param [r] str [const AjPStr] Output format.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutSetFormatS(AjPSeqout seqout, const AjPStr str)
+{
+    AjPStr fmt = NULL;
+
+    ajDebug("ajSeqoutSetFormat '%S'\n", str);
+    ajStrAssignS(&fmt, str);
+    ajSeqoutstrGetFormatDefault(&fmt);
+
+    ajStrAssignEmptyS(&seqout->Formatstr, fmt);
+    ajDebug("... output format set to '%S'\n", fmt);
+
+    ajStrDel(&fmt);
+
+    return ajTrue;
+}
+
+
+/* @obsolete ajSeqOutSetFormat
+** @rename ajSeqoutSetFormatS
+*/
+
+__deprecated AjBool ajSeqOutSetFormat(AjPSeqout seqout, const AjPStr format)
+{
+    return ajSeqoutSetFormatS(seqout, format);
+}
+
+
+/* @func ajSeqoutSetNameDefaultC ***********************************************
+**
+** Provides a unique (for this program run) name for a sequence.
+**
+** @param [w] seqout [AjPSeqout] Sequence output object
+** @param [r] multi [AjBool] If true, appends a number to the name.
+** @param [r] txt [const char*] Name set by caller
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutSetNameDefaultC(AjPSeqout seqout,
+			       AjBool multi, const char* txt)
+{
+    static ajint count = 0;
+
+    if(ajStrGetLen(seqout->Name))
+    {
+	ajDebug("ajSeqoutSetNameDefaultC already has a name '%S'\n",
+		seqout->Name);
+	return ajFalse;
+    }
+
+    if (*txt)
+    {
+	if(multi && count)
+	    ajFmtPrintS(&seqout->Name, "%s_%3.3d", txt, ++count);
+	else
+	{
+	    ajStrAssignC(&seqout->Name, txt);
+	    ++count;
+	}
+    }
+    else
+    {
+	if(multi)
+	    ajFmtPrintS(&seqout->Name, "EMBOSS_%3.3d", ++count);
+	else
+	{
+	    ajStrAssignC(&seqout->Name, "EMBOSS");
+	    ++count;
+	}
+    }
+
+    ajDebug("ajSeqoutSetNameDefaultC set to '%S'\n", seqout->Name);
+
+    return ajTrue;
+}
+
+
+/* @func ajSeqoutSetNameDefaultS ***********************************************
+**
+** Provides a unique (for this program run) name for a sequence.
+**
+** @param [w] seqout [AjPSeqout] Sequence output object
+** @param [r] multi [AjBool] If true, appends a number to the name.
+** @param [r] str [const AjPStr] Name set by caller
+** @return [AjBool] True on success
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutSetNameDefaultS(AjPSeqout seqout,
+			    AjBool multi, const AjPStr str)
+{
+    static ajint count = 0;
+
+    if(ajStrGetLen(seqout->Name))
+    {
+	ajDebug("ajSeqoutSetNameDefaultS already has a name '%S'\n",
+		seqout->Name);
+	return ajFalse;
+    }
+
+    if (ajStrGetLen(str))
+    {
+	if(multi && count)
+	    ajFmtPrintS(&seqout->Name, "%S_%3.3d", str, ++count);
+	else
+	{
+	    ajStrAssignS(&seqout->Name, str);
+	    ++count;
+	}
+    }
+    else
+    {
+	if(multi)
+	    ajFmtPrintS(&seqout->Name, "EMBOSS_%3.3d", ++count);
+	else
+	{
+	    ajStrAssignC(&seqout->Name, "EMBOSS");
+	    ++count;
+	}
+    }
+
+    ajDebug("ajSeqoutSetNameDefaultS set to '%S'\n", seqout->Name);
+
+    return ajTrue;
+}
+
+
+/* @obsolete ajSeqoutDefName
+** @replace ajSeqoutSetNameDefaultS (1,2,3/1,3,2)
+*/
+
+__deprecated void ajSeqoutDefName(AjPSeqout thys,
+				  const AjPStr setname, AjBool multi)
+{
+    ajSeqoutSetNameDefaultS(thys, multi, setname);
+    return;
+}
+
+/* @funcstatic seqDbName ******************************************************
+**
+** Adds the database name (if any) to the name provided.
+**
+** @param [w] name [AjPStr*] Derived name.
+** @param [r] db [const AjPStr] Database name (if any)
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqDbName(AjPStr* name, const AjPStr db)
+{
+    AjPStr tmpname = NULL;
+
+    if(!ajStrGetLen(db))
+	return;
+
+    ajStrAssignS(&tmpname, *name);
+    ajFmtPrintS(name, "%S:%S", db, tmpname);
+
+    ajStrDel(&tmpname);
+
+    return;
+}
+
+
+
+
+/* @section print *************************************************************
+**
+** @fdata [AjPSeqout]
+**
+** Print internal details for use by entrails
+**
+** @nam3rule Print Print internal details
+** @nam4rule PrintFormat Print details of sequence output formats
+**
+** @argrule Print outf [AjPFile] Output file
+** @argrule Print full [AjBool] Print full details
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
+
+
+/* @func ajSeqoutPrintFormat **************************************************
+**
+** Reports the internal data structures
+**
+** @param [u] outf [AjPFile] Output file
+** @param [r] full [AjBool] Full report (usually ajFalse)
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutPrintFormat(AjPFile outf, AjBool full)
+{
+
+    ajint i = 0;
+
+    (void) full;	 /* make it used - no extra detail reported */
+
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "# sequence output formats\n");
+    ajFmtPrintF(outf, "# Alias Alias name\n");
+    ajFmtPrintF(outf, "# Single: If true, write each sequence to new file\n");
+    ajFmtPrintF(outf, "# Save: If true, save sequences, write when closed\n");
+    ajFmtPrintF(outf, "# Nuc   Can read nucleotide input\n");
+    ajFmtPrintF(outf, "# Pro   Can read protein input\n");
+    ajFmtPrintF(outf, "# Feat  Can read feature annotation\n");
+    ajFmtPrintF(outf, "# Gap   Can read gap characters\n");
+    ajFmtPrintF(outf, "# Mset  Can read seqsetall (multiple seqsets)\n");
+    ajFmtPrintF(outf, "# Name          Alias Single Save  Pro  Nuc Feat  "
+		"Gap MSet Description\n");
+    ajFmtPrintF(outf, "\n");
+    ajFmtPrintF(outf, "OutFormat {\n");
+    for(i=0; seqOutFormat[i].Name; i++)
+    {
+	ajFmtPrintF(outf,
+		    "  %-15s %3B    %3B  %3B  %3B  %3B  %3B  %3B  %3B \"%s\"\n",
+		    seqOutFormat[i].Name,
+		    seqOutFormat[i].Alias,
+		    seqOutFormat[i].Single,
+		    seqOutFormat[i].Save,
+		    seqOutFormat[i].Nucleotide,
+		    seqOutFormat[i].Protein,
+		    seqOutFormat[i].Feature,
+		    seqOutFormat[i].Gap,
+		    seqOutFormat[i].Multiset,
+		    seqOutFormat[i].Desc);
+    }
+    ajFmtPrintF(outf, "}\n\n");
+
+    return;
+}
+
+/* @obsolete ajSeqPrintOutFormat
+** @rename ajSeqoutPrintFormat
+*/
+
+__deprecated void ajSeqPrintOutFormat(AjPFile outf, AjBool full)
+{
+    ajSeqoutPrintFormat(outf, full);
+    return;
+}
+
+
+
+/* @funcstatic seqSeqFormat ***************************************************
+**
+** Initialises sequence output formatting parameters.
+**
+** @param [r] seqlen [ajint] Sequence length
+** @param [u] psf [SeqPSeqFormat*] Sequence format object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf)
+{
+    char numform[20];
+    SeqPSeqFormat sf;
+    ajint i;
+    ajint j;
+
+    j = 1;
+
+    for(i = seqlen; i; i /= 10)
+	j++;
+
+    sprintf(numform, "%d", seqlen);
+    ajDebug("seqSeqFormat numwidth old: %d new: %d\n", strlen(numform)+1, j);
+
+    if(!*psf)
+    {
+	sf = AJNEW0(*psf);
+	sf->namewidth = 8;
+	sf->spacer    = 0;
+	sf->width     = 50;
+	sf->tab       = 0;
+	sf->numleft   = ajFalse;
+	sf->numright  = sf->numleft = sf->numjust = ajFalse;
+	sf->nameright = sf->nameleft = ajFalse;
+	sf->numline   = 0;
+	sf->linepos   = 0;
+
+	sf->skipbefore  = ajFalse;
+	sf->skipafter   = ajFalse;
+	sf->isactive    = ajFalse;
+	sf->baseonlynum = ajFalse;
+	sf->gapchar     = '-';
+	sf->matchchar   = '.';
+	sf->noleaves    = sf->domatch = sf->degap = ajFalse;
+	sf->pretty = ajFalse;
+	strcpy(sf->endstr, "");
+	/*sf->interline = 1;*/
+    }
+    else
+	sf = *psf;
+
+    sf->numwidth = j;		    /* or 8 as a reasonable minimum */
+
+    return;
+}
+
+
+
+
 /* ==================================================================== */
 /* ============================ Casts ================================= */
 /* ==================================================================== */
 
 /* @section Sequence Output Casts *********************************************
+**
+** @fdata [AjPSeqout]
 **
 ** These functions examine the contents of a sequence output object
 ** and return some derived information. Some of them provide access to
@@ -5591,20 +5823,98 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
 ** provided for programming convenience but should be used with
 ** caution.
 **
+** @nam3rule Get Return an element or property
+** @nam4rule Checkgcg GCG checksum
+** @nam4rule Basecount Counts of nucleotide bases
+**
+** @argrule Get seqout [const AjPSeqout] Sequence output object
+** @argrule Basecount bases [ajuint*] Base counts
+**
+** @valrule Checkgcg [ajint] GCG checksum
+** @valrule Basecount [void]
+**
+** @fcategory cast
+**
 ******************************************************************************/
 
-/* @func ajSeqoutCheckGcg *****************************************************
+/* @func ajSeqoutGetBasecount **************************************************
+**
+** Counts the numbers of A, C, G and T in a nucleotide sequence.
+**
+** @param [r] seqout [const AjPSeqout] Sequence output object
+** @param [w] bases [ajuint*] Integer array, minimum size 5,
+**                                 to hold the results.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqoutGetBasecount(const AjPSeqout seqout, ajuint* bases)
+{
+    const char* cp;
+
+    ajDebug("ajSeqoutGetBasecount %d bases\n", ajStrGetLen(seqout->Seq));
+
+    bases[0] = bases[1] = bases[2] = bases[3] = bases[4] = 0;
+
+    cp = ajStrGetPtr(seqout->Seq);
+
+    while(*cp)
+    {
+	switch (*cp)
+	{
+	case 'A':
+	case 'a':
+	    bases[0]++;
+	    break;
+	case 'C':
+	case 'c':
+	    bases[1]++;
+	    break;
+	case 'G':
+	case 'g':
+	    bases[2]++;
+	    break;
+	case 'T':
+	case 't':
+	case 'U':
+	case 'u':
+	    bases[3]++;
+	    break;
+	default:
+	    break;
+	}
+	cp++;
+    }
+
+    bases[4] = ajStrGetLen(seqout->Seq) -
+	bases[0] - bases[1] - bases[2] - bases[3];
+
+    return;
+}
+
+
+/* @obsolete ajSeqoutCount
+** @rename ajSeqoutGetBasecount
+*/
+
+__deprecated void ajSeqoutCount(const AjPSeqout seqout, ajuint* b)
+{
+    ajSeqoutGetBasecount(seqout, b);
+    return;
+}
+
+/* @func ajSeqoutGetCheckgcg **************************************************
 **
 ** Calculates a GCG checksum for an output sequence.
 **
-** @param [r] outseq [const AjPSeqout] Output sequence.
+** @param [r] seqout [const AjPSeqout] Output sequence.
 ** @return [ajint] GCG checksum.
 ** @category cast [AjPSeqout] Calculates the GCG checksum for a
 **                sequence set.
 ** @@
 ******************************************************************************/
 
-ajint ajSeqoutCheckGcg(const AjPSeqout outseq)
+ajint ajSeqoutGetCheckgcg(const AjPSeqout seqout)
 {
     ajlong  i;
     ajlong check = 0;
@@ -5612,8 +5922,8 @@ ajint ajSeqoutCheckGcg(const AjPSeqout outseq)
     const char *cp;
     ajint ilen;
 
-    cp   = ajStrGetPtr(outseq->Seq);
-    ilen = ajStrGetLen(outseq->Seq);
+    cp   = ajStrGetPtr(seqout->Seq);
+    ilen = ajStrGetLen(seqout->Seq);
 
     for(i = 0; i < ilen; i++)
     {
@@ -5627,20 +5937,14 @@ ajint ajSeqoutCheckGcg(const AjPSeqout outseq)
     return check;
 }
 
+/* @obsolete ajSeqoutCheckGcg
+** @rename ajSeqoutGetCheckgcg
+*/
 
-
-
-/* ==================================================================== */
-/* ========================== Assignments ============================= */
-/* ==================================================================== */
-
-/* @section Sequence Output Assignments ***************************************
-**
-** These functions overwrite the sequence output object provided as
-** the first argument.
-**
-******************************************************************************/
-
+__deprecated ajint ajSeqoutCheckGcg(const AjPSeqout seqout)
+{
+    return ajSeqoutGetCheckgcg(seqout);
+}
 
 
 
@@ -5859,110 +6163,48 @@ static AjBool seqFileReopen(AjPSeqout outseq)
 
 
 
-/* @funcstatic seqDbName ******************************************************
+/* @section debugging *********************************************************
 **
-** Adds the database name (if any) to the name provided.
+** Functions for reporting of a string object.
 **
-** @param [w] name [AjPStr*] Derived name.
-** @param [r] db [const AjPStr] Database name (if any)
-** @return [void]
-** @@
-******************************************************************************/
-
-static void seqDbName(AjPStr* name, const AjPStr db)
-{
-    AjPStr tmpname = NULL;
-
-    if(!ajStrGetLen(db))
-	return;
-
-    ajStrAssignS(&tmpname, *name);
-    ajFmtPrintS(name, "%S:%S", db, tmpname);
-
-    ajStrDel(&tmpname);
-
-    return;
-}
-
-
-
-
-/* @func ajSeqoutDefName ******************************************************
+** @fdata       [AjPSeqout]
 **
-** Provides a unique (for this program run) name for a sequence.
+** @nam3rule   Trace        Report string elements to debug file 
 **
-** @param [w] thys [AjPSeqout] Sequence output object
-** @param [r] setname [const AjPStr] Name set by caller
-** @param [r] multi [AjBool] If true, appends a number to the name.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqoutDefName(AjPSeqout thys, const AjPStr setname, AjBool multi)
-{
-    static ajint count = 0;
-
-    if(ajStrGetLen(thys->Name))
-    {
-	ajDebug("ajSeqoutDefName already has a name '%S'\n", thys->Name);
-	return;
-    }
-
-    if (ajStrGetLen(setname))
-    {
-	if(multi && count)
-	    ajFmtPrintS(&thys->Name, "%S_%3.3d", setname, ++count);
-	else
-	{
-	    ajStrAssignS(&thys->Name, setname);
-	    ++count;
-	}
-    }
-    else
-    {
-	if(multi)
-	    ajFmtPrintS(&thys->Name, "EMBOSS_%3.3d", ++count);
-	else
-	{
-	    ajStrAssignC(&thys->Name, "EMBOSS");
-	    ++count;
-	}
-    }
-
-    ajDebug("ajSeqoutDefName set to '%S'\n", thys->Name);
-
-    return;
-}
-
-
+** @argrule Trace seqout [const AjPSeqout] String
+**
+** @valrule * [void]
+**
+** @fcategory misc
+*/
 
 
 /* @func ajSeqoutTrace ********************************************************
 **
 ** Debug calls to trace the data in a sequence object.
 **
-** @param [r] seq [const AjPSeqout] Sequence output object.
+** @param [r] seqout [const AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSeqoutTrace(const AjPSeqout seq)
+void ajSeqoutTrace(const AjPSeqout seqout)
 {
     AjIList it;
     AjPStr cur;
     
     ajDebug("\n\n\nSequence Out trace\n");
     ajDebug( "==============\n\n");
-    ajDebug( "  Name: '%S'\n", seq->Name);
+    ajDebug( "  Name: '%S'\n", seqout->Name);
 
-    if(ajStrGetLen(seq->Acc))
-	ajDebug( "  Accession: '%S'\n", seq->Acc);
+    if(ajStrGetLen(seqout->Acc))
+	ajDebug( "  Accession: '%S'\n", seqout->Acc);
 
-    if(ajListLength(seq->Acclist))
+    if(ajListLength(seqout->Acclist))
     {
 	ajDebug("  Acclist: (%d)",
-		ajListLength(seq->Acclist));
-	it = ajListIterRead(seq->Acclist);
+		ajListLength(seqout->Acclist));
+	it = ajListIterRead(seqout->Acclist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	    ajDebug(" %S\n", cur);
 
@@ -5970,81 +6212,81 @@ void ajSeqoutTrace(const AjPSeqout seq)
 	ajDebug("\n");
     }
 
-    if(ajStrGetLen(seq->Sv))
-	ajDebug( "  SeqVersion: '%S'\n", seq->Sv);
+    if(ajStrGetLen(seqout->Sv))
+	ajDebug( "  SeqVersion: '%S'\n", seqout->Sv);
 
-    if(ajStrGetLen(seq->Gi))
-	ajDebug( "  GenInfo Id: '%S'\n", seq->Gi);
+    if(ajStrGetLen(seqout->Gi))
+	ajDebug( "  GenInfo Id: '%S'\n", seqout->Gi);
 
-    if(ajStrGetLen(seq->Desc))
-	ajDebug( "  Description: '%S'\n", seq->Desc);
+    if(ajStrGetLen(seqout->Desc))
+	ajDebug( "  Description: '%S'\n", seqout->Desc);
 
-    if(ajStrGetRes(seq->Seq))
-	ajDebug( "  Reserved: %d\n", ajStrGetRes(seq->Seq));
+    if(ajStrGetRes(seqout->Seq))
+	ajDebug( "  Reserved: %d\n", ajStrGetRes(seqout->Seq));
 
-    if(ajListLength(seq->Keylist))
+    if(ajListLength(seqout->Keylist))
     {
 	ajDebug("  Keywordlist: (%d)",
-		ajListLength(seq->Keylist));
-	it = ajListIterRead(seq->Keylist);
+		ajListLength(seqout->Keylist));
+	it = ajListIterRead(seqout->Keylist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	    ajDebug("   '%S'\n", cur);
 
 	ajListIterFree(&it);
 	ajDebug("\n");
     }
-    ajDebug("  Taxonomy: '%S'\n", seq->Tax);
+    ajDebug("  Taxonomy: '%S'\n", seqout->Tax);
 
-    if(ajListLength(seq->Taxlist))
+    if(ajListLength(seqout->Taxlist))
     {
 	ajDebug("  Taxlist: (%d)",
-		ajListLength(seq->Taxlist));
-	it = ajListIterRead(seq->Taxlist);
+		ajListLength(seqout->Taxlist));
+	it = ajListIterRead(seqout->Taxlist);
 	while((cur = (AjPStr) ajListIterNext(it)))
 	    ajDebug("   '%S'\n", cur);
 
 	ajListIterFree(&it);
     }
 
-    if(ajStrGetLen(seq->Type))
-	ajDebug( "  Type: '%S'\n", seq->Type);
+    if(ajStrGetLen(seqout->Type))
+	ajDebug( "  Type: '%S'\n", seqout->Type);
 
-    if(ajStrGetLen(seq->Outputtype))
-	ajDebug( "  Output type: '%S'\n", seq->Outputtype);
+    if(ajStrGetLen(seqout->Outputtype))
+	ajDebug( "  Output type: '%S'\n", seqout->Outputtype);
 
-    if(ajStrGetLen(seq->Db))
-	ajDebug( "  Database: '%S'\n", seq->Db);
+    if(ajStrGetLen(seqout->Db))
+	ajDebug( "  Database: '%S'\n", seqout->Db);
 
-    if(ajStrGetLen(seq->Full))
-	ajDebug( "  Full name: '%S'\n", seq->Full);
+    if(ajStrGetLen(seqout->Full))
+	ajDebug( "  Full name: '%S'\n", seqout->Full);
 
-    if(ajStrGetLen(seq->Usa))
-	ajDebug( "  Usa: '%S'\n", seq->Usa);
+    if(ajStrGetLen(seqout->Usa))
+	ajDebug( "  Usa: '%S'\n", seqout->Usa);
 
-    if(ajStrGetLen(seq->Ufo))
-	ajDebug( "  Ufo: '%S'\n", seq->Ufo);
+    if(ajStrGetLen(seqout->Ufo))
+	ajDebug( "  Ufo: '%S'\n", seqout->Ufo);
 
-    if(ajStrGetLen(seq->Formatstr))
-	ajDebug( "  Output format: '%S'\n", seq->Formatstr);
+    if(ajStrGetLen(seqout->Formatstr))
+	ajDebug( "  Output format: '%S'\n", seqout->Formatstr);
 
-    if(ajStrGetLen(seq->Filename))
-	ajDebug( "  Filename: '%S'\n", seq->Filename);
+    if(ajStrGetLen(seqout->Filename))
+	ajDebug( "  Filename: '%S'\n", seqout->Filename);
 
-    if(ajStrGetLen(seq->Directory))
-	ajDebug( "  Directory: '%S'\n", seq->Directory);
+    if(ajStrGetLen(seqout->Directory))
+	ajDebug( "  Directory: '%S'\n", seqout->Directory);
 
-    if(ajStrGetLen(seq->Entryname))
-	ajDebug( "  Entryname: '%S'\n", seq->Entryname);
+    if(ajStrGetLen(seqout->Entryname))
+	ajDebug( "  Entryname: '%S'\n", seqout->Entryname);
 
-    if(ajStrGetLen(seq->Doc))
-	ajDebug( "  Documentation:...\n%S\n", seq->Doc);
+    if(ajStrGetLen(seqout->Doc))
+	ajDebug( "  Documentation:...\n%S\n", seqout->Doc);
 
-    if(seq->Fttable)
-	ajFeattableTrace(seq->Fttable);
+    if(seqout->Fttable)
+	ajFeattableTrace(seqout->Fttable);
     else
 	ajDebug( "  No Feature table present\n");
 
-    if(seq->Features)
+    if(seqout->Features)
 	ajDebug( "  Features ON\n");
     else
 	ajDebug( "  Features OFF\n");
@@ -6053,152 +6295,6 @@ void ajSeqoutTrace(const AjPSeqout seq)
 }
 
 
-
-
-/* @func ajSeqoutCount ********************************************************
-**
-** Counts the numbers of A, C, G and T in a nucleotide sequence.
-**
-** @param [r] seqout [const AjPSeqout] Sequence output object
-** @param [w] b [ajuint*] integer array, minimum size 5, to hold the results.
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqoutCount(const AjPSeqout seqout, ajuint* b)
-{
-    const char* cp;
-
-    ajDebug("ajSeqoutCount %d bases\n", ajStrGetLen(seqout->Seq));
-
-    b[0] = b[1] = b[2] = b[3] = b[4] = 0;
-
-    cp = ajStrGetPtr(seqout->Seq);
-
-    while(*cp)
-    {
-	switch (*cp)
-	{
-	case 'A':
-	case 'a':
-	    b[0]++;
-	    break;
-	case 'C':
-	case 'c':
-	    b[1]++;
-	    break;
-	case 'G':
-	case 'g':
-	    b[2]++;
-	    break;
-	case 'T':
-	case 't':
-	case 'U':
-	case 'u':
-	    b[3]++;
-	    break;
-	default:
-	    break;
-	}
-	cp++;
-    }
-
-    b[4] = ajStrGetLen(seqout->Seq) - b[0] - b[1] - b[2] - b[3];
-
-    return;
-}
-
-
-
-
-/* @func ajSeqWriteXyz ********************************************************
-**
-** Writes a sequence in SWISSPROT format.
-**
-** @param [w] outf [AjPFile] output stream
-** @param [r] seq [const AjPStr] sequence
-** @param [r] prefix [const char *] identifier code - should be 2 char's long
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
-{
-    AjPSeqout outseq        = NULL;
-    static SeqPSeqFormat sf = NULL;
-
-    ajint mw;
-    unsigned long long crc;
-
-    crc = ajSp64Crc(seq);
-    mw = (ajint) (0.5+ajSeqstrCalcMolwt(seq));
-    ajFmtPrintF(outf,
-		"%-5sSEQUENCE %5d AA; %6d MW;  %08X",
-		prefix, ajStrGetLen(seq), mw, 
-		(crc>>32)&0xffffffff);
-
-    ajFmtPrintF(outf,
-		"%08X CRC64;\n",
-		crc&0xffffffff);
-
-    outseq = ajSeqoutNewFile(outf);
-
-    ajStrAssignS(&outseq->Seq,seq);
-
-    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
-    strcpy(sf->endstr, "");
-    sf->tab    = 4;
-    sf->spacer = 11;
-    sf->width  = 60;
-
-    seqWriteSeq(outseq, sf);
-    seqFormatDel(&sf);
-
-    ajSeqoutDel(&outseq);
-
-    return;
-}
-
-
-
-
-/* @func ajSssWriteXyz ********************************************************
-**
-** Writes a sequence in SWISSPROT format w/o checksum or molecular weight -
-** used for printing secondary structure strings.
-**
-** @param [w] outf [AjPFile] output stream
-** @param [r] seq [const AjPStr] sequence
-** @param [r] prefix [const char *] identifier code - should be 2 char's long
-** @return [void]
-** @@
-******************************************************************************/
-
-void ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix)
-{
-    AjPSeqout outseq        = NULL;
-    static SeqPSeqFormat sf = NULL;
-
-    outseq = ajSeqoutNew();
-
-    outseq->File = outf;
-    ajStrAssignS(&outseq->Seq,seq);
-
-    ajFmtPrintF(outseq->File,
-		"%-5sSEQUENCE %5d AA;\n",
-		prefix, ajStrGetLen(outseq->Seq));
-
-    seqSeqFormat(ajStrGetLen(outseq->Seq), &sf);
-    strcpy(sf->endstr, "");
-    sf->tab    = 4;
-    sf->spacer = 11;
-    sf->width  = 60;
-
-    seqWriteSeq(outseq, sf);
-    seqFormatDel(&sf);
-
-    return;
-}
 
 
 /* @funcstatic seqFormatDel ***************************************************
@@ -6218,7 +6314,21 @@ static void seqFormatDel(SeqPSeqFormat* pformat)
 
 
 
-/* @func ajSeqWriteExit *******************************************************
+/* @section exit **************************************************************
+**
+** Functions called on exit
+**
+** @fdata [AjPSeqout]
+**
+** @nam3rule Exit Cleanup of internals when program exits
+**
+** @valrule * [void]
+** @fcategory misc
+**
+******************************************************************************/
+
+
+/* @func ajSeqoutExit *******************************************************
 **
 ** Cleans up sequence output processing internal memory
 **
@@ -6226,7 +6336,7 @@ static void seqFormatDel(SeqPSeqFormat* pformat)
 ** @@
 ******************************************************************************/
 
-void ajSeqWriteExit(void)
+void ajSeqoutExit(void)
 {
     ajRegFree(&seqoutRegFmt);
     ajRegFree(&seqoutRegId);
@@ -6234,4 +6344,198 @@ void ajSeqWriteExit(void)
     ajStrDel(&seqoutUsaTest);
 
     return;
+}
+
+/* @obsolete ajSeqWriteExit
+** @rename ajSeqoutExit
+*/
+
+__deprecated void ajSeqWriteExit(void)
+{
+    ajSeqoutExit();
+    return;
+}
+
+/* @datasection [AjPStr] Sequence output strings ******************************
+**
+** Function is for manipulating sequence output objects
+**
+** @nam2rule Seqoutstr
+**
+******************************************************************************/
+
+/* @section other *******************************************************
+**
+** @fdata [AjPStr]
+** @fcategory use
+**
+** @nam3rule Get Return value
+** @nam3rule Is Test value
+** @nam4rule Format Sequence format names
+** @nam5rule FormatDefault Return name of default output format
+** @nam5rule Exists Test format exists
+** @nam5rule Single Test format writes to single or multiple files
+**
+** @argrule GetFormatDefault Pformat [AjPStr*] Default output format name
+** @argrule IsFormat format [const AjPStr] Output format required
+**
+** @valrule FormatDefault [AjBool] True on success
+** @valrule FormatExists [AjBool] True format is defined
+** @valrule FormatSingle [AjBool] True if single files are written
+**
+******************************************************************************/
+
+
+/* @func ajSeqoutstrGetFormatDefault ******************************************
+**
+** Sets the default output format.
+** Checks the _OUTFORMAT variable,
+** and uses FASTA if no other definition is found.
+**
+** @param [w] Pformat [AjPStr*] Default output format.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutstrGetFormatDefault(AjPStr* Pformat)
+{
+
+    if(ajStrGetLen(*Pformat))
+	ajDebug("... output format '%S'\n", *Pformat);
+    else
+    {
+	/* ajStrAssignEmptyC(pformat, seqOutFormat[0].Name);*/
+	if (ajNamGetValueC("outformat", Pformat))
+	    ajDebug("ajSeqoutstrGetFormatDefault '%S' from EMBOSS_OUTFORMAT\n",
+		     *Pformat);
+	else
+	{
+	    ajStrAssignEmptyC(Pformat, "fasta"); /* use the real name */
+	    ajDebug("... output format not set, default to '%S'\n", *Pformat);
+	}
+    }
+
+    return ajTrue;
+}
+
+
+/* @obsolete ajSeqOutFormatDefault
+** @rename ajSeqoutstrGetFormatDefault
+*/
+
+__deprecated AjBool ajSeqOutFormatDefault(AjPStr* pformat)
+{
+    return ajSeqoutstrGetFormatDefault(pformat);
+}
+
+/* @funcstatic seqoutFindOutFormat ********************************************
+**
+** Looks for the specified output format in the internal definitions and
+** returns the index.
+**
+** @param [r] format [const AjPStr] Format required.
+** @param [w] iformat [ajint*] Index
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqoutFindOutFormat(const AjPStr format, ajint* iformat)
+{
+
+    AjPStr tmpformat = NULL;
+    ajint i = 0;
+
+    if(!ajStrGetLen(format))
+    {
+	if (ajNamGetValueC("outformat", &tmpformat))
+	    ajDebug("seqoutFindOutFormat '%S' from EMBOSS_OUTFORMAT\n",
+		    tmpformat);
+	else
+	    return ajFalse;
+
+    }
+    else
+	ajStrAssignS(&tmpformat, format);
+
+    ajStrFmtLower(&tmpformat);
+
+    while(seqOutFormat[i].Name)
+    {
+	if(ajStrMatchCaseC(tmpformat, seqOutFormat[i].Name))
+	{
+	    *iformat = i;
+	    ajStrDel(&tmpformat);
+	    return ajTrue;
+	}
+	i++;
+    }
+
+    ajStrDel(&tmpformat);
+
+    return ajFalse;
+}
+
+
+/* @obsolete ajSeqFindOutFormat
+** @rename seqoutFindOutFormat
+*/
+
+__deprecated AjBool ajSeqFindOutFormat(const AjPStr format, ajint* iformat)
+{
+    return seqoutFindOutFormat(format, iformat);
+}
+
+/* @func ajSeqoutstrIsFormatExists ********************************************
+**
+** Checks whether an output format name exists.
+**
+** @param [r] format [const AjPStr] Output format required.
+** @return [AjBool] ajTrue if format is known.
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutstrIsFormatExists(const AjPStr format)
+{
+    ajint iformat;
+
+    if(!seqoutFindOutFormat(format, &iformat))
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+/* @func ajSeqoutstrIsFormatSingle *******************************************
+**
+** Checks whether an output format should go to single files, rather than
+** all sequences being written to one file. Some formats do not work when
+** more than one sequence is writte to a file. Obvious examples are plain
+** text and GCG formats.
+**
+** @param [r] format [const AjPStr] Output format required.
+** @return [AjBool] ajTrue if separate file is needed for each sequence.
+** @@
+******************************************************************************/
+
+AjBool ajSeqoutstrIsFormatSingle(const AjPStr format)
+{
+    ajint iformat;
+
+    if(!seqoutFindOutFormat(format, &iformat))
+    {
+	ajErr("Unknown output format '%S'", format);
+	return ajFalse;
+    }
+
+    return seqOutFormat[iformat].Single;
+}
+
+
+/* @obsolete ajSeqOutFormatSingle
+** @rename ajSeqoutstrIsFormatSingle
+*/
+
+__deprecated AjBool ajSeqOutFormatSingle(AjPStr format)
+{
+    return ajSeqoutstrIsFormatSingle(format);
 }

@@ -140,40 +140,65 @@ typedef struct AjSSeqout {
 ** Prototype definitions
 */
 
-__deprecated void          ajSeqAllWrite (AjPSeqout outseq, const AjPSeq seq);
 void         ajSeqoutWriteSeq (AjPSeqout outseq, const AjPSeq seq);
 AjBool       ajSeqoutOpenFilename (AjPSeqout seqout, const AjPStr name);
-__deprecated AjBool        ajSeqFileNewOut (AjPSeqout seqout,
-					   const AjPStr name);
-ajint        ajSeqoutCheckGcg (const AjPSeqout outseq);
+ajint        ajSeqoutGetCheckgcg (const AjPSeqout outseq);
 void         ajSeqoutClear (AjPSeqout thys);
-void         ajSeqoutCount(const AjPSeqout seqout, ajuint* b);
-void         ajSeqoutDefName(AjPSeqout thys,
-			     const AjPStr setname, AjBool multi);
+void         ajSeqoutGetBasecount(const AjPSeqout seqout, ajuint* bases);
+AjBool       ajSeqoutSetNameDefaultC(AjPSeqout thys,
+				     AjBool multi, const char* txt);
+AjBool       ajSeqoutSetNameDefaultS(AjPSeqout thys,
+				     AjBool multi, const AjPStr str);
 void         ajSeqoutDel (AjPSeqout* thys);
-AjBool       ajSeqOutFormatDefault (AjPStr* pformat);
-AjBool       ajSeqOutFormatSingle (AjPStr format);
+AjBool       ajSeqoutstrGetFormatDefault (AjPStr* Pformat);
+AjBool       ajSeqoutstrIsFormatExists(const AjPStr format);
+AjBool       ajSeqoutstrIsFormatSingle (const AjPStr format);
 AjPSeqout    ajSeqoutNew (void);
 AjPSeqout    ajSeqoutNewFile (AjPFile file);
-__deprecated AjPSeqout     ajSeqoutNewF (AjPFile file);
+AjPSeqout    ajSeqoutNewFormatC(const char* txt);
+AjPSeqout    ajSeqoutNewFormatS(const AjPStr str);
 AjBool       ajSeqoutOpen (AjPSeqout thys);
-AjBool       ajSeqOutSetFormat (AjPSeqout thys, const AjPStr format);
-AjBool       ajSeqOutSetFormatC (AjPSeqout thys, const char* format);
+AjBool       ajSeqoutSetFormatC (AjPSeqout thys, const char* format);
+AjBool       ajSeqoutSetFormatS (AjPSeqout thys, const AjPStr format);
 void         ajSeqoutTrace (const AjPSeqout seq);
-void         ajSeqPrintOutFormat (AjPFile outf, AjBool full);
-void         ajSeqoutUsa (AjPSeqout* pthis, const AjPStr Usa);
+void         ajSeqoutPrintFormat (AjPFile outf, AjBool full);
+void         ajSeqoutClearUsa (AjPSeqout thys, const AjPStr Usa);
 void         ajSeqoutWriteSet (AjPSeqout seqout, const AjPSeqset seq);
-__deprecated void          ajSeqWrite (AjPSeqout seqout, const AjPSeq seq);
 void         ajSeqoutClose (AjPSeqout outseq);
-__deprecated void          ajSeqWriteClose (AjPSeqout outseq);
-void         ajSeqWriteExit(void);
-void         ajSeqWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
-void         ajSssWriteXyz(AjPFile outf, const AjPStr seq, const char *prefix);
-__deprecated void         ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq);
+void         ajSeqoutExit(void);
+
+void         ajSeqoutDumpSwisslike(AjPSeqout outseq,const AjPStr seq,
+				   const char *prefix);
+
 /*
 ** End of prototype definitions
 */
 
+__deprecated void         ajSeqoutCount(const AjPSeqout seqout, ajuint* b);
+__deprecated void         ajSeqAllWrite (AjPSeqout outseq, const AjPSeq seq);
+__deprecated AjBool       ajSeqFileNewOut (AjPSeqout seqout,
+					   const AjPStr name);
+__deprecated AjPSeqout    ajSeqoutNewF (AjPFile file);
+__deprecated void         ajSeqWrite (AjPSeqout seqout, const AjPSeq seq);
+__deprecated void         ajSeqsetWrite(AjPSeqout outseq, const AjPSeqset seq);
+__deprecated void         ajSeqWriteClose (AjPSeqout outseq);
+__deprecated AjBool       ajSeqOutFormatSingle (AjPStr format);
+__deprecated AjBool       ajSeqOutSetFormat (AjPSeqout thys,
+					     const AjPStr format);
+__deprecated AjBool       ajSeqOutSetFormatC (AjPSeqout thys,
+					      const char* format);
+__deprecated AjBool       ajSeqOutFormatDefault (AjPStr* pformat);
+
+__deprecated void         ajSeqoutUsa (AjPSeqout* pthis, const AjPStr Usa);
+
+__deprecated void         ajSeqPrintOutFormat (AjPFile outf, AjBool full);
+__deprecated AjBool       ajSeqFindOutFormat(const AjPStr format,
+					     ajint* iformat);
+__deprecated void         ajSeqWriteExit(void);
+__deprecated ajint        ajSeqoutCheckGcg (const AjPSeqout outseq);
+
+__deprecated void         ajSeqoutDefName(AjPSeqout thys,
+					  const AjPStr setname, AjBool multi);
 #endif
 
 #ifdef __cplusplus
