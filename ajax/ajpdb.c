@@ -5825,7 +5825,8 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
     AjIList iter    = NULL;
     AjPAtom tmp     = NULL;
     AjPResidue tmpr = NULL;
-    
+    AjPSeqout outseq;
+
     /* Write the header information */
 
     ajFmtPrintF(outf, "%-5s%S\n", "ID", obj->Pdb);
@@ -5888,7 +5889,9 @@ AjBool ajPdbWriteAll(AjPFile outf, const AjPPdb obj)
 		    obj->Chains[x]->Nwat);
 		    */
 	ajFmtPrintF(outf, "XX\n");	
-	ajSeqWriteXyz(outf, obj->Chains[x]->Seq, "SQ");
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, obj->Chains[x]->Seq, "SQ");
+	ajSeqoutDel(&outseq);
     }
     ajFmtPrintF(outf, "XX\n");	
 
@@ -6130,7 +6133,7 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
     AjBool     found_start = ajFalse;
     AjBool     found_end   = ajFalse;    
 
-
+    AjPSeqout outseq;
    
     /* Check for unknown or zero-length chain */
     if(!ajPdbChnidToNum(chnid, pdb, &chn))
@@ -6201,7 +6204,9 @@ AjBool ajPdbWriteSegment(AjPFile outf, const AjPPdb pdb, const AjPStr segment,
 		id,
 		MAJSTRGETLEN(segment));
     ajFmtPrintF(outf, "XX\n");	
-    ajSeqWriteXyz(outf, segment, "SQ");
+    outseq = ajSeqoutNewFile(outf);
+    ajSeqoutDumpSwisslike(outseq, segment, "SQ");
+    ajSeqoutDel(&outseq);
     ajFmtPrintF(outf, "XX\n");	
     
     
@@ -6469,6 +6474,7 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
     AjPStr Ligid=NULL;
     AjPStr res1=NULL;
     AjPStr res2=NULL;
+    AjPSeqout outseq;
 
     Id    = ajStrNew();
     Domid = ajStrNew();
@@ -6549,7 +6555,9 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
     /* S1 */
     if(MAJSTRGETLEN(cmap->Seq1))
     {
-	ajSeqWriteXyz(outf, cmap->Seq1, "S1");
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, cmap->Seq1, "S1");
+	ajSeqoutDel(&outseq);
 	ajFmtPrintF(outf, "XX\n");	
     }
     
@@ -6559,7 +6567,9 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
     {
 	if(MAJSTRGETLEN(cmap->Seq2))
 	{
-	    ajSeqWriteXyz(outf, cmap->Seq2, "S2");
+	    outseq = ajSeqoutNewFile(outf);
+	    ajSeqoutDumpSwisslike(outseq, cmap->Seq2, "S2");
+	    ajSeqoutDel(&outseq);
 	    ajFmtPrintF(outf, "XX\n");	
 	}
     }

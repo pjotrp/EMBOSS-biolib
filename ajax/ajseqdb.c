@@ -3418,7 +3418,7 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 	    del = ajFalse;
 	    
 	    handle = ajStrTokenNewC(qry->Exclude," \n");
-	    while(ajStrToken(&wildname,&handle," \n"))
+	    while(ajStrTokenNextParseC(&handle," \n",&wildname))
 		if(ajStrMatchWildS(name,wildname))
 		{
 		    del = ajTrue;
@@ -4035,7 +4035,7 @@ static AjBool seqEmbossGcgAll(AjPSeqin seqin)
 		ajFileNameTrim(&name);
 		handle = ajStrTokenNewC(qry->Exclude," \n");
 		found = ajFalse;
-		while(ajStrToken(&wildname,&handle," \n"))
+		while(ajStrTokenNextParseC(&handle," \n",&wildname))
 		    if(ajStrMatchWildS(name,wildname))
 		    {
 			found = ajTrue;
@@ -7171,11 +7171,11 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
     ajStrDel(&gethead);
 
 #ifndef WIN32
-    fp = ajSysFdopen(sock, "r");
+    fp = ajSysFuncFdopen(sock, "r");
 #else
     {
         int fd = _open_osfhandle(sock, _O_RDONLY);
-	fp = ajSysFdopen(fd, "r");
+	fp = ajSysFuncFdopen(fd, "r");
     }
 #endif
 

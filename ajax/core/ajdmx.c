@@ -1319,6 +1319,7 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
     AjIList iter = NULL;
     
     AjPScophit thys = NULL;
+    AjPSeqout outseq;
     
     iter = ajListIterRead(list);
     
@@ -1421,8 +1422,10 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
         ajFmtPrintF(outf, "%-5s%d START; %d END;\n", "RA", thys->Start,
 		    thys->End);
         ajFmtPrintF(outf, "XX\n");
-        ajSeqWriteXyz(outf, thys->Seq, "SQ");
-        ajFmtPrintF(outf, "XX\n");
+	outseq = ajSeqoutNewFile(outf);
+        ajSeqoutDumpSwisslike(outseq, thys->Seq, "SQ");
+	ajSeqoutDel(&outseq);
+	ajFmtPrintF(outf, "XX\n");
     
         ajFmtPrintF(outf, "//\n");
     }

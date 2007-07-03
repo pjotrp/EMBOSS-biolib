@@ -264,7 +264,6 @@ void         ajSeqFmtLower (AjPSeq thys);
 void         ajSeqFmtUpper (AjPSeq thys);
 void         ajSeqTrace (const AjPSeq seq);
 void         ajSeqTraceTitle (const AjPSeq seq, const char* title);
-AjBool       ajSeqFindOutFormat (const AjPStr format, ajint* iformat);
 void         ajSeqTrim(AjPSeq thys);
 ajuint       ajSeqGetBeginTrue (const AjPSeq seq);
 ajuint       ajSeqGetEndTrue (const AjPSeq seq);

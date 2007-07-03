@@ -3728,6 +3728,7 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
     AjPResidue  res         = NULL;
     AjPResidue  res2        = NULL;
 /*    AjPResidue *resarr      = NULL; */
+    AjPSeqout outseq;
 
 
 
@@ -4002,8 +4003,12 @@ AjBool ajPdbWriteDomain(AjPFile outf, const AjPPdb pdb,
 		ajStrGetLen(seq),
 		pdb->Chains[chn-1]->numHelices, 
 		pdb->Chains[chn-1]->numStrands);
-    ajFmtPrintF(outf, "XX\n");	
-    ajSeqWriteXyz(outf, seq, "SQ");
+    ajFmtPrintF(outf, "XX\n");
+
+    outseq = ajSeqoutNewFile(outf);
+    ajSeqoutDumpSwisslike(outseq, seq, "SQ");
+    ajSeqoutDel(&outseq);
+
     ajFmtPrintF(outf, "XX\n");	
 
 
@@ -4369,7 +4374,7 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
     
     ajint i;
     AjPStr tmp;
-
+    AjPSeqout outseq;
 
     /* Check args */
     if(!outf || !obj)
@@ -4408,16 +4413,10 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
     if(ajStrGetLen(obj->SeqPdb))
     {
 	ajFmtPrintF(outf,"XX\n");
-	ajSeqWriteXyz(outf, obj->SeqPdb, "DS");		
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, obj->SeqPdb, "DS");
+	ajSeqoutDel(&outseq);
     }	
-
-
-
-
-
-
-
-
 
     ajFmtPrintF(outf,"NR   %d\n",obj->Length);
 
@@ -4441,7 +4440,9 @@ AjBool ajCathWrite(AjPFile outf, const AjPCath obj)
 	ajFmtPrintF(outf, "XX\n%-5s%d START; %d END;\n", "RA", obj->Startd,
 		    obj->Endd);
 	ajFmtPrintF(outf, "XX\n");	
-	ajSeqWriteXyz(outf, obj->SeqSpr, "SQ");
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, obj->SeqSpr, "SQ");
+	ajSeqoutDel(&outseq);
     }
     
 
@@ -4519,7 +4520,7 @@ AjBool ajDomainWrite(AjPFile outf, const AjPDomain obj)
 AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 {
     ajint i;
-
+    AjPSeqout outseq;
 
     if(!outf || !obj)
     {
@@ -4551,7 +4552,9 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
     if(ajStrGetLen(obj->SeqPdb))
     {
 	ajFmtPrintF(outf,"XX\n");
-	ajSeqWriteXyz(outf, obj->SeqPdb, "DS");		
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, obj->SeqPdb, "DS");		
+	ajSeqoutDel(&outseq);
     }	
 
     if(ajStrGetLen(obj->Acc))
@@ -4565,7 +4568,9 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 	ajFmtPrintF(outf, "XX\n%-5s%d START; %d END;\n", "RA", obj->Startd,
 		    obj->Endd);
 	ajFmtPrintF(outf, "XX\n");	
-	ajSeqWriteXyz(outf, obj->SeqSpr, "SQ");
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, obj->SeqSpr, "SQ");
+	ajSeqoutDel(&outseq);
     }
     
     
@@ -4576,8 +4581,11 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 	ajFmtPrintF(outf,"XX\n");
     
     if(ajStrGetLen(obj->Sss))
-	ajSeqWriteXyz(outf, obj->Sss, "SS");
-
+    {
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, obj->Sss, "SS");
+	ajSeqoutDel(&outseq);
+    }
 
     ajFmtPrintF(outf,"XX\nNC   %d\n",obj->N);
 

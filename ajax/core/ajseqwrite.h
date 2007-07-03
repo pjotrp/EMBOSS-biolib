@@ -199,6 +199,10 @@ __deprecated ajint        ajSeqoutCheckGcg (const AjPSeqout outseq);
 
 __deprecated void         ajSeqoutDefName(AjPSeqout thys,
 					  const AjPStr setname, AjBool multi);
+__deprecated void         ajSeqWriteXyz(AjPFile outf,
+					const AjPStr seq, const char *prefix);
+__deprecated void         ajSssWriteXyz(AjPFile outf,
+					const AjPStr seq, const char *prefix);
 #endif
 
 #ifdef __cplusplus
