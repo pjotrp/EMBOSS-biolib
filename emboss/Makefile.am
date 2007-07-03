@@ -13,7 +13,7 @@ endif
 
 
 check_PROGRAMS = acdlog ajtest \
-complex corbatest \
+complex corbatest dbxstat \
 demoalign demofeatures demolist demoreport \
 demosequence demostring demostringnew demotable \
 entrails giep histogramtest intconv \
@@ -110,6 +110,7 @@ dbiflat_SOURCES = dbiflat.c
 dbigcg_SOURCES = dbigcg.c
 dbxfasta_SOURCES = dbxfasta.c
 dbxflat_SOURCES = dbxflat.c
+dbxstat_SOURCES = dbxstat.c
 dbxgcg_SOURCES = dbxgcg.c
 degapseq_SOURCES = degapseq.c
 descseq_SOURCES = descseq.c
