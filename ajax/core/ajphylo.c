@@ -1053,6 +1053,13 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 
     ajPhyloFreqTrace(ret);
 
+    ajStrDel(&tmpline);
+    ajStrDel(&tmpval);
+    ajStrDel(&tmpstr);
+    ajStrDel(&rdline);
+
+    ajFileClose(&freqfile);
+
     return ret;
 }
 
