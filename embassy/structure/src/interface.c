@@ -330,12 +330,10 @@ static AjBool interface_WriteFile(AjPFile logf, AjPFile outf, float thresh,
 		/* S1 & S2 */
 		if((pdb->Chains[y]->Nres != 0) && pdb->Chains[w]->Nres != 0)
 		{
-		    outseq = ajSeqoutNew();
+		    outseq = ajSeqoutNewFile(outf);
 		    ajSeqoutDumpSwisslike(outseq, pdb->Chains[y]->Seq, "S1");
-		    ajSeqoutDel(&outseq);
 		    ajFmtPrintF(outf, "XX\n");	
 
-		    outseq = ajSeqoutNew();
 		    ajSeqoutDumpSwisslike(outseq, pdb->Chains[w]->Seq, "S2");
 		    ajSeqoutDel(&outseq);
 		    ajFmtPrintF(outf, "XX\n");	

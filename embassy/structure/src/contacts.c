@@ -400,7 +400,7 @@ static AjBool contacts_WriteFile(AjPFile logf,
 	    /* S1 */
 	    if(pdb->Chains[y]->Nres != 0)
 	    {
-		outseq = ajSeqoutNew();
+		outseq = ajSeqoutNewFile(outf);
 		ajSeqoutDumpSwisslike(outseq, pdb->Chains[y]->Seq, "S1");
 		ajSeqoutDel(&outseq);
 		ajFmtPrintF(outf, "XX\n");	

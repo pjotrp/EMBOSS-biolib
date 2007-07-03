@@ -1268,7 +1268,7 @@ static AjBool    sites_HeterogenContactsWrite(AjPFile outf,
 	      /* S1 */
 	      if(dbase->entries[i]->cont_data[j]->Nres != 0)
 	      {
-		  outseq = ajSeqoutNew();
+		  outseq = ajSeqoutNewFile(outf);
 		  ajSeqoutDumpSwisslike(outseq,
 					dbase->entries[i]->cont_data[j]->Seq, 
 					"S1");
