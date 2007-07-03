@@ -16564,3 +16564,97 @@ void ajBtreeHybLeafList(AjPBtcache cache, ajlong rootblock,
     return;
 }
 
+
+
+
+/* @func ajBtreeDumpHybKeys ********************************************
+**
+** Read the leaves of a primary hybrid tree (requested by EBI services)
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] dmin [ajint] minimum number of times the key should appear
+** @param [r] dmax [ajint] maximum number of times the key should appear
+** @param [u] list [AjPFile] output file
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajBtreeDumpHybKeys(AjPBtcache cache, ajint dmin, ajint dmax, AjPFile outf)
+{
+    AjPBtHybrid id = NULL;
+    
+    AjPStr *karray;
+    ajlong *parray;
+    AjPBtpage page;
+    unsigned char *buf;
+    ajint nodetype;
+    ajint i;
+    ajint j;
+    ajlong level = 0L;
+    ajint dups;
+    
+    AjPBucket bucket;
+    ajint nkeys;
+    ajlong right;
+    AjPBtMem array = NULL;
+
+    array = btreeAllocPriArray(cache);
+    karray = array->karray;
+    parray = array->parray;
+
+    page = ajBtreeCacheRead(cache, 0);
+    buf = page->buf;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+    GBT_NODETYPE(buf,&nodetype);
+
+    while(nodetype != BT_LEAF && cache->level != 0)
+    {
+	page = ajBtreeCacheRead(cache,parray[0]);
+	buf = page->buf;
+	btreeGetKeys(cache,buf,&karray,&parray);
+	GBT_NODETYPE(buf,&nodetype);
+    }
+
+    do
+    {
+	GBT_NKEYS(buf,&nkeys);
+	for(i=0;i<nkeys+1;++i)
+	{
+	    bucket = btreeReadBucket(cache,parray[i]);
+	    for(j=0;j<bucket->Nentries;++j)
+	    {
+		dups = bucket->Ids[j]->dups;
+		if(!dups)
+		    dups = 1;
+		
+		if(dups < dmin)
+		    continue;
+		if(dups > dmax && dmax)
+		    continue;
+
+		ajFmtPrintF(outf,"%S %d\n",
+			    bucket->Ids[j]->id,
+			    dups);
+	    }
+	    btreeBucketDel(&bucket);
+	}
+
+	right = 0L;
+	if(cache->level)
+	{
+	    GBT_RIGHT(buf,&right);
+	    if(right)
+	    {
+		page = ajBtreeCacheRead(cache,right);
+		buf = page->buf;
+		btreeGetKeys(cache,buf,&karray,&parray);
+	    }
+	}
+    } while(right);
+
+    btreeDeallocPriArray(cache,array);
+
+    return;
+}

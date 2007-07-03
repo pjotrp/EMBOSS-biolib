@@ -732,6 +732,10 @@ void        ajBtreeFreeSecArray(AjPBtcache cache);
 void 	    ajBtreeHybLeafList(AjPBtcache cache, ajlong rootblock,
 			       const AjPStr idname, AjPList list);
 
+void        ajBtreeDumpHybKeys(AjPBtcache cache, ajint dmin, ajint dmax,
+			       AjPFile outf);
+
+
 /*
 ** End of prototype definitions
 */
