@@ -162,7 +162,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     fprintf(outfile, " method version %s\n\n",VERSION);
 
     printf("all: %s\n",(all ? "true":"false"));
- 
+
+    ajStrDel(&datatype);
 }  /* emboss_getoptions */
 
 
@@ -455,6 +456,7 @@ void transformgfs()
   free(c);
   free(sumprod);
   free(sqrtp);
+  free(pbar);
 } /* transformgfs */
 
 
@@ -1408,7 +1410,6 @@ int main(int argc, Char *argv[])
   }
   FClose(outfile);
   FClose(outtree);
-  FClose(infile);
 #ifdef MAC
   fixmacfile(outfilename);
   fixmacfile(outtreename);
@@ -1417,6 +1418,12 @@ int main(int argc, Char *argv[])
 #ifdef WIN32
   phyRestoreConsoleAttributes();
 #endif
+  ajPhyloFreqDel(&phylofreq);
+  ajPhyloTreeDelarray(&phylotrees);
+
+  ajFileClose(&embossoutfile);
+  ajFileClose(&embossouttree);
+
   embExit();
   return 0;
 }
