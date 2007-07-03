@@ -63,7 +63,7 @@ static ajint utilBigendCalled = 0;
 ** @nam3rule  Bad    Calls 'exit' with an unsuccessful code (EXIT_FAILURE
 **                   defined in stdlib.h).
 ** 
-** @valrule   *  [void]
+** @valrule   *  [void] All functions do not return
 ** 
 ** @fcategory misc
 **
@@ -71,48 +71,20 @@ static ajint utilBigendCalled = 0;
 
 /* @func ajExit ***************************************************************
 **
-** Calls 'exit' with a successful code (zero).
+** Calls 'exit' with a successful code (zero), but first calls ajReset to
+** call memory clean up and debug reporting functions.
 **
-** But first it calls some cleanup routines which can report on resource
-** usage etc.
+** No cleanup or reporting routines are called. Simply crashes.
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-__noreturn void  ajExit(void)
+__noreturn void ajExit(void)
 {
-#ifdef WIN32
-    WSACleanup();
-#endif
-    ajDebug("\nFinal Summary\n=============\n\n");
-    ajUtilLoginfo();
-    ajTableExit();
-    ajListExit();
-    ajFileExit();
-    ajFeatExit();
-    ajSeqExit();
-    ajPhyloExit();
-    ajAlignExit();
-    ajReportExit();
-    ajAcdExit(ajFalse);
-    ajNamExit();
-    ajSysExit();
-    ajCallExit();
-    ajBaseExit();
-    ajCodExit();
-    ajTrnExit();
-    ajMeltExit();
-    ajTimeExit();
-    ajRegExit();
-    ajArrExit();
-    ajStrExit();
-    ajMemExit();
-    ajMessExit();     /* clears data for ajDebug - do this last!!!  */
+    ajReset();
     exit(0);
 }
-
-
 
 
 /* @func ajExitAbort **********************************************************
@@ -153,6 +125,72 @@ __noreturn void  ajExitBad(void)
 {
     exit(EXIT_FAILURE);
 }
+
+
+/* @datasection [none] Memory cleanup functions ********************************
+**
+** @nam2rule  Reset  Resets internal memory and returns.
+**
+*/
+
+/* @section reset **************************************************************
+**
+** Functions for memory cleanup
+**
+** @fdata [none]
+**
+** 
+** @valrule   *  [void] No return value
+** 
+** @fcategory misc
+**
+******************************************************************************/
+
+/* @func ajReset **************************************************************
+**
+** Cleans up all internal memory by calling cleanup routines which
+** can report on resource usage etc.
+**
+** Intended to be called at the end of processing by exit functions.
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReset(void)
+{
+#ifdef WIN32
+    WSACleanup();
+#endif
+    ajDebug("\nFinal Summary\n=============\n\n");
+    ajUtilLoginfo();
+    ajTableExit();
+    ajListExit();
+    ajFileExit();
+    ajFeatExit();
+    ajSeqExit();
+    ajPhyloExit();
+    ajAlignExit();
+    ajReportExit();
+    ajAcdExit(ajFalse);
+    ajNamExit();
+    ajSysExit();
+    ajCallExit();
+    ajBaseExit();
+    ajCodExit();
+    ajTrnExit();
+    ajMeltExit();
+    ajTimeExit();
+    ajRegExit();
+    ajArrExit();
+    ajStrExit();
+    ajMemExit();
+    ajMessExit();     /* clears data for ajDebug - do this last!!!  */
+
+    return;
+}
+
+
 
 
 /* @datasection [none] Byte manipulation functions ****************************

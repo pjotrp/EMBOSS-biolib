@@ -25,6 +25,8 @@ void   ajByteRevShort(short* ival);
 void   ajByteRevLong(ajlong* lval);
 void   ajByteRevUint(ajuint* ival);
 
+void   ajReset(void);
+
 void   ajUtilCatch (void);
 AjBool ajUtilGetBigendian (void);
 AjBool ajUtilGetUid (AjPStr* Puid);
