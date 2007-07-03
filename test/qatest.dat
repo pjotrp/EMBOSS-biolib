@@ -15017,7 +15017,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
-FZ = 4531
+FZ = 4559
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15027,7 +15027,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
-FZ = 4531
+FZ = 4559
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15037,7 +15037,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
-FZ = 4531
+FZ = 4559
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15047,7 +15047,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
-FZ = 4531
+FZ = 4559
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -22357,12 +22357,12 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Build a profile HMM from an alignment.\n/
 FI stdout
-FC =37
+FC = 37
 FP /^hmmbuild  -n globins50  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  globin.hmm ../../data/hmmnew/globins50.msf\n/
 FP /^Average score:      189.04 bits\n/
 FP /^Constructed a profile HMM \(length 143\)\n/
 FI globin.hmm
-FC =447
+FC = 447
 FP /^COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf\n/
 FP /^CKSUM 9858\n/
 //
@@ -22380,11 +22380,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Build a profile HMM from an alignment.\n/
 FI stdout
-FC =37
+FC = 37
 FP /^hmmbuild  -n rrm  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/rrm.sto\n/
 FP /^Constructed a profile HMM \(length 77\)\n/
 FI myhmms
-FC =249
+FC = 249
 FP /^COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto\n/
 FP /^CKSUM 8325\n/
 //
@@ -22404,11 +22404,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Build a profile HMM from an alignment.\n/
 FI stdout
-FC =37
+FC = 37
 FP /^hmmbuild  -n fn3  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/fn3.sto\n/
 FP /^Constructed a profile HMM \(length 84\)\n/
 FI myhmms
-FC =523
+FC = 523
 FP /^COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto\n/
 FP /^COM   hmmbuild -n fn3 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/fn3.sto\n/
 FP /^CKSUM 8325\n/
@@ -22430,11 +22430,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Build a profile HMM from an alignment.\n/
 FI stdout
-FC =37
+FC = 37
 FP /^hmmbuild  -n pkinase  --pbswitch 1000  --archpri 0.850000  --idlevel 0.620000  --swentry 0.500000  --swexit 0.500000  --wgsc  -A -F  myhmms ../../data/hmmnew/pkinase.sto\n/
 FP /^Constructed a profile HMM \(length 294\)\n/
 FI myhmms
-FC =1427
+FC = 1427
 FP /^COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto\n/
 FP /^COM   hmmbuild -n fn3 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/fn3.sto\n/
 FP /^COM   hmmbuild -n pkinase --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/pkinase.sto\n/
@@ -22458,11 +22458,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /Calibrate HMM search statistics\n/
 FI stdout
-FC =21
+FC = 21
 FP /^hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex-keep/globin.hmm\n/
 FP /^HMM file:                 ../ehmmbuild-ex-keep/globin.hmm\n/
 FI globino.hmm
-FC =449
+FC = 449
 FP /^COM   hmmbuild -n globins50 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F globin.hmm ../../data/hmmnew/globins50.msf\n/
 FP /^COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex-keep/globin.hmm\n/
 FP /^CKSUM 9858\n/
@@ -22482,11 +22482,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /Calibrate HMM search statistics\n/
 FI stdout
-FC =31
+FC = 31
 FP /^hmmcalibrate --mean 350.000000  --num 5000  --sd 350.000000  --seed 1 ../ehmmbuild-ex4-keep/myhmms\n/
 FP /^HMM file:                 ../ehmmbuild-ex4-keep/myhmms\n/
 FI myhmmso
-FC =1433
+FC = 1433
 FP /^COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto\n/
 FP /^COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms\n/
 FP /^COM   hmmbuild -n fn3 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/fn3.sto\n/
@@ -22511,10 +22511,10 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Search a sequence database with a profile HMM\n/
 FI stdout
-FC =3
+FC = 3
 FP /^hmmsearch -A 100 -E 10.000000 -T -1000000.000000 -Z 0 --domE 1000000.000000 --domT -1000000.000000  ../ehmmcalibrate-ex-keep/globino.hmm ../../data/hmmnew/Artemia.fa > globino.ehmmsearch\n/
 FI globino.ehmmsearch
-FC =216
+FC = 216
 FP /^HMM file:                   ../ehmmcalibrate-ex-keep/globino.hmm \[globins50\]\n/
 FP /^     Total hits:           1\n/
 FP /^     Total hits:           9\n/
@@ -22533,11 +22533,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Search one or more sequences against an HMM database.\n/
 FI stdout
-FC =3
+FC = 3
 ## This is not the full command-line so as to avoid checking against a (variable) temp. file name.
 FP /^hmmpfam -A 10 -E 10.000000 -T -1000000.000000 -Z 59021 --domE 1000000.000000 --domT -1000000.000000  --informat FASTA ../ehmmcalibrate-ex2-keep/myhmmso/
 FI myhmmso.ehmmpfam
-FC =137
+FC = 137
 FP /^HMM file:                 ../ehmmcalibrate-ex2-keep/myhmmso\n/
 FP /^fn3        6/6/
 FP /^pkinase    1/1/
@@ -22556,12 +22556,12 @@ FP 0 /Error: /
 FP /^Align sequences to an HMM profile\n/
 FP 0 /Died: /
 FI stdout
-FC =13
+FC = 13
 ## This is not the full command-line so as to avoid checking against a (variable) temp. file name.
 FP /^hmmalign  --informat FASTA --outformat A2M  -o globins630.ali ../ehmmcalibrate-ex-keep/globino.hmm/
 FP /^Alignment saved in file globins630.ali\n/
 FI globins630.ali
-FC =3150
+FC = 3150
 FP /^>BAHG_VITSP \n/
 FP /^>MYG_ZIPCA \n/
 //
@@ -22579,11 +22579,11 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Convert between profile HMM file formats\n/
 FI stdout
-FC =16
+FC = 16
 FP /^hmmconvert -p  -F  ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmconvert\n/
 FP /^1 HMM\(s\) converted and written to globino.ehmmconvert\n/
 FI globino.ehmmconvert
-FC =169
+FC = 169
 FP /^\(Peptide\) HMMCONVERT v2.3.2 Length: 143 globins50||\n/
 FP /^ \*    621    74   359   488   301   325   254   392   570   697   178   318   209   339   312   490   400   555    65   192     0     0     0     0 \n/
 //
@@ -22595,17 +22595,17 @@ AA ehmmemit
 DL keep
 CL ../ehmmcalibrate-ex-keep/globino.hmm globino.ehmmemit -c N -n 10
 FI stderr
-FC =1
+FC = 1
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FP /^Generate sequences from a profile HMM.\n/
 FI stdout
-FC =14
+FC = 14
 FP /^hmmemit --seed 0  -n 10  -o globino.ehmmemit ../ehmmcalibrate-ex-keep/globino.hmm\n/
 FP /^Output saved in file globino.ehmmemit\n/
 FI globino.ehmmemit
-FC =40
+FC = 40
 FP /^>globins50-1 \n/
 FP /^>globins50-10 \n/
 FP /^AEQAIEMQLWHAVANAKKVEEEQVKRLYQDERGSTAHFMHYEKLRNNNDK\n/
@@ -22626,19 +22626,19 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Create a binary SSI index for an HMM database.\n/
 FI stdout
-FC =18
+FC = 18
 FP /^hmmindex myhmmso\n/
 FP /^SSI index:      myhmmso.ssi\n/
 FP /^# of HMMS:      3\n/
 FI myhmmso.ssi
 FP /pkinase/
 FP /fn3/
-FZ =176
+FZ = 176
 ## Each file, including those copied in, needs a test.
 ## Use the test for myhmmso from ehmmcalibrate-ex2-keep
 ## Can't use 'QQ rm myhmmso' as both myhmmso & myhmmso.ssi are needed by the next test.
 FI myhmmso
-FC =1433
+FC = 1433
 FP /^COM   hmmbuild -n rrm --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/rrm.sto\n/
 FP /^COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms\n/
 FP /^COM   hmmbuild -n fn3 --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/fn3.sto\n/
@@ -22663,10 +22663,10 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Retrieve an HMM from an HMM database.\n/
 FI stdout
-FC =3
+FC = 3
 FP /^hmmfetch ../ehmmindex-ex-keep/myhmmso pkinase > pkinase.ehmmfetch\n/
 FI pkinase.ehmmfetch
-FC =906
+FC = 906
 FP /^COM   hmmbuild -n pkinase --pbswitch 1000 --archpri 0.850000 --idlevel 0.620000 --swentry 0.500000 --swexit 0.500000 --wgsc -A -F myhmms ../../data/hmmnew/pkinase.sto\n/
 FP /^COM   hmmcalibrate --mean 350.000000 --num 5000 --sd 350.000000 --seed 1 ../ehmmbuild-ex4-keep/myhmms\n/
 FP /^CKSUM 4536\n/
@@ -23168,12 +23168,12 @@ FP /^Motif detection\n/
 FI stdout
 FC = 0
 FI ex1.html
-FC =1341
+FC = 1382
 FP /^ce1cg                    1.0000    105  ara                      1.0000    105  \n/
 FP /^bglr1                    1.0000    105  crp                      1.0000    105  \n/
 //
 
-ID ememe-ex2-ex
+ID ememe-ex2
 AB memenew
 RQ meme
 AA ememe
@@ -23185,14 +23185,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex2.html
-FC =1331
+FC = 1372
 FP /^ce1cg                    1.0000    105  ara                      1.0000    105  \n/
 FP /^bglr1                    1.0000    105  crp                      1.0000    105  \n/
 //
 
-ID ememe-ex3-ex
+ID ememe-ex3
 AB memenew
 RQ meme
 AA ememe
@@ -23204,14 +23204,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex3.html
-FC =1410
+FC = 1451
 FP /^ce1cg                    1.0000    105  ara                      1.0000    105  \n/
 FP /^bglr1                    1.0000    105  crp                      1.0000    105  \n/
 //
 
-ID ememe-ex4-ex
+ID ememe-ex4
 AB memenew
 RQ meme
 AA ememe
@@ -23223,14 +23223,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex4.html
-FC =1219
+FC = 1260
 FP /^CHO1                     1.0000    800  CHO2                     1.0000    800  \n/
 FP /^FAS1                     1.0000    800  FAS2                     1.0000    800  \n/
 //
 
-ID ememe-ex5-ex
+ID ememe-ex5
 AB memenew
 RQ meme
 AA ememe
@@ -23242,14 +23242,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex5.html
 FC > 1499
 FP /^ICYA_MANSE               1.0000    189  LACB_BOVIN               1.0000    178  \n/
 FP /^BBP_PIEBR                1.0000    173  RETB_BOVIN               1.0000    183  \n/
 //
 
-ID ememe-ex6-ex
+ID ememe-ex6
 AB memenew
 RQ meme
 AA ememe
@@ -23261,14 +23261,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex6.html
-FC =1766
+FC = 1807
 FP /^RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  \n/
 FP /^BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  \n/
 //
 
-ID ememe-ex7-ex
+ID ememe-ex7
 AB memenew
 RQ meme
 AA ememe
@@ -23280,14 +23280,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex7.html
 FC > 2056
 FP /^RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  \n/
 FP /^BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  \n/
 //
 
-ID ememe-ex8-ex
+ID ememe-ex8
 AB memenew
 RQ meme
 AA ememe
@@ -23299,14 +23299,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex8.html
-FC =2496
+FC = 2545
 FP /^RAM1_YEAST               1.0000    431  PFTB_RAT                 1.0000    437  \n/
 FP /^BET2_YEAST               1.0000    325  RATRABGERB               1.0000    331  \n/
 //
 
-ID ememe-ex9-ex
+ID ememe-ex9
 TI 120 
 AB memenew
 RQ meme
@@ -23319,9 +23319,9 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex9.html
-FC =7759
+FC = 7816
 FP /^2BHD_STREX               1.0000    255  3BHD_COMTE               1.0000    253  \n/
 FP /^ADH_DROME                1.0000    255  AP27_MOUSE               1.0000    244  \n/
 //
@@ -23347,9 +23347,9 @@ FP 0 /Error: /
 FP 0 /Died: /
 FP /^Motif detection\n/
 FI stdout
-FC =0
+FC = 0
 FI ex1.out
-FC =926
+FC = 926
 FP /^  LENGTH = 105  COMBINED P-VALUE = 4.78e-04  E-VALUE =   0.0086<BR>\n/
 FP /^1    CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGAAATACCGCACAGATG\n/
 FI crp0.s
