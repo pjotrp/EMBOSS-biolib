@@ -409,7 +409,7 @@ AjBool ajCharFmtLower(char* txt)
 	 *  complained about casting ajint to char. However, for conversion of
 	 *  large databases it's too much of an overhead. Think about a macro
 	 *  later. In the meantime revert to the standard system call
-	 *    *cp = ajSysItoC(tolower((ajint) *cp));
+	 *    *cp = ajSysCastItoc(tolower((ajint) *cp));
 	 */
 	*cp = (char)tolower((ajint) *cp);
 	cp++;
@@ -451,7 +451,7 @@ AjBool ajCharFmtUpper(char* txt)
 	 *  complained about casting ajint to char. However, for conversion of
 	 *  large databases it's too much of an overhead. Think about a macro
 	 *  later. In the meantime revert to the standard system call
-	 *    *cp = ajSysItoC(toupper((ajint) *cp));
+	 *    *cp = ajSysCastItoc(toupper((ajint) *cp));
 	 */
 	*cp = (char) toupper((ajint) *cp);
 	cp++;
@@ -1743,11 +1743,11 @@ AjPStr ajCharParseC (const char* txt, const char* txtdelim)
     {
 	if (cp) ajCharDel(&cp);
 	cp = ajCharNewC(txt);
-	strp->Ptr = ajSysStrtok (cp, txtdelim);
+	strp->Ptr = ajSysFuncStrtok(cp, txtdelim);
     }
     else
     {
-	strp->Ptr = ajSysStrtok (NULL, txtdelim);
+	strp->Ptr = ajSysFuncStrtok(NULL, txtdelim);
     }
 
     if (strp->Ptr)
@@ -3576,6 +3576,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam4rule  KeepRange        Keep range of character positions.
 ** @nam4rule  KeepSet          Keep only characters in a set.
 ** @nam5rule  KeepSetAlpha     Also remove non-alphabetic.
+** @nam6rule  KeepSetAlphaRest  Also remove non-alphabetic and report non-space
 ** @nam3rule  Quote            Editing quotes in qtrings
 ** @nam4rule  QuoteStrip       Removing quotes
 ** @nam5rule  QuoteStripAll    Removing internal and external quotes
@@ -3616,6 +3617,8 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 **                                  numbers count from end
 ** @argrule   Range pos2 [ajint] End position in string, negative
 **                                  numbers count from end
+** @argrule   Rest Prest [AjPStr*] Excluded non-whitespace characters.
+**
 ** @valrule   * [AjBool]
 **
 ** @fcategory modify
@@ -4059,6 +4062,135 @@ __deprecated AjBool  ajStrKeepAlphaC(AjPStr* s, const char* charset)
 {
     return ajStrKeepSetAlphaC(s, charset);
 }
+
+/* @func ajStrKeepSetAlphaS ***************************************************
+**
+** Removes all characters from a string that are not alphabetic and
+** are not in a given set.
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @param [r] str [const AjPStr] Non-alphabetic character set to keep
+** @return [AjBool] ajTrue if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepSetAlphaS(AjPStr* Pstr, const AjPStr str)
+{
+    return ajStrKeepSetAlphaC(Pstr, str->Ptr);
+}
+
+
+
+/* @func ajStrKeepSetAlphaRest *************************************************
+**
+** Removes all characters from a string that are not alphabetic.
+**
+** Also returns any non-whitespace characters in the strings
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @param [u] Prest [AjPStr *] Excluded non-whitespace characters.
+** @return [AjBool] ajTrue if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepSetAlphaRest(AjPStr* Pstr, AjPStr* Prest)
+{
+    AjPStr thys;
+    char *p;
+    char *q;
+
+    ajStrAssignC(Prest, "");
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    p = thys->Ptr;
+    q = thys->Ptr;
+
+    while(*p)
+    {
+	if(isalpha((ajint)*p))
+	    *q++=*p;
+	else if(!isspace((ajint)*p))
+	    ajStrAppendK(Prest, *p);
+	p++;
+    }
+
+    *q='\0';
+    thys->Len = q - thys->Ptr;
+
+    if(!thys->Len) return ajFalse;
+    return ajTrue;
+}
+
+
+
+/* @func ajStrKeepSetAlphaRestC ***********************************************
+**
+** Removes all characters from a string that are not alphabetic and
+** are not in a given set.
+**
+** Also returns any non-whitespace characters in the strings
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @param [r] txt [const char*] Non-alphabetic character set to keep
+** @param [u] Prest [AjPStr *] Excluded non-whitespace characters.
+** @return [AjBool] ajTrue if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepSetAlphaRestC(AjPStr* Pstr, const char* txt, AjPStr* Prest)
+{
+    AjPStr thys;
+    char *p;
+    char *q;
+
+    ajStrAssignC(Prest, "");
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    p = thys->Ptr;
+    q = thys->Ptr;
+
+    while(*p)
+    {
+	if(isalpha((ajint)*p))
+	    *q++=*p;
+	else if(strchr(txt, *p))
+	    *q++=*p;
+	else if(!isspace((ajint)*p))
+	    ajStrAppendK(Prest, *p);
+	p++;
+    }
+
+    *q='\0';
+    thys->Len = q - thys->Ptr;
+
+    if(!thys->Len) return ajFalse;
+    return ajTrue;
+}
+
+
+
+/* @func ajStrKeepSetAlphaRestS ***********************************************
+**
+** Removes all characters from a string that are not alphabetic and
+** are not in a given set.
+**
+** Also returns any non-whitespace characters in the strings
+**
+** @param [u] Pstr [AjPStr *] String to clean.
+** @param [r] str [const AjPStr] Non-alphabetic character set to keep
+** @param [u] Prest [AjPStr *] Excluded non-whitespace characters.
+** @return [AjBool] ajTrue if string is not empty
+** @@
+******************************************************************************/
+
+AjBool ajStrKeepSetAlphaRestS(AjPStr* Pstr, const AjPStr str, AjPStr* Prest)
+{
+    return ajStrKeepSetAlphaRestC(Pstr, str->Ptr, Prest);
+}
+
+
 
 /* @func ajStrQuoteStrip ******************************************************
 **
@@ -9942,10 +10074,10 @@ const AjPStr ajStrParseC(const AjPStr str, const char* txtdelim)
     {
 	if(strParseCp) ajCharDel(&strParseCp);
 	strParseCp = ajCharNewC(str->Ptr);
-	strp->Ptr = ajSysStrtok(strParseCp, txtdelim);
+	strp->Ptr = ajSysFuncStrtok(strParseCp, txtdelim);
     }
     else
-	strp->Ptr = ajSysStrtok(NULL, txtdelim);
+	strp->Ptr = ajSysFuncStrtok(NULL, txtdelim);
 
     if(strp->Ptr)
     {
@@ -10090,7 +10222,7 @@ ajuint ajStrParseCountMultiC(const AjPStr str, const char *txtdelim)
     AjPStr buf  = NULL;
     ajuint count;
     char  *p;
-    char  *save = NULL;
+    const char  *save = NULL;
     AjPStr mystr  = NULL;
 
     if(!str)
@@ -10099,7 +10231,7 @@ ajuint ajStrParseCountMultiC(const AjPStr str, const char *txtdelim)
     buf = ajStrNew();
     mystr = ajStrNewS(str);
 
-    p = ajSysStrtokR(ajStrGetuniquePtr(&mystr),txtdelim,&save,&buf);
+    p = ajSysFuncStrtokR(ajStrGetuniquePtr(&mystr),txtdelim,&save,&buf);
     if(!p)
     {
 	ajStrDel(&buf);
@@ -10107,7 +10239,7 @@ ajuint ajStrParseCountMultiC(const AjPStr str, const char *txtdelim)
     }
 
     count = 1;
-    while(ajSysStrtokR(NULL,txtdelim,&save,&buf))
+    while(ajSysFuncStrtokR(NULL,txtdelim,&save,&buf))
 	++count;
 
     ajStrDel(&buf);

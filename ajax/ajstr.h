@@ -261,6 +261,12 @@ AjBool     ajStrKeepSetC(AjPStr* Pstr, const char* txt);
 AjBool     ajStrKeepSetS(AjPStr* Pstr, const AjPStr str);
 AjBool     ajStrKeepSetAlpha(AjPStr* Pstr);
 AjBool     ajStrKeepSetAlphaC(AjPStr* Pstr, const char* txt);
+AjBool     ajStrKeepSetAlphaS(AjPStr* Pstr, const AjPStr str);
+AjBool     ajStrKeepSetAlphaRest(AjPStr* Pstr, AjPStr* Prest);
+AjBool     ajStrKeepSetAlphaRestC(AjPStr* Pstr, const char* txt,
+				  AjPStr* Prest);
+AjBool     ajStrKeepSetAlphaRestS(AjPStr* Pstr, const AjPStr str,
+				  AjPStr* Prest);
 AjBool     ajStrQuoteStrip(AjPStr *Pstr);
 AjBool     ajStrQuoteStripAll(AjPStr *Pstr);
 AjBool     ajStrRemoveGap(AjPStr* thys);
