@@ -314,9 +314,9 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 
 	q = ajStrGetPtr(line);
 	c = 0;
-	q = ajSysStrtok(q,ajStrGetPtr(delim));
+	q = ajSysFuncStrtok(q,ajStrGetPtr(delim));
 
-	while((q=ajSysStrtok(NULL,ajStrGetPtr(delim))))
+	while((q=ajSysFuncStrtok(NULL,ajStrGetPtr(delim))))
 	{
 	    sscanf(q,"%d",&v);
 	    ajInt2dPut(matrix,d1,c++,v);

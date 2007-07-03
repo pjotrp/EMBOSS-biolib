@@ -826,9 +826,9 @@ static void restrict_read_equiv(AjPFile equfile, AjPTable table,
 	if(!*p || *p=='#' || *p=='!')
 	    continue;
 
-	p     = ajSysStrtok(p," \t\n");
+	p     = ajSysFuncStrtok(p," \t\n");
 	key   = ajStrNewC(p);
-	p     = ajSysStrtok(NULL," \t\n");
+	p     = ajSysFuncStrtok(NULL," \t\n");
 	value = ajStrNewC(p);
 	if(!commercial)
 	    ajStrTrimEndC(&value,"*");

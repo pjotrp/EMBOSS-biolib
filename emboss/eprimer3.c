@@ -337,7 +337,7 @@ int main(int argc, char **argv)
             program = ajStrNew();
             ajStrAssignC(&program, "primer3_core");
     
-            if(ajSysWhich(&program))
+            if(ajSysFileWhich(&program))
             {
     	        execlp( "primer3_core", "primer3_core", NULL );
     	        ajDie("There was a problem while executing primer3");

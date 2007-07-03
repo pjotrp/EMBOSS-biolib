@@ -397,7 +397,7 @@ static void antigenic_readAnti(AjPFloat *agp)
 
 	ajCharFmtUpper(p);
 	q = p;
-	q = ajSysStrtok(q," \t");
+	q = ajSysFuncStrtok(q," \t");
 	n = ajAZToInt(*q);
 
 	if(sscanf(p,"%*s%d%d%d%f%f%f",&v1,&v2,&v3,&vf1,&vf2,&vf3)!=6)

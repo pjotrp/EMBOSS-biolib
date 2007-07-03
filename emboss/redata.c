@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 
 	if(*p=='#' || *p=='\n' || *p=='!')
 	    continue;
-	p = ajSysStrtok(p," \t\n");
+	p = ajSysFuncStrtok(p," \t\n");
 	ajStrAssignC(&str,p);
 /*	while(*p) ++p;
 	*p = ' ';*/
@@ -132,11 +132,11 @@ int main(int argc, char **argv)
 	while(ajStrMatchCaseS(str,enzyme))
 	{
 	    p = ajStrGetPtr(enzline);
-	    p = ajSysStrtok(p," \t\n");
+	    p = ajSysFuncStrtok(p," \t\n");
 	    ajStrAssignC(&str,p);
-	    p = ajSysStrtok(NULL," \t\n");
+	    p = ajSysFuncStrtok(NULL," \t\n");
 	    ajStrAssignC(&line,p);
-	    p = ajSysStrtok(NULL,"\n");
+	    p = ajSysFuncStrtok(NULL,"\n");
 	    sscanf(p,"%d%d",&len,&ncuts);
 	    if(ncuts==2)
 		sscanf(p,"%d%d%d%d%d",&len,&ncuts,&blunt,&cut1,&cut2);
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
 		break;
 
 	    p = ajStrGetPtr(enzline);
-	    p = ajSysStrtok(p," \t\n");
+	    p = ajSysFuncStrtok(p," \t\n");
 	    ajStrAssignC(&str,p);
 	}
 
@@ -301,7 +301,7 @@ static AjPTable redata_supply_table(AjPFile inf)
 
 	if(!*p || *p=='#' || *p=='\n' || *p=='!')
 	    continue;
-	p = ajSysStrtok(p," \t\n");
+	p = ajSysFuncStrtok(p," \t\n");
 	key = ajStrNewC(p);
 	q = strstr(q,p);
 
