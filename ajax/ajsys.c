@@ -207,16 +207,21 @@ __deprecated void ajSysArgListFree(char*** PParglist)
 **
 ** Function for casting one datatype to another.
 **
+** @fdata [none]
+** @fcategory misc
 **
 ** @nam3rule  Cast         Function for casting one datatype to another.
 ** @nam4rule  CastItoc     Convert Int to Char (for fussy compilers)
-** @nam4rule  CastItouc    Convert Int to Unsigned Char  (for fussy compilers). 
-** 
-** @fcategory misc
+** @nam4rule  CastItouc    Convert Int to Unsigned Char (for fussy compilers). 
+**
+** @argrule * v [ajint] Character as an integer
+**
+** @valrule *Itoc [char] Character
+** @valrule *Itouc [unsigned char] Unsigned character
 **
 ******************************************************************************/
 
-/* @func ajSysItoC ************************************************************
+/* @func ajSysCastItoc ********************************************************
 **
 ** Convert Int to Char
 ** Needed for very fussy compilers i.e. Digital C
@@ -226,7 +231,7 @@ __deprecated void ajSysArgListFree(char*** PParglist)
 ** @@
 ******************************************************************************/
 
-char ajSysItoC(ajint v)
+char ajSysCastItoc(ajint v)
 {
     char c;
 
@@ -235,9 +240,18 @@ char ajSysItoC(ajint v)
 }
 
 
+/* @obsolete ajSysItoC
+** @rename ajSysCastItoC
+*/
+
+__deprecated char ajSysItoC(ajint v)
+{
+    return ajSysCastItoc(v);
+}
 
 
-/* @func ajSysItoUC ***********************************************************
+
+/* @func ajSysCastItouc *******************************************************
 **
 ** Convert Int to Unsigned Char
 ** Needed for very fussy compilers i.e. Digital C
@@ -247,7 +261,7 @@ char ajSysItoC(ajint v)
 ** @@
 ******************************************************************************/
 
-unsigned char ajSysItoUC(ajint v)
+unsigned char ajSysCastItouc(ajint v)
 {
     char c;
 
@@ -256,10 +270,21 @@ unsigned char ajSysItoUC(ajint v)
 }
 
 
+/* @obsolete ajSysItoUC
+** @rename ajSysCastItouc
+*/
+
+__deprecated unsigned char ajSysItoUC(ajint v)
+{
+    return ajSysCastItouc(v);
+}
+
 /* @section System functions for files ****************************************
 **
 ** System functions for files.
 **
+** @fdata [none]
+** @fcategory misc
 **
 ** @nam3rule  File           System functions for files.
 ** @nam4rule  FileWhich      Searches $PATH sequentially for a user-EXECUTABLE 
@@ -267,35 +292,45 @@ unsigned char ajSysItoUC(ajint v)
 ** @nam5rule  FileWhichEnv   Uses environment to extract the PATH list.
 ** @nam4rule  FileUnlink     Deletes a file or link
 ** 
+** @argrule Unlink filename [const AjPStr] File name
+** @argrule Which Pfilename [AjPStr*] File name (updated when found)
+** @argrule Env env [char* const[]] File name (updated when found)
 ** @valrule   *  [AjBool]  True if operation is successful.
-**
-** @fcategory misc
 **
 ******************************************************************************/
 
 
-/* @func ajSysUnlink **********************************************************
+/* @func ajSysFileUnlink ******************************************************
 **
 ** Deletes a file or link
 **
-** @param [r] s [const AjPStr] Filename in AjStr.
+** @param [r] filename [const AjPStr] Filename in AjStr.
 ** @return [AjBool] true if deleted false otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSysUnlink(const AjPStr s)
+AjBool ajSysFileUnlink(const AjPStr filename)
 {
-    ajDebug("ajSysUnlink '%S'\n", s);
+    ajDebug("ajSysFileUnlink '%S'\n", filename);
 
 #ifndef WIN32
-    if(!unlink(ajStrGetPtr(s)))
+    if(!unlink(ajStrGetPtr(filename)))
 	return ajTrue;
 #else
-    if(DeleteFile(ajStrGetPtr(s)))
+    if(DeleteFile(ajStrGetPtr(filename)))
 	return ajTrue;
 #endif
-    ajDebug("ajSysUnlink failed to delete '%S'\n", s);
+    ajDebug("ajSysUnlink failed to delete '%S'\n", filename);
     return ajFalse;
+}
+
+/* @obsolete ajSysUnlink
+** @rename ajSysFileUnlink
+*/
+
+__deprecated AjBool ajSysUnlink(const AjPStr s)
+{
+    return ajSysFileUnlink(s);
 }
 
 
@@ -303,21 +338,17 @@ AjBool ajSysUnlink(const AjPStr s)
 
 
 
-
-
-
-
-/* @func ajSysWhich ***********************************************************
+/* @func ajSysFileWhich *******************************************************
 **
 ** Gets the Basename of a file then searches $PATH sequentially until it
 ** finds a user-EXECUTABLE file of the same name.
 **
-** @param [u] s [AjPStr*] Filename in AjStr, replaced by full pathname
+** @param [u] Pfilename [AjPStr*] Filename in AjStr, replaced by full pathname
 ** @return [AjBool] True if executable found, false otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSysWhich(AjPStr *s)
+AjBool ajSysFileWhich(AjPStr *Pfilename)
 {
     char *p;
     static AjPStr tname = NULL;
@@ -327,14 +358,14 @@ AjBool ajSysWhich(AjPStr *s)
     if(!p)
 	return ajFalse;
 
-    ajStrAssignS(&tname, *s);
+    ajStrAssignS(&tname, *Pfilename);
 
     if(!fname)
 	fname = ajStrNew();
 
     ajFileNameTrim(&tname);
 
-    p=ajSysStrtok(p,PATH_SEPARATOR);
+    p=ajSysFuncStrtok(p,PATH_SEPARATOR);
 
     if(p==NULL)
     {
@@ -350,12 +381,12 @@ AjBool ajSysWhich(AjPStr *s)
 
 	if(ajFileStat(fname, AJ_FILE_X))
 	{
-	    ajStrSetClear(s);
-	    ajStrAssignEmptyS(s,fname);
+	    ajStrSetClear(Pfilename);
+	    ajStrAssignEmptyS(Pfilename,fname);
 	    break;
 	}
 
-	if((p = ajSysStrtok(NULL,PATH_SEPARATOR))==NULL)
+	if((p = ajSysFuncStrtok(NULL,PATH_SEPARATOR))==NULL)
         {
 	    ajStrDelStatic(&fname);
 	    ajStrDelStatic(&tname);
@@ -370,20 +401,28 @@ AjBool ajSysWhich(AjPStr *s)
 }
 
 
+/* @obsolete ajSysWhich
+** @rename ajSysFileWhich
+*/
+
+__deprecated AjBool ajSysWhich(AjPStr *s)
+{
+    return ajSysFileWhich(s);
+}
 
 
-/* @func ajSysWhichEnv ********************************************************
+/* @func ajSysFileWhichEnv ****************************************************
 **
 ** Gets the Basename of a file then searches $PATH sequentially until it
 ** finds a user-EXECUTABLE file of the same name. Reentrant.
 **
-** @param [u] s [AjPStr*] Filename in AjStr, replaced by full pathname
+** @param [u] Pfilename [AjPStr*] Filename in AjStr, replaced by full pathname
 ** @param [r] env [char* const[]] Environment
 ** @return [AjBool] True if executable found, false otherwise
 ** @@
 ******************************************************************************/
 
-AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
+AjBool ajSysFileWhichEnv(AjPStr *Pfilename, char * const env[])
 {
     ajint count;
     char *p = NULL;
@@ -391,7 +430,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     AjPStr tname = NULL;
     AjPStr fname = NULL;
     AjPStr path  = NULL;
-    char   *save = NULL;
+    const char   *save = NULL;
     AjPStr buf   = NULL;
     AjPStr tmp   = NULL;
     
@@ -399,7 +438,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     buf   = ajStrNew();
     tname = ajStrNew();
     tmp   = ajStrNew();
-    ajStrAssignS(&tname,*s);
+    ajStrAssignS(&tname,*Pfilename);
     
     fname = ajStrNew();
     path  = ajStrNew();
@@ -410,7 +449,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     ajStrAppendC(&tname,".exe");
 #endif
 
-    ajDebug("ajSysWhichEnv '%S' => %S\n", *s, tname);
+    ajDebug("ajSysFileWhichEnv '%S' => %S\n", *Pfilename, tname);
 
     count = 0;
     while(env[count]!=NULL)
@@ -449,7 +488,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 
     /*ajDebug("tmp '%S' save '%S' buf '%S'\n", tmp, save, buf);*/
  
-    p = ajSysStrtokR(ajStrGetuniquePtr(&tmp),PATH_SEPARATOR,&save,&buf);
+    p = ajSysFuncStrtokR(ajStrGetuniquePtr(&tmp),PATH_SEPARATOR,&save,&buf);
 
     if(p==NULL)
     {
@@ -466,7 +505,7 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 
     while(!ajFileStat(fname, AJ_FILE_X))
     {
-	if((p = ajSysStrtokR(NULL,PATH_SEPARATOR,&save,&buf))==NULL)
+	if((p = ajSysFuncStrtokR(NULL,PATH_SEPARATOR,&save,&buf))==NULL)
 	{
 	    ajStrDel(&fname);
 	    ajStrDel(&tname);
@@ -480,8 +519,8 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
     }
     
     
-    ajStrAssignS(s,fname);
-    ajDebug("ajSysWhichEnv returns '%S'\n", *s);
+    ajStrAssignS(Pfilename,fname);
+    ajDebug("ajSysFileWhichEnv returns '%S'\n", *Pfilename);
 
     ajStrDel(&fname);
     ajStrDel(&tname);
@@ -494,11 +533,22 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 
 
 
+/* @obsolete ajSysWhichEnv
+** @rename ajSysFileWhichEnv
+*/
+
+__deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
+{
+    return ajSysFileWhichEnv(Pfilename, env);
+}
+
 
 /* @section Wrappers to C functions *******************************************
 **
 ** Functions for calling or substituting C-functions.
 **
+** @fdata [none]
+** @fcategory misc
 **
 ** @nam3rule  Func         Replacement for C-function.
 ** @nam4rule  FuncStrtok   strtok that doesn't corrupt the source string
@@ -509,15 +559,38 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 ** @nam4rule  FuncFdopen   Calls non-ANSI fdopen.
 ** @nam4rule  FuncStrdup   Duplicate BSD strdup function for very strict ANSI 
 ** @nam3rule  System       Execute a command line as if from the C shell
-** @nam3rule  SystemEnv    Execute command line and pass the environment 
+** @nam4rule  SystemEnv    Execute command line and pass the environment 
 **                         received from main to extract the PATH list
-** 
-** @fcategory misc
+** @nam4rule  SystemOut    Execute command line and write standard output to
+**                         a named file
+**
+** @argrule Fdopen filedes [ajint] file descriptor
+** @argrule Fdopen mode [const char*] file mode
+** @argrule Fgets buf [char*] buffer
+** @argrule Fgets size [int] maximum length to read
+** @argrule Fgets fp [FILE*] stream
+** @argrule Fopen name [const char*] Name of file to open
+** @argrule Fopen flags [const char*] Read/write/append flags
+** @argrule Strdup dupstr [const char*] String to duplicate
+** @argrule Strtok srcstr [const char*] source string
+** @argrule Strtok delimstr [const char*] delimiter string
+** @argrule R ptrptr [const char**] Saved pointer
+** @argrule R buf [AjPStr*] Independent buffer provided by caller
+** @argrule System cmdline [const AjPStr] The command line
+** @argrule SystemEnv env [char* const[]] Environment variables and values
+** @argrule SystemOut outfname [const AjPStr] The output file name
+**
+** @valrule Fdopen [FILE*] C open file
+** @valrule Fgets [char*] Buffer on success
+** @valrule Fopen [FILE*] C open file
+** @valrule Strdup [char*] New string
+** @valrule Strtok [char*] New string
+** @valrule System [void]
 **
 ******************************************************************************/
 
 
-/* @func ajSysFdopen **********************************************************
+/* @func ajSysFuncFdopen ******************************************************
 **
 ** Place non-ANSI fdopen here
 **
@@ -527,27 +600,34 @@ AjBool ajSysWhichEnv(AjPStr *s, char * const env[])
 ** @@
 ******************************************************************************/
 
-FILE* ajSysFdopen(ajint filedes, const char *mode)
+FILE* ajSysFuncFdopen(ajint filedes, const char *mode)
 {
     return fdopen(filedes,mode);
 }
 
 
+/* @obsolete ajSysFdopen
+** @rename ajSysFuncFdopen
+*/
 
+__deprecated FILE* ajSysFdopen(ajint filedes, const char *mode)
+{
+    return ajSysFuncFdopen(filedes, mode);
+}
 
-/* @func ajSysFgets ***********************************************************
+/* @func ajSysFuncFgets *******************************************************
 **
 ** An fgets replacement that will cope with Mac OSX <CR> files
 **
-** @param [w] buf [char *] buffer
+** @param [w] buf [char*] buffer
 ** @param [r] size [int] maximum length to read
-** @param [u] fp [FILE *] stream
+** @param [u] fp [FILE*] stream
 **
 ** @return [char*] buf or NULL
 ** @@
 ******************************************************************************/
 
-char* ajSysFgets(char *buf, int size, FILE *fp)
+char* ajSysFuncFgets(char *buf, int size, FILE *fp)
 {
 #ifdef __ppc__
     int c = 0;
@@ -598,10 +678,16 @@ char* ajSysFgets(char *buf, int size, FILE *fp)
 #endif
 }
 
+/* @obsolete ajSysFgets
+** @rename ajSysFuncFgets
+*/
 
+__deprecated char* ajSysFgets(char *buf, int size, FILE *fp)
+{
+    return ajSysFuncFgets(buf, size, fp);
+}
 
-
-/* @func ajSysFopen ***********************************************************
+/* @func ajSysFuncFopen *******************************************************
 **
 ** An fopen replacement to cope with cygwin and windows
 **
@@ -612,7 +698,7 @@ char* ajSysFgets(char *buf, int size, FILE *fp)
 ** @@
 ******************************************************************************/
 
-FILE* ajSysFopen(const char *name, const char *flags)
+FILE* ajSysFuncFopen(const char *name, const char *flags)
 {
     FILE   *ret  = NULL;
 #ifdef __CYGWIN__
@@ -637,64 +723,78 @@ FILE* ajSysFopen(const char *name, const char *flags)
 }
 
 
+/* @obsolete ajSysFopen
+** @rename ajSysFuncFopen
+*/
+
+__deprecated FILE* ajSysFopen(const char *name, const char *flags)
+{
+    return ajSysFuncFopen(name, flags);
+}
 
 
-/* @func ajSysStrdup **********************************************************
+/* @func ajSysFuncStrdup ******************************************************
 **
 ** Duplicate BSD strdup function for very strict ANSI compilers
 **
-** @param [r] s [const char *] string to duplicate
+** @param [r] dupstr [const char *] string to duplicate
 ** @return [char*] Text string as for strdup
 ** @@
 ******************************************************************************/
 
-char* ajSysStrdup(const char *s)
+char* ajSysFuncStrdup(const char *dupstr)
 {
     static char *p;
 
-    AJCNEW(p, strlen(s)+1);
-    strcpy(p,s);
+    AJCNEW(p, strlen(dupstr)+1);
+    strcpy(p,dupstr);
 
     return p;
 }
 
+/* @obsolete ajSysStrdup
+** @rename ajSysFuncStrdup
+*/
+__deprecated char* ajSysStrdup(const char *s)
+{
+    return ajSysFuncStrdup(s);
+}
 
-
-/* @func ajSysStrtok **********************************************************
+/* @func ajSysFuncStrtok ******************************************************
 **
 ** strtok that doesn't corrupt the source string
 **
-** @param [r] s [const char *] source string
-** @param [r] t [const char *] delimiter string
+** @param [r] srcstr [const char *] source string
+** @param [r] delimstr [const char *] delimiter string
 **
 ** @return [char*] pointer or NULL when nothing is found
 ** @@
 ******************************************************************************/
 
-char* ajSysStrtok(const char *s, const char *t)
+char* ajSysFuncStrtok(const char *srcstr, const char *delimstr)
 {
     ajint len;
 
-    if(s)
+    if(srcstr)
     {
 	if(!sysTokRets)
 	{
 	    sysTokSou  = ajStrNew();
 	    sysTokRets = ajStrNew();
 	}
-	ajStrAssignC(&sysTokSou,s);
+	ajStrAssignC(&sysTokSou,srcstr);
 	sysTokp = ajStrGetPtr(sysTokSou);
     }
 
     if(!*sysTokp)
 	return NULL;
 
-    len = strspn(sysTokp,t);		/* skip over delimiters */
+    len = strspn(sysTokp,delimstr);		/* skip over delimiters */
     sysTokp += len;
     if(!*sysTokp)
 	return NULL;
 
-    len = strcspn(sysTokp,t);		/* count non-delimiters */
+    len = strcspn(sysTokp,delimstr);		/* count non-delimiters */
     ajStrAssignSubC(&sysTokRets,sysTokp,0,len-1);
     sysTokp += len;		  /* skip over first delimiter only */
 
@@ -702,44 +802,52 @@ char* ajSysStrtok(const char *s, const char *t)
 }
 
 
+/* @obsolete ajSysStrtok
+** @rename ajSysFuncStrtok
+*/
 
-/* @func ajSysStrtokR *********************************************************
+__deprecated char* ajSysStrtok(const char *s, const char *t)
+{
+    return ajSysFuncStrtok(s, t);
+}
+
+/* @func ajSysFuncStrtokR *****************************************************
 **
 ** Reentrant strtok that doesn't corrupt the source string.
 ** This function uses a string buffer provided by the caller.
 **
-** @param [u] s  [char *] source string
-** @param [r] t [const char *] delimiter string
-** @param [u] ptrptr [char **] ptr save
+** @param [u] srcstr  [const char *] source string
+** @param [r] delimstr [const char *] delimiter string
+** @param [u] ptrptr [const char **] ptr save
 ** @param [w] buf [AjPStr *] result buffer
 **
 ** @return [char*] pointer or NULL
 ** @@
 ******************************************************************************/
 
-char* ajSysStrtokR(char *s, const char *t,  char **ptrptr,
-			 AjPStr *buf)
+char* ajSysFuncStrtokR(const char *srcstr, const char *delimstr,
+		       const char **ptrptr,AjPStr *buf)
 {
-    char *p;
+    const char *p;
     ajint len;
 
     if(!*buf)
 	*buf = ajStrNew();
 
-    if(s!=NULL)
-	p = s;
+    if(srcstr!=NULL)
+	p = srcstr;
     else
 	p = *ptrptr;
 
     if(!*p)
 	return NULL;
 
-    len = strspn(p,t);			/* skip over delimiters */
+    len = strspn(p,delimstr);			/* skip over delimiters */
     p += len;
     if(!*p)
 	return NULL;
 
-    len = strcspn(p,t);			/* count non-delimiters */
+    len = strcspn(p,delimstr);			/* count non-delimiters */
     ajStrAssignSubC(buf,p,0,len-1);
     p += len;			       /* skip to first delimiter */
 
@@ -748,21 +856,30 @@ char* ajSysStrtokR(char *s, const char *t,  char **ptrptr,
     return ajStrGetuniquePtr(buf);
 }
 
+/* @obsolete ajSysStrtokR
+** @rename ajSysFuncStrtokR
+*/
 
 
+__deprecated char* ajSysStrtokR(const char *s, const char *t,
+				const char **ptrptr,
+				AjPStr *buf)
+{
+    return ajSysFuncStrtokR(s, t, ptrptr, buf);
+}
 
-/* @func ajSystem *************************************************************
+/* @func ajSysSystem **********************************************************
 **
 ** Exec a command line as if from the C shell
 **
 ** The exec'd program is passed a new argv array in argptr
 **
-** @param [r] cl [const AjPStr] The command line
+** @param [r] cmdline [const AjPStr] The command line
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSystem(const AjPStr cl)
+void ajSysSystem(const AjPStr cmdline)
 {
 #ifndef WIN32
     pid_t pid;
@@ -774,14 +891,14 @@ void ajSystem(const AjPStr cl)
 
     AjPStr pname = NULL;
 
-    if(!ajSysArglistBuild(cl, &pgm, &argptr))
+    if(!ajSysArglistBuild(cmdline, &pgm, &argptr))
 	return;
 
     pname = ajStrNew();
 
     ajStrAssignC(&pname, pgm);
 
-    if(!ajSysWhich(&pname))
+    if(!ajSysFileWhich(&pname))
 	ajFatal("cannot find program '%S'", pname);
 
     pid=fork();
@@ -821,21 +938,119 @@ void ajSystem(const AjPStr cl)
 }
 
 
+/* @obsolete ajSystem
+** @rename ajSysSystem
+*/
+
+__deprecated void ajSystem(const AjPStr cl)
+{
+    return ajSysSystem(cl);
+}
+
+/* @func ajSysSystemEnv *******************************************************
+**
+** Exec a command line as if from the C shell
+**
+** This routine must be passed the environment received from
+** main(ajint argc, char **argv, char **env)
+** The environment is used to extract the PATH list (see ajWhich)
+**
+** Note that the environment is passed through unaltered. The exec'd
+** program is passed a new argv array
+**
+** @param [r] cmdline [const AjPStr] The command line
+** @param [r] env [char* const[]] The environment
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
+{
+#ifndef WIN32
+    pid_t pid;
+    pid_t retval;
+    ajint status;
+    char *pgm = NULL;
+    char **argptr = NULL;
+    ajint i;
+
+    AjPStr pname = NULL;
+
+    if(!ajSysArglistBuild(cmdline, &pgm, &argptr))
+	return;
+
+    pname = ajStrNew();
+
+    ajDebug("ajSystemEnv '%s' %S \n", pgm, cmdline);
+    ajStrAssignC(&pname, pgm);
+    if(!ajSysFileWhichEnv(&pname, env))
+	ajFatal("cannot find program '%S'", pname);
+
+    ajDebug("ajSystemEnv %S = %S\n", pname, cmdline);
+    for (i=0;argptr[i]; i++)
+    {
+	ajDebug("%4d '%s'\n", i, argptr[i]);
+    }
+
+    pid = fork();
+    if(pid==-1)
+	ajFatal("System fork failed");
+
+    if(pid)
+    {
+	while((retval=waitpid(pid,&status,0))!=pid)
+	{
+	    if(retval == -1)
+		if(errno != EINTR)
+		    break;
+	}
+    }
+    else
+    {
+	execve(ajStrGetPtr(pname), argptr, env);
+	ajExitAbort();			/* just in case */
+    }
+
+    ajStrDel(&pname);
+
+    i = 0;
+    while(argptr[i])
+    {
+	AJFREE(argptr[i]);
+	++i;
+    }
+    AJFREE(argptr);
+
+    AJFREE(pgm);
+
+#endif
+
+    return;
+}
+
+/* @obsolete ajSystemEnv
+** @rename ajSysSystemEnv
+*/
+
+__deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
+{
+    return ajSysSystemEnv(cl, env);
+}
 
 
-/* @func ajSystemOut **********************************************************
+/* @func ajSysSystemOut *******************************************************
 **
 ** Exec a command line as if from the C shell
 **
 ** The exec'd program is passed a new argv array in argptr
 **
-** @param [r] cl [const AjPStr] The command line
+** @param [r] cmdline [const AjPStr] The command line
 ** @param [r] outfname [const AjPStr] The output file name
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void ajSystemOut(const AjPStr cl, const AjPStr outfname)
+void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 {
 #ifndef WIN32
     pid_t pid;
@@ -847,14 +1062,14 @@ void ajSystemOut(const AjPStr cl, const AjPStr outfname)
 
     AjPStr pname = NULL;
 
-    if(!ajSysArglistBuild(cl, &pgm, &argptr))
+    if(!ajSysArglistBuild(cmdline, &pgm, &argptr))
 	return;
 
     pname = ajStrNew();
 
     ajStrAssignC(&pname, pgm);
 
-    if(!ajSysWhich(&pname))
+    if(!ajSysFileWhich(&pname))
 	ajFatal("cannot find program '%S'", pname);
 
     fflush(stdout);
@@ -899,90 +1114,14 @@ void ajSystemOut(const AjPStr cl, const AjPStr outfname)
     return;
 }
 
-/* @func ajSystemEnv **********************************************************
-**
-** Exec a command line as if from the C shell
-**
-** This routine must be passed the environment received from
-** main(ajint argc, char **argv, char **env)
-** The environment is used to extract the PATH list (see ajWhich)
-**
-** Note that the environment is passed through unaltered. The exec'd
-** program is passed a new argv array
-**
-** @param [r] cl [const AjPStr] The command line
-** @param [r] env [char* const[]] The environment
-** @return [void]
-** @@
-******************************************************************************/
+/* @obsolete ajSystemOut
+** @rename ajSysSystemOut
+*/
 
-void ajSystemEnv(const AjPStr cl, char * const env[])
+__deprecated void ajSystemOut(const AjPStr cl, const AjPStr outfname)
 {
-#ifndef WIN32
-    pid_t pid;
-    pid_t retval;
-    ajint status;
-    char *pgm = NULL;
-    char **argptr = NULL;
-    ajint i;
-
-    AjPStr pname = NULL;
-
-    if(!ajSysArglistBuild(cl, &pgm, &argptr))
-	return;
-
-    pname = ajStrNew();
-
-    ajDebug("ajSystemEnv '%s' %S \n", pgm, cl);
-    ajStrAssignC(&pname, pgm);
-    if(!ajSysWhichEnv(&pname, env))
-	ajFatal("cannot find program '%S'", pname);
-
-    ajDebug("ajSystemEnv %S = %S\n", pname, cl);
-    for (i=0;argptr[i]; i++)
-    {
-	ajDebug("%4d '%s'\n", i, argptr[i]);
-    }
-
-    pid = fork();
-    if(pid==-1)
-	ajFatal("System fork failed");
-
-    if(pid)
-    {
-	while((retval=waitpid(pid,&status,0))!=pid)
-	{
-	    if(retval == -1)
-		if(errno != EINTR)
-		    break;
-	}
-    }
-    else
-    {
-	execve(ajStrGetPtr(pname), argptr, env);
-	ajExitAbort();			/* just in case */
-    }
-
-    ajStrDel(&pname);
-
-    i = 0;
-    while(argptr[i])
-    {
-	AJFREE(argptr[i]);
-	++i;
-    }
-    AJFREE(argptr);
-
-    AJFREE(pgm);
-
-#endif
-
-    return;
+    return ajSysSystemOut(cl, outfname);
 }
-
-
-
-
 
 /* @section Miscellaneous system functions ************************************
 **
@@ -994,6 +1133,7 @@ void ajSystemEnv(const AjPStr cl, char * const env[])
 ** @nam3rule  Canon   Sets or unsets TTY canonical mode
 ** @nam3rule  Exit    Cleans up system internals memory
 ** 
+** @argrule Canon state [AjBool] Canonical mode set if true
 ** @valrule   *  [void]
 **
 ******************************************************************************/
@@ -1065,7 +1205,7 @@ __deprecated void ajSysBasename(AjPStr *s)
 
 
 /* @obsolete ajSysIsDirectory
-** remove use ajFileDir instead
+** @remove use ajFileDir instead
 */
 
 __deprecated AjBool ajSysIsDirectory(const char *s)

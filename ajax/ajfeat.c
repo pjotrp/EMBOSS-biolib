@@ -5377,7 +5377,7 @@ static char featFrame(ajint frame)
 
 static char featStrand(ajint strand)
 {
-    if (ajSysItoC(strand) != '-')
+    if (ajSysCastItoc(strand) != '-')
 	return '+';
 
     return '-';
@@ -6410,7 +6410,7 @@ float ajFeatGetScore(const AjPFeature thys)
 
 AjBool ajFeatGetForward(const AjPFeature thys)
 {
-    if(ajSysItoC(thys->Strand) != '-')
+    if(ajSysCastItoc(thys->Strand) != '-')
 	return ajTrue;
 
     return ajFalse;

@@ -29,7 +29,7 @@
 
 
 #ifdef __CYGWIN__
-#define fopen(a,b) ajSysFopen(a,b)
+#define fopen(a,b) ajSysFuncFopen(a,b)
 #endif
 
 
@@ -993,7 +993,7 @@ char* ajMessSysErrorText(void)
       
     /* must make copy - will be used when mess* calls itself */
     AJFREE(messErrMess);
-    messErrMess = ajSysStrdup(mess);
+    messErrMess = ajSysFuncStrdup(mess);
 
     AJFREE(mess);
     return messErrMess;
@@ -1072,7 +1072,7 @@ static char* messFormat(va_list args, const char *format, const char *prefix)
     {
 	if(new_buf != NULL)
 	    AJFREE(new_buf);
-	buf_ptr = new_buf = ajSysStrdup(format);
+	buf_ptr = new_buf = ajSysFuncStrdup(format);
     }
     else
 	buf_ptr = messbuf;
@@ -1130,15 +1130,15 @@ static char* messGetFilename(const char *path)
 	{				/* Last char = "/" ?? */
 	    if(path_copy != NULL)
 		AJFREE(path_copy);
-	    path_copy = ajSysStrdup(path);
+	    path_copy = ajSysFuncStrdup(path);
 
-	    tmp = ajSysStrtok(path_copy, path_delim);
+	    tmp = ajSysFuncStrtok(path_copy, path_delim);
 
 	    while(tmp != NULL)
 	    {
 		result = tmp;	 /* Keep results of previous strtok */
 
-		tmp = ajSysStrtok(NULL, path_delim);
+		tmp = ajSysFuncStrtok(NULL, path_delim);
 	    }
 	}
     }
@@ -1175,7 +1175,7 @@ static char* messGetFilename(const char *path)
 void ajMessErrorInit(const char *progname)
 {
     if(progname != NULL)
-	messageG.progname = ajSysStrdup(messGetFilename(progname));
+	messageG.progname = ajSysFuncStrdup(messGetFilename(progname));
 
     return;
 }
@@ -1206,7 +1206,7 @@ void ajMessSetErr(const char *filename, ajint line_num)
     ** than just a filename, depending on how a module was compiled.
     */
 
-    messageG.filename = ajSysStrdup(messGetFilename(filename));
+    messageG.filename = ajSysFuncStrdup(messGetFilename(filename));
 
     messageG.line_num = line_num;
 
@@ -1287,7 +1287,7 @@ AjBool ajMessErrorSetFile(const char *errfile)
     {
 	if((fp = fopen(errfile,"r")))
 	{
-	    messErrorFile = ajSysStrdup(errfile);
+	    messErrorFile = ajSysFuncStrdup(errfile);
 	    fclose(fp);
 	    return ajTrue;
 	}
@@ -1667,7 +1667,7 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
 #ifndef __ppc__
 	cp = fgets(&buff[ipos], isize, stdin);
 #else
-	cp = ajSysFgets(&buff[ipos], isize, stdin);
+	cp = ajSysFuncFgets(&buff[ipos], isize, stdin);
 #endif
 
         if(!cp && !ipos)

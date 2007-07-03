@@ -80,7 +80,7 @@ static void   fileListRecurs(const AjPStr file, AjPList list, ajint *recurs);
 static DIR*   fileOpenDir(AjPStr *dir);
 
 #ifdef __CYGWIN__
-#define fopen(a,b) ajSysFopen(a,b)
+#define fopen(a,b) ajSysFuncFopen(a,b)
 #endif
 
 
@@ -459,7 +459,7 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 	    thys->Pid, pipefds[0], pipefds[1]);
 
     /* fp is what we read from the pipe */
-    thys->fp = ajSysFdopen(pipefds[0], "r");
+    thys->fp = ajSysFuncFdopen(pipefds[0], "r");
     close(pipefds[1]);
     ajStrDelStatic(&fileNameTmp);
 
@@ -1926,7 +1926,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 #ifndef __ppc__
 	cp = fgets(&buff[ipos], isize, thys->fp);
 #else
-	cp = ajSysFgets(&buff[ipos], isize, thys->fp);
+	cp = ajSysFuncFgets(&buff[ipos], isize, thys->fp);
 #endif
 
         if(!cp && !ipos)
@@ -4972,8 +4972,6 @@ FILE* ajFileBuffFp(const AjPFileBuff thys)
 **
 ** @param [r] thys [const AjPFileBuff] Buffered file.
 ** @return [AjPFile] File object.
-** @category cast [AjPFileBuff] Returns the equivalent AjPFile without
-**                              the buffer access.
 ** @@
 ******************************************************************************/
 
@@ -4997,12 +4995,10 @@ AjPFile ajFileBuffFile(const AjPFileBuff thys)
 **
 ** Intended for cases where the file data must be preprocessed before
 ** being seen by the sequence reading routines. The first case was
-** for stripping HTML tagsafter reading via HTTP.
+** for stripping HTML tags after reading via HTTP.
 **
 ** @param [u] thys [AjPFileBuff] Buffered file.
 ** @return [void]
-** @category input [AjPFileBuff] Reads all input lines from a file into
-**                                the buffer.
 ** @@
 ******************************************************************************/
 
