@@ -459,7 +459,7 @@ static void grpGetAcdFiles(AjPList glist, AjPList alpha, char * const env[],
 
 			/* see if the appl is the name of a real program */
 			ajStrAssignS(&applpath, appl);
-			if(ajSysWhichEnv(&applpath, env))
+			if(ajSysFileWhichEnv(&applpath, env))
 			{
 			    /*
 			    ** see if the appl is OK in GUIs or we don't

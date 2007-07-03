@@ -775,25 +775,25 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict re, AjPFile inf)
     }
 
 
-    p = ajSysStrtok(p,"\t \n");
+    p = ajSysFuncStrtok(p,"\t \n");
     ajStrAssignC(&re->cod,p);
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     ajStrAssignC(&re->pat,p);
     ajStrAssignC(&re->bin,p);
 
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     sscanf(p,"%d",&re->len);
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     sscanf(p,"%d",&re->ncuts);
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     sscanf(p,"%d",&re->blunt);
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     sscanf(p,"%d",&re->cut1);
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     sscanf(p,"%d",&re->cut2);
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     sscanf(p,"%d",&re->cut3);
-    p = ajSysStrtok(NULL,"\t \n");
+    p = ajSysFuncStrtok(NULL,"\t \n");
     sscanf(p,"%d",&re->cut4);
 
     for(i=0,q=ajStrGetuniquePtr(&re->bin);i<re->len;++i)

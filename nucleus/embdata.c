@@ -1,6 +1,6 @@
 /* @source embdata.c
 **
-** General routines for alignment.
+** General routines for data files
 ** Copyright (c) 1999 Mark Faller
 **
 ** This program is free software; you can redistribute it and/or
@@ -72,7 +72,7 @@ void embDataListDel(AjPList* data)
 
 /* @funcstatic dataListNextLine ***********************************************
 **
-** private function to read in the next line of data from the file. It is
+** Private function to read in the next line of data from the file. It is
 ** called from embDataListRead.
 **
 ** @param [u] pfile [AjPFile] file pointer to the data file

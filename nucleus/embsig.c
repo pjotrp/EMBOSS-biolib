@@ -2343,7 +2343,8 @@ AjPList embHitlistReadNodeFasta(AjPFile inf,
 AjBool embHitlistWrite(AjPFile outf, const EmbPHitlist obj)
 {
     ajuint x = 0;  /* Counter */
-    
+    AjPSeqout outseq;
+
     if(!obj)
 	return ajFalse;
 
@@ -2428,7 +2429,9 @@ AjBool embHitlistWrite(AjPFile outf, const EmbPHitlist obj)
 	ajFmtPrintF(outf, "%-5s%u START; %u END;\n", "RA",
 		    obj->hits[x]->Start, obj->hits[x]->End);
 	ajFmtPrintF(outf, "XX\n");
-	ajSeqWriteXyz(outf, obj->hits[x]->Seq, "SQ");
+	outseq = ajSeqoutNewFile(outf);
+	ajSeqoutDumpSwisslike(outseq, obj->hits[x]->Seq, "SQ");
+	ajSeqoutDel(&outseq);
 	ajFmtPrintF(outf, "XX\n");
     }
     ajFmtPrintF(outf, "//\n");
@@ -2462,7 +2465,7 @@ AjBool embHitlistWriteSubset(AjPFile outf,
     ajuint x    = 0;  /* Counter */
     ajuint y    = 0;  /* Counter */
     ajuint nset = 0;  /* No. in set to be printed out */
-    
+    AjPSeqout outseq;
 
     if(!obj)
 	return ajFalse;
@@ -2550,7 +2553,9 @@ AjBool embHitlistWriteSubset(AjPFile outf,
 	    ajFmtPrintF(outf, "%-5s%u START; %u END;\n", "RA",
 			obj->hits[x]->Start, obj->hits[x]->End);
 	    ajFmtPrintF(outf, "XX\n");
-	    ajSeqWriteXyz(outf, obj->hits[x]->Seq, "SQ");
+	    outseq = ajSeqoutNewFile(outf);
+	    ajSeqoutDumpSwisslike(outseq, obj->hits[x]->Seq, "SQ");
+	    ajSeqoutDel(&outseq);
 	    ajFmtPrintF(outf, "XX\n");
 	}
     }
