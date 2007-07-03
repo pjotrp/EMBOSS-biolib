@@ -4058,7 +4058,7 @@ __deprecated ajint  ajSeqGapCount(const AjPSeq seq)
 void ajSeqExit(void)
 {
     ajSeqReadExit();
-    ajSeqWriteExit();
+    ajSeqoutExit();
     ajSeqDbExit();
     ajSeqTypeExit();
 
@@ -6212,7 +6212,7 @@ void ajSeqcvtTrace(const AjPSeqCvt cvt)
     ajDebug("----- --- --\n");
     for(i=0; i < cvt->size; i++)
 	if(cvt->table[i])
-	    ajDebug("%5d %3d <%c>\n", i, cvt->table[i], ajSysItoC(i));
+	    ajDebug("%5d %3d <%c>\n", i, cvt->table[i], ajSysCastItoc(i));
 
     ajDebug("... all others are zero ...\n", cvt->bases);
 
@@ -6299,8 +6299,8 @@ AjPSeqCvt ajSeqcvtNewC(const char* bases)
     while(*cp)
     {
 	i++;
-	ret->table[toupper((ajint) *cp)] = ajSysItoC(i);
-	ret->table[tolower((ajint) *cp)] = ajSysItoC(i);
+	ret->table[toupper((ajint) *cp)] = ajSysCastItoc(i);
+	ret->table[tolower((ajint) *cp)] = ajSysCastItoc(i);
 	cp++;
     }
 
@@ -6350,13 +6350,13 @@ AjPSeqCvt ajSeqcvtNewEndC(const char* bases)
     ret->missing = imax;
 
     for(j=0; j < ret->size; j++)
-	ret->table[j] = ajSysItoC(imax);
+	ret->table[j] = ajSysCastItoc(imax);
 
     i = 0;
     while(*cp)
     {
-	ret->table[toupper((ajint) *cp)] = ajSysItoC(i);
-	ret->table[tolower((ajint) *cp)] = ajSysItoC(i);
+	ret->table[toupper((ajint) *cp)] = ajSysCastItoc(i);
+	ret->table[tolower((ajint) *cp)] = ajSysCastItoc(i);
 	cp++;
 	i++;
     }
@@ -6411,7 +6411,7 @@ AjPSeqCvt ajSeqcvtNewNumberC(const char* bases)
     i = 0;
     while(*cp)
     {
-	c = ajSysItoC(toupper((ajint)*cp));
+	c = ajSysCastItoc(toupper((ajint)*cp));
 	ret->table[toupper((ajint) *cp)] = c;
 	ret->table[tolower((ajint) *cp)] = c;
 	cp++;
@@ -6478,9 +6478,9 @@ AjPSeqCvt ajSeqcvtNewStr (const AjPPStr basearray, ajint numbases)
     {
 	ajStrAppendK(&ret->bases, ajStrGetCharFirst(basearray[i]));
 	ret->table[toupper((ajint) ajStrGetCharFirst(basearray[i]))] =
-	    ajSysItoC(i+1);
+	    ajSysCastItoc(i+1);
 	ret->table[tolower((ajint) ajStrGetCharFirst(basearray[i]))] =
-	    ajSysItoC(i+1);
+	    ajSysCastItoc(i+1);
     }
 
     return ret;
@@ -6553,9 +6553,9 @@ AjPSeqCvt ajSeqcvtNewStrAsym (const AjPPStr basearray, ajint numbases,
 	/* ajStrAssignS(&ret->labels[i], bases[i]); */
 	ajStrAppendK(&ret->bases, ajStrGetCharFirst(basearray[i]));
 	ret->table[toupper((ajint) ajStrGetCharFirst(basearray[i]))] =
-	    ajSysItoC(i+1);
+	    ajSysCastItoc(i+1);
 	ret->table[tolower((ajint) ajStrGetCharFirst(basearray[i]))] =
-	    ajSysItoC(i+1);
+	    ajSysCastItoc(i+1);
     }
 
     return ret;
