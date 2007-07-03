@@ -29,7 +29,7 @@
 #include "mse.h"         /* MSE global variables and definitions  */
 
 /*FILE *debug;*/
-int DEFAULTFORMAT;
+AjPStr DEFAULTFORMATSTR = NULL;
 /*AjPStr FORMATSTR=NULL;*/
 char **envptr;
 
@@ -44,11 +44,10 @@ void LoadSeqWithseqset(AjPSeqset seqset){
   int i;
   const AjPStr tempname;
 
-  DEFAULTFORMAT = seqset->Format;
+  ajStrAssignS(&DEFAULTFORMATSTR,seqset->Formatstr);
 
-  if(!DEFAULTFORMAT){
-    DEFAULTFORMAT = 7;
-  }
+  if(!ajStrGetLen(DEFAULTFORMATSTR))
+    ajStrAssignC(&DEFAULTFORMATSTR, "fasta");
 
   strcpy(FOSSName,ajStrGetPtr(seqset->Usa));
   ajDebug("FOSSName = %s \n",FOSSName);
@@ -114,8 +113,7 @@ void DoSave(char *FName, AjPSeqout outseq)
     strcpy(OutFName,FName);
     ajname = ajStrNewC(OutFName);
       
-    myoutseq = ajSeqoutNew();
-    myoutseq->Format = DEFAULTFORMAT;
+    myoutseq = ajSeqoutNewFormatS(DEFAULTFORMATSTR);
     ajSeqoutOpenFilename(outseq, ajname);
   }    
   for(i=1;i<NOS && OkToEdit[i]; i++){
@@ -171,6 +169,8 @@ AjPSeqout outseq;
 /*
 ** Setup screen control package, keypad and MSE, check for in-line arguments
 */
+
+        ajStrAssignC(&DEFAULTFORMATSTR, "fasta");
 
 	embInitP("mse", argc, argv, "MSE");
 
@@ -2542,8 +2542,7 @@ void DoWrite( int Start, int Finish, char *FName )
 
     ajname = ajStrNewC(FName);
 
-    myoutseq = ajSeqoutNew();
-    myoutseq->Format = DEFAULTFORMAT;
+    myoutseq = ajSeqoutNewFormatS(DEFAULTFORMATSTR);
     ajSeqoutOpenFilename(myoutseq, ajname);
 
     seqnew = ajSeqNewNameC(Seq[Strand].Mem, Seq[Strand].Name);
@@ -3518,16 +3517,16 @@ char OneLine[256];
 } /* End of DoTitle */
 
 void DoFormat(char *format){
-int formatnumber;
  AjPStr tmpformat = NULL;
 
  tmpformat = ajStrNewC(format);
  
- if (!ajSeqFindOutFormat(tmpformat, &formatnumber)) {
+ if (!ajSeqoutstrIsFormatExists(tmpformat))
+ {
    ShowError("format not recognised");
  }
  else{
-   DEFAULTFORMAT = formatnumber;
+   ajStrAssignC(&DEFAULTFORMATSTR, format);
  }
   ajStrDel(&tmpformat);
 }

@@ -213,7 +213,7 @@ int main(int argc, char **argv)
 	    ajFileClose(&pdbscop_outf);
 	    ajFmtPrintS(&temp, "rm %S", pdbscop_name);
 	    ajFmtPrint("%S\n", temp);
-	    ajSystem(temp);
+	    ajSysSystem(temp);
 	}
 
 
@@ -228,7 +228,7 @@ int main(int argc, char **argv)
 	    ajFileClose(&cpdbscop_outf);
 	    ajFmtPrintS(&temp, "rm %S", cpdbscop_name);
 	    ajFmtPrint("%S\n", temp);
-	    ajSystem(temp);
+	    ajSysSystem(temp);
 	}
 
 

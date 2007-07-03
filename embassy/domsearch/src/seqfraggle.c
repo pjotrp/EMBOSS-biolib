@@ -222,7 +222,8 @@ int main(int argc, char **argv)
 	    ajFileDirExtnTrim(&temp2);
 	    ajStrInsertS(&temp2, 0, ajDirName(dhfout));
 	    ajStrAssignS(&temp2, ajDirExt(dhfout));
-	    ajSeqoutUsa(&seqout, temp2);
+	    seqout = ajSeqoutNew();
+	    ajSeqoutClearUsa(seqout, temp2);
 	}
 
 

@@ -108,7 +108,7 @@ int main(int argc, char **argv)
     rndo = ajSeqoutNew();
     if(!ajSeqoutOpenFilename(rndo, rnd))
 	ajFatal("Terminal ajSeqFileNewOut failure. Email EMBOSS helpdesk!\n");
-    ajSeqOutSetFormatC(rndo, "fasta");
+    ajSeqoutSetFormatC(rndo, "fasta");
 
     while(ajSeqallNext(seqfile, &seq))
 	ajSeqoutWriteSeq(rndo, seq);

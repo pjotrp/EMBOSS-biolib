@@ -281,11 +281,11 @@ int main(int argc, char **argv)
 	    
 	    
 	    ajFmtPrint("%S\n", cmd);
-	    ajSystem(cmd);
+	    ajSysSystem(cmd);
 	    ajFmtPrintS(&cmd,"rm %S",seqsfname);
-	    ajSystem(cmd);
+	    ajSysSystem(cmd);
 	    ajFmtPrintS(&cmd,"rm %S",seqfname);
-	    ajSystem(cmd);
+	    ajSysSystem(cmd);
 
 	}
 	else

@@ -232,7 +232,7 @@ int main(ajint argc, char **argv)
 	    
 	    ajFmtPrintS(&temp, "rm %S", ccf_name);
 	    ajFmtPrint("%S", temp);
-	    ajSystem(temp);
+	    ajSysSystem(temp);
 
 	    ajFileClose(&pdb_inf);
 	    ajFileClose(&ccf_outf);

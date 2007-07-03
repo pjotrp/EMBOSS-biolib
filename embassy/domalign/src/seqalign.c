@@ -585,11 +585,11 @@ int main(int argc, char **argv)
 	/* Clean up directory. */
 	if(modei==2)
 	    if(scopalign->N !=0)
-		ajSysUnlink(clustin1);
+		ajSysFileUnlink(clustin1);
 	
-	ajSysUnlink(clustin2);
-	ajSysUnlink(clustout);
-	ajSysUnlink(clustdnd);  
+	ajSysFileUnlink(clustin2);
+	ajSysFileUnlink(clustout);
+	ajSysFileUnlink(clustdnd);  
 	
 	
 	/* Free memory. */

@@ -247,6 +247,7 @@ static AjBool interface_WriteFile(AjPFile logf, AjPFile outf, float thresh,
     ajint entry=0;    
     AjPStr     domid=NULL;
     AjPStr     pdbid=NULL;
+    AjPSeqout  outseq = NULL;
 
 
 
@@ -329,10 +330,14 @@ static AjBool interface_WriteFile(AjPFile logf, AjPFile outf, float thresh,
 		/* S1 & S2 */
 		if((pdb->Chains[y]->Nres != 0) && pdb->Chains[w]->Nres != 0)
 		{
-		    ajSeqWriteXyz(outf, pdb->Chains[y]->Seq, "S1");
+		    outseq = ajSeqoutNew();
+		    ajSeqoutDumpSwisslike(outseq, pdb->Chains[y]->Seq, "S1");
+		    ajSeqoutDel(&outseq);
 		    ajFmtPrintF(outf, "XX\n");	
 
-		    ajSeqWriteXyz(outf, pdb->Chains[w]->Seq, "S2");
+		    outseq = ajSeqoutNew();
+		    ajSeqoutDumpSwisslike(outseq, pdb->Chains[w]->Seq, "S2");
+		    ajSeqoutDel(&outseq);
 		    ajFmtPrintF(outf, "XX\n");	
 
 		}

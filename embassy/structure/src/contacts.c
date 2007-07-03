@@ -252,7 +252,7 @@ int main(ajint argc, char **argv)
 	    ajFmtPrintF(logf, "ERROR  file write error %S\n", con_name);
 
 	    ajFmtPrintS(&temp, "rm %S", con_name);
-	    ajSystem(temp);
+	    ajSysSystem(temp);
 
 	    ajFileClose(&cpdb_inf);
 	    ajFileClose(&con_outf);
@@ -326,7 +326,7 @@ static AjBool contacts_WriteFile(AjPFile logf,
     ajint      entry  = 0;    
     AjPStr     pdbid  = NULL;
     AjPStr     domid  = NULL;
-
+    AjPSeqout  outseq = NULL;
 
 
     /* Error checking on args. */
@@ -400,7 +400,9 @@ static AjBool contacts_WriteFile(AjPFile logf,
 	    /* S1 */
 	    if(pdb->Chains[y]->Nres != 0)
 	    {
-		ajSeqWriteXyz(outf, pdb->Chains[y]->Seq, "S1");
+		outseq = ajSeqoutNew();
+		ajSeqoutDumpSwisslike(outseq, pdb->Chains[y]->Seq, "S1");
+		ajSeqoutDel(&outseq);
 		ajFmtPrintF(outf, "XX\n");	
 	    }
 	    

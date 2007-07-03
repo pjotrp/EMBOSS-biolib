@@ -451,15 +451,15 @@ int main(int argc, char **argv)
 
     /* Remove all temporary files. */
 
-    ajSysUnlink(log);
-    ajSysUnlink(dom);
-    ajSysUnlink(set);
-    ajSysUnlink(scan);
-    ajSysUnlink(sort);
-    ajSysUnlink(out);
+    ajSysFileUnlink(log);
+    ajSysFileUnlink(dom);
+    ajSysFileUnlink(set);
+    ajSysFileUnlink(scan);
+    ajSysFileUnlink(sort);
+    ajSysFileUnlink(out);
     ajStrAssignS(&temp, name);	
     ajStrAppendC(&temp, ".mat");
-    ajSysUnlink(temp);
+    ajSysFileUnlink(temp);
     
     
 
@@ -1045,23 +1045,23 @@ static void domainalign_stamp(AjPDomain prevdomain,
     ajFmtPrintS(&exec,	"stamp -l %S -s -n 2 -slide 5 -prefix %S -d %S",
 		dom, name, set);
     ajFmtPrint("\n%S\n\n", exec);
-    ajSystem(exec);  
+    ajSysSystem(exec);  
 
     ajFmtPrintS(&exec, "sorttrans -f %S -s Sc 2.5",
 		scan);
     ajFmtPrint("\n%S > %S\n\n", exec, sort);
 
-    ajSystemOut(exec, sort);
+    ajSysSystemOut(exec, sort);
 
     ajFmtPrintS(&exec, "stamp -l %S -prefix %S",
 		sort, name);
     ajFmtPrint("\n%S > %S\n\n", exec, log);
-    ajSystemOut(exec, log);
+    ajSysSystemOut(exec, log);
 	
     ajFmtPrintS(&exec, "transform -f %S -g  -o %S",
 		sort, alignc);
     ajFmtPrint("\n%S\n\n", exec);
-    ajSystem(exec);
+    ajSysSystem(exec);
     
     
     /* Count the number of clusters in the log file. */
@@ -1080,14 +1080,14 @@ static void domainalign_stamp(AjPDomain prevdomain,
     ajFmtPrintS(&exec,"poststamp -f %S.%d -min 0.5",
 		name, ncluster);
     ajFmtPrint("%S\n\n", exec);
-    ajSystem(exec);
+    ajSysSystem(exec);
     
     
     /* Call STAMP ... convert block format alignment into clustal format. */
     ajFmtPrintS(&exec,"ver2hor -f %S.%d.post",
 		name, ncluster); 
     ajFmtPrint("%S > %S\n\n", exec, out);
-    ajSystemOut(exec, out);
+    ajSysSystemOut(exec, out);
     
     
     /* Process STAMP alignment file and generate alignment file for output. */
@@ -1099,11 +1099,11 @@ static void domainalign_stamp(AjPDomain prevdomain,
     for(x=1;x<ncluster+1;x++)
     {
 	ajFmtPrintS(&temp, "%S.%d", name, x);
-	ajSysUnlink(temp); 
+	ajSysFileUnlink(temp); 
     }
     
     ajFmtPrintS(&temp, "%S.%d.post", name, ncluster);
-    ajSysUnlink(temp); 
+    ajSysFileUnlink(temp); 
 
     ajStrDel(&exec);
     ajStrDel(&line);
@@ -1151,7 +1151,7 @@ static void domainalign_tcoffee(AjPDomain domain,
 
     ajFmtPrintS(&exec,"t_coffee -in %S sap_pair", pdbnames);
     ajFmtPrint("%S > %S\n", exec, in);
-    ajSystemOut(exec, in);
+    ajSysSystemOut(exec, in);
 
     /* Process tcoffee alignment file and generate alignment file 
        for output. */

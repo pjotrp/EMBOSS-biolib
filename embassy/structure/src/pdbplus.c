@@ -378,7 +378,7 @@ int main(ajint argc, char **argv)
 
 	    /* Remove temporary file (stride output file). */
 	    ajFmtPrintS(&exec, "rm %S", randomname); 
-	    ajSystem(exec); 
+	    ajSysSystem(exec); 
 	    
 	    /* 
 	     **  Calculate element serial numbers (eStrideNum)& ammend residue
@@ -540,19 +540,19 @@ int main(ajint argc, char **argv)
 	    ajFileClose(&tempf);
 	    
 	    ajFmtPrintS(&exec, "rm %S", naccess_str); 
-	    ajSystem(exec); 
+	    ajSysSystem(exec); 
 
 	    ajStrAssignS(&naccess_str, pdbprefix);
 	    ajStrAppendS(&naccess_str, pdb->Pdb);
 	    ajStrAppendC(&naccess_str, ".asa");
 	    ajFmtPrintS(&exec, "rm %S", naccess_str);
-	    ajSystem(exec); 
+	    ajSysSystem(exec); 
 
 	    ajStrAssignS(&naccess_str, pdbprefix);
 	    ajStrAppendS(&naccess_str, pdb->Pdb);
 	    ajStrAppendC(&naccess_str, ".log");
 	    ajFmtPrintS(&exec, "rm %S", naccess_str);
-	    ajSystem(exec); 
+	    ajSysSystem(exec); 
 	}
 
         /* Open CCF (output) file. */

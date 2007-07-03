@@ -524,31 +524,31 @@ int main(int argc, char **argv)
 /*    if(domf)
     {
 	ajFmtPrintS(&temp, "rm %S", dom);
-	ajSystem(temp);
+	ajSysSystem(temp);
     }
     if(setf)
     {
 	ajFmtPrintS(&temp, "rm %S", set);
-	ajSystem(temp);
+	ajSysSystem(temp);
     }
     if(outf)
     {    
 	ajFmtPrintS(&temp, "rm %S", out);
-	ajSystem(temp);
+	ajSysSystem(temp);
     } */
 
 
     ajFmtPrintS(&temp, "rm %S", dom);
-    ajSystem(temp);
+    ajSysSystem(temp);
 
     ajFmtPrintS(&temp, "rm %S", set);
-    ajSystem(temp);
+    ajSysSystem(temp);
 
     ajFmtPrintS(&temp, "rm %S", out);
-    ajSystem(temp);
+    ajSysSystem(temp);
 
     ajFmtPrintS(&temp, "rm %S", scan);
-    ajSystem(temp);
+    ajSysSystem(temp);
 
     
     /* Tidy up*/

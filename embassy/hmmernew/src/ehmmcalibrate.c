@@ -126,17 +126,17 @@ int main(int argc, char **argv)
 
     /* 5. Call hmmcalibrate */
     ajFmtPrint("\n%S\n\n", cmd);
-    ajSystem(cmd);
+    ajSysSystem(cmd);
     
 
     /* 6. Copy HMMER output (overwritten input file) to output file. 
        Restore original input file. */
     ajFmtPrintS(&cmd, "mv %S %S", inname, outname);
     /*    ajFmtPrint("\n%S\n\n", cmd);  */
-    ajSystem(cmd);
+    ajSysSystem(cmd);
     ajFmtPrintS(&cmd, "mv %S %S", rnd, inname);
     /*    ajFmtPrint("\n%S\n\n", cmd);  */
-    ajSystem(cmd);
+    ajSysSystem(cmd);
     
 
     /* 7. Exit cleanly */

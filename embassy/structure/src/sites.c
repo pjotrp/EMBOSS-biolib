@@ -1187,7 +1187,7 @@ static AjBool    sites_HeterogenContactsWrite(AjPFile outf,
   ajint entry=0;
   ajint total_entry=0;
   AjPStr ptr=NULL;
-  
+  AjPSeqout outseq = NULL;
 
   /* Check arguments */
   if((outf==NULL) || (dbase==NULL)) 
@@ -1268,8 +1268,11 @@ static AjBool    sites_HeterogenContactsWrite(AjPFile outf,
 	      /* S1 */
 	      if(dbase->entries[i]->cont_data[j]->Nres != 0)
 	      {
-		  ajSeqWriteXyz(outf, dbase->entries[i]->cont_data[j]->Seq, 
-				"S1");
+		  outseq = ajSeqoutNew();
+		  ajSeqoutDumpSwisslike(outseq,
+					dbase->entries[i]->cont_data[j]->Seq, 
+					"S1");
+		  ajSeqoutDel(&outseq);
 		  ajFmtPrintF(outf, "XX\n");	
 	      }
 	      
