@@ -99,7 +99,7 @@
 #define _XOPEN_SOURCE
 #endif
 
-#if !defined(__ppc__) && !defined(__FreeBSD__) && !defined(WIN32)
+#if !defined(__ppc__) && !defined(__APPLE__) && !defined(__FreeBSD__) && !defined(WIN32)
 #include <crypt.h>
 #endif
 

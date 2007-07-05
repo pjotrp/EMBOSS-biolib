@@ -115,7 +115,7 @@ static AjBool jembossctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq);
 #define _XOPEN_SOURCE
 #endif
 
-#if !defined(__ppc__) && !defined(__FreeBSD__)
+#if !defined(__ppc__) && !defined(__APPLE__) && !defined(__FreeBSD__)
 #include <crypt.h>
 #endif
 
