@@ -1,4 +1,21 @@
 Version 5.0.0
+	The MRS server in Nijmegen changed its syntax just before our
+	release. A new database access method "MRS3" supports the main
+	MRS3 server. We have very little documentation on the changed URL
+	query syntax. Access by ID appears to work at this stage. The
+	database URL is defined as http://mrs.cmbi.ru.nl/mrs-3/plain.do
+	The plain text output is now defined in the URL. The database
+	names have all changed on the server. At present the same server
+	appears to still support the old MRS access method with the URL
+	http://mrs.cmbi.ru.nl/mrs/cgi-bin/mrs.cgi
+
+	ACD parsing now allows square brackets within quoted strings.
+
+	Functions for lists and tables have been renamed to new standard
+	naming conventions. Some source files remain to be standardized
+	after the release, most importantly ajfile, ajfeat and some
+	remaining ajseq source files.
+
 	Warning messages are available for sequence formats that do not
 	allow additional characters. The environment variable
 	EMBOSS_SEQWARN needs to be set to "Y" to enable warnings. For
