@@ -4387,11 +4387,11 @@ FP /\A.{308}L48662\001/
 FI outfile.dbiflat
 FC = 34
 FP /# Release: 0.0\n/
-FP /# Date: 15\/07\/06\n/
+FP /# Date: 15\/07\/[0-9][0-9]\n/
 FP /# Files: 1\n/
 FP /#   File 1: .*/rod.dat\n/
 FP /# Fields: 2\n/
-FP /# Rundate: Sat 15 Jul 2006 12:00:00\n/
+FP /# Rundate: [A-Z][a-z][a-z] 15 Jul 20[0-9][0-9] 12:00:00\n/
 FP 1 /^Index \S+ maxlen \d+ items \d+\n/
 FP 1 /^filename: /
 //
@@ -4427,11 +4427,11 @@ FP /\A.{308}L48662\001/
 FI outfile.dbiflat
 FC = 35
 FP /# Release: 0.0\n/
-FP /# Date: 15\/07\/06\n/
+FP /# Date: 15\/07\/[0-9][0-9]\n/
 FP /# Files: 1\n/
 FP /#   File 1: .*/rod.dat\n/
 FP /# Fields: 2\n/
-FP /# Rundate: Sat 15 Jul 2006 12:00:00\n/
+FP /# Rundate: [A-Z][a-z][a-z] 15 Jul 20[0-9][0-9] 12:00:00\n/
 FP 1 /^Index \S+ maxlen \d+ items \d+\n/
 FP 1 /^filename: /
 //
@@ -13727,7 +13727,7 @@ AP seqret
 CL -auto ../../data/dna.embl genbank::test.out
 FI test.out
 FZ = 503
-FP /^LOCUS       EMBL                     100 bp    DNA     linear   UNC 15-JUL-2006\n/
+FP /^LOCUS       EMBL                     100 bp    DNA     linear   UNC 15-JUL-20[0-9][0-9]\n/
 FP /^DEFINITION  EMBL FORMAT DNA SEQUENCE\.\n/
 FP /^ACCESSION   E10002\n/
 FP /^VERSION     E10002.34\n/
@@ -13745,7 +13745,7 @@ AP seqret
 CL -auto ../../data/dna.embl test.out -osf genbank
 FI test.out
 FZ = 503
-FP /^LOCUS       EMBL                     100 bp    DNA     linear   UNC 15-JUL-2006\n/
+FP /^LOCUS       EMBL                     100 bp    DNA     linear   UNC 15-JUL-20[0-9][0-9]\n/
 FP /^DEFINITION  EMBL FORMAT DNA SEQUENCE\.\n/
 FP /^ACCESSION   E10002\n/
 FP /^VERSION     E10002.34\n/
@@ -14606,7 +14606,7 @@ ID seqret-offset
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat%1833
 FI test.out
-FZ = 12374
+FZ = 11938
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
 FP 5 /^ID/
@@ -14618,7 +14618,7 @@ ID seqret-offset-zero
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat%0
 FI test.out
-FZ = 12941
+FZ = 12345
 FP /^ID   L48662; /
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
@@ -14789,7 +14789,7 @@ ID seqret-query-direct-des2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:*norvegicus*
 FI test.out
-FZ = 12374
+FZ = 11938
 FP /^ID   Z46957; /
 FP 5 /^ID/
 //
@@ -14819,7 +14819,7 @@ ID seqret-query-direct-deswordmid
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:DES:mrna
 FI test.out
-FZ = 6958
+FZ = 6860
 FP /^ID   L48662; /
 FP 3 /^ID/
 //
@@ -14867,7 +14867,7 @@ ID seqret-query-direct-org2
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rattus\*
 FI test.out
-FZ = 12374
+FZ = 11938
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
 FP 5 /^ID/
@@ -14877,7 +14877,7 @@ ID seqret-query-direct-org3
 AP seqret
 CL -auto -out test.out -osf embl embl::../../embl/rod.dat:ORG:Rodentia
 FI test.out
-FZ = 12941
+FZ = 12345
 FP /^ID   L48662; /
 FP /^ID   Z46957; /
 FP /^ID   U68037; /
@@ -16006,7 +16006,7 @@ ID featseqall-end-embl
 AP seqret
 CL -feat @../../data/eclac.list -send 100 -out test.out -osf embl -auto
 FI test.out
-FZ = 76638
+FZ = 62617
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +caattcaggg tggtgaatgt gaaaccagta acgttatacg +100\n/
@@ -16018,7 +16018,7 @@ ID featseqall-begin-embl
 AP seqret
 CL -feat @../../data/eclac.list -sbegin 51 -send 100 -out test.out -osf embl -auto
 FI test.out
-FZ = 75868
+FZ = 61847
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +ggaagagagt caattcaggg tggtgaatgt gaaaccagta acgttatacg +50/
@@ -16031,7 +16031,7 @@ ID featseqall-rev-embl
 AP seqret
 CL -feat @../../data/eclac.list -sbegin 51 -send 100 -srev -out test.out -osf embl -auto
 FI test.out
-FZ = 76012
+FZ = 61991
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +cgtataacgt tactggtttc acattcacca ccctgaattg actctcttcc +50\n/
@@ -16140,7 +16140,7 @@ ID featseqset-end-embl
 AQ seqretset
 CL -feat @../../data/eclac.list -send 100 -out test.out -osf embl -auto
 FI test.out
-FZ = 76638
+FZ = 62617
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +caattcaggg tggtgaatgt gaaaccagta acgttatacg +100\n/
@@ -16152,7 +16152,7 @@ ID featseqset-begin-embl
 AQ seqretset
 CL -feat @../../data/eclac.list -sbegin 51 -send 100 -out test.out -osf embl -auto
 FI test.out
-FZ = 75868
+FZ = 61847
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +ggaagagagt caattcaggg tggtgaatgt gaaaccagta acgttatacg +50/
@@ -16165,7 +16165,7 @@ ID featseqset-rev-embl
 AQ seqretset
 CL -feat @../../data/eclac.list -sbegin 51 -send 100 -srev -out test.out -osf embl -auto
 FI test.out
-FZ = 76012
+FZ = 61991
 FP 5 /^ID   /
 FP 5 /^FH   /
 FP /^ +cgtataacgt tactggtttc acattcacca ccctgaattg actctcttcc +50\n/
@@ -20795,7 +20795,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x51872ll.embl
-FZ = 104511
+FZ = 90490
 FP 3 /^ID   V00/
 FP 5 /^ID   /
 //
@@ -23158,6 +23158,7 @@ ID ememe-keep
 AB memenew
 RQ meme
 AA ememe
+DL keep
 CL ../../data/memenew/crp0.s -mod oops -pal ex1.html
 FI stderr
 FC = 1
@@ -25695,9 +25696,9 @@ IN
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9](   d = [0-9.]+)?\n/
-FP  /^GUGAUGGGCACCCUGGUAU.*GUCGCCGCC   20\n/
-FP  /^UGUGCUCCAACCUUAGACA.*GCGCAACUG   30\n/
-FP  /^UAACUUCAUUUCUUAUCGU.*GGUUGAUAU   32\n/
+FP  /^GGGUCGCUUUCCGCUCAGA.*GGCUCGAAA   30   d \= 1\.000000\n/
+FP  /^GUUAUCUGACGCGACAUAG.*AUAGCCUAA   36\n/
+FP  /^GUCGGUAUUGUGGAUGGUA.*CUGGCACGA   26\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25718,9 +25719,9 @@ IN
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9]\n/
-FP  /^GUGAUGGGCACCCUGGUAU.*GUCGCCGCC   20\n/
-FP  /^UGUGCUCCAACCUUAGACA.*GCGCAACUG   30\n/
-FP  /^UAACUUCAUUUCUUAUCGU.*GGUUGAUAU   32\n/
+FP  /^CACUACCGUGUCGUGGCGU.*UGGUGCAGC   27\n/
+FP  /^GGUACCGUACUCUUUAAGU.*GUACUAAUC   36\n/
+FP  /^GCGAAGUGUUUCGGAACCA.*UUCGCCCUA   21\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
