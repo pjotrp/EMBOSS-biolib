@@ -10624,12 +10624,12 @@ __deprecated ajint  ajCharPos(const char* thys, ajint ipos)
 ** @nam4rule New      String iterator constructor.
 ** @nam5rule NewBack  String iterator reverse direction constructor.
 **
-** @argrule New str [const AjPStr] Origiial string
+** @argrule New str [const AjPStr] Original string
 **
 ** @valrule * [AjIStr] String iterator
 **
 ** @fcategory new
-*/
+******************************************************************************/
 
 
 
