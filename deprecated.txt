@@ -37,6 +37,53 @@ ajSeqBaseComp ajBaseComp
 #ajindex
 #ajjava
 #ajlist
+ajListCopy ajListNewListref
+ajListNewArgs -
+ajListPushApp ajListPushAppend
+ajListPushList ajListPushlist
+ajListGarbageCollect =ajListPurge 1,2,3 1,3,2
+ajListGarbageCollect @ajListPurge
+ajListSort2 ajListSortTwo
+ajListSort3 ajListSortTwoThree
+ajListUnique2 ajListSortTwoUnique
+ajListUnique ajListSortUnique
+ajListPopEnd ajListPopLast
+ajListLength ajListGetLength
+ajListFind ajListMapfind
+ajListMapRead ajListMapread
+ajListFirst ajListPeekFirst
+ajListLast ajListPeekLast
+ajListToArray ajListToarray
+ajListNodesNew -
+ajListAppend -
+ajListDel ajListFree
+ajListIter ajListIterNew
+ajListIterBack ajListIterNewBack
+ajListIterRead ajListIterNewread
+ajListIterBackRead ajListIterNewreadBack
+ajListIterMore -
+ajListIterMoreBack -
+ajListIterBackDone ajListIterDoneBack
+ajListIterFree ajListIterDel
+ajListIterBackMore -
+ajListIterNext ajListIterGet
+ajListIterBackNext ajListIterGetBack
+ajListInsert ajListIterInsert
+ajListRemove ajListIterRemove
+ajListstrClone -
+ajListstrCopy ajListstrNewList
+ajListstrPushApp ajListstrPushAppend
+ajListstrPushList ajListstrPushlist
+ajListstrPopEnd ajListstrPopLast
+ajListstrLength ajListstrGetLength
+ajListstrFind ajListstrMapfind
+ajListstrMapRead ajListstrMapread
+ajListstrToArray ajListstrToarray
+ajListstrToArrayApp ajListstrToarrayAppend
+ajListstrNewArgs -
+ajListstrDel ajListstrFree
+ajListstrInsert ajListstrIterInsert
+ajListstrRemove ajListstrIterRemove
 #ajmath
 #ajmatrices
 #ajmem
@@ -194,8 +241,23 @@ ajSeqoutNewF ajSeqoutNewFile
 ajSeqWrite ajSeqoutWriteSeq
 ajSeqAllWrite ajSeqoutWriteSeq
 ajSeqsetWrite ajSeqoutWriteSet
+ajSeqWriteXyz =ajSeqoutDumpSwisslike 1,2,3 2,1,3
+ajSeqWriteXyz @ajSeqoutDumpSwisslike
+ajSssWriteXyz -
+ajSeqoutUsa ajSeqoutClearUsa
 ajSeqWriteClose ajSeqoutClose
 ajSeqFileNewOut ajSeqoutOpenFilename
+ajSeqOutSetFormatC ajSeqoutSetFormatC
+ajSeqOutSetFormat ajSeqoutSetFormatS
+ajSeqoutDefName =ajSeqoutSetNameDefaultS 1,2,3 1,3,2
+ajSeqoutDefName @ajSeqoutSetNameDefaultS
+ajSeqPrintOutFormat ajSeqoutPrintFormat
+ajSeqoutCount ajSeqoutGetBasecount
+ajSeqoutCheckGcg ajSeqoutGetCheckgcg
+ajSeqWriteExit ajSeqoutExit
+ajSeqOutFormatDefault ajSeqoutstrGetFormatDefault
+ajSeqFindOutFormat seqoutFindOutFormat
+ajSeqOutFormatSingle ajSeqoutstrIsFormatSingle
 #ajsort
 #ajstr
 ajCharNew ajCharNewS
@@ -372,10 +434,47 @@ ajStrCopyC =ajStrAssignC 1,2 1,2
 ajStrCopyC @ajStrDel_or_@ajStrAssignC
 #ajsys
 ajSysArglist ajSysArglistBuild
-ajSysArglistFree ajSysArglistFree
+ajSysArgListFree ajSysArglistFree
+ajSysItoC ajSysCastItoC
+ajSysItoUC ajSysCastItouc
+ajSysUnlink ajSysFileUnlink
+ajSysWhich ajSysFileWhich
+ajSysWhichEnv ajSysFileWhichEnv
+ajSysFdopen ajSysFuncFdopen
+ajSysFgets ajSysFuncFgets
+ajSysFopen ajSysFuncFopen
+ajSysStrdup ajSysFuncStrdup
+ajSysStrtok ajSysFuncStrtok
+ajSysStrtokR ajSysFuncStrtokR
+ajSystem ajSysSystem
+ajSystemEnv ajSysSystemEnv
+ajSystemOut ajSysSystemOut
 ajSysBasename ajFileNameTrim
+ajSysIsDirectory -
 ajSysIsRegular -
 #ajtable
+ajTableNewL ajTableNewFunctionLen
+ajTableNew ajTableNewFunctionLen
+ajTableGet ajTableFetch
+ajTableKey ajTableGetKey
+ajTableLength ajTableGetLength
+ajStrTableCmp ajTablestrCmp
+ajStrTableCmpCase ajTablestrCmpCase
+ajStrTableHash ajTablestrHash
+ajStrTableHashCase ajTablestrHashCase
+ajStrTablePrint ajTablestrPrint
+ajStrTableTrace ajTablestrTrace
+ajStrTableFree ajTablestrFree
+ajStrTableFreeKey ajTablestrFreeKey
+ajStrTableNewCaseC ajTablecharNewCaseLen
+ajStrTableNewCase ajTablestrNewCaseLen
+ajStrTableNewC ajTablecharNewLen
+ajStrTableNew ajTablestrNewLen
+ajStrTableCmpC ajTablecharCmp
+ajStrTableCmpCaseC ajTablecharCmpCase
+ajStrTableHashC ajTablecharHash
+ajStrTableHashCaseC ajTablecharHashCase
+ajStrTablePrintC ajTablecharPrint
 #ajtime
 ajTimeSet ajTimeNewDayFmt
 ajTimeToday ajTimeNewToday
@@ -474,6 +573,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #dbxfasta
 #dbxflat
 #dbxgcg
+#dbxstat
 #degapseq
 #demoalign
 #demofeatures
