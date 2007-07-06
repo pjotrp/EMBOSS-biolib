@@ -593,7 +593,7 @@ static AjBool interface_ContactMapCalc(AjPInt2d *mat, ajint *ncon,
 
     
     /*Convert the AjPList of atoms to an array of AjPAtom*/
-    if(!(siz1=ajListToArray((AjPList)pdb->Chains[chn1-1]->Atoms,
+    if(!(siz1=ajListToarray((AjPList)pdb->Chains[chn1-1]->Atoms,
 			   (void ***)&arr1)))
     {
 	ajWarn("Zero sized list of sequences passed into "
@@ -602,7 +602,7 @@ static AjBool interface_ContactMapCalc(AjPInt2d *mat, ajint *ncon,
     }
 
 
-    if(!(siz2=ajListToArray((AjPList)pdb->Chains[chn2-1]->Atoms,
+    if(!(siz2=ajListToarray((AjPList)pdb->Chains[chn2-1]->Atoms,
 			   (void ***)&arr2)))
     {
 	ajWarn("Zero sized list of sequences passed into "

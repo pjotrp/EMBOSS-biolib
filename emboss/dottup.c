@@ -294,7 +294,7 @@ static void dottup_drawPlotlines(void *x, void *cl)
 
 static void dottup_plotMatches(const AjPList list)
 {
-    ajListMapRead(list,dottup_drawPlotlines, NULL);
+    ajListMapread(list,dottup_drawPlotlines, NULL);
 
     return;
 }
@@ -365,8 +365,8 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
 
     if(matchlist)
     {
-	iter = ajListIterRead(matchlist);
-	while((wmp = ajListIterNext(iter)))
+	iter = ajListIterNewread(matchlist);
+	while((wmp = ajListIterGet(iter)))
 	{
 	    x1 = x2 = (float) (wmp->seq1start + begin1);
 	    y1 = y2 = (float) (wmp->seq2start + begin2);
@@ -374,7 +374,7 @@ static void dottup_stretchplot(AjPGraph graph, const AjPList matchlist,
 	    y2 += (float) wmp->length-1;
 	    ajGraphAddLine(graph,x1,y1,x2,y2,0);
 	}
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
     }
 
     ajGraphPlpDataSetXY(gdata,xa,ya);

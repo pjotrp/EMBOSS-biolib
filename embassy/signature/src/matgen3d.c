@@ -193,8 +193,8 @@ int main(ajint argc, char **argv)
 	if(!(list_allscop = ajScopReadAllNew(dcfinfile)))
 	    ajFatal("Error reading SCOP classification file\n");
 
-	ScopIter=(ajListIter(list_allscop));
-	while((ScopPtr=(AjPScop)ajListIterNext(ScopIter)))
+	ScopIter=(ajListIterNew(list_allscop));
+	while((ScopPtr=(AjPScop)ajListIterGet(ScopIter)))
 	{
 	    /*Only first member of each family*/
 	    if(ajStrMatchS(PrevEntry, ScopPtr->Family))
@@ -203,10 +203,10 @@ int main(ajint argc, char **argv)
 	    tmpID=ajStrNew();
 	    ajStrAssignS(&tmpID, ScopPtr->Entry);
 	    ajStrFmtLower(&tmpID);
-	    ajListstrPushApp(ListIDs, tmpID);
+	    ajListstrPushAppend(ListIDs, tmpID);
 	    ajStrAssignS(&PrevEntry, ScopPtr->Family);
 	}
-	ajListIterFree(&ScopIter);  
+	ajListIterDel(&ScopIter);  
     }
     /* mode == 2: Ligand-binding positions. */
     else if(modei == 2)
@@ -222,18 +222,18 @@ int main(ajint argc, char **argv)
 		if((ajFmtScanS(line, "%S", lig_tmp) != 1))
 		    ajFatal("Ligand id not read from file");
 		ajStrFmtUpper(&lig_tmp);
-		ajListPushApp(list_lig, lig_tmp);
+		ajListPushAppend(list_lig, lig_tmp);
 	    }	
-	    lig_n = ajListToArray(list_lig, (void ***) &lig_arr);
+	    lig_n = ajListToarray(list_lig, (void ***) &lig_arr);
 	}	
 	
 
 	list_cmap = ajCmapReadAllNew(coninfile);
-	cmap_n = ajListToArray(list_cmap, (void ***) &cmap_arr);
+	cmap_n = ajListToarray(list_cmap, (void ***) &cmap_arr);
 		
 	
-	CmapIter=(ajListIter(list_cmap));
-	while((CmapPtr=(AjPCmap)ajListIterNext(CmapIter)))
+	CmapIter=(ajListIterNew(list_cmap));
+	while((CmapPtr=(AjPCmap)ajListIterGet(CmapIter)))
 	{
 	    for(done=ajFalse, x=0; x<lig_n; x++)
 		if(ajStrMatchS(lig_arr[x], CmapPtr->Ligid))
@@ -255,12 +255,12 @@ int main(ajint argc, char **argv)
 		ajFatal("Neither domain or pdb id is defined");
 	    
 	    ajStrFmtLower(&tmpID);
-	    ajListstrPushApp(ListIDs, tmpID);
+	    ajListstrPushAppend(ListIDs, tmpID);
 	}
 	
-	ajListIterFree(&CmapIter);  
+	ajListIterDel(&CmapIter);  
     }
-    IDNum=ajListLength(ListIDs);
+    IDNum=ajListGetLength(ListIDs);
     
     
 
@@ -346,8 +346,8 @@ int main(ajint argc, char **argv)
 
       
 	/*Initialise iterator for domain residues*/
-	ResIter=ajListIter(Pdb->Chains[0]->Residues);
-	while((res=(AjPResidue)ajListIterNext(ResIter)))
+	ResIter=ajListIterNew(Pdb->Chains[0]->Residues);
+	while((res=(AjPResidue)ajListIterGet(ResIter)))
 	{
 	    /*Skip to next atom if residue number same*/
 	    /*
@@ -448,7 +448,7 @@ int main(ajint argc, char **argv)
 	    /* PrevRes=res->Idx; */
 	}
        		   
-	ajListIterFree(&ResIter);
+	ajListIterDel(&ResIter);
 	ajPdbDel(&Pdb);
 	ajFileClose(&DCorFptr);
 	ajStrDel(&IdName);
@@ -524,7 +524,7 @@ int main(ajint argc, char **argv)
     {
         while(ajListPop(list_allscop,(void **)&ScopTmp))
 	    ajScopDel(&ScopTmp);
-	ajListDel(&list_allscop);
+	ajListFree(&list_allscop);
     }
 
     /* free Cmap objects */
@@ -532,7 +532,7 @@ int main(ajint argc, char **argv)
     {
         while(ajListPop(list_cmap,(void **)&CmapTmp))
 	    ajCmapDel(&CmapTmp);
-	ajListDel(&list_cmap);
+	ajListFree(&list_cmap);
 
 	AJFREE(cmap_arr);
     }
@@ -541,7 +541,7 @@ int main(ajint argc, char **argv)
     ajStrDel(&msg);
     ajStrDel(&label);
     ajStrDel(&PrevEntry);
-    ajListstrDel(&ListIDs);
+    ajListstrFree(&ListIDs);
     ajStrDel(&line);
     ajInt2dDel(&CountMatrix);
     ajFloat2dDel(&SCRMatrix);

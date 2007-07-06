@@ -689,7 +689,7 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
     if(!file)
     {
 	ajStrDel(&firststring);
-	ajListDel(&rlabel_list);
+	ajListFree(&rlabel_list);
 	return ajFalse;
     }
     
@@ -708,14 +708,14 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
 	    else
 	    {	
 		ajFmtScanC(ptr, "%S", &firststring);
-		ajListPushApp(rlabel_list, firststring);
+		ajListPushAppend(rlabel_list, firststring);
 		firststring = ajStrNew();	
 	    }
 	}
     }
     first = ajTrue;
     ajStrDel(&firststring);
-    rows = ajListToArray(rlabel_list, (void ***) &rlabel_arr);
+    rows = ajListToarray(rlabel_list, (void ***) &rlabel_arr);
     ajFileSeek(file, 0, 0);
 
 
@@ -793,7 +793,7 @@ AjBool ajMatrixRead(AjPMatrix* pthis, const AjPStr filename)
     for(i=0; i<rows; i++)   
 	ajStrDel(&rlabel_arr[i]);
     AJFREE(rlabel_arr);
-    ajListDel(&rlabel_list);
+    ajListFree(&rlabel_list);
 
     return ajTrue;
 }
@@ -878,14 +878,14 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
 	    else
 	    {
 		ajFmtScanC(ptr, "%S", &firststring);
-		ajListPushApp(rlabel_list, firststring);
+		ajListPushAppend(rlabel_list, firststring);
 		firststring = ajStrNew();
 	    }
 	}
     }
     first = ajTrue;
     ajStrDel(&firststring);
-    rows = ajListToArray(rlabel_list, (void ***) &rlabel_arr);
+    rows = ajListToarray(rlabel_list, (void ***) &rlabel_arr);
     ajFileSeek(file, 0, 0);
 
 
@@ -972,7 +972,7 @@ AjBool ajMatrixfRead(AjPMatrixf* pthis, const AjPStr filename)
    for(i=0; i<rows; i++)   
 	ajStrDel(&rlabel_arr[i]);
     AJFREE(rlabel_arr);
-    ajListDel(&rlabel_list);
+    ajListFree(&rlabel_list);
 
     return ajTrue;
 }

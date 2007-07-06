@@ -1333,7 +1333,7 @@ static AjBool ajMessReadErrorFile(void)
     if(!fp)
 	return ajFalse;
 
-    errorTable = ajStrTableNewC(0);
+    errorTable = ajTablecharNew();
 
     while(fgets(line, 512, fp))
     {
@@ -1353,7 +1353,7 @@ static AjBool ajMessReadErrorFile(void)
 	*mess = '\0';
 	namestore = ajFmtString("%s",name);
 	messstore = ajFmtString("%s",message);
-	mess = (char *) ajTableGet(errorTable, namestore);
+	mess = (char *) ajTableFetch(errorTable, namestore);
 	if(mess)
 	    ajErr("%s is listed more than once in file %s",
 			name,messErrorFile);
@@ -1382,7 +1382,7 @@ void ajMessOutCode(const char *code)
 
     if(errorTable)
     {
-	mess = ajTableGet(errorTable, code);
+	mess = ajTableFetch(errorTable, code);
 	if(mess)
 	    ajMessOut(mess);
 	else
@@ -1392,7 +1392,7 @@ void ajMessOutCode(const char *code)
     {
 	if(ajMessReadErrorFile())
 	{
-	    mess = ajTableGet(errorTable, code);
+	    mess = ajTableFetch(errorTable, code);
 	    if(mess)
 		ajMessOut(mess);
 	    else
@@ -1424,7 +1424,7 @@ void ajMessErrorCode(const char *code)
 
     if(errorTable)
     {
-	mess = ajTableGet(errorTable, code);
+	mess = ajTableFetch(errorTable, code);
 	if(mess)
 	    ajErr(mess);
 	else
@@ -1434,7 +1434,7 @@ void ajMessErrorCode(const char *code)
     {
 	if(ajMessReadErrorFile())
 	{
-	    mess = ajTableGet(errorTable, code);
+	    mess = ajTableFetch(errorTable, code);
 	    if(mess)
 		ajErr(mess);
 	    else
@@ -1467,7 +1467,7 @@ __noreturn void  ajMessCrashCodeFL(const char *code)
 
     if(errorTable)
     {
-	mess = ajTableGet(errorTable, code);
+	mess = ajTableFetch(errorTable, code);
 	if(mess)
 	    ajMessCrashFL(mess);
 	else
@@ -1477,7 +1477,7 @@ __noreturn void  ajMessCrashCodeFL(const char *code)
     {
 	if(ajMessReadErrorFile())
 	{
-	    mess = ajTableGet(errorTable, code);
+	    mess = ajTableFetch(errorTable, code);
 	    if(mess)
 		ajMessCrashFL(mess);
 	    else

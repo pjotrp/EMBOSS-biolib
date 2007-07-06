@@ -616,7 +616,7 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 		}
 	    }
 
-	    ajListPushApp(distlist, dist);
+	    ajListPushAppend(distlist, dist);
 	    dist = NULL;
 	}
     }
@@ -628,9 +628,9 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
     }
 
     ajDebug("Distances file '%S' has %d (%d) distance matrices\n",
-	    filename, i, ajListLength(distlist));
+	    filename, i, ajListGetLength(distlist));
     ajFileClose(&distfile);
-    ajListToArray(distlist, (void***) &ret);
+    ajListToarray(distlist, (void***) &ret);
     /*ret = (AjPPhyloTree*) trees;*/
     ajListFree(&distlist);
     for(i=0; ret[i]; i++)
@@ -1303,18 +1303,18 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 		else if (ajFileEof(propfile))
 		    break;
 	    }
-	    ajListstrPushApp(proplist, propstr);
+	    ajListstrPushAppend(proplist, propstr);
 	    i++;
 	}
 	ajFileClose(&propfile);
-	ajListToArray(proplist, (void***) &props);
+	ajListToarray(proplist, (void***) &props);
 	ret->Str = (AjPStr*) props;
 
-	ret->Size = ajListLength(proplist);;
+	ret->Size = ajListGetLength(proplist);;
 	ret->Len = len;
     }
 
-    ajListDel(&proplist);
+    ajListFree(&proplist);
     ajStrDel(&proppat);
     ajStrDel(&token);
     ajStrDel(&rdline);
@@ -1514,13 +1514,13 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
 		  filename, i, len);
 	    return NULL;
 	}
-	ajListPushApp(statelist, state);
+	ajListPushAppend(statelist, state);
     }
     ajFileClose(&statefile);
-    ajListToArray(statelist, (void***) &states);
+    ajListToarray(statelist, (void***) &states);
     ret = (AjPPhyloState*) states;
 
-    ajListDel(&statelist);
+    ajListFree(&statelist);
     ajStrDel(&tmpval);
     ajStrDel(&tmpstr);
     ajStrDel(&rdline);
@@ -1705,7 +1705,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 			" treecopy: '%S'\n",
 			tree->Tree, tree->BaseBifurcated,
 			tree->BaseTrifurcated, treecopy);
-		ajListPushApp(treelist, tree);
+		ajListPushAppend(treelist, tree);
 		tree = NULL;
 
 		i++;
@@ -1736,9 +1736,9 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 	}
 	ajDebug("Tree file '%S' has %d (%d) trees,"
 		" required %d\n",
-		  filename, i, ajListLength(treelist), size);
+		  filename, i, ajListGetLength(treelist), size);
         ajFileClose(&treefile);
-	ajListToArray(treelist, (void***) &ret);
+	ajListToarray(treelist, (void***) &ret);
 	/*ret = (AjPPhyloTree*) trees;*/
 	ajListFree(&treelist);
     }

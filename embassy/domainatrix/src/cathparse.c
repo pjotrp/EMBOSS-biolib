@@ -93,7 +93,7 @@ int main(int argc, char **argv)
     ajFileClose(&namesf); 
     ajFileClose(&outf); 
     ajFileClose(&logf); 
-    ajListDel(&list);
+    ajListFree(&list);
 
     ajExit();
     return 0;

@@ -331,11 +331,11 @@ int main(ajint argc, char **argv)
 		     **   to the line is found. 
 		     */
 
-		    /* iter = ajListIterRead(pdb->Chains[chain_num]->Atoms); */
-		    iter = ajListIterRead(pdb->Chains[chain_num]->Residues);
+		    /* iter = ajListIterNewread(pdb->Chains[chain_num]->Atoms); */
+		    iter = ajListIterNewread(pdb->Chains[chain_num]->Residues);
 		    found = ajFalse; 
 
-		    while((temp_res = (AjPResidue)ajListIterNext(iter)))
+		    while((temp_res = (AjPResidue)ajListIterGet(iter)))
 		    {
 		        /* If we have found the residue we want */
 			if((ajStrMatchS(res_num, temp_res->Pdb) && 
@@ -356,7 +356,7 @@ int main(ajint argc, char **argv)
 			/* Matching residue not found yet. */       
 			    continue;	
 		    }
-		    ajListIterFree(&iter);
+		    ajListIterDel(&iter);
 		} /* End of if ASG loop. */ 
 	    } /* End of while line loop. */
 	    
@@ -488,10 +488,10 @@ int main(ajint argc, char **argv)
 		     **   ajBool found switches to true when first residue 
 		     **   corresponding to the line is found. 
 		     */
-		    iter = ajListIterRead(pdb->Chains[chain_num]->Residues);
+		    iter = ajListIterNewread(pdb->Chains[chain_num]->Residues);
 
 		    found = ajFalse; 
-		    while((temp_res = (AjPResidue)ajListIterNext(iter)))
+		    while((temp_res = (AjPResidue)ajListIterGet(iter)))
 		    {
 			/* If we have found the residue we want, write the residue 
 			   object. */
@@ -521,7 +521,7 @@ int main(ajint argc, char **argv)
 			       residue. */
 			    continue;	 
 		    }
-		    ajListIterFree(&iter);
+		    ajListIterDel(&iter);
 		} 
 	    } 
 	    
@@ -583,7 +583,7 @@ int main(ajint argc, char **argv)
 
     
 
-    ajListDel(&ccfin);
+    ajListFree(&ccfin);
     ajDirDel(&pdbin);
     ajStrDel(&pdbprefix);
     ajStrDel(&pdb_name);
@@ -659,7 +659,7 @@ static void pdbplus_sort(AjPPdb pdb, int tS)
         /* Use ajListToArray to convert the list of residues for the current
 	   chain to an array.  Returns size of array of pointers */
 
-        siz = ajListToArray((AjPList)pdb->Chains[z]->Residues,
+        siz = ajListToarray((AjPList)pdb->Chains[z]->Residues,
 			  (void ***)&arr);
 
 	/* Loop through the array to identify, index  &

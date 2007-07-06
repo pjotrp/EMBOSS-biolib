@@ -207,7 +207,7 @@ int main(int argc, char **argv)
 		if(embSignatureCompile(&sig, gapo, gape, sub))
 		{
 		    sigok=ajTrue;
-		    ajListPushApp(siglist, sig);
+		    ajListPushAppend(siglist, sig);
 		    /*
 		    ajFmtPrint("Id: %S\nDomid: %S\nLigid: %S\nns: %d\n"
                                "sn: %d\nnp: %d\npn: %d\nminpatch: %d\n"
@@ -230,7 +230,7 @@ int main(int argc, char **argv)
 	ajFileClose(&sigf);
 	ajStrDel(&signame);
     }
-    ajListDel(&sigin);
+    ajListFree(&sigin);
 
     
     
@@ -239,15 +239,15 @@ int main(int argc, char **argv)
     {
 	/* Do sequence-signature alignment and save results */
 	hits = ajListNew();
-	sigiter = ajListIter(siglist);
+	sigiter = ajListIterNew(siglist);
 	
-	while((sig = (EmbPSignature) ajListIterNext(sigiter)))
+	while((sig = (EmbPSignature) ajListIterGet(sigiter)))
 	{
 	    if(embSignatureAlignSeq(sig, seq, &hit, ntermi))
 	    {
 		hit->Sig = sig;
 		
-		ajListPushApp(hits, hit);
+		ajListPushAppend(hits, hit);
 		hit=NULL; /* To force reallocation by embSignatureAlignSeq */
 	    }
 	    /* There has to be a hit for each signature for correct
@@ -258,13 +258,13 @@ int main(int argc, char **argv)
 	       else
 	       {
 		hit = embHitNew();
-		ajListPushApp(hits, hit);
+		ajListPushAppend(hits, hit);
 		hit=NULL; 
 		}
 		*/
 	}
 	
-	ajListIterFree(&sigiter);
+	ajListIterDel(&sigiter);
 	
 
 	/* Rank-order the list of hits by score */
@@ -294,10 +294,10 @@ int main(int argc, char **argv)
 
 	/* Sort list of hits by ligand type and site number.
 	   Process list of ligands and print out. */
-	ajListSort2(hits, embMatchLigid, embMatchSN);
+	ajListSortTwo(hits, embMatchLigid, embMatchSN);
 
 
-	iter = ajListIter(hits);
+	iter = ajListIterNew(hits);
 
 	if(modei==1)
 	    ligands = sigscanlig_score_ligands_patch(hits);
@@ -318,14 +318,14 @@ int main(int argc, char **argv)
 	/* Memory management */
 	while(ajListPop(hits, (void **) &hit))
 	    embHitDel(&hit);
-	ajListDel(&hits);
+	ajListFree(&hits);
     }	
     
 
     /* MEMORY MANAGEMENT */
     while(ajListPop(siglist, (void **) &sig))
 	embSignatureDel(&sig);
-    ajListDel(&siglist);
+    ajListFree(&siglist);
     ajSeqallDel(&database);
     ajMatrixfDel(&sub);
 	
@@ -423,16 +423,16 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
     label = ajStrNew();
     
 	
-    iter = ajListIter(hits);
-    while((hit = (EmbPHit) ajListIterNext(iter)))
+    iter = ajListIterNew(hits);
+    while((hit = (EmbPHit) ajListIterGet(iter)))
     {
 	if((wid1=MAJSTRGETLEN(hit->Sig->Ligid))>mwid1)
 	    mwid1 = wid1; 
 	if((len=MAJSTRGETLEN(hit->Seq))>mlen)
 	    mlen = len;
     }
-    ajListIterFree(&iter);
-    ajListIterFree(&itersig);
+    ajListIterDel(&iter);
+    ajListIterDel(&itersig);
 
 
 
@@ -452,8 +452,8 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 
     
     /* Main loop for printing alignment. */
-    iter = ajListIter(hits);
-    while((hit = (EmbPHit) ajListIterNext(iter)))
+    iter = ajListIterNew(hits);
+    while((hit = (EmbPHit) ajListIterGet(iter)))
     {
 	/* Get pointer to sequence & alignment string. */
 	ptrp = ajStrGetPtr(hit->Seq);
@@ -506,8 +506,8 @@ static AjBool sigscanlig_SignatureAlignWriteBlock(AjPFile outf,
 
 	hitcnt++;
     }	 
-    ajListIterFree(&iter);
-    ajListIterFree(&itersig);
+    ajListIterDel(&iter);
+    ajListIterDel(&itersig);
     ajStrDel(&label);
     
 
@@ -567,12 +567,12 @@ AjBool sigscanlig_WriteFasta(AjPFile outf, AjPList hits)
 
     
     /*
-    sizarr = ajListToArray(siglist, (void ***) &sigarr);
-    if(sizarr != ajListToArray(hits, (void ***) &hitarr))
+    sizarr = ajListToarray(siglist, (void ***) &sigarr);
+    if(sizarr != ajListToarray(hits, (void ***) &hitarr))
 	ajFatal("Arrays are different sizes");
       */  
 
-    sizarr = ajListToArray(hits, (void ***) &hitarr);
+    sizarr = ajListToarray(hits, (void ***) &hitarr);
     
 
     for(x=0; x<sizarr; x++)
@@ -750,11 +750,11 @@ AjBool sigscanlig_WriteFastaHit(AjPFile outf, AjPList hits, ajint n,
 	return ajFalse;
 
     
-    /* sizarr = ajListToArray(siglist, (void ***) &sigarr);
-    if(sizarr != ajListToArray(hits, (void ***) &hitarr))
+    /* sizarr = ajListToarray(siglist, (void ***) &sigarr);
+    if(sizarr != ajListToarray(hits, (void ***) &hitarr))
        ajFatal("Arrays are different sizes"); */
         
-    sizarr = ajListToArray(hits, (void ***) &hitarr);
+    sizarr = ajListToarray(hits, (void ***) &hitarr);
     
 
     if(n>=sizarr)
@@ -865,9 +865,9 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
     ret = ajListNew();
     prev_ligand = ajStrNew();
 
-    iter = ajListIter(hits);
+    iter = ajListIterNew(hits);
 
-    while((hit = (EmbPHit) ajListIterNext(iter)))
+    while((hit = (EmbPHit) ajListIterGet(iter)))
     {
 	/* New ligand */
 	if((!ajStrMatchS(hit->Sig->Ligid, prev_ligand)))
@@ -881,7 +881,7 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 		lighit->np = nhits; 
 		lighit->score =  score;
 		ajStrAssignS(&lighit->ligid, prev_ligand);
-		ajListPushApp(ret, lighit);
+		ajListPushAppend(ret, lighit);
 
 	    }
 	    
@@ -917,13 +917,13 @@ AjPList sigscanlig_score_ligands_patch(AjPList hits)
 	lighit->np = nhits; 
 	lighit->score = score;
 	ajStrAssignS(&lighit->ligid, prev_ligand);
-	ajListPushApp(ret, lighit);
+	ajListPushAppend(ret, lighit);
     }
 	
     ajListSort(ret, sigscanlig_MatchinvScore);
     
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     ajStrDel(&prev_ligand);
 
     return ret;
@@ -970,11 +970,11 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
     ret = ajListNew();
     prev_ligand = ajStrNew();
   
-    iter = ajListIter(hits);
+    iter = ajListIterNew(hits);
 
 
     /* Hits are already sorted by ligid & site number */
-    while((hit = (EmbPHit) ajListIterNext(iter)))
+    while((hit = (EmbPHit) ajListIterGet(iter)))
     {
 	/* ajFmtPrint("Current hit: %S (ligid: %S, sn: %d) score: %f\n", 
 		   hit->Acc, hit->Sig->Ligid, hit->Sig->sn, hit->Score); */
@@ -1004,7 +1004,7 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 		lighit->score =  score;
 
 		ajStrAssignS(&lighit->ligid, prev_ligand);
-		ajListPushApp(ret, lighit);
+		ajListPushAppend(ret, lighit);
 
 	    }
 	    
@@ -1045,14 +1045,14 @@ AjPList sigscanlig_score_ligands_site(AjPList hits)
 	lighit->np = nhits; 
 	lighit->score = score;
 	ajStrAssignS(&lighit->ligid, prev_ligand);
-	ajListPushApp(ret, lighit);
+	ajListPushAppend(ret, lighit);
     }
 	
 
     ajListSort(ret, sigscanlig_MatchinvScore);
     
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     ajStrDel(&prev_ligand);
 
     return ret;
@@ -1112,17 +1112,17 @@ void sigscanlig_WriteResults(AjPList results, AjPFile resultsf)
     AjIList   iter      = NULL;   /* Iterator. */
     AjPLighit lighit    = NULL;
     
-    iter = ajListIter(results);
+    iter = ajListIterNew(results);
 
     ajFmtPrintF(resultsf, "%-10s%-10s%-10s%-10s\n",
 		"LIGID", "PATCHES", "SITES", "SCORE");
     
-    while((lighit = (AjPLighit) ajListIterNext(iter)))
+    while((lighit = (AjPLighit) ajListIterGet(iter)))
 	ajFmtPrintF(resultsf, "%-10S%-10d%-10d%-10.2f\n",
 		    lighit->ligid, lighit->np, lighit->ns, lighit->score);
 
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     return;
 }

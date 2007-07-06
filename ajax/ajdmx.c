@@ -377,7 +377,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	    y++;
 
 	    if(y == 1)
-		ajListstrToArray(list_seqs, &arr_seqs);
+		ajListstrToarray(list_seqs, &arr_seqs);
 
 	    cnt = 0;
 	    continue;
@@ -420,8 +420,8 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 		    ajFatal("ajDmxScopalgRead could not parse alignment");
 
 		/* Push strings onto lists */
-		ajListstrPushApp(list_seqs,seq);
-		ajListstrPushApp(list_codes,code);
+		ajListstrPushAppend(list_seqs,seq);
+		ajListstrPushAppend(list_codes,code);
 		continue;
 	    }
 	}	
@@ -445,7 +445,7 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
     ** # Post_similar 111111111111111111111111111111111111111111111-----
     */
     if(!done_1st_blk && nseq)
-	ajListstrToArray(list_seqs, &arr_seqs);
+	ajListstrToarray(list_seqs, &arr_seqs);
 
     ajStrDel(&seq1);
     
@@ -506,8 +506,8 @@ AjBool ajDmxScopalgRead(AjPFile inf, AjPScopalg *thys)
 	ajWarn("ajDmxScopalgRead called but no sequences found.");
         
 
-    ajListstrDel(&list_seqs); 
-    ajListstrDel(&list_codes); 
+    ajListstrFree(&list_seqs); 
+    ajListstrFree(&list_codes); 
     
     return ajTrue;
 }
@@ -686,20 +686,20 @@ AjPList ajDmxScophitListCopy(const AjPList ptr)
     ret = ajListNew();
     
     /* Initialise the iterator */
-    iter = ajListIterRead(ptr);
+    iter = ajListIterNewread(ptr);
     
     /* Iterate through the list of Scophit objects */
-    while((hit=(AjPScophit)ajListIterNext(iter)))
+    while((hit=(AjPScophit)ajListIterGet(iter)))
     {
 	new = ajDmxScophitNew();
 	
 	ajDmxScophitCopy(&new, hit);
 
 	/* Push scophit onto list */
-	ajListPushApp(ret,new);
+	ajListPushAppend(ret,new);
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     return ret;
 }
@@ -1321,10 +1321,10 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
     AjPScophit thys = NULL;
     AjPSeqout outseq;
     
-    iter = ajListIterRead(list);
+    iter = ajListIterNewread(list);
     
 
-    while((thys = (AjPScophit)ajListIterNext(iter)))
+    while((thys = (AjPScophit)ajListIterGet(iter)))
     {
         
         if(!thys)
@@ -1430,7 +1430,7 @@ AjBool ajDmxScophitsWrite(AjPFile outf, const AjPList list)
         ajFmtPrintF(outf, "//\n");
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     
 
     return ajTrue;
@@ -1457,10 +1457,10 @@ AjBool ajDmxScophitsWriteFasta(AjPFile outf, const AjPList list)
     
     AjPScophit thys = NULL;
     
-    iter = ajListIterRead(list);
+    iter = ajListIterNewread(list);
     
 
-    while((thys = (AjPScophit)ajListIterNext(iter)))
+    while((thys = (AjPScophit)ajListIterGet(iter)))
     {
         
         if(!thys)
@@ -1540,7 +1540,7 @@ AjBool ajDmxScophitsWriteFasta(AjPFile outf, const AjPList list)
 	
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     
 
     return ajTrue;
@@ -2023,7 +2023,7 @@ AjBool ajDmxScopSeqFromSunid(ajint id, AjPStr *seq, const AjPList list)
         return ajFalse;
     }
       
-    dim = ajListToArray(list, (void ***) &(arr));
+    dim = ajListToarray(list, (void ***) &(arr));
     if(!dim)
     {
         ajWarn("Empty list passed to ajDmxScopSeqFromSunid");

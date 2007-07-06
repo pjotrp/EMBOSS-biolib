@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     ajGraphSetCharScale(0.5);
     
     /* display the overlapping matches in red */
-    if(overlaps && ajListLength(matchlist))
+    if(overlaps && ajListGetLength(matchlist))
     {
 	oldcolour = ajGraphSetFore(RED);
 	dotpath_plotMatches(matchlist);
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
     
     
     /* display them */
-    if(ajListLength(matchlist))
+    if(ajListGetLength(matchlist))
 	dotpath_plotMatches(matchlist);
     
     if(boxit)
@@ -273,7 +273,7 @@ static void dotpath_drawPlotlines(void *x, void *cl)
 
 static void dotpath_plotMatches(const AjPList list)
 {
-    ajListMapRead(list,dotpath_drawPlotlines, NULL);
+    ajListMapread(list,dotpath_drawPlotlines, NULL);
 
     return;
 }

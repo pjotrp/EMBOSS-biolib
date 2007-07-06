@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 
     while((validin_tmp = embHitlistReadFasta(validin)))
     {
-	ajListPushApp(validin_l, (void *) validin_tmp);
+	ajListPushAppend(validin_l, (void *) validin_tmp);
 
 	if(moden==1)
 	    if(ajStrMatchS(validin_tmp->Family, hitsin_l->Family)           &&
@@ -136,11 +136,11 @@ int main(int argc, char **argv)
 
 
     for(x=0; x<hitsin_l->N; x++)
-	ajListPushApp(hitsin_tmp, (void *) hitsin_l->hits[x]);
+	ajListPushAppend(hitsin_tmp, (void *) hitsin_l->hits[x]);
     ajListSort(hitsin_tmp, embMatchinvScore);
     AJFREE(hitsin_l->hits);
     hitsin_l->hits = NULL;
-    nhitsin = ajListToArray(hitsin_tmp, (void ***) &hitsin_l->hits);
+    nhitsin = ajListToarray(hitsin_tmp, (void ***) &hitsin_l->hits);
     
     for(x=0; x<nhitsin; x++)
 	if(ajStrMatchC(hitsin_l->hits[x]->Typeobj, "FALSE"))
@@ -162,12 +162,12 @@ int main(int argc, char **argv)
     /* Free memory & exit cleanly. */
     ajFileClose(&hitsin);
     embHitlistDel(&hitsin_l);
-    ajListDel(&hitsin_tmp);
+    ajListFree(&hitsin_tmp);
 
     ajFileClose(&validin);
     while(ajListPop(validin_l, (void **) &validin_tmp))
 	embHitlistDel(&validin_tmp);
-    ajListDel(&validin_l);
+    ajListFree(&validin_l);
 
     ajFileClose(&hitsout);
 

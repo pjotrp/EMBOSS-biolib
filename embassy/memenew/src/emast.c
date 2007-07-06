@@ -205,7 +205,7 @@ int main(int argc, char **argv)
 
 
     /* 4. Call mast */
-    /* ajFmtPrint("\n%S\n", cmd);  */
+    ajDebug("%S\n", cmd);
     system(ajStrGetPtr(cmd));    
 
 

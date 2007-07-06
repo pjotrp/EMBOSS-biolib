@@ -433,8 +433,8 @@ int main(int argc, char **argv)
 
 	if(list)
 	{
-	    iter = ajListIterRead(list);
-	    while((ppt = ajListIterNext(iter)))
+	    iter = ajListIterNewread(list);
+	    while((ppt = ajListIterGet(iter)))
 	    {
 		x1 = ppt->x1+b1-1;
 		y1 = ppt->y1+b2-1;
@@ -443,7 +443,7 @@ int main(int argc, char **argv)
 		ajGraphAddLine(xygraph,x1,y1,x2,y2,0);
 		AJFREE(ppt);
 	    }
-	    ajListIterFree(&iter);
+	    ajListIterDel(&iter);
 	}
 
 	ajGraphPlpDataSetXY(gdata,xa,ya);
@@ -458,7 +458,7 @@ int main(int argc, char **argv)
     
     
     
-    ajListDel(&list);
+    ajListFree(&list);
 
     ajSeqDel(&seq);
     ajSeqDel(&seq2);

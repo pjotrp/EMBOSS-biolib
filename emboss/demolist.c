@@ -99,15 +99,15 @@ int main(int argc, char **argv)
     ajUser("\nOutput via the ajListIter method \nSorted by source");
 
     /* Print out the list using the iterator */
-    iter = ajListIterRead(list);
-    while(ajListIterMore(iter))
+    iter = ajListIterNewread(list);
+    while(!ajListIterDone(iter))
     {
-	gffnew = (DemolistPgff) ajListIterNext (iter) ;
+	gffnew = (DemolistPgff) ajListIterGet(iter) ;
 	ajUser("%S\t%S\t%S\t%d\t%d\t%d",gffnew->clone,gffnew->source,
 	       gffnew->type,gffnew->start,gffnew->end,gffnew->score);
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
 
 
@@ -119,7 +119,7 @@ int main(int argc, char **argv)
     /* printout the list but use the array method */
     ajListSort(list, demolist_typecomp);
     ajUser("\nOutput via the array method \nSorted by type");
-    ia = ajListToArray(list, &array);
+    ia = ajListToarray(list, &array);
     for (i = 0; i < ia; i++)
     {
 	gffnew = (DemolistPgff) array[i];
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     /* free the objects in the list */
     ajListMap(list,demolist_freegff,NULL);
 
-    ajListDel(&list);
+    ajListFree(&list);
     ajStrDel(&line);
     ajFileClose(&gfffile);
 

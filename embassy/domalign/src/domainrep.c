@@ -190,13 +190,13 @@ int main(int argc, char **argv)
 	    if(nfam)
 	    {
 		/* Get family size. */
-		famsize = ajListLength(famlist);
+		famsize = ajListGetLength(famlist);
 		
 
 		if(famsize>2)
 		{
 		    /* Create an array of pointers to the famlist data. */
-		    ajListToArray(famlist, (void ***) &(arr));
+		    ajListToarray(famlist, (void ***) &(arr));
 		    
 		    /* Allocate & initialise scores and mean arrays. */
 		    scores   = ajFloat2dNewL(famsize);
@@ -324,7 +324,7 @@ int main(int argc, char **argv)
 		    
 		    while(ajListPop(famlist,(void**)&tmp))
 			ajDomainDel(&tmp);
-		    ajListDel(&famlist);
+		    ajListFree(&famlist);
 		    famlist    = ajListNew();
 		
     
@@ -341,7 +341,7 @@ int main(int argc, char **argv)
 			ajDomainWrite(dcfout, tmp);
 			ajDomainDel(&tmp);
 		    }
-		    ajListDel(&famlist);
+		    ajListFree(&famlist);
 		    famlist    = ajListNew();
 		}
 	    }
@@ -356,7 +356,7 @@ int main(int argc, char **argv)
 	}
 		
 	/* Add the Scop object to the list for the family. */
-	ajListPushApp(famlist, domain);
+	ajListPushAppend(famlist, domain);
     }
     /* End of main application loop*/
 
@@ -364,13 +364,13 @@ int main(int argc, char **argv)
 
     /* Start of code to process last family. */
     /* Get family size. */
-    famsize = ajListLength(famlist);
+    famsize = ajListGetLength(famlist);
 		
 
     if(famsize>2)
     {
 	/* Create an array of pointers to the famlist data. */
-	ajListToArray(famlist, (void ***) &(arr));
+	ajListToarray(famlist, (void ***) &(arr));
 	
 	/* Allocate & initialise scores and mean arrays. */
 	scores   = ajFloat2dNewL(famsize);
@@ -497,7 +497,7 @@ int main(int argc, char **argv)
 	
 	while(ajListPop(famlist,(void**)&tmp))
 	    ajDomainDel(&tmp);
-	ajListDel(&famlist);
+	ajListFree(&famlist);
 	famlist    = ajListNew();
 	
 	
@@ -514,7 +514,7 @@ int main(int argc, char **argv)
 	    ajDomainWrite(dcfout, tmp);
 	    ajDomainDel(&tmp);
 	}
-	ajListDel(&famlist);
+	ajListFree(&famlist);
 	famlist    = ajListNew();
     }
 

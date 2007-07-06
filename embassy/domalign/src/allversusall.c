@@ -143,7 +143,7 @@ int main(int argc, char **argv)
 	    seq_tmp = ajSeqNew();
 	    ajStrAssignS(&seq_tmp->Acc, ajSeqsetGetseqAccS(seqset, x));
 	    ajStrAssignC(&seq_tmp->Seq, ajSeqsetGetseqSeqC(seqset, x));
-	    ajListPushApp(seq_list,seq_tmp);		
+	    ajListPushAppend(seq_list,seq_tmp);		
 	}
     
 
@@ -160,7 +160,7 @@ int main(int argc, char **argv)
 	
 
 	/* 5. Write sequence similarity values to output directory.   */
-	seq_list_siz = ajListLength(seq_list);
+	seq_list_siz = ajListGetLength(seq_list);
 	for(x=0; x<seq_list_siz; x++)
 	    for(y=x+1; y<seq_list_siz; y++)
 		ajFmtPrintF(outf, "%d %S : %d %S : %.2f\n", 
@@ -175,13 +175,13 @@ int main(int argc, char **argv)
 
 	while(ajListPop(seq_list, (void **) &seq_tmp))
 	    ajSeqDel(&seq_tmp);
-	ajListDel(&seq_list);
+	ajListFree(&seq_list);
 	ajFloat2dDel(&scores);	
     }	    
 
 
     /* Memory management. */
-    ajListDel(&in);
+    ajListFree(&in);
     ajDirDel(&out);
     ajFileClose(&logf);
     ajStrDel(&outname);

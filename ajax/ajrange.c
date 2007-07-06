@@ -546,12 +546,12 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	
 	one = ajStrNew();
 	ajStrTokenNextParse(&tokens, &one);
-	ajListstrPushApp(onelist, one);
+	ajListstrPushAppend(onelist, one);
 	
 	two = ajStrNew();
 	ajStrTokenNextParse(&tokens, &two);
 	if(ajStrGetLen(two))
-	    ajListstrPushApp(twolist, two);
+	    ajListstrPushAppend(twolist, two);
 	else
 	{
 	    ajWarn("Odd integer(s) in range specification:\n%S\n", line);
@@ -562,13 +562,13 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
 	text = ajStrNew();
 	ajStrTokenNextParseC(&tokens, notSpace, &text);
 	ajStrTrimWhite(&text);
-	ajListstrPushApp(textlist, text);
+	ajListstrPushAppend(textlist, text);
 	
 	ajStrTokenDel( &tokens);	
     }
     
     /* now we know how many pairs of numbers to store, create ajRange object */
-    n  = ajListstrLength(onelist);
+    n  = ajListstrGetLength(onelist);
     if(size)
     {
 	if(n != size)
@@ -642,9 +642,9 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
     }
 
 
-    ajListstrFree(&onelist);
-    ajListstrFree(&twolist);
-    ajListstrFree(&textlist);
+    ajListstrFreeData(&onelist);
+    ajListstrFreeData(&twolist);
+    ajListstrFreeData(&textlist);
 
     return ret;
 }
@@ -851,13 +851,13 @@ AjBool ajRangeSeqExtractList(const AjPRange thys,
 		continue;
 	    str = ajStrNew();
 	    ajStrAppendSubS(&str, ajSeqGetSeqS(seq), st-1, en-1);
-	    ajListstrPushApp(outliststr, str);
+	    ajListstrPushAppend(outliststr, str);
 	}
     }
     else
     {
 	str = ajSeqGetSeqCopyS(seq);
-	ajListstrPushApp(outliststr, str);
+	ajListstrPushAppend(outliststr, str);
     }
 
     return result;
@@ -1140,7 +1140,7 @@ AjBool ajRangeStrExtractList(const AjPRange thys,
 	ajRangeValues(thys,i,&st,&en);
         str = ajStrNew();
 	ajStrAppendSubS(&str, instr, st-1, en-1);
-	ajListstrPushApp(outliststr, str);
+	ajListstrPushAppend(outliststr, str);
     }
 
     return result;

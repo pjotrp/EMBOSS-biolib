@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     ajFileClose(&outf);
     ajFileClose(&inf1);
     ajFileClose(&inf2);
-    ajListDel(&list);
+    ajListFree(&list);
 
     ajExit();
     return 0;

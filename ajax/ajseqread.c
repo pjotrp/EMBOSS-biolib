@@ -870,7 +870,7 @@ void ajSeqinDel(AjPSeqin* pthis)
     ajStrDel(&thys->Desc);
     ajStrDel(&thys->Doc);
 
-    while(ajListLength(thys->List))
+    while(ajListGetLength(thys->List))
     {
 	ajListPop(thys->List, (void**) &node);
 	ajStrDel(&node->Usa);
@@ -1096,9 +1096,9 @@ AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
     {
 	/* First call. No file open yet ... */
 	if(!seqUsaProcess(thys, seqin)	       /* ... so process the USA */
-	   && !ajListLength(seqin->List))      /* not list with bad 1st item */
+	   && !ajListGetLength(seqin->List))      /* not list with bad 1st item */
 	    return ajFalse; /* if this fails, we read no sequence at all */
-	if(ajListLength(seqin->List))
+	if(ajListGetLength(seqin->List))
 	    listdata = ajTrue;
     }
 
@@ -1123,7 +1123,7 @@ AjBool ajSeqAllRead(AjPSeq thys, AjPSeqin seqin)
 	    ajSeqType(thys);
     }
 
-    while(!ret && ajListLength(seqin->List))
+    while(!ret && ajListGetLength(seqin->List))
     {
 	/* Failed, but we have a list still - keep trying it */
 
@@ -1445,7 +1445,7 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
     else
     {
 	/* (b) if we have a list, try the next USA in the list */
-	if(ajListLength(seqin->List))
+	if(ajListGetLength(seqin->List))
 	{
 	    listdata = ajTrue;
 	    ajListPop(seqin->List, (void**) &node);
@@ -1462,7 +1462,7 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
 	    AJFREE(node);
 
 	    ajDebug("ajSeqRead: open list, try '%S'\n", seqin->Usa);
-	    if(!seqUsaProcess(thys, seqin) && !ajListLength(seqin->List))
+	    if(!seqUsaProcess(thys, seqin) && !ajListGetLength(seqin->List))
 		return ajFalse;
 	    ret = seqRead(thys, seqin);
 	    ajDebug("ajSeqRead: list usa: '%S' returns: %B\n",
@@ -1472,9 +1472,9 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
 	{
 	    ajDebug("ajSeqRead: no file yet - test USA '%S'\n", seqin->Usa);
 	    /* (c) Must be a USA - decode it */
-	    if(!seqUsaProcess(thys, seqin) && !ajListLength(seqin->List))
+	    if(!seqUsaProcess(thys, seqin) && !ajListGetLength(seqin->List))
 		return ajFalse;
-	    if(ajListLength(seqin->List)) /* could be a new list */
+	    if(ajListGetLength(seqin->List)) /* could be a new list */
 		listdata = ajTrue;
 	    ret = seqRead(thys, seqin);
 	    ajDebug("ajSeqRead: new usa: '%S' returns: %B\n",
@@ -1484,7 +1484,7 @@ AjBool ajSeqRead(AjPSeq thys, AjPSeqin seqin)
 
     /* Now read whatever we got */
 
-    while(!ret && ajListLength(seqin->List))
+    while(!ret && ajListGetLength(seqin->List))
     {
 	/* Failed, but we have a list still - keep trying it */
         if(listdata)
@@ -1611,7 +1611,7 @@ AjBool ajSeqsetRead(AjPSeqset thys, AjPSeqin seqin)
 	/*ajSeqTrace(seq);*/
 	iseq++;
 
-	ajListPushApp(setlist, seq);
+	ajListPushAppend(setlist, seq);
 
 	/*ajDebug("appended to list\n");*/
 
@@ -1692,14 +1692,14 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 	    ajSeqType(seq);
 
 	/*ajDebug ("ajSeqsetallRead read sequence %d '%s' %d..%d\n",
-	  iseq, ajSeqName(seq), seq->Begin, seq->End);*/
+	  iseq, ajSeqGetNameC(seq), seq->Begin, seq->End);*/
 	/*ajSeqTrace(seq);*/
 	iseq++;
 
 	if(!setlist)
 	    setlist = ajListNew();
 
-	ajListPushApp(setlist, seq);
+	ajListPushAppend(setlist, seq);
 
 	/*ajDebug("appended to list\n");*/
 
@@ -1717,9 +1717,9 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 
 	    ajSeqsetFromList(seqset, setlist);
 	    ajListFree(&setlist);
-	    ajListPushApp(thys, seqset);
+	    ajListPushAppend(thys, seqset);
 	    ajDebug("ajSeqsetallRead multidone save set %u of %u sequences\n",
-		    ajListLength(thys), ajSeqsetGetSize(seqset));
+		    ajListGetLength(thys), ajSeqsetGetSize(seqset));
 	    seqset = NULL;
 	}
     }
@@ -1730,7 +1730,7 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 
     /* convert the list of sequences into a seqset structure */
 
-    if(ajListLength(setlist))
+    if(ajListGetLength(setlist))
     {
 	seqset = ajSeqsetNew();
 	ajStrAssignS(&seqset->Usa, seqin->Usa);
@@ -1740,12 +1740,12 @@ AjBool ajSeqsetallRead(AjPList thys, AjPSeqin seqin)
 
 	ajSeqsetFromList(seqset, setlist);
 	ajListFree(&setlist);
-	ajListPushApp(thys, seqset);
+	ajListPushAppend(thys, seqset);
 	seqset = NULL;
     }
 
     ajDebug("ajSeqsetallRead total %d sets of %d sequences\n",
-	    ajListLength(thys), iseq);
+	    ajListGetLength(thys), iseq);
 
     return ajTrue;
 }
@@ -1769,18 +1769,18 @@ ajint ajSeqsetFromList(AjPSeqset thys, const AjPList list)
     AjIList iter;
     AjPSeq seq;
 
-    ajDebug("ajSeqsetFromList length: %d\n", ajListLength(list));
+    ajDebug("ajSeqsetFromList length: %d\n", ajListGetLength(list));
 
     ajListTrace(list);
 
-    thys->Size      = ajListLength(list);
+    thys->Size      = ajListGetLength(list);
     thys->Seq       = AJCALLOC0(thys->Size, sizeof(AjPSeq));
     thys->Seqweight = AJCALLOC0(thys->Size, sizeof(float));
 
     i = 0;
-    iter = ajListIterRead(list);
+    iter = ajListIterNewread(list);
     ajListIterTrace(iter);
-    while((seq = (AjPSeq) ajListIterNext(iter)))
+    while((seq = (AjPSeq) ajListIterGet(iter)))
     {
 	if(!i)
 	{
@@ -1801,7 +1801,7 @@ ajint ajSeqsetFromList(AjPSeqset thys, const AjPList list)
 		seq->Name, ajSeqGetLen(seq), thys->Seq[i]->Weight);
 	i++;
     }
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     return thys->Size;
 }
@@ -4079,7 +4079,7 @@ static AjBool seqReadClustal(AjPSeq thys, AjPSeqin seqin)
 	}
 
 	seqin->Data = AJNEW0(alndata);
-	alndata->Table = alntable = ajTableNew(0,ajStrTableCmp,ajStrTableHash);
+	alndata->Table = alntable = ajTablestrNew();
 	alnlist = ajListstrNew();
 	seqin->Filecount = 0;
 
@@ -4098,7 +4098,7 @@ static AjBool seqReadClustal(AjPSeq thys, AjPSeqin seqin)
 
 	    ajTablePut(alntable, name, alnitem);
 	    name = NULL;
-	    ajListstrPushApp(alnlist, ajStrNewS(alnitem->Name));
+	    ajListstrPushAppend(alnlist, ajStrNewS(alnitem->Name));
 
 	    ok = ajFileBuffGetStore(buff, &seqReadLine,
 				    seqin->Text, &thys->TextPtr);
@@ -4117,7 +4117,7 @@ static AjBool seqReadClustal(AjPSeq thys, AjPSeqin seqin)
 	    ajListstrPop(alnlist, &alndata->Names[i]);
 	    ajDebug("list [%d] '%S'\n", i, alndata->Names[i]);
 	}
-	ajListstrFree(&alnlist);
+	ajListstrFreeData(&alnlist);
 
 	while(ajFileBuffGetStore(buff, &seqReadLine,
 				 seqin->Text, &thys->TextPtr))
@@ -4143,7 +4143,7 @@ static AjBool seqReadClustal(AjPSeq thys, AjPSeqin seqin)
     }
     i = alndata->Count;
     ajDebug("returning [%d] '%S'\n", i, alndata->Names[i]);
-    alnitem = ajTableGet(alntable, alndata->Names[i]);
+    alnitem = ajTableFetch(alntable, alndata->Names[i]);
     ajStrAssignS(&thys->Name, alndata->Names[i]);
 
     thys->Weight = alnitem->Weight;
@@ -4177,7 +4177,7 @@ static AjBool seqClustalReadseq(const AjPStr rdline, const AjPTable msftable)
     if(!ajStrExtractFirst(rdline, &seqstr, &token))
 	return ajFalse;
 
-    msfitem = ajTableGet(msftable, token);
+    msfitem = ajTableFetch(msftable, token);
     ajStrDel(&token);
     if(!msfitem)
     {
@@ -4260,8 +4260,7 @@ static AjBool seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin)
 	ajStrDel(&tmpstr);
 
 	seqin->Data = AJNEW0(phydata);
-	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
-					       ajStrTableHash);
+	phydata->Table = phytable = ajTablestrNew();
 	phydata->Names = AJCALLOC(iseq, sizeof(*phydata->Names));
 	seqin->Filecount = 0;
 
@@ -4366,7 +4365,7 @@ static AjBool seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin)
 
     i = phydata->Count;
     ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
-    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    phyitem = ajTableFetch(phytable, phydata->Names[i]);
     ajStrAssignS(&thys->Name, phydata->Names[i]);
     ajStrDel(&phydata->Names[i]);
 
@@ -4467,8 +4466,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		seqReadLine, iseq, len);*/
 
 	seqin->Data = AJNEW0(phydata);
-	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
-					       ajStrTableHash);
+	phydata->Table = phytable = ajTablestrNew();
 	phylist = ajListstrNew();
 	seqin->Filecount = 0;
 
@@ -4508,12 +4506,12 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		seqMsfDataDel((SeqPMsfData*) &seqin->Data);
 		seqMsfItemDel(&phyitem);
 
-		ajListstrFree(&phylist);
+		ajListstrFreeData(&phylist);
 
 		return ajFalse;
 	    }
 	    if(ajStrIsWhite(phyitem->Name) ||
-	       ajTableGet(phytable, phyitem->Name))
+	       ajTableFetch(phytable, phyitem->Name))
 	    {
 		ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		ajDebug("phytable repeated name '%S'\n",
@@ -4522,15 +4520,15 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 		seqMsfDataDel((SeqPMsfData*) &seqin->Data);
 		seqMsfItemDel(&phyitem);
 
-		ajListstrFree(&phylist);
+		ajListstrFreeData(&phylist);
 
 		return seqReadPhylipnon(thys, seqin);
 	    }
 	    ajTablePut(phytable, ajStrNewS(phyitem->Name), phyitem);
-	    ajListstrPushApp(phylist, ajStrNewS(phyitem->Name));
+	    ajListstrPushAppend(phylist, ajStrNewS(phyitem->Name));
 	    ajDebug("added '%S' list:%u table:%u\n",
-		    phyitem->Name, ajListLength(phylist),
-		    ajTableLength(phytable));
+		    phyitem->Name, ajListGetLength(phylist),
+		    ajTableGetLength(phytable));
 	    if(!jseq)
 		maxlen = ilen;
 	    else
@@ -4542,9 +4540,9 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 			    iseq, jseq, ilen, maxlen);
 		    ajFileBuffResetStore(buff, seqin->Text, &thys->TextPtr);
 		    ajDebug("phytable deleted size:%u\n",
-			    ajTableLength(phytable));
+			    ajTableGetLength(phytable));
 		    seqMsfDataDel((SeqPMsfData*) &seqin->Data);
-		    ajListstrFree(&phylist);
+		    ajListstrFreeData(&phylist);
 		    if(seqReadPhylipnon(thys, seqin))
 			return ajTrue;
 		    else {
@@ -4576,7 +4574,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 	    ajListstrPop(phylist, &phydata->Names[i]);
 	    /* ajDebug("list [%d] '%S'\n", i, phydata->Names[i]); */
 	}
-	ajListstrFree(&phylist);
+	ajListstrFreeData(&phylist);
 
 	if(ilen < len)
 	{
@@ -4647,7 +4645,7 @@ static AjBool seqReadPhylip(AjPSeq thys, AjPSeqin seqin)
 
     i = phydata->Count;
     /* ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]); */
-    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    phyitem = ajTableFetch(phytable, phydata->Names[i]);
     ajStrAssignS(&thys->Name, phydata->Names[i]);
 
     thys->Weight = phyitem->Weight;
@@ -4697,7 +4695,7 @@ static AjBool seqPhylipReadseq(const AjPStr rdline, const AjPTable phytable,
     if(!ajRegExec(seqRegPhylipSeq2, rdline))
 	return ajFalse;
 
-    phyitem = ajTableGet(phytable, token);
+    phyitem = ajTableFetch(phytable, token);
     if(!phyitem)
     {
 	ajDebug("seqPhylipReadseq failed to find '%S' in phytable\n",
@@ -4817,7 +4815,7 @@ static AjBool seqReadHennig86(AjPSeq thys, AjPSeqin seqin)
 	ajStrDel(&tmpstr);
 
 	seqin->Data = AJNEW0(fmtdata);
-	fmtdata->Table = fmttable = ajTableNew(0,ajStrTableCmp,ajStrTableHash);
+	fmtdata->Table = fmttable = ajTablestrNew();
 	fmtlist = ajListstrNew();
 	seqin->Filecount = 0;
 
@@ -4855,7 +4853,7 @@ static AjBool seqReadHennig86(AjPSeq thys, AjPSeqin seqin)
 	    ajStrDel(&seqstr);
 
 	    ajTablePut(fmttable, ajStrNewS(fmtitem->Name), fmtitem);
-	    ajListstrPushApp(fmtlist, ajStrNewS(fmtitem->Name));
+	    ajListstrPushAppend(fmtlist, ajStrNewS(fmtitem->Name));
 	    jseq++;
 	    ajDebug("first set %d: '%S'\n", jseq, seqReadLine);
 
@@ -4875,7 +4873,7 @@ static AjBool seqReadHennig86(AjPSeq thys, AjPSeqin seqin)
 	    ajListstrPop(fmtlist, &fmtdata->Names[i]);
 	    ajDebug("list [%d] '%S'\n", i, fmtdata->Names[i]);
 	}
-	ajListstrFree(&fmtlist);
+	ajListstrFreeData(&fmtlist);
 
 	while(ajFileBuffGetStore(buff, &seqReadLine,
 				 seqin->Text, &thys->TextPtr))
@@ -4907,7 +4905,7 @@ static AjBool seqReadHennig86(AjPSeq thys, AjPSeqin seqin)
     }
     i = fmtdata->Count;
     ajDebug("returning [%d] '%S'\n", i, fmtdata->Names[i]);
-    fmtitem = ajTableGet(fmttable, fmtdata->Names[i]);
+    fmtitem = ajTableFetch(fmttable, fmtdata->Names[i]);
     ajStrAssignS(&thys->Name, fmtdata->Names[i]);
     ajStrDel(&fmtdata->Names[i]);
 
@@ -4947,7 +4945,7 @@ static AjBool seqHennig86Readseq(const AjPStr rdline, const AjPTable msftable)
 	return ajFalse;
 
     ajRegSubI(seqRegHennigSeq, 0, &token);
-    msfitem = ajTableGet(msftable, token);
+    msfitem = ajTableFetch(msftable, token);
     ajStrDel(&token);
     if(!msfitem)
 	return ajFalse;
@@ -5024,8 +5022,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 		seqReadLine, len);
 
 	seqin->Data = AJNEW0(phydata);
-	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
-					       ajStrTableHash);
+	phydata->Table = phytable = ajTablestrNew();
 	phylist = ajListstrNew();
 	seqin->Filecount = 0;
 
@@ -5048,7 +5045,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 	       phyitem->Weight = 1.0;
 	       seqSetName(&phyitem->Name, seqReadLine);
 	       ajTablePut(phytable, ajStrNewS(phyitem->Name), phyitem);
-	       ajListstrPushApp(phylist, ajStrNewS(phyitem->Name));
+	       ajListstrPushAppend(phylist, ajStrNewS(phyitem->Name));
 	       iseq++;
 	       ilen = 0;
 	   }
@@ -5089,7 +5086,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 	    ajListstrPop(phylist, &phydata->Names[i]);
 	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
 	}
-	ajListstrFree(&phylist);
+	ajListstrFreeData(&phylist);
 	phydata->Nseq = iseq;
 	phydata->Count = 0;
 	phydata->Bufflines = bufflines;
@@ -5103,7 +5100,7 @@ static AjBool seqReadTreecon(AjPSeq thys, AjPSeqin seqin)
 
     i = phydata->Count;
     ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
-    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    phyitem = ajTableFetch(phytable, phydata->Names[i]);
     ajStrAssignS(&thys->Name, phydata->Names[i]);
 
     thys->Weight = phyitem->Weight;
@@ -5189,8 +5186,7 @@ static AjBool seqReadJackknifer(AjPSeq thys, AjPSeqin seqin)
 				seqin->Text, &thys->TextPtr);
 
 	seqin->Data = AJNEW0(phydata);
-	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
-					       ajStrTableHash);
+	phydata->Table = phytable = ajTablestrNew();
 	phylist = ajListstrNew();
 	seqin->Filecount = 0;
 
@@ -5215,7 +5211,7 @@ static AjBool seqReadJackknifer(AjPSeq thys, AjPSeqin seqin)
 
 		ajRegSubI(seqRegJackSeq, 1, &tmpstr);
 		seqSetName(&tmpname, tmpstr);
-		phyitem = ajTableGet(phytable, tmpname);
+		phyitem = ajTableFetch(phytable, tmpname);
 		if (!phyitem)
 		{
 		    ajDebug("JackKnifer format: new (id) '%S'\n", tmpname);
@@ -5223,7 +5219,7 @@ static AjBool seqReadJackknifer(AjPSeq thys, AjPSeqin seqin)
 		    phyitem->Weight = 1.0;
 		    ajStrAssignS(&phyitem->Name,tmpname);
 		    ajTablePut(phytable, ajStrNewS(phyitem->Name), phyitem);
-		    ajListstrPushApp(phylist, ajStrNewS(phyitem->Name));
+		    ajListstrPushAppend(phylist, ajStrNewS(phyitem->Name));
 		    iseq++;
 		}
 		else
@@ -5247,7 +5243,7 @@ static AjBool seqReadJackknifer(AjPSeq thys, AjPSeqin seqin)
 	    ajListstrPop(phylist, &phydata->Names[i]);
 	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
 	}
-	ajListstrFree(&phylist);
+	ajListstrFreeData(&phylist);
 	phydata->Nseq = iseq;
 	phydata->Count = 0;
 	phydata->Bufflines = bufflines;
@@ -5261,7 +5257,7 @@ static AjBool seqReadJackknifer(AjPSeq thys, AjPSeqin seqin)
 
     i = phydata->Count;
     ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
-    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    phyitem = ajTableFetch(phytable, phydata->Names[i]);
     ajStrAssignS(&thys->Name, phydata->Names[i]);
     ajStrDel(&phydata->Names[i]);
 
@@ -5487,8 +5483,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 
 	
 	seqin->Data = AJNEW0(phydata);
-	phydata->Table = phytable = ajTableNew(0, ajStrTableCmp,
-					       ajStrTableHash);
+	phydata->Table = phytable = ajTablestrNew();
 	phylist = ajListstrNew();
 	seqin->Filecount = 0;
 
@@ -5511,7 +5506,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 
 		ajRegSubI(seqRegMegaSeq, 1, &tmpstr);
 		seqSetName(&tmpname, tmpstr);
-		phyitem = ajTableGet(phytable, tmpname);
+		phyitem = ajTableFetch(phytable, tmpname);
 		if (!phyitem)
 		{
 		    ajDebug("Mega format: new #id '%S'\n", tmpname);
@@ -5519,7 +5514,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 		    phyitem->Weight = 1.0;
 		    ajStrAssignS(&phyitem->Name,tmpname);
 		    ajTablePut(phytable, ajStrNewS(phyitem->Name), phyitem);
-		    ajListstrPushApp(phylist, ajStrNewS(phyitem->Name));
+		    ajListstrPushAppend(phylist, ajStrNewS(phyitem->Name));
 		    iseq++;
 		}
 		else
@@ -5551,7 +5546,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 	    ajListstrPop(phylist, &phydata->Names[i]);
 	    ajDebug("list [%d] '%S'\n", i, phydata->Names[i]);
 	}
-	ajListstrFree(&phylist);
+	ajListstrFreeData(&phylist);
 	phydata->Nseq = iseq;
 	phydata->Count = 0;
 	phydata->Bufflines = bufflines;
@@ -5567,7 +5562,7 @@ static AjBool seqReadMega(AjPSeq thys, AjPSeqin seqin)
 
     i = phydata->Count;
     ajDebug("returning [%d] '%S'\n", i, phydata->Names[i]);
-    phyitem = ajTableGet(phytable, phydata->Names[i]);
+    phyitem = ajTableFetch(phytable, phydata->Names[i]);
     ajStrAssignS(&thys->Name, phydata->Names[i]);
     ajStrDel(&phydata->Names[i]);
 
@@ -6028,8 +6023,7 @@ static AjBool seqReadMsf(AjPSeq thys, AjPSeqin seqin)
 	}
 
 	seqin->Data = AJNEW0(msfdata);
-	msfdata->Table = msftable = ajTableNew(0, ajStrTableCmp,
-					       ajStrTableHash);
+	msfdata->Table = msftable = ajTablestrNew();
 	msflist = ajListstrNew();
 	seqin->Filecount = 0;
 	ok = ajFileBuffGetStore(buff, &seqReadLine,
@@ -6044,7 +6038,7 @@ static AjBool seqReadMsf(AjPSeq thys, AjPSeqin seqin)
 	    if(seqGcgMsfHeader(seqReadLine, &msfitem))
 	    {
 		ajTablePut(msftable, ajStrNewS(msfitem->Name), msfitem);
-		ajListstrPushApp(msflist, ajStrNewS(msfitem->Name));
+		ajListstrPushAppend(msflist, ajStrNewS(msfitem->Name));
 		iseq++;
 	    }
 	}
@@ -6060,7 +6054,7 @@ static AjBool seqReadMsf(AjPSeq thys, AjPSeqin seqin)
 	    ajListstrPop(msflist, &msfdata->Names[i]);
 	    ajDebug("list [%d] '%S'\n", i, msfdata->Names[i]);
 	}
-	ajListstrFree(&msflist);
+	ajListstrFreeData(&msflist);
 	while(ajFileBuffGetStore(buff, &seqReadLine,
 				 seqin->Text, &thys->TextPtr))
 	{
@@ -6085,7 +6079,7 @@ static AjBool seqReadMsf(AjPSeq thys, AjPSeqin seqin)
     }
     i = msfdata->Count;
     ajDebug("returning [%d] '%S'\n", i, msfdata->Names[i]);
-    msfitem = ajTableGet(msftable, msfdata->Names[i]);
+    msfitem = ajTableFetch(msftable, msfdata->Names[i]);
     ajStrAssignS(&thys->Name, msfdata->Names[i]);
 
     thys->Weight = msfitem->Weight;
@@ -6127,7 +6121,7 @@ static AjBool seqGcgMsfReadseq(const AjPStr rdline, const AjPTable msftable)
 
     ajDebug("seqGcgMsfReadseq '%S' '%S'\n", token, seqstr);
 
-    msfitem = ajTableGet(msftable, token);
+    msfitem = ajTableFetch(msftable, token);
     if(!msfitem)
     {
 	ajStrDel(&token);
@@ -6166,7 +6160,7 @@ static void seqMsfDataDel(SeqPMsfData* pthys)
     thys = *pthys;
 
     ajDebug("seqMsfDataDel Nseq:%u Count:%u Table:%u Nexus:%u\n",
-	    thys->Nseq, thys->Count, ajTableLength(thys->Table),
+	    thys->Nseq, thys->Count, ajTableGetLength(thys->Table),
 	    ajNexusGetNtaxa(thys->Nexus));
 
     for(i=0; i < thys->Nseq; i++)
@@ -6264,7 +6258,7 @@ static void seqMsfDataTrace(const SeqPMsfData thys)
     }
 
     ajDebug("seqMsfDataTrace Nseq:%u Count:%u Table:%u Nexus:%u\n",
-	    thys->Nseq, thys->Count, ajTableLength(thys->Table),
+	    thys->Nseq, thys->Count, ajTableGetLength(thys->Table),
 	    ajNexusGetNtaxa(thys->Nexus));
 
     for(i=0; i < thys->Nseq; i++)
@@ -6431,7 +6425,7 @@ static AjBool seqReadSwiss(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushApp(thys->Keylist, liststr);
+		ajListstrPushAppend(thys->Keylist, liststr);
 	    }
 	}
 
@@ -6714,7 +6708,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushApp(thys->Keylist, liststr);
+		ajListstrPushAppend(thys->Keylist, liststr);
 	    }
 	}
 
@@ -6806,7 +6800,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	    ajStrTokenNextParse(&handle, &token); /* 'DR' */
 	    ajStrTokenNextParseC(&handle, "\n\r", &token); /* xref */
 	    ajStrAssignS(&xrefstr, token);
-	    ajListPushApp(thys->Xreflist, xrefstr);
+	    ajListPushAppend(thys->Xreflist, xrefstr);
 	    xrefstr = NULL;
 	}
 
@@ -6947,12 +6941,12 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	    if(seqref)
 	    {
 		ajSeqrefStandard(seqref);
-		ajListPushApp(thys->Reflist, seqref);
+		ajListPushAppend(thys->Reflist, seqref);
 		seqref = NULL;
 	    }
 	    if(ajStrGetLen(cmtstr))
 	    {
-		ajListPushApp(thys->Cmtlist, cmtstr);
+		ajListPushAppend(thys->Cmtlist, cmtstr);
 		cmtstr = NULL;
 	    }
 
@@ -7186,7 +7180,7 @@ static AjBool seqReadExperiment(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushApp(thys->Keylist, liststr);
+		ajListstrPushAppend(thys->Keylist, liststr);
 	    }
 	}
 
@@ -7582,7 +7576,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 		bufflines++;
 	    }
 	    ajSeqrefStandard(seqref);
-	    ajListPushApp(thys->Reflist, seqref);
+	    ajListPushAppend(thys->Reflist, seqref);
 	    seqref = NULL;
 	}
 
@@ -7595,7 +7589,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	    {
 		liststr = ajStrNewS(token);
 		ajStrTrimWhite(&liststr);
-		ajListstrPushApp(thys->Keylist, liststr);
+		ajListstrPushAppend(thys->Keylist, liststr);
 	    }
 
 	    ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text,
@@ -7609,7 +7603,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 		{
 		    liststr = ajStrNewS(token);
 		    ajStrTrimWhite(&liststr);
-		    ajListstrPushApp(thys->Keylist, liststr);
+		    ajListstrPushAppend(thys->Keylist, liststr);
 		}
 		ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text,
 					&thys->TextPtr);
@@ -9053,18 +9047,18 @@ static void seqUsaListTrace(const AjPList list)
     SeqPListUsa node;
     ajuint i = 0;
 
-    iter = ajListIterRead(list);
+    iter = ajListIterNewread(list);
 
-    ajDebug("SeqUsaListTrace %d nodes\n", ajListLength(list));
-    while(ajListIterMore(iter))
+    ajDebug("SeqUsaListTrace %d nodes\n", ajListGetLength(list));
+    while(!ajListIterDone(iter))
     {
-	node = (SeqPListUsa) ajListIterNext(iter);
+	node = (SeqPListUsa) ajListIterGet(iter);
 	ajDebug("%3d: '%S' %4d..%d (%b) '%S' %d\n",
 		++i, node->Usa, node->Begin, node->End, node->Rev,
 		node->Formatstr, node->Format);
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     ajDebug("...Done...\n");
 
     return;
@@ -9112,7 +9106,7 @@ static AjBool seqListProcess(AjPSeq seq, AjPSeqin seqin, const AjPStr listfile)
     if(depth > MAXDEPTH)
 	ajFatal("USA List too deep");
 
-    if(!ajListLength(seqin->List))
+    if(!ajListGetLength(seqin->List))
 	seqin->List = ajListNew();
 
     list = ajListNew();
@@ -9138,7 +9132,7 @@ static AjBool seqListProcess(AjPSeq seq, AjPSeqin seqin, const AjPStr listfile)
 	        AJNEW0(node);
 	        ajStrAssignS(&node->Usa, token);
 	        seqUsaSave(node, seqin);
-	        ajListPushApp(list, node);
+	        ajListPushAppend(list, node);
 	    }
 	    ajStrDel(&token);
 	    token = NULL;
@@ -9151,7 +9145,7 @@ static AjBool seqListProcess(AjPSeq seq, AjPSeqin seqin, const AjPStr listfile)
     seqUsaListTrace(seqin->List);
     ajDebug("Trace new list\n");
     seqUsaListTrace(list);
-    ajListPushList(seqin->List, &list);
+    ajListPushlist(seqin->List, &list);
 
     ajDebug("Trace combined seqin->List\n");
     seqUsaListTrace(seqin->List);
@@ -9395,7 +9389,7 @@ static void seqSetNameFile(AjPStr* name, const AjPSeqin seqin)
 
 static void seqAccSave(AjPSeq thys, const AjPStr acc)
 {
-    ajListstrPushApp(thys->Acclist, ajStrNewS(acc));
+    ajListstrPushAppend(thys->Acclist, ajStrNewS(acc));
 
     if(!ajStrGetLen(thys->Acc))
 	ajStrAssignS(&thys->Acc, acc);
@@ -9434,7 +9428,7 @@ static void seqTaxSave(AjPSeq thys, const AjPStr tax, ajuint level)
 	break;
     default:
 	newstr = ajStrNewS(tax);
-	ajListstrPushApp(thys->Taxlist, newstr);
+	ajListstrPushAppend(thys->Taxlist, newstr);
 	break;
     }
 
@@ -9760,48 +9754,48 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
     {
 	/*ajDebug("No accession number to test\n");*/
     }
-    else if(ajListLength(seq->Acclist))
+    else if(ajListGetLength(seq->Acclist))
     {		   /* accession number test - check the entire list */
-	iter = ajListIterRead(seq->Acclist);
-	while(ajListIterMore(iter))
+	iter = ajListIterNewread(seq->Acclist);
+	while(!ajListIterDone(iter))
 	{
-	    accstr = ajListIterNext(iter);
+	    accstr = ajListIterGet(iter);
 	    ajDebug("... try accession '%S' '%S'\n", accstr,
 		    thys->Acc);
 
 	    if(ajStrMatchWildS(accstr, thys->Acc))
 	    {
-		ajListIterFree(&iter);
+		ajListIterDel(&iter);
 		return ajTrue;
 	    }
 	}
 	tested = ajTrue;
 	ajDebug("acc test failed\n");
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
     }
 
     if(!ajStrGetLen(thys->Org))
     {
 	/*ajDebug("No taxonomy to test\n"); */
     }
-    else if(ajListLength(seq->Taxlist))
+    else if(ajListGetLength(seq->Taxlist))
     {			   /* taxonomy test - check the entire list */
-	iter = ajListIterRead(seq->Taxlist);
-	while(ajListIterMore(iter))
+	iter = ajListIterNewread(seq->Taxlist);
+	while(!ajListIterDone(iter))
 	{
-	    taxstr = ajListIterNext(iter);
+	    taxstr = ajListIterGet(iter);
 	    ajDebug("... try organism '%S' '%S'\n", taxstr,
 		    thys->Org);
 
 	    if(ajStrMatchWildS(taxstr, thys->Org))
 	    {
-		ajListIterFree(&iter);
+		ajListIterDel(&iter);
 		return ajTrue;
 	    }
 	}
 	tested = ajTrue;
 	ajDebug("org test failed\n");
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
     }
     else
     {
@@ -9813,24 +9807,24 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
     {
 	/*ajDebug("No keyword to test\n");*/
     }
-    else if(ajListLength(seq->Keylist))
+    else if(ajListGetLength(seq->Keylist))
     {			    /* keyword test - check the entire list */
-	iter = ajListIterRead(seq->Keylist);
-	while(ajListIterMore(iter))
+	iter = ajListIterNewread(seq->Keylist);
+	while(!ajListIterDone(iter))
 	{
-	    keystr = ajListIterNext(iter);
+	    keystr = ajListIterGet(iter);
 	    ajDebug("... try keyword '%S' '%S'\n", keystr,
 		    thys->Key);
 
 	    if(ajStrMatchWildS(keystr, thys->Key))
 	    {
-		ajListIterFree(&iter);
+		ajListIterDel(&iter);
 		return ajTrue;
 	    }
 	}
 	tested = ajTrue;
 	ajDebug("key test failed\n");
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
     }
     else
     {
@@ -9853,7 +9847,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 
 	tested = ajTrue;
 	ajDebug("des test failed\n");
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
     }
     else
     {
@@ -10912,8 +10906,8 @@ void ajSeqinTrace(const AjPSeqin thys)
     if(ajStrGetLen(thys->Date))
 	ajDebug( "  Date: '%S'\n", thys->Date);
 
-    if(ajListLength(thys->List))
-	ajDebug( "  List: (%d)\n", ajListLength(thys->List));
+    if(ajListGetLength(thys->List))
+	ajDebug( "  List: (%d)\n", ajListGetLength(thys->List));
 
     if(thys->Filebuff)
 	ajDebug( "  Filebuff: %F (%Ld)\n",

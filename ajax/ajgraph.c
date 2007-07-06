@@ -1040,7 +1040,7 @@ static void GraphClose(void)
     else
 	ajGraphInfo(&files);
 
-    while(ajListstrLength(files))
+    while(ajListstrGetLength(files))
     {
 	ajListstrPop(files, &tmpStr);
 	ajDebug("GraphInfo file '%S'\n", tmpStr);
@@ -1052,7 +1052,7 @@ static void GraphClose(void)
     {
 	ajDebug("GraphClose deleting graphData '%F' '%S'.'%S'\n",
 		graphData->File, graphData->FName, graphData->Ext);
-	ajListstrDel(&graphData->List);
+	ajListstrFree(&graphData->List);
 	ajFileClose(&graphData->File);
 	ajStrDel(&graphData->FName);
 	ajStrDel(&graphData->Ext);
@@ -1062,7 +1062,7 @@ static void GraphClose(void)
     }
     else
     {
-	ajListstrDel(&files);
+	ajListstrFree(&files);
 
 	ajDebug("=g= plend()\n");
 	plend();
@@ -1811,7 +1811,7 @@ static void GraphListDevicesarg (const char* name, va_list args)
 	if(!graphType[i].Alias)
 	{
 	    devname = ajStrNewC(graphType[i].Name);
-	    ajListstrPushApp(list, devname);
+	    ajListstrPushAppend(list, devname);
 	}
     }
 
@@ -3871,7 +3871,7 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	/* open a file for dumping the data points */
 	temp = ajFmtStr("%S%d%s",thys->plplot->outputfile,i+1,ext);
 	outf = ajFileNewOut(temp);
-	ajListstrPushApp(graphData->List, temp);
+	ajListstrPushAppend(graphData->List, temp);
 	if(!outf)
 	{
 	    ajErr("Could not open graph file %S\n",temp);
@@ -7932,7 +7932,7 @@ ajint ajGraphInfo(AjPList* files)
     if(i < 0)				/* single filename  in tmp*/
     {
 	ajStrAssignC(&tmpStr, tmp);
-	ajListstrPushApp(*files, tmpStr);
+	ajListstrPushAppend(*files, tmpStr);
 	tmpStr=NULL;
 	return 1;
     }
@@ -7942,7 +7942,7 @@ ajint ajGraphInfo(AjPList* files)
 	ajDebug("ajGraphInfo printing file %d\n", j);
 	ajFmtPrintS(&tmpStr, tmp, j);
 	ajDebug("ajGraphInfo storing file '%S'\n", tmpStr);
-	ajListstrPushApp(*files, tmpStr);
+	ajListstrPushAppend(*files, tmpStr);
 	tmpStr=NULL;
     }
 
@@ -7992,7 +7992,7 @@ static void GraphDatafileNext(void)
 	    graphData->Lines++;
 	    graphData->Lines++;
 	}
-	ajListstrPushApp(graphData->List, tempstr);
+	ajListstrPushAppend(graphData->List, tempstr);
     }
 
     return;

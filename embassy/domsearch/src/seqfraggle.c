@@ -279,7 +279,7 @@ int main(int argc, char **argv)
     
 
     /* Memory magagement. */
-    ajListDel(&dhfin);
+    ajListFree(&dhfin);
     ajDirDel(&dhfout);
     ajStrDel(&exec);
 

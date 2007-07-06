@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     /* Clean up */
     while(ajListPop(list, (void **) &tmp))
 	ajPdbtospDel(&tmp);
-    ajListDel(&list);
+    ajListFree(&list);
     ajFileClose(&inf1);
     ajFileClose(&outf);
 

@@ -656,14 +656,11 @@ AjPSeq ajSeqNewSeq(const AjPSeq seq)
 	ajStrAssignS(&pthis->TextPtr, seq->TextPtr);
 
 
-    pthis->Acclist = ajListstrNew();
-    ajListstrClone(seq->Acclist, pthis->Acclist);
+    pthis->Acclist = ajListstrNewList(seq->Acclist);
 
-    pthis->Keylist = ajListstrNew();
-    ajListstrClone(seq->Keylist, pthis->Keylist);
+    pthis->Keylist = ajListstrNewList(seq->Keylist);
 
-    pthis->Taxlist = ajListstrNew();
-    ajListstrClone(seq->Taxlist, pthis->Taxlist);
+    pthis->Taxlist = ajListstrNewList(seq->Taxlist);
 
     ajStrAssignS(&pthis->Seq, seq->Seq);
     if (seq->Fttable)
@@ -754,27 +751,27 @@ void ajSeqDel(AjPSeq* Pseq)
 
     while(ajListstrPop(seq->Acclist,&ptr))
 	ajStrDel(&ptr);
-    ajListDel(&seq->Acclist);
+    ajListFree(&seq->Acclist);
 
     while(ajListstrPop(seq->Keylist,&ptr))
 	ajStrDel(&ptr);
-    ajListDel(&seq->Keylist);
+    ajListFree(&seq->Keylist);
 
     while(ajListstrPop(seq->Taxlist,&ptr))
 	ajStrDel(&ptr);
-    ajListDel(&seq->Taxlist);
+    ajListFree(&seq->Taxlist);
 
     while(ajListPop(seq->Reflist,(void **)&tmpref))
 	ajSeqrefDel(&tmpref);
-    ajListDel(&seq->Reflist);
+    ajListFree(&seq->Reflist);
 
     while(ajListPop(seq->Cmtlist,(void **)&ptr))
 	ajStrDel(&ptr);
-    ajListDel(&seq->Cmtlist);
+    ajListFree(&seq->Cmtlist);
 
     while(ajListPop(seq->Xreflist,(void **)&ptr))
 	ajStrDel(&ptr);
-    ajListDel(&seq->Xreflist);
+    ajListFree(&seq->Xreflist);
 
     ajSeqdateDel(&seq->Date);
 
@@ -4069,20 +4066,20 @@ void ajSeqExit(void)
     ajStrDel(&seqDivisionDef);
     ajStrDel(&seqClassDef);
 
-    ajStrTableFreeKey(&seqTableMol);
-    ajStrTableFreeKey(&seqTableMolEmbl);
-    ajStrTableFreeKey(&seqTableMolDdbj);
-    ajStrTableFreeKey(&seqTableMolGb);
+    ajTablestrFreeKey(&seqTableMol);
+    ajTablestrFreeKey(&seqTableMolEmbl);
+    ajTablestrFreeKey(&seqTableMolDdbj);
+    ajTablestrFreeKey(&seqTableMolGb);
 
-    ajStrTableFreeKey(&seqTableDiv);
-    ajStrTableFreeKey(&seqTableDivEmbl);
-    ajStrTableFreeKey(&seqTableDivDdbj);
-    ajStrTableFreeKey(&seqTableDivGb);
+    ajTablestrFreeKey(&seqTableDiv);
+    ajTablestrFreeKey(&seqTableDivEmbl);
+    ajTablestrFreeKey(&seqTableDivDdbj);
+    ajTablestrFreeKey(&seqTableDivGb);
 
-    ajStrTableFreeKey(&seqTableCls);
-    ajStrTableFreeKey(&seqTableClsEmbl);
-    ajStrTableFreeKey(&seqTableClsDdbj);
-    ajStrTableFreeKey(&seqTableClsGb);
+    ajTablestrFreeKey(&seqTableCls);
+    ajTablestrFreeKey(&seqTableClsEmbl);
+    ajTablestrFreeKey(&seqTableClsDdbj);
+    ajTablestrFreeKey(&seqTableClsGb);
 
     return;
 }
@@ -4128,14 +4125,14 @@ void ajSeqTrace(const AjPSeq seq)
     if(ajStrGetLen(seq->Acc))
 	ajDebug( "  Accession: '%S'\n", seq->Acc);
 
-    if(ajListLength(seq->Acclist))
+    if(ajListGetLength(seq->Acclist))
     {
-	ajDebug( "  Acclist: (%d) ", ajListLength(seq->Acclist));
-	it = ajListIterRead(seq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	ajDebug( "  Acclist: (%d) ", ajListGetLength(seq->Acclist));
+	it = ajListIterNewread(seq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug(" %S", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
 	ajDebug(" \n");
     }
 
@@ -4154,25 +4151,25 @@ void ajSeqTrace(const AjPSeq seq)
     if(ajStrGetLen(seq->Tax))
 	ajDebug( "  Taxonomy: '%S'\n", seq->Tax);
 
-    if(ajListLength(seq->Taxlist))
+    if(ajListGetLength(seq->Taxlist))
     {
-	ajDebug( "  Taxlist: (%d)", ajListLength(seq->Taxlist));
-	it = ajListIterRead(seq->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	ajDebug( "  Taxlist: (%d)", ajListGetLength(seq->Taxlist));
+	it = ajListIterNewread(seq->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug(" '%S'", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
 	ajDebug("\n");
     }
 
-    if(ajListLength(seq->Keylist))
+    if(ajListGetLength(seq->Keylist))
     {
-	ajDebug( "  Keywordlist: (%d)", ajListLength(seq->Keylist));
-	it = ajListIterRead(seq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	ajDebug( "  Keywordlist: (%d)", ajListGetLength(seq->Keylist));
+	it = ajListIterNewread(seq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug(" '%S'", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
 	ajDebug("\n");
     }
 
@@ -7729,7 +7726,7 @@ AjBool ajSeqrefStandard(AjPSeqRef ref)
 **
 ** @param [r] src [const AjPList] Source list of citations
 ** @param [w] dest [AjPList] Destination list of citations
-** @return [AjBool] True on success
+** @return [AjBool] True on success#
 ******************************************************************************/
 
 AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
@@ -7738,17 +7735,17 @@ AjBool ajSeqreflistClone(const AjPList src, AjPList dest)
     AjPSeqRef refout = NULL;
     AjPSeqRef refin = NULL;
 
-    if(ajListLength(dest))
+    if(ajListGetLength(dest))
 	return ajFalse;
 
-    iter = ajListIterRead(src);
-    while ((refin = (AjPSeqRef) ajListIterNext(iter)))
+    iter = ajListIterNewread(src);
+    while ((refin = (AjPSeqRef) ajListIterGet(iter)))
     {
 	refout = ajSeqrefNewRef(refin);
-	ajListPushApp(dest, refout);
+	ajListPushAppend(dest, refout);
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     return ajTrue;
 }
@@ -8321,7 +8318,7 @@ AjBool ajSeqclsSetEmbl(AjPStr* Pcls, const AjPStr clsembl)
 	called = ajTrue;
     }
 
-    clsname = ajTableGet(seqTableClsEmbl, clsembl);
+    clsname = ajTableFetch(seqTableClsEmbl, clsembl);
     if(!clsname)
 	return ajFalse;
 
@@ -8351,7 +8348,7 @@ AjBool ajSeqclsSetGb(AjPStr* Pcls, const AjPStr clsgb)
 	called = ajTrue;
     }
 
-    clsname = ajTableGet(seqTableClsGb, clsgb);
+    clsname = ajTableFetch(seqTableClsGb, clsgb);
     if(!clsname)
 	return ajFalse;
 
@@ -8401,10 +8398,10 @@ const char* ajSeqclsGetEmbl(const AjPStr cls)
     ajDebug("ajSeqclsGetEmbl '%S'\n", cls);
 
     if(ajStrGetLen(cls))
-	clsdef = ajTableGet(seqTableCls, cls);
+	clsdef = ajTableFetch(seqTableCls, cls);
 
     if(!clsdef)
-	clsdef = ajTableGet(seqTableCls, seqClassDef);
+	clsdef = ajTableFetch(seqTableCls, seqClassDef);
 
     if(!clsdef)
 	return ajStrGetPtr(seqClassDef);
@@ -8433,17 +8430,17 @@ static void seqclsInit(void)
     if(seqTableCls)
 	return;
 
-    seqTableCls = ajStrTableNewCase(16);
-    seqTableClsEmbl = ajStrTableNewCase(16);
-    seqTableClsDdbj = ajStrTableNewCase(16);
-    seqTableClsGb = ajStrTableNewCase(16);
+    seqTableCls = ajTablestrNewCaseLen(16);
+    seqTableClsEmbl = ajTablestrNewCaseLen(16);
+    seqTableClsDdbj = ajTablestrNewCaseLen(16);
+    seqTableClsGb = ajTablestrNewCaseLen(16);
 
     seqClassDef = ajStrNewC(seqClass[0].Name);
 
     for(i=0;seqClass[i].Name;i++)
     {
 	keystr = ajStrNewC(seqClass[i].Name);
-	if(ajTableGet(seqTableCls, keystr))
+	if(ajTableFetch(seqTableCls, keystr))
 	    ajStrDel(&keystr);
 	else
 	    ajTablePut(seqTableCls, keystr, &seqClass[i]);
@@ -8451,7 +8448,7 @@ static void seqclsInit(void)
 	if(seqClass[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Embl);
-	    if(ajTableGet(seqTableClsEmbl, valstr))
+	    if(ajTableFetch(seqTableClsEmbl, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableClsEmbl, valstr, keystr);
@@ -8460,7 +8457,7 @@ static void seqclsInit(void)
 	if(seqClass[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Ddbj);
-	    if(ajTableGet(seqTableClsDdbj, valstr))
+	    if(ajTableFetch(seqTableClsDdbj, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableClsDdbj, valstr, keystr);
@@ -8469,7 +8466,7 @@ static void seqclsInit(void)
 	if(seqClass[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqClass[i].Genbank);
-	    if(ajTableGet(seqTableClsGb, valstr))
+	    if(ajTableFetch(seqTableClsGb, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableClsGb, valstr, keystr);
@@ -8525,7 +8522,7 @@ AjBool ajSeqdivSetEmbl(AjPStr* Pdivi, const AjPStr divembl)
 	called = ajTrue;
     }
 
-    divname = ajTableGet(seqTableDivEmbl, divembl);
+    divname = ajTableFetch(seqTableDivEmbl, divembl);
     if(!divname)
 	return ajFalse;
 
@@ -8555,10 +8552,10 @@ AjBool ajSeqdivSetGb(AjPStr* Pdivi, const AjPStr divgb)
 	called = ajTrue;
     }
 
-    divname = ajTableGet(seqTableDivGb, divgb);
+    divname = ajTableFetch(seqTableDivGb, divgb);
 
     if(!divname)		/* Genbank mixes division and class */
-	divname = ajTableGet(seqTableClsGb, divgb);
+	divname = ajTableFetch(seqTableClsGb, divgb);
 
     if(!divname)
 	return ajFalse;
@@ -8610,10 +8607,10 @@ const char* ajSeqdivGetEmbl(const AjPStr divi)
     ajDebug("ajSeqdivGetEmbl '%S'\n", divi);
 
     if(ajStrGetLen(divi))
-	divdef = ajTableGet(seqTableDiv, divi);
+	divdef = ajTableFetch(seqTableDiv, divi);
 
     if(!divdef)
-	divdef = ajTableGet(seqTableDiv, seqDivisionDef);
+	divdef = ajTableFetch(seqTableDiv, seqDivisionDef);
 
     if(!divdef)
 	return ajStrGetPtr(seqDivisionDef);
@@ -8648,10 +8645,10 @@ const char* ajSeqdivGetGb(const AjPStr divi)
     ajDebug("ajSeqdivGetGb '%S'\n", divi);
 
     if(ajStrGetLen(divi))
-	divdef = ajTableGet(seqTableDiv, divi);
+	divdef = ajTableFetch(seqTableDiv, divi);
 
     if(!divdef)
-	divdef = ajTableGet(seqTableDiv, seqDivisionDef);
+	divdef = ajTableFetch(seqTableDiv, seqDivisionDef);
 
     if(!divdef)
 	return ajStrGetPtr(seqDivisionDef);
@@ -8680,17 +8677,17 @@ static void seqdivInit(void)
     if(seqTableDiv)
 	return;
 
-    seqTableDiv = ajStrTableNewCase(16);
-    seqTableDivEmbl = ajStrTableNewCase(16);
-    seqTableDivDdbj = ajStrTableNewCase(16);
-    seqTableDivGb = ajStrTableNewCase(16);
+    seqTableDiv = ajTablestrNewCaseLen(16);
+    seqTableDivEmbl = ajTablestrNewCaseLen(16);
+    seqTableDivDdbj = ajTablestrNewCaseLen(16);
+    seqTableDivGb = ajTablestrNewCaseLen(16);
 
     seqDivisionDef = ajStrNewC(seqDivision[0].Name);
 
     for(i=0;seqDivision[i].Name;i++)
     {
 	keystr = ajStrNewC(seqDivision[i].Name);
-	if(ajTableGet(seqTableDiv, keystr))
+	if(ajTableFetch(seqTableDiv, keystr))
 	    ajStrDel(&keystr);
 	else
 	    ajTablePut(seqTableDiv, keystr, &seqDivision[i]);
@@ -8698,7 +8695,7 @@ static void seqdivInit(void)
 	if(seqDivision[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Embl);
-	    if(ajTableGet(seqTableDivEmbl, valstr))
+	    if(ajTableFetch(seqTableDivEmbl, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableDivEmbl, valstr, keystr);
@@ -8707,7 +8704,7 @@ static void seqdivInit(void)
 	if(seqDivision[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Ddbj);
-	    if(ajTableGet(seqTableDivDdbj, valstr))
+	    if(ajTableFetch(seqTableDivDdbj, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableDivDdbj, valstr, keystr);
@@ -8716,7 +8713,7 @@ static void seqdivInit(void)
 	if(seqDivision[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqDivision[i].Genbank);
-	    if(ajTableGet(seqTableDivGb, valstr))
+	    if(ajTableFetch(seqTableDivGb, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableDivGb, valstr, keystr);
@@ -8774,7 +8771,7 @@ AjBool ajSeqmolSetEmbl(AjPStr* Pmol, const AjPStr molembl)
 	called = ajTrue;
     }
 
-    molname = ajTableGet(seqTableMolEmbl, molembl);
+    molname = ajTableFetch(seqTableMolEmbl, molembl);
     if(!molname)
 	return ajFalse;
 
@@ -8804,7 +8801,7 @@ AjBool ajSeqmolSetGb(AjPStr* Pmol, const AjPStr molgb)
 	called = ajTrue;
     }
 
-    molname = ajTableGet(seqTableMolGb, molgb);
+    molname = ajTableFetch(seqTableMolGb, molgb);
     if(!molname)
 	return ajFalse;
 
@@ -8854,10 +8851,10 @@ const char* ajSeqmolGetEmbl(const AjPStr mol)
     ajDebug("ajSeqMoleculeGetEmbl '%S'\n", mol);
 
     if(ajStrGetLen(mol))
-	moldef = ajTableGet(seqTableMol, mol);
+	moldef = ajTableFetch(seqTableMol, mol);
 
     if(!moldef)
-	moldef = ajTableGet(seqTableMol, seqMoleculeDef);
+	moldef = ajTableFetch(seqTableMol, seqMoleculeDef);
 
     if(!moldef)
 	return ajStrGetPtr(seqMoleculeDef);
@@ -8892,10 +8889,10 @@ const char* ajSeqmolGetGb(const AjPStr mol)
     ajDebug("ajSeqMoleculeGetGb '%S'\n", mol);
 
     if(ajStrGetLen(mol))
-	moldef = ajTableGet(seqTableMol, mol);
+	moldef = ajTableFetch(seqTableMol, mol);
 
     if(!moldef)
-	moldef = ajTableGet(seqTableMol, seqMoleculeDef);
+	moldef = ajTableFetch(seqTableMol, seqMoleculeDef);
 
     if(!moldef)
 	return ajStrGetPtr(seqMoleculeDef);
@@ -8926,17 +8923,17 @@ static void seqmolInit(void)
     if(seqTableMol)
 	return;
 
-    seqTableMol = ajStrTableNewCase(16);
-    seqTableMolEmbl = ajStrTableNewCase(16);
-    seqTableMolDdbj = ajStrTableNewCase(16);
-    seqTableMolGb = ajStrTableNewCase(16);
+    seqTableMol = ajTablestrNewCaseLen(16);
+    seqTableMolEmbl = ajTablestrNewCaseLen(16);
+    seqTableMolDdbj = ajTablestrNewCaseLen(16);
+    seqTableMolGb = ajTablestrNewCaseLen(16);
 
     seqMoleculeDef = ajStrNewC(seqMolecule[0].Name);
 
     for(i=0;seqMolecule[i].Name;i++)
     {
 	keystr = ajStrNewC(seqMolecule[i].Name);
-	if(ajTableGet(seqTableMol, keystr))
+	if(ajTableFetch(seqTableMol, keystr))
 	    ajStrDel(&keystr);
 	else
 	    ajTablePut(seqTableMol, keystr, &seqMolecule[i]);
@@ -8944,7 +8941,7 @@ static void seqmolInit(void)
 	if(seqMolecule[i].Embl[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Embl);
-	    if(ajTableGet(seqTableMolEmbl, valstr))
+	    if(ajTableFetch(seqTableMolEmbl, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableMolEmbl, valstr, keystr);
@@ -8953,7 +8950,7 @@ static void seqmolInit(void)
 	if(seqMolecule[i].Ddbj[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Ddbj);
-	    if(ajTableGet(seqTableMolDdbj, valstr))
+	    if(ajTableFetch(seqTableMolDdbj, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableMolDdbj, valstr, keystr);
@@ -8962,7 +8959,7 @@ static void seqmolInit(void)
 	if(seqMolecule[i].Genbank[0])
 	{
 	    valstr = ajStrNewC(seqMolecule[i].Genbank);
-	    if(ajTableGet(seqTableMolGb, valstr))
+	    if(ajTableFetch(seqTableMolGb, valstr))
 		ajStrDel(&valstr);
 	    else
 		ajTablePut(seqTableMolGb, valstr, keystr);

@@ -249,20 +249,20 @@ int main(int argc, char **argv)
 		    
 
 		    /* Write file with domain entries that are retained. */
-		    for(iter=ajListIterRead(list_domain), x=0;
-			(domain_tmp=(AjPDomain)ajListIterNext(iter));
+		    for(iter=ajListIterNewread(list_domain), x=0;
+			(domain_tmp=(AjPDomain)ajListIterGet(iter));
 			x++)
 			if(ajUintGet(keep,x))
 			    ajDomainWrite(domain_outf, domain_tmp);
 			else
 			    ajDomainWrite(red_outf, domain_tmp);
-		    ajListIterFree(&iter);	
+		    ajListIterDel(&iter);	
 
 
 		    /* Write diagnostic. */
  		    ajFmtPrintF(errf, "Retained\n");
-		    for(iter=ajListIterRead(list_domain), x=0;
-			(domain_tmp=(AjPDomain)ajListIterNext(iter));
+		    for(iter=ajListIterNewread(list_domain), x=0;
+			(domain_tmp=(AjPDomain)ajListIterGet(iter));
 			x++)
 			if(ajUintGet(keep,x))
 			    ajFmtPrintF(errf, "%S\n", 
@@ -270,15 +270,15 @@ int main(int argc, char **argv)
 		    
 		    
 
-		    ajListIterFree(&iter);
+		    ajListIterDel(&iter);
 		    ajFmtPrintF(errf, "Rejected\n");
-		    for(iter=ajListIterRead(list_domain), x=0;
-			(domain_tmp=(AjPDomain)ajListIterNext(iter));
+		    for(iter=ajListIterNewread(list_domain), x=0;
+			(domain_tmp=(AjPDomain)ajListIterGet(iter));
 			x++)
 			if(!(ajUintGet(keep,x)))
 			    ajFmtPrintF(errf, "%S\n", 
 					ajDomainGetId(domain_tmp));
-		    ajListIterFree(&iter);	
+		    ajListIterDel(&iter);	
 
 		    
 		    /* Write diagnostic. */
@@ -290,22 +290,22 @@ int main(int argc, char **argv)
 
 
 		/* Free up the domain list and create a new one. */
-		iter=ajListIterRead(list_domain);
-		while((domain_tmp=(AjPDomain)ajListIterNext(iter)))
+		iter=ajListIterNewread(list_domain);
+		while((domain_tmp=(AjPDomain)ajListIterGet(iter)))
 		    ajDomainDel(&domain_tmp);
-		ajListIterFree(&iter);	
-		ajListDel(&list_domain);	    
+		ajListIterDel(&iter);	
+		ajListFree(&list_domain);	    
 
 
 		/* Free up the seqs list and create a new one. */
-		iter=ajListIterRead(list_seqs);
-		while((nrseq=(EmbPDmxNrseq)ajListIterNext(iter)))
+		iter=ajListIterNewread(list_seqs);
+		while((nrseq=(EmbPDmxNrseq)ajListIterGet(iter)))
 		{
 		    ajSeqDel(&nrseq->Seq);
 		    AJFREE(nrseq);
 		}
-		ajListIterFree(&iter);	
-		ajListDel(&list_seqs);	    
+		ajListIterDel(&iter);	
+		ajListFree(&list_seqs);	    
 	    }
 	    else
 	    {
@@ -345,11 +345,11 @@ int main(int argc, char **argv)
             ajStrAssignS(&nrseq->Seq->Seq, ajDomainGetSeqPdb(domain));
 
 	ajStrAssignS(&nrseq->Seq->Name, ajDomainGetPdb(domain));
-	ajListPushApp(list_seqs,nrseq);	
+	ajListPushAppend(list_seqs,nrseq);	
 
 
 	/* Add the current domain structure to the list. */
-	ajListPushApp(list_domain,domain);	
+	ajListPushAppend(list_domain,domain);	
     }
     /* End of main application loop. */
     
@@ -380,51 +380,51 @@ int main(int argc, char **argv)
 			     gapextend,threshlow, threshup, ajFalse);
 
 	/* Write file with domain entries that are retained. */
-	for(iter=ajListIterRead(list_domain), x=0;
-	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
+	for(iter=ajListIterNewread(list_domain), x=0;
+	    (domain_tmp=(AjPDomain)ajListIterGet(iter));
 	    x++)
 	    if(ajUintGet(keep,x))
 		ajDomainWrite(domain_outf, domain_tmp);
 	    else
 		ajDomainWrite(red_outf, domain_tmp);
-	ajListIterFree(&iter);	
+	ajListIterDel(&iter);	
     
 
 
 	/* Write diagnostic. */
 	ajFmtPrintF(errf, "Retained\n");
-	for(iter=ajListIterRead(list_domain), x=0;
-	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
+	for(iter=ajListIterNewread(list_domain), x=0;
+	    (domain_tmp=(AjPDomain)ajListIterGet(iter));
 	    x++)
 	    if(ajUintGet(keep,x))
 		ajFmtPrintF(errf, "%S\n", ajDomainGetId(domain_tmp));
-	ajListIterFree(&iter);	
+	ajListIterDel(&iter);	
 	ajFmtPrintF(errf, "Rejected\n");
-	for(iter=ajListIterRead(list_domain), x=0;
-	    (domain_tmp=(AjPDomain)ajListIterNext(iter));
+	for(iter=ajListIterNewread(list_domain), x=0;
+	    (domain_tmp=(AjPDomain)ajListIterGet(iter));
 	    x++)
 	    if(!(ajUintGet(keep,x)))
 		ajFmtPrintF(errf, "%S\n", ajDomainGetId(domain_tmp));
-	ajListIterFree(&iter);	
+	ajListIterDel(&iter);	
     }
     
     /* Free up the domain list. */
-    iter=ajListIterRead(list_domain);
-    while((domain_tmp=(AjPDomain)ajListIterNext(iter)))
+    iter=ajListIterNewread(list_domain);
+    while((domain_tmp=(AjPDomain)ajListIterGet(iter)))
 	ajDomainDel(&domain_tmp);
-    ajListIterFree(&iter);	
-    ajListDel(&list_domain);	    
+    ajListIterDel(&iter);	
+    ajListFree(&list_domain);	    
     
     
     /* Free up the seqs list. */
-    iter=ajListIterRead(list_seqs);
-    while((nrseq=(EmbPDmxNrseq)ajListIterNext(iter)))
+    iter=ajListIterNewread(list_seqs);
+    while((nrseq=(EmbPDmxNrseq)ajListIterGet(iter)))
     {
 	ajSeqDel(&nrseq->Seq);
 	AJFREE(nrseq);
     }
-    ajListIterFree(&iter);	
-    ajListDel(&list_seqs);	    
+    ajListIterDel(&iter);	
+    ajListFree(&list_seqs);	    
     
     
     /* Tidy up. */

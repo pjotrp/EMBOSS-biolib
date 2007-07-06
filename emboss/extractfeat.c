@@ -216,10 +216,10 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
         describeout = ajStrNew();
 
 
-	iter = ajListIterRead(featab->Features);
-	while(ajListIterMore(iter))
+	iter = ajListIterNewread(featab->Features);
+	while(!ajListIterDone(iter))
 	{
-	    gf = ajListIterNext(iter) ;
+	    gf = ajListIterGet(iter) ;
 
 	    /*
 	    ** Determine what sort of thing this feature is. Only one of
@@ -352,7 +352,7 @@ static void extractfeat_FeatSeqExtract(const AjPSeq seq, AjPSeqout seqout,
 	    else
             	ajStrAssignS(&featseq, tmpseq);
 	}
-	ajListIterFree(&iter) ;
+	ajListIterDel(&iter) ;
 	
 	/*
 	** write out any previous sequence(s)
@@ -826,20 +826,20 @@ static void extractfeat_FeatureFilter(AjPFeattable featab,
     /* foreach feature in the feature table */
     if(featab)
     {
-	iter = ajListIter(featab->Features);
-	while(ajListIterMore(iter))
+	iter = ajListIterNew(featab->Features);
+	while(!ajListIterDone(iter))
 	{
-	    gf = (AjPFeature)ajListIterNext(iter);
+	    gf = (AjPFeature)ajListIterGet(iter);
 	    if(!extractfeat_MatchFeature(gf, source, type, sense,
 					 minscore, maxscore, tag, value,
 					 &tagsmatch))
 	    {
 		/* no match, so delete feature from feature table */
 		ajFeatDel(&gf);
-		ajListRemove(iter);
+		ajListIterRemove(iter);
 	    }
 	}
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
    }
 
     return;
@@ -991,7 +991,7 @@ static AjBool extractfeat_MatchPatternTags(const AjPFeature feat,
             break;
         }
     }
-    ajListIterFree(&titer);
+    ajListIterDel(&titer);
 
     ajStrDel(&tagnam);
     ajStrDel(&tagval);
@@ -1050,7 +1050,7 @@ static AjBool extractfeat_MatchPatternDescribe(const AjPFeature feat,
             }
         }	
     }
-    ajListIterFree(&titer);
+    ajListIterDel(&titer);
 
     if(val)
         ajStrAppendC(strout, ") ");

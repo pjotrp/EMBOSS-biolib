@@ -382,12 +382,12 @@ static AjBool seqwords_TermsRead(AjPFile inf,
         
     
     /* Convert the AjPList of terms to array of AjPSeq's. */
-    if(!((*thys)->N=ajListstrToArray((AjPList)list_terms,&(*thys)->Keywords)))
+    if(!((*thys)->N=ajListstrToarray((AjPList)list_terms,&(*thys)->Keywords)))
 	ajWarn("Zero sized list of terms passed into seqwords_TermsRead");
 
 
     /* Clean up.  Free the list (not the nodes!). */
-    ajListstrDel(&list_terms);
+    ajListstrFree(&list_terms);
     ajStrDel(&line);
     ajStrDel(&type);
     

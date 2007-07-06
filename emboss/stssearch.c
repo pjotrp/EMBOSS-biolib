@@ -120,7 +120,7 @@ int main(int argc, char **argv)
 	if(!nprimers)
 	    primList = ajListNew();
 
-	ajListPushApp(primList, primdata);
+	ajListPushAppend(primList, primdata);
 	nprimers++;
     }
 

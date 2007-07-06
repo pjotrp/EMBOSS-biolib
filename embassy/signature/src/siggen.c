@@ -864,7 +864,7 @@ int main(ajint argc, char **argv)
     ajDirDel(&sig_path);
     ajStrDel(&sig_name);
     ajStrDel(&sig_name_sp);
-    ajListDel(&alg_path);
+    ajListFree(&alg_path);
     ajStrDel(&alg_name);
     ajDirDel(&con_path);
     ajStrDel(&con_name);
@@ -873,7 +873,7 @@ int main(ajint argc, char **argv)
     ajStrDel(&pair_mat);
     ajStrDel(&tempres);
 
-    ajListDel(&list);
+    ajListFree(&list);
     ajMatrixfDel(&mat);
 
 

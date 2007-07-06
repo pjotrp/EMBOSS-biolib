@@ -273,7 +273,7 @@ int main(ajint argc, char **argv)
 
 
     /* Tidy up. */
-    ajListDel(&cpdb_path);
+    ajListFree(&cpdb_path);
     ajStrDel(&cpdb_name);
     ajDirDel(&con_path);
     ajStrDel(&con_name);
@@ -644,7 +644,7 @@ static AjBool contacts_ContactMapCalc(AjPInt2d *mat,
     
     
     /*Convert the AjPList of atoms to an array of AjPAtom*/
-    if(!(siz=ajListToArray((AjPList)pdb->Chains[chn-1]->Atoms,
+    if(!(siz=ajListToarray((AjPList)pdb->Chains[chn-1]->Atoms,
 			   (void ***)&arr)))
     {
 	ajWarn("Zero sized list of sequences passed into "

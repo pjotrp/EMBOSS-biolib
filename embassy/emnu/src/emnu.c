@@ -1311,15 +1311,15 @@ populate_program_menus(AjPList plist, ITEM **ip)
     char *buffer;
 
 /* iterate through the programs list to get the longest name */
-    giter = ajListIterRead(plist);
-    while ((gl = ajListIterNext(giter)) != NULL) {
+    giter = ajListIterNewread(plist);
+    while ((gl = ajListIterGet(giter)) != NULL) {
         if (ajStrGetLen(gl->name) > namelen) namelen = ajStrGetLen(gl->name);
     }
-    ajListIterFree(&giter);
+    ajListIterDel(&giter);
 
 /* iterate through the programs list populating the items */
-    giter = ajListIterRead(plist);
-    while ((gl = ajListIterNext(giter)) != NULL) {
+    giter = ajListIterNewread(plist);
+    while ((gl = ajListIterGet(giter)) != NULL) {
     	if (ajStrGetLen(gl->doc) + namelen + 2 > COLS) {
 /* doc is longer than max length - copy string to buffer then truncate */
     	    buffer = (char *) malloc(ajStrGetLen(gl->doc)+1);
@@ -1331,7 +1331,7 @@ populate_program_menus(AjPList plist, ITEM **ip)
             *ip++ = new_item(ajStrGetPtr(gl->name), ajStrGetPtr(gl->doc));
         }
     }
-    ajListIterFree(&giter);
+    ajListIterDel(&giter);
 
 /* +++ debug to see if a blank line at the end of a menu is destructive */
 /* *ip++ = new_item(" ", ""); */
@@ -1362,8 +1362,8 @@ populate_menu(int type, WINDOW *w, ITEM *item)
     switch (type) {
     case GROUPS_MENU:
 /* add on space for 7 extra options plus null at end */
-	ajDebug("starting malloc() for %d items (+8)\n", ajListLength(glist));
-        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListLength(glist)+8));
+	ajDebug("starting malloc() for %d items (+8)\n", ajListGetLength(glist));
+        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListGetLength(glist)+8));
         ip = items;
         *ip++ = new_item("EXIT", "");
         *ip++ = new_item("HELP", "");
@@ -1371,7 +1371,7 @@ populate_menu(int type, WINDOW *w, ITEM *item)
         *ip++ = new_item("NEW FILES", "");
         *ip = new_item("ALPHABETIC LISTING OF ALL PROGRAMS", "");
 /* set item usrptr to the programs list for this group */	
-        ajListFirst(alpha, (void**) &gl);	/* get list of all programs */
+        ajListPeekFirst(alpha, (void**) &gl);	/* get list of all programs */
         set_item_userptr(*ip, (void *)gl->progs);
 	ip++;
 
@@ -1379,15 +1379,15 @@ populate_menu(int type, WINDOW *w, ITEM *item)
         *ip++ = new_item(" ", "");
 /* iterate through the groups list */
 	ajDebug("starting iteration through groups list\n");
-        giter = ajListIterRead(glist);
-        while ((gl = ajListIterNext(giter)) != NULL) {
+        giter = ajListIterNewread(glist);
+        while ((gl = ajListIterGet(giter)) != NULL) {
 	    ajDebug("Next list node: %S\n", gl->name);
             *ip = new_item(ajStrGetPtr(gl->name), "");
 /* set item usrptr to the programs list for this group */
             set_item_userptr(*ip, (void *)gl->progs);
             ip++;
         }
-        ajListIterFree(&giter);
+        ajListIterDel(&giter);
         *ip = (ITEM *) 0;  
     	break;
 
@@ -1401,7 +1401,7 @@ populate_menu(int type, WINDOW *w, ITEM *item)
 	
     case PROGS_MENU:
 /* add on space for 3 extra options plus null at end */
-        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListLength((AjPList)item_userptr(item))+4));
+        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListGetLength((AjPList)item_userptr(item))+4));
         ip = items;
         *ip++ = new_item("EXIT", "");
         *ip++ = new_item("HELP", "");
@@ -1429,16 +1429,16 @@ we should delete the old list */
 	free(name);
 
 /* get list of found programs */
-        ajListFirst(searchlist, (void**)&gl);
+        ajListPeekFirst(searchlist, (void**)&gl);
         plist = gl->progs;
 
 /* add on space for 3 extra options plus null at end */
-        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListLength(plist)+4));
+        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListGetLength(plist)+4));
         ip = items;
         *ip++ = new_item("EXIT", "");
         *ip++ = new_item("HELP", "");
 /* if nothing found then inform user and don't add to *ip */
-	if (ajListLength(plist)) {
+	if (ajListGetLength(plist)) {
             *ip++ = new_item(" ", "");
 	    populate_program_menus(plist, ip);
 	} else {
@@ -1449,7 +1449,7 @@ we should delete the old list */
 	
     case ALPHA_MENU:
 /* add on space for 3 extra options plus null at end */
-        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListLength((AjPList)item_userptr(item))+4));
+        items = (ITEM **)malloc(sizeof(ITEM *)*(ajListGetLength((AjPList)item_userptr(item))+4));
         ip = items;
         *ip++ = new_item("EXIT", "");
         *ip++ = new_item("HELP", "");

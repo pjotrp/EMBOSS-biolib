@@ -260,7 +260,7 @@ int main(ajint argc, char **argv)
 
 
     /*Tidy up */
-    ajListDel(&pdb_path);
+    ajListFree(&pdb_path);
     ajStrDel(&pdb_name);
     ajDirDel(&ccf_path);
     ajStrDel(&ccf_name);

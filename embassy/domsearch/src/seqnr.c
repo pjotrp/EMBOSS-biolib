@@ -203,7 +203,7 @@ int main(int argc, char **argv)
 		seq_tmp->Seq = ajSeqNew();
 		ajStrAssignS(&seq_tmp->Seq->Acc,infhits->hits[x]->Acc);
 		ajStrAssignS(&seq_tmp->Seq->Seq,infhits->hits[x]->Seq);
-		ajListPushApp(seq_list,seq_tmp);		
+		ajListPushAppend(seq_list,seq_tmp);		
 	    }
 	} 
 	else
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 		seq_tmp->Seq = ajSeqNew();
 		ajStrAssignS(&seq_tmp->Seq->Acc, ajSeqsetGetseqAccS(seqset, x));
 		ajStrAssignS(&seq_tmp->Seq->Seq, ajSeqsetGetseqSeqS(seqset, x));
-		ajListPushApp(seq_list,seq_tmp);		
+		ajListPushAppend(seq_list,seq_tmp);		
 	    }
 	    ajSeqsetDel(&seqset);
 	    ajSeqinDel(&seqin);
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
 			seq_tmp->Garbage = ajTrue;
 			ajStrAssignS(&seq_tmp->Seq->Acc,hitlist->hits[x]->Acc);
 			ajStrAssignS(&seq_tmp->Seq->Seq,hitlist->hits[x]->Seq);
-			ajListPushApp(seq_list,seq_tmp);		
+			ajListPushAppend(seq_list,seq_tmp);		
 		    }
 		    embHitlistDel(&hitlist);
 		} 
@@ -309,7 +309,7 @@ int main(int argc, char **argv)
 				     ajSeqsetGetseqAccS(seqset, x));
 			ajStrAssignS(&seq_tmp->Seq->Seq,
 				     ajSeqsetGetseqSeqS(seqset, x));
-			ajListPushApp(seq_list,seq_tmp);		
+			ajListPushAppend(seq_list,seq_tmp);		
 		    }
 		    ajSeqsetDel(&seqset);
 		    ajSeqinDel(&seqin);
@@ -393,7 +393,7 @@ int main(int argc, char **argv)
 			ajStrAssignS(&seq_tmp->Seq->Seq,scopalg->Seqs[x]);
 			/* Remove gap char's & whitespace. */
 			ajStrRemoveGap(&seq_tmp->Seq->Seq);  
-			ajListPushApp(seq_list,seq_tmp);		
+			ajListPushAppend(seq_list,seq_tmp);		
 		    }
 		    ajDmxScopalgDel(&scopalg);
 		} 
@@ -408,7 +408,7 @@ int main(int argc, char **argv)
 				     ajSeqsetGetseqAccS(seqset, x));
 			ajStrAssignS(&seq_tmp->Seq->Seq,
 				     ajSeqsetGetseqSeqS(seqset, x));
-			ajListPushApp(seq_list,seq_tmp);		
+			ajListPushAppend(seq_list,seq_tmp);		
 		    }
 		    ajSeqsetDel(&seqset);
 		    ajSeqinDel(&seqin);
@@ -430,7 +430,7 @@ int main(int argc, char **argv)
 			     gapextend, threshlow, threshup, ajTrue)))
 		ajFatal("embDmxSeqNR failure in seqnr");
 	}	
-	seq_siz = ajListLength(seq_list);
+	seq_siz = ajListGetLength(seq_list);
 	for(x=0; x<seq_siz; x++)
 	    if(ajUintGet(keep, x) == 1)
 		ajUintPut(&nokeep, x, 0);
@@ -462,14 +462,14 @@ int main(int argc, char **argv)
 	    ajSeqDel(&seq_tmp->Seq);
 	    AJFREE(seq_tmp);
 	}
-	ajListDel(&seq_list);
+	ajListFree(&seq_list);
 	ajUintDel(&keep);	
 	ajUintDel(&nokeep);
     }	    
 
 
     /* Tidy up. */
-    ajListDel(&in);
+    ajListFree(&in);
     if(singlets)
 	ajDirDel(&singlets);
     if(insets)

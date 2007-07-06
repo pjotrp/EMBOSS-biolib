@@ -208,7 +208,7 @@ int main(int argc, char **argv, char **env)
 	embExitBad();
 
     /* Set output format to fasta */
-    ajSeqOutSetFormat( fil_file, tmp);
+    ajSeqoutSetFormatS( fil_file, tmp);
 
     while(ajSeqallNext(seqall, &seq))
     {

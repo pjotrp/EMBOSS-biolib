@@ -402,7 +402,7 @@ int main(int argc, char **argv)
     ajFmtPrintF(errf, "\n\n\n");    
     
 
-    numfiles  = ajListLength(hitsfiles);
+    numfiles  = ajListGetLength(hitsfiles);
 /*    printf("numfiles: %d\n", numfiles); */
     
 
@@ -482,10 +482,10 @@ int main(int argc, char **argv)
     for(x=0; x<numfiles; x++)    
     {
 	ajFmtPrintF(errf, ">>>>>  FILE %d >>>>>\n", x);
-	iter = ajListIterRead(hitslists[x]);
-	while((tmphit = (AjPHitdata)ajListIterNext(iter)))
+	iter = ajListIterNewread(hitslists[x]);
+	while((tmphit = (AjPHitdata)ajListIterGet(iter)))
 	    ajFmtPrintF(errf, "%S\n", tmphit->Class);
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
 	ajFmtPrintF(errf, "\n\n\n");    	
     }	
     ajFmtPrintF(errf, "NUMBER OF RELATIVES\n");
@@ -709,7 +709,7 @@ int main(int argc, char **argv)
     /*  For ACD variables */
     while(ajListPop(hitsfiles, (void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&hitsfiles);
+    ajListFree(&hitsfiles);
     ajStrDel(&mode[0]);
     AJFREE(mode);
     if(modei==2)
@@ -737,7 +737,7 @@ int main(int argc, char **argv)
     {
 	while((ajListPop(hitslists[x], (void **)&tmphit)))
 	    rocplot_HitdataDel(&tmphit);
-	ajListDel(&hitslists[x]);
+	ajListFree(&hitslists[x]);
     }
     AJFREE(hitslists);
     ajIntDel(&nrelatives);
@@ -892,8 +892,8 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 
     
     /* Memory is NOT freed before the ajFatal below */
-    iter = ajListIterRead(hitsfiles);
-    while((hitsfile = (AjPStr)ajListIterNext(iter)))
+    iter = ajListIterNewread(hitsfiles);
+    while((hitsfile = (AjPStr)ajListIterGet(iter)))
     {
 	/* Create the list of file names only from full paths */
 	tmpname   = ajStrNew();
@@ -906,7 +906,7 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 	if(!MAJSTRGETLEN(tmpname))
 	    ajFatal("Zero length file name in rocplot_read_hits_files");
 	else
-	    ajListstrPushApp(tmpnames, tmpname);
+	    ajListstrPushAppend(tmpnames, tmpname);
 
 	/* DIAGNOSTIC */
 	ajFmtPrint("%S\n", hitsfile);
@@ -996,7 +996,7 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 	    }
 	    else
 		ajStrAssignS(&tmphit->Class, class);
-	    ajListPushApp(hitslists[filecnt], (void *)tmphit);
+	    ajListPushAppend(hitslists[filecnt], (void *)tmphit);
 	}
 	/* Check there are at least as many FALSE hits as the ROC number */
 	if(nfalse<roctmp)
@@ -1013,10 +1013,10 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 
 	filecnt++;
     }   
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     /* Create array of file names only */
-    ajListToArray(tmpnames, (void***)hitsnames);
+    ajListToarray(tmpnames, (void***)hitsnames);
     
     /* Assign ROC number */
     *roc = roctmp;
@@ -1053,7 +1053,7 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
     ajStrDel(&token5);
     ajStrDel(&class);
     ajStrDel(&accession);
-    ajListstrDel(&tmpnames);
+    ajListstrFree(&tmpnames);
 
 
     return ajTrue;
@@ -1147,25 +1147,25 @@ static AjBool rocplot_hit_is_unique(AjPHitdata  hit, AjPList mrglist,
     AjIList     iter      = NULL;    
     AjPHitdata  tmphit    = NULL; 
 
-    iter = ajListIterRead(mrglist);
-    while((tmphit = (AjPHitdata)ajListIterNext(iter)))
+    iter = ajListIterNewread(mrglist);
+    while((tmphit = (AjPHitdata)ajListIterGet(iter)))
     {
 	if(norange) 
 	{
 	    if(ajStrMatchS(tmphit->Acc, hit->Acc))
 	    {
-		ajListIterFree(&iter);
+		ajListIterDel(&iter);
 		return ajFalse;
 	    }
 	}
 	else
 	    if(rocplot_overlap(tmphit, hit, thresh))
 	    {
-		ajListIterFree(&iter);
+		ajListIterDel(&iter);
 		return ajFalse;
 	    }
     }
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     return ajTrue;
 }
 
@@ -1304,7 +1304,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 
     AJCNEW0(iters, numfiles);
     for(x=0; x<numfiles; x++)    
-	iters[x]=ajListIterRead(hitslists[x]);
+	iters[x]=ajListIterNewread(hitslists[x]);
     
     /* Make hitcnt array safe for calls to ajIntGet */
     for(x=0; x<numfiles; x++)	    
@@ -1330,7 +1330,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 	    
 	    for(x=0; x<numfiles; x++)	    
 	    {
-		if((tmphit = (AjPHitdata)ajListIterNext(iters[x])))
+		if((tmphit = (AjPHitdata)ajListIterGet(iters[x])))
 		{
 		    if(((datamode==1) && 
 			(rocplot_hit_is_unique(tmphit, mrglist,
@@ -1371,7 +1371,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			xyptr = rocplot_XYdataNew();
 			xyptr->X = (1 - spec);
 			xyptr->Y = sens;
-			ajListPushApp(xylist, (void *)xyptr);
+			ajListPushAppend(xylist, (void *)xyptr);
 			
 			if(nottrue==maxfalse)
 			{
@@ -1389,11 +1389,11 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 			    if(y!=ajIntGet(*hitcnt, 0))
 				ajFatal("Discrepancy in hits count in "
 					"rocplot_calcdata");
-			    ajListDel(&xylist);
+			    ajListFree(&xylist);
 			    break;
 			}
 		    }
-		    ajListPushApp(mrglist, (void *) tmphit);
+		    ajListPushAppend(mrglist, (void *) tmphit);
 		}
 		else
 		    done[x]=ajTrue;
@@ -1434,7 +1434,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 	    
 	    xylist = ajListNew();
 
-	    while((tmphit = (AjPHitdata)ajListIterNext(iters[x])))
+	    while((tmphit = (AjPHitdata)ajListIterGet(iters[x])))
 	    {
 		ajIntInc(hitcnt, x);
 		
@@ -1477,7 +1477,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		xyptr->X = (1 - spec);
 		xyptr->Y = sens;
 
-		ajListPushApp(xylist, (void *)xyptr);
+		ajListPushAppend(xylist, (void *)xyptr);
 			
 		/* Housekeeping */
 		reset = ajFalse;
@@ -1505,7 +1505,7 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
 		    if(y!=ajIntGet(*hitcnt, x))
 			ajFatal("Discrepancy in hits count in "
 				"rocplot_calcdata");
-		    ajListDel(&xylist);
+		    ajListFree(&xylist);
 		    break;
 		}
 	    }
@@ -1527,11 +1527,11 @@ static AjBool rocplot_calcdata(int mode, int multimode, int datamode,
     }
     
     /* Free memory and return */
-    ajListDel(&mrglist);
+    ajListFree(&mrglist);
     AJFREE(done);
     
     for(x=0; x<numfiles; x++)
-	ajListIterFree(&iters[x]);
+	ajListIterDel(&iters[x]);
     AJFREE(iters);
 
     return ajTrue;

@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     /* Tidy up and return. */
     while(ajListPop(dirlist,(void **)&tmp))
 	ajStrDel(&tmp);
-    ajListDel(&dirlist);
+    ajListFree(&dirlist);
     ajHetDel(&dic);
     ajFileClose(&fin);
     ajFileClose(&fout); 
@@ -197,13 +197,13 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 		
 
 		/* Initialise iterator to iterate through the list <listhet>. */
-		iter=ajListIterRead(listhet);
+		iter=ajListIterNewread(listhet);
 
 		foundhet=ajFalse;
 
 		/* Iterate through the list, make <hettemp> point to the current
 		   node. */		
-		while((hettemp=(AjPStr)ajListIterNext(iter)))
+		while((hettemp=(AjPStr)ajListIterGet(iter)))
 		{
 		    /* If <het> matches the current node, break. */
 		    if(ajStrMatchS(hettemp, het))
@@ -223,7 +223,7 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 		
 		
 		/* Free the list iterator. */
-		ajListIterFree(&iter);
+		ajListIterDel(&iter);
 	    }
 	}
 	
@@ -232,10 +232,10 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 	
 	/* Compare list of heterogens from this file to our dictionary. 
 	   Initialise iterator to iterate through the list <listhet>. */
-	iter=ajListIterRead(listhet);
+	iter=ajListIterNewread(listhet);
 
 	/* Iterate through list, make <hettemp> point to the current node. */		
-	while((hettemp=(AjPStr)ajListIterNext(iter)))
+	while((hettemp=(AjPStr)ajListIterGet(iter)))
 	{
 	    /* Run through each heterogen in our dictionary and 
 	       increment the counter if we have a match*/
@@ -253,18 +253,18 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 	/* Close file and tidy up. */
 	ajFileClose(&fptr);
 	ajStrDel(&fname);
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
 	
 	/* Free the list and its contents. */
-	iter=ajListIterRead(listhet);
+	iter=ajListIterNewread(listhet);
 
-	while((hettemp=(AjPStr)ajListIterNext(iter)))
+	while((hettemp=(AjPStr)ajListIterGet(iter)))
 	    ajStrDel(&hettemp);
 	
-	ajListstrDel(&listhet);
+	ajListstrFree(&listhet);
 
 	/* Free the list iterator. */
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
     }
 
 

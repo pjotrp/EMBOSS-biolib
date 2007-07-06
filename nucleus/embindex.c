@@ -698,11 +698,11 @@ ajuint embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
 	ajFileNameTrim(&file);
 	for(j=0;j<nremove && ! ajStrMatchWildS(file,removelist[j]);++j);
 	if(j == nremove)
-	    ajListPushApp(lfiles,(void *)file);
+	    ajListPushAppend(lfiles,(void *)file);
     }
 
-    nfiles =  ajListToArray(lfiles,(void ***)&(*filelist));
-    ajListDel(&lfiles);
+    nfiles =  ajListToarray(lfiles,(void ***)&(*filelist));
+    ajListFree(&lfiles);
 
     for(i=0; i<nremove;++i)
 	ajStrDel(&removelist[i]);
@@ -821,18 +821,18 @@ void embBtreeEntryDel(EmbPBtreeEntry* thys)
 
     while(ajListPop(pthis->files,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&pthis->files);
+    ajListFree(&pthis->files);
 
     while(ajListPop(pthis->reffiles,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&pthis->reffiles);
+    ajListFree(&pthis->reffiles);
 
     ajStrDel(&pthis->id);
-    ajListDel(&pthis->ac);
-    ajListDel(&pthis->de);
-    ajListDel(&pthis->sv);
-    ajListDel(&pthis->kw);
-    ajListDel(&pthis->tx);
+    ajListFree(&pthis->ac);
+    ajListFree(&pthis->de);
+    ajListFree(&pthis->sv);
+    ajListFree(&pthis->kw);
+    ajListFree(&pthis->tx);
 
     *thys = NULL;
     AJFREE(pthis);
@@ -969,7 +969,7 @@ ajuint embBtreeGetFiles(EmbPBtreeEntry entry, const AjPStr fdirectory,
 	for(j=0;j<nremove && !ajStrMatchWildS(file,removelist[j]);++j);
 	if(j == nremove)
 	{
-	    ajListPushApp(entry->files,(void *)file);
+	    ajListPushAppend(entry->files,(void *)file);
 	    ++count;
 	}
     }
@@ -1016,7 +1016,7 @@ AjBool embBtreeWriteEntryFile(const EmbPBtreeEntry entry)
     ajFmtPrintF(entfile,"# Release: %S\n",entry->release);
     ajFmtPrintF(entfile,"# Date:    %S\n",entry->date);
 
-    do_ref = (ajListLength(entry->reffiles)) ? ajTrue : ajFalse;
+    do_ref = (ajListGetLength(entry->reffiles)) ? ajTrue : ajFalse;
     if(!do_ref)
 	ajFmtPrintF(entfile,"Single");
     else
@@ -1029,15 +1029,15 @@ AjBool embBtreeWriteEntryFile(const EmbPBtreeEntry entry)
 	{
 	    ajListPop(entry->files,(void **)&tmpstr);
 	    ajFmtPrintF(entfile,"%S\n",tmpstr);
-	    ajListPushApp(entry->files,(void *)tmpstr);
+	    ajListPushAppend(entry->files,(void *)tmpstr);
 	}
 	else
 	{
 	    ajListPop(entry->files,(void **)&tmpstr);
 	    ajListPop(entry->reffiles,(void **)&refstr);
 	    ajFmtPrintF(entfile,"%S %S\n",tmpstr, refstr);
-	    ajListPushApp(entry->files,(void *)tmpstr);
-	    ajListPushApp(entry->reffiles,(void *)refstr);
+	    ajListPushAppend(entry->files,(void *)tmpstr);
+	    ajListPushAppend(entry->reffiles,(void *)refstr);
 	}
 	
     }

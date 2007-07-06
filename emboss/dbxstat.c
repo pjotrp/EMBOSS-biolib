@@ -31,8 +31,8 @@
 ** @alias DbxstatSNames
 ** @alias DbxstatONames
 **
-** @attr Name [const char*] Parser name
-** @attr Parser [(AjBool*)] Parser function
+** @attr name [const char*] Field name
+** @attr iname [const char*] Field index name
 ** @@
 ******************************************************************************/
 

@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     **  and ajStrTableHashCase as the hash function. Initial size of 50
     **  is used
     */
-    type   = ajTableNew(50, ajStrTableCmpCase, ajStrTableHashCase);
+    type   = ajTableNewFunctionLen(50, ajStrTableCmpCase, ajStrTableHashCase);
     list = ajListstrNew();
     while(ajFileReadLine(gfffile, &line))
     {
@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 	if(temp)
 	{
 	    /* does the key "temp" already exist in the table */
-	    intptr = ajTableGet(type, temp);
+	    intptr = ajTableFetch(type, temp);
 
 	    if(!intptr)
 	    {				/* if not i.e. no key returned */
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 	    }
 	}
     }
-    ajUser("%d types found",ajTableLength(type));
+    ajUser("%d types found",ajTableGetLength(type));
 
     /* use the map function to print out the results */
     ajTableMap(type, demotable_typePrint, NULL);
@@ -98,10 +98,10 @@ int main(int argc, char **argv)
 
     /* clean up the table using a list of known keys */
 
-    iter = ajListIterRead(list);
-    while (ajListIterMore(iter))
+    iter = ajListIterNewread(list);
+    while (!ajListIterDone(iter))
     {
-	tmpkey = (AjPStr) ajListIterNext(iter);
+	tmpkey = (AjPStr) ajListIterGet(iter);
 	tmpval = ajTableRemoveKey(type, tmpkey, (void**)&trukey);
 	if(tmpval) {
 	    ajUser("Deleting '%S' %d", trukey, *tmpval);
@@ -118,8 +118,8 @@ int main(int argc, char **argv)
     ajFileClose(&gfffile);
     ajStrDel(&line);
     ajRegFree(&gffexp);
-    ajListIterFree(&iter);
-    ajListstrFree(&list);
+    ajListIterDel(&iter);
+    ajListstrFreeData(&list);
 
     embExit();
     return 0;

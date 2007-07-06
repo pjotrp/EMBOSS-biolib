@@ -207,7 +207,7 @@ int main(int argc, char **argv)
     
     ajSeqDel(&seq);
     ajStrDel(&substr);
-    ajListDel(&ajb);
+    ajListFree(&ajb);
     
     if(outf)
 	ajFileClose(&outf);
@@ -511,7 +511,7 @@ static void helixturnhelix_report_hits(AjPList ajb,
     hp  = ajUintNew();
     hsd = ajFloatNew();
 
-    n = ajListToArray(ajb, (void***) &lp);
+    n = ajListToarray(ajb, (void***) &lp);
 
     if(!n)
     {

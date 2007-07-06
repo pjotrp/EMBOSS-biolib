@@ -124,7 +124,7 @@ int main(ajint argc, char **argv)
     
 
     /* Determine number of nodes on list    */
-    num = ajListLength(cpdb_path);
+    num = ajListGetLength(cpdb_path);
 
 
 
@@ -176,12 +176,12 @@ int main(ajint argc, char **argv)
         ajFileClose(&fptr_cpdb);
 	ajStrDel(&temp);
     }
-    num = ajListLength(entry);
+    num = ajListGetLength(entry);
     
 
     /* Sort the list of pdb codes & convert to an array. */
     ajListSort(entry, domainreso_StrComp);
-    ajListToArray(entry, (void ***)&entryarr);
+    ajListToarray(entry, (void ***)&entryarr);
     
     
     /* Read DCF file and compare IDs to those in list          
@@ -203,7 +203,7 @@ int main(ajint argc, char **argv)
     ajStrDel(&cpdb_name);
     ajFileClose(&dcfout);
     ajFileClose(&dcfin);
-    ajListDel(&cpdb_path);
+    ajListFree(&cpdb_path);
     AJFREE(entryarr);
     
   

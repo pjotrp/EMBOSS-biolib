@@ -484,7 +484,7 @@ int main(int argc, char **argv)
     
     listTestFiles = embDbiFileListExc(directory, filename, exclude);
     ajListSort(listTestFiles, ajStrVcmp);
-    nfiles = ajListToArray(listTestFiles, &testFiles);
+    nfiles = ajListToarray(listTestFiles, &testFiles);
     
     if(!nfiles)
 	ajFatal("No files selected");
@@ -624,7 +624,7 @@ int main(int argc, char **argv)
 	embDbiRmEntryFile(dbname, cleanup);
     
     ajListMap(idlist, embDbiEntryDelMap, NULL);
-    ajListDel(&idlist);
+    ajListFree(&idlist);
     AJFREE(entryIds);
 
     ajStrDelarray(&fields);
@@ -668,7 +668,7 @@ int main(int argc, char **argv)
 
     ajFileClose(&logfile);
 
-    ajListstrFree(&listTestFiles);
+    ajListstrFreeData(&listTestFiles);
 
     ajStrDel(&t);
     ajStrDel(&id);
@@ -835,7 +835,7 @@ static EmbPEntry dbiblast_nextblastentry(PBlastDb db, ajint ifile,
 	/* field tokens as list, then move to dbiblastEntry->field */
 	for(ifield=0; ifield < nfields; ifield++)
 	{
-	    dbiblastEntry->nfield[ifield] = ajListLength(fdl[ifield]);
+	    dbiblastEntry->nfield[ifield] = ajListGetLength(fdl[ifield]);
 
 	    if(dbiblastEntry->nfield[ifield])
 	    {
@@ -1238,20 +1238,20 @@ static AjBool dbiblast_parseNcbi(const AjPStr line, AjPFile * alistfile,
 	{
 	    fd = ajCharNewS(tmpac);
 	    countfield[accfield]++;
-	    ajListPushApp(fdlist[accfield], fd);
+	    ajListPushAppend(fdlist[accfield], fd);
 	}
 
         if(svnfield >= 0 && ajStrGetLen(tmpsv))
 	{
 	    fd = ajCharNewS(tmpsv);
 	    countfield[svnfield]++;
-	    ajListPushApp(fdlist[svnfield], fd);
+	    ajListPushAppend(fdlist[svnfield], fd);
 	}
 
         if(svnfield >= 0 && ajStrGetLen(tmpgi))
 	{
 	    fd = ajCharNewS(tmpgi);
-	    ajListPushApp(fdlist[svnfield], fd);
+	    ajListPushAppend(fdlist[svnfield], fd);
 	}
 
         if(desfield >= 0 && ajStrGetLen(tmpdes))
@@ -1264,7 +1264,7 @@ static AjBool dbiblast_parseNcbi(const AjPStr line, AjPFile * alistfile,
 		ajDebug("++des '%S'\n", tmpfd);
 		fd = ajCharNewS(tmpfd);
 		countfield[desfield]++;
-		ajListPushApp(fdlist[desfield], fd);
+		ajListPushAppend(fdlist[desfield], fd);
 		ajRegPost(wrdexp, &tmpdes);
 	    }
 	}
@@ -1354,7 +1354,7 @@ static AjBool dbiblast_parseGcg(const AjPStr line, AjPFile * alistfile,
 	else
 	{
 	    ac = ajCharNewS(mytmpac);
-	    ajListPushApp(myfdl[accfield], ac);
+	    ajListPushAppend(myfdl[accfield], ac);
 	}
     }
 
@@ -1441,7 +1441,7 @@ static AjBool dbiblast_parseSimple(const AjPStr line,
 	else
 	{
 	    ac = ajCharNewS(mytmpac);
-	    ajListPushApp(myfdl[accfield], ac);
+	    ajListPushAppend(myfdl[accfield], ac);
 	}
     }
 

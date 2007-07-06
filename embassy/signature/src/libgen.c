@@ -318,7 +318,7 @@ int main(int argc, char **argv)
     /* Tidy up. */
     ajStrDel(&mode[0]);
     AJFREE(mode);
-    ajListDel(&indir);
+    ajListFree(&indir);
     ajDirDel(&outdir);
     ajStrDel(&seqsfname);
     ajStrDel(&cmd);

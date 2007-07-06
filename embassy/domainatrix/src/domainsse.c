@@ -150,13 +150,13 @@ int main(int argc, char **argv)
         sse =ajStrNew();
 
         /* Initialise the iterator. */
-        /* iter=ajListIter(pdb->Chains[0]->Atoms); */
-	iter=ajListIter(pdb->Chains[0]->Residues);
+        /* iter=ajListIterNew(pdb->Chains[0]->Atoms); */
+	iter=ajListIterNew(pdb->Chains[0]->Residues);
 
         /* Iiterate through the list of residues in the Pdb object,
 	   temp_res is an AjPResidue used to point to the current residue. */
         num=0;
-        while((temp_res=(AjPResidue)ajListIterNext(iter)))
+        while((temp_res=(AjPResidue)ajListIterGet(iter)))
 	{
 	    /* If this residue is part of a new element.
 	       eNum is the Serial number of the STRIDE-assigned element. */
@@ -171,7 +171,7 @@ int main(int argc, char **argv)
 	/* Add the completed sse to the scop structure. */
         ajStrAssignS(&scop->Sse, sse);
 	
-        ajListIterFree(&iter);
+        ajListIterDel(&iter);
 
         /* Construct SSS string from data in pdb object. */
        
@@ -179,11 +179,11 @@ int main(int argc, char **argv)
         sss =ajStrNew();
 
         /* Initialise the iterator. */
-/*        iter=ajListIter(pdb->Chains[0]->Atoms); */
-        iter=ajListIter(pdb->Chains[0]->Residues);
+/*        iter=ajListIterNew(pdb->Chains[0]->Atoms); */
+        iter=ajListIterNew(pdb->Chains[0]->Residues);
 
         /* Iiterate through the list of residues in the Pdb object. */
-        while((temp_res=(AjPResidue)ajListIterNext(iter)))
+        while((temp_res=(AjPResidue)ajListIterGet(iter)))
 	{
             /* Idx is the Residue number - index into sequence. */
 	    /* Append one instance of eType for each new residue to make ss
@@ -195,7 +195,7 @@ int main(int argc, char **argv)
 	}	
 	/* Add the completed sss to the scop structure. */
         ajStrAssignS(&scop->Sss, sss);
-        ajListIterFree(&iter);
+        ajListIterDel(&iter);
 
 	/* Write out the scop structure to the scop output file. */
 	if(!ajScopWrite(dcf_outf, scop))

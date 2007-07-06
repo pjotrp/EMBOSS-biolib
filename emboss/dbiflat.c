@@ -273,7 +273,7 @@ int main(int argc, char **argv)
 
     listInputFiles = embDbiFileListExc(directory, filename, exclude);
     ajListSort(listInputFiles, ajStrVcmp);
-    nfiles = ajListToArray(listInputFiles, &inputFiles);
+    nfiles = ajListToarray(listInputFiles, &inputFiles);
     if(!nfiles)
 	ajFatal("No files selected");
 
@@ -477,8 +477,8 @@ int main(int argc, char **argv)
     }
 
     ajListMap(idlist, embDbiEntryDelMap, NULL);
-    ajListDel(&idlist);
-    ajListstrFree(&listInputFiles);
+    ajListFree(&idlist);
+    ajListstrFreeData(&listInputFiles);
     AJFREE(entryIds);
     ajStrDel(&curfilename);
 
@@ -571,7 +571,7 @@ static EmbPEntry dbiflat_NextFlatEntry(AjPFile libr, ajuint ifile,
 	/* field tokens as list, then move to dbiflatEntry->field */
 	for(ifield=0; ifield < nfields; ifield++)
 	{
-	    dbiflatEntry->nfield[ifield] = ajListLength(fdl[ifield]);
+	    dbiflatEntry->nfield[ifield] = ajListGetLength(fdl[ifield]);
 
 	    if(dbiflatEntry->nfield[ifield])
 	    {
@@ -756,7 +756,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[svnfield], fd);
+		    ajListPushAppend(myfdl[svnfield], fd);
 		}
 		svndone = ajTrue;
 	    }
@@ -811,7 +811,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 			    embDbiMaxlen(&tmpac, &maxFieldLen[accfield]);
 			    countfield[accfield]++;
 			    fd = ajCharNewS(tmpac);
-			    ajListPushApp(myfdl[accfield], fd);
+			    ajListPushAppend(myfdl[accfield], fd);
 			}
 			ajStrDel(&tmpac);
 		    }
@@ -828,7 +828,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		    else
 		    {
 			fd = ajCharNewS(tmpfd);
-			ajListPushApp(myfdl[accfield], fd);
+			ajListPushAppend(myfdl[accfield], fd);
 		    }
 		}
 		ajRegPost(regEmblAcc, &tmpline);
@@ -850,7 +850,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[desfield], fd);
+		    ajListPushAppend(myfdl[desfield], fd);
 		}
 		ajRegPost(regEmblWrd, &tmpline);
 	    }
@@ -871,7 +871,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[svnfield], fd);
+		    ajListPushAppend(myfdl[svnfield], fd);
 		}
 		ajRegPost(regEmblVer, &tmpline);
 	    }
@@ -897,7 +897,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[keyfield], fd);
+		    ajListPushAppend(myfdl[keyfield], fd);
 		}
 	    }
 	    continue;
@@ -921,7 +921,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[taxfield], fd);
+		    ajListPushAppend(myfdl[taxfield], fd);
 		}
 	    }
 	    continue;
@@ -942,7 +942,7 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
 	else
 	{
 	    fd = ajCharNewS(tmpfd);
-	    ajListPushApp(myfdl[svnfield], fd);
+	    ajListPushAppend(myfdl[svnfield], fd);
 	}
     }
 
@@ -1105,7 +1105,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[accfield], fd);
+		    ajListPushAppend(myfdl[accfield], fd);
 		}
 		ajRegPost(regGbWrd, &tmpline);
 	    }
@@ -1128,7 +1128,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[desfield], fd);
+		    ajListPushAppend(myfdl[desfield], fd);
 		}
 		ajRegPost(regGbWrd, &tmpline);
 	    }
@@ -1155,7 +1155,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[keyfield], fd);
+		    ajListPushAppend(myfdl[keyfield], fd);
 		}
 	    }
 	    continue;
@@ -1181,7 +1181,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[taxfield], fd);
+		    ajListPushAppend(myfdl[taxfield], fd);
 		}
 	    }
 	    continue;
@@ -1201,7 +1201,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[svnfield], fd);
+		    ajListPushAppend(myfdl[svnfield], fd);
 		}
 		svndone = ajTrue;
 
@@ -1217,7 +1217,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[svnfield], fd);
+		    ajListPushAppend(myfdl[svnfield], fd);
 		}
 	    }
 	    continue;
@@ -1240,7 +1240,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 	else
 	{
 	    fd = ajCharNewS(tmpfd);
-	    ajListPushApp(myfdl[svnfield], fd);
+	    ajListPushAppend(myfdl[svnfield], fd);
 	}
     }
 
@@ -1412,7 +1412,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[accfield], fd);
+		    ajListPushAppend(myfdl[accfield], fd);
 		}
 		ajRegPost(regRefseqWrd, &tmpline);
 	    }
@@ -1434,7 +1434,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[desfield], fd);
+		    ajListPushAppend(myfdl[desfield], fd);
 		}
 		ajRegPost(regRefseqWrd, &tmpline);
 	    }
@@ -1461,7 +1461,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[keyfield], fd);
+		    ajListPushAppend(myfdl[keyfield], fd);
 		}
 	    }
 	    continue;
@@ -1486,7 +1486,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[taxfield], fd);
+		    ajListPushAppend(myfdl[taxfield], fd);
 		}
 	    }
 	    continue;
@@ -1506,7 +1506,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[svnfield], fd);
+		    ajListPushAppend(myfdl[svnfield], fd);
 		}
 		svndone = ajTrue;
 
@@ -1520,7 +1520,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 		else
 		{
 		    fd = ajCharNewS(tmpfd);
-		    ajListPushApp(myfdl[svnfield], fd);
+		    ajListPushAppend(myfdl[svnfield], fd);
 		}
 	    }
 	    continue;
@@ -1543,7 +1543,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 	else
 	{
 	    fd = ajCharNewS(tmpfd);
-	    ajListPushApp(myfdl[svnfield], fd);
+	    ajListPushAppend(myfdl[svnfield], fd);
 	}
     }
 

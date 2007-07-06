@@ -157,7 +157,7 @@ int main(ajint argc, char **argv)
     
     /* Read contact maps into list */
     cmap_list = ajCmapReadAllNew(conf);
-    iter      = ajListIter(cmap_list);
+    iter      = ajListIterNew(cmap_list);
     
     
     
@@ -168,7 +168,7 @@ int main(ajint argc, char **argv)
     {
 	/* Process each contact map (protein-ligand interaction site)
            in turn */
-	while( (cmap=(AjPCmap)ajListIterNext(iter)))
+	while( (cmap=(AjPCmap)ajListIterGet(iter)))
 	{
 	    /* 3D signature */
 	    if(typei==2)
@@ -203,8 +203,8 @@ int main(ajint argc, char **argv)
 		    else
 		    {
 			foundresidue = ajFalse;
-			iter_residue = ajListIter(pdb->Chains[cmap->Chn1-1]->Residues);
-			while((residue = (AjPResidue) ajListIterNext(iter_residue)))
+			iter_residue = ajListIterNew(pdb->Chains[cmap->Chn1-1]->Residues);
+			while((residue = (AjPResidue) ajListIterGet(iter_residue)))
 			{
 			    if(residue->Idx == x+1)
 			    {
@@ -220,7 +220,7 @@ int main(ajint argc, char **argv)
 			}
 			if(!foundresidue)
 			    ajFatal("Residue not found in siggenlig");
-			ajListIterFree(&iter_residue);
+			ajListIterDel(&iter_residue);
 		    }
 		    if(firstpos)
 			ajUintPut(&sigdat->gsiz, 0, x);
@@ -229,7 +229,7 @@ int main(ajint argc, char **argv)
 
 		    ajUintPut(&sigdat->gfrq, 0, 1);
 
-		    ajListPushApp(sigdat_list, sigdat);
+		    ajListPushAppend(sigdat_list, sigdat);
 		    prevpos=x;
 		    firstpos = ajFalse;
 		}
@@ -241,8 +241,8 @@ int main(ajint argc, char **argv)
 		
 		
 	    /* Convert list of Sigdata objects into array in signature */
-	    sig->npos = ajListToArray(sigdat_list, (void***)&sig->dat);
-	    ajListDel(&sigdat_list);
+	    sig->npos = ajListToarray(sigdat_list, (void***)&sig->dat);
+	    ajListFree(&sigdat_list);
 	    
 		
 	    /* WRITE SIGNATURE FILE */
@@ -265,7 +265,7 @@ int main(ajint argc, char **argv)
     {
 	/* Process each contact map (protein-ligand interaction site)
            in turn */
-	while( (cmap=(AjPCmap)ajListIterNext(iter)))
+	while( (cmap=(AjPCmap)ajListIterGet(iter)))
 	{
 	    /* 3D signature */
 	    if(typei==2)
@@ -301,8 +301,8 @@ int main(ajint argc, char **argv)
 		    else
 		    {
 			foundresidue = ajFalse;
-			iter_residue = ajListIter(pdb->Chains[cmap->Chn1-1]->Residues);
-			while((residue = (AjPResidue) ajListIterNext(iter_residue)))
+			iter_residue = ajListIterNew(pdb->Chains[cmap->Chn1-1]->Residues);
+			while((residue = (AjPResidue) ajListIterGet(iter_residue)))
 			{
 			    if(residue->Idx == x+1)
 			    {
@@ -318,7 +318,7 @@ int main(ajint argc, char **argv)
 			}
 			if(!foundresidue)
 			    ajFatal("Residue not found in siggenlig");
-			ajListIterFree(&iter_residue);
+			ajListIterDel(&iter_residue);
 		    }
 		    
 		    
@@ -331,12 +331,12 @@ int main(ajint argc, char **argv)
 
 
 		    if(((x - prevpos -1) <= gapdistance) || (firstpos))
-			ajListPushApp(sigdat_list, sigdat);
+			ajListPushAppend(sigdat_list, sigdat);
 		    else
 		    {
 			/* Either create new signature or delete list
                            of Sigdat objects */
-			if((ajListLength(sigdat_list) >= patchsize))
+			if((ajListGetLength(sigdat_list) >= patchsize))
 			{
 			    /* Allocate signature object (w/o position
 			       data) and copy data from Cmap object /
@@ -348,9 +348,9 @@ int main(ajint argc, char **argv)
 
 			    /* Convert list of Sigdata objects into
                                array in signature */
-			    sig->npos = ajListToArray(sigdat_list,
+			    sig->npos = ajListToarray(sigdat_list,
 						      (void***)&sig->dat);
-			    ajListPushApp(sig_list, sig);
+			    ajListPushAppend(sig_list, sig);
 			  
 
 			    /* Set gap distance for current position,
@@ -367,9 +367,9 @@ int main(ajint argc, char **argv)
 
 			/* Push current position, i.e. the first
                            position in the next putative signature. */
-			ajListDel(&sigdat_list);
+			ajListFree(&sigdat_list);
 			sigdat_list = ajListNew();
-			ajListPushApp(sigdat_list, sigdat);
+			ajListPushAppend(sigdat_list, sigdat);
 		    }
 
 		    prevpos=x;
@@ -385,7 +385,7 @@ int main(ajint argc, char **argv)
 	    /* PROCESS LAST SIGNATURE */
 
 	    /* Either create new signature or delete list of Sigdat objects */
-	    if((ajListLength(sigdat_list) >= patchsize))
+	    if((ajListGetLength(sigdat_list) >= patchsize))
 	    {
 		/* Allocate signature object (w/o position data) and copy
 		   data from Cmap object / ACD. */
@@ -395,21 +395,21 @@ int main(ajint argc, char **argv)
 
 	      
 		/* Convert list of Sigdata objects into array in signature */
-		sig->npos = ajListToArray(sigdat_list, (void***)&sig->dat);
-		ajListPushApp(sig_list, sig);
+		sig->npos = ajListToarray(sigdat_list, (void***)&sig->dat);
+		ajListPushAppend(sig_list, sig);
 	    }
 	    else
 	    {
 		while(ajListPop(sigdat_list, (void **) &sigdat_tmp))
 		    embSigdatDel(&sigdat_tmp);
 	    }
-	    ajListDel(&sigdat_list);
+	    ajListFree(&sigdat_list);
 
 
 
 	    /* WRITE SIGNATURE FILE */
 	    /* Write number of patches in signature object */
-	    num_patches = ajListLength(sig_list);
+	    num_patches = ajListGetLength(sig_list);
 	    while(ajListPop(sig_list, (void **) &sig))
 	    {
 		sig->np = num_patches;
@@ -428,7 +428,7 @@ int main(ajint argc, char **argv)
 		embSignatureDel(&sig);
 		ajFileClose(&sigoutf);
 	    }
-	    ajListDel(&sig_list);
+	    ajListFree(&sig_list);
 	}
     }
     
@@ -441,11 +441,11 @@ int main(ajint argc, char **argv)
     ajFileClose(&logf);
     while(ajListPop(cmap_list, (void **) &cmap))
 	ajCmapDel(&cmap);
-    ajListDel(&cmap_list);
+    ajListFree(&cmap_list);
     AJFREE(mode);
     AJFREE(type);
     AJFREE(envdef);
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     ajDirDel(&sigdir);
     ajStrDel(&sigfname);
     ajStrDel(&OEnv);

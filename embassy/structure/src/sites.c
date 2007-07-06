@@ -330,7 +330,7 @@ int main(ajint argc, char **argv)
     /* Read domain classification file & store it as list of SCOP objects */
     if(!(list_allscop = ajScopReadAllNew(dcf_fptr)))
     { 
-	ajListDel(&prot);
+	ajListFree(&prot);
 	ajDirDel(&dom);
 	ajStrDel(&msg); 
 	ajFileClose(&dcf_fptr);
@@ -343,7 +343,7 @@ int main(ajint argc, char **argv)
     /* Read van der Waals data file (Evdw.dat) and create vdw object*/
     if(!(vdw=ajVdwallReadNew(vdwf)))
     { 
-	ajListDel(&prot);
+	ajListFree(&prot);
 	ajDirDel(&dom);
 	ajStrDel(&msg); 
 	ajFileClose(&dcf_fptr);
@@ -352,14 +352,14 @@ int main(ajint argc, char **argv)
 	ajFileClose(&vdwf); 
 	while(ajListPop(list_allscop,(void **)&scoptemp)) 
 	    ajScopDel(&scoptemp); 
-	ajListDel(&list_allscop);
+	ajListFree(&list_allscop);
 	ajFatal("Error reading vdw radii file\n"); 
     }
     
     /* Read heterogen_dictionary.out and create Dichet object */
     if((!(hetDic = ajHetReadNew(het_fptr))))     
     {
-	ajListDel(&prot);
+	ajListFree(&prot);
 	ajDirDel(&dom);
 	ajStrDel(&msg); 
 	ajFileClose(&dcf_fptr);
@@ -368,7 +368,7 @@ int main(ajint argc, char **argv)
 	ajFileClose(&vdwf);
 	while(ajListPop(list_allscop,(void **)&scoptemp)) 
 	    ajScopDel(&scoptemp); 
-	ajListDel(&list_allscop);
+	ajListFree(&list_allscop);
 	ajFatal("Error reading HET dictionary file\n"); 
     }
     
@@ -387,7 +387,7 @@ int main(ajint argc, char **argv)
     
     /* CREATE LIST OF PROTEIN COORDINATE FILES IN PROTEIN COORDINATE 
        DIRECTORY */
-    f_num=ajListLength(prot);
+    f_num=ajListGetLength(prot);
     
 
 
@@ -452,7 +452,7 @@ int main(ajint argc, char **argv)
 	embPdbListHeterogens(pdb, &list_heterogens, &siz_heterogens, 
 			     &n_heterogens, logf);	
       
-	l=ajListLength(list_heterogens);
+	l=ajListGetLength(list_heterogens);
 	ajFmtPrintF(logf, " HETS:YES", l);
 	ajFmtPrintF(logf, " NHETS:%d", l);
 	fflush(stdout);
@@ -485,17 +485,17 @@ int main(ajint argc, char **argv)
 		/*pdb file is already open and the object exists*/
 		pdbstr = NULL;
 		ajStrAssignS(&pdbstr, pdb->Pdb);
-		ajListPushApp(list_pdbscopids, pdbstr);
+		ajListPushAppend(list_pdbscopids, pdbstr);
 		ajChararrPut(&arr_chains, cnt_chains, pdb->Chains[i]->Id);
 		ajIntPut(&arr_nres, cnt_chains, pdb->Chains[i]->Nres);
 		++cnt_chains;
 		tmpseq = ajStrNew();
 		ajStrAssignS(&tmpseq, pdb->Chains[i]->Seq);
-		ajListPushApp(list_seqs,   tmpseq); 
+		ajListPushAppend(list_seqs,   tmpseq); 
 
-		siz_atomarr=ajListToArray(pdb->Chains[i]->Atoms, 
+		siz_atomarr=ajListToarray(pdb->Chains[i]->Atoms, 
 					  (void ***) &atomarr); 
-		ajListPushApp(list_domains, (AjPAtom *) atomarr);
+		ajListPushAppend(list_domains, (AjPAtom *) atomarr);
 		atomarr=NULL;
 		ajIntPut(&siz_domains, ndomain, siz_atomarr);
 		ndomain++;	
@@ -524,24 +524,24 @@ int main(ajint argc, char **argv)
 	    list_domfnames=ajListstrNew();
 	  
 	    /* Initialise iterator for list of scop ids */
-	    iter_scopids=ajListIter(list_pdbscopids);	
-	    while((pdbscopid=ajListIterNext(iter_scopids))) 
+	    iter_scopids=ajListIterNew(list_pdbscopids);	
+	    while((pdbscopid=ajListIterGet(iter_scopids))) 
 	    {	  
 		dom_co_fname=ajStrNew();
 		ajStrAssignS(&dom_co_fname, ajDirName(dom));
 		ajStrAppendS(&dom_co_fname, pdbscopid);
 		ajStrAppendC(&dom_co_fname, ".");
 		ajStrAppendS(&dom_co_fname, ajDirExt(dom));
-		ajListstrPushApp(list_domfnames, dom_co_fname);
+		ajListstrPushAppend(list_domfnames, dom_co_fname);
 	    }
-	    ajListIterFree(&iter_scopids);
+	    ajListIterDel(&iter_scopids);
 	  
 	  
 	    /* Initialise iterator */
-	    iter_domfnames=ajListIter(list_domfnames);
+	    iter_domfnames=ajListIterNew(list_domfnames);
 
 	    /* START OF DOMAIN LOOP - PER DOMAIN IN list_scopids */
-	    while((pdbscop_fname=ajListIterNext(iter_domfnames))) 
+	    while((pdbscop_fname=ajListIterGet(iter_domfnames))) 
 	    {
 		if((dom_fptr=ajFileNewIn(pdbscop_fname))==NULL)
 		{
@@ -560,7 +560,7 @@ int main(ajint argc, char **argv)
 		}
 	      
 		/* Create list of domain pdb objects */
-		ajListPushApp(pdbdomList, pdbdom);
+		ajListPushAppend(pdbdomList, pdbdom);
 		/* Close domain coordinate file */
 		ajFileClose(&dom_fptr);
 	      
@@ -568,15 +568,15 @@ int main(ajint argc, char **argv)
 	  
 	    /* CREATE LIST OF DOMAIN ATOM ARRAYS FOR DOMAINS IN CURRENT 
 	       PROTEIN COORDINATE FILE */
-	    iter_pdbdom=ajListIter(pdbdomList);
+	    iter_pdbdom=ajListIterNew(pdbdomList);
 	    cnt_chains=0;
-	    while((pdbdom_ptr=ajListIterNext(iter_pdbdom)))
+	    while((pdbdom_ptr=ajListIterGet(iter_pdbdom)))
 	    {
 		/* note: only one chain in domain coordinate file and 
 		   so Chains[0] */
-		siz_atomarr=ajListToArray(pdbdom_ptr->Chains[0]->Atoms, 
+		siz_atomarr=ajListToarray(pdbdom_ptr->Chains[0]->Atoms, 
 					  (void ***) &atomarr); 
-		ajListPushApp(list_domains, (AjPAtom *) atomarr);
+		ajListPushAppend(list_domains, (AjPAtom *) atomarr);
 		
 		
 		ajChararrPut(&arr_chains, cnt_chains, 
@@ -586,7 +586,7 @@ int main(ajint argc, char **argv)
 		
 		tmpseq = ajStrNew();
 		ajStrAssignS(&tmpseq, pdbdom_ptr->Chains[0]->Seq);
-		ajListPushApp(list_seqs,   tmpseq);  
+		ajListPushAppend(list_seqs,   tmpseq);  
 
 		atomarr=NULL;
 		ajIntPut(&siz_domains, ndomain, siz_atomarr);
@@ -594,9 +594,9 @@ int main(ajint argc, char **argv)
 	    }
 
 
-	    ajListIterFree(&iter_pdbdom);
+	    ajListIterDel(&iter_pdbdom);
 	    pdbdom_ptr=NULL;
-	    l=ajListLength(list_domains);
+	    l=ajListGetLength(list_domains);
 	    ajFmtPrintF(logf, " NDOMS: %d\n", l);
 	    fflush(stdout);
 	  
@@ -619,13 +619,13 @@ int main(ajint argc, char **argv)
 	    /* Free memory for domain pdb objects and pdbdomList */
 	    while(ajListPop(pdbdomList, (void **) &pdbdom_ptr))
 		ajPdbDel(&pdbdom_ptr);
-	    ajListDel(&pdbdomList);
+	    ajListFree(&pdbdomList);
 	  
 	    /* Free list of domain coordinate filenames */
 	    while(ajListstrPop(list_domfnames, &domfname_tmp))
 		ajStrDel(&domfname_tmp); 
-	    ajListstrDel(&list_domfnames);
-	    ajListIterFree(&iter_domfnames);
+	    ajListstrFree(&list_domfnames);
+	    ajListIterDel(&iter_domfnames);
 	}
       
 	/* Free siz_domains */
@@ -639,26 +639,26 @@ int main(ajint argc, char **argv)
 	   the array elements point to because this is free'd by the call to
 	   ajPdbDel) */
 	
-	iter_loa=ajListIter(list_domains); 
-	while((l_atm=(AjPAtom *)ajListIterNext(iter_loa)))
+	iter_loa=ajListIterNew(list_domains); 
+	while((l_atm=(AjPAtom *)ajListIterGet(iter_loa)))
 	    AJFREE(l_atm);
-	ajListIterFree(&iter_loa);
+	ajListIterDel(&iter_loa);
 
-	ajListDel(&list_domains);
+	ajListFree(&list_domains);
 	ajChararrDel(&arr_chains);
 	ajIntDel(&arr_nres);
 	while(ajListPop(list_seqs, (void *) &tmpseq))
 	    ajStrDel(&tmpseq);
-	ajListDel(&list_seqs); 
+	ajListFree(&list_seqs); 
 
 	
 	/* Free list of heterogen atom arrays */      
-	iter_loa=ajListIter(list_heterogens); 
-	while((l_atm=(AjPAtom *)ajListIterNext(iter_loa)))
+	iter_loa=ajListIterNew(list_heterogens); 
+	while((l_atm=(AjPAtom *)ajListIterGet(iter_loa)))
 	    AJFREE(l_atm);
-	ajListIterFree(&iter_loa);
+	ajListIterDel(&iter_loa);
 	
-	ajListDel(&list_heterogens);
+	ajListFree(&list_heterogens);
 
 	/* Free memory for protein pdb object */
 	ajPdbDel(&pdb);
@@ -667,7 +667,7 @@ int main(ajint argc, char **argv)
 	/* Free list of scop ids in pdb object */
 	while(ajListstrPop(list_pdbscopids, &scopid_tmp)) 
 	    ajStrDel(&scopid_tmp); 
-	ajListstrDel(&list_pdbscopids);
+	ajListstrFree(&list_pdbscopids);
            
     } /*End of loop while(ajListstrPop(prot, &cp_file))*/
     
@@ -677,7 +677,7 @@ int main(ajint argc, char **argv)
     for(i=0; i<(dbase)->n; i++)
     {
 	(dbase)->entries[i]->no_sites
-	    =ajListToArray((dbase)->entries[i]->tmp, 
+	    =ajListToarray((dbase)->entries[i]->tmp, 
 			   (void ***) &(dbase)->entries[i]->cont_data);
     }
     
@@ -690,8 +690,8 @@ int main(ajint argc, char **argv)
 
 
     /* MEMORY MANAGEMENT */
-    ajListDel(&prot);
-    ajListDel(&pdbdomList);
+    ajListFree(&prot);
+    ajListFree(&pdbdomList);
     ajDirDel(&dom);
     ajFileClose(&dcf_fptr);
     ajFileClose(&het_fptr);
@@ -701,7 +701,7 @@ int main(ajint argc, char **argv)
     ajVdwallDel(&vdw);
     while(ajListPop(list_allscop,(void **)&scoptemp)) 
 	ajScopDel(&scoptemp); 
-    ajListDel(&list_allscop);
+    ajListFree(&list_allscop);
     ajHetDel(&hetDic);
     sites_DbaseDel(&dbase);
     ajFileClose(&logf);  
@@ -855,8 +855,8 @@ static AjBool      sites_HeterogenContacts(ajint entype,
     }
   
   
-  ajListToArray(list_pdbscopids, (void ***) &scopidArr);
-  ajListToArray(list_seqs, (void ***) &chainseqsArr);
+  ajListToarray(list_pdbscopids, (void ***) &scopidArr);
+  ajListToarray(list_seqs, (void ***) &chainseqsArr);
 
 
 
@@ -864,8 +864,8 @@ static AjBool      sites_HeterogenContacts(ajint entype,
   /* Create Temporary list for all AjPDomConts - check this i.e. all? */
   cont_dataList=ajListNew();
   
-  iter_dom=ajListIter(list_domains); 
-  while((dom_atm=(AjPAtom *)ajListIterNext(iter_dom)))
+  iter_dom=ajListIterNew(list_domains); 
+  while((dom_atm=(AjPAtom *)ajListIterGet(iter_dom)))
     {
       idx_tmp=0;
 
@@ -874,11 +874,11 @@ static AjBool      sites_HeterogenContacts(ajint entype,
       HetIdx=0; /* initialise siz_heterogens index */
 
 /* initialise iterator for list_heterogens */
-      iter_het=ajListIter(list_heterogens);     
+      iter_het=ajListIterNew(list_heterogens);     
 /* Get size of current domain atom array */
       dom_max=ajIntGet(siz_domains, DomIdx-1);  
 
-      while((het_atm=(AjPAtom *)ajListIterNext(iter_het)))
+      while((het_atm=(AjPAtom *)ajListIterGet(iter_het)))
 	{
 	  hetctr++;
 	  het_max=0;
@@ -985,10 +985,10 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 				   dom_atm[i]->Idx);
 			  tempaa=ajStrNew();
 			  ajStrAssignS(&tempaa, dom_atm[i]->Id3);		      
-			  ajListPushApp(aaTempList, (void *) tempaa);
+			  ajListPushAppend(aaTempList, (void *) tempaa);
 			  tempres_pos2=ajStrNew();
 			  /* ajStrAssignS(&tempres_pos2, dom_atm[i]->Pdb); */
-			  ajListPushApp(res_pos2TempList, tempres_pos2);
+			  ajListPushAppend(res_pos2TempList, tempres_pos2);
 			  idx_tmp=dom_atm[i]->Idx;
 			  break; /* heterogen atoms array loop */
 			  
@@ -1001,23 +1001,23 @@ static AjBool      sites_HeterogenContacts(ajint entype,
 	  
 	  if(cont_dataTemp->no_keyres > 0)
 	    {  
-	      ajListToArray(aaTempList, (void ***) &(cont_dataTemp)->aa_code);
-	      ajListToArray(res_pos2TempList, 
+	      ajListToarray(aaTempList, (void ***) &(cont_dataTemp)->aa_code);
+	      ajListToarray(res_pos2TempList, 
 			    (void ***) &(cont_dataTemp)->res_pos2);
-	      ajListPushApp(cont_dataList, cont_dataTemp);
+	      ajListPushAppend(cont_dataList, cont_dataTemp);
 	      cont_dataTemp=NULL;
 	    } 
 	  else
 	    sites_DomContsDel(&cont_dataTemp);
 	  
-	  ajListDel(&aaTempList);
-	  ajListDel(&res_pos2TempList);
+	  ajListFree(&aaTempList);
+	  ajListFree(&res_pos2TempList);
 	  
 	  /* cont_dataTemp=NULL; */
 	  
 	} /* while het_atm */
       
-      ajListIterFree(&iter_het);
+      ajListIterDel(&iter_het);
       
     } /* while dom_atm */
   
@@ -1026,10 +1026,10 @@ static AjBool      sites_HeterogenContacts(ajint entype,
   while(ajListPop(cont_dataList,(void **)&dom_cont))
       for(i=0; i<(*dbase)->n; i++) 
 	  if(ajStrMatchS(dom_cont->het_name, (*dbase)->entries[i]->abv))
-	      ajListPushApp((*dbase)->entries[i]->tmp, dom_cont);
+	      ajListPushAppend((*dbase)->entries[i]->tmp, dom_cont);
   
-  ajListDel(&cont_dataList);
-  ajListIterFree(&iter_dom);
+  ajListFree(&cont_dataList);
+  ajListIterDel(&iter_dom);
   AJFREE(scopidArr);
   AJFREE(chainseqsArr); 
   
@@ -1511,7 +1511,7 @@ static void sites_DbaseEntDel(AjPDbaseEnt *ptr)
 
     ajStrDel(&(*ptr)->abv);
     ajStrDel(&(*ptr)->ful);
-    ajListDel(&(*ptr)->tmp);
+    ajListFree(&(*ptr)->tmp);
   
     if((*ptr)->cont_data)
     {

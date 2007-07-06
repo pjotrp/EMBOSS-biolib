@@ -138,11 +138,11 @@ int main(int argc, char **argv)
     /* Create list of scop objects for entire input domain classification file. */
     scop_list  = ajListNew();
     while((temp_scop = (ajScopReadCNew(dcfin, "*"))))
-        ajListPushApp(scop_list,temp_scop);
+        ajListPushAppend(scop_list,temp_scop);
 
 
     /* Error handing if domain classification file was empty. */
-    if(!(ajListLength(scop_list)))
+    if(!(ajListGetLength(scop_list)))
     {
       
         ajWarn("Empty list from scop input file\n");
@@ -154,8 +154,8 @@ int main(int argc, char **argv)
        	ajFileClose(&logf);
 	while(ajListPop(scop_list, (void *) &temp_scop))
 	    ajScopDel(&temp_scop);
-	ajListDel(&scop_list);
-        ajListIterFree(&iter);    
+	ajListFree(&scop_list);
+        ajListIterDel(&iter);    
 	
 	ajExit();
 	return 1;
@@ -173,8 +173,8 @@ int main(int argc, char **argv)
        	ajFileClose(&logf);
 	while(ajListPop(scop_list, (void *) &temp_scop))
 	    ajScopDel(&temp_scop);
-	ajListDel(&scop_list);
-        ajListIterFree(&iter);    
+	ajListFree(&scop_list);
+        ajListIterDel(&iter);    
 	
 	ajExit();
 	return 1; 
@@ -229,8 +229,8 @@ int main(int argc, char **argv)
 
 
         /* Iterate through list of scop objects & calculate alignment scores. */
-        iter=ajListIter(scop_list);
-        while((temp_scop=(AjPScop)ajListIterNext(iter)))
+        iter=ajListIterNew(scop_list);
+        while((temp_scop=(AjPScop)ajListIterGet(iter)))
         {
             /* The function extracts the se (mode 0) or ss (mode 1) subject 
 	       sequences from the scop object, performs a Needleman-Wunsch 
@@ -251,7 +251,7 @@ int main(int argc, char **argv)
 	}
 
 
-        ajListIterFree(&iter);
+        ajListIterDel(&iter);
       	temp_scop    = NULL;
 
 
@@ -259,11 +259,11 @@ int main(int argc, char **argv)
         ajListSort(scop_list, ssematch_CompScoreInv);
 	
 	
-        iter=ajListIter(scop_list);
+        iter=ajListIterNew(scop_list);
         /* Write top-scoring hits to outfile. */
         for(x=0; x < max_hits; x++ )
 	{
-            temp_scop=(AjPScop)ajListIterNext(iter);
+            temp_scop=(AjPScop)ajListIterGet(iter);
  
 	    /* Print score to output file. */
 	    ajFmtPrintF(outfile, "XX   ALIGNMENT SCORE %.3f\nXX\n", temp_scop->Score);
@@ -275,7 +275,7 @@ int main(int argc, char **argv)
         
         }
 
-	ajListIterFree(&iter); 
+	ajListIterDel(&iter); 
      	temp_scop    = NULL;
     }
 
@@ -290,7 +290,7 @@ int main(int argc, char **argv)
     ajFileClose(&logf);
     while(ajListPop(scop_list, (void *) &temp_scop))
 	ajScopDel(&temp_scop);
-    ajListDel(&scop_list);
+    ajListFree(&scop_list);
     ajStrDel(&msg);
     ajStrDel(&line);
     ajStrDel(&qse); 

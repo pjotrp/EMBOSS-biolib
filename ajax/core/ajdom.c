@@ -159,7 +159,7 @@ static void domAddToMap(AjPDomNodeList list, AjPDomNode key,
 			AjPDomNodeEntry val)
 {
     if(!list->table)
-	list->table = ajTableNew(AJDOM_TABLE_HINT,NULL,NULL);
+	list->table = ajTableNewLen(AJDOM_TABLE_HINT);
     
 
     domRemoveFromMap(list,key);
@@ -473,7 +473,7 @@ static AjPDomNodeEntry domDoLookupNode(const AjPDomNodeList list,
 {
     AjPDomNodeEntry p;
 
-    p = (AjPDomNodeEntry) ajTableGet(list->table,node);
+    p = (AjPDomNodeEntry) ajTableFetch(list->table,node);
 
     return p;
 }

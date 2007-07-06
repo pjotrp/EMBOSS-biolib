@@ -203,10 +203,10 @@ int main(int argc, char **argv)
 	ajFileScan(path,NULL,NULL,ajTrue,ajFalse,NULL,rlist,recurs,outf);
     }
 
-    ajListDel(&flocs);
+    ajListFree(&flocs);
     while(ajListPop(rlist,(void **)&t))
 	ajStrDel(&t);
-    ajListDel(&rlist);
+    ajListFree(&rlist);
     ajStrDel(&path);
     ajStrDel(&hdir);
     ajStrDel(&ddir);

@@ -183,8 +183,8 @@ int main(int argc, char **argv)
             ajWarn(ajStrGetPtr(msg));
             ajFmtPrintF(logf, "WARN  Could not open for reading %S\n", 
                         inname);
-	    ajListDel(&listin);
-	    ajListDel(&listout);
+	    ajListFree(&listin);
+	    ajListFree(&listout);
             continue;       
         }
         else
@@ -236,19 +236,19 @@ int main(int argc, char **argv)
 	       Sort this list by accession number, then by start, then
 	       by end. */
 
-	    ajListPushApp(listin,tmphitlist);
+	    ajListPushAppend(listin,tmphitlist);
 	    embDmxHitlistToScophits(listin, listout);
-	    ajListSort3(listout,ajDmxScophitCompAcc, ajDmxScophitCompStart, 
+	    ajListSortTwoThree(listout,ajDmxScophitCompAcc, ajDmxScophitCompStart, 
 			ajDmxScophitCompEnd);
           
 	    /* Eleminate identical hits. */
-	    iter=ajListIterRead(listout); 
+	    iter=ajListIterNewread(listout); 
           
 	    /* Get the first node in the list, only once. */
-	    hit = (AjPScophit)ajListIterNext(iter);
+	    hit = (AjPScophit)ajListIterGet(iter);
           
 	    /* Loop while we can get another hit. */
-	    while((nexthit=(AjPScophit)ajListIterNext(iter)))
+	    while((nexthit=(AjPScophit)ajListIterGet(iter)))
 	    {
 		/* Check if the accession numbers are the same and if the
 		   the start and end are identical. */
@@ -264,17 +264,17 @@ int main(int argc, char **argv)
 		    hit = nexthit;
 	    }             
 
-	    ajListIterFree(&iter);
+	    ajListIterDel(&iter);
 	    iter =  NULL;
      
 	    /* The end of the list been reached. 
 	       Delete hits in the list that are targetted for removal. */
-	    ajListGarbageCollect(listout, ajDmxScophitDelWrap, 
-				 (const void *) ajDmxScophitCheckTarget);
+	    ajListPurge(listout, (const void *) ajDmxScophitCheckTarget,
+			ajDmxScophitDelWrap);
           
 	    /* Recreate the hitlist for printing. */
 	    embDmxScophitsToHitlist(listout,&hitlist,&iter);
-	    ajListIterFree(&iter);
+	    ajListIterDel(&iter);
 	    iter =  NULL;
 
 
@@ -293,18 +293,18 @@ int main(int argc, char **argv)
 		ajFileClose(&psif); 
 
 		/* Free listin. */
-		iter=ajListIterRead(listin); 
-		while((tmphitlist=(EmbPHitlist)ajListIterNext(iter)))
+		iter=ajListIterNewread(listin); 
+		while((tmphitlist=(EmbPHitlist)ajListIterGet(iter)))
 		    embHitlistDel(&tmphitlist);
-		ajListDel(&listin);
-		ajListIterFree(&iter);
+		ajListFree(&listin);
+		ajListIterDel(&iter);
 		
 		/* Free listout. */
-		iter=ajListIterRead(listout); 
-		while((hit=(AjPScophit)ajListIterNext(iter)))
+		iter=ajListIterNewread(listout); 
+		while((hit=(AjPScophit)ajListIterGet(iter)))
 		    ajDmxScophitDel(&hit);
-		ajListDel(&listout);
-		ajListIterFree(&iter);
+		ajListFree(&listout);
+		ajListIterDel(&iter);
 
 		continue;       
 	    }      
@@ -316,18 +316,18 @@ int main(int argc, char **argv)
 	    ajFileClose(&families);
 
 	    /* Free listin. */
-	    iter=ajListIterRead(listin); 
-	    while((tmphitlist=(EmbPHitlist)ajListIterNext(iter)))
+	    iter=ajListIterNewread(listin); 
+	    while((tmphitlist=(EmbPHitlist)ajListIterGet(iter)))
 		embHitlistDel(&tmphitlist);
-	    ajListDel(&listin);
-	    ajListIterFree(&iter);
+	    ajListFree(&listin);
+	    ajListIterDel(&iter);
           
 	    /* Free listout. */
-	    iter=ajListIterRead(listout); 
-	    while((hit=(AjPScophit)ajListIterNext(iter)))
+	    iter=ajListIterNewread(listout); 
+	    while((hit=(AjPScophit)ajListIterGet(iter)))
 		ajDmxScophitDel(&hit);
-	    ajListDel(&listout);
-	    ajListIterFree(&iter);
+	    ajListFree(&listout);
+	    ajListIterDel(&iter);
 
 	    /* Free memory etc*/
 	    embHitlistDel(&hitlist);
@@ -345,7 +345,7 @@ int main(int argc, char **argv)
     /*Tidy up and return. */
     ajStrDel(&mode[0]);
     AJFREE(mode);
-    ajListDel(&inseqs);
+    ajListFree(&inseqs);
     ajDirDel(&dhfout);
     ajStrDel(&dhfname);
     ajStrDel(&psiname);

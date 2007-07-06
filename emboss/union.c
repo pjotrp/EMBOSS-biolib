@@ -239,12 +239,12 @@ static void union_CopyFeatures (const AjPFeattable old_feattable,
 
     outseq_name = ajStrNew();
 
-    new_length = ajListLength(new_feattable->Features);
-    iter = ajListIterRead(old_feattable->Features);
+    new_length = ajListGetLength(new_feattable->Features);
+    iter = ajListIterNewread(old_feattable->Features);
 
-    while(ajListIterMore(iter))
+    while(!ajListIterDone(iter))
     {
-	gf = ajListIterNext (iter);
+	gf = ajListIterGet(iter);
 	type = ajFeatGetType(gf);
 
 	copy = ajFeatCopy (gf);
