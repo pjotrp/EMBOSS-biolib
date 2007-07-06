@@ -440,6 +440,7 @@ static AjBool     seqAccessFreeEmblcd(void* qry);
 static AjBool     seqAccessFreeEmboss(void* qry);
 static AjBool     seqAccessGcg(AjPSeqin seqin);
 static AjBool     seqAccessMrs(AjPSeqin seqin);
+static AjBool     seqAccessMrs3(AjPSeqin seqin);
 /* static AjBool     seqAccessNbrf(AjPSeqin seqin); */ /* obsolete */
 static AjBool     seqAccessSeqhound(AjPSeqin seqin);
 static AjBool     seqAccessSrs(AjPSeqin seqin);
@@ -572,7 +573,10 @@ static SeqOAccess seqAccess[] =
 	 "use BluePrint seqhound services"},
     {"mrs",       AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
 	 seqAccessMrs, NULL,
-	 "retrieve in text format from CMBI MRS server"},
+	 "retrieve in text format from CMBI MRS server (MRS2 syntax)"},
+    {"mrs3",       AJFALSE, AJTRUE,  AJFALSE,  AJFALSE,  
+	 seqAccessMrs3, NULL,
+	 "retrieve in text format from CMBI MRS3 server"},
     {"srs",       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessSrs, NULL,
 	 "retrieve in text format from a local SRS installation"},
@@ -803,14 +807,14 @@ static AjBool seqAccessEmblcd(AjPSeqin seqin)
 	}
     }
 
-    if(ajListLength(qryd->List))
+    if(ajListGetLength(qryd->List))
     {
 	retval = seqCdQryNext(qry);
 	if(retval)
 	    ajFileBuffSetFile(&seqin->Filebuff, qryd->libr, qryd->Samefile);
     }
 
-    if(!ajListLength(qryd->List)) /* could have been emptied by code above */
+    if(!ajListGetLength(qryd->List)) /* could have been emptied by code above */
     {
 	seqCdQryClose(qry);
 	/* AJB addition */
@@ -939,7 +943,7 @@ static AjBool seqCdAll(AjPSeqin seqin)
 			  ajTrue, ajTrue))
 	{
 	    ajDebug("qrybufflist add '%S'\n", fullName);
-	    ajListstrPushApp(list, fullName);
+	    ajListstrPushAppend(list, fullName);
 	    fullName = NULL;
 	}
 	else
@@ -1446,7 +1450,7 @@ static AjBool seqCdIdxQuery(AjPSeqQuery qry)
 		entry->div = idxLine->DivCode;
 		entry->annoff = idxLine->AnnOffset;
 		entry->seqoff = idxLine->SeqOffset;
-		ajListPushApp(list, (void*)entry);
+		ajListPushAppend(list, (void*)entry);
 	    }
 	    else
 	    {
@@ -1476,7 +1480,7 @@ static AjBool seqCdIdxQuery(AjPSeqQuery qry)
     ajStrDel(&idstr);
     ajStrDel(&idpref);
 
-    if(ajListLength(list))
+    if(ajListGetLength(list))
 	return ajTrue;
 
     return ajFalse;
@@ -2977,14 +2981,14 @@ static AjBool seqAccessEmboss(AjPSeqin seqin)
 	return ajFalse;
  
 
-    if(ajListLength(qryd->List))
+    if(ajListGetLength(qryd->List))
     {
 	retval = seqEmbossQryNext(qry);
 	if(retval)
 	    ajFileBuffSetFile(&seqin->Filebuff, qryd->libs, qryd->Samefile);
     }
 
-    if(!ajListLength(qryd->List)) /* could have been emptied by code above */
+    if(!ajListGetLength(qryd->List)) /* could have been emptied by code above */
     {
 	seqEmbossQryClose(qry);
 	/* AJB addition */
@@ -3402,7 +3406,7 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 			  ajTrue, ajTrue))
 	{
 	    ajDebug("qrybufflist add '%S'\n", name);
-	    ajListstrPushApp(list, name);
+	    ajListstrPushAppend(list, name);
 	    name = NULL;
 	}
 	else
@@ -3429,10 +3433,10 @@ static AjBool seqEmbossAll(AjPSeqin seqin)
 	    if(del)
 		ajStrDel(&filestrings[i]);
 	    else
-		ajListstrPushApp(list, filestrings[i]);		
+		ajListstrPushAppend(list, filestrings[i]);		
 	}
 	else
-	    ajListstrPushApp(list, filestrings[i]);
+	    ajListstrPushAppend(list, filestrings[i]);
 */
 	ajStrDel(&filestrings[i]);
 	++i;
@@ -3485,7 +3489,7 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
 	    if(entry)
 	    {
 		if(!entry->dups)
-		    ajListPushApp(qryd->List,(void *)entry);
+		    ajListPushAppend(qryd->List,(void *)entry);
 		else
 		    ajBtreeHybLeafList(qryd->idcache,entry->offset,
 				       entry->id,qryd->List);
@@ -3499,7 +3503,7 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
 	    if(entry)
 	    {
 		if(!entry->dups)
-		    ajListPushApp(qryd->List,(void *)entry);
+		    ajListPushAppend(qryd->List,(void *)entry);
 		else
 		    ajBtreeHybLeafList(qryd->accache,entry->offset,
 				       entry->id,qryd->List);
@@ -3512,14 +3516,14 @@ static AjBool seqEmbossQryEntry(AjPSeqQuery qry)
 	    if(entry)
 	    {
 		if(!entry->dups)
-		    ajListPushApp(qryd->List,(void *)entry);
+		    ajListPushAppend(qryd->List,(void *)entry);
 		else
 		    ajBtreeHybLeafList(qryd->svcache,entry->offset,
 				       entry->id,qryd->List);
 	    }
     }
 
-    if(!ajListLength(qryd->List))
+    if(!ajListGetLength(qryd->List))
 	return ajFalse;
 
     if(!qry->CaseId)
@@ -3550,7 +3554,7 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
 
     qryd = qry->QryData;
 
-    if(!ajListLength(qryd->List))
+    if(!ajListGetLength(qryd->List))
 	return ajFalse;
 
     /*ajListTrace(qryd->List);*/
@@ -3573,7 +3577,7 @@ static AjBool seqEmbossQryNext(AjPSeqQuery qry)
 	    else
 	    {
 		ajBtreeIdDel(&entry);
-		if(!ajListLength(qryd->List))
+		if(!ajListGetLength(qryd->List))
 		    return ajFalse;
 	    }
 	}
@@ -3761,14 +3765,14 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 		    if(id)
 		    {
 			if(!id->dups)
-			    ajListPushApp(qryd->List,(void *)id);
+			    ajListPushAppend(qryd->List,(void *)id);
 			else
 			    ajBtreeHybLeafList(qryd->idcache,id->offset,
 					       id->id,qryd->List);
 		    }
 		    ajStrDel(&kwid);
 		}
-		ajListDel(&tlist);
+		ajListFree(&tlist);
 		ajBtreePriDel(&pri);
 	    }
 	    return ajTrue;
@@ -3797,14 +3801,14 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 		    if(id)
 		    {
 			if(!id->dups)
-			    ajListPushApp(qryd->List,(void *)id);
+			    ajListPushAppend(qryd->List,(void *)id);
 			else
 			    ajBtreeHybLeafList(qryd->idcache,id->offset,
 					       id->id,qryd->List);
 		    }
 		    ajStrDel(&kwid);
 		}
-		ajListDel(&tlist);
+		ajListFree(&tlist);
 		ajBtreePriDel(&pri);
 	    }
 	    return ajTrue;
@@ -3833,14 +3837,14 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
 		    if(id)
 		    {
 			if(!id->dups)
-			    ajListPushApp(qryd->List,(void *)id);
+			    ajListPushAppend(qryd->List,(void *)id);
 			else
 			    ajBtreeHybLeafList(qryd->idcache,id->offset,
 					       id->id,qryd->List);
 		    }
 		    ajStrDel(&kwid);
 		}
-		ajListDel(&tlist);
+		ajListFree(&tlist);
 		ajBtreePriDel(&pri);
 	    }
 	    return ajTrue;
@@ -3857,14 +3861,14 @@ static AjBool seqEmbossQryQuery(AjPSeqQuery qry)
     if(qryd->do_id && qryd->idcache)
     {
 	ajBtreeListFromKeyW(qryd->idcache,qry->Id->Ptr,qryd->List);
-	if(ajListLength(qryd->List))
+	if(ajListGetLength(qryd->List))
 	    return ajTrue;
     }
 
     if(qryd->do_ac && qryd->accache)
     {
 	ajBtreeListFromKeyW(qryd->accache,qry->Acc->Ptr,qryd->List);
-	if(ajListLength(qryd->List))
+	if(ajListGetLength(qryd->List))
 	    return ajTrue;
     }
 
@@ -3944,14 +3948,14 @@ static AjBool seqAccessEmbossGcg(AjPSeqin seqin)
 	return ajFalse;
     
 
-    if(ajListLength(qryd->List))
+    if(ajListGetLength(qryd->List))
     {
 	retval = seqEmbossQryNext(qry);
 	if(retval)
 	    seqEmbossGcgLoadBuff(seqin);
     }
 
-    if(!ajListLength(qryd->List)) /* could have been emptied by code above */
+    if(!ajListGetLength(qryd->List)) /* could have been emptied by code above */
     {
 	seqEmbossQryClose(qry);
 	ajFileClose(&qryd->libs);
@@ -4517,7 +4521,7 @@ static AjBool seqCdQryReuse(AjPSeqQuery qry)
     else
     {
 	ajDebug("reusing data from previous call %x\n", qry->QryData);
-	ajDebug("listlen  %d\n", ajListLength(qryd->List));
+	ajDebug("listlen  %d\n", ajListGetLength(qryd->List));
 	ajDebug("divfile '%S'\n", qryd->divfile);
 	ajDebug("idxfile '%S'\n", qryd->idxfile);
 	ajDebug("datfile '%S'\n", qryd->datfile);
@@ -4526,7 +4530,7 @@ static AjBool seqCdQryReuse(AjPSeqQuery qry)
 	ajDebug("nameSize %d\n",  qryd->nameSize);
 	ajDebug("div      %d\n",  qryd->div);
 	ajDebug("maxdiv   %d\n",  qryd->maxdiv);
-	ajDebug("qryd->List length %d\n", ajListLength(qryd->List));
+	ajDebug("qryd->List length %d\n", ajListGetLength(qryd->List));
 	/*ajListTrace(qryd->List);*/
     }
 
@@ -4648,7 +4652,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		entry->div = qryd->idxLine->DivCode;
 		entry->annoff = qryd->idxLine->AnnOffset;
 		entry->seqoff = qryd->idxLine->SeqOffset;
-		ajListPushApp(qryd->List, (void*)entry);
+		ajListPushAppend(qryd->List, (void*)entry);
 	    }
 	    else
 		ajDebug("SKIP: '%S' [file %d]\n",
@@ -4684,7 +4688,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		    entry->div = qryd->idxLine->DivCode;
 		    entry->annoff = qryd->idxLine->AnnOffset;
 		    entry->seqoff = qryd->idxLine->SeqOffset;
-		    ajListPushApp(qryd->List, (void*)entry);
+		    ajListPushAppend(qryd->List, (void*)entry);
 		}
 		else
 		    ajDebug("SKIP: accnum '%S' [file %d]\n",
@@ -4726,7 +4730,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		    entry->div = qryd->idxLine->DivCode;
 		    entry->annoff = qryd->idxLine->AnnOffset;
 		    entry->seqoff = qryd->idxLine->SeqOffset;
-		    ajListPushApp(qryd->List, (void*)entry);
+		    ajListPushAppend(qryd->List, (void*)entry);
 		}
 		else
 		    ajDebug("SKIP: seqvn '%S' [file %d]\n",
@@ -4768,7 +4772,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		    entry->div = qryd->idxLine->DivCode;
 		    entry->annoff = qryd->idxLine->AnnOffset;
 		    entry->seqoff = qryd->idxLine->SeqOffset;
-		    ajListPushApp(qryd->List, (void*)entry);
+		    ajListPushAppend(qryd->List, (void*)entry);
 		}
 		else
 		    ajDebug("SKIP: seqvn '%S' [file %d]\n",
@@ -4810,7 +4814,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		    entry->div = qryd->idxLine->DivCode;
 		    entry->annoff = qryd->idxLine->AnnOffset;
 		    entry->seqoff = qryd->idxLine->SeqOffset;
-		    ajListPushApp(qryd->List, (void*)entry);
+		    ajListPushAppend(qryd->List, (void*)entry);
 		}
 		else
 		    ajDebug("SKIP: des '%S' [file %d]\n",
@@ -4852,7 +4856,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		    entry->div = qryd->idxLine->DivCode;
 		    entry->annoff = qryd->idxLine->AnnOffset;
 		    entry->seqoff = qryd->idxLine->SeqOffset;
-		    ajListPushApp(qryd->List, (void*)entry);
+		    ajListPushAppend(qryd->List, (void*)entry);
 		}
 		else
 		    ajDebug("SKIP: key '%S' [file %d]\n",
@@ -4894,7 +4898,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 		    entry->div = qryd->idxLine->DivCode;
 		    entry->annoff = qryd->idxLine->AnnOffset;
 		    entry->seqoff = qryd->idxLine->SeqOffset;
-		    ajListPushApp(qryd->List, (void*)entry);
+		    ajListPushAppend(qryd->List, (void*)entry);
 		}
 		else
 		    ajDebug("SKIP: tax '%S' [file %d]\n",
@@ -4907,7 +4911,7 @@ static AjBool seqCdQryEntry(AjPSeqQuery qry)
 
     if(ipos < 0)
 	return ajFalse;
-    if(!ajListLength(qryd->List))
+    if(!ajListGetLength(qryd->List))
 	return ajFalse;
 
     if(!qry->CaseId)
@@ -4940,7 +4944,7 @@ static AjBool seqCdQryQuery(AjPSeqQuery qry)
 	if(seqCdIdxQuery(qry))
 	{
 	    qryd = qry->QryData;
-	    ajListUnique(qryd->List, seqCdEntryCmp, seqCdEntryDel);
+	    ajListSortUnique(qryd->List, seqCdEntryCmp, seqCdEntryDel);
 	    return ajTrue;
 	}
 
@@ -4954,7 +4958,7 @@ static AjBool seqCdQryQuery(AjPSeqQuery qry)
 	if(!seqCdTrgQuery(qry))
 	    return ajFalse;
 	qryd = qry->QryData;
-	ajListUnique(qryd->List, seqCdEntryCmp, seqCdEntryDel);
+	ajListSortUnique(qryd->List, seqCdEntryCmp, seqCdEntryDel);
 	return ajTrue;
     }
 
@@ -5034,10 +5038,10 @@ static AjBool seqCdQryNext(AjPSeqQuery qry)
 
     qryd = qry->QryData;
 
-    if(!ajListLength(qryd->List))
+    if(!ajListGetLength(qryd->List))
 	return ajFalse;
 
-    ajDebug("qryd->List (b) length %d\n", ajListLength(qryd->List));
+    ajDebug("qryd->List (b) length %d\n", ajListGetLength(qryd->List));
     /*ajListTrace(qryd->List);*/
     ajListPop(qryd->List, &item);
     entry = (SeqPCdEntry) item;
@@ -5095,11 +5099,11 @@ static AjBool seqBlastQryNext(AjPSeqQuery qry)
 
     qryd = qry->QryData;
 
-    if(!ajListLength(qryd->List))
+    if(!ajListGetLength(qryd->List))
 	return ajFalse;
 
     ajDebug("seqBlastQryNext qryd %x qryd->List (c) length: %d\n",
-	    qryd, ajListLength(qryd->List));
+	    qryd, ajListGetLength(qryd->List));
 
     /* ajListTrace(qryd->List);*/
 
@@ -5317,14 +5321,14 @@ static AjBool seqAccessGcg(AjPSeqin seqin)
 	AJFREE(qryd->trgLine);
     }
 
-    if(ajListLength(qryd->List))
+    if(ajListGetLength(qryd->List))
     {
 	retval = seqCdQryNext(qry);
 	if(retval)
 	    seqGcgLoadBuff(seqin);
     }
 
-    if(!ajListLength(qryd->List))
+    if(!ajListGetLength(qryd->List))
     {
 	ajFileClose(&qryd->libr);
 	ajFileClose(&qryd->libs);
@@ -5922,7 +5926,7 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 	}
     }
 
-    if(ajListLength(qryd->List))
+    if(ajListGetLength(qryd->List))
     {
 	retval = seqBlastQryNext(qry);	/* changes qry->QryData */
 	qryd = qry->QryData;
@@ -5930,7 +5934,7 @@ static AjBool seqAccessBlast(AjPSeqin seqin)
 	    seqBlastLoadBuff(seqin);
     }
 
-    if(!ajListLength(qryd->List))
+    if(!ajListGetLength(qryd->List))
     {
 	ajFileClose(&qryd->libr);
 	ajFileClose(&qryd->libs);
@@ -6630,8 +6634,129 @@ static AjBool seqAccessMrs(AjPSeqin seqin)
     }
 
     ajFmtPrintAppS(&get,
-		   "&format=entry&exp=1&save_to=text/plain\n",
+		   "&format=entry&exp=1&save_to=text/plain",
 		   searchdb, qryid);
+
+    ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+
+    /* finally we have set the GET command */
+    ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
+
+    if(ajStrGetLen(proxyName))
+	fp = seqHttpGetProxy(qry, proxyName, proxyPort, host, iport, get);
+    else
+	fp = seqHttpGet(qry, host, iport, get);
+
+    if(!fp)
+	return ajFalse;
+
+    ajFileBuffDel(&seqin->Filebuff);
+    seqin->Filebuff = ajFileBuffNewF(fp);
+    if(!seqin->Filebuff)
+    {
+	ajDebug("socket buffer attach failed\n");
+	ajErr("socket buffer attach failed for database '%S'", qry->DbName);
+	return ajFalse;
+    }
+    ajDebug("Ready to read errno %d msg '%s'\n",
+	    errno, ajMessSysErrorText());
+
+#ifndef WIN32
+    signal(SIGALRM, seqSocketTimeout);
+    alarm(180);	    /* we allow 180 seconds to read from the socket */
+#endif
+
+    ajFileBuffLoad(seqin->Filebuff);
+
+#ifndef WIN32
+    alarm(0);
+#endif
+
+    ajFileBuffStripHtml(seqin->Filebuff);
+
+    ajStrAssignS(&seqin->Db, qry->DbName);
+
+    ajStrDel(&host);
+    ajStrDel(&urlget);
+    ajStrDel(&get);
+    ajStrDel(&proxyName);
+    ajStrDel(&httpver);
+
+    if(!qry->CaseId)
+	qry->QryDone = ajTrue;
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqAccessMrs3 ***********************************************
+**
+** Reads sequence(s) using CMBI Nijmegen's Maarten's Retrieval System.
+**
+** MRS is accessed as a simple URL.
+**
+** @param [u] seqin [AjPSeqin] Sequence input.
+** @return [AjBool] ajTrue on success.
+** @@
+******************************************************************************/
+
+static AjBool seqAccessMrs3(AjPSeqin seqin)
+{
+    AjPStr host      = NULL;
+    AjPStr urlget    = NULL;
+    AjPStr get       = NULL;
+    AjPStr proxyName = NULL;		/* host for proxy access.*/
+    AjPStr httpver   = NULL;	      /* HTTP version 1.0, 1.1, ... */
+    ajint iport;
+    ajint proxyPort;
+    FILE *fp;
+    AjPSeqQuery qry;
+    AjPStr searchdb = NULL;
+    AjPStr qryid = NULL;
+
+    iport = 80;
+    proxyPort = 0;			/* port for proxy axxess */
+    qry = seqin->Query;
+
+    if(!ajNamDbGetDbalias(qry->DbName, &searchdb))
+	ajStrAssignS(&searchdb, qry->DbName);
+    ajDebug("seqAccessMrs %S:%S\n", qry->DbAlias, qry->Id);
+
+    if(!seqHttpUrl(qry, &iport, &host, &urlget))
+    {
+	ajStrDel(&host);
+	ajStrDel(&urlget);
+	return ajFalse;
+    }
+
+    seqHttpVersion(qry, &httpver);
+    if(seqHttpProxy(qry, &proxyPort, &proxyName))
+	ajFmtPrintS(&get, "GET http://%S:%d%S",
+		    host, iport, urlget);
+    else
+	ajFmtPrintS(&get, "GET %S",
+		    urlget);
+
+    ajFmtPrintAppS(&get,
+		   "?db=%S",
+		   searchdb, qryid);
+
+    if(ajStrGetLen(qry->Id))
+	ajFmtPrintAppS(&get,
+		       "&id=%S",
+		       qry->Id);
+    else if(qry->HasAcc && ajStrGetLen(qry->Acc))
+    {
+    	ajFmtPrintAppS(&get,
+		       "&ac=%S",
+		       qry->Acc);
+	return ajFalse;
+    }
+
+    ajFmtPrintAppS(&get, " HTTP/%S\n", httpver);
+
     /* finally we have set the GET command */
     ajDebug("host '%S' port %d get '%S'\n", host, iport, get);
 
@@ -8213,7 +8338,7 @@ static ajuint seqCdTrgFind(AjPSeqQuery qry, const char* indexname,
 		entry->div = idxline->DivCode;
 		entry->annoff = idxline->AnnOffset;
 		entry->seqoff = idxline->SeqOffset;
-		ajListPushApp(l,(void*)entry);
+		ajListPushAppend(l,(void*)entry);
 	    }
 	    else
 		ajDebug("SKIP: token '%S' [file %d]\n",
@@ -8228,7 +8353,7 @@ static ajuint seqCdTrgFind(AjPSeqQuery qry, const char* indexname,
     ajStrDel(&fdstr);
     ajStrDel(&fdprefix);
 
-    return ajListLength(l);
+    return ajListGetLength(l);
 }
 
 
