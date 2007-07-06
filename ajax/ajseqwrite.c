@@ -411,8 +411,14 @@ static SeqOOutFormat seqOutFormat[] =
 **
 ** @nam3rule New Constructor
 ** @nam4rule NewFile Constructor using an open output file
+** @nam4rule NewFormat Constructor using a named format
+** @suffix C [char*] C character string
+** @suffix S [AjPStr] string object
 **
 ** @argrule NewFile file [AjPFile] Open output file
+** @argrule C txt [const char*] Format name
+** @argrule S str [const AjPStr] Format name
+**
 ** @valrule * [AjPSeqout]
 ******************************************************************************/
 
@@ -538,7 +544,7 @@ AjPSeqout ajSeqoutNewFormatC(const char* txt)
 **
 ** Creates a new sequence output object with a specified format.
 **
-** @param [r] str [AjPStr] Output sequence format
+** @param [r] str [const AjPStr] Output sequence format
 ** @return [AjPSeqout] New sequence output object.
 ** @@
 ******************************************************************************/
@@ -624,31 +630,31 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 
     while(ajListPop(seqout->Acclist,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&seqout->Acclist);
+    ajListFree(&seqout->Acclist);
 
     while(ajListPop(seqout->Keylist,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&seqout->Keylist);
+    ajListFree(&seqout->Keylist);
     
     while(ajListPop(seqout->Taxlist,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&seqout->Taxlist);
+    ajListFree(&seqout->Taxlist);
 
     while(ajListPop(seqout->Reflist,(void **)&tmpref))
 	ajSeqrefDel(&tmpref);
-    ajListDel(&seqout->Reflist);
+    ajListFree(&seqout->Reflist);
 
     while(ajListPop(seqout->Cmtlist,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&seqout->Cmtlist);
+    ajListFree(&seqout->Cmtlist);
 
     while(ajListPop(seqout->Xreflist,(void **)&tmpstr))
 	ajStrDel(&tmpstr);
-    ajListDel(&seqout->Xreflist);
+    ajListFree(&seqout->Xreflist);
 
     while(ajListPop(seqout->Savelist,(void **)&seq))
 	ajSeqDel(&seq);
-    ajListDel(&seqout->Savelist);
+    ajListFree(&seqout->Savelist);
     ajFeattabOutDel(&seqout->Ftquery);
 
     if(seqout->Knownfile)
@@ -1045,7 +1051,7 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
     ajSeqTrim(listseq);
 
     /* if(listseq->Rev)
-       ajSeqReverse(listseq); */ /* already done */
+       ajSeqReverseDo(listseq); */ /* already done */
 
     if(outseq->Single)
 	ajSeqSetName(listseq, outseq->Entryname);
@@ -1055,7 +1061,7 @@ static void seqWriteListAppend(AjPSeqout outseq, const AjPSeq seq)
     if(listseq->Fttable)
 	ajFeatDefName(listseq->Fttable, listseq->Name);
 
-    ajListPushApp(outseq->Savelist, listseq);
+    ajListPushAppend(outseq->Savelist, listseq);
 
     if(outseq->Single)
     {
@@ -1508,13 +1514,13 @@ static void seqWriteHennig86(AjPSeqout outseq)
     char* cp;
     
     ajDebug("seqWriteHennig86 list size %d\n",
-	    ajListLength(outseq->Savelist));
+	    ajListGetLength(outseq->Savelist));
     
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
     
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -1608,13 +1614,13 @@ static void seqWriteMega(AjPSeqout outseq)
     ajuint iend;
     ajuint wid = 50;
 
-    ajDebug("seqWriteMega list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWriteMega list size %d\n", ajListGetLength(outseq->Savelist));
 
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
 
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %u items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -1676,13 +1682,13 @@ static void seqWriteMeganon(AjPSeqout outseq)
     ajuint itest;
     AjPStr sseq = NULL;
 
-    ajDebug("seqWriteMeganon list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWriteMeganon list size %d\n", ajListGetLength(outseq->Savelist));
 
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
 
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -1741,13 +1747,13 @@ static void seqWriteNexus(AjPSeqout outseq)
     ajuint iend;
     ajuint wid = 50;
     
-    ajDebug("seqWriteNexus list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWriteNexus list size %d\n", ajListGetLength(outseq->Savelist));
     
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
     
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -1844,13 +1850,13 @@ static void seqWriteNexusnon(AjPSeqout outseq)
     AjPStr sseq = NULL;
 
     ajDebug("seqWriteNexusnon list size %d\n",
-	    ajListLength(outseq->Savelist));
+	    ajListGetLength(outseq->Savelist));
 
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
 
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -1936,13 +1942,13 @@ static void seqWriteJackknifer(AjPSeqout outseq)
     AjPStr tmpid = NULL;
 
     ajDebug("seqWriteJackknifer list size %d\n",
-	    ajListLength(outseq->Savelist));
+	    ajListGetLength(outseq->Savelist));
 
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
 
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -2010,13 +2016,13 @@ static void seqWriteJackknifernon(AjPSeqout outseq)
     static AjPStr tmpid = NULL;
 
     ajDebug("seqWriteJackknifernon list size %d\n",
-	    ajListLength(outseq->Savelist));
+	    ajListGetLength(outseq->Savelist));
 
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
 
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -2086,13 +2092,13 @@ static void seqWriteTreecon(AjPSeqout outseq)
     ajuint itest;
     AjPStr sseq = NULL;
 
-    ajDebug("seqWriteTreecon list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWriteTreecon list size %d\n", ajListGetLength(outseq->Savelist));
 
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
 
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -2148,14 +2154,14 @@ static void seqWriteClustal(AjPSeqout outseq)
     ajuint iend;
     ajuint iwidth = 50;
     
-    ajDebug("seqWriteClustal list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWriteClustal list size %d\n", ajListGetLength(outseq->Savelist));
     
     
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
     
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -2248,17 +2254,17 @@ static void seqWriteSelex(AjPSeqout outseq)
     ajuint  slen   = 0;
     AjPStr *aseqs = NULL;
     
-    ajDebug("seqWriteSelex list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWriteSelex list size %d\n", ajListGetLength(outseq->Savelist));
     
     rfstr = ajStrNewC("#=RF");
     csstr = ajStrNewC("#=CS");
     ssstr = ajStrNewC("#=SS");
     
-    n = ajListLength(outseq->Savelist);
+    n = ajListGetLength(outseq->Savelist);
     if(!n)
 	return;
     
-    test = ajListToArray(outseq->Savelist, (void***) &seqs);
+    test = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", test);
     
     
@@ -2526,13 +2532,13 @@ static void seqWriteMsf(AjPSeqout outseq)
     ajuint igap;
     ajuint maxnamelen = 10;
     
-    ajDebug("seqWriteMsf list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWriteMsf list size %d\n", ajListGetLength(outseq->Savelist));
     
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
     
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
@@ -2630,7 +2636,7 @@ static void seqWriteMsf(AjPSeqout outseq)
     /* AJB: Shouldn't this be left to ajSeqoutDel? */
     while(ajListPop(outseq->Savelist,(void **)&seq))
 	ajSeqDel(&seq);
-    ajListDel(&outseq->Savelist);
+    ajListFree(&outseq->Savelist);
     
     ajStrDel(&sbeg);
     ajStrDel(&send);
@@ -2774,11 +2780,11 @@ static void seqWriteExperiment(AjPSeqout outseq)
 		"ID   %-10S standard; DNA; UNC; %d BP.\n",
 		outseq->Name, ajStrGetLen(outseq->Seq));
     
-    if(ajListLength(outseq->Acclist))
+    if(ajListGetLength(outseq->Acclist))
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
@@ -2801,7 +2807,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ";\n", cur);
     }
     
@@ -2813,11 +2819,11 @@ static void seqWriteExperiment(AjPSeqout outseq)
     if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "EX   %S\n", outseq->Desc);
     
-    if(ajListLength(outseq->Keylist))
+    if(ajListGetLength(outseq->Keylist))
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -2838,18 +2844,18 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
     if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
-    if(ajListLength(outseq->Taxlist))
+    if(ajListGetLength(outseq->Taxlist))
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -2870,7 +2876,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
@@ -2959,11 +2965,11 @@ static void seqWriteEmbl(AjPSeqout outseq)
 		"ID   %-10S standard; DNA; UNC; %d BP.\n",
 		outseq->Name, ajStrGetLen(outseq->Seq));
     
-    if(ajListLength(outseq->Acclist))
+    if(ajListGetLength(outseq->Acclist))
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
@@ -2986,7 +2992,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ";\n", cur);
     }
     
@@ -3007,11 +3013,11 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	}
     }
 
-    if(ajListLength(outseq->Keylist))
+    if(ajListGetLength(outseq->Keylist))
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3032,18 +3038,18 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
     if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
-    if(ajListLength(outseq->Taxlist) > 1)
+    if(ajListGetLength(outseq->Taxlist) > 1)
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3064,7 +3070,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
@@ -3175,11 +3181,11 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 		ajStrGetLen(outseq->Seq));
     ajStrDel(&svstr);
     
-    if(ajListLength(outseq->Acclist))
+    if(ajListGetLength(outseq->Acclist))
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
@@ -3202,7 +3208,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ";\nXX\n", cur);
     }
 
@@ -3247,11 +3253,11 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, "XX\n", cur);
     }
 
-    if(ajListLength(outseq->Keylist))
+    if(ajListGetLength(outseq->Keylist))
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3272,18 +3278,18 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\nXX\n", cur);
     }
     
     if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
-    if(ajListLength(outseq->Taxlist) > 1)
+    if(ajListGetLength(outseq->Taxlist) > 1)
     {
 	ilen=0;
-	it = ajListIterRead(outseq->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3304,7 +3310,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     if(ajStrGetLen(outseq->Organelle))
@@ -3312,13 +3318,13 @@ static void seqWriteEmblnew(AjPSeqout outseq)
     
     if(ajStrGetLen(outseq->Tax) ||
        ajStrGetLen(outseq->Organelle) ||
-       ajListLength(outseq->Taxlist) > 1)
+       ajListGetLength(outseq->Taxlist) > 1)
 	ajFmtPrintF(outseq->File, "XX\n", cur);
     
-    if(ajListLength(outseq->Reflist))
+    if(ajListGetLength(outseq->Reflist))
     {
-	it = ajListIterRead(outseq->Reflist);
-	while ((seqref = (const AjPSeqRef) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Reflist);
+	while ((seqref = (const AjPSeqRef) ajListIterGet(it)))
 	{
 	    ajFmtPrintF(outseq->File, "RN   [%u]\n", seqref->Number);
 
@@ -3414,13 +3420,13 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	    }
 	    ajFmtPrintF(outseq->File, "XX\n");
 	}
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
 
-    if(ajListLength(outseq->Xreflist))
+    if(ajListGetLength(outseq->Xreflist))
     {
-	it = ajListIterRead(outseq->Xreflist);
-	while ((cmtstr = (const AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Xreflist);
+	while ((cmtstr = (const AjPStr) ajListIterGet(it)))
 	{
 	    ajStrAssignS(&tmpstr,  cmtstr);
 	    ajStrFmtWrap(&tmpstr, 75);
@@ -3431,14 +3437,14 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 		tmpline = ajStrParseC(NULL, "\n");
 	    }
 	}
-	ajListIterFree(&it);
+	ajListIterDel(&it);
 	ajFmtPrintF(outseq->File, "XX\n", cur);
     }
 
-    if(ajListLength(outseq->Cmtlist))
+    if(ajListGetLength(outseq->Cmtlist))
     {
-	it = ajListIterRead(outseq->Cmtlist);
-	while ((cmtstr = (const AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Cmtlist);
+	while ((cmtstr = (const AjPStr) ajListIterGet(it)))
 	{
 	    ajStrAssignS(&tmpstr,  cmtstr);
 	    ajStrFmtWrapAt(&tmpstr, 75, ',');
@@ -3453,7 +3459,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	    }
 	    ajFmtPrintF(outseq->File, "XX\n", cur);
 	}
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
 
     if(seqoutUfoLocal(outseq))
@@ -3527,11 +3533,11 @@ static void seqWriteSwiss(AjPSeqout outseq)
 		"ID   %-10S     STANDARD;      PRT; %5d AA.\n",
 		outseq->Name, ajStrGetLen(outseq->Seq));
     
-    if(ajListLength(outseq->Acclist))
+    if(ajListGetLength(outseq->Acclist))
     {
 	ilen = 0;
-	it = ajListIterRead(outseq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
@@ -3555,7 +3561,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 
 	}
 	
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ";\n", cur);
     }
     
@@ -3565,11 +3571,11 @@ static void seqWriteSwiss(AjPSeqout outseq)
     if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
-    if(ajListLength(outseq->Taxlist) > 1)
+    if(ajListGetLength(outseq->Taxlist) > 1)
     {
 	ilen = 0;
-	it   = ajListIterRead(outseq->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it   = ajListIterNewread(outseq->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3591,15 +3597,15 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 	}
 	
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
-    if(ajListLength(outseq->Keylist))
+    if(ajListGetLength(outseq->Keylist))
     {
 	ilen = 0;
-	it   = ajListIterRead(outseq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it   = ajListIterNewread(outseq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3621,7 +3627,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 	}
 
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
@@ -3694,11 +3700,11 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 		"ID   %-10S     Unreviewed;    %7d AA.\n",
 		outseq->Name, ajStrGetLen(outseq->Seq));
     
-    if(ajListLength(outseq->Acclist))
+    if(ajListGetLength(outseq->Acclist))
     {
 	ilen = 0;
-	it = ajListIterRead(outseq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
@@ -3722,7 +3728,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 
 	}
 	
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ";\n", cur);
     }
     
@@ -3732,11 +3738,11 @@ static void seqWriteSwissnew(AjPSeqout outseq)
     if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
     
-    if(ajListLength(outseq->Taxlist) > 1)
+    if(ajListGetLength(outseq->Taxlist) > 1)
     {
 	ilen = 0;
-	it   = ajListIterRead(outseq->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it   = ajListIterNewread(outseq->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3758,15 +3764,15 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 	}
 	
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
-    if(ajListLength(outseq->Keylist))
+    if(ajListGetLength(outseq->Keylist))
     {
 	ilen = 0;
-	it   = ajListIterRead(outseq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it   = ajListIterNewread(outseq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3788,7 +3794,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 	}
 
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
@@ -3906,11 +3912,11 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	}
     }
 
-    if(ajListLength(outseq->Acclist))
+    if(ajListGetLength(outseq->Acclist))
     {
 	ilen = 0;
-	it   = ajListIterRead(outseq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it   = ajListIterNewread(outseq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
@@ -3934,7 +3940,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 
 	}
 
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	if(ilen > 0)
 	    ajFmtPrintF(outseq->File, "\n", cur);
     }
@@ -3948,11 +3954,11 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "VERSION     %S\n", outseq->Sv);
     }
     
-    if(ajListLength(outseq->Keylist))
+    if(ajListGetLength(outseq->Keylist))
     {
 	ilen = 0;
-	it = ajListIterRead(outseq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
@@ -3974,7 +3980,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	    ilen += ajStrGetLen(cur);
 	}
 
-	ajListIterFree(&it) ;
+	ajListIterDel(&it) ;
 	ajFmtPrintF(outseq->File, ".\n", cur);
     }
     
@@ -3983,11 +3989,11 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, "SOURCE      %S\n", outseq->Tax);
 
 	ajFmtPrintF(outseq->File, "  ORGANISM  %S\n", outseq->Tax);
-	if(ajListLength(outseq->Taxlist))
+	if(ajListGetLength(outseq->Taxlist))
 	{
 	    ilen = 0;
-	    it   = ajListIterRead(outseq->Taxlist);
-	    while((cur = (AjPStr) ajListIterNext(it)))
+	    it   = ajListIterNewread(outseq->Taxlist);
+	    while((cur = (AjPStr) ajListIterGet(it)))
 	    {
 		if(ilen+ajStrGetLen(cur) >= 79)
 		{
@@ -4009,15 +4015,15 @@ static void seqWriteGenbank(AjPSeqout outseq)
 		ilen += ajStrGetLen(cur);
 	    }
 
-	    ajListIterFree(&it) ;
+	    ajListIterDel(&it) ;
 	    ajFmtPrintF(outseq->File, ".\n", cur);
 	}
     }
 
-    if(ajListLength(outseq->Reflist))
+    if(ajListGetLength(outseq->Reflist))
     {
-	it = ajListIterRead(outseq->Reflist);
-	while ((seqref = (const AjPSeqRef) ajListIterNext(it)))
+	it = ajListIterNewread(outseq->Reflist);
+	while ((seqref = (const AjPSeqRef) ajListIterGet(it)))
 	{
 	    ajFmtPrintF(outseq->File, "REFERENCE   %u", seqref->Number);
 	    if(ajStrGetLen(seqref->Position))
@@ -4087,7 +4093,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	    }
 
 	}
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
     if(seqoutUfoLocal(outseq))
     {
@@ -4340,13 +4346,13 @@ static void seqWritePhylip(AjPSeqout outseq)
     ajuint iend;
     AjPStr tstr = NULL;
     
-    ajDebug("seqWritePhylip list size %d\n", ajListLength(outseq->Savelist));
+    ajDebug("seqWritePhylip list size %d\n", ajListGetLength(outseq->Savelist));
     
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
     
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -4429,13 +4435,13 @@ static void seqWritePhylipnon(AjPSeqout outseq)
     AjPStr tstr = NULL;
     
     ajDebug("seqWritePhylipnon list size %d\n",
-	    ajListLength(outseq->Savelist));
+	    ajListGetLength(outseq->Savelist));
     
-    isize = ajListLength(outseq->Savelist);
+    isize = ajListGetLength(outseq->Savelist);
     if(!isize)
 	return;
     
-    itest = ajListToArray(outseq->Savelist, (void***) &seqs);
+    itest = ajListToarray(outseq->Savelist, (void***) &seqs);
     ajDebug("ajListToArray listed %d items\n", itest);
     seqarr = (AjPSeq*) seqs;
     for(i=0; i < isize; i++)
@@ -4635,43 +4641,43 @@ static void seqWriteDebug(AjPSeqout outseq)
     ajFmtPrintF(outseq->File, "  Name: '%S'\n", outseq->Name);
     ajFmtPrintF(outseq->File, "  Accession: '%S'\n", outseq->Acc);
 
-    if(ajListLength(outseq->Acclist))
+    if(ajListGetLength(outseq->Acclist))
     {
 	ajFmtPrintF(outseq->File, "  Acclist: (%d)",
-		    ajListLength(outseq->Acclist));
-	it = ajListIterRead(outseq->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		    ajListGetLength(outseq->Acclist));
+	it = ajListIterNewread(outseq->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajFmtPrintF(outseq->File, " %S\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
 	ajFmtPrintF(outseq->File, "\n");
     }
     
     ajFmtPrintF(outseq->File, "  SeqVersion: '%S'\n", outseq->Sv);
     ajFmtPrintF(outseq->File, "  GenInfo Id: '%S'\n", outseq->Gi);
     ajFmtPrintF(outseq->File, "  Description: '%S'\n", outseq->Desc);
-    if(ajListLength(outseq->Keylist))
+    if(ajListGetLength(outseq->Keylist))
     {
 	ajFmtPrintF(outseq->File, "  Keywordlist: (%d)\n",
-		    ajListLength(outseq->Keylist));
-	it = ajListIterRead(outseq->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		    ajListGetLength(outseq->Keylist));
+	it = ajListIterNewread(outseq->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajFmtPrintF(outseq->File, "    '%S'\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
     ajFmtPrintF(outseq->File, "  Taxonomy: '%S'\n", outseq->Tax);
     ajFmtPrintF(outseq->File, "  Organelle: '%S'\n", outseq->Organelle);
 
-    if(ajListLength(outseq->Taxlist))
+    if(ajListGetLength(outseq->Taxlist))
     {
 	ajFmtPrintF(outseq->File, "  Taxlist: (%d)\n",
-		    ajListLength(outseq->Taxlist));
-	it = ajListIterRead(outseq->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		    ajListGetLength(outseq->Taxlist));
+	it = ajListIterNewread(outseq->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajFmtPrintF(outseq->File, "    '%S'\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
     ajFmtPrintF(outseq->File, "  Type: '%S'\n", outseq->Type);
     ajFmtPrintF(outseq->File, "  Output type: '%S'\n", outseq->Outputtype);
@@ -4700,32 +4706,32 @@ static void seqWriteDebug(AjPSeqout outseq)
 			outseq->Date->SeqDate, outseq->Date->SeqRel,
 			outseq->Date->SeqVer);
     }
-    if(ajListLength(outseq->Cmtlist))
+    if(ajListGetLength(outseq->Cmtlist))
     {
 	ajFmtPrintF(outseq->File, "  Commentlist: (%d)\n",
-		    ajListLength(outseq->Cmtlist));
-	it = ajListIterRead(outseq->Cmtlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		    ajListGetLength(outseq->Cmtlist));
+	it = ajListIterNewread(outseq->Cmtlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajFmtPrintF(outseq->File, "    '%S'\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
-    if(ajListLength(outseq->Xreflist))
+    if(ajListGetLength(outseq->Xreflist))
     {
 	ajFmtPrintF(outseq->File, "  Xreflist: (%d)\n",
-		    ajListLength(outseq->Xreflist));
-	it = ajListIterRead(outseq->Xreflist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		    ajListGetLength(outseq->Xreflist));
+	it = ajListIterNewread(outseq->Xreflist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajFmtPrintF(outseq->File, "    '%S'\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
-    if(ajListLength(outseq->Reflist))
+    if(ajListGetLength(outseq->Reflist))
     {
 	ajFmtPrintF(outseq->File, "  Citationlist: (%d)\n",
-		    ajListLength(outseq->Reflist));
-	it = ajListIterRead(outseq->Reflist);
-	while((curref = (AjPSeqRef) ajListIterNext(it)))
+		    ajListGetLength(outseq->Reflist));
+	it = ajListIterNewread(outseq->Reflist);
+	while((curref = (AjPSeqRef) ajListIterGet(it)))
 	{
 	    ajFmtPrintF(outseq->File, "    Number: %u\n",
 			curref->Number);
@@ -4754,7 +4760,7 @@ static void seqWriteDebug(AjPSeqout outseq)
 		ajFmtPrintF(outseq->File, "      Loctype: '%S'\n",
 			    curref->Loctype);
 	}
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
     ajFmtPrintF(outseq->File, "  Usa: '%S'\n", outseq->Usa);
     ajFmtPrintF(outseq->File, "  Ufo: '%S'\n", outseq->Ufo);
@@ -5212,6 +5218,7 @@ void ajSeqoutClear(AjPSeqout seqout)
 {
 
     AjPStr ptr = NULL;
+    AjPSeqRef tmpref = NULL;
 
     ajDebug("ajSeqoutClear called\n");
 
@@ -5257,6 +5264,15 @@ void ajSeqoutClear(AjPSeqout seqout)
 	ajStrDel(&ptr);
 
     while(ajListstrPop(seqout->Taxlist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListPop(seqout->Reflist,(void **)&tmpref))
+	ajSeqrefDel(&tmpref);
+
+    while(ajListstrPop(seqout->Cmtlist,&ptr))
+	ajStrDel(&ptr);
+
+    while(ajListstrPop(seqout->Xreflist,&ptr))
 	ajStrDel(&ptr);
 
     ajFeattabOutClear(&seqout->Ftquery);
@@ -5999,15 +6015,28 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajStrAssignS(&outseq->Db, seq->Db);
     ajStrAssignS(&outseq->Name, seq->Name);
     ajStrAssignS(&outseq->Acc, seq->Acc);
-    ajListstrClone(seq->Acclist, outseq->Acclist);
+
+    ajListstrFreeData(&outseq->Acclist);
+    outseq->Acclist = ajListstrNewList(seq->Acclist);
+
     ajStrAssignS(&outseq->Sv, seq->Sv);
     ajStrAssignS(&outseq->Gi, seq->Gi);
     ajStrAssignS(&outseq->Tax, seq->Tax);
-    ajListstrClone(seq->Taxlist, outseq->Taxlist);
-    ajListstrClone(seq->Keylist, outseq->Keylist);
-    ajListstrClone(seq->Cmtlist, outseq->Cmtlist);
-    ajListstrClone(seq->Xreflist, outseq->Xreflist);
+
+    ajListstrFreeData(&outseq->Taxlist);
+    outseq->Taxlist = ajListstrNewList(seq->Taxlist);
+
+    ajListstrFreeData(&outseq->Keylist);
+    outseq->Keylist = ajListstrNewList(seq->Keylist);
+
+    ajListstrFreeData(&outseq->Cmtlist);
+    outseq->Cmtlist = ajListstrNewList(seq->Cmtlist);
+
+    ajListstrFreeData(&outseq->Xreflist);
+    outseq->Xreflist = ajListstrNewList(seq->Xreflist);
+
     ajSeqreflistClone(seq->Reflist, outseq->Reflist);
+
     ajStrAssignS(&outseq->Desc, seq->Desc);
     ajStrAssignS(&outseq->Type, seq->Type);
     ajStrAssignS(&outseq->Informatstr, seq->Formatstr);
@@ -6017,7 +6046,6 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
 	ajSeqdateDel(&outseq->Date);
     if(seq->Date)
 	outseq->Date = ajSeqdateNewDate(seq->Date);
-
 
     AJFREE(outseq->Accuracy);
     if(seq->Accuracy)
@@ -6200,15 +6228,15 @@ void ajSeqoutTrace(const AjPSeqout seqout)
     if(ajStrGetLen(seqout->Acc))
 	ajDebug( "  Accession: '%S'\n", seqout->Acc);
 
-    if(ajListLength(seqout->Acclist))
+    if(ajListGetLength(seqout->Acclist))
     {
 	ajDebug("  Acclist: (%d)",
-		ajListLength(seqout->Acclist));
-	it = ajListIterRead(seqout->Acclist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		ajListGetLength(seqout->Acclist));
+	it = ajListIterNewread(seqout->Acclist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug(" %S\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
 	ajDebug("\n");
     }
 
@@ -6224,28 +6252,28 @@ void ajSeqoutTrace(const AjPSeqout seqout)
     if(ajStrGetRes(seqout->Seq))
 	ajDebug( "  Reserved: %d\n", ajStrGetRes(seqout->Seq));
 
-    if(ajListLength(seqout->Keylist))
+    if(ajListGetLength(seqout->Keylist))
     {
 	ajDebug("  Keywordlist: (%d)",
-		ajListLength(seqout->Keylist));
-	it = ajListIterRead(seqout->Keylist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		ajListGetLength(seqout->Keylist));
+	it = ajListIterNewread(seqout->Keylist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug("   '%S'\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
 	ajDebug("\n");
     }
     ajDebug("  Taxonomy: '%S'\n", seqout->Tax);
 
-    if(ajListLength(seqout->Taxlist))
+    if(ajListGetLength(seqout->Taxlist))
     {
 	ajDebug("  Taxlist: (%d)",
-		ajListLength(seqout->Taxlist));
-	it = ajListIterRead(seqout->Taxlist);
-	while((cur = (AjPStr) ajListIterNext(it)))
+		ajListGetLength(seqout->Taxlist));
+	it = ajListIterNewread(seqout->Taxlist);
+	while((cur = (AjPStr) ajListIterGet(it)))
 	    ajDebug("   '%S'\n", cur);
 
-	ajListIterFree(&it);
+	ajListIterDel(&it);
     }
 
     if(ajStrGetLen(seqout->Type))
