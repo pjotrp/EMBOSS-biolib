@@ -6,7 +6,7 @@
 <pre>
 ########################################
 # Program: dreg
-# Rundate: Sat 15 Jul 2006 12:00:00
+# Rundate: Sun 15 Jul 2007 12:00:00
 # Commandline: dreg
 #    -sequence tembl:x13776
 #    -pattern ggtacc
@@ -19,7 +19,7 @@
 # Sequence: X13776     from: 1   to: 2167
 # HitCount: 1
 #
-# Pattern: GGTACC
+# Pattern: ggtacc
 #
 #=======================================
 

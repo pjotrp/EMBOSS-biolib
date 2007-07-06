@@ -123,29 +123,6 @@ Cycle   2: species 6 (   0.15168) joins species 7 (   0.11752)
 Cycle   1: node 1 (   0.04648) joins species 4 (   0.28469)
 last cycle:
  node 1  (   0.02696) joins species 5  (   0.15393) joins node 6  (   0.03982)
-coordinates lengthsum: 0.000000
-Calling coordinates q->v 0.768910
-coordinates lengthsum: 0.768910
-Calling coordinates q->v 0.420269
-coordinates lengthsum: 0.420269
-Calling coordinates q->v 0.357931
-coordinates lengthsum: 0.778200
-Calling coordinates q->v 0.046481
-coordinates lengthsum: 0.466750
-Calling coordinates q->v 0.284694
-coordinates lengthsum: 0.751444
-Calling coordinates q->v 0.026956
-coordinates lengthsum: 0.493706
-Calling coordinates q->v 0.153931
-coordinates lengthsum: 0.647637
-Calling coordinates q->v 0.039819
-coordinates lengthsum: 0.533525
-Calling coordinates q->v 0.151675
-coordinates lengthsum: 0.685200
-Calling coordinates q->v 0.117525
-coordinates lengthsum: 0.651050
-Calling coordinates q->v 0.917690
-coordinates lengthsum: 0.917690
 
 Output written on file "neighbor.fneighbor"
 

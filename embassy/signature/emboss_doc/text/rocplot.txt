@@ -744,7 +744,7 @@ mooth bezier title "False hits"
 
   File: _summary
 
-rocplot summary file (15 Jul 2006)
+rocplot summary file (15 Jul 2007)
 
 mode      == 2 (Multiple input file mode)
 multimode == 2 (Combine data: single ROC plot, single classification plot.)

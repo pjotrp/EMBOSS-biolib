@@ -564,7 +564,7 @@ Output file format
 CPU: emboss6.ebi.ac.uk
 Time 0.001999 secs.
 
-mast.bin ../../data/memenew/ex1.html -ev 10.000000 -mt 0.000100
+mast ../../data/memenew/ex1.html -ev 10.000000 -mt 0.000100
 </PRE>
 <A NAME=bh></A>
 <A NAME=sbh></A>

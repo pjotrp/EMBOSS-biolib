@@ -45,3 +45,4 @@
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
+acdDelPhyloFreq '0'

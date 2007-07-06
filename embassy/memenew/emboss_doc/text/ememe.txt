@@ -1542,44 +1542,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 2
 
@@ -1619,44 +1620,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 3
 
@@ -1696,44 +1698,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 4
 
@@ -1773,44 +1776,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 5
 
@@ -1850,44 +1854,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 6
 
@@ -1927,44 +1932,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 7
 
@@ -2004,44 +2010,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 8
 
@@ -2081,44 +2088,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
   Output files for usage example 9
 
@@ -2158,44 +2166,45 @@ Output file format
    color: blue; } TD.blue { color: blue; } TH.blue { color: blue; }
    B.orange { color: orange; } TD.orange { color: orange; } TH.orange {
    color: orange; } B.green { color: green; } TD.green { color: green; }
-   [Part of this file has been deleted for brevity] position in the
-   motif, and <I>f</I> is the background frequency of the letter (given
-   in the <A HREF=#command_doc>command line summary</A> section.) This is
-   the same matrix that is used above in computing the <I>p</I>-values of
-   the occurrences of the motif in the <A HREF=#sites_doc2>Occurrences of
-   the Motif</A> and <A HREF=#diagrams_doc2>Block Diagrams of Motif
-   Occurrences</A> sections. The scoring matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The scoring matrix is
-   preceded by a line starting with "log-odds matrix:" and containing the
-   length of the alphabet, width of the motif, number of characters in
-   the training set, the scoring threshold (obsolete) and the motif
-   <I>E</I>-value. <P> <B>Note:</B> The probability <I>p</I> used to
-   compute the PSSM is <I>not</I> exactly the same as the corresponding
-   value in the Position Specific Probability Matrix (PSPM). The values
-   of <I>p</I> used to compute the PSSM take into account the motif
-   prior, whereas the values in the PSPM are just the <I>observed</I>
-   frequencies of letters in the motif sites. <P> <LI> <A NAME=pspm_doc2
-   HREF=#pspm1><H4> Position-Specific Probability Matrix</H4></A> The
-   motif itself is a position-specific probability matrix giving, for
-   each position in the pattern, the observed frequency ("probability")
-   of each possible letter. The probability matrix is printed
-   "sideways"--columns correspond to the letters in the alphabet (in the
-   same order as shown in the simplified motif) and rows corresponding to
-   the positions of the motif, position one first. The motif is preceded
-   by a line starting with "letter-probability matrix:" and containing
-   the length of the alphabet, width of the motif, number of occurrences
-   of the motif, and the <I>E</I>-value of the motif. <p> <b>Note:</b>
-   Earlier versions of MEME gave the posterior probabilities--the
-   probability after applying a prior on letter frequencies--rather than
-   the observed frequencies. These versions of MEME also gave the number
-   of <I>possible</I> positions for the motif rather than the actual
-   number of occurrences. The output from these earlier versions of MEME
-   can be distinguished by "n=" rather than "nsites=" in the line
-   preceding the matrix. </UL> <HR><TABLE SUMMARY='buttons' ALIGN=LEFT
-   CELLSPACING=0><TR> <TD BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go
-   to top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
+   [Part of this file has been deleted for brevity] position one first.
+   The motif is preceded by a line starting with "letter-probability
+   matrix:" and containing the length of the alphabet, width of the
+   motif, number of occurrences of the motif, and the <I>E</I>-value of
+   the motif. <p> <b>Note:</b> Earlier versions of MEME gave the
+   posterior probabilities--the probability after applying a prior on
+   letter frequencies--rather than the observed frequencies. These
+   versions of MEME also gave the number of <I>possible</I> positions for
+   the motif rather than the actual number of occurrences. The output
+   from these earlier versions of MEME can be distinguished by "n="
+   rather than "nsites=" in the line preceding the matrix. <P> <LI> <A
+   NAME=regular_expression_doc2 HREF=#regular_expression1><H4> Regular
+   Expression</H4></A> This is the <A HREF=#consensus_doc2>multilevel
+   consensus</A> expressed as a regular expression for convenience.
+   Regular expressions can be used for searching for against sequences
+   (using, for example, <A
+   HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262">
+   PatMatch</A>) but the search accuracy will usually be better with the
+   PSSM (using, for example <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>.) MEME regular
+   expressions are interpreted as follows: single letters match that
+   letter; groups of letters in square brackets match any of the letters
+   in the group. <P> <LI> <A NAME=motif-summary-doc2
+   HREF=#motif-summary><H4> Motif Summary Tiling</H4></A> The motif
+   summary tiling is done using the same algorithm as used by <A
+   HREF=http://meme.nbcr.net/meme/mast-intro.html>MAST</A>. The motif
+   occurrences shown in the motif summary <B>may not be exactly the same
+   as those reported in each motif section</B> because only motifs with a
+   position <em>p</em>-value of 0.0001 that don't overlap other, more
+   significant motif occurrences are shown. The format of the machine
+   readable motif-summary is: <pre> [sequence_name
+   combined_<em>p</em>-value number_of_motif_occurrences [motif_number
+   start_of_motif position_<em>p</em>-value]+]+ </pre> See the
+   documentation for <A
+   HREF=http://meme.nbcr.net/meme/mast-output.html>MAST output</A> for
+   the definition of position and combined <em>p</em>-values. </UL>
+   <HR><TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0><TR> <TD
+   BGCOLOR='#DDDDFF'><A HREF="#top_buttons"><B>Go to
+   top</B></A></TABLE><BR> </FORM> </BODY> </HTML>
 
    The MEME results consist of:
      * The version of MEME and the date it was released.

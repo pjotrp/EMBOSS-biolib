@@ -204,6 +204,8 @@ Command line arguments
    -fatal              boolean    Report fatal errors
    -die                boolean    Report dying program messages
 
+acdDelPhyloFreq '0'
+
 Input file format
 
    fgendist reads continuous character data
