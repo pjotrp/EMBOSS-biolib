@@ -3710,7 +3710,7 @@ void ajCodGetCodonlist(const AjPCod cod, AjPList list)
 	for(j=0;j<cod->tcount[i];j++)
 	{
 	    codon = ajStrNewC(ajCodTriplet(i));
-	    ajListstrPushApp(list, codon);
+	    ajListstrPushAppend(list, codon);
 	    codon = NULL;
 	}
     }
