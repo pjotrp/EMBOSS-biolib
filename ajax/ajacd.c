@@ -193,6 +193,8 @@ static AjPStr acdAttrValTmp   = NULL;
 static AjPStr acdQualNameTmp  = NULL;
 static AjPStr acdQualNumTmp   = NULL;
 
+static AjBool acdParseQuotes = AJFALSE;
+
 /*
 static ajint acdLineCount = 0;
 static AjPList acdListCount = NULL;
@@ -3169,7 +3171,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 
     acdProgram = ajStrNewC(pgm);
     acdSecList = ajListstrNew();
-    acdSecTable = ajStrTableNewCase(50);
+    acdSecTable = ajTablestrNewCaseLen(50);
 
     acdLog("testing acdprompts");
     if(ajNamGetValueC("acdprompts", &acdTmpStr))
@@ -3289,8 +3291,8 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     while(ajFileReadLine(acdFile, &acdLine))
     {
 	AJNEW0(k);
-	*k = ajListLength(acdListWords);
-	ajListPushApp(acdListCount, k);
+	*k = ajListGetLength(acdListWords);
+	ajListPushAppend(acdListCount, k);
       
 	if(ajStrCutComments(&acdLine))
 	{
@@ -3300,7 +3302,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    {
 		if(ajStrGetLen(tmpword)) /* nothing before first whitespace */
 		{
-		    ajListstrPushApp(acdListWords, tmpword);
+		    ajListstrPushAppend(acdListWords, tmpword);
 		    tmpword = NULL;
 		}
 		else
@@ -3316,8 +3318,8 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     ajStrDel(&acdLine);
     
     AJNEW0(k);
-    *k = ajListLength(acdListWords);
-    ajListPushApp(acdListCount, k);
+    *k = ajListGetLength(acdListWords);
+    ajListPushAppend(acdListCount, k);
     
     acdCodeInit();
     acdKnowntypeInit();
@@ -3326,8 +3328,8 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     
     acdParse(acdListWords, acdListCount);
     
-    ajListstrDel(&acdListWords);
-    ajListDel(&acdListCount);
+    ajListstrFree(&acdListWords);
+    ajListFree(&acdListCount);
     
     if(acdDoPretty || acdDoValid)
 	ajExit();
@@ -3477,7 +3479,7 @@ static void acdParse(AjPList listwords, AjPList listcount)
     /* initialise the global line number counter to zero */
     acdLineNum = 0;
 
-    while(ajListLength(listcount) && (!lineword))
+    while(ajListGetLength(listcount) && (!lineword))
     {
 	ajListPeek(listcount, (void**) &iword);
 	if(*iword)
@@ -3493,11 +3495,11 @@ static void acdParse(AjPList listwords, AjPList listcount)
     lineword = 0;
     acdWordNum = 0;
     
-    while(ajListLength(listwords))
+    while(ajListGetLength(listwords))
     {
  	acdWordNextName(listwords, &acdStrType);
 	
-	while(ajListLength(listcount) && (lineword < acdWordNum))
+	while(ajListGetLength(listcount) && (lineword < acdWordNum))
 	{
 	    ajListPop(listcount, (void**) &iword);
 	    lineword = *iword;
@@ -3646,11 +3648,11 @@ static void acdParse(AjPList listwords, AjPList listcount)
     acdLog("-- All Done --\n");
     
     acdLog("-- All Done : acdSecList length %d\n",
-	   ajListstrLength(acdSecList));
+	   ajListstrGetLength(acdSecList));
     
     acdLineNum = linecount;
     
-    if(ajListstrLength(acdSecList)) /* fatal error, unclosed section(s) */
+    if(ajListstrGetLength(acdSecList)) /* fatal error, unclosed section(s) */
     {
 	while(ajListstrPop(acdSecList, &secname))
 	{
@@ -3667,11 +3669,11 @@ static void acdParse(AjPList listwords, AjPList listcount)
     ajStrDel(&acdStrAlias);
     ajStrDel(&acdStrType);
     ajStrDel(&acdStrValue);
-    ajListstrDel(&acdSecList);
+    ajListstrFree(&acdSecList);
     
     acdLineNum = 0;
     
-    while(ajListLength(listcount))
+    while(ajListGetLength(listcount))
     {
 	ajListPop(listcount, (void**) &iword);
 	AJFREE(iword);
@@ -3713,7 +3715,9 @@ static AjPStr acdParseValue(AjPList listwords)
     
     const char *quotes = "\"'";
     const char *endquotes = "\"'";
-    
+
+    acdParseQuotes = ajFalse;
+
     if(!acdWordNext(listwords, &strp))	/* test: novalue.acd */
 	acdErrorAcd(acdNewCurr,
 		    "Unexpected end of file, attribute value not found\n");
@@ -3725,7 +3729,9 @@ static AjPStr acdParseValue(AjPList listwords)
 	ajStrDel(&strp);
 	return acdParseReturn;
     }
-    
+
+    acdParseQuotes = ajTrue;
+
     /* quote found: parse up to closing quote then strip white space */
     
     iquote = cq - quotes;
@@ -3837,8 +3843,13 @@ static AjBool acdWordNextName(AjPList listwords, AjPStr* pword)
     if(acdWordNext(listwords, pword))
     {
 	if(ajStrGetCharLast(*pword) != ':')
-	{				/* test nocolon.acd */
-	    acdError("Expected ':' not found after '%S'", *pword);
+	{
+	    if(ajStrGetCharFirst(*pword) == ':')/* test nocolon.acd */
+		acdError("Found ':' at start of word '%S'", *pword);
+	    else if(ajStrFindAnyK(*pword, ':') > 0)
+		acdError("Expected space missing after ':' in '%S'", *pword);
+	    else
+		acdError("Expected ':' not found after '%S'", *pword);
 	    return ajFalse;
 	}
 	ajStrCutEnd(pword, 1);
@@ -4002,7 +4013,7 @@ static AjBool acdIsRightB(AjPStr* pstr, AjPList listwords)
     AjPStr teststr = NULL;
     char ch;
 
-    if(*pstr)
+    if(*pstr && !acdParseQuotes)
     {
 	ch = ajStrGetCharLast(*pstr);
 
@@ -4254,7 +4265,7 @@ static AcdPAcd acdNewSec(const AjPStr name)
     }
 
     acdLog("acdNewSec '%S' acdSecList length %d\n",
-	   name, ajListstrLength(acdSecList));
+	   name, ajListstrGetLength(acdSecList));
 
     acd = acdNewAcdKey(name, name, ikey);
     acd->Level = ACD_SEC;
@@ -4270,7 +4281,7 @@ static AcdPAcd acdNewSec(const AjPStr name)
 	acdError("Duplicate section '%S'", name);
 
     acdLog("acdNewSec acdSecList push '%S' new length %d\n",
-	   secname, ajListstrLength(acdSecList));
+	   secname, ajListstrGetLength(acdSecList));
 
     return acd;
 }
@@ -4301,9 +4312,9 @@ static AcdPAcd acdNewEndsec(const AjPStr name)
     }
 
     acdLog("acdNewEndsec '%S' acdSecList length %d\n",
-	   name, ajListstrLength(acdSecList));
+	   name, ajListstrGetLength(acdSecList));
 
-    if(!ajListstrLength(acdSecList))	/* test endsecextra.acd */
+    if(!ajListstrGetLength(acdSecList))	/* test endsecextra.acd */
     {
 	acdLog("Bad endsection '%S', not in a section\n", name);
 	acdError("Bad endsection '%S', not in a section", name);
@@ -4312,7 +4323,7 @@ static AcdPAcd acdNewEndsec(const AjPStr name)
     {
 	ajListstrPop(acdSecList, &secname);
 	acdLog("Pop from acdSecList '%S' new length %d\n",
-	       secname, ajListstrLength(acdSecList));
+	       secname, ajListstrGetLength(acdSecList));
 
 	if(!ajStrMatchS(name, secname))	/* test badendsec.acd */
 	{
@@ -6946,7 +6957,7 @@ static void acdSetDirlist(AcdPAcd thys)
 	
 
 
-    n = ajListLength(val);
+    n = ajListGetLength(val);
 
     ajDebug("acdSetDirlist '%S' listlength %d\n",
 	    acdReply, n);
@@ -6956,7 +6967,7 @@ static void acdSetDirlist(AcdPAcd thys)
 	ajListPop(val,(void **)&v);
 	ajStrAppendS(&t,v);
 	ajStrAssignC(&v,ajStrGetPtr(t));
-	ajListPushApp(val,(void *)v);
+	ajListPushAppend(val,(void *)v);
     }
     
     thys->Value = val;
@@ -11604,9 +11615,8 @@ static void acdSetSeqall(AcdPAcd thys)
 	    acdSetQualDefBool(thys, "sreverse", sreverse);
 	}
     }
-    /* no need to do this - it should happen in ajSeqallNext */
-    /* if(val->Rev)
-	ajSeqallReverse(val); */
+
+    /* no need to reverse - it should happen in ajSeqallNext */
 
     acdLog("sbegin: %d, send: %d, sreverse: %B\n",
 	   sbegin, send, sreverse);
@@ -11780,7 +11790,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
 
-    nsets = ajListToArray(seqlist,(void***) &sets);
+    nsets = ajListToarray(seqlist,(void***) &sets);
     val   = (AjPSeqset*) sets;
     ajListFree(&seqlist);
 
@@ -14492,7 +14502,7 @@ static void acdHelpValidGraph(const AcdPAcd thys, AjBool table, AjPStr* str)
     if(!table)
 	ajFmtPrintAppS(str, ")");
 
-    ajListDel(&list);
+    ajListFree(&list);
 
     return;
 }
@@ -15438,7 +15448,7 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
     ajUser("<th align=\"left\">Default</th>");
     ajUser("</tr>\n");
 
-    if(!ajListLength(tablist))
+    if(!ajListGetLength(tablist))
     {
 	ajUser("<tr>");
 	ajUser("<td colspan=4>(none)</td>");
@@ -15446,8 +15456,8 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
     }
     else
     {
-	iter = ajListIterRead(tablist);
-	while((item = ajListIterNext(iter)))
+	iter = ajListIterNewread(tablist);
+	while((item = ajListIterGet(iter)))
 	{
 	    acdTextTrim(&item->Help);
 	    ajUser("<tr>");
@@ -15459,7 +15469,7 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
 	}
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     return;
 }
@@ -15518,7 +15528,7 @@ static void acdHelpAssocTable(const AcdPAcd thys, AjPList tablist)
 	acdHelpText(pa, &item->Help);
 	acdHelpValid(pa, ajTrue, &item->Valid);
 	acdHelpExpect(pa, ajTrue, &item->Expect);
-	ajListPushApp(tablist, item);
+	ajListPushAppend(tablist, item);
     }
 
     return;
@@ -15597,7 +15607,7 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist)
     acdHelpValid(thys, ajTrue, &item->Valid);
     acdHelpText(thys, &item->Help);
     
-    ajListPushApp(tablist, item);
+    ajListPushAppend(tablist, item);
     
     return;
 }
@@ -22301,7 +22311,7 @@ static AjBool acdCodeGet(const AjPStr code, AjPStr *msg)
     ajStrAssignS(&tmpcode, code);
     ajStrFmtLower(&tmpcode);
 
-    value = ajTableGet(acdCodeTable, tmpcode);
+    value = ajTableFetch(acdCodeTable, tmpcode);
     if(value)
     {
 	ajStrAssignS(msg, value);
@@ -22485,7 +22495,7 @@ static void acdCodeInit(void)
     
     ajStrDel(&codeLine);
     
-    acdCodeTable = ajStrTableNew(0);
+    acdCodeTable = ajTablestrNew();
     
     codexp = ajRegCompC("^ *([^ ]+) +\"([^\"]*)\"");
     while(ajRegExec(codexp, codeText))
@@ -22882,13 +22892,13 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
 	if(ifound == 1)
 	{
 	    ajStrAssignS(&hitstr,hitstr1);
-	    ajListstrPushApp(list, hitstr);
+	    ajListstrPushAppend(list, hitstr);
 	    hitstr = NULL;
 	}
 	else if(jfound == 1)
 	{
 	    ajStrAssignS(&hitstr, hitstr2);
-	    ajListstrPushApp(list, hitstr);
+	    ajListstrPushAppend(list, hitstr);
 	    hitstr = NULL;
 	}
 	else
@@ -22908,7 +22918,7 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
     ajStrTokenDel(&rephandle);
     ajStrDel(&repstr);
     
-    ilen = ajListstrLength(list);
+    ilen = ajListstrGetLength(list);
     acdLog("Found %d matches OK: %b min: %d max: %d\n",
 	   ilen, ok, min, max);
     if(ok)
@@ -22943,11 +22953,11 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
     }
     
     acdLog("Found %d matches\n", ilen);
-    acdLog("Menu length now %d\n", ajListstrLength(list));
+    acdLog("Menu length now %d\n", ajListstrGetLength(list));
     if(ok)
 	acdLog("Before return val[0] '%S'\n", val[0]);
     
-    ajListstrFree(&list);
+    ajListstrFreeData(&list);
     ajStrDel(&delim);
     ajStrDel(&codedelim);
     ajStrDel(&repdelim);
@@ -23089,7 +23099,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
 	if(jfound == 1)
 	{
 	    ajStrAssignS(&hitstr, hitstr2);
-	    ajListstrPushApp(list, hitstr);
+	    ajListstrPushAppend(list, hitstr);
 	    hitstr = NULL;
 	}
 	else
@@ -23108,7 +23118,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
     ajStrTokenDel(&rephandle);
     ajStrDel(&repstr);
     
-    ilen = ajListstrLength(list);
+    ilen = ajListstrGetLength(list);
     
     if(ok)
     {
@@ -23139,7 +23149,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
     
     acdLog("Found %d matches\n", ilen);
     
-    ajListstrDel(&list);
+    ajListstrFree(&list);
     ajStrDel(&value);
     ajStrDel(&line);
     ajStrDel(&code);
@@ -24460,10 +24470,10 @@ static void acdReset(void)
 	acdDel(&pa);
     }
 
-    ajStrTableFree(&acdKnowntypeTypeTable);
-    ajStrTableFree(&acdKnowntypeDescTable);
-    ajStrTableFree(&acdCodeTable);
-    ajStrTableFree(&acdGrpTable);
+    ajTablestrFree(&acdKnowntypeTypeTable);
+    ajTablestrFree(&acdKnowntypeDescTable);
+    ajTablestrFree(&acdCodeTable);
+    ajTablestrFree(&acdGrpTable);
 
     ajStrDel(&acdTmpStr);
     ajStrDel(&acdTmpStr2);
@@ -24481,8 +24491,8 @@ static void acdReset(void)
     ajStrDel(&acdLogFName);
     ajFileClose(&acdLogFile);
 
-    ajListstrFree(&acdSecList);
-    ajStrTableFree(&acdSecTable);
+    ajListstrFreeData(&acdSecList);
+    ajTablestrFree(&acdSecTable);
 
     ajStrDel(&acdPrettyFName);
     ajFileClose(&acdPrettyFile);
@@ -24490,6 +24500,7 @@ static void acdReset(void)
     ajStrDel(&acdOutFullFName);
     ajStrDel(&acdVarAcdProtein);
 
+    acdParseQuotes = ajFalse;
     ajStrDel(&acdParseReturn);
     ajStrDel(&acdReply);
     ajStrDel(&acdReplyDef);
@@ -24737,7 +24748,7 @@ static void acdValidSection(const AcdPAcd thys)
     }
     /* should have a known name */
 
-    sectType = ajTableGet(typeTable, thys->Name);
+    sectType = ajTableFetch(typeTable, thys->Name);
     tmpstr = acdAttrValue(thys, "type");
 
     if(!sectType)
@@ -24781,7 +24792,7 @@ static void acdValidSection(const AcdPAcd thys)
 	}
     }
 
-    sectInfo = ajTableGet(infoTable, thys->Name);
+    sectInfo = ajTableFetch(infoTable, thys->Name);
     tmpstr = acdAttrValue(thys, "information");
 
     /* must have an information attribute */
@@ -24862,7 +24873,7 @@ static void acdValidQual(AcdPAcd thys)
     if(!acdDoValid)
 	return;
 
-    if(ajListLength(acdSecList))
+    if(ajListGetLength(acdSecList))
     {
 	acdValidSectionFull(&secname);
     }
@@ -25670,7 +25681,7 @@ static void acdValidKnowntype(const AcdPAcd thys)
     if (!defType)
 	ajFmtPrintS(&defType, "%S output", acdProgram);
 
-    acdKnownType = ajTableGet(acdKnowntypeTypeTable, typestr);
+    acdKnownType = ajTableFetch(acdKnowntypeTypeTable, typestr);
     if (!acdKnownType)
     {
 	if(ajStrFindAnyK(typestr, '_') >= 0)
@@ -25814,7 +25825,7 @@ static const AjPStr acdKnowntypeDesc(const AcdPAcd thys)
     knowntype = acdAttrValue(thys, "knowntype");
     if(!ajStrGetLen(knowntype)) return NULL;
 
-    knowndesc = ajTableGet(acdKnowntypeDescTable, knowntype);
+    knowndesc = ajTableFetch(acdKnowntypeDescTable, knowntype);
     return knowndesc;
 }
 
@@ -25852,8 +25863,8 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     ajNamRootInstall(&knownRootInst);
     ajFileDirFix(&knownRootInst);
     
-    *desctable = ajStrTableNewCase(500);
-    *typetable = ajStrTableNewCase(500);
+    *desctable = ajTablestrNewCase();
+    *typetable = ajTablestrNewCase();
 
     if(ajNamGetValueC("acdroot", &knownRoot))
     {
@@ -25966,7 +25977,7 @@ static void acdValidApplGroup(const AjPStr groups)
     {
 	ajRegSubI(grpexp, 1, &grpName);
 	ajStrRemoveWhiteExcess(&grpName);
-	grpDesc = ajTableGet(acdGrpTable, grpName);
+	grpDesc = ajTableFetch(acdGrpTable, grpName);
 	if(!grpDesc)
 	    acdErrorValid("Unknown group '%S' for application", grpName);
 	ajRegPost(grpexp, &tmpGroups);
@@ -26013,7 +26024,7 @@ static void acdValidApplKeywords(const AjPStr keys)
     {
 	ajRegSubI(keyexp, 1, &keyName);
 	ajStrRemoveWhiteExcess(&keyName);
-	keyDesc = ajTableGet(keyTable, keyName);
+	keyDesc = ajTableFetch(keyTable, keyName);
 	if(!keyDesc)
 	    acdErrorValid("Unknown keyword '%S' for application", keyName);
 	ajRegPost(keyexp, &tmpKeys);
@@ -26039,7 +26050,7 @@ static void acdValidApplKeywords(const AjPStr keys)
 
 static AjPTable acdReadGroups(void)
 {
-    AjPTable ret = ajStrTableNewCase(50);
+    AjPTable ret = ajTablestrNewCaseLen(50);
 
     AjPFile grpFile    = NULL;
     AjPStr grpFName    = NULL;
@@ -26135,7 +26146,7 @@ static AjPTable acdReadGroups(void)
 
 static AjPTable acdReadKeywords(void)
 {
-    AjPTable ret = ajStrTableNewCase(50);
+    AjPTable ret = ajTablestrNewCaseLen(50);
 
     AjPFile keyFile    = NULL;
     AjPStr keyFName    = NULL;
@@ -26195,7 +26206,7 @@ static AjPTable acdReadKeywords(void)
 		ajRegSubI(keyxp, 1, &keyName);
 		ajRegSubI(keyxp, 2, &keyDesc);
 		ajStrExchangeKK(&keyName, '_', ' ');
-		if(ajTableGet(acdGrpTable, keyName))
+		if(ajTableFetch(acdGrpTable, keyName))
 		    ajWarn("Keyword %S in file %S is a known group",
 			   keyName, keyFName);
 		if(ajTablePut(ret, keyName, keyDesc))
@@ -26255,8 +26266,8 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
     ajNamRootInstall(&sectRootInst);
     ajFileDirFix(&sectRootInst);
     
-    *typetable = ajStrTableNewCase(50);
-    *infotable = ajStrTableNewCase(50);
+    *typetable = ajTablestrNewCaseLen(50);
+    *infotable = ajTablestrNewCaseLen(50);
 
     if(ajNamGetValueC("acdroot", &sectRoot))
     {
@@ -26345,14 +26356,14 @@ static AjBool acdValidSectionMatch(const char* secname)
     AjPStr listsecname;
     AjBool ret = ajFalse;
 
-    if(!ajListLength(acdSecList))
+    if(!ajListGetLength(acdSecList))
 	return ajFalse;
 
-    iter = ajListIterRead(acdSecList);
+    iter = ajListIterNewread(acdSecList);
 
-    while (ajListIterMore(iter))
+    while (!ajListIterDone(iter))
     {
-	listsecname = ajListIterNext(iter);
+	listsecname = ajListIterGet(iter);
 	if(ajStrMatchC(listsecname, secname))
 	{
 	    ret = ajTrue;
@@ -26360,7 +26371,7 @@ static AjBool acdValidSectionMatch(const char* secname)
 	}
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     return ret;
 }
@@ -26381,20 +26392,20 @@ static void acdValidSectionFull(AjPStr* secname)
 
     ajStrAssignC(secname, "");
 
-    if(!ajListLength(acdSecList))
+    if(!ajListGetLength(acdSecList))
 	return;
 
-    iter = ajListIterRead(acdSecList);
+    iter = ajListIterNewread(acdSecList);
 
-    while (ajListIterMore(iter))
+    while (!ajListIterDone(iter))
     {
-	listsecname = ajListIterNext(iter);
+	listsecname = ajListIterGet(iter);
 	if (ajStrGetLen(*secname))
 	    ajStrAppendK(secname,':');
 	ajStrAppendS(secname, listsecname);
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     return;
 }
@@ -26955,7 +26966,7 @@ static void acdDelFloat(void** PPval)
 static void acdDelList(void** PPval)
 {
     if(!*PPval) return;
-    ajListstrDel((AjPList*)PPval);
+    ajListstrFree((AjPList*)PPval);
     return;
 }
 
