@@ -1136,7 +1136,8 @@ void ajListMapread(const AjPList list,
 __deprecated void ajListMapRead(const AjPList list,
 		   void apply(void* x, void* cl), void* cl)
 {
-    return ajListMapread(list, apply, cl);
+    ajListMapread(list, apply, cl);
+    return;
 }
 
 
@@ -2130,7 +2131,8 @@ void ajListIterDel(AjIList* iter)
 
 __deprecated void ajListIterFree(AjIList* iter)
 {
-    return ajListIterDel(iter);
+    ajListIterDel(iter);
+    return;
 }
 
 
