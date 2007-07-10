@@ -124,9 +124,9 @@ void        ajListstrFreeData   (AjPList *list);
 void        ajListstrIterTrace (const AjIList iter);
 ajuint      ajListstrGetLength (const AjPList list);
 void        ajListstrMap (AjPList thys,
-			  void apply(AjPStr* x, void* cl), void* cl);
+			  void (*apply) (AjPStr* x, void* cl), void* cl);
 void        ajListstrMapread (const AjPList thys,
-			      void apply(AjPStr x, void* cl), void* cl);
+			      void (*apply) (AjPStr x, void* cl), void* cl);
 AjPList     ajListstrNew (void);          /* return header */
 AjBool      ajListstrPeek    (const AjPList list, AjPStr* x);
 AjBool      ajListstrPop    (AjPList list, AjPStr* x);
