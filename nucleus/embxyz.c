@@ -96,7 +96,7 @@ AjBool embXyzSeqsetNR(const AjPList input, AjPInt *keep, ajint *nset,
     cvt = ajMatrixfCvt(matrix);
 
     /* Convert the AjPList to an array of AjPseq */
-    if(!(nin=ajListToArray(input,(void ***)&inseqs)))
+    if(!(nin=ajListToarray(input,(void ***)&inseqs)))
     {
 	ajWarn("Zero sized list of sequences passed into SeqsetNR");
 	AJFREE(compass);
@@ -335,7 +335,7 @@ AjBool embXyzSeqsetNRRange(const AjPList input, AjPInt *keep, ajint *nset,
 
 
     /* Convert the AjPList to an array of AjPseq */
-    if(!(nin=ajListToArray(input,(void ***)&inseqs)))
+    if(!(nin=ajListToarray(input,(void ***)&inseqs)))
     {
 	ajWarn("Zero sized list of sequences passed into SeqsetNR");
 	AJFREE(compass);
