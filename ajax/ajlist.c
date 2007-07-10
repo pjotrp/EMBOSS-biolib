@@ -2394,7 +2394,9 @@ void ajListIterRemove(AjIList iter)
 
 __deprecated void ajListRemove(AjIList iter)
 {
-    return ajListIterRemove(iter);
+
+    ajListIterRemove(iter);
+    return;
 }
 
 /* @section Trace functions ***************************************************
@@ -2642,7 +2644,9 @@ void ajListstrPushAppend(AjPList list, AjPStr x)
 
 __deprecated void ajListstrPushApp(AjPList list, AjPStr x)
 {
-    return ajListstrPushAppend(list, x);
+
+    ajListstrPushAppend(list, x);
+    return;
 }
 
 
@@ -2705,7 +2709,7 @@ __deprecated void ajListstrPushList(AjPList list, AjPList* Plist)
 ** @@
 ******************************************************************************/
 
-void ajListstrMap(AjPList list, void apply(AjPStr* x, void* cl), void* cl)
+void ajListstrMap(AjPList list, void (*apply) (AjPStr* x, void* cl), void* cl)
 {
     AjPListNode rest;
 
@@ -2979,7 +2983,9 @@ void ajListstrMapread(const AjPList list,
 __deprecated void ajListstrMapRead(const AjPList list,
 		  void apply(AjPStr x, void* cl), void* cl)
 {
-    return ajListstrMapread(list, apply, cl);
+
+    ajListstrMapread(list, apply, cl);
+    return;
 }
 
 /* @func ajListstrPeek ********************************************************
