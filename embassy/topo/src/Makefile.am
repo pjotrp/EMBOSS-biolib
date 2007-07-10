@@ -30,9 +30,9 @@ noinst_HEADERS = common.h
 if LOCALLINK
 
 if ISCYGWIN
-LDADD = ../../../nucleus/libnucleus.la  ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la  ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajaxg.la ../../../ajax/libajax.la ../../../plplot/libplplot.la $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajaxg.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
 endif
 
 else
