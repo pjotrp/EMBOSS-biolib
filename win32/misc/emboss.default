@@ -33,47 +33,38 @@ SET CACHESIZE 200
 
 DB emblebi [  type: N method: srswww format: embl release: "EBI"
    dbalias: "embl"
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "EMBL from the EBI" ]
 
 DB em [  type: N method: srswww format: embl release: "EBI"
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   dbalias: "EMBL"
   comment: "EMBL from the EBI" ]
 
 DB swissprot [  type: P method: srswww format: swiss release: "EBI"
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "SWISSPROT from the EBI" ]
 
 DB sw [  type: P method: srswww format: swiss release: "EBI"
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   dbalias: "SWISSPROT"
   comment: "SWISSPROT from the EBI" ]
 
 DB uniprot [  type: P method: srswww format: swiss release: "EBI"
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "UNIPROT from the EBI" ]
 
 DB uni [  type: P method: srswww format: swiss release: EBI
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   dbalias: "UNIPROT"
   comment: "UNIPROT from the EBI" ]
 
 DB pir [  type: P method: srswww format: nbrf release: "EBI"
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "PIR from the EBI" ]
 
-DB genbank [  type: N method: srswww format: genbank release: "NCBI"
-  url: "http://www.infobiogen.fr/srs7bin/cgi-bin/wgetz"
-  comment: "GenBank from Infobiogen" ]
-
-DB gb [  type: N method: srswww format: genbank release: "NCBI"
-  url: "http://www.infobiogen.fr/srs7bin/cgi-bin/wgetz"
-  dbalias: "GENBANK"
-  comment: "GenBank from Infobiogen" ]
-
 DB refseq [  type: N method: srswww format: genbank release: "NCBI"
-  url: "http://srs.ebi.ac.uk/srs7bin/cgi-bin/wgetz"
+  url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "REFSEQ from EBI" ]
 
 
