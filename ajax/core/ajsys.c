@@ -944,7 +944,8 @@ void ajSysSystem(const AjPStr cmdline)
 
 __deprecated void ajSystem(const AjPStr cl)
 {
-    return ajSysSystem(cl);
+    ajSysSystem(cl);
+    return
 }
 
 /* @func ajSysSystemEnv *******************************************************
@@ -981,12 +982,12 @@ void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
 
     pname = ajStrNew();
 
-    ajDebug("ajSystemEnv '%s' %S \n", pgm, cmdline);
+    ajDebug("ajSysSystemEnv '%s' %S \n", pgm, cmdline);
     ajStrAssignC(&pname, pgm);
     if(!ajSysFileWhichEnv(&pname, env))
 	ajFatal("cannot find program '%S'", pname);
 
-    ajDebug("ajSystemEnv %S = %S\n", pname, cmdline);
+    ajDebug("ajSysSystemEnv %S = %S\n", pname, cmdline);
     for (i=0;argptr[i]; i++)
     {
 	ajDebug("%4d '%s'\n", i, argptr[i]);
@@ -1034,7 +1035,8 @@ void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
 
 __deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
 {
-    return ajSysSystemEnv(cl, env);
+    ajSysSystemEnv(cl, env);
+    return
 }
 
 
@@ -1120,7 +1122,8 @@ void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 
 __deprecated void ajSystemOut(const AjPStr cl, const AjPStr outfname)
 {
-    return ajSysSystemOut(cl, outfname);
+    ajSysSystemOut(cl, outfname);
+    return
 }
 
 /* @section Miscellaneous system functions ************************************
