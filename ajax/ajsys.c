@@ -945,7 +945,7 @@ void ajSysSystem(const AjPStr cmdline)
 __deprecated void ajSystem(const AjPStr cl)
 {
     ajSysSystem(cl);
-    return
+    return;
 }
 
 /* @func ajSysSystemEnv *******************************************************
@@ -1036,7 +1036,7 @@ void ajSysSystemEnv(const AjPStr cmdline, char * const env[])
 __deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
 {
     ajSysSystemEnv(cl, env);
-    return
+    return;
 }
 
 
@@ -1123,7 +1123,7 @@ void ajSysSystemOut(const AjPStr cmdline, const AjPStr outfname)
 __deprecated void ajSystemOut(const AjPStr cl, const AjPStr outfname)
 {
     ajSysSystemOut(cl, outfname);
-    return
+    return;
 }
 
 /* @section Miscellaneous system functions ************************************
