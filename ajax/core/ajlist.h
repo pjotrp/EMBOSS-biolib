@@ -164,11 +164,11 @@ void        ajListSortTwoThree (AjPList thys,
 
 void        ajListSortUnique (AjPList thys,
 			  int (*sort1) (const void* x, const void* cl),
-			  void nodedelete (void** x, void* cl));
+			  void (*nodedelete) (void** x, void* cl));
 void        ajListSortTwoUnique(AjPList thys,
 			  int (*sort1) (const void* x, const void* cl),
 			  int (*sort2) (const void* x, const void* cl),
-			  void nodedelete (void** x, void* cl));
+			  void (*nodedelete) (void** x, void* cl));
 void        ajListUnused(void** array);
 
 /*
@@ -241,11 +241,11 @@ __deprecated void        ajListSort3 (AjPList thys,
 
 __deprecated void        ajListUnique (AjPList thys,
 			  int (*compar) (const void* x, const void* cl),
-			  void nodedelete (void** x, void* cl));
+			  void (*nodedelete) (void** x, void* cl));
 __deprecated void        ajListUnique2(AjPList thys,
 			  int (*compar1) (const void* x, const void* cl),
 			  int (*compar2) (const void* x, const void* cl),
-			  void nodedelete (void** x, void* cl));
+			  void (*nodedelete) (void** x, void* cl));
 
 __deprecated void        ajListGarbageCollect (AjPList list,
 					       void (*destruct)(void **),
