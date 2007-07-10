@@ -63,6 +63,16 @@ DB pir [  type: P method: srswww format: nbrf release: "EBI"
   url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "PIR from the EBI" ]
 
+DB gb [  type: N method: srswww format: genbank release: "Pasteer"
+  url: "http://srs.pasteur.fr/cgi-bin/wgetz"
+  dbalias: "GENBANKRELEASE"
+  comment: "GenBank from Pasteur" ]
+
+DB genbank [  type: N method: srswww format: genbank release: "Pasteur"
+  url: "http://srs.pasteur.fr/cgi-bin/wgetz"
+  dbalias: "GENBANKRELEASE"
+  comment: "GenBank from Pasteur" ]
+
 DB refseq [  type: N method: srswww format: genbank release: "NCBI"
   url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "REFSEQ from EBI" ]
