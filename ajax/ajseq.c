@@ -1351,8 +1351,10 @@ __deprecated void  ajSeqAssSeqC (AjPSeq thys, const char* text)
 */
 __deprecated void  ajSeqAssSeqCI (AjPSeq thys, const char* text, ajint ilen)
 {
+/*
     static ajint savelen;
     savelen = ilen;
+*/
     ajSeqAssignSeqC(thys, text);
     return;
 }

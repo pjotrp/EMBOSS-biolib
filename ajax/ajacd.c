@@ -81,7 +81,7 @@ static AjBool acdKnowntypeSet = AJFALSE;
 static AjPTable acdKnowntypeTypeTable = NULL;
 static AjPTable acdKnowntypeDescTable = NULL;
 
-static AjBool acdQualTestSkip = AJFALSE;
+/* static AjBool acdQualTestSkip = AJFALSE; */
 
 static ajint acdInFile = 0;
 static ajint acdInFileSet = AJFALSE;
@@ -18831,7 +18831,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
     acdLog("\n");
     
     acdMasterQual = NULL;
-    acdQualTestSkip = ajFalse;
+/*    acdQualTestSkip = ajFalse; */
 
     i = 1;
     while(i < argc)
@@ -19219,7 +19219,7 @@ static ajint acdIsQual(const char* arg, const char* arg2,
     
     if(!strcmp(cp, "--"))	       /* special -- to turn off processing */
     {
-	acdQualTestSkip = ajTrue;
+/*	acdQualTestSkip = ajTrue; */
 	return 0;
     }
     if(*cp && strchr("-/", *cp))   /* first character vs. qualifier starts */
@@ -24566,7 +24566,7 @@ static void acdReset(void)
     acdStdout = AJFALSE;
     acdCodeSet = AJFALSE;
     acdKnowntypeSet = AJFALSE;
-    acdQualTestSkip = AJFALSE;
+/*    acdQualTestSkip = AJFALSE; */
     acdInFile = 0;
     acdInFileSet = AJFALSE;
     acdOutFile = 0;
