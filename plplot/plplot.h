@@ -1,4 +1,4 @@
-/* $Id: plplot.h,v 1.6 2007/05/17 10:37:26 ajb Exp $
+/* $Id: plplot.h,v 1.7 2007/07/11 10:45:58 ajb Exp $
 
     Macros and prototypes for the PLplot package.  This header file must
     be included by all user codes.
@@ -162,6 +162,7 @@ typedef float PLFLT;
 #define PLFLT_MIN  FLT_MIN
 #endif
 
+#if 0 /* ajb: stdint.h isn't that portable (really c99 stuff) */ 
 #if (defined(HAVE_STDINT_H) && !defined(__cplusplus)) ||\
 (defined(__cplusplus) && defined(HAVE_CXX_STDINT_H))
 #include <stdint.h>
@@ -173,6 +174,12 @@ typedef int32_t PLINT;
 typedef unsigned int PLUNICODE;
 typedef int PLINT;
 #endif
+#endif
+
+/* ajb: define explicitly avoiding stdint.h above */
+typedef unsigned int PLUNICODE;
+typedef int PLINT;
+
 
 /* For identifying logical (boolean) arguments */
 typedef PLINT PLBOOL;
