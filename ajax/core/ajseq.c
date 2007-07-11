@@ -6927,7 +6927,7 @@ void ajSeqdateDel(AjPSeqDate* Pdate)
     AJFREE(*Pdate);
 
     return;
-};
+}
 
 
 /* @section modifiers ************************************************
@@ -7176,7 +7176,7 @@ void ajSeqrefDel(AjPSeqRef* Pref)
     AJFREE(*Pref);
 
     return;
-};
+}
 
 /* @section modifiers ************************************************
 **
