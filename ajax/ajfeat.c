@@ -8876,14 +8876,14 @@ static AjBool featTagSpecialAllCitation(const AjPStr val)
 {
 /*    AjPStr numstr = NULL;*/
     const char* cp = ajStrGetPtr(val);
-    const char* cq;
+/*    const char* cq; */
     ajint i = 0;
 /*    AjBool saveit = ajFalse;*/
     AjBool ret = ajFalse;
 
     if(*cp++ == '[')
     {
-	cq = cp;
+/*	cq = cp; */
 	while(*cp)
 	{
 	    if(!isdigit((ajint)*cp))
@@ -9743,7 +9743,7 @@ static AjBool featTagSpecialAllDbxref(const AjPStr val)
 static AjBool featTagSpecialAllProteinid(const AjPStr val)
 {
     const char* cp = ajStrGetPtr(val);
-    const char* cq;
+/*    const char* cq; */
     ajint icp;
     ajint i = 0;
     ajint idot = 0;
@@ -9780,7 +9780,7 @@ static AjBool featTagSpecialAllProteinid(const AjPStr val)
     else
     {
 	cp = ajStrGetPtr(val);
-	cq = cp;
+/*	cq = cp; */
 	i=0;
 	while(*cp)
 	{

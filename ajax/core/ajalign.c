@@ -4916,14 +4916,9 @@ static AjBool alignConsSet(const AjPAlign thys, ajint iali,
     
     const char *seqcharptr;
     char gapch;
-    AjPStr debugstr1=NULL;
-    AjPStr debugstr2=NULL;
     AlignPData data = NULL;
     const AjPSeq* seqs;
     const AjPSeq seq;
-
-    debugstr1=ajStrNew();
-    debugstr2=ajStrNew();
 
     data = alignData(thys, iali);
     seqs = alignSeqs(thys, iali);
