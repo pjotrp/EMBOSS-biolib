@@ -18720,14 +18720,10 @@ AjBool ajAcdSetControl(const char* optionName)
 static void acdArgsScan(ajint argc, char * const argv[])
 {
     ajint i;
-
-    ajint j=0;
-
     char* cp;
 
     for(i=0; i < argc; i++)
     {
-	j = 0;
 	cp = argv[i];
 	if(*cp && strchr("-/", *cp))  /* first character vs. qualifier starts */
 	{
