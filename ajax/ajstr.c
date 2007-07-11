@@ -7727,7 +7727,6 @@ AjBool ajStrFromDouble(AjPStr* Pstr, double val, ajint precision)
     AjBool ret = ajFalse;
     long long i;
     char fmt[12];
-    AjPStr thys;
 
     if(val)
 	i = precision + ajNumLengthDouble(val) + 3;
@@ -7735,7 +7734,6 @@ AjBool ajStrFromDouble(AjPStr* Pstr, double val, ajint precision)
 	i = precision + 4;
 
     ret = ajStrSetRes(Pstr, (ajuint)i);
-    thys = *Pstr;
 
     sprintf(fmt, "%%.%df", precision);
     ajFmtPrintS(Pstr, fmt, val);
@@ -7765,7 +7763,6 @@ AjBool ajStrFromDoubleExp(AjPStr* Pstr, double val, ajint precision)
     AjBool ret = ajFalse;
     long long i;
     char fmt[12];
-    AjPStr thys;
 
     if(val)
 	i = precision + ajNumLengthDouble(val) + 8;
@@ -7773,7 +7770,6 @@ AjBool ajStrFromDoubleExp(AjPStr* Pstr, double val, ajint precision)
 	i = precision + 8;
 
     ret = ajStrSetRes(Pstr, (ajuint)i);
-    thys = *Pstr;
 
     sprintf(fmt, "%%.%de", precision);
     ajFmtPrintS(Pstr, fmt, val);
@@ -7809,7 +7805,6 @@ AjBool ajStrFromFloat(AjPStr* Pstr, float val, ajint precision)
     AjBool ret = ajFalse;
     ajuint i;
     char fmt[12];
-    AjPStr thys;
 
     if(val)
 	i = precision + ajNumLengthFloat(val) + 4;
@@ -7817,7 +7812,6 @@ AjBool ajStrFromFloat(AjPStr* Pstr, float val, ajint precision)
 	i = precision + 4;
 
     ret = ajStrSetRes(Pstr, i);
-    thys = *Pstr;
 
     sprintf(fmt, "%%.%df", precision);
     ajFmtPrintS(Pstr, fmt, val);
@@ -7844,7 +7838,6 @@ AjBool ajStrFromInt(AjPStr* Pstr, ajint val)
 {
     AjBool ret = ajFalse;
     ajuint i;
-    AjPStr thys;
 
     if(val)
 	i = ajNumLengthInt(val) + 2;
@@ -7855,7 +7848,6 @@ AjBool ajStrFromInt(AjPStr* Pstr, ajint val)
 	i++;
 
     ret = ajStrSetRes(Pstr, i);
-    thys = *Pstr;
 
     ajFmtPrintS(Pstr, "%d", val);
 
@@ -7881,7 +7873,6 @@ AjBool ajStrFromLong(AjPStr* Pstr, ajlong val)
 {
     AjBool ret = ajFalse;
     ajlong i;
-    AjPStr thys;
 
     if(val)
 	i = ajNumLengthUint(val) + 2;
@@ -7892,7 +7883,6 @@ AjBool ajStrFromLong(AjPStr* Pstr, ajlong val)
 	i++;
 
     ret = ajStrSetRes(Pstr, i);
-    thys = *Pstr;
 
     ajFmtPrintS(Pstr, "%ld", (long)val);
 
