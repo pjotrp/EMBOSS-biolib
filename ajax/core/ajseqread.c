@@ -6538,7 +6538,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     AjPStr token     = NULL;
     ajuint bufflines         = 0;
     AjBool ok;
-    AjBool okdate;
+/*    AjBool okdate; */
     AjPFileBuff buff;
     AjPStr tmpstr = NULL;
     AjBool dofeat        = ajFalse;
@@ -6910,7 +6910,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 		thys->Date = ajSeqdateNew();
 	    ajStrTokenAssignC(&handle, seqReadLine, " (),");
 	    icount = 0;
-	    okdate = ajTrue;
+/*	    okdate = ajTrue; */
 	    while(ajStrTokenNextParse(&handle, &token))
 	    {
 		icount++;
