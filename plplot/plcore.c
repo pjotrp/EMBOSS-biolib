@@ -1,4 +1,4 @@
-/* $Id: plcore.c,v 1.11 2007/05/14 14:43:51 ajb Exp $
+/* $Id: plcore.c,v 1.12 2007/07/11 11:59:08 ajb Exp $
 
 	Central dispatch facility for PLplot.
 	Also contains the PLplot main data structures, external access
@@ -2383,7 +2383,8 @@ plSelectDev(void)			/* pmr: prototype */
 {
     int dev, i, count, length;
     char response[80];
-
+    int tlen;
+    
 /* Device name already specified.  See if it is valid. */
 
     if (*(plsc->DevName) != '\0' && *(plsc->DevName) != '?') {
@@ -2431,7 +2432,8 @@ plSelectDev(void)			/* pmr: prototype */
     /* Final "\n" in response messes things up, so ignore it.  */
 
 	length = strlen(response);
-	if (*(response - 1 + length) == '\n')
+	tlen = length - 1;
+	if (*(response + tlen) == '\n')
 	    length--;
 
 	for (i = 0; i < npldrivers; i++) {
