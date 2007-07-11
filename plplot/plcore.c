@@ -1,4 +1,4 @@
-/* $Id: plcore.c,v 1.12 2007/07/11 11:59:08 ajb Exp $
+/* $Id: plcore.c,v 1.13 2007/07/11 12:04:49 ajb Exp $
 
 	Central dispatch facility for PLplot.
 	Also contains the PLplot main data structures, external access
@@ -2432,6 +2432,12 @@ plSelectDev(void)			/* pmr: prototype */
     /* Final "\n" in response messes things up, so ignore it.  */
 
 	length = strlen(response);
+	if(!length)
+	{
+	    fprintf(stderr,"Error: empty response\n");
+	    exit(-1);
+	}
+	
 	tlen = length - 1;
 	if (*(response + tlen) == '\n')
 	    length--;
