@@ -1231,7 +1231,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     AjPStr outstd = NULL;
     AjPStr errstd = NULL;
     int retval    = 0;
-    char *save;
+    const char *save;
 
     jvc = (*env)->GetObjectClass(env,obj);
 
@@ -1260,7 +1260,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     (*env)->ReleaseStringUTFChars(env,commandline,sptr);
 
 
-    ajSysStrtokR(ajStrGetPtr(cl)," \t\n",&save,&prog);
+    ajSysFuncStrtokR(ajStrGetPtr(cl)," \t\n",&save,&prog);
 
 
     sptr = (char *) (*env)->GetStringUTFChars(env,environment,0);
@@ -1275,7 +1275,7 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_fork
     argp = make_array(cl);
     envp = make_array(envi);
 
-    if(!ajSysWhichEnv(&prog,envp))
+    if(!ajSysFileWhichEnv(&prog,envp))
     {
 	java_tidy_command(&prog,&cl,&envi,&dir,&outstd,&errstd);
 	i = 0;
@@ -1522,7 +1522,7 @@ static char** make_array(const AjPStr str)
     int n;
     char **ptr   = NULL;
     AjPStr buf;
-    char   *save = NULL;
+    const char *save = NULL;
 
     buf = ajStrNew();
 
@@ -1534,11 +1534,11 @@ static char** make_array(const AjPStr str)
 
     n = 0;
 
-    if(!ajSysStrtokR(ajStrGetPtr(str)," \t\n",&save,&buf))
+    if(!ajSysFuncStrtokR(ajStrGetPtr(str)," \t\n",&save,&buf))
 	return ptr;
     ptr[n++] = ajCharNewS(buf);
 
-    while(ajSysStrtokR(NULL," \t\n",&save,&buf))
+    while(ajSysFuncStrtokR(NULL," \t\n",&save,&buf))
 	ptr[n++] = ajCharNewS(buf);
 
     ajStrDel(&buf);
@@ -2709,7 +2709,7 @@ static int java_jembossctl(ajint command,
 
     /* Set program name */
     ajStrAssignC(&prog,"jembossctl");
-    if(!ajSysWhichEnv(&prog,envp))
+    if(!ajSysFileWhichEnv(&prog,envp))
     {
 	ajStrAppendC(errstd,"Cannot locate jembossctl\n");
 	java_tidy_command2(&unused,&cl,&clemboss,&dir,&envi,&prog,buff);
