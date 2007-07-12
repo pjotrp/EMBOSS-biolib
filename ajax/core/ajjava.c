@@ -116,7 +116,7 @@
 #endif
 
 #ifdef PAM
-#if defined(__ppc__)
+#if defined(__ppc__) || defined(__APPLE__)
 #include <pam/pam_appl.h>
 #else
 #include <security/pam_appl.h>
@@ -342,9 +342,9 @@ JNIEXPORT jboolean JNICALL Java_org_emboss_jemboss_parser_Ajax_seqsetType
     ok = ajJavaGetSeqsetFromUsa(name,&seq);
     if(ok)
     {
-	len = ajSeqsetLen(seq);
+	len = ajSeqsetGetLen(seq);
 	nuc = ajSeqsetIsNuc(seq);
-	weight = ajSeqsetTotweight(seq);
+	weight = ajSeqsetGetTotweight(seq);
 
 	field = (*env)->GetStaticFieldID(env,jvc,"length","I");
 	(*env)->SetStaticIntField(env,jvc,field,len);
