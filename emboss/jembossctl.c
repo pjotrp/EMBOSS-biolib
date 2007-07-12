@@ -130,7 +130,7 @@ static AjBool jembossctl_GetSeqsetFromUsa(const AjPStr thys, AjPSeqset *seq);
 #endif
 
 #ifdef PAM
-#if defined(__ppc__)
+#if defined(__ppc__) || defined(__APPLE__)
 #include <pam/pam_appl.h>
 #else
 #include <security/pam_appl.h>
