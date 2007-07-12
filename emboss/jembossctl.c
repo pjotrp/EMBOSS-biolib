@@ -1706,7 +1706,7 @@ static char** jembossctl_make_array(const AjPStr str)
     int n;
     char **ptr = NULL;
     AjPStr buf;
-    char *save = NULL;
+    const char *save = NULL;
 
     buf = ajStrNew();
 
