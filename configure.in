@@ -6,7 +6,7 @@ dnl Process this file with autoconf to produce a configure script.
 #CC=cc
 
 AC_INIT(ajax/ajacd.c)
-AM_INIT_AUTOMAKE(EMBOSS, 5.0.0)
+AM_INIT_AUTOMAKE(EMBOSS, 5.1.0)
 
 
 AC_PROG_AWK
@@ -525,6 +525,8 @@ test/swnew/Makefile test/testdb/Makefile
 test/wormpep/Makefile emboss/data/Makefile
 emboss/data/AAINDEX/Makefile
 emboss/data/CODONS/Makefile emboss/data/REBASE/Makefile 
+emboss/data/JASPAR_CORE/Makefile emboss/data/JASPAR_FAM/Makefile
+emboss/data/JASPAR_PHYLOFACTS/Makefile
 emboss/data/PRINTS/Makefile emboss/data/PROSITE/Makefile
 doc/Makefile doc/manuals/Makefile doc/tutorials/Makefile
 doc/programs/Makefile doc/programs/html/Makefile doc/programs/text/Makefile
