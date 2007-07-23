@@ -44,7 +44,7 @@ extractalign extractfeat extractseq \
 findkm freak fuzznuc fuzzpro fuzztran \
 garnier geecee getorf helixturnhelix hmoment \
 iep infoalign infoseq isochore \
-jembossctl lindna listor \
+jaspextract jembossctl lindna listor \
 makenucseq makeprotseq marscan maskfeat maskseq \
 matcher megamerger merger msbar \
 mwcontam mwfilter \
@@ -150,6 +150,7 @@ iep_SOURCES = iep.c
 infoalign_SOURCES = infoalign.c
 infoseq_SOURCES = infoseq.c
 isochore_SOURCES = isochore.c
+jaspextract_SOURCES = jaspextract.c
 jembossctl_SOURCES = jembossctl.c
 lindna_SOURCES = lindna.c
 listor_SOURCES = listor.c
