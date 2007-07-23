@@ -22,7 +22,7 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	garnier.acd geecee.acd getorf.acd giep.acd \
 	helixturnhelix.acd histogramtest.acd \
 	hmoment.acd iep.acd infoalign.acd infoseq.acd intconv.acd \
-	isochore.acd lindna.acd listor.acd \
+	isochore.acd jaspextract.acd lindna.acd listor.acd \
 	makenucseq.acd makeprotseq.acd marscan.acd maskfeat.acd maskseq.acd \
 	matcher.acd megamerger.acd \
 	merger.acd msbar.acd mwcontam.acd mwfilter.acd
