@@ -360,6 +360,7 @@ AjPFile     ajFileNewOutD (const AjPStr dir, const AjPStr name);
 AjPFile     ajFileNewOutDir(const AjPDir dir, const AjPStr name);
 void        ajFileOutHeader (AjPFile thys);
 void        ajFileOutClose (AjPFile *pthis);
+AjBool      ajFilePathData(AjPStr *Ppath);
 AjBool      ajFileNext (AjPFile thys);
 size_t      ajFileRead (void* ptr, size_t element_size, size_t count,
 			AjPFile thys);

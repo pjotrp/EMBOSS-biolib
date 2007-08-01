@@ -2476,6 +2476,64 @@ void ajFileExit(void)
 
 
 
+/* @func ajFilePathData ******************************************************
+**
+** Get the path to the active data directory
+**
+** @param [u] Ppath [AjPStr*] path.
+**
+** @return [AjBool] True if the data directory is found
+** @@
+******************************************************************************/
+
+AjBool ajFilePathData(AjPStr *Ppath)
+{
+#ifndef WIN32
+    AjPStr package;
+    AjPStr tmpstr = NULL;
+#endif
+
+    if(!Ppath)
+	return ajFalse;
+
+    if(ajNamGetValueC("DATA", Ppath))
+    {
+	ajFileDirFix(Ppath);
+	return ajTrue;
+    }
+
+#ifndef WIN32
+    if(ajNamRootInstall(Ppath))
+    {
+	package = ajStrNew();
+	tmpstr  = ajStrNew();
+	ajNamRootPack(&package);
+	ajFileDirFix(Ppath);
+	ajFmtPrintS(&tmpstr,"%Sshare%c%S%cdata%c",*Ppath,SLASH_CHAR,package,
+		    SLASH_CHAR,SLASH_CHAR);
+	ajStrAssignS(Ppath,tmpstr);
+	ajStrDel(&tmpstr);
+	ajStrDel(&package);
+	if(ajFileDir(Ppath))
+	    return ajTrue;
+    }
+
+    if(ajNamRoot(Ppath))
+    {
+	ajStrAppendC(Ppath,SLASH_STRING);
+	ajStrAppendC(Ppath,"data");
+	ajStrAppendC(Ppath,SLASH_STRING);
+	return ajTrue;
+    }	
+
+#endif
+
+    return ajFalse;
+}
+
+
+
+
 /* @func ajFileTrace **********************************************************
 **
 ** Writes debug messages to trace the contents of a file object.
