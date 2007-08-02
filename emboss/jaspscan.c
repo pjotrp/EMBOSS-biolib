@@ -123,7 +123,7 @@ static void    jaspscan_strdel(void** str, void* cl);
 static void    jaspscan_scan(const AjPStr seq, const ajuint begin,
 			     const AjPStr mfname, const char type,
 			     const AjPStr name, const float threshold,
-			     AjPList hits);
+			     const AjBool both, AjPList hits);
 
 
 static AjPJsphits jaspscan_hitsnew(void);
@@ -142,6 +142,7 @@ static void   jaspscan_ReportHits(AjPFeattable TabRpt, AjPTable mattab,
 				  AjPList hits);
 
 static void   jaspscan_ClearTable(void **key, void **value, void *cl);
+static void   jaspscan_CompMat(float **matrix, ajuint cols);
 
 
 
@@ -189,6 +190,7 @@ int main(int argc, char **argv)
     ajuint i;
     AjPTable mattab = NULL;
     AjPFeattable TabRpt = NULL;
+    AjBool both = ajFalse;
     
 
     embInit("jaspscan", argc, argv);
@@ -199,6 +201,7 @@ int main(int argc, char **argv)
     excl       = ajAcdGetString("exclude");
     thresh     = ajAcdGetFloat("threshold");
     report     = ajAcdGetReport("outfile");
+    both       = ajAcdGetBool("both");
     
     jaspdir = ajStrNew();
     name    = ajStrNew();
@@ -255,7 +258,7 @@ int main(int argc, char **argv)
 	{
 	    ajListPop(flist,(void **)&mfname);
 
-	    jaspscan_scan(substr,begin,mfname, cp, name, thresh, hits);
+	    jaspscan_scan(substr,begin,mfname, cp, name, thresh, both, hits);
 
 	    ajStrDel(&mfname);
 	}
@@ -544,6 +547,7 @@ static void jaspscan_strdel(void** str, void* cl)
 ** @param [r] type [const char] Jaspar database type (C,F or P)
 ** @param [r] name [const AjPStr] sequence name
 ** @param [r] threshold [const float] scoring threshold
+** @param [r] both [const AjBool] scan reverse strand too
 ** @param [u] hits [AjPList] hit list
 **
 ** @return [void]
@@ -553,7 +557,7 @@ static void jaspscan_strdel(void** str, void* cl)
 static void jaspscan_scan(const AjPStr seq, const ajuint begin,
 			  const AjPStr mfname, const char type,
 			  const AjPStr name, const float threshold,
-			  AjPList hits)
+			  const AjBool both, AjPList hits)
 {
     AjPJsphits val = NULL;
     AjPStr mname   = NULL;
@@ -641,6 +645,50 @@ static void jaspscan_scan(const AjPStr seq, const ajuint begin,
     }
     
 
+    if(both)
+    {
+	jaspscan_CompMat(matrix, cols);
+
+	p = ajStrGetPtr(seq);
+
+	for(i=0; i < limit; ++i)
+	{
+	    sum = 0.;
+	    schar = p[i];
+	    for(cc = 0; cc < cols; ++cc)
+	    {
+		schar = p[i+cc];
+		if(schar == 'A')
+		    sum += matrix[0][cc];
+		else if(schar == 'C')
+		    sum += matrix[1][cc];
+		else if(schar == 'G')
+		    sum += matrix[2][cc];
+		else if(schar == 'T')
+		    sum += matrix[3][cc];
+	    }
+
+
+	    scorepc = (sum * 100.) / maxscore;
+
+
+	    if(scorepc >= threshold)
+	    {
+		val = jaspscan_hitsnew();
+		val->type = type;
+		ajStrAssignS(&val->matname,mname);
+		val->end = i + begin;
+		val->start = val->end + cols - 1;
+		val->score = sum;
+		val->threshold = threshold;
+		val->scorepc  = scorepc;
+		val->maxscore = maxscore;
+
+		ajListPushAppend(hits,(void *)val);
+	    }
+	}
+    }
+    
 
     for(i = 0; i < 4; ++i)
 	AJFREE(matrix[i]);
@@ -1127,7 +1175,10 @@ static void jaspscan_ReportHits(AjPFeattable TabRpt, AjPTable mattab,
 
     while(ajListPop(hits,(void **)&hit))
     {
-	feat = ajFeatNewII(TabRpt,hit->start,hit->end);
+	if(hit->start <= hit->end)
+	    feat = ajFeatNewII(TabRpt,hit->start,hit->end);
+	else
+	    feat = ajFeatNewIIRev(TabRpt,hit->start,hit->end);
 
 	ajFmtPrintS(&str,"*pc %.3f",hit->scorepc);
 	ajFeatTagAdd(feat, NULL, str);
@@ -1247,6 +1298,54 @@ static void jaspscan_ClearTable(void **key, void **value, void *cl)
 
     *key = NULL;
     *value = NULL;
+
+    return;
+}
+
+
+
+
+/* @funcstatic jaspscan_CompMat ************************************
+**
+** Complement the matrix
+**
+** @param [u] matrix [float**] matrix
+** @param [r] cols [ajuint] number of columns
+**
+** @return [void]
+** @@
+*********************************************************************/
+
+static void jaspscan_CompMat(float **matrix, ajuint cols)
+{
+    float *mtmp = NULL;
+    float *fp   = NULL;
+    float *fq   = NULL;
+    float ftmp  = 0.;
+    ajuint i;
+
+    mtmp = matrix[0];
+    matrix[0] = matrix[3];
+    matrix[3] = mtmp;
+
+    mtmp = matrix[1];
+    matrix[1] = matrix[2];
+    matrix[2] = mtmp;
+
+    for(i=0; i<4; ++i)
+    {
+	fp = matrix[i];
+	fq = fp + cols - 1;
+
+	while(fp < fq)
+	{
+	    ftmp = *fp;
+	    *fp = *fq;
+	    *fq = ftmp;
+	    ++fp;
+	    --fq;
+	}
+    }
 
     return;
 }

@@ -85,6 +85,12 @@ section: additional [
            selection list."
   ]
 
+  boolean: both [
+    default: "N"
+    information: "Scan both strands"
+    help: "If set then both the forward and reverse strands are searched"
+  ]
+
 endsection: additional
 
 section: output [
