@@ -1563,7 +1563,62 @@ void ajPhyloStateTrace(const AjPPhyloState thys)
 
 /* @func ajPhyloTreeRead ******************************************************
 **
-** Reads phylogenetic trees from a file
+** Reads phylogenetic trees from a file.
+**
+** For background see the NESCent Hackathon Wiki
+** https://www.nescent.org/wg_phyloinformatics/Main_Page
+**
+** Programs using or producing trees include:
+**
+** Editors in http://bioinfo.unice.fr/biodiv/Tree_editors.html
+**
+** Packages PHYLIP, GARLI, MrBayes, PROTML, TREE-PUZZLE
+** PAUP
+**
+** Tree fomrats include:
+**
+** Newick (New Hampshire) is a simple string with parentheses
+** see http://evolution.genetics.washington.edu/phylip/newicktree.html
+** and http://evolution.genetics.washington.edu/phylip/newick_doc.html
+** Newick format is used by PHYLIP, GARLI, MrBayes, PROTML, TREE-PUZZLE
+** In PAUP the format is called "phylip"
+** Phylip includes weights for multiple input trees as a final comment
+** containing only a floating point number e.g. [0.5];
+**
+** Nexus files use Translate to define numbers, and then have a
+** Newick string using the numbers, or simply define the Newick string
+** with names. The branch lengths appear as in Newick.
+** http://workshop.molecularevolution.org/resources/fileformats/tree_formats.php
+** Test files (including malformed ones) are available from
+** https://www.nescent.org/wg_phyloinformatics/Supporting_NEXUS
+**
+** nhx (New Hampshire Extended) includes annotation using specially formatted
+** comments after the name:length in the form [&&NHX:code=value;code=value]
+** where codes are documented in
+** http://www.phylosoft.org/forester/NHX.html
+** according to some documentation, ATV and FORESTER can read NHX with the []
+** removed but this is deprecated (naturally, as this would be a valid Newick
+** tree with proper comments).
+** NHX also bans the use of empty nodes so names are required.
+** Apparently PHYLIP can read trees with no names.
+**
+** svggraph is an output format only
+** (or at least, no sign of anything reading it)
+**
+** tabtree is an ASCII text representation used for output only by
+** BioPerl::TreeIO
+**
+** lintree is a program output format. The program is available from
+** http://www.bio.psu.edu/People/Faculty/Nei/Lab/lintre/lintre.unix.tar.Z
+**
+** phyloXML is an effort to define an XML format, still in progress
+** http://www.phyloxml.org/
+**
+** TGF treegraph format
+** http://www.math.uni-bonn.de/people/jmueller/extra/treegraph/docu.pdf
+**
+** TGF TreeDyn format ... not the same as treegraph
+** http://www.treedyn.org/
 **
 ** @param [r] filename [const AjPStr] input filename
 ** @param [r] size [ajint] Number of trees expected
@@ -1576,6 +1631,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 {
     AjPPhyloTree* ret = NULL;
     AjPPhyloTree tree = NULL;
+    AjPTree mytree = NULL;
     AjPFile treefile  = NULL;
     AjPList treelist  = NULL;
     AjBool treeok;
@@ -1742,7 +1798,13 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 	/*ret = (AjPPhyloTree*) trees;*/
 	ajListFree(&treelist);
     }
-    
+    for(i=0;ret[i];i++)
+    {
+	mytree = ajTreeNewNewick(ret[i]->Tree);
+	ajTreeTrace(mytree);
+	ajTreeFree(&mytree);
+    }
+
     ajStrDel(&rdline);
     ajStrDel(&token);
     ajStrDel(&treecopy);
