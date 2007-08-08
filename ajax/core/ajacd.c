@@ -2364,11 +2364,11 @@ AcdOQual acdQualAppl[] =	  /* careful: index numbers used in */
 				  /* acdSetQualAppl */
 {
     {"auto",       "N", "boolean", "Turn off prompts"},
-    {"stdout",     "N", "boolean", "Write standard output"},
-    {"filter",     "N", "boolean", "Read standard input, "
-	                           "write standard output"},
+    {"stdout",     "N", "boolean", "Write first file to standard output"},
+    {"filter",     "N", "boolean", "Read first file from standard input, "
+	                           "write first file to standard output"},
     /* after auto and stdout so it can replace */
-    {"options",    "N", "boolean","Prompt for standard and additional values"},
+    {"options",    "N", "boolean", "Prompt for standard and additional values"},
     {"debug",      "N", "boolean", "Write debug output to program.dbg"},
     /* deprecated - to be removed in a future version */
 /* removed in 2.8.0
@@ -12737,7 +12737,7 @@ static void acdSetSeqset(AcdPAcd thys)
 	acdSetQualDefInt(thys, "send", send);
     }
 
-    if(ajSeqsetIsNuc(val))
+    if(ajSeqsetGetSize(val) && ajSeqsetIsNuc(val))
     {
 	if(seqin->Rev)
 	{
@@ -27125,7 +27125,9 @@ static void acdDelPhyloState(void** PPval)
 static void acdDelPhyloTree(void** PPval)
 {
     if(!*PPval) return;
-    ajPhyloTreeDel((AjPPhyloTree*)PPval);
+
+    ajPhyloTreeDelarray((AjPPhyloTree**)PPval);
+
     return;
 }
 
