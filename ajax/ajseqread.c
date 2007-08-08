@@ -479,6 +479,7 @@ static AjBool     seqReadAbi(AjPSeq thys, AjPSeqin seqin);
 
 static void       seqAccSave(AjPSeq thys, const AjPStr acc);
 static ajuint     seqAppend(AjPStr* seq, const AjPStr line);
+static ajuint     seqAppendK(AjPStr* seq, char ch);
 static const AjPStr seqAppendWarn(AjPStr* seq, const AjPStr line);
 static ajuint     seqAppendCommented(AjPStr* seq, AjBool* incomment,
 				     const AjPStr line);
@@ -539,6 +540,8 @@ static AjBool     seqReadMsf(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNbrf(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNcbi(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadNexus(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadPdb(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadPdbseq(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadPhylip(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadPhylipnon(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadRaw(AjPSeq thys, AjPSeqin seqin);
@@ -596,6 +599,19 @@ static SeqPSelexseq  selexseqNew(void);
 **
 ** Functions to read each sequence format
 **
+** New documentation on sequence formats:
+** http://www.megasoftware.net/mega4.pdf pages 55 onwards (sections 4.1, 4.2)
+** describe MEGA, some other formats, simple XML (name and seq)
+**
+** The SeqIO program supports some non-EMBOSS formats:
+** http://biowulf.nih.gov/apps/seqio_docs/seqio_user.html
+** notably FASTA-output, BLAST-output
+** and has its own rules for database definitions (BioSeq)
+** and database references
+**
+** For XML formats see Paul Gordon's list at
+** http://www.visualgenomics.ca/gordonp/xml/
+**
 ******************************************************************************/
 
 static SeqOInFormat seqInFormatDef[] = {
@@ -604,10 +620,10 @@ static SeqOInFormat seqInFormatDef[] = {
 /*     Feature  Gap,     ReadFunction, Multiset, Padding */
   {"unknown",     "Unknown format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-       AJTRUE,  AJTRUE,  seqReadText, AJTRUE, 0},	/* alias for text */
+       AJTRUE,  AJTRUE,  seqReadText, AJFALSE, 0},	/* alias for text */
   {"gcg",         "GCG sequence format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  seqReadGcg, AJFALSE, 0}, /* do first, headers mislead */
+       AJFALSE, AJTRUE,  seqReadGcg, AJFALSE, 0}, /* do 1st, headers mislead */
   {"gcg8",        "GCG old (version 8) sequence format",
        AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadGcg, AJFALSE, 0}, /* alias for gcg (8.x too) */
@@ -632,6 +648,12 @@ static SeqOInFormat seqInFormatDef[] = {
   {"pir",         "NBRF/PIR entry format (alias)",
        AJTRUE,  AJFALSE, AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  seqReadNbrf, AJFALSE, 0},	/* alias for nbrf */
+  {"pdb",         "PDB protein databank format ATOM lines",
+       AJFALSE, AJTRUE,  AJTRUE, AJTRUE,
+       AJFALSE, AJFALSE, seqReadPdb, AJFALSE, 0},
+  {"pdbseq",         "PDB protein databank format SEQRES lines",
+       AJFALSE, AJFALSE, AJTRUE, AJTRUE,
+       AJFALSE, AJFALSE, seqReadPdbseq, AJFALSE, 0},
   {"fasta",       "FASTA format including NCBI-style IDs",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadNcbi, AJFALSE, 0}, /* alias for ncbi,
@@ -641,7 +663,7 @@ static SeqOInFormat seqInFormatDef[] = {
        AJFALSE, AJTRUE,  seqReadNcbi, AJFALSE, 0}, /* test before pearson */
   {"gifasta",     "FASTA format including NCBI-style IDs (alias)",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  seqReadGifasta, AJFALSE, 0}, /* NCBI with GI as the ID*/
+       AJFALSE, AJTRUE,  seqReadGifasta, AJFALSE, 0}, /* NCBI with GI as ID*/
   {"pearson",     "Plain old fasta format with IDs not parsed further",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadFasta, AJFALSE, 0}, /* plain fasta - off by
@@ -4009,6 +4031,312 @@ static AjBool seqReadIg(AjPSeq thys, AjPSeqin seqin)
     }
 
     ajFileBuffClear(buff, 0);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqReadPdbseq **************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using PDB protein databank format using the SEQRES records.
+**
+** This is the original sequence, see seqReadPdb for parsing the ATOM records
+** which give the sequence observed in the structure.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadPdbseq(AjPSeq thys, AjPSeqin seqin)
+{
+    ajuint bufflines      = 0;
+    AjPFileBuff buff;
+    AjPStrTok handle = NULL;
+    AjPStr name  = NULL;
+    AjPStr alnname  = NULL;
+    AjPStr token = NULL;
+    AjPStr chain = NULL;
+    AjPTable alntable    = NULL;
+    SeqPMsfItem alnitem  = NULL;
+    AjPList alnlist      = NULL;
+    SeqPMsfData alndata  = NULL;
+    char aa;
+    ajuint iseq = 0;
+    ajuint nseq = 0;
+    ajuint i;
+    AjBool ok = ajTrue;
+
+    buff = seqin->Filebuff;
+
+    ajDebug("seqReadPeb seqin->Data %x\n", seqin->Data);
+
+    if(!seqin->Data)
+    {					/* start of file */
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+	bufflines++;
+
+	ajDebug("first line:\n'%S'\n", seqReadLine);
+
+	if(!ajStrPrefixC(seqReadLine, "HEADER    "))
+	{
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+
+	ajStrAssignSubS(&name,seqReadLine, 62, 71);
+	ajStrTrimWhite(&name);
+
+	ajDebug("first line OK name '%S'\n", name);
+
+	seqin->Data = AJNEW0(alndata);
+	alndata->Table = alntable = ajTablestrNew();
+	alnlist = ajListstrNew();
+	seqin->Filecount = 0;
+
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+
+	while(ok && !ajStrMatchC(seqReadLine, "END"))
+	{
+	    bufflines++;
+	    if(ajStrPrefixC(seqReadLine, "SEQRES"))
+	    {
+		ajStrKeepRange(&seqReadLine, 0,71);
+		ajStrTokenAssignC(&handle, seqReadLine, " \n\r");
+		ajStrTokenNextParse(&handle, &token);	/* 'SEQRES' */
+
+		ajStrTokenNextParse(&handle, &token);	/* number */
+		ajStrToUint(token, &iseq);
+
+		ajStrTokenNextParse(&handle, &chain);	/* chain letter */
+		if(iseq == 1)
+		{
+		    nseq++;
+		    ajFmtPrintS(&token, "%S-%S", name, chain);
+		    AJNEW0(alnitem);
+		    seqSetName(&alnitem->Name, token);
+		    ajStrAssignS(&alnname, alnitem->Name);
+		    alnitem->Weight = 1.0;
+		    ajTablePut(alntable, alnname, alnitem);
+		    alnname = NULL;
+		    ajListstrPushAppend(alnlist, ajStrNewS(alnitem->Name));
+		}
+		while(ajStrTokenNextParse(&handle, &token))
+		{
+		    if(ajBaseAa3ToAa1(&aa, token))
+		    {
+			seqAppendK(&alnitem->Seq, aa);
+		    }
+		}
+
+	    }
+
+	    ok = ajFileBuffGetStore(buff, &seqReadLine,
+				    seqin->Text, &thys->TextPtr);
+	}
+
+	ajDebug("PDB Entry has %d sequences\n", nseq);
+	ajListstrTrace(alnlist);
+	ajTableTrace(alntable);
+	ajTableMap(alntable, seqMsfTabList, NULL);
+
+	alndata->Names = AJCALLOC(nseq, sizeof(*alndata->Names));
+	for(i=0; i < nseq; i++)
+	{
+	    ajListstrPop(alnlist, &alndata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, alndata->Names[i]);
+	}
+	ajListstrFreeData(&alnlist);
+
+	ajTableMap(alntable, seqMsfTabList, NULL);
+	alndata->Nseq = nseq;
+	alndata->Count = 0;
+	alndata->Bufflines = bufflines;
+	ajDebug("PDB format read %d lines\n", bufflines);
+    }
+
+    alndata = seqin->Data;
+    alntable = alndata->Table;
+    if(alndata->Count >= alndata->Nseq)
+    {					/* all done */
+	ajFileBuffClear(seqin->Filebuff, 0);
+	seqMsfDataDel((SeqPMsfData*) &seqin->Data);
+	return ajFalse;
+    }
+
+    i = alndata->Count;
+    ajDebug("returning [%d] '%S'\n", i, alndata->Names[i]);
+    alnitem = ajTableFetch(alntable, alndata->Names[i]);
+    ajStrAssignS(&thys->Name, alndata->Names[i]);
+
+    thys->Weight = alnitem->Weight;
+    ajStrAssignS(&thys->Seq, alnitem->Seq);
+
+    alndata->Count++;
+
+    ajStrDel(&token);
+    ajStrDel(&name);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic seqReadPdb **************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using PDB protein databank format using ATOM records.
+**
+** See seqReadPdbseq for parsing the SEQRES records
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadPdb(AjPSeq thys, AjPSeqin seqin)
+{
+    ajuint bufflines      = 0;
+    AjPFileBuff buff;
+    AjPStr name  = NULL;
+    AjPStr alnname  = NULL;
+    AjPStr token = NULL;
+    AjPStr chain = NULL;
+    AjPTable alntable    = NULL;
+    SeqPMsfItem alnitem  = NULL;
+    AjPList alnlist      = NULL;
+    SeqPMsfData alndata  = NULL;
+    char aa;
+    ajuint nseq = 0;
+    ajuint i;
+    AjBool ok = ajTrue;
+    AjPStr aa3 = NULL;
+    ajuint iaa = 0;
+    ajuint lastaa = 0;
+
+    buff = seqin->Filebuff;
+
+    ajDebug("seqReadPeb seqin->Data %x\n", seqin->Data);
+
+    if(!seqin->Data)
+    {					/* start of file */
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+	bufflines++;
+
+	ajDebug("first line:\n'%S'\n", seqReadLine);
+
+	if(!ajStrPrefixC(seqReadLine, "HEADER    "))
+	{
+	    ajFileBuffReset(buff);
+	    return ajFalse;
+	}
+
+	ajStrAssignSubS(&name,seqReadLine, 62, 71);
+	ajStrTrimWhite(&name);
+
+	ajDebug("first line OK name '%S'\n", name);
+
+	seqin->Data = AJNEW0(alndata);
+	alndata->Table = alntable = ajTablestrNew();
+	alnlist = ajListstrNew();
+	seqin->Filecount = 0;
+
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+
+	while(ok && !ajStrMatchC(seqReadLine, "END"))
+	{
+	    bufflines++;
+	    if(ajStrPrefixC(seqReadLine, "ATOM"))
+	    {
+		if(!alnitem)
+		    AJNEW0(alnitem);
+
+		ajStrKeepRange(&seqReadLine, 0,71);
+
+		ajStrAssignSubS(&aa3, seqReadLine, 17, 19);
+		ajStrAssignSubS(&chain, seqReadLine, 21, 21);
+		ajStrAssignSubS(&token, seqReadLine, 22, 25);
+		ajStrToUint(token, &iaa);
+
+		if(iaa > lastaa)
+		{
+		    if(ajBaseAa3ToAa1(&aa, aa3))
+			seqAppendK(&alnitem->Seq, aa);
+		    else
+			seqAppendK(&alnitem->Seq, 'X');
+		    lastaa = iaa;
+		}
+
+	    }
+
+	    else if(ajStrPrefixC(seqReadLine, "TER"))
+	    {
+		nseq++;
+		ajFmtPrintS(&token, "%S-%S", name, chain);
+		seqSetName(&alnitem->Name, token);
+		ajStrAssignS(&alnname, alnitem->Name);
+		alnitem->Weight = 1.0;
+		ajTablePut(alntable, alnname, alnitem);
+		alnname = NULL;
+		ajListstrPushAppend(alnlist, ajStrNewS(alnitem->Name));
+		alnitem = NULL;
+		lastaa = 0;
+	    }
+	    ok = ajFileBuffGetStore(buff, &seqReadLine,
+				    seqin->Text, &thys->TextPtr);
+	}
+
+	ajDebug("PDB Entry has %d sequences\n", nseq);
+	ajListstrTrace(alnlist);
+	ajTableTrace(alntable);
+	ajTableMap(alntable, seqMsfTabList, NULL);
+
+	alndata->Names = AJCALLOC(nseq, sizeof(*alndata->Names));
+	for(i=0; i < nseq; i++)
+	{
+	    ajListstrPop(alnlist, &alndata->Names[i]);
+	    ajDebug("list [%d] '%S'\n", i, alndata->Names[i]);
+	}
+	ajListstrFreeData(&alnlist);
+
+	ajTableMap(alntable, seqMsfTabList, NULL);
+	alndata->Nseq = nseq;
+	alndata->Count = 0;
+	alndata->Bufflines = bufflines;
+	ajDebug("PDB format read %d lines\n", bufflines);
+    }
+
+    alndata = seqin->Data;
+    alntable = alndata->Table;
+    if(alndata->Count >= alndata->Nseq)
+    {					/* all done */
+	ajFileBuffClear(seqin->Filebuff, 0);
+	seqMsfDataDel((SeqPMsfData*) &seqin->Data);
+	return ajFalse;
+    }
+
+    i = alndata->Count;
+    ajDebug("returning [%d] '%S'\n", i, alndata->Names[i]);
+    alnitem = ajTableFetch(alntable, alndata->Names[i]);
+    ajStrAssignS(&thys->Name, alndata->Names[i]);
+
+    thys->Weight = alnitem->Weight;
+    ajStrAssignS(&thys->Seq, alnitem->Seq);
+
+    alndata->Count++;
+
+    ajStrDel(&token);
+    ajStrDel(&name);
 
     return ajTrue;
 }
@@ -8129,6 +8457,35 @@ static ajuint seqAppend(AjPStr* pseq, const AjPStr line)
     ajuint ret = 0;
 
     ajStrAssignS(&tmpstr, line);
+    ajStrKeepSetAlphaC(&tmpstr, "*.~?#+-");
+    ajStrAppendS(pseq, tmpstr);
+
+    ret = ajStrGetLen(*pseq);
+    ajStrDel(&tmpstr);
+
+    return ret;
+}
+
+
+
+
+/* @funcstatic seqAppendK *****************************************************
+**
+** Appends single sequence character in the input line to a growing sequence.
+** Non sequence characters are simply ignored.
+**
+** @param [u] pseq [AjPStr*] Sequence as a string
+** @param [r] line [char ch] Input character.
+** @return [ajuint] Sequence length to date.
+** @@
+******************************************************************************/
+
+static ajuint seqAppendK(AjPStr* pseq, char ch)
+{
+    AjPStr tmpstr = NULL;
+    ajuint ret = 0;
+
+    ajStrAssignK(&tmpstr, ch);
     ajStrKeepSetAlphaC(&tmpstr, "*.~?#+-");
     ajStrAppendS(pseq, tmpstr);
 
