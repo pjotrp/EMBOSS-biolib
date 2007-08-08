@@ -170,7 +170,7 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 
 	/* Read in pdb code first.  Then tokenise by ':', discard the 
 	   first token, then tokenise the second token by ',', parsing 
-	   out the swisssprot codes and accession numbers from the 
+	   out the swissprot codes and accession numbers from the 
 	   subtokens */
 
 
@@ -807,8 +807,8 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    /* Check residue number is in range */
 	    if((x>(ret)->Dim) || (y>(ret)->Dim))
 		ajFatal("Fatal attempt to write bad data in "
-			"ajCmapReadNew\nFile: %S (%S)\nx: %d y:%d\nEmail culprit: "
-			"jison@hgmp.mrc.ac.uk\n", ajFileGetName(inf), temp_id, x, y);
+			"ajCmapReadNew\nFile: %S (%S)\nx: %d y:%d\n",
+			ajFileGetName(inf), temp_id, x, y);
 	    
 	    /* Enter '1' in matrix to indicate contact */
 	    ajUint2dPut(&(ret)->Mat, x-1, y-1, 1);
@@ -825,8 +825,8 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    /* Check residue number is in range */
 	    if((x>(ret)->Dim))
 		ajFatal("Fatal attempt to write bad data in "
-			"ajCmapReadNew\nFile: %S (%S)\nx: %d\nEmail culprit: "
-			"jison@hgmp.mrc.ac.uk\n", ajFileGetName(inf), temp_id, x);
+			"ajCmapReadNew\nFile: %S (%S)\nx: %d\n",
+			ajFileGetName(inf), temp_id, x);
 	    
 	    /* Enter '1' in matrix to indicate contact.  For ligand contacts, 
 	       the first row / column only is used. */
@@ -1091,8 +1091,7 @@ AjPHet ajHetReadRawNew(AjPFile inf)
 	ajListFree(&list);	    
 	ajStrDel(&line);
 
-	ajFatal("Fatal discrepancy in count of HET and FORMUL records\n"
-		"Email wawan@hgmp.mrc.ac.uk\n");
+	ajFatal("Fatal discrepancy in count of HET and FORMUL records\n");
     }	
     
     ret = ajHetNew(0);
@@ -1462,8 +1461,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 		    ajListPushAppend((ret)->Water,(void *)atom);
 		else
 		    ajFatal("Unexpected parse error in "
-			    "ajPdbReadFirstModelNew. Email "
-			    "jison@hgmp.mrc.ac.uk");
+			    "ajPdbReadFirstModelNew");
 	    }
 	    else
 	      {
@@ -1966,8 +1964,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 		else if(atom->Type == 'W')
 		    ajListPushAppend((ret)->Water,(void *)atom);
 		else
-		    ajFatal("Unexpected parse error in ajPdbRead. "
-			    "Email jison@hgmp.mrc.ac.uk");
+		    ajFatal("Unexpected parse error in ajPdbRead");
 	    }
 	    else
 		ajListPushAppend((ret)->Chains[chn-1]->Atoms,(void *)atom);
@@ -2354,8 +2351,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 		    ajListPushAppend((ret)->Water,(void *)atom);
 		else
 		    ajFatal("Unexpected parse error in "
-			    "ajPdbReadFirstModelNew. Email "
-			    "jison@hgmp.mrc.ac.uk");
+			    "ajPdbReadFirstModelNew");
 	    }
 	    else
 		ajListPushAppend((ret)->Chains[chn-1]->Atoms,(void *)atom);
