@@ -120,7 +120,7 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     ajint off;
     ajint len;
     AjPFeature sf    = NULL;
-    /*AjPSeq revseq    = NULL;*/
+    AjPSeq revseq    = NULL;
     AjPStr substr    = NULL;
     AjPStr seqstr    = NULL;
     AjPStr tmpstr = NULL;
@@ -131,16 +131,14 @@ void embPatternRegexSearch (AjPFeattable ftable, const AjPSeq seq,
     adj = ajSeqGetEnd(seq);
     pos = ajSeqGetBegin(seq);
 
-/* this code is to reverse the sequence */
-/*
     if (reverse)
     {
-        revseq = ajSeqNewS (seq);
+        revseq = ajSeqNewSeq(seq);
         ajSeqReverseForce(revseq);
         ajStrAssignSubS(&seqstr, ajSeqGetSeqS(revseq), pos-1, adj-1);
     }
-*/
-    ajStrAssignSubS(&seqstr, ajSeqGetSeqS(seq), pos-1, adj-1);
+    else
+	ajStrAssignSubS(&seqstr, ajSeqGetSeqS(seq), pos-1, adj-1);
 
     ajStrFmtUpper(&seqstr);
 
