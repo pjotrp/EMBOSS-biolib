@@ -42,6 +42,11 @@
 </tr>
 
 <tr>
+<td><a href="/emboss/apps/jaspextract.html">jaspextract</a></td>
+<td>Extract data from JASPAR</td>
+</tr>
+
+<tr>
 <td><a href="pdbparse.html">pdbparse</a></td>
 <td>Parses PDB files and writes protein CCF files</td>
 </tr>

@@ -47,6 +47,11 @@
 </tr>
 
 <tr>
+<td><a href="/emboss/apps/jaspextract.html">jaspextract</a></td>
+<td>Extract data from JASPAR</td>
+</tr>
+
+<tr>
 <td><a href="pdbplus.html">pdbplus</a></td>
 <td>Add accessibility & secondary structure to a CCF file</td>
 </tr>

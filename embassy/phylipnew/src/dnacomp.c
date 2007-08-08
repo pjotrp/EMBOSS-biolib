@@ -73,7 +73,7 @@ Char ch;
 Char progname[20];
 long *zeros;
 
-/* Local variables for maketree, propogated globally for C version: */
+/* Local variables for maketree, propagated globally for C version: */
   long maxwhich;
   double like, maxsteps, bestyet, bestlike, bstlike2;
   boolean lastrearr, recompute;
@@ -1004,6 +1004,9 @@ void maketree()
       while (!in_tree[j - 1])
         j++;
       mincomp(j);
+
+      ajUtilCatch();
+
       if (outgropt)
         reroot(treenode[outgrno - 1], root);
       postorder(root);

@@ -52,6 +52,7 @@ Usage
 Plots an unrooted tree diagram
 Phylip tree file: drawgram.tree
 Phylip drawtree output file [drawgram.fdrawtree]: 
+Reading tree '(Delta,(Epsilon,(Gamma,(Beta,Alpha))));'
 
 DRAWTREE from PHYLIP version 3.6b
 Reading tree ...
@@ -156,8 +157,9 @@ Command line arguments
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options

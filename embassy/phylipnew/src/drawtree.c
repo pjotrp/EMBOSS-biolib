@@ -2504,6 +2504,7 @@ void setup_environment(int argc, Char *argv[])
   printf("Reading tree ... \n");
   firsttree = true;
   treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree); 
+  ajUser("Reading tree '%s'", treestr);
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,
@@ -2518,6 +2519,7 @@ void setup_environment(int argc, Char *argv[])
   nodep[spp] = q;
   where = root;
   rotate = true;
+  ajUtilCatch();
   printf("Tree has been read.\n");
   printf("Loading the font ... \n");
   loadfont(font,argv[0]);

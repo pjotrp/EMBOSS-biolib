@@ -8,6 +8,7 @@
 Plots an unrooted tree diagram
 Phylip tree file: <b>drawgram.tree</b>
 Phylip drawtree output file [drawgram.fdrawtree]: <b></b>
+Reading tree '(Delta,(Epsilon,(Gamma,(Beta,Alpha))));'
 
 DRAWTREE from PHYLIP version 3.6b
 Reading tree ... 
