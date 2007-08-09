@@ -63,7 +63,7 @@ DB pir [  type: P method: srswww format: nbrf release: "EBI"
   url: "http://srs.ebi.ac.uk/srsbin/cgi-bin/wgetz"
   comment: "PIR from the EBI" ]
 
-DB gb [  type: N method: srswww format: genbank release: "Pasteer"
+DB gb [  type: N method: srswww format: genbank release: "Pasteur"
   url: "http://srs.pasteur.fr/cgi-bin/wgetz"
   dbalias: "GENBANKRELEASE"
   comment: "GenBank from Pasteur" ]
@@ -80,14 +80,14 @@ DB refseq [  type: N method: srswww format: genbank release: "NCBI"
 
 ##################################################################
 # Test Databases
-# Used by the qatest.pl scriupt to test an EMBOSS installation.
+# Used by the qatest.pl script to test an EMBOSS installation.
 # Comment them out if you do not want your users to use them.
 # Examples in the EMBOSS documentation should all run by using
 # TEMBL: in place of EMBL:, TSW: in place of SW:, and so on.
 ##################################################################
 
 
-# swissprot (Puffer fish entries)
+# swissprot (Puffer fish entries and some others useful for testing)
 # =========
 
 #DB tsw [ type: P dir: $emboss_tempdata\swiss
@@ -95,7 +95,7 @@ DB refseq [  type: N method: srswww format: genbank release: "NCBI"
 #   fields: "sv des org key"
 #   comment: "Swissprot native format with EMBL CD-ROM index" ]
 
-# swnew (Puffer fish entries)
+# swnew (Puffer fish entries and others useful for testing)
 # =====
 
 #DB tswnew [ type: P dir: $emboss_tempdata\swnew
@@ -152,7 +152,7 @@ DB refseq [  type: N method: srswww format: genbank release: "NCBI"
 # Modify these for your own
 # local and remote database definitions
 #
-# See the EMBOSS Administrators Guide 3.0.0
+# See the EMBOSS Administrators Guide 5.0.0
 # for full documentation on DB definitions.
 #############################################
 
@@ -160,14 +160,6 @@ DB refseq [  type: N method: srswww format: genbank release: "NCBI"
 # GENBANK from the Canadian EMBnet node SRSWWW server
 #######################################################################
 
-
-#DB genbank [ type: N method: url format: genbank
-#   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-id+-e+[genbank-id:'%s']+-vn+2"
-#   comment: "Genbank IDs" ]
-
-#DB gb [ type: N method: url format: genbank
-#   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-id+-e+[genbank-id:'%s']+-vn+2"
-#   comment: "Genbank IDs" ]
 
 #DB genbanka [ type: N method: url format: genbank
 #   url: "http://www.ca.embnet.org/srs6bin/cgi-bin/wgetz?-id+-e+[genbank-acc:'%s']+-vn+2"
