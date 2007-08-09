@@ -8678,7 +8678,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 1
-FP /^[1-4].\d+(\.\d+)?\n/
+FP /^[1-9]\.\d+(\.\d+)?\n/
 //
 
 ID emowse-ex
