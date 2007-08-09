@@ -42,7 +42,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2006-07-15
+##date 2007-07-15
 ##Type DNA X65923
 X65923	EMBL	polyA_signal	484	489	0.000	+	.	Sequence "X65923.6"
 X65923	EMBL	polyA_site	509	509	0.000	+	.	Sequence "X65923.7" ; FeatFlags "0x40"

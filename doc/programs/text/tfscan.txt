@@ -98,8 +98,9 @@ Command line arguments
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
@@ -392,7 +393,8 @@ Known bugs
 
 See also
 
-   Program name Description
+   Program name                  Description
+   jaspscan     Scans DNA sequences for transcription factors
 
    Your EMBOSS administrator will have to run the EMBOSS program
    tfextract in order to set up the data files from the TRANSFAC

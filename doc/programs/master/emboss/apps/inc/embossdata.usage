@@ -195,6 +195,11 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Edayhoff.freq
 
 
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_CORE
+
+  dummyfile
+
+
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/REBASE
 
   dummyfile
@@ -225,6 +230,16 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/AAINDEX
   chop780214
   chop780215
   chop780216
+
+
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_FAM
+
+  dummyfile
+
+
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_PHYLOFACTS
+
+  dummyfile
 
 
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/CODONS

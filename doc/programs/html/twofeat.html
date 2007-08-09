@@ -380,8 +380,9 @@ Output report [x65923.twofeat]: <b></b>
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
@@ -792,7 +793,7 @@ outputs a report format file. The default format is <b>table</b>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2006-07-15
+##date 2007-07-15
 ##Type DNA X65923
 X65923	EMBL	polyA_signal	484	489	0.000	+	.	Sequence "X65923.6"
 X65923	EMBL	polyA_site	509	509	0.000	+	.	Sequence "X65923.7" ; FeatFlags "0x40"

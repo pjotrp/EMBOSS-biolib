@@ -125,8 +125,9 @@ Command line arguments
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
@@ -326,7 +327,7 @@ Output file format
   File: u01317.marscan
 
 ##gff-version 2.0
-##date 2006-07-15
+##date 2007-07-15
 ##Type DNA U01317
 U01317  marscan misc_signal     2242    2458    0.000   +       .       Sequenc
 e "U01317.1" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 24

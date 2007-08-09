@@ -414,6 +414,7 @@ vrnaplot         Plot vrnafold output
 vrnasubopt       Calculate RNA suboptimals
 
 NUCLEIC TRANSCRIPTION
+jaspscan         Scans DNA sequences for transcription factors
 tfscan           Scans DNA sequences for transcription factors
 
 NUCLEIC TRANSLATION
@@ -597,6 +598,7 @@ domainnr         Removes redundant domains from a DCF file
 domainseqs       Adds sequence records to a DCF file
 domainsse        Add secondary structure records to a DCF file
 hetparse         Converts heterogen group dictionary to EMBL-like format
+jaspextract      Extract data from JASPAR
 pdbparse         Parses PDB files and writes protein CCF files
 pdbplus          Add accessibility & secondary structure to a CCF file
 pdbtosp          Convert swissprot:PDB codes file to EMBL-like format
@@ -621,6 +623,9 @@ dbxgcg           Database b+tree indexing for GCG formatted databases
 UTILS MISC
 embossdata       Finds or fetches data files read by EMBOSS programs
 embossversion    Writes the current EMBOSS version number
+
+YADDA YADDA
+test             Yadda
 
 
    Example 3
@@ -797,6 +802,8 @@ infoalign        Information on a multiple sequence alignment
 infoseq          Displays some simple information about sequences
 interface        Generate inter-chain CON files from CCF files
 isochore         Plots isochores in large DNA sequences
+jaspextract      Extract data from JASPAR
+jaspscan         Scans DNA sequences for transcription factors
 libgen           Generate discriminating elements from alignments
 lindna           Draws linear maps of DNA constructs
 listor           Write a list file of the logical OR of two sets of sequences
@@ -906,6 +913,7 @@ stssearch        Search a DNA database for matches with a set of STS primers
 supermatcher     Match large sequences against one or more other sequences
 syco             Synonymous codon usage Gribskov statistic plot
 tcode            Fickett TESTCODE statistic to identify protein-coding DNA
+test             Yadda
 textsearch       Search sequence documentation. Slow, use SRS and Entrez!
 tfextract        Extract data from TRANSFAC
 tfm              Displays a program's help documentation manual
@@ -998,6 +1006,7 @@ TEST
 UTILS DATABASE CREATION
 UTILS DATABASE INDEXING
 UTILS MISC
+YADDA YADDA
 
    Example 5
 
@@ -1106,8 +1115,9 @@ Command line arguments
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
@@ -1156,17 +1166,13 @@ Output file format
    sequences</td> </tr> </table> <h2><a name="ALIGNMENT
    DIFFERENCES">ALIGNMENT DIFFERENCES</a></h2> <table border
    cellpadding=4 bgcolor="#FFFFF0"> [Part of this file has been deleted
-   for brevity] <tr><th>Program name</th><th>Description</th></tr> <tr>
-   <td><a href="dbiblast.html">dbiblast</a></td> <td>Index a BLAST
-   database</td> </tr> <tr> <td><a href="dbifasta.html">dbifasta</a></td>
-   <td>Database indexing for fasta file databases</td> </tr> <tr> <td><a
-   href="dbiflat.html">dbiflat</a></td> <td>Index a flat file
-   database</td> </tr> <tr> <td><a href="dbigcg.html">dbigcg</a></td>
-   <td>Index a GCG formatted database</td> </tr> <tr> <td><a
-   href="dbxfasta.html">dbxfasta</a></td> <td>Database b+tree indexing
-   for fasta file databases</td> </tr> <tr> <td><a
-   href="dbxflat.html">dbxflat</a></td> <td>Database b+tree indexing for
-   flat file databases</td> </tr> <tr> <td><a
+   for brevity] </tr> <tr> <td><a href="dbiflat.html">dbiflat</a></td>
+   <td>Index a flat file database</td> </tr> <tr> <td><a
+   href="dbigcg.html">dbigcg</a></td> <td>Index a GCG formatted
+   database</td> </tr> <tr> <td><a href="dbxfasta.html">dbxfasta</a></td>
+   <td>Database b+tree indexing for fasta file databases</td> </tr> <tr>
+   <td><a href="dbxflat.html">dbxflat</a></td> <td>Database b+tree
+   indexing for flat file databases</td> </tr> <tr> <td><a
    href="dbxgcg.html">dbxgcg</a></td> <td>Database b+tree indexing for
    GCG formatted databases</td> </tr> </table> <h2><a name="UTILS
    MISC">UTILS MISC</a></h2> <table border cellpadding=4
@@ -1174,7 +1180,11 @@ Output file format
    <tr> <td><a href="embossdata.html">embossdata</a></td> <td>Finds or
    fetches data files read by EMBOSS programs</td> </tr> <tr> <td><a
    href="embossversion.html">embossversion</a></td> <td>Writes the
-   current EMBOSS version number</td> </tr> </table>
+   current EMBOSS version number</td> </tr> </table> <h2><a name="YADDA
+   YADDA">YADDA YADDA</a></h2> <table border cellpadding=4
+   bgcolor="#FFFFF0"> <tr><th>Program name</th><th>Description</th></tr>
+   <tr> <td><a href="test.html">test</a></td> <td>Yadda</td> </tr>
+   </table>
 
    If the -html, -prelink and -postlink qualifiers are specified, then
    the output will be wrapped in HTML tags, ready for inclusion in a Web
@@ -1282,8 +1292,9 @@ Comments
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options

@@ -235,6 +235,11 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Edayhoff.freq
 
 
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_CORE
+
+  dummyfile
+
+
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/REBASE
 
   dummyfile
@@ -265,6 +270,16 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/AAINDEX
   chop780214
   chop780215
   chop780216
+
+
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_FAM
+
+  dummyfile
+
+
+DIRECTORY: /homes/pmr/local/share/EMBOSS/data/JASPAR_PHYLOFACTS
+
+  dummyfile
 
 
 DIRECTORY: /homes/pmr/local/share/EMBOSS/data/CODONS
@@ -599,8 +614,9 @@ Command line arguments
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options

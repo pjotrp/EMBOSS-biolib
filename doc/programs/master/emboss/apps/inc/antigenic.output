@@ -118,7 +118,7 @@ Max_score_pos at "*"
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2006-07-15
+##date 2007-07-15
 ##Type Protein ACTB1_FUGRU
 ACTB1_FUGRU	antigenic	region	214	222	1.207	+	.	Sequence "ACTB1_FUGRU.1" ; note "*pos 218"
 ACTB1_FUGRU	antigenic	region	131	145	1.187	+	.	Sequence "ACTB1_FUGRU.2" ; note "*pos 137"

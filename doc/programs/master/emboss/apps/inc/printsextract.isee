@@ -12,6 +12,11 @@
 </tr>
 
 <tr>
+<td><a href="jaspextract.html">jaspextract</a></td>
+<td>Extract data from JASPAR</td>
+</tr>
+
+<tr>
 <td><a href="prosextract.html">prosextract</a></td>
 <td>Build the PROSITE motif database for use by patmatmotifs</td>
 </tr>

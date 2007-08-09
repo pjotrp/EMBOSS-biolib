@@ -60,7 +60,7 @@ AY411291 228-228 Length: 1
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2006-07-15
+##date 2007-07-15
 ##Type DNA AY411291
 AY411291	diffseq	conflict	228	228	1.000	+	.	Sequence "AY411291.1" ; note "SNP in X65923" ; replace "t"
 </pre>
@@ -69,7 +69,7 @@ AY411291	diffseq	conflict	228	228	1.000	+	.	Sequence "AY411291.1" ; note "SNP in
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2006-07-15
+##date 2007-07-15
 ##Type DNA X65923
 X65923	diffseq	conflict	284	284	1.000	+	.	Sequence "X65923.1" ; note "SNP in AY411291" ; replace "c"
 </pre>

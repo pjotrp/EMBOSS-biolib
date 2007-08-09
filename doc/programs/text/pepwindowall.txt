@@ -54,14 +54,15 @@ Command line arguments
    -gxtitle2 string Graph x axis title -gytitle2 string Graph y axis
    title -goutfile2 string Output file for non interactive displays
    -gdirectory2 string Output directory General qualifiers: -auto boolean
-   Turn off prompts -stdout boolean Write standard output -filter boolean
-   Read standard input, write standard output -options boolean Prompt for
-   standard and additional values -debug boolean Write debug output to
-   program.dbg -verbose boolean Report some/full command line options
-   -help boolean Report command line options. More information on
-   associated and general qualifiers can be found with -help -verbose
-   -warning boolean Report warnings -error boolean Report errors -fatal
-   boolean Report fatal errors -die boolean Report dying program messages
+   Turn off prompts -stdout boolean Write first file to standard output
+   -filter boolean Read first file from standard input, write first file
+   to standard output -options boolean Prompt for standard and additional
+   values -debug boolean Write debug output to program.dbg -verbose
+   boolean Report some/full command line options -help boolean Report
+   command line options. More information on associated and general
+   qualifiers can be found with -help -verbose -warning boolean Report
+   warnings -error boolean Report errors -fatal boolean Report fatal
+   errors -die boolean Report dying program messages
 
 Input file format
 

@@ -168,8 +168,9 @@ Output report [u01317.marscan]: <b></b>
 
    General qualifiers:
    -auto               boolean    Turn off prompts
-   -stdout             boolean    Write standard output
-   -filter             boolean    Read standard input, write standard output
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
    -options            boolean    Prompt for standard and additional values
    -debug              boolean    Write debug output to program.dbg
    -verbose            boolean    Report some/full command line options
@@ -391,7 +392,7 @@ By default <b>marscan</b> writes a GFF (Gene Feature Format) report file.
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2006-07-15
+##date 2007-07-15
 ##Type DNA U01317
 U01317	marscan	misc_signal	2242	2458	0.000	+	.	Sequence "U01317.1" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 2451" ; note "*end8bp 2458" ; note "*start16bp 2242" ; note "*end16bp 2257"
 U01317	marscan	misc_signal	17654	17730	0.000	+	.	Sequence "U01317.2" ; note "*type MAR/SAR recognition site (MRS)" ; note "*start8bp 17723" ; note "*end8bp 17730" ; note "*start16bp 17654" ; note "*end16bp 17669"
