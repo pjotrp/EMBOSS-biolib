@@ -20,7 +20,7 @@ section: input [
     pattern: "[A-z][A-z0-9_]+"
   ]
 
-  string: indexdir [
+  directory: indexdir [
     standard: "y"
     default: "."
     information: "Index file directory"
