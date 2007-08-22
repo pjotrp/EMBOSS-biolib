@@ -505,9 +505,9 @@ typedef struct FeatSOutFormat
 
 static FeatOOutFormat featOutFormatDef[] =
 {
-    /* Name       Alias    Nucleotide Prot
+    /* Name     Nucleotide Prot
          VocInit             WriteFunction
-	 Description*/
+	 Description       Alias   Padding */
     {"unknown", AJFALSE,   AJFALSE,
 	 NULL,               feattableWriteUnknown,
 	 "unknown format", AJFALSE, 0},
@@ -541,6 +541,9 @@ static FeatOOutFormat featOutFormatDef[] =
     {"swissprot", AJFALSE,   AJTRUE,
 	 featVocabInitSwiss, ajFeattableWriteSwiss,
 	 "SwissProt format", AJFALSE, 0},
+    {"debug",     AJTRUE,    AJTRUE,
+	 featVocabInitEmbl, ajFeattablePrint,
+	 "Debugging trace of full internal data content", AJFALSE, 0},
     {NULL, AJFALSE, AJFALSE, NULL, NULL, NULL, AJFALSE, 0}
 };
 
@@ -1197,7 +1200,7 @@ AjPFeature ajFeatNewII(AjPFeattable thys,
 
     if(Start > End)
 	ret = featFeatNew(thys,source,featTypeMiscfeat,
-			  Start,End,score,'-',frame,
+			  End,Start,score,'-',frame,
 			  0,0,0,NULL, NULL,flags);
     else
 	ret = featFeatNew(thys,source,featTypeMiscfeat,
@@ -1236,10 +1239,10 @@ AjPFeature ajFeatNewIIRev(AjPFeattable thys,
 
     /*ajDebug("ajFeatNewIIRev %d %d\n", Start, End);*/
 
-    if(Start >= End)
-	ret = ajFeatNewII(thys,Start,End);
-    else
+    if(Start > End)
 	ret = ajFeatNewII(thys,End,Start);
+    else
+	ret = ajFeatNewII(thys,Start,End);
 
     ret->Strand = '-';
 
@@ -6341,7 +6344,10 @@ ajuint ajFeatGetStart(const AjPFeature thys)
 
 char ajFeatGetStrand(const AjPFeature thys)
 {
-    return thys->Strand;
+    if(thys->Strand == '-')
+	return '-';
+    else
+	return '+';
 }
 
 
@@ -7802,6 +7808,29 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
 
 
 
+/* @func ajFeattableSetLength **************************************************
+**
+** Sets the length of a feature table with the length of the source sequence.
+**
+** This is needed to reverse the table correctly
+**
+** @param [u] thys [AjPFeattable] Feature table object
+** @param [r] len [ajuint] Length
+** @return [void]
+** @@
+**
+******************************************************************************/
+
+void ajFeattableSetLength(AjPFeattable thys, ajuint len)
+{
+    thys->Len = len;
+
+    return;
+}
+
+
+
+
 /* @func ajFeattableSetNuc ****************************************************
 **
 ** Sets the type of a feature table as nucleotide
@@ -8039,6 +8068,7 @@ AjPFeattable ajFeattableNewSeq(const AjPSeq seq)
 	thys = ajFeattableNewProt(ajSeqGetNameS(seq));
     else
 	thys = ajFeattableNewDna(ajSeqGetNameS(seq));
+    thys->Len = ajSeqGetLen(seq);
 
     return thys;
 }
@@ -8499,6 +8529,41 @@ void ajFeattableTrace(const AjPFeattable thys)
 
 
 
+
+/* @func ajFeatTypeNuc ****************************************************
+**
+** Given a feature type name,
+** returns the valid feature type for the internal DNA feature table
+**
+** @param [r]   type  [const AjPStr] Type name
+** @return [const AjPStr] Valid feature type
+** @@
+******************************************************************************/
+
+const AjPStr ajFeatTypeNuc(const AjPStr type)
+{
+    featInit();
+
+    return featTableTypeExternal(type, FeatTypeTableDna);
+}
+
+
+/* @func ajFeatTypeProt ****************************************************
+**
+** Given a feature type name,
+** returns the valid feature type for the internal protein feature table
+**
+** @param [r]   type  [const AjPStr] Type name
+** @return [const AjPStr] Valid feature type
+** @@
+******************************************************************************/
+
+const AjPStr ajFeatTypeProt(const AjPStr type)
+{
+    featInit();
+
+    return featTableTypeExternal(type, FeatTypeTableProtein);
+}
 
 /* @funcstatic featTypeDna ****************************************************
 **
@@ -9142,7 +9207,8 @@ static AjBool featTagSpecialAllConssplice(AjPStr* pval)
     if(!ret)
     {
 	featWarn("bad /cons_splice value '%S'",   *pval);
-	ajUser("beg: '%S' end: '%S'", begstr, endstr);
+	ajDebug("bad /cons_splice value '%S' beg: '%S' end: '%S'",
+		*pval, begstr, endstr);
     }
 
     if (islow)
@@ -12138,7 +12204,111 @@ void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
     return;
 }
 
+/* @func ajFeattablePrint ******************************************************
+**
+** Print contents of a feature table to a file
+**
+** @param [r] ftable [const AjPFeattable] Feature table
+** @param [u] outf [AjPFile] Output file
+** @return [AjBool] Always true
+******************************************************************************/
 
+AjBool ajFeattablePrint(const AjPFeattable ftable, AjPFile outf)
+{
+    AjIList iterft     = NULL;
+    AjPFeature feature = NULL;
+    AjIList itertag    = NULL;
+    FeatPTagval tv = NULL;
+    ajint i=0;
+    ajint j=0;
+
+    ajFmtPrintF(outf, "  DefFormat: %u\n",
+		ftable->DefFormat);
+    ajFmtPrintF(outf, "  Start: %u\n",
+		ftable->Start);
+    ajFmtPrintF(outf, "  End: %u\n",
+		ftable->End);
+    ajFmtPrintF(outf, "  Len: %u\n",
+		ftable->Len);
+    ajFmtPrintF(outf, "  Offset: %u\n",
+		ftable->Offset);
+    ajFmtPrintF(outf, "  Groups: %u\n",
+		ftable->Groups);
+
+    iterft = ajListIterNewread(ftable->Features);
+    while(!ajListIterDone(iterft))
+    {
+	feature = (AjPFeature)ajListIterGet(iterft);
+	i++;
+
+	ajFmtPrintF(outf, "\n  Feature %d\n", i);
+	ajFmtPrintF(outf, "    Source: '%S'\n", feature->Source);
+	ajFmtPrintF(outf, "    Type: '%S'\n", feature->Type);
+	ajFmtPrintF(outf, "    Score: %.6f\n", feature->Score);
+	ajFmtPrintF(outf, "    Protein: %B\n", feature->Protein);
+	ajFmtPrintF(outf, "    Strand: '%c'\n", feature->Strand);
+	ajFmtPrintF(outf, "    Start: %d\n", feature->Start);
+	ajFmtPrintF(outf, "    End: %d\n", feature->End);
+	ajFmtPrintF(outf, "    Start2: %d\n", feature->Start2);
+	ajFmtPrintF(outf, "    End2: %d\n", feature->End2);
+	ajFmtPrintF(outf, "    Remote: '%S'\n", feature->Remote);
+	ajFmtPrintF(outf, "    Label: '%S'\n", feature->Label);
+	ajFmtPrintF(outf, "    Frame: %d\n", feature->Frame);
+	ajFmtPrintF(outf, "    Exon: %u\n", feature->Exon);
+	ajFmtPrintF(outf, "    Group: %u\n", feature->Group);
+	ajFmtPrintF(outf, "    Flags: %x\n", feature->Flags);
+	if(feature->Flags & FEATFLAG_START_BEFORE_SEQ)
+	    ajFmtPrintF(outf, "      START_BEFORE_SEQ\n");
+	if(feature->Flags & FEATFLAG_END_AFTER_SEQ)
+	    ajFmtPrintF(outf, "      END_AFTER_SEQ\n");
+	if(feature->Flags & FEATFLAG_CHILD)
+	    ajFmtPrintF(outf, "      CHILD\n");
+	if(feature->Flags & FEATFLAG_BETWEEN_SEQ)
+	    ajFmtPrintF(outf, "      BETWEEN_SEQ\n");
+	if(feature->Flags & FEATFLAG_START_TWO)
+	    ajFmtPrintF(outf, "      START_TWO\n");
+	if(feature->Flags & FEATFLAG_END_TWO)
+	    ajFmtPrintF(outf, "      END_TWO\n");
+	if(feature->Flags & FEATFLAG_POINT)
+	    ajFmtPrintF(outf, "      POINT\n");
+	if(feature->Flags & FEATFLAG_COMPLEMENT_MAIN)
+	    ajFmtPrintF(outf, "      COMPLEMENT_MAIN\n");
+	if(feature->Flags & FEATFLAG_MULTIPLE)
+	    ajFmtPrintF(outf, "      MULTIPLE\n");
+	if(feature->Flags & FEATFLAG_GROUP)
+	    ajFmtPrintF(outf, "      GROUP\n");
+	if(feature->Flags & FEATFLAG_ORDER)
+	    ajFmtPrintF(outf, "      ORDER\n");
+	if(feature->Flags & FEATFLAG_ONEOF)
+	    ajFmtPrintF(outf, "      ONEOF\n");
+	if(feature->Flags & FEATFLAG_REMOTEID)
+	    ajFmtPrintF(outf, "      REMOTEID\n");
+	if(feature->Flags & FEATFLAG_LABEL)
+	    ajFmtPrintF(outf, "      LABEL\n");
+	if(feature->Flags & FEATFLAG_START_UNSURE)
+	    ajFmtPrintF(outf, "      START_UNSURE\n");
+	if(feature->Flags & FEATFLAG_END_UNSURE)
+	    ajFmtPrintF(outf, "      END_UNSURE\n");
+
+	ajFmtPrintF(outf, "    Tags: %u tags\n",
+		    ajListGetLength(feature->Tags));
+
+	j=0;
+	itertag = ajListIterNewread(feature->Tags);
+	while(!ajListIterDone(itertag))
+	{
+	    tv = ajListIterGet(itertag);
+	    ajFmtPrintF(outf, "      Tag %3d %S : '%S'\n",
+			++j, tv->Tag, tv->Value);
+	}
+	ajListIterDel(&itertag);
+
+    }
+
+    ajListIterDel(&iterft);
+
+    return ajTrue;
+}
 
 
 /* @func ajFeatPrintFormat **************************************************
