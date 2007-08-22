@@ -820,13 +820,6 @@ static void showalign_Order(const AjPStr order,
 	break;
     }
 
-    /* debug
-       ajUser("sorted names:");
-       for(i=0; seqs[i]; i++)
-       if(aorder[i].seq != NULL)
-       ajUser("%s", ajSeqGetNameC(aorder[i].seq));
-
-       */
 
     return;
 }
