@@ -206,7 +206,7 @@ static AlignOFormat alignFormat[] = {
   {"msf",       "MSF format sequence", alignWriteMsf,
        AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
   /* trace  for debug */
-  {"trace", "Debugging trace of full internal data content", alignWriteTrace,
+  {"debug", "Debugging trace of full internal data content", alignWriteTrace,
        AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
   /* alignment formats */
   {"markx0",    "Pearson MARKX0 format", alignWriteMarkX0,
