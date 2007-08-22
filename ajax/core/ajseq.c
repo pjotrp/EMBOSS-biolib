@@ -2521,6 +2521,7 @@ void ajSeqTrim(AjPSeq seq)
 ** @valrule Offset [ajuint] Sequence start offset
 ** @valrule Range [ajuint] Sequence length
 ** @valrule Rev [AjBool] Reverse attribute
+** @valrule Revtext [AjPStr] Reverse text
 ** @valrule *Feat [const AjPFeattable] Link to internal feature table
 ** @valrule *FeatCopy [AjPFeattable] New feature table with original contents
 ** @valrule *SeqCopyC [char*] New sequence with original contents
@@ -2584,7 +2585,7 @@ __deprecated const AjPStr  ajSeqGetAcc(const AjPSeq seq)
 ** or 1 if no start has been set.
 **
 ** To return the position within the original sequence, which may be different
-** if the sequence has been trimmed, use ajSeqTrueBegin
+** if the sequence has been trimmed, use ajSeqGetBeginTrue
 **
 ** @param [r] seq [const AjPSeq] Sequence object
 ** @return [ajuint] Start position.
