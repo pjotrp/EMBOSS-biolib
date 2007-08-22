@@ -199,7 +199,7 @@ int main(int argc, char **argv)
     /* check there are primers to be searched */
     if(!ajListGetLength(primerList))
     {
-	ajUser("\nNo suitable primers found - exiting\n");
+	ajErr("No suitable primers found - exiting");
 	embExitBad();
 	return 0;
 
