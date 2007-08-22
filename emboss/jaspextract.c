@@ -78,7 +78,7 @@ int main(int argc, char **argv)
 **
 ** Checks whether a specific subdirectory exists
 **
-** @param [r] directory [AjPStr] jaspar directory
+** @param [r] directory [const AjPStr] jaspar directory
 ** @param [r] sdir      [const char *] subdirectory name
 **
 ** @return [AjBool] ajTrue if the subdirectory exists
@@ -113,7 +113,7 @@ static AjBool jaspextract_check(const AjPStr directory, const char *sdir)
 **
 ** Copy datafile into the EMBOSS  data area
 **
-** @param [r] directory [AjPStr] jaspar directory
+** @param [r] directory [const AjPStr] jaspar directory
 ** @param [r] sdir      [const char *] subdirectory name
 **
 ** @return [void]

@@ -33,7 +33,7 @@
 #define JASPTAB_GUESS 1000
 
 
-/* @data AjPJsphits ***********************************************************
+/* @datastatic AjPJsphits *****************************************************
 **
 ** Jaspar hits object
 **
@@ -54,7 +54,7 @@
 ** @attr threshold [float] threshold score
 ** @attr maxscore [float] maximum score for a matrix
 ** @attr type [char] type of Jaspar database (C,F or P)
-** @attr Padding [char[3]] padding to alignment boundary
+** @attr Padding [char[7]] padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -74,18 +74,34 @@ typedef struct AjSJspHits {
 
 
 
-/* @data AjPJspmat ***********************************************************
+/* @datastatic AjPJspmat ******************************************************
 **
-** Jaspar marix object
+** Jaspar matrix object
 **
-** Also holds matrix information and type.
+** Also holds matrix information and type from the matrix_list.txt file
 **
-** AjPJspmax is implemented as a pointer to a C data structure.
+** AjPJspmat is implemented as a pointer to a C data structure.
 **
 ** @alias AjSJspmat
 ** @alias AjOJspmat
 **
+** @attr id [AjPStr] Identifier
+** @attr num [AjPStr] Information content (very close to optional content value)
+** @attr name [AjPStr] Name or transcription factor
+** @attr klass [AjPStr] Class of transcription factor
+** @attr seqdb [AjPStr] Source database name for protein (may be EMBL)
+** @attr species [AjPStr] Species
+** @attr sgroup [AjPStr] Taxonomy supergroup
+** @attr protseq [AjPStr] Source database accession (see seqdb)
+** @attr exp [AjPStr] Experiment type (e.g. SELEX)
+** @attr pmid [AjPStr] Source medline reference record and PMID number
+** @attr content [AjPStr] Shannon information content (floating point number)
+** @attr models [AjPStr] Included models
+** @attr mcs [AjPStr] MCS reference
+** @attr jaspar [AjPStr] Jaspar reference
+** @attr transfac [AjPStr] Transfac reference
 ** @attr type [char] Type of Jaspar database (C,F or P)
+** @attr Padding [char[7]] padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -122,7 +138,7 @@ static void    jaspscan_GetFileList(const AjPStr dir, const AjPStr jaspdir,
 static void    jaspscan_strdel(void** str, void* cl);
 static void    jaspscan_scan(const AjPStr seq, const ajuint begin,
 			     const AjPStr mfname, const char type,
-			     const AjPStr name, const float threshold,
+			     const float threshold,
 			     const AjBool both, AjPList hits);
 
 
@@ -135,10 +151,10 @@ static void       jaspscan_infodel(AjPJspmat *thys);
 static AjPTable jaspscan_ReadCoreList(const AjPStr jaspdir);
 static AjPTable jaspscan_ReadFamList(const AjPStr jaspdir);
 
-static void   jaspscan_coretoken(AjPJspmat info, AjPStr str);
+static void   jaspscan_coretoken(AjPJspmat info, const AjPStr str);
 static ajuint jaspscan_readmatrix(const AjPStr mfname, float ***matrix);
 
-static void   jaspscan_ReportHits(AjPFeattable TabRpt, AjPTable mattab,
+static void   jaspscan_ReportHits(AjPFeattable TabRpt, const AjPTable mattab,
 				  AjPList hits);
 
 static void   jaspscan_ClearTable(void **key, void **value, void *cl);
@@ -161,7 +177,6 @@ int main(int argc, char **argv)
 
     AjPStr jaspdir = NULL;
     AjPStr menu    = NULL;
-    AjPStr name    = NULL;
     AjPStr substr  = NULL;
     AjPStr mats    = NULL;
     AjPStr excl    = NULL;
@@ -169,9 +184,6 @@ int main(int argc, char **argv)
     float thresh = 0.;
     
     ajuint recurs  = 0;
-    
-    AjPStr *carr  = NULL;
-    AjPStr *earr  = NULL;
     
     AjPStr dir    = NULL;
     AjPStr mfname = NULL;
@@ -204,7 +216,6 @@ int main(int argc, char **argv)
     both       = ajAcdGetBool("both");
     
     jaspdir = ajStrNew();
-    name    = ajStrNew();
     substr  = ajStrNew();
     
     flist = ajListNew();
@@ -246,7 +257,6 @@ int main(int argc, char **argv)
     {
 	begin  = ajSeqallGetseqBegin(seqall);
 	end    = ajSeqallGetseqEnd(seqall);
-	ajStrAssignC(&name,ajSeqGetNameC(seq));
 
 	ajStrAssignSubC(&substr,ajSeqGetSeqC(seq),begin-1,end-1);
 	ajStrFmtUpper(&substr);
@@ -258,7 +268,7 @@ int main(int argc, char **argv)
 	{
 	    ajListPop(flist,(void **)&mfname);
 
-	    jaspscan_scan(substr,begin,mfname, cp, name, thresh, both, hits);
+	    jaspscan_scan(substr,begin,mfname, cp, thresh, both, hits);
 
 	    ajStrDel(&mfname);
 	}
@@ -273,7 +283,6 @@ int main(int argc, char **argv)
     ajStrDel(&dir);
     ajStrDel(&menu);
     ajStrDel(&excl);
-    ajStrDel(&name);
     ajStrDel(&substr);
     ajStrDel(&mats);
     ajStrDel(&head);
@@ -302,10 +311,10 @@ int main(int argc, char **argv)
 **
 ** Add Jaspar matrix files to a list
 **
-** @param [r] dir [AjPStr] DATA directory
+** @param [r] dir [const AjPStr] DATA directory
 ** @param [r] jaspdir [const AjPStr] Jaspar subdirectory name
 ** @param [r] wild [const char *] wildcard matrix name
-** @param [r] list [AjPList] list for appending matrices
+** @param [u] list [AjPList] list for appending matrices
 **
 ** @return [void]
 ** @@
@@ -353,11 +362,11 @@ static void jaspscan_GetFileList(const AjPStr dir, const AjPStr jaspdir,
 **
 ** Parse 'matrices' and 'exclude' inputs
 **
-** @param [r] dir [AjPStr] DATA directory
+** @param [r] dir [const AjPStr] DATA directory
 ** @param [r] jaspdir [const AjPStr] Jaspar subdirectory name
 ** @param [r] mats [const AjPStr] comma separated list of matrices
 ** @param [r] excl [const AjPStr] comma separated list of excludes
-** @param [r] recurs [ajuint *] recursion count
+** @param [u] recurs [ajuint *] recursion count
 ** @param [u] ret [AjPList] resultant matrices list
 **
 ** @return [void]
@@ -545,7 +554,6 @@ static void jaspscan_strdel(void** str, void* cl)
 ** @param [r] begin [const ajuint] start position
 ** @param [r] mfname [const AjPStr] matrix file name
 ** @param [r] type [const char] Jaspar database type (C,F or P)
-** @param [r] name [const AjPStr] sequence name
 ** @param [r] threshold [const float] scoring threshold
 ** @param [r] both [const AjBool] scan reverse strand too
 ** @param [u] hits [AjPList] hit list
@@ -556,7 +564,7 @@ static void jaspscan_strdel(void** str, void* cl)
 
 static void jaspscan_scan(const AjPStr seq, const ajuint begin,
 			  const AjPStr mfname, const char type,
-			  const AjPStr name, const float threshold,
+			  const float threshold,
 			  const AjBool both, AjPList hits)
 {
     AjPJsphits val = NULL;
@@ -803,7 +811,7 @@ static void jaspscan_hitsdel(AjPJsphits *thys)
 **
 ** Read/parse the JASPAR_CORE/JASPAR_PHYLOFACTS  matrix_list.txt files
 **
-** @param [r] jaspdir [AjPStr] Jaspar directory
+** @param [r] jaspdir [const AjPStr] Jaspar directory
 **
 ** @return [AjPTable] AjPJspmat objects with matrix ID keys
 ** @@
@@ -900,7 +908,7 @@ static AjPTable jaspscan_ReadCoreList(const AjPStr jaspdir)
 **
 ** Read/parse the JASPAR_FAM matrix_list.txt file
 **
-** @param [r] jaspdir [AjPStr] Jaspar directory
+** @param [r] jaspdir [const AjPStr] Jaspar directory
 **
 ** @return [AjPTable] AjPJspmat objects with matrix ID keys
 ** @@
@@ -1003,13 +1011,13 @@ static AjPTable jaspscan_ReadFamList(const AjPStr jaspdir)
 ** Parse matrix_list.txt key/value pairs
 **
 ** @param [u] info [AjPJspmat] Jaspar matrix information
-** @param [r] str [AjPStr] key/value pair
+** @param [r] str [const AjPStr] key/value pair
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-void jaspscan_coretoken(AjPJspmat info, AjPStr str)
+static void jaspscan_coretoken(AjPJspmat info, const AjPStr str)
 {
     const char *p;
     const char *q;
@@ -1155,14 +1163,14 @@ static void jaspscan_infodel(AjPJspmat *thys)
 ** Report Jaspar hits
 **
 ** @param [u] TabRpt [AjPFeattable] report object
-** @param [r] mattab [AjPTable] matrix bibio information
-** @param [r] hits [AjPList] matrix bibio information
+** @param [r] mattab [const AjPTable] matrix information
+** @param [u] hits [AjPList] List of hits removed as they are printed
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void jaspscan_ReportHits(AjPFeattable TabRpt, AjPTable mattab,
+static void jaspscan_ReportHits(AjPFeattable TabRpt, const AjPTable mattab,
 				AjPList hits)
 {
     AjPJsphits hit = NULL;
@@ -1295,6 +1303,8 @@ static void jaspscan_ClearTable(void **key, void **value, void *cl)
     
     ajStrDel(&skey);
     jaspscan_infodel(&info);
+
+    (void) cl;				/* make it used */
 
     *key = NULL;
     *value = NULL;
