@@ -51,6 +51,7 @@ section: input [
            ma0010 \
            ma0032 \
            ma0053"
+    knowntype: "jaspar matrix id"
   ]
 
 
@@ -79,13 +80,16 @@ section: additional [
 
   string:  exclude [
     default: ""
+    additional: "Y"
     information: "Comma separated matrix list for exclusion"
     help: "The names of any matrices to exclude from the 'matrices' \
            list. Matrices are specified in the same way as for the \
            selection list."
+    knowntype: "jaspar matrix id"
   ]
 
   boolean: both [
+    additional: "Y"
     default: "N"
     information: "Scan both strands"
     help: "If set then both the forward and reverse strands are searched"
