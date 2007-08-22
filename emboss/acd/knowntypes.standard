@@ -133,6 +133,8 @@ integer_gap_extension             integer        Affine gap extension penalty
 integer_gap_penalty               integer        Affine gap penalty
 integer_long_data                 file           Standard format information on int and long data
 inverted_output                   file           Sanger Centre program inverted output
+jaspar_database                   file           JASPAR database
+jaspar_matrix_id		  string	 JASPAR matrix identifier
 keywords                          file           Keywords file
 kitsch_input                      file           Phylip kitsch program input
 kitsch_output                     file           Phylip kitsch program output
