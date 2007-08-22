@@ -1,3 +1,77 @@
+Version 5.1.0
+	Alignment format "trace" used to display internal data content, is
+	renamed to "debug" to be consisten with other formats. A "debug"
+	format is added for feature output.
+
+	Application documentation has been updated to remove obsolete
+	references to EMBL database identifiers. These are replaced with
+	the correct accession numbers.
+
+	Two new entries have been added to the "tembl" test EMBL database
+	for use in the QA tests.
+
+	Report output now checks the sequence and feature table type. Is
+	the sequence is not a valid protein, protein-only formats (pir,
+	swiss) will fail with an error message. Similarly, if the sequence
+	is not a valid nucleotide sequence then nucleotide-only formats
+	(embl, genbank) will fail with an error message.
+
+	Garnier now uses the correct SwissProt and internal feature keys
+	for protein secondary structure. The results will appear much
+	better for example as a swissprot feature table. This required
+	rewriting of the internals by recoding the secondary structure
+	features with a "garnier" tag replacing the previous "helix",
+	"sheet", "turns" and "coil" tags. The default output is
+	unchanged. The results in other report formats will be changed.
+
+	Silent no longer reports the "Dir" column. This is replaced by the
+	new "Strand" column which reports "+" for a forward feature and
+	"-" for a reverse feature.
+
+	The following programs have changed default report output, with
+	the strand included for nucleotide sequences: equicktandem,
+	etandem, fuzznuc, fuzztran, recoder, restrict, silent, tcode,
+	twofeat. The strand column can be removed with the new commandline
+	associated qualifier -norstrandshow.
+
+	Reports for nucleotide sequences have confusing ways to represent
+	the start and end positions for features on the complementary
+	strand. A strand column has been added to these reports,
+	controlled by a new -rstrandshow qualifier and attribute. By
+	default the strand is shown for all nucleotide reports (see a list
+	of changed program outputs above). The start position is always
+	lower than the end position for features on the complementary
+	strand indicating the region that should be reversed. In past
+	releases the seqtable report format (fuzznuc, dreg, dan)
+	confusingly reversed start and end positions to indicate the
+	unreported strand. For all report formats (nametable, table) the
+	start and end positions are now consistent with nucleotide feature
+	formats (gff, embl, genbank).
+
+	Reports from dreg incorrectly reported sequences reversed with the
+	-sreverse qualifier.
+
+	Report headers now include the text "(Reversed)" when the input
+	sequence(s) are reverse complemented.
+
+	Phylogenetic trees in newick format are now parsed into internal
+	trees and converted back for use by Phylip. This allows us to
+	read other tree formats and pass them to Phylip (e.g. Nexus)
+
+	Some ACD data types did not allow the input to be NULL because
+	extra tests were carried out on the results. These are all cleaned
+	up and tested so that they can safely be set to nullok and missing
+	in local applications.
+
+	New sequence reading formats for PDB files. By default the ATOM
+	records are used (format "pdb"). An alternative format "pdbseq"
+	will read the SEQRES records which give the original sequence. The
+	ATOM records give the sequence determined from the structure.
+
+	Improved the help text for the -stdout and -filter options to
+	explain output files are written to standard output. Some users
+	expected graphics output (from plplot) to be controlled.
+
 Version 5.0.0
 	The MRS server in Nijmegen changed its syntax just before our
 	release. A new database access method "MRS3" supports the main
