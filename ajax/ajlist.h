@@ -121,10 +121,12 @@ AjPList     ajListstrNewList   (const AjPList list);
 AjPList     ajListstrNewListref   (const AjPList list);
 void        ajListstrFree   (AjPList *list);
 void        ajListstrFreeData   (AjPList *list);
+AjPStr      ajListstrIterGet (AjIList iter);
+AjPStr      ajListstrIterGetBack (AjIList iter);
 void        ajListstrIterTrace (const AjIList iter);
 ajuint      ajListstrGetLength (const AjPList list);
 void        ajListstrMap (AjPList thys,
-			  void (*apply) (AjPStr* x, void* cl), void* cl);
+			  void apply(AjPStr* x, void* cl), void* cl);
 void        ajListstrMapread (const AjPList thys,
 			      void (*apply) (AjPStr x, void* cl), void* cl);
 AjPList     ajListstrNew (void);          /* return header */

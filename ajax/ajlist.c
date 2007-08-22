@@ -2199,6 +2199,7 @@ void* ajListIterGet(AjIList iter)
     return ret;
 }
 
+
 /* @obsolete ajListIterNext
 ** @rename ajListIterGet
 */
@@ -2709,7 +2710,7 @@ __deprecated void ajListstrPushList(AjPList list, AjPList* Plist)
 ** @@
 ******************************************************************************/
 
-void ajListstrMap(AjPList list, void (*apply) (AjPStr* x, void* cl), void* cl)
+void ajListstrMap(AjPList list, void apply(AjPStr* x, void* cl), void* cl)
 {
     AjPListNode rest;
 
@@ -3326,6 +3327,97 @@ void ajListstrFreeData(AjPList* Plist)
 **
 *******************************************************************************/
 
+
+
+/* @section stepping **********************************************************
+**
+** @fdata [AjIList]
+**
+** @nam4rule   Get      Next value.
+** @nam5rule   GetBack  Next value in reverse direction
+**
+** @argrule * iter [AjIList] String iterator
+**
+** @valrule * [AjPStr] Value
+**
+** @fcategory modify
+*/
+
+
+/* @func ajListstrIterGet *****************************************************
+**
+** Returns next item using iterator, or steps off the end.
+**
+** @param [u] iter [AjIList] List iterator.
+** @return [AjPStr] Data item returned.
+** @@
+******************************************************************************/
+
+AjPStr ajListstrIterGet(AjIList iter)
+{
+    AjPListNode p;
+    void *ret;
+
+    if(!iter)
+	return NULL;
+
+    p = iter->Here;
+
+    if(!iter->Back)
+    {
+	if(!p->Next)
+	    return NULL;
+	ret = p->Item;
+	iter->Here = p->Next;
+    }
+    else
+    {
+	if(!p->Next->Next || !p->Next->Next->Next)
+	  return NULL;
+	iter->Back = ajFalse;
+	ret = p->Next->Item;
+	iter->Here = p->Next->Next;
+    }
+
+    return (AjPStr) ret;
+}
+
+/* @func ajListstrIterGetBack *************************************************
+**
+** Returns next item using back iterator.
+**
+** @param [u] iter [AjIList] List iterator.
+** @return [AjPStr] Data item returned.
+** @@
+******************************************************************************/
+
+AjPStr ajListstrIterGetBack(AjIList iter)
+{
+    AjPListNode p;
+    void* ret;
+
+    if(!iter)
+	return NULL;
+
+    p = iter->Here;
+
+    if(!p->Prev)
+      return NULL;
+
+    if(!iter->Back)
+    {
+	ret = p->Prev->Prev->Item;
+	iter->Here = p->Prev->Prev;
+	iter->Back = ajTrue;
+    }
+    else
+    {
+	ret = p->Prev->Item;
+	iter->Here = p->Prev;
+    }
+
+    return (AjPStr) ret;
+}
 
 
 /* @section modifiers **********************************************************
