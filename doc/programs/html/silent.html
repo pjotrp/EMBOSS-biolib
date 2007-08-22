@@ -105,6 +105,7 @@ Output report [x65923.silent]: <b></b>
    -raccshow2          boolean    Show accession number in the report
    -rdesshow2          boolean    Show description in the report
    -rscoreshow2        boolean    Show the score in the report
+   -rstrandshow2       boolean    Show the nucleotide strand in the report
    -rusashow2          boolean    Show the full USA in the report
    -rmaxall2           integer    Maximum total hits to report
    -rmaxseq2           integer    Maximum hits to report for one sequence
@@ -331,8 +332,8 @@ SQ   Sequence 518 BP; 125 A; 139 C; 148 G; 106 T; 0 other;
 #
 #=======================================
 
-  Start     End Dir    EnzymeName RS-Pattern Base-Posn    AAs Silent Mutation
-    272     267 Rev    HindIII    AAGCTT           268    A.A    Yes     A-&gt;T
+  Start     End  Strand EnzymeName RS-Pattern Base-Posn AAs Silent Mutation
+    267     272       - HindIII AAGCTT    268 A.A    Yes   A-&gt;T
 
 #---------------------------------------
 #---------------------------------------
@@ -389,7 +390,7 @@ The directories are searched in the following order:
 </ul>
 <p>
 <p>
-The EMBOSS REBASE restriction enzyme data files are stored iin
+The EMBOSS REBASE restriction enzyme data files are stored in
 directory 'data/REBASE/*' under the EMBOSS installation directory.
 
 <p>

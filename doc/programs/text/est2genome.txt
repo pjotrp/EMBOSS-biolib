@@ -17,7 +17,7 @@ Description
    GT and AG.
 
    Unless instructed otherwise, the program makes three alignments: First
-   it compares both stands of the spliced sequence against the forward
+   it compares both strands of the spliced sequence against the forward
    strand of the genomic, assuming the splice consensus GT/AG (ie in the
    forward gene direction). The maximum-scoring orientation is then
    realigned assuming the splice consensus CT/AC (ie in the reversed gene

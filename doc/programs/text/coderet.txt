@@ -432,7 +432,7 @@ Output file format
    pro) and a unique ordinal number for this type to distinguish it from
    others in this sequence. The name, type and number of separated by
    underscore characters. Thus the second CDS feature in the sequence
-   'HSXYZ' would be named 'HSXYZ_cds_2'.
+   'A12345' would be named 'A12345_cds_2'.
 
    The translations are not made from the coding sequence, they are
    extracted directly from the translation sequence held in the feature

@@ -100,34 +100,36 @@ Description
    fasta::xxx.seq A sequence file "xxx.seq" in fasta format
    gcg::egmsmg.gcg A sequence file "egmsmg.gcg" in GCG 9 format
    egmsmg.gcg -sformat=gcg A sequence file "egmsmg.gcg" in GCG 9 format
-   embl::paamir.em A sequence file "paamir.em" in EMBL format
-   embl:paamir EMBL entry PAAMIR, using whatever access method is defined
+   embl::x13776.em A sequence file "x13776.em" in EMBL format
+   embl:x13776 EMBL entry X13776, using whatever access method is defined
    locally for the EMBL database
-   embl:X13776 EMBL entry X13776, using whatever access method is defined
+   embl:K01793 EMBL entry K01793, using whatever access method is defined
    locally for the EMBL database and searching by accession number and
-   entry name (X13776 is the accession number in this case)
-   embl-acc:X13776 EMBL entry X13776, using whatever access method is
+   entry name (K01793 is a secondary accession number in this case for
+   entry J01636)
+   embl-acc:K01793 EMBL entry X13776, using whatever access method is
    defined locally for the EMBL database and searching by accession
    number only
-   embl-id:paamir EMBL entry PAAMIR, using whatever access method is
+   embl-id:x13776 EMBL entry x13776, using whatever access method is
    defined locally for the EMBL database, and searching by ID only
-   embl:paami* EMBL entries PAAMIB, PAAMIE and so on, usually in
+   embl:v0029* EMBL entries V00290, V00291, and so on, usually in
    alphabetical order, using whatever access method is defined locally
    for the EMBL database
    embl or EMBL:* All sequences in the EMBL database
    @mylist Reads file mylist and uses each line as a separate USA. This
    is standard VMS list file syntax, also used in SRS 4.0 but missing in
-   SRS 5.0. The list file is a list of USAs (one per line). List files
-   can contain references to other lists files or any other standard USA.
+   SRS 5.0 onwards. The list file is a list of USAs (one per line). List
+   files can contain references to other lists files or any other
+   standard USA.
    list::mylist Same as "@mylist" above
-   'getz -e [embl-id:paamir] |' The pipe character "|" causes EMBOSS to
-   fire up getz (SRS 5.1) to extract entry PAAMIR from EMBL in EMBL
-   format. Any application or script which writes one or more sequences
-   to stdout can be used in this way.
+   'getz -e [embl-id:x13776] |' The pipe character "|" causes EMBOSS to
+   fire up getz (SRS) to extract entry x13776 from EMBL in EMBL format.
+   Any application or script which writes one or more sequences to stdout
+   can be used in this way.
    asis::atacgcagttatctgaccat So far the shortest USA we could invent. In
    'asis' format the name is the sequence so no file needs to be opened.
-   This is a special case. It was intended as a joke, but could be quite
-   useful for generating command lines.
+   This is a special case. It was intended as a joke, but has proved
+   quite useful for generating command lines when testing.
 
   Input sequence formats
 
@@ -248,7 +250,7 @@ Description
    program to ignore the given output file name and will generate its own
    file names. One sequence will be written to each such file. These file
    names are made from the sequence ID name, with the name of the format
-   as the extension (e.g. hsfau.gcg).
+   as the extension (e.g. x65923.gcg).
 
    This is not ideal. Preferably, you should stay away from formats that
    can't cope with multiple sequences in a file.

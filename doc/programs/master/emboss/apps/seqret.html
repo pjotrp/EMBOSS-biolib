@@ -179,39 +179,39 @@ The following are valid USAs for sequences:
 </TR>
 
 <TR>
-<TD>embl::paamir.em</TD>
-<TD>A sequence file "paamir.em" in EMBL format</TD>
+<TD>embl::x13776.em</TD>
+<TD>A sequence file "x13776.em" in EMBL format</TD>
 </TR>
 
 <TR>
-<TD>embl:paamir</TD>
-<TD>EMBL entry PAAMIR, using whatever access method is defined locally
+<TD>embl:x13776</TD>
+<TD>EMBL entry X13776, using whatever access method is defined locally
 for the EMBL database</TD>
 </TR>
 
 <TR>
-<TD>embl:X13776</TD>
-<TD>EMBL entry X13776, using whatever access method is defined locally
+<TD>embl:K01793</TD>
+<TD>EMBL entry K01793, using whatever access method is defined locally
 for the EMBL database and searching by accession number and entry name
-(X13776 is the accession number in this case)</TD>
+(K01793 is a secondary accession number in this case for entry J01636)</TD>
 </TR>
 
 <TR>
-<TD>embl-acc:X13776</TD>
+<TD>embl-acc:K01793</TD>
 <TD>EMBL entry X13776, using whatever access method is defined locally
 for the EMBL database and searching by accession number only
 </TD>
 </TR>
 
 <TR>
-<TD>embl-id:paamir</TD>
-<TD>EMBL entry PAAMIR, using whatever access method is defined locally
+<TD>embl-id:x13776</TD>
+<TD>EMBL entry x13776, using whatever access method is defined locally
 for the EMBL database, and searching by ID only</TD>
 </TR>
 
 <TR>
-<TD>embl:paami*</TD>
-<TD>EMBL entries PAAMIB, PAAMIE and so on, usually in alphabetical order,
+<TD>embl:v0029*</TD>
+<TD>EMBL entries V00290, V00291, and so on, usually in alphabetical order,
 using whatever access method is defined locally for the EMBL database</TD>
 </TR>
 
@@ -224,7 +224,7 @@ using whatever access method is defined locally for the EMBL database</TD>
 <TD>@mylist</TD>
 <TD>Reads file <i>mylist</i> and uses each line as a separate USA.  This
 is standard VMS list file syntax, also used in SRS 4.0 but missing in
-SRS 5.0.  The list file is a list of USAs (one per line).  List files
+SRS 5.0 onwards.  The list file is a list of USAs (one per line).  List files
 can contain references to other lists files or any other standard
 USA.</TD>
 </TR>
@@ -235,9 +235,9 @@ USA.</TD>
 </TR>
 
 <TR>
-<TD>'getz -e [embl-id:paamir] |'</TD>
-<TD>The pipe character "|" causes EMBOSS to fire up getz (SRS 5.1)
-to extract entry PAAMIR from EMBL in EMBL format. Any application or
+<TD>'getz -e [embl-id:x13776] |'</TD>
+<TD>The pipe character "|" causes EMBOSS to fire up getz (SRS)
+to extract entry x13776 from EMBL in EMBL format. Any application or
 script which writes one or more sequences to stdout can be used in
 this way.
 </TR>
@@ -247,7 +247,7 @@ this way.
 <TD>So far the shortest USA we
 could invent. In 'asis' format the name is the sequence so no file
 needs to be opened. This is a special case.  It was intended as a
-joke, but could be quite useful for generating command lines.</TD>
+joke, but has proved quite useful for generating command lines when testing.</TD>
 </TR>
 
 </TABLE>
@@ -483,7 +483,7 @@ qualifier <b>-ossingle</b> on the command line.  This will force the
 EMBOSS program to ignore the given output file name and will generate its
 own file names.  One sequence will be written to each such file.  These file
 names are made from the sequence ID name, with the name of the format as
-the extension (e.g.  <b>hsfau.gcg</b>). 
+the extension (e.g.  <b>x65923.gcg</b>). 
 <P>
 
 This is not ideal.  Preferably, you should stay away from formats that

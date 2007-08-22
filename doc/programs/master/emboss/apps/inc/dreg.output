@@ -23,8 +23,8 @@
 #
 #=======================================
 
-  Start     End Pattern_name Sequence
-      1       6 regex1       ggtacc
+  Start     End  Strand Pattern_name Sequence
+      1       6       + regex1       ggtacc
 
 #---------------------------------------
 #---------------------------------------

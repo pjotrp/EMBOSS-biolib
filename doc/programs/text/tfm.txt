@@ -583,9 +583,6 @@ UTILS MISC
 embossdata       Finds or fetches data files read by EMBOSS programs
 embossversion    Writes the current EMBOSS version number
 
-YADDA YADDA
-test             Yadda
-
 
    Example 3
 
@@ -872,7 +869,6 @@ stssearch        Search a DNA database for matches with a set of STS primers
 supermatcher     Match large sequences against one or more other sequences
 syco             Synonymous codon usage Gribskov statistic plot
 tcode            Fickett TESTCODE statistic to identify protein-coding DNA
-test             Yadda
 textsearch       Search sequence documentation. Slow, use SRS and Entrez!
 tfextract        Extract data from TRANSFAC
 tfm              Displays a program's help documentation manual
@@ -965,7 +961,6 @@ TEST
 UTILS DATABASE CREATION
 UTILS DATABASE INDEXING
 UTILS MISC
-YADDA YADDA
 
    Example 5
 
@@ -1146,18 +1141,26 @@ ALIGNMENT CONSENSUS
 ALIGNMENT DIFFERENCES
   [Part of this file has been deleted
    for brevity]
-  dbiflat
-    Index a flat file database
+ Program name Description
 
-  dbigcg  Index a GCG formatted
+
+    dbiblast  Index a BLAST
    database
 
-  dbxfasta
-    Database b+tree indexing for fasta file databases
+  dbifasta
+    Database indexing for fasta file databases
 
+  dbiflat  Index a flat file
+   database
 
-    dbxflat  Database b+tree
-   indexing for flat file databases
+  dbigcg
+    Index a GCG formatted database
+
+  dbxfasta  Database b+tree indexing
+   for fasta file databases
+
+  dbxflat  Database b+tree indexing for
+   flat file databases
 
   dbxgcg  Database b+tree indexing for
    GCG formatted databases
@@ -1173,15 +1176,6 @@ UTILS MISC
 
   embossversion  Writes the
    current EMBOSS version number
-
-
-YADDA YADDA
-
- Program name Description
-
-
-  test  Yadda
-
 
 
    If the -html, -prelink and -postlink qualifiers are specified, then

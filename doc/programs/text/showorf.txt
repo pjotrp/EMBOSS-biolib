@@ -270,8 +270,8 @@ SQ   Sequence 2167 BP; 363 A; 712 C; 730 G; 362 T; 0 other;
 
 Output file format
 
-   As a sequence with high GC content (from Pseudmonas aeruginosa) PAAMIR
-   has several overlapping open reading frames.
+   As a sequence with high GC content (from Pseudomonas aeruginosa)
+   X13776 has several overlapping open reading frames.
 
    The true ORFs are 1..109 (amiB partial) 135..1292 (amiC) 1289..1879
    (amiR) 1925..end (amiS partial)

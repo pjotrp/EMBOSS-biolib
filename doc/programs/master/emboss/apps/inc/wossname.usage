@@ -493,9 +493,6 @@ UTILS MISC
 embossdata       Finds or fetches data files read by EMBOSS programs
 embossversion    Writes the current EMBOSS version number
 
-YADDA YADDA
-test             Yadda
-
 
 </pre></td></tr></table><p>
 <p>
@@ -789,7 +786,6 @@ stssearch        Search a DNA database for matches with a set of STS primers
 supermatcher     Match large sequences against one or more other sequences
 syco             Synonymous codon usage Gribskov statistic plot
 tcode            Fickett TESTCODE statistic to identify protein-coding DNA
-test             Yadda
 textsearch       Search sequence documentation. Slow, use SRS and Entrez!
 tfextract        Extract data from TRANSFAC
 tfm              Displays a program's help documentation manual
@@ -889,7 +885,6 @@ TEST
 UTILS DATABASE CREATION
 UTILS DATABASE INDEXING
 UTILS MISC
-YADDA YADDA
 
 </pre></td></tr></table><p>
 <p>

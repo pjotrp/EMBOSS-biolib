@@ -2448,6 +2448,15 @@ attggtctat
 cttaggctgc
 >U01317_63482_63742 [exon] Human beta globin region on chromosome 11.
 cacagctcct
+>M23100_1541_1923 [exon] Human insulin receptor (INSR) gene, exon 1, clones lam
+bda-hINSR-(1-13).
+ctccgggccc
+>M23100_1542_1923 [exon] Human insulin receptor (INSR) gene, exon 1, clones lam
+bda-hINSR-(1-13).
+tccgggcccc
+>M23100_1548_1923 [exon] Human insulin receptor (INSR) gene, exon 1, clones lam
+bda-hINSR-(1-13).
+ccccgagatc
 >V00451_363_460 [exon] Glycine max leghemoglobin gene or pseudogene (no mRNA de
 tected).
 gaaatatggg

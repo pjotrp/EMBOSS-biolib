@@ -130,6 +130,7 @@ Output report [l46634.tan]: <b></b>
    -raccshow2          boolean    Show accession number in the report
    -rdesshow2          boolean    Show description in the report
    -rscoreshow2        boolean    Show the score in the report
+   -rstrandshow2       boolean    Show the nucleotide strand in the report
    -rusashow2          boolean    Show the full USA in the report
    -rmaxall2           integer    Maximum total hits to report
    -rmaxseq2           integer    Maximum hits to report for one sequence
@@ -384,12 +385,12 @@ By default <b>etandem</b> writes a 'table' report file.
 #
 #=======================================
 
-  Start     End   Score   Size  Count Identity Consensus
-    793     936     120      6     24     93.8 acccta   
-    283     420      90      6     23     84.8 taaccc   
-    432     485      38      6      9     90.7 ccctaa   
-    494     529      26      6      6     94.4 ccctaa   
-    568     597      24      6      5    100.0 aaccct   
+  Start     End  Strand   Score   Size  Count Identity Consensus
+    793     936       +     120      6     24     93.8 acccta   
+    283     420       +      90      6     23     84.8 taaccc   
+    432     485       +      38      6      9     90.7 ccctaa   
+    494     529       +      26      6      6     94.4 ccctaa   
+    568     597       +      24      6      5    100.0 aaccct   
 
 #---------------------------------------
 #---------------------------------------

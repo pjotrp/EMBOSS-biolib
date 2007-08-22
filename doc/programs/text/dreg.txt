@@ -702,6 +702,7 @@ Command line arguments
    -raccshow3          boolean    Show accession number in the report
    -rdesshow3          boolean    Show description in the report
    -rscoreshow3        boolean    Show the score in the report
+   -rstrandshow3       boolean    Show the nucleotide strand in the report
    -rusashow3          boolean    Show the full USA in the report
    -rmaxall3           integer    Maximum total hits to report
    -rmaxseq3           integer    Maximum hits to report for one sequence
@@ -905,8 +906,8 @@ Output file format
 #
 #=======================================
 
-  Start     End Pattern_name Sequence
-      1       6 regex1       ggtacc
+  Start     End  Strand Pattern_name Sequence
+      1       6       + regex1       ggtacc
 
 #---------------------------------------
 #---------------------------------------

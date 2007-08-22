@@ -57,6 +57,15 @@
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
+&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;a href="dbiblast.html"&gt;dbiblast&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Index a BLAST database&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;a href="dbifasta.html"&gt;dbifasta&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Database indexing for fasta file databases&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
@@ -96,15 +105,6 @@
 &lt;tr&gt;
 &lt;td&gt;&lt;a href="embossversion.html"&gt;embossversion&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Writes the current EMBOSS version number&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;/table&gt;
-&lt;h2&gt;&lt;a name="YADDA YADDA"&gt;YADDA YADDA&lt;/a&gt;&lt;/h2&gt;
-&lt;table border cellpadding=4 bgcolor="#FFFFF0"&gt;
-&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;a href="test.html"&gt;test&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;Yadda&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;/table&gt;

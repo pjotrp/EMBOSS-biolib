@@ -509,9 +509,6 @@ UTILS MISC
 embossdata       Finds or fetches data files read by EMBOSS programs
 embossversion    Writes the current EMBOSS version number
 
-YADDA YADDA
-test             Yadda
-
 
    Example 3
 
@@ -798,7 +795,6 @@ stssearch        Search a DNA database for matches with a set of STS primers
 supermatcher     Match large sequences against one or more other sequences
 syco             Synonymous codon usage Gribskov statistic plot
 tcode            Fickett TESTCODE statistic to identify protein-coding DNA
-test             Yadda
 textsearch       Search sequence documentation. Slow, use SRS and Entrez!
 tfextract        Extract data from TRANSFAC
 tfm              Displays a program's help documentation manual
@@ -891,7 +887,6 @@ TEST
 UTILS DATABASE CREATION
 UTILS DATABASE INDEXING
 UTILS MISC
-YADDA YADDA
 
    Example 5
 
@@ -1051,13 +1046,17 @@ Output file format
    sequences</td> </tr> </table> <h2><a name="ALIGNMENT
    DIFFERENCES">ALIGNMENT DIFFERENCES</a></h2> <table border
    cellpadding=4 bgcolor="#FFFFF0"> [Part of this file has been deleted
-   for brevity] </tr> <tr> <td><a href="dbiflat.html">dbiflat</a></td>
-   <td>Index a flat file database</td> </tr> <tr> <td><a
-   href="dbigcg.html">dbigcg</a></td> <td>Index a GCG formatted
-   database</td> </tr> <tr> <td><a href="dbxfasta.html">dbxfasta</a></td>
-   <td>Database b+tree indexing for fasta file databases</td> </tr> <tr>
-   <td><a href="dbxflat.html">dbxflat</a></td> <td>Database b+tree
-   indexing for flat file databases</td> </tr> <tr> <td><a
+   for brevity] <tr><th>Program name</th><th>Description</th></tr> <tr>
+   <td><a href="dbiblast.html">dbiblast</a></td> <td>Index a BLAST
+   database</td> </tr> <tr> <td><a href="dbifasta.html">dbifasta</a></td>
+   <td>Database indexing for fasta file databases</td> </tr> <tr> <td><a
+   href="dbiflat.html">dbiflat</a></td> <td>Index a flat file
+   database</td> </tr> <tr> <td><a href="dbigcg.html">dbigcg</a></td>
+   <td>Index a GCG formatted database</td> </tr> <tr> <td><a
+   href="dbxfasta.html">dbxfasta</a></td> <td>Database b+tree indexing
+   for fasta file databases</td> </tr> <tr> <td><a
+   href="dbxflat.html">dbxflat</a></td> <td>Database b+tree indexing for
+   flat file databases</td> </tr> <tr> <td><a
    href="dbxgcg.html">dbxgcg</a></td> <td>Database b+tree indexing for
    GCG formatted databases</td> </tr> </table> <h2><a name="UTILS
    MISC">UTILS MISC</a></h2> <table border cellpadding=4
@@ -1065,11 +1064,7 @@ Output file format
    <tr> <td><a href="embossdata.html">embossdata</a></td> <td>Finds or
    fetches data files read by EMBOSS programs</td> </tr> <tr> <td><a
    href="embossversion.html">embossversion</a></td> <td>Writes the
-   current EMBOSS version number</td> </tr> </table> <h2><a name="YADDA
-   YADDA">YADDA YADDA</a></h2> <table border cellpadding=4
-   bgcolor="#FFFFF0"> <tr><th>Program name</th><th>Description</th></tr>
-   <tr> <td><a href="test.html">test</a></td> <td>Yadda</td> </tr>
-   </table>
+   current EMBOSS version number</td> </tr> </table>
 
    If the -html, -prelink and -postlink qualifiers are specified, then
    the output will be wrapped in HTML tags, ready for inclusion in a Web

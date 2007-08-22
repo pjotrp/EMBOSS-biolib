@@ -35,7 +35,7 @@ with a specified ID name or accession number.
 
 EMBOSS does not allow database entries to be specified by just the ID
 name or accession number.  You must specify both the name of the
-database and the entry, for example 'embl:hsfau', not just 'hsfau'. 
+database and the entry, for example 'embl:x65923', not just 'x65923''. 
 
 <p>
 
@@ -55,16 +55,22 @@ each sequence - an ID name and an Accession number.
 
 <p>
 
-Why are there two such identifiers? The ID name was originally intended
-to be a human-readable name that had some indication of the function of
-its sequence.  In EMBL and GenBank the first two (or three) letters
-indicated the species and the rest indicated the function, for example
-'hsfau' is the 'Homo Sapiens FAU pseudogene'.  This naming scheme
-started to be a problem when the number of entries added each day was so
-vast that people could not make up the ID names fast enough.  Instead,
-the Accession numbers were used as the ID name.  Therefore you will now
-find ID names like 'AF061303', the same as the Accession number for that
-sequence in EMBL. 
+Why are there two such identifiers? The ID name was originally
+intended to be a human-readable name that had some indication of the
+function of its sequence.  In the early years of EMBL and GenBank the
+first two (or three) letters indicated the species and the rest
+indicated the function, for example 'HSFAU' was the 'Homo Sapiens FAU
+pseudogene'.  This naming scheme started to be a problem when the
+number of entries added each day was so vast that people could not
+make up the ID names fast enough.  Instead, the Accession numbers were
+used as the ID name.  Therefore you will now find ID names like
+'X65923', the same as the Accession number for that sequence in
+EMBL.
+
+<p>
+The protein sequence databases continue to use recognizable names for
+entries (for example AMIR_PSEAE for the AmiR gene product of
+Pseudomonas aeruginosa in UniProt/SwissProt).
 
 <p>
 
@@ -81,7 +87,7 @@ the merged sequences will be retained as 'secondary' Accession numbers.
 
 <p>
 
-EMBL, GenBank and SwissProt share an Accession numbering scheme - an
+EMBL, GenBank and UniProt/SwissProt share an Accession numbering scheme - an
 Accession number uniquely identifies a sequence within these three
 databases. 
 
@@ -327,7 +333,7 @@ The reported database entries are written out to the specified output file.
 <p>
 
 Each database that is defined in the local implementation of EMBOSS
-which contains an entry called 'hsfau' is reported.
+which contains an entry called 'x65923' is reported.
 
 <p>
 
@@ -350,12 +356,12 @@ they are written, for example:
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-Writing hsfau.embl
-Writing hsfau.human
-Writing hsfau.tembl
-Writing hsfau.em
-Writing hsfau.genbank
-Writing hsfau.gb
+Writing x65923.embl
+Writing x65923.human
+Writing x65923.tembl
+Writing x65923.em
+Writing x65923.genbank
+Writing x65923.gb
 </td></tr></table><p>
 
 

@@ -286,7 +286,8 @@ Notes
 
 References
 
-   None.
+    1. Jeffrey (1990) Nucleic Acids Research 18: 2163-2170 "Chaos game
+       representation of gene structure"
 
 Warnings
 

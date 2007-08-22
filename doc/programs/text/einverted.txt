@@ -372,7 +372,7 @@ Notes
    parameter values are below einverted's default cutoff score - you
    should decrease the 'Minimum score threshold' to see them.
 
-   For example, when palindrome is run with 'em:hsfau1', it finds the
+   For example, when palindrome is run with 'em:x65921', it finds the
    repeat:
 
 64    aaaactaaggc    74
@@ -385,7 +385,7 @@ Notes
 
    If einverted is run as:
 
-   % einverted em:hsfau1 -threshold 33
+   % einverted em:x65921 -threshold 30
 
    then it will find it:
 

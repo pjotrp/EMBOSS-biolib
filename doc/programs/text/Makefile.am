@@ -18,7 +18,8 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	fuzznuc.txt fuzzpro.txt fuzztran.txt garnier.txt geecee.txt \
 	getorf.txt helixturnhelix.txt hmoment.txt \
 	iep.txt infoalign.txt infoseq.txt isochore.txt
-pkgdata2_DATA = jembossctl.txt lindna.txt listor.txt \
+pkgdata2_DATA = jaspextract.txt jaspscan.txt jembossctl.txt \
+	lindna.txt listor.txt \
 	makenucseq.txt makeprotseq.txt \
 	marscan.txt maskfeat.txt maskseq.txt matcher.txt \
 	megamerger.txt merger.txt msbar.txt \

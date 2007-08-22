@@ -40,7 +40,7 @@ pkgdata_DATA =  abiview.1.abiview.gif banana.1.banana.gif \
 	helixturnhelix.html hmm_group.html \
 	hmoment.html iep.html index.html infoalign.html \
 	information_group.html infoseq.html \
-	isochore.html jembossctl.html
+	isochore.html jaspextract.html jaspscan.html jembossctl.html
 pkgdata2_DATA = lindna.html listor.html makenucseq.html makeprotseq.html \
 	marscan.html maskfeat.html \
 	maskseq.html matcher.html megamerger.html \
