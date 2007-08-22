@@ -8475,7 +8475,7 @@ static ajuint seqAppend(AjPStr* pseq, const AjPStr line)
 ** Non sequence characters are simply ignored.
 **
 ** @param [u] pseq [AjPStr*] Sequence as a string
-** @param [r] line [char ch] Input character.
+** @param [r] ch [char] Input character.
 ** @return [ajuint] Sequence length to date.
 ** @@
 ******************************************************************************/
