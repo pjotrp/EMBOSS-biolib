@@ -2578,6 +2578,7 @@ AcdOQual acdQualReport[] =
     {"raccshow",   "N", "boolean", "Show accession number in the report"},
     {"rdesshow",   "N", "boolean", "Show description in the report"},
     {"rscoreshow", "Y", "boolean", "Show the score in the report"},
+    {"rstrandshow","Y", "boolean", "Show the nucleotide strand in the report"},
     {"rusashow",   "N", "boolean", "Show the full USA in the report"},
     {"rmaxall",    "0", "integer", "Maximum total hits to report"},
     {"rmaxseq",    "0", "integer", "Maximum hits to report for one sequence"},
@@ -5812,7 +5813,7 @@ static void acdSetAppl(AcdPAcd thys)
     if(!acdAuto && ajStrGetLen(appldoc))
     {
 	ajStrFmtWrap(&appldoc, 75);
-	ajUser("%S", appldoc);
+	ajUserDumpS(appldoc);
     }
 
     ajStrAssignS(&thys->ValStr, thys->Name);
@@ -10754,6 +10755,8 @@ static void acdSetReport(AcdPAcd thys)
 			  &val->Showdes, &acdReplyDef);
 	    acdQualToBool(thys, "rscoreshow", ajTrue,
 			  &val->Showscore, &acdReplyDef);
+	    acdQualToBool(thys, "rstrandshow", ajTrue,
+			  &val->Showstrand, &acdReplyDef);
 	    acdQualToBool(thys, "rusashow", ajFalse,
 			  &val->Showusa, &acdReplyDef);
 	    acdQualToInt(thys, "rmaxall", ajFalse,
@@ -13782,7 +13785,7 @@ static void acdHelp(void)
 	genlist = ajListNew();
 	if(acdVerbose)
 	    asslist = ajListNew();
-	ajUser("<table border cellspacing=0 cellpadding=3 "
+	ajUserDumpC("<table border cellspacing=0 cellpadding=3 "
 	       "bgcolor=\"#ccccff\">");
 	/* was #f5f5ff */
     }
@@ -13920,7 +13923,7 @@ static void acdHelp(void)
 	acdHelpTableShow(genlist, "General qualifiers");
     
     if(acdDoTable)
-	ajUser("</table>");
+	ajUserDumpC("</table>");
     
     ajExit();
 }
@@ -15415,7 +15418,7 @@ static void acdHelpShow(const AjPStr str, const char* title)
     }
 
     ajUser("   %s:", title);
-    ajUser("%S", str);
+    ajUserDumpS(str);
 
     return;
 }
@@ -15442,17 +15445,17 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
     if(!acdDoTable)
 	return;
 
-    ajUser("<tr bgcolor=\"#FFFFCC\">"); /* was #FFFFD0 */
+    ajUserDumpC("<tr bgcolor=\"#FFFFCC\">"); /* was #FFFFD0 */
     ajUser("<th align=\"left\" colspan=2>%s</th>", title);
-    ajUser("<th align=\"left\">Allowed values</th>");
-    ajUser("<th align=\"left\">Default</th>");
-    ajUser("</tr>\n");
+    ajUserDumpC("<th align=\"left\">Allowed values</th>");
+    ajUserDumpC("<th align=\"left\">Default</th>");
+    ajUserDumpC("</tr>\n");
 
     if(!ajListGetLength(tablist))
     {
-	ajUser("<tr>");
-	ajUser("<td colspan=4>(none)</td>");
-	ajUser("</tr>\n");
+	ajUserDumpC("<tr>");
+	ajUserDumpC("<td colspan=4>(none)</td>");
+	ajUserDumpC("</tr>\n");
     }
     else
     {
@@ -15460,12 +15463,12 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
 	while((item = ajListIterGet(iter)))
 	{
 	    acdTextTrim(&item->Help);
-	    ajUser("<tr>");
+	    ajUserDumpC("<tr>");
 	    ajUser("<td>%S</td>", item->Qual);
 	    ajUser("<td>%S</td>", item->Help);
 	    ajUser("<td>%S</td>", item->Valid);
 	    ajUser("<td>%S</td>", item->Expect);
-	    ajUser("</tr>\n");
+	    ajUserDumpC("</tr>\n");
 	}
     }
 
@@ -16275,9 +16278,9 @@ static void acdSetAll(void)
     if (acdDoTrace)
     {
 	iendsec = acdFindKeyC("endsection");
-	ajUser("Trace:");
-	ajUser("Trace: Line Std        ACD_Type  Name and 'value'");
-	ajUser("Trace: ---- --- ---------------  ----------------");
+	ajUserDumpC("Trace:");
+	ajUserDumpC("Trace: Line Std        ACD_Type  Name and 'value'");
+	ajUserDumpC("Trace: ---- --- ---------------  ----------------");
     }
 
     for(acdSetCurr=acdList; acdSetCurr; acdSetCurr = acdSetCurr->Next)
@@ -16319,7 +16322,7 @@ static void acdSetAll(void)
 		       pa->LineNum, level, acdKeywords[pa->Type].Name,
 		       pa->Name);
 		if (pa->Type == iendsec)
-		    ajUser("Trace:");
+		    ajUserDumpC("Trace:");
 	    }
 	    else
 	    {
@@ -22652,7 +22655,7 @@ static void acdSelectPrompt(const AcdPAcd thys)
     
     hdrstr = acdAttrValue(thys, "header");
     if(ajStrGetLen(hdrstr))
-	ajUser("%S", hdrstr);
+	ajUserDumpS(hdrstr);
     
     ajStrAssignS(&delim,acdAttrValue(thys, "delimiter"));
     if(!ajStrGetLen(delim))
@@ -22711,7 +22714,7 @@ static void acdListPrompt(const AcdPAcd thys)
 
     hdrstr = acdAttrValue(thys, "header");
     if(ajStrGetLen(hdrstr))
-	ajUser("%S", hdrstr);
+	ajUserDumpS(hdrstr);
 
     ajStrAssignS(&delim,acdAttrValue(thys, "delimiter"));
     if(!ajStrGetLen(delim))
