@@ -1754,7 +1754,7 @@ void ajGraphDumpDevices(void)
     ajint j;
     AjPStr aliases = NULL;
 
-    ajUser("Devices allowed (with alternative names) are:-");
+    ajUserDumpC("Devices allowed (with alternative names) are:-");
     for(i=0;graphType[i].Name;i++)
     {
 	if(!graphType[i].Alias)
@@ -1773,7 +1773,7 @@ void ajGraphDumpDevices(void)
 	    if(ajStrGetLen(aliases))
 		ajUser("%s (%S)",graphType[i].Name, aliases);
 	    else
-		ajUser("%s",graphType[i].Name);
+		ajUserDumpC(graphType[i].Name);
 	}
     }
 
@@ -6382,12 +6382,12 @@ static void GraphPrint(const AjPGraph thys)
 
     if (!thys->plplot)
     {
-	ajUser("No plplot graph data");
+	ajUserDumpC("No plplot graph data");
 	return;
      }
     if(!thys->plplot->Obj)
     {
-	ajUser("No Objects");
+	ajUserDumpC("No Objects");
 	return;
     }
     else			   /* cycle through till NULL found */
@@ -6481,7 +6481,7 @@ static void GraphDraw(const AjPGraph thys)
 		ajGraphSetFore(temp);
 	    }
 	    else
-		ajUser("UNDEFINED OBJECT TYPE USED");
+		ajUserDumpC("UNDEFINED OBJECT TYPE USED");
 	    Obj = Obj->next;
 	}
     }
@@ -6765,7 +6765,7 @@ static void GraphDataPrint(const AjPGraphPlpData graphdata)
 
     if(!graphdata->Obj)
     {
-	ajUser("No Objects");
+	ajUserDumpC("No Objects");
 	return;
     }
     else
@@ -6852,7 +6852,7 @@ static void GraphDataDraw(const AjPGraphPlpData graphdata)
 		ajGraphSetFore(temp);
 	    }
 	    else
-		ajUser("UNDEFINED OBJECT TYPE USED");
+		ajUserDumpC("UNDEFINED OBJECT TYPE USED");
 	    Obj = Obj->next;
 	}
     }

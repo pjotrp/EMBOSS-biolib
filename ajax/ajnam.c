@@ -597,13 +597,13 @@ static void namListMaster(const AjPTable table, ajint which)
 	{
 	    ajUser("DB %S\t *%s*", fnew->name, key);
 	    namPrintDatabase(fnew->data);
-	    ajUser("");
+	    ajUserDumpC("");
 	}
 	else if(TYPE_RESOURCE == which) 
 	{
 	    ajUser("RES %S\t *%s*", fnew->name, key);
 	    namPrintResource(fnew->data);
-	    ajUser("");
+	    ajUserDumpC("");
 	}
 	else if(TYPE_ENV == which)
 	{
@@ -865,10 +865,10 @@ static ajint namMethod2Scope(const AjPStr method)
 
 void ajNamListOrigin(void)
 {
-    ajUser("SOURCE---------->");
-    ajUser("%S", namFileOrig);
-    ajUser("SOURCE---------->");
-    ajUser("");
+    ajUserDumpC("SOURCE---------->");
+    ajUserDumpS(namFileOrig);
+    ajUserDumpC("SOURCE---------->");
+    ajUserDumpC("");
 
     return;
 }
@@ -904,10 +904,10 @@ void ajNamDebugOrigin(void)
 
 void ajNamListDatabases(void)
 {
-    ajUser("DB---------->");
+    ajUserDumpC("DB---------->");
     namListMaster(namDbMasterTable, TYPE_DB);
-    ajUser("DB---------->");
-    ajUser("");
+    ajUserDumpC("DB---------->");
+    ajUserDumpC("");
 
     return;
 }
@@ -1056,10 +1056,10 @@ void ajNamListListResources(AjPList rsnames)
 
 void ajNamVariables(void)
 {
-    ajUser("ENV---------->");
+    ajUserDumpC("ENV---------->");
     namListMaster(namDbMasterTable, TYPE_ENV);
-    ajUser("ENV---------->");
-    ajUser("");
+    ajUserDumpC("ENV---------->");
+    ajUserDumpC("");
 
     return;
 }

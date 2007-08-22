@@ -441,6 +441,54 @@ void ajUser(const char *format,...)
 
 
 
+/* @func ajUserDumpC ***********************************************************
+**
+** Prints a string unchanged. Calls the defined output function (if any).
+** Otherwise prints the message to standard error with an extra newline.
+**
+** @param [r] txt [const char*] String to print unchanged
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajUserDumpC(const char* txt)
+{
+    if(outRoutine)
+	(*outRoutine)(txt);
+    else
+	fprintf(stderr, "%s\n", txt);
+
+    return;
+}
+
+
+
+
+/* @func ajUserDumpS ***********************************************************
+**
+** Prints a string unchanged. Calls the defined output function (if any).
+** Otherwise prints the message to standard error with an extra newline.
+**
+** @param [r] str [const AjPStr] String to print unchanged
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajUserDumpS(const AjPStr str)
+{
+    const char *mesg_buf = ajStrGetPtr(str);
+
+    if(outRoutine)
+	(*outRoutine)(mesg_buf);
+    else
+	fprintf(stderr, "%s\n", mesg_buf);
+
+    return;
+}
+
+
+
+
 /* @func ajMessOut ************************************************************
 **
 ** Formats a message. Calls the defined output function (if any).
@@ -1675,7 +1723,8 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
 	    if(feof(stdin))
 		ajFatal("END-OF-FILE reading from user\n");
 	    else
-		ajFatal("Error reading from user\n");
+		ajFatal("Error reading from user: '%s'\n",
+			strerror(errno));
 	}
 
 	jlen = strlen(&buff[ipos]);
