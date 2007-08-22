@@ -1,4 +1,10 @@
 Version 5.1.0
+	jaspscan application added. Scans sequences for transcription
+	factors using the JASPAR matrices.
+
+	jaspextract application added to move the JASPAR matrices into the
+	EMBOSS data area subdirectories.
+	
 	Alignment format "trace" used to display internal data content, is
 	renamed to "debug" to be consisten with other formats. A "debug"
 	format is added for feature output.
