@@ -386,6 +386,9 @@ int main(int argc, char **argv)
 		 hSaveStdout = GetStdHandle(STD_OUTPUT_HANDLE);
 		 if (!CreatePipe(&hChildStdoutRd, &hChildStdoutWr, &saAttr, 0))
 		     ajFatal ( "Couldn't open pipe() from" );
+
+		 SetHandleInformation(hChildStdoutRd,HANDLE_FLAG_INHERIT,0);
+
 		 if (!SetStdHandle(STD_OUTPUT_HANDLE, hChildStdoutWr)) 
 		     ajFatal("Redirecting STDOUT failed");
 		 fSuccess = DuplicateHandle(GetCurrentProcess(),
@@ -642,9 +645,10 @@ int main(int argc, char **argv)
     
             ajStrSetClear(&result);
 
-            close( pipeto[1] );
+#ifndef WIN32
+            close(pipeto[1]);
             close(pipefrom[0]);
-            
+#endif            
         }	/* end of parent/child fork */
 
     }	/* end of sequence loop */
