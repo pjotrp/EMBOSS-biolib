@@ -1185,6 +1185,10 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
     
     AjPAtom    atom     = NULL;
     AjPResidue residue  = NULL;
+    ajint      rn_last = -100000;
+    ajint      mn_last = -100000;
+
+    AjBool     fixReadAtoms = ajTrue;
 
     /* Intitialise strings */
     line  = ajStrNew();
@@ -1368,7 +1372,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 
 
 	/* Parse atom line */
-	else if(ajStrPrefixC(line,"AT"))
+	else if(fixReadAtoms && ajStrPrefixC(line,"AT"))
 	{
 	    mod = chn = gpn = 0;
 	    
@@ -1594,6 +1598,163 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    ajListPushAppend((ret)->Chains[chn-1]->Residues,(void *)residue);  
 
 	    continue;
+	}
+	/* Parse coordinate line */
+	if(ajStrPrefixC(line,"CO"))
+	{
+	    mod = chn = gpn = 0;
+	    
+	    ajStrTokenAssignC(&handle,line," \t\n\r");
+	    ajStrTokenNextParse(&handle,&token);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToInt(token,&mod);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToInt(token,&chn);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToInt(token,&gpn);
+	    
+	    /* AJNEW0(atom); */
+	    atom = ajAtomNew();
+	    
+	    atom->Mod = mod;
+	    atom->Chn = chn;
+	    atom->Gpn = gpn;
+	    
+	    ajStrTokenNextParse(&handle,&token);
+	    atom->Type = *ajStrGetPtr(token);
+	    
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToInt(token,&atom->Idx);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrAssignS(&atom->Pdb,token);
+
+	    
+	    /* Residue object */
+	    if(atom->Type=='P')
+	    {
+		/* New model */
+		if(atom->Mod != mn_last)
+		{
+		    rn_last = -100000;
+		    mn_last = atom->Mod;
+		}
+		/* New residue */
+		if(atom->Idx != rn_last)
+		{
+		    residue = ajResidueNew();
+
+		    residue->Mod     = atom->Mod;
+		    residue->Chn     = atom->Chn;
+		    residue->Idx     = atom->Idx;
+		    ajStrAssignS(&residue->Pdb, atom->Pdb);
+		}	
+	    }	
+
+	    ajStrTokenNextParse(&handle,&token);
+	    residue->eType = *ajStrGetPtr(token);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToInt(token,&residue->eNum);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrAssignS(&residue->eId,token);
+	    
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToInt(token,&residue->eClass);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    residue->eStrideType = *ajStrGetPtr(token);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToInt(token,&residue->eStrideNum);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    atom->Id1 = *ajStrGetPtr(token);
+	    residue->Id1  = atom->Id1;
+	    
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrAssignS(&atom->Id3,token);
+	    ajStrAssignS(&residue->Id3, atom->Id3);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrAssignS(&atom->Atm,token);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToFloat(token,&atom->X);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToFloat(token,&atom->Y);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToFloat(token,&atom->Z);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToFloat(token,&atom->O);
+
+	    ajStrTokenNextParse(&handle,&token);
+	    ajStrToFloat(token,&atom->B);
+
+	    ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->Phi);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->Psi);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->Area);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->all_abs);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->all_rel);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->side_abs);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->side_rel);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->main_abs);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->main_rel);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->npol_abs);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->npol_rel);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->pol_abs);
+
+            ajStrTokenNextParse(&handle,&token);
+            ajStrToFloat(token,&residue->pol_rel);
+
+
+	    /* Check for coordinates for water or groups that could not
+	       be uniquely assigned to a chain */
+	    if(chn==0)
+	    {
+		/* Heterogen */
+		if(atom->Type == 'H')
+		    ajListPushAppend((ret)->Groups,(void *)atom);
+		else if(atom->Type == 'W')
+		    ajListPushAppend((ret)->Water,(void *)atom);
+		else
+		    ajFatal("Unexpected parse error in ajPdbRead");
+	    }
+	    else
+		ajListPushAppend((ret)->Chains[chn-1]->Atoms,(void *)atom);
+
+	    
+	    ajListPushAppend((ret)->Chains[chn-1]->Residues,(void *)residue);
 	}
     }
     /* End of main application loop */
