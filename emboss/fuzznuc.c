@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     writeok=ajTrue;
     while (writeok && ajSeqallNext(seqall,&seq))
     {
-	tab = ajFeattableNewDna(ajSeqGetNameS(seq));
+	tab = ajFeattableNewSeq(seq);
         embPatlistSeqSearch(tab,seq,plist,ajFalse);
         if (sc)
             embPatlistSeqSearch (tab,seq,plist,ajTrue);
