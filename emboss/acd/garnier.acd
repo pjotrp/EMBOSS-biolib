@@ -45,7 +45,7 @@ section: output [
   report: outfile [
     parameter: "Y"
     rformat: "tagseq"
-    taglist: "str:helix str:sheet str:turns str:coil"
+    taglist: "str:garnier"
   ]
 
 endsection: output
