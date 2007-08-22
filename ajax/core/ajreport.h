@@ -50,6 +50,7 @@ extern "C"
 ** @attr MaxHitAll [ajint] Maximum number of hits to report overall
 ** @attr MaxHitSeq [ajint] Maximum number of hits to report for each sequence
 ** @attr Format [AjEnum] Report format (index number)
+** @attr Padding [char[4]] Padding to alignment boundary
 **
 ** @new ajReportNew Default constructor
 ** @delete ajReportDel Default destructor
@@ -87,6 +88,7 @@ typedef struct AjSReport {
   ajint MaxHitAll;
   ajint MaxHitSeq;
   AjEnum Format;
+  char Padding[4];
 } AjOReport;
 
 #define AjPReport AjOReport*
