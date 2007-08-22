@@ -96,7 +96,7 @@ int main(int argc, char **argv)
     }
 
 
-    ajUser("\nOutput via the ajListIter method \nSorted by source");
+    ajUserDumpC("\nOutput via the ajListIter method \nSorted by source");
 
     /* Print out the list using the iterator */
     iter = ajListIterNewread(list);
@@ -112,13 +112,13 @@ int main(int argc, char **argv)
 
 
     ajListSort(list, demolist_startcomp);
-    ajUser("\nOutput via the ajListMap function \nSorted by start pos");
+    ajUserDumpC("\nOutput via the ajListMap function \nSorted by start pos");
     ajListMap(list,demolist_dumpOut,NULL);
 
 
     /* printout the list but use the array method */
     ajListSort(list, demolist_typecomp);
-    ajUser("\nOutput via the array method \nSorted by type");
+    ajUserDumpC("\nOutput via the array method \nSorted by type");
     ia = ajListToarray(list, &array);
     for (i = 0; i < ia; i++)
     {

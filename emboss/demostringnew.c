@@ -295,7 +295,7 @@ int main(int argc, char **argv)
     ** String comparison functions 
     ** See "@section comparison" in ajstr.c
     */
-    ajUser("/* String comparison functions */");
+    ajUserDumpC("/* String comparison functions */");
     boo = ajCharMatchC(txt0, txt1);
     ajUser("ajCharMatchC(txt0 txt1); == %B", boo);
     boo = ajCharMatchCaseC(txt0, txt1);
