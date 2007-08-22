@@ -729,17 +729,12 @@ static void silent_fmt_hits(AjPList hits, AjPFeattable feat,
     while(ajListPop(hits,(void **)&res))
     {
 	if (rev)
-	{
 	    sf = ajFeatNewIIRev(feat,
 				res->match, res->match+ajStrGetLen(res->site)-1);
-	    ajFmtPrintS(&tmpFeatStr, "*dir Rev");
-	    ajFeatTagAdd (sf, NULL, tmpFeatStr);
-	}
 	else
-	{
 	    sf = ajFeatNewII(feat,
 			     res->match, res->match+ajStrGetLen(res->site)-1);
-	}
+
 	if (silent)
 	{
 	    ajFmtPrintS(&tmpFeatStr, "*silent Yes");
