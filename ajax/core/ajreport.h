@@ -42,6 +42,7 @@ extern "C"
 ** @attr Showdes [AjBool] Report sequence description
 ** @attr Showusa [AjBool] Report USA (-rusa) or only seqname
 ** @attr Showscore [AjBool] Report score (if optional for format)
+** @attr Showstrand [AjBool] Report nucleotide strand (if optional for format)
 ** @attr Multi [AjBool] if true, assume >1 sequence
 ** @attr Mintags [ajint] Minimum number of tags to report
 ** @attr CountSeq [ajint] Number of sequences reported so far
@@ -78,6 +79,7 @@ typedef struct AjSReport {
   AjBool Showdes;
   AjBool Showusa;
   AjBool Showscore;
+  AjBool Showstrand;
   AjBool Multi;
   ajint Mintags;
   ajint CountSeq;
