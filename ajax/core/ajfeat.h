@@ -112,7 +112,9 @@ ajuint        ajFeattablePos (const AjPFeattable thys, ajint ipos);
 ajuint        ajFeattablePosI (const AjPFeattable thys,
 			       ajuint imin, ajint ipos);
 ajuint        ajFeattablePosII (ajuint ilen, ajuint imin, ajint ipos);
+AjBool        ajFeattablePrint(const AjPFeattable ftable, AjPFile outf);
 void          ajFeattableReverse  (AjPFeattable  thys) ;
+void          ajFeattableSetLength(AjPFeattable thys, ajuint len);
 void          ajFeattableSetNuc (AjPFeattable thys);
 void          ajFeattableSetProt (AjPFeattable thys);
 void          ajFeattableSetRange  (AjPFeattable thys,
@@ -177,6 +179,8 @@ void          ajFeatTrace (const AjPFeature thys);
 AjBool        ajFeatTrimOffRange (AjPFeature ft, ajuint ioffset,
 				  ajuint begin, ajuint end,
 				  AjBool dobegin, AjBool doend);
+const AjPStr ajFeatTypeNuc(const AjPStr type);
+const AjPStr ajFeatTypeProt(const AjPStr type);
 AjPFeattable  ajFeatUfoRead (AjPFeattabIn tabin, const AjPStr Ufo);
 AjBool        ajFeatUfoWrite (const AjPFeattable thys,
 			      AjPFeattabOut tabout, const AjPStr Ufo);
