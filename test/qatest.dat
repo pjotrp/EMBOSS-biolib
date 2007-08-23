@@ -21776,8 +21776,8 @@ IN
 IN
 FI stdout
 FC = 2
-FP /swtiny1\.fasta$/
-FP /swtiny2\.fasta$/
+FP /swtiny1\.fasta\n/
+FP /swtiny2\.fasta\n/
 FI stderr
 FC = 2
 FP 0 /^Warning:/
@@ -21799,8 +21799,8 @@ FP /2 O30129 : 3 O26938 : 71\.43\n/
 FI allversusall.log
 FC = 4
 FP 2 /^\/\/\n/
-FP /swtiny1\.fasta$/
-FP /swtiny2\.fasta$/
+FP /swtiny1\.fasta\n/
+FP /swtiny2\.fasta\n/
 //
 
 
