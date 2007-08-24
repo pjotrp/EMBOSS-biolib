@@ -179,9 +179,12 @@ static AjBool       featDelRegSwiss(void);
 static void         featDumpEmbl(const AjPFeature thys, const AjPStr location,
 				 AjPFile file, const AjPStr Seqid,
 				 AjBool IsEmbl);
-static void         featDumpGff(const AjPFeature thys,
-				const AjPFeattable owner,
-				AjPFile file);
+static void         featDumpGff2(const AjPFeature thys,
+				 const AjPFeattable owner,
+				 AjPFile file);
+static void         featDumpGff3(const AjPFeature thys,
+				 const AjPFeattable owner,
+				 AjPFile file);
 static void         featDumpPir(const AjPFeature thys, const AjPStr location,
 				AjPFile file);
 static void         featDumpSwiss(const AjPFeature thys, AjPFile file,
@@ -284,8 +287,10 @@ static void         featTagEmblWrapC(AjPStr* pval, ajuint margin,
 				     AjPStr* retstr);
 static void         featTagFmt (const AjPStr name, const AjPTable table,
 				AjPStr* retstr);
-static void         featTagGffDefault(AjPStr* pout, const AjPStr tag,
-				      AjPStr* pval);
+static void         featTagGff2Default(AjPStr* pout, const AjPStr tag,
+				       AjPStr* pval);
+static void         featTagGff3Default(AjPStr* pout, const AjPStr tag,
+				       AjPStr* pval);
 static AjBool       featTagGffSpecial(AjPStr* pval, const AjPStr tag);
 static void         featTagLimit(const AjPStr name, const AjPTable table,
 				 AjPStr* retstr);
@@ -293,7 +298,8 @@ static AjBool       featTagName(const AjPStr line, AjPStr* name, AjPStr* type,
 				AjPStr* rest);
 static const AjPStr featTagProt(const AjPStr type, AjBool* known);
 static void         featTagQuoteEmbl(AjPStr* pval);
-static void         featTagQuoteGff(AjPStr* pval);
+static void         featTagQuoteGff2(AjPStr* pval);
+static void         featTagQuoteGff3(AjPStr* pval);
 static void         featTagSetDefault(AjPFeature thys,
 				      const AjPStr tag, const AjPStr value,
 				      AjPStr* pdeftag, AjPStr* pdefval);
@@ -511,6 +517,15 @@ static FeatOOutFormat featOutFormatDef[] =
     {"unknown", AJFALSE,   AJFALSE,
 	 NULL,               feattableWriteUnknown,
 	 "unknown format", AJFALSE, 0},
+    {"gff3",       AJTRUE,    AJTRUE,
+	 featVocabInitGff,   ajFeattableWriteGff3,
+	 "GFF version 3", AJFALSE, 0},
+    {"gff2",       AJTRUE,    AJTRUE,
+	 featVocabInitGff,   ajFeattableWriteGff2,
+	 "GFF version 2", AJFALSE, 0},
+    {"gff",       AJTRUE,    AJTRUE,
+	 featVocabInitGff,   ajFeattableWriteGff3,
+	 "GFF version 3", AJTRUE,  0},
     {"embl",      AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteEmbl,
 	 "embl format", AJFALSE, 0},
@@ -526,9 +541,6 @@ static FeatOOutFormat featOutFormatDef[] =
     {"refseq",    AJTRUE,    AJFALSE,
 	 featVocabInitEmbl,  ajFeattableWriteGenbank,
 	 "genbank format", AJTRUE, 0},
-    {"gff",       AJTRUE,    AJTRUE,
-	 featVocabInitGff,   ajFeattableWriteGff,
-	 "GFF version 2", AJFALSE, 0},
     {"pir",       AJFALSE,   AJTRUE,
 	 featVocabInitPir,   ajFeattableWritePir,
 	 "PIR format", AJFALSE, 0},
@@ -732,8 +744,8 @@ AjBool ajFeattabOutOpen(AjPFeattabOut thys, const AjPStr ufo)
     {
 	if(!featFindOutFormat (thys->Formatstr, &thys->Format))
 	    ajErr("unknown output feature format '%S' "
-		  "will write as gff instead\n",
-		  thys->Formatstr );
+		  "will write as %s instead\n",
+		  thys->Formatstr, featOutFormatDef[thys->Format].Name);
     }
     else
     {
@@ -2655,8 +2667,8 @@ static AjBool featReadSwiss  (AjPFeattable thys, AjPFileBuff file)
 /* ======================== GFF Processing functions ================== */
 /* =================================================================== */
 
-/* ajfeat defaults to version 2 GFF only...*/
-#define DEFAULT_GFF_VERSION 2
+/* ajfeat defaults to version 3 GFF only...*/
+#define DEFAULT_GFF_VERSION 3
 
 
 
@@ -2866,7 +2878,14 @@ static void featGffProcessTagval(AjPFeature gf, AjPFeattable table,
 		featGroupSet (gf, table, featValTmp);
 		grpset = ajTrue;
 	    }
+	    else if(ajStrMatchC (tmptag, "ID"))
+	    {
+		featGroupSet (gf, table, featValTmp);
+		grpset = ajTrue;
+	    }
 	    else if(ajStrMatchC(tmptag, "FeatFlags"))
+		featFlagSet(gf, featValTmp);
+	    else if(ajStrMatchC(tmptag, "featflags"))
 		featFlagSet(gf, featValTmp);
 	    else
 	    {
@@ -4487,9 +4506,9 @@ static AjBool featReadGff(AjPFeattable thys, AjPFileBuff file)
 
 
 
-/* @func ajFeattableWriteGff **************************************************
+/* @func ajFeattableWriteGff2 **************************************************
 **
-** Write feature table in GFF format
+** Write feature table in GFF 2.0 format
 **
 ** @param [r] Feattab [const AjPFeattable] feature table
 ** @param [u] file [AjPFile] Output file
@@ -4497,7 +4516,7 @@ static AjBool featReadGff(AjPFeattable thys, AjPFileBuff file)
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWriteGff(const AjPFeattable Feattab, AjPFile file)
+AjBool ajFeattableWriteGff2(const AjPFeattable Feattab, AjPFile file)
 {
     AjIList    iter = NULL;
     AjPFeature gf   = NULL;
@@ -4532,7 +4551,48 @@ AjBool ajFeattableWriteGff(const AjPFeattable Feattab, AjPFile file)
 	while(!ajListIterDone(iter))
 	{
 	    gf = ajListIterGet(iter);
-	    featDumpGff(gf, Feattab, file);
+	    featDumpGff2(gf, Feattab, file);
+	}
+	ajListIterDel(&iter);
+    }
+
+    return ajTrue;
+}
+
+/* @func ajFeattableWriteGff3 **************************************************
+**
+** Write feature table in GFF format
+**
+** @param [r] Feattab [const AjPFeattable] feature table
+** @param [u] file [AjPFile] Output file
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+AjBool ajFeattableWriteGff3(const AjPFeattable Feattab, AjPFile file)
+{
+    AjIList    iter = NULL;
+    AjPFeature gf   = NULL;
+
+    /* Check arguments */
+    /* ajDebug ("ajFeattableWriteGff Checking arguments\n"); */
+    if(!file)
+	return ajFalse;
+    
+    /* Print header first */
+    ajFmtPrintF(file, "##gff-version 3\n") ;
+    
+
+  /* For all features... relatively simple because internal structures
+     are deliberately styled on GFF */
+
+    if(Feattab->Features)
+    {
+	iter = ajListIterNewread(Feattab->Features);
+	while(!ajListIterDone(iter))
+	{
+	    gf = ajListIterGet(iter);
+	    featDumpGff3(gf, Feattab, file);
 	}
 	ajListIterDel(&iter);
     }
@@ -4684,7 +4744,7 @@ static AjBool featRegInitGff(void)
     GffRegexcomment   = ajRegCompC("^#[ ]*(.*)");
     GffRegextype      = ajRegCompC("^##[Tt]ype +(\\S+)");
 
-    GffRegexTvTagval  = ajRegCompC(" *([^ ]+) *((\"(\\.|[^\\\"])*\"|"
+    GffRegexTvTagval  = ajRegCompC(" *([^ =]+)[ =]((\"(\\.|[^\\\"])*\"|"
 			 	   "[^;]+)*)(;|$)"); /* "tag name */
 
     FeatInitGff = ajTrue;
@@ -10195,7 +10255,7 @@ static void featTagQuoteEmbl(AjPStr* pval)
 
 
 
-/* @funcstatic featTagQuoteGff ************************************************
+/* @funcstatic featTagQuoteGff2 ***********************************************
 **
 ** Internal quotes converted to escaped quotes
 ** for EMBL feature tag values
@@ -10205,13 +10265,52 @@ static void featTagQuoteEmbl(AjPStr* pval)
 ** @@
 ******************************************************************************/
 
-static void featTagQuoteGff(AjPStr* pval)
+static void featTagQuoteGff2(AjPStr* pval)
 {
 
     if(!featRegQuote)
 	featRegQuote = ajRegCompC("([^\"]*)\"");
 
-    /* ajDebug("featTagQuoteGff '%S'\n", *pval); */
+    /* ajDebug("featTagQuoteGff2 '%S'\n", *pval); */
+
+    ajStrAssignS(&featValCopy, *pval);
+    ajStrDelStatic(pval);
+    while(ajRegExec(featRegQuote, featValCopy))
+    {
+	ajRegSubI(featRegQuote, 1, &featSubStr);
+	/* ajDebug("part '%S'\n", substr); */
+	ajStrAppendS(pval, featSubStr);
+	ajStrAppendC(pval, "\\\"");
+	ajRegPost(featRegQuote, &featTmpStr);
+	ajStrAssignS(&featValCopy, featTmpStr);
+    }
+    /* ajDebug("rest '%S'\n", featValCopy); */
+    ajStrAppendS(pval, featValCopy);
+    ajStrFmtQuote(pval);
+
+    return;
+}
+
+
+
+
+/* @funcstatic featTagQuoteGff3 ************************************************
+**
+** Internal quotes converted to escaped quotes
+** for EMBL feature tag values
+**
+** @param  [u] pval [AjPStr*] parameter value
+** @return [void]
+** @@
+******************************************************************************/
+
+static void featTagQuoteGff3(AjPStr* pval)
+{
+
+    if(!featRegQuote)
+	featRegQuote = ajRegCompC("([^\"]*)\"");
+
+    /* ajDebug("featTagQuoteGff3 '%S'\n", *pval); */
 
     ajStrAssignS(&featValCopy, *pval);
     ajStrDelStatic(pval);
@@ -10569,7 +10668,7 @@ static void featTagEmblDefault(AjPStr* pout, const AjPStr tag, AjPStr* pval)
 
 
 
-/* @funcstatic featTagGffDefault **********************************************
+/* @funcstatic featTagGff2Default **********************************************
 **
 ** Give up, and generate a default feature tag
 **
@@ -10580,11 +10679,35 @@ static void featTagEmblDefault(AjPStr* pout, const AjPStr tag, AjPStr* pval)
 ** @@
 ******************************************************************************/
 
-static void featTagGffDefault(AjPStr* pout, const AjPStr tag, AjPStr* pval)
+static void featTagGff2Default(AjPStr* pout, const AjPStr tag, AjPStr* pval)
 {
-    /*ajDebug("featTagGffDefault '%S' '%S'\n", tag, *pval);*/
+    /*ajDebug("featTagGff2Default '%S' '%S'\n", tag, *pval);*/
 
-    featTagQuoteGff(pval);
+    featTagQuoteGff2(pval);
+    ajFmtPrintS(pout, "note \"%S: %S\"", tag, *pval);
+
+    return;
+}
+
+
+
+
+/* @funcstatic featTagGff3Default **********************************************
+**
+** Give up, and generate a default feature tag
+**
+** @param  [w] pout [AjPStr*] Output string
+** @param  [r] tag [const AjPStr] original tag name
+** @param  [u] pval [AjPStr*] parameter value
+** @return [void]
+** @@
+******************************************************************************/
+
+static void featTagGff3Default(AjPStr* pout, const AjPStr tag, AjPStr* pval)
+{
+    /*ajDebug("featTagGff3Default '%S' '%S'\n", tag, *pval);*/
+
+    featTagQuoteGff3(pval);
     ajFmtPrintS(pout, "note \"%S: %S\"", tag, *pval);
 
     return;
@@ -11155,9 +11278,9 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
 
 
 
-/* @funcstatic featDumpGff ****************************************************
+/* @funcstatic featDumpGff2 ***************************************************
 **
-** Write details of single feature to GFF output file
+** Write details of single feature to GFF 2.0 output file
 **
 ** @param [r] thys [const AjPFeature] Feature
 ** @param [r] owner [const AjPFeattable] Feature table
@@ -11167,8 +11290,8 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
 ** @@
 ******************************************************************************/
 
-static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
-			AjPFile file)
+static void featDumpGff2(const AjPFeature thys, const AjPFeattable owner,
+			 AjPFile file)
 {
     AjIList iter  = NULL;
     const AjPStr outtyp = NULL;		/* these come from AjPTable */
@@ -11298,7 +11421,7 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
 		/*ajDebug("case qlimited\n");*/
 		featTagLimit(outtag, tagstable, &featLimTmp);
 		featTagAllLimit(&featValTmp, featLimTmp);
-		featTagQuoteGff(&featValTmp);
+		featTagQuoteGff2(&featValTmp);
 		ajFmtPrintAppS(&featOutStr, " %S", featValTmp);
 		break;
 	    case CASE2('T','E') : /* no space, no quotes, wrap at margin */
@@ -11308,31 +11431,240 @@ static void featDumpGff(const AjPFeature thys, const AjPFeattable owner,
 		break;
 	    case CASE2('Q','T') :	/* escape quotes, wrap at space */
 		/*ajDebug("case qtext\n");*/
-		featTagQuoteGff(&featValTmp);
+		featTagQuoteGff2(&featValTmp);
 		ajFmtPrintAppS(&featOutStr, " %S", featValTmp);
 		break;
 	    case CASE2('Q','W') :	/* escape quotes, remove space */
 		/*ajDebug("case qtext\n");*/
-		featTagQuoteGff(&featValTmp);
+		featTagQuoteGff2(&featValTmp);
 		ajStrRemoveWhite(&featValTmp);
 		ajFmtPrintAppS(&featOutStr, " %S", featValTmp);
 		break;
 	    case CASE2('Q', 'S') :	/* special regexp, quoted */
 		/*ajDebug("case qspecial\n");*/
 		if(!featTagGffSpecial(&featValTmp, outtag))
-		    featTagGffDefault(&featOutStr, outtag, &featValTmp);
+		    featTagGff2Default(&featOutStr, outtag, &featValTmp);
 		else
 		{
-		    featTagQuoteGff(&featValTmp);
+		    featTagQuoteGff2(&featValTmp);
 		    ajFmtPrintAppS(&featOutStr, " %S", featValTmp);
 		}
 		break;
 	    case CASE2('S','P') :	/* special regexp */
 		/*ajDebug("case special\n");*/
 		if(!featTagGffSpecial(&featValTmp, outtag))
-		    featTagGffDefault(&featOutStr, outtag, &featValTmp);
+		    featTagGff2Default(&featOutStr, outtag, &featValTmp);
 		else
 		    ajFmtPrintAppS(&featOutStr, " %S", featValTmp);
+
+		break;
+	    case CASE2('V','O') :	/* no value, so an error here */
+		/*ajDebug("case void\n");*/
+		break;
+	    default:
+		featWarn("Unknown GFF 2.0 feature tag type '%S' for '%S'",
+		       featFmtTmp, outtag);
+	    }
+	}
+	else
+	{
+	    /*ajDebug ("no value, hope it is void: '%S'\n", featFmtTmp);*/
+	}
+	
+	ajFmtPrintF(file, "%S", featOutStr);
+	ajStrDelStatic(&featOutStr);
+    }
+    
+    ajListIterDel(&iter);
+    
+    ajFmtPrintF (file, "\n") ;
+    
+    ajStrDel(&flagdata);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic featDumpGff3 ***************************************************
+**
+** Write details of single feature to GFF 3.0 output file
+**
+** @param [r] thys [const AjPFeature] Feature
+** @param [r] owner [const AjPFeattable] Feature table
+**                                       (used for the sequence name)
+** @param [u] file [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+static void featDumpGff3(const AjPFeature thys, const AjPFeattable owner,
+			 AjPFile file)
+{
+    AjIList iter  = NULL;
+    const AjPStr outtyp = NULL;		/* these come from AjPTable */
+    const AjPStr outtag = NULL;		/* so please, please */
+    /* don't delete them */
+    FeatPTagval tv       = NULL;
+    ajint i = 0;
+    AjBool knowntag = ajTrue;
+    const char* cp;
+    AjPStr flagdata      = NULL;
+    AjPTable tagstable = NULL;
+    AjPTable typetable = NULL;
+
+    if(thys->Protein)
+    {
+	typetable = FeatTypeTableGffprotein;
+	tagstable = FeatTagsTableGffprotein;
+    }
+    else
+    {
+	typetable = FeatTypeTableGff;
+	tagstable = FeatTagsTableGff;
+    }
+    
+    /* header done by calling routine */
+    
+    /*ajDebug("featDumpGff...\n");*/
+    
+    /* simple line-by line with Gff tags */
+    
+    outtyp = featTableTypeInternal(thys->Type, typetable);
+    
+    /*ajDebug("Type '%S' => '%S'\n", thys->Type, outtyp);*/
+    
+    ajFmtPrintF (file, "%S\t%S\t%S\t%d\t%d\t%.3f\t%c\t%c\t",
+		 owner->Seqid,
+		 thys->Source,
+		 outtyp,
+		 thys->Start,
+		 thys->End,
+		 thys->Score,
+		 featStrand(thys->Strand),
+		 featFrame(thys->Frame));
+    
+    if(thys->Flags)
+	ajFmtPrintS(&flagdata, "0x%x", thys->Flags);
+
+    if(thys->Start2)
+    {
+	if(ajStrGetLen(flagdata))
+	    ajStrAppendC(&flagdata, " ");
+	ajFmtPrintAppS(&flagdata, "start2:%d", thys->Start2);
+    }
+
+    if(thys->End2)
+    {
+	if(ajStrGetLen(flagdata))
+	    ajStrAppendC(&flagdata, " ");
+	ajFmtPrintAppS(&flagdata, "end2:%d", thys->End2);
+    }
+
+    if(ajStrGetLen(thys->Remote))
+    {
+	if(ajStrGetLen(flagdata))
+	    ajStrAppendC(&flagdata, " ");
+	ajFmtPrintAppS(&flagdata, "remoteid:%S", thys->Remote);
+    }
+
+    if(ajStrGetLen(thys->Label))
+    {
+	if(ajStrGetLen(flagdata))
+	    ajStrAppendC(&flagdata, " ");
+	ajFmtPrintAppS(&flagdata, "label:%S", thys->Label);
+    }
+    
+    /* group and flags */
+    
+    ajFmtPrintF(file, "ID=\"%S.%d\"",
+		owner->Seqid, thys->Group) ;
+    i++;
+    
+    if(ajStrGetLen(flagdata))
+    {
+	/*
+	 ** Move this code up to run for all features - to preserve the order
+	 ** when rewriting in EMBL format
+	     if ( FEATFLAG_MULTIPLE)
+             {
+	       (void) ajFmtPrintF (file, "Sequence=\"%S.%d\" ; ",
+	 			  owner->Seqid, thys->Group) ;
+	       i++;
+	     }
+	 */
+	if(i++)
+	    ajFmtPrintF (file, " ;") ;
+	ajFmtPrintF (file, "featflags=\"%S\"", flagdata) ;
+    }
+    
+    /* For all tag-values... */
+    
+    iter = ajFeatTagIter(thys);
+    
+    while(!ajListIterDone(iter))
+    {
+	tv     = ajListIterGet(iter);
+	outtag = featTableTag(tv->Tag, tagstable, &knowntag);
+	featTagFmt(outtag, tagstable, &featFmtTmp);
+	/*ajDebug("Tag '%S' => '%S' %S '%S'\n",
+		tv->Tag, outtag, featFmtTmp, tv->Value);*/
+	if(i++)
+	    ajFmtPrintF(file, " ;") ;
+	ajFmtPrintAppS(&featOutStr, "%S", outtag);
+	
+	if(tv->Value)
+	{
+	    ajStrAssignS(&featValTmp, tv->Value);
+	    cp = ajStrGetPtr(featFmtTmp);
+	    switch(CASE2(cp[0], cp[1]))
+	    {
+	    case CASE2('L','I') :	/* limited */
+		/*ajDebug("case limited\n");*/
+		featTagLimit(outtag, tagstable, &featLimTmp);
+		featTagAllLimit(&featValTmp, featLimTmp);
+		ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+		break;
+	    case CASE2('Q', 'L') :	/* limited, escape quotes */
+		/*ajDebug("case qlimited\n");*/
+		featTagLimit(outtag, tagstable, &featLimTmp);
+		featTagAllLimit(&featValTmp, featLimTmp);
+		featTagQuoteGff3(&featValTmp);
+		ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+		break;
+	    case CASE2('T','E') : /* no space, no quotes, wrap at margin */
+		/*ajDebug("case text\n");*/
+		ajStrRemoveWhite(&featValTmp);
+		ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+		break;
+	    case CASE2('Q','T') :	/* escape quotes, wrap at space */
+		/*ajDebug("case qtext\n");*/
+		featTagQuoteGff3(&featValTmp);
+		ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+		break;
+	    case CASE2('Q','W') :	/* escape quotes, remove space */
+		/*ajDebug("case qtext\n");*/
+		featTagQuoteGff3(&featValTmp);
+		ajStrRemoveWhite(&featValTmp);
+		ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+		break;
+	    case CASE2('Q', 'S') :	/* special regexp, quoted */
+		/*ajDebug("case qspecial\n");*/
+		if(!featTagGffSpecial(&featValTmp, outtag))
+		    featTagGff3Default(&featOutStr, outtag, &featValTmp);
+		else
+		{
+		    featTagQuoteGff3(&featValTmp);
+		    ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
+		}
+		break;
+	    case CASE2('S','P') :	/* special regexp */
+		/*ajDebug("case special\n");*/
+		if(!featTagGffSpecial(&featValTmp, outtag))
+		    featTagGff3Default(&featOutStr, outtag, &featValTmp);
+		else
+		    ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
 
 		break;
 	    case CASE2('V','O') :	/* no value, so an error here */

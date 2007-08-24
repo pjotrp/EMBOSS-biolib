@@ -172,7 +172,8 @@ static void       seqWriteFitch(AjPSeqout outseq);
 static void       seqWriteGcg(AjPSeqout outseq);
 static void       seqWriteGenbank(AjPSeqout outseq);
 static void       seqWriteGifasta(AjPSeqout outseq);
-static void       seqWriteGff(AjPSeqout outseq);
+static void       seqWriteGff2(AjPSeqout outseq);
+static void       seqWriteGff3(AjPSeqout outseq);
 static void       seqWriteHennig86(AjPSeqout outseq);
 static void       seqWriteIg(AjPSeqout outseq);
 static void       seqWriteJackknifer(AjPSeqout outseq);
@@ -293,9 +294,15 @@ static SeqOOutFormat seqOutFormat[] =
     {"refseq",     "Genbank entry format (alias)",
 	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteGenbank}, /* alias for genbank */
-    {"gff",        "GFF feature file with sequence in the header",
+    {"gff2",       "GFF2 feature file with sequence in the header",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteGff},
+	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteGff2},
+    {"gff3",       "GFF3 feature file with sequence in FASTA format after",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteGff3},
+    {"gff",        "GFF3 feature file with sequence in FASTA format after",
+	 AJTRUE,  AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJTRUE,  AJTRUE,  AJFALSE, seqWriteGff3},
     {"ig",         "Intelligenetics sequence format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteIg},
@@ -4140,23 +4147,23 @@ static void seqWriteGenbank(AjPSeqout outseq)
 
 
 
-/* @funcstatic seqWriteGff ****************************************************
+/* @funcstatic seqWriteGff2 ***************************************************
 **
-** Writes a sequence in GFF format.
+** Writes a sequence in GFF 2.0 format.
 **
 ** @param [u] outseq [AjPSeqout] Sequence output object.
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void seqWriteGff(AjPSeqout outseq)
+static void seqWriteGff2(AjPSeqout outseq)
 {
     SeqPSeqFormat sf = NULL;
     AjPStr version   = NULL;
     AjPStr ftfmt     = NULL;
     
     if(!ftfmt)
-	ajStrAssignC(&ftfmt, "gff");
+	ajStrAssignC(&ftfmt, "gff2");
     
     if(!version)
 	ajNamRootVersion(&version);
@@ -4206,10 +4213,60 @@ static void seqWriteGff(AjPSeqout outseq)
 	    ajFeattableSetNuc(outseq->Fttable);
 	
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
-	    ajWarn("seqWriteGff features output failed UFO: '%S'",
+	    ajWarn("seqWriteGff2 features output failed UFO: '%S'",
 		   outseq->Ufo);
 
     }
+
+    ajStrDel(&ftfmt);
+    ajStrDel(&version);
+
+    return;
+}
+
+
+
+
+/* @funcstatic seqWriteGff3 ***************************************************
+**
+** Writes a sequence in GFF 3 format.
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteGff3(AjPSeqout outseq)
+{
+    AjPStr version   = NULL;
+    AjPStr ftfmt     = NULL;
+    
+    if(!ftfmt)
+	ajStrAssignC(&ftfmt, "gff3");
+    
+    if(!version)
+	ajNamRootVersion(&version);
+    
+    if(seqoutUfoLocal(outseq))
+    {
+	ajFeattabOutDel(&outseq->Ftquery);
+	outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
+					     ajStrGetPtr(outseq->Type),
+					     outseq->File);
+	if(ajStrMatchC(outseq->Type, "P"))
+	    ajFeattableSetProt(outseq->Fttable);
+	else
+	    ajFeattableSetNuc(outseq->Fttable);
+	
+	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
+	    ajWarn("seqWriteGff3 features output failed UFO: '%S'",
+		   outseq->Ufo);
+
+    }
+
+    ajFmtPrintF(outseq->File, "##FASTA\n");
+
+    seqWriteFasta(outseq);
 
     ajStrDel(&ftfmt);
     ajStrDel(&version);

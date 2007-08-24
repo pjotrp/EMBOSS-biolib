@@ -130,7 +130,9 @@ AjBool        ajFeattableWriteEmbl (const AjPFeattable features,
 				    AjPFile file);
 AjBool        ajFeattableWriteGenbank (const AjPFeattable features,
 				       AjPFile file);
-AjBool        ajFeattableWriteGff (const AjPFeattable features,
+AjBool        ajFeattableWriteGff2 (const AjPFeattable features,
+				    AjPFile file);
+AjBool        ajFeattableWriteGff3 (const AjPFeattable features,
 				   AjPFile file);
 AjBool        ajFeattableWritePir (const AjPFeattable features,
 				   AjPFile file);
