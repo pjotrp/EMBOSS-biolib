@@ -427,7 +427,10 @@ typedef struct AcdSTableItem
 ** @attr SetAttr [AcdPAttr] Definitions of calculated attributes
 ** @attr SetStr [AjPPStr] Values for the calculated attributes (SetAttr)
 ** @attr DefStr [AjPPStr] Values for the default attributes
-** @attr Defined [AjBool] Set when a value is defined by the user
+** @attr Defined [AjBool] Set when a value is defined on the commandline
+**                        or by an associated qualifier ACD attribute
+** @attr UserDefined [AjBool] Set when a value is defined by the user
+**                            including replies to prompts
 ** @attr Used [ajint] Use count, saved for a possible diagnostic message to
 **                    catch ACD items declared and never referenced by the
 **                    calling program.
@@ -445,6 +448,7 @@ typedef struct AcdSTableItem
 ** @attr RefPassed [ajint] Enumerated value for reference 0= not passed,
 **                         1= values only passed,
 **                         2= values and reference passed
+** @attr Padding [ajint] Padding to alignment boundary
 ** @attr Value [void*] Value as a pointer to the native object to be
 **                     returned by an ajAcdGet function call
 ** @@
@@ -464,6 +468,7 @@ typedef struct AcdSAcd
     AjPPStr SetStr;
     AjPPStr DefStr;
     AjBool Defined;
+    AjBool UserDefined;
     ajint Used;
     AjBool Assoc;
     ajint LineNum;
@@ -473,6 +478,7 @@ typedef struct AcdSAcd
     AjPStr ValStr;
     ajint SAttr;
     ajint RefPassed;
+    ajint Padding;
     void* Value;
 } AcdOAcd;
 #define AcdPAcd AcdOAcd*
@@ -787,6 +793,7 @@ static void      acdPrettyWrap(ajint left, const char *fmt, ...);
 static void      acdPrettyUnShift(void);
 static void      acdPrintCalcattr(AjPFile outf, const char* acdtype,
 				  const AcdOAttr calcattr[]);
+static void      acdPrintUsed(void);
 static void      acdProcess(void);
 static const AjPStr acdPromptAlign(AcdPAcd thys);
 static const AjPStr acdPromptCodon(AcdPAcd thys);
@@ -883,7 +890,7 @@ static void      acdTestUnknown(const AjPStr name, const AjPStr alias,
 static AjBool    acdTextFormat(AjPStr* text);
 static void      acdTextTrim(AjPStr* text);
 static void      acdTokenToLowerS(AjPStr *token, ajint* number);
-static AjBool    acdUserGet(const AcdPAcd thys, AjPStr* reply);
+static AjBool    acdUserGet(AcdPAcd thys, AjPStr* reply);
 static AjBool    acdUserGetPrompt(const AcdPAcd thys, const char* assocqual,
 				  const char* prompt, AjPStr* reply);
 static void      acdUserSavereply(const AcdPAcd thys, const char* assocqual,
@@ -5349,14 +5356,14 @@ static AjBool acdDefinedEmpty (const AcdPAcd thys)
 **
 ** If -auto is in effect, fails if there is no value.
 **
-** @param [r] thys [const AcdPAcd] ACD object for current item.
+** @param [u] thys [AcdPAcd] ACD object for current item.
 ** @param [w] reply [AjPStr*] The user response, or
 **        the default value if accepted.
 ** @return [AjBool] ajTrue if reply contains any text.
 ** @@
 ******************************************************************************/
 
-static AjBool acdUserGet(const AcdPAcd thys, AjPStr* reply)
+static AjBool acdUserGet(AcdPAcd thys, AjPStr* reply)
 {
     AjBool ret = ajFalse;
     
@@ -5408,6 +5415,8 @@ static AjBool acdUserGet(const AcdPAcd thys, AjPStr* reply)
 	    ret = ajUserGet(reply, "%S: ", acdUserMsg);
 	if(!ret)
 	    ajStrAssignS(reply, acdUserReplyDef);
+	if(ret)
+	  thys->UserDefined = ajTrue;
 	acdUserSavereply(thys, NULL, ret, *reply);
     }
     
@@ -13320,6 +13329,40 @@ static void acdSetTree(AcdPAcd thys)
 
 
 
+/* @func ajAcdIsUserDefined ***************************************************
+**
+** Returns the string value of any ACD item
+**
+** @param [r] token [const char*] Text token name
+** @return [const AjPStr] String object. The string was already set by
+**         acdSetString so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjBool ajAcdIsUserdefined(const char *token)
+{
+    AcdPAcd acd;
+    ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
+
+    tmpstr = ajStrNewC(token);
+
+    acdTokenToLowerS(&tmpstr, &pnum);
+
+    acd = acdFindAcd(tmpstr, tmpstr, pnum);
+    if(!acd)
+    {
+        ajErr("Qualifier '-%s' not found", token);
+        return ajFalse;
+    }
+
+    ajStrDel(&tmpstr);
+
+    return acd->UserDefined;
+}
+
+
 /* @func ajAcdGetValue ********************************************************
 **
 ** Returns the string value of any ACD item
@@ -13657,7 +13700,7 @@ static void* acdGetValueNumC(const char *token, const char* type,
 		ajDie("Unknown qualifier '-%S'", pa->Token);
 
 	    if((itype>=0) && (pa->Type != itype)) /* program source error */
-		ajDie("Value for '-%S' is not of type %s\n", pa->Token, type);
+		ajDie("Value for '-%S' is not of type %s", pa->Token, type);
 
 	    if(pa->PNum == pnum)
 	    {
@@ -13700,7 +13743,7 @@ static void* acdGetValueNumC(const char *token, const char* type,
     ajStrDel(&ambigList);
 
     /* program source error */
-    ajDie("Qualifier '-%s' not found\n", token);
+    ajDie("Qualifier '-%s' not found", token);
 
     return NULL;
 }
@@ -18918,7 +18961,7 @@ static void acdArgsParse(ajint argc, char * const argv[])
 		}
 	    }
 	    
-
+	    acd->UserDefined = ajTrue;
 	    ajStrAppendK(&acdArgSave, '-');
 	    ajStrAppendS(&acdArgSave, noqual);
 	    if(number)
@@ -18965,6 +19008,8 @@ static void acdArgsParse(ajint argc, char * const argv[])
 	{
 	    iparam = acdNextParam(0);	/* first free parameter */
 	    acdIsParam(cp, &param, &iparam, &acd); /* die if too many */
+
+	    acd->UserDefined = ajTrue;
 	    ajStrAppendC(&acdArgSave, "[-");
 	    ajStrAppendS(&acdArgSave, acd->Name);
 	    ajStrAppendC(&acdArgSave, "] ");
@@ -19134,7 +19179,7 @@ static AjBool acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 
     if(*iparam >= acdNParam)		/* test acdc-toomanyparam */
     {
-	ajErr("Argument '%s' : Too many parameters %d/%d\n",
+	ajErr("Argument '%s' : Too many parameters %d/%d",
 	      arg, (*iparam), acdNParam);
 	ajExitBad();
     }
@@ -24446,6 +24491,27 @@ void ajAcdExit(AjBool silent)
 }
 
 
+/* @funcstatic acdPrintUsed ***************************************************
+**
+** Quick printoout of all qualifiers believed to have been used
+**
+** @return [void]
+******************************************************************************/
+
+static void acdPrintUsed(void)
+{
+    AcdPAcd pa;
+
+    ajUserDumpS(acdArgSave);
+
+    for(pa=acdList; pa; pa=pa->Next)
+    {
+      if(pa->UserDefined)
+	ajUser("ACD qual defined: '%S'", pa->Name);
+    }
+    return;
+}
+
 /* @funcstatic acdReset *******************************************************
 **
 ** Cleans up all memory allocated to ACD internals.
@@ -24462,6 +24528,8 @@ static void acdReset(void)
 {
     AcdPAcd pa;
     AcdPAcd qa = NULL;
+
+    /* acdPrintUsed(); */
 
     for(pa=acdList; pa; pa=qa)
     {
@@ -27366,4 +27434,7 @@ void ajAcdUnused(void)
     acdAttrToChar(acdpacd, "attr", '.', &c);
     acdQualToFloat(acdpacd, "", 0.0, 0, &f, &ajpstr);
     acdCountType("outfile");
+    acdPrintUsed();
+
+    return;
 }
