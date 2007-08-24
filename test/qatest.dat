@@ -25752,12 +25752,12 @@ CL -repeats 3
 TI 500
 IN ../../data/rna3.fold
 IN
+## We can only trst the first result to be the same
+## after that random number functions differ on Linux and Tru64 at least
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9](   d = [0-9\.]+)?\n/
 FP  /^GGGUCGCUUUCCGCUCAGA.*GGCUCGAAA   30   d \= 1\.000000\n/
-FP  /^GUUAUCUGACGCGACAUAG.*AUAGCCUAA   36\n/
-FP  /^GUCGGUAUUGUGGAUGGUA.*CUGGCACGA   26\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
