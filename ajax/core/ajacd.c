@@ -436,21 +436,21 @@ typedef struct AcdSTableItem
 **                    calling program.
 ** @attr Assoc [AjBool] ajTrue if this is an associated qualifier, listed
 **                      in the AssocQuals structure of another ACD item
-** @attr LineNum [ajint] Source file line number of definition start,
-**                       saved for use in diagnostic messages 
 ** @attr AssocQuals [struct AcdSAcd*] Associated qualifiers list, or
 **                                    NULL if there are none for this ACD type
 ** @attr StdPrompt [AjPStr] Standard prompt set for some types by
 **                          an acdPrompt function
 ** @attr OrigStr [AjPStr] Original string saved for later processing
 ** @attr ValStr [AjPStr] Value as a string for printing
+** @attr Value [void*] Value as a pointer to the native object to be
+**                     returned by an ajAcdGet function call
 ** @attr SAttr [ajint] Number of calculated attributes for this ACD type
 ** @attr RefPassed [ajint] Enumerated value for reference 0= not passed,
 **                         1= values only passed,
 **                         2= values and reference passed
+** @attr LineNum [ajint] Source file line number of definition start,
+**                       saved for use in diagnostic messages 
 ** @attr Padding [ajint] Padding to alignment boundary
-** @attr Value [void*] Value as a pointer to the native object to be
-**                     returned by an ajAcdGet function call
 ** @@
 ******************************************************************************/
 
@@ -471,15 +471,15 @@ typedef struct AcdSAcd
     AjBool UserDefined;
     ajint Used;
     AjBool Assoc;
-    ajint LineNum;
     struct AcdSAcd* AssocQuals;
     AjPStr StdPrompt;
     AjPStr OrigStr;
     AjPStr ValStr;
+    void* Value;
     ajint SAttr;
     ajint RefPassed;
+    ajint LineNum;
     ajint Padding;
-    void* Value;
 } AcdOAcd;
 #define AcdPAcd AcdOAcd*
 
