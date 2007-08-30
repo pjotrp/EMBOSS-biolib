@@ -1,0 +1,14 @@
+1. Installing EMBASSY MIRA
+
+The EMBASSY MIRA package contains "wrapper" applications providing an 
+EMBOSS-style interface to the applications in the original MIRA package 
+version 2.8.2 developed by Bastien Chevreux.
+
+Please read the file INSTALL in the EMBASSY MIRA package distribution 
+for installation instructions.
+
+
+
+2. Installing original MIRA
+(text to be written - for the moment see
+ http://chevreux.org/projects_mira.html)
