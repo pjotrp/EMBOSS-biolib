@@ -369,19 +369,19 @@ static MiraOQuals miraintegers[] = {
 
 
 
-static void emira_dobools(AjPStr *cl, AjPTable table);
-static void emira_dostrings(AjPStr *cl, AjPTable table);
-static void emira_dodirectories(AjPStr *cl, AjPTable table);
-static void emira_dolistsingles(AjPStr *cl, AjPTable table);
-static void emira_dointegers(AjPStr *cl, AjPTable table);
-static AjPTable emira_makepreftab(void);
+static void emiraest_dobools(AjPStr *cl, AjPTable table);
+static void emiraest_dostrings(AjPStr *cl, AjPTable table);
+static void emiraest_dodirectories(AjPStr *cl, AjPTable table);
+static void emiraest_dolistsingles(AjPStr *cl, AjPTable table);
+static void emiraest_dointegers(AjPStr *cl, AjPTable table);
+static AjPTable emiraest_makepreftab(void);
 
 
 
 
-/* @prog emira ***************************************************************
+/* @prog emiraest ************************************************************
 **
-** Wrapper for MIRA
+** Wrapper for MIRAest
 **
 ******************************************************************************/
 
@@ -396,14 +396,14 @@ int main(int argc, char **argv)
     ajuint i;
     
 
-    embInit("emiraest", argc, argv);
+    embInitP("emiraest", argc, argv, "MIRA");
 
 
     cl = ajStrNewC("miraest");
 
     stmp = ajStrNew();
 
-    preftab = emira_makepreftab();
+    preftab = emiraest_makepreftab();
 
     if(ajAcdIsUserdefined("genome"))
     {
@@ -435,11 +435,11 @@ int main(int argc, char **argv)
     }
 
 
-    emira_dostrings(&cl, preftab);
-    emira_dodirectories(&cl, preftab);
-    emira_dobools(&cl, preftab);
-    emira_dointegers(&cl, preftab);
-    emira_dolistsingles(&cl, preftab);
+    emiraest_dostrings(&cl, preftab);
+    emiraest_dodirectories(&cl, preftab);
+    emiraest_dobools(&cl, preftab);
+    emiraest_dointegers(&cl, preftab);
+    emiraest_dolistsingles(&cl, preftab);
     
     ajDebug("Constructed command line: %S\n",cl);
 
@@ -464,7 +464,19 @@ int main(int argc, char **argv)
 
 
 
-static void emira_dobools(AjPStr *cl, AjPTable table)
+/* @funcstatic emiraest_dobools *********************************************
+**
+** Get ACD bools.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void emiraest_dobools(AjPStr *cl, AjPTable table)
 {
     ajuint i;
     AjBool bqual = ajFalse;
@@ -510,7 +522,19 @@ static void emira_dobools(AjPStr *cl, AjPTable table)
 
 
 
-static void emira_dostrings(AjPStr *cl, AjPTable table)
+/* @funcstatic emiraest_dostrings *********************************************
+**
+** Get ACD strings.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void emiraest_dostrings(AjPStr *cl, AjPTable table)
 {
     ajuint i;
     AjPStr squal = NULL;
@@ -548,7 +572,19 @@ static void emira_dostrings(AjPStr *cl, AjPTable table)
 
 
 
-static void emira_dodirectories(AjPStr *cl, AjPTable table)
+/* @funcstatic emiraest_dodirectories ****************************************
+**
+** Get ACD directories.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void emiraest_dodirectories(AjPStr *cl, AjPTable table)
 {
     ajuint i;
     AjPStr squal = NULL;
@@ -587,7 +623,19 @@ static void emira_dodirectories(AjPStr *cl, AjPTable table)
 
 
 
-static void emira_dolistsingles(AjPStr *cl, AjPTable table)
+/* @funcstatic emiraest_dolistsingles ****************************************
+**
+** Get ACD single value list entries.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void emiraest_dolistsingles(AjPStr *cl, AjPTable table)
 {
     ajuint i;
     AjPStr squal = NULL;
@@ -626,7 +674,19 @@ static void emira_dolistsingles(AjPStr *cl, AjPTable table)
 
 
 
-static void emira_dointegers(AjPStr *cl, AjPTable table)
+/* @funcstatic emiraest_dointegers ********************************************
+**
+** Get ACD integers.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void emiraest_dointegers(AjPStr *cl, AjPTable table)
 {
     ajuint i;
     ajint  iqual;
@@ -651,7 +711,7 @@ static void emira_dointegers(AjPStr *cl, AjPTable table)
 	    ajStrAssignS(&prefix,value);
 
 	if(sscanf(miraintegers[i].def,"%d",&dval) != 1)
-	    ajFatal("Dval conversion error in emira_dointegers()");
+	    ajFatal("Dval conversion error in emiraest_dointegers()");
 
 	if(iqual != dval)
 	    ajFmtPrintAppS(cl," -%S%s=%d",prefix,miraintegers[i].mname,iqual);
@@ -668,7 +728,16 @@ static void emira_dointegers(AjPStr *cl, AjPTable table)
 
 
 
-static AjPTable emira_makepreftab(void)
+/* @funcstatic emiraest_makepreftab *******************************************
+**
+** Make table relating qualifiers to prefixes
+** e.g. -project has the prefix -GE:
+**
+** @return [AjPTable] qualifier/prefix table
+** @@
+******************************************************************************/
+
+static AjPTable emiraest_makepreftab(void)
 {
     AjPTable ret = NULL;
     ajuint i;

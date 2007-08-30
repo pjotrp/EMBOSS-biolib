@@ -396,7 +396,7 @@ int main(int argc, char **argv)
     ajuint i;
     
 
-    embInit("emira", argc, argv);
+    embInitP("emira", argc, argv, "MIRA");
 
 
     cl = ajStrNewC("mira");
@@ -464,6 +464,18 @@ int main(int argc, char **argv)
 
 
 
+/* @funcstatic emira_dobools *********************************************
+**
+** Get ACD bools.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
 static void emira_dobools(AjPStr *cl, AjPTable table)
 {
     ajuint i;
@@ -510,6 +522,18 @@ static void emira_dobools(AjPStr *cl, AjPTable table)
 
 
 
+/* @funcstatic emira_dostrings *********************************************
+**
+** Get ACD strings.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
 static void emira_dostrings(AjPStr *cl, AjPTable table)
 {
     ajuint i;
@@ -547,6 +571,18 @@ static void emira_dostrings(AjPStr *cl, AjPTable table)
 
 
 
+
+/* @funcstatic emira_dodirectories ********************************************
+**
+** Get ACD directories.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
 
 static void emira_dodirectories(AjPStr *cl, AjPTable table)
 {
@@ -587,6 +623,18 @@ static void emira_dodirectories(AjPStr *cl, AjPTable table)
 
 
 
+/* @funcstatic emira_dolistsingles ********************************************
+**
+** Get ACD single value list entries.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
 static void emira_dolistsingles(AjPStr *cl, AjPTable table)
 {
     ajuint i;
@@ -625,6 +673,18 @@ static void emira_dolistsingles(AjPStr *cl, AjPTable table)
 
 
 
+
+/* @funcstatic emira_dointegers ********************************************
+**
+** Get ACD integers.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
 
 static void emira_dointegers(AjPStr *cl, AjPTable table)
 {
@@ -667,6 +727,15 @@ static void emira_dointegers(AjPStr *cl, AjPTable table)
 
 
 
+
+/* @funcstatic emira_makepreftab ********************************************
+**
+** Make table relating qualifiers to prefixes
+** e.g. -project has the prefix -GE:
+**
+** @return [AjPTable] qualifier/prefix table
+** @@
+******************************************************************************/
 
 static AjPTable emira_makepreftab(void)
 {
