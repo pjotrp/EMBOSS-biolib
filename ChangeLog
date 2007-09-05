@@ -1,4 +1,17 @@
 Version 5.1.0
+	Pepcoil now produces a report (replacing a text output) in "motif"
+	format. The default is changed to not report non coiled-coil
+	regions as they are hard to distinguish in this format.
+
+	The "motif" report format is extended to allow two score positions
+	marked with "*" and "+" and labelled internally as "pos" and
+	"pos2". No application uses pos2 (it was added for pepcoil, but
+	both score maximum positions are always the same)
+
+	A new function ajAcdIsUserdefined allows wrappers to test which
+	qualifiers have values changed by the user so that they can use
+	shorter command lines to launch the wrapped application.
+
 	jaspscan application added. Scans sequences for transcription
 	factors using the JASPAR matrices.
 
