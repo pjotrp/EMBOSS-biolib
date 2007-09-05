@@ -1243,9 +1243,14 @@ static void reportWriteMotif(AjPReport thys,
     static AjPStr* tagprints = NULL;
     static ajuint*  tagsizes = NULL;
     ajuint j = 0;
+    ajuint jstar = UINT_MAX;
+    ajuint jplus = UINT_MAX;
     AjPStr tagval = NULL;
     
     ajuint jpos = 0;
+    ajuint jpos2 = 0;
+    ajuint jposmin = 0;
+    ajuint jposmax = 0;
     ajuint jmax = UINT_MAX;
     char strand = '+';
     const AjPStr seqalias;
@@ -1264,14 +1269,23 @@ static void reportWriteMotif(AjPReport thys,
     ajReportWriteHeader(thys, ftable, seq);
     
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
-    
+
     for(j=0; j < ntags; j++)
+    {
 	if(ajStrMatchCaseC(tagnames[j], "pos"))
 	{
-	    jmax = j;
-	    ajFmtPrintF(outf, "%S at \"*\"\n\n", tagprints[jmax]);
-	    break;
+	    jstar = j;
+	    ajFmtPrintF(outf, "%S at \"*\"\n", tagprints[jstar]);
 	}
+	if(ajStrMatchCaseC(tagnames[j], "pos2"))
+	{
+	    jplus = j;
+	    ajFmtPrintF(outf, "%S at \"+\"\n", tagprints[jplus]);
+	}
+    }
+    if(jstar != UINT_MAX || jplus != UINT_MAX)
+	ajFmtPrintF(outf, "\n");
+	
     
     iterft = ajListIterNewread(ftable->Features);
     while(!ajListIterDone(iterft))
@@ -1293,19 +1307,57 @@ static void reportWriteMotif(AjPReport thys,
 	    ajFmtPrintF(outf, " (Reversed)");
 	ajFmtPrintF(outf, "\n");
 
-	if(jmax <UINT_MAX)
+	jposmin = 0;
+	jposmax = 0;
+	jpos=0;
+	jpos2=0;
+
+	if(jstar != UINT_MAX)
 	{
-	    if(ajFeatGetNote(feature, tagnames[jmax], &tagval))
+	    if(ajFeatGetNote(feature, tagnames[jstar], &tagval))
+	    {
 		ajStrToUint(tagval, &jpos);
-	    else
-		jpos = iend+1;
-
-	    ajStrAssignResC(&tmpstr, ilen,"");
-	    for(j=istart; j<jpos; j++)
-		ajStrAppendK(&tmpstr, ' ');
-
-	    ajFmtPrintF(outf, "           %S*\n", tmpstr);
+		jposmin = jposmax = jpos;
+	    }
 	}
+	
+	if(jplus != UINT_MAX)
+	{
+	    if(ajFeatGetNote(feature, tagnames[jplus], &tagval))
+	    {
+		ajStrToUint(tagval, &jpos2);
+		if(jpos2 < jpos)
+		    jposmin = jpos2;
+		else
+		    jposmax = jpos2;
+	    }
+	}
+
+	if(jposmin > iend)
+	    jposmin=iend;
+	if(jposmax > iend)
+	    jposmax=jposmin;
+
+	ajStrAssignResC(&tmpstr, ilen,"");
+
+	for(j=istart; j<jposmin; j++)
+	    ajStrAppendK(&tmpstr, ' ');
+	if(jpos == j)
+	    ajStrAppendK(&tmpstr, '*');
+	else if(jpos2 == j)
+	    ajStrAppendK(&tmpstr, '+');
+
+	if(jposmax > jposmin)
+	{
+	    for(j++; j<jposmax; j++)
+		ajStrAppendK(&tmpstr, ' ');
+	    if(jpos == j)
+		ajStrAppendK(&tmpstr, '*');
+	    else if(jpos2 == j)
+		ajStrAppendK(&tmpstr, '+');
+	}
+	ajFmtPrintF(outf, "           %S\n", tmpstr);
+
 	
 	ajFmtPrintF(outf, " Sequence: %S\n", subseq);
 	ajStrAssignResC(&tmpstr, ilen,"");
