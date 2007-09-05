@@ -75,6 +75,9 @@ int main(int argc, char **argv)
     ajint     ncomp;
     ajint     npart;
 
+    EmbPPropMolwt *mwdata = NULL;
+    AjBool mono;
+    
 
     embInit("digest", argc, argv);
 
@@ -86,8 +89,9 @@ int main(int argc, char **argv)
     overlap     = ajAcdGetBool("overlap");
     allpartials = ajAcdGetBool("allpartials");
     report      = ajAcdGetReport("outfile");
-    mfptr       = ajAcdGetDatafile("aadata");
-
+    mfptr       = ajAcdGetDatafile("mwdata");
+    mono        = ajAcdGetBool("mono");
+    
     /* obsolete. Can be uncommented in acd file and here to reuse */
 
     /* outf      = ajAcdGetOutfile("originalfile"); */
@@ -104,6 +108,8 @@ int main(int argc, char **argv)
 	cterm = ajTrue;
 
 
+    mwdata = embPropEmolwtRead(mfptr);
+
     while(ajSeqallNext(seqall, &a))
     {
 	substr = ajStrNew();
@@ -118,17 +124,15 @@ int main(int argc, char **argv)
 
 	TabRpt = ajFeattableNewSeq(a);
 
-	embPropAminoRead(mfptr);
-
 	embPropCalcFragments(ajStrGetPtr(substr),n,&l,&pa,
 			     unfavoured,overlap,
 			     allpartials,&ncomp,&npart,&rname,
-			     nterm, cterm, dorag);
+			     nterm, cterm, dorag, mwdata, mono);
 
 	if(outf)
 	    ajFmtPrintF(outf,"DIGEST of %s from %d to %d Molwt=%10.3f\n\n",
 			ajSeqGetNameC(a),be,en,
-			embPropCalcMolwt(ajSeqGetSeqC(a),0,len-1));
+			embPropCalcMolwt(ajSeqGetSeqC(a),0,len-1,mwdata,mono));
 	if(!ncomp)
 	{
 	    if(outf)
@@ -194,6 +198,10 @@ int main(int argc, char **argv)
 	    ajFeattableClear(TabRpt);
 	}
     }
+
+
+    embPropMolwtDel(&mwdata);
+
     ajReportDel(&report);
 
     ajFeattableDel(&TabRpt);

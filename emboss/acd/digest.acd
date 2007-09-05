@@ -14,12 +14,12 @@ section: input [
     type: "Protein"
   ]
 
-  datafile: aadata [
-    information: "Amino acids properties and molecular weight
+  datafile: mwdata [
+    information: "Amino acids molecular weight
                   data file"
     help: "Molecular weight data for amino acids"
-    default: "Eamino.dat"
-    knowntype: "amino acid properties"
+    default: "Emolwt.dat"
+    knowntype: "molecular weights"
   ]
 
 endsection: input
@@ -41,6 +41,12 @@ section: required [
     header: "Enzymes and Reagents"
     information: "Select number"
     button: "Y"
+  ]
+
+  boolean: mono [
+    standard: "Y"
+    default: "N"
+    information: "Use monoisotopic weights"
   ]
 
 endsection: required

@@ -152,6 +152,9 @@ int main(int argc, char **argv)
     AjPList hlist = NULL;
     AjPFile mfptr = NULL;
 
+    EmbPPropMolwt *mwdata = NULL;
+    AjBool mono;
+
     embInit("emowse", argc, argv);
 
     seqall   = ajAcdGetSeqall("sequence");
@@ -163,9 +166,10 @@ int main(int argc, char **argv)
     tol      = ajAcdGetFloat("tolerance");
     partials = ajAcdGetFloat("partials");
     outf     = ajAcdGetOutfile("outfile");
-    mfptr   = ajAcdGetDatafile("aadata");
-
-    embPropAminoRead(mfptr);
+    mfptr    = ajAcdGetDatafile("mwdata");
+    mono     = ajAcdGetBool("mono");
+    
+    mwdata = embPropEmolwtRead(mfptr);
 
     freqs = ajDoubleNewL(FGUESS);
     emowse_read_freqs(ffile, &freqs);
@@ -189,13 +193,13 @@ int main(int argc, char **argv)
 	end   = ajSeqallGetseqEnd(seqall);
 
 
-	smw = embPropCalcMolwt(ajSeqGetSeqC(seq),--begin,--end);
+	smw = embPropCalcMolwt(ajSeqGetSeqC(seq),--begin,--end,mwdata,mono);
 	if(smolwt)
 	    if(emowse_molwt_outofrange(smw,(double)smolwt,(double)range))
 		continue;
 
 	flist  = ajListNew();
-	nfrags = embMolGetFrags(ajSeqGetSeqS(seq),rno,&flist);
+	nfrags = embMolGetFrags(ajSeqGetSeqS(seq),rno,mwdata,mono,&flist);
 
 	emowse_match(data,dno,flist,nfrags,(double)tol,seq,hlist,
 		     (double)partials,

@@ -14,11 +14,18 @@ section: input [
   ]
 
   datafile: aadata [
-    information: "Amino acids properties and molecular weight
+    information: "Amino acids properties
                   data file"
-    help: "Molecular weight data for amino acids"
+    help: "Amino acid properties"
     default: "Eamino.dat"
     knowntype: "amino acid properties"
+  ]
+
+  datafile: mwdata [
+    information: "Molecular weight data file"
+    help: "Molecular weight data for amino acids"
+    default: "Emolwt.dat"
+    knowntype: "molecular weights"
   ]
 
 endsection: input
@@ -31,6 +38,11 @@ section: advanced [
   boolean: termini [
     default: "Y"
     information: "Include charge at N and C terminus"
+  ]
+
+  boolean: mono [
+    default: "N"
+    information: "Use monoisotopic weights"
   ]
 
 endsection: advanced
