@@ -1,4 +1,22 @@
 Version 5.1.0
+	A new application "density" has beeen added. This reports the
+	A+C+G+T+AT+GC densities of nucleic acid sequences within
+	an adjustable sliding window. Plots of A+C+G+T or AT+GC are
+	optionally produced.
+	
+	Molecular weight programs (e.g. digest, mowse) now have a
+	-mono switch to allow use of monoisotopic weights.
+	By default, average molecular weights are used.
+
+	The Eamino.dat format has changed. Molecular weight information
+	has been removed and put in its own Emolwt.dat file. This latter
+	now allows specification of average and monoisotopic weights. Values
+	for hydrogen and oxygen are specified as well as the amino acid weights.
+
+	The library representation of amino acid property information
+	has been changed. The EmbPropTable global table has been
+	removed and replaced with EmbPPropAmino and EmbPPropMolwt objects.
+	
 	Pepcoil now produces a report (replacing a text output) in "motif"
 	format. The default is changed to not report non coiled-coil
 	regions as they are hard to distinguish in this format.
