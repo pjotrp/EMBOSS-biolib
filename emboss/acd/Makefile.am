@@ -11,7 +11,7 @@ pkgdata_DATA = aaindexextract.acd abiview.acd acdc.acd acdlog.acd \
 	dbxgcg.acd dbxstat.acd degapseq.acd demoalign.acd \
 	demofeatures.acd demolist.acd demoreport.acd demosequence.acd \
 	demostring.acd demostringnew.acd \
-	demotable.acd descseq.acd diffseq.acd digest.acd \
+	demotable.acd density.acd descseq.acd diffseq.acd digest.acd \
 	distmat.acd dotmatcher.acd dotpath.acd dottup.acd dreg.acd \
 	edialign.acd \
 	einverted.acd embossdata.acd embossversion.acd emma.acd emowse.acd \

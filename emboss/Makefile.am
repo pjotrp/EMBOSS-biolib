@@ -35,7 +35,7 @@ compseq cons cpgplot cpgreport \
 cusp cutgextract cutseq \
 dan dbiblast dbifasta dbiflat dbigcg \
 dbxfasta dbxflat dbxgcg \
-degapseq descseq diffseq digest distmat \
+degapseq density descseq diffseq digest distmat \
 dotmatcher dotpath dottup dreg \
 edialign einverted embossdata embossversion emma \
 emowse entret epestfind eprimer3 \
@@ -113,6 +113,7 @@ dbxflat_SOURCES = dbxflat.c
 dbxstat_SOURCES = dbxstat.c
 dbxgcg_SOURCES = dbxgcg.c
 degapseq_SOURCES = degapseq.c
+density_SOURCES = density.c
 descseq_SOURCES = descseq.c
 diffseq_SOURCES = diffseq.c
 digest_SOURCES = digest.c
