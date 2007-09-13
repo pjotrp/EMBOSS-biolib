@@ -82,6 +82,7 @@ int main(int argc, char **argv)
     AjPSeqall  seqall;
     AjPSeq     seq;
     AjPStr     str;
+    AjPStr     hdr;
     
     AjPReport report = NULL;
     AjBool dual = ajFalse;
@@ -124,6 +125,11 @@ int main(int argc, char **argv)
     dgraph  = ajAcdGetGraphxy("dgraph");
 
     str = ajStrNew();
+    hdr = ajStrNew();
+
+    ajFmtPrintS(&hdr, "Window size = %d\n",window);
+    ajReportSetHeader(report,hdr);
+    
     AJNEW0(density);
     
     if(quad)
@@ -278,7 +284,8 @@ int main(int argc, char **argv)
     ajFeattableDel(&ftable);
 
     ajStrDel(&str);
-
+    ajStrDel(&hdr);
+    
     embExit();
 
     return 0;
