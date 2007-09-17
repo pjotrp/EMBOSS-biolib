@@ -35,7 +35,7 @@
 
 
 
-static AjBool pepstats_issize(EmbPPropAmino aa, ajint crit);
+static AjBool pepstats_issize(const EmbPPropAmino aa, ajint crit);
 
 
 
@@ -217,13 +217,13 @@ int main(int argc, char **argv)
 **
 ** Returns true if an amino acd matches a given size criterion
 **
-** @param [r] aa [EmbPPropAmino] amino acid data
+** @param [r] aa [const EmbPPropAmino] amino acid data
 ** @param [r] crit [ajint] criterion 
 ** @return [AjBool] true if criterion is met
 ** @@
 ******************************************************************************/
 
-static AjBool pepstats_issize(EmbPPropAmino aa, ajint crit)
+static AjBool pepstats_issize(const EmbPPropAmino aa, ajint crit)
 {
     if(crit==1)
 	return aa->tiny;

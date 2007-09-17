@@ -57,7 +57,7 @@ typedef struct SNucDensity
 static void density_ReportHits(AjPFeattable TabRpt, PNucDensity density,
                                ajint limit);
 
-static void density_addquadgraph(AjPGraph qgraph, ajint limit,
+static void density_addqualgraph(AjPGraph qgraph, ajint limit,
 				 PNucDensity density, float ymin, float ymax,
 				 ajint window);
 
@@ -300,7 +300,7 @@ int main(int argc, char **argv)
 **
 ** @param [u] qgraph [AjPGraph] graph object
 ** @param [r] limit [ajint] range
-** @param [r] density [PNucDensity] co-ords
+** @param [r] density [const PNucDensity] co-ords
 ** @param [r] ymin [float] min y value
 ** @param [r] ymax [float] max y value
 ** @param [r] window [ajint] window
@@ -308,7 +308,8 @@ int main(int argc, char **argv)
 ******************************************************************************/
 
 static void density_addquadgraph(AjPGraph qgraph, ajint limit,
-				 PNucDensity density, float ymin, float ymax,
+				 const PNucDensity density,
+				 float ymin, float ymax,
 				 ajint window)
 {
     ajint i;
@@ -417,7 +418,7 @@ static void density_addquadgraph(AjPGraph qgraph, ajint limit,
 **
 ** @param [u] dgraph [AjPGraph] graph object
 ** @param [r] limit [ajint] range
-** @param [r] density [PNucDensity] co-ords
+** @param [r] density [const PNucDensity] co-ords
 ** @param [r] ymin [float] min y value
 ** @param [r] ymax [float] max y value
 ** @param [r] window [ajint] window
@@ -425,7 +426,8 @@ static void density_addquadgraph(AjPGraph qgraph, ajint limit,
 ******************************************************************************/
 
 static void density_adddualgraph(AjPGraph dgraph, ajint limit,
-				 PNucDensity density, float ymin, float ymax,
+				 const PNucDensity density,
+				 float ymin, float ymax,
 				 ajint window)
 {
     ajint i;
@@ -492,14 +494,14 @@ static void density_adddualgraph(AjPGraph dgraph, ajint limit,
 ** Report density
 **
 ** @param [u] TabRpt [AjPFeattable] report object
-** @param [r] density [PNucDensity] density
+** @param [r] density [const PNucDensity] density
 ** @param [r] limit [ajint] limit
 **
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void density_ReportHits(AjPFeattable TabRpt, PNucDensity density,
+static void density_ReportHits(AjPFeattable TabRpt, const PNucDensity density,
                                ajint limit)
 {
     AjPFeature feat = NULL;
