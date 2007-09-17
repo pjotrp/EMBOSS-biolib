@@ -871,9 +871,9 @@ static AjPFeature psiphi_write_psi_phi (AjPFeattable angletab,
     angleft = ajFeatNewII(angletab,
 			  resnum,
 			  resnum);
-    ajFmtPrintS(&feattmp, "*phi: %7.2f", phi);
+    ajFmtPrintS(&feattmp, "*phi %7.2f", phi);
     ajFeatTagAdd(angleft, NULL, feattmp);
-    ajFmtPrintS(&feattmp, "*psi: %7.2f", psi);
+    ajFmtPrintS(&feattmp, "*psi %7.2f", psi);
     ajFeatTagAdd(angleft, NULL, feattmp);
 
     ajStrDel(&feattmp);
