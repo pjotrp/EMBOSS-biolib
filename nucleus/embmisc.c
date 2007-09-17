@@ -43,11 +43,13 @@ AjBool embMiscMatchPattern (const AjPStr str, const AjPStr pattern)
 
     tokens = ajStrTokenNewC(pattern, whiteSpace);
     while (ajStrTokenNextParse( &tokens, &key))
-	if (ajStrMatchWildS(str, key))
+    {
+	if (ajStrMatchWildCaseS(str, key))
 	{
 	    val = ajTrue;
 	    break;
 	}
+    }
 
     ajStrTokenDel( &tokens);
     ajStrDel(&key);
