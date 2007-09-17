@@ -141,6 +141,8 @@ AjBool        ajFeattableWriteSwiss (const AjPFeattable features,
 void          ajFeattabInClear (AjPFeattabIn thys);
 void          ajFeattabInDel (AjPFeattabIn* pthis);
 AjPFeattabIn  ajFeattabInNew (void);
+AjPFeattabIn  ajFeattabInNewCSF (const char* fmt, const AjPStr name,
+				 const char* type, AjPFileBuff buff);
 AjPFeattabIn  ajFeattabInNewSS (const AjPStr fmt, const AjPStr name,
 				const char* type);
 AjPFeattabIn  ajFeattabInNewSSF (const AjPStr fmt, const AjPStr name,
@@ -154,6 +156,8 @@ AjPStr        ajFeattabOutFilename (const AjPFeattabOut thys);
 AjBool        ajFeattabOutIsLocal(const AjPFeattabOut thys);
 AjBool        ajFeattabOutIsOpen (const AjPFeattabOut thys);
 AjPFeattabOut ajFeattabOutNew (void);
+AjPFeattabOut ajFeattabOutNewCSF (const char* fmt, const AjPStr name,
+				  const char* type, AjPFile buff);
 AjPFeattabOut ajFeattabOutNewSSF (const AjPStr fmt, const AjPStr name,
 				  const char* type, AjPFile buff);
 AjBool        ajFeattabOutOpen (AjPFeattabOut thys, const AjPStr ufo);
@@ -181,12 +185,14 @@ void          ajFeatTrace (const AjPFeature thys);
 AjBool        ajFeatTrimOffRange (AjPFeature ft, ajuint ioffset,
 				  ajuint begin, ajuint end,
 				  AjBool dobegin, AjBool doend);
-const AjPStr ajFeatTypeNuc(const AjPStr type);
-const AjPStr ajFeatTypeProt(const AjPStr type);
+AjBool        ajFeatTypeIsCds(const AjPFeature gf);
+const AjPStr  ajFeatTypeNuc(const AjPStr type);
+const AjPStr  ajFeatTypeProt(const AjPStr type);
 AjPFeattable  ajFeatUfoRead (AjPFeattabIn tabin, const AjPStr Ufo);
 AjBool        ajFeatUfoWrite (const AjPFeattable thys,
 			      AjPFeattabOut tabout, const AjPStr Ufo);
 AjBool        ajFeatWrite (AjPFeattabOut ftout, const AjPFeattable ft) ;
+AjBool        ajFeattagIsNote(const AjPStr tag);
 
 void          ajFeatUnused(void);
 
