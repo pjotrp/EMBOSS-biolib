@@ -54,18 +54,17 @@ section: required [
     values: "length, position, score"
   ]
 
-  boolean: mono [
-    standard: "Y"
-    default: "N"
-    information: "Use monoisotopic weights"
-  ]
-
 endsection: required
 
 section: additional [
   information: "Additional section"
   type: "page"
 ]
+
+  boolean: mono [
+    default: "N"
+    information: "Use monoisotopic weights"
+  ]
 
   float: threshold [
     additional: "Y"
