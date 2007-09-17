@@ -563,7 +563,7 @@ AjBool ajCharMatchCaseC(const char* txt, const char* txt2)
 	return ajFalse;
 
     while(*cp && *cq)
-	if(tolower((ajint) *cp++) != tolower((ajint) *cq++))
+	if(toupper((ajint) *cp++) != toupper((ajint) *cq++))
 	    return ajFalse;
 
     if(*cp || *cq)
@@ -583,7 +583,7 @@ __deprecated AjBool  ajStrMatchCaseCC(const char* thys, const char* text)
 
 /* @func ajCharMatchWildC *****************************************************
 **
-** Simple case-insensitive test for matching two text strings using 
+** Simple case-sensitive test for matching two text strings using 
 ** wildcard characters. 
 **
 ** @param [r] txt [const char*] String
@@ -620,7 +620,7 @@ __deprecated AjBool  ajStrMatchWildCC(const char* str, const char* text)
 
 /* @func ajCharMatchWildS *****************************************************
 **
-** Simple case-insensitive test for matching a text string and a string using
+** Simple case-sensitive test for matching a text string and a string using
 ** wildcard characters.
 **
 ** @param [r] txt [const char*] String
@@ -636,7 +636,7 @@ AjBool ajCharMatchWildS(const char* txt, const AjPStr str)
 
 /* @func ajCharMatchWildCaseC *************************************************
 **
-** Simple case-sensitive test for matching two text strings using 
+** Simple case-insensitive test for matching two text strings using 
 ** wildcard characters. 
 **
 ** @param [r] txt [const char*] String
@@ -664,7 +664,7 @@ AjBool ajCharMatchWildCaseC(const char* txt, const char* txt2)
 
 /* @func ajCharMatchWildCaseS *************************************************
 **
-** Simple case-sensitive test for matching a text string and a string using
+** Simple case-insensitive test for matching a text string and a string using
 ** wildcard characters.
 **
 ** @param [r] txt [const char*] String
@@ -707,125 +707,6 @@ AjBool ajCharMatchWildNextC(const char* txt, const char* txt2)
     char lastch = '\0';
     
     ajDebug("ajCharMatchWildNextC '%s' '%s'\n", txt, txt2);
-
-    cp = txt2;
-    cq = txt;
-    
-    if(!*cp && !*cq)
-	return ajTrue; /* both empty */
-
-    if(!*cp)
-	return ajFalse;	/* no query text */
-    
-    while(*cp && !isspace((int) *cp))
-    {
-	if(!*cq && *cp != '*')
-	    return ajFalse;
-
-	switch(*cp)
-	{
-	case '?':		/* skip next character and continue */
-	    lastch = *cq;
-	    cp++;
-	    cq++;
-	    break;
-	case '*':
-	    cp++;		 /* recursive call to test the rest */
-	    if(!*cp)
-	    {
-		ajDebug("...matches at end +%d '%s' +%d '%s'\n",
-			 (cq - txt), cq, (cp - txt2), cp);
-		return ajTrue;	 /* just match the rest */
-	    }
-
-	    if(!*cq)		 /* no more string to compare */
-	    {
-		savecp = cp;
-		while(*cp == '*') {
-		    savecp = cp++;	/* may be ***... savecp is last '*' */
-		}
-		if(!*cp) return ajTrue;
-		return ajCharMatchWildNextC(cq,savecp);
-	    }
-
-	    while(*cq)
-	    {		 /* wildcard in mid name, look for the rest */
-		if(ajCharMatchWildNextC(cq, cp)) /* recursive + repeats */
-		    return ajTrue;
-		ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
-			 (cq - txt), cq, (cp - txt2), cp);
-		cq++;
-	    }
-
-	    return ajFalse;	  /* if we're still here, it failed */
-
-	    /* always returns once '*' is found */
-
-	default:	 /* for all other characters, keep checking */
-	    if(tolower((ajint) *cp) != tolower((ajint) *cq))
-		return ajFalse;
-
-	    cp++;
-	    if(*cq)
-	    {
-		lastch = *cq;
-		cq++;
-	    }
-	}
-    }
-
-    ajDebug("...done comparing at +%d '%s' +%d '%s' lastch '%c'\n",
-	     (cq - txt), cq, (cp - txt2), cp, lastch);
-    
-    if(!isalnum((int) lastch))
-    {
-	ajDebug("not a word boundary at '%c'\n", lastch);
-	return ajFalse;
-    }
-    
-    if(*cp)
-    {
-	ajDebug("...incomplete cp, FAILED\n");
-	return ajFalse ;
-    }
-    
-    if(*cq)
-    {
-	if(isalnum((int) *cq))
-	{
-	    ajDebug("word continues, failed\n");
-	    return ajFalse;
-	}
-	ajDebug("word end ... success\n");
-	return ajTrue;
-    }
-    
-    ajDebug("...all finished and matched\n");
-    
-    return ajTrue;
-}
-
-
-
-/* @func ajCharMatchWildNextCaseC *********************************************
-**
-** Test for matching the next 'word' in two text strings using 
-** wildcard characters, case-sensitive.
-**
-** @param [r] txt [const char*] String
-** @param [r] txt2 [const char*] Text
-** @return [AjBool] ajTrue if found
-** @@
-******************************************************************************/
-
-AjBool ajCharMatchWildNextCaseC(const char* txt, const char* txt2)
-{
-    const char* cp;
-    const char* cq;
-    const char* savecp;
-    char lastch = '\0';
-    
-    ajDebug("ajCharMatchWildNextCaseC '%s' '%s'\n", txt, txt2);
 
     cp = txt2;
     cq = txt;
@@ -926,10 +807,129 @@ AjBool ajCharMatchWildNextCaseC(const char* txt, const char* txt2)
 
 
 
+/* @func ajCharMatchWildNextCaseC *********************************************
+**
+** Test for matching the next 'word' in two text strings using 
+** wildcard characters, case-insensitive.
+**
+** @param [r] txt [const char*] String
+** @param [r] txt2 [const char*] Text
+** @return [AjBool] ajTrue if found
+** @@
+******************************************************************************/
+
+AjBool ajCharMatchWildNextCaseC(const char* txt, const char* txt2)
+{
+    const char* cp;
+    const char* cq;
+    const char* savecp;
+    char lastch = '\0';
+    
+    ajDebug("ajCharMatchWildNextCaseC '%s' '%s'\n", txt, txt2);
+
+    cp = txt2;
+    cq = txt;
+    
+    if(!*cp && !*cq)
+	return ajTrue; /* both empty */
+
+    if(!*cp)
+	return ajFalse;	/* no query text */
+    
+    while(*cp && !isspace((int) *cp))
+    {
+	if(!*cq && *cp != '*')
+	    return ajFalse;
+
+	switch(*cp)
+	{
+	case '?':		/* skip next character and continue */
+	    lastch = *cq;
+	    cp++;
+	    cq++;
+	    break;
+	case '*':
+	    cp++;		 /* recursive call to test the rest */
+	    if(!*cp)
+	    {
+		ajDebug("...matches at end +%d '%s' +%d '%s'\n",
+			 (cq - txt), cq, (cp - txt2), cp);
+		return ajTrue;	 /* just match the rest */
+	    }
+
+	    if(!*cq)		 /* no more string to compare */
+	    {
+		savecp = cp;
+		while(*cp == '*') {
+		    savecp = cp++;	/* may be ***... savecp is last '*' */
+		}
+		if(!*cp) return ajTrue;
+		return ajCharMatchWildNextCaseC(cq,savecp);
+	    }
+
+	    while(*cq)
+	    {		 /* wildcard in mid name, look for the rest */
+		if(ajCharMatchWildNextCaseC(cq, cp)) /* recursive + repeats */
+		    return ajTrue;
+		ajDebug("...'*' at +%d '%s' +%d '%s' continuing\n",
+			 (cq - txt), cq, (cp - txt2), cp);
+		cq++;
+	    }
+
+	    return ajFalse;	  /* if we're still here, it failed */
+
+	    /* always returns once '*' is found */
+
+	default:	 /* for all other characters, keep checking */
+	    if(toupper((ajint) *cp) != toupper((ajint) *cq))
+		return ajFalse;
+
+	    cp++;
+	    if(*cq)
+	    {
+		lastch = *cq;
+		cq++;
+	    }
+	}
+    }
+
+    ajDebug("...done comparing at +%d '%s' +%d '%s' lastch '%c'\n",
+	     (cq - txt), cq, (cp - txt2), cp, lastch);
+    
+    if(!isalnum((int) lastch))
+    {
+	ajDebug("not a word boundary at '%c'\n", lastch);
+	return ajFalse;
+    }
+    
+    if(*cp)
+    {
+	ajDebug("...incomplete cp, FAILED\n");
+	return ajFalse ;
+    }
+    
+    if(*cq)
+    {
+	if(isalnum((int) *cq))
+	{
+	    ajDebug("word continues, failed\n");
+	    return ajFalse;
+	}
+	ajDebug("word end ... success\n");
+	return ajTrue;
+    }
+    
+    ajDebug("...all finished and matched\n");
+    
+    return ajTrue;
+}
+
+
+
 /* @func ajCharMatchWildWordC *************************************************
 **
-** Case-insensitive test for matching a text string 'word' against a 
-** text string using wildcard characters.
+** Case-sensitive test for matching a text string 'word' against any 
+** word in a test text string using wildcard characters.
 **
 ** 'Word' is defined as starting and ending with an alphanumeric character
 ** (A-Z a-z 0-9) with no white space.
@@ -990,8 +990,8 @@ AjBool ajCharMatchWildWordC(const char* txt, const char* txt2)
 
 /* @func ajCharMatchWildWordCaseC *********************************************
 **
-** Case-sensitive test for matching a text string 'word' against a 
-** text string using wildcard characters.
+** Case-insensitive test for matching a text string 'word' against any 
+** word in a text string using wildcard characters.
 **
 ** 'Word' is defined as starting and ending with an alphanumeric character
 ** (A-Z a-z 0-9) with no white space.
@@ -1164,7 +1164,7 @@ AjBool ajCharPrefixCaseC(const char* txt, const char* txt2)
 
     while(*cp && *cq)
     {
-	if(tolower((ajint) *cp) != tolower((ajint) *cq)) return ajFalse;
+	if(toupper((ajint) *cp) != toupper((ajint) *cq)) return ajFalse;
 	cp++;cq++;
     }
 
@@ -1293,7 +1293,7 @@ __deprecated AjBool  ajStrSuffixCO(const char* txt, const AjPStr suff)
 
 /* @func ajCharSuffixCaseC ****************************************************
 **
-** Case-sensitive test for matching the end of a text string against a given 
+** Case-insensitive test for matching the end of a text string against a given 
 ** suffix text string.
 **
 ** @param [r] txt [const char*] String
@@ -1319,9 +1319,9 @@ AjBool ajCharSuffixCaseC(const char* txt, const char* txt2)
 
     cp = &txt[jstart];
     cq = txt2;
-    while (cp)
+    while (*cp)
     {
-	if(tolower((ajint)*cp) != tolower((ajint)*cq)) return ajFalse;
+	if(toupper((ajint)*cp) != toupper((ajint)*cq)) return ajFalse;
 	cp++; cq++;
     }
 
@@ -1330,7 +1330,7 @@ AjBool ajCharSuffixCaseC(const char* txt, const char* txt2)
 
 /* @func ajCharSuffixCaseS ****************************************************
 **
-** Case-sensitive test for matching the end of a text string against a given 
+** Case-insensitive test for matching the end of a text string against a given 
 ** suffix string.
 **
 ** @param [r] txt [const char*] Test string as text
@@ -1355,7 +1355,7 @@ AjBool ajCharSuffixCaseS(const char* txt, const AjPStr str)
     cq = str->Ptr;
     while (cp)
     {
-	if(tolower((ajint)*cp) != tolower((ajint)*cq)) return ajFalse;
+	if(toupper((ajint)*cp) != toupper((ajint)*cq)) return ajFalse;
 	cp++; cq++;
     }
 
@@ -1552,9 +1552,9 @@ int ajCharCmpWild(const char* txt, const char* txt2)
 	    /* always returns once '*' is found */
 
 	default:	 /* for all other characters, keep checking */
-	    if(tolower((ajint) *cp) != tolower((ajint) *cq))
+	    if(*cp != *cq)
 	    {
-		if(tolower((ajint) *cp) > tolower((ajint) *cq))
+		if(*cp > *cq)
 		    return -1;
 		else
 		    return 1;
@@ -1655,9 +1655,9 @@ int ajCharCmpWildCase(const char* txt, const char* txt2)
 	    /* always returns once '*' is found */
 
 	default:	 /* for all other characters, keep checking */
-	    if(*cp != *cq)
+	    if(toupper((ajint) *cp) != toupper((ajint) *cq))
 	    {
-		if(*cp > *cq)
+		if(toupper((ajint) *cp) > toupper((ajint) *cq))
 		    return -1;
 		else
 		    return 1;
@@ -1724,7 +1724,7 @@ __deprecated ajint  ajStrCmpWildCC(const char* str, const char* text)
 
 AjPStr ajCharParseC (const char* txt, const char* txtdelim)
 {
-    static AjPStr strp = 0; /* internal AjPStr - do not try to destroy */
+    static AjPStr strp = NULL; /* internal AjPStr - do not try to destroy */
     static char* cp    = NULL;
 
     if (!strp)
@@ -1735,8 +1735,8 @@ AjPStr ajCharParseC (const char* txt, const char* txtdelim)
 	    ajUtilCatch();
 	    return NULL;
 	}
-	strp = ajStrNew();
-	AJFREE(strp->Ptr);
+	AJNEW0(strp);
+	strp->Use = 1;
     }
 
     if (txt)
@@ -1759,6 +1759,8 @@ AjPStr ajCharParseC (const char* txt, const char* txtdelim)
     else
     {
 	strp->Len=0;
+	strp->Res=1;
+	strp->Use=0;
     }
 
     return NULL;
@@ -2327,6 +2329,7 @@ AjBool ajStrAssignC(AjPStr* Pstr, const char* txt)
     ajuint i;
 
     if (!txt) {
+	ajStrDel(Pstr);
 	*Pstr = ajStrNewResLenC("", 1, 0);
 	return ret;
     }
@@ -3074,6 +3077,55 @@ AjBool ajStrAppendLenC(AjPStr* Pstr, const char* txt, ajuint len)
 __deprecated AjBool  ajStrAppCI(AjPStr* pthis, const char* txt, size_t i)
 {
     return ajStrAppendLenC(pthis, txt, i);
+}
+
+/* @func ajStrAppendSubC ******************************************************
+**
+** Appends a substring of a string to the end of another string.
+** 
+** @param [w] Pstr [AjPStr*] Target string
+** @param [r] txt [const char*] Source string
+** @param [r] pos1 [ajint] start position for substring
+** @param [r] pos2 [ajint] end position for substring
+** @return [AjBool] ajTrue if string was reallocated
+** @@
+******************************************************************************/
+
+AjBool ajStrAppendSubC(AjPStr* Pstr, const char* txt, ajint pos1, ajint pos2)
+{
+    ajuint ilen;
+    ajuint jlen;
+    ajuint ibegin;
+    ajuint iend;
+    AjBool ret = ajFalse;
+
+    AjPStr thys;
+    ajuint j;
+
+    thys = *Pstr;
+
+    jlen = strlen(txt);
+    ibegin = ajMathPos(jlen, pos1);
+    iend   = ajMathPosI(jlen, ibegin, pos2);
+
+    ilen = iend - ibegin + 1;
+
+    if(thys)
+    {
+	j = AJMAX(thys->Res, thys->Len+ilen+1);
+    }
+    else
+	j = ilen+1;
+
+    ret = ajStrSetResRound(Pstr, j);
+    thys = *Pstr;			/* possible new location */
+
+    memmove(thys->Ptr+thys->Len, &txt[ibegin], ilen);
+    thys->Len += ilen;
+
+    thys->Ptr[thys->Len] = '\0';
+
+    return ret;
 }
 
 /* @func ajStrAppendSubS ******************************************************
@@ -4442,6 +4494,12 @@ AjBool ajStrRemoveSetC(AjPStr* Pstr, const char *txt)
 	--thys->Len;
 	*q = '\0';
     }
+
+    while(*p)
+	*(q++) = *(p++);
+
+    *q = '\0';
+
     if(!thys->Len) return ajFalse;
     return ajTrue;
 }
@@ -5308,7 +5366,7 @@ __deprecated AjBool  ajStrSubstitute(AjPStr* pthis,
 
 /* @func ajStrExchangePosCC ***************************************************
 **
-** Replace all occurrences in a string of one substring with another.
+** Replace one substring with another at a given position in the text.
 **
 ** @param [u] Pstr [AjPStr*]  Target string.
 ** @param [r] ipos [ajint] Position in the string, negative values are
@@ -5984,7 +6042,7 @@ AjBool ajStrIsCharsetCaseC(const AjPStr str, const char* txt)
 	return ajFalse;
 
     while (*cq)
-      filter[(int)*cq++] = 1;
+      filter[toupper((int)*cq++)] = 1;
 
     cp = ajStrGetPtr(str);
 
@@ -6451,7 +6509,7 @@ AjBool ajStrWhole(const AjPStr str, ajint pos1, ajint pos2)
     ajuint iend;
 
     ibeg = ajMathPos(str->Len, pos1);
-    if(!ibeg)
+    if(ibeg)
 	return ajFalse;
 
     iend = ajMathPosI(str->Len, ibeg, pos2);
@@ -8526,7 +8584,7 @@ __deprecated AjBool  ajStrWrapLeft(AjPStr* pthis, ajint width, ajint left)
 ** @nam4rule  MatchWild      Comparison using wildcard characters.
 ** @nam5rule  MatchWildCase  Case-insensitive comparison
 **                           using wildcard characters.
-** @nam5rule  MatchWildWord  Case-insensitive wildcard comparison of 
+** @nam5rule  MatchWildWord  Case-sensitive wildcard comparison of 
 **                           first words within two strings.
 ** @nam6rule  MatchWildWordCase  Case-insensitive wildcard comparison of 
 **                           first words within two strings.
@@ -8655,7 +8713,7 @@ __deprecated AjBool  ajStrMatchCase(const AjPStr str, const AjPStr str2)
 
 /* @func ajStrMatchWildC ******************************************************
 **
-** Simple case-insensitive test for matching a string and a text string using
+** Simple case-sensitive test for matching a string and a text string using
 ** wildcard characters.
 **
 ** @param [r] str [const AjPStr] String
@@ -8674,7 +8732,7 @@ AjBool ajStrMatchWildC(const AjPStr str, const char* txt2)
 
 /* @func ajStrMatchWildS ******************************************************
 **
-** Simple case-insensitive test for matching two strings using wildcard 
+** Simple case-sensitive test for matching two strings using wildcard 
 ** characters.
 **
 ** @param [r] str [const AjPStr] String
@@ -8703,7 +8761,7 @@ __deprecated AjBool  ajStrMatchWild(const AjPStr str, const AjPStr str2)
 
 /* @func ajStrMatchWildCaseC **************************************************
 **
-** Simple case-sensitive test for matching a string and a text string using
+** Simple case-insensitive test for matching a string and a text string using
 ** wildcard characters.
 **
 ** @param [r] str [const AjPStr] String
@@ -8722,7 +8780,7 @@ AjBool ajStrMatchWildCaseC(const AjPStr str, const char* txt2)
 
 /* @func ajStrMatchWildCaseS **************************************************
 **
-** Simple case-sensitive test for matching two strings using wildcard 
+** Simple case-insensitive test for matching two strings using wildcard 
 ** characters.
 **
 ** @param [r] str [const AjPStr] String
@@ -8739,7 +8797,7 @@ AjBool ajStrMatchWildCaseS(const AjPStr str, const AjPStr str2)
 
 /* @func ajStrMatchWildWordC **************************************************
 **
-** Case-insensitive test for matching a text string "word" against a string
+** Case-sensitive test for matching a text string "word" against a string
 ** using wildcard characters. 
 **
 ** 'Word' is defined as starting and ending with an alphanumeric character
@@ -8763,7 +8821,7 @@ AjBool ajStrMatchWildWordC(const AjPStr str, const char* txt2)
 
 /* @func ajStrMatchWildWordS **************************************************
 **
-** Case-insensitive test for matching a string "word" against a string
+** Case-sensitive test for matching a string "word" against a string
 ** using wildcard characters. 
 **
 ** 'Word' is defined as starting and ending with an alphanumeric character
@@ -8786,7 +8844,7 @@ AjBool ajStrMatchWildWordS(const AjPStr str, const AjPStr str2)
 
 /* @func ajStrMatchWildWordCaseC **********************************************
 **
-** Case-sensitive test for matching a text string "word" against a string
+** Case-insensitive test for matching a text string "word" against a string
 ** using wildcard characters. 
 **
 ** 'Word' is defined as starting and ending with an alphanumeric character
@@ -8810,7 +8868,7 @@ AjBool ajStrMatchWildWordCaseC(const AjPStr str, const char* txt2)
 
 /* @func ajStrMatchWildWordCaseS **********************************************
 **
-** Case-sensitive test for matching a string "word" against a string
+** Case-insensitive test for matching a string "word" against a string
 ** using wildcard characters. 
 **
 ** 'Word' is defined as starting and ending with an alphanumeric character
@@ -9955,10 +10013,12 @@ AjBool ajStrExtractFirst(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
 	cp++;
 	j++;
     }
-    if(!*cp) return ajFalse;		/* nothing after whitespace */
 
     ajStrAssignSubS(Pword, str, 0, i);
-    ajStrAssignSubS(Prest, str, j, str->Len);
+    if(cp)
+	ajStrAssignSubS(Prest, str, j, str->Len);
+    else
+	ajStrAssignC(Prest, "");
 
     /*ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
       i, j, str->Len, *Pword);*/
@@ -10015,12 +10075,14 @@ AjBool ajStrExtractWord(const AjPStr str, AjPStr* Prest, AjPStr* Pword)
 	cp++;
 	j++;
     }
-    if(!*cp) return ajFalse;		/* nothing after whitespace */
 
     ajStrAssignSubS(Pword, str, istart, i);
-    ajStrAssignSubS(Prest, str, j, str->Len);
+    if(cp)
+	ajStrAssignSubS(Prest, str, j, str->Len);
+    else
+	ajStrAssignC(Prest, "");
 
-    /*ajDebug("ajStrExtractFirst i:%d j:%d len:%d word '%S'\n",
+    /*ajDebug("ajStrExtractWord i:%d j:%d len:%d word '%S'\n",
       i, j, str->Len, *Pword);*/
     return ajTrue;
 }
@@ -10097,7 +10159,7 @@ __deprecated const AjPStr  ajStrTokC(const AjPStr thys, const char* delim)
 
 /* @func ajStrParseCount ******************************************************
 **
-** Returns the number of tokens in a string.
+** Returns the number of tokens in a string, delimited by whitespace
 **
 ** @param [r] str [const AjPStr] String to examine.
 ** @return [ajuint] The number of tokens
@@ -10112,7 +10174,7 @@ ajuint ajStrParseCount(const AjPStr str)
     ajuint count;
 
     count = 0;
-    ajStrTokenAssign(&t, str);
+    ajStrTokenAssignC(&t, str, " \t\n\r");
 
     while(ajStrTokenNextParse(&t, &tmp))
 	++count;
@@ -10272,14 +10334,17 @@ ajuint ajStrParseSplit(const AjPStr str, AjPStr **PPstr)
     if(!str->Len)
 	return 0;
 
-
     p = q = ajStrGetPtr(str);
 
     len = str->Len;
-    for(i=c=n=0;i<len;++i)
+    c=0;
+    n=0;
+    for(i=0;i<len;++i)
 	if(*(p++)=='\n')
 	    ++c;
     p=q;
+    if(ajStrGetCharLast(str) != '\n')
+	++c;
 
     AJCNEW0(*PPstr,c);
 
@@ -10292,6 +10357,8 @@ ajuint ajStrParseSplit(const AjPStr str, AjPStr **PPstr)
 	ajStrAssignSubC(&(*PPstr)[n++],p,0,q-p);
 	p = ++q;
     }
+    if(ajStrGetCharLast(str) != '\n')
+	ajStrAssignC(&(*PPstr)[n++],q);
 
     return c;
 }
