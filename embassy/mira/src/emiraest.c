@@ -390,11 +390,10 @@ int main(int argc, char **argv)
     AjPStr cl    = NULL;
     AjPStr stmp  = NULL;
     AjPStr squal = NULL;
-    AjBool bqual = ajFalse;
+    /* AjBool bqual = ajFalse; */
     AjPTable preftab = NULL;
-    
-    ajuint i;
-    
+
+
 
     embInitP("emiraest", argc, argv, "MIRA");
 
