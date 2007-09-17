@@ -54,15 +54,17 @@ typedef struct SNucDensity
 
 
 
-static void density_ReportHits(AjPFeattable TabRpt, PNucDensity density,
+static void density_ReportHits(AjPFeattable TabRpt, const PNucDensity density,
                                ajint limit);
 
-static void density_addqualgraph(AjPGraph qgraph, ajint limit,
-				 PNucDensity density, float ymin, float ymax,
+static void density_addquadgraph(AjPGraph qgraph, ajint limit,
+				 const PNucDensity density,
+				 float ymin, float ymax,
 				 ajint window);
 
 static void density_adddualgraph(AjPGraph dgraph, ajint limit,
-				 PNucDensity density, float ymin, float ymax,
+				 const PNucDensity density,
+				 float ymin, float ymax,
 				 ajint window);
 
 
