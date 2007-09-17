@@ -1600,7 +1600,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    continue;
 	}
 	/* Parse coordinate line */
-	if(ajStrPrefixC(line,"CO"))
+	else if(ajStrPrefixC(line,"CO"))
 	{
 	    mod = chn = gpn = 0;
 	    
@@ -1624,7 +1624,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    atom->Gpn = gpn;
 	    
 	    ajStrTokenNextParse(&handle,&token);
-	    atom->Type = *ajStrGetPtr(token);
+	    atom->Type = ajStrGetCharFirst(token);
 	    
 	    ajStrTokenNextParse(&handle,&token);
 	    ajStrToInt(token,&atom->Idx);
@@ -1632,7 +1632,6 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	    ajStrTokenNextParse(&handle,&token);
 	    ajStrAssignS(&atom->Pdb,token);
 
-	    
 	    /* Residue object */
 	    if(atom->Type=='P')
 	    {
