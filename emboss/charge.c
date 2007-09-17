@@ -31,7 +31,7 @@
 static void  charge_addgraph(AjPGraph graph, ajint limit, const float *x,
 			     const float *y, float ymax, float ymin,
 			     ajint window);
-static AjPFloat charge_read_amino(AjPFile fp);
+/*static AjPFloat charge_read_amino(AjPFile fp);*/
 
 
 
