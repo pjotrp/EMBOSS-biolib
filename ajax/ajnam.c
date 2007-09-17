@@ -2088,7 +2088,7 @@ void ajNamInit(const char* prefix)
     ajStrFmtUpper(&prefixStr);
     
     if(ajNamGetenv(prefixStr, &homercVal))
-	ajStrToBool(debugVal, &namDoHomeRc);
+	ajStrToBool(homercVal, &namDoHomeRc);
 
     ajStrDel(&homercVal);
     
