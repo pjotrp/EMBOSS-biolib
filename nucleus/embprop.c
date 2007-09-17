@@ -57,7 +57,7 @@ float dayhoff[] = {
 #define EAMINODATFILE "Ebmino.dat"
 
 
-static AjBool propInit = 0;
+/* static AjBool propInit = 0;*/
 
 static char propPurines[]     = "agrAGR";
 static char propPyrimidines[] = "ctuyCTUY";
@@ -70,7 +70,7 @@ static ajint propFragCompare(const void *a, const void *b);
 
 
 
-/* @func embPropEaminoRead *****************************************************
+/* @func embPropEaminoRead ****************************************************
 **
 ** Read amino acid properties from Eamino.dat
 **
@@ -79,7 +79,7 @@ static ajint propFragCompare(const void *a, const void *b);
 ** @@
 ******************************************************************************/
 
-EmbPPropAmino *embPropEaminoRead(AjPFile mfptr)
+EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
 {
     AjPStr  line  = NULL;
     AjPStr  token = NULL;
@@ -125,17 +125,18 @@ EmbPPropAmino *embPropEaminoRead(AjPFile mfptr)
 	    ajFatal("Amino file line doesn't begin with a single A->Z (%S)",
 		    line);
 
-	if(n = ajFmtScanS(line,"%*s%d%d%d%d%d%d%f%d%d%d",
-		   &ret[i]->tiny,
-		   &ret[i]->small,
-		   &ret[i]->aliphatic,
-		   &ret[i]->aromatic,
-		   &ret[i]->nonpolar,
-		   &ret[i]->polar,
-		   &ret[i]->charge,
-		   &ret[i]->pve,
-		   &ret[i]->nve,
-		   &ret[i]->extcoeff) != 10)
+	n = ajFmtScanS(line,"%*s%d%d%d%d%d%d%f%d%d%d",
+		       &ret[i]->tiny,
+		       &ret[i]->small,
+		       &ret[i]->aliphatic,
+		       &ret[i]->aromatic,
+		       &ret[i]->nonpolar,
+		       &ret[i]->polar,
+		       &ret[i]->charge,
+		       &ret[i]->pve,
+		       &ret[i]->nve,
+		       &ret[i]->extcoeff);
+	if(n!= 10)
 	    ajFatal("Only %d columns in amino file - expected %d",n+1,11);
     }
 
@@ -148,7 +149,7 @@ EmbPPropAmino *embPropEaminoRead(AjPFile mfptr)
 
 
 
-/* @func embPropEmolwtRead *****************************************************
+/* @func embPropEmolwtRead ****************************************************
 **
 ** Read molecular weights from Emolwt.dat
 **
@@ -157,7 +158,7 @@ EmbPPropAmino *embPropEaminoRead(AjPFile mfptr)
 ** @@
 ******************************************************************************/
 
-EmbPPropMolwt *embPropEmolwtRead(AjPFile mfptr)
+EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
 {
     AjPStr  line  = NULL;
     AjPStr  token = NULL;
@@ -189,7 +190,7 @@ EmbPPropMolwt *embPropEmolwtRead(AjPFile mfptr)
 	if(firstline)
 	{
 	    if(!ajStrPrefixC(line,"Mol"))
-		ajFatal("Incorrect format molwt file");
+		ajFatal("Incorrect format molwt file: '%S'", line);
 	    firstline = ajFalse;
 	    continue;
 	}
@@ -223,9 +224,10 @@ EmbPPropMolwt *embPropEmolwtRead(AjPFile mfptr)
 	    ajFatal("Molwt file line doesn't begin with a single A->Z (%S)",
 		    line);
 
-	if(n = ajFmtScanS(line,"%*s%lf%lf",
-		   &ret[i]->average,
-		   &ret[i]->mono) != 2)
+	n = ajFmtScanS(line,"%*s%lf%lf",
+		       &ret[i]->average,
+		       &ret[i]->mono);
+	if(n != 2)
 	    ajFatal("Only %d columns in amino file - expected %d",n,3);
     }
 
@@ -242,12 +244,12 @@ EmbPPropMolwt *embPropEmolwtRead(AjPFile mfptr)
 **
 ** Return charge value
 **
-** @param [r] prop [EmbPPropAmino] Input properties object
+** @param [r] prop [const EmbPPropAmino] Input properties object
 ** @return [float] charge
 ** @@
 ******************************************************************************/
 
-float embPropGetCharge(EmbPPropAmino prop)
+float embPropGetCharge(const EmbPPropAmino prop)
 {
     return prop->charge;
 }
@@ -263,7 +265,7 @@ float embPropGetCharge(EmbPPropAmino prop)
 ** @param [r] s [const char *] sequence
 ** @param [r] start [ajint] start position
 ** @param [r] end [ajint] end position
-** @param [r] mwdata [EmbPPropMolwt*] molecular weight data
+** @param [r] mwdata [EmbPPropMolwt const *] molecular weight data
 ** @param [r] mono [AjBool] true for monoisotopic values
 **
 ** @return [double] molecular weight
@@ -271,7 +273,7 @@ float embPropGetCharge(EmbPPropAmino prop)
 ******************************************************************************/
 
 double embPropCalcMolwt(const char *s, ajint start, ajint end,
-			EmbPPropMolwt *mwdata, AjBool mono)
+			EmbPPropMolwt const *mwdata, AjBool mono)
 {
     double nmass = 0.;
     double cmass = 0.;
@@ -297,7 +299,7 @@ double embPropCalcMolwt(const char *s, ajint start, ajint end,
 ** @param [r] s [const char *] sequence
 ** @param [r] start [ajint] start position
 ** @param [r] end [ajint] end position
-** @param [r] mwdata [EmbPPropMolwt*] molecular weight data
+** @param [r] mwdata [EmbPPropMolwt const *] molecular weight data
 ** @param [r] mono [AjBool] true for monoisotopic values
 ** @param [r] nmass [double] mass of the N-terminal group
 ** @param [r] cmass [double] mass of the C-terminal group
@@ -307,7 +309,7 @@ double embPropCalcMolwt(const char *s, ajint start, ajint end,
 ******************************************************************************/
 
 double embPropCalcMolwtMod(const char *s, ajint start, ajint end,
-			   EmbPPropMolwt *mwdata, AjBool mono,
+			   EmbPPropMolwt const *mwdata, AjBool mono,
 			   double nmass, double cmass)
 {
     const char *p;
@@ -343,14 +345,14 @@ double embPropCalcMolwtMod(const char *s, ajint start, ajint end,
 ** @param [r] s [const char *] sequence
 ** @param [r] start [ajint] start position
 ** @param [r] end [ajint] end position
-** @param [r] aadata [EmbPPropAmino*] amino acid data
+** @param [r] aadata [EmbPPropAmino const *] amino acid data
 **
 ** @return [double] molar extinction coefficient
 ** @@
 ******************************************************************************/
 
 double embPropCalcMolextcoeff(const char *s, ajint start, ajint end,
-			      EmbPPropAmino *aadata)
+			      EmbPPropAmino const *aadata)
 {
 
     const char *p;
@@ -432,7 +434,7 @@ const char* embPropIntToThree(ajint c)
 ** @param [r] nterm [AjBool] nterm ragging
 ** @param [r] cterm [AjBool] cterm ragging
 ** @param [r] dorag [AjBool] true if ragging
-** @param [r] mwdata [EmbPPropMolwt*] molecular weight data
+** @param [r] mwdata [EmbPPropMolwt const *] molecular weight data
 ** @param [r] mono [AjBool] true for monoisotopic weights
 **
 ** @return [void]
@@ -444,7 +446,8 @@ void embPropCalcFragments(const char *s, ajint n,
 			  AjBool unfavoured, AjBool overlap,
 			  AjBool allpartials, ajint *ncomp, ajint *npart,
 			  AjPStr *rname, AjBool nterm, AjBool cterm,
-			  AjBool dorag, EmbPPropMolwt *mwdata, AjBool mono)
+			  AjBool dorag, EmbPPropMolwt const *mwdata,
+			  AjBool mono)
 {
     static const char *PROPENZReagent[]=
     {

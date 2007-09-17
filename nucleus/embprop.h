@@ -112,7 +112,7 @@ EmbPPropMolwt *embPropEmolwtRead(AjPFile fp);
 void          embPropAminoDel(EmbPPropAmino **thys);
 void          embPropMolwtDel(EmbPPropMolwt **thys);
 
-float embPropGetCharge(EmbPPropAmino prop);
+float embPropGetCharge(const EmbPPropAmino prop);
 
 
 /* void    embPropAminoRead (void); */
@@ -121,14 +121,15 @@ void 	embPropCalcFragments (const char *s, ajint n,
 			      AjBool unfavoured, AjBool overlap,
 			      AjBool allpartials, ajint *ncomp, ajint *npart,
 			      AjPStr *rname, AjBool nterm, AjBool cterm,
-			      AjBool dorag, EmbPPropMolwt *mwdata, AjBool mono);
+			      AjBool dorag, EmbPPropMolwt const  *mwdata,
+			      AjBool mono);
 double  embPropCalcMolextcoeff(const char *s, ajint start, ajint end,
-			       EmbPPropAmino *aadata);
+			       EmbPPropAmino const *aadata);
 double  embPropCalcMolwt (const char *s, ajint start, ajint end,
-			  EmbPPropMolwt *mwdata, AjBool mono);
+			  EmbPPropMolwt const *mwdata, AjBool mono);
 /* new method for chemically modified ends */
 double  embPropCalcMolwtMod (const char *s, ajint start, ajint end,
-			     EmbPPropMolwt *mwdata, AjBool mono,
+			     EmbPPropMolwt const *mwdata, AjBool mono,
 			     double nmass, double cmass);
 const char*   embPropCharToThree (char c);
 void    embPropExit(void);

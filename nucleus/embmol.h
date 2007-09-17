@@ -34,7 +34,7 @@ typedef struct EmbSMolFrag
 ** Prototype definitions
 */
 
-ajint embMolGetFrags(const AjPStr thys, ajint rno, EmbPPropMolwt *mwdata,
+ajint embMolGetFrags(const AjPStr thys, ajint rno, EmbPPropMolwt const *mwdata,
 		     AjBool mono, AjPList *l);
 
 /*

@@ -41,13 +41,13 @@ static ajint embMolFragSort(const void* a, const void* b);
 ** @param [r] thys [const AjPStr] sequence
 ** @param [r] rno [ajint] 1=Trypsin 2=LysC 3=ArgC 4=AspN 5=V8b 6=V8p
 **                        7=Chy 8=CNBr
-** @param [r] mwdata [EmbPPropMolwt*] molecular weight data
+** @param [r] mwdata [EmbPPropMolwt const *] molecular weight data
 ** @param [r] mono [AjBool] true for monoisotopic data
 ** @param [w] l [AjPList*] list for results
 ** @return [ajint] number of fragments
 ******************************************************************************/
 
-ajint embMolGetFrags(const AjPStr thys, ajint rno, EmbPPropMolwt *mwdata,
+ajint embMolGetFrags(const AjPStr thys, ajint rno, EmbPPropMolwt const *mwdata,
 		     AjBool mono, AjPList *l)
 {
     static struct enz
