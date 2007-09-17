@@ -5662,8 +5662,11 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam4rule  GetValue   ACD datatype string value
 ** @nam5rule  Name    Name of ACD datatype value
 ** @nam5rule  Single  First in array of ACD datatype values
+** @nam3rule  Is    Test value
+** @nam4rule  IsUserdefined    Test value is defined by the user
 **
 ** @argrule   Get    token [const char*] Token name
+** @argrule   Is    token [const char*] Token name
 ** @argrule   Num    token [const char*] Token name
 **
 ** @valrule   Align  [AjPAlign]
@@ -5728,6 +5731,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   *TreeSingle  [AjPPhyloTree]
 ** @valrule   Value  [const AjPStr]
 ** @valrule   *Name  [AjPStr]
+** @valrule   Is  [AjBool]
 ** @fcategory misc
 **
 ******************************************************************************/
@@ -13329,40 +13333,6 @@ static void acdSetTree(AcdPAcd thys)
 
 
 
-/* @func ajAcdIsUserDefined ***************************************************
-**
-** Returns the string value of any ACD item
-**
-** @param [r] token [const char*] Text token name
-** @return [const AjPStr] String object. The string was already set by
-**         acdSetString so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjBool ajAcdIsUserdefined(const char *token)
-{
-    AcdPAcd acd;
-    ajint pnum = 0;		   /* need to get from end of token */
-    AjPStr tmpstr = NULL;
-
-    tmpstr = ajStrNewC(token);
-
-    acdTokenToLowerS(&tmpstr, &pnum);
-
-    acd = acdFindAcd(tmpstr, tmpstr, pnum);
-    if(!acd)
-    {
-        ajErr("Qualifier '-%s' not found", token);
-        return ajFalse;
-    }
-
-    ajStrDel(&tmpstr);
-
-    return acd->UserDefined;
-}
-
-
 /* @func ajAcdGetValue ********************************************************
 **
 ** Returns the string value of any ACD item
@@ -13389,6 +13359,41 @@ __deprecated const AjPStr  ajAcdValue(const char *token)
 }
 
 
+
+
+/* @func ajAcdIsUserdefined ***************************************************
+**
+** Tests whether an ACD item has a value set by the user.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjBool] True if token is not found as an ACD object name
+**
+** @cre failure to find an item with the right name gives an error message
+** and continues
+** @@
+******************************************************************************/
+
+AjBool ajAcdIsUserdefined(const char *token)
+{
+    AcdPAcd acd;
+    ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
+
+    tmpstr = ajStrNewC(token);
+
+    acdTokenToLowerS(&tmpstr, &pnum);
+
+    acd = acdFindAcd(tmpstr, tmpstr, pnum);
+    if(!acd)
+    {
+        ajErr("Qualifier '-%s' not found", token);
+        return ajFalse;
+    }
+
+    ajStrDel(&tmpstr);
+
+    return acd->UserDefined;
+}
 
 
 /* @funcstatic acdAttrCount ***************************************************
@@ -15725,6 +15730,7 @@ static void acdListReport(const char* title)
 	else
 	    acdLog(" AssocQuals: <undefined>\n");
 	acdLog("    Defined: %B\n", pa->Defined);
+	acdLog("    Userdefined: %B\n", pa->UserDefined);
 	acdLog("Orig. Value: '%S'\n", pa->OrigStr);
 
 	if(pa->ValStr)
