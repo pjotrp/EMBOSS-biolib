@@ -45,8 +45,8 @@
 ** @attr Alias [AjBool] Name is an alias for an identical definition
 ** @attr Mintags [ajuint] Minimum number of special tags needed
 ** @attr Showseq [AjBool] ajTrue if sequence is to be included
-** @attr Nuc [AjBool] ajTrue if format can work with nucleotide sequences
-** @attr Prot [AjBool] ajTrue if format can work with protein sequences
+** @attr Nucleotide [AjBool] ajTrue if format can work with nucleotide sequences
+** @attr Protein [AjBool] ajTrue if format can work with protein sequences
 ** @attr Showheader [AjBool] ajTrue if header appears in output
 ** @attr Write [(void*)] Function to write report
 ******************************************************************************/
@@ -58,8 +58,8 @@ typedef struct ReportSFormat
     AjBool Alias;
     ajuint Mintags;
     AjBool Showseq;
-    AjBool Nuc;
-    AjBool Prot;
+    AjBool Nucleotide;
+    AjBool Protein;
     AjBool Showheader;
     void (*Write) (AjPReport outrpt,
 		   const AjPFeattable ftable, const AjPSeq seq);
@@ -2067,7 +2067,7 @@ static void reportWriteTable(AjPReport thys,
     ajReportWriteHeader(thys, ftable, seq);
     
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
-    
+    ajUser("ntags:%u", ntags);
     iterft = ajListIterNewread(ftable->Features);
     while(!ajListIterDone(iterft))
     {
@@ -2721,9 +2721,9 @@ AjBool ajReportWrite(AjPReport thys,
 	isprot = ajTrue;
 
     ok = ajFalse;
-    if(isnuc && reportFormat[thys->Format].Nuc)
+    if(isnuc && reportFormat[thys->Format].Nucleotide)
 	ok = ajTrue;
-    else if(isprot && reportFormat[thys->Format].Prot)
+    else if(isprot && reportFormat[thys->Format].Protein)
 	ok = ajTrue;
 
     if(!ok)
@@ -3619,8 +3619,8 @@ void ajReportPrintFormat(AjPFile outf, AjBool full)
 	    ajFmtPrintF(outf, "  %-12s %5B %3B %3B %7d %7B \"%s\"\n",
 			reportFormat[i].Name,
 			reportFormat[i].Alias,
-			reportFormat[i].Nuc,
-			reportFormat[i].Prot,
+			reportFormat[i].Nucleotide,
+			reportFormat[i].Protein,
 			reportFormat[i].Mintags,
 			reportFormat[i].Showseq,
 			reportFormat[i].Desc);
