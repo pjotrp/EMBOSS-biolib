@@ -378,7 +378,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5341
+FC = 5485
 FP 50 /^acdProcess/
 FI stderr
 FC = 2
@@ -1814,8 +1814,9 @@ FI hba_human.fasta
 FC = 4
 FP /^>HBA_HUMAN /
 FI hba_human.gff
-FC = 159
-FP /^##Type Protein HBA_HUMAN\n/
+FC = 161
+FP /^#!Type Protein\n/
+FP /^##sequence-region HBA_HUMAN 1 141\n/
 //
 
 ID qual-ufo-noid
@@ -1833,10 +1834,13 @@ FI stdout
 FC = 2
 FP /^>HBA_HUMAN/
 FI stdout.gff
-FC = 26
-FP /^##Type Protein HBA_HUMAN\n/
-FP 2 /^HBA_HUMAN\tSWISSPROT\tmisc_feature\t19\t19\t/
-FP 0 /^HBA_HUMAN\tSWISSPROT\tmisc_feature\t20\t20\t/
+FC = 28
+FP /^#!Type Protein\n/
+FP /^##sequence-region HBA_HUMAN 1 141\n/
+FP 2 /^HBA_HUMAN\tSWISSPROT\tlocated_sequence_feature\t19\t19\t/
+FP 0 /^HBA_HUMAN\tSWISSPROT\tlocated_sequence_feature\t20\t20\t/
+FP  /\tID="HBA_HUMAN.4";note="ACETYLATION";note="\*comment: IN VARIANT THION/
+FP  /THIONVILLE; WHERE THE INITIATOR MET IS NOT CLEAVED"\n/
 //
 
 ID qual-sid
@@ -2039,7 +2043,8 @@ IN tsw:actb1_fugru
 IN
 IN
 FI actb1_fugru.antigenic
-FP /^##Type Protein ACTB1_FUGRU\n/
+FP /^#!Type Protein\n/
+FP /^##sequence-region ACTB1_FUGRU 1 375\n/
 FZ > 100
 FC > 5
 FI stderr
@@ -2318,7 +2323,7 @@ FZ = 375
 FP /\A>PAAMIR_1_7\n/
 FP /^PPARRRWRRWRVTWQRGRWWSRLTSPASIRPPAGPSSRPAMVSSRRTRPSPPGPRRPTGR\n/
 FI paamir_1.gff
-FZ = 133
+FC = 6
 FP /^PAAMIR_1\t\S+\t\S+\t278\t634\t0\.000/
 //
 
@@ -3130,7 +3135,8 @@ FP /Observed\/Expected ratio > 0\.60/
 FP /Length 406 \(104\.\.509\)/
 FP /Length 329 \(596\.\.924\)/
 FI u68037.gff
-FP /^##Type DNA U68037/
+FP /^#!Type DNA\n/
+FP /^##sequence-region U68037 1 924\n/
 FI cpgplot.ps
 FP /^%%Title: PLplot Graph/
 //
@@ -3158,7 +3164,7 @@ FP /Observed\/Expected ratio > 0\.60/
 FP /Length 406 \(104\.\.509\)/
 FP /Length 329 \(596\.\.924\)/
 FI u68037.gff
-FZ = 186
+FC = 7
 FP /^U68037\t\S+\t\S+\t104\t509\t/
 FP /^U68037\t\S+\t\S+\t596\t924\t/
 FI cpgplot1.dat
@@ -3188,8 +3194,8 @@ FP /CPGREPORT of U68037 from 1 to 1218/
 FP /U68037                   12     13    17          1 100\.0    -/
 FP /U68037                 1183   1193    26          2  72\.7   2\.00/
 FI u68037.gff
-FZ = 471
-FP /^U68037\tcpgreport\tmisc_feature\t96\t1032\t630\.000\t/
+FC = 11
+FP /^U68037\tcpgreport\tlocated_sequence_feature\t96\t1032\t630\.000\t/
 //
 
 ID cusp-ex
@@ -8246,16 +8252,17 @@ FP /^Sequence: c\nFeature: gene 1-402 gene='FAU' locus_tag='HCM4175'\n/
 FP /^# Overlap_end: 458 in X65923\n/
 FP /^# Overlap_end: 402 in AY411291\n/
 FI AY411291.diffgff
-FZ = 159
-FP /^AY411291\tdiffseq\tconflict\t228\t228\t1\.000\t[+]\t\.\tSequence "AY411291\.1" ; note "SNP in X65923" ; replace "t"/
+FC = 6
+FP /^AY411291\tdiffseq\tmisc_difference\t228\t228\t1\.000\t[+]\t\.\tID="AY411291\.1";note="SNP in X65923";replace="t"/
 FI X65923.diffgff
-FZ = 155
-FP /^X65923\tdiffseq\tconflict\t284\t284\t1\.000\t[+]\t\.\tSequence "X65923\.1" ; note "SNP in AY411291" ; replace "c"\n/
+FC = 6
+FP /^X65923\tdiffseq\tmisc_difference\t284\t284\t1\.000\t[+]\t\.\tID="X65923\.1";note="SNP in AY411291";replace="c"\n/
 //
 
 ID digest-ex
 AP digest
 IN tsw:opsd_human
+IN
 IN
 IN
 FI stderr
@@ -8264,7 +8271,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI opsd_human.digest
-FP /^    246     248    346\.378 K      E      AEK\n/
+FP /^    246     248    346\.383 K      E      AEK\n/
 FP /yields 14 fragments/
 FC = 36
 //
@@ -8277,13 +8284,14 @@ CL -sbegin 10 -send 250
 IN tsw:opsd_human
 IN
 IN
+IN
 FI stderr
 FC = 11
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI opsd_human.digest
-FP /^    246     248    346\.378 K      E      AEK\n/
+FP /^    246     248    346\.383 K      E      AEK\n/
 FP /yields 8 fragments/
 FC = 32
 //
@@ -8684,6 +8692,7 @@ ID emowse-ex
 AP emowse
 IN tsw:*
 IN ../../data/test.mowse
+IN
 IN
 IN
 FI stderr
@@ -10036,9 +10045,9 @@ ID feat-embl-togff
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft gff::test.out -auto
 FI test.out
-FZ = 60761
+FZ = 58717
 ## Internal quotes
-FP /\tCDS\t1289\t1879\t0\.000\t\+\t\.\tSequence "AB036666\.58" ; .* of \\"amiE\\" /
+FP /\tCDS\t1289\t1879\t0\.000\t\+\t0\tID="AB036666\.58";.* of \\"amiE\\" /
 //
 
 ID feat-embl-togb
@@ -10089,10 +10098,10 @@ ID feat-pir-togff
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 5029
+FZ = 4628
 ## active site two locations with copied annotation (note and comment)
-FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; note "Cys, His" ; comment "status experimental"\n/
-FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; FeatFlags "0x4"\n/
+FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";note="Cys, His";comment="status experimental"\n/
+FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";featflags="0x4"\n/
 //
 
 ID feat-pir-topir
@@ -10126,9 +10135,9 @@ ID feat-swiss-togff
 AP seqret
 CL -feat tsw:laci_ecoli gff::test.out -auto
 FI test.out
-FZ = 3263
-FP /^LACI_ECOLI\tSWISSPROT\tdna_bind\t6\t25\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.3" ; note "H-T-H motif"\n/
-FP /^LACI_ECOLI\tSWISSPROT\thelix\t74\t89\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.9"\n/
+FZ = 3027
+FP /^LACI_ECOLI\tSWISSPROT\tDNA_bind\t6\t25\t0\.000\t\+\t\.\tID="LACI_ECOLI\.3";note="H-T-H motif"\n/
+FP /^LACI_ECOLI\tSWISSPROT\thelix\t74\t89\t0\.000\t\+\t\.\tID="LACI_ECOLI\.9"\n/
 //
 
 ID garnier-ex
@@ -10760,7 +10769,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI u01317.marscan 
-FZ = 1539
+FZ = 1523
 FP /\t2242\t2458\t.*start8bp 2451".*end8bp 2458".*start16bp 2242".*end16bp 2257"\n/
 //
 
@@ -11348,12 +11357,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI gcn4_yeast.pepcoil 
-FZ = 258
-FP /^Other structures from 1 to 232 \(232 residues\)\n/
-FP /^   Max score: 1\.283 \(probability 0\.21\)\n/
-FP /^Prediction starts at 233\n/
-FP /^Probable coiled-coil from 233 to 281 \(49 residues\)\n/
-FP /^   Max score: 1\.910 \(probability 1\.00\)\n/
+FZ = 845
+FP 1 /^ +Sequence:/
+FP /^\(1\) Score 1\.910 length 49 at residues 233->281\n/
+FP /^ Sequence: ARNTEAARRSRARKLQRMKQLEDKVEELLSKNYHLENEVARLKKLVGER\n/
 OC The SwissProt annotation marks the true leucine zipper motif as from 253 to 274.
 OC The leucine zipper is a special case of a coiled-coil region.
 //
@@ -11486,7 +11493,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI laci_ecoli.pepstats
 FZ = 1502
-FP /^Molecular weight = 38590\.05/
+FP /^Molecular weight = 38590\.06/
 FP /^Average Residue Weight  = 107\.195\s+Charge\s+= 1\.5\s+\n/
 FP /^Isoelectric Point = 6\.8820\n/
 FP /^A280 Molar Extinction Coefficient  = 21620\s+\n/
@@ -11756,7 +11763,7 @@ FI polydot.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI globins.gff
-FP /HBB_HUMAN\s+wordmatch\s+misc_feature\s+88\s+111\s+1\.000\s+[+]\s+\.\s+Sequence "HBB_HUMAN\.1" ; note "HBB_HORSE"\n/
+FP /HBB_HUMAN\s+wordmatch\s+region\s+88\s+111\s+1\.000\s+[+]\s+\.\s+ID="HBB_HUMAN\.1";note="HBB_HORSE"\n/
 //
 
 ID preg-ex
@@ -12063,8 +12070,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI 1hmp_a.psiphi 
-FZ = 4007
-FP /     56      56     0\.0  \-139\.15   162\.01\n/
+FZ = 3843
+FP /     56      56     0\.0 \-139\.15  162\.01\n/
 //
 
 ID rebaseextract-keep
@@ -12470,16 +12477,16 @@ FP 1 /\A>Z69719 Z69719\.1 /
 
 ID seqret-inlist-good
 AP seqret
-CL -auto @../../data/good.list test.out -osf embl
+CL -auto @../../data/good.list test.out -osf swiss
 FI test.out
-FZ = 584
+FZ = 575
 FP 3 /^ID   .* AA\.\n/
 FP /^SQ   SEQUENCE    56 AA;   6466 MW;  48CB2E252357CBF6 CRC64;/
 //
 
 ID seqret-inlist-bad
 AP seqret
-CL -auto @../../data/bad.list test.out -osf embl
+CL -auto @../../data/bad.list test.out -osf swiss
 FI stderr
 FZ = 112
 FP 0 /Warning: /
@@ -13125,7 +13132,7 @@ FP 1 /^SQ   Sequence 120 BP; 29 A; 29 C; 29 G; 29 T; 4 other;/
 
 ID seqret-inmultiauto-aln
 AP seqret
-CL -auto ../../data/globins.m-aln test.out -osf embl
+CL -auto ../../data/globins.m-aln test.out -osf swiss
 FI test.out
 FP 1 /^ID   HBB_HUMAN  .* 167 AA\.\n/
 FP 1 /^ID   HBA_HUMAN  .* 167 AA\.\n/
@@ -13136,7 +13143,7 @@ FP 1 /^SQ   SEQUENCE   167 AA;  18181 MW;  BEAE9EB4529C39C3 CRC64;\n/
 
 ID seqret-inmultiusa-aln
 AP seqret
-CL -auto aln::../../data/globins.m-aln test.out -osf embl
+CL -auto aln::../../data/globins.m-aln test.out -osf swiss
 FI test.out
 FP 1 /^ID   HBB_HUMAN  .* 167 AA\.\n/
 FP 1 /^ID   HBA_HUMAN  .* 167 AA\.\n/
@@ -13147,7 +13154,7 @@ FP 1 /^SQ   SEQUENCE   167 AA;  18181 MW;  BEAE9EB4529C39C3 CRC64;\n/
 
 ID seqret-inmulti-aln
 AP seqret
-CL -auto ../../data/globins.m-aln  -sf aln test.out -osf embl
+CL -auto ../../data/globins.m-aln  -sf aln test.out -osf swiss
 FI test.out
 FP 1 /^ID   HBB_HUMAN  .* 167 AA\.\n/
 FP 1 /^ID   HBA_HUMAN  .* 167 AA\.\n/
@@ -13802,26 +13809,26 @@ ID seqret-outusa-gff
 AP seqret
 CL -auto ../../data/dna.embl gff::test.out
 FI test.out
-FZ = 191
-FP /^##gff-version 2\n/
-FP /^##source-version EMBOSS [0-9\.]+\n/
-FP /^##date [0-9\-]+\n/
-FP /^##DNA EMBL\n/
-FP /^##acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
-FP /^##end-DNA\n/
+FZ = 255
+FP /^##gff-version 3\n/
+FP /^##sequence-region EMBL 1 100\n/
+FP /^#\!Source-version EMBOSS [0-9\.]+\n/
+FP /^#\!Date [0-9\-]+\n/
+FP /^#\!Type DNA\n/
+FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
 //
 
 ID seqret-out-gff
 AP seqret
 CL -auto ../../data/dna.embl test.out -osf gff
 FI test.out
-FZ = 191
-FP /^##gff-version 2\n/
-FP /^##source-version EMBOSS [0-9\.]+\n/
-FP /^##date [0-9\-]+\n/
-FP /^##DNA EMBL\n/
-FP /^##acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
-FP /^##end-DNA\n/
+FZ = 255
+FP /^##gff-version 3\n/
+FP /^##sequence-region EMBL 1 100\n/
+FP /^#\!Source-version EMBOSS [0-9\.]+\n/
+FP /^#\!Date [0-9\-]+\n/
+FP /^#\!Type DNA\n/
+FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgt\n/
 //
 
 ID seqret-outusa-ig
@@ -13904,36 +13911,28 @@ FP /^acgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtacgtac\n/
 
 ID seqret-outusa-swiss
 AP seqret
-CL -auto ../../data/dna.embl swiss::test.out
+CL -auto ../../data/prot.swiss swiss::test.out
 FI test.out
-FZ = 469
-FP /^ID   EMBL       standard; DNA; UNC; 100 BP\.\n/
-FP /^AC   E10002;\n/
-FP /^SV   E10002\.34\n/
-FP /^DE   EMBL FORMAT DNA SEQUENCE\n/
-FP /^KW   DNA binding protein; repressor\.\n/
-FP /^OS   Escherichia coli\n/
-FP /^OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
-FP /^OC   Escherichia\.\n/
-FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;\n/
-FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        60\n/
+FZ = 278
+FP /^ID   FASTA          Unreviewed;        100 AA\.\n/
+FP /^AC   S00001;\n/
+FP /^DE   FASTA FORMAT PROTEIN SEQUENCE\n/
+FP /^SQ   SEQUENCE   100 AA;  11907 MW;  DCEF6AA9E9BA19B4 CRC64;\n/
+FP /^     ACDEFGHIKL MNPQRSTVWY ACDEFGHIKL MNPQRSTVWY ACDEFGHIKL MNPQRSTVWY\n/
+FP /^     ACDEFGHIKL MNPQRSTVWY ACDEFGHIKL MNPQRSTVWY\n/
 //
 
 ID seqret-out-swiss
 AP seqret
-CL -auto ../../data/dna.embl test.out -osf swiss
+CL -auto ../../data/prot.swiss test.out -osf swiss
 FI test.out
-FZ = 469
-FP /^ID   EMBL       standard; DNA; UNC; 100 BP\.\n/
-FP /^AC   E10002;\n/
-FP /^SV   E10002\.34\n/
-FP /^DE   EMBL FORMAT DNA SEQUENCE\n/
-FP /^KW   DNA binding protein; repressor\.\n/
-FP /^OS   Escherichia coli\n/
-FP /^OC   Bacteria; Proteobacteria; gamma subdivision; Enterobacteriaceae;\n/
-FP /^OC   Escherichia\.\n/
-FP /^SQ   Sequence 100 BP; 25 A; 25 C; 25 G; 25 T; 0 other;\n/
-FP /^     acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt acgtacgtac gtacgtacgt        60\n/
+FZ = 278
+FP /^ID   FASTA          Unreviewed;        100 AA\.\n/
+FP /^AC   S00001;\n/
+FP /^DE   FASTA FORMAT PROTEIN SEQUENCE\n/
+FP /^SQ   SEQUENCE   100 AA;  11907 MW;  DCEF6AA9E9BA19B4 CRC64;\n/
+FP /^     ACDEFGHIKL MNPQRSTVWY ACDEFGHIKL MNPQRSTVWY ACDEFGHIKL MNPQRSTVWY\n/
+FP /^     ACDEFGHIKL MNPQRSTVWY ACDEFGHIKL MNPQRSTVWY\n/
 //
 
 ID seqret-outusa-text
@@ -14190,44 +14189,44 @@ ID seqret-outmultiusa-gff
 AP seqret
 CL -auto ../../data/dna.m-embl gff::test.out
 FI test.out
-FZ = 642
-FP 3 /^##DNA FASTAM[1-3]\n/
-FP /^##DNA FASTAM2\n/
-FP 3 /^##end-DNA\n/
+FZ = 858
+FP 3 /^##sequence-region FASTAM[1-3] 1 120\n/
+FP 3 /^#\!Type DNA\n/
+FP /^##sequence-region FASTAM2 1 120\n/
+FP 3 /^##FASTA\n/
 //
 
 ID seqret-outmulti-gff
 AP seqret
 CL -auto ../../data/dna.m-embl test.out -osf gff
 FI test.out
-FZ = 642
-FP 3 /^##DNA FASTAM[1-3]\n/
-FP /^##DNA FASTAM2\n/
-FP 3 /^##end-DNA\n/
+FZ = 858
+FP 3 /^##sequence-region FASTAM[1-3] 1 120\n/
+FP 3 /^#\!Type DNA\n/
+FP /^##sequence-region FASTAM2 1 120\n/
+FP 3 /^##FASTA\n/
 //
 
 ID seqret-outmultiusa-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss gff::test.out
 FI test.out
-FZ = 543
-FP 3 /^##gff-version 2\n/
-FP 3 /^##Protein SWISSM[1-3]\n/
-FP /^##Protein SWISSM2\n/
-FP 3 /^##end-Protein\n/
-FP /^##MMNNPPQQRRSSTTVVWWYY\n/
+FZ = 759
+FP 3 /^##sequence-region SWISSM[1-3] 1 \d+\n/
+FP 3 /^#\!Type Protein\n/
+FP /^##sequence-region SWISSM2 1 80\n/
+FP 3 /^##FASTA\n/
 //
 
 ID seqret-outmulti-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf gff
 FI test.out
-FZ = 543
-FP 3 /^##gff-version 2\n/
-FP 3 /^##Protein SWISSM[1-3]\n/
-FP /^##Protein SWISSM2\n/
-FP 3 /^##end-Protein\n/
-FP /^##MMNNPPQQRRSSTTVVWWYY\n/
+FZ = 759
+FP 3 /^##sequence-region SWISSM[1-3] 1 \d+\n/
+FP 3 /^#\!Type Protein\n/
+FP /^##sequence-region SWISSM2 1 80\n/
+FP 3 /^##FASTA\n/
 //
 
 ID seqret-outmultiusa-hennig86
@@ -15891,9 +15890,9 @@ FZ = 168
 FP 1 /^>/
 FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 1097
-FP /^##Type DNA V00294\n/
-FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2"/
+FZ = 1094
+FP /^#!Type DNA\n/
+FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2"/
 //
 
 ID featseq-begin-fasta
@@ -15904,9 +15903,9 @@ FP 1 /^>/
 FZ = 117
 FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 1094
-FP /^##Type DNA V00294\n/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 1091
+FP /^#!Type DNA\n/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseq-rev-fasta
@@ -15917,9 +15916,9 @@ FZ = 117
 FP 1 /^>/
 FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 FI test.gff
-FZ = 1094
-FP /^##Type DNA V00294\n/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 1091
+FP /^#!Type DNA\n/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseq-end-embl
@@ -15964,9 +15963,9 @@ FP 1 /^ +Name: /
 FP  / +Name: V00294 .* Check: 8066/
 FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 1097
-FP /^##Type DNA V00294\n/
-FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2"/
+FZ = 1094
+FP /^#!Type DNA\n/
+FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2"/
 //
 
 ID featseq-begin-msf
@@ -15978,9 +15977,9 @@ FP 1 / +Name: /
 FP  / +Name: V00294 .* Check: 2937/
 FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 1094
-FP /^##Type DNA V00294\n/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 1091
+FP /^#!Type DNA\n/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseq-rev-msf
@@ -15992,9 +15991,9 @@ FP 1 / +Name: /
 FP  / +Name: V00294 .* Check: 9768/
 FP /^V00294     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 FI test.gff
-FZ = 1094
-FP /^##Type DNA V00294\n/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 1091
+FP /^#!Type DNA\n/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqall-end-fasta
@@ -16006,10 +16005,10 @@ FP 5 /^>/
 FP /^caattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6544
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2"/
+FZ = 6463
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2"/
 //
 
 ID featseqall-begin-fasta
@@ -16021,10 +16020,10 @@ FP 5 /^>/
 FP /^ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqall-rev-fasta
@@ -16036,10 +16035,10 @@ FP 5 /^>/
 FP /^cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
 FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x1" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t0\tID=\S+;featflags="0x1";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqall-end-embl
@@ -16091,10 +16090,10 @@ FP  / +Name: V00294 .* Check: 8066/
 FP /^J01636     ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6544
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2"/
+FZ = 6463
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2"/
 //
 
 ID featseqall-begin-msf
@@ -16108,10 +16107,10 @@ FP  / +Name: V00294 .* Check: 2937/
 FP /^J01636     ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqall-rev-msf
@@ -16125,10 +16124,10 @@ FP  / +Name: V00294 .* Check: 9768/
 FP /^J01636     cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
 FP /^V00294     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x1" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t0\tID=\S+;featflags="0x1";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqset-end-fasta
@@ -16140,10 +16139,10 @@ FP 5 /^>/
 FP /^caattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^gagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6544
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2"/
+FZ = 6463
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2"/
 //
 
 ID featseqset-begin-fasta
@@ -16155,10 +16154,10 @@ FP 5 /^>/
 FP /^ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqset-rev-fasta
@@ -16170,10 +16169,10 @@ FP 5 /^>/
 FP /^cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
 FP /^ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x1" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t0\tID=\S+;featflags="0x1";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqset-end-embl
@@ -16225,10 +16224,10 @@ FP  / +Name: V00294 .* Check: 8066/
 FP /^J01636     ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6544
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2"/
+FZ = 6463
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t79\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t31\t100\t0\.000\t[+]\t0\tID=\S+;featflags="0x2"/
 //
 
 ID featseqset-begin-msf
@@ -16242,10 +16241,10 @@ FP  / +Name: V00294 .* Check: 2937/
 FP /^J01636     ggaagagagtcaattcagggtggtgaatgtgaaaccagtaacgttatacg\n/
 FP /^V00294     cgatgtcgcagagtatgccggtgtctcttatcagaccgtttcccgcgtgg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x2" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t29\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x2";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[+]\t0\tID=\S+;featflags="0x3"/
 //
 
 ID featseqset-rev-msf
@@ -16259,10 +16258,10 @@ FP  / +Name: V00294 .* Check: 9768/
 FP /^J01636     cgtataacgttactggtttcacattcaccaccctgaattgactctcttcc\n/
 FP /^V00294     ccacgcgggaaacggtctgataagagacaccggcatactctgcgacatcg\n/
 FI test.gff
-FZ = 6212
-FP 5 /^##Type DNA/
-FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x1" .*gene "lacI"/
-FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t\.\tSequence \S+ ; FeatFlags "0x3"/
+FZ = 6152
+FP 5 /^#!Type DNA/
+FP /^J01636\tEMBL\tCDS\t1\t22\t0\.000\t[-]\t0\tID=\S+;featflags="0x1";.*gene="lacI"/
+FP /^V00294\tEMBL\tCDS\t1\t50\t0\.000\t[-]\t0\tID=\S+;featflags="0x3"/
 //
 
 ###########################################################
@@ -17679,8 +17678,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.twofeat
-FZ = 197
-FP /polyA_signal/
+FZ = 244
+FP /polyA_signal_sequence\t484\t489/
 //
 
 ID union-ex
@@ -17841,11 +17840,11 @@ FP /^ +5 HBA_HUMAN +[+] +59\.\.63 +HBB_HUMAN +[+] +64\.\.68\n/
 FP /^ +4 HBA_HUMAN +[+] +15\.\.18 +HBB_HUMAN +[+] +16\.\.19\n/
 FP /^ +4 HBA_HUMAN +[+] +117\.\.120 +HBB_HUMAN +[+] +122\.\.125\n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID wossname-ex
@@ -19327,8 +19326,8 @@ FI v00294.wordmatch
 FC = 23
 FP /^ +1113 +V00294 +[+] +1\.\.1113 +V00294 +[+] +1\.\.1113\n/
 FI V00294.gff
-FZ = 137
-FP /^V00294\twordmatch\tmisc_feature\t1\t1113\t1\.000\t/
+FZ = 194
+FP /^V00294\twordmatch\tlocated_sequence_feature\t1\t1113\t1\.000\t/
 //
 
 ID align-wordmatch-pair
@@ -19350,11 +19349,11 @@ FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-srspair
@@ -19376,11 +19375,11 @@ FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx0
@@ -19402,11 +19401,11 @@ FP 1 /^       :::::\n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx1
@@ -19429,11 +19428,11 @@ FP 2 /^           \n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx2
@@ -19455,11 +19454,11 @@ FP 1 /^HBA_HU HGKKV\n/
 FP 1 /^HBB_HU -----\n/
 FP 2 /^HBB_HU ----\n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx3
@@ -19479,11 +19478,11 @@ FZ > 608
 FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
 FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID align-wordmatch-markx10
@@ -19512,11 +19511,11 @@ FP 1 /^; al_start: 64\n/
 FP 1 /^; al_stop: 68\n/
 FP 1 /^; al_display_start: 64\n/
 FI HBA_HUMAN.gff
-FZ = 336
-FP /^HBA_HUMAN\twordmatch\tmisc_feature\t59\t63\t1\.000\t/
+FZ = 346
+FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 336
-FP /^HBB_HUMAN\twordmatch\tmisc_feature\t64\t68\t1\.000\t/
+FZ = 346
+FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
 ID align-merger-fasta
@@ -20622,8 +20621,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI test.out
-FZ = 652
-FP /\A##gff-version 2\.0\n/
+FZ = 690
+FP /\A##gff-version 3\n/
 FP 10 /^seq1\tdemofeature\t/
 //
 
@@ -20649,7 +20648,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI test.out
-FZ = 2218
+FZ = 2201
 FP 10 /^X13776\tEMBL\t/
 //
 
