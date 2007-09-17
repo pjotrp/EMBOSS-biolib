@@ -292,7 +292,7 @@ AjPTable ajTableNewLen(ajuint size)
 
 /* @func ajTableFetch *********************************************************
 **
-** returns the value associated with key in table, or null
+** Returns the value associated with key in table, or null
 ** if table does not hold key.
 **
 ** @param [r] table [const AjPTable] table to search
@@ -975,6 +975,100 @@ AjPTable ajTablestrNewLen(ajuint size)
 
 
 
+
+/* @section Retrieval **********************************************************
+**
+** @fdata [AjPTable]
+**
+** Retrieves values from a hash table
+**
+** @nam3rule Fetch Retrieval fuction
+**
+** @argrule Fetch table [const AjPTable] Hash table
+** @argrule Fetch key [const AjPStr] Key
+**
+** @valrule Fetch [const AjPStr] Value
+**
+** @fcategory cast
+**
+******************************************************************************/
+
+/* @func ajTablestrFetch ******************************************************
+**
+** returns the value associated with key in table, or null
+** if table does not hold key.
+**
+** @param [r] table [const AjPTable] table to search
+** @param [r] key   [const AjPStr] key to find.
+** @return [const AjPStr]  value associated with key
+** @error NULL if key not found in table.
+** @@
+******************************************************************************/
+
+const AjPStr ajTablestrFetch(const AjPTable table, const AjPStr key)
+{
+    ajint i;
+    struct binding *p;
+
+    if(!table)
+	return NULL;
+    if (!key)
+	return NULL;
+
+    i = (*table->hash)(key, table->size);
+    for(p = table->buckets[i]; p; p = p->link)
+	if((*table->cmp)(key, p->key) == 0)
+	    break;
+
+    return p ? (const AjPStr) p->value : NULL;
+}
+
+/* @section Modify ************************************************************
+**
+** @fdata [AjPTable]
+**
+** Updates values from a hash table
+**
+** @nam3rule Fetchmod Retrieval fuction
+**
+** @argrule Fetchmod table [AjPTable] Hash table
+** @argrule Fetchmod key [const AjPStr] Key
+**
+** @valrule Fetchmod [AjPStr*] Value
+**
+** @fcategory modify
+**
+******************************************************************************/
+
+/* @func ajTablestrFetchmod ***************************************************
+**
+** returns the value associated with key in table, or null
+** if table does not hold key.
+**
+** @param [u] table [AjPTable] table to search
+** @param [r] key   [const AjPStr] key to find.
+** @return [AjPStr*]  value associated with key
+** @error NULL if key not found in table.
+** @@
+******************************************************************************/
+
+AjPStr* ajTablestrFetchmod(AjPTable table, const AjPStr key)
+{
+    ajint i;
+    struct binding *p;
+
+    if(!table)
+	return NULL;
+    if (!key)
+	return NULL;
+
+    i = (*table->hash)(key, table->size);
+    for(p = table->buckets[i]; p; p = p->link)
+	if((*table->cmp)(key, p->key) == 0)
+	    break;
+
+    return p ? (AjPStr*) (&p->value) : NULL;
+}
 
 /* @section Comparison functions **********************************************
 **
