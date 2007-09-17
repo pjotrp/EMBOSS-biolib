@@ -29,6 +29,7 @@ static AjPRegexp seqRegMegaSeq  = NULL;
 static AjPRegexp seqRegJackTop  = NULL;
 static AjPRegexp seqRegJackSeq  = NULL;
 static AjPRegexp seqRegGffTyp = NULL;
+static AjPRegexp seqRegGff3Typ = NULL;
 static AjPRegexp seqRegRawNonseq = NULL;
 static AjPRegexp seqRegNbrfId  = NULL;
 static AjPRegexp seqRegStadenId = NULL;
@@ -531,6 +532,7 @@ static AjBool     seqReadGcg(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadGenbank(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadGifasta(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadGff(AjPSeq thys, AjPSeqin seqin);
+static AjBool     seqReadGff3(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadHennig86(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadIg(AjPSeq thys, AjPSeqin seqin);
 static AjBool     seqReadJackknifer(AjPSeq thys, AjPSeqin seqin);
@@ -738,9 +740,15 @@ static SeqOInFormat seqInFormatDef[] = {
   {"plain",       "Plain text (alias)",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadText, AJFALSE, 0},	/* alias for text */
-  {"gff",         "GFF feature file with sequence in the header",
+  {"gff2",         "GFF feature file with sequence in the header",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJTRUE,  AJTRUE,  seqReadGff, AJFALSE, 0},
+  {"gff3",         "GFF3 feature file with sequence",
+       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+       AJTRUE,  AJTRUE,  seqReadGff3, AJFALSE, 0},
+  {"gff",         "GFF3 feature file with sequence",
+       AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,
+       AJTRUE,  AJTRUE,  seqReadGff3, AJFALSE, 0},
   {"stockholm",   "Stockholm (pfam) format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadStockholm, AJFALSE, 0},
@@ -6965,6 +6973,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
     else		     /* test for a SwissProt/SpTrEMBL entry */
     {
 	if(ajStrFindC(seqReadLine, " PRT; ")>= 0  ||
+	   ajStrFindC(seqReadLine, " Unreviewed; ") >= 0 ||
 	   ajStrFindC(seqReadLine, " Reviewed; ") >= 0 ||
 	   ajStrFindC(seqReadLine, " Preliminary; ") >= 0 
 	   )
@@ -8158,8 +8167,192 @@ static AjBool seqReadGff(AjPSeq thys, AjPSeqin seqin)
 
     if(ajStrMatchC(typstr, "Protein"))
       ajSeqSetProt(thys);
-    else
+    else if(ajSeqIsNuc(thys))
       ajSeqSetNuc(thys);
+    else
+      ajSeqSetProt(thys);
+
+
+    ajFileBuffClear(buff, 0);
+
+    ajStrDel(&typstr);
+    ajStrDel(&verstr);
+    ajStrDel(&outstr);
+
+    return ajTrue;
+}
+
+
+
+/* @funcstatic seqReadGff3 ****************************************************
+**
+** Given data in a sequence structure, tries to read everything needed
+** using GFF3 format.
+**
+** GFF3 is far stricter than GFF2 but does include a sequence in FASTA format
+**
+** GFF also defines Type and sequence-region headers, but they only
+** provide information that is also in the DNA, RNA or Protein header
+** and these are required for sequence storage so we ignore the alternatives.
+**
+** @param [w] thys [AjPSeq] Sequence object
+** @param [u] seqin [AjPSeqin] Sequence input object
+** @return [AjBool] ajTrue on success
+** @@
+******************************************************************************/
+
+static AjBool seqReadGff3(AjPSeq thys, AjPSeqin seqin)
+{
+
+    ajuint bufflines         = 0;
+    AjBool ok;
+    AjPFileBuff buff;
+    AjPFileBuff ftfile   = NULL;
+    AjBool dofeat        = ajFalse;
+    AjPStr verstr = NULL;	/* copy of version line */
+    AjPStr outstr = NULL;	/* generated Type line */
+    AjPStr typstr = NULL;
+
+    buff = seqin->Filebuff;
+
+    if(!seqFtFmtGff)
+	ajStrAssignC(&seqFtFmtGff, "gff3");
+
+    if(!seqRegGff3Typ)
+	seqRegGff3Typ = ajRegCompC("^#([DR]NA|Protein) +([^ \t\r\n]+)");
+
+    ok = ajFileBuffGetStore(buff, &seqReadLine,
+			    seqin->Text, &thys->TextPtr);
+    if(!ok)
+	return ajFalse;
+
+    bufflines++;
+
+    ajDebug("seqReadGff3 first line '%S'\n", seqReadLine);
+
+    ajStrRemoveWhiteExcess(&seqReadLine);
+    if(!ajStrMatchC(seqReadLine, "##gff-version 3"))
+    {
+	ajDebug("bad gff3 version line '%S'\n", seqReadLine);
+	ajFileBuffReset(buff);
+	return ajFalse;
+    }
+    ajStrAssignS(&verstr, seqReadLine);
+
+    if(seqin->Text)
+	ajStrAssignS(&thys->TextPtr,seqReadLine);
+
+    ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
+    while(ok && ajStrPrefixC(seqReadLine, "#"))
+    {
+	if(ajStrPrefixC(seqReadLine, "##sequence-region"))
+	{
+	}
+	else if(ajStrPrefixC(seqReadLine, "##feature-ontology"))
+	{
+	}
+	else if(ajStrPrefixC(seqReadLine, "##attribute-ontology"))
+	{
+	}
+	else if(ajStrPrefixC(seqReadLine, "##source-ontology"))
+	{
+	}
+	else if(ajStrPrefixC(seqReadLine, "###"))
+	{
+	}
+	else if(ajStrPrefixC(seqReadLine, "##FASTA"))
+	{
+	    break;
+	}
+	else if(ajStrPrefixC(seqReadLine, "##"))
+	{
+	    ajWarn("GFF3: Unrecognized header directive '%S'",
+		   seqReadLine);
+	}
+	if(ajRegExec(seqRegGff3Typ, seqReadLine))
+	{
+	    ajRegSubI(seqRegGff3Typ, 1, &typstr);
+	    ajRegSubI(seqRegGff3Typ, 2, &thys->Name);
+	    ajFmtPrintS(&outstr, "#!Type %S %S", typstr, thys->Name);
+	}
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+    }
+
+    /* do we want the features now? */
+
+    if(ok & seqinUfoLocal(seqin))
+    {
+	dofeat = ajTrue;
+
+	ftfile = ajFileBuffNew();
+	ajFileBuffLoadS(ftfile, verstr);
+	ajFileBuffLoadS(ftfile, outstr);
+    }
+
+    while(ok && !ajStrPrefixC(seqReadLine, "##"))
+    {
+	if(dofeat)
+	    ajFileBuffLoadS(ftfile, seqReadLine);
+	/* ajDebug("GFF FEAT saved line:\n%S", seqReadLine); */
+	ok = ajFileBuffGetStore(buff,&seqReadLine,seqin->Text,
+				&thys->TextPtr);
+    }
+
+    if(!ajStrPrefixC(seqReadLine, "##FASTA")) /* no sequence at end */
+    {
+	ajUser("bad FASTA line '%S'", seqReadLine);
+	ajFileBuffReset(buff);
+	return ajFalse;
+    }
+	
+    ok = ajFileBuffGetStore(buff, &seqReadLine,
+			    seqin->Text, &thys->TextPtr);
+    if(ok)
+    {
+	if(ajStrPrefixC(seqReadLine, ">"))
+	{
+	    ajStrCutStart(&seqReadLine, 1);
+	    ajStrExtractFirst(seqReadLine, &thys->Desc, &thys->Name);
+	}
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+    }
+    while(ok && !ajStrPrefixC(seqReadLine, "##"))
+    {
+	seqAppend(&thys->Seq, seqReadLine);
+	ok = ajFileBuffGetStore(buff, &seqReadLine,
+				seqin->Text, &thys->TextPtr);
+    }
+    if(!ajSeqGetLen(thys))
+    {
+	ajUser("seqlen 0");
+	ajFileBuffReset(buff);
+	return ajFalse;
+    }
+
+    if(dofeat)
+    {
+	ajFeattabInDel(&seqin->Ftquery);
+	seqin->Ftquery = ajFeattabInNewSSF(seqFtFmtGff, thys->Name,
+					   ajStrGetPtr(seqin->Type), ftfile);
+	ajDebug("GFF FEAT TabIn %x\n", seqin->Ftquery);
+	ftfile = NULL;		  /* now copied to seqin->FeattabIn */
+	ajFeattableDel(&seqin->Fttable);
+	seqin->Fttable = ajFeatRead(seqin->Ftquery);
+	/* ajFeattableTrace(seqin->Fttable); */
+	ajFeattableDel(&thys->Fttable);
+	thys->Fttable = seqin->Fttable;
+	seqin->Fttable = NULL;
+    }
+
+
+    if(ajStrMatchC(typstr, "Protein"))
+      ajSeqSetProt(thys);
+    else if(ajSeqIsNuc(thys))
+      ajSeqSetNuc(thys);
+    else
+      ajSeqSetProt(thys);
 
     ajFileBuffClear(buff, 0);
 
@@ -10073,12 +10266,12 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
     {
 	if(thys->CaseId)
 	{
-	    if(ajStrMatchWildCaseS(seq->Name, thys->Id))
+	    if(ajStrMatchWildS(seq->Name, thys->Id))
 		return ajTrue;
 	}
 	else
 	{
-	    if(ajStrMatchWildS(seq->Name, thys->Id))
+	    if(ajStrMatchWildCaseS(seq->Name, thys->Id))
 		return ajTrue;
 	}
 
@@ -10089,7 +10282,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 
     if(ajStrGetLen(thys->Sv)) /* test Sv and Gi */
     {
-	if(ajStrMatchWildS(seq->Sv, thys->Sv))
+	if(ajStrMatchWildCaseS(seq->Sv, thys->Sv))
 	    return ajTrue;
 
 	ajDebug("sv test failed\n");
@@ -10099,7 +10292,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 
     if(ajStrGetLen(thys->Gi)) /* test Sv and Gi */
     {
-	if(ajStrMatchWildS(seq->Gi, thys->Gi))
+	if(ajStrMatchWildCaseS(seq->Gi, thys->Gi))
 	    return ajTrue;
 
 	ajDebug("gi test failed\n");
@@ -10120,7 +10313,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 	    ajDebug("... try accession '%S' '%S'\n", accstr,
 		    thys->Acc);
 
-	    if(ajStrMatchWildS(accstr, thys->Acc))
+	    if(ajStrMatchWildCaseS(accstr, thys->Acc))
 	    {
 		ajListIterDel(&iter);
 		return ajTrue;
@@ -10144,7 +10337,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 	    ajDebug("... try organism '%S' '%S'\n", taxstr,
 		    thys->Org);
 
-	    if(ajStrMatchWildS(taxstr, thys->Org))
+	    if(ajStrMatchWildCaseS(taxstr, thys->Org))
 	    {
 		ajListIterDel(&iter);
 		return ajTrue;
@@ -10173,7 +10366,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 	    ajDebug("... try keyword '%S' '%S'\n", keystr,
 		    thys->Key);
 
-	    if(ajStrMatchWildS(keystr, thys->Key))
+	    if(ajStrMatchWildCaseS(keystr, thys->Key))
 	    {
 		ajListIterDel(&iter);
 		return ajTrue;
@@ -10199,7 +10392,7 @@ static AjBool seqQueryMatch(const AjPSeqQuery thys, const AjPSeq seq)
 	ajDebug("... try description '%S' '%S'\n", seq->Desc,
 		thys->Des);
 
-	if(ajStrMatchWildWordS(seq->Desc, thys->Des))
+	if(ajStrMatchWildWordCaseS(seq->Desc, thys->Des))
 	    return ajTrue;
 
 	tested = ajTrue;
