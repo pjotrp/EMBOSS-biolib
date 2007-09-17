@@ -7,7 +7,6 @@ extern "C"
 #define ajstr_h
 
 #include "ajdefine.h"
-#include "ajtable.h"
 
 
 
@@ -228,6 +227,8 @@ AjBool     ajStrAppendK(AjPStr* Pstr, char chr);
 AjBool     ajStrAppendS(AjPStr* Pstr, const AjPStr str);
 AjBool     ajStrAppendCountK(AjPStr* Pstr, char chr, ajuint num);
 AjBool     ajStrAppendLenC(AjPStr* Pstr, const char* txt, ajuint len);
+AjBool     ajStrAppendSubC(AjPStr* Pstr, const char* txt,
+			   ajint pos1, ajint pos2);
 AjBool     ajStrAppendSubS(AjPStr* Pstr, const AjPStr str,
 			   ajint pos1, ajint pos2);
 
