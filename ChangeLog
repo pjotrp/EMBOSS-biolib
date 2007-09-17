@@ -1,6 +1,32 @@
 Version 5.1.0
-	A new application "density" has beeen added. This reports the
-	A+C+G+T+AT+GC densities of nucleic acid sequences within
+	String functions corrected so that Case in the name always means
+	case-insensitive and works by converting to upper case. Some
+	functions were defined the wrong way, with "Case" for the
+	case-insensitive form.
+
+	GFF3 format is now the default feature output.
+
+	A new function ajFeatIsCds identifies protein coding nucleotide
+	features (CDS) using the SO identifier. A new function
+	ajFeattagIsNote identifies feature tags that are for the default
+	feature tag.
+
+	Protein features now use the new Sequence Ontology terms defined
+	by BioSapiens. These are not yet accepted by GFF3 validators. The
+	new SO identifiers are added to protein feature definitions and
+	used internally.
+
+	Feature format definitions (the Efeatures and Etags files)
+	now allow #include references to other files. This allows a
+	standard EMBL and Swissprot feature table definition to be
+	included by the internal and GFF definitions. Redefinitions are
+	allowed using + and - prefxes to add and remove tags for existing
+	feature types.
+
+	GFF3 format feature (and report) output is added.
+
+	A new application "density" has been added. This reports the
+	A+C+G+T and AT+GC densities of nucleic acid sequences within
 	an adjustable sliding window. Plots of A+C+G+T or AT+GC are
 	optionally produced.
 	
