@@ -126,6 +126,9 @@ int main(int argc, char **argv)
     qgraph  = ajAcdGetGraphxy("qgraph");
     dgraph  = ajAcdGetGraphxy("dgraph");
 
+    if(quad && dual)
+	ajFatal("Specifying both -quad and -dual is not allowed");
+
     str = ajStrNew();
     hdr = ajStrNew();
 
