@@ -149,6 +149,7 @@ meme_database                     file           MEME database
 meme_background_frequencies       file           MEME background frequencies file
 meme_motif_order                  string         MEME directive for ordering and spacing of motifs
 meme_output                       file           MEME program output
+mira_parameters                   file           MIRA program parameters
 mix_input                         file           Phylip mix program input
 mix_output                        file           Phylip mix program output
 molwt                             file           Molecular weights
