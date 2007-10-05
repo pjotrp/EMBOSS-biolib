@@ -104,6 +104,9 @@ static AjPStr acdTmpOutFName = NULL;
 
 /*static AjPStr acdOutFName = NULL;*/
 
+static AjPList acdListComments = NULL;
+static AjPList acdListCommentsCount = NULL;
+static AjPList acdListCommentsColumn = NULL;
 static AjPStr acdLogFName = NULL;
 static AjPFile acdLogFile = NULL;
 static AjPList acdSecList = NULL;
@@ -117,7 +120,9 @@ static ajint acdPrettyIndent = 2;
 
 static AjPStr acdFName = NULL;
 static ajint acdLineNum = 0;
+static ajint acdCmtWord  = 0;
 static ajint acdWordNum = 0;
+static ajint acdWordSave = 0;
 static ajint acdErrorCount = 0;
 
 static AjPStr acdStrName = NULL;
@@ -713,6 +718,7 @@ static void*     acdGetValueNumC(const char *token, const char* type,
 				ajint pnum, AjBool passbyref);
 static void*     acdGetValueNumS(const AjPStr token, const char* type,
 				ajint pnum, AjBool passbyref);
+static const AjPStr acdGetValDefault(const char *token);
 static const AjPStr acdGetValStr(const char *token);
 static void      acdHelp(void);
 static void      acdHelpAppend(const AcdPAcd thys, AjPStr* str, char flag);
@@ -788,6 +794,8 @@ static void      acdParseAttributes(const AcdPAcd acd,
 static void      acdParseName(AjPList listwords, AjPStr* pword);
 static AjPStr    acdParseValue(AjPList listwords);
 static void      acdPretty(const char *fmt, ...);
+static void      acdPrettyClose(void);
+static void      acdPrettyComment(const AjPStr comment);
 static void      acdPrettyShift(void);
 static void      acdPrettyWrap(ajint left, const char *fmt, ...);
 static void      acdPrettyUnShift(void);
@@ -1512,6 +1520,8 @@ AcdOAttr acdAttrInfile[] =
 {
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
+    {"trydefault", VT_BOOL, 0, "N",
+	 "Default filename may not exist if nullok is true"},
     {"binary", VT_BOOL, 0, "N",
 	 "File contains binary data"},
     {NULL, VT_NULL, 0, NULL,
@@ -3169,6 +3179,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     static AjPStr acdPackRoot = NULL;
     static AjPStr acdPackRootName = NULL;
     static AjPStr acdUtilRoot = NULL;
+    AjPStr comment = NULL;
     AjPStrTok tokenhandle = NULL;
     char white[] = " \t\n\r";
     AjPList acdListWords = NULL;
@@ -3176,6 +3187,9 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     AjPStr tmpword = NULL;	    /* words to add to acdListWords */
     ajint i;
     ajint *k = NULL;
+    ajint *kc = NULL;
+    ajuint *kp = NULL;
+    ajuint pos;
 
     acdProgram = ajStrNewC(pgm);
     acdSecList = ajListstrNew();
@@ -3296,13 +3310,17 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     acdListWords = ajListstrNew();
     acdListCount = ajListNew();
     
+    acdListComments = ajListstrNew();
+    acdListCommentsCount = ajListNew();
+    acdListCommentsColumn = ajListNew();
+    
     while(ajFileReadLine(acdFile, &acdLine))
     {
 	AJNEW0(k);
 	*k = ajListGetLength(acdListWords);
 	ajListPushAppend(acdListCount, k);
       
-	if(ajStrCutComments(&acdLine))
+	if(ajStrCutCommentsRestpos(&acdLine, &comment, &pos))
 	{
 	    tokenhandle = ajStrTokenNewC(acdLine, white);
 	  
@@ -3320,6 +3338,16 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    }
 	    ajStrTokenDel(&tokenhandle);
 	    ajStrDel(&tmpword); 	/* empty token at the end */
+	}
+	if (ajStrGetLen(comment)) {
+	    ajListstrPushAppend(acdListComments, comment);
+	    comment = NULL;
+	    AJNEW(kc);
+	    *kc = ajListGetLength(acdListWords);
+	    ajListPushAppend(acdListCommentsCount, kc);
+	    AJNEW(kp);
+	    *kp = pos;
+	    ajListPushAppend(acdListCommentsColumn, kp);
 	}
     }
     ajFileClose(&acdFile);
@@ -3379,6 +3407,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     ajStrDel(&acdPackRoot);
     ajStrDel(&acdPackRootName);
     ajStrDel(&acdFName);
+    ajStrDel(&comment);
     
     return;
 }
@@ -3482,10 +3511,34 @@ static void acdParse(AjPList listwords, AjPList listcount)
     ajint linecount = 0;
     ajint lineword  = 0;
     ajint *iword    = NULL;
+    ajint *icword    = NULL;
+    ajint *icpos    = NULL;
+    AjPStr cmtstr = NULL;
     AjPTime today = NULL;
-    
+
     /* initialise the global line number counter to zero */
     acdLineNum = 0;
+
+    while(ajListGetLength(acdListCommentsCount) && !acdCmtWord)
+    {
+	ajListPeek(acdListCommentsCount, (void**) &icword);
+	acdCmtWord = *icword;
+	if(!acdCmtWord)
+	{
+	    ajStrDel(&cmtstr);
+	    ajListPop(acdListCommentsCount, (void**) &icword);
+	    ajListPop(acdListCommentsColumn, (void**) &icpos);
+	    ajListstrPop(acdListComments, &cmtstr);
+	    acdPrettyComment(cmtstr);
+	    AJFREE(icword);
+	    AJFREE(icpos);
+	}
+    }
+    if(ajStrGetLen(cmtstr))
+    {
+	acdPretty("\n");
+	ajStrDel(&cmtstr);
+    }
 
     while(ajListGetLength(listcount) && (!lineword))
     {
@@ -3535,8 +3588,12 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	    
 	    acdNewCurr = acdNewAppl(acdStrName);
 	    
+	    acdWordNum++;		/* add one for '[' */
+
 	    acdPretty("%s: %S [\n",
 		      acdKeywords[acdCurrentStage].Name, acdStrName);
+	    
+	    acdWordNum--;		/* not yet parsed '[' */
 	    
 	    acdParseAttributes(acdNewCurr, listwords);
 
@@ -3575,13 +3632,17 @@ static void acdParse(AjPList listwords, AjPList listcount)
 		ajStrAssignS(&acdStrAlias, acdStrName);
 	    
 	    acdNewCurr = acdNewQual(acdStrName, acdStrAlias, &acdStrType, 0);
-	    
+
+	    acdWordNum++;		/* add one for '[' */
+
 	    if(!ajStrMatchS(acdStrName, acdStrAlias))
 		acdPretty("\n%S: %S %S [\n", acdStrType,
 			  acdStrName, acdStrAlias);
 	    else
 		acdPretty("\n%S: %S [\n", acdStrType,
 			  acdStrName);
+
+	    acdWordNum--;		/* not yet parsed '[' */
 	    
 	    acdParseAttributes(acdNewCurr, listwords);
 	    
@@ -3595,8 +3656,12 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	    
 	    acdNewCurr = acdNewSec(acdStrName);
 	    
+	    acdWordNum++;		/* add one for '[' */
+
 	    acdPretty("\n%s: %S [\n",
 		      acdKeywords[acdCurrentStage].Name, acdStrName);
+	    
+	    acdWordNum--;		/* not yet parsed '[' */
 	    
 	    acdParseAttributes(acdNewCurr, listwords);
 	    
@@ -3636,8 +3701,12 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	    
 	    acdNewCurr = acdNewRel(acdStrName);
 	    
+	    acdWordNum++;		/* add one for '[' */
+
 	    acdPretty("\n%s: %S [\n",
 		      acdKeywords[acdCurrentStage].Name, acdStrName);
+	    
+	    acdWordNum--;		/* not yet parsed '[' */
 	    
 	    acdParseAttributes(acdNewCurr, listwords);
 	    
@@ -3671,6 +3740,8 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	acdLog("Unclosed sections in ACD file\n");
 	acdError("Unclosed sections in ACD file"); /* test noendsec.acd */
     }
+
+    acdPrettyClose();
     
     ajStrDel(&acdStrName); /* the global string ... no longer needed */
     
@@ -4109,8 +4180,14 @@ static void acdParseAttributes(const AcdPAcd acd, AjPList listwords)
 	    acdSet(acd, &strAttr, strFixValue);
 	else
 	    acdSetKey(acd, &strAttr, strFixValue);
+
+	if(done)
+	    acdWordNum--;
+
 	acdPrettyWrap(ajStrGetLen(strAttr)+3, "%S: \"%S\"",
 		      strAttr, strValue);
+	if(done)
+	    acdWordNum++;
     }
 
     acdPrettyUnShift();
@@ -5660,6 +5737,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam4rule  GetToggle   ACD boolean toggle datatype
 ** @nam4rule  GetTree   ACD phylogenetic tree datatype
 ** @nam4rule  GetValue   ACD datatype string value
+** @nam5rule  GetValueDefault   ACD datatype default value
 ** @nam5rule  Name    Name of ACD datatype value
 ** @nam5rule  Single  First in array of ACD datatype values
 ** @nam3rule  Is    Test value
@@ -8449,12 +8527,14 @@ static void acdSetInfile(AcdPAcd thys)
 
     ajint itry;
     AjBool nullok;
+    AjBool trydefault;
     
     AjPStr infname = NULL;
     
     val = NULL;				/* set the default value */
     
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "trydefault", ajFalse, &trydefault);
     
     acdInFilename(&infname);
     required = acdIsRequired(thys);
@@ -8476,10 +8556,15 @@ static void acdSetInfile(AcdPAcd thys)
 	    val = ajFileNewIn(acdReply);
 	    if(!val)
 	    {
-		acdBadVal(thys, required,
-			  "Unable to open file '%S' for input",
-			  acdReply);
-		ok = ajFalse;
+		if(!nullok ||
+		   !trydefault ||
+		   !ajStrMatchS(acdReply, acdReplyDef))
+		{
+		    acdBadVal(thys, required,
+			      "Unable to open file '%S' for input",
+			      acdReply);
+		    ok = ajFalse;
+		}
 	    }
 	}
 	else
@@ -13361,6 +13446,21 @@ __deprecated const AjPStr  ajAcdValue(const char *token)
 
 
 
+/* @func ajAcdGetValueDefault **************************************************
+**
+** Returns the default value of any ACD item
+**
+** @param [r] token [const char*] Text token name
+** @return [const AjPStr] Default value.
+** @cre failure to find an item with the right name and type returns NULL.
+** @@
+******************************************************************************/
+
+const AjPStr ajAcdGetValueDefault(const char *token)
+{
+    return acdGetValDefault(token);
+}
+
 /* @func ajAcdIsUserdefined ***************************************************
 **
 ** Tests whether an ACD item has a value set by the user.
@@ -13608,6 +13708,39 @@ static const AjPStr acdGetValStr(const char *token)
     if(!acd) return NULL;
 
     return acd->ValStr;
+}
+
+
+
+
+/* @funcstatic acdGetValDefault ************************************************
+**
+** Picks up a token by name and tests the type.
+** The default string value is returned for any data type.
+**
+** @param [r] token [const char*] Token name, optionally including
+**                                a numeric suffix.
+** @return [const AjPStr] String.
+**
+******************************************************************************/
+
+static const AjPStr acdGetValDefault(const char *token)
+{
+    AcdPAcd acd;
+    ajint pnum = 0;		   /* need to get from end of token */
+    AjPStr tmpstr = NULL;
+
+    tmpstr = ajStrNewC(token);
+
+    acdLog("acdGetValStr '%s' (%s)\n", token);
+
+    acdTokenToLowerS(&tmpstr, &pnum);
+
+    acd = acdFindAcd(tmpstr, tmpstr, pnum);
+    ajStrDel(&tmpstr);
+    if(!acd) return NULL;
+
+    return acd->DefStr[DEF_DEFAULT];
 }
 
 
@@ -14033,7 +14166,8 @@ static void acdHelpAssoc(const AcdPAcd thys, AjPStr *str, const char* name)
 			qname,  qtype);
 	    ajStrAssignC(&text, quals[i].Help);
 	    acdTextFormat(&text);
-	    ajStrFmtWrapLeft(&text, 45, 34);
+	    ajStrFmtWrapLeft(&text, 45, 34, 0);
+	    ajStrCutStart(&text, 34);
 	    ajStrAppendS(&line, text);
 	    ajStrAppendC(&line, "\n");
 	    ajStrAppendS(str, line);
@@ -14124,7 +14258,8 @@ static void acdHelpAppend(const AcdPAcd thys, AjPStr *str, char flag)
 
     ajStrRemoveWhiteSpaces(&text);
     acdTextFormat(&text);
-    ajStrFmtWrapLeft(&text, 45, 34);
+    ajStrFmtWrapLeft(&text, 45, 34, 0);
+    ajStrCutStart(&text, 34);
     ajStrAppendS(&line, text);
     ajStrAppendC(&line, "\n");
     ajStrAppendS(str, line);
@@ -23723,6 +23858,15 @@ static void acdPretty(const char *fmt, ...)
 {
     va_list args ;
     static AjPStr tmpstr = NULL;
+    ajint *icword    = NULL;
+    ajint *icpos    = NULL;
+    AjPStr cmtstr = NULL;
+    ajint lastword;
+    ajint wordcount;
+    ajuint ipos;
+    ajint i = 0;
+    ajint j = 0;
+    ajint ccnt=0;
 
     if(!acdDoPretty)
 	return;
@@ -23740,10 +23884,38 @@ static void acdPretty(const char *fmt, ...)
 	}
     }
 
-
     va_start(args, fmt);
     ajFmtVPrintS(&tmpstr, fmt, args);
     va_end(args);
+
+    /*
+    ** test for comment block before this line
+    */
+
+    while(ajListGetLength(acdListCommentsCount) && (acdCmtWord <= acdWordSave))
+    {
+	ajListPeek(acdListCommentsCount, (void**) &icword);
+	ajListPeek(acdListCommentsColumn, (void**) &icpos);
+	acdCmtWord = *icword;
+	if((acdCmtWord == acdWordSave && !*icpos) ||
+	    (acdCmtWord<=acdWordSave))
+	{
+	    if(!ajStrGetLen(cmtstr))
+		ajFmtPrintF(acdPrettyFile, "\n");
+	    
+	    ajListPop(acdListCommentsCount, (void**) &icword);
+	    ajListPop(acdListCommentsColumn, (void**) &icpos);
+	    ajListstrPop(acdListComments, &cmtstr);
+	    acdPrettyComment(cmtstr);
+	    ajStrDel(&cmtstr);
+	    AJFREE(icword);
+	    AJFREE(icpos);
+	    ccnt++;
+	}
+    }
+
+    if(ccnt && ajStrGetCharFirst(tmpstr) != '\n')
+	ajFmtPrintF(acdPrettyFile, "\n");
 
     while(ajStrGetCharFirst(tmpstr) == '\n')
     {
@@ -23751,10 +23923,176 @@ static void acdPretty(const char *fmt, ...)
 	ajStrCutStart(&tmpstr, 1);
     }
 
+    wordcount = ajStrParseCount(tmpstr);
+    lastword = acdWordSave + wordcount;
+
+    /*
+    ** now check for inline comment on this line of text
+    */
+
+    if(ajListGetLength(acdListCommentsCount) && (acdCmtWord <= lastword))
+    {
+	ajListPeek(acdListCommentsCount, (void**) &icword);
+	ajListPeek(acdListCommentsColumn, (void**) &icpos);
+	acdCmtWord = *icword;
+	if((acdCmtWord == lastword && *icpos) |
+	   (acdCmtWord < lastword))
+	{
+	    ajListPop(acdListCommentsCount, (void**) &icword);
+	    ajListPop(acdListCommentsColumn, (void**) &icpos);
+	    ajListstrPop(acdListComments, &cmtstr);
+
+	    ajStrRemoveWhiteExcess(&cmtstr);
+	    if(!ajStrPrefixC(cmtstr, "#"))
+		ajStrInsertC(&cmtstr, 0, "#");
+
+	    if((ajStrGetLen(cmtstr) > 1) && !ajStrPrefixC(cmtstr, "# "))
+		ajStrInsertC(&cmtstr, 1, " ");
+
+	    i=0;
+	    while(ajStrGetCharLast(tmpstr) == '\n')
+	    {
+		ajStrCutEnd(&tmpstr, 1);
+		i++;
+	    }
+	    ipos = 50;
+	    if(ajStrGetLen(cmtstr) > (79 - ipos))
+		ipos = 79 - ajStrGetLen(cmtstr);
+
+	    if(ipos <= (ajStrGetLen(tmpstr)+acdPrettyMargin))
+		ipos = ajStrGetLen(tmpstr)+acdPrettyMargin+1;
+	    j = ipos-ajStrGetLen(tmpstr)-acdPrettyMargin;
+	    ajStrAppendCountK(&tmpstr, ' ', j);
+	    ajStrAppendS(&tmpstr, cmtstr);
+	    if(i)
+		ajStrAppendCountK(&tmpstr, '\n', i);
+	    ajStrDel(&cmtstr);
+	    AJFREE(icword);
+	    AJFREE(icpos);
+	}
+    }
+
     if(acdPrettyMargin)
 	ajFmtPrintF(acdPrettyFile, "%.*s", acdPrettyMargin,
 		    "                                                       ");
     ajFmtPrintF(acdPrettyFile, "%S", tmpstr);
+
+    acdWordSave += wordcount;
+
+    return;
+}
+
+
+
+
+/* @funcstatic acdPrettyClose *************************************************
+**
+** Writes any remaining comments and closes the pretty output file
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPrettyClose(void)
+{
+    ajint *icword    = NULL;
+    ajint *icpos    = NULL;
+    AjPStr cmtstr = NULL;
+
+    if(!acdDoPretty)
+	return;
+
+    if(!acdPrettyFName)
+    {
+	if(acdStdout)
+	    acdPrettyFile = ajFileNewF(stdout);
+	else
+	{
+	    ajFmtPrintS(&acdPrettyFName, "%S.acdpretty", acdProgram);
+	    acdPrettyFile = ajFileNewOut(acdPrettyFName);
+	    ajFileUnbuffer(acdPrettyFile);
+	    ajFmtPrint("Created %S\n", acdPrettyFName);
+	}
+    }
+
+    while(ajListGetLength(acdListCommentsCount) && (acdCmtWord <= acdWordSave))
+    {
+	ajListPeek(acdListCommentsCount, (void**) &icword);
+	acdCmtWord = *icword;
+	if(acdCmtWord <= acdWordSave)
+	{
+	    if(!ajStrGetLen(cmtstr))
+		ajFmtPrintF(acdPrettyFile, "\n");
+	    
+	    ajStrDel(&cmtstr);
+	    ajListPop(acdListCommentsCount, (void**) &icword);
+	    ajListPop(acdListCommentsColumn, (void**) &icpos);
+	    ajListstrPop(acdListComments, &cmtstr);
+	    acdPrettyComment(cmtstr);
+	    AJFREE(icword);
+	    AJFREE(icpos);
+	}
+    }
+
+    ajStrDel(&cmtstr);
+
+    ajFileClose(&acdPrettyFile);
+
+    return;
+}
+
+
+
+/* @funcstatic acdPrettyComment ***********************************************
+**
+** Writes an indented one-line comment
+**
+** @param [r] comment [const AjPStr] OComment to be printer
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdPrettyComment(const AjPStr comment)
+{
+    AjPStr tmpstr = NULL;
+
+    if(!acdDoPretty)
+	return;
+
+    if(!acdPrettyFName)
+    {
+	if(acdStdout)
+	    acdPrettyFile = ajFileNewF(stdout);
+	else
+	{
+	    ajFmtPrintS(&acdPrettyFName, "%S.acdpretty", acdProgram);
+	    acdPrettyFile = ajFileNewOut(acdPrettyFName);
+	    ajFileUnbuffer(acdPrettyFile);
+	    ajFmtPrint("Created %S\n", acdPrettyFName);
+	}
+    }
+
+    ajStrAssignS(&tmpstr, comment);
+    ajStrRemoveWhiteExcess(&tmpstr);
+
+    if(!ajStrPrefixC(tmpstr, "#"))
+	ajStrInsertC(&tmpstr, 0, "#");
+
+    if((ajStrGetLen(tmpstr) > 1) && !ajStrPrefixC(tmpstr, "# "))
+	ajStrInsertC(&tmpstr, 1, " ");
+
+
+    /*
+    ** margin is set for attributes
+    ** reduce by 2 to align with definitions
+    */
+
+    if(acdPrettyMargin)
+	ajFmtPrintF(acdPrettyFile, "%.*s", acdPrettyMargin,
+		    "                                                       ");
+    ajFmtPrintF(acdPrettyFile, "%S\n", tmpstr);
+
+    ajStrDel(&tmpstr);
 
     return;
 }
@@ -23780,6 +24118,19 @@ static void acdPrettyWrap(ajint left, const char *fmt, ...)
     static AjPStr tmpstr = NULL;
     ajint leftmargin     = left + acdPrettyMargin;
     ajint width          = 78 - leftmargin;
+    ajint *icword    = NULL;
+    ajint *icpos    = NULL;
+    AjPStr cmtstr = NULL;
+    ajint lastword;
+    ajint wordcount;
+    ajuint ipos;
+    ajint ccnt = 0;
+    ajint jpos;
+    ajint kpos;
+    ajuint ilen;
+    AjIList itercmt;
+    AjIList iterpos;
+    AjIList iterword;
 
     if(!acdDoPretty)
 	return;
@@ -23796,17 +24147,137 @@ static void acdPrettyWrap(ajint left, const char *fmt, ...)
 	}
     }
 
+    /*
+    ** whole line comments before wrapped text
+    */
+
+    while(ajListGetLength(acdListCommentsCount) && (acdCmtWord <= acdWordSave))
+    {
+	ajListPeek(acdListCommentsCount, (void**) &icword);
+	acdCmtWord = *icword;
+	if(acdCmtWord <= acdWordSave)
+	{
+	    if(!ajStrGetLen(cmtstr))
+		ajFmtPrintF(acdPrettyFile, "\n");
+	    
+	    ajListPop(acdListCommentsCount, (void**) &icword);
+	    ajListPop(acdListCommentsColumn, (void**) &icpos);
+	    ajListstrPop(acdListComments, &cmtstr);
+	    acdPrettyComment(cmtstr);
+	    ajStrDel(&cmtstr);
+	    AJFREE(icword);
+	    AJFREE(icpos);
+	}
+    }
+
     va_start(args, fmt);
     ajFmtVPrintS(&tmpstr, fmt, args);
     va_end(args);
 
     ajStrExchangeCC(&tmpstr, " \\ ", " \\\n"); /* force newlines at '\' */
 
-    ajStrFmtWrapLeft(&tmpstr, width, leftmargin);
-    if(acdPrettyMargin)
-	ajFmtPrintF(acdPrettyFile, "%.*s", acdPrettyMargin,
-		    "                                                       ");
+    wordcount = ajStrParseCount(tmpstr);
+    lastword = acdWordSave + wordcount;
+
+    /*
+    ** Now check for inline comments in these lines of text
+    */
+
+    /*
+    ** First iterate to get comment max length
+    */
+
+    ipos = 50;
+    if(ajListGetLength(acdListCommentsCount) && (acdCmtWord <= lastword))
+    {
+	ajListPeek(acdListCommentsCount, (void**) &icword);
+	acdCmtWord = *icword;
+	itercmt  = ajListIterNewread(acdListComments);
+	iterpos  = ajListIterNewread(acdListCommentsColumn);
+	iterword = ajListIterNewread(acdListCommentsCount);
+	while(!ajListIterDone(iterword) && (*icword <= lastword))
+	{
+	    icword = ajListIterGet(iterword);
+	    icpos = ajListIterGet(iterpos);
+	    cmtstr = ajListIterGet(itercmt);
+	    if(*icword <= lastword && *icpos > (acdPrettyMargin+3))
+	    {
+		ccnt++;
+		if(ajStrGetLen(cmtstr) > (79 - ipos))
+		    ipos = 79 - ajStrGetLen(cmtstr);
+		/*if(*icpos < (ajint) ipos)
+		    ipos = *icpos;*/
+	    }
+	}
+	ajListIterDel(&itercmt);
+	ajListIterDel(&iterpos);
+	ajListIterDel(&iterword);
+    }
+
+    if((ajint) ipos <= (leftmargin + 20))
+       ipos = leftmargin + 20;
+
+    width = ipos - leftmargin - 1;
+
+    ajStrFmtWrapLeft(&tmpstr, width, acdPrettyMargin, left);
+
+    /*
+    ** Insert any comments at ends of lines
+    */
+
+    jpos=-1;
+    while(ccnt--)
+    {
+	ajListPop(acdListCommentsCount, (void**) &icword);
+	ajListPop(acdListCommentsColumn, (void**) &icpos);
+	ajListstrPop(acdListComments, &cmtstr);
+	ajStrRemoveWhiteExcess(&cmtstr);
+	if(!ajStrPrefixC(cmtstr, "#"))
+	    ajStrInsertC(&cmtstr, 0, "#");
+
+	if((ajStrGetLen(cmtstr) > 1) && !ajStrPrefixC(cmtstr, "# "))
+	    ajStrInsertC(&cmtstr, 1, " ");
+
+	kpos = ajStrFindNextK(tmpstr, jpos+1, '\n');
+	if(kpos < 0)
+	{
+	    if(jpos == (ajint) ajStrGetLen(tmpstr))
+	    {
+		ajStrAppendK(&tmpstr, '\n');
+		ilen = 0;
+	    }
+	    else
+		ilen = ajStrGetLen(tmpstr) - jpos - 1;
+	    while(ilen < ipos)
+	    {
+		ajStrAppendK(&tmpstr, ' ');
+		ilen++;
+	    }
+	    ajStrAppendS(&tmpstr, cmtstr);
+	    jpos = ajStrGetLen(tmpstr);
+	}
+	else
+	{
+	    ilen = kpos - jpos - 1;
+	    jpos = kpos;
+	    while(ilen < ipos)
+	    {
+		ajStrInsertK(&tmpstr, jpos, ' ');
+		ilen++;
+		jpos++;
+	    }
+	    ajStrInsertS(&tmpstr, jpos, cmtstr);
+	    jpos += ajStrGetLen(cmtstr);
+	}
+	ajStrDel(&cmtstr);
+	AJFREE(icword);
+	AJFREE(icpos);
+    }
+
+
     ajFmtPrintF(acdPrettyFile, "%S\n", tmpstr);
+
+    acdWordSave += wordcount;
 
     return;
 }
@@ -24626,6 +25097,10 @@ static void acdReset(void)
     ajRegFree(&acdRegExpCaseList);
     ajRegFree(&acdRegExpFilename);
     ajRegFree(&acdRegExpFileExists);
+
+    ajListFree(&acdListCommentsCount);
+    ajListFree(&acdListCommentsColumn);
+    ajListstrFree(&acdListComments);
 
     ajStrDel(&acdProgram);
     AJFREE(acdParamSet);

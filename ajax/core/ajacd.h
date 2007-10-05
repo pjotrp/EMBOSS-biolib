@@ -80,6 +80,7 @@ AjPPhyloTree* ajAcdGetTree (const char *token);
 AjPPhyloTree  ajAcdGetTreeSingle (const char *token);
 
 const AjPStr  ajAcdGetValue (const char* token);
+const AjPStr  ajAcdGetValueDefault (const char* token);
 
 void          ajAcdInit (const char *pgm, ajint argc, char * const argv[]);
 void          ajAcdInitP (const char *pgm, ajint argc, char * const argv[],
