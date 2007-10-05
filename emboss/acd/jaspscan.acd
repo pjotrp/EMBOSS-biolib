@@ -45,9 +45,9 @@ section: input [
            character ',' and then treated as the list of enzymes to search \
            for. \
            An example of a file of matrix names is: \
-           # my matrices \
+           ! my matrices \
            ma0001, ma0002 \
-           # other matrices \
+           ! other matrices \
            ma0010 \
            ma0032 \
            ma0053"
