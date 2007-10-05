@@ -2067,7 +2067,6 @@ static void reportWriteTable(AjPReport thys,
     ajReportWriteHeader(thys, ftable, seq);
     
     ntags = ajReportLists(thys, &tagtypes, &tagnames, &tagprints, &tagsizes);
-    ajUser("ntags:%u", ntags);
     iterft = ajListIterNewread(ftable->Features);
     while(!ajListIterDone(iterft))
     {
@@ -2807,6 +2806,9 @@ AjBool ajReportWrite(AjPReport thys,
 
 void ajReportClose(AjPReport thys)
 {
+    if(!thys)
+	return;
+
     ajDebug("ajReportClose '%F' CountSeq %d CountHit %d\n",
 	    thys->File, thys->CountSeq, thys->CountHit);
 
