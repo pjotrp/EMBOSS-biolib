@@ -279,7 +279,7 @@ sub runtest ($) {
 # fall through for any unknown lines (bad prefix, or failed to match regexp)
 
     else {
-      $testerr = "$retcode{1} $line: $line\n";
+      $testerr = "$retcode{1}: $line\n";
       print STDERR $testerr;
       print LOG $testerr;
       return 1;
