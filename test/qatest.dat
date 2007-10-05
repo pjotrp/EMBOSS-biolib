@@ -1,4 +1,4 @@
-###########################################################################
+##########################################################################
 # Things to do
 #
 # (1) database extract programs to write to a local directory
@@ -393,7 +393,8 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 CL qatest
 FI qatest.acdpretty
-FZ = 810
+FZ = 879
+FP 2 /[\#]/
 FP 3 /^string:/
 FP 12 /^[a-z]+: /
 FI stdout
@@ -3359,8 +3360,6 @@ FZ = 15
 FP /^Created dan\.ps\n/
 FI dan.ps
 FP /^%%Title: PLplot Graph/
-FI x13776.dan
-FZ = 0
 //
 
 ID dan-old
@@ -3385,8 +3384,50 @@ FI dan1.dat
 FZ = 46589
 FP /^11\.000000\s+64\.921204\n/
 FP /^2158\.000000\s+62\.373310\n/
-FI x13776.dan
-FZ = 0
+//
+
+ID density-ex
+AP density
+CL tembl:x13776
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI x13776.density
+FC = 2095
+FP / +1 +1 +[+] +0\.000  0\.180  0\.330  0\.330  0\.160  0\.340  0\.660\n/
+//
+
+ID density-ex2
+AP density
+CL tembl:x13776 -quad -qgraph cps
+FI stdout
+FC = 1
+FP /^Created density\.ps\n/
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI density.ps
+FP /^%%Title: PLplot Graph/
+//
+
+ID density-ex3
+AP density
+CL tembl:x13776 -dual -dgraph cps
+FI stdout
+FC = 1
+FP /^Created density\.ps\n/
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI density.ps
+FP /^%%Title: PLplot Graph/
 //
 
 #############################################
@@ -9352,7 +9393,6 @@ FP 5 /PRODUCT SIZE: +[0-9]+/
 ID equicktandem-ex
 UC The input sequence is the human herpesvirus tandem repeat.
 AP equicktandem
-CL -noorigfile
 IN tembl:L46634
 IN
 IN
@@ -25847,3 +25887,95 @@ FI stdout
 FC = 0
 //
 
+###############################################################
+#
+# MIRA fragment assembly
+# Needs to be installed, use MIRA local copy of demo data
+#
+###############################################################
+
+ID emira-ex
+AB mira
+AA emira
+PP ln -f -s ../../../../src/mira-2.8.3/minidemo/data/bbdataset1/cjejuni_demo* .
+CL -setparam fasta -project cjejuni_demo -genome accurate
+CL -mxti -rns tigr -orh
+QQ rm cjejuni_demo_backbone_in.gbf
+QQ rm cjejuni_demo_in.fasta
+QQ rm cjejuni_demo_in.fasta.qual
+QQ rm cjejuni_demo_straindata_in.txt
+QQ rm cjejuni_demo_traceinfo_in.xml
+FI EdIt.log
+FC =0
+DI cjejuni_demo_info
+DI cjejuni_demo_log
+DI cjejuni_demo_results
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 2186
+FP 4 /^Contig id: 13\n/
+FP 5 /^Contig id: 2\n/
+//
+
+ID emiraest-ex
+AB mira
+AA emiraest
+CL -setparam fasta
+TI 300
+IN
+## Input files absolutely require the step1 prefix for MIRA up to 2.8.3
+PP uncover_at ../../../../src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.masked.fasta -P "-CL:mbc=on:mbcmeg=240" -n -a -r ../../../../src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.fasta step1_in.fasta >ttt
+PP rm ttt
+PP ln -f -s ../../../../src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.fasta.qual step1_in.fasta.qual
+PP touch step1_straindata_in.txt
+QQ rm step1_in.fasta.qual
+QQ rm step1_straindata_in.txt
+FI EdIt.log
+FC =0
+DI step1_info
+DI step1_log
+DI step1_results
+FI step1_in.fasta
+FC = 43967
+FP 2396 /^>/
+FI step1_nosnps_remain.caf
+FC = 107792
+FP 1594 /^BaseQuality : /
+FI step1_snpsinSTRAIN_default.caf
+FC = 47698
+FP 802 /^BaseQuality : /
+FI step1_res_cafstrainnames.txt
+FC = 2
+FP /^step1_snpsinSTRAIN_default.caf\tdefault\n/
+FP /^step1_nosnps_remain.caf\tremain\n/
+FI step2_reads.caf
+FC = 50914
+FP 1424 /^BaseQuality : /
+FI step2_straindata.txt
+FC = 1427
+FP 307 /^default_c\d+\tdefault\n/
+DI default_info
+DI default_log
+DI default_results
+DI remain_info
+DI remain_log
+DI remain_results
+DI step3_info
+DI step3_log
+DI step3_results
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FP 3 /Error while trying to load parameter file me_step[1-9]\.par/
+FI stdout
+FC = 123366
+FP 4 /^Contig id: 138\n/
+FP 2 /^Contig id: 1380\n/
+FP 1 /^Contig id: 1390\n/
+//
