@@ -7389,6 +7389,9 @@ static AjBool featVocabRead(const char* name,
     ajDebug("Trace typetable '%S'", TypeFName);
     ajTablestrTrace(pTypeTable);
 
+    ajStrDel(&TagsFName);
+    ajStrDel(&TypeFName);
+
     return ajTrue;
 }
 
@@ -7481,7 +7484,7 @@ static AjBool featVocabReadTags(const AjPStr fname, AjPTable pTagsTable,
 	}
 	else if(ajStrGetLen(line)) /* skip comments */
 	{
-	    tagname = NULL;		/* create a new tag */
+	    ajStrDel(&tagname);		/* create a new tag */
 	    if(featTagName(line, &tagname, &tagtype, &featTmpStr))
 	    {
 		numtype = -1;
@@ -7552,6 +7555,8 @@ static AjBool featVocabReadTags(const AjPStr fname, AjPTable pTagsTable,
     ajStrDel(&TagsFName);
     ajStrDel(&line);
     ajStrDel(&token);
+    ajStrDel(&tagname);
+    ajStrDel(&tagtype);
 
     /*
        ajTableTrace(pTagsTable);
@@ -7689,6 +7694,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 				  fname, localname,
 				  sofaname, tablestr);
 			    ajStrDel(&tablestr);
+			    ajStrDel(&localname);
 			}
 			localname = NULL;
 			sofaname = NULL;
@@ -7855,6 +7861,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     ajStrDel(&tag);
     ajStrDel(&type);
     ajStrDel(&intids);
+    ajStrDel(&modtype);
     
     return ajTrue;    
 }
