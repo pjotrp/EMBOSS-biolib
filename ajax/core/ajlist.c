@@ -1631,13 +1631,16 @@ void ajListFreeData(AjPList* Plist)
     /* free the data for each node (just a simple free) */
     /* as we free the nodes */
 
-    if(!list->Count)
+    if(list->Count)
+    {
 	for( ; (*rest)->Next; *rest = next)
 	{
 	    AJFREE((*rest)->Item);
 	    next = (*rest)->Next;
 	    AJFREE(*rest);
 	}
+	AJFREE((*rest)->Item);
+    }
 
     AJFREE(*rest);
     AJFREE(*Plist);
