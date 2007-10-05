@@ -571,7 +571,7 @@ protein_protein_interaction SO:0001093
 #Ca_contact_site SO:0001094
 
 # "Residue involved in contact with cobalt." [EBIBS:GAR]
-#   synonym: "Co_contact_site" EXACT [] $$$ca not co$$$
+#   synonym: "Co_contact_site" EXACT []
 #   subset: biosapiens
 #   isa: SO:0001092 ! metal_binding
 #   namespace: BS
