@@ -1,4 +1,31 @@
 Version 5.1.0
+	The acdpretty utility can now preserve comments in ACD files.
+	Comments are maintained in blocks with blank lines before and
+	after. Inline comments are started in column 50 unless they are
+	exceptionally long. Comments themselves have white space cleaned
+	up but otherwise are not reformatted.
+
+	A new function ajAcdGetValueDefault is added to return the default
+	value of an ACD qualifier. This can be combined with
+	ajAcdIsUserdefined in wrappers to test for values changed by the
+	user.
+
+	Infile qualifiers in ACD have a new attribute "trydefault" which
+	allows the default filename to fail. Any filename provided by the
+	user has to exist. This was added to support the behaviour of the
+	MIRA EMBASSY package. To allow an infile to fail the attribute
+	"nullok" also must be set to "Y"
+
+	Applications which produce an output file or graphics often
+	created an empty output file when the plot was selected.
+	The ACD files have been corrected to only create the file if it
+	will be written to. Applications changed are charge, dan,
+	freak, hmoment, iep and tcode.
+
+	Whichdb only writes to its output file if -get is false.
+	With -get it creates sequences. The outfile is no longer created
+	when whichdb is in -get mode.
+
 	String functions corrected so that Case in the name always means
 	case-insensitive and works by converting to upper case. Some
 	functions were defined the wrong way, with "Case" for the
