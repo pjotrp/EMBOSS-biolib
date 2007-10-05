@@ -83,6 +83,7 @@ section: output [
     precision: "3"
     taglist: "str:Estimation"
     nullok: "$(plot)"
+    nulldefault: "$(plot)"
   ]
 
   xygraph: graph [

@@ -276,7 +276,7 @@ int main(int argc, char **argv)
 	jaspscan_ReportHits(TabRpt,mattab,hits);
 
 	ajReportWrite(report, TabRpt, seq);
-	ajFeattableClear(TabRpt);
+	ajFeattableDel(&TabRpt);
     }
 
 

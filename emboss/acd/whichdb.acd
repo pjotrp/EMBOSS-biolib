@@ -37,6 +37,7 @@ section: output [
   outfile: outfile [
     standard: "@(!$(get))"
     nullok: "$(get)"
+    nulldefault: "$(get)"
     knowntype: "whichdb output"
   ]
 

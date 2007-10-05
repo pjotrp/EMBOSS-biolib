@@ -62,6 +62,7 @@ section: output [
     rformat: "table"
     knowntype: "density output"
     nullok: "Y"
+    nulldefault: "@($(quad) | $(dual))"
   ]
 
 endsection: output

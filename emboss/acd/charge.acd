@@ -54,6 +54,7 @@ section: output [
     standard: "@(!$(plot))"
     knowntype: "charge output"
     nullok: "Y"
+    nulldefault: "$(plot)"
   ]
 
 endsection: output

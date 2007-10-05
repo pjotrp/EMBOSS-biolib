@@ -66,6 +66,7 @@ section: output [
     standard: "@(!$(plot))"
     knowntype: "freak output"
     nullok: "$(plot)"
+    nulldefault: "$(plot)"
   ]
 
 endsection: output

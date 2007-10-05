@@ -183,9 +183,9 @@ int main(int argc, char **argv)
 	    ++npoints;
 	}
 
-	if(!plot)
+	if(report)
 	    tcode_report(report, from, to, testcodes, npoints, ftable, seq);
-	else
+	if(plot)
 	{
 	    this = ajGraphPlpDataNewI(npoints);
 	    ajGraphPlpDataSetTypeC(this,"2D plot");
@@ -231,8 +231,7 @@ int main(int argc, char **argv)
 
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
-    if(!plot)
-	ajReportClose(report);
+    ajReportClose(report);
     ajReportDel(&report);
     ajFileClose(&datafile);
     ajFeattableDel(&ftable);

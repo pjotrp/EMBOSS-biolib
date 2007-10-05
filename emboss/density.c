@@ -132,9 +132,12 @@ int main(int argc, char **argv)
     str = ajStrNew();
     hdr = ajStrNew();
 
-    ajFmtPrintS(&hdr, "Window size = %d\n",window);
-    ajReportSetHeader(report,hdr);
-    
+    if(report)
+    {
+	ajFmtPrintS(&hdr, "Window size = %d\n",window);
+	ajReportSetHeader(report,hdr);
+    }
+
     AJNEW0(density);
     
     if(quad)

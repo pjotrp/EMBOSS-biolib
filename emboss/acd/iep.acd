@@ -87,6 +87,7 @@ section: output [
     standard: "$(report)"
     knowntype: "iep output"
     nullok: "@(!$(report))"
+    nulldefault: "@(!$(report))"
   ]
 
 endsection: output

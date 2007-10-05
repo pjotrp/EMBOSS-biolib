@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 		ymax = ymax > yb[i] ? ymax : yb[i];
 	}
 
-	if(!plot)
+	if(!plot && outf)
 	{
 	    ajFmtPrintF(outf,"HMOMENT of %s from %d to %d\n\n",sname,
 			beg+1,end+1);
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 	    }
 
 	}
-	else
+	else if (plot)
 	{
 	    if(twin)
 		ajGraphSetMulti(graph,2);

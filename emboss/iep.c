@@ -116,7 +116,7 @@ int main(int argc, char **argv)
 
 	embIepCompS(substr, amino, sscount, modlysine, c);
 
-	if(dofile)
+	if(dofile && outf)
 	{
 	    ajFmtPrintF(outf,"IEP of %S from %d to %d\n",
 			ajSeqGetNameS(a), be, en);

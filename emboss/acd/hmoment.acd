@@ -75,6 +75,7 @@ section: output [
     standard: "@(!$(plot))"
     knowntype: "hmoment output"
     nullok: "$(plot)"
+    nulldefault: "$(plot)"
   ]
 
 endsection: output
