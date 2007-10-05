@@ -9393,6 +9393,7 @@ FP 5 /PRODUCT SIZE: +[0-9]+/
 ID equicktandem-ex
 UC The input sequence is the human herpesvirus tandem repeat.
 AP equicktandem
+CL -noorigfile
 IN tembl:L46634
 IN
 IN
@@ -17234,8 +17235,6 @@ FI tcode.ps
 FC = 339
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
-FI x65921.tcode
-FZ = 0
 //
 
 ID textsearch-ex
