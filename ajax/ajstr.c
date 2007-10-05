@@ -3618,6 +3618,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam3rule  Cut                Remove region(s) from a string. 
 ** @nam4rule  CutComments      Remove comment lines.
 ** @nam5rule  CutCommentsStart Remove comment lines beginning with '#' only.
+** @nam5rule  CutCommentsRestpos Remove comment lines and note start position
 ** @nam4rule  CutEnd           Remove one end or another.
 ** @nam4rule  CutRange         Remove a substring.
 ** @nam4rule  CutStart         Remove one end or another.
@@ -3643,7 +3644,7 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam4rule  RemoveWhite      Remove all whitespace characters.
 ** @nam5rule  RemoveWhiteExcess  Remove excess whitespace only.
 ** @nam5rule  RemoveWhiteSpaces  Remove excess space characters only.
-** @nam4rule  RemoveWild       Remove characters after a wildcard.
+** @nam4rule  RemoveWild         Remove characters after a wildcard.
 ** @nam3rule  Trim               Remove region(s) of a given character
 **                               composition only from start and / or end
 **                               of a string.
@@ -3656,20 +3657,22 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @nam5rule  TrimWhiteEnd     Trim whitespace from end.
 ** @nam5rule  TrimWhiteStart   Trim whitespace from start.
 **
-** @argrule   *       Pstr [AjPStr*] Modifiable string
-** @argrule   Pos     pos [ajint] Position in string to start inserting,
-**                                negative values count from the end
-** @argrule   C       txt [const char*] Text string
-** @argrule   K       chr [char] Single character
-** @argrule   S       str [const AjPStr] Text string
-** @argrule   Len      len [ajuint] Number of characters to copy
-** @argrule   CutEnd   len [ajuint] Number of characters to copy
-** @argrule   CutStart len [ajuint] Number of characters to copy
-** @argrule   Range pos1 [ajint] Start position in string, negative
-**                                  numbers count from end
-** @argrule   Range pos2 [ajint] End position in string, negative
-**                                  numbers count from end
-** @argrule   Rest Prest [AjPStr*] Excluded non-whitespace characters.
+** @argrule   *        Pstr  [AjPStr*] Modifiable string
+** @argrule   Pos      pos   [ajint]   First position to be deleted.
+                                       Negative values count from the end
+** @argrule   Restpos  Pcomment  [AjPStr*]  Removed (comment) characters
+** @argrule   Restpos  Pstartpos [ajuint*]  Position at start of comment
+** @argrule   C        txt   [const char*]  Text string
+** @argrule   K        chr   [char]         Single character
+** @argrule   S        str   [const AjPStr] Text string
+** @argrule   Len      len   [ajuint] Number of characters to copy
+** @argrule   CutEnd   len   [ajuint] Number of characters to copy
+** @argrule   CutStart len   [ajuint] Number of characters to copy
+** @argrule   Range    pos1  [ajint]  Start position in string, negative
+**                                    numbers count from end
+** @argrule   Range    pos2  [ajint]  End position in string, negative
+**                                    numbers count from end
+** @argrule   Rest     Prest [AjPStr*] Excluded characters
 **
 ** @valrule   * [AjBool]
 **
@@ -3720,6 +3723,50 @@ AjBool ajStrCutComments(AjPStr* Pstr)
 __deprecated AjBool  ajStrUncomment(AjPStr* text)
 {
     return ajStrCutComments(text);
+}
+
+/* @func ajStrCutCommentsRestpos **********************************************
+**
+** Removes comments from a string.
+** 
+** A comment begins with a "#" character and may appear anywhere in the string.
+** See ajStrCutCommentsStart for alternative definition of a comment.
+**
+** @param [u] Pstr [AjPStr*] Line of text from input file
+** @param [w] Pcomment [AjPStr*] Comment characters deleted
+** @param [w] Pstartpos [ajuint*] Comment start position
+** @return [AjBool] ajTrue if there is some text remaining
+** @@
+******************************************************************************/
+
+AjBool ajStrCutCommentsRestpos(AjPStr* Pstr,
+			       AjPStr* Pcomment, ajuint* Pstartpos)
+{
+    AjPStr thys;
+    char *cp;
+
+    thys = ajStrGetuniqueStr(Pstr);
+
+    *Pstartpos=0;
+    ajStrAssignC(Pcomment, "");
+
+    if(!thys->Len)		/* empty string */
+	return ajFalse;
+
+    cp = strchr(thys->Ptr, '#');
+    if(cp)
+    {
+	/* comment found and removed */
+	*Pstartpos = cp -thys->Ptr;
+	ajStrAssignC(Pcomment, cp);
+	*cp = '\0';
+	thys->Len = cp - thys->Ptr;
+    }
+
+    if(!thys->Len)	      /* no text before the comment */
+	return ajFalse;
+
+    return ajTrue;
 }
 
 /* @func ajStrCutCommentsStart ************************************************
@@ -8011,6 +8058,7 @@ AjBool ajStrFromUint(AjPStr* Pstr, ajuint val)
 ** @argrule Wrap width [ajuint] Line length
 ** @argrule WrapAt ch [char] Preferred last character on line
 ** @argrule WrapLeft margin [ajuint] Left margin
+** @argrule WrapLeft indent [ajuint] Indentation on later lines
 **
 ** @valrule * [AjBool] True on success
 **
@@ -8480,19 +8528,21 @@ AjBool ajStrFmtWrapAt(AjPStr* Pstr, ajuint width, char ch)
 
 /* @func ajStrFmtWrapLeft *****************************************************
 **
-** Formats a string so that it wraps and has a margin of space characters when
-** printed.  
+** Formats a string so that it wraps and has a margin of space characters
+** and an additional indent when printed.  
 **
 ** Newline characters are inserted, at white space if possible, 
 **
 ** @param [u] Pstr [AjPStr*] Target string
 ** @param [r] width [ajuint] Line width
 ** @param [r] margin [ajuint] Left margin
+** @param [r] indent [ajuint] Left indentation on later lines
 ** @return [AjBool] ajTrue on successful completion else ajFalse;
 ** @@
 ******************************************************************************/
 
-AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint margin)
+AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width,
+			ajuint margin, ajuint indent)
 {
     AjPStr newstr = NULL;
     char* cp;
@@ -8500,30 +8550,35 @@ AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint margin)
     ajuint i   = 0;
     ajuint j;
     ajuint isp = 0;
+    ajuint leftmargin = margin;
+    ajuint maxwidth = width + indent;
 
-    /* ajDebug("ajStrFmtWrapLeft %d %d\n'%S'\n", width, margin, *Pstr); */
+   /* ajDebug("ajStrFmtWrapLeft %d %d %d\n'%S'\n",
+	   width, margin, indent, *Pstr); */
 
-    len = 1 + (*Pstr)->Len + (margin + 1) * (*Pstr)->Len / width;
+    len = 1 + (*Pstr)->Len + (indent + margin + 1) * (*Pstr)->Len / width;
     ajStrAssignS(&newstr, *Pstr);
     ajStrAssignResC(Pstr, len, "");
-    
+    ajStrAppendCountK(Pstr, ' ', margin);
+
     for(cp = newstr->Ptr; *cp; cp++)
     {
 	switch(*cp)
 	{
 	case '\n':
 	    ajStrAppendK(Pstr, '\n');
-	    for(j=0; j<margin; j++)
+	    for(j=0; j<leftmargin; j++)
 		ajStrAppendK(Pstr, ' ');
-	    i = 0;
+	    i = indent;
 	    isp = 0;
+	    leftmargin = margin + indent;
 	    break;
 	case ' ':
 	case '\t':
 	    isp = (*Pstr)->Len;
 	    /* ajDebug("can split at %d\n", isp); */
 	default:
-	    if(++i >= width)
+	    if(++i >= maxwidth)
 	    {	/* too wide, time to split */
 		/* ajDebug("split at i: %d isp: %d\n'%S'\n",
 		   i, isp, *Pstr); */
@@ -8533,6 +8588,7 @@ AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint margin)
 			ajStrAppendK(Pstr, '\n');
 		    else
 			(*Pstr)->Ptr[isp] = '\n';
+		    leftmargin = margin + indent;
 		}
 		else
 		{
@@ -8540,12 +8596,12 @@ AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint margin)
 		    break;
 		}
 
-		for(j=0; j<margin; j++)
+		for(j=0; j<leftmargin; j++)
 		{	  /* follow newline with left margin spaces */
 		    isp++;
-		    ajStrInsertC(Pstr, isp, " ");
+		    ajStrInsertK(Pstr, isp, ' ');
 		}
-		i = (*Pstr)->Len - isp;
+		i = (*Pstr)->Len - isp + indent;
 		isp = 0;
 
 		if(!isspace((ajint)*cp))
@@ -8570,7 +8626,7 @@ AjBool ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint margin)
 
 __deprecated AjBool  ajStrWrapLeft(AjPStr* pthis, ajint width, ajint left)
 {
-    return ajStrFmtWrapLeft(pthis, width, left);
+    return ajStrFmtWrapLeft(pthis, width, 0, left);
 }
 
 /* @section comparison ********************************************************
@@ -9523,13 +9579,15 @@ __deprecated int  ajStrCmp(const void* str, const void* str2)
 **
 ** @nam3rule  Find          Locate first occurence of a string
 **                          within another string. 
-** @nam4rule  FindAny       Any in a set of characters (FindSet?)
+** @nam4rule  FindAny       Any in a set of characters from the start
 ** @nam4rule  FindCase      Case insensitive
+** @nam4rule  FindNext      Next in a set of characters from a given position
 ** @nam4rule  FindRest      Any not in a set of characters
 ** @nam5rule  FindRestCase  Any not in a set of characters, case insensitive
 ** @nam3rule  Findlast      Locate last occurence of a string
 **
 ** @argrule * str [const AjPStr] String
+** @argrule FindNext pos1 [ajint] String position to search from
 ** @argrule C txt2 [const char*] Text to find
 ** @argrule K chr [char] Character
 ** @argrule S str2 [const AjPStr] Text to find
@@ -9741,6 +9799,90 @@ ajint ajStrFindCaseS(const AjPStr str, const AjPStr str2)
 __deprecated ajint  ajStrFindCase(const AjPStr str, const AjPStr str2)
 {
     return ajStrFindCaseS(str,str2);
+}
+
+
+/* @func ajStrFindNextC *******************************************************
+**
+** Finds the next occurrence in a string of any character in a second 
+** (text) string.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] pos1 [ajint] Start position in string
+** @param [r] txt2 [const char*] text to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindNextC(const AjPStr str, ajint pos1, const char* txt2)
+{
+    ajuint i;
+    ajuint jpos;
+
+    jpos = ajMathPos(str->Len, pos1);
+
+    i = jpos + strcspn(&str->Ptr[jpos], txt2);
+    if(i == str->Len)
+	return -1;
+    return i;
+}
+
+
+
+
+/* @func ajStrFindNextK *******************************************************
+**
+** Finds the next occurrence in a string of a specified character.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] pos1 [ajint] Start position in string
+** @param [r] chr [char] character to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindNextK(const AjPStr str, ajint pos1, char chr)
+{
+    const char* cp;
+    ajuint jpos;
+
+    jpos = ajMathPos(str->Len, pos1);
+
+    cp = strchr(&str->Ptr[jpos], (ajint) chr);
+    if(!cp)
+	return -1;
+
+    return(cp - str->Ptr);
+}
+
+
+
+/* @func ajStrFindNextS *******************************************************
+**
+** Finds the next occurrence in a string of any character in a second 
+** string.
+**
+** @param [r] str [const AjPStr] String
+** @param [r] pos1 [ajint] Start position in string
+** @param [r] str2 [const AjPStr] text to find
+** @return [ajint] Position of the start of text in string if found.
+**                Or -1 for text not found.
+** @@
+******************************************************************************/
+
+ajint ajStrFindNextS(const AjPStr str, ajint pos1, const AjPStr str2)
+{
+    ajuint i;
+    ajuint jpos;
+
+    jpos = ajMathPos(str->Len, pos1);
+
+    i = jpos + strcspn(&str->Ptr[jpos], str2->Ptr);
+    if(i == str->Len)
+	return -1;
+    return i;
 }
 
 

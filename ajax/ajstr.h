@@ -253,6 +253,7 @@ AjBool     ajStrPasteMaxS( AjPStr* Pstr, ajint pos, const AjPStr str,
 /* cut */
 
 AjBool     ajStrCutComments(AjPStr* Pstr);
+AjBool     ajStrCutCommentsRestpos(AjPStr* Pstr, AjPStr* Prest, ajuint* pos);
 AjBool     ajStrCutCommentsStart(AjPStr* Pstr);
 AjBool     ajStrCutEnd(AjPStr* Pstr, ajuint len);
 AjBool     ajStrCutRange(AjPStr* Pstr, ajint pos1, ajint pos2);
@@ -394,7 +395,8 @@ AjBool     ajStrFmtUpper(AjPStr* Pstr);
 AjBool     ajStrFmtUpperSub(AjPStr* Pstr, ajint pos1, ajint pos2);
 AjBool     ajStrFmtWrap(AjPStr* Pstr, ajuint width );
 AjBool     ajStrFmtWrapAt(AjPStr* Pstr, ajuint width, char ch);
-AjBool     ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width, ajuint left);
+AjBool     ajStrFmtWrapLeft(AjPStr* Pstr, ajuint width,
+			    ajuint margin, ajuint indent);
 
 /* comparison */
 
@@ -443,6 +445,9 @@ ajint      ajStrFindAnyK(const AjPStr str, char chr);
 ajint      ajStrFindAnyS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindCaseC (const AjPStr str, const char* txt);
 ajint      ajStrFindCaseS (const AjPStr str, const AjPStr str2);
+ajint      ajStrFindNextC  (const AjPStr str, ajint pos, const char* txt);
+ajint      ajStrFindNextK(const AjPStr str, ajint pos, char chr);
+ajint      ajStrFindNextS (const AjPStr str, ajint pos, const AjPStr str2);
 ajint      ajStrFindRestC (const AjPStr str, const char* txt);
 ajint      ajStrFindRestS (const AjPStr str, const AjPStr str2);
 ajint      ajStrFindRestCaseC (const AjPStr str, const char* txt);
