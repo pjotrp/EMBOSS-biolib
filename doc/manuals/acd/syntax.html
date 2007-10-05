@@ -441,6 +441,18 @@ Kinetics" which had to be created to hold 'findkm').</p>
 
  <tr>
   <td>
+  <p>Assembly</p>
+  </td>
+  <td>
+  <p>Fragment_assembly</p>
+  </td>
+  <td>
+  <p>DNA sequence assembly</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>Display</p>
   </td>
   <td>
@@ -1581,6 +1593,7 @@ nullok: N<br>
   <td>
   <p>
 nullok: N<br>
+trydefault: N<br>
 binary: N<br>
 
  </p>
@@ -4981,6 +4994,18 @@ they can fix the value, or provide parsers for each alternative.
   <p>&nbsp;</p>
   </td>
   <td>
+  <p>trydefault: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Default filename may not exist if nullok is true<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
   <p>binary: <i>Y/N<i></p>
   </td>
   <td>
@@ -5798,7 +5823,11 @@ can run without a frequencies file.
 
 <p>The <i>nullok:</i> attribute specifies that a missing input file is
 acceptable to the application, and that -noxxx can be used on the
-command line to avoid reading the default input ifle (if any)</p>
+command line to avoid reading the default input file (if any)</p>
+
+<p>The <i>trydefault:</i> attribute specifies that the default
+filename may not exist. If <i>nullok:</i> is also defined as true then
+no error is reported.</p>
 
 <h5>Matrix</h5>
 
