@@ -497,8 +497,6 @@ Output file format
 
    [tcode results]
 
-  File: x65921.tcode
-
 Data files
 
    EMBOSS data files are distributed with the application and stored in

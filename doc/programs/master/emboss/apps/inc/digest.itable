@@ -20,6 +20,13 @@
 </tr>
 
 <tr>
+<td>-mono</td>
+<td>Use monoisotopic weights</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output report file name</td>
 <td>Report output file</td>
@@ -43,10 +50,10 @@
 </tr>
 
 <tr>
-<td>-aadata</td>
+<td>-mwdata</td>
 <td>Molecular weight data for amino acids</td>
 <td>Data file</td>
-<td>Eamino.dat</td>
+<td>Emolwt.dat</td>
 </tr>
 
 <tr>

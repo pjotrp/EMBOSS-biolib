@@ -59,18 +59,22 @@ AY411291 228-228 Length: 1
 <p><h3>File: AY411291.diffgff</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-##gff-version 2.0
-##date 2007-07-15
-##Type DNA AY411291
-AY411291	diffseq	conflict	228	228	1.000	+	.	Sequence "AY411291.1" ; note "SNP in X65923" ; replace "t"
+##gff-version 3
+##sequence-region AY411291 1 402
+#!Date 2007-07-15
+#!Type DNA
+#!Source-version EMBOSS 5.1.0
+AY411291	diffseq	misc_difference	228	228	1.000	+	.	ID="AY411291.1";note="SNP in X65923";replace="t"
 </pre>
 </td></tr></table><p>
 <p><h3>File: X65923.diffgff</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-##gff-version 2.0
-##date 2007-07-15
-##Type DNA X65923
-X65923	diffseq	conflict	284	284	1.000	+	.	Sequence "X65923.1" ; note "SNP in AY411291" ; replace "c"
+##gff-version 3
+##sequence-region X65923 1 518
+#!Date 2007-07-15
+#!Type DNA
+#!Source-version EMBOSS 5.1.0
+X65923	diffseq	misc_difference	284	284	1.000	+	.	ID="X65923.1";note="SNP in AY411291";replace="c"
 </pre>
 </td></tr></table><p>

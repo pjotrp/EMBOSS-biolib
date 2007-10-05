@@ -32,7 +32,7 @@ Usage
 Predicts coiled coil regions
 Input protein sequence(s): tsw:gcn4_yeast
 Window size [28]: 
-Output file [gcn4_yeast.pepcoil]: 
+Output report [gcn4_yeast.pepcoil]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -43,13 +43,13 @@ Command line arguments
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
    -window             integer    [28] Window size (Integer from 7 to 28)
-  [-outfile]           outfile    [*.pepcoil] Output file name
+  [-outfile]           report     [*.pepcoil] Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
    -[no]coil           boolean    [Y] Report coiled coil regions
    -frame              boolean    [Yes if -coil is true] Show coil frameshifts
-   -[no]other          boolean    [Y] Report non coiled coil regions
+   -other              boolean    [N] Report non coiled coil regions
 
    Associated qualifiers:
 
@@ -70,7 +70,17 @@ Command line arguments
    -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2        string     Output directory
+   -rformat2           string     Report format
+   -rname2             string     Base file name
+   -rextension2        string     File name extension
+   -rdirectory2        string     Output directory
+   -raccshow2          boolean    Show accession number in the report
+   -rdesshow2          boolean    Show description in the report
+   -rscoreshow2        boolean    Show the score in the report
+   -rstrandshow2       boolean    Show the nucleotide strand in the report
+   -rusashow2          boolean    Show the full USA in the report
+   -rmaxall2           integer    Maximum total hits to report
+   -rmaxseq2           integer    Maximum hits to report for one sequence
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -215,16 +225,38 @@ Output file format
 
   File: gcn4_yeast.pepcoil
 
-PEPCOIL of GCN4_YEAST
-   using a window of 28 residues
+########################################
+# Program: pepcoil
+# Rundate: Sun 15 Jul 2007 12:00:00
+# Commandline: pepcoil
+#    -sequence tsw:gcn4_yeast
+# Report_format: motif
+# Report_file: gcn4_yeast.pepcoil
+########################################
+
+#=======================================
+#
+# Sequence: GCN4_YEAST     from: 1   to: 281
+# HitCount: 1
+#
+# Window size: 28 residues
+#
+#=======================================
+
+Max_coil_pos at "*"
+
+(1) Score 1.910 length 49 at residues 233->281
+                           *
+ Sequence: ARNTEAARRSRARKLQRMKQLEDKVEELLSKNYHLENEVARLKKLVGER
+           |                                               |
+         233                                               281
+ Probability: 1.000
+ Predict: coiled
+ Max_coil_pos: 249
 
 
-Other structures from 1 to 232 (232 residues)
-   Max score: 1.283 (probability 0.21)
-
-Prediction starts at 233
-Probable coiled-coil from 233 to 281 (49 residues)
-   Max score: 1.910 (probability 1.00)
+#---------------------------------------
+#---------------------------------------
 
 Data files
 

@@ -145,7 +145,7 @@ Command line arguments
                                   tekt, tek, none, data, xterm, png, gif)
 
    Additional (Optional) qualifiers:
-   -aadata             datafile   [Eamino.dat] Amino acids properties and
+   -mwdata             datafile   [Emolwt.dat] Amino acids properties and
                                   molecular weight data file
    -threshold          float      [+5.0] Threshold value to discriminate weak
                                   from potential PEST motifs. Valid PEST
@@ -158,6 +158,7 @@ Command line arguments
                                   mathematics. (Number from -55.00 to 55.00)
 
    Advanced (Unprompted) qualifiers:
+   -mono               boolean    [N] Use monoisotopic weights
    -[no]potential      boolean    [Y] Decide whether potential PEST motifs
                                   should be printed.
    -[no]poor           boolean    [Y] Decide whether poor PEST motifs should

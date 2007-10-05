@@ -509,7 +509,8 @@ Output file format
 #
 #=======================================
 
-  Start     End  Strand   Score    GC% Sense_siRNA Antisense_siRNA
+  Start     End  Strand   Score    GC%             Sense_siRNA         Antisens
+e_siRNA
     308     330       +   9.000   50.0 AAGUGAGAGGUCAGACUCCdTdT GGAGUCUGACCUCUCA
 CUUdTdT
     309     331       +   9.000   50.0 AGUGAGAGGUCAGACUCCUdTdT AGGAGUCUGACCUCUC
@@ -805,7 +806,8 @@ taaaaaagccacttagttcagtc
 #
 #=======================================
 
-  Start     End  Strand   Score    GC% Sense_siRNA Antisense_siRNA
+  Start     End  Strand   Score    GC%                 Sense_siRNA         Anti
+sense_siRNA
     308     330       +   9.000   50.0 (AA)AAGUGAGAGGUCAGACUCCdTdT GGAGUCUGACCU
 CUCACUUdTdT
     309     331       +   9.000   50.0 (AA)AGUGAGAGGUCAGACUCCUdTdT AGGAGUCUGACC
@@ -1004,6 +1006,7 @@ See also
    chaos        Create a chaos game representation plot for a sequence
    compseq      Count composition of dimer/trimer/etc words in a sequence
    dan          Calculates DNA RNA/DNA melting temperature
+   density      Nucleic acid density plot
    freak        Residue/base frequency table or plot
    isochore     Plots isochores in large DNA sequences
    wordcount    Counts words of a specified size in a DNA sequence

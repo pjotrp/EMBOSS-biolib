@@ -47,6 +47,11 @@
 </tr>
 
 <tr>
+<td><a href="density.html">density</a></td>
+<td>Nucleic acid density plot</td>
+</tr>
+
+<tr>
 <td><a href="emowse.html">emowse</a></td>
 <td>Protein identification by mass spectrometry</td>
 </tr>

@@ -508,13 +508,15 @@ Output file format
 
   File: x65923.twofeat
 
-##gff-version 2.0
-##date 2007-07-15
-##Type DNA X65923
-X65923  EMBL    polyA_signal    484     489     0.000   +       .       Sequenc
-e "X65923.6"
-X65923  EMBL    polyA_site      509     509     0.000   +       .       Sequenc
-e "X65923.7" ; FeatFlags "0x40"
+##gff-version 3
+##sequence-region X65923 1 518
+#!Date 2007-07-15
+#!Type DNA
+#!Source-version EMBOSS 5.1.0
+X65923  EMBL    polyA_signal_sequence   484     489     0.000   +       .
+ID="X65923.6"
+X65923  EMBL    polyA_site      509     509     0.000   +       .       ID="X65
+923.7";featflags="0x40"
 
 Data files
 

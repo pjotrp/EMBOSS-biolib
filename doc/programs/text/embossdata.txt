@@ -175,7 +175,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Evdw.dat
   Edna.melt
   Eaa_properties.dat
-  Eamino.dat~
+  Emolwt.dat
   EBLOSUMN
   Eangles.dat
   tfinsect
@@ -196,6 +196,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Efeatures.gffprotein
   Eprior1.plib
   Efeatures.embl
+  Efeatures.gff2
   Efeatures.gff3
   EBLOSUM30
   EBLOSUM35

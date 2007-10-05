@@ -426,6 +426,7 @@ See also
    chaos        Create a chaos game representation plot for a sequence
    compseq      Count composition of dimer/trimer/etc words in a sequence
    dan          Calculates DNA RNA/DNA melting temperature
+   density      Nucleic acid density plot
    freak        Residue/base frequency table or plot
    sirna        Finds siRNA duplexes in mRNA
    wordcount    Counts words of a specified size in a DNA sequence

@@ -353,6 +353,7 @@ See also
    checktrans    Reports STOP codons and ORF statistics of a protein
    compseq       Count composition of dimer/trimer/etc words in a sequence
    dan           Calculates DNA RNA/DNA melting temperature
+   density       Nucleic acid density plot
    emowse        Protein identification by mass spectrometry
    iep           Calculates the isoelectric point of a protein
    isochore      Plots isochores in large DNA sequences

@@ -368,176 +368,175 @@ Output file format
 # HitCount: 2148
 #=======================================
 
-  Start     End  Strand       Tm       GC   DeltaG   DeltaH   DeltaS   TmProd S
-equence
-      1      20       +     64.9     70.0        .        .        .        . g
-gtaccgctggccgagcatc
-      2      21       +     63.7     65.0        .        .        .        . g
-taccgctggccgagcatct
-      3      22       +     63.7     65.0        .        .        .        . t
-accgctggccgagcatctg
-      4      23       +     66.9     70.0        .        .        .        . a
-ccgctggccgagcatctgc
-      5      24       +     66.7     70.0        .        .        .        . c
-cgctggccgagcatctgct
-      6      25       +     65.5     70.0        .        .        .        . c
-gctggccgagcatctgctc
-      7      26       +     65.5     70.0        .        .        .        . g
-ctggccgagcatctgctcg
-      8      27       +     63.7     65.0        .        .        .        . c
-tggccgagcatctgctcga
-      9      28       +     62.9     60.0        .        .        .        . t
-ggccgagcatctgctcgat
-     10      29       +     62.6     65.0        .        .        .        . g
-gccgagcatctgctcgatc
-     11      30       +     61.7     60.0        .        .        .        . g
-ccgagcatctgctcgatca
-     12      31       +     60.2     60.0        .        .        .        . c
-cgagcatctgctcgatcac
-     13      32       +     60.2     60.0        .        .        .        . c
-gagcatctgctcgatcacc
-     14      33       +     59.0     55.0        .        .        .        . g
-agcatctgctcgatcacca
-     15      34       +     59.2     55.0        .        .        .        . a
-gcatctgctcgatcaccac
-     16      35       +     60.4     60.0        .        .        .        . g
-catctgctcgatcaccacc
-     17      36       +     58.9     55.0        .        .        .        . c
-atctgctcgatcaccacca
-     18      37       +     58.6     55.0        .        .        .        . a
-tctgctcgatcaccaccag
-     19      38       +     61.3     60.0        .        .        .        . t
-ctgctcgatcaccaccagc
-     20      39       +     62.4     65.0        .        .        .        . c
-tgctcgatcaccaccagcc
-     21      40       +     63.9     65.0        .        .        .        . t
-gctcgatcaccaccagccg
-     22      41       +     64.9     70.0        .        .        .        . g
-ctcgatcaccaccagccgg
-     23      42       +     64.3     70.0        .        .        .        . c
-tcgatcaccaccagccggg
-     24      43       +     66.1     70.0        .        .        .        . t
-cgatcaccaccagccgggc
-     25      44       +     67.5     75.0        .        .        .        . c
-gatcaccaccagccgggcg
-     26      45       +     66.1     70.0        .        .        .        . g
-atcaccaccagccgggcga
-     27      46       +     66.3     70.0        .        .        .        . a
-tcaccaccagccgggcgac
-     28      47       +     68.6     75.0        .        .        .        . t
-caccaccagccgggcgacg
-     29      48       +     69.8     80.0        .        .        .        . c
-accaccagccgggcgacgg
-     30      49       +     70.7     80.0        .        .        .        . a
-ccaccagccgggcgacggg
-     31      50       +     70.5     80.0        .        .        .        . c
-caccagccgggcgacggga
-     32      51       +     68.6     75.0        .        .        .        . c
-accagccgggcgacgggaa
-     33      52       +     68.6     75.0        .        .        .        . a
-ccagccgggcgacgggaac
-     34      53       +     68.4     75.0        .        .        .        . c
-cagccgggcgacgggaact
+  Start     End  Strand     Tm     GC DeltaG DeltaH DeltaS TmProd Sequence
+      1      20       +   64.9   70.0      .      .      .      . ggtaccgctggcc
+gagcatc
+      2      21       +   63.7   65.0      .      .      .      . gtaccgctggccg
+agcatct
+      3      22       +   63.7   65.0      .      .      .      . taccgctggccga
+gcatctg
+      4      23       +   66.9   70.0      .      .      .      . accgctggccgag
+catctgc
+      5      24       +   66.7   70.0      .      .      .      . ccgctggccgagc
+atctgct
+      6      25       +   65.5   70.0      .      .      .      . cgctggccgagca
+tctgctc
+      7      26       +   65.5   70.0      .      .      .      . gctggccgagcat
+ctgctcg
+      8      27       +   63.7   65.0      .      .      .      . ctggccgagcatc
+tgctcga
+      9      28       +   62.9   60.0      .      .      .      . tggccgagcatct
+gctcgat
+     10      29       +   62.6   65.0      .      .      .      . ggccgagcatctg
+ctcgatc
+     11      30       +   61.7   60.0      .      .      .      . gccgagcatctgc
+tcgatca
+     12      31       +   60.2   60.0      .      .      .      . ccgagcatctgct
+cgatcac
+     13      32       +   60.2   60.0      .      .      .      . cgagcatctgctc
+gatcacc
+     14      33       +   59.0   55.0      .      .      .      . gagcatctgctcg
+atcacca
+     15      34       +   59.2   55.0      .      .      .      . agcatctgctcga
+tcaccac
+     16      35       +   60.4   60.0      .      .      .      . gcatctgctcgat
+caccacc
+     17      36       +   58.9   55.0      .      .      .      . catctgctcgatc
+accacca
+     18      37       +   58.6   55.0      .      .      .      . atctgctcgatca
+ccaccag
+     19      38       +   61.3   60.0      .      .      .      . tctgctcgatcac
+caccagc
+     20      39       +   62.4   65.0      .      .      .      . ctgctcgatcacc
+accagcc
+     21      40       +   63.9   65.0      .      .      .      . tgctcgatcacca
+ccagccg
+     22      41       +   64.9   70.0      .      .      .      . gctcgatcaccac
+cagccgg
+     23      42       +   64.3   70.0      .      .      .      . ctcgatcaccacc
+agccggg
+     24      43       +   66.1   70.0      .      .      .      . tcgatcaccacca
+gccgggc
+     25      44       +   67.5   75.0      .      .      .      . cgatcaccaccag
+ccgggcg
+     26      45       +   66.1   70.0      .      .      .      . gatcaccaccagc
+cgggcga
+     27      46       +   66.3   70.0      .      .      .      . atcaccaccagcc
+gggcgac
+     28      47       +   68.6   75.0      .      .      .      . tcaccaccagccg
+ggcgacg
+     29      48       +   69.8   80.0      .      .      .      . caccaccagccgg
+gcgacgg
+     30      49       +   70.7   80.0      .      .      .      . accaccagccggg
+cgacggg
+     31      50       +   70.5   80.0      .      .      .      . ccaccagccgggc
+gacggga
+     32      51       +   68.6   75.0      .      .      .      . caccagccgggcg
+acgggaa
+     33      52       +   68.6   75.0      .      .      .      . accagccgggcga
+cgggaac
+     34      53       +   68.4   75.0      .      .      .      . ccagccgggcgac
+gggaact
 
 
   [Part of this file has been deleted for brevity]
 
-   2101    2120       +     69.9     80.0        .        .        .        . g
-gccggagcgctgaccctgc
-   2102    2121       +     68.7     75.0        .        .        .        . g
-ccggagcgctgaccctgct
-   2103    2122       +     65.5     70.0        .        .        .        . c
-cggagcgctgaccctgcta
-   2104    2123       +     63.5     65.0        .        .        .        . c
-ggagcgctgaccctgctat
-   2105    2124       +     61.3     60.0        .        .        .        . g
-gagcgctgaccctgctatt
-   2106    2125       +     60.1     60.0        .        .        .        . g
-agcgctgaccctgctattc
-   2107    2126       +     61.7     60.0        .        .        .        . a
-gcgctgaccctgctattcg
-   2108    2127       +     63.4     65.0        .        .        .        . g
-cgctgaccctgctattcgc
-   2109    2128       +     61.7     60.0        .        .        .        . c
-gctgaccctgctattcgct
-   2110    2129       +     59.5     55.0        .        .        .        . g
-ctgaccctgctattcgctt
-   2111    2130       +     57.1     50.0        .        .        .        . c
-tgaccctgctattcgcttt
-   2112    2131       +     56.4     45.0        .        .        .        . t
-gaccctgctattcgctttt
-   2113    2132       +     54.7     45.0        .        .        .        . g
-accctgctattcgctttta
-   2114    2133       +     55.0     45.0        .        .        .        . a
-ccctgctattcgcttttac
-   2115    2134       +     55.9     50.0        .        .        .        . c
-cctgctattcgcttttacc
-   2116    2135       +     54.7     45.0        .        .        .        . c
-ctgctattcgcttttacct
-   2117    2136       +     52.0     40.0        .        .        .        . c
-tgctattcgcttttaccta
-   2118    2137       +     51.2     35.0        .        .        .        . t
-gctattcgcttttacctat
-   2119    2138       +     50.9     40.0        .        .        .        . g
-ctattcgcttttacctatc
-   2120    2139       +     49.0     35.0        .        .        .        . c
-tattcgcttttacctatct
-   2121    2140       +     49.3     35.0        .        .        .        . t
-attcgcttttacctatctg
-   2122    2141       +     51.1     35.0        .        .        .        . a
-ttcgcttttacctatctgt
-   2123    2142       +     52.2     40.0        .        .        .        . t
-tcgcttttacctatctgtg
-   2124    2143       +     54.0     45.0        .        .        .        . t
-cgcttttacctatctgtgg
-   2125    2144       +     55.2     50.0        .        .        .        . c
-gcttttacctatctgtggg
-   2126    2145       +     53.9     45.0        .        .        .        . g
-cttttacctatctgtgggt
-   2127    2146       +     52.3     45.0        .        .        .        . c
-ttttacctatctgtgggtg
-   2128    2147       +     53.5     45.0        .        .        .        . t
-tttacctatctgtgggtgg
-   2129    2148       +     56.0     50.0        .        .        .        . t
-ttacctatctgtgggtggc
-   2130    2149       +     57.8     55.0        .        .        .        . t
-tacctatctgtgggtggcc
-   2131    2150       +     60.1     60.0        .        .        .        . t
-acctatctgtgggtggccg
-   2132    2151       +     63.4     65.0        .        .        .        . a
-cctatctgtgggtggccgc
-   2133    2152       +     64.3     70.0        .        .        .        . c
-ctatctgtgggtggccgcc
-   2134    2153       +     63.4     65.0        .        .        .        . c
-tatctgtgggtggccgcca
-   2135    2154       +     62.7     60.0        .        .        .        . t
-atctgtgggtggccgccaa
-   2136    2155       +     64.5     65.0        .        .        .        . a
-tctgtgggtggccgccaac
-   2137    2156       +     66.5     70.0        .        .        .        . t
-ctgtgggtggccgccaacc
-   2138    2157       +     66.8     70.0        .        .        .        . c
-tgtgggtggccgccaacca
-   2139    2158       +     66.8     70.0        .        .        .        . t
-gtgggtggccgccaaccag
-   2140    2159       +     66.8     70.0        .        .        .        . g
-tgggtggccgccaaccagt
-   2141    2160       +     65.9     65.0        .        .        .        . t
-gggtggccgccaaccagtt
-   2142    2161       +     65.6     70.0        .        .        .        . g
-ggtggccgccaaccagttc
-   2143    2162       +     65.6     70.0        .        .        .        . g
-gtggccgccaaccagttcc
-   2144    2163       +     64.4     65.0        .        .        .        . g
-tggccgccaaccagttcct
-   2145    2164       +     64.1     65.0        .        .        .        . t
-ggccgccaaccagttcctc
-   2146    2165       +     65.4     70.0        .        .        .        . g
-gccgccaaccagttcctcg
-   2147    2166       +     64.2     65.0        .        .        .        . g
-ccgccaaccagttcctcga
-   2148    2167       +     62.4     65.0        .        .        .        . c
-cgccaaccagttcctcgag
+   2101    2120       +   69.9   80.0      .      .      .      . ggccggagcgctg
+accctgc
+   2102    2121       +   68.7   75.0      .      .      .      . gccggagcgctga
+ccctgct
+   2103    2122       +   65.5   70.0      .      .      .      . ccggagcgctgac
+cctgcta
+   2104    2123       +   63.5   65.0      .      .      .      . cggagcgctgacc
+ctgctat
+   2105    2124       +   61.3   60.0      .      .      .      . ggagcgctgaccc
+tgctatt
+   2106    2125       +   60.1   60.0      .      .      .      . gagcgctgaccct
+gctattc
+   2107    2126       +   61.7   60.0      .      .      .      . agcgctgaccctg
+ctattcg
+   2108    2127       +   63.4   65.0      .      .      .      . gcgctgaccctgc
+tattcgc
+   2109    2128       +   61.7   60.0      .      .      .      . cgctgaccctgct
+attcgct
+   2110    2129       +   59.5   55.0      .      .      .      . gctgaccctgcta
+ttcgctt
+   2111    2130       +   57.1   50.0      .      .      .      . ctgaccctgctat
+tcgcttt
+   2112    2131       +   56.4   45.0      .      .      .      . tgaccctgctatt
+cgctttt
+   2113    2132       +   54.7   45.0      .      .      .      . gaccctgctattc
+gctttta
+   2114    2133       +   55.0   45.0      .      .      .      . accctgctattcg
+cttttac
+   2115    2134       +   55.9   50.0      .      .      .      . ccctgctattcgc
+ttttacc
+   2116    2135       +   54.7   45.0      .      .      .      . cctgctattcgct
+tttacct
+   2117    2136       +   52.0   40.0      .      .      .      . ctgctattcgctt
+ttaccta
+   2118    2137       +   51.2   35.0      .      .      .      . tgctattcgcttt
+tacctat
+   2119    2138       +   50.9   40.0      .      .      .      . gctattcgctttt
+acctatc
+   2120    2139       +   49.0   35.0      .      .      .      . ctattcgctttta
+cctatct
+   2121    2140       +   49.3   35.0      .      .      .      . tattcgcttttac
+ctatctg
+   2122    2141       +   51.1   35.0      .      .      .      . attcgcttttacc
+tatctgt
+   2123    2142       +   52.2   40.0      .      .      .      . ttcgcttttacct
+atctgtg
+   2124    2143       +   54.0   45.0      .      .      .      . tcgcttttaccta
+tctgtgg
+   2125    2144       +   55.2   50.0      .      .      .      . cgcttttacctat
+ctgtggg
+   2126    2145       +   53.9   45.0      .      .      .      . gcttttacctatc
+tgtgggt
+   2127    2146       +   52.3   45.0      .      .      .      . cttttacctatct
+gtgggtg
+   2128    2147       +   53.5   45.0      .      .      .      . ttttacctatctg
+tgggtgg
+   2129    2148       +   56.0   50.0      .      .      .      . tttacctatctgt
+gggtggc
+   2130    2149       +   57.8   55.0      .      .      .      . ttacctatctgtg
+ggtggcc
+   2131    2150       +   60.1   60.0      .      .      .      . tacctatctgtgg
+gtggccg
+   2132    2151       +   63.4   65.0      .      .      .      . acctatctgtggg
+tggccgc
+   2133    2152       +   64.3   70.0      .      .      .      . cctatctgtgggt
+ggccgcc
+   2134    2153       +   63.4   65.0      .      .      .      . ctatctgtgggtg
+gccgcca
+   2135    2154       +   62.7   60.0      .      .      .      . tatctgtgggtgg
+ccgccaa
+   2136    2155       +   64.5   65.0      .      .      .      . atctgtgggtggc
+cgccaac
+   2137    2156       +   66.5   70.0      .      .      .      . tctgtgggtggcc
+gccaacc
+   2138    2157       +   66.8   70.0      .      .      .      . ctgtgggtggccg
+ccaacca
+   2139    2158       +   66.8   70.0      .      .      .      . tgtgggtggccgc
+caaccag
+   2140    2159       +   66.8   70.0      .      .      .      . gtgggtggccgcc
+aaccagt
+   2141    2160       +   65.9   65.0      .      .      .      . tgggtggccgcca
+accagtt
+   2142    2161       +   65.6   70.0      .      .      .      . gggtggccgccaa
+ccagttc
+   2143    2162       +   65.6   70.0      .      .      .      . ggtggccgccaac
+cagttcc
+   2144    2163       +   64.4   65.0      .      .      .      . gtggccgccaacc
+agttcct
+   2145    2164       +   64.1   65.0      .      .      .      . tggccgccaacca
+gttcctc
+   2146    2165       +   65.4   70.0      .      .      .      . ggccgccaaccag
+ttcctcg
+   2147    2166       +   64.2   65.0      .      .      .      . gccgccaaccagt
+tcctcga
+   2148    2167       +   62.4   65.0      .      .      .      . ccgccaaccagtt
+cctcgag
 
 #---------------------------------------
 #---------------------------------------
@@ -547,8 +546,6 @@ cgccaaccagttcctcgag
   Graphics File: dan.ps
 
    [dan results]
-
-  File: x13776.dan
 
    The header information contains details of the program, date and
    sequence
@@ -638,6 +635,7 @@ See also
    btwisted     Calculates the twisting in a B-DNA sequence
    chaos        Create a chaos game representation plot for a sequence
    compseq      Count composition of dimer/trimer/etc words in a sequence
+   density      Nucleic acid density plot
    freak        Residue/base frequency table or plot
    isochore     Plots isochores in large DNA sequences
    sirna        Finds siRNA duplexes in mRNA

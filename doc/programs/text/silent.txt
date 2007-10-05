@@ -228,8 +228,8 @@ Output file format
 #
 #=======================================
 
-  Start     End  Strand EnzymeName RS-Pattern Base-Posn AAs Silent Mutation
-    267     272       - HindIII AAGCTT    268 A.A    Yes   A->T
+  Start     End  Strand EnzymeName RS-Pattern Base-Posn    AAs Silent Mutation
+    267     272       - HindIII    AAGCTT           268    A.A    Yes     A->T
 
 #---------------------------------------
 #---------------------------------------

@@ -711,6 +711,7 @@ See also
    charge        Protein charge plot
    checktrans    Reports STOP codons and ORF statistics of a protein
    dan           Calculates DNA RNA/DNA melting temperature
+   density       Nucleic acid density plot
    emowse        Protein identification by mass spectrometry
    freak         Residue/base frequency table or plot
    iep           Calculates the isoelectric point of a protein

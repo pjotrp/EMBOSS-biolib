@@ -390,6 +390,7 @@ Protein identification by mass spectrometry
 Input protein sequence(s): <b>tsw:*</b>
 Peptide molecular weight values file: <b>test.mowse</b>
 Whole sequence molwt [0]: <b></b>
+Use monoisotopic weights [N]: <b></b>
 Output file [edd1_rat.emowse]: <b></b>
 
 </pre></td></tr></table><p>
@@ -407,11 +408,12 @@ Output file [edd1_rat.emowse]: <b></b>
                                   format, or reference (input USA)
   [-infile]            infile     Peptide molecular weight values file
    -weight             integer    [0] Whole sequence molwt (Any integer value)
+   -mono               boolean    [N] Use monoisotopic weights
   [-outfile]           outfile    [*.emowse] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   [Eamino.dat] Amino acids properties and
+   -mwdata             datafile   [Emolwt.dat] Amino acids properties and
                                   molecular weight data file
    -frequencies        datafile   [Efreqs.dat] Amino acid frequencies data
                                   file
@@ -494,6 +496,13 @@ Output file [edd1_rat.emowse]: <b></b>
 </tr>
 
 <tr>
+<td>-mono</td>
+<td>Use monoisotopic weights</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>[-outfile]<br>(Parameter 3)</td>
 <td>Output file name</td>
 <td>Output file</td>
@@ -517,10 +526,10 @@ Output file [edd1_rat.emowse]: <b></b>
 </tr>
 
 <tr>
-<td>-aadata</td>
+<td>-mwdata</td>
 <td>Amino acids properties and molecular weight data file</td>
 <td>Data file</td>
-<td>Eamino.dat</td>
+<td>Emolwt.dat</td>
 </tr>
 
 <tr>
@@ -757,13 +766,13 @@ Using data fragments of:
 
          No Match      1086.2 1399.6 2030.2 2424.7 2930.3 5423.0 6082.8 
 
-    18 : FLAV_CLOSA     4.938e+00 17763.3    0.125 
+    18 : FLAV_CLOSA     4.938e+00 17763.4    0.125 
          Flavodoxin.
          Mw     Start  End    Seq
         *1085.3 17     26     VAKLIEEGVK                                   
          No Match      1399.6 2030.2 2424.7 2930.3 3086.3 5423.0 6082.8 
 
-    19 : AMIC_PSEAE     3.859e+00 42806.9    0.125 
+    19 : AMIC_PSEAE     3.859e+00 42807.0    0.125 
          Aliphatic amidase expression-regulating protein.
          Mw     Start  End    Seq
         *2423.7 308    328    VEDVQRHLYDICIDAPQGPVR                        

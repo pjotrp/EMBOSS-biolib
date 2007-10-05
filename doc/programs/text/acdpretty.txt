@@ -53,6 +53,9 @@ Output file format
 
   File: qatest.acdpretty
 
+# Example ACD file for QA testing
+#
+
 application: qatest [
   groups: "test"
   documentation: "ACD file for QA testing"
@@ -82,12 +85,14 @@ integer: bint [
 
 string: testalen [
   standard: "Y"
-  information: "asequence length $(asequence.length)"
+  information: "asequence length
+                $(asequence.length)"
 ]
 
 string: testblen [
   standard: "Y"
-  information: "bsequence length $(bsequence.length)"
+  information: "bsequence length
+                $(bsequence.length)"
 ]
 
 string: outdir [

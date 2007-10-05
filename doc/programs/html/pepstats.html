@@ -107,9 +107,11 @@ Pepstats program output file [laci_ecoli.pepstats]: <b></b>
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   [Eamino.dat] Molecular weight data for amino
+   -aadata             datafile   [Eamino.dat] Amino acid properties
+   -mwdata             datafile   [Emolwt.dat] Molecular weight data for amino
                                   acids
    -[no]termini        boolean    [Y] Include charge at N and C terminus
+   -mono               boolean    [N] Use monoisotopic weights
 
    Associated qualifiers:
 
@@ -191,9 +193,16 @@ Pepstats program output file [laci_ecoli.pepstats]: <b></b>
 
 <tr>
 <td>-aadata</td>
-<td>Molecular weight data for amino acids</td>
+<td>Amino acid properties</td>
 <td>Data file</td>
 <td>Eamino.dat</td>
+</tr>
+
+<tr>
+<td>-mwdata</td>
+<td>Molecular weight data for amino acids</td>
+<td>Data file</td>
+<td>Emolwt.dat</td>
 </tr>
 
 <tr>
@@ -201,6 +210,13 @@ Pepstats program output file [laci_ecoli.pepstats]: <b></b>
 <td>Include charge at N and C terminus</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
+</tr>
+
+<tr>
+<td>-mono</td>
+<td>Use monoisotopic weights</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
 </tr>
 
 </table>
@@ -344,7 +360,7 @@ SQ   SEQUENCE   360 AA;  38590 MW;  347A8DEE92D736CB CRC64;
 <pre>
 PEPSTATS of LACI_ECOLI from 1 to 360
 
-Molecular weight = 38590.05  		Residues = 360   
+Molecular weight = 38590.06  		Residues = 360   
 Average Residue Weight  = 107.195 	Charge   = 1.5   
 Isoelectric Point = 6.8820
 A280 Molar Extinction Coefficient  = 21620   

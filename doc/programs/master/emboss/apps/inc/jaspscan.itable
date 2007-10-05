@@ -33,7 +33,9 @@ Blank lines and lines starting with a hash character or '!' are ignored and all 
 character ',' and then treated as the list of enzymes to search
 for.
 An example of a file of matrix names is:
+! my matrices
 ma0001, ma0002
+! other matrices
 ma0010
 ma0032
 ma0053</td>

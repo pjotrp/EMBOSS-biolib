@@ -3,11 +3,12 @@
                                   format, or reference (input USA)
   [-infile]            infile     Peptide molecular weight values file
    -weight             integer    [0] Whole sequence molwt (Any integer value)
+   -mono               boolean    [N] Use monoisotopic weights
   [-outfile]           outfile    [*.emowse] Output file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   [Eamino.dat] Amino acids properties and
+   -mwdata             datafile   [Emolwt.dat] Amino acids properties and
                                   molecular weight data file
    -frequencies        datafile   [Efreqs.dat] Amino acid frequencies data
                                   file

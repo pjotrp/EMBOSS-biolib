@@ -101,6 +101,7 @@ Enzymes and Reagents
          7 : Chymotrypsin
          8 : CNBr
 Select number [1]: <b></b>
+Use monoisotopic weights [N]: <b></b>
 Output report [opsd_human.digest]: <b></b>
 
 </pre></td></tr></table><p>
@@ -120,11 +121,12 @@ Output report [opsd_human.digest]: <b></b>
                                   (Lys-C); 3 (Arg-C); 4 (Asp-N); 5
                                   (V8-bicarb); 6 (V8-phosph); 7
                                   (Chymotrypsin); 8 (CNBr))
+   -mono               boolean    [N] Use monoisotopic weights
   [-outfile]           report     [*.digest] Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   [Eamino.dat] Molecular weight data for amino
+   -mwdata             datafile   [Emolwt.dat] Molecular weight data for amino
                                   acids
    -unfavoured         boolean    Trypsin will not normally cut after a K if
                                   it is followed by (e.g.) another K or a P.
@@ -217,6 +219,13 @@ Output report [opsd_human.digest]: <b></b>
 </tr>
 
 <tr>
+<td>-mono</td>
+<td>Use monoisotopic weights</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>[-outfile]<br>(Parameter 2)</td>
 <td>Output report file name</td>
 <td>Report output file</td>
@@ -240,10 +249,10 @@ Output report [opsd_human.digest]: <b></b>
 </tr>
 
 <tr>
-<td>-aadata</td>
+<td>-mwdata</td>
 <td>Molecular weight data for amino acids</td>
 <td>Data file</td>
-<td>Eamino.dat</td>
+<td>Emolwt.dat</td>
 </tr>
 
 <tr>
@@ -460,20 +469,20 @@ By default <b>digest</b> writes a 'seqtable' report file.
 #=======================================
 
   Start     End Mol_Weight Cterm  Nterm  Sequence
-     70     135   7129.319 R      Y      TPLNYILLNLAVADLFMVLGGFTSTLYTSLHGYFVFGPTGCNLEGFFATLGGEIALWSLVVLAIER
-    178     231   6335.495 R      E      YIPEGLQCSCGIDYYTLKPEVNNESFVIYMFVVHFTIPMIIIFFCYGQLVFTVK
-     22      69   5788.873 R      T      SPFEYPQYYLAEPWQFSMLAAYMFLLIVLGFPINFLTLYVTVQHKKLR
-    253     296   5004.085 R      S      MVIIMVIAFLICWVPYASVAFYIFTHQGSNFGPIFMTIPAFFAK
-    136     177   4600.460 R      Y      YVVVCKPMSNFRFGENHAIMGVAFTWVMALACAAPPLAGWSR
-      1      21   2257.495 .      S      MNGTEGPNFYVPFSNATGVVR
-    297     311   1728.089 K      Q      SAAIYNPVIYIMMNK
-    232     245   1490.538 K      A      EAAAQQQESATTQK
-    326     339   1403.457 K      T      NPLGDDEASATVSK
-    315     325   1186.476 R      N      NCMLTTICCGK
-    340     348    902.950 K      .      TETSQVAPA
-    249     252    503.550 K      M      EVTR
-    312     314    449.504 K      N      QFR
-    246     248    346.378 K      E      AEK
+     70     135   7129.324 R      Y      TPLNYILLNLAVADLFMVLGGFTSTLYTSLHGYFVFGPTGCNLEGFFATLGGEIALWSLVVLAIER
+    178     231   6335.500 R      E      YIPEGLQCSCGIDYYTLKPEVNNESFVIYMFVVHFTIPMIIIFFCYGQLVFTVK
+     22      69   5788.878 R      T      SPFEYPQYYLAEPWQFSMLAAYMFLLIVLGFPINFLTLYVTVQHKKLR
+    253     296   5004.090 R      S      MVIIMVIAFLICWVPYASVAFYIFTHQGSNFGPIFMTIPAFFAK
+    136     177   4600.464 R      Y      YVVVCKPMSNFRFGENHAIMGVAFTWVMALACAAPPLAGWSR
+      1      21   2257.500 .      S      MNGTEGPNFYVPFSNATGVVR
+    297     311   1728.093 K      Q      SAAIYNPVIYIMMNK
+    232     245   1490.543 K      A      EAAAQQQESATTQK
+    326     339   1403.462 K      T      NPLGDDEASATVSK
+    315     325   1186.480 R      N      NCMLTTICCGK
+    340     348    902.954 K      .      TETSQVAPA
+    249     252    503.554 K      M      EVTR
+    312     314    449.509 K      N      QFR
+    246     248    346.383 K      E      AEK
 
 #---------------------------------------
 #---------------------------------------

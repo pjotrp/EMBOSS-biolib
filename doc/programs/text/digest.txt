@@ -63,6 +63,7 @@ Enzymes and Reagents
          7 : Chymotrypsin
          8 : CNBr
 Select number [1]: 
+Use monoisotopic weights [N]: 
 Output report [opsd_human.digest]: 
 
    Go to the input files for this example
@@ -77,11 +78,12 @@ Command line arguments
                                   (Lys-C); 3 (Arg-C); 4 (Asp-N); 5
                                   (V8-bicarb); 6 (V8-phosph); 7
                                   (Chymotrypsin); 8 (CNBr))
+   -mono               boolean    [N] Use monoisotopic weights
   [-outfile]           report     [*.digest] Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aadata             datafile   [Eamino.dat] Molecular weight data for amino
+   -mwdata             datafile   [Emolwt.dat] Molecular weight data for amino
                                   acids
    -unfavoured         boolean    Trypsin will not normally cut after a K if
                                   it is followed by (e.g.) another K or a P.
@@ -304,25 +306,25 @@ Output file format
 #=======================================
 
   Start     End Mol_Weight Cterm  Nterm  Sequence
-     70     135   7129.319 R      Y      TPLNYILLNLAVADLFMVLGGFTSTLYTSLHGYFVFGP
+     70     135   7129.324 R      Y      TPLNYILLNLAVADLFMVLGGFTSTLYTSLHGYFVFGP
 TGCNLEGFFATLGGEIALWSLVVLAIER
-    178     231   6335.495 R      E      YIPEGLQCSCGIDYYTLKPEVNNESFVIYMFVVHFTIP
+    178     231   6335.500 R      E      YIPEGLQCSCGIDYYTLKPEVNNESFVIYMFVVHFTIP
 MIIIFFCYGQLVFTVK
-     22      69   5788.873 R      T      SPFEYPQYYLAEPWQFSMLAAYMFLLIVLGFPINFLTL
+     22      69   5788.878 R      T      SPFEYPQYYLAEPWQFSMLAAYMFLLIVLGFPINFLTL
 YVTVQHKKLR
-    253     296   5004.085 R      S      MVIIMVIAFLICWVPYASVAFYIFTHQGSNFGPIFMTI
+    253     296   5004.090 R      S      MVIIMVIAFLICWVPYASVAFYIFTHQGSNFGPIFMTI
 PAFFAK
-    136     177   4600.460 R      Y      YVVVCKPMSNFRFGENHAIMGVAFTWVMALACAAPPLA
+    136     177   4600.464 R      Y      YVVVCKPMSNFRFGENHAIMGVAFTWVMALACAAPPLA
 GWSR
-      1      21   2257.495 .      S      MNGTEGPNFYVPFSNATGVVR
-    297     311   1728.089 K      Q      SAAIYNPVIYIMMNK
-    232     245   1490.538 K      A      EAAAQQQESATTQK
-    326     339   1403.457 K      T      NPLGDDEASATVSK
-    315     325   1186.476 R      N      NCMLTTICCGK
-    340     348    902.950 K      .      TETSQVAPA
-    249     252    503.550 K      M      EVTR
-    312     314    449.504 K      N      QFR
-    246     248    346.378 K      E      AEK
+      1      21   2257.500 .      S      MNGTEGPNFYVPFSNATGVVR
+    297     311   1728.093 K      Q      SAAIYNPVIYIMMNK
+    232     245   1490.543 K      A      EAAAQQQESATTQK
+    326     339   1403.462 K      T      NPLGDDEASATVSK
+    315     325   1186.480 R      N      NCMLTTICCGK
+    340     348    902.954 K      .      TETSQVAPA
+    249     252    503.554 K      M      EVTR
+    312     314    449.509 K      N      QFR
+    246     248    346.383 K      E      AEK
 
 #---------------------------------------
 #---------------------------------------

@@ -563,7 +563,7 @@ Command line arguments
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
    -feature            boolean    Use feature information
-   -firstonly          boolean    Read one sequence and stop
+   -firstonly          boolean    some help text to test comments
 
    Associated qualifiers:
 

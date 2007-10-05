@@ -63,7 +63,9 @@ Command line arguments
                                   of enzymes to search
                                   for.
                                   An example of a file of matrix names is:
+                                  ! my matrices
                                   ma0001, ma0002
+                                  ! other matrices
                                   ma0010
                                   ma0032
                                   ma0053 (Any string is accepted)
@@ -311,45 +313,63 @@ Output file format
 #
 #=======================================
 
-  Start     End  Strand Score_Percent ID     Name Species      Class
-Supergroup Protein_Seq Experiment Source_PMID Info_Content Closest_Jaspar Close
-st_Transfac MCS_Score Built_From Sequence
-    117     126       + 82.143 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      gggggaggat
-   1191    1200       + 89.286 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      gaggcgggga
-   1203    1212       + 83.929 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      cgggcggggc
-   1208    1217       + 89.286 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ggggcggggc
-   1213    1222       + 80.357 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ggggcgggac
-   1704    1713       + 82.143 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      cgggcgtgga
-   1838    1847       + 82.143 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ccggcgggga
-   1933    1942       + 82.143 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ggggcgcggg
-   1945    1954       + 89.286 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      tgggcgggga
-   2027    2036       + 89.286 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ggggcggggg
-   2032    2041       + 87.500 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ggggggcggt
-   2034    2043       + 82.143 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ggggcggtgg
-   1252    1261       - 80.357 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      gagggaggga
-   1304    1313       - 80.357 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      gcggcgcgga
-   1805    1814       - 80.357 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      agcgcggggt
-   1974    1983       - 89.286 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      tgggtggggt
-   2016    2025       - 80.357 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      ggggagggtt
-   2017    2026       - 87.500 MA0079 SP1  Homo sapiens ZN-FINGER, C2H2 vertebr
-ate P08047 SELEX  2192357  9.719 .      .           . .      tggggagggt
+  Start     End  Strand Score_Percent ID     Name   Species      Class
+  Supergroup Protein_Seq Experiment Source_PMID Info_Content Closest_Jaspar Clo
+sest_Transfac MCS_Score Built_From Sequence
+    117     126       +        82.143 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          gggggaggat
+   1191    1200       +        89.286 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          gaggcgggga
+   1203    1212       +        83.929 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          cgggcggggc
+   1208    1217       +        89.286 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ggggcggggc
+   1213    1222       +        80.357 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ggggcgggac
+   1704    1713       +        82.143 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          cgggcgtgga
+   1838    1847       +        82.143 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ccggcgggga
+   1933    1942       +        82.143 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ggggcgcggg
+   1945    1954       +        89.286 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          tgggcgggga
+   2027    2036       +        89.286 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ggggcggggg
+   2032    2041       +        87.500 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ggggggcggt
+   2034    2043       +        82.143 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ggggcggtgg
+   1252    1261       -        80.357 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          gagggaggga
+   1304    1313       -        80.357 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          gcggcgcgga
+   1805    1814       -        80.357 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          agcgcggggt
+   1974    1983       -        89.286 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          tgggtggggt
+   2016    2025       -        80.357 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          ggggagggtt
+   2017    2026       -        87.500 MA0079 SP1    Homo sapiens ZN-FINGER, C2H
+2 vertebrate P08047      SELEX      2192357            9.719 .              .
+                      . .          tggggagggt
 
 #---------------------------------------
 #---------------------------------------

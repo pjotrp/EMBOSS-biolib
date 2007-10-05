@@ -60,7 +60,7 @@ Lupas A, van Dyke M & Stock J (1991); Science 252:1162-4
 Predicts coiled coil regions
 Input protein sequence(s): <b>tsw:gcn4_yeast</b>
 Window size [28]: <b></b>
-Output file [gcn4_yeast.pepcoil]: <b></b>
+Output report [gcn4_yeast.pepcoil]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -77,13 +77,13 @@ Output file [gcn4_yeast.pepcoil]: <b></b>
   [-sequence]          seqall     Protein sequence(s) filename and optional
                                   format, or reference (input USA)
    -window             integer    [28] Window size (Integer from 7 to 28)
-  [-outfile]           outfile    [*.pepcoil] Output file name
+  [-outfile]           report     [*.pepcoil] Output report file name
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
    -[no]coil           boolean    [Y] Report coiled coil regions
    -frame              boolean    [Yes if -coil is true] Show coil frameshifts
-   -[no]other          boolean    [Y] Report non coiled coil regions
+   -other              boolean    [N] Report non coiled coil regions
 
    Associated qualifiers:
 
@@ -104,7 +104,17 @@ Output file [gcn4_yeast.pepcoil]: <b></b>
    -fopenfile1         string     Features file name
 
    "-outfile" associated qualifiers
-   -odirectory2        string     Output directory
+   -rformat2           string     Report format
+   -rname2             string     Base file name
+   -rextension2        string     File name extension
+   -rdirectory2        string     Output directory
+   -raccshow2          boolean    Show accession number in the report
+   -rdesshow2          boolean    Show description in the report
+   -rscoreshow2        boolean    Show the score in the report
+   -rstrandshow2       boolean    Show the nucleotide strand in the report
+   -rusashow2          boolean    Show the full USA in the report
+   -rmaxall2           integer    Maximum total hits to report
+   -rmaxseq2           integer    Maximum hits to report for one sequence
 
    General qualifiers:
    -auto               boolean    Turn off prompts
@@ -149,8 +159,8 @@ Output file [gcn4_yeast.pepcoil]: <b></b>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Output file name</td>
-<td>Output file</td>
+<td>Output report file name</td>
+<td>Report output file</td>
 <td><i>&lt;*&gt;</i>.pepcoil</td>
 </tr>
 
@@ -185,10 +195,10 @@ Output file [gcn4_yeast.pepcoil]: <b></b>
 </tr>
 
 <tr>
-<td>-[no]other</td>
+<td>-other</td>
 <td>Report non coiled coil regions</td>
 <td>Boolean value Yes/No</td>
-<td>Yes</td>
+<td>No</td>
 </tr>
 
 </table>
@@ -328,16 +338,38 @@ SQ   SEQUENCE   281 AA;  31310 MW;  2ED1B8E35D509578 CRC64;
 The SwissProt annotation marks the true leucine zipper motif as from 253 to 274. The leucine zipper is a special case of a coiled-coil region. <p><h3>File: gcn4_yeast.pepcoil </h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-PEPCOIL of GCN4_YEAST
-   using a window of 28 residues
+########################################
+# Program: pepcoil
+# Rundate: Sun 15 Jul 2007 12:00:00
+# Commandline: pepcoil
+#    -sequence tsw:gcn4_yeast
+# Report_format: motif
+# Report_file: gcn4_yeast.pepcoil
+########################################
+
+#=======================================
+#
+# Sequence: GCN4_YEAST     from: 1   to: 281
+# HitCount: 1
+#
+# Window size: 28 residues
+#
+#=======================================
+
+Max_coil_pos at "*"
+
+(1) Score 1.910 length 49 at residues 233-&gt;281
+                           *
+ Sequence: ARNTEAARRSRARKLQRMKQLEDKVEELLSKNYHLENEVARLKKLVGER
+           |                                               |
+         233                                               281
+ Probability: 1.000
+ Predict: coiled
+ Max_coil_pos: 249
 
 
-Other structures from 1 to 232 (232 residues)
-   Max score: 1.283 (probability 0.21)
-
-Prediction starts at 233
-Probable coiled-coil from 233 to 281 (49 residues)
-   Max score: 1.910 (probability 1.00)
+#---------------------------------------
+#---------------------------------------
 </pre>
 </td></tr></table><p>
 
