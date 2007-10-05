@@ -3319,7 +3319,6 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	AJNEW0(k);
 	*k = ajListGetLength(acdListWords);
 	ajListPushAppend(acdListCount, k);
-      
 	if(ajStrCutCommentsRestpos(&acdLine, &comment, &pos))
 	{
 	    tokenhandle = ajStrTokenNewC(acdLine, white);
@@ -3345,9 +3344,11 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    AJNEW(kc);
 	    *kc = ajListGetLength(acdListWords);
 	    ajListPushAppend(acdListCommentsCount, kc);
+	    kc = NULL;
 	    AJNEW(kp);
 	    *kp = pos;
 	    ajListPushAppend(acdListCommentsColumn, kp);
+	    kp = NULL;
 	}
     }
     ajFileClose(&acdFile);
@@ -3364,8 +3365,8 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     
     acdParse(acdListWords, acdListCount);
     
-    ajListstrFree(&acdListWords);
-    ajListFree(&acdListCount);
+    ajListstrFreeData(&acdListWords);
+    ajListFreeData(&acdListCount);
     
     if(acdDoPretty || acdDoValid)
 	ajExit();
@@ -3748,7 +3749,7 @@ static void acdParse(AjPList listwords, AjPList listcount)
     ajStrDel(&acdStrAlias);
     ajStrDel(&acdStrType);
     ajStrDel(&acdStrValue);
-    ajListstrFree(&acdSecList);
+    ajListstrFreeData(&acdSecList);
     
     acdLineNum = 0;
     
@@ -23334,7 +23335,7 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
     
     acdLog("Found %d matches\n", ilen);
     
-    ajListstrFree(&list);
+    ajListstrFreeData(&list);
     ajStrDel(&value);
     ajStrDel(&line);
     ajStrDel(&code);
@@ -25098,9 +25099,9 @@ static void acdReset(void)
     ajRegFree(&acdRegExpFilename);
     ajRegFree(&acdRegExpFileExists);
 
-    ajListFree(&acdListCommentsCount);
-    ajListFree(&acdListCommentsColumn);
-    ajListstrFree(&acdListComments);
+    ajListFreeData(&acdListCommentsCount);
+    ajListFreeData(&acdListCommentsColumn);
+    ajListstrFreeData(&acdListComments);
 
     ajStrDel(&acdProgram);
     AJFREE(acdParamSet);
@@ -27514,7 +27515,7 @@ static void acdDelFloat(void** PPval)
 static void acdDelList(void** PPval)
 {
     if(!*PPval) return;
-    ajListstrFree((AjPList*)PPval);
+    ajListstrFreeData((AjPList*)PPval);
     return;
 }
 
