@@ -1042,7 +1042,8 @@ __deprecated void ajSystemEnv(const AjPStr cl, char * const env[])
 
 /* @func ajSysSystemOut *******************************************************
 **
-** Exec a command line as if from the C shell
+** Exec a command line as if from the C shell with standard output redirected
+** to a named file
 **
 ** The exec'd program is passed a new argv array in argptr
 **
