@@ -29,6 +29,13 @@
 ** the biggest match and calculating start and ends for both sequences.
 */
 
+
+/*
+** possible speedup. The matching function is iterating through a
+** list of hits just to find the one with the right offset. Could we
+** use a table instead with the offset (as a string) as the key?
+ */
+
 #include "emboss.h"
 #include <limits.h>
 #include <math.h>
@@ -307,10 +314,13 @@ int main(int argc, char **argv)
 
 /* @funcstatic supermatcher_matchListOrder ************************************
 **
-** Undocumented.
+** Calculates the offset for the current match.
 **
-** @param [r] x [void**] Undocumented
-** @param [r] cl [void*] Undocumented
+** Steps through the ordered output list to find one item with the same offset.
+** Adds to it if found, otherwise creates a new item at the end.
+**
+** @param [r] x [void**] Word match item
+** @param [r] cl [void*] Ordered output lists
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -497,12 +507,15 @@ static ajint supermatcher_findstartpoints(AjPTable seq1MatchTable,
 
     supermatcher_orderandconcat(matchlist, ordered);
 
+    /* this sets global structure conmax to point to a matchlist element */
     ajListMap(ordered,supermatcher_findmax, &max);
 
     ajDebug("findstart conmax off:%d count:%d total:%d\n",
 	    conmax->offset, conmax->count, conmax->total,
 	    ajListGetLength(conmax->list));
     offset = conmax->offset;
+
+    /* the offset is all we needed! we can delete everything */
 
     ajListMap(ordered,supermatcher_removelists, NULL);
     ajListFree(&ordered);
