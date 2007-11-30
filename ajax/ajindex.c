@@ -2516,7 +2516,14 @@ static ajint btreeIdCompare(const void *a, const void *b)
 
 static ajint btreeNumIdCompare(const void *a, const void *b)
 {
-    return (*(AjPBtNumId const *)a)->offset - (*(AjPBtNumId const *)b)->offset;
+  ajlong val;
+
+    val = (*(AjPBtNumId const *)a)->offset - (*(AjPBtNumId const *)b)->offset;
+
+    if(!val)
+      return 0;
+
+    return (val < 0L) ? -1 : 1;
 }
 
 
