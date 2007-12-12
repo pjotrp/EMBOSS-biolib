@@ -472,8 +472,9 @@ static ajlong dbxgcg_gcggetent(EmbPBtreeEntry entry, AjPFile infs,
 	dbxgcg_gcg_rexp = ajRegCompC("^>>>>([^ \t\n]+)");
 
     if(!dbxgcg_gcg_sexp)
-	dbxgcg_gcg_sexp = ajRegCompC("^>>>>([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)"
-			  "[ \t]+([^ \t]+)[ \t]+([0-9]+)");
+	dbxgcg_gcg_sexp = ajRegCompC("^>>>>([^ \t]+)[ \t]+"
+				     "(Dummy Header|[^ \t]+)[ \t]+([^ \t]+)"
+				     "[ \t]+([^ \t]+)[ \t]+([0-9]+)");
 
     ajStrAssignC(&sline, "");
 
