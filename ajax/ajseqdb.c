@@ -4314,7 +4314,8 @@ static AjBool seqEmbossGcgReadSeq(AjPSeqin seqin)
 
     if(!seqRegGcgId)
     {
-	seqRegGcgId =ajRegCompC("^>...([^ ]+) +([^ ]+) +([^ ]+) +([^ ]+) +([0-9]+)");
+	seqRegGcgId =ajRegCompC("^>...([^ ]+) +(Dummy Header|[^ ]+) +"
+				"([^ ]+) +([^ ]+) +([0-9]+)");
 	seqRegGcgId2=ajRegCompC("^>[PF]1;([^ ]+)");
     }
 
@@ -5546,7 +5547,8 @@ static AjBool seqGcgReadSeq(AjPSeqin seqin)
 
     if(!seqRegGcgId)
     {
-	seqRegGcgId =ajRegCompC("^>...([^ ]+) +([^ ]+) +([^ ]+) +([^ ]+) +([0-9]+)");
+	seqRegGcgId =ajRegCompC("^>...([^ ]+) +([^ ]+) +(Dummy Header|[^ ]+)"
+				" +([^ ]+) +([0-9]+)");
 	seqRegGcgId2=ajRegCompC("^>[PF]1;([^ ]+)");
     }
 
@@ -6099,7 +6101,7 @@ static AjBool seqBlastOpen(AjPSeqQuery qry, AjBool next)
 	    ajFatal("error reading file %F", qryd->libt);
     }
     else
-	ajStrAssignC(&Title, "");
+	ajStrAssignClear(&Title);
 
     if(isblast2)
 	ajStrSetValidLen(&Title, TitleLen);
@@ -7001,7 +7003,7 @@ static AjBool seqHttpProxy(const AjPSeqQuery qry, ajint* proxyport,
 	ajStrAssignS(&proxy, qry->DbProxy);
 
     if(ajStrMatchC(proxy, ":"))
-	ajStrAssignC(&proxy, "");
+	ajStrAssignClear(&proxy);
 
     if(ajRegExec(seqRegHttpProxy, proxy))
     {
