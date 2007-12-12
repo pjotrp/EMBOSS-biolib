@@ -2768,11 +2768,11 @@ static AjBool seqReadNcbi(AjPSeq thys, AjPSeqin seqin)
     if(!ok)
 	return ajFalse;
 
-    ajStrAssignC(&id,"");
-    ajStrAssignC(&acc,"");
-    ajStrAssignC(&sv,"");
-    ajStrAssignC(&gi,"");
-    ajStrAssignC(&desc,"");
+    ajStrAssignClear(&id);
+    ajStrAssignClear(&acc);
+    ajStrAssignClear(&sv);
+    ajStrAssignClear(&gi);
+    ajStrAssignClear(&desc);
 
 
     if(!ajSeqParseNcbi(seqReadLine,&id,&acc,&sv,&gi,&db,&desc))
@@ -2887,11 +2887,11 @@ static AjBool seqReadGifasta(AjPSeq thys, AjPSeqin seqin)
     if(!ok)
 	return ajFalse;
 
-    ajStrAssignC(&id,"");
-    ajStrAssignC(&acc,"");
-    ajStrAssignC(&sv,"");
-    ajStrAssignC(&gi,"");
-    ajStrAssignC(&desc,"");
+    ajStrAssignClear(&id);
+    ajStrAssignClear(&acc);
+    ajStrAssignClear(&sv);
+    ajStrAssignClear(&gi);
+    ajStrAssignClear(&desc);
 
 
     if(!ajSeqParseNcbi(seqReadLine,&id,&acc,&sv,&gi,&db,&desc) ||
@@ -3977,7 +3977,7 @@ static AjBool seqReadRaw(AjPSeq thys, AjPSeqin seqin)
 	    ajDebug("seqReadRaw: Bad character found in line: %S\n",
 		    seqReadLine);
 	    ajFileBuffReset(buff);
-	    ajStrAssignC(&thys->Seq,"");
+	    ajStrAssignClear(&thys->Seq);
 	    return ajFalse;
 	}
 	seqAppend(&thys->Seq, seqReadLine);
@@ -7887,7 +7887,7 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
 	    ajStrTokenNextParse(&handle, &token); /* number */
 	    ajStrToUint(token, &refnum);
 	    ajSeqrefSetnumNumber(seqref, refnum);
-	    ajStrAssignC(&tmpstr2, "");
+	    ajStrAssignClear(&tmpstr2);
 	    while (ajStrTokenNextParse(&handle, &token))
 	    {
 		if(ajStrMatchC(token, "(bases")) continue;
@@ -8738,7 +8738,7 @@ static ajuint seqAppendCommented(AjPStr* pseq, AjBool* incomment,
 	    }
 	    else
 	    {
-		ajStrAssignC(&tmpstr, "");	/* all comment */
+		ajStrAssignClear(&tmpstr);	/* all comment */
 	    }
 	}
 	else
@@ -8756,7 +8756,7 @@ static ajuint seqAppendCommented(AjPStr* pseq, AjBool* incomment,
 	    {
 		ajStrAppendS(pseq, tmpstr);
 		ajDebug("all saved '%S'\n", *pseq);
-		ajStrAssignC(&tmpstr, "");
+		ajStrAssignClear(&tmpstr);
 	    }
 	}
 	if(ajStrGetLen(tmpstr))
@@ -10799,13 +10799,13 @@ AjBool ajSeqParseFasta(const AjPStr instr, AjPStr* id, AjPStr* acc,
     else if(ok && ajSeqtestIsAccession(token2))
     {
 	ajStrAssignS(acc, token2);
-        ajStrAssignC(sv, "");
+        ajStrAssignClear(sv);
 	ajStrTokenNextParseC(&handle, "\n\r", desc);
     }
     else if(ok)
     {
-        ajStrAssignC(acc, "");
-        ajStrAssignC(sv, "");
+        ajStrAssignClear(acc);
+        ajStrAssignClear(sv);
 	ajStrAssignS(desc, token);
 	if(ajStrTokenNextParseC(&handle, "\n\r", &token))
 	{
@@ -10864,7 +10864,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
     ajuint  nt;
     AjBool ret = ajFalse;
 
-    ajStrAssignC(db, "");
+    ajStrAssignClear(db);
 
     /* NCBI's list of standard identifiers June 2001
      ** ftp://ncbi.nlm.nih.gov/blast/db/README.formatdb
@@ -10950,7 +10950,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 	return ret;
     }
 
-    ajStrAssignC(id, "");
+    ajStrAssignClear(id);
     ajStrTokenAssignC(&handle,idstr,"|");
 
     ajStrTokenNextParse(&handle, &prefix);
@@ -10969,7 +10969,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 	    /* we only have a gi prefix */
 	    ajDebug("*only* gi prefix\n");
 	    ajStrAssignS(id, token);
-	    ajStrAssignC(acc, "");
+	    ajStrAssignClear(acc);
 	    ajStrAssignS(desc, reststr);
 	    ajDebug("found pref: '%S' id: '%S', acc: '%S' "
 	       "desc: '%S'\n",
@@ -11021,7 +11021,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
         ajDebug("ajSeqParseNcbi recursive failed '%S' - use gnl id\n",
 		reststr);
 	ajStrAssignS(id,numtoken);
-	ajStrAssignC(acc,"");
+	ajStrAssignClear(acc);
 	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' "
 	   "sv: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *sv, *desc); */
@@ -11045,7 +11045,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 
         /* ajDebug("bbs or lcl prefix\n"); */
 	ajStrTokenNextParse(&handle, id);
-	ajStrAssignC(acc,"");
+	ajStrAssignClear(acc);
 	ajStrAssignS(desc, reststr);
 	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
@@ -11066,7 +11066,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
         if(!strcmp(q,"gnl"))
 	   ajStrAssignS(db, token);
 	ajStrTokenNextParse(&handle, id);
-	ajStrAssignC(acc,"");		/* no accession number */
+	ajStrAssignClear(acc);		/* no accession number */
 	ajStrAssignS(desc, reststr);
 	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
@@ -11091,7 +11091,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
 	    /* chain identifier to append */
 	    ajStrAppendS(id, token);
 	}
-	ajStrAssignC(acc,"");		/* no accession number */
+	ajStrAssignClear(acc);		/* no accession number */
 	ajStrAssignS(desc, reststr);
 	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
@@ -11147,7 +11147,7 @@ AjBool ajSeqParseNcbi(const AjPStr instr, AjPStr* id, AjPStr* acc,
         /* ajDebug("pir,prf prefix\n"); */
 	ajStrTokenNextParse(&handle, id);
 	ajStrAssignS(desc, reststr);
-	ajStrAssignC(acc, "");
+	ajStrAssignClear(acc);
 	/* ajDebug("found pref: '%S' id: '%S', acc: '%S' desc: '%S'\n",
 	   prefix, *id, *acc, *desc); */
 	ajStrDel(&str);

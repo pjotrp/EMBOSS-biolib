@@ -1759,7 +1759,7 @@ void ajGraphDumpDevices(void)
     {
 	if(!graphType[i].Alias)
 	{
-	    ajStrAssignC(&aliases, "");
+	    ajStrAssignClear(&aliases);
 	    for(j=0;graphType[j].Name;j++)
 	    {
 		if(graphType[j].Alias &&

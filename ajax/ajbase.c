@@ -231,7 +231,7 @@ AjBool ajBaseInit(void)
 
     code = ajStrNew();
     list = ajStrNew();
-    ajStrAssignC(&code,"");
+    ajStrAssignClear(&code);
     ajStrAssignC(&list,"ACGT");
 
 

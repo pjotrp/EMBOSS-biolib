@@ -685,7 +685,7 @@ static void reportWriteDiffseq(AjPReport thys,
 	    ajStrToUint(tagval, &jlen);
 	
 	if(!ajFeatGetNoteC(feature, "name", &jname))
-	    ajStrAssignC(&jname, "");
+	    ajStrAssignClear(&jname);
 	
 	if(ilen > 0)
 	{
@@ -714,7 +714,7 @@ static void reportWriteDiffseq(AjPReport thys,
 	}
 	
 	if(!ajFeatGetNoteC(feature, "sequence", &subseq))
-	    ajStrAssignC(&subseq, "");
+	    ajStrAssignClear(&subseq);
 	
 	if(jlen > 0)
 	{

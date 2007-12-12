@@ -1272,7 +1272,7 @@ static void seqWriteNcbi(AjPSeqout outseq)
     else if(ajStrGetLen(outseq->Acc))
 	ajStrAssignS(&version, outseq->Acc);
     else
-	ajStrAssignC(&version, "");
+	ajStrAssignClear(&version);
 
     ajDebug("seqWriteNcbi version '%S' dbname: '%S' KnownDb: %B\n",
 	    version, dbname, seqNcbiKnowndb(dbname));
@@ -1364,7 +1364,7 @@ static void seqWriteGifasta(AjPSeqout outseq)
 	ajStrAssignS(&version, outseq->Acc);
 
     else
-	ajStrAssignC(&version, "");
+	ajStrAssignClear(&version);
 
     ajDebug("seqWriteGifasta version '%S' dbname: '%S' KnownDb: %B\n",
 	    version, dbname, seqNcbiKnowndb(dbname));
@@ -6114,7 +6114,7 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     if(iend >= ibegin)
 	ajStrAssignSubS(&outseq->Seq, seq->Seq, ibegin-1, iend-1);
     else				/* empty sequence */
-	ajStrAssignC(&outseq->Seq, "");
+	ajStrAssignClear(&outseq->Seq);
 
     outseq->Fttable = seq->Fttable;
     if(outseq->Fttable)

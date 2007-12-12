@@ -131,14 +131,14 @@ AjPTree ajTreeNewNewick(const AjPStr newick)
 		AJNEW0(flen);
 		ajStrToDouble(tmpstr, flen);
 		ajTreeAddData(tree, tmpname, flen);
-		ajStrAssignC(&tmpname, "");
-		ajStrAssignC(&tmpstr, "");
+		ajStrAssignClear(&tmpname);
+		ajStrAssignClear(&tmpstr);
 		islength = ajFalse;
 	    }
 	    else
 	    {
 		ajTreeAddData(tree, tmpstr, NULL);
-		ajStrAssignC(&tmpstr, "");
+		ajStrAssignClear(&tmpstr);
 	    }
 	    tree = ajTreeUp(tree);
 	    nparam--;
@@ -149,14 +149,14 @@ AjPTree ajTreeNewNewick(const AjPStr newick)
 		AJNEW0(flen);
 		ajStrToDouble(tmpstr, flen);
 		ajTreeAddData(tree, tmpname, flen);
-		ajStrAssignC(&tmpname, "");
-		ajStrAssignC(&tmpstr, "");
+		ajStrAssignClear(&tmpname);
+		ajStrAssignClear(&tmpstr);
 		islength = ajFalse;
 	    }
 	    else
 	    {
 		ajTreeAddData(tree, tmpstr, NULL);
-		ajStrAssignC(&tmpstr, "");
+		ajStrAssignClear(&tmpstr);
 	    }
 
 	    tree = ajTreeAddSubNode(tree);
@@ -170,8 +170,8 @@ AjPTree ajTreeNewNewick(const AjPStr newick)
 		AJNEW0(flen);
 		ajStrToDouble(tmpstr, flen);
 		ajTreeAddData(tree, tmpname, flen);
-		ajStrAssignC(&tmpname, "");
-		ajStrAssignC(&tmpstr, "");
+		ajStrAssignClear(&tmpname);
+		ajStrAssignClear(&tmpstr);
 		islength = ajFalse;
 	    }
 	    isdone = ajTrue;
@@ -182,7 +182,7 @@ AjPTree ajTreeNewNewick(const AjPStr newick)
 		       newick);
 	    islength = ajTrue;
 	    ajStrAssignS(&tmpname, tmpstr);
-	    ajStrAssignC(&tmpstr, "");
+	    ajStrAssignClear(&tmpstr);
 	    break;
 	case '[':
 	    ncomment++;
@@ -952,7 +952,7 @@ void ajTreeToNewick(const AjPTree thys, AjPStr* Pnewick)
     const AjPTree root;
     AjPTree nexttree;
 
-    ajStrAssignC(Pnewick, "");
+    ajStrAssignClear(Pnewick);
 
 
     root = thys;
@@ -1046,14 +1046,14 @@ void ajTreeTrace(const AjPTree thys)
     AjPTree tree;
     ajint inode=0;
 
-    ajStrAssignC(&treeFollowPath, "");
+    ajStrAssignClear(&treeFollowPath);
     treeTraceNode(thys, inode++);
 
     tree = ajTreeFollow(NULL, thys);
     while(tree)
     {
 	treeTraceNode(tree, inode++);
-	ajStrAssignC(&treeFollowPath, "");
+	ajStrAssignClear(&treeFollowPath);
 	tree = ajTreeFollow(tree, thys);
     }
 
@@ -1077,7 +1077,7 @@ void ajTreestrTrace(const AjPTree thys)
     AjPTree tree;
     ajint inode=0;
 
-    ajStrAssignC(&treeFollowPath, "");
+    ajStrAssignClear(&treeFollowPath);
 
     treestrTraceNode(thys, inode++);
     tree = ajTreeFollow(NULL, thys);

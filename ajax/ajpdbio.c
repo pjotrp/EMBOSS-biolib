@@ -4009,7 +4009,7 @@ static AjBool MaskChains(AjPPdbfile pdbfile, AjPFile logf,
     aa3=ajStrNew();
     lastrn=ajStrNew();
     sub=ajStrNew();
-    ajStrAssignC(&sub, "");
+    ajStrAssignClear(&sub);
     
     
     firstatm=lastatm=pdbfile->idxfirst;
@@ -5240,7 +5240,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		    /* Sequence are same length but contain mismatches */
 		    else
 		    {	
-			for(ajStrAssignC(&msgstr, ""), nmismatches=0, k=0;
+			for(ajStrAssignClear(&msgstr), nmismatches=0, k=0;
 			    k<nres[i];k++)
 			    if(ajStrGetCharPos(seq[i], k) != 
 			       ajStrGetCharPos(pdbfile->seqres[i], k))
@@ -5563,7 +5563,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 
 		/* Check whether residue numbering is correct (and count 
 		   the number of mismatches) */
-		for(err=ajFalse, ajStrAssignC(&msgstr, ""), nmismatches=0, 
+		for(err=ajFalse, ajStrAssignClear(&msgstr), nmismatches=0, 
 		    k=0;k<nres[i];k++)
 		{
 		    this_num = ajIntGet(num[i], k);
@@ -5869,7 +5869,7 @@ static AjBool AlignNumbering(AjPPdbfile pdbfile, AjPFile logf, ajuint lim,
 		   */
 		
 
-		for(ajStrAssignC(&msgstr, ""), 
+		for(ajStrAssignClear(&msgstr), 
 		    nmismatches=0,
 		    done_end=ajFalse,  
 		    len=pdbfile->nres[i],

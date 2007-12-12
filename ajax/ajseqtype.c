@@ -2217,7 +2217,7 @@ AjBool ajSeqTypeSummary(const AjPStr type_name, AjPStr* Ptype, AjBool* gaps)
 	    ajStrAssignC(Ptype, "protein");
 	    break;
 	default:
-	    ajStrAssignC(Ptype, "");
+	    ajStrAssignClear(Ptype);
 	    break;
 	}
 	return ajTrue;

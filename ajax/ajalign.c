@@ -844,7 +844,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		if (!iseq)
 		{
 		    jpos = ipos[iseq];
-		    ajStrAssignC(&tmpnum, "");
+		    ajStrAssignClear(&tmpnum);
 		    jj=7;
 		    cp = ajStrGetPtr(tmpstr);
 		    while (*cp) {
@@ -905,7 +905,7 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 		    if (iseq+1 == nseq)
 		    {
 			jpos = ipos[iseq];
-			ajStrAssignC(&tmpnum, "");
+			ajStrAssignClear(&tmpnum);
 			jj=7;
 			kk=7;
 			cp = ajStrGetPtr(tmpstr);
@@ -2337,7 +2337,7 @@ void ajAlignWriteHeader(AjPAlign thys)
     ajFmtPrintF(outf, "# Aligned_sequences: %d\n", thys->Nseqs);
     for(i=0; i < thys->Nseqs; i++)
     {
-	ajStrAssignC(&tmpstr, "");
+	ajStrAssignClear(&tmpstr);
 	if(thys->Showacc)
 	    ajFmtPrintAppS(&tmpstr, " (%S)",
 			   ajSeqGetAccS(alignSeq(thys,i, 0)));
@@ -4934,7 +4934,7 @@ static AjBool alignConsSet(const AjPAlign thys, ajint iali,
     seq = seqs[numseq];
     seqcharptr = ajSeqGetSeqC(seq);
 
-    ajStrAssignC(cons, "");
+    ajStrAssignClear(cons);
 
     /* For each position in the alignment, calculate consensus character */
     

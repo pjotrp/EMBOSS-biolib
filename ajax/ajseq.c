@@ -7390,7 +7390,7 @@ AjBool ajSeqrefAppendXref(AjPSeqRef ref, const AjPStr str)
 
 AjBool ajSeqrefFmtAuthorsEmbl(const AjPSeqRef ref, AjPStr* Pdest)
 {
-    ajStrAssignC(Pdest, "");
+    ajStrAssignClear(Pdest);
 
     if(!ref->Authors)
 	return ajFalse;
@@ -7415,7 +7415,7 @@ AjBool ajSeqrefFmtAuthorsGb(const AjPSeqRef ref, AjPStr* Pdest)
     ajint imax;
     char* cp;
 
-    ajStrAssignC(Pdest, "");
+    ajStrAssignClear(Pdest);
 
     if(!ref->Authors)
 	return ajFalse;
@@ -7449,7 +7449,7 @@ AjBool ajSeqrefFmtAuthorsGb(const AjPSeqRef ref, AjPStr* Pdest)
 
 AjBool ajSeqrefFmtLocationEmbl(const AjPSeqRef ref, AjPStr* Pdest)
 {
-    ajStrAssignC(Pdest, "");
+    ajStrAssignClear(Pdest);
 
     if(!ref->Location)
 	return ajFalse;
@@ -7470,7 +7470,7 @@ AjBool ajSeqrefFmtLocationEmbl(const AjPSeqRef ref, AjPStr* Pdest)
 
 AjBool ajSeqrefFmtLocationGb(const AjPSeqRef ref, AjPStr* Pdest)
 {
-    ajStrAssignC(Pdest, "");
+    ajStrAssignClear(Pdest);
 
     if(!ref->Location)
 	return ajFalse;
@@ -7496,7 +7496,7 @@ AjBool ajSeqrefFmtLocationGb(const AjPSeqRef ref, AjPStr* Pdest)
 
 AjBool ajSeqrefFmtTitleGb(const AjPSeqRef ref, AjPStr* Pdest)
 {
-    ajStrAssignC(Pdest, "");
+    ajStrAssignClear(Pdest);
 
     if(!ajStrGetLen(ref->Title))
     {

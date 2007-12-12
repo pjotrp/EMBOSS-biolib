@@ -164,6 +164,7 @@ void ajReset(void)
 #endif
     ajDebug("\nFinal Summary\n=============\n\n");
     ajUtilLoginfo();
+    ajBtreeExit();
     ajTableExit();
     ajListExit();
     ajFileExit();
@@ -688,7 +689,7 @@ AjBool ajUtilGetUid(AjPStr* Puid)
     uid = getuid();
     if(!uid)
     {
-	ajStrAssignC(Puid, "");
+	ajStrAssignClear(Puid);
 	return ajFalse;
     }
 
@@ -696,7 +697,7 @@ AjBool ajUtilGetUid(AjPStr* Puid)
     pwd = getpwuid(uid);
     if(!pwd)
     {
-	ajStrAssignC(Puid, "");
+	ajStrAssignClear(Puid);
 	return ajFalse;
     }
 

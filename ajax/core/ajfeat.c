@@ -3467,7 +3467,7 @@ static AjPFeature featEmblFromLine(AjPFeattable thys,
     }
     else
     {
-	ajStrAssignC(&featProcessLine, "");
+	ajStrAssignClear(&featProcessLine);
 	newft = ajFalse;		/* no new data, just process */
 	if(ajStrGetLen(*saveloc))
 	    doft = ajTrue;
@@ -3819,7 +3819,7 @@ static AjPFeature featEmblProcess(AjPFeattable thys, const AjPStr feature,
 	{
 	    featWarn("Bad feature syntax %S: giving up at '%S'",
 		   thys->Seqid, *tags);
-	    ajStrAssignC(tags, "");
+	    ajStrAssignClear(tags);
 	}
     }
 
@@ -3974,7 +3974,7 @@ static AjBool featEmblOperIn(const AjPStr loc, AjPStr* opnam, AjPStr* value,
     if(ipos < ajStrGetLen(loc))
 	ajStrAssignSubS(rest, loc, ipos+1, -1);
     else
-	ajStrAssignC(rest, "");
+	ajStrAssignClear(rest);
 
     return ajTrue;
 }
@@ -4021,14 +4021,14 @@ static AjBool featEmblOperNone(const AjPStr loc, AjPStr* entryid,
     }
     else
     {
-	ajStrAssignC(entryid, "");
+      ajStrAssignClear(entryid);
 	ajStrAssignSubS(value, loc, 0, ipos-1);
     }
 
     if(ipos < ajStrGetLen(loc))
 	ajStrAssignSubS(rest, loc, ipos+1, -1);
     else
-	ajStrAssignC(rest, "");
+	ajStrAssignClear(rest);
 
    return ajTrue;
 }
@@ -4061,8 +4061,8 @@ static AjBool featEmblLoc(const AjPStr loc, AjPStr* begstr, AjBool* between,
 
     *between = ajFalse;
     *simple  = ajFalse;
-    ajStrAssignC(begstr, "");
-    ajStrAssignC(endstr, "");
+    ajStrAssignClear(begstr);
+    ajStrAssignClear(endstr);
 
     while(*cp)
     {
@@ -4121,7 +4121,7 @@ static AjBool featEmblLoc(const AjPStr loc, AjPStr* begstr, AjBool* between,
 	if(numeric)
 	    ajStrAssignSubS(endstr, loc, 0, -1);
 	else
-	    ajStrAssignC(endstr, "");
+	    ajStrAssignClear(endstr);
     }
 
     return ajTrue;
@@ -4248,7 +4248,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
     AjPStr testvalue = NULL;
     static ajint depth = 0;
 
-    ajStrAssignC(value, "");
+    ajStrAssignClear(value);
 
     while((*cp == ' '))
 	cp++;
@@ -4274,12 +4274,12 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
     switch(*cp)
     {
     case '\0':				/* /name is end of input */
-	ajStrAssignC(tags,"");
-	ajStrAssignC(value,"");
+	ajStrAssignClear(tags);
+	ajStrAssignClear(value);
 	return ajTrue;
     case '/':				/* /name then next tag, no value */
 	ajStrAssignC(tags, cp);
-	ajStrAssignC(value,"");
+	ajStrAssignClear(value);
 	return ajTrue;
     case '=':				/* /name=value */
 	break;
@@ -4308,7 +4308,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 		    if(*cp)
 			ajStrAssignC(tags, cp);
 		    else
-			ajStrAssignC(tags, "");
+			ajStrAssignClear(tags);
 		    ajStrDel(&testtags);
 		    ajStrDel(&testname);
 		    ajStrDel(&testvalue);
@@ -4347,7 +4347,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 	    }
 	    cp++;
 	}
-	ajStrAssignC(tags, "");
+	ajStrAssignClear(tags);
     }
     else
     {
@@ -4390,7 +4390,7 @@ static AjBool featEmblTvRest(AjPStr* tags, AjPStr* skip)
     AjBool ok = ajFalse;
     const char* cp = ajStrGetPtr(*tags);
 
-    ajStrAssignC(skip, "");
+    ajStrAssignClear(skip);
 
     while(*cp)
     {
@@ -4414,7 +4414,7 @@ static AjBool featEmblTvRest(AjPStr* tags, AjPStr* skip)
 	cp++;
     }
 
-    ajStrAssignC(tags, "");
+    ajStrAssignClear(tags);
 
     return ajTrue;
 }
@@ -4438,9 +4438,9 @@ static AjBool featTagName(const AjPStr line, AjPStr* name, AjPStr* type,
 {
     const char* cp = ajStrGetPtr(line);
 
-    ajStrAssignC(name, "");
-    ajStrAssignC(type, "");
-    ajStrAssignC(rest, "");
+    ajStrAssignClear(name);
+    ajStrAssignClear(type);
+    ajStrAssignClear(rest);
 
     while(isspace((ajint)*cp))
 	cp++;
@@ -4455,7 +4455,7 @@ static AjBool featTagName(const AjPStr line, AjPStr* name, AjPStr* type,
 
     if(!*cp)
     {
-	ajStrAssignC(name, "");
+	ajStrAssignClear(name);
 	return ajFalse;
     }
 
@@ -4513,10 +4513,10 @@ static AjBool featFeatType(const AjPStr line, AjPStr* type,
     ajint i;
     AjBool istag = ajFalse;
 
-    ajStrAssignC(type, "");
-    ajStrAssignC(intids, "");
-    ajStrAssignC(tag, "");
-    ajStrAssignC(req, "");
+    ajStrAssignClear(type);
+    ajStrAssignClear(intids);
+    ajStrAssignClear(tag);
+    ajStrAssignClear(req);
 
     while(isspace((ajint)*cp))
 	cp++;
@@ -6370,7 +6370,7 @@ AjBool ajFeatLocToSeq(const AjPStr seq, const AjPStr line,
     
     
     /* Construct the sequence */
-    ajStrAssignC(res,"");
+    ajStrAssignClear(res);
     handle = ajStrTokenNewC(featLocStr,",");
     while(ajStrTokenNextParse(&handle,&featLocToken))
     {
@@ -6822,7 +6822,7 @@ AjBool ajFeatGetNoteCI(const AjPFeature thys, const char* name, ajint count,
 				    
 			    }
 			    else	/* no value */
-				ajStrAssignC(val, "");
+				ajStrAssignClear(val);
 
 			    ajListIterDel(&iter);
 			    return ajTrue;
@@ -7511,7 +7511,7 @@ static AjBool featVocabReadTags(const AjPStr fname, AjPTable pTagsTable,
 		if(tagscount == 1) /* save first tag as the default */
 		{
 		    tagstr = NULL;
-		    ajStrAssignC(&defname, "");
+		    ajStrAssignClear(&defname);
 		    ajStrAssignS(&tagstr, tagname);
 		    if(ajTablePut (pTagsTable, defname, tagstr))
 			ajErr("%S duplicate tag for '%S'",
@@ -7681,7 +7681,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			ismodtype = ajTrue;
 			ajStrAssignS(&modtype, type);
 			if(ajStrMatchC(type, ".")) /* replace default */
-			    ajStrAssignC(&type, "");
+			    ajStrAssignClear(&type);
 			ajStrAssignS(&localname, type);
 			ajStrAssignS(&sofaname, intids);
 			tablestr = ajTablePut(pTypeTable,
@@ -7717,7 +7717,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			{
 			    defname   = NULL;
 			    typtagstr = NULL;
-			    ajStrAssignC(&defname, "");
+			    ajStrAssignClear(&defname);
 			    ajStrAssignS(&typtagstr, type);
 			    /*ajDebug("Efeatures.%s %d saved '%S'\n",
 			    name, typecount, type);*/
@@ -7772,17 +7772,17 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 				sofaid = ajStrParseWhite(NULL);
 			    }
 			    ajStrInsertS(&typtagstr, 0, type);
-			    ajStrAssignC(&type, "");
+			    ajStrAssignClear(&type);
 			    savetype  = firstid;
 			    firstid = NULL;
 			    sofaid = NULL;
-			    ajStrAssignC(&intids, "");
+			    ajStrAssignClear(&intids);
 			}
 			else
 			{
 			    savetype  = type;
 			    type      = NULL;
-			    ajStrAssignC(&intids, "");
+			    ajStrAssignClear(&intids);
 			}
 		    }
 		}
@@ -11503,7 +11503,7 @@ static AjBool featTagAllLimit(AjPStr* pval, const AjPStr values)
 		ret = ajTrue;
 		break;
 	    }
-	    ajStrAssignC(&limstr, "");
+	    ajStrAssignClear(&limstr);
 	    cq = cp+1;
 	    i=0;
 	}
@@ -12028,7 +12028,7 @@ static void featDumpPir(const AjPFeature thys, const AjPStr location,
 
     copy = ajFeatCopy(thys);
 
-    ajStrAssignC(&outcomm, "");
+    ajStrAssignClear(&outcomm);
     
     ajStrAssignS(&outtyp, copy->Type);
     typmod = featTypePirOut(&outtyp);	/* try to pick the best type if any */
@@ -12745,7 +12745,7 @@ static void featTagFmt(const AjPStr name, const AjPTable table,
 
     cp = ajStrGetPtr(tagstr);
 
-    ajStrAssignC(retstr, "");
+    ajStrAssignClear(retstr);
 
     cq = cp;
     i=0;
@@ -12780,7 +12780,7 @@ static void featTagLimit(const AjPStr name, const AjPTable table,
     AjPStr tagstr;
     const char* cp = NULL;
 
-    ajStrAssignC(retstr, "");
+    ajStrAssignClear(retstr);
     tagstr = (AjPStr) ajTableFetch(table, name);
     cp = ajStrGetPtr(tagstr);
 

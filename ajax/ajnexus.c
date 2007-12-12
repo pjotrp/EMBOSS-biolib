@@ -237,7 +237,7 @@ AjPNexus ajNexusParse(AjPFileBuff buff)
 	{
 	    if (!nexusBlockSave(ret, blocklist, blockname))
 		return NULL;
-	    ajStrAssignC(&blockname, "");
+	    ajStrAssignClear(&blockname);
 	    block = ajFalse;
 	}
 	else if (block)				/* the rest */

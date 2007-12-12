@@ -404,7 +404,7 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
     char q;
     ajint idx;
 
-    ajStrAssignC(b, "");
+    ajStrAssignClear(b);
 
     p = ajStrGetPtr(a);
     while(*p)
@@ -464,7 +464,7 @@ void ajCodBacktranslateAmbig(AjPStr *b, const AjPStr a, const AjPCod thys)
     char q;
     char codon[4] = "NNN";
 
-    ajStrAssignC(b, "");
+    ajStrAssignClear(b);
 
     ajDebug("ajCodBacktranslateAmbig '%S'\n", a);
     p = ajStrGetPtr(a);
@@ -880,11 +880,11 @@ void ajCodClear(AjPCod thys)
 {
     ajint i;
 
-    ajStrAssignC(&thys->Name,"");
-    ajStrAssignC(&thys->Species,"");
-    ajStrAssignC(&thys->Division,"");
-    ajStrAssignC(&thys->Release,"");
-    ajStrAssignC(&thys->Desc,"");
+    ajStrAssignClear(&thys->Name);
+    ajStrAssignClear(&thys->Species);
+    ajStrAssignClear(&thys->Division);
+    ajStrAssignClear(&thys->Release);
+    ajStrAssignClear(&thys->Desc);
 
     thys->CdsCount = 0;
     thys->CodonCount = 0;
@@ -920,11 +920,11 @@ void ajCodClearData(AjPCod thys)
 {
     ajint i;
 
-    ajStrAssignC(&thys->Name,"");
-    ajStrAssignC(&thys->Species,"");
-    ajStrAssignC(&thys->Division,"");
-    ajStrAssignC(&thys->Release,"");
-    ajStrAssignC(&thys->Desc,"");
+    ajStrAssignClear(&thys->Name);
+    ajStrAssignClear(&thys->Species);
+    ajStrAssignClear(&thys->Division);
+    ajStrAssignClear(&thys->Release);
+    ajStrAssignClear(&thys->Desc);
 
     thys->CdsCount = 0;
     thys->CodonCount = 0;
