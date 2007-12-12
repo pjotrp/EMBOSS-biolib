@@ -45,7 +45,11 @@
 #include <fcntl.h>
 
 #define FILERECURSLV 20
-static ajint fileBuffSize = 2048;
+static ajuint fileBuffSize = 2048;
+
+static AjBool fileUsedStdin  = AJFALSE;
+static AjBool fileUsedStdout = AJFALSE;
+static AjBool fileUsedStderr = AJFALSE;
 
 static ajint fileHandle = 0;
 static ajint fileOpenCnt = 0;
@@ -238,7 +242,7 @@ AjPDir ajDirNewSS(const AjPStr name, const AjPStr prefix, const AjPStr ext)
 
 /* @func ajDiroutNew **********************************************************
 **
-** Creates a new directory outputobject.
+** Creates a new directory output object.
 **
 ** @param [r] name [const AjPStr] Directory name
 ** @return [AjPDir] New directory object.
@@ -1040,6 +1044,13 @@ AjPFile ajFileNewF(FILE* file)
     if(fileOpenCnt > fileOpenMax)
 	fileOpenMax = fileOpenCnt;
 
+    if(file == stdin)
+	fileUsedStdin = ajTrue;
+    else if(file == stdout)
+	fileUsedStdout = ajTrue;
+    else if(file == stderr)
+	fileUsedStderr = ajTrue;
+
     return thys;
 }
 
@@ -1270,7 +1281,19 @@ static void fileClose(AjPFile thys)
 	ajDebug("closing file '%F'\n", thys);
 	if(thys->fp)
 	{
-	    if(thys->fp != stdout && thys->fp != stderr)
+	    if(thys->fp == stdout)
+	    {
+		fileUsedStdout = ajFalse;
+	    }
+	    else if(thys->fp == stderr)
+	    {
+		fileUsedStderr = ajFalse;
+	    }
+	    else if(thys->fp == stdin)
+	    {
+		fileUsedStdin = ajFalse;
+	    }
+	    else
 	    {
 		if(fclose(thys->fp))
 		    ajFatal("File close problem in fileClose");
@@ -1793,7 +1816,9 @@ FILE* ajFileReopen(AjPFile thys, const AjPStr name)
 
 AjBool ajFileReadLine(AjPFile thys, AjPStr* pdest)
 {
-    return ajFileGetsTrim(thys, pdest);
+  ajlong fpos = 0;
+
+  return ajFileGetsTrimL(thys, pdest, &fpos);
 }
 
 
@@ -1815,25 +1840,26 @@ AjBool ajFileReadLine(AjPFile thys, AjPStr* pdest)
 AjBool ajFileGetsTrimL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 {
     AjBool ok;
-    AjPStr dest;
 
     ok = ajFileGetsL(thys, pdest, fpos);
 
     if(!ok)
 	return ajFalse;
 
+    MAJSTRDEL(pdest);
+
     /* trim any trailing newline */
 
-    dest = *pdest;
 
     /*ajDebug("Remove carriage-return characters from PC-style files\n");*/
-    if(ajStrGetCharLast(dest) == '\n')
-	ajStrCutEnd(pdest, 1);
+    if(ajStrGetCharLast(thys->Buff) == '\n')
+	ajStrCutEnd(&thys->Buff, 1);
 
     /* PC files have \r\n Macintosh files have just \r : this fixes both */
-    if(ajStrGetCharLast(dest) == '\r')
-	ajStrCutEnd(pdest, 1);
+    if(ajStrGetCharLast(thys->Buff) == '\r')
+	ajStrCutEnd(&thys->Buff, 1);
 
+    ajStrAssignRef(pdest, thys->Buff);
     return ajTrue;
 }
 
@@ -1903,25 +1929,37 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     ajint ilen;
     ajint jlen;
     ajint ipos;
-    
-    ajStrSetRes(&thys->Buff, fileBuffSize);
-    buff  = ajStrGetuniquePtr(&thys->Buff);
-    isize = ajStrGetRes(thys->Buff);
+
+    MAJSTRDEL(pdest);
+
+    if(!thys->Buff)
+      ajStrAssignResC(&thys->Buff, fileBuffSize, "");
+    else if(fileBuffSize > MAJSTRGETRES(thys->Buff))
+      ajStrSetRes(&thys->Buff, fileBuffSize);
+
+    if(MAJSTRGETUSE(thys->Buff) == 1)
+      buff = MAJSTRGETPTR(thys->Buff);
+    else
+      buff  = ajStrGetuniquePtr(&thys->Buff);
+
+    isize = MAJSTRGETRES(thys->Buff);
     ilen  = 0;
     ipos  = 0;
     
     if(!thys->fp)
 	ajWarn("ajFileGets file not found");
     
+    *fpos = MAJFILETELL(thys);
+
     while(buff)
     {
 	if(thys->End)
 	{
+	    ajStrAssignClear(pdest);
 	    ajDebug("at EOF: File already read to end %F\n", thys);
 	    return ajFalse;
 	}
 	
-	*fpos = ajFileTell(thys);
 
 #ifndef __ppc__
 	cp = fgets(&buff[ipos], isize, thys->fp);
@@ -1934,7 +1972,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	    if(feof(thys->fp))
 	    {
 		thys->End = ajTrue;
-		ajStrAssignC(pdest, "");
+		ajStrAssignClear(pdest);
 		ajDebug("EOF ajFileGetsL file %F\n", thys);
 		return ajFalse;
 	    }
@@ -1951,11 +1989,10 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	 ** and we don't have a newline at the end
 	 ** (must be careful about that - we may just have read enough)
 	 */
-	ajStrSetValidLen(&thys->Buff, ilen);
 	if((jlen == (isize-1)) &&
-	   (ajStrGetCharLast(thys->Buff) != '\n'))
+	   (buff[ilen-1] != '\n'))
 	{
-	    ajStrSetRes(&thys->Buff, ajStrGetRes(thys->Buff)+fileBuffSize);
+	    ajStrSetResRound(&thys->Buff, ajStrGetRes(thys->Buff)+fileBuffSize);
 	    ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
 		    "Size: %d\n",
 		    jlen, ipos, isize, ilen, ajStrGetRes(thys->Buff));
@@ -1976,8 +2013,8 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	ajDebug("Appending missing newline to '%S'\n", thys->Buff);
 	ajStrAppendK(&thys->Buff, '\n');
     }
-    ajStrAssignS(pdest, thys->Buff);
- 
+    ajStrAssignRef(pdest, thys->Buff);
+
     return ajTrue;
 }
 
@@ -2094,7 +2131,7 @@ AjBool ajFileNameShorten(AjPStr* fname)
 	return ajTrue;
     }
 
-    ajStrAssignC(fname, "");
+    ajStrAssignClear(fname);
 
     return ajFalse;
 }
@@ -2812,6 +2849,18 @@ ajlong ajFileTell(const AjPFile thys)
 
 
 
+/* @macro MAJFILETELL ********************************************************
+**
+** Returns the current position in an open file object
+**
+** A macro version of {ajFileTell} available in case it is needed for speed.
+**
+** @param [r] thys [const AjPFile] Source file
+** @return [ajlong] Current file position
+** @@
+******************************************************************************/
+
+
 
 /* @func ajFileStdout *********************************************************
 **
@@ -2853,7 +2902,7 @@ AjBool ajFileStderr(const AjPFile file)
 
 
 
-/* @func ajFileStdin **********************************************************
+/* @func ajFileStdin ***********************************************************
 **
 ** Tests whether a file object is really stdin.
 **
@@ -2868,6 +2917,54 @@ AjBool ajFileStdin(const AjPFile file)
 	return ajTrue;
 
     return ajFalse;
+}
+
+
+
+
+/* @func ajFileRedirectStderr *************************************************
+**
+** Tests whether stderr is in use by an internal file
+**
+** @return [AjBool] ajTrue if the file matches stderr.
+** @@
+******************************************************************************/
+
+AjBool ajFileRedirectStderr(void)
+{
+    return fileUsedStderr;
+}
+
+
+
+
+/* @func ajFileRedirectStdin **************************************************
+**
+** Tests whether stdin is in use by an internal file
+**
+** @return [AjBool] ajTrue if the file matches stdin.
+** @@
+******************************************************************************/
+
+AjBool ajFileRedirectStdin(void)
+{
+    return fileUsedStdin;
+}
+
+
+
+
+/* @func ajFileRedirectStdout *************************************************
+**
+** Tests whether stdout is in use by an internal file
+**
+** @return [AjBool] ajTrue if the file matches stdout.
+** @@
+******************************************************************************/
+
+AjBool ajFileRedirectStdout(void)
+{
+    return fileUsedStdout;
 }
 
 
@@ -4101,7 +4198,7 @@ void ajFileBuffStripHtml(AjPFileBuff thys)
 		{
 		    /* end-of-chunk at end-of-line */
 		    fileBuffLineNext(thys);
-		    ajStrAssignC(&saveLine, "");
+		    ajStrAssignClear(&saveLine);
 		    ajDebug("end-of-chunk at end-of-line: '%S'\n", saveLine);
 		}
 		else
@@ -4404,7 +4501,7 @@ void ajFileBuffReset(AjPFileBuff thys)
 **
 ** @param [u] thys [AjPFileBuff] File buffer
 ** @param [r] store [AjBool] append if true
-** @param [w] astr [AjPStr*] string to append to
+** @param [w] astr [AjPStr*] Stored string cleared if store is true
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -4413,7 +4510,7 @@ void ajFileBuffResetStore(AjPFileBuff thys, AjBool store, AjPStr *astr)
 {
     ajFileBuffReset(thys);
     if(store)
-	ajStrAssignC(astr, "");
+	ajStrAssignClear(astr);
 
     return;
 }
