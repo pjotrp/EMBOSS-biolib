@@ -513,6 +513,20 @@ LDFLAGS="$LDFLAGS -lsec"
 fi
 
 
+dnl Test if --enable-mprobe is given
+if test "${enable_mprobe+set}" != set; then
+enable_mprobe=no
+fi
+
+
+AC_ARG_ENABLE(mprobe,
+[  --enable-mprobe         mprobe memory allocation test])
+if test "${enable_mprobe}" = "yes" ; then
+   CPPFLAGS="-DAJ_MPROBE $CPPFLAGS"
+   AC_MSG_RESULT(yes)
+else
+   AC_MSG_RESULT(no)
+fi
 dnl check and set compilation flags for Jemboss auth server code
 CHECK_THREADS
 
