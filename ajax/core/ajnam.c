@@ -34,6 +34,7 @@
 #include <stdlib.h>
 #endif
 
+#include "mcheck.h"
 
 enum NamEType
 {
@@ -1815,7 +1816,7 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 		    {
 			wordptr = ajStrNewS(word);
 			ajListstrPushAppend(listwords, wordptr);
-			ajStrAssignC(&word, "");
+			ajStrAssignClear(&word);
 		    }
 		    i++;
 		    ptr++;
@@ -1836,10 +1837,10 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 		{
 		    wordptr = ajStrNewS(word);
 		    ajListstrPushAppend(listwords, wordptr);
-		    ajStrAssignC(&word, "");
+		    ajStrAssignClear(&word);
 		    wordptr = ajStrNewC("]");
 		    ajListstrPushAppend(listwords, wordptr);
-		    ajStrAssignC(&word, "");
+		    ajStrAssignClear(&word);
 		}
 		else
 		    ajStrAppendK(&word,*ptr);
@@ -1850,7 +1851,7 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
 	    {
 		wordptr = ajStrNewS(word);
 		ajListstrPushAppend(listwords, wordptr);
-		ajStrAssignC(&word, "");
+		ajStrAssignClear(&word);
 	    }
 	    
 	}
@@ -1932,6 +1933,21 @@ void ajNamInit(const char* prefix)
 
     if(namVarMasterTable && namDbMasterTable && namResMasterTable)
 	return;
+
+#ifdef AJ_MPROBE
+    /*
+    ** mcheck turns on checking of all malloc/calloc/realloc/free calls
+    **
+    ** it *must* be called before any other malloc by the main program
+    **
+    ** ajMemCheck reports on status. If called via ajMemProbe (AJMPROBE)
+    ** it can also report the source file line it was invoked from
+    **
+    ** This is all specific to glibc and must be turned on with ./configure
+    */
+    if(mcheck(ajMemCheck))
+	ajWarn("ajNamInit called after first malloc - ajMemCheck ignored");
+#endif
 
 #ifdef WIN32
     WSAStartup(MAKEWORD(1, 1), &wsaData);
