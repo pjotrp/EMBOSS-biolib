@@ -376,6 +376,9 @@ ajint       ajFileSeek (AjPFile thys, ajlong offset, ajint wherefrom);
 AjBool      ajFileSetDir (AjPStr *pname, const AjPStr dir);
 AjBool      ajFileStat (const AjPStr filename, ajint mode);
 AjBool      ajFileNameValid (const AjPStr filename);
+AjBool      ajFileRedirectStderr(void);
+AjBool      ajFileRedirectStdin(void);
+AjBool      ajFileRedirectStdout(void);
 AjBool      ajFileStderr (const AjPFile file);
 AjBool      ajFileStdin (const AjPFile file);
 AjBool      ajFileStdout (const AjPFile file);
@@ -408,6 +411,7 @@ AjPOutfile  ajOutfileNew(const AjPStr name);
 */
 
 
+#define    MAJFILETELL(file) (file->fp ? ftell(file->fp) : 0L)
 
 /* ============= definitions =========================*/
 #ifndef WIN32
