@@ -1356,7 +1356,8 @@ static void listArrayTrace(void** array)
 ** @nam3rule Print Trace contents to standard error
 ** @nam3rule Trace Trace contents to debug file
 **
-** @argrule * list [const AjPList] List
+** @argrule Probe Plist [AjPList const*] Pointer to list
+** @argrule Trace list  [const AjPList]  List
 **
 ** @valrule * [void]
 **
@@ -1364,6 +1365,99 @@ static void listArrayTrace(void** array)
 **
 ******************************************************************************/
 
+
+
+/* @func ajListProbe ***********************************************************
+**
+** Free all nodes in the list.
+** NOTE: The data is only freed with a specified list type.
+**       For undefined data types we recommend you to
+**       use ajListMap with a routine to free the memory.
+**
+** @param [r] Plist [AjPList const*] List
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajListProbe(AjPList const * Plist)
+{
+    AjPListNode next;
+    AjPListNode *rest;
+    AjPList list;
+
+    if(!Plist)
+	return;
+
+    if(!*Plist)
+	return;
+
+    list = *Plist;
+    rest = &list->First;
+
+    /* don't free the data in the list (we don't know how) */
+    /* just free the nodes */
+    if(list->Count)
+	for( ; (*rest)->Next; *rest = next)
+	{
+	    next = (*rest)->Next;
+	    AJMPROBE(*rest);
+	}
+
+    AJMPROBE(*rest);
+    AJMPROBE(*Plist);
+
+    return;
+}
+
+
+
+
+/* @func ajListProbeData *******************************************************
+**
+** Free all nodes in the list. Free all the data values.
+** For more complex data objects use ajListMap with a routine to
+** free the object memory.
+**
+** @param [r] Plist [AjPList const*] List
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajListProbeData(AjPList const * Plist)
+{
+    AjPListNode next;
+    AjPListNode *rest;
+    AjPList list;
+
+    if(!Plist)
+	return;
+
+    if(!*Plist)
+	return;
+
+    list = *Plist;
+    rest = &list->First;
+
+
+    /* free the data for each node (just a simple free) */
+    /* as we free the nodes */
+
+    if(list->Count)
+    {
+	for( ; (*rest)->Next; *rest = next)
+	{
+	    AJMPROBE((*rest)->Item);
+	    next = (*rest)->Next;
+	    AJMPROBE(*rest);
+	}
+	AJMPROBE((*rest)->Item);
+    }
+
+    AJMPROBE(*rest);
+    AJMPROBE(*Plist);
+
+    return;
+}
 
 
 /* @func ajListTrace **********************************************************

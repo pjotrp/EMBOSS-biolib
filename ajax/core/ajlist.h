@@ -110,6 +110,8 @@ AjPList     ajListNew (void);          /* return header */
 AjBool      ajListPeek    (const AjPList list, void** x);
 AjBool      ajListPop    (AjPList list, void** x);
 AjBool      ajListPopLast (AjPList thys, void** x);
+void        ajListProbe   (AjPList const *list);
+void        ajListProbeData   (AjPList const *list);
 void        ajListPurge(AjPList list,
 			AjBool (*test)(const void *),
 			void (*nodedelete)(void **));
