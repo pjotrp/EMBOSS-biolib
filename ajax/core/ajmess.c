@@ -1695,6 +1695,13 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
     ajFmtVError(fmt, args);
     va_end(args);
 
+    if(ajFileRedirectStdin())
+    {
+	ajUser("(Standard input in use: using default)");
+	ajStrAssignC(pthis, "");
+	return ajStrGetLen(*pthis);
+    }
+
     ajStrSetRes(pthis, fileBuffSize);
     buff  = ajStrGetuniquePtr(pthis);
     thys = *pthis;
@@ -1705,9 +1712,6 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
 
     /*ajDebug("ajUserGet buffer len: %d res: %d ptr: %x\n",
 	     ajStrGetLen(thys), ajStrGetRes(thys), thys->Ptr);*/
-
-    if(feof(stdin))
-	ajFatal("END-OF-FILE reading from user\n");
 
     while(buff)
     {
@@ -1721,7 +1725,10 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
         if(!cp && !ipos)
 	{
 	    if(feof(stdin))
-		ajFatal("END-OF-FILE reading from user\n");
+	    {
+		ajErr("Unable to get reply from user - end of standard input");
+		ajExitBad();
+	    }
 	    else
 		ajFatal("Error reading from user: '%s'\n",
 			strerror(errno));
