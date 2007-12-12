@@ -142,6 +142,7 @@ char*      ajCharNewRes(ajuint size);
 char*      ajCharNewResC(const char* txt, ajuint size);
 char*      ajCharNewResS(const AjPStr str, ajuint size);
 char*      ajCharNewResLenC(const char* txt, ajuint size, ajuint len);
+char*      ajCharNull (void);
 
 /* destructors */
 
@@ -204,13 +205,18 @@ void       ajStrDel (AjPStr* Pstr);
 void       ajStrDelarray(AjPStr** PPstr);
 AjBool     ajStrDelStatic(AjPStr* Pstr);
 
+#define MAJSTRDEL(Pstr) if(*Pstr) \
+    {if((*Pstr)->Use <= 1) ajStrDel(Pstr);	\
+  else {--(*Pstr)->Use;(*Pstr) = NULL;}}
+
 /* assignment */
 
 AjBool     ajStrAssignC(AjPStr* Pstr, const char* txt);
 AjBool     ajStrAssignK(AjPStr* Pstr, char chr);
 AjBool     ajStrAssignS(AjPStr* Pstr, const AjPStr str);
-AjBool     ajStrAssignEmptyC  (AjPStr* pthis, const char* str);
-AjBool     ajStrAssignEmptyS   (AjPStr* pthis, const AjPStr str);
+AjBool     ajStrAssignClear(AjPStr* Pstr);
+AjBool     ajStrAssignEmptyC(AjPStr* pthis, const char* str);
+AjBool     ajStrAssignEmptyS(AjPStr* pthis, const AjPStr str);
 AjBool     ajStrAssignLenC(AjPStr* Pstr, const char* txt, ajuint ilen);
 AjBool     ajStrAssignRef(AjPStr* Pstr, AjPStr refstr);
 AjBool     ajStrAssignResC(AjPStr* Pstr, ajuint size, const char* txt);
@@ -341,19 +347,21 @@ char       ajStrGetCharFirst(const AjPStr str);
 char       ajStrGetCharLast(const AjPStr str);
 char       ajStrGetCharPos(const AjPStr str, ajint pos);
 ajuint     ajStrGetLen(const AjPStr str);
-#define    MAJSTRGETLEN(str) str->Len
+#define    MAJSTRGETLEN(str) ((str) ? (str)->Len : 0)
 const char* ajStrGetPtr(const AjPStr str);
-#define    MAJSTRGETPTR(str) str->Ptr
+#define    MAJSTRGETPTR(str) ((str) ? (str)->Ptr : ajCharNull())
 ajuint      ajStrGetRes(const AjPStr str);
-#define    MAJSTRGETRES(str) str->Res
+#define    MAJSTRGETRES(str) ((str) ? (str)->Res : 0)
 ajuint     ajStrGetRoom(const AjPStr str);
 ajuint     ajStrGetUse(const AjPStr str);
-#define    MAJSTRGETUSE(str) str->Use
+#define    MAJSTRGETUSE(str) ((str) ? (str)->Use : 0)
 AjBool     ajStrGetValid (const AjPStr thys);
 
 /* modifiable string retrieval */
 
 char*      ajStrGetuniquePtr(AjPStr *Pstr);
+#define MAJSTRGETUNIQUESTR(Pstr) (((*Pstr)->Use > 1) ? \
+				  ajStrGetUniqueStr(Pstr) : *Pstr) 
 AjPStr     ajStrGetuniqueStr(AjPStr *Pstr);
 
 /* element assignment */
@@ -425,6 +433,9 @@ AjBool     ajStrSuffixCaseS (const AjPStr str, const AjPStr pref);
 
 /* comparison (sorting) */
 
+#define MAJSTRCMPC(str1,txt2) strcmp(str1->Ptr, txt2)
+#define MAJSTRCMPS(str1,str2) strcmp(str1->Ptr, str2->Ptr)
+
 int        ajStrCmpC(const AjPStr thys, const char *text);
 int        ajStrCmpS(const AjPStr str, const AjPStr str2);
 int        ajStrCmpCaseS (const AjPStr str1, const AjPStr str2);
@@ -467,8 +478,9 @@ ajuint     ajStrParseCountMultiC(const AjPStr str, const char *txtdelim);
 ajuint     ajStrParseSplit(const AjPStr str, AjPStr **PPstr);
 const AjPStr ajStrParseWhite(const AjPStr str);
 
-/*( debug */
+/* debug */
 
+void       ajStrProbe (AjPStr const * Pstr);
 void       ajStrStat (const char* title);
 void       ajStrTrace (const AjPStr thys);
 void       ajStrTraceFull (const AjPStr thys);
