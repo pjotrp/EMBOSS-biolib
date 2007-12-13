@@ -189,15 +189,15 @@ int main(int argc, char **argv)
 			    ival++;
 			else
 			{
-			    ajErr("value is not integer ..%s..\n",
-				  ajStrGetPtr(value));
+			    ajErr("value is not integer ..%S..\n",
+				  value);
 			    embExit();
 			}
 		    }
 		    else
 		    {
 			ajErr("At position %d in seq, couldn't find key "
-			      "%s in table", j, ajStrGetPtr(key));
+			      "%S", j, key);
 			embExit();
 		    }
 		}
