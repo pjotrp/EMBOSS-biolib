@@ -621,6 +621,10 @@ void ajMemProbe(void* ptr,
     mprobe(ptr);
 
     probeTest = ajFalse;
+#else
+    (void) ptr;
+    (void) file;
+    (void) line;
 #endif
     return;
 }
