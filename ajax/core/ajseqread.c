@@ -9748,6 +9748,8 @@ static void seqListNoComment(AjPStr* text)
     if(!i)				/* empty string */
 	return;
 
+    MAJSTRGETUNIQUESTR(text);
+    
     cp = strchr(ajStrGetPtr(*text), '#');
     if(cp)
     {					/* comment found */
