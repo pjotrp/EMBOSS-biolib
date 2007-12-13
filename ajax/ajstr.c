@@ -2679,13 +2679,6 @@ AjBool ajStrAssignLenC(AjPStr* Pstr, const char* txt, ajuint  len)
     if (!txt)
 	ajFatal("ajStrAssignLenC source text NULL");
 
-    if(txt[len])
-    {
-	ajWarn("ajStrAssignLenC '%s' %d txt[len] '%c'",
-	       txt, len, txt[len]);
-	ajUtilCatch();
-    }
-
     thys = *Pstr;
     if(!thys)
     {
@@ -2899,21 +2892,19 @@ AjBool ajStrAssignSubC(AjPStr* Pstr, const char* txt, ajint pos1, ajint pos2)
 
     ilen = iend - ibegin + 1;
 
+    if(!*Pstr)
+	ret = ajStrSetResRound(Pstr, ilen+1);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
+
+    if((*Pstr)->Res < ilen+1)
+	ret = ajStrSetResRound(Pstr, ilen+1);
+
     thys = *Pstr;
-    if(!thys)
-    {
-	ret = ajStrSetResRound(Pstr, ilen+1);
-	thys = *Pstr;
-    }
-    else if(thys->Res < ilen+1)
-    {
-	ret = ajStrSetResRound(Pstr, ilen+1);
-	thys = *Pstr;
-    }
 
     thys->Len = ilen;
     if (ilen)
-	memcpy(thys->Ptr, txt, ilen);
+	memcpy(thys->Ptr, &txt[ibegin], ilen);
 
     thys->Ptr[ilen] = '\0';
     return ret;
@@ -2971,17 +2962,15 @@ AjBool ajStrAssignSubS(AjPStr* Pstr, const AjPStr str,
 
     ilen = iend - ibegin + 1;
 
+    if(!*Pstr)
+	ret = ajStrSetResRound(Pstr, ilen+1);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
+
+    if((*Pstr)->Res < ilen+1)
+	ret = ajStrSetResRound(Pstr, ilen+1);
+
     thys = *Pstr;
-    if(!thys)
-    {
-	ret = ajStrSetResRound(Pstr, ilen+1);
-	thys = *Pstr;
-    }
-    else if(thys->Res < ilen+1)
-    {
-	ret = ajStrSetResRound(Pstr, ilen+1);
-	thys = *Pstr;
-    }
 
     thys->Len = ilen;
     if (ilen)
@@ -3542,9 +3531,11 @@ AjBool ajStrJoinC(AjPStr* Pstr, ajint pos, const char* txt,
 
     len = strlen(txt);
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     ibegin = ajMathPos(thys->Len, pos);
     ibegin2 = ajMathPos(len, posb);
@@ -3556,7 +3547,7 @@ AjBool ajStrJoinC(AjPStr* Pstr, ajint pos, const char* txt,
 
     if(newlen > thys->Res)
     {
-	ajStrSetResRound(Pstr, j);
+	ajStrSetResRound(Pstr, newlen);
 	thys = *Pstr;
     }
 
@@ -3620,9 +3611,11 @@ AjBool ajStrMask(AjPStr* Pstr, ajint pos1, ajint pos2, char maskchr)
     ajuint iend;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     ibegin = ajMathPos(thys->Len, pos1);
     iend = ajMathPosI(thys->Len, ibegin, pos2);
@@ -3698,9 +3691,11 @@ AjBool ajStrPasteCountK( AjPStr* Pstr, ajint pos, char chr,
     char* ptr1 = 0;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     ibegin = ajMathPos(thys->Len, pos);
     iend   = ibegin + num;
@@ -3757,9 +3752,11 @@ AjBool ajStrPasteMaxC (AjPStr* Pstr, ajint pos, const char* txt,
 
     slen = strlen(txt);
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     ibegin = ajMathPos(thys->Len, pos);
     iend = ibegin + len;
@@ -3908,9 +3905,11 @@ AjBool ajStrCutComments(AjPStr* Pstr)
     AjPStr thys;
     char *cp;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(!thys->Len)		/* empty string */
 	return ajFalse;
@@ -3957,9 +3956,11 @@ AjBool ajStrCutCommentsRestpos(AjPStr* Pstr,
     AjPStr thys;
     char *cp;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     *Pstartpos=0;
     ajStrAssignClear(Pcomment);
@@ -3998,9 +3999,11 @@ AjBool ajStrCutCommentsStart(AjPStr* Pstr)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(!MAJSTRGETLEN(thys))		/* empty string */
 	return ajFalse;
@@ -4038,9 +4041,11 @@ AjBool ajStrCutEnd(AjPStr* Pstr, ajuint len)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(!len)
 	return ajTrue;
@@ -4090,9 +4095,11 @@ AjBool ajStrCutRange(AjPStr* Pstr, ajint pos1, ajint pos2)
     ajuint iend;
     ajuint irest;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     ibegin = ajMathPos(thys->Len, pos1);
     iend = ajMathPosI(thys->Len, ibegin, pos2) + 1;
@@ -4136,9 +4143,11 @@ AjBool ajStrCutStart(AjPStr* Pstr, ajuint len)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(!len)
 	return ajTrue;
@@ -4236,9 +4245,11 @@ AjBool ajStrKeepSetC(AjPStr* Pstr, const char* txt)
     char *p;
     char *q;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = thys->Ptr;
     q = thys->Ptr;
@@ -4276,16 +4287,18 @@ AjBool ajStrKeepSetS(AjPStr* Pstr, const AjPStr str)
 
     if(!str)
     {
-      thys = *Pstr;
-      if(MAJSTRGETLEN(thys))
+      if(MAJSTRGETLEN(*Pstr))
 	return ajTrue;
       else
 	return ajFalse;
     }
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
+    
     txt = MAJSTRGETPTR(str);
 
     p = thys->Ptr;
@@ -4329,9 +4342,11 @@ AjBool ajStrKeepSetAlpha(AjPStr* Pstr)
     char *p;
     char *q;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = thys->Ptr;
     q = thys->Ptr;
@@ -4369,9 +4384,11 @@ AjBool ajStrKeepSetAlphaC(AjPStr* Pstr, const char* txt)
     char *p;
     char *q;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = thys->Ptr;
     q = thys->Ptr;
@@ -4441,9 +4458,11 @@ AjBool ajStrKeepSetAlphaRest(AjPStr* Pstr, AjPStr* Prest)
 
     ajStrAssignClear(Prest);
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = thys->Ptr;
     q = thys->Ptr;
@@ -4488,9 +4507,11 @@ AjBool ajStrKeepSetAlphaRestC(AjPStr* Pstr, const char* txt, AjPStr* Prest)
 
     ajStrAssignClear(Prest);
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = thys->Ptr;
     q = thys->Ptr;
@@ -4551,9 +4572,11 @@ AjBool ajStrQuoteStrip(AjPStr* Pstr)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(ajStrGetCharLast(thys) == '"')
 	ajStrCutEnd(Pstr, 1);
@@ -4587,9 +4610,11 @@ AjBool ajStrQuoteStripAll(AjPStr* Pstr)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(ajStrGetCharLast(thys) == '"')
     {
@@ -4639,9 +4664,11 @@ AjBool ajStrRemoveGap(AjPStr* Pstr)
     char c;
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = q = thys->Ptr;
     len = thys->Len;
@@ -4691,9 +4718,11 @@ AjBool ajStrRemoveHtml(AjPStr* Pstr)
     char *q;
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = q = thys->Ptr;
     while(*p)
@@ -4831,9 +4860,11 @@ AjBool ajStrRemoveWhite(AjPStr* Pstr)
     ajuint len;
     char *p;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p   = thys->Ptr;
     len = thys->Len;
@@ -4886,11 +4917,11 @@ AjBool ajStrRemoveWhiteExcess(AjPStr* Pstr)
     ajuint len;
     char *p;
 
-    /* $$$ need to clean up extra strlen calls here */
-
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = thys->Ptr;
     
@@ -5012,11 +5043,11 @@ AjBool ajStrRemoveWhiteSpaces(AjPStr* Pstr)
     ajuint len;
     char *p;
 
-    /* $$$ need to clean up extra strlen calls here */
-
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     p = thys->Ptr;
     
@@ -5122,9 +5153,11 @@ AjBool ajStrRemoveWild(AjPStr* Pstr)
     char* cp;
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     cp = thys->Ptr;
 
@@ -5173,9 +5206,11 @@ AjBool ajStrTrimC(AjPStr* Pstr, const char* txt)
     const char* cp;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     cp = thys->Ptr;
     i = strspn(cp, txt);
@@ -5230,9 +5265,11 @@ AjBool ajStrTrimEndC(AjPStr* Pstr, const char* txt)
     const char* cp;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(!thys->Len)
 	return ajFalse;
@@ -5272,9 +5309,11 @@ AjBool ajStrTrimStartC(AjPStr* Pstr, const char* txt)
     const char* cp;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(!thys->Len)
 	return ajFalse;
@@ -5382,9 +5421,11 @@ AjBool ajStrTruncateLen(AjPStr* Pstr, ajuint len)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     if(len > thys->Len) return ajTrue;
 
@@ -5412,9 +5453,11 @@ AjBool ajStrTruncatePos(AjPStr* Pstr, ajint pos)
     AjPStr thys;
     ajuint ibegin;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     ibegin = 1 + ajMathPos(thys->Len, pos);
     thys->Ptr[ibegin] = '\0';
@@ -5578,9 +5621,11 @@ AjBool ajStrExchangeKK(AjPStr* Pstr, char chr, char chrnew)
     AjPStr thys;
     char* cp;
     
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys  = ajStrGetuniqueStr(Pstr);
 
     cp   = thys->Ptr;
     
@@ -5738,9 +5783,11 @@ AjBool ajStrExchangeSetCC(AjPStr* Pstr, const char* txt, const char* txtnew)
     co = txt;
     cn = txtnew;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     i = strlen(txtnew);
     if(strlen(txt) > i)
@@ -5835,9 +5882,11 @@ AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chrnew)
 
     co = txt;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-       thys = ajStrGetuniqueStr(Pstr);
 
     while(*co)
     {
@@ -5896,9 +5945,11 @@ AjBool ajStrRandom(AjPStr* Pstr)
     ajuint len;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     ajStrAssignS(&copy, thys);
     p=copy->Ptr;
@@ -5946,9 +5997,11 @@ AjBool ajStrReverse(AjPStr* Pstr)
     char tmp;
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     cp = thys->Ptr;
     cq = cp + thys->Len - 1;
@@ -7318,9 +7371,11 @@ char* ajStrGetuniquePtr(AjPStr *Pstr)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     return thys->Ptr;
 }
@@ -7446,6 +7501,9 @@ AjBool ajStrSetClear(AjPStr* Pstr)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        return ajTrue;
+    
     thys = *Pstr;
     if(thys->Use > 1)
       thys  = ajStrGetuniqueStr(Pstr);
@@ -8456,9 +8514,11 @@ AjBool ajStrFmtLower(AjPStr* Pstr)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys  = ajStrGetuniqueStr(Pstr);
 
     ajCharFmtLower(thys->Ptr);
 
@@ -8492,9 +8552,11 @@ AjBool ajStrFmtLowerSub(AjPStr* Pstr, ajint pos1, ajint pos2)
     ajuint iend;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys  = ajStrGetuniqueStr(Pstr);
 
     ibegin = ajMathPos(thys->Len, pos1);
     iend = ajMathPosI(thys->Len, ibegin, pos2);
@@ -8571,9 +8633,11 @@ AjBool ajStrFmtTitle(AjPStr* Pstr)
 
     ajStrFmtLower(Pstr);
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys  = ajStrGetuniqueStr(Pstr);
 
     cp = thys->Ptr;
 
@@ -8618,9 +8682,11 @@ AjBool ajStrFmtUpper(AjPStr* Pstr)
 {
     AjPStr thys;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys  = ajStrGetuniqueStr(Pstr);
 
     ajCharFmtUpper(thys->Ptr);
 
@@ -8656,9 +8722,11 @@ AjBool ajStrFmtUpperSub(AjPStr* Pstr, ajint pos1, ajint pos2)
     ajuint iend;
     ajuint i;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
     thys = *Pstr;
-    if(thys->Use > 1)
-      thys  = ajStrGetuniqueStr(Pstr);
 
     ibegin = ajMathPos(thys->Len, pos1);
     iend = ajMathPosI(thys->Len, ibegin, pos2);
@@ -8702,12 +8770,14 @@ AjBool ajStrFmtWrap(AjPStr* Pstr, ajuint width )
     ajuint k;
     ajuint imax;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
+    thys = *Pstr;
+
     if(width > (*Pstr)->Len)		/* already fits on one line */
 	return ajTrue;
-
-    thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     cq = thys->Ptr;
     i=0;
@@ -8794,12 +8864,14 @@ AjBool ajStrFmtWrapAt(AjPStr* Pstr, ajuint width, char ch)
     ajuint kk;
     ajuint imax;
 
+    if(!*Pstr)
+        *Pstr = ajStrNewResLenC("", 1, 0);
+    else if((*Pstr)->Use > 1)
+        ajStrGetuniqueStr(Pstr);
+    thys = *Pstr;
+
     if(width > (*Pstr)->Len)		/* already fits on one line */
 	return ajTrue;
-
-    thys = *Pstr;
-    if(thys->Use > 1)
-      thys = ajStrGetuniqueStr(Pstr);
 
     cq = thys->Ptr;
     i=0;
