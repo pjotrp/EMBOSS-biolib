@@ -361,7 +361,7 @@ AjBool     ajStrGetValid (const AjPStr thys);
 
 char*      ajStrGetuniquePtr(AjPStr *Pstr);
 #define MAJSTRGETUNIQUESTR(Pstr) (((*Pstr)->Use > 1) ? \
-				  ajStrGetUniqueStr(Pstr) : *Pstr) 
+				  ajStrGetuniqueStr(Pstr) : *Pstr) 
 AjPStr     ajStrGetuniqueStr(AjPStr *Pstr);
 
 /* element assignment */
