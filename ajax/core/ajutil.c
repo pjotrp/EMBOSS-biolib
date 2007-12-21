@@ -164,7 +164,7 @@ void ajReset(void)
 #endif
     ajDebug("\nFinal Summary\n=============\n\n");
     ajUtilLoginfo();
-    ajBtreeExit();
+    /*    ajBtreeExit(); */
     ajTableExit();
     ajListExit();
     ajFileExit();
