@@ -7203,6 +7203,7 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 		    fprintf(fp2,"\n");             
 	    }
 */
+            ajSeqoutClose(seqout);
 	}     
    
        
