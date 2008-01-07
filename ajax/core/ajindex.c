@@ -11963,8 +11963,14 @@ static void btreeIdDelFromList(void** pentry, void* cl)
 
 static ajint btreeOffsetCompare(const void *a, const void *b)
 {
-    return (*(AjPBtId const *)a)->offset -
-		  (*(AjPBtId const *)b)->offset;
+  ajlong val;
+
+    val = (*(AjPBtId const *)a)->offset - (*(AjPBtId const *)b)->offset;
+
+    if(!val)
+      return 0;
+
+    return (val < 0L) ? -1 : 1;
 }
 
 
