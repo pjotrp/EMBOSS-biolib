@@ -19,7 +19,7 @@ section: input [
 
   infile: constraintfile [
     parameter: "Y"
-    information: "Vienna RNA structure contraints file
+    information: "Vienna RNA structure constraints file
                   (optional)"
     knowntype: "rna constraint"
   ]
@@ -51,6 +51,11 @@ section: advanced [
   boolean: tetraloop [
     default: "Y"
     information: "Stabilising energies for tetra-loops"
+  ]
+
+  boolean: circular [
+    default: "N"
+    information: "Circular RNA"
   ]
 
   list: energy [

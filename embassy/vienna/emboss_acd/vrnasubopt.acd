@@ -44,6 +44,11 @@ section: advanced [
     information: "Temperature"
   ]
 
+  boolean: circular [
+    default: "N"
+    information: "Allow circular RNA"
+  ]
+
   boolean: gu [
     default: "Y"
     information: "Allow GU pairs"
@@ -57,6 +62,11 @@ section: advanced [
   boolean: lp [
     default: "Y"
     information: "Allow lonely pairs"
+  ]
+
+  boolean: convert [
+    default: "Y"
+    information: "Convert T to U"
   ]
 
   string: nsbases [

@@ -125,9 +125,16 @@ section: output [
     information: "Vienna RNAfold output file"
   ]
 
-  outfile: dotoutfile [
+  outfile: adotoutfile [
     name: "$(sequence.name)"
     extension: "ps"
+    knowntype: "postscript"
+    information: "Vienna dotplot postscript output file"
+  ]
+
+  outfile: bdotoutfile [
+    name: "$(sequence.name)"
+    extension: "ps2"
     knowntype: "postscript"
     information: "Vienna dotplot postscript output file"
   ]

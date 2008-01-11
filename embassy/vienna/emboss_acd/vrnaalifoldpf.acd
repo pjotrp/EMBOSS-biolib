@@ -76,6 +76,16 @@ section: advanced [
     information: "Stabilizing energies for tetra-loops"
   ]
 
+  boolean: circular [
+    default: "N"
+    information: "Circular RNA"
+  ]
+
+  boolean: colour [
+    default: "N"
+    information: "Colour structure plot"
+  ]
+
   list: energy [
     default: "0"
     minimum: "1"
@@ -152,6 +162,13 @@ section: output [
     extension: "ssps"
     knowntype: "Vienna structure"
     information: "Vienna structure postscript output file"
+  ]
+
+  outfile: alignoutfile [
+    nullok: "Y"
+    default: ""
+    information: "Vienna alignment colour postscript output file"
+    knowntype: "vienna alignment"
   ]
 
 endsection: output
