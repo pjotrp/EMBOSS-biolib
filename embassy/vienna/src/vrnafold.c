@@ -1,5 +1,5 @@
-/* Last changed Time-stamp: <2005-06-22 15:57:54 ivo> */
-/*                
+/* Last changed Time-stamp: <2007-12-05 13:55:42 ronny> */
+/*
 		  Ineractive Access to folding Routines
 
 		  c Ivo L Hofacker
@@ -16,55 +16,47 @@
 #include "fold.h"
 #include "part_func.h"
 #include "fold_vars.h"
-#include "ePS_dot.h"
+#include "PS_dot.h"
 #include "utils.h"
 extern void  read_parameter_file(AjPFile file);
-extern float circfold(const char *string, char *structure);
-
 extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
+extern float circfold(const char *string, char *structure);
+extern plist * stackProb(double cutoff);
+/*@unused@*/
+static char UNUSED rcsid[] = "$Id: vrnafold.c,v 1.6 2008/01/11 14:48:02 ajb Exp $";
 
+#define PRIVATE static
 
+static char  scale1[] = "....,....1....,....2....,....3....,....4";
+static char  scale2[] = "....,....5....,....6....,....7....,....8";
 
-static char *cwarn[] = 
-{
-    "# Depending on the origin of the circular sequence, some structures may",
-    "# be missed when using -noLP. Try rotating your sequence a few times.",
-    "#",
-    NULL
-};
-
-
+PRIVATE struct plist *b2plist(const char *struc);
+PRIVATE struct plist *make_plist(int length, double pmin);
+PRIVATE void usage(void);
 
 /*--------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[])
 {
-    char   *string;
-    char   *structure=NULL;
-    char   *cstruc=NULL;
-
-    char   *ns_bases=NULL;
-    char   *c;
-    int    i;
-    int    length;
-    int    l;
-    int    sym;
-
-    double energy;
-    double min_en;
-    double kT;
-    double sfact=1.07;
-    int    pf=0;
-    int    istty;
-    int    noconv=0;
-    int    circ=0;
+    char *string, *line;
+    char *structure=NULL, *cstruc=NULL;
+    char  fname[13], ffname[20], gfname[20];
+    char  *ParamFile=NULL;
+    char  *ns_bases=NULL, *c;
+    int   i, length, l, sym, r;
+    double energy, min_en;
+    double kT, sfact=1.07;
+    int   pf=0, noPS=0, istty;
+    int noconv=0;
+    int circ=0;
 
     AjPSeq  seq     = NULL;
     AjPFile confile = NULL;
     AjPFile paramfile = NULL;
     AjPFile outf = NULL;
     AjPFile essfile = NULL;
-    AjPFile dotfile = NULL;
+    AjPFile dotfilea = NULL;
+    AjPFile dotfileb = NULL;
     
 
     AjPStr seqstring = NULL;
@@ -114,8 +106,12 @@ int main(int argc, char *argv[])
     edangles  = ajAcdGetList("dangles");
     outf      = ajAcdGetOutfile("outfile");
     essfile   = ajAcdGetOutfile("ssoutfile");
-
-    do_backtrack = 1; 
+    /*
+      dotfilea  = ajAcdGetOutfile("adotoutfile");
+      dotfileb  = ajAcdGetOutfile("bdotoutfile");
+    */
+    
+    do_backtrack = 2; 
     pf = 0;
     string = NULL;
     istty = 0;
@@ -150,14 +146,12 @@ int main(int argc, char *argv[])
 	dangles = 3;
 
 
-    if(circ&& noLonelyPairs)
+    if(circ && noLonelyPairs)
     {
-	i = 0;
-	while(cwarn[i])
-	{
-	    ajFmtPrintF(outf,"%s\n",cwarn[i]);
-	    ++i;
-	}
+
+        ajWarn("Depending on the origin of the circular sequence\n"
+               "some structures may be missed when using -noLP\nTry "
+               "rotating your sequence a few times\n");        
     }
 
 
@@ -195,10 +189,6 @@ int main(int argc, char *argv[])
     if(confile)
 	vienna_GetConstraints(confile,&constring);
     
-
-
-
-
     string = NULL;
     structure = NULL;
 
@@ -215,94 +205,115 @@ int main(int argc, char *argv[])
     }
     
 
-    for (l = 0; l < length; l++)
-    {
-	string[l] = toupper(string[l]);
-	if (!noconv && string[l] == 'T')
-	    string[l] = 'U';
+    for (l = 0; l < length; l++) {
+        string[l] = toupper(string[l]);
+        if (!noconv && string[l] == 'T') string[l] = 'U';
     }
-    
+
     /* initialize_fold(length); */
-    if (circ) 
-	min_en = circfold(string, structure);
+    if (circ)
+        min_en = circfold(string, structure);
     else
-	min_en = fold(string, structure);
+        min_en = fold(string, structure);
 
     ajFmtPrintF(outf,"%s\n%s", string, structure);
-    
     if (istty)
-	printf("\n minimum free energy = %6.2f kcal/mol\n", min_en);
+        printf("\n minimum free energy = %6.2f kcal/mol\n", min_en);
     else
-	ajFmtPrintF(outf," (%6.2f)\n", min_en);
-    
+        ajFmtPrintF(outf," (%6.2f)\n", min_en);
 
-    if (length<2000)
-	(void) PS_rna_plot(string, structure, essfile);
-    else
-    { 
-	struct bond  *bp;
-	ajWarn("Structure too long, not doing xy_plot\n");
+    if (!noPS)
+    {
+        if (length<2000)
+            (void) PS_rna_plot(string, structure, essfile);
+        else
+        {
+            ajWarn("Structure too long, not doing xy_plot\n");
+            free_arrays();  /* free's base_pair */
+        }
+    }
 
-	/* free mfe arrays but preserve base_pair for PS_dot_plot */
-	bp = base_pair; base_pair = space(16);
-	free_arrays();			/* free's base_pair */
-	base_pair = bp;
-    } 
-    
     if (pf)
     {
-	if (circ)
-	    ajFatal("Currently no partition function for circular RNAs.\n");
+        char *pf_struc;
+        pf_struc = (char *) space((unsigned) length+1);
 	if (dangles==1)
-	{
-	    dangles=2;	  /* recompute with dangles as in pf_fold() */
-	    min_en = energy_of_struct(string, structure);
-	    dangles=1;
-	}
-	 
-	kT = (temperature+273.15)*1.98717/1000.; /* in Kcal */
-	pf_scale = exp(-(sfact*min_en)/kT/length);
-	if (length>2000)
-	    ajFmtPrintF(outf, "scaling factor %f\n", pf_scale);
+        {
+            dangles=2;   /* recompute with dangles as in pf_fold() */
+            min_en = (circ) ? energy_of_circ_struct(string, structure) :
+                energy_of_struct(string, structure);
+            dangles=1;
+        }
 
-	init_pf_fold(length);
+        kT = (temperature+273.15)*1.98717/1000.; /* in Kcal */
+        pf_scale = exp(-(sfact*min_en)/kT/length);
 
-	if (cstruc!=NULL)
-	    strncpy(structure, cstruc, length+1);
-	energy = pf_fold(string, structure);
-	
-	if (do_backtrack)
-	{
-	    ajFmtPrintF(outf,"%s", structure);
-	    ajFmtPrintF(outf," [%6.2f]\n", energy);
-	}
+        if (length>2000)
+            ajWarn("scaling factor %f\n", pf_scale);
 
-	if ((istty)||(!do_backtrack)) 
-	    printf(" free energy of ensemble = %6.2f kcal/mol\n", energy);
+        (circ) ? init_pf_circ_fold(length) : init_pf_fold(length);
 
+        if (cstruc!=NULL)
+            strncpy(pf_struc, cstruc, length+1);
 
+        energy = (circ) ? pf_circ_fold(string, pf_struc) :
+            pf_fold(string, pf_struc);
 
-	ajFmtPrintF(outf," frequency of mfe structure in ensemble %g\n"
-		   " ensemble diversity %-6.2f\n", exp((energy-min_en)/kT),
-		   mean_bp_dist(length));
+        if (do_backtrack)
+        {
+            ajFmtPrintF(outf,"%s", pf_struc);
+            ajFmtPrintF(outf," [%6.2f]\n", energy);
+        }
 
-	if (do_backtrack)
-	{
-	    (void) PS_dot_plot(string, dotfile);
-	}
-	free_pf_arrays();
+        if ((istty)||(!do_backtrack))
+            ajFmtPrintF(outf," free energy of ensemble = %6.2f kcal/mol\n",
+                        energy);
+
+        if (do_backtrack)
+        {
+            plist *pl1,*pl2;
+            char *cent;
+            double dist, cent_en;
+            cent = centroid(length, &dist);
+            cent_en = (circ) ? energy_of_circ_struct(string, cent) :
+                energy_of_struct(string, cent);
+            ajFmtPrintF(outf,"%s {%6.2f d=%.2f}\n", cent, cent_en, dist);
+            free(cent);
+
+            pl1 = make_plist(length, 1e-5);
+            pl2 = b2plist(structure);
+            (void) PS_dot_plot_list(string, dotfilea, pl1, pl2, "");
+            free(pl2);
+            if (do_backtrack==2)
+            {
+                pl2 = stackProb(1e-5);
+                PS_dot_plot_list(string, dotfileb, pl1, pl2,
+                                 "Probabilities for stacked pairs (i,j)(i+1,j-1)");
+                free(pl2);
+            }
+            free(pl1);
+            free(pf_struc);
+        }
+
+        ajFmtPrintF(outf," frequency of mfe structure in ensemble %g; ",
+                    exp((energy-min_en)/kT));
+
+        if (do_backtrack)
+            ajFmtPrintF(outf,"ensemble diversity %-6.2f", mean_bp_dist(length));
+
+        ajFmtPrintF(outf,"\n");
+        free_pf_arrays();
 
     }
 
     if (cstruc!=NULL)
-	free(cstruc);
+        free(cstruc);
 
     if (length>=2000)
-	free(base_pair);
+        free(base_pair);
 
     free(string);
-    free(structure); 
-
+    free(structure);
 
     ajStrDel(&seqstring);
     ajStrDel(&constring);
@@ -311,8 +322,73 @@ int main(int argc, char *argv[])
 
     ajFileClose(&outf);
     ajFileClose(&essfile);
-    
+/*
+  ajFileClose(&dotfilea);
+  ajFileClose(&dotfileb);
+*/  
     embExit();
-
+    
     return 0;
+}
+
+
+
+
+PRIVATE struct plist *b2plist(const char *struc) {
+  /* convert bracket string to plist */
+  short *pt;
+  struct plist *pl;
+  int i,k=0;
+  pt = make_pair_table(struc);
+  pl = (struct plist *)space(strlen(struc)/2*sizeof(struct plist));
+  for (i=1; i<strlen(struc); i++) {
+    if (pt[i]>i) {
+      pl[k].i = i;
+      pl[k].j = pt[i];
+      pl[k++].p = 0.95*0.95;
+    }
+  }
+  free(pt);
+  pl[k].i=0;
+  pl[k].j=0;
+  pl[k++].p=0.;
+  return pl;
+}
+
+
+
+
+PRIVATE struct plist *make_plist(int length, double pmin) {
+  /* convert matrix of pair probs to plist */
+  struct plist *pl;
+  int i,j,k=0,maxl;
+  maxl = 2*length;
+  pl = (struct plist *)space(maxl*sizeof(struct plist));
+  k=0;
+  for (i=1; i<length; i++)
+    for (j=i+1; j<=length; j++) {
+      if (pr[iindx[i]-j]<pmin) continue;
+      if (k>=maxl-1) {
+	maxl *= 2;
+	pl = (struct plist *)xrealloc(pl,maxl*sizeof(struct plist));
+      }
+      pl[k].i = i;
+      pl[k].j = j;
+      pl[k++].p = pr[iindx[i]-j];
+    }
+  pl[k].i=0;
+  pl[k].j=0;
+  pl[k++].p=0.;
+  return pl;
+}
+
+
+
+
+PRIVATE void usage(void)
+{
+  nrerror("usage:\n"
+	  "RNAfold [-p[0|2]] [-C] [-T temp] [-4] [-d[2|3]] [-noGU] [-noCloseGU]\n"
+	  "        [-noLP] [-e e_set] [-P paramfile] [-nsp pairs] [-S scale]\n"
+	  "        [-noconv] [-noPS] [-circ] \n");
 }

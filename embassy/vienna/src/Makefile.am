@@ -30,13 +30,13 @@ endif
 VIENNALIBSRC = dist_vars.c fold_vars.c part_func.c eread_epars.c \
         treedist.c energy_par.c inverse.c ProfileDist.c RNAstruct.c utils.c \
         fold.c naview.c ePS_dot.c stringdist.c params.c subopt.c list.c \
-        cofold.c eLfold.c epart_func_co.c ProfileAln.c duplex.c alifold.c \
-        alipfold.c aln_util.c getconstraints.c
+        cofold.c eLfold.c epart_func_co.c part_func_up.c ProfileAln.c \
+	duplex.c alifold.c alipfold.c aln_util.c getconstraints.c
 
 
 noinst_HEADERS = intloops.h list.h
 
-EXTRA_DIST = circfold.inc config.h
+EXTRA_DIST = alicircfold.inc circfold.inc config.h
 
 libviennarna_la_SOURCES = $(VIENNALIBSRC)
 

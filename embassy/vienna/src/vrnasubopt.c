@@ -41,7 +41,9 @@ int main(int argc, char *argv[])
     double deltap=0.;
     int delta=100;
     int n_back = 0;
-
+    int noconv=0;
+    int circ=0;
+    
     AjPSeq  seq     = NULL;
     AjPFile confile = NULL;
     AjPFile paramfile = NULL;
@@ -55,6 +57,7 @@ int main(int argc, char *argv[])
   
     AjBool eclose;
     AjBool lonely;
+    AjBool convert;
     AjPStr ensbases = NULL;
     AjBool etloop;
     AjPStr *edangles = NULL;
@@ -74,9 +77,11 @@ int main(int argc, char *argv[])
     confile       = ajAcdGetInfile("constraintfile");
     paramfile     = ajAcdGetInfile("paramfile");
     eT            = ajAcdGetFloat("temperature");
+    circ          = !!ajAcdGetBool("circular");
     eGU           = ajAcdGetBool("gu");
     eclose        = ajAcdGetBool("closegu");
     lonely        = ajAcdGetBool("lp");
+    convert       = ajAcdGetBool("convert");
     ensbases      = ajAcdGetString("nsbases");
     etloop        = ajAcdGetBool("tetraloop");
     erange        = ajAcdGetFloat("erange");
@@ -97,6 +102,7 @@ int main(int argc, char *argv[])
     noGU          = (eGU) ? 0 : 1;
     no_closingGU  = (eclose) ? 0 : 1;
     noLonelyPairs = (lonely) ? 0 : 1;
+    noconv        = (convert) ? 0 : 1;
     ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
 
@@ -150,9 +156,10 @@ int main(int argc, char *argv[])
 	vienna_GetConstraints(confile,&constring);
     
 
+    if(n_back)
+        init_rand();
 
-
-
+    
     sequence  = NULL;
     structure = NULL;
 
@@ -177,8 +184,13 @@ int main(int argc, char *argv[])
 		ajFatal("Constraints of type '|' are not allowed\n");
     }      
       
-    for (l = 0; l < length; l++) sequence[l] = toupper(sequence[l]);
-
+    for (l = 0; l < length; l++)
+    {
+        sequence[l] = toupper(sequence[l]);
+        if (!noconv && sequence[l] == 'T')
+            sequence[l] = 'U';
+    }
+    
     if (logML!=0 || dangles==1 || dangles==3) 
 	if (deltap<=0) deltap=delta/100. +0.001;
     if (deltap>0)
@@ -196,17 +208,21 @@ int main(int argc, char *argv[])
 	st_back=1;
 	ss = (char *) space(strlen(sequence)+1);
 	strncpy(ss, structure, length);
-	mfe = fold(sequence, ss);
+	mfe = (circ) ? circfold(sequence, ss) : fold(sequence, ss);
 	kT = (temperature+273.15)*1.98717/1000.; /* in Kcal */
 	pf_scale = exp(-(1.03*mfe)/kT/length);
 	strncpy(ss, structure, length);
-	(void) pf_fold(sequence, ss);
-	init_rand();
+        /*
+        ** we are not interested in the free energy but in the bppm, so we
+        ** drop free energy into the void
+        */
+        (circ) ? (void) pf_circ_fold(sequence, ss) :
+            (void) pf_fold(sequence, ss);
 	free(ss);
 	for (i=0; i<n_back; i++)
 	{
 	    char *s;
-	    s = pbacktrack(sequence);
+            s = (circ) ? pbacktrack_circ(sequence) : pbacktrack(sequence);
 	    ajFmtPrintF(outf,"%s\n", s);
 	    free(s);
 	}
@@ -214,7 +230,8 @@ int main(int argc, char *argv[])
     }
     else
     {
-	subopt(sequence, structure, delta, ajFileFp(outf));
+	(circ) ? subopt_circ(sequence, structure, delta, ajFileFp(outf)) :
+            subopt(sequence, structure, delta, ajFileFp(outf));
     }
       
 

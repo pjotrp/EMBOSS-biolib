@@ -1,6 +1,5 @@
 extern float  alifold(char **strings, char *structure);
 extern  void  free_alifold_arrays(void);
-extern  void  update_alifold_params(void);
 extern double cv_fact /* =1 */;
 extern double nc_fact /* =1 */;
 typedef struct {
@@ -12,3 +11,5 @@ typedef struct {
    char comp;    /* 1 iff pair is in mfe structure */
 }  pair_info;
 extern float alipf_fold(char **sequences, char *structure, pair_info **pi);
+extern float circalifold(const char **strings, char *structure);
+extern float alipf_circ_fold(char **sequences, char *structure, pair_info **pi);

@@ -1,4 +1,4 @@
-/* Last changed Time-stamp: <2001-08-23 10:19:23 ivo> */
+/* Last changed Time-stamp: <2006-02-25 19:55:55 ivo> */
 /*
 
 	  Calculate Energy of given Sequences and Structures
@@ -23,36 +23,34 @@
 #endif
 
 /*@unused@*/
-static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.4 2007/01/31 12:47:07 rice Exp $";
+static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.5 2008/01/11 14:48:02 ajb Exp $";
 
 #define  PUBLIC
 #define  PRIVATE   static
 
+static char  scale[] = "....,....1....,....2....,....3....,....4"
+		       "....,....5....,....6....,....7....,....8";
+
 PRIVATE char *costring(char *string);
 PRIVATE char *tokenize(char *line);
-
+PRIVATE void usage(void);
 extern int logML;
 extern int cut_point;
 extern int eos_debug;
 extern void  read_parameter_file(AjPFile file);
-
-extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
-
-
+extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
+extern float energy_of_circ_struct(const char *seq, const char *str);
 
 int main(int argc, char *argv[])
 {
-    char *string;
-    char  *structure;
+    char *line, *string, *structure;
     char  fname[12];
-
-    int   l;
-    int   length1;
-    int   length2;
+    char  *ParamFile=NULL;
+    int   i, l, length1, length2;
     float energy;
     int   istty;
+    int circ=0;
     int   noconv=0;
-
 
     AjPSeq seq1 = NULL;
     AjPSeq seq2 = NULL;
@@ -110,7 +108,8 @@ int main(int argc, char *argv[])
     temperature   = (double) eT;
     noconv        = (convert) ? 0 : 1;
     tetra_loop    = !!etloop;
-
+    circ          = !!ajAcdGetBool("circular");
+    
     ewt = *ajStrGetPtr(*eenergy);
     if(ewt == '0')
 	energy_set = 0;
@@ -145,11 +144,9 @@ int main(int argc, char *argv[])
     ajStrAppendK(&constring1,'&');
     ajStrAppendS(&constring1,constring2);
     
-
     cut_point = -1;
 
     strcpy(fname,ajSeqGetNameC(seq1));
-
 
     string = tokenize(MAJSTRGETPTR(seqstring1));
     length2 = (int) strlen(string);
@@ -167,10 +164,14 @@ int main(int argc, char *argv[])
 	    string[l] = 'U';
     }
 
-      
-    energy = energy_of_struct(string, structure);
-    if(cut_point == -1)
-	ajFmtPrintF(outf,"%s\n%s", string, structure);
+
+    if (circ)
+	energy = energy_of_circ_struct(string, structure);
+    else
+	energy = energy_of_struct(string, structure);
+
+    if (cut_point == -1)
+        ajFmtPrintF(outf,"%s\n%s", string, structure);
     else
     {
 	char *pstring, *pstruct;
@@ -181,8 +182,9 @@ int main(int argc, char *argv[])
 	free(pstruct);
     }
 
+
     ajFmtPrintF(outf," (%6.2f)\n", energy);
-      
+
     free(string);
     free(structure);
 
@@ -196,7 +198,6 @@ int main(int argc, char *argv[])
 
     ajExit();
     
-
     return 0;
 }
 
@@ -205,37 +206,30 @@ int main(int argc, char *argv[])
 
 PRIVATE char *tokenize(char *line)
 {
-    char *token, *copy, *ctmp;
-    int cut = -1;
+  char *token, *copy, *ctmp;
+  int cut = -1;
 
-    copy = (char *) space(strlen(line)+1);
-    ctmp = (char *) space(strlen(line)+1);
-    (void) sscanf(line, "%s", copy);
-    ctmp[0] = '\0';
-    token = strtok(copy, "&");
-    cut = strlen(token)+1;
-    while (token)
-    {
-	strcat(ctmp, token);
-	token = strtok(NULL, "&");
+  copy = (char *) space(strlen(line)+1);
+  ctmp = (char *) space(strlen(line)+1);
+  (void) sscanf(line, "%s", copy);
+  ctmp[0] = '\0';
+  token = strtok(copy, "&");
+  cut = strlen(token)+1;
+  while (token) {
+    strcat(ctmp, token);
+    token = strtok(NULL, "&");
+  }
+  if (cut > strlen(ctmp)) cut = -1;
+  if (cut > -1) {
+    if (cut_point==-1) cut_point = cut;
+    else if (cut_point != cut) {
+      fprintf(stderr,"cut_point = %d cut = %d\n", cut_point, cut);
+      nrerror("Sequence and Structure have different cut points.");
     }
+  }
+  free(copy);
 
-    if (cut > strlen(ctmp))
-	cut = -1;
-
-    if (cut > -1)
-    {
-	if (cut_point==-1)
-	    cut_point = cut;
-	else if (cut_point != cut)
-	{
-	    fprintf(stderr,"cut_point = %d cut = %d\n", cut_point, cut);
-	    ajFatal("Sequence and Structure have different cut points.");
-	}
-    }
-    free(copy);
-  
-    return ctmp;
+  return ctmp;
 }
 
 
@@ -243,17 +237,22 @@ PRIVATE char *tokenize(char *line)
 
 PRIVATE char *costring(char *string)
 {
-    char *ctmp;
-    int len;
-  
-    len = strlen(string);
-    ctmp = (char *)space((len+2) * sizeof(char));
-    /* first sequence */
-    (void) strncpy(ctmp, string, cut_point-1);
-    /* spacer */
-    ctmp[cut_point-1] = '&';
-    /* second sequence */
-    (void) strcat(ctmp, string+cut_point-1);
+  char *ctmp;
+  int len;
 
-    return ctmp;
+  len = strlen(string);
+  ctmp = (char *)space((len+2) * sizeof(char));
+  /* first sequence */
+  (void) strncpy(ctmp, string, cut_point-1);
+  /* spacer */
+  ctmp[cut_point-1] = '&';
+  /* second sequence */
+  (void) strcat(ctmp, string+cut_point-1);
+
+  return ctmp;
+}
+
+PRIVATE void usage(void)
+{
+  nrerror("usage: RNAeval  [-T temp] [-4] [-d[0|1|2]] [-e e_set] [-logML] [-P paramfile]");
 }

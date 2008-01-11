@@ -15,9 +15,10 @@
 #ifdef WITH_DMALLOC
 #include "dmalloc.h"
 #endif
-#include "emboss.h"
+#include "ajax.h"
+
 /*@unused@*/
-static const char rcsid[] = "$Id: utils.c,v 1.5 2007/05/25 13:53:11 rice Exp $";
+static char rcsid[] = "$Id: utils.c,v 1.6 2008/01/11 14:48:02 ajb Exp $";
 
 #define PRIVATE  static
 #define PUBLIC
@@ -34,6 +35,11 @@ PUBLIC char  *time_stamp(void);
 PUBLIC char  *random_string(int l, const char symbols[]);
 PUBLIC int    hamming(const char *s1, const char *s2);
 PUBLIC char  *get_line(FILE *fp);
+
+PUBLIC unsigned short xsubi[3];
+
+#undef xrealloc
+/* dmalloc.h #define's xrealloc */
 void *xrealloc (void *p, unsigned size);
 PUBLIC void init_rand(void);
 PUBLIC char *pack_structure(const char *struc);
@@ -41,7 +47,6 @@ PUBLIC char *unpack_structure(const char *packed);
 PUBLIC short *make_pair_table(const char *structure);
 PUBLIC int bp_distance(const char *str1, const char *str2);
 
-PUBLIC unsigned short xsubi[3];
 
 /*-------------------------------------------------------------------------*/
 
@@ -65,8 +70,6 @@ PUBLIC void *space(unsigned size) {
 #define space(S) calloc(1,(S))
 #endif
 
-#undef xrealloc
-/* dmalloc.h #define's xrealloc */
 void *xrealloc (void *p, unsigned size) {
   if (p == 0)
     return space(size);
@@ -96,6 +99,7 @@ PUBLIC void nrerror(const char message[])       /* output message upon error */
 PUBLIC void init_rand(void)
 {
   time_t t;
+
   AjPStr timestr = NULL;
   AjPTime timenow = NULL;
 
@@ -111,6 +115,7 @@ PUBLIC void init_rand(void)
   {
       (void) time(&t);
   }
+
   xsubi[0] = xsubi[1] = xsubi[2] = (unsigned short) t;  /* lower 16 bit */
   xsubi[1] += (unsigned short) ((unsigned)t >> 6);
   xsubi[2] += (unsigned short) ((unsigned)t >> 12);

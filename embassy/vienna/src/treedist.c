@@ -12,7 +12,7 @@
 #include  "edit_cost.h"
 #include  "dist_vars.h"
 #include  "utils.h"
-static const char rcsid[] = "$Id: treedist.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static char rcsid[] = "$Id: treedist.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
 
 #define PRIVATE  static
 #define PUBLIC
@@ -434,7 +434,7 @@ PRIVATE void print_keyroots(int *keyroots)
 
 PRIVATE void print_postorder_list(Postorder_list *pl)
 {
-   register int i;
+   register i;
    char     label[100];
    
    printf("--->  postorder list  <---\n\n");

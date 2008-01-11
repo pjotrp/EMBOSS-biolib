@@ -1,10 +1,7 @@
 /*
   $Log: list.c,v $
-  Revision 1.2  2005/11/01 15:39:10  rice
-  compiler warnings
-
-  Revision 1.1  2005/10/13 13:00:44  ajb
-  First draft
+  Revision 1.3  2008/01/11 14:48:02  ajb
+  Vienna 1.6alpha to Vienna 1.7
 
   Revision 1.5  2003/07/14 13:36:58  ivo
   use space() instead of malloc
@@ -35,7 +32,7 @@
 #include "list.h"
 
 /*@unused@*/
-static const char rcsid[] = "$Id: list.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static const char rcsid[] = "$Id: list.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
 
 #define PUBLIC
 PUBLIC void *

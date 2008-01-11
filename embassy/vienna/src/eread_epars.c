@@ -5,6 +5,7 @@
 			  Vienna RNA Package
 */
      
+
 #include "ajax.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,7 +17,7 @@
 #include "energy_const.h"
 #include "energy_par.h"
 
-static const char rcsid[] = "$Id: eread_epars.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static char rcsid[] = "$Id: eread_epars.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
 
 #define PUBLIC
 #define PRIVATE   static
@@ -33,7 +34,7 @@ enum parset {UNKNOWN= -1, QUIT, S, SH, HP, B, IL, MMI, MMH, MMM, MM_H,
 #define DEF_TEMP   37.0    /* default temperature */
 
 /*----------------------- prototypes -------------------------*/
-PUBLIC  void  read_parameter_file(AjPFile paramfile);
+PUBLIC  void  read_parameter_file(AjPFile fname);
 PUBLIC  void  write_parameter_file(const char fname[]);
   
 PRIVATE void  rd_stacks(int stack[NBPAIRS+1][NBPAIRS+1]);
@@ -62,37 +63,31 @@ PRIVATE FILE *fp;
 PRIVATE float rtemp=DEF_TEMP;
 
 /*------------------------------------------------------------*/
-PUBLIC void read_parameter_file(AjPFile paramfile)
+PUBLIC void read_parameter_file(AjPFile fname)
 {
-  char    *line;
-  char    ident[32];
-  enum    parset type;
-  int     r;
-  int     changed = 0;
+  char    *line, ident[32];
+  enum parset type;
+  int      r, changed=0;
 
+  fp = ajFileFp(fname);
 
-  fp = ajFileFp(paramfile);
-
-
-  if (!(line = get_line(fp)))
-  {
-      ajWarn("Incorrect parameter file format\n");
-      return;
+  if (!(line = get_line(fp))) {
+    fprintf(stderr," File %s is in improper format.\n", fname);
+    return;
   }
 
   if (strncmp(line,"## RNAfold parameter file",25)!=0) {
-      ajWarn(
+    fprintf(stderr,
 	    "Missing header line in file.\n"
-	    "Maybe this file is in an incorrect format.\n"
-	    "Use the INTERRUPT-key to stop.\n");
+	    "Maybe this file has incorrect format.\n"
+	    "Use INTERRUPT-key to stop.\n");
   }
   free(line);
   
-  while((line=get_line(fp)))
-  {
+  while((line=get_line(fp))) {
+    
     r = sscanf(line, "# %31s", ident);
-    if (r==1)
-    {
+    if (r==1) {
       type = gettype(ident);
       switch (type)
 	{
@@ -124,13 +119,13 @@ PUBLIC void read_parameter_file(AjPFile paramfile)
 	  
 	default: /* maybe it's a temperature */
 	  r=sscanf(ident, "%f", &rtemp);
-	  if (r!=1)
-	      ajWarn(" Unknown field identifier in `%s'\n", line);
+	  if (r!=1) fprintf(stderr," Unknown field identifier in `%s'\n", line);
 	}
     } /* else ignore line */
     free(line);  
   }
   
+
   check_symmetry();
   return;
 }
@@ -437,7 +432,6 @@ PRIVATE void ignore_comment(char * line)
 /*------------------------------------------------------------*/  
 
 /*@unused@*/
-/*
 PRIVATE char *settype(enum parset s)
 {
   switch(s)
@@ -472,8 +466,6 @@ PRIVATE char *settype(enum parset s)
     }
   return "";
 }
-*/
-
 /*------------------------------------------------------------*/ 
 
 PRIVATE enum parset gettype(char ident[])

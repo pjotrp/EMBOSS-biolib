@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
     if (delta>=0)
     {
 	duplexT *sub;
-	subopt = duplex_subopt(s1, s2, delta, 0);
+	subopt = duplex_subopt(s1, s2, delta, 5);
 	for (sub=subopt; sub->i >0; sub++)
 	{
 	    print_struc(sub,outf);

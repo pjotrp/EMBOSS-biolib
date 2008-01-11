@@ -11,13 +11,14 @@
 #include <string.h>
 #include <ctype.h>
 #include "utils.h"
+
 #define PRIVATE  static
 #define PUBLIC
 
 #define MAXLEN    10000
 #define STRUC     MAXLEN/5        /* maximal number of loops at min stack length 2 */
 
-static const char rcsid[] = "$Id: RNAstruct.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
+static char rcsid[] = "$Id: RNAstruct.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
 
 PUBLIC char *b2HIT(const char *structure);             /* Full   -> HIT    [incl. root]       */
 PUBLIC char *b2C(const char *structure);               /* Full   -> Coarse [incl. root]       */
@@ -31,9 +32,8 @@ PUBLIC char  *unexpand_Full(const char *structure);    /* FFull  -> Full        
 PUBLIC void   parse_structure(const char *structure);  /* guess !!! */
 
 PRIVATE char *aux_struct(const char *structure);
-PUBLIC char *unweight(const char *structure);
-PUBLIC void unexpand_aligned_F(char *align[2]);
-
+PUBLIC char  *unweight(const char *structure);
+PUBLIC void  unexpand_aligned_F(char *align[2]);
 
 /* on return from parse_structure(), b2C() or b2Shapiro() ... */
 PUBLIC int    loop_size[STRUC];       /* contains loop sizes of a structure */
@@ -251,7 +251,8 @@ PUBLIC char *b2Shapiro(const char *structure )
        case '[':
 	 temp[l++]='(';
 	 temp[l++]='(';
-	 if ((i>0)&&(string[i-1]=='(')) bulge[lp]=1;
+	 if ((i>0)&&(string[i-1]=='(' || string[i-1]=='['))
+	   bulge[lp]=1;
 	 lp++;
 	 loop_degree[++loops]=1;
 	 loop[lp]=loops;

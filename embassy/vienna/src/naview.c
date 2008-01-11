@@ -137,10 +137,10 @@ static int depth(struct loop *lp);
 
 static logical connected_connection(struct connection *cp, struct connection *cpnext);
 static int    find_ic_middle(int icstart, int icend, struct connection *anchor_connection, struct connection *acp, struct loop *lp);
-
 int naview_xy_coordinates(short *pair_table, float *X, float *Y);
 
 
+
 int naview_xy_coordinates(short *pair_table, float *X, float *Y) {
   int i;
   
@@ -446,7 +446,7 @@ static void traverse_loop(struct loop *lp, struct connection *anchor_connection)
   int icstart1,icup,icdown,icnext,direction;
   double dan,dx,dy,rr;
   double cpx,cpy,cpnextx,cpnexty,cnx,cny,rcn,rc,lnx,lny,rl,ac,acn,sx,sy,dcp;
-  int imaxloop=0;
+  int imaxloop;
     
   angleinc = 2 * pi / (nbase+1);
   acp = NULL;
@@ -833,7 +833,7 @@ static void determine_radius(struct loop *lp,double lencut)
 
 {
   double mindit,ci,dt,sumn,sumd,radius,dit;
-  int i,j,end,start,imindit=0;
+  int i,j,end,start,imindit;
   struct connection *cp,*cpnext;
   static double rt2_2 = 0.7071068;
 

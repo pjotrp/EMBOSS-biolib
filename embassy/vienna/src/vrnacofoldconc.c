@@ -1,10 +1,6 @@
-/* Last changed Time-stamp: <2005-02-16 14:58:00 ivo> */
-
-/*                
-		  Ineractive Access to folding Routines
-
-		  c Ivo L Hofacker
-		  Vienna RNA package
+/* Last changed Time-stamp: <2006-04-05 12:58:49 ivo> */
+/*
+		  c Ivo L Hofacker, Vienna RNA package
 */
 
 #include "emboss.h"
@@ -14,95 +10,71 @@
 #include <ctype.h>
 #include <unistd.h>
 #include <string.h>
-#include "ePS_dot.h"
+#include "PS_dot.h"
 #include "cofold.h"
 #include "fold.h"
-#include "eco_part_func.h"
+#include "part_func_co.h"
 #include "part_func.h"
 #include "fold_vars.h"
 #include "utils.h"
 
+/* extern void  read_parameter_file(const char fname[]); */
 extern void  read_parameter_file(AjPFile file);
-extern AjBool vienna_GetConstraints(AjPFile confile,AjPStr *constring);
+extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
+
+/*@unused@*/
+static char rcsid[] = "$Id: vrnacofoldconc.c,v 1.7 2008/01/11 14:48:02 ajb Exp $";
 
 #define PRIVATE static
 
-#define SAME_STRAND(I,J) (((I)>=cut_point)||((J)<cut_point))
+static char  scale[] = "....,....1....,....2....,....3....,....4"
+		       "....,....5....,....6....,....7....,....8";
+
 PRIVATE char *costring(char *string);
 PRIVATE char *tokenize(char *line);
-
-PRIVATE double do_partfunc(char *string, int length, int Switch,
-			   struct plist **tpr, struct plist **mf);
-
-PRIVATE void free_franz(char *Astring, char *Bstring, plist *prAB,
-			plist *prAA, plist *prBB, plist *prA, plist *prB,
-			struct plist *mfAB, struct plist *mfAA,
-			struct plist *mfBB, struct plist *mfA,
-			struct plist *mfB);
-
-PRIVATE int read_concentrationfile(AjPFile concfile, double *startc);
-
-PRIVATE struct ConcEnt *do_the_concenratinger(AjPFile Conc_file, double FEAB,
-					      double FEAA, double FEBB,
-					      double FEA, double FEB,
-					      double *startconces,
-					      AjPFile outf);
+PRIVATE void usage(void);
+PRIVATE cofoldF do_partfunc(char *string, int length, int Switch, struct plist **tpr, struct plist **mf);
+PRIVATE double *read_concentrations(AjPFile concfile);
+PRIVATE void do_concentrations(double FEAB, double FEAA, double FEBB, double FEA, double FEB, double *startconces,AjPFile outf);
+PRIVATE struct plist *get_mfe_plist(struct plist *pl);
 
 /*--------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[])
 {
-    char *string;
-    char *structure = NULL;
-    char *cstruc = NULL;
-    char  fname[53];
-    char  *ns_bases = NULL;
-    char  *c;
-    char  *Concfile;
-
-    int   i;
-    int   length;
-    int   l;
-    int   sym;
-
-    double energy;
+    char *string, *line;
+    char *structure=NULL, *cstruc=NULL;
+    char  fname[53], ffname[60];
+    char  *ParamFile=NULL;
+    char  *ns_bases=NULL, *c;
+    char *Concfile;
+    int   i, length, l, sym, r;
     double min_en;
-    double kT;
-    double sfact=1.07;
-
-    int pf=0;
-    int istty;
+    double kT, sfact=1.07;
+    int   pf=0, istty;
     int noconv=0;
-    int doT=0;			 /*compute dimere free energies etc.*/
-    int doC=0;			 /*toggle to compute concentrations*/ 
-    int doQ=0;	       /*toggle to compute prob of base being paired*/
-    int cofi=0;			/*toggle concentrations stdin / file*/
-
-    double FEAB;			/*free energy  of AB dimer*/
-    double FEAA;			/*free energy  of AA dimer*/
-    double FEBB;			/*free energy  of BB dimer*/
-    double FEA;
-    double FEB;
-
-    struct plist *prAB = NULL;
-    struct plist *prAA;		    /*pair probabilities of AA dimer*/
+    int doT=0;    /*compute dimere free energies etc.*/
+    int doC=0;    /*toggle to compute concentrations*/
+    int doQ=0;    /*toggle to compute prob of base being paired*/
+    int cofi=0;   /*toggle concentrations stdin / file*/
+    struct plist *prAB;
+    struct plist *prAA;   /*pair probabilities of AA dimer*/
     struct plist *prBB;
     struct plist *prA;
     struct plist *prB;
     struct plist *mfAB;
-    struct plist *mfAA;		    /*pair mfobabilities of AA dimer*/
+    struct plist *mfAA;   /*pair mfobabilities of AA dimer*/
     struct plist *mfBB;
     struct plist *mfA;
     struct plist *mfB;
-    double *ConcAandB = NULL;
-
+    double *ConcAandB;
 
     AjPSeq  seq1    = NULL;
     AjPFile confile1 = NULL;
     AjPSeq  seq2    = NULL;
     AjPFile confile2 = NULL;
-    AjPFile paramfile = NULL;
     AjPFile concfile = NULL;
+    AjPFile paramfile = NULL;
     AjPFile outf = NULL;
     AjPFile essfile = NULL;
     AjPFile dotfile = NULL;
@@ -111,7 +83,7 @@ int main(int argc, char *argv[])
     AjPFile boutf  = NULL;
     AjPFile bboutf = NULL;
     AjPFile aboutf = NULL;
-
+    
     
 
     AjPStr seqstring1 = NULL;
@@ -134,11 +106,10 @@ int main(int argc, char *argv[])
 
 /*    AjBool dimers; */
     AjBool paired;
-  
+
 
     embInitP("vrnacofoldconc",argc,argv,"VIENNA");
-    
-    
+
     seqstring1 = ajStrNew();
     constring1 = ajStrNew();
     constring2 = ajStrNew();
@@ -149,7 +120,7 @@ int main(int argc, char *argv[])
     seq2      = ajAcdGetSeq("bsequence");
     confile2  = ajAcdGetInfile("bconstraintfile");
     paramfile = ajAcdGetInfile("paramfile");
-    concfile  = ajAcdGetInfile("concentrationfile");
+
     eT        = ajAcdGetFloat("temperature");
     eGU       = ajAcdGetBool("gu");
     eclose    = ajAcdGetBool("closegu");
@@ -164,12 +135,17 @@ int main(int argc, char *argv[])
     paired    = ajAcdGetBool("paired");
     outf      = ajAcdGetOutfile("outfile");
     essfile   = ajAcdGetOutfile("ssoutfile");
-    aoutf     = ajAcdGetOutfile("aoutfile");
-    aaoutf    = ajAcdGetOutfile("aaoutfile");
-    boutf     = ajAcdGetOutfile("boutfile");
-    bboutf    = ajAcdGetOutfile("bboutfile");
-    aboutf    = ajAcdGetOutfile("aboutfile");
 
+    concfile  = ajAcdGetInfile("concentrationfile");
+/*    dotfile   = ajAcdGetOutfile("dotoutfile"); */
+    
+
+  aoutf     = ajAcdGetOutfile("aoutfile");
+  aaoutf    = ajAcdGetOutfile("aaoutfile");
+  boutf     = ajAcdGetOutfile("boutfile");
+  bboutf    = ajAcdGetOutfile("bboutfile");
+  aboutf    = ajAcdGetOutfile("aboutfile");
+  
 
 
     do_backtrack = 1; 
@@ -177,6 +153,7 @@ int main(int argc, char *argv[])
     doT  = 1;
     doC  = 1;
     cofi = 1;
+    doQ  = 0;
     
     string   = NULL;
     Concfile = NULL;
@@ -240,46 +217,21 @@ int main(int argc, char *argv[])
 	}
     }
 
-    
+
+
 
     cut_point = -1;
-    if (doC)
-    {
-	ConcAandB=(double *)space(20*sizeof(double));
-    }
 
     ajFmtPrintS(&seqstring1,"%s&%s",ajSeqGetSeqC(seq1),ajSeqGetSeqC(seq2));
-    string = tokenize(MAJSTRGETPTR(seqstring1));
+    string = tokenize(MAJSTRGETPTR(seqstring1));  /* frees line */
+
     length = (int) strlen(string);
 
-#if 0
-    if ((doC)&&!(cofi))
-    {				   /*read concentrations out of file*/
-	i=0;				/*kann i e nehmen??*/
-	double tmp1, tmp2;
-	printf("Please enter concentrations\n format: ConcA ConcB\n"
-	       " return to end\n");
-	while ((line = get_line(stdin))!=NULL)
-	{
-	    if(*line=='\0') break;
-	    sscanf(line,"%lf %lf",&tmp1,&tmp2);
-	    ConcAandB[i++]=tmp1;
-	    ConcAandB[i++]=tmp2;
-	
-	    if (i%20==0)
-	    {
-		ConcAandB=(double *)xrealloc(ConcAandB,(i+22)*sizeof(double));
-	 
-	    }
-	    free(line);
-	}
-	ConcAandB[i++]=0;
-	ConcAandB[i]=0;
+
+    if (doC)
+    {
+	ConcAandB = read_concentrations(concfile);
     }
-#endif
-
-
-    
 
 
     structure = (char *) space((unsigned) length+1);
@@ -296,270 +248,236 @@ int main(int argc, char *argv[])
 	else
 	    ajFatal("Constraints missing\n");
     }
-    
+
     for (l = 0; l < length; l++)
     {
-	string[l] = toupper(string[l]);
-	if (!noconv && string[l] == 'T')
-	    string[l] = 'U';
+        string[l] = toupper(string[l]);
+        if (!noconv && string[l] == 'T') string[l] = 'U';
     }
+
 
     /*compute mfe of AB dimer*/
     min_en = cofold(string, structure);
     mfAB=(struct plist *) space(sizeof(struct plist) * (length+1));
     mfAB=get_mfe_plist(mfAB);
-    
-    /*     for (l=0; mfAB[l].i!=0; l++) { */
-    /*       if (!SAME_STRAND(mfAB[l].i,mfAB[l].j)) { */
-    /* 	min_en += 4.1; /\*can i use DuplexInit there? if not: Ivooo??*\/ */
-    /* 	break; */
-    /*       } */
-    /*     } */
-    
+
     if (cut_point == -1)
-	ajFmtPrintF(outf,"%s\n%s", string, structure); /*no cofold*/
+        ajFmtPrintF(outf,"%s\n%s", string, structure); /*no cofold*/
     else
     {
-	char *pstring, *pstruct;
-	pstring = costring(string);
-	pstruct = costring(structure);
-	ajFmtPrintF(outf,"%s\n%s", pstring,  pstruct);
-	free(pstring);
-	free(pstruct);
+        char *pstring, *pstruct;
+        pstring = costring(string);
+        pstruct = costring(structure);
+        ajFmtPrintF(outf,"%s\n%s", pstring,  pstruct);
+        free(pstring);
+        free(pstruct);
     }
-    
+
     ajFmtPrintF(outf," (%6.2f)\n", min_en);
-    
-    
+
     if (length<2000)
-	(void) PS_rna_plot(string, structure, essfile);
+        (void) PS_rna_plot(string, structure, essfile);
     else
-    { 
-	ajWarn("Structure too long, not doing xy_plot\n");
-	free_co_arrays();  
+    {
+        ajWarn("Structure too long, not doing xy_plot\n");
+        free_co_arrays();
     }
-    
+
     /*compute partition function*/
     if (pf)
     {
-	if (dangles==1)
-	{
-	    dangles=2;	  /* recompute with dangles as in pf_fold() */
-	    min_en = energy_of_struct(string, structure);
-	    dangles=1;
-	}
-      	 
-	kT = (temperature+273.15)*1.98717/1000.; /* in Kcal */
-	pf_scale = exp(-(sfact*min_en)/kT/length);
-	if (length>2000)
-	    ajWarn("Scaling factor %f\n", pf_scale);
+        cofoldF AB, AA, BB;
+        if (dangles==1)
+        {
+            dangles=2;   /* recompute with dangles as in pf_fold() */
+            min_en = energy_of_struct(string, structure);
+            dangles=1;
+        }
 
-	init_co_pf_fold(length);
+        kT = (temperature+273.15)*1.98717/1000.; /* in Kcal */
+        pf_scale = exp(-(sfact*min_en)/kT/length);
+        if (length>2000)
+            ajWarn("scaling factor %f\n", pf_scale);
 
-	if (cstruc!=NULL)
-	    strncpy(structure, cstruc, length+1);
-	energy = co_pf_fold(string, structure);
-	prAB=(struct plist *) space(sizeof(struct plist) * (2*length));
-	prAB=get_plist(prAB, length,0.00001); 
-	FEAB=energy;
-	if (doQ)
-	    make_probsum(length,fname,outf); /*compute prob of base paired*/
-	free_co_arrays();
+        init_co_pf_fold(length);
 
-	if (doT)
-	{			    /*cofold of all dimers, monomers*/
-	    int Blength, Alength;
-	    char  *Astring, *Bstring;
-	    char *Newstring;
+        if (cstruc!=NULL)
+            strncpy(structure, cstruc, length+1);
+        AB = co_pf_fold(string, structure);
 
-	    char *comment;
-	    struct ConcEnt *Conc;
-	    if (cut_point<0)
-	    {
-		free(mfAB);
-		free(prAB);
-		ajFatal("This program requires two molecules\n");
-	    }
+        if (do_backtrack)
+        {
+            char *costruc;
+            costruc = (char *) space(sizeof(char)*(strlen(structure)+2));
+            if (cut_point<0)
+                ajFmtPrintF(outf,"%s", structure);
+            else
+            {
+                strncpy(costruc, structure, cut_point-1);
+                strcat(costruc, "&");
+                strcat(costruc, structure+cut_point-1);
+                ajFmtPrintF(outf,"%s", costruc);
+            }
+            ajFmtPrintF(outf," [%6.2f]\n", AB.FAB);
+        }
 
-	    if (dangles==1)
-		dangles=2;		/*merkmas??*/
-	    Alength=cut_point-1;	/*length of first molecule*/
-	    Blength=length-cut_point+1; /*length of 2nd molecule*/
-	
-	    /*Sequence of first molecule*/
-	    Astring=(char *)space(sizeof(char)*(Alength+1));
-	    /*Sequence of second molecule*/
-	    Bstring=(char *)space(sizeof(char)*(Blength+1));
-	    strncat(Astring,string,Alength);      
-	    strncat(Bstring,string+Alength,Blength);
-	
-	
-	
-	    /*compute AA dimer*/
-	    prAA=(struct plist *) space(sizeof(struct plist) * (4*Alength));
-	    mfAA=(struct plist *) space(sizeof(struct plist) * (Alength+1));
-	    FEAA=do_partfunc(Astring, Alength, 2, &prAA, &mfAA);
-	    /*compute BB dimer*/
-	    prBB=(struct plist *) space(sizeof(struct plist) * (4*Blength));
-	    mfBB=(struct plist *) space(sizeof(struct plist) * (Blength+1));
-	    FEBB=do_partfunc(Bstring, Blength, 2, &prBB, &mfBB);
-	    /*free_co_pf_arrays();*/
-	
-	    /*compute A monomer*/
-	    prA=(struct plist *) space(sizeof(struct plist) * (2*Alength));
-	    mfA=(struct plist *) space(sizeof(struct plist) * (Alength+1));
-	    if(Alength>4)
-	    {			     /*only if sec_struc is possible*/
-		FEA=do_partfunc(Astring, Alength, 1, &prA, &mfA);
-		/*	  free_pf_arrays();*/
+        if ((istty)||(!do_backtrack))
+            ajFmtPrintF(outf," free energy of ensemble = %6.2f kcal/mol\n",
+                        AB.FAB);
+        ajFmtPrintF(outf," frequency of mfe structure in ensemble %g",
+                    exp((AB.FAB-min_en)/kT));
 
-	    }
-	    else
-	    {				/*no secondary structure*/
-		FEA=0.;
-		prA=(struct plist *)xrealloc(prA,sizeof(struct plist));
-		mfA=(struct plist *)xrealloc(mfA,sizeof(struct plist));
-		prA[0].i=mfA[0].i=0;
-		prA[0].j=mfA[0].j=0;
-		prA[0].p=mfA[0].p=0.;
-	    }
-	    /*compute B monomer*/
-	    prB=(struct plist *) space(sizeof(struct plist) * (2*Blength));
-	    mfB=(struct plist *) space(sizeof(struct plist) * (Blength+1));
-	
-	    if (Blength>4)
-	    {
-	  
-		FEB=do_partfunc(Bstring, Blength, 1, &prB, &mfB); 
-		/*	  free_pf_arrays();*/
-	  
-	  
-	    }
-	    else
-	    {
-		FEB=0.;
-		prB=(struct plist *)xrealloc(prB,sizeof(struct plist));
-		mfB=(struct plist *)xrealloc(mfB,sizeof(struct plist));
-		prB[0].i=mfB[0].i=0;
-		prB[0].j=mfB[0].j=0;
-		prB[0].p=mfB[0].p=0.;
-	 
-	    } 
+        ajFmtPrintF(outf," , delta G binding=%6.2f\n", AB.FcAB - AB.FA - AB.FB);
 
-	    compute_probabilities(&FEAB,&FEAA,&FEBB,&FEA,&FEB,
-				  prAB,prAA,prBB,prA,prB,
-				  Alength,Blength,outf);
-	    ajFmtPrintF(outf,"\nFree Energies:\n    AB\t\tAA\t\tBB\t\tA\t\t"
-			"B\n%.6f\t%6f\t%6f\t%6f\t%6f\n",FEAB,FEAA,FEBB,FEA,
-			FEB);
-	
-	    if (doC)
-	    {
-		Conc=do_the_concenratinger(concfile,FEAB, FEAA, FEBB, FEA,
-					   FEB, ConcAandB, outf);
-		free(Conc);		/*freeen*/
-	    }
-	
-	    /*output of the 5 dot plots*/
-	
-	    /*AB dot_plot*/
-	    /*write Free Energy into comment*/ 
-	    comment=(char *)space(80*sizeof(char));
-	    sprintf(comment,"\n%%FreeEnergy= %.9f\n",FEAB);
-	    /*reset cut_point*/
-	    cut_point=Alength+1;
-	    (void)PS_dot_plot_list(string, aboutf, prAB, mfAB, comment);
-	    free(comment);
-	
-	    /*AA dot_plot*/
-	    comment=(char *)space(80*sizeof(char));
-	    sprintf(comment,"\n%%FreeEnergy= %.9f\n",FEAA);
-	    /*write AA sequence*/
-	    Newstring=(char*)space((2*Alength+1)*sizeof(char));
-	    strcat(Newstring,Astring);
-	    strcat(Newstring,Astring);
-	    (void)PS_dot_plot_list(Newstring, aaoutf, prAA, mfAA, comment);
-	    free(comment);
-	    free(Newstring);
+        prAB=(struct plist *) space(sizeof(struct plist) * (2*length));
+        prAB=get_plist(prAB, length,0.00001);
 
-	    /*BB dot_plot*/
-	    comment=(char *)space(80*sizeof(char));
-	    sprintf(comment,"\n%%FreeEnergy= %.9f\n",FEBB);
-	    /*write BB sequence*/
-	    Newstring=(char*)space((2*Blength+1)*sizeof(char));
-	    strcat(Newstring,Bstring);
-	    strcat(Newstring,Bstring);
-	    /*reset cut_point*/
-	    cut_point=Blength+1;
-	    (void)PS_dot_plot_list(Newstring, bboutf, prBB, mfBB, comment);
-	    free(comment);
-	    free(Newstring);
+        /* if (doQ) make_probsum(length,fname); */ /*compute prob of base paired*/
+        /* free_co_arrays(); */
 
-	    /*A dot plot*/
-	    /*reset cut_point*/
-	    cut_point=-1;
-	    comment=(char *)space(80*sizeof(char));
-	    sprintf(comment,"\n%%FreeEnergy= %.9f\n",FEA);
-	    (void)PS_dot_plot_list(Astring, aoutf, prA, mfA, comment);
-	    free(comment);
+        if (doT)
+        { /* cofold of all dimers, monomers */
+            int Blength, Alength;
+            char  *Astring, *Bstring;
+            char *Newstring;
+            char Newname[30];
+            char comment[80];
+            if (cut_point<0)
+            {
+                free(mfAB);
+                free(prAB);
+                ajFatal("Sorry, I cannot do that with only one molecule, "
+                        "please give me two\n");
+
+            }
+
+            if (dangles==1)
+                dangles=2;
+
+            Alength=cut_point-1;        /*length of first molecule*/
+            Blength=length-cut_point+1; /*length of 2nd molecule*/
+
+            /*Sequence of first molecule*/
+            Astring=(char *)space(sizeof(char)*(Alength+1));
+            /*Sequence of second molecule*/
+            Bstring=(char *)space(sizeof(char)*(Blength+1));
+            strncat(Astring,string,Alength);
+            strncat(Bstring,string+Alength,Blength);
+
+            /* compute AA dimer */
+            prAA=(struct plist *) space(sizeof(struct plist) * (4*Alength));
+            mfAA=(struct plist *) space(sizeof(struct plist) * (Alength+1));
+            AA=do_partfunc(Astring, Alength, 2, &prAA, &mfAA);
+            /* compute BB dimer */
+            prBB=(struct plist *) space(sizeof(struct plist) * (4*Blength));
+            mfBB=(struct plist *) space(sizeof(struct plist) * (Blength+1));
+            BB=do_partfunc(Bstring, Blength, 2, &prBB, &mfBB);
+            /*free_co_pf_arrays();*/
+
+            /* compute A monomer */
+            prA=(struct plist *) space(sizeof(struct plist) * (2*Alength));
+            mfA=(struct plist *) space(sizeof(struct plist) * (Alength+1));
+            do_partfunc(Astring, Alength, 1, &prA, &mfA);
+
+            /* compute B monomer */
+            prB=(struct plist *) space(sizeof(struct plist) * (2*Blength));
+            mfB=(struct plist *) space(sizeof(struct plist) * (Blength+1));
+            do_partfunc(Bstring, Blength, 1, &prB, &mfB);
+
+            compute_probabilities(AB.F0AB, AB.FA, AB.FB, prAB, prA, prB,
+                                  Alength);
+            compute_probabilities(AA.F0AB, AA.FA, AA.FA, prAA, prA, prA,
+                                  Alength);
+            compute_probabilities(BB.F0AB, BB.FA, BB.FA, prBB, prA, prB,
+                                  Blength);
+            ajFmtPrintF(outf,"Free Energies:\nAB\t\tAA\t\tBB\t\tA\t\tB\n%.6f"
+                        "\t%6f\t%6f\t%6f\t%6f\n",
+                        AB.FcAB, AA.FcAB, BB.FcAB, AB.FA, AB.FB);
+
+            if (doC)
+            {
+                do_concentrations(AB.FcAB, AA.FcAB, BB.FcAB, AB.FA, AB.FB,
+                                  ConcAandB, outf);
+                free(ConcAandB);/*freeen*/
+            }
+
+            /*AB dot_plot*/
+            /*write Free Energy into comment*/
+            sprintf(comment,"\n%%Heterodimer AB FreeEnergy= %.9f\n", AB.FcAB);
+            /*reset cut_point*/
+            cut_point=Alength+1;
+            (void)PS_dot_plot_list(string, aboutf, prAB, mfAB, comment);
+
+            /*AA dot_plot*/
+            sprintf(comment,"\n%%Homodimer AA FreeEnergy= %.9f\n",AA.FcAB);
+            /*write AA sequence*/
+            Newstring=(char*)space((2*Alength+1)*sizeof(char));
+            strcpy(Newstring,Astring);
+            strcat(Newstring,Astring);
+            (void)PS_dot_plot_list(Newstring, aaoutf, prAA, mfAA, comment);
+            free(Newstring);
+
+            /*BB dot_plot*/
+            sprintf(comment,"\n%%Homodimer BB FreeEnergy= %.9f\n",BB.FcAB);
+            /*write BB sequence*/
+            Newstring=(char*)space((2*Blength+1)*sizeof(char));
+            strcpy(Newstring,Bstring);
+            strcat(Newstring,Bstring);
+            /*reset cut_point*/
+            cut_point=Blength+1;
+            (void)PS_dot_plot_list(Newstring, bboutf, prBB, mfBB, comment);
+            free(Newstring);
+
+            /*A dot plot*/
+            /*reset cut_point*/
+            cut_point=-1;
+            sprintf(comment,"\n%%Monomer A FreeEnergy= %.9f\n",AB.FA);
+            /*write A sequence*/
+            (void)PS_dot_plot_list(Astring, aoutf, prA, mfA, comment);
+
+            /*B monomer dot plot*/
+            sprintf(comment,"\n%%Monomer B FreeEnergy= %.9f\n",AB.FB);
+            /*write B sequence*/
+            (void)PS_dot_plot_list(Bstring, boutf, prB, mfB, comment);
+            free(Astring);
+            free(Bstring);
+            free(prAB);
+            free(prAA);
+            free(prBB);
+            free(prA);
+            free(prB);
+            free(mfAB);
+            free(mfAA);
+            free(mfBB);
+            free(mfA);
+            free(mfB);
+        } /*end if(doT)*/
+
+    }/*end if(pf)*/
 
 
-	    /*B monomer dot plot*/
-	    comment=(char *)space(80*sizeof(char));
-	    sprintf(comment,"\n%%FreeEnergy= %.9f\n",FEB);
-	    (void)PS_dot_plot_list(Bstring, boutf, prB, mfB, comment);
-	    free(comment);
-		
-	    free_franz(Astring, Bstring,  prAB, prAA, prBB, prA, prB,  mfAB,
-		       mfAA, mfBB, mfA, mfB);
-	
-	
-	} /*end if(doT)*/
-
-	if (do_backtrack)
-	{
-	    ajFmtPrintF(outf,"%s", structure);
-	    if (!istty)
-		ajFmtPrintF(outf," [%6.2f]\n", energy);
-	    else
-		printf("\n");		/*8.6.04*/
-	}
-
-	if ((istty)||(!do_backtrack)) 
-	    ajFmtPrintF(outf," free energy of ensemble = %6.2f kcal/mol\n",
-			energy);
-	ajFmtPrintF(outf," frequency of mfe structure in ensemble %g\n",
-	       exp((energy-min_en)/kT));
-     
-	
-    } /*end if(pf)*/
-    
-    
     if (do_backtrack)
     {
-	if (!doT)
-	{
-	    if(pf)
-	    {
-		(void) PS_dot_plot_list(string, dotfile, prAB, mfAB, "doof");
-		free(prAB);
-	    }
-	    free(mfAB);
-	}
+        if (!doT)
+        {
+            if (pf)
+            {
+                (void) PS_dot_plot_list(string, dotfile, prAB, mfAB, "doof");
+                free(prAB);
+            }
+            free(mfAB);
+        }
     }
-    if(!doT)
-	free_co_pf_arrays();
-    
-    
+
+    if (!doT)
+        free_co_pf_arrays();
+
+
     if (cstruc!=NULL)
-	free(cstruc);
-
+        free(cstruc);
     free(string);
+    free(structure);
 
-    free(structure); 
-    
-    
-    
     ajSeqDel(&seq1);
     ajSeqDel(&seq2);
 
@@ -576,237 +494,173 @@ int main(int argc, char *argv[])
 
 
 
- 
+
 PRIVATE char *tokenize(char *line)
 {
-    char *pos, *copy;
-    int cut = -1;
+  char *pos, *copy;
+  int cut = -1;
 
-    copy = (char *) space(strlen(line)+1);
-    (void) sscanf(line, "%s", copy);
-    pos = strchr(copy, '&');
-    if (pos)
-    {
-	cut = (int) (pos-copy)+1;
-	if (cut >= strlen(copy))
-	    cut = -1;
-	if (strchr(pos+1, '&'))
-	    ajFatal("More than one cut-point in input\n");
-	for (;*pos;pos++)
-	    *pos = *(pos+1);		/* splice out the & */
+  copy = (char *) space(strlen(line)+1);
+  (void) sscanf(line, "%s", copy);
+  pos = strchr(copy, '&');
+  if (pos) {
+    cut = (int) (pos-copy)+1;
+    if (cut >= strlen(copy)) cut = -1;
+    if (strchr(pos+1, '&')) nrerror("more than one cut-point in input");
+    for (;*pos;pos++) *pos = *(pos+1); /* splice out the & */
+  }
+  if (cut > -1) {
+    if (cut_point==-1) cut_point = cut;
+    else if (cut_point != cut) {
+      fprintf(stderr,"cut_point = %d cut = %d\n", cut_point, cut);
+      nrerror("Sequence and Structure have different cut points.");
     }
-
-    if(cut > -1)
-    {
-	if (cut_point==-1)
-	    cut_point = cut;
-	else if(cut_point != cut)
-	{
-	    ajFatal("cut_point = %d cut = %d\n"
-		    "Sequence and Structure have different cut points.\n",
-		    cut_point,cut);
-	}
-    }
-
-    free(line);
-
-    return copy;
+  }
+  free(line);
+  return copy;
 }
-
-
-
 
 PRIVATE char *costring(char *string)
 {
-    char *ctmp;
-    int len;
-  
-    len = strlen(string);
-    ctmp = (char *)space((len+2) * sizeof(char));
-    /* first sequence */
-    (void) strncpy(ctmp, string, cut_point-1);
-    /* spacer */
-    ctmp[cut_point-1] = '&';
-    /* second sequence */
-    (void) strcat(ctmp, string+cut_point-1);
+  char *ctmp;
+  int len;
 
-    return ctmp;
+  len = strlen(string);
+  ctmp = (char *)space((len+2) * sizeof(char));
+  /* first sequence */
+  (void) strncpy(ctmp, string, cut_point-1);
+  /* spacer */
+  ctmp[cut_point-1] = '&';
+  /* second sequence */
+  (void) strcat(ctmp, string+cut_point-1);
+
+  return ctmp;
 }
 
-
-
-
-PRIVATE double do_partfunc(char *string, int length, int Switch,
-			   struct plist **tpr, struct plist **mfpl)
-{
-    /*compute mfe and partition function of dimere or  monomer*/  
-    double En = 0.;
-    char *Newstring;
-    char *tempstruc;
-    double min_en;
-    double sfact=1.07;
-    double kT;
-    kT = (temperature+273.15)*1.98717/1000.;
-    switch (Switch)
+PRIVATE cofoldF do_partfunc(char *string, int length, int Switch, struct plist **tpr, struct plist **mfpl) {
+  /*compute mfe and partition function of dimere or  monomer*/
+  char *Newstring;
+  char *tempstruc;
+  double min_en;
+  double sfact=1.07;
+  double kT;
+  cofoldF X;
+  kT = (temperature+273.15)*1.98717/1000.;
+  switch (Switch)
     {
-    case 1:				/*monomer*/
-	cut_point=-1;
-	tempstruc = (char *) space((unsigned)length+1);
-	min_en = fold(string, tempstruc);
-	pf_scale = exp(-(sfact*min_en)/kT/(length));
-	*mfpl=get_mfe_plist(*mfpl);
-	free_arrays();
-	/*En=pf_fold(string, tempstruc);*/
-	init_co_pf_fold(length);
-	En=co_pf_fold(string, tempstruc);
-      
-	*tpr=get_plist(*tpr, length,0.00001);
-	free_co_pf_arrays();
-	free(tempstruc);
-	break;
+    case 1: /*monomer*/
+      cut_point=-1;
+      tempstruc = (char *) space((unsigned)length+1);
+      min_en = fold(string, tempstruc);
+      pf_scale = exp(-(sfact*min_en)/kT/(length));
+      *mfpl=get_mfe_plist(*mfpl);
+      free_arrays();
+      /*En=pf_fold(string, tempstruc);*/
+      init_co_pf_fold(length);
+      X=co_pf_fold(string, tempstruc);
 
-    case 2:				/*dimer*/
-	Newstring=(char *)space(sizeof(char)*(length*2+1)); 
-	strcat(Newstring,string);
-	strcat(Newstring,string);
-	cut_point=length+1;
-	tempstruc = (char *) space((unsigned)length*2+1);
-	min_en = cofold(Newstring, tempstruc);
-	pf_scale =exp(-(sfact*min_en)/kT/(2*length));
-	*mfpl=get_mfe_plist(*mfpl);
-	free_co_arrays(); 
-	init_co_pf_fold(2*length);
-	En=co_pf_fold(Newstring, tempstruc);
-	*tpr=get_plist(*tpr, 2*length,0.00001);
-	free_co_pf_arrays();
-	free(Newstring);
-	free(tempstruc);
-	break;
+      *tpr=get_plist(*tpr, length,0.00001);
+      free_co_pf_arrays();
+      free(tempstruc);
+      break;
+
+    case 2: /*dimer*/
+      Newstring=(char *)space(sizeof(char)*(length*2+1));
+      strcat(Newstring,string);
+      strcat(Newstring,string);
+      cut_point=length+1;
+      tempstruc = (char *) space((unsigned)length*2+1);
+      min_en = cofold(Newstring, tempstruc);
+      pf_scale =exp(-(sfact*min_en)/kT/(2*length));
+      *mfpl=get_mfe_plist(*mfpl);
+      free_co_arrays();
+      init_co_pf_fold(2*length);
+      X=co_pf_fold(Newstring, tempstruc);
+      *tpr=get_plist(*tpr, 2*length,0.00001);
+      free_co_pf_arrays();
+      free(Newstring);
+      free(tempstruc);
+      break;
 
     default:
-	ajFatal("Error in get_partfunc\n, computing neither mono- nor dimer!\n");
-    }
+      printf("Error in get_partfunc\n, computing neither mono- nor dimere!\n");
+      exit (42);
 
-    return En;
+    }
+  return X;
 }
 
 
+PRIVATE void do_concentrations(double FEAB, double FEAA, double FEBB, double FEA, double FEB, double *startconc, AjPFile outf) {
+  /* compute and print concentrations out of free energies, calls get_concentrations */
+  struct ConcEnt *result;
+  int i, n;
 
+  result=get_concentrations(FEAB, FEAA, FEBB, FEA, FEB, startconc,outf);
 
-PRIVATE void free_franz(char *Astring, char *Bstring, struct plist *prAB,
-			struct plist *prAA, struct plist *prBB,
-			struct plist *prA, struct plist *prB,
-			struct plist *mfAB, struct plist *mfAA,
-			struct plist *mfBB, struct plist *mfA,
-			struct plist *mfB)
-{
-
-    /*free arrays for dimer/monomer computations*/
-    free(Astring);
-    free(Bstring);
-    free(prAB);
-    free(prAA);
-    free(prBB);
-    free(prB);
-    free(prA);
-    free(mfAB);
-    free(mfAA);
-    free(mfBB);
-    free(mfA);
-    free(mfB);
-
-    return;
+  ajFmtPrintF(outf,"Initial concentrations\t\trelative Equilibrium "
+              "concentrations\n");
+  ajFmtPrintF(outf,"A\t\t B\t\t AB\t\t AA\t\t BB\t\t A\t\t B\n");
+  for (n=0; (startconc[2*n]>0) || (startconc[2*n+1]>0); n++); /* count */
+  for (i=0; i<n ;i++) {
+    double tot = result[i].A0+result[i].B0;
+    ajFmtPrintF(outf,"%-10g\t%-10g\t%.5f \t%.5f \t%.5f \t%.5f \t%.5f\n",
+                result[i].A0, result[i].B0,
+                result[i].ABc/tot, result[i].AAc/tot, result[i].BBc/tot ,
+                result[i].Ac/tot, result[i].Bc/tot);
+  }
+  free(result);
 }
 
 
+PRIVATE double *read_concentrations(AjPFile concfile) {
+  /* reads concentrations, returns list of double, -1. marks end */
+  char *line;
+  double *startc;
+  int i=0, n=2;
+  FILE *fp = NULL;
 
-
-PRIVATE struct ConcEnt *do_the_concenratinger(AjPFile Conc_file,double FEAB,
-					      double FEAA, double FEBB,
-					      double FEA, double FEB,
-					      double *startconces,
-					      AjPFile outf)
-{
-    /*compute concentrations out of  free energies, calls get_concentrations*/
-    struct ConcEnt *result;
-    int i;
-    char *line;
-    double temp;
-    int n=1;
- 
-    i=0;
-
-    if(Conc_file)
-	i=read_concentrationfile(Conc_file,startconces); /*??*/
-    else if(startconces[0]==0)
-    {
-	printf("Please enter concentrations, alternating A,B, '*'to stop\n");
-	do
-	{
-	    if ((line = get_line(stdin))==NULL)
-		break;
-	    if ((line ==NULL) || (strcmp(line, "*") == 0))
-		break;
-	    sscanf(line,"%lf", &temp);
-	    startconces[i++]=temp;
-	    free(line);
-	    if (i==n*20-1)
-	    {
-		n*=2;
-		startconces=(double *)xrealloc(startconces,(2+n*20)*
-					       sizeof(double));
-	    }
-	}while (1);
-    
-	if (!i%2)
-	{
-	    printf("Warning! number of concentrations is not "
-		   "a multiple of 2!!\n");
-	}
-	startconces[i++]=0;
-	startconces[i]=0;
-    }
-   
-    result=get_concentrations(FEAB, FEAA, FEBB, FEA, FEB, startconces, outf);
+  fp = ajFileFp(concfile);
   
-    free(startconces);
+  startc = (double *) space((2*n+1)*sizeof(double));
 
-    return result;
+  while ((line=get_line(fp))!=NULL) {
+    int c;
+    if (i+4>=2*n) {
+      n*=2;
+      startc=(double *)xrealloc(startc,(2*n+1)*sizeof(double));
+    }
+    c = sscanf(line,"%lf %lf", &startc[i], &startc[i+1]);
+    free(line);
+    if (c<2) break;
+    i+=2;
+  }
+  startc[i]=startc[i+1]=0;
+  return startc;
+}
+
+static struct plist *get_mfe_plist(struct plist *pl) {
+  /*get list of mfe structure out of base_pairs array*/
+  int l;
+  for(l=1; l<=base_pair[0].i; l++)
+    {
+      pl[l-1].i=base_pair[l].i;
+      pl[l-1].j=base_pair[l].j;
+      pl[l-1].p=0.95;
+    }
+  pl[l-1].i=0;
+  pl[l-1].j=0;
+  pl[l-1].p=0.;
+  pl=(struct plist *)xrealloc(pl,l*sizeof(struct plist));
+  return pl;
 }
 
 
-
-
-PRIVATE int read_concentrationfile(AjPFile concfile, double *startc)
+PRIVATE void usage(void)
 {
-    /*reads file of concentrations*/
-    FILE *fp;
-    char *line;
-    int i,n;
-    double tmp1, tmp2;
-    n=1;
-    i=0;
-
-    fp = ajFileFp(concfile);
-
-    line=get_line(fp);
-    while(line!=NULL)
-    {
-	sscanf(line,"%lf %lf",&tmp1,&tmp2);
-	startc[i++]=tmp1;
-	startc[i++]=tmp2;
-	free(line);
-	if(i==n*20)
-	{
-	    n*=2;
-	    startc=(double *)xrealloc(startc,(2+20*n)*sizeof(double));
-	}
-	line=get_line(fp);
-    }
-
-    free(line);
-    startc[i++]=0;
-    startc[i--]=0;
-
-    return --i;
+  nrerror("usage:\n"
+	  "RNAcofold [-a] [-c] [-f concfile]\n"
+	  "[-p[0]] [-C] [-T temp] [-4] [-d[2|3]] [-noGU] [-noCloseGU]\n"
+	  "[-noLP] [-e e_set] [-P paramfile] [-nsp pairs] [-S scale] "
+	  "[-noconv]\n");
 }

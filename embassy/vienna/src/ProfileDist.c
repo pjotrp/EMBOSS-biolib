@@ -15,13 +15,13 @@
 #include  "part_func.h"
 #include  "utils.h"
 /*@unused@*/
-static const char rcsid[] = "$Id: ProfileDist.c,v 1.3 2007/01/31 12:47:07 rice Exp $";
+static char rcsid[] = "$Id: ProfileDist.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
 
 #define PUBLIC
 #define PRIVATE        static
-#define MIN(x,y)       (((x)<(y)) ? (x) : (y))      
-#define MAX(x,y)       (((x)>(y)) ? (x) : (y))
-#define MIN3(x,y,z)    (MIN(  (MIN((x),(y))) ,(z)))
+#define eMIN(x,y)       (((x)<(y)) ? (x) : (y))      
+#define eMAX(x,y)       (((x)>(y)) ? (x) : (y))
+#define MIN3(x,y,z)    (eMIN(  (eMIN((x),(y))) ,(z)))
 
 PRIVATE int *alignment[2];
 
@@ -42,7 +42,7 @@ PUBLIC float profile_edit_distance(const float *T1, const float *T2)
      we should really use affine gap-costs ala Gotoh */
 
   float    **distance;
-  short    **i_point=NULL, **j_point=NULL;
+  short    **i_point, **j_point;
   
   int           i, j, i1, j1, pos, length1,length2;
   float         minus, plus, change, temp;
@@ -145,7 +145,7 @@ PUBLIC float profile_edit_distance(const float *T1, const float *T2)
 
 PRIVATE double PrfEditCost(int i, int j, const float *T1, const float *T2)
 {
-  double  dist=0.0;
+  double  dist;
   int    k, kmax;
 
   kmax = (int) T1[1];

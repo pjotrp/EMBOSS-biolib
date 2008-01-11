@@ -11,7 +11,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "utils.h"
-#include "ePS_dot.h"
+#include "PS_dot.h"
 
 #define PRIVATE static
 

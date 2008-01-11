@@ -14,7 +14,7 @@
 #include  "dist_vars.h"
 #include  "utils.h"
 
-static const char rcsid[] = "$Id: stringdist.c,v 1.2 2005/11/01 15:39:10 rice Exp $";
+static char rcsid[] = "$Id: stringdist.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
 
 #define PUBLIC
 #define PRIVATE        static
@@ -44,7 +44,7 @@ PUBLIC float string_edit_distance(swString *T1, swString *T2)
 
 {
     float  **distance;
-    short    **i_point=NULL, **j_point=NULL;
+    short    **i_point, **j_point;
 
     int           i, j, i1, j1, pos, length1,length2;
     float         minus, plus, change, temp;

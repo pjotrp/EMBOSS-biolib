@@ -1,10 +1,7 @@
 /*
   $Log: list.h,v $
-  Revision 1.2  2007/01/31 12:47:07  rice
-  compiler warnings (prototypes, unsigned, etc.)
-
-  Revision 1.1  2005/10/13 13:00:44  ajb
-  First draft
+  Revision 1.3  2008/01/11 14:48:02  ajb
+  Vienna 1.6alpha to Vienna 1.7
 
   Revision 1.2  2000/10/10 08:50:01  ivo
   some annotation for lclint
@@ -66,6 +63,6 @@ void lst_insertafter (LIST * l, /*@keep@*/ void *node, void *after);
 void *lst_deletenext (/*@only@*/ LIST * l, void *node);
 /*@dependent@*/ void *lst_first (LIST * l);
 /*@dependent@*/ void *lst_next (void *prev);
-void lst_mergesort (LIST * l, int (*cmp_func) (void *, void *));
+void lst_mergesort (LIST * l, int (*cmp_func) (void*,void*));
 
 #endif
