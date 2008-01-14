@@ -15,7 +15,7 @@ float circalifold(const char **strings, char *structure) {
      fM_d5 = multiloop region with >= 2 stems, extending to pos n-1
 	     (a pair (1,k) will form a 5' dangle with pos n)
   */
-  int *fM2, Fc, FcH, FcI, FcM, Hi, Hj, Ii, Ij, Ip, Iq, Mi;
+  int *fM2, Fc, FcH, FcI, FcM, Hi=0, Hj=0, Ii=0, Ij=0, Ip=0, Iq=0, Mi=0;
   int FcMd3, FcMd5;
   int i,j, p,q,length, energy;
   int n_seq, psc, s=0;

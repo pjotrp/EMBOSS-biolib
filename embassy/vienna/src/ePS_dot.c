@@ -16,7 +16,7 @@
 #include "fold_vars.h"
 #include "PS_dot.h"
 
-static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.2 2008/01/11 14:48:02 ajb Exp $";
+static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.3 2008/01/14 13:56:13 ajb Exp $";
 
 #define PUBLIC
 #define  PRIVATE   static
@@ -1108,7 +1108,7 @@ int PS_color_aln(const char *structure, AjPFile filename,
 
   int N,i,j,k,x,y,tmp,columnWidth;
   char *tmpBuffer,*ssEscaped,*ruler, *cons;
-  char c;
+  char c='\0';
   float fontWidth, fontHeight, imageHeight, imageWidth,tmpColumns;
   int length, maxName, maxNum, currPos;
   float lineStep,blockStep,consStep,ssStep,rulerStep,nameStep,numberStep;

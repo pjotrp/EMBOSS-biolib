@@ -23,7 +23,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: fold.c,v 1.5 2008/01/11 14:48:02 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: fold.c,v 1.6 2008/01/14 13:56:13 ajb Exp $";
 #ifdef __GNUC__
 #define INLINE inline
 #else
@@ -102,7 +102,9 @@ PRIVATE int   init_length=-1;
 PRIVATE char  alpha[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 /* needed by cofold/eval */
 PRIVATE int cut_in_loop(int i);
+#if 0
 PRIVATE int min_hairpin = TURN;
+#endif
 PUBLIC  int cut_point = -1; /* set to first pos of second seq for cofolding */
 PUBLIC int   eos_debug=0;  /* verbose info from energy_of_struct */
 
@@ -531,7 +533,7 @@ PRIVATE void backtrack(const char *string, int s) {
     sector[s].ml = (backtrack_type=='M') ? 1 : ((backtrack_type=='C')?2:0);
   }
   while (s>0) {
-    int ml, fij, fi, cij, traced, i1, j1, d3, d5, mm, p, q, jj=0;
+    int ml, fij, fi, cij=0, traced, i1, j1, d3, d5, mm, p, q, jj=0;
     int canonical = 1;     /* (i,j) closes a canonical structure */
     i  = sector[s].i;
     j  = sector[s].j;

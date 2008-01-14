@@ -18,8 +18,11 @@
 #include "fold_vars.h"
 #include "pair_mat.h"
 #include "alifold.h"
+
 /*@unused@*/
-static char rcsid[] = "$Id: alipfold.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: alipfold.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define MAX(x,y) (((x)>(y)) ? (x) : (y))
 #define MIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -177,11 +180,11 @@ PUBLIC float alipf_circ_fold(char **sequences, char *structure, pair_info **pi)
 
 PRIVATE void alipf_linear(char **sequences, char *structure)
 {
-  int s, n, n_seq, i,j,k,l, ij, kl, u,u1,d,ii,ll, type_2, tt;
-  FLT_OR_DBL temp, Q, Qmax=0;
+    int s, n, n_seq, i,j,k,l, ij, /*kl,*/ u,u1,d,ii,/*ll,*/ type_2, tt;
+  FLT_OR_DBL temp/*, Q,*/ /*Qmax=0*/;
   FLT_OR_DBL qbt1, *tmp;
 
-  double free_energy, kTn;
+  double /*free_energy,*/ kTn;
 
   n = (int) strlen(sequences[0]);
   for (s=0; sequences[s]!=NULL; s++);
@@ -327,12 +330,12 @@ PRIVATE void alipf_linear(char **sequences, char *structure)
 PRIVATE void alipf_create_bppm(char **sequences, char *structure, pair_info **pi)
 {
   int s;
-  int n, n_seq, i,j,k,l, ij, kl, u,u1,d,ii,ll, type_2, tt, ov=0;
+  int n, n_seq, i,j,k,l, ij, kl, /*u,*//*u1,*//*d,*/ii,ll, /*type_2,*/ tt, ov=0;
   FLT_OR_DBL temp, Qmax=0, prm_MLb;
   FLT_OR_DBL prmt,prmt1;
   FLT_OR_DBL qbt1, *tmp, tmp2, tmp3;
 
-  double free_energy, kTn;
+  double /*free_energy,*/ kTn;
   n = (int) strlen(sequences[0]);
   for (s=0; sequences[s]!=NULL; s++);
   n_seq = s;
@@ -1148,7 +1151,7 @@ PUBLIC void alipf_circ(char **sequences, char *structure){
 
   for(p=1;p<n;p++){
     for(q=p+TURN+1;q<=n;q++){
-      int ij, psc;
+        int /*ij,*/ psc;
       u = n-q + p-1;
       if (u<TURN) continue;
 

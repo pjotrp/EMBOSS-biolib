@@ -14,7 +14,9 @@
 #include  "dist_vars.h"
 #include  "utils.h"
 
-static char rcsid[] = "$Id: stringdist.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: stringdist.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define PUBLIC
 #define PRIVATE        static
@@ -43,8 +45,8 @@ PRIVATE int       *alignment[2]; /* contains information from backtracking
 PUBLIC float string_edit_distance(swString *T1, swString *T2)
 
 {
-    float  **distance;
-    short    **i_point, **j_point;
+    float  **distance=NULL;
+    short    **i_point=NULL, **j_point=NULL;
 
     int           i, j, i1, j1, pos, length1,length2;
     float         minus, plus, change, temp;

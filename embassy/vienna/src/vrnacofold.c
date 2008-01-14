@@ -23,16 +23,22 @@ extern void  read_parameter_file(AjPFile file);
 extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
 
 /*@unused@*/
-static char rcsid[] = "$Id: vrnacofold.c,v 1.6 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: vrnacofold.c,v 1.7 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define PRIVATE static
 
+#if 0
 static char  scale[] = "....,....1....,....2....,....3....,....4"
-		       "....,....5....,....6....,....7....,....8";
+        	       "....,....5....,....6....,....7....,....8";
+#endif
 
 PRIVATE char *costring(char *string);
 PRIVATE char *tokenize(char *line);
+#if 0
 PRIVATE void usage(void);
+#endif
 PRIVATE cofoldF do_partfunc(char *string, int length, int Switch, struct plist **tpr, struct plist **mf);
 PRIVATE double *read_concentrations(AjPFile concfile);
 PRIVATE void do_concentrations(double FEAB, double FEAA, double FEBB, double FEA, double FEB, double *startconces,AjPFile outf);
@@ -42,13 +48,13 @@ PRIVATE struct plist *get_mfe_plist(struct plist *pl);
 
 int main(int argc, char *argv[])
 {
-    char *string, *line;
+    char *string/*, *line*/;
     char *structure=NULL, *cstruc=NULL;
-    char  fname[53], ffname[60];
-    char  *ParamFile=NULL;
+    /*char  fname[53], ffname[60]; */
+    /*char  *ParamFile=NULL; */
     char  *ns_bases=NULL, *c;
     char *Concfile;
-    int   i, length, l, sym, r;
+    int   i, length, l, sym/*, r*/;
     double min_en;
     double kT, sfact=1.07;
     int   pf=0, istty;
@@ -338,7 +344,7 @@ int main(int argc, char *argv[])
             int Blength, Alength;
             char  *Astring, *Bstring;
             char *Newstring;
-            char Newname[30];
+            /*char Newname[30];*/
             char comment[80];
             if (cut_point<0)
             {
@@ -653,7 +659,7 @@ static struct plist *get_mfe_plist(struct plist *pl) {
   return pl;
 }
 
-
+#if 0
 PRIVATE void usage(void)
 {
   nrerror("usage:\n"
@@ -662,3 +668,4 @@ PRIVATE void usage(void)
 	  "[-noLP] [-e e_set] [-P paramfile] [-nsp pairs] [-S scale] "
 	  "[-noconv]\n");
 }
+#endif

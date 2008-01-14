@@ -23,17 +23,24 @@
 #endif
 
 /*@unused@*/
-static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.5 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.6 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define  PUBLIC
 #define  PRIVATE   static
 
+#if 0
 static char  scale[] = "....,....1....,....2....,....3....,....4"
 		       "....,....5....,....6....,....7....,....8";
+#endif
 
 PRIVATE char *costring(char *string);
 PRIVATE char *tokenize(char *line);
+#if 0
 PRIVATE void usage(void);
+#endif
+
 extern int logML;
 extern int cut_point;
 extern int eos_debug;
@@ -43,10 +50,10 @@ extern float energy_of_circ_struct(const char *seq, const char *str);
 
 int main(int argc, char *argv[])
 {
-    char *line, *string, *structure;
+    char /* *line,*/ *string, *structure;
     char  fname[12];
-    char  *ParamFile=NULL;
-    int   i, l, length1, length2;
+    /*char  *ParamFile=NULL;*/
+    int   /*i,*/ l, length1, length2;
     float energy;
     int   istty;
     int circ=0;
@@ -251,8 +258,9 @@ PRIVATE char *costring(char *string)
 
   return ctmp;
 }
-
+#if 0
 PRIVATE void usage(void)
 {
   nrerror("usage: RNAeval  [-T temp] [-4] [-d[0|1|2]] [-e e_set] [-logML] [-P paramfile]");
 }
+#endif

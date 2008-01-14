@@ -18,7 +18,9 @@
 #include "ajax.h"
 
 /*@unused@*/
-static char rcsid[] = "$Id: utils.c,v 1.6 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: utils.c,v 1.7 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define PRIVATE  static
 #define PUBLIC

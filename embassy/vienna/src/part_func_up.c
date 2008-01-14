@@ -8,6 +8,9 @@
 */
 /*
   $Log: part_func_up.c,v $
+  Revision 1.2  2008/01/14 13:56:13  ajb
+  Fix compiler warnings
+
   Revision 1.1  2008/01/11 15:03:12  ajb
   Vienna 1.6alpha to Vienna 1.7
 
@@ -65,7 +68,7 @@
 #include "part_func_up.h"
 #include "duplex.h"
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: part_func_up.c,v 1.1 2008/01/11 15:03:12 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: part_func_up.c,v 1.2 2008/01/14 13:56:13 ajb Exp $";
 #define CO_TURN 0
 #define MAX(x,y) (((x)>(y)) ? (x) : (y))
 #define MIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -641,7 +644,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu_contrib *p_c2, int w, char *cstruc, int incr3, int incr5)
 {
   int i, j, k,l,n1,n2,add_i5,add_i3,i_max,k_max, pc_size;
-  double temp, Z, rev_d, E, Z2,**p_c_S, **p_c2_S, int_scale;
+  double temp, Z, rev_d, E, Z2,**p_c_S, **p_c2_S=NULL, int_scale;
   FLT_OR_DBL ****qint_4, **qint_ik;
   /* PRIVATE double **pint; array for pf_up() output */
   interact *Int;

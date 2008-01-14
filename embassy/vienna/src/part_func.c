@@ -7,6 +7,9 @@
 */
 /*
   $Log: part_func.c,v $
+  Revision 1.5  2008/01/14 13:56:13  ajb
+  Fix compiler warnings
+
   Revision 1.4  2008/01/11 14:48:02  ajb
   Vienna 1.6alpha to Vienna 1.7
 
@@ -72,7 +75,7 @@ typedef struct plist {
 
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: part_func.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: part_func.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
 
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
 #define eMIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -205,8 +208,8 @@ PUBLIC float pf_circ_fold(char *sequence, char *structure){
 PUBLIC void pf_linear(char *sequence, char *structure)
 {
 
-  int n, i,j,k,l, ij, kl, u,u1,d,ii,ll, type, type_2, tt;
-  FLT_OR_DBL temp, Q, Qmax=0;
+    int n, i,j,k,l, ij, /*kl,*/ u,u1,d,ii,/*ll,*/ type, type_2, tt;
+  FLT_OR_DBL temp, /*Q,*/ Qmax=0;
   FLT_OR_DBL qbt1, *tmp;
 
   double max_real;
@@ -1239,7 +1242,7 @@ static void backtrack_qm2(int k, int n){
 static void backtrack(int i, int j) {
   do {
     double r, qbt1;
-    int k, l, type, u, u1;
+    int k, l=0, type, u, u1;
 
     pstruc[i-1] = '('; pstruc[j-1] = ')';
 
@@ -1279,7 +1282,7 @@ static void backtrack(int i, int j) {
   /* backtrack in multi-loop */
   {
     double r, qt;
-    int k, l, ii, jj, type;
+    int k, /*l,*/ ii, jj/*, type*/;
 
     i++; j--;
     /* find the first split index */
@@ -1362,7 +1365,7 @@ PUBLIC plist *stackProb(double cutoff) {
       if ((p=pr[iindx[i]-j])<cutoff) continue;
       if (qb[iindx[i+1]-(j-1)]<FLT_MIN) continue;
       p *= qb[iindx[i+1]-(j-1)]/qb[iindx[i]-j];
-      p *= expLoopEnergy(0,0,ptype[iindx[i]-j],rtype[ptype[iindx[i+1]-(j-1)]],
+      p *= expLoopEnergy(0,0,ptype[iindx[i]-j],rtype[(int)(ptype[iindx[i+1]-(j-1)])],
 			 0,0,0,0)*scale[2];/* add *scale[u1+u2+2] */
       if (p>cutoff) {
 	pl[num].i = i;

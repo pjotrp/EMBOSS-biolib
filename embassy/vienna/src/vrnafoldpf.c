@@ -22,28 +22,36 @@ extern void  read_parameter_file(AjPFile file);
 extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
 extern float circfold(const char *string, char *structure);
 extern plist * stackProb(double cutoff);
+extern void init_pf_circ_fold(int length);
+
 /*@unused@*/
-static char UNUSED rcsid[] = "$Id: vrnafoldpf.c,v 1.6 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char UNUSED rcsid[] = "$Id: vrnafoldpf.c,v 1.7 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define PRIVATE static
 
+#if 0
 static char  scale1[] = "....,....1....,....2....,....3....,....4";
 static char  scale2[] = "....,....5....,....6....,....7....,....8";
+#endif
 
 PRIVATE struct plist *b2plist(const char *struc);
 PRIVATE struct plist *make_plist(int length, double pmin);
+#if 0
 PRIVATE void usage(void);
+#endif
 
 /*--------------------------------------------------------------------------*/
 
 int main(int argc, char *argv[])
 {
-    char *string, *line;
+    char *string/*, *line*/;
     char *structure=NULL, *cstruc=NULL;
-    char  fname[13], ffname[20], gfname[20];
-    char  *ParamFile=NULL;
+    /* char  fname[13], ffname[20], gfname[20]; */
+    /* char  *ParamFile=NULL; */
     char  *ns_bases=NULL, *c;
-    int   i, length, l, sym, r;
+    int   i, length, l, sym/*, r*/;
     double energy, min_en;
     double kT, sfact=1.07;
     int   pf=0, noPS=0, istty;
@@ -383,7 +391,7 @@ PRIVATE struct plist *make_plist(int length, double pmin) {
 
 
 
-
+#if 0
 PRIVATE void usage(void)
 {
   nrerror("usage:\n"
@@ -391,3 +399,4 @@ PRIVATE void usage(void)
 	  "        [-noLP] [-e e_set] [-P paramfile] [-nsp pairs] [-S scale]\n"
 	  "        [-noconv] [-noPS] [-circ] \n");
 }
+#endif

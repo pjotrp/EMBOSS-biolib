@@ -26,8 +26,11 @@
 #include "fold_vars.h"
 #include "part_func.h"
 #include "utils.h"
+
 /*@unused@*/
-static char rcsid[] = "$Id: ProfileAln.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: ProfileAln.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define PUBLIC
 #define PRIVATE        static
@@ -72,7 +75,7 @@ PUBLIC float profile_aln(const float *T1, const char *seq1,
   /* This is like a Needleman-Wunsch alignment, with affine gap-costs
      ala Gotoh. The score looks at both seq and pair profile */
 
-  float  **S, **E, **F, tot_score;
+  float  **S, **E, **F, tot_score=0.;
   int    i, j, length1, length2;
 
   length1 = strlen(seq1);

@@ -14,8 +14,11 @@
 #include  "fold_vars.h"
 #include  "part_func.h"
 #include  "utils.h"
+
 /*@unused@*/
-static char rcsid[] = "$Id: ProfileDist.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: ProfileDist.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define PUBLIC
 #define PRIVATE        static
@@ -41,8 +44,8 @@ PUBLIC float profile_edit_distance(const float *T1, const float *T2)
   /* This is like a Needleman-Wunsch alignment,
      we should really use affine gap-costs ala Gotoh */
 
-  float    **distance;
-  short    **i_point, **j_point;
+  float    **distance=NULL;
+  short    **i_point=NULL, **j_point=NULL;
   
   int           i, j, i1, j1, pos, length1,length2;
   float         minus, plus, change, temp;
@@ -145,7 +148,7 @@ PUBLIC float profile_edit_distance(const float *T1, const float *T2)
 
 PRIVATE double PrfEditCost(int i, int j, const float *T1, const float *T2)
 {
-  double  dist;
+  double  dist=0.;
   int    k, kmax;
 
   kmax = (int) T1[1];

@@ -25,17 +25,19 @@
 extern void  read_parameter_file(AjPFile fname);
 extern float circalifold(const char **strings, char *structure);
 extern float energy_of_circ_struct(const char *seq, const char *structure);
-
+extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
 
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.8 2008/01/11 14:48:02 ajb Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.9 2008/01/14 13:56:13 ajb Exp $";
 
 #define PRIVATE static
 
 static const char scale[] = "....,....1....,....2....,....3....,....4"
 			    "....,....5....,....6....,....7....,....8";
 
+#if 0
 PRIVATE void /*@exits@*/ usage(void);
+#endif
 PRIVATE char **annote(const char *structure, const char *AS[]);
 PRIVATE void print_pi(const pair_info pi, FILE *file);
 PRIVATE cpair *make_color_pinfo(const pair_info *pi);
@@ -482,7 +484,7 @@ PRIVATE char **annote(const char *structure, const char *AS[]) {
 }
 
 /*-------------------------------------------------------------------------*/
-
+#if 0
 PRIVATE void usage(void)
 {
   nrerror("usage:\n"
@@ -491,3 +493,4 @@ PRIVATE void usage(void)
 	  "        [-noLP] [-e e_set] [-P paramfile] [-nsp pairs] [-S scale]\n"
 	  );
 }
+#endif

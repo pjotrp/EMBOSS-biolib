@@ -8,6 +8,9 @@
 */
 /*
   $Log: epart_func_co.c,v $
+  Revision 1.5  2008/01/14 13:56:13  ajb
+  Fix compiler warnings
+
   Revision 1.4  2008/01/11 14:48:02  ajb
   Vienna 1.6alpha to Vienna 1.7
 
@@ -67,7 +70,7 @@
 #include "PS_dot.h"
 #include "part_func_co.h"
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: epart_func_co.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: epart_func_co.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
 
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
 #define eMIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -456,7 +459,7 @@ PUBLIC cofoldF co_pf_fold(char *sequence, char *structure)
 	 for (t=n; t>l; t--) {
 	   for (k=1; k<cut_point; k++) {
 	     kt=iindx[k]-t;
-	     type=rtype[ptype[kt]];
+	     type=rtype[(int)(ptype[kt])];
 	     temp=pr[kt]*scale[2]*expdangle5[type][S1[t-1]];
 	     if (l+1<t) temp*=q[iindx[l+1]-(t-1)];
 	     if (SAME_STRAND(k,k+1)) {
@@ -489,7 +492,7 @@ PUBLIC cofoldF co_pf_fold(char *sequence, char *structure)
 	   for (k=cut_point; k<=n; k++) {
 	     sk=iindx[s]-k;
 	     if (qb[sk]) {
-	       type=rtype[ptype[sk]];
+                 type=rtype[(int)(ptype[sk])];
 	       temp=pr[sk]*expdangle3[type][S1[s+1]]*scale[2];
 	       if (s+1<t) temp*=q[iindx[s+1]-(t-1)];
 	       if (SAME_STRAND(k-1,k)) temp*=expdangle5[type][S1[k-1]]*q[iindx[cut_point]-(k-1)];

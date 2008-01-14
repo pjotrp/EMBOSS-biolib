@@ -14,8 +14,11 @@
 #include "utils.h"
 #include "fold_vars.h"
 #include "pair_mat.h"
+
 /*@unused@*/
-static char rcsid[] = "$Id: aln_util.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: aln_util.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 int read_clustal(FILE *clust, char *AlignedSeqs[], char *names[]);
 char *consensus(const char *AS[]);

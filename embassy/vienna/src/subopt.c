@@ -1,5 +1,8 @@
 /*
   $Log: subopt.c,v $
+  Revision 1.4  2008/01/14 13:56:13  ajb
+  Fix compiler warnings
+
   Revision 1.3  2008/01/11 14:48:02  ajb
   Vienna 1.6alpha to Vienna 1.7
 
@@ -83,7 +86,7 @@
 #define PRIVATE	  static
 
 /*@unused@*/
-PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
+PRIVATE char UNUSED rcsid[] = "$Id: subopt.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
 
 /*Typedefinitions ---------------------------------------------------------- */
 
@@ -822,7 +825,7 @@ scan_interval(int i, int j, int array_flag, STATE * state)
 			/* if we reach here, i should be 1 and j should be n respectively										*/
 			for(k=i; k<j; k++)
 		    for (l=k+TURN+1; l <= j; l++){
-					int kl, type, u, new_c, tmpE, no_close;
+					int kl, type, u, new_c, tmpE=0, no_close;
 					u = j-l + k-1;	/* get the hairpin loop length	*/
 					if(u<TURN) continue;
 
@@ -862,7 +865,7 @@ scan_interval(int i, int j, int array_flag, STATE * state)
 			/* now we search for our exterior interior loop possibilities	*/
 			for(k=i; k<j; k++)
 		    for (l=k+TURN+1; l <= j; l++){
-					int kl, type, u, new_c, tmpE, no_close;
+                        int kl, type, /*u, new_c,*/ tmpE, no_close;
 
 					kl = indx[l]+k;	/* just confusing these indices ;-)	*/
 					type = ptype[kl];
@@ -878,7 +881,7 @@ scan_interval(int i, int j, int array_flag, STATE * state)
 						if(qmin<p+TURN+1) qmin = p+TURN+1;
 						for(q = qmin; q <=j; q++){
 							int u2, type_2;
-							type_2 = rtype[ptype[indx[q]+p]];
+							type_2 = rtype[(int)(ptype[indx[q]+p])];
 							if(!type_2) continue;
 							u2 = k-1 + j-q;
 							if(u1+u2>MAXLOOP) continue;

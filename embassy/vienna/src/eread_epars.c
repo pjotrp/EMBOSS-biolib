@@ -17,7 +17,9 @@
 #include "energy_const.h"
 #include "energy_par.h"
 
-static char rcsid[] = "$Id: eread_epars.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: eread_epars.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 #define PUBLIC
 #define PRIVATE   static
@@ -72,7 +74,7 @@ PUBLIC void read_parameter_file(AjPFile fname)
   fp = ajFileFp(fname);
 
   if (!(line = get_line(fp))) {
-    fprintf(stderr," File %s is in improper format.\n", fname);
+      ajWarn(" File %s is in improper format.\n", ajFileName(fname));
     return;
   }
 
@@ -432,6 +434,7 @@ PRIVATE void ignore_comment(char * line)
 /*------------------------------------------------------------*/  
 
 /*@unused@*/
+#if 0
 PRIVATE char *settype(enum parset s)
 {
   switch(s)
@@ -466,6 +469,7 @@ PRIVATE char *settype(enum parset s)
     }
   return "";
 }
+#endif
 /*------------------------------------------------------------*/ 
 
 PRIVATE enum parset gettype(char ident[])

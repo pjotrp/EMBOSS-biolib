@@ -23,7 +23,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: eLfold.c,v 1.3 2008/01/11 14:48:02 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: eLfold.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
 
 
 #define PAREN
@@ -485,7 +485,7 @@ PRIVATE char * backtrack(char *string, int start, int maxdist) {
   for (i=0; i<=MIN2(length-start, maxdist); i++) structure[i] = '-';
 
   while (s>0) {
-    int ml, fij, cij, traced, i1, j1, d3, d5, mm, p, q, jj=0;
+    int ml, fij, cij=0, traced, i1, j1, d3, d5, mm, p, q, jj=0;
     int canonical = 1;     /* (i,j) closes a canonical structure */
     i  = sector[s].i;
     j  = sector[s].j;

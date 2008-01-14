@@ -18,7 +18,9 @@
 #define MAXLEN    10000
 #define STRUC     MAXLEN/5        /* maximal number of loops at min stack length 2 */
 
-static char rcsid[] = "$Id: RNAstruct.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
+#if 0
+static char rcsid[] = "$Id: RNAstruct.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
+#endif
 
 PUBLIC char *b2HIT(const char *structure);             /* Full   -> HIT    [incl. root]       */
 PUBLIC char *b2C(const char *structure);               /* Full   -> Coarse [incl. root]       */

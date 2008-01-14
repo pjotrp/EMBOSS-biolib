@@ -22,7 +22,7 @@
 #include "params.h"
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: alifold.c,v 1.4 2008/01/11 14:48:02 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: alifold.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
 
 #define PAREN
 
@@ -362,7 +362,7 @@ void backtrack(const char **strings, int s) {
     sector[s].ml = (backtrack_type=='M') ? 1 : ((backtrack_type=='C')?2:0);
   }
   while (s>0) {
-    int ss, ml, fij, fi, cij, traced, i1, j1, d3, d5, jj=0;
+    int ss, ml, fij, fi, cij=0, traced, i1, j1, d3, d5, jj=0;
     int canonical = 1;     /* (i,j) closes a canonical structure */
     i  = sector[s].i;
     j  = sector[s].j;
