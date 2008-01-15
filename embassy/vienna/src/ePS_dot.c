@@ -16,7 +16,7 @@
 #include "fold_vars.h"
 #include "PS_dot.h"
 
-static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.3 2008/01/14 13:56:13 ajb Exp $";
+static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $";
 
 #define PUBLIC
 #define  PRIVATE   static
@@ -1266,7 +1266,7 @@ int PS_color_aln(const char *structure, AjPFile filename,
   currY=startY;
   currPos=0;
 
-  cons =  consensus(seqs);
+  cons =  consensus((const char **)seqs);
   
   while (currPos<length) {
 
