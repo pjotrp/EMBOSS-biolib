@@ -34,7 +34,9 @@
 #include <stdlib.h>
 #endif
 
-#include "mcheck.h"
+#ifdef AJ_MEMPROBE
+#include <mcheck.h>
+#endif
 
 enum NamEType
 {

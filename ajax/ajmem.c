@@ -25,7 +25,9 @@
 #include <string.h>
 
 #include "ajax.h"
+#ifdef AJ_MEMPROBE
 #include <mcheck.h>
+#endif
 
 static const Except_T Mem_Failed =
 {
@@ -543,6 +545,7 @@ void ajMemExit(void)
 ******************************************************************************/
 void ajMemCheck(int istat)
 {
+#ifdef AJ_MEMPROBE
     if(probeTest)
     {
 	if(istat == MCHECK_OK)
@@ -569,7 +572,7 @@ void ajMemCheck(int istat)
 
     if(probeMaxFail && (++probeFail >= probeMaxFail))
        ajDie("Maximum ajMemProbe failures %d", probeFail);
-
+#endif
     return;
 }
 
