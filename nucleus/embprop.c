@@ -127,7 +127,7 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
 
 	n = ajFmtScanS(line,"%*s%d%d%d%d%d%d%f%d%d%d",
 		       &ret[i]->tiny,
-		       &ret[i]->small,
+		       &ret[i]->sm_all,
 		       &ret[i]->aliphatic,
 		       &ret[i]->aromatic,
 		       &ret[i]->nonpolar,

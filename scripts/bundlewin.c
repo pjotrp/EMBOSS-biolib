@@ -807,7 +807,11 @@ static void write_nucleusexports(char *fn,char *basedir)
     fprintf(outf,"LIBRARY \t""nucleus.dll""\n\n");
     fprintf(outf,"EXPORTS\n");
 
-    fprintf(outf,"\tEmbPropTable DATA\n;others\n");
+    /*
+    ** EmbPropTable no longer exists but leave this as an example
+    ** of how to add rogue data definitions
+    **    fprintf(outf,"\tEmbPropTable DATA\n;others\n");
+    */
 
     if(!(inf=fopen(TMPFILE2,"r")))
     {

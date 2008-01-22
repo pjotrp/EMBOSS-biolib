@@ -228,7 +228,7 @@ static AjBool pepstats_issize(const EmbPPropAmino aa, ajint crit)
     if(crit==1)
 	return aa->tiny;
     else if(crit==2)
-	return aa->small;
+	return aa->sm_all;
     else if(crit==3)
 	return aa->aliphatic;
     else if(crit==4)

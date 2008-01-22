@@ -37,7 +37,7 @@ extern "C"
 ** Amino acid properties
 **
 ** @attr tiny [ajint] tiny
-** @attr small [ajint] small
+** @attr sm_all [ajint] small
 ** @attr aliphatic [ajint] aliphatic
 ** @attr aromatic [ajint] aromatic
 ** @attr nonpolar [ajint] non-polar
@@ -53,7 +53,7 @@ extern "C"
 typedef struct EmbSPropAmino
 {
     ajint     tiny;
-    ajint     small;
+    ajint     sm_all;
     ajint     aliphatic;
     ajint     aromatic;
     ajint     nonpolar;
@@ -105,8 +105,6 @@ typedef struct EmbSPropFrag	/* Enzyme digestion structure */
 ** Prototype definitions
 */
 
-void    embPropAminoRead (AjPFile fp);
-
 EmbPPropAmino *embPropEaminoRead(AjPFile fp);
 EmbPPropMolwt *embPropEmolwtRead(AjPFile fp);
 void          embPropAminoDel(EmbPPropAmino **thys);
@@ -132,7 +130,7 @@ double  embPropCalcMolwtMod (const char *s, ajint start, ajint end,
 			     EmbPPropMolwt const *mwdata, AjBool mono,
 			     double nmass, double cmass);
 const char*   embPropCharToThree (char c);
-void    embPropExit(void);
+
 void    embPropFixF(float matrix[], float missing);
 const char*   embPropIntToThree (ajint c);
 AjPStr  embPropProtGaps (AjPSeq seq, ajint pad);
