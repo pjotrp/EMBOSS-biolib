@@ -52,7 +52,7 @@
 
 sub usage () {
   print STDERR "Usage:\n";
-  print STDERR "  qatest.pl [-kk | -ks | -ka]  [-t=60] [testnames...]\n";
+  print STDERR "  qatest.pl [-kk | -ks | -ka] [-t=60] [-wild] [-mcheck] [testnames...]\n";
   print STDERR "            defaults: -kk -t=60\n";
 }
 
@@ -328,7 +328,7 @@ sub runtest ($) {
   eval {
     $status = 0;
     alarm($timeout);
-    $sysstat = system("$ppcmd $testpath$testapp $cmdline > stdout 2> stderr $stdin $qqcmd");
+    $sysstat = system("$domcheck$ppcmd $testpath$testapp $cmdline > stdout 2> stderr $stdin $qqcmd");
     alarm(0);
     $status = $sysstat >> 8;
   };
@@ -408,6 +408,7 @@ sub runtest ($) {
     if ($file eq "..") {next}	# parent directory
     if ($file eq "stdin") {next} # stdin we created
     if ($file eq "testdef") {next} # test definition
+    if ($file eq "gmon.out") {next} # gccprofile file
 
     $testfile{$file} = 1;
 
@@ -452,7 +453,7 @@ sub runtest ($) {
 
 # This file was not defined
 
-    if (!defined($outfile{$file})) {
+    if (!defined($outfile{$file}) && ($file ne "$testapp.dbgx")) {
       $testerr = "$retcode{3} $testid/$file\n";
       print STDERR $testerr;
       print LOG $testerr;
@@ -678,6 +679,7 @@ sub testnum ($$) {
 $defdelete="success";		# success, all, keep
 $timeoutdef=60;			# default timeout in seconds
 
+$domcheck="";
 $numtests = 0;
 $testappname=0;
 $misshtml=0;
@@ -690,14 +692,22 @@ $misssf=0;
 %packfail=();
 $mainfail=0;
 $packa="unknown";
-  
+$dowild=0;
 $logfile = "qatest.log";
+$testwild = "*";
 
 foreach $test (@ARGV) {
   if ($test =~ /^-(.*)/) {
     $opt=$1;
     if ($opt eq "kk") {$defdelete="keep"}
     elsif ($opt eq "ks") {$defdelete="success"}
+    elsif ($opt eq "wild") {
+	$dowild=1;
+	if(defined($testname)) {
+	    $testwild = $testname;
+	}
+    }
+    elsif ($opt eq "mcheck") {$domcheck="MALLOC_CHECK_=3;export MALLOC_CHECK_;"}
     elsif ($opt eq "ka") {$defdelete="all"}
     elsif ($opt =~ /without=(\S+)/) {$without{$1}=1}
     elsif ($opt =~ /t=([0-9]+)/) {$timeoutdef=int($1)}
@@ -705,6 +715,10 @@ foreach $test (@ARGV) {
     else {print STDERR "+++ unknown option '$opt'\n"; usage()}
   }
   else {
+    $testname=$test;
+    if($dowild) {
+	$testwild = $testname;
+    }
     $test =~ s/\/$//;
     $dotest{$test} = 1;
     $numtests++;
@@ -812,7 +826,8 @@ while (<IN>) {
 # end of definition - fire up the test
 
   if (/^\/\//) {
-    if (($numtests > 0) && !$dotest{$id}) {next}
+    if (($numtests > 0) && !$dowild && !$dotest{$id}) {next}
+    if (($numtests > 0) && $dowild && $id !~ /$testwild/) {next}
 
     $result = runtest ($testdef);
     $tcount++;
