@@ -39,6 +39,7 @@ static const Except_T Mem_Badcount =
     "Allocation bad byte count"
 };
 
+#ifdef AJ_SAVESTATS
 static ajlong memAlloc       = 0;
 static ajlong memFree        = 0;
 static ajlong memCount       = 0;
@@ -47,15 +48,17 @@ static ajlong memResizeOld   = 0;
 static ajlong memResizeCount = 0;
 static ajlong memTotal       = 0;
 static ajlong memZero        = 0;
+#endif
 
 
+#ifdef AJ_MEMPROBE
 static void* probePtr = NULL;
 static ajint probeLine = 0;
 static const char* probeFile = "";
 static AjBool probeTest = AJFALSE;
 static ajint probeFail = 0;
 static ajint probeMaxFail = 0;
-
+#endif
 
 /* @func ajMemAlloc ***********************************************************
 **
@@ -105,9 +108,11 @@ void* ajMemAlloc(size_t nbytes, const char* file, ajint line, AjBool nofail)
 #endif
     }
 
+#ifdef AJ_SAVESTATS
     memAlloc += nbytes;
     memCount++;
     memTotal++;
+#endif
 
     return ptr;
 }
@@ -159,9 +164,11 @@ void* ajMemCalloc(size_t count, size_t nbytes,
 #endif
     }
 
+#ifdef AJ_SAVESTATS
     memAlloc += (count*nbytes);
     memCount++;
     memTotal++;
+#endif
 
     return ptr;
 }
@@ -216,13 +223,14 @@ void* ajMemCallocZero(size_t count, size_t nbytes,
 #endif
     }
 
+    memset(ptr, 0, count*nbytes);
+
+#ifdef AJ_SAVESTATS
     memAlloc += (count*nbytes);
     memCount++;
     memTotal++;
-
-    memset(ptr, 0, count*nbytes);
-
     memZero += (count*nbytes);
+#endif
 
     return ptr;
 }
@@ -256,7 +264,9 @@ void ajMemSetZero(void* ptr, size_t count, size_t nbytes)
 
     memset(ptr, 0, count*nbytes);
 
+#ifdef AJ_SAVESTATS
     memZero += (count*nbytes);
+#endif
 
     return;
 }
@@ -275,9 +285,12 @@ void ajMemFree(void* ptr)
     if(ptr)
     {
 	free(ptr);
+	ptr = NULL;
+
+#ifdef AJ_SAVESTATS
 	memCount--;
 	memFree++;
-	ptr = NULL;
+#endif
     }
 
     return;
@@ -338,9 +351,11 @@ void* ajMemResize(void* ptr, size_t nbytes,
 #endif
     }
   
+#ifdef AJ_SAVESTATS
     memResize += nbytes;
     memResizeCount++;
-  
+#endif
+    
     return ptr;
 }
 
@@ -406,10 +421,12 @@ void* ajMemResizeZero(void* ptr, size_t oldbytes, size_t nbytes,
     if(nbytes > oldbytes)
 	memset(((char*)ptr)+oldbytes, 0, (nbytes-oldbytes));
 
+#ifdef AJ_SAVESTATS
     memResizeOld += oldbytes;
     memResize += nbytes;
     memResizeCount++;
-  
+#endif
+
     return ptr;
 }
 
@@ -481,6 +498,9 @@ float* ajMemArrF(size_t size)
 
 void ajMemStat(const char* title)
 {
+    (void) title;               /* make it used */
+
+#ifdef AJ_SAVESTATS
     static ajlong statAlloc       = 0;
     static ajlong statCount       = 0;
     static ajlong statFree        = 0;
@@ -508,7 +528,7 @@ void ajMemStat(const char* title)
     statZero   = memZero;
 
     statResizeCount = memResizeCount;
-
+#endif
     return;
 }
 
@@ -525,12 +545,14 @@ void ajMemStat(const char* title)
 
 void ajMemExit(void)
 {
+#ifdef AJ_SAVESTATS
     ajDebug("Memory usage (bytes): %Ld allocated, %Ld reallocated "
 	    "%Ld returned %Ld zeroed\n",
 	    memAlloc, memResize,memResizeOld,  memZero);
     ajDebug("Memory usage (number): %Ld allocates, "
 	    "%Ld frees, %Ld resizes, %Ld in use\n",
 	    memTotal, memFree, memResizeCount, memCount);
+#endif
 
     return;
 }
@@ -572,6 +594,8 @@ void ajMemCheck(int istat)
 
     if(probeMaxFail && (++probeFail >= probeMaxFail))
        ajDie("Maximum ajMemProbe failures %d", probeFail);
+#else
+    (void) istat;
 #endif
     return;
 }
@@ -586,12 +610,15 @@ void ajMemCheck(int istat)
 ******************************************************************************/
 void ajMemCheckSetLimit(ajint maxfail)
 {
+#ifdef AJ_MEMPROBE
     if(probeFail >= maxfail)
       ajDie("Maximum ajMemProbe failures set to %d, already at %d",
 	    maxfail, probeFail);
 
     probeMaxFail = maxfail;
-
+#else
+    (void) maxfail;
+#endif
     return;
 }
 
