@@ -4240,21 +4240,27 @@ static AjBool featEmblLocRange(const AjPStr loc, ajint* num1, ajint* num2)
 
 static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 {
-    const char* cp = ajStrGetPtr(*tags);
+    const char* cp;
     const char* cq;
     ajint i;
     AjPStr testtags = NULL;
     AjPStr testname = NULL;
     AjPStr testvalue = NULL;
+    AjPStr tmptag = NULL;
     static ajint depth = 0;
 
+    tmptag = ajStrNewS(*tags);
+    cp = ajStrGetPtr(tmptag);
     ajStrAssignClear(value);
 
     while((*cp == ' '))
 	cp++;
 
     if(*cp++ != '/')
+    {
+        ajStrDel(&tmptag);      
 	return ajFalse;
+    }
 
     cq = cp;
     i=0;
@@ -4269,21 +4275,27 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 	cp++;
 
     if(!ajStrGetLen(*name))
+    {
+        ajStrDel(&tmptag);
 	return ajFalse;
-
+    }
+    
     switch(*cp)
     {
     case '\0':				/* /name is end of input */
 	ajStrAssignClear(tags);
 	ajStrAssignClear(value);
+        ajStrDel(&tmptag);
 	return ajTrue;
     case '/':				/* /name then next tag, no value */
 	ajStrAssignC(tags, cp);
 	ajStrAssignClear(value);
+        ajStrDel(&tmptag);
 	return ajTrue;
     case '=':				/* /name=value */
 	break;
     default:				/* anything else is bad */
+        ajStrDel(&tmptag);
 	return ajFalse;
     }
     cp++;
@@ -4312,6 +4324,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 		    ajStrDel(&testtags);
 		    ajStrDel(&testname);
 		    ajStrDel(&testvalue);
+                    ajStrDel(&tmptag);
 		    return ajTrue;
 		}
 		else			/* "" but is it really internal */
@@ -4321,6 +4334,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 			ajStrDel(&testtags);
 			ajStrDel(&testname);
 			ajStrDel(&testvalue);
+                        ajStrDel(&tmptag);
 			return ajTrue;
 		    }
 		    depth++;
@@ -4335,6 +4349,7 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 			while(*cp == ' ')
 			    cp++;
 			ajStrAssignC(tags, cp);
+                        ajStrDel(&tmptag);
 			return ajTrue;
 		    }
 		    else		/* really an internal " */
@@ -4360,11 +4375,13 @@ static AjBool featEmblTvTagVal(AjPStr* tags, AjPStr* name, AjPStr* value)
 	}
 	ajStrAssignLenC(value, cq, i);
 	ajStrAssignC(tags, cp);
+        ajStrDel(&tmptag);
 	return ajTrue;
     }
     ajStrDel(&testtags);
     ajStrDel(&testname);
     ajStrDel(&testvalue);
+    ajStrDel(&tmptag);
 
     return ajFalse;
 
