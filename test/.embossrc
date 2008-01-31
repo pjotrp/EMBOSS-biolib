@@ -481,6 +481,6 @@ DB temblrest [ type: N dir: "$emboss_tempdata/embl"
    exclude: "hum*.dat rod*.dat vrt*.dat"
 ]
 
-RES embl [ type: "Index" ]
-RES swnew [ type: "Index" ]
-RES pir [ type: "Index" ]
+RES emblresource [ type: "Index" ]
+RES swnewresource [ type: "Index" ]
+RES pirresource [ type: "Index" ]
