@@ -1219,7 +1219,8 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 		    fd = ajCharNewS(tmpfd);
 		    ajListPushAppend(fdl[accfield], fd);
 		}
-		ajRegPost(dbigcg_embl_wrdexp, &tmpline);
+		ajRegPost(dbigcg_embl_wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -1240,7 +1241,8 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 		    fd = ajCharNewS(tmpfd);
 		    ajListPushAppend(fdl[desfield], fd);
 		}
-		ajRegPost(dbigcg_embl_wrdexp, &tmpline);
+		ajRegPost(dbigcg_embl_wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -1261,7 +1263,8 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 		    fd = ajCharNewS(tmpfd);
 		    ajListPushAppend(fdl[svnfield], fd);
 		}
-		ajRegPost(dbigcg_embl_verexp, &tmpline);
+		ajRegPost(dbigcg_embl_verexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -1270,7 +1273,8 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 	    while(ajRegExec(dbigcg_embl_phrexp, tmpline))
 	    {
 		ajRegSubI(dbigcg_embl_phrexp, 1, &tmpfd);
-		ajRegPost(dbigcg_embl_phrexp, &tmpline);
+		ajRegPost(dbigcg_embl_phrexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
 		    continue;
@@ -1294,7 +1298,8 @@ static AjBool dbigcg_ParseEmbl(AjPFile libr,
 	    while(ajRegExec(dbigcg_embl_taxexp, tmpline))
 	    {
 		ajRegSubI(dbigcg_embl_taxexp, 1, &tmpfd);
-		ajRegPost(dbigcg_embl_taxexp, &tmpline);
+		ajRegPost(dbigcg_embl_taxexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrFmtUpper(&tmpfd);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
@@ -1480,7 +1485,8 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 		    fd = ajCharNewS(tmpfd);
 		    ajListPushAppend(fdl[accfield], fd);
 		}
-		ajRegPost(wrdexp, &tmpline);
+		ajRegPost(wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -1502,7 +1508,8 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 		    fd = ajCharNewS(tmpfd);
 		    ajListPushAppend(fdl[desfield], fd);
 		}
-		ajRegPost(wrdexp, &tmpline);
+		ajRegPost(wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -1511,7 +1518,8 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 	    while(ajRegExec(phrexp, tmpline))
 	    {
 	        ajRegSubI(phrexp, 1, &tmpfd);
-		ajRegPost(phrexp, &tmpline);
+		ajRegPost(phrexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
 		    continue;
@@ -1536,7 +1544,8 @@ static AjBool dbigcg_ParseGenbank(AjPFile libr,
 	    while(ajRegExec(taxexp, tmpline))
 	    {
 	        ajRegSubI(taxexp, 1, &tmpfd);
-		ajRegPost(taxexp, &tmpline);
+		ajRegPost(taxexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
 		    continue;
@@ -1720,7 +1729,8 @@ static AjBool dbigcg_ParsePir(AjPFile libr,
 		fd = ajCharNewS(tmpfd);
 		ajListPushAppend(fdl[desfield], fd);
 	    }
-	    ajRegPost(dbigcg_pir_wrdexp, &rline);
+	    ajRegPost(dbigcg_pir_wrdexp, &tmpstr);
+            ajStrAssignS(&rline, tmpstr);
 	}
     }
 
@@ -1747,7 +1757,8 @@ static AjBool dbigcg_ParsePir(AjPFile libr,
 		    fd = ajCharNewS(tmpfd);
 		    ajListPushAppend(fdl[accfield], fd);
 		}
-		ajRegPost(dbigcg_pir_ac2exp, &tmpline);
+		ajRegPost(dbigcg_pir_ac2exp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	}
 
@@ -1773,7 +1784,8 @@ static AjBool dbigcg_ParsePir(AjPFile libr,
 			fd = ajCharNewS(tmpfd);
 			ajListPushAppend(fdl[keyfield], fd);
 		    }
-		    ajRegPost(dbigcg_pir_phrexp, &tmpline);
+		    ajRegPost(dbigcg_pir_phrexp, &tmpstr);
+                    ajStrAssignS(&tmpline, tmpstr);
 		}
 	    }
 	}
@@ -1799,7 +1811,8 @@ static AjBool dbigcg_ParsePir(AjPFile libr,
 			fd = ajCharNewS(tmpfd);
 			ajListPushAppend(fdl[taxfield], fd);
 		    }
-		    ajRegPost(dbigcg_pir_tax2exp, &tmpline);
+		    ajRegPost(dbigcg_pir_tax2exp, &tmpstr);
+                    ajStrAssignS(&tmpline, tmpstr);
 		}
 	    }
 	}

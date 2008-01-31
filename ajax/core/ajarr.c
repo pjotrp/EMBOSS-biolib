@@ -1972,6 +1972,7 @@ AjBool ajFloatParse (const AjPStr str, AjPFloat* array)
     float t = 0.0;
 
     AjPStr tmpstr = NULL;
+    AjPStr tmpstr2 = NULL;
     AjPStr numstr = NULL;
 
     if (!floatRegNum)
@@ -1982,7 +1983,8 @@ AjBool ajFloatParse (const AjPStr str, AjPFloat* array)
     while (ajRegExec (floatRegNum, tmpstr))
     {
 	ajRegSubI (floatRegNum, 0, &numstr);
-	ajRegPost (floatRegNum, &tmpstr);
+	ajRegPost (floatRegNum, &tmpstr2);
+        ajStrAssignS(&tmpstr, tmpstr2);
 	ajStrToFloat (numstr, &t);
 	ajFloatPut(array,i,t);
 	i++;
@@ -1990,6 +1992,7 @@ AjBool ajFloatParse (const AjPStr str, AjPFloat* array)
 
     ajStrDel(&numstr);
     ajStrDel(&tmpstr);
+    ajStrDel(&tmpstr2);
 
     if (!i)
 	return ajFalse;

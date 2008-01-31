@@ -22625,6 +22625,7 @@ static void acdCodeInit(void)
     AjPStr codeLine     = NULL;
     AjPStr codeText     = NULL;
     AjPStr codeLanguage = NULL;
+    AjPStr tmpstr = NULL;
     AjPRegexp codexp = NULL;
     
     if(acdCodeSet)
@@ -22692,7 +22693,8 @@ static void acdCodeInit(void)
 	ajStrFmtLower(&codeCode);
 	ajTablePut(acdCodeTable, codeCode, codeValue);
 	acdLog("add to table %S '%S'\n", codeCode, codeValue);
-	ajRegPost(codexp, &codeText);
+	ajRegPost(codexp, &tmpstr);
+        ajStrAssignS(&codeText, tmpstr);
     }
 
     if(!ajStrIsWhite(codeText))		/* test acdc-codebad */
@@ -22708,6 +22710,7 @@ static void acdCodeInit(void)
     ajStrDel(&codeRootInst);
     ajStrDel(&codePack);
     ajStrDel(&codeLanguage);
+    ajStrDel(&tmpstr);
 
     acdCodeSet = ajTrue;
     return;

@@ -909,7 +909,8 @@ static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 		ajStrAssignS(&str,tmpfd);
 		ajListPush(entry->ac,(void *)str);
 
-		ajRegPost(dbxgcg_embl_wrdexp, &tmpline);
+		ajRegPost(dbxgcg_embl_wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -924,7 +925,8 @@ static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 		ajStrAssignS(&str,tmpfd);
 		ajListPush(entry->de,(void *)str);
 
-		ajRegPost(dbxgcg_embl_wrdexp, &tmpline);
+		ajRegPost(dbxgcg_embl_wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -939,7 +941,8 @@ static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 		ajStrAssignS(&str,tmpfd);
 		ajListPush(entry->sv,(void *)str);
 
-		ajRegPost(dbxgcg_embl_verexp, &tmpline);
+		ajRegPost(dbxgcg_embl_verexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -948,7 +951,8 @@ static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 	    while(ajRegExec(dbxgcg_embl_phrexp, tmpline))
 	    {
 		ajRegSubI(dbxgcg_embl_phrexp, 1, &tmpfd);
-		ajRegPost(dbxgcg_embl_phrexp, &tmpline);
+		ajRegPost(dbxgcg_embl_phrexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
 		    continue;
@@ -965,7 +969,8 @@ static AjBool dbxgcg_ParseEmbl(EmbPBtreeEntry entry, AjPFile infr,
 	    while(ajRegExec(dbxgcg_embl_taxexp, tmpline))
 	    {
 		ajRegSubI(dbxgcg_embl_taxexp, 1, &tmpfd);
-		ajRegPost(dbxgcg_embl_taxexp, &tmpline);
+		ajRegPost(dbxgcg_embl_taxexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
 		    continue;
@@ -1097,7 +1102,8 @@ static AjBool dbxgcg_ParseGenbank(EmbPBtreeEntry entry, AjPFile infr,
 		ajStrAssignS(&str,tmpfd);
 		ajListPush(entry->ac,(void *)str);
 
-		ajRegPost(wrdexp, &tmpline);
+		ajRegPost(wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -1112,7 +1118,8 @@ static AjBool dbxgcg_ParseGenbank(EmbPBtreeEntry entry, AjPFile infr,
 		ajStrAssignS(&str,tmpfd);
 		ajListPush(entry->de,(void *)str);
 
-		ajRegPost(wrdexp, &tmpline);
+		ajRegPost(wrdexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	    continue;
 	}
@@ -1121,7 +1128,8 @@ static AjBool dbxgcg_ParseGenbank(EmbPBtreeEntry entry, AjPFile infr,
 	    while(ajRegExec(phrexp, tmpline))
 	    {
 	        ajRegSubI(phrexp, 1, &tmpfd);
-		ajRegPost(phrexp, &tmpline);
+		ajRegPost(phrexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
 		    continue;
@@ -1138,7 +1146,8 @@ static AjBool dbxgcg_ParseGenbank(EmbPBtreeEntry entry, AjPFile infr,
 	    while(ajRegExec(taxexp, tmpline))
 	    {
 	        ajRegSubI(taxexp, 1, &tmpfd);
-		ajRegPost(taxexp, &tmpline);
+		ajRegPost(taxexp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 		ajStrTrimWhiteEnd(&tmpfd);
 		if(!ajStrGetLen(tmpfd))
 		    continue;
@@ -1249,7 +1258,8 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 	    ajStrAssignS(&str,tmpfd);
 	    ajListPush(entry->de,(void *)str);
 
-	    ajRegPost(dbxgcg_pir_wrdexp, &rline);
+	    ajRegPost(dbxgcg_pir_wrdexp, &tmpstr);
+            ajStrAssignS(&rline, tmpstr);
 	}
     }
 
@@ -1273,7 +1283,8 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 		    ajListPush(entry->ac,(void *)str);
 		}
 
-		ajRegPost(dbxgcg_pir_ac2exp, &tmpline);
+		ajRegPost(dbxgcg_pir_ac2exp, &tmpstr);
+                ajStrAssignS(&tmpline, tmpstr);
 	    }
 	}
 
@@ -1292,7 +1303,8 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 		    ajStrAssignS(&str,tmpfd);
 		    ajListPush(entry->kw,(void *)str);
 
-		    ajRegPost(dbxgcg_pir_phrexp, &tmpline);
+		    ajRegPost(dbxgcg_pir_phrexp, &tmpstr);
+                    ajStrAssignS(&tmpline, tmpstr);
 		}
 	    }
 	}
@@ -1312,7 +1324,8 @@ static AjBool dbxgcg_ParsePir(EmbPBtreeEntry entry, AjPFile infr,
 		    ajStrAssignS(&str,tmpfd);
 		    ajListPush(entry->tx,(void *)str);
 
-		    ajRegPost(dbxgcg_pir_tax2exp, &tmpline);
+		    ajRegPost(dbxgcg_pir_tax2exp, &tmpstr);
+                    ajStrAssignS(&tmpline, tmpstr);
 		}
 	    }
 	}
