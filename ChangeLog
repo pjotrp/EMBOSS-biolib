@@ -1,4 +1,22 @@
 Version 5.1.0
+	Protein sequences from the Staden package were read as nucleotide
+	because they were missing information on the ID line to identify
+	EMBL of SWISSPROT format. The sequences are now tested and
+	correctly typed.
+
+	Wordcount now accepts protein sequences as input. Previous
+	releases only allowed nucleotide sequences.
+
+	Wordfinder options had the same information prompt. These have
+	been changed from "limit" to "minimum" and "maximum" to make their
+	function clear.
+
+	Prompting for values from the user now includes a test for
+	standard input in use as an input file. If standard input is open,
+	the default response is accepted and a message is written to the
+	user. This is to avoid problems with command lines that use
+	"stdin" as an input and do not include -auto.
+
 	The acdpretty utility can now preserve comments in ACD files.
 	Comments are maintained in blocks with blank lines before and
 	after. Inline comments are started in column 50 unless they are
@@ -163,6 +181,10 @@ Version 5.1.0
 	expected graphics output (from plplot) to be controlled.
 
 Version 5.0.0
+	Extractalign is a new applications to extract regions from a
+	sequence alignment in the same way extractseq extracts regions
+	from single sequences.
+
 	The MRS server in Nijmegen changed its syntax just before our
 	release. A new database access method "MRS3" supports the main
 	MRS3 server. We have very little documentation on the changed URL
