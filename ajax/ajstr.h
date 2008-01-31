@@ -433,8 +433,8 @@ AjBool     ajStrSuffixCaseS (const AjPStr str, const AjPStr pref);
 
 /* comparison (sorting) */
 
-#define MAJSTRCMPC(str1,txt2) strcmp(str1->Ptr, txt2)
-#define MAJSTRCMPS(str1,str2) strcmp(str1->Ptr, str2->Ptr)
+#define MAJSTRCMPC(str1,txt2) strcmp((str1)->Ptr, txt2)
+#define MAJSTRCMPS(str1,str2) strcmp((str1)->Ptr, (str2)->Ptr)
 
 int        ajStrCmpC(const AjPStr thys, const char *text);
 int        ajStrCmpS(const AjPStr str, const AjPStr str2);
@@ -646,11 +646,11 @@ __deprecated AjBool      ajStrKeepAlphaC (AjPStr* pthis, const char* chars);
 __deprecated AjBool      ajStrKeepC (AjPStr* pthis, const char* chars);
 __deprecated ajint        ajStrLen (const AjPStr thys);
 __deprecated ajint       ajStrListToArray(const AjPStr str, AjPStr **array);
-__deprecated AjBool      ajStrMatchCaseCC (const char* thys, const char* text);
-__deprecated AjBool      ajStrMatchCC     (const char* thys, const char* text);
-__deprecated AjBool      ajStrMatchWildCC (const char* str, const char* text);
-__deprecated AjBool      ajStrMatchWildCO (const char* str, const AjPStr wild);
-__deprecated AjBool      ajStrMatchWord   (const AjPStr str, const AjPStr text);
+__deprecated AjBool      ajStrMatchCaseCC(const char* thys, const char* text);
+__deprecated AjBool      ajStrMatchCC    (const char* thys, const char* text);
+__deprecated AjBool      ajStrMatchWildCC(const char* str, const char* text);
+__deprecated AjBool      ajStrMatchWildCO(const char* str, const AjPStr wild);
+__deprecated AjBool      ajStrMatchWord  (const AjPStr str, const AjPStr text);
 __deprecated AjBool      ajStrMatchWordCC (const char* str, const char* text);
 __deprecated AjBool      ajStrMod (AjPStr* pthis);
 __deprecated AjBool      ajStrModL (AjPStr* pthis, size_t size);
@@ -661,13 +661,13 @@ __deprecated AjBool      ajStrMatchCase(const AjPStr str, const AjPStr str2);
 __deprecated AjBool      ajStrMatchWild(const AjPStr str, const AjPStr str2);
 __deprecated int         ajStrNCmpC(const AjPStr str, const char* txt,
 				   ajint len);
-__deprecated ajint 	    ajStrNCmpCaseCC (const char* str1, const char* str2,
+__deprecated ajint 	 ajStrNCmpCaseCC (const char* str1, const char* str2,
 					 ajint len);
 __deprecated ajint       ajStrNCmpO (const AjPStr thys, const AjPStr anoth,
 				    ajint n);
 __deprecated AjPStr      ajStrNewCL (const char *txt, size_t size);
 __deprecated AjPStr      ajStrNewCIL (const char *txt, ajint len, size_t size);
-__deprecated const AjPStr  ajStrNull(void);
+__deprecated const AjPStr ajStrNull(void);
 __deprecated AjBool      ajStrParentheses(const AjPStr s);
 __deprecated ajint       ajStrPos  (const AjPStr thys, ajint ipos);
 __deprecated ajint       ajStrPosI (const AjPStr thys, ajint imin, ajint ipos);
@@ -700,9 +700,9 @@ __deprecated ajint       ajStrSize (const AjPStr thys);
 __deprecated const char  *ajStrStr (const AjPStr thys);
 __deprecated char        *ajStrStrMod (AjPStr* thys);
 __deprecated AjBool      ajStrSub (AjPStr* pthis, ajint begin, ajint len);
-__deprecated AjBool      ajStrSubstitute   (AjPStr* pthis, const AjPStr replace,
+__deprecated AjBool      ajStrSubstitute  (AjPStr* pthis, const AjPStr replace,
 			      const AjPStr putin);
-__deprecated AjBool      ajStrSubstituteCC (AjPStr* pthis, const char* replace,
+__deprecated AjBool      ajStrSubstituteCC(AjPStr* pthis, const char* replace,
 			      const char* putin);
 __deprecated AjBool      ajStrSubstituteKK (AjPStr* pthis, char replace,
 			      char putin);
@@ -720,7 +720,8 @@ __deprecated AjBool      ajStrUncomment (AjPStr* text);
 __deprecated AjBool      ajStrUncommentStart (AjPStr* text);
 __deprecated AjBool      ajStrWildPrefix (AjPStr* str);
 __deprecated AjBool      ajStrWrap (AjPStr* pthis, ajint width);
-__deprecated AjBool      ajStrWrapLeft (AjPStr* pthis, ajint width, ajint left);
+__deprecated AjBool      ajStrWrapLeft (AjPStr* pthis, ajint width,
+                                        ajint left);
 
 
 
