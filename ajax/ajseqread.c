@@ -1947,6 +1947,8 @@ static ajuint seqReadFmt(AjPSeq thys, AjPSeqin seqin,
     {
 	ajDebug("seqReadFmt success with format %d (%s)\n",
 		format, seqInFormatDef[format].Name);
+        ajDebug("id: '%S' len: %d\n",
+                thys->Name, ajStrGetLen(thys->Seq));
 	seqin->Format = format;
 	ajStrAssignC(&seqin->Formatstr, seqInFormatDef[format].Name);
 	ajStrAssignC(&thys->Formatstr, seqInFormatDef[format].Name);
@@ -6987,7 +6989,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 
     ok = ajFileBuffGetStore(buff, &seqReadLine, seqin->Text, &thys->TextPtr);
 
-    while(ok && !ajStrPrefixC(seqReadLine, "SQ   "))
+    while(ok && !ajStrPrefixC(seqReadLine, "SQ"))
     {
 	bufflines++;
 
@@ -7365,6 +7367,17 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 	}
     }
 
+    if(!ajSeqIsNuc(thys))
+    {
+        ajFileBuffReset(buff);
+        ajStrDel(&tmpstr);
+        ajStrDel(&token);
+        ajStrDel(&datestr);
+        ajStrDel(&relstr);
+        ajStrTokenDel(&handle);
+        return ajFalse;
+    }
+    
     ajSeqSetNuc(thys);
 
     ajFileBuffClear(buff, 0);
