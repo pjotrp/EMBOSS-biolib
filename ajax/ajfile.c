@@ -61,6 +61,7 @@ static AjPStr fileNameFix = NULL;
 static AjPStr fileBaseTmp = NULL;
 static AjPStr fileHomeTmp = NULL;
 static AjPStr fileNameTmp = NULL;
+static AjPStr fileNameDataTmp = NULL;
 static AjPStr filePackTmp = NULL;
 static AjPStr fileDirfixTmp = NULL;
 static AjPStr fileCwd = NULL;
@@ -1357,15 +1358,15 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	return;
     }
     
-    ajStrAssignC(&fileNameTmp, ".embossdata");
-    ajStrAppendC(&fileNameTmp, SLASH_STRING);
-    ajStrAppendS(&fileNameTmp, fileBaseTmp);
-    ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
-    if(ajFileStat(fileNameTmp, AJ_FILE_R))
+    ajStrAssignC(&fileNameDataTmp, ".embossdata");
+    ajStrAppendC(&fileNameDataTmp, SLASH_STRING);
+    ajStrAppendS(&fileNameDataTmp, fileBaseTmp);
+    ajDebug("ajFileDataNew trying '%S'\n", fileNameDataTmp);
+    if(ajFileStat(fileNameDataTmp, AJ_FILE_R))
     {
-	*fnew = ajFileNewIn(fileNameTmp);
+	*fnew = ajFileNewIn(fileNameDataTmp);
 	ajStrDelStatic(&fileBaseTmp);
-	ajStrDelStatic(&fileNameTmp);
+	ajStrDelStatic(&fileNameDataTmp);
 	return;
     }
     
@@ -1381,7 +1382,7 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	    *fnew = ajFileNewIn(fileHomeTmp);
 	    ajStrDelStatic(&fileHomeTmp);
 	    ajStrDelStatic(&fileBaseTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
 
@@ -1395,64 +1396,64 @@ void ajFileDataNew(const AjPStr tfile, AjPFile *fnew)
 	    *fnew = ajFileNewIn(fileHomeTmp);
 	    ajStrDelStatic(&fileHomeTmp);
 	    ajStrDelStatic(&fileBaseTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
 	ajStrDelStatic(&fileHomeTmp);
     }
     
-    if(ajNamGetValueC("DATA", &fileNameTmp))
+    if(ajNamGetValueC("DATA", &fileNameDataTmp))
     {
-        ajFileDirFix(&fileNameTmp);
-	ajStrAppendS(&fileNameTmp,fileBaseTmp);
-	ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
-	if(ajFileStat(fileNameTmp, AJ_FILE_R))
+        ajFileDirFix(&fileNameDataTmp);
+	ajStrAppendS(&fileNameDataTmp,fileBaseTmp);
+	ajDebug("ajFileDataNew trying '%S'\n", fileNameDataTmp);
+	if(ajFileStat(fileNameDataTmp, AJ_FILE_R))
 	{
-	    *fnew = ajFileNewIn(fileNameTmp);
+	    *fnew = ajFileNewIn(fileNameDataTmp);
 	    ajStrDelStatic(&fileBaseTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
     }
     
     /* just EMBOSS/data under installation */
-    if(ajNamRootInstall(&fileNameTmp))
+    if(ajNamRootInstall(&fileNameDataTmp))
     {
         ajNamRootPack(&filePackTmp);		/* just EMBOSS */
-	ajFileDirFix(&fileNameTmp);
-	ajStrAppendC(&fileNameTmp,"share/");
-	ajStrAppendS(&fileNameTmp,filePackTmp);
-	ajStrAppendC(&fileNameTmp,"/data/");
-	ajStrAppendS(&fileNameTmp,fileBaseTmp);
-	ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
-	if(ajFileStat(fileNameTmp, AJ_FILE_R))
+	ajFileDirFix(&fileNameDataTmp);
+	ajStrAppendC(&fileNameDataTmp,"share/");
+	ajStrAppendS(&fileNameDataTmp,filePackTmp);
+	ajStrAppendC(&fileNameDataTmp,"/data/");
+	ajStrAppendS(&fileNameDataTmp,fileBaseTmp);
+	ajDebug("ajFileDataNew trying '%S'\n", fileNameDataTmp);
+	if(ajFileStat(fileNameDataTmp, AJ_FILE_R))
 	{
-	    *fnew = ajFileNewIn(fileNameTmp);
+	    *fnew = ajFileNewIn(fileNameDataTmp);
 	    ajStrDelStatic(&fileBaseTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
     }
     
     /* just emboss/data under source */
-    if(ajNamRoot(&fileNameTmp))
+    if(ajNamRoot(&fileNameDataTmp))
     {
-	ajStrAppendC(&fileNameTmp,"/data/");
-	ajStrAppendS(&fileNameTmp,fileBaseTmp);
-	ajDebug("ajFileDataNew trying '%S'\n", fileNameTmp);
-	if(ajFileStat(fileNameTmp, AJ_FILE_R))
+	ajStrAppendC(&fileNameDataTmp,"/data/");
+	ajStrAppendS(&fileNameDataTmp,fileBaseTmp);
+	ajDebug("ajFileDataNew trying '%S'\n", fileNameDataTmp);
+	if(ajFileStat(fileNameDataTmp, AJ_FILE_R))
 	{
-	    *fnew = ajFileNewIn(fileNameTmp);
+	    *fnew = ajFileNewIn(fileNameDataTmp);
 	    ajStrDelStatic(&fileBaseTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
     }
     
     ajStrDelStatic(&fileBaseTmp);
-    ajStrDelStatic(&fileNameTmp);
+    ajStrDelStatic(&fileNameDataTmp);
     
-    ajDebug("ajFileDataNew failed to find '%S'\n", fileNameTmp);
+    ajDebug("ajFileDataNew failed to find '%S'\n", fileNameDataTmp);
     *fnew = NULL;
     
     return;
@@ -1501,71 +1502,71 @@ void ajFileDataNewC(const char *s, AjPFile *f)
 
 void ajFileDataDirNew(const AjPStr tfile, const AjPStr dir, AjPFile *fnew)
 {
-    if(ajNamGetValueC("DATA", &fileNameTmp))
+    if(ajNamGetValueC("DATA", &fileNameDataTmp))
     {
-        ajFileDirFix(&fileNameTmp);
+        ajFileDirFix(&fileNameDataTmp);
 	if(ajStrGetLen(dir))
 	{
-	    ajStrAppendS(&fileNameTmp,dir);
-	    ajFileDirFix(&fileNameTmp);
+	    ajStrAppendS(&fileNameDataTmp,dir);
+	    ajFileDirFix(&fileNameDataTmp);
 	}
-	ajStrAppendS(&fileNameTmp,tfile);
-	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameTmp);
-	if(ajFileStat(fileNameTmp, AJ_FILE_R))
+	ajStrAppendS(&fileNameDataTmp,tfile);
+	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameDataTmp);
+	if(ajFileStat(fileNameDataTmp, AJ_FILE_R))
 	{
-	    *fnew = ajFileNewIn(fileNameTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    *fnew = ajFileNewIn(fileNameDataTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
     }
     
     /* just EMBOSS/data under installation */
-    if(ajNamRootInstall(&fileNameTmp))
+    if(ajNamRootInstall(&fileNameDataTmp))
     {
 	/* just EMBOSS */
         ajNamRootPack(&filePackTmp);
-	ajFileDirFix(&fileNameTmp);
-	ajStrAppendC(&fileNameTmp,"share/");
-	ajStrAppendS(&fileNameTmp,filePackTmp);
-	ajStrAppendC(&fileNameTmp,"/data/");
+	ajFileDirFix(&fileNameDataTmp);
+	ajStrAppendC(&fileNameDataTmp,"share/");
+	ajStrAppendS(&fileNameDataTmp,filePackTmp);
+	ajStrAppendC(&fileNameDataTmp,"/data/");
 	if(ajStrGetLen(dir))
 	{
-	    ajStrAppendS(&fileNameTmp,dir);
-	    ajFileDirFix(&fileNameTmp);
+	    ajStrAppendS(&fileNameDataTmp,dir);
+	    ajFileDirFix(&fileNameDataTmp);
 	}
-	ajStrAppendS(&fileNameTmp,tfile);
-	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameTmp);
-	if(ajFileStat(fileNameTmp, AJ_FILE_R))
+	ajStrAppendS(&fileNameDataTmp,tfile);
+	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameDataTmp);
+	if(ajFileStat(fileNameDataTmp, AJ_FILE_R))
 	{
-	    *fnew = ajFileNewIn(fileNameTmp);
+	    *fnew = ajFileNewIn(fileNameDataTmp);
 	    ajStrDelStatic(&filePackTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
     }
 
     /* just emboss/data under source */
-    if(ajNamRoot(&fileNameTmp))
+    if(ajNamRoot(&fileNameDataTmp))
     {
-	ajStrAppendC(&fileNameTmp,"/data/");
+	ajStrAppendC(&fileNameDataTmp,"/data/");
 	if(ajStrGetLen(dir))
 	{
-	    ajStrAppendS(&fileNameTmp,dir);
-	    ajFileDirFix(&fileNameTmp);
+	    ajStrAppendS(&fileNameDataTmp,dir);
+	    ajFileDirFix(&fileNameDataTmp);
 	}
-	ajStrAppendS(&fileNameTmp,tfile);
-	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameTmp);
-	if(ajFileStat(fileNameTmp, AJ_FILE_R))
+	ajStrAppendS(&fileNameDataTmp,tfile);
+	ajDebug("ajFileDataDirNew trying '%S'\n", fileNameDataTmp);
+	if(ajFileStat(fileNameDataTmp, AJ_FILE_R))
 	{
-	    *fnew = ajFileNewIn(fileNameTmp);
+	    *fnew = ajFileNewIn(fileNameDataTmp);
 	    ajStrDelStatic(&filePackTmp);
-	    ajStrDelStatic(&fileNameTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
     }
     
     ajStrDelStatic(&filePackTmp);
-    ajStrDelStatic(&fileNameTmp);
+    ajStrDelStatic(&fileNameDataTmp);
     
     *fnew = NULL;
     
@@ -2180,55 +2181,55 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
 {
     if (tfile == NULL) return;
     
-    if(ajNamGetValueC("DATA", &fileNameTmp))
+    if(ajNamGetValueC("DATA", &fileNameDataTmp))
     {
 	/* also does ajFileDirFix */
-	if(!ajFileDir(&fileNameTmp))
+	if(!ajFileDir(&fileNameDataTmp))
 	{
 	    ajNamRootPack(&filePackTmp);
 	    ajFatal("%S_DATA directory not found: %S\n",
-		    filePackTmp, fileNameTmp);
+		    filePackTmp, fileNameDataTmp);
 	}
-	ajStrAppendS(&fileNameTmp,tfile);
-	if(!(*fnew = ajFileNewOut(fileNameTmp)))
-	    ajFatal("Cannot write to file %S\n",fileNameTmp);
-	ajStrDel(&fileNameTmp);
+	ajStrAppendS(&fileNameDataTmp,tfile);
+	if(!(*fnew = ajFileNewOut(fileNameDataTmp)))
+	    ajFatal("Cannot write to file %S\n",fileNameDataTmp);
+	ajStrDel(&fileNameDataTmp);
 
 	return;
     }
     
     /* just emboss/data under installation */
-    if(ajNamRootInstall(&fileNameTmp))
+    if(ajNamRootInstall(&fileNameDataTmp))
     {
 	/* just EMBOSS */
         ajNamRootPack(&filePackTmp);
-	ajFileDirFix(&fileNameTmp);
-	ajStrAppendC(&fileNameTmp,"share/");
-	ajStrAppendS(&fileNameTmp,filePackTmp);
-	ajStrAppendC(&fileNameTmp,"/data/");
+	ajFileDirFix(&fileNameDataTmp);
+	ajStrAppendC(&fileNameDataTmp,"share/");
+	ajStrAppendS(&fileNameDataTmp,filePackTmp);
+	ajStrAppendC(&fileNameDataTmp,"/data/");
 
 	/* if we are installed, else see below */
-	if(ajFileDir(&fileNameTmp))
+	if(ajFileDir(&fileNameDataTmp))
 	{
-	    ajStrAppendS(&fileNameTmp,tfile);
-	    if(!(*fnew = ajFileNewOut(fileNameTmp)))
-		ajFatal("Cannot write to file %S\n",fileNameTmp);
-	    ajStrDel(&fileNameTmp);
+	    ajStrAppendS(&fileNameDataTmp,tfile);
+	    if(!(*fnew = ajFileNewOut(fileNameDataTmp)))
+		ajFatal("Cannot write to file %S\n",fileNameDataTmp);
+	    ajStrDelStatic(&fileNameDataTmp);
 	    return;
 	}
     }
     
     /* just emboss/data under source */
-    if(ajNamRoot(&fileNameTmp))
+    if(ajNamRoot(&fileNameDataTmp))
     {
-	ajStrAppendC(&fileNameTmp,"/data/");
-	if(!ajFileDir(&fileNameTmp))
+	ajStrAppendC(&fileNameDataTmp,"/data/");
+	if(!ajFileDir(&fileNameDataTmp))
 	    ajFatal("Not installed, and source data directory not found: %S\n",
-		    fileNameTmp);
-	ajStrAppendS(&fileNameTmp,tfile);
-	if(!(*fnew = ajFileNewOut(fileNameTmp)))
-	    ajFatal("Cannot write to file %S\n",fileNameTmp);
-	ajStrDel(&fileNameTmp);
+		    fileNameDataTmp);
+	ajStrAppendS(&fileNameDataTmp,tfile);
+	if(!(*fnew = ajFileNewOut(fileNameDataTmp)))
+	    ajFatal("Cannot write to file %S\n",fileNameDataTmp);
+	ajStrDel(&fileNameDataTmp);
 	return;
     }
 
@@ -2236,7 +2237,7 @@ void ajFileDataNewWrite(const AjPStr tfile, AjPFile *fnew)
     ajNamRootPack(&filePackTmp);
     ajFatal("No install or source data directory, and %S_DATA not defined\n",
 	    filePackTmp);
-    ajStrDelStatic(&fileNameTmp);
+    ajStrDelStatic(&fileNameDataTmp);
     *fnew = NULL;
     
     return;
@@ -2493,6 +2494,7 @@ void ajFileExit(void)
     ajStrDel(&fileBaseTmp);
     ajStrDel(&fileHomeTmp);
     ajStrDel(&fileNameTmp);
+    ajStrDel(&fileNameDataTmp);
     ajStrDel(&filePackTmp);
     ajStrDel(&fileDirfixTmp);
     ajStrDel(&fileCwd);
