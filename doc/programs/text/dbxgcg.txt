@@ -46,7 +46,7 @@ Usage
 % dbxgcg 
 Database b+tree indexing for GCG formatted databases
 Basename for index files: embl
-Resource name: embl
+Resource name: emblresource
       EMBL : EMBL
      SWISS : Swiss-Prot, SpTrEMBL, TrEMBLnew
    GENBANK : Genbank, DDBJ
@@ -189,7 +189,7 @@ Order     71
 Fill      47
 Pagesize  2048
 Level     0
-Cachesize 200
+Cachesize 100
 Order2    82
 Fill2     99
 Count     47
@@ -201,7 +201,7 @@ Order     71
 Fill      47
 Pagesize  2048
 Level     0
-Cachesize 200
+Cachesize 100
 Order2    82
 Fill2     99
 Count     39

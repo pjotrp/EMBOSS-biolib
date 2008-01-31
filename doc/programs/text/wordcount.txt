@@ -5,7 +5,7 @@
 
 Function
 
-   Counts words of a specified size in a DNA sequence
+   Counts words of specified size in a DNA or protein sequence
 
 Description
 
@@ -18,7 +18,7 @@ Usage
 
 
 % wordcount tembl:u68037 -wordsize=3 
-Counts words of a specified size in a DNA sequence
+Counts words of specified size in a DNA or protein sequence
 Output file [u68037.wordcount]: 
 
    Go to the input files for this example
@@ -27,9 +27,10 @@ Output file [u68037.wordcount]:
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
-                                  format, or reference (input USA)
-   -wordsize           integer    [4] Word size (Integer 2 or more)
+  [-sequence]          seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
+   -wordsize           integer    [@($(acdprotein)? 2 : 4)] Word size (Integer
+                                  1 or more)
   [-outfile]           outfile    [*.wordcount] Output file name
 
    Additional (Optional) qualifiers:
@@ -303,16 +304,29 @@ Known bugs
 
 See also
 
-   Program name                        Description
-   banana       Bending and curvature plot in B-DNA
-   btwisted     Calculates the twisting in a B-DNA sequence
-   chaos        Create a chaos game representation plot for a sequence
-   compseq      Count composition of dimer/trimer/etc words in a sequence
-   dan          Calculates DNA RNA/DNA melting temperature
-   density      Nucleic acid density plot
-   freak        Residue/base frequency table or plot
-   isochore     Plots isochores in large DNA sequences
-   sirna        Finds siRNA duplexes in mRNA
+   Program name                         Description
+   backtranambig Back translate a protein sequence to ambiguous codons
+   backtranseq   Back translate a protein sequence
+   banana        Bending and curvature plot in B-DNA
+   btwisted      Calculates the twisting in a B-DNA sequence
+   chaos         Create a chaos game representation plot for a sequence
+   charge        Protein charge plot
+   checktrans    Reports STOP codons and ORF statistics of a protein
+   compseq       Count composition of dimer/trimer/etc words in a sequence
+   dan           Calculates DNA RNA/DNA melting temperature
+   density       Nucleic acid density plot
+   emowse        Protein identification by mass spectrometry
+   freak         Residue/base frequency table or plot
+   iep           Calculates the isoelectric point of a protein
+   isochore      Plots isochores in large DNA sequences
+   mwcontam      Shows molwts that match across a set of files
+   mwfilter      Filter noisy molwts from mass spec output
+   octanol       Displays protein hydropathy
+   pepinfo       Plots simple amino acid properties in parallel
+   pepstats      Protein statistics
+   pepwindow     Displays protein hydropathy
+   pepwindowall  Displays protein hydropathy of a set of sequences
+   sirna         Finds siRNA duplexes in mRNA
 
 Author(s)
 

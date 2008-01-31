@@ -7,7 +7,7 @@
 % <b>dbxgcg </b>
 Database b+tree indexing for GCG formatted databases
 Basename for index files: <b>embl</b>
-Resource name: <b>embl</b>
+Resource name: <b>emblresource</b>
       EMBL : EMBL
      SWISS : Swiss-Prot, SpTrEMBL, TrEMBLnew
    GENBANK : Genbank, DDBJ

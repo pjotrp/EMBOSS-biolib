@@ -312,7 +312,7 @@ Known bugs
 
 See also
 
-   Program name                         Description
+   Program name                          Description
    backtranambig Back translate a protein sequence to ambiguous codons
    backtranseq   Back translate a protein sequence
    charge        Protein charge plot
@@ -327,6 +327,7 @@ See also
    pepinfo       Plots simple amino acid properties in parallel
    pepstats      Protein statistics
    pepwindowall  Displays protein hydropathy of a set of sequences
+   wordcount     Counts words of specified size in a DNA or protein sequence
 
    pepwindow can use any of the "Nakai et al." database of amino acid
    parameters - these are in a database called "AAINDEX". The program

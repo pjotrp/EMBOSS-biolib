@@ -7,7 +7,7 @@
 % <b>dbxflat </b>
 Database b+tree indexing for flat file databases
 Basename for index files: <b>embl</b>
-Resource name: <b>embl</b>
+Resource name: <b>emblresource</b>
       EMBL : EMBL
      SWISS : Swiss-Prot, SpTrEMBL, TrEMBLnew
         GB : Genbank, DDBJ

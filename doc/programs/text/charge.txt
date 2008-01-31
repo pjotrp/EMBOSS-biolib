@@ -392,7 +392,7 @@ Known bugs
 
 See also
 
-   Program name                         Description
+   Program name                          Description
    backtranambig Back translate a protein sequence to ambiguous codons
    backtranseq   Back translate a protein sequence
    checktrans    Reports STOP codons and ORF statistics of a protein
@@ -407,6 +407,7 @@ See also
    pepstats      Protein statistics
    pepwindow     Displays protein hydropathy
    pepwindowall  Displays protein hydropathy of a set of sequences
+   wordcount     Counts words of specified size in a DNA or protein sequence
 
 Author(s)
 

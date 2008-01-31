@@ -305,7 +305,7 @@ density          Nucleic acid density plot
 freak            Residue/base frequency table or plot
 isochore         Plots isochores in large DNA sequences
 sirna            Finds siRNA duplexes in mRNA
-wordcount        Counts words of a specified size in a DNA sequence
+wordcount        Counts words of specified size in a DNA or protein sequence
 
 NUCLEIC CPG ISLANDS
 cpgplot          Plot CpG rich areas
@@ -519,6 +519,7 @@ pepinfo          Plots simple amino acid properties in parallel
 pepstats         Protein statistics
 pepwindow        Displays protein hydropathy
 pepwindowall     Displays protein hydropathy of a set of sequences
+wordcount        Counts words of specified size in a DNA or protein sequence
 
 PROTEIN MOTIFS
 antigenic        Finds antigenic sites in proteins
@@ -909,7 +910,7 @@ vrnasubopt       Calculate RNA suboptimals
 water            Smith-Waterman local alignment
 whichdb          Search all databases for an entry
 wobble           Wobble base plot
-wordcount        Counts words of a specified size in a DNA sequence
+wordcount        Counts words of specified size in a DNA or protein sequence
 wordfinder       Match large sequences against one or more other sequences
 wordmatch        Finds all exact matches of a given size between 2 sequences
 wossname         Finds programs by keywords in their one-line documentation

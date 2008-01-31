@@ -343,7 +343,7 @@ Known bugs
 
 See also
 
-   Program name                         Description
+   Program name                          Description
    backtranambig Back translate a protein sequence to ambiguous codons
    backtranseq   Back translate a protein sequence
    banana        Bending and curvature plot in B-DNA
@@ -365,7 +365,7 @@ See also
    pepwindow     Displays protein hydropathy
    pepwindowall  Displays protein hydropathy of a set of sequences
    sirna         Finds siRNA duplexes in mRNA
-   wordcount     Counts words of a specified size in a DNA sequence
+   wordcount     Counts words of specified size in a DNA or protein sequence
 
 Author(s)
 

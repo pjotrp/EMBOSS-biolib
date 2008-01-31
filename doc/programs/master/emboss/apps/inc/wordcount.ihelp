@@ -1,7 +1,8 @@
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Nucleotide sequence(s) filename and optional
-                                  format, or reference (input USA)
-   -wordsize           integer    [4] Word size (Integer 2 or more)
+  [-sequence]          seqall     Sequence(s) filename and optional format, or
+                                  reference (input USA)
+   -wordsize           integer    [@($(acdprotein)? 2 : 4)] Word size (Integer
+                                  1 or more)
   [-outfile]           outfile    [*.wordcount] Output file name
 
    Additional (Optional) qualifiers:

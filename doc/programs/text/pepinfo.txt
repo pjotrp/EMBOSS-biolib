@@ -14,7 +14,7 @@ Description
 
    It can plot and display the following properties:
      * plots of hydrophobicity (using the method of Kyte & Doolittle), of
-       OHM (Sweet & Eisenberg), or of consensus parameters (Eisenberg et
+       OMH (Sweet & Eisenberg), or of consensus parameters (Eisenberg et
        al))
      * a histogram of the presence of residues with the physico-chemical
        properties: Tiny, Small, Aliphatic, Aromatic, Non-polar, Polar,
@@ -412,7 +412,7 @@ Known bugs
 
 See also
 
-   Program name                         Description
+   Program name                          Description
    backtranambig Back translate a protein sequence to ambiguous codons
    backtranseq   Back translate a protein sequence
    charge        Protein charge plot
@@ -427,6 +427,7 @@ See also
    pepstats      Protein statistics
    pepwindow     Displays protein hydropathy
    pepwindowall  Displays protein hydropathy of a set of sequences
+   wordcount     Counts words of specified size in a DNA or protein sequence
 
 Author(s)
 

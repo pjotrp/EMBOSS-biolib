@@ -322,7 +322,7 @@ Known bugs
 
 See also
 
-   Program name                        Description
+   Program name                         Description
    backtranseq  Back translate a protein sequence
    charge       Protein charge plot
    checktrans   Reports STOP codons and ORF statistics of a protein
@@ -345,6 +345,7 @@ See also
    showseq      Display a sequence with features, translation etc
    sixpack      Display a DNA sequence with 6-frame translation and ORFs
    transeq      Translate nucleic acid sequences
+   wordcount    Counts words of specified size in a DNA or protein sequence
 
 Author(s)
 

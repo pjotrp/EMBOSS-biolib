@@ -26,7 +26,7 @@ Order     71
 Fill      47
 Pagesize  2048
 Level     0
-Cachesize 200
+Cachesize 100
 Order2    82
 Fill2     99
 Count     47
@@ -40,7 +40,7 @@ Order     71
 Fill      47
 Pagesize  2048
 Level     0
-Cachesize 200
+Cachesize 100
 Order2    82
 Fill2     99
 Count     39

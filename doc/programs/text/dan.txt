@@ -630,7 +630,7 @@ Known bugs
 
 See also
 
-   Program name                        Description
+   Program name                         Description
    banana       Bending and curvature plot in B-DNA
    btwisted     Calculates the twisting in a B-DNA sequence
    chaos        Create a chaos game representation plot for a sequence
@@ -639,7 +639,7 @@ See also
    freak        Residue/base frequency table or plot
    isochore     Plots isochores in large DNA sequences
    sirna        Finds siRNA duplexes in mRNA
-   wordcount    Counts words of a specified size in a DNA sequence
+   wordcount    Counts words of specified size in a DNA or protein sequence
 
 Author(s)
 

@@ -219,7 +219,7 @@ Known bugs
 
 See also
 
-   Program name                         Description
+   Program name                          Description
    backtranambig Back translate a protein sequence to ambiguous codons
    backtranseq   Back translate a protein sequence
    charge        Protein charge plot
@@ -234,6 +234,7 @@ See also
    pepinfo       Plots simple amino acid properties in parallel
    pepstats      Protein statistics
    pepwindow     Displays protein hydropathy
+   wordcount     Counts words of specified size in a DNA or protein sequence
 
 Author(s)
 
