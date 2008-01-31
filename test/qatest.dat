@@ -351,7 +351,7 @@ FI x13776.out2
 FZ = 0
 FI qatest.dbg
 FP /USA to test: 'tembl:x13776'/
-FP 2 /^Memory usage /
+FP 0 /^Memory usage /
 //
 
 ID acdc-ex
@@ -1378,10 +1378,11 @@ IN f
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: 'f' is ambiguous \(fa,four,fb,five\)\n/
 FP /Error: Bad menu option 'f'\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-listambig2
@@ -1394,10 +1395,11 @@ IN t
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: 't' is ambiguous \(two,three\)\n/
 FP /Error: Bad menu option 't'\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-listbad
@@ -1410,10 +1412,11 @@ IN x
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: 'x' is not a valid menu option\n/
 FP /Error: Bad menu option 'x'\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 FP /Accepted short codes are: a,b,c,fa,fb\n/
 //
 
@@ -1427,10 +1430,11 @@ IN a,b,c,four
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: Menu allows no more than 3 values\n/
 FP /Error: Bad menu option 'a,b,c,four'\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-listmin
@@ -1443,10 +1447,11 @@ IN
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: Menu needs 1 value\n/
 FP /Error: Bad menu option ''\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-reportbadformat
@@ -1491,10 +1496,11 @@ IN f
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: 'f' is ambiguous \(four,five\)\n/
 FP /Error: Bad select option 'f'\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-selectbad
@@ -1507,11 +1513,12 @@ IN x
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: 'x' is not a valid selection list option\n/
 FP /Error: Bad select option 'x'\n/
 FP /Accepted values are: one,two,three,four,five\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-selectmax
@@ -1524,10 +1531,11 @@ IN one,two,thr,four
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: Selection list allows no more than 3 values\n/
 FP /Error: Bad select option 'one,two,thr,four'\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-selectmax2
@@ -1540,10 +1548,11 @@ IN 1,2,3,4
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: Selection list allows no more than 3 values\n/
 FP /Error: Bad select option '1,2,3,4'\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-selectmin
@@ -1556,10 +1565,11 @@ IN
 FI stderr
 FZ > 0
 FP 0 /Warning: /
-FP 2 /Error: /
+FP 3 /Error: /
 FP 0 /Died: /
 FP /Error: Selection list needs 1 value\n/
 FP /Error: Bad select option ''\n/
+FP /Error: Unable to get reply from user - end of standard input\n/
 //
 
 ID acdc-retry
@@ -6181,7 +6191,7 @@ ID dbxfasta-ex-keep
 DL keep
 AP dbxfasta
 IN emrod
-IN embl
+IN emblresource
 IN idacc
 IN ../../data
 IN emrod
@@ -6236,7 +6246,7 @@ DL keep
 AP dbxfasta
 CL -fields "id,acc,sv,des"
 IN emrod
-IN embl
+IN emblresource
 IN idacc
 IN ../../data
 IN emrod
@@ -6379,7 +6389,7 @@ ID dbxfasta-swiss-keep
 DL keep
 AP dbxfasta
 IN swnew
-IN swnew
+IN swnewresource
 IN idacc
 IN ../../data
 IN swnew
@@ -6491,7 +6501,7 @@ ID dbxfasta-worm-keep
 DL keep
 AP dbxfasta
 IN worm
-IN swnew
+IN swnewresource
 IN simple
 IN ../../data
 IN wormpep.clone.*
@@ -6611,10 +6621,11 @@ ID dbxflat-ex-keep
 DL keep
 AP dbxflat
 IN embl
-IN embl
+IN emblresource
 IN embl
 IN rod.dat
 IN ../../embl
+IN
 IN
 FI stderr
 FC = 12
@@ -6623,7 +6634,8 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 1
-FP /^Processing file .*\/test\/embl\/rod\.dat\n/
+FP /^Processing file .*rod\.dat\n/
+FP 1 /^Processing file /
 FI embl.ent
 FC = 5
 FP /^# Number of files: 1\n/
@@ -6745,7 +6757,7 @@ DL keep
 AP dbxflat
 CL -fields "id,acc,sv,des,key,org"
 IN embl
-IN embl
+IN emblresource
 IN embl
 IN 
 IN ../../embl
@@ -6757,8 +6769,8 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 10
-FP /^Processing file .*\/test\/embl\/rod\.dat\n/
-FP 10 /^Processing file .*\/test\/embl\/[a-z0-9]+\.dat\n/
+FP /^Processing file .*rod\.dat\n/
+FP 10 /^Processing file /
 FI embl.ent
 FC = 14
 FP /^# Number of files: 10\n/
@@ -6996,7 +7008,7 @@ ID dbxflat-swiss-keep
 DL keep
 AP dbxflat
 IN swnew
-IN swnew
+IN swnewresource
 IN
 IN
 IN ../../swnew
@@ -7010,8 +7022,8 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FC = 1
-FP 1 /Processing file .*\/test\/swnew\/[a-z_]+\.dat\n/
-FP 1 /^Processing file /
+FP /^Processing file .*trembl\.dat\n/
+FP 1 /^Processing file \S+\.dat/
 FI swnew.ent
 FC = 5
 FP /# Number of files: 1\n/
@@ -7111,7 +7123,7 @@ DL keep
 TI 120
 AP dbxgcg
 IN embl
-IN embl
+IN emblresource
 IN embl
 IN ../../embl
 IN
@@ -7347,7 +7359,7 @@ TI 120
 AP dbxgcg
 CL -fields "id,acc,sv,des,key,org"
 IN embl
-IN embl
+IN emblresource
 IN embl
 IN ../../embl
 IN
@@ -7722,7 +7734,7 @@ DL keep
 TI 120
 AP dbxgcg
 IN pir
-IN pir
+IN pirresource
 IN pir
 IN ../../pir
 IN
@@ -7916,7 +7928,7 @@ TI 120
 AP dbxgcg
 CL -fields "id,acc,des,key,org"
 IN pir
-IN pir
+IN pirresource
 IN pir
 IN ../../pir
 IN
