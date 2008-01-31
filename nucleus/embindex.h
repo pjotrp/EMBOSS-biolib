@@ -204,9 +204,15 @@ AjBool         embBtreeOpenCaches(EmbPBtreeEntry entry);
 AjBool         embBtreeCloseCaches(EmbPBtreeEntry entry);
 AjBool         embBtreeDumpParameters(EmbPBtreeEntry entry);
 
+void           embIndexExit(void);
+
 /*
 ** End of prototype definitions
 */
+
+#if 0
+AjBool         embBtreeProbeCaches(EmbPBtreeEntry entry);
+#endif
 
 #endif
 

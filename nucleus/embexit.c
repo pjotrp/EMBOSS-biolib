@@ -35,6 +35,7 @@ __noreturn void embExit (void)
 {
     embDbiExit();
     embGrpExit();
+    embIndexExit();
     embWordExit();
 
     ajExit();
