@@ -160,7 +160,7 @@ static AjPStr seqtypeCharsetRnaGap       = NULL;
 ** - Phylip and some alignment output
 ** ~ GCG for gaps at ends
 ** * Staden for DNA but stop for protein (fix on input?)
-** O Phylip (fix on input?)
+** O Phylip (fix on input?) - no longer possible: O is pyrrolysine in proteins
 */
 
 
@@ -174,14 +174,14 @@ char seqCharProtStop[]  = "*";
 char seqCharNuc[]       = "ACGTUBDHKMNRSVWXY?";
 char seqCharNucPure[]   = "ACGTU";
 char seqCharNucAmbig[]  = "BDHKMNRSVWXY?";
-char seqCharGap[]       = ".~O-";	/* phylip uses O */
+char seqCharGap[]       = ".~-";	/* phylip used O in old versions */
 char seqCharNucDna[]    = "ACGTBDHKMNRSVWXY?";
 char seqCharNucRna[]    = "ACGUBDHKMNRSVWXY?";
-char seqCharGapany[]    = ".~O-";	/* phylip uses O */
+char seqCharGapany[]    = ".~-";	/* phylip used O in old versions*/
 char seqCharGapdash[]   = "-";
 char seqCharGapdot[]    = ".";
 char seqGap = '-';		/* the (only) EMBOSS gap character */
-char seqCharGapTest[]   = " .~O-";   /* phylip uses O - don't forget space */
+char seqCharGapTest[]   = " .~-";   /* phylip used O - don't forget space */
 char seqCharPhylo[]       = "?";	/* phylip uses ? for unknown or gap */
 
 
