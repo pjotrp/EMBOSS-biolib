@@ -1,5 +1,5 @@
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual C++ Express 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ajax", "ajax\ajax.vcproj", "{03677CDE-FD36-4C02-A9A0-E266FACAAC8E}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nucleus", "nucleus\nucleus.vcproj", "{3605EF7B-263A-4BF8-895F-E8F7DF1669F7}"
