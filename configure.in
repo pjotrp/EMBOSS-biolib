@@ -540,7 +540,8 @@ test/wormpep/Makefile emboss/data/Makefile
 emboss/data/AAINDEX/Makefile
 emboss/data/CODONS/Makefile emboss/data/REBASE/Makefile 
 emboss/data/JASPAR_CORE/Makefile emboss/data/JASPAR_FAM/Makefile
-emboss/data/JASPAR_PHYLOFACTS/Makefile
+emboss/data/JASPAR_PHYLOFACTS/Makefile emboss/data/JASPAR_CNE/Makefile
+emboss/data/JASPAR_POLII/Makefile emboss/data/JASPAR_SPLICE/Makefile
 emboss/data/PRINTS/Makefile emboss/data/PROSITE/Makefile
 doc/Makefile doc/manuals/Makefile doc/tutorials/Makefile
 doc/programs/Makefile doc/programs/html/Makefile doc/programs/text/Makefile
