@@ -5534,6 +5534,119 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 
 
 
+/* @func ajDirScan ***********************************************************
+**
+** Scan through a directory returning all filenames and directory names
+** except '.' and '..'
+**
+** @param [r] path [const AjPStr] Directory to scan
+** @param [r] filename [const AjPStr] Filename to search for (or NULL)
+** @param [w] result [AjPList *] List for matching entries
+**
+** @return [ajint] number of entries in list
+** @@
+******************************************************************************/
+
+ajint ajDirScan(const AjPStr path, const AjPStr filename, AjPList *result)
+{
+    DIR *indir;
+#if defined(AJ_IRIXLF)
+    struct dirent64 *dp;
+#else
+    struct dirent *dp;
+#endif
+    AjPStr s = NULL;
+    AjPStr t = NULL;
+    AjPStr tpath = NULL;
+#ifdef _POSIX_C_SOURCE
+    char buf[sizeof(struct dirent)+MAXNAMLEN];
+#endif
+    
+    tpath = ajStrNew();
+    ajStrAssignS(&tpath,path);
+    
+    
+    if(!ajFileDir(&tpath))
+    {
+	ajStrDel(&tpath);
+	return 0;
+    }
+
+
+    if(!(indir=opendir(ajStrGetPtr(tpath))))
+    {
+	ajStrDel(&tpath);
+	return 0;
+    }
+    
+    
+    s = ajStrNew();
+    
+#if defined(AJ_IRIXLF)
+#ifdef _POSIX_C_SOURCE
+    while(!readdir64_r(indir,(struct dirent64 *)buf,&dp))
+    {
+	if(!dp)
+	    break;
+#else
+	while((dp=readdir64(indir)))
+	{
+#endif
+#else
+#ifdef _POSIX_C_SOURCE
+    while(!readdir_r(indir,(struct dirent *)buf,&dp))
+    {
+	if(!dp)
+	    break;
+#else
+	while((dp=readdir(indir)))
+	{
+#endif
+#endif
+
+#ifndef __CYGWIN__
+	if(!dp->d_ino ||
+	   !strcmp(dp->d_name,".") ||
+	   !strcmp(dp->d_name,".."))
+#else
+	if(!strcmp(dp->d_name,".") ||
+	   !strcmp(dp->d_name,".."))
+#endif
+	    continue;
+	ajStrAssignS(&s,tpath);
+	ajStrAppendC(&s,dp->d_name);
+
+
+        if(filename)
+        {
+            if(ajCharMatchWildC(dp->d_name,ajStrGetPtr(filename)))
+            {
+                t = ajStrNewS(s);
+                ajListPushAppend(*result,(void *)t);
+            }
+        }
+        else
+        {
+            t = ajStrNewS(s);
+            ajListPushAppend(*result,(void *)t);
+        }
+        
+    }
+    closedir(indir);
+    
+    
+    ajStrDel(&s);
+    ajStrDel(&tpath);
+
+    if(result)
+	return ajListGetLength(*result);
+    
+    return 0;
+}
+
+
+
+
 /* @func ajFileTestSkip *******************************************************
 **
 ** Tests a filename against wildcard

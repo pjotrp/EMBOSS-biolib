@@ -252,7 +252,9 @@ AjPDir      ajDiroutNew (const AjPStr name);
 AjPDir      ajDiroutNewS (const AjPStr name, const AjPStr ext);
 AjPDir      ajDiroutNewSS (const AjPStr name, const AjPStr prefix,
 			   const AjPStr ext);
-
+ajint       ajDirScan(const AjPStr path, const AjPStr filename,
+                      AjPList *result);
+    
 AjBool      ajFileBuffBuff (AjPFileBuff thys);
 void        ajFileBuffClear (AjPFileBuff thys, ajint lines);
 void        ajFileBuffClearStore (AjPFileBuff thys, ajint lines,
