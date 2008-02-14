@@ -19,7 +19,7 @@ section: input [
     default: "C"
     minimum: "1"
     maximum: "1"
-    values: "C:Core,F:Fam,P:Phylofacts"
+    values: "C:Core,F:Fam,P:Phylofacts,N:CNE,O:POLII,S:SPLICE"
     delimiter: ","
     codedelimiter: ":"
     header: "Jaspar matrix set"

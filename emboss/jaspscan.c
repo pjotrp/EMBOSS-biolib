@@ -24,6 +24,9 @@
 #define J_COR "JASPAR_CORE"
 #define J_FAM "JASPAR_FAM"
 #define J_PHY "JASPAR_PHYLOFACTS"
+#define J_CNE "JASPAR_CNE"
+#define J_POL "JASPAR_POLII"
+#define J_SPL "JASPAR_SPLICE"
 #define J_EXT ".pfm"
 
 #define J_LIST "matrix_list.txt"
@@ -89,10 +92,9 @@ typedef struct AjSJspHits {
 ** @attr num [AjPStr] Information content (very close to optional content value)
 ** @attr name [AjPStr] Name or transcription factor
 ** @attr klass [AjPStr] Class of transcription factor
-** @attr seqdb [AjPStr] Source database name for protein (may be EMBL)
 ** @attr species [AjPStr] Species
 ** @attr sgroup [AjPStr] Taxonomy supergroup
-** @attr protseq [AjPStr] Source database accession (see seqdb)
+** @attr protseq [AjPStr] Source database accession
 ** @attr exp [AjPStr] Experiment type (e.g. SELEX)
 ** @attr pmid [AjPStr] Source medline reference record and PMID number
 ** @attr content [AjPStr] Shannon information content (floating point number)
@@ -100,30 +102,38 @@ typedef struct AjSJspHits {
 ** @attr mcs [AjPStr] MCS reference
 ** @attr jaspar [AjPStr] Jaspar reference
 ** @attr transfac [AjPStr] Transfac reference
+** @attr desc [AjPStr] Description
+** @attr comment [AjPStr] comment
+** @attr erttss [AjPStr] End relative to TSS
+** @attr srttss [AjPStr] Start relative to TSS
+** @attr consensus [AjPStr] Consensus
 ** @attr type [char] Type of Jaspar database (C,F or P)
 ** @attr Padding [char[7]] padding to alignment boundary
 ** @@
 ******************************************************************************/
 
 typedef struct AjSJspmat {
-
-  AjPStr id;
-  AjPStr num;
-  AjPStr name;
-  AjPStr klass;
-  AjPStr seqdb;
-  AjPStr species;
-  AjPStr sgroup;
-  AjPStr protseq;
-  AjPStr exp;
-  AjPStr pmid;
-  AjPStr content;
-  AjPStr models;
-  AjPStr mcs;
-  AjPStr jaspar;
-  AjPStr transfac;
-  char type;
-  char Padding[7];
+    AjPStr id;
+    AjPStr num;
+    AjPStr name;
+    AjPStr klass;
+    AjPStr species;
+    AjPStr sgroup;
+    AjPStr protseq;
+    AjPStr exp;
+    AjPStr pmid;
+    AjPStr content;
+    AjPStr models;
+    AjPStr mcs;
+    AjPStr jaspar;
+    AjPStr transfac;
+    AjPStr desc;
+    AjPStr comment;
+    AjPStr erttss;
+    AjPStr srttss;
+    AjPStr consens;
+    char type;
+    char Padding[7];
 } AjOJspmat;
 #define AjPJspmat AjOJspmat*
 
@@ -231,6 +241,12 @@ int main(int argc, char **argv)
 	ajStrAssignC(&jaspdir,J_FAM);
     else if(cp=='P')
 	ajStrAssignC(&jaspdir,J_PHY);
+    else if(cp=='N')
+	ajStrAssignC(&jaspdir,J_CNE);
+    else if(cp=='O')
+	ajStrAssignC(&jaspdir,J_POL);
+    else if(cp=='S')
+	ajStrAssignC(&jaspdir,J_SPL);
     else
 	ajFatal("Invalid JASPAR database selection");
 
@@ -248,6 +264,12 @@ int main(int argc, char **argv)
     if(cp == 'F')
 	mattab = jaspscan_ReadFamList(jaspdir);
     if(cp == 'P')
+	mattab = jaspscan_ReadCoreList(jaspdir);
+    if(cp == 'N')
+	mattab = jaspscan_ReadCoreList(jaspdir);
+    if(cp == 'O')
+	mattab = jaspscan_ReadCoreList(jaspdir);
+    if(cp == 'S')
 	mattab = jaspscan_ReadCoreList(jaspdir);
 
     ajFmtPrintS(&head,"Database scanned: %S  Threshold: %.3f",jaspdir,thresh);
@@ -889,7 +911,6 @@ static AjPTable jaspscan_ReadCoreList(const AjPStr jaspdir)
 	ajStrAssignS(&key,info->id);
 	ajTablePut(ret,(void *)key,(void *) info);
     }
-    
 
     ajFileClose(&inf);
 
@@ -1030,8 +1051,10 @@ static void jaspscan_coretoken(AjPJspmat info, const AjPStr str)
     p = ajStrGetPtr(str);
     q = p;
     
-    while(*q != ' ' && *q != '\t')
+    while(*q != '"' && *q != '\t')
 	++q;
+
+    --q;
     
     ajStrAssignSubC(&key,p,0,q-p-1);
     
@@ -1045,13 +1068,11 @@ static void jaspscan_coretoken(AjPJspmat info, const AjPStr str)
 	while(*q != '"')
 	    ++q;
 	ajStrAssignSubC(&value,p,0,q-p-1);
-
+        
 	if(ajStrMatchC(key,"acc"))
 	    ajStrAssignS(&info->protseq,value);
 	if(ajStrMatchC(key,"medline"))
 	    ajStrAssignS(&info->pmid,value);
-	if(ajStrMatchC(key,"seqdb"))
-	    ajStrAssignS(&info->seqdb,value);
 	if(ajStrMatchC(key,"species"))
 	    ajStrAssignS(&info->species,value);
 	if(ajStrMatchC(key,"sysgroup"))
@@ -1068,6 +1089,19 @@ static void jaspscan_coretoken(AjPJspmat info, const AjPStr str)
 	    ajStrAssignS(&info->jaspar,value);
 	if(ajStrMatchC(key,"transfac"))
 	    ajStrAssignS(&info->transfac,value);
+
+	if(ajStrMatchC(key,"Description"))
+	    ajStrAssignS(&info->desc,value);
+	if(ajStrMatchC(key,"description"))
+	    ajStrAssignS(&info->desc,value);
+	if(ajStrMatchC(key,"comment"))
+	    ajStrAssignS(&info->comment,value);
+	if(ajStrMatchC(key,"End relative to TSS"))
+	    ajStrAssignS(&info->erttss,value);
+	if(ajStrMatchC(key,"Start relative to TSS"))
+	    ajStrAssignS(&info->srttss,value);
+	if(ajStrMatchC(key,"consensus"))
+	    ajStrAssignS(&info->consens,value);
     }
 
 
@@ -1098,7 +1132,6 @@ static AjPJspmat jaspscan_infonew(void)
     thys->num      = ajStrNew();
     thys->name     = ajStrNew();
     thys->klass    = ajStrNew();
-    thys->seqdb    = ajStrNew();
     thys->species  = ajStrNew();
     thys->sgroup   = ajStrNew();
     thys->protseq  = ajStrNew();
@@ -1109,7 +1142,12 @@ static AjPJspmat jaspscan_infonew(void)
     thys->jaspar   = ajStrNew();
     thys->transfac = ajStrNew();
     thys->content  = ajStrNew();
-
+    thys->desc     = ajStrNew();
+    thys->comment  = ajStrNew();
+    thys->erttss   = ajStrNew();
+    thys->srttss   = ajStrNew();
+    thys->consens  = ajStrNew();
+    
     return thys;
 }
 
@@ -1136,7 +1174,6 @@ static void jaspscan_infodel(AjPJspmat *thys)
     ajStrDel(&pthis->num);
     ajStrDel(&pthis->name);
     ajStrDel(&pthis->klass);
-    ajStrDel(&pthis->seqdb);
     ajStrDel(&pthis->species);
     ajStrDel(&pthis->sgroup);
     ajStrDel(&pthis->protseq);
@@ -1147,6 +1184,11 @@ static void jaspscan_infodel(AjPJspmat *thys)
     ajStrDel(&pthis->jaspar);
     ajStrDel(&pthis->transfac);
     ajStrDel(&pthis->content);
+    ajStrDel(&pthis->desc);
+    ajStrDel(&pthis->comment);
+    ajStrDel(&pthis->erttss);
+    ajStrDel(&pthis->srttss);
+    ajStrDel(&pthis->consens);
 
     AJFREE(*thys);
 
