@@ -116,6 +116,8 @@ int main(int argc, char **argv)
 	be     = ajSeqGetBegin(a);
 	en     = ajSeqGetEnd(a);
 	ajStrAssignSubC(&substr,ajSeqGetSeqC(a),be-1,en-1);
+        ajStrFmtUpper(&substr);
+
 	len = en-be+1;
 
 	l     = ajListNew();
