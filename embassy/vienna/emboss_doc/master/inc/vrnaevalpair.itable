@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-aconstraintfile]<br>(Parameter 2)</td>
-<td>Vienna RNA structure contraints file</td>
+<td>Vienna RNA structure constraints file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -28,7 +28,7 @@
 
 <tr>
 <td>[-bconstraintfile]<br>(Parameter 4)</td>
-<td>Second vienna RNA structure contraints file</td>
+<td>Second vienna RNA structure constraints file</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>

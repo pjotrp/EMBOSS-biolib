@@ -20,7 +20,7 @@ section: input [
   infile: aconstraintfile [
     nullok: "Y"
     default: ""
-    information: "Vienna RNA structure contraints file
+    information: "Vienna RNA structure constraints file
                   (optional)"
     knowntype: "rna constraint"
   ]
@@ -33,7 +33,7 @@ section: input [
   infile: bconstraintfile [
     nullok: "Y"
     default: ""
-    information: "Second vienna RNA structure contraints file
+    information: "Second vienna RNA structure constraints file
                   (optional)"
     knowntype: "rna constraint"
   ]

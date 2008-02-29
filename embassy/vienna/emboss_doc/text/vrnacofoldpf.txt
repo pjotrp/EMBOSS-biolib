@@ -46,9 +46,9 @@ Command line arguments
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -aconstraintfile    infile     Vienna RNA structure contraints file
+   -aconstraintfile    infile     Vienna RNA structure constraints file
                                   (optional)
-   -bconstraintfile    infile     Second vienna RNA structure contraints file
+   -bconstraintfile    infile     Second vienna RNA structure constraints file
                                   (optional)
    -paramfile          infile     Vienna RNA parameters file (optional)
    -temperature        float      [37.0] Temperature (Any numeric value)

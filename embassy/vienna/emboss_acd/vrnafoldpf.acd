@@ -21,7 +21,7 @@ section: input [
   infile: constraintfile [
     nullok: "Y"
     default: ""
-    information: "Vienna RNA structure contraints file
+    information: "Vienna RNA structure constraints file
                   (optional)"
     knowntype: "rna constraint"
   ]

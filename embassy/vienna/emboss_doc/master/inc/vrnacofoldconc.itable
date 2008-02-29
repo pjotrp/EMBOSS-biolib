@@ -51,14 +51,14 @@
 
 <tr>
 <td>-aconstraintfile</td>
-<td>Vienna RNA structure contraints file (optional)</td>
+<td>Vienna RNA structure constraints file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>-bconstraintfile</td>
-<td>Second vienna RNA structure contraints file (optional)</td>
+<td>Second vienna RNA structure constraints file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>

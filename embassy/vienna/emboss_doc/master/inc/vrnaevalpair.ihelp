@@ -1,10 +1,10 @@
    Standard (Mandatory) qualifiers:
   [-asequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-aconstraintfile]   infile     Vienna RNA structure contraints file
+  [-aconstraintfile]   infile     Vienna RNA structure constraints file
   [-bsequence]         sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
-  [-bconstraintfile]   infile     Second vienna RNA structure contraints file
+  [-bconstraintfile]   infile     Second vienna RNA structure constraints file
   [-outfile]           outfile    [*.vrnaevalpair] Vienna RNAeval output file
 
    Additional (Optional) qualifiers: (none)

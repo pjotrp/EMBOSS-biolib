@@ -5,7 +5,7 @@
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -constraintfile     infile     Vienna RNA structure contraints file
+   -constraintfile     infile     Vienna RNA structure constraints file
                                   (optional)
    -paramfile          infile     Vienna RNA parameters file (optional)
    -temperature        float      [37.0] Temperature (Any numeric value)
