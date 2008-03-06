@@ -1152,37 +1152,83 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
     }
 
     
-    entry->idorder = (entry->pagesize - 60) / ((entry->idlen + 1) + 12);
-    entry->idfill  = (entry->pagesize - 16) / (entry->idlen + 28);
-    entry->acorder = (entry->pagesize - 60) / ((entry->aclen + 1) + 12);
-    entry->acfill  = (entry->pagesize - 16) / (entry->aclen + 28);
-    entry->svorder = (entry->pagesize - 60) / ((entry->svlen + 1) + 12);
-    entry->svfill  = (entry->pagesize - 16) / (entry->svlen + 28);
+    entry->idorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->idlen + 1) + BT_IDKEYEXTRA);
 
-    entry->kworder = (entry->pagesize - 60) / ((entry->kwlen + 1) + 12);
-    entry->kwfill  = (entry->pagesize - 16) / (entry->kwlen + 28);
-    entry->deorder = (entry->pagesize - 60) / ((entry->delen + 1) + 12);
-    entry->defill  = (entry->pagesize - 16) / (entry->delen + 28);
-    entry->txorder = (entry->pagesize - 60) / ((entry->txlen + 1) + 12);
-    entry->txfill  = (entry->pagesize - 16) / (entry->txlen + 28);
+    entry->idfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->idlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->kwsecorder = (entry->pagesize - 60) / ((entry->kwlen + 1) + 12);
-    entry->desecorder = (entry->pagesize - 60) / ((entry->delen + 1) + 12);
-    entry->txsecorder = (entry->pagesize - 60) / ((entry->txlen + 1) + 12);
+    entry->acorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->aclen + 1) + BT_IDKEYEXTRA);
 
-    entry->kwsecfill  = (entry->pagesize - 16) / (entry->kwlen + 4);
-    entry->desecfill  = (entry->pagesize - 16) / (entry->delen + 4);
-    entry->txsecfill  = (entry->pagesize - 16) / (entry->txlen + 4);
+    entry->acfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->aclen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->idsecorder = (entry->pagesize - 60) / 24;
-    entry->idsecfill  = (entry->pagesize - 60) / 20;
+    entry->svorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->svlen + 1) + BT_IDKEYEXTRA);
 
-    entry->acsecorder = (entry->pagesize - 60) / 24;
-    entry->acsecfill  = (entry->pagesize - 60) / 20;
+    entry->svfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->svlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->svsecorder = (entry->pagesize - 60) / 24;
-    entry->svsecfill  = (entry->pagesize - 60) / 20;
-    
+    entry->kworder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->kwlen + 1) + BT_IDKEYEXTRA);
+
+    entry->kwfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->kwlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
+
+    entry->deorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->delen + 1) + BT_IDKEYEXTRA);
+
+    entry->defill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->delen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
+
+    entry->txorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->txlen + 1) + BT_IDKEYEXTRA);
+
+    entry->txfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->txlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
+
+ 
+    entry->idsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        (BT_OFFKEYLEN + BT_IDKEYEXTRA);
+
+    entry->acsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        (BT_OFFKEYLEN + BT_IDKEYEXTRA);
+
+    entry->svsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        (BT_OFFKEYLEN + BT_IDKEYEXTRA);
+
+ 
+    entry->idsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        BT_DOFFROFF;
+
+    entry->acsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        BT_DOFFROFF;
+
+    entry->svsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        BT_DOFFROFF;
+
+
+    /*
+     *  The secondary tree keys are the IDs of the entries containing
+     *  the keywords
+     */
+
+    entry->kwsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->idlen + 1) + BT_IDKEYEXTRA);
+    entry->desecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->idlen + 1) + BT_IDKEYEXTRA);
+    entry->txsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        ((entry->idlen + 1) + BT_IDKEYEXTRA);
+
+
+    entry->kwsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->idlen + 1) + BT_KEYLENENTRY);
+    entry->desecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->idlen + 1) + BT_KEYLENENTRY);
+    entry->txsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+        ((entry->idlen + 1) + BT_KEYLENENTRY);
+
     ajStrDel(&value);
 
     return;
