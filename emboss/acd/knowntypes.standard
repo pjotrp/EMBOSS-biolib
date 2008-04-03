@@ -162,6 +162,7 @@ neighbor_output                   file           Phylip neighbor program output
 newcoils_datafile                 file           Program newcoils data
 newick                            tree           Phylip tree
 newick_tree                       file           Phylip tree
+non_coding_sequence               sequence       Non-coding
 nucleotide_codes                  string         DNA/RNA sequence characters
 nucleotide_sequence               string         DNA/RNA sequence
 output_delimiter                  string         Delimiter between fields in single line output
@@ -203,6 +204,7 @@ protdist_input                    file           Phylip protdist program input
 protdist_output                   file           Phylip protdist program output
 protein_clean_coordinates         file           Clean protein structure coordinates
 protein_codes                     string         Protein sequence characters
+protein_fasta                     file           Protein sequence in fasta format
 protpars_input                    file           Phylip protpars program input
 protpars_output                   file           Phylip protpars program output
 quicktandem_output                file           Sanger Centre program quicktandem output
@@ -240,6 +242,7 @@ seqbootrest_output                file           Phylip seqboot_rest program out
 seqbootseq_output                 file           Phylip seqboot_seq program output
 sequence                          string         Sequence
 sequence_data                     file           Sequence
+sequence_fasta                    file           Nucleotide or protein sequence in fasta format
 sequence_id_input                 string         Sequence identifier for an input sequence
 sequence_id_list                  string         Sequence identifier list or @filename for input sequences
 sequence_id_output                string         Sequence identifier for an output sequence
