@@ -86,12 +86,13 @@ static AjPStr strNew(ajuint size);
 static AjPStr strClone(AjPStr* Pstr);
 static void   strCloneL(AjPStr* pthis, ajuint size);
 
+#ifdef AJ_SAVESTATS
 static ajlong strAlloc     = 0;
 static ajlong strFree      = 0;
 static ajlong strFreeCount = 0;
 static ajlong strCount     = 0;
 static ajlong strTotal     = 0;
-
+#endif
 
 
 
@@ -160,7 +161,7 @@ char* ajCharNewC(const char* txt)
 
     len = strlen(txt);
     cp = (char*) AJALLOC0(len+1);
-    memcpy(cp, txt, len+1);
+    memmove(cp, txt, len+1);
 
     return cp;
 }
@@ -185,7 +186,7 @@ char* ajCharNewS(const AjPStr str)
     static char* cp;
 
     cp = (char*) AJALLOC0(str->Len+1);
-    memcpy(cp, str->Ptr, str->Len+1);
+    memmove(cp, str->Ptr, str->Len+1);
 
     return cp;
 }
@@ -255,7 +256,7 @@ char* ajCharNewResC(const char* txt, ajuint size)
 	isize = ilen + 1;
 
     cp = (char*) AJALLOC0(isize);
-    memcpy(cp, txt, ilen+1);
+    memmove(cp, txt, ilen+1);
 
     return cp;
 }
@@ -283,7 +284,7 @@ char* ajCharNewResS(const AjPStr str, ajuint size)
 	isize = str->Len + 1;
 
     cp = (char*) AJALLOC0(isize);
-    memcpy(cp, str->Ptr, str->Len+1);
+    memmove(cp, str->Ptr, str->Len+1);
 
     return cp;
 }
@@ -324,7 +325,8 @@ char* ajCharNewResLenC(const char* txt, ajuint size, ajuint len)
 	isize = len + 1;
 
     cp = (char*) AJALLOC0(isize);
-    memcpy(cp, txt, len);
+    if(len)
+        memmove(cp, txt, len);
 
     return cp;
 }
@@ -2022,7 +2024,8 @@ AjPStr ajStrNewResS(const AjPStr str, ajuint size)
 **
 ** @param [r] txt [const char*] Null-terminated character string to initialise
 **        the new string.
-** @param [r] size [ajuint]  Reserved size (including a possible null).
+** @param [r] size [ajuint]  Reserved size, including a trailing null and
+**                           possible space for expansion
 ** @param [r] len [ajuint] Length of txt to save calculation time.
 ** @return [AjPStr] Pointer to a string of the specified size
 **         containing the supplied text.
@@ -2042,7 +2045,7 @@ AjPStr ajStrNewResLenC(const char* txt, ajuint size, ajuint len)
     thys = strNew(minlen);
     thys->Len = len;
     if(txt)
-	memcpy(thys->Ptr, txt, len+1);
+	memmove(thys->Ptr, txt, len+1);
     thys->Ptr[len] = '\0';
 
     return thys;
@@ -2155,9 +2158,11 @@ static AjPStr strNew(ajuint size)
     ret->Use = 1;
     ret->Ptr[0] = '\0';
 
+#ifdef AJ_SAVESTATS
     strAlloc += size;
     strCount++;
     strTotal++;
+#endif
 
     return ret;
 }
@@ -2245,9 +2250,11 @@ void ajStrDel(AjPStr* Pstr)
 	{
 	    AJFREE(thys->Ptr);		/* free the string */
 
+#ifdef AJ_SAVESTATS
 	    strFree += thys->Res;
 	    strFreeCount++;
 	    strCount--;
+#endif
 
 	    thys->Res = 0;	      /* in case of copied pointers */
 	    thys->Len = 0;
@@ -2431,7 +2438,7 @@ AjBool ajStrAssignC(AjPStr* Pstr, const char* txt)
     thys->Len = i;
 
     if(i)
-	memcpy(thys->Ptr, txt, ires);
+	memmove(thys->Ptr, txt, ires);
     else
 	thys->Ptr[0] = '\0';
 
@@ -2525,7 +2532,7 @@ AjBool ajStrAssignS(AjPStr* Pstr, const AjPStr str)
     }
 
     thys->Len = str->Len;
-    memcpy(thys->Ptr, str->Ptr, str->Len+1);
+    memmove(thys->Ptr, str->Ptr, str->Len+1);
 
     return ret;
 }
@@ -2693,7 +2700,7 @@ AjBool ajStrAssignLenC(AjPStr* Pstr, const char* txt, ajuint  len)
 
     thys->Len = len;
     if (len)
-	memcpy(thys->Ptr, txt, len);
+	memmove(thys->Ptr, txt, len);
 
     thys->Ptr[len] = '\0';
 
@@ -2791,7 +2798,7 @@ AjBool ajStrAssignResC(AjPStr* Pstr, ajuint size, const char* txt)
     thys->Len = ilen;
 
     if(ilen)
-	memcpy(thys->Ptr, txt, ilen);
+	memmove(thys->Ptr, txt, ilen);
 
     thys->Ptr[ilen] = '\0';
 
@@ -2841,7 +2848,7 @@ AjBool ajStrAssignResS(AjPStr* Pstr, ajuint size, const AjPStr str)
     if (str)
     {
 	thys->Len = str->Len;
-	memcpy(thys->Ptr, str->Ptr, str->Len);
+	memmove(thys->Ptr, str->Ptr, str->Len);
 	thys->Ptr[str->Len] = '\0';
     }
     else
@@ -2904,7 +2911,7 @@ AjBool ajStrAssignSubC(AjPStr* Pstr, const char* txt, ajint pos1, ajint pos2)
 
     thys->Len = ilen;
     if (ilen)
-	memcpy(thys->Ptr, &txt[ibegin], ilen);
+	memmove(thys->Ptr, &txt[ibegin], ilen);
 
     thys->Ptr[ilen] = '\0';
     return ret;
@@ -2974,7 +2981,7 @@ AjBool ajStrAssignSubS(AjPStr* Pstr, const AjPStr str,
 
     thys->Len = ilen;
     if (ilen)
-	memcpy(thys->Ptr, &str->Ptr[ibegin], ilen);
+	memmove(thys->Ptr, &str->Ptr[ibegin], ilen);
 
     thys->Ptr[ilen] = '\0';
     return ret;
@@ -3148,7 +3155,7 @@ AjBool ajStrAppendS(AjPStr* Pstr, const AjPStr str)
     ret = ajStrSetResRound(Pstr, j);
     thys = *Pstr;			/* possible new location */
 
-    memcpy(thys->Ptr+thys->Len, str->Ptr, str->Len+1);	/* include the null */
+    memmove(thys->Ptr+thys->Len, str->Ptr, str->Len+1);	/* include the null */
     thys->Len += str->Len;
 
     return ret;
@@ -3251,7 +3258,7 @@ AjBool ajStrAppendLenC(AjPStr* Pstr, const char* txt, ajuint len)
     ret = ajStrSetResRound(Pstr, j);
     thys = *Pstr;			/* possible new location */
 
-    memcpy(thys->Ptr+thys->Len, txt, len+1);
+    memmove(thys->Ptr+thys->Len, txt, len+1);
     thys->Len += len;
 
     thys->Ptr[thys->Len] = '\0';
@@ -3310,7 +3317,7 @@ AjBool ajStrAppendSubC(AjPStr* Pstr, const char* txt, ajint pos1, ajint pos2)
     ret = ajStrSetResRound(Pstr, j);
     thys = *Pstr;			/* possible new location */
 
-    memcpy(thys->Ptr+thys->Len, &txt[ibegin], ilen);
+    memmove(thys->Ptr+thys->Len, &txt[ibegin], ilen);
     thys->Len += ilen;
 
     thys->Ptr[thys->Len] = '\0';
@@ -3359,7 +3366,7 @@ AjBool ajStrAppendSubS(AjPStr* Pstr, const AjPStr str, ajint pos1, ajint pos2)
     ret = ajStrSetResRound(Pstr, j);
     thys = *Pstr;			/* possible new location */
 
-    memcpy(thys->Ptr+thys->Len, &str->Ptr[ibegin], ilen);
+    memmove(thys->Ptr+thys->Len, &str->Ptr[ibegin], ilen);
     thys->Len += ilen;
 
     thys->Ptr[thys->Len] = '\0';
@@ -11042,6 +11049,7 @@ void ajStrProbe(AjPStr const * Pstr)
 
 void ajStrStat(const char* title)
 {
+#ifdef AJ_SAVESTATS
     static ajlong statAlloc     = 0;
     static ajlong statCount     = 0;
     static ajlong statFree      = 0;
@@ -11060,6 +11068,7 @@ void ajStrStat(const char* title)
     statFree      = strFree;
     statFreeCount = strFreeCount;
     statTotal     = strTotal;
+#endif
 
     return;
 }
@@ -11202,11 +11211,13 @@ void ajStrTraceTitle(const AjPStr str, const char* title)
 
 void ajStrExit(void)
 {
+#ifdef AJ_SAVESTATS
     ajDebug("String usage (bytes): %Ld allocated, %Ld freed, %Ld in use\n",
 	    strAlloc, strFree,
 	    (strAlloc - strFree));
     ajDebug("String usage (number): %Ld allocated, %Ld freed %Ld in use\n",
 	    strTotal, strFreeCount, strCount);
+#endif
 
     ajCharDel(&strParseCp);
     return;
