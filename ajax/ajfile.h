@@ -43,9 +43,16 @@ extern "C"
 ** @attr List [AjPList] List of file names (first is open)
 ** @attr End [AjBool] True if EOF has been reached
 ** @attr App [AjBool] True if file was opened for append. 
+** @attr Workbuffer [char*] Block as a buffer for fgets etc
+** @attr Readblock [char*] Block as a buffer for fread
+** @attr Blocksize [ajuint] Read block maximum size
+** @attr Blockpos [ajuint] Read block position
+** @attr Blocklen [ajuint] Read block length used
 ** @attr Buff [AjPStr] Buffer for latest line read
-** @attr Pid [pid_t] Process PID if any
+** @attr Buffsize [ajuint] Buffer size (zero for default size)
 ** @attr Handle [ajint] AJAX file number 0 if unused
+** @attr Filepos [ajlong] File offset for start of last read
+** @attr Pid [pid_t] Process PID if any
 ** @@
 ******************************************************************************/
 
@@ -56,10 +63,17 @@ typedef struct AjSFile {
   AjBool End;
   AjBool App;
   AjPStr Buff;
+  char *Workbuffer;
+  char *Readblock;
+  ajuint Blocksize;
+  ajuint Blockpos;
+  ajuint Blocklen;
+  ajuint Buffsize;
+  ajint Handle;
+  ajlong Filepos;
 #ifndef WIN32
   pid_t Pid;
 #endif
-  ajint Handle;
 } AjOFile;
 
 #define AjPFile AjOFile*
@@ -354,6 +368,7 @@ AjPFile     ajFileNewDWE (const AjPStr dir, const AjPStr wildfile,
 AjPFile     ajFileNewF (FILE* file);
 AjPFile     ajFileNewIn (const AjPStr name);
 AjPFile     ajFileNewInC (const char *name);
+    AjPFile     ajFileNewInBlock(const AjPStr name, ajuint blocksize);
 AjPFile     ajFileNewInPipe (const AjPStr name);
 AjPFile     ajFileNewInList (AjPList list);
 AjPFile     ajFileNewOut (const AjPStr name);

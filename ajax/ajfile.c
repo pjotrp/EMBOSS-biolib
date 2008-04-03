@@ -45,7 +45,7 @@
 #include <fcntl.h>
 
 #define FILERECURSLV 20
-static ajuint fileBuffSize = 2048;
+static ajuint fileBuffSize = 2049;
 
 static AjBool fileUsedStdin  = AJFALSE;
 static AjBool fileUsedStdout = AJFALSE;
@@ -492,6 +492,41 @@ AjPFile ajFileNewInPipe(const AjPStr name)
 
 
 
+/* @func ajFileNewInBlock *****************************************************
+**
+** Creates a new file object to read a named file using blocked fread calls
+**
+** If the filename ends with a pipe character then a pipe is opened
+** using ajFileNewInPipe.
+**
+** @param [r] name [const AjPStr] File name.
+** @param [r] blocksize [ajuint] Block size
+** @return [AjPFile] New file object.
+** @category new [AjPFile] Constructor using a filename for an input file
+** @@
+******************************************************************************/
+
+AjPFile ajFileNewInBlock(const AjPStr name, ajuint blocksize)
+{
+    AjPFile ret;
+    ret = ajFileNewIn(name);
+    ret->Blocksize = blocksize;
+    if(blocksize) 
+    {
+        ret->Workbuffer = ajCharNewRes(blocksize);
+        /*setvbuf(ret->fp, ret->Workbuffer, _IOFBF, blocksize);*/
+        ret->Readblock = ajCharNewRes(blocksize+1);
+        ret->Blockpos = 0;
+        ret->Blocklen = 0;
+        ret->Blocksize = blocksize;
+    }
+    ajDebug("ajFileNewInBlock '%S' blocksize:%u\n", name, blocksize);
+    return ret;
+}
+
+
+
+
 /* @func ajFileNewIn **********************************************************
 **
 ** Creates a new file object to read a named file.
@@ -516,7 +551,7 @@ AjPFile ajFileNewIn(const AjPStr name)
     AjPFile ptr;
     
     char   *p = NULL;
-    
+
     ajDebug("ajFileNewIn '%S'\n", name);
     
     if(ajStrMatchC(name, "stdin"))
@@ -592,6 +627,7 @@ AjPFile ajFileNewIn(const AjPStr name)
 
     ajNamResolve(&thys->Name);
     thys->fp = fopen(ajStrGetPtr(thys->Name), "rb");
+    
     if(!thys->fp)
     {
 	ajStrDel(&thys->Name);
@@ -1311,6 +1347,8 @@ static void fileClose(AjPFile thys)
     ajStrDel(&thys->Name);
     ajStrDel(&thys->Buff);
     ajListstrFreeData(&thys->List);
+    AJFREE(thys->Workbuffer);
+    AJFREE(thys->Readblock);
 
     return;
 }
@@ -1930,13 +1968,20 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     ajint ilen;
     ajint jlen;
     ajint ipos;
-
+    ajint buffsize;
+    size_t iread;
+    const char* pnewline = NULL;
+ 
     MAJSTRDEL(pdest);
 
+    buffsize = fileBuffSize;
+    if(thys->Buffsize)
+        buffsize = thys->Buffsize;
+
     if(!thys->Buff)
-      ajStrAssignResC(&thys->Buff, fileBuffSize, "");
-    else if(fileBuffSize > MAJSTRGETRES(thys->Buff))
-      ajStrSetRes(&thys->Buff, fileBuffSize);
+      ajStrAssignResC(&thys->Buff, buffsize, "");
+    else if(buffsize > MAJSTRGETRES(thys->Buff))
+      ajStrSetRes(&thys->Buff, buffsize);
 
     if(MAJSTRGETUSE(thys->Buff) == 1)
       buff = MAJSTRGETPTR(thys->Buff);
@@ -1950,7 +1995,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     if(!thys->fp)
 	ajWarn("ajFileGets file not found");
     
-    *fpos = MAJFILETELL(thys);
+    *fpos = thys->Filepos;
 
     while(buff)
     {
@@ -1963,9 +2008,55 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	
 
 #ifndef __ppc__
-	cp = fgets(&buff[ipos], isize, thys->fp);
+        if(thys->Readblock)
+        {
+            if(thys->Blockpos >= thys->Blocklen)
+            {
+                iread = fread(thys->Readblock,
+                              1, thys->Blocksize,
+                              thys->fp);
+                if(!iread && ferror(thys->fp))
+                    ajFatal("fread failed with error:%d '%s'",
+                            ferror(thys->fp), strerror(ferror(thys->fp)));
+                thys->Blockpos = 0;
+                thys->Blocklen = iread;
+                thys->Readblock[iread] = '\0';
+                /*ajDebug("++ fread %u fpos:%Ld\n", iread, *fpos);*/
+             }
+
+            if(thys->Blockpos < thys->Blocklen)
+            {
+
+                /* we know we have something in Readblock to process */
+
+                pnewline = strchr(&thys->Readblock[thys->Blockpos], '\n');
+                if(pnewline)
+                    jlen = pnewline - &thys->Readblock[thys->Blockpos] + 1;
+                else
+                    jlen = thys->Blocklen - thys->Blockpos;
+                /*ajDebug("ipos:%d jlen:%d pnewline:%p Readblock:%p blockpos:%d blocklen:%d\n",
+                        ipos, jlen, pnewline, thys->Readblock,
+                        thys->Blockpos, thys->Blocklen);*/
+                memmove(&buff[ipos], &thys->Readblock[thys->Blockpos], jlen);
+                buff[ipos+jlen]='\0';
+                cp = &buff[ipos];
+                thys->Blockpos += jlen;
+            }
+            else
+            {
+                jlen = 0;
+                cp = NULL;
+            }
+        }
+        else
+        {
+            cp = fgets(&buff[ipos], isize, thys->fp);
+            jlen = strlen(&buff[ipos]);
+        }
+        
 #else
 	cp = ajSysFuncFgets(&buff[ipos], isize, thys->fp);
+	jlen = strlen(&buff[ipos]);
 #endif
 
         if(!cp && !ipos)
@@ -1981,8 +2072,8 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 		ajFatal("Error reading from file '%s'\n", ajFileName(thys));
 	}
 
-	jlen = strlen(&buff[ipos]);
 	ilen += jlen;
+        thys->Filepos += jlen;
 
 	/*
 	 ** We need to read again if:
@@ -1990,32 +2081,38 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
 	 ** and we don't have a newline at the end
 	 ** (must be careful about that - we may just have read enough)
 	 */
-	if((jlen == (isize-1)) &&
+
+	if(((thys->Readblock && !pnewline) ||(jlen == (isize-1))) &&
 	   (buff[ilen-1] != '\n'))
 	{
-	    ajStrSetResRound(&thys->Buff, ajStrGetRes(thys->Buff)+fileBuffSize);
-	    ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
+            MAJSTRSETVALIDLEN(&thys->Buff, ilen); /* fix before resizing! */
+	    ajStrSetResRound(&thys->Buff, ilen+buffsize+1);
+	    /*ajDebug("more to do: jlen: %d ipos: %d isize: %d ilen: %d "
 		    "Size: %d\n",
-		    jlen, ipos, isize, ilen, ajStrGetRes(thys->Buff));
+		    jlen, ipos, isize, ilen, ajStrGetRes(thys->Buff));*/
 	    ipos += jlen;
 	    buff = ajStrGetuniquePtr(&thys->Buff);
 	    isize = ajStrGetRes(thys->Buff) - ipos;
-	    ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
-		    ipos, isize, ajStrGetRes(thys->Buff));
-
+	    /*ajDebug("expand to: ipos: %d isize: %d Size: %d\n",
+              ipos, isize, ajStrGetRes(thys->Buff));*/
 	}
 	else
 	    buff = NULL;
     }
     
-    ajStrSetValidLen(&thys->Buff, ilen);
+    MAJSTRSETVALIDLEN(&thys->Buff, ilen);
     if (ajStrGetCharLast(thys->Buff) != '\n')
     {
-	ajDebug("Appending missing newline to '%S'\n", thys->Buff);
+	/*ajDebug("Appending missing newline to '%S'\n", thys->Buff);*/
 	ajStrAppendK(&thys->Buff, '\n');
     }
     ajStrAssignRef(pdest, thys->Buff);
 
+/*
+  if(thys->Readblock)
+        ajDebug("ajFileGetsL done blocklen:%d blockpos:%d readlen:%u\n",
+                thys->Blocklen, thys->Blockpos, ajStrGetLen(thys->Buff));
+*/
     return ajTrue;
 }
 
@@ -2374,6 +2471,7 @@ AjBool ajFileGetwd(AjPStr* dir)
 
 /* @func ajFileDirUp **********************************************************
 **
+1
 ** Changes directory name to one level up
 **
 ** @param [u] dir [AjPStr*] Directory name.
@@ -3330,7 +3428,7 @@ AjPFileBuff ajFileBuffNewDW(const AjPStr dir, const AjPStr wildfile)
 **
 ** Opens directory "dir"
 ** Looks for file(s) matching "file"
-** Skip files natching excluded files wildcard
+** Skip files matching excluded files wildcard
 ** Opens them as a list of files using a buffered file object.
 **
 ** @param [r] dir [const AjPStr] Directory
@@ -3578,7 +3676,7 @@ AjPFile ajFileNewDW(const AjPStr dir, const AjPStr wildfile)
 **
 ** Opens directory "dir"
 ** Looks for file(s) matching "file"
-** Skip files natching excluded files wildcard
+** Skip files matching excluded files wildcard
 ** Opens them as a list of files using a simple file object.
 **
 ** @param [r] dir [const AjPStr] Directory
@@ -5508,7 +5606,7 @@ ajint ajFileScan(const AjPStr path, const AjPStr filename, AjPList *result,
 	    
 	    if(show)
 		ajFmtPrintF(outf,"  %s\n",dp->d_name);
-	    ajDebug("  %s\n",dp->d_name);
+	    /*ajDebug("  %s\n",dp->d_name);*/
 	}
     }
     closedir(indir);
