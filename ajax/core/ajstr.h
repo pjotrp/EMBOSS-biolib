@@ -226,6 +226,10 @@ AjBool     ajStrAssignSubC(AjPStr* Pstr, const char* txt,
 AjBool     ajStrAssignSubS(AjPStr* Pstr, const AjPStr str,
 			  ajint pos1, ajint pos2);
 
+#define MAJSTRASSIGNCLEAR(Pstr) if((*Pstr) && (*Pstr)->Use == 1)        \
+    {(*Pstr)->Ptr[0]='\0';(*Pstr)->Len=0;} else {ajStrAssignClear(Pstr);}
+    
+    
 /* combination */
 
 AjBool     ajStrAppendC(AjPStr* Pstr, const char* txt);
@@ -371,6 +375,8 @@ AjBool     ajStrSetRes(AjPStr* Pstr, ajuint size);
 AjBool     ajStrSetResRound(AjPStr* Pstr, ajuint size);
 AjBool     ajStrSetValid(AjPStr *Pstr);
 AjBool     ajStrSetValidLen(AjPStr* Pstr, ajuint len);
+
+#define MAJSTRSETVALIDLEN(Pstr,len) (*Pstr)->Len = len
 
 /* string to datatype conversion functions */
 
