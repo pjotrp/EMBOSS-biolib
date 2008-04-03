@@ -1,4 +1,64 @@
 Version 5.1.0
+	In emboss.default database definitions the filename and exclude
+	values can be delimited by spaces, commas or semicolons. Previous
+	releases used only spaces. Parsing is now consistent with the
+	fields definition which allowed all the above characters.
+
+	Protein sequences with pyrrolysine ('O') had 'O' converted to a
+	gap because this was a gap character in early versions of
+	Phylip. This was patched in 5.0.0 to allow 'O' in UniProt release
+	13. The gap character is upper case only, so 'o' was correctly
+	read as pyrrolysine.
+
+	Wordfinder used the same descriptions for two pairs of qualifiers.
+	The descriptions are changed to make their meaning clear in
+	commandline help and in web interfaces.
+
+	New function ajTimeDiff returns the difference in seconds between
+	two time values.
+
+	Profiling tests showed that file reading and string handling can
+	be made faster. String handling called functions many levels
+	deep. Making this code inline and using macro versions improved
+	performance for applications (e.g. database indexing) that use
+	many string calls. File input requires each input line to be
+	copied. Using copy-by-reference (ajStrAssignRef) often makes this
+	more efficient. Existing macros now test for undefined strings:
+	MAJSTRGETLEN, MAJSTRGETPTR, MAJSTRGETRES and MAJSTRGETUSE. New
+	macros are added for string handling: MAJSTRDEL,
+	MAJSTRGETUNIQUESTR, MAJSTRCMPC and MAJSTRCMPS.
+
+	Memory management includes new macros AJCRESIZE0 and AJRESIZE0
+	provide resize functions that guarantee new memory is set to
+	zero. The functions must be given the original allocated size.
+
+	Using the GNU C run-time library, calls to mcheck and mprobe are
+	available to test for memory corruption by examining the bytes
+	before and after an address allocated by malloc. This can be
+	turned on for any application, including Unix commands, with the
+	environment variable MALLOC_CHECK_ which has values 0, 1, 2 or
+	3. 1 writes to standard error when a problem is found, 2 aborts
+	the programs, 3 does both and 0 ignores errors. No recompilation
+	is needed for this simple method. EMBOSS now has a ./configure
+	option --enable-mprobe which enables two new
+	functions. ajMemProbe, passed an address from malloc (AJNEW0,
+	AJCNEW0, etc.) tests the bytes before and after and reports any
+	errors. The advantage of using ajMemProbe rather than mprobe is
+	that a macro MAJMEMPROBE also reports the file and line number
+	where ist was called. To avoid large numbers of messages (when
+	code has problems) a limit can be set with ajMemCheckSetLimit
+	after which the program will exit. Note that enable-mprobe is
+	incompatible with using valgrind to test for memory leaks - as
+	mprobe and mcheck have to look at illegal bytes before and after
+	allocated memory blocks. Memory checking is turned on by a call to
+	mcheck, passing the function ajMemCheck, in ajnam.c before the
+	first memory allocation. If any program calls malloc before
+	calling embInit or embInitP this call will fail and issue a
+	warning (if compiled with --enable-mprobe). A special call
+	ajStrProbe tests any string with mprobe. Special calls ajListProbe
+	and ajListProbeData test lists and their contents. For more
+	details see http://www.gnu.org/software/libc/manual/
+
 	Protein sequences from the Staden package were read as nucleotide
 	because they were missing information on the ID line to identify
 	EMBL of SWISSPROT format. The sequences are now tested and
