@@ -1,6 +1,6 @@
 # some simple testing stuff
 
-SET emboss_qadata /homes/pmr/cvsemboss/test
+SET emboss_qadata /homes/pmr/profemboss/test
 SET emboss_tempdata /homes/pmr/local/share/EMBOSS/test
 
 # Standard date for test runs - set to the date of the release
@@ -39,14 +39,6 @@ DB tswnew [ type: P dir: $emboss_tempdata/swnew
    method: emblcd format: swiss release: 37 
    fields: "sv des org key"
    comment: "SpTrEmbl as 3 files in native format with EMBL CD-ROM index" ]
-
-# wormpep
-# =======
-
-DB twp [ type: P dir: $emboss_tempdata/wormpep
-   method: emblcd format: fasta release: 16 
-   fields: "des"
-   comment: "EMBL new in native format with EMBL CD-ROM index" ]
 
 # embl
 # ====
@@ -480,6 +472,13 @@ DB temblrest [ type: N dir: "$emboss_tempdata/embl"
    filename: "*.dat"
    exclude: "hum*.dat rod*.dat vrt*.dat"
 ]
+
+# cache and page sizes for dbx indexing ... matching the default values
+
+SET emboss_pagesize 2048
+SET emboss_cachesize 100
+
+# dummy resource names for dbx indexing to use the default values
 
 RES emblresource [ type: "Index" ]
 RES swnewresource [ type: "Index" ]
