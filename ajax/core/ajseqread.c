@@ -9526,7 +9526,7 @@ static AjBool seqQueryFieldC(const AjPSeqQuery qry, const char* field)
     AjPStr token     = NULL;
 
     ajDebug("seqQueryFieldC usa '%s' fields '%S'\n", field, qry->DbFields);
-    ajStrTokenAssignC(&handle, qry->DbFields, " ");
+    ajStrTokenAssignC(&handle, qry->DbFields, "\t ,;\n\r");
     while(ajStrTokenNextParse(&handle, &token))
     {
 	ajDebug("seqQueryField test '%S'\n", token);
