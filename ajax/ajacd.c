@@ -1396,7 +1396,7 @@ AcdOAttr acdAttrDistances[] =
 	 "Number of rows"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
-    {"missval", VT_INT, 0, "N",
+    {"missval", VT_BOOL, 0, "N",
 	 "Can have missing values (replicates zero)"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
@@ -2574,7 +2574,7 @@ AcdOQual acdQualOuttree[] =
 AcdOQual acdQualPattern[] =
 {
     {"pformat",    "",  "string",  "File format"},
-    {"pmismatch",  "",  "integer", "Pattern mismatch"},
+    {"pmismatch", "0",  "integer", "Pattern mismatch"},
     {"pname",      "",  "string",  "Pattern base name"},
     {NULL, NULL, NULL, NULL}
 };
@@ -22897,7 +22897,7 @@ static void acdListPrompt(const AcdPAcd thys)
     AjPStr line = NULL;
     AjPStr code = NULL;
     AjPStr desc = NULL;
-    ajint margin = 8;
+    ajuint margin = 8;
 
     static const char* white = " \t\n\r";
 
