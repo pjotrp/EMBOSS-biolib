@@ -3926,16 +3926,17 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	{
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "ACCESSION  ");
+		ajFmtPrintF(outseq->File, "ACCESSION   ");
 		ilen = 11;
 	    }
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
-		ajFmtPrintF(outseq->File, "\n           ");
+		ajFmtPrintF(outseq->File, "\n            ");
 		ilen = 11;
 	    }
 
-            ajFmtPrintF(outseq->File, " ");
+            if(ilen > 11)
+                ajFmtPrintF(outseq->File, " ");
             ilen += 1;
 
 	    ajFmtPrintF(outseq->File, "%S", cur);
@@ -3965,16 +3966,17 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	{
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "KEYWORDS   ");
+		ajFmtPrintF(outseq->File, "KEYWORDS    ");
 		ilen = 11;
 	    }
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n           ");
+		ajFmtPrintF(outseq->File, ";\n            ");
 		ilen = 11;
 	    }
 
-            ajFmtPrintF(outseq->File, "; ");
+            if(ilen > 11)
+                ajFmtPrintF(outseq->File, "; ");
             ilen += 2;
 
 	    ajFmtPrintF(outseq->File, "%S", cur);
