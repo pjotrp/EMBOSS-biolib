@@ -1,4 +1,16 @@
 Version 5.1.0
+	In GenBank output format, multiple line KEYWORD sections were not
+	formatted correctly.
+
+	ACD list and select values (the menus that appear in the user
+	prompt) can now have ACD variables. Although useful for local
+	application development these are not used in EMBOSS distributed
+	ACD files because the variables are difficult for web and GUI
+	interfaces to resolve when presenting the menu text.
+
+	List and Table internal data structures are now cached so that
+	creating and deleting temporary lists and tables is more efficient.
+
 	In emboss.default database definitions the filename and exclude
 	values can be delimited by spaces, commas or semicolons. Previous
 	releases used only spaces. Parsing is now consistent with the
