@@ -634,6 +634,23 @@ __deprecated AjBool ajTimeLocal(const time_t timer, AjPTime thys)
 }
 
 
+/* @section comparison ********************************************************
+**
+** Functions for comparing time objects.
+**
+** @fdata [AjPTime]
+**
+** @nam3rule  Diff  Return time difference.
+**
+** @argrule   *   thys [const AjPTime] Time object.
+** @argrule   *   newtime [const AjPTime] Later time object.
+** 
+** @valrule   Diff  [double] Time difference in seconds
+** @fcategory use
+**
+******************************************************************************/
+
+
 /* @func ajTimeDiff ***********************************************************
 **
 ** Difference between two time objects
