@@ -22851,7 +22851,8 @@ static void acdSelectPrompt(const AcdPAcd thys)
     if(!ajStrGetLen(delim))
 	ajStrAssignC(&delim, ";");
 
-    ajStrAssignS(&value, acdAttrValue(thys, "value"));
+    ajStrAssignS(&value, acdAttrValue(thys, "values"));
+    acdVarResolve(&value);
     if(!ajStrGetLen(value))
 	if(!acdKnownValueSelect(thys, &value))
 	    acdError("No value defined for selection");
@@ -22896,6 +22897,7 @@ static void acdListPrompt(const AcdPAcd thys)
     AjPStr line = NULL;
     AjPStr code = NULL;
     AjPStr desc = NULL;
+    ajint margin = 8;
 
     static const char* white = " \t\n\r";
 
@@ -22918,7 +22920,8 @@ static void acdListPrompt(const AcdPAcd thys)
 	ajStrAssignC(&codedelim, ":");
     }
 
-    ajStrAssignS(&value, acdAttrValue(thys, "value"));
+    ajStrAssignS(&value, acdAttrValue(thys, "values"));
+    acdVarResolve(&value);
     if(!ajStrGetLen(value))
 	if(!acdKnownValueList(thys, &value))
 	    acdError("No value defined for list");
@@ -22928,10 +22931,21 @@ static void acdListPrompt(const AcdPAcd thys)
     {
 	codehandle = ajStrTokenNewS(line, codedelim);
 	ajStrTokenNextParse(&codehandle, &code);
+	ajStrTrimC(&code, white);
+        if(ajStrGetLen(code) > margin)
+            margin = ajStrGetLen(code);
+	ajStrTokenDel(&codehandle);
+    }
+
+    ajStrTokenAssignS(&handle, value, delim);
+    while(ajStrTokenNextFind(&handle, &line))
+    {
+	codehandle = ajStrTokenNewS(line, codedelim);
+	ajStrTokenNextParse(&codehandle, &code);
 	ajStrTokenNextParseS(&codehandle, delim, &desc);
 	ajStrTrimC(&code, white);
 	ajStrTrimC(&desc, white);
-	ajUser("  %8S : %S", code, desc);
+	ajUser("  %*S : %S", margin, code, desc);
 	ajStrTokenDel(&codehandle);
     }
 
@@ -23013,7 +23027,8 @@ static AjPStr* acdListValue(const AcdPAcd thys, ajint min, ajint max,
 	ajStrAssignC(&repdelim, ",");
     }
     
-    ajStrAssignS(&value,acdAttrValue(thys, "value"));
+    ajStrAssignS(&value,acdAttrValue(thys, "values"));
+    acdVarResolve(&value);
     if(!ajStrGetLen(value))
 	if(!acdKnownValueList(thys, &value))
 	    acdError("No value defined for list");
@@ -23235,7 +23250,8 @@ static AjPStr* acdSelectValue(const AcdPAcd thys, ajint min, ajint max,
 	ajStrAssignC(&repdelim, ",");
     }
     
-    ajStrAssignS(&value, acdAttrValue(thys, "value"));
+    ajStrAssignS(&value, acdAttrValue(thys, "values"));
+    acdVarResolve(&value);
     if(!ajStrGetLen(value))
 	if(!acdKnownValueSelect(thys, &value))
 	    acdError("No value defined for selection");
