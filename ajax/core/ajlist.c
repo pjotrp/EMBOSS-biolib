@@ -49,15 +49,18 @@
 
 #include "ajax.h"
 
+#ifdef AJ_SAVESTATS
 static ajint listNewCnt     = 0;
 static ajint listDelCnt     = 0;
 static ajuint listMaxNum     = 0;
 static ajint listNodeCnt    = 0;
 static ajint listIterNewCnt = 0;
 static ajint listIterDelCnt = 0;
+#endif
 
-
-
+static ajint listFreeNext = 0;
+static ajint listFreeMax = 0;
+static AjPListNode* listFreeSet = NULL;
 
 static AjPList listNew(AjEnum type);
 static void listInsertNode(AjPListNode * pnode, void* x);
@@ -66,7 +69,10 @@ static void listNodesTrace(const AjPListNode node);
 static AjBool listNodeDel(AjPListNode * pnode);
 static void* listNodeItem(const AjPListNode node);
 static void listArrayTrace(void** array);
+static void listFreeSetExpand (void);
 
+   
+  
 
 /* @filesection ajlist *********************************************************
 **
@@ -212,8 +218,10 @@ static AjPList listNew(AjEnum type)
 
     list->Last = listDummyNode(&list->First);
 
+#ifdef AJ_SAVESTATS
     listNodeCnt--;			/* dummy */
     listNewCnt++;
+#endif
 
     return list;
 }
@@ -233,7 +241,11 @@ static void listInsertNode(AjPListNode * pnode, void* x)
 {
     AjPListNode p;
 
-    AJNEW0(p);
+    if(listFreeNext)
+        p = listFreeSet[--listFreeNext];
+    else
+        AJNEW0(p);
+    
     p->Item = x;
     p->Next = (*pnode);
     p->Prev = (*pnode)->Prev;
@@ -242,7 +254,9 @@ static void listInsertNode(AjPListNode * pnode, void* x)
 
     *pnode = p;
 
+#ifdef AJ_SAVESTATS
     listNodeCnt++;
+#endif
 
     return;
 }
@@ -261,9 +275,19 @@ static void listInsertNode(AjPListNode * pnode, void* x)
 
 static AjPListNode listDummyNode(AjPListNode *pnode)
 {
-    AJNEW0(*pnode);
+    if(listFreeNext)
+    {
+        *pnode = listFreeSet[--listFreeNext];
+        (*pnode)->Item = NULL;
+        (*pnode)->Prev = NULL;
+        (*pnode)->Next = NULL;
+    }
+    else
+        AJNEW0(*pnode);
 
+#ifdef AJ_SAVESTATS
     listNodeCnt++;
+#endif
 
     return *pnode;
 }
@@ -311,8 +335,10 @@ void ajListPush(AjPList list, void* x)
     if(!list->Count++)
 	list->Last->Prev = list->First;
 
+#ifdef AJ_SAVESTATS
     if(list->Count > listMaxNum)
 	listMaxNum = list->Count;
+#endif
 
     return;
 }
@@ -354,8 +380,11 @@ void ajListPushAppend(AjPList list, void* x)
     list->Last->Prev = tmp;
 
     list->Count++;
+
+#ifdef AJ_SAVESTATS
     if(list->Count > listMaxNum)
 	listMaxNum = list->Count;
+#endif
 
     return;
 }
@@ -401,15 +430,23 @@ void ajListPushlist(AjPList list, AjPList* Plist)
 	    list->Last = more->Last;
 	}
 
-	AJFREE(list->First);
+        if(listFreeNext >= listFreeMax)
+            listFreeSetExpand();
+        if(listFreeNext >= listFreeMax)
+            AJFREE(list->First);
+        else if(list->First)
+            listFreeSet[listFreeNext++] = list->First;
+        
 	list->First = more->First;
 	list->Count += more->Count;
 	list->First->Prev = NULL;
 	more->First = NULL;
 	more->Count=0;
 
+#ifdef AJ_SAVESTATS
 	if(list->Count > listMaxNum)
 	    listMaxNum = list->Count;
+#endif
     }
 
     ajListFree(Plist);	/* free the list but not the nodes */
@@ -916,6 +953,32 @@ __deprecated void ajListUnique(AjPList list,
 **
 ******************************************************************************/
 
+/* @funcstatic listFreeSetExpand ***********************************************
+**
+** Expand the list of free nodes
+**
+** @return [void]
+******************************************************************************/
+
+static void listFreeSetExpand (void)
+{
+    ajint newsize;
+    if(!listFreeSet)
+    {
+        listFreeMax = 1024;
+        AJCNEW0(listFreeSet,listFreeMax);
+        return;
+    }
+    if(listFreeMax >= 65536)
+        return;
+    newsize = listFreeMax + listFreeMax;
+    AJCRESIZE0(listFreeSet, listFreeMax, newsize);
+    listFreeMax = newsize;
+    return;
+}
+
+    
+    
 /* @func ajListPop ************************************************************
 **
 ** remove the first node but set pointer to data first.
@@ -928,9 +991,13 @@ __deprecated void ajListUnique(AjPList list,
 
 AjBool ajListPop(AjPList list, void** x)
 {
-    if(!list)
+    if(!list) 
+    {
+        if(x)
+            *x = NULL;
 	return ajFalse;
-
+    }
+    
     if(x)
 	*x = listNodeItem(list->First);
 
@@ -961,7 +1028,12 @@ AjBool ajListPopLast(AjPList list, void** x)
     AjPListNode pthis = NULL;
 
     if(!list)
+    {
+        if(x)
+            *x = NULL;
 	return ajFalse;
+    }
+    
 
     if(!list->Count)
 	return ajFalse;
@@ -975,15 +1047,32 @@ AjBool ajListPopLast(AjPList list, void** x)
     if(list->Count==1)
     {
 	list->Last->Prev = NULL;
-	AJFREE(list->First);
+        if(listFreeNext >= listFreeMax)
+            listFreeSetExpand();
+        if(listFreeNext >= listFreeMax)
+            AJFREE(list->First);
+        else if(list->First)
+            listFreeSet[listFreeNext++] = list->First;
+        
 	list->First = list->Last;
     }
     else
     {
 	pthis->Prev->Next = list->Last;
 	list->Last->Prev = pthis->Prev;
-	AJFREE(pthis);
+	list->Last->Prev = NULL;
+        if(listFreeNext >= listFreeMax)
+            listFreeSetExpand();
+        if(listFreeNext >= listFreeMax)
+            AJFREE(pthis);
+        else if(pthis)
+        {
+            listFreeSet[listFreeNext++] = pthis;
+            pthis = NULL;
+        }
+        
     }
+    
 
 
     --list->Count;
@@ -1593,8 +1682,10 @@ __deprecated void ajListAppend(AjPList list, AjPListNode* morenodes)
     {				/* need to get to the end of the list */
 	more = more->Next;
 	list->Count++;
+#ifdef AJ_SAVESTATS
 	if(list->Count > listMaxNum)
 	    listMaxNum = list->Count;
+#endif
     }
 
     list->Last = more;		/* now we can set the end of the list */
@@ -1670,7 +1761,9 @@ void ajListFree(AjPList* Plist)
     if(!*Plist)
 	return;
 
+#ifdef AJ_SAVESTATS
     listDelCnt++;
+#endif
 
     list = *Plist;
     rest = &list->First;
@@ -1681,10 +1774,27 @@ void ajListFree(AjPList* Plist)
 	for( ; (*rest)->Next; *rest = next)
 	{
 	    next = (*rest)->Next;
-	    AJFREE(*rest);
+            if(listFreeNext >= listFreeMax)
+                listFreeSetExpand();
+            if(listFreeNext >= listFreeMax)
+                AJFREE(*rest);
+            else if(*rest)
+            {
+                listFreeSet[listFreeNext++] = *rest;
+                *rest = NULL;
+            }
 	}
 
-    AJFREE(*rest);
+    if(listFreeNext >= listFreeMax)
+        listFreeSetExpand();
+    if(listFreeNext >= listFreeMax)
+        AJFREE(*rest);
+    else if(*rest)
+    {
+        listFreeSet[listFreeNext++] = *rest;
+        *rest = NULL;
+    }
+    
     AJFREE(*Plist);
 
     return;
@@ -1716,7 +1826,9 @@ void ajListFreeData(AjPList* Plist)
     if(!*Plist)
 	return;
 
+#ifdef AJ_SAVESTATS
     listDelCnt++;
+#endif
 
     list = *Plist;
     rest = &list->First;
@@ -1731,12 +1843,29 @@ void ajListFreeData(AjPList* Plist)
 	{
 	    AJFREE((*rest)->Item);
 	    next = (*rest)->Next;
-	    AJFREE(*rest);
-	}
+            if(listFreeNext >= listFreeMax)
+                listFreeSetExpand();
+            if(listFreeNext >= listFreeMax)
+                AJFREE(*rest);
+            else if(*rest)
+            {
+                listFreeSet[listFreeNext++] = *rest;
+                *rest = NULL;
+            }
+        }
 	AJFREE((*rest)->Item);
     }
 
-    AJFREE(*rest);
+    if(listFreeNext >= listFreeMax)
+        listFreeSetExpand();
+    if(listFreeNext >= listFreeMax)
+        AJFREE(*rest);
+    else if(*rest)
+    {
+        listFreeSet[listFreeNext++] = *rest;
+        *rest = NULL;
+    }
+
     AJFREE(*Plist);
 
     return;
@@ -1759,7 +1888,9 @@ __deprecated void ajListDel(AjPList* Plist)
     if(!*Plist)
 	return;
 
+#ifdef AJ_SAVESTATS
     listDelCnt++;
+#endif
 
     list = *Plist;
     rest = &list->First;
@@ -1768,10 +1899,27 @@ __deprecated void ajListDel(AjPList* Plist)
 	for( ; (*rest)->Next; *rest = next)
 	{
 	    next = (*rest)->Next;
-	    AJFREE(*rest);
-	}
+            if(listFreeNext >= listFreeMax)
+                listFreeSetExpand();
+            if(listFreeNext >= listFreeMax)
+                AJFREE(*rest);
+            else if(*rest)
+            {
+                listFreeSet[listFreeNext++] = *rest;
+                *rest = NULL;
+            }
+        }
 
-    AJFREE(*rest);
+    if(listFreeNext >= listFreeMax)
+        listFreeSetExpand();
+    if(listFreeNext >= listFreeMax)
+        AJFREE(*rest);
+    else if(*rest)
+    {
+        listFreeSet[listFreeNext++] = *rest;
+        *rest = NULL;
+    }
+
     AJFREE(*Plist);
 
     return;
@@ -1782,7 +1930,7 @@ __deprecated void ajListDel(AjPList* Plist)
 
 /* @funcstatic listNodeDel ****************************************************
 **
-** Remove a first node from the list.
+** Remove a node from the list.
 **
 ** @param [d] pnode  [AjPListNode*] Current node.
 ** @return [AjBool] ajTrue on success.
@@ -1802,7 +1950,14 @@ static AjBool listNodeDel(AjPListNode * pnode)
     tmp = node->Prev;
     node = node->Next;
     node->Prev = tmp;
-    AJFREE(*pnode);
+
+    if(listFreeNext >= listFreeMax)
+        listFreeSetExpand();
+    if(listFreeNext >= listFreeMax)
+        AJFREE(*pnode);
+    else if(*pnode)
+        listFreeSet[listFreeNext++] = *pnode;
+ 
     *pnode = node;
 
     return ajTrue;
@@ -1873,11 +2028,25 @@ void ajListUnused(void** array)
 
 void ajListExit(void)
 {
+    ajuint i;
+
+#ifdef AJ_SAVESTATS
     ajDebug("List usage : %d opened, %d closed, %d maxsize %d nodes\n",
 	     listNewCnt, listDelCnt, listMaxNum, listNodeCnt);
     ajDebug("List iterator usage : %d opened, %d closed\n",
 	     listIterNewCnt, listIterDelCnt);
+#endif
+    if(listFreeNext)
+        for(i=0;i<listFreeNext;i++)
+            AJFREE(listFreeSet[i]);
 
+            
+    if(listFreeSet) 
+        AJFREE(listFreeSet);
+
+    listFreeNext = 0;
+    listFreeMax = 0;
+    
     return;
 }
 
@@ -1941,7 +2110,9 @@ AjIList ajListIterNew(AjPList list)
     iter->Orig = list->First;
     iter->Modify = ajTrue;
 
+#ifdef AJ_SAVESTATS
     listIterNewCnt++;
+#endif
 
     return iter;
 }
@@ -1987,7 +2158,9 @@ AjIList ajListIterNewBack(AjPList list)
     iter->Here = tmp->Next;
     iter->Modify = ajTrue;
 
+#ifdef AJ_SAVESTATS
     listIterNewCnt++;
+#endif
 
     return iter;
 }
@@ -2027,7 +2200,9 @@ AjIList ajListIterNewread(const AjPList list)
     iter->Orig = list->First;
     iter->Modify = ajFalse;
 
+#ifdef AJ_SAVESTATS
     listIterNewCnt++;
+#endif
 
     return iter;
 }
@@ -2073,7 +2248,9 @@ AjIList ajListIterNewreadBack(const AjPList list)
     iter->Here = tmp->Next;
     iter->Modify = ajFalse;
 
+#ifdef AJ_SAVESTATS
     listIterNewCnt++;
+#endif
 
     return iter;
 }
@@ -2217,7 +2394,9 @@ void ajListIterDel(AjIList* iter)
 {
     AJFREE(*iter);
 
+#ifdef AJ_SAVESTATS
     listIterDelCnt++;
+#endif
 
     return;
 }
@@ -2416,8 +2595,10 @@ void ajListIterInsert(AjIList iter, void* x)
     }
 
     list->Count++;
+#ifdef AJ_SAVESTATS
     if(list->Count > listMaxNum)
 	listMaxNum = list->Count;
+#endif
 
     /*ajListTrace(list);*/
     /*ajListIterTrace(iter);*/
@@ -2918,15 +3099,31 @@ AjBool ajListstrPopLast(AjPList list, AjPStr *Pstr)
     if(list->Count==1)
     {
 	list->Last->Prev = NULL;
-	AJFREE(list->First);
+        if(listFreeNext >= listFreeMax)
+            listFreeSetExpand();
+        if(listFreeNext >= listFreeMax)
+            AJFREE(list->First);
+        else if(list->First)
+            listFreeSet[listFreeNext++] = list->First;
+        
 	list->First = list->Last;
     }
     else
     {
 	pthis->Prev->Next = list->Last;
 	list->Last->Prev = pthis->Prev;
-	AJFREE(pthis);
+        if(listFreeNext >= listFreeMax)
+            listFreeSetExpand();
+        if(listFreeNext >= listFreeMax)
+            AJFREE(pthis);
+        else if(pthis)
+        {
+            listFreeSet[listFreeNext++] = pthis;
+            pthis = NULL;
+        }
     }
+
+    
 
 
     --list->Count;
@@ -3386,7 +3583,9 @@ void ajListstrFreeData(AjPList* Plist)
     if(!*Plist)
 	return;
 
+#ifdef AJ_SAVESTATS
     listDelCnt++;
+#endif
 
     list = *Plist;
     rest = &list->First;
@@ -3398,13 +3597,30 @@ void ajListstrFreeData(AjPList* Plist)
 	{
 	    next = (*rest)->Next;
 	    ajStrDel((AjPStr*) &(*rest)->Item);
-	    AJFREE(*rest);
+            if(listFreeNext >= listFreeMax)
+                listFreeSetExpand();
+            if(listFreeNext >= listFreeMax)
+                AJFREE(*rest);
+            else if(*rest)
+            {
+                listFreeSet[listFreeNext++] = *rest;
+                *rest=NULL;
+            }
 	}
 	ajStrDel((AjPStr*) &(*rest)->Item);
     }
 
 
-    AJFREE(*rest);
+    if(listFreeNext >= listFreeMax)
+        listFreeSetExpand();
+    if(listFreeNext >= listFreeMax)
+        AJFREE(*rest);
+    else if(*rest)
+    {
+        listFreeSet[listFreeNext++] = *rest;
+        *rest = NULL;
+    }
+    
     AJFREE(*Plist);
 
     return;
@@ -3586,8 +3802,10 @@ void ajListstrIterInsert(AjIList iter, AjPStr str)
     }
 
     list->Count++;
+#ifdef AJ_SAVESTATS
     if(list->Count > listMaxNum)
 	listMaxNum = list->Count;
+#endif
 
     ajListstrTrace(list);
     ajListstrIterTrace(iter);
