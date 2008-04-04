@@ -43,6 +43,7 @@ extern "C"
 ** @attr List [AjPList] List of file names (first is open)
 ** @attr End [AjBool] True if EOF has been reached
 ** @attr App [AjBool] True if file was opened for append. 
+** @attr Buff [AjPStr] File block read buffer
 ** @attr Workbuffer [char*] Block as a buffer for fgets etc
 ** @attr Readblock [char*] Block as a buffer for fread
 ** @attr Blocksize [ajuint] Read block maximum size
