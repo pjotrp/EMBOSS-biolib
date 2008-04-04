@@ -130,6 +130,7 @@ static ajlong strTotal     = 0;
 **
 ** @nam3rule  New     Construct a new string.
 ** @nam4rule  NewRes  Minimum reserved size.
+** @nam3rule  Null    Return an internal empty string
 **
 ** @argrule   C       txt [const char*] C character string
 ** @argrule   S       str [const AjPStr] Text string
@@ -10994,7 +10995,7 @@ __deprecated const AjPStr  ajStrTok(const AjPStr str)
 ** @nam4rule   TraceFull        All characters in detail
 ** @nam4rule   TraceTitle        With title text
 **
-** @argrule Probe Pstr [AjPStr const *] String
+** @argrule Probe Pstr [AjPStr const*] String
 ** @argrule Stat title [const char*] Report title
 ** @argrule Trace str [const AjPStr] String
 ** @argrule TraceTitle title [const char*] Report title
