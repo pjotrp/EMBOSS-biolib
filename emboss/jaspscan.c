@@ -106,7 +106,7 @@ typedef struct AjSJspHits {
 ** @attr comment [AjPStr] comment
 ** @attr erttss [AjPStr] End relative to TSS
 ** @attr srttss [AjPStr] Start relative to TSS
-** @attr consensus [AjPStr] Consensus
+** @attr consens [AjPStr] Consensus
 ** @attr type [char] Type of Jaspar database (C,F or P)
 ** @attr Padding [char[7]] padding to alignment boundary
 ** @@

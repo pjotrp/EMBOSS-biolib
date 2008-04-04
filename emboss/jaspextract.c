@@ -51,12 +51,12 @@ static void jaspextract_check(const AjPStr directory, AjPList dlist);
 static void jaspextract_copy(AjPList dlist);
 
 static void jaspextract_jddel(JaspPDir *thys);
-static JaspPDir jaspextract_jdnew();
+static JaspPDir jaspextract_jdnew(void);
 
 
 
 
-static char *jdirnames[] = {
+static const char *jdirnames[] = {
     "JASPAR_CORE",
     "JASPAR_FAM",
     "JASPAR_PHYLOFACTS",
@@ -173,7 +173,7 @@ static void jaspextract_check(const AjPStr directory, AjPList dlist)
 **
 ** Copy datafile into the EMBOSS  data area
 **
-** @param [r] dlist [AjPList] jaspar directory list
+** @param [u] dlist [AjPList] jaspar directory list
 **
 ** @return [void]
 ** @@
@@ -258,7 +258,7 @@ static void jaspextract_copy(AjPList dlist)
 ** @@
 ******************************************************************************/
 
-static JaspPDir jaspextract_jdnew()
+static JaspPDir jaspextract_jdnew(void)
 {
     JaspPDir ret = NULL;
 
