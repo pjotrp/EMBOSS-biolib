@@ -1364,7 +1364,7 @@ static void btreeWriteBucket(AjPBtcache cache, const AjPBucket bucket,
     {
 	id = bucket->Ids[i];
 	len = BT_BUCKIDLEN(id->id);
-	if((lptr-buf+1) + (len+1+BT_DDOFFROFF) > cache->pagesize) /* overflow */
+	if((lptr-buf+1) + (len+1+BT_DDOFFROFF) > (ajuint) cache->pagesize) /* overflow */
 	{
     	    ajDebug("WriteBucket: Overflow\n");
 	    if(!overflow)		/* No overflow buckets yet */
