@@ -27,10 +27,8 @@ section: advanced [
 ]
 
   boolean: firstonly [
+    default: "N"
     information: "Read one sequence and stop"
-    help: "some help text
-     to test comments"
-#second comment
   ]
 
 endsection: advanced

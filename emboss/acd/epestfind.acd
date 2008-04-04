@@ -61,11 +61,6 @@ section: additional [
   type: "page"
 ]
 
-  boolean: mono [
-    default: "N"
-    information: "Use monoisotopic weights"
-  ]
-
   float: threshold [
     additional: "Y"
     default: "+5.0"
@@ -87,6 +82,11 @@ section: advanced [
   information: "Advanced section"
   type: "page"
 ]
+
+  boolean: mono [
+    default: "N"
+    information: "Use monoisotopic weights"
+  ]
 
   boolean: potential [
     default: "Y"

@@ -1,5 +1,5 @@
 application: mwcontam [
-  documentation: "Shows molwts that match across a set of
+  documentation: "Shows molecular weights that match across a set of
                   files"
   groups: "Protein:Composition"
 ]
@@ -12,7 +12,7 @@ section: input [
   filelist: files [
     parameter: "Y"
     information: "Molecular weights file list"
-    knowntype: "molwt"
+    knowntype: "molecular weights"
   ]
 
 endsection: input
@@ -38,7 +38,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     extension: "mwcontam"
-    knowntype: "molwt"
+    knowntype: "molecular weights"
     information: "Molecular weights output file"
   ]
 
