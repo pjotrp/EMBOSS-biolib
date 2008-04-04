@@ -2816,18 +2816,18 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "AC   ", cur);
+		ajFmtPrintF(outseq->File, "AC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 
@@ -2836,7 +2836,7 @@ static void seqWriteExperiment(AjPSeqout outseq)
 
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ";\n", cur);
+	ajFmtPrintF(outseq->File, ";\n");
     }
     
     if(ajStrGetLen(outseq->Sv))
@@ -2855,25 +2855,25 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "KW   ", cur);
+		ajFmtPrintF(outseq->File, "KW   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(ajStrGetLen(outseq->Tax))
@@ -2887,25 +2887,25 @@ static void seqWriteExperiment(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "OC   ", cur);
+		ajFmtPrintF(outseq->File, "OC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(seqoutUfoLocal(outseq))
@@ -2995,18 +2995,18 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "AC   ", cur);
+		ajFmtPrintF(outseq->File, "AC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 
@@ -3015,7 +3015,7 @@ static void seqWriteEmbl(AjPSeqout outseq)
 
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ";\n", cur);
+	ajFmtPrintF(outseq->File, ";\n");
     }
     
     if(ajStrGetLen(outseq->Sv))
@@ -3043,25 +3043,25 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "KW   ", cur);
+		ajFmtPrintF(outseq->File, "KW   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(ajStrGetLen(outseq->Tax))
@@ -3075,25 +3075,25 @@ static void seqWriteEmbl(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "OC   ", cur);
+		ajFmtPrintF(outseq->File, "OC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(seqoutUfoLocal(outseq))
@@ -3226,7 +3226,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ";\nXX\n", cur);
+	ajFmtPrintF(outseq->File, ";\nXX\n");
     }
 
     /* no SV line in the new format - see the ID line */
@@ -3254,7 +3254,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 			"DT   %D (Rel. %S, Last updated, Version %S)\n",
 			outseq->Date->ModDate, outseq->Date->ModRel,
 			outseq->Date->ModVer);
- 	ajFmtPrintF(outseq->File, "XX\n", cur);
+ 	ajFmtPrintF(outseq->File, "XX\n");
    }
 
     if(ajStrGetLen(outseq->Desc))
@@ -3267,7 +3267,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	    ajFmtPrintF(outseq->File, "DE   %S\n", tmpline);
 	    tmpline = ajStrParseC(NULL, "\n");
 	}
-	ajFmtPrintF(outseq->File, "XX\n", cur);
+	ajFmtPrintF(outseq->File, "XX\n");
     }
 
     if(ajListGetLength(outseq->Keylist))
@@ -3278,25 +3278,25 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "KW   ", cur);
+		ajFmtPrintF(outseq->File, "KW   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\nXX\n", cur);
+	ajFmtPrintF(outseq->File, ".\nXX\n");
     }
     
     if(ajStrGetLen(outseq->Tax))
@@ -3310,25 +3310,25 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "OC   ", cur);
+		ajFmtPrintF(outseq->File, "OC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     if(ajStrGetLen(outseq->Organelle))
 	ajFmtPrintF(outseq->File, "OG   %S\n", outseq->Organelle);
@@ -3336,7 +3336,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
     if(ajStrGetLen(outseq->Tax) ||
        ajStrGetLen(outseq->Organelle) ||
        ajListGetLength(outseq->Taxlist) > 1)
-	ajFmtPrintF(outseq->File, "XX\n", cur);
+	ajFmtPrintF(outseq->File, "XX\n");
     
     if(ajListGetLength(outseq->Reflist))
     {
@@ -3455,7 +3455,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	    }
 	}
 	ajListIterDel(&it);
-	ajFmtPrintF(outseq->File, "XX\n", cur);
+	ajFmtPrintF(outseq->File, "XX\n");
     }
 
     if(ajListGetLength(outseq->Cmtlist))
@@ -3474,7 +3474,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 		    ajFmtPrintF(outseq->File, "CC   %S\n", tmpline);
 		tmpline = ajStrParseC(NULL, "\n");
 	    }
-	    ajFmtPrintF(outseq->File, "XX\n", cur);
+	    ajFmtPrintF(outseq->File, "XX\n");
 	}
 	ajListIterDel(&it);
     }
@@ -3488,7 +3488,7 @@ static void seqWriteEmblnew(AjPSeqout outseq)
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
 	    ajWarn("seqWriteEmbl features output failed UFO: '%S'",
 		   outseq->Ufo);
-	ajFmtPrintF(outseq->File, "XX\n", cur);
+	ajFmtPrintF(outseq->File, "XX\n");
     }
     
     ajSeqoutGetBasecount(outseq, b);
@@ -3553,18 +3553,18 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "AC   ", cur);
+		ajFmtPrintF(outseq->File, "AC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 
@@ -3574,7 +3574,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	}
 	
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ";\n", cur);
+	ajFmtPrintF(outseq->File, ";\n");
     }
     
     if(ajStrGetLen(outseq->Desc))
@@ -3591,18 +3591,18 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "OC   ", cur);
+		ajFmtPrintF(outseq->File, "OC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
@@ -3610,7 +3610,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	}
 	
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(ajListGetLength(outseq->Keylist))
@@ -3621,18 +3621,18 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "KW   ", cur);
+		ajFmtPrintF(outseq->File, "KW   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
@@ -3640,7 +3640,7 @@ static void seqWriteSwiss(AjPSeqout outseq)
 	}
 
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(seqoutUfoLocal(outseq))
@@ -3715,18 +3715,18 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	{
 	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "AC   ", cur);
+		ajFmtPrintF(outseq->File, "AC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 
@@ -3736,7 +3736,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	}
 	
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ";\n", cur);
+	ajFmtPrintF(outseq->File, ";\n");
     }
     
     if(ajStrGetLen(outseq->Desc))
@@ -3753,18 +3753,18 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "OC   ", cur);
+		ajFmtPrintF(outseq->File, "OC   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
@@ -3772,7 +3772,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	}
 	
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(ajListGetLength(outseq->Keylist))
@@ -3783,18 +3783,18 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	{
 	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
+		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
 	    }
 
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "KW   ", cur);
+		ajFmtPrintF(outseq->File, "KW   ");
 		ilen = 6;
 	    }
 	    else
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
+		ajFmtPrintF(outseq->File, "; ");
 		ilen += 2;
 	    }
 	    ajFmtPrintF(outseq->File, "%S", cur);
@@ -3802,7 +3802,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	}
 
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(seqoutUfoLocal(outseq))
@@ -3860,6 +3860,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
     
     static SeqPSeqFormat sf = NULL;
     /*ajuint b[5];*/                /* was used for BASE COUNT line */
+    AjPStr ftfmt = NULL;
     AjPStr tmpstr = NULL;
     AjPStr tmpstr2 = NULL;
     const AjPStr tmpline = NULL;
@@ -3868,6 +3869,9 @@ static void seqWriteGenbank(AjPSeqout outseq)
     AjPStr cur;
     ajuint ilen;
    
+    if(!ftfmt)
+	ajStrAssignC(&ftfmt, "genbank");
+    
     ajSeqoutTrace(outseq);
     
     ajFmtPrintF(outseq->File, "LOCUS       %-17S %10u bp   ",
@@ -3920,22 +3924,19 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	it   = ajListIterNewread(outseq->Acclist);
 	while((cur = (AjPStr) ajListIterGet(it)))
 	{
-	    if(ilen + ajStrGetLen(cur) > 79)
-	    {
-		ajFmtPrintF(outseq->File, "\n", cur);
-		ilen = 0;
-	    }
-
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "ACCESSION   ", cur);
-		ilen = 12;
+		ajFmtPrintF(outseq->File, "ACCESSION  ");
+		ilen = 11;
 	    }
-	    else
+	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
-		ajFmtPrintF(outseq->File, " ", cur);
-		ilen += 1;
+		ajFmtPrintF(outseq->File, "\n           ");
+		ilen = 11;
 	    }
+
+            ajFmtPrintF(outseq->File, " ");
+            ilen += 1;
 
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
@@ -3944,7 +3945,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 
 	ajListIterDel(&it) ;
 	if(ilen > 0)
-	    ajFmtPrintF(outseq->File, "\n", cur);
+	    ajFmtPrintF(outseq->File, "\n");
     }
     
     if(ajStrGetLen(outseq->Sv))
@@ -3962,28 +3963,26 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	it = ajListIterNewread(outseq->Keylist);
 	while((cur = (AjPStr) ajListIterGet(it)))
 	{
-	    if(ilen+ajStrGetLen(cur) >= 79)
-	    {
-		ajFmtPrintF(outseq->File, ";\n", cur);
-		ilen = 0;
-	    }
-
 	    if(ilen == 0)
 	    {
-		ajFmtPrintF(outseq->File, "KEYWORDS    ", cur);
-		ilen = 12;
+		ajFmtPrintF(outseq->File, "KEYWORDS   ");
+		ilen = 11;
 	    }
-	    else
+	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
-		ajFmtPrintF(outseq->File, "; ", cur);
-		ilen += 2;
+		ajFmtPrintF(outseq->File, ";\n           ");
+		ilen = 11;
 	    }
+
+            ajFmtPrintF(outseq->File, "; ");
+            ilen += 2;
+
 	    ajFmtPrintF(outseq->File, "%S", cur);
 	    ilen += ajStrGetLen(cur);
 	}
 
 	ajListIterDel(&it) ;
-	ajFmtPrintF(outseq->File, ".\n", cur);
+	ajFmtPrintF(outseq->File, ".\n");
     }
     
     if(ajStrGetLen(outseq->Tax))
@@ -3999,18 +3998,18 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	    {
 		if(ilen+ajStrGetLen(cur) >= 79)
 		{
-		    ajFmtPrintF(outseq->File, ";\n", cur);
+		    ajFmtPrintF(outseq->File, ";\n");
 		    ilen = 0;
 		}
 		
 		if(ilen == 0)
 		{
-		    ajFmtPrintF(outseq->File, "            ", cur);
+		    ajFmtPrintF(outseq->File, "            ");
 		    ilen = 12;
 		}
 		else
 		{
-		    ajFmtPrintF(outseq->File, "; ", cur);
+		    ajFmtPrintF(outseq->File, "; ");
 		    ilen += 2;
 		}
 		ajFmtPrintF(outseq->File, "%S", cur);
@@ -4018,7 +4017,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
 	    }
 
 	    ajListIterDel(&it) ;
-	    ajFmtPrintF(outseq->File, ".\n", cur);
+	    ajFmtPrintF(outseq->File, ".\n");
 	}
     }
 
@@ -4100,7 +4099,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
     if(seqoutUfoLocal(outseq))
     {
 	ajFeattabOutDel(&outseq->Ftquery);
-        outseq->Ftquery = ajFeattabOutNewCSF("genbank", outseq->Name,
+        outseq->Ftquery = ajFeattabOutNewSSF(ftfmt, outseq->Name,
 					     ajStrGetPtr(outseq->Type),
 					     outseq->File);
 	if(!ajFeatWrite(outseq->Ftquery, outseq->Fttable))
@@ -4132,6 +4131,7 @@ static void seqWriteGenbank(AjPSeqout outseq)
     
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
+    ajStrDel(&ftfmt);
     ajStrDel(&tmpstr);
     ajStrDel(&tmpstr2);
 
