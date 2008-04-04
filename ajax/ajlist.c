@@ -1060,7 +1060,6 @@ AjBool ajListPopLast(AjPList list, void** x)
     {
 	pthis->Prev->Next = list->Last;
 	list->Last->Prev = pthis->Prev;
-	list->Last->Prev = NULL;
         if(listFreeNext >= listFreeMax)
             listFreeSetExpand();
         if(listFreeNext >= listFreeMax)
@@ -1272,7 +1271,10 @@ AjBool ajListPeekFirst(const AjPList list, void** x)
     if(!list)
 	return ajFalse;
 
-    if(x)
+    if(!list->Count)
+        return ajFalse;
+
+  if(x)
 	*x = listNodeItem(list->First);
 
     return ajTrue;
@@ -1442,6 +1444,8 @@ static void listArrayTrace(void** array)
 **
 ** @fdata [AjPList]
 **
+** @nam3rule Probe Test for memory allocation conflicts
+** @nam4rule ProbeData Test data for memory allocation conflicts
 ** @nam3rule Print Trace contents to standard error
 ** @nam3rule Trace Trace contents to debug file
 **
@@ -1458,10 +1462,7 @@ static void listArrayTrace(void** array)
 
 /* @func ajListProbe ***********************************************************
 **
-** Free all nodes in the list.
-** NOTE: The data is only freed with a specified list type.
-**       For undefined data types we recommend you to
-**       use ajListMap with a routine to free the memory.
+** Test list for memory allocation conflicts
 **
 ** @param [r] Plist [AjPList const*] List
 ** @return [void]
@@ -1503,9 +1504,7 @@ void ajListProbe(AjPList const * Plist)
 
 /* @func ajListProbeData *******************************************************
 **
-** Free all nodes in the list. Free all the data values.
-** For more complex data objects use ajListMap with a routine to
-** free the object memory.
+** Test list and data for memory allocation conflicts
 **
 ** @param [r] Plist [AjPList const*] List
 ** @return [void]
@@ -2028,7 +2027,7 @@ void ajListUnused(void** array)
 
 void ajListExit(void)
 {
-    ajuint i;
+    ajint i;
 
 #ifdef AJ_SAVESTATS
     ajDebug("List usage : %d opened, %d closed, %d maxsize %d nodes\n",
