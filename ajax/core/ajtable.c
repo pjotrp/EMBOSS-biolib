@@ -909,7 +909,7 @@ void ajTableFree(AjPTable* Ptable)
 
 void ajTableExit(void)
 {
-    ajuint i;
+    ajint i;
 
 #ifdef AJ_SAVESTATS
     ajDebug("Table usage : %d opened, %d closed, %d maxsize, %d maxmem\n",

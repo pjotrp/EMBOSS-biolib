@@ -1968,7 +1968,7 @@ AjBool ajFileGetsL(AjPFile thys, AjPStr* pdest, ajlong* fpos)
     ajint ilen;
     ajint jlen;
     ajint ipos;
-    ajint buffsize;
+    ajuint buffsize;
     size_t iread;
     const char* pnewline = NULL;
  

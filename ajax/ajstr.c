@@ -338,7 +338,7 @@ char* ajCharNewResLenC(const char* txt, ajuint size, ajuint len)
 ** @return [char*] Empty string
 ******************************************************************************/
 
-char *ajCharNull (void)
+char* ajCharNull (void)
 {
   return charNULL;
 }
@@ -2066,7 +2066,6 @@ __deprecated AjPStr  ajStrNewCIL(const char* txt, ajint len, size_t size)
 ** reserved size.
 **
 ** @param [w] Pstr [AjPStr*] String
-** @param [r] size [ajuint] Minimum reserved size.
 ** @return [AjPStr] New String
 ** @@
 ******************************************************************************/
@@ -10995,7 +10994,7 @@ __deprecated const AjPStr  ajStrTok(const AjPStr str)
 ** @nam4rule   TraceFull        All characters in detail
 ** @nam4rule   TraceTitle        With title text
 **
-** @argrule Probe Pstr [const AjPStr*] String
+** @argrule Probe Pstr [AjPStr const *] String
 ** @argrule Stat title [const char*] Report title
 ** @argrule Trace str [const AjPStr] String
 ** @argrule TraceTitle title [const char*] Report title
@@ -11068,6 +11067,8 @@ void ajStrStat(const char* title)
     statFree      = strFree;
     statFreeCount = strFreeCount;
     statTotal     = strTotal;
+#else
+    (void) title;
 #endif
 
     return;
