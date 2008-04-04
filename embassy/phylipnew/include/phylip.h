@@ -7,7 +7,7 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#define VERSION "3.6b"
+#define VERSION "3.67"
 
 /* machine-specific stuff:
    based on a number of factors in the library stdlib.h, we will try
@@ -26,6 +26,10 @@ typedef struct EmbossSTreeNode {
     AjPStr Name;
 } EmbossOTreeNode;
 #define EmbossPTreeNode EmbossOTreeNode*
+
+#ifndef X_DISPLAY_MISSING /* X11 is  available */
+#define X
+#endif
 
 #ifdef WIN32
 #include <windows.h>
