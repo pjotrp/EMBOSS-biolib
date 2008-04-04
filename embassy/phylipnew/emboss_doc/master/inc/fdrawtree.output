@@ -22,25 +22,6 @@
 %%PaperSize: Letter
  1 setlinecap 
  1 setlinejoin  
-    4.25 setlinewidth newpath 
-%!PS-Adobe-2.0
-%%Title: Phylip Tree Output
-%%DocumentFonts: (atend)
-%%Pages: 1 1
-%%BoundingBox: 0 0 612 792
-%%DocumentPaperSizes: Letter
-%%Orientation: Portrait
-%%EndComments
-/l {newpath moveto lineto stroke} def
-%%EndProlog
-%%
-%%Page: 1 1
-%%PageBoundingBox: 0 0 585 765
-%%PageFonts: (atend)
-%%BeginPageSetup
-%%PaperSize: Letter
- 1 setlinecap 
- 1 setlinejoin  
     4.72 setlinewidth newpath 
   193.10   333.75   147.15   270.50 l
   193.10   333.75   239.05   396.99 l

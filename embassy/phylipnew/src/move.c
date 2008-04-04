@@ -4,7 +4,7 @@
 #include "moves.h"
 #include "wagner.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -1005,9 +1005,8 @@ void buildtree()
     for (i = 0; i < chars; i++)                           /**/
       zeros[i] = 0;                                         /**/
     treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
-    treeread(&treestr, &root, treenode, &goteof, &firsttree,
-                nodep, &nextnode, &haslengths,
-                &grbg, initmovenode); /*debug*/
+    treeread(&treestr, &root, treenode, &goteof, &firsttree, nodep, &nextnode,
+             &haslengths, &grbg, initmovenode,false,nonodes);
 
     for (i = spp; i < (nonodes); i++) {
       p = treenode[i];
@@ -1351,6 +1350,7 @@ void redisplay()
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     getchar();
     if (ch == '\n')

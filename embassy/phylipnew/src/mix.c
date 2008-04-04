@@ -3,7 +3,7 @@
 #include "disc.h"
 #include "wagner.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -620,12 +620,12 @@ void tryrearr(node2 *p, node2 **r, boolean *success)
   re_move3(&p, &forknode, &root, treenode);
   add3(whereto, p, forknode, &root, treenode);
   evaluate(*r);
-  if (like <= oldlike) {
-    re_move3(&p, &forknode, &root, treenode);
-    add3(frombelow, p, forknode, &root, treenode);
-  } else {
+  if ( like - oldlike > LIKE_EPSILON ) {
     *success = true;
     bestyet = like;
+  } else {
+    re_move3(&p, &forknode, &root, treenode);
+    add3(frombelow, p, forknode, &root, treenode);
   }
 }  /* tryrearr */
 

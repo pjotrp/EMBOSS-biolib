@@ -2,7 +2,7 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2000 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -11,6 +11,30 @@ long nonodes, endsite, outgrno, nextree, which;
 boolean interleaved, printdata, outgropt, treeprint, dotdiff, transvp;
 steptr weight, category, alias, location, ally;
 sequence y;
+
+
+void fix_x(node* p,long site, double maxx, long rcategs)
+{ /* dnaml dnamlk */
+  long i,j;
+  p->underflows[site] += log(maxx);
+
+  for ( i = 0 ; i < rcategs ; i++ ) {
+    for ( j = 0 ; j < ((long)T - (long)A + 1) ; j++)
+      p->x[site][i][j] /= maxx;
+  }
+} /* fix_x */
+
+
+void fix_protx(node* p,long site, double maxx, long rcategs) 
+{ /* proml promlk */
+  long i,m;
+
+  p->underflows[site] += log(maxx);
+
+  for ( i = 0 ; i < rcategs  ; i++ ) 
+    for (m = 0; m <= 19; m++)
+      p->protx[site][i][m] /= maxx;
+} /* fix_protx */
 
 
 void free_all_x_in_array (long nonodes, pointarray treenode)
@@ -171,7 +195,7 @@ void alloctree(pointarray *treenode, long nonodes, boolean usertree)
     (*treenode)[i]->tip = true;
     (*treenode)[i]->index = i+1;
     (*treenode)[i]->iter = true;
-    (*treenode)[i]->branchnum = i+1;
+    (*treenode)[i]->branchnum = 0;
     (*treenode)[i]->initialized = true;
   }
   if (!usertree)
@@ -182,7 +206,7 @@ void alloctree(pointarray *treenode, long nonodes, boolean usertree)
         p->tip = false;
         p->index = i+1;
         p->iter = true;
-        p->branchnum = i+1;
+        p->branchnum = 0;
         p->initialized = false;
         p->next = q;
         q = p;
@@ -202,6 +226,7 @@ void allocx(long nonodes, long rcategs, pointarray treenode, boolean usertree)
 
   for (i = 0; i < spp; i++){
     treenode[i]->x = (phenotype)Malloc(endsite*sizeof(ratelike));
+    treenode[i]->underflows = (double *)Malloc(endsite * sizeof (double));
     for (j = 0; j < endsite; j++)
       treenode[i]->x[j]  = (ratelike)Malloc(rcategs*sizeof(sitelike));
   }
@@ -209,6 +234,7 @@ void allocx(long nonodes, long rcategs, pointarray treenode, boolean usertree)
     for (i = spp; i < nonodes; i++) {
       p = treenode[i];
       for (j = 1; j <= 3; j++) {
+        p->underflows = (double *)Malloc (endsite * sizeof (double));
         p->x = (phenotype)Malloc(endsite*sizeof(ratelike));
         for (k = 0; k < endsite; k++)
           p->x[k] = (ratelike)Malloc(rcategs*sizeof(sitelike));
@@ -229,6 +255,7 @@ void prot_allocx(long nonodes, long rcategs, pointarray treenode,
 
   for (i = 0; i < spp; i++){
     treenode[i]->protx = (pphenotype)Malloc(endsite*sizeof(pratelike));
+    treenode[i]->underflows = (double *)Malloc(endsite*sizeof(double));
     for (j = 0; j < endsite; j++)
       treenode[i]->protx[j]  = (pratelike)Malloc(rcategs*sizeof(psitelike));
   }  
@@ -237,6 +264,7 @@ void prot_allocx(long nonodes, long rcategs, pointarray treenode,
       p = treenode[i];
       for (j = 1; j <= 3; j++) {
         p->protx = (pphenotype)Malloc(endsite*sizeof(pratelike));
+        p->underflows = (double *)Malloc(endsite*sizeof(double));
         for (k = 0; k < endsite; k++)
           p->protx[k] = (pratelike)Malloc(rcategs*sizeof(psitelike));
         p = p->next;
@@ -254,16 +282,22 @@ void allocx2(long nonodes, long endsite, long sitelength, pointarray treenode,
   long i, j, k, l;
   node *p;
 
-  for (i = 0; i < spp; i++)
+  for (i = 0; i < spp; i++) {
     treenode[i]->x2 = (phenotype2)Malloc(endsite*sizeof(sitelike2));
+    for ( j = 0 ; j < endsite ; j++ )
+      treenode[i]->x2[j] = (double *)Malloc((sitelength + 1) * sizeof(double));
+  }
   if (!usertree) {
     for (i = spp; i < nonodes; i++) {
       p = treenode[i];
       for (j = 1; j <= 3; j++) {
         p->x2 = (phenotype2)Malloc(endsite*sizeof(sitelike2));
-        for (k = 0; k < endsite; k++)
+        for (k = 0; k < endsite; k++) {
+          p->x2[k] = (double *)Malloc((sitelength + 1) * sizeof(double));
           for (l = 0; l < sitelength; l++)
+             for (l = 0; l < sitelength; l++)
              p->x2[k][l] = 1.0;
+        }
         p = p->next;
       }
     }
@@ -306,14 +340,14 @@ void setuptree(pointarray treenode, long nonodes, boolean usertree)
 } /* setuptree */
 
 
-void setuptree2(tree a)
+void setuptree2(tree *a)
 {
   /* initialize a tree */
   /* used in dnaml, dnamlk, & restml */
 
-  a.likelihood = -999999.0;
-  a.start = a.nodep[0]->back;
-  a.root = NULL;
+  a->likelihood = -999999.0;
+  a->start = a->nodep[0]->back;
+  a->root = NULL;
 } /* setuptree2 */
 
 
@@ -343,20 +377,6 @@ void freetrans(transptr *trans, long nonodes,long sitelength)
   }
   free(*trans);
 }
-
-
-void alloctrans(transptr *trans, long nonodes, long sitelength)
-{
-  /* used by restml */
-  long i, j;
-
-  *trans = (transptr)Malloc(nonodes*sizeof(transmatrix));
-  for (i = 0; i < nonodes; ++i){
-    (*trans)[i] = (transmatrix)Malloc((sitelength + 1) * sizeof(double *));
-    for (j = 0;j < sitelength + 1; ++j)
-      (*trans)[i][j] = (double *)Malloc((sitelength + 1) * sizeof(double));
-  }
-}  /* alloctrans */
 
 
 void getbasefreqs(double freqa, double freqc, double freqg, double freqt,
@@ -1210,9 +1230,9 @@ void gdispose(node *p, node **grbg, pointarray treenode)
     q->back = NULL;
     r = q;
     q = q->next;
-    chucktreenode(grbg, r);
+    chuck(grbg, r);
   }
-  chucktreenode(grbg, q);
+  chuck(grbg, q);
 }  /* gdispose */
 
 
@@ -1436,7 +1456,7 @@ void re_move(node *item, node **fork, node **root, boolean recompute,
     }
   }
   if ((*fork)->numdesc >= 2)
-    chucktreenode(grbg, item->back);
+    chuck(grbg, item->back);
   item->back = NULL;
   if (!recompute)
     return;
@@ -1554,7 +1574,7 @@ void reroot3(node *outgroup, node *root, node *root2, node *lastdesc,
   p = root->next;
   while (p->next != root)
     p = p->next;
-  chucktreenode(grbg, root);
+  chuck(grbg, root);
   p->next = outgroup->back;
   root2->next = lastdesc->next;
   lastdesc->next = root2;
@@ -1706,7 +1726,7 @@ void backtobinary(node **root, node *binroot, node **grbg)
   (*root)->next = p->next;
   binroot->next->next->back = *root;
   (*root)->back = binroot->next->next;
-  chucktreenode(grbg, p);
+  chuck(grbg, p);
   (*root)->numdesc--;
   *root = binroot;
   (*root)->numdesc = 2;
@@ -2286,7 +2306,7 @@ void putback(node *oldback, node *item, node *forknode, node **grbg)
   oldback->back = item;
   item->back = oldback;
   oldback->index = forknode->index;
-  chucktreenode(grbg, q);
+  chuck(grbg, q);
 } /* putback */
 
 
@@ -2330,7 +2350,7 @@ void savelocrearr(node *item, node *forknode, node *below, node *tmp,
       putback(oldback, item, forknode, grbg);
   } else {
     if (oldback)
-      chucktreenode(grbg, oldback);
+      chuck(grbg, oldback);
     re_move(item, &oldfork, root, true, treenode, grbg, zeros);
     collapse = collapsible(item, below, tmp, tmp1, tmp2, tmp3, tmprm,
                      tmpadd, multf, *root, zeros, treenode);
@@ -3177,7 +3197,13 @@ void treeout3(node *p, long nextree, long *col, node *root)
 }  /* treeout3 */
 
 
+/* FIXME curtree should probably be passed by reference */
 void drawline2(long i, double scale, tree curtree)
+{
+  fdrawline2(outfile, i, scale, &curtree);
+}
+
+void fdrawline2(FILE *fp, long i, double scale, tree *curtree)
 {
   /* draws one row of the tree diagram by moving up tree */
   /* used in dnaml & restml */
@@ -3187,17 +3213,17 @@ void drawline2(long i, double scale, tree curtree)
   node *r, *first =NULL, *last =NULL;
   boolean done;
 
-  p = curtree.start;
-  q = curtree.start;
+  p = curtree->start;
+  q = curtree->start;
   extra = false;
-  if (i == (long)p->ycoord && p == curtree.start) {  /* debug why 2nd clause? */
+  if (i == (long)p->ycoord && p == curtree->start) {
     if (p->index - spp >= 10)
-      fprintf(outfile, " %2ld", p->index - spp);
+      fprintf(fp, " %2ld", p->index - spp);
     else
-      fprintf(outfile, "  %ld", p->index - spp);
+      fprintf(fp, "  %ld", p->index - spp);
     extra = true;
   } else
-    fprintf(outfile, "  ");
+    fprintf(fp, "  ");
   do {
     if (!p->tip) {
       r = p->next;
@@ -3208,14 +3234,14 @@ void drawline2(long i, double scale, tree curtree)
           done = true;
         }
         r = r->next;
-      } while (!(done || (p != curtree.start && r == p) ||
-                 (p == curtree.start && r == p->next)));
+      } while (!(done || (p != curtree->start && r == p) ||
+                 (p == curtree->start && r == p->next)));
       first = p->next->back;
       r = p;
       while (r->next != p)
         r = r->next;
       last = r->back;
-      if (p == curtree.start)
+      if (p == curtree->start)
         last = p->back;
     }
     done = (p->tip || p == q);
@@ -3228,43 +3254,43 @@ void drawline2(long i, double scale, tree curtree)
     }
     if ((long)q->ycoord == i && !done) {
       if ((long)p->ycoord != (long)q->ycoord)
-        putc('+', outfile);
+        putc('+', fp);
       else
-        putc('-', outfile);
+        putc('-', fp);
       if (!q->tip) {
         for (j = 1; j <= n - 2; j++)
-          putc('-', outfile);
+          putc('-', fp);
         if (q->index - spp >= 10)
-          fprintf(outfile, "%2ld", q->index - spp);
+          fprintf(fp, "%2ld", q->index - spp);
         else
-          fprintf(outfile, "-%ld", q->index - spp);
+          fprintf(fp, "-%ld", q->index - spp);
         extra = true;
       } else {
         for (j = 1; j < n; j++)
-          putc('-', outfile);
+          putc('-', fp);
       }
     } else if (!p->tip) {
       if ((long)last->ycoord > i && (long)first->ycoord < i &&
-          (i != (long)p->ycoord || p == curtree.start)) {
-        putc('|', outfile);
+          (i != (long)p->ycoord || p == curtree->start)) {
+        putc('|', fp);
         for (j = 1; j < n; j++)
-          putc(' ', outfile);
+          putc(' ', fp);
       } else {
         for (j = 1; j <= n; j++)
-          putc(' ', outfile);
+          putc(' ', fp);
       }
     } else {
       for (j = 1; j <= n; j++)
-        putc(' ', outfile);
+        putc(' ', fp);
     }
     if (q != p)
       p = q;
   } while (!done);
   if ((long)p->ycoord == i && p->tip) {
     for (j = 0; j < nmlngth; j++)
-      putc(nayme[p->index-1][j], outfile);
+      putc(nayme[p->index-1][j], fp);
   }
-  putc('\n', outfile);
+  putc('\n', fp);
 }  /* drawline2 */
 
 
@@ -3363,6 +3389,7 @@ void copynode(node *c, node *d, long categs)
   for (i = 0; i < endsite; i++)
     for (j = 0; j < categs; j++)
       memcpy(d->x[i][j], c->x[i][j], sizeof(sitelike));
+  memcpy(d->underflows,c->underflows,sizeof(double) * endsite);
   d->tyme = c->tyme;
   d->v = c->v;
   d->xcoord = c->xcoord;
@@ -3383,6 +3410,7 @@ void prot_copynode(node *c, node *d, long categs)
   for (i = 0; i < endsite; i++)
     for (j = 0; j < categs; j++)
       memcpy(d->protx[i][j], c->protx[i][j], sizeof(psitelike));
+  memcpy(d->underflows,c->underflows,sizeof(double) * endsite);
   d->tyme = c->tyme;
   d->v = c->v;
   d->xcoord = c->xcoord;
@@ -3542,7 +3570,7 @@ void standev(long chars, long numtrees, long minwhich, double minsteps,
         sd = sqrt(sumw / (sumw - 1.0) * (sum2 - temp * temp));
         fprintf(outfile, "%10.1f%12.4f",
                 (nsteps[which - 1] - minsteps) / 10, sd);
-        if (sum > 1.95996 * sd)
+        if ((sum > 0.0) && (sum > 1.95996 * sd))
           fprintf(outfile, "           Yes\n");
         else
           fprintf(outfile, "           No\n");
@@ -3618,7 +3646,7 @@ void standev(long chars, long numtrees, long minwhich, double minsteps,
         if (f[j] < sum)
           sum = f[j];
       for (j = 0; j < numtrees; j++)          /* accumulate P's */
-        if (nsteps[j]/10.0-sum2 < f[j] - sum)
+        if (nsteps[j]/10.0-sum2 <= f[j] - sum)
           P[j] += 1.0/SAMPLES;
     }
     fprintf(outfile, "Tree    Steps   Diff Steps   P value");
@@ -3681,7 +3709,7 @@ void standev2(long numtrees, long maxwhich, long a, long b, double maxlogl,
         temp = sum / sumw;
         sd = sqrt(sumw / (sumw - 1.0) * (sum2 - temp * temp));
         fprintf(outfile, "%10.1f %11.4f", (l0gl[which - 1])-maxlogl, sd);
-        if ((-sum) > 1.95996 * sd)
+        if ((sum < 0.0) && ((-sum) > 1.95996 * sd))
           fprintf(outfile, "           Yes\n");
         else
           fprintf(outfile, "           No\n");
@@ -3753,7 +3781,7 @@ void standev2(long numtrees, long maxwhich, long a, long b, double maxlogl,
         if (f[j] > sum)
           sum = f[j];
       for (j = 0; j < numtrees; j++)          /* accumulate P's */
-        if (maxlogl-l0gl[j] < sum-f[j])
+        if (maxlogl-l0gl[j] <= sum-f[j])
           P[j] += 1.0/SAMPLES;
     }
     fprintf(outfile, "Tree    logL    Diff logL    P value");
@@ -3949,13 +3977,18 @@ void freex2(long nonodes, pointarray treenode)
   long i, j;
   node *p;
 
-  for (i = 0; i < spp; i++)
+  for (i = 0; i < spp; i++) {
     free(treenode[i]->x2);
+    treenode[i]->x2 = NULL;
+  }
   for (i = spp; i < nonodes; i++) {
     p = treenode[i];
-    for (j = 1; j <= 3; j++) {
-      free(p->x2);
-      p = p->next;
+    if (p != NULL) {
+      for (j = 1; j <= 3; j++) {
+        free(p->x2);
+        p->x2 = NULL;
+        p = p->next;
+      }
     }
   }
 }  /* freex2 */
@@ -4015,11 +4048,11 @@ void collapsetree(node *p, node *root, node **grbg, pointarray treenode,
       index = q->index;
       index2 = q->back->index;
       numd = treenode[index-1]->numdesc + q->back->numdesc -1;
-      chucktreenode(grbg, q->back);
-      chucktreenode(grbg, q);
+      chuck(grbg, q->back);
+      chuck(grbg, q);
       q = x2;
 
-      /* update the indicies around the node circle */
+      /* update the indices around the node circle */
       do{
         if(q->index != index){
           q->index = index;

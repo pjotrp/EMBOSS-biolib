@@ -87,7 +87,7 @@ Usage
 % fmove 
 Interactive mixed method parsimony
 Phylip character discrete states file: move.dat
-phylip tree file (optional): 
+Phylip tree file (optional): 
 NEXT? (R # + - S . T U W O F H J K L C ? X Q) (? for Help): Q
 Do you want to write out the tree to a file? (Y or N): Y
 
@@ -122,7 +122,7 @@ Command line arguments
 
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing data set
-  [-intreefile]        tree       phylip tree file (optional)
+  [-intreefile]        tree       Phylip tree file (optional)
 
    Additional (Optional) qualifiers:
    -weights            properties Weights file

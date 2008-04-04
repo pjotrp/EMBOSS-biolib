@@ -1,15 +1,17 @@
-
 #include "phylip.h"
 #include "moves.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein and Andrew Keeffe.  Permission is granted to
    copy and use this program provided no fee is charged for it and provided
    that this copyright notice is not removed. */
 
-#define maxsp           5000   /* maximum number of species               */
-#define maxsz           9999  /* size of pointer array.  >= 2*maxsp - 1  */
-                              /* this can be large without eating memory */
+/* maximum number of species               */
+#define maxsp           5000
+
+/* size of pointer array.  >= 2*maxsp - 1  */
+/* (this can be large without eating memory */
+#define maxsz           9999
 
 #define overr           4
 #define which           1
@@ -21,7 +23,7 @@ typedef enum {valid, remoov, quit} reslttype;
 typedef enum {
   horiz, vert, up, updel, ch_over, upcorner, midcorner, downcorner, aa, cc, 
   gg, tt, deleted
-  } chartype;
+} chartype;
 
 typedef struct treeset_t {
   node *root;
@@ -113,6 +115,7 @@ void   clade(void);
 void   changeoutgroup(void);
 void   redisplay(void);
 void   treeconstruct(void);
+void   fill_del(node*p);
 /* function prototypes */
 #endif
 
@@ -161,7 +164,7 @@ void initretreenode(node **p, node **grbg, node *q, long len,
   double valyew, divisor;
 
   switch (whichinit) {
-  
+
     case bottom:
       gnu(grbg, p);
       (*p)->index = nodei;
@@ -174,12 +177,12 @@ void initretreenode(node **p, node **grbg, node *q, long len,
         (*p)->nayme[i] = '\0';
       nodep[(*p)->index - 1] = (*p);
       break;
-  
+
     case nonbottom:
       gnu(grbg, p);
       (*p)->index = nodei;
       break;
-  
+
     case hslength:
       if ((*p)->back) {
         (*p)->back->back = *p;
@@ -188,7 +191,7 @@ void initretreenode(node **p, node **grbg, node *q, long len,
           (*p)->length = (*p)->back->length;
       }
       break;
-  
+
     case tip:
       (*ntips)++;
       gnu(grbg, p);
@@ -198,13 +201,13 @@ void initretreenode(node **p, node **grbg, node *q, long len,
       (*p)->hasname = true;
       strncpy ((*p)->nayme, str, MAXNCH);
       break;
-  
+
     case length:
       (*p)->haslength = true;
       if ((*p)->back != NULL)
         (*p)->back->haslength = (*p)->haslength;
       processlength(&valyew, &divisor, ch,
-        &minusread, treestr, parens);
+          &minusread, treestr, parens);
       if (!minusread)
         (*p)->length = valyew / divisor;
       else
@@ -215,16 +218,16 @@ void initretreenode(node **p, node **grbg, node *q, long len,
         (*p)->back->length = (*p)->length;
       }
       break;
-  
+
     case hsnolength:
       haslengths = (haslengths && q == NULL);
       (*p)->haslength = false;
       (*p)->back  = q;
       break;
-  
+
     default:        /*cases iter, treewt, unttrwt         */
       break;        /*should not occur                */
-  
+
   }
 } /* initretreenode */
 
@@ -529,7 +532,7 @@ boolean ifhaslengths()
 void add_at(node *below, node *newtip, node *newfork)
 {
   /* inserts the nodes newfork and its left descendant, newtip,
-    to the tree.  below becomes newfork's right descendant */
+     to the tree.  below becomes newfork's right descendant */
   node *leftdesc, *rtdesc;
   double length;
 
@@ -582,9 +585,9 @@ void add_before(node *atnode, node *newtip)
 {
   /* inserts the node newtip together with its ancestral fork
      into the tree next to the node atnode. */
-/*xx ?? debug what to do if no ancestral node -- have to create one */
-/*xx this case is handled by add_at.  However, add_at does not account for
-when there is more than one sibling for the relocated newtip */
+  /*xx ?? debug what to do if no ancestral node -- have to create one */
+  /*xx this case is handled by add_at.  However, add_at does not account for
+    when there is more than one sibling for the relocated newtip */
   node *q;
 
   if (atnode != nodep[atnode->index - 1])
@@ -642,11 +645,11 @@ void add_child(node *parent, node *newchild)
 
 void re_move(node **item, node **fork)
 {
-/* Removes node item from the tree.  If item has one sibling,
-   removes its ancestor, fork, from the tree as well and attach
-   item's sib to fork's ancestor.  In this case, it returns a pointer
-   to the removed fork node which is still attached to item.
-*/
+  /* Removes node item from the tree.  If item has one sibling,
+     removes its ancestor, fork, from the tree as well and attach
+     item's sib to fork's ancestor.  In this case, it returns a pointer
+     to the removed fork node which is still attached to item.
+     */
   node *p =NULL, *q;
   int nodecount;
 
@@ -672,15 +675,15 @@ void re_move(node **item, node **fork)
     p->next = (*item)->back->next;
     chuck(&grbg, (*item)->back);
     (*item)->back = NULL;
-/*xx*/ *fork = NULL;
+    /*xx*/ *fork = NULL;
   } else {
     /* traditional (binary tree) remove code */
     if (*item == (*fork)->next->back) {
       if (root == *fork)
-     root = (*fork)->next->next->back;
+        root = (*fork)->next->next->back;
     } else {
       if (root == *fork)
-     root = (*fork)->next->back;
+        root = (*fork)->next->back;
     }
     fromtype = beforenode;
     /* stitch nodes together, leaving out item */
@@ -692,10 +695,10 @@ void re_move(node **item, node **fork)
       q->back = p;
     if (haslengths) {
       if (p != NULL && q != NULL) {
-     p->length += q->length;
-     q->length = p->length;
+        p->length += q->length;
+        q->length = p->length;
       } else
-     (*item)->length = (*fork)->next->length + (*fork)->next->next->length;
+        (*item)->length = (*fork)->next->length + (*fork)->next->next->length;
     }
     (*fork)->back = NULL;
     p = (*fork)->next;
@@ -724,8 +727,8 @@ void reroot(node *outgroup)
   r = p;
 
   /* There is no point in proceeding if 
-       1. outgroup is a child of root, and
-       2. the tree bifurcates at the root.
+   1. outgroup is a child of root, and
+   2. the tree bifurcates at the root.
    */
   if((outgroup->back->index == root->index) && !(nodecount > 2))
     return;
@@ -736,7 +739,7 @@ void reroot(node *outgroup)
      that is closest to the root.  The while loop changes the ring member
      pointed to by nodep[] for those nodes that will have their
      orientation changed by the reroot operation.
-  */
+     */
   p = outgroup->back;
   while (p->index != root->index) {
     q = nodep[p->index - 1]->back;
@@ -914,7 +917,7 @@ void flatcoordinates(node *p, long *tipy)
       p->ycoord = p->next->next->back->ycoord;
   }
   else
-  p->ycoord = (first->ycoord + last->ycoord) / 2;
+    p->ycoord = (first->ycoord + last->ycoord) / 2;
   p->ymin = first->ymin;
   p->ymax = last->ymax;
 }  /* flatcoordinates */
@@ -923,7 +926,7 @@ void flatcoordinates(node *p, long *tipy)
 void grwrite(chartype c, long num, long *pos)
 {
   long i;
-     
+
   prefix(c);
   for (i = 1; i <= num; i++) {
     if ((*pos) >= leftedge && (*pos) - leftedge + 1 < screenwidth)
@@ -973,16 +976,16 @@ void drawline(long i, node *nuroot, boolean *subtree)
       r = p->next;
       done = false;
       do {
-     if (i >= r->back->ymin && i <= r->back->ymax) {
-       q = r->back;
-       done = true;
-     }
-     r = r->next;
+        if (i >= r->back->ymin && i <= r->back->ymax) {
+          q = r->back;
+          done = true;
+        }
+        r = r->next;
       } while (!(done || r == p));
       first = p->next->back;
       r = p->next;
       while (r->next != p)
-     r = r->next;
+        r = r->next;
       last = r->back;
     }
     done = (p == q);
@@ -999,7 +1002,7 @@ void drawline(long i, node *nuroot, boolean *subtree)
     if ((long)q->ycoord == i && !done) {
       c = ch_over;
       if (!haslengths && !q->haslength)
-     c = horiz;
+        c = horiz;
       if (q->deleted)
         c = deleted;
       if (q == first)
@@ -1011,23 +1014,23 @@ void drawline(long i, node *nuroot, boolean *subtree)
       else
         d = midcorner;
       if (n > 1 || q->tip) {
-     grwrite(d, 1, &pos);
-     grwrite(c, n - 3, &pos);
+        grwrite(d, 1, &pos);
+        grwrite(c, n - 3, &pos);
       }
       if (q->index >= 100)
-     nnwrite(q->index, 3, &pos, leftedge, screenwidth);
+        nnwrite(q->index, 3, &pos, leftedge, screenwidth);
       else if (q->index >= 10) {
-     grwrite(c, 1, &pos);
-     nnwrite(q->index, 2, &pos, leftedge, screenwidth);
+        grwrite(c, 1, &pos);
+        nnwrite(q->index, 2, &pos, leftedge, screenwidth);
       } else {
-     grwrite(c, 2, &pos);
-     nnwrite(q->index, 1, &pos, leftedge, screenwidth);
+        grwrite(c, 2, &pos);
+        nnwrite(q->index, 1, &pos, leftedge, screenwidth);
       }
       extra = true;
     } else if (!q->tip) {
       if ((long)last->ycoord > i && (long)first->ycoord < i &&
           i != (long)p->ycoord) {
-     c = up;
+        c = up;
         if(p->deleted)
           c = updel;
         if (!p->tip) {
@@ -1053,10 +1056,10 @@ void drawline(long i, node *nuroot, boolean *subtree)
           if ((down_nondel != 0) && i > (long)p->ycoord && i < down_nondel)
             c = up;
         }
-     grwrite(c, 1, &pos);
-     chwrite(' ', n - 1, &pos, leftedge, screenwidth);
+        grwrite(c, 1, &pos);
+        chwrite(' ', n - 1, &pos, leftedge, screenwidth);
       } else
-     chwrite(' ', n, &pos, leftedge, screenwidth);
+        chwrite(' ', n, &pos, leftedge, screenwidth);
     } else
       chwrite(' ', n, &pos, leftedge, screenwidth);
     if (p != q)
@@ -1066,12 +1069,12 @@ void drawline(long i, node *nuroot, boolean *subtree)
     if (p->hasname) {
       n = 0;
       for (j = 1; j <= MAXNCH; j++) {
-     if (nodep[p->index - 1]->nayme[j - 1] != '\0')
-       n = j;
+        if (nodep[p->index - 1]->nayme[j - 1] != '\0')
+          n = j;
       }
       chwrite(':', 1, &pos, leftedge, screenwidth);
       for (j = 0; j < n; j++)
-     chwrite(nodep[p->index - 1]->nayme[j],
+        chwrite(nodep[p->index - 1]->nayme[j],
                 1, &pos, leftedge, screenwidth);
     }
   }
@@ -1163,8 +1166,7 @@ void yourtree()
   node *newtip, *newfork;
   Char ch;
 
-  for (i = 0; i < maxsz; i++)
-    uniquearray[i] = 0;
+  uniquearray[0] = 0;
   spp = 2;
   nonodes = spp * 2 - 1;
   maketip(&root, 1);
@@ -1173,6 +1175,7 @@ void yourtree()
   add_at(root, newtip, newfork);
   i = 2;
   maxinput = 1;
+  k_max = 5;
   do {
     i++;
     printree();
@@ -1197,6 +1200,7 @@ void yourtree()
 #ifdef WIN32
         phyFillScreenColor();
 #endif
+        fflush(stdout);
         scanf("%c%*[^\n]", &ch);
         getchar();
         if (ch == '\n')
@@ -1253,10 +1257,11 @@ void yourtree()
   for (i = spp + 1; i <= k_max; i++) {
     if ((nodep[i - 1] != nodep[i]) && (nodep[i - 1] != NULL)) {
       uniquearray[uniqueindex++] = i;
+      uniquearray[uniqueindex] = 0;
     }
   }
 
-  for (i = 0; i < uniqueindex; i++) {
+  for ( i = 0; uniquearray[i] != 0; i++) {
     nodep[spp + i] = nodep[uniquearray[i] - 1];
     nodep[spp + i]->index = spp + i + 1;
     nodep[spp + i]->next->index = spp + i + 1;
@@ -1269,7 +1274,7 @@ void yourtree()
 }  /* yourtree */
 
 
-void buildtree()
+void buildtree(void)
 {
   /* variables needed to be passed to treeread() */
   long    nextnode   = 0;
@@ -1284,8 +1289,8 @@ void buildtree()
 
   /* These assignments moved from treeconstruct -- they seem to happen
      only here. */
-/*xx treeone & treetwo assignments should probably happen in 
-treeconstruct.  Memory leak if user reads multiple trees. */
+  /*xx treeone & treetwo assignments should probably happen in 
+    treeconstruct.  Memory leak if user reads multiple trees. */
   treeone = (node **)Malloc(maxsz*sizeof(node *));
   treetwo = (node **)Malloc(maxsz*sizeof(node *));
   simplifiedtree.nodep = (node **)Malloc(maxsz*sizeof(node *));
@@ -1293,44 +1298,43 @@ treeconstruct.  Memory leak if user reads multiple trees. */
   topedge     = 1;
   leftedge    = 1;
   switch (how) {
-    
-  case arb:
-    nodep = treeone;
-    treesets[othertree].nodep = treetwo;
-    arbitree();
-    break;
 
-  case use:
-    printf("\nReading tree file ...\n\n");
-    
-    if (!readnext) {
-      /* This is the first time through here, act accordingly */
-      firsttree = true;
-     
-      treesread = 0;
-    } else {
-      /* This isn't the first time through here ... */
-      firsttree = false;
-    }
-    treestr = ajStrGetuniquePtr(&phylotrees[treesread]->Tree);
-    allocate_nodep(&nodep, treestr, &spp);
-    treesets[whichtree].nodep = nodep;
-    
-    if (firsttree)
-      nayme = (naym *)Malloc(spp*sizeof(naym));
-    treeread(&treestr, &root, dummy_treenode, &goteof, &firsttree,
-             nodep, &nextnode, &haslengths,
-             &grbg, initretreenode);
-    nonodes = nextnode;
-    treesread++;
-    treesets[othertree].nodep = treetwo;
-    break;
+    case arb:
+      nodep = treeone;
+      treesets[othertree].nodep = treetwo;
+      arbitree();
+      break;
 
-  case spec:
-    nodep = treeone;
-    treesets[othertree].nodep = treetwo;
-    yourtree();
-    break;
+    case use:
+      printf("\nReading tree file ...\n\n");
+
+      if (!readnext) {
+        /* This is the first time through here, act accordingly */
+        firsttree = true;
+
+        treesread = 0;
+      } else {
+        /* This isn't the first time through here ... */
+        firsttree = false;
+      }
+      treestr = ajStrGetuniquePtr(&phylotrees[treesread]->Tree);
+      allocate_nodep(&nodep, treestr, &spp);
+      treesets[whichtree].nodep = nodep;
+
+      if (firsttree)
+        nayme = (naym *)Malloc(spp*sizeof(naym));
+      treeread(&treestr, &root, dummy_treenode, &goteof, &firsttree, nodep, 
+          &nextnode, &haslengths, &grbg, initretreenode,true,-1);
+      nonodes = nextnode;
+      treesread++;
+      treesets[othertree].nodep = treetwo;
+      break;
+
+    case spec:
+      nodep = treeone;
+      treesets[othertree].nodep = treetwo;
+      yourtree();
+      break;
   }
 
   q = root->next;
@@ -1390,7 +1394,7 @@ void retree_help()
   printf(" K Move viewing window upward\n");
   printf(" L Move viewing window to the right\n");
   printf(" C show only one Clade (subtree) (might be useful if tree is ");
-    printf("too big)\n");
+  printf("too big)\n");
   printf(" ? Help (this screen)\n");
   printf(" Q (Quit) Exit from program\n");
   printf(" X Exit from program\n\n");
@@ -1419,7 +1423,7 @@ void consolidatetree(long index)
   while (nodep[i-1] != NULL) {
     r = nodep[i - 1];
     if (!(r->tip))
-       r->index--;
+      r->index--;
     if (!(r->tip)) {
       q = r->next;
       do {
@@ -1438,62 +1442,86 @@ void consolidatetree(long index)
 void rearrange()
 {
   long i, j, maxinput;
-  boolean ok1, ok2;
+  boolean ok;
   node *p, *q;
   char ch;
 
   printf("Remove everything to the right of which node? ");
-  inpnum(&i, &ok1);
-  ok1 = (ok1 && i >= 1 && i <= (spp * 2 - 1) && i != root->index);
-  if (ok1)
-    ok1 = !nodep[i - 1]->deleted;
-  if (ok1) {
+  inpnum(&i, &ok);
+  if ( ok == false ) {
+    /* fall through */
+  } else if ( i < 1 || i > spp*2 - 1 ) {
+    /* i is not in range */
+    ok = false;
+  } else if (i == root->index ) {
+    /* i is root */
+    ok = false;
+  } else if ( nodep[i-1]->deleted ) {
+    /* i has been deleted */
+    ok = false;
+  } else {
     printf("Add at or before which node? ");
-    inpnum(&j, &ok2);
-    ok2 = (ok2 && j >= 1 && j <= (spp * 2 - 1));
-    if (ok2) {
-      if (j != root->index)
-        ok2 = !nodep[nodep[j - 1]->back->index - 1]->deleted;
-    }
-    if (ok2) {
-/*xx This edit says "j must not be i's parent."
-     Is this necessary anymore?   */
-    /*  ok2 = (nodep[j - 1] != nodep[nodep[i - 1]->back->index - 1]);*/
-      p = nodep[j - 1];
-      /* make sure that j is not a descendent of i */
-      while (p != root) {
-        ok2 = (ok2 && p != nodep[i - 1]);
-        p = nodep[p->back->index - 1];
+    inpnum(&j, &ok);
+    if ( ok == false ) {
+      /* fall through */
+    } else if ( j < 1 || j > spp*2 - 1 ) {
+      /* j is not in range */
+      ok = false;
+    } else if ( nodep[j-1]->deleted ) {
+      /* j has been deleted */
+      ok = false;
+    } else if (j != root->index && nodep[nodep[j-1]->back->index - 1]->deleted ) {
+      /* parent of j has been deleted */
+      ok = false;
+    } else if ( nodep[j-1] == nodep[nodep[i-1]->back->index -1] ) {
+      /* i is j's parent */
+      ok = false;
+    } else {
+      /* make sure that j is not a descendant of i */
+      for ( p = nodep[j-1]; p != root; p = nodep[p->back->index - 1] ) {
+        if ( p == nodep[i-1] ) {
+          ok = false;
+          break;
+        }
       }
-      if (ok1 && ok2) {
+      if ( ok ) {
         maxinput = 1;
         do {
           printf("Insert at node (A) or before node (B)? ");
 #ifdef WIN32
           phyFillScreenColor();
 #endif
+          fflush(stdout);
           scanf("%c%*[^\n]", &ch);
           getchar();
           if (ch == '\n')
             ch = ' ';
-          ch = isupper((int)ch) ? ch : toupper((int)ch);
+          ch = toupper(ch);
           maxinput++;
           if (maxinput == 100) {
-            printf("ERROR: too many tries at choosing option\n");
-            embExitBad();
+            printf("ERROR: Input failed too many times.\n");
+            exxit(-1);
           }
         } while (ch != 'A' && ch != 'B');
+
         if (ch == 'A') {
-          if (!(nodep[j - 1]->deleted) && !nodep[j - 1]->tip) {
+          if ( nodep[j - 1]->deleted || nodep[j - 1]->tip ) {
+            /* If j is a tip or has been deleted */
+            ok = false;
+          } else if ( nodep[j-1] == nodep[nodep[i-1]->back->index -1] ) {
+            /* If j is i's parent */
+            ok = false;
+          } else {
             copytree();
             re_move(&nodep[i - 1], &q);
             add_child(nodep[j - 1], nodep[i - 1]);
             if (fromtype == beforenode)
               consolidatetree(q->index);
-          } else
-            ok2 = false;
-        } else {
-          if (j != root->index) { /* can't insert at root */
+          }
+        } else { /* ch == 'B' */
+          if (j == root->index) { /* can't insert at root */
+            ok = false;
+          } else {
             copytree();
             printf("Insert before node %ld\n",j);
             re_move(&nodep[i - 1], &q);
@@ -1502,14 +1530,15 @@ void rearrange()
               nodep[i-1]->back = nodep[q->index-1]->next;
             }
             add_before(nodep[j - 1], nodep[i - 1]);
-          } else
-            ok2 = false;
+          }
         } /* endif (before or at node) */
       } /* endif (ok to do move) */
     } /* endif (destination node ok) */
   } /* endif (from node ok) */
+
   printree();
-  if (!(ok1 && ok2))
+
+  if ( !ok )
     printf("Not a possible rearrangement.  Try again: \n");
   else {
     written = false;
@@ -1701,14 +1730,14 @@ double oltrav(node *p)
 
 void outlength()
 {
-/* compute the farthest combined length out from each node */
+  /* compute the farthest combined length out from each node */
   oltrav(root);
 }  /* outlength */
 
 
 void midpoint()
 {
-/* midpoint root the tree */
+  /* midpoint root the tree */
   double balance, greatlen, lesslen, grlen, maxlen;
   node *maxnode, *grnode, *lsnode =NULL;
   boolean ok = true;
@@ -1760,7 +1789,7 @@ void midpoint()
   balance = greatlen - (greatlen + lesslen) / 2.0;
   grlen = grnode->length;
 
-  while ((balance > grlen) && ok) {
+  while ((balance - grlen > 1e-10) && ok) {
     /* First, find the most distant immediate child of grnode
        and reroot to it. */
     p = grnode;
@@ -1806,8 +1835,8 @@ void midpoint()
   }; /* end of while ((balance > grlen) && ok) */
 
   if (ok) {
-/*xx the following ignores deleted nodes */
-/*   this may be ok because deleted nodes are omitted from length calculations */
+    /*xx the following ignores deleted nodes */
+    /*   this may be ok because deleted nodes are omitted from length calculations */
     if (multi) {
       reroot(grnode); /*xx need length corrections */
 
@@ -1869,6 +1898,35 @@ void deltrav(node *p, boolean value)
     q = q->next;
   } while (p != q);
 }  /* deltrav */
+
+
+void fill_del(node*p)
+{
+  int alldell;
+  node *q = p;
+
+  if ( p->next == NULL) return;
+
+  q=p->next;
+  while ( q != p) {
+    fill_del(q->back); 
+    q=q->next;
+  }
+
+  alldell = 1;
+
+  q=p->next;
+  while ( q != p) {
+    if ( !q->back->deleted ) {
+      alldell = 0;
+    }
+    q=q->next;
+  }
+
+  p->deleted = alldell;
+
+}
+
 
 
 void reg_del(node *delp, boolean value)
@@ -1944,6 +2002,7 @@ void del_or_restore()
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -2006,32 +2065,32 @@ void undo()
    in preparation for writing a tree to disk.
  
    boolean deadend      This node is not deleted but all of its children
-     are, so this node will be treated as such when
-     the tree is written or displayed.
+   are, so this node will be treated as such when
+   the tree is written or displayed.
    
    boolean onebranch    This node has only one valid child, so that this
-     node will not be written and its child will be 
-     written as a child of its grandparent with the
-     appropriate summing of lengths.
+   node will not be written and its child will be 
+   written as a child of its grandparent with the
+   appropriate summing of lengths.
  
    nodep *onebranchnode
-     Used if onebranch is true.  Onebranchnode points
-     to the one valid child.  This child may be one or
-     more generations down from the current node.
+   Used if onebranch is true.  Onebranchnode points
+   to the one valid child.  This child may be one or
+   more generations down from the current node.
  
    double onebranchlength
-     Used if onebranch is true.  Onebranchlength is
-     the length from the current node to the valid 
-     child.
-*/
+   Used if onebranch is true.  Onebranchlength is
+   the length from the current node to the valid 
+   child.
+   */
 
 void treetrav(node *p)
 {
   long branchcount = 0;
   node *q, *onebranchp =NULL;
  
-/* Count the non-deleted branches hanging off of this node into branchcount.
-   If there is only one such branch, onebranchp points to that branch. */
+  /* Count the non-deleted branches hanging off of this node into branchcount.
+     If there is only one such branch, onebranchp points to that branch. */
  
   if (p->tip)
     return;
@@ -2040,11 +2099,11 @@ void treetrav(node *p)
   do {
     if (!q->back->deleted) {
       if (!q->back->tip)
-     treetrav(q->back);
+        treetrav(q->back);
       
       if (!q->back->deadend && !q->back->deleted) {
-     branchcount++;
-     onebranchp = q->back;
+        branchcount++;
+        onebranchp = q->back;
       }
     }
     q = q->next;
@@ -2176,7 +2235,7 @@ void simcopytree()
 
   simplifiedtree.root = simcopytrav(root);
   /*xx If there are deleted nodes, nonodes will be different.
-       However, nonodes is not used in the simplified tree. */
+    However, nonodes is not used in the simplified tree. */
   simplifiedtree.nonodes = nonodes;
   simplifiedtree.waswritten = waswritten;
   simplifiedtree.hasmult = hasmult;
@@ -2229,9 +2288,9 @@ void writebranchlength(double x)
           col += w + 6;
         }
         else {
-            if ((long)(100000*x) == 10*(long)(10000*x)) {
-              if (!xmltree)
-                putc(':', outtree);
+          if ((long)(100000*x) == 10*(long)(10000*x)) {
+            if (!xmltree)
+              putc(':', outtree);
             fprintf(outtree, "%*.4f", (int)(w + 6), x);
             col += w + 7;
           }
@@ -2257,8 +2316,8 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
   boolean comma;
   node *q;
  
-/* If this is a tip or there are no non-deleted branches from this node,
-   render this node as a tip (write its name).  */
+  /* If this is a tip or there are no non-deleted branches from this node,
+     render this node as a tip (write its name).  */
 
   if (p == root) {
     if (xmltree)
@@ -2274,7 +2333,7 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
       n = 0;
       for (i = 1; i <= MAXNCH; i++) {
         if ((nodep[p->index - 1]->nayme[i - 1] != '\0')
-          && (nodep[p->index - 1]->nayme[i - 1] != ' '))
+            && (nodep[p->index - 1]->nayme[i - 1] != ' '))
           n = i;
       }
       indent += 2;
@@ -2305,44 +2364,44 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
     if (p->onebranchnode->hasname) {
       n = 0;
       for (i = 1; i <= MAXNCH; i++) {
-      if ((nodep[p->index - 1]->nayme[i - 1] != '\0')
-           && (nodep[p->index - 1]->nayme[i - 1] != ' '))
-        n = i;
-      indent += 2;
-      if (xmltree) {
-        putc('\n', outtree);
-        for (i = 1; i <= indent; i++)
-          putc(' ', outtree);
-        fprintf(outtree, "<clade");
-        if ((p->haslength && writeparens) || p->onebranch) {
-          if (!(p->onebranch && !p->onebranchhaslength)) {
-            fprintf(outtree, " length=");
-            if (p->onebranch)
-              x = p->onebranchlength;
-            else
-              x = p->length;
-            x += addlength;
-            writebranchlength(x);
+        if ((nodep[p->index - 1]->nayme[i - 1] != '\0')
+            && (nodep[p->index - 1]->nayme[i - 1] != ' '))
+          n = i;
+        indent += 2;
+        if (xmltree) {
+          putc('\n', outtree);
+          for (i = 1; i <= indent; i++)
+            putc(' ', outtree);
+          fprintf(outtree, "<clade");
+          if ((p->haslength && writeparens) || p->onebranch) {
+            if (!(p->onebranch && !p->onebranchhaslength)) {
+              fprintf(outtree, " length=");
+              if (p->onebranch)
+                x = p->onebranchlength;
+              else
+                x = p->length;
+              x += addlength;
+              writebranchlength(x);
+            }
+            fprintf(outtree, "<name>");
           }
-          fprintf(outtree, "<name>");
         }
+        for (i = 0; i < n; i++) {
+          c = p->onebranchnode->nayme[i];
+          if (c == '_')
+            c = ' ';
+          putc(c, outtree);
+        }
+        col += n;
+        if (xmltree)
+          fprintf(outtree, "</name></clade>");
       }
-      for (i = 0; i < n; i++) {
-        c = p->onebranchnode->nayme[i];
-        if (c == '_')
-          c = ' ';
-        putc(c, outtree);
-      }
-      col += n;
-      if (xmltree)
-        fprintf(outtree, "</name></clade>");
     }
-  }
   } else if (p->onebranch && !p->onebranchnode->tip) {
     treeout(p->onebranchnode, true, 0.0, indent);
   } else {
-      /* Multiple non-deleted branch case:  go round the node
-         recursing down the branches.  */
+    /* Multiple non-deleted branch case:  go round the node
+       recursing down the branches.  */
     if (xmltree) {
       putc('\n', outtree);
       indent += 2;
@@ -2356,7 +2415,7 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
         fprintf(outtree, "<clade");
         if ((p->haslength && writeparens) || p->onebranch) {
           if (!(p->onebranch && !p->onebranchhaslength)) {
-            fprintf(outtree, " length=");
+            fprintf(outtree, " length=\"");
             if (p->onebranch)
               x = p->onebranchlength;
             else
@@ -2364,8 +2423,9 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
             x += addlength;
             writebranchlength(x);
           }
+          fprintf(outtree, "\">");
         }
-        fprintf(outtree, ">");
+        else fprintf(outtree, ">");
       } else putc('(', outtree); 
     }
     (col)++;
@@ -2378,11 +2438,11 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
     q = p->next; 
     while (q != p) {
       comma = true;
-/* If branch is deleted or is a dead end, do not recurse
-   down the branch and do not write a comma afterwards.
-*/
+      /* If branch is deleted or is a dead end, do not recurse
+         down the branch and do not write a comma afterwards.
+         */
       if (!q->back->deleted && !q->back->deadend)
-      treeout(q->back, true, 0.0, indent);
+        treeout(q->back, true, 0.0, indent);
       else
         comma = false;
       if (q->back->index == lastnodeidx)
@@ -2400,7 +2460,7 @@ void treeout(node *p, boolean writeparens, double addlength, long indent)
         col = 0;
       }
     }
-/* The right paren ')' closes off this level of recursion. */
+    /* The right paren ')' closes off this level of recursion. */
     if (p != root) {
       if (xmltree) {
         fprintf(outtree, "\n");
@@ -2467,7 +2527,7 @@ void roottreeout(boolean *userwantsrooted)
   /* write out file with representation of final tree */
   long trnum, trnumwide;
   boolean treeisrooted = false;
-  
+
   treetrav(root);
   simcopytree(); /* Prepare a copy of the going tree without deleted branches */
   treesets[whichtree].root = root;        /* Store the current root */
@@ -2521,7 +2581,7 @@ void notrootedtorooted()
   /* root halfway along leftmost branch of unrooted tree */
   /* create a new triad for the new base */
   maketemptriad(&newbase,nonodes+1);
-    
+
   /* Take left branch and make it the left branch of newbase */
   newbase->next->back = root->next->back;
   newbase->next->next->back = root;
@@ -2529,7 +2589,7 @@ void notrootedtorooted()
   if (newbase->next->back->haslength) {
     newbase->next->back->length /= 2.0;
     newbase->next->next->back->length =
-    newbase->next->back->length;
+        newbase->next->back->length;
     newbase->next->next->back->haslength = true;
   }
   /* remove leftmost ring node from old base ring */
@@ -2552,8 +2612,8 @@ void rootedtonotrooted()
   double sumlength = 0;
 
   /* Use the leftmost non-tip immediate descendant of the root,
-   root at that, write a multifurcation with that as the base.
-  If both descendants are tips, write tree as is. */
+     root at that, write a multifurcation with that as the base.
+     If both descendants are tips, write tree as is. */
   root = simplifiedtree.root;
   /* first, search for leftmost non-tip immediate descendent of root */
   q = root->next->back;
@@ -2609,7 +2669,7 @@ void rootedtonotrooted()
     chuck(&grbg, root);
     root = newbase;
     treeout(root, true, 0.0, 0);
-   }
+  }
 } /* rootedtonotrooted */
 
 
@@ -2635,6 +2695,7 @@ void treewrite(boolean *done)
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     getchar();
     if (ch == '\n')
@@ -2664,28 +2725,28 @@ void retree_window(adjwindow action)
   /* move viewing window of tree */
   switch (action) {
 
-  case left:
-    if (leftedge != 1)
-      leftedge -= hscroll;
-    break;
+    case left:
+      if (leftedge != 1)
+        leftedge -= hscroll;
+      break;
 
-  case downn:
-    /* The 'topedge + 3' is needed to allow downward scrolling
-       when part of the tree is above the screen and only 1 or 2 lines
-       are below it. */
-    if (treelines - topedge + 3 >= screenlines)
-      topedge += vscroll;
-    break;
+    case downn:
+      /* The 'topedge + 3' is needed to allow downward scrolling
+         when part of the tree is above the screen and only 1 or 2 lines
+         are below it. */
+      if (treelines - topedge + 3 >= screenlines)
+        topedge += vscroll;
+      break;
 
-  case upp:
-    if (topedge != 1)
-      topedge -= vscroll;
-    break;
+    case upp:
+      if (topedge != 1)
+        topedge -= vscroll;
+      break;
 
-  case right:
-    if (leftedge < vscreenwidth)
-      leftedge += hscroll;
-    break;
+    case right:
+      if (leftedge < vscreenwidth)
+        leftedge += hscroll;
+      break;
   }
   printree();
 }  /* retree_window */
@@ -2715,7 +2776,8 @@ void getlength(double *length, reslttype *reslt, boolean *hslngth)
       break;}
     else if (sscanf(tmp,"%lf",&valyew) == 1){
       (*reslt) = valid;
-      break;}
+      break;
+    }
     maxinput++;
     if (maxinput == 100) {
       printf("ERROR: too many tries at choosing option\n");
@@ -2758,13 +2820,13 @@ void changelength()
     if (p->haslength) {
       x = p->length;
       if (x > 0.0)
-     w = (long)(0.43429448222 * log(x));
+        w = (long)(0.43429448222 * log(x));
       else if (x == 0.0)
-     w = 0;
+        w = 0;
       else
-     w = (long)(0.43429448222 * log(-x)) + 1;
+        w = (long)(0.43429448222 * log(-x)) + 1;
       if (w < 0)
-     w = 0;
+        w = 0;
       printf("The current length of this branch is %*.5f\n", (int)(w + 7), x);
     } else
       printf("This branch does not have a length\n");
@@ -2772,28 +2834,28 @@ void changelength()
     getlength(&length, &reslt, &hslngth);
     switch (reslt) {
 
-    case valid:
-      copytree();
+      case valid:
+        copytree();
 
-      p->length = length;
-      p->haslength = true;
-      if (p->back != NULL) {
-     p->back->length = length;
-     p->back->haslength = true;
-      }
-      break;
+        p->length = length;
+        p->haslength = true;
+        if (p->back != NULL) {
+          p->back->length = length;
+          p->back->haslength = true;
+        }
+        break;
 
-    case remoov:
-      copytree();
+      case remoov:
+        copytree();
 
-      p->haslength = false;
-      if (p->back != NULL)
-     p->back->haslength = false;
-      break;
+        p->haslength = false;
+        if (p->back != NULL)
+          p->back->haslength = false;
+        break;
 
-    case quit:
-      /* blank case */
-      break;
+      case quit:
+        /* blank case */
+        break;
     }
   } else {
     printf("\n (this operation cannot be undone)\n");
@@ -2804,25 +2866,26 @@ void changelength()
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
-      ch = ' ';
+        ch = ' ';
       maxinput++;
       if (maxinput == 100) {
         printf("ERROR: too many tries at choosing option\n");
-        embExitBad();
+        exxit(-1);
       }
     } while (ch != 'U' && ch != 'u' && ch != 'R' && ch != 'r');
     if (ch == 'R' || ch == 'r') {
       copytree();
       for (i = 0; i < spp; i++)
-     nodep[i]->haslength = false;
+        nodep[i]->haslength = false;
       for (i = spp; i < nonodes; i++) {
         if (nodep[i] != NULL) {
-       nodep[i]->haslength = false;
-       nodep[i]->next->haslength = false;
-       nodep[i]->next->next->haslength = false;
+          nodep[i]->haslength = false;
+          nodep[i]->next->haslength = false;
+          nodep[i]->next->next->haslength = false;
         }
       }
     }
@@ -2859,12 +2922,12 @@ void changename()
 
       /* this is valid because names are padded out to MAXNCH with nulls */
       for (i = 1; i <= MAXNCH; i++) {
-     if (nodep[tipno - 1]->nayme[i - 1] != '\0')
-       n = i;
+        if (nodep[tipno - 1]->nayme[i - 1] != '\0')
+          n = i;
       }
       printf("The current name of tip %ld is \"", tipno);
       for (i = 0; i < n; i++)
-     putchar(nodep[tipno - 1]->nayme[i]);
+        putchar(nodep[tipno - 1]->nayme[i]);
       printf("\"\n");
     }
     copytree();
@@ -2951,18 +3014,19 @@ void redisplay()
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     getchar();
     if (ch == '\n')
       ch = ' ';
     ch = isupper((int)ch) ? ch : toupper((int)ch);
     if (ch == 'C' || ch == 'F' || ch == 'O' || ch == 'R' ||
-      ch == 'U' || ch == 'X' || ch == 'Q' || ch == '.' ||
-      ch == 'W' || ch == 'B' || ch == 'N' || ch == '?' ||
-      ch == 'H' || ch == 'J' || ch == 'K' || ch == 'L' ||
-      ch == '+' || ch == 'T' || ch == 'D' ||
-      (haslengths && ch == 'M') ||
-      (haslengths && ch == '=')) {
+        ch == 'U' || ch == 'X' || ch == 'Q' || ch == '.' ||
+        ch == 'W' || ch == 'B' || ch == 'N' || ch == '?' ||
+        ch == 'H' || ch == 'J' || ch == 'K' || ch == 'L' ||
+        ch == '+' || ch == 'T' || ch == 'D' ||
+        (haslengths && ch == 'M') ||
+     (haslengths && ch == '=')) {
 
       switch (ch) {
 
@@ -3071,6 +3135,7 @@ void redisplay()
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -3098,7 +3163,7 @@ void treeconstruct()
     othertree = 1;
     treesets[whichtree].initialized = false;
     treesets[othertree].initialized = false;
-/*xx    nodep = treesets[whichtree].nodep;   debug */
+    /*xx    nodep = treesets[whichtree].nodep;   debug */
     root = treesets[whichtree].root;
     subtree = false;
     topedge = 1;
@@ -3127,8 +3192,8 @@ int main(int argc, Char *argv[])
 #endif
   init(argc,argv);
   emboss_getoptions("fretree",argc,argv);
-/*  treesets[0].nodep = treeone;
-  treesets[1].nodep = treetwo;*/
+  /*  treesets[0].nodep = treeone;
+      treesets[1].nodep = treetwo;*/
   nexus     = false;
   nolengths = false;
   grbg = NULL;
@@ -3146,7 +3211,7 @@ int main(int argc, Char *argv[])
     if (xmltree)
       fprintf(outtree, "</phylogenies>\n");
     else if (nexus)
-        fprintf(outtree, "END;\n");
+      fprintf(outtree, "END;\n");
   }
   FClose(intree);
   FClose(outtree);

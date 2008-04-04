@@ -12,6 +12,7 @@ void inpnum(long *n, boolean *success)
 #ifdef WIN32
   phyFillScreenColor();
 #endif
+  fflush(stdout);
   getstryng(line);
   *n = atof(line);
   fields = sscanf(line,"%ld",n);
@@ -97,6 +98,7 @@ void help(const char *letters)
 #ifdef WIN32
   phyFillScreenColor();
 #endif
+  fflush(stdout);
   getstryng(input);
 }  /* help */
 

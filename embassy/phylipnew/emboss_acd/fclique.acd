@@ -22,7 +22,7 @@ section: input [
     length: "$(infile.discretelength)"
     knowntype: "ancestral states"
     nullok: "Y"
-    information: "Phylip ancestral states file"
+    information: "Phylip ancestral states file (optional)"
   ]
 
   properties: factorfile [

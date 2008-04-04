@@ -249,7 +249,8 @@ Command line arguments
                                   seqeunce input
 *  -basefreq           array      [0.25 0.25 0.25 0.25] Base frequencies for A
                                   C G T/U (use blanks to separate)
-   -lower              boolean    [N] Lower triangular distance matrix
+   -lower              boolean    [N] Output as a lower triangular distance
+                                  matrix
    -printdata          boolean    [N] Print data at start of run
    -[no]progress       boolean    [Y] Print indications of progress of run
 
@@ -395,11 +396,11 @@ Output file format
   File: dnadist.fdnadist
 
     5
-Alpha       0.000000  0.303893  0.857546  1.158921  1.542897
-Beta        0.303893  0.000000  0.339731  0.913519  0.619666
-Gamma       0.857546  0.339731  0.000000  1.631729  1.293707
-Delta       1.158921  0.913519  1.631729  0.000000  0.165882
-Epsilon     1.542897  0.619666  1.293707  0.165882  0.000000
+Alpha      0.000000 0.303900 0.857544 1.158927 1.542899
+Beta       0.303900 0.000000 0.339727 0.913522 0.619671
+Gamma      0.857544 0.339727 0.000000 1.631729 1.293713
+Delta      1.158927 0.913522 1.631729 0.000000 0.165882
+Epsilon    1.542899 0.619671 1.293713 0.165882 0.000000
 
 Data files
 

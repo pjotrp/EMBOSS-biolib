@@ -31,7 +31,7 @@ struct winpreviewparms_t {
 struct winpreviewparms_t winpreviewparms;
 
 #endif
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 struct {
         char* fn;
         double *xo, *yo, *scale;
@@ -362,7 +362,7 @@ void getpreview()
 #ifdef MAC
   printf("        M         Macintosh screens\n");
 #endif
-#ifdef X
+#ifndef X_DISPLAY_MISSING
   printf("        X         X Windows display\n");
 #endif
 #ifdef WIN32
@@ -377,6 +377,7 @@ void getpreview()
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     getchar();
     uppercase(&ch);
@@ -391,7 +392,7 @@ void getpreview()
 #define FOO
   while (strchr("NMKDU",ch) == NULL);
 #endif
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 #define FOO
   while (strchr("NXKDU",ch) == NULL);
 #endif
@@ -530,7 +531,7 @@ void initplotter(long ntips, char *fontname)
   Char picthi, pictlo;
   long pictint;
   int padded_width, byte_width;
-#ifdef X
+#ifndef X_DISPLAY_MISSING
   unsigned int dummy1, dummy2;
 #endif
   
@@ -547,7 +548,7 @@ void initplotter(long ntips, char *fontname)
  switch (plotter) {
 
   case xpreview:
-#ifdef X
+#ifndef X_DISPLAY_MISSING
     XGetGeometry(display,mainwin,
     &DefaultRootWindow(display),&x,&y,&width,&height,&dummy1,&dummy2);
     XClearWindow(display,mainwin);
@@ -792,7 +793,7 @@ void finishplotter()
   switch (plotter) {
 
   case xpreview:
-#ifdef X
+#ifndef X_DISPLAY_MISSING
          plotter=oldplotter;
          redraw(NULL,NULL,NULL);
          XtAppMainLoop(appcontext);
@@ -802,6 +803,7 @@ void finishplotter()
 
   case tek:
     if (previewing) {
+      fflush(stdout);
       scanf("%*c%*[^\n]");
       getchar();
       printf("%c\f", escape);
@@ -1320,12 +1322,12 @@ void loadfont(short *font, char *application)
   AjPStr token = NULL;
 
   if (!intexp)
-      intexp = ajRegCompC("[-0-9]+");
+      intexp = ajRegCompC("[0-9-]+");
   i=0;
   fontfilename = ajAcdGetString("fontfile");
   if(ajNamRootInstall(&installdir))
   {
-      ajStrAppendC(&installdir, "share/EMBOSS/data/");
+      ajStrAppendC(&installdir, "/share/PHYLIPNEW/data/");
       ajFileSetDir(&fontfilename, installdir);
   }
 
@@ -1333,24 +1335,40 @@ void loadfont(short *font, char *application)
   if(!fontfile)
       return;
 
-  while (!(ajFileEof(fontfile) || ch == ' ')) {
+  ajFileGetsTrim(fontfile, &rdline);
+  while (!((!ajStrGetLen(rdline) || ajFileEof(fontfile))
+	   || ch == ' ')) {
     charstart = i + 1;
-    ajFileGetsTrim(fontfile, &rdline);
-    ajFmtScanS(rdline, "%c%c%ld%hd%hd", &ch, &ch, &dummy, &font[charstart + 1],
-           &font[charstart + 2]);
+    ajDebug("Next line charstart:%d '%S'\n", charstart, rdline);
+    ajFmtScanS(rdline, "%c%c%ld%hd%hd", &ch, &ch, &dummy,
+	       &font[charstart + 1], &font[charstart + 2]);
     font[charstart] = ch;
+    ajDebug("read [%d] '%d' [%d] '%d' [%d '%d'\n",
+	    i, font[i], (i+1), font[i+1], (i+2), font[i+2]);
     i = charstart + 3;
     do {
-      if ((i - charstart - 3) % 10 == 0) 
-        ajFileGetsTrim(fontfile, &rdline);
+      if ((i - charstart - 3) % 10 == 0)
+      {
+	  ajFileGetsTrim(fontfile, &rdline);
+	  ajDebug("More on next line at i: %d charstart: %d '%S'\n",
+		  i, charstart, rdline);
+      }	      
       i++;
       if (!ajRegExec(intexp, rdline))
-	  ajDie("bad format in fontfile %F", fontfile);
+	  ajDie("bad format in fontfile %F at '%S'", fontfile, rdline);
       ajRegSubI(intexp, 0, &token);
       ajStrToInt(token, &inum);
       font[i - 1] = inum;
+      ajRegPost(intexp, &token);
+      ajStrAssignS(&rdline, token);
+      ajDebug("next [%d] '%d'\n", (i-1), font[i-1]);
     } while (abs(font[i - 1]) < 10000);
+    ajDebug("Done at [%d] '%d'\n", (i-1), font[i-1]);
     font[charstart - 1] = i + 1;
+    ajDebug("last [%d] '%d'\n", (charstart-1), font[charstart-1]);
+    ajFileGetsTrim(fontfile, &rdline);
+    ajDebug("Start next line at font[%d-1] %d ch:'%c' EOF: %B\n",
+	   i, font[i-1], ch, ajFileEof(fontfile));
   }
   font[charstart - 1] = 0;
   ajFileClose(&fontfile);
@@ -1421,6 +1439,7 @@ void getrayparms(long *treecolor, long *namecolor, long *backcolor,
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%ld%*[^\n]", &numtochange);
       getchar();
       countup(&loopcount, 10);
@@ -1438,6 +1457,7 @@ void getrayparms(long *treecolor, long *namecolor, long *backcolor,
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1464,6 +1484,7 @@ void getrayparms(long *treecolor, long *namecolor, long *backcolor,
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1490,6 +1511,7 @@ void getrayparms(long *treecolor, long *namecolor, long *backcolor,
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1518,6 +1540,7 @@ void getrayparms(long *treecolor, long *namecolor, long *backcolor,
 #ifdef WIN32
         phyFillScreenColor();
 #endif
+        fflush(stdout);
         scanf("%c%*[^\n]", &ch);
         getchar();
         if (ch == '\n')
@@ -1544,13 +1567,15 @@ void getrayparms(long *treecolor, long *namecolor, long *backcolor,
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%ld%*[^\n]", rx);
       getchar();
       printf("Enter the Y resolution:\n");
 #ifdef WIN32
       phyFillScreenColor();
 #endif
-    scanf("%ld%*[^\n]",ry);
+      fflush(stdout);
+      scanf("%ld%*[^\n]",ry);
       getchar();
     }
     break;
@@ -1611,6 +1636,7 @@ void getvrmlparms(long *vrmltreecolor, long *vrmlnamecolor, long *vrmlskycolorne
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%ld%*[^\n]", &numtochange);
       getchar();
       countup(&loopcount, 10);
@@ -1628,6 +1654,7 @@ void getvrmlparms(long *vrmltreecolor, long *vrmlnamecolor, long *vrmlskycolorne
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1654,6 +1681,7 @@ void getvrmlparms(long *vrmltreecolor, long *vrmlnamecolor, long *vrmlskycolorne
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1680,6 +1708,7 @@ void getvrmlparms(long *vrmltreecolor, long *vrmlnamecolor, long *vrmlskycolorne
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1706,6 +1735,7 @@ void getvrmlparms(long *vrmltreecolor, long *vrmlnamecolor, long *vrmlskycolorne
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1732,6 +1762,7 @@ void getvrmlparms(long *vrmltreecolor, long *vrmlnamecolor, long *vrmlskycolorne
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       if (ch == '\n')
@@ -1924,13 +1955,7 @@ void plotrparms(long ntips)
     yunitspercm = 1.0;
     xsize = 10.0;
     ysize = 10.0;
-    vrmltreecolor = 6;
-    vrmlnamecolor = 4;
-    vrmlskycolornear = 7;
-    vrmlskycolorfar = 2;
-    vrmlgroundcolornear = 1;
-    vrmlgroundcolorfar = 1;
-    vrmlplotcolor = vrmltreecolor;
+    vrmlplotcolor = treecolor;
     loopcount = 0;
     do {
       n=showvrmlparms(vrmltreecolor, vrmlnamecolor, vrmlskycolornear,
@@ -1976,7 +2001,7 @@ void plotrparms(long ntips)
     ysize = 18.0;
     break;
 
-#ifdef X
+#ifndef X_DISPLAY_MISSING
   case xpreview:
     xunitspercm = 39.37;
     yunitspercm = 39.37;
@@ -2339,12 +2364,14 @@ void getplotter(Char ch)
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%lf%*[^\n]", &userxsize);
     getchar();
     printf("Y resolution?\n");
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%lf%*[^\n]", &userysize);
     getchar();
     xunitspercm = 1.0;
@@ -2372,12 +2399,14 @@ void getplotter(Char ch)
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%lf%*[^\n]", &userxsize);
     getchar();
     printf("Y resolution?\n");
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%lf%*[^\n]", &userysize);
     getchar();
     xunitspercm = 1.0;
@@ -2470,7 +2499,7 @@ if (plotter == mac){
 int readafmfile(char *filename, short *metric)
 {
 char line[256], word1[100], word2[100];
-int scanned, nmetrics=0, inmetrics, charnum, charlen, i, capheight=0;
+int scanned = 1, nmetrics=0, inmetrics, charnum, charlen, i, capheight=0;
 FILE *fp;
 
 fp = fopen(filename,"r");
@@ -2483,6 +2512,7 @@ for (i=0;i<256;i++){
 }
 
 for (;;){
+    /*scan_eoln(fp);*/ /* pmr: this seems to never set line - use old call */
   scanned = fscanf(fp,"%[^\n]\n",line);
   if (scanned != 1 )
     break;
@@ -3119,6 +3149,7 @@ void makebox(char *fn,double *xo,double *yo,double *scale,long ntips)
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     (void)getchar();
     if (ch == '\n')
@@ -3233,7 +3264,7 @@ boolean plotpreview(char *fn, double *xo, double *yo, double *scale,
         finishplotter();
     }
 #endif
-#ifdef X
+#ifndef X_DISPLAY_MISSING
     if (previewer == xpreview ){
         xpreviewparms.fn    = fn;
         xpreviewparms.xo    = xo;
@@ -3256,7 +3287,7 @@ boolean plotpreview(char *fn, double *xo, double *yo, double *scale,
 #endif
 #ifndef MAC
 #ifndef WIN32
-#ifndef X
+#ifdef X_DISPLAY_MISSING
   makebox(fn,xo,yo,scale,nt);
   plottree(root, root);
   plotlabels(fn);
@@ -3288,6 +3319,7 @@ boolean plotpreview(char *fn, double *xo, double *yo, double *scale,
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       (void)getchar();
       if (ch == '\n')
@@ -3346,7 +3378,7 @@ long allocstripe(striptype stripe, long x, long y)
 } /* allocstripe */
 
 
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 
 void  redraw(Widget w,XtPointer client, XExposeEvent *ev) {
         XGCValues values;

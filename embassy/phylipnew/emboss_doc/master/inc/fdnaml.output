@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-Nucleic acid sequence Maximum Likelihood method, version 3.6b
+Nucleic acid sequence Maximum Likelihood method, version 3.67
 
  5 species,  13  sites
 
@@ -57,31 +57,31 @@ Site category   Rate of change
 
 
 
-                                                             +Epsilon   
-  +----------------------------------------------------------3  
-  |                                                          +Delta     
-  |  
-  |  +------Gamma     
-  2--1  
+                                                              +Epsilon   
+     +--------------------------------------------------------3  
+  +--2                                                        +-Delta     
+  |  |  
   |  +Beta      
+  |  
+  1------Gamma     
   |  
   +-Alpha     
 
 
 remember: this is an unrooted tree!
 
-Ln Likelihood =   -57.89164
+Ln Likelihood =   -57.87892
 
  Between        And            Length      Approx. Confidence Limits
  -------        ---            ------      ------- ---------- ------
 
-     2          Alpha             0.26902     (     zero,     0.80593) *
-     2             3              7.83947     (     zero,    22.44277) **
-     3          Epsilon           0.13647     (     zero,     0.59801)
-     3          Delta             0.13781     (     zero,     0.59867)
-     2             1              0.00006     (     zero,     0.54477)
-     1          Gamma             0.95525     (     zero,     2.45593) **
-     1          Beta              0.04509     (     zero,     0.48078)
+     1          Alpha             0.26766     (     zero,     0.80513) *
+     1             2              0.04687     (     zero,     0.48388)
+     2             3              7.59821     (     zero,    22.01485) **
+     3          Epsilon           0.00006     (     zero,     0.46205)
+     3          Delta             0.27319     (     zero,     0.73380) **
+     2          Beta              0.00006     (     zero,     0.44052)
+     1          Gamma             0.95677     (     zero,     2.46186) **
 
      *  = significantly positive, P &lt; 0.05
      ** = significantly positive, P &lt; 0.01
@@ -99,8 +99,8 @@ Most probable category at each site if &gt; 0.95 probability ("." otherwise)
 <p><h3>File: dnaml.treefile</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-((Epsilon:0.13647,Delta:0.13781):7.83947,(Gamma:0.95525,
-Beta:0.04509):0.00006,Alpha:0.26902);
+(((Epsilon:0.00006,Delta:0.27319):7.59821,Beta:0.00006):0.04687,
+Gamma:0.95677,Alpha:0.26766);
 </pre>
 </td></tr></table><p>
 
@@ -110,7 +110,7 @@ Beta:0.04509):0.00006,Alpha:0.26902);
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-Nucleic acid sequence Maximum Likelihood method, version 3.6b
+Nucleic acid sequence Maximum Likelihood method, version 3.67
 
  5 species,  13  sites
 
@@ -135,11 +135,11 @@ Empirical Base Frequencies:
 Transition/transversion ratio =   2.000000
 
 
-     +Beta      
-  +--2  
-  |  |                                            +Epsilon   
-  |  +--------------------------------------------1  
-  |                                               +--------Delta     
+                                                  +Epsilon   
+     +--------------------------------------------1  
+  +--2                                            +--------Delta     
+  |  |  
+  |  +Beta      
   |  
   3------------------------------Gamma     
   |  
@@ -153,13 +153,13 @@ Ln Likelihood =   -72.25088
  Between        And            Length      Approx. Confidence Limits
  -------        ---            ------      ------- ---------- ------
 
-     3          Alpha             0.20753     (     zero,     0.56587)
-     3             2              0.09399     (     zero,     0.40897)
-     2          Beta              0.00006     (     zero,     0.32900)
-     2             1              1.51297     (     zero,     3.31131) **
+     3          Alpha             0.20745     (     zero,     0.56578)
+     3             2              0.09408     (     zero,     0.40912)
+     2             1              1.51296     (     zero,     3.31130) **
      1          Epsilon           0.00006     (     zero,     0.34299)
-     1          Delta             0.28136     (     zero,     0.62653) **
-     3          Gamma             1.01654     (     zero,     2.33183) **
+     1          Delta             0.28137     (     zero,     0.62654) **
+     2          Beta              0.00006     (     zero,     0.32900)
+     3          Gamma             1.01651     (     zero,     2.33178) **
 
      *  = significantly positive, P &lt; 0.05
      ** = significantly positive, P &lt; 0.01
@@ -170,7 +170,7 @@ Ln Likelihood =   -72.25088
 <p><h3>File: dnaml.treefile</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-((Beta:0.00006,(Epsilon:0.00006,Delta:0.28136):1.51297):0.09399,
-Gamma:1.01654,Alpha:0.20753);
+(((Epsilon:0.00006,Delta:0.28137):1.51296,Beta:0.00006):0.09408,
+Gamma:1.01651,Alpha:0.20745);
 </pre>
 </td></tr></table><p>

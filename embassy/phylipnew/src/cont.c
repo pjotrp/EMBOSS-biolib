@@ -1,12 +1,12 @@
-#include "phylip.h"
-#include "cont.h"
-
-/* version 3.6. (c) Copyright 1999-2000 by the University of Washington.
+/* version 3.6. (c) Copyright 1999-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
+#include <float.h>
 
+#include "phylip.h"
+#include "cont.h"
 
 void alloctree(pointarray *treenode, long nonodes)
 {
@@ -46,7 +46,7 @@ void freetree(pointarray *treenode, long nonodes)
     }
   }
   free(*treenode);
-}
+} /* freetree */
 
 void setuptree(tree *a, long nonodes)
 {
@@ -71,7 +71,7 @@ void setuptree(tree *a, long nonodes)
       p = p->next;
     }
   }
-  a->likelihood = -99999.0;
+  a->likelihood = -DBL_MAX;
   a->start = a->nodep[0];
 }  /* setuptree */
 

@@ -11,47 +11,6 @@ Phylip tree file (optional): <b></b>
 Phylip dnamlk program output file [dnaml.fdnamlk]: <b></b>
 
 
- mulsets: false
- datasets : 1
- rctgry : true
- gama : false
- invar : false
-
- ctgry: true
- categs : 2
- rcategs : 5
- auto_: false
- freqsfrom : true
- global : false
- hypstate : false
- invar : false
- jumble : false
- njumble : 1
- lngths : false
- lambda : 1.000000
- lambda1 : 0.000000
- cv : 0.000000
- freqa : 0.000000
- freqc : 0.000000
- freqg : 0.000000
- freqt : 0.000000
- trout : true
- ttratio : 2.000000
- probsum : 1.000623
- ttr : false
- usertree : false
- weights: true
- printdata : true
- progress : true
- treeprint: true
- interleaved : true 
-
-probcat[0] 0.522000
-probcat[1] 0.399000
-probcat[2] 0.076000
-probcat[3] 0.003600
-probcat[4] 0.000023
-
 Adding species:
    1. Alpha     
    2. Beta      

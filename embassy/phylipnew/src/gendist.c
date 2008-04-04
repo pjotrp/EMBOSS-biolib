@@ -106,7 +106,7 @@ void getalleles()
 void inputdata()
 {
   /* read allele frequencies */
-  long i, j, k, m, n;
+  long i, j, k, m, m1, n;
   double sum;
   ajint ipos = 0;
  
@@ -133,7 +133,36 @@ void inputdata()
         printf(
      "\n\nERROR: Locus %ld in species %ld: frequencies do not add up to 1\n\n",
                j, i);
+        for (m1 = 1; m1 <= n; m1 += 1) {
+          if (m1 == 1)
+            printf("%f", x[i-1][m-n+m1-2]);
+          else {
+            if ((m1 % 8) == 1)
+              printf("\n");
+            printf("+%f", x[i-1][m-n+m1-2]);
+          }
+        }
+        printf(" = %f\n\n", sum);
         embExitBad();
+      }
+      if (!all) {
+        x[i - 1][m - 1] = 1.0 - sum;
+        if (x[i-1][m-1] < -epsilong) {
+          printf("\n\nERROR: Locus %ld in species %ld: ",j,i);
+          printf("frequencies add up to more than 1\n\n");
+          for (m1 = 1; m1 <= n; m1 += 1) {
+            if (m1 == 1)
+              printf("%f", x[i-1][m-n+m1-2]);
+            else {
+              if ((m1 % 8) == 1)
+                printf("\n");
+              printf("+%f", x[i-1][m-n+m1-2]);
+              }
+            }
+          printf(" = %f\n\n", sum);
+          embExitBad();
+        }
+        m++;
       }
     }
   }
@@ -238,7 +267,12 @@ void writedists()
     else
       k = spp;
     for (j = 1; j <= k; j++) {
-      fprintf(outfile, "%10.6f", fabs(d[i][j - 1]));
+      if (d[i][j-1] < 100.0)
+        fprintf(outfile, "%10.6f", d[i][j-1]);
+      else if (d[i][j-1] < 1000.0)
+        fprintf(outfile, " %10.6f", d[i][j-1]);
+        else
+          fprintf(outfile, " %11.6f", d[i][j-1]);
       if ((j + 1) % 7 == 0 && j < k)
         putc('\n', outfile);
     }

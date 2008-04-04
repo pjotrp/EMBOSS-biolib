@@ -2,7 +2,7 @@
 #include "phylip.h"
 #include "cons.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2005 by the University of Washington.
    Written by Dan Fineman, Joseph Felsenstein, Mike Palczewski, Hisashi Horino,
    Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee
@@ -14,9 +14,8 @@ extern long tree_pairing;
 
 /* The following extern's refer to things declared in cons.c */
 
-typedef enum {PHYLIPSYMMETRIC, PHYLIPBSD } distance_type;
+typedef enum { PHYLIPSYMMETRIC, PHYLIPBSD } distance_type;
 
-boolean bsd_possible;
 distance_type  dtype;
 extern Char intreename[FNMLNGTH], intree2name[FNMLNGTH], outtreename[FNMLNGTH];
 extern node *root;
@@ -26,7 +25,8 @@ AjPFile embossoutfile;
 
 long trees_in_1, trees_in_2;
 
-extern long numopts, outgrno, col, setsz;
+extern long numopts, outgrno, col;
+extern long setsz;
 extern long maxgrp;               /* max. no. of groups in all trees found  */
 
 extern boolean trout, firsttree, noroot, outgropt, didreroot, prntsets,
@@ -248,6 +248,10 @@ double bsd_tree_diff(group_type **tree1, group_type **tree2,
         return_value+= pow(lengths2[index2], 2);
     }
   }
+  if (return_value > 0.0)
+    return_value = sqrt(return_value);
+  else
+    return_value = 0.0;
   return return_value;
 }
 
@@ -400,10 +404,12 @@ void print_line_heading(long tree)
 void output_matrix_double(double diffl, long tree1, long tree2, long trees_in_1,
     long trees_in_2)
 {
-  if ( tree1 == 1 && ((tree2 - 1) % 7 == 0 || tree2 == 1 )) {
-    if ( (tree_pairing == ALL_IN_FIRST && tree2 + 6 < trees_in_1) ||
-         (tree_pairing == ALL_IN_1_AND_2 && tree2 + 6 < trees_in_2)) {
-      print_matrix_heading(tree2, tree2 + 6);
+  if ( tree1 == 1 && ((tree2 - 1) % get_num_columns() == 0 || tree2 == 1 )) {
+    if ( (tree_pairing == ALL_IN_FIRST && tree2 + get_num_columns() - 1
+          < trees_in_1) ||
+         (tree_pairing == ALL_IN_1_AND_2 && tree2 + get_num_columns() - 1
+          < trees_in_2)) {
+      print_matrix_heading(tree2, tree2 + get_num_columns() - 1);
     } else {
       if ( tree_pairing == ALL_IN_FIRST)
         print_matrix_heading(tree2, trees_in_1);
@@ -411,7 +417,7 @@ void output_matrix_double(double diffl, long tree1, long tree2, long trees_in_1,
         print_matrix_heading(tree2, trees_in_2);
     }
   }
-  if ( (tree2 - 1) % 7 == 0 || tree2 == 1) {
+  if ( (tree2 - 1) % get_num_columns() == 0 || tree2 == 1) {
     print_line_heading(tree1);
   }
   fprintf(outfile, " %9g  ", diffl);
@@ -425,10 +431,12 @@ void output_matrix_double(double diffl, long tree1, long tree2, long trees_in_1,
 void output_matrix_long(long diffl, long tree1, long tree2, long trees_in_1,
     long trees_in_2)
 {
-  if ( tree1 == 1 && ((tree2 - 1) % 10 == 0 || tree2 == 1 )) {
-    if ( (tree_pairing == ALL_IN_FIRST && tree2 + 9 < trees_in_1) ||
-         (tree_pairing == ALL_IN_1_AND_2 && tree2 + 9 < trees_in_2)) {
-      print_matrix_heading(tree2, tree2 + 9);
+  if ( tree1 == 1 && ((tree2 - 1) % get_num_columns() == 0 || tree2 == 1 )) {
+    if ( (tree_pairing == ALL_IN_FIRST && tree2 + get_num_columns() - 1
+          < trees_in_1) ||
+         (tree_pairing == ALL_IN_1_AND_2 && tree2 + get_num_columns() - 1
+          < trees_in_2)) {
+      print_matrix_heading(tree2, tree2 + get_num_columns() - 1);
     } else {
       if ( tree_pairing == ALL_IN_FIRST)
         print_matrix_heading(tree2, trees_in_1);
@@ -436,7 +444,7 @@ void output_matrix_long(long diffl, long tree1, long tree2, long trees_in_1,
         print_matrix_heading(tree2, trees_in_2);
     }
   }
-  if ( (tree2 - 1) % 10 == 0 || tree2 == 1) {
+  if ( (tree2 - 1) % get_num_columns() == 0 || tree2 == 1) {
     print_line_heading(tree1);
   }
   fprintf(outfile, "%4ld  ", diffl);
@@ -657,18 +665,17 @@ void compute_distances(pattern_elm ***pattern_array, long trees_in_1,
           }
         }
       } else {
-        for ( index3 = 0 ; index3 < trees_in_1 ; index3 += num_columns) {
+        for ( index3 = trees_in_1 ; index3 < end_tree ; index3 += num_columns) {
           for ( index1 = 0 ; index1 < trees_in_1 ; index1++) {
           assign_tree (treeA, pattern_array, index1, &patternsz1);
           assign_lengths(&length1, pattern_array, index1);
             for ( index2 = index3 ; 
-                index2 < index3 + num_columns && index2 < trees_in_2 ;
+                index2 < index3 + num_columns && index2 < end_tree ;
                 index2++) {
-              assign_tree (treeB, pattern_array, index2 + trees_in_1,
-                            &patternsz2);
+              assign_tree (treeB, pattern_array, index2, &patternsz2);
               assign_lengths(&length2, pattern_array, index2);
               tree_diff (treeA, treeB, length1, length2, patternsz1, patternsz2,
-                  index1 + 1, index2 + 1, trees_in_1, trees_in_2);
+                  index1 + 1, index2 - trees_in_1 + 1, trees_in_1, trees_in_2);
             }
           }
         }
@@ -808,6 +815,7 @@ void output_submenu()
       else
         printf ("\n Choose one: (V,S)\n");
 
+      fflush(stdout);
       scanf("%c%*[^\n]", &ch);
       getchar();
       uppercase(&ch);
@@ -856,6 +864,7 @@ void pairing_submenu()
 
     printf ("\n Choose one: (A,P,C,L)\n");
       
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     getchar();
     uppercase(&ch);
@@ -902,7 +911,6 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   spp            = 0;
   grbg           = NULL;
   col            = 0;
-  bsd_possible   = 1;
 
 
   noroot = true;
@@ -956,9 +964,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
 int main(int argc, Char *argv[])
 {  
-  /* Local variables added by Dan F. */
   pattern_elm  ***pattern_array;
   double *timesseen_changes=NULL;
+  char *s; /* for getenv */
 
 
 #ifdef MAC
@@ -974,6 +982,9 @@ int main(int argc, Char *argv[])
 
   ntrees = 0.0;
   maxgrp = 10000;
+  /* change maxgrp based on MAXGRP environment variable */
+  s=getenv("MAXGRP");
+  if(s) sscanf(s,"%ld",&maxgrp);
   lasti  = -1;
 
   /* how many trees do we have? */

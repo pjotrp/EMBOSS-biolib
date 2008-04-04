@@ -342,7 +342,7 @@ void plot(pensttstype pen, double xabs, double yabs)
 
     case xpreview:
       if (pen == pendown) {
-#ifdef X
+#ifndef X_DISPLAY_MISSING
         XDrawLine(display,mainwin,gc1,(long)oldx,(long)(height-oldy),
                                       (long)xabs,(long)(height-yabs));
 #endif

@@ -29,7 +29,8 @@
                                   seqeunce input
 *  -basefreq           array      [0.25 0.25 0.25 0.25] Base frequencies for A
                                   C G T/U (use blanks to separate)
-   -lower              boolean    [N] Lower triangular distance matrix
+   -lower              boolean    [N] Output as a lower triangular distance
+                                  matrix
    -printdata          boolean    [N] Print data at start of run
    -[no]progress       boolean    [Y] Print indications of progress of run
 

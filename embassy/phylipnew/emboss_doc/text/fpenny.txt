@@ -462,7 +462,7 @@ Output file format
   File: penny.fpenny
 
 
-Penny algorithm, version 3.6b
+Penny algorithm, version 3.67
  branch-and-bound to find all most parsimonious trees
 
 Wagner parsimony method

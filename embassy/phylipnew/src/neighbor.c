@@ -1,13 +1,14 @@
 
-#include "phylip.h"
-#include "dist.h"
-
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2005 by the University of Washington.
    Written by Mary Kuhner, Jon Yamato, Joseph Felsenstein, Akiko Fuseki,
    Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
+#include <float.h>
+
+#include "phylip.h"
+#include "dist.h"
 
 AjPPhyloDist* phylodists = NULL;
 AjPPhyloTree* phylotrees;
@@ -270,7 +271,7 @@ void jointree()
       for (i = 0; i <= j - 2; i++)
         x[j - 1][i] = x[i][j - 1];
     }
-    tmin = 99999.0;
+    tmin = DBL_MAX;
     /* Compute sij and minimize */
     if (njoin) {     /* many revisions by Y. Ina from here ... */
       for (i = 0; i < spp; i++)

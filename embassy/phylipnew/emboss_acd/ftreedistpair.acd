@@ -19,7 +19,6 @@ section: input [
     parameter: "Y"
     knowntype: "newick"
     information: "Second phylip tree file"
-    nullok: "Y"
   ]
 
 endsection: input

@@ -6,12 +6,27 @@
 #include "phylip.h"
 #include "draw.h"
 
-/* Version 3.6.  Copyright (c) 1986-2002 by Joseph Felsenstein and
-  Christopher A. Meacham.  Additional code written by Hisashi Horino,
-  Sean Lamont, Andrew Keefe, Daniel Fineman, and Akiko Fuseki.
-  Permission is granted to copy, distribute, and modify this
-  program provided that (1) this copyright message is not removed
-  and (2) no fee is charged for this program. */
+/* Version 3.6.  Copyright (c) 1986-2004 by The University of Washington and
+  Written by Joseph Felsenstein and Christopher A. Meacham.  Additional code
+  written by Hisashi Horino, Sean Lamont, Andrew Keefe, Daniel Fineman, 
+  Akiko Fuseki, Doug Buxton and Michal Palczewski. Permission is granted to 
+  copy, distribute, and modify this program provided that (1) this copyright 
+  message is not removed and (2) no fee is charged for this program. */ 
+
+#ifdef MAC
+char* about_message = 
+  "Drawgram unrooted tree plotting program\r"
+  "PHYLIP version 3.6 (c) Copyright 1986-2004\r"
+  "by The University of Washington.\r"  
+  "Written by Joseph Felsenstein and Christopher A. Meacham.\r" 
+  "Additional code written by Hisashi Horino, Sean Lamont, Andrew Keefe,\r"
+  "Daniel Fineman, Akiko Fuseki, Doug Buxton and Michal Palczewski.\r"
+  "Permission is granted to copy, distribute and modify this program\r"
+  "provided that\r"
+  "(1) This copyright message is not removed and\r"
+  "(2) no fee is charged for this program.";
+#endif
+
 
 
 #define gap 0.5    /* distance in character heights between the end
@@ -57,7 +72,7 @@ long *zeros;     /* ... down to here */
 static enum {weighted, intermediate, centered, inner, vshaped} nodeposition;
 winactiontype winaction;
 
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 String res[]= {
         "*.input: True",
         "*.menubar.orientation: horizontal",
@@ -83,8 +98,9 @@ String res[]= {
 /* function prototypes */
 void emboss_getoptions(char *pgm, int argc, char *argv[]);
 
-void   initdrawgramnode(node **, node **, node *, long, long, long *,
-                long *, initops, pointarray, pointarray, Char *, Char *, char**);
+void   initdrawgramnode(node **, node **, node *, long, long, long *, long *,
+                        initops, pointarray, pointarray,
+                        Char *, Char *, char**);
 void   initialparms(void);
 char   showparms(void);
 void   getparms(char);
@@ -158,6 +174,7 @@ void initialparms()
 /*
 //     plotter = DEFPLOTTER;
 //     previewer = DEFPREV;
+//  preview = true;
 */
 
   paperx=20.6375;
@@ -181,7 +198,6 @@ void initialparms()
     nodeposition = centered;
   xmargin = 0.08 * xsize;
   ymargin = 0.08 * ysize;
-  preview = true;
   hpmargin = 0.02*pagex;
   vpmargin = 0.02*pagey;
 }  /* initialparms */
@@ -212,7 +228,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     
     getplotter(ajStrGetCharFirst(plottercode));
 
-    getpreviewer = ajAcdGetListSingle("previewer");
+    preview = true;
+    getpreviewer = ajAcdGetListSingle("previewer"); /* sets plotter variable */
 
     if(ajStrMatchC(getpreviewer, "n")) {
       preview = false;
@@ -960,7 +977,7 @@ void setup_environment(Char *argv[], boolean *canbeplotted)
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,
-            &grbg, initdrawgramnode);
+            &grbg, initdrawgramnode,true,-1);
   root->oldlen = 0.0;
   printf("Tree has been read.\n");
   printf("Loading the font .... \n");
@@ -1012,11 +1029,13 @@ void user_loop(boolean *canbeplotted)
                                            &scale,spp,root);*/
       (*canbeplotted)=true;
     }
-    if ((previewer == winpreview || previewer == xpreview || previewer == mac) && (winaction == quitnow)) {
+    if ((previewer == winpreview || previewer == xpreview || previewer == mac)
+        && (winaction == quitnow)) {
       break;
     }
   }
 } /* user_loop */
+
 
 int main(int argc, Char *argv[])
 {
@@ -1038,8 +1057,8 @@ int main(int argc, Char *argv[])
   grbg = NULL;
   progname = argv[0];
 
-#ifdef X
-  nargc=argc;
+#ifndef X_DISPLAY_MISSING
+  nargc=1;
   nargv=argv;
 #endif
   
@@ -1049,7 +1068,8 @@ int main(int argc, Char *argv[])
   setup_environment(argv, &canbeplotted);
 
   user_loop(&canbeplotted);
-  if (!((previewer == winpreview || previewer == xpreview || previewer == mac) && (winaction == quitnow))) {
+  if (!((previewer == winpreview || previewer == xpreview || previewer == mac)
+        && (winaction == quitnow))) {
     
     previewing = false;
     initplotter(spp,fontname);

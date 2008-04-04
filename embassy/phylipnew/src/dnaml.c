@@ -1,14 +1,15 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, Andrew Keeffe,
    Dan Fineman, and Patrick Colacurcio.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
 typedef struct valrec {
-  double rat, ratxi, ratxv, orig_zz, z1, y1, z1zz, z1yy, xiz1, xiy1xv;
+  double rat, ratxi, ratxv, orig_zz, z1, y1, z1zz, z1yy, xiz1,
+      xiy1xv;
   double *ww, *zz, *wwzz, *vvzz; 
 } valrec;
 
@@ -69,18 +70,26 @@ void   maketree(void);
 void   clean_up(void);
 void   reallocsites(void);
 void globrearrange(void) ;
-
+void   dnaml_unroot_here(node* root, node** nodep, long nonodes);
+void   dnaml_unroot(node* p, node** nodep, long nonodes);
+void   freetable(void);
+void   alloclrsaves(void);
+void   resetlrsaves(void);
+void   freelrsaves(void);
 /* function prototypes */
 #endif
 
+/* local rearrangements need to save views.  created globally so that *
+ * reallocation of the same variable is unnecessary                   */
+node **lrsaves;
 
-extern sequence y;
-
+long oldendsite;
 double fracchange;
 long rcategs;
 boolean haslengths;
 
-Char infilename[FNMLNGTH],  intreename[FNMLNGTH], catfilename[FNMLNGTH], weightfilename[FNMLNGTH];
+Char infilename[FNMLNGTH],  intreename[FNMLNGTH],
+    catfilename[FNMLNGTH], weightfilename[FNMLNGTH];
 
 const char* outfilename;
 const char* outtreename;
@@ -92,7 +101,7 @@ long nonodes2, sites, weightsum, categs, datasets, ith, njumble, jumb;
 long parens, outgrno;
 boolean  freqsfrom, global, jumble, weights, trout, usertree,
   ctgry, rctgry, auto_, hypstate, ttr, progress, mulsets, justwts,
-  firstset, improve, smoothit, polishing, lngths, gama, invar;
+  firstset, improve, smoothit, polishing, lngths, gama, invar,inserting=false;
 tree curtree, bestree, bestree2, priortree;
 node *qwhere, *grbg, *addwhere;
 double xi, xv, ttratio, ttratio0, freqa, freqc, freqg, freqt, freqr,
@@ -121,6 +130,7 @@ vall *mp=NULL;
 void dnamlcopy(tree *a, tree *b, long nonodes, long categs)
 {
   /* copies tree a to tree b*/
+  /* assumes bifurcation (OK) */
   long i, j;
   node *p, *q;
 
@@ -129,7 +139,8 @@ void dnamlcopy(tree *a, tree *b, long nonodes, long categs)
     if (a->nodep[i]->back) {
       if (a->nodep[i]->back == a->nodep[a->nodep[i]->back->index - 1])
         b->nodep[i]->back = b->nodep[a->nodep[i]->back->index - 1];
-      else if (a->nodep[i]->back == a->nodep[a->nodep[i]->back->index - 1]->next)
+      else if (a->nodep[i]->back ==
+               a->nodep[a->nodep[i]->back->index - 1]->next)
         b->nodep[i]->back = b->nodep[a->nodep[i]->back->index - 1]->next;
       else
         b->nodep[i]->back = b->nodep[a->nodep[i]->back->index - 1]->next->next;
@@ -406,7 +417,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 } /* emboss_getoptions */
 
 
-void initmemrates() 
+void initmemrates(void) 
 {
    probcat = (double *) Malloc(rcategs * sizeof(double));
    rrate = (double *) Malloc(rcategs * sizeof(double));
@@ -438,7 +449,7 @@ void reallocsites(void)
 }
 
 
-void allocrest()
+void allocrest(void)
 {
   long i;
 
@@ -456,7 +467,7 @@ void allocrest()
 }  /* allocrest */
 
 
-void doinit()
+void doinit(void)
 { /* initializes variables */
 
   inputnumbersseq(seqsets[0], &spp, &sites, &nonodes2, 2);
@@ -475,7 +486,7 @@ void doinit()
 }  /* doinit */
 
 
-void inputoptions()
+void inputoptions(void)
 {
   long i;
 
@@ -503,7 +514,7 @@ void inputoptions()
 }  /* inputoptions */
 
 
-void makeweights()
+void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   long i;
@@ -539,7 +550,7 @@ void makeweights()
 }  /* makeweights */
 
 
-void getinput()
+void getinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -549,13 +560,17 @@ void getinput()
                  freqsfrom, true);
   if (!justwts || firstset)
     seq_inputdata(seqsets[ith-1],sites);
+  if ( !firstset )
+    oldendsite = endsite;
   makeweights();
-  setuptree2(curtree);
+  if ( firstset ) alloclrsaves();
+  else  resetlrsaves(); 
+  setuptree2(&curtree);
   if (!usertree) {
-    setuptree2(bestree);
-    setuptree2(priortree);
+    setuptree2(&bestree);
+    setuptree2(&priortree);
     if (njumble > 1)
-      setuptree2(bestree2);
+      setuptree2(&bestree2);
   }
   allocx(nonodes2, rcategs, curtree.nodep, usertree);
   if (!usertree) {
@@ -606,7 +621,28 @@ void inittable_for_usertree(char* treestr)
   }
 }  /* inittable_for_usertree */
 
-void inittable()
+void freetable(void)
+{
+  long i, j;
+ 
+  for (i = 0; i < rcategs; i++) {
+    for (j = 0; j < categs; j++) {
+      free(tbl[i][j]->ww);
+      free(tbl[i][j]->zz);
+      free(tbl[i][j]->wwzz);
+      free(tbl[i][j]->vvzz);
+    }
+  }
+  for (i = 0; i < rcategs; i++)  {
+    for (j = 0; j < categs; j++) 
+      free(tbl[i][j]);
+    free(tbl[i]);
+  }
+  free(tbl);
+}
+
+
+void inittable(void)
 {
   /* Define a lookup table. Precompute values and print them out in tables */
   long i, j;
@@ -697,6 +733,8 @@ double evaluate(node *p, boolean saveit)
 
   sum = 0.0;
   q = p->back;
+  if ( p->initialized  == false && p->tip == false)  nuview(p);
+  if ( q->initialized  == false && q->tip == false)  nuview(q);
   y = p->v;
   lz = -y;
   for (i = 0; i < rcategs; i++)
@@ -737,7 +775,7 @@ double evaluate(node *p, boolean saveit)
     sumterm = 0.0;
     for (j = 0; j < rcategs; j++)
       sumterm += probcat[j] * tterm[j];
-    lterm = log(sumterm);
+    lterm = log(sumterm) + p->underflows[i] + q->underflows[i];
     for (j = 0; j < rcategs; j++)
       clai[j] = tterm[j] / sumterm;
     memcpy(contribution[i], clai, rcategs*sizeof(double));
@@ -818,11 +856,13 @@ void free_nvd (nuview_data *local_nvd)
 
 void nuview(node *p)
 {
-  long i, j, k, num_sibs, sib_index;
-  nuview_data *local_nvd;
+    long i, j, k, l, num_sibs, sib_index;
+  nuview_data *local_nvd = NULL;
   node *sib_ptr, *sib_back_ptr;
   sitelike p_xx;
   double lw;
+  double correction;
+  double maxx;
 
   /* Figure out how many siblings the current node has */
   num_sibs    = count_sibs (p);
@@ -857,7 +897,8 @@ void nuview(node *p)
       for (j = 0; j < categs; j++) {
         tbl[i][j]->ww[sib_index]   = exp(tbl[i][j]->ratxi * lw);
         tbl[i][j]->zz[sib_index]   = exp(tbl[i][j]->ratxv * lw);
-        tbl[i][j]->wwzz[sib_index] = tbl[i][j]->ww[sib_index] * tbl[i][j]->zz[sib_index];
+        tbl[i][j]->wwzz[sib_index] = tbl[i][j]->ww[sib_index] *
+            tbl[i][j]->zz[sib_index];
         tbl[i][j]->vvzz[sib_index] = (1.0 - tbl[i][j]->ww[sib_index]) *
           tbl[i][j]->zz[sib_index];
       }
@@ -865,6 +906,8 @@ void nuview(node *p)
   
   /* Loop 2: */
   for (i = 0; i < endsite; i++) {
+    correction = 0;
+    maxx = 0;
     k = category[alias[i]-1] - 1;
     for (j = 0; j < rcategs; j++) {
 
@@ -873,6 +916,8 @@ void nuview(node *p)
       for (sib_index=0; sib_index < num_sibs; sib_index++) {
         sib_ptr         = sib_ptr->next;
         sib_back_ptr    = sib_ptr->back;
+        if ( j == 0 )
+          correction += sib_back_ptr->underflows[i];
 
         local_nvd->wwzz[sib_index] = tbl[j][k]->wwzz[sib_index];
         local_nvd->vvzz[sib_index] = tbl[j][k]->vvzz[sib_index];
@@ -932,13 +977,20 @@ void nuview(node *p)
           local_nvd->vzsumy[sib_index];
       }
 
+      for ( l = 0 ; l < ((long)T - (long)A + 1); l++ ) {
+        if ( p_xx[l] > maxx )
+          maxx = p_xx[l];
+      }
       /* And the final point of this whole function: */
       memcpy(p->x[i][j], p_xx, sizeof(sitelike));
     }
+    p->underflows[i] = 0;
+    if ( maxx < MIN_DOUBLE)
+      fix_x(p,i,maxx,rcategs);
+    p->underflows[i] += correction;
   }
 
   p->initialized = true;
-
   free_nvd (local_nvd);
   free (local_nvd);
 }  /* nuview */
@@ -1005,7 +1057,7 @@ void slopecurv(node *p,double y,double *like,double *slope,double *curve)
     sumterm = 0.0;
     for (j = 0; j < rcategs; j++)
       sumterm += probcat[j] * term[i][j];
-    lterm = log(sumterm);
+    lterm = log(sumterm) + p->underflows[i] + q->underflows[i];
     for (j = 0; j < rcategs; j++) {
       term[i][j] = term[i][j] / sumterm;
       slopeterm[i][j] = slopeterm[i][j] / sumterm;
@@ -1078,7 +1130,9 @@ void slopecurv(node *p,double y,double *like,double *slope,double *curve)
   sum += log(sum2);
   (*like) = sum;
   (*slope) = slope2 / sum2;
-  (*curve) = (curve2 - slope2 * slope2 / sum2) / sum2;
+
+  /* Expressed in terms of *slope to prevent overflow */
+  (*curve) = curve2 / sum2 - *slope * *slope;
 } /* slopecurv */
 
 
@@ -1100,13 +1154,13 @@ void makenewv(node *p)
   while ((it < iterations) && (ite < 20) && (!done)) {
     slopecurv (p, y, &like, &slope, &curve);
     better = false;
-    if (firsttime) {
+    if (firsttime) {    /* if no older value of y to compare with */
       yold = y;
       oldlike = like;
       firsttime = false;
       better = true;
     } else {
-      if (like > oldlike) {
+      if (like > oldlike) {    /* update the value of yold if it was better */
         yold = y;
         oldlike = like;
         better = true;
@@ -1114,19 +1168,19 @@ void makenewv(node *p)
       }
     }
     if (better) {
-      y = y + slope/fabs(curve);
-      if (yold < epsilon)
-        yold = epsilon;
+      y = y + slope/fabs(curve);   /* Newton-Raphson, forced uphill-wards */
+      if (y < epsilon)
+        y = epsilon;
     } else {
       if (fabs(y - yold) < epsilon)
         ite = 20;
-      y = (y + 19*yold) / 20.0;
+      y = (y + 19*yold) / 20.0;    /* retract 95% of way back */
     }
     ite++;
-    done = fabs(y-yold) < epsilon;
+    done = fabs(y-yold) < 0.1*epsilon;
   }
   smoothed = (fabs(yold-yorig) < epsilon) && (yorig > 1000.0*epsilon);
-  p->v = yold;
+  p->v = yold;   /* the last one that had better likelihood */
   q->v = yold;
   curtree.likelihood = oldlike;
 }  /* makenewv */
@@ -1135,7 +1189,7 @@ void makenewv(node *p)
 void update(node *p)
 {
   long num_sibs, i;
-  node *sib_ptr;
+  node* sib_ptr;
 
   if (!p->tip && !p->initialized)
     nuview(p);
@@ -1143,24 +1197,19 @@ void update(node *p)
     nuview(p->back);
   if ((!usertree) || (usertree && !lngths) || p->iter) {
     makenewv(p);
-
-    if (!p->tip) {
-      num_sibs = count_sibs (p);
-      sib_ptr  = p;
-      for (i=0; i < num_sibs; i++) {
-        sib_ptr              = sib_ptr->next;
-        sib_ptr->initialized = false;
+    if ( smoothit ) {
+      inittrav(p);
+      inittrav(p->back);
+    } else {
+      if (inserting) {
+        num_sibs = count_sibs (p);
+        sib_ptr  = p;
+        for (i=0; i < num_sibs; i++) {
+          sib_ptr              = sib_ptr->next;
+          sib_ptr->initialized = false;
+        }
       }
-    }
-
-    if (!p->back->tip) {
-      num_sibs = count_sibs (p->back);
-      sib_ptr  = p->back;
-      for (i=0; i < num_sibs; i++) {
-        sib_ptr              = sib_ptr->next;
-        sib_ptr->initialized = false;
-      }
-    }
+    } 
   }
 }  /* update */
 
@@ -1183,8 +1232,6 @@ void smooth(node *p)
     
     if (polishing || (smoothit && !smoothed)) {
       smooth(sib_ptr->back);
-      p->initialized = false;
-      sib_ptr->initialized = false;
     }
   }
 }  /* smooth */
@@ -1193,8 +1240,9 @@ void smooth(node *p)
 void insert_(node *p, node *q, boolean dooinit)
 {
   /* Insert q near p */
-  long i, j, num_sibs;
-  node *r, *sib_ptr;
+  /* assumes bifurcation (OK) */
+  long i;
+  node *r;
 
   r = p->next->next;
   hookup(r, q->back);
@@ -1204,30 +1252,21 @@ void insert_(node *p, node *q, boolean dooinit)
   r->v = q->v;
   r->back->v = r->v;
   p->initialized = false;
-  p->next->initialized = false;
-  p->next->next->initialized = false;
   if (dooinit) {
     inittrav(p);
-    inittrav(q);
-    inittrav(q->back);
+    inittrav(p->back);
   }
   i = 1;
+  inserting = true;
   while (i <= smoothings) {
     smooth (p);
-    if (!smoothit) {
-      if (!p->tip) {
-        num_sibs = count_sibs (p);
-        sib_ptr  = p;
-        for (j=0; j < num_sibs; j++) {
-          smooth (sib_ptr->next->back);
-          sib_ptr = sib_ptr->next;
-        }
-      }
+    if ( !p->tip ) {
+      smooth(p->next);
+      smooth(p->next->next);
     }
-    else 
-      smooth(p->back);
     i++;
   }
+  inserting = false;
 }  /* insert_ */
 
 
@@ -1236,20 +1275,24 @@ void dnaml_re_move(node **p, node **q)
   /* remove p and record in q where it was */
   long i;
 
-  /** assumes bifurcations */
+  /* assumes bifurcation (OK) */
   *q = (*p)->next->back;
   hookup(*q, (*p)->next->next->back);
   (*p)->next->back = NULL;
   (*p)->next->next->back = NULL;
-  inittrav((*q));
-  inittrav((*q)->back);
-  i = 1;
-  while (i <= smoothings) {
-    smooth(*q);
-    if (smoothit)
-      smooth((*q)->back);
-    i++;
+  (*q)->v += (*q)->back->v;
+  (*q)->back->v = (*q)->v;
+  if ( smoothit ) {
+    inittrav((*q));
+    inittrav((*q)->back);
   }
+  if ( smoothit ) {
+    for ( i = 0 ; i < smoothings ; i++ ) {
+      smooth(*q);
+      smooth((*q)->back);
+    }
+  }
+  else smooth(*q);
 }  /* dnaml_re_move */
 
 
@@ -1288,7 +1331,7 @@ void addtraverse(node *p, node *q, boolean contin)
     vsave = q->v;
     qback = q->back;
   }
-  insert_(p, q, false);
+  insert_(p, q, smoothit);
   like = evaluate(p, false);
   if (like > bestyet || bestyet == UNDEFINED) {
     bestyet = like;
@@ -1322,6 +1365,42 @@ void addtraverse(node *p, node *q, boolean contin)
 }  /* addtraverse */
 
 
+void freelrsaves(void)
+{
+  long i,j;
+  for ( i = 0 ; i < NLRSAVES ; i++ ) {
+    for (j = 0; j < oldendsite; j++)
+      free(lrsaves[i]->x[j]);
+    free(lrsaves[i]->x);
+    free(lrsaves[i]->underflows);
+    free(lrsaves[i]);
+  }
+  free(lrsaves);
+}
+
+
+void resetlrsaves(void) 
+{
+  freelrsaves();
+  alloclrsaves();
+}
+
+
+void alloclrsaves(void)
+{
+  long i,j;
+
+  lrsaves = Malloc(NLRSAVES * sizeof(node*));
+  for ( i = 0 ; i < NLRSAVES ; i++ ) {
+    lrsaves[i] = Malloc(sizeof(node));
+    lrsaves[i]->x = (phenotype)Malloc(endsite*sizeof(ratelike));
+    lrsaves[i]->underflows = Malloc(endsite * sizeof (double));
+    for (j = 0; j < endsite; j++)
+      lrsaves[i]->x[j]  = (ratelike)Malloc(rcategs*sizeof(sitelike));
+  }
+} /* alloclrsaves */
+
+
 void globrearrange(void) 
 {
   /* does global rearrangements */
@@ -1334,8 +1413,8 @@ void globrearrange(void)
  
   alloctree(&globtree.nodep,nonodes2,0);
   alloctree(&oldtree.nodep,nonodes2,0);
-  setuptree2(globtree);
-  setuptree2(oldtree);
+  setuptree2(&globtree);
+  setuptree2(&oldtree);
   allocx(nonodes2, rcategs, globtree.nodep, 0);
   allocx(nonodes2, rcategs, oldtree.nodep, 0);
   dnamlcopy(&curtree,&globtree,nonodes2,rcategs);
@@ -1408,9 +1487,10 @@ void globrearrange(void)
 void rearrange(node *p, node *pp)
 {
   /* rearranges the tree locally moving pp around near p */
+  /* assumes bifurcation (OK) */
   long i, num_sibs;
-  double v3 = 0, v4 = 0, v5 = 0;
   node *q, *r, *sib_ptr;
+  node *rnb = NULL, *rnnb = NULL;
 
   if (!p->tip && !p->back->tip) {
     curtree.likelihood = bestyet;
@@ -1418,15 +1498,21 @@ void rearrange(node *p, node *pp)
       r = p->back->next;
     else
       r = p->back->next->next;
-    /* assumes bifurcations? */
+    /* assumes bifurcation, that's ok */
     if (!smoothit) {
-      v3 = r->v;
-      v4 = r->next->v;
-      v5 = r->next->next->v;
+      rnb = r->next->back;
+      rnnb = r->next->next->back;
+      copynode(r,lrsaves[0],rcategs);
+      copynode(r->next,lrsaves[1],rcategs);
+      copynode(r->next->next,lrsaves[2],rcategs);
+      copynode(p->next,lrsaves[3],rcategs);
+      copynode(p->next->next,lrsaves[4],rcategs);
     }
     else
       dnamlcopy(&curtree, &bestree, nonodes2, rcategs);
     dnaml_re_move(&r, &q);
+    nuview(p->next);
+    nuview(p->next->next);
     if (smoothit)
       dnamlcopy(&curtree, &priortree, nonodes2, rcategs);
     else
@@ -1440,24 +1526,27 @@ void rearrange(node *p, node *pp)
     if (smoothit)
       dnamlcopy(&bestree, &curtree, nonodes2, rcategs);
     else {
-      insert_(r, qwhere, true);
       if (qwhere == q) {
-        r->v = v3;
-        r->back->v = v3;
-        r->next->v = v4;
-        r->next->back->v = v4;
-        r->next->next->v = v5;
-        r->next->next->back->v = v5;
+        hookup(rnb,r->next);
+        hookup(rnnb,r->next->next);
+        copynode(lrsaves[0],r,rcategs);
+        copynode(lrsaves[1],r->next,rcategs);
+        copynode(lrsaves[2],r->next->next,rcategs);
+        copynode(lrsaves[3],p->next,rcategs);
+        copynode(lrsaves[4],p->next->next,rcategs);
+        rnb->v = r->next->v;
+        rnnb->v = r->next->next->v;
+        r->back->v = r->v;
         curtree.likelihood = bestyet;
       }
       else {
+        insert_(r, qwhere, true);
         smoothit = true;
         for (i = 1; i<=smoothings; i++) {
           smooth (r);
           smooth (r->back);
         }
         smoothit = false;
-        dnamlcopy(&curtree, &bestree, nonodes2, rcategs);
       }
     }
   }
@@ -1475,9 +1564,9 @@ void rearrange(node *p, node *pp)
 
 
 void initdnamlnode(node **p, node **grbg, node *q, long len, long nodei,
-                        long *ntips, long *parens, initops whichinit,
-                        pointarray treenode, pointarray nodep, Char *str, Char *ch,
-                        char** treestr)
+                   long *ntips, long *parens, initops whichinit,
+                   pointarray treenode, pointarray nodep, Char *str,
+                   Char *ch, char** treestr)
 {
   /* initializes a node */
   boolean minusread;
@@ -1568,7 +1657,7 @@ void dnaml_coordinates(node *p, double lengthsum, long *tipy,
 }  /* dnaml_coordinates */
 
 
-void dnaml_printree()
+void dnaml_printree(void)
 {
   /* prints out diagram of the tree2 */
   long tipy;
@@ -1726,6 +1815,7 @@ void rectrav(node *p, long m, long n)
 {
   /* print out segment of reconstructed sequence for one branch */
   long i;
+  node *q;
 
   putc(' ', outfile);
   if (p->tip) {
@@ -1745,14 +1835,14 @@ void rectrav(node *p, long m, long n)
   }
   putc('\n', outfile);
   if (!p->tip) {
-    rectrav(p->next->back, m, n);
-    rectrav(p->next->next->back, m, n);
+    for ( q = p->next; q != p; q = q->next )
+      rectrav(q->back, m, n);
   }
   mx1 = mx;
 }  /* rectrav */
 
 
-void summarize()
+void summarize(void)
 {
   /* print out branch length information and node numbers */
   long i, j, mm=0, num_sibs;
@@ -1898,10 +1988,12 @@ void summarize()
       for (j = 0; j < rcategs; j++)
         marginal[i][j] /= sum;
     }
-    fprintf(outfile, "Most probable category at each site if > 0.95 probability (\".\" otherwise)\n\n");
+    fprintf(outfile, "Most probable category at each site if > 0.95"
+            " probability (\".\" otherwise)\n\n");
     for (i = 1; i <= nmlngth + 3; i++)
       putc(' ', outfile);
     for (i = 0; i < sites; i++) {
+      mm = 0;
       sum = 0.0;
       for (j = 0; j < rcategs; j++)
         if (marginal[i][j] > sum) {
@@ -2014,21 +2106,26 @@ void dnaml_treeout(node *p)
 void inittravtree(node *p)
 {
   /* traverse tree to set initialized and v to initial values */
+  node *q; 
 
   p->initialized = false;
   p->back->initialized = false;
-  if ((!lngths) || p->iter) {
+  if ( usertree && (!lngths || p->iter) ) {
     p->v = initialv;
     p->back->v = initialv;
   }
-  if (!p->tip) {
-    inittravtree(p->next->back);
-    inittravtree(p->next->next->back);
+  
+  if ( !p->tip ) {
+    q = p->next;
+    while ( q != p ) {
+      inittravtree(q->back);
+      q = q->next;
+    }
   }
 } /* inittravtree */
 
 
-void treevaluate()
+void treevaluate(void)
 {
   /* evaluate a user tree */
   long i;
@@ -2042,21 +2139,93 @@ void treevaluate()
 }  /* treevaluate */
 
 
-void maketree()
+void dnaml_unroot(node* root, node** nodep, long nonodes) 
+{
+  node *p,*r,*q;
+  double newl;
+  long i;
+  long numsibs;
+  
+  numsibs = count_sibs(root);
+
+  if ( numsibs > 2 ) {
+    q = root;
+    r = root;
+    while (!(q->next == root))
+      q = q->next;
+    q->next = root->next;
+
+    for(i=0 ; i < endsite ; i++){
+      free(r->x[i]);
+      r->x[i] = NULL;
+    }
+    free(r->x);
+    r->x = NULL;
+    chuck(&grbg, r);
+    curtree.nodep[spp] = q;
+  } else { /* Bifurcating root - remove entire root fork */
+    /* Join oldlen on each side of root */
+    newl = root->next->oldlen + root->next->next->oldlen;
+    root->next->back->oldlen = newl;
+    root->next->next->back->oldlen = newl;
+
+    /* Join v on each side of root */
+    newl = root->next->v + root->next->next->v;
+    root->next->back->v = newl;
+    root->next->next->back->v = newl;
+
+    /* Connect root's children */
+    root->next->back->back=root->next->next->back;
+    root->next->next->back->back = root->next->back;
+
+    /* Move nodep entries down one and set indices */
+    for ( i = spp; i < nonodes-1; i++ ) {
+      p = nodep[i+1];
+      nodep[i] = p;
+      nodep[i+1] = NULL;
+      if ( nodep[i] == NULL ) /* This may happen in a
+                                 multifurcating intree */
+        break;
+      do {
+        p->index = i+1;
+        p = p->next;
+      } while (p != nodep[i]);
+    }
+
+    /* Free protx arrays from old root */
+    for(i=0 ; i < endsite ; i++){
+      free(root->x[i]);
+      free(root->next->x[i]);
+      free(root->next->next->x[i]);
+      root->x[i] = NULL;
+      root->next->x[i] = NULL;
+      root->next->next->x[i] = NULL;
+    }
+    free(root->x);
+    free(root->next->x);
+    free(root->next->next->x);
+
+    chuck(&grbg,root->next->next);
+    chuck(&grbg,root->next);
+    chuck(&grbg,root);
+  }
+}
+
+void maketree(void)
 {
   long i, j;
   boolean dummy_first, goteof;
   pointarray dummy_treenode=NULL;
   long nextnode;
-  node *root, *q, *r;
+  node *root;
   char* treestr;
 
   inittable();
 
   if (usertree) {
     treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
-    inittable_for_usertree(treestr);
-
+    inittable_for_usertree (treestr);
+    
     if(numtrees > MAXSHIMOTREES)
       shimotrees = MAXSHIMOTREES;
     else
@@ -2090,33 +2259,22 @@ void maketree()
       goteof           = false;
 
       treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
-      treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first,
-               curtree.nodep, &nextnode,
-               &haslengths, &grbg, initdnamlnode);
-      q = root;
-      r = root;
-      while (!(q->next == root))
-        q = q->next;
-      q->next = root->next;
-      root = q;
-      for(i=0 ; i < endsite ; i++){
-        free(r->x[i]);
-        r->x[i] = NULL;
-      }
-      free(r->x);
-      r->x = NULL;
-      chucktreenode(&grbg, r);
-      curtree.nodep[spp] = q;
+      treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first, 
+                      curtree.nodep, &nextnode, &haslengths, &grbg, 
+                      initdnamlnode, false, nonodes2);
+      dnaml_unroot(root, curtree.nodep, nonodes2);
       if (goteof && (which <= numtrees)) {
         /* if we hit the end of the file prematurely */
         printf ("\n");
         printf ("ERROR: trees missing at end of file.\n");
         printf ("\tExpected number of trees:\t\t%ld\n", numtrees);
         printf ("\tNumber of trees actually in file:\t%ld.\n\n", which - 1);
-        embExitBad();
+        exxit(-1);
       }
 
       curtree.start = curtree.nodep[0]->back;
+      if ( outgropt )
+        curtree.start = curtree.nodep[outgrno - 1]->back;
       
       treevaluate();
       dnaml_printree();
@@ -2126,9 +2284,10 @@ void maketree()
         dnaml_treeout(curtree.start);
       }
       if(which < numtrees){
-        freex_notip(nonodes2, curtree.nodep);
+        freex_notip(nextnode, curtree.nodep);
         gdispose(curtree.start, &grbg, curtree.nodep);
       }
+      else nonodes2 = nextnode;
       which++;
     }
     FClose(intree);
@@ -2151,9 +2310,9 @@ void maketree()
     }
     nextsp = 3;
     polishing = false;
+    smoothit = improve;
     buildsimpletree(&curtree);
     curtree.start = curtree.nodep[enterorder[0] - 1]->back;
-    smoothit = improve;
     nextsp = 4;
     while (nextsp <= spp) {
       buildnewtip(enterorder[nextsp - 1], &curtree);
@@ -2172,7 +2331,6 @@ void maketree()
           smooth (curtree.start->back);
         }
         smoothit = false;
-        dnamlcopy(&curtree, &bestree, nonodes2, rcategs);
         bestyet = curtree.likelihood;
       }
       if (progress) {
@@ -2198,28 +2356,15 @@ void maketree()
         }
         if (global && nextsp == spp)
           globrearrange();
-        else
+        else 
           rearrange(curtree.start, curtree.start->back);
         if (global && nextsp == spp && progress)
           putchar('\n');
       }
-      for (i = spp; i < nextsp + spp - 2; i++) {
-        curtree.nodep[i]->initialized = false;
-        curtree.nodep[i]->next->initialized = false;
-        curtree.nodep[i]->next->next->initialized = false;
-      }
-      if (!smoothit) {
-        smoothit = true;
-        for (i = 1; i<=smoothings; i++) {
-          smooth (curtree.start);
-          smooth (curtree.start->back);
-        }
-        smoothit = false;
-        dnamlcopy(&curtree, &bestree, nonodes2, rcategs);
-        bestyet = curtree.likelihood;
-      }
       nextsp++;
     }
+    if ( !smoothit)
+      dnamlcopy(&curtree, &bestree, nonodes2, rcategs);
     if (global && progress) {
       putchar('\n');
       fflush(stdout);
@@ -2259,12 +2404,7 @@ void maketree()
       free(l0gf[i]);
     free(l0gf);
   }
-  for (i = 0; i < rcategs; i++)
-    for (j = 0; j < categs; j++)
-      free(tbl[i][j]);
-  for (i = 0; i < rcategs; i++)
-    free(tbl[i]);
-  free(tbl);
+  freetable();
   if (jumb < njumble)
     return;
   free(contribution);
@@ -2294,27 +2434,27 @@ void maketree()
 }  /* maketree */
 
 
-void clean_up()
+void clean_up(void)
 {
   /* Free and/or close stuff */
   long i;
 
-    free (rrate);
-    free (probcat);
-    free (rate);
-    /* Seems to require freeing every time... */
-    for (i = 0; i < spp; i++) {
-      free (y[i]);
-    }
-    free (y);
-    free (nayme);
-    free (enterorder);
-    free (category);
-    free (weight);
-    free (alias);
-    free (ally);
-    free (location);
-    free (aliasweight);
+  free (rrate);
+  free (probcat);
+  free (rate);
+  /* Seems to require freeing every time... */
+  for (i = 0; i < spp; i++) {
+    free (y[i]);
+  }
+  free (y);
+  free (nayme);
+  free (enterorder);
+  free (category);
+  free (weight);
+  free (alias);
+  free (ally);
+  free (location);
+  free (aliasweight);
 
   FClose(infile);
   FClose(outfile);
@@ -2353,8 +2493,11 @@ int main(int argc, Char *argv[])
     getinput();
     if (ith == 1)
       firstset = false;
-    for (jumb = 1; jumb <= njumble; jumb++)
+    if (usertree)
       maketree();
+    else
+      for (jumb = 1; jumb <= njumble; jumb++)
+        maketree();
   }
 
   clean_up();

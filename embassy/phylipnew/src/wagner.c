@@ -3,7 +3,7 @@
 #include "disc.h"
 #include "wagner.h"
 
-/* version 3.6. (c) Copyright 1993-2000 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */

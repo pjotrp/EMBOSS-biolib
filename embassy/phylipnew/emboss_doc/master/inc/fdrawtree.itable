@@ -196,7 +196,7 @@
 <td>-fontfile</td>
 <td>Fontfile name</td>
 <td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
+<td>font2</td>
 </tr>
 
 </table>

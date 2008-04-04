@@ -1,8 +1,10 @@
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
+
+#include <float.h>
 
 #include "phylip.h"
 #include "seq.h"
@@ -10,6 +12,10 @@
 #define initialv        0.1     /* starting value of branch length          */
 
 #define over            60   /* maximum width of a tree on screen */
+
+/* Define this to print messages when free_trans() is misused.
+ * See FIXME note in free_trans() */
+/* #define TRANS_DEBUG */
 
 extern sequence y;
 
@@ -37,7 +43,7 @@ void   copymatrix(transmatrix, transmatrix);
 void   maketrans(double, boolean);
 void   branchtrans(long, double);
 double evaluate(tree *, node *);
-void   nuview(node *);
+boolean nuview(node *);
 void   makenewv(node *);
 void   update(node *);
 void   smooth(node *);
@@ -51,21 +57,45 @@ void   buildsimpletree(tree *);
 void   addtraverse(node *, node *, boolean);
 void   rearrange(node *, node *);
 void   restml_coordinates(node *, double, long *,double *, double *);
+void   restml_fprintree(FILE *fp);
 void   restml_printree(void);
 
 double sigma(node *, double *);
-void   describe(node *);
+void   fdescribe(FILE *, node *);
 void   summarize(void);
 void   restml_treeout(node *);
-void   inittravtree(node *);
+static phenotype2 restml_pheno_new(long endsite, long sitelength);
+/*static void restml_pheno_delete(phenotype2 x2);*/ /* unused */
+void initrestmlnode(node **p, node **grbg, node *q, long len, long nodei,
+    long *ntips, long *parens, initops whichinit, pointarray treenode,
+    pointarray nodep, Char *str, Char *ch, char **treestr);
+static void restml_unroot(node* root, node** nodep, long nonodes);
+void   inittravtree(tree* t,node *);
+static void adjust_lengths_r(node *p);
 void   treevaluate(void);
 void   maketree(void);
 void   globrearrange(void); 
+void   adjust_lengths(tree *);
+double adjusted_v(double v);
+sitelike2 init_sitelike(long sitelength);
+void   free_sitelike(sitelike2 sl);
+void   copy_sitelike(sitelike2 dest, sitelike2 src,long sitelength);
+void   reallocsites(void);
+static void set_branchnum(node *p, long branchnum);
+void   alloctrans(tree *t, long nonodes, long sitelength);
+long   get_trans(tree* t);
+void   free_trans(tree* t, long trans);
+void   free_all_trans(tree* t);
+void   alloclrsaves(void);
+void   freelrsaves(void);
+void   resetlrsaves(void);
+void   cleanup(void);
 /* function prototypes */
 #endif
 
 
-Char infilename[FNMLNGTH], intreename[FNMLNGTH];
+Char infilename[FNMLNGTH];
+Char intreename[FNMLNGTH];
 
 const char* outfilename;
 const char* outtreename;
@@ -78,8 +108,26 @@ ajint numwts;
 long nonodes2, sites, enzymes, weightsum, sitelength, datasets, 
         ith, njumble, jumb=0;
 long inseed, inseed0;
-boolean  global, jumble, lengths, weights, trout, trunc8, usertree,
-           progress, mulsets, firstset, improve, smoothit;
+
+/* User options */
+
+boolean  global;        /* Perform global rearrangements? */
+boolean  jumble;        /* Randomize input order? */
+boolean  lengths;       /* Use lengths from user tree? */
+boolean  weights;
+boolean  trout;         /* Write tree to outtree? */
+boolean  trunc8;
+boolean  usertree;      /* Input user tree? Or search. */
+boolean  progress;      /* Display progress */
+boolean  mulsets;       /* Use multiple data sets */
+
+/* Runtime state */
+
+boolean  firstset;
+boolean  improve;
+boolean  smoothit;
+boolean  inserting = false;
+
 double bestyet;
 tree curtree, priortree, bestree, bestree2;
 longer seed;
@@ -87,13 +135,16 @@ long *enterorder;
 steptr aliasweight;
 char *progname;
 node *qwhere,*addwhere;
+/* local rearrangements need to save views.  
+   created globally so that reallocation of the same variable is unnecessary */
+node **lrsaves;
 
 /* Local variables for maketree, propagated globally for C version: */
-long       nextsp, numtrees, maxwhich, col;
+long       nextsp, numtrees, maxwhich, col, shimotrees;
 double      maxlogl;
 boolean     succeeded, smoothed;
-transmatrix tempmatrix, temp2matrix, temp3matrix,
-              temp4matrix, temp5matrix, tempslope, tempcurve;
+#define NTEMPMATS 7
+transmatrix *tempmatrix, tempslope, tempcurve;
 sitelike2    pie;
 double      *l0gl;
 double     **l0gf;
@@ -102,7 +153,122 @@ Char ch;
 /* variables added to keep treeread2() happy */
 boolean goteof;
 double trweight;
-boolean haslengths;
+node *grbg = NULL;
+
+#ifdef DEBUG
+void checknode(node *p) {
+  assert(p != NULL);
+  assert(p->back != NULL);
+  assert(p->back->back == p);
+  //assert(p->v == p->back->v);
+  //assert(p->branchnum > 0);
+  //assert(p->branchnum == p->back->branchnum);
+}
+
+void checktree_r(node *p) {
+  node *q;
+
+  checknode(p);
+  if (!p->tip) {
+    for (q = p->next; q != p; q = q->next) {
+      checktree_r(q->back);
+    }
+  }
+}
+
+void checktree() {
+  checktree_r(curtree.start);
+  checktree_r(curtree.start->back);
+}
+#endif /* DEBUG */
+
+
+static void
+set_branchnum(node *p, long branchnum)
+{
+  assert(p != NULL);
+  assert(branchnum > 0);
+  p->branchnum = branchnum;
+}
+  
+
+void alloctrans(tree *t, long nonodes, long sitelength)
+{
+  /* used by restml */
+  long i, j;
+
+  t->trans = (transptr)Malloc(nonodes*sizeof(transmatrix));
+  for (i = 0; i < nonodes; ++i){
+    t->trans[i] = (transmatrix)Malloc((sitelength + 1) * sizeof(double *));
+    for (j = 0;j < sitelength + 1; ++j)
+      t->trans[i][j] = (double *)Malloc((sitelength + 1) * sizeof(double));
+  }
+ 
+  t->freetrans = Malloc(nonodes* sizeof(long));
+  for ( i = 0; i < nonodes; i++ )
+    t->freetrans[i] = i+1;
+  t->transindex = nonodes - 1;
+}  /* alloctrans */
+
+
+long get_trans(tree* t)
+{
+  long ret;
+  assert(t->transindex >= 0);
+  ret = t->freetrans[t->transindex];
+  t->transindex--;
+  return ret;
+}
+
+
+void free_trans(tree* t, long trans)
+{
+  long i;
+
+  /* FIXME This is a temporary workaround and probably slows things down a bit.
+   * During rearrangements, this function is sometimes called more than once on
+   * already freed nodes, causing the freetrans array to overrun other data. */
+  for ( i = 0 ; i < t->transindex; i++ ) {
+    if ( t->freetrans[i] == trans ) {
+#ifdef TRANS_DEBUG
+      printf("ERROR: trans %ld has already been freed!!\n", trans);
+#endif
+      return;
+    }
+  }
+  /* end of temporary fix */
+  
+  t->transindex++;
+  t->freetrans[t->transindex] = trans;
+}
+
+
+void free_all_trans(tree* t) 
+{
+  long i;
+
+  for ( i = 0; i < nonodes2; i++ )
+    t->freetrans[i] = i;
+  t->transindex = nonodes2 - 1;
+}
+
+
+sitelike2 init_sitelike(long sitelength) 
+{
+  return Malloc((sitelength+1) * sizeof(double));
+}
+
+
+void free_sitelike(sitelike2 sl) 
+{
+  free(sl);
+}
+
+
+void copy_sitelike(sitelike2 dest, sitelike2 src,long sitelength)
+{
+  memcpy(dest,src,(sitelength+1)*sizeof(double));
+}
 
 
 void restml_inputnumbers(AjPPhyloState state)
@@ -113,7 +279,7 @@ void restml_inputnumbers(AjPPhyloState state)
   sites = state->Len;
   enzymes = state->Count;
 
-  nonodes2 = spp * 2 - 2;
+  nonodes2 = spp * 2 - 1;
 }  /* restml_inputnumbers */
 
 
@@ -216,6 +382,22 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 }  /* emboss_getoptions */
 
 
+void reallocsites() 
+{
+  long i;
+  for (i = 0; i < spp; i++) {
+    free(y[i]);
+    y[i] = (Char *)Malloc(sites*sizeof(Char));
+  }
+  free(weight);
+  free(alias);
+  free(aliasweight);
+  weight = (steptr)Malloc((sites+1)*sizeof(long));
+  alias = (steptr)Malloc((sites+1)*sizeof(long));
+  aliasweight = (steptr)Malloc((sites+1)*sizeof(long));
+}
+
+
 void allocrest()
 {
   long i;
@@ -231,6 +413,41 @@ void allocrest()
 }  /* allocrest */
 
 
+void freelrsaves()
+{
+  long i,j;
+  for ( i = 0 ; i < NLRSAVES ; i++ ) {
+    for (j = 0; j < endsite; j++)
+      free(lrsaves[i]->x2[j]);
+    free(lrsaves[i]->x2);
+    free(lrsaves[i]->underflows);
+    free(lrsaves[i]);
+  }
+  free(lrsaves);
+}
+
+
+void resetlrsaves() 
+{
+  freelrsaves();
+  alloclrsaves();
+}
+
+
+void alloclrsaves()
+{
+  long i,j;
+  lrsaves = Malloc(NLRSAVES * sizeof(node*));
+  for ( i = 0 ; i < NLRSAVES ; i++ ) {
+    lrsaves[i] = Malloc(sizeof(node));
+    lrsaves[i]->x2 = Malloc((endsite + 1)*sizeof(sitelike2));
+    for ( j = 0 ; j <= endsite ; j++ ) {
+      lrsaves[i]->x2[j] = Malloc((sitelength + 1) * sizeof(double));
+    }
+  }
+} /* alloclrsaves */
+
+
 void setuppie()
 {
   /* set up equilibrium probabilities of being a given
@@ -238,6 +455,7 @@ void setuppie()
   long i;
   double sum;
 
+  pie = init_sitelike(sitelength);
   pie[0] = 1.0;
   sum = pie[0];
   for (i = 1; i <= sitelength; i++) {
@@ -252,27 +470,20 @@ void setuppie()
 void doinit()
 {
   /* initializes variables */
-  long i;
+  long i,j;
 
   restml_inputnumbers(phylostates[0]);
+  if (!usertree)
+    nonodes2--;
   if (printdata)
     fprintf(outfile, "%4ld Species, %4ld Sites,%4ld Enzymes\n",
             spp, sites, enzymes);
-  tempmatrix = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
-  for (i=0; i<=sitelength; i++)
-    tempmatrix[i] = (double *)Malloc((sitelength+1) * sizeof(double));
-  temp2matrix = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
-  for (i=0; i<=sitelength; i++)
-    temp2matrix[i] = (double *)Malloc((sitelength+1) * sizeof(double));
-  temp3matrix = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
-  for (i=0; i<=sitelength; i++)
-    temp3matrix[i] = (double *)Malloc((sitelength+1) * sizeof(double));
-  temp4matrix = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
-  for (i=0; i<=sitelength; i++)
-    temp4matrix[i] = (double *)Malloc((sitelength+1) * sizeof(double));
-  temp5matrix = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
-  for (i=0; i<=sitelength; i++)
-    temp5matrix[i] = (double *)Malloc((sitelength+1) * sizeof(double));
+  tempmatrix = Malloc(NTEMPMATS * sizeof(transmatrix));
+  for ( i = 0 ; i < NTEMPMATS ; i++ ) {
+    tempmatrix[i] = Malloc((sitelength+1) * sizeof(double *));
+    for ( j = 0 ; j <= sitelength ; j++)
+      tempmatrix[i][j] = (double *)Malloc((sitelength+1) * sizeof(double));
+  }
   tempslope = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
   for (i=0; i<=sitelength; i++)
     tempslope[i] = (double *)Malloc((sitelength+1) * sizeof(double));
@@ -280,19 +491,40 @@ void doinit()
   for (i=0; i<=sitelength; i++)
     tempcurve[i] = (double *)Malloc((sitelength+1) * sizeof(double));
   setuppie();
-  alloctrans(&curtree.trans, nonodes2, sitelength);
-  alloctree(&curtree.nodep, nonodes2, false);
+  alloctrans(&curtree, nonodes2, sitelength);
+  alloctree(&curtree.nodep, nonodes2, usertree);
   allocrest();
   if (usertree)
     return;
-  alloctrans(&bestree.trans, nonodes2, sitelength);
+  alloctrans(&bestree, nonodes2, sitelength);
   alloctree(&bestree.nodep, nonodes2, 0);
-  alloctrans(&priortree.trans, nonodes2, sitelength);
+  alloctrans(&priortree, nonodes2, sitelength);
   alloctree(&priortree.nodep, nonodes2, 0);
   if (njumble == 1) return;
-  alloctrans(&bestree2.trans, nonodes2, sitelength);
+  alloctrans(&bestree2, nonodes2, sitelength);
   alloctree(&bestree2.nodep, nonodes2, 0);
 }  /* doinit */
+
+
+void cleanup() {
+  long i, j;
+
+  for (i = 0; i < NTEMPMATS; i++) {
+    for (j = 0; j <= sitelength; j++)
+      free(tempmatrix[i][j]);
+    free(tempmatrix[i]);
+  }
+  free(tempmatrix);
+  tempmatrix = NULL;
+  for (i = 0; i <= sitelength; i++) {
+    free(tempslope[i]);
+    free(tempcurve[i]);
+  }
+  free(tempslope);
+  tempslope = NULL;
+  free(tempcurve);
+  tempcurve = NULL;
+}
 
 
 void inputoptions(AjPPhyloState state)
@@ -318,12 +550,16 @@ void inputoptions(AjPPhyloState state)
     }
     sites = curst;
   }
+  if ( !firstset )
+    reallocsites();
+
   for (i = 1; i <= sites; i++)
     weight[i] = 1;
   weightsum = sites;
   extranum = numwts;
   for (i = 1; i <= numwts; i++) {
-      inputweightsstr2(phyloweights->Str[i-1], 1, sites+1, &weightsum, weight, &weights, "RESTML");
+      inputweightsstr2(phyloweights->Str[i-1], 1, sites+1,
+                       &weightsum, weight, &weights, "RESTML");
   }
   fprintf(outfile, "\n  Recognition sequences all%2ld bases long\n",
           sitelength);
@@ -563,15 +799,17 @@ void getinput()
   /* reads the input data */
   inputoptions(phylostates[ith-1]);
   restml_inputdata(phylostates[ith-1]);
+  if ( !firstset ) freelrsaves();
   makeweights();
-  setuptree2(curtree);
+  alloclrsaves();
   if (!usertree) {
-    setuptree2(priortree);
-    setuptree2(bestree);
+    setuptree2(&curtree);
+    setuptree2(&priortree);
+    setuptree2(&bestree);
     if (njumble > 1) 
-      setuptree2(bestree2);
+      setuptree2(&bestree2);
   }
-  allocx2(nonodes2, endsite+1, sitelength, curtree.nodep, false);
+  allocx2(nonodes2, endsite+1, sitelength, curtree.nodep, usertree);
   if (!usertree) {
     allocx2(nonodes2, endsite+1, sitelength, priortree.nodep, 0);
     allocx2(nonodes2, endsite+1, sitelength, bestree.nodep, 0);
@@ -600,8 +838,10 @@ void maketrans(double p, boolean nr)
      probability p.  Put the results in tempmatrix, tempslope, tempcurve */
   long i, j, k, m1, m2;
   double sump, sums=0, sumc=0, pover3, pijk, term;
-  double binom1[maxcutter + 1], binom2[maxcutter + 1];
+  sitelike2 binom1, binom2;
 
+  binom1 = init_sitelike(sitelength);
+  binom2 = init_sitelike(sitelength);
   pover3 = p / 3;
   for (i = 0; i <= sitelength; i++) {
     if (p > 1.0 - epsilon)
@@ -640,13 +880,15 @@ void maketrans(double p, boolean nr)
                             - (i-k)/((3.0-p)*(3.0-p)) );
         }
       }
-      tempmatrix[i][j] = sump;
+      tempmatrix[0][i][j] = sump;
       if (nr) {
         tempslope[i][j] = sums;
         tempcurve[i][j] = sumc;
       }
     }
   }
+  free_sitelike(binom1);
+  free_sitelike(binom2);
 }  /* maketrans */
 
 
@@ -657,7 +899,7 @@ void branchtrans(long i, double p)
 
   nr = false;
   maketrans(p, nr);
-  copymatrix(curtree.trans[i - 1], tempmatrix);
+  copymatrix(curtree.trans[i - 1], tempmatrix[0]);
 }  /* branchtrans */
 
 
@@ -665,46 +907,51 @@ double evaluate(tree *tr, node *p)
 {
   /* evaluates the likelihood, using info. at one branch */
   double sum, sum2, y, liketerm, like0, lnlike0=0, term;
-  long i, j, k;
+  long i, j, k,branchnum;
   node *q;
   sitelike2 x1, x2;
-  boolean nr;
 
+  x1 = init_sitelike(sitelength);
+  x2 = init_sitelike(sitelength);
   sum = 0.0;
   q = p->back;
+
+  nuview(p);
+  nuview(q);
+
   y = p->v;
-  nr = false;
-  maketrans(y, nr);
-  memcpy(x1, p->x2[0], sizeof(sitelike2));
-  memcpy(x2, q->x2[0], sizeof(sitelike2));
+  branchnum = p->branchnum;
+  copy_sitelike(x1,p->x2[0],sitelength);
+  copy_sitelike(x2,q->x2[0],sitelength);
   if (trunc8) {
     like0 = 0.0;
     for (j = 0; j <= sitelength; j++) {
       liketerm = pie[j] * x1[j];
       for (k = 0; k <= sitelength; k++)
-        like0 += liketerm * tempmatrix[j][k] * x2[k];
+        like0 += liketerm * tr->trans[branchnum-1][j][k] * x2[k];
     }
     lnlike0 = log(enzymes * (1.0 - like0));
   }
   for (i = 1; i <= endsite; i++) {
-    memcpy(x1, p->x2[i], sizeof(sitelike2));
-    memcpy(x2, q->x2[i], sizeof(sitelike2));
+    copy_sitelike(x1,p->x2[i],sitelength);
+    copy_sitelike(x2,q->x2[i],sitelength);
     sum2 = 0.0;
     for (j = 0; j <= sitelength; j++) {
       liketerm = pie[j] * x1[j];
       for (k = 0; k <= sitelength; k++)
-        sum2 += liketerm * tempmatrix[j][k] * x2[k];
+        sum2 += liketerm * tr->trans[branchnum-1][j][k] * x2[k];
     }
     term = log(sum2);
     if (trunc8)
       term -= lnlike0;
-    if (usertree)
+    if (usertree && (which <= shimotrees))
       l0gf[which - 1][i - 1] = term;
     sum += weight[i] * term;
   }
 /* *** debug  put a variable "saveit" in evaluate as third argument as to
    whether to save the KHT suff */
   if (usertree) {
+    if(which <= shimotrees)
       l0gl[which - 1] = sum;
     if (which == 1) {
       maxwhich = 1;
@@ -715,61 +962,56 @@ double evaluate(tree *tr, node *p)
     }
   }
   tr->likelihood = sum;
+  free_sitelike(x1);
+  free_sitelike(x2);
   return sum;
 }  /* evaluate */
 
 
-void nuview(node *p)
+boolean nuview(node *p)
 {
   /* recompute fractional likelihoods for one part of tree */
   long i, j, k, lowlim;
-  double sumq, sumr;
-  node *q, *r;
+  double sumq;
+  node *q, *s;
   sitelike2 xq, xr, xp;
-  transmatrix tempq, tempr;
-  double *tq, *tr;
+  double **tempq = NULL;
+  double *tq     = NULL;
 
-  if (!p->next->back->tip && !p->next->back->initialized)
-    nuview (p->next->back);
-  if (!p->next->next->back->tip && !p->next->next->back->initialized)
-    nuview (p->next->next->back);
-  tempq = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
-  tempr = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
-  for (i=0;i<=sitelength;++i){
-    tempq[i] = (double *)Malloc((sitelength+1) * sizeof (double));
-    tempr[i] = (double *)Malloc((sitelength+1) * sizeof (double));
+  if (p->tip)
+    return false;
+  xq = init_sitelike(sitelength);
+  xr = init_sitelike(sitelength);
+  xp = init_sitelike(sitelength);
+  for (s = p->next; s != p; s = s->next) {
+    if ( nuview(s->back) )
+      p->initialized = false;
   }
-  if (trunc8)
-    lowlim = 0;
-  else
-    lowlim = 1;
-  q = p->next->back;
-  r = p->next->next->back;
-  copymatrix(tempq,curtree.trans[q->branchnum - 1]);
-  copymatrix(tempr,curtree.trans[r->branchnum - 1]);
+
+  if (p->initialized)
+    return false;
+
+  lowlim = trunc8 ? 0 : 1;
+
   for (i = lowlim; i <= endsite; i++) {
-    memcpy (xq, q->x2[i], sizeof(sitelike2));
-    memcpy (xr, r->x2[i], sizeof(sitelike2));
-    for (j = 0; j <= sitelength; j++) {
-      sumq = 0.0;
-      sumr = 0.0;
-      tq = tempq[j];
-      tr = tempr[j];
-      for (k = 0; k <= sitelength; k++) {
-        sumq += tq[k] * xq[k];
-        sumr += tr[k] * xr[k];
+    xp = p->x2[i];
+    for (j = 0; j <= sitelength; j++)
+      xp[j] = 1.0;
+    for (s = p->next; s != p; s = s->next) {
+      q = s->back;
+      tempq = curtree.trans[q->branchnum - 1];
+      xq = q->x2[i];
+      for (j = 0; j <= sitelength; j++) {
+        sumq = 0.0;
+        tq = tempq[j];
+        for (k = 0; k <= sitelength; k++)
+          sumq += tq[k] * xq[k];
+        xp[j] *= sumq;
       }
-      xp[j] = sumq * sumr;
     }
-    memcpy(p->x2[i], xp, sizeof(sitelike2));
   }
-  for (i=0;i<=sitelength;++i){
-    free(tempq[i]);
-    free(tempr[i]);
-  }
-  free(tempq);
-  free(tempr);
-  p->initialized = true;
+
+  return true;
 }  /* nuview */
 
 
@@ -802,14 +1044,14 @@ void makenewv(node *p)
     curve = 0.0;
     maketrans(y, nr);
     for (i = lowlim; i <= endsite; i++) {
-      memcpy(xx1, p->x2[i], sizeof(sitelike2));
-      memcpy(xx2, q->x2[i], sizeof(sitelike2));
+      xx1 = p->x2[i];
+      xx2 = q->x2[i];
       sum = 0.0;
       sums = 0.0;
       sumc = 0.0;
       for (j = 0; j <= sitelength; j++) {
         liket = xx1[j] * pie[j];
-        tm = tempmatrix[j];
+        tm = tempmatrix[0][j];
         ts = tempslope[j];
         tc = tempcurve[j];
         for (k = 0; k <= sitelength; k++) {
@@ -875,20 +1117,20 @@ void makenewv(node *p)
 void update(node *p)
 {
   /* improve branch length and views for one branch */
+  nuview(p);
+  nuview(p->back);
 
-  if (!p->tip && !p->initialized)
-    nuview(p);
-  if (!p->back->tip && !p->back->initialized)
-    nuview(p->back);
-  if (p->iter) {
+  if ( !(usertree && lengths) ) {
     makenewv(p);
-    if (!p->tip) {
-      p->next->initialized = false;
-      p->next->next->initialized = false;
+    if (smoothit ) {
+      inittrav(p);
+      inittrav(p->back);
     }
-    if (!p->back->tip) {
-      p->back->next->initialized = false;
-      p->back->next->next->initialized = false;
+    else {
+     if (inserting && !p->tip) {
+        p->next->initialized = false;
+        p->next->next->initialized = false;
+      }
     }
   }
 }  /* update */
@@ -903,13 +1145,9 @@ void smooth(node *p)
   if (!p->tip) {
     if (smoothit && !smoothed) {
       smooth(p->next->back);
-      p->initialized = false;
-      p->next->next->initialized = false;
     }
     if (smoothit && !smoothed) {
       smooth(p->next->next->back);
-      p->initialized = false;
-      p->next->initialized = false;
     }
   }
 }  /* smooth */
@@ -918,7 +1156,7 @@ void smooth(node *p)
 void insert_(node *p, node *q)
 {
   /* insert a subtree into a branch, improve lengths in tree */
-  long i, m, n;
+  long i;
   node *r;
 
   r = p->next->next;
@@ -928,38 +1166,36 @@ void insert_(node *p, node *q)
     q->v = 0.75;
   else
     q->v = 0.75 * (1 - sqrt(1 - 1.333333 * q->v));
+  if ( q->v < epsilon)
+    q->v = epsilon;
+
   q->back->v = q->v;
   r->v = q->v;
   r->back->v = r->v;
-  if (q->branchnum == q->index) {
-    m = q->branchnum;
-    n = r->index;
-  } else {
-    m = r->index;
-    n = q->branchnum;
-  }
-  q->branchnum = m;
-  q->back->branchnum = m;
-  r->branchnum = n;
-  r->back->branchnum = n;
+ 
+  set_branchnum(q->back, q->branchnum);
+  set_branchnum(r, get_trans(&curtree));
+  set_branchnum(r->back, r->branchnum);
   branchtrans(q->branchnum, q->v);
   branchtrans(r->branchnum, r->v);
+
+  if ( smoothit ) {
+    inittrav(p);
+    inittrav(p->back);
+  } 
   p->initialized = false;
-  p->next->initialized = false;
-  p->next->next->initialized = false;
+
   i = 1;
+  inserting = true;
   while (i <= smoothings) {
     smooth(p);
-    if (!smoothit) {
-      if (!p->tip) {
-        smooth (p->next->back);
-        smooth (p->next->next->back);
-      }
+    if (!p->tip) {
+      smooth (p->next->back);
+      smooth (p->next->next->back);
     }
-    else 
-      smooth(p->back);
     i++;
   }
+  inserting = false;
 }  /* insert */
 
 
@@ -970,35 +1206,45 @@ void restml_re_move(node **p, node **q)
 
   *q = (*p)->next->back;
   hookup(*q, (*p)->next->next->back);
-  (*q)->back->branchnum = (*q)->branchnum;
-  branchtrans((*q)->branchnum, 0.75*(1 - (1 - 1.333333*(*q)->v)
-                                        * (1 - 1.333333*(*p)->next->v)));
+  free_trans(&curtree,(*q)->back->branchnum);
+  set_branchnum((*q)->back, (*q)->branchnum);
+  (*q)->v = 0.75*(1 - (1 - 1.333333*(*q)->v) * (1 - 1.333333*(*p)->next->v));
+
+  if ( (*q)->v > 1 - epsilon)
+    (*q)->v = 1 - epsilon;
+  else if ( (*q)->v < epsilon)
+    (*q)->v = epsilon;
+                  
+  (*q)->back->v = (*q)->v;
+  branchtrans((*q)->branchnum, (*q)->v);
+
   (*p)->next->back = NULL;
   (*p)->next->next->back = NULL;
-  if (!(*q)->tip) {
-    (*q)->next->initialized = false;
-    (*q)->next->next->initialized = false;
+ 
+  if ( smoothit ) {
+    inittrav((*q)->back);
+    inittrav(*q);
   }
-  if (!(*q)->back->tip) {
-    (*q)->back->next->initialized = false;
-    (*q)->back->next->next->initialized = false;
-  }
-  i = 1;
-  while (i <= smoothings) {
-    smooth(*q);
-    if (smoothit)
+  
+  if ( smoothit ) {
+    for ( i = 0 ; i < smoothings ; i++ ) {
+      smooth(*q);
       smooth((*q)->back);
-    i++;
+    }
   }
+  else ( smooth(*q));
 }  /* restml_re_move */
 
 
 void restml_copynode(node *c, node *d)
 {
   /* copy a node */
+  long i;
 
-  d->branchnum = c->branchnum;
-  memcpy(d->x2, c->x2, (endsite+1)*sizeof(sitelike2));
+  set_branchnum(d, c->branchnum);
+  
+  for ( i = 0 ; i <= endsite ; i++)
+    copy_sitelike(d->x2[i],c->x2[i],sitelength);
   d->v = c->v;
   d->iter = c->iter;
   d->xcoord = c->xcoord;
@@ -1051,45 +1297,49 @@ void restml_copy_(tree *a, tree *b)
   b->likelihood = a->likelihood;
   for (i=0;i<nonodes2;++i)
     copymatrix(b->trans[i],a->trans[i]);
+  b->transindex = a->transindex;
+  memcpy(b->freetrans,a->freetrans,nonodes*sizeof(long));
+
   b->start = a->start;
 }  /* restml_copy */
 
 
-void buildnewtip(long m, tree *tr)
+void buildnewtip(long m,tree *tr)
 {
   /* set up a new tip and interior node it is connected to */
   node *p;
   long i, j;
 
   p = tr->nodep[nextsp + spp - 3];
-  for (i = 0; i < endsite; i++) {
-    for (j = 0; j < sitelength; j++) {
+  for (i = 0; i <= endsite; i++) {
+    for (j = 0; j < sitelength; j++) { /* trunc8 */
       p->x2[i][j] = 1.0; 
       p->next->x2[i][j] = 1.0; 
       p->next->next->x2[i][j] = 1.0; 
     }
   }
+
   hookup(tr->nodep[m - 1], p);
   p->v = initialv;
   p->back->v = initialv;
-  branchtrans(m, initialv);
-  p->branchnum = m;
-  p->next->branchnum = p->index;
-  p->next->next->branchnum = p->index;
-  p->back->branchnum = m;
+  set_branchnum(p, get_trans(tr));
+  set_branchnum(p->back, p->branchnum);
+  branchtrans(p->branchnum, initialv);
 }  /* buildnewtip */
 
 
 void buildsimpletree(tree *tr)
 {
   /* set up and adjust branch lengths of a three-species tree */
+  long branch;
 
   hookup(tr->nodep[enterorder[0] - 1], tr->nodep[enterorder[1] - 1]);
   tr->nodep[enterorder[0] - 1]->v = initialv;
   tr->nodep[enterorder[1] - 1]->v = initialv;
   branchtrans(enterorder[1], initialv);
-  tr->nodep[enterorder[0] - 1]->branchnum = 2;
-  tr->nodep[enterorder[1] - 1]->branchnum = 2;
+  branch = get_trans(tr);
+  set_branchnum(tr->nodep[enterorder[0] - 1], branch);
+  set_branchnum(tr->nodep[enterorder[1] - 1], branch);
   buildnewtip(enterorder[2], tr);
   insert_(tr->nodep[enterorder[2] - 1]->back, tr->nodep[enterorder[1] - 1]);
   tr->start = tr->nodep[enterorder[2]-1]->back;
@@ -1099,13 +1349,11 @@ void buildsimpletree(tree *tr)
 void addtraverse(node *p, node *q, boolean contin)
 {
   /* try adding p at q, proceed recursively through tree */
-  long oldnum = 0;
   double like, vsave = 0;
   node *qback =NULL;
 
   if (!smoothit) {
-    oldnum = q->branchnum;
-    copymatrix (temp2matrix, curtree.trans[oldnum-1]);
+    copymatrix (tempmatrix[1], curtree.trans[q->branchnum - 1]);
     vsave = q->v;
     qback = q->back;
   }
@@ -1127,18 +1375,29 @@ void addtraverse(node *p, node *q, boolean contin)
     hookup (q, qback);
     q->v = vsave;
     q->back->v = vsave;
-    q->branchnum = oldnum;
-    q->back->branchnum = oldnum;
-    copymatrix (curtree.trans[oldnum-1], temp2matrix);
-    curtree.likelihood = bestyet;
+    free_trans(&curtree,q->back->branchnum);
+    set_branchnum(q->back, q->branchnum);
+    copymatrix (curtree.trans[q->branchnum - 1], tempmatrix[1]);
+#ifdef DEBUG
+    evaluate(&curtree, curtree.start);
+    assert( close(bestyet, curtree.likelihood) );
+#endif
+    /* curtree.likelihood = bestyet; */
+    evaluate(&curtree, curtree.start);
   }
   if (!q->tip && contin) {
+    /* assumes bifurcation (OK) */
     addtraverse(p, q->next->back, contin);
     addtraverse(p, q->next->next->back, contin);
   }
+  if ( contin && q == curtree.root ) {
+    /* FIXME!! curtree.root->back == NULL?  curtree.root == NULL? */
+    addtraverse(p,q->back,contin);
+  }
 }  /* addtraverse */
 
-void globrearrange() 
+
+void globrearrange(void) 
 {
   /* does global rearrangements */
   tree globtree;
@@ -1150,10 +1409,10 @@ void globrearrange()
   printf("\n   ");
   alloctree(&globtree.nodep,nonodes2,0);
   alloctree(&oldtree.nodep,nonodes2,0);
-  alloctrans(&globtree.trans, nonodes2, sitelength);
-  alloctrans(&oldtree.trans, nonodes2, sitelength);
-  setuptree2(globtree);
-  setuptree2(oldtree);
+  alloctrans(&globtree, nonodes2, sitelength);
+  alloctrans(&oldtree, nonodes2, sitelength);
+  setuptree2(&globtree);
+  setuptree2(&oldtree);
   allocx2(nonodes2, endsite + 1, sitelength,globtree.nodep, 0);
   allocx2(nonodes2, endsite + 1, sitelength,oldtree.nodep, 0);
   restml_copy_(&curtree,&globtree);
@@ -1222,75 +1481,130 @@ void globrearrange()
   freetree2(oldtree.nodep,nonodes2);
 }
 
+void printnode(node* p);
+void printnode(node* p)
+{
+  if (p->back)
+  printf("p->index = %3ld, p->back->index = %3ld, p->branchnum = %3ld,evaluates"
+      " to %f\n",p->index,p->back->index,p->branchnum,evaluate(&curtree,p));
+  
+  else 
+  printf("p->index = %3ld, p->back->index =none, p->branchnum = %3ld,evaluates"
+      " to nothing\n",p->index,p->branchnum);
+}
+
+void printvals(void);
+void printvals(void) 
+{
+  int i;
+  node* p;
+
+  for ( i = 0 ; i < nextsp ; i++ )  {
+    p = curtree.nodep[i];
+    printnode(p);
+  }
+  for ( i = spp ; i <= spp + nextsp - 3 ; i++ ) {
+    p = curtree.nodep[i];
+    printnode(p);
+    printnode(p->next);
+    printnode(p->next->next);
+  }
+}
+
 void rearrange(node *p, node *pp)
 {
   /* rearranges the tree locally */
-  long i, oldnum3=0, oldnum4=0, oldnum5=0;
-  double v3=0, v4=0, v5=0;
-  node *q, *r;
+  long i;
+  node *q;
+  node *r;
+  node *rnb;
+  node *rnnb;
 
-  if (!p->tip && !p->back->tip) {
+  if (p->tip) return;
+  if (p->back->tip) {
+    rearrange(p->next->back, p);
+    rearrange(p->next->next->back, p);
+
+    return;
+
+  } else /* if !p->tip && !p->back->tip */ {
+    /*
+    evaluate(&curtree, curtree.start);
     bestyet = curtree.likelihood;
+    */
+
     if (p->back->next != pp)
       r = p->back->next;
     else
       r = p->back->next->next;
-    if (!smoothit) {
-      oldnum3 = r->branchnum;
-      copymatrix (temp3matrix, curtree.trans[oldnum3-1]);
-      v3 = r->v;
-      oldnum4 = r->next->branchnum;
-      copymatrix (temp4matrix, curtree.trans[oldnum4-1]);
-      v4 = r->next->v;
-      oldnum5 = r->next->next->branchnum;
-      copymatrix (temp5matrix, curtree.trans[oldnum5-1]);
-      v5 = r->next->next->v;
-    }
-    else
+
+    if (smoothit) {
+      /* Copy the whole tree, because we may change all lengths */
       restml_copy_(&curtree, &bestree);
-    restml_re_move(&r, &q);
-    if (smoothit)
+      restml_re_move(&r, &q);
+      nuview(p->next);
+      nuview(p->next->next);
       restml_copy_(&curtree, &priortree);
-    else
-      qwhere = q;
-    addtraverse(r, p->next->back, false);
-    addtraverse(r, p->next->next->back, false);
-    if (smoothit)
+      addtraverse(r, p->next->back, false);
+      addtraverse(r, p->next->next->back, false);
       restml_copy_(&bestree, &curtree);
-    else {
-      insert_(r, qwhere);
+    } else {
+      /* Save node data and matrices, so we can undo */
+      rnb = r->next->back;
+      rnnb = r->next->next->back;
+
+      restml_copynode(r,lrsaves[0]);
+      restml_copynode(r->next,lrsaves[1]);
+      restml_copynode(r->next->next,lrsaves[2]);
+      restml_copynode(p->next,lrsaves[3]);
+      restml_copynode(p->next->next,lrsaves[4]);
+
+      copymatrix (tempmatrix[2], curtree.trans[r->branchnum - 1]);
+      copymatrix (tempmatrix[3], curtree.trans[r->next->branchnum - 1]);
+      copymatrix (tempmatrix[4], curtree.trans[r->next->next->branchnum-1]);
+      copymatrix (tempmatrix[5], curtree.trans[p->next->branchnum-1]);
+      copymatrix (tempmatrix[6], curtree.trans[p->next->next->branchnum-1]);
+
+      restml_re_move(&r, &q);
+      nuview(p->next);
+      nuview(p->next->next);
+      qwhere = q;
+      addtraverse(r, p->next->back, false);
+      addtraverse(r, p->next->next->back, false);
       if (qwhere == q) {
-        r->v = v3;
-        r->back->v = v3;
-        r->branchnum = oldnum3;
-        r->back->branchnum = oldnum3;
-        copymatrix (curtree.trans[oldnum3-1], temp3matrix);
-        r->next->v = v4;
-        r->next->back->v = v4;
-        r->next->branchnum = oldnum4;
-        r->next->back->branchnum = oldnum4;
-        copymatrix (curtree.trans[oldnum4-1], temp4matrix);
-        r->next->next->v = v5;
-        r->next->next->back->v = v5;
-        r->next->next->branchnum = oldnum5;
-        r->next->next->back->branchnum = oldnum5;
-        copymatrix (curtree.trans[oldnum5-1], temp5matrix);
+        hookup(rnb,r->next);
+        hookup(rnnb,r->next->next);
+        restml_copynode(lrsaves[0],r);
+        restml_copynode(lrsaves[1],r->next);
+        restml_copynode(lrsaves[2],r->next->next);
+        restml_copynode(lrsaves[3],p->next);
+        restml_copynode(lrsaves[4],p->next->next);
+        r->back->v = r->v;
+        r->next->back->v = r->next->v;
+        r->next->next->back->v = r->next->next->v;
+        p->next->back->v = p->next->v;
+        p->next->next->back->v = p->next->next->v;
+        set_branchnum(r->back, r->branchnum);
+        set_branchnum(r->next->back, r->next->branchnum);
+        set_branchnum(p->next->back, p->next->branchnum);
+        set_branchnum(p->next->next->back, p->next->next->branchnum);
+        copymatrix (curtree.trans[r->branchnum-1], tempmatrix[2]);
+        copymatrix (curtree.trans[r->next->branchnum-1], tempmatrix[3]);
+        copymatrix (curtree.trans[r->next->next->branchnum-1], tempmatrix[4]);
+        copymatrix (curtree.trans[p->next->branchnum-1], tempmatrix[5]);
+        copymatrix (curtree.trans[p->next->next->branchnum-1], tempmatrix[6]);
         curtree.likelihood = bestyet;
-      }
-      else {
+      } else {
         smoothit = true;
+        insert_(r, qwhere);
+        
         for (i = 1; i<=smoothings; i++) {
           smooth (r);
           smooth (r->back);
         }
         smoothit = false;
-        restml_copy_(&curtree, &bestree);
       }
     }
-  }
-  if (!p->tip) {
-    rearrange(p->next->back, p);
-    rearrange(p->next->next->back, p);
   }
 }  /* rearrange */
 
@@ -1333,24 +1647,31 @@ void restml_coordinates(node *p, double lengthsum, long *tipy,
 }  /* restml_coordinates */
 
 
-void restml_printree()
+void restml_fprintree(FILE *fp)
 {
   /* prints out diagram of the tree */
   long tipy,i;
   double scale, tipmax, x;
 
-  putc('\n', outfile);
+  putc('\n', fp);
   if (!treeprint)
     return;
-  putc('\n', outfile);
+  putc('\n', fp);
   tipy = 1;
   tipmax = 0.0;
   restml_coordinates(curtree.start, 0.0, &tipy,&tipmax,&x);
   scale = 1.0 / (tipmax + 1.000);
   for (i = 1; i <= tipy - down; i++)
-    drawline2(i, scale, curtree);
-  putc('\n', outfile);
-}  /* restml_printree */
+    fdrawline2(fp, i, scale, &curtree);
+  putc('\n', fp);
+}  /* restml_fprintree */
+
+
+void restml_printree(void)
+{
+  restml_fprintree(outfile);
+}
+  
 
 
 double sigma(node *q, double *sumlr)
@@ -1359,12 +1680,16 @@ double sigma(node *q, double *sumlr)
   double sump, sumr, sums, sumc, p, pover3, pijk, Qjk, liketerm, f;
   double  slopef,curvef;
   long i, j, k, m1, m2;
-  double binom1[maxcutter + 1], binom2[maxcutter + 1];
+  sitelike2 binom1, binom2;
   transmatrix Prob, slopeP, curveP;
   node *r;
   sitelike2 x1, x2;
   double term, TEMP;
 
+  x1 = init_sitelike(sitelength);
+  x2 = init_sitelike(sitelength);
+  binom1 = init_sitelike(sitelength);
+  binom2 = init_sitelike(sitelength);
   Prob   = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
   slopeP = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
   curveP = (transmatrix)Malloc((sitelength+1) * sizeof(double *));
@@ -1418,8 +1743,8 @@ double sigma(node *q, double *sumlr)
     slopef = 0.0;
     curvef = 0.0;
     sumr = 0.0;
-    memcpy(x1, q->x2[i], sizeof(sitelike2));
-    memcpy(x2, r->x2[i], sizeof(sitelike2));
+    copy_sitelike(x1,q->x2[i],sitelength);
+    copy_sitelike(x2,r->x2[i],sitelength);
     for (j = 0; j <= sitelength; j++) {
       liketerm = pie[j] * x1[j];
       sumr += liketerm * x2[j];
@@ -1440,8 +1765,8 @@ double sigma(node *q, double *sumlr)
     slopef = 0.0;
     curvef = 0.0;
     sumr = 0.0;
-    memcpy(x1, q->x2[0], sizeof(sitelike2));
-    memcpy(x2, r->x2[0], sizeof(sitelike2));
+    copy_sitelike(x1,q->x2[0],sitelength);
+    copy_sitelike(x2,r->x2[0],sitelength);
     for (j = 0; j <= sitelength; j++) {
       liketerm = pie[j] * x1[j];
       sumr += liketerm * x2[j];
@@ -1465,6 +1790,10 @@ double sigma(node *q, double *sumlr)
   free(Prob);
   free(slopeP);
   free(curveP);
+  free_sitelike(x1);
+  free_sitelike(x2);
+  free_sitelike(binom1);
+  free_sitelike(binom2);
   if (sumc < -1.0e-6)
     return ((-sums - sqrt(sums * sums - 3.841 * sumc)) / sumc);
   else
@@ -1472,61 +1801,65 @@ double sigma(node *q, double *sumlr)
 }  /* sigma */
 
 
-void describe(node *p)
+void fdescribe(FILE *fp, node *p)
 {
   /* print out information on one branch */
   double sumlr;
   long i;
   node *q;
   double s;
+  double realv;
 
   q = p->back;
-  fprintf(outfile, "%4ld      ", q->index - spp);
-  fprintf(outfile, "    ");
+  fprintf(fp, "%4ld      ", q->index - spp);
+  fprintf(fp, "    ");
   if (p->tip) {
     for (i = 0; i < nmlngth; i++)
-      putc(nayme[p->index - 1][i], outfile);
+      putc(nayme[p->index - 1][i], fp);
   } else
-    fprintf(outfile, "%4ld      ", p->index - spp);
+    fprintf(fp, "%4ld      ", p->index - spp);
   if (q->v >= 0.75)
-    fprintf(outfile, "     infinity");
-  else
-    fprintf(outfile, "%13.5f", -0.75 * log(1 - 1.333333 * q->v));
+    fprintf(fp, "     infinity");
+  else {
+    realv = -0.75 * log(1 - 4.0/3.0 * q->v);
+    fprintf(fp, "%13.5f", realv);
+  }
   if (p->iter) {
     s = sigma(q, &sumlr);
     if (s < 0.0)
-      fprintf(outfile, "     (     zero,    infinity)");
+      fprintf(fp, "     (     zero,    infinity)");
     else {
-      fprintf(outfile, "     (");
+      fprintf(fp, "     (");
       if (q->v - s <= 0.0)
-        fprintf(outfile, "     zero");
+        fprintf(fp, "     zero");
       else
-        fprintf(outfile, "%9.5f", -0.75 * log(1 - 1.333333 * (q->v - s)));
-      putc(',', outfile);
+        fprintf(fp, "%9.5f", -0.75 * log(1 - 1.333333 * (q->v - s)));
+      putc(',', fp);
       if (q->v + s >= 0.75)
-        fprintf(outfile, "    infinity");
+        fprintf(fp, "    infinity");
       else
-        fprintf(outfile, "%12.5f", -0.75 * log(1 - 1.333333 * (q->v + s)));
-      putc(')', outfile);
+        fprintf(fp, "%12.5f", -0.75 * log(1 - 1.333333 * (q->v + s)));
+      putc(')', fp);
       }
     if (sumlr > 1.9205)
-      fprintf(outfile, " *");
+      fprintf(fp, " *");
     if (sumlr > 2.995)
-      putc('*', outfile);
+      putc('*', fp);
     }
   else
-    fprintf(outfile, "            (not varied)");
-  putc('\n', outfile);
+    fprintf(fp, "            (not varied)");
+  putc('\n', fp);
   if (!p->tip) {
-    describe(p->next->back);
-    describe(p->next->next->back);
+    for (q = p->next; q != p; q = q->next)
+      fdescribe(fp, q->back);
   }
-}  /* describe */
+}  /* fdescribe */
 
 
 void summarize()
 {
   /* print out information on branches of tree */
+  node *q;
 
   fprintf(outfile, "\nremember: ");
   if (outgropt)
@@ -1538,9 +1871,9 @@ void summarize()
   fprintf(outfile, "      Approx. Confidence Limits\n");
   fprintf(outfile, " -------        ---            ------");
   fprintf(outfile, "      ------- ---------- ------\n");
-  describe(curtree.start->next->back);
-  describe(curtree.start->next->next->back);
-  describe(curtree.start->back);
+  for (q = curtree.start->next; q != curtree.start; q = q->next)
+    fdescribe(outfile, q->back);
+  fdescribe(outfile, curtree.start->back);
   fprintf(outfile, "\n     *  = significantly positive, P < 0.05\n");
   fprintf(outfile, "     ** = significantly positive, P < 0.01\n\n\n");
 }  /* summarize */
@@ -1610,26 +1943,212 @@ void restml_treeout(node *p)
 }  /* restml_treeout */
 
 
-void inittravtree(node *p)
+static phenotype2
+restml_pheno_new(long endsite, long sitelength)
 {
-  /* traverse tree to set initialized and v to initial values */
+  phenotype2 ret;
+  long k, l;
 
-  if (p->index < p->back->index)
-    p->branchnum = p->index;
-  else
-    p->branchnum = p->back->index;
+  endsite++;
+  ret = (phenotype2)Malloc(endsite*sizeof(sitelike2));
+  for (k = 0; k < endsite; k++) {
+    ret[k] = Malloc((sitelength + 1) * sizeof(double));
+    for (l = 0; l < sitelength; l++)
+      ret[k][l] = 1.0;
+  }
+  
+  return ret;
+}
+
+/* unused */
+/*
+static void
+restml_pheno_delete(phenotype2 x2)
+{
+  long k;
+
+  for (k = 0; k < endsite+1; k++)
+    free(x2[k]);
+  free(x2);
+}
+*/
+
+void initrestmlnode(node **p, node **grbg, node *q, long len, long nodei,
+                        long *ntips, long *parens, initops whichinit,
+                        pointarray treenode, pointarray nodep, Char *str, 
+                        Char *ch, char** treestr)
+{
+  /* initializes a node */
+  boolean minusread;
+  double valyew, divisor;
+
+  switch (whichinit) {
+  case bottom:
+    gnu(grbg, p);
+    (*p)->index = nodei;
+    (*p)->tip = false;
+    (*p)->branchnum = 0;
+    (*p)->x2 = restml_pheno_new(endsite, sitelength);
+    nodep[(*p)->index - 1] = (*p);
+    break;
+  case nonbottom:
+    gnu(grbg, p);
+    (*p)->x2 = restml_pheno_new(endsite, sitelength);
+    (*p)->index = nodei;
+    break;
+  case tip:
+    match_names_to_data (str, nodep, p, spp);
+    break;
+  case iter:
+    (*p)->initialized = false;
+    (*p)->v = initialv;
+    (*p)->iter = true;
+    if ((*p)->back != NULL){
+      (*p)->back->iter = true;
+      (*p)->back->v = initialv;  
+      (*p)->back->initialized = false;
+    }
+    break;
+  case length:
+    processlength(&valyew, &divisor, ch, &minusread, treestr, parens);
+    (*p)->v = valyew / divisor;
+    (*p)->iter = false;
+    if ((*p)->back != NULL) {
+      (*p)->back->v = (*p)->v;
+      (*p)->back->iter = false;
+    }
+    break;
+  case hsnolength:
+    break;
+  default:        /* cases hslength, treewt, unittrwt */
+    break;
+  }
+} /* initrestmlnode */
+
+
+static void
+restml_unroot(node* root, node** nodep, long nonodes) 
+{
+  node *p,*r,*q;
+  double newl;
+  long i;
+  long numsibs;
+  
+  numsibs = count_sibs(root);
+
+  if ( numsibs > 2 ) {
+    q = root;
+    r = root;
+    while (!(q->next == root))
+      q = q->next;
+    q->next = root->next;
+
+    /* FIXME?
+    for(i=0 ; i < endsite ; i++){
+      free(r->x[i]);
+      r->x[i] = NULL;
+    }
+    free(r->x);
+    r->x = NULL;
+    */
+
+    chuck(&grbg, r);
+    curtree.nodep[spp] = q;
+  } else { /* Bifurcating root - remove entire root fork */
+    /* Join v on each side of root */
+    newl = root->next->v + root->next->next->v;
+    root->next->back->v = newl;
+    root->next->next->back->v = newl;
+
+    /* Connect root's children */
+    hookup(root->next->back, root->next->next->back);
+
+    /* Move nodep entries down one and set indices */
+    for ( i = spp; i < nonodes-1; i++ ) {
+      p = nodep[i+1];
+      nodep[i] = p;
+      nodep[i+1] = NULL;
+      if ( nodep[i] == NULL ) /* This may happen in a
+                                 multifurcating intree */
+        break;
+      do {
+        p->index = i+1;
+        p = p->next;
+      } while (p != nodep[i]);
+    }
+
+    /* Free protx arrays from old root */
+    /*
+    for(i=0 ; i < endsite ; i++){
+      free(root->x[i]);
+      free(root->next->x[i]);
+      free(root->next->next->x[i]);
+      root->x[i] = NULL;
+      root->next->x[i] = NULL;
+      root->next->next->x[i] = NULL;
+    }
+    free(root->x);
+    free(root->next->x);
+    free(root->next->next->x);
+    */
+
+    chuck(&grbg,root->next->next);
+    chuck(&grbg,root->next);
+    chuck(&grbg,root);
+  }
+} /* dnaml_unroot */
+
+void inittravtree(tree* t,node *p)
+{ /* traverse tree to set initialized and v to initial values */
+  node* q; 
+
+  if ( p->branchnum == 0) {
+    set_branchnum(p, get_trans(t));
+    set_branchnum(p->back, p->branchnum);
+  }
   p->initialized = false;
   p->back->initialized = false;
-  if ((!lengths) || p->iter) {
+  if ( usertree && (!lengths || p->iter)) {
     branchtrans(p->branchnum, initialv);
     p->v = initialv;
     p->back->v = initialv;
   }
-  if (!p->tip) {
-    inittravtree(p->next->back);
-    inittravtree(p->next->next->back);
+  else branchtrans(p->branchnum, p->v);
+
+  if ( !p->tip ) {
+    q = p->next;
+    while ( q != p ) {
+      inittravtree(t,q->back);
+      q = q->next;
+    }
   }
 } /* inittravtree */
+
+
+double adjusted_v(double v) {
+  return 3.0/4.0 * (1.0-exp(-4.0/3.0 * v));
+}
+
+
+static void
+adjust_lengths_r(node *p)
+{
+  node *q; 
+
+  p->v = adjusted_v(p->v);
+  p->back->v = p->v;
+  if (!p->tip) {
+    for (q = p->next; q != p; q = q->next)
+      adjust_lengths_r(q->back);
+  }
+}
+
+
+void adjust_lengths(tree *t)
+{
+  assert(t->start->back->tip);
+  adjust_lengths_r(t->start);
+}
 
 
 void treevaluate()
@@ -1637,11 +2156,20 @@ void treevaluate()
   /* find maximum likelihood branch lengths of user tree */
   long i;
 
-  inittravtree(curtree.start);
+  if ( lengths)  
+    adjust_lengths(&curtree);
+  nonodes2--;
+
+  inittravtree(&curtree,curtree.start);
+  inittravtree(&curtree,curtree.start->back);
   smoothit = true;
-  for (i = 1; i <= smoothings * 4; i++)
+  for (i = 1; i <= smoothings * 4; i++)  {
     smooth (curtree.start);
+    smooth (curtree.start->back);
+  }
   evaluate(&curtree, curtree.start);
+  
+  nonodes2++;
 }  /* treevaluate */
 
 
@@ -1649,14 +2177,19 @@ void maketree()
 {
   /* construct and rearrange tree */
   long i,j;
+  long nextnode;
   char* treestr;
 
   if (usertree) {
-      if (numtrees > 2)
+    if(numtrees > MAXSHIMOTREES)
+      shimotrees = MAXSHIMOTREES;
+    else
+      shimotrees = numtrees;
+    if (numtrees > 2)
       emboss_initseed(inseed, &inseed0, seed);
-    l0gl = (double *) Malloc(numtrees * sizeof(double));
-    l0gf = (double **) Malloc(numtrees * sizeof(double *));
-    for (i=0; i < numtrees; ++i)
+    l0gl = (double *) Malloc(shimotrees * sizeof(double));
+    l0gf = (double **) Malloc(shimotrees * sizeof(double *));
+    for (i=0; i < shimotrees; ++i)
       l0gf[i] = (double *)Malloc(endsite * sizeof(double));
     if (treeprint) {
       fprintf(outfile, "User-defined tree");
@@ -1667,22 +2200,44 @@ void maketree()
     which = 1;
     while (which <= numtrees) {
       treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
-      treeread2 (&treestr, &curtree.start, curtree.nodep,
-        lengths, &trweight, &goteof, &haslengths, &spp);
+      /*
+      treeread2 (intree, &curtree.start, curtree.nodep, lengths, &trweight, 
+                      &goteof, &haslengths, &spp,false,nonodes2);
+      */
+
+      /* These initializations required each time through the loop
+         since multiple trees require re-initialization */
+      nextnode         = 0;
+      goteof           = false;
+
+      treeread(&treestr, &curtree.start, NULL, &goteof, NULL,
+               curtree.nodep, &nextnode, NULL, &grbg, 
+               initrestmlnode, false, nonodes2);
+
+      restml_unroot(curtree.start, curtree.nodep, nonodes2);
+
+      if ( outgropt )
+        curtree.start = curtree.nodep[outgrno - 1]->back;
+      else
+        curtree.start = curtree.nodep[0]->back;
+
       treevaluate();
-      restml_printree();
+      restml_fprintree(outfile);
       summarize();
       if (trout) {
         col = 0;
         restml_treeout(curtree.start);
       }
+      clear_connections(&curtree,nonodes2); 
+
       which++;
     }
     FClose(intree);
     if (numtrees > 1 && weightsum > 1 )
-    standev2(numtrees, maxwhich, 1, endsite, maxlogl, l0gl, l0gf,
+    standev2(numtrees, maxwhich, 0, endsite-1, maxlogl, l0gl, l0gf,
               aliasweight, seed);
   } else {
+    free_all_trans(&curtree);
     for (i = 1; i <= spp; i++)
       enterorder[i - 1] = i;
     if (jumble)
@@ -1692,29 +2247,29 @@ void maketree()
       writename(0, 3, enterorder);
     }
     nextsp = 3;
+    smoothit = improve;
     buildsimpletree(&curtree);
     curtree.start = curtree.nodep[enterorder[0] - 1]->back;
-    smoothit = improve;
     nextsp = 4;
     while (nextsp <= spp) {
       buildnewtip(enterorder[nextsp - 1], &curtree);
-      bestyet = - nextsp*sites*sitelength*log(4.0);
+      /* bestyet = - nextsp*sites*sitelength*log(4.0); */
+      bestyet = -DBL_MAX;
       if (smoothit)
         restml_copy_(&curtree, &priortree);
       addtraverse(curtree.nodep[enterorder[nextsp - 1] - 1]->back,
-                  curtree.start, true);
+                  curtree.nodep[enterorder[0]-1]->back, true);
       if (smoothit)
         restml_copy_(&bestree, &curtree);
       else {
-        insert_(curtree.nodep[enterorder[nextsp - 1] - 1]->back, qwhere);
         smoothit = true;
+        insert_(curtree.nodep[enterorder[nextsp - 1] - 1]->back, qwhere);
         for (i = 1; i<=smoothings; i++) {
           smooth (curtree.start);
           smooth (curtree.start->back);
         }
         smoothit = false;
-        restml_copy_(&curtree, &bestree);
-        bestyet = curtree.likelihood;
+        /* bestyet = curtree.likelihood; */
       }
       if (progress)
         writename(nextsp - 1, 1, enterorder);
@@ -1736,26 +2291,13 @@ void maketree()
         else 
           rearrange(curtree.start, curtree.start->back);
       }
-      for (i = spp; i < nonodes2; i++) {
-        curtree.nodep[i]->initialized = false;
-        curtree.nodep[i]->next->initialized = false;
-        curtree.nodep[i]->next->next->initialized = false;
-      }
-      if (!smoothit) {
-        smoothit = true;
-        for (i = 1; i<=smoothings; i++) {
-          smooth (curtree.start);
-          smooth (curtree.start->back);
-        }
-        smoothit = false;
-        restml_copy_(&curtree, &bestree);
-      }
       nextsp++;
     }
     if (global && progress) {
       putchar('\n');
       fflush(stdout);
     }
+    restml_copy_(&curtree, &bestree);
     if (njumble > 1) {
       if (jumb == 1)
         restml_copy_(&bestree, &bestree2);
@@ -1767,7 +2309,7 @@ void maketree()
       if (njumble > 1)
         restml_copy_(&bestree2, &curtree);
       curtree.start = curtree.nodep[outgrno - 1]->back;
-      restml_printree();
+      restml_fprintree(outfile);
       summarize();
       if (trout) {
         col = 0;
@@ -1775,6 +2317,8 @@ void maketree()
       }
     }
   }
+  if ( jumb < njumble )
+    return;
   freex2(nonodes2, curtree.nodep);
    if (!usertree) {
      freex2(nonodes2, priortree.nodep);
@@ -1783,7 +2327,7 @@ void maketree()
        freex2(nonodes2, bestree2.nodep);
    } else {
      free(l0gl);
-     for (i=0;i<numtrees;++i)
+     for (i=0;i<shimotrees;++i)
        free(l0gf[i]);
      free(l0gf);
    }
@@ -1825,6 +2369,7 @@ int main(int argc, Char *argv[])
     for (jumb = 1; jumb <= njumble; jumb++)
       maketree();
   }
+  cleanup();
   FClose(infile);
   FClose(outfile);
   FClose(outtree);

@@ -1,5 +1,5 @@
    Standard (Mandatory) qualifiers:
-  [-infile]            seqset     (Aligned) sequence set filename and optional
+  [-infilesequences]   seqset     (Aligned) sequence set filename and optional
                                   format, or reference (input USA)
   [-outfile]           outfile    [*.fseqbootall] Phylip seqboot program
                                   output file
@@ -45,7 +45,7 @@
    Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
-   "-infile" associated qualifiers
+   "-infilesequences" associated qualifiers
    -sbegin1            integer    Start of each sequence to be used
    -send1              integer    End of each sequence to be used
    -sreverse1          boolean    Reverse (if DNA)

@@ -2,7 +2,7 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -513,6 +513,7 @@ void doinit()
   allocrest();
 }  /* doinit*/
 
+
 void protinputdata(AjPSeqset seqset)
 {
   /* input the names and sequences for each species */
@@ -705,11 +706,11 @@ void protfillin(node *p, node *left, node *rt)
   /* sets up for each node in the tree the aa set for site m
      at that point and counts the changes.  The program
      spends much of its time in this function */
-  boolean counted;
+    boolean counted, done;
   aas aa;
   long s = 0;
   sitearray ls, rs, qs;
-  long i, m, n;
+  long i, j, m, n;
 
   for (m = 0; m < chars; m++) {
     if (left != NULL)
@@ -726,7 +727,7 @@ void protfillin(node *p, node *left, node *rt)
     }
     else {
       n = left->numsteps[m] + rt->numsteps[m];
-      if (ls[0] == rs[0]) {
+      if ((ls[0] == rs[0]) && (ls[1] == rs[1]) && (ls[2] == rs[2])) {
         qs[0] = ls[0];
         qs[1] = ls[1];
         qs[2] = ls[2];
@@ -759,12 +760,32 @@ void protfillin(node *p, node *left, node *rt)
           } else
               n += weight[m];
         }
-        qs[1] = 0;
-        qs[2] = 0;
-        for (i = 0; i <= 1; i++) {
-          for (aa = ala; (long)aa <= (long)stop; aa = (aas)((long)aa + 1)) {
-            if (((1L << ((long)aa)) & qs[i]) != 0)
-              qs[i+1] |= translate[(long)aa - (long)ala][1];
+        switch (i) {
+          case 1:
+            qs[1] = qs[0] | (ls[0] & rs[1]) | (ls[1] & rs[0]);
+            qs[2] = qs[1] | (ls[0] & rs[2]) | (ls[1] & rs[1]) | (ls[2] & rs[0]);
+            break;
+          case 2:
+            qs[1] = qs[0] | (ls[0] & rs[2]) | (ls[1] & rs[1]) | (ls[2] & rs[0]);
+            qs[2] = qs[1] | ls[0] | (ls[1] & rs[2]) | (ls[2] & rs[1]) | rs[0];
+            break;
+          case 3:
+            qs[1] = qs[0] | ls[0] | (ls[1] & rs[2]) | (ls[2] & rs[1]) | rs[0];
+            qs[2] = qs[1] | ls[1] | (ls[2] & rs[2]) | rs[1];
+            break;
+          case 4:
+            qs[1] = qs[0] | ls[1] | (ls[2] & rs[2]) | rs[1];
+            qs[2] = qs[1] | ls[2] | rs[2];
+            break;
+        }
+        for (aa = ala; (long)aa <= (long)stop; aa = (aas)((long)aa + 1)) {
+          done = false;
+          for (i = 0; (!done) && (i <= 1); i++) {
+            if (((1L << ((long)aa)) & qs[i]) != 0) {
+              for (j = i+1; j <= 2; j++)
+                qs[j] |= translate[(long)aa - (long)ala][j-i];
+              done = true;
+            }
           }
         }
       }
@@ -1064,7 +1085,7 @@ void tryrearr(node *p, boolean *success)
   protfillin(temp, temp1, p);
   protfillin(temp1, temp, whereto->back);
   evaluate(temp1);
-  if (like <= oldlike) {
+  if (like - oldlike < LIKE_EPSILON) {
     if (p == forknode->next->next->back) {
       q = forknode->next;
       forknode->next = forknode->next->next;
@@ -1206,8 +1227,6 @@ void prottreeread(char** treestr)
     do
       ch = *(*treestr)++;
     while (ch != ';');
-  if (progress)
-    printf("\n\n");
   free(names);
 }  /* prottreeread */
 
@@ -1602,7 +1621,7 @@ void maketree()
         }
         bestlike = bestyet;
         if (jumb == 1) {
-          bstlike2 = bestlike;
+          bstlike2 = bestlike = -30.0*spp*chars;
           nextree = 1;
         }
         do {
@@ -1685,6 +1704,7 @@ void maketree()
       describe();
       which++;
     }
+    printf("\n");
     FClose(intree);
     putc('\n', outfile);
     if (numtrees > 1 && chars > 1 )

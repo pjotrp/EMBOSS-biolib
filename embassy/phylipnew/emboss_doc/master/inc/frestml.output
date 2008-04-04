@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-Restriction site Maximum Likelihood method, version 3.6b
+Restriction site Maximum Likelihood method, version 3.67
 
 
   Recognition sequences all 6 bases long
@@ -17,29 +17,29 @@ Sites absent from all species are assumed to have been omitted
 
   +----Gamma     
   |  
-  |     +Epsilon   
-  |  +--3  
-  1--2  +Delta     
-  |  |  
   |  +Beta      
+  1--2  
+  |  |  +Epsilon   
+  |  +--3  
+  |     +Delta     
   |  
   +Alpha     
 
 
 remember: this is an unrooted tree!
 
-Ln Likelihood =   -40.34358
+Ln Likelihood =   -40.47082
 
  
  Between        And            Length      Approx. Confidence Limits
  -------        ---            ------      ------- ---------- ------
-   1          Gamma           0.10813     (  0.01154,     0.21901) **
-   1             2            0.01156     (     zero,     0.04578)
-   2             3            0.05885     (     zero,     0.12697) **
-   3          Epsilon         0.00100     (     zero,     0.00617)
-   3          Delta           0.01460     (     zero,     0.05036)
+   1          Gamma           0.10794     (  0.01144,     0.21872) **
+   1             2            0.01244     (     zero,     0.04712)
    2          Beta            0.00100     (     zero,    infinity)
-   1          Alpha           0.01310     (     zero,     0.04806)
+   2             3            0.05878     (     zero,     0.12675) **
+   3          Epsilon         0.00022     (     zero,    infinity)
+   3          Delta           0.01451     (     zero,     0.04459) **
+   1          Alpha           0.01244     (     zero,     0.04717)
 
      *  = significantly positive, P &lt; 0.05
      ** = significantly positive, P &lt; 0.01
@@ -50,7 +50,7 @@ Ln Likelihood =   -40.34358
 <p><h3>File: restml.treefile</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-(Gamma:0.10813,((Epsilon:0.00100,Delta:0.01460):0.05885,
-Beta:0.00100):0.01156,Alpha:0.01310);
+(Gamma:0.10794,(Beta:0.00100,(Epsilon:0.00022,
+Delta:0.01451):0.05878):0.01244,Alpha:0.01244);
 </pre>
 </td></tr></table><p>

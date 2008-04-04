@@ -17,7 +17,7 @@ section: input [
   tree: intreefile [
     parameter: "Y"
     knowntype: "newick"
-    information: "Phylip tree file"
+    information: "Phylip tree file (optional)"
     nullok: "N"
   ]
 

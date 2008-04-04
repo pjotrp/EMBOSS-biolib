@@ -3,7 +3,7 @@
 #include "disc.h"
 #include "dollo.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -37,6 +37,7 @@ void   describe(void);
 void   initdollopnode(node **, node **, node *, long, long, long *,
             long *, initops, pointarray, pointarray, Char *, Char *, char **);
 void   maketree(void);
+void   reallocchars(void);
 void   emboss_getoptions(char *pgm, int argc, char *argv[]);
 /* function prototypes */
 #endif
@@ -82,6 +83,7 @@ boolean lastrearr;
 double nsteps[maxuser];
 node *there;
 long fullset;
+long shimotrees;
 bitptr zeroanc, oneanc;
 long *place;
 Char ch;
@@ -202,7 +204,43 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 }  /* emboss_getoptions */
 
 
-void allocrest()
+void reallocchars(void)
+{
+  long i;
+  
+  free(extras);
+  free(weight);
+  free(threshwt);
+  free(numsteps);
+  free(ancone); 
+  free(anczero);
+  free(ancone0);
+  free(anczero0);
+  free(numsone); 
+  free(numszero);
+  free(guess); 
+  
+  if (usertree) {
+    for (i = 1; i <= maxuser; i++){
+      free(fsteps);
+      fsteps[i - 1] = (double *)Malloc(chars*sizeof(double));
+    }
+  }
+
+  extras = (steptr)Malloc(chars*sizeof(long));
+  weight = (steptr)Malloc(chars*sizeof(long));
+  threshwt = (double *)Malloc(chars*sizeof(double));
+  numsteps = (steptr)Malloc(chars*sizeof(long));
+  ancone = (boolean *)Malloc(chars*sizeof(boolean));
+  anczero = (boolean *)Malloc(chars*sizeof(boolean));
+  ancone0 = (boolean *)Malloc(chars*sizeof(boolean));
+  anczero0 = (boolean *)Malloc(chars*sizeof(boolean));
+  numsone = (steptr)Malloc(chars*sizeof(long));
+  numszero = (steptr)Malloc(chars*sizeof(long));
+  guess = (Char *)Malloc(chars*sizeof(Char));
+}
+
+void allocrest(void)
 {
   long i;
 
@@ -233,7 +271,7 @@ void allocrest()
 }  /* allocrest */
 
 
-void doinit()
+void doinit(void)
 {
   /* initializes variables */
 
@@ -247,7 +285,7 @@ void doinit()
 }  /* doinit */
 
 
-void inputoptions()
+void inputoptions(void)
 {
   /* input the information on the options */
   long i;
@@ -262,8 +300,10 @@ void inputoptions()
       inputweightsstr(phyloweights->Str[0], chars, weight, &weights);      
   }
   else {
-      if (!firstset)
+      if (!firstset) {
           samenumspstate(phylostates[ith-1], &chars, ith);
+          reallocchars();
+      }
       for (i = 0; i < (chars); i++)
           weight[i] = 1;
       if (ancvar)
@@ -292,7 +332,7 @@ void inputoptions()
 }  /* inputoptions */
 
 
-void doinput()
+void doinput(void)
 {
   /* reads the input data */
   inputoptions();
@@ -545,7 +585,7 @@ void tryrearr(node *p, node **r, boolean *success)
   re_move(&p, &forknode, &root, treenode);
   add(whereto, p, forknode, &root, treenode);
   evaluate(*r);
-  if (like <= oldlike) {
+  if (oldlike - like < LIKE_EPSILON) {
     re_move(&p, &forknode, &root, treenode);
     add(frombelow, p, forknode, &root, treenode);
   } else {
@@ -791,7 +831,7 @@ void maketree()
       treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
-                &grbg, initdollopnode); /*debug*/
+                &grbg, initdollopnode,false,nonodes);
 
       for (i = spp; i < (nonodes); i++) {
         p = treenode[i];
@@ -887,4 +927,3 @@ int main(int argc, Char *argv[])
   embExit();
   return 0;
 }  /* Dollo or polymorphism parsimony by uphill search */
-

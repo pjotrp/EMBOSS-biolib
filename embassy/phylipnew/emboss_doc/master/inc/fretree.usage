@@ -8,7 +8,7 @@
 Interactive tree rearrangement
 Number of species [0]: <b>10</b>
 Phylip tree file: <b>retree.dat</b>
-PHYLIP tree output file [retree.treefile]: <b></b>
+Phylip tree output file [retree.treefile]: <b></b>
 NEXT? (R . U W O T F D B N H J K L C + ? X Q) (? for Help): <b>Q</b>
 Do you want to write out the tree to a file? (Y or N): <b>Y</b>
 Enter R if the tree is to be rooted, OR enter U if the tree is to be unrooted: <b>U</b>

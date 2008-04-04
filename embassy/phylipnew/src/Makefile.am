@@ -49,7 +49,7 @@ fdnacomp_SOURCES = dnacomp.c seq.c phylip.c
 fdnadist_SOURCES = dnadist.c seq.c phylip.c
 fdnainvar_SOURCES = dnainvar.c seq.c phylip.c
 fdnaml_SOURCES = dnaml.c seq.c phylip.c
-fdnamlk_SOURCES = dnamlk.c  seq.c phylip.c
+fdnamlk_SOURCES = dnamlk.c seq.c phylip.c printree.c mlclock.c
 fdnamove_SOURCES = dnamove.c moves.c seq.c phylip.c
 fdnapenny_SOURCES = dnapenny.c seq.c phylip.c
 fdnapars_SOURCES = dnapars.c seq.c phylip.c
@@ -72,7 +72,7 @@ fpars_SOURCES = pars.c discrete.c phylip.c
 fpenny_SOURCES = penny.c disc.c wagner.c phylip.c
 
 fproml_SOURCES = proml.c seq.c phylip.c
-fpromlk_SOURCES = promlk.c seq.c phylip.c
+fpromlk_SOURCES = promlk.c seq.c phylip.c printree.c mlclock.c
 fprotdist_SOURCES = protdist.c seq.c phylip.c
 fprotpars_SOURCES = protpars.c seq.c phylip.c
 

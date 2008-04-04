@@ -6,7 +6,7 @@
 </tr>
 
 <tr>
-<td>[-infile]<br>(Parameter 1)</td>
+<td>[-infilesequences]<br>(Parameter 1)</td>
 <td>(Aligned) sequence set filename and optional format, or reference (input USA)</td>
 <td>Readable set of sequences</td>
 <td><b>Required</b></td>

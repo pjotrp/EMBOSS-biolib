@@ -61,7 +61,7 @@ Usage
 
 % fmix 
 Mixed parsimony algorithm
-hylip character discrete states file: mix.dat
+Phylip character discrete states file: mix.dat
 Phylip tree file (optional): 
 Phylip mix program output file [mix.fmix]: 
 
@@ -90,7 +90,7 @@ Trees also written onto file "mix.treefile"
 
 % fmix -printdata -ancfile mixancfile.dat 
 Mixed parsimony algorithm
-hylip character discrete states file: mix.dat
+Phylip character discrete states file: mix.dat
 Phylip tree file (optional): 
 Phylip mix program output file [mix.fmix]: 
 
@@ -351,7 +351,7 @@ Output file format
   File: mix.fmix
 
 
-Mixed parsimony algorithm, version 3.6b
+Mixed parsimony algorithm, version 3.67
 
 Wagner parsimony method
 
@@ -448,7 +448,7 @@ requires a total of      9.000
   File: mix.fmix
 
 
-Mixed parsimony algorithm, version 3.6b
+Mixed parsimony algorithm, version 3.67
 
 5 species, 6 characters
 

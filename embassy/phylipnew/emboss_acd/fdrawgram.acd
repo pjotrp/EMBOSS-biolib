@@ -12,6 +12,7 @@ section: input [
 ]
 
   string: fontfile [
+    default: "font2"
     information: "Fontfile name"
     knowntype: "phylip font"
   ]

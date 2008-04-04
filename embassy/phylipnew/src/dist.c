@@ -1,15 +1,19 @@
 #include "phylip.h"
 #include "dist.h"
 
-/* version 3.6. (c) Copyright 1993-2000 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
 void alloctree(pointptr *treenode, long nonodes)
 {
-  /* allocate treenode dynamically */
-  /* used in fitch, kitsch & neighbor */
+  /* allocate spp tips and (nonodes - spp) forks, each containing three
+   * nodes. Fill in treenode where 0..spp-1 are pointers to tip nodes, and
+   * spp..nonodes-1 are pointers to one node in each fork. */
+
+  /* used in fitch, kitsch, neighbor */
+
   long i, j;
   node *p, *q;
 
@@ -218,7 +222,6 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax,
   /* establishes coordinates of nodes */
   node *q, *first, *last;
 
-  /*printf("coordinates lengthsum: %f\n", lengthsum);*/
   if (p->tip) {
     p->xcoord = (long)(over * lengthsum + 0.5);
     p->ycoord = *tipy;
@@ -230,11 +233,9 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax,
     return;
   }
   q = p->next;
-   do {
-     /*if (q->back)
-       printf("Calling coordinates q->v %f\n", q->v);*/
-     if (q->back)
-       coordinates(q->back, lengthsum + q->v, tipy,tipmax, start, njoin);
+  do {
+    if (q->back)
+      coordinates(q->back, lengthsum + q->v, tipy,tipmax, start, njoin);
     q = q->next;
   } while ((p == start || p != q) && (p != start || p->next != q));
   first = p->next->back;
@@ -243,12 +244,9 @@ void coordinates(node *p, double lengthsum, long *tipy, double *tipmax,
     q = q->next;
   last = q->back;
   p->xcoord = (long)(over * lengthsum + 0.5);
-  if (p == start) {
-    if (njoin)
-      p->ycoord = p->next->next->back->ycoord;
-    else
-      p->ycoord = (p->next->back->ycoord + p->next->next->back->ycoord) / 2;
-  } else
+  if (p == start && p->back) 
+    p->ycoord = p->next->next->back->ycoord;
+  else
     p->ycoord = (first->ycoord + last->ycoord) / 2;
   p->ymin = first->ymin;
   p->ymax = last->ymax;

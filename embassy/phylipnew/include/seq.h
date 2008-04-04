@@ -5,13 +5,11 @@
 
 /*
     seq.h:  included in dnacomp, dnadist, dnainvar, dnaml, dnamlk, dnamove,
-            dnapars, dnapenny, protdist, protpars, & restml
+            dnapars, dnapenny, protdist, protpars, restdist & restml
 */
 
-#define maxcutter       8    /* maximum number of bases in a site in restml */
-
-/* move */
-/* All the below moved here in the Great TreeRead Migration of '96 */
+#ifndef SEQ_H
+#define SEQ_H
 
 #define ebcdic          EBCDIC
 #define MAXNCH          20
@@ -29,10 +27,6 @@
 #define FULL_MATRIX       11
 #define VERBOSE           22
 #define SPARSE            33
-
-/* Used in proml, promlk, dnaml, dnamlk for undefined bestyet*/
-#define UNDEFINED 1.0
-
 
 /* Number of columns per block in a matrix output */
 #define COLUMNS_PER_BLOCK 10
@@ -80,9 +74,8 @@ void   allocx(long, long, pointarray, boolean);
 void   prot_allocx(long, long, pointarray, boolean);
 void   allocx2(long, long, long, pointarray, boolean);
 void   setuptree(pointarray, long, boolean);
-void   setuptree2(tree);
+void   setuptree2(tree *);
 void   alloctip(node *, long *);
-void   alloctrans(transptr *, long, long);
 void   freetrans(transptr *, long ,long );
 void   getbasefreqs(double, double, double, double, double *, double *,
                         double *, double *, double *, double *, double *,
@@ -184,6 +177,7 @@ void   printree(node *, double);
 void   writesteps(long, boolean, steptr, node *);
 void   treeout(node *, long, long *, node *);
 void   treeout3(node *, long, long *, node *);
+void   fdrawline2(FILE *fp, long i, double scale, tree *curtree);
 void   drawline2(long, double, tree);
 void   drawline3(long, double, node *);
 void   copynode(node *, node *, long);
@@ -219,6 +213,9 @@ void   emboss_treeout3(node *, AjPOutfile, long, long *, node *);
 void   collapsetree(node *, node *, node **, pointarray, long *);
 void   collapsebestrees(node **, node **, pointarray, bestelm *, long *,
                       long *, long, boolean, boolean);
+void   fix_x(node* p,long site, double maxx, long rcategs);
+void   fix_protx(node* p,long site,double maxx, long rcategs);
 /*function prototypes*/
 #endif
 
+#endif /* SEQ_H */

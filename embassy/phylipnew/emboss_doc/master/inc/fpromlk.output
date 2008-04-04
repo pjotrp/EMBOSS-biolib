@@ -6,7 +6,7 @@
 <pre>
 
 Amino acid sequence
-   Maximum Likelihood method with molecular clock, version 3.6b
+   Maximum Likelihood method with molecular clock, version 3.67
 
 Jones-Taylor-Thornton model of amino acid change
 
@@ -14,30 +14,30 @@ Jones-Taylor-Thornton model of amino acid change
 
 
 
-                                         +-----------Epsilon   
-  +--------------------------------------4  
-  !                                      +-----------Delta     
+                                          +-----------Epsilon   
+  +---------------------------------------4  
+  !                                       +-----------Delta     
 --3  
-  !                     +----------------------------Gamma     
-  +---------------------2  
-                        !                   +--------Beta      
-                        +-------------------1  
-                                            +--------Alpha     
+  !                      +----------------------------Gamma     
+  +----------------------2  
+                         !                   +--------Beta      
+                         +-------------------1  
+                                             +--------Alpha     
 
 
-Ln Likelihood =  -134.75201
+Ln Likelihood =  -134.70332
 
  Ancestor      Node      Node Height     Length
  --------      ----      ---- ------     ------
  root            3      
-   3             4          0.66099      0.66099
-   4          Epsilon       0.85359      0.19260
-   4          Delta         0.85359      0.19260
-   3             2          0.36919      0.36919
-   2          Gamma         0.85359      0.48440
-   2             1          0.69651      0.32732
-   1          Beta          0.85359      0.15708
-   1          Alpha         0.85359      0.15708
+   3             4          0.66464      0.66464
+   4          Epsilon       0.85971      0.19507
+   4          Delta         0.85971      0.19507
+   3             2          0.37420      0.37420
+   2          Gamma         0.85971      0.48551
+   2             1          0.70208      0.32788
+   1          Beta          0.85971      0.15763
+   1          Alpha         0.85971      0.15763
 
 
 
@@ -47,7 +47,7 @@ Ln Likelihood =  -134.75201
 <p><h3>File: promlk.treefile</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-((Epsilon:0.19260,Delta:0.19260):0.66099,(Gamma:0.48440,
-(Beta:0.15708,Alpha:0.15708):0.32732):0.36919);
+((Epsilon:0.19507,Delta:0.19507):0.66464,(Gamma:0.48551,
+(Beta:0.15763,Alpha:0.15763):0.32788):0.37420);
 </pre>
 </td></tr></table><p>

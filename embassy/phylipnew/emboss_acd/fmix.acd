@@ -14,7 +14,7 @@ section: input [
     characters: "01PB?"
     help: "File containing one or more data sets"
     knowntype: "discrete characters"
-    information: "hylip character discrete states file"
+    information: "Phylip character discrete states file"
   ]
 
   tree: intreefile [

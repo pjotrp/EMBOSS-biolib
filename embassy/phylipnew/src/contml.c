@@ -1,10 +1,12 @@
-#include "phylip.h"
-#include "cont.h"
-
 /* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
+
+#include <float.h>
+
+#include "phylip.h"
+#include "cont.h"
 
 
 #define epsilon1        0.000001   /* small number */
@@ -161,8 +163,6 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     fprintf(outfile, "\nContinuous character Maximum Likelihood");
     fprintf(outfile, " method version %s\n\n",VERSION);
 
-    printf("all: %s\n",(all ? "true":"false"));
-
     ajStrDel(&datatype);
 }  /* emboss_getoptions */
 
@@ -227,7 +227,7 @@ void getalleles()
         fprintf(outfile, "%4ld", alleles[i - 1]);
     }
     locus = (long *)Malloc(totalleles*sizeof(long));
-    m=0;
+    m = 0;
     for (i = 1; i <= loci; i++) {
       for (j = 0; j < alleles[i - 1]; j++)
         locus[m+j] = i;
@@ -246,7 +246,7 @@ void getalleles()
     x[i] = (phenotype3)Malloc(totalleles*sizeof(double));
   pbar = (double *)Malloc(totalleles*sizeof(double));
   if (usertree)
-    for (i = 0; i < MAXSHIMOTREES ; i++)
+    for (i = 0; i < MAXSHIMOTREES; i++)
       l0gf[i] = (double *)Malloc(totalleles*sizeof(double));
   if (printdata)
     putc('\n', outfile);
@@ -255,7 +255,7 @@ void getalleles()
 
 void inputdata()
 { /* read species data */
-  long i, j, k, l, m, n, p;
+  long i, j, k, l, m, m0, n, p;
   double sum;
   ajint ipos = 0;
 
@@ -302,6 +302,7 @@ void inputdata()
     m = 1;
     p = 1;
     for (j = 1; j <= loci; j++) {
+      m0 = m;
       sum = 0.0;
       if (contchars)
         n = 1;
@@ -334,9 +335,9 @@ void inputdata()
       "\n\nERROR: Locus %ld in species %ld: frequencies do not add up to 1\n",
                   j, i + 1);
           printf("\nFrequencies are:\n");
-          for (l = 0; l <= m-3; l++)
-            printf("%lf+", x[i][l]);
-          printf("%lf = %lf\n\n", x[i][m-2], sum);
+          for (l = m0; l <= m-3; l++)
+            printf("%f+", x[i][l]);
+          printf("%f = %f\n\n", x[i][m-2], sum);
           exxit(-1);
         } else {
           for (l = 0; l <= m-2; l++)
@@ -354,9 +355,9 @@ void inputdata()
             printf("\n\nERROR: Locus %ld in species %ld: ", j, i + 1);
             printf("frequencies add up to more than 1\n");
             printf("\nFrequencies are:\n");
-            for (l = 0; l <= m-3; l++)
-              printf("%lf+", x[i][l]);
-            printf("%lf = %lf\n\n", x[i][m-2], sum);
+            for (l = m0-1; l <= m-3; l++)
+              printf("%f+", x[i][l]);
+            printf("%f = %f\n\n", x[i][m-2], sum);
             exxit(-1);
           }
         }
@@ -399,11 +400,11 @@ void transformgfs()
       if ((pbar[j]*x[i][j]) >= 0.0)
         sumprod[locus[j]-1] += sqrtp[j]*sqrt(x[i][j]);
     for (j = 0; j < totalleles; j++) { /* the projection to tangent plane */
-      f = 1.0 + sumprod[locus[j]-1];
+        f = (1.0 + sumprod[locus[j]-1])/2.0;
       if (x[i][j] == 0.0)
         x[i][j] = (2.0/f - 1.0)*sqrtp[j];
       else
-        x[i][j] = (2.0/f)*sqrt(x[i][j]) + (2.0/f - 1.0)*sqrtp[j];
+        x[i][j] = (1.0/f)*sqrt(x[i][j]) + (1.0/f - 1.0)*sqrtp[j];
     }
   }
   maxalleles = 0;
@@ -421,8 +422,8 @@ void transformgfs()
         sum = 0.0;
         for (n = 0; n <= l; n++)
           sum += c[k][n]*c[l][n];
-        if (fabs(c[k-1][l]) > 0.000000001) /* ... orthogonal to those ones */
-          c[k][l+1] = -sum / c[k-1][l];
+        if (fabs(c[l][l+1]) > 0.000000001) /* ... orthogonal to those ones */
+          c[k][l+1] = -sum / c[l][l+1];    /* set coeff to make orthogonal */
         else
           c[k][l+1] = 1.0;
       }
@@ -431,12 +432,16 @@ void transformgfs()
         sum += c[k][l]*sqrtp[m+l];
       if (sqrtp[m+k+1] > 0.0000000001)
         c[k][k+1] = - sum / sqrtp[m+k+1];
-      else
-        c[k][k+1] = 0.0;
+      else {
+        for (l = 0; l <= k; l++)
+          c[k][l] = 0.0;
+        c[k][k+1] = 1.0;
+      }
       sum = 0.0;
       for (l = 0; l <= k+1; l++)
         sum += c[k][l]*c[k][l];
-      for (l = 0; l <= k; l++)      /* normalize so orthonormal */
+      sum = sqrt(sum);
+      for (l = 0; l <= k+1; l++)
         if (sum > 0.0000000001)
           c[k][l] /= sum;
     }
@@ -1119,7 +1124,7 @@ void treeout(node *p)
   if (p == curtree.start)
     fprintf(outtree, ";\n");
   else {
-    fprintf(outtree, ":%*.5f", (int)w + 7, x);
+    fprintf(outtree, ":%*.8f", (int)w + 7, x);
     col += w + 8;
   }
 }  /* treeout */
@@ -1138,11 +1143,11 @@ void describe(node *p, double chilow, double chihigh)
       putc(nayme[p->index - 1][i], outfile);
   } else
     fprintf(outfile, "%4ld      ", p->index - spp);
-  fprintf(outfile, "%15.5f", q->v);
+  fprintf(outfile, "%15.8f", q->v);
   delta = p->deltav + p->back->deltav;
   bigv = p->v + delta;
   if (p->iter)
-     fprintf(outfile, "   (%12.5f,%12.5f)",
+     fprintf(outfile, "   (%12.8f,%12.8f)",
              chilow * bigv - delta, chihigh * bigv - delta);
   fprintf(outfile, "\n");
   if (!p->tip) {
@@ -1216,11 +1221,16 @@ void nodeinit(node *p)
 
 void initrav(node *p)
 { /* traverse to initialize */
+  node* q; 
+
   if (p->tip)
     nodeinit(p->back);
   else {
-    initrav(p->next->back);
-    initrav(p->next->next->back);
+    q = p->next;
+    while ( q != p)  {
+      initrav(q->back);
+      q = q->next;
+    }
   }
 }  /* initrav */
 
@@ -1262,7 +1272,7 @@ void maketree()
     while (which <= numtrees) {
       treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
       treeread2 (&treestr, &curtree.start, curtree.nodep,
-        lengths, &trweight, &goteof, &haslengths, &spp);
+        lengths, &trweight, &goteof, &haslengths, &spp,false,nonodes2);
       curtree.start = curtree.nodep[outgrno - 1]->back;
       treevaluate();
       printree();
@@ -1278,7 +1288,7 @@ void maketree()
       free(weight);
       fprintf(outfile, "\n\n");
     }
-  } else {
+  } else { /* if ( !usertree ) */
     if (jumb == 1) {
       setuptree(&curtree, nonodes2);
       setuptree(&priortree, nonodes2);
@@ -1305,7 +1315,7 @@ void maketree()
     while (nextsp <= spp) {
       buildnewtip(enterorder[nextsp - 1], &curtree, nextsp);
       copy_(&curtree, &priortree);
-      bestree.likelihood = -99999.0;
+      bestree.likelihood = -DBL_MAX;
       addtraverse(curtree.nodep[enterorder[nextsp - 1] - 1]->back,
                   curtree.start, true );
       copy_(&bestree, &curtree);

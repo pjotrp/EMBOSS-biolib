@@ -74,7 +74,8 @@
                                   0.001 or more)
 
    Advanced (Unprompted) qualifiers:
-   -fontfile           string     Fontfile name (Any string is accepted)
+   -fontfile           string     [font2] Fontfile name (Any string is
+                                  accepted)
 
    Associated qualifiers:
 

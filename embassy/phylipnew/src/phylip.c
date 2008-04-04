@@ -7,14 +7,18 @@
 
 #ifdef OSX_CARBON
 #include <Carbon/Carbon.h>
-#endif
+#endif /* OSX_CARBON */
 
 #include <stdio.h>
 #include <signal.h>
+
+#include "phylip.h"
+
 #ifdef WIN32
 #include <windows.h>
 /* for console code (clear screen, text color settings) */
-CONSOLE_SCREEN_BUFFER_INFO savecsbi;
+CONSOLE_SCREEN_BUFFER_INFO      savecsbi;
+boolean savecsbi_valid = false;
 HANDLE hConsoleOutput;
 
 void phyClearScreen();
@@ -24,15 +28,14 @@ void phyRestoreConsoleAttributes();
 void phyFillScreenColor();
 #endif
 
-#include "phylip.h"
-
 static void emboss_printtreenode(node *p, node* root);
 long countsemic(char *treestr);
 
 #if defined(OSX_CARBON) && defined(__MWERKS__)
 boolean fixedpath = false;
-#endif
-FILE *infile, *outfile, *intree, *intree2, *outtree, *weightfile, *catfile, *ancfile, *mixfile, *factfile;
+#endif /* WIN32 */
+
+FILE *outfile, *infile, *intree, *intree2, *outtree, *weightfile, *catfile, *ancfile, *mixfile, *factfile;
 AjPFile embossinfile;
 AjPFile embossoutfile;
 AjPFile embossintree;
@@ -49,10 +52,10 @@ naym *nayme;                     /* names of species */
 
 void init(int argc, char** argv) 
 { /* initialization routine for all programs 
-   * anything done at the beginig for every program should be done here */ 
+   * anything done at the beginning for every program should be done here */ 
  
   /* set up signal handler for 
-   * segfault,floating point exception, illegal instruction, bad pipe, bus error
+   * segfault, floating point exception, illegal instruction, bad pipe, bus error
    * there are more signals that can cause a crash, but these are the most common
    * even these aren't found on all machines.  */
 }
@@ -83,15 +86,28 @@ const char* get_command_name (const char *vektor)
     /* If not, return the vector */
     return vektor;
 
-}  /*get_command_name*/
+}  /* get_command_name */
+
+
+void EOF_error()
+{ /* Print a message and exit when EOF is reached prematurely. */
+  puts("\n\nERROR: Unexpected end-of-file.\n");
+  exxit(-1);
+}  /* EOF_error */
 
 
 void getstryng(char *fname)
 { /* read in a file name from stdin and take off newline if any */
+  char *end;
 
+  fflush(stdout);
   fname = fgets(fname, 100, stdin);
-  if (strchr(fname, '\n') != NULL)
-    *strchr(fname, '\n') = '\0';
+  if ( fname == NULL )
+    EOF_error();
+
+  if ( (end = strpbrk(fname, "\n\r")) != NULL)
+    *end = '\0';
+    
 } /* getstryng */
 
 
@@ -154,7 +170,7 @@ double randum(longer seed)
   mult[3] = 6;    /*                         +22*64+6         */
   for (i = 0; i <= 5; i++)
     newseed[i] = 0;
-  for (i = 0; i <= 5; i++) {
+  for (i = 0; i <= 5; i++) {  /* do the multiplication piecewise */
     sum = newseed[i];
     k = i;
     if (i > 3)
@@ -167,8 +183,8 @@ double randum(longer seed)
       newseed[j] &= 63;
     }
   }
-  memcpy(seed, newseed, sizeof(longer));
-  seed[5] &= 3;
+  memcpy(seed, newseed, sizeof(longer));        /* new seed replaces old one */
+  seed[5] &= 3;          /* from the new seed, get a floating point fraction */
   x = 0.0;
   for (i = 0; i <= 5; i++)
     x = x / 64.0 + seed[i];
@@ -178,7 +194,7 @@ double randum(longer seed)
 
 
 void randumize(longer seed, long *enterorder)
-{ /* randomize input order of species */
+{ /* randomize input order of species -- randomly permute array enterorder */
   long i, j, k;
 
   for (i = 0; i < spp; i++) {
@@ -209,10 +225,10 @@ void uppercase(Char *ch)
 
 /* @func emboss_initseed ******************************************************
 **
-** Given a random numebr seed (inseed)
+** Given a random number seed (inseed)
 **
 ** Increments it until it gives a remainder of 1 when divided by 4
-** and returns the reulting corrected sees as *inseed0
+** and returns the resulting corrected seed as *inseed0
 **
 ** Also returns an array of 6 seed values in seed array
 **
@@ -340,7 +356,7 @@ void lgr(long m, double b, raterootarray lgroot)
         x = lgroot[m-1][m-1];
         do {
           x = 2.0*x;
-          y = glaguerre(m, b,x);
+          y = glaguerre(m, b, x);
         } while ((dwn && (y > 0.0)) || ((!dwn) && (y < 0.0)));
         upper = x;
       }
@@ -405,7 +421,7 @@ double logfac (long n)
         x += log(i);
       return x;
     }
-}
+} /* logfac */
 
                         
 double glaguerre(long m, double b, double x)
@@ -492,7 +508,7 @@ void root_hermite(long n, double *hroot)
     hroot[start-1] = 0.0;
   }
   for (ii = start; ii < n; ii++) {         /* search only upwards*/
-    hroot[ii] = halfroot(hermite,n,hroot[ii-1]+EPSILON, 1./n);
+    hroot[ii] = halfroot(hermite, n, hroot[ii-1]+EPSILON, 1./n);
     hroot[start - z] = -hroot[ii];
     z++;
   }
@@ -513,7 +529,7 @@ double halfroot(double (*func)(long m, double x), long n, double startx,
   double fl;
   double fm = 100000.;
   double gradient;
-  boolean dwn = 0;
+  boolean dwn = false;
 
   /* decide if we search above or below startx and escapes to trace back
      to the starting point that most often will be
@@ -610,17 +626,21 @@ void initgammacat (long categs, double alpha, double *rate, double *probcat)
 } /* initgammacat */
 
 
-void inithowmany(long *howmany, long howoften)
+void inithowmany(long *howmanny, long howoften)
 {/* input how many cycles */
   long loopcount;
 
   loopcount = 0;
-  do { 
+  for (;;) {
     printf("How many cycles of %4ld trees?\n", howoften);
-    scanf("%ld%*[^\n]", howmany);
-    getchar();
+    fflush(stdout);
+    if (scanf("%ld%*[^\n]", howmanny) == 1) {
+      getchar();
+      if (*howmanny >= 1)
+        break;
+    }
     countup(&loopcount, 10);
-  } while (*howmany <= 0);
+  }
 }  /*inithowmany*/
 
 
@@ -630,12 +650,16 @@ void inithowoften(long *howoften)
   long loopcount;
 
   loopcount = 0;
-  do {
+  for (;;) {
     printf("How many trees per cycle?\n");
-    scanf("%ld%*[^\n]", howoften);
-    getchar();
+    fflush(stdout);
+    if (scanf("%ld%*[^\n]", howoften) == 1) {
+      getchar();
+      if (*howoften >= 1)
+        break;
+    }
     countup(&loopcount, 10);
-  } while (*howoften <= 0);
+  }
 }  /*inithowoften*/
 
 
@@ -644,14 +668,18 @@ void initlambda(double *lambda)
   long loopcount;
 
   loopcount = 0;
-  do {
+  for (;;) {
     printf("Mean block length of sites having the same rate (greater than 1)?\n");
-    scanf("%lf%*[^\n]", lambda);
-    getchar();
+    fflush(stdout);
+    if (scanf("%lf%*[^\n]", lambda) == 1) {
+      getchar();
+      if (*lambda > 1.0)
+        break;
+    }
     countup(&loopcount, 10);
-  } while (*lambda <= 1.0);
+  }
   *lambda = 1.0 / *lambda;
-}  /*initlambda*/
+}  /* initlambda */
 
 
 void initfreqs(double *freqa, double *freqc, double *freqg, double *freqt)
@@ -662,6 +690,7 @@ void initfreqs(double *freqa, double *freqc, double *freqg, double *freqt)
   printf("Base frequencies for A, C, G, T/U (use blanks to separate)?\n");
   loopcount = 0;
   do {
+    fflush(stdout);
     getstryng(input);
     scanned = sscanf(input,"%lf%lf%lf%lf%*[^\n]", freqa, freqc, freqg, freqt);
     if (scanned == 4)
@@ -678,39 +707,52 @@ void initratio(double *ttratio)
   long loopcount;
 
   loopcount = 0;
-  do {
+  for (;;) {
     printf("Transition/transversion ratio?\n");
-    scanf("%lf%*[^\n]", ttratio);
-    getchar();
+    fflush(stdout);
+    if (scanf("%lf%*[^\n]", ttratio) == 1) {
+      getchar();
+      if (*ttratio >= 0.0)
+        break;
+      else
+        printf("Transition/transversion ratio cannot be negative.\n");
+    }
     countup(&loopcount, 10);
-  } while (*ttratio < 0.0);
+  }
 }  /* initratio */
 
 
 void initpower(double *power)
 {
-  printf("New power?\n");
-  scanf("%lf%*[^\n]", power);
-  getchar();
-}  /*initpower*/
+  for (;;) {
+    printf("New power?\n");
+    fflush(stdout);
+    if (scanf("%lf%*[^\n]", power) == 1) {
+      getchar();
+      break;
+    }
+  }
+}  /* initpower */
 
 
 void initdatasets(long *datasets)
 {
   /* handle multi-data set option */
   long loopcount;
-  boolean done;
 
   loopcount = 0;
-  do {
+  for (;;) {
     printf("How many data sets?\n");
-    scanf("%ld%*[^\n]", datasets);
-    getchar();
-    done = (*datasets > 1);
-      if (!done)
-     printf("Bad data sets number:  it must be greater than 1\n");
+    fflush(stdout);
+    if (scanf("%ld%*[^\n]", datasets) == 1) {
+      getchar();
+      if (*datasets > 1)
+        break;
+      else
+        printf("Bad data sets number:  it must be greater than 1\n");
+    }
     countup(&loopcount, 10);
-  } while (!done);
+  }
 } /* initdatasets */
 
 
@@ -718,18 +760,20 @@ void justweights(long *datasets)
 {
   /* handle multi-data set option by weights */
   long loopcount;
-  boolean done;
 
   loopcount = 0;
-  do {
+  for (;;) {
     printf("How many sets of weights?\n");
-    scanf("%ld%*[^\n]", datasets);
-    getchar();
-    done = (*datasets >= 1);
-      if (!done)
-     printf("BAD NUMBER:  it must be greater than 1\n");
+    fflush(stdout);
+    if (scanf("%ld%*[^\n]", datasets) == 1) {
+      getchar();
+      if (*datasets >= 1)
+        break;
+      else 
+        printf("BAD NUMBER:  it must be greater than 1\n");
+    }
     countup(&loopcount, 10);
-  } while (!done);
+  }
 } /* justweights */
 
 
@@ -797,7 +841,7 @@ void inputnumbersfreq(AjPPhyloFreq freq,
 {
     *spp = freq->Size;
     *chars = freq->Loci;
-  *nonodes = *spp * 2 - n;
+    *nonodes = *spp * 2 - n;
 }
 
 void inputnumbersstate(AjPPhyloState state,
@@ -923,7 +967,7 @@ void printweights(FILE *filename, long inc, long chars,
   for (i = 0; i < chars; i++)
     if (weight[i] > 9)
       letterweights = true;
-  fprintf(filename, "\n    %s are weighted as follows:",letters);
+  fprintf(filename, "\n    %s are weighted as follows:", letters);
   if (letterweights)
     fprintf(filename, " (A = 10, B = 11, etc.)\n");
   else
@@ -946,7 +990,7 @@ void printweights(FILE *filename, long inc, long chars,
 
 
 void inputcategsstr(AjPStr str, long a, long b,
-		    steptr category, long categs,const char *prog)
+		    steptr category, long categs, const char *prog)
 {
   /* input the categories, 1-9 */
   Char ch;
@@ -965,7 +1009,7 @@ void printcategs(FILE *filename, long chars, steptr category,
   /* print out the sitewise categories */
   long i, j;
 
-  fprintf(filename, "\n    %s are:\n",letters);
+  fprintf(filename, "\n    %s are:\n", letters);
   for (i = 0; i < chars; i++) {
     if (i % 60 == 0) {
       putc('\n', filename);
@@ -1127,7 +1171,8 @@ void initnamefreq(AjPPhyloFreq freq, long i)
   }
 } /* initnamefreq */
 
-void findtree(boolean *found,long *pos,long nextree,long *place,bestelm *bestrees)
+void findtree(boolean *found, long *pos, long nextree, long *place,
+              bestelm *bestrees)
 {
   /* finds tree given by array place in array bestrees by binary search */
   /* used by dnacomp, dnapars, dollop, mix, & protpars */
@@ -1163,7 +1208,8 @@ void findtree(boolean *found,long *pos,long nextree,long *place,bestelm *bestree
 }  /* findtree */
 
 
-void addtree(long pos,long *nextree,boolean collapse,long *place,bestelm *bestrees)
+void addtree(long pos, long *nextree, boolean collapse, long *place,
+             bestelm *bestrees)
 {
   /* puts tree from array place in its proper position in array bestrees */
   /* used by dnacomp, dnapars, dollop, mix, & protpars */
@@ -1179,7 +1225,7 @@ void addtree(long pos,long *nextree,boolean collapse,long *place,bestelm *bestre
   }
   for (i = 0; i < spp; i++)
     bestrees[pos - 1].btree[i] = place[i];
-    bestrees[pos - 1].collapse = collapse;
+  bestrees[pos - 1].collapse = collapse;
   (*nextree)++;
 }  /* addtree */
 
@@ -1292,6 +1338,11 @@ void processlength(double *valyew, double *divisor, Char *ch,
   *divisor = 1.0;
   sgetch(ch, parens, treestr);
   digit = (long)(*ch - ordzero);
+  if ( ((digit <= 9) && (digit >= 0)) || *ch == '.' || *ch == '-') ;
+  else {
+    /* fprintf(stdout,"! ? !");   */
+    /* fprintf(outfile,"! ? !");  */
+     }
   while ( ((digit <= 9) && (digit >= 0)) || *ch == '.' || *ch == '-') {
     if (*ch == '.' )
       pointread = true;
@@ -1340,7 +1391,7 @@ void odd_malloc(long x)
   printf (" (perhaps it was not saved as Text Only),\n");
   printf ("       2.  There is a bug in the program.\n");
   printf ("       Please check your input file carefully.\n");
-  printf ("       If it seems to be a bug, please mail joe@gs.washington.edu\n");
+  printf ("       If it seems to be a bug, please mail joe (at) gs.washington.edu\n");
   printf ("       with the name of the program, your computer system type,\n");
   printf ("       a full description of the problem, and with the input data file.\n");
   printf ("       (which should be in the body of the message, not as an Attachment).\n");
@@ -1359,7 +1410,7 @@ MALLOCRETURN *mymalloc(long x)
       (x > TOO_MUCH_MEMORY))
     odd_malloc(x);
 
-  new_block = (MALLOCRETURN *)calloc(1,x);
+  new_block = (MALLOCRETURN *)calloc(1, x);
 
   if (!new_block) {
     memerror();
@@ -1391,7 +1442,8 @@ void gnu(node **grbg, node **p)
 
 
 void chuck(node **grbg, node *p)
-{ /* collect garbage on p -- put it on front of garbage list */
+{
+  /* collect garbage on p -- put it on front of garbage list */
   p->back = NULL;
   p->next = *grbg;
   *grbg = p;
@@ -1520,15 +1572,6 @@ void gnudisctreenode(node **grbg, node **p, long i,
 }  /* gnudisctreenode */
 
 
-void chucktreenode(node **grbg, node *p)
-{ /* collect garbage on p -- put it on front of garbage list */
-
-  p->back = NULL;
-  p->next = *grbg;
-  *grbg = p;
-}  /* chucktreenode */
-
-
 void setupnode(node *p, long i)
 { /* initialization of node pointers, variables */
 
@@ -1538,6 +1581,12 @@ void setupnode(node *p, long i)
   p->index = i;
   p->tip = false;
 }  /* setupnode */
+
+
+node *pnode(tree *t, node *p) {
+  /* Get the "parent nodelet" of p's node group */
+  return t->nodep[p->index - 1];
+}
 
 
 long count_sibs (node *p)
@@ -1612,12 +1661,16 @@ long countcomma(char *treestr, long *comma)
 {
   /* Modified by Dan F. 11/10/96 */ 
 
+/* countcomma rewritten so it passes back both lparen+comma to allocate nodep
+   and a pointer to the comma variable.  This allows the tree to know how many
+   species exist, and the tips to be placed in the front of the nodep array */
+
   Char c;
   long  lparen = 0;
   long bracket = 0;
   char *treeptr = treestr;
-  (*comma) = 0;
 
+  (*comma) = 0;
 
   for (;;){
     c = *treeptr++;
@@ -1637,10 +1690,6 @@ long countcomma(char *treestr, long *comma)
 
   return lparen + (*comma);
 }  /*countcomma*/
-/* countcomma rewritten so it passes back both lparen+comma to allocate nodep
-   and a pointer to the comma variable.  This allows the tree to know how many
-   species exist, and the tips to be placed in the front of the nodep array */
-
 
 long countsemic(char *treestr)
 { /* Used to determine the number of user trees.  Return
@@ -1688,22 +1737,46 @@ long countsemic(char *treestr)
 void hookup(node *p, node *q)
 { /* hook together two nodes */
 
+  assert(p != NULL);
+  assert(q != NULL);
+#ifdef DEBUG
+  if (p->back != NULL || q->back != NULL)
+    printf("warning: attempt to hookup already-connected nodes\n");
+#else
+  assert(p->back == NULL);
+  assert(q->back == NULL);
+#endif
+  
   p->back = q;
   q->back = p;
 }  /* hookup */
+
+
+void unhookup(node *p, node *q)
+{
+  /* unhook two nodes. Not strictly required, but helps check assumptions */
+  assert(p != NULL);
+  assert(q != NULL);
+  assert(p->back != NULL);
+  assert(q->back != NULL);
+  assert(p->back == q);
+  assert(q->back == p);
+  p->back = NULL;
+  q->back = NULL;
+}
 
 
 void link_trees(long local_nextnum, long nodenum, long local_nodenum,
         pointarray nodep)
 {
   if(local_nextnum == 0)
-    hookup(nodep[nodenum],nodep[local_nodenum]);
+    hookup(nodep[nodenum], nodep[local_nodenum]);
   else if(local_nextnum == 1)
       hookup(nodep[nodenum], nodep[local_nodenum]->next);
     else if(local_nextnum == 2)
-        hookup(nodep[nodenum],nodep[local_nodenum]->next->next);
+        hookup(nodep[nodenum], nodep[local_nodenum]->next->next);
       else
-        printf("Error in Link_Trees()");
+        printf("Error in Link_trees()");
 } /* link_trees() */
 
 
@@ -1727,6 +1800,7 @@ void malloc_pheno (node *p, long endsite, long rcategs)
   long i;
 
   p->x  = (phenotype)Malloc(endsite*sizeof(ratelike));
+  p->underflows = (double *)Malloc(endsite * sizeof(double));
   for (i = 0; i < endsite; i++)
     p->x[i]  = (ratelike)Malloc(rcategs*sizeof(sitelike));
 } /* malloc_pheno */
@@ -1738,6 +1812,7 @@ void malloc_ppheno (node *p,long endsite, long rcategs)
   long i;
 
   p->protx  = (pphenotype)Malloc(endsite*sizeof(pratelike));
+  p->underflows  = (double *)Malloc(endsite*sizeof(double));
   for (i = 0; i < endsite; i++)
     p->protx[i]  = (pratelike)Malloc(rcategs*sizeof(psitelike));
 } /* malloc_ppheno */
@@ -1745,20 +1820,23 @@ void malloc_ppheno (node *p,long endsite, long rcategs)
 
 long take_name_from_tree (Char *ch, Char *str, char **treestr)
 {
-  /* This loop takes in the name from the tree.
-     Return the length of the name string.  */
+  /* This loop reads a name from treefile and stores it in *str.
+     Returns the length of the name string. str must be at
+     least MAXNCH bytes, but no effort is made to null-terminate
+     the string. Underscores and newlines are converted to spaces.
+     Characters beyond MAXNCH are discarded. */
 
   long name_length = 0;
 
   do {
     if ((*ch) == '_')
       (*ch) = ' ';
-    str[name_length++] = (*ch);
+    if ( name_length < MAXNCH )
+      str[name_length++] = (*ch);
     (*ch) = *(*treestr)++;
     if (*ch == '\n')
       *ch = ' ';
-  } while ((*ch) != ':' && (*ch) != ',' && (*ch) != ')' &&
-        (*ch) != '[' && (*ch) != ';' && name_length <= MAXNCH);
+  } while ( strchr(":,)[;", *ch) == NULL );
   return name_length;
 }  /* take_name_from_tree */
 
@@ -1800,7 +1878,7 @@ void match_names_to_data (Char *str, pointarray treenode, node **p, long spp)
 void addelement(node **p, node *q, Char *ch, long *parens, char **treestr,
         pointarray treenode, boolean *goteof, boolean *first, pointarray nodep,
         long *nextnode, long *ntips, boolean *haslengths, node **grbg,
-        initptr initnode)
+        initptr initnode, boolean unifok, long maxnodes)
 {
   /* Recursive procedure adds nodes to user-defined tree
      This is the main (new) tree-reading procedure */
@@ -1808,17 +1886,28 @@ void addelement(node **p, node *q, Char *ch, long *parens, char **treestr,
   node *pfirst;
   long i, len = 0, nodei = 0;
   boolean notlast;
-  Char str[MAXNCH];
+  Char str[MAXNCH+1];
   node *r;
+  long furs = 0;
 
   if ((*ch) == '(') {
     (*nextnode)++;          /* get ready to use new interior node */
     nodei = *nextnode;      /* do what needs to be done at bottom */
+    if ( maxnodes != -1 && nodei > maxnodes) {
+      printf("ERROR in input tree file: Attempting to allocate too\n"); 
+      printf("many nodes. This is usually caused by a unifurcation.\n");  
+      printf("To use this tree with this program  use Retree to read\n");
+      printf("and write this tree.\n");
+      exxit(-1);
+    }
+    
+    /* do what needs to be done at bottom */
     (*initnode)(p, grbg, q, len, nodei, ntips,
                   parens, bottom, treenode, nodep, str, ch, treestr);
     pfirst      = (*p);
     notlast = true;
     while (notlast) {          /* loop through immediate descendants */
+      furs++;
       (*initnode)(&(*p)->next, grbg, q,
                    len, nodei, ntips, parens, nonbottom, treenode,
                    nodep, str, ch, treestr);
@@ -1828,7 +1917,7 @@ void addelement(node **p, node *q, Char *ch, long *parens, char **treestr,
       
       addelement(&(*p)->next->back, (*p)->next, ch, parens, treestr,
         treenode, goteof, first, nodep, nextnode, ntips,
-        haslengths, grbg, initnode);        /* call self recursively */
+        haslengths, grbg, initnode, unifok, maxnodes);
 
       (*initnode)(&r, grbg, q, len, nodei, ntips,
                     parens, hslength, treenode, nodep, str, ch, treestr);
@@ -1844,12 +1933,18 @@ void addelement(node **p, node *q, Char *ch, long *parens, char **treestr,
            (*ch) != '[' && (*ch) != ';' && (*ch) != ':');
       }
     }
+    if ( furs <= 1 && !unifok ) {
+      printf("ERROR in input tree file: A Unifurcation was detetected.\n");
+      printf("To use this tree with this program use retree to read and");
+      printf(" write this tree\n");
+      exxit(-1);
+    }
     
     (*p)->next = pfirst;
     (*p)       = pfirst;
 
   } else if ((*ch) != ')') {       /* if it's a species name */
-    for (i = 0; i < MAXNCH; i++)   /* fill string with nulls */
+    for (i = 0; i < MAXNCH+1; i++)   /* fill string with nulls */
       str[i] = '\0';
 
     len = take_name_from_tree (ch, str, treestr);  /* get the name */
@@ -1886,13 +1981,20 @@ void addelement(node **p, node *q, Char *ch, long *parens, char **treestr,
 
 void treeread (char** treestr, node **root, pointarray treenode,
         boolean *goteof, boolean *first, pointarray nodep, 
-        long *nextnode, boolean *haslengths, node **grbg, initptr initnode)
+        long *nextnode, boolean *haslengths, node **grbg, initptr initnode,
+        boolean unifok, long maxnodes)
 {
   /* read in user-defined tree and set it up */
+  /* Eats everything up to the first open paren, then
+   * calls the recursive function addelement, which builds the
+   * tree and calls back to initnode. */
   char  ch;
   long parens = 0;
   long ntips = 0;
   
+#ifdef DEBUG
+  debugtree2(nodep, maxnodes, outtree);
+#endif
   (*goteof) = false;
   (*nextnode) = spp;
 
@@ -1908,12 +2010,14 @@ void treeread (char** treestr, node **root, pointarray treenode,
        encounter an open-paren */
     sgetch(&ch, &parens, treestr);
   }
-  (*haslengths) = true; 
+  if (haslengths != NULL)
+    (*haslengths) = true; 
   addelement(root, NULL, &ch, &parens, treestr,
          treenode, goteof, first, nodep, nextnode, &ntips,
-         haslengths, grbg, initnode);
+         haslengths, grbg, initnode, unifok, maxnodes);
   
-  (*first) = false;
+  if (first)
+    (*first) = false;
   if (parens != 0) {
     printf("\n\nERROR in tree file: unmatched parentheses\n\n");
     exxit(-1);
@@ -1923,7 +2027,8 @@ void treeread (char** treestr, node **root, pointarray treenode,
 
 void addelement2(node *q, Char *ch, long *parens, char **treestr,
         pointarray treenode, boolean lngths, double *trweight, boolean *goteof,
-        long *nextnode, long *ntips, long no_species, boolean *haslengths)
+        long *nextnode, long *ntips, long no_species, boolean *haslengths,
+        boolean unifok, long maxnodes)
 {
   /* recursive procedure adds nodes to user-defined tree
      -- old-style bifurcating-only version */
@@ -1932,17 +2037,26 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
   boolean notlast, minusread;
   Char str[MAXNCH];
   double valyew, divisor;
+  long furs = 0; 
 
   if ((*ch) == '(') {
 
     current_loop_index = (*nextnode) + spp;
     (*nextnode)++;
 
+    if ( maxnodes != -1 && current_loop_index > maxnodes) {
+      printf("ERROR in intree file: Attempting to allocate too many nodes\n");
+      printf("This is usually caused by a unifurcation.  To use this\n");
+      printf("intree with this program  use retree to read and write\n"); 
+      printf("this tree.\n");
+      exxit(-1);
+    }
     /* This is an assignment of an interior node */
     p = treenode[current_loop_index];
     pfirst = p;
     notlast = true;
     while (notlast) {
+      furs++;
       /* This while loop goes through a circle (triad for
       bifurcations) of nodes */
       p = p->next;
@@ -1952,7 +2066,7 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
       sgetch(ch, parens, treestr);
       
       addelement2(p, ch, parens, treestr, treenode, lngths, trweight,
-        goteof, nextnode, ntips, no_species, haslengths);
+        goteof, nextnode, ntips, no_species, haslengths, unifok, maxnodes);
 
       if ((*ch) == ')') {
         notlast = false;
@@ -1961,6 +2075,13 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
         } while ((*ch) != ',' && (*ch) != ')' &&
            (*ch) != '[' && (*ch) != ';' && (*ch) != ':');
       }
+    }
+
+    if ( furs <= 1 && !unifok ) {
+      printf("ERROR in intree file: A Unifurcation was detected.\n");
+      printf("To use this intree with this program use retree to read and");
+      printf(" write this tree\n");
+      exxit(-1);
     }
 
   } else if ((*ch) != ')') {
@@ -1979,17 +2100,23 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
   if ((*ch) == '[') {    /* getting tree weight from last comment field */
     if (**treestr) {
       *trweight = strtod(*treestr, treestr);
-      sgetch(ch, parens, treestr);
-      if (*ch != ']') {
-        ajErr("ERROR: Missing right square bracket");
-        exxit(-1);
-      }
-      else {
+      if(trweight) {
         sgetch(ch, parens, treestr);
-        if (*ch != ';') {
-          ajErr("ERROR: Missing semicolon after square brackets");
+        if (*ch != ']') {
+          ajErr("ERROR: Missing right square bracket");
           exxit(-1);
         }
+        else {
+          sgetch(ch, parens, treestr);
+          if (*ch != ';') {
+            ajErr("ERROR: Missing semicolon after square brackets");
+            exxit(-1);
+          }
+        }
+      }
+      else {
+        ajErr("ERROR: Expecting tree weight in last comment field");
+        exxit(-1);
       }
     }
   }
@@ -1998,17 +2125,11 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
     /* the ajWarn should be for multiple trees as input */
     /* ajWarn("WARNING: tree weight set to 1.0");*/
   }
-  else
+  else if (haslengths != NULL)
     (*haslengths) = ((*haslengths) && q == NULL);
   
   if (q != NULL)
     hookup(q, pfirst);
-  if (q != NULL) {
-    if (q->branchnum < pfirst->branchnum)
-      pfirst->branchnum = q->branchnum;
-    else
-      q->branchnum = pfirst->branchnum;
-  }
 
   if ((*ch) == ':') {
     processlength(&valyew, &divisor, ch,
@@ -2024,8 +2145,7 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
         q->back->v = q->v;
         q->iter = false;
         q->back->iter = false;
-        q->back->iter = false;
-    }
+      }
     }
   }
   
@@ -2034,7 +2154,7 @@ void addelement2(node *q, Char *ch, long *parens, char **treestr,
 
 void treeread2 (char **treestr, node **root, pointarray treenode,
         boolean lngths, double *trweight, boolean *goteof,
-        boolean *haslengths, long *no_species)
+        boolean *haslengths, long *no_species, boolean unifok, long maxnodes)
 {
   /* read in user-defined tree and set it up
      -- old-style bifurcating-only version */
@@ -2060,7 +2180,8 @@ void treeread2 (char **treestr, node **root, pointarray treenode,
   }
 
   addelement2(NULL, &ch, &parens, treestr, treenode, lngths, trweight,
-          goteof, &nextnode, &ntips, (*no_species), haslengths);
+              goteof, &nextnode, &ntips, (*no_species), haslengths,
+              unifok, maxnodes);
   (*root) = treenode[*no_species];
 
   (*root)->oldlen = 0.0;
@@ -2094,10 +2215,101 @@ void exxit(int exitcode)
 } /* exxit */
 
 
+void unroot(tree *t, long nonodes) 
+{
+  /* used by fitch, restml and contml */
+  if (t->start->back == NULL) { 
+    if (t->start->next->back->tip)
+      t->start = t->start->next->next->back;
+    else  t->start = t->start->next->back;
+  }
+  if (t->start->next->back == NULL) {
+    if (t->start->back->tip)
+      t->start = t->start->next->next->back;
+    else t->start = t->start->back;
+  }
+  if (t->start->next->next->back == NULL)  {
+    if (t->start->back->tip)
+      t->start = t->start->next->back;
+    else t->start = t->start->back;
+  }
+    
+
+  unroot_r(t->start,t->nodep,nonodes);
+  unroot_r(t->start->back, t->nodep, nonodes);
+}
+
+
+void unroot_here(node* root, node** nodep, long nonodes)
+{
+  node* tmpnode;
+  double newl;
+  /* used by unroot */
+  /* assumes bifurcation this is ok in the programs that use it */
+ 
+  newl = root->next->oldlen + root->next->next->oldlen;
+  root->next->back->oldlen = newl;
+  root->next->next->back->oldlen = newl;
+
+  newl = root->next->v + root->next->next->v;
+  root->next->back->v = newl;
+  root->next->next->back->v = newl;
+
+  root->next->back->back=root->next->next->back;
+  root->next->next->back->back = root->next->back;
+  
+  while ( root->index != nonodes ) {
+    tmpnode = nodep[ root->index ];
+    nodep[root->index] = root;
+    root->index++;
+    root->next->index++;
+    root->next->next->index++;
+    nodep[root->index - 2] = tmpnode;
+    tmpnode->index--;
+    tmpnode->next->index--;
+    tmpnode->next->next->index--;
+  }
+}
+
+
+void unroot_r(node* p, node** nodep, long nonodes) 
+{
+  /* used by unroot */
+  node *q;
+  
+  if ( p->tip) return;
+
+  q = p->next;
+  while ( q != p ) {
+    if (q->back == NULL)
+      unroot_here(q, nodep, nonodes);
+    else unroot_r(q->back, nodep, nonodes);
+    q = q->next;
+  }
+}
+
+void clear_connections(tree *t, long nonodes) 
+{
+  long i;
+  node *p;
+  for ( i = 0 ; i < nonodes ; i++) {
+    p = t->nodep[i];
+    if (p != NULL) {
+      p->back = NULL;
+      p->v = 0;
+      for (p = p->next; p && p != t->nodep[i]; p = p->next) {
+        p->next->back = NULL;
+        p->next->v    = 0;
+      }
+    }
+  }
+}
+
 #ifdef WIN32
 void phySaveConsoleAttributes()
 {
-  GetConsoleScreenBufferInfo( hConsoleOutput, &savecsbi );
+  if ( GetConsoleScreenBufferInfo(hConsoleOutput, &savecsbi) )
+    savecsbi_valid = true;
 } /* PhySaveConsoleAttributes */
 
 
@@ -2105,10 +2317,15 @@ void phySetConsoleAttributes()
 {
   hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
-  phySaveConsoleAttributes();
+  if ( hConsoleOutput == INVALID_HANDLE_VALUE )
+    hConsoleOutput = NULL;
 
-  SetConsoleTextAttribute(hConsoleOutput, 
-    BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY);
+  if ( hConsoleOutput != NULL ) {
+    phySaveConsoleAttributes();
+
+    SetConsoleTextAttribute(hConsoleOutput, 
+      BACKGROUND_GREEN | BACKGROUND_BLUE | BACKGROUND_INTENSITY);
+  }
 } /* phySetConsoleAttributes */
 
 
@@ -2118,12 +2335,18 @@ void phyRestoreConsoleAttributes()
   DWORD cCharsWritten;
   DWORD dwConSize; 
 
-  dwConSize = savecsbi.dwSize.X * savecsbi.dwSize.Y;
+  printf("Press enter to quit.\n");
+  fflush(stdout);
+  getchar();
 
-  SetConsoleTextAttribute(hConsoleOutput, savecsbi.wAttributes);
+  if ( savecsbi_valid ) {
+    dwConSize = savecsbi.dwSize.X * savecsbi.dwSize.Y;
 
-  FillConsoleOutputAttribute( hConsoleOutput, savecsbi.wAttributes,
-         dwConSize, coordScreen, &cCharsWritten );
+    SetConsoleTextAttribute(hConsoleOutput, savecsbi.wAttributes);
+
+    FillConsoleOutputAttribute( hConsoleOutput, savecsbi.wAttributes,
+           dwConSize, coordScreen, &cCharsWritten );
+  }
 } /* phyRestoreConsoleAttributes */
 
 
@@ -2134,11 +2357,12 @@ void phyFillScreenColor()
   CONSOLE_SCREEN_BUFFER_INFO csbi; /* to get buffer info */ 
   DWORD dwConSize; 
 
-  GetConsoleScreenBufferInfo( hConsoleOutput, &csbi );
-  dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
+  if ( GetConsoleScreenBufferInfo( hConsoleOutput, &csbi ) ) {
+    dwConSize = csbi.dwSize.X * csbi.dwSize.Y;
 
-  FillConsoleOutputAttribute( hConsoleOutput, csbi.wAttributes,
-         dwConSize, coordScreen, &cCharsWritten );
+    FillConsoleOutputAttribute( hConsoleOutput, csbi.wAttributes,
+           dwConSize, coordScreen, &cCharsWritten );
+  }
 } /* PhyFillScreenColor */
 
 
@@ -2175,7 +2399,256 @@ void phyClearScreen()
    SetConsoleCursorPosition( hConsoleOutput, coordScreen );
    return;
 } /* PhyClearScreen */
-#endif
+#endif /* WIN32 */
+
+
+/* These functions are temporarily used for translating the fixed-width
+ * space-padded nayme array to an array of null-terminated char *. */
+char **stringnames_new(void)
+{
+  /* Copy nayme array to null terminated strings and return array of char *.
+   * Spaces are stripped from end of naym's.
+   * Returned array size is spp+1; last element is NULL. */
+
+  char **names;
+  char *ch;
+  long len, i;
+
+  names = (char **)Malloc((spp+1) * sizeof(char *));
+
+  for ( i = 0; i < spp; i++ ) {
+    len = strlen(nayme[i]);
+    names[i] = (char *)Malloc((MAXNCH+1) * sizeof(char));
+    strncpy(names[i], nayme[i], MAXNCH);
+    names[i][MAXNCH] = '\0';
+    /* Strip trailing spaces */
+    for ( ch = names[i] + MAXNCH - 1; *ch == ' ' || *ch == '\0'; ch-- )
+      *ch = '\0';
+  }
+  names[spp] = NULL;
+
+  return names;
+}
+
+void stringnames_delete(char **names)
+{
+  /* Free a string array returned by stringnames_new() */
+  long i;
+
+  assert( names != NULL );
+  for ( i = 0; i < spp; i++ ) {
+    assert( names[i] != NULL );
+    free(names[i]);
+  }
+  free(names);
+}
+
+int fieldwidth_double(double val, unsigned int precision)
+{
+  /* Printf a double to a temporary buffer with specified precision using %g
+   * and return its length. Precision must not be greater than 999,999 */
+
+  char format[10];
+  char buf[0x200]; /* TODO: What's the largest possible? */
+
+  if (precision > 999999)
+    abort();
+
+  sprintf(format, "%%.%uf", precision); /* %.Nf */
+  /* snprintf() would be better, but is it avaliable on all systems? */
+  return sprintf(buf, format, val);
+}
+
+void output_matrix_d(FILE *fp, double **matrix,
+    unsigned long rows, unsigned long cols,
+    char **row_head, char **col_head, int flags)
+{
+  /*
+   * Print a matrix of double to file. Headings are given in row_head and
+   * col_head, either of which may be NULL to indicate that headings should not
+   * be printed. Otherwise, they must be null-terminated arrays of pointers to
+   * null-terminalted character arrays.
+   *
+   * The macro OUTPUT_PRECISION defines the number of significant figures to
+   * print, and OUTPUT_TEXTWIDTH defines the maximum length of each line.
+   * 
+   * Optional formatting is specified by flags argument, using macros MAT_*
+   * defined in phylip.h.
+   */
+
+  unsigned     *colwidth;               /* [0..spp-1] min width of each column */
+  unsigned      headwidth;              /* min width of row header column */
+  unsigned long linelen;                /* length of current printed line */
+  unsigned      fw;
+  unsigned long row, col;
+  unsigned long i;
+  unsigned long cstart, cend;
+  unsigned long textwidth = OUTPUT_TEXTWIDTH;
+  const int     gutter = 1;
+  boolean       do_block;
+  boolean       lower_triangle;
+  boolean       border;
+  boolean       output_cols;
+  boolean       pad_row_head;
+
+  if ( flags & MAT_NOHEAD )
+    col_head = NULL;
+  if ( flags & MAT_NOBREAK )
+    textwidth = 0;
+  do_block = (flags & MAT_BLOCK) && (textwidth > 0);
+  lower_triangle = flags & MAT_LOWER;
+  border = flags & MAT_BORDER;
+  output_cols = flags & MAT_PCOLS;
+  pad_row_head = flags & MAT_PADHEAD;
+
+  /* Determine minimal width for row headers, if given */
+  headwidth = 0;
+  if ( row_head != NULL ) { 
+    for (row = 0; row < rows; row++) {
+      fw = strlen(row_head[row]);
+      if ( headwidth < fw )
+        headwidth = fw;
+    }
+  }
+
+  /* Enforce minimum of 10 ch for machine-readable output */
+  if ( (pad_row_head) && (headwidth < 10) )
+    headwidth = 10;
+  
+  /* Determine minimal width for each matrix col */
+  colwidth = (unsigned int *)Malloc(spp * sizeof(int));
+  for (col = 0; col < cols; col++) {
+    if ( col_head != NULL )
+      colwidth[col] = strlen(col_head[col]);
+    else
+      colwidth[col] = 0;
+    for (row = 0; row < rows; row++) {
+      fw = fieldwidth_double(matrix[row][col], PRECISION);
+      if ( colwidth[col] < fw )
+        colwidth[col] = fw;
+    }
+  }
+  
+  /*** Print the matrix ***/
+  /* Number of columns if requested */
+  if ( output_cols ) {
+    fprintf(fp, "%5lu\n", cols);
+  }
+  
+  /* Omit last column for lower triangle */
+  if ( lower_triangle )
+    cols--;
+
+  /* Blocks */
+  cstart = cend = 0;
+  while ( cend != cols ) {
+    if ( do_block ) {
+      linelen = headwidth;
+      for ( col = cstart; col < cols; col++ ) {
+        if ( linelen + colwidth[col] + gutter > textwidth ) {
+          break;
+        }
+        linelen += colwidth[col] + gutter;
+      }
+      cend = col;
+      /* Always print at least one, regardless of line len */
+      if ( cend == cstart )
+        cend++;
+    } else {
+      cend = cols;
+    }
+
+
+    /* Column headers */
+    if ( col_head != NULL ) {
+      /* corner space */
+      for ( i = 0; i < headwidth; i++ )
+        putc(' ', fp);
+      if ( border ) {
+        for ( i = 0; i < gutter+1; i++ )
+          putc(' ', fp);
+      }
+      /* Names */
+      for ( col = cstart; col < cend; col++ ) {
+        for ( i = 0; i < gutter; i++ )
+          putc(' ', fp);
+        /* right justify */
+        fw = strlen(col_head[col]);
+        for ( i = 0; i < colwidth[col] - fw; i++ )
+          putc(' ', fp);
+        fputs(col_head[col], fp);
+      }
+      putc('\n', fp);
+    }
+    
+    /* Top border */
+    if ( border ) {
+      for ( i = 0; i < headwidth + gutter; i++ )
+        putc(' ', fp);
+      putc('\\', fp);
+      for ( col = cstart; col < cend; col++ ) {
+        for ( i = 0; i < colwidth[col] + gutter; i++ )
+          putc('-', fp);
+      }
+      putc('\n', fp);
+    }
+    
+    /* Rows */
+    for (row = 0; row < rows; row++) {
+      /* Skip empty rows for lower triangle (incl. first) */
+      if ( lower_triangle && row <= cstart )
+        continue;
+      /* Row header, if given */
+      if ( row_head != NULL ) {
+        /* right-justify for non-machine-readable */
+        if ( !pad_row_head ) {
+          for ( i = strlen(row_head[row]); i < headwidth; i++ )
+            putc(' ', fp);
+        }
+        fputs(row_head[row], fp);
+        /* left-justify for machine-readable */
+        if ( pad_row_head ) {
+          for ( i = strlen(row_head[row]); i < headwidth; i++ )
+            putc(' ', fp);
+        }
+      }
+      linelen = headwidth;
+
+      /* Left border */
+      if ( border ) {
+        for ( i = 0; i < gutter; i++ )
+          putc(' ', fp);
+        putc('|', fp);
+        linelen += 2;
+      }
+      
+      /* Row data */
+      for (col = cstart; col < cend; col++) { /* cols */
+        /* Stop after col == row for lower triangle */
+        if ( lower_triangle && col >= row )
+          break;
+        /* Break line if going over max text width */
+        if ( !do_block && textwidth > 0 ) {
+          if ( linelen + colwidth[col] > textwidth ) {
+            putc('\n', fp);
+            linelen = 0;
+          }
+          linelen += colwidth[col] + gutter;
+        }
+        
+        for ( i = 0; i < gutter; i++ )
+          putc(' ', fp);
+
+        /* Print the datum */
+        fprintf(fp, "%*.6f", colwidth[col], matrix[row][col]);
+      }
+      putc('\n', fp);
+    } /* End of row */
+    putc('\n', fp); /* blank line */
+    cstart = cend;
+  } /* End of block */
+  free(colwidth);
+} /* output_matrix_d */
 
 void emboss_printtree(node *p, char* title)
 {

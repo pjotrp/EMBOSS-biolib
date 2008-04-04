@@ -1,6 +1,6 @@
    Standard (Mandatory) qualifiers:
   [-infile]            discretestates File containing data set
-  [-intreefile]        tree       phylip tree file (optional)
+  [-intreefile]        tree       Phylip tree file (optional)
 
    Additional (Optional) qualifiers:
    -weights            properties Weights file

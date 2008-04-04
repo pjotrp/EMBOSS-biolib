@@ -1,13 +1,40 @@
-#include "phylip.h"
-#include "seq.h"
-
-/* version 3.6. (c) Copyright 1986-2002 by the University of Washington
+/* version 3.6. (c) Copyright 1986-2007 by the University of Washington
   and by Joseph Felsenstein.  Written by Joseph Felsenstein.  Permission is
   granted to copy and use this program provided no fee is charged for it
   and provided that this copyright notice is not removed. */
 
-#define epsilon         0.0001   /* used in makenewv, getthree, update */
+
+#include <float.h>
+#include <stdlib.h>
+
+/* #define DEBUG  */
+
+#include "phylip.h"
+#include "seq.h"
+#include "mlclock.h"
+#include "printree.h"
+
+#ifdef DEBUG
+#include "dnamlk_debug.c"
+#endif
+
 #define over            60
+
+/* These are redefined from phylip.h */
+/* Fractional accuracy to which node tymes are optimized */
+#undef epsilon
+double epsilon = 1e-3;
+
+/* Number of (failed) passes over the tree before giving up */
+#undef smoothings
+#define smoothings      4
+
+#undef initialv
+#define initialv        0.3
+
+
+/* DEBUG: This does extra consistency checks in nuview() - SLOW! */
+/* #define NUVIEW_DEBUG */
 
 typedef struct valrec {
   double rat, ratxi, ratxv, orig_zz, z1, y1, z1zz, z1yy, xiz1,
@@ -15,9 +42,36 @@ typedef struct valrec {
   double *ww, *zz, *wwzz, *vvzz; 
 } valrec;
 
+struct options {
+  boolean auto_;
+  boolean ctgry;
+  long    categs;
+  long    rcategs;
+  boolean freqsfrom;
+  boolean gama;
+  boolean invar;
+  boolean global;
+  boolean hypstate;
+  boolean jumble;
+  long    njumble;
+  double  lambda;
+  double  lambda1;
+  boolean lengthsopt;
+  boolean trout;
+  double  ttratio;
+  boolean ttr;
+  boolean usertree;
+  boolean weights;
+  boolean printdata;
+  boolean dotdiff;
+  boolean progress;
+  boolean treeprint;
+  boolean interleaved;
+};
+
+
 typedef double contribarr[maxcategs];
 
-extern sequence y;
 valrec ***tbl;
 
 AjPSeqset* seqsets = NULL;
@@ -31,52 +85,41 @@ ajint numwts;
 #ifndef OLDC
 /* function prototypes */
 //void   getoptions(void);
-void   emboss_getoptions(char *pgm, int argc, char *argv[]);
-void   initmemrates(void); 
-void   allocrest(void);
-void   doinit(void);
-void   inputoptions(void);
-void   makeweights(void);
-void   getinput(void);
-void   inittable_for_usertree (char *);
-void   inittable(void);
-void   exmake(double, long);
-void   alloc_nvd(long, nuview_data *);
-void   free_nvd(nuview_data *);
-void   nuview(node *);
-double evaluate(node *);
-void   getthree(node *p, double thigh, double tlow);
-void   makenewv(node *);
-void   update(node *);
-void   smooth(node *);
-void   restoradd(node *, node *, node *, double);
-void   dnamlk_add(node *, node *, node *);
-void   dnamlk_re_move(node **, node **, boolean);
-void   tryadd(node *, node **, node **);
-void   addpreorder(node *, node *, node *, boolean, boolean);
-void   tryrearr(node *, boolean *);
-void   repreorder(node *, boolean *);
-void   rearrange(node **);
-void   initdnamlnode(node **, node **, node *, long, long, long *, long *,
-                initops, pointarray, pointarray, Char *, Char *, char **);
-void   tymetrav(node *, double *);
-void   dnamlk_coordinates(node *, long *);
-void   dnamlk_drawline(long, double);
-void   dnamlk_printree(void);
-void   describe(node *);
-void   reconstr(node *, long);
-void   rectrav(node *, long, long);
-void   summarize(void);
-void   dnamlk_treeout(node *);
-void   nodeinit(node *);
-void   initrav(node *);
-void   travinit(node *);
-void   travsp(node *);
-void   treevaluate(void);
-void   maketree(void);
-void reallocsites(void);
-void save_tree_tyme(tree* save_tree, double tymes[]);
-void restore_saved_tyme(tree *load_tree, double tymes[]);
+static void    emboss_getoptions(char *pgm, int argc, char *argv[]);
+static void    initmemrates(void); 
+static void    allocrest(void);
+static void    doinit(void);
+static void    inputoptions(void);
+static void    makeweights(void);
+static void    getinput(void);
+static void    inittable_for_usertree (char *);
+static void    inittable(void);
+static void    alloc_nvd(long, nuview_data *);
+static void    free_nvd(nuview_data *);
+static boolean nuview(node *);
+static double  dnamlk_evaluate(node *);
+static boolean update(node *);
+static boolean smooth(node *);
+static void    restoradd(node *, node *, node *, double);
+static void    dnamlk_add(node *, node *, node *);
+static void    dnamlk_re_move(node **, node **, boolean);
+static void    tryadd(node *, node **, node **);
+static void    addpreorder(node *, node *, node *, boolean, boolean);
+static boolean tryrearr(node *);
+static boolean repreorder(node *);
+static void    rearrange(node **);
+static void    initdnamlnode(node **, node **, node *, long, long,
+                            long *, long *, initops, pointarray, pointarray,
+                            Char *, Char *, char **);
+static boolean tymetrav(node *);
+static void    reconstr(node *, long);
+static void    rectrav(node *, long, long);
+static void    summarize(FILE *fp);
+static void    dnamlk_treeout(node *);
+static void    init_tymes(node *p, double minlength);
+static void    treevaluate(void);
+static void    maketree(void);
+static void    reallocsites(void);
 /* function prototypes */
 #endif
 
@@ -92,10 +135,13 @@ long sites, weightsum, categs, datasets, ith, njumble, jumb, numtrees, shimotree
 /*  sites = number of sites in actual sequences
   numtrees = number of user-defined trees */
 long inseed, inseed0, mx, mx0, mx1;
-boolean freqsfrom, global, global2=0, jumble, lngths, trout, usertree, weights, 
+boolean freqsfrom, global, global2=0, jumble, trout, usertree, weights, 
           rctgry, ctgry, ttr, auto_, progress, mulsets, firstset, hypstate, 
           smoothit, polishing, justwts, gama, invar;
-tree curtree, bestree, bestree2, priortree;
+boolean lengthsopt = false;             /* Use lengths in user tree option */
+boolean lngths     = false;             /* Actually use lengths (depends on
+                                           each input tree) */
+tree curtree, bestree, bestree2;
 node *qwhere, *grbg;
 double *tymes;
 double xi, xv, ttratio, ttratio0, freqa, freqc, freqg, freqt, freqr,
@@ -104,45 +150,30 @@ double xi, xv, ttratio, ttratio0, freqa, freqc, freqg, freqt, freqr,
 long *enterorder;
 steptr aliasweight;
 double *rate;
-double **term, **slopeterm, **curveterm;
 longer seed;
 double *probcat;
 long iprobcat;
 contribarr *contribution;
 char *progname;
-long rcategs, nonodes2;
+long rcategs;
 long **mp;
-char basechar[16]="acmgrsvtwyhkdbn";
+char basechar[16] = "acmgrsvtwyhkdbn";
 
 
 /* Local variables for maketree, propagated globally for C version: */
 long    k, maxwhich, col;
-double  like, bestyet, tdelta, lnlike, slope, curv, maxlogl;
-boolean lastsp, smoothed, succeeded;
+double  like, bestyet, maxlogl;
+boolean lastsp;
+
+boolean smoothed; /* set true before each smoothing run, and set false
+                     each time a branch cannot be completely optimized. */
 double  *l0gl;
-double  x[3], lnl[3];
 double  expon1i[maxcategs], expon1v[maxcategs],
         expon2i[maxcategs], expon2v[maxcategs];
 node   *there;
 double  **l0gf;
 Char ch, ch2;
 
-
-void save_tree_tyme(tree* save_tree, double tymes[])
-{
-  int i;
-  for ( i = spp ; i < nonodes ; i++) {
-    tymes[i - spp] = save_tree->nodep[i]->tyme;
-  }
-}
-
-void restore_saved_tyme(tree *load_tree, double tymes[])
-{
-  int i;
-  for ( i = spp ; i < nonodes ; i++) {
-    load_tree->nodep[i]->tyme = tymes[i - spp];
-  }
-}
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
 {
@@ -334,7 +365,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     fprintf(outfile, "\nNucleic acid sequence Maximum Likelihood");
     fprintf(outfile, " method, version %s\n\n",VERSION);
 
-
+/*
     printf("\n mulsets: %s",(mulsets ? "true" : "false"));
     printf("\n datasets : %ld",(datasets));
     printf("\n rctgry : %s",(rctgry ? "true" : "false"));
@@ -371,17 +402,17 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     printf("\n interleaved : %s \n\n",(interleaved ? "true" : "false"));
     for (i=0;i<iprobcat;i++)
       printf("probcat[%d] %f\n", i, probcat[i]);
-
+*/
 }  /* emboss_getoptions */
 
-void initmemrates(void)
+static void initmemrates(void)
 {
    probcat = (double *) Malloc(rcategs * sizeof(double));
    rrate = (double *) Malloc(rcategs * sizeof(double));
    iprobcat = rcategs;
 }
 
-void reallocsites(void) 
+static void reallocsites(void) 
 {
   long i;
 
@@ -404,7 +435,7 @@ void reallocsites(void)
   location    = (long *)Malloc(sites*sizeof(long));
 }
 
-void allocrest()
+static void allocrest(void)
 {
   long i;
 
@@ -423,7 +454,7 @@ void allocrest()
 }  /* allocrest */
 
 
-void doinit()
+static void doinit(void)
 {
   /* initializes variables */
 
@@ -441,7 +472,7 @@ void doinit()
 }  /* doinit */
 
 
-void inputoptions()
+static void inputoptions(void)
 {
   long i;
 
@@ -470,7 +501,7 @@ void inputoptions()
 }  /* inputoptions */
 
 
-void makeweights()
+static void makeweights(void)
 {
   /* make up weights vector to avoid duplicate computations */
   long i;
@@ -496,7 +527,7 @@ void makeweights()
 }  /* makeweights */
 
 
-void getinput()
+static void getinput(void)
 {
   
   /* reads the input data */
@@ -508,11 +539,11 @@ void getinput()
   if (!justwts || firstset)
     seq_inputdata(seqsets[ith-1], sites);
   makeweights();
-  setuptree2(curtree);
+  setuptree2(&curtree);
   if (!usertree) {
-    setuptree2(bestree);
+    setuptree2(&bestree);
     if (njumble > 1)
-      setuptree2(bestree2);
+      setuptree2(&bestree2);
   }
   allocx(nonodes, rcategs, curtree.nodep, usertree);
   if (!usertree) {
@@ -532,7 +563,7 @@ void getinput()
 }  /* getinput */
 
 
-void inittable_for_usertree (char* treestr)
+static void inittable_for_usertree (char* treestr)
 {
   /* If there's a user tree, then the ww/zz/wwzz/vvzz elements need
      to be allocated appropriately. */
@@ -562,7 +593,28 @@ void inittable_for_usertree (char* treestr)
 }  /* inittable_for_usertree */
 
 
-void inittable()
+static void freetable(void)
+{
+  long i, j;
+ 
+  for (i = 0; i < rcategs; i++) {
+    for (j = 0; j < categs; j++) {
+      free(tbl[i][j]->ww);
+      free(tbl[i][j]->zz);
+      free(tbl[i][j]->wwzz);
+      free(tbl[i][j]->vvzz);
+    }
+  }
+  for (i = 0; i < rcategs; i++)  {
+    for (j = 0; j < categs; j++) 
+      free(tbl[i][j]);
+    free(tbl[i]);
+  }
+  free(tbl);
+}
+
+
+static void inittable(void)
 {
   /* Define a lookup table. Precompute values and print them out in tables */
   long i, j;
@@ -639,31 +691,7 @@ void inittable()
 }  /* inittable */
 
 
-void exmake(double lz, long n)
-{
-  /* pretabulate tables of exponentials so need not do for each site */
-  long i;
-  double rat;
-
-  for (i = 0; i < categs; i++) {
-    rat = rate[i];
-    switch (n) {
-
-    case 1:
-      expon1i[i] = exp(rat * xi * lz);
-      expon1v[i] = exp(rat * xv * lz);
-      break;
-
-    case 2:
-      expon2i[i] = exp(rat * xi * lz);
-      expon2v[i] = exp(rat * xv * lz);
-      break;
-    }
-  }
-}  /* exmake */
-
-
-void alloc_nvd(long num_sibs, nuview_data *local_nvd)
+static void alloc_nvd(long num_sibs, nuview_data *local_nvd)
 {
   /* Allocate blocks of memory appropriate for the number of siblings
      a given node has */
@@ -679,7 +707,7 @@ void alloc_nvd(long num_sibs, nuview_data *local_nvd)
 }  /* alloc_nvd */
 
 
-void free_nvd(nuview_data *local_nvd)
+static void free_nvd(nuview_data *local_nvd)
 {
   /* The natural complement to the alloc version */
   free (local_nvd->yy);
@@ -694,27 +722,44 @@ void free_nvd(nuview_data *local_nvd)
 }  /* free_nvd */
 
 
-void nuview(node *p)
-/* current (modified dnaml) nuview */
+static boolean nuview(node *p)
 {
-  long i, j, k, num_sibs, sib_index;
+  /* Recursively update summary data for subtree rooted at p. Returns true if
+   * view has changed. */
+
+  long i, j, k, l, num_sibs = 0, sib_index;
   nuview_data *local_nvd;
+  node *q;
   node *sib_ptr, *sib_back_ptr;
   sitelike p_xx;
   double lw;
+  double correction;
+  double maxx;
 
-  /* Figure out how many siblings the current node has */
-  num_sibs    = count_sibs (p);
-  /* Recursive calls, should be called for all children */
-  sib_ptr = p;
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr      = sib_ptr->next;
-    sib_back_ptr = sib_ptr->back;
+  assert(p != NULL);
+  if ( p == NULL ) return false;
+  if ( p->tip ) return false; /* Tips do not need to be initialized */
 
-    if (!(sib_back_ptr == NULL))
-      if (!sib_back_ptr->tip && !sib_back_ptr->initialized)
-        nuview (sib_back_ptr);
+#ifdef NUVIEW_DEBUG
+  /* DEBUG: Update nuviews regardless */
+  /* p->initialized = false; */
+#endif
+
+  for (q = p->next; q != p; q = q->next) {
+    num_sibs++;
+    if ( q->back != NULL && !q->tip) {
+      if ( nuview(q->back) )
+        p->initialized = false;
+    }
   }
+
+  if ( p->initialized )
+    return false;
+
+  /* At this point, all views downstream should be initialized.
+   * If not, we have a problem. */
+  assert( invalid_descendant_view(p) == NULL );
+
   /* Allocate the structure and blocks therein for variables used in
      this function */
   local_nvd = (nuview_data *) Malloc( sizeof (nuview_data));
@@ -728,7 +773,7 @@ void nuview(node *p)
     sib_back_ptr = sib_ptr->back;
     
     if (sib_back_ptr != NULL)
-      lw =  -fabs(p->tyme - sib_back_ptr->tyme);
+      lw = -fabs(p->tyme - sib_back_ptr->tyme);
     else
       lw = 0.0;
 
@@ -738,12 +783,14 @@ void nuview(node *p)
         tbl[i][j]->zz[sib_index]   = exp(tbl[i][j]->ratxv * lw);
         tbl[i][j]->wwzz[sib_index] = tbl[i][j]->ww[sib_index] * tbl[i][j]->zz[sib_index];
         tbl[i][j]->vvzz[sib_index] = (1.0 - tbl[i][j]->ww[sib_index]) *
-          tbl[i][j]->zz[sib_index];
+                                                                tbl[i][j]->zz[sib_index];
       }
   }
 
   /* Loop 2: */
   for (i = 0; i < endsite; i++) {
+    correction = 0; 
+    maxx = 0;
     k = category[alias[i]-1] - 1;
     for (j = 0; j < rcategs; j++) {
 
@@ -752,14 +799,18 @@ void nuview(node *p)
       for (sib_index=0; sib_index < num_sibs; sib_index++) {
         sib_ptr         = sib_ptr->next;
         sib_back_ptr    = sib_ptr->back;
+        
 
         local_nvd->wwzz[sib_index] = tbl[j][k]->wwzz[sib_index];
         local_nvd->vvzz[sib_index] = tbl[j][k]->vvzz[sib_index];
         local_nvd->yy[sib_index]   = 1.0 - tbl[j][k]->zz[sib_index];
-        if (sib_back_ptr != NULL)
+        if (sib_back_ptr != NULL) {
           memcpy(local_nvd->xx[sib_index],
                sib_back_ptr->x[i][j],
                sizeof(sitelike));
+          if ( j == 0)
+            correction += sib_back_ptr->underflows[i];
+        }
         else {
           local_nvd->xx[sib_index][0] = 1.0;
           local_nvd->xx[sib_index][(long)C - (long)A] = 1.0;
@@ -818,53 +869,54 @@ void nuview(node *p)
           local_nvd->vzsumy[sib_index];
       }
 
+      for ( l = 0 ; l < ((long)T - (long)A + 1 ) ; l++ ) {
+        if (  p_xx[l] > maxx )
+          maxx = p_xx[l];
+      }
+
       /* And the final point of this whole function: */
       memcpy(p->x[i][j], p_xx, sizeof(sitelike));
     }
+    p->underflows[i] = 0;
+    if ( maxx < MIN_DOUBLE)
+      fix_x(p, i, maxx,rcategs);
+    p->underflows[i] += correction;
   }
-
-  p->initialized = true;
 
   free_nvd (local_nvd);
   free (local_nvd);
+
+  p->initialized = true;
+  return true;
 }  /* nuview */
 
 
-double evaluate(node *p)
-{
+static double dnamlk_evaluate(node *p)
+{ /* Evaluate and return the log likelihood of the current tree
+   * as seen from the branch from p to p->back. If p is the root node,
+   * the first child branch is used instead. Views are updated as needed. */
   contribarr tterm;
   static contribarr like, nulike, clai;
   double sum, sum2, sumc=0, y, lz, y1, z1zz, z1yy, 
                 prod12, prod1, prod2, prod3, sumterm, lterm;
   long i, j, k, lai;
   node *q, *r;
-  sitelike x1, x2;
+  double *x1, *x2;              /* pointers to sitelike elements in node->x */
   sum = 0.0;
 
-  if (p == curtree.root && (count_sibs(p) == 2)) {
-    r = p->next->back;
-    q = p->next->next->back;
-    y = r->tyme + q->tyme - 2 * p->tyme;
-    if (!r->tip && !r->initialized) nuview (r);
-    if (!q->tip && !q->initialized) nuview (q);
-  } else if (p == curtree.root) {
-    /* the next two lines copy tyme and x to p->next.  Normally they are 
-       not initialized for an internal node. */
-/* assumes bifurcation */
-    p->next->tyme = p->tyme;
-    nuview(p->next);
-    r = p->next;
-    q = p->next->back;
-    y = fabs(p->next->tyme - q->tyme);
-  } else {
-    r = p;
-    q = p->back;
-    if (!r->tip && !r->initialized) nuview (r);
-    if (!q->tip && !q->initialized) nuview (q);
-    y = fabs(r->tyme - q->tyme);
-  }
+  assert( all_tymes_valid(curtree.root, 0.0, false) );
 
+  /* Root node has no branch, so use branch to first child */
+  if (p == curtree.root)
+    p = p->next;
+
+  r = p;
+  q = p->back;
+  nuview(r);
+  nuview(q);
+  y = fabs(r->tyme - q->tyme);
   lz = -y;
+
   for (i = 0; i < rcategs; i++)
     for (j = 0; j < categs; j++) {
     tbl[i][j]->orig_zz = exp(tbl[i][j]->ratxi * lz);
@@ -884,10 +936,10 @@ double evaluate(node *p)
         z1zz = 1.0;
         z1yy = 0.0;
       }
-      memcpy(x1, r->x[i][j], sizeof(sitelike));
+      x1 = r->x[i][j];
       prod1 = freqa * x1[0] + freqc * x1[(long)C - (long)A] +
              freqg * x1[(long)G - (long)A] + freqt * x1[(long)T - (long)A];
-      memcpy(x2, q->x[i][j], sizeof(sitelike));
+      x2 = q->x[i][j];
       prod2 = freqa * x2[0] + freqc * x2[(long)C - (long)A] +
              freqg * x2[(long)G - (long)A] + freqt * x2[(long)T - (long)A];
       prod3 = (x1[0] * freqa + x1[(long)G - (long)A] * freqg) *
@@ -903,7 +955,7 @@ double evaluate(node *p)
     sumterm = 0.0;
     for (j = 0; j < rcategs; j++)
       sumterm += probcat[j] * tterm[j];
-    lterm = log(sumterm);
+    lterm = log(sumterm) + p->underflows[i] + q->underflows[i];
     for (j = 0; j < rcategs; j++)
       clai[j] = tterm[j] / sumterm;
     memcpy(contribution[i], clai, sizeof(contribarr));
@@ -915,11 +967,11 @@ double evaluate(node *p)
     for (j = 0; j < rcategs; j++)
       like[j] = 1.0;
     for (i = 0; i < sites; i++) {
+      sumc = 0.0;
+      for (k = 0; k < rcategs; k++)
+        sumc += probcat[k] * like[k];
+      sumc *= lambda;
       if ((ally[i] > 0) && (location[ally[i]-1] > 0)) {
-        sumc = 0.0;
-        for (k = 0; k < rcategs; k++)
-          sumc += probcat[k] * like[k];
-        sumc *= lambda;
         lai = location[ally[i] - 1];
         memcpy(clai, contribution[lai - 1], sizeof(contribarr));
         for (j = 0; j < rcategs; j++)
@@ -950,314 +1002,151 @@ double evaluate(node *p)
     maxlogl = sum;
   }
   return sum;
-}  /* evaluate */
+}  /* dnamlk_evaluate */
 
 
-void getthree(node *p, double thigh, double tlow)
+
+static boolean update(node *p)
 {
-  /* compute likelihood at a new triple of points */
-  int i;
-  double tt = p->tyme;
-  double td = fabs(tdelta);
+  /* Conditionally optimize tyme at a node. Return true if successful. */
 
-  x[0] = tt - td;
-  x[1] = tt;
-  x[2] = tt + td;
-
-  if ( x[0] < tlow + epsilon ) {
-    x[0] = tlow + epsilon;
-    x[1] = ( x[0] + x[2] ) / 2;
-  }
-
-  if ( x[2] > thigh - epsilon ) {
-    x[2] = thigh - epsilon;
-    x[1] = ( x[0] + x[2] ) / 2;
-  }
-  
-  for ( i = 0 ; i < 3 ; i++ ) {
-    p->tyme = x[i];
-    nuview(p);
-    lnl[i] = evaluate(p);
-  }
-}  /* getthree */
-
-
-void makenewv(node *p)
-{
-  /* improve a node time */
-  long it, imin, imax, i, num_sibs;
-  double tt, tfactor, tlow, thigh, oldlike, oldx, ymin, ymax, s32, s21, yold;
-  boolean done, already;
-  node *s, *sdown, *sib_ptr, *sib_back_ptr;
-
-  s = curtree.nodep[p->index - 1];
-  oldx = s->tyme;
-  oldlike = curtree.likelihood;
-  sdown = s->back;
-  if (s == curtree.root)
-    tlow = -10.0;
-  else
-    tlow = sdown->tyme;
-
-  sib_ptr = s;
-  num_sibs = count_sibs(p);
-
-  thigh = s->next->back->tyme;
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr      = sib_ptr->next;
-    sib_back_ptr = sib_ptr->back;
-      if (sib_back_ptr->tyme < thigh)
-        thigh = sib_back_ptr->tyme;
-  }
-  done = (thigh - tlow < 4.0*epsilon);
-  it = 1;
-  if (s != curtree.root)
-    tdelta = (thigh - tlow) / 10.0;
-  else
-    tdelta = (thigh - s->tyme) / 5.0;
-  tfactor = 1.0;
-  if (!done)
-    getthree(s, thigh, tlow); /* get three points for interpolation */
-  while (it < iterations && !done) {
-    ymax = lnl[0];
-    imax = 1;
-    for (i = 2; i <= 3; i++) { /*figure out which point has the largest */
-      if (lnl[i - 1] > ymax) { /*ln likelihood value */
-        ymax = lnl[i - 1];  
-        imax = i;
-      }
-    }
-    if (imax != 2) { /* make sure that the second point has the largest */
-      ymax = x[1];   /* ln likelihood value */
-      x[1] = x[imax - 1];
-      x[imax - 1] = ymax;
-      ymax = lnl[1];
-      lnl[1] = lnl[imax - 1];
-      lnl[imax - 1] = ymax;
-    }
-    tt = x[1];
-    yold = tt;
-    s32 = (lnl[2] - lnl[1]) / (x[2] - x[1]); /* compute slopes */
-    s21 = (lnl[1] - lnl[0]) / (x[1] - x[0]);
-    if (fabs(x[2] - x[0]) > epsilon)
-      curv = (s32 - s21) / ((x[2] - x[0]) / 2);
-    else
-      curv = 0.0;
-    slope = (s32 + s21) / 2 - curv * (x[2] - 2 * x[1] + x[0]) / 4;
-    if (curv >= 0.0) {
-      if (slope < 0)
-        tdelta = -fabs(tdelta);
-      else
-        tdelta = fabs(tdelta);
-    } else
-      tdelta = -(tfactor * slope / curv);
-    if (tt + tdelta <= tlow + epsilon)
-      tdelta = tlow + epsilon - tt;
-    if (tt + tdelta >= thigh - epsilon)
-      tdelta = thigh - epsilon - tt;
-    tt += tdelta;
-    done = (fabs(yold - tt) < epsilon || fabs(tdelta) < epsilon);
-    s->tyme = tt;
-    nuview(s);
-    lnlike = evaluate(s);
-    ymin = lnl[0];
-    imin = 1;
-    for (i = 2; i <= 3; i++) { /* figure out which of the three original */
-      if (lnl[i - 1] < ymin) { /* points has the lowest ln likelihood */
-        ymin = lnl[i - 1];
-        imin = i;
-      }
-    }
-    already = (tt == x[0]) || (tt == x[1]) || (tt == x[2]);
-    if (!already && ymin < lnlike) { /* if the minimum point is lower than   */
-      x[imin - 1] = tt;              /* our new interpolated point than take */
-      lnl[imin - 1] = lnlike;        /* that point and put it where the*/
-    }                                /* interpolated point is */
-    if (already || lnlike < oldlike) { 
-      tt = x[2];                     /* if either our interpolated point has */
-      s->tyme = x[2];                /* a lower score or is equivalent to    */
-      tfactor /= 2;                  /* our original three reinterpolate this*/
-      tdelta /= 2;                   /* time go only half as far             */
-      curtree.likelihood = lnl[2];
-      lnlike = lnl[2];
-    } else
-      tfactor = 1.0;
-
-    if (!done) {  /* apply it to the sibs */
-      sib_ptr = p;
-      num_sibs = count_sibs(p);
-      p->tyme = tt;
-      for (i=0 ; i < num_sibs; i++) {
-        sib_ptr      = sib_ptr->next;
-        sib_ptr->tyme = tt;
-      }
-  
-      sib_ptr = p;
-      nuview(p);
-      for (i=0 ; i < num_sibs; i++) {
-        sib_ptr      = sib_ptr->next;
-        nuview(sib_ptr);
-      }
-    }
-    
-    it++;
-  }
-  sib_ptr = p;
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr      = sib_ptr->next;
-    inittrav (sib_ptr);
-  }
-  smoothed = smoothed && done;
-}  /* makenewv */
-
-
-void update(node *p)
-{
-  node *sib_ptr, *sib_back_ptr;
-  long i, num_sibs;
-  
-  /* improve time and recompute views at a node */
   if (p == NULL)
-    return;
-  if (p->back != NULL) {
-    if (!p->back->tip && !p->back->initialized)
-      nuview(p->back);
-  }
+    return false;
 
-  sib_ptr = p;
-  num_sibs = count_sibs(p);
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr      = sib_ptr->next;
-    sib_back_ptr = sib_ptr->back;
-    if (sib_back_ptr != NULL) {
-      if (!sib_back_ptr->tip && !sib_back_ptr->initialized)
-        nuview(sib_back_ptr);
-    }
-  }
-
-  if ((!usertree) || (usertree && !lngths) || p->iter) {
-    makenewv(p);
-    return;
-  }
-  nuview(p);
-
-  sib_ptr = p;
-  num_sibs = count_sibs(p);
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr      = sib_ptr->next;
-    nuview(sib_ptr);  
-  }
+  if ( (!usertree) || (usertree && !lngths) )
+    return makenewv(p);
+  return false;
 }  /* update */
 
 
-void smooth(node *p)
+static boolean smooth(node *p)
 {
-  node *sib_ptr;
-  long i, num_sibs;
+  node *q = NULL;
+  boolean success;
 
   if (p == NULL)
-    return;
+    return false;
   if (p->tip)
-    return;
+    return false;
 
-  update(p);
+  /* optimize tyme here */
+  success = update(p);
 
-  smoothed = false;
-  sib_ptr = p;
-  num_sibs = count_sibs(p);
-  for (i=0; i < num_sibs; i++) {
-    sib_ptr = sib_ptr->next;
-    if (polishing || (smoothit && !smoothed)) {
-      smooth(sib_ptr->back);
-      p->initialized = false;
-      sib_ptr->initialized = false;
+  if (smoothit || polishing) {
+    for (q = p->next; q != p; q = q->next) {
+      /* smooth subtrees */
+      success = smooth(q->back) || success;
+      /* optimize tyme again after each subtree */
+      success = update(p) || success;  
     }
-    update(p);  
   }
+
+  return success;
 }  /* smooth */
 
 
-void restoradd(node *below, node *newtip, node *newfork, double prevtyme)
+static void restoradd(node *below, node *newtip, node *newfork, double prevtyme)
 {
-/* restore "new" tip and fork to place "below".  restore tymes */
-/* assumes bifurcation */
+  /* restore "new" tip and fork to place "below".  restore tymes */
+  /* assumes bifurcation */
+
   hookup(newfork, below->back);
   hookup(newfork->next, below);
   hookup(newtip, newfork->next->next);
   curtree.nodep[newfork->index-1] = newfork;
-  newfork->tyme = prevtyme;
-/* assumes bifurcations */
-  newfork->next->tyme = prevtyme;
-  newfork->next->next->tyme = prevtyme;
+  setnodetymes(newfork,prevtyme);
 } /* restoradd */
 
 
-void dnamlk_add(node *below, node *newtip, node *newfork)
+static void dnamlk_add(node *below, node *newtip, node *newfork)
 {
   /* inserts the nodes newfork and its descendant, newtip, into the tree. */
   long i;
-  boolean done;
   node *p;
+  node *above;
+  double newtyme;
+  boolean success;
 
-  below = curtree.nodep[below->index - 1];
-  newfork = curtree.nodep[newfork->index-1];
-  newtip = curtree.nodep[newtip->index-1];
-  if (below->back != NULL)
-    below->back->back = newfork;
-  newfork->back = below->back;
-  below->back = newfork->next->next;
-  newfork->next->next->back = below;
-  newfork->next->back = newtip;
-  newtip->back = newfork->next;
-  if (newtip->tyme < below->tyme)
-    p = newtip;
-  else p = below;
-  newfork->tyme = p->tyme;
+  assert( all_tymes_valid(curtree.root, 0.98*MIN_BRANCH_LENGTH, false) );
+  assert( floating_fork(newfork) );
+  assert( newtip->back == NULL );
+
+  /* Get parent nodelets */
+  below = pnode(&curtree, below);
+  newfork = pnode(&curtree, newfork);
+  newtip = pnode(&curtree, newtip);
+
+  /* Join above node to newfork */
+  if (below->back == NULL)
+    newfork->back = NULL;
+  else {
+    above = below->back;
+    /* unhookup(below, above); */
+    hookup(newfork, above);
+  }
+
+  /* Join below to newfork->next->next */
+  hookup(below, newfork->next->next);
+  /* Join newtip to newfork->next */
+  hookup(newfork->next, newtip);
+
+  /* Move root if inserting there */
   if (curtree.root == below)
     curtree.root = newfork;
+
+  /* p = child with lowest tyme */
+  p = newtip->tyme < below->tyme ? newtip : below;
+
+  /* If not at root, set newfork tyme to average below/above */
   if (newfork->back != NULL) {
     if (p->tyme > newfork->back->tyme)
-      newfork->tyme = (p->tyme + newfork->back->tyme) / 2.0;
-    else newfork->tyme = p->tyme - epsilon;
-    newfork->next->tyme = newfork->tyme;
-    newfork->next->next->tyme = newfork->tyme;
-    do {
-      p = curtree.nodep[p->back->index - 1];
-      done = (p == curtree.root);
-      if (!done)
-        done = (curtree.nodep[p->back->index - 1]->tyme < p->tyme - epsilon);
-      if (!done) {
-        curtree.nodep[p->back->index - 1]->tyme = p->tyme - epsilon;
-        curtree.nodep[p->back->index - 1]->next->tyme = p->tyme - epsilon;
-        curtree.nodep[p->back->index - 1]->next->next->tyme = p->tyme - epsilon;
-      }
-    } while (!done);
-  } else {
-      newfork->tyme = newfork->tyme - 2*epsilon;
-      newfork->next->tyme = newfork->tyme;
-      newfork->next->next->tyme = newfork->tyme;
+      newtyme = (p->tyme + newfork->back->tyme) / 2.0;
+    else
+      newtyme = p->tyme - INSERT_MIN_TYME;
+
+    if (p->tyme - newtyme < MIN_BRANCH_LENGTH)
+      newtyme = p->tyme - MIN_BRANCH_LENGTH;
+    setnodetymes(newfork, newtyme);
+    /* Now move from newfork to root, setting parent tymes older than children 
+     * by at least MIN_BRANCH_LENGTH */
+    p = newfork;
+    while (p != curtree.root) {
+      if (p->back->tyme > p->tyme - MIN_BRANCH_LENGTH)
+        setnodetymes(p->back, p->tyme - MIN_BRANCH_LENGTH);
+      else
+        break;
+      /* get parent node */
+      p = pnode(&curtree, p->back);
     }
-  inittrav(newtip);
-  inittrav(newtip->back);
-  smoothed = false;
-  i = 1;
-  while (i < smoothings && !smoothed) {
-    smoothed = true;
-    smooth(newfork);
-    smooth(newfork->back);
-    i++;
+  } else { /* root == newfork */
+    /* make root 2x older */
+    setnodetymes(newfork, p->tyme - 2*INSERT_MIN_TYME);
+  }
+
+  assert( all_tymes_valid(curtree.root, 0.98*MIN_BRANCH_LENGTH, false) );
+  
+  /* Adjust branch lengths throughout */
+#ifdef DEBUG
+  fprintf(stderr, "tree is:\n");
+  mlk_printree(stderr, &curtree);
+  summarize(stderr);
+#endif
+  for ( i = 1; i < smoothings; i++ ) {
+    success = smooth(newfork);
+    success = smooth(newfork->back) || success;
+    if ( !success ) break;
   }
 }  /* dnamlk_add */
 
 
-void dnamlk_re_move(node **item, node **fork, boolean tempadd)
+static void dnamlk_re_move(node **item, node **fork, boolean tempadd)
 {
-  /* removes nodes item and its ancestor, fork, from the tree.
-    the new descendant of fork's ancestor is made to be
-    fork's second descendant (other than item).  Also
-    returns pointers to the deleted nodes, item and fork */
+  /* removes nodes *item and its parent (returned in *fork), from the tree.
+    the new descendant of fork's ancestor is made to be fork's descendant other
+    than item. Item must point to node*, but *fork is not read */
   node *p, *q;
   long i;
+  boolean success;
 
   if ((*item)->back == NULL) {
     *fork = NULL;
@@ -1288,29 +1177,36 @@ void dnamlk_re_move(node **item, node **fork, boolean tempadd)
   inittrav(q);
   if (tempadd)
     return;
-  i = 1;
-  while (i <= smoothings) {
-    smooth(q);
-    if (smoothit)
-      smooth(q->back);
-    i++;
+
+#ifdef DEBUG
+  fprintf(stderr, "tree is:");
+  mlk_printree(stderr, &curtree);
+#endif
+  for ( i = 1; i <= smoothings; i++ ) {
+    success = smooth(q);
+    if ( smoothit )
+      success = smooth(q->back) || success;
+    if ( !success ) break;
   }
 }  /* dnamlk_re_move */
 
 
-void tryadd(node *p, node **item, node **nufork)
+static void tryadd(node *p, node **item, node **nufork)
 {  /* temporarily adds one fork and one tip to the tree.
     if the location where they are added yields greater
     likelihood than other locations tested up to that
     time, then keeps that location as there */
 
+  if ( !global2 ) 
+      save_tymes(&curtree,tymes);
   dnamlk_add(p, *item, *nufork);
-  like = evaluate(p);
+  like = dnamlk_evaluate(p);
   if (lastsp) {
       if (like >= bestree.likelihood || bestree.likelihood == UNDEFINED)  {
-            copy_(&curtree, &bestree, nonodes, rcategs);
-            if (global2) 
-                save_tree_tyme(&curtree,tymes);
+        copy_(&curtree, &bestree, nonodes, rcategs);
+        if ( global2 ) 
+          /* To be restored in maketree() */
+            save_tymes(&curtree,tymes);
       }
   }
   if (like > bestyet || bestyet == UNDEFINED) {
@@ -1318,17 +1214,20 @@ void tryadd(node *p, node **item, node **nufork)
     there = p;
   }
   dnamlk_re_move(item, nufork, true);
-  if ( global2 ) {
-      restore_saved_tyme(&curtree,tymes);
+  if ( !global2 ) {
+      restore_tymes(&curtree,tymes);
   }
 }  /* tryadd */
 
 
-void addpreorder(node *p, node *item_, node *nufork_, boolean contin,
+static void addpreorder(node *p, node *item_, node *nufork_, boolean contin,
                         boolean continagain)
 {
-  /* traverses a binary tree, calling function tryadd
-    at a node before calling tryadd at its descendants */
+  /* Traverse tree, adding item at different locations until we
+   * find a better likelihood. Afterwards, global 'there' will be
+   * set to the best add location, or will be left alone if no
+   * better could be found. */
+
   node *item, *nufork;
 
   item = item_;
@@ -1338,30 +1237,39 @@ void addpreorder(node *p, node *item_, node *nufork_, boolean contin,
   tryadd(p, &item, &nufork);
   contin = continagain;
   if ((!p->tip) && contin) {
+    /* assumes bifurcation (OK) */
     addpreorder(p->next->back, item, nufork, contin, continagain);
     addpreorder(p->next->next->back, item, nufork, contin, continagain);
   }
 }  /* addpreorder */
 
 
-void tryrearr(node *p, boolean *success)
+static boolean tryrearr(node *p)
 {
   /* evaluates one rearrangement of the tree.
     if the new tree has greater likelihood than the old
-    one sets success = TRUE and keeps the new tree.
-    otherwise, restores the old tree */
-  node *frombelow, *whereto, *forknode;
-  double oldlike, prevtyme;
-  boolean wasonleft;
+    keeps the new tree and returns true.
+    otherwise, restores the old tree and returns false. */
+
+  node *forknode;       /* parent fork of p */
+  node *frombelow;      /* other child of forknode */
+  node *whereto;        /* parent fork of forknode */
+
+  double oldlike;       /* likelihood before rearrangement */
+  double prevtyme;      /* forknode->tyme before rearrange */
+  double like_delta;    /* improvement in likelihood */
+  boolean wasonleft;    /* true if p first child of forknode */
 
   if (p == curtree.root)
-    return;
+    return false;
+  /* forknode = parent fork of p */
   forknode = curtree.nodep[p->back->index - 1];
   if (forknode == curtree.root)
-    return;
+    return false;
   oldlike = bestyet;
   prevtyme = forknode->tyme;
-/* the following statement presumes bifurcating tree */
+  /* assumes bifurcation (OK) */
+  /* frombelow = other child of forknode (not p) */
   if (forknode->next->back == p) {
     frombelow = forknode->next->next->back;
     wasonleft = true;
@@ -1371,10 +1279,16 @@ void tryrearr(node *p, boolean *success)
     wasonleft = false;
   }
   whereto = curtree.nodep[forknode->back->index - 1];
+
+  /* remove forknode and p */
   dnamlk_re_move(&p, &forknode, true);
+
+  /* add p and forknode as parent of whereto */
   dnamlk_add(whereto, p, forknode);
-  like = evaluate(p);
-  if (like <= oldlike && oldlike != UNDEFINED) {
+
+  like = dnamlk_evaluate(p);
+  like_delta = like - oldlike;
+  if ( like_delta < LIKE_EPSILON && oldlike != UNDEFINED) {
     dnamlk_re_move(&p, &forknode, true);
     restoradd(frombelow, p, forknode, prevtyme);
     if (wasonleft && (forknode->next->next->back == p)) {
@@ -1382,53 +1296,63 @@ void tryrearr(node *p, boolean *success)
        hookup (forknode->next, p);
     }
     curtree.likelihood = oldlike;
+
+    /* assumes bifurcation (OK) */
     inittrav(forknode);
     inittrav(forknode->next);
     inittrav(forknode->next->next);
+
+    return false;
   } else {
-    (*success) = true;
     bestyet = like;
   }
+  return true;
 }  /* tryrearr */
 
 
-void repreorder(node *p, boolean *success)
+static boolean repreorder(node *p)
 {
   /* traverses a binary tree, calling function tryrearr
-    at a node before calling tryrearr at its descendants */
+    at a node before calling tryrearr at its descendants.
+    Returns true the first time rearrangement increases the
+    tree's likelihood. */
+
   if (p == NULL)
-    return;
-  tryrearr(p, success);
+    return false;
+  if ( !tryrearr(p) )
+    return false;
   if (p->tip)
-    return;
-  if (!(*success))
-    repreorder(p->next->back, success);
-  if (!(*success))
-    repreorder(p->next->next->back, success);
+    return true;
+  /* assumes bifurcation */
+  if ( !repreorder(p->next->back) )
+    return false;
+  if ( !repreorder(p->next->next->back) )
+    return false;
+  
+  return true;
 }  /* repreorder */
 
 
-void rearrange(node **r)
+static void rearrange(node **r)
 {
   /* traverses the tree (preorder), finding any local
     rearrangement which increases the likelihood.
     if traversal succeeds in increasing the tree's
     likelihood, function rearrange runs traversal again */
-  boolean success;
-  success = true;
-  while (success) {
-    success = false;
-    repreorder(*r, &success);
-  }
+  while ( repreorder(*r) )
+    /* continue */;
+
 }  /* rearrange */
 
 
-void initdnamlnode(node **p, node **grbg, node *q, long len, long nodei,
+static void initdnamlnode(node **p, node **grbg, node *q, long len, long nodei,
                      long *ntips, long *parens, initops whichinit,
                      pointarray treenode, pointarray nodep, Char *str, Char *ch,
                      char** treestr)
 {
-  /* initializes a node */
+  /* Initializes each node as it is read from user tree by treeread().
+   * whichinit specifies which type of initialization is to be done.
+   */
   boolean minusread;
   double valyew, divisor;
 
@@ -1450,7 +1374,9 @@ void initdnamlnode(node **p, node **grbg, node *q, long len, long nodei,
     break;
   case iter:
     (*p)->initialized = false;
-    (*p)->v = initialv;
+    /* Initial branch lengths start at 0.0. tymetrav() enforces
+     * MIN_BRANCH_LENGTH */
+    (*p)->v = 0.0;
     (*p)->iter = true;
     if ((*p)->back != NULL)
       (*p)->back->iter = true;
@@ -1467,230 +1393,51 @@ void initdnamlnode(node **p, node **grbg, node *q, long len, long nodei,
   case hslength:
     break;
   case hsnolength:
+    if (usertree && lengthsopt && lngths) {
+      printf("Warning: one or more lengths not defined in user tree number %ld.\n", which);
+      printf("DNAMLK will attempt to optimize all branch lengths.\n\n");
+      lngths = false;
+    }
     break;
   case treewt:
     break;
   case unittrwt:
-    curtree.nodep[spp]->iter = false; 
     break;
   }
 } /* initdnamlnode */
 
 
-void tymetrav(node *p, double *x)
+static boolean tymetrav(node *p)
 {
-  /* set up times of nodes */
-  node *sib_ptr, *q;
-  long i, num_sibs;
+  /* Recursively convert branch lengths to node tymes. Returns the maximum
+   * branch length p's parent can have, which is p->tyme - max(p->v,
+   * MIN_BRANCH_LENGTH) */
+
+  node *q;
   double xmax;
+  double x;
 
   xmax = 0.0;
   if (!p->tip) {
-    sib_ptr  = p;
-    num_sibs = count_sibs(p);
-    for (i=0; i < num_sibs; i++) {
-      sib_ptr = sib_ptr->next;
-      tymetrav(sib_ptr->back, x);
-      if (xmax > (*x))
-        xmax = (*x);
+    for (q = p->next; q != p; q = q->next) {
+      x = tymetrav(q->back);
+      if (xmax > x)
+        xmax = x;
     }
-  } else
-    (*x)     = 0.0;
-  p->tyme  = xmax;
-  if (!p->tip) {
-    q = p;
-    while (q->next != p) {
-      q = q->next;
-      q->tyme = p->tyme;
-    }
+  } else {
+    x = 0.0;
   }
-  (*x) = p->tyme - p->v;
+
+  setnodetymes(p,xmax);
+
+  if (p->v < MIN_BRANCH_LENGTH)
+    return xmax - MIN_BRANCH_LENGTH;
+  else 
+    return xmax - p->v;
 }  /* tymetrav */
 
 
-void dnamlk_coordinates(node *p, long *tipy)
-{
-  /* establishes coordinates of nodes */
-  node *q, *first, *last, *pp1 =NULL, *pp2 =NULL;
-  long num_sibs, p1, p2, i;
-
-  if (p->tip) {
-    p->xcoord = 0;
-    p->ycoord = (*tipy);
-    p->ymin   = (*tipy);
-    p->ymax   = (*tipy);
-    (*tipy)  += down;
-    return;
-  }
-  q = p->next;
-  do {
-    dnamlk_coordinates(q->back, tipy);
-    q = q->next;
-  } while (p != q);
-  num_sibs = count_sibs(p);
-  p1 = (long)((num_sibs+1)/2.0);
-  p2 = (long)((num_sibs+2)/2.0);
-  i = 1;
-  q = p->next;
-  first  = q->back;
-  do {
-    if (i == p1) pp1 = q->back;
-    if (i == p2) pp2 = q->back;
-    last = q->back;
-    q = q->next;
-    i++;
-  } while (q != p);
-  p->xcoord = (long)(0.5 - over * p->tyme);
-  p->ycoord = (pp1->ycoord + pp2->ycoord) / 2;
-  p->ymin = first->ymin;
-  p->ymax = last->ymax;
-}  /* dnamlk_coordinates */
-
-
-void dnamlk_drawline(long i, double scale)
-{
-  /* draws one row of the tree diagram by moving up tree */
-  node *p, *q, *r, *first =NULL, *last =NULL;
-  long n, j;
-  boolean extra, done;
-
-  p = curtree.root;
-  q = curtree.root;
-  extra = false;
-  if ((long)(p->ycoord) == i) {
-    if (p->index - spp >= 10)
-      fprintf(outfile, "-%2ld", p->index - spp);
-    else
-      fprintf(outfile, "--%ld", p->index - spp);
-    extra = true;
-  } else
-    fprintf(outfile, "  ");
-  do {
-    if (!p->tip) {
-      r = p->next;
-      done = false;
-      do {
-        if (i >= r->back->ymin && i <= r->back->ymax) {
-          q = r->back;
-          done = true;
-        }
-        r = r->next;
-      } while (!(done || r == p));
-      first = p->next->back;
-      r = p->next;
-      while (r->next != p)
-        r = r->next;
-      last = r->back;
-    }
-    done = (p == q);
-    n = (long)(scale * ((long)(p->xcoord) - (long)(q->xcoord)) + 0.5);
-    if (n < 3 && !q->tip)
-      n = 3;
-    if (extra) {
-      n--;
-      extra = false;
-    }
-    if ((long)(q->ycoord) == i && !done) {
-      if (p->ycoord != q->ycoord)
-        putc('+', outfile);
-      else
-        putc('-', outfile);
-      if (!q->tip) {
-        for (j = 1; j <= n - 2; j++)
-          putc('-', outfile);
-        if (q->index - spp >= 10)
-          fprintf(outfile, "%2ld", q->index - spp);
-        else
-          fprintf(outfile, "-%ld", q->index - spp);
-        extra = true;
-      } else {
-        for (j = 1; j < n; j++)
-          putc('-', outfile);
-      }
-    } else if (!p->tip) {
-      if ((long)(last->ycoord) > i && (long)(first->ycoord) < i && 
-           i != (long)(p->ycoord)) {
-        putc('!', outfile);
-        for (j = 1; j < n; j++)
-          putc(' ', outfile);
-      } else {
-        for (j = 1; j <= n; j++)
-          putc(' ', outfile);
-      }
-    } else {
-      for (j = 1; j <= n; j++)
-        putc(' ', outfile);
-    }
-    if (p != q)
-      p = q;
-  } while (!done);
-  if ((long)(p->ycoord) == i && p->tip) {
-    for (j = 0; j < nmlngth; j++)
-      putc(nayme[p->index - 1][j], outfile);
-  }
-  putc('\n', outfile);
-}  /* dnamlk_drawline */
-
-
-void dnamlk_printree()
-{
- /* prints out diagram of the tree */
-  long tipy;
-  double scale;
-  long i;
-  node *p;
-
-  if (!treeprint)
-    return;
-  putc('\n', outfile);
-  tipy = 1;
-  dnamlk_coordinates(curtree.root, &tipy);
-  p = curtree.root;
-  while (!p->tip)
-    p = p->next->back;
-  scale = 1.0 / (long)(p->tyme - curtree.root->tyme + 1.000);
-  putc('\n', outfile);
-  for (i = 1; i <= tipy - down; i++)
-    dnamlk_drawline(i, scale);
-  putc('\n', outfile);
-}  /* dnamlk_printree */
-
-
-void describe(node *p)
-{
-  long i, num_sibs;
-  node *sib_ptr, *sib_back_ptr;
-  double v;
-
-  if (p == curtree.root)
-    fprintf(outfile, " root         ");
-  else
-    fprintf(outfile, "%4ld          ", p->back->index - spp);
-  if (p->tip) {
-    for (i = 0; i < nmlngth; i++)
-      putc(nayme[p->index - 1][i], outfile);
-  } else
-    fprintf(outfile, "%4ld      ", p->index - spp);
-  if (p != curtree.root) {
-    fprintf(outfile, "%11.5f", fracchange * (p->tyme - curtree.root->tyme));
-    v = fracchange * (p->tyme - curtree.nodep[p->back->index - 1]->tyme);
-    fprintf(outfile, "%13.5f", v);
-  }
-  putc('\n', outfile);
-  if (!p->tip) {
-
-    sib_ptr = p;
-    num_sibs = count_sibs(p);
-    for (i=0 ; i < num_sibs; i++) {
-      sib_ptr      = sib_ptr->next;
-      sib_back_ptr = sib_ptr->back;
-      describe(sib_back_ptr);
-    }
-  }
-}  /* describe */
-
-
-void reconstr(node *p, long n)
+static void reconstr(node *p, long n)
 {
   /* reconstruct and print out base at site n+1 at node p */
   long i, j, k, m, first, second, num_sibs;
@@ -1745,7 +1492,7 @@ void reconstr(node *p, long n)
 } /* reconstr */
 
 
-void rectrav(node *p, long m, long n)
+static void rectrav(node *p, long m, long n)
 {
   /* print out segment of reconstructed sequence for one branch */
   long num_sibs, i;
@@ -1780,9 +1527,9 @@ void rectrav(node *p, long m, long n)
 }  /* rectrav */
 
 
-void summarize()
+static void summarize(FILE *fp)
 {
-  long i, j, mm=0;
+  long i, j, mm;
   double mode, sum;
   double like[maxcategs], nulike[maxcategs];
   double **marginal;
@@ -1790,11 +1537,11 @@ void summarize()
   mp = (long **)Malloc(sites * sizeof(long *));
   for (i = 0; i <= sites-1; ++i)
     mp[i] = (long *)Malloc(sizeof(long)*rcategs);
-  fprintf(outfile, "\nLn Likelihood = %11.5f\n\n", curtree.likelihood);
-  fprintf(outfile, " Ancestor      Node      Node Height     Length\n");
-  fprintf(outfile, " --------      ----      ---- ------     ------\n");
-  describe(curtree.root);
-  putc('\n', outfile);
+  fprintf(fp, "\nLn Likelihood = %11.5f\n\n", curtree.likelihood);
+  fprintf(fp, " Ancestor      Node      Node Height     Length\n");
+  fprintf(fp, " --------      ----      ---- ------     ------\n");
+  mlk_describe(fp, &curtree, fracchange);
+  putc('\n', fp);
   if (rctgry && rcategs > 1) {
     for (i = 0; i < rcategs; i++)
       like[i] = 1.0;
@@ -1828,22 +1575,22 @@ void summarize()
       }
     }
     mx0 = mx;
-    fprintf(outfile,
+    fprintf(fp,
  "Combination of categories that contributes the most to the likelihood:\n\n");
     for (i = 1; i <= nmlngth + 3; i++)
-      putc(' ', outfile);
+      putc(' ', fp);
     for (i = 1; i <= sites; i++) {
-      fprintf(outfile, "%ld", mx);
+      fprintf(fp, "%ld", mx);
       if (i % 10 == 0)
-        putc(' ', outfile);
+        putc(' ', fp);
       if (i % 60 == 0 && i != sites) {
-        putc('\n', outfile);
+        putc('\n', fp);
         for (j = 1; j <= nmlngth + 3; j++)
-          putc(' ', outfile);
+          putc(' ', fp);
       }
       mx = mp[i - 1][mx - 1];
     }
-    fprintf(outfile, "\n\n");
+    fprintf(fp, "\n\n");
     marginal = (double **) Malloc( sites*sizeof(double *));
     for (i = 0; i < sites; i++)
       marginal[i] = (double *) Malloc( rcategs*sizeof(double));
@@ -1889,10 +1636,12 @@ void summarize()
       for (j = 0; j < rcategs; j++)
         marginal[i][j] /= sum;
     }
-    fprintf(outfile, "Most probable category at each site if > 0.95 probability (\".\" otherwise)\n\n");
+    fprintf( fp, "Most probable category at each site if > 0.95 probability "
+        "(\".\" otherwise)\n\n" );
     for (i = 1; i <= nmlngth + 3; i++)
-      putc(' ', outfile);
+      putc(' ', fp);
     for (i = 0; i < sites; i++) {
+      mm = 0;
       sum = 0.0;
       for (j = 0; j < rcategs; j++)
         if (marginal[i][j] > sum) {
@@ -1900,32 +1649,32 @@ void summarize()
           mm = j;
         }
         if (sum >= 0.95)
-        fprintf(outfile, "%ld", mm+1);
+        fprintf(fp, "%ld", mm+1);
       else
-        putc('.', outfile);
+        putc('.', fp);
       if ((i+1) % 60 == 0) {
         if (i != 0) {
-          putc('\n', outfile);
+          putc('\n', fp);
           for (j = 1; j <= nmlngth + 3; j++)
-            putc(' ', outfile);
+            putc(' ', fp);
         }
       }
       else if ((i+1) % 10 == 0)
-        putc(' ', outfile);
+        putc(' ', fp);
     }
-    putc('\n', outfile);
+    putc('\n', fp);
     for (i = 0; i < sites; i++)
       free(marginal[i]);
     free(marginal);
   }
-  putc('\n', outfile);
-  putc('\n', outfile);
+  putc('\n', fp);
+  putc('\n', fp);
   if (hypstate) {
-    fprintf(outfile, "Probable sequences at interior nodes:\n\n");
-    fprintf(outfile, "  node       ");
+    fprintf(fp, "Probable sequences at interior nodes:\n\n");
+    fprintf(fp, "  node       ");
     for (i = 0; (i < 13) && (i < ((sites + (sites-1)/10 - 39) / 2)); i++)
-      putc(' ', outfile);
-    fprintf(outfile, "Reconstructed sequence (caps if > 0.95)\n\n");
+      putc(' ', fp);
+    fprintf(fp, "Reconstructed sequence (caps if > 0.95)\n\n");
     if (!rctgry || (rcategs == 1))
       mx0 = 1;
     for (i = 0; i < sites; i += 60) {
@@ -1933,7 +1682,7 @@ void summarize()
       if (k >= sites)
         k = sites - 1;
       rectrav(curtree.root, i, k);
-      putc('\n', outfile);
+      putc('\n', fp);
       mx0 = mx1;
     }
   }
@@ -1943,7 +1692,7 @@ void summarize()
 }  /* summarize */
 
 
-void dnamlk_treeout(node *p)
+static void dnamlk_treeout(node *p)
 {
   /* write out file with representation of final tree */
   node *sib_ptr;
@@ -2003,46 +1752,15 @@ void dnamlk_treeout(node *p)
 }  /* dnamlk_treeout */
 
 
-void nodeinit(node *p)
+static void init_tymes(node *p, double minlength)
 {
-  /* set up times at one node */
-  node *sib_ptr, *sib_back_ptr;
-  long i, num_sibs;
-  double lowertyme;
-
-  sib_ptr = p;
-  num_sibs = count_sibs(p);
-
-  /* lowertyme = lowest of children's times */
-  lowertyme = p->next->back->tyme;
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr      = sib_ptr->next;
-    sib_back_ptr = sib_ptr->back;
-    if (sib_back_ptr->tyme < lowertyme)
-      lowertyme = sib_back_ptr->tyme;
-  }
-
-  p->tyme = lowertyme - 0.1;
-
-  sib_ptr = p;
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr = sib_ptr->next;
-    sib_back_ptr = sib_ptr->back;
-
-    sib_ptr->tyme = p->tyme;
-    sib_back_ptr->v = sib_back_ptr->tyme - p->tyme;
-    sib_ptr->v = sib_back_ptr->v;
-  }
-}  /* nodeinit */
-
-
-void initrav(node *p)
-{
+  /* Set all node tymes closest to the tips but with no branches shorter than
+   * minlength */
 
   long i, num_sibs;
   node *sib_ptr, *sib_back_ptr;
 
-  /* traverse to set up times throughout tree */
+  /* traverse to set up times in subtrees */
   if (p->tip)
     return;
 
@@ -2051,100 +1769,57 @@ void initrav(node *p)
   for (i=0 ; i < num_sibs; i++) {
     sib_ptr      = sib_ptr->next;
     sib_back_ptr = sib_ptr->back;
-    initrav(sib_back_ptr);
+    init_tymes(sib_back_ptr, minlength);
   }
 
-  nodeinit(p);
-}  /* initrav */
+  /* set time at this node */
+  setnodetymes(p, min_child_tyme(p) - minlength);
+
+}  /* init_tymes */
 
 
-void travinit(node *p)
-{
-  long i, num_sibs;
-  node *sib_ptr, *sib_back_ptr;
-
-  /* traverse to set up initial values */
-  if (p == NULL)
-    return;
-  if (p->tip)
-    return;
-  if (p->initialized)
-    return;
-
-  sib_ptr = p;
-  num_sibs = count_sibs(p);
-  for (i=0 ; i < num_sibs; i++) {
-    sib_ptr      = sib_ptr->next;
-    sib_back_ptr = sib_ptr->back;
-    travinit(sib_back_ptr);
-  }
-
-  nuview(p);
-  p->initialized = true;
-}  /* travinit */
-
-
-void travsp(node *p)
-{
-  long i, num_sibs;
-  node *sib_ptr, *sib_back_ptr;
-
-  /* traverse to find tips */
-  if (p == curtree.root)
-    travinit(p);
-  if (p->tip)
-    travinit(p->back);
-  else {
-    sib_ptr = p;
-    num_sibs = count_sibs(p);
-    for (i=0 ; i < num_sibs; i++) {
-      sib_ptr      = sib_ptr->next;
-      sib_back_ptr = sib_ptr->back;
-      travsp(sib_back_ptr);
-    }
-  }
-}  /* travsp */
-
-
-void treevaluate()
+static void treevaluate(void)
 {
   /* evaluate likelihood of tree, after iterating branch lengths */
-  long i, j,  num_sibs;
-  node *sib_ptr;
+  long i;
 
-  polishing = true;
-  smoothit = true;
-  if (lngths == 0 && usertree == 1) {
-    for (i = 0; i < spp; i++)
-        curtree.nodep[i]->initialized = false;
-    for (i = spp; i < nonodes; i++) {
-        sib_ptr = curtree.nodep[i];
-        sib_ptr->initialized = false;
-        num_sibs = count_sibs(sib_ptr);
-        for (j=0 ; j < num_sibs; j++) {
-        sib_ptr      = sib_ptr->next;
-        sib_ptr->initialized = false;
-        }
+  if ( !usertree || (usertree && !lngths) ) {
+#ifdef DEBUG
+    fprintf(stderr, "tree is:");
+    mlk_printree(stderr, &curtree);
+    summarize(stderr);
+#endif
+    polishing = true;
+    smoothit = true;
+    for (i = 0; i < smoothings; ) {
+      if ( !smooth(curtree.root) )
+        i++;
     }
-    initrav(curtree.root);
-    travsp(curtree.root);
   }
-  for (i = 1; i <= smoothings * 4; i++)
-    smooth(curtree.root);
-  evaluate(curtree.root);
+
+  dnamlk_evaluate(curtree.root);
+
+#ifdef DEBUG
+  fprintf(stderr, "final tree is:");
+  mlk_printree(stderr, &curtree);
+  summarize(stderr);
+#endif
+
 }  /* treevaluate */
 
 
-void maketree()
+static void maketree(void)
 {
   /* constructs a binary tree from the pointers in curtree.nodep,
      adds each node at location which yields highest likelihood
      then rearranges the tree for greatest likelihood */
 
   long i, j;
-  double x;
   node *item, *nufork, *dummy, *q, *root=NULL;
   boolean succeded, dummy_haslengths, dummy_first, goteof;
+  long max_nonodes;        /* Maximum number of nodes required to
+                            * express all species in a bifurcating tree
+                            * */
   long nextnode;
   pointarray dummy_treenode=NULL;
   double oldbest;
@@ -2189,7 +1864,7 @@ void maketree()
       lastsp = (i == spp);
       addpreorder(curtree.root, item, nufork, true, true);
       dnamlk_add(there, item, nufork);
-      like = evaluate(curtree.root);
+      like = dnamlk_evaluate(curtree.root);
       copy_(&curtree, &bestree, nonodes, rcategs);
       rearrange(&curtree.root);
       if (curtree.likelihood > bestree.likelihood) {
@@ -2202,6 +1877,7 @@ void maketree()
 #endif
       }
       if (lastsp && global) {
+        /* perform global rearrangements */
         if (progress) {
           printf("Doing global rearrangements\n");
           printf("  !");
@@ -2210,18 +1886,19 @@ void maketree()
               putchar('-');
           printf("!\n");
         }
-        global2 = true;
+        global2 = false;
         do {
           succeded = false;
           if (progress)
             printf("   ");
-          save_tree_tyme(&curtree, tymes);
+          /* FIXME: tymes gets clobbered by tryadd() */
+          /* save_tymes(&curtree, tymes); */
           for (j = 0; j < nonodes; j++) {
             oldbest = bestree.likelihood;
             bestyet = UNDEFINED;
             item = curtree.nodep[j];
             if (item != curtree.root) {
-              nufork = curtree.nodep[curtree.nodep[j]->back->index - 1];
+              nufork = pnode(&curtree, item->back); /* parent fork */
               
               if (nufork != curtree.root) {  
                 tmp = nufork->next->back;
@@ -2234,13 +1911,16 @@ void maketree()
                       tmp  = nufork->next->back;
                   else tmp = nufork->next->next->back;
               } /* if we add item at tmp we have done nothing */
+              assert( all_tymes_valid(curtree.root, 0.98*MIN_BRANCH_LENGTH, false) );
               dnamlk_re_move(&item, &nufork, false);
-              there = curtree.root;
+              /* there = curtree.root; */
+              there = tmp;
               addpreorder(curtree.root, item, nufork, true, true);
               if ( tmp != there && bestree.likelihood > oldbest)
                 succeded = true;
               dnamlk_add(there, item, nufork);
-              restore_saved_tyme(&curtree,tymes);
+              if (global2)
+                restore_tymes(&curtree,tymes);
             }
             if (progress) {
               if ( j % (( nonodes / 72 ) + 1 ) == 0 )
@@ -2265,15 +1945,17 @@ void maketree()
       else copy_(&bestree, &curtree, nonodes, rcategs);
       fprintf(outfile, "\n\n");
       treevaluate();
-      curtree.likelihood = evaluate(curtree.root);
-      dnamlk_printree();
-      summarize();
+      curtree.likelihood = dnamlk_evaluate(curtree.root);
+      if (treeprint)
+        mlk_printree(outfile, &curtree);
+      summarize(outfile);
       if (trout) {
         col = 0;
         dnamlk_treeout(curtree.root);
       }
     } 
-  } else {
+  } else { /* if ( usertree ) */
+    /* Open in binary: ftell() is broken for UNIX line-endings under WIN32 */
     treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
     inittable_for_usertree (treestr);
     if(numtrees > MAXSHIMOTREES)
@@ -2294,6 +1976,7 @@ void maketree()
     }
     fprintf(outfile, "\n\n");
     which = 1;
+    max_nonodes = nonodes;
     while (which <= numtrees) {
       
       /* These initializations required each time through the loop
@@ -2302,19 +1985,13 @@ void maketree()
       nextnode         = 0;
       dummy_first      = true;
       goteof           = false;
+      lngths           = lengthsopt;
+      nonodes          = max_nonodes;
 
       treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, dummy_treenode, &goteof, &dummy_first,
-               curtree.nodep, &nextnode,
-               &dummy_haslengths, &grbg, initdnamlnode);
-
-      nonodes = nextnode;
-      
-      root = curtree.nodep[root->index - 1];
-      curtree.root = root;
-
-      if (lngths)
-        tymetrav(curtree.root, &x);
+               curtree.nodep, &nextnode, &dummy_haslengths, &grbg, 
+               initdnamlnode, false, nonodes);
 
       if (goteof && (which <= numtrees)) {
         /* if we hit the end of the file prematurely */
@@ -2322,12 +1999,22 @@ void maketree()
         printf ("ERROR: trees missing at end of file.\n");
         printf ("\tExpected number of trees:\t\t%ld\n", numtrees);
         printf ("\tNumber of trees actually in file:\t%ld.\n\n", which - 1);
-        embExitBad();
+        exxit(-1);
       }
-      curtree.start = curtree.nodep[0]->back;
+
+      nonodes = nextnode;
+      root = curtree.nodep[root->index - 1];
+      curtree.root = root;
+
+      if (lngths)
+        tymetrav(curtree.root);
+      else
+        init_tymes(curtree.root, initialv);
+
       treevaluate();
-      dnamlk_printree();
-      summarize();
+      if (treeprint)
+        mlk_printree(outfile, &curtree);
+      summarize(outfile);
       if (trout) {
         col = 0;
         dnamlk_treeout(curtree.root);
@@ -2337,7 +2024,7 @@ void maketree()
         gdispose(curtree.root, &grbg, curtree.nodep);
       }
       which++;
-    }      
+    }
 
     FClose(intree);
     if (!auto_ && numtrees > 1 && weightsum > 1 )
@@ -2360,6 +2047,7 @@ void maketree()
     }
   }
   free(root);
+  freetable();
 } /* maketree */
 
 /*?? Dnaml has a clean-up function for freeing memory, closing files, etc.
@@ -2367,6 +2055,8 @@ void maketree()
 
 int main(int argc, Char *argv[])
 {  /* DNA Maximum Likelihood with molecular clock */
+  /* Initialize mlclock.c */
+  mlclock_init(&curtree, &dnamlk_evaluate);
 
 #ifdef MAC
   argc = 1;                /* macsetup("Dnamlk", "Dnamlk");        */
@@ -2383,6 +2073,7 @@ int main(int argc, Char *argv[])
 
   ttratio0    = ttratio;
 
+  /* Data set loop */
   for (ith = 1; ith <= datasets; ith++) {
     ttratio = ttratio0;
     if (datasets > 1) {
@@ -2393,9 +2084,16 @@ int main(int argc, Char *argv[])
     getinput();
     if (ith == 1)
       firstset = false;
-    for (jumb = 1; jumb <= njumble; jumb++)
+
+    /* Jumble loop */
+    if (usertree)
       maketree();
+    else
+      for (jumb = 1; jumb <= njumble; jumb++)
+        maketree();
   }
+
+  /* Close files */
   FClose(infile);  
   FClose(outfile);
   FClose(outtree);

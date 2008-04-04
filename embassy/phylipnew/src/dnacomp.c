@@ -2,7 +2,7 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -230,7 +230,7 @@ void allocrest()
   ally = (steptr)Malloc(chars*sizeof(long));
   location = (steptr)Malloc(chars*sizeof(long));
   place = (long *)Malloc((2*spp-1)*sizeof(long));
-  in_tree = (boolptr)Malloc(chars*sizeof(boolean));
+  in_tree = (boolptr)Malloc(spp*sizeof(boolean));
 }  /* allocrest */
 
 
@@ -588,7 +588,7 @@ void tryrearr(node *p, boolean *success)
   fillin(temp, temp1, p);
   fillin(temp1, temp, whereto->back);
   evaluate(temp1);
-  if (like <= oldlike) {
+  if (like <= oldlike + LIKE_EPSILON) {
     if (p != forknode->next->next->back)
       return;
     q = forknode->next;
@@ -994,7 +994,8 @@ void maketree()
       haslengths = true;
       treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
       treeread(&treestr, &root, treenode, &goteof, &firsttree,
-                 nodep, &nextnode, &haslengths, &grbg, initdnacompnode);
+               nodep, &nextnode, &haslengths, &grbg,
+               initdnacompnode,false,nonodes);
       for (j = 0; j < spp; j++)
         names[j] = false;
       initboolnames(root, names);

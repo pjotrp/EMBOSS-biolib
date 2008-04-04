@@ -104,7 +104,7 @@
 
 <tr>
 <td>-lower</td>
-<td>Lower triangular distance matrix</td>
+<td>Output as a lower triangular distance matrix</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>

@@ -8,8 +8,6 @@
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
 
-#define overr           4
-#define which           1
 #define maxsz           999   /* size of pointer array for the undo trees */
                               /* this can be large without eating memory */
 
@@ -141,9 +139,9 @@ long *zeros;                                          /*treeread variables*/
 pointptr treenode;   /* pointers to all nodes in tree */
 double threshold;
 double *threshwt;
-boolean reversed[13];
-boolean graphic[13];
-unsigned char chh[13];
+boolean reversed[(long)question - (long)horiz + 1];
+boolean graphic[(long)question - (long)horiz + 1];
+unsigned char chh[(long)question - (long)horiz + 1];
 howtree how;
 gbases *garbage;
 char *progname;
@@ -1379,6 +1377,7 @@ void yourtree(void)
 #ifdef WIN32
         phyFillScreenColor();
 #endif
+        fflush(stdout);
         scanf("%c%*[^\n]", &ch);
         getchar();
         if (ch == '\n')
@@ -1468,7 +1467,7 @@ void buildtree(void)
     treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
     treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
-                &grbg, initdnamovenode); /*debug*/
+                &grbg, initdnamovenode,true,nonodes);
     for (i = spp; i < (nextnode); i++) {
       p = treenode[i];
       for (j = 1; j <= 3; j++) {
@@ -1648,6 +1647,7 @@ void rearrange(void)
 #ifdef WIN32
           phyFillScreenColor();
 #endif
+          fflush(stdout);
           scanf("%c%*[^\n]", &ch);
           getchar();
           if (ch == '\n')
@@ -2098,6 +2098,7 @@ void redisplay(void)
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     getchar();
     uppercase(&ch); 
@@ -2198,6 +2199,7 @@ void redisplay(void)
 #ifdef WIN32
     phyFillScreenColor();
 #endif
+    fflush(stdout);
     scanf("%c%*[^\n]", &ch);
     getchar();
     if (ch == 'Y' || ch == 'y')

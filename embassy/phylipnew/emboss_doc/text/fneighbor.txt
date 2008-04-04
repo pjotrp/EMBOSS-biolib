@@ -221,7 +221,7 @@ Output file format
   File: neighbor.fneighbor
 
 
-Neighbor-Joining/UPGMA method version 3.6b
+Neighbor-Joining/UPGMA method version 3.67
 
 
    7 Populations

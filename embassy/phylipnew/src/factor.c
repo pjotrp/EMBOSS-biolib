@@ -1,7 +1,7 @@
 
 #include "phylip.h"
 
-/* version 3.6. (c) Copyright 1988-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1988-2004 by the University of Washington.
    A program to factor multistate character trees.
    Originally version 29 May 1983 by C. A. Meacham, Botany Department,
      University of Georgia
@@ -351,7 +351,10 @@ void dotrees()
   offset = 0;
   charnumber = 0;
   ajFileGetsTrim(inputfile, &rdline);
-  ajFmtScanS(rdline, "%d", &ival);
+  if(ajFmtScanS(rdline, "%d", &ival) != 1) {
+    printf("Invalid input file!\n");
+    embExitBad();
+  }      
   charnumber = ival;
   while (charnumber < 999) {
     if (charnumber < lastchar) {
@@ -554,7 +557,7 @@ int main(int argc, Char *argv[])
   emboss_getoptions("ffactor", argc, argv);
 
   ajFileGetsTrim(inputfile, &rdline);
-  sscanf(ajStrGetPtr(rdline), "%ld%ld*[^\n]", &neus, &nchars);
+  sscanf(ajStrGetPtr(rdline), "%ld%ld", &neus, &nchars);
 
   charnum = (long *)Malloc(nchars*sizeof(long));
   chstart = (long *)Malloc(nchars*sizeof(long));

@@ -27,7 +27,7 @@
 
 <tr>
 <td>-ancfile</td>
-<td>Phylip ancestral states file</td>
+<td>Phylip ancestral states file (optional)</td>
 <td>Property value(s)</td>
 <td>&nbsp;</td>
 </tr>

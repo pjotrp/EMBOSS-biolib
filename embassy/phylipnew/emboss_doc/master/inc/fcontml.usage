@@ -10,7 +10,6 @@ Input file: <b>contml.dat</b>
 Phylip tree file (optional): <b></b>
 Phylip contml program output file [contml.fcontml]: <b></b>
 
-all: true
 Adding species:
    1. European  
    2. African   

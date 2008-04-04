@@ -22,7 +22,7 @@ section: input [
     parameter: "Y"
     nullok: "Y"
     knowntype: "newick"
-    information: "phylip tree file (optional)"
+    information: "Phylip tree file (optional)"
   ]
 
   properties: weights [

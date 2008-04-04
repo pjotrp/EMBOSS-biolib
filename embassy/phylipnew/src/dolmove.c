@@ -1007,7 +1007,7 @@ void buildtree()
     treestr = ajStrGetuniquePtr(&phylotrees[0]->Tree);
     treeread(&treestr, &root, treenode, &goteof, &firsttree,
                 nodep, &nextnode, &haslengths,
-                &grbg, initdolmovenode); /*debug*/
+                &grbg, initdolmovenode,false,nonodes);
     for (i = spp; i < (nonodes); i++) {
       p = treenode[i];
       for (j = 1; j <= 3; j++) {

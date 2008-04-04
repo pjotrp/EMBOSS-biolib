@@ -2,7 +2,7 @@
   [-infile]            discretestates File containing one or more sets of
                                   restriction data
   [-outfile]           outfile    [*.frestboot] Phylip seqboot_rest program
-                                  output file'
+                                  output file
 
    Additional (Optional) qualifiers (* if not always prompted):
    -weights            properties Weights file

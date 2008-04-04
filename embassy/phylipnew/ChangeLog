@@ -1,3 +1,15 @@
+	Updated all code to phylip 3.67. The output of sevral programs has
+	changed - see the phylip release notes for details. Programs with
+	changed output are all the molecular clock algorithms : fcontml,
+	fdnaml, fdnamlk, proml, promlk, restml. ftreedist and ftreedistpair
+	branch score distance output has also changed in phylip 3.67
+
+	fontfile now works correctly in fdrawgram and fdrawtree. The
+	fontfile value must be a known phylip font in the data directory.
+
+	previewing with X11 was broken. Setting "none" for previewer no
+	longer prompts before plotting.
+
 	frestdist had a memory access error reported by valgrind. The same
 	error was found in the original phylip source, and fixed by
 	copying in code changes in phylip 3.66

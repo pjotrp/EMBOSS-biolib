@@ -4,13 +4,13 @@
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>fdrawtree </b>
+% <b>fdrawtree -previewer n </b>
 Plots an unrooted tree diagram
 Phylip tree file: <b>drawgram.tree</b>
 Phylip drawtree output file [drawgram.fdrawtree]: <b></b>
 Reading tree '(Delta,(Epsilon,(Gamma,(Beta,Alpha))));'
 
-DRAWTREE from PHYLIP version 3.6b
+DRAWTREE from PHYLIP version 3.67
 Reading tree ... 
 Tree has been read.
 Loading the font ... 

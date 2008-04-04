@@ -1,6 +1,6 @@
    Standard (Mandatory) qualifiers:
   [-infile]            frequencies File containing one or more sets of data
-  [-intreefile]        tree       Phylip tree file
+  [-intreefile]        tree       Phylip tree file (optional)
   [-outfile]           outfile    [*.fcontrast] Phylip contrast program output
                                   file
 

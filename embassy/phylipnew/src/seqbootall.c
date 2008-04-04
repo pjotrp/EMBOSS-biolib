@@ -1,7 +1,7 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2005 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, Andrew Keeffe,
    and Doug Buxton.
    Permission is granted to copy and use this program provided no fee is
@@ -38,14 +38,23 @@ void   seqboot_inputnumbersstate(AjPPhyloState);
 
 void   inputoptions(void);
 
+char **matrix_char_new(long rows, long cols);
+void   matrix_char_delete(char **mat, long rows);
+double **matrix_double_new(long rows, long cols);
+void   matrix_double_delete(double **mat, long rows);
+
 void   seqboot_inputdataseq(AjPSeqset);
 void   seqboot_inputdatafreq(AjPPhyloFreq);
 void   seqboot_inputdatarest(AjPPhyloState);
 
 void   allocrest(void);
+void   freerest(void);
 void   allocnew(void);
+void   freenew(void);
+void   allocnewer(long newergroups, long newersites);
 void   doinput(int argc, Char *argv[]);
 void   bootweights(void);
+void   permute_vec(long *a, long n);
 void   sppermute(long);
 void   charpermute(long, long);
 void   writedata(void);
@@ -55,12 +64,46 @@ void   writeauxdata(steptr, FILE*);
 void   writefactors(void);
 void   bootwrite(void);
 void   seqboot_inputaux(steptr, FILE*);
-void seqboot_inputfactors(AjPPhyloProp fact);
+void   freenewer(void);
+
+void   seqboot_inputfactors(AjPPhyloProp fact);
 
 /* function prototypes */
 #endif
 
 
+/*** Config vars ***/
+/* Mutually exclusive booleans for boostrap type */
+boolean bootstrap, jackknife;
+boolean permute;        /* permute char order */
+boolean ild;            /* permute species for each char */
+boolean lockhart;       /* permute chars within species */
+boolean rewrite;
+
+boolean factors = false; /* Use factors (only with morph data) */
+
+/* Bootstrap/jackknife sample frequency */
+boolean regular = true;  /* Use 50% sampling with bootstrap/jackknife */
+double fracsample = 0.5; /* ...or user-defined sample freq, [0..inf) */
+
+/* Output format: mutually exclusive, none indicates PHYLIP */
+boolean xml = false;
+boolean nexus = false;
+
+boolean weights = false;/* Read weights file */
+boolean categories = false;/* Use categories (permuted with dataset) */
+boolean enzymes;
+boolean all;             /* All alleles present in infile? */
+boolean justwts = false; /* Write boot'd/jack'd weights, no datasets */
+boolean mixture;
+boolean ancvar;
+boolean progress = true; /* Enable progress indications */
+
+boolean firstrep; /* TODO Must this be global? */
+longer seed;
+
+/* Filehandles and paths */
+/* Usual suspects declared in phylip.c/h */
 FILE *outcatfile, *outweightfile, *outmixfile, *outancfile, *outfactfile;
 Char infilename[FNMLNGTH], catfilename[FNMLNGTH], weightfilename[FNMLNGTH], mixfilename[FNMLNGTH], ancfilename[FNMLNGTH], factfilename[FNMLNGTH];
 
@@ -83,23 +126,38 @@ AjPFile embossoutcatfile;
 const char* outfactfilename;
 AjPFile embossoutfactfile;
 
-long sites, loci, maxalleles, groups, newsites, newersites,
-  newgroups, newergroups, nenzymes, reps, ws, blocksize, categs, maxnewsites;
-boolean bootstrap, permute, ild, lockhart, jackknife, regular, xml, nexus,
-  weights, categories, factors, enzymes, all, justwts, progress, mixture,
-  firstrep, ancvar;
-double fracsample;
+long sites, loci, maxalleles, groups, 
+  nenzymes, reps, ws, blocksize, categs, maxnewsites;
+
 datatype data;
 seqtype seq;
-steptr oldweight, where, how_many, newwhere, newhowmany,
-  newerwhere, newerhowmany, factorr, newerfactor, mixdata, ancdata;
-steptr *charorder;
-Char *factor;
-long *alleles;
-Char **nodep;
-double **nodef;
-long **sppord;
-longer seed;
+steptr oldweight, where, how_many, mixdata, ancdata;
+
+/* Original dataset */
+/* [0..spp-1][0..sites-1] */
+Char **nodep   = NULL;           /* molecular or morph data */
+double **nodef = NULL;         /* gene freqs */
+
+Char *factor = NULL;  /* factor[sites] - direct read-in of factors file */
+long *factorr = NULL; /* [0..sites-1] => nondecreasing [1..groups] */
+
+long *alleles = NULL;
+
+/* Mapping with read-in weights eliminated
+ * Allocated once in allocnew() */
+long newsites;
+long newgroups;
+long *newwhere   = NULL;    /* Map [0..newgroups-1] => [1..newsites] */
+long *newhowmany = NULL;    /* Number of chars for each [0..newgroups-1] */
+
+/* Mapping with bootstrapped weights applied */
+/* (re)allocated by allocnewer() */
+long newersites, newergroups;
+long *newerfactor  = NULL;  /* Map [0..newersites-1] => [1..newergroups] */
+long *newerwhere   = NULL;  /* Map [0..newergroups-1] => [1..newersites] */
+long *newerhowmany = NULL;  /* Number of chars for each [0..newergroups-1] */
+long **charorder   = NULL;  /* Permutation [0..spp-1][0..newergroups-1] */
+long **sppord      = NULL;  /* Permutation [0..newergroups-1][0..spp-1] */
 
 
 void emboss_getoptions(char *pgm, int argc, char *argv[])
@@ -141,7 +199,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     embInitP (pgm, argc, argv, "PHYLIPNEW");
 
-    seqset = ajAcdGetSeqset("infile");
+    seqset = ajAcdGetSeqset("infilesequences");
 
     typeofdata = ajAcdGetListSingle("datatype");
 
@@ -400,7 +458,7 @@ void inputoptions()
   }
   maxnewsites = groups * maxfactsize;
   allocnew();
-  for (i = 0; i < (groups); i++) {
+  for (i = 0; i < groups; i++) {
     if (oldweight[where[i] - 1] > 0) {
       newgroups++;
       newsites += how_many[i];
@@ -411,6 +469,58 @@ void inputoptions()
 }  /* inputoptions */
 
 
+char **matrix_char_new(long rows, long cols)
+{
+  char **mat;
+  long i;
+
+  assert(rows > 0); assert(cols > 0);
+
+  mat = (char **)Malloc(rows*sizeof(char *));
+  for (i = 0; i < rows; i++)
+    mat[i] = (char *)Malloc(cols*sizeof(char));
+
+  return mat;
+}
+
+
+void matrix_char_delete(char **mat, long rows)
+{
+  long i;
+  
+  assert(mat != NULL);
+  for (i = 0; i < rows; i++)
+    free(mat[i]);
+  free(mat);
+}
+
+
+double **matrix_double_new(long rows, long cols)
+{
+  double **mat;
+  long i;
+
+  assert(rows > 0); assert(cols > 0);
+  
+  mat = (double **)Malloc(rows*sizeof(double *));
+  for (i = 0; i < rows; i++)
+    mat[i] = (double *)Malloc(cols*sizeof(double));
+
+  return mat;
+}
+
+
+void matrix_double_delete(double **mat, long rows)
+{
+  long i;
+  
+  assert(mat != NULL);
+  for (i = 0; i < rows; i++)
+    free(mat[i]);
+  free(mat);
+}
+
+
 void seqboot_inputdataseq(AjPSeqset seqset)
 {
   /* input the names and sequences for each species */
@@ -419,9 +529,7 @@ void seqboot_inputdataseq(AjPSeqset seqset)
   boolean allread, done;
   const AjPStr str;
 
-  nodep = (Char **)Malloc(spp*sizeof(Char *));
-  for (i = 0; i < (spp); i++)
-    nodep[i] = (Char *)Malloc(sites*sizeof(Char));
+  nodep = matrix_char_new(spp, sites);
 
   j = nmlngth + (sites + (sites - 1) / 10) / 2 - 5;
   if (j < nmlngth - 1)
@@ -541,9 +649,7 @@ void seqboot_inputdatafreq(AjPPhyloFreq freq)
   ajint ipos=0;
  
 
-  nodef = (double **)Malloc(spp*sizeof(double *));
-  for (i = 0; i < (spp); i++)
-    nodef[i] = (double *)Malloc(sites*sizeof(double));
+  nodef = matrix_double_new(spp, sites);
 
   j = nmlngth + (sites + (sites - 1) / 10) / 2 - 5;
   if (j < nmlngth - 1)
@@ -650,9 +756,7 @@ void seqboot_inputdatafreq(AjPPhyloFreq freq)
   AjPStr str;
   boolean allread, done;
 
-  nodep = (Char **)Malloc(spp*sizeof(Char *));
-  for (i = 0; i < (spp); i++)
-    nodep[i] = (Char *)Malloc(sites*sizeof(Char));
+  nodep = matrix_char_new(spp, sites);
 
   j = nmlngth + (sites + (sites - 1) / 10) / 2 - 5;
   if (j < nmlngth - 1)
@@ -797,20 +901,110 @@ void allocrest()
   nayme = (naym *)Malloc(spp*sizeof(naym));
 }  /* allocrest */
 
+void freerest()
+{
+  /* Free bookkeeping arrays */
+  if (alleles)
+    free(alleles);
+  free(oldweight);
+  free(weight);
+  if (categories)
+    free(category);
+  if (mixture)
+    free(mixdata);
+  if (ancvar)
+    free(ancdata);
+  free(where);
+  free(how_many);
+  free(factor);
+  free(factorr);
+  free(nayme);
+}
+
+
 void allocnew(void)
 { /* allocate memory for arrays that depend on the lenght of the 
      output sequence*/
-  long i;
+  /* Only call this function once */
+  assert(newwhere == NULL && newhowmany == NULL); 
 
   newwhere = (steptr)Malloc(loci*sizeof(long));
   newhowmany = (steptr)Malloc(loci*sizeof(long));
-  newerwhere = (steptr)Malloc(loci*sizeof(long));
-  newerhowmany = (steptr)Malloc(loci*sizeof(long));
-  newerfactor = (steptr)Malloc(maxnewsites*maxalleles*sizeof(long));
-  charorder = (steptr *)Malloc(spp*sizeof(steptr));
-  for (i = 0; i < spp; i++)
-    charorder[i] = (steptr)Malloc(maxnewsites*sizeof(long));
 }
+
+void freenew(void)
+{ /* free arrays allocated by allocnew() */
+  /* Only call this function once */
+  assert(newwhere != NULL);
+  assert(newhowmany != NULL);
+
+  free(newwhere);
+  free(newhowmany);
+}
+
+
+void allocnewer(long newergroups, long newersites)
+{ /* allocate memory for arrays that depend on the length of the bootstrapped
+     output sequence */
+  /* Assumes that spp remains constant */
+  static long curnewergroups = 0;
+  static long curnewersites  = 0;
+
+  long i;
+
+  if (newerwhere != NULL) {
+    if (newergroups > curnewergroups) {
+      free(newerwhere);
+      free(newerhowmany);
+      for (i = 0; i < spp; i++)
+        free(charorder[i]);
+      newerwhere = NULL;
+    }
+    if (newersites > curnewersites) {
+      free(newerfactor);
+      newerfactor = NULL;
+    }
+  }
+
+  if (charorder == NULL)
+    charorder = (steptr *)Malloc(spp*sizeof(steptr));
+
+  /* Malloc() will fail if either is 0, so add a dummy element */
+  if (newergroups == 0)
+    newergroups++;
+  if (newersites == 0)
+    newersites++;
+  
+  if (newerwhere == NULL) {
+    newerwhere = (steptr)Malloc(newergroups*sizeof(long));
+    newerhowmany = (steptr)Malloc(newergroups*sizeof(long));
+    for (i = 0; i < spp; i++)
+      charorder[i] = (steptr)Malloc(newergroups*sizeof(long));
+    curnewergroups = newergroups;
+  }
+  if (newerfactor == NULL) {
+    newerfactor = (steptr)Malloc(newersites*sizeof(long));
+    curnewersites = newersites;
+  }
+}
+
+
+void freenewer()
+{
+  /* Free memory allocated by allocnewer() */
+  /* spp must be the same as when allocnewer was called */
+  long i;
+
+  if (newerwhere) {
+    free(newerwhere);
+    free(newerhowmany);
+    free(newerfactor);
+    for (i = 0; i < spp; i++)
+      free(charorder[i]);
+    free(charorder);
+  }
+}
+
 
 void doinput(int argc, Char *argv[])
 { /* reads the input data */
@@ -827,6 +1021,7 @@ void bootweights()
 { /* sets up weights by resampling data */
   long i, j, k, blocks;
   double p, q, r;
+  long grp = 0, site = 0;
 
   ws = newgroups;
   for (i = 0; i < (ws); i++)
@@ -872,49 +1067,63 @@ void bootweights()
   } else             /* case of rewriting data */
     for (i = 0; i < (newgroups); i++)
       weight[i] = 1;
-  for (i = 0; i < (newgroups); i++)
-    newerwhere[i] = 0;
-  for (i = 0; i < (newgroups); i++)
-    newerhowmany[i] = 0;
+
+  /* Count number of replicated groups */
   newergroups = 0;
-  newersites = 0;
-  for (i = 0; i < (newgroups); i++) {
-    for (j = 1; j <= (weight[i]); j++) {
-      newergroups++;
-      for (k = 1; k <= (newhowmany[i]); k++) {
-        newersites++;
-        newerfactor[newersites - 1] = newergroups;
+  newersites  = 0;
+  for (i = 0; i < newgroups; i++) {
+    newergroups += weight[i];
+    newersites  += newhowmany[i] * weight[i];
+  }
+
+  if (newergroups < 1) {
+    fprintf(stdout, "ERROR: sampling frequency or number of sites is too small\n");
+    exxit(-1);
+  }
+  
+  /* reallocate "newer" arrays, sized by output groups:
+   * newerfactor, newerwhere, newerhowmany, and charorder */
+  allocnewer(newergroups, newersites);
+  
+  /* Replicate each group i weight[i] times */
+  grp = 0;
+  site = 0;
+  for (i = 0; i < newgroups; i++) {
+    for (j = 0; j < weight[i]; j++) {
+      for (k = 0; k < newhowmany[i]; k++) {
+        newerfactor[site] = grp + 1;
+        site++;
       }
-      newerwhere[newergroups - 1] = newwhere[i];
-      newerhowmany[newergroups - 1] = newhowmany[i];
+      newerwhere[grp] = newwhere[i];
+      newerhowmany[grp] = newhowmany[i];
+      grp++;
     }
   }
 }  /* bootweights */
 
 
-void sppermute(long n)
-{ /* permute the species order as given in array sppord */
+void permute_vec(long *a, long n)
+{
   long i, j, k;
 
-  for (i = 1; i <= (spp - 1); i++) {
+  for (i = 1; i < n; i++) {
     k = (long)((i+1) * randum(seed));
-    j = sppord[n - 1][i];
-    sppord[n - 1][i] = sppord[n - 1][k];
-    sppord[n - 1][k] = j;
+    j = a[i];
+    a[i] = a[k];
+    a[k] = j;
   }
+}
+
+
+void sppermute(long n)
+{ /* permute the species order as given in array sppord */
+  permute_vec(sppord[n-1], spp);
 }  /* sppermute */
 
 
 void charpermute(long m, long n)
 { /* permute the n+1 characters of species m+1 */
-  long i, j, k;
-
-  for (i = 1; i <= (n - 1); i++) {
-    k = (long)((i+1) * randum(seed));
-    j = charorder[m][i];
-    charorder[m][i] = charorder[m][k];
-    charorder[m][k] = j;
-  }
+  permute_vec(charorder[m], n);
 } /* charpermute */
 
 
@@ -940,17 +1149,19 @@ void writedata()
     else if (data == genefreqs)
       fprintf(outfile, "%5ld %5ld\n", spp, newergroups);
     else {
-      if ((data == seqs)
-          && !(bootstrap || jackknife || permute || ild || lockhart) && xml)
+      if ((data == seqs) && rewrite && xml)
         fprintf(outfile, "<alignment>\n");
       else 
-        if (!(bootstrap || jackknife || permute || ild || lockhart) && nexus) {
+        if (rewrite && nexus) {
           fprintf(outfile, "#NEXUS\n");
-          fprintf(outfile, "BEGIN DATA\n");
+          fprintf(outfile, "BEGIN DATA;\n");
           fprintf(outfile, "  DIMENSIONS NTAX=%ld NCHAR=%ld;\n",
                     spp, newersites);
           fprintf(outfile, "  FORMAT");
-          fprintf(outfile, " interleave");
+          if (interleaved)
+            fprintf(outfile, " interleave=yes");
+          else
+            fprintf(outfile, " interleave=no");
           fprintf(outfile, " DATATYPE=");
           if (data == seqs) {
             switch (seq) { 
@@ -980,79 +1191,72 @@ void writedata()
     if (!(bootstrap || jackknife || permute || ild || lockhart) && xml)
       interleaved = false;
   }
-  if (interleaved)
-    m = 60;
-  else
-    m = newergroups;
+  m = interleaved ? 60 : newergroups;
   do {
     if (m > newergroups)
       m = newergroups;
     for (j = 0; j < spp; j++) {
       n = 0;
       if ((l == 1) || (interleaved && nexus)) {
-        if (!(bootstrap || jackknife || permute || ild || lockhart) && xml) {
+        if (rewrite && xml) {
           fprintf(outfile, "   <sequence");
           switch (seq) {
-            case (dna): fprintf(outfile, " type=dna"); break;
-            case (rna): fprintf(outfile, " type=rna"); break;
-            case (protein): fprintf(outfile, " type=protein"); break;
+            case (dna): fprintf(outfile, " type=\"dna\""); break;
+            case (rna): fprintf(outfile, " type=\"rna\""); break;
+            case (protein): fprintf(outfile, " type=\"protein\""); break;
           }
           fprintf(outfile, ">\n");
           fprintf(outfile, "      <name>");
         }
-        n2 = nmlngth-1;
-        if (!(bootstrap || jackknife || permute || ild || lockhart)
-            && (xml || nexus)) {
-          while (nayme[j][n2] == ' ')
+        n2 = nmlngth;
+        if (rewrite && (xml || nexus)) {
+          while (nayme[j][n2-1] == ' ')
             n2--;
         }
         if (nexus)
           fprintf(outfile, "  ");
-        for (k = 0; k <= n2; k++)
+        for (k = 0; k < n2; k++)
           if (nexus && (nayme[j][k] == ' ') && (k < n2))
             putc('_', outfile);
           else
             putc(nayme[j][k], outfile);
-        if (!(bootstrap || jackknife || permute || ild || lockhart) && xml)
+        if (rewrite && xml)
           fprintf(outfile, "</name>\n      <data>");
       } else {
-        if (!(bootstrap || jackknife || permute || ild || lockhart) && xml) {
+        if (rewrite && xml) {
           fprintf(outfile, "      ");
         }
-        else {
-          for (k = 1; k <= nmlngth; k++)
-            putc(' ', outfile);
-        }
       }
-      if (nexus)
-        for (k = 0; k < nmlngth+1-n2; k++)
+      if (!xml) {
+        for (k = 0; k < nmlngth-n2; k++)
           fprintf(outfile, " "); 
+        fprintf(outfile, " "); 
+      }
       for (k = l - 1; k < m; k++) {
         if (permute && j + 1 == 1)
           sppermute(newerfactor[n]);    /* we can assume chars not permuted */
-        for (n2 = -1; n2 <= (newerhowmany[k] - 2); n2++) {
+        for (n2 = -1; n2 <= (newerhowmany[charorder[j][k]] - 2); n2++) {
           n++;
           if (data == genefreqs) {
             if (n > 1 && (n & 7) == 1)
               fprintf(outfile, "\n              ");
-            x = nodef[sppord[newerfactor[charorder[j][n - 1]] - 1][j] - 1]
-                    [newerwhere[charorder[j][k]] + n2];
+            x = nodef[sppord[charorder[j][k]][j] - 1]
+                     [newerwhere[charorder[j][k]] + n2];
             fprintf(outfile, "%8.5f", x);
           } else {
-            if (!(bootstrap || jackknife || permute || ild || lockhart) && xml
-                && (n > 1) && (n % 60 == 1))
+            if (rewrite && xml && (n > 1) && (n % 60 == 1))
               fprintf(outfile, "\n            ");
             else if (!nexus && !interleaved && (n > 1) && (n % 60 == 1))
                 fprintf(outfile, "\n           ");
-            charstate = nodep[sppord[newerfactor[charorder[j][n - 1]] - 1]
-                             [j] - 1][newerwhere[charorder[j][k]] + n2];
+            charstate = nodep[sppord[charorder[j][k]][j] - 1]
+                             [newerwhere[charorder[j][k]] + n2];
             putc(charstate, outfile);
             if (n % 10 == 0 && n % 60 != 0)
               putc(' ', outfile);
           }
         }
       }
-      if (!(bootstrap || jackknife || permute || ild || lockhart ) && xml) {
+      if (rewrite && xml) {
         fprintf(outfile, "</data>\n   </sequence>\n");
       }
       putc('\n', outfile);
@@ -1180,7 +1384,7 @@ void writecategories()
 
 void writeauxdata(steptr auxdata, FILE *outauxfile)
 {
-  /* write out auxiliary option data (mixtures, ancestors, ect) to
+  /* write out auxiliary option data (mixtures, ancestors, etc.) to
      appropriate file.  Samples parralel to data, or just gives one
      output entry if justwts is true */
   long k, l, m, n, n2;
@@ -1246,19 +1450,19 @@ void writeauxdata(steptr auxdata, FILE *outauxfile)
 
 void writefactors(void)
 {
-  long k, l, m, n, prevfact, writesites;
+    long i, k, l, m, n, writesites;
   char symbol;
   steptr wfactor;
+  long grp;
 
   if(!justwts || firstrep){
     if(justwts){
       writesites = sites;
       wfactor = factorr;
     } else {
-      writesites = newersites;
+      writesites = newergroups;
       wfactor = newerfactor;
     }
-    prevfact = wfactor[0];
     symbol = '+';
     if (interleaved)
       m = 60;
@@ -1270,16 +1474,16 @@ void writefactors(void)
         m = writesites;
       n = 0;
       for(k=l-1 ; k < m ; k++){
-        n++;
-        if (!interleaved && n > 1 && n % 60 == 1)
-          fprintf(outfactfile, "\n ");
-        if(prevfact != wfactor[k]){
-          symbol = (symbol == '+') ? '-' : '+';
-          prevfact = wfactor[k];
+        grp = charorder[0][k];
+        for(i = 0; i < newerhowmany[grp]; i++) {
+          putc(symbol, outfactfile);
+          n++;
+          if (!interleaved && n > 1 && n % 60 == 1)
+            fprintf(outfactfile, "\n ");
+          if (n % 10 == 0 && n % 60 != 0)
+            putc(' ', outfactfile);
         }
-        putc(symbol, outfactfile);
-        if (n % 10 == 0 && n % 60 != 0)
-          putc(' ', outfactfile);
+        symbol = (symbol == '+') ? '-' : '+';
       }
       if (interleaved) {
         l += 60;
@@ -1295,31 +1499,28 @@ void bootwrite()
 { /* does bootstrapping and writes out data sets */
   long i, j, rr, repdiv10;
 
-  if (!(bootstrap || jackknife || permute || ild || lockhart))
+  if (rewrite)
     reps = 1;
   repdiv10 = reps / 10;
   if (repdiv10 < 1)
     repdiv10 = 1;
   if (progress)
     putchar('\n');
+  firstrep = true;
   for (rr = 1; rr <= (reps); rr++) {
+    bootweights();
     for (i = 0; i < spp; i++)
-      for (j = 0; j < maxnewsites; j++)
+      for (j = 0; j < newergroups; j++)
         charorder[i][j] = j;
-    if(rr==1)
-      firstrep = true;
-    else
-      firstrep = false;
     if (ild) {
-      charpermute(0, maxnewsites);
+      charpermute(0, newergroups);
       for (i = 1; i < spp; i++)
-        for (j = 0; j < maxnewsites; j++)
+        for (j = 0; j < newergroups; j++)
           charorder[i][j] = charorder[0][j];
     }
     if (lockhart)
       for (i = 0; i < spp; i++)
-        charpermute(i, maxnewsites);
-    bootweights();
+        charpermute(i, newergroups);
     if (!justwts || permute || ild || lockhart)
       writedata();
     if (justwts && !(permute || ild || lockhart))
@@ -1332,12 +1533,12 @@ void bootwrite()
       writeauxdata(mixdata, outmixfile);
     if (ancvar)
       writeauxdata(ancdata, outancfile);
-    if (progress && (bootstrap || jackknife || permute || ild || lockhart)
-          && ((reps < 10) || rr % repdiv10 == 0)) {
+    if (progress && !rewrite && ((reps < 10) || rr % repdiv10 == 0)) {
       printf("completed replicate number %4ld\n", rr);
 #ifdef WIN32
       phyFillScreenColor();
 #endif
+      firstrep = false;
     }
   }
   if (progress) {
@@ -1362,7 +1563,21 @@ int main(int argc, Char *argv[])
   ansi = ANSICRT;
   doinput(argc, argv);
   bootwrite();
+
+  freenewer();
+  freenew();
+  freerest();
+
+  if (nodep)
+    matrix_char_delete(nodep, spp);
+  if (nodef)
+    matrix_double_delete(nodef, spp);
+
   FClose(infile);
+  if (factors) {
+    FClose(factfile);
+    FClose(outfactfile);
+  }
   if (weights)
     FClose(weightfile);
   if (categories) {

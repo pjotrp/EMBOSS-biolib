@@ -184,7 +184,7 @@ Output file format
   File: consense.fconsense
 
 
-Consensus tree program, version 3.6b
+Consensus tree program, version 3.67
 
 Species in order:
 

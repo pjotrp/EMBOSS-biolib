@@ -104,13 +104,13 @@ number may have to be removed.
 <p>
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
-% <b>fdrawtree </b>
+% <b>fdrawtree -previewer n </b>
 Plots an unrooted tree diagram
 Phylip tree file: <b>drawgram.tree</b>
 Phylip drawtree output file [drawgram.fdrawtree]: <b></b>
 Reading tree '(Delta,(Epsilon,(Gamma,(Beta,Alpha))));'
 
-DRAWTREE from PHYLIP version 3.6b
+DRAWTREE from PHYLIP version 3.67
 Reading tree ... 
 Tree has been read.
 Loading the font ... 
@@ -211,7 +211,8 @@ Done.
                                   0.001 or more)
 
    Advanced (Unprompted) qualifiers:
-   -fontfile           string     Fontfile name (Any string is accepted)
+   -fontfile           string     [font2] Fontfile name (Any string is
+                                  accepted)
 
    Associated qualifiers:
 
@@ -435,7 +436,7 @@ Done.
 <td>-fontfile</td>
 <td>Fontfile name</td>
 <td>Any string is accepted</td>
-<td><i>An empty string is accepted</i></td>
+<td>font2</td>
 </tr>
 
 </table>
@@ -508,25 +509,6 @@ outputs ...
 <p><h3>File: drawgram.fdrawtree</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
-%!PS-Adobe-2.0
-%%Title: Phylip Tree Output
-%%DocumentFonts: (atend)
-%%Pages: 1 1
-%%BoundingBox: 0 0 612 792
-%%DocumentPaperSizes: Letter
-%%Orientation: Portrait
-%%EndComments
-/l {newpath moveto lineto stroke} def
-%%EndProlog
-%%
-%%Page: 1 1
-%%PageBoundingBox: 0 0 585 765
-%%PageFonts: (atend)
-%%BeginPageSetup
-%%PaperSize: Letter
- 1 setlinecap 
- 1 setlinejoin  
-    4.25 setlinewidth newpath 
 %!PS-Adobe-2.0
 %%Title: Phylip Tree Output
 %%DocumentFonts: (atend)

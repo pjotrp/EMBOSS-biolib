@@ -6,7 +6,7 @@
 
 % <b>fmix </b>
 Mixed parsimony algorithm
-hylip character discrete states file: <b>mix.dat</b>
+Phylip character discrete states file: <b>mix.dat</b>
 Phylip tree file (optional): <b></b>
 Phylip mix program output file [mix.fmix]: <b></b>
 
@@ -39,7 +39,7 @@ Trees also written onto file "mix.treefile"
 
 % <b>fmix -printdata -ancfile mixancfile.dat </b>
 Mixed parsimony algorithm
-hylip character discrete states file: <b>mix.dat</b>
+Phylip character discrete states file: <b>mix.dat</b>
 Phylip tree file (optional): <b></b>
 Phylip mix program output file [mix.fmix]: <b></b>
 

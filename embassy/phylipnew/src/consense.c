@@ -1,7 +1,7 @@
 #include "phylip.h"
 #include "cons.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Hisashi Horino,
    Akiko Fuseki, Dan Fineman, Sean Lamont, and Andrew Keeffe.
    Permission is granted

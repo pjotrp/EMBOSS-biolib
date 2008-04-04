@@ -1,4 +1,4 @@
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -754,7 +754,8 @@ void maketree()
     nextnode = 0;
     treestr = ajStrGetuniquePtr(&phylotrees[which-1]->Tree);
     treeread (&treestr, &curtree.start, curtree.nodep, &goteof, &first,
-            curtree.nodep, &nextnode, &haslengths, &grbg, initcontrastnode);
+              curtree.nodep, &nextnode, &haslengths, &grbg,
+              initcontrastnode,false,nonodes);
     q = curtree.start;
     r = curtree.start;
     while (!(q->next == curtree.start))

@@ -21,7 +21,7 @@
 
 <tr>
 <td>[-outtreefile]<br>(Parameter 3)</td>
-<td>PHYLIP tree output file</td>
+<td>Phylip tree output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.fretree</td>
 </tr>

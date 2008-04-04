@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-intreefile]<br>(Parameter 2)</td>
-<td>Phylip tree file</td>
+<td>Phylip tree file (optional)</td>
 <td>Phylogenetic tree</td>
 <td>&nbsp;</td>
 </tr>

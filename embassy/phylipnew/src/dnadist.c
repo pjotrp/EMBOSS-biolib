@@ -1,7 +1,7 @@
 #include "phylip.h"
 #include "seq.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Akiko Fuseki, Sean Lamont, and Andrew Keeffe.
    Permission is granted to copy and use this program provided no fee is
    charged for it and provided that this copyright notice is not removed. */
@@ -32,6 +32,7 @@ AjPFile embossoutfile;
 long sites, categs, weightsum, datasets, ith, rcategs;
 boolean freqsfrom, jukes, kimura, logdet, gama, invar, similarity, lower, f84,
         weights, progress, ctgry, mulsets, justwts, firstset, baddists;
+boolean matrix_flags;       /* Matrix output format */
 node **nodep;
 double xi, xv, ttratio, ttratio0, freqa, freqc, freqg, freqt, freqr, freqy,
         freqar, freqcy, freqgr, freqty, cvi, invarfrac, sumrates, fracchange;
@@ -99,6 +100,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
   progress = true;
   mulsets = false;
   datasets = 1;
+  matrix_flags = MAT_MACHINE;
 
     embInitP (pgm, argc, argv, "PHYLIPNEW");
 
@@ -171,7 +173,8 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     printdata = ajAcdGetBool("printdata");
     progress = ajAcdGetBool("progress");
     lower = ajAcdGetBool("lower");
-    
+    if(lower)
+        matrix_flags = MAT_HUMAN | MAT_LOWER;
 
     if(!freqsfrom) {
       basefreq = ajAcdGetArray("basefreq"); 
@@ -744,7 +747,7 @@ void makev(long m, long n, double *v)
   }
   if(!overlap){
     printf("\nWARNING: NO OVERLAP BETWEEN SEQUENCES %ld AND %ld; -1.0 WAS WRITTEN\n", m, n);
-    (*v) = -1.0;
+    baddists = true;
     return;
   }
 
@@ -777,11 +780,13 @@ void makev(long m, long n, double *v)
   if (logdet && !quick) {
     printf(" WARNING: CANNOT CALCULATE LOGDET DISTANCE\n");
     printf("  WITH PRESENT PROGRAM IF PARTIALLY AMBIGUOUS NUCLEOTIDES\n");
+    printf("  -1.0 WAS WRITTEN\n");
     baddists = true;
   }
   if (jukesquick && jukes && (numerator * 4 <= denominator)) {
     printf("\nWARNING: INFINITE DISTANCE BETWEEN ");
     printf(" SPECIES %3ld AND %3ld\n", m, n);
+    printf("  -1.0 WAS WRITTEN\n");
     baddists = true;
   }
   if (jukesquick && invar
@@ -789,6 +794,7 @@ void makev(long m, long n, double *v)
           <= (1.0 - invarfrac))) {
     printf("\nWARNING: DIFFERENCE BETWEEN SPECIES %3ld AND %3ld", m, n);
     printf(" TOO LARGE FOR INVARIABLE SITES\n");
+    printf("  -1.0 WAS WRITTEN\n");
     baddists = true;
   }
   if (jukesquick) {
@@ -832,7 +838,7 @@ void makev(long m, long n, double *v)
       delta = 0.1;
       tt = delta;
       it = 0;
-      while (fabs(delta) > 0.00002 && it < iterationsd) {
+      while (fabs(delta) > 0.0000002 && it < iterationsd) {
         it++;
         if (!gama) {
           p1 = exp(-tt);
@@ -873,6 +879,7 @@ void makev(long m, long n, double *v)
         printf(" TOO LARGE FOR INVARIABLE SITES\n");
       else
         printf(" TOO LARGE TO ESTIMATE DISTANCE\n");
+      printf("  -1.0 WAS WRITTEN\n");
       baddists = true;
     }
     vv = fracchange * tt;
@@ -902,7 +909,7 @@ void makev(long m, long n, double *v)
     tt = 0.1;
     delta = 0.1;
     it = 1;
-    while (it < iterationsd && fabs(delta) > 0.00002) {
+    while (it < iterationsd && fabs(delta) > 0.0000002) {
       slope = 0.0;
       if (tt > 0.0) {
         lz = -tt;
@@ -953,6 +960,7 @@ void makev(long m, long n, double *v)
         printf(" TOO LARGE FOR INVARIABLE SITES\n");
       else
         printf(" TOO LARGE TO ESTIMATE DISTANCE\n");
+      printf("  -1.0 WAS WRITTEN\n");
       baddists = true;
     }
     vv = tt * fracchange;
@@ -982,6 +990,7 @@ void makev(long m, long n, double *v)
     if (vv == 99.0) {
       printf("\nNegative or zero determinant for distance between species");
       printf(" %ld and %ld\n", m, n);
+      printf("  -1.0 WAS WRITTEN\n");
       baddists = true;
     }
     vv = -0.25*(vv - 0.5*(log(basefreq1[0])+log(basefreq1[1])
@@ -993,6 +1002,7 @@ void makev(long m, long n, double *v)
     if (denominator < 1.0) {
       printf("\nWARNING: SPECIES %3ld AND %3ld HAVE NO BASES THAT", m, n);
       printf(" CAN BE COMPARED\n");
+      printf("  -1.0 WAS WRITTEN\n");
       baddists = true;
   }
     vv = (double)numerator / denominator;
@@ -1045,8 +1055,6 @@ void makedists(void)
 #endif
     }
   }
-  if (baddists)
-    embExitBad();
   if (progress) {
     printf("    ");
     for (j = 0; j < nmlngth; j++)
@@ -1064,56 +1072,12 @@ void makedists(void)
 void writedists(void)
 {
   /* write out distances */
-  long i, j, k, n;
+  char **names;
 
-  if (!printdata && !similarity)
-    fprintf(outfile, "%5ld\n", spp);
-  else
-    fprintf(outfile, "\n");
-  if (!similarity) {
-    for (i = 0; i < spp; i++) {
-      for (j = 0; j < nmlngth; j++)
-        putc(nayme[i][j], outfile);
-      if (lower)
-        k = i;
-      else
-        k = spp;
-      for (j = 1; j <= k; j++) {
-        fprintf(outfile, "%10.6f", d[i][j - 1]);
-        if ((j + 1) % 7 == 0 && j < k)
-          putc('\n', outfile);
-      }
-      putc('\n', outfile);
-    }
-  } else {
-    for (i = 0; i < spp; i += 6) {
-      if ((i+6) < spp)
-        n = i+6;
-      else
-        n = spp;
-      fprintf(outfile, "            ");
-      for (j = i; j < n ; j++) {
-        for (k = 0; k < (nmlngth-3); k++)
-          putc(nayme[j][k], outfile);
-        putc(' ', outfile);
-        putc(' ', outfile);
-        putc(' ', outfile);
-      }
-      putc('\n', outfile);
-      for (j = 0; j < spp; j++) {
-        for (k = 0; k < nmlngth; k++)
-          putc(nayme[j][k], outfile);
-        if ((i+6) < spp)
-          n = i+6;
-        else
-          n = spp;
-        for (k = i; k < n ; k++)
-          fprintf(outfile, "%10.6f", d[j][k]);
-        putc('\n', outfile);
-      }
-      putc('\n', outfile);
-    }
-  }
+  names = stringnames_new();
+  output_matrix_d(outfile, d, spp, spp, names, names, matrix_flags);
+  stringnames_delete(names);
+
   if (progress)
     printf("\nDistances written to file \"%s\"\n\n", outfilename);
 }  /* writedists */

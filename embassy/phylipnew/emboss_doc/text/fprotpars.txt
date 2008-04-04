@@ -149,6 +149,7 @@ Adding species:
 Doing global rearrangements
   !---------!
    .........
+   .........
 
 Output written to file "protpars.fprotpars"
 
@@ -178,6 +179,7 @@ Adding species:
 
 Doing global rearrangements
   !---------!
+   .........
    .........
 
 
@@ -233,6 +235,7 @@ Adding species:
 Doing global rearrangements
   !---------!
    .........
+   .........
 
 
 Adding species:
@@ -275,6 +278,7 @@ Adding species:
 Doing global rearrangements
   !---------!
    .........
+   .........
 
 
 Adding species:
@@ -316,6 +320,7 @@ Adding species:
 
 Doing global rearrangements
   !---------!
+   .........
    .........
 
 
@@ -391,6 +396,7 @@ Adding species:
 Doing global rearrangements
   !---------!
    .........
+   .........
 
 Output written to file "protpars.fprotpars"
 
@@ -409,6 +415,7 @@ Adding species:
 
 Doing global rearrangements
   !---------!
+   .........
    .........
 
 Output written to file "protpars.fprotpars"
@@ -580,7 +587,7 @@ Output file format
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.6b
+Protein parsimony algorithm, version 3.67
 
 
 
@@ -651,7 +658,7 @@ requires a total of     16.000
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.6b
+Protein parsimony algorithm, version 3.67
 
  5 species,  10  sites
 
@@ -766,7 +773,7 @@ root     1                AN??EFGHIK
   File: protpars2.fprotpars
 
 
-Protein parsimony algorithm, version 3.6b
+Protein parsimony algorithm, version 3.67
 
 
 Data set # 1:
@@ -901,7 +908,7 @@ requires a total of     24.000
   File: protpars.fprotpars
 
 
-Protein parsimony algorithm, version 3.6b
+Protein parsimony algorithm, version 3.67
 
 
 
@@ -1010,20 +1017,21 @@ requires a total of      2.000
 ((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.3333];
 ((((Epsilon,Delta),Gamma),Beta),Alpha)[0.3333];
 (((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.3333];
-((Gamma,(Delta,(Epsilon,Beta))),Alpha)[0.0714];
-(((Epsilon,Gamma),(Delta,Beta)),Alpha)[0.0714];
-((Epsilon,(Gamma,(Delta,Beta))),Alpha)[0.0714];
-((Gamma,(Epsilon,(Delta,Beta))),Alpha)[0.0714];
-(((Delta,Gamma),(Epsilon,Beta)),Alpha)[0.0714];
-(((Delta,(Epsilon,Gamma)),Beta),Alpha)[0.0714];
-((((Epsilon,Delta),Gamma),Beta),Alpha)[0.0714];
-((Epsilon,((Delta,Gamma),Beta)),Alpha)[0.0714];
-(((Epsilon,(Delta,Gamma)),Beta),Alpha)[0.0714];
-((Delta,(Gamma,(Epsilon,Beta))),Alpha)[0.0714];
-((Delta,((Epsilon,Gamma),Beta)),Alpha)[0.0714];
-(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.0714];
-((Delta,(Epsilon,(Gamma,Beta))),Alpha)[0.0714];
-((Epsilon,(Delta,(Gamma,Beta))),Alpha)[0.0714];
+((Gamma,(Delta,(Epsilon,Beta))),Alpha)[0.0667];
+(((Epsilon,Gamma),(Delta,Beta)),Alpha)[0.0667];
+((Gamma,((Epsilon,Delta),Beta)),Alpha)[0.0667];
+((Epsilon,(Gamma,(Delta,Beta))),Alpha)[0.0667];
+((Gamma,(Epsilon,(Delta,Beta))),Alpha)[0.0667];
+(((Delta,Gamma),(Epsilon,Beta)),Alpha)[0.0667];
+(((Delta,(Epsilon,Gamma)),Beta),Alpha)[0.0667];
+((((Epsilon,Delta),Gamma),Beta),Alpha)[0.0667];
+((Epsilon,((Delta,Gamma),Beta)),Alpha)[0.0667];
+(((Epsilon,(Delta,Gamma)),Beta),Alpha)[0.0667];
+((Delta,(Gamma,(Epsilon,Beta))),Alpha)[0.0667];
+((Delta,((Epsilon,Gamma),Beta)),Alpha)[0.0667];
+(((Epsilon,Delta),(Gamma,Beta)),Alpha)[0.0667];
+((Delta,(Epsilon,(Gamma,Beta))),Alpha)[0.0667];
+((Epsilon,(Delta,(Gamma,Beta))),Alpha)[0.0667];
 
 Data files
 

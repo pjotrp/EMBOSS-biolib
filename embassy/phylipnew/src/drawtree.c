@@ -9,18 +9,34 @@
 #include "draw.h"
 
 
-/* Version 3.6.  Copyright (c) 1986-2002 by the University of Washington and
+/* Version 3.6.  Copyright (c) 1986-2004 by the University of Washington and
   Written by Joseph Felsenstein and Christopher A. Meacham.  Additional code
   written by Sean Lamont, Andrew Keefe, Hisashi Horino and Akiko Fuseki.
   Permission is granted to copy, distribute,
   and modify this program provided that (1) this copyright message is
   not removed and (2) no fee is charged for this program. */
 
+#ifdef MAC
+char* about_message = 
+  "Drawtree unrooted tree plotting program\r"
+  "PHYLIP version 3.6 (c) Copyright 1986-2004\r"
+  "by The University of Washington.\r"  
+  "Written by Joseph Felsenstein and Christopher A. Meacham.\r" 
+  "Additional code written by Sean Lamont, Andrew Keefe, Hisashi Horino,\r"
+  "Akiko Fuseki, Doug Buxton and Michal Palczewski.\r"
+  "Permission is granted to copy, distribute and modify this program\r"
+  "provided that\r"
+  "(1) This copyright message is not removed and\r"
+  "(2) no fee is charged for this program.";
+#endif
+
+
 #define GAP             0.5
 #define MAXITERATIONS   100
 #define MINIMUMCHANGE   0.0001
 
-/* When 2 Nodes are on top of each other, this is the max. force that's allowed. */
+/* When 2 Nodes are on top of each other, this is the max.
+   force that's allowed. */
 #ifdef INFINITY
 #undef INFINITY
 #endif
@@ -76,7 +92,7 @@ struct stackElem
 };
 typedef struct stackElem stackElemType;
 
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 String res[]= {
         "*.input: True",
         "*.menubar.orientation: horizontal",
@@ -92,7 +108,17 @@ String res[]= {
         "*.drawing_area.bottom: ChainBottom",
         "*.drawing_area.left: ChainLeft",
         "*.drawing_area.right: ChainRight",
-        "*.dialog.label: Drawtree -- Unrooted tree plotting program\\n\\n\\nPHYLIP version 3.6. (c) Copyright 1993-2002 by The University of Washington.\\nWritten by Joseph Felsenstein, Andrew Keeffe, Akiko Fuseki, Sean Lamont\\nand Dan Fineman\\nPermission is granted to copy and use this program provided no fee is\\ncharged for it and provided that this copyright notice is not removed.",
+        "*.dialog.label: "
+          "Drawtree unrooted tree plotting program\\n"
+  "PHYLIP version 3.6 (c) Copyright 1986-2004\\n"
+  "by The University of Washington.\\n"  
+  "Written by Joseph Felsenstein and Christopher A. Meacham.\\n" 
+  "Additional code written by Sean Lamont, Andrew Keefe, Hisashi Horino,\\n"
+  "Akiko Fuseki, Doug Buxton and Michal Palczewski.\\n"
+  "Permission is granted to copy, distribute and modify this program\\n"
+  "provided that\\n"
+  "(1) This copyright message is not removed and\\n"
+  "(2) no fee is charged for this program.",
         NULL
 };
 #endif
@@ -528,7 +554,8 @@ char showparms()
   if ((((plotter == pict || plotter == mac)  &&
        (((grows == vertical && labelrotation == 0.0) ||
        (grows == horizontal && labelrotation == 90.0))))))
-    printf(" F                        Font:  %s\n Q        Pict Font Attributes:  %s, %s, %s, %s\n",
+    printf(" F                        Font:  %s\n Q"
+           "        Pict Font Attributes:  %s, %s, %s, %s\n",
    fontname, (pictbold   ? "Bold"   : "Medium"),
         (pictitalic ? "Italic" : "Regular"),
         (pictshadow ? "Shadowed": "Unshadowed"),
@@ -1367,9 +1394,9 @@ void totalForceOnNode(node *pPivotSubNode, node *pToSubNode,
    Most likely pPivotSubNode is not the index subNode!  In any case, only
    the leafs are consider in repelling force; so, no worry about index subNode.
    pTotalForce and pAngle must be set to 0 before calling this function for the
-   first time, or the result will be invalid. 
-   pPivotSubNode is named for external interface.  When calling totalForceOnNode()
-   recursively, pPivotSubNode should be thought of as pFromSubNode.
+   first time, or the result will be invalid.  pPivotSubNode is named for 
+   external interface.  When calling totalForceOnNode() recursively, 
+   pPivotSubNode should be thought of as pFromSubNode.
  */
   node *pSubNode;
   double force, angle, forceX, forceY, prevForceX, prevForceY;
@@ -1382,23 +1409,27 @@ void totalForceOnNode(node *pPivotSubNode, node *pToSubNode,
   {
     pSubNode = pSubNode->next;
     if ( pSubNode->back != NULL && pSubNode->back != pToSubNode) 
-      totalForceOnNode(pSubNode->back, pToSubNode, pTotalForce, pAngle, medianDistance);
+      totalForceOnNode(pSubNode->back, pToSubNode, pTotalForce, pAngle,
+                       medianDistance);
   }
 
-  /* visit this branch; You need to visit it for the first time - at root only! */
-  /* Modified so that all nodes are visited and calculated forces, instead of just
-     the leafs only. */
-  /* use pPivotSubNode instead of pSubNode here because pSubNode stop short
-     just before pPivotSubNode (the entry node) */
+  /* visit this branch; You need to visit it for the first time - at root only!
+   *
+   * Modified so that all nodes are visited and calculated forces, instead of 
+   * just the leafs only. 
+   * use pPivotSubNode instead of pSubNode here because pSubNode stop short
+   *  just before pPivotSubNode (the entry node) */
   if ( pPivotSubNode == root && pPivotSubNode->back != NULL 
        && pPivotSubNode->back != pToSubNode) 
-    totalForceOnNode(pPivotSubNode->back, pToSubNode, pTotalForce, pAngle, medianDistance);
+    totalForceOnNode(pPivotSubNode->back, pToSubNode, pTotalForce, pAngle,
+                     medianDistance);
 
   /* Break down the previous sum of forces to components form */
   prevForceX = *pTotalForce * cos(*pAngle);
   prevForceY = *pTotalForce * sin(*pAngle);
   
-  force_1to1(nodep[pPivotSubNode->index-1], pToSubNode, &force, &angle, medianDistance);
+  force_1to1(nodep[pPivotSubNode->index-1], pToSubNode, &force, &angle,
+             medianDistance);
   /* force between 2 nodes */
   forceX = force * cos(angle);
   forceY = force * sin(angle);
@@ -1545,10 +1576,13 @@ double forcePerpendicularOnNode(node *pPivotSubNode, node *pToSubNode,
   totalForce = (double)0;
   forceAngle = (double)0;
 
-  totalForceOnNode(pPivotSubNode, pToSubNode, &totalForce, &forceAngle, medianDistance);
+  totalForceOnNode(pPivotSubNode, pToSubNode, &totalForce, &forceAngle,
+                   medianDistance);
 
-  xDelta = nodep[pToSubNode->index-1]->xcoord - nodep[pPivotSubNode->index-1]->xcoord;
-  yDelta = nodep[pToSubNode->index-1]->ycoord - nodep[pPivotSubNode->index-1]->ycoord;
+  xDelta = nodep[pToSubNode->index-1]->xcoord -
+      nodep[pPivotSubNode->index-1]->xcoord;
+  yDelta = nodep[pToSubNode->index-1]->ycoord -
+      nodep[pPivotSubNode->index-1]->ycoord;
 
   /* Try to avoid the case where 2 nodes are on top of each other. */
   /*
@@ -1579,12 +1613,14 @@ double forcePerpendicularOnNode(node *pPivotSubNode, node *pToSubNode,
 
   if (forcePerpendicular < -epsilon)
   {
-    printf("ERROR: drawtree - forcePerpendicular applied at an angle should not be less than zero (in forcePerpendicularOnNode()). \n");
+    printf("ERROR: drawtree - forcePerpendicular applied at an angle should"
+           " not be less than zero (in forcePerpendicularOnNode()). \n");
     printf("alpha = %f\n", alpha);
     embExitBad();
   }
   /* correct the sign of the moment */
-  forcePerpendicular = signOfMoment(xDelta, yDelta, cosForceAngle, sinForceAngle) 
+  forcePerpendicular = signOfMoment(xDelta, yDelta, cosForceAngle,
+                                    sinForceAngle) 
     * forcePerpendicular;
   return forcePerpendicular;
 }  /* forcePerpendicularOnNode */
@@ -1598,7 +1634,8 @@ void polarizeABranch(node *pStartingSubNode, double *xx, double *yy)
    the plot!  This function takes a subnode and branch out of all other subnode
    except the starting subnode (where the parent is), thus converting the x-y 
    to polar coordinates for the branch only.  xx and yy are purely "inherited"
-   features of polarize().  They should have been passed as values not addresses. */
+   features of polarize().  They should have been passed as values not
+   addresses. */
   node *pSubNode;
 
   pSubNode = pStartingSubNode;
@@ -1637,7 +1674,8 @@ void pushNodeToStack(stackElemType **ppStackTop, node *pNode)
   {
     /* NULL can be stored in the location, but the location itself can't 
        be NULL! */
-    printf("ERROR: drawtree - error using pushNodeToStack(); ppStackTop is NULL.\n");
+    printf("ERROR: drawtree - error using pushNodeToStack(); "
+           "ppStackTop is NULL.\n");
     embExitBad();
   }
   pStackElem = (stackElemType*)Malloc( sizeof(stackElemType) );
@@ -1725,22 +1763,25 @@ double medianOfDistance(node *pRootSubNode, boolean firstRecursiveCallP)
       medianOfDistance(pSubNode->back, false);
   }
 
-  /* visit this branch; You need to visit it for the first time - at root only! */
-  /* use pRootSubNode instead of pSubNode here because pSubNode stop short
-     just before pRootSubNode (the entry node) */
+  /* visit this branch; You need to visit it for the first time - at root 
+     only! use pRootSubNode instead of pSubNode here because pSubNode stop 
+     short just before pRootSubNode (the entry node) */
   if ( firstRecursiveCallP == true && pRootSubNode->back != NULL)
     medianOfDistance(pRootSubNode->back, false);
 
   /* Why only leafs count?  Modifying it!  */
-  xDelta = nodep[pSubNode->index-1]->xcoord - nodep[pReferenceNode->index-1]->xcoord;
-  yDelta = nodep[pSubNode->index-1]->ycoord - nodep[pReferenceNode->index-1]->ycoord;
+  xDelta = nodep[pSubNode->index-1]->xcoord -
+      nodep[pReferenceNode->index-1]->xcoord;
+  yDelta = nodep[pSubNode->index-1]->ycoord -
+      nodep[pReferenceNode->index-1]->ycoord;
   distance = sqrt( xDelta*xDelta + yDelta*yDelta );
   
   /* Similar to pushing onto the stack */
   pLink = (struct dblLinkNode*) Malloc( sizeof(struct dblLinkNode) );
   if (pLink == NULL)
   {
-    printf("Fatal ERROR: drawtree - Insufficient Memory in medianOfDistance()!\n");
+    printf("Fatal ERROR: drawtree - Insufficient Memory in"
+           " medianOfDistance()!\n");
     embExitBad();
   }
   pLink->value = distance;
@@ -1762,7 +1803,8 @@ double medianOfDistance(node *pRootSubNode, boolean firstRecursiveCallP)
     }
     else if (count == 2)
     {
-      distance = (pFrontOfLinkedList->value + pFrontOfLinkedList->pBack->value)/(double)2;
+      distance = (pFrontOfLinkedList->value +
+                  pFrontOfLinkedList->pBack->value)/(double)2;
       free(pFrontOfLinkedList->pBack);
       free(pFrontOfLinkedList);
       return distance;
@@ -1784,7 +1826,7 @@ double medianOfDistance(node *pRootSubNode, boolean firstRecursiveCallP)
         {
           if(pMidElem->value < pBackElem->value)
           {
-            /* Swap - carry the smaller value to the root of the linked list. */
+          /* Swap - carry the smaller value to the root of the linked list. */
             pMidElem->pBack = pBackElem->pBack;
             pBackElem->pBack = pMidElem;
             pFrontElem->pBack = pBackElem;
@@ -1811,7 +1853,7 @@ double medianOfDistance(node *pRootSubNode, boolean firstRecursiveCallP)
         free(pLink);
       }
 
-      /* Get the return value!! - only the last return value is the valid one. */
+    /* Get the return value!! - only the last return value is the valid one. */
       distance = pFrontOfLinkedList->value;
 
       /* Continue from the same i value left off by the previous for loop!  */
@@ -1851,8 +1893,10 @@ void leftRightLimits(node *pToSubNode, double *pLeftLimit,
   /* It shouldn't be pivoted at a left, but just checking. */
   if (pToSubNode->back->tip == true)
   {
-    /* Logically this should not happen.  But we actually can return pi as the limit. */
-    printf("ERROR: In leftRightLimits() - Pivoted at a leaf! Unable to calculate left and right limit.\n");
+    /* Logically this should not happen.  But we actually can return pi
+       as the limit. */
+    printf("ERROR: In leftRightLimits() - Pivoted at a leaf! Unable to "
+           "calculate left and right limit.\n");
     embExitBad();
   }
   else if (pToSubNode->back->next->next == pToSubNode->back)
@@ -1889,13 +1933,14 @@ void leftRightLimits(node *pToSubNode, double *pLeftLimit,
     xRightVector = nodep[pRightSubNode->index-1]->xcoord - pPivotNode->xcoord;
     yRightVector = nodep[pRightSubNode->index-1]->ycoord - pPivotNode->ycoord;
 
-    lengthsProd = sqrt(xToNodeVector*xToNodeVector+yToNodeVector*yToNodeVector) 
+    lengthsProd = sqrt(xToNodeVector*xToNodeVector+yToNodeVector*yToNodeVector)
       * sqrt(xRightVector*xRightVector+yRightVector*yRightVector);
     if ( lengthsProd < epsilon )
     {
       continue;
     }
-    rightLimit = angleBetVectors(xToNodeVector, yToNodeVector, xRightVector, yRightVector);
+    rightLimit = angleBetVectors(xToNodeVector, yToNodeVector, xRightVector,
+                                 yRightVector);
 
     if ( (*pRightLimit) < rightLimit) *pRightLimit = rightLimit;
   }
@@ -1914,13 +1959,14 @@ void leftRightLimits(node *pToSubNode, double *pLeftLimit,
     xLeftVector = nodep[pLeftSubNode->index-1]->xcoord - pPivotNode->xcoord;
     yLeftVector = nodep[pLeftSubNode->index-1]->ycoord - pPivotNode->ycoord;
 
-    lengthsProd = sqrt(xToNodeVector*xToNodeVector+yToNodeVector*yToNodeVector) 
+    lengthsProd = sqrt(xToNodeVector*xToNodeVector+yToNodeVector*yToNodeVector)
       * sqrt(xLeftVector*xLeftVector+yLeftVector*yLeftVector);
     if ( lengthsProd < epsilon )
     {
       continue;
     }
-    leftLimit = angleBetVectors(xToNodeVector, yToNodeVector, xLeftVector, yLeftVector);
+    leftLimit = angleBetVectors(xToNodeVector, yToNodeVector, xLeftVector,
+                                yLeftVector);
 
     if ( (*pLeftLimit) < leftLimit) *pLeftLimit = leftLimit;
   }
@@ -1952,7 +1998,8 @@ void branchLRHelper(node *pPivotSubNode, node *pCurSubNode,
     yCurNodeVector = nodep[pCurSubNode->index-1]->ycoord 
       - nodep[pPivotSubNode->index-1]->ycoord;
 
-    if ( vCounterClkwiseU(xPivotVector, yPivotVector, xCurNodeVector, yCurNodeVector) 
+    if ( vCounterClkwiseU(xPivotVector, yPivotVector, xCurNodeVector,
+                          yCurNodeVector) 
          == 1)
     {
       /* Relevant to Left Angle */
@@ -2003,7 +2050,8 @@ void improveNodeAngle(node *pToNode, double medianDistance)
   {
     leftRightLimits(pToNode, &leftLimit, &rightLimit);
     norminalDistance = distance / medianDistance;
-    forcePerpendicular = forcePerpendicularOnNode(pPivot, pToNode, medianDistance);
+    forcePerpendicular = forcePerpendicularOnNode(pPivot, pToNode,
+                                                  medianDistance);
     angleRotate = forcePerpendicular / norminalDistance;
     /* Limiting the angle of rotation */
     if ( angleRotate > 0 && angleRotate > limitFactor * leftLimit)
@@ -2055,9 +2103,7 @@ void improvtravn(node *pStartingSubNode)
   medianDistance = medianOfDistance(root, true);
 
   /* Set max. number of iteration */
-  noOfIteration = (long)0;
-  while( noOfIteration++ < maxNumOfIter)
-  {
+  for ( noOfIteration = (long)0; noOfIteration < maxNumOfIter; noOfIteration++) {
 
     /* First, push all subNodes in the root node onto the stack-to-be-used to kick up
        the process */
@@ -2088,10 +2134,10 @@ void improvtravn(node *pStartingSubNode)
       
       while (pPOPStackTop != NULL)
       {
-              /* We always push the pivot subNode onto the stack!  That's when we 
-                 pop that pivot subNode, subNode.back is the node we apply the force
-                 to (ToNode). Also, when we pop a pivot subNode, always push all 
-                 pivot subNodes in the same ToNode onto the stack. */
+           /* We always push the pivot subNode onto the stack!  That's when we
+            pop that pivot subNode, subNode.back is the node we apply the force
+            to (ToNode). Also, when we pop a pivot subNode, always push all 
+            pivot subNodes in the same ToNode onto the stack. */
               popNodeFromStack(&pPOPStackTop, &pSubNode);
       
               pBackStartNode = pSubNode->back;
@@ -2103,12 +2149,12 @@ void improvtravn(node *pStartingSubNode)
               }
               else
               {
-                /* Push all subNodes in this pSubNode->back onto the stack-to-be-used, 
-                   after poping a pivot subNode. If pSubNode->back is a leaf, no 
-                   push on stack. */ 
+                /* Push all subNodes in this pSubNode->back onto the
+                 * stack-to-be-used, after poping a pivot subNode. If
+                 * pSubNode->back is a leaf, no push on stack. */ 
                 pBackSubNode = pBackStartNode;
-                /* Do not push this pBackStartNode onto the stack!  Or the process will never 
-                   stop. */
+                /* Do not push this pBackStartNode onto the stack!  Or the
+                 * process will never stop. */
                 while(pBackSubNode->next != pBackStartNode)
                 {
                   pBackSubNode = pBackSubNode->next;
@@ -2461,12 +2507,13 @@ void user_loop()
     calculate();
     rescale();
     canbeplotted = true;
-    if (preview)
+    if (preview) {
+      printf("Preview window displayed... press \"Change\" button to return to menu.\n");
       canbeplotted=plotpreview(fontname,&xoffset,&yoffset,&scale,spp,root);
-    else
-      canbeplotted=plot_without_preview(fontname,&xoffset,&yoffset,
-                                        &scale,spp,root);
-     if ((previewer == winpreview || previewer == xpreview || previewer == mac) && (winaction == quitnow))
+    } else {
+      canbeplotted = true;
+    }
+    if ((previewer == winpreview || previewer == xpreview || previewer == mac) && (winaction == quitnow))
       canbeplotted = true;
  }
 } /* user_loop */
@@ -2508,7 +2555,7 @@ void setup_environment(int argc, Char *argv[])
   allocate_nodep(&nodep, treestr, &spp);
   treeread (&treestr, &root, treenode, &goteof, &firsttree,
             nodep, &nextnode, &haslengths,
-            &grbg, initdrawtreenode);
+            &grbg, initdrawtreenode,true,-1);
   q = root;
   r = root;
   while (!(q->next == root))
@@ -2519,7 +2566,6 @@ void setup_environment(int argc, Char *argv[])
   nodep[spp] = q;
   where = root;
   rotate = true;
-  ajUtilCatch();
   printf("Tree has been read.\n");
   printf("Loading the font ... \n");
   loadfont(font,argv[0]);
@@ -2575,7 +2621,7 @@ int main(int argc, Char *argv[])
 #endif
   argv[0] = "Drawtree";
 #endif
-#ifdef X
+#ifndef X_DISPLAY_MISSING
   nargc=argc;
   nargv=argv;
 #endif
@@ -2597,10 +2643,11 @@ int main(int argc, Char *argv[])
     strpdiv  = stripedepth;
   }
 
-  if (!((previewer == winpreview || previewer == xpreview || previewer == mac) && (winaction == quitnow))) {
+  if (!((previewer == winpreview || previewer == xpreview || previewer == mac)
+        && (winaction == quitnow))) {
     previewing = false;
     initplotter(spp,fontname);
-    numlines = dotmatrix ? ((long)floor(yunitspercm * ysize + 0.5)/strpdeep):1;   
+    numlines = dotmatrix ? ((long)floor(yunitspercm * ysize + 0.5)/strpdeep) : 1;   
     if (plotter != ibm)
       printf("\nWriting plot file ...\n");
     drawit(fontname,&xoffset,&yoffset,numlines,root);

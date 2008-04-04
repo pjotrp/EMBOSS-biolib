@@ -76,7 +76,7 @@ section: output [
     parameter: "Y"
     extension: "treefile"
     knowntype: "newick tree"
-    information: "PHYLIP tree output file"
+    information: "Phylip tree output file"
   ]
 
 endsection: output

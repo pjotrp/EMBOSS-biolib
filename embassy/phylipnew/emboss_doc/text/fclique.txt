@@ -104,7 +104,7 @@ Command line arguments
                                   file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -ancfile            properties Phylip ancestral states file
+   -ancfile            properties Phylip ancestral states file (optional)
    -factorfile         properties Phylip multistate factors file (optional)
    -weights            properties Phylip weights file (optional)
    -cliqmin            integer    [0] Minimum clique size (Integer 0 or more)
@@ -175,7 +175,7 @@ Output file format
   File: clique.fclique
 
 
-Largest clique program, version 3.6b
+Largest clique program, version 3.67
 
 
 

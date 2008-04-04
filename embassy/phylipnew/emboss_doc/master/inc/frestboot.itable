@@ -14,7 +14,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>Phylip seqboot_rest program output file'</td>
+<td>Phylip seqboot_rest program output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.frestboot</td>
 </tr>

@@ -1,7 +1,7 @@
 
 #include "phylip.h"
 
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 #include <X11/Xlib.h>
 #include <X11/Intrinsic.h>
 #include <X11/StringDefs.h>
@@ -115,7 +115,7 @@ boolean plot_without_preview(char *, double *, double *, double *, long,
 
 
 
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 Display *display;               /* the X display */
 extern Window  mainwin;         /* the main display window */
 int x, y;                       /* the corner of the window */
@@ -145,8 +145,13 @@ extern char fontname[LARGE_BUF_LENGTH]; /* the font name to use */
 #define DEFPREV ibm
 #endif   
 #ifdef MAC 
+#ifdef OSX_CARBON
+#define DEFPLOTTER lw
+#define DEFPREV mac
+#else
 #define DEFPLOTTER pict
 #define DEFPREV mac 
+#endif   
 #endif   
 #ifdef VMS
 #define DEFPLOTTER lw
@@ -157,10 +162,10 @@ extern char fontname[LARGE_BUF_LENGTH]; /* the font name to use */
 #ifndef VMS
 #ifndef WIN32
 #define DEFPLOTTER lw
-#ifdef X
+#ifndef X_DISPLAY_MISSING
 #define DEFPREV xpreview
 #endif
-#ifndef X
+#ifdef X_DISPLAY_MISSING
 #define DEFPREV tek
 #endif
 #endif

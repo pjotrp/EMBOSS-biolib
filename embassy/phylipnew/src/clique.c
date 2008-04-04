@@ -1,7 +1,7 @@
 #include "phylip.h"
 #include "disc.h"
 
-/* version 3.6. (c) Copyright 1993-2002 by the University of Washington.
+/* version 3.6. (c) Copyright 1993-2004 by the University of Washington.
    Written by Joseph Felsenstein, Jerry Shurman, Hisashi Horino,
    Akiko Fuseki, Sean Lamont, and Andrew Keeffe.  Permission is granted
    to copy and use this program provided no fee is charged for it and

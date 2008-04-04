@@ -7,7 +7,7 @@
 % <b>fcontrast </b>
 Continuous character Contrasts
 Input file: <b>contrast.dat</b>
-Phylip tree file: <b>contrast.tree</b>
+Phylip tree file (optional): <b>contrast.tree</b>
 Phylip contrast program output file [contrast.fcontrast]: <b></b>
 
 

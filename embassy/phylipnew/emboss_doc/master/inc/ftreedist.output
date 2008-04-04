@@ -5,16 +5,16 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-Tree distance program, version 3.6b
+Tree distance program, version 3.67
 
 Branch score distances between adjacent pairs of trees:
 
-Trees 1 and 2:    4.000000e-02
-Trees 3 and 4:    1.000000e-01
-Trees 5 and 6:    4.000000e-02
-Trees 7 and 8:    4.000000e-02
-Trees 9 and 10:    4.000000e-02
-Trees 11 and 12:    1.000000e-01
+Trees 1 and 2:    2.000000e-01
+Trees 3 and 4:    3.162278e-01
+Trees 5 and 6:    2.000000e-01
+Trees 7 and 8:    2.000000e-01
+Trees 9 and 10:    2.000000e-01
+Trees 11 and 12:    3.162278e-01
 </pre>
 </td></tr></table><p>
 
@@ -24,7 +24,7 @@ Trees 11 and 12:    1.000000e-01
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 
-Tree distance program, version 3.6b
+Tree distance program, version 3.67
 
 Symmetric differences between adjacent pairs of trees:
 

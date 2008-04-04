@@ -7,7 +7,7 @@
 % <b>frestboot -seed 3 </b>
 Bootstrapped restriction sites algorithm
 Input file: <b>restboot.dat</b>
-Phylip seqboot_rest program output file' [restboot.frestboot]: <b></b>
+Phylip seqboot_rest program output file [restboot.frestboot]: <b></b>
 
 
  bootstrap: true

@@ -480,7 +480,7 @@ Output file format
   File: dolpenny.fdolpenny
 
 
-Penny algorithm for Dollo or polymorphism parsimony, version 3.6b
+Penny algorithm for Dollo or polymorphism parsimony, version 3.67
  branch-and-bound to find all most parsimonious trees
 
 

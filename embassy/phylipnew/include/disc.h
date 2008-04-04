@@ -63,6 +63,7 @@ void setuptree(pointptr);
 void setuptree2(pointptr2);
 void inputancestors(boolean *, boolean *);
 void inputancestorsstr(AjPStr, boolean *, boolean *);
+void inputancestorsnew(boolean *, boolean *);
 void printancestors(FILE *, boolean *, boolean *);
 void add(node *, node *, node *, node **, pointptr);
 void add2(node *, node *, node *, node **, boolean, boolean, pointptr);
