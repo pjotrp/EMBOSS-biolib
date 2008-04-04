@@ -28,7 +28,7 @@ extern float energy_of_circ_struct(const char *seq, const char *structure);
 extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
 
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.9 2008/01/14 13:56:13 ajb Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.10 2008/04/04 13:01:57 rice Exp $";
 
 #define PRIVATE static
 
@@ -325,7 +325,7 @@ int main(int argc, char *argv[])
         ajFmtPrintF(outf,"\n# Alignment section\n\n");
         aliout = ajFileFp(outf);
         
-	fprintf(aliout, "%d sequence; length of alignment %d\n",
+	fprintf(aliout, "%d sequences; length of alignment %d\n",
 		n_seq, length);
 	fprintf(aliout, "alifold output\n");
 	for (k=0; pi[k].i>0; k++) {
