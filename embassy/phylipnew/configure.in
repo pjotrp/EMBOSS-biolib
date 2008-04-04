@@ -211,7 +211,8 @@ AC_CHECK_FUNCS(strdup strstr strchr erand48 memmove)
 
 if test "${with_x}" != "no" ; then
 LF_EMBOSS_PATH_XLIB
-fi
+LF_EMBOSS_PATH_XTLIB
+ffi
 
 dnl Library checks
 AC_CHECK_LIB(c, gethostbyname, LIBS="$LIBS", LIBS="$LIBS -lnsl")

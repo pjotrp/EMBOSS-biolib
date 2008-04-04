@@ -44,3 +44,13 @@ fi
   AC_SUBST(XLIB)
 ])
 
+AC_DEFUN([LF_EMBOSS_PATH_XTLIB],[
+  CXXFLAGS="$CXXFLAGS $X_CFLAGS"
+if test "`uname`" != "IRIX64" && test "`uname`" != "IRIX" ; then
+  XLIB="$XLIB -lXaw -lXt"
+else
+  XLIB="$XLIB -lXaw -lXt"
+fi
+  AC_SUBST(XLIB)
+])
+
