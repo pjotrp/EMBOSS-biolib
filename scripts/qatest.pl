@@ -451,9 +451,10 @@ sub runtest ($) {
       }
     }
 
-# This file was not defined
+# This file was not defined (we let extra -debug files through)
 
-    if (!defined($outfile{$file}) && ($file ne "$testapp.dbgx")) {
+    if (!defined($outfile{$file})) {
+      if($file eq "$testapp.dbg") {next}
       $testerr = "$retcode{3} $testid/$file\n";
       print STDERR $testerr;
       print LOG $testerr;
