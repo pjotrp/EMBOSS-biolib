@@ -78,8 +78,8 @@ int main(int argc, char **argv)
     /* ACD file processing */
     embInitP("emast",argc,argv,"MEMENEW");
     mfile    = ajAcdGetInfile("mfile");
-    d        = ajAcdGetInfile("d");
-    a        = ajAcdGetInfile("a");
+    d        = ajAcdGetInfile("dfile");
+    a        = ajAcdGetInfile("afile");
     bfile    = ajAcdGetInfile("bfile");
     smax     = ajAcdGetInt("smax");
     ev       = ajAcdGetFloat("ev");

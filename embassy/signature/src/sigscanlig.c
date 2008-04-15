@@ -177,15 +177,15 @@ int main(int argc, char **argv)
     
 
     /* GET VALUES FROM ACD */
-    sigin      = ajAcdGetDirlist("siginfiles");
-    database   = ajAcdGetSeqall("dbsequences");
+    sigin      = ajAcdGetDirlist("siginfilesdir");
+    database   = ajAcdGetSeqall("dbseqall");
     sub        = ajAcdGetMatrixf("sub");
     gapo       = ajAcdGetFloat("gapo");
     gape       = ajAcdGetFloat("gape");
     nterm      = ajAcdGetList("nterm");
-    hitsdir    = ajAcdGetOutdir("hitsdir");
-    aligndir   = ajAcdGetOutdir("aligndir"); 
-    resultsdir = ajAcdGetOutdir("resultsdir"); 
+    hitsdir    = ajAcdGetOutdir("hitsoutdir");
+    aligndir   = ajAcdGetOutdir("alignoutdir"); 
+    resultsdir = ajAcdGetOutdir("resultsoutdir"); 
     mode        = ajAcdGetList("mode");
 
 

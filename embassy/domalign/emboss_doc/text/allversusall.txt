@@ -86,7 +86,7 @@ CONTENTS
   6.1 COMMAND LINE ARGUMENTS
 
    Standard (Mandatory) qualifiers:
-  [-seqinpath]         dirlist    [./] (no help text) dirlist value
+  [-seqinpath]         dirlist    [./] Sequence directories
   [-datoutdir]         outdir     [./] This option specifies the location of
                                   sequence similarity data files (output).
    -logfile            outfile    [allversusall.log] This option specifies the

@@ -1,0 +1,4 @@
+	emast options -a and -d renamed to -afile and -dfile
+
+	ememe option -plib renamed to -plibfile
+	

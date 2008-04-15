@@ -33,7 +33,7 @@
 </tr>
 
 <tr>
-<td>-plib</td>
+<td>-plibfile</td>
 <td>The name of the file containing the Dirichlet prior in the format of file prior30.plib</td>
 <td>Input file</td>
 <td><b>Required</b></td>

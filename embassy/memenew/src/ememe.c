@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     embInitP("ememe",argc,argv,"MEMENEW");
     dataset   = ajAcdGetSeqset("dataset");
     bfile     = ajAcdGetInfile("bfile");
-    plib      = ajAcdGetInfile("plib");
+    plib      = ajAcdGetInfile("plibfile");
     mod       = ajAcdGetSelect("mod");
     nmotifs   = ajAcdGetInt("nmotifs");
     text      = ajAcdGetBool("text");

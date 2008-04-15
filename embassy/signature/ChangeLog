@@ -1,0 +1,7 @@
+	Renamed sigscanlig qualifiers
+		-siginfiles to -siginfilesdir
+		-dbsequences to -dbseqall
+		-hitsdir to -hitsoutdir
+	        -aligndir to -alignoutdir
+		-resultsdir to -resultsoutdir
+

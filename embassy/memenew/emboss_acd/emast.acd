@@ -17,7 +17,7 @@ section: input [
     knowntype: "meme output"
   ]
 
-  infile: d [
+  infile: dfile [
     additional: "Y"
     default: ""
     nullok: "Y"
@@ -27,7 +27,7 @@ section: input [
     knowntype: "meme database"
   ]
 
-  infile: a [
+  infile: afile [
     additional: "Y"
     default: ""
     nullok: "Y"

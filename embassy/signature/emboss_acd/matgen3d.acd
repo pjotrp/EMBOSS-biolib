@@ -161,7 +161,7 @@ section: output [
     parameter: "Y"
     information: "Domainatrix calculations log output file"
     default: "matgen3d.calc"
-    knowntype: "domainatrix log"
+    knowntype: "domainatrix calculations log"
   ]
 
   outfile: logfile [

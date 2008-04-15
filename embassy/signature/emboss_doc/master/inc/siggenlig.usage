@@ -18,7 +18,7 @@ Available types
          2 : 3D (structural) signature
 Select type of signature. [1]: <b>1</b>
 Window size [0]: <b></b>
-Domainatrix signature output directory [./]: <b></b>
+Domainatrix signature file output directory [./]: <b></b>
 Domainatrix log output file [siggenlig.log]: <b></b>
 
 </pre></td></tr></table><p>

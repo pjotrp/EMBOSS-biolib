@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-seqinpath]<br>(Parameter 1)</td>
-<td>(no help text) dirlist value</td>
+<td>Sequence directories</td>
 <td>Directory with files</td>
 <td>./</td>
 </tr>

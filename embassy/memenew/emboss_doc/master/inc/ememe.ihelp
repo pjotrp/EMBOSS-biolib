@@ -17,7 +17,7 @@
                                   position-specific scoring matrix (log-odds
                                   matrix). See application documentation for
                                   more information.
-   -plib               infile     The name of the file containing the
+   -plibfile           infile     The name of the file containing the
                                   Dirichlet prior in the format of file
                                   prior30.plib
    -mod                selection  [zoops] If you know how occurrences of

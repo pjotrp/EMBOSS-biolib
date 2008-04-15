@@ -28,7 +28,7 @@ Substitution matrix to be used [EBLOSUM62]: <b>EBLOSUM62</b>
 The % sparsity of signature [10]: <b>15</b>
 Window size [0]: <b>0</b>
 Ignore alignment positions with post_similar value of 0 [Y]: <b>Y</b>
-Domainatrix signature output directory [./]: <b></b>
+Domainatrix signature file output directory [./]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

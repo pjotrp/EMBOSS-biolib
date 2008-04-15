@@ -34,7 +34,7 @@ section: input [
     knowntype: "background markov model meme"
   ]
 
-  infile: plib [
+  infile: plibfile [
     additional: "Y"
     default: ""
     nullok: "Y"

@@ -141,9 +141,9 @@ Command line arguments
   [-outfile]           outfile    [*.emast] MAST program output file
 
    Additional (Optional) qualifiers:
-   -d                  infile     If -d  is not given, MAST looks
+   -dfile              infile     If -d  is not given, MAST looks
                                   for database specified inside of .
-   -a                  infile     Input file  is assumed to contain
+   -afile              infile     Input file  is assumed to contain
                                   motifs in the format output by
                                   bin/make_logodds and  is their alphabet;
                                   -d  or -stdin must be specified

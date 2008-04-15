@@ -1,0 +1,11 @@
+	Qualifiers renamed to standard EMBOSS names:
+		-params to -paramsfile
+		-exp to -expdir
+		-scf to -scfdir
+		-fei to -feifile
+		-fpi to -fpifile
+		-pi to -pifile
+		-fai to -faifile
+		-sdi to -sdifile
+		-xtii to -xtiifile
+	

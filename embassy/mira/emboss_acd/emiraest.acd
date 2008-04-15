@@ -4,6 +4,7 @@ application: emiraest [
   gui: "yes"
   batch: "yes"
   cpu: "high"
+  embassy: "mira"
 ]
 
 section: input [
@@ -11,13 +12,15 @@ section: input [
   type: "page"
 ]
 
-  string: params [
-    standard: "N"
+  infile: paramsfile [
     default: ""
-    information: "Parameter file"
+    information: "MIRA program parameters file (optional)"
     help: "Loads parameters from the filename given. Allows a maximum of 10
            levels of recursion, i.e. a -params option appearing within a file
            that loads other parameter files"
+    knowntype: "mira parameters"
+    nullok: "Y"
+    trydefault: "Y"
   ]
 
 
@@ -35,63 +38,103 @@ section: input [
            type of input file."
   ]
 
+  directory: expdir [
+    default: "."
+    information: "EXP assembly project file directory"
+    help: "Defines the directory where mira should search for experiment
+           files (EXP)."
+    knowntype: "exp file"
+]
+
+  directory: scfdir [
+    default: "."
+    information: "SCF assembly project file directory"
+    help: "Defines the directory where mira should search for SCF
+           files"
+    knowntype: "scf file"
+  ]
+
 # File
 
-  string: fei [
+  infile: feifile [
     default: "mira_in.fofn"
-    information: "File of filenames for an EXP project"
+    information: "EXP assembly project file of filenames file"
     help: "Defines the file of filenames where the names of the EXP files
            of a project are located."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "exp file of filenames"
   ]
 
-  string: fpi [
+  infile: fpifile [
     default: "mira_in.fofn"
-    information: "File of filenames for a PHD project"
+    information: "PHD assembly project file of filenames file"
     help: "Defines the file of filenames where the names of the PHD files
            of a project are located."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "phd file of filenames"
   ]
 
-  string: pi [
+  infile: pifile [
     default: "mira_in.phd"
-    information: "File of sequences for a PHD project"
+    information: "PHD assembly project sequences file"
     help: "Defines the PHD file to load sequences of a project from."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "phd sequences"
   ]
 
-  string: fai [
+  infile: faifile [
     default: "mira_in.fasta"
-    information: "File of sequences for a FASTA project"
+    information: "Nucleotide sequences in FASTA format file"
     help: "Defines the FASTA file to load sequences of a project from."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "dna fasta set"
   ]
 
-  string: fqi [
+  infile: fqifile [
     default: "mira_in.fasta.qual"
-    information: "FASTA quality input file"
+    information: "Sequence read quality scores file"
     help: "Defines the fasta file to load base qualities of a project from.
            Although the order of reads in the quality file does not need to
 	   be the same as in the fasta or fofn projects (although it saves
 	   a bit of time if they are)."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "sequence read quality"
   ]
 
-  string: ci [
+  infile: cifile [
     default: "mira_in.caf"
-    information: "Input file for a CAF project"
+    information: "CAF assembly project file"
     help: "Defines the file to load a CAF project from. Filename must end
            with '.caf'."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "CAF project"
   ]
 
-  string: sdi [
+  infile: sdifile [
     default: "mira_straindata_in.txt"
-    information: "Input file for straindata"
+    information: "MIRA program strain data file"
     help: "Defines the file to load straindata from. Only used in EST
            projects (miraEST)."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "mira strain data"
   ]
 
-  string: xtii [
+  infile: xtiifile [
     default: "mira_xmltraceinfo_in.xml"
-    information: "trace info file"
+    information: "Sequence trace information file"
     help: "Defines the file to load a trace info file in XML format from.
            This can be used both when merging XML data to loaded files or
 	   when loading a project from an XML trace info file."
+    nullok: "Y"
+    trydefault: "Y"
+    knowntype: "sequence trace information"
   ]
 
 endsection: input
@@ -106,11 +149,14 @@ section: required [
     default: "mira"
     information: "Basename for index files"
     help: "Default is mira. Defines the project name for this assembly.
-    The project name automatically influences the name of input and output
-    files / directories. E.g. in the default setting, the file names for the
-    output of the assembly in FASTA format would be mira_out.fasta and
-    mira_out.fasta.qual. Setting the project name to 'MyProject' would
-    generate MyProject_out.fasta and MyProject_out.fasta.qual."
+          The project name automatically influences the name of input
+          and output files / directories. E.g. in the default setting,
+          the file names for the output of the assembly in FASTA
+          format would be mira_out.fasta and
+          mira_out.fasta.qual. Setting the project name to 'MyProject'
+          would generate MyProject_out.fasta and
+          MyProject_out.fasta.qual."
+    knowntype: "file basename"
   ]
 
 
@@ -414,6 +460,7 @@ section: advanced [
     default: ""
     information: "Backbone strain name"
     help: "Defines the name of the strain that the backbone sequences have."
+    knowntype: "strain name"
   ]
 
   list: bft [
@@ -702,7 +749,7 @@ section: advanced [
   boolean: pvc [
     default: "Y"
     information: "Possible vector clip"
-    help: "mira will try to identify possible sequencing vector relicts
+    help: "Mira will try to identify possible sequencing vector relicts
            present at the start of a sequence and clip them away. These
            relicts are usually a few bases long and were not correctly
            removed from the sequence in data pre-processing steps of
@@ -1005,6 +1052,7 @@ section: advanced [
     default: "mira"
     information: "Name prefix"
     help: "Contigs will have this string prepended to their names."
+    knowntype: "name prefix"
   ]
 
   list: an [
@@ -1349,20 +1397,7 @@ section: output [
            result of an assembly ready to import into the Staden package (GAP4)
 	   in Direct Assembly format. The name of the directory will then
 	   be <projectname>_.<extension>"
-  ]
-
-  directory: exp [
-    default: "."
-    information: "EXP files directory"
-    help: "Defines the directory where mira should search for experiment
-           files (EXP)."
-]
-
-  directory: scf [
-    default: "."
-    information: "SCF files directory"
-    help: "Defines the directory where mira should search for SCF
-           files"
+    knowntype: "name suffix"
   ]
 
   string: log [
@@ -1370,6 +1405,7 @@ section: output [
     information: "Log files directory"
     help: "Defines the directory where mira will write some log files to.
            Note that the name of the actual project will be prepended."
+    knowntype: "name suffix"
   ]
 
 
@@ -1378,6 +1414,7 @@ section: output [
     information: "Output file for a CAF project"
     help: "Defines the file in CAF format to save an assembled project to.
            Filename must end with '.caf'."
+    knowntype: "output filename"
   ]
 
 endsection: output

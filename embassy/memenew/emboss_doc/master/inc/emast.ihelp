@@ -8,9 +8,9 @@
   [-outfile]           outfile    [*.emast] MAST program output file
 
    Additional (Optional) qualifiers:
-   -d                  infile     If -d <database> is not given, MAST looks
+   -dfile              infile     If -d <database> is not given, MAST looks
                                   for database specified inside of <mfile>.
-   -a                  infile     Input file <mfile> is assumed to contain
+   -afile              infile     Input file <mfile> is assumed to contain
                                   motifs in the format output by
                                   bin/make_logodds and <a> is their alphabet;
                                   -d <database> or -stdin must be specified

@@ -206,7 +206,7 @@ section: output [
     default: "./"
     extension: "sig"
     knowntype: "domainatrix signature"
-    information: "Domainatrix signature output directory"
+    information: "Domainatrix signature file output directory"
   ]
 
 endsection: output

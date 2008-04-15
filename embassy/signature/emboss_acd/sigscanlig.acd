@@ -13,9 +13,9 @@ section: input [
   type: "page"
 ]
 
-  dirlist: siginfiles [
+  dirlist: siginfilesdir [
     parameter: "Y"
-    information: "Domainatrix signature file directory"
+    information: "Domainatrix signature file directories"
     help: "This option specifies the directory of signature files
            (input). A 'signature file' contains a sparse sequence signature
            suitable for use with the SIGSCAN and SIGSCANLIG programs. The
@@ -25,7 +25,7 @@ section: input [
     knowntype: "domainatrix signature"
   ]
 
-  seqall: dbsequences [
+  seqall: dbseqall [
     parameter: "Y"
     information: "Database of query sequences."
     help: "This option specifies the name of the database of query
@@ -155,7 +155,7 @@ section: output [
            hits to consider for each ligand."
   ]
 
-  outdir: hitsdir [
+  outdir: hitsoutdir [
     parameter: "Y"
     help: "This option specifies the directory of the LHF files
            (ligand hits files) (output). A 'ligand hits file' contains
@@ -170,7 +170,7 @@ section: output [
                   directory"
   ]
 
-  outdir: aligndir [
+  outdir: alignoutdir [
     parameter: "Y"
     help: "This option specifies the name of the SAF (signature
            alignment file) (output).A 'signature alignment file' contains one
@@ -190,7 +190,7 @@ section: output [
                   directory"
   ]
 
-  outdir: resultsdir [
+  outdir: resultsoutdir [
     parameter: "Y"
     help: "This option specifies the directory for the results files.
            A results file is generated for each query sequence and contains a
@@ -198,7 +198,7 @@ section: output [
     default: "./"
     extension: "results"
     knowntype: "sigscanlig output"
-    information: "Domainatrix sigscanlig program output file
+    information: "Domainatrix sigscanlig program output file output
                   directory"
   ]
 

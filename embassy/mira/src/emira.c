@@ -208,22 +208,26 @@ typedef struct MiraSQuals
 
 
 
+static MiraOQuals mirainfiles[] = {
+    {"paramsfile", "params", ""},
+    {"feifile", "fei", "mira_in.fofn"},
+    {"fpifile", "fpi", "mira_in.fofn"},
+    {"pifile", "pi", "mira_in.phd"},
+    {"faifile", "fai", "mira_in.fasta"},
+    {"fqifile", "fqi", "mira_in.fasta.qual"},
+    {"cifile", "ci", "mira_in.caf"},
+    {"sdifile", "sdi", "mira_straindata_in.txt"},
+    {"xtiifile", "xtii", "mira_xmltraceinfo_in.xml"},
+    {NULL, NULL, NULL}
+};
+
 static MiraOQuals mirastrings[] = {
-    {"params", "params", ""},
     {"project", "project", "mira"},
     {"bsn", "bsn", ""},
     {"np", "np", "mira"},
     {"gapfda", "gap4da", "gap4da"},
     {"log", "log", "miralog"},
     {"co", "co", "mira_out.caf"},
-    {"fei", "fei", "mira_in.fofn"},
-    {"fpi", "fpi", "mira_in.fofn"},
-    {"pi", "pi", "mira_in.phd"},
-    {"fai", "fai", "mira_in.fasta"},
-    {"fqi", "fqi", "mira_in.fasta.qual"},
-    {"ci", "ci", "mira_in.caf"},
-    {"sdi", "sdi", "mira_straindata_in.txt"},
-    {"xtii", "xtii", "mira_xmltraceinfo_in.xml"},
 #if 0
     /* Can't use these until ACD can cope with a default string of " " */
     {"tegfc", "tegfc", " "},
@@ -235,8 +239,8 @@ static MiraOQuals mirastrings[] = {
 
 
 static MiraOQuals miradirectories[] = {
-    {"exp", "exp", "./"},
-    {"scf", "scf", "./"},
+    {"expdir", "exp", "./"},
+    {"scfdir", "scf", "./"},
     {NULL, NULL, NULL}
 };
 
@@ -371,6 +375,7 @@ static MiraOQuals miraintegers[] = {
 
 static void emira_dobools(AjPStr *cl, AjPTable table);
 static void emira_dostrings(AjPStr *cl, AjPTable table);
+static void emira_doinfiles(AjPStr *cl, AjPTable table);
 static void emira_dodirectories(AjPStr *cl, AjPTable table);
 static void emira_dolistsingles(AjPStr *cl, AjPTable table);
 static void emira_dointegers(AjPStr *cl, AjPTable table);
@@ -434,6 +439,7 @@ int main(int argc, char **argv)
 
 
     emira_dostrings(&cl, preftab);
+    emira_doinfiles(&cl, preftab);
     emira_dodirectories(&cl, preftab);
     emira_dobools(&cl, preftab);
     emira_dointegers(&cl, preftab);
@@ -558,6 +564,63 @@ static void emira_dostrings(AjPStr *cl, AjPTable table)
 	if(!ajStrMatchC(squal,mirastrings[i].def))
 	    ajFmtPrintAppS(cl," -%S%s=%S",prefix,mirastrings[i].mname,squal);
 	ajStrDel(&squal);
+	++i;
+    }
+
+    ajStrDel(&key);
+    ajStrDel(&prefix);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic emira_doinfiles ************************************************
+**
+** Get ACD input files.
+** Only add to command line if value different from the default
+**
+** @param [w] cl [AjPStr*] command line
+** @param [r] table [AjPTable] table relating qualifiers to prefixes
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void emira_doinfiles(AjPStr *cl, AjPTable table)
+{
+    ajuint i;
+    AjPStr squal = NULL;
+    AjPStr prefix = NULL;
+    AjPStr key    = NULL;
+    AjPStr value  = NULL;
+    AjPFile infile = NULL;
+    
+    prefix = ajStrNew();
+    key    = ajStrNew();
+    
+    i = 0;
+
+    while(mirainfiles[i].qname)
+    {
+	infile = ajAcdGetInfile(mirainfiles[i].qname);
+	if(infile)
+	   squal = ajStrNewS(ajFileGetName(infile));
+	else
+	    squal = ajStrNewS(ajAcdGetValueDefault(mirainfiles[i].qname));
+	ajStrAssignC(&key,mirainfiles[i].qname);
+	ajStrAssignC(&prefix,"");
+
+	value = ajTableFetch(table, key);
+	if(value)
+	    ajStrAssignS(&prefix,value);
+
+	if(!ajStrMatchC(squal,mirainfiles[i].def))
+	    ajFmtPrintAppS(cl," -%S%s=%S",prefix,mirainfiles[i].mname,
+			   squal);
+	ajStrDel(&squal);
+	ajFileClose(&infile);
 	++i;
     }
 

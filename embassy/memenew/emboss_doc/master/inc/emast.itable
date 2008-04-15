@@ -40,14 +40,14 @@
 </tr>
 
 <tr>
-<td>-d</td>
+<td>-dfile</td>
 <td>If -d &lt;database&gt; is not given, MAST looks for database specified inside of &lt;mfile&gt;.</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
-<td>-a</td>
+<td>-afile</td>
 <td>Input file &lt;mfile&gt; is assumed to contain motifs in the format output by bin/make_logodds and &lt;a&gt; is their alphabet; -d &lt;database&gt; or -stdin must be specified when this option is used.</td>
 <td>Input file</td>
 <td><b>Required</b></td>
