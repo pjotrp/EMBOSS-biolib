@@ -301,7 +301,7 @@ Author(s)
    Original program by Bengt Persson and Patrick Argos.
 
    This application was modified for inclusion in EMBOSS by Ian Longden
-   (il ï¿½ sanger.ac.uk)
+   (il © sanger.ac.uk)
    Sanger Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge,
    CB10 1SA, UK.
 

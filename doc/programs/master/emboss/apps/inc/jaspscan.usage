@@ -11,6 +11,9 @@ Jaspar matrix set
          C : Core
          F : Fam
          P : Phylofacts
+         N : CNE
+         O : POLII
+         S : SPLICE
 Matrix set [C]: <b></b>
 Comma separated matrix list [all]: <b>ma0079</b>
 Threshold percentage [80.0]: <b></b>

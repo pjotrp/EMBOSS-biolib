@@ -59,6 +59,8 @@ Displays information on the currently available databases
 
 # Name           Type  ID  Qry All Comment
 # ============== ==== ==  === === =======
+twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
+dex
 qapblast         P    OK  OK  OK  BLAST swissnew
 qapblastall      P    OK  OK  OK  BLAST swissnew, all fields indexed
 qapblastsplit    P    OK  OK  OK  BLAST swissnew split in 5 files
@@ -80,8 +82,6 @@ tsw              P    OK  OK  OK  Swissprot native format with EMBL CD-ROM inde
 x
 tswnew           P    OK  OK  OK  SpTrEmbl as 3 files in native format with EMB
 L CD-ROM index
-twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
-dex
 genbanksrs       N    OK  -   -   Genbank IDs
 qanfasta         N    OK  OK  OK  FASTA file EMBL rodents
 qanfastaall      N    OK  OK  OK  FASTA file EMBL rodents, all fields indexed
@@ -152,6 +152,8 @@ Displays information on the currently available databases
 
  Name Type ID Qry All Comment
 
+ twp P OK   OK   OK   EMBL new in native format with EMBL CD-ROM index
+
  qapblast P OK   OK   OK   BLAST swissnew
 
  qapblastall P OK   OK   OK   BLAST swissnew, all fields indexed
@@ -191,8 +193,6 @@ Displays information on the currently available databases
 
  tswnew P OK   OK   OK   SpTrEmbl as 3 files in native format with EMBL CD-ROM
 index
-
- twp P OK   OK   OK   EMBL new in native format with EMBL CD-ROM index
 
  genbanksrs N OK   -    -    Genbank IDs
 
@@ -272,6 +272,8 @@ Displays information on the currently available databases
 
 # Name           Type  ID  Qry All Comment
 # ============== ==== ==  === === =======
+twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
+dex
 qapblast         P    OK  OK  OK  BLAST swissnew
 qapblastall      P    OK  OK  OK  BLAST swissnew, all fields indexed
 qapblastsplit    P    OK  OK  OK  BLAST swissnew split in 5 files
@@ -293,8 +295,6 @@ tsw              P    OK  OK  OK  Swissprot native format with EMBL CD-ROM inde
 x
 tswnew           P    OK  OK  OK  SpTrEmbl as 3 files in native format with EMB
 L CD-ROM index
-twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
-dex
 
    Example 6
 
@@ -304,6 +304,8 @@ dex
 % showdb -noheading 
 Displays information on the currently available databases
 
+twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
+dex
 qapblast         P    OK  OK  OK  BLAST swissnew
 qapblastall      P    OK  OK  OK  BLAST swissnew, all fields indexed
 qapblastsplit    P    OK  OK  OK  BLAST swissnew split in 5 files
@@ -325,8 +327,6 @@ tsw              P    OK  OK  OK  Swissprot native format with EMBL CD-ROM inde
 x
 tswnew           P    OK  OK  OK  SpTrEmbl as 3 files in native format with EMB
 L CD-ROM index
-twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
-dex
 genbanksrs       N    OK  -   -   Genbank IDs
 qanfasta         N    OK  OK  OK  FASTA file EMBL rodents
 qanfastaall      N    OK  OK  OK  FASTA file EMBL rodents, all fields indexed
@@ -369,6 +369,7 @@ ex
 
 % showdb -noheading -notype -noid -noquery -noall -nocomment -auto 
 
+twp
 qapblast
 qapblastall
 qapblastsplit
@@ -388,7 +389,6 @@ qaxpirinc
 tpir
 tsw
 tswnew
-twp
 genbanksrs
 qanfasta
 qanfastaall
@@ -431,6 +431,7 @@ tgenbank
 % showdb -only -type 
 Displays information on the currently available databases
 
+twp              P
 qapblast         P
 qapblastall      P
 qapblastsplit    P
@@ -450,7 +451,6 @@ qaxpirinc        P
 tpir             P
 tsw              P
 tswnew           P
-twp              P
 genbanksrs       N
 qanfasta         N
 qanfastaall      N
@@ -497,6 +497,8 @@ Displays information on the currently available databases
   Comment
 # ============== ==== ==  === === ========= ================= ======= ======= =
 ======
+twp              P    OK  OK  OK  emblcd    des               global  16      E
+MBL new in native format with EMBL CD-ROM index
 qapblast         P    OK  OK  OK  blast     -                 special         B
 LAST swissnew
 qapblastall      P    OK  OK  OK  blast     sv,des            special         B
@@ -535,8 +537,6 @@ tsw              P    OK  OK  OK  emblcd    sv,des,org,key    special 36      S
 wissprot native format with EMBL CD-ROM index
 tswnew           P    OK  OK  OK  emblcd    sv,des,org,key    special 37      S
 pTrEmbl as 3 files in native format with EMBL CD-ROM index
-twp              P    OK  OK  OK  emblcd    des               special 16      E
-MBL new in native format with EMBL CD-ROM index
 genbanksrs       N    OK  -   -   srswww    gi,sv,des,org,key global          G
 enbank IDs
 qanfasta         N    OK  OK  OK  emblcd    -                 special         F
@@ -677,6 +677,8 @@ Output file format
 
 # Name           Type  ID  Qry All Comment
 # ============== ==== ==  === === =======
+twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
+dex
 qapblast         P    OK  OK  OK  BLAST swissnew
 qapblastall      P    OK  OK  OK  BLAST swissnew, all fields indexed
 qapblastsplit    P    OK  OK  OK  BLAST swissnew split in 5 files
@@ -698,8 +700,6 @@ tsw              P    OK  OK  OK  Swissprot native format with EMBL CD-ROM inde
 x
 tswnew           P    OK  OK  OK  SpTrEmbl as 3 files in native format with EMB
 L CD-ROM index
-twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM in
-dex
 genbanksrs       N    OK  -   -   Genbank IDs
 qanfasta         N    OK  OK  OK  FASTA file EMBL rodents
 qanfastaall      N    OK  OK  OK  FASTA file EMBL rodents, all fields indexed

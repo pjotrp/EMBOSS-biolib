@@ -186,24 +186,24 @@ eem_vi.seq eem_vi.ref
   File: embl.pxac
 
 Order     71
-Fill      47
+Fill      46
 Pagesize  2048
 Level     0
 Cachesize 100
-Order2    82
-Fill2     99
+Order2    99
+Fill2     101
 Count     47
 Kwlimit   15
 
   File: embl.pxid
 
 Order     71
-Fill      47
+Fill      46
 Pagesize  2048
 Level     0
 Cachesize 100
-Order2    82
-Fill2     99
+Order2    99
+Fill2     101
 Count     39
 Kwlimit   15
 

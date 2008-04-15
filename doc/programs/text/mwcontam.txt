@@ -5,7 +5,7 @@
 
 Function
 
-   Shows molwts that match across a set of files
+   Shows molecular weights that match across a set of files
 
 Description
 
@@ -23,7 +23,7 @@ Usage
 
 
 % mwcontam 
-Shows molwts that match across a set of files
+Shows molecular weights that match across a set of files
 Molecular weights file list: ../data/mw2.dat,mw3.dat
 Ppm tolerance [50.0]: 
 Molecular weights output file [outfile.mwcontam]: 

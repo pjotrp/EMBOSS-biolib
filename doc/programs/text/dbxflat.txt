@@ -170,24 +170,24 @@ rod.dat
   File: embl.pxac
 
 Order     71
-Fill      47
+Fill      46
 Pagesize  2048
 Level     0
 Cachesize 100
-Order2    82
-Fill2     99
+Order2    99
+Fill2     101
 Count     8
 Kwlimit   15
 
   File: embl.pxid
 
 Order     71
-Fill      47
+Fill      46
 Pagesize  2048
 Level     0
 Cachesize 100
-Order2    82
-Fill2     99
+Order2    99
+Fill2     101
 Count     5
 Kwlimit   15
 

@@ -7,7 +7,7 @@
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
    -feature            boolean    Use feature information
-   -firstonly          boolean    some help text to test comments
+   -firstonly          boolean    [N] Read one sequence and stop
 
    Associated qualifiers:
 

@@ -55,9 +55,12 @@ Resource name: emblresource
       ncbi : | formats
 ID line format [idacc]: idacc
 Database directory [.]: data
-Wildcard database filename [*.dat]: emrod
-Release number [0.0]: 
-Index date [00/00/00]: 
+Wildcard database filename [*.fasta]: emrod
+        id : ID
+       acc : Accession number
+        sv : Sequence Version and GI
+       des : Description
+Index fields [id,acc]: 
 
 Processing file /homes/user/test/data/emrod
 
@@ -105,17 +108,17 @@ Command line arguments
                                   (>db:ID); gcgidacc (>db:ID ACC); dbid (>db
                                   ID); ncbi (| formats))
    -directory          directory  [.] Database directory
-   -filenames          string     [*.dat] Wildcard database filename (Any
+   -filenames          string     [*.fasta] Wildcard database filename (Any
                                   string is accepted)
-   -release            string     [0.0] Release number (Any string up to 9
-                                  characters)
-   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
-
-   Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers:
    -fields             menu       [id,acc] Index fields (Values: id (ID); acc
                                   (Accession number); sv (Sequence Version and
                                   GI); des (Description))
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -release            string     [0.0] Release number (Any string up to 9
+                                  characters)
+   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
    -exclude            string     Wildcard filename(s) to exclude (Any string
                                   is accepted)
    -indexoutdir        outdir     [.] Index file output directory
@@ -167,24 +170,24 @@ emrod
   File: emrod.pxac
 
 Order     71
-Fill      47
+Fill      46
 Pagesize  2048
 Level     0
 Cachesize 100
-Order2    82
-Fill2     99
+Order2    99
+Fill2     101
 Count     5
 Kwlimit   15
 
   File: emrod.pxid
 
 Order     71
-Fill      47
+Fill      46
 Pagesize  2048
 Level     0
 Cachesize 100
-Order2    82
-Fill2     99
+Order2    99
+Fill2     101
 Count     5
 Kwlimit   15
 

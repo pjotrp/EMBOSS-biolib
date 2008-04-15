@@ -15,7 +15,7 @@
 <tr>
 <td>-menu</td>
 <td>Matrix set</td>
-<td><table><tr><td>C</td> <td><i>(Core)</i></td></tr><tr><td>F</td> <td><i>(Fam)</i></td></tr><tr><td>P</td> <td><i>(Phylofacts)</i></td></tr></table></td>
+<td><table><tr><td>C</td> <td><i>(Core)</i></td></tr><tr><td>F</td> <td><i>(Fam)</i></td></tr><tr><td>P</td> <td><i>(Phylofacts)</i></td></tr><tr><td>N</td> <td><i>(CNE)</i></td></tr><tr><td>O</td> <td><i>(POLII)</i></td></tr><tr><td>S</td> <td><i>(SPLICE)</i></td></tr></table></td>
 <td>C</td>
 </tr>
 

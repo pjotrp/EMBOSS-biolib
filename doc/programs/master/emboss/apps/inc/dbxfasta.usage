@@ -16,9 +16,12 @@ Resource name: <b>emblresource</b>
       ncbi : | formats
 ID line format [idacc]: <b>idacc</b>
 Database directory [.]: <b>data</b>
-Wildcard database filename [*.dat]: <b>emrod</b>
-Release number [0.0]: <b></b>
-Index date [00/00/00]: <b></b>
+Wildcard database filename [*.fasta]: <b>emrod</b>
+        id : ID
+       acc : Accession number
+        sv : Sequence Version and GI
+       des : Description
+Index fields [id,acc]: <b></b>
 
 Processing file /homes/user/test/data/emrod
 

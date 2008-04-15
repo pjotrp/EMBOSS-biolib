@@ -10,17 +10,17 @@
                                   (>db:ID); gcgidacc (>db:ID ACC); dbid (>db
                                   ID); ncbi (| formats))
    -directory          directory  [.] Database directory
-   -filenames          string     [*.dat] Wildcard database filename (Any
+   -filenames          string     [*.fasta] Wildcard database filename (Any
                                   string is accepted)
-   -release            string     [0.0] Release number (Any string up to 9
-                                  characters)
-   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
-
-   Additional (Optional) qualifiers: (none)
-   Advanced (Unprompted) qualifiers:
    -fields             menu       [id,acc] Index fields (Values: id (ID); acc
                                   (Accession number); sv (Sequence Version and
                                   GI); des (Description))
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -release            string     [0.0] Release number (Any string up to 9
+                                  characters)
+   -date               string     [00/00/00] Index date (Date string dd/mm/yy)
    -exclude            string     Wildcard filename(s) to exclude (Any string
                                   is accepted)
    -indexoutdir        outdir     [.] Index file output directory

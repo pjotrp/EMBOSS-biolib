@@ -27,6 +27,9 @@ Jaspar matrix set
          C : Core
          F : Fam
          P : Phylofacts
+         N : CNE
+         O : POLII
+         S : SPLICE
 Matrix set [C]: 
 Comma separated matrix list [all]: ma0079
 Threshold percentage [80.0]: 
@@ -41,7 +44,8 @@ Command line arguments
   [-sequence]          seqall     Nucleotide sequence(s) filename and optional
                                   format, or reference (input USA)
    -menu               menu       [C] Matrix set (Values: C (Core); F (Fam); P
-                                  (Phylofacts))
+                                  (Phylofacts); N (CNE); O (POLII); S
+                                  (SPLICE))
    -matrices           string     [all] The name 'all' reads in all matrix
                                   files from the selected
                                   JASPAR matrix set. You can specify

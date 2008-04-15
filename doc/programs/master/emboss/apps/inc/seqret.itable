@@ -44,7 +44,7 @@
 
 <tr>
 <td>-firstonly</td>
-<td>some help text to test comments</td>
+<td>Read one sequence and stop</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
