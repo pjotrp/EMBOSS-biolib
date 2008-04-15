@@ -6196,9 +6196,8 @@ IN idacc
 IN ../../data
 IN emrod
 IN
-IN
 FI stderr
-FC = 8
+FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -6210,25 +6209,25 @@ FC = 5
 FP 1 /^# Number of files: 1\n/
 FP /^emrod\n/
 FI emrod.pxac
-FZ = 118
+FZ = 119
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     5\n/
 FP 1 /^Kwlimit   15\n/
 FI emrod.pxid
-FZ = 118
+FZ = 119
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     5\n/
 FP 1 /^Kwlimit   15\n/
 FI emrod.xac
@@ -6251,7 +6250,6 @@ IN idacc
 IN ../../data
 IN emrod
 IN
-IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -6265,47 +6263,47 @@ FC = 5
 FP 1 /^# Number of files: 1\n/
 FP /^emrod\n/
 FI emrod.pxac
-FZ = 118
+FZ = 119
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     5\n/
 FP 1 /^Kwlimit   15\n/
 FI emrod.pxde
 FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
+FP 1 /^Cachesize 100\n/
 FP 1 /^Order2    71\n/
-FP 1 /^Fill2     106\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     70\n/
 FP 1 /^Kwlimit   15\n/
 FI emrod.pxid
-FZ = 118
+FZ = 119
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     5\n/
 FP 1 /^Kwlimit   15\n/
 FI emrod.pxsv
-FZ = 118
+FZ = 119
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     0\n/
 FP 1 /^Kwlimit   15\n/
 FI emrod.xac
@@ -6394,9 +6392,8 @@ IN idacc
 IN ../../data
 IN swnew
 IN
-IN
 FI stderr
-FC = 8
+FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -6408,25 +6405,25 @@ FC = 5
 FP 1 /^# Number of files: 1\n/
 FP /^swnew\n/
 FI swnew.pxac
-FZ = 118
+FZ = 119
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     8\n/
 FP 1 /^Kwlimit   15\n/
 FI swnew.pxid
-FZ = 118
+FZ = 119
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     8\n/
 FP 1 /^Kwlimit   15\n/
 FI swnew.xac
@@ -6506,9 +6503,8 @@ IN simple
 IN ../../data
 IN wormpep.clone.*
 IN
-IN
 FI stderr
-FC = 8
+FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -6522,32 +6518,32 @@ FP 1 /# Number of files: 2\n/
 FP 1 /^wormpep\.clone\.AB\n/
 FP 1 /^wormpep\.clone\.ZK637\n/
 FI worm.pxac
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     65\n/
 FP 1 /^Kwlimit   15\n/
 FI worm.pxid
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     65\n/
 FP 1 /^Kwlimit   15\n/
 FI worm.xid
-FZ = 8192
+FZ = 6144
 FP 1 /\0ah10\.1\0/
 FI worm.xac
-FZ = 8192
+FZ = 6144
 FP 1 /\0ah10\.1\0/
 //
 
@@ -6626,7 +6622,6 @@ IN embl
 IN rod.dat
 IN ../../embl
 IN
-IN
 FI stderr
 FC = 12
 FP 0 /Warning: /
@@ -6641,25 +6636,25 @@ FC = 5
 FP /^# Number of files: 1\n/
 FP /^rod\.dat\n/
 FI embl.pxac
-FZ = 118
+FZ = 119
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
-FP /^Order2    82\n/
-FP /^Fill2     99\n/
+FP /^Cachesize 100\n/
+FP /^Order2    99\n/
+FP /^Fill2     101\n/
 FP /^Count     8\n/
 FP /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 118
+FZ = 119
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
-FP /^Order2    82\n/
-FP /^Fill2     99\n/
+FP /^Cachesize 100\n/
+FP /^Order2    99\n/
+FP /^Fill2     101\n/
 FP /^Count     5\n/
 FP /^Kwlimit   15\n/
 FI embl.xac
@@ -6777,69 +6772,69 @@ FP /^# Number of files: 10\n/
 FP /^rod\.dat\n/
 FP 10 /^[a-z0-9]+\.dat\n/
 FI embl.pxac
-FZ = 120
+FZ = 121
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
-FP /^Order2    82\n/
-FP /^Fill2     99\n/
+FP /^Cachesize 100\n/
+FP /^Order2    99\n/
+FP /^Fill2     101\n/
 FP /^Count     153\n/
 FP /^Kwlimit   15\n/
 FI embl.pxde
 FZ = 121
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
+FP /^Cachesize 100\n/
 FP /^Order2    71\n/
-FP /^Fill2     106\n/
+FP /^Fill2     101\n/
 FP /^Count     429\n/
 FP /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 119
+FZ = 120
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
-FP /^Order2    82\n/
-FP /^Fill2     99\n/
+FP /^Cachesize 100\n/
+FP /^Order2    99\n/
+FP /^Fill2     101\n/
 FP /^Count     48\n/
 FP /^Kwlimit   15\n/
 FI embl.pxkw
 FZ = 120
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
+FP /^Cachesize 100\n/
 FP /^Order2    71\n/
-FP /^Fill2     106\n/
+FP /^Fill2     101\n/
 FP /^Count     93\n/
 FP /^Kwlimit   15\n/
 FI embl.pxsv
-FZ = 119
+FZ = 120
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
-FP /^Order2    82\n/
-FP /^Fill2     99\n/
+FP /^Cachesize 100\n/
+FP /^Order2    99\n/
+FP /^Fill2     101\n/
 FP /^Count     48\n/
 FP /^Kwlimit   15\n/
 FI embl.pxtx
 FZ = 121
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
+FP /^Cachesize 100\n/
 FP /^Order2    71\n/
-FP /^Fill2     106\n/
+FP /^Fill2     101\n/
 FP /^Count     668\n/
 FP /^Kwlimit   15\n/
 FI embl.xac
@@ -7035,25 +7030,25 @@ FI swnew.xac
 FZ = 6144
 FP /\0o42495\0/
 FI swnew.pxac
-FZ = 118
+FZ = 119
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
-FP /^Order2    82\n/
-FP /^Fill2     99\n/
+FP /^Cachesize 100\n/
+FP /^Order2    99\n/
+FP /^Fill2     101\n/
 FP /^Count     8\n/
 FP /^Kwlimit   15\n/
 FI swnew.pxid
-FZ = 118
+FZ = 119
 FP /^Order     71\n/
-FP /^Fill      47\n/
+FP /^Fill      46\n/
 FP /^Pagesize  2048\n/
 FP /^Level     0\n/
-FP /^Cachesize [12]00\n/
-FP /^Order2    82\n/
-FP /^Fill2     99\n/
+FP /^Cachesize 100\n/
+FP /^Order2    99\n/
+FP /^Fill2     101\n/
 FP /^Count     8\n/
 FP /^Kwlimit   15\n/
 //
@@ -7142,25 +7137,25 @@ FP 1 /^Dual filename database\n/
 FP 1 /^# Number of files: 9\n/
 FP 9 / eem_[a-z1-9]+\.ref\n/
 FI embl.pxac
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     47\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     39\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.xac
@@ -7378,69 +7373,69 @@ FP 1 /^Dual filename database\n/
 FP 1 /^# Number of files: 9\n/
 FP 9 / eem_[a-z1-9]+\.ref\n/
 FI embl.pxac
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     47\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxde
 FZ = 121
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
+FP 1 /^Cachesize 100\n/
 FP 1 /^Order2    71\n/
-FP 1 /^Fill2     106\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     381\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxid
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     39\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxkw
 FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
+FP 1 /^Cachesize 100\n/
 FP 1 /^Order2    71\n/
-FP 1 /^Fill2     106\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     72\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxsv
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     23\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.pxtx
 FZ = 121
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
+FP 1 /^Cachesize 100\n/
 FP 1 /^Order2    71\n/
-FP 1 /^Fill2     106\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     434\n/
 FP 1 /^Kwlimit   15\n/
 FI embl.xac
@@ -7753,29 +7748,29 @@ FP 1 /^# Number of files: 4\n/
 FP 1 /^Dual filename database\n/
 FP 4 /^pir[1-9]\.seq pir[1-9]\.ref\n/
 FI pir.pxac
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     92\n/
 FP 1 /^Kwlimit   15\n/
 FI pir.pxid
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     59\n/
 FP 1 /^Kwlimit   15\n/
 FI pir.xac
-FZ = 53248
+FZ = 51200
 FP 1 /\0a00011\0/
 FP 1 /\0a04607\0/
 FI pir.xid
@@ -7948,62 +7943,62 @@ FP 1 /^# Number of files: 4\n/
 FP 1 /^Dual filename database\n/
 FP 4 /^pir[1-9]\.seq pir[1-9]\.ref\n/
 FI pir.pxac
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     92\n/
 FP 1 /^Kwlimit   15\n/
 FI pir.pxde
 FZ = 121
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
+FP 1 /^Cachesize 100\n/
 FP 1 /^Order2    71\n/
-FP 1 /^Fill2     106\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     319\n/
 FP 1 /^Kwlimit   15\n/
 FI pir.pxid
-FZ = 119
+FZ = 120
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
-FP 1 /^Order2    82\n/
-FP 1 /^Fill2     99\n/
+FP 1 /^Cachesize 100\n/
+FP 1 /^Order2    99\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     59\n/
 FP 1 /^Kwlimit   15\n/
 FI pir.pxkw
 FZ = 121
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
+FP 1 /^Cachesize 100\n/
 FP 1 /^Order2    71\n/
-FP 1 /^Fill2     106\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     474\n/
 FP 1 /^Kwlimit   15\n/
 FI pir.pxtx
 FZ = 121
 FP 1 /^Order     71\n/
-FP 1 /^Fill      47\n/
+FP 1 /^Fill      46\n/
 FP 1 /^Pagesize  2048\n/
 FP 1 /^Level     0\n/
-FP 1 /^Cachesize [12]00\n/
+FP 1 /^Cachesize 100\n/
 FP 1 /^Order2    71\n/
-FP 1 /^Fill2     106\n/
+FP 1 /^Fill2     101\n/
 FP 1 /^Count     117\n/
 FP 1 /^Kwlimit   15\n/
 FI pir.xac
-FZ = 53248
+FZ = 51200
 FP 1 /\0a00011\0/
 FP 1 /\0a04607\0/
 FI pir.xde
@@ -8018,8 +8013,8 @@ FI pir.xkw
 FZ = 104448
 FP 1 /\0heme\0/
 FI pir.xtx
-FZ = 673792
-FP 2 /\0anas platyrhynchos\0/
+FZ = 671744
+FP 1 /\0anas platyrhynchos\0/
 FP 1 /\0domestic duck\0/
 FP 1 /\0equus quagga\0/
 //
@@ -10624,7 +10619,7 @@ IN ma0079
 IN
 IN
 FI stderr
-FC = 6
+FC = 9
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -24199,19 +24194,19 @@ IN
 IN
 FI contml.fcontml
 FC = 67
-FP /^Ln Likelihood =    20\.7312[0-9]\n/
-FP /^  3       Chinese           0\.00301   \(    -0\.03824,     0\.06681\)\n/
+FP /^Ln Likelihood =    38\.7191[0-9]\n/
+FP /^  2       Chinese        0\.00208822   \( -0\.00960622,  0\.02017433\)\n/
 FI contml.treefile
 FC = 2
-FP /\(American:0\.00000,\(Australian:0\.13759,Chinese:0\.00301\):0\.09982\)/
+FP /\(African:0\.09693444,\(Australian:0\.05247405,\(American:0\.03806240,Chinese:0\.00208822\):0\.00945315\):0\.02252816,/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 15
-FP 10 /^./
+FC = 14
+FP 9 /^./
 //
 
 ID fcontrast-ex
@@ -24323,9 +24318,9 @@ IN ../../data/evolution/dnadist.dat
 IN
 IN
 FI dnadist.fdnadist
-FC = 6
+FC = 7
 FP /    5\n/
-FP /^Alpha       0\.000000  0\.303893  0\.857546  1\.158921  1\.542897\n/
+FP /^Alpha      0\.000000 0\.303900 0\.857544 1\.158927 1\.542899\n/
 FI stderr
 FC = 8
 FP 0 /Warning: /
@@ -24379,13 +24374,13 @@ FI dnaml.fdnaml
 FC = 90
 FP /^        1           0\.264            0\.522\n/
 FP /^        2           2\.000\n/
-FP /^Ln Likelihood =   -57\.89164\n/
-FP /^ +2 + Alpha +0\.26902 +\( +zero, +0\.80593\) \*\n/
+FP /^Ln Likelihood =   -57\.87892\n/
+FP /^     1          Alpha             0\.26766     \(     zero,     0\.80513\) \*\n/
 FP /^             1132121111 211\n/
 FI dnaml.treefile
 FC = 2
-FP /^\(\(Epsilon:0\.13647,Delta:0\.13781\):7\.83947,\(Gamma:0\.95525,\n/
-FP /^Beta:0\.04509\):0\.00006,Alpha:0\.26902\);\n/
+FP /^\(\(\(Epsilon:0\.00006,Delta:0\.27319\):7\.59821,Beta:0\.00006\):0\.04687,\n/
+FP /^Gamma:0\.95677,Alpha:0\.26766\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -24419,7 +24414,7 @@ FC = 68
 FP 57 /^./
 FI dnaml.treefile
 FC = 2
-FP /^Gamma:1\.01654,Alpha:0\.20753\);\n/
+FP /^Gamma:1\.01651,Alpha:0\.20745\);\n/
 //
 
 ID fdnamlk-ex
@@ -24440,21 +24435,21 @@ FI dnaml.fdnamlk
 FC = 89
 FP /^        1           0\.264            0\.522\n/
 FP /^        2           2\.000\n/
-FP /^Ln Likelihood =   -60\.78[0-9][0-9][0-9]\n/
-FP /^ +2 +Gamma +4\.529[0-9][0-9] +0\.90[78][09][92]\n/
-FP /^             1121121111 111\n/
+FP /^Ln Likelihood =   -57\.98242\n/
+FP /^   2          Gamma         4\.15060      0\.55971\n/
+FP /^             1132121111 211\n/
 FI dnaml.treefile
 FC = 2
-FP /^\(\(Epsilon:0\.58[01]58,Delta:0\.58[01]58\):3\.94[0-9][0-9][0-9],\(Gamma:0\.90[78][90][92],\n/
-FP /^\(Beta:0\.678[0-9][0-9],Alpha:0\.678[0-9][0-9]\):0\.229[0-9][0-9]\):3\.621[0-9][0-9]\);\n/
+FP /^\(\(Epsilon:0\.13456,Delta:0\.13456\):4\.01604,\(Gamma:0\.55971,\n/
+FP /^\(Beta:0\.15731,Alpha:0\.15731\):0\.40240\):3\.59089\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 55
-FP 47 /^./
+FC = 14
+FP 9 /^./
 //
 
 ID fdnamove-ex
@@ -24544,8 +24539,8 @@ FI dollop.treefile
 FC = 1
 FP /^\(Delta,\(Epsilon,\(Gamma,\(Beta,Alpha\)\)\)\);\n/
 FI stdout
-FC = 18
-FP 12 /^./
+FC = 19
+FP 13 /^./
 //
 
 ID fdolmove-ex
@@ -24598,7 +24593,6 @@ AA fdrawgram
 CL -previewer n
 IN ../../data/evolution/drawgram.tree
 IN
-IN Y
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -24616,6 +24610,7 @@ FP 5 /show\n/
 ID fdrawtree-ex
 AB phylipnew
 AA fdrawtree
+CL -previewer n
 IN ../../data/evolution/drawgram.tree
 IN
 FI stderr
@@ -24627,7 +24622,7 @@ FI stdout
 FC = 12
 FP 8 /^./
 FI drawgram.fdrawtree
-FC = 86
+FC = 67
 FP /\%\!PS-Adobe-2\.0\n/
 FP 5 /show\n/
 //
@@ -24911,14 +24906,14 @@ IN ../../data/evolution/proml.dat
 IN
 IN
 FI proml.fproml
-FC = 33
-FP /^Ln Likelihood =  -131\.58633\n/
-FP /^  1------2                             \+------------Delta     \n/
-FP /^     1 +Alpha +0\.30915 +\( +zero, +0\.66607\) \*\*\n/
+FC = 36
+FP /^Ln Likelihood =  -131\.55052\n/
+FP /^  1------2                              \+------------Delta     \n/
+FP /^     1 +Alpha +0\.31006 +\( +zero, +0\.66806\) \*\*\n/
 FI proml.treefile
 FC = 2
-FP /^\(Beta:0\.00010,\(\(Epsilon:0\.00010,Delta:0\.41008\):1\.00021,\n/
-FP /^Gamma:0\.68318\):0\.22118,Alpha:0\.30915\);\n/
+FP /^\(Beta:0\.00010,\(\(Epsilon:0\.00010,Delta:0\.41176\):1\.00907,\n/
+FP /^Gamma:0\.68569\):0\.22206,Alpha:0\.31006\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -24937,22 +24932,22 @@ IN
 IN
 FI promlk.fpromlk
 FC = 38
-FP /^Ln Likelihood =  -134\.75201\n/
+FP /^Ln Likelihood =  -134\.70332\n/
 FP /^ root            3      \n/
-FP /^   3             4          0\.66099      0\.66099\n/
-FP /^   4          Epsilon       0\.85359      0\.19260\n/
+FP /^   3             4          0\.66464      0\.66464\n/
+FP /^   4          Epsilon       0.85971      0.19507\n/
 FI promlk.treefile
 FC = 2
-FP /^\(\(Epsilon:0\.19260,Delta:0\.19260\):0\.66099,\(Gamma:0\.48440,\n/
-FP /^\(Beta:0\.15708,Alpha:0\.15708\):0\.32732\):0\.36919\);\n/
+FP /^\(\(Epsilon:0\.19507,Delta:0\.19507\):0\.66464,\(Gamma:0\.48551,\n/
+FP /^\(Beta:0\.15763,Alpha:0\.15763\):0\.32788\):0\.37420\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 15
-FP 9 /^./
+FC = 20
+FP 14 /^./
 //
 
 ID fprotdist-ex
@@ -24962,7 +24957,7 @@ IN ../../data/evolution/protdist.dat
 IN
 FI protdist.fprotdist
 FC = 6
-FP /^Gamma       0\.625670  0\.375578  0\.000000  0\.975798  0\.861634\n/
+FP /^Gamma       0.628142  0.377406  0.000000  0.979550  0.866781\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -24995,8 +24990,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 16
-FP 11 /^./
+FC = 17
+FP 12 /^./
 //
 
 ID fprotpars-ex2
@@ -25027,8 +25022,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 40
-FP 29 /^./
+FC = 41
+FP 30 /^./
 //
 
 ID fprotpars-ex3
@@ -25080,8 +25075,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 126
-FP 90 /^./
+FC = 129
+FP 93 /^./
 //
 
 ID fprotpars-ex4
@@ -25104,40 +25099,41 @@ IN
 IN
 IN
 FI protpars.fprotpars
-FC = 324
+FC = 342
 FP /^Weights set # 1:\n/
 FP /^     3 trees in all found\n/
 FP 3 /^requires a total of     14\.000\n/
 FP /^Weights set # 2:\n/
-FP /^    14 trees in all found\n/
-FP 14 /^requires a total of      2\.000\n/
+FP /^    15 trees in all found\n/
+FP 15 /^requires a total of      2\.000\n/
 FI protpars.treefile
-FC = 17
+FC = 18
 FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0\.3333\];\n/
 FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0\.3333\];\n/
 FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0\.3333\];\n/
-FP /^\(\(Gamma,\(Delta,\(Epsilon,Beta\)\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(\(Epsilon,Gamma\),\(Delta,Beta\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(Epsilon,\(Gamma,\(Delta,Beta\)\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(Gamma,\(Epsilon,\(Delta,Beta\)\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(\(Delta,Gamma\),\(Epsilon,Beta\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(\(Delta,\(Epsilon,Gamma\)\),Beta\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(Epsilon,\(\(Delta,Gamma\),Beta\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(\(Epsilon,\(Delta,Gamma\)\),Beta\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(Delta,\(Gamma,\(Epsilon,Beta\)\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(Delta,\(\(Epsilon,Gamma\),Beta\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(Delta,\(Epsilon,\(Gamma,Beta\)\)\),Alpha\)\[0\.0714\];\n/
-FP /^\(\(Epsilon,\(Delta,\(Gamma,Beta\)\)\),Alpha\)\[0\.0714\];\n/
+FP /^\(\(Gamma,\(Delta,\(Epsilon,Beta\)\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(\(Epsilon,Gamma\),\(Delta,Beta\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Gamma,\(\(Epsilon,Delta\),Beta\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Epsilon,\(Gamma,\(Delta,Beta\)\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Gamma,\(Epsilon,\(Delta,Beta\)\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(\(Delta,Gamma\),\(Epsilon,Beta\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(\(Delta,\(Epsilon,Gamma\)\),Beta\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(\(\(Epsilon,Delta\),Gamma\),Beta\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Epsilon,\(\(Delta,Gamma\),Beta\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(\(Epsilon,\(Delta,Gamma\)\),Beta\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Delta,\(Gamma,\(Epsilon,Beta\)\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Delta,\(\(Epsilon,Gamma\),Beta\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(\(Epsilon,Delta\),\(Gamma,Beta\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Delta,\(Epsilon,\(Gamma,Beta\)\)\),Alpha\)\[0\.0667\];\n/
+FP /^\(\(Epsilon,\(Delta,\(Gamma,Beta\)\)\),Alpha\)\[0\.0667\];\n/
 FI stderr
 FC = 8
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
-FC = 38
-FP 24 /^./
+FC = 40
+FP 26 /^./
 //
 
 ID frestboot-ex
@@ -25189,12 +25185,12 @@ IN
 IN
 FI restml.frestml
 FC = 41
-FP /^Ln Likelihood =   -40\.34358\n/
-FP /^   1 +Gamma +0\.10813     \(  0\.01154,     0\.21901\) \*\*\n/
+FP /^Ln Likelihood =   -40\.47082\n/
+FP /^   1          Gamma           0\.10794     \(  0\.01144,     0\.21872\) \*\*\n/
 FI restml.treefile
 FC = 2
-FP /^\(Gamma:0\.10813,\(\(Epsilon:0\.00100,Delta:0\.01460\):0\.05885,\n/
-FP /^Beta:0\.00100\):0\.01156,Alpha:0\.01310\);\n/
+FP /^\(Gamma:0\.10794,\(Beta:0\.00100,\(Epsilon:0\.00022,\n/
+FP /^Delta:0\.01451\):0\.05878\):0\.01244,Alpha:0\.01244\);\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25238,8 +25234,8 @@ IN ../../data/evolution/seqboot.dat
 IN
 FI seqboot.fseqboot
 FC = 600
-FP 7 /^Alpha     AAAAAA\n/
-FP 14 /^Beta      AAACCC\n/
+FP 7 /^Alpha      AAAAAA\n/
+FP 14 /^Beta       AAACCC\n/
 FP 21 /^\S+ +AAACCC\n/
 FP 100 /^Alpha/
 FI stderr
@@ -25260,8 +25256,8 @@ IN ../../data/evolution/seqboot.dat
 IN
 FI seqboot.fseqbootall
 FC = 600
-FP 7 /^Alpha     AAAAAA\n/
-FP 14 /^Beta      AAACCC\n/
+FP 7 /^Alpha      AAAAAA\n/
+FP 14 /^Beta       AAACCC\n/
 FP 21 /^\S+ +AAACCC\n/
 FP 100 /^Alpha/
 FI stderr
@@ -25281,7 +25277,7 @@ IN ../../data/evolution/treedist.dat
 IN
 FI treedist.ftreedist
 FC = 11
-FP /Trees 1 and 2:    4/
+FP /Trees 3 and 4:    3\.162278e\-01/
 FP 6 /Trees \d+ and \d+:\s+\d+/
 FI stderr
 FC = 2
@@ -25322,7 +25318,7 @@ IN
 IN
 FI treedist.ftreedist
 FC = 6
-FP /1 2 4/
+FP /3 4 3\.162278e\-01/
 FP 6 /\d+\s+\d+\s+\d+/
 FI stderr
 FC = 2
@@ -25363,8 +25359,8 @@ IN ../../data/evolution/treedist.dat
 IN
 FI treedist.ftreedistpair
 FC = 288
-FP /^1 14 4\.000000e-02\n/
-FP /^2 13 4\.000000e-02\n/
+FP /^1 14 2\.000000e-01\n/
+FP /^2 13 2\.000000e-01\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25438,8 +25434,11 @@ FC = 2
 FP /\(-56\.91 \= -48\.71 \+  -8\.20\) \n/
 FP /^\.\.\.\.\(\(\(\(\(\(\(\(\(\(\(\.\(\(\(\.\..*\)\)\.\)\)\)\)\)\)\.\.\.\.\. /
 FI ecoli6s.ssps
-FC = 500
+FC = 523
 FP /^%%Pages: 1\n/
+FI ecoli6s.alirnaps
+FC = 1005
+FP /^showpage\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25456,11 +25455,14 @@ AA vrnaalifoldpf
 IN ../../data/ecoli6s.fasta
 IN
 FI ecoli6s.ssps
-FC = 500
+FC = 523
 FP /^%%Pages: 1\n/
 FI ecoli6s.ps
-FC = 334
+FC = 330
 FP /^%%Pages: 1\n/
+FI ecoli6s.alirnaps
+FC = 1005
+FP /^showpage\n/
 FI ecoli6s.vrnaalifoldpf
 FC = 177
 FP /\(-56\.91 \= -48\.71 \+  -8\.20\) \n/
@@ -25494,7 +25496,7 @@ FC = 2
 FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
 FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
 FI red.ssps
-FC = 131
+FC = 139
 FP /^%%Pages: 1\n/
 FI stderr
 FC = 2
@@ -25514,30 +25516,27 @@ IN ../../data/cofold-blue.fasta
 IN ../../data/cofold-conc.dat
 IN
 FI red.vrnacofoldconc
-FC = 15
+FC = 11
 FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
 FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
-FP /^Expinit2 = 0\.513986\n/
-FP /^tab = -1\.738299\ttaa = 4\.679345\ttbb = -12\.558919\n/
-FP /^-5\.884889\t-0\.208509\t-16\.658920\t-0\.003662\t-4\.266495\n/
-FP /^10\.000000\t+10\.000000\t+0\.844630\t+3\.676596\t+4\.491062\t+1\.802178\t+0\.173246 f\n/
+FP /^-5.838299\t+1.006546\t+-16.231717\t+-0.003662\t+-4.266495\n/
 FI red.ssps
-FC = 131
-FP /^%%Pages: 1\n/
-FI red.aps
-FC = 123
-FP /^%%Pages: 1\n/
-FI red.aaps
-FC = 162
-FP /^%%Pages: 1\n/
-FI red.abps
-FC = 209
-FP /^%%Pages: 1\n/
-FI red.bps
 FC = 139
 FP /^%%Pages: 1\n/
+FI red.aps
+FC = 119
+FP /^%%Pages: 1\n/
+FI red.aaps
+FC = 158
+FP /^%%Pages: 1\n/
+FI red.abps
+FC = 205
+FP /^%%Pages: 1\n/
+FI red.bps
+FC = 135
+FP /^%%Pages: 1\n/
 FI red.bbps
-FC = 152
+FC = 148
 FP /^%%Pages: 1\n/
 FI stderr
 FC = 2
@@ -25559,13 +25558,13 @@ FI red.vrnacofoldpf
 FC = 4
 FP /^AUGAAGAUGA\&CUGUCUGUCUUGAGACA\n/
 FP /^\.\.\.\.\(\(\(\(\.\.\&\.\.\)\)\)\)\(\(\(\.\.\.\.\)\)\)\. \( -4\.40\)\n/
-FP /^\.\.\.\.\(\(\(\(\,\.\.\.\)\)\)\}\(\(\(\.\.\.\.\)\)\)\. \[ -5\.88\]\n/
-FP /^ frequency of mfe structure in ensemble 0\.279849\n/
+FP /^\.\.\.\.\(\(\(\(\,\.\&\.\.\)\)\)\}\(\(\(\.\.\.\.\)\)\)\. \[ -5\.88\]\n/
+FP /^ frequency of mfe structure in ensemble 0\.279848 , delta G binding\= -1\.57\n/
 FI red.ps
-FC = 207
+FC = 203
 FP /^%%Pages: 1\n/
 FI red.ssps
-FC = 131
+FC = 139
 FP /^%%Pages: 1\n/
 FI stderr
 FC = 2
@@ -25709,7 +25708,7 @@ DL keep
 IN ../../data/rna1.seq
 IN
 FI rna1.ssps
-FC = 147
+FC = 154
 FP /^%%Pages: 1\n/
 FI rna1.vrnafold
 FC = 2
@@ -25732,7 +25731,7 @@ CL  -constraintfile ../../data/rna1.fold
 IN  ../../data/rna1.seq
 IN
 FI rna1.ssps
-FC = 146
+FC = 153
 FP /^%%Pages: 1\n/
 FI rna1.vrnafold
 FC = 2
@@ -25755,17 +25754,19 @@ CL -temperature 42
 IN  ../../data/rna2.seq
 IN
 FI rna2.ssps
-FC = 130
+FC = 137
 FP /%%Pages: 1\n/
 FI rna2.ps
-FC = 182
+FC = 178
+FP /%%Pages: 1\n/
+FI rna2.ps2
+FC = 204
 FP /%%Pages: 1\n/
 FI rna2.vrnafoldpf
 FC = 5
 FP /\.\.\.\.\.\(\(\(\(\(\.\.\.\.\.\)\)\)\)\)\.\.\.\.\.\.\.\. \( -3\.47\)\n/
 FP /\.\.\{\(\,\(\(\(\(\(\.\.\.\.\.\)\)\)\}\}\.\}\}\,\,\.\.\. \[ -4\.45\]\n/
-FP / frequency of mfe structure in ensemble 0\.209182\n/
-FP / ensemble diversity 3\.04  \n/
+FP / frequency of mfe structure in ensemble 0\.209182; ensemble diversity 6\.08  \n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25847,8 +25848,9 @@ AA vrnalfold
 IN tembl:d00596
 IN
 FI d00596.vrnalfold
-FC = 952
+FC = 2218
 FP /^\.\(\(\(\.\.\.\.\.\(\(\(\(\(\.\.\.\.\.\.\)\)\)\)\)\.\.\.\(\(\.\.\.\.\)\)\.\.\.\.\.\.\.\)\)\)\. \(-10\.40\) 13193\n/
+##FP /^\.\(\(\(\.\.\.\.\.\(\(\(\(\(\.\.\.\.\.\.\)\)\)\)\)\.\.\.\(\(\.\.\.\.\)\)\.\.\.\.\.\.\.\)\)\)\. \(-10\.40\) 13193\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25866,7 +25868,7 @@ AA vrnaplot
 IN ../vrnafold-keep/rna1.vrnafold
 IN
 FI rna1.vrnaplot
-FC = 147
+FC = 154
 FP /%%Pages: 1\n/
 FI stderr
 FC = 2
@@ -25886,7 +25888,7 @@ IN
 FI rna1.vrnasubopt
 FC = 9
 FP /^> rna1 \[100\]\n/
-FP /^CACTACTCCAAGGACCGTATCTTTCTCAGTGCGACAGTAA   -380    100\n/
+FP /^CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA   -380    100\n/
 FP /^\.\.\.\(\(\(\(\(\.\.\.\.\)\)\.\(\(\(\(\.\(\(\.\.\.\.\.\)\)\)\)\)\)\.\.\.\)\)\)\.  -2\.80\n/
 FP /^\.\.\.\(\(\(\(\(\.\.\.\.\)\)\.\(\(\(\(\(\.\.\.\.\.\.\.\.\)\)\)\)\)\.\.\.\)\)\)\.  -3\.80\n/
 FI stderr
