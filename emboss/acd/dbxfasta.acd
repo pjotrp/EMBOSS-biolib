@@ -51,7 +51,7 @@ section: input [
 
   string: filenames [
     standard: "Y"
-    default: "*.dat"
+    default: "*.fasta"
     information: "Wildcard database filename"
     knowntype: "emboss database wildcard filename"
   ]
