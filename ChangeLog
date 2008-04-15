@@ -1,4 +1,13 @@
 Version 5.1.0
+	Program dbxfasta now defaults to a filename of "*.fasta"
+	The previous default "*.dat" is not commonly used for FASTA format
+	databases.
+	
+	Program msbar block mutations were 1 longer than the specified
+	block and may crash if the block size was fixed (minimum and
+	maximum block sizes the same). This off-by-one error is now
+	corrected.
+
 	In GenBank output format, multiple line KEYWORD sections were not
 	formatted correctly.
 
