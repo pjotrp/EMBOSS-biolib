@@ -1,5 +1,5 @@
    Standard (Mandatory) qualifiers:
-  [-structure]         infile     Vienna RNAfold output file
+  [-structuresfile]    infile     Vienna RNAfold output file
   [-outfile]           outfile    [*.vrnaplot] Vienna RNAfold output file
 
    Additional (Optional) qualifiers: (none)

@@ -16,6 +16,8 @@
    -[no]convert        boolean    [Y] Convert T to U
    -nsbases            string     Non-standard bases (Any string is accepted)
    -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -circular           boolean    [N] Circular RNA
+   -colour             boolean    [N] Colour structure plot
    -energy             menu       [0] Rarely used option to fold sequences
                                   from the ABCD... alphabet (Values: 0 (BP); 1
                                   (Any with GC); 2 (Any with AU parameters))
@@ -34,6 +36,8 @@
    -dotoutfile         outfile    [*.vrnaalifoldpf] Vienna dotplot postscript
                                   output file
    -ssoutfile          outfile    [*.vrnaalifoldpf] Vienna structure
+                                  postscript output file
+   -alignoutfile       outfile    [*.vrnaalifoldpf] Vienna alignment colour
                                   postscript output file
 
    Associated qualifiers:
@@ -61,6 +65,9 @@
    -odirectory         string     Output directory
 
    "-ssoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-alignoutfile" associated qualifiers
    -odirectory         string     Output directory
 
    General qualifiers:

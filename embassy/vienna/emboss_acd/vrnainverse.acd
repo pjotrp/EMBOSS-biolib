@@ -12,7 +12,7 @@ section: input [
   type: "page"
 ]
 
-  infile: structure [
+  infile: structuresfile [
     parameter: "Y"
     information: "Vienna RNA structures file"
     knowntype: "rna structures"

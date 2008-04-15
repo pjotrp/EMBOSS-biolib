@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 
     embInitP("vrnadistance",argc,argv,"VIENNA");
 
-    sfile     = ajAcdGetInfile("structure");
+    sfile     = ajAcdGetInfile("structuresfile");
     edist     = ajAcdGetList("distance");
     ecomp     = ajAcdGetList("compare");
     eschapiro = ajAcdGetBool("schapiro");

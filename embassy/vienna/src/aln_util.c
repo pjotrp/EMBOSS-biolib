@@ -13,11 +13,13 @@
 #include <config.h>
 #include "utils.h"
 #include "fold_vars.h"
+
+#define ALNNOPAIRMATRIX
 #include "pair_mat.h"
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: aln_util.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
+static char rcsid[] = "$Id: aln_util.c,v 1.6 2008/04/15 10:43:49 rice Exp $";
 #endif
 
 int read_clustal(FILE *clust, char *AlignedSeqs[], char *names[]);

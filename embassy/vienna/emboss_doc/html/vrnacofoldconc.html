@@ -487,28 +487,24 @@ outputs a report format file. The default format is ...
 <pre>
 AUGAAGAUGA&amp;CUGUCUGUCUUGAGACA
 ....((((..&amp;..))))(((....))). ( -4.40)
-Expinit2 = 0.513986
-tab = -1.738299	taa = 4.679345	tbb = -12.558919
-
+....((((,.&amp;..)))}(((....))). [ -5.88]
+ frequency of mfe structure in ensemble 0.279848 , delta G binding= -1.57
 Free Energies:
-    AB		AA		BB		A		B
--5.884889	-0.208509	-16.658920	-0.003662	-4.266495
-
-Initial concentrations		Equilibrium concentrations
-A		 B			AB		 AA		 BB		 A		 B
-10.000000	10.000000		0.844630	3.676596	4.491062	1.802178	0.173246 f
-10.000000	10.000000		0.042232	0.183830	0.224553	0.090109	0.008662 f
-....((((,...)))}(((....))). [ -5.88]
- frequency of mfe structure in ensemble 0.279849
+AB		AA		BB		A		B
+-5.838299	1.006546	-16.231717	-0.003662	-4.266495
+Kaa..0.193006 266048 12.7351
+Initial concentrations		relative Equilibrium concentrations
+A		 B		 AB		 AA		 BB		 A		 B
+10        	10        	0.01066 	0.14707 	0.24456 	0.19519 	0.00021
 </pre>
 </td></tr></table><p>
 <p><h3>File: red.ssps</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
-%%Title: Rna secondary Structure Plot
+%%Title: RNA Secondary Structure Plot
 %%BoundingBox: 66 210 518 662
 %%DocumentFonts: Helvetica
 %%Pages: 1
@@ -529,11 +525,18 @@ RNAplot begin
 /min { 2 copy gt { exch } if pop } bind def
 /max { 2 copy lt { exch } if pop } bind def
 /drawoutline {
-  outlinecolor
-  newpath
-  coor 0 get aload pop 0.8 0 360 arc
-  coor {aload pop lineto} forall
-  stroke
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
 } bind def
 /drawpairs {
   paircolor
@@ -548,13 +551,6 @@ RNAplot begin
 } bind def
 % draw bases
 /drawbases {
-  [] 0 setdash
-  seqcolor
-  0
-  coor {
-    aload pop moveto
-    dup sequence exch 1 getinterval cshow
-    1 add
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -616,8 +612,8 @@ end
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Title: RNA DotPlot
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Title: RNA Dot Plot
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%BoundingBox: 66 211 518 662
 %%DocumentFonts: Helvetica
@@ -626,7 +622,7 @@ end
 
 %Options: -d2 
 % 
-%FreeEnergy= -0.003661585
+%Monomer A FreeEnergy= -0.003661585
 
 %This file contains the square roots of the base pair probabilities in the form
 % i  j  sqrt(p(i,j)) ubox
@@ -635,16 +631,12 @@ end
 /DPdict 100 dict def
 DPdict begin
 /logscale false def
+/lpmin 1e-05 log def
+
 /box { %size x y box - draws box centered on x,y
-   2 index 0.5 mul add            % x += 0.5
-   exch 2 index 0.5 mul add exch  % x += 0.5
-   newpath
-   moveto
-   dup neg   0 rlineto
-   dup neg   0 exch rlineto
-             0 rlineto
-   closepath
-   fill
+   2 index 0.5 mul sub            % x -= 0.5
+   exch 2 index 0.5 mul sub exch  % y -= 0.5
+   3 -1 roll dup rectfill
 } bind def
 
 /ubox {
@@ -665,6 +657,10 @@ DPdict begin
 [ [0.7 -0.3 0 ]
   [0.7 0.7 len add 0]
   [-0.3 len sub -0.4 -90]
+  [-0.3 len sub 0.7 len add -90]
+] {
+   gsave
+    aload pop rotate translate
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -726,8 +722,8 @@ end
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Title: RNA DotPlot
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Title: RNA Dot Plot
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%BoundingBox: 66 211 518 662
 %%DocumentFonts: Helvetica
@@ -736,7 +732,7 @@ end
 
 %Options: -d2 
 % 
-%FreeEnergy= -0.208508983
+%Homodimer AA FreeEnergy= 1.006545912
 
 %This file contains the square roots of the base pair probabilities in the form
 % i  j  sqrt(p(i,j)) ubox
@@ -745,16 +741,12 @@ end
 /DPdict 100 dict def
 DPdict begin
 /logscale false def
+/lpmin 1e-05 log def
+
 /box { %size x y box - draws box centered on x,y
-   2 index 0.5 mul add            % x += 0.5
-   exch 2 index 0.5 mul add exch  % x += 0.5
-   newpath
-   moveto
-   dup neg   0 rlineto
-   dup neg   0 exch rlineto
-             0 rlineto
-   closepath
-   fill
+   2 index 0.5 mul sub            % x -= 0.5
+   exch 2 index 0.5 mul sub exch  % y -= 0.5
+   3 -1 roll dup rectfill
 } bind def
 
 /ubox {
@@ -775,6 +767,10 @@ DPdict begin
 [ [0.7 -0.3 0 ]
   [0.7 0.7 len add 0]
   [-0.3 len sub -0.4 -90]
+  [-0.3 len sub 0.7 len add -90]
+] {
+   gsave
+    aload pop rotate translate
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -783,50 +779,50 @@ DPdict begin
 
 drawgrid
 %data starts here
-1 8 nan ubox
-1 12 0.407831799 ubox
-1 18 0.546335663 ubox
-2 6 0.012910178 ubox
-2 7 0.012773380 ubox
-2 9 nan ubox
-2 11 0.407831799 ubox
-2 13 0.335096015 ubox
-2 14 0.495435278 ubox
-2 15 0.329519420 ubox
-2 16 0.307465785 ubox
-2 17 0.571406921 ubox
-2 19 0.338549088 ubox
-2 20 0.262470929 ubox
-3 8 0.013692171 ubox
-3 12 0.335096015 ubox
-3 18 0.336299047 ubox
-4 8 0.012403691 ubox
-4 12 0.495435278 ubox
-4 18 0.361298493 ubox
-5 12 0.329519420 ubox
-5 18 0.335687944 ubox
-6 12 0.307465785 ubox
-6 18 0.278217484 ubox
-7 12 0.571406921 ubox
-7 18 0.745965997 ubox
-8 11 0.546335663 ubox
-8 13 0.336299047 ubox
-8 14 0.361298493 ubox
-8 15 0.335687944 ubox
-8 16 0.278217484 ubox
-8 17 0.745965997 ubox
-8 19 0.333927239 ubox
-8 20 0.186733437 ubox
-9 12 0.338549088 ubox
-9 18 0.333927239 ubox
-10 12 0.262470929 ubox
-10 18 0.186733437 ubox
-11 18 nan ubox
-12 16 0.012910178 ubox
-12 17 0.012773380 ubox
-12 19 nan ubox
-13 18 0.010583252 ubox
-14 18 0.010427900 ubox
+1 8 0.012265566 ubox
+1 12 0.215587153 ubox
+1 18 0.288802765 ubox
+2 6 0.007382632 ubox
+2 7 0.017136911 ubox
+2 9 0.006557723 ubox
+2 11 0.215587153 ubox
+2 13 0.177137725 ubox
+2 14 0.261895917 ubox
+2 15 0.174189834 ubox
+2 16 0.162531888 ubox
+2 17 0.302055878 ubox
+2 19 0.178963082 ubox
+2 20 0.138746812 ubox
+3 8 0.007237926 ubox
+3 12 0.177137725 ubox
+3 18 0.177773670 ubox
+4 8 0.006556812 ubox
+4 12 0.261895917 ubox
+4 18 0.190988815 ubox
+5 12 0.174189834 ubox
+5 18 0.177450624 ubox
+6 12 0.162531888 ubox
+6 18 0.147070716 ubox
+7 12 0.302055878 ubox
+7 18 0.394330909 ubox
+8 11 0.288802765 ubox
+8 13 0.177773670 ubox
+8 14 0.190988815 ubox
+8 15 0.177450624 ubox
+8 16 0.147070716 ubox
+8 17 0.394330909 ubox
+8 19 0.176519887 ubox
+8 20 0.098710624 ubox
+9 12 0.178963082 ubox
+9 18 0.176519887 ubox
+10 12 0.138746812 ubox
+10 18 0.098710624 ubox
+11 18 0.012265566 ubox
+12 16 0.007382632 ubox
+12 17 0.017136911 ubox
+12 19 0.006557723 ubox
+13 18 0.007170919 ubox
+14 18 0.006512656 ubox
 showpage
 end
 %%EOF
@@ -836,8 +832,8 @@ end
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Title: RNA DotPlot
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Title: RNA Dot Plot
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%BoundingBox: 66 211 518 662
 %%DocumentFonts: Helvetica
@@ -846,7 +842,7 @@ end
 
 %Options: -d2 
 % 
-%FreeEnergy= -5.884888649
+%Heterodimer AB FreeEnergy= -5.838299492
 
 %This file contains the square roots of the base pair probabilities in the form
 % i  j  sqrt(p(i,j)) ubox
@@ -855,16 +851,12 @@ end
 /DPdict 100 dict def
 DPdict begin
 /logscale false def
+/lpmin 1e-05 log def
+
 /box { %size x y box - draws box centered on x,y
-   2 index 0.5 mul add            % x += 0.5
-   exch 2 index 0.5 mul add exch  % x += 0.5
-   newpath
-   moveto
-   dup neg   0 rlineto
-   dup neg   0 exch rlineto
-             0 rlineto
-   closepath
-   fill
+   2 index 0.5 mul sub            % x -= 0.5
+   exch 2 index 0.5 mul sub exch  % y -= 0.5
+   3 -1 roll dup rectfill
 } bind def
 
 /ubox {
@@ -885,58 +877,62 @@ DPdict begin
 [ [0.7 -0.3 0 ]
   [0.7 0.7 len add 0]
   [-0.3 len sub -0.4 -90]
+  [-0.3 len sub 0.7 len add -90]
+] {
+   gsave
+    aload pop rotate translate
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-6 26 0.010568585 ubox
-7 12 0.022464919 ubox
-7 14 0.888581257 ubox
-7 16 0.008014762 ubox
-7 18 0.469788688 ubox
-7 20 0.003434528 ubox
-8 13 0.864846377 ubox
-8 17 0.459064168 ubox
-8 27 0.014069947 ubox
-9 11 0.185631592 ubox
-9 12 0.526055295 ubox
-9 14 0.017371849 ubox
-9 15 0.211168745 ubox
-9 16 0.255225452 ubox
-9 19 0.006477108 ubox
-9 26 0.013490881 ubox
-10 12 0.037689419 ubox
-10 14 0.191228823 ubox
-10 16 0.017643945 ubox
-10 18 0.005857187 ubox
-11 17 0.008887992 ubox
-12 25 0.006033087 ubox
-12 27 nan ubox
-13 26 nan ubox
-14 23 0.010075980 ubox
-14 25 nan ubox
-15 22 0.010247965 ubox
-15 24 nan ubox
-16 22 nan ubox
-16 23 nan ubox
-16 27 0.305588746 ubox
-17 21 nan ubox
-17 26 0.882047609 ubox
-18 22 nan ubox
-18 23 0.005436960 ubox
-18 24 0.003329870 ubox
-18 25 0.882815707 ubox
-19 24 0.877600892 ubox
-20 25 0.003423158 ubox
-21 27 0.009348769 ubox
-22 26 0.015430131 ubox
-17 26 0.949999988 lbox
-18 25 0.949999988 lbox
-19 24 0.949999988 lbox
-5 16 0.949999988 lbox
-6 15 0.949999988 lbox
-7 14 0.949999988 lbox
-8 13 0.949999988 lbox
+6 26 0.010177101 ubox
+7 12 0.021632770 ubox
+7 14 0.855666290 ubox
+7 16 0.007717878 ubox
+7 18 0.452386699 ubox
+7 20 0.003307306 ubox
+8 13 0.832810588 ubox
+8 17 0.442059430 ubox
+8 27 0.013548766 ubox
+9 11 0.178755395 ubox
+9 12 0.506569088 ubox
+9 14 0.016728359 ubox
+9 15 0.203346599 ubox
+9 16 0.245771341 ubox
+9 19 0.006237182 ubox
+9 26 0.012991150 ubox
+10 12 0.036293322 ubox
+10 14 0.184145302 ubox
+10 16 0.016990375 ubox
+10 18 0.005640224 ubox
+11 17 0.008558761 ubox
+12 25 0.008108337 ubox
+12 27 0.080028280 ubox
+13 26 0.180825466 ubox
+14 23 0.012679048 ubox
+14 25 0.181430593 ubox
+15 22 0.012950484 ubox
+15 24 0.181499570 ubox
+16 22 0.007039813 ubox
+16 23 0.171288889 ubox
+16 27 0.300268293 ubox
+17 21 0.005675580 ubox
+17 26 0.853563809 ubox
+18 22 0.006794027 ubox
+18 23 0.006526663 ubox
+18 24 0.003206525 ubox
+18 25 0.854300760 ubox
+19 24 0.849253823 ubox
+20 25 0.003296357 ubox
+21 27 0.009002471 ubox
+22 26 0.014858566 ubox
+17 26 0.9746794 lbox
+18 25 0.9746794 lbox
+19 24 0.9746794 lbox
+5 16 0.9746794 lbox
+6 15 0.9746794 lbox
+7 14 0.9746794 lbox
+8 13 0.9746794 lbox
 showpage
 end
 %%EOF
@@ -946,8 +942,8 @@ end
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Title: RNA DotPlot
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Title: RNA Dot Plot
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%BoundingBox: 66 211 518 662
 %%DocumentFonts: Helvetica
@@ -956,7 +952,7 @@ end
 
 %Options: -d2 
 % 
-%FreeEnergy= -4.266494751
+%Monomer B FreeEnergy= -4.266494644
 
 %This file contains the square roots of the base pair probabilities in the form
 % i  j  sqrt(p(i,j)) ubox
@@ -965,16 +961,12 @@ end
 /DPdict 100 dict def
 DPdict begin
 /logscale false def
+/lpmin 1e-05 log def
+
 /box { %size x y box - draws box centered on x,y
-   2 index 0.5 mul add            % x += 0.5
-   exch 2 index 0.5 mul add exch  % x += 0.5
-   newpath
-   moveto
-   dup neg   0 rlineto
-   dup neg   0 exch rlineto
-             0 rlineto
-   closepath
-   fill
+   2 index 0.5 mul sub            % x -= 0.5
+   exch 2 index 0.5 mul sub exch  % y -= 0.5
+   3 -1 roll dup rectfill
 } bind def
 
 /ubox {
@@ -995,6 +987,10 @@ DPdict begin
 [ [0.7 -0.3 0 ]
   [0.7 0.7 len add 0]
   [-0.3 len sub -0.4 -90]
+  [-0.3 len sub 0.7 len add -90]
+] {
+   gsave
+    aload pop rotate translate
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -1043,10 +1039,10 @@ drawgrid
 8 13 0.014451769 ubox
 8 15 0.313262201 ubox
 9 14 0.311389763 ubox
-3 16 0.949999988 lbox
-4 15 0.949999988 lbox
-5 14 0.949999988 lbox
-6 13 0.949999988 lbox
+3 16 0.9746794 lbox
+4 15 0.9746794 lbox
+5 14 0.9746794 lbox
+6 13 0.9746794 lbox
 showpage
 end
 %%EOF
@@ -1056,8 +1052,8 @@ end
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Title: RNA DotPlot
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Title: RNA Dot Plot
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%BoundingBox: 66 211 518 662
 %%DocumentFonts: Helvetica
@@ -1066,7 +1062,7 @@ end
 
 %Options: -d2 
 % 
-%FreeEnergy= -16.658920288
+%Homodimer BB FreeEnergy= -16.231717299
 
 %This file contains the square roots of the base pair probabilities in the form
 % i  j  sqrt(p(i,j)) ubox
@@ -1075,16 +1071,12 @@ end
 /DPdict 100 dict def
 DPdict begin
 /logscale false def
+/lpmin 1e-05 log def
+
 /box { %size x y box - draws box centered on x,y
-   2 index 0.5 mul add            % x += 0.5
-   exch 2 index 0.5 mul add exch  % x += 0.5
-   newpath
-   moveto
-   dup neg   0 rlineto
-   dup neg   0 exch rlineto
-             0 rlineto
-   closepath
-   fill
+   2 index 0.5 mul sub            % x -= 0.5
+   exch 2 index 0.5 mul sub exch  % y -= 0.5
+   3 -1 roll dup rectfill
 } bind def
 
 /ubox {
@@ -1105,6 +1097,10 @@ DPdict begin
 [ [0.7 -0.3 0 ]
   [0.7 0.7 len add 0]
   [-0.3 len sub -0.4 -90]
+  [-0.3 len sub 0.7 len add -90]
+] {
+   gsave
+    aload pop rotate translate
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -1123,40 +1119,40 @@ drawseq
 
 drawgrid
 %data starts here
-1 7 0.003236660 ubox
-2 34 0.009973158 ubox
-3 33 0.012492753 ubox
-4 32 0.010908848 ubox
-4 34 0.009627680 ubox
-5 31 0.009623489 ubox
-6 30 0.006572256 ubox
-6 34 0.706536621 ubox
-7 33 0.999220455 ubox
-8 32 0.999725513 ubox
-9 31 0.999931184 ubox
-10 30 0.999844986 ubox
-11 29 0.525401714 ubox
-12 28 0.525401714 ubox
-13 23 0.006572256 ubox
-13 27 0.999844986 ubox
-14 22 0.009623489 ubox
-14 26 0.999931184 ubox
-15 21 0.010908848 ubox
-15 25 0.999725513 ubox
-16 20 0.012492753 ubox
-16 24 0.999220455 ubox
-17 19 0.009973158 ubox
-17 21 0.009627680 ubox
-17 23 0.706536621 ubox
-18 24 0.003236660 ubox
-7 33 0.949999988 lbox
-8 32 0.949999988 lbox
-9 31 0.949999988 lbox
-10 30 0.949999988 lbox
-13 27 0.949999988 lbox
-14 26 0.949999988 lbox
-15 25 0.949999988 lbox
-16 24 0.949999988 lbox
+1 7 0.003236657 ubox
+2 34 0.009973148 ubox
+3 33 0.012492742 ubox
+4 32 0.010908837 ubox
+4 34 0.009627671 ubox
+5 31 0.009623480 ubox
+6 30 0.006572250 ubox
+6 34 0.706535967 ubox
+7 33 0.999219530 ubox
+8 32 0.999724559 ubox
+9 31 0.999930230 ubox
+10 30 0.999844032 ubox
+11 29 0.525401232 ubox
+12 28 0.525401232 ubox
+13 23 0.006572250 ubox
+13 27 0.999844032 ubox
+14 22 0.009623480 ubox
+14 26 0.999930230 ubox
+15 21 0.010908837 ubox
+15 25 0.999724559 ubox
+16 20 0.012492742 ubox
+16 24 0.999219530 ubox
+17 19 0.009973148 ubox
+17 21 0.009627671 ubox
+17 23 0.706535967 ubox
+18 24 0.003236657 ubox
+7 33 0.9746794 lbox
+8 32 0.9746794 lbox
+9 31 0.9746794 lbox
+10 30 0.9746794 lbox
+13 27 0.9746794 lbox
+14 26 0.9746794 lbox
+15 25 0.9746794 lbox
+16 24 0.9746794 lbox
 showpage
 end
 %%EOF

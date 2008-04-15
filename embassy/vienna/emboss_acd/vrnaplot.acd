@@ -12,7 +12,7 @@ section: input [
   type: "page"
 ]
 
-  infile: structure [
+  infile: structuresfile [
     parameter: "Y"
     information: "Vienna RNAfold output file"
     knowntype: "rnafold output"

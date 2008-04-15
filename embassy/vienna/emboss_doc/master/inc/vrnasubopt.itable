@@ -57,6 +57,13 @@
 </tr>
 
 <tr>
+<td>-circular</td>
+<td>Allow circular RNA</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>-[no]gu</td>
 <td>Allow GU pairs</td>
 <td>Boolean value Yes/No</td>
@@ -73,6 +80,13 @@
 <tr>
 <td>-[no]lp</td>
 <td>Allow lonely pairs</td>
+<td>Boolean value Yes/No</td>
+<td>Yes</td>
+</tr>
+
+<tr>
+<td>-[no]convert</td>
+<td>Convert T to U</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>

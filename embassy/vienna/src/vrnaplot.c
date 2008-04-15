@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
     embInitP("vrnaplot",argc,argv,"VIENNA");
 
 
-    inf    = ajAcdGetInfile("structure");
+    inf    = ajAcdGetInfile("structuresfile");
     layout = ajAcdGetList("layout");
     optype = ajAcdGetList("optype");
     epre   = ajAcdGetString("pre");

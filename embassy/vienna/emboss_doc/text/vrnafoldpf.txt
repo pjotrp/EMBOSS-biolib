@@ -61,7 +61,9 @@ Command line arguments
                                   unpaired bases for just one dangling end); 2
                                   (Always use dangling energies); 3 (Allow
                                   coaxial stacking of adjacent helices))
-   -dotoutfile         outfile    [*.vrnafoldpf] Vienna dotplot postscript
+   -adotoutfile        outfile    [*.vrnafoldpf] Vienna dotplot postscript
+                                  output file
+   -bdotoutfile        outfile    [*.vrnafoldpf] Vienna dotplot postscript
                                   output file
    -ssoutfile          outfile    [*.vrnafoldpf] Vienna structure postscript
                                   output file
@@ -87,7 +89,10 @@ Command line arguments
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
 
-   "-dotoutfile" associated qualifiers
+   "-adotoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-bdotoutfile" associated qualifiers
    -odirectory         string     Output directory
 
    "-ssoutfile" associated qualifiers
@@ -130,9 +135,9 @@ Output file format
   File: rna2.ssps
 
 %!PS-Adobe-3.0 EPSF-3.0
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
-%%Title: Rna secondary Structure Plot
+%%Title: RNA Secondary Structure Plot
 %%BoundingBox: 66 210 518 662
 %%DocumentFonts: Helvetica
 %%Pages: 1
@@ -153,11 +158,18 @@ RNAplot begin
 /min { 2 copy gt { exch } if pop } bind def
 /max { 2 copy lt { exch } if pop } bind def
 /drawoutline {
-  outlinecolor
-  newpath
-  coor 0 get aload pop 0.8 0 360 arc
-  coor {aload pop lineto} forall
-  stroke
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
 } bind def
 /drawpairs {
   paircolor
@@ -172,13 +184,6 @@ RNAplot begin
 } bind def
 % draw bases
 /drawbases {
-  [] 0 setdash
-  seqcolor
-  0
-  coor {
-    aload pop moveto
-    dup sequence exch 1 getinterval cshow
-    1 add
 
 
   [Part of this file has been deleted for brevity]
@@ -239,13 +244,121 @@ end
 
    [vrnafoldpf results]
 
+  File: rna2.ps2
+
+%!PS-Adobe-3.0 EPSF-3.0
+%%Title: RNA Dot Plot
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
+%%CreationDate: Sun Jul 15 12:00:00 2007
+%%BoundingBox: 66 211 518 662
+%%DocumentFonts: Helvetica
+%%Pages: 1
+%%EndComments
+
+%Options: -T 42.000000
+% Probabilities for stacked pairs (i,j)(i+1,j-1)
+%This file contains the square roots of the base pair probabilities in the form
+% i  j  sqrt(p(i,j)) ubox
+
+%%BeginProlog
+/DPdict 100 dict def
+DPdict begin
+/logscale false def
+/lpmin 1e-05 log def
+
+/box { %size x y box - draws box centered on x,y
+   2 index 0.5 mul sub            % x -= 0.5
+   exch 2 index 0.5 mul sub exch  % y -= 0.5
+   3 -1 roll dup rectfill
+} bind def
+
+/ubox {
+   logscale {
+      log dup add lpmin div 1 exch sub dup 0 lt { pop 0 } if
+   } if
+   3 1 roll
+   exch len exch sub 1 add box
+} bind def
+
+/lbox {
+   3 1 roll
+   len exch sub 1 add box
+} bind def
+
+/drawseq {
+% print sequence along all 4 sides
+[ [0.7 -0.3 0 ]
+  [0.7 0.7 len add 0]
+  [-0.3 len sub -0.4 -90]
+  [-0.3 len sub 0.7 len add -90]
+] {
+   gsave
+    aload pop rotate translate
+    0 1 len 1 sub {
+     dup 0 moveto
+
+
+  [Part of this file has been deleted for brevity]
+
+7 17 0.003363066 ubox
+7 19 0.806369320 ubox
+7 21 0.571948019 ubox
+8 16 0.005588458 ubox
+8 18 0.867252863 ubox
+9 17 0.869450272 ubox
+10 16 0.765192299 ubox
+10 18 0.465646147 ubox
+11 17 0.474046413 ubox
+12 16 0.293537313 ubox
+12 18 0.006203375 ubox
+13 18 0.010243061 ubox
+17 22 0.004916079 ubox
+17 24 0.003978294 ubox
+21 25 0.003495774 ubox
+21 26 0.006231260 ubox
+21 27 0.006187568 ubox
+1 13 0.0145421 lbox
+2 10 0.0111590 lbox
+2 12 0.0181003 lbox
+2 17 0.0061036 lbox
+2 19 0.0106114 lbox
+2 21 0.0096756 lbox
+3 15 0.0121334 lbox
+3 16 0.0110798 lbox
+3 23 0.3850400 lbox
+3 24 0.0697088 lbox
+3 25 0.5832047 lbox
+3 26 0.0053010 lbox
+3 27 0.0193731 lbox
+3 28 0.0269476 lbox
+4 24 0.6809466 lbox
+4 26 0.0256399 lbox
+4 27 0.0277023 lbox
+4 28 0.0153939 lbox
+5 16 0.0131388 lbox
+5 23 0.6331162 lbox
+5 25 0.0201391 lbox
+5 26 0.0059229 lbox
+5 27 0.0038129 lbox
+6 14 0.0115354 lbox
+6 20 0.7699092 lbox
+6 22 0.5719158 lbox
+7 19 0.8058871 lbox
+8 18 0.8659380 lbox
+9 17 0.7651279 lbox
+10 18 0.4631454 lbox
+11 17 0.2934067 lbox
+showpage
+end
+%%EOF
+
   File: rna2.vrnafoldpf
 
 UUGGAGUACACAACCUGUACACUCUUUC
 .....(((((.....)))))........ ( -3.47)
 ..{(,(((((.....)))}}.}},,... [ -4.45]
- frequency of mfe structure in ensemble 0.209182
- ensemble diversity 3.04
+.....(((((.....)))))........ { -3.47 d=4.61}
+ frequency of mfe structure in ensemble 0.209182; ensemble diversity 6.08
 
 Data files
 

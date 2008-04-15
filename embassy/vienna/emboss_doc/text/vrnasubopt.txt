@@ -42,9 +42,11 @@ Command line arguments
                                   (optional)
    -paramfile          infile     Vienna RNA parameters file (optional)
    -temperature        float      [37.0] Temperature (Any numeric value)
+   -circular           boolean    [N] Allow circular RNA
    -[no]gu             boolean    [Y] Allow GU pairs
    -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
    -[no]lp             boolean    [Y] Allow lonely pairs
+   -[no]convert        boolean    [Y] Convert T to U
    -nsbases            string     Non-standard bases (Any string is accepted)
    -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
    -erange             float      [1.0] Calculate suboptimal structures within
@@ -119,7 +121,7 @@ Output file format
   File: rna1.vrnasubopt
 
 > rna1 [100]
-CACTACTCCAAGGACCGTATCTTTCTCAGTGCGACAGTAA   -380    100
+CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA   -380    100
 ...(((((....)).((((.((.....))))))...))).  -2.80
 ...(((((....)).(((((........)))))...))).  -3.80
 ...(((((....)..(((((........)))))..)))).  -3.10

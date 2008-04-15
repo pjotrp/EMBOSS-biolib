@@ -127,7 +127,14 @@
 </tr>
 
 <tr>
-<td>-dotoutfile</td>
+<td>-adotoutfile</td>
+<td>Vienna dotplot postscript output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.vrnafoldpf</td>
+</tr>
+
+<tr>
+<td>-bdotoutfile</td>
 <td>Vienna dotplot postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnafoldpf</td>

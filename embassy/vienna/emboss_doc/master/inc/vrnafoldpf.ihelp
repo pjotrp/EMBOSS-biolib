@@ -25,7 +25,9 @@
                                   unpaired bases for just one dangling end); 2
                                   (Always use dangling energies); 3 (Allow
                                   coaxial stacking of adjacent helices))
-   -dotoutfile         outfile    [*.vrnafoldpf] Vienna dotplot postscript
+   -adotoutfile        outfile    [*.vrnafoldpf] Vienna dotplot postscript
+                                  output file
+   -bdotoutfile        outfile    [*.vrnafoldpf] Vienna dotplot postscript
                                   output file
    -ssoutfile          outfile    [*.vrnafoldpf] Vienna structure postscript
                                   output file
@@ -51,7 +53,10 @@
    "-outfile" associated qualifiers
    -odirectory2        string     Output directory
 
-   "-dotoutfile" associated qualifiers
+   "-adotoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-bdotoutfile" associated qualifiers
    -odirectory         string     Output directory
 
    "-ssoutfile" associated qualifiers

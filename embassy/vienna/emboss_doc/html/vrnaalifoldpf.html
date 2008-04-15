@@ -110,6 +110,8 @@ Vienna RNAfold output file [ecoli6s.vrnaalifoldpf]: <b></b>
    -[no]convert        boolean    [Y] Convert T to U
    -nsbases            string     Non-standard bases (Any string is accepted)
    -[no]tetraloop      boolean    [Y] Stabilizing energies for tetra-loops
+   -circular           boolean    [N] Circular RNA
+   -colour             boolean    [N] Colour structure plot
    -energy             menu       [0] Rarely used option to fold sequences
                                   from the ABCD... alphabet (Values: 0 (BP); 1
                                   (Any with GC); 2 (Any with AU parameters))
@@ -128,6 +130,8 @@ Vienna RNAfold output file [ecoli6s.vrnaalifoldpf]: <b></b>
    -dotoutfile         outfile    [*.vrnaalifoldpf] Vienna dotplot postscript
                                   output file
    -ssoutfile          outfile    [*.vrnaalifoldpf] Vienna structure
+                                  postscript output file
+   -alignoutfile       outfile    [*.vrnaalifoldpf] Vienna alignment colour
                                   postscript output file
 
    Associated qualifiers:
@@ -155,6 +159,9 @@ Vienna RNAfold output file [ecoli6s.vrnaalifoldpf]: <b></b>
    -odirectory         string     Output directory
 
    "-ssoutfile" associated qualifiers
+   -odirectory         string     Output directory
+
+   "-alignoutfile" associated qualifiers
    -odirectory         string     Output directory
 
    General qualifiers:
@@ -277,6 +284,20 @@ Vienna RNAfold output file [ecoli6s.vrnaalifoldpf]: <b></b>
 </tr>
 
 <tr>
+<td>-circular</td>
+<td>Circular RNA</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-colour</td>
+<td>Colour structure plot</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>-energy</td>
 <td>Rarely used option to fold sequences from the ABCD... alphabet</td>
 <td><table><tr><td>0</td> <td><i>(BP)</i></td></tr><tr><td>1</td> <td><i>(Any with GC)</i></td></tr><tr><td>2</td> <td><i>(Any with AU parameters)</i></td></tr></table></td>
@@ -335,6 +356,13 @@ Vienna RNAfold output file [ecoli6s.vrnaalifoldpf]: <b></b>
 <tr>
 <td>-ssoutfile</td>
 <td>Vienna structure postscript output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.vrnaalifoldpf</td>
+</tr>
+
+<tr>
+<td>-alignoutfile</td>
+<td>Vienna alignment colour postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnaalifoldpf</td>
 </tr>
@@ -445,9 +473,9 @@ outputs a report format file. The default format is ...
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
-%%Title: Rna secondary Structure Plot
+%%Title: RNA Secondary Structure Plot
 %%BoundingBox: 66 210 518 662
 %%DocumentFonts: Helvetica
 %%Pages: 1
@@ -468,11 +496,18 @@ RNAplot begin
 /min { 2 copy gt { exch } if pop } bind def
 /max { 2 copy lt { exch } if pop } bind def
 /drawoutline {
-  outlinecolor
-  newpath
-  coor 0 get aload pop 0.8 0 360 arc
-  coor {aload pop lineto} forall
-  stroke
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
 } bind def
 /drawpairs {
   paircolor
@@ -487,13 +522,6 @@ RNAplot begin
 } bind def
 % draw bases
 /drawbases {
-  [] 0 setdash
-  seqcolor
-  0
-  coor {
-    aload pop moveto
-    dup sequence exch 1 getinterval cshow
-    1 add
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
@@ -553,6 +581,116 @@ end
 </td></tr></table><p>
 <p><h3>Graphics File: ecoli6s.ps</h3>
 <p><img src="vrnaalifoldpf.1.ecoli6s.gif" alt="[vrnaalifoldpf results]">
+<p><h3>File: ecoli6s.alirnaps</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 0 0 576 428
+%%EndComments
+% draws Vienna RNA like colored boxes
+/box { % x1 y1 x2 y2 hue saturation
+  gsave
+  dup 0.3 mul 1 exch sub sethsbcolor
+  exch 3 index sub exch 2 index sub rectfill
+  grestore
+} def
+% draws a box in current color
+/box2 { % x1 y1 x2 y2
+  exch 3 index sub exch 2 index sub rectfill
+} def
+/string { % (Text) x y
+ 6 add
+ moveto
+  show
+} def
+0 428 translate
+1 -1 scale
+/Courier findfont
+[10 0 0 -10 0 0] makefont setfont
+192.0 11.5 198.0 20.0 0.16 1 box
+192.0 20.0 198.0 28.5 0.16 1 box
+192.0 28.5 198.0 37.0 0.16 1 box
+192.0 37.0 198.0 45.5 0.16 1 box
+192.0 45.5 198.0 54.0 0.16 1 box
+192.0 54.0 198.0 62.5 0.16 1 box
+192.0 62.5 198.0 71.0 0.16 1 box
+270.0 331.0 276.0 339.5 0.16 1 box
+270.0 339.5 276.0 348.0 0.16 1 box
+270.0 348.0 276.0 356.5 0.16 1 box
+270.0 356.5 276.0 365.0 0.16 1 box
+270.0 365.0 276.0 373.5 0.16 1 box
+270.0 373.5 276.0 382.0 0.16 1 box
+270.0 382.0 276.0 390.5 0.16 1 box
+198.0 11.5 204.0 20.0 0.16 1 box
+198.0 20.0 204.0 28.5 0.16 1 box
+198.0 28.5 204.0 37.0 0.16 1 box
+198.0 37.0 204.0 45.5 0.16 1 box
+198.0 45.5 204.0 54.0 0.16 1 box
+198.0 54.0 204.0 62.5 0.16 1 box
+198.0 62.5 204.0 71.0 0.16 1 box
+264.0 331.0 270.0 339.5 0.16 1 box
+264.0 339.5 270.0 348.0 0.16 1 box
+264.0 348.0 270.0 356.5 0.16 1 box
+264.0 356.5 270.0 365.0 0.16 1 box
+264.0 365.0 270.0 373.5 0.16 1 box
+264.0 373.5 270.0 382.0 0.16 1 box
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+516.0 306.9 522.0 315.0 box2
+522.0 304.2 528.0 315.0 box2
+0 setgray
+(\).\)\)\)\)\)\).\)\).\)\)\)\)\)\).....) 168.0 321.5 string
+(X01238.1/1-183) 6.0 332.0 string
+(CGGCGGCA-UC-UCGGAG-AUUC) 168.0 332.0 string
+(183) 312.0 332.0 string
+(AL627277.1/108623-108805) 6.0 340.5 string
+(CGGCGGCA-UC-UCGGAG-AUUC) 168.0 340.5 string
+(183) 312.0 340.5 string
+(AJ414145.1/90993-91174) 6.0 349.0 string
+(CGACGGCA-CC-UCGGAG-AUCC) 168.0 349.0 string
+(182) 312.0 349.0 string
+(U32767.1/6538-6734) 6.0 357.5 string
+(CAGCGGCACUC-UGGGGU-CUUC) 168.0 357.5 string
+(197) 312.0 357.5 string
+(AE006208.1/8365-8185) 6.0 366.0 string
+(CAGCGGCA-UC-UCGGGUUCUUC) 168.0 366.0 string
+(181) 312.0 366.0 string
+(Y00334.1/77-254) 6.0 374.5 string
+(CAGCGGCA-CGACCGGGG-AGCU) 168.0 374.5 string
+(178) 312.0 374.5 string
+(AE004317.1/5626-5807) 6.0 383.0 string
+(CAACGGCA-UC-CCGGGG-UUC-) 168.0 383.0 string
+(182) 312.0 383.0 string
+(.........190.......200.) 168.0 393.5 string
+0.6 setgray
+168.0 405.2 174.0 421.5 box2
+174.0 413.4 180.0 421.5 box2
+180.0 410.7 186.0 421.5 box2
+186.0 405.2 192.0 421.5 box2
+192.0 405.2 198.0 421.5 box2
+198.0 405.2 204.0 421.5 box2
+204.0 405.2 210.0 421.5 box2
+210.0 405.2 216.0 421.5 box2
+216.0 420.5 222.0 421.5 box2
+222.0 410.7 228.0 421.5 box2
+228.0 408.0 234.0 421.5 box2
+234.0 420.5 240.0 421.5 box2
+240.0 410.7 246.0 421.5 box2
+246.0 408.0 252.0 421.5 box2
+252.0 405.2 258.0 421.5 box2
+258.0 405.2 264.0 421.5 box2
+264.0 413.4 270.0 421.5 box2
+270.0 410.7 276.0 421.5 box2
+276.0 420.5 282.0 421.5 box2
+282.0 413.4 288.0 421.5 box2
+288.0 408.0 294.0 421.5 box2
+294.0 413.4 300.0 421.5 box2
+300.0 410.7 306.0 421.5 box2
+showpage
+</pre>
+</td></tr></table><p>
 <p><h3>File: ecoli6s.vrnaalifoldpf</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
@@ -561,7 +699,7 @@ AUUUCCCUGAGGUGUUCGCCAGCGGGC_CAUGUCCCUGAGCCGAUAUUUAAUACCACAAGAAUGUGGUGCUCCGUGGUUG
 ....(((((((((({{(((..((((((................................(((((((......(((((((...{.((...(((((....................)))))..)),....)))))))..,.))))))).(((((((((....)))))))))......)))))).)))))).)).))))))..... [-59.30]
  frequency of mfe structure in ensemble 0.0206905
 
-#Alignment section
+# Alignment section
 
 7 sequences; length of alignment 203
 alifold output

@@ -422,8 +422,8 @@ outputs a report format file. The default format is ...
 <pre>
 AUGAAGAUGA&amp;CUGUCUGUCUUGAGACA
 ....((((..&amp;..))))(((....))). ( -4.40)
-....((((,...)))}(((....))). [ -5.88]
- frequency of mfe structure in ensemble 0.279849
+....((((,.&amp;..)))}(((....))). [ -5.88]
+ frequency of mfe structure in ensemble 0.279848 , delta G binding= -1.57
 </pre>
 </td></tr></table><p>
 <p><h3>Graphics File: red.ps</h3>
@@ -432,9 +432,9 @@ AUGAAGAUGA&amp;CUGUCUGUCUUGAGACA
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 %!PS-Adobe-3.0 EPSF-3.0
-%%Creator: ePS_dot.c,v 1.1 2005/10/13 13:00:44 ajb Exp $, ViennaRNA-1.6
+%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
-%%Title: Rna secondary Structure Plot
+%%Title: RNA Secondary Structure Plot
 %%BoundingBox: 66 210 518 662
 %%DocumentFonts: Helvetica
 %%Pages: 1
@@ -455,11 +455,18 @@ RNAplot begin
 /min { 2 copy gt { exch } if pop } bind def
 /max { 2 copy lt { exch } if pop } bind def
 /drawoutline {
-  outlinecolor
-  newpath
-  coor 0 get aload pop 0.8 0 360 arc
-  coor {aload pop lineto} forall
-  stroke
+  gsave outlinecolor newpath
+  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
+  currentdict /cutpoint known        % check if cutpoint is defined
+  {coor 0 cutpoint getinterval
+   {aload pop lineto} forall         % draw outline of 1st sequence
+   coor cutpoint get aload pop
+   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
+   coor cutpoint coor length cutpoint sub getinterval
+   {aload pop lineto} forall}        % draw outline of 2nd sequence
+  {coor {aload pop lineto} forall}   % draw outline as a whole
+  ifelse
+  stroke grestore
 } bind def
 /drawpairs {
   paircolor
@@ -474,13 +481,6 @@ RNAplot begin
 } bind def
 % draw bases
 /drawbases {
-  [] 0 setdash
-  seqcolor
-  0
-  coor {
-    aload pop moveto
-    dup sequence exch 1 getinterval cshow
-    1 add
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>

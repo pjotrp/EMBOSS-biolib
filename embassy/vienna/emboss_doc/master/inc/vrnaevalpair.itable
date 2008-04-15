@@ -85,6 +85,13 @@
 </tr>
 
 <tr>
+<td>-circular</td>
+<td>Circular RNA</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>-energy</td>
 <td>Rarely used option to fold sequences from the ABCD... alphabet</td>
 <td><table><tr><td>0</td> <td><i>(BP)</i></td></tr><tr><td>1</td> <td><i>(Any with GC)</i></td></tr><tr><td>2</td> <td><i>(Any with AU parameters)</i></td></tr></table></td>

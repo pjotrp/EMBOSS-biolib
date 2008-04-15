@@ -49,6 +49,7 @@ Command line arguments
    -temperature        float      [37.0] Temperature (Any numeric value)
    -[no]convert        boolean    [Y] Convert T to U
    -[no]tetraloop      boolean    [Y] Stabilising energies for tetra-loops
+   -circular           boolean    [N] Circular RNA
    -energy             menu       [0] Rarely used option to fold sequences
                                   from the ABCD... alphabet (Values: 0 (BP); 1
                                   (Any with GC); 2 (Any with AU parameters))

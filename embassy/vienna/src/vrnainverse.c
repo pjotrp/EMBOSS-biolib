@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     embInitP("vrnainverse",argc,argv,"VIENNA");
     
     
-    inf        = ajAcdGetInfile("structure");
+    inf        = ajAcdGetInfile("structuresfile");
     seq        = ajAcdGetSeq("sequence");
     paramfile  = ajAcdGetInfile("paramfile");
     eT         = ajAcdGetFloat("temperature");

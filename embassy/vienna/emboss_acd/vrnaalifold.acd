@@ -151,7 +151,6 @@ section: output [
   ]
 
   outfile: ssoutfile [
-    name: "$(sequence.name)"
     extension: "ssps"
     knowntype: "vienna structure"
     information: "Vienna structure postscript output file"
@@ -160,6 +159,7 @@ section: output [
   outfile: alignoutfile [
     nullok: "Y"
     default: ""
+    extension: "alirnaps"
     information: "Vienna alignment colour postscript output file"
     knowntype: "vienna alignment"
   ]

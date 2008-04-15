@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &gt; rna1 [100]
-CACTACTCCAAGGACCGTATCTTTCTCAGTGCGACAGTAA   -380    100
+CACUACUCCAAGGACCGUAUCUUUCUCAGUGCGACAGUAA   -380    100
 ...(((((....)).((((.((.....))))))...))).  -2.80
 ...(((((....)).(((((........)))))...))).  -3.80
 ...(((((....)..(((((........)))))..)))).  -3.10
