@@ -87,6 +87,7 @@ ajListstrRemove ajListstrIterRemove
 #ajmath
 #ajmatrices
 #ajmem
+ajMemCalloc0 ajMemCallocZero
 #ajmess
 #ajnam
 #ajnexus
