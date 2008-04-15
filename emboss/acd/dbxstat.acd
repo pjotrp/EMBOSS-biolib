@@ -23,7 +23,7 @@ section: input [
   directory: indexdir [
     standard: "y"
     default: "."
-    information: "Index file directory"
+    information: "Index directory"
     knowntype: "emboss database index"
   ]
 
@@ -73,6 +73,7 @@ section: output [
 
   outfile: outfile [
     standard: "y"
+    knowntype: "dbxstat output"
   ]
 
 endsection: output

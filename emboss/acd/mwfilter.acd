@@ -11,13 +11,13 @@ section: input [
   infile: infile [
     parameter: "Y"
     information: "Molecular weights file"
-    knowntype: "molwt"
+    knowntype: "molecular weights"
   ]
 
   datafile: datafile [
     default: "Emwfilter.dat"
     information: "Molecular weight standards data file"
-    knowntype: "standard molwt"
+    knowntype: "standard molecular weights"
   ]
 
 endsection: input
@@ -56,7 +56,7 @@ section: output [
   outfile: outfile [
     parameter: "Y"
     extension: "mwfilter"
-    knowntype: "molwt"
+    knowntype: "molecular weights"
     information: "Molecular weights output file"
   ]
 
