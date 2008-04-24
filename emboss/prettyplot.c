@@ -74,7 +74,7 @@
 
 const char **seqcharptr;
 ajint **seqcolptr;
-ajint **seqboxptr;
+ajint **seqboxptr = NULL;
 ajint *seqcount = NULL;
 ajint charlen;
 AjBool shownames;
@@ -975,7 +975,8 @@ int main(int argc, char **argv)
     {
 	ajStrDel(&seqnames[i]);
 	AJFREE(seqcolptr[i]);
-	AJFREE(seqboxptr[i]);
+	if(seqboxptr)
+            AJFREE(seqboxptr[i]);
     }
     AJFREE(seqcolptr);
     AJFREE(seqboxptr);
