@@ -9105,16 +9105,6 @@ FP 0 /Error: /
 FP 0 /Died: /
 //
 
-ID entret-inauto-selex
-AP entret
-CL -auto ../../data/test.selex test.out
-FI test.out
-FZ = 610
-FC = 20
-FP /^#=ID r17\n/
-FP /^lig2  AUGGAUGCGCACC AUCA GGGCGUAUCUAU\n/
-//
-
 ID entret-in-selex
 AP entret
 CL -auto ../../data/test.selex -sf selex test.out
@@ -13115,15 +13105,6 @@ FP /^ID   .* 838 BP\.\n/
 FP /^SQ   Sequence 838 BP; 274 A; 140 C; 182 G; 211 T; 31 other;/
 //
 
-ID seqret-inauto-selex
-AP seqret
-CL -auto ../../data/test.selex test.out -osf embl
-FI test.out
-FZ = 587
-FP 3 /^ID/
-FP /^ID   lig28.* 31 BP\.\n/
-FP /^SQ   Sequence 31 BP; 7 A; 7 C; 8 G; 7 T; 2 other;/
-//
 
 ID seqret-inusa-selex
 AP seqret
@@ -22856,7 +22837,7 @@ ID ohmm-own-keep1
 AB hmmer
 AA ohmmbuild
 DL keep
-CL ../../data/hmm/rrm.slx rrm.hmm
+CL ../../data/hmm/rrm.slx -sf selex rrm.hmm
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -22879,7 +22860,7 @@ FP /^M 2\.09 0\.84 [0\. ]+ 20\.78 0\.00 30\.46 0\.83 [0\. ]+ 13\.00 [0\. ]+ \n/
 ID ohmm-own-keep2
 AB hmmer
 AA ohmmbuild
-CL ../../data/hmm/fn3.slx fn3.hmm
+CL ../../data/hmm/fn3.slx -sf selex fn3.hmm
 QQ cp fn3.hmm ../ohmm-own-keep1/
 FI stderr
 FC = 1
@@ -22903,7 +22884,7 @@ FP /^M 4\.96 0\.00 18\.09 4\.46 0\.00 9\.88 0\.00 0\.00 .* 0\.00 1\.13 \n/
 ID ohmm-own-keep3
 AB hmmer
 AA ohmmbuild
-CL ../../data/hmm/pkinase.slx pkinase.hmm
+CL ../../data/hmm/pkinase.slx -sf selex pkinase.hmm
 QQ cp pkinase.hmm ../ohmm-own-keep1/
 FI stderr
 FC = 1
@@ -22976,7 +22957,7 @@ FP /^M 3\.15 2\.06 [0\. ]+ 26\.86 0\.00 34\.70 0\.81 [0\. ]+ 20\.42 [0\. ]+ \n/
 ID ohmm-own2-keep2
 AB hmmer
 AA ohmmbuild
-CL -append ../../data/hmm/fn3.slx ../ohmm-own2-keep1/myhmms
+CL -append ../../data/hmm/fn3.slx -sf selex ../ohmm-own2-keep1/myhmms
 FI stderr
 FC = 1
 FP 0 /Warning: /
@@ -22996,7 +22977,7 @@ FP /^M 4\.96 0\.00 18\.09 4\.46 0\.00 9\.88 0\.00 0\.00 .* 0\.00 1\.13 \n/
 ID ohmm-own2-keep3
 AB hmmer
 AA ohmmbuild
-CL -append ../../data/hmm/pkinase.slx ../ohmm-own2-keep1/myhmms
+CL -append ../../data/hmm/pkinase.slx -sf selex ../ohmm-own2-keep1/myhmms
 FI stderr
 FC = 1
 FP 0 /Warning: /
