@@ -227,7 +227,7 @@ public class DragTree extends JTree implements DragGestureListener,
         File dir = new File(fullname);
         
         if(dir.exists())
-          JOptionPane.showMessageDialog(null, fullname+" alread exists!",
+          JOptionPane.showMessageDialog(null, fullname+" already exists!",
                                    "Error", JOptionPane.ERROR_MESSAGE);
         else
         {
@@ -317,7 +317,7 @@ public class DragTree extends JTree implements DragGestureListener,
   {
     final File fnew = new File(newFullName);
     if(fnew.exists())
-      JOptionPane.showMessageDialog(null, newFullName+" alread exists!",
+      JOptionPane.showMessageDialog(null, newFullName+" already exists!",
                                "Warning", JOptionPane.ERROR_MESSAGE);
     else
     {
