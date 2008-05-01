@@ -2106,7 +2106,6 @@ AjIList ajListIterNew(AjPList list)
     iter->Head = list;
     iter->Back = ajFalse;
     iter->Here = list->First;
-    iter->Orig = list->First;
     iter->Modify = ajTrue;
 
 #ifdef AJ_SAVESTATS
@@ -2196,7 +2195,6 @@ AjIList ajListIterNewread(const AjPList list)
     iter->ReadHead = list;
     iter->Back = ajFalse;
     iter->Here = list->First;
-    iter->Orig = list->First;
     iter->Modify = ajFalse;
 
 #ifdef AJ_SAVESTATS
@@ -2676,6 +2674,44 @@ __deprecated void ajListRemove(AjIList iter)
     ajListIterRemove(iter);
     return;
 }
+
+/* @func ajListIterRewind ******************************************************
+**
+** Resets iterator to start position
+**
+** @param [u] iter [AjIList] List iterator.
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajListIterRewind(AjIList iter)
+{
+    AjPListNode node = NULL;
+    AjPListNode tmp  = NULL;
+    const AjPList list;
+
+    if(!iter)
+        return;
+
+    if(iter->Modify)
+        list = iter->Head;
+    else
+        list = iter->ReadHead;
+
+    if(iter->Back)
+    {
+        for(node=list->First; node->Next; node = node->Next)
+            tmp = node;
+        iter->Here = tmp->Next;
+    }
+    else
+    {
+        iter->Here = list->First;
+    }
+    
+    return;
+}
+
 
 /* @section Trace functions ***************************************************
 **
