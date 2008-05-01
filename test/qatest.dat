@@ -8786,6 +8786,40 @@ FZ = 186
 FP /^HBB_HUMAN:0\.08080,\nHBB_HORSE:0\.08359\)\n/
 //
 
+ID emma-dna
+RQ clustalw
+AP emma
+IN ../../data/tropomyosin.fasta
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+##
+## stdout is written by clustalw, invoked by emma
+##
+## exact output file contents depend on the clustalw version
+## this is for clustalw 1.82, built from
+## ftp://ftp.ebi.ac.uk/pub/software/unix/clustalw/clustalw1.82.UNIX.tar.gz
+## file size 606683 date 'Feb  6  2001'
+##
+FI stdout
+FC = 120
+FP /^Sequences \(1:2\) Aligned\. Score:  59\n/
+FP /^Alignment Score 127498\n/
+FP /^GCG-Alignment file created +\S+\Z/
+FI bf056441.aln
+FC = 299
+FP /^TTC----TTACAAGAGAAGAGAA--AGACCCAC-----GGAGCTCCAG--AGTTTCTGTT\n/
+FI bf056441.dnd
+FC = 34
+FP /^AF186110:0.00114,\n/
+FP /AF362887:0.07397\)\n/
+FP 11 /^\(\n/
+//
+
 ID entret-ex
 AP entret
 CL tembl:x65923
