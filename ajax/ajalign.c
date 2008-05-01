@@ -3612,7 +3612,7 @@ AjBool ajAlignSetRange(AjPAlign thys,
 
 /* @func ajAlignSetSubRange ***************************************************
 **
-** Sets the alignment sub range in each sequence, but only for a
+** Sets the local alignment sub range in each sequence, but only for a
 ** pairwise alignment.
 **
 ** This sets the SubOffset in addition to the Start and End values,
@@ -3623,6 +3623,8 @@ AjBool ajAlignSetRange(AjPAlign thys,
 ** defined with SeqExternal so we use pointers to one original to avoid
 ** making multiple copies in memory while builing the AjPAlign and AlignPData
 ** structure.
+**
+** Resets the alignment length to be the length of the longest subsequence
 **
 ** @param [u] thys [AjPAlign] Alignment object
 ** @param [r] substart1 [ajint] Subsequence offset in sequence 1
@@ -3669,6 +3671,7 @@ AjBool ajAlignSetSubRange(AjPAlign thys,
     data->End[0]       = end1;
     data->Len[0]       = len1;
     data->Offset[0]    = substart1;
+    data->Offend[0]    = len1 - (substart1 + end1 - start1 + 1);
     data->Rev[0]       = rev1;
 
     data->SubOffset[1] = substart2;
@@ -3676,11 +3679,19 @@ AjBool ajAlignSetSubRange(AjPAlign thys,
     data->End[1]       = end2;
     data->Len[1]       = len2;
     data->Offset[1]    = substart2;
+    data->Offend[1]    = len2 - (substart2 + end2 - start2 + 1);
     data->Rev[1]       = rev2;
 
     if(thys->SeqExternal)
     {
 	data->LenAli = (end1 - start1) + 1;
+	if(data->LenAli < (end2 - start2 + 1))
+	    data->LenAli = (end2 - start2) + 1;
+	ajDebug("len:  %d\n", data->LenAli);
+    }
+    else
+    {
+        data->LenAli = (end1 - start1) + 1;
 	if(data->LenAli < (end2 - start2 + 1))
 	    data->LenAli = (end2 - start2) + 1;
 	ajDebug("len:  %d\n", data->LenAli);
