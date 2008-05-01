@@ -269,7 +269,7 @@ ALPH  Amino
 RF    yes
 CS    yes
 MAP   yes
-COM   ohmmbuild ../../data/hmm/fn3.slx fn3.hmm
+COM   ohmmbuild ../../data/hmm/fn3.slx -sf selex fn3.hmm
 COM   ohmmcalibrate myhmms -seed 1079460101
 NSEQ  109
 DATE  Sun Jul 15 12:00:00 2007
