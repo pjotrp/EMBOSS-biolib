@@ -234,8 +234,8 @@ t
                                   close to this temperature. The oligo melting
                                   temperature formula in EPrimer3 is that
                                   given in Rychlik, Spencer and Rhoads,
-                                  Nucleic Acids Research, vol 18, num 12, pp
-                                  6409-6412 and Breslauer, Frank, Bloeker and
+                                  Nucleic Acids Research, vol 18, num 21, pp
+                                  6409-6412 and Breslauer, Frank, Bloecker and
                                   Marky, Proc. Natl. Acad. Sci. USA, vol 83,
                                   pp 3746-3750. Please refer to the former
                                   paper for background discussion. (Any
@@ -277,7 +277,7 @@ t
                                   degrees Celsius. This parameter corresponds
                                   to 'c' in Rychlik, Spencer and Rhoads'
                                   equation (ii) (Nucleic Acids Research, vol
-                                  18, num 12) where a suitable value (for a
+                                  18, num 21) where a suitable value (for a
                                   lower initial concentration of template) is
                                   'empirically determined'. The value of this
                                   parameter is less than the actual
@@ -393,8 +393,8 @@ t
                                   are close to this temperature. The oligo
                                   melting temperature formula in EPrimer3 is
                                   that given in Rychlik, Spencer and Rhoads,
-                                  Nucleic Acids Research, vol 18, num 12, pp
-                                  6409-6412 and Breslauer, Frank, Bloeker and
+                                  Nucleic Acids Research, vol 18, num 21, pp
+                                  6409-6412 and Breslauer, Frank, Bloecker and
                                   Marky, Proc. Natl. Acad. Sci. USA, vol 83,
                                   pp 3746-3750. Please refer to the former
                                   paper for background discussion. (Any
@@ -626,7 +626,7 @@ t
                                   disruption for the five 3' bases as
                                   calculated using the nearest neighbor
                                   parameters published in Breslauer, Frank,
-                                  Bloeker and Marky, Proc. Natl. Acad. Sci.
+                                  Bloecker and Marky, Proc. Natl. Acad. Sci.
                                   USA, vol 83, pp 3746-3750. EPrimer3 uses a
                                   completely permissive default value for
                                   backward compatibility (which we may change
