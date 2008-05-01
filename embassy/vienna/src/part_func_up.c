@@ -8,6 +8,9 @@
 */
 /*
   $Log: part_func_up.c,v $
+  Revision 1.3  2008/05/01 10:35:48  rice
+  MIN and MAX renamed to eMIN and eMAX to avoid name clashes
+
   Revision 1.2  2008/01/14 13:56:13  ajb
   Fix compiler warnings
 
@@ -68,10 +71,10 @@
 #include "part_func_up.h"
 #include "duplex.h"
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: part_func_up.c,v 1.2 2008/01/14 13:56:13 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: part_func_up.c,v 1.3 2008/05/01 10:35:48 rice Exp $";
 #define CO_TURN 0
-#define MAX(x,y) (((x)>(y)) ? (x) : (y))
-#define MIN(x,y) (((x)<(y)) ? (x) : (y))
+#define eMAX(x,y) (((x)>(y)) ? (x) : (y))
+#define eMIN(x,y) (((x)<(y)) ? (x) : (y))
 #define ZERO(A) (fabs(A) < DBL_EPSILON)
 #define EQUAL(A,B) (fabs((A)-(B)) < 1000*DBL_EPSILON)
 #define PUBLIC
@@ -249,7 +252,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 #ifdef PF2_DEBUG
 	for(i=p+1; i<=o-1;i++) {  
 	  /* longest unpaired region */
-	  for(j=i; j < MIN(i+w,o); j++) {
+	  for(j=i; j < eMIN(i+w,o); j++) {
 	    ij=iindx[i]-j;
 	    puij[ij]+= temp;
 	    pu_stru->H[i][j-i]+=temp;
@@ -260,10 +263,10 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 
 	/* interior loops with interior pair k,l and an unpaired region of
 	 length w between p and k || l and o*/	
-	for (k=p+1; k<=MIN(p+MAXLOOP+1,o-TURN-2); k++) {
+	for (k=p+1; k<=eMIN(p+MAXLOOP+1,o-TURN-2); k++) {
 	  u1 = k-p-1;	  
 	  sum_l=0.0;
-	  for (l=MAX(k+TURN+1,o-1-MAXLOOP+u1); l<o; l++) {
+	  for (l=eMAX(k+TURN+1,o-1-MAXLOOP+u1); l<o; l++) {
 	    kl=iindx[k]-l;
 	    type_2 = ptype[kl];
 	    if(l+1 < o){
@@ -284,7 +287,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 #ifdef PF2_DEBUG	     
 	      /* unpaired in region ]p,k[ p < i < i+w-1 < k*/
 	      for (i=p+1; i <= k-1; i++ ){
-		for (j=i; j < MIN(i+w,k); j++ ){
+		for (j=i; j < eMIN(i+w,k); j++ ){
 		  ij=iindx[i]-j; puij[ij]+=temp;
 		  /* don't use this to test ]l,o[ contribution */
 		  pu_stru->I[i][j-i]+=temp;
@@ -292,7 +295,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 	      }
 	      /* unpaired in region ]l,o[, l < i < i+w-1 < o*/
 	      for (i=l+1; i <= o-1; i++){
-		for (j=i; j < MIN(i+w,o); j++ ){
+		for (j=i; j < eMIN(i+w,o); j++ ){
 		  ij=iindx[i]-j; puij[ij]+=temp;
 		  /* don't use this to test ]p,k[ contribution */
 		  pu_stru->I[i][j-i]+=temp;
@@ -304,7 +307,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 	  /* unpaired in region ]p,k[  */
 	  for(i=p+1;i <= k-1;i++) {
 	    int max_v; 
-	    max_v=MIN(w-1,k-i-1);
+	    max_v=eMIN(w-1,k-i-1);
 	    store_I2o[i][max_v] += sum_l;
 	  }
 	} /* end of k */
@@ -361,7 +364,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 	  store_M_qm_o[i] += qm[p1i] * temp;
 
 #ifdef PF2_DEBUG	  
-	  for(j=i; j< MIN(i+w,o);j++) {	    
+	  for(j=i; j< eMIN(i+w,o);j++) {	    
 	    double temp2;
 	    int iwo;
 	    temp2=0;
@@ -392,13 +395,13 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
     for(i=1; i < o; i++) {
       int max_v,vo;      
       sum_h += store_H[i];
-      max_v = MIN(w-1,o-i-1); 
+      max_v = eMIN(w-1,o-i-1); 
       for(v=max_v; v >=0;v--) {
 	/* Hairpins */	
 	pu_test->H[i][v] += sum_h;/* store_H[i][v] + store_H[i][max_v]; */
 	/* Interior loops: unpaired region between  ]l,o[ calculated here !*/
 	/* unpaired region between ]p,k[ collected after after o-loop */
-	if(v <= MIN(max_v,MAXLOOP)) {
+	if(v <= eMIN(max_v,MAXLOOP)) {
 	  pu_test->I[i][v] += store_Io[i]; /* ]l,o[ */
 	}
 	/* Multiloops:*/
@@ -421,9 +424,9 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
     int max_v;
     double sum_iv;
     sum_iv=0.;
-    max_v = MIN(w-1,n-i); 
+    max_v = eMIN(w-1,n-i); 
     for(v=n; v >=0;v--) {      
-      if(v <= MIN(max_v,MAXLOOP)) {
+      if(v <= eMIN(max_v,MAXLOOP)) {
 	/* all unpaired regions [i,v] between p and k in interior loops */
 	/* notice v runs from max_v -> 0, sum_iv sums all int. l. contribs */
 	/* for each x, v < x =< max_v, since they contribute to [i,v] */
@@ -495,7 +498,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
 	  temp2 = qq_1m2[i-1]*expMLbase[p-i];
 	  /* multiply with revers dangles for prpr[po]*... */
 	  temp2 *= temp;	  
-	  for (j=i; j<MIN(i+w,p);j++) {
+	  for (j=i; j<eMIN(i+w,p);j++) {
 	    ij=iindx[i]-j;
 	    puij[ij]+=temp2;
 	    pu_stru->M[i][j-i]+=temp2;
@@ -512,7 +515,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
   for(i=0;i<=n;i++) { sum_M[i]=0.; }
   for(i=1; i<=n;i++) {
     int v_max;
-    v_max=MIN(w-1,n-i);
+    v_max=eMIN(w-1,n-i);
     for(v=n; v>=i;v--){
       sum_M[i]+=store_M_mlbase[iindx[i]-v];
       if ((v-i <= v_max) ) {
@@ -526,7 +529,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
   Zuij=0.;bla=0;
   for (i=1; i<=n; i++) {
     uu=0;
-    for(j=i; j<MIN(i+w,n+1);j++){
+    for(j=i; j<eMIN(i+w,n+1);j++){
       ij=iindx[i]-j;
       temp=q1k[i-1]*1*scale[j-i+1]*qln[j+1]/q1k[n];
 #ifdef PF2_DEBUG      
@@ -570,7 +573,7 @@ PUBLIC pu_contrib *pf_unstru(char *sequence, int w)
   
   /* check if pu_stru->H[ij]+pu_stru->I[ij]+pu_stru->M[ij]+pu_stru->E[ij] == puij[ij]  */
   for (i=1; i<n; i++) {
-    for (j=i; j < MIN((i+w),n); j++) {
+    for (j=i; j < eMIN((i+w),n); j++) {
       int u_len;
       double sum_stru,sum_test,dG_us,dG_ut;
       /*get the free energy of opening region [i,j] - that is free energy necessary to remove all structures from region [i,j]*/
@@ -674,7 +677,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
   p_c_S = (double **) space (sizeof(double *)*(n1+1));
   
   for (i=1; i<=n1; i++) {
-    pc_size = MIN((w+incr3+incr5),n1);
+    pc_size = eMIN((w+incr3+incr5),n1);
     /* printf("pc_size = %d\n",pc_size); */
     p_c_S[i] = (double *) space (sizeof(double)*(pc_size+1));    
     for (j=0; j < (pc_size); j++) {
@@ -685,7 +688,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
   if(p_c2 != NULL) {
     p_c2_S = (double **) space (sizeof(double *)*(n2+1));
     for (i=1; i<=n2; i++) {
-      pc_size = MIN(w,n2);
+      pc_size = eMIN(w,n2);
       p_c2_S[i] = (double *) space (sizeof(double)*(pc_size+2));    
       for (j=0; j < (pc_size); j++) {
 	p_c2_S[i][j] = p_c2->H[i][j]+p_c2->I[i][j]+p_c2->M[i][j]+p_c2->E[i][j];
@@ -773,7 +776,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
   for (i=1; i<=n1; i++) {
     int end_k;
     end_k = i-w;
-    if(fold_constrained && pos && ci) end_k= MAX(i-w, ci-w);
+    if(fold_constrained && pos && ci) end_k= eMAX(i-w, ci-w);
     /* '|' constrains for long sequence: index i from 1 to n1 (5' to 3')*/
     /* interaction has to include 3' most '|' constrain, ci */
     if(fold_constrained && pos && ci && i==1 && i<ci) 
@@ -794,7 +797,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
     for (j=n2; j>0; j--) {
       int type, type2,end_l;
       end_l = j+w;
-      if(fold_constrained && pos && ci) end_l= MIN(cj+w,j+w);
+      if(fold_constrained && pos && ci) end_l= eMIN(cj+w,j+w);
       /* '|' constrains for short sequence: index j from n2 to 1 (3' to 5')*/
       /* interaction has to include 5' most '|' constrain, cj */
       if(fold_constrained && pos && cj && j==n2 && j>cj) 
@@ -818,7 +821,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
       if((i-incr5) > 0 ) add_i5=i-incr5;
       else add_i5=1;
       add_i3=incr3;
-      pc_size = MIN((w+incr3+incr5),n1);
+      pc_size = eMIN((w+incr3+incr5),n1);
       if(incr3 < pc_size) add_i3=incr3;
       else add_i3=pc_size-1;
 
@@ -917,7 +920,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
           if(k-incr5 > 0) add_i5=k-incr5;
           else add_i5=1;
 	  /* add incr3 to i */
-	  pc_size = MIN((w+incr3+incr5),n1);
+	  pc_size = eMIN((w+incr3+incr5),n1);
 	  if(i-k+incr3 < pc_size) add_i3=i-k+incr3;
 	  else add_i3=pc_size-1;
 	  
@@ -954,7 +957,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
       int bla;
       bla=i-w;
       if (fold_constrained && pos && ci && i-w < ci-w+1) continue;
-      if (fold_constrained && pos && ci) bla = MAX(ci-w+1,i-w);
+      if (fold_constrained && pos && ci) bla = eMAX(ci-w+1,i-w);
       for (j=n2; j>0; j--) {
 	for (k=0; k<=w; k++){
 	  free(qint_4[bla][j][k]);
@@ -977,7 +980,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
 	/* qint_ik[i][k] as well as Z are scaled to scale[((int) w/2) */
 	Int->Pi[l]+=qint_ik[i][k]/Z;
 	/* Int->Gi[l]: minimal delta G at position [l] */
-	Int->Gi[l]=MIN(Int->Gi[l],
+	Int->Gi[l]=eMIN(Int->Gi[l],
 		       ( -log(qint_ik[i][k])-( ((int) w/2)*log(pf_scale)) )*
 		       ((Pf->temperature+K0)*GASCONST/1000.0) );
       }
@@ -1369,7 +1372,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
     }
     
     for (i=1; i<=len; i++) {
-      for (j=i; j < MIN((i+w),len+1); j++) {
+      for (j=i; j < eMIN((i+w),len+1); j++) {
 	double blubb;
 	if( (j-i+1) == w && i+w-1 <= len) {
 	  blubb = p_c->H[i][j-i]+p_c->I[i][j-i]+p_c->M[i][j-i]+p_c->E[i][j-i];
@@ -1426,7 +1429,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
   
   if(p_c_sh != NULL) {
     len = p_c_sh->length;
-    ws=MIN(w,len);
+    ws=eMIN(w,len);
       p_cont_sh = (double **) space(sizeof(double*)*(5));
     
     if(strchr(select_contrib, 'S')) {
@@ -1475,7 +1478,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
     }
     
     for (i=1; i<=len; i++) {
-      for (j=i; j < MIN((i+ws),len+1); j++) {
+      for (j=i; j < eMIN((i+ws),len+1); j++) {
 	double blubb;
 	if( (j-i+1) == ws && i+ws-1 <= len) {
 	  blubb = p_c_sh->H[i][j-i]+p_c_sh->I[i][j-i]+p_c_sh->M[i][j-i]+p_c_sh->E[i][j-i];
