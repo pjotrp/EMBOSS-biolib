@@ -13,8 +13,8 @@ pkgdata_DATA =  aaindexextract.txt abiview.txt acdc.txt acdlog.txt \
 	dottup.txt dreg.txt \
         edialign.txt einverted.txt embossdata.txt embossversion.txt \
 	emma.txt emowse.txt entret.txt epestfind.txt eprimer3.txt \
-	equicktandem.txt est2genome.txt etandem.txt extractfeat.txt \
-	extractseq.txt findkm.txt freak.txt \
+	equicktandem.txt est2genome.txt etandem.txt extractalign.txt \
+	extractfeat.txt extractseq.txt findkm.txt freak.txt \
 	fuzznuc.txt fuzzpro.txt fuzztran.txt garnier.txt geecee.txt \
 	getorf.txt helixturnhelix.txt hmoment.txt \
 	iep.txt infoalign.txt infoseq.txt isochore.txt

@@ -29,11 +29,11 @@ pkgdata_DATA =  abiview.1.abiview.gif banana.1.banana.gif \
 	dbxgcg.html degapseq.html descseq.html \
 	diffseq.html digest.html display_group.html distmat.html \
 	dotmatcher.html dotpath.html dottup.html dreg.html \
-	edialign.html einverted.html embossdata.html \
+	edialign.html einverted.html edit_group.html embossdata.html \
 	embossversion.html emma.html emowse.html \
 	entret.html enzyme_kinetics_group.html \
 	epestfind.html eprimer3.html equicktandem.html \
-	est2genome.html etandem.html extractfeat.html \
+	est2genome.html etandem.html extractalign.html extractfeat.html \
 	extractseq.html feature_tables_group.html \
 	findkm.html freak.html fuzznuc.html fuzzpro.html fuzztran.html \
 	garnier.html geecee.html getorf.html groups.html \
@@ -56,7 +56,7 @@ pkgdata2_DATA = lindna.html listor.html makenucseq.html makeprotseq.html \
 	nucleic_gene_finding_group.html nucleic_motifs_group.html \
 	nucleic_mutation_group.html nucleic_primers_group.html \
 	nucleic_profiles_group.html nucleic_repeats_group.html \
-	nucleic_restriction_group.html \
+	nucleic_restriction_group.html nucleic_rna_folding_group.html \
 	nucleic_transcription_group.html \
 	nucleic_translation_group.html octanol.html oddcomp.html \
 	palindrome.html pasteseq.html patmatdb.html patmatmotifs.html \
