@@ -207,7 +207,7 @@ tembl:x65921
 # Trying 'qapblastall:x65921'
 # Failed 'qapblastall:x65921'
 # Trying 'tgb:x65921'
-# Failed 'tgb:x65921'
+tgb:x65921
 # Trying 'qaxpir:x65921'
 # Failed 'qaxpir:x65921'
 # Trying 'qawfasta:x65921'
