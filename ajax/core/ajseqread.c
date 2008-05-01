@@ -733,10 +733,10 @@ static SeqOInFormat seqInFormatDef[] = {
        AJFALSE, AJTRUE,  seqReadIg, AJFALSE, 0}, /* can read almost anything */
   {"staden",      "Old staden package sequence format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  seqReadStaden, AJFALSE, 0}, /* original staden format */
+       AJFALSE, AJTRUE,  seqReadStaden, AJFALSE, 0},/* original staden format */
   {"text",        "Plain text",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  seqReadText, AJFALSE, 0}, /* can read almost anything */
+       AJFALSE, AJTRUE,  seqReadText, AJFALSE, 0},/* can read almost anything */
   {"plain",       "Plain text (alias)",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadText, AJFALSE, 0},	/* alias for text */
@@ -752,8 +752,8 @@ static SeqOInFormat seqInFormatDef[] = {
   {"stockholm",   "Stockholm (pfam) format",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadStockholm, AJFALSE, 0},
-  {"selex",       "Selex format",
-       AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
+  {"selex",       "Selex format",                /* can read almost anything */
+       AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
        AJFALSE, AJTRUE,  seqReadSelex, AJFALSE, 0},
   {"pfam",        "Stockholm (pfam) format (alias)",
        AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,
@@ -763,7 +763,7 @@ static SeqOInFormat seqInFormatDef[] = {
        AJFALSE, AJTRUE,  seqReadFitch, AJFALSE, 0},
   {"mase",        "Mase program format",
        AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
-       AJFALSE, AJTRUE,  seqReadMase, AJFALSE, 0},	/* like ig - off by default*/
+       AJFALSE, AJTRUE,  seqReadMase, AJFALSE, 0},/* like ig - off by default*/
   {"raw",         "Raw sequence with no non-sequence characters",
        AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,
        AJFALSE, AJFALSE, seqReadRaw, AJFALSE, 0}, /* OK - only sequence chars
@@ -2969,7 +2969,14 @@ static AjBool seqReadGifasta(AjPSeq thys, AjPSeqin seqin)
 
 /* @funcstatic seqReadSelex ***************************************************
 **
-** Read a Selex file. (temporary)
+** Read a Selex file. Assumed a comment on the first line but this may
+** not be true.
+**
+** This format can read anything that looks like a block of "name sequence"
+** data. The names are even allowed to change in later blocks.
+**
+** The format was used by HMMER, but that package now prefers the better
+** annotated "Stockholm" format used by Pfam and Rfam.
 **
 ** @param [w] thys [AjPSeq] Sequence object
 ** @param [u] seqin [AjPSeqin] Sequence input object
@@ -3687,6 +3694,13 @@ static void seqSelexPos(const AjPStr line, ajuint *begin, ajuint *end)
      */
 
     len  = ajStrGetLen(line) - 1;
+    if(!len) 
+    {
+        *begin=0;
+        *end=0;
+        return;
+    }
+    
     pos  = len -1;
     *end = (pos > *end) ? pos : *end;
     p = ajStrGetPtr(line);
@@ -3699,6 +3713,8 @@ static void seqSelexPos(const AjPStr line, ajuint *begin, ajuint *end)
 	pos = p - ajStrGetPtr(line);
     *begin = (pos < *begin) ? pos : *begin;
 
+    ajDebug("seqSelexPos len:%u pos:%u begin:%u end:%u\n",
+            len, pos, *begin, *end);
 
     return;
 }
@@ -3732,8 +3748,8 @@ static AjBool seqSelexReadBlock(SeqPSelex *thys, AjBool *named, ajuint n,
     AjPStr rf = NULL;
     AjPStr cs = NULL;
     ajuint  i;
-    ajuint  begin;
-    ajuint  end;
+    ajuint  begin=0;
+    ajuint  end=0;
     AjBool ok;
     ajuint  cnt;
     AjPStr tmp    = NULL;
@@ -3760,6 +3776,10 @@ static AjBool seqSelexReadBlock(SeqPSelex *thys, AjBool *named, ajuint n,
     ok = ajTrue;
     cnt = 0;
 
+
+    while(ajStrPrefixC(*line,"\n"))
+        ok = ajFileBuffGetStore(buff,line, store, astr);
+   
     while(ok)
     {
 	seqSelexPos(*line,&begin,&end);
@@ -3793,7 +3813,7 @@ static AjBool seqSelexReadBlock(SeqPSelex *thys, AjBool *named, ajuint n,
 	    {
 		ajFmtScanS(*line,"%S",&tmp);
 		if(!ajStrPrefixS(pthis->name[cnt],tmp))
-		    ajWarn("Sequence names do not match [%S %S]",
+		    ajWarn("Selex format sequence names do not match ['%S' '%S']",
 			   pthis->name[cnt],tmp);
 	    }
 
@@ -3809,13 +3829,19 @@ static AjBool seqSelexReadBlock(SeqPSelex *thys, AjBool *named, ajuint n,
     ajDebug("selexReadBlock block done line '%S' n: %u rf:%B cs:%B ss:%B\n",
 	    *line, n, haverf, havecs, havess);
 
+    if(cnt != n)
+        ajWarn("Selex format expected %u sequences in block, found %u",
+               n, cnt);
+    if(cnt > n)
+        cnt = n;
+
     if(haverf)
 	seqSelexAppend(rf,&pthis->rf,begin,end);
 
     if(havecs)
 	seqSelexAppend(cs,&pthis->cs,begin,end);
 
-    for(i=0;i<n;++i)
+    for(i=0;i<cnt;++i)
     {
 	seqSelexAppend(seqs[i],&pthis->str[i],begin,end);
 	if(havess)
@@ -8314,7 +8340,6 @@ static AjBool seqReadGff3(AjPSeq thys, AjPSeqin seqin)
 
     if(!ajStrPrefixC(seqReadLine, "##FASTA")) /* no sequence at end */
     {
-	ajUser("bad FASTA line '%S'", seqReadLine);
 	ajFileBuffReset(buff);
 	return ajFalse;
     }
@@ -8339,7 +8364,6 @@ static AjBool seqReadGff3(AjPSeq thys, AjPSeqin seqin)
     }
     if(!ajSeqGetLen(thys))
     {
-	ajUser("seqlen 0");
 	ajFileBuffReset(buff);
 	return ajFalse;
     }
