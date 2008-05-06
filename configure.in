@@ -518,7 +518,7 @@ if test "${enable_mprobe+set}" != set; then
 enable_mprobe=no
 fi
 
-
+AC_MSG_CHECKING([for mprobe])
 AC_ARG_ENABLE(mprobe,
 [  --enable-mprobe         mprobe memory allocation test])
 if test "${enable_mprobe}" = "yes" ; then
@@ -533,6 +533,7 @@ if test "${enable_savestats+set}" != set; then
 enable_savestats=no
 fi
 
+AC_MSG_CHECKING([for savestats])
 AC_ARG_ENABLE(savestats,
 [  --enable-savestats      save statistics and print with debug output])
 if test "${enable_savestats}" = "yes" ; then
