@@ -23,11 +23,11 @@ section: required [
 
   list: appl [
     standard: "Y"
-    default: "default"
+    default: "all"
     minimum: "1"
     maximum: "15"
     header: "Applications to use"
-    values: "default:Default, blastprodom:blastprodom, coils:coils,
+    values: "all:all, blastprodom:blastprodom, coils:coils,
              gene3d:gene3d, hmmpanther:hmmpanther, hmmpir:hmmpir,
 	     hmmpfam:hmmpfam, hmmsmart:hmmsmart, hmmtigr:hmmtigr,
 	     fprintscan:fprintscan, scanregexp:scanregexp,

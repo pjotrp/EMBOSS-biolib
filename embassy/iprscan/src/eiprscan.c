@@ -117,10 +117,10 @@ int main(int argc, char **argv)
     i = 0;
     while(applist[i])
     {
-        if(ajStrMatchC(applist[i],"default"))
+        if(ajStrMatchC(applist[i],"all"))
         {
             if(lcnt != 1)
-                ajFatal("Cannot specify 'default' with multiple "
+                ajFatal("Cannot specify 'all' with multiple "
                         "applications");
             ++i;
             continue;
