@@ -32,9 +32,9 @@
 int main(int argc, char **argv)
 {
     AjPStr    cl     = NULL;
-    AjPSeqall seqall = NULL;
-    AjPSeq    seq    = NULL;
-
+    AjPSeqset seqset = NULL;
+    AjPSeqout seqout = NULL;
+    
     AjPStr    stmp   = NULL;
     AjPStr    email  = NULL;
     AjPStr    fmt    = NULL;
@@ -57,14 +57,14 @@ int main(int argc, char **argv)
     ajuint lcnt = 0;
     
     
-    const AjPStr fn = NULL;
+    AjPStr fn = NULL;
     AjPFile outf = NULL;
     
     
     embInitP("eiprscan", argc, argv, "IPRSCAN");
 
 
-    seqall  = ajAcdGetSeqall("sequence");
+    seqset  = ajAcdGetSeqset("sequence");
     email   = ajAcdGetString("email");
     crc     = ajAcdGetBool("crc");
     applist = ajAcdGetList("appl");
@@ -78,20 +78,22 @@ int main(int argc, char **argv)
     
     stmp = ajStrNew();
     cl   = ajStrNewC("iprscan -cli");
-
-
-    if(!ajSeqallNext(seqall,&seq))
-        ajFatal("Sequence(s) missing. Should never get here");
+    fn   = ajStrNew();
     
-    fn = ajSeqallGetFilename(seqall);
 
-    if(ajStrMatchC(fn,"asis"))
-        ajFatal("asis input not allowed for eiprscan");
+
+    ajStrAssignC(&fn, ajFileTempName(NULL));
+    seqout = ajSeqoutNew();
+    if(!ajSeqoutOpenFilename(seqout, fn))
+	ajFatal("Cannot open temporary file %S",fn);
+    ajSeqoutSetFormatC(seqout, "fasta");
+    ajSeqoutWriteSet(seqout,seqset);
+    ajSeqoutClose(seqout);
 
     ajFmtPrintS(&stmp," -i %S",fn);
     ajStrAppendS(&cl,stmp);
 
-    if(!ajSeqIsProt(seq))
+    if(!ajSeqsetIsProt(seqset))
         ajStrAppendC(&cl," -seqtype n");
 
     if(!crc)
@@ -167,15 +169,19 @@ int main(int argc, char **argv)
 #endif
 
 
+    ajSysFileUnlink(fn);
+    
+    
     ajStrDel(&cl);
+    ajStrDel(&fn);
     ajStrDel(&stmp);
     ajStrDel(&email);
     ajStrDel(&fmt);
     ajStrDel(&trtab);
     ajStrDelarray(&applist);
-    ajSeqallDel(&seqall);
-    ajSeqDel(&seq);
-
+    ajSeqoutDel(&seqout);
+    ajSeqsetDel(&seqset);
+    
     embExit();
 
     return 0;
