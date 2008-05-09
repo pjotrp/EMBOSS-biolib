@@ -24,8 +24,6 @@ package org.emboss.jemboss.gui.form;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
 
 import org.emboss.jemboss.gui.SetUpMenuBar;
 import org.emboss.jemboss.gui.sequenceChooser.*;
