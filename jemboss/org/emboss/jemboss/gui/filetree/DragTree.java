@@ -34,7 +34,6 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import org.emboss.jemboss.soap.PrivateRequest;
-import org.emboss.jemboss.gui.ResultsMenuBar;
 import org.emboss.jemboss.gui.ShowResultSet;
 import org.emboss.jemboss.JembossParams;
 
@@ -258,10 +257,10 @@ public class DragTree extends JTree implements DragGestureListener,
     }
     else if(source.getText().equals("De-select All"))
       clearSelection();
-    else if(isFileSelection() && source.getText().equals("Rename..."))
+    else if(source.getText().equals("Rename..."))
     {
       String inputValue = (String)JOptionPane.showInputDialog(null,
-                              "New File Name","Rename "+f.getName(), 
+                              "New "+(isFileSelection()?"File":"Folder")+" Name","Rename "+f.getName(), 
                               JOptionPane.QUESTION_MESSAGE,null,null,f.getName());
 
       if(inputValue != null && !inputValue.equals("") )
