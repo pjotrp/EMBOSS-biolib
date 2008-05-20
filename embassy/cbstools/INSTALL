@@ -1,0 +1,94 @@
+Installing SIGNALP.
+
+a) from the anonymous cvs code.
+    
+       1) Go to the package directory
+       cd embassy/signalp
+
+       2) make the configuration file
+       aclocal -I m4
+       autoconf
+       automake -a
+
+       3) configure and compile
+       Configuration should be done using the same options you used
+       for the main package. So, if you used:
+
+           ./configure --with-pngdriver=/opt/lib
+
+       for the main package then use the same command for the
+       embassy package. Then:
+
+       make
+       make install
+
+
+b) From the FTP server
+
+    The package is available from our FTP server
+    ftp://emboss.open-bio.org/pub/EMBOSS/ 
+
+
+    If you have done a full installation of EMBOSS using a 'prefix'
+    e.g. you configured with ./configure --prefix=/usr/local/emboss
+    and followed this with a 'make install' (highly recommended) then:
+
+       1) gunzip and untar the file anywhere (e.g.)
+       gunzip SIGNALP-3.0.0.tar.gz
+       tar xvf SIGNALP-3.0.0.tar
+
+       2) go into the signalp directory
+       cd SIGNALP-1.0.0
+
+       3) Configuration should be done using the same options you used
+       for the main package. So, if you used:
+
+       ./configure --prefix=/usr/local/emboss --with-pngdriver=/opt/lib
+
+       for the main package then use the same command for the
+       embassy package. Then:
+
+       make
+       make install
+
+       If you configured without using a prefix but did do
+       a 'make install' (or specified a prefix of /usr/local,
+       which amounts to the same thing) then you must configure
+       using (e.g.):
+            ./configure --prefix=/usr/local --with-pngdriver=/fu/bar
+               --enable-localforce
+
+       Note the --enable-localforce switch.
+
+    If, on the other hand, you did not do a 'make install' of EMBOSS
+    then:
+
+       1) Go to the emboss directory 
+       cd EMBOSS-4.0.0
+
+       2) make new directory embassy if it does not exist already.
+       mkdir embassy
+
+       3) Go into that directory
+       cd embassy
+
+       4) gunzip and untar the file
+       gunzip SIGNALP-3.0.0.tar.gz
+       tar xvf SIGNALP-3.0.0.tar
+
+       5) go into the signalp directory
+       cd SIGNALP-3.0.0
+
+       6) configure and compile
+       Configuration should be done using the same options you used for the
+       main EMBOSS package. So, if you used:
+
+       ./configure --with-pngdriver=/fu/bar
+
+       for the main package then use the same command for the
+       embassy package. Then:
+
+       make
+   
+       7) Set your PATH to include the full path of the 'src'
+          directory
