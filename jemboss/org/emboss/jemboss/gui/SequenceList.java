@@ -27,7 +27,6 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
-import javax.swing.border.*;
 import java.awt.event.*;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -62,6 +61,8 @@ public class SequenceList extends JFrame
 
   final Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
+  
+  JMenuItem getSeqLength;
 
   /**
   *
@@ -112,7 +113,7 @@ public class SequenceList extends JFrame
         String fileName = (String)table.getValueAt(nrow,
                 table.convertColumnIndexToView(SequenceListTableModel.COL_NAME));
 
-        SequenceData row = (SequenceData)seqModel.modelVector.elementAt(nrow);
+        SequenceData row = (SequenceData)SequenceListTableModel.modelVector.elementAt(nrow);
 
         if(!(row.s_remote.booleanValue()))
           DragTree.showFilePane(fileName,mysettings);        //local file
@@ -122,8 +123,8 @@ public class SequenceList extends JFrame
     });
     fileMenu.add(openMenuItem);
 
-    JMenuItem ajaxSeq = new JMenuItem("Calculate Sequence Attributes");
-    ajaxSeq.addActionListener(new ActionListener()
+    getSeqLength = new JMenuItem("Calculate Sequence Attributes");
+    getSeqLength.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -143,12 +144,10 @@ public class SequenceList extends JFrame
         
           boolean ok = false;
           int ajaxLength=0;
-          float ajaxWeight;
-          boolean ajaxProtein;
 
           if(!withSoap && fc!=null)    //Ajax without SOAP
           {
-            if(mysettings.isCygwin())
+            if(JembossParams.isCygwin())
             {
               ajaxLength = cygwinSeqAttr(fc,mysettings);
               if(ajaxLength > -1)
@@ -156,16 +155,10 @@ public class SequenceList extends JFrame
             }
             else
             {
-              Ajax aj = new Ajax();
-              ok = aj.seqType(fc);
-              if(ok)
-              {
-                ajaxLength  = aj.length;
-                ajaxWeight  = aj.weight;
-                ajaxProtein = aj.protein;
-              }
+                ajaxLength = getSeqAttr(fc, mysettings);
+                if (ajaxLength > -1)
+                    ok = true;                
             }
-
           }
           else if(fc!=null)    //Ajax with SOAP
           {
@@ -175,8 +168,6 @@ public class SequenceList extends JFrame
               if(ca.getStatus().equals("0"))
               {
                 ajaxLength  = ca.getLength();
-                ajaxWeight  = ca.getWeight();
-                ajaxProtein = ca.isProtein();
                 ok = true;
               }
             }
@@ -217,7 +208,7 @@ public class SequenceList extends JFrame
         }
       }
     });
-    toolMenu.add(ajaxSeq);
+    toolMenu.add(getSeqLength);
 
 
     JMenuItem addSeq = new JMenuItem("Add Sequence");
@@ -312,22 +303,51 @@ public class SequenceList extends JFrame
     });
     helpMenu.add(fmh);
     menuPanel.add(helpMenu);
+    addTableSelectionListener();
   }
 
+  private void addTableSelectionListener() {
+
+        table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        ListSelectionModel rowSM = table.getSelectionModel();
+        rowSM.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent e) {
+                // Ignore extra messages.
+                if (e.getValueIsAdjusting())
+                    return;
+
+                ListSelectionModel lsm = (ListSelectionModel) e.getSource();
+                if (!lsm.isSelectionEmpty()) {
+                    int selectedRow = lsm.getMinSelectionIndex();
+                    SequenceData sd = getSequenceData(selectedRow);
+                    System.out.println("Row " + selectedRow
+                            + " is now selected. "+sd.s_listFile);
+                    if (sd.s_listFile.booleanValue()){
+                        getSeqLength.setEnabled(false);
+                    } else {
+                        getSeqLength.setEnabled(true);
+                    }
+                }
+            }
+        });
+    }
+  
   /**
-  *
-  * Look for first set to default in the table.
-  * @return 	index to row
-  *
-  */
-  private int getDefaultRow()
+     * 
+     * Look for first set to default in the table.
+     * 
+     * @return index to row
+     * 
+     */
+  private int getDefaultRow(int h)
   {
     int nrow = seqModel.getRowCount();
+    int j = 0;
     for(int i =0;i<nrow;i++)
     {
       Boolean isDef = (Boolean)seqModel.getValueAt(i,
                         SequenceListTableModel.COL_DEF);
-      if(isDef.booleanValue())
+      if(isDef.booleanValue() && (j++ == h) )
         return i;
     }
     return -1;
@@ -363,15 +383,48 @@ public class SequenceList extends JFrame
     return Integer.parseInt(stok.nextToken().trim());
   }
 
+
+  /**
+   * Returns length of the inputs sequence, fc,
+   * executes the infoseq application to retrieve the length
+   * @param fc is the input sequence
+   * @param mysettings is the jemboss configuration parameters
+   * @return length of the input sequence
+ */
+public static int getSeqAttr(String fc, JembossParams mysettings)
+  {
+    String[] envp = new String[3];  /* environment vars */
+    String ps = new String(System.getProperty("path.separator"));
+    String embossPath = mysettings.getEmbossPath();
+    embossPath = new String(
+                      embossPath + ps + mysettings.getEmbossBin() );
+    envp[0] = "PATH=" + embossPath;
+    envp[1] = "EMBOSS_DATA=" + mysettings.getEmbossData();
+    envp[2] = "HOME=" + System.getProperty("user.home");
+
+    String command = mysettings.getEmbossBin().concat(
+                "infoseq -only -type -length -nohead -auto "+fc);
+    RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
+    rea.waitFor();
+
+    String stdout = rea.getProcessStdout();
+    if(stdout.trim().equals(""))
+      return -1;
+
+    StringTokenizer stok = new StringTokenizer(stdout,"\n ");
+    stok.nextToken();
+    return Integer.parseInt(stok.nextToken().trim());
+  }
+
   /**
   *
   * Get the default Sequence name
   * @return 	default sequence name or null if no default 
   *
   */
-  public String getDefaultSequenceName()
+  public String getDefaultSequenceName(int h)
   {
-    int ndef = getDefaultRow();
+    int ndef = getDefaultRow(h);
     if(ndef<0)
       return null;
 
@@ -543,7 +596,6 @@ class DragJTable extends JTable implements DragGestureListener,
         SequenceData seqData = (SequenceData)
            t.getTransferData(SequenceData.SEQUENCEDATA);
 
-        String seqName = seqData.s_name;
 
         insertData(seqModel,e.getLocation(),seqData.s_name,
                    seqData.s_beg,seqData.s_end,
@@ -574,7 +626,7 @@ class DragJTable extends JTable implements DragGestureListener,
                          Boolean lis, Boolean def, Boolean bremote)
   {
     int row = rowAtPoint(ploc);
-    seqModel.modelVector.insertElementAt(new SequenceData(fileName,
+    SequenceListTableModel.modelVector.insertElementAt(new SequenceData(fileName,
                                    sbeg,send,lis,def,bremote),row);
 
     tableChanged(new TableModelEvent(seqModel, row+1, row+1,
