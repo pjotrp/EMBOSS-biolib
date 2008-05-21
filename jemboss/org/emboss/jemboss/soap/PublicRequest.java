@@ -22,16 +22,15 @@
 
 package org.emboss.jemboss.soap;
 
-import java.io.*;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 
-import org.emboss.jemboss.JembossParams;
-
-//AXIS
-import org.apache.axis.client.Call;
-import org.apache.axis.client.Service;
 import javax.xml.namespace.QName;
+
+import org.apache.axis.client.Call;
 import org.apache.axis.encoding.XMLType;
+import org.emboss.jemboss.JembossParams;
 
 /**
 *
