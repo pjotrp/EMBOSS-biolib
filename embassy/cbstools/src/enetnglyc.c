@@ -1,6 +1,6 @@
-/* @source etmhmm application
+/* @source enetnglyc application
 **
-** Wrapper for TMHMM
+** Wrapper for netNglyc
 **
 ** @author Copyright (C) Alan Bleasby
 ** @@
@@ -23,9 +23,9 @@
 #include "emboss.h"
 
 
-/* @prog etmhmm ************************************************************
+/* @prog enetnglyc ************************************************************
 **
-** Wrapper for TMHMM
+** Wrapper for netNglyc
 **
 ******************************************************************************/
 

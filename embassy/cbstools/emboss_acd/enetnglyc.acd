@@ -52,7 +52,7 @@ section: output [
 
   outfile: outfile [
     parameter: "Y"
-    knowntype: "esignalp output"
+    knowntype: "enetnglyc output"
   ]
 
 endsection: output
