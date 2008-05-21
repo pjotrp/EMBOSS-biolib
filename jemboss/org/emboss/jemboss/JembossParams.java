@@ -22,8 +22,6 @@ package org.emboss.jemboss;
 
 import java.util.*;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.net.InetAddress;
 
 
 /**
