@@ -1,0 +1,58 @@
+application: enetnglyc [
+  documentation: "Reports N-glycosylation sites in human proteins"
+  groups: "Protein:Motifs"
+  embassy: "netNglyc"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphics"
+  ]
+
+  boolean: asparagines [
+    default: "N"
+    information: "Predict on all asparagines"
+  ]
+
+  boolean: thresholds [
+    default: "N"
+    information: "Show additional thresholds when -plot is used"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "esignalp output"
+  ]
+
+endsection: output
