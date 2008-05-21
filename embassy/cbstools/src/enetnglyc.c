@@ -90,7 +90,8 @@ int main(int argc, char **argv)
 #endif
 
 #if 1
-    system(ajStrGetPtr(cl));
+   if(system(ajStrGetPtr(cl)) == -1)
+       ajFatal("Command %S failed",cl);
 #endif
 
     ajSysFileUnlink(fn);
