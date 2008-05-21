@@ -124,7 +124,7 @@ public class SetInFileCard extends Box
       {
         if(listPane==null)  // create the list panel here 
         {
-          listPane = new ListFilePanel(15,mysettings);
+          listPane = new ListFilePanel(15, mysettings, h==0);
           Box bxleft = new Box(BoxLayout.X_AXIS);
           bxleft.add(listPane);
           bxleft.add(Box.createHorizontalGlue());
@@ -170,7 +170,7 @@ public class SetInFileCard extends Box
     fileChoose = new FileChooser(bdown[0],name,mysettings);
 
 //find any default sequence in the user's SequenceList
-    String defaultSeq = SetUpMenuBar.seqList.getDefaultSequenceName();
+    String defaultSeq = h!=0 ? null : SetUpMenuBar.seqList.getDefaultSequenceName(h);
     if(defaultSeq != null)
       fileChoose.setText(defaultSeq);
    
