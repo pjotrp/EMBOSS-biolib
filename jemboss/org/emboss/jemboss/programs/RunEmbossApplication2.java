@@ -39,7 +39,7 @@ public class RunEmbossApplication2
   /** standard error */
   private StringBuffer stderr = new StringBuffer();
   /** running directory */
-  private File project;
+  //private File project;
   /** process status */
   private String status;
   private StdoutHandler stdouth;
@@ -57,7 +57,7 @@ public class RunEmbossApplication2
   public RunEmbossApplication2(String[] embossCommand,
                        String[] envp, File project)
   {
-    this.project = project;
+    //this.project = project;
     status = "0";
 
     Runtime embossRun = Runtime.getRuntime();
@@ -90,7 +90,7 @@ public class RunEmbossApplication2
   public RunEmbossApplication2(String embossCommand, 
                        String[] envp, File project)
   {
-    this.project = project;
+    //this.project = project;
     status = "0";
 
     Runtime embossRun = Runtime.getRuntime();
@@ -140,7 +140,7 @@ public class RunEmbossApplication2
     BufferedReader stderrRead = null;
     try
     {
-      String line;
+      //String line;
       stderrStream =
          new BufferedInputStream(p.getErrorStream());
       stderrRead =
@@ -193,7 +193,7 @@ public class RunEmbossApplication2
     BufferedReader stdoutRead = null;
     try
     {
-      String line;
+      //String line;
       stdoutStream =
          new BufferedInputStream(p.getInputStream());
       stdoutRead =
@@ -252,36 +252,36 @@ public class RunEmbossApplication2
   * to write the stdout to the project directory.
   *
   */
-  private void writeStdout()
-  {
-    if(project != null)
-    {
-      PrintWriter out = null;
-      String fname = "";
-      try
-      {
-        fname = project.getCanonicalPath() + 
-                             "/application_stdout";
-        File so = new File(fname);
-
-        if(!so.exists())
-          so.createNewFile();
-
-        out = new PrintWriter(new FileWriter(fname,true));
-        out.println(stdout);
-      }
-      catch(IOException ioe)
-      {
-        System.err.println("RunEmbossApplication2: Error writing" +
-                            fname);
-      }
-      finally
-      {
-        if(out!=null)
-          out.close();
-      }
-    }
-  }
+//  private void writeStdout()
+//  {
+//    if(project != null)
+//    {
+//      PrintWriter out = null;
+//      String fname = "";
+//      try
+//      {
+//        fname = project.getCanonicalPath() + 
+//                             "/application_stdout";
+//        File so = new File(fname);
+//
+//        if(!so.exists())
+//          so.createNewFile();
+//
+//        out = new PrintWriter(new FileWriter(fname,true));
+//        out.println(stdout);
+//      }
+//      catch(IOException ioe)
+//      {
+//        System.err.println("RunEmbossApplication2: Error writing" +
+//                            fname);
+//      }
+//      finally
+//      {
+//        if(out!=null)
+//          out.close();
+//      }
+//    }
+//  }
 
   /**
   *
@@ -294,7 +294,7 @@ public class RunEmbossApplication2
     {
       // make sure we hang around for stdout
       while(stdouth.isAlive())
-        Thread.currentThread().sleep(10);
+        Thread.sleep(10);
     }
     catch(InterruptedException ie)
     {
@@ -316,7 +316,7 @@ public class RunEmbossApplication2
     {
       // make sure we hang around for stdout
       while(stderrh.isAlive())
-        Thread.currentThread().sleep(10);
+        Thread.sleep(10);
     }
     catch(InterruptedException ie)
     {
