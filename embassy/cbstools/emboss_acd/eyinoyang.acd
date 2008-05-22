@@ -1,0 +1,71 @@
+application: eyinoyang [
+  documentation: "Reports O-(beta)-GlcNAc attachment sites"
+  groups: "Protein:Motifs"
+  embassy: "yinoyang"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphics"
+  ]
+
+  list: format [
+    header:   "Output format"
+    default: "short"
+    minimum: "1"
+    maximum: "1"
+    values: "short:short, long:long"
+    delimiter: ","
+    codedelimiter: ":"
+    information: "Format"
+  ]
+
+  boolean: netphos [
+    default: "N"
+    information: "Run netphos and predict Yin-Yang sites"
+  ]
+
+  float: threshold [
+    default: "0.5"
+    minimum: "0.0"
+    maximum: "1.0"
+    information: "Report netphos only scores above this value"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "eyinoyang output"
+  ]
+
+endsection: output
