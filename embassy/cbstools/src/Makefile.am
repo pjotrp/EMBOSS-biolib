@@ -2,7 +2,7 @@
 
 SUBDIRS =
 
-bin_PROGRAMS = esignalp etmhmm enetnglyc enetoglyc enetphos
+bin_PROGRAMS = esignalp etmhmm enetnglyc enetoglyc enetphos eprop
 
 if LOCALLINK
 INCLUDES = -I../../../ajax -I../../../nucleus -I../../../plplot
@@ -27,6 +27,7 @@ etmhmm_SOURCES = etmhmm.c
 enetnglyc_SOURCES = enetnglyc.c
 enetoglyc_SOURCES = enetoglyc.c
 enetphos_SOURCES = enetphos.c
+eprop_SOURCES = eprop.c
 
 if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)

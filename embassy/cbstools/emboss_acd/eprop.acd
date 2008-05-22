@@ -1,0 +1,58 @@
+application: eprop [
+  documentation: "Reports propeptide cleavage sites in proteins"
+  groups: "Protein:Motifs"
+  embassy: "prop"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphics"
+  ]
+
+  boolean: pcprediction [
+    default: "N"
+    information: "Perform proprotein convertase prediction"
+  ]
+
+  boolean: signalp [
+    default: "N"
+    information: "Include signal peptide cleavage site prediction"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "enetphos output"
+  ]
+
+endsection: output
