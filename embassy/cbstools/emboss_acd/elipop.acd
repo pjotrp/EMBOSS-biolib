@@ -1,0 +1,76 @@
+application: elipop [
+  documentation: "Prediction of lipoproteins"
+  groups: "Protein:Motifs"
+  embassy: "cbstools"
+]
+
+section: input [
+  information: "Input section"
+  type: "page"
+]
+
+  seqset: sequence [
+    parameter: "Y"
+    type: "any"
+  ]
+
+endsection: input
+
+section: required [
+  information: "Required section"
+  type: "page"
+]
+
+endsection: required
+
+section: additional [
+  information: "Additional section"
+  type: "page"
+]
+
+
+endsection: additional
+
+section: advanced [
+  information: "Advanced section"
+  type: "page"
+]
+
+  boolean: plot [
+    default: "N"
+    information: "Produce graphics"
+  ]
+
+  boolean: short [
+    default: "N"
+    information: "Short output"
+  ]
+
+  boolean: html [
+    default: "N"
+    information: "html output"
+  ]
+
+  boolean: format [
+    default: "N"
+    information: "Run LipoPformat script"
+  ]
+
+  integer: cutoff [
+    default: "-3"
+    information: "Log-odds cutoff"
+  ]
+
+endsection: advanced
+
+section: output [
+  information: "Output section"
+  type: "page"
+]
+
+  outfile: outfile [
+    parameter: "Y"
+    knowntype: "elipop output"
+  ]
+
+endsection: output
