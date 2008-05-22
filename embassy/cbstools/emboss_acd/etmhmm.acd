@@ -1,7 +1,7 @@
 application: etmhmm [
   documentation: "Reports transmembrane helices"
   groups: "Protein:Motifs"
-  embassy: "tmhmm"
+  embassy: "cbstools"
 ]
 
 section: input [

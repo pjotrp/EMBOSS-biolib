@@ -1,7 +1,7 @@
 application: enetnglyc [
   documentation: "Reports N-glycosylation sites in human proteins"
   groups: "Protein:Motifs"
-  embassy: "netNglyc"
+  embassy: "cbstools"
 ]
 
 section: input [

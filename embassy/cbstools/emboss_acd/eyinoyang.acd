@@ -1,7 +1,7 @@
 application: eyinoyang [
   documentation: "Reports O-(beta)-GlcNAc attachment sites"
   groups: "Protein:Motifs"
-  embassy: "yinoyang"
+  embassy: "cbstools"
 ]
 
 section: input [
