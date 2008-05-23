@@ -977,17 +977,20 @@ public class JembossServer
       String fc = new String("");
       String key = new String(outFiles[i]);
 
-
       if(inFiles != null)
       {
         if(!inFiles.containsKey(key))        // leave out input files
         {
           try
           {
-            BufferedReader in = new BufferedReader(new FileReader(project + fs +
-                                                                  outFiles[i]));
-            while((line = in.readLine()) != null)
-              fc = fc.concat(line + "\n");
+            File outfile = new File(project + fs + outFiles[i]);
+            BufferedReader in = new BufferedReader(new FileReader(outfile));
+            StringBuffer buf = new StringBuffer((int)outfile.length());
+            while((line = in.readLine()) != null){
+                buf.append(line);
+                buf.append("\n");
+            }
+            fc = buf.toString();
           }
           catch (IOException ioe){}
         }
@@ -996,10 +999,14 @@ public class JembossServer
       {
         try
         {
-          BufferedReader in = new BufferedReader(new FileReader(project + fs +
-                                                                outFiles[i]));
-          while((line = in.readLine()) != null)
-            fc = fc.concat(line + "\n");
+            File outfile = new File(project + fs + outFiles[i]);
+            BufferedReader in = new BufferedReader(new FileReader(outfile));
+            StringBuffer buf = new StringBuffer((int)outfile.length());
+            while((line = in.readLine()) != null){
+                buf.append(line);
+                buf.append("\n");
+            }
+            fc = buf.toString();
         }
         catch (IOException ioe){}
       }
