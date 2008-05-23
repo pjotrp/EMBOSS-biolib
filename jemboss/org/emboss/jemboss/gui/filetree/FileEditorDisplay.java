@@ -27,7 +27,6 @@ import java.awt.Dimension;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.io.*;
-import java.net.URL;
 
 /**
 *
