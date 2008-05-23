@@ -31,7 +31,6 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 import org.apache.regexp.*;
-import java.io.*;
 import java.util.Hashtable;
 import java.util.Enumeration;
 
@@ -119,7 +118,6 @@ public class ShowResultSet extends JFrame
 
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
-    ScrollPanel s1;
     JScrollPane r1;
 
     String stabs[] = addHashContentsToTab(reslist,rtp);
@@ -238,7 +236,6 @@ public class ShowResultSet extends JFrame
   */
   private String[] addHashContentsToTab(Hashtable h,JTabbedPane rtp)
   {
-    ScrollPanel s1;
     JScrollPane r1;
 
     String cmd = "cmd";
