@@ -320,8 +320,6 @@ public class SequenceList extends JFrame
                 if (!lsm.isSelectionEmpty()) {
                     int selectedRow = lsm.getMinSelectionIndex();
                     SequenceData sd = getSequenceData(selectedRow);
-                    System.out.println("Row " + selectedRow
-                            + " is now selected. "+sd.s_listFile);
                     if (sd.s_listFile.booleanValue()){
                         getSeqLength.setEnabled(false);
                     } else {
