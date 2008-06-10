@@ -1801,7 +1801,7 @@ ajint ajSeqsetFromList(AjPSeqset thys, const AjPList list)
 
     ajDebug("ajSeqsetFromList length: %d\n", ajListGetLength(list));
 
-    ajListTrace(list);
+    /*ajListTrace(list);*/
 
     thys->Size      = ajListGetLength(list);
     thys->Seq       = AJCALLOC0(thys->Size, sizeof(AjPSeq));
@@ -7733,6 +7733,16 @@ static AjBool seqReadGenbank(AjPSeq thys, AjPSeqin seqin)
     bufflines++;
 
     ok = ajTrue;
+
+    /* extra blank lines */
+
+    while(ajStrIsWhite(seqReadLine))
+    {
+	if(!ajFileBuffGetStore(buff, &seqReadLine,
+			       seqin->Text, &thys->TextPtr))
+	    return ajFalse;
+	bufflines++;
+    }
 
     /* for GCG formatted databases */
 
