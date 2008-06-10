@@ -5,6 +5,7 @@
 /*@notnull@*/
 static const char Law_and_Order[] = "_ACGUTXKI";
 
+#ifndef ALNNOPAIRMATRIX
 static int BP_pair[NBASES][NBASES]=
 /* _  A  C  G  U  X  K  I */
 {{ 0, 0, 0, 0, 0, 0, 0, 0},
@@ -15,7 +16,6 @@ static int BP_pair[NBASES][NBASES]=
  { 0, 0, 0, 0, 0, 0, 2, 0},
  { 0, 0, 0, 0, 0, 1, 0, 0},
  { 0, 6, 0, 0, 5, 0, 0, 0}};
-#ifndef ALNNOPAIRMATRIX
 #define MAXALPHA 20       /* maximal length of alphabet */
 
 static short alias[MAXALPHA+1];
