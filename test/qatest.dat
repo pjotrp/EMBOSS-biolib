@@ -2366,7 +2366,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI cirdna.ps
-FC = 658
+FC = 491
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stdout
@@ -10682,7 +10682,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI lindna.ps
-FC = 318
+FC = 312
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11456,7 +11456,7 @@ FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 3 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FC = 23290
+FC = 17026
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 2\n/
 //
@@ -11481,7 +11481,7 @@ FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 0 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FC = 22675
+FC = 16411
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11752,7 +11752,7 @@ FI stdout
 FZ = 19
 FP /^Created plotorf\.ps\n/
 FI plotorf.ps
-FC = 741
+FC = 681
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11772,7 +11772,7 @@ FI stdout
 FZ = 19
 FP /^Created plotorf\.ps\n/
 FI plotorf.ps
-FC = 6352
+FC = 3275
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -12090,9 +12090,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI hd_fugru.prophet
-FP /^# Score: 170\.08\n/
-FP /^globins +15 ELSAVDKAWVKAN-SVAEVGGHALERGLFASEPMTLEFFDTFKYLSTFDL +63\n/
-FP /^HBA_HUMAN +2 VLSPADKTNVKAAWG-GKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDL +50\n/
+FP /^# Score: 161\.14\n/
+FP /^globins +15 ELSAVDKAWVKANSVAEVGGHALERGLFASEPMTLEFFDTFKYLSTFDLS +64\n/
+FP /^HBA_HUMAN +2 VLSPADKTNVKAAW-GKVGAHAGEYGAEALERMFLSFPTTKTYFPHFDLS +50\n/
 //
 
 ID prosextract-keep
@@ -17391,7 +17391,7 @@ FP 3 /^     43      70        1 YMF.*KLRT\n/
 FP /^# Total_sequences: 3\n/
 FP /^# Total_hitcount: 21\n/
 FI tmap.ps
-FC = 1237
+FC = 1234
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -17413,7 +17413,7 @@ FP 2 /^     43      69        1 YMFLLIVLGFPINFLTLYVTVQHKKLR\n/
 FP /^# Total_sequences: 2\n/
 FP /^# Total_hitcount: 14\n/
 FI tmap.ps
-FC = 1246
+FC = 1243
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -17562,6 +17562,22 @@ FI mito.pep
 FZ = 5626
 FP /^>NC_001321\.1_1/
 FP /^VNY\*SAHDHNMTEVSYIWYFFIFFGGLARTPLWP\*\*VSSQSDKL\*LGLDVFVIWLAQPTC\n/
+//
+
+ID transeq-list0
+UC To translate from a list of sequences and test the ranges are set correctly
+AP transeq
+CL @../../data/range0.list list.pep
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI list.pep
+FZ = 1237
+FP /^LFSVVAAVPEIKMLLMTEKKKKKX\n/
+FP /^STVTQLPTKWWPSRTSLLVRSSTPEETRPSRLTC\*PMAAASVPLSPAAHPLASTRRLSSV\n/
+FP /^KKKKX\n/
 //
 
 ID transeq-list1
