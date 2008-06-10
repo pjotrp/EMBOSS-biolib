@@ -130,7 +130,7 @@ static AjPStr acdStrName = NULL;
 static AjPStr acdVarAcdProtein = NULL;
 
 static ajint acdUseData = 0;
-static ajint acdUseFeat = 0;
+static ajint acdUseFeatures = 0;
 static ajint acdUseInfile = 0;
 static ajint acdUseIn = 0;
 static ajint acdUseSeq = 0;
@@ -811,8 +811,8 @@ static const AjPStr acdPromptDirectory(AcdPAcd thys);
 static const AjPStr acdPromptDirlist(AcdPAcd thys);
 static const AjPStr acdPromptDiscretestates(AcdPAcd thys);
 static const AjPStr acdPromptDistances(AcdPAcd thys);
-static const AjPStr acdPromptFeat(AcdPAcd thys);
 static const AjPStr acdPromptFeatout(AcdPAcd thys);
+static const AjPStr acdPromptFeatures(AcdPAcd thys);
 static const AjPStr acdPromptFilelist(AcdPAcd thys);
 static const AjPStr acdPromptFrequencies(AcdPAcd thys);
 static const AjPStr acdPromptGraph(AcdPAcd thys);
@@ -988,6 +988,8 @@ static void acdHelpExpectDirlist(const AcdPAcd thys, AjBool table,
 static void acdHelpExpectData(const AcdPAcd thys, AjBool table, AjPStr* str);
 static void acdHelpExpectFeatout(const AcdPAcd thys, AjBool table,
 				 AjPStr* str);
+static void acdHelpExpectFeatures(const AcdPAcd thys, AjBool table,
+                                  AjPStr* str);
 static void acdHelpExpectFilelist(const AcdPAcd thys, AjBool table,
 				  AjPStr* str);
 static void acdHelpExpectFloat(const AcdPAcd thys, AjBool table, AjPStr* str);
@@ -1009,6 +1011,7 @@ static void acdHelpValidCodon(const AcdPAcd thys, AjBool table, AjPStr* str);
 static void acdHelpValidDirlist(const AcdPAcd thys, AjBool table, AjPStr* str);
 static void acdHelpValidData(const AcdPAcd thys, AjBool table, AjPStr* str);
 static void acdHelpValidFeatout(const AcdPAcd thys, AjBool table, AjPStr* str);
+static void acdHelpValidFeatures(const AcdPAcd thys, AjBool table, AjPStr* str);
 static void acdHelpValidFilelist(const AcdPAcd thys, AjBool table,
 				 AjPStr* str);
 static void acdHelpValidFloat(const AcdPAcd thys, AjBool table, AjPStr* str);
@@ -1069,7 +1072,7 @@ static void acdSetSec(AcdPAcd thys);
 static void acdSetVar(AcdPAcd thys);
 static void acdSetAlign(AcdPAcd thys);
 static void acdSetArray(AcdPAcd thys);
-static void acdSetBool(AcdPAcd thys);
+static void acdSetBoolean(AcdPAcd thys);
 static void acdSetCodon(AcdPAcd thys);
 static void acdSetCpdb(AcdPAcd thys);
 static void acdSetDirlist(AcdPAcd thys);
@@ -1077,8 +1080,8 @@ static void acdSetDatafile(AcdPAcd thys);
 static void acdSetDirectory(AcdPAcd thys);
 static void acdSetDiscretestates(AcdPAcd thys);
 static void acdSetDistances(AcdPAcd thys);
-static void acdSetFeat(AcdPAcd thys);
 static void acdSetFeatout(AcdPAcd thys);
+static void acdSetFeatures(AcdPAcd thys);
 static void acdSetFilelist(AcdPAcd thys);
 static void acdSetFloat(AcdPAcd thys);
 static void acdSetFrequencies(AcdPAcd thys);
@@ -1408,7 +1411,7 @@ AcdOAttr acdAttrEndsec[] =
 	 NULL}
 };
 
-AcdOAttr acdAttrFeat[] =
+AcdOAttr acdAttrFeatures[] =
 {
     {"type", VT_STR, 0, "",
 	 "Feature type (protein, nucleotide, etc.)"},
@@ -2434,7 +2437,7 @@ AcdOQual acdQualCpdb[] =
     {NULL, NULL, NULL, NULL}
 };
 
-AcdOQual acdQualFeat[] =
+AcdOQual acdQualFeatures[] =
 {
     {"fformat",    "",  "string",  "Features format"},
     {"fopenfile",  "",  "string",  "Features file name"},
@@ -2770,7 +2773,7 @@ AcdOType acdType[] =
 	 "List of floating point numbers" },
     {"boolean",        "simple",    NULL,
 	 acdAttrBool,           NULL,
-	 acdSetBool,            NULL,                  acdFree,
+	 acdSetBoolean,         NULL,                  acdFree,
 	 AJFALSE, AJFALSE, NULL,               &acdUseMisc, &acdUseMisc,
 	 "Boolean value Yes/No" },
     {"codon",	       "input",     acdSecInput,
@@ -2808,16 +2811,16 @@ AcdOType acdType[] =
 	 acdSetDistances,       NULL,                  acdDelPhyloDist,
 	 AJTRUE,  AJTRUE,  acdPromptDistances, &acdUseData, &acdUseIn,
 	 "Distance matrix" },
-    {"features",       "input",     acdSecInput,
-	 acdAttrFeat,           acdQualFeat,
-	 acdSetFeat,            NULL,                  acdDelFeattable,
-	 AJTRUE,  AJTRUE,  acdPromptFeat,      &acdUseFeat, &acdUseIn,
-	 "Readable feature table" },
     {"featout",        "output",    acdSecOutput,
 	 acdAttrFeatout,        acdQualFeatout,
 	 acdSetFeatout,         NULL,                  acdDelFeattabOut,
 	 AJTRUE,  AJTRUE,  acdPromptFeatout,   &acdUseFeatout, &acdUseOut,
 	 "Writeable feature table" },
+    {"features",       "input",     acdSecInput,
+	 acdAttrFeatures,       acdQualFeatures,
+	 acdSetFeatures,        NULL,                  acdDelFeattable,
+	 AJTRUE,  AJTRUE,  acdPromptFeatures,  &acdUseFeatures, &acdUseIn,
+	 "Readable feature table" },
     {"filelist",       "input",     acdSecInput,
 	 acdAttrFilelist,       NULL,
 	 acdSetFilelist,        NULL,                  acdDelList,
@@ -3068,6 +3071,7 @@ AcdOValid acdValue[] =
     {"datafile",  acdHelpValidData,     acdHelpExpectData},
     {"dirlist",   acdHelpValidDirlist,  acdHelpExpectDirlist},
     {"featout",   acdHelpValidFeatout,  acdHelpExpectFeatout},
+    {"features",  acdHelpValidFeatures, acdHelpExpectFeatures},
     {"filelist",  acdHelpValidFilelist, acdHelpExpectFilelist},
     {"float",     acdHelpValidFloat,    acdHelpExpectFloat},
     {"graph",     acdHelpValidGraph,    acdHelpExpectGraph},
@@ -5685,7 +5689,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam3rule  Get    Get value
 ** @nam4rule  GetAlign    ACD alignment datatype
 ** @nam4rule  GetArray    ACD array datatype
-** @nam4rule  GetBool    ACD booleandatatype
+** @nam4rule  GetBoolean  ACD boolean datatype
 ** @nam4rule  GetCodon    ACD codon usage datatype
 ** @nam4rule  GetCpdb    ACD clean PDB data datatype
 ** @nam4rule  GetDatafile    ACD Datafile datatype
@@ -5693,8 +5697,8 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam4rule  GetDirlist    ACD directory list datatype
 ** @nam4rule  GetDiscretestates   ACD discrete states datatype
 ** @nam4rule  GetDistances    ACD distances datatype
-** @nam4rule  GetFeat    ACD features datatype
 ** @nam4rule  GetFeatout    ACD features output datatype
+** @nam4rule  GetFeatures   ACD features datatype
 ** @nam4rule  GetFilelist   ACD file list datatype
 ** @nam4rule  GetFloat    ACD floating point number datatype
 ** @nam4rule  GetFrequencies    ACD frequenciesdatatype
@@ -5750,7 +5754,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 **
 ** @valrule   Align  [AjPAlign]
 ** @valrule   Array  [AjPFloat]
-** @valrule   Bool  [AjBool]
+** @valrule   Boolean  [AjBool]
 ** @valrule   Codon  [AjPCod]
 ** @valrule   Cpdb  [AjPFile]
 ** @valrule   Datafile  [AjPFile]
@@ -5760,8 +5764,8 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   *DiscretestatesSingle  [AjPPhyloState]
 ** @valrule   Distances  [AjPPhyloDist*]
 ** @valrule   *DistancesSingle  [AjPPhyloDist]
-** @valrule   Feat  [AjPFeattable]
 ** @valrule   Featout  [AjPFeattabOut]
+** @valrule   Features  [AjPFeattable]
 ** @valrule   Filelist  [AjPList]
 ** @valrule   Float  [float]
 ** @valrule   Frequencies  [AjPPhyloFreq]
@@ -6387,7 +6391,7 @@ static void acdSetArray(AcdPAcd thys)
 
 
 
-/* @func ajAcdGetBool *********************************************************
+/* @func ajAcdGetBoolean ******************************************************
 **
 ** Returns an item of type Bool as defined in a named ACD item. Called by the
 ** application after all ACD values have been set, and simply returns
@@ -6399,7 +6403,7 @@ static void acdSetArray(AcdPAcd thys)
 ** @@
 ******************************************************************************/
 
-AjBool ajAcdGetBool(const char *token)
+AjBool ajAcdGetBoolean(const char *token)
 {
     AjBool* val;
 
@@ -6408,9 +6412,18 @@ AjBool ajAcdGetBool(const char *token)
 }
 
 
+/* @obsolete ajAcdGetBool
+** @rename ajAcdGetBoolean
+*/
+
+__deprecated AjBool ajAcdGetBool(const char *token)
+{
+    return ajAcdGetBoolean(token);
+}
 
 
-/* @funcstatic acdSetBool *****************************************************
+
+/* @funcstatic acdSetBoolean **************************************************
 **
 ** Using the definition in the ACD file, and any values for the
 ** item or its associated qualifiers provided on the command line,
@@ -6427,7 +6440,7 @@ AjBool ajAcdGetBool(const char *token)
 ** @@
 ******************************************************************************/
 
-static void acdSetBool(AcdPAcd thys)
+static void acdSetBoolean(AcdPAcd thys)
 {
     AjBool* val;
 
@@ -7443,200 +7456,6 @@ static void acdSetDistances(AcdPAcd thys)
 
 
 
-/* @func ajAcdGetFeat *********************************************************
-**
-** Returns an item of type Features as defined in a named ACD item.
-** Called by the application after all ACD values have been set,
-** and simply returns what the ACD item already has.
-**
-** @param [r] token [const char*] Text token name
-** @return [AjPFeattable] Feature Table object. The table was already loaded by
-**         acdSetFeat so this just returns the pointer.
-** @cre failure to find an item with the right name and type aborts.
-** @@
-******************************************************************************/
-
-AjPFeattable ajAcdGetFeat(const char *token)
-{
-    return acdGetValueRef(token, "features");
-}
-
-
-
-
-/* @funcstatic acdSetFeat *****************************************************
-**
-** Using the definition in the ACD file, and any values for the
-** item or its associated qualifiers provided on the command line,
-** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD feature table item.
-**
-** Understands all attributes and associated qualifiers for this item type.
-**
-** The default value (if no other available) is a null string, which
-** is invalid.
-**
-** Associated qualifiers "-fformat", "-fopenfile"
-** are applied to the UFO before reading the feature table.
-**
-** Associated qualifiers "-fbegin", "-fend" and "-freverse"
-** are applied as appropriate, with prompting for values,
-** after the feature table has been read.
-** They are applied to the feature table,
-** and the resulting table is what is set in the ACD item.
-**
-** @param [u] thys [AcdPAcd] ACD item.
-** @return [void]
-** @@
-******************************************************************************/
-
-static void acdSetFeat(AcdPAcd thys)
-{
-    AjPFeattable val   = NULL;
-    AjPFeattabIn tabin = NULL;
-    
-    AjBool required = ajFalse;
-    AjBool ok       = ajFalse;
-
-    ajint itry;
-    
-    AjPStr infname = NULL;
-    static AjPStr type    = NULL;
-    
-    ajint fbegin = 0;
-    ajint fend   = 0;
-    AjBool freverse = ajFalse;
-    AjBool fprompt  = ajFalse;
-    ajint iattr;
-    
-    tabin = ajFeattabInNew();		/* set the default value */
-    
-    acdQualToBool(thys, "fask", ajFalse, &fprompt, &acdReplyDef);
-    
-    if(acdAttrToStr(thys, "type", "", &type))
-    {
-	if(!ajFeattabInSetType(tabin, type))
-	    acdError("Invalid type for feature input");
-	acdInTypeFeatSave(type);
-    }
-    else
-    {
-	acdInTypeFeatSave(NULL);
-    }
-
-    acdInFilename(&infname);
-    required = acdIsRequired(thys);
-    acdReplyInit(thys, ajStrGetPtr(infname), &acdReplyDef);
-    acdPromptFeat(thys);
-    ajStrDel(&infname);
-    
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ok = ajTrue;	   /* accept the default if nothing changes */
-
-	ajStrAssignS(&acdReply, acdReplyDef);
-
-	if(required)
-	    acdUserGet(thys, &acdReply);
-
-	acdGetValueAssoc(thys, "fformat", &tabin->Formatstr);
-	acdGetValueAssoc(thys, "fopenfile", &tabin->Filename);
-
-	val = ajFeatUfoRead(tabin, acdReply);
-	if(!val) {
-	    ok = ajFalse;
-	    acdBadVal(thys, required,
-		      "Unable to read feature table '%S'", acdReply);
-	}
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    acdInFileSave(ajFeattableGetName(val), ajTrue); /* save sequence name */
-    
-    /* now process the begin, end and reverse options */
-    
-    ok = acdQualToInt(thys, "fbegin", 1, &fbegin, &acdReplyDef);
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ajStrAssignS(&acdReply, acdReplyDef);
-	if(fprompt)
-	    acdUserGetPrompt(thys, "fbegin", " Begin at position", &acdReply);
-	ok = ajStrToInt(acdReply, &fbegin);
-	if(!ok)
-	    acdBadVal(thys, ajTrue,
-		      "Invalid integer value '%S'", acdReply);
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    ok = acdQualToInt(thys, "fend", ajFeattableLen(val), &fend, &acdReplyDef);
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ajStrAssignS(&acdReply, acdReplyDef);
-	if(fprompt)
-	    acdUserGetPrompt(thys, "fend", "   End at position", &acdReply);
-	ok = ajStrToInt(acdReply, &fend);
-	if(!ok)
-	    acdBadVal(thys, ajTrue,
-		      "Invalid integer value '%S'", acdReply);
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    ok = acdQualToBool(thys, "freverse", ajFalse, &freverse, &acdReplyDef);
-    for(itry=acdPromptTry; itry && !ok; itry--)
-    {
-	ajStrAssignS(&acdReply, acdReplyDef);
-	if(fprompt)
-	    acdUserGetPrompt(thys, "freverse", "    Reverse strand", &acdReply);
-	ok = ajStrToBool(acdReply, &freverse);
-
-	if(!ok)
-	    acdBadVal(thys, ajTrue,
-		      "Invalid Y/N value '%S'", acdReply);
-    }
-
-    if(!ok)
-	acdBadRetry(thys);
-    
-    acdLog("sbegin: %d, send: %d, freverse: %B\n",
-	   fbegin, fend, freverse);
-    
-    if(freverse)
-	ajFeattableReverse(val);
-    
-    ajFeattableSetRange(val, fbegin, fend);
-    
-    ajFeattabInDel(&tabin);
-    
-    /* features tables have special set attributes */
-    
-    thys->SAttr = acdAttrListCount(acdCalcFeat);
-    thys->SetAttr = &acdCalcFeat[0];
-    thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
-    
-    iattr = 0;
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableBegin(val));
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableEnd(val));
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableLen(val));
-    ajStrFromBool(&thys->SetStr[iattr++], ajFeattableIsProt(val));
-    ajStrFromBool(&thys->SetStr[iattr++], ajFeattableIsNuc(val));
-    ajStrAssignS(&thys->SetStr[iattr++], ajFeattableGetName(val));
-    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableSize(val));
-    
-    thys->Value = val;
-    ajStrAssignS(&thys->ValStr, acdReply);
-    
-    return;
-}
-
-
-
-
 /* @func ajAcdGetFeatout ******************************************************
 **
 ** Returns an item of type FeatOut as defined in a named ACD item.
@@ -7791,6 +7610,211 @@ static void acdSetFeatout(AcdPAcd thys)
     ajStrDel(&fmt);
     ajStrDel(&type);
 
+    return;
+}
+
+
+
+
+/* @func ajAcdGetFeatures *****************************************************
+**
+** Returns an item of type Features as defined in a named ACD item.
+** Called by the application after all ACD values have been set,
+** and simply returns what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [AjPFeattable] Feature Table object. The table was already loaded by
+**         acdSetFeat so this just returns the pointer.
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+AjPFeattable ajAcdGetFeatures(const char *token)
+{
+    return acdGetValueRef(token, "features");
+}
+
+
+/* @obsolete ajAcdGetFeat
+** @rename ajAcdGetFeatures
+*/
+
+__deprecated AjPFeattable ajAcdGetFeat(const char *token)
+{
+    return ajAcdGetFeatures(token);
+}
+
+
+
+
+
+/* @funcstatic acdSetFeatures **************************************************
+**
+** Using the definition in the ACD file, and any values for the
+** item or its associated qualifiers provided on the command line,
+** prompts the user if necessary (and possible) and
+** sets the actual value for an ACD feature table item.
+**
+** Understands all attributes and associated qualifiers for this item type.
+**
+** The default value (if no other available) is a null string, which
+** is invalid.
+**
+** Associated qualifiers "-fformat", "-fopenfile"
+** are applied to the UFO before reading the feature table.
+**
+** Associated qualifiers "-fbegin", "-fend" and "-freverse"
+** are applied as appropriate, with prompting for values,
+** after the feature table has been read.
+** They are applied to the feature table,
+** and the resulting table is what is set in the ACD item.
+**
+** @param [u] thys [AcdPAcd] ACD item.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdSetFeatures(AcdPAcd thys)
+{
+    AjPFeattable val   = NULL;
+    AjPFeattabIn tabin = NULL;
+    
+    AjBool required = ajFalse;
+    AjBool ok       = ajFalse;
+
+    ajint itry;
+    
+    AjPStr infname = NULL;
+    static AjPStr type    = NULL;
+    
+    ajint fbegin = 0;
+    ajint fend   = 0;
+    AjBool freverse = ajFalse;
+    AjBool fprompt  = ajFalse;
+    ajint iattr;
+    
+    tabin = ajFeattabInNew();		/* set the default value */
+    
+    acdQualToBool(thys, "fask", ajFalse, &fprompt, &acdReplyDef);
+    
+    if(acdAttrToStr(thys, "type", "", &type))
+    {
+	if(!ajFeattabInSetType(tabin, type))
+	    acdError("Invalid type for feature input");
+	acdInTypeFeatSave(type);
+    }
+    else
+    {
+	acdInTypeFeatSave(NULL);
+    }
+
+    acdInFilename(&infname);
+    required = acdIsRequired(thys);
+    acdReplyInit(thys, ajStrGetPtr(infname), &acdReplyDef);
+    acdPromptFeatures(thys);
+    ajStrDel(&infname);
+    
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ok = ajTrue;	   /* accept the default if nothing changes */
+
+	ajStrAssignS(&acdReply, acdReplyDef);
+
+	if(required)
+	    acdUserGet(thys, &acdReply);
+
+	acdGetValueAssoc(thys, "fformat", &tabin->Formatstr);
+	acdGetValueAssoc(thys, "fopenfile", &tabin->Filename);
+
+	val = ajFeatUfoRead(tabin, acdReply);
+	if(!val) {
+	    ok = ajFalse;
+	    acdBadVal(thys, required,
+		      "Unable to read feature table '%S'", acdReply);
+	}
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    acdInFileSave(ajFeattableGetName(val), ajTrue); /* save sequence name */
+    
+    /* now process the begin, end and reverse options */
+    
+    ok = acdQualToInt(thys, "fbegin", 1, &fbegin, &acdReplyDef);
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ajStrAssignS(&acdReply, acdReplyDef);
+	if(fprompt)
+	    acdUserGetPrompt(thys, "fbegin", " Begin at position", &acdReply);
+	ok = ajStrToInt(acdReply, &fbegin);
+	if(!ok)
+	    acdBadVal(thys, ajTrue,
+		      "Invalid integer value '%S'", acdReply);
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    ok = acdQualToInt(thys, "fend", ajFeattableLen(val), &fend, &acdReplyDef);
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ajStrAssignS(&acdReply, acdReplyDef);
+	if(fprompt)
+	    acdUserGetPrompt(thys, "fend", "   End at position", &acdReply);
+	ok = ajStrToInt(acdReply, &fend);
+	if(!ok)
+	    acdBadVal(thys, ajTrue,
+		      "Invalid integer value '%S'", acdReply);
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    ok = acdQualToBool(thys, "freverse", ajFalse, &freverse, &acdReplyDef);
+    for(itry=acdPromptTry; itry && !ok; itry--)
+    {
+	ajStrAssignS(&acdReply, acdReplyDef);
+	if(fprompt)
+	    acdUserGetPrompt(thys, "freverse", "    Reverse strand", &acdReply);
+	ok = ajStrToBool(acdReply, &freverse);
+
+	if(!ok)
+	    acdBadVal(thys, ajTrue,
+		      "Invalid Y/N value '%S'", acdReply);
+    }
+
+    if(!ok)
+	acdBadRetry(thys);
+    
+    acdLog("sbegin: %d, send: %d, freverse: %B\n",
+	   fbegin, fend, freverse);
+    
+    if(freverse)
+	ajFeattableReverse(val);
+    
+    ajFeattableSetRange(val, fbegin, fend);
+    
+    ajFeattabInDel(&tabin);
+    
+    /* features tables have special set attributes */
+    
+    thys->SAttr = acdAttrListCount(acdCalcFeat);
+    thys->SetAttr = &acdCalcFeat[0];
+    thys->SetStr = AJCALLOC0(thys->SAttr, sizeof(AjPStr));
+    
+    iattr = 0;
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableBegin(val));
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableEnd(val));
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableLen(val));
+    ajStrFromBool(&thys->SetStr[iattr++], ajFeattableIsProt(val));
+    ajStrFromBool(&thys->SetStr[iattr++], ajFeattableIsNuc(val));
+    ajStrAssignS(&thys->SetStr[iattr++], ajFeattableGetName(val));
+    ajStrFromInt(&thys->SetStr[iattr++], ajFeattableSize(val));
+    
+    thys->Value = val;
+    ajStrAssignS(&thys->ValStr, acdReply);
+    
     return;
 }
 
@@ -14626,6 +14650,34 @@ static void acdHelpValidFeatout(const AcdPAcd thys, AjBool table, AjPStr* str)
 
 
 
+/* @funcstatic acdHelpValidFeatures *******************************************
+**
+** Generates valid description for an input feature type.
+**
+** @param [r] thys [const AcdPAcd] ACD object
+** @param [r] table [AjBool] True if writing acdtable HTML table
+** @param [w] str [AjPStr*] Help text (if any) generated
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpValidFeatures(const AcdPAcd thys, AjBool table, AjPStr* str)
+{
+    if(!thys) return;
+
+    if(table)
+	ajStrAssignClear(str);
+    return;
+}
+
+
+
+
+
+
+
+
+
 /* @funcstatic acdHelpValidRange **********************************************
 **
 ** Generates valid description for a sequence range.
@@ -15328,6 +15380,30 @@ static void acdHelpExpectFeatout(const AcdPAcd thys, AjBool table, AjPStr* str)
 	ajStrAppendC(str, "<i>unknown.gff</i>");
     else
 	ajStrAppendC(str, "unknown.gff");
+
+    return;
+}
+
+
+
+
+/* @funcstatic acdHelpExpectFeatures ******************************************
+**
+** Generates expected value description for an input feature type.
+**
+** @param [r] thys [const AcdPAcd] ACD object
+** @param [r] table [AjBool] True if writing acdtable HTML table
+** @param [w] str [AjPStr*] Help text (if any) generated
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpExpectFeatures(const AcdPAcd thys, AjBool table, AjPStr* str)
+{
+    if(!thys) return;
+
+    if(table)
+	ajFmtPrintAppS(str, "<b>Required</b>");
 
     return;
 }
@@ -20844,7 +20920,7 @@ static const AjPStr acdPromptFilelist(AcdPAcd thys)
 
 
 
-/* @funcstatic acdPromptFeat **************************************************
+/* @funcstatic acdPromptFeatures **********************************************
 **
 ** Sets the default prompt for this ACD object to be a feature table
 ** prompt with "first", "second" etc. added.
@@ -20854,7 +20930,7 @@ static const AjPStr acdPromptFilelist(AcdPAcd thys)
 ** @@
 ******************************************************************************/
 
-static const AjPStr acdPromptFeat(AcdPAcd thys)
+static const AjPStr acdPromptFeatures(AcdPAcd thys)
 {
     static ajint count=0;
 
@@ -25149,7 +25225,7 @@ static void acdReset(void)
     acdWordNum = 0;
     acdErrorCount = 0;
     acdUseData = 0;
-    acdUseFeat = 0;
+    acdUseFeatures = 0;
     acdUseInfile = 0;
     acdUseSeq = 0;
     acdUseAlign = 0;

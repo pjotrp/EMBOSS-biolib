@@ -16,7 +16,7 @@ void          ajAcdExit (AjBool single);
 
 AjPAlign      ajAcdGetAlign (const char *token);
 AjPFloat      ajAcdGetArray (const char *token);
-AjBool        ajAcdGetBool (const char *token);
+AjBool        ajAcdGetBoolean (const char *token);
 const AjPStr  ajAcdGetCmdline (void);
 AjPCod        ajAcdGetCodon (const char *token);
 AjPFile       ajAcdGetCpdb (const char *token);
@@ -28,7 +28,7 @@ AjPPhyloState* ajAcdGetDiscretestates (const char *token);
 AjPPhyloState ajAcdGetDiscretestatesSingle (const char *token);
 AjPPhyloDist* ajAcdGetDistances (const char *token);
 AjPPhyloDist  ajAcdGetDistancesSingle (const char *token);
-AjPFeattable  ajAcdGetFeat (const char *token);
+AjPFeattable  ajAcdGetFeatures (const char *token);
 AjPFeattabOut ajAcdGetFeatout (const char *token);
 AjPList       ajAcdGetFilelist (const char *token);
 float         ajAcdGetFloat (const char *token);
@@ -107,6 +107,8 @@ __deprecated void           ajAcdProgramS (AjPStr* pgm);
 __deprecated const AjPStr   ajAcdValue (const char* token);
 __deprecated AjBool         ajAcdStdout (void);
 
+__deprecated AjBool        ajAcdGetBool (const char *token);
+__deprecated AjPFeattable  ajAcdGetFeat (const char *token);
 /*
 ** End of prototype definitions
 */
