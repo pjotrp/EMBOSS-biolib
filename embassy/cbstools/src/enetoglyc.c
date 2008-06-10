@@ -48,8 +48,8 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    plot    = ajAcdGetBool("plot");
-    sigp    = ajAcdGetBool("signalp");
+    plot    = ajAcdGetBoolean("plot");
+    sigp    = ajAcdGetBoolean("signalp");
     
     cl   = ajStrNewC("netOglyc ");
     fn   = ajStrNew();

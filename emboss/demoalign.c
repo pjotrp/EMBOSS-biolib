@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     align   = ajAcdGetAlign("outfile");
     fmat    = ajAcdGetMatrixf("floatmatrix");
     imat    = ajAcdGetMatrix("intmatrix");
-    dofloat = ajAcdGetBool("dofloat");
+    dofloat = ajAcdGetBoolean("dofloat");
 
     ajSeqsetFill(seqset);
 

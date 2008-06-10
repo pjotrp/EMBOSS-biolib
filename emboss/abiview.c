@@ -122,9 +122,9 @@ int main(int argc, char **argv)
     base_start = ajAcdGetInt("startbase");
     base_end   = ajAcdGetInt("endbase");
     seqout     = ajAcdGetSeqout("outseq");
-    separate   = ajAcdGetBool("separate");
-    yticks     = ajAcdGetBool("yticks");
-    dseq       = ajAcdGetBool("sequence");
+    separate   = ajAcdGetBoolean("separate");
+    yticks     = ajAcdGetBoolean("yticks");
+    dseq       = ajAcdGetBoolean("sequence");
     window     = ajAcdGetInt("window");
     baseN      = ajAcdGetString("bases");
 

@@ -167,7 +167,7 @@ int main(int argc, char **argv)
     partials = ajAcdGetFloat("partials");
     outf     = ajAcdGetOutfile("outfile");
     mfptr    = ajAcdGetDatafile("mwdata");
-    mono     = ajAcdGetBool("mono");
+    mono     = ajAcdGetBoolean("mono");
     
     mwdata = embPropEmolwtRead(mfptr);
 

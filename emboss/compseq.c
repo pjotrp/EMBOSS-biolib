@@ -101,11 +101,11 @@ int main(int argc, char **argv)
     word      = ajAcdGetInt("word");
     outfile   = ajAcdGetOutfile("outfile");
     infile    = ajAcdGetInfile("infile");
-    zerocount = ajAcdGetBool("zerocount");
-    ignorebz  = ajAcdGetBool("ignorebz");
+    zerocount = ajAcdGetBoolean("zerocount");
+    ignorebz  = ajAcdGetBoolean("ignorebz");
     frame     = ajAcdGetInt("frame");
-    reverse   = ajAcdGetBool("reverse");
-    calcfreq  = ajAcdGetBool("calcfreq");
+    reverse   = ajAcdGetBoolean("reverse");
+    calcfreq  = ajAcdGetBoolean("calcfreq");
 
     /* Output some documentation to the results file */
     ajFmtPrintF(outfile, "#\n# Output from 'compseq'\n#\n");

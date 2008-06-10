@@ -392,7 +392,7 @@ int main(int argc, char * argv[])
 		      &istart[i+1],&iend[i+1]); /* again offset by 1 */
     }
   
-    outstart = ajAcdGetBool("membrane");
+    outstart = ajAcdGetBoolean("membrane");
   
     wide=16.8 ;
 
@@ -493,7 +493,7 @@ int main(int argc, char * argv[])
     }
     
 /*c determine if this is a draft plot */ 
-    draft = ajAcdGetBool("draft");
+    draft = ajAcdGetBoolean("draft");
 
     /*c determine the number of possible pages this will take */ 
     pages=1 ;

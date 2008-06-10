@@ -72,23 +72,23 @@ int main(int argc, char **argv)
 
     hmmfile = ajAcdGetInfile("hmmfile");
     seqfile = ajAcdGetSeqall("seqfile");
-    nuc     = ajAcdGetBool("nuc");
+    nuc     = ajAcdGetBoolean("nuc");
     A       = ajAcdGetInt("A");
     E       = ajAcdGetFloat("E");
     T       = ajAcdGetFloat("T");
     Z       = ajAcdGetInt("Z");
-    acc     = ajAcdGetBool("acc");
-    compat  = ajAcdGetBool("compat");
+    acc     = ajAcdGetBoolean("acc");
+    compat  = ajAcdGetBoolean("compat");
     cpu     = ajAcdGetInt("cpu");
-    cutga   = ajAcdGetBool("cutga");
-    cuttc   = ajAcdGetBool("cuttc");
-    cutnc   = ajAcdGetBool("cutnc");
+    cutga   = ajAcdGetBoolean("cutga");
+    cuttc   = ajAcdGetBoolean("cuttc");
+    cutnc   = ajAcdGetBoolean("cutnc");
     dome    = ajAcdGetFloat("dome");
     domt    = ajAcdGetFloat("domt");
-    forward = ajAcdGetBool("forward");
-    nulltwo = ajAcdGetBool("nulltwo");
-        pvm = ajAcdGetBool("pvm");
-        xnu = ajAcdGetBool("xnu");
+    forward = ajAcdGetBoolean("forward");
+    nulltwo = ajAcdGetBoolean("nulltwo");
+        pvm = ajAcdGetBoolean("pvm");
+        xnu = ajAcdGetBoolean("xnu");
     outfile = ajAcdGetOutfile("outfile");
 
 

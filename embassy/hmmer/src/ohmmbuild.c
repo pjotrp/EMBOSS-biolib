@@ -12,7 +12,7 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ohmmbuild.c,v 1.4 2007/02/14 16:33:03 rice Exp $
+ * RCS $Id: ohmmbuild.c,v 1.5 2008/06/10 12:51:15 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -255,22 +255,22 @@ int main(int argc, char **argv)
 	align_ofile = ajCharNewS(ajFileGetName(rsname));
     ajFileClose(&rsname);
 
-    ajappend = ajAcdGetBool("append");
+    ajappend = ajAcdGetBoolean("append");
   
     if(ajappend)
 	do_append=TRUE;
     else
 	do_append=FALSE;
 
-    ajamino = ajAcdGetBool("amino");
+    ajamino = ajAcdGetBoolean("amino");
     if(ajamino)
 	SetAlphabet(hmmAMINO);
-    ajnucleic = ajAcdGetBool("nucleic");
+    ajnucleic = ajAcdGetBoolean("nucleic");
     if(ajnucleic)
 	SetAlphabet(hmmAMINO);
   
     archpri  = ajAcdGetFloat("archpri");
-    ajbinary = ajAcdGetBool("binary");
+    ajbinary = ajAcdGetBoolean("binary");
     if(ajbinary)
 	do_binary=TRUE;
     else
@@ -290,7 +290,7 @@ int main(int argc, char **argv)
 
     gapmax      = ajAcdGetFloat("gapmax");
     blosumlevel = ajAcdGetFloat("idlevel");
-    ajeff       = ajAcdGetBool("efficiency");
+    ajeff       = ajAcdGetBoolean("efficiency");
     if(ajeff)
 	do_eff=TRUE;
     else
@@ -314,7 +314,7 @@ int main(int argc, char **argv)
     pamwgt  = ajAcdGetFloat("pamweight");
     swentry = ajAcdGetFloat("swentry");
     swexit  = ajAcdGetFloat("swexit");
-    ajmore  = ajAcdGetBool("more");
+    ajmore  = ajAcdGetBoolean("more");
     if(ajmore)
 	verbose=TRUE;
     else

@@ -130,7 +130,7 @@ AjPFile outf;
 
   /*  categories = ajAcdGetInt("categories");*/
   /*basefrequency = ajAcdGetToggle("basefrequency");*/
-  printdata = ajAcdGetBool("printinitial");
+  printdata = ajAcdGetBoolean("printinitial");
 
   if(ml){
     freqa = ajAcdGetFloat("freqa");

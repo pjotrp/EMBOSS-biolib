@@ -149,12 +149,12 @@ int main(int argc, char *argv[])
     paramfile = ajAcdGetInfile("paramfile");
     T_min     = ajAcdGetFloat("mintemp");
     T_max     = ajAcdGetFloat("maxtemp");
-    eGU       = ajAcdGetBool("gu");
-    eclose    = ajAcdGetBool("closegu");
-    lonely    = ajAcdGetBool("lp");
-    convert   = ajAcdGetBool("convert");
+    eGU       = ajAcdGetBoolean("gu");
+    eclose    = ajAcdGetBoolean("closegu");
+    lonely    = ajAcdGetBoolean("lp");
+    convert   = ajAcdGetBoolean("convert");
     ensbases  = ajAcdGetString("nsbases");
-    etloop    = ajAcdGetBool("tetraloop");
+    etloop    = ajAcdGetBoolean("tetraloop");
     eenergy   = ajAcdGetList("energy");
     edangles  = ajAcdGetList("dangles");
     h         = ajAcdGetFloat("step");

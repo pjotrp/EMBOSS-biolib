@@ -140,8 +140,8 @@ int main(ajint argc, char **argv)
     con_path      = ajAcdGetOutdir("conoutdir");
     logf          = ajAcdGetOutfile("conlogfile");
     thresh        = ajAcdGetFloat("threshold");
-    ccfnaming     = ajAcdGetBool("ccfnaming");
-    skip          = ajAcdGetBool("skip");
+    ccfnaming     = ajAcdGetBoolean("ccfnaming");
+    skip          = ajAcdGetBoolean("skip");
     ignore        = ajAcdGetFloat("ignore");
     vdwf          = ajAcdGetDatafile("vdwfile");
 

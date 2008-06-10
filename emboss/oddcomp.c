@@ -81,7 +81,7 @@ int main(int argc, char **argv)
     window     = ajAcdGetInt("window");
     outfile    = ajAcdGetOutfile("outfile");
     compdata   = ajAcdGetInfile("infile");
-    ignorebz   = ajAcdGetBool("ignorebz");
+    ignorebz   = ajAcdGetBoolean("ignorebz");
     fullwindow = ajAcdGetToggle("fullwindow");
 
     /* Output some documentation to the results file */

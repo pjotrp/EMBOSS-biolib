@@ -113,7 +113,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 	nummatrices++;
 
 
-    minev = ajAcdGetBool("minev");
+    minev = ajAcdGetBoolean("minev");
 
     phylotrees = ajAcdGetTree("intreefile");
     if (phylotrees)
@@ -126,11 +126,11 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
     power = ajAcdGetFloat("power");
     if(minev) negallowed = true;
-    else negallowed = ajAcdGetBool("negallowed");
+    else negallowed = ajAcdGetBoolean("negallowed");
   
 
 
-    replicates = ajAcdGetBool("replicates");
+    replicates = ajAcdGetBoolean("replicates");
 
     if(!usertree) {
       njumble = ajAcdGetInt("njumble");
@@ -144,9 +144,9 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
     //if mulsets and not jumble do jumble
 
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
-    treeprint = ajAcdGetBool("treeprint");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
 
     embossoutfile = ajAcdGetOutfile("outfile");   

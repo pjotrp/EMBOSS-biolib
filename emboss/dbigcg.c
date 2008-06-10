@@ -251,8 +251,8 @@ int main(int argc, char **argv)
     dbname     = ajAcdGetString("dbname");
     release    = ajAcdGetString("release");
     datestr    = ajAcdGetString("date");
-    systemsort = ajAcdGetBool("systemsort");
-    cleanup    = ajAcdGetBool("cleanup");
+    systemsort = ajAcdGetBoolean("systemsort");
+    cleanup    = ajAcdGetBoolean("cleanup");
     sortopt    = ajAcdGetString("sortoptions");
     maxindex   = ajAcdGetInt("maxindex");
     logfile    = ajAcdGetOutfile("outfile");

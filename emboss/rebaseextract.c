@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 
     inf   = ajAcdGetInfile("infile");
     infp  = ajAcdGetInfile("protofile");
-    doequ = ajAcdGetBool("equivalences");
+    doequ = ajAcdGetBoolean("equivalences");
 
     equ1 = ajListNew();
     equ2 = ajListNew();

@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    full    = ajAcdGetBool("full");
+    full    = ajAcdGetBoolean("full");
     
     cl   = ajStrNewC("chlorop ");
     fn   = ajStrNew();

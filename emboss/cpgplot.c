@@ -116,9 +116,9 @@ int main(int argc, char **argv)
     minpc     = ajAcdGetFloat("minpc");
     doplot    = ajAcdGetToggle("plot");
     mult      = ajAcdGetGraphxy ("graph");
-    doobsexp  = ajAcdGetBool("obsexp");
-    docg      = ajAcdGetBool("cg");
-    dopc      = ajAcdGetBool("pc");
+    doobsexp  = ajAcdGetBoolean("obsexp");
+    docg      = ajAcdGetBoolean("cg");
+    dopc      = ajAcdGetBoolean("pc");
     featout   = ajAcdGetFeatout("outfeat");
 
 

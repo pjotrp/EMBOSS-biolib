@@ -50,9 +50,9 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    plot    = ajAcdGetBool("plot");
-    pc      = ajAcdGetBool("pcprediction");
-    sigp    = ajAcdGetBool("signalp");
+    plot    = ajAcdGetBoolean("plot");
+    pc      = ajAcdGetBoolean("pcprediction");
+    sigp    = ajAcdGetBoolean("signalp");
     
     cl   = ajStrNewC("prop ");
     fn   = ajStrNew();

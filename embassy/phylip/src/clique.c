@@ -92,15 +92,15 @@ AjPFile inf;
   inf = ajAcdGetInfile("infile");
   infile = inf->fp;
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  printcomp = ajAcdGetBool("matrixout");
+  printcomp = ajAcdGetBoolean("matrixout");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
 
-  trout = ajAcdGetBool("trout");
+  trout = ajAcdGetBoolean("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
@@ -113,7 +113,7 @@ AjPFile inf;
     outgrno = 1;
 
 
-  ancvar = ajAcdGetBool("ancestral");
+  ancvar = ajAcdGetBoolean("ancestral");
 
   Clmin = ajAcdGetToggle("minclique");
   if(Clmin)

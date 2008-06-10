@@ -56,9 +56,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     else if(ajStrMatchC(method, "c")) cavalli = true;
     else if(ajStrMatchC(method, "r")) reynolds = true;
 
-    lower = ajAcdGetBool("lower");
+    lower = ajAcdGetBoolean("lower");
 
-    progress = ajAcdGetBool("progress");
+    progress = ajAcdGetBoolean("progress");
 
      embossoutfile = ajAcdGetOutfile("outfile");   
      emboss_openfile(embossoutfile, &outfile, &outfilename);

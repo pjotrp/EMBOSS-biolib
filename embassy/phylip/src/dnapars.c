@@ -221,15 +221,15 @@ long inseed0;
   else
     outgrno = 1;
   
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  stepbox = ajAcdGetBool("steps");
+  stepbox = ajAcdGetBoolean("steps");
 
-  ancseq = ajAcdGetBool("seqatnodes");
+  ancseq = ajAcdGetBoolean("seqatnodes");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
  
   trout = ajAcdGetToggle("trout");
   if(trout){

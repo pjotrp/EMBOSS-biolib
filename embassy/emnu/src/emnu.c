@@ -3070,8 +3070,8 @@ int main (int argc, char * argv[], char **env) {
   	PROGRAM_NAME, PROGRAM_VERSION);
 
 /* get the args */
-    WANTMORE = (int)ajAcdGetBool("morefiles");
-    explode = ajAcdGetBool("explode");
+    WANTMORE = (int)ajAcdGetBoolean("morefiles");
+    explode = ajAcdGetBoolean("explode");
 
 /* get the groups and program information - both EMBOSS and EMBASSY */
     glist = ajListNew();

@@ -170,9 +170,9 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     }
 
 
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
-    lower = ajAcdGetBool("lower");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
+    lower = ajAcdGetBoolean("lower");
     if(lower)
         matrix_flags = MAT_HUMAN | MAT_LOWER;
 

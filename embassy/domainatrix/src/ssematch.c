@@ -462,14 +462,14 @@ static AjBool  ssematch_NWScore(AjPScop temp_scop,
     embAlignPathCalc(p,q,lenp,lenq, gapopen,
 		     gapextend,path,sub,cvt,compass,show);
 
-    embAlignScoreNWMatrix(path,pseq, qseq,sub,cvt,
-			  lenp,lenq,gapopen,
-			  compass,gapextend,&start1,&start2);
+    /*embAlignScoreNWMatrix(path,compass,gapopen,gapextend,
+                          pseq, qseq,
+			  lenp,lenq,sub,cvt,
+			  &start1,&start2);*/
 
     embAlignWalkNWMatrix(path,pseq,qseq,&pstr,&qstr,
-			 lenp,lenq,
-			 &start1,&start2,gapopen,gapextend,cvt,
-			 compass,sub);
+			 lenp,lenq,&start1,&start2,
+                         gapopen,gapextend,compass);
 
     embAlignCalcSimilarity(pstr,qstr,sub,cvt,lenp,
 			   lenq,&id,&sim,&idx, &simx);

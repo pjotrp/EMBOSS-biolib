@@ -105,17 +105,17 @@ int main(int argc, char **argv)
     min        = ajAcdGetInt("min");
     max        = ajAcdGetInt("max");
     sitelen    = 2;
-    threeprime = ajAcdGetBool("threeprime");
-    blunt      = ajAcdGetBool("blunt");
-    sticky     = ajAcdGetBool("sticky");
-    single     = ajAcdGetBool("single");
-    html       = ajAcdGetBool("html");
-    alpha      = ajAcdGetBool("alphabetic");
-    ambiguity  = ajAcdGetBool("ambiguity");
-    plasmid    = ajAcdGetBool("plasmid");
-    commercial = ajAcdGetBool("commercial");
-    limit      = ajAcdGetBool("limit");
-    frags      = ajAcdGetBool("fragments");
+    threeprime = ajAcdGetBoolean("threeprime");
+    blunt      = ajAcdGetBoolean("blunt");
+    sticky     = ajAcdGetBoolean("sticky");
+    single     = ajAcdGetBoolean("single");
+    html       = ajAcdGetBoolean("html");
+    alpha      = ajAcdGetBoolean("alphabetic");
+    ambiguity  = ajAcdGetBoolean("ambiguity");
+    plasmid    = ajAcdGetBoolean("plasmid");
+    commercial = ajAcdGetBoolean("commercial");
+    limit      = ajAcdGetBoolean("limit");
+    frags      = ajAcdGetBoolean("fragments");
     dfile      = ajAcdGetDatafile("datafile");
 
     if(single)

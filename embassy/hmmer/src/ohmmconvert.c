@@ -78,8 +78,8 @@ int main(int argc, char **argv)
     do_force  = FALSE;
 
     ajfmt    = ajAcdGetListSingle("format");
-    ajappend = ajAcdGetBool("append");
-    ajforce  = ajAcdGetBool("force");
+    ajappend = ajAcdGetBoolean("append");
+    ajforce  = ajAcdGetBoolean("force");
     inf      = ajAcdGetInfile("infile");
     outf     = ajAcdGetOutfile("outfile");
   

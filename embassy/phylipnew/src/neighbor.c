@@ -89,7 +89,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
       else outgrno = 1;
     }
 
-    replicates = ajAcdGetBool("replicates");
+    replicates = ajAcdGetBoolean("replicates");
 
     jumble = ajAcdGetToggle("jumble");
     if(jumble) {
@@ -103,9 +103,9 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
       emboss_initseed(inseed, &inseed0, seed);
     }    
  
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
-    treeprint = ajAcdGetBool("treeprint");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
 
     embossoutfile = ajAcdGetOutfile("outfile");   

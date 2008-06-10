@@ -24,7 +24,7 @@
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.7 2008/01/14 13:56:13 ajb Exp $";
+static char UNUSED rcsid[]="$Id: vrnaeval.c,v 1.8 2008/06/10 12:51:15 rice Exp $";
 #endif
 
 #define  PUBLIC
@@ -102,19 +102,19 @@ int main(int argc, char *argv[])
 
     eT        = ajAcdGetFloat("temperature");
 
-    convert   = ajAcdGetBool("convert");
+    convert   = ajAcdGetBoolean("convert");
 
-    etloop    = ajAcdGetBool("tetraloop");
+    etloop    = ajAcdGetBoolean("tetraloop");
     eenergy   = ajAcdGetList("energy");
 
     edangles  = ajAcdGetList("dangles");
-    logml     = ajAcdGetBool("logml");
+    logml     = ajAcdGetBoolean("logml");
     outf      = ajAcdGetOutfile("outfile");
 
     temperature   = (double) eT;
     noconv        = (convert) ? 0 : 1;
     tetra_loop    = !!etloop;
-    circ          = !!ajAcdGetBool("circular");
+    circ          = !!ajAcdGetBoolean("circular");
     
     ewt = *ajStrGetPtr(*eenergy);
     if(ewt == '0')

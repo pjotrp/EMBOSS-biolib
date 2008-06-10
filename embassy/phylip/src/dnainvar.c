@@ -83,9 +83,9 @@ AjPFile outf;
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
   fprintf(outfile, "\nNucleic acid sequence Invariants ");
   fprintf(outfile, "method, version %s\n\n",VERSION);

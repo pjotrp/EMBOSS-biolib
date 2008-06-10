@@ -83,8 +83,8 @@ int main(int argc, char **argv)
 
     sequence = ajAcdGetSeq("sequence");
     report   = ajAcdGetReport("outfile");
-    full     = ajAcdGetBool("full");
-    prune    = ajAcdGetBool("prune");
+    full     = ajAcdGetBoolean("full");
+    prune    = ajAcdGetBoolean("prune");
 
     ajSeqFmtUpper(sequence);		/* prosite regexs are all upper case */
     tab = ajFeattableNewSeq(sequence);

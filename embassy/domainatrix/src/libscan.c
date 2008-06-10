@@ -325,12 +325,12 @@ int main(int argc, char **argv)
     embInitP("libscan",argc,argv,"DOMAINATRIX");
   
     mode      = ajAcdGetList("mode");
-    do_grib   = ajAcdGetBool("grib");
-    do_henik  = ajAcdGetBool("henik");
-    do_hmm    = ajAcdGetBool("hmm");
-    do_sig    = ajAcdGetBool("sig");
-    do_sam    = ajAcdGetBool("sam");
-    do_pssm   = ajAcdGetBool("pssm");
+    do_grib   = ajAcdGetBoolean("grib");
+    do_henik  = ajAcdGetBoolean("henik");
+    do_hmm    = ajAcdGetBoolean("hmm");
+    do_sig    = ajAcdGetBoolean("sig");
+    do_sam    = ajAcdGetBoolean("sam");
+    do_pssm   = ajAcdGetBoolean("pssm");
     
     model  = ajStrNew();
     scoplist = ajListNew();
@@ -470,7 +470,7 @@ int main(int argc, char **argv)
   
     /* create scop list */
     while((entry = (ajScopReadCNew(scopf, "*"))))
-	ajListPushApp(scoplist,(AjPScop)entry); 
+	ajListPushAppend(scoplist,(AjPScop)entry); 
     ajFileClose(&scopf);
   
     /*sort scoplist by Sunid_Family prior to binary search*/
@@ -576,11 +576,11 @@ int main(int argc, char **argv)
 
 
     /* clean up scoplist */
-    iter = ajListIterRead(scoplist);
-    while((entry = (AjPScop)ajListIterNext(iter)))
+    iter = ajListIterNewread(scoplist);
+    while((entry = (AjPScop)ajListIterGet(iter)))
 	ajScopDel(&entry);
-    ajListDel(&scoplist);
-    ajListIterFree(&iter);
+    ajListFree(&scoplist);
+    ajListIterDel(&iter);
 
     /* clean up hmmer parameters */
     if(do_hmm)
@@ -847,7 +847,7 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
 	    hit->Score = score;
 	    ajStrAssignS(&hit->Seq,sequence);
 	            
-	    ajListPushApp(listhits,hit);
+	    ajListPushAppend(listhits,hit);
 	    ajStrAssignC(&sequence,"");
 	
 	    break;
@@ -861,19 +861,19 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
     }
 
     ajFileClose(&inf);
-    ajSysUnlink(hmmoutfname);
-    ajSysUnlink(hmminfname);
+    ajSysFileUnlink(hmmoutfname);
+    ajSysFileUnlink(hmminfname);
 
   }
 
 
-  ajFmtPrint("********* list size - %d\n", ajListLength(listhits));
+  ajFmtPrint("********* list size - %d\n", ajListGetLength(listhits));
   
   /* target duplicate hits and remove  */
-  iter   = ajListIter(listhits);
-  hit    = (AjPHit)ajListIterNext(iter);
+  iter   = ajListIterNew(listhits);
+  hit    = (AjPHit)ajListIterGet(iter);
   
-  while((nexthit=(AjPHit)ajListIterNext(iter)))
+  while((nexthit=(AjPHit)ajListIterGet(iter)))
   {
       if((ajStrMatchS(hit->Acc, nexthit->Acc)))
       {	
@@ -888,23 +888,23 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
   }
   
   /* remove duplicates */
-  ajListGarbageCollect(listhits, libscan_HitDelWrap, 
-			  (int(*)(const void *)) libscan_HitCheckTarget);
+  ajListPurge(listhits, (int(*, 
+			  libscan_HitDelWrap)(const void *)) libscan_HitCheckTarget);
 
 
-   ajFmtPrint("********* list size after garbage collection - %d\n", ajListLength(listhits));
+   ajFmtPrint("********* list size after garbage collection - %d\n", ajListGetLength(listhits));
   /* calcute mean, standard deviation and zscore */
   mean = libscan_CalcMean(listhits);
   sdv  = libscan_CalcSdv(listhits,mean);
   
   
   /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-  iter = ajListIter(listhits);
-  while((hit = (AjPHit)ajListIterNext(iter))){
+  iter = ajListIterNew(listhits);
+  while((hit = (AjPHit)ajListIterGet(iter))){
       zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);      
       hit->Pval  = zvalue;      
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
 
   /* sort the list by score */
   ajListSort(listhits,libscan_HitCompScore);
@@ -920,7 +920,7 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
   hitlist->Sunid_Family = sun_id;
   
   /* Convert list to array within Hitlist object */
-  nhits=ajListToArray(listhits,(void ***)&hitlist->hits);
+  nhits=ajListToarray(listhits,(void ***)&hitlist->hits);
   hitlist->N = nhits;
   
   if(!(hitlist->N))
@@ -941,11 +941,11 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
   embHitlistDel(&hitlist);
   
   /* Clean up listhits */
-  iter = ajListIter(listhits);
-  while((hit = (AjPHit)ajListIterNext(iter)))
+  iter = ajListIterNew(listhits);
+  while((hit = (AjPHit)ajListIterGet(iter)))
     embHitDel(&hit);
-  ajListDel(&listhits);
-  ajListIterFree(&iter);
+  ajListFree(&listhits);
+  ajListIterDel(&iter);
 
   /* Clean up hits array */
   AJFREE(hits);
@@ -1104,8 +1104,8 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
     }
     
     ajFileClose(&inf);
-    ajSysUnlink(profoutfname);
-    ajSysUnlink(profinfname);
+    ajSysFileUnlink(profoutfname);
+    ajSysFileUnlink(profinfname);
     
     
     /* create a new hit structure */
@@ -1118,16 +1118,16 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
     hit->Score = score;
     ajStrAssignS(&hit->Seq,sequence);
 
-    ajListPushApp(listhits,hit);
+    ajListPushAppend(listhits,hit);
     nhits++;
   }
 
 
   /* target duplicate hits and remove  */
-  iter   = ajListIter(listhits);
-  hit    = (AjPHit)ajListIterNext(iter);
+  iter   = ajListIterNew(listhits);
+  hit    = (AjPHit)ajListIterGet(iter);
   
-  while((nexthit=(AjPHit)ajListIterNext(iter)))
+  while((nexthit=(AjPHit)ajListIterGet(iter)))
   {
       if((ajStrMatchS(hit->Acc, nexthit->Acc)))
       {	
@@ -1139,20 +1139,20 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   }
   
   /* remove duplicates */
-  ajListGarbageCollect(listhits, libscan_HitDelWrap, 
-		       (int(*)(const void *)) libscan_HitCheckTarget);
+  ajListPurge(listhits, (int(*, 
+		       libscan_HitDelWrap)(const void *)) libscan_HitCheckTarget);
 
   /* calculate mean,standard deviation and zscore */
   mean = libscan_CalcMean(listhits);
   sdv  = libscan_CalcSdv(listhits,mean);
   
   /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-  iter = ajListIter(listhits);
-  while((hit = (AjPHit)ajListIterNext(iter))){
+  iter = ajListIterNew(listhits);
+  while((hit = (AjPHit)ajListIterGet(iter))){
     zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);
     hit->Pval  = zvalue;
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
 
   /* sort the list by score */
   ajListSort(listhits,libscan_HitCompScore);
@@ -1168,7 +1168,7 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   hitlist->Sunid_Family = sun_id;
     
   /* Convert list to array within Hitlist object */
-  nhits=ajListToArray(listhits,(void ***)&hitlist->hits);
+  nhits=ajListToarray(listhits,(void ***)&hitlist->hits);
   hitlist->N = nhits;
 
   /*******************************************************************
@@ -1185,11 +1185,11 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   embHitlistDel(&hitlist);
 
   /* Free listhits nodes */
-  iter = ajListIter(listhits);
-  while((hit = (AjPHit)ajListIterNext(iter)))
+  iter = ajListIterNew(listhits);
+  while((hit = (AjPHit)ajListIterGet(iter)))
     embHitDel(&hit);
-  ajListDel(&listhits);
-  ajListIterFree(&iter);
+  ajListFree(&listhits);
+  ajListIterDel(&iter);
     
   /* Clean up hits array */
   AJFREE(hits);
@@ -1302,10 +1302,10 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
    
    
    /* target duplicate hits and remove  */
-   iter   = ajListIter(listhits);
-   hit    = (AjPHit)ajListIterNext(iter);
+   iter   = ajListIterNew(listhits);
+   hit    = (AjPHit)ajListIterGet(iter);
   
-   while((nexthit=(AjPHit)ajListIterNext(iter)))
+   while((nexthit=(AjPHit)ajListIterGet(iter)))
    {
        if((ajStrMatchS(hit->Acc, nexthit->Acc)))
        {	
@@ -1317,20 +1317,20 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
   }
   
   /* remove duplicates */
-  ajListGarbageCollect(listhits, libscan_HitDelWrap, 
-			  (int(*)(const void *)) libscan_HitCheckTarget);
+  ajListPurge(listhits, (int(*, 
+			  libscan_HitDelWrap)(const void *)) libscan_HitCheckTarget);
 
 
    mean = libscan_CalcMean(listhits);
    sdv  = libscan_CalcSdv(listhits,mean);
   
    /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-   iter = ajListIter(listhits);
-   while((hit = (AjPHit)ajListIterNext(iter))){
+   iter = ajListIterNew(listhits);
+   while((hit = (AjPHit)ajListIterGet(iter))){
        zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);
        hit->Pval  = zvalue;
    }
-   ajListIterFree(&iter);
+   ajListIterDel(&iter);
 
    /* sort the list by score */
    ajListSort(listhits,libscan_HitCompScore);
@@ -1347,7 +1347,7 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
    hitlist->Sunid_Family = sun_id;
 
    /* Convert list to array within Hitlist object */
-   nhits=ajListToArray(listhits,(void ***)&hitlist->hits);
+   nhits=ajListToarray(listhits,(void ***)&hitlist->hits);
    hitlist->N = nhits;
    
    /* write the scophits to file */
@@ -1359,11 +1359,11 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
    embHitlistDel(&hitlist);
    
    /* Clean up listhits nodes */
-   iter = ajListIterRead(listhits);
-   while((hit = (AjPHit)ajListIterNext(iter)))
+   iter = ajListIterNewread(listhits);
+   while((hit = (AjPHit)ajListIterGet(iter)))
      embHitDel(&hit);	
-   ajListDel(&listhits);
-   ajListIterFree(&iter); 
+   ajListFree(&listhits);
+   ajListIterDel(&iter); 
 
    /* Clean up hits array */
    AJFREE(hits);
@@ -1507,7 +1507,7 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
 	hit->Start = start;
 	hit->End   = end;
 	
-	ajListPushApp(listhits,hit); 
+	ajListPushAppend(listhits,hit); 
 
       }
       else
@@ -1516,13 +1516,13 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     ajFileClose(&inf);        
 
     /* sort list to get identical hits together */
-    ajListSort2(listhits,libscan_HitCompAcc,libscan_HitCompScore);
+    ajListSortTwo(listhits,libscan_HitCompAcc,libscan_HitCompScore);
 
     /* target duplicate hits and remove  */
-    iter   = ajListIter(listhits);
-    hit    = (AjPHit)ajListIterNext(iter);
+    iter   = ajListIterNew(listhits);
+    hit    = (AjPHit)ajListIterGet(iter);
     ajFmtPrint("%S\t%f\n",hit->Acc,hit->Score);
-    while((nexthit=(AjPHit)ajListIterNext(iter)))
+    while((nexthit=(AjPHit)ajListIterGet(iter)))
     {
       ajFmtPrint("%S\t%f\n",nexthit->Acc,nexthit->Score);
 	if((ajStrMatchS(hit->Acc, nexthit->Acc)))
@@ -1535,19 +1535,19 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     }
   
     /* remove duplicates */
-    ajListGarbageCollect(listhits, libscan_HitDelWrap, 
-		       (int(*)(const void *)) libscan_HitCheckTarget);
+    ajListPurge(listhits, (int(*, 
+		       libscan_HitDelWrap)(const void *)) libscan_HitCheckTarget);
 
     mean = libscan_CalcMean(listhits);
     sdv  = libscan_CalcSdv(listhits,mean);
   
     /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-    iter = ajListIter(listhits);
-    while((hit = (AjPHit)ajListIterNext(iter))){
+    iter = ajListIterNew(listhits);
+    while((hit = (AjPHit)ajListIterGet(iter))){
       zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);
       hit->Pval  = zvalue;
     }
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     /* sort the list by score */
     ajListSort(listhits,libscan_HitCompScore);
@@ -1563,7 +1563,7 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     hitlist->Sunid_Family = sun_id;
    
     /* Convert list to array within Hitlist object */
-    nhits=ajListToArray(listhits,(void ***)&hitlist->hits);
+    nhits=ajListToarray(listhits,(void ***)&hitlist->hits);
     hitlist->N = nhits;
   
     if(!(hitlist->N))
@@ -1584,11 +1584,11 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     embHitlistDel(&hitlist);
   
     /* Clean up listhits */
-    iter = ajListIter(listhits);
-    while((hit = (AjPHit)ajListIterNext(iter)))
+    iter = ajListIterNew(listhits);
+    while((hit = (AjPHit)ajListIterGet(iter)))
 	embHitDel(&hit);
-    ajListDel(&listhits);
-    ajListIterFree(&iter);
+    ajListFree(&listhits);
+    ajListIterDel(&iter);
 
     /* Clean up hits array */
     AJFREE(hits);
@@ -1749,16 +1749,16 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 	
 	/* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
 	for(i=0;i<blastlist->N;i++)
-	    ajListPushApp(listhits,blastlist->hits[i]); 
+	    ajListPushAppend(listhits,blastlist->hits[i]); 
 
 	/* sort list to get identical hits together */
-	ajListSort2(listhits, libscan_HitCompAcc,libscan_HitCompScore);
+	ajListSortTwo(listhits, libscan_HitCompAcc,libscan_HitCompScore);
 
 	/* target the duplicates for removal */
-	iter   = ajListIter(listhits);
-	hit    = (AjPHit)ajListIterNext(iter);
+	iter   = ajListIterNew(listhits);
+	hit    = (AjPHit)ajListIterGet(iter);
 	
-	while((nexthit=(AjPHit)ajListIterNext(iter)))
+	while((nexthit=(AjPHit)ajListIterGet(iter)))
 	{
 	    if((ajStrMatchS(hit->Acc, nexthit->Acc)))
 	    {	
@@ -1772,19 +1772,19 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 	/**************************************************
 	 **             remove duplicates
 	 *************************************************/
-	ajListGarbageCollect(listhits, libscan_HitDelWrap, 
-			     (int(*)(const void *)) libscan_HitCheckTarget);
+	ajListPurge(listhits, (int(*, 
+			     libscan_HitDelWrap)(const void *)) libscan_HitCheckTarget);
 
 	mean = libscan_CalcMean(listhits);
 	sdv  = libscan_CalcSdv(listhits,mean);
 	
 	/* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-	iter = ajListIter(listhits);
-	while((hit = (AjPHit)ajListIterNext(iter))){
+	iter = ajListIterNew(listhits);
+	while((hit = (AjPHit)ajListIterGet(iter))){
 	    zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);
 	    hit->Pval  = zvalue;
 	}
-	ajListIterFree(&iter);
+	ajListIterDel(&iter);
 
 	/* sort the list by score */
 	ajListSort(listhits,libscan_HitCompScore);
@@ -1800,7 +1800,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 	hitlist->Sunid_Family = sun_id;
    
 	/* Convert list to array within Hitlist object */
-	nhits=ajListToArray(listhits,(void ***)&hitlist->hits);
+	nhits=ajListToarray(listhits,(void ***)&hitlist->hits);
 	hitlist->N = nhits;
   
 	if(!(hitlist->N))
@@ -1821,13 +1821,13 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
 	embHitlistDel(&blastlist);
 
 	/* clean up listhits */
-	iter = ajListIter(listhits);
-	while((hit = (AjPHit)ajListIterNext(iter)))
+	iter = ajListIterNew(listhits);
+	while((hit = (AjPHit)ajListIterGet(iter)))
 	  embHitDel(&hit);
-	ajListDel(&listhits);
-	ajListIterFree(&iter);
+	ajListFree(&listhits);
+	ajListIterDel(&iter);
 	
-	ajListDel(&pssmlist);
+	ajListFree(&pssmlist);
 	
 	ajStrDel(&masterseq);
 	ajStrDel(&sunid);
@@ -2001,10 +2001,10 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   ajStrAssignS(&outfile,seq->Name);
   ajStrAppendS(&outfile,hmmoutextn);
 
-  iter = ajListIter(modelnames);
+  iter = ajListIterNew(modelnames);
 
   /* Start of main application loop */
-  while((hmmfile = (AjPStr)ajListIterNext(iter))){
+  while((hmmfile = (AjPStr)ajListIterGet(iter))){
 
     /* get the Sunid_Family from the hmmfile. THIS WILL NEED TO BE CHANGED */
     posdash = ajStrFindlastC(hmmfile, "/");
@@ -2077,7 +2077,7 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
 	    hit->End   = end;
 
 	    /* push the scop hit onto list */
-	    ajListPushApp(listhits,(AjPHit) hit);
+	    ajListPushAppend(listhits,(AjPHit) hit);
 	    ajStrAssignC(&sequence,"");	
 
 	    break;
@@ -2090,9 +2090,9 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
 	continue;
     }
     ajFileClose(&inf);
-    ajSysUnlink(hmmoutfname);
+    ajSysFileUnlink(hmmoutfname);
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
 
   hmmoutf     = ajFileNewOutD(hmmoutpath,outfile);
 
@@ -2101,12 +2101,12 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   sdv  = libscan_CalcSdv(listhits,mean);
 
   /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-  iter = ajListIter(listhits);
-  while((hit = (AjPHit)ajListIterNext(iter))){
+  iter = ajListIterNew(listhits);
+  while((hit = (AjPHit)ajListIterGet(iter))){
       zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);      
       hit->Pval  = zvalue;      
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
 
   /* sort the list by score */
   ajListSort(listhits,libscan_HitCompScore);
@@ -2117,7 +2117,7 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   ajStrAssignS(&hitlist->Model,model);
 
   /* convert the original list of hits to an array for convenience */
-  nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
+  nhits = ajListToarray(listhits,(void ***)&hitlist->hits);
   hitlist->N = nhits;
 
   if(!(hitlist->N))
@@ -2130,23 +2130,23 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   AJFREE(hits);
 
   /* remove temparary files from directory */
-  ajSysUnlink(hmminfname);
-  ajSysUnlink(hmmoutfname);
+  ajSysFileUnlink(hmminfname);
+  ajSysFileUnlink(hmmoutfname);
 
   /* delete and clean up listhits */
-  iter=ajListIter(listhits);
-  while((hit=(AjPHit)ajListIterNext(iter)))
+  iter=ajListIterNew(listhits);
+  while((hit=(AjPHit)ajListIterGet(iter)))
     embHitDel(&hit);
-  ajListDel(&listhits);
-  ajListIterFree(&iter);
+  ajListFree(&listhits);
+  ajListIterDel(&iter);
 
   /* delete and clean up modelnames */
-  iter=ajListIter(modelnames);
+  iter=ajListIterNew(modelnames);
   ajStrDel(&tmpname);
-  while((tmpname=(AjPStr)ajListIterNext(iter)))
+  while((tmpname=(AjPStr)ajListIterGet(iter)))
     ajStrDel(&tmpname);
-  ajListIterFree(&iter);
-  ajListDel(&modelnames);
+  ajListIterDel(&iter);
+  ajListFree(&modelnames);
 
   /* clean up */
   ajRegFree(&rexp1);
@@ -2289,10 +2289,10 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   ajStrAssignS(&outfile,seq->Name);
   ajStrAppendS(&outfile,profoutextn);
   
-  iter = ajListIter(modelnames);
+  iter = ajListIterNew(modelnames);
 
   /*Start of main application loop*/
-  while((profile = (AjPStr)ajListIterNext(iter))){
+  while((profile = (AjPStr)ajListIterGet(iter))){
 
     /* get the Sunid_Family from the profile. THIS WILL NEED TO BE CHANGED */
     posdash = ajStrFindlastC(profile, "/");
@@ -2359,12 +2359,12 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     hit->End   = end;    
     
     /*push the scop hit onto list */
-    ajListPushApp(listhits,(AjPHit) hit);
+    ajListPushAppend(listhits,(AjPHit) hit);
     
     ajFileClose(&inf);
-    ajSysUnlink(profileoutfname);
+    ajSysFileUnlink(profileoutfname);
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
     
   profoutf = ajFileNewOutD(profoutpath,outfile);
   
@@ -2373,12 +2373,12 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   sdv  = libscan_CalcSdv(listhits,mean);
 
   /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-  iter = ajListIter(listhits);
-  while((hit = (AjPHit)ajListIterNext(iter))){
+  iter = ajListIterNew(listhits);
+  while((hit = (AjPHit)ajListIterGet(iter))){
       zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);      
       hit->Pval  = zvalue;      
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
 
   /* sort the list by score */
   ajListSort(listhits,libscan_HitCompScore);
@@ -2389,7 +2389,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   ajStrAssignS(&hitlist->Model,model);
 
   /* convert the original list of hits to an array for convenience */
-  nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
+  nhits = ajListToarray(listhits,(void ***)&hitlist->hits);
   hitlist->N = nhits;
   
   if(!(hitlist->N))
@@ -2402,19 +2402,19 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   AJFREE(hits);
   
   /* delete and clean up listhits */
-  iter=ajListIter(listhits);
-  while((hit=(AjPHit)ajListIterNext(iter)))
+  iter=ajListIterNew(listhits);
+  while((hit=(AjPHit)ajListIterGet(iter)))
     embHitDel(&hit);
-  ajListDel(&listhits);	
-  ajListIterFree(&iter);
+  ajListFree(&listhits);	
+  ajListIterDel(&iter);
   
   /* delete and clean up modelnames */
-  iter=ajListIter(modelnames);
+  iter=ajListIterNew(modelnames);
   ajStrDel(&tmpname);    
-  while((tmpname=(AjPStr)ajListIterNext(iter)))
+  while((tmpname=(AjPStr)ajListIterGet(iter)))
     ajStrDel(&tmpname);
-  ajListDel(&modelnames);
-  ajListIterFree(&iter);	
+  ajListFree(&modelnames);
+  ajListIterDel(&iter);	
   
   ajStrDel(&tmpname);
   ajStrDel(&id);
@@ -2502,8 +2502,8 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
 
 
     
-    iter = ajListIterRead(modelnames);
-    while((sigfile=(AjPStr)ajListIterNext(iter)))
+    iter = ajListIterNewread(modelnames);
+    while((sigfile=(AjPStr)ajListIterGet(iter)))
     {
 
 	ajFmtPrint("Opening %S\n", sigfile);
@@ -2552,13 +2552,13 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
       ajStrAssignS(&hit->Acc,string);
       ajStrAssignS(&hit->Spr,sig->Family);
       
-      ajListPushApp(listhits,(AjPHit) hit);
+      ajListPushAppend(listhits,(AjPHit) hit);
 
       embSignatureDel(&sig);
       ajFileClose(&sigin); 
       
     }
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
         
     sigoutf     = ajFileNewOutD(sigoutpath,outfile);
 
@@ -2567,12 +2567,12 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     sdv  = libscan_CalcSdv(listhits,mean);
 
     /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-    iter = ajListIter(listhits);
-    while((hit = (AjPHit)ajListIterNext(iter))){
+    iter = ajListIterNew(listhits);
+    while((hit = (AjPHit)ajListIterGet(iter))){
 	zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);      
 	hit->Pval  = zvalue;      
     }
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
 
     /* sort the list by score */
     ajListSort(listhits,libscan_HitCompScore);
@@ -2583,7 +2583,7 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     ajStrAssignS(&hitlist->Model,model);
 
     /* convert the original list of hits to an array for convenience */
-    nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
+    nhits = ajListToarray(listhits,(void ***)&hitlist->hits);
     hitlist->N = nhits;
     
     if(!(hitlist->N))
@@ -2596,18 +2596,18 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     AJFREE(hits);
    
     /* delete and clean up listhits */
-    iter=ajListIterRead(listhits);
-    while((hit=(AjPHit)ajListIterNext(iter)))
+    iter=ajListIterNewread(listhits);
+    while((hit=(AjPHit)ajListIterGet(iter)))
       embHitDel(&hit);
-    ajListDel(&listhits);
-    ajListIterFree(&iter);		
+    ajListFree(&listhits);
+    ajListIterDel(&iter);		
 
     /* delete and clean up modelnames */
-    iter=ajListIterRead(modelnames);
-    while((tmpname=(AjPStr)ajListIterNext(iter)))
+    iter=ajListIterNewread(modelnames);
+    while((tmpname=(AjPStr)ajListIterGet(iter)))
       ajStrDel(&tmpname);
-    ajListDel(&modelnames);
-    ajListIterFree(&iter);	
+    ajListFree(&modelnames);
+    ajListIterDel(&iter);	
     
     ajStrDel(&outfile);
     ajStrDel(&tmpname);	
@@ -2743,9 +2743,9 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   ajStrAssignS(&outfile,seq->Name);
   ajStrAppendS(&outfile,samoutextn);
 
-  iter = ajListIter(modelnames);
+  iter = ajListIterNew(modelnames);
   /* Start of main application loop */
-  while((samfile = (AjPStr)ajListIterNext(iter))){
+  while((samfile = (AjPStr)ajListIterGet(iter))){
 
     /* get the Sunid_Family from the samfile. */
     posdash = ajStrFindlastC(samfile, "/");
@@ -2810,7 +2810,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
 	    hit->Start = start;
 	    hit->End   = end;
 	
-	    ajListPushApp(listhits,hit); 
+	    ajListPushAppend(listhits,hit); 
 
 	}
 	else
@@ -2827,7 +2827,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
     system(ajStrGetPtr(cmd));
 
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
 
   samoutf     = ajFileNewOutD(samoutpath,outfile);
 
@@ -2836,12 +2836,12 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   sdv  = libscan_CalcSdv(listhits,mean);
 
   /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-  iter = ajListIter(listhits);
-  while((hit = (AjPHit)ajListIterNext(iter))){
+  iter = ajListIterNew(listhits);
+  while((hit = (AjPHit)ajListIterGet(iter))){
       zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);      
       hit->Pval  = zvalue;      
   }
-  ajListIterFree(&iter);
+  ajListIterDel(&iter);
 
   /* sort the list by score */
   ajListSort(listhits,libscan_HitCompScore);
@@ -2852,7 +2852,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   ajStrAssignS(&hitlist->Model,model);
 
   /* convert the original list of hits to an array for convenience */
-  nhits = ajListToArray(listhits,(void ***)&hitlist->hits);
+  nhits = ajListToarray(listhits,(void ***)&hitlist->hits);
   hitlist->N = nhits;
   
   if(!(hitlist->N))
@@ -2865,23 +2865,23 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   AJFREE(hits);
 
   /* remove temparary files from directory */
-  ajSysUnlink(saminfname);
-  ajSysUnlink(samoutfname);
+  ajSysFileUnlink(saminfname);
+  ajSysFileUnlink(samoutfname);
 
   /* delete and clean up listhits */
-  iter=ajListIter(listhits);
-  while((hit=(AjPHit)ajListIterNext(iter)))
+  iter=ajListIterNew(listhits);
+  while((hit=(AjPHit)ajListIterGet(iter)))
     embHitDel(&hit);
-  ajListDel(&listhits);
-  ajListIterFree(&iter);
+  ajListFree(&listhits);
+  ajListIterDel(&iter);
 
   /* delete and clean up modelnames */
-  iter=ajListIter(modelnames);
+  iter=ajListIterNew(modelnames);
   ajStrDel(&tmpname);
-  while((tmpname=(AjPStr)ajListIterNext(iter)))
+  while((tmpname=(AjPStr)ajListIterGet(iter)))
     ajStrDel(&tmpname);
-  ajListIterFree(&iter);
-  ajListDel(&modelnames);
+  ajListIterDel(&iter);
+  ajListFree(&modelnames);
 
   /* clean up */
   ajRegFree(&rexp1);
@@ -3120,7 +3120,7 @@ static AjBool libscan_RunHmmerInModeOne(AjPSeqset db, AjPStr hmmpath,
 	    }
         }
 	
-	ajListDel(&hmmlist);
+	ajListFree(&hmmlist);
 	
 	
 	ajStrDel(&sunid);
@@ -3277,7 +3277,7 @@ static AjBool libscan_RunProphetInModeOne(AjPSeqset db, AjPStr profpath,
 	    ajStrDel(&profile);
 	}
 
-	ajListDel(&proflist);
+	ajListFree(&proflist);
 	ajStrDel(&sunid);
 	ajStrDel(&profsearch);
 	ajStrDel(&family);
@@ -3437,7 +3437,7 @@ static AjBool libscan_RunSignatureInModeOne(AjPSeqset db, AjPStr sigpath,
             }   
             ajStrDel(&sigfile);
         }
-	ajListDel(&siglist);
+	ajListFree(&siglist);
 	ajStrDel(&sunid);
 	ajStrDel(&sigsearch);
 	ajStrDel(&family);
@@ -3598,7 +3598,7 @@ static AjBool libscan_RunSamInModeOne(AjPStr samdb, AjPStr sampath,
 	    }
         }
 	
-	ajListDel(&samlist);
+	ajListFree(&samlist);
 	
 	
 	ajStrDel(&sunid);
@@ -3839,18 +3839,18 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 
 	    /* generate list for ease of use */
 	    for(i=0;i<blastlist->N;i++)
-		ajListPushApp(listhits,blastlist->hits[i]); 
+		ajListPushAppend(listhits,blastlist->hits[i]); 
 	    	    
 	    mean = libscan_CalcMean(listhits);
 	    sdv  = libscan_CalcSdv(listhits,mean);
 
 	    /* DO A SECOND PARSE THROUGH THE HITS AND CALCULATE THE Z-SCORE */
-	    iter = ajListIter(listhits);
-	    while((hit = (AjPHit)ajListIterNext(iter))){
+	    iter = ajListIterNew(listhits);
+	    while((hit = (AjPHit)ajListIterGet(iter))){
 		zvalue = libscan_ScoreToZscore(hit->Score,mean,sdv);
 		hit->Pval  = zvalue;
 	    }
-	    ajListIterFree(&iter);
+	    ajListIterDel(&iter);
 	    
 	    /* sort the list by score */
 	    ajListSort(listhits,libscan_HitCompScore);
@@ -3861,7 +3861,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    ajStrAssignS(&hitlist->Model,model);
 	    
 	    /* Convert list to array within Hitlist object */
-	    nhits=ajListToArray(listhits,(void ***)&hitlist->hits);
+	    nhits=ajListToarray(listhits,(void ***)&hitlist->hits);
 	    hitlist->N = nhits;
 
 	    if(!(hitlist->N))
@@ -3889,11 +3889,11 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    embHitlistDel(&blastlist);
 	    
 	    /* clean up listhits */
-	    iter = ajListIter(listhits);
-	    while((hit = (AjPHit)ajListIterNext(iter)))
+	    iter = ajListIterNew(listhits);
+	    while((hit = (AjPHit)ajListIterGet(iter)))
 		embHitDel(&hit);
-	    ajListDel(&listhits);
-	    ajListIterFree(&iter);
+	    ajListFree(&listhits);
+	    ajListIterDel(&iter);
 
 	    ajSeqDel(&seq);
         }
@@ -4132,7 +4132,7 @@ static AjBool libscan_SunidToScopInfo (ajint sunid, AjPStr *family,
         return ajFalse;
     }
     
-    dim = ajListToArray(list,(void***)&(arr));
+    dim = ajListToarray(list,(void***)&(arr));
     
     if(!dim)
     {
@@ -4179,11 +4179,11 @@ static float libscan_CalcMean(AjPList hits)
   if(!hits)
     ajFatal("No list of hits passed to libscan_CalcMean\n");
   
-  if(ajListLength(hits)==0)
+  if(ajListGetLength(hits)==0)
     return ajFalse;
   
   /* convert list to array for convenience */
-  nhits = ajListToArray(hits,(void ***)&hit);
+  nhits = ajListToarray(hits,(void ***)&hit);
   
   if(!nhits)
     ajFatal("No hits in libscan_CalcMean!");
@@ -4229,11 +4229,11 @@ static float libscan_CalcSdv(AjPList hits, float mean)
   if(!mean)
     ajFatal("No mean passed to libscan_CalSdv\n");
   
-  if(ajListLength(hits)==0)
+  if(ajListGetLength(hits)==0)
     return ajFalse;
   
   /* convert list to array for convenience */
-  nhits = ajListToArray(hits,(void ***)&hit);
+  nhits = ajListToarray(hits,(void ***)&hit);
   
   if(!nhits)
     ajFatal("No hits in libscan_CalcMean!");
@@ -4313,11 +4313,11 @@ AjBool libscan_HitlistToScophits(const AjPList in, AjPList *out)
     }
 
     /* Create list iterator and new list */
-    iter = ajListIterRead(in);	
+    iter = ajListIterNewread(in);	
     
 
     /* Iterate through the list of Hitlist pointers */
-    while((hitlist=(AjPHitlist)ajListIterNext(iter)))
+    while((hitlist=(AjPHitlist)ajListIterGet(iter)))
     {
 	/* Loop for each hit in hitlist structure */
 	for(x=0; x<hitlist->N; ++x)
@@ -4352,12 +4352,12 @@ AjBool libscan_HitlistToScophits(const AjPList in, AjPList *out)
 	    scophit->Pval = hitlist->hits[x]->Pval;
 	    
 	    /* Push scophit onto list */
-	    ajListPushApp(*out,scophit);
+	    ajListPushAppend(*out,scophit);
 	}
     }	
     
 
-    ajListIterFree(&iter);	
+    ajListIterDel(&iter);	
 
     return ajTrue;
 }
@@ -4385,8 +4385,8 @@ AjBool libscan_ScophitsWriteFasta(AjPFile outf, const AjPList list)
     
     AjPScophit thys = NULL;    
 
-    iter = ajListIterRead(list);
-    while((thys = (AjPScophit)ajListIterNext(iter)))
+    iter = ajListIterNewread(list);
+    while((thys = (AjPScophit)ajListIterGet(iter)))
     {
         
         if(!thys)
@@ -4471,7 +4471,7 @@ AjBool libscan_ScophitsWriteFasta(AjPFile outf, const AjPList list)
 	
     }
 
-    ajListIterFree(&iter);
+    ajListIterDel(&iter);
     
 
     return ajTrue;

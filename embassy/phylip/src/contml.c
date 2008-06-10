@@ -133,9 +133,9 @@ long inseed0;
 
   usertree = !ajAcdGetToggle("besttree");
   if(usertree)
-    lengths = ajAcdGetBool("lengths");
+    lengths = ajAcdGetBoolean("lengths");
   else {
-    global = ajAcdGetBool("global");
+    global = ajAcdGetBoolean("global");
     jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
@@ -161,7 +161,7 @@ long inseed0;
 
   contchars = ajAcdGetToggle("continuous");
   if(!contchars)
-    all = ajAcdGetBool("all");
+    all = ajAcdGetBoolean("all");
   
   outgropt = ajAcdGetToggle("og");
   if(outgropt)
@@ -173,11 +173,11 @@ long inseed0;
   if(mulsets)
     datasets = ajAcdGetInt("datasets");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
 
   trout = ajAcdGetToggle("trout");
   if(trout){

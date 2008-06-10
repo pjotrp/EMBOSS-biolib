@@ -54,16 +54,16 @@ int main(int argc, char **argv)
     seq = ajAcdGetSeq ("sequence");
     outf = ajAcdGetOutfile("outfile");
 
-    competition = ajAcdGetBool("competition");
+    competition = ajAcdGetBoolean("competition");
 
-    rdtime = ajAcdGetBool ("rdtime");
-    rdcost = ajAcdGetBool ("rdcost");
-    animalstudies = ajAcdGetBool ("animalstudies");
-    clinicaltrials = ajAcdGetBool ("clinicaltrials");
-    fdaproblems = ajAcdGetBool ("fdaproblems");
-    fdatime = ajAcdGetBool ("fdatime");
-    profit = ajAcdGetBool ("profit");
-    everythingelse = ajAcdGetBool ("everythingelse");
+    rdtime = ajAcdGetBoolean("rdtime");
+    rdcost = ajAcdGetBoolean("rdcost");
+    animalstudies = ajAcdGetBoolean("animalstudies");
+    clinicaltrials = ajAcdGetBoolean("clinicaltrials");
+    fdaproblems = ajAcdGetBoolean("fdaproblems");
+    fdatime = ajAcdGetBoolean("fdatime");
+    profit = ajAcdGetBoolean("profit");
+    everythingelse = ajAcdGetBoolean("everythingelse");
 
     if (rdtime)
       ajFmtPrintF(outf, "Drug discovery development time: %d-%d years\n",

@@ -339,13 +339,13 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
      
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
-    treeprint = ajAcdGetBool("treeprint");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
-    stepbox = ajAcdGetBool("stepbox");
-    ancseq = ajAcdGetBool("ancseq");
-    dotdiff = ajAcdGetBool("dotdiff");
+    stepbox = ajAcdGetBoolean("stepbox");
+    ancseq = ajAcdGetBoolean("ancseq");
+    dotdiff = ajAcdGetBoolean("dotdiff");
 
     if(!usertree) {
       njumble = ajAcdGetInt("njumble");

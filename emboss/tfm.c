@@ -58,8 +58,8 @@ int main(int argc, char **argv)
     
     program = ajAcdGetString("program");
     outfile = ajAcdGetOutfile("outfile");
-    html    = ajAcdGetBool("html");
-    more    = ajAcdGetBool("more");
+    html    = ajAcdGetBoolean("html");
+    more    = ajAcdGetBoolean("more");
 
     cmd     = ajStrNew();
     path    = ajStrNew();

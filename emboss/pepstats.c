@@ -94,11 +94,11 @@ int main(int argc, char **argv)
     embInit("pepstats", argc, argv);
 
     a       = ajAcdGetSeqall("sequence");
-    termini = ajAcdGetBool("termini");
+    termini = ajAcdGetBoolean("termini");
     outf    = ajAcdGetOutfile("outfile");
     mfptr   = ajAcdGetDatafile("aadata");
     wfptr   = ajAcdGetDatafile("mwdata");
-    mono    = ajAcdGetBool("mono");
+    mono    = ajAcdGetBoolean("mono");
     
     substr  = ajStrNew();
 

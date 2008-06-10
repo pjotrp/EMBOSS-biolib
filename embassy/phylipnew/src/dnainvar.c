@@ -97,11 +97,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       justwts = true;
     }
 
-    printdata = ajAcdGetBool("printdata");
-    if(printdata) dotdiff = ajAcdGetBool("dotdiff");
-    progress = ajAcdGetBool("progress");
-    prntpat = ajAcdGetBool("printpattern");
-    printinv = ajAcdGetBool("printinvariant");
+    printdata = ajAcdGetBoolean("printdata");
+    if(printdata) dotdiff = ajAcdGetBoolean("dotdiff");
+    progress = ajAcdGetBoolean("progress");
+    prntpat = ajAcdGetBoolean("printpattern");
+    printinv = ajAcdGetBoolean("printinvariant");
 
      embossoutfile = ajAcdGetOutfile("outfile");   
      emboss_openfile(embossoutfile, &outfile, &outfilename);

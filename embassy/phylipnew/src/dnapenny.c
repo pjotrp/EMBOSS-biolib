@@ -135,7 +135,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     howmany = ajAcdGetInt("howmany");
     howoften = ajAcdGetInt("howoften");
-    simple = ajAcdGetBool("simple");  
+    simple = ajAcdGetBoolean("simple");  
     outgrno = ajAcdGetInt("outgrno");
     if(outgrno != 0) outgropt = true;
     else outgrno = 1;
@@ -163,12 +163,12 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       justwts = true;
     }
 
-    progress = ajAcdGetBool("progress");
-    printdata = ajAcdGetBool("printdata");
-    treeprint = ajAcdGetBool("treeprint");
+    progress = ajAcdGetBoolean("progress");
+    printdata = ajAcdGetBoolean("printdata");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
-    stepbox = ajAcdGetBool("stepbox");
-    ancseq = ajAcdGetBool("ancseq");
+    stepbox = ajAcdGetBoolean("stepbox");
+    ancseq = ajAcdGetBoolean("ancseq");
    
 
      embossoutfile = ajAcdGetOutfile("outfile");   

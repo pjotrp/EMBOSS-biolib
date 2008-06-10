@@ -85,7 +85,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
 
-  interleaved = ajAcdGetBool("inter");
+  interleaved = ajAcdGetBoolean("inter");
 
   inseed = ajAcdGetInt("randseed");
   /* make sure it's odd*/
@@ -114,9 +114,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     data = genefreqs;
 
   if (data == restsites)
-    enzymes = ajAcdGetBool("enzymes");
+    enzymes = ajAcdGetBoolean("enzymes");
   else if (data == genefreqs)
-    all = ajAcdGetBool("all");
+    all = ajAcdGetBoolean("all");
 
   testlist = ajAcdGetList ("test");
 
@@ -127,9 +127,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
   reps = ajAcdGetInt("reps");
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
   if (printdata)
     fprintf(outfile, "\nBootstrapped sequences algorithm, version %s\n\n\n",

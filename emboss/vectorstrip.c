@@ -165,11 +165,11 @@ int main(int argc, char **argv)
     outf       = ajAcdGetOutfile("outfile");
     seqout     = ajAcdGetSeqoutall("outseq");
     vec        = ajAcdGetToggle("vectorfile");
-    besthits   = ajAcdGetBool("besthits");
+    besthits   = ajAcdGetBoolean("besthits");
     fiveprime  = ajAcdGetString("linkerA");
     threeprime = ajAcdGetString("linkerB");
     vectorfile = ajAcdGetInfile("vectorsFILE");
-    allsequences = ajAcdGetBool("allsequences");
+    allsequences = ajAcdGetBoolean("allsequences");
 
     vectorlist = ajListNew();
 

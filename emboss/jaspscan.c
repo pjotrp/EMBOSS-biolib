@@ -223,7 +223,7 @@ int main(int argc, char **argv)
     excl       = ajAcdGetString("exclude");
     thresh     = ajAcdGetFloat("threshold");
     report     = ajAcdGetReport("outfile");
-    both       = ajAcdGetBool("both");
+    both       = ajAcdGetBoolean("both");
     
     jaspdir = ajStrNew();
     substr  = ajStrNew();

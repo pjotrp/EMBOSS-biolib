@@ -70,13 +70,13 @@ int main(int argc, char *argv[])
     seq2      = ajAcdGetSeq("bsequence");
     paramfile = ajAcdGetInfile("paramfile");
     eT        = ajAcdGetFloat("temperature");
-    eGU       = ajAcdGetBool("gu");
-    eclose    = ajAcdGetBool("closegu");
-    lonely    = ajAcdGetBool("lp");
-    convert   = ajAcdGetBool("convert");
+    eGU       = ajAcdGetBoolean("gu");
+    eclose    = ajAcdGetBoolean("closegu");
+    lonely    = ajAcdGetBoolean("lp");
+    convert   = ajAcdGetBoolean("convert");
     ensbases  = ajAcdGetString("nsbases");
-    etloop    = ajAcdGetBool("tetraloop");
-    dosort    = ajAcdGetBool("sort");
+    etloop    = ajAcdGetBoolean("tetraloop");
+    dosort    = ajAcdGetBoolean("sort");
     edelta    = ajAcdGetFloat("delta");
   
     edangles  = ajAcdGetList("dangles");

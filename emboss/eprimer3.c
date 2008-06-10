@@ -198,8 +198,8 @@ int main(int argc, char **argv)
     embInit("eprimer3", argc, argv);
 
     /* Global details */
-    explain_flag     = ajAcdGetBool("explainflag");
-    file_flag        = ajAcdGetBool("fileflag");
+    explain_flag     = ajAcdGetBoolean("explainflag");
+    file_flag        = ajAcdGetBoolean("fileflag");
     task             = ajAcdGetList("task");
     do_primer        = ajAcdGetToggle("primer");
     do_hybrid        = ajAcdGetToggle("hybridprobe");
@@ -215,7 +215,7 @@ int main(int argc, char **argv)
     right_input     = ajAcdGetString("reverseinput");
 
     /* Primer details */
-    pick_anyway         = ajAcdGetBool("pickanyway");
+    pick_anyway         = ajAcdGetBoolean("pickanyway");
     mispriming_library  = ajAcdGetInfile("mispriminglibraryfile");
     max_mispriming      = ajAcdGetFloat("maxmispriming");
     pair_max_mispriming = ajAcdGetFloat("pairmaxmispriming");

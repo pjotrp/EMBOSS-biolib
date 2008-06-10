@@ -95,9 +95,9 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
       mlfrac = ajAcdGetFloat("mlfrac");
     }
 
-    prntsets = ajAcdGetBool("prntsets");
-    progress = ajAcdGetBool("progress");
-    treeprint = ajAcdGetBool("treeprint");
+    prntsets = ajAcdGetBoolean("prntsets");
+    progress = ajAcdGetBoolean("progress");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
     outgrno = ajAcdGetInt("outgrno");
     if(outgrno != 0) outgropt = true;

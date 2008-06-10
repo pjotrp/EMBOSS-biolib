@@ -92,18 +92,18 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
         datasets = numseqs;
     }
 
-    restsites = ajAcdGetBool("restsites");
-    neili = ajAcdGetBool("neili");
-    if(!neili) gama = ajAcdGetBool("gamma");
+    restsites = ajAcdGetBoolean("restsites");
+    neili = ajAcdGetBoolean("neili");
+    if(!neili) gama = ajAcdGetBoolean("gamma");
     if(gama) {
       cvi = ajAcdGetFloat("gammacoefficient");
       cvi = 1.0 / (cvi * cvi);
     }
     ttratio = ajAcdGetFloat("ttratio");
     sitelength = ajAcdGetInt("sitelength");
-    lower = ajAcdGetBool("lower");
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
+    lower = ajAcdGetBoolean("lower");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
 
     xi = (ttratio - 0.5)/(ttratio + 0.5);
     xv = 1.0 - xi;

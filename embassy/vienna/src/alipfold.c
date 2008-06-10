@@ -21,11 +21,11 @@
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: alipfold.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
+static char rcsid[] = "$Id: alipfold.c,v 1.5 2008/06/10 12:51:15 rice Exp $";
 #endif
 
-#define MAX(x,y) (((x)>(y)) ? (x) : (y))
-#define MIN(x,y) (((x)<(y)) ? (x) : (y))
+#define eMAX(x,y) (((x)>(y)) ? (x) : (y))
+#define eMIN(x,y) (((x)<(y)) ? (x) : (y))
 #define PUBLIC
 #define PRIVATE static
 #define STACK_BULGE1  1   /* stacking energies for bulges of size 1 */
@@ -242,9 +242,9 @@ PRIVATE void alipf_linear(char **sequences, char *structure)
 	qbt1 *= scale[u+2];
 
 	/* interior loops with interior pair k,l */
-	for (k=i+1; k<=MIN(i+MAXLOOP+1,j-TURN-2); k++){
+	for (k=i+1; k<=eMIN(i+MAXLOOP+1,j-TURN-2); k++){
 	  u1 = k-i-1;
-	  for (l=MAX(k+TURN+1,j-1-MAXLOOP+u1); l<=j-1; l++){
+	  for (l=eMAX(k+TURN+1,j-1-MAXLOOP+u1); l<=j-1; l++){
 	    double qloop=1;
 	    if (qb[iindx[k]-l]==0) {qloop=0; continue;}
 	    for (s=0; s<n_seq; s++) {
@@ -360,7 +360,7 @@ PRIVATE void alipf_create_bppm(char **sequences, char *structure, pair_info **pi
   /* 1. exterior pair i,j and initialization of pr array */
   if(circ){
     for (i=1; i<=n; i++) {
-      for (j=i; j<=MIN(i+TURN,n); j++) pr[iindx[i]-j] = 0;
+      for (j=i; j<=eMIN(i+TURN,n); j++) pr[iindx[i]-j] = 0;
       for (j=i+TURN+1; j<=n; j++) {
 	ij = iindx[i]-j;
 	if (qb[ij]>0.) {
@@ -502,7 +502,7 @@ PRIVATE void alipf_create_bppm(char **sequences, char *structure, pair_info **pi
   } /* end if(circ)  */
   else{
     for (i=1; i<=n; i++) {
-      for (j=i; j<=MIN(i+TURN,n); j++) pr[iindx[i]-j] = 0;
+      for (j=i; j<=eMIN(i+TURN,n); j++) pr[iindx[i]-j] = 0;
       for (j=i+TURN+1; j<=n; j++) {
 	ij = iindx[i]-j;
 	if (qb[ij]>0.){
@@ -532,8 +532,8 @@ PRIVATE void alipf_create_bppm(char **sequences, char *structure, pair_info **pi
 	if (type[s]==0) type[s]=7;
       }
 
-      for (i=MAX(1,k-MAXLOOP-1); i<=k-1; i++)
-	for (j=l+1; j<=MIN(l+ MAXLOOP -k+i+2,n); j++) {
+      for (i=eMAX(1,k-MAXLOOP-1); i<=k-1; i++)
+	for (j=l+1; j<=eMIN(l+ MAXLOOP -k+i+2,n); j++) {
 	  ij = iindx[i] - j;
 	  if ((pr[ij]>0.)) {
 	    double qloop=1;
@@ -669,11 +669,11 @@ PRIVATE void scale_pf_params(unsigned int length, int n_seq)
   }
 
   /* loop energies: hairpins, bulges, interior, mulit-loops */
-  for (i=0; i<=MIN(30,length); i++) {
+  for (i=0; i<=eMIN(30,length); i++) {
     GT =  hairpin37[i]*TT;
     exphairpin[i] = exp( -GT*10./kTn);
   }
-  for (i=0; i<=MIN(30, MAXLOOP); i++) {
+  for (i=0; i<=eMIN(30, MAXLOOP); i++) {
     GT =  bulge37[i]*TT;
     expbulge[i] = exp( -GT*10./kTn);
     GT =  internal_loop37[i]*TT;
@@ -697,7 +697,7 @@ PRIVATE void scale_pf_params(unsigned int length, int n_seq)
   for (i=0; i<5; i++) {
     GT = F_ninio37[i]*TT;
     for (j=0; j<=MAXLOOP; j++)
-      expninio[i][j]=exp(-MIN(MAX_NINIO,j*GT)*10/kTn);
+      expninio[i][j]=exp(-eMIN(MAX_NINIO,j*GT)*10/kTn);
   }
   for (i=0; (i*7)<strlen(Tetraloops); i++) {
     GT = TETRA_ENTH37 - (TETRA_ENTH37-TETRA_ENERGY37[i])*TT;

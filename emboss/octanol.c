@@ -91,9 +91,9 @@ int main(int argc, char **argv)
     mult = ajAcdGetGraphxy("graph");
     datafile  = ajAcdGetDatafile("datafile");
     llen = ajAcdGetInt("width");
-    iface  = ajAcdGetBool("interfaceplot");
-    octanol = ajAcdGetBool("octanolplot");
-    difference = ajAcdGetBool("differenceplot");
+    iface  = ajAcdGetBoolean("interfaceplot");
+    octanol = ajAcdGetBoolean("octanolplot");
+    difference = ajAcdGetBoolean("differenceplot");
 
     if(!octanol_getwhitewimbleydata(datafile,&matrix[0],&err[0],&matrix2[0],
 				    &err2[0]))

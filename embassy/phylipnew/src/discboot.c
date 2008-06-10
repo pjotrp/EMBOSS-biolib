@@ -208,9 +208,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       }
     }
 
-    printdata = ajAcdGetBool("printdata");
-    if(printdata) dotdiff = ajAcdGetBool("dotdiff");
-    progress = ajAcdGetBool("progress");
+    printdata = ajAcdGetBoolean("printdata");
+    if(printdata) dotdiff = ajAcdGetBoolean("dotdiff");
+    progress = ajAcdGetBoolean("progress");
 
 
     embossoutfile = ajAcdGetOutfile("outfile");   

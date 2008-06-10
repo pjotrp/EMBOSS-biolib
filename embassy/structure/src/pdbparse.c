@@ -140,10 +140,10 @@ int main(ajint argc, char **argv)
     min_chain_size=ajAcdGetInt("chnsiz");
     max_mismatch  =ajAcdGetInt("maxmis");
     max_trim      =ajAcdGetInt("maxtrim");
-    ccfnaming   = ajAcdGetBool("ccfnaming");
-    camask     = ajAcdGetBool("camask");
-    camask1    = ajAcdGetBool("camaska");
-    atommask     = ajAcdGetBool("atommask");
+    ccfnaming   = ajAcdGetBoolean("ccfnaming");
+    camask     = ajAcdGetBoolean("camask");
+    camask1    = ajAcdGetBoolean("camaska");
+    atommask     = ajAcdGetBoolean("atommask");
     
     
     /* Check directories*/

@@ -129,7 +129,7 @@ int main (int argc, char * argv[])
 
 
     outf   = ajAcdGetOutfile("outfile"); /* output filename  */
-    ambig  = ajAcdGetBool("ambiguous");
+    ambig  = ajAcdGetBoolean("ambiguous");
     gapwt  = ajAcdGetFloat("gapweight");
     if(nuc)
     {
@@ -142,7 +142,7 @@ int main (int argc, char * argv[])
 	methodlist = ajAcdGetListSingle("protmethod");
     }
     posn   = ajAcdGetInt("position");
-    calc_a = ajAcdGetBool("calculatea");
+    calc_a = ajAcdGetBoolean("calculatea");
     var_a  = ajAcdGetFloat("parametera");
 
 

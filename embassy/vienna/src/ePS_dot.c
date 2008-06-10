@@ -16,7 +16,7 @@
 #include "fold_vars.h"
 #include "PS_dot.h"
 
-static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $";
+static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.5 2008/06/10 12:51:15 rice Exp $";
 
 #define PUBLIC
 #define  PRIVATE   static
@@ -1125,6 +1125,8 @@ int PS_color_aln(const char *structure, AjPFile filename,
     {"0.65 1","0.65 0.6", "0.65 0.2"}, /* blue   */
     {"0.81 1","0.81 0.6", "0.81 0.2"} /* violet */
   };
+
+  (void) make_pair_matrix;
 
   const char *alnPlotHeader =
 	"%%!PS-Adobe-3.0 EPSF-3.0\n"

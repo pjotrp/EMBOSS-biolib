@@ -159,7 +159,7 @@ int main(int argc, char **argv)
     logf      = ajAcdGetOutfile("logfile");    
     amode     = ajAcdGetList("amode");  
     mode      = ajAcdGetList("mode");    
-    forcetype = ajAcdGetBool("forcetype");
+    forcetype = ajAcdGetBoolean("forcetype");
     
 
     /* Convert the selected amode to an integer */

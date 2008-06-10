@@ -141,7 +141,7 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
     if(!usertree) {
       thorough = ajAcdGetToggle("thorough");
-      if(thorough) rearrfirst = ajAcdGetBool("rearrange");
+      if(thorough) rearrfirst = ajAcdGetBoolean("rearrange");
       maxtrees = ajAcdGetInt("maxtrees");
       njumble = ajAcdGetInt("njumble");
       if(njumble >0) {
@@ -158,14 +158,14 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
     thresh = ajAcdGetToggle("thresh");
     if(thresh)  threshold = ajAcdGetFloat("threshold");
-    stepbox = ajAcdGetBool("stepbox");
-    ancseq = ajAcdGetBool("ancseq");
+    stepbox = ajAcdGetBoolean("stepbox");
+    ancseq = ajAcdGetBoolean("ancseq");
 
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
-    treeprint = ajAcdGetBool("treeprint");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
-    if (ancseq || printdata) ajAcdGetBool("dotdiff");
+    if (ancseq || printdata) ajAcdGetBoolean("dotdiff");
 
      embossoutfile = ajAcdGetOutfile("outfile");   
      emboss_openfile(embossoutfile, &outfile, &outfilename);

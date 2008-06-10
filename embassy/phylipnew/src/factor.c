@@ -87,9 +87,9 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
   inputfile = ajAcdGetInfile("infile");
 
-  factorrequest = ajAcdGetBool("factors");
-  ancstrrequest = ajAcdGetBool("anc");
-  progress = ajAcdGetBool("progress");
+  factorrequest = ajAcdGetBoolean("factors");
+  ancstrrequest = ajAcdGetBoolean("anc");
+  progress = ajAcdGetBoolean("progress");
 
   embossoutfile = ajAcdGetOutfile("outfile");   
   emboss_openfile(embossoutfile, &outfile, &outfilename);

@@ -157,9 +157,9 @@ int main(int argc, char **argv)
 
     seq     = ajAcdGetSeq("sequence");
     enzymes = ajAcdGetString("enzymes");
-    sshow   = ajAcdGetBool("sshow");
-    tshow   = ajAcdGetBool("tshow");
-    allmut  = ajAcdGetBool("allmut");
+    sshow   = ajAcdGetBoolean("sshow");
+    tshow   = ajAcdGetBoolean("tshow");
+    allmut  = ajAcdGetBoolean("allmut");
     report = ajAcdGetReport ("outfile");
 
     shits  = ajListNew();

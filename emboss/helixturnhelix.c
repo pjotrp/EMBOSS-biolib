@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     substr = ajStrNew();
     matrix = ajInt2dNew();
 
-    eightyseven = ajAcdGetBool("eightyseven");
+    eightyseven = ajAcdGetBoolean("eightyseven");
 
     cols = helixturnhelix_readNab(&matrix,eightyseven);
     ajDebug("cols = %d\n",cols);

@@ -63,8 +63,8 @@ int main(int argc, char **argv)
     mapali  = ajAcdGetInfile("mapali");
     withali = ajAcdGetInfile("withali");
     o       = ajAcdGetAlign("o");
-    m       = ajAcdGetBool("m");
-    q       = ajAcdGetBool("q");
+    m       = ajAcdGetBoolean("m");
+    q       = ajAcdGetBoolean("q");
 
 
 

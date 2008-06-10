@@ -155,14 +155,14 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
   
 
-    progress = ajAcdGetBool("progress");
-    printdata = ajAcdGetBool("printdata");
-    treeprint = ajAcdGetBool("treeprint");
+    progress = ajAcdGetBoolean("progress");
+    printdata = ajAcdGetBoolean("printdata");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
 
     if(!usertree) {
       thorough = ajAcdGetToggle("thorough");
-      if(thorough) rearrfirst = ajAcdGetBool("rearrange");
+      if(thorough) rearrfirst = ajAcdGetBoolean("rearrange");
       maxtrees = ajAcdGetInt("maxtrees");
       njumble = ajAcdGetInt("njumble");
       if(njumble >0) {
@@ -185,11 +185,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
     thresh = ajAcdGetToggle("thresh");
     if(thresh)  threshold = ajAcdGetFloat("threshold");
-    stepbox = ajAcdGetBool("stepbox");
-    ancseq = ajAcdGetBool("ancseq");
-    transvp = ajAcdGetBool("transversion");
+    stepbox = ajAcdGetBoolean("stepbox");
+    ancseq = ajAcdGetBoolean("ancseq");
+    transvp = ajAcdGetBoolean("transversion");
    
-    if (ancseq || printdata) ajAcdGetBool("dotdiff");
+    if (ancseq || printdata) ajAcdGetBoolean("dotdiff");
 
  
      embossoutfile = ajAcdGetOutfile("outfile");   

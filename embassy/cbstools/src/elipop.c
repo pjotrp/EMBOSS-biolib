@@ -52,10 +52,10 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    plot    = ajAcdGetBool("plot");
-    sht     = ajAcdGetBool("short");
-    html    = ajAcdGetBool("html");
-    format  = ajAcdGetBool("format");
+    plot    = ajAcdGetBoolean("plot");
+    sht     = ajAcdGetBoolean("short");
+    html    = ajAcdGetBoolean("html");
+    format  = ajAcdGetBoolean("format");
     cutoff  = ajAcdGetInt("cutoff");
     
     cl   = ajStrNewC("LipoP ");

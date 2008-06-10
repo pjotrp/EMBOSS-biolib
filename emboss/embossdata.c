@@ -72,7 +72,7 @@ int main(int argc, char **argv)
     embInit("embossdata", argc, argv);
 
     filename = ajAcdGetString("filename");
-    fetch    = ajAcdGetBool("fetch");
+    fetch    = ajAcdGetBoolean("fetch");
     showall  = ajAcdGetToggle("showall");
     rstrs    = ajAcdGetSelect("reject");
     outf     = ajAcdGetOutfile("outfile");

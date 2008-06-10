@@ -82,15 +82,15 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     while (phylotrees[numtrees])
         numtrees++;
 
-  varywithin = ajAcdGetBool("varywithin");
-    if(varywithin) nophylo = ajAcdGetBool("nophylo");
+  varywithin = ajAcdGetBoolean("varywithin");
+    if(varywithin) nophylo = ajAcdGetBoolean("nophylo");
     else {
-      reg = ajAcdGetBool("reg");
-      writecont = ajAcdGetBool("writecont");
+      reg = ajAcdGetBoolean("reg");
+      writecont = ajAcdGetBoolean("writecont");
     }
     
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
 
      embossoutfile = ajAcdGetOutfile("outfile");   
      emboss_openfile(embossoutfile, &outfile, &outfilename);

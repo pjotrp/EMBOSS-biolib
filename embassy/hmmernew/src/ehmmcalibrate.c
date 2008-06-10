@@ -67,7 +67,7 @@ int main(int argc, char **argv)
     fixed      = ajAcdGetInt("fixed");
     mean       = ajAcdGetFloat("mean");
     num        = ajAcdGetInt("num");
-    pvm        = ajAcdGetBool("pvm");
+    pvm        = ajAcdGetBoolean("pvm");
     sd         = ajAcdGetFloat("sd");
     seed       = ajAcdGetInt("seed");
     hmmfileout = ajAcdGetOutfile("hmmfileout");

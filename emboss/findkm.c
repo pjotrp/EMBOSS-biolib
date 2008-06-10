@@ -94,7 +94,7 @@ int main(int argc, char **argv)
 
     infile  = ajAcdGetInfile("infile");
     outfile = ajAcdGetOutfile ("outfile");
-    doplot  = ajAcdGetBool("plot");
+    doplot  = ajAcdGetBoolean("plot");
     graphLB = ajAcdGetGraphxy("graphLB");
     line = ajStrNew();
 

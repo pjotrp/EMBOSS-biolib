@@ -60,7 +60,7 @@ int main(int argc, char **argv)
     format  = ajAcdGetListSingle("format");
     gmode   = ajAcdGetListSingle("gmode");
     synver  = ajAcdGetListSingle("synver");
-    keep    = ajAcdGetBool("keepall");
+    keep    = ajAcdGetBoolean("keepall");
     trunc   = ajAcdGetInt("truncate");
     outf    = ajAcdGetOutfile("outfile");    
 

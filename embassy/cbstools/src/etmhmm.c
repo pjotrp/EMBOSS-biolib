@@ -50,10 +50,10 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    plot    = ajAcdGetBool("plot");
-    html    = ajAcdGetBool("html");
-    sht     = ajAcdGetBool("short");
-    one     = ajAcdGetBool("one");
+    plot    = ajAcdGetBoolean("plot");
+    html    = ajAcdGetBoolean("html");
+    sht     = ajAcdGetBoolean("short");
+    one     = ajAcdGetBoolean("one");
     
     cl   = ajStrNewC("tmhmm ");
     fn   = ajStrNew();

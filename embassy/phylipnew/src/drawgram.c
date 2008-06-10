@@ -243,7 +243,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     else if(ajStrMatchC(getpreviewer, "i")) previewer = decregis;
     else if(ajStrMatchC(getpreviewer, "o")) previewer = other;
 
-    getgrows = ajAcdGetBool("grows");
+    getgrows = ajAcdGetBoolean("grows");
     if(getgrows) grows = horizontal;
     else grows = vertical;
 
@@ -261,7 +261,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
 
-    uselengths = ajAcdGetBool("lengths");
+    uselengths = ajAcdGetBoolean("lengths");
 
     labelrotation = ajAcdGetFloat("labelrotation");
 

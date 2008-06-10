@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     aangle    = ajAcdGetInt("aangle");
     bangle    = ajAcdGetInt("bangle");
     baseline  = ajAcdGetFloat("baseline");
-    twin      = ajAcdGetBool("double");
+    twin      = ajAcdGetBoolean("double");
 
     /* only one will be used - see variable 'plot' */
 

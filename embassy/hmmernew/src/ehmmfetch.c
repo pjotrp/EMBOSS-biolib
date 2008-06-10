@@ -55,7 +55,7 @@ int main(int argc, char **argv)
 
     database   = ajAcdGetInfile("database");
     name       = ajAcdGetString("name");
-    nhmm       = ajAcdGetBool("nhmm");
+    nhmm       = ajAcdGetBoolean("nhmm");
     outfile    = ajAcdGetOutfile("outfile");
     
 

@@ -62,7 +62,7 @@
 #ifndef __lint     
 /*@unused@*/       
 static const char rcsid[] =
-"$Id: sim4.init.c,v 1.12 2007/02/20 09:59:40 rice Exp $";
+"$Id: sim4.init.c,v 1.13 2008/06/10 12:51:15 rice Exp $";
 #endif         
            
 
@@ -777,8 +777,8 @@ AjPStr   esim4_cdsregion;
         ESIM4_OUTDEV      = ajAcdGetOutfile ("outfile");
         SIM4_OUTDEV       = ESIM4_OUTDEV->fp;
         args->ali_flag    = ajAcdGetInt ("format");
-        args->poly_flag   = ajAcdGetBool ("cliptails");
-        args->acc_flag    = ajAcdGetBool ("smallexons");
+        args->poly_flag   = ajAcdGetBoolean("cliptails");
+        args->acc_flag    = ajAcdGetBoolean("smallexons");
         esim4_strand      = ajAcdGetListSingle("strand");
         args->DRANGE      = ajAcdGetInt ("diagonal");
         args->weight      = ajAcdGetInt ("weight");
@@ -787,7 +787,7 @@ AjPStr   esim4_cdsregion;
         args->K           = ajAcdGetInt ("mspa");
         args->C           = ajAcdGetInt ("mspb");
         args->X           = ajAcdGetInt ("extend");
-        args->B           = ajAcdGetBool ("ambiguity");
+        args->B           = ajAcdGetBoolean("ambiguity");
         esim4_cdsregion   = ajAcdGetString ("cdsregion");
         args->S           = ajStrGetPtr(esim4_cdsregion);  
         args->set_K       = ajAcdGetToggle ("usermspa");

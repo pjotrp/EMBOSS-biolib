@@ -144,7 +144,7 @@ int main(int argc, char **argv)
     logf = ajAcdGetOutfile("outfile");
     wildspecies = ajAcdGetString("species");
     filename = ajAcdGetString("filename");
-    allrecords = ajAcdGetBool("allrecords");
+    allrecords = ajAcdGetBoolean("allrecords");
 
     ajStrInsertC(&release, 0, "CUTG");
     ajStrRemoveWhite(&release);

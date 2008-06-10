@@ -88,7 +88,7 @@ int main(int argc, char **argv)
     blocklist = ajAcdGetList("block");
 
     count   = ajAcdGetInt("count");
-    inframe = ajAcdGetBool("inframe");
+    inframe = ajAcdGetBoolean("inframe");
     min     = ajAcdGetInt("minimum");
     max     = ajAcdGetInt("maximum");
     other   = ajAcdGetSeqall("othersequence");

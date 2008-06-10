@@ -63,8 +63,8 @@ int main(int argc, char *argv[])
     sfile     = ajAcdGetInfile("structuresfile");
     edist     = ajAcdGetList("distance");
     ecomp     = ajAcdGetList("compare");
-    eschapiro = ajAcdGetBool("schapiro");
-    doalign   = ajAcdGetBool("doalignment");
+    eschapiro = ajAcdGetBoolean("schapiro");
+    doalign   = ajAcdGetBoolean("doalignment");
     outf      = ajAcdGetOutfile("outfile");
 
     etypes = ajStrNew();

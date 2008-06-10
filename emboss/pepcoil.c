@@ -118,9 +118,9 @@ int main(int argc, char **argv)
     window = ajAcdGetInt("window");
     report = ajAcdGetReport("outfile");
 
-    coil   = ajAcdGetBool("coil");
-    frame  = ajAcdGetBool("frame");
-    other  = ajAcdGetBool("other");
+    coil   = ajAcdGetBoolean("coil");
+    frame  = ajAcdGetBoolean("frame");
+    other  = ajAcdGetBoolean("other");
 
 
     substr = ajStrNew();

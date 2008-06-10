@@ -66,14 +66,14 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     email   = ajAcdGetString("email");
-    crc     = ajAcdGetBool("crc");
+    crc     = ajAcdGetBoolean("crc");
     applist = ajAcdGetList("appl");
     fmt     = ajAcdGetListSingle("format");
     trtab   = ajAcdGetListSingle("trtable");
     trlen   = ajAcdGetInt("trlen");
-    alt     = ajAcdGetBool("altjobs");
-    iprlook = ajAcdGetBool("iprlookup");
-    goterms = ajAcdGetBool("goterms");
+    alt     = ajAcdGetBoolean("altjobs");
+    iprlook = ajAcdGetBoolean("iprlookup");
+    goterms = ajAcdGetBoolean("goterms");
     outf    = ajAcdGetOutfile("outfile");
     
     stmp = ajStrNew();

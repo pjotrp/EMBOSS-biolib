@@ -105,7 +105,7 @@ int i;
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
   }
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
 
   njoin = ajAcdGetToggle("nj");
   if(njoin){
@@ -114,8 +114,8 @@ int i;
     outgrno = ajAcdGetInt("outgnum"); 
   }
 
-  lower = ajAcdGetBool("lt");
-  upper = ajAcdGetBool("ut");
+  lower = ajAcdGetBoolean("lt");
+  upper = ajAcdGetBoolean("ut");
 
   jumble = ajAcdGetToggle("random");
   if(jumble){
@@ -140,9 +140,9 @@ int i;
   if(mulsets)
     datasets = ajAcdGetInt("datasets");
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
   if(printdata){
     fprintf(outfile, "\nNeighbor-Joining/UPGMA method version %s\n\n",VERSION);

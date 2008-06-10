@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     plib      = ajAcdGetInfile("plibfile");
     mod       = ajAcdGetSelect("mod");
     nmotifs   = ajAcdGetInt("nmotifs");
-    text      = ajAcdGetBool("text");
+    text      = ajAcdGetBoolean("text");
     prior     = ajAcdGetSelect("prior");
     evt       = ajAcdGetFloat("evt");
     nsites    = ajAcdGetInt("nsites");
@@ -99,13 +99,13 @@ int main(int argc, char **argv)
     w         = ajAcdGetInt("w");
     minw      = ajAcdGetInt("minw");
     maxw      = ajAcdGetInt("maxw");
-    nomatrim  = ajAcdGetBool("nomatrim");
+    nomatrim  = ajAcdGetBoolean("nomatrim");
     wg        = ajAcdGetInt("wg");
     ws        = ajAcdGetInt("ws");
-    noendgaps = ajAcdGetBool("noendgaps");
-    revcomp   = ajAcdGetBool("revcomp");
-    pal       = ajAcdGetBool("pal");
-    nostatus  = ajAcdGetBool("nostatus");
+    noendgaps = ajAcdGetBoolean("noendgaps");
+    revcomp   = ajAcdGetBoolean("revcomp");
+    pal       = ajAcdGetBoolean("pal");
+    nostatus  = ajAcdGetBoolean("nostatus");
     maxiter   = ajAcdGetInt("maxiter");
     distance  = ajAcdGetFloat("distance");
     b         = ajAcdGetFloat("b");

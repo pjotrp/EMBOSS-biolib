@@ -63,7 +63,7 @@ AjPStr *methodlist;
   inf = ajAcdGetInfile("infile");
   infile = inf->fp;
 
-  all = ajAcdGetBool("all");
+  all = ajAcdGetBoolean("all");
 
   methodlist = ajAcdGetList ("method");
   if(strncmp(ajStrGetPtr(*methodlist),"Nei",3) == 0){
@@ -74,13 +74,13 @@ AjPStr *methodlist;
   else
     reynolds = true;
 
-  lower = ajAcdGetBool("lowertriangle");
+  lower = ajAcdGetBoolean("lowertriangle");
 
   mulsets = ajAcdGetToggle("multsets");
   if(mulsets)
     datasets = ajAcdGetInt("datasets");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
 }
 

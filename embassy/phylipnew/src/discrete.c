@@ -25,7 +25,7 @@ void discrete_inputdata(AjPPhyloState state, long chars)
   
   for(i=0;i<spp;i++){
     initnamestate(state,i);
-    /*    ajUser("%s/n",ajSeqsetName(seqset, i));*/
+    /*    ajUser("%s/n",ajSeqsetGetseqNameS(seqset, i));*/
     strncpy(&y[i][0],ajStrGetPtr(state->Str[i]),chars);
     y[i][chars] = '\0';
   }

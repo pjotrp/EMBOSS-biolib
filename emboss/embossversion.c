@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
     embInit("embossversion", argc, argv);
 
-    full = ajAcdGetBool("full");
+    full = ajAcdGetBoolean("full");
     outfile = ajAcdGetOutfile("outfile");
 
     if (!full) {

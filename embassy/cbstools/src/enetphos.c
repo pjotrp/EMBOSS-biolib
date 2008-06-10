@@ -55,12 +55,12 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    plot    = ajAcdGetBool("plot");
-    best    = ajAcdGetBool("best");
-    gff     = ajAcdGetBool("gff");
-    two     = ajAcdGetBool("two");
-    kinase  = ajAcdGetBool("kinase");
-    addseq  = ajAcdGetBool("addseq");
+    plot    = ajAcdGetBoolean("plot");
+    best    = ajAcdGetBoolean("best");
+    gff     = ajAcdGetBoolean("gff");
+    two     = ajAcdGetBoolean("two");
+    kinase  = ajAcdGetBoolean("kinase");
+    addseq  = ajAcdGetBoolean("addseq");
     cutoff  = ajAcdGetFloat("cutoff");
     rsd     = ajAcdGetListSingle("residue");
     

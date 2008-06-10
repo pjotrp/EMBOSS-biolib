@@ -224,7 +224,7 @@ int main(int argc, char **argv)
     maxlabels = ajAcdGetInt("maxlabels");
 
     /* to draw or not to draw the ruler */
-    Ruler = ajAcdGetBool("ruler");
+    Ruler = ajAcdGetBoolean("ruler");
 
     /* get the type of blocks */
     BlockType = ajAcdGetListSingle("blocktype");
@@ -234,12 +234,12 @@ int main(int argc, char **argv)
     InterColour = ajAcdGetInt("intercolour");
 
     /* to draw or not to draw junctions between ticks */
-    InterTicks = ajAcdGetBool("interticks");
+    InterTicks = ajAcdGetBoolean("interticks");
 
     /* get the size of the intervals between the ruler's ticks */
     GapSize = ajAcdGetInt("gapsize");
     /* to draw or not to draw vertical lines at ruler's ticks */
-    TickLines = ajAcdGetBool("ticklines");
+    TickLines = ajAcdGetBoolean("ticklines");
 
 
     /* set the output graphical context */

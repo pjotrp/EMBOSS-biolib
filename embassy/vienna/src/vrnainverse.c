@@ -84,18 +84,18 @@ int main(int argc, char *argv[])
     seq        = ajAcdGetSeq("sequence");
     paramfile  = ajAcdGetInfile("paramfile");
     eT         = ajAcdGetFloat("temperature");
-    eGU        = ajAcdGetBool("gu");
-    eclose     = ajAcdGetBool("closegu");
-    lonely     = ajAcdGetBool("lp");
-    etloop     = ajAcdGetBool("tetraloop");
+    eGU        = ajAcdGetBoolean("gu");
+    eclose     = ajAcdGetBoolean("closegu");
+    lonely     = ajAcdGetBoolean("lp");
+    etloop     = ajAcdGetBoolean("tetraloop");
     eenergy    = ajAcdGetList("energy");
     edangles   = ajAcdGetList("dangles");
     method     = ajAcdGetList("folding");
     ealpha     = ajAcdGetString("alphabet");
     final_cost = ajAcdGetFloat("final");
     repeat     = ajAcdGetInt("repeats");
-    showfails  = ajAcdGetBool("showfails");
-    succeed    = ajAcdGetBool("succeed");
+    showfails  = ajAcdGetBoolean("showfails");
+    succeed    = ajAcdGetBoolean("succeed");
     outf       = ajAcdGetOutfile("outfile");
     
     

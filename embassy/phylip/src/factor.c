@@ -86,11 +86,11 @@ AjPFile inf;
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  ancstrrequest = ajAcdGetBool("anc");
+  ancstrrequest = ajAcdGetBoolean("anc");
 
-  factorrequest = ajAcdGetBool("factors");
+  factorrequest = ajAcdGetBoolean("factors");
 
 }
 

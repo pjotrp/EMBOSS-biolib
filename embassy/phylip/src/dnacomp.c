@@ -169,19 +169,19 @@ long inseed0;
   outfile = outf->fp;
 
   /* FORMAT CANNOT BE READ IF USER TREE
-    usertree = ajAcdGetBool("besttree");
+    usertree = ajAcdGetBoolean("besttree");
     usertree =  !usertree;
   */
   usertree = false;
-  ancseq = ajAcdGetBool("allnodes");
+  ancseq = ajAcdGetBoolean("allnodes");
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
 
-  stepbox = ajAcdGetBool("stepoutput");
+  stepbox = ajAcdGetBoolean("stepoutput");
 
   trout = ajAcdGetToggle("trout");
   if(trout){

@@ -110,7 +110,7 @@ int main(int argc, char **argv)
     saltConc  = ajAcdGetFloat("saltconc");
     doThermo  = ajAcdGetToggle("thermo");
     isProduct = ajAcdGetToggle("product");
-    isRNA     = ajAcdGetBool("rna");
+    isRNA     = ajAcdGetBoolean("rna");
     doplot    = ajAcdGetToggle("plot");
 
     formamide = ajAcdGetFloat("formamide");

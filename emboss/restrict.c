@@ -110,18 +110,18 @@ int main(int argc, char **argv)
     min        = ajAcdGetInt("min");
     max        = ajAcdGetInt("max");
     sitelen    = ajAcdGetInt("sitelen");
-    blunt      = ajAcdGetBool("blunt");
-    sticky     = ajAcdGetBool("sticky");
-    single     = ajAcdGetBool("single");
-    alpha      = ajAcdGetBool("alphabetic");
-    ambiguity  = ajAcdGetBool("ambiguity");
-    plasmid    = ajAcdGetBool("plasmid");
-    commercial = ajAcdGetBool("commercial");
-    limit      = ajAcdGetBool("limit");
-    frags      = ajAcdGetBool("fragments");
-    nameit     = ajAcdGetBool("name");
+    blunt      = ajAcdGetBoolean("blunt");
+    sticky     = ajAcdGetBoolean("sticky");
+    single     = ajAcdGetBoolean("single");
+    alpha      = ajAcdGetBoolean("alphabetic");
+    ambiguity  = ajAcdGetBoolean("ambiguity");
+    plasmid    = ajAcdGetBoolean("plasmid");
+    commercial = ajAcdGetBoolean("commercial");
+    limit      = ajAcdGetBoolean("limit");
+    frags      = ajAcdGetBoolean("fragments");
+    nameit     = ajAcdGetBoolean("name");
     enzfile      = ajAcdGetDatafile("datafile");
-    ifrag      = ajAcdGetBool("solofragment");
+    ifrag      = ajAcdGetBoolean("solofragment");
     
     /* obsolete. Can be uncommented in acd file and here to reuse */
 

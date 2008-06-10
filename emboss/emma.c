@@ -126,7 +126,7 @@ int main(int argc, char **argv, char **env)
     gapw      = ajAcdGetInt("gapw");
     topdiags  = ajAcdGetInt("topdiags");
     window    = ajAcdGetInt("window");
-    nopercent = ajAcdGetBool("nopercent");
+    nopercent = ajAcdGetBoolean("nopercent");
 
     pw_matrix = ajAcdGetListSingle("pwmatrix");
     pwmc = ajStrGetCharFirst(pw_matrix);
@@ -187,9 +187,9 @@ int main(int argc, char **argv, char **env)
     ma_matrix = ajAcdGetInfile("mamatrixfile");
     gapc      = ajAcdGetFloat("gapopen");
     gapv      = ajAcdGetFloat("gapextend");
-    endgaps   = ajAcdGetBool("endgaps");
-    norgap    = ajAcdGetBool("norgap");
-    nohgap    = ajAcdGetBool("nohgap");
+    endgaps   = ajAcdGetBoolean("endgaps");
+    norgap    = ajAcdGetBoolean("norgap");
+    nohgap    = ajAcdGetBoolean("nohgap");
     gap_dist  = ajAcdGetInt("gapdist");
     hgapres   = ajAcdGetString("hgapres");
     maxdiv    = ajAcdGetInt("maxdiv");

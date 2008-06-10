@@ -497,7 +497,7 @@ static void emiraest_dobools(AjPStr *cl, AjPTable table)
 
     while(mirabools[i].qname)
     {
-	bqual = ajAcdGetBool(mirabools[i].qname);
+	bqual = ajAcdGetBoolean(mirabools[i].qname);
 	ajStrAssignC(&key,mirabools[i].qname);
 	ajStrAssignC(&prefix,"");
 

@@ -26,7 +26,7 @@ extern void init_pf_circ_fold(int length);
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[] = "$Id: vrnafold.c,v 1.7 2008/01/14 13:56:13 ajb Exp $";
+static char UNUSED rcsid[] = "$Id: vrnafold.c,v 1.8 2008/06/10 12:51:15 rice Exp $";
 #endif
 
 #define PRIVATE static
@@ -102,13 +102,13 @@ int main(int argc, char *argv[])
     confile   = ajAcdGetInfile("constraintfile");
     paramfile = ajAcdGetInfile("paramfile");
     eT        = ajAcdGetFloat("temperature");
-    ecirc     = ajAcdGetBool("circular");
-    eGU       = ajAcdGetBool("gu");
-    eclose    = ajAcdGetBool("closegu");
-    lonely    = ajAcdGetBool("lp");
-    convert   = ajAcdGetBool("convert");
+    ecirc     = ajAcdGetBoolean("circular");
+    eGU       = ajAcdGetBoolean("gu");
+    eclose    = ajAcdGetBoolean("closegu");
+    lonely    = ajAcdGetBoolean("lp");
+    convert   = ajAcdGetBoolean("convert");
     ensbases  = ajAcdGetString("nsbases");
-    etloop    = ajAcdGetBool("tetraloop");
+    etloop    = ajAcdGetBoolean("tetraloop");
     eenergy   = ajAcdGetList("energy");
     escale    = ajAcdGetFloat("scale");
     edangles  = ajAcdGetList("dangles");

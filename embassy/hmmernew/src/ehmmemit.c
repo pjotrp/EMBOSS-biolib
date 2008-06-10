@@ -57,10 +57,10 @@ int main(int argc, char **argv)
 
     hmmfile = ajAcdGetInfile("hmmfile");
     seed    = ajAcdGetInt("seed");
-    a       = ajAcdGetBool("a");
-    c       = ajAcdGetBool("c");
+    a       = ajAcdGetBoolean("a");
+    c       = ajAcdGetBoolean("c");
     nseq    = ajAcdGetInt("nseq");
-    q       = ajAcdGetBool("q");
+    q       = ajAcdGetBoolean("q");
     o       = ajAcdGetOutfile("o");
 
 

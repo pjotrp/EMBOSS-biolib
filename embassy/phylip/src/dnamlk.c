@@ -204,9 +204,9 @@ int scanned;
 
   usertree = !ajAcdGetToggle("besttree");
   if(usertree)
-    lengths = ajAcdGetBool("lengths");
+    lengths = ajAcdGetBoolean("lengths");
   else {
-    globle = ajAcdGetBool("global");
+    globle = ajAcdGetBoolean("global");
     jumble = ajAcdGetToggle("random");
     if(jumble){
       inseed = ajAcdGetInt("randseed");
@@ -299,17 +299,17 @@ int scanned;
      probcat[0] = 1.0;
    }
 
-  /*  outgropt = ajAcdGetBool("og");
+  /*  outgropt = ajAcdGetBoolean("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
   else
     outgrno = 1;
   */
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
  
   trout = ajAcdGetToggle("trout");
   if(trout){

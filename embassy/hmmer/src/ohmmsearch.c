@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ohmmsearch.c,v 1.6 2007/02/20 09:58:04 rice Exp $
+ * RCS $Id: ohmmsearch.c,v 1.7 2008/06/10 12:51:15 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -196,22 +196,22 @@ int main(int argc, char **argv)
     num_threads = ajAcdGetInt("cpu");
     domE   = ajAcdGetFloat("dome");
     domT   = ajAcdGetFloat("domt");
-    ajb = ajAcdGetBool("forward");
+    ajb = ajAcdGetBoolean("forward");
     if(ajb)
 	do_forward=TRUE;
     else
 	do_forward=FALSE;
-    ajb = ajAcdGetBool("nulltwo");
+    ajb = ajAcdGetBoolean("nulltwo");
     if(ajb)
 	do_null2=TRUE;
     else
 	do_null2=FALSE;
-    ajb = ajAcdGetBool("pvm");
+    ajb = ajAcdGetBoolean("pvm");
     if(ajb)
 	do_pvm=TRUE;
     else
 	do_pvm=FALSE;
-    ajb = ajAcdGetBool("xnu");
+    ajb = ajAcdGetBoolean("xnu");
     if(ajb)
 	do_xnu=TRUE;
     else

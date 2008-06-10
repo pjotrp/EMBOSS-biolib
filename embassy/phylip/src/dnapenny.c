@@ -213,7 +213,7 @@ AjPFile treef;
 
   howoften = ajAcdGetInt("howoften");
 
-  simple = ajAcdGetBool("simple");
+  simple = ajAcdGetBoolean("simple");
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
@@ -232,15 +232,15 @@ AjPFile treef;
   else
     outgrno = 1;
   
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  stepbox = ajAcdGetBool("steps");
+  stepbox = ajAcdGetBoolean("steps");
 
-  ancseq = ajAcdGetBool("seqatnodes");
+  ancseq = ajAcdGetBoolean("seqatnodes");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
   trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");

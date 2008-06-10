@@ -75,9 +75,9 @@ int main(int argc, char **argv)
     inf1         =  ajAcdGetInfile("classfile");
     inf2         =  ajAcdGetInfile("desinfile");
     outf         = ajAcdGetOutfile("dcffile");
-    nosegments   =  ajAcdGetBool("nosegments");
-    nomultichain =  ajAcdGetBool("nomultichain");
-    nominor      =  ajAcdGetBool("nominor");
+    nosegments   =  ajAcdGetBoolean("nosegments");
+    nomultichain =  ajAcdGetBoolean("nomultichain");
+    nominor      =  ajAcdGetBoolean("nominor");
 
 
     /*

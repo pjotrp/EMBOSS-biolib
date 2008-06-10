@@ -296,7 +296,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     else if(ajStrMatchC(getpreviewer, "i")) previewer = decregis;
     else if(ajStrMatchC(getpreviewer, "o")) previewer = other;
 
-    uselengths = ajAcdGetBool("lengths"); /* needed */
+    uselengths = ajAcdGetBoolean("lengths"); /* needed */
 
     labelrotation = ajAcdGetFloat("labelrotation");
 

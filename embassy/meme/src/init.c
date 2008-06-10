@@ -152,22 +152,22 @@ extern void init_meme(
   ajmodel = ajAcdGetList("model");
   mod = ajStrGetPtr(*ajmodel);
 
-  ajprotein = ajAcdGetBool("protein");
+  ajprotein = ajAcdGetBoolean("protein");
   if(ajprotein)
       alph = "PROTEIN";
-  ajnucleic = ajAcdGetBool("nucleic");
+  ajnucleic = ajAcdGetBoolean("nucleic");
   if(ajnucleic)
       alph = "DNA";
 
   pal=0;
-  ajpal = ajAcdGetBool("palindromes");
+  ajpal = ajAcdGetBoolean("palindromes");
   if(ajpal)
       pal=1;
-  ajpal = ajAcdGetBool("ponly");
+  ajpal = ajAcdGetBoolean("ponly");
   if(ajpal)
       pal=2;
 
-  shortn = ajAcdGetBool("shorten");
+  shortn = ajAcdGetBoolean("shorten");
   
   ajnsites = ajAcdGetFloat("nsites");
   nsites = (double) ajnsites;
@@ -189,7 +189,7 @@ extern void init_meme(
   ajprior = ajAcdGetList("prior");
   prior = ajStrGetPtr(*ajprior);
 
-  brief = ajAcdGetBool("brief");
+  brief = ajAcdGetBoolean("brief");
   if(brief)
       DOC=FALSE;
   else
@@ -215,43 +215,43 @@ extern void init_meme(
   
   PAGEWIDTH = ajAcdGetInt("page");
 
-  ajstatus = ajAcdGetBool("status");
+  ajstatus = ajAcdGetBoolean("status");
   if(ajstatus)
       NO_STATUS = FALSE;
   else
       NO_STATUS = TRUE;
 
-  VERBOSE = ajAcdGetBool("V");
+  VERBOSE = ajAcdGetBoolean("V");
 
   prob = (double) ajAcdGetFloat("prob");
 
-  strands[2] = ajAcdGetBool("cfive");
-  strands[3] = ajAcdGetBool("cthree");
-  strands[1] = ajAcdGetBool("wthree");
+  strands[2] = ajAcdGetBoolean("cfive");
+  strands[3] = ajAcdGetBoolean("cthree");
+  strands[1] = ajAcdGetBoolean("wthree");
 
   seed = ajAcdGetInt("seed");
 
   seqfrac = (double) ajAcdGetFloat("seqfrac");
 
-  ajalign = ajAcdGetBool("align");
+  ajalign = ajAcdGetBoolean("align");
   if(ajalign)
       NOALIGN = FALSE;
   else
       NOALIGN = TRUE;
 
-  TRACE = ajAcdGetBool("trace");
+  TRACE = ajAcdGetBoolean("trace");
 
-  PRINTALL = ajAcdGetBool("allprint");
+  PRINTALL = ajAcdGetBoolean("allprint");
 
-  PRINT_W  = ajAcdGetBool("wprint");
+  PRINT_W  = ajAcdGetBoolean("wprint");
 
-  PRINT_Z  = ajAcdGetBool("zprint");
+  PRINT_Z  = ajAcdGetBoolean("zprint");
 
-  PRINT_LL = ajAcdGetBool("llprint");
+  PRINT_LL = ajAcdGetBoolean("llprint");
 
-  PRINT_STARTS = ajAcdGetBool("startsprint");
+  PRINT_STARTS = ajAcdGetBoolean("startsprint");
 
-  PRINT_FASTA  = ajAcdGetBool("fastaprint");
+  PRINT_FASTA  = ajAcdGetBoolean("fastaprint");
 
   TIMER = ajAcdGetInt("timer");
   
@@ -883,4 +883,4 @@ extern void init_meme(
   *debug_file_p = debug_file;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.6 2006/07/12 15:50:45 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.7 2008/06/10 12:52:39 rice Exp $ */

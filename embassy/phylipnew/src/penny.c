@@ -146,17 +146,17 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     if(outgrno != 0) outgropt = true;
     else outgrno = 1;
 
-    simple = ajAcdGetBool("simple");
+    simple = ajAcdGetBoolean("simple");
 
 
     threshold = ajAcdGetFloat("threshold");
 
-    progress = ajAcdGetBool("progress");
-    printdata = ajAcdGetBool("printdata");
-    treeprint = ajAcdGetBool("treeprint");
+    progress = ajAcdGetBoolean("progress");
+    printdata = ajAcdGetBoolean("printdata");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
-    stepbox = ajAcdGetBool("stepbox");
-    ancseq = ajAcdGetBool("ancseq");
+    stepbox = ajAcdGetBoolean("stepbox");
+    ancseq = ajAcdGetBoolean("ancseq");
 
      embossoutfile = ajAcdGetOutfile("outfile");   
      emboss_openfile(embossoutfile, &outfile, &outfilename);

@@ -131,8 +131,8 @@ int main(int argc, char **argv)
     seq_start     = seq_begin - 1;
     outfile       = ajAcdGetOutfile("outfile");
     hwindow       = ajAcdGetInt("hwindow");
-    do_general    = ajAcdGetBool("generalplot");
-    do_hydropathy = ajAcdGetBool("hydropathyplot");
+    do_general    = ajAcdGetBoolean("generalplot");
+    do_hydropathy = ajAcdGetBoolean("hydropathyplot");
 
     aa_properties = ajAcdGetDatafile("aaproperties");
     aa_hydropathy = ajAcdGetDatafile("aahydropathy");

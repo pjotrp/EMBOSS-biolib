@@ -197,20 +197,20 @@ int i;
     threshold = (long)(threshold * 10.0 + 0.5) / 10.0;
   }
 
-  ancvar = ajAcdGetBool("ancestral");
+  ancvar = ajAcdGetBoolean("ancestral");
 
   mulsets = ajAcdGetToggle("multsets");
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
   
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  stepbox = ajAcdGetBool("steps");
+  stepbox = ajAcdGetBoolean("steps");
 
-  ancseq = ajAcdGetBool("statesatnodes");
-  treeprint = ajAcdGetBool("drawtree");
+  ancseq = ajAcdGetBoolean("statesatnodes");
+  treeprint = ajAcdGetBoolean("drawtree");
  
   trout = ajAcdGetToggle("trout");
   if(trout){

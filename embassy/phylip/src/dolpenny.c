@@ -149,13 +149,13 @@ AjPFile inf;
   inf = ajAcdGetInfile("datafile");
   infile = inf->fp;
 
-  dollo = ajAcdGetBool("dollo");
+  dollo = ajAcdGetBoolean("dollo");
 
   howmany = ajAcdGetInt("numgroups");
 
   howoften = ajAcdGetInt("howoften");
 
-  simple = ajAcdGetBool("simple");
+  simple = ajAcdGetBoolean("simple");
 
   outf = ajAcdGetOutfile("outfile");
   outfile = outf->fp;
@@ -169,15 +169,15 @@ AjPFile inf;
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
  
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  stepbox = ajAcdGetBool("steps");
+  stepbox = ajAcdGetBoolean("steps");
 
-  ancseq = ajAcdGetBool("statesatnodes");
+  ancseq = ajAcdGetBoolean("statesatnodes");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
   trout = ajAcdGetToggle("trout");
   if(trout){
     treef = ajAcdGetOutfile("treefile");

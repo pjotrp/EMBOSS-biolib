@@ -28,7 +28,7 @@ extern float energy_of_circ_struct(const char *seq, const char *structure);
 extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
 
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.10 2008/04/04 13:01:57 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.11 2008/06/10 12:51:15 rice Exp $";
 
 #define PRIVATE static
 
@@ -110,24 +110,24 @@ int main(int argc, char *argv[])
     confile   = ajAcdGetInfile("constraintfile");
     paramfile = ajAcdGetInfile("paramfile");
     eT        = ajAcdGetFloat("temperature");
-    eGU       = ajAcdGetBool("gu");
-    eclose    = ajAcdGetBool("closegu");
-    lonely    = ajAcdGetBool("lp");
+    eGU       = ajAcdGetBoolean("gu");
+    eclose    = ajAcdGetBoolean("closegu");
+    lonely    = ajAcdGetBoolean("lp");
     ensbases  = ajAcdGetString("nsbases");
-    etloop    = ajAcdGetBool("tetraloop");
+    etloop    = ajAcdGetBoolean("tetraloop");
     eenergy   = ajAcdGetList("energy");
     escale    = ajAcdGetFloat("scale");
     edangles  = ajAcdGetList("dangles");
-    mis       = !!ajAcdGetBool("most");
-    endgaps   = !!ajAcdGetBool("endgaps");
+    mis       = !!ajAcdGetBoolean("most");
+    endgaps   = !!ajAcdGetBoolean("endgaps");
     nc_fact   = (double) ajAcdGetFloat("nspenalty");
     cv_fact   = (double) ajAcdGetFloat("covariance");
 
     outf      = ajAcdGetOutfile("outfile");
     essfile   = ajAcdGetOutfile("ssoutfile");
     alifile   = ajAcdGetOutfile("alignoutfile");
-    circ      = !!ajAcdGetBool("circular");
-    doColor   = !!ajAcdGetBool("colour");
+    circ      = !!ajAcdGetBoolean("circular");
+    doColor   = !!ajAcdGetBoolean("colour");
 
 /*    dotfile   = ajAcdGetOutfile("dotoutfile"); */
     

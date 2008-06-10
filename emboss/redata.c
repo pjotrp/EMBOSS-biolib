@@ -90,9 +90,9 @@ int main(int argc, char **argv)
 
     enzyme        = ajAcdGetString("enzyme");
     outf          = ajAcdGetOutfile("outfile");
-    isoschizomers = ajAcdGetBool("isoschizomers");
-    references    = ajAcdGetBool("references");
-    suppliers     = ajAcdGetBool("suppliers");
+    isoschizomers = ajAcdGetBoolean("isoschizomers");
+    references    = ajAcdGetBoolean("references");
+    suppliers     = ajAcdGetBoolean("suppliers");
 
 
     ajStrRemoveWhite(&enzyme);

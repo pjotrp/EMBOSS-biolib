@@ -351,10 +351,10 @@ int main(int argc, char **argv)
 
     seq    = ajAcdGetSeq("sequence");
     win    = ajAcdGetInt("window");
-    dsppot = ajAcdGetBool("potential");
-    dspwea = ajAcdGetBool("poor");
-    dspinv = ajAcdGetBool("invalid");
-    dspmap = ajAcdGetBool("map");
+    dsppot = ajAcdGetBoolean("potential");
+    dspwea = ajAcdGetBoolean("poor");
+    dspinv = ajAcdGetBoolean("invalid");
+    dspmap = ajAcdGetBoolean("map");
     trshld = ajAcdGetFloat("threshold");
     outf   = ajAcdGetOutfile("outfile");
     mfptr = ajAcdGetDatafile("mwdata");
@@ -366,7 +366,7 @@ int main(int argc, char **argv)
     str    = ajStrNew();
     substr = ajStrNew();
     reslst = ajListNew();
-    mono   = ajAcdGetBool("mono");
+    mono   = ajAcdGetBoolean("mono");
     
     mwdata = embPropEmolwtRead(mfptr);
     ajFileClose(&mfptr);	  /* Close the amino acid datafile. */

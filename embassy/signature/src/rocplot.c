@@ -372,7 +372,7 @@ int main(int argc, char **argv)
        (ajStrGetCharFirst(*multimode)=='1'))
 	barbasename   = ajAcdGetString("barbasename");
     classbasename      = ajAcdGetString("classbasename");
-    norange           = ajAcdGetBool("norange");
+    norange           = ajAcdGetBoolean("norange");
     
 
     /* DIAGNOSTICS */

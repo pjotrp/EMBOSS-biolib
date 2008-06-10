@@ -117,7 +117,7 @@ int main(int argc, char **argv)
     outfile = ajAcdGetOutfile("outfile");
 
     maxmismatches = ajAcdGetInt("nummismatches");
-    overlap       = ajAcdGetBool("overlap");
+    overlap       = ajAcdGetBoolean("overlap");
 
     while(ajSeqallNext(seqall, &sequence))
     {

@@ -103,7 +103,7 @@ int main(int argc, char **argv)
     seqall     = ajAcdGetSeqall("sequence");
     opval      = -13;		/* was ajAcdGetInt */
     nval       = 2;		/* was ajAcdGetInt */
-    prokaryote = ajAcdGetBool("prokaryote");
+    prokaryote = ajAcdGetBoolean("prokaryote");
     minweight  = ajAcdGetFloat("minweight");
     report     = ajAcdGetReport("outfile");
 

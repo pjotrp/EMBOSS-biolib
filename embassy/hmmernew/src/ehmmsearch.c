@@ -73,17 +73,17 @@ int main(int argc, char **argv)
     E       = ajAcdGetFloat("E");
     T       = ajAcdGetFloat("T");
     Z       = ajAcdGetInt("Z");
-    compat  = ajAcdGetBool("compat");
+    compat  = ajAcdGetBoolean("compat");
     cpu     = ajAcdGetInt("cpu");
-    cutga   = ajAcdGetBool("cutga");
-    cuttc   = ajAcdGetBool("cuttc");
-    cutnc   = ajAcdGetBool("cutnc");
+    cutga   = ajAcdGetBoolean("cutga");
+    cuttc   = ajAcdGetBoolean("cuttc");
+    cutnc   = ajAcdGetBoolean("cutnc");
     dome    = ajAcdGetFloat("dome");
     domt    = ajAcdGetFloat("domt");
-    forward = ajAcdGetBool("forward");
-    nulltwo = ajAcdGetBool("nulltwo");
-        pvm = ajAcdGetBool("pvm");
-        xnu = ajAcdGetBool("xnu");
+    forward = ajAcdGetBoolean("forward");
+    nulltwo = ajAcdGetBoolean("nulltwo");
+        pvm = ajAcdGetBoolean("pvm");
+        xnu = ajAcdGetBoolean("xnu");
     outfile = ajAcdGetOutfile("outfile");
 
 

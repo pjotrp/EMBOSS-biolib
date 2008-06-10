@@ -4402,7 +4402,7 @@ void DoHelp(int Start)
      ajDebug("scr_restore ERR \n");
    else 
    ajStrInsertC(&whereto,0,"rm ");
-   ajSystemEnv(whereto, envptr);
+   ajSysSystemEnv(whereto, envptr);
  }
  ajStrDel(&whereto);
 */

@@ -339,7 +339,7 @@ int main(ajint argc, char **argv)
     conthresh     = ajAcdGetInt("conthresh");
     con_path      = ajAcdGetDirectory("conpath");    
     cpdb_path     = ajAcdGetDirectory("cpdbpath");    
-    filterpsim    = ajAcdGetBool("filterpsim");
+    filterpsim    = ajAcdGetBoolean("filterpsim");
     
 
 

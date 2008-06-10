@@ -932,7 +932,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     trees_in_1 = 0;
     while (phylotrees[trees_in_1])  trees_in_1++;
 
-    progress = ajAcdGetBool("progress");
+    progress = ajAcdGetBoolean("progress");
 
     outgrno = ajAcdGetInt("outgrno");
     if(outgrno != 0) outgropt = true;
@@ -943,7 +943,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     if(ajStrMatchC(disttype, "s")) dtype = PHYLIPSYMMETRIC;
     else dtype = PHYLIPBSD;
 
-    noroot = !ajAcdGetBool("noroot");
+    noroot = !ajAcdGetBoolean("noroot");
 
     tree_p = ajAcdGetListSingle("pairing");
 

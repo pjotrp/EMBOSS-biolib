@@ -14,7 +14,7 @@
  * Score an HMM against random sequence data sets;
  * set histogram fitting parameters.
  * 
- * RCS $Id: ohmmcalibrate.c,v 1.5 2007/02/20 09:58:04 rice Exp $
+ * RCS $Id: ohmmcalibrate.c,v 1.6 2008/06/10 12:51:15 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
     ajFileClose(&ajhistfile);
     lenmean    = ajAcdGetFloat("mean");
     nsample    = ajAcdGetInt("num");
-    ajpvm      = ajAcdGetBool("pvm");
+    ajpvm      = ajAcdGetBoolean("pvm");
     if(ajpvm)
 	do_pvm=TRUE;
     else

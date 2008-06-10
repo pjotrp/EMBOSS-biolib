@@ -166,7 +166,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   usertree = !ajAcdGetToggle("besttree");
       
   if(!usertree){
-    global = ajAcdGetBool("global");
+    global = ajAcdGetBoolean("global");
 
     jumble = ajAcdGetToggle("random");
     if(jumble){
@@ -191,10 +191,10 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       njumble = 1;
   }
   else{
-    lengths = ajAcdGetBool("lengths");
+    lengths = ajAcdGetBoolean("lengths");
   }
 
-  trunc8 = ajAcdGetBool("allsites");
+  trunc8 = ajAcdGetBoolean("allsites");
 
   sitelength = ajAcdGetInt("sitelen");
 
@@ -204,11 +204,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
   
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
  
   trout = ajAcdGetToggle("trout");
   if(trout){

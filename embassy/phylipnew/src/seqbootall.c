@@ -214,11 +214,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     }
     else if(ajStrMatchC(typeofdata, "r")) {
       data = restsites;
-      enzymes = ajAcdGetBool("enzymes");
+      enzymes = ajAcdGetBoolean("enzymes");
     } 
     else if(ajStrMatchC(typeofdata, "g")) {
       data = genefreqs;
-      all = ajAcdGetBool("all");
+      all = ajAcdGetBoolean("all");
     }
 
 
@@ -311,9 +311,9 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
       }
     }
 
-    printdata = ajAcdGetBool("printdata");
-    if(printdata) dotdiff = ajAcdGetBool("dotdiff");
-    progress = ajAcdGetBool("progress");
+    printdata = ajAcdGetBoolean("printdata");
+    if(printdata) dotdiff = ajAcdGetBoolean("dotdiff");
+    progress = ajAcdGetBoolean("progress");
 
 
     embossoutfile = ajAcdGetOutfile("outfile");   

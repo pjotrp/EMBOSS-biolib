@@ -162,8 +162,8 @@ int main(int argc, char **argv)
 
     seq     = ajAcdGetSeq("sequence");          /* sequence to investigate */
     enzymes = ajAcdGetString("enzymes");   /* enzyme list             */
-    sshow   = ajAcdGetBool("sshow");       /* display seq             */
-    tshow   = ajAcdGetBool("tshow");       /* display translated seq  */
+    sshow   = ajAcdGetBoolean("sshow");       /* display seq             */
+    tshow   = ajAcdGetBoolean("tshow");       /* display translated seq  */
     report = ajAcdGetReport ("outfile");     /* report filename         */
 
 

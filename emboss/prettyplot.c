@@ -212,12 +212,12 @@ int main(int argc, char **argv)
     numseq = ajSeqsetGetSize(seqset);
 
     graph             = ajAcdGetGraph("graph");
-    colourbyconsensus = ajAcdGetBool("ccolours");
-    colourbyresidues  = ajAcdGetBool("docolour");
+    colourbyconsensus = ajAcdGetBoolean("ccolours");
+    colourbyresidues  = ajAcdGetBoolean("docolour");
     shade             = ajAcdGetString("shade");
     pair              = ajAcdGetArray("pair");
     identity          = ajAcdGetInt("identity");
-    boxit             = ajAcdGetBool("box");
+    boxit             = ajAcdGetBoolean("box");
 
     ajtime = ajTimeNewTodayFmt("daytime");
 
@@ -232,7 +232,7 @@ int main(int argc, char **argv)
 	for(i=0;i<numseq;i++)
 	    AJCNEW(seqboxptr[i], ajSeqsetGetLen(seqset));
     }
-    boxcol      = ajAcdGetBool("boxcol");
+    boxcol      = ajAcdGetBoolean("boxcol");
     sboxcolval  = ajAcdGetString("boxcolval");
 
     if(boxcol)
@@ -242,19 +242,19 @@ int main(int argc, char **argv)
 	    iboxcolval = GREY;
     }
 
-    consensus = ajAcdGetBool("consensus");
+    consensus = ajAcdGetBoolean("consensus");
     if(consensus)
     {
 	AJCNEW(constr, ajSeqsetGetLen(seqset)+1);
 	constr[0] = '\0';
     }
-    shownames   = ajAcdGetBool("name");
-    shownumbers = ajAcdGetBool("number");
+    shownames   = ajAcdGetBoolean("name");
+    shownumbers = ajAcdGetBoolean("number");
     charlen     = ajAcdGetInt("maxnamelen");
     fplural     = ajAcdGetFloat("plurality");
-    portrait    = ajAcdGetBool("portrait");
-    collision   = ajAcdGetBool("collision");
-    listoptions = ajAcdGetBool("listoptions");
+    portrait    = ajAcdGetBoolean("portrait");
+    collision   = ajAcdGetBoolean("collision");
+    listoptions = ajAcdGetBoolean("listoptions");
     altstr = ajAcdGetListSingle("alternative");
     cmpmatrix   = ajAcdGetMatrix("matrixfile");
 

@@ -27,8 +27,8 @@ int main (int argc, char **argv)
     embInit("demofeatures", argc, argv);
 
     output      = ajAcdGetFeatout("outfeat");
-    sortbytype  = ajAcdGetBool("typesort");
-    sortbystart = ajAcdGetBool("startsort");
+    sortbytype  = ajAcdGetBoolean("typesort");
+    sortbystart = ajAcdGetBoolean("startsort");
 
     ajStrAssignC(&name,"seq1");
 

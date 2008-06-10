@@ -83,14 +83,14 @@ int main(int argc, char **argv)
 
     seqall      = ajAcdGetSeqall("seqall");
     menu        = ajAcdGetListSingle("menu");
-    dorag       = ajAcdGetBool("ragging");
+    dorag       = ajAcdGetBoolean("ragging");
     rag         = ajAcdGetListSingle("termini");
-    unfavoured  = ajAcdGetBool("unfavoured");
-    overlap     = ajAcdGetBool("overlap");
-    allpartials = ajAcdGetBool("allpartials");
+    unfavoured  = ajAcdGetBoolean("unfavoured");
+    overlap     = ajAcdGetBoolean("overlap");
+    allpartials = ajAcdGetBoolean("allpartials");
     report      = ajAcdGetReport("outfile");
     mfptr       = ajAcdGetDatafile("mwdata");
-    mono        = ajAcdGetBool("mono");
+    mono        = ajAcdGetBoolean("mono");
     
     /* obsolete. Can be uncommented in acd file and here to reuse */
 

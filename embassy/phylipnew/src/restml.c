@@ -341,13 +341,13 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
 
 
 
-    trunc8 = ajAcdGetBool("allsites");
+    trunc8 = ajAcdGetBoolean("allsites");
     
  
     if (!usertree) {
-      rough = ajAcdGetBool("rough");
+      rough = ajAcdGetBoolean("rough");
       if(!rough) improve = true;  
-      global = ajAcdGetBool("global");
+      global = ajAcdGetBoolean("global");
       njumble = ajAcdGetInt("njumble");
       if(njumble >0) {
         inseed = ajAcdGetInt("seed");
@@ -362,9 +362,9 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     if(outgrno != 0) outgropt = true;
     else outgrno = 1;
 
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
-    treeprint = ajAcdGetBool("treeprint");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
 
      embossoutfile = ajAcdGetOutfile("outfile");   

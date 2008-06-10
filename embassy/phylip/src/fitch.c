@@ -150,30 +150,30 @@ int i;
     treef = ajAcdGetOutfile("treefile");
     treefile = treef->fp;
   }
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
 
   usertree = ! ajAcdGetToggle("besttree");
 
   if(usertree)
-    lengths = ajAcdGetBool("length");
+    lengths = ajAcdGetBoolean("length");
 
   power = ajAcdGetFloat("power");
 
-  negallowed = ajAcdGetBool("negbranch");
+  negallowed = ajAcdGetBoolean("negbranch");
 
   outgropt = ajAcdGetToggle("og");
   if(outgropt)
     outgrno = ajAcdGetInt("outgnum"); 
 
-  lower = ajAcdGetBool("lt");
+  lower = ajAcdGetBoolean("lt");
 
-  upper = ajAcdGetBool("ut");
+  upper = ajAcdGetBoolean("ut");
 
-  replicates = ajAcdGetBool("replicates");
+  replicates = ajAcdGetBoolean("replicates");
 
 
   if (!usertree) {
-    global = ajAcdGetBool("global");
+    global = ajAcdGetBoolean("global");
 
     jumble = ajAcdGetToggle("random");
     if(jumble){
@@ -200,9 +200,9 @@ int i;
   if(mulsets)
     datasets = ajAcdGetInt("datasets");
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 }
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/

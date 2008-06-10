@@ -49,9 +49,9 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    plot    = ajAcdGetBool("plot");
-    thresh  = ajAcdGetBool("thresholds");
-    asp     = ajAcdGetBool("asparagines");
+    plot    = ajAcdGetBoolean("plot");
+    thresh  = ajAcdGetBoolean("thresholds");
+    asp     = ajAcdGetBoolean("asparagines");
     
     cl   = ajStrNewC("netNglyc ");
     fn   = ajStrNew();

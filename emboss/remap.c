@@ -148,33 +148,33 @@ int main(int argc, char **argv)
     tablename   = ajAcdGetListSingle("table");
     uppercase   = ajAcdGetRange("uppercase");
     highlight   = ajAcdGetRange("highlight");
-    threeletter = ajAcdGetBool("threeletter");
-    numberseq   = ajAcdGetBool("number");
+    threeletter = ajAcdGetBoolean("threeletter");
+    numberseq   = ajAcdGetBoolean("number");
     width       = ajAcdGetInt("width");
     length      = ajAcdGetInt("length");
     margin      = ajAcdGetInt("margin");
-    nameseq     = ajAcdGetBool("name");
-    description = ajAcdGetBool("description");
+    nameseq     = ajAcdGetBoolean("name");
+    description = ajAcdGetBoolean("description");
     offset      = ajAcdGetInt("offset");
-    html        = ajAcdGetBool("html");
+    html        = ajAcdGetBoolean("html");
     orfminsize  = ajAcdGetInt("orfminsize");
-    translation = ajAcdGetBool("translation");
-    reverse     = ajAcdGetBool("reverse");
-    cutlist     = ajAcdGetBool("cutlist");
-    flat        = ajAcdGetBool("flatreformat");
+    translation = ajAcdGetBoolean("translation");
+    reverse     = ajAcdGetBoolean("reverse");
+    cutlist     = ajAcdGetBoolean("cutlist");
+    flat        = ajAcdGetBoolean("flatreformat");
     framelist   = ajAcdGetList("frame");
     
     /*  restriction enzyme stuff */
     mincuts    = ajAcdGetInt("mincuts");
     maxcuts    = ajAcdGetInt("maxcuts");
     sitelen    = ajAcdGetInt("sitelen");
-    single     = ajAcdGetBool("single");
-    blunt      = ajAcdGetBool("blunt");
-    sticky     = ajAcdGetBool("sticky");
-    ambiguity  = ajAcdGetBool("ambiguity");
-    plasmid    = ajAcdGetBool("plasmid");
-    commercial = ajAcdGetBool("commercial");
-    limit      = ajAcdGetBool("limit");
+    single     = ajAcdGetBoolean("single");
+    blunt      = ajAcdGetBoolean("blunt");
+    sticky     = ajAcdGetBoolean("sticky");
+    ambiguity  = ajAcdGetBoolean("ambiguity");
+    plasmid    = ajAcdGetBoolean("plasmid");
+    commercial = ajAcdGetBoolean("commercial");
+    limit      = ajAcdGetBoolean("limit");
     enzymes    = ajAcdGetString("enzymes");
 
     if(!blunt  && !sticky)

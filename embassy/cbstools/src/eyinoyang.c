@@ -51,8 +51,8 @@ int main(int argc, char **argv)
 
     seqset  = ajAcdGetSeqset("sequence");
     outf    = ajAcdGetOutfile("outfile");
-    plot    = ajAcdGetBool("plot");
-    netphos = ajAcdGetBool("netphos");
+    plot    = ajAcdGetBoolean("plot");
+    netphos = ajAcdGetBoolean("netphos");
     thresh  = ajAcdGetFloat("threshold");
     format  = ajAcdGetListSingle("format");
     

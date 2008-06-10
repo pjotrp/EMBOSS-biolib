@@ -91,15 +91,15 @@ AjPFile trf;
   trf = ajAcdGetInfile("treefile");
   treefile = trf->fp;
 
-  reg = ajAcdGetBool("corplusreg");
+  reg = ajAcdGetBoolean("corplusreg");
 
   mulsets = ajAcdGetToggle("multsets");
   if(mulsets)
     numtrees = ajAcdGetInt("datasets");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 }
 
 /************ END EMBOSS GET OPTIONS ROUTINES **************************/

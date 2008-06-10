@@ -29,14 +29,14 @@
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: ProfileAln.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
+static char rcsid[] = "$Id: ProfileAln.c,v 1.5 2008/06/10 12:51:15 rice Exp $";
 #endif
 
 #define PUBLIC
 #define PRIVATE        static
-#define MIN(x,y)       (((x)<(y)) ? (x) : (y))
-#define MAX(x,y)       (((x)>(y)) ? (x) : (y))
-#define MAX3(x,y,z)    (MAX(  (MAX((x),(y))) ,(z)))
+#define eMIN(x,y)       (((x)<(y)) ? (x) : (y))
+#define eMAX(x,y)       (((x)>(y)) ? (x) : (y))
+#define MAX3(x,y,z)    (eMAX(  (eMAX((x),(y))) ,(z)))
 #define EQUAL(x,y)     (fabs((x)-(y)) <= fabs(x)*2*FLT_EPSILON)
 
 PRIVATE int *alignment[2];
@@ -96,8 +96,8 @@ PUBLIC float profile_aln(const float *T1, const char *seq1,
   for (i=1; i<=length1; i++) {
     for (j=1; j<=length2; j++) {
       float M;
-      E[i][j] = MAX(E[i-1][j]+ext, S[i-1][j]+open);
-      F[i][j] = MAX(F[i][j-1]+ext, S[i][j-1]+open);
+      E[i][j] = eMAX(E[i-1][j]+ext, S[i-1][j]+open);
+      F[i][j] = eMAX(F[i][j-1]+ext, S[i][j-1]+open);
       M = S[i-1][j-1] + PrfEditScore(T1+3*i,T2+3*j, seq1[i-1], seq2[j-1]);
       S[i][j] = MAX3(M, E[i][j], F[i][j]);
     }

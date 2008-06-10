@@ -77,17 +77,17 @@ int main(int argc, char *argv[])
     confile       = ajAcdGetInfile("constraintfile");
     paramfile     = ajAcdGetInfile("paramfile");
     eT            = ajAcdGetFloat("temperature");
-    circ          = !!ajAcdGetBool("circular");
-    eGU           = ajAcdGetBool("gu");
-    eclose        = ajAcdGetBool("closegu");
-    lonely        = ajAcdGetBool("lp");
-    convert       = ajAcdGetBool("convert");
+    circ          = !!ajAcdGetBoolean("circular");
+    eGU           = ajAcdGetBoolean("gu");
+    eclose        = ajAcdGetBoolean("closegu");
+    lonely        = ajAcdGetBoolean("lp");
+    convert       = ajAcdGetBoolean("convert");
     ensbases      = ajAcdGetString("nsbases");
-    etloop        = ajAcdGetBool("tetraloop");
+    etloop        = ajAcdGetBoolean("tetraloop");
     erange        = ajAcdGetFloat("erange");
     prange        = ajAcdGetFloat("prange");
-    subopt_sorted = !!ajAcdGetBool("sort");
-    logML         = !!ajAcdGetBool("logml");
+    subopt_sorted = !!ajAcdGetBoolean("sort");
+    logML         = !!ajAcdGetBoolean("logml");
     n_back        = ajAcdGetInt("nrandom");
    
     edangles      = ajAcdGetList("dangles");

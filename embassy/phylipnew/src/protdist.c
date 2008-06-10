@@ -574,8 +574,8 @@ void   emboss_getoptions(char *pgm, int argc, char *argv[])
     }
 
 
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
 
 
      embossoutfile = ajAcdGetOutfile("outfile");   

@@ -203,7 +203,7 @@ long inseed0;
       njumble = 1;
   }
 
-  dollo = ajAcdGetBool("dollo");
+  dollo = ajAcdGetBoolean("dollo");
 
   thresh = ajAcdGetToggle("thresh");
   if(thresh){
@@ -211,21 +211,21 @@ long inseed0;
     threshold = (long)(threshold * 10.0 + 0.5) / 10.0;
   }
 
-  ancvar = ajAcdGetBool("ancest");
+  ancvar = ajAcdGetBoolean("ancest");
 
   mulsets = ajAcdGetToggle("multsets");
   if (mulsets)
     datasets = ajAcdGetInt("datasets");
   
-  printdata = ajAcdGetBool("printdata");
+  printdata = ajAcdGetBoolean("printdata");
 
-  progress = ajAcdGetBool("progress");
+  progress = ajAcdGetBoolean("progress");
 
-  stepbox = ajAcdGetBool("steps");
+  stepbox = ajAcdGetBoolean("steps");
 
-  ancseq = ajAcdGetBool("statesatnodes");
+  ancseq = ajAcdGetBoolean("statesatnodes");
 
-  treeprint = ajAcdGetBool("drawtree");
+  treeprint = ajAcdGetBoolean("drawtree");
  
   trout = ajAcdGetToggle("trout");
   if(trout){

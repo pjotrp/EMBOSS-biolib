@@ -650,7 +650,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
         while (phylotrees[numtrees])
             numtrees++;
         usertree = true;
-        lngths = ajAcdGetBool("lengths");
+        lngths = ajAcdGetBoolean("lengths");
     }
 
     numwts = 0;
@@ -708,7 +708,7 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     }     
     else {
       rctgry = true;
-      auto_ = ajAcdGetBool("adjsite"); 
+      auto_ = ajAcdGetBoolean("adjsite"); 
       if(auto_)  {
          lambda = ajAcdGetFloat("lambda");
          lambda = 1 / lambda;
@@ -754,8 +754,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     else outgrno = 1;
 
      if(!usertree) {
-      global = ajAcdGetBool("global");
-      rough = ajAcdGetBool("rough");
+      global = ajAcdGetBoolean("global");
+      rough = ajAcdGetBoolean("rough");
       if(!rough) improve = true;  
       njumble = ajAcdGetInt("njumble");
       if(njumble >0) {
@@ -775,11 +775,11 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     }
        
 
-    printdata = ajAcdGetBool("printdata");
-    progress = ajAcdGetBool("progress");
-    treeprint = ajAcdGetBool("treeprint");
+    printdata = ajAcdGetBoolean("printdata");
+    progress = ajAcdGetBoolean("progress");
+    treeprint = ajAcdGetBoolean("treeprint");
     trout = ajAcdGetToggle("trout");
-    hypstate = ajAcdGetBool("hypstate");
+    hypstate = ajAcdGetBoolean("hypstate");
 
 
      embossoutfile = ajAcdGetOutfile("outfile");   

@@ -606,20 +606,20 @@ int main(int argc, char **argv)
 
     seqset    = ajAcdGetSeqset("sequences");
     nucmode   = ajAcdGetListSingle("nucmode");
-    revcomp   = ajAcdGetBool("revcomp");
+    revcomp   = ajAcdGetBoolean("revcomp");
     overlapw  = ajAcdGetSelectSingle("overlapw");
     linkage   = ajAcdGetListSingle("linkage");
     lmax      = ajAcdGetInt("maxfragl");
-    dna_speed = !!ajAcdGetBool("fragmat");
+    dna_speed = !!ajAcdGetBoolean("fragmat");
     
     thr_sim_score  = ajAcdGetInt("fragsim");
-    iter_cond_prob = !!ajAcdGetBool("itscore");
+    iter_cond_prob = !!ajAcdGetBoolean("itscore");
     
     threshold = ajAcdGetFloat("threshold");
-    mask      = !!ajAcdGetBool("mask");
+    mask      = !!ajAcdGetBoolean("mask");
     plot_num  = ajAcdGetInt("starnum");
 
-    quali_num = !ajAcdGetBool("dostars");
+    quali_num = !ajAcdGetBoolean("dostars");
 
     outfile   = ajAcdGetOutfile("outfile");
     seqout    = ajAcdGetSeqoutall("outseq");

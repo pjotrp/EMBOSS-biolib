@@ -97,7 +97,7 @@ int main(int argc, char **argv)
     inf       = ajAcdGetInfile("infile");
     tolerance = ajAcdGetFloat("tolerance");
     datafile  = ajAcdGetDatafile("datafile");
-    showdel   = ajAcdGetBool("showdel");
+    showdel   = ajAcdGetBoolean("showdel");
     outf      = ajAcdGetOutfile("outfile");
 
     exparray = ajDoubleNew();
