@@ -248,7 +248,8 @@ AjPTrn ajTrnNewC(const char * filename)
 /* @func ajTrnNewI ************************************************************
 **
 ** Initialises translation. Reads a translation data file called 'EGC.x'
-** where 'x' is supplied as an ajint parameter in the range 0 to 15.
+** where 'x' is supplied as an ajint parameter.
+** The filename must exist somewhere in the data path.
 ** ajTrnDel should be called when translation has ceased.
 **
 ** @param [r] trnFileNameInt [ajint] translation table file name number
