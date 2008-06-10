@@ -165,9 +165,6 @@ void ajReset(void)
     ajDebug("\nFinal Summary\n=============\n\n");
     ajUtilLoginfo();
     /*    ajBtreeExit(); */
-    ajTableExit();
-    ajListExit();
-    ajFileExit();
     ajFeatExit();
     ajSeqExit();
     ajPhyloExit();
@@ -184,6 +181,9 @@ void ajReset(void)
     ajTimeExit();
     ajRegExit();
     ajArrExit();
+    ajFileExit();
+    ajListExit();
+    ajTableExit();
     ajStrExit();
     ajMemExit();
     ajMessExit();     /* clears data for ajDebug - do this last!!!  */
