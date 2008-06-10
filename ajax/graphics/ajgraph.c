@@ -2732,16 +2732,16 @@ void ajGraphGetCharSize(float *defheight, float *currentheight)
 
 /* @func ajGraphGetOut ********************************************************
 **
-** Get the Output Device Parameters
+** Get the output page parameters
 **
-** For graph data type, sets to zero.
+** For graph data type, sets to zero as these are not applicable.
 **
-** @param [u] xp [float *] where to store the default char height
-** @param [u] yp [float *] where to the current  char height
-** @param [u] xleng [ajint *] where to store the default char height
-** @param [u] yleng [ajint *] where to the current  char height
-** @param [u] xoff [ajint *] where to store the default char height
-** @param [u] yoff [ajint *] where to the current  char height
+** @param [u] xp [float *] where to store the x position
+** @param [u] yp [float *] where to store the y position
+** @param [u] xleng [ajint *] where to store the x length
+** @param [u] yleng [ajint *] where to the y length
+** @param [u] xoff [ajint *] where to store the x offset
+** @param [u] yoff [ajint *] where to sore the y offset
 **
 ** @return [void]
 ** @@
@@ -3619,7 +3619,7 @@ void ajGraphHoriBars(ajint numofpoints, PLFLT *y, PLFLT *xmin, PLFLT *xmax)
 
 /* @func ajGraphInitSeq *******************************************************
 **
-** Creates a graph and define default values based on a sequence.
+** Initialises a graph using default values based on a sequence.
 **
 ** Existing titles and other data are unchanged
 **
