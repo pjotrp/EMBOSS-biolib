@@ -1,6 +1,8 @@
 #ajacd
+ajAcdGetBool ajAcdGetBoolean
 ajAcdGetDiscretestatesI =ajAcdGetDiscretestatesSingle 1,2 1
 ajAcdGetDiscretestatesI @ajAcdGetDiscretestatesSingle
+ajAcdGetFeat ajAcdGetFeatures
 ajAcdGetListI =ajAcdGetListSingle 1,2 1
 ajAcdGetListI @ajAcdGetListSingle
 ajAcdGetSelectI =ajAcdGetSelectSingle 1,2 1
