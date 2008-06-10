@@ -1,4 +1,47 @@
-Version 5.1.0
+Version 6.0.0
+	The sequence alignment code has been updated.Sequence alignments
+	with low gap penalties failed to allow two gaps (one in each
+	sequence) without a match in between. The embAlign functions are
+	now simplified. Scores are returned by the PathCalc functions. The
+	Walk functions that walk through the path and return the aligned
+	sequences are faster and need fewer parameters. Profile alignments
+	occasionally duplicated residues in the sequence around gap
+	positions. Fast alignments around a limited width include
+	additional residues at each end and require an offset rather than
+	separate start positions. The offset if the difference between the
+	two start positions used in 5.0.0 and earlier releases.
+
+	Eprimer3 citations are corrected in the help text (from the ACD
+	file) and in the documentation. The citation errors were traced to
+	the original primer3_core documentation which has now been
+	corrected.
+
+	Wordmatch could confuse overlapping matches. It occasionally
+	extended the wrong match and missed a corresponding new match.
+
+	Seqmatchall results were correct with the default output
+	format which reports match positions, but gave incorrect results
+	with some other local alignment formats that include the sequence.
+	Seqmatchall now stores alignments in the same way as other local
+	alignment applications, and the alignment internals are corrected
+	to ensure other applictaiopns will not have the same problem.
+
+	Emma was officially supporting clustalw 1.83. Issues with clustalw
+	2.0 are now resolved and this version is supported if clustalw2 is
+	installed. Emma executes an applications called clustalw (not
+	clustalw2) so version 2.0 must be installed under this name or an
+	environment variable EMBOSS_CLUSTALW needs to be defined to point
+	to the executable clustalw2 file.
+
+	Sequence format "selex" allows invalid sequence data files to be
+	accepted as input. Selex format is still available but is no
+	longer included in the formats that can be automatically
+	detected. Wehn reading selex format data, users need to put
+	"-sformat selex" on the command line, or specify "selex::" at the
+	from of the USA. See the HMMER (old version EMBASSY package)
+	documentation for examples. HMMERNEW (recommended) examples use
+	Stockholm format and so are unchanged.
+
 	Program dbxfasta now defaults to a filename of "*.fasta"
 	The previous default "*.dat" is not commonly used for FASTA format
 	databases.
