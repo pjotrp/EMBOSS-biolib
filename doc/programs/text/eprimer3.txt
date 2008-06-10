@@ -934,12 +934,14 @@ Notes
 
    The Whitehead Institute program that is run by this program is
    available from: http://primer3.sourceforge.net/
-   (Then see the link Download and then 'Release 1.1')
+   (Then see the link Download and then 'Release 1.1.4')
 
-   The version that is run by this program is 3.1.1 currently available
-   from: The Whitehead Institute's primer3 program is
+   Earlier versions are also supported. We expect later versions to also
+   work - please contact the EMBOSS team if you find any problems.
+
+   The Whitehead Institute's primer3 program states:
    We request but do not require that use of this software be cited in
-   publications as
+   publications as:
 
    Steve Rozen and Helen J. Skaletsky (2000) Primer3 on the WWW for
    general users and for biologist programmers. In: Krawetz S, Misener S

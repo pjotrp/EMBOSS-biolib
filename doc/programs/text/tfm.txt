@@ -524,9 +524,21 @@ wordcount        Counts words of specified size in a DNA or protein sequence
 PROTEIN MOTIFS
 antigenic        Finds antigenic sites in proteins
 digest           Protein proteolytic enzyme or reagent cleavage digest
+echlorop         Reports presence of chloroplast transit peptides
+eiprscan         Motif detection
+elipop           Prediction of lipoproteins
 emast            Motif detection
 ememe            Motif detection
+enetnglyc        Reports N-glycosylation sites in human proteins
+enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian p
+roteins
+enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic p
+roteins
 epestfind        Finds PEST motifs as potential proteolytic cleavage sites
+eprop            Reports propeptide cleavage sites in proteins
+esignalp         Reports protein signal cleavage sites
+etmhmm           Reports transmembrane helices
+eyinoyang        Reports O-(beta)-GlcNAc attachment sites
 fuzzpro          Protein pattern search
 fuzztran         Protein pattern search after translation
 helixturnhelix   Report nucleic acid binding motifs
@@ -657,6 +669,7 @@ dotmatcher       Displays a thresholded dotplot of two sequences
 dotpath          Non-overlapping wordmatch dotplot of two sequences
 dottup           Displays a wordmatch dotplot of two sequences
 dreg             Regular expression search of a nucleotide sequence
+echlorop         Reports presence of chloroplast transit peptides
 eclique          Largest clique program
 econsense        Majority-rule and strict consensus tree
 econtml          Continuous character Maximum Likelihood method
@@ -684,7 +697,9 @@ ehmmindex        Create a binary SSI index for an HMM database
 ehmmpfam         Search one or more sequences against an HMM database
 ehmmsearch       Search a sequence database with a profile HMM
 einverted        Finds DNA inverted repeats
+eiprscan         Motif detection
 ekitsch          Fitch-Margoliash method with contemporary tips
+elipop           Prediction of lipoproteins
 emast            Motif detection
 embossdata       Finds or fetches data files read by EMBOSS programs
 embossversion    Writes the current EMBOSS version number
@@ -696,21 +711,30 @@ emma             Multiple alignment program - interface to ClustalW program
 emnu             Simple menu of EMBOSS applications
 emowse           Protein identification by mass spectrometry
 eneighbor        Phylogenies from distance matrix by N-J or UPGMA method
+enetnglyc        Reports N-glycosylation sites in human proteins
+enetoglyc        Reports mucin type GalNAc O-glycosylation sites in mammalian p
+roteins
+enetphos         Reports ser, thr and tyr phosphorylation sites in eukaryotic p
+roteins
 entret           Reads and writes (returns) flatfile entries
 epenny           Penny algorithm, branch-and-bound
 epestfind        Finds PEST motifs as potential proteolytic cleavage sites
 eprimer3         Picks PCR primers and hybridization oligos
+eprop            Reports propeptide cleavage sites in proteins
 eprotdist        Protein distance algorithm
 eprotpars        Protein parsimony algorithm
 equicktandem     Finds tandem repeats
 erestml          Restriction site Maximum Likelihood method
 eseqboot         Bootstrapped sequences algorithm
+esignalp         Reports protein signal cleavage sites
 esim4            Align an mRNA to a genomic DNA sequence
 est2genome       Align EST and genomic DNA sequences
 etandem          Looks for tandem repeats in a nucleotide sequence
+etmhmm           Reports transmembrane helices
 extractalign     Extract regions from a sequence alignment
 extractfeat      Extract features from a sequence
 extractseq       Extract regions from a sequence
+eyinoyang        Reports O-(beta)-GlcNAc attachment sites
 fclique          Largest clique program
 fconsense        Majority-rule and strict consensus tree
 fcontml          Gene frequency and continuous character Maximum Likelihood
