@@ -900,7 +900,7 @@ void ajListSortUnique(AjPList list,
 	return;
 
     ajListSort(list, sort1);
-    ajListTrace(list);
+    /*ajListTrace(list);*/
 
     iter = ajListIterNew(list);
     while(!ajListIterDone(iter))
@@ -2535,6 +2535,7 @@ __deprecated void* ajListIterBackNext(AjIList iter)
 **
 ** @nam4rule   Insert  Insert a new value at iterator position
 ** @nam4rule   Remove  Remove value at iterator position
+** @nam4rule   Rewind  Rewind list to start
 **
 ** @argrule * iter [AjIList] String iterator
 ** @argrule Insert x [void*] Value
