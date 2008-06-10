@@ -4988,10 +4988,11 @@ static int seqCdEntryCmp(const void* pa, const void* pb)
     a = *(SeqPCdEntry const *) pa;
     b = *(SeqPCdEntry const *) pb;
 
+    /*
     ajDebug("seqCdEntryCmp %x %d %d : %x %d %d\n",
 	     a, a->div, a->annoff,
 	     b, b->div, b->annoff);
-
+    */
     if(a->div != b->div)
 	return (a->div - b->div);
 
@@ -5047,27 +5048,30 @@ static AjBool seqCdQryNext(AjPSeqQuery qry)
     ajListPop(qryd->List, &item);
     entry = (SeqPCdEntry) item;
 
+    /*
     ajDebug("entry: %x div: %d (%d) ann: %d seq: %d\n",
 	    entry, entry->div, qryd->div, entry->annoff, entry->seqoff);
-
+    */
     qryd->idnum = entry->annoff - 1;
 
+    /*
     ajDebug("idnum: %d\n", qryd->idnum);
-
+    */
     qryd->Samefile = ajTrue;
     if(entry->div != qryd->div)
     {
 	qryd->Samefile = ajFalse;
 	qryd->div = entry->div;
-	ajDebug("div: %d\n", qryd->div);
+	/*ajDebug("div: %d\n", qryd->div);*/
 	if(!seqCdQryFile(qry))
 	    return ajFalse;
     }
 
+    /*
     ajDebug("Offsets(cd) %d %d\n", entry->annoff, entry->seqoff);
     ajDebug("libr %x\n", qryd->libr);
     ajDebug("libr %F\n", qryd->libr);
-
+    */
     ajFileSeek(qryd->libr, entry->annoff,0);
     if(qryd->libs)
 	ajFileSeek(qryd->libs, entry->seqoff,0);
