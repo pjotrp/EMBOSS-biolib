@@ -160,10 +160,17 @@ char* ajCharNewC(const char* txt)
     char* cp;
     ajuint len;
 
-    len = strlen(txt);
-    cp = (char*) AJALLOC0(len+1);
-    memmove(cp, txt, len+1);
-
+    if(txt)
+    {
+        len = strlen(txt);
+        cp = (char*) AJALLOC0(len+1);
+        memmove(cp, txt, len+1);
+    }
+    else
+    {
+        cp = (char*) AJALLOC0(1);
+    }
+    
     return cp;
 }
 
@@ -251,14 +258,21 @@ char* ajCharNewResC(const char* txt, ajuint size)
     ajuint ilen;
 
     isize = size;
-    ilen = strlen(txt);
+    if(txt)
+    {
+        ilen = strlen(txt);
 
-    if(ilen >= isize)
-	isize = ilen + 1;
+        if(ilen >= isize)
+            isize = ilen + 1;
 
-    cp = (char*) AJALLOC0(isize);
-    memmove(cp, txt, ilen+1);
-
+        cp = (char*) AJALLOC0(isize);
+        memmove(cp, txt, ilen+1);
+    }
+    else
+    {
+        cp = (char*) AJALLOC0(isize);
+    }
+   
     return cp;
 }
 
@@ -2417,7 +2431,10 @@ AjBool ajStrAssignC(AjPStr* Pstr, const char* txt)
 
     if(!*Pstr)
     {
-	*Pstr = ajStrNewC(txt);
+	if(txt)
+            *Pstr = ajStrNewC(txt);
+        else
+            *Pstr = ajStrNew();
 	return ajTrue;
     }
 
