@@ -400,12 +400,13 @@ static void prophet_scan_profile(const AjPStr substr, const AjPStr name,
     AjPSeq seqn=NULL;
     
 
-    embAlignProfilePathCalc(ajStrGetPtr(substr),mlen,slen,opencoeff,extendcoeff,
-			    path,fmatrix,compass,0);
+    score=embAlignProfilePathCalc(ajStrGetPtr(substr),mlen,slen,
+                                  opencoeff,extendcoeff,
+                                  path,fmatrix,compass,0);
 
-    score=embAlignScoreProfileMatrix(path,compass,opencoeff,extendcoeff,
+    /*score=embAlignScoreProfileMatrix(path,compass,opencoeff,extendcoeff,
 				     substr,mlen,slen,fmatrix,&start1,
-				     &start2);
+				     &start2);*/
 
     embAlignWalkProfileMatrix(path,compass,opencoeff,extendcoeff,cons,
 			      substr,m,n,mlen,slen,fmatrix,&start1,

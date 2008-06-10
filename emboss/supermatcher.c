@@ -123,8 +123,8 @@ int main(int argc, char **argv)
     AjPMatrixf matrix;
     AjPSeqCvt cvt = 0;
     float **sub;
-    ajint *compass = 0;
-    float *path = 0;
+    ajint *compass = NULL;
+    float *path = NULL;
 
     float gapopen;
     float gapextend;
@@ -161,9 +161,9 @@ int main(int argc, char **argv)
     /* obsolete. Can be uncommented in acd file and here to reuse */
 
     /* outf      = ajAcdGetOutfile("originalfile"); */
-    /* show      = ajAcdGetBool("showinternals");*/
-    /* scoreonly = ajAcdGetBool("scoreonly"); */
-    /* showalign = ajAcdGetBool("showalign"); */
+    /* show      = ajAcdGetBoolean("showinternals");*/
+    /* scoreonly = ajAcdGetBoolean("scoreonly"); */
+    /* showalign = ajAcdGetBoolean("showalign"); */
 
     gapopen   = ajRoundF(gapopen, 8);
     gapextend = ajRoundF(gapextend, 8);
@@ -231,7 +231,7 @@ int main(int argc, char **argv)
 
 	    if(end1-start1 > oldmax)
 	    {
-		oldmax = ((end1-start1)+1)*width;
+		oldmax = ((end1-start1)+1)+width;
 		AJRESIZE(path,oldmax*width*sizeof(float));
 		AJRESIZE(compass,oldmax*width*sizeof(ajint));
 		ajDebug("++ resize to oldmax: %d\n", oldmax);
@@ -245,22 +245,18 @@ int main(int argc, char **argv)
 		     start1, end1, (end1 - start1 + 1), lena,
 		     start2, end2, (end2 - start2 + 1), lenb);
 
-	    embAlignPathCalcFast(&p[start1],&q[start2],
-				 end1-start1+1,end2-start2+1,
-				 gapopen,gapextend,path,sub,cvt,
-				 compass,show,width);
-
-
-	    ajDebug("Calling embAlignScoreSWMatrixFast\n");
-
-	    score = embAlignScoreSWMatrixFast(path,compass,gapopen,gapextend,
-					      a,b,end1-start1+1,end2-start2+1,
-					      sub,cvt,&start1,&start2,width);
+	    score = embAlignPathCalcSWFast(&p[start1],&q[start2],
+                                           end1-start1+1,end2-start2+1,
+                                           0,width,
+                                           gapopen,gapextend,
+                                           path,sub,cvt,
+                                           compass,show);
 
 	    if(scoreonly)
 	    {
 		if(outf)
-		    ajFmtPrintF(outf,"%s %s %.2f\n",ajSeqGetNameC(a),ajSeqGetNameC(b),
+		    ajFmtPrintF(outf,"%s %s %.2f\n",
+                                ajSeqGetNameC(a),ajSeqGetNameC(b),
 				score);
 	    }
 	    else
@@ -268,7 +264,8 @@ int main(int argc, char **argv)
 		ajDebug("Calling embAlignWalkSWMatrixFast\n");
 		embAlignWalkSWMatrixFast(path,compass,gapopen,gapextend,a,b,
 					 &m,&n,end1-start1+1,end2-start2+1,
-					 sub,cvt,&start1,&start2,width);
+					 0,width,
+                                         &start1,&start2);
 
 		ajDebug("Calling embAlignPrintLocal\n");
 		if(outf)
