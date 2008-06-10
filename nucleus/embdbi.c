@@ -1711,7 +1711,7 @@ ajuint embDbiMemWriteFields(const AjPStr dbname,const  AjPStr release,
     ajuint itoken = 0;
     ajuint idup   = 0;
     EmbPField fieldData    = NULL;
-    static char* lastfd    = NULL;
+    static char* lastfd    = "";
     ajuint lastidnum = 0;
 
     ajStrAssignC(&field, dbiFieldFile(fieldname));
