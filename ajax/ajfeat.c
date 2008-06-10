@@ -8117,7 +8117,7 @@ void ajFeatSetScore(AjPFeature thys, float score)
 
 /* @func ajFeatSetStrand ******************************************************
 **
-** Sets the score for a feature
+** Sets the strand for a feature
 **
 ** @param [u] thys [AjPFeature] Feature
 ** @param [r] rev [AjBool] True if reverse strand
