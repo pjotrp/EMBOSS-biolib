@@ -30,7 +30,7 @@ mytest_SOURCES = mytest.c
 
 
 if LOCALLINK
-LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
+LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajaxg.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)
 else
-LDADD = -L${embprefix}/lib -lnucleus -lajax -leplplot $(XLIB)
+LDADD = -L${embprefix}/lib -lnucleus -lajaxg -lajax -leplplot $(XLIB)
 endif
