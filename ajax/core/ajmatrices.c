@@ -547,9 +547,9 @@ void ajMatrixChar(const AjPMatrix thys, ajint i, AjPStr *label)
 
 /* @func ajMatrixfChar ********************************************************
 **
-** Returns the sequence character conversion table for a matrix.
+** Returns the sequence character conversion table for a floating point matrix.
 ** This table converts any character defined in the matrix to a
-** positive integer, and any other character is converted to zero.
+** floating point number, and any other character is converted to zero.
 **
 ** @param [r] thys [const AjPMatrixf] Matrix object
 ** @param [r] i [ajint] Character index
