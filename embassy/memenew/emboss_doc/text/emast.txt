@@ -926,22 +926,34 @@ Known bugs
 
 See also
 
-    Program name                         Description
-   antigenic      Finds antigenic sites in proteins
-   digest         Protein proteolytic enzyme or reagent cleavage digest
-   ememe          Motif detection
-   epestfind      Finds PEST motifs as potential proteolytic cleavage sites
-   fuzzpro        Protein pattern search
-   fuzztran       Protein pattern search after translation
+   Program name Description
+   antigenic Finds antigenic sites in proteins
+   digest Protein proteolytic enzyme or reagent cleavage digest
+   echlorop Reports presence of chloroplast transit peptides
+   eiprscan Motif detection
+   elipop Prediction of lipoproteins
+   ememe Motif detection
+   enetnglyc Reports N-glycosylation sites in human proteins
+   enetoglyc Reports mucin type GalNAc O-glycosylation sites in mammalian
+   proteins
+   enetphos Reports ser, thr and tyr phosphorylation sites in eukaryotic
+   proteins
+   epestfind Finds PEST motifs as potential proteolytic cleavage sites
+   eprop Reports propeptide cleavage sites in proteins
+   esignalp Reports protein signal cleavage sites
+   etmhmm Reports transmembrane helices
+   eyinoyang Reports O-(beta)-GlcNAc attachment sites
+   fuzzpro Protein pattern search
+   fuzztran Protein pattern search after translation
    helixturnhelix Report nucleic acid binding motifs
-   oddcomp        Find protein sequence regions with a biased composition
-   omeme          Motif detection
-   patmatdb       Search a protein sequence with a motif
-   patmatmotifs   Search a PROSITE motif database with a protein sequence
-   pepcoil        Predicts coiled coil regions
-   preg           Regular expression search of a protein sequence
-   pscan          Scans proteins using PRINTS
-   sigcleave      Reports protein signal cleavage sites
+   oddcomp Find protein sequence regions with a biased composition
+   omeme Motif detection
+   patmatdb Search a protein sequence with a motif
+   patmatmotifs Search a PROSITE motif database with a protein sequence
+   pepcoil Predicts coiled coil regions
+   preg Regular expression search of a protein sequence
+   pscan Scans proteins using PRINTS
+   sigcleave Reports protein signal cleavage sites
 
 Author(s)
 
