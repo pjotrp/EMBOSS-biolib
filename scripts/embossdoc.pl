@@ -589,6 +589,8 @@ $filestrstatic = "<p><b>Datatypes:</b> ";
 
 $ftable = "";
 
+$lastfname = "";
+
 ### cppreserved is a list of C++ reserved words not to be used as param names.
 ### test is whether to test the return etc.
 ### body is whether to print the body code
