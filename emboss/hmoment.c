@@ -308,7 +308,7 @@ static float hmoment_calchm(const char *p, int pos, int window, ajint angle)
     for(i=0;i<window;++i)
     {
 	res = p[pos+i];
-	h   = hydata[ajAZToInt(res)];
+	h   = hydata[ajBasecodeToInt(res)];
 
 	sumsin  += (h * sin(ajDegToRad((float)tangle)));
 	sumcos  += (h * cos(ajDegToRad((float)tangle)));

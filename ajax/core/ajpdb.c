@@ -6751,10 +6751,12 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 		if((ajUint2dGet(cmap->Mat, x, y)==1))
 		{
 		    /* Assign residue id. */
-		    if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq1, x), &res1))
+		    if(!ajResidueToTriplet(ajStrGetCharPos(cmap->Seq1, x),
+                                           &res1))
 			ajFatal("Index out of range in ajCmapWrite");
 		
-		    if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq1, y), &res2))
+		    if(!ajResidueToTriplet(ajStrGetCharPos(cmap->Seq1, y),
+                                           &res2))
 			ajFatal("Index out of range in ajCmapWrite");
 
 		    /* Print out the contact. */
@@ -6771,10 +6773,12 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 		if((ajUint2dGet(cmap->Mat, x, y)==1))
 		{
 		    /* Assign residue id. */
-		    if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq1, x), &res1))
+		    if(!ajResidueToTriplet(ajStrGetCharPos(cmap->Seq1, x),
+                                           &res1))
 			ajFatal("Index out of range in ajCmapWrite");
 		
-		    if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq2, y), &res2))
+		    if(!ajResidueToTriplet(ajStrGetCharPos(cmap->Seq2, y),
+                                           &res2))
 			ajFatal("Index out of range in ajCmapWrite");
 
 		    /* Print out the contact. */
@@ -6789,7 +6793,7 @@ AjBool   ajCmapWrite(AjPFile outf, const AjPCmap cmap)
 	    if((ajUint2dGet(cmap->Mat, 0, x)==1))
 	    {
 		/* Assign residue id. */
-		if(!ajBaseAa1ToAa3(ajStrGetCharPos(cmap->Seq1, x), &res1))
+		if(!ajResidueToTriplet(ajStrGetCharPos(cmap->Seq1, x), &res1))
 		    ajFatal("Index out of range in ajCmapWrite");
 		
 		/* Print out the contact. */

@@ -3964,7 +3964,3 @@ void ajListstrIterTrace(const AjIList iter)
 
     return;
 }
-
-
-
-

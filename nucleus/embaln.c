@@ -1754,7 +1754,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
     /* First initialise the first column and row */
     for(column=0;column<seqlen;++column)
     {
-	path[column] = pmatrix[0][ajAZToInt(a[column])];
+	path[column] = pmatrix[0][ajBasecodeToInt(a[column])];
         if(path[column]<0.0)
             path[column]=0.0;
 	compass[column] = DIAG;
@@ -1763,7 +1763,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 
     for(row=0;row<proflen;++row)
     {
-	path[row*seqlen] = pmatrix[row][ajAZToInt(*a)];
+	path[row*seqlen] = pmatrix[row][ajBasecodeToInt(*a)];
         if(path[row*seqlen]<0.0)
             path[row*seqlen]=0.0;
 	compass[row*seqlen] = DIAG;
@@ -1780,7 +1780,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 
         while(column!=seqlen)
         {
-	    fmscore = pmatrix[row][ajAZToInt(a[column])];
+	    fmscore = pmatrix[row][ajBasecodeToInt(a[column])];
 
 	    /* Get diag score */
 	    mscore = fmscore + path[(row-1)*seqlen+(column-1)];
@@ -2114,7 +2114,7 @@ void embAlignPrintProfile(AjPFile outf,
 		ajStrAppendC(&fm," ");
 		continue;
 	    }
-	    match=pmatrix[cpos][ajAZToInt(q[i])];
+	    match=pmatrix[cpos][ajBasecodeToInt(q[i])];
 
 	    if(p[i]==q[i])
 	    {

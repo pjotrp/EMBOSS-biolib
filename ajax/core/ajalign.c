@@ -4562,6 +4562,210 @@ void ajAlignPrintFormat(AjPFile outf, AjBool full)
     return;
 }
 
+/* @funcstatic alignConsSet ***************************************************
+**
+** Sets consensus to be a copy of a numbered sequence
+**
+** @param [r] thys [const AjPAlign] Alignment object
+** @param [r] iali [ajint] alignment number
+** @param [r] numseq [ajint] Sequence number to use as the consensus
+** @param [w] cons [AjPStr*] the created consensus sequence
+** @return [AjBool] True on success
+******************************************************************************/
+
+static AjBool alignConsSet(const AjPAlign thys, ajint iali,
+			   ajint numseq, AjPStr *cons)
+{
+    ajint   nseqs;
+    ajint   mlen;
+    
+    ajint   kkpos;		/* alignment position loop variable */
+    
+    const char *seqcharptr;
+    char gapch;
+    AlignPData data = NULL;
+    const AjPSeq* seqs;
+    const AjPSeq seq;
+
+    data = alignData(thys, iali);
+    seqs = alignSeqs(thys, iali);
+
+    nseqs   = thys->Nseqs;
+    mlen    = data->LenAli;
+    
+    ajDebug("alignConsSet iali:%d numseq:%d nseqs:%d mlen:%d\n",
+	    iali, numseq, nseqs, mlen);
+        
+    gapch = '-';
+    
+    seq = seqs[numseq];
+    seqcharptr = ajSeqGetSeqC(seq);
+
+    ajStrAssignClear(cons);
+
+    /* For each position in the alignment, calculate consensus character */
+    
+    for(kkpos=0; kkpos<data->SubOffset[0]; kkpos++)
+    {
+	ajStrAppendK(cons, gapch);
+    }
+
+    for(kkpos=0; kkpos< mlen; kkpos++)
+    {
+	ajStrAppendK(cons,seqcharptr[kkpos+data->SubOffset[numseq]]);	
+    }
+    
+    /* ajDebug("ret ident:%d sim:%d gap:%d len:%d\n",
+	    *retident, *retsim, *retgap, *retlen); */
+
+
+    return ajTrue;    
+}
+
+
+/* @func ajAlignConsAmbig *************************************************
+**
+** Calculates alignment consensus of ambiguity characters from a sequence set.
+**
+** @param [r] thys [const AjPSeqset] Sequence set.
+** @param [w] cons [AjPStr*] the created consensus sequence
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+AjBool ajAlignConsAmbig(const AjPSeqset thys, AjPStr *cons)
+{
+    if(ajSeqsetIsNuc(thys))
+        return ajAlignConsAmbigNuc(thys, cons);
+    else
+        return ajAlignConsAmbigProt(thys, cons);
+}
+
+
+
+/* @func ajAlignConsAmbigNuc **************************************************
+**
+** Calculates alignment consensus of ambiguity characters from a sequence set.
+**
+** @param [r] thys [const AjPSeqset] Sequence set.
+** @param [w] cons [AjPStr*] the created consensus sequence
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+AjBool ajAlignConsAmbigNuc(const AjPSeqset thys, AjPStr *cons)
+{
+    ajint   iseq;	     /* iterate over sequences (outer loop) */
+    
+    ajint   nseqs;
+    ajint   mlen;
+    AjBool  isgap;
+    ajint   kipos;	   /* alignment position */
+    
+    const char **seqcharptr;
+    char res;
+    ajuint binres;
+
+    void *freeptr = NULL;
+
+    nseqs   = thys->Size;
+    mlen    = thys->Len;
+    
+    AJCNEW(seqcharptr,nseqs);
+
+    /* ajDebug("fplural:%.2f ident:%.1f mlen: %d\n",
+	    fplural, ident, mlen); */
+    
+    for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
+	seqcharptr[iseq] =  ajSeqsetGetseqSeqC(thys, iseq);
+    
+    /* For each position in the alignment, calculate consensus character */
+    
+    for(kipos=0; kipos< mlen; kipos++)
+    {
+        binres = 0;
+        isgap = ajFalse;
+	for(iseq=0;iseq<nseqs;iseq++)
+	{
+	    if(seqcharptr[iseq][kipos] == ' ' ||
+	       seqcharptr[iseq][kipos] == '-')
+                isgap = ajTrue;
+            binres |= ajBaseAlphaToBin(seqcharptr[iseq][kipos]);
+	}
+        res = ajBaseBinToAlpha(binres);
+        if(isgap)
+            res = (char)tolower((int)res);
+	
+	ajStrAppendK(cons,res);
+    }
+
+    freeptr = (void *) seqcharptr;
+    AJFREE(freeptr);
+
+    return ajTrue;    
+}
+
+
+/* @func ajAlignConsAmbigProt *************************************************
+**
+** Calculates alignment consensus of ambiguity characters from a sequence set.
+**
+** @param [r] thys [const AjPSeqset] Sequence set.
+** @param [w] cons [AjPStr*] the created consensus sequence
+** @return [AjBool] ajTrue on success
+******************************************************************************/
+
+AjBool ajAlignConsAmbigProt(const AjPSeqset thys, AjPStr *cons)
+{
+    ajint   iseq;	     /* iterate over sequences (outer loop) */
+    
+    ajint   nseqs;
+    ajint   mlen;
+    AjBool  isgap;
+    ajint   kipos;	   /* alignment position */
+    
+    const char **seqcharptr;
+    char res;
+    ajuint binres;
+
+    void *freeptr = NULL;
+
+    nseqs   = thys->Size;
+    mlen    = thys->Len;
+    
+    AJCNEW(seqcharptr,nseqs);
+
+    /* ajDebug("fplural:%.2f ident:%.1f mlen: %d\n",
+	    fplural, ident, mlen); */
+    
+    for(iseq=0;iseq<nseqs;iseq++)	/* get sequence as string */
+	seqcharptr[iseq] =  ajSeqsetGetseqSeqC(thys, iseq);
+    
+    /* For each position in the alignment, calculate consensus character */
+    
+    for(kipos=0; kipos< mlen; kipos++)
+    {
+        binres = 0;
+        isgap = ajFalse;
+	for(iseq=0;iseq<nseqs;iseq++)
+	{
+	    if(seqcharptr[iseq][kipos] == ' ' ||
+	       seqcharptr[iseq][kipos] == '-')
+                isgap = ajTrue;
+            binres |= ajResidueAlphaToBin(seqcharptr[iseq][kipos]);
+	}
+        res = ajResidueBinToAlpha(binres);
+        if(isgap)
+            res = (char)tolower((int)res);
+	
+	ajStrAppendK(cons,res);
+    }
+
+    freeptr = (void *) seqcharptr;
+    AJFREE(freeptr);
+
+    return ajTrue;    
+}
+
+
 /* @func ajAlignConsStats ****************************************************
 **
 ** Calculates alignment statistics (and a consensus) from a sequence set.
@@ -4834,20 +5038,6 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 	ajMatrixChar(imatrix, identicalmaxindex-1, &debugstr1);
 	ajMatrixChar(imatrix, matchingmaxindex-1, &debugstr2);
 	
-
-	/* ajDebug("index[%d] ident:%d '%S' %.1f matching:%d '%S' %.1f %.1f "
-		"high:%d '%c' %.1f\n",
-		kkpos,
-		identicalmaxindex,
-		debugstr1, 
-		identical[identicalmaxindex],
-		matchingmaxindex,
-		debugstr2, 
-		matching[matchingmaxindex],
-		himatch,
-		highindex, seqcharptr[highindex][khpos],
-		seqs[highindex]->Weight); */
-
 	if(identical[identicalmaxindex] >= ident) isident=ajTrue;
 	if(matching[matchingmaxindex] >= fplural) issim=ajTrue;
 	
@@ -4904,68 +5094,6 @@ AjBool ajAlignConsStats(const AjPSeqset thys, AjPMatrix mymatrix, AjPStr *cons,
 
     return ajTrue;    
 }
-
-
-/* @funcstatic alignConsSet ***************************************************
-**
-** Sets consensus to be a copy of a numbered sequence
-**
-** @param [r] thys [const AjPAlign] Alignment object
-** @param [r] iali [ajint] alignment number
-** @param [r] numseq [ajint] Sequence number to use as the consensus
-** @param [w] cons [AjPStr*] the created consensus sequence
-** @return [AjBool] True on success
-******************************************************************************/
-
-static AjBool alignConsSet(const AjPAlign thys, ajint iali,
-			   ajint numseq, AjPStr *cons)
-{
-    ajint   nseqs;
-    ajint   mlen;
-    
-    ajint   kkpos;		/* alignment position loop variable */
-    
-    const char *seqcharptr;
-    char gapch;
-    AlignPData data = NULL;
-    const AjPSeq* seqs;
-    const AjPSeq seq;
-
-    data = alignData(thys, iali);
-    seqs = alignSeqs(thys, iali);
-
-    nseqs   = thys->Nseqs;
-    mlen    = data->LenAli;
-    
-    ajDebug("alignConsSet iali:%d numseq:%d nseqs:%d mlen:%d\n",
-	    iali, numseq, nseqs, mlen);
-        
-    gapch = '-';
-    
-    seq = seqs[numseq];
-    seqcharptr = ajSeqGetSeqC(seq);
-
-    ajStrAssignClear(cons);
-
-    /* For each position in the alignment, calculate consensus character */
-    
-    for(kkpos=0; kkpos<data->SubOffset[0]; kkpos++)
-    {
-	ajStrAppendK(cons, gapch);
-    }
-
-    for(kkpos=0; kkpos< mlen; kkpos++)
-    {
-	ajStrAppendK(cons,seqcharptr[kkpos+data->SubOffset[numseq]]);	
-    }
-    
-    /* ajDebug("ret ident:%d sim:%d gap:%d len:%d\n",
-	    *retident, *retsim, *retgap, *retlen); */
-
-
-    return ajTrue;    
-}
-
 
 
 /* @func ajAlignExit **********************************************************

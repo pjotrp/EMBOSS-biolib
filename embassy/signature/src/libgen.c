@@ -388,7 +388,7 @@ static void libgen_simple_matrix(AjPSeqset seqset,
         for(j=0;j<len;++j)
         {
             x = toupper((ajint)*p++);
-            ++matrix[ajAZToInt(x)][j];
+            ++matrix[ajBasecodeAlphaToInt(x)][j];
         }
     }
 
@@ -524,14 +524,14 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            if(ajAZToInt(p[i])!=27)  /* If not a gap. */
+            if(ajBasecodeAlphaToInt(p[i])!=27)  /* If not a gap. */
                 continue;
             pos = i;
-            while(pos>-1 && ajAZToInt(p[pos])==27)
+            while(pos>-1 && ajBasecodeAlphaToInt(p[pos])==27)
                 --pos;
             start = ++pos;
             pos=i;
-            while(pos<mlen && ajAZToInt(p[pos])==27)
+            while(pos<mlen && ajBasecodeAlphaToInt(p[pos])==27)
                 ++pos;
             end = pos-1;
             gsum = AJMAX(gsum, (end-start)+1);
@@ -571,7 +571,8 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            weights[i][ajAZToInt(p[i])] += ajSeqsetGetseqWeight(seqset,j);
+            weights[i][ajBasecodeAlphaToInt(p[i])] +=
+                ajSeqsetGetseqWeight(seqset,j);
         }
 
 
@@ -608,12 +609,13 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             q = valid;
             while(*q)
             {
-                score = weights[i][ajAZToInt(*q)];
-                score *= (float)(sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)]);
+                score = weights[i][ajBasecodeAlphaToInt(*q)];
+                score *= (float)(sub[ajSeqcvtGetCodeK(cvt,*p)]
+                                    [ajSeqcvtGetCodeK(cvt,*q)]);
                 sum += score;
                 ++q;
             }
-            mat[i][ajAZToInt(*p)] = sum;
+            mat[i][ajBasecodeAlphaToInt(*p)] = sum;
         }
 
     /* Calculate gap penalties. */
@@ -745,14 +747,14 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            if(ajAZToInt(p[i])!=27)
+            if(ajBasecodeAlphaToInt(p[i])!=27)
                 continue; /* If not a gap. */
             pos = i;
-            while(pos>-1 && ajAZToInt(p[pos])==27)
+            while(pos>-1 && ajBasecodeAlphaToInt(p[pos])==27)
                 --pos;
             start = ++pos;
             pos=i;
-            while(pos<mlen && ajAZToInt(p[pos])==27)
+            while(pos<mlen && ajBasecodeAlphaToInt(p[pos])==27)
                 ++pos;
             end = pos-1;
             gsum = AJMAX(gsum, (end-start)+1);
@@ -791,7 +793,8 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            weights[i][ajAZToInt(p[i])] += ajSeqsetGetseqWeight(seqset,j);
+            weights[i][ajBasecodeAlphaToInt(p[i])] +=
+                ajSeqsetGetseqWeight(seqset,j);
         }
 
     px = -INT_MAX;
@@ -838,12 +841,13 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
             q = valid;
             while(*q)
             {
-                score = weights[i][ajAZToInt(*q)];
-                score *= sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
+                score = weights[i][ajBasecodeAlphaToInt(*q)];
+                score *= sub[ajSeqcvtGetCodeK(cvt,*p)]
+                            [ajSeqcvtGetCodeK(cvt,*q)];
                 sum += score;
                 ++q;
             }
-            mat[i][ajAZToInt(*p)] = sum;
+            mat[i][ajBasecodeAlphaToInt(*p)] = sum;
         }
 
     /* Calculate gap penalties. */

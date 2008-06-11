@@ -22,7 +22,17 @@ ajAcdProgram -
 #ajarr
 #ajassert
 #ajbase
+ajAZToBin ajBaseAlphaToBin
+ajAZToBinC ajBaseAlphacharToBin
+ajBaseComp ajBaseAlphacharComp
 ajSeqBaseComp ajBaseComp
+ajBinToAZ ajBaseBinToAlpha
+ajBaseCodes ajBaseGetCodes
+ajBaseAa3ToAa1 =ajResidueFromTriplet 1,2 2,1
+ajBaseAa3ToAa1 @ajResidueFromTriplet
+ajBaseAa1ToAa3 ajResidueToTriplet
+ajIntToAZ ajBasecodeFromInt
+ajAZToInt ajBasecodeToInt
 #ajcall
 #ajcod
 #ajdan

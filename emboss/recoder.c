@@ -694,13 +694,13 @@ static ajint recoder_changebase(char pbase, char* tbase)
     {
       bs = ajStrIterGetK(splits);
 
-      if( ajAZToBin(bs) & ajAZToBin('G') )
+      if( ajBaseAlphaToBin(bs) & ajBaseAlphaToBin('G') )
 	  setBase[0] = 0;
-      if( ajAZToBin(bs) & ajAZToBin('A') )
+      if( ajBaseAlphaToBin(bs) & ajBaseAlphaToBin('A') )
 	  setBase[1] = 0;
-      if( ajAZToBin(bs) & ajAZToBin('T') )
+      if( ajBaseAlphaToBin(bs) & ajBaseAlphaToBin('T') )
 	  setBase[2] = 0;
-      if( ajAZToBin(bs) & ajAZToBin('C') )
+      if( ajBaseAlphaToBin(bs) & ajBaseAlphaToBin('C') )
 	  setBase[3] = 0;
 
       ajStrIterNext(splits);

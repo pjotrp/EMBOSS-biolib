@@ -77,7 +77,7 @@ AjBool embReadAminoDataDoubleC(const char *s, double **a, double fill)
 	    AJFREE(*a);
 	    return ajFalse;
 	}
-	idx = ajAZToInt(*p);
+	idx = ajBasecodeToInt(*p);
 	p = ajSysFuncStrtok(NULL," \t\r");
 
 	if(!p)
@@ -156,7 +156,7 @@ AjBool embReadAminoDataFloatC(const char *s, float **a, float fill)
 	    AJFREE(*a);
 	    return ajFalse;
 	}
-	idx = ajAZToInt(*p);
+	idx = ajBasecodeToInt(*p);
 	p   = ajSysFuncStrtok(NULL," \t\r");
 
 	if(!p)
@@ -238,7 +238,7 @@ AjBool embReadAminoDataIntC(const char *s, ajint **a, ajint fill)
 	    AJFREE(*a);
 	    return ajFalse;
 	}
-	idx = ajAZToInt(*p);
+	idx = ajBasecodeToInt(*p);
 	p   = ajSysFuncStrtok(NULL," \t\r");
 
 	if(!p)

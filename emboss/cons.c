@@ -87,11 +87,13 @@ int main(int argc, char **argv)
 
     ajSeqsetFmtUpper(seqset);
 
-    cons = ajStrNew();
-    embConsCalc (seqset, cmpmatrix, nseqs, mlen,
-		 fplural, setcase, identity, ajFalse, &cons);
+    cons = ajStrNewRes(mlen+1);
+    /*embConsCalc (seqset, cmpmatrix, nseqs, mlen,
+      fplural, setcase, identity, ajFalse, &cons);*/
 
-    /* write out consensus sequence */
+    ajAlignConsAmbig (seqset, &cons);
+
+     /* write out consensus sequence */
     seqo = ajSeqNew();
     ajSeqAssignSeqS(seqo,cons);
 

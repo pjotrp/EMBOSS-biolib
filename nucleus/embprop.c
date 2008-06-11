@@ -120,7 +120,7 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
 	ajStrFmtUpper(&token);
 	if(ajStrGetLen(token) != 1)
 	    ajFatal("Amino file line doesn't begin with a single character");
-	i = ajAZToInt((ajint) *ajStrGetPtr(token));
+	i = ajBasecodeToInt((ajint) *ajStrGetPtr(token));
 	if(i == 27)
 	    ajFatal("Amino file line doesn't begin with a single A->Z (%S)",
 		    line);
@@ -219,7 +219,7 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
 	}
 
 
-	i = ajAZToInt((ajint) *ajStrGetPtr(token));
+	i = ajBasecodeToInt((ajint) *ajStrGetPtr(token));
 	if(i == 27)
 	    ajFatal("Molwt file line doesn't begin with a single A->Z (%S)",
 		    line);
@@ -326,7 +326,7 @@ double embPropCalcMolwtMod(const char *s, ajint start, ajint end,
 
     for(i=0;i<len;++i)
     {
-	idx = ajAZToInt(toupper((ajint)p[i]));
+	idx = ajBasecodeToInt(toupper((ajint)p[i]));
 	mw = (mono) ? mwdata[idx]->mono : mwdata[idx]->average;
 	
 	sum += mw;
@@ -366,7 +366,7 @@ double embPropCalcMolextcoeff(const char *s, ajint start, ajint end,
     sum = 0.0;
 
     for(i=0;i<len;++i)
-	sum += (double) aadata[ajAZToInt(toupper((ajint)p[i]))]->extcoeff;
+	sum += (double) aadata[ajBasecodeToInt(toupper((ajint)p[i]))]->extcoeff;
 
     return sum;
 }
@@ -386,7 +386,7 @@ double embPropCalcMolextcoeff(const char *s, ajint start, ajint end,
 
 const char* embPropCharToThree(char c)
 {
-    return embPropIntToThree(ajAZToInt(c));
+    return embPropIntToThree(ajBasecodeToInt(c));
 }
 
 

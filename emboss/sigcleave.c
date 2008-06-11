@@ -141,7 +141,7 @@ int main(int argc, char **argv)
 
         q = ajStrGetuniquePtr(&substr);
 	for(i=0;i<len;++i,++q)
-	    *q = (char) ajAZToInt(*q);
+	    *q = (char) ajBasecodeToInt(*q);
 	p = ajStrGetPtr(substr);
 
 	maxsite   = n = 0;
@@ -413,7 +413,7 @@ static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
 	q = ajStrGetPtr(line);
 	q = ajSysFuncStrtok(q,ajStrGetPtr(delim));
 
-	d1 = ajAZToInt((char)toupper((ajint)*p));
+	d1 = ajBasecodeToInt((char)toupper((ajint)*p));
 	c  = 0;
 	while((q=ajSysFuncStrtok(NULL,ajStrGetPtr(delim))))
 	{

@@ -126,7 +126,7 @@ int main(int argc, char **argv)
 	    sum=0.;
 	    for(j=0;j<window;++j)
 	    {
-		idx = ajAZToInt(toupper((int)*(p+i+j)));
+		idx = ajBasecodeToInt(toupper((int)*(p+i+j)));
 		sum += embPropGetCharge(adata[idx]);
 	    }
 	    sum /= (float)window;

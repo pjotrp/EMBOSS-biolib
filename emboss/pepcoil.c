@@ -157,7 +157,7 @@ int main(int argc, char **argv)
 
 	q = ajStrGetuniquePtr(&substr);
 	for(i=0;i<len;++i,++q)
-	    *q = (char) ajAZToInt(*q);
+	    *q = (char) ajBasecodeToInt(*q);
 
 	p = ajStrGetPtr(substr);
 
@@ -486,7 +486,7 @@ static void pepcoil_readcoildat(AjPFloat2d *rdat)
 	ajCharFmtUpper(p);
 	q=p;
 	q=ajSysFuncStrtok(q," \t");
-	n=ajAZToInt(*q);
+	n=ajBasecodeToInt(*q);
 	c = 0;
 	while((q=ajSysFuncStrtok(NULL,delim)))
 	{

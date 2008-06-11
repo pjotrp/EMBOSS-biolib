@@ -502,7 +502,7 @@ static void profit_scan_simple(const AjPStr substr,
     {
 	sum = 0;
 	for(j=0;j<mlen;++j)
-	    sum += matrix[j][ajAZToInt(*(p+i+j))];
+	    sum += matrix[j][ajBasecodeToInt(*(p+i+j))];
 	score = sum * 100 / maxs;
 	if(score >= thresh)
 	    profit_printHits(pname,i,score,outf);
@@ -576,7 +576,7 @@ static void profit_scan_profile (const AjPStr substr,
     {
 	sum=0.0;
 	for(j=0;j<mlen;++j)
-	    sum += fmatrix[j][ajAZToInt(*(p+i+j))];
+	    sum += fmatrix[j][ajBasecodeToInt(*(p+i+j))];
 	score = sum * (float)100. / maxs;
 	if((ajint)score >= thresh)
 	    profit_printHits(pname,i,(ajint)score,outf);

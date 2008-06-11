@@ -488,11 +488,11 @@ static void printsextract_calcMatrices(AjPFile inf, AjPFile outf,
 	    p = ajStrGetPtr(*s)+4;
 	    for(k=0;k<c;++k)
 	    {
-		t = ajAZToInt(*(p+k));
+		t = ajBasecodeToInt(*(p+k));
 
 		if(t>AZ)
 		    printf("Error\n");
-		++mat[ajAZToInt(*(p+k))][k];
+		++mat[ajBasecodeToInt(*(p+k))][k];
 	    }
 
 	    ajFileReadLine(inf,s);
@@ -519,7 +519,7 @@ static void printsextract_calcMatrices(AjPFile inf, AjPFile outf,
 	    fmin = 0;
 	    p = ajStrGetPtr(*s)+4;
 	    for(k=0;k<c;++k)
-		fmin+=mat[ajAZToInt(*(p+k))][k];
+		fmin+=mat[ajBasecodeToInt(*(p+k))][k];
 	    
 	    min = (min<fmin) ? min : fmin;
 	    ajFileReadLine(inf,s);

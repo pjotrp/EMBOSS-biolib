@@ -8151,7 +8151,7 @@ void ajSeqstrComplement(AjPStr* Pseq)
 
     while(*cp)
     {
-	*cp = ajBaseComp(*cp);
+	*cp = ajBaseAlphacharComp(*cp);
 	cp++;
     }
 
@@ -8198,15 +8198,15 @@ void ajSeqstrReverse(AjPStr* Pseq)
 
     while(cp < cq)
     {
-	tmp = ajBaseComp(*cp);
-	*cp = ajBaseComp(*cq);
+	tmp = ajBaseAlphacharComp(*cp);
+	*cp = ajBaseAlphacharComp(*cq);
 	*cq = tmp;
 	cp++;
 	cq--;
     }
 
     if(cp == cq)
-	*cp = ajBaseComp(*cp);
+	*cp = ajBaseAlphacharComp(*cp);
 
     return;
 }

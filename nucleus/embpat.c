@@ -797,7 +797,7 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict re, AjPFile inf)
     sscanf(p,"%d",&re->cut4);
 
     for(i=0,q=ajStrGetuniquePtr(&re->bin);i<re->len;++i)
-	*(q+i)=ajAZToBinC(*(q+i));
+	*(q+i)=(char)ajBaseAlphaToBin((int)*(q+i));
 
     ajStrDel(&line);
 
@@ -3835,8 +3835,8 @@ ajuint embPatRestrictMatch(const AjPSeq seq, ajuint begin, ajuint end,
     p = ajStrGetuniquePtr(&binstr);
     for(i=0;i<plen;++i,++p,++q)
     {
-	*p = (char)ajAZToBin(*p);
-	*q = (char)ajAZToBin(*q);
+	*p = (char)ajBaseAlphaToBin(*p);
+	*q = (char)ajBaseAlphaToBin(*q);
     }
 
 

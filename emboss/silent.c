@@ -585,7 +585,7 @@ static AjPSilent silent_checktrans(const AjPStr seq,const EmbPMatMatch match,
 
 
     count=0;
-    while(ajAZToBin(*q++) & ajAZToBin(*p++))
+    while(ajBaseAlphaToBin(*q++) & ajBaseAlphaToBin(*p++))
           ++count;
 
     /* Changed base postion */

@@ -306,7 +306,7 @@ ajuint embMatProtScanInt(const AjPStr s, const AjPStr n, const EmbPMatPrints m,
     p = q = ajStrGetuniquePtr(&t);
     slen = ajStrGetLen(t);
     for(i=0;i<slen;++i,++p)
-	*p = ajSysCastItoc(ajAZToInt((ajint)*p));
+	*p = ajSysCastItoc(ajBasecodeToInt((ajint)*p));
     p = q;
 
     *all = *ordered = ajTrue;

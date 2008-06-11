@@ -142,8 +142,8 @@ int main(int argc, char **argv)
 
     for(j=0;j<llen;j++)
     {
-	total += matrix[ajAZToInt(s1[j])];
-	total2 += matrix2[ajAZToInt(s1[j])];
+	total += matrix[ajBasecodeToInt(s1[j])];
+	total2 += matrix2[ajBasecodeToInt(s1[j])];
     }
 
     for(i=0;i<ilen-llen;i++)
@@ -181,10 +181,10 @@ int main(int argc, char **argv)
 	if(-total2 < min)
 	    min = -total2;
 
-	total -= matrix[ajAZToInt(s1[0])];
-	total += matrix[ajAZToInt(s1[llen])];
-	total2 -= matrix2[ajAZToInt(s1[0])];
-	total2 += matrix2[ajAZToInt(s1[llen])];
+	total -= matrix[ajBasecodeToInt(s1[0])];
+	total += matrix[ajBasecodeToInt(s1[llen])];
+	total2 -= matrix2[ajBasecodeToInt(s1[0])];
+	total2 += matrix2[ajBasecodeToInt(s1[llen])];
 
 
 	s1++;

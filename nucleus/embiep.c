@@ -156,7 +156,7 @@ void embIepPkRead(void)
 	p  = ajSysFuncStrtok(p," \t\n\r");
 	ch = ajSysCastItoc(toupper((ajint)*p));
 	p  = ajSysFuncStrtok(NULL," \t\n\r");
-	sscanf(p,"%lf",&AjpK[ajAZToInt(ch)]);
+	sscanf(p,"%lf",&AjpK[ajBasecodeToInt(ch)]);
     }
 
     AjpK[EMBIEPAMINO]    = amino;
@@ -199,7 +199,7 @@ void embIepCompC(const char *s, ajint amino,
     p=s;
     while(*p)
     {
-	++c[ajAZToInt(ajSysCastItoc(toupper((ajint)*p)))];
+	++c[ajBasecodeToInt(ajSysCastItoc(toupper((ajint)*p)))];
 	++p;
     }
 

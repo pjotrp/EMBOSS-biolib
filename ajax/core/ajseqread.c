@@ -4165,7 +4165,7 @@ static AjBool seqReadPdbseq(AjPSeq thys, AjPSeqin seqin)
 		}
 		while(ajStrTokenNextParse(&handle, &token))
 		{
-		    if(ajBaseAa3ToAa1(&aa, token))
+		    if(ajResidueFromTriplet(token,&aa))
 		    {
 			seqAppendK(&alnitem->Seq, aa);
 		    }
@@ -4306,7 +4306,7 @@ static AjBool seqReadPdb(AjPSeq thys, AjPSeqin seqin)
 
 		if(iaa > lastaa)
 		{
-		    if(ajBaseAa3ToAa1(&aa, aa3))
+		    if(ajResidueFromTriplet(aa3,&aa))
 			seqAppendK(&alnitem->Seq, aa);
 		    else
 			seqAppendK(&alnitem->Seq, 'X');

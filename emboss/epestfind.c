@@ -433,9 +433,11 @@ int main(int argc, char **argv)
 		    embIepCompS(substr, 1, 0, 0, aac);
 		    /* Valid PEST motifs must contain D or E, P and S or T. */
 		    if(
-		       aac[ajAZToInt ('D')] + aac[ajAZToInt ('E')] == 0 ||
-		       aac[ajAZToInt ('P')] == 0 ||
-		       aac[ajAZToInt ('S')] + aac[ajAZToInt ('T')] == 0
+                        (aac[ajBasecodeToInt ('D')] +
+                         aac[ajBasecodeToInt ('E')]) == 0 ||
+                        aac[ajBasecodeToInt ('P')] == 0 ||
+                        (aac[ajBasecodeToInt ('S')] +
+                         aac[ajBasecodeToInt ('T')]) == 0
 		       )
 		    {
 			/* invalid PEST motifs */
@@ -457,36 +459,36 @@ int main(int argc, char **argv)
 		    pstsum  = 0;
 
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('D')]->mono :
-			mwdata[ajAZToInt('D')]->average;
-		    pstsum += dtmp * aac[ajAZToInt('D')];
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('D')]->mono :
+			mwdata[ajBasecodeToInt('D')]->average;
+		    pstsum += dtmp * aac[ajBasecodeToInt('D')];
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('E')]->mono :
-			mwdata[ajAZToInt('E')]->average;
-		    pstsum += dtmp * aac[ajAZToInt('E')];
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('E')]->mono :
+			mwdata[ajBasecodeToInt('E')]->average;
+		    pstsum += dtmp * aac[ajBasecodeToInt('E')];
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('P')]->mono :
-			mwdata[ajAZToInt('P')]->average;
-		    pstsum += dtmp * aac[ajAZToInt('P')];
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('P')]->mono :
+			mwdata[ajBasecodeToInt('P')]->average;
+		    pstsum += dtmp * aac[ajBasecodeToInt('P')];
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('S')]->mono :
-			mwdata[ajAZToInt('S')]->average;
-		    pstsum += dtmp * aac[ajAZToInt('S')];
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('S')]->mono :
+			mwdata[ajBasecodeToInt('S')]->average;
+		    pstsum += dtmp * aac[ajBasecodeToInt('S')];
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('T')]->mono :
-			mwdata[ajAZToInt('T')]->average;
-		    pstsum += dtmp * aac[ajAZToInt('T')];
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('T')]->mono :
+			mwdata[ajBasecodeToInt('T')]->average;
+		    pstsum += dtmp * aac[ajBasecodeToInt('T')];
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('E')]->mono :
-			mwdata[ajAZToInt('E')]->average;
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('E')]->mono :
+			mwdata[ajBasecodeToInt('E')]->average;
 		    pstsum -= dtmp;
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('P')]->mono :
-			mwdata[ajAZToInt('P')]->average;
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('P')]->mono :
+			mwdata[ajBasecodeToInt('P')]->average;
 		    pstsum -= dtmp;
 
-		    dtmp = (mono) ? mwdata[ajAZToInt('T')]->mono :
-			mwdata[ajAZToInt('T')]->average;
+		    dtmp = (mono) ? mwdata[ajBasecodeToInt('T')]->mono :
+			mwdata[ajBasecodeToInt('T')]->average;
 		    pstsum -= dtmp;
 		    
 		    pstpct  = pstsum / momass * 100;

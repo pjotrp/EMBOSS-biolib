@@ -148,7 +148,7 @@ int main(int argc, char **argv)
 
 	q = p = ajStrGetuniquePtr(&substr);
 	for(i=0;i<len;++i,++p)
-	    *p = (char) ajAZToInt(*p);
+	    *p = (char) ajBasecodeToInt(*p);
 
 	totap = 0.0;
 	fpos  = 0;
@@ -398,7 +398,7 @@ static void antigenic_readAnti(AjPFloat *agp)
 	ajCharFmtUpper(p);
 	q = p;
 	q = ajSysFuncStrtok(q," \t");
-	n = ajAZToInt(*q);
+	n = ajBasecodeToInt(*q);
 
 	if(sscanf(p,"%*s%d%d%d%f%f%f",&v1,&v2,&v3,&vf1,&vf2,&vf3)!=6)
 	{

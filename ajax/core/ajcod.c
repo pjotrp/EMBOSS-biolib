@@ -280,7 +280,7 @@ AjPCod ajCodNewCode(ajint code)
     {
 	idx = ajCodIndexC(spsumcodons[i]);
 	ajStrAssignS(&aa, ajTrnCodonC(trn, spsumcodons[i]));
-	c = ajAZToInt((ajint)ajStrGetCharFirst(aa));
+	c = ajBasecodeToInt((ajint)ajStrGetCharFirst(aa));
 	if(c>25)
 	    c=27;
 	thys->aa[idx] = c;
@@ -428,7 +428,7 @@ void ajCodBacktranslate(AjPStr *b, const AjPStr a, const AjPCod thys)
 	if(toupper((int)q)==(int)'Z')
 	  q = 'E';
 
-	idx = thys->back[ajAZToInt(q)];
+	idx = thys->back[ajBasecodeToInt(q)];
 /*
 	if(thys->aa[idx]==27)
 	{
@@ -541,17 +541,17 @@ static AjBool codTripletAdd (const AjPCod thys,
     for (i=0;i<AJCODSTART;++i)
     {
 	ajDebug("testing '%c' %d '%c' %2x%2x%2x\n",
-		residue, i, ajIntToAZ(thys->aa[i]),
+		residue, i, ajBasecodeFromInt(thys->aa[i]),
 		triplet[0], triplet[1], triplet[2]);
-	if(ajIntToAZ(thys->aa[i]) == aa)
+	if(ajBasecodeFromInt(thys->aa[i]) == aa)
 	{
 	    codon = ajCodTriplet(i);
 	    ajDebug("codTripletAdd '%c' %d '%c' %2x%2x%2x '%s'\n",
-		    residue, i, ajIntToAZ(thys->aa[i]),
+		    residue, i, ajBasecodeFromInt(thys->aa[i]),
 		    triplet[0], triplet[1], triplet[2], codon);
-	    triplet[0] |= ajAZToBin(codon[0]);
-	    triplet[1] |= ajAZToBin(codon[1]);
-	    triplet[2] |= ajAZToBin(codon[2]);
+	    triplet[0] |= ajBaseAlphaToBin(codon[0]);
+	    triplet[1] |= ajBaseAlphaToBin(codon[1]);
+	    triplet[2] |= ajBaseAlphaToBin(codon[2]);
 	    ajDebug("codTripletAdd now %2x%2x%2x\n",
 		    triplet[0], triplet[1], triplet[2]);
 	    ret = ajTrue;
@@ -574,7 +574,7 @@ static void codTripletBases(char* triplet)
 {
     ajint j;
     for(j=0;j<3;j++)
-	triplet[j] = ajBinToAZ(triplet[j]);
+	triplet[j] = ajBaseBinToAlpha(triplet[j]);
 
     return;
 }
@@ -592,7 +592,7 @@ ajint ajCodBase(ajint c)
 {
     ajint v;
 
-    v = ajAZToBin(c);
+    v = ajBaseAlphaToBin(c);
 
     if(v & 1) return 0;
     if(v & 2) return 1;
@@ -1197,7 +1197,7 @@ static AjBool codReadEmboss(AjPCod thys, AjPFileBuff inbuff)
 	ajStrTokenNextParse(&handle, &tok);
 	if(!codIsAa(&tok))
 	    return ajFalse;
-	c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
+	c = ajBasecodeToInt((ajint)ajStrGetCharFirst(tok));
 	if(c>25)
 	    c=27;			/* stop */
 
@@ -1292,7 +1292,7 @@ static AjBool codReadStaden(AjPCod thys, AjPFileBuff inbuff)
 	    ajStrTokenNextParse(&handle, &tok);
 	    if(!codIsAa(&tok))
 		return ajFalse;
-	    c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
+	    c = ajBasecodeToInt((ajint)ajStrGetCharFirst(tok));
 	    if(c>25)
 		c=27;			/* stop */
 
@@ -1376,7 +1376,7 @@ static AjBool codReadSpsum(AjPCod thys, AjPFileBuff inbuff)
 	    return ajFalse;
 	j = ajCodIndexC(spsumcodons[i]);
 	thys->num[j] = num;
-	c = ajAZToInt((ajint)spsumaa[i]);
+	c = ajBasecodeToInt((ajint)spsumaa[i]);
 	if(c>25)
 	    c=27;
 	thys->aa[j] = c;
@@ -1489,7 +1489,7 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
 		    ajStrTokenNextParse(&handle, &tok);
 		    if(!codIsAa(&tok))
 			return ajFalse;
-		    c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
+		    c = ajBasecodeToInt((ajint)ajStrGetCharFirst(tok));
 
 		    ajStrTokenNextParse(&handle, &tok);
 		    if(!codIsFraction(tok))
@@ -1501,7 +1501,7 @@ static AjBool codReadCutg(AjPCod thys, AjPFileBuff inbuff)
 		    if(!trn)
 			trn = ajTrnNewI(0);
 		    ajStrAssignS(&tok, ajTrnCodon(trn, tok));
-		    c = ajAZToInt((ajint)ajStrGetCharFirst(tok));
+		    c = ajBasecodeToInt((ajint)ajStrGetCharFirst(tok));
 		}
 		if(c>25)
 		    c=27;		/* stop */
@@ -1590,7 +1590,7 @@ static AjBool codReadCodehop(AjPCod thys, AjPFileBuff inbuff)
 	if(!trn)
 	    trn = ajTrnNewI(0);
 	ajStrAssignS(&tok2, ajTrnCodon(trn, tok4));
-	c = ajAZToInt((ajint)ajStrGetCharFirst(tok2));
+	c = ajBasecodeToInt((ajint)ajStrGetCharFirst(tok2));
 	if(c>25)
 	    c=27;			/* stop */
 	idx = ajCodIndex(tok4);
@@ -2655,7 +2655,8 @@ static void codWriteCherry(const AjPCod thys, AjPFile outf)
 	    {
 		codon[2]=*c2;
 		i = ajCodIndexC(codon);
-		if(!ajBaseAa1ToAa3(ajIntToAZ(thys->aa[i]), &ThreeAa))
+		if(!ajResidueToTriplet(ajBasecodeFromInt(thys->aa[i]),
+                                       &ThreeAa))
 		    ajStrAssignC(&ThreeAa, "End");
 		ajStrFmtLower(&ThreeAa);
 		ajStrFmtTitle(&ThreeAa);
@@ -2728,7 +2729,8 @@ static void codWriteTransterm(const AjPCod thys, AjPFile outf)
 	    {
 		codon[2]=*c2;
 		i = ajCodIndexC(codon);
-		if(!ajBaseAa1ToAa3(ajIntToAZ(thys->aa[i]), &ThreeAa))
+		if(!ajResidueToTriplet(ajBasecodeFromInt(thys->aa[i]),
+                                       &ThreeAa))
 		    ajStrAssignC(&ThreeAa, "End");
 		ajStrFmtLower(&ThreeAa);
 		ajStrFmtTitle(&ThreeAa);
@@ -2785,7 +2787,8 @@ static void codWriteGcg(const AjPCod thys, AjPFile outf)
 	    {
 		codon[2]=*c2;
 		i = ajCodIndexC(codon);
-		if(!ajBaseAa1ToAa3(ajIntToAZ(thys->aa[i]), &ThreeAa))
+		if(!ajResidueToTriplet(ajBasecodeFromInt(thys->aa[i]),
+                                       &ThreeAa))
 		    ajStrAssignC(&ThreeAa, "End");
 		ajStrFmtLower(&ThreeAa);
 		ajStrFmtTitle(&ThreeAa);

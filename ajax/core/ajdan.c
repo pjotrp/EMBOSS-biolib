@@ -38,8 +38,6 @@ static ajint aj_melt_savesize   = 0;
 static AjBool aj_melt_saveinit  = 0;
 static AjBool aj_melt_saveshift = 1;
 
-static AjBool danBaseInit = AJFALSE;
-
 
 /* @func ajMeltInit **********************************************************
 **
@@ -184,6 +182,7 @@ void ajMeltInit(AjBool isdna, ajint savesize)
 **
 ** Gives a score for the probability of two sequences being the same.
 ** The sequences are the same length.
+**
 ** Uses IUB ambiguity codes. The result is the sum of the probabilities
 ** at each position.
 **
@@ -210,9 +209,6 @@ float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
     if(len > 0)
 	mlen = (mlen < len) ? mlen : len;
 
-    if(!danBaseInit)
-	danBaseInit = ajBaseInit();
-
     score = 0.0;
     if(!mlen)
 	return score;
@@ -223,11 +219,10 @@ float ajProbScore(const AjPStr seq1, const AjPStr seq2, ajint len)
 
     for(i=0; i<mlen; ++i)
     {
-	x = ajAZToInt(*(p+i));
-	y = ajAZToInt(*(q+i));
-	score *= ajBaseProb(x,y);
+	x = ajBasecodeToInt(*(p+i));
+	y = ajBasecodeToInt(*(q+i));
+	score *= ajBaseAlphaCompare(x,y);
     }
-
     return score;
 }
 

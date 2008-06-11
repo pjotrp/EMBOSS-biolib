@@ -154,7 +154,7 @@ int main(int argc, char **argv)
 
 	q = ajStrGetuniquePtr(&substr);
 	for(i=0;i<len;++i,++q)
-	    *q = (char) ajAZToInt(*q);
+	    *q = (char) ajBasecodeToInt(*q);
 
 	p = ajStrGetPtr(substr);
 
@@ -310,7 +310,7 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 	    if(xcols!=cols)
 		ajFatal("Assymetric table");
 
-	d1 = ajAZToInt((char)toupper((ajint)*p));
+	d1 = ajBasecodeToInt((char)toupper((ajint)*p));
 
 	q = ajStrGetPtr(line);
 	c = 0;
