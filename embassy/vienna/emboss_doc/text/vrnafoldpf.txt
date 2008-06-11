@@ -135,7 +135,7 @@ Output file format
   File: rna2.ssps
 
 %!PS-Adobe-3.0 EPSF-3.0
-%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
+%%Creator: ePS_dot.c,v 1.5 2008/06/10 12:51:15 rice Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%Title: RNA Secondary Structure Plot
 %%BoundingBox: 66 210 518 662
@@ -248,7 +248,7 @@ end
 
 %!PS-Adobe-3.0 EPSF-3.0
 %%Title: RNA Dot Plot
-%%Creator: ePS_dot.c,v 1.4 2008/01/15 10:25:02 ajb Exp $, ViennaRNA-1.7
+%%Creator: ePS_dot.c,v 1.5 2008/06/10 12:51:15 rice Exp $, ViennaRNA-1.7
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%BoundingBox: 66 211 518 662
 %%DocumentFonts: Helvetica
