@@ -106,27 +106,12 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
                           ajint lena, ajint lenb,
 			  ajint *start1, ajint *start2);
 
-float embAlignPathCalcFast(const char *a, const char *b,
-                           ajint lena, ajint lenb,
-                           float gapopen, float gapextend, float *path,
-                           float * const *sub, const AjPSeqCvt cvt,
-                           ajint *compass, AjBool show, ajint width);
-
 float embAlignPathCalcSWFast(const char *a, const char *b,
                              ajint lena, ajint lenb,
                              ajint offset, ajint width,
                              float gapopen, float gapextend, float *path,
                              float * const *sub, const AjPSeqCvt cvt,
                              ajint *compass, AjBool show);
-
-void embAlignWalkMatrixFast(const float *path, const ajint *compass,
-                            float gapopen, float gapextend,
-                            const AjPSeq a, const AjPSeq b,
-                            AjPStr *m, AjPStr *n,
-                            ajint lena, ajint lenb,
-                            ajint offset, ajint width,
-                            float * const *sub, const AjPSeqCvt cvt,
-                            ajint *start1, ajint *start2);
 
 void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 			      float gapopen, float gapextend,

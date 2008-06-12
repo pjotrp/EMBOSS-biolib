@@ -1352,7 +1352,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     for(i=0;i<lena;++i)
     {
         if(i < leftwidth)
-            path[i*width] = -999.9;
+            path[i*width] = (float) -999.9;
         else
             path[i*width] = sub[ajSeqcvtGetCodeK(cvt,a[i])]
                                [ajSeqcvtGetCodeK(cvt,b[i])];
@@ -1365,7 +1365,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
     for(j=0;j<width;++j)
     {
         if(j < leftwidth)
-            path[j] = -999.9;
+            path[j] = (float) -999.9;
         else
             path[j] = sub[ajSeqcvtGetCodeK(cvt,a[0])]
                          [ajSeqcvtGetCodeK(cvt,b[j-leftwidth])];
@@ -1378,7 +1378,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
 	maxb[j] = path[j]-(gapopen);
 
     for(j=rightwidth;j<lenb;++j)
-	maxb[j] = -999.9;
+	maxb[j] = (float) -999.9;
 
     /* ajDebug("2   %d %d\n",lena,lenb);*/
 
@@ -1394,7 +1394,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
         {
             ip++;
 
-	    path[ip] = -999.9;
+	    path[ip] = (float) -999.9;
             compass[ip] = 0;
 
             if(icol++ < 0)
