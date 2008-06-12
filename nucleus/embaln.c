@@ -1464,6 +1464,7 @@ float embAlignPathCalcSWFast(const char *a, const char *b,
             
     if(show)
     {
+        max = -FLT_MAX;
 	for(i=ymax;i>=ymin;--i)
 	{
             ajFmtPrintS(&outstr, "%6d ", i);
@@ -1802,7 +1803,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 		{
 		    mscore = maxs[column];
 		    path[row*seqlen+column] = mscore;
-		    compass[row*seqlen+column] = 1; /* Score comes from left */
+		    compass[row*seqlen+column] = 1; /* Score from left */
 		}
 
 	    }
@@ -1820,7 +1821,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
 		{
 		    mscore = maxp;
 		    path[row*seqlen+column] = mscore;
-		    compass[row*seqlen+column] = 2; /* Score comes from bottom */
+		    compass[row*seqlen+column] = 2; /* Score from bottom */
 		}
 	    }
             if(mscore < 0.0)
