@@ -389,6 +389,11 @@ public class JembossParams
       plplot = jembossSettings.getProperty(plplotName);
       embossData = jembossSettings.getProperty(embossDataName);
       embossBin = jembossSettings.getProperty(embossBinName);
+      if (embossBin.length()>0){
+          String fs = System.getProperty("file.separator");
+          if(!embossBin.endsWith(fs))
+              embossBin += fs;
+      }      
       embossPath = jembossSettings.getProperty(embossPathName);
       embossEnvironment = jembossSettings.getProperty(embossEnvironmentName);
       acdDirToParse = jembossSettings.getProperty(acdDirToParseName);
