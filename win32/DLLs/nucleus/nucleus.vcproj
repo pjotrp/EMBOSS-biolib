@@ -288,10 +288,6 @@
 				RelativePath="..\..\nucleus\embword.c"
 				>
 			</File>
-			<File
-				RelativePath="..\..\nucleus\embxyz.c"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -400,10 +396,6 @@
 			</File>
 			<File
 				RelativePath="..\..\nucleus\embword.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\nucleus\embxyz.h"
 				>
 			</File>
 			<File
