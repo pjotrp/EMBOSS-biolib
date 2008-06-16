@@ -25,12 +25,12 @@ package org.emboss.jemboss.gui;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.event.*;
 import org.emboss.jemboss.gui.form.Separator;
 import org.emboss.jemboss.JembossParams;
 import org.emboss.jemboss.Jemboss;
 import org.emboss.jemboss.gui.filetree.FileSave;
+import org.emboss.jemboss.gui.filetree.LocalAndRemoteFileTreeFrame;
 
 /**
 *
@@ -166,7 +166,7 @@ public class AdvancedOptions extends JPanel
           mysettings.setUserHome(cwd);
           org.emboss.jemboss.Jemboss.tree.newRoot(cwd);
           if(SetUpMenuBar.localAndRemoteTree != null)
-            SetUpMenuBar.localAndRemoteTree.getLocalDragTree().newRoot(cwd);
+            LocalAndRemoteFileTreeFrame.getLocalDragTree().newRoot(cwd);
 
           if(!f.canWrite())
             JOptionPane.showMessageDialog(null,
@@ -192,7 +192,7 @@ public class AdvancedOptions extends JPanel
         mysettings.setUserHome(cwd);
         org.emboss.jemboss.Jemboss.tree.newRoot(cwd);
         if(SetUpMenuBar.localAndRemoteTree != null)
-          SetUpMenuBar.localAndRemoteTree.getLocalDragTree().newRoot(cwd);
+          LocalAndRemoteFileTreeFrame.getLocalDragTree().newRoot(cwd);
         userHome.setText(cwd);
       }
     });
