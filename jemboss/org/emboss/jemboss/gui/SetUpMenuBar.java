@@ -32,7 +32,6 @@ import java.net.URL;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import java.awt.event.*;
 import java.util.Vector;
 
@@ -387,7 +386,7 @@ public class SetUpMenuBar
      if(localAndRemoteTree == null)
        return null;
 
-     return localAndRemoteTree.getLocalDragTree();
+     return LocalAndRemoteFileTreeFrame.getLocalDragTree();
    }
 
   /**
