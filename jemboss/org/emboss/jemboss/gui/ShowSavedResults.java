@@ -385,7 +385,7 @@ public class ShowSavedResults extends JFrame
 	      {
 	        setCursor(cbusy); 
                 selList = convertToOriginal(selList);
-	        ResultList thisres = new ResultList(mysettings,selList,
+	        new ResultList(mysettings,selList,
                                          "delete_saved_results"); 
 	        setCursor(cdone);
 	       
@@ -619,7 +619,7 @@ public class ShowSavedResults extends JFrame
             {
 	      setCursor(cbusy);
               selList = convertToOriginal(selList);
-	      ResultList thisres = new ResultList(mysettings,selList,
+	      new ResultList(mysettings,selList,
                                              "delete_saved_results");
 	      setCursor(cdone);
 
@@ -722,7 +722,7 @@ public class ShowSavedResults extends JFrame
   */
   public static String convertToPretty(String sorig)
   {
-    int index = sorig.indexOf('_');
+//    int index = sorig.indexOf('_');
 //  if(index > -1)
 //    sorig = sorig.substring(0,index) + "\t" +
 //            sorig.substring(index+1);
