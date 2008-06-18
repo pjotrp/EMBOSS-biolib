@@ -24,12 +24,13 @@ package org.emboss.jemboss.gui;
 
 import java.awt.*;
 import java.io.*;
+import java.util.Properties;
+
 import javax.swing.*;
 import java.awt.event.*;
 import org.emboss.jemboss.gui.form.Separator;
 import org.emboss.jemboss.JembossParams;
 import org.emboss.jemboss.Jemboss;
-import org.emboss.jemboss.gui.filetree.FileSave;
 import org.emboss.jemboss.gui.filetree.LocalAndRemoteFileTreeFrame;
 
 /**
@@ -199,7 +200,7 @@ public class AdvancedOptions extends JPanel
 
 //save user work dir checkbox
     saveUserHome = new JCheckBox("Save between Jemboss sessions");
-    saveUserHome.setSelected(false);
+    saveUserHome.setSelected(true);
     bleft =  Box.createHorizontalBox();
     bleft.add(saveUserHome);
     bleft.add(Box.createHorizontalGlue());
@@ -255,80 +256,22 @@ public class AdvancedOptions extends JPanel
     String uhome = System.getProperty("user.home");
     String fs = System.getProperty("file.separator");
     String jemProp = uhome+fs+"jemboss.properties";
-    File fjemProp = new File(jemProp);
- 
-    String uHome = "user.home="+getHomeDirectory();
-    if(!Jemboss.withSoap)
-      uHome = uHome + "\nresults.home="+getResultsDirectory();
-
-    uHome = addEscapeChars(uHome);
-
-    if(fjemProp.exists())       // re-write jemboss.properties
-      rewriteProperties(jemProp,uHome);
-    else                        // write new jemboss.properties
-    {
-      FileSave fsave = new FileSave(fjemProp);
-      fsave.fileSaving(uHome);
+    Properties p = new Properties();
+    try {
+        p.load(new FileInputStream(jemProp));
+        p.put("user.home",getHomeDirectory());
+        if(!Jemboss.withSoap)
+            p.put("results.home",getResultsDirectory());
+        boolean gsl = SequenceList.isgetSequenceLengthSelected();
+        p.put("getsequencelength", gsl ? "true": "false");
+        p.store(new FileOutputStream(jemProp), "jemboss properties");
+    } catch (FileNotFoundException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
     }
-  }
-
-  /**
-  *
-  * Re-write jemboss.properties when there is an existing jemboss,properties
-  * and insert/update the user.home property
-  * @param jemProp	jemboss.properties file	
-  * @param uHome	user home directory
-  *
-  */
-  public void rewriteProperties(String jemProp, String uHome)
-  {
-     File file_txt = new File(jemProp);
-     File file_tmp = new File(jemProp + ".tmp");
-     try 
-     {
-       BufferedReader bufferedreader = new BufferedReader(new FileReader(file_txt));
-       BufferedWriter bufferedwriter = new BufferedWriter(new FileWriter(file_tmp));
-       String line;
-       while ((line = bufferedreader.readLine()) != null) 
-       {
-         if(line.startsWith("user.home"))
-           line = uHome;
-
-         bufferedwriter.write(line);
-         bufferedwriter.newLine();
-       }
-       bufferedreader.close();
-       bufferedwriter.close();
-       file_txt.delete();
-       file_tmp.renameTo(file_txt);
-     } 
-     catch (FileNotFoundException filenotfoundexception)
-     {
-       System.err.println("jemboss.properties read error");
-     } 
-     catch (IOException e) 
-     {
-       System.err.println("jemboss.properties i/o error");
-     }
-
-  }
-
-  /**
-  *
-  * Add in escape chars (for windows) to the backslash chars
-  * @param l	string to insert escape characters to
-  *
-  */
-  private String addEscapeChars(String l)
-  {
-    int n = l.indexOf("\\");
-
-    while( n > -1) 
-    {
-      l = l.substring(0,n)+"\\"+l.substring(n,l.length());
-      n = l.indexOf("\\",n+2);
-    }
-    return l;
   }
 
 }
