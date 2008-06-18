@@ -55,7 +55,7 @@ public class BuildProgramMenu
   /** thread for progress monitor on the login window */
   private SplashThread splashThread;
   /** environment vars */
-  private String[] envp;
+  static private String[] envp;
   /** current appliction loaded */
   private int currentApp = -1;
   /** favorite menu */
@@ -102,7 +102,7 @@ public class BuildProgramMenu
     {
       String[] env = null;
       
-      if(mysettings.isCygwin())
+      if(JembossParams.isCygwin())
         env = new String[4];  /* environment vars */
       else
         env = new String[3];
@@ -115,8 +115,8 @@ public class BuildProgramMenu
       env[1] = "PLPLOT_LIB=" + mysettings.getPlplot();
 //    env[2] = "EMBOSS_DATA=" + mysettings.getEmbossData();
       env[2] = "HOME=" + System.getProperty("user.home") + fs;
-      if(mysettings.isCygwin())
-        env[3] = "EMBOSSCYGROOT=" + mysettings.getCygwinRoot();
+      if(JembossParams.isCygwin())
+        env[3] = "EMBOSSCYGROOT=" + JembossParams.getCygwinRoot();
 
       envp = mysettings.getEmbossEnvironmentArray(env);
     }
@@ -128,8 +128,20 @@ public class BuildProgramMenu
 
       public Object construct() 
       {
-        if(withSoap) 
-        {
+          try {
+              if (withSoap) {
+                  constructWithSoap();
+              } else {
+                  constructWithoutSoap();
+              }
+          } catch (Exception e) {
+          } finally {
+          }
+          return woss;
+      }
+
+      private void constructWithSoap(){
+
           mainMenu.setEnableFileManagers(false);
           mainMenu.setEnableShowResults(false);
 
@@ -187,7 +199,7 @@ public class BuildProgramMenu
               matrices = showdb.getMatrices();  // get the available matrices
               codons   = showdb.getCodonUsage();
 
-              JLabel jl = new JLabel("<html>"); // not used but speeds first
+              /*JLabel jl = */new JLabel("<html>"); // not used but speeds first
                                                 // ACD form loading which
                                                 // uses html
               return null;
@@ -197,7 +209,7 @@ public class BuildProgramMenu
           
           splashing.doneSomething("");
 
-          int iloop = 0;
+          //int iloop = 0;
 
           try
           {
@@ -221,7 +233,10 @@ public class BuildProgramMenu
 //              db = d.getDB();
 //            }
             }
-            catch (Exception ex){ System.out.println("calling the server"); }
+            catch (Exception ex){
+                ex.printStackTrace();
+                System.err.println("problem while reading the wossname output from wossname.jar");
+            }
 
             if(woss.equals(""))
             {
@@ -245,16 +260,41 @@ public class BuildProgramMenu
               ss.setNewSettings();
             else
               System.exit(0);
-          }
-        } 
-        else 
-        {
+          }        
+      }
+            
+      private void constructWithoutSoap(){
+
           String embossBin = mysettings.getEmbossBin();
-          String embossCommand = new String(embossBin + "wossname -colon -gui -auto");
-          RunEmbossApplication2 rea = new RunEmbossApplication2(
-                                      embossCommand,envp,null);
-          rea.waitFor();
-          woss = rea.getProcessStdout();
+          String embossCommand;
+        RunEmbossApplication2 rea=null;
+        try {
+            embossCommand = new String(embossBin + "wossname -colon -gui -auto");
+              rea = new RunEmbossApplication2(
+                                          embossCommand,envp,null);
+              if (rea.getStatus().equals("1")){
+                  String error = rea.getInitialIOError();
+                  JOptionPane.showMessageDialog(null,
+                          "Problem while getting emboss application list:\n"+
+                          error,
+                          "alert", JOptionPane.ERROR_MESSAGE);
+                  return;                  
+              }
+              rea.waitFor();
+              woss = rea.getProcessStdout();
+        } catch (RuntimeException e) {
+            try {
+                System.err.println(rea.getProcessStderr());
+            } catch (RuntimeException e1) {
+                // TODO Auto-generated catch block
+                e1.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(null,
+                    "Problem while getting emboss application list:"+
+                    e.getMessage(),
+                    "alert", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
           embossCommand = new String(embossBin + "showdb -auto");
           rea = new RunEmbossApplication2(embossCommand,envp,null);
@@ -291,10 +331,7 @@ public class BuildProgramMenu
 
           codons = new Vector();
           for(int i=0;i<dataFile.length;i++)
-            codons.add(dataFile[i]);
-        }
-
-        return woss;
+            codons.add(dataFile[i]);        
       }
 
 
@@ -438,7 +475,7 @@ public class BuildProgramMenu
             currentApp = index;
             String acdText = getAcdText(allAcd[index],mysettings,
                                                        withSoap);
-            BuildJembossForm bjf = new BuildJembossForm(allDes[index],
+            new BuildJembossForm(allDes[index],
                                   db,allAcd[index],envp,cwd,
                                   acdText,withSoap,p2,mysettings,f);
             scrollProgForm.setViewportView(p2);   
@@ -539,7 +576,6 @@ public class BuildProgramMenu
         {
           public void mouseClicked(MouseEvent e)
           {
-//          System.gc();
             f.setCursor(cbusy);
             JList source = (JList)e.getSource();
             source.setSelectionBackground(Color.cyan);
@@ -548,7 +584,7 @@ public class BuildProgramMenu
             currentApp = index;
             String acdText = getAcdText(allAcd[index],mysettings,
                                                        withSoap);
-            BuildJembossForm bjf = new BuildJembossForm(allDes[index],
+            new BuildJembossForm(allDes[index],
                                   db,allAcd[index],envp,cwd,
                                   acdText,withSoap,p2,mysettings,f);
             scrollProgForm.setViewportView(p2);
@@ -590,7 +626,7 @@ public class BuildProgramMenu
 
         String acdText = getAcdText(allAcd[k],mysettings,
                                                withSoap);
-        BuildJembossForm bjf = new BuildJembossForm(allDes[k],
+        new BuildJembossForm(allDes[k],
                       db,allAcd[k],envp,cwd,acdText,
                       withSoap,p2,mysettings,f);
         scrollProgForm.setViewportView(p2);
@@ -692,6 +728,10 @@ public class BuildProgramMenu
     }
     return acdText;
   }
+
+    public static String[] getEnvp() {
+        return envp;
+    }
 
 }
 
