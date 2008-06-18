@@ -259,15 +259,20 @@ public class AdvancedOptions extends JPanel
     Properties p = new Properties();
     try {
         p.load(new FileInputStream(jemProp));
+    } catch (FileNotFoundException e) {
+        // we should ignore this error
+    } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+    }
+    
+    try{
         p.put("user.home",getHomeDirectory());
         if(!Jemboss.withSoap)
             p.put("results.home",getResultsDirectory());
         boolean gsl = SequenceList.isgetSequenceLengthSelected();
         p.put("getsequencelength", gsl ? "true": "false");
         p.store(new FileOutputStream(jemProp), "jemboss properties");
-    } catch (FileNotFoundException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
     } catch (IOException e) {
         // TODO Auto-generated catch block
         e.printStackTrace();
