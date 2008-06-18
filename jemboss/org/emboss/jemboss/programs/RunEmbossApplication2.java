@@ -38,6 +38,9 @@ public class RunEmbossApplication2
   private StringBuffer stdout = new StringBuffer();
   /** standard error */
   private StringBuffer stderr = new StringBuffer();
+  
+  private String initialIOError = null;
+  
   /** running directory */
   //private File project;
   /** process status */
@@ -46,39 +49,6 @@ public class RunEmbossApplication2
   private StderrHandler stderrh;
   private JTextArea textArea;
 
-
-  /**
-  *
-  * @param embossCommand        emboss command to run
-  * @param envp                 environment
-  * @param project              running directory
-  *
-  */
-  public RunEmbossApplication2(String[] embossCommand,
-                       String[] envp, File project)
-  {
-    //this.project = project;
-    status = "0";
-
-    Runtime embossRun = Runtime.getRuntime();
-    try
-    {
-      p = embossRun.exec(embossCommand,envp,project);
-
-      // 2 threads to read in stdout & stderr buffers
-      // to prevent blocking
-      stdouth = new StdoutHandler(this);
-      stderrh = new StderrHandler(this);
-      stdouth.start();
-      stderrh.start();
-    }
-    catch(IOException ioe)
-    {
-      System.out.println("RunEmbossApplication2 Error executing: "+
-                          embossCommand);
-      status = "1";
-    }
-  }
 
   /**
   *
@@ -107,25 +77,11 @@ public class RunEmbossApplication2
     }
     catch(IOException ioe)
     {
-      System.out.println("RunEmbossApplication2 Error executing: "+
+      System.err.println("Error executing: "+
                           embossCommand);
+      initialIOError = ioe.getMessage();
       status = "1";
     }
-  }
-
-  /**
-  *
-  * @param embossCommand        emboss command to run
-  * @param envp                 environment
-  * @param project              running directory
-  *
-  */
-  public RunEmbossApplication2(String embossCommand, 
-                        String envp[], File project,
-                        JTextArea textArea)
-  {
-    this(embossCommand,envp,project);
-    this.textArea = textArea;
   }
 
   /**
@@ -393,6 +349,10 @@ public class RunEmbossApplication2
     {
       rea.readProcessStderr();
     }
+  }
+
+  public String getInitialIOError() {
+      return initialIOError;
   }
 
 }
