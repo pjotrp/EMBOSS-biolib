@@ -1326,6 +1326,13 @@ public class JembossParams
     }
     updateSettingsFromProperties();
   }
+  
+  public boolean getGetSequenceLength(){
+      String gsl = (String)jembossSettings.get("getsequencelength");
+      if (gsl==null)
+          return false;
+      return Boolean.parseBoolean(gsl);
+  }
 
 }
 
