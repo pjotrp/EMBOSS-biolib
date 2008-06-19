@@ -1327,8 +1327,8 @@ public class Graph2DPlot extends ScrollPanel
     float x2;
     float y2;
 
-    float xendPoint =  (float)(xend.getValue()-xstart.getValue())*xfactor;
-    float yendPoint = -(float)(yend.getValue()-ystart.getValue())*yfactor;
+    //float xendPoint =  (float)(xend.getValue()-xstart.getValue())*xfactor;
+    //float yendPoint = -(float)(yend.getValue()-ystart.getValue())*yfactor;
 
     g2d.translate(xborder, getHeight()-yborder);
     for(int i=1; i<xnum; i++)
