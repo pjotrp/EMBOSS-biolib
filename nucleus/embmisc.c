@@ -36,7 +36,9 @@
 AjBool embMiscMatchPattern (const AjPStr str, const AjPStr pattern)
 {
 
-    char whiteSpace[] = " \t\n\r,;|";  /* skip whitespace and , ; | */
+    /* pmr: allow '|' which can appear in NCBI style IDs */
+
+    char whiteSpace[] = " \t\n\r,;";  /* skip whitespace and , ; */
     AjPStrTok tokens;
     AjPStr key = NULL;
     AjBool val = ajFalse;
