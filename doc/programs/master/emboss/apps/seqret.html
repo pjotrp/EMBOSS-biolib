@@ -23,6 +23,101 @@ seqret
 </H2>
 
 
+<p><b>seqret</b> reads in one or more sequences and writes them out again. The sequence input may be a literal sequence or read from a database, file, file of sequence names, or even the command-line or the output of another programs. The sequence output can be written to screen, to file, or passed to another program. A wide range of standard sequence formats may be specified for input and output.  If you don't specify the input format, <b>seqret</b> will try a set of possible formats until it reads it in successfully. The sequence input and output, as for all EMBOSS programs, is described by a Uniform Sequence Address.  This is is a very flexible way of specifying one or more sequences from a variety of sources and includes sequence files, database queries and external applications.</p>
+
+<p>There are many options built-in into EMBOSS for detailed specification of the input and output sequences, for example the sequence type, file format. specification of sequence regions by begin and end positions, or generation of the reverse complement of a nucleic acid sequence.  On output <b>seqret</b> can change the case of the sequence to upper or to lower case. </p>
+
+<p><b>seqret</b> is useful for a variety of tasks, including extracting sequences from databases, displaying sequences, reformatting sequences, producing the reverse complement of a sequence, extracting fragments of a sequence, sequence case conversion or any combination of the above functions.</p>
+
+
+
+
+<H2>
+    Usage
+</H2>
+<!--#include file="inc/seqret.usage" -->
+
+
+<H2>
+    Command line arguments
+</H2>
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+<!--#include file="inc/seqret.ihelp" -->
+</pre>
+</td></tr></table>
+<P>
+
+<!--#include file="inc/seqret.itable" -->
+
+
+<H2>
+    Input file format
+</H2>
+
+
+<b>seqret</b> reads one or more sequence USAs.
+
+<p>
+
+<!--#include file="inc/seqret.input" -->
+
+<H2>
+    Output file format
+</H2>
+
+
+The output from <b>seqret</b> is one or more sequences, and by default will be
+written in FASTA format. 
+
+<p>
+
+If the '-firstonly' qualifier is used then only the first sequence of the
+input USA specification will be written out. 
+
+<p>
+
+In some cases the output filename will be the same as the input
+filename, but as <b>seqret</b> reads only the first sequence before opening
+the output file it may try to overwrite the input.  Note that this is
+not true of <b>seqretset</b> which reads all sequences into memory at
+startup, but which can need a large amount of memory for many sequences.
+
+<p>
+
+<!--#include file="inc/seqret.output" -->
+
+<H2>
+    Data files
+</H2>
+
+
+None.
+
+<H2>
+    Notes
+</H2>
+
+This description of what you can do when reading or writing files is not
+specific to the program <b>seqret</b>.  All EMBOSS programs that read or write
+sequences can do the same. 
+
+<p>
+
+<b>seqret</b> is often one of the first programs taught in EMBOSS training
+courses.  This is because it is versatile, it is extremely powerful for
+its size (17 lines of code) it illustrates many aspects of EMBOSS
+programs and it was one of the first EMBOSS programs to be written, so
+it has a special place in the hearts of EMBOSS developers. 
+
+<p>
+
+The name '<b>seqret</b>' derives both from its function ("sequence return") and
+from the fact that immense amounts of functionality can come from so few
+lines of source code - most of the work is done by the EMBOSS libraries
+which the program calls and whose complexity is hidden, or "secret". 
+
+<p>
 The simplicity of the above description of this program greatly
 understates the rich functionality of this program. 
 
@@ -765,91 +860,10 @@ all the info that is required, but will write to standard output by
 default.  The user will also still be prompted for an output filename,
 in case the user wants to save the output to a file. 
 
-<H2>
-    Usage
-</H2>
-<!--#include file="inc/seqret.usage" -->
 
 
-<H2>
-    Command line arguments
-</H2>
-<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
-<pre>
-<!--#include file="inc/seqret.ihelp" -->
-</pre>
-</td></tr></table>
-<P>
-
-<!--#include file="inc/seqret.itable" -->
 
 
-<H2>
-    Input file format
-</H2>
-
-
-<b>seqret</b> reads one or more sequence USAs.
-
-<p>
-
-<!--#include file="inc/seqret.input" -->
-
-<H2>
-    Output file format
-</H2>
-
-
-The output from <b>seqret</b> is one or more sequences, and by default will be
-written in FASTA format. 
-
-<p>
-
-If the '-firstonly' qualifier is used then only the first sequence of the
-input USA specification will be written out. 
-
-<p>
-
-In some cases the output filename will be the same as the input
-filename, but as <b>seqret</b> reads only the first sequence before opening
-the output file it may try to overwrite the input.  Note that this is
-not true of <b>seqretset</b> which reads all sequences into memory at
-startup, but which can need a large amount of memory for many sequences.
-
-<p>
-
-<!--#include file="inc/seqret.output" -->
-
-<H2>
-    Data files
-</H2>
-
-
-None.
-
-<H2>
-    Notes
-</H2>
-
-
-This description of what you can do when reading or writing files is not
-specific to the program <b>seqret</b>.  All EMBOSS programs that read or write
-sequences can do the same. 
-
-<p>
-
-<b>seqret</b> is often one of the first programs taught in EMBOSS training
-courses.  This is because it is versatile, it is extremely powerful for
-its size (17 lines of code) it illustrates many aspects of EMBOSS
-programs and it was one of the first EMBOSS programs to be written, so
-it has a special place in the hearts of EMBOSS developers. 
-
-<p>
-
-The name '<b>seqret</b>' derives both from its function ("sequence return") and
-from the fact that immense amounts of functionality can come from so few
-lines of source code - most of the work is done by the EMBOSS libraries
-which the program calls and whose complexity is hidden, or "secret". 
 
 
 <H2>
