@@ -148,7 +148,7 @@ public class PublicRequest
      } 
      catch (Exception e) 
      {
-       throw new JembossSoapException("Connection failed");
+       throw new JembossSoapException("Connection failed: "+e.getMessage());
      }
 
    }
