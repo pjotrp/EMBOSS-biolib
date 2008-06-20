@@ -107,7 +107,7 @@ public class LocalTreeToolBar extends JToolBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        File cwd = new File(System.getProperty("user.dir"));
+        File cwd = new File(mysettings.getResultsHome());
         setDirectory(cwd, mysettings);
       }
     });
