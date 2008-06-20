@@ -79,7 +79,7 @@ public class Jemboss implements ActionListener
   */
   public Jemboss()
   {
-
+    String fileseparator = System.getProperty("file.separator");
     // initialize settings
     JembossParams mysettings = new JembossParams();
 
@@ -116,7 +116,7 @@ public class Jemboss implements ActionListener
                         "resources/client.keystore");
 
       String jembossClientKeyStore = System.getProperty("user.home") + 
-                                System.getProperty("file.separator") + 
+                                                       fileseparator + 
                                              ".jembossClientKeystore";
 
       try
@@ -136,9 +136,22 @@ public class Jemboss implements ActionListener
     if(!withSoap &&
        mysettings.getUserHome().equals(System.getProperty("user.home")))
     {
-      mysettings.setUserHome(System.getProperty("user.dir"));
-      if(mysettings.getDebug())
-        System.out.println("Standalone mode");
+        if (System.getProperty("os.name").startsWith("Windows")) {
+            String emboss_root = System.getenv().get("EMBOSS_ROOT");
+            String userhome = emboss_root + fileseparator
+            + System.getProperty("user.name");
+            String resultshome = userhome + fileseparator + "results";
+            if (new File(resultshome).mkdirs()) {
+                mysettings.setUserHome(userhome);
+                mysettings.setResultsHome(resultshome);
+            }
+        } else
+            mysettings.setUserHome(System.getProperty("user.dir"));
+        if (mysettings.getDebug())
+            System.out.println("Standalone mode");
+        mysettings.setUserHome(System.getProperty("user.dir"));
+        if (mysettings.getDebug())
+            System.out.println("Standalone mode");
     }
 
     // make the local file manager
