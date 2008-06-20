@@ -40,6 +40,8 @@ public class JembossParams
 /** denotes a server is not responding */
   static public final int SERVER_DOWN = 2;
 
+  static final String fs = System.getProperty("file.separator");
+
   // these are the things that could be set
   private boolean useHTTPSProxy = false;
   private String useHTTPSProxyName = "useHTTPSProxy";
@@ -215,7 +217,7 @@ public class JembossParams
   private String userHomeName = "user.home";
   
   /** standalone results directory           */
-  private String resultsHome = System.getProperty("user.home")+ "/jemboss";
+  private String resultsHome = System.getProperty("user.home")+ fs + "jemboss";
   private String resultsHomeName = "results.home";
 
 
@@ -343,7 +345,6 @@ public class JembossParams
     FileInputStream in = null;
     try
     {
-      String fs = System.getProperty("file.separator");
       in = new FileInputStream(folder + fs + "jemboss.properties");
       jembossSettings.load(in);
     }
@@ -390,7 +391,6 @@ public class JembossParams
       embossData = jembossSettings.getProperty(embossDataName);
       embossBin = jembossSettings.getProperty(embossBinName);
       if (embossBin.length()>0){
-          String fs = System.getProperty("file.separator");
           if(!embossBin.endsWith(fs))
               embossBin += fs;
       }      
@@ -798,8 +798,6 @@ public class JembossParams
 */
   public String getResultsHome()
   {
-    String fs = System.getProperty("file.separator");
-
     if(!resultsHome.endsWith(fs))
       resultsHome = resultsHome + fs;
     return resultsHome;
