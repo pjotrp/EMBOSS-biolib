@@ -141,7 +141,8 @@ public class Jemboss implements ActionListener
             String userhome = emboss_root + fileseparator
             + System.getProperty("user.name");
             String resultshome = userhome + fileseparator + "results";
-            if (new File(resultshome).mkdirs()) {
+            File rh = new File(resultshome);
+            if (rh.exists() || rh.mkdirs()) {
                 mysettings.setUserHome(userhome);
                 mysettings.setResultsHome(resultshome);
             }
