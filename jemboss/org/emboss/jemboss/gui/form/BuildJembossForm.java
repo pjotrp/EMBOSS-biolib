@@ -29,7 +29,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -194,7 +193,7 @@ public class BuildJembossForm implements ActionListener
           url = url+applName+".html";
         }
 
-        JEditorPane htmlPane = null;
+        //JEditorPane htmlPane = null;
         if(url == null)
         {
           try
@@ -298,7 +297,7 @@ public class BuildJembossForm implements ActionListener
                      String appDescription)
   {
 
-    String appN = "";
+    //String appN = "";
 
 // get total number of Swing components
     int ntextf = parseAcd.getNumTextf();
@@ -446,7 +445,7 @@ public class BuildJembossForm implements ActionListener
   public void actionPerformed(ActionEvent ae)
   {
 
-    String line;
+    //String line;
 
     if( ae.getActionCommand().startsWith("Advanced Option"))
     {
@@ -748,9 +747,9 @@ public class BuildJembossForm implements ActionListener
                                  Hashtable filesToMove)
   {
 
-    String params = new String("");
-    String appN = "";
-    String file = "";
+    //String params = new String("");
+    //String appN = "";
+    //String file = "";
     String options = "";
     String fn = "";
     String sfn;
@@ -764,9 +763,8 @@ public class BuildJembossForm implements ActionListener
       String val = parseAcd.getParamValueStr(j,0).toLowerCase();
       int h = parseAcd.getGuiHandleNumber(j);
 
-      if(att.startsWith("appl"))
-        appN = new String(att);
-      else if (parseAcd.isOutputGraph(j))
+      if(!att.startsWith("appl") &&
+          parseAcd.isOutputGraph(j))
       {
         if(graphics == null)
           System.out.println("graphics is NULL");
@@ -991,7 +989,7 @@ public class BuildJembossForm implements ActionListener
             String fna = System.getProperty("user.dir")+
                          System.getProperty("file.separator")+"seq.list";
 
-            boolean ok = inSeq[h].writeListFile(fna);
+            /*boolean ok = */inSeq[h].writeListFile(fna);
             options = options.concat(" -" + val + " list::" +  fna);
           }
         } 
@@ -1016,8 +1014,8 @@ public class BuildJembossForm implements ActionListener
               File tf;
               try
               {
-                if(mysettings.isCygwin())
-                  tmp = mysettings.getCygwinRoot()+System.getProperty("file.separator")+"tmp";
+                if(JembossParams.isCygwin())
+                  tmp = JembossParams.getCygwinRoot()+System.getProperty("file.separator")+"tmp";
                 else
                   tmp = System.getProperty("java.io.tmpdir");
 
