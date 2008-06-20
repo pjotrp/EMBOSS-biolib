@@ -47,7 +47,7 @@ public class Jemboss implements ActionListener
 
 /** Jemboss frame      */
   private JFrame f;
-/** Jemboss split pain */
+/** Jemboss split pane */
   private JSplitPane pmain; 
 /** Local filemanager panel */
   private JPanel p3;
@@ -142,7 +142,15 @@ public class Jemboss implements ActionListener
             + System.getProperty("user.name");
             String resultshome = userhome + fileseparator + "results";
             File rh = new File(resultshome);
-            if (rh.exists() || rh.mkdirs()) {
+            if (!rh.exists() && !rh.mkdirs()){               
+                JOptionPane.showMessageDialog(f,
+                        ("Jemboss not able to set its results directory "+
+                        "to the following location:\n"+resultshome), 
+                        "Message", JOptionPane.INFORMATION_MESSAGE);
+                // TODO: we should have a checkbox in the JOptionPane
+                // to let user select not to see this notification later
+            }
+            if (rh.exists()) {
                 mysettings.setUserHome(userhome);
                 mysettings.setResultsHome(resultshome);
             }
