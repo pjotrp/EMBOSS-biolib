@@ -149,9 +149,6 @@ public class Jemboss implements ActionListener
             mysettings.setUserHome(System.getProperty("user.dir"));
         if (mysettings.getDebug())
             System.out.println("Standalone mode");
-        mysettings.setUserHome(System.getProperty("user.dir"));
-        if (mysettings.getDebug())
-            System.out.println("Standalone mode");
     }
 
     // make the local file manager
