@@ -22,6 +22,12 @@ are welcome.
 
 Change Log:
 ---------------------------------------------------
+20-Jun-2008
+
+  * When the user.home property has its default value and the operating system
+    is windows jemboss user-home directory is set to ${EMBOSS_ROOT}\${user.name},
+    similarly the jemboss results-home directory is set to
+    ${EMBOSS_ROOT}\${user.name}\results\
 
 18-Jun-2008
 
@@ -29,31 +35,23 @@ Change Log:
   
   * fixed the problem with saving the "results.home" property
         
-  * loading and storing jemboss.properties file was updated by
+  * loading and storing jemboss.properties files was updated by
     using functions from java.util.Properties class
     
   * links on this page was updated and we started to have a changelog here
-      
-  * deleted a constructor in the RunEmbossApplication2 class which
-    was quite similar to another one and not used by any existing classes
-    
-  * deleted another constructor in the RunEmbossApplication2 class which
-    was not used by any existing classes
-    
+         
   * RunEmbossApplication2 class now records IO errors when starting application jobs 
      
-  * construct method in the BuildProgramMenu class was too long,
-    it now uses constructWithSoap and ConstructWithoutSoap methods instead
-
   * SequnceList class now uses the same environment settings used by the
     BuildProgramMenu class when launching EMBOSS applications
     
   * replaced the "Calculate sequence attributes" menu option
-    by "Get sequence lengths automatically" checkbox
+    by "Get sequence lengths automatically" checkbox in SequenceList frame
     
   * added a new boolean property to store user preferences in the above checkbox
   
-  * sequence lengths are not calculated if the entry is an existing file
+  * sequence lengths are not calculated if the entry is an existing file,
+    in SequenceList frame
   
 
      
