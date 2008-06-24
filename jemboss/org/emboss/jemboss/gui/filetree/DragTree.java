@@ -230,8 +230,10 @@ public class DragTree extends JTree implements DragGestureListener,
                                    "Error", JOptionPane.ERROR_MESSAGE);
         else
         {
-          if(dir.mkdir())
-            addObject(inputValue,path,node);
+          if(dir.mkdir()){
+            FileNode child = addObject(inputValue,path,node);
+            this.expandPath(new TreePath(child.getPath()));
+          }
           else
             JOptionPane.showMessageDialog(null,
                        "Cannot make the folder\n"+fullname,
@@ -474,7 +476,7 @@ public class DragTree extends JTree implements DragGestureListener,
   * @param node         node to add child to
   *
   */
-  public DefaultMutableTreeNode addObject(String child,
+  public FileNode addObject(String child,
                             String path, FileNode node)
   {
 
@@ -518,7 +520,6 @@ public class DragTree extends JTree implements DragGestureListener,
   public void deleteObject(FileNode node)
   {
     DefaultTreeModel model =(DefaultTreeModel)getModel();
-    FileNode parentNode = getNode(node.getFile().getParent());
     model.removeNodeFromParent(node);
   }
 
