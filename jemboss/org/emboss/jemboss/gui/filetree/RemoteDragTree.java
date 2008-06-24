@@ -1012,8 +1012,8 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
 
     private void maybeShowPopup(MouseEvent e)
     {
-      if(e.isPopupTrigger()){
-        final RemoteFileNode node = getSelectedNode();
+      RemoteFileNode node = getSelectedNode();
+      if(node != null && e.isPopupTrigger()){
         if (node.getFile().equals(REMOTE_HOME)){
             renameMenuItem.setEnabled(false);
             deleteMenuItem.setEnabled(false);
