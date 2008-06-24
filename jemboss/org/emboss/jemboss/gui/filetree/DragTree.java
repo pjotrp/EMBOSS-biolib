@@ -67,6 +67,10 @@ public class DragTree extends JTree implements DragGestureListener,
   /** used by AutoScroll method */
   private Insets autoscrollInsets = new Insets( 0, 0, 0, 0 );
 
+  JMenuItem openMenu;
+  JMenuItem renameMenuItem;
+  JMenuItem deleteMenuItem;
+  
   /**
   *
   * @param rt		root directory
@@ -103,7 +107,7 @@ public class DragTree extends JTree implements DragGestureListener,
     popup.add(menuItem);
     popup.add(new JSeparator());
 //open menu
-    JMenu openMenu = new JMenu("Open With");
+    openMenu = new JMenu("Open With");
     popup.add(openMenu);
     menuItem = new JMenuItem("Jemboss Alignment Editor");
     menuItem.addActionListener(this);
@@ -112,15 +116,15 @@ public class DragTree extends JTree implements DragGestureListener,
     menuItem.addActionListener(this);
     openMenu.add(menuItem);
 
-    menuItem = new JMenuItem("Rename...");
-    menuItem.addActionListener(this);
-    popup.add(menuItem);
+    renameMenuItem = new JMenuItem("Rename...");
+    renameMenuItem.addActionListener(this);
+    popup.add(renameMenuItem);
     menuItem = new JMenuItem("New Folder...");
     menuItem.addActionListener(this);
     popup.add(menuItem);
-    menuItem = new JMenuItem("Delete...");
-    menuItem.addActionListener(this);
-    popup.add(menuItem);
+    deleteMenuItem = new JMenuItem("Delete...");
+    deleteMenuItem.addActionListener(this);
+    popup.add(deleteMenuItem);
     popup.add(new JSeparator());
     menuItem = new JMenuItem("De-select All");
     menuItem.addActionListener(this);
@@ -921,9 +925,23 @@ public class DragTree extends JTree implements DragGestureListener,
 
     private void maybeShowPopup(MouseEvent e)
     {
-      if(e.isPopupTrigger())
-        popup.show(e.getComponent(),
-                e.getX(), e.getY());
+        FileNode node = getSelectedNode();
+        if(node !=null && e.isPopupTrigger()){
+            if (node.getFile() == root){
+                renameMenuItem.setEnabled(false);
+                deleteMenuItem.setEnabled(false);
+                openMenu.setEnabled(false);
+            } else{
+                renameMenuItem.setEnabled(true);
+                deleteMenuItem.setEnabled(true);
+                if(!node.isDirectory())
+                    openMenu.setEnabled(true);
+                else
+                    openMenu.setEnabled(false);
+            }
+            popup.show(e.getComponent(),
+                    e.getX(), e.getY());
+        }
     }
   }
 
