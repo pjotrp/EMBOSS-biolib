@@ -24,6 +24,10 @@ Tim Carver   tjc@sanger.ac.uk
 
 Change Log:
 ---------------------------------------------------
+24-Jun-2008
+
+ * context sensitive popup menu items in remote and local file managers
+ 
 20-Jun-2008
 
   * When the user.home property has its default value and the operating system
