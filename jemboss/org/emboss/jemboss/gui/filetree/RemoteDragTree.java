@@ -295,10 +295,9 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       clearSelection();
     else if(source.getText().equals("Rename..."))
     {
-      if(node.isLeaf())
       {
         String inputValue = (String)JOptionPane.showInputDialog(null,
-                              "New File Name","Rename "+fn,
+                              "New "+(node.isLeaf()?"file":"folder")+" name","Rename "+fn,
                               JOptionPane.QUESTION_MESSAGE,null,null,fn);
 
         pn = (RemoteFileNode)node.getParent();
@@ -456,7 +455,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
       {
         public void run ()
         {
-          addObject(parentNode,newfile,false);
+          addObject(parentNode,newfile,node.isDirectory());
           deleteObject(node);
         };
       };
