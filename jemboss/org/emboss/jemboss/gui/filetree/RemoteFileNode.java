@@ -99,7 +99,7 @@ public class RemoteFileNode extends DefaultMutableTreeNode
     rootdir = froots.getCurrentRoot();
     serverPathToFile = (String)froots.getRoots().get(rootdir);
 
-    if(file.equals(" "))
+    if(file.equals(RemoteDragTree.REMOTE_HOME))
       isDir = true;
 
     if(parent != null)
