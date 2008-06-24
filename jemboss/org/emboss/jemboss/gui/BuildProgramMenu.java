@@ -209,8 +209,6 @@ public class BuildProgramMenu
           
           splashing.doneSomething("");
 
-          //int iloop = 0;
-
           try
           {
             try
@@ -218,25 +216,8 @@ public class BuildProgramMenu
               Hashtable hwoss = (new JembossJarUtil("resources/wossname.jar")).getHash();
               if(hwoss.containsKey("wossname.out"))
                 woss = new String((byte[])hwoss.get("wossname.out"));
-
-//            mainMenu.setEnableFileManagers(false);
-//            mainMenu.setEnableShowResults(false);
-
-//            Hashtable hshowdb = (new JembossJarUtil("resources/showdb.jar")).getHash();
-//            mainMenu.setEnableFileManagers(false);
-//            mainMenu.setEnableShowResults(false);   
-
-//            if(hshowdb.containsKey("showdb.out"))
-//            {
-//              String showdbOut = new String((byte[])hshowdb.get("showdb.out"));
-//              Database d = new Database(showdbOut);
-//              db = d.getDB();
-//            }
             }
-            catch (Exception ex){
-                ex.printStackTrace();
-                System.err.println("problem while reading the wossname output from wossname.jar");
-            }
+            catch (Exception ex){}
 
             if(woss.equals(""))
             {
