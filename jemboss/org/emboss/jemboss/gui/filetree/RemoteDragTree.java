@@ -1023,6 +1023,8 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
             deleteMenuItem.setEnabled(true);
             if(!node.isDirectory())
                 openMenu.setEnabled(true);
+            else
+                openMenu.setEnabled(false);
         }
         popup.show(e.getComponent(),
                 e.getX(), e.getY());
