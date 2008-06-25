@@ -135,10 +135,17 @@ public class Jemboss implements ActionListener
   }
   
   
-  //the main frame is initialised in a new function, 
-  
+  /**
+  *
+  * Checks and sets user-home and results-home directories.
+  * When the user.home property has its default value
+  * and the operating system is windows jemboss 
+  * user-home directory is set to ${EMBOSS_ROOT}\${user.name},
+  * similarly the jemboss results-home directory is set to
+  * ${EMBOSS_ROOT}\${user.name}\results
+  * 
+  */  
   private void checkHomeDirectories(JembossParams mysettings){
-    // set to the working dir
     if(!withSoap &&
        mysettings.getUserHome().equals(System.getProperty("user.home")))
     {
@@ -167,8 +174,13 @@ public class Jemboss implements ActionListener
     }
   }
 
-//the main frame is initialised in a new function, 
-    
+  
+  /**
+  * 
+  * Initialises the main frame
+  *  
+  * @param mysettings
+  */
   private void initMainFrame(JembossParams mysettings){
     // make the local file manager
     tree = new DragTree(new File(mysettings.getUserHome()),
@@ -229,7 +241,12 @@ public class Jemboss implements ActionListener
   }
 
 
-  // sets window dimensions, dependent on screen size 
+  /**
+  * 
+  * Sets window dimensions, dependent on screen size
+  * @param screensize
+  * 
+  */
   private Dimension setWindowSizesAndLocation(Dimension screensize) {
       int arrowSize = fwdArrow.getIconWidth();
       if (screensize.getWidth() < 1024) {
