@@ -50,7 +50,7 @@ public class Jemboss implements ActionListener
 /** Jemboss split pane */
   private JSplitPane pmain; 
 /** Local filemanager panel */
-  private JPanel p3;
+  private JPanel localFileManagerPanel;
 /** Local filemanager */
   public static DragTree tree;
 /** Button to open local filemanager */
@@ -72,6 +72,8 @@ public class Jemboss implements ActionListener
 /** Jemboss main menu */
   private SetUpMenuBar mainMenu;
 
+  final String fileseparator = System.getProperty("file.separator");
+
   /**
   *
   * Display the Jemboss GUI.
@@ -79,7 +81,6 @@ public class Jemboss implements ActionListener
   */
   public Jemboss()
   {
-    String fileseparator = System.getProperty("file.separator");
     // initialize settings
     JembossParams mysettings = new JembossParams();
 
@@ -127,11 +128,16 @@ public class Jemboss implements ActionListener
                             jembossClientKeyStore);
       }
       catch(Exception exp){}
-
     }
-
-    f = new JFrame("Jemboss");
-
+    f = new JFrame("Jemboss");   
+    checkHomeDirectories(mysettings);
+    initMainFrame(mysettings);
+  }
+  
+  
+  //the main frame is initialised in a new function, 
+  
+  private void checkHomeDirectories(JembossParams mysettings){
     // set to the working dir
     if(!withSoap &&
        mysettings.getUserHome().equals(System.getProperty("user.home")))
@@ -159,7 +165,11 @@ public class Jemboss implements ActionListener
         if (mysettings.getDebug())
             System.out.println("Standalone mode");
     }
+  }
 
+//the main frame is initialised in a new function, 
+    
+  private void initMainFrame(JembossParams mysettings){
     // make the local file manager
     tree = new DragTree(new File(mysettings.getUserHome()),
                         f, mysettings);
@@ -170,17 +180,17 @@ public class Jemboss implements ActionListener
     filePanel.add(tree,BorderLayout.CENTER);
     scrollTree = new JScrollPane(filePanel);
 
-    JPanel p1 = new JPanel(new BorderLayout());         // menu panel
-    ScrollPanel p2 = new ScrollPanel(new GridLayout()); // emboss form pain
-    p3 = new JPanel(new BorderLayout());                // filemanager panel
+    JPanel menuPanel = new JPanel(new BorderLayout());
+    ScrollPanel embossFormPanel = new ScrollPanel(new GridLayout());
+    localFileManagerPanel = new JPanel(new BorderLayout());
 
-    JScrollPane scrollProgForm = new JScrollPane(p2);
+    JScrollPane scrollProgForm = new JScrollPane(embossFormPanel);
     JPanel pwork = new JPanel(new BorderLayout());
     JPanel pform = new JPanel(new BorderLayout());
 
     pform.add(scrollProgForm, BorderLayout.CENTER);
     pwork.add(pform, BorderLayout.WEST);
-    pwork.add(p3, BorderLayout.CENTER);
+    pwork.add(localFileManagerPanel, BorderLayout.CENTER);
 
     JMenuBar btmMenu = new JMenuBar();
 
@@ -190,51 +200,51 @@ public class Jemboss implements ActionListener
     extend.addActionListener(this);
     extend.setToolTipText("Open and close file manager.");
 
-    Dimension d = f.getToolkit().getScreenSize();
-
     resultsManager = new PendingResults(mysettings, withSoap);
     btmMenu.add(resultsManager.statusPanel(f));
     btmMenu.add(extend);
     pform.add(btmMenu,BorderLayout.SOUTH);
 
     pmain = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-                                  p1,pwork);
+                                  menuPanel,pwork);
     pmain.setOneTouchExpandable(true);
-
-    int arrowSize = fwdArrow.getIconWidth();
-    Dimension jform;
-    // set window dimensions, dependent on screen size
-    if(d.getWidth()<1024)
-    {
-      jdim = new Dimension(615,500);
-      jdimExtend = new Dimension(795,500);
-      pmain.setPreferredSize(jdim);
-      scrollTree.setPreferredSize(new Dimension(180,500));
-      jform = new Dimension(615-180+arrowSize,500);
-    }
-    else
-    {
-      jdim = new Dimension(660,540);
-      jdimExtend = new Dimension(840,540);
-      pmain.setPreferredSize(jdim);
-      scrollTree.setPreferredSize(new Dimension(180,540));
-      jform = new Dimension(660-180+arrowSize,500);
-    }
 
     // setup the top menu bar
     mainMenu = new SetUpMenuBar(mysettings,f,
                                 withSoap);
+    
+    Dimension screensize = f.getToolkit().getScreenSize();
+    Dimension formPanelDim = setWindowSizesAndLocation(screensize);
 
-    // add to Jemboss main frame and locate it center left of screen
     f.getContentPane().add(pmain);
     f.pack();
-    f.setLocation(0,((int)d.getHeight()-f.getHeight())/2);
+    // locate main frame center left of screen
+    f.setLocation(0, ((int) screensize.getHeight() - f.getHeight()) / 2);
 
-    new BuildProgramMenu(p1,p2,pform,scrollProgForm,
+    new BuildProgramMenu(menuPanel,embossFormPanel,pform,scrollProgForm,
                          mysettings,withSoap,
-                         mainMenu,f,jform);
+                         mainMenu,f,formPanelDim);
 
     f.addWindowListener(new winExit());
+  }
+
+
+  // sets window dimensions, dependent on screen size 
+  private Dimension setWindowSizesAndLocation(Dimension screensize) {
+      int arrowSize = fwdArrow.getIconWidth();
+      if (screensize.getWidth() < 1024) {
+          jdim = new Dimension(615, 500);
+          jdimExtend = new Dimension(795, 500);
+          pmain.setPreferredSize(jdim);
+          scrollTree.setPreferredSize(new Dimension(180, 500));
+          return new Dimension(615 - 180 + arrowSize, 500);
+      } else {
+          jdim = new Dimension(660, 540);
+          jdimExtend = new Dimension(840, 540);
+          pmain.setPreferredSize(jdim);
+          scrollTree.setPreferredSize(new Dimension(180, 540));
+          return new Dimension(660 - 180 + arrowSize, 500);
+      }
   }
 
 
@@ -246,16 +256,16 @@ public class Jemboss implements ActionListener
   */
   public void actionPerformed(ActionEvent ae)
   {
-    if( p3.getComponentCount() > 0 )
+    if( localFileManagerPanel.getComponentCount() > 0 )
     {
-      p3.remove(0);
+      localFileManagerPanel.remove(0);
       extend.setIcon(fwdArrow);
       pmain.setPreferredSize(jdim);
       f.pack();
     }
     else
     {
-      p3.add(scrollTree, BorderLayout.CENTER);
+      localFileManagerPanel.add(scrollTree, BorderLayout.CENTER);
       extend.setIcon(bwdArrow);
       pmain.setPreferredSize(jdimExtend);
       f.pack();
