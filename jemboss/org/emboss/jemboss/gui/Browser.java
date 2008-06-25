@@ -51,8 +51,6 @@ public class Browser extends JFrame
   private MemoryComboBox urlField;
   /** HTML pane   */
   private JEditorPane htmlPane;
-  /** initial URL */
-  private String initialURL;
   /** busy cursor */
   private Cursor cbusy = new Cursor(Cursor.WAIT_CURSOR);
   /** done cursor */
@@ -105,7 +103,6 @@ public class Browser extends JFrame
                  String text, JembossParams mysettings) throws IOException
   {
     super(name);
-    this.initialURL = initialURL;
 
     if(mysettings.isBrowserProxy())
     {
@@ -150,7 +147,6 @@ public class Browser extends JFrame
   public Browser(URL urlName, String initialURL) throws IOException
   {
     super(initialURL);
-    this.initialURL = initialURL;
     setURL(urlName,initialURL);
   }
 
