@@ -86,6 +86,7 @@ sub runtest ($) {
   my %outfile = ();
   my %testdir = ();
   my %outdir = ();
+  my %outdirfiles = ();
   my $testq = 0;
   my $testa = 0;
   my $testpath="";
@@ -201,15 +202,29 @@ sub runtest ($) {
       $idir++;
     }
 
-# directoryfile - output file example
+# directoryfile - output file count
 
-    elsif ($line =~ /^DF\s+(\S+)/) {
+    elsif ($line =~ /^DC\s+(\d+)/) {
+      $dircount{$dirname} = $1;
       if (!$idir) {
 	$testerr = "$retcode{22} $testid/*/$1\n";
 	print STDERR $testerr;
 	print LOG $testerr;
 	return 20;
       }
+    }
+
+# directoryfile - output file example
+
+    elsif ($line =~ /^DF\s+(\S+)/) {
+      $dirfile = $1;
+      if (!$idir) {
+	$testerr = "$retcode{22} $testid/*/$1\n";
+	print STDERR $testerr;
+	print LOG $testerr;
+	return 20;
+      }
+      $outdirfiles{$dirname} .= "$dirfile;";
       print LOG "Known example in directory [$idir] <$dirname/$1>\n";
     }
 
@@ -427,6 +442,35 @@ sub runtest ($) {
 	print LOG "directory [$d] <$file>\n";
 # DC number of files
 # DP filename(s)
+	opendir(DDIR, $file);
+	$ndfiles = 0;
+	while($df = readdir(DDIR)) {
+	    if($df =~ /^[.]+$/){next}
+	    $ndfiles++;
+	    $adfiles{$df} = 1;
+	}
+	if(defined($dircount{$file})) {
+	    if($dircount{$file} != $ndfiles) {
+		print STDERR "$dirname: found $ndfiles/$dircount{$file} files\n";
+	    }
+	}
+	if(defined($outdirfiles{$file})) {
+	    $dfiles = $outdirfiles{$file};
+	    $dfiles =~ s/;$//;
+	    @dfiles = split(/;/,$dfiles);
+	    %dfiles = ();
+	    foreach $df (@dfiles) {
+		$dfiles{$df}=0;
+		if(!defined($adfiles{$df})) {
+		    print STDERR "$dirname/$df not found\n";
+		}
+	    }
+	    foreach $adf (@adfiles) {
+		if(!defined($dfiles{$adf})) {
+		    print STDERR "$dirname: $adf not expected\n";
+		}
+	    }
+	}
       }
       next;
     }
