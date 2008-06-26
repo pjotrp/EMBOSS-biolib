@@ -42,6 +42,136 @@ ajAZToInt ajBasecodeToInt
 #ajexcept
 #ajfeat
 #ajfile
+ajDirNew ajDirNewPath
+ajDirNewS ajDirNewPathExt
+ajDirNewSS ajDirNewPathPreExt
+ajDirExt ajDirGetExt
+ajDirName ajDirGetPath
+ajDirOutNew -
+ajDirOutNewS -
+ajDirOutNewSS -
+ajFileNewF ajFileNewFromCfile
+ajFileNew -
+ajFileNewIn ajFileNewInNameS
+ajFileNewDC -
+ajFileNewDF =ajFileNewInNamePathS 1,2 2,1
+ajFileNewDF @ajFileNewInNamePathS
+ajFileNewInList ajFileNewListinList
+ajFileNewDirF ajFileNewListinDirPre
+ajFileNewDW ajFileNewListinPathWild
+ajFileNewDWE ajFileNewListinPathWildExclude
+ajFileNewOut ajFileNewOutNameS
+ajFileNewOutDir =ajFileNewOutNameDirS 1,2 2,1
+ajFileNewOutDir @ajFileNewOutNameDirS
+ajFileNewOutD =ajFileNewOutNamePathS 1,2 2,1
+ajFileNewOutD @ajFileNewOutNamePathS
+ajFileNewApp ajFileNewOutappendNameS
+ajFileReopen ajFileReopenName
+ajFileNext ajFileReopenNext
+ajFileTell ajFileResetPos
+ajFileUnbuffer ajFileSetUnbuffer
+ajFileFp ajFileGetFileptr
+ajFileName ajFileGetNameC
+ajFileNameS ajFileGetNameS
+ajFileGetName ajFileGetNameS
+ajFileGetApp ajFileIsAppend
+ajFileEof ajFileIsEof
+ajFileStderr ajFileIsStderr
+ajFileStdin ajFileIsStdin
+ajFileStdout ajFileIsStdout
+ajFileBuffNewF ajFilebuffNewFromCfile
+ajFileBuffNewFile ajFilebuffNewFromFile
+ajFileBuffNewS ajFilebuffNewLine
+ajFileBuffNewList ajFilebuffNewListinList
+ajFileBuffNewIn ajFilebuffNewNameS
+ajFileBuffNewDC =ajFileBuffNewNamePathC 1,2 2,1
+ajFileBuffNewDC @ajFileBuffNewNamePathC
+ajFileBuffNewDF =ajFilebuffNewNamePathS 1,2 2,1
+ajFileBuffNewDF @ajFilebuffNewNamePathS
+ajFileBuffNew ajFilebuffNewNofile
+ajFileBuffNewDW ajFilebuffNewPathWild
+ajFileBuffNewDWE ajFilebuffNewPathWildExclude
+ajFileBuffDel ajFilebuffDel
+ajFileBuffSetFile -
+ajFileBuffClear ajFilebuffClear
+ajFileBuffClearStore ajFilebuffClearStore
+ajFileBuffFix ajFilebuffFix
+ajFileBuffReset ajFilebuffReset
+ajFileBuffResetPos ajFilebuffResetPos
+ajFileBuffResetStore ajFilebuffResetStore
+ajFileBuffBuff ajFilebuffSetBuffered
+ajFileBuffNobuff ajFilebuffSetUnbuffered
+ajFileBuffStripHtmlPre ajFileBuffHtmlPre
+ajFileBuffStripHtml ajFilebuffHtmlStrip
+ajFileBuffLoadC ajFilebuffLoadC
+ajFileBuffLoadS ajFilebuffLoadS
+ajFileBuffLoad ajFilebuffLoadAll
+ajFileBuffFile ajFilebuffGetFile
+ajFileBuffSize ajFileValueBuffsize
+ajFileBuffFp ajFilebuffGetFileptr
+ajFileBuffIsBuffered ajFilebuffIsBuffered
+ajFileBuffEmpty ajFilebuffIsEmpty
+ajFileBuffEnd ajFilebuffIsEnded
+ajFileBuffEof ajFilebuffIsEof
+ajFileBuffTrace ajFilebuffTrace
+ajFileBuffTraceFull ajFilebuffTraceFull
+ajFileBuffPrint ajFilebuffTraceTitle
+ajOutfileNew ajOutfileNewNameS
+ajOutfileDel ajOutfileClose
+ajOutfileFile ajOutfileGetFile
+ajOutfileFp ajOutfileGetFileptr
+ajOutfileFormat ajOutfileGetFormat
+ajFileStat -
+ajFileNameValid ajFilenameExistsRead
+ajFileLength ajFilenameGetSize
+ajFileHasDir ajFilenameHasPath
+ajFileTestSkip -
+ajFileNameExtC ajFilenameReplaceExtC
+ajFileNameExt ajFilenameReplaceExtS
+ajFileNameDirSetC ajFilenameReplacePathC
+ajFileNameDirSet ajFilenameReplacePathS
+ajFileSetDir ajFilenameReplacePathS
+ajFileTempName -
+ajFileNameShorten ajFilenameTrimAll
+ajFileExtnTrim ajFilenameTrimExt
+ajFileNameTrim ajFilenameTrimPath
+ajFileDirTrim ajFilenameTrimPath
+ajFileDirExtnTrim ajFilenameTrimPathExt
+ajFileDirPath ajDirnameFillPath
+ajFileDirFix ajDirnameFix
+ajFileDir ajDirnameFixExists
+ajFileDirUp ajDirnameUp
+ajFileScan -
+ajDirScan -
+ajFileGetwd -
+#ajfiledata
+ajFileDataNewC -
+ajFileDataNew -
+ajFileDataDirNew -
+ajFileDataDirNewC -
+ajFileDataNewWrite -
+ajFilePathData -
+#ajfileio
+ajFileGets ajReadline
+ajFileReadAppend ajReadlineAppend
+ajFileGetsL ajReadlinePos
+ajFileGetsTrim ajReadlineTrim
+ajFileReadLine ajReadlineTrim
+ajFileGetsTrimL ajReadlineTrimPos
+ajFileRead =ajReadbinBinary 1,2,3,4 4,3,2,1
+ajFileRead @ajReadbinBinary
+ajFileOutHeader -
+ajFileWrite =ajWritebinBinary 1,2,3,4 1,4,3,2
+ajFileWrite @ajWritebinBinary
+ajFileWriteByte ajWritebinByte
+ajFileWriteInt2 ajWritebinInt2
+ajFileWriteInt4 ajWritebinInt4
+ajFileWriteStr ajWritebinStr
+ajFileBuffGet ajBuffreadLine
+ajFileBuffGetL ajBuffreadLinePos
+ajFileBuffGetStoreL ajBuffreadLinePosStore
+ajFileBuffGetStore ajBuffreadLineStore
+ajFileBuffGetTrim ajBuffreadLineTrim
 #ajfmt
 #ajgraph
 #ajgraphxml
@@ -102,6 +232,11 @@ ajListstrRemove ajListstrIterRemove
 ajMemCalloc0 ajMemCallocZero
 #ajmess
 #ajnam
+ajNamRootInstall -
+ajNamRootPack -
+ajNamRootVersion -
+ajNamRoot -
+ajNamRootBase -
 #ajnexus
 #ajpat
 #ajpdb
@@ -544,7 +679,6 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #embshow
 #embsig
 #embword
-#embxyz
 #aaindexextract
 #abiview
 #acdc
