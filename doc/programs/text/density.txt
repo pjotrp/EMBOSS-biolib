@@ -5,7 +5,7 @@
 
 Function
 
-   Nucleic acid density plot
+   Draw a nucleic acid density plot
 
 Description
 
@@ -21,7 +21,7 @@ Usage
 
 
 % density tembl:x13776 
-Nucleic acid density plot
+Draw a nucleic acid density plot
 Output report [x13776.density]: 
 
    Go to the input files for this example
@@ -31,7 +31,7 @@ Output report [x13776.density]:
 
 
 % density tembl:x13776 -quad -qgraph cps 
-Nucleic acid density plot
+Draw a nucleic acid density plot
 
 Created density.ps
 
@@ -41,7 +41,7 @@ Created density.ps
 
 
 % density tembl:x13776 -dual -dgraph cps 
-Nucleic acid density plot
+Draw a nucleic acid density plot
 
 Created density.ps
 
@@ -450,16 +450,16 @@ Known bugs
 
 See also
 
-   Program name                         Description
-   banana       Bending and curvature plot in B-DNA
-   btwisted     Calculates the twisting in a B-DNA sequence
-   chaos        Create a chaos game representation plot for a sequence
-   compseq      Count composition of dimer/trimer/etc words in a sequence
-   dan          Calculates DNA RNA/DNA melting temperature
-   freak        Residue/base frequency table or plot
-   isochore     Plots isochores in large DNA sequences
+   Program name                           Description
+   banana       Plot bending and curvature data for B-DNA
+   btwisted     Calculate the twisting in a B-DNA sequence
+   chaos        Draw a chaos game representation plot for a nucleotide sequence
+   compseq      Calculate the composition of unique words in sequences
+   dan          Calculates nucleic acid melting temperature
+   freak        Generate residue/base frequency table or plot
+   isochore     Plots isochores in DNA sequences
    sirna        Finds siRNA duplexes in mRNA
-   wordcount    Counts words of specified size in a DNA or protein sequence
+   wordcount    Count and extract unique words in DNA sequence(s)
 
 Author(s)
 

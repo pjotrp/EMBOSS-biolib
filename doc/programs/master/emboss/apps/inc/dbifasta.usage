@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>dbifasta </b>
-Database indexing for fasta file databases
+Index a fasta file database
 Database name: <b>EMROD</b>
               simple : >ID
                idacc : >ID ACC

@@ -24,33 +24,14 @@ newseq
 <H2>
     Function
 </H2>
-Type in a short new sequence
+Create a sequence file from a typed-in sequence
 
 <H2>
     Description
 </H2>
 
+<p><b>newseq</b> creates a sequence file from a sequence that is manually typed in at the command-line. This is a quicker, easier and less error-prone method than editing such a file in a text editor.</p>
 
-This allows you to type a sequence into a file in a quick and
-easy manner.
-
-<p>
-The length of the sequence you can type in is restricted to a
-fairly short length (typically less than 255 characters).  This
-length restriction is not a property of the EMBOSS package, but of the
-computer system you are using.  This is because, as you type in
-response to a prompt from this program, what you type is stored in the
-computer operating system before being handed over to the program. 
-There is often a limit of less than 255 characters on the length of a
-response that a computer system will allow you to give. 
-
-<p>
-Despite this restriction, it is expected that this program will
-be a useful and easy way of constructing new sequence files. 
-
-<p>
-(You wouldn't want to type a long sequence in by hand, anyway,
-would you?)
 
 <H2>
     Usage
@@ -66,7 +47,7 @@ Type in a short sequence to the file 'mycc.pep' in SWISSPROT format:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>newseq </b>
-Type in a short new sequence.
+Create a sequence file from a typed-in sequence
 Name of the sequence: <b>cytoc</b>
 Description of the sequence: <b>fragment of cytochrome c</b>
 Type of sequence
@@ -270,7 +251,7 @@ None.
 </H2>
 
 
-None.
+<p>There will be a maximum permissible length (typically 255 characters) of the sequence that may be entered. This is not a property of the EMBOSS package but of the computer system you are using. Whenever you type something in at the command-line, the text is stored in a buffer before being passed to the program.  There is often a limit of less than 255 characters on the size of the buffer and so also the size of the sequence you can specify to <b>newseq</b>. The computer will normally issue a beep when the end of buffer is reached, and allow no more character input. </p>
 
 <H2>
     Diagnostic Error Messages
@@ -303,17 +284,17 @@ None.
 
 <tr>
 <td><a href="codcopy.html">codcopy</a></td>
-<td>Reads and writes a codon usage table</td>
+<td>Copy and reformat a codon usage table</td>
 </tr>
 
 <tr>
 <td><a href="cutseq.html">cutseq</a></td>
-<td>Removes a specified section from a sequence</td>
+<td>Removes a section from a sequence</td>
 </tr>
 
 <tr>
 <td><a href="degapseq.html">degapseq</a></td>
-<td>Removes gap characters from sequences</td>
+<td>Removes non-alphabetic (e.g. gap) characters from sequences</td>
 </tr>
 
 <tr>
@@ -323,7 +304,7 @@ None.
 
 <tr>
 <td><a href="entret.html">entret</a></td>
-<td>Reads and writes (returns) flatfile entries</td>
+<td>Retrieves sequence entries from flatfile databases and files</td>
 </tr>
 
 <tr>
@@ -333,7 +314,7 @@ None.
 
 <tr>
 <td><a href="extractfeat.html">extractfeat</a></td>
-<td>Extract features from a sequence</td>
+<td>Extract features from sequence(s)</td>
 </tr>
 
 <tr>
@@ -348,37 +329,37 @@ None.
 
 <tr>
 <td><a href="makenucseq.html">makenucseq</a></td>
-<td>Creates random nucleotide sequences</td>
+<td>Create random nucleotide sequences</td>
 </tr>
 
 <tr>
 <td><a href="makeprotseq.html">makeprotseq</a></td>
-<td>Creates random protein sequences</td>
+<td>Create random protein sequences</td>
 </tr>
 
 <tr>
 <td><a href="maskfeat.html">maskfeat</a></td>
-<td>Mask off features of a sequence</td>
+<td>Write a sequence with masked features</td>
 </tr>
 
 <tr>
 <td><a href="maskseq.html">maskseq</a></td>
-<td>Mask off regions of a sequence</td>
+<td>Write a sequence with masked regions</td>
 </tr>
 
 <tr>
 <td><a href="noreturn.html">noreturn</a></td>
-<td>Removes carriage return from ASCII files</td>
+<td>Remove carriage return from ASCII files</td>
 </tr>
 
 <tr>
 <td><a href="notseq.html">notseq</a></td>
-<td>Exclude a set of sequences and write out the remaining ones</td>
+<td>Write to file a subset of an input stream of sequences</td>
 </tr>
 
 <tr>
 <td><a href="nthseq.html">nthseq</a></td>
-<td>Writes one sequence from a multiple set of sequences</td>
+<td>Write to file a single sequence from an input stream of sequences</td>
 </tr>
 
 <tr>
@@ -388,7 +369,7 @@ None.
 
 <tr>
 <td><a href="revseq.html">revseq</a></td>
-<td>Reverse and complement a sequence</td>
+<td>Reverse and complement a nucleotide sequence</td>
 </tr>
 
 <tr>
@@ -398,7 +379,7 @@ None.
 
 <tr>
 <td><a href="seqretsplit.html">seqretsplit</a></td>
-<td>Reads and writes (returns) sequences in individual files</td>
+<td>Reads sequences and writes them to individual files</td>
 </tr>
 
 <tr>
@@ -408,32 +389,32 @@ None.
 
 <tr>
 <td><a href="splitter.html">splitter</a></td>
-<td>Split a sequence into (overlapping) smaller sequences</td>
+<td>Split sequence(s) into smaller sequences</td>
 </tr>
 
 <tr>
 <td><a href="trimest.html">trimest</a></td>
-<td>Trim poly-A tails off EST sequences</td>
+<td>Remove poly-A tails from nucleotide sequences</td>
 </tr>
 
 <tr>
 <td><a href="trimseq.html">trimseq</a></td>
-<td>Trim ambiguous bits off the ends of sequences</td>
+<td>Remove unwanted characters from start and end of sequence(s)</td>
 </tr>
 
 <tr>
 <td><a href="union.html">union</a></td>
-<td>Reads sequence fragments and builds one sequence</td>
+<td>Concatenate multiple sequences into a single sequence</td>
 </tr>
 
 <tr>
 <td><a href="vectorstrip.html">vectorstrip</a></td>
-<td>Strips out DNA between a pair of vector sequences</td>
+<td>Removes vectors from the ends of nucleotide sequence(s)</td>
 </tr>
 
 <tr>
 <td><a href="yank.html">yank</a></td>
-<td>Reads a sequence range, appends the full USA to a list file</td>
+<td>Add a sequence reference (a full USA) to a list file</td>
 </tr>
 
 </table>

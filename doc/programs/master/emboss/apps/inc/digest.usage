@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>digest </b>
-Protein proteolytic enzyme or reagent cleavage digest
+Reports on protein proteolytic enzyme or reagent cleavage sites
 Input protein sequence(s): <b>tsw:opsd_human</b>
 Enzymes and Reagents
          1 : Trypsin

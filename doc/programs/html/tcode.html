@@ -22,30 +22,15 @@ tcode
 <H2>
     Function
 </H2>
-Fickett TESTCODE statistic to identify protein-coding DNA
+Identify protein-coding regions using Fickett TESTCODE statistic
 <H2>
     Description
 </H2>
 
-<b>tcode</b> tests DNA sequences for protein coding regions using an
-algorithm which looks for simple and universal differences between
-protein-coding and noncoding DNA.The original paper reports that the
-test had been thoroughly proven on 400,000 bases of sequence data: it
-misclassifies 5% of the regions tested and gives an answer of "No
-Opinion" one fifth of the time. 
+<p><b>tcode</b> identifies protein-coding regions in one or more DNA sequences using the fickett TESTCODE statistic.  This is based on simple and universal differences between protein-coding and noncoding DNA.  The TESTCODE statistic is calculated for windows of a specified size over each input sequence. The results can be output as a standard EMBOSS report file or displayed graphically.</p> 
 
-<p>
+<p>The output reports each window as "Coding", "Noncoding" or "No opinion". Entries marked "No opinion" have a TESTCODE value that falls between the maximum and minimum values required to report a region as noncoding or coding. For the graphical plot, all points above a green horizontal line are determined to be coding regions. Those below a red line are determined to be noncoding. Points between the red and green lines are "no opinion" ones.</p>
 
-The program slides a window of user-selectable size over the DNA
-sequence. For each window the TESTCODE statistic is applied. The
-results can be output as a text report or displayed graphically.  The
-text output reports each window as "Coding", "Noncoding" or "No
-opinion". Entries marked "No opinion" have a TESTCODE value that falls
-between the maximum and minimum values required to report a region as
-noncoding or coding. For the graphical plot, all points above a green
-horizontal line are determined to be coding regions. Those below a red
-line are determined to be noncoding.  Points between the red and green
-lines are "no opinion" ones.
 
 
 <H2>
@@ -143,7 +128,7 @@ Anything in between these two values is uncertain.
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>tcode </b>
-Fickett TESTCODE statistic to identify protein-coding DNA
+Identify protein-coding regions using Fickett TESTCODE statistic
 Input nucleotide sequence(s): <b>tembl:x65921</b>
 Length of sliding window [200]: <b></b>
 Output report [x65921.tcode]: <b></b>
@@ -161,7 +146,7 @@ Produce a graphical plot
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>tcode -plot -graph cps </b>
-Fickett TESTCODE statistic to identify protein-coding DNA
+Identify protein-coding regions using Fickett TESTCODE statistic
 Input nucleotide sequence(s): <b>tembl:x65921</b>
 Length of sliding window [200]: <b></b>
 
@@ -801,28 +786,19 @@ alternative values may be user defined.
 <H2>
     Notes
 </H2>
-
-In the GCG package, the current (version 10.3) TESTCODE application's apparent
-interpretation of the algorithm is:
+<p>The TESTCODE statistic reflects the fact that codons are used with unequal frequency and that oligonucleotides and nucleotides tend to be repeated with a periodicity of three.  The original paper reports that the test had been thoroughly proven on 400,000 bases of sequence data: it misclassifies 5% of the regions tested and gives an answer of "No Opinion" one fifth of the time.</p>
 
 <p>
-
-<pre>
+In the GCG package, the current (version 10.3) TESTCODE application's apparent interpretation of the algorithm is:
 	MAX(A1,A2,A3) / MIN(A1,A2,A3)
-</pre>
-
-<p>
 
 The EMBOSS <b>tcode</b> program uses the correct Fickett algorithm equation:
-
-<p>
-
-<pre>
 	MAX(A1,A2,A3) / MIN(A1,A2,A3) + 1
-</pre>
 
-thus any plot using the GCG TESTCODE aplication will be slightly higher
-than the <b>tcode</b> equivalent. 
+thus any plot using the GCG TESTCODE aplication will be slightly higher than the <b>tcode</b> equivalent.
+</p>
+
+
 
 
 <H2>
@@ -844,7 +820,7 @@ Fickett, J.W. (1982) Nucleic Acids Research 10(17) pp.5303-5318
     Warnings
 </H2>
 
-None.
+<p>The program will ignore ambiguity codes in the nucleic acid sequence and just accept the four common bases. This is a function of the algorithm, and the data tables.</p>
 
 <H2>
     Diagnostic Error Messages
@@ -869,17 +845,17 @@ It always exits with status 0.
 
 <tr>
 <td><a href="marscan.html">marscan</a></td>
-<td>Finds MAR/SAR sites in nucleic sequences</td>
+<td>Finds matrix/scaffold recognition (MRS) signatures in DNA sequences</td>
 </tr>
 
 <tr>
 <td><a href="plotorf.html">plotorf</a></td>
-<td>Plot potential open reading frames</td>
+<td>Plot potential open reading frames in a nucleotide sequence</td>
 </tr>
 
 <tr>
 <td><a href="showorf.html">showorf</a></td>
-<td>Pretty output of DNA translations</td>
+<td>Display a nucleotide sequence and translation in pretty format</td>
 </tr>
 
 <tr>
@@ -889,12 +865,12 @@ It always exits with status 0.
 
 <tr>
 <td><a href="syco.html">syco</a></td>
-<td>Synonymous codon usage Gribskov statistic plot</td>
+<td>Draw synonymous codon usage statictic plot for a nucleotide sequence</td>
 </tr>
 
 <tr>
 <td><a href="wobble.html">wobble</a></td>
-<td>Wobble base plot</td>
+<td>Plot third base position variability in a nucleotide sequence</td>
 </tr>
 
 </table>

@@ -5,16 +5,20 @@
 
 Function
 
-   Nucleic acid pattern search
+   Search for patterns in nucleotide sequences
 
 Description
 
-   fuzznuc uses PROSITE style patterns to search nucleotide sequences.
+   fuzznuc searches for a specified PROSITE-style pattern in nucleotide
+   sequences. Such patterns are specifications of a (typically short)
+   length of sequence to be found. They can specify a search for an exact
+   sequence or they can allow various ambiguities, matches to variable
+   lengths of sequence and repeated subsections of the sequence. One or
+   more nucleotide sequences are read from file. The output is a standard
+   EMBOSS report file that includes data such as location and score of
+   any matches.
 
-   Patterns are specifications of a (typically short) length of sequence
-   to be found. They can specify a search for an exact sequence or they
-   can allow various ambiguities, matches to variable lengths of sequence
-   and repeated subsections of the sequence.
+Algorithm
 
    fuzznuc intelligently selects the optimum searching algorithm to use,
    depending on the complexity of the search pattern specified.
@@ -25,7 +29,7 @@ Usage
 
 
 % fuzznuc 
-Nucleic acid pattern search
+Search for patterns in nucleotide sequences
 Input nucleotide sequence(s): tembl:L46634
 Search pattern: AAGCTT
 Output report [l46634.fuzznuc]: 
@@ -37,7 +41,7 @@ Output report [l46634.fuzznuc]:
 
 
 % fuzznuc 
-Nucleic acid pattern search
+Search for patterns in nucleotide sequences
 Input nucleotide sequence(s): tembl:L46634
 Search pattern: @nucseq.pat
 Output report [l46634.fuzznuc]: 
@@ -49,7 +53,7 @@ Output report [l46634.fuzznuc]:
 
 
 % fuzznuc -pname test 
-Nucleic acid pattern search
+Search for patterns in nucleotide sequences
 Input nucleotide sequence(s): tembl:L46634
 Search pattern: @nucsimple.pat
 Output report [l46634.fuzznuc]: 
@@ -61,7 +65,7 @@ Output report [l46634.fuzznuc]:
 
 
 % fuzznuc 
-Nucleic acid pattern search
+Search for patterns in nucleotide sequences
 Input nucleotide sequence(s): tembl:L46634
 Search pattern: @nuc.pat
 Output report [l46634.fuzznuc]: 
@@ -563,10 +567,11 @@ Known bugs
 
 See also
 
-   Program name                    Description
-   dreg         Regular expression search of a nucleotide sequence
-   fuzztran     Protein pattern search after translation
-   marscan      Finds MAR/SAR sites in nucleic sequences
+   Program name Description
+   dreg Regular expression search of nucleotide sequence(s)
+   fuzztran Search for patterns in protein sequences (translated)
+   marscan Finds matrix/scaffold recognition (MRS) signatures in DNA
+   sequences
 
    Other EMBOSS programs allow you to search for regular expression
    patterns but may be less easy for the user who has never used regular

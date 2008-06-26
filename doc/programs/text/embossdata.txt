@@ -5,44 +5,16 @@
 
 Function
 
-   Finds or fetches data files read by EMBOSS programs
+   Find and retrieve EMBOSS data files
 
 Description
 
-   This is a utility to indicate which directories can hold EMBOSS data
-   files and what the names of these files are.
-
-   The names of EMBOSS data files all start with the character 'E', by
-   convention, to distinguish them somewhat from any other files,
-   especially files in your home directory.
-
-   EMBOSS data files are read in by assorted EMBOSS programs, for example
-   the files holding the various genetic codes to translate from nucleic
-   acid codons to amino acids are held in files called "EGC.0", "EGC.1",
-   "EGC.2", etc. These files normally are kept in a standard data
-   directory under the EMBOSS package installation position:
-   ".../emboss/emboss/data/". When EMBOSS programs require a data file,
-   they search for it, in order, through the following set of
-   directories:
-     * The current directory
-     * '.embossdata' in the current directory
-     * Your home directory
-     * '.embossdata' in your home directory
-     * The EMBOSS standard data directory
-
-   If a data file is placed in the current directory, EMBOSS programs
-   will use it in preference to the file of the same name in the EMBOSS
-   standard data directory. Thus if you wish to modify a data file to
-   change the behaviour of an EMBOSS program, you should obtain it from
-   the EMBOSS standard data directory, edit it, and place it in one of
-   the other directories, such as the current directory or your home
-   directory.
-
-   The program embossdata is a utility to enable you to check on the
-   location of the directories which could hold data files, to display
-   the names of data files in those directories and to make local copies
-   of the data files from the EMBOSS standard data directory in order for
-   you to modify them.
+   embossdata searches for a specified data file in all the directories
+   which can hold them and writes the results of the search to screen or
+   (optionally) to file. Optionally, all the files in the searched
+   directories can be displayed. Optionally, it will also copy the file
+   from the EMBOSS standard data directory to the current directory so
+   that you can safely edit and use it.
 
 Usage
 
@@ -52,7 +24,7 @@ Usage
 
 
 % embossdata 
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 Data file name: 
 
 # The following directories can contain EMBOSS data files.
@@ -74,7 +46,7 @@ Data file name:
 
 
 % embossdata -showall 
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 Data file name: 
 
 
@@ -218,6 +190,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Matrices.nucleotide
   Epk.dat
   tfvertebrate
+  Eresidues.iub
   Efeatures.protein
   Erna.melt
   Eamino.dat
@@ -878,7 +851,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/CODONS
 
 
 % embossdata -fetch Epepcoil.dat 
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 
 File '/homes/pmr/local/share/EMBOSS/data/Epepcoil.dat' has been copied successf
 ully.
@@ -891,7 +864,7 @@ ully.
 
 
 % embossdata EPAM60 
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 
 # The following directories can contain EMBOSS data files.
 # They are searched in the following order until the file is found.
@@ -999,7 +972,50 @@ Data files
 
 Notes
 
-   None.
+   Many EMBOSS programs use a data file. The data files are typically
+   kept in a standard directory in the EMBOSS installation
+   (.../emboss/emboss/data/). When an EMBOSS programs require a data
+   file, it search for it in the following order of directories:
+     * The current directory
+     * .embossdata subdirectory in the current directory
+     * Your home directory
+     * .embossdata subdirectory in your home directory
+     * The EMBOSS standard data directory
+
+   EMBOSS will use the data file it finds first from the above
+   directories. For example, a data file in the current directory is used
+   in preference to a file of the same name in the EMBOSS standard data
+   directory.
+
+   It is sometimes necessary to modify a data file to change the
+   behaviour of an EMBOSS program. To do this safely, you should copy the
+   data file from the EMBOSS standard data directory to one of the other
+   directories, such as the current directory or your home directory,
+   before editing it. embossdata helps here by displaying the names of
+   data files in all the directories which could hold them, and copying a
+   data file from the EMBOSS standard data directory to the current
+   directory.
+
+   By convention, all EMBOSS data file names start with the character
+   'E', to distinguish them from other files on your system. For example
+   genetic codes to translate codons to amino acids are held in data
+   files called "EGC.0", "EGC.1", "EGC.2", etc.
+
+  -filename option
+
+   Name of data file to search for or copy into the current directory
+   from the EMBOSS standard data directory. The name of the file is not
+   altered when it is fetched. (Any string is accepted).
+
+  -outfile option
+
+   Name of file containing the results of searching the data directories.
+   By default this is written to the screen (stdout).
+
+  -reject option
+
+   The names of sub-directories of the EMBOSS data directory that should
+   be ignored when displaying data directories.
 
 References
 
@@ -1025,8 +1041,8 @@ Known bugs
 
 See also
 
-   Program name                Description
-   embossversion Writes the current EMBOSS version number
+   Program name                     Description
+   embossversion Writes the current EMBOSS version number to a file
 
 Author(s)
 

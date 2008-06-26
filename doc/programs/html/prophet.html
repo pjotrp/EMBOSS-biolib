@@ -24,22 +24,20 @@ prophet
 <H2>
     Function
 </H2>
-Gapped alignment for profiles
+Scan one or more sequences with a Gribskov or Henikoff profile
 
 <H2>
     Description
 </H2>
 
-<b>prophet</b> finds matches between a GRIBSKOV or HENIKOFF profile
-produced by <b>prophecy</b> and one or more sequences.
+<p>prophet scans one or more sequences with the supplied Gribskov or Henikoff profile (produced by prophecy).  It writes the the highest-scoring (gapped) alignment for each sequence to file, which includes the score for the match.  Gap opening coefficient and gap extension coefficient must be specified.</p>
 
-<p>
 
-Note: <b>prophet</b> does <b>NOT</b> use the 'simple frequency matrices'
-produced by <b>prophecy</b>.  If you have a 'simple frequency matrix'you
-should use the program <b>profit</b> to scan sequences. 
 
-<p>
+<H2>
+Algorithm
+</H2>
+<p>prophet does NOT use the 'simple frequency matrices' produced by prophecy. If you have a 'simple frequency matrix'you should use the program profit to scan sequences.</p>
 
 
 
@@ -53,7 +51,7 @@ should use the program <b>profit</b> to scan sequences.
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>prophet </b>
-Gapped alignment for profiles
+Scan one or more sequences with a Gribskov or Henikoff profile
 Input sequence(s): <b>tsw:h*</b>
 Profile or weight matrix file: <b>globins.gribskov</b>
 Gap opening coefficient [1.0]: <b></b>
@@ -527,12 +525,12 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr>
 <td><a href="profit.html">profit</a></td>
-<td>Scan a sequence or database with a matrix or profile</td>
+<td>Scan one or more sequences with a simple frequency matrix</td>
 </tr>
 
 <tr>
 <td><a href="prophecy.html">prophecy</a></td>
-<td>Creates matrices/profiles from multiple alignments</td>
+<td>Create frequency matrix or profile from a multiple alignment</td>
 </tr>
 
 </table>

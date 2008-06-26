@@ -7,7 +7,7 @@ Display the directories searched for EMBOSS data files:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>embossdata </b>
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 Data file name: <b></b>
 
 # The following directories can contain EMBOSS data files.
@@ -34,7 +34,7 @@ Display the names of data files in all of the possible data directories: This is
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>embossdata -showall </b>
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 Data file name: <b></b>
 
 
@@ -178,6 +178,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Matrices.nucleotide
   Epk.dat
   tfvertebrate
+  Eresidues.iub
   Efeatures.protein
   Erna.melt
   Eamino.dat
@@ -845,7 +846,7 @@ Make a copy of an EMBOSS data file in the current directory:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>embossdata -fetch Epepcoil.dat </b>
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 
 File '/homes/pmr/local/share/EMBOSS/data/Epepcoil.dat' has been copied successfully.
 
@@ -862,7 +863,7 @@ Display the directories which contain a particular EMBOSS data file:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>embossdata EPAM60 </b>
-Finds or fetches data files read by EMBOSS programs
+Find and retrieve EMBOSS data files
 
 # The following directories can contain EMBOSS data files.
 # They are searched in the following order until the file is found.

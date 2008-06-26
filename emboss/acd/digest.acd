@@ -1,6 +1,6 @@
 application: digest [
-  documentation: "Protein proteolytic enzyme or
-                  reagent cleavage digest"
+  documentation: "Reports on protein proteolytic enzyme or
+                  reagent cleavage sites"
   groups: "Protein:Motifs"
 ]
 

@@ -449,8 +449,8 @@ Known bugs
 
 See also
 
-   Program name                  Description
-   tfscan       Scans DNA sequences for transcription factors
+   Program name                         Description
+   tfscan       Identify transcription factor binding sites in DNA sequences
 
 Author(s)
 

@@ -456,10 +456,10 @@ Known bugs
 
 See also
 
-   Program name                       Description
-   dotmatcher   Displays a thresholded dotplot of two sequences
-   dotpath      Non-overlapping wordmatch dotplot of two sequences
-   polydot      Displays all-against-all dotplots of a set of sequences
+   Program name                          Description
+   dotmatcher   Draw a threshold dotplot of two sequences
+   dotpath      Draw a non-overlapping wordmatch dotplot of two sequences
+   polydot      Draw dotplots for all-against-all comparison of a sequence set
 
    dotmatcher, by comparison, moves a window of specified length up each
    diagonal and displays a line over the window if the sum of the

@@ -5,14 +5,19 @@
 
 Function
 
-   Gapped alignment for profiles
+   Scan one or more sequences with a Gribskov or Henikoff profile
 
 Description
 
-   prophet finds matches between a GRIBSKOV or HENIKOFF profile produced
-   by prophecy and one or more sequences.
+   prophet scans one or more sequences with the supplied Gribskov or
+   Henikoff profile (produced by prophecy). It writes the the
+   highest-scoring (gapped) alignment for each sequence to file, which
+   includes the score for the match. Gap opening coefficient and gap
+   extension coefficient must be specified.
 
-   Note: prophet does NOT use the 'simple frequency matrices' produced by
+Algorithm
+
+   prophet does NOT use the 'simple frequency matrices' produced by
    prophecy. If you have a 'simple frequency matrix'you should use the
    program profit to scan sequences.
 
@@ -22,7 +27,7 @@ Usage
 
 
 % prophet 
-Gapped alignment for profiles
+Scan one or more sequences with a Gribskov or Henikoff profile
 Input sequence(s): tsw:h*
 Profile or weight matrix file: globins.gribskov
 Gap opening coefficient [1.0]: 
@@ -460,9 +465,9 @@ Known bugs
 
 See also
 
-   Program name                     Description
-   profit       Scan a sequence or database with a matrix or profile
-   prophecy     Creates matrices/profiles from multiple alignments
+   Program name                         Description
+   profit       Scan one or more sequences with a simple frequency matrix
+   prophecy     Create frequency matrix or profile from a multiple alignment
 
 Author(s)
 

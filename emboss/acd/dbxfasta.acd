@@ -1,7 +1,6 @@
 application: dbxfasta [
+  documentation: "Index a fasta file database using b+tree indices"
   groups: "Utils:Database indexing"
-  documentation: "Database b+tree indexing for fasta file
-                  databases"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

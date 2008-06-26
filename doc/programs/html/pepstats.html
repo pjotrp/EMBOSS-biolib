@@ -25,19 +25,14 @@ pepstats
 <H2>
     Function
 </H2>
-Protein statistics
+Calculates statistics of protein properties
 
 <H2>
     Description
 </H2>
 
-
-<b>pepstats</b> outputs a report of simple protein sequence
-information including:
-
-<p>
+<p><b>pepstats</b> reads one or more protein sequences and writes an output file with various statistics on the protein properties.  This includes:</p>
 <ul>
-
 <li>Molecular weight
 <li>Number of residues
 <li>Average residue weight
@@ -50,29 +45,8 @@ information including:
 <li>Extinction coefficient at 1 mg/ml (A280)
 </ul>
 
-<p>
 
-DayhoffStat is the amino acid's molar percentage divided by the Dayhoff
-statistic.  The Dayhoff statistic is the amino acid's relative occurence
-per 1000 aa normalised to 100 by rls@ebi.ac.uk (original work from 1993)
 
-<p>
-
-The probability of expression in inclusion bodies is sometimes
-referred to as a type of solubility measure. If, however, a
-recombinant protein is expressed in Escherichia coli, it can be
-expressed as soluble in the cytosol or insoluble in inclusion bodies. If
-the Harrison model predicts a given protein to be probably expressed
-in includion bodies, this doesn't mean that it is not possible to get
-it soluble in the cytosol. One example: Thermatoga maritima cell
-divison protein FtsA with a C-terminal His-Tag has a 58% Harrison
-probability of being expressed in inclusion bodies. However, there was
-plenty of soluble protein in the E. coli cytosol (F. van den Ent and
-J.  Lowe, EMBO J. 19, 5300-5307 2000). If the protein is expressed in
-inclusion bodies or not is not only dependent on the sequence, but
-also on many other factors, such as E. coli strain, incubation
-temperature, type of expression vector, strength of promoter and
-medium.
 
 
 
@@ -86,7 +60,7 @@ medium.
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>pepstats </b>
-Protein statistics
+Calculates statistics of protein properties
 Input protein sequence(s): <b>tsw:laci_ecoli</b>
 Pepstats program output file [laci_ecoli.pepstats]: <b></b>
 
@@ -464,7 +438,11 @@ The directories are searched in the following order:
     Notes
 </H2>
 
-None.
+<p>DayhoffStat is the amino acid's molar percentage divided by the Dayhoff statistic. The Dayhoff statistic is read from the EMBOSS data file <tt>Edayhoff.freq</tt> and is the amino acid's relative occurence per 1000 aa normalised to 100.</p>
+
+<p>The probability of expression in inclusion bodies is sometimes referred to as a type of solubility measure. If, however, a recombinant protein is expressed in Escherichia coli, it can be expressed as soluble in the cytosol or insoluble in inclusion bodies. If the Harrison model predicts a given protein to be probably expressed in includion bodies, this doesn't mean that it is not possible to get it soluble in the cytosol. One example: Thermatoga maritima cell divison protein FtsA with a C-terminal His-Tag has a 58% Harrison probability of being expressed in inclusion bodies. However, there was plenty of soluble protein in the E. coli cytosol (F. van den Ent and J. Lowe, EMBO J. 19, 5300-5307 2000). If the protein is expressed in inclusion bodies or not is not only dependent on the sequence, but also on many other factors, such as E. coli strain, incubation temperature, type of expression vector, strength of promoter and medium. </p>
+
+
 
 <H2>
     References
@@ -504,17 +482,17 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr>
 <td><a href="backtranambig.html">backtranambig</a></td>
-<td>Back translate a protein sequence to ambiguous codons</td>
+<td>Back-translate a protein sequence to ambiguous nucleotide sequence</td>
 </tr>
 
 <tr>
 <td><a href="backtranseq.html">backtranseq</a></td>
-<td>Back translate a protein sequence</td>
+<td>Back-translate a protein sequence to a nucleotide sequence</td>
 </tr>
 
 <tr>
 <td><a href="charge.html">charge</a></td>
-<td>Protein charge plot</td>
+<td>Draw a protein charge plot</td>
 </tr>
 
 <tr>
@@ -524,57 +502,57 @@ None.
 
 <tr>
 <td><a href="compseq.html">compseq</a></td>
-<td>Count composition of dimer/trimer/etc words in a sequence</td>
+<td>Calculate the composition of unique words in sequences</td>
 </tr>
 
 <tr>
 <td><a href="emowse.html">emowse</a></td>
-<td>Protein identification by mass spectrometry</td>
+<td>Search protein sequences by digest fragment molecular weight</td>
 </tr>
 
 <tr>
 <td><a href="freak.html">freak</a></td>
-<td>Residue/base frequency table or plot</td>
+<td>Generate residue/base frequency table or plot</td>
 </tr>
 
 <tr>
 <td><a href="iep.html">iep</a></td>
-<td>Calculates the isoelectric point of a protein</td>
+<td>Calculate the isoelectric point of proteins</td>
 </tr>
 
 <tr>
 <td><a href="mwcontam.html">mwcontam</a></td>
-<td>Shows molecular weights that match across a set of files</td>
+<td>Find weights common to multiple molecular weights files</td>
 </tr>
 
 <tr>
 <td><a href="mwfilter.html">mwfilter</a></td>
-<td>Filter noisy molwts from mass spec output</td>
+<td>Filter noisy data from molecular weights file</td>
 </tr>
 
 <tr>
 <td><a href="octanol.html">octanol</a></td>
-<td>Displays protein hydropathy</td>
+<td>Draw a White-Wimley protein hydropathy plot</td>
 </tr>
 
 <tr>
 <td><a href="pepinfo.html">pepinfo</a></td>
-<td>Plots simple amino acid properties in parallel</td>
+<td>Plot amino acid properties of a protein sequence in parallel</td>
 </tr>
 
 <tr>
 <td><a href="pepwindow.html">pepwindow</a></td>
-<td>Displays protein hydropathy</td>
+<td>Draw a Kyte-Doolittle hydropathy plot for a protein sequence</td>
 </tr>
 
 <tr>
 <td><a href="pepwindowall.html">pepwindowall</a></td>
-<td>Displays protein hydropathy of a set of sequences</td>
+<td>Draw Kyte-Doolittle hydropathy plot for a protein alignment</td>
 </tr>
 
 <tr>
 <td><a href="wordcount.html">wordcount</a></td>
-<td>Counts words of specified size in a DNA or protein sequence</td>
+<td>Count and extract unique words in DNA sequence(s)</td>
 </tr>
 
 </table>

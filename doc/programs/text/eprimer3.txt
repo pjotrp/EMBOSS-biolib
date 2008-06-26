@@ -980,7 +980,7 @@ Known bugs
 See also
 
    Program name                         Description
-   primersearch Searches DNA sequences for matches with primer pairs
+   primersearch Search DNA sequences for matches with primer pairs
    stssearch    Search a DNA database for matches with a set of STS primers
 
 History

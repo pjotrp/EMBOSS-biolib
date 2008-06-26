@@ -18,17 +18,17 @@
 
 <tr>
 <td><a href="dbxfasta.html">dbxfasta</a></td>
-<td>Database b+tree indexing for fasta file databases</td>
+<td>Index a fasta file database using b+tree indices</td>
 </tr>
 
 <tr>
 <td><a href="dbxflat.html">dbxflat</a></td>
-<td>Database b+tree indexing for flat file databases</td>
+<td>Index a flat file database using b+tree indices</td>
 </tr>
 
 <tr>
 <td><a href="dbxgcg.html">dbxgcg</a></td>
-<td>Database b+tree indexing for GCG formatted databases</td>
+<td>Index a GCG formatted database using b+tree indices</td>
 </tr>
 
 </table>

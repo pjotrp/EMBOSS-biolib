@@ -1,5 +1,6 @@
 application: tfextract [
-  documentation: "Extract data from TRANSFAC"
+  documentation: "Process TRANSFAC transcription factor database
+                  for use by tfscan"
   groups: "Utils:Database creation"
   gui: "no"
   batch: "no"

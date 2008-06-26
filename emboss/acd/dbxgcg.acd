@@ -1,7 +1,6 @@
 application: dbxgcg [
+  documentation: "Index a GCG formatted database using b+tree indices"
   groups: "Utils:Database indexing"
-  documentation: "Database b+tree indexing for GCG formatted
-                  databases"
   gui: "yes"
   batch: "yes"
   cpu: "medium"

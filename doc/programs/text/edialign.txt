@@ -403,13 +403,15 @@ Known bugs
 
 See also
 
-   Program name                        Description
-   emma         Multiple alignment program - interface to ClustalW program
-   infoalign    Information on a multiple sequence alignment
-   plotcon      Plot quality of conservation of a sequence alignment
-   prettyplot   Displays aligned sequences, with colouring and boxing
-   showalign    Displays a multiple sequence alignment
-   tranalign    Align nucleic coding regions given the aligned proteins
+   Program name Description
+   emma Multiple sequence alignment (ClustalW wrapper)
+   infoalign Display basic information about a multiple sequence
+   alignment
+   plotcon Plot conservation of a sequence alignment
+   prettyplot Draw a sequence alignment with pretty formatting
+   showalign Display a multiple sequence alignment in pretty format
+   tranalign Generate an aligment of nucleic coding regions from aligned
+   proteins
 
 Author(s)
 

@@ -20,25 +20,6 @@ Description
    EMBOSS, and appears to be the most generally used and publicly
    available index file format for these databases.
 
-   Having created the EMBOSS indices for this file, a database can then
-   be defined in the file emboss.defaults as something like:
-
-DB embl [
-   type: N
-   format: embl
-   method: gcg
-   directory: /data/gcg/gcgembl
-]
-
-  Fields Indexed
-
-   By default, dbigcg will index the ID name and the accession number (if
-   present).
-   If they are present in your database, you may also specify that
-   dbiflat should index the Sequence Version and GI number, the Keywords
-   and Taxonomy names and the words in the description by using the
-   '-fields' qualifier with the appropriate values.
-
 Usage
 
    Here is a sample session with dbigcg
@@ -246,7 +227,24 @@ Data files
 
 Notes
 
-   None.
+   Having created the EMBOSS indices for this file, a database can then
+   be defined in the file emboss.defaults as something like:
+
+DB embl [
+   type: N
+   format: embl
+   method: gcg
+   directory: /data/gcg/gcgembl
+]
+
+  Fields Indexed
+
+   By default, dbigcg will index the ID name and the accession number (if
+   present).
+   If they are present in your database, you may also specify that
+   dbiflat should index the Sequence Version and GI number, the Keywords
+   and Taxonomy names and the words in the description by using the
+   '-fields' qualifier with the appropriate values.
 
 References
 
@@ -272,11 +270,11 @@ See also
 
    Program name                     Description
    dbiblast     Index a BLAST database
-   dbifasta     Database indexing for fasta file databases
+   dbifasta     Index a fasta file database
    dbiflat      Index a flat file database
-   dbxfasta     Database b+tree indexing for fasta file databases
-   dbxflat      Database b+tree indexing for flat file databases
-   dbxgcg       Database b+tree indexing for GCG formatted databases
+   dbxfasta     Index a fasta file database using b+tree indices
+   dbxflat      Index a flat file database using b+tree indices
+   dbxgcg       Index a GCG formatted database using b+tree indices
 
 Author(s)
 

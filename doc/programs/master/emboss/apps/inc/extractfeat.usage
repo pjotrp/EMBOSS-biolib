@@ -7,7 +7,7 @@ To write out the exons of a sequence:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>extractfeat tembl:x65921 -type exon stdout </b>
-Extract features from a sequence
+Extract features from sequence(s)
 
 >X65921_408_504 [exon] H.sapiens fau 1 gene
 cagtgacgtgacacgcagcccacggtctgtactgacgcgccctcgcttcttcctctttct
@@ -39,7 +39,7 @@ To write out the exons with 10 extra bases at the start and end so that you can 
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>extractfeat tembl:x65921 -type exon -before 10 -after 10 stdout </b>
-Extract features from a sequence
+Extract features from sequence(s)
 
 >X65921_408_504 [exon] H.sapiens fau 1 gene
 ggtcgctcagcagtgacgtgacacgcagcccacggtctgtactgacgcgccctcgcttct
@@ -72,7 +72,7 @@ To write out the 10 bases around the start of all 'exon' features in the tembl d
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>extractfeat tembl:*  -type exon -before 5 -after -5 stdout </b>
-Extract features from a sequence
+Extract features from sequence(s)
 
 >X65921_408_504 [exon] H.sapiens fau 1 gene
 ctcagcagtg
@@ -1710,7 +1710,7 @@ To extract the CDS region with the exons joined into one sequence:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>extractfeat tembl:x65921 -type CDS -join stdout </b>
-Extract features from a sequence
+Extract features from sequence(s)
 
 >X65921_782_1912 [CDS] H.sapiens fau 1 gene
 atgcagctctttgtccgcgcccaggagctacacaccttcgaggtgaccggccaggaaacg
@@ -1734,7 +1734,7 @@ To write out the 7 residues around all phosphorylated serine residues
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>extractfeat tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4 stdout </b>
-Extract features from a sequence
+Extract features from sequence(s)
 
 >OPSD_HUMAN_334_334 [mod_res] Rhodopsin (Opsin-2).
 DEASATV

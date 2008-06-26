@@ -5,21 +5,18 @@
 
 Function
 
-   Fickett TESTCODE statistic to identify protein-coding DNA
+   Identify protein-coding regions using Fickett TESTCODE statistic
 
 Description
 
-   tcode tests DNA sequences for protein coding regions using an
-   algorithm which looks for simple and universal differences between
-   protein-coding and noncoding DNA.The original paper reports that the
-   test had been thoroughly proven on 400,000 bases of sequence data: it
-   misclassifies 5% of the regions tested and gives an answer of "No
-   Opinion" one fifth of the time.
+   tcode identifies protein-coding regions in one or more DNA sequences
+   using the fickett TESTCODE statistic. This is based on simple and
+   universal differences between protein-coding and noncoding DNA. The
+   TESTCODE statistic is calculated for windows of a specified size over
+   each input sequence. The results can be output as a standard EMBOSS
+   report file or displayed graphically.
 
-   The program slides a window of user-selectable size over the DNA
-   sequence. For each window the TESTCODE statistic is applied. The
-   results can be output as a text report or displayed graphically. The
-   text output reports each window as "Coding", "Noncoding" or "No
+   The output reports each window as "Coding", "Noncoding" or "No
    opinion". Entries marked "No opinion" have a TESTCODE value that falls
    between the maximum and minimum values required to report a region as
    noncoding or coding. For the graphical plot, all points above a green
@@ -81,7 +78,7 @@ Usage
 
 
 % tcode 
-Fickett TESTCODE statistic to identify protein-coding DNA
+Identify protein-coding regions using Fickett TESTCODE statistic
 Input nucleotide sequence(s): tembl:x65921
 Length of sliding window [200]: 
 Output report [x65921.tcode]: 
@@ -95,7 +92,7 @@ Output report [x65921.tcode]:
 
 
 % tcode -plot -graph cps 
-Fickett TESTCODE statistic to identify protein-coding DNA
+Identify protein-coding regions using Fickett TESTCODE statistic
 Input nucleotide sequence(s): tembl:x65921
 Length of sliding window [200]: 
 
@@ -610,17 +607,19 @@ Data files
 
 Notes
 
+   The TESTCODE statistic reflects the fact that codons are used with
+   unequal frequency and that oligonucleotides and nucleotides tend to be
+   repeated with a periodicity of three. The original paper reports that
+   the test had been thoroughly proven on 400,000 bases of sequence data:
+   it misclassifies 5% of the regions tested and gives an answer of "No
+   Opinion" one fifth of the time.
+
    In the GCG package, the current (version 10.3) TESTCODE application's
-   apparent interpretation of the algorithm is:
-
-        MAX(A1,A2,A3) / MIN(A1,A2,A3)
-
-   The EMBOSS tcode program uses the correct Fickett algorithm equation:
-
-        MAX(A1,A2,A3) / MIN(A1,A2,A3) + 1
-
-   thus any plot using the GCG TESTCODE aplication will be slightly
-   higher than the tcode equivalent.
+   apparent interpretation of the algorithm is: MAX(A1,A2,A3) /
+   MIN(A1,A2,A3) The EMBOSS tcode program uses the correct Fickett
+   algorithm equation: MAX(A1,A2,A3) / MIN(A1,A2,A3) + 1 thus any plot
+   using the GCG TESTCODE aplication will be slightly higher than the
+   tcode equivalent.
 
 References
 
@@ -629,7 +628,9 @@ References
 
 Warnings
 
-   None.
+   The program will ignore ambiguity codes in the nucleic acid sequence
+   and just accept the four common bases. This is a function of the
+   algorithm, and the data tables.
 
 Diagnostic Error Messages
 
@@ -641,14 +642,16 @@ Exit status
 
 See also
 
-   Program name                       Description
-   getorf       Finds and extracts open reading frames (ORFs)
-   marscan      Finds MAR/SAR sites in nucleic sequences
-   plotorf      Plot potential open reading frames
-   showorf      Pretty output of DNA translations
-   sixpack      Display a DNA sequence with 6-frame translation and ORFs
-   syco         Synonymous codon usage Gribskov statistic plot
-   wobble       Wobble base plot
+   Program name Description
+   getorf Finds and extracts open reading frames (ORFs)
+   marscan Finds matrix/scaffold recognition (MRS) signatures in DNA
+   sequences
+   plotorf Plot potential open reading frames in a nucleotide sequence
+   showorf Display a nucleotide sequence and translation in pretty format
+   sixpack Display a DNA sequence with 6-frame translation and ORFs
+   syco Draw synonymous codon usage statictic plot for a nucleotide
+   sequence
+   wobble Plot third base position variability in a nucleotide sequence
 
   See Elsewhere
 

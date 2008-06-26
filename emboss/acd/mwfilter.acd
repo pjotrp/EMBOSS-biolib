@@ -1,5 +1,5 @@
 application: mwfilter [
-  documentation: "Filter noisy molwts from mass spec output"
+  documentation: "Filter noisy data from molecular weights file"
   groups: "Protein:Composition"
 ]
 

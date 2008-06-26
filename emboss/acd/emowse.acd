@@ -1,6 +1,5 @@
 application: emowse [
-  documentation: "Protein identification by mass
-                  spectrometry"
+  documentation: "Search protein sequences by digest fragment molecular weight"
   groups: "Protein:Composition"
 ]
 

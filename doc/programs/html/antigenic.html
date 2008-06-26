@@ -34,23 +34,16 @@ Finds antigenic sites in proteins
 </H2>
 
 
-Antigenic predicts potentially antigenic regions of a protein
-sequence, using the method of Kolaskar and Tongaonkar.
+<p><B>Antigenic</B> predicts potentially <b>antigenic</b> regions of a protein sequence, using the method of Kolaskar and Tongaonkar. This method is based on a single parameter and thus very simple to use.</p>
 
-<p>
 
-Analysis of data from experimentally determined antigenic sites on
-proteins has revealed that the hydrophobic residues Cys, Leu and Val, if
-they occur on the surface of a protein, are more likely to be a part of
-antigenic sites.  A semi-empirical method which makes use of
-physicochemical properties of amino acid residues and their frequencies
-of occurrence in experimentally known segmental epitopes was developed
-by Kolaskar and Tongaonkar
-to predict antigenic determinants on proteins.  Application of this
-method to a large number of proteins has shown that their method can
-predict antigenic determinants with about 75% accuracy which is better
-than most of the known methods.  This method is based on a single
-parameter and thus very simple to use. 
+<H2>
+    Algorithm
+</H2>
+
+<p>Analysis of data from experimentally determined <b>antigenic</b> sites on proteins has revealed that the hydrophobic residues Cys, Leu and Val, if they occur on the surface of a protein, are more likely to be a part of <b>antigenic</b> sites.  The method of Kolaskar and Tongaonkar to predict <b>antigenic</b> determinants in proteins is semi-empirical and makes use of physicochemical properties of amino acid residues and their frequencies of occurrence in experimentally known segmental epitopes.</p>
+
+
 
 <H2>
     Usage
@@ -463,7 +456,7 @@ Max_score_pos at "*"
 ##sequence-region ACTB1_FUGRU 1 375
 #!Date 2007-07-15
 #!Type Protein
-#!Source-version EMBOSS 5.1.0
+#!Source-version EMBOSS 6.0.0
 ACTB1_FUGRU	antigenic	region	214	222	1.207	+	.	ID="ACTB1_FUGRU.1";note="*pos 218"
 ACTB1_FUGRU	antigenic	region	131	145	1.187	+	.	ID="ACTB1_FUGRU.2";note="*pos 137"
 ACTB1_FUGRU	antigenic	region	5	12	1.166	+	.	ID="ACTB1_FUGRU.3";note="*pos 8"
@@ -569,6 +562,7 @@ Total          2066         5340        7944
 <H2>
     Notes
 </H2>
+<p>Application of this method to a large number of proteins has shown that their method can predict <b>antigenic</b> determinants with about 75% accuracy which is better than most of the known methods.</p>
 
 
 <H2>
@@ -621,7 +615,7 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr>
 <td><a href="digest.html">digest</a></td>
-<td>Protein proteolytic enzyme or reagent cleavage digest</td>
+<td>Reports on protein proteolytic enzyme or reagent cleavage sites</td>
 </tr>
 
 <tr>
@@ -631,52 +625,52 @@ None.
 
 <tr>
 <td><a href="fuzzpro.html">fuzzpro</a></td>
-<td>Protein pattern search</td>
+<td>Search for patterns in protein sequences</td>
 </tr>
 
 <tr>
 <td><a href="fuzztran.html">fuzztran</a></td>
-<td>Protein pattern search after translation</td>
+<td>Search for patterns in protein sequences (translated)</td>
 </tr>
 
 <tr>
 <td><a href="helixturnhelix.html">helixturnhelix</a></td>
-<td>Report nucleic acid binding motifs</td>
+<td>Identify nucleic acid-binding motifs in protein sequences</td>
 </tr>
 
 <tr>
 <td><a href="oddcomp.html">oddcomp</a></td>
-<td>Find protein sequence regions with a biased composition</td>
+<td>Identify proteins with specified sequence word composition</td>
 </tr>
 
 <tr>
 <td><a href="patmatdb.html">patmatdb</a></td>
-<td>Search a protein sequence with a motif</td>
+<td>Searches protein sequences with a sequence motif</td>
 </tr>
 
 <tr>
 <td><a href="patmatmotifs.html">patmatmotifs</a></td>
-<td>Search a PROSITE motif database with a protein sequence</td>
+<td>Scan a protein sequence with motifs from the PROSITE database</td>
 </tr>
 
 <tr>
 <td><a href="pepcoil.html">pepcoil</a></td>
-<td>Predicts coiled coil regions</td>
+<td>Predicts coiled coil regions in protein sequences</td>
 </tr>
 
 <tr>
 <td><a href="preg.html">preg</a></td>
-<td>Regular expression search of a protein sequence</td>
+<td>Regular expression search of protein sequence(s)</td>
 </tr>
 
 <tr>
 <td><a href="pscan.html">pscan</a></td>
-<td>Scans proteins using PRINTS</td>
+<td>Scans protein sequence(s) with fingerprints from the PRINTS database</td>
 </tr>
 
 <tr>
 <td><a href="sigcleave.html">sigcleave</a></td>
-<td>Reports protein signal cleavage sites</td>
+<td>Reports on signal cleavage sites in a protein sequence</td>
 </tr>
 
 </table>

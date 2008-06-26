@@ -5,7 +5,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>dbxflat </b>
-Database b+tree indexing for flat file databases
+Index a flat file database using b+tree indices
 Basename for index files: <b>embl</b>
 Resource name: <b>emblresource</b>
       EMBL : EMBL

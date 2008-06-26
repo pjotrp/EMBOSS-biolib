@@ -10,20 +10,18 @@ Function
 Description
 
    Antigenic predicts potentially antigenic regions of a protein
-   sequence, using the method of Kolaskar and Tongaonkar.
+   sequence, using the method of Kolaskar and Tongaonkar. This method is
+   based on a single parameter and thus very simple to use.
+
+Algorithm
 
    Analysis of data from experimentally determined antigenic sites on
    proteins has revealed that the hydrophobic residues Cys, Leu and Val,
    if they occur on the surface of a protein, are more likely to be a
-   part of antigenic sites. A semi-empirical method which makes use of
-   physicochemical properties of amino acid residues and their
-   frequencies of occurrence in experimentally known segmental epitopes
-   was developed by Kolaskar and Tongaonkar to predict antigenic
-   determinants on proteins. Application of this method to a large number
-   of proteins has shown that their method can predict antigenic
-   determinants with about 75% accuracy which is better than most of the
-   known methods. This method is based on a single parameter and thus
-   very simple to use.
+   part of antigenic sites. The method of Kolaskar and Tongaonkar to
+   predict antigenic determinants in proteins is semi-empirical and makes
+   use of physicochemical properties of amino acid residues and their
+   frequencies of occurrence in experimentally known segmental epitopes.
 
 Usage
 
@@ -330,7 +328,7 @@ Max_score_pos at "*"
 ##sequence-region ACTB1_FUGRU 1 375
 #!Date 2007-07-15
 #!Type Protein
-#!Source-version EMBOSS 5.1.0
+#!Source-version EMBOSS 6.0.0
 ACTB1_FUGRU     antigenic       region  214     222     1.207   +       .
 ID="ACTB1_FUGRU.1";note="*pos 218"
 ACTB1_FUGRU     antigenic       region  131     145     1.187   +       .
@@ -426,6 +424,10 @@ Total          2066         5340        7944
 
 Notes
 
+   Application of this method to a large number of proteins has shown
+   that their method can predict antigenic determinants with about 75%
+   accuracy which is better than most of the known methods.
+
 References
 
     1. Kolaskar,AS and Tongaonkar,PC (1990). A semi-empirical method for
@@ -451,19 +453,22 @@ Known bugs
 
 See also
 
-    Program name                         Description
-   digest         Protein proteolytic enzyme or reagent cleavage digest
-   epestfind      Finds PEST motifs as potential proteolytic cleavage sites
-   fuzzpro        Protein pattern search
-   fuzztran       Protein pattern search after translation
-   helixturnhelix Report nucleic acid binding motifs
-   oddcomp        Find protein sequence regions with a biased composition
-   patmatdb       Search a protein sequence with a motif
-   patmatmotifs   Search a PROSITE motif database with a protein sequence
-   pepcoil        Predicts coiled coil regions
-   preg           Regular expression search of a protein sequence
-   pscan          Scans proteins using PRINTS
-   sigcleave      Reports protein signal cleavage sites
+   Program name Description
+   digest Reports on protein proteolytic enzyme or reagent cleavage sites
+   epestfind Finds PEST motifs as potential proteolytic cleavage sites
+   fuzzpro Search for patterns in protein sequences
+   fuzztran Search for patterns in protein sequences (translated)
+   helixturnhelix Identify nucleic acid-binding motifs in protein
+   sequences
+   oddcomp Identify proteins with specified sequence word composition
+   patmatdb Searches protein sequences with a sequence motif
+   patmatmotifs Scan a protein sequence with motifs from the PROSITE
+   database
+   pepcoil Predicts coiled coil regions in protein sequences
+   preg Regular expression search of protein sequence(s)
+   pscan Scans protein sequence(s) with fingerprints from the PRINTS
+   database
+   sigcleave Reports on signal cleavage sites in a protein sequence
 
 Author(s)
 

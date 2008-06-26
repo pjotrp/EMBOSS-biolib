@@ -1,6 +1,5 @@
 application: prosextract [
-  documentation: "Build the PROSITE motif database for use by
-                  patmatmotifs"
+  documentation: "Processes the PROSITE motif database for use by patmatmotifs"
   groups: "Utils:Database creation"
   gui: "no"
   batch: "no"

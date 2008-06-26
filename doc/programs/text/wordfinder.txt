@@ -540,12 +540,13 @@ Known bugs
 
 See also
 
-   Program name                         Description
-   matcher      Finds the best local alignments between two sequences
-   seqmatchall  All-against-all comparison of a set of sequences
-   supermatcher Match large sequences against one or more other sequences
-   water        Smith-Waterman local alignment
-   wordmatch    Finds all exact matches of a given size between 2 sequences
+   Program name Description
+   matcher Waterman-Eggert local alignment of two sequences
+   seqmatchall All-against-all word comparison of a sequence set
+   supermatcher Calculate approximate local pair-wise alignments of
+   larger sequences
+   water Smith-Waterman local alignment of sequences
+   wordmatch Finds regions of identity (exact matches) of two sequences
 
 Author(s)
 

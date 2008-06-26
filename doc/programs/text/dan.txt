@@ -5,16 +5,34 @@
 
 Function
 
-   Calculates DNA RNA/DNA melting temperature
+   Calculates nucleic acid melting temperature
 
 Description
 
-   Dan calculates the melting temperature (Tm) and the percent G+C of a
-   nucleic acid sequence (optionally plotting them). For the Melting
-   temperature profile, free energy values calculated from nearest
-   neighbor thermodynamics are used (Breslauer et al. Proc. Natl. Acad.
-   Sci. USA 83, 3746-3750 and Baldino et al. Methods in Enzymol. 168,
-   761-777).
+   Dan calculates the melting temperature (Tm) and the percentage of G+C
+   nucleotides for windows over a nucleic acid sequence, optionally
+   plotting them. If a plot is not being produced, dan reports the
+   sequence of each oligomer window, its melting temperature under the
+   specified conditions and its percentage GC content. The change in
+   enthalpy (H), entropy (S) and Gibbs free energy (S) for dissociation
+   of the oligomers may (optionally) be reported to file (but not
+   plotted).
+
+Algorithm
+
+   The values of melting point and other thermodynamic properties of the
+   sequence, namely change in enthalpy (H), entropy (S) and Gibbs free
+   energy (S) on dissociation, are calculated for a sequence region (or
+   "window") of a user-specified size (see "-windowsize" option). The
+   window is incrementally moved along the sequence with the properties
+   being calculated at each new position. The user must provide the salt
+   and DNA concentration. Optionally, the percent formamide, percent of
+   mismatches allowed and product length may be specified.
+
+   For the Melting temperature profile, free energy values calculated
+   from nearest neighbor thermodynamics are used (Breslauer et al. Proc.
+   Natl. Acad. Sci. USA 83, 3746-3750 and Baldino et al. Methods in
+   Enzymol. 168, 761-777).
 
 Usage
 
@@ -22,7 +40,7 @@ Usage
 
 
 % dan 
-Calculates DNA RNA/DNA melting temperature
+Calculates nucleic acid melting temperature
 Input nucleotide sequence(s): tembl:x13776
 Enter window size [20]: 
 Enter Shift Increment [1]: 
@@ -39,7 +57,7 @@ Output report [x13776.dan]:
 
 
 % dan -plot -graph cps 
-Calculates DNA RNA/DNA melting temperature
+Calculates nucleic acid melting temperature
 Input nucleotide sequence(s): tembl:x13776
 Enter window size [20]: 
 Enter Shift Increment [1]: 
@@ -599,7 +617,14 @@ Data files
 
 Notes
 
-   None.
+   The enthalpy of a reaction equates to the "heat" of the reaction so
+   long as temperate and pressure are constant. Enthalpy depends upon the
+   strength of the chemical bonds and non-bonding interactions involved.
+   The entropy of a reaction reflects the level of disorder or randomness
+   of the molecules involved. The higher the entropy, the greater the
+   disorder. The free energy of a reaction reflects it's ability to do
+   work. It helps one determine whether a reaction is feasible given a
+   set of conditions and it's quilibrium.
 
 References
 
@@ -630,16 +655,16 @@ Known bugs
 
 See also
 
-   Program name                         Description
-   banana       Bending and curvature plot in B-DNA
-   btwisted     Calculates the twisting in a B-DNA sequence
-   chaos        Create a chaos game representation plot for a sequence
-   compseq      Count composition of dimer/trimer/etc words in a sequence
-   density      Nucleic acid density plot
-   freak        Residue/base frequency table or plot
-   isochore     Plots isochores in large DNA sequences
+   Program name                           Description
+   banana       Plot bending and curvature data for B-DNA
+   btwisted     Calculate the twisting in a B-DNA sequence
+   chaos        Draw a chaos game representation plot for a nucleotide sequence
+   compseq      Calculate the composition of unique words in sequences
+   density      Draw a nucleic acid density plot
+   freak        Generate residue/base frequency table or plot
+   isochore     Plots isochores in DNA sequences
    sirna        Finds siRNA duplexes in mRNA
-   wordcount    Counts words of specified size in a DNA or protein sequence
+   wordcount    Count and extract unique words in DNA sequence(s)
 
 Author(s)
 

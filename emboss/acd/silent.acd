@@ -1,5 +1,6 @@
 application: silent [
-  documentation: "Silent mutation restriction enzyme scan"
+  documentation: "Find restriction sites to insert (mutate)
+                  with no translation change"
   groups: "Nucleic:Restriction"
 ]
 

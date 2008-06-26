@@ -1,5 +1,5 @@
 application: hmoment [
-  documentation: "Hydrophobic moment calculation"
+  documentation: "Calculate and plot hydrophobic moment for protein sequence(s)"
   groups: "Protein:2D Structure"
 ]
 

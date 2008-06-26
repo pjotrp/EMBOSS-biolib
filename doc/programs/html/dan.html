@@ -24,17 +24,20 @@ dan
 <H2>
     Function
 </H2>
-Calculates DNA RNA/DNA melting temperature
+Calculates nucleic acid melting temperature
 <H2>
     Description
 </H2>
 
-Dan calculates the melting temperature (Tm) and the percent G+C of a
-nucleic acid sequence (optionally plotting them).  For the Melting
-temperature profile, free energy values calculated from nearest neighbor
-thermodynamics are used (Breslauer et al.  Proc.  Natl.  Acad.  Sci. 
-USA 83, 3746-3750 and Baldino et al.  Methods in Enzymol.  168,
-761-777). 
+<p><B>Dan</B> calculates the melting temperature (Tm) and the percentage of G+C nucleotides for windows over a nucleic acid sequence, optionally plotting them.  If a plot is not being produced, <b>dan</b> reports the sequence of each oligomer window, its melting temperature under the specified conditions and its percentage GC content.  The change in enthalpy (H), entropy (S) and Gibbs free energy (S) for dissociation of the oligomers may (optionally) be reported to file (but not plotted).</p>
+
+<H2>
+Algorithm
+</H2>
+
+<p>The values of melting point and other thermodynamic properties of the sequence, namely change in enthalpy (H), entropy (S) and Gibbs free energy (S) on dissociation, are calculated for a sequence region (or "window") of a user-specified size (see "-windowsize" option).  The window is incrementally moved along the sequence with the properties being calculated at each new position.  The user must provide the salt and DNA concentration. Optionally, the percent formamide, percent of mismatches allowed and product length may be specified.
+<p>For the Melting temperature profile, free energy values calculated from nearest neighbor thermodynamics are used (Breslauer et al. Proc. Natl. Acad. Sci. USA 83, 3746-3750 and Baldino et al. Methods in Enzymol. 168, 761-777).</p>
+
 
 <H2>
     Usage
@@ -46,7 +49,7 @@ USA 83, 3746-3750 and Baldino et al.  Methods in Enzymol.  168,
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>dan </b>
-Calculates DNA RNA/DNA melting temperature
+Calculates nucleic acid melting temperature
 Input nucleotide sequence(s): <b>tembl:x13776</b>
 Enter window size [20]: <b></b>
 Enter Shift Increment [1]: <b></b>
@@ -67,7 +70,7 @@ An example of producing a plot of Tm:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>dan -plot -graph cps </b>
-Calculates DNA RNA/DNA melting temperature
+Calculates nucleic acid melting temperature
 Input nucleotide sequence(s): <b>tembl:x13776</b>
 Enter window size [20]: <b></b>
 Enter Shift Increment [1]: <b></b>
@@ -701,7 +704,7 @@ The directories are searched in the following order:
     Notes
 </H2>
 
-None.
+<p>The enthalpy of a reaction equates to the "heat" of the reaction so long as temperate and pressure are constant.  Enthalpy depends upon the strength of the chemical bonds and non-bonding interactions involved.  The entropy of a reaction reflects the level of disorder or randomness of the molecules involved. The higher the entropy, the greater the disorder.  The free energy of a reaction reflects it's ability to do work.  It helps one determine whether a reaction is feasible given a set of conditions and it's quilibrium.</p>
 
 
 <H2>
@@ -755,37 +758,37 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr>
 <td><a href="banana.html">banana</a></td>
-<td>Bending and curvature plot in B-DNA</td>
+<td>Plot bending and curvature data for B-DNA</td>
 </tr>
 
 <tr>
 <td><a href="btwisted.html">btwisted</a></td>
-<td>Calculates the twisting in a B-DNA sequence</td>
+<td>Calculate the twisting in a B-DNA sequence</td>
 </tr>
 
 <tr>
 <td><a href="chaos.html">chaos</a></td>
-<td>Create a chaos game representation plot for a sequence</td>
+<td>Draw a chaos game representation plot for a nucleotide sequence</td>
 </tr>
 
 <tr>
 <td><a href="compseq.html">compseq</a></td>
-<td>Count composition of dimer/trimer/etc words in a sequence</td>
+<td>Calculate the composition of unique words in sequences</td>
 </tr>
 
 <tr>
 <td><a href="density.html">density</a></td>
-<td>Nucleic acid density plot</td>
+<td>Draw a nucleic acid density plot</td>
 </tr>
 
 <tr>
 <td><a href="freak.html">freak</a></td>
-<td>Residue/base frequency table or plot</td>
+<td>Generate residue/base frequency table or plot</td>
 </tr>
 
 <tr>
 <td><a href="isochore.html">isochore</a></td>
-<td>Plots isochores in large DNA sequences</td>
+<td>Plots isochores in DNA sequences</td>
 </tr>
 
 <tr>
@@ -795,7 +798,7 @@ None.
 
 <tr>
 <td><a href="wordcount.html">wordcount</a></td>
-<td>Counts words of specified size in a DNA or protein sequence</td>
+<td>Count and extract unique words in DNA sequence(s)</td>
 </tr>
 
 </table>

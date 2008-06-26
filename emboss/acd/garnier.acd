@@ -1,5 +1,5 @@
 application: garnier [
-  documentation: "Predicts protein secondary structure"
+  documentation: "Predicts protein secondary structure using GOR method"
   groups: "Protein:2D Structure"
 ]
 

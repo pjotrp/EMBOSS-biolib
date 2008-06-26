@@ -1,5 +1,5 @@
 application: charge [
-  documentation: "Protein charge plot"
+  documentation: "Draw a protein charge plot"
   groups: "Protein:Composition"
 ]
 

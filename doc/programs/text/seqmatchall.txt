@@ -5,20 +5,16 @@
 
 Function
 
-   All-against-all comparison of a set of sequences
+   All-against-all word comparison of a sequence set
 
 Description
 
-   This takes a set of sequences and does an all-against-all pairwise
-   comparison of words (fragments of the sequences of a specified fixed
-   size) in the sequences, finding regions of identity between any two
-   sequences.
-
-   The larger the specified word size, the faster the comparison will
-   proceed. Regions whose stretches of identity are shorter than the word
-   size will be missed. You should therefore choose a word size that is
-   small enough to find those regions of similarity you are interested in
-   within a reasonable time-frame.
+   seqmatchall takes a set of sequences and does an all-against-all
+   pairwise comparison of words of a specified size in the sequences,
+   finding regions of identity between any two sequences. It writes an
+   output file with a list of regions of identity in pairs of sequences,
+   the start and end positions and length of the matching regions and the
+   name of the sequences.
 
 Usage
 
@@ -29,7 +25,7 @@ Usage
 
 
 % seqmatchall 
-All-against-all comparison of a set of sequences
+All-against-all word comparison of a sequence set
 Input sequence set: @eclac.list
 Word size [4]: 15
 Output alignment [j01636.seqmatchall]: 
@@ -215,8 +211,11 @@ Data files
 
 Notes
 
-   The larger the word size, the faster the comparisons will proceed, but
-   regions of identitly smaller than the word size will not be reported.
+   The larger the specified word size, the faster the comparison will
+   proceed. Regions whose stretches of identity are shorter than the word
+   size will be missed. You should therefore choose a word size that is
+   small enough to find those regions of similarity you are interested in
+   within a reasonable time-frame.
 
 References
 
@@ -240,12 +239,13 @@ Known bugs
 
 See also
 
-   Program name                         Description
-   matcher      Finds the best local alignments between two sequences
-   supermatcher Match large sequences against one or more other sequences
-   water        Smith-Waterman local alignment
-   wordfinder   Match large sequences against one or more other sequences
-   wordmatch    Finds all exact matches of a given size between 2 sequences
+   Program name Description
+   matcher Waterman-Eggert local alignment of two sequences
+   supermatcher Calculate approximate local pair-wise alignments of
+   larger sequences
+   water Smith-Waterman local alignment of sequences
+   wordfinder Match large sequences against one or more other sequences
+   wordmatch Finds regions of identity (exact matches) of two sequences
 
    polydot will give a graphical view of the same matches.
 

@@ -1,5 +1,5 @@
 application: pepstats [
-  documentation: "Protein statistics"
+  documentation: "Calculates statistics of protein properties"
   groups: "Protein:Composition"
 ]
 

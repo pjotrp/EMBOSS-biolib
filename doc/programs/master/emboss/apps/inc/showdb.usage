@@ -7,7 +7,7 @@ Display information on the currently available databases:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 # Name           Type  ID  Qry All Comment
 # ============== ==== ==  === === =======
@@ -78,7 +78,7 @@ Write the results to a file:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb -outfile showdb.out </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 </pre></td></tr></table><p>
 <p>
@@ -93,7 +93,7 @@ Display information on one explicit database:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb -database tsw </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 # Name         Type  ID  Qry All Comment
 # ============ ==== ==  === === =======
@@ -112,7 +112,7 @@ Display information on the databases formatted in HTML:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb -html </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 <table border cellpadding=4 bgcolor="#FFFFF0">
 <tr><th>Name</th><th>Type</th><th>ID</th><th>Qry</th><th>All</th><th>Comment</th></tr>
@@ -184,7 +184,7 @@ Display protein databases only:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb -nonucleic </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 # Name           Type  ID  Qry All Comment
 # ============== ==== ==  === === =======
@@ -222,7 +222,7 @@ Display the information with no headings:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb -noheading </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 twp              P    OK  OK  OK  EMBL new in native format with EMBL CD-ROM index
 qapblast         P    OK  OK  OK  BLAST swissnew
@@ -359,7 +359,7 @@ Display only the names and types:
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb -only -type </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 twp              P    
 qapblast         P    
@@ -428,7 +428,7 @@ Display everything
 <table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
 
 % <b>showdb -full </b>
-Displays information on the currently available databases
+Displays information on configured databases
 
 # Name           Type  ID  Qry All Method    Fields            Defined  Release  Comment
 # ============== ==== ==  === === ========= ================= ======= ======= =======

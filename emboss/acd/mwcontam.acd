@@ -1,6 +1,5 @@
 application: mwcontam [
-  documentation: "Shows molecular weights that match across a set of
-                  files"
+  documentation: "Find weights common to multiple molecular weights files"
   groups: "Protein:Composition"
 ]
 
