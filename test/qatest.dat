@@ -1,11 +1,6 @@
 ##########################################################################
 # Things to do
 #
-# (1) database extract programs to write to a local directory
-# (2) test local directory as well as local files (see above)
-# (3) make list of missing data files
-# (4) update web page examples to match the tests
-# (5) tests for @list and other odd USA types
 #
 ###########################################################################
 
@@ -2390,7 +2385,7 @@ FP /^Mean Squared Difference = 0\.034\n/
 FP /^Sum Squared Difference = 2\.178\n/
 FP /^Root Mean Squared Difference = 0\.184\n/
 FP /^Sum Difference         = 9\.504\n/
-FP /^Mean Difference         = 0\.149\n/
+FP /^Mean Difference         = 0\.14[89]\n/
 FP /^Codons not appearing   = 0\n/
 //
 
@@ -17349,7 +17344,7 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI stdout
 FZ > 43000
-FP 1 /^ +Finds programs by keywords in their one-line documentation\n/
+FP 1 /^ +Finds programs by keywords in their short description\n/
 FP 1 /^ +-explode/
 //
 
