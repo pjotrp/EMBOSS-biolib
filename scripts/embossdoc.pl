@@ -261,7 +261,7 @@ sub secttest($$) {
     elsif ($sect =~ /Miscellaneous$/) {$stype = "misc"}
     if ($stype eq "") {return $stype}
     if ($stype ne $ctype) {
-	print "bad category '$ctype' in section '$sect'\n";
+	print "bad category '$ctype' (expected '$stype') in section '$sect'\n";
     }
     return $stype;
 }
