@@ -35,7 +35,7 @@ DQPGQGVADAAPWLGRARGAPAPVAGSDEAARADPEDRSGVAGKRAVRLSDPGRPEQ
 ##sequence-region PAAMIR_1 1 634
 #!Date 2007-07-15
 #!Type Protein
-#!Source-version EMBOSS 5.1.0
+#!Source-version EMBOSS 6.0.0
 PAAMIR_1	checktrans	region	278	634	0.000	+	.	ID="PAAMIR_1.1"
 </pre>
 </td></tr></table><p>

@@ -63,7 +63,7 @@ AY411291 228-228 Length: 1
 ##sequence-region AY411291 1 402
 #!Date 2007-07-15
 #!Type DNA
-#!Source-version EMBOSS 5.1.0
+#!Source-version EMBOSS 6.0.0
 AY411291	diffseq	misc_difference	228	228	1.000	+	.	ID="AY411291.1";note="SNP in X65923";replace="t"
 </pre>
 </td></tr></table><p>
@@ -74,7 +74,7 @@ AY411291	diffseq	misc_difference	228	228	1.000	+	.	ID="AY411291.1";note="SNP in 
 ##sequence-region X65923 1 518
 #!Date 2007-07-15
 #!Type DNA
-#!Source-version EMBOSS 5.1.0
+#!Source-version EMBOSS 6.0.0
 X65923	diffseq	misc_difference	284	284	1.000	+	.	ID="X65923.1";note="SNP in AY411291";replace="c"
 </pre>
 </td></tr></table><p>
