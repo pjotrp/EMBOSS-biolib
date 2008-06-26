@@ -1,5 +1,23 @@
 Version 6.0.0
-	The sequence alignment code has been updated.Sequence alignments
+	Application short descriptions have been revised. The minimum
+	length of application one line descriptions is increased from 60
+	to 70 characters. The descriptions are easier to write. Output
+	from wossname can now be 90 characters wide. Interfaces that use
+	the description in menus may need to allow some extra space.
+
+	Function names in ajfile.c have been standardised. Old names are
+	still accepted but are marked as "deprecated" and will generate
+	warnings with the gcc compiler (see ajstr below). Other compilers
+	will see no difference. New source files ajfiledata.c and
+	ajfileio.c have been added. The buffered file data structures are
+	renamed internally to be more consistent (AjPFileBuff to AjPFilebuff).
+
+	notseq was unable to search for IDs contaaining '|' characters
+	but uses string matching (not regular expressions) and these
+	characters are valid in NCBI-style FASTA files if read with the
+	"pearson" format which accepts the whole ID string without parsing.
+
+	The sequence alignment code has been updated. Sequence alignments
 	with low gap penalties failed to allow two gaps (one in each
 	sequence) without a match in between. The embAlign functions are
 	now simplified. Scores are returned by the PathCalc functions. The
@@ -36,7 +54,7 @@ Version 6.0.0
 	Sequence format "selex" allows invalid sequence data files to be
 	accepted as input. Selex format is still available but is no
 	longer included in the formats that can be automatically
-	detected. Wehn reading selex format data, users need to put
+	detected. When reading selex format data, users need to put
 	"-sformat selex" on the command line, or specify "selex::" at the
 	from of the USA. See the HMMER (old version EMBASSY package)
 	documentation for examples. HMMERNEW (recommended) examples use
