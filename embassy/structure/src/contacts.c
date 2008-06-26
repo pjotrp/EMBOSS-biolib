@@ -94,7 +94,7 @@ int main(ajint argc, char **argv)
 {
     AjPList    cpdb_path     = NULL;	/* Directory of ccf files.     */
     AjPStr     cpdb_name     = NULL;	/* Name of ccf file.           */
-    AjPDir     con_path      = NULL;	/* Directory of contact files. */
+    AjPDirout  con_path      = NULL;	/* Directory of contact files. */
     AjPStr     con_name      = NULL;	/* Name of contact file.       */
     AjPStr     msg           = NULL;	/* Error message.              */
     AjPStr     temp          = NULL;	/* Temp string.                */
@@ -186,7 +186,7 @@ int main(ajint argc, char **argv)
 
 
 	/* Read clean coordinate file. */
-	if((cpdb_inf=ajFileNewIn(temp))==NULL)
+	if((cpdb_inf=ajFileNewInNameS(temp))==NULL)
 	{
 	    ajFmtPrintS(&msg, "Could not open for reading %S", 
 			temp);
@@ -224,12 +224,12 @@ int main(ajint argc, char **argv)
 	else
 	{
 	    ajStrAssignS(&con_name, temp);	
-	    ajFileDirExtnTrim(&con_name);
+	    ajFilenameTrimPathExt(&con_name);
 	}
 		
 	       
 	ajStrFmtLower(&con_name);
-	if(!(con_outf=ajFileNewOutDir(con_path, con_name)))
+	if(!(con_outf=ajFileNewOutNameDirS(con_name, con_path)))
 	{
 	    ajFmtPrintS(&msg, "ERROR file open error %S", 
 			con_name);
@@ -275,7 +275,7 @@ int main(ajint argc, char **argv)
     /* Tidy up. */
     ajListFree(&cpdb_path);
     ajStrDel(&cpdb_name);
-    ajDirDel(&con_path);
+    ajDiroutDel(&con_path);
     ajStrDel(&con_name);
     ajStrDel(&msg);
     ajFileClose(&logf);
@@ -521,8 +521,9 @@ static AjBool contacts_ContactMapWrite(AjPFile outf,
 	    if((ajInt2dGet(mat, x, y)==1))
 	    {
 		/* Assign residue id. */
-		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn-1]->Seq, x), 
-				   &res1))
+		if(!ajResidueToTriplet(
+                       ajStrGetCharPos(pdb->Chains[chn-1]->Seq, x), 
+                       &res1))
 		{
 		    ajStrDel(&res1);
 		    ajStrDel(&res2);  
@@ -530,8 +531,9 @@ static AjBool contacts_ContactMapWrite(AjPFile outf,
 			   "contacts_PrintPdbSeqresChain");		
 		    return ajFalse;
 		}
-		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn-1]->Seq, y), 
-				   &res2))
+		if(!ajResidueToTriplet(
+                       ajStrGetCharPos(pdb->Chains[chn-1]->Seq, y), 
+                       &res2))
 		{
 		    ajStrDel(&res1);
 		    ajStrDel(&res2);  

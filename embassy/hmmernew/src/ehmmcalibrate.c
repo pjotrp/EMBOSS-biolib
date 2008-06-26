@@ -84,12 +84,12 @@ int main(int argc, char **argv)
     rnd     = ajStrNew();
     inname  = ajStrNew();
     outname = ajStrNew();
-    ajStrAssignC(&inname, ajFileName(hmmfilein));
-    ajStrAssignC(&outname, ajFileName(hmmfileout));
+    ajStrAssignC(&inname, ajFileGetNameC(hmmfilein));
+    ajStrAssignC(&outname, ajFileGetNameC(hmmfileout));
 
 
     /* 2. Copy the input file (HMMER will overwrite it) */
-    ajStrAssignC(&rnd, ajFileTempName(NULL));
+    ajFilenameSetTempname(&rnd);
     ajFmtPrintS(&cmd, "cp %S %S", inname, rnd);
     /* ajFmtPrint("\n%S\n", cmd); */
     system(ajStrGetPtr(cmd));
@@ -114,7 +114,7 @@ int main(int argc, char **argv)
     ajFmtPrintAppS(&cmd, " --sd %f ", sd);
     ajFmtPrintAppS(&cmd, " --seed %d ", seed);
     if(histfile)
-	ajFmtPrintAppS(&cmd, " --histfile %s ", ajFileName(histfile));
+	ajFmtPrintAppS(&cmd, " --histfile %s ", ajFileGetNameC(histfile));
     ajStrAppendS(&cmd, inname);
 
 

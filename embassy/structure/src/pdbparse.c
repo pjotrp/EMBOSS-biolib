@@ -65,7 +65,7 @@ int main(ajint argc, char **argv)
 {
     AjPList    pdb_path     =NULL;  /* Path of pdb files */
     AjPStr     pdb_name     =NULL;  /* Name of pdb file  */
-    AjPDir     ccf_path    =NULL;   /* Path of ccf files */
+    AjPDirout  ccf_path    =NULL;   /* Path of ccf files */
     AjPStr     ccf_name    =NULL;   /* Name of ccf file  */
     AjPStr     pdbid        =NULL;  /* PDB code          */
     AjPStr     pdbid_temp   =NULL;  /* PDB code          */
@@ -117,7 +117,7 @@ int main(ajint argc, char **argv)
     /*     THIS_DIAGNOSTIC  
 	   tempstr=ajStrNew();    
 	   ajStrAssignC(&tempstr,     "diagnostics");
-	   tempfile=ajFileNewOut(tempstr);
+	   tempfile=ajFileNewOutNameS(tempstr);
 	   ajStrDel(&tempstr);*/
     
     
@@ -135,14 +135,14 @@ int main(ajint argc, char **argv)
     embInitP("pdbparse",argc,argv,"STRUCTURE");
 
     pdb_path     = ajAcdGetDirlist("pdbpath");
-    ccf_path    = ajAcdGetOutdir("ccfoutdir");
+    ccf_path     = ajAcdGetOutdir("ccfoutdir");
     logf         = ajAcdGetOutfile("logfile");
     min_chain_size=ajAcdGetInt("chnsiz");
-    max_mismatch  =ajAcdGetInt("maxmis");
-    max_trim      =ajAcdGetInt("maxtrim");
-    ccfnaming   = ajAcdGetBoolean("ccfnaming");
-    camask     = ajAcdGetBoolean("camask");
-    camask1    = ajAcdGetBoolean("camaska");
+    max_mismatch =ajAcdGetInt("maxmis");
+    max_trim     =ajAcdGetInt("maxtrim");
+    ccfnaming    = ajAcdGetBoolean("ccfnaming");
+    camask       = ajAcdGetBoolean("camask");
+    camask1      = ajAcdGetBoolean("camaska");
     atommask     = ajAcdGetBoolean("atommask");
     
     
@@ -158,7 +158,7 @@ int main(ajint argc, char **argv)
 		
 	
 	/* Read pdb file*/
-	if((pdb_inf=ajFileNewIn(temp))==NULL)
+	if((pdb_inf=ajFileNewInNameS(temp))==NULL)
 	{
 	    ajFmtPrintS(&msg, "Could not open for reading %S ", 
 			temp);
@@ -172,7 +172,7 @@ int main(ajint argc, char **argv)
 	
 	/* Assign pdb id code from file name */
 	ajStrAssignS(&pdbid, temp);
-	ajFileDirExtnTrim(&pdbid);
+	ajFilenameTrimPathExt(&pdbid);
 
 	if(MAJSTRGETLEN(pdbid)>4)
 	{
@@ -207,7 +207,7 @@ int main(ajint argc, char **argv)
 	ajStrFmtLower(&ccf_name);
 
 	
-	if(!(ccf_outf=ajFileNewOutDir(ccf_path, ccf_name)))
+	if(!(ccf_outf=ajFileNewOutNameDirS(ccf_name, ccf_path)))
 	{
 	    ajFmtPrintS(&msg, "Could not open %S for writing", 
 			ccf_name);
@@ -262,7 +262,7 @@ int main(ajint argc, char **argv)
     /*Tidy up */
     ajListFree(&pdb_path);
     ajStrDel(&pdb_name);
-    ajDirDel(&ccf_path);
+    ajDiroutDel(&ccf_path);
     ajStrDel(&ccf_name);
     ajStrDel(&base_name);
     ajStrDel(&pdbid);

@@ -12,7 +12,7 @@
  * SRE, Mon Nov 18 12:41:29 1996
  *
  * main() for HMM construction from an alignment.
- * RCS $Id: ohmmbuild.c,v 1.5 2008/06/10 12:51:15 rice Exp $
+ * RCS $Id: ohmmbuild.c,v 1.6 2008/06/26 08:40:56 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 
     rsname = ajAcdGetOutfile("resavefile");
     if(rsname)
-	align_ofile = ajCharNewS(ajFileGetName(rsname));
+	align_ofile = ajCharNewS(ajFileGetNameS(rsname));
     ajFileClose(&rsname);
 
     ajappend = ajAcdGetBoolean("append");
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
 
     cfname = ajAcdGetOutfile("cfile");
     if(cfname)
-	cfile = ajCharNewS(ajFileGetName(cfname));
+	cfile = ajCharNewS(ajFileGetNameS(cfname));
     ajFileClose(&cfname);
 
     ajcstrategy = ajAcdGetListSingle("cstrategy");
@@ -298,17 +298,17 @@ int main(int argc, char **argv)
 
     nuname = ajAcdGetInfile("nullfile");
     if(nuname)
-	rndfile = ajCharNewS(ajFileGetName(nuname));
+	rndfile = ajCharNewS(ajFileGetNameS(nuname));
     ajFileClose(&nuname);
 
     paname = ajAcdGetInfile("pamfile");
     if(paname)
-	pamfile = ajCharNewS(ajFileGetName(paname));
+	pamfile = ajCharNewS(ajFileGetNameS(paname));
     ajFileClose(&paname);
 
     prname = ajAcdGetInfile("priorfile");
     if(prname)
-	prifile = ajCharNewS(ajFileGetName(prname));
+	prifile = ajCharNewS(ajFileGetNameS(prname));
     ajFileClose(&prname);
 
     pamwgt  = ajAcdGetFloat("pamweight");
@@ -336,8 +336,8 @@ int main(int argc, char **argv)
     seqset = ajAcdGetSeqset("sequences");
     outf   = ajAcdGetOutfile("outfile");
 
-    ofname = ajStrNewC((char *)ajFileName(outf));
-    if(!ajFileLength(ofname))
+    ofname = ajStrNewC((char *)ajFileGetNameC(outf));
+    if(!ajFilenameGetSize(ofname))
 	unlink(ajStrGetPtr(ofname));
     hmmfile = ajStrGetPtr(ofname);
 

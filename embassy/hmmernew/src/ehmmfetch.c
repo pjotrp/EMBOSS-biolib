@@ -80,9 +80,9 @@ int main(int argc, char **argv)
 	ajStrAppendC(&cmd, " -n ");
     /* Note the output redirected to outfile  */
     ajFmtPrintAppS(&cmd, " %s %S > %s", 
-		   ajFileName(database),
+		   ajFileGetNameC(database),
 		   name,
-		   ajFileName(outfile));
+		   ajFileGetNameC(outfile));
 
 
     /* 3. Close ACD files. */

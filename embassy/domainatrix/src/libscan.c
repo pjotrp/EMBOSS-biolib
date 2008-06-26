@@ -348,7 +348,7 @@ int main(int argc, char **argv)
       
       if(ajStrGetCharFirst(*mode)=='1')
       {
-	if((!ajFileDir(&hmmoutpath)))
+	if((!ajDirnameFixExists(&hmmoutpath)))
 	  ajFatal("Could not open directory");    
       }
     }  
@@ -365,7 +365,7 @@ int main(int argc, char **argv)
       
       if(ajStrGetCharFirst(*mode)=='1')
       {
-	if((!ajFileDir(&samoutpath)))
+	if((!ajDirnameFixExists(&samoutpath)))
 	  ajFatal("Could not open directory");    
       }
     }	
@@ -385,7 +385,7 @@ int main(int argc, char **argv)
       
       if(ajStrGetCharFirst(*mode)=='1')
       {
-	if((!ajFileDir(&pssmoutpath)))
+	if((!ajDirnameFixExists(&pssmoutpath)))
 	  ajFatal("Could not open directory");    
       }
     }	
@@ -397,7 +397,7 @@ int main(int argc, char **argv)
       
       gbvpath = ajAcdGetString("gbvpath");
       
-      if((!ajFileDir(&gbvpath)))
+      if((!ajDirnameFixExists(&gbvpath)))
 	ajFatal("Could not open directory");    
 
       gbvextn    = ajAcdGetString("gbvextn");
@@ -408,7 +408,7 @@ int main(int argc, char **argv)
       
       if(ajStrGetCharFirst(*mode)=='1')
       {
-	if((!ajFileDir(&gbvoutpath)))
+	if((!ajDirnameFixExists(&gbvoutpath)))
 	  ajFatal("Could not open directory");    
       }
     }
@@ -419,7 +419,7 @@ int main(int argc, char **argv)
       cnt++;
       
       hnfpath    = ajAcdGetString("hnfpath");
-      if((!ajFileDir(&hnfpath)))
+      if((!ajDirnameFixExists(&hnfpath)))
 	ajFatal("Could not open directory");    
       hnfextn    = ajAcdGetString("hnfextn");
       hnfgapo    = ajAcdGetFloat("hnfgapo");
@@ -429,7 +429,7 @@ int main(int argc, char **argv)
       
       if(ajStrGetCharFirst(*mode)=='1')
       {
-	if((!ajFileDir(&hnfoutpath)))
+	if((!ajDirnameFixExists(&hnfoutpath)))
 	  ajFatal("Could not open directory");    
       }
     }
@@ -440,7 +440,7 @@ int main(int argc, char **argv)
       cnt++;
       
       sigpath    = ajAcdGetString("sigpath");
-      if((!ajFileDir(&sigpath)))
+      if((!ajDirnameFixExists(&sigpath)))
 	ajFatal("Could not open directory"); 
    
       sigextn    = ajAcdGetString("sigextn");
@@ -456,7 +456,7 @@ int main(int argc, char **argv)
       
       if(ajStrGetCharFirst(*mode)=='1')
       {
-	if((!ajFileDir(&sigoutpath)))
+	if((!ajDirnameFixExists(&sigoutpath)))
 	  ajFatal("Could not open directory");    
       }
     }
@@ -783,7 +783,7 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
   /* CREAT TEMPERARY FILE NAMES */
   /* create the filename for the hmmersearch output file */
   ajRandomSeed();
-  ajStrAssignC(&tmp, ajFileTempName(NULL));
+  ajFilenameSetTempname(&tmp);
   
   ajStrAssignS(&hmminfname,tmp);
   ajStrAppendC(&hmminfname, ".hmminf");
@@ -793,7 +793,7 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
 
   /* GET SCORES FOR EACH SEQUENCE IN THE DATABASE */
   for(cnt=0;cnt<db->Size;cnt++){      	
-    hmminf    = ajFileNewOut(hmminfname);
+    hmminf    = ajFileNewOutNameS(hmminfname);
     
     ajFmtPrintF(hmminf,">%S\n%S\n",db->Seq[cnt]->Name,db->Seq[cnt]->Seq);
     ajFileClose(&hmminf);
@@ -801,14 +801,14 @@ static AjBool libscan_HmmSearch(AjPSeqset db, AjPStr hmmfile, AjPStr family,
     /* RUN HMMSEARCH */
     libscan_RunHmmsearch(hmmfile, hmminfname, hmmoutfname);
 
-    inf = ajFileNewIn(hmmoutfname);
+    inf = ajFileNewInNameS(hmmoutfname);
     
     /* GET ALL INFOMATION ASSOCIATED WITH A MATCH */
-    while(ajFileReadLine(inf,&line)){
+    while(ajReadlineTrim(inf,&line)){
 	
       if(ajStrFindC(line,"Alignments of top-scoring domains:")>=0){
 
-	while(ajFileReadLine(inf,&line)){
+	while(ajReadlineTrim(inf,&line)){
 
 	  if(ajRegExec(rexp1,line) && ajRegExec(rexp2,line) && ajRegExec(rexp3,line)&&
 	     ajRegExec(rexp4,line) && ajRegExec(rexp5,line)){
@@ -1051,7 +1051,7 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   
   /* CREAT TEMPERARY FILE NAMES */
   ajRandomSeed();
-  ajStrAssignC(&tmp, ajFileTempName(NULL));
+  ajFilenameSetTempname(&tmp);
   
   ajStrAssignS(&profoutname,tmp);
   ajStrAppendC(&profoutname, ".profoutname");
@@ -1066,7 +1066,7 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
   ajFmtPrint("profile - %S\n",profile);
   
   for(cnt = 0; cnt<db->Size;cnt++){
-    profinf = ajFileNewOut(profinfname);
+    profinf = ajFileNewOutNameS(profinfname);
     
     ajFmtPrintF(profinf,">%S\n%S\n",db->Seq[cnt]->Name,db->Seq[cnt]->Seq);
     ajFileClose(&profinf);
@@ -1074,10 +1074,10 @@ static AjBool libscan_ProfileSearch(AjPSeqset db, AjPStr profile,
     /* RUN PROPHET */
     libscan_RunProphet(profile, profinfname, gapopen, gapextn, profoutfname);
     
-    inf = ajFileNewIn(profoutfname);
+    inf = ajFileNewInNameS(profoutfname);
     
     /* GET ALL INFOMATION ASSOCIATED WITH A MATCH */
-    while(ajFileReadLine(inf,&line)){
+    while(ajReadlineTrim(inf,&line)){
       if((ajStrPrefixC(line,"Local:"))){
 	/* GET THE ID */
 	ajFmtScanS(line,"%*s %*s %*s %S",&id);
@@ -1249,7 +1249,7 @@ AjPHit nexthit  = NULL;         /* hit that gets constructed in the first parse 
 
    AjPHitlist hitlist      = NULL;
    
-   sigin    = ajFileNewIn(sigfile);
+   sigin    = ajFileNewInNameS(sigfile);
    
    listhits = ajListNew();
    
@@ -1459,7 +1459,7 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     /* CREAT TEMPERARY FILE NAMES */
     /* create the filename for the samsearch output file */
     ajRandomSeed();
-    ajStrAssignC(&tmp, ajFileTempName(NULL));
+    ajFilenameSetTempname(&tmp);
   
     /* temp base name for sam output file*/
     ajStrAssignS(&sambasename,tmp);
@@ -1474,10 +1474,10 @@ static AjBool libscan_SamSearch(AjPStr samdb, AjPStr samfile, AjPStr family,
     /* execute the command line */
     system(ajStrGetPtr(cmd));
         
-    inf = ajFileNewIn(samoutfname);
+    inf = ajFileNewInNameS(samoutfname);
     
     /* GET ALL INFOMATION ASSOCIATED WITH A MATCH */
-    while(ajFileReadLine(inf,&line)){
+    while(ajReadlineTrim(inf,&line)){
       
       if(ajRegExec(rexp1,line)){
 	
@@ -1710,7 +1710,7 @@ static AjBool libscan_RunBlastpgpInModeOne(AjPStr db, AjPStr pssmpath,
                 ajStrAppendS(&pssmsearch, pssmoutextn);
 		
                 /* CREAT OUTPUT STREAMS */
-                outf = ajFileNewOutD(pssmoutpath,pssmsearch);
+                outf = ajFileNewOutNamePathS(pssmsearch,pssmoutpath);
 		
 		/* set mater sequence path and extension */
 		ajStrAssignS(&masterseq,pssmpath);
@@ -1988,12 +1988,12 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   /* Initialise random number generator for naming of temp. files
      and create hmmer output file */
   ajRandomSeed();
-  ajStrAssignC(&tmpname, ajFileTempName(NULL));
+  ajFilenameSetTempname(&tmpname);
 
   ajStrAssignS(&hmminfname, tmpname);
   ajStrAppendC(&hmminfname, ".hmminf");
 
-  hmminf = ajFileNewOut(hmminfname);
+  hmminf = ajFileNewOutNameS(hmminfname);
   
   ajFmtPrintF(hmminf,">%S\n%S\n",seq->Name,seq->Seq);
   ajFileClose(&hmminf);
@@ -2018,7 +2018,7 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
     }
 
     ajRandomSeed();
-    ajStrAssignC(&tmpname, ajFileTempName(NULL));
+    ajFilenameSetTempname(&tmpname);
 
     ajStrAssignS(&hmmoutfname, tmpname);
     ajStrAppendC(&hmmoutfname, ".hmmoutf");
@@ -2026,16 +2026,16 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
     libscan_RunHmmsearch(hmmfile, hmminfname, hmmoutfname);
 
     /* open hmmsearch output file */
-    if(!(inf = ajFileNewIn(hmmoutfname)))
+    if(!(inf = ajFileNewInNameS(hmmoutfname)))
       ajWarn("File %S could not be opened\n",hmmoutfname);
 
 
     /* get scoring information and alignment */
-    while(ajFileReadLine(inf,&line)){
+    while(ajReadlineTrim(inf,&line)){
 
       if(ajStrFindC(line,"Alignments of top-scoring domains:")>=0){
 
-	while(ajFileReadLine(inf,&line)){
+	while(ajReadlineTrim(inf,&line)){
 
 	  if(ajRegExec(rexp1,line) && ajRegExec(rexp2,line) && ajRegExec(rexp3,line) &&
 	     ajRegExec(rexp4,line) && ajRegExec(rexp5,line)){
@@ -2094,7 +2094,7 @@ AjBool libscan_HmmLibScan(AjPSeq seq, AjPStr hmmpath,
   }
   ajListIterDel(&iter);
 
-  hmmoutf     = ajFileNewOutD(hmmoutpath,outfile);
+  hmmoutf     = ajFileNewOutNamePathS(outfile,hmmoutpath);
 
   /* calculate the mean and standard deviation from tmplist*/
   mean = libscan_CalcMean(listhits);
@@ -2277,12 +2277,12 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   /* Initialise random number generator for naming of temp. files
      and create hmmer output file */
   ajRandomSeed();
-  ajStrAssignC(&tmpname, ajFileTempName(NULL));
+  ajFilenameSetTempname(&tmpname);
   
   ajStrAssignS(&profileinfname, tmpname);
   ajStrAppendC(&profileinfname, ".profileinf");
   
-  profileinf = ajFileNewOut(profileinfname);
+  profileinf = ajFileNewOutNameS(profileinfname);
   ajFmtPrintF(profileinf,">%S\n%S\n",seq->Name,seq->Seq);
   ajFileClose(&profileinf);
   
@@ -2306,7 +2306,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     }
     
     ajRandomSeed();
-    ajStrAssignC(&tmpname, ajFileTempName(NULL));
+    ajFilenameSetTempname(&tmpname);
     
     ajStrAssignS(&profileoutfname, tmpname);
     ajStrAppendC(&profileoutfname, ".profileoutf");
@@ -2314,10 +2314,10 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     libscan_RunProphet(profile, profileinfname, gapopen, gapextn, profileoutfname);
     
     /* open hmmsearch output file */
-    if(!(inf = ajFileNewIn(profileoutfname)))
+    if(!(inf = ajFileNewInNameS(profileoutfname)))
       ajWarn("File %S could not be opened\n",profileoutfname);
     
-    while(ajFileReadLine(inf,&line)){
+    while(ajReadlineTrim(inf,&line)){
       if((ajStrPrefixC(line,"Local:"))){
 	/* GET THE ID */
 	ajFmtScanS(line,"%*s %*s %*s %S",&id);
@@ -2366,7 +2366,7 @@ static AjBool libscan_ProfileLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
   }
   ajListIterDel(&iter);
     
-  profoutf = ajFileNewOutD(profoutpath,outfile);
+  profoutf = ajFileNewOutNamePathS(outfile,profoutpath);
   
  /* calculate the mean and standard deviation from listhits */
   mean = libscan_CalcMean(listhits);
@@ -2510,7 +2510,7 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     
 
 
-      sigin  = ajFileNewIn(sigfile);
+      sigin  = ajFileNewInNameS(sigfile);
       
       /* READ SIGNATURE FILE */
       if(!(sig=embSignatureReadNew(sigin))){       
@@ -2560,7 +2560,7 @@ static AjBool libscan_SignatureLibScan(AjPSeq seq, AjPStr path, AjPStr extn,
     }
     ajListIterDel(&iter);
         
-    sigoutf     = ajFileNewOutD(sigoutpath,outfile);
+    sigoutf     = ajFileNewOutNamePathS(outfile,sigoutpath);
 
     /* calculate the mean and standard deviation from listhits*/
     mean = libscan_CalcMean(listhits);
@@ -2729,13 +2729,13 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   /* Initialise random number generator for naming of temp. files
      and create sam output file */
   ajRandomSeed();
-  ajStrAssignC(&tmpname, ajFileTempName(NULL));
+  ajFilenameSetTempname(&tmpname);
 
   ajStrAssignS(&saminfname, tmpname);
   ajStrAppendC(&saminfname, ".saminf");
 
   /* the scoring query sequence */
-  saminf = ajFileNewOut(saminfname);
+  saminf = ajFileNewOutNameS(saminfname);
   ajFmtPrintF(saminf,">%S\n%S\n",seq->Name,seq->Seq);
   ajFileClose(&saminf);
 
@@ -2759,7 +2759,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
     }
 
     ajRandomSeed();
-    ajStrAssignC(&tmp, ajFileTempName(NULL));
+    ajFilenameSetTempname(&tmp);
 
     /* temp base name for sam output file*/
     ajStrAssignS(&sambasename,tmp);
@@ -2775,11 +2775,11 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
     system(ajStrGetPtr(cmd));
 
     /* open samsearch output file */
-    if(!(inf = ajFileNewIn(samoutfname)))
+    if(!(inf = ajFileNewInNameS(samoutfname)))
 	ajWarn("File %S could not be opened\n",samoutfname);
 
     /* get scoring information */
-    while(ajFileReadLine(inf,&line)){
+    while(ajReadlineTrim(inf,&line)){
 
 	if(ajRegExec(rexp1,line)){
 	    
@@ -2829,7 +2829,7 @@ AjBool libscan_SamLibScan(AjPSeq seq, AjPStr sampath,
   }
   ajListIterDel(&iter);
 
-  samoutf     = ajFileNewOutD(samoutpath,outfile);
+  samoutf     = ajFileNewOutNamePathS(outfile,samoutpath);
 
   /* calculate the mean and standard deviation from tmplist*/
   mean = libscan_CalcMean(listhits);
@@ -3028,7 +3028,7 @@ static AjPList libscan_GetLibrary(AjPStr path, AjPStr extn)
     }   
 
     /* all files containing hidden markov models will be in a list */
-    ajFileScan(path, tmp, &list, ajFalse, ajFalse, NULL, NULL, ajFalse, NULL);
+    ajFilelistAddPathWild(list, path, tmp);
     
     ajStrDel(&tmp);
 
@@ -3099,7 +3099,7 @@ static AjBool libscan_RunHmmerInModeOne(AjPSeqset db, AjPStr hmmpath,
 		
 		
                 /* CREAT OUTPUT STREAMS */
-                hmmoutf = ajFileNewOutD(hmmoutpath,hmmsearch);
+                hmmoutf = ajFileNewOutNamePathS(hmmsearch,hmmoutpath);
             
                 ajStrToInt(sunid,&sun_id);
 
@@ -3259,7 +3259,7 @@ static AjBool libscan_RunProphetInModeOne(AjPSeqset db, AjPStr profpath,
                 ajStrAppendS(&profsearch, profoutextn);
                                       
                 /* CREAT OUTPUT STREAMS */
-                profoutf = ajFileNewOutD(profoutpath,profsearch);
+                profoutf = ajFileNewOutNamePathS(profsearch,profoutpath);
                  
                 ajStrToInt(sunid,&sun_id);
                  
@@ -3419,7 +3419,7 @@ static AjBool libscan_RunSignatureInModeOne(AjPSeqset db, AjPStr sigpath,
                 ajStrAppendS(&sigsearch, sigoutextn);
                                       
                 /* CREAT OUTPUT STREAMS */
-                sigoutf = ajFileNewOutD(sigoutpath,sigsearch);
+                sigoutf = ajFileNewOutNamePathS(sigsearch,sigoutpath);
 
                  
                 ajStrToInt(sunid,&sun_id);
@@ -3579,7 +3579,7 @@ static AjBool libscan_RunSamInModeOne(AjPStr samdb, AjPStr sampath,
 		
 		
                 /* CREAT OUTPUT STREAMS */
-                samoutf = ajFileNewOutD(samoutpath,samsearch);
+                samoutf = ajFileNewOutNamePathS(samsearch,samoutpath);
 		
                 ajStrToInt(sunid,&sun_id);
             
@@ -3707,7 +3707,7 @@ static AjPFile libscan_RunBlastpgp(AjPStr database, AjPStr masterseq,
     /* Initialise random number generator for naming of temp. files
        and create  psiblast input files */
     ajRandomSeed();
-    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajFilenameSetTempname(&name);
     ajStrAssignRef(psiname, name);
     ajStrAppendC(psiname, ".psiout");
 
@@ -3732,7 +3732,7 @@ static AjPFile libscan_RunBlastpgp(AjPStr database, AjPStr masterseq,
     ajStrDel(&temp);
 
     /* Open psiblast output file and return pointer */
-    psif = ajFileNewIn(*psiname); 
+    psif = ajFileNewInNameS(*psiname); 
 
     return psif;
 }
@@ -3795,7 +3795,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	/* Initialise random number generator for naming of temp. files
 	   and create  psiblast input files */
 	ajRandomSeed();
-	ajStrAssignC(&name, ajFileTempName(NULL));
+	ajFilenameSetTempname(&name);
 	ajStrAssignRef(&psiname, name);
 	ajStrAppendC(&psiname, ".psiout");
 
@@ -3809,7 +3809,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
             ajStrAssignS(&seq->Seq,set->Seq[i]->Seq);
 
 	    /* the scoring query sequence */
-	    pssminf = ajFileNewOut(pssminfname);
+	    pssminf = ajFileNewOutNameS(pssminfname);
 	    ajFmtPrintF(pssminf,">%S\n%S\n",seq->Name,seq->Seq);
 	    ajFileClose(&pssminf);
             
@@ -3820,7 +3820,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    system(ajStrGetPtr(temp));
 
 	    /* parse the output from search results */
-	    pssmoutf = ajFileNewIn(psiname);
+	    pssmoutf = ajFileNewInNameS(psiname);
 
             /* write hits to hitlist */
 	    blastlist = libscan_ReadPsiblastOutput(NULL,NULL,NULL,NULL,0,
@@ -3877,7 +3877,7 @@ static AjBool libscan_RunRPSBlast(AjPSeqset set, AjPStr db, AjPStr *mode,
 	    ajStrAssignS(&outfile,seq->Name);
 	    ajStrAppendS(&outfile,pssmoutextn);
 
-	    outf = ajFileNewOutD(pssmoutpath,outfile);
+	    outf = ajFileNewOutNamePathS(outfile,pssmoutpath);
 
 	    embHitlistWriteFasta(outf,hitlist);
 	    ajFileClose(&outf);
@@ -3965,7 +3965,7 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
     fullseq   = ajStrNew();
     
     /* Calculate the number of hits */
-    while(ajFileReadLine(psif,&line))
+    while(ajReadlineTrim(psif,&line))
         if(ajStrFindCaseC(line,"score = ")>=0)
             nhits++;
     fseekr = ajFileSeek(psif,offset,SEEK_SET);
@@ -3985,7 +3985,7 @@ static AjPHitlist libscan_ReadPsiblastOutput(AjPStr class, AjPStr fold,
     hitlist->Sunid_Family = sunid;
 
     /* Loop for whole of input file*/
-    while(ajFileReadLine(psif,&line))
+    while(ajReadlineTrim(psif,&line))
     {
         /* We've found a line beginning with > i.e. the start 
            of a block of hits to a single protein*/

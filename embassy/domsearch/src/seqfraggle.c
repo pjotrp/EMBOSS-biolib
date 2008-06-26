@@ -81,7 +81,7 @@ static void seqfraggle_getlengths_other(AjPStr temp,
 int main(int argc, char **argv)
 {
     AjPList      dhfin      = NULL;  /* Hits files for input.                */
-    AjPDir       dhfout     = NULL;  /* Hits files for output.               */
+    AjPDirout    dhfout     = NULL;  /* Hits files for output.               */
 
     AjPStr      temp        = NULL;  /* Temp string.                         */
     AjPStr      temp2       = NULL;  /* Temp string.                         */
@@ -133,7 +133,7 @@ int main(int argc, char **argv)
     while(ajListPop(dhfin,(void **)&temp))
     {
         /* Open hits file. */
-        if((hitsPtr=ajFileNewIn(temp))==NULL)
+        if((hitsPtr=ajFileNewInNameS(temp))==NULL)
         {
             ajWarn("Could not open hits file %S", temp);
             ajStrDel(&temp); 
@@ -213,15 +213,15 @@ int main(int argc, char **argv)
 	if(hitlist)
 	{
 	    ajStrAssignS(&temp2, temp);
-	    ajFileDirExtnTrim(&temp2);
-	    dhfoutPtr = ajFileNewOutDir(dhfout, temp2);
+	    ajFilenameTrimPathExt(&temp2);
+	    dhfoutPtr = ajFileNewOutNameDirS(temp2, dhfout);
 	}
 	else
 	{
 	    ajStrAssignS(&temp2, temp);
-	    ajFileDirExtnTrim(&temp2);
-	    ajStrInsertS(&temp2, 0, ajDirName(dhfout));
-	    ajStrAssignS(&temp2, ajDirExt(dhfout));
+	    ajFilenameTrimPathExt(&temp2);
+	    ajStrInsertS(&temp2, 0, ajDiroutGetPath(dhfout));
+	    ajStrAssignS(&temp2, ajDiroutGetExt(dhfout));
 	    seqout = ajSeqoutNew();
 	    ajSeqoutClearUsa(seqout, temp2);
 	}
@@ -280,7 +280,7 @@ int main(int argc, char **argv)
 
     /* Memory magagement. */
     ajListFree(&dhfin);
-    ajDirDel(&dhfout);
+    ajDiroutDel(&dhfout);
     ajStrDel(&exec);
 
 

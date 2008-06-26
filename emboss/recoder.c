@@ -421,7 +421,7 @@ static ajint recoder_readRE(AjPList *relist, const AjPStr enzymes)
 
     *relist = ajListNew();              /* list the RS code and info */
 
-    ajFileDataNew(refilename,&fin);
+    fin = ajDatafileNewInNameS(refilename);
     if(!fin)
 	ajFatal("Aborting...restriction file not found");
 
@@ -687,7 +687,7 @@ static ajint recoder_changebase(char pbase, char* tbase)
     ajint i;
     ajint nb;
 
-    bt = ajBaseCodes((ajint)pbase);
+    bt = ajBaseGetCodes((ajint)pbase);
     splits = ajStrIterNew(bt);
 
     while(!ajStrIterDone(splits))

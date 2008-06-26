@@ -225,7 +225,7 @@ int main(ajint argc, char **argv)
     AjPStr      cpdb_name     =NULL;  /* Name of coordinate file. */
     AjPDir      con_path      =NULL;  /* Location of contact files -input. */
     AjPStr      con_name      =NULL;  /* Name of contact file. */
-    AjPDir      sig_path      =NULL;  /* Location of signature files -input. */
+    AjPDirout   sig_path      =NULL;  /* Location of signature files -output */
     AjPStr      sig_name      =NULL;  /* Name of signature files. */
     AjPStr      sig_name_sp   =NULL;  /* Sparsity extn for signature file. */
     AjPStr      pair_mat      =NULL;  /* Residue pair substitution matrix. */
@@ -390,7 +390,7 @@ int main(ajint argc, char **argv)
       /*      ajFmtPrint("1\n");fflush(stdout); */
 
         /* Open alignment file. */
-        if((fptr_alg=ajFileNewIn(temp))==NULL)
+        if((fptr_alg=ajFileNewInNameS(temp))==NULL)
         {
             ajFileClose(&fptr_alg);
             ajFatal("Could not open alignment file");
@@ -467,7 +467,7 @@ int main(ajint argc, char **argv)
                 idok=ajFalse;
                 
                 /* Open contact data file. */
-                if((fptr_con= ajFileNewDirF(con_path, alg->Codes[x]))==NULL)
+                if((fptr_con= ajFileNewListinDirPre(con_path, alg->Codes[x]))==NULL)
                     ajFatal("Could not open contact file!!");
                 
                 
@@ -506,7 +506,7 @@ int main(ajint argc, char **argv)
 
                 
                 /* Open coordinate file. */
-                if((fptr_cpdb=ajFileNewDirF(cpdb_path, alg->Codes[x]))==NULL)
+                if((fptr_cpdb=ajFileNewListinDirPre(cpdb_path, alg->Codes[x]))==NULL)
                     ajFatal("Could not open coordinate file");
 
                 /* Read coordinate data file. */ 
@@ -693,7 +693,7 @@ int main(ajint argc, char **argv)
 		ajStrFromInt(&temp3, alg->Sunid_Family);
 		ajStrAssignS(&sig_name, temp3);	
 	    }	
-	ajFileDirExtnTrim(&sig_name);
+	ajFilenameTrimPathExt(&sig_name);
 
 
 	/*      ajFmtPrint("16\n");fflush(stdout); */
@@ -794,9 +794,9 @@ int main(ajint argc, char **argv)
 	/*
         ajStrAssignRef(&temp1, sig_name);     
         for(x=1;
-            (ajFileStat(&temp1, AJ_FILE_R ) ||
-             ajFileStat(&temp1, AJ_FILE_W ) ||
-             ajFileStat(&temp1, AJ_FILE_X ));
+            (ajFilenameExistsRead(temp1) ||
+             ajFilenameExistsWrite(temp1) ||
+             ajFilenameExistsExec(temp1));
             x++)
         {
             ajStrAssignRef(&temp1, sig_name); 
@@ -808,7 +808,7 @@ int main(ajint argc, char **argv)
 	*/
 
 
-	if((sig_outf=ajFileNewOutDir(sig_path, sig_name))==NULL)
+	if((sig_outf=ajFileNewOutNameDirS(sig_name, sig_path))==NULL)
         {
             ajFatal("Could not open signature file for output");
             continue;       
@@ -861,7 +861,7 @@ int main(ajint argc, char **argv)
     ajStrDel(&temp1);
     ajStrDel(&temp2);
     ajStrDel(&temp3);
-    ajDirDel(&sig_path);
+    ajDiroutDel(&sig_path);
     ajStrDel(&sig_name);
     ajStrDel(&sig_name_sp);
     ajListFree(&alg_path);

@@ -2208,7 +2208,7 @@ ajint ajFmtScanF(AjPFile thys, const char* fmt, ...)
     if(!thys)
 	return 0;
 
-    file = ajFileFp(thys);
+    file = ajFileGetFileptr(thys);
 
     va_start(ap, fmt);
 

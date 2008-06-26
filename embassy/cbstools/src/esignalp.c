@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     AjPSeqout seqout = NULL;
     AjPStr    type   = NULL;
     AjBool    plot   = ajFalse;
-    AjPStr    ofn    = NULL;
+    const AjPStr ofn = NULL;
     AjPStr    fn     = NULL;
     AjPStr    stmp   = NULL;
     AjPStr    method = NULL;
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
     stmp = ajStrNew();
     
 
-    ajStrAssignC(&fn, ajFileTempName(NULL));
+    ajFilenameSetTempname(&fn);
     seqout = ajSeqoutNew();
     if(!ajSeqoutOpenFilename(seqout, fn))
 	ajFatal("Cannot open temporary file %S",fn);
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
         ajStrAppendS(&cl,stmp);
     }
     
-    ofn = ajFileGetName(outf);
+    ofn = ajFileGetNameS(outf);
     ajFmtPrintS(&stmp," > %S",ofn);
     ajStrAppendS(&cl,stmp);
     ajFileClose(&outf);

@@ -404,7 +404,7 @@ int main(ajint argc, char **argv)
       
 	/* OPEN FILE AND WRITE PDB OBJECT */
 	/* Open file */
-	if((prot_fptr=ajFileNewIn(cp_file))==NULL) 
+	if((prot_fptr=ajFileNewInNameS(cp_file))==NULL) 
 	{
 	    ajFmtPrintS(&msg, "Could not open for reading %S", cp_file );
 	    ajWarn(ajStrGetPtr(msg));
@@ -528,10 +528,10 @@ int main(ajint argc, char **argv)
 	    while((pdbscopid=ajListIterGet(iter_scopids))) 
 	    {	  
 		dom_co_fname=ajStrNew();
-		ajStrAssignS(&dom_co_fname, ajDirName(dom));
+		ajStrAssignS(&dom_co_fname, ajDirGetPath(dom));
 		ajStrAppendS(&dom_co_fname, pdbscopid);
 		ajStrAppendC(&dom_co_fname, ".");
-		ajStrAppendS(&dom_co_fname, ajDirExt(dom));
+		ajStrAppendS(&dom_co_fname, ajDirGetExt(dom));
 		ajListstrPushAppend(list_domfnames, dom_co_fname);
 	    }
 	    ajListIterDel(&iter_scopids);
@@ -543,7 +543,7 @@ int main(ajint argc, char **argv)
 	    /* START OF DOMAIN LOOP - PER DOMAIN IN list_scopids */
 	    while((pdbscop_fname=ajListIterGet(iter_domfnames))) 
 	    {
-		if((dom_fptr=ajFileNewIn(pdbscop_fname))==NULL)
+		if((dom_fptr=ajFileNewInNameS(pdbscop_fname))==NULL)
 		{
 		    ajFmtPrintS(&msg, "Could not open for reading: %S", 
 				pdbscop_fname);

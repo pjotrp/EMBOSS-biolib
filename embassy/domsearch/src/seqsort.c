@@ -71,7 +71,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr_fam,
 				       AjPList famlist, 
 				       AjPList supfamlist, 
 				       AjPList foldlist,
-				       AjPDir outdir);
+				       AjPDirout outdir);
 
 static AjBool seqsort_PsiblastHitSort(AjPList famlist,
 				      AjPList supfamlist, 
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     ajint   sig_overlap  = 0;       /* The minimum overlaping residues 
 				       required for merging of two hits.     */
     AjPDir  dhfin      = NULL;      /* Directory of domain hits files - input*/
-    AjPDir  dhfout     = NULL;      /* Directory of domain hits files - input*/
+    AjPDirout dhfout   = NULL;      /* Directory of domain hits files - input*/
     AjPStr  psipath    = NULL;      /* the name of the directory where 
 				       psiblasts results are kept.           */
     AjPStr  psiextn    = NULL;      /* The psiblasts file extension.         */
@@ -144,8 +144,8 @@ int main(int argc, char **argv)
     psiextn    = ajStrNew();
     
     
-    ajStrAssignS(&psipath, ajDirName(dhfin));
-    ajStrAssignS(&psiextn, ajDirExt(dhfin));
+    ajStrAssignS(&psipath, ajDirGetPath(dhfin));
+    ajStrAssignS(&psiextn, ajDirGetExt(dhfin));
 
 
 
@@ -178,7 +178,7 @@ int main(int argc, char **argv)
     ajStrDel(&psipath);
     ajStrDel(&psiextn);
     ajDirDel(&dhfin);
-    ajDirDel(&dhfout);
+    ajDiroutDel(&dhfout);
     
 
     ajExit();
@@ -245,13 +245,12 @@ static AjPList seqsort_HitlistListRead(AjPStr path,
     }	
 
     /* All files containing hits will be in a list. */
-    ajFileScan(path, tmp, &list, ajFalse, ajFalse, NULL, NULL, ajFalse, NULL);
-
+    ajFilelistAddPathWild(list, path, tmp);
     
     /* Read each psiblast file and create a list of Scophit structures. */
     while(ajListPop(list,(void **)&filename))
     {
-	if((inf = ajFileNewIn(filename)) == NULL)
+	if((inf = ajFileNewInNameS(filename)) == NULL)
 	{
 	  ajWarn("Could not open for reading\n");
 	  ajFmtPrintS(&logf,"WARN  Could not open for reading %S\n",filename);
@@ -980,7 +979,7 @@ static AjBool seqsort_PsiblastHitSort(AjPList famlist,
 ** @param [r] famlist    [AjPList *] Families list.
 ** @param [r] supfamlist [AjPList *] Superfamilies list.
 ** @param [r] foldlist   [AjPList *] Folds list.
-** @param [r] outdir     [AjPDir]    Output directory. 
+** @param [r] outdir     [AjPDirout] Output directory. 
 ** 
 ** @return [AjBool] ajTrue if the files were written, ajFalse otherwise.
 ** @@
@@ -992,7 +991,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr_fam,
 				       AjPList famlist, 
 				       AjPList supfamlist, 
 				       AjPList foldlist, 
-				       AjPDir outdir)
+				       AjPDirout outdir)
 
 {
     EmbPHitlist hitlist = NULL;
@@ -1046,7 +1045,7 @@ static AjBool seqsort_WriteOutputFiles(AjPFile fptr_fam,
 
 	ajStrFromInt(&temp, hitlist->Sunid_Family);
 
-	if(!(outf = ajFileNewOutDir(outdir, temp)))
+	if(!(outf = ajFileNewOutNameDirS(temp, outdir)))
 	    ajFatal("Could not open output file in seqsort_WriteOutputFiles");
 	embHitlistWriteFasta(outf, hitlist);
 	

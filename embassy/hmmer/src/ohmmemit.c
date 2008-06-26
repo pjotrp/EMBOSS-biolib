@@ -12,7 +12,7 @@
  * SRE, Sun Mar  8 14:11:24 1998 [St. Louis]
  * 
  * main() for generating sequences from an HMM
- * RCS $Id: ohmmemit.c,v 1.5 2008/06/10 12:51:15 rice Exp $
+ * RCS $Id: ohmmemit.c,v 1.6 2008/06/26 08:40:56 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -96,8 +96,8 @@ int main(int argc, char **argv)
     else
 	do_consensus=FALSE;
 
-    instr  = ajStrNewC((char *)ajFileName(inf));
-    outstr = ajStrNewC((char *)ajFileName(outf));
+    instr  = ajStrNewC((char *)ajFileGetNameC(inf));
+    outstr = ajStrNewC((char *)ajFileGetNameC(outf));
 
     hmmfile = ajStrGetPtr(instr);
 
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
      * Open the output file, or stdout
      ***********************************************/ 
 
-    fp = ajFileFp(outf);
+    fp = ajFileGetFileptr(outf);
   
  
     /*********************************************** 

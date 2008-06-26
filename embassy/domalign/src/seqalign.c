@@ -76,7 +76,7 @@ int main(int argc, char **argv)
     AjPFile hitsinf    = NULL;  /* Current domain hits file.                 */
     AjPStr hitsname    = NULL;  /* Name of current domain hits file.         */
 
-    AjPDir  dafout     = NULL;  /* Directory of domain alignment outfiles    */
+    AjPDirout dafout   = NULL;  /* Directory of domain alignment outfiles    */
 
     AjPStr  tmp_name   = NULL;  /* Random name for temp. files.              */
 
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
 
     /* Create name for temp. clustalw input files. */
     ajRandomSeed();
-    ajStrAssignC(&tmp_name,ajFileTempName(NULL));
+    ajFilenameSetTempname(&tmp_name);
 
 
     /* Read each domain alignment file */
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
 	
 
 	/* Open domain alignment file */
-	if((inf = ajFileNewIn(inname)) == NULL)
+	if((inf = ajFileNewInNameS(inname)) == NULL)
 	{
 	    ajWarn("Could not open seed alignment file %S", inname);
 	    ajFmtPrintF(logf, "//\nCould not open seed alignment file %S\n",
@@ -254,7 +254,7 @@ int main(int argc, char **argv)
 	    /* Create clustal input alignment in CLUSTAL format. */
 	    ajStrAssignS(&clustin1,tmp_name);
 	    ajStrAppendC(&clustin1,".aln");
-	    if((clustinf1 = ajFileNewOut(clustin1))==NULL)
+	    if((clustinf1 = ajFileNewOutNameS(clustin1))==NULL)
 		ajFatal("Could not open %S for writing\n", clustin1);
 	    if(scopalign)
 		ajDmxScopalgWriteFasta(scopalign,clustinf1);  
@@ -315,12 +315,12 @@ int main(int argc, char **argv)
 	    
 	/* Open domain hits file (input). */
 	ajStrAssignS(&hitsname, inname);
-	ajFileDirExtnTrim(&hitsname);
-	ajStrInsertS(&hitsname, 0, ajDirName(dhfin));
+	ajFilenameTrimPathExt(&hitsname);
+	ajStrInsertS(&hitsname, 0, ajDirGetPath(dhfin));
 	ajStrAppendC(&hitsname, ".");
-	ajStrAppendS(&hitsname, ajDirExt(dhfin));
+	ajStrAppendS(&hitsname, ajDirGetExt(dhfin));
 	
-	if(!(hitsinf = ajFileNewIn(hitsname)))
+	if(!(hitsinf = ajFileNewInNameS(hitsname)))
 	{
 	    ajWarn("Could not open domain hits file %S", hitsname);
 	    ajFmtPrintF(logf, "Could not open domain hits file %S", hitsname);
@@ -337,7 +337,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	    if(!ajFileReadLine(hitsinf, &line))
+	    if(!ajReadlineTrim(hitsinf, &line))
 	    {	    
 		ajWarn("Empty domain hits file %S", hitsname);
 		ajFmtPrintF(logf, "Empty domain hits file %S", hitsname);
@@ -400,7 +400,7 @@ int main(int argc, char **argv)
 	/* Create file of clustal input sequences. */
 	ajStrAssignS(&clustin2,tmp_name);
 	ajStrAppendC(&clustin2,".seqs");
-	clustinf2 = ajFileNewOut(clustin2);
+	clustinf2 = ajFileNewOutNameS(clustin2);
 
 
 	/* ajFmtPrint("hit_sing->Dom: %S\nhit_sing->Acc: %S\n", 
@@ -504,19 +504,19 @@ int main(int argc, char **argv)
 	    
 	    
 	/* Reformat output file into domain alignment format. */
-	if((alg_in = ajFileNewIn(clustout))==NULL)
+	if((alg_in = ajFileNewInNameS(clustout))==NULL)
 	    ajFatal("Could not read clustal output file %S", clustout);
 
 
     
 	/* Open domain alignment file (output). */
 	ajStrAssignS(&outname, inname);
-	ajFileDirExtnTrim(&outname);
-	ajStrInsertS(&outname, 0, ajDirName(dafout));
+	ajFilenameTrimPathExt(&outname);
+	ajStrInsertS(&outname, 0, ajDiroutGetPath(dafout));
 	ajStrAppendC(&outname, ".");
-	ajStrAppendS(&outname, ajDirExt(dafout));
+	ajStrAppendS(&outname, ajDiroutGetExt(dafout));
 
-	if((alg_out = ajFileNewOut(outname))==NULL)
+	if((alg_out = ajFileNewOutNameS(outname))==NULL)
 	    ajFatal("Could not write clustal output file");
 
 
@@ -557,7 +557,7 @@ int main(int argc, char **argv)
 	}	
 
 	/* Then parse the clustal file and write the alignment. */
-	while(ajFileReadLine(alg_in,&line))
+	while(ajReadlineTrim(alg_in,&line))
 	{
 	    if(ajStrPrefixC(line, "CLUSTAL"))
 		continue;
@@ -620,7 +620,7 @@ int main(int argc, char **argv)
     ajStrDel(&cmd);
     ajListstrFree(&inseqsdhf);
     ajListstrFree(&inseqsdaf);
-    ajDirDel(&dafout);
+    ajDiroutDel(&dafout);
     ajStrDel(&tmp_name);
     ajStrDel(&clustin1);
     ajStrDel(&clustin2);

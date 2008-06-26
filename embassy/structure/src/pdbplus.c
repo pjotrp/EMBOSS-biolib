@@ -80,7 +80,7 @@ int main(ajint argc, char **argv)
     AjPStr   pdb_name     = NULL;  /* Full name (path/name/extension) of 
 					 pdb format input file.              */
 
-    AjPDir   ccfout      = NULL;   /* Path of coordinate output file.        */
+    AjPDirout ccfout     = NULL;   /* Path of coordinate output file.        */
     AjPStr   randomname  = NULL;   /* Name for temp file tempf.              */
     AjPStr   ccf_this    = NULL; 
     AjPStr   exec        = NULL; 
@@ -174,7 +174,7 @@ int main(ajint argc, char **argv)
 
     
     ajRandomSeed();
-    ajStrAssignC(&randomname, ajFileTempName(NULL)); 
+    ajFilenameSetTempname(&randomname); 
 
 
 
@@ -190,7 +190,7 @@ int main(ajint argc, char **argv)
         /* Open protein coordinate file.  If it cannot be opened, write a 
            message to the error file, delete ccf_this and continue. */
 
-        if((ccf_inf = ajFileNewIn(ccf_this)) == NULL)   
+        if((ccf_inf = ajFileNewInNameS(ccf_this)) == NULL)   
 	{
 	    ajWarn("%s%S\n//\n", 
 		   "clean coordinate file not found: ", ccf_this);
@@ -226,7 +226,7 @@ int main(ajint argc, char **argv)
         /* Construct name of corresponding PDB file.
 	    NACCESS does *not* generate an output file if the path is './' e.g. 
 	    naccess ./1rbp.ent , therefore replace './' with null. */
-	ajStrAssignS(&pdb_name, ajDirName(pdbin));
+	ajStrAssignS(&pdb_name, ajDirGetPath(pdbin));
 	if(ajStrMatchC(pdb_name, "./") || ajStrMatchC(pdb_name, "."))
 	    ajStrAssignC(&pdb_name, "");
 	
@@ -234,11 +234,11 @@ int main(ajint argc, char **argv)
 	ajStrFmtLower(&pdb->Pdb);
         ajStrAppendS(&pdb_name, pdb->Pdb);
         ajStrAppendC(&pdb_name, ".");
-	ajStrAppendS(&pdb_name, ajDirExt(pdbin));
+	ajStrAppendS(&pdb_name, ajDirGetExt(pdbin));
 	
 
         /* Check corresponding PDB file exists for reading using ajFileStat. */
-	if(!(ajFileStat(pdb_name, AJ_FILE_R )))
+	if(!(ajFilenameExistsRead(pdb_name)))
         {
             ajFmtPrintF(errf, "%s%S\n//\n", "PDB file not found: ", pdb_name);
             ajWarn("%s%S\n//\n", "PDB file not found: ", pdb_name);
@@ -257,19 +257,19 @@ int main(ajint argc, char **argv)
 	     */
 	    
 	    ajFmtPrintS(&syscmd, "stride %S -f%S >> %s 2>&1",  
-			pdb_name, randomname, ajFileName(serrf));
+			pdb_name, randomname, ajFileGetNameC(serrf));
 	    ajFmtPrint("stride %S -f%S >> %s 2>&1\n",  
-		       pdb_name, randomname,ajFileName(serrf));
+		       pdb_name, randomname,ajFileGetNameC(serrf));
 	    system(ajStrGetPtr(syscmd));  
 
 /*	    ajFmtPrintS(&syscmd, "stride %S -f%S >> %s",  
-			pdb_name, randomname, ajFileName(serrf));
+			pdb_name, randomname, ajFileGetNameC(serrf));
 	    ajFmtPrint("stride %S -f%S >> %s\n",  
-		       pdb_name, randomname,ajFileName(serrf));
+		       pdb_name, randomname,ajFileGetNameC(serrf));
 	    system(ajStrGetPtr(syscmd));  */
 	    
 	    /* Open the stride output file */
-	    if (((tempf = ajFileNewIn(randomname)) == NULL))
+	    if (((tempf = ajFileNewInNameS(randomname)) == NULL))
 	    {
 		ajWarn("%s%S\n//\n", 
 		       "no stride output for: ", pdb_name); 
@@ -288,7 +288,7 @@ int main(ajint argc, char **argv)
 	    done_stride = ajFalse;
 
 	    /* Parse STRIDE output from temp output file a line at a time. */
-	    while(ajFileReadLine(tempf,&line))
+	    while(ajReadlineTrim(tempf,&line))
 	    {       
 		if(ajStrPrefixC(line,"ASG"))    
 		{
@@ -402,18 +402,18 @@ int main(ajint argc, char **argv)
 	    
 	    ajFmtPrintS(&syscmd, "naccess %S  >> %s 2>&1",  
 			pdb_name, 
-			ajFileName(nerrf));
+			ajFileGetNameC(nerrf));
 	    ajFmtPrint("naccess %S  >> %s 2>&1\n",  
 		       pdb_name, 
-		       ajFileName(nerrf));
+		       ajFileGetNameC(nerrf));
 	    system(ajStrGetPtr(syscmd));  
 
 /*	    ajFmtPrintS(&syscmd, "naccess %S  >> %s",  
 			pdb_name, 
-			ajFileName(nerrf));
+			ajFileGetNameC(nerrf));
 	    ajFmtPrint("naccess %S  >> %s\n",  
 		       pdb_name, 
-		       ajFileName(nerrf));
+		       ajFileGetNameC(nerrf));
 	    system(ajStrGetPtr(syscmd));  */
 
 	    
@@ -422,7 +422,7 @@ int main(ajint argc, char **argv)
 	    ajStrAppendC(&naccess_str, ".rsa");
 	    
 	    /* Open the NACCESS output file. */
-	    if (((tempf = ajFileNewIn(naccess_str)) == NULL))
+	    if (((tempf = ajFileNewInNameS(naccess_str)) == NULL))
 	    {
 		ajFmtPrintF(errf, "%s%S\n//\n", 
 			    "no naccess output for: ", pdb_name); 
@@ -439,7 +439,7 @@ int main(ajint argc, char **argv)
 
 	    done_naccess = ajFalse;
 	    /* Parse NACCESS output from temp output file a line at a time. */	    
-	    while(ajFileReadLine(tempf,&line))
+	    while(ajReadlineTrim(tempf,&line))
 	    {       
 		if(ajStrPrefixC(line,"RES"))    
 		{
@@ -556,7 +556,7 @@ int main(ajint argc, char **argv)
 	}
 
         /* Open CCF (output) file. */
-        ccf_outf = ajFileNewOutDir(ccfout, pdb->Pdb);
+        ccf_outf = ajFileNewOutNameDirS(pdb->Pdb, ccfout);
 	
         
         /* Write AjPPdb object to the output file in clean format. */
@@ -587,7 +587,7 @@ int main(ajint argc, char **argv)
     ajDirDel(&pdbin);
     ajStrDel(&pdbprefix);
     ajStrDel(&pdb_name);
-    ajDirDel(&ccfout);
+    ajDiroutDel(&ccfout);
     ajStrDel(&res);
     ajStrDel(&res_num);
     ajStrDel(&randomname);

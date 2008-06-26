@@ -107,7 +107,7 @@ int main(int argc, char **argv)
     AjPStr     inname    = NULL;  /* Name of current input alignments.     */
     AjPFile    inf       = NULL;  /* File pointer for alignments (input).  */
 
-    AjPDir     outdir    = NULL;  /* Directory of output discriminators.   */
+    AjPDirout  outdir    = NULL;  /* Directory of output discriminators.   */
     AjPStr     outname   = NULL;  /* Name of output file.                  */
     AjPFile    outf      = NULL;  /* File for discriminator (output).      */
 
@@ -165,7 +165,7 @@ int main(int argc, char **argv)
     while(ajListPop(indir,(void **)&inname))
     {  
 	/* Open domain alignment file. */
-        if((inf = ajFileNewIn(inname)) == NULL)
+        if((inf = ajFileNewInNameS(inname)) == NULL)
         {
             ajWarn("Could not open file %S\n",inname);
 	    ajStrDel(&inname);
@@ -206,10 +206,10 @@ int main(int argc, char **argv)
 
 	/* Create name for output file. */
 	ajStrAssignS(&outname, inname);
-	ajFileDirExtnTrim(&outname);	
-	ajStrInsertS(&outname, 0, ajDirName(outdir));
+	ajFilenameTrimPathExt(&outname);	
+	ajStrInsertS(&outname, 0, ajDiroutGetPath(outdir));
 	ajStrAppendC(&outname, ".");
-	ajStrAppendS(&outname, ajDirExt(outdir));
+	ajStrAppendS(&outname, ajDiroutGetExt(outdir));
 
 
 	if((modei==LIBGEN_HMMER) ||
@@ -218,10 +218,10 @@ int main(int argc, char **argv)
 	{
 	    /* Write alignment in CLUSTAL format to temp. file. */
 	    ajRandomSeed();
-	    ajStrAssignC(&seqsfname, ajFileTempName(NULL));
+	    ajFilenameSetTempname(&seqsfname);
 	    if(modei==LIBGEN_SAM)
 		ajStrAppendC(&seqsfname, ".a2m"); 
-	    seqsf = ajFileNewOut(seqsfname);
+	    seqsf = ajFileNewOutNameS(seqsfname);
 
 	    if(scopalg)
 		ajDmxScopalgWriteClustal2(scopalg,seqsf);
@@ -238,8 +238,8 @@ int main(int argc, char **argv)
 
 
 	    /* Write single sequence to temp. file. */
-	    ajStrAssignC(&seqfname, ajFileTempName(NULL));
-	    seqf = ajFileNewOut(seqfname);
+	    ajFilenameSetTempname(&seqfname);
+	    seqf = ajFileNewOutNameS(seqfname);
 	    
 	    if(scopalg)
 		ajFmtPrintF(seqf,">\n%S\n", scopalg->Seqs[0]);
@@ -258,7 +258,7 @@ int main(int argc, char **argv)
 			    outname);
 	    else if(modei==LIBGEN_SAM)
 	    {
-		ajStrAssignC(&tmpfname, ajFileTempName(NULL));
+		ajFilenameSetTempname(&tmpfname);
 		ajStrAppendC(&tmpfname, ".mod");
 
 
@@ -290,7 +290,7 @@ int main(int argc, char **argv)
 	}
 	else
 	{
-	    if((!(outf = ajFileNewOut(outname))))
+	    if((!(outf = ajFileNewOutNameS(outname))))
 		ajFatal("Could not create output file\n");
 	    
 	    if(modei==LIBGEN_FREQUENCY)
@@ -319,7 +319,7 @@ int main(int argc, char **argv)
     ajStrDel(&mode[0]);
     AJFREE(mode);
     ajListFree(&indir);
-    ajDirDel(&outdir);
+    ajDiroutDel(&outdir);
     ajStrDel(&seqsfname);
     ajStrDel(&cmd);
     
@@ -388,7 +388,7 @@ static void libgen_simple_matrix(AjPSeqset seqset,
         for(j=0;j<len;++j)
         {
             x = toupper((ajint)*p++);
-            ++matrix[ajBasecodeAlphaToInt(x)][j];
+            ++matrix[ajBasecodeToInt(x)][j];
         }
     }
 
@@ -524,14 +524,14 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            if(ajBasecodeAlphaToInt(p[i])!=27)  /* If not a gap. */
+            if(ajBasecodeToInt(p[i])!=27)  /* If not a gap. */
                 continue;
             pos = i;
-            while(pos>-1 && ajBasecodeAlphaToInt(p[pos])==27)
+            while(pos>-1 && ajBasecodeToInt(p[pos])==27)
                 --pos;
             start = ++pos;
             pos=i;
-            while(pos<mlen && ajBasecodeAlphaToInt(p[pos])==27)
+            while(pos<mlen && ajBasecodeToInt(p[pos])==27)
                 ++pos;
             end = pos-1;
             gsum = AJMAX(gsum, (end-start)+1);
@@ -548,7 +548,8 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
         q=valid;
         while(*q)
         {
-            mmax=(mmax>sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)]) ? mmax :
+            mmax=(mmax>sub[ajSeqcvtGetCodeK(cvt,*p)]
+                          [ajSeqcvtGetCodeK(cvt,*q)]) ? mmax :
                 sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
             ++q;
         }
@@ -571,7 +572,7 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            weights[i][ajBasecodeAlphaToInt(p[i])] +=
+            weights[i][ajBasecodeToInt(p[i])] +=
                 ajSeqsetGetseqWeight(seqset,j);
         }
 
@@ -609,13 +610,13 @@ static void libgen_gribskov_profile(AjPSeqset seqset,
             q = valid;
             while(*q)
             {
-                score = weights[i][ajBasecodeAlphaToInt(*q)];
+                score = weights[i][ajBasecodeToInt(*q)];
                 score *= (float)(sub[ajSeqcvtGetCodeK(cvt,*p)]
                                     [ajSeqcvtGetCodeK(cvt,*q)]);
                 sum += score;
                 ++q;
             }
-            mat[i][ajBasecodeAlphaToInt(*p)] = sum;
+            mat[i][ajBasecodeToInt(*p)] = sum;
         }
 
     /* Calculate gap penalties. */
@@ -747,14 +748,14 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            if(ajBasecodeAlphaToInt(p[i])!=27)
+            if(ajBasecodeToInt(p[i])!=27)
                 continue; /* If not a gap. */
             pos = i;
-            while(pos>-1 && ajBasecodeAlphaToInt(p[pos])==27)
+            while(pos>-1 && ajBasecodeToInt(p[pos])==27)
                 --pos;
             start = ++pos;
             pos=i;
-            while(pos<mlen && ajBasecodeAlphaToInt(p[pos])==27)
+            while(pos<mlen && ajBasecodeToInt(p[pos])==27)
                 ++pos;
             end = pos-1;
             gsum = AJMAX(gsum, (end-start)+1);
@@ -770,7 +771,8 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
         q=valid;
         while(*q)
         {
-            mmax=(mmax>sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)]) ? mmax :
+            mmax=(mmax>sub[ajSeqcvtGetCodeK(cvt,*p)]
+                          [ajSeqcvtGetCodeK(cvt,*q)]) ? mmax :
                 sub[ajSeqcvtGetCodeK(cvt,*p)][ajSeqcvtGetCodeK(cvt,*q)];
             ++q;
         }
@@ -793,7 +795,7 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
             p=ajSeqsetGetseqSeqC(seqset,j);
             if(i>=strlen(p))
                 continue;
-            weights[i][ajBasecodeAlphaToInt(p[i])] +=
+            weights[i][ajBasecodeToInt(p[i])] +=
                 ajSeqsetGetseqWeight(seqset,j);
         }
 
@@ -841,13 +843,13 @@ static void libgen_henikoff_profile(AjPSeqset seqset,
             q = valid;
             while(*q)
             {
-                score = weights[i][ajBasecodeAlphaToInt(*q)];
+                score = weights[i][ajBasecodeToInt(*q)];
                 score *= sub[ajSeqcvtGetCodeK(cvt,*p)]
                             [ajSeqcvtGetCodeK(cvt,*q)];
                 sum += score;
                 ++q;
             }
-            mat[i][ajBasecodeAlphaToInt(*p)] = sum;
+            mat[i][ajBasecodeToInt(*p)] = sum;
         }
 
     /* Calculate gap penalties. */

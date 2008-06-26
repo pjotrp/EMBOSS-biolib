@@ -724,7 +724,7 @@ extern void init_meme(
   }
 
   /* check that IUPAC alphabet if using PAM mapping */
-  if (MAP == "pam" && strcmp(alphabet, PROTEIN)) {
+  if (!strcmp(MAP,"pam") && strcmp(alphabet, PROTEIN)) {
     printf("Setting sequence to theta mapping type to `Uni' since alphabet not IUPAC\n");
     MAP = "uni";
   }
@@ -883,4 +883,4 @@ extern void init_meme(
   *debug_file_p = debug_file;
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.7 2008/06/10 12:52:39 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/init.c,v 1.8 2008/06/26 08:40:56 rice Exp $ */

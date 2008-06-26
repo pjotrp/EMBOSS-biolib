@@ -56,27 +56,31 @@
 int main(int argc, char **argv)
 {
     /* Variable declarations */
-    AjPList    in        = NULL;    /* Names of domain hits files (input).    */    
-    AjPStr     inname    = NULL;    /* Full name of the current DHF file.     */
-    AjPFile    inf       = NULL;    /* Current DHF file.                      */
-    AjPMatrixf matrix    = NULL;    /* Substitution matrix.                   */
-    float      gapopen   = 0.0;     /* Gap insertion penalty.                 */
-    float      gapextend = 0.0;     /* Gap extension penalty.                 */
-    AjPDir     out       = NULL;    /* Domain hits files (output).            */    
-    AjPFile    outf      = NULL;    /* Current DHF file (output).             */
-    AjPStr     outname   = NULL;    /* Name of output file (re-used).         */    
-    AjPFile    logf      = NULL;    /* log file pointer.                      */
+    AjPList    in        = NULL;    /* Names of domain hits files (input).   */
+
+    AjPStr     inname    = NULL;    /* Full name of the current DHF file.    */
+    AjPFile    inf       = NULL;    /* Current DHF file.                     */
+    AjPMatrixf matrix    = NULL;    /* Substitution matrix.                  */
+    float      gapopen   = 0.0;     /* Gap insertion penalty.                */
+    float      gapextend = 0.0;     /* Gap extension penalty.                */
+    AjPDirout  out       = NULL;    /* Domain hits files (output).           */
+
+    AjPFile    outf      = NULL;    /* Current DHF file (output).            */
+    AjPStr     outname   = NULL;    /* Name of output file (re-used).        */
+
+    AjPFile    logf      = NULL;    /* log file pointer.                     */
  
-    AjBool     ok        = ajFalse; /* Housekeeping                           */
-    AjPSeqset  seqset    = NULL;    /* Seqset (re-used)                       */
-    AjPSeqin   seqin     = NULL;    /* Seqin (re-used)                        */    
-    AjPList    seq_list  = NULL;    /* Main list for redundancy removal.      */
-    ajint      seq_list_siz = 0;    /* Size of seq_list                       */
-    AjPSeq     seq_tmp   = NULL;    /* Temp. pointer for making seq_list.     */
+    AjBool     ok        = ajFalse; /* Housekeeping                          */
+    AjPSeqset  seqset    = NULL;    /* Seqset (re-used)                      */
+    AjPSeqin   seqin     = NULL;    /* Seqin (re-used)                       */
+
+    AjPList    seq_list  = NULL;    /* Main list for redundancy removal.     */
+    ajint      seq_list_siz = 0;    /* Size of seq_list                      */
+    AjPSeq     seq_tmp   = NULL;    /* Temp. pointer for making seq_list.    */
     AjPFloat2d scores      = NULL;  /* 1: Sequence in seq_list was classed as
-				       non-redundant, 0: redundant.           */
-    ajint      x         = 0;       /* Housekeeping.                          */
-    ajint      y         = 0;       /* Housekeeping.                          */
+				       non-redundant, 0: redundant.          */
+    ajint      x         = 0;       /* Housekeeping.                         */
+    ajint      y         = 0;       /* Housekeeping.                         */
 
     
 
@@ -108,7 +112,7 @@ int main(int argc, char **argv)
 	seq_list    = ajListNew();
 	
 	/* Open & read sequence file. */
-	if((inf = ajFileNewIn(inname)) == NULL)
+	if((inf = ajFileNewInNameS(inname)) == NULL)
 	    ajFatal("Could not open DHF file %S", inname);
 
 	seqset = ajSeqsetNew();
@@ -155,8 +159,8 @@ int main(int argc, char **argv)
 
 	/* Create output files. */
 	ajStrAssignS(&outname, inname);
-	ajFileDirExtnTrim(&outname);
-	outf = ajFileNewOutDir(out, outname);
+	ajFilenameTrimPathExt(&outname);
+	outf = ajFileNewOutNameDirS(outname, out);
 	
 
 	/* 5. Write sequence similarity values to output directory.   */
@@ -182,7 +186,7 @@ int main(int argc, char **argv)
 
     /* Memory management. */
     ajListFree(&in);
-    ajDirDel(&out);
+    ajDiroutDel(&out);
     ajFileClose(&logf);
     ajStrDel(&outname);
 

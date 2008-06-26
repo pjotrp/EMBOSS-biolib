@@ -125,9 +125,9 @@ int main(int argc, char **argv)
     if(xnu)
 	ajStrAppendC(&cmd, " --xnu ");
     ajFmtPrintAppS(&cmd, " %s %S > %s", 
-		   ajFileName(hmmfile),
+		   ajFileGetNameC(hmmfile),
 		   ajSeqallGetFilename(seqfile),
-		   ajFileName(outfile));
+		   ajFileGetNameC(outfile));
 
 
     /* 3. Close ACD files. */

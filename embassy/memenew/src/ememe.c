@@ -130,7 +130,7 @@ int main(int argc, char **argv)
     /* 2. Re-write dataset to a temporary file in a format (fasta) MEME can understand.
        We cannot just pass the name of dataset to MEME as the name provided might be a 
        USA which MEME would not understand. */
-    ajStrAssignC(&rnd, ajFileTempName(NULL));
+    ajFilenameSetTempname(&rnd);
     rndo = ajSeqoutNew();
     if(!ajSeqoutOpenFilename(rndo, rnd))
 	ajFatal("Terminal ajSeqFileNewOut failure. Email EMBOSS helpdesk!\n");
@@ -152,9 +152,9 @@ int main(int argc, char **argv)
 
     ajFmtPrintAppS(&cmd, " %S", rnd);
     if(bfile)
-	ajFmtPrintAppS(&cmd, " -bfile %s ", ajFileName(bfile));
+	ajFmtPrintAppS(&cmd, " -bfile %s ", ajFileGetNameC(bfile));
     if(plib)
-	ajFmtPrintAppS(&cmd, " -plib %s ", ajFileName(plib));
+	ajFmtPrintAppS(&cmd, " -plib %s ", ajFileGetNameC(plib));
     option = ajStrGetCharFirst(mod[0]);
     if(option == 'o')
 	ajStrAppendC(&cmd, " -mod oops ");
@@ -218,7 +218,7 @@ int main(int argc, char **argv)
 	ajFmtPrintAppS(&cmd, "-protein ");
     else
 	ajFmtPrintAppS(&cmd, "-dna ");
-    ajFmtPrintAppS(&cmd, " > %S ", ajFileGetName(outfile));
+    ajFmtPrintAppS(&cmd, " > %S ", ajFileGetNameS(outfile));
 
 
     /* 4. Close files from ACD before calling meme */	

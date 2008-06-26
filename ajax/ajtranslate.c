@@ -307,7 +307,7 @@ AjPTrn ajTrnNew(const AjPStr trnFileName)
 	trnFileName = ajStrNewC(TGCFILE);
 
 
-    ajFileDataNew(trnFileName, &trnFile);
+    trnFile = ajDatafileNewInNameS(trnFileName);
     if(trnFile==NULL)
 	ajFatal("Translation table file '%S' not found\n", trnFileName);
 
@@ -382,7 +382,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
 
     ajDebug("ajTrnReadFile %F\n", trnFile);
 
-    while(ajFileReadLine(trnFile, &trnLine))
+    while(ajReadlineTrim(trnFile, &trnLine))
     {
 	trnNoComment(&trnLine);
 	if(ajStrGetLen(trnLine))
@@ -397,7 +397,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     }
 
     /* title */
-    while(ajFileReadLine(trnFile, &trnLine))
+    while(ajReadlineTrim(trnFile, &trnLine))
     {
 	trnNoComment(&trnLine);
 	if(ajStrGetLen(trnLine))
@@ -408,7 +408,7 @@ void ajTrnReadFile(AjPTrn trnObj, AjPFile trnFile)
     }
 
     /* rest */
-    while(ajFileReadLine(trnFile, &trnLine))
+    while(ajReadlineTrim(trnFile, &trnLine))
     {
 	trnNoComment(&trnLine);
 	if(ajStrGetLen(trnLine))
@@ -1655,11 +1655,11 @@ const AjPStr ajTrnName(ajint trnFileNameInt)
 	    indexfname = ajStrNewC("EGC.index");
 	trnCodes = ajTablestrNewLen(20);
 
-	ajFileDataNew(indexfname, &indexf);
+	indexf = ajDatafileNewInNameS(indexfname);
 	if(!indexf)
 	    return unknown;
 
-	while(ajFileReadLine(indexf, &line))
+	while(ajReadlineTrim(indexf, &line))
 	{
 	    ajStrTrimWhite(&line);
 	    if(ajStrGetCharFirst(line) == '#')

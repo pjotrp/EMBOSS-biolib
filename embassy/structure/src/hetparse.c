@@ -174,7 +174,7 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
     while(ajListPop(listfiles,(void **)&fname))
     {
         /* Open pdb file. */
-        if((fptr=ajFileNewIn(fname))==NULL)
+        if((fptr=ajFileNewInNameS(fname))==NULL)
 	{
 	    ajWarn("Could not open file in hetparse_HetScan\n");
 	    continue;
@@ -188,7 +188,7 @@ static AjBool        hetparse_HetScan(AjPList listfiles,
 	listhet = ajListstrNew();
 
 	/* PARSE FILE & POPULATE LIST OF HETATM CODES. */
-	while(ajFileReadLine(fptr, &line))
+	while(ajReadlineTrim(fptr, &line))
 	{
 	    if(ajStrPrefixC(line,"HETATM"))
 	    {

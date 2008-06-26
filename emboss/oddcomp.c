@@ -87,7 +87,7 @@ int main(int argc, char **argv)
     /* Output some documentation to the results file */
     ajFmtPrintF(outfile, "#\n# Output from 'oddcomp'\n#\n");
     ajFmtPrintF(outfile, "# The Expected frequencies are taken from the "
-		"file: %s\n", ajFileName(compdata));
+		"file: %s\n", ajFileGetNameC(compdata));
 
     /* read the required frequencies into a table */
     oddcomp_readexpfreq(&exptable, compdata, &word);
@@ -371,7 +371,7 @@ static ajint oddcomp_readexpfreq(AjPTable *exptable, AjPFile compdata,
 
 
     /* read the file */
-    while(ajFileReadLine(compdata, &line))
+    while(ajReadlineTrim(compdata, &line))
     {
 	/* skip comment and blank lines */
 	if(!ajStrFindC(line, "#"))
@@ -396,7 +396,7 @@ static ajint oddcomp_readexpfreq(AjPTable *exptable, AjPFile compdata,
     }
 
     /* read the file */
-    while(ajFileReadLine(compdata, &line))
+    while(ajReadlineTrim(compdata, &line))
     {
 	/* skip comment and blank lines */
 	if(!ajStrFindC(line, "#"))
@@ -414,7 +414,7 @@ static ajint oddcomp_readexpfreq(AjPTable *exptable, AjPFile compdata,
     }
 
     /* read in the observed frequencies as a string */
-    while(ajFileReadLine(compdata, &line))
+    while(ajReadlineTrim(compdata, &line))
     {
 	/* skip comment and blank lines */
 	if(!ajStrFindC(line, "#"))

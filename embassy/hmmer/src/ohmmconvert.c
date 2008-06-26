@@ -102,12 +102,12 @@ int main(int argc, char **argv)
     else
 	outfmt = BICPROFILE;
 
-    instr  = ajStrNewC((char *)ajFileName(inf));
-    outstr = ajStrNewC((char *)ajFileName(outf));
+    instr  = ajStrNewC((char *)ajFileGetNameC(inf));
+    outstr = ajStrNewC((char *)ajFileGetNameC(outf));
     if(*ajStrGetPtr(outstr)>31)
     {
 	ajFileClose(&outf);
-	if(!ajFileLength(outstr))
+	if(!ajFilenameGetSize(outstr))
 	    unlink(ajStrGetPtr(outstr));
     }
 

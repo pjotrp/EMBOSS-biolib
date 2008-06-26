@@ -918,11 +918,11 @@ void print_meme_doc()
     exit(1);
   }*/
 
-  ajFileDataNewC("Ememe.dat",&inf);
+  inf = ajDatafileNewInNameC("Ememe.dat");
   if(!inf)
       ajFatal("Unable to open MEME's documentation file Ememe.dat");
 
-  doc = ajFileFp(inf);
+  doc = ajFileGetFileptr(inf);
 
   ajFmtPrintF(outf,"\n");
   PSTARRS();
@@ -1358,4 +1358,4 @@ ajFmtPrintF(outf,"%c",(d==1) ? unhash(eseq[j]) : unhash(dna_comp(eseq[j])));
   free(sites);
 } /* print_sites */
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/display.c,v 1.3 2006/02/22 15:02:28 rice Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/display.c,v 1.4 2008/06/26 08:40:56 rice Exp $ */

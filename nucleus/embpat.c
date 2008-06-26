@@ -1,3 +1,4 @@
+
 /* @source embpat.c
 **
 ** General routines for pattern matching.
@@ -334,9 +335,7 @@ EmbPPatMatch embPatMatchFindC(const AjPStr regexp, const char *sptr,
 	AJNEW(len);
 	*len = ajRegLenI(regcomp,0);
 	*pos += (ajuint) (sptr-ptr);
-/*	node = ajListNodesNew(pos, NULL);*/
 	ajListPush(poslist, pos);
-/*	node = ajListNodesNew(len, NULL);*/
 	ajListPush(lenlist, len);
 	sptr += posi+1;
 	if(nterm)
@@ -761,7 +760,7 @@ AjBool embPatRestrictReadEntry(EmbPPatRestrict re, AjPFile inf)
     ajuint i;
 
     line = ajStrNew();
-    while((ret=ajFileReadLine(inf,&line)))
+    while((ret=ajReadlineTrim(inf,&line)))
     {
 	p = ajStrGetPtr(line);
 	if(!(!*p || *p=='#' || *p=='!'))

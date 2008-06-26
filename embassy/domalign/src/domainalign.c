@@ -64,41 +64,41 @@ static void domainalign_ProcessStampFile(AjPStr in,
 					 AjPFile logf);
 
 static void domainalign_writelast(AjPDomain domain, ajint noden, 
-			   AjPStr *last_node, 
-			   ajint *last_nodeid);
+                                  AjPStr *last_node, 
+                                  ajint *last_nodeid);
 
 static void domainalign_writeid(AjPDomain domain, ajint noden, 
-			 AjPDir daf, AjPDir super, 
-			 AjPStr *align, AjPStr *alignc);
+                                AjPDirout daf, AjPDirout super, 
+                                AjPStr *align, AjPStr *alignc);
 
 static void domainalign_writesid(AjPDomain domain, ajint noden, 
-			  AjPStr *id);
+                                 AjPStr *id);
 
 static void domainalign_stamp(AjPDomain prevdomain, 
-		       AjPDomain domain, 
-		       AjPDir    daf, 
-		       AjPDir    super,
-		       AjPDir    singlets, 
-		       AjPStr    align, 
-		       AjPStr    alignc, 
-		       AjPStr    dom, 
-		       AjPStr    name, 
-		       AjPStr    set, 
-		       AjPStr    scan, 
-		       AjPStr    sort, 
-		       AjPStr    log, 
-		       AjPStr    out, 
-		       AjBool    keepsinglets, 
-		       ajint     moden, 
-		       ajint     noden,
-		       ajint     nset, 
-		       AjPFile   logf);
+                              AjPDomain domain, 
+                              AjPDirout daf, 
+                              AjPDirout super,
+                              AjPDirout singlets, 
+                              AjPStr    align, 
+                              AjPStr    alignc, 
+                              AjPStr    dom, 
+                              AjPStr    name, 
+                              AjPStr    set, 
+                              AjPStr    scan, 
+                              AjPStr    sort, 
+                              AjPStr    log, 
+                              AjPStr    out, 
+                              AjBool    keepsinglets, 
+                              ajint     moden, 
+                              ajint     noden,
+                              ajint     nset, 
+                              AjPFile   logf);
 
 
 static void domainalign_keepsinglets(AjPDomain domain,
 				     ajint     noden, 
-				     AjPDir    singlets, 
-				     AjPFile logf);
+				     AjPDirout singlets, 
+				     AjPFile   logf);
 
 static void domainalign_ProcessTcoffeeFile(AjPStr in, 
 					   AjPStr out, 
@@ -147,9 +147,9 @@ int main(int argc, char **argv)
 				    TCOFFEEE.                                */
     AjPDir    pdb        = NULL; /* Path of domain coordinate files (pdb 
 				    format input).                           */
-    AjPDir    daf        = NULL; /* Path of sequence alignment files for output. */
-    AjPDir    super      = NULL; /* Path of structure alignment files for output. */
-    AjPDir    singlets   = NULL; /* Path of FASTA singlet sequence files for output. */
+    AjPDirout daf        = NULL; /* Path of sequence alignment files for output. */
+    AjPDirout super      = NULL; /* Path of structure alignment files for output. */
+    AjPDirout singlets   = NULL; /* Path of FASTA singlet sequence files for output. */
     AjPStr    temp1      = NULL; /* A temporary string.                      */
 
     AjPFile   dcfin      = NULL; /* File pointer for original Escop.dat file.*/
@@ -223,7 +223,7 @@ int main(int argc, char **argv)
 
     /* Initialise random number generator for naming of temp. files. */
     ajRandomSeed();
-    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajFilenameSetTempname(&name);
 
 
     /* Create names for temp. files. */
@@ -235,7 +235,7 @@ int main(int argc, char **argv)
     ajStrAppendC(&set, ".set");
     ajStrAssignS(&scan, name);	
     ajStrAppendC(&scan, ".scan");
-    ajStrAssignS(&sort, name);	
+    ajStrAssignS(&sort, name);
     ajStrAppendC(&sort, ".sort");
     ajStrAssignS(&out, name);	
     ajStrAppendC(&out, ".out");
@@ -249,7 +249,7 @@ int main(int argc, char **argv)
     /* Open STAMP domain set file. */
     if(moden == MODE_STAMP)
     {
-	if(!(setf=ajFileNewOut(set)))
+	if(!(setf=ajFileNewOutNameS(set)))
 	    ajFatal("Could not open domain set file\n");
     }
     
@@ -320,7 +320,7 @@ int main(int argc, char **argv)
 			
 
 		    /* Open STAMP domain set file. */
-		    if(!(setf=ajFileNewOut(set)))
+		    if(!(setf=ajFileNewOutNameS(set)))
 			ajFatal("Could not open domain set file\n");
 		}
 		else
@@ -345,7 +345,7 @@ int main(int argc, char **argv)
 	    /* Open, write and close STAMP domain file. */
 	    if(moden == MODE_STAMP)
 	    {
-		if(!(domf=ajFileNewOut(dom)))
+		if(!(domf=ajFileNewOutNameS(dom)))
 		    ajFatal("Could not open domain file\n");
 		ajStrAssignS(&temp, ajDomainGetId(domain));
 		ajStrFmtLower(&temp);
@@ -376,10 +376,10 @@ int main(int argc, char **argv)
 	/* Write TCOFFEE argument. */    
 	else
 	{
-	    ajStrAppendS(&pdbnames, ajDirName(pdb));
+	    ajStrAppendS(&pdbnames, ajDirGetPath(pdb));
 	    ajStrAppendS(&pdbnames, temp);
 	    ajStrAppendC(&pdbnames, ".");
-	    ajStrAppendS(&pdbnames, ajDirExt(pdb));
+	    ajStrAppendS(&pdbnames, ajDirGetExt(pdb));
 	    ajStrAppendC(&pdbnames, " ");
 	}
 	
@@ -479,9 +479,9 @@ int main(int argc, char **argv)
     ajStrDel(&alignc);
     ajStrDel(&pdbnames);
     ajDirDel(&pdb); 
-    ajDirDel(&daf); 
-    ajDirDel(&super); 
-    ajDirDel(&singlets); 
+    ajDiroutDel(&daf); 
+    ajDiroutDel(&super); 
+    ajDiroutDel(&singlets); 
     ajStrDel(&temp); 
     ajStrDel(&temp1); 
     ajStrDel(&node[0]);
@@ -623,7 +623,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
 
 
     /* Open input and output files. */
-    if(!(inf=ajFileNewIn(in)))
+    if(!(inf=ajFileNewInNameS(in)))
 	ajFatal("Could not open input file in domainalign_ProcessStampFile");
     
 
@@ -631,7 +631,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
 
     /* Start of code for reading input file. 
        Ignore everything up to first line beginning with 'Number'. */
-    while((ajFileReadLine(inf,&line)))
+    while((ajReadlineTrim(inf,&line)))
     {
 	/* ajFileReadLine will trim the tailing \n. */
 	if((ajStrGetCharPos(line, 1)=='\0'))
@@ -647,7 +647,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
     if(ok)
     {
 	/* Write DOMAIN classification records to file. */
-	if(!(outf=ajFileNewOut(out)))
+	if(!(outf=ajFileNewOutNameS(out)))
 	 ajFatal("Could not open output file in domainalign_ProcessStampFile");
 
 	
@@ -709,7 +709,7 @@ static void domainalign_ProcessStampFile(AjPStr in,
 
 
 
-	while((ajFileReadLine(inf,&line)))
+	while((ajReadlineTrim(inf,&line)))
 	{
 	    /* Increment counter for block of file. */
 	    if((ajStrGetCharPos(line, 1)=='\0'))
@@ -876,8 +876,8 @@ static void domainalign_writelast(AjPDomain domain,
 **
 ** @param [r] domain [AjPDomain]   Domain.
 ** @param [r] noden  [ajint]       Node number.
-** @param [r] daf    [AjPDir]      Domain alignment files.
-** @param [r] super  [AjPDir]      Structural superimposition files.
+** @param [r] daf    [AjPDirout]   Domain alignment files.
+** @param [r] super  [AjPDirout]   Structural superimposition files.
 ** @param [r] align  [AjPStr *]    Align.
 ** @param [r] alignc [AjPStr *]    Alignc.
 ** 
@@ -887,8 +887,8 @@ static void domainalign_writelast(AjPDomain domain,
 ****************************************************************************/
 static void domainalign_writeid(AjPDomain domain, 
 				ajint noden, 
-				AjPDir daf, 
-				AjPDir super, 
+				AjPDirout daf, 
+				AjPDirout super, 
 				AjPStr *align, 
 				AjPStr *alignc) 
 {
@@ -916,15 +916,16 @@ static void domainalign_writeid(AjPDomain domain,
 	ajStrFromInt(&temp, domain->Cath->Family_Id);
 
     ajStrAssignS(align, temp);	
-    ajStrInsertS(align, 0, ajDirName(daf));	
+    ajStrInsertS(align, 0, ajDiroutGetPath(daf));	
     ajStrAppendC(align, ".");
-    ajStrAppendS(align, ajDirExt(daf));
+    ajStrAppendS(align, ajDiroutGetExt(daf));
 
     ajStrAssignS(alignc, temp);	
-    ajStrInsertS(alignc, 0, ajDirName(super));	
+    ajStrInsertS(alignc, 0, ajDiroutGetPath(super));	
     ajStrAppendC(alignc, ".");
-    ajStrAppendS(alignc, ajDirExt(super));
+    ajStrAppendS(alignc, ajDiroutGetExt(super));
 
+    ajDebug("daf file '%S' super file '%S'\n", *align, *alignc);
     ajStrDel(&temp);
     return;
 }
@@ -980,9 +981,9 @@ static 	void domainalign_writesid(AjPDomain domain,
 **
 ** @param [r] prevdomain [AjPDomain] Previous domain.
 ** @param [r] domain [AjPDomain] This domain.
-** @param [r] daf [AjPDir] Domain alignment files.
-** @param [r] super [AjPDir] Superimposition files.
-** @param [r] singlets [AjPDir]  Singlet files.
+** @param [r] daf [AjPDirout] Domain alignment files.
+** @param [r] super [AjPDirout] Superimposition files.
+** @param [r] singlets [AjPDirout]  Singlet files.
 ** @param [r] align [AjPStr]   Align.
 ** @param [r] alignc [AjPStr] Alignc.
 ** @param [r] dom [AjPStr]   Dom.
@@ -1004,9 +1005,9 @@ static 	void domainalign_writesid(AjPDomain domain,
 ****************************************************************************/
 static void domainalign_stamp(AjPDomain prevdomain,
 			      AjPDomain domain, 
-			      AjPDir    daf, 
-			      AjPDir    super,
-			      AjPDir    singlets, 
+			      AjPDirout daf, 
+			      AjPDirout super,
+			      AjPDirout singlets, 
 			      AjPStr    align, 
 			      AjPStr    alignc, 
 			      AjPStr    dom, 
@@ -1065,10 +1066,10 @@ static void domainalign_stamp(AjPDomain prevdomain,
     
     
     /* Count the number of clusters in the log file. */
-    if(!(clusterf=ajFileNewIn(log)))
+    if(!(clusterf=ajFileNewInNameS(log)))
 	ajFatal("Could not open log file '%S'\n", log);
     ncluster=0;
-    while(ajFileReadLine(clusterf,&line))
+    while(ajReadlineTrim(clusterf,&line))
 	if(ajRegExec(rexp,line))
 	    ncluster++;
     ajFileClose(&clusterf);	
@@ -1202,9 +1203,9 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in,
 
 
     /* Open input and output files. */
-    if(!(inf=ajFileNewIn(in)))
+    if(!(inf=ajFileNewInNameS(in)))
         ajFatal("Could not open input file in domainalign_ProcessTcoffeeFile");
-    if(!(outf=ajFileNewOut(align)))
+    if(!(outf=ajFileNewOutNameS(align)))
         ajFatal("Could not open output file in domainalign_ProcessTcoffeeFile");
     
 
@@ -1261,14 +1262,14 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in,
     
     /* Start of code for reading input file. */
     /*Ignore everything up to first line beginning with 'Number'*/
-    while((ajFileReadLine(inf,&line)))
+    while((ajReadlineTrim(inf,&line)))
         /* ajFileReadLine will trim the tailing \n. */
         if((ajStrGetCharPos(line, 1)=='\0'))
             break;
 
     
     /* Read rest of input file. */
-    while((ajFileReadLine(inf,&line)))
+    while((ajReadlineTrim(inf,&line)))
     {
       if((ajStrGetCharPos(line, 1)=='\0'))
         continue; 
@@ -1321,7 +1322,7 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in,
 **
 ** @param [r] domain [AjPDomain] 
 ** @param [r] noden [ajint] 
-** @param [r] singlets [AjPDir] 
+** @param [r] singlets [AjPDirout] 
 ** @param [r] logf [AjPFile] 
 **
 ** @return [void] True on success
@@ -1329,7 +1330,7 @@ static void domainalign_ProcessTcoffeeFile(AjPStr in,
 ****************************************************************************/
 static void domainalign_keepsinglets(AjPDomain domain,
 				     ajint     noden, 
-				     AjPDir    singlets, 	
+				     AjPDirout singlets, 	
 				     AjPFile   logf)
 {
     AjPStr      temp2     = NULL;   /* A temporary string. */
@@ -1387,7 +1388,7 @@ static void domainalign_keepsinglets(AjPDomain domain,
 
 	}
 
-	singf = ajFileNewOutDir(singlets, temp2);
+	singf = ajFileNewOutNameDirS(temp2, singlets);
 	embHitlistWriteFasta(singf, hitlist);
 	/* ajFmtPrintF(singf, ">%S\n%S\n", temp2, ajDomainGetSeqPdb(domain)); */
 	ajFileClose(&singf);

@@ -12,7 +12,7 @@
  * SRE, Thu Dec 18 16:05:29 1997 [St. Louis]
  * 
  * main() for aligning a set of sequences to an HMM.
- * RCS $Id: ohmmalign.c,v 1.5 2008/06/10 12:51:15 rice Exp $
+ * RCS $Id: ohmmalign.c,v 1.6 2008/06/26 08:40:56 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */ 
 
@@ -100,11 +100,11 @@ int main(int argc, char **argv)
 
   ajmapali = ajAcdGetInfile("mapalifile");
   if (ajmapali)
-      mapali = ajCharNewS(ajFileGetName(ajmapali));
+      mapali = ajCharNewS(ajFileGetNameS(ajmapali));
   ajFileClose(&ajmapali);
   ajwithali = ajAcdGetInfile("withalifile");
   if (ajwithali)
-      withali = ajCharNewS(ajFileGetName(ajwithali));
+      withali = ajCharNewS(ajFileGetNameS(ajwithali));
   ajFileClose(&ajwithali);
 
   be_quiet=TRUE;
@@ -112,13 +112,13 @@ int main(int argc, char **argv)
 
 
   outf = ajAcdGetOutfile("outfile");
-  outfname = ajStrNewC((char *)ajFileName(outf));
+  outfname = ajStrNewC((char *)ajFileGetNameC(outf));
   if(*ajStrGetPtr(outfname)>31)
       ajFileClose(&outf);
   outfile = ajStrGetPtr(outfname);
 
   inf = ajAcdGetInfile("hmmfile");
-  infname = ajStrNewC((char *)ajFileName(inf));
+  infname = ajStrNewC((char *)ajFileGetNameC(inf));
   ajFileClose(&inf);
   hmmfile = ajStrGetPtr(infname);
 

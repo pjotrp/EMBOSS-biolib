@@ -488,7 +488,7 @@ void getoptions(void)
   /* interactively set options */
   short i, inseed0=0,scanned;
   Char ch;
-  char line[128];
+  char line[256];
    char rest[128];
   boolean done, done1;
   double probsum;

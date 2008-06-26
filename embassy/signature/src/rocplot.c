@@ -142,7 +142,7 @@ typedef struct AjSXYdata
 ** PROTOTYPES  
 **
 ******************************************************************************/
-static AjBool rocplot_write_summary(AjPDir outdir, 
+static AjBool rocplot_write_summary(AjPDirout outdir, 
 				    AjPFile outf,
 				    ajint mode, 
 				    ajint multimode, 
@@ -153,7 +153,7 @@ static AjBool rocplot_write_summary(AjPDir outdir,
 				    AjPFloat rocn, 
 				    AjPInt nrelatives);
 
-static AjBool   rocplot_write_barchart(AjPDir outdir,
+static AjBool   rocplot_write_barchart(AjPDirout outdir,
 				       AjPStr fname, 
 				       AjPStr title, 
 				       AjPStr xlabel,
@@ -164,7 +164,7 @@ static AjBool   rocplot_write_barchart(AjPDir outdir,
 				       AjPFloat rocn, 
 				       ajint numfiles);
 
-static AjBool   rocplot_write_classplot(AjPDir outdir,
+static AjBool   rocplot_write_classplot(AjPDirout outdir,
 					AjPStr fname,
 					AjPStr title, 
 					AjPStr xlabel,
@@ -176,7 +176,7 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,
 					AjPFloat3d classy,
 					ajint npoints);
 
-static AjBool   rocplot_write_rocplot(AjPDir outdir,
+static AjBool   rocplot_write_rocplot(AjPDirout outdir,
 				      AjPStr fname, 
 				      AjPStr title, 
 				      AjPStr xlabel,
@@ -266,7 +266,7 @@ int main(int argc, char **argv)
 
     /* For ACD data */
     AjPList   hitsfiles  = NULL;    /* Directory of hits files from ACD. */
-    AjPDir    outdir     = NULL;    /* Directory for output files.       */
+    AjPDirout outdir     = NULL;    /* Directory for output files.       */
     AjPStr   *mode       = NULL;    /* 
 				     ** Mode of operation from ACD: 
 				     ** 1: Single input file mode.
@@ -770,7 +770,7 @@ int main(int argc, char **argv)
     ajStrDel(&barylabel);
 
     /* For output directory */
-    ajDirDel(&outdir);
+    ajDiroutDel(&outdir);
     
     
     /* DIAGNOSTICS */
@@ -914,12 +914,12 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 	
 	
 	/* Open input file and check format of first line */
-	inf      = ajFileNewIn(hitsfile);
+	inf      = ajFileNewInNameS(hitsfile);
 	if(!inf)
 	    ajFatal("Cannot open file %S",hitsfile);
 
 	/* Disregard comments lines beginning with '#' */
-	while((ret=ajFileReadLine(inf,&hitsline)))
+	while((ret=ajReadlineTrim(inf,&hitsline)))
 	{
 	    if(ajStrGetCharFirst(hitsline)!='#')
 		break;
@@ -950,7 +950,7 @@ static AjBool rocplot_read_hits_files(int mode, int multimode, int datamode,
 	/* Read hits from file and create list */
 	nfalse   = 0;
 	ntrue    = 0;
-	while(ajFileReadLine(inf,&hitsline))
+	while(ajReadlineTrim(inf,&hitsline))
 	{
 	    if(ajStrGetCharFirst(hitsline)=='#')
 		continue;
@@ -1635,13 +1635,13 @@ static AjBool rocplot_count_class(AjPHitdata tmphit, ajint hitcnt,
 ** @param [r] rocy    [AjPFloat2d]  Data points (y) for each data series
 ** @param [r] rocn    [AjPFloat]    ROCn value for each dataset
 ** @param [r] hitcnt  [AjPInt]      No. of points in data series
-** @param [r] outdir  [AjPDir]      Directory for output files
+** @param [r] outdir  [AjPDirout]      Directory for output files
 ** 
 ** @return [AjBool] True if file was succesfully written.
 ** @@
 **
 ******************************************************************************/
-static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname,
+static AjBool   rocplot_write_rocplot(AjPDirout outdir,AjPStr fname,
 				      AjPStr title, 
 				      AjPStr xlabel, AjPStr ylabel, 
 				      ajint nseries, AjPStr *legend, 
@@ -1679,8 +1679,9 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname,
     /* Create gnuplot data files */
     for(x=0; x<nseries; x++)
     {
-	ajFmtPrintS(&outfname, "%S%S_dat%d", ajDirName(outdir), fname, x);
-	if(!(outf = ajFileNewOut(outfname)))
+	ajFmtPrintS(&outfname, "%S%S_dat%d",
+                    ajDiroutGetPath(outdir), fname, x);
+	if(!(outf = ajFileNewOutNameS(outfname)))
 	    ajFatal("Could not open gnuplot data file (%S) for writing in "
 		    "rocplot_write_rocplot", outfname);
 	ajFmtPrintF(outf, "# GNUPLOT data file for rocplot, series %d\n", x);
@@ -1692,11 +1693,11 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname,
     }
 
     /* Create gnuplot driver file */
-    ajStrAssignS(&outfname, ajDirName(outdir));
+    ajStrAssignS(&outfname, ajDiroutGetPath(outdir));
     ajStrAppendS(&outfname, fname);
 
-/*    if(!(outf = ajFileNewOut(fname))) */
-    if(!(outf = ajFileNewOut(outfname)))
+/*    if(!(outf = ajFileNewOutNameS(fname))) */
+    if(!(outf = ajFileNewOutNameS(outfname)))
 	ajFatal("Could not open gnuplot driver file (%S) for writing in "
 		"rocplot_write_rocplot", fname);
     ajFmtPrintF(outf, "# GNUPLOT driver file for roc plot\n");
@@ -1786,13 +1787,13 @@ static AjBool   rocplot_write_rocplot(AjPDir outdir,AjPStr fname,
 ** @param [r] x       [AjPFloat2d]  Data points (x) for each data series
 ** @param [r] y       [AjPFloat3d]  Data points (y) for each data series
 ** @param [r] npoints [ajint]       No. of points in data series
-** @param [r] outdir  [AjPDir]      Directory for output files
+** @param [r] outdir  [AjPDirout]      Directory for output files
 ** 
 ** @return [AjBool] True if file was succesfully written.
 ** @@
 **
 *****************************************************************************/
-static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname, 
+static AjBool   rocplot_write_classplot(AjPDirout outdir,AjPStr fname, 
 					AjPStr title, 
 					AjPStr xlabel, AjPStr ylabel, 
 					ajint nseries, ajint filen, 
@@ -1828,8 +1829,9 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname,
     {
 	if(ajFloat3dGet(classy, filen, x, npoints-1)!=0.0)
 	{
-	    ajFmtPrintS(&outfname, "%S%S_dat%d", ajDirName(outdir), fname, x);
-	    if(!(outf = ajFileNewOut(outfname)))
+	    ajFmtPrintS(&outfname, "%S%S_dat%d",
+                        ajDiroutGetPath(outdir), fname, x);
+	    if(!(outf = ajFileNewOutNameS(outfname)))
 		ajFatal("Could not open gnuplot data file (%S) for writing "
 			"in rocplot_write_classplot", outfname);	   
 	    ajFmtPrintF(outf, "# GNUPLOT data file for %s hits, series %d\n",
@@ -1843,10 +1845,10 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname,
     }
 
     /* Create gnuplot driver file */
-    ajStrAssignS(&outfname, ajDirName(outdir));
+    ajStrAssignS(&outfname, ajDiroutGetPath(outdir));
     ajStrAppendS(&outfname, fname);
 
-    if(!(outf = ajFileNewOut(outfname)))
+    if(!(outf = ajFileNewOutNameS(outfname)))
 	ajFatal("Could not open gnuplot driver file (%S) for writing in "
 		"rocplot_write_classplot", fname);		
     ajFmtPrintF(outf, "# GNUPLOT driver file for classification plot\n");
@@ -1926,13 +1928,13 @@ static AjBool   rocplot_write_classplot(AjPDir outdir,AjPStr fname,
 ** @param [r] binsize   [float]    Bin size
 ** @param [r] rocn      [AjPFloat] ROCn values
 ** @param [r] numfiles  [ajint]    No. of input files
-** @param [r] outdir    [AjPDir]   Directory for output files
+** @param [r] outdir    [AjPDirout]   Directory for output files
 ** 
 ** @return [AjBool] True if file was succesfully written.
 ** @@
 **
 ******************************************************************************/
-static AjBool   rocplot_write_barchart(AjPDir outdir,AjPStr fname, 
+static AjBool   rocplot_write_barchart(AjPDirout outdir,AjPStr fname, 
 				       AjPStr title, 
 				       AjPStr xlabel, AjPStr ylabel, 
 				       ajint nbins, float binstart, 
@@ -2004,8 +2006,9 @@ static AjBool   rocplot_write_barchart(AjPDir outdir,AjPStr fname,
 
     
     /* Create gnuplot data files */
-    ajFmtPrintS(&outfname, "%S%S_dat", ajDirName(outdir), fname);
-    if(!(outf = ajFileNewOut(outfname)))
+    ajFmtPrintS(&outfname, "%S%S_dat",
+                ajDiroutGetPath(outdir), fname);
+    if(!(outf = ajFileNewOutNameS(outfname)))
 	ajFatal("Could not open gnuplot data file (%S) for writing in "
 		"rocplot_write_barchart", outfname);	
     ajFmtPrintF(outf, "# GNUPLOT data file for barchart\n");
@@ -2018,10 +2021,10 @@ static AjBool   rocplot_write_barchart(AjPDir outdir,AjPStr fname,
 
     
     /* Create gnuplot driver file */
-    ajStrAssignS(&outfname, ajDirName(outdir));
+    ajStrAssignS(&outfname, ajDiroutGetPath(outdir));
     ajStrAppendS(&outfname, fname);
         
-    if(!(outf = ajFileNewOut(outfname)))
+    if(!(outf = ajFileNewOutNameS(outfname)))
 	ajFatal("Could not open gnuplot driver file (%S) for writing in "
 		"rocplot_write_barchart", fname);
     ajFmtPrintF(outf, "set title \"%S\"\n", title);
@@ -2070,13 +2073,14 @@ static AjBool   rocplot_write_barchart(AjPDir outdir,AjPStr fname,
 ** @param [r] roc        [ajint]     ROC number
 ** @param [r] rocn       [AjPFloat]  ROCn value for each dataset
 ** @param [r] nrelatives [AjPInt]    Number of known relatives for dataset
-** @param [r] outdir     [AjPDir]    Directory for output files
+** @param [r] outdir     [AjPDirout]    Directory for output files
 ** 
 ** @return [AjBool] True if file was succesfully written.
 ** @@
 **
 ******************************************************************************/
-static AjBool rocplot_write_summary(AjPDir outdir, AjPFile outf, ajint mode, 
+static AjBool rocplot_write_summary(AjPDirout outdir,
+                                    AjPFile outf, ajint mode, 
 				    ajint multimode, ajint datamode, 
 				    ajint numfiles, AjPStr *hitsnames, 
 				    ajint roc, AjPFloat rocn, 

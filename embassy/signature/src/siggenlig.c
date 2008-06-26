@@ -91,7 +91,7 @@ int main(ajint argc, char **argv)
     ajint   patchsize    = 0;     /* Minimum patch size.                     */
     ajint   gapdistance  = 0;     /* Maximum gap distance.                   */
     ajint   wsiz         = 0;     /* Window size.                            */
-    AjPDir  sigdir       = NULL;  /* Directory of signature files (output).  */
+    AjPDirout sigdir     = NULL;  /* Directory of signature files (output).  */
     
     AjPCmap cmap         = NULL;  /* Contact map for entry from CON
 				     file (input)*/
@@ -134,7 +134,7 @@ int main(ajint argc, char **argv)
     gapdistance = ajAcdGetInt("gapdistance");
     wsiz        = ajAcdGetInt("wsiz");
     sigdir      = ajAcdGetOutdir("sigoutdir");
-    logf      = ajAcdGetOutfile("logfile");
+    logf        = ajAcdGetOutfile("logfile");
     
     
     
@@ -254,7 +254,7 @@ int main(ajint argc, char **argv)
 		ajStrAppendK(&sigfname, '#');
 	    ajStrAppendC(&sigfname, ".sig");
 	    
-	    sigoutf = ajFileNewOutDir(sigdir, sigfname);
+	    sigoutf = ajFileNewOutNameDirS(sigfname, sigdir);
 	    embSignatureWrite(sigoutf, sig);
 	    embSignatureDel(&sig);
 	    ajFileClose(&sigoutf);
@@ -422,7 +422,7 @@ int main(ajint argc, char **argv)
 		    ajStrAppendK(&sigfname, '#');
 		ajStrAppendC(&sigfname, ".sig");
 
-		sigoutf = ajFileNewOutDir(sigdir, sigfname);
+		sigoutf = ajFileNewOutNameDirS(sigfname, sigdir);
 
 		embSignatureWrite(sigoutf, sig);
 		embSignatureDel(&sig);
@@ -446,7 +446,7 @@ int main(ajint argc, char **argv)
     AJFREE(type);
     AJFREE(envdef);
     ajListIterDel(&iter);
-    ajDirDel(&sigdir);
+    ajDiroutDel(&sigdir);
     ajStrDel(&sigfname);
     ajStrDel(&OEnv);
     
@@ -464,11 +464,11 @@ AjPPdb siggenlig_read_ccf(AjPCmap cmap,  AjPDir ccfd,  AjPDir ccfp)
     AjPFile ccffptr      = NULL;  /* CCF file pointer.  */
 
     if(MAJSTRGETLEN(cmap->Domid))
-	ccffptr = ajFileNewDirF(ccfd, cmap->Domid);
+	ccffptr = ajFileNewListinDirPre(ccfd, cmap->Domid);
     else if((!MAJSTRGETLEN(cmap->Id)))
 	ajFatal("No Id!");
     else
-	ccffptr = ajFileNewDirF(ccfp, cmap->Id);
+	ccffptr = ajFileNewListinDirPre(ccfp, cmap->Id);
     
     if(!ccffptr)
     {

@@ -801,10 +801,9 @@ static void alignWriteMark(AjPAlign thys, ajint iali, ajint markx)
 			ajSeqGetNameC(data->Seq[0]), data->Len[0],
 			ajSeqGetNameC(data->Seq[1]), data->Len[1]);
 	ajFmtPrintF(outf,"; mp_name: EMBOSS\n");
-	ajNamRootVersion(&tmpstr);
-	ajFmtPrintF(outf,"; mp_ver: %S\n", tmpstr);
+	ajFmtPrintF(outf,"; mp_ver: %S\n", ajNamValueVersion());
 	ajFmtPrintF(outf,"; pg_name: %S\n", ajAcdGetProgram());
-	ajFmtPrintF(outf,"; pg_ver: %S\n", tmpstr);
+	ajFmtPrintF(outf,"; pg_ver: %S\n", ajNamValueVersion());
 	ajFmtPrintF(outf,"; pg_matrix: %S\n", thys->Matrix);
 	ajFmtPrintF(outf,"; pg_gap-pen: -%S -%S\n",
 		    thys->GapPen, thys->ExtPen);
@@ -1975,7 +1974,7 @@ AjBool ajAlignOpen(AjPAlign thys, const AjPStr name)
     if(!ajAlignValid(thys))
 	return ajFalse;
 
-    thys->File = ajFileNewOut(name);
+    thys->File = ajFileNewOutNameS(name);
     if(thys->File)
 	return ajTrue;
 
@@ -2068,7 +2067,7 @@ const char * ajAlignGetFilename(const AjPAlign thys)
     if(!thys->File)
 	return NULL;
     
-    return ajFileName(thys->File);
+    return ajFileGetNameC(thys->File);
 }
 
 

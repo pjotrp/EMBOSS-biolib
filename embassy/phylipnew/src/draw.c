@@ -1325,18 +1325,18 @@ void loadfont(short *font, char *application)
       intexp = ajRegCompC("[0-9-]+");
   i=0;
   fontfilename = ajAcdGetString("fontfile");
-  if(ajNamRootInstall(&installdir))
+  ajStrAssignS(&installdir, ajNamValueInstalldir());
   {
       ajStrAppendC(&installdir, "/share/PHYLIPNEW/data/");
-      ajFileSetDir(&fontfilename, installdir);
+      ajFilenameReplacePathS(&fontfilename, installdir);
   }
 
-  fontfile = ajFileNewIn(fontfilename);
+  fontfile = ajFileNewInNameS(fontfilename);
   if(!fontfile)
       return;
 
-  ajFileGetsTrim(fontfile, &rdline);
-  while (!((!ajStrGetLen(rdline) || ajFileEof(fontfile))
+  ajReadlineTrim(fontfile, &rdline);
+  while (!((!ajStrGetLen(rdline) || ajFileIsEof(fontfile))
 	   || ch == ' ')) {
     charstart = i + 1;
     ajDebug("Next line charstart:%d '%S'\n", charstart, rdline);
@@ -1349,7 +1349,7 @@ void loadfont(short *font, char *application)
     do {
       if ((i - charstart - 3) % 10 == 0)
       {
-	  ajFileGetsTrim(fontfile, &rdline);
+	  ajReadlineTrim(fontfile, &rdline);
 	  ajDebug("More on next line at i: %d charstart: %d '%S'\n",
 		  i, charstart, rdline);
       }	      
@@ -1366,9 +1366,9 @@ void loadfont(short *font, char *application)
     ajDebug("Done at [%d] '%d'\n", (i-1), font[i-1]);
     font[charstart - 1] = i + 1;
     ajDebug("last [%d] '%d'\n", (charstart-1), font[charstart-1]);
-    ajFileGetsTrim(fontfile, &rdline);
+    ajReadlineTrim(fontfile, &rdline);
     ajDebug("Start next line at font[%d-1] %d ch:'%c' EOF: %B\n",
-	   i, font[i-1], ch, ajFileEof(fontfile));
+	   i, font[i-1], ch, ajFileIsEof(fontfile));
   }
   font[charstart - 1] = 0;
   ajFileClose(&fontfile);

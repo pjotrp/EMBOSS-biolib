@@ -27,6 +27,8 @@ extern "C"
 #include "ajstr.h"
 #include "ajtime.h"
 #include "ajfile.h"
+#include "ajfiledata.h"
+#include "ajfileio.h"
 #include "ajlist.h"
 
 #include "ajtable.h"

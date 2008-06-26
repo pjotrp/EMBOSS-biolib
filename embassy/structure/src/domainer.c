@@ -63,8 +63,8 @@ int main(int argc, char **argv)
     AjPStr   msg           =NULL;	/* Error message */
     AjPStr   temp          =NULL;	/* Error message */
 
-    AjPDir   cpdbscop_dir  =NULL;
-    AjPDir   pdbscop_dir   =NULL;
+    AjPDirout cpdbscop_dir =NULL;
+    AjPDirout pdbscop_dir  =NULL;
     AjPDir   cpdb_dir      =NULL;
     AjPFile  scop_inf      =NULL;
     AjPFile  cpdb_inf      =NULL;
@@ -115,12 +115,12 @@ int main(int argc, char **argv)
 	/* Read clean coordinate file*/
 	ajStrAssignRef(&scop_name, scop->Pdb);
 	ajStrFmtLower(&scop_name);
-	if(!(cpdb_inf=ajFileNewDirF(cpdb_dir, scop_name)))
+	if(!(cpdb_inf=ajFileNewListinDirPre(cpdb_dir, scop_name)))
 	{
-	    ajStrAssignS(&cpdb_name, ajDirName(cpdb_dir));
+	    ajStrAssignS(&cpdb_name, ajDirGetPath(cpdb_dir));
 	    ajStrAppendS(&cpdb_name, scop_name);
 	    ajStrAppendC(&cpdb_name, ".");
-	    ajStrAppendS(&cpdb_name, ajDirExt(cpdb_dir));
+	    ajStrAppendS(&cpdb_name, ajDirGetExt(cpdb_dir));
 
 	    ajFmtPrintS(&msg, "Could not open for reading cpdb file %S", 
 			cpdb_name);
@@ -156,14 +156,14 @@ int main(int argc, char **argv)
 	ajStrFmtLower(&scop_name);
 
 
-	ajStrAssignS(&pdbscop_name, ajDirName(pdbscop_dir));
+	ajStrAssignS(&pdbscop_name, ajDiroutGetPath(pdbscop_dir));
 	ajStrAppendS(&pdbscop_name, scop_name);
 	ajStrAppendC(&pdbscop_name, ".");
-	ajStrAppendS(&pdbscop_name, ajDirExt(pdbscop_dir));
+	ajStrAppendS(&pdbscop_name, ajDiroutGetExt(pdbscop_dir));
 
 
 
-	if(!(pdbscop_outf=ajFileNewOutDir(pdbscop_dir,scop_name)))
+	if(!(pdbscop_outf=ajFileNewOutNameDirS(scop_name,pdbscop_dir)))
 	{
 	    ajFmtPrintS(&msg, "Could not open for writing pdbscop file %S", 
 			pdbscop_name);
@@ -182,13 +182,13 @@ int main(int argc, char **argv)
 	ajStrAssignS(&scop_name, scop->Entry);
 	ajStrFmtLower(&scop_name);
 
-	ajStrAssignS(&cpdbscop_name, ajDirName(cpdbscop_dir));
+	ajStrAssignS(&cpdbscop_name, ajDiroutGetPath(cpdbscop_dir));
 	ajStrAppendS(&cpdbscop_name, scop_name);
 	ajStrAppendC(&cpdbscop_name, ".");
-	ajStrAppendS(&cpdbscop_name, ajDirExt(cpdbscop_dir));
+	ajStrAppendS(&cpdbscop_name, ajDiroutGetExt(cpdbscop_dir));
 
 
-	if(!(cpdbscop_outf=ajFileNewOutDir(cpdbscop_dir, scop_name)))
+	if(!(cpdbscop_outf=ajFileNewOutNameDirS(scop_name, cpdbscop_dir)))
 	{
 	    ajFmtPrintS(&msg, "Could not open for writing cpdbscop file %S", 
 			cpdbscop_name);

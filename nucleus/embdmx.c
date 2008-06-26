@@ -1968,7 +1968,7 @@ AjPList  embDmxScophitReadAllFasta(AjPFile inf)
     type     = ajStrNew();
     
 
-    while((ok = ajFileReadLine(inf,&line)))
+    while((ok = ajReadlineTrim(inf,&line)))
     {
 	if(ajStrPrefixC(line,">"))
 	{

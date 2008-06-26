@@ -278,7 +278,7 @@ static AjBool tcode_readdata(AjPTestcode *table1, AjPFile datafile)
 
     while(val && ok)
     {
-	ok = ajFileReadLine(datafile,&line);
+	ok = ajReadlineTrim(datafile,&line);
 	c  = *ajStrGetPtr(line);
 
 	if(c=='#' || c=='\n')
@@ -293,7 +293,7 @@ static AjBool tcode_readdata(AjPTestcode *table1, AjPFile datafile)
 
     while(val && ok)
     {
-	ok = ajFileReadLine(datafile,&line);
+	ok = ajReadlineTrim(datafile,&line);
 	c = *ajStrGetPtr(line);
 
 	if(c=='#' || c=='\n')
@@ -307,7 +307,7 @@ static AjBool tcode_readdata(AjPTestcode *table1, AjPFile datafile)
     ok = ajTrue;
     while(ok && i != table->npositions)
     {
-	ok = ajFileReadLine(datafile,&line);
+	ok = ajReadlineTrim(datafile,&line);
 	c = *ajStrGetPtr(line);
 
 	if(c=='#' || c=='\n')
@@ -327,7 +327,7 @@ static AjBool tcode_readdata(AjPTestcode *table1, AjPFile datafile)
     ok = ajTrue;
     while(ok && i != table->ncontent)
     {
-	ok = ajFileReadLine(datafile,&line);
+	ok = ajReadlineTrim(datafile,&line);
 	c = *ajStrGetPtr(line);
 
 	if(c=='#' || c=='\n')
@@ -347,7 +347,7 @@ static AjBool tcode_readdata(AjPTestcode *table1, AjPFile datafile)
     ok = ajTrue;
     while(ok && i != 4)
     {
-	ok = ajFileReadLine(datafile,&line);
+	ok = ajReadlineTrim(datafile,&line);
 	c = *ajStrGetPtr(line);
 
 	if(c=='#' || c=='\n')
@@ -363,7 +363,7 @@ static AjBool tcode_readdata(AjPTestcode *table1, AjPFile datafile)
     ok = ajTrue;
     while(ok && i != 4)
     {
-	ok = ajFileReadLine(datafile,&line);
+	ok = ajReadlineTrim(datafile,&line);
 	c = *ajStrGetPtr(line);
 
 	if(c=='#' || c=='\n')

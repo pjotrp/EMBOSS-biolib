@@ -63,10 +63,10 @@ PriorLib *read_PriorLib(char *plib_name, double desired_beta)
 	  printf("Can't find prior library %s\n", plib_name);
 	  exit(1);
 	}*/
-	ajFileDataNewC(plib_name,&inf);
+	inf = ajDatafileNewInNameC(plib_name);
 	if(!inf)
 	  ajFatal("Can't find prior library %s\n", plib_name);
-	fp = ajFileFp(inf);
+	fp = ajFileGetFileptr(inf);
 	    
 
 	token = "Alphabet="; line++;
@@ -306,4 +306,4 @@ static double lgam(double x)
   }
 }
 
-/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/prior.c,v 1.1 2000/11/05 21:47:55 ajb Exp $ */
+/* $Header: /home/repository/emboss/emboss/emboss/embassy/meme/src/prior.c,v 1.2 2008/06/26 08:40:56 rice Exp $ */

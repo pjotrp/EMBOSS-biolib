@@ -216,7 +216,7 @@ int main(ajint argc, char **argv)
 	/* Read ligand list file */
 	if(modeli == 2)
 	{
-	    while(ajFileReadLine(liginfile,&line))
+	    while(ajReadlineTrim(liginfile,&line))
 	    {
 		lig_tmp = ajStrNew();
 		if((ajFmtScanS(line, "%S", lig_tmp) != 1))
@@ -279,7 +279,7 @@ int main(ajint argc, char **argv)
 	/* PDB code */
 	if(MAJSTRGETLEN(IdName)==4)
 	{
-	    if((!(DCorFptr = ajFileNewDirF(ccfpdir, IdName))))
+	    if((!(DCorFptr = ajFileNewListinDirPre(ccfpdir, IdName))))
 	    {
 		notopened++;
 		ajFmtPrintS(&msg, "Could not open for reading %S",
@@ -294,7 +294,7 @@ int main(ajint argc, char **argv)
 	/* Domain code */
 	if(MAJSTRGETLEN(IdName)==7)
 	{
-	    if((!(DCorFptr = ajFileNewDirF(ccfddir, IdName))))
+	    if((!(DCorFptr = ajFileNewListinDirPre(ccfddir, IdName))))
 	    {
 		notopened++;
 		ajFmtPrintS(&msg, "Could not open for reading %S",

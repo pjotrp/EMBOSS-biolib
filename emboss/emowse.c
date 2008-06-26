@@ -256,7 +256,7 @@ static void emowse_read_freqs(AjPFile finf, AjPDouble *freqs)
     c   = 0;
     str = ajStrNew();
 
-    while(ajFileReadLine(finf,&str))
+    while(ajReadlineTrim(finf,&str))
     {
        	if(sscanf(ajStrGetPtr(str),"%lf",&f)==1)
 	    ajDoublePut(freqs,c,f);
@@ -322,7 +322,7 @@ static ajint emowse_read_data(AjPFile inf, EmbPMdata** data)
     str = ajStrNew();
     l   = ajListNew();
 
-    while(ajFileReadLine(inf,&str))
+    while(ajReadlineTrim(inf,&str))
 	if(sscanf(ajStrGetPtr(str),"%lf",&v)==1)
 	{
 	    AJNEW0(ptr);

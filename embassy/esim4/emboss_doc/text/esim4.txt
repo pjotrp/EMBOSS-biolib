@@ -521,10 +521,10 @@ Known bugs
 
 See also
 
-   Program name                      Description
-   est2genome   Align EST and genomic DNA sequences
-   needle       Needleman-Wunsch global alignment
-   stretcher    Finds the best global alignment between two sequences
+   Program name                       Description
+   est2genome   Align EST sequences to genomic DNA sequence
+   needle       Needleman-Wunsch global alignment of two sequences
+   stretcher    Needleman-Wunsch rapid global alignment of two sequences
 
 Author(s)
 

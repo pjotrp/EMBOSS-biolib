@@ -507,7 +507,7 @@ int main(int argc, char **argv)
             /* mispriming library may not have been specified */
             if(mispriming_library)
             eprimer3_send_stringC(stream, "PRIMER_MISPRIMING_LIBRARY",
-                                  ajFileName(mispriming_library));
+                                  ajFileGetNameC(mispriming_library));
     
             eprimer3_send_float(stream, "PRIMER_MAX_MISPRIMING", 
                                 max_mispriming);
@@ -582,7 +582,7 @@ int main(int argc, char **argv)
             if(internal_oligo_mishyb_library)
                 eprimer3_send_stringC(stream,
                     "PRIMER_INTERNAL_OLIGO_MISHYB_LIBRARY",
-                    ajFileName(internal_oligo_mishyb_library));
+                    ajFileGetNameC(internal_oligo_mishyb_library));
 
             eprimer3_send_float(stream, "PRIMER_INTERNAL_OLIGO_MAX_MISHYB",
                     internal_oligo_max_mishyb);

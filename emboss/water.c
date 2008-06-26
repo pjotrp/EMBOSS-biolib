@@ -40,7 +40,7 @@ int main(int argc, char **argv)
     AjPStr n;
     AjPStr ss;
 
-    AjBool  show = ajTrue;
+    AjBool  show = ajFalse;
 
     ajuint lena;
     ajuint lenb;
@@ -146,8 +146,8 @@ int main(int argc, char **argv)
 	/*score=embAlignScoreSWMatrix(path,compass,gapopen,gapextend,a,b,lena,
           lenb,sub,cvt,&start1,&start2);*/
 
-	embAlignWalkSWMatrix(path,compass,gapopen,gapextend,a,b,&m,&n,lena,
-			     lenb,&start1,&start2);
+	embAlignWalkSWMatrix(path,compass,gapopen,gapextend,a,b,&m,&n,
+			     lena,lenb,&start1,&start2);
 
 	ajDebug("ReportLocal call start1:%d begina:%d start2:%d beginb:%d\n",
 		start1, begina, start2, beginb);

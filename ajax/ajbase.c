@@ -486,16 +486,15 @@ static AjBool baseInit(void)
     ajStrAssignC(&list,"ACGT");
 
 
-    bfname = ajStrNew();
-    ajStrAssignC(&bfname,IUBFILE);
-    ajFileDataNew(bfname, &bfptr);
-    if(!bfptr) ajFatal("Ebases.iub file not found\n");
+    bfname = ajStrNewC(IUBFILE);
+    bfptr = ajDatafileNewInNameS(bfname);
+    if(!bfptr) ajFatal("%S file not found\n", bfname);
 
 
     line = ajStrNew();
 
 
-    while(ajFileGets(bfptr, &line))
+    while(ajReadline(bfptr, &line))
     {
 	p = ajStrGetPtr(line);
 	if(*p=='#' || *p=='!' || *p=='\n')
@@ -797,11 +796,11 @@ static AjBool residueInit(void)
 
 
     ajStrAssignC(&bfname,IUBPFILE);
-    ajFileDataNew(bfname, &bfptr);
-    if(!bfptr) ajFatal("Eresidues.iub file not found\n");
+    bfptr = ajDatafileNewInNameS(bfname);
+    if(!bfptr) ajFatal("%S file not found\n", bfname);
 
 
-    while(ajFileGets(bfptr, &line))
+    while(ajReadline(bfptr, &line))
     {
 	p = ajStrGetPtr(line);
 	if(*p=='#' || *p=='!' || *p=='\n')

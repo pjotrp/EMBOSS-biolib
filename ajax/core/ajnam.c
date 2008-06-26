@@ -102,7 +102,12 @@ static char namVersion[] = VERSION;
 static char namVersion[] = "1.x";
 #endif
 
-static AjPStr namFixedRootBaseStr = NULL;
+/* string versions of char* constants set in ajNamInit */
+static AjPStr namFixedBaseStr     = NULL;
+static AjPStr namFixedRootStr     = NULL;
+static AjPStr namFixedInstallStr  = NULL;
+static AjPStr namFixedPackageStr  = NULL;
+static AjPStr namFixedVersionStr  = NULL;
 static AjPStr namPrefixStr        = NULL;
 static AjPStr namFileOrig         = NULL;
 
@@ -1407,7 +1412,7 @@ static void namListParse(AjPList listwords, AjPList listcount,
 		val = ajStrNewC(ajStrGetPtr(includefn));
 		ajTablePut(Ifiles,key,val);
 
-		if(!(iinf = ajFileNewIn(includefn))) /* test: badinclude.rc */
+		if(!(iinf = ajFileNewInNameS(includefn))) /* test: badinclude.rc */
 		{
 		    namError("Failed to open include file '%S'\n", includefn);
 		    ajStrAppendC(&namFileOrig,"(Failed)");
@@ -1792,7 +1797,7 @@ static AjBool namProcessFile(AjPFile file, const AjPStr shortname)
     namUser("namProcessFile '%F'\n", file);
     
     /* Read in the settings. */
-    while(ajFileReadLine(file, &rdline))
+    while(ajReadlineTrim(file, &rdline))
     {
 	
 	AJNEW0(k);
@@ -2019,11 +2024,16 @@ void ajNamInit(const char* prefix)
     else
 	prefixRoot = namFixedRoot;
     
-    /* namFixedRootBaseStr is the directory above the source root */
+    /* namFixedBaseStr is the directory above the source root */
     
-    ajStrAssignC(&namFixedRootBaseStr, prefixRoot);
-    ajFileDirUp(&namFixedRootBaseStr);
+    ajStrAssignC(&namFixedRootStr, prefixRoot);
+    ajStrAssignS(&namFixedBaseStr, namFixedRootStr);
+    ajDirnameUp(&namFixedBaseStr);
     
+    ajStrAssignC(&namFixedPackageStr, namPackage);
+    ajStrAssignC(&namFixedVersionStr, namVersion);
+    ajStrAssignC(&namFixedInstallStr, namInstallRoot);
+
     /*
     ** look for default file in the install directory as
        <install-prefix>/share/PREFIX/emboss.default
@@ -2033,7 +2043,7 @@ void ajNamInit(const char* prefix)
     
     ajFmtPrintS(&namRootStr, "%s/share/%S/%s.default",
 		 namInstallRoot, prefixCap, prefix);
-    prefixRootFile = ajFileNewIn(namRootStr);
+    prefixRootFile = ajFileNewInNameS(namRootStr);
     ajStrAssignC(&basename, "global");
     
     /* look for $(PREFIX)_ROOT/../emboss.default */
@@ -2044,7 +2054,7 @@ void ajNamInit(const char* prefix)
 	    ajFmtPrintS(&namRootStr, "%s%s%s.default", prefixRoot,
 			SLASH_STRING,prefix);
 
-	prefixRootFile = ajFileNewIn(namRootStr);
+	prefixRootFile = ajFileNewInNameS(namRootStr);
 	ajStrAssignC(&basename, "source");
     }
     
@@ -2078,7 +2088,7 @@ void ajNamInit(const char* prefix)
 	    ajStrAppendC(&namFileOrig, ", ");
 	ajStrAppendS(&namFileOrig, namRootStr);
 
-	prefixRootFile = ajFileNewIn(namRootStr);
+	prefixRootFile = ajFileNewInNameS(namRootStr);
 	if(prefixRootFile)
 	{
 	    ajStrAssignC(&basename, "special");
@@ -2121,7 +2131,7 @@ void ajNamInit(const char* prefix)
 	ajStrAppendS(&namFileOrig, namRootStr);
 
 	ajStrAssignC(&basename, "user");
-	prefixRootFile = ajFileNewIn(namRootStr);
+	prefixRootFile = ajFileNewInNameS(namRootStr);
 	if(prefixRootFile)
 	{
 	    ajStrAppendC(&namFileOrig, "(OK)");
@@ -2138,6 +2148,8 @@ void ajNamInit(const char* prefix)
     ajStrDel(&basename);
     ajStrDel(&prefixStr);
     ajStrDel(&prefixCap);
+    if(!namFixedVersionStr)
+        namFixedVersionStr = ajStrNewC(namVersion);
     
     if(namErrorCount)		/* test: badsummary.rc */
 	ajDie("Error(s) in configuration files");
@@ -2290,13 +2302,20 @@ void ajNamExit(void)
     ajTableFree(&namDbMasterTable); /* free table and database structures */
     namListMasterDelete(namResMasterTable, TYPE_RESOURCE);/* Delete elements */
     ajTableFree(&namResMasterTable); /* free table and database structures */
-    ajStrDel(&namFixedRootBaseStr);	/* allocated in ajNamInit */
-    ajStrDel(&namPrefixStr);		/* allocated in ajNamInit */
-    ajStrDel(&namFileOrig);		/* allocated in ajNamInit */
-    ajStrDel(&namRootStr);		/* allocated in ajNamInit */
 
+    ajStrDel(&namFixedBaseStr);    /* allocated in ajNamInit */
+    ajStrDel(&namFixedRootStr);    /* allocated in ajNamInit */
+    ajStrDel(&namFixedInstallStr); /* allocated in ajNamInit */
+    ajStrDel(&namFixedPackageStr); /* allocated in ajNamInit */
+    ajStrDel(&namFixedVersionStr); /* allocated in ajNamInit */
+    ajStrDel(&namPrefixStr);       /* allocated in ajNamInit */
+    ajStrDel(&namFileOrig);        /* allocated in ajNamInit */
+    ajStrDel(&namRootStr);         /* allocated in ajNamInit */
+    ajStrDel(&namFixedVersionStr); /* allocated in ajNamInit */
+    
     ajStrDel(&namFileName);		/* allocated in ajNamProcessFile */
     ajStrDel(&namValNameTmp);
+
 
     ajRegFree(&namNameExp);
     ajRegFree(&namVarExp);
@@ -2735,57 +2754,78 @@ static void namError(const char* fmt, ...)
 
 
 
-/* @func ajNamRootInstall *****************************************************
+/* @func ajNamValueInstalldir *************************************************
 **
 ** Returns the install directory root for all file searches
 ** (package level)
 **
-** @param [w] root [AjPStr*] Root.
-** @return [AjBool] ajTrue on success.
+** @return [const AjPStr] Install directory root
 ** @@
 ******************************************************************************/
 
-AjBool ajNamRootInstall(AjPStr* root)
+const AjPStr ajNamValueInstalldir(void)
 {
-    ajStrAssignC(root, namInstallRoot);
+    return namFixedInstallStr;
+}
 
+
+/* @obsolete ajNamRootInstall
+** @remove Use ajNamValueinstalldir
+*/
+__deprecated AjBool ajNamRootInstall(AjPStr* root)
+{
+    ajStrAssignS(root, namFixedInstallStr);
+    if(!ajStrGetLen(*root)) return ajFalse;
     return ajTrue;
 }
 
 
-
-
-/* @func ajNamRootPack ********************************************************
+/* @func ajNamValuePackage *****************************************************
 **
 ** Returns the package name for the library
 **
-** @param [w] pack [AjPStr*] Package name.
-** @return [AjBool] ajTrue on success.
+** @return [const AjPStr] Package name
 ** @@
 ******************************************************************************/
 
-AjBool ajNamRootPack(AjPStr* pack)
+const AjPStr ajNamValuePackage(void)
 {
-    ajStrAssignC(pack, namPackage);
+    return namFixedPackageStr;
+}
 
+
+/* @obsolete ajNamRootPack
+** @remove Use ajNamValuePackage
+*/
+__deprecated AjBool ajNamRootPack(AjPStr* root)
+{
+    ajStrAssignS(root, namFixedPackageStr);
+    if(!ajStrGetLen(*root)) return ajFalse;
     return ajTrue;
 }
 
 
 
 
-/* @func ajNamRootVersion *****************************************************
+/* @func ajNamValueVersion *****************************************************
 **
 ** Returns the version number for the library
 **
-** @param [w] version [AjPStr*] Version number.
-** @return [AjBool] ajTrue on success.
+** @return [const AjPStr] Version number
 ** @@
 ******************************************************************************/
 
-AjBool ajNamRootVersion(AjPStr* version)
+const AjPStr ajNamValueVersion(void)
 {
-    ajStrAssignC(version, namVersion);
+    return namFixedVersionStr;
+}
+
+/* @obsolete ajNamRootVersion
+** @remove Use ajNamValueVersion
+*/
+__deprecated AjBool ajNamRootVersion(AjPStr* version)
+{
+    ajStrAssignS(version, namFixedVersionStr);
 
     return ajTrue;
 }
@@ -2793,19 +2833,26 @@ AjBool ajNamRootVersion(AjPStr* version)
 
 
 
-/* @func ajNamRoot ************************************************************
+/* @func ajNamValueRootdir *****************************************************
 **
 ** Returns the directory for all file searches
 ** (package level)
 **
-** @param [w] root [AjPStr*] Root.
-** @return [AjBool] ajTrue on success.
+** @return [const AjPStr] Package level root directory
 ** @@
 ******************************************************************************/
 
-AjBool ajNamRoot(AjPStr* root)
+const AjPStr ajNamValueRootdir(void)
 {
-    ajStrAssignC(root, namFixedRoot);
+    return namFixedRootStr;
+}
+
+/* @obsolete ajNamRoot
+** @remove Use ajNamValueRootdir
+*/
+__deprecated AjBool ajNamRoot(AjPStr* root)
+{
+    ajStrAssignS(root, namFixedRootStr);
 
     return ajTrue;
 }
@@ -2813,23 +2860,28 @@ AjBool ajNamRoot(AjPStr* root)
 
 
 
-/* @func ajNamRootBase ********************************************************
+/* @func ajNamValueBasedir *****************************************************
 **
 ** Returns the base directory for all for all file searches
 ** (above package level).
 **
-** @param [w] rootbase [AjPStr*] Root.
-** @return [AjBool] ajTrue on success.
-** @@
+** @return [const AjPStr] Base directory
 ******************************************************************************/
 
-AjBool ajNamRootBase(AjPStr* rootbase)
+const AjPStr ajNamValueBasedir(void)
 {
-    ajStrAssignS(rootbase, namFixedRootBaseStr);
+    return namFixedBaseStr;
+}
+
+/* @obsolete ajNamRootBase
+** @remove Use ajNamValueBasedir
+*/
+__deprecated AjBool ajNamRootBase(AjPStr* rootbase)
+{
+    ajStrAssignS(rootbase, namFixedBaseStr);
 
     return ajTrue;
 }
-
 
 
 

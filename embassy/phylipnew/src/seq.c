@@ -295,7 +295,6 @@ void allocx2(long nonodes, long endsite, long sitelength, pointarray treenode,
         for (k = 0; k < endsite; k++) {
           p->x2[k] = (double *)Malloc((sitelength + 1) * sizeof(double));
           for (l = 0; l < sitelength; l++)
-             for (l = 0; l < sitelength; l++)
              p->x2[k][l] = 1.0;
         }
         p = p->next;

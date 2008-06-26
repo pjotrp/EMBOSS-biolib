@@ -271,9 +271,9 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
     ajint **mat;
 
     if(eightyseven)
-	ajFileDataNewC(HTH87FILE,&mfptr);
+	mfptr = ajDatafileNewInNameC(HTH87FILE);
     else
-	ajFileDataNewC(HTHFILE,&mfptr);
+	mfptr = ajDatafileNewInNameC(HTHFILE);
     if(!mfptr)
 	ajFatal("HTH file not found\n");
 
@@ -282,7 +282,7 @@ static ajint helixturnhelix_readNab(AjPInt2d *matrix,AjBool eightyseven)
 
     pass = ajTrue;
 
-    while(ajFileGets(mfptr, &line))
+    while(ajReadline(mfptr, &line))
     {
 	p = ajStrGetPtr(line);
 

@@ -147,7 +147,7 @@ int main(ajint argc, char **argv)
     while(ajListPop(cpdb_path,(void **)&temp))
     {
         /* Open coordinate file. */
-        if((fptr_cpdb=ajFileNewIn(temp))==NULL)
+        if((fptr_cpdb=ajFileNewInNameS(temp))==NULL)
         {
 	    ajWarn("Could not open cpdb file");
             ajStrDel(&temp);

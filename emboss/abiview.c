@@ -128,7 +128,7 @@ int main(int argc, char **argv)
     window     = ajAcdGetInt("window");
     baseN      = ajAcdGetString("bases");
 
-    fname = ajStrNewC(ajFileName(fp));
+    fname = ajStrNewC(ajFileGetNameC(fp));
 
     ajStrFmtUpper(&baseN);
     nbases  = ajStrGetLen(baseN);
@@ -136,7 +136,7 @@ int main(int argc, char **argv)
 
 
     if(!ajSeqABITest(fp))
-        ajFatal("%s not an ABI file",ajFileName(fp));
+        ajFatal("%s not an ABI file",ajFileGetNameC(fp));
 
     numBases = ajSeqABIGetNBase(fp);
 

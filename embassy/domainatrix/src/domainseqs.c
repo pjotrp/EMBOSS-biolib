@@ -173,11 +173,11 @@ int main(int argc, char **argv)
 	ajFmtPrint("//\n%-15S\n", ajDomainGetId(domain));  
 	
 
-	if(!(dpdb_inf=ajFileNewDirF(dpdb_path, dpdb_name)))
+	if(!(dpdb_inf=ajFileNewListinDirPre(dpdb_path, dpdb_name)))
 	{
 	    ajStrAssignS(&msg, dpdb_name);
 	    ajStrAppendC(&msg, ".");
-	    ajStrAppendS(&msg,ajDirExt(dpdb_path));
+	    ajStrAppendS(&msg,ajDirGetExt(dpdb_path));
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_OPEN");  
 	    ajWarn("Could not open ccf file %S", msg);
 	    ajDomainDel(&domain);

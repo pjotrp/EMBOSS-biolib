@@ -118,7 +118,7 @@ int main(int argc, char **argv)
     outfilename = ajStrNew();
     stdoutname  = ajStrNew();
     stdouttemp  = ajStrNew();
-    ajStrAssignC(&stdoutname, ajFileTempName(NULL));
+    ajFilenameSetTempname(&stdoutname);
 
 
     /* 2. Build emast command line */
@@ -130,22 +130,22 @@ int main(int argc, char **argv)
        */
     if(!ajNamGetValueC("mast", &cmd))
 	ajStrAssignC(&cmd, "mast");
-    ajFmtPrintAppS(&cmd, " %s ", ajFileName(mfile));
+    ajFmtPrintAppS(&cmd, " %s ", ajFileGetNameC(mfile));
 
     /* Warn user if both d and isstdin are specified and use only d */
     if(d && isstdin)
 	ajWarn("Database options < -d > and < -stdin > were both set, only < -d > will be used!");
     if(d)
-	ajFmtPrintAppS(&cmd, " -d %s ", ajFileName(d));
+	ajFmtPrintAppS(&cmd, " -d %s ", ajFileGetNameC(d));
     else if(isstdin)
 	ajFmtPrintAppS(&cmd, " -stdin ");
     /* Presume 'a' is a file .. it doesn't say in the MAST docs ! */
     if((d || isstdin) && a)
-	ajFmtPrintAppS(&cmd, " -a %s ", ajFileName(a));
+	ajFmtPrintAppS(&cmd, " -a %s ", ajFileGetNameC(a));
     if(b)
 	ajFmtPrintAppS(&cmd, " -b ");
     if(bfile)
-	ajFmtPrintAppS(&cmd, " -bfile %s ", ajFileName(bfile));
+	ajFmtPrintAppS(&cmd, " -bfile %s ", ajFileGetNameC(bfile));
     if(smax != -1)
 	ajFmtPrintAppS(&cmd, " -smax %d ", smax);
     ajFmtPrintAppS(&cmd, " -ev %f ", ev);
@@ -219,12 +219,12 @@ int main(int argc, char **argv)
 
        Rename the mast output file to that specified in the ACD file.
        Remove stdoutf */
-    stdoutf = ajFileNewIn(stdoutname);
-    if(!ajFileReadLine(stdoutf, &stdouttemp))
+    stdoutf = ajFileNewInNameS(stdoutname);
+    if(!ajReadlineTrim(stdoutf, &stdouttemp))
 	ajFatal("File read error on mast output file (stdout)");
     if(!ajFmtScanS(stdouttemp, "%*s %*s %*s %S", &outfilename))
     	ajFatal("File read error on mast output file (stdout)");
-    ajFmtPrintS(&cmd, "mv %S %S", outfilename , ajFileGetName(outfile));
+    ajFmtPrintS(&cmd, "mv %S %S", outfilename , ajFileGetNameS(outfile));
     system(ajStrGetPtr(cmd));    
     ajFmtPrintS(&cmd, "rm %S", stdoutname);
     system(ajStrGetPtr(cmd));

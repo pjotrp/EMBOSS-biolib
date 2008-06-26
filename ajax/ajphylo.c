@@ -408,12 +408,12 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 	    ajRegCompC("^\\s*([0-9]+[.]?[0-9]*)\\s+(([0-9]+)[^0-9.])?");
 
     distlist = ajListNew();
-    distfile = ajFileNewIn(filename);
+    distfile = ajFileNewInNameS(filename);
 
     if(!distfile)
 	return NULL;
 
-    ajFileGetsTrim(distfile, &rdline);
+    ajReadlineTrim(distfile, &rdline);
     if(!ajStrToInt(rdline, &count))
     {
 	ajErr("Distance file '%S' bad header record '%S'",
@@ -431,7 +431,7 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 
 
     done = ajTrue;
-    while(ajFileGets(distfile, &rdline))
+    while(ajReadline(distfile, &rdline))
     {
 	if(done) {
 	    irow = -1;
@@ -755,12 +755,12 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 	phyloRegFreqIndiv =
 	    ajRegCompC("^(\\S.........)\\s+([1-9][0-9]*)\\s*$");
 
-    freqfile = ajFileNewIn(filename);
+    freqfile = ajFileNewInNameS(filename);
 
     if(!freqfile)
 	return NULL;
 
-    ajFileGets(freqfile, &rdline);
+    ajReadline(freqfile, &rdline);
 
     /* process header */
 
@@ -793,7 +793,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 
     /* process alleles counts, if any */
 
-    ajFileGets(freqfile, &rdline);
+    ajReadline(freqfile, &rdline);
     if(ajRegExec(phyloRegFreqInt, rdline))	/* allele counts */
     {
 	if(contchar)
@@ -837,7 +837,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 	}
 	ncells = count*nfreq;
 	AJCNEW0(ret->Data,ncells);
-	ajFileGets(freqfile, &rdline);
+	ajReadline(freqfile, &rdline);
     }
     else
     {
@@ -910,7 +910,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 		ipos++;
 	    }
 
-	    if(!ajFileGets(freqfile, &rdline))
+	    if(!ajReadline(freqfile, &rdline))
 		break;
 	}
 
@@ -1017,7 +1017,7 @@ AjPPhyloFreq ajPhyloFreqRead(const AjPStr filename,
 	    ipos++;
 	}
 
-	if(!ajFileGets(freqfile, &rdline))
+	if(!ajReadline(freqfile, &rdline))
 	    break;
     }
 
@@ -1229,7 +1229,7 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
     else
 	count = 1;
 
-    propfile = ajFileNewIn(filename);
+    propfile = ajFileNewInNameS(filename);
     if(!propfile)		/* read the filename string as data */
     {
 	if (size > 1)
@@ -1270,7 +1270,7 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 	    propstr = ajStrNewRes(len+1);
 	    propok = ajFalse;
 	    ilen = 0;
-	    while(!propok && ajFileGetsTrim(propfile, &rdline))
+	    while(!propok && ajReadlineTrim(propfile, &rdline))
 	    {
 		ajStrFmtUpper(&rdline);
 		cp = ajStrGetPtr(rdline);
@@ -1300,7 +1300,7 @@ AjPPhyloProp ajPhyloPropRead(const AjPStr filename, const AjPStr propchars,
 		    ajErr("End of properties file '%S':"
 			  " after %d sets, expected %d",
 			  filename, i, size);
-		else if (ajFileEof(propfile))
+		else if (ajFileIsEof(propfile))
 		    break;
 	    }
 	    ajListstrPushAppend(proplist, propstr);
@@ -1424,12 +1424,12 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
 
     statelist = ajListNew();
 
-    statefile = ajFileNewIn(filename);
+    statefile = ajFileNewInNameS(filename);
 
     if(!statefile)
 	return NULL;
 
-    while(ajFileGets(statefile, &rdline))
+    while(ajReadline(statefile, &rdline))
     {
 	
 	if(!ajRegExec(phyloRegStateInt, rdline))
@@ -1462,7 +1462,7 @@ AjPPhyloState* ajPhyloStateRead(const AjPStr filename, const AjPStr statechars)
 	
 	ilen = 0;
 	i    = 0;
-	while(ajFileGets(statefile, &rdline))
+	while(ajReadline(statefile, &rdline))
 	{
 	    if(ilen == 0 && ajRegExec(phyloRegStateState, rdline))
 	    {
@@ -1664,7 +1664,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
     if(count < 1)
 	count = 1;
 
-    treefile = ajFileNewIn(filename);
+    treefile = ajFileNewInNameS(filename);
     if(!treefile)
 	return NULL;
 
@@ -1677,7 +1677,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 	    ajDebug("ajPhyloTreeRead i: %d count: %d size: %d\n",
 		    i, count, size);
 	    tree = ajPhyloTreeNew();
-	    while(ajFileGetsTrim(treefile, &rdline))
+	    while(ajReadlineTrim(treefile, &rdline))
 	    {
 		if(!i && !ajStrGetLen(tree->Tree))
 		{
@@ -1695,7 +1695,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 				      " required %d",
 				      filename, headcount, size);
 			}
-			ajFileGetsTrim(treefile, &rdline);
+			ajReadlineTrim(treefile, &rdline);
 			count = headcount;
 		    }
 		}
@@ -1772,7 +1772,7 @@ AjPPhyloTree* ajPhyloTreeRead(const AjPStr filename, ajint size)
 	    }
 	    else
 	    {
-		if(ajFileEof(treefile))
+		if(ajFileIsEof(treefile))
 		    treeok = ajTrue;
 		else
 		{

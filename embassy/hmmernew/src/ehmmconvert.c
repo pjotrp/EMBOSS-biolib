@@ -91,10 +91,10 @@ int main(int argc, char **argv)
     /* hmmer cannot append to empty file, so only set the -A (append) option
        if file was opened for appending to (and therefore was not wiped by
        EMBOSS) and is not zero size. */
-    if(ajFileGetApp(newhmmfile) && (ajFileLength(ajFileNameS(newhmmfile))!=-1))
+    if(ajFileIsAppend(newhmmfile) && (ajFilenameGetSize(ajFileGetNameS(newhmmfile))!=-1))
 	ajStrAppendC(&cmd, " -A ");
     ajStrAppendC(&cmd, " -F ");
-    ajFmtPrintAppS(&cmd, " %s %s", ajFileName(oldhmmfile), ajFileName(newhmmfile));
+    ajFmtPrintAppS(&cmd, " %s %s", ajFileGetNameC(oldhmmfile), ajFileGetNameC(newhmmfile));
 
 
     /* 2. Close ACD files. */

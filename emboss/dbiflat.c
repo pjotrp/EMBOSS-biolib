@@ -293,7 +293,7 @@ int main(int argc, char **argv)
     {
 	ajStrAssignS(&curfilename, (AjPStr) inputFiles[ifile]);
 	embDbiFlatOpenlib(curfilename, &libr);
-	ajFileNameTrim(&curfilename);
+	ajFilenameTrimPath(&curfilename);
 	if(ajStrGetLen(curfilename) >= maxfilelen)
 	    maxfilelen = ajStrGetLen(curfilename) + 1;
 
@@ -340,7 +340,7 @@ int main(int argc, char **argv)
 
     /* Write the entryname.idx index */
     ajStrAssignC(&tmpfname, "entrynam.idx");
-    entFile = ajFileNewOutD(indexdir, tmpfname);
+    entFile = ajFileNewOutNamePathS(tmpfname, indexdir);
 
     recsize = maxidlen+10;
     filesize = 300 + (idCount*(ajint)recsize);
@@ -698,9 +698,9 @@ static AjBool dbiflat_ParseEmbl(AjPFile libr, AjPFile* alistfile,
     if(!regEmblEnd)
 	regEmblEnd = ajRegCompC("^//");
 
-    *dpos = ajFileTell(libr);
+    *dpos = ajFileResetPos(libr);
 
-    while(ajFileGets(libr, &rline))
+    while(ajReadline(libr, &rline))
     {
 	if(ajRegExec(regEmblEnd, rline))
 	{
@@ -1049,9 +1049,9 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
     if(!regGbEnd)
 	regGbEnd = ajRegCompC("^//");
 
-    ipos = ajFileTell(libr);
+    ipos = ajFileResetPos(libr);
 
-    while(ajFileGets(libr, &rline))
+    while(ajReadline(libr, &rline))
     {
 	if(ajRegExec(regGbEnd, rline))
 	{
@@ -1232,7 +1232,7 @@ static AjBool dbiflat_ParseGenbank(AjPFile libr, AjPFile* alistfile,
 	    continue;
 	}
 
-	ipos = ajFileTell(libr);
+	ipos = ajFileResetPos(libr);
     }
 
     if(!done)
@@ -1358,9 +1358,9 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
     if(!regRefseqEnd)
 	regRefseqEnd = ajRegCompC("^//");
 
-    ipos = ajFileTell(libr);
+    ipos = ajFileResetPos(libr);
 
-    while(ajFileGets(libr, &rline))
+    while(ajReadline(libr, &rline))
     {
 	if(ajRegExec(regRefseqEnd, rline))
 	{
@@ -1539,7 +1539,7 @@ static AjBool dbiflat_ParseRefseq(AjPFile libr, AjPFile* alistfile,
 	    continue;
 	}
 
-	ipos = ajFileTell(libr);
+	ipos = ajFileResetPos(libr);
     }
 
     if(!done)

@@ -100,10 +100,10 @@ static ajlong strTotal     = 0;
 **
 ** @nam1rule aj Function belongs to the AJAX library.
 **
-** @suffix Len [size_t] length
-** @suffix C [char*] C character string
-** @suffix S [AjPStr] string object
-** @suffix K [char] single character
+** @suffix Len Length
+** @suffix C C character string
+** @suffix S string object
+** @suffix K single character
 */
 
 
@@ -2150,7 +2150,7 @@ static void strCloneL(AjPStr* Pstr, ajuint size)
 **
 ** Internal constructor for modifiable AJAX strings. Used by all the string
 ** parameterized contructors to allocate the space for the text string.
-** The exception is ajStrNew which returns a clone of the null string.
+** The only exception is ajStrNew which returns a clone of the null string.
 **
 ** @param [rE] size [ajuint] size of the reserved space, including the
 **        terminating NULL character. Zero uses a default string size STRSIZE.
@@ -3156,9 +3156,8 @@ AjBool ajStrAppendS(AjPStr* Pstr, const AjPStr str)
     AjPStr thys;
     ajuint j;
 
-    if(!str) {
-	ajFatal("ajStrAppendS source string is NULL");
-    }
+    if(!str)
+        return ajFalse;
 
     thys = *Pstr;
 
@@ -3265,7 +3264,7 @@ AjBool ajStrAppendLenC(AjPStr* Pstr, const char* txt, ajuint len)
     thys = *Pstr;
 
     if(!txt)
-	ajFatal("ajStrAppendLenC source string is NULL");
+	return ajFalse;
 
     if(*Pstr)
 	j = AJMAX(thys->Res, (thys->Len+len+1));

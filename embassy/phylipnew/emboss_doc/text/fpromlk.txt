@@ -505,7 +505,7 @@ Known bugs
 See also
 
    Program name                         Description
-   distmat      Creates a distance matrix from multiple alignments
+   distmat      Create a distance matrix from a multiple sequence alignment
    ednacomp     DNA compatibility algorithm
    ednadist     Nucleic acid sequence Distance Matrix program
    ednainvar    Nucleic acid sequence Invariants method

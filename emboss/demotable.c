@@ -64,7 +64,7 @@ int main(int argc, char **argv)
     */
     type   = ajTableNewFunctionLen(50, ajStrTableCmpCase, ajStrTableHashCase);
     list = ajListstrNew();
-    while(ajFileReadLine(gfffile, &line))
+    while(ajReadlineTrim(gfffile, &line))
     {
 	temp = demotable_getsubfromstring(line,3); /* get the string to test */
 

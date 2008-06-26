@@ -121,7 +121,7 @@ int main(int argc, char **argv)
 	
 	/*ajFileNewDF opens domain files dir, looks for named domain file, 
 	  returns new file object */
-	if(!(dccf_inf=ajFileNewDirF(dccf, dccf_name)))
+	if(!(dccf_inf=ajFileNewListinDirPre(dccf, dccf_name)))
 	{
 	    ajFmtPrintF(errf, "%-15s\n", "FILE_OPEN");
             ajFmtPrintF(errf, "Could not open dccf file %S\n", dccf_name);  

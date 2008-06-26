@@ -522,10 +522,10 @@ AjPRange ajRangeFileLimits(const AjPStr name, ajuint imin, ajuint imax,
     textlist = ajListstrNew();
 
     
-    if((infile = ajFileNewIn(name)) == NULL)
+    if((infile = ajFileNewInNameS(name)) == NULL)
 	return NULL;
 
-    while(ajFileReadLine(infile, &line))
+    while(ajReadlineTrim(infile, &line))
     {
 	ajStrTrimWhite(&line);
 	

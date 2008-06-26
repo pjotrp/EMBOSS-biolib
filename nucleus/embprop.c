@@ -101,7 +101,7 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
     for(i=0; i < EMBPROPSIZE; ++i)
 	AJNEW0(ret[i]);
     
-    while(ajFileGets(mfptr, &line))
+    while(ajReadline(mfptr, &line))
     {
 	ajStrRemoveWhiteExcess(&line);
 	p = ajStrGetPtr(line);
@@ -180,7 +180,7 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
     for(i=0; i < EMBPROPSIZE+2; ++i)
 	AJNEW0(ret[i]);
     
-    while(ajFileGets(mfptr, &line))
+    while(ajReadline(mfptr, &line))
     {
 	ajStrRemoveWhiteExcess(&line);
 	p = ajStrGetPtr(line);

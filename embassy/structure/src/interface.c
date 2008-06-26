@@ -460,8 +460,9 @@ static AjBool interface_ContactMapWrite(AjPFile outf, AjPInt2d mat,
 	    if((ajInt2dGet(mat, x, y)==1))
 	    {
 		/* Assign residue id */
-		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn1-1]->Seq, x), 
-				   &res1))
+		if(!ajResidueToTriplet(
+                       ajStrGetCharPos(pdb->Chains[chn1-1]->Seq, x), 
+                       &res1))
 		{
 		    ajStrDel(&res1);
 		    ajStrDel(&res2);  
@@ -469,8 +470,9 @@ static AjBool interface_ContactMapWrite(AjPFile outf, AjPInt2d mat,
 			   "interface_ContactMapWrite");		
 		    return ajFalse;
 		}
-		if(!ajBaseAa1ToAa3(ajStrGetCharPos(pdb->Chains[chn2-1]->Seq, y), 
-				   &res2))
+		if(!ajResidueToTriplet(
+                       ajStrGetCharPos(pdb->Chains[chn2-1]->Seq, y), 
+                       &res2))
 		{
 		    ajStrDel(&res1);
 		    ajStrDel(&res2);  

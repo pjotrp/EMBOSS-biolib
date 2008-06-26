@@ -647,15 +647,14 @@ ajuint embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
     /* ajDebug("In ajBtreeReadDir\n"); */
 
     lfiles = ajListNew();
-    nfiles = ajFileScan(fdirectory,files,&lfiles,ajFalse,ajFalse,NULL,NULL,
-			ajFalse,NULL);
+    nfiles = ajFilelistAddPathWild(lfiles, fdirectory, files);
 
     nremove = ajArrCommaList(exclude,&removelist);
     
     for(i=0;i<nfiles;++i)
     {
 	ajListPop(lfiles,(void **)&file);
-	ajFileNameTrim(&file);
+	ajFilenameTrimPath(&file);
 	for(j=0;j<nremove && ! ajStrMatchWildS(file,removelist[j]);++j);
 	if(j == nremove)
 	    ajListPushAppend(lfiles,(void *)file);
@@ -698,7 +697,7 @@ static AjPFile btreeCreateFile(const AjPStr idirectory, const AjPStr dbname,
 
     ajFmtPrintS(&filename,"%S%s%S%s",idirectory,SLASH_STRING,dbname,add);
     
-    fp =  ajFileNewOut(filename);
+    fp =  ajFileNewOutNameS(filename);
 
     ajStrDel(&filename);
     return fp;
@@ -916,8 +915,7 @@ ajuint embBtreeGetFiles(EmbPBtreeEntry entry, const AjPStr fdirectory,
     
     /* ajDebug("In embBtreeGetFiles\n"); */
 
-    nfiles = ajFileScan(fdirectory,files,&entry->files,ajFalse,ajFalse,NULL,
-			NULL,ajFalse,NULL);
+    nfiles = ajFilelistAddPathWild(entry->files, fdirectory,files);
 
     nremove = ajArrCommaList(exclude,&removelist);
 
@@ -925,7 +923,7 @@ ajuint embBtreeGetFiles(EmbPBtreeEntry entry, const AjPStr fdirectory,
     for(i=0;i<nfiles;++i)
     {
 	ajListPop(entry->files,(void **)&file);
-	ajFileNameTrim(&file);
+	ajFilenameTrimPath(&file);
 	for(j=0;j<nremove && !ajStrMatchWildS(file,removelist[j]);++j);
 	if(j == nremove)
 	{

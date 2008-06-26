@@ -88,7 +88,7 @@ void ajMeltInit(AjBool isdna, ajint savesize)
     else
 	ajStrAssignEmptyC(&mfname,RNAMELTFILE);
 
-    ajFileDataNew(mfname, &mfptr);
+    mfptr = ajDatafileNewInNameS(mfname);
     if(!mfptr)
 	ajFatal("Entropy/enthalpy/energy file '%S' not found\n",
 		mfname);
@@ -114,7 +114,7 @@ void ajMeltInit(AjBool isdna, ajint savesize)
     }
 
 
-    while(ajFileGets(mfptr, &line))
+    while(ajReadline(mfptr, &line))
     {
 	p = ajStrGetuniquePtr(&line);
 	if(*p=='#' || *p=='!' || !*p)

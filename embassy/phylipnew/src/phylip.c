@@ -128,14 +128,14 @@ void emboss_openfile(AjPFile outfile, FILE **fp, const char **perm)
 {
     if (outfile)
     {
-	*fp = ajFileFp(outfile);
+	*fp = ajFileGetFileptr(outfile);
 	outfile->fp = NULL;
     }
     else
 	*fp = NULL;
     ajDebug("phylip emboss_openfile '%F'\n",
 	    outfile);
-    *perm = ajFileName(outfile);
+    *perm = ajFileGetNameC(outfile);
     return;
 }
 

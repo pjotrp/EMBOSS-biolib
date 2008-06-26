@@ -1039,6 +1039,7 @@ static AjBool acdResourceList(const AcdPAcd thys,
 static void acdDelAlign(void** PPval);
 static void acdDelCod(void** PPval);
 static void acdDelDir(void** PPval);
+static void acdDelDirout(void** PPval);
 static void acdDelFeattabOut(void** PPval);
 static void acdDelFeattable(void** PPval);
 static void acdDelFile(void** PPval);
@@ -2883,7 +2884,7 @@ AcdOType acdType[] =
 	 "Formatted output file" },
     {"outdir",         "output",    acdSecOutput,
 	 acdAttrOutdir,         NULL,
-	 acdSetOutdir,          NULL,                  acdDelDir,
+	 acdSetOutdir,          NULL,                  acdDelDirout,
 	 AJTRUE,  AJTRUE,  acdPromptOutdir,    &acdUseMisc, &acdUseOut,
 	 "Output directory" },
     {"outdiscrete",    "output",    acdSecOutput,
@@ -3223,16 +3224,16 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 
     /* open the command definition file */
     
-    ajNamRootPack(&acdPack);
-    ajNamRootInstall(&acdRootInst);
-    ajFileDirFix(&acdRootInst);
+    ajStrAssignS(&acdPack, ajNamValuePackage());
+    ajStrAssignS(&acdRootInst, ajNamValueInstalldir());
+    ajDirnameFix(&acdRootInst);
     
     if(ajNamGetValueC("acdroot", &acdRoot))
     {				       /* _acdroot variable defined */
-	ajFileDirFix(&acdRoot);
+	ajDirnameFix(&acdRoot);
 	ajFmtPrintS(&acdFName, "%S%s.acd", acdRoot, pgm);
 	acdLog("Trying acdfile '%S' (acdroot)\n", acdFName);
-	acdFile = ajFileNewIn(acdFName);
+	acdFile = ajFileNewInNameS(acdFName);
     }
     else if(*package)
     {					/* separate package */
@@ -3242,7 +3243,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 		    acdRootInst, pgm);
 	acdLog("Trying acdfile '%S' (package '%s' installed)\n",
 	       acdFName, package);
-	acdFile = ajFileNewIn(acdFName);
+	acdFile = ajFileNewInNameS(acdFName);
 	if(!acdFile)
 	{
 	    acdLog("acdfile '%S' not opened\n", acdFName);
@@ -3253,21 +3254,21 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	    ajStrAppendC(&acdPackRootName, "acdroot");
 	    if(ajNamGetValue(acdPackRootName, &acdPackRoot))
 	    {
-		ajFileDirFix(&acdPackRoot);
+		ajDirnameFix(&acdPackRoot);
 		ajFmtPrintS(&acdFName, "%S%s.acd", acdPackRoot, pgm);
 		acdLog("Trying acdfile '%S' (package %sacdroot)\n",
 		       acdFName, package);
 	    }
 	    else
 	    {
-		ajNamRoot(&acdPackRoot);
-		ajFileDirUp(&acdPackRoot);
+		ajStrAssignS(&acdPackRoot, ajNamValueRootdir());
+		ajDirnameUp(&acdPackRoot);
 		ajFmtPrintS(&acdFName, "%Sembassy/%S/emboss_acd/%s.acd",
 			    acdPackRoot, acdPack, pgm);
 		acdLog("Trying acdfile '%S' (package %s source)\n",
 		       acdFName, package);
 	    }
-	    acdFile = ajFileNewIn(acdFName);
+	    acdFile = ajFileNewInNameS(acdFName);
 	}
     }
     else
@@ -3275,7 +3276,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 	ajFmtPrintS(&acdFName, "%Sshare/%S/acd/%s.acd",
 		    acdRootInst, acdPack, pgm);
 	acdLog("Trying acdfile '%S' (installed)\n", acdFName);
-	acdFile = ajFileNewIn(acdFName);
+	acdFile = ajFileNewInNameS(acdFName);
 	if(!acdFile)
 	{
 	    acdLog("acdfile '%S' not opened\n", acdFName);
@@ -3284,20 +3285,20 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
 
 	    if(ajNamGetValueC("acdutilroot", &acdUtilRoot))
 	    {
-		ajFileDirFix(&acdUtilRoot);
+		ajDirnameFix(&acdUtilRoot);
 		ajFmtPrintS(&acdFName, "%S%s.acd", acdUtilRoot, pgm);
 		acdLog("Trying acdfile '%S' (acdutilroot)\n", acdFName);
-		acdFile = ajFileNewIn(acdFName);
+		acdFile = ajFileNewInNameS(acdFName);
 	    }
 	}
 	if(!acdFile)
 	{
 	    acdLog("acdfile '%S' not opened\n", acdFName);
-	    ajNamRoot(&acdRoot);
-	    ajFileDirFix(&acdRoot);
+	    ajStrAssignS(&acdRoot, ajNamValueRootdir());
+	    ajDirnameFix(&acdRoot);
 	    ajFmtPrintS(&acdFName, "%Sacd/%s.acd", acdRoot, pgm);
 	    acdLog("Trying acdfile '%S' (original main source)\n", acdFName);
-	    acdFile = ajFileNewIn(acdFName);
+	    acdFile = ajFileNewInNameS(acdFName);
 	    if(!acdFile)
 	    {
 		acdLog("acdfile '%S' not opened\n", acdFName);
@@ -3318,7 +3319,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     acdListCommentsCount = ajListNew();
     acdListCommentsColumn = ajListNew();
     
-    while(ajFileReadLine(acdFile, &acdLine))
+    while(ajReadlineTrim(acdFile, &acdLine))
     {
 	AJNEW0(k);
 	*k = ajListGetLength(acdListWords);
@@ -5780,7 +5781,7 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   Outcodon  [AjPOutfile]
 ** @valrule   Outcpdb   [AjPOutfile]
 ** @valrule   Outdata  [AjPOutfile]
-** @valrule   Outdir  [AjPDir]
+** @valrule   Outdir  [AjPDirout]
 ** @valrule   Outdiscrete  [AjPOutfile]
 ** @valrule   Outdistance  [AjPOutfile]
 ** @valrule   Outfile  [AjPFile]
@@ -6183,7 +6184,7 @@ static void acdSetAlign(AcdPAcd thys)
 	    }
     
 	    ajStrAssignS(&acdOutFullFName, acdReply);
-	    ajFileSetDir(&acdOutFullFName, dir);
+	    ajFilenameReplacePathS(&acdOutFullFName, dir);
 	    ok = ajAlignOpen(val, acdOutFullFName);
 	    if(!ok)
 	    {
@@ -6671,7 +6672,7 @@ static void acdSetCpdb(AcdPAcd thys)
 
 	if(ajStrGetLen(acdReply))
 	{
-	    val = ajFileNewIn(acdReply);
+	    val = ajFileNewInNameS(acdReply);
 	    if(!val)
 	    {
 		acdBadVal(thys, required,
@@ -6713,7 +6714,7 @@ static void acdSetCpdb(AcdPAcd thys)
 **
 ** @param [r] token [const char*] Text token name
 ** @return [AjPFile] File object. The file was already opened by
-**         ajFileDataNew so this just returns the pointer.
+**         ajDatafileNewInNameS so this just returns the pointer.
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
@@ -6786,7 +6787,7 @@ static void acdSetDatafile(AcdPAcd thys)
 	
 	if(ajStrGetLen(acdReply))
 	{
-	    ajFileDataDirNew(acdReply, dir, &val);
+	    val = ajDatafileNewInNamePathS(acdReply, dir);
 	    if(!val)
 	    {
 		acdBadVal(thys, required,
@@ -6857,7 +6858,7 @@ AjPStr ajAcdGetDirectoryName(const char *token)
     AjPDir dir;
 
     dir = acdGetValue(token, "directory");
-    ajStrAssignS(&ret, ajDirName(dir));
+    ret = ajStrNewS(ajDirGetPath(dir));
     return ret;
 }
 
@@ -6915,12 +6916,12 @@ static void acdSetDirectory(AcdPAcd thys)
 	if(ajStrGetLen(acdReply))
 	{
 	    if(dopath)
-		ok = ajFileDirPath(&acdReply);
+		ok = ajDirnameFillPath(&acdReply);
 	    else
-		ok = ajFileDir(&acdReply);
+		ok = ajDirnameFixExists(&acdReply);
 	    if (ok)
 	    {
-		val = ajDirNewS(acdReply, ext);
+		val = ajDirNewPathExt(acdReply, ext);
 		if (!val)
 		    ok = ajFalse;
 	    }
@@ -7025,9 +7026,9 @@ static void acdSetDirlist(AcdPAcd thys)
 	if(ajStrGetLen(acdReply))
 	{
 	    if(dopath)
-		ok = ajFileDirPath(&acdReply);
+		ok = ajDirnameFillPath(&acdReply);
 	    else
-		ok = ajFileDir(&acdReply);
+		ok = ajDirnameFixExists(&acdReply);
 
 	    if(!ok)
 		acdBadVal(thys, required,
@@ -7056,7 +7057,8 @@ static void acdSetDirlist(AcdPAcd thys)
 	ajStrAppendS(&t, ext);
     }    
 
-    ajFileScan(acdReply,t,&val,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
+    ajFilelistAddPathWild(val, acdReply, t);
+    /* ajFileScan(acdReply,t,&val,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL); */
 
     /* Sort list so that list of files is system-independent */
     ajListSort(val, ajStrVcmp);
@@ -7846,11 +7848,11 @@ AjPList ajAcdGetFilelist(const char *token)
 ** Using the definition in the ACD file, and any values for the
 ** item or its associated qualifiers provided on the command line,
 ** prompts the user if necessary (and possible) and
-** sets the actual value for an ACD directory item.
+** sets the actual value for an ACD file list item.
 **
 ** Understands all attributes and associated qualifiers for this item type.
 **
-** The default value is "." the current directory.
+** There is no default value
 **
 ** @param [u] thys [AcdPAcd] ACD item.
 ** @return [void]
@@ -7867,7 +7869,7 @@ static void acdSetFilelist(AcdPAcd thys)
 
     AjBool nullok = ajFalse;
 
-    val = NULL;
+    val = ajListNew();
 
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
 
@@ -7896,7 +7898,7 @@ static void acdSetFilelist(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
 
-    val = ajFileFileList(acdReply);
+    ajFilelistAddListname(val, acdReply);
 
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
@@ -8578,7 +8580,7 @@ static void acdSetInfile(AcdPAcd thys)
 
 	if(ajStrGetLen(acdReply))
 	{
-	    val = ajFileNewIn(acdReply);
+	    val = ajFileNewInNameS(acdReply);
 	    if(!val)
 	    {
 		if(!nullok ||
@@ -9193,14 +9195,14 @@ static AjPOutfile acdSetOutType(AcdPAcd thys, const char* type)
 	if(ajStrGetLen(acdReply))
 	{
 	    ajStrAssignS(&acdOutFullFName, acdReply);
-	    ajFileSetDir(&acdOutFullFName, dir);
-	    val = ajOutfileNew(acdOutFullFName);
+	    ajFilenameReplacePathS(&acdOutFullFName, dir);
+	    val = ajOutfileNewNameS(acdOutFullFName);
 	    if(!ok)
 	    {
 		acdBadVal(thys, required,
 			  "Unable to open output file '%S'",
 			  acdOutFullFName);
-		ajOutfileDel(&val);
+		ajOutfileClose(&val);
 	    }
 	    ajStrAssignEmptyS(&val->Formatstr, fmt);
 	    ajStrAssignEmptyC(&val->Type, type);
@@ -9385,18 +9387,18 @@ static void acdSetOutdata(AcdPAcd thys)
     
 /* @func ajAcdGetOutdir *******************************************************
 **
-** Returns an item of type AjPDir which has been validated as an output
+** Returns an item of type AjPDirout which has been validated as an output
 ** directory.
 **
 ** Optionally can be forced to have a fully qualified path when returned.
 **
 ** @param [r] token [const char*] Text token name
-** @return [AjPDir] Output directory object
+** @return [AjPDirout] Output directory object
 ** @cre failure to find an item with the right name and type aborts.
 ** @@
 ******************************************************************************/
 
-AjPDir ajAcdGetOutdir(const char *token)
+AjPDirout ajAcdGetOutdir(const char *token)
 {
     return acdGetValueRef(token, "outdir");
 }
@@ -9420,10 +9422,10 @@ AjPDir ajAcdGetOutdir(const char *token)
 AjPStr ajAcdGetOutdirName(const char *token)
 {
     AjPStr ret = NULL;
-    AjPDir dir;
+    AjPDirout dirout;
 
-    dir =  acdGetValue(token, "outdir");
-    ajStrAssignS(&ret, ajDirName(dir));
+    dirout =  acdGetValue(token, "outdir");
+    ret= ajStrNewS(ajDiroutGetPath(dirout));
     return ret;
 }
 
@@ -9448,7 +9450,7 @@ AjPStr ajAcdGetOutdirName(const char *token)
 
 static void acdSetOutdir(AcdPAcd thys)
 {
-    AjPDir val;
+    AjPDirout val;
 
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
@@ -9483,15 +9485,15 @@ static void acdSetOutdir(AcdPAcd thys)
 	    ajDebug("acdSetOutdir start reply '%S' dopath:%B ok:%B\n",
 		    acdReply, dopath,ok);
 	    if(dopath)
-		ok = ajFileDirPath(&acdReply);
+		ok = ajDirnameFillPath(&acdReply);
 	    else
-		ok = ajFileDir(&acdReply);
+		ok = ajDirnameFixExists(&acdReply);
 
 	    ajDebug("acdSetOutdir dir done reply '%S' dopath:%B ok:%B\n",
 		    acdReply, dopath,ok);
 	    if (ok)
 	    {
-		val = ajDiroutNewS(acdReply, ext);
+		val = ajDiroutNewPathExt(acdReply, ext);
 		if (!val)
 		    ok = ajFalse;
 	    }
@@ -9719,11 +9721,11 @@ static void acdSetOutfile(AcdPAcd thys)
 
 	if(ajStrGetLen(acdReply))
 	{
-	    ajFileSetDir(&acdOutFullFName, dir);
+	    ajFilenameReplacePathS(&acdOutFullFName, dir);
 	    if(append)
-		val = ajFileNewApp(acdOutFullFName);
+		val = ajFileNewOutappendNameS(acdOutFullFName);
 	    else
-		val = ajFileNewOut(acdOutFullFName);
+		val = ajFileNewOutNameS(acdOutFullFName);
 
 	    if(!val)
 	    {
@@ -9856,11 +9858,11 @@ static void acdSetOutfileall(AcdPAcd thys)
 
 	if(ajStrGetLen(acdReply))
 	{
-	    ajFileSetDir(&acdOutFullFName, dir);
+	    ajFilenameReplacePathS(&acdOutFullFName, dir);
 	    if(append)
-		val = ajFileNewApp(acdOutFullFName);
+		val = ajFileNewOutappendNameS(acdOutFullFName);
 	    else
-		val = ajFileNewOut(acdOutFullFName);
+		val = ajFileNewOutNameS(acdOutFullFName);
 
 	    if(!val)
 	    {
@@ -10897,7 +10899,7 @@ static void acdSetReport(AcdPAcd thys)
 		      thys->Name);
     
 	    ajStrAssignS(&acdOutFullFName, acdReply);
-	    ajFileSetDir(&acdOutFullFName, dir);
+	    ajFilenameReplacePathS(&acdOutFullFName, dir);
 	    ok = ajReportOpen(val, acdOutFullFName);
 	    if(!ok)
 	    {
@@ -11006,7 +11008,7 @@ static void acdSetScop(AcdPAcd thys)
 
 	if(ajStrGetLen(acdReply))
 	{
-	    val = ajFileNewIn(acdReply);
+	    val = ajFileNewInNameS(acdReply);
 	    if(!val)
 	    {
 		acdBadVal(thys, required,
@@ -18531,7 +18533,7 @@ static AjBool acdExpFilename(AjPStr* result, const AjPStr str)
 	acdLog("acdRegExpFilename matched  '%S'\n", str);
 	ajRegSubI(acdRegExpFilename, 1, &acdTmpStr);
 	ajStrAssignS(result, acdTmpStr);
-	ajFileNameShorten(result);
+	ajFilenameTrimAll(result);
 	ajStrFmtLower(result);
 	acdLog("file: %S = '%S'\n", acdTmpStr, *result);
 
@@ -22707,18 +22709,18 @@ static void acdCodeInit(void)
     if(acdCodeSet)
 	return;
     
-    ajNamRootPack(&codePack);
-    ajNamRootInstall(&codeRootInst);
-    ajFileDirFix(&codeRootInst);
+    ajStrAssignS(&codePack, ajNamValuePackage());
+    ajStrAssignS(&codeRootInst,ajNamValueInstalldir());
+    ajDirnameFix(&codeRootInst);
     
     if(!ajNamGetValueC("language", &codeLanguage))
 	ajStrAssignC(&codeLanguage, "english");
     
     if(ajNamGetValueC("acdroot", &codeRoot))
     {
-	ajFileDirFix(&codeRoot);
+	ajDirnameFix(&codeRoot);
 	ajFmtPrintS(&codeFName, "%Scodes.%S", codeRoot, codeLanguage);
-	codeFile = ajFileNewIn(codeFName);
+	codeFile = ajFileNewInNameS(codeFName);
 	acdLog("Code file in acdroot: '%S'\n", codeFName);
     }
     else
@@ -22726,15 +22728,15 @@ static void acdCodeInit(void)
 	ajFmtPrintS(&codeFName, "%Sshare/%S/acd/codes.%S",
 		    codeRootInst, codePack, codeLanguage);
 	acdLog("Code file installed: '%S'\n", codeFName);
-	codeFile = ajFileNewIn(codeFName);
+	codeFile = ajFileNewInNameS(codeFName);
 	if(!codeFile)
 	{
 	    acdLog("Code file '%S' not opened\n", codeFName);
-	    ajNamRoot(&codeRoot);
-	    ajFileDirFix(&codeRoot);
+	    ajStrAssignS(&codeRoot, ajNamValueRootdir());
+	    ajDirnameFix(&codeRoot);
 	    ajFmtPrintS(&codeFName, "%Sacd/codes.%S", codeRoot, codeLanguage);
 	    acdLog("Code file from source dir: '%S'\n", codeFName);
-	    codeFile = ajFileNewIn(codeFName);
+	    codeFile = ajFileNewInNameS(codeFName);
 	}
     }
     
@@ -22747,7 +22749,7 @@ static void acdCodeInit(void)
     
     /* fix by Nicolas Joly <njoly@pasteur.fr> */
     
-    while(codeFile && ajFileReadLine(codeFile, &codeLine))
+    while(codeFile && ajReadlineTrim(codeFile, &codeLine))
 	if(ajStrCutComments(&codeLine))
 	{
 	    ajStrAppendS(&codeText, codeLine);
@@ -23519,10 +23521,10 @@ static AjBool acdDataFilename(AjPStr* infname,
 	ajStrAssignClear(infname);
 
     if(ajStrGetLen(ext))
-	ajFileNameExt(infname, ext);
+	ajFilenameReplaceExtS(infname, ext);
     else
 	if (!nullok)
-	    ajFileNameExtC(infname, "dat");
+	    ajFilenameReplaceExtC(infname, "dat");
 
     return ret;
 }
@@ -23596,7 +23598,7 @@ static AjBool acdOutDirectory(AjPStr* dir)
 
     if(ajStrGetLen(mydir))
     {
-	ajFileDirFix(&mydir);
+	ajDirnameFix(&mydir);
 	ajStrAssignS(dir, mydir);
 	ret = ajTrue;
     }
@@ -23719,7 +23721,7 @@ static AjBool acdInFileSave(const AjPStr infname, AjBool reset)
 	return ajFalse;
 
     ajStrAssignS(&acdInFName, infname);
-    ajFileNameShorten(&acdInFName);
+    ajFilenameTrimAll(&acdInFName);
     ajStrFmtLower(&acdInFName);
 
     if(reset)
@@ -23925,8 +23927,8 @@ static void acdLog(const char *fmt, ...)
     if(!acdLogFName)
     {
 	ajFmtPrintS(&acdLogFName, "%S.acdlog", acdProgram);
-	acdLogFile = ajFileNewOut(acdLogFName);
-	ajFileUnbuffer(acdLogFile);
+	acdLogFile = ajFileNewOutNameS(acdLogFName);
+	ajFileSetUnbuffer(acdLogFile);
     }
 
     va_start(args, fmt) ;
@@ -23970,12 +23972,12 @@ static void acdPretty(const char *fmt, ...)
     if(!acdPrettyFName)
     {
 	if(acdStdout)
-	    acdPrettyFile = ajFileNewF(stdout);
+	    acdPrettyFile = ajFileNewFromCfile(stdout);
 	else
 	{
 	    ajFmtPrintS(&acdPrettyFName, "%S.acdpretty", acdProgram);
-	    acdPrettyFile = ajFileNewOut(acdPrettyFName);
-	    ajFileUnbuffer(acdPrettyFile);
+	    acdPrettyFile = ajFileNewOutNameS(acdPrettyFName);
+	    ajFileSetUnbuffer(acdPrettyFile);
 	    ajFmtPrint("Created %S\n", acdPrettyFName);
 	}
     }
@@ -24101,12 +24103,12 @@ static void acdPrettyClose(void)
     if(!acdPrettyFName)
     {
 	if(acdStdout)
-	    acdPrettyFile = ajFileNewF(stdout);
+	    acdPrettyFile = ajFileNewFromCfile(stdout);
 	else
 	{
 	    ajFmtPrintS(&acdPrettyFName, "%S.acdpretty", acdProgram);
-	    acdPrettyFile = ajFileNewOut(acdPrettyFName);
-	    ajFileUnbuffer(acdPrettyFile);
+	    acdPrettyFile = ajFileNewOutNameS(acdPrettyFName);
+	    ajFileSetUnbuffer(acdPrettyFile);
 	    ajFmtPrint("Created %S\n", acdPrettyFName);
 	}
     }
@@ -24158,12 +24160,12 @@ static void acdPrettyComment(const AjPStr comment)
     if(!acdPrettyFName)
     {
 	if(acdStdout)
-	    acdPrettyFile = ajFileNewF(stdout);
+	    acdPrettyFile = ajFileNewFromCfile(stdout);
 	else
 	{
 	    ajFmtPrintS(&acdPrettyFName, "%S.acdpretty", acdProgram);
-	    acdPrettyFile = ajFileNewOut(acdPrettyFName);
-	    ajFileUnbuffer(acdPrettyFile);
+	    acdPrettyFile = ajFileNewOutNameS(acdPrettyFName);
+	    ajFileSetUnbuffer(acdPrettyFile);
 	    ajFmtPrint("Created %S\n", acdPrettyFName);
 	}
     }
@@ -24234,12 +24236,12 @@ static void acdPrettyWrap(ajint left, const char *fmt, ...)
     if(!acdPrettyFName)
     {
 	if(acdStdout)
-	    acdPrettyFile = ajFileNewF(stdout);
+	    acdPrettyFile = ajFileNewFromCfile(stdout);
 	else
 	{
 	    ajFmtPrintS(&acdPrettyFName, "%S.acdpretty", acdProgram);
-	    acdPrettyFile = ajFileNewOut(acdPrettyFName);
-	    ajFileUnbuffer(acdPrettyFile);
+	    acdPrettyFile = ajFileNewOutNameS(acdPrettyFName);
+	    ajFileSetUnbuffer(acdPrettyFile);
 	}
     }
 
@@ -25038,7 +25040,7 @@ void ajAcdExit(AjBool silent)
        ajStrGetLen(acdProgram) &&
        ajNamGetValueC("acdcommandlinelog", &cmdlog))
     {
-	cmdlogfile = ajFileNewApp(cmdlog);
+	cmdlogfile = ajFileNewOutappendNameS(cmdlog);
 	ajStrAssignS(&cmdstr, acdArgSave);
 	if(ajStrGetLen(acdInputSave))
 	{
@@ -25262,7 +25264,7 @@ static void acdReset(void)
 static void acdValidAppl(const AcdPAcd thys)
 {
     ajint i;
-    ajuint idocmax = 60;			/* maximum length of
+    ajuint idocmax = 70;			/* maximum length of
 					   documentation string */
 
     if(!acdDoValid)
@@ -26503,18 +26505,18 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     AjPStr knownRest     = NULL;
     ajint iline = 0;
 
-    ajNamRootPack(&knownPack);
-    ajNamRootInstall(&knownRootInst);
-    ajFileDirFix(&knownRootInst);
+    ajStrAssignS(&knownPack, ajNamValuePackage());
+    ajStrAssignS(&knownRootInst, ajNamValueInstalldir());
+    ajDirnameFix(&knownRootInst);
     
     *desctable = ajTablestrNewCase();
     *typetable = ajTablestrNewCase();
 
     if(ajNamGetValueC("acdroot", &knownRoot))
     {
-	ajFileDirFix(&knownRoot);
+	ajDirnameFix(&knownRoot);
 	ajFmtPrintS(&knownFName, "%Sknowntypes.standard", knownRoot);
-	knownFile = ajFileNewIn(knownFName);
+	knownFile = ajFileNewInNameS(knownFName);
 	acdLog("Knowntypes file in acdroot: '%S'\n", knownFName);
     }
     else
@@ -26522,15 +26524,15 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
 	ajFmtPrintS(&knownFName, "%Sshare/%S/acd/knowntypes.standard",
 		    knownRootInst, knownPack);
 	acdLog("Knowntypes file installed: '%S'\n", knownFName);
-	knownFile = ajFileNewIn(knownFName);
+	knownFile = ajFileNewInNameS(knownFName);
 	if(!knownFile)
 	{
 	    acdLog("Knowntypes file '%S' not opened\n", knownFName);
-	    ajNamRoot(&knownRoot);
-	    ajFileDirFix(&knownRoot);
+	    ajStrAssignS(&knownRoot, ajNamValueRootdir());
+	    ajDirnameFix(&knownRoot);
 	    ajFmtPrintS(&knownFName, "%Sacd/knowntypes.standard", knownRoot);
 	    acdLog("Knowntypes file from source dir: '%S'\n", knownFName);
-	    knownFile = ajFileNewIn(knownFName);
+	    knownFile = ajFileNewInNameS(knownFName);
 	}
     }
     
@@ -26539,7 +26541,7 @@ static void acdReadKnowntype(AjPTable* desctable, AjPTable* typetable)
     else
 	acdLog("Knowntypes file %F used\n", knownFile);
     
-    while(knownFile && ajFileReadLine(knownFile, &knownLine))
+    while(knownFile && ajReadlineTrim(knownFile, &knownLine))
     {
 	iline++;
 	if(ajStrCutComments(&knownLine))
@@ -26706,15 +26708,15 @@ static AjPTable acdReadGroups(void)
     AjPStr grpName     = NULL;
     AjPStr grpDesc     = NULL;
 
-    ajNamRootPack(&grpPack);
-    ajNamRootInstall(&grpRootInst);
-    ajFileDirFix(&grpRootInst);
+    ajStrAssignS(&grpPack, ajNamValuePackage());
+    ajStrAssignS(&grpRootInst, ajNamValueInstalldir());
+    ajDirnameFix(&grpRootInst);
     
     if(ajNamGetValueC("acdroot", &grpRoot))
     {
-	ajFileDirFix(&grpRoot);
+	ajDirnameFix(&grpRoot);
 	ajFmtPrintS(&grpFName, "%Sgroups.standard", grpRoot);
-	grpFile = ajFileNewIn(grpFName);
+	grpFile = ajFileNewInNameS(grpFName);
 	acdLog("Group file in acdroot: '%S'\n", grpFName);
     }
     else
@@ -26722,15 +26724,15 @@ static AjPTable acdReadGroups(void)
 	ajFmtPrintS(&grpFName, "%Sshare/%S/acd/groups.standard",
 		    grpRootInst, grpPack);
 	acdLog("Group file installed: '%S'\n", grpFName);
-	grpFile = ajFileNewIn(grpFName);
+	grpFile = ajFileNewInNameS(grpFName);
 	if(!grpFile)
 	{
 	    acdLog("Grp file '%S' not opened\n", grpFName);
-	    ajNamRoot(&grpRoot);
-	    ajFileDirFix(&grpRoot);
+	    ajStrAssignS(&grpRoot, ajNamValueRootdir());
+	    ajDirnameFix(&grpRoot);
 	    ajFmtPrintS(&grpFName, "%Sacd/groups.standard", grpRoot);
 	    acdLog("Grp file from source dir: '%S'\n", grpFName);
-	    grpFile = ajFileNewIn(grpFName);
+	    grpFile = ajFileNewInNameS(grpFName);
 	}
     }
     
@@ -26740,7 +26742,7 @@ static AjPTable acdReadGroups(void)
 	acdLog("Group file %F used\n", grpFile);
     
     grpxp = ajRegCompC("([^ ]+) +([^ ].*)");
-    while(grpFile && ajFileReadLine(grpFile, &grpLine))
+    while(grpFile && ajReadlineTrim(grpFile, &grpLine))
     {
 	if(ajStrCutComments(&grpLine))
 	{
@@ -26805,15 +26807,15 @@ static AjPTable acdReadKeywords(void)
     if(!acdGrpTable)
 	acdGrpTable = acdReadGroups();
 
-    ajNamRootPack(&keyPack);
-    ajNamRootInstall(&keyRootInst);
-    ajFileDirFix(&keyRootInst);
+    ajStrAssignS(&keyPack, ajNamValuePackage());
+    ajStrAssignS(&keyRootInst, ajNamValueInstalldir());
+    ajDirnameFix(&keyRootInst);
     
     if(ajNamGetValueC("acdroot", &keyRoot))
     {
-	ajFileDirFix(&keyRoot);
+	ajDirnameFix(&keyRoot);
 	ajFmtPrintS(&keyFName, "%Skeywords.standard", keyRoot);
-	keyFile = ajFileNewIn(keyFName);
+	keyFile = ajFileNewInNameS(keyFName);
 	acdLog("Keyword file in acdroot: '%S'\n", keyFName);
     }
     else
@@ -26821,15 +26823,15 @@ static AjPTable acdReadKeywords(void)
 	ajFmtPrintS(&keyFName, "%Sshare/%S/acd/keywords.standard",
 		    keyRootInst, keyPack);
 	acdLog("Keyword file installed: '%S'\n", keyFName);
-	keyFile = ajFileNewIn(keyFName);
+	keyFile = ajFileNewInNameS(keyFName);
 	if(!keyFile)
 	{
 	    acdLog("keyword file '%S' not opened\n", keyFName);
-	    ajNamRoot(&keyRoot);
-	    ajFileDirFix(&keyRoot);
+	    ajStrAssignS(&keyRoot, ajNamValueRootdir());
+	    ajDirnameFix(&keyRoot);
 	    ajFmtPrintS(&keyFName, "%Sacd/keywords.standard", keyRoot);
 	    acdLog("Keywords file from source dir: '%S'\n", keyFName);
-	    keyFile = ajFileNewIn(keyFName);
+	    keyFile = ajFileNewInNameS(keyFName);
 	}
     }
     
@@ -26839,7 +26841,7 @@ static AjPTable acdReadKeywords(void)
 	acdLog("Keyword file %F used\n", keyFile);
     
     keyxp = ajRegCompC("([^ ]+) +([^ ].*)");
-    while(keyFile && ajFileReadLine(keyFile, &keyLine))
+    while(keyFile && ajReadlineTrim(keyFile, &keyLine))
     {
 	if(ajStrCutComments(&keyLine))
 	{
@@ -26906,18 +26908,18 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
     AjPStr sectType     = NULL;
     AjPStr sectDesc     = NULL;
 
-    ajNamRootPack(&sectPack);
-    ajNamRootInstall(&sectRootInst);
-    ajFileDirFix(&sectRootInst);
+    ajStrAssignS(&sectPack, ajNamValuePackage());
+    ajStrAssignS(&sectRootInst, ajNamValueInstalldir());
+    ajDirnameFix(&sectRootInst);
     
     *typetable = ajTablestrNewCaseLen(50);
     *infotable = ajTablestrNewCaseLen(50);
 
     if(ajNamGetValueC("acdroot", &sectRoot))
     {
-	ajFileDirFix(&sectRoot);
+	ajDirnameFix(&sectRoot);
 	ajFmtPrintS(&sectFName, "%Ssections.standard", sectRoot);
-	sectFile = ajFileNewIn(sectFName);
+	sectFile = ajFileNewInNameS(sectFName);
 	acdLog("Section file in acdroot: '%S'\n", sectFName);
     }
     else
@@ -26925,15 +26927,15 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
 	ajFmtPrintS(&sectFName, "%Sshare/%S/acd/sections.standard",
 		    sectRootInst, sectPack);
 	acdLog("Section file installed: '%S'\n", sectFName);
-	sectFile = ajFileNewIn(sectFName);
+	sectFile = ajFileNewInNameS(sectFName);
 	if(!sectFile)
 	{
 	    acdLog("Sect file '%S' not opened\n", sectFName);
-	    ajNamRoot(&sectRoot);
-	    ajFileDirFix(&sectRoot);
+	    ajStrAssignS(&sectRoot, ajNamValueRootdir());
+	    ajDirnameFix(&sectRoot);
 	    ajFmtPrintS(&sectFName, "%Sacd/sections.standard", sectRoot);
 	    acdLog("Sect file from source dir: '%S'\n", sectFName);
-	    sectFile = ajFileNewIn(sectFName);
+	    sectFile = ajFileNewInNameS(sectFName);
 	}
     }
     
@@ -26943,7 +26945,7 @@ static void acdReadSections(AjPTable* typetable, AjPTable* infotable)
 	acdLog("Section file %F used\n", sectFile);
     
     sectxp = ajRegCompC("([^ ]+) +([^ ]+) +([^ ].*)");
-    while(sectFile && ajFileReadLine(sectFile, &sectLine))
+    while(sectFile && ajReadlineTrim(sectFile, &sectLine))
     {
 	if(ajStrCutComments(&sectLine))
 	{
@@ -27437,11 +27439,11 @@ static AjBool acdResourceList(const AcdPAcd thys,
     {
 	ajStrAssignClear(value);
 	ajStrCutStart(&liststr, 1);
-	ajFileDataNew(liststr, &infile);
+	infile = ajDatafileNewInNameS(liststr);
 	if(!infile)
 	    return ajFalse;
 
-	while(ajFileReadLine(infile, &line))
+	while(ajReadlineTrim(infile, &line))
 	{
 	    ajStrTrimWhite(&line);
 	    if(ajStrGetCharFirst(line) == '#')
@@ -27521,6 +27523,24 @@ static void acdDelDir(void** PPval)
 {
     if(!*PPval) return;
     ajDirDel((AjPDir*)PPval);
+    return;
+}
+
+
+
+
+/* @funcstatic acdDelDirout ***************************************************
+**
+** Function with void** prototype to delete ACD directory data
+**
+** @param [d] PPval [void**] Value to be deleted
+** @return [void]
+******************************************************************************/
+
+static void acdDelDirout(void** PPval)
+{
+    if(!*PPval) return;
+    ajDiroutDel((AjPDirout*)PPval);
     return;
 }
 
@@ -27665,7 +27685,7 @@ static void acdDelMatrixf(void** PPval)
 static void acdDelOutfile(void** PPval)
 {
     if(!*PPval) return;
-    ajOutfileDel((AjPOutfile*)PPval);
+    ajOutfileClose((AjPOutfile*)PPval);
     return;
 }
 

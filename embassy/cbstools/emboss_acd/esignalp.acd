@@ -12,6 +12,7 @@ section: input [
   seqset: sequence [
     parameter: "Y"
     type: "any"
+    aligned: "Y"
   ]
 
 endsection: input

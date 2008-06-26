@@ -1813,7 +1813,7 @@ static AjPPdbfile ReadLines(AjPFile inf)
     
     /* Read pdb file and append lines to list */ 
     line = ajStrNew();
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	ajListstrPushAppend(list, line);
 	line = ajStrNew();

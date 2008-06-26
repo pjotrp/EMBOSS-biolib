@@ -251,7 +251,8 @@ int main(int argc, char **argv)
 	ajFatal("Invalid JASPAR database selection");
 
 
-    if(!ajFilePathData(&dir))
+    ajStrAssignS(&dir, ajDatafileValuePath());
+    if(!ajStrGetLen(dir))
 	ajFatal("EMBOSS DATA directory couldn't be determined");
 
 
@@ -356,12 +357,12 @@ static void jaspscan_GetFileList(const AjPStr dir, const AjPStr jaspdir,
     
 
     ajFmtPrintS(&jdir,"%S%S",dir,jaspdir);
-    if(!ajFileDir(&jdir))
+    if(!ajDirnameFixExists(&jdir))
 	ajFatal("EMBOSS_DATA undefined or 'jaspextract' needs to be run");
 
     ajFmtPrintS(&wstr,"%s%s",wild,J_EXT);
 
-    ajFileScan(jdir,wstr,&tlist,ajFalse,ajFalse,NULL,NULL,ajFalse,NULL);
+    ajFilelistAddPathWild(tlist,jdir,wstr);
 
     if(!ajListGetLength(tlist))
 	ajWarn("Matrix file(s) %S not found",wstr);
@@ -439,11 +440,11 @@ static void jaspscan_ParseInput(const AjPStr dir, const AjPStr jaspdir,
 	    else if(ajStrGetCharFirst(carr[i]) == '@')
 	    {
 		ajStrTrimStartC(&carr[i],"@");
-		inf = ajFileNewIn(carr[i]);
+		inf = ajFileNewInNameS(carr[i]);
 		if(!inf)
 		    ajFatal("Cannot open list file %S",carr[i]);
 
-		while(ajFileReadLine(inf,&line))
+		while(ajReadlineTrim(inf,&line))
 		{
 		    ajStrRemoveWhite(&line);
 		    c = ajStrGetCharFirst(line);
@@ -490,11 +491,11 @@ static void jaspscan_ParseInput(const AjPStr dir, const AjPStr jaspdir,
 	    if(ajStrGetCharFirst(earr[i]) == '@')
 	    {
 		ajStrTrimStartC(&earr[i],"@");
-		inf = ajFileNewIn(earr[i]);
+		inf = ajFileNewInNameS(earr[i]);
 		if(!inf)
 		    ajFatal("Cannot open list file %S",earr[i]);
 
-		while(ajFileReadLine(inf,&line))
+		while(ajReadlineTrim(inf,&line))
 		{
 		    ajStrRemoveWhite(&line);
 		    c = ajStrGetCharFirst(line);
@@ -632,8 +633,8 @@ static void jaspscan_scan(const AjPStr seq, const ajuint begin,
     mname = ajStrNew();
 
     ajStrAssignS(&mname,mfname);
-    ajFileNameTrim(&mname);
-    ajFileExtnTrim(&mname);
+    ajFilenameTrimPath(&mname);
+    ajFilenameTrimExt(&mname);
 
     p = ajStrGetPtr(seq);
 
@@ -757,12 +758,12 @@ static ajuint jaspscan_readmatrix(const AjPStr mfname, float ***matrix)
 
     line = ajStrNew();
 
-    inf = ajFileNewIn(mfname);
+    inf = ajFileNewInNameS(mfname);
     if(!inf)
 	ajFatal("Cannot open matrix file %S",mfname);
 
     i = 0;
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	if(!i)
 	    cols = ajStrParseCountC(line," \n");
@@ -860,7 +861,7 @@ static AjPTable jaspscan_ReadCoreList(const AjPStr jaspdir)
     ajFmtPrintS(&lfile,"%S%s%s",jaspdir,SLASH_STRING,J_LIST);
 
 
-    ajFileDataNew(lfile,&inf);
+    inf = ajDatafileNewInNameS(lfile);
     if(!inf)
 	ajFatal("Matrix list file %S not found",lfile);
 
@@ -868,7 +869,7 @@ static AjPTable jaspscan_ReadCoreList(const AjPStr jaspdir)
     ret = ajTablestrNewLen(JASPTAB_GUESS);
     
     
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	info = jaspscan_infonew();
 	ajFmtScanS(line,"%S%S%S",&info->id,&info->num,&info->name);
@@ -956,7 +957,7 @@ static AjPTable jaspscan_ReadFamList(const AjPStr jaspdir)
     ajFmtPrintS(&lfile,"%S%s%s",jaspdir,SLASH_STRING,J_LIST);
 
 
-    ajFileDataNew(lfile,&inf);
+    inf = ajDatafileNewInNameS(lfile);
     if(!inf)
 	ajFatal("Matrix list file %S not found",lfile);
 
@@ -964,7 +965,7 @@ static AjPTable jaspscan_ReadFamList(const AjPStr jaspdir)
     ret = ajTablestrNewLen(JASPTAB_GUESS);
     
     
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	info = jaspscan_infonew();
 	ajFmtScanS(line,"%S%S",&info->id,&info->num);

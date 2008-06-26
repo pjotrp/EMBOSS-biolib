@@ -251,11 +251,11 @@ static void         featLocEmblWrapC(AjPStr* pval, ajuint margin,
 static AjBool       featoutUfoProcess(AjPFeattabOut thys, const AjPStr ufo);
 static AjPFeature   featPirFromLine(AjPFeattable thys,
 				    const AjPStr origline);
-static AjBool       featReadEmbl(AjPFeattable thys, AjPFileBuff file);
-static AjBool       featReadGff(AjPFeattable thys, AjPFileBuff file);
-static AjBool       featReadGff3(AjPFeattable thys, AjPFileBuff file);
-static AjBool       featReadPir(AjPFeattable thys, AjPFileBuff file);
-static AjBool       featReadSwiss(AjPFeattable thys, AjPFileBuff file);
+static AjBool       featReadEmbl(AjPFeattable thys, AjPFilebuff file);
+static AjBool       featReadGff(AjPFeattable thys, AjPFilebuff file);
+static AjBool       featReadGff3(AjPFeattable thys, AjPFilebuff file);
+static AjBool       featReadPir(AjPFeattable thys, AjPFilebuff file);
+static AjBool       featReadSwiss(AjPFeattable thys, AjPFilebuff file);
 static AjBool       featRegInitEmbl(void);
 static AjBool       featRegInitGff(void);
 static AjBool       featRegInitGff3(void);
@@ -393,7 +393,7 @@ typedef struct FeatSInFormat
     AjBool Nucleotide;
     AjBool Protein;
     AjBool Used;
-    AjBool (*Read)  (AjPFeattable thys, AjPFileBuff file);
+    AjBool (*Read)  (AjPFeattable thys, AjPFilebuff file);
     AjBool (*InitReg)(void);
     AjBool (*DelReg)(void);
     const char* Desc;
@@ -797,7 +797,7 @@ AjBool ajFeattabOutOpen(AjPFeattabOut thys, const AjPStr ufo)
 
     /*ajDebug("trying to open dir:'%S' file:'%S' fmt:'%S'\n",
 	    thys->Directory, thys->Filename, thys->Formatstr);*/
-    thys->Handle = ajFileNewOutD(thys->Directory, thys->Filename);
+    thys->Handle = ajFileNewOutNamePathS(thys->Filename, thys->Directory);
     if(!thys->Handle)
 	return ajFalse;
    /* ajDebug("after opening '%S'\n", thys->Filename);*/
@@ -966,7 +966,7 @@ AjPFeattabIn ajFeattabInNewSS(const AjPStr fmt, const AjPStr name,
     pthis->Format = iformat;
     ajStrAssignC(&pthis->Type, type);
     ajStrAssignS(&pthis->Seqname, name);
-    pthis->Handle = ajFileBuffNew();
+    pthis->Handle = ajFilebuffNewNofile();
 
     /*ajDebug("ajFeatTabInNewSS %x Handle %x\n", pthis, pthis->Handle);*/
 
@@ -985,7 +985,7 @@ AjPFeattabIn ajFeattabInNewSS(const AjPStr fmt, const AjPStr name,
 ** @param [r] fmt [const char*] feature format
 ** @param [r] name [const AjPStr] sequence name
 ** @param [r] type [const char*] feature type
-** @param [u] buff [AjPFileBuff] Buffer containing feature data
+** @param [u] buff [AjPFilebuff] Buffer containing feature data
 ** @return [AjPFeattabIn] Feature table input object
 ** @category new [AjPFeattabIn] Constructor with format, name, type
 **                              and input file
@@ -993,7 +993,7 @@ AjPFeattabIn ajFeattabInNewSS(const AjPStr fmt, const AjPStr name,
 ******************************************************************************/
 
 AjPFeattabIn ajFeattabInNewCSF(const char* fmt, const AjPStr name,
-				const char* type, AjPFileBuff buff)
+				const char* type, AjPFilebuff buff)
 {
     AjPFeattabIn pthis;
     ajint iformat = 0;
@@ -1026,7 +1026,7 @@ AjPFeattabIn ajFeattabInNewCSF(const char* fmt, const AjPStr name,
 ** @param [r] fmt [const AjPStr] feature format
 ** @param [r] name [const AjPStr] sequence name
 ** @param [r] type [const char*] feature type
-** @param [u] buff [AjPFileBuff] Buffer containing feature data
+** @param [u] buff [AjPFilebuff] Buffer containing feature data
 ** @return [AjPFeattabIn] Feature table input object
 ** @category new [AjPFeattabIn] Constructor with format, name, type
 **                              and input file
@@ -1034,7 +1034,7 @@ AjPFeattabIn ajFeattabInNewCSF(const char* fmt, const AjPStr name,
 ******************************************************************************/
 
 AjPFeattabIn ajFeattabInNewSSF(const AjPStr fmt, const AjPStr name,
-				const char* type, AjPFileBuff buff)
+				const char* type, AjPFilebuff buff)
 {
     AjPFeattabIn pthis;
     ajint iformat = 0;
@@ -1095,7 +1095,7 @@ void ajFeattabOutSetBasename(AjPFeattabOut thys, const AjPStr basename)
     AjPStr tmpname = NULL;
 
     tmpname = ajStrNewS(basename);    
-    ajFileNameShorten(&tmpname);    
+    ajFilenameTrimAll(&tmpname);    
     ajStrAssignEmptyS(&thys->Basename, tmpname);
     ajStrDel(&tmpname);
     /*ajDebug("ajFeattabOutSetBasename '%S' result '%S'\n",	
@@ -1209,7 +1209,7 @@ AjPFeattabOut ajFeattabOutNewSSF(const AjPStr fmt, const AjPStr name,
 
 AjPFeattable ajFeatRead(AjPFeattabIn  ftin)
 {
-    AjPFileBuff  file ;
+    AjPFilebuff  file ;
     ajint format ;
 
     AjPFeattable features = NULL ;
@@ -1836,7 +1836,7 @@ void ajFeattabInDel(AjPFeattabIn* pthis)
 
     /*ajDebug("ajFeattabInDel %x Handle %x\n", thys, thys->Handle);*/
     if(!thys->Local)
-	ajFileBuffDel(&thys->Handle);
+	ajFilebuffDel(&thys->Handle);
 
     ajStrDel(&thys->Ufo);
     ajStrDel(&thys->Formatstr);
@@ -2592,12 +2592,12 @@ AjBool ajFeatWrite(AjPFeattabOut ftout, const AjPFeattable features)
 ** Reads feature data in EMBL format
 **
 ** @param [u] thys [AjPFeattable] Feature table
-** @param [u] file [AjPFileBuff] Buffered input file
+** @param [u] file [AjPFilebuff] Buffered input file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool featReadEmbl(AjPFeattable thys, AjPFileBuff file)
+static AjBool featReadEmbl(AjPFeattable thys, AjPFilebuff file)
 {
     AjBool found           = ajFalse;
     AjPStr savefeat = NULL;
@@ -2609,7 +2609,7 @@ static AjBool featReadEmbl(AjPFeattable thys, AjPFileBuff file)
 
     ajFeattableSetNuc(thys);
 
-    while(ajFileBuffGet(file, &featReadLine))
+    while(ajBuffreadLine(file, &featReadLine))
     {
 	/* if it's an EMBL feature do stuff */
 	if(!ajStrCmpLenC(featReadLine, "FT   ", 5))
@@ -2647,12 +2647,12 @@ static AjBool featReadEmbl(AjPFeattable thys, AjPFileBuff file)
 ** Reads feature data in PIR format
 **
 ** @param [u] thys [AjPFeattable] Feature table
-** @param [u] file [AjPFileBuff] Buffered input file
+** @param [u] file [AjPFilebuff] Buffered input file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool featReadPir(AjPFeattable thys, AjPFileBuff file)
+static AjBool featReadPir(AjPFeattable thys, AjPFilebuff file)
 {
     AjBool found = ajFalse;
 
@@ -2661,7 +2661,7 @@ static AjBool featReadPir(AjPFeattable thys, AjPFileBuff file)
     if(!featReadLine)
 	featReadLine = ajStrNewRes(100);
 
-    while(ajFileBuffGet(file, &featReadLine))
+    while(ajBuffreadLine(file, &featReadLine))
     {
 	ajStrTrimWhite(&featReadLine);
 
@@ -2806,12 +2806,12 @@ static AjPFeature featPirFromLine(AjPFeattable thys,
 ** Reads feature data in SwissProt format
 **
 ** @param [u] thys [AjPFeattable] Feature table
-** @param [u] file [AjPFileBuff] Buffered input file
+** @param [u] file [AjPFilebuff] Buffered input file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool featReadSwiss(AjPFeattable thys, AjPFileBuff file)
+static AjBool featReadSwiss(AjPFeattable thys, AjPFilebuff file)
 {
     AjBool found           = ajFalse;
     AjPStr savefeat = NULL;
@@ -2824,7 +2824,7 @@ static AjBool featReadSwiss(AjPFeattable thys, AjPFileBuff file)
     if(!featReadLine)
 	featReadLine = ajStrNewRes(100);
 
-    while(ajFileBuffGet(file, &featReadLine))
+    while(ajBuffreadLine(file, &featReadLine))
     {
 	ajStrTrimWhite(&featReadLine);
 
@@ -4851,12 +4851,12 @@ static AjPFeature featGff3FromLine(AjPFeattable thys, const AjPStr line)
 ** Read input file in GFF format
 **
 ** @param [u] thys [AjPFeattable] Feature table
-** @param [u] file [AjPFileBuff] Input buffered file
+** @param [u] file [AjPFilebuff] Input buffered file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool featReadGff(AjPFeattable thys, AjPFileBuff file)
+static AjBool featReadGff(AjPFeattable thys, AjPFilebuff file)
 {
     AjPStr line  = NULL;
     AjPStr verstr       = NULL;
@@ -4869,7 +4869,7 @@ static AjBool featReadGff(AjPFeattable thys, AjPFileBuff file)
     
     /* ajDebug("featReadGff..........\n"); */
     
-    while(ajFileBuffGet(file, &line))
+    while(ajBuffreadLine(file, &line))
     {	
 	ajStrTrimWhite(&line);
 	
@@ -4944,12 +4944,12 @@ static AjBool featReadGff(AjPFeattable thys, AjPFileBuff file)
 ** Read input file in GFF3 format
 **
 ** @param [u] thys [AjPFeattable] Feature table
-** @param [u] file [AjPFileBuff] Input buffered file
+** @param [u] file [AjPFilebuff] Input buffered file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool featReadGff3(AjPFeattable thys, AjPFileBuff file)
+static AjBool featReadGff3(AjPFeattable thys, AjPFilebuff file)
 {
     AjPStr line  = NULL;
     AjPStr verstr       = NULL;
@@ -4961,7 +4961,7 @@ static AjBool featReadGff3(AjPFeattable thys, AjPFileBuff file)
     
     /* ajDebug("featReadGff3..........\n"); */
     
-    while(ajFileBuffGet(file, &line))
+    while(ajBuffreadLine(file, &line))
     {	
 	ajStrTrimWhite(&line);
 	
@@ -5066,7 +5066,6 @@ AjBool ajFeattableWriteGff2(const AjPFeattable Feattab, AjPFile file)
 
 AjBool ajFeattableWriteGff3(const AjPFeattable Feattab, AjPFile file)
 {
-    AjPStr version   = NULL;
     AjIList    iter = NULL;
     AjPFeature gf   = NULL;
 
@@ -5075,9 +5074,6 @@ AjBool ajFeattableWriteGff3(const AjPFeattable Feattab, AjPFile file)
     if(!file)
 	return ajFalse;
     
-    if(!version)
-	ajNamRootVersion(&version);
-
     /* Print GFF3-specific header first with ## tags */
 
     ajFmtPrintF(file, "##gff-version 3\n") ;
@@ -5093,7 +5089,7 @@ AjBool ajFeattableWriteGff3(const AjPFeattable Feattab, AjPFile file)
 	ajFmtPrintF(file, "#!Type Protein\n");
     else
 	ajFmtPrintF(file, "#!Type DNA\n");
-    ajFmtPrintF(file, "#!Source-version EMBOSS %S\n", version);
+    ajFmtPrintF(file, "#!Source-version EMBOSS %S\n", ajNamValueVersion());
 
 
   /* For all features... relatively simple because internal structures
@@ -5110,7 +5106,6 @@ AjBool ajFeattableWriteGff3(const AjPFeattable Feattab, AjPFile file)
 	ajListIterDel(&iter);
     }
 
-    ajStrDel(&version);
     return ajTrue;
 }
 
@@ -6208,7 +6203,7 @@ void ajFeattabInClear(AjPFeattabIn thys)
     ajStrSetClear(&thys->Filename);
     ajStrSetClear(&thys->Seqid);
     ajStrSetClear(&thys->Type);
-    ajFileBuffDel(&thys->Handle);
+    ajFilebuffDel(&thys->Handle);
     if(thys->Handle)
 	ajFatal("ajFeattabInClear did not delete Handle");
 
@@ -7457,7 +7452,7 @@ static AjBool featVocabReadTags(const AjPStr fname, AjPTable pTagsTable,
 	NULL
     };
     
-    ajFileDataNew(fname, &TagsFile);
+    TagsFile = ajDatafileNewInNameS(fname);
     if(!TagsFile)
     {
 	ajErr("Unable to read feature tags data file '%S'\n", fname);
@@ -7466,7 +7461,7 @@ static AjBool featVocabReadTags(const AjPStr fname, AjPTable pTagsTable,
     
     tagscount = ajTableGetLength(pTagsTable);
     linecount = 0;
-    while(ajFileReadLine(TagsFile,&line))
+    while(ajReadlineTrim(TagsFile,&line))
     {
 	linecount++;
 	ajStrRemoveWhiteExcess(&line);
@@ -7630,7 +7625,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     AjBool ismodtype = ajFalse;
     AjPStr* Ptyptagstr = NULL;
 
-    ajFileDataNew(fname,&TypeFile);
+    TypeFile = ajDatafileNewInNameS(fname);
     if(!TypeFile)
     {
 	ajErr("Unable to read feature types data file '%S'\n", fname);
@@ -7639,7 +7634,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     
     filetypecount = 0;
     typecount = ajTableGetLength(pTypeTable);
-    while(ajFileReadLine(TypeFile,&line))
+    while(ajReadlineTrim(TypeFile,&line))
     {
 	ajStrRemoveWhiteExcess(&line);
 	if(ajStrPrefixC(line,"#")) /* if a comment skip it */
@@ -8726,7 +8721,7 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
     /* Open the file so that we can try to read it */
     
    /* ajDebug("trying to open '%S'\n", featin->Filename);*/
-    featin->Handle = ajFileBuffNewIn(featin->Filename);
+    featin->Handle = ajFilebuffNewNameS(featin->Filename);
     if(!featin->Handle)
 	return NULL;
     /*ajDebug("after opening '%S'\n", featin->Filename);*/
@@ -8747,11 +8742,11 @@ AjPFeattable ajFeatUfoRead(AjPFeattabIn featin,
 		break;
 
 	    /* Reset buffer to start */
-	    ajFileBuffReset(featin->Handle);
+	    ajFilebuffReset(featin->Handle);
 
 	}
 
-    ajFileBuffDel(&featin->Handle);
+    ajFilebuffDel(&featin->Handle);
     
     return ret;
 }

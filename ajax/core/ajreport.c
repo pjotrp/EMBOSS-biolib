@@ -2463,7 +2463,7 @@ AjBool ajReportOpen(AjPReport thys, const AjPStr name)
     if(!ajReportValid(thys))
 	return ajFalse;
 
-    thys->File = ajFileNewOut(name);
+    thys->File = ajFileNewOutNameS(name);
     if(thys->File)
 	return ajTrue;
 

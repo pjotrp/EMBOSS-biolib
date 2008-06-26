@@ -693,7 +693,7 @@ int main(int argc, char **argv)
     else if(ajStrMatchC(linkage,"UPGMA"))
 	strcpy(clust_sim, "av");    
 
-    ajFileDataNewC("edialignmat",&matfp);
+    matfp = ajDatafileNewInNameC("edialignmat");
 
     if(!matfp)
 	ajFatal("edialignmat matrix file not found\n");
@@ -1000,13 +1000,13 @@ int main(int argc, char **argv)
 /*
 ** This section had to be used if the VC++ /MT libs were used instead of
 ** the /MD ones
-    ajStrAssignS(&tnstr,ajFileGetName(matfp));
+    ajStrAssignS(&tnstr,ajFileGetNameS(matfp));
     ajFileClose(&matfp);
 
     fp_matrix = fopen(ajStrGetPtr(tnstr),"rb");
 */
 
-    fp_matrix = ajFileFp(matfp);
+    fp_matrix = ajFileGetFileptr(matfp);
 
     if( wgt_type != 1 )
 	edialign_matrix_read( fp_matrix );
@@ -1432,12 +1432,12 @@ int main(int argc, char **argv)
     if( textual_alignment )
     {
 /*
-	ajStrAssignS(&tnstr,ajFileGetName(outfile));
+	ajStrAssignS(&tnstr,ajFileGetNameS(outfile));
 	ajFileClose(&outfile);
 
 	fp_ali = fopen(ajStrGetPtr(tnstr),"wb");
 */
-	fp_ali = ajFileFp(outfile);
+	fp_ali = ajFileGetFileptr(outfile);
 	
 	/* fp_ali = fopen(itname,"w"); */
     }
@@ -6305,19 +6305,19 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 
     if ( w_type == 0 )
     {
-	ajFileDataNewC("tp400_prot",&etpfile);
+	etpfile = ajDatafileNewInNameC("tp400_prot");
 /*	strcpy( suffix , "prot" );*/
     }
 
-    if ( w_type == 1 )
+    else if ( w_type == 1 )
     {
-	ajFileDataNewC("tp400_dna",&etpfile);
+	etpfile = ajDatafileNewInNameC("tp400_dna");
 /*	strcpy( suffix , "dna" );*/
     }  
 
-    if ( w_type == 2 )
+    else if ( w_type == 2 )
     {
-	ajFileDataNewC("tp400_trans",&etpfile);
+	etpfile = ajDatafileNewInNameC("tp400_trans");
 /*	strcpy( suffix , "trans" );*/
     }
  
@@ -6342,11 +6342,11 @@ static void edialign_tp400_read( ajint w_type , double **pr_ptr )
 
 
 /*
-    ajStrAssignS(&tnstr,ajFileGetName(etpfile));
+    ajStrAssignS(&tnstr,ajFileGetNameS(etpfile));
     ajFileClose(&etpfile);    
     fp = fopen(ajStrGetPtr(tnstr),"rb");
 */
-    fp = ajFileFp(etpfile);
+    fp = ajFileGetFileptr(etpfile);
 
     if ( fgets( line , MLINE , fp ) == NULL ) 
 	ajFatal("\n\n problem with tp400 file \n\n");

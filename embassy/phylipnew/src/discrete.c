@@ -792,7 +792,7 @@ void re_move(node *item, node **fork, node **root, boolean recompute,
      If item belongs to a node with more than 2 descendants,
      fork will not be deleted */
   /* used in pars */
-  node *p, *q, *other, *otherback = NULL;
+  node *p, *q, *other=NULL, *otherback = NULL;
 
   if (item->back == NULL) {
     *fork = NULL;

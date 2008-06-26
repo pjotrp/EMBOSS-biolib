@@ -3871,7 +3871,7 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	
 	/* open a file for dumping the data points */
 	temp = ajFmtStr("%S%d%s",thys->plplot->outputfile,i+1,ext);
-	outf = ajFileNewOut(temp);
+	outf = ajFileNewOutNameS(temp);
 	ajListstrPushAppend(graphData->List, temp);
 	if(!outf)
 	{
@@ -7977,7 +7977,7 @@ static void GraphDatafileNext(void)
 	graphData->Lines = 0;
 	tempstr = ajFmtStr("%S%d%S",
 			   graphData->FName,++graphData->Num,graphData->Ext);
-	graphData->File = ajFileNewOut(tempstr);
+	graphData->File = ajFileNewOutNameS(tempstr);
 	if(!graphData->File)
 	{
 	    ajErr("Could not open graph file %S\n",tempstr);

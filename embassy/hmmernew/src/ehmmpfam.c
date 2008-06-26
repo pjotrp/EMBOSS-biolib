@@ -104,7 +104,7 @@ int main(int argc, char **argv)
     /* 2. Re-write seqfile to a temporary file in a format (fasta) HMMER can understand.
        We cannot just pass the name of seqfile to HMMER as the name provided might be a 
        USA which HMMER would not understand. */
-    ajStrAssignC(&rnd, ajFileTempName(NULL));
+    ajFilenameSetTempname(&rnd);
     rndo = ajSeqoutNew();
     if(!ajSeqoutOpenFilename(rndo, rnd))
 	ajFatal("Terminal ajSeqFileNewOut failure. Email EMBOSS helpdesk!\n");
@@ -153,9 +153,9 @@ int main(int argc, char **argv)
        rnd is the name of the rewritten seqfile.  
        MUST specify FASTA format explicitly. */
     ajFmtPrintAppS(&cmd, " --informat FASTA %s %S > %s", 
-		   ajFileName(hmmfile),
+		   ajFileGetNameC(hmmfile),
 		   rnd,
-		   ajFileName(outfile));
+		   ajFileGetNameC(outfile));
     
 
     /* 3. Close ACD files. */

@@ -1618,7 +1618,7 @@ void ajDebug(const char* fmt, ...)
 	if(fileDebug)
 	{
 	    ajFmtPrintS(&fileDebugName, "%s.dbg", ajStrGetPtr(acdProgram));
-	    fileDebugFile = ajFileNewOut(fileDebugName);
+	    fileDebugFile = ajFileNewOutNameS(fileDebugName);
 	    if(!fileDebugFile)
 		ajFatal("Cannot open debug file %S",fileDebugName);
 	    if(ajNamGetValueC("debugbuffer", &bufstr))
@@ -1626,7 +1626,7 @@ void ajDebug(const char* fmt, ...)
 		ajStrToBool(bufstr, &acdDebugBuffer);
 	    }
 	    if(!acdDebugBuffer)
-		ajFileUnbuffer(fileDebugFile);
+		ajFileSetUnbuffer(fileDebugFile);
 	    ajFmtPrintF(fileDebugFile, "Debug file %F buffered:%B\n",
 			 fileDebugFile, acdDebugBuffer);
 	    ajStrDel(&bufstr);
@@ -1662,7 +1662,7 @@ FILE* ajDebugFile(void)
     if(!fileDebugFile)
 	return NULL;
 
-    return ajFileFp(fileDebugFile);
+    return ajFileGetFileptr(fileDebugFile);
 }
 
 
@@ -1689,13 +1689,13 @@ ajint ajUserGet(AjPStr* pthis, const char* fmt, ...)
     ajint isize;
     ajint ilen;
     ajint jlen;
-    ajint fileBuffSize = ajFileBuffSize();
+    ajint fileBuffSize = ajFileValueBuffsize();
 
     va_start(args, fmt);
     ajFmtVError(fmt, args);
     va_end(args);
 
-    if(ajFileRedirectStdin())
+    if(ajFileValueRedirectStdin())
     {
 	ajUser("(Standard input in use: using default)");
 	ajStrAssignC(pthis, "");

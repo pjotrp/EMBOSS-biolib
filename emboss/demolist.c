@@ -85,7 +85,7 @@ int main(int argc, char **argv)
     /* create a new list */
     list = ajListNew();
 
-    while(ajFileReadLine(gfffile, &line))
+    while(ajReadlineTrim(gfffile, &line))
     {
 	/* create new gff */
 	gffnew = demolist_creategff(line);

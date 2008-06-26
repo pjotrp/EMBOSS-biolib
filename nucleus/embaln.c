@@ -383,6 +383,7 @@ float embAlignPathCalcSW(const char *a, const char *b, ajint lena, ajint lenb,
         for(j=0;j<lenb;++j)
             ajFmtPrintAppS(&outstr, "%6d  ", j);
         ajDebug("%S\n", outstr);
+        ajStrDel(&outstr);
     }
     AJFREE(maxa);
 
@@ -471,7 +472,7 @@ void embAlignWalkSWMatrix(const float *path, const ajint *compass,
 	    ajStrAppendK(m,p[ypos--]);
 	    ajStrAppendK(n,q[xpos--]);
 
-	    if(path[(ypos)*lenb+xpos]<=0.)
+	    if(ypos >= 0 && xpos>=0 && path[(ypos)*lenb+xpos]<=0.)
 		break;
 
 	    continue;
@@ -1630,7 +1631,7 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
                     ip, path[ip]);
 	    ajStrAppendK(m,p[ypos--]);
 	    ajStrAppendK(n,q[xpos2--]);
-	    if(path[ip-width]<=0.0)
+	    if(xpos2>=0 && ypos>=0 && path[ip-width]<=0.0)
 		break;
 
 	    continue;
@@ -1775,8 +1776,7 @@ float embAlignProfilePathCalc(const char *a, ajint proflen, ajint seqlen,
     for(row=1;row<proflen;++row)
     {
         column = 1;
-        maxp = path[row*seqlen+column] - (pmatrix[row][GAPO]*gapopen);
-
+        maxp = path[row*seqlen] - (pmatrix[row][GAPO]*gapopen);
         /* get match for current xpos/ypos */
 
         while(column!=seqlen)

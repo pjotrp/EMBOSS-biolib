@@ -89,8 +89,8 @@ int main(int argc, char **argv)
     ajFmtPrintAppS(&cmd, " -n %d ", nseq);
     if(q)
 	ajStrAppendC(&cmd, " -q ");
-    ajFmtPrintAppS(&cmd, " -o %s ", ajFileName(o));
-    ajStrAppendS(&cmd, ajFileNameS(hmmfile));
+    ajFmtPrintAppS(&cmd, " -o %s ", ajFileGetNameC(o));
+    ajStrAppendS(&cmd, ajFileGetNameS(hmmfile));
 
     
     /* 3. Close ACD files. */

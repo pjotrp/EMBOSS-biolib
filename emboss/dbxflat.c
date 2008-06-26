@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 	ajListPushAppend(entry->files,(void *)thysfile);
 	ajFmtPrintS(&tmpstr,"%S%S",entry->directory,thysfile);
 	printf("Processing file %s\n",MAJSTRGETPTR(tmpstr));
-	if(!(inf=ajFileNewIn(tmpstr)))
+	if(!(inf=ajFileNewInNameS(tmpstr)))
 	    ajFatal("Cannot open input file %S\n",tmpstr);
 	
 
@@ -295,9 +295,9 @@ static AjBool dbxflat_ParseEmbl(EmbPBtreeEntry entry, AjPFile inf)
     
     while(!ajStrPrefixC(line,"//"))
     {
-	pos = ajFileTell(inf);
+	pos = ajFileResetPos(inf);
 	
-	if(!ajFileReadLine(inf,&line))
+	if(!ajReadlineTrim(inf,&line))
 	{
 	    ajStrDel(&line);
 	    return ajFalse;
@@ -392,11 +392,11 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 	    if(ajStrPrefixC(line,"KEYWORDS"))
 	    {
 		ajStrAssignS(&sumline,line);
-		ret = ajFileReadLine(inf,&line);
+		ret = ajReadlineTrim(inf,&line);
 		while(ret && *MAJSTRGETPTR(line)==' ')
 		{
 		    ajStrAppendS(&sumline,line);
-		    ret = ajFileReadLine(inf,&line);
+		    ret = ajReadlineTrim(inf,&line);
 		}
 		ajStrRemoveWhiteExcess(&sumline);
 		embBtreeGenBankKW(sumline,entry->kw,entry->kwlen);
@@ -407,11 +407,11 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 	    if(ajStrPrefixC(line,"DEFINITION"))
 	    {
 		ajStrAssignS(&sumline,line);
-		ret = ajFileReadLine(inf,&line);
+		ret = ajReadlineTrim(inf,&line);
 		while(ret && *MAJSTRGETPTR(line)==' ')
 		{
 		    ajStrAppendS(&sumline,line);
-		    ret = ajFileReadLine(inf,&line);
+		    ret = ajReadlineTrim(inf,&line);
 		}
 		ajStrRemoveWhiteExcess(&sumline);
 		embBtreeGenBankDE(sumline,entry->de,entry->delen);
@@ -422,12 +422,12 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 	if(entry->do_taxonomy)
 	    if(ajStrPrefixC(line,"SOURCE"))
 	    {
-		ret = ajFileReadLine(inf,&line);
+		ret = ajReadlineTrim(inf,&line);
 		ajStrAppendC(&line,";");
 		while(ret && *MAJSTRGETPTR(line)==' ')
 		{
 		    ajStrAppendS(&sumline,line);
-		    ret = ajFileReadLine(inf,&line);
+		    ret = ajReadlineTrim(inf,&line);
 		}
 		ajStrRemoveWhiteExcess(&sumline);
 		embBtreeGenBankTX(sumline,entry->tx,entry->txlen);
@@ -435,9 +435,9 @@ static AjBool dbxflat_ParseGenbank(EmbPBtreeEntry entry, AjPFile inf)
 	    }
 	
 
-	pos = ajFileTell(inf);
+	pos = ajFileResetPos(inf);
 
-	if(!ajFileReadLine(inf,&line))
+	if(!ajReadlineTrim(inf,&line))
 	    ret = ajFalse;
     }
 

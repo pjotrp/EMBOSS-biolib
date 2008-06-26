@@ -149,7 +149,7 @@ int main(int argc, char **argv)
 
     /* Initialise random number generator for naming of temp. files*/
     ajRandomSeed();
-    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajFilenameSetTempname(&name);
 
 
     /* Create names for temp. files*/
@@ -214,7 +214,7 @@ int main(int argc, char **argv)
 		    {
 			/* Open, write and close domain file*/
 			
-			if(!(domf=ajFileNewOut(dom)))
+			if(!(domf=ajFileNewOutNameS(dom)))
 			    ajFatal("Could not open domain file\n");
 			ajStrAssignS(&temp, ajDomainGetId(arr[x]));
 			ajStrFmtLower(&temp);
@@ -226,7 +226,7 @@ int main(int argc, char **argv)
 			{
 			    /* Open domain set file. */
 
-			    if(!(setf=ajFileNewOut(set)))
+			    if(!(setf=ajFileNewOutNameS(set)))
 				ajFatal("Could not open domain set file\n");
 
 			    
@@ -252,7 +252,7 @@ int main(int argc, char **argv)
 			    
 			    /* Open stamp output file. */
 			
-			    outf = ajFileNewIn(out);
+			    outf = ajFileNewInNameS(out);
 			    
 
 			    /* Parse stamp output file and write scores array. */ 
@@ -388,7 +388,7 @@ int main(int argc, char **argv)
 	{
 	    /* Open, write and close domain file*/
 
-	    if(!(domf=ajFileNewOut(dom)))
+	    if(!(domf=ajFileNewOutNameS(dom)))
 		ajFatal("Could not open domain file\n");
 	    ajStrAssignS(&temp, ajDomainGetId(arr[x]));
 	    ajStrFmtLower(&temp);
@@ -400,7 +400,7 @@ int main(int argc, char **argv)
 	    {
 
 		/* Open domain set file. */
-		if(!(setf=ajFileNewOut(set)))
+		if(!(setf=ajFileNewOutNameS(set)))
 		    ajFatal("Could not open domain set file\n");
 
 			    
@@ -426,7 +426,7 @@ int main(int argc, char **argv)
 			    
 		/* Open stamp output file. */
 
-		outf = ajFileNewIn(out);
+		outf = ajFileNewInNameS(out);
 			    
 
 		/* Parse stamp output file and write scores array. */ 
@@ -611,7 +611,7 @@ static AjBool domainrep_WriteRmsd(ajint x, ajint y, AjPFloat2d *scores,
 
 
     /* Read through file until line starting with "See" is found. */
-    while(ajFileReadLine(fptr, &line) && !(ajStrPrefixC(line, "See")))
+    while(ajReadlineTrim(fptr, &line) && !(ajStrPrefixC(line, "See")))
     {
         /* Look for line starting Scan. */
         if(ajStrPrefixC(line, "Scan"))

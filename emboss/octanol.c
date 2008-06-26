@@ -243,7 +243,7 @@ static ajint octanol_getwhitewimbleydata(AjPFile file, float matrix[],
 
 
 
-    while(ajFileGets(file,&buffer))
+    while(ajReadline(file,&buffer))
     {
 	s1 = ajStrGetPtr(buffer);
 	if(*s1 == '#')			/* ignore lines */

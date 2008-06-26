@@ -117,7 +117,7 @@ int main(int argc, char **argv, char **env)
     use_dend  = ajAcdGetToggle("dend");
     dend_file = ajAcdGetInfile("dendfile");
     if (dend_file)
-	ajStrAssignS(&dend_filename, ajFileGetName(dend_file));
+	ajStrAssignS(&dend_filename, ajFileGetNameS(dend_file));
     ajFileClose(&dend_file);
 
     do_slow = ajAcdGetToggle("slow");
@@ -294,7 +294,7 @@ int main(int argc, char **argv, char **env)
 		    ajStrAppendC(&cmd, " -pwmatrix=");
 		else
 		    ajStrAppendC(&cmd, " -pwdnamatrix=");
-		ajStrAppendS(&cmd, ajFileGetName(pairwise_matrix));
+		ajStrAppendS(&cmd, ajFileGetNameS(pairwise_matrix));
             }
             else
             {
@@ -340,7 +340,7 @@ int main(int argc, char **argv, char **env)
 	    ajStrAppendC(&cmd, " -matrix=");
 	else
 	    ajStrAppendC(&cmd, " -pwmatrix=");
-	ajStrAppendS(&cmd, ajFileGetName(ma_matrix));
+	ajStrAppendS(&cmd, ajFileGetNameS(ma_matrix));
     }
     else
     {
@@ -425,9 +425,9 @@ int main(int argc, char **argv, char **env)
     /* read in new tmp dend file (if produced) to output through EMBOSS */
     if(tmp_dendfilename!=NULL)
     {
-	tmp_dendfile = ajFileNewIn( tmp_dendfilename);
+	tmp_dendfile = ajFileNewInNameS( tmp_dendfilename);
 
-	while(ajFileReadLine(tmp_dendfile, &line))
+	while(ajReadlineTrim(tmp_dendfile, &line))
 	    ajFmtPrintF(dend_outfile, "%s\n", ajStrGetPtr( line));
 
 	ajFileClose(&tmp_dendfile);

@@ -10,7 +10,7 @@
 
 /* alistat_main.c
  * Fri Jan 27 10:41:41 1995
- * RCS $Id: oalistat.c,v 1.6 2008/06/10 12:51:15 rice Exp $
+ * RCS $Id: oalistat.c,v 1.7 2008/06/26 08:40:56 rice Exp $
  * 
  * Look at an alignment file, determine some simple statistics.
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
@@ -79,7 +79,7 @@ int main(int argc, char **argv)
     else
 	do_fast=FALSE;
   
-    infname = ajStrNewC((char *)ajFileName(inf));
+    infname = ajStrNewC((char *)ajFileGetNameC(inf));
     seqfile = ajStrGetPtr(infname);
     ajFileClose(&inf);
 

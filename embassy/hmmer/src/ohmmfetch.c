@@ -14,7 +14,7 @@
  * Recover a specific HMM file from an HMM database, using
  * a GSI index (created with hmmindex).
  * 
- * RCS $Id: ohmmfetch.c,v 1.4 2007/02/20 09:58:04 rice Exp $
+ * RCS $Id: ohmmfetch.c,v 1.5 2008/06/26 08:40:56 rice Exp $
  *
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
@@ -90,7 +90,7 @@ int main(int argc, char **argv)
 	ajFatal("HMM file %s may be corrupt or in incorrect format; "
 		"parse failed", hmmfile);
 
-    ajfp = ajFileFp(outf);
+    ajfp = ajFileGetFileptr(outf);
     WriteAscHMM(ajfp, hmm);
     ajFileClose(&outf);
   

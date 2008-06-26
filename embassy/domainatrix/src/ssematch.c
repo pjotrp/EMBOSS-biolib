@@ -184,7 +184,7 @@ int main(int argc, char **argv)
     qse = ajStrNew();
     qss = ajStrNew();
     
-    while(ajFileReadLine(ssin,&line))
+    while(ajReadlineTrim(ssin,&line))
     {
         /* SE string */
         if(ajStrPrefixC(line,"SE"))
@@ -197,7 +197,7 @@ int main(int argc, char **argv)
         /* SS string */
 	else if(ajStrPrefixC(line,"SS"))
 	{
-            while((ajFileReadLine(ssin,&line)) && !ajStrPrefixC(line,"XX"))
+            while((ajReadlineTrim(ssin,&line)) && !ajStrPrefixC(line,"XX"))
                 ajStrAppendS(&qss,line);
             ajStrRemoveWhite(&qss);
 

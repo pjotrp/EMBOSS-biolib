@@ -101,7 +101,7 @@ int main(int argc, char **argv)
 
     /* Determine N by reading infile */
 
-    while(ajFileReadLine(infile, &line))
+    while(ajReadlineTrim(infile, &line))
         if(ajStrGetLen(line) >0)
 	    N++;
 
@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     ajFileSeek(infile, 0L, 0);
 
     N=0;
-    while(ajFileReadLine(infile, &line))
+    while(ajReadlineTrim(infile, &line))
     {
 	if(ajStrGetLen(line) > 0)
         {

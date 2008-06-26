@@ -156,14 +156,14 @@ int main(int argc, char **argv)
 
     AjPFile      hitsf =NULL;     /* Hits output file.                       
 				     sequence matches.                       */
-    AjPDir       hitsdir=NULL;    /* Directory of hits files (output).       */
+    AjPDirout    hitsdir=NULL;    /* Directory of hits files (output).       */
 
     AjPFile      alignf =NULL;    /* Alignment output file.                  */
-    AjPDir       aligndir=NULL;   /* Directory of alignment files (output).  */
+    AjPDirout    aligndir=NULL;   /* Directory of alignment files (output).  */
 
     
-    AjPDir     resultsdir=NULL;   /* Directory of results files (output).  */
-    AjPFile    resultsf =NULL;   /* Results file (output).  */
+    AjPFile    resultsf =NULL;    /* Results file (output).  */
+    AjPDirout  resultsdir=NULL;   /* Directory of results files (output).  */
 
     AjPStr *mode         = NULL;  /* Mode, 1: Patch score mode, 2:
 				     Site score mode.  */
@@ -202,7 +202,7 @@ int main(int argc, char **argv)
     {
 	/* Read signature files, compile signatures and populate list. */
 	sigok = ajFalse;
-	if((sigf = ajFileNewIn(signame)))
+	if((sigf = ajFileNewInNameS(signame)))
 	    if((sig = embSignatureReadNew(sigf)))
 		if(embSignatureCompile(&sig, gapo, gape, sub))
 		{
@@ -272,9 +272,9 @@ int main(int argc, char **argv)
 
 	
 	/* Write ligand hits & alignment files (output)  */	
-	hitsf    = ajFileNewOutDir(hitsdir, ajSeqGetNameS(seq));
-	alignf   = ajFileNewOutDir(aligndir, ajSeqGetNameS(seq));
-	resultsf = ajFileNewOutDir(resultsdir, ajSeqGetNameS(seq));
+	hitsf    = ajFileNewOutNameDirS(ajSeqGetNameS(seq), hitsdir);
+	alignf   = ajFileNewOutNameDirS(ajSeqGetNameS(seq), aligndir);
+	resultsf = ajFileNewOutNameDirS(ajSeqGetNameS(seq), resultsdir);
 	
 
 	
@@ -330,9 +330,9 @@ int main(int argc, char **argv)
     ajMatrixfDel(&sub);
 	
     AJFREE(nterm);    
-    ajDirDel(&hitsdir);
-    ajDirDel(&aligndir);
-    ajDirDel(&resultsdir);
+    ajDiroutDel(&hitsdir);
+    ajDiroutDel(&aligndir);
+    ajDiroutDel(&resultsdir);
     AJFREE(mode);
 
 

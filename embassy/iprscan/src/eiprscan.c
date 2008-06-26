@@ -39,7 +39,7 @@ int main(int argc, char **argv)
     AjPStr    email  = NULL;
     AjPStr    fmt    = NULL;
     AjPStr    trtab  = NULL;
-    AjPStr    ofn    = NULL;
+    const AjPStr ofn = NULL;
     
     AjPStr    *applist = NULL;
 
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
     
 
 
-    ajStrAssignC(&fn, ajFileTempName(NULL));
+    ajFilenameSetTempname(&fn);
     seqout = ajSeqoutNew();
     if(!ajSeqoutOpenFilename(seqout, fn))
 	ajFatal("Cannot open temporary file %S",fn);
@@ -154,7 +154,7 @@ int main(int argc, char **argv)
         ajStrAppendC(&cl," -goterms");
 
 
-    ofn = ajFileGetName(outf);
+    ofn = ajFileGetNameS(outf);
     ajFmtPrintS(&stmp," -o %S",ofn);
     ajFileClose(&outf);
     ajStrAppendS(&cl,stmp);

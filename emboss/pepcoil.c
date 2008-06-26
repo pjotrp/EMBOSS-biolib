@@ -473,13 +473,13 @@ static void pepcoil_readcoildat(AjPFloat2d *rdat)
 
     float v;
 
-    ajFileDataNewC(COILFILE, &mfptr);
+    mfptr = ajDatafileNewInNameC(COILFILE);
     if(!mfptr)
-	ajFatal("%s file not found\n",COILFILE);
+	ajFatal("Pepcoil data file '%s' not found\n",COILFILE);
 
     line = ajStrNew();
 
-    while(ajFileGets(mfptr, &line))
+    while(ajReadline(mfptr, &line))
     {
 	p=ajStrGetuniquePtr(&line);
 	if(*p=='#' || *p=='!' || !*p) continue;

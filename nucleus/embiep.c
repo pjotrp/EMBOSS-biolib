@@ -123,7 +123,7 @@ void embIepPkRead(void)
     if(AjIEPinit)
 	return;
 
-    ajFileDataNewC(PKFILE,&inf);
+    inf = ajDatafileNewInNameC(PKFILE);
     if(!inf)
 	ajFatal("%s file not found",PKFILE);
 
@@ -131,7 +131,7 @@ void embIepPkRead(void)
 	AjpK[i]=0.0;
 
     line = ajStrNew();
-    while(ajFileGets(inf,&line))
+    while(ajReadline(inf,&line))
     {
 	p = ajStrGetPtr(line);
 	if(*p=='#' || *p=='!' || *p=='\n' || *p=='\r')

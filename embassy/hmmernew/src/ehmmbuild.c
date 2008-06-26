@@ -113,7 +113,7 @@ int main(int argc, char **argv)
     fmt  = ajStrNew();
     hmmfilename = ajStrNew();
 
-    ajStrAssignC(&hmmfilename, ajFileName(hmmfile));
+    ajStrAssignC(&hmmfilename, ajFileGetNameC(hmmfile));
 
 
     /* 2. Ensure alignfile is in format HMMER can understand.  These include
@@ -149,11 +149,11 @@ int main(int argc, char **argv)
        */
     ajFmtPrintS(&cmd, "hmmbuild ");
     if(prior)
-	ajFmtPrintAppS(&cmd, " --prior %s ", ajFileName(prior));
+	ajFmtPrintAppS(&cmd, " --prior %s ", ajFileGetNameC(prior));
     if(null)
-	ajFmtPrintS(&cmd, " --null %s ", ajFileName(null));
+	ajFmtPrintS(&cmd, " --null %s ", ajFileGetNameC(null));
     if(pam)
-	ajFmtPrintAppS(&cmd, " --pam %s  --pamwgt %f ", ajFileName(pam), pamwgt);
+	ajFmtPrintAppS(&cmd, " --pam %s  --pamwgt %f ", ajFileGetNameC(pam), pamwgt);
     ajFmtPrintAppS(&cmd, " -n %S ", nhmm);
 
     /* ACD option only allows one selection */
@@ -196,9 +196,9 @@ int main(int argc, char **argv)
     else if(option == 'N')
 	ajStrAppendC(&cmd, " --wnone ");
     if(o)
-	ajFmtPrintAppS(&cmd, " -o %s ", ajFileName(o));
+	ajFmtPrintAppS(&cmd, " -o %s ", ajFileGetNameC(o));
     if(cfile)
-	ajFmtPrintAppS(&cmd, " --cfile %s ", ajFileName(cfile));
+	ajFmtPrintAppS(&cmd, " --cfile %s ", ajFileGetNameC(cfile));
     /* -A (append) always set but file will be wiped by EMBOSS first unless 
        append: "Y" is set for "hmmfile" in the ACD file. */
     ajStrAppendC(&cmd, " -A -F ");

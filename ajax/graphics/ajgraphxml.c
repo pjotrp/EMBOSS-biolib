@@ -2657,7 +2657,7 @@ void ajXmlAddGraphicC(AjPGraphXml file, const char *type)
 
 
     if(file->nodeTypes)
-	file->nodeTypes = ajStrTableNew(1);
+	file->nodeTypes = ajTablestrNewLen(1);
     
     /*  el unrefed above if type == NULL */
     /* look to see if I need some checking here hugh */
@@ -4266,12 +4266,12 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
     ajint limit;
     ajint limit2;
     
-    /*    returnNode = (AjPXmlNode) ajTableGet(file->nodeTypes, nameReqd); */
+    /*    returnNode = (AjPXmlNode) ajTableFetch(file->nodeTypes, nameReqd); */
 
 
-    colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
+    colourTable = (AjPTable) ajTableFetch(file->nodeTypes, nameReqd);
     if(colourTable != NULL)
-	returnNode = (AjPXmlNode) ajTableGet(colourTable, 
+	returnNode = (AjPXmlNode) ajTableFetch(colourTable, 
 					     xml_PresentColourAsString(file));
     
 
@@ -4346,10 +4346,10 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
 	gdome_n_ref(xml_GetNode(xml_GetCurrentGraphic(file)), &exc);
 
 
-	colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
+	colourTable = (AjPTable) ajTableFetch(file->nodeTypes, nameReqd);
 	if(colourTable == NULL)
 	{
-	    colourTable = ajStrTableNew(1);
+	    colourTable = ajTablestrNewLen(1);
     
 	    ajTablePut(file->nodeTypes, (const void *) ajStrNewS(nameReqd),
 		       (void *)colourTable);
@@ -4463,10 +4463,10 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
 	gdome_n_ref(xml_GetNode(returnNode2), &exc);
 
 
-	colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
+	colourTable = (AjPTable) ajTableFetch(file->nodeTypes, nameReqd);
 	if(colourTable == NULL)
 	{
-	    colourTable = ajStrTableNew(1);
+	    colourTable = ajTablestrNewLen(1);
 	    ajTablePut(file->nodeTypes, (const void *) ajStrNewS(nameReqd),
 		       (void *)colourTable);
 	}
@@ -4486,10 +4486,10 @@ static AjPXmlNode xml_GetNodeTypeMakeIfNot(AjPGraphXml file,
     gdome_n_ref(xml_GetNode(returnNode), &exc);
 
 
-    colourTable = (AjPTable) ajTableGet(file->nodeTypes, nameReqd);
+    colourTable = (AjPTable) ajTableFetch(file->nodeTypes, nameReqd);
     if(colourTable == NULL)
     {
-	colourTable = ajStrTableNew(1);
+	colourTable = ajTablestrNewLen(1);
 	ajTablePut(file->nodeTypes, 
 		   (const void *) ajStrNewS(nameReqd),
 		   (void *)colourTable);
@@ -4770,7 +4770,7 @@ static AjPGraphXml xml_CreateNewOutputFile()
 
     xml_AddCommonBit(file);
 
-    file->nodeTypes = ajStrTableNew(1);
+    file->nodeTypes = ajTablestrNewLen(1);
     
     gdome_str_unref (name);
     gdome_str_unref (publicId);

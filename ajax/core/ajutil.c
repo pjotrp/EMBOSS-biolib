@@ -181,6 +181,7 @@ void ajReset(void)
     ajTimeExit();
     ajRegExit();
     ajArrExit();
+    ajDatafileExit();
     ajFileExit();
     ajListExit();
     ajTableExit();
@@ -716,11 +717,11 @@ AjBool ajUtilGetUid(AjPStr* Puid)
     if (GetUserName(nameBuf, &nameLen))
     {
 	ajDebug("  pwd: '%s'\n", nameBuf);
-	ajStrAssC (Puid, nameBuf);
+	ajStrAssignC(Puid, nameBuf);
 	return ajTrue;
     }
 
-    ajStrAssC (Puid, "");
+    ajStrAssignC(Puid, "");
 
     return ajFalse;
 #endif
@@ -756,7 +757,7 @@ void ajUtilLoginfo(void)
     
     if(ajNamGetValueC("logfile", &logfname))
     {
-	logf = ajFileNewApp(logfname);
+	logf = ajFileNewOutappendNameS(logfname);
 	if(!logf)
 	    return;
 

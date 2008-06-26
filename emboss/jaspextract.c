@@ -128,17 +128,18 @@ static void jaspextract_check(const AjPStr directory, AjPList dlist)
     flist = ajListNew();
 
 
-    ajDirScan(directory,NULL,&flist);
+    ajFilelistAddPathDir(flist, directory);
 
 
     while(ajListPop(flist,(void **)&entry))
     {
-
-        if(!ajFileStat(entry,AJ_FILE_DIR))
+        ajDebug("jaspextract_check '%S'\n", entry);
+        
+        if(!ajFilenameExistsRead(entry))
             continue;
 
         ajStrAssignS(&nbase,entry);
-	ajFileDirTrim(&nbase);
+	ajFilenameTrimPath(&nbase);
 
         i = 0;
         while(jdirnames[i])
@@ -149,6 +150,8 @@ static void jaspextract_check(const AjPStr directory, AjPList dlist)
                 ajStrAssignS(&jdir->namactual,entry);
                 ajStrAssignC(&jdir->namdata,jdirnames[i]);
                 ajListPush(dlist,(void *)jdir);
+                ajDebug("found %d: '%s' => '%S' '%S'\n",
+                        i, jdirnames[i], jdir->namactual, jdir->namdata);
             }
             
 
@@ -204,26 +207,26 @@ static void jaspextract_copy(AjPList dlist)
 
     while(ajListPop(dlist,(void **)&jdir))
     {
-        ajFileScan(jdir->namactual,wild,&flist,ajFalse,ajFalse,NULL,NULL,
-                   ajFalse,NULL);
-
-
+        ajFilelistAddPathWild(flist, jdir->namactual,wild);
+        ajDebug("jaspextract_copy '%S' '%S'\n",
+                jdir->namactual, wild);
         while(ajListPop(flist,(void **)&entry))
         {
             ajStrAssignS(&nbase,entry);
-            ajFileNameTrim(&nbase);
+            ajFilenameTrimPath(&nbase);
             ajFmtPrintS(&dfile,"%S%c%S",jdir->namdata,SLASH_CHAR,nbase);
-
+            ajDebug("copying '%S' => '%S'\n",
+                    entry, dfile);
             /* Avoid UNIX copy for portability */
-            inf  = ajFileNewIn(entry);
+            inf  = ajFileNewInNameS(entry);
             if(!inf)
                 ajFatal("Cannot open input file: %S",entry);
 
-            ajFileDataNewWrite(dfile,&outf);
+            outf = ajDatafileNewOutNameS(dfile);
             if(!outf)
                 ajFatal("Cannot open output file: %S",dfile);
 
-            while(ajFileReadLine(inf,&line))
+            while(ajReadlineTrim(inf,&line))
                 ajFmtPrintF(outf,"%S\n",line);
 
             ajFileClose(&inf);

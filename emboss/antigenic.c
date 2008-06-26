@@ -372,16 +372,16 @@ static void antigenic_readAnti(AjPFloat *agp)
     char *p;
     char *q;
 
-    ajFileDataNewC(DATAFILE, &mfptr);
+    mfptr = ajDatafileNewInNameC(DATAFILE);
     if(!mfptr)
-	ajFatal("Antigenicity file not found\n");
+	ajFatal("Antigenicity file '%s' not found\n", DATAFILE);
 
     line=ajStrNew();
 
     deltae = deltas = deltap =0;
     deltaaf =deltasf = 0.0;
 
-    while(ajFileGets(mfptr, &line))
+    while(ajReadline(mfptr, &line))
     {
 	p = ajStrGetuniquePtr(&line);
 	if(*p=='#' || *p=='!' || *p=='\n')

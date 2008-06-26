@@ -291,14 +291,14 @@ int main(int argc, char **argv)
 	    if(single)
 		maxcuts = mincuts = 1;
 	    retable = ajTablestrNewLen(EQUGUESS);
-	    ajFileDataNewC(ENZDATA, &enzfile);
+	    enzfile = ajDatafileNewInNameC(ENZDATA);
 
 	    if(!enzfile)
 		ajFatal("Cannot locate enzyme file. Run REBASEEXTRACT");
 
 	    if(limit)
 	    {
-		ajFileDataNewC(EQUDATA,&equfile);
+		equfile = ajDatafileNewInNameC(EQUDATA);
 		if(!equfile)
 		    limit = ajFalse;
 		else
@@ -508,7 +508,7 @@ static void showseq_read_equiv(AjPFile equfile, AjPTable table)
 
     line = ajStrNew();
 
-    while(ajFileReadLine(equfile,&line))
+    while(ajReadlineTrim(equfile,&line))
     {
         p = ajStrGetPtr(line);
 
@@ -548,14 +548,14 @@ static void showseq_read_file_of_enzyme_names(AjPStr *enzymes)
     if(ajStrFindC(*enzymes, "@") == 0)
     {
 	ajStrTrimC(enzymes, "@");	/* remove the @ */
-	file = ajFileNewIn(*enzymes);
+	file = ajFileNewInNameS(*enzymes);
 	if(file == NULL)
 	    ajFatal("Cannot open the file of enzyme names: '%S'", enzymes);
 
 	/* blank off the enzyme file name and replace with the enzyme names */
 	ajStrSetClear(enzymes);
 	line = ajStrNew();
-	while(ajFileReadLine(file, &line))
+	while(ajReadlineTrim(file, &line))
 	{
 	    p = ajStrGetPtr(line);
 

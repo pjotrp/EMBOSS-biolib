@@ -405,7 +405,7 @@ static void primersearch_read_primers(AjPList *primerList, AjPFile primerFile,
     Primer primdata = NULL;
 
 
-    while (ajFileReadLine (primerFile, &rdline))
+    while (ajReadlineTrim(primerFile, &rdline))
     {
 	primdata = NULL;
 	if (ajStrGetCharFirst(rdline) == '#')

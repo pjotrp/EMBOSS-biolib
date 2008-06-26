@@ -371,9 +371,9 @@ static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
     ajuint jmax;
 
     if(prokaryote)
-	ajFileDataNewC(PROFILE,&mfptr);
+	mfptr = ajDatafileNewInNameC(PROFILE);
     else
-	ajFileDataNewC(EUKFILE,&mfptr);
+	mfptr = ajDatafileNewInNameC(EUKFILE);
     if(!mfptr) ajFatal("SIG file  not found\n");
 
 
@@ -382,7 +382,7 @@ static ajint sigcleave_readSig(AjPFloat2d *matrix,AjBool prokaryote)
 
     pass = ajTrue;
 
-    while(ajFileGets(mfptr, &line))
+    while(ajReadline(mfptr, &line))
     {
 	p = ajStrGetPtr(line);
 

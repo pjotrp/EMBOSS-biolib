@@ -168,7 +168,7 @@ static AjBool pepwindow_getnakaidata(AjPFile file, float matrix[])
 	matrix[i] = FLT_MIN;
     }
 
-    while(ajFileGets(file,&buffer))
+    while(ajReadline(file,&buffer))
     {
 	ptr = ajStrGetPtr(buffer);
 	if(*ptr == 'D')			/* save description */

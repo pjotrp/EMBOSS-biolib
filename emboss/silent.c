@@ -437,9 +437,9 @@ static ajint silent_restr_read(AjPList *relist,const AjPStr enzymes)
     rptr       = embPatRestrictNew();
     *relist    = ajListNew();
 
-    ajFileDataNew(refilename,&fin);
+    fin = ajDatafileNewInNameS(refilename);
     if(!fin)
-	ajFatal("Aborting...restriction file not found");
+	ajFatal("Aborting...restriction file '%S' not found", refilename);
 
     /* Parse the user-selected enzyme list */
     if(!enzymes)

@@ -283,14 +283,14 @@ static AjBool seqwords_TermsRead(AjPFile inf,
     type       = ajStrNew();
     
     /* Read first line. */
-    ok = ajFileReadLine(inf,&line);
+    ok = ajReadlineTrim(inf,&line);
 
 
     while(ok && !ajStrPrefixC(line,"//"))
     {
 	if(ajStrPrefixC(line,"XX"))
 	{
-	    ok = ajFileReadLine(inf,&line);
+	    ok = ajReadlineTrim(inf,&line);
 	    continue;
 	}	
 	else if(ajStrPrefixC(line,"TY"))
@@ -320,7 +320,7 @@ static AjBool seqwords_TermsRead(AjPFile inf,
 	else if(ajStrPrefixC(line,"FO"))
 	{
 	    ajStrAssignC(&(*thys)->Fold,ajStrGetPtr(line)+3);
-	    while(ajFileReadLine(inf,&line))
+	    while(ajReadlineTrim(inf,&line))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
@@ -331,7 +331,7 @@ static AjBool seqwords_TermsRead(AjPFile inf,
 	else if(ajStrPrefixC(line,"SF"))
 	{
 	    ajStrAssignC(&(*thys)->Superfamily,ajStrGetPtr(line)+3);
-	    while(ajFileReadLine(inf,&line))
+	    while(ajReadlineTrim(inf,&line))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
@@ -342,7 +342,7 @@ static AjBool seqwords_TermsRead(AjPFile inf,
 	else if(ajStrPrefixC(line,"FA"))
 	{
 	    ajStrAssignC(&(*thys)->Family,ajStrGetPtr(line)+3);
-	    while(ajFileReadLine(inf,&line))
+	    while(ajReadlineTrim(inf,&line))
 	    {
 		if(ajStrPrefixC(line,"XX"))
 		    break;
@@ -367,7 +367,7 @@ static AjBool seqwords_TermsRead(AjPFile inf,
 	    ajListstrPush(list_terms,temp);		    
 	}
 
-	ok = ajFileReadLine(inf,&line);
+	ok = ajReadlineTrim(inf,&line);
     }
     if(!ok)
     {
@@ -442,7 +442,7 @@ static AjBool seqwords_keysearch(AjPFile inf,
 
 
     /* Start of main loop. */
-    while((ajFileReadLine(inf,&line)))
+    while((ajReadlineTrim(inf,&line)))
     {
 	/* Parse the AC line. */
 	if(ajStrPrefixC(line,"AC"))
@@ -525,7 +525,7 @@ static AjBool seqwords_keysearch(AjPFile inf,
 
 
 	    /* Read the sequence into hitlist structure. */
-	    while((ajFileReadLine(inf,&line)) && !ajStrPrefixC(line,"//"))
+	    while((ajReadlineTrim(inf,&line)) && !ajStrPrefixC(line,"//"))
 		/* Read sequence line into temp. */
 		ajStrAppendC(&temp,ajStrGetPtr(line)+3);
  

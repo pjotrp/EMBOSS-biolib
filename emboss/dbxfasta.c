@@ -128,7 +128,7 @@ int main(int argc, char **argv)
 	ajListPushAppend(entry->files,(void *)thysfile);
 	ajFmtPrintS(&tmpstr,"%S%S",entry->directory,thysfile);
 	printf("Processing file %s\n",MAJSTRGETPTR(tmpstr));
-	if(!(inf=ajFileNewIn(tmpstr)))
+	if(!(inf=ajFileNewInNameS(tmpstr)))
 	    ajFatal("Cannot open input file %S\n",tmpstr);
 	
 
@@ -251,8 +251,8 @@ static AjBool dbxfasta_NextEntry(EmbPBtreeEntry entry, AjPFile inf,
 
     while(*MAJSTRGETPTR(line) != '>')
     {
-	entry->fpos = ajFileTell(inf);
-	if(!ajFileReadLine(inf,&line))
+	entry->fpos = ajFileResetPos(inf);
+	if(!ajReadlineTrim(inf,&line))
 	{
 	  ajStrDel(&line);
 	  return ajFalse;

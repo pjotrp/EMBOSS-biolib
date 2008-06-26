@@ -333,7 +333,7 @@ static void vectorstrip_read_vector_data(AjPFile vectorfile,
 
     Vector vector = NULL;
 
-    while(ajFileReadLine(vectorfile, &rdline))
+    while(ajReadlineTrim(vectorfile, &rdline))
     {
 	AjPStr name  = NULL;
 	AjPStr five  = NULL;

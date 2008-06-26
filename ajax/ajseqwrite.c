@@ -4155,14 +4155,11 @@ static void seqWriteGenbank(AjPSeqout outseq)
 static void seqWriteGff2(AjPSeqout outseq)
 {
     SeqPSeqFormat sf = NULL;
-    AjPStr version   = NULL;
     
-    if(!version)
-	ajNamRootVersion(&version);
     ajFmtPrintF(outseq->File,
 		"##gff-version 2\n");
     ajFmtPrintF(outseq->File,
-		"##source-version EMBOSS %S\n", version);
+		"##source-version EMBOSS %S\n", ajNamValueVersion());
     ajFmtPrintF(outseq->File,
 		"##date %D\n", ajTimeRefTodayFmt("GFF"));
     if(ajStrMatchC(outseq->Type, "P"))
@@ -4209,8 +4206,6 @@ static void seqWriteGff2(AjPSeqout outseq)
 
     }
 
-    ajStrDel(&version);
-
     return;
 }
 
@@ -4228,8 +4223,6 @@ static void seqWriteGff2(AjPSeqout outseq)
 
 static void seqWriteGff3(AjPSeqout outseq)
 {
-    AjPStr version   = NULL;
-    
     if(seqoutUfoLocal(outseq))
     {
 	ajFeattabOutDel(&outseq->Ftquery);
@@ -4260,9 +4253,8 @@ static void seqWriteGff3(AjPSeqout outseq)
 	else
 	    ajFmtPrintF(outseq->File, "#!Type DNA\n");
 
-	ajNamRootVersion(&version);
-    	ajFmtPrintF(outseq->File, "#!Source-version EMBOSS %S\n", version);
-	ajStrDel(&version);
+    	ajFmtPrintF(outseq->File, "#!Source-version EMBOSS %S\n",
+                    ajNamValueVersion());
     }
 
     ajFmtPrintF(outseq->File, "##FASTA\n");
@@ -4350,7 +4342,7 @@ static void seqWriteMase(AjPSeqout outseq)
     ajuint linelen = 60;
     ajuint iend;
 
-    if (!ajFileTell(outseq->File))
+    if (!ajFileResetPos(outseq->File))
 	ajFmtPrintF(outseq->File, ";;Written by EMBOSS on %D\n",
 		ajTimeRefTodayFmt("report"));
 
@@ -4948,7 +4940,7 @@ static void seqWriteSeq(AjPSeqout outseq, const SeqPSeqFormat sf)
     width  = sf->width;
     l1     = sf->linepos;
     file   = outseq->File;
-    outf   = ajFileFp(file);
+    outf   = ajFileGetFileptr(file);
 
 
     /* if(sf->numline) numline = 1;*/
@@ -5208,7 +5200,7 @@ static AjBool seqoutUsaProcess(AjPSeqout thys)
 	    if(thys->Knownfile)
 		thys->File = thys->Knownfile;
 	    else
-		thys->File = ajFileNewOutD(thys->Directory, thys->Filename);
+		thys->File = ajFileNewOutNamePathS(thys->Filename, thys->Directory);
 
 	    if(!thys->File)
 	    {
@@ -5487,7 +5479,7 @@ AjBool ajSeqoutOpenFilename(AjPSeqout seqout, const AjPStr name)
     }
     else
     {
-	seqout->File = ajFileNewOut(name);
+	seqout->File = ajFileNewOutNameS(name);
 	if(seqout->File)
 	    return ajTrue;
     }
@@ -6233,7 +6225,7 @@ static AjBool seqFileReopen(AjPSeqout outseq)
 
     ajFmtPrintS(&name, "%S.%S", outseq->Name, outseq->Extension);
     ajStrFmtLower(&name);
-    outseq->File = ajFileNewOutD(outseq->Directory, name);
+    outseq->File = ajFileNewOutNamePathS(name, outseq->Directory);
     ajDebug("seqFileReopen single: %B file '%S'\n", outseq->Single, name);
     ajStrDel(&name);
 

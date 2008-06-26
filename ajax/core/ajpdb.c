@@ -151,7 +151,7 @@ AjPList       ajPdbtospReadAllRawNew(AjPFile inf)
 
 
     /* Read lines from file */
-    while(ajFileReadLine(inf, &line))
+    while(ajReadlineTrim(inf, &line))
     {
 	if(ajStrPrefixC(line, "____  _"))
 	{
@@ -335,7 +335,7 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
     ajStrAssignC(&tentry,entry);
     ajStrFmtUpper(&tentry);
     
-    while((ok=ajFileReadLine(inf,&line)))
+    while((ok=ajReadlineTrim(inf,&line)))
     {
 	if(!ajStrPrefixC(line,"EN   "))
 	    continue;
@@ -350,7 +350,7 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
     {
 	if(ajStrPrefixC(line,"XX"))
 	{
-	    ok = ajFileReadLine(inf,&line);
+	    ok = ajReadlineTrim(inf,&line);
 	    continue;
 	}
 	else if(ajStrPrefixC(line,"NE"))
@@ -366,7 +366,7 @@ AjPPdbtosp ajPdbtospReadCNew(AjPFile inf, const char *entry)
 	    i++;
 	}
 	
-	ok = ajFileReadLine(inf,&line);
+	ok = ajReadlineTrim(inf,&line);
     }
     
     return ret;
@@ -586,7 +586,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
     
 
     /* Start of main loop */
-    while((ajFileReadLine(inf, &line)))
+    while((ajReadlineTrim(inf, &line)))
     {
         /* // */
 	if(ajStrPrefixC(line, "//"))
@@ -703,7 +703,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	/* S1 */
 	else if(ajStrPrefixC(line, "S1"))
 	{    
-	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&seq1,ajStrGetPtr(line));
 	    ajStrRemoveWhite(&seq1);
 	}
@@ -711,7 +711,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	/* S2 */
 	else if(ajStrPrefixC(line, "S2"))
 	{    
-	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&seq2,ajStrGetPtr(line));
 	    ajStrRemoveWhite(&seq2);
 	}
@@ -808,7 +808,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    if((x>(ret)->Dim) || (y>(ret)->Dim))
 		ajFatal("Fatal attempt to write bad data in "
 			"ajCmapReadNew\nFile: %S (%S)\nx: %d y:%d\n",
-			ajFileGetName(inf), temp_id, x, y);
+			ajFileGetNameS(inf), temp_id, x, y);
 	    
 	    /* Enter '1' in matrix to indicate contact */
 	    ajUint2dPut(&(ret)->Mat, x-1, y-1, 1);
@@ -826,7 +826,7 @@ AjPCmap ajCmapReadNew(AjPFile inf, ajint mode, ajint chn, ajint mod)
 	    if((x>(ret)->Dim))
 		ajFatal("Fatal attempt to write bad data in "
 			"ajCmapReadNew\nFile: %S (%S)\nx: %d\n",
-			ajFileGetName(inf), temp_id, x);
+			ajFileGetNameS(inf), temp_id, x);
 	    
 	    /* Enter '1' in matrix to indicate contact.  For ligand contacts, 
 	       the first row / column only is used. */
@@ -875,7 +875,7 @@ AjPVdwall  ajVdwallReadNew(AjPFile inf)
 
 
     /* Start of main loop */
-    while((ajFileReadLine(inf, &line)))
+    while((ajReadlineTrim(inf, &line)))
     {
 	/* Parse NR line */
 	if(ajStrPrefixC(line, "NR"))
@@ -969,7 +969,7 @@ AjPHet  ajHetReadNew(AjPFile inf)
     list = ajListNew();
   
     /* Read lines from file */
-    while(ajFileReadLine(inf, &line))
+    while(ajReadlineTrim(inf, &line))
     {
 	if(ajStrPrefixC(line, "ID   "))
 	{
@@ -1048,7 +1048,7 @@ AjPHet ajHetReadRawNew(AjPFile inf)
 
     
     /* Read lines from file */
-    while(ajFileReadLine(inf, &line))
+    while(ajReadlineTrim(inf, &line))
     {
 	if(ajStrPrefixC(line,"HET "))
 	{
@@ -1199,7 +1199,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
     xstr  = ajStrNew();
 
     /* Start of main loop */
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	if(ajStrPrefixC(line,"XX"))
 	    continue;
@@ -1364,7 +1364,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	/* Parse sequence line */
 	else if(ajStrPrefixC(line,"SQ"))
 	{
-	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
 	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;
@@ -1387,7 +1387,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	      {
 		/* break; */
 		/* Discard remaining AT lines */
-		while(ajFileReadLine(inf,&line) && ajStrPrefixC(line,"AT"));
+		while(ajReadlineTrim(inf,&line) && ajStrPrefixC(line,"AT"));
 	      }
 
 	    /* Chain number */
@@ -1490,7 +1490,7 @@ AjPPdb ajPdbReadNew(AjPFile inf, ajint mode)
 	      {
 		/* break;*/
 		/* Discard remaining RE lines */
-		while(ajFileReadLine(inf,&line) && ajStrPrefixC(line,"RE"));
+		while(ajReadlineTrim(inf,&line) && ajStrPrefixC(line,"RE"));
 	      }
 	    /* Chain number */
 	    ajStrTokenNextParse(&handle,&token);
@@ -1826,7 +1826,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
     xstr  = ajStrNew();
 
     /* Start of main application loop */
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	if(ajStrPrefixC(line,"XX"))
 	    continue;
@@ -1968,7 +1968,7 @@ AjPPdb ajPdbReadoldNew(AjPFile inf)
 	/* Parse sequence line */
 	if(ajStrPrefixC(line,"SQ"))
 	{
-	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
 	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;
@@ -2203,7 +2203,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
     xstr  = ajStrNew();
 
     /* Start of main application loop */
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	if(ajStrPrefixC(line,"XX"))
 	    continue;
@@ -2351,7 +2351,7 @@ AjPPdb ajPdbReadoldFirstModelNew(AjPFile inf)
 	/* Parse sequence line */
 	if(ajStrPrefixC(line,"SQ"))
 	{
-	    while(ajFileReadLine(inf,&line) && !ajStrPrefixC(line,"XX"))
+	    while(ajReadlineTrim(inf,&line) && !ajStrPrefixC(line,"XX"))
 		ajStrAppendC(&(ret)->Chains[nc-1]->Seq,ajStrGetPtr(line));
 	    ajStrRemoveWhite(&(ret)->Chains[nc-1]->Seq);
 	    continue;

@@ -2977,7 +2977,7 @@ void ajBtreeWriteParams(const AjPBtcache cache, const char *fn,
     fname = ajStrNew();
     ajFmtPrintS(&fname,"%s/%s.p%s",idir,fn,ext);
 
-    if(!(outf = ajFileNewOut(fname)))
+    if(!(outf = ajFileNewOutNameS(fname)))
 	ajFatal("Cannot open param file %S\n",fname);
 
     ajFmtPrintF(outf,"Order     %d\n",cache->order);
@@ -3035,10 +3035,10 @@ void ajBtreeReadParams(const char *fn, const char *ext,
     fname = ajStrNew();
     ajFmtPrintS(&fname,"%s/%s.p%s",idir,fn,ext);
     
-    if(!(inf = ajFileNewIn(fname)))
+    if(!(inf = ajFileNewInNameS(fname)))
 	ajFatal("Cannot open param file %S\n",fname);
 
-    while(ajFileReadLine(inf,&line))
+    while(ajReadlineTrim(inf,&line))
     {
 	if(ajStrPrefixC(line,"Order2"))
 	{
@@ -6559,11 +6559,11 @@ ajint ajBtreeReadEntries(const char *filename, const char *indexdir,
     
     ajStrAppendC(&fn,".ent");
     
-    inf = ajFileNewIn(fn);
+    inf = ajFileNewInNameS(fn);
     if(!inf)
 	ajFatal("Cannot open database entries file %S",fn);
 
-    while(ajFileReadLine(inf, &line))
+    while(ajReadlineTrim(inf, &line))
     {
 	p = *(line->Ptr);
 	if(p == '#' || !ajStrGetLen(line))
@@ -6576,7 +6576,7 @@ ajint ajBtreeReadEntries(const char *filename, const char *indexdir,
 
     if(!do_ref)
     {
-	while(ajFileReadLine(inf, &line))
+	while(ajReadlineTrim(inf, &line))
 	{
 	    seqname = ajStrNew();
 	    ajFmtScanS(line,"%S",&tseqname);
@@ -6589,7 +6589,7 @@ ajint ajBtreeReadEntries(const char *filename, const char *indexdir,
     }
     else
     {
-	while(ajFileReadLine(inf, &line))
+	while(ajReadlineTrim(inf, &line))
 	{
 	    seqname = ajStrNew();
 	    refname = ajStrNew();

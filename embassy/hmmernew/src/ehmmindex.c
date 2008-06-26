@@ -70,7 +70,7 @@ int main(int argc, char **argv)
        iv. HMMER & new parameters.
        */
     ajFmtPrintS(&cmd, "hmmindex ");
-    ajStrAppendC(&cmd, ajFileName(database));
+    ajStrAppendC(&cmd, ajFileGetNameC(database));
 
     
     /* 3. Close ACD files. */

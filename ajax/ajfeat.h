@@ -142,11 +142,11 @@ void          ajFeattabInClear (AjPFeattabIn thys);
 void          ajFeattabInDel (AjPFeattabIn* pthis);
 AjPFeattabIn  ajFeattabInNew (void);
 AjPFeattabIn  ajFeattabInNewCSF (const char* fmt, const AjPStr name,
-				 const char* type, AjPFileBuff buff);
+				 const char* type, AjPFilebuff buff);
 AjPFeattabIn  ajFeattabInNewSS (const AjPStr fmt, const AjPStr name,
 				const char* type);
 AjPFeattabIn  ajFeattabInNewSSF (const AjPStr fmt, const AjPStr name,
-				 const char* type, AjPFileBuff buff);
+				 const char* type, AjPFilebuff buff);
 AjBool        ajFeattabInSetType(AjPFeattabIn thys, const AjPStr type);
 AjBool        ajFeattabInSetTypeC(AjPFeattabIn thys, const char* type);
 void          ajFeattabOutClear(AjPFeattabOut *thys);

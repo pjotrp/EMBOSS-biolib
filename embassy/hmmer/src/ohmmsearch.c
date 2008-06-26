@@ -15,7 +15,7 @@
  * Conditionally includes PVM parallelization when HMMER_PVM is defined
  *    at compile time; hmmsearch --pvm runs the PVM version.
  *
- * RCS $Id: ohmmsearch.c,v 1.7 2008/06/10 12:51:15 rice Exp $
+ * RCS $Id: ohmmsearch.c,v 1.8 2008/06/26 08:40:56 rice Exp $
  * Modified for EMBOSS by Alan Bleasby (ISMB 2001)
  */
 
@@ -182,7 +182,7 @@ int main(int argc, char **argv)
   
     ajhmmfile = ajAcdGetInfile("hmmfile");
     if(ajhmmfile)
-	hmmfile = ajCharNewS(ajFileGetName(ajhmmfile));
+	hmmfile = ajCharNewS(ajFileGetNameS(ajhmmfile));
     else
 	hmmfile = NULL;
     ajFileClose(&ajhmmfile);
@@ -431,7 +431,7 @@ int main(int argc, char **argv)
 		ajFmtPrintF(outf,"%s: domain %d of %d, from %d to %d: score "
 			    "%.1f, E = %.2g\n", name, domidx, ndom, sqfrom,
 			    sqto, sc, evalue);
-		PrintFancyAli(ajFileFp(outf), ali);
+		PrintFancyAli(ajFileGetFileptr(outf), ali);
 	    }
 	    else if (evalue >= domE)
 	    {
@@ -457,15 +457,15 @@ int main(int argc, char **argv)
 
     /* 4. Histogram output */
     ajFmtPrintF(outf,"\nHistogram of all scores:\n");
-    PrintASCIIHistogram(ajFileFp(outf), histogram);
+    PrintASCIIHistogram(ajFileGetFileptr(outf), histogram);
 
     /* 5. Tophits summaries, while developing...
      */
     ajFmtPrintF(outf,"\nTotal sequences searched: %d\n", nseq);
     ajFmtPrintF(outf,"\nWhole sequence top hits:\n");
-    TophitsReport(ajFileFp(outf), ghit, globE, nseq);
+    TophitsReport(ajFileGetFileptr(outf), ghit, globE, nseq);
     ajFmtPrintF(outf,"\nDomain top hits:\n");
-    TophitsReport(ajFileFp(outf), dhit, domE, nseq);
+    TophitsReport(ajFileGetFileptr(outf), dhit, domE, nseq);
 
     /*********************************************** 
      * Clean-up and exit.

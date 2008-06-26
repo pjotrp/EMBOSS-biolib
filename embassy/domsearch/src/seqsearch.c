@@ -99,7 +99,7 @@ int main(int argc, char **argv)
     AjPStr     inname    = NULL;   /* Name of alignment file.                */
     AjPFile    inf       = NULL;   /* Alignment file pointer.                */
     
-    AjPDir     dhfout    = NULL;   /* Directory of hits files for output.    */
+    AjPDirout  dhfout    = NULL;   /* Directory of hits files for output.    */
     AjPStr     dhfname   = NULL;   /* Name of hits file.                     */
     AjPStr     singlet   = NULL;   /* sequence of a particular sunid.        */
 
@@ -176,7 +176,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(logf, "//\n%S\n", inname);
 
         /* Check alignment file can be read. */
-        if((inf = ajFileNewIn(inname)) == NULL)
+        if((inf = ajFileNewInNameS(inname)) == NULL)
         {
             ajFmtPrintS(&msg, "Could not open for reading %S", 
                         inname);
@@ -220,7 +220,7 @@ int main(int argc, char **argv)
 
 	/* Create hits output file name - the same name as the input file. */
 	ajStrAssignS(&dhfname, inname);
-	ajFileDirExtnTrim(&dhfname);
+	ajFilenameTrimPathExt(&dhfname);
 
 	
 	    
@@ -278,7 +278,7 @@ int main(int argc, char **argv)
 	    iter =  NULL;
 
 
-	    if(!(families = ajFileNewOutDir(dhfout, dhfname)))
+	    if(!(families = ajFileNewOutNameDirS(dhfname, dhfout)))
 	    {
 		ajFmtPrintS(&msg, "Could not open for writing %S", 
 			    dhfname);
@@ -346,7 +346,7 @@ int main(int argc, char **argv)
     ajStrDel(&mode[0]);
     AJFREE(mode);
     ajListFree(&inseqs);
-    ajDirDel(&dhfout);
+    ajDiroutDel(&dhfout);
     ajStrDel(&dhfname);
     ajStrDel(&psiname);
     ajStrDel(&database);
@@ -437,7 +437,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
 
 
     /* Open alignment file. */
-    alignf = ajFileNewIn(seqname);
+    alignf = ajFileNewInNameS(seqname);
     
     /* Read domain alignment if appropriate. */
     if(!(ajDmxScopalgRead(alignf, scopalg)))
@@ -460,7 +460,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     /* Initialise random number generator for naming of temp. files
        and create  psiblast input files. */
     ajRandomSeed();
-    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajFilenameSetTempname(&name);
     ajStrAssignRef(&seqs_in, name);
     ajStrAppendC(&seqs_in, ".seqsin");
     ajStrAssignRef(&seq_in, name);
@@ -469,8 +469,8 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     ajStrAppendC(psiname, ".psiout");
 
 
-    seqsinf = ajFileNewOut(seqs_in);
-    seqinf  = ajFileNewOut(seq_in);
+    seqsinf = ajFileNewOutNameS(seqs_in);
+    seqinf  = ajFileNewOutNameS(seq_in);
     
 
 
@@ -544,7 +544,7 @@ static AjPFile seqsearch_psialigned(AjPStr seqname,
     
 
     /* Open psiblast output file and return pointer. */
-    psif = ajFileNewIn(*psiname); 
+    psif = ajFileNewInNameS(*psiname); 
 
     return psif;
 }
@@ -601,7 +601,7 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
 
 
     /* Open dhf (or other format) sequence file. */
-    dhfin = ajFileNewIn(seqname);
+    dhfin = ajFileNewInNameS(seqname);
 
     /* Read dhf file if appropriate. */
     if(!(*hit = embHitlistReadFasta(dhfin)))
@@ -624,14 +624,14 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
 
     /* Initialise random number generator for naming of temp. files
        and create  psiblast input files. */
-    ajStrAssignC(&name, ajFileTempName(NULL));
+    ajFilenameSetTempname(&name);
     ajStrAssignRef(&seq_in, name);
     ajStrAppendC(&seq_in, ".seqin");
     ajStrAssignRef(psiname, name);
     ajStrAppendC(psiname, ".psiout");
 
     /* Create output file for psi-blast input file. */
-    seqinf = ajFileNewOut(seq_in);
+    seqinf = ajFileNewOutNameS(seq_in);
     
     /* Write psiblast input file of single sequence. */    
     if((*hit))
@@ -664,7 +664,7 @@ static AjPFile seqsearch_psisingle(AjPStr seqname,
 
 
     /* Open psiblast output file and return pointer. */
-    psif = ajFileNewIn(*psiname);
+    psif = ajFileNewInNameS(*psiname);
     return psif;
 }
 
@@ -723,7 +723,7 @@ static EmbPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
     fullseq   = ajStrNew();
     
     /* Calculate the number of hits. */
-    while(ajFileReadLine(psif,&line))
+    while(ajReadlineTrim(psif,&line))
         if(ajStrFindCaseC(line,"score = ")>=0)
             nhits++;
     fseekr = ajFileSeek(psif,offset,SEEK_SET);
@@ -764,7 +764,7 @@ static EmbPHitlist seqsearch_ReadPsiblastOutput(AjPScopalg scopalg,
     
 
     /* Loop for whole of input file. */
-    while(ajFileReadLine(psif,&line))
+    while(ajReadlineTrim(psif,&line))
     {
         /* We've found a line beginning with > i.e. the start of a block of 
 	   hits to a single protein. */

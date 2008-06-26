@@ -75,10 +75,10 @@ int main(int argc, char **argv)
     AjPMatrixf matrix    = NULL;    /* Substitution matrix.                  */
     float      gapopen   = 0.0;     /* Gap insertion penalty.                */
     float      gapextend = 0.0;     /* Gap extension penalty.                */
-    AjPDir     out       = NULL;    /* Domain hits files (output).           */
+    AjPDirout  out       = NULL;    /* Domain hits files (output).           */
     AjPFile    outf      = NULL;    /* Current DHF file (output).            */
     AjBool     dored     = ajFalse; /* True if redundant hits are output.    */
-    AjPDir     outred    = NULL;    /* DHF files for redundant hits (output).*/
+    AjPDirout  outred    = NULL;    /* DHF files for redundant hits (output).*/
     AjPFile    redf      = NULL;    /* Current DHF file redundancy (output). */
     AjPStr     outname   = NULL;    /* Name of output file (re-used).        */
     AjPFile    logf      = NULL;    /* Log file pointer.                     */
@@ -151,7 +151,7 @@ int main(int argc, char **argv)
 	/**********************************/
 	/*         Open DHF file          */
 	/**********************************/
-	if((inf = ajFileNewIn(inname)) == NULL)
+	if((inf = ajFileNewInNameS(inname)) == NULL)
 	    ajFatal("Could not open DHF file %S", inname);
 
 	/* Read DHF file. */
@@ -229,13 +229,13 @@ int main(int argc, char **argv)
 	{
 	    /* Open singlets file. */
 	    ajStrAssignS(&filtername, inname);
-	    ajFileDirExtnTrim(&filtername);
-	    ajStrInsertS(&filtername, 0, ajDirName(singlets));
+	    ajFilenameTrimPathExt(&filtername);
+	    ajStrInsertS(&filtername, 0, ajDirGetPath(singlets));
 	    ajStrAppendC(&filtername, ".");
-	    ajStrAppendS(&filtername, ajDirExt(singlets));
+	    ajStrAppendS(&filtername, ajDirGetExt(singlets));
 
 	
-	    if((filterf = ajFileNewIn(filtername)) == NULL)
+	    if((filterf = ajFileNewInNameS(filtername)) == NULL)
 	    {
 		ajWarn("Could not open DHF file %S",
 		       filtername);
@@ -326,13 +326,13 @@ int main(int argc, char **argv)
 	{
 	    /* Open sets file. */
 	    ajStrAssignS(&filtername, inname);
-	    ajFileDirExtnTrim(&filtername);
-	    ajStrInsertS(&filtername, 0, ajDirName(insets));
+	    ajFilenameTrimPathExt(&filtername);
+	    ajStrInsertS(&filtername, 0, ajDirGetPath(insets));
 	    ajStrAppendC(&filtername, ".");
-	    ajStrAppendS(&filtername, ajDirExt(insets));
+	    ajStrAppendS(&filtername, ajDirGetExt(insets));
 
 	
-	    if((filterf = ajFileNewIn(filtername)) == NULL)
+	    if((filterf = ajFileNewInNameS(filtername)) == NULL)
 	    {
 		ajWarn("Could not open DAF file %S", filtername);
 		ajFmtPrint("Could not open sets filter file %S", filtername);
@@ -440,10 +440,10 @@ int main(int argc, char **argv)
 
 	/* Create output files. */
 	ajStrAssignS(&outname, inname);
-	ajFileDirExtnTrim(&outname);
-	outf = ajFileNewOutDir(out, outname);
+	ajFilenameTrimPathExt(&outname);
+	outf = ajFileNewOutNameDirS(outname, out);
 	if(dored)
-	    redf = ajFileNewOutDir(outred, outname);
+	    redf = ajFileNewOutNameDirS(outname, outred);
 	
 
 	/* 5. Write non-redundant domains to main output directory.  
@@ -474,9 +474,9 @@ int main(int argc, char **argv)
 	ajDirDel(&singlets);
     if(insets)
 	ajDirDel(&insets);
-    ajDirDel(&out);
+    ajDiroutDel(&out);
     if(outred)
-	ajDirDel(&outred);
+	ajDiroutDel(&outred);
     ajFileClose(&logf);
 
 

@@ -350,7 +350,7 @@ void dotrees()
   lastchar = 0;
   offset = 0;
   charnumber = 0;
-  ajFileGetsTrim(inputfile, &rdline);
+  ajReadlineTrim(inputfile, &rdline);
   if(ajFmtScanS(rdline, "%d", &ival) != 1) {
     printf("Invalid input file!\n");
     embExitBad();
@@ -377,7 +377,7 @@ void dotrees()
     chstart[charindex - 1] = offset;
     numstates[charindex - 1] = nstates;
     offset += nstates * nstates;
-    ajFileGetsTrim(inputfile, &rdline);
+    ajReadlineTrim(inputfile, &rdline);
     ajFmtScanS(rdline, "%d", &ival);
     charnumber = ival;
   }
@@ -452,7 +452,7 @@ void doeu(long *chposition, long eu)
   Char *multichar;
   const char* cp;
 
-  ajFileGetsTrim(inputfile, &rdline);
+  ajReadlineTrim(inputfile, &rdline);
   cp = ajStrGetPtr(rdline);
 
   for (i = 1; i <= nmlngth; i++) {
@@ -476,7 +476,7 @@ void doeu(long *chposition, long eu)
 	  ch = *cp++;
 	  if (!*cp)
 	  {
-	      ajFileGetsTrim(inputfile, &rdline);
+	      ajReadlineTrim(inputfile, &rdline);
 	      cp = ajStrGetPtr(rdline);
 	      ch = *cp++;
 	  }
@@ -556,7 +556,7 @@ int main(int argc, Char *argv[])
   init(argc,argv);
   emboss_getoptions("ffactor", argc, argv);
 
-  ajFileGetsTrim(inputfile, &rdline);
+  ajReadlineTrim(inputfile, &rdline);
   sscanf(ajStrGetPtr(rdline), "%ld%ld", &neus, &nchars);
 
   charnum = (long *)Malloc(nchars*sizeof(long));

@@ -583,7 +583,7 @@ AjBool ajSeqTypeCheckIn(AjPSeq thys, const AjPSeqin seqin)
     ajint i;
     
     /*ajDebug("testing sequence '%s' '%S' type '%S' IsNuc %B IsProt %B\n",
-	    ajSeqName(thys), thys->Seq,
+	    ajSeqGetNameC(thys), thys->Seq,
 	    seqin->Inputtype, seqin->IsNuc, seqin->IsProt);*/
 
     Type = seqin->Inputtype; /* ACD file had a predefined seq type */
