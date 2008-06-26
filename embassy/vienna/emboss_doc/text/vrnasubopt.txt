@@ -43,6 +43,7 @@ Command line arguments
    -paramfile          infile     Vienna RNA parameters file (optional)
    -temperature        float      [37.0] Temperature (Any numeric value)
    -circular           boolean    [N] Allow circular RNA
+   -dos                boolean    [N] DOS special corrections
    -[no]gu             boolean    [Y] Allow GU pairs
    -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
    -[no]lp             boolean    [Y] Allow lonely pairs
@@ -162,7 +163,7 @@ Known bugs
 See also
 
     Program name                       Description
-   einverted      Finds DNA inverted repeats
+   einverted      Finds inverted repeats in nucleotide sequences
    vrnaalifold    RNA alignment folding
    vrnaalifoldpf  RNA alignment folding with partition
    vrnacofold     RNA cofolding

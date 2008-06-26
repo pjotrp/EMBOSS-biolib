@@ -1,4 +1,121 @@
-2005-05-07  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+2008-03-31  Stephan Bernhart  <berni@tbi.univie.ac.at>
+
+	* add cofolding to RNAsubopt
+
+2008-01-08  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* ensure circfold works even for open chain
+
+2007-12-13  Ulli Mueckstein  <ulli@tbi.univie.ac.at>
+
+	* upate RNAup related files
+	  RNAup can now include the intramolecular structure of both
+	  molecules and handles constraints.
+
+2007-12-05  Ronny Lorenz  <ronny@tbi.univie.ac.at>
+
+	* add circfold variants in part_func.c alipfold.c subopt.c
+
+2007-09-19  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* compute the controid structure of the ensemble in RNAfold -p
+	* fix a missing factor 2 in mean_bp_dist().
+	  CAUTION ensemble diversities returned by RNAfold -p are now
+	  twice as large as in earlier versions.
+
+2007-09-04  Ivo Hofacker  <ivo@blini.tbi.univie.ac.at>
+
+	* fix a bug in Lfold() where base number n-max-4 would never pair
+
+2007-08-26  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* add RNAaliduplex the alignment version of RNAduplex
+	* introduce a minimal distance between hits produced by	duplex_subopt()
+
+2007-07-03  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* add a loop_energy() function to compute energy of a single loop
+
+2007-06-23  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* add aliLfold() and RNALalifold, alignment variant of Lfold()
+
+2007-04-30  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+	* add RNAup to distribution
+
+2007-04-15  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+	* fix segfault in colorps output (thanks to Andres Varon)
+
+2007-03-03  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+	* avoid unnormalized doubles in scale[], big speedup for pf_fold()
+	  on very long sequences
+
+2007-02-03  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* RNAalifold can now produce colored structure plots and
+	  alignment plots
+
+2007-02-01 Ivo Hofacker <ivo@tbi.univie.ac.at>
+
+	* Fix segfault in RNAplfold because of missing prototype
+
+2006-12-01 Ivo Hofacker <ivo@tbi.univie.ac.at>
+
+	* RNAduplex would segfault when no structure base pairs are possible
+
+2006-08-22  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* add computation stacking probabilities using RNAfold -p2
+	* add -noPS option for NRAfold to supress drawing structures
+
+2006-08-09  Stephan Bernhart  <berni@tbi.univie.ac.at>
+
+	* RNAplfold can now compute probabilites of unpaired regions
+	  (scanning version of RNAup)
+
+2006-06-14  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* compile library with -fpic (if available) for use as shared
+	  library in the Perl module.
+	* fix another bug when calling Lfold() repeatedly
+	* fix switch cmdline parsing in RNAalifold (-mis implied -4)
+	* fix bug in cofold() with dangles=0
+
+2006-05-08  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* fix segfault in Lfold() when calling repeatedly
+	* fix structure parsing in RNAstruct.c
+	  (thanks to Michael Pheasant for reporting both bugs)
+	* add duplexfold() and alifold() to Perl module
+	* distinguish window size and max pair span in LPfold
+
+2006-04-05  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* fix performance bug in co_pf_fold()
+	* use relative error for termination of Newton iteration
+
+2006-03-02  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* add circular folding in alifold()
+
+2006-01-18  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* cleanup berni partition cofold code, including several bug fixes
+
+2006-01-16  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* update RNAplfold to working version
+	* add PS_dot_plot_turn() in  PS_dot.c
+
+2005-11-07  Ivo Hofacker  <ivo@tbi.univie.ac.at>
+
+	* add new utilities colorna and coloraln
+
+2005-10-11  Christoph Flamm  <xtof@tbi.univie.ac.at>
+
+	* adapt PS_rna_plot() for drawing co-folded structures
+
+2005-07-24  Ivo Hofacker  <ivo@tbi.univie.ac.at>
 
 	* fix a few memory problems in structure comparison routines
 

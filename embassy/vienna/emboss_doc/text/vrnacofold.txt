@@ -157,7 +157,7 @@ AUGAAGAUGA&CUGUCUGUCUUGAGACA
   File: red.ssps
 
 %!PS-Adobe-3.0 EPSF-3.0
-%%Creator: ePS_dot.c,v 1.5 2008/06/10 12:51:15 rice Exp $, ViennaRNA-1.7
+%%Creator: ePS_dot.c,v 1.5 2008/06/10 12:51:15 rice Exp $, ViennaRNA-1.7.2
 %%CreationDate: Sun Jul 15 12:00:00 2007
 %%Title: RNA Secondary Structure Plot
 %%BoundingBox: 66 210 518 662
@@ -294,7 +294,7 @@ Known bugs
 See also
 
     Program name                       Description
-   einverted      Finds DNA inverted repeats
+   einverted      Finds inverted repeats in nucleotide sequences
    vrnaalifold    RNA alignment folding
    vrnaalifoldpf  RNA alignment folding with partition
    vrnacofoldconc RNA cofolding with concentrations

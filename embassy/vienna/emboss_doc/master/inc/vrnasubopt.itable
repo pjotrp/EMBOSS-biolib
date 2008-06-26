@@ -64,6 +64,13 @@
 </tr>
 
 <tr>
+<td>-dos</td>
+<td>DOS special corrections</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
 <td>-[no]gu</td>
 <td>Allow GU pairs</td>
 <td>Boolean value Yes/No</td>

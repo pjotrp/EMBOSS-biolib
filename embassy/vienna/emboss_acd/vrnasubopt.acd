@@ -49,6 +49,11 @@ section: advanced [
     information: "Allow circular RNA"
   ]
 
+ boolean: dos [
+    default: "N"
+    information: "DOS special corrections"
+  ]
+
   boolean: gu [
     default: "Y"
     information: "Allow GU pairs"

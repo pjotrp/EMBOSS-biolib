@@ -99,6 +99,7 @@ Vienna RNAfold output file [rna1.vrnasubopt]: <b></b>
    -paramfile          infile     Vienna RNA parameters file (optional)
    -temperature        float      [37.0] Temperature (Any numeric value)
    -circular           boolean    [N] Allow circular RNA
+   -dos                boolean    [N] DOS special corrections
    -[no]gu             boolean    [Y] Allow GU pairs
    -[no]closegu        boolean    [Y] Allow GU pairs at end of helices
    -[no]lp             boolean    [Y] Allow lonely pairs
@@ -220,6 +221,13 @@ Vienna RNAfold output file [rna1.vrnasubopt]: <b></b>
 <tr>
 <td>-circular</td>
 <td>Allow circular RNA</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-dos</td>
+<td>DOS special corrections</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
@@ -517,7 +525,7 @@ None.
 <tr><th>Program name</th><th>Description</th></tr>
 <tr>
 <td><a href="/emboss/apps/einverted.html">einverted</a></td>
-<td>Finds DNA inverted repeats</td>
+<td>Finds inverted repeats in nucleotide sequences</td>
 </tr>
 
 <tr>
