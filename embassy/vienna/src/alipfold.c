@@ -21,7 +21,7 @@
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: alipfold.c,v 1.5 2008/06/10 12:51:15 rice Exp $";
+static char rcsid[] = "$Id: alipfold.c,v 1.6 2008/06/26 08:40:00 rice Exp $";
 #endif
 
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
@@ -104,7 +104,7 @@ PUBLIC float alipf_fold(char **sequences, char *structure, pair_info **pi)
   S = (short **) space(sizeof(short *)*(n_seq+1));
   type = (int *) space(n_seq*sizeof(int));
   for (s=0; s<n_seq; s++) {
-    if (strlen(sequences[s]) != n) nrerror("uneqal seqence lengths");
+    if (strlen(sequences[s]) != n) nrerror("unequal sequence lengths");
     S[s] = encode_seq(sequences[s]);
   }
   make_pscores((const short *const*)S, (const char *const*)sequences, n_seq, structure);
@@ -147,7 +147,7 @@ PUBLIC float alipf_circ_fold(char **sequences, char *structure, pair_info **pi)
   S = (short **) space(sizeof(short *)*(n_seq+1));
   type = (int *) space(n_seq*sizeof(int));
   for (s=0; s<n_seq; s++) {
-    if (strlen(sequences[s]) != n) nrerror("uneqal seqence lengths");
+    if (strlen(sequences[s]) != n) nrerror("unequal sequence lengths");
     S[s] = encode_seq(sequences[s]);
   }
   make_pscores((const short *const*)S, (const char *const*)sequences, n_seq, structure);
@@ -962,13 +962,12 @@ pair_info *make_pairinfo(const short *const* S, char **AS, int n_seq) {
 	num_p++;
 	if (num_p>=max_p) {
 	  max_p *= 2;
-	  pi = realloc(pi, max_p * sizeof(pair_info));
-	  if (pi==NULL) nrerror("out of memory in alipf_fold");
+	  pi = xrealloc(pi, max_p * sizeof(pair_info));
 	}
       }
     }
   free(duck);
-  pi = realloc(pi, (num_p+1)*sizeof(pair_info));
+  pi = xrealloc(pi, (num_p+1)*sizeof(pair_info));
   pi[num_p].i=0;
   qsort(pi, num_p, sizeof(pair_info), compare_pair_info );
   return pi;
@@ -1226,5 +1225,6 @@ PUBLIC void alipf_circ(char **sequences, char *structure){
   for(k=TURN+2; k<n-2*TURN-3; k++)
     qmo += qm[iindx[1]-k] * qm2[k+1] * pow(expMLclosing,n_seq);
 
-  qo = qho + qio + qmo;
+  /* add additional pf of 1.0 to take open chain into account */
+  qo = qho + qio + qmo + 1.0*scale[n];
 }

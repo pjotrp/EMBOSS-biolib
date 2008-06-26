@@ -65,22 +65,22 @@ int main(int argc, char *argv[])
 
     eline = ajStrNew();
 
-    if(!ajFileReadLine(inf,&eline))
+    if(!ajReadlineTrim(inf,&eline))
 	ajFatal("Empty input file\n");
 
     while(!ajStrGetLen(eline))
     {
-	if(!ajFileReadLine(inf,&eline))
+	if(!ajReadlineTrim(inf,&eline))
 	    ajFatal("Empty input file\n");
     }
     if(*ajStrGetPtr(eline) == '>')
-	if(!ajFileReadLine(inf,&eline))
+	if(!ajReadlineTrim(inf,&eline))
 	    ajFatal("Missing sequence line\n");
 
     string = (char *) space(ajStrGetLen(eline) + 1);
     sscanf(ajStrGetPtr(eline),"%s",string);
 
-    if(!ajFileReadLine(inf,&eline))
+    if(!ajReadlineTrim(inf,&eline))
 	ajFatal("Missing structure line\n");
 
     structure = (char *) space(ajStrGetLen(eline) + 1);

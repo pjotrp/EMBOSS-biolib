@@ -32,7 +32,7 @@ AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring)
     ajStrAssignC(constring,"");
     
 
-    while(ajFileReadLine(confile,&line))
+    while(ajReadlineTrim(confile,&line))
     {
 	if(ajStrPrefixC(line,"#") || ajStrPrefixC(line,"*") || !ajStrGetLen(line))
 	    continue;
@@ -49,7 +49,7 @@ AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring)
 	    ajStrAssignS(&seqstr,line);
 	    seqlen = ajStrGetLen(seqstr);
 
-	    if(!ajFileReadLine(confile,&line))
+	    if(!ajReadlineTrim(confile,&line))
 		ajFatal("Missing constraint line in file (%F)\n",confile);
 	    if(ajStrPrefixC(line,"#") || ajStrPrefixC(line,"*") ||
 	       !ajStrGetLen(line))

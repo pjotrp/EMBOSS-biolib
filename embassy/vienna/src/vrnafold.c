@@ -26,7 +26,7 @@ extern void init_pf_circ_fold(int length);
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[] = "$Id: vrnafold.c,v 1.8 2008/06/10 12:51:15 rice Exp $";
+static char UNUSED rcsid[] = "$Id: vrnafold.c,v 1.9 2008/06/26 08:40:00 rice Exp $";
 #endif
 
 #define PRIVATE static
@@ -235,11 +235,9 @@ int main(int argc, char *argv[])
         if (length<2000)
             (void) PS_rna_plot(string, structure, essfile);
         else
-        {
             ajWarn("Structure too long, not doing xy_plot\n");
-            free_arrays();  /* free's base_pair */
-        }
     }
+    if (length>2000) free_arrays(); 
 
     if (pf)
     {
@@ -316,9 +314,6 @@ int main(int argc, char *argv[])
 
     if (cstruc!=NULL)
         free(cstruc);
-
-    if (length>=2000)
-        free(base_pair);
 
     free(string);
     free(structure);

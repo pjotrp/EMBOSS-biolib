@@ -16,7 +16,7 @@
 #include "fold_vars.h"
 #include "PS_dot.h"
 
-static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.5 2008/06/10 12:51:15 rice Exp $";
+static char UNUSED rcsid[] = "$Id: ePS_dot.c,v 1.6 2008/06/26 08:40:00 rice Exp $";
 
 #define PUBLIC
 #define  PRIVATE   static
@@ -80,7 +80,7 @@ PUBLIC int gmlRNA(char *string, char *structure, AjPFile ssfile, char option)
   if (isupper(option)) labels = 1;
 
 
-  gmlfile = ajFileFp(ssfile);
+  gmlfile = ajFileGetFileptr(ssfile);
 
   length = strlen(string);
 
@@ -110,7 +110,7 @@ PUBLIC int gmlRNA(char *string, char *structure, AjPFile ssfile, char option)
 	  "# GML Output\n"
 	  "# CreationDate: %s\n"
 	  "# Name: %s\n"
-	  "# Options: %s\n", VERSION, time_stamp(), ajFileName(ssfile), option_string());
+	  "# Options: %s\n", VERSION, time_stamp(), ajFileGetNameC(ssfile), option_string());
   fprintf(gmlfile,
 	  "graph [\n"
 	  " directed 0\n");
@@ -313,7 +313,7 @@ int PS_rna_plot_a(char *string, char *structure, AjPFile ssfile, char *pre, char
 
   length = strlen(string);
 
-  xyplot = ajFileFp(ssfile);
+  xyplot = ajFileGetFileptr(ssfile);
 
   pair_table = make_pair_table(structure);
 
@@ -422,7 +422,7 @@ int svg_rna_plot(char *string, char *structure, AjPFile ssfile)
 
   length = strlen(string);
 
-  xyplot = ajFileFp(ssfile);
+  xyplot = ajFileGetFileptr(ssfile);
 
   pair_table = make_pair_table(structure);
 
@@ -511,7 +511,7 @@ PUBLIC int ssv_rna_plot(char *string, char *structure, AjPFile ssfile)
   float *X, *Y;
   float xmin, xmax, ymin, ymax;
 
-  ssvfile = ajFileFp(ssfile);
+  ssvfile = ajFileGetFileptr(ssfile);
 
   length = strlen(string);
   pair_table = make_pair_table(structure);
@@ -567,7 +567,7 @@ PUBLIC int ssv_rna_plot(char *string, char *structure, AjPFile ssfile)
 	  "# SStructView Output\n"
 	  "# CreationDate: %s\n"
 	  "# Name: %s\n"
-	  "# Options: %s\n", VERSION, time_stamp(), ajFileName(ssfile), option_string());
+	  "# Options: %s\n", VERSION, time_stamp(), ajFileGetNameC(ssfile), option_string());
   for (i=1; i<=length; i++)
     fprintf(ssvfile, "BASE\t%d\t%c\t%d\t%d\n",
 	    i, string[i-1], (int) (X[i-1]+0.5), (int) (Y[i-1]+0.5));
@@ -589,7 +589,7 @@ PUBLIC int xrna_plot(char *string, char *structure, AjPFile ssfile)
   short *pair_table;
   float *X, *Y;
 
-  ss_file = ajFileFp(ssfile);
+  ss_file = ajFileGetFileptr(ssfile);
 
   length = strlen(string);
   pair_table = make_pair_table(structure);
@@ -1036,9 +1036,9 @@ static FILE * PS_dot_common(char *seq, AjPFile wastlfile,
   int i, length;
 
   length= strlen(seq);
-  wastl = ajFileFp(wastlfile);
+  wastl = ajFileGetFileptr(wastlfile);
 
-  strncpy(name, ajFileName(wastlfile), 30);
+  strncpy(name, ajFileGetNameC(wastlfile), 30);
   if ((c=strrchr(name, '_'))!=0) *c='\0';
 
   fprintf(wastl,
@@ -1154,7 +1154,7 @@ int PS_color_aln(const char *structure, AjPFile filename,
 	"[10 0 0 -10 0 0] makefont setfont\n";
 	
   
-  outfile = ajFileFp(filename);
+  outfile = ajFileGetFileptr(filename);
 
   
   columnWidth=60;            /* Display long alignments in blocks of this size */

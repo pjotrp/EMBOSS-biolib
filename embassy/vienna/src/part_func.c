@@ -7,11 +7,20 @@
 */
 /*
   $Log: part_func.c,v $
+  Revision 1.6  2008/06/26 08:40:00  rice
+  version 1.7.2 modes and ajfile deprecated functions renamed
+
   Revision 1.5  2008/01/14 13:56:13  ajb
   Fix compiler warnings
 
   Revision 1.4  2008/01/11 14:48:02  ajb
   Vienna 1.6alpha to Vienna 1.7
+
+  Revision 1.29  2008/02/23 10:10:49  ivo
+  list returned from StackProb was sometimes not terminated correctly
+
+  Revision 1.28  2008/01/08 15:08:10  ivo
+  circular fold would fail for open chain
 
   Revision 1.27  2007/12/05 13:04:04  ivo
   add various circfold variants from Ronny
@@ -75,7 +84,7 @@ typedef struct plist {
 
 
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: part_func.c,v 1.5 2008/01/14 13:56:13 ajb Exp $";
+static char rcsid[] UNUSED = "$Id: part_func.c,v 1.6 2008/06/26 08:40:00 rice Exp $";
 
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
 #define eMIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -402,8 +411,8 @@ PRIVATE void pf_circ(char *sequence, char *structure){
   for(k=TURN+2; k<n-2*TURN-3; k++)
     qmo += qm[iindx[1]-k] * qm2[k+1] * expMLclosing;
 
-  /* all done, just add the three energies to get partition function for circular RNA  */
-  qo = qho + qio + qmo;
+   /* add an additional pf of 1.0 to take the open chain into account too           */
+  qo = qho + qio + qmo + 1.0*scale[n];
 }
 
 /* calculate base pairing probs */
@@ -1116,8 +1125,12 @@ char *pbacktrack_circ(char *seq){
   /* initialize pstruct with single bases  */
   for (i=0; i<n; i++) pstruc[i] = '.';
 
-  qt = 0.;
+  qt = 1.0*scale[n];
   r = urn() * qo;
+
+  /* open chain? */
+  if(qt > r) return pstruc;
+
   for(i=1; (i < n); i++){
     for(j=i+TURN+1;(j<=n); j++){
 
@@ -1176,8 +1189,7 @@ char *pbacktrack_circ(char *seq){
     }
   }
   /* if we reach the real end of this function, an error has occured  */
-  /* cause we HAVE TO find an exterior loop!!! else we have to extend  */
-  /* circ partition function with the case that all bases dont pair  */
+  /* cause we HAVE TO find an exterior loop or an open chain!!!       */
   nrerror("backtracking failed in exterior loop");
   return pstruc;
 }
@@ -1377,7 +1389,7 @@ PUBLIC plist *stackProb(double cutoff) {
 	}
       }
     }
-
+  pl[num].i=0;
   return pl;
 }
 /*-------------------------------------------------------------------------*/

@@ -24,7 +24,7 @@ extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: vrnacofold.c,v 1.8 2008/06/10 12:51:15 rice Exp $";
+static char rcsid[] = "$Id: vrnacofold.c,v 1.9 2008/06/26 08:40:00 rice Exp $";
 #endif
 
 #define PRIVATE static
@@ -624,7 +624,7 @@ PRIVATE double *read_concentrations(AjPFile concfile) {
   int i=0, n=2;
   FILE *fp = NULL;
 
-  fp = ajFileFp(concfile);
+  fp = ajFileGetFileptr(concfile);
   
   startc = (double *) space((2*n+1)*sizeof(double));
 

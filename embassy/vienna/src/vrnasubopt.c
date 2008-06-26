@@ -1,4 +1,4 @@
-/* Last changed Time-stamp: <2004-08-12 12:45:17 ivo> */
+/* Last changed Time-stamp: <2008-03-31 17:06:17 ivo> */
 /*                
 		Ineractive access to suboptimal folding
 
@@ -21,9 +21,14 @@
 extern void  read_parameter_file(AjPFile fname);
 extern int   st_back;
 
+static char UNUSED rcsid[] = "$Id: vrnasubopt.c,v 1.8 2008/06/26 08:40:00 rice Exp $";
 #define PRIVATE static
 
 extern double print_energy;
+#define MAXDOS 1000
+extern int    density_of_states[MAXDOS+1];
+/*PRIVATE char *tokenize(char *line);*/
+/*PRIVATE void usage(void);*/
 
 extern char *pbacktrack(char *sequence);
 
@@ -43,6 +48,7 @@ int main(int argc, char *argv[])
     int n_back = 0;
     int noconv=0;
     int circ=0;
+    int dos=0;
     
     AjPSeq  seq     = NULL;
     AjPFile confile = NULL;
@@ -78,6 +84,7 @@ int main(int argc, char *argv[])
     paramfile     = ajAcdGetInfile("paramfile");
     eT            = ajAcdGetFloat("temperature");
     circ          = !!ajAcdGetBoolean("circular");
+    dos           = !!ajAcdGetBoolean("dos");
     eGU           = ajAcdGetBoolean("gu");
     eclose        = ajAcdGetBoolean("closegu");
     lonely        = ajAcdGetBoolean("lp");
@@ -93,6 +100,8 @@ int main(int argc, char *argv[])
     edangles      = ajAcdGetList("dangles");
     outf      = ajAcdGetOutfile("outfile");
 
+    if(dos)
+        print_energy = -999999;
 
     do_backtrack = 1;
    
@@ -191,7 +200,7 @@ int main(int argc, char *argv[])
             sequence[l] = 'U';
     }
     
-    if (logML!=0 || dangles==1 || dangles==3) 
+    if ((logML!=0 || dangles==1 || dangles==3) && dos==0)
 	if (deltap<=0) deltap=delta/100. +0.001;
     if (deltap>0)
 	print_energy = deltap;
@@ -230,8 +239,8 @@ int main(int argc, char *argv[])
     }
     else
     {
-	(circ) ? subopt_circ(sequence, structure, delta, ajFileFp(outf)) :
-            subopt(sequence, structure, delta, ajFileFp(outf));
+	(circ) ? subopt_circ(sequence, structure, delta, ajFileGetFileptr(outf)) :
+            subopt(sequence, structure, delta, ajFileGetFileptr(outf));
     }
       
 

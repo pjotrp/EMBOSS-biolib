@@ -28,7 +28,7 @@ extern float energy_of_circ_struct(const char *seq, const char *structure);
 extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
 
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.10 2008/06/10 12:51:15 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifoldpf.c,v 1.11 2008/06/26 08:40:00 rice Exp $";
 
 #define PRIVATE static
 
@@ -322,7 +322,7 @@ int main(int argc, char *argv[])
       short *ptable; int k;
 	ptable = make_pair_table(mfe_struc);
         ajFmtPrintF(outf,"\n# Alignment section\n\n");
-        aliout = ajFileFp(outf);
+        aliout = ajFileGetFileptr(outf);
         
 	fprintf(aliout, "%d sequences; length of alignment %d\n",
 		n_seq, length);

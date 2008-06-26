@@ -103,8 +103,8 @@ int main(int argc, char *argv[])
     edit_backtrack = !!doalign;
     cost_matrix    = !!eschapiro;
 
-    fpinf     = ajFileFp(sfile);
-    somewhere = ajFileFp(outf);
+    fpinf     = ajFileGetFileptr(sfile);
+    somewhere = ajFileGetFileptr(outf);
     istty = 0;
    
     do

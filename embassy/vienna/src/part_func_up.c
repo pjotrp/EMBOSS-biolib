@@ -1,4 +1,4 @@
-/* Last changed Time-stamp: <2007-12-07 16:48:10 ulim> */
+/* Last changed Time-stamp: <2008-03-26 17:05:48 ulim> */
 /*                
 		  partiton function for RNA secondary structures
 
@@ -8,7 +8,14 @@
 */
 /*
   $Log: part_func_up.c,v $
-  Revision 1.3  2008/05/01 10:35:48  rice
+  Revision 1.4  2008/06/26 08:40:00  rice
+  version 1.7.2 modes and ajfile deprecated functions renamed
+
+
+  Revision 1.3  2008/05/08 14:11:55  ivo
+  minor output changes
+
+  Revision 1.2a  2008/05/01 10:35:48  rice
   MIN and MAX renamed to eMIN and eMAX to avoid name clashes
 
   Revision 1.2  2008/01/14 13:56:13  ajb
@@ -61,6 +68,7 @@
 #include <string.h>
 #include <math.h>
 #include <float.h>    /* #defines FLT_MAX ... */
+#include <unistd.h>
 #include "fold.h"
 #include "utils.h"
 #include "energy_par.h"
@@ -71,7 +79,7 @@
 #include "part_func_up.h"
 #include "duplex.h"
 /*@unused@*/
-static char rcsid[] UNUSED = "$Id: part_func_up.c,v 1.3 2008/05/01 10:35:48 rice Exp $";
+static char rcsid[] UNUSED = "$Id: part_func_up.c,v 1.4 2008/06/26 08:40:00 rice Exp $";
 #define CO_TURN 0
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
 #define eMIN(x,y) (((x)<(y)) ? (x) : (y))
@@ -1031,7 +1039,7 @@ PUBLIC interact *pf_interact(const char *s1, const char *s2, pu_contrib *p_c, pu
   if(fold_constrained && (gi==0 || gk==0 ||  gl==0 || gj==0)) {
     nrerror("pf_interact: could not satisfy all constraints");    
   }
-  /* fill stricture interact */
+  /* fill structure interact */
   Int->length = n1;
   Int->i = gi;
   Int->j = gj;
@@ -1295,7 +1303,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
   char *unpaired_fe[6]={"free energy to open all structures","free energy to open exterior loops","free energy to open hairpin loops","free energy to open interior loops","free energy to open multiloops","interaction probability"};
 
   if(p_c != NULL) {
-    wastl = fopen(ofile,"w");
+    wastl = fopen(ofile,"a");
     if (wastl==NULL) {
       fprintf(stderr, "p_cont: can't open %s for Up_plot\n", ofile);
       perror(ofile);
@@ -1390,7 +1398,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
   if(p_cont != NULL){
     for (g=0; g<=4; g++){
       if((int) p_cont[g][0]) {
-	fprintf(wastl, "# %s\n",unpaired[g]);
+          fprintf(wastl, "# %s for u = %d\n",unpaired[g],w);
 	for (i=1; i<=len; i++){
 	  if(i >= w) {
 	    fprintf(wastl,"%7d\t%7.15f\n",i,p_cont[g][i]);
@@ -1407,7 +1415,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
     dG_u=0.;
     for (g=0; g<=4; g++){
       if((int) p_cont[g][0]) {
-	fprintf(wastl, "# %s\n",unpaired_fe[g]);
+          fprintf(wastl, "# %s for u = %d\n",unpaired_fe[g],w);
 	for (i=1; i<=len; i++){
 	  dG_u = -log(p_cont[g][i])*(temperature+K0)*GASCONST/1000.0;
 	  if(i >= w) {
@@ -1424,7 +1432,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
     }
     /* printf("\n%d,%d (%.3f) for u=%d\n",min_i,min_j,min_gu,w); */
   }
-  /* get values for the shortet sequence */
+  /* get values for the shorter sequence */
   
   
   if(p_c_sh != NULL) {
@@ -1496,7 +1504,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
     len = p_c_sh->length;
     for (g=0; g<=4; g++){
       if((int) p_cont_sh[g][0]) {
-	fprintf(wastl, "# %s in shorter sequence\n",unpaired[g]);
+          fprintf(wastl, "# %s for u = %d in shorter sequence\n",unpaired[g],w);
 	for (i=1; i<=len; i++){
 	  if(i >= ws) {
 	    fprintf(wastl,"%7d\t%7.15f\n",i,p_cont_sh[g][i]);
@@ -1508,7 +1516,7 @@ PUBLIC int Up_plot(pu_contrib *p_c, pu_contrib *p_c_sh, interact *pint, int len,
     dG_u=0.;
     for (g=0; g<=4; g++){
       if((int) p_cont_sh[g][0]) {
-	fprintf(wastl, "# %s in shorter sequence\n",unpaired_fe[g]);
+          fprintf(wastl, "# %s for u = %d in shorter sequence\n",unpaired_fe[g],w);
 	for (i=1; i<=len; i++){
 	  dG_u = -log(p_cont_sh[g][i])*(temperature+K0)*GASCONST/1000.0;
 	  if(i >= ws) {

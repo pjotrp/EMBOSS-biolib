@@ -18,7 +18,7 @@
 #include "energy_par.h"
 
 #if 0
-static char rcsid[] = "$Id: eread_epars.c,v 1.4 2008/01/14 13:56:13 ajb Exp $";
+static char rcsid[] = "$Id: eread_epars.c,v 1.5 2008/06/26 08:40:00 rice Exp $";
 #endif
 
 #define PUBLIC
@@ -71,10 +71,10 @@ PUBLIC void read_parameter_file(AjPFile fname)
   enum parset type;
   int      r, changed=0;
 
-  fp = ajFileFp(fname);
+  fp = ajFileGetFileptr(fname);
 
   if (!(line = get_line(fp))) {
-      ajWarn(" File %s is in improper format.\n", ajFileName(fname));
+      ajWarn(" File %s is in improper format.\n", ajFileGetNameC(fname));
     return;
   }
 
@@ -197,9 +197,10 @@ PRIVATE char *get_array1(int *arr, int size)
 PRIVATE void  rd_stacks(int stacks[NBPAIRS+1][NBPAIRS+1])
 {
   int    i;
-  char  *cp; 
-  for (i=1; i<=NBPAIRS; i++) {
-    cp = get_array1(stacks[i]+1,NBPAIRS);
+  char  *cp;
+  /* pmr: rearranged to workaround a warning bug in the gcc 4.3 compiler */
+  for (i=0; i<NBPAIRS; i++) {
+    cp = get_array1(&stacks[i+1][1],NBPAIRS);
     if (cp) {
       fprintf(stderr,"\nrd_stacks: %s\n", cp);
       exit(1);
@@ -290,7 +291,7 @@ PRIVATE void rd_int22(int int22[NBPAIRS+1][NBPAIRS+1][5][5][5][5])
       for (k=1; k<5; k++) 
 	for (l=1; l<5; l++)
 	  for (m=1; m<5; m++) {
-	    cp = get_array1(int22[i][j][k][l][m]+1,4);
+	    cp = get_array1(&int22[i][j][k][l][m][1],4);
 	    if (cp) {
 	      fprintf(stderr, "rd_int22: in field "
 		      "int22[%d][%d][%d][%d][%d]\n\t%s\n",
@@ -518,12 +519,12 @@ PUBLIC void write_parameter_file(const char fname[]) {
   fprintf(outfp,"\n# stack_energies\n");
   fprintf(outfp,"/*  CG    GC    GU    UG    AU    UA    @  */\n");
   for (c=1; c<NBPAIRS+1; c++)
-    display_array(stack37[c]+1,NBPAIRS,NBPAIRS, outfp);
+    display_array(&stack37[c][1],NBPAIRS,NBPAIRS, outfp);
   
   fprintf(outfp,"\n# stack_enthalpies\n");
   fprintf(outfp,"/*  CG    GC    GU    UG    AU    UA    @  */\n");
   for (c=1; c<NBPAIRS+1; c++)
-    display_array(enthalpies[c]+1,NBPAIRS,NBPAIRS, outfp);
+    display_array(&enthalpies[c][1],NBPAIRS,NBPAIRS, outfp);
   
   fprintf(outfp,"\n# mismatch_hairpin\n");
   { int i,k;
@@ -627,7 +628,7 @@ PUBLIC void write_parameter_file(const char fname[]) {
 	  fprintf(outfp, "/* %2s.%c%c..%2s */\n",
 		  pnames[p1], bnames[i], bnames[j], pnames[p2]);
 	  for (k=1; k<5; k++) 
-	    display_array(int22_37[p1][p2][i][j][k]+1,4,5, outfp);
+	    display_array(&int22_37[p1][p2][i][j][k][1],4,5, outfp);
 	}
   }
   
@@ -640,7 +641,7 @@ PUBLIC void write_parameter_file(const char fname[]) {
 	  fprintf(outfp, "/* %2s.%c%c..%2s */\n",
 		  pnames[p1], bnames[i], bnames[j], pnames[p2]);
 	  for (k=1; k<5; k++) 
-	    display_array(int22_H[p1][p2][i][j][k]+1,4,5, outfp);
+	    display_array(&int22_H[p1][p2][i][j][k][1],4,5, outfp);
 	}
   }
   

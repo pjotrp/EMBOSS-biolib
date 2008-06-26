@@ -150,7 +150,7 @@ int main(int argc, char *argv[])
 	symbolset[l] = toupper(symbolset[l]);
     
     inv_verbose = !!showfails;
-    fp = ajFileFp(inf);
+    fp = ajFileGetFileptr(inf);
     
     init_rand();
     kT = (temperature+273.15)*1.98717/1000.0;
