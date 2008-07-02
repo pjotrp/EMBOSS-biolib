@@ -1,2 +1,7 @@
 Version 6.0.0
+	New EMBASSY package myembossdemo is a parallel package designed to
+	provide example applications for novice EMBOSS developers. The
+	applications in myemboss have been moved there so myemboss is now
+	supplied with no applications built.
+
 	Added ajaxg AJAX graphical library to link list

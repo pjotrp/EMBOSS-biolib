@@ -1,4 +1,5 @@
-pkgdata_DATA = index.html \
-	myseq.html
+##pkgdata_DATA = index.html \
+##	myprog.html \
+##	myotherprog.html
 
-pkgdatadir=$(prefix)/share/EMBOSS/doc/html/embassy/myseq
+pkgdatadir=$(prefix)/share/EMBOSS/doc/html/embassy/myemboss

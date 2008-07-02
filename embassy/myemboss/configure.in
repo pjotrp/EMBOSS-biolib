@@ -5,8 +5,8 @@ dnl Process this file with autoconf to produce a configure script.
 ## then uncomment the following line.
 #CC=cc
 
-AC_INIT(source/myseq.c)
-AM_INIT_AUTOMAKE(MYEMBOSS, 3.0.0)
+AC_INIT(MYEMBOSS, 6.0.0,emboss-bug@emboss.open-bio.org)
+AM_INIT_AUTOMAKE(MYEMBOSS, 6.0.0)
 
 AC_PROG_AWK
 dnl Make sure CFLAGS is defined to stop AC_PROC_CC adding -g
