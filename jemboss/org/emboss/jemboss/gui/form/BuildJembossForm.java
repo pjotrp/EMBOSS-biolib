@@ -116,7 +116,7 @@ public class BuildJembossForm implements ActionListener
   private String helptext = "";
   private boolean withSoap;
   private JFrame f;
-  private ScrollPanel p2;
+  private JPanel p2;
   private String embossBin;
 
   private int numofFields;
@@ -124,7 +124,7 @@ public class BuildJembossForm implements ActionListener
   
   public BuildJembossForm(String appDescription, String db[],
         final String applName, String[] envp, String cwd, 
-        String acdText, final boolean withSoap, ScrollPanel p2, 
+        String acdText, final boolean withSoap, JPanel p2, 
         final JembossParams mysettings, final JFrame f)
   {
 
