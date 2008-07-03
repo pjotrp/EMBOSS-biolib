@@ -24,6 +24,8 @@ package org.emboss.jemboss.gui;
 import java.awt.*;
 import java.io.*;
 import java.util.*;
+import java.util.prefs.Preferences;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
@@ -62,8 +64,11 @@ public class SequenceList extends JFrame implements TableModelListener
   final Cursor cdone = new Cursor(Cursor.DEFAULT_CURSOR);
   final boolean withSoap;
   final JembossParams mysettings;
+  Preferences myPreferences;
   
   protected static JCheckBoxMenuItem getSeqLength;
+  private final static String GET_SEQUENCE_LENGTH_AUTO ="GET_SEQUENCE_LENGTH_AUTOMATICALLY"; 
+  private final static String STORE_SEQUENCE_LIST ="STORE_SEQUENCE_LIST"; 
 
   /**
   *
@@ -76,11 +81,26 @@ public class SequenceList extends JFrame implements TableModelListener
     super("Sequence List");
     this.withSoap = withSoap;
     this.mysettings = mysettings;
+    myPreferences = Preferences.userNodeForPackage(SequenceList.class);
     setSize(400,155);
     getSeqLength = new JCheckBoxMenuItem("Get sequence lengths automatically");
-    if(mysettings.getGetSequenceLength())
+    if(myPreferences.getBoolean(GET_SEQUENCE_LENGTH_AUTO, false))
         getSeqLength.setSelected(true);
+    getSeqLength.addItemListener(new ItemListener(){
+        public void itemStateChanged(ItemEvent e) {
+            myPreferences.putBoolean(GET_SEQUENCE_LENGTH_AUTO,
+                    getSeqLength.isSelected());
+        }
+    });
     storeSeqList = new JCheckBoxMenuItem("Save Sequence List");
+    if(myPreferences.getBoolean(STORE_SEQUENCE_LIST, false))
+        storeSeqList.setSelected(true);
+    storeSeqList.addItemListener(new ItemListener(){
+        public void itemStateChanged(ItemEvent e) {
+            myPreferences.putBoolean(STORE_SEQUENCE_LIST,
+                    isStoreSequenceList());
+        }
+    });
     seqModel = new SequenceListTableModel();
     table = new DragJTable(seqModel);
     table.setModel(seqModel);
@@ -177,9 +197,8 @@ public class SequenceList extends JFrame implements TableModelListener
     File fseq = new File(System.getProperty("user.home")
                            + System.getProperty("file.separator")
                            + ".jembossSeqList");
-    if(fseq.canRead())
-      storeSeqList.setSelected(true);
-    else {
+    if(!fseq.canRead())
+    {
       storeSeqList.setSelected(false);
       storeSeqList.setEnabled(false);
     }
@@ -439,9 +458,9 @@ public static int getSeqAttr(String fc, JembossParams mysettings)
   
   /**
   *
-  * Determines if a sequence list has been stored
+  * Determines whether the 'store sequence list' menu item selected
   * ("~/.jembossSeqList")
-  * @return 	true if a sequence list has been stored
+  * @return 	true if the menu item was selected
   *
   */
   public boolean isStoreSequenceList()
@@ -449,11 +468,6 @@ public static int getSeqAttr(String fc, JembossParams mysettings)
     return storeSeqList.isSelected();
   }
   
-  public static boolean isgetSequenceLengthSelected()
-  {
-    return getSeqLength.isSelected();
-  }
-
   public void tableChanged(TableModelEvent e) {
       if (getSeqLength.isSelected() == false)
           return;

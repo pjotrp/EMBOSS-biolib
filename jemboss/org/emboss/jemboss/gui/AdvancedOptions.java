@@ -270,8 +270,6 @@ public class AdvancedOptions extends JPanel
         p.put("user.home",getHomeDirectory());
         if(!Jemboss.withSoap)
             p.put("results.home",getResultsDirectory());
-        boolean gsl = SequenceList.isgetSequenceLengthSelected();
-        p.put("getsequencelength", gsl ? "true": "false");
         p.store(new FileOutputStream(jemProp), "jemboss properties");
     } catch (IOException e) {
         // TODO Auto-generated catch block
