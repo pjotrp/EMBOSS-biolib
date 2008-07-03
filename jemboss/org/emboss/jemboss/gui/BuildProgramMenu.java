@@ -63,22 +63,21 @@ public class BuildProgramMenu
 
   /**
   *
-  *  @param  p1 		menu pane
-  *  @param  p2 		form pane
+  *  @param  menuPane 		menu pane
+  *  @param  formPane 		form pane
   *  @param  pform 		pane containing emboss form and job manager
   *  @param  scrollProgForm 	EMBOSS form scroll pane 
   *  @param  mysettings		Jemboss settings
   *  @param  withSoap 		true if using SOAP server
   *  @param  mainMenu		Jemboss main menu bar
   *  @param  f			Jemboss frame
-  *  @param  jform 		form pane dimension
   *
   */
-  public BuildProgramMenu(final JPanel p1, final ScrollPanel p2, 
+  public BuildProgramMenu(final JPanel menuPane, final JPanel formPane, 
            final JPanel pform, final JScrollPane scrollProgForm,
            final JembossParams mysettings,
            final boolean withSoap, final SetUpMenuBar mainMenu,
-           final JFrame f, final Dimension jform)
+           final JFrame f)
   {
   
     final String fs = new String(System.getProperty("file.separator"));
@@ -121,13 +120,15 @@ public class BuildProgramMenu
       envp = mysettings.getEmbossEnvironmentArray(env);
     }
 
-    
-    SwingWorker groupworker = new SwingWorker() 
+    SwingWorker groupworker = new SwingWorker()
     {
       String woss = "";
-
+      ProgList progs;
+      
       public Object construct() 
       {
+          putJembossLogo();
+          f.validate();
           try {
               if (withSoap) {
                   constructWithSoap();
@@ -315,9 +316,10 @@ public class BuildProgramMenu
             codons.add(dataFile[i]);        
       }
 
-
       public void finished() 
       {
+        
+
 // sets the delay for dismissing tooltips
         MultiLineToolTipUI.initialize();
         ToolTipManager toolTipManager = ToolTipManager.sharedInstance();
@@ -331,7 +333,7 @@ public class BuildProgramMenu
 
 // program menu
         JMenuBar menuBar = new JMenuBar();
-        ProgList progs = new ProgList(woss,menuBar);
+        progs = new ProgList(woss,menuBar);
 
         if(withSoap)
           splashing.doneSomething("");
@@ -343,10 +345,18 @@ public class BuildProgramMenu
         final String allAcd[] = progs.getProgsList();
         final String allDes[] = progs.getProgDescription();
 
-        p1.add(menuBar, BorderLayout.NORTH);
-        f.setVisible(true);
+        menuPane.add(menuBar, BorderLayout.NORTH);
+
+        favourites(allAcd, allDes, numProgs);
+        constructProgramMenu(allAcd, numProgs);        
+        JList progList = constructScrollList(allAcd, numProgs);
+        constructSearchToolbar(progList);
+        f.validate();
+      }
 
 // favorites
+      private void favourites(final String[] allAcd, final String[] allDes, 
+              final int numProgs){
         favorites = new Favorites(mainMenu.getFavoriteJMenu());
         JMenuItem favItems[] = favorites.getFavorites();
         for(int i=0; i<favItems.length;i++)
@@ -366,8 +376,7 @@ public class BuildProgramMenu
                   public void actionPerformed(ActionEvent e)
                   {
                     f.setCursor(cbusy);
-                    currentApp = setForm(e,f,scrollProgForm,numProgs,p2,
-                             mysettings,cwd,allAcd,allDes,withSoap);
+                    currentApp = setForm(e, numProgs, allAcd);
                     f.setCursor(cdone);
                   }
                 });
@@ -375,14 +384,15 @@ public class BuildProgramMenu
               else if(e.getActionCommand().equals("EDIT"))
                 favorites.edit(allAcd);
               else
-                currentApp = setForm(e,f,scrollProgForm,numProgs,p2,
-                             mysettings,cwd,allAcd,allDes,withSoap);
+                currentApp = setForm(e, numProgs, allAcd);
               f.setCursor(cdone);
             }
           });
         }
+      }
 
 // main menu
+      private void constructProgramMenu(final String[] allAcd, final int numProgs){
         JMenuItem mi[] = new JMenuItem[numProgs];
         mi = progs.getMenuItems();
         int nm = progs.getNumberMenuItems();
@@ -395,8 +405,7 @@ public class BuildProgramMenu
             public void actionPerformed(ActionEvent e)
             {
               f.setCursor(cbusy);
-              currentApp= setForm(e,f,scrollProgForm,numProgs,p2,
-                          mysettings,cwd,allAcd,allDes,withSoap);
+              currentApp= setForm(e, numProgs, allAcd);
               f.setCursor(cdone);
             }
           });
@@ -408,12 +417,15 @@ public class BuildProgramMenu
               splashf.toFront();
           }
         }
+      }
 
 // program scroll list
+      private JList constructScrollList(final String[] allAcd, final int numProgs){
         final JList progList = new JList(allAcd);
         JScrollPane scrollPane = new JScrollPane(progList);
 
         Box alphaPane = new Box(BoxLayout.Y_AXIS);
+        alphaPane.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 0));
         Box alphaTextPane = new Box(BoxLayout.X_AXIS);
         alphaPane.add(Box.createRigidArea(new Dimension(0,10)));
         alphaTextPane.add(new JLabel("GoTo:"));
@@ -452,16 +464,8 @@ public class BuildProgramMenu
           {
             f.setCursor(cbusy);
             int index = progList.getSelectedIndex();
-            p2.removeAll();
             currentApp = index;
-            String acdText = getAcdText(allAcd[index],mysettings,
-                                                       withSoap);
-            new BuildJembossForm(allDes[index],
-                                  db,allAcd[index],envp,cwd,
-                                  acdText,withSoap,p2,mysettings,f);
-            scrollProgForm.setViewportView(p2);   
-            JViewport vp = scrollProgForm.getViewport();
-            vp.setViewPosition(new Point(0,0));
+            setForm(index);
             f.setCursor(cdone);
           }
         });
@@ -470,16 +474,39 @@ public class BuildProgramMenu
         alphaPane.add(alphaTextPane);
         alphaPane.add(scrollPane);
 
-        p1.add(alphaPane, BorderLayout.CENTER);
+        menuPane.add(alphaPane, BorderLayout.CENTER);
 
-        Dimension dp1 = p1.getMinimumSize();
-        dp1 = new Dimension((int)dp1.getWidth()-10,(int)dp1.getHeight());
-        p1.setPreferredSize(dp1);
-        p1.setMaximumSize(dp1);
-        p1.setMinimumSize(dp1);
+        Dimension dp1 = menuPane.getMinimumSize();
+        menuPane.setPreferredSize(dp1);
+        menuPane.setMaximumSize(new Dimension(dp1.width,Short.MAX_VALUE));
+        menuPane.setMinimumSize(dp1);
+        
+        scrollProgForm.setBackground(Color.white);
+
+        progList.setSelectionBackground(Color.cyan);
+
+// create listener to build Jemboss program forms
+        MouseListener mouseListener = new MouseAdapter()
+        {
+          public void mouseClicked(MouseEvent e)
+          {
+            f.setCursor(cbusy);
+            JList source = (JList)e.getSource();
+            source.setSelectionBackground(Color.cyan);
+            int index = source.getSelectedIndex();
+            currentApp = index;
+            setForm(index);
+            f.setCursor(cdone);
+          }
+        };
+        progList.addMouseListener(mouseListener);
+        progList.addKeyListener(new ProgListSelectionListener());        
+        return progList;
+      }
 
 
 // search tool bar
+      private void constructSearchToolbar(JList progList){
         final JRadioButton radioAND = new JRadioButton("AND");
         JRadioButton radioOR  = new JRadioButton("OR");
         Font fnt = new Font("SansSerif", Font.BOLD, 10);
@@ -530,94 +557,72 @@ public class BuildProgramMenu
         bacross.add(Box.createHorizontalGlue());
         toolBar.add(bacross);
 
-        p1.add(toolBar, BorderLayout.SOUTH);
+        menuPane.add(toolBar, BorderLayout.SOUTH);
+      }
 
 // put on the logo
+      private void putJembossLogo(){
         ClassLoader cl = this.getClass().getClassLoader();
         ImageIcon jlo = new ImageIcon(
                   cl.getResource("images/Jemboss_logo_large.gif"));
         JLabel jlablogo = new JLabel(jlo); 
-        JPanel pFront = new JPanel();
-        pFront.setBackground(Color.white);
-        pFront.add(jlablogo);
-
-// ensure fill the screen here as pform is BorderLayout.WEST
-        int pwidth = (int)(f.getSize().getWidth()-p1.getSize().getWidth())-14;
-        Dimension d = new Dimension(pwidth,100);
-        pform.setPreferredSize(d);
-        pform.setMinimumSize(d);
-        jlablogo.setPreferredSize(jform);
-
-        p2.add(pFront);
-
-        progList.setSelectionBackground(Color.cyan);
-
-// create listener to build Jemboss program forms
-        MouseListener mouseListener = new MouseAdapter()
-        {
-          public void mouseClicked(MouseEvent e)
-          {
-            f.setCursor(cbusy);
-            JList source = (JList)e.getSource();
-            source.setSelectionBackground(Color.cyan);
-            int index = source.getSelectedIndex();
-            p2.removeAll();
-            currentApp = index;
-            String acdText = getAcdText(allAcd[index],mysettings,
-                                                       withSoap);
-            new BuildJembossForm(allDes[index],
-                                  db,allAcd[index],envp,cwd,
-                                  acdText,withSoap,p2,mysettings,f);
-            scrollProgForm.setViewportView(p2);
-            JViewport vp = scrollProgForm.getViewport();
-            vp.setViewPosition(new Point(0,0));
-            f.setCursor(cdone);
-          }
-        };
-        progList.addMouseListener(mouseListener);
-
-        p1.setVisible(false);
-        p1.setVisible(true);
-
+        
+        formPane.add(jlablogo, BorderLayout.CENTER);
+        formPane.setBackground(Color.white);
       }
+      
+      
+      private void setForm(int i){
+          formPane.removeAll();
+          String acdText = getAcdText(progs.getProgsList()[i],
+                  mysettings, withSoap);
+          new BuildJembossForm(progs.getProgDescription()[i],
+                  db,progs.getProgsList()[i],envp,cwd,
+                  acdText,withSoap,formPane,mysettings,f);
+      }
+      
+      private int setForm(ActionEvent e, int numProgs, String allAcd[])
+      {
+          String p = e.getActionCommand();
+          int ind = p.indexOf(" ");
+
+          if(ind > -1)
+              p = p.substring(0,ind).trim();
+
+          for(int k=0;k<numProgs;k++)
+          {
+              if(p.equalsIgnoreCase(allAcd[k]))
+              {
+                  currentApp = k;
+                  setForm(k);
+                  break;
+              }
+          }
+          return currentApp;
+      }
+
+      
+      final class ProgListSelectionListener implements KeyListener{
+
+          public void keyPressed(KeyEvent e) {
+              if (e.getKeyCode()==KeyEvent.VK_ENTER){
+                  JList l = (JList)e.getSource();
+                  setForm(l.getSelectedIndex());
+              }
+          }
+
+          public void keyReleased(KeyEvent e) {
+          }
+
+          public void keyTyped(KeyEvent e) {
+          }
+            
+        }
+      
     };
     groupworker.start();
-
   }
-
-  private int setForm(ActionEvent e, JFrame f, JScrollPane scrollProgForm,
-                      int numProgs, ScrollPanel p2, JembossParams mysettings, 
-                      String cwd, String allAcd[], String allDes[],
-                      boolean withSoap)
-  {
-//  JMenuItem source = (JMenuItem)(e.getSource());
-                  
-    String p = e.getActionCommand();
-    int ind = p.indexOf(" ");
-
-    if(ind > -1)
-      p = p.substring(0,ind).trim();
-                                                                                                     
-    for(int k=0;k<numProgs;k++)
-    {
-      if(p.equalsIgnoreCase(allAcd[k]))
-      {
-        p2.removeAll();
-        currentApp = k;
-
-        String acdText = getAcdText(allAcd[k],mysettings,
-                                               withSoap);
-        new BuildJembossForm(allDes[k],
-                      db,allAcd[k],envp,cwd,acdText,
-                      withSoap,p2,mysettings,f);
-        scrollProgForm.setViewportView(p2);
-        JViewport vp = scrollProgForm.getViewport();
-        vp.setViewPosition(new Point(0,0));
-        break;
-      }
-    }
-    return currentApp;
-  }
+   
 
   /**
   *
