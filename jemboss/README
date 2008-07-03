@@ -24,6 +24,10 @@ Tim Carver   tjc@sanger.ac.uk
 
 Change Log:
 ---------------------------------------------------
+03-July-2008
+
+ * Jemboss and BuildProgramMenu classes were refactored with GUI improvements
+
 24-Jun-2008
 
  * context sensitive popup menu items in remote and local file managers
