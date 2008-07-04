@@ -65,7 +65,7 @@ public class RemoteDragTree extends JTree implements DragGestureListener,
   /** used by AutoScroll method */
   private Insets autoscrollInsets = new Insets( 0, 0, 0, 0 );
   
-  public static final String REMOTE_HOME = " - remote home - ";
+  public static final String REMOTE_HOME = " ";
   
   JMenuItem openMenu;
   JMenuItem renameMenuItem;
