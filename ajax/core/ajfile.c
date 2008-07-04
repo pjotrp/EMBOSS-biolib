@@ -3540,7 +3540,8 @@ void ajFilebuffResetPos(AjPFilebuff buff)
 */
 __deprecated void ajFileBuffResetPos(AjPFilebuff buff)
 {
-    return ajFilebuffResetPos(buff);
+    ajFilebuffResetPos(buff);
+    return;
 }
 
 
