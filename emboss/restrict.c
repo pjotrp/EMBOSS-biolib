@@ -963,7 +963,7 @@ static void restrict_namecheck(const AjPStr enzymes, AjPFile enzfile)
 
         value = ajTableFetch(enztable,ea[i]);
         if(!value)
-            ajWarn("Restriction enzyme %S isn't in the database",ea[i]);
+            ajFatal("Restriction enzyme %S isn't in the database",ea[i]);
     }
     
     
