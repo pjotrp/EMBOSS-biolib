@@ -31,6 +31,7 @@
 
 
 #define EQUGUESS 3500	  /* Estimate of number of equivalent names */
+#define ENZGUESS 5000     /* Estimate of withrefm entries           */
 
 
 static void restrict_reportHits(AjPReport report, const AjPSeq seq,
@@ -54,7 +55,7 @@ static void restrict_read_equiv(AjPFile equfile, AjPTable table,
 				AjBool commercial);
 static void restrict_read_file_of_enzyme_names(AjPStr *enzymes);
 static ajint restrict_enzcompare(const void *a, const void *b);
-
+static void restrict_namecheck(const AjPStr enzymes, AjPFile enzfile);
 
 
 
@@ -147,6 +148,12 @@ int main(int argc, char **argv)
 	    ajFatal("Cannot locate enzyme file. Run REBASEEXTRACT");
     }
 
+
+    if(enzymes)
+        if(!ajStrMatchCaseC(enzymes,"all"))
+            restrict_namecheck(enzymes,enzfile);
+
+    
     if(limit)
     {
 	equfile = ajDatafileNewInNameC(EQUDATA);
@@ -905,4 +912,70 @@ static ajint restrict_enzcompare(const void *a, const void *b)
 {
     return strcmp((*(EmbPMatMatch const *)a)->cod->Ptr,
 		  (*(EmbPMatMatch const *)b)->cod->Ptr);
+}
+
+
+
+
+/* @funcstatic restrict_namecheck *******************************************
+**
+** Check that all given restriction enzyme names exists
+**
+** @param [r] enzymes [const AjPStr] enzyme list
+** @param [r] enzfile [AjPFile] enzyme file
+** @return [void]
+** @@
+******************************************************************************/
+
+static void restrict_namecheck(const AjPStr enzymes, AjPFile enzfile)
+{
+    ajuint ne = 0;
+    ajuint i;
+    
+    AjPStr *ea = NULL;
+    AjPTable enztable = NULL;
+    
+    AjPStr key   = NULL;
+    AjPStr value = NULL;
+
+    EmbPPatRestrict enz = NULL;
+    
+    enztable = ajTablestrNewLen(ENZGUESS);
+    enz      = embPatRestrictNew();
+    
+    ne = ajArrCommaList(enzymes,&ea);
+
+    while(embPatRestrictReadEntry(enz,enzfile))
+    {
+        key = ajStrNew();
+        ajStrAssignS(&key,enz->cod);
+        ajStrFmtUpper(&key);
+        value = ajStrNewC("dummy");
+        
+	ajTablePut(enztable,(void *)key, (void *)value);
+    }
+    
+ 
+    for(i=0; i < ne; ++i)
+    {
+        ajStrRemoveWhite(&ea[i]);
+        ajStrFmtUpper(&ea[i]);
+
+        value = ajTableFetch(enztable,ea[i]);
+        if(!value)
+            ajWarn("Restriction enzyme %S isn't in the database",ea[i]);
+    }
+    
+    
+    ajFileSeek(enzfile,0L,0);
+
+    ajTablestrFree(&enztable);
+    for(i=0;i<ne;++i)
+	ajStrDel(&ea[i]);
+    if(ne)
+	AJFREE(ea);
+
+    embPatRestrictDel(&enz);
+    
+    return;
 }
