@@ -197,7 +197,14 @@ public class SequenceList extends JFrame implements TableModelListener
     File fseq = new File(System.getProperty("user.home")
                            + System.getProperty("file.separator")
                            + ".jembossSeqList");
-    if(!fseq.canRead())
+    if (!fseq.exists()){
+    	try {
+			fseq.createNewFile();
+		} catch (IOException e1) {
+			// 
+		}
+    }
+    if(!fseq.canWrite())
     {
       storeSeqList.setSelected(false);
       storeSeqList.setEnabled(false);
