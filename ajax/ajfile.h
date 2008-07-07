@@ -522,6 +522,7 @@ __deprecated void         ajFileUnbuffer (AjPFile thys);
 ** End of prototype definitions
 */
 
+#define    MAJFILETELL(file) (file->fp ? ftell(file->fp) : 0L)
 
 /* ============= definitions =========================*/
 #ifndef WIN32
