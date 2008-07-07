@@ -437,6 +437,7 @@ public class SetUpMenuBar
 
     if(seqList.isStoreSequenceList())  //create a SequenceList file
       saveSequenceList();
+    seqList.saveBounds();
 
     deleteTmp(new File(cwd),".jembosstmp");
     System.exit(0);
