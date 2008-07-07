@@ -515,6 +515,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\ajax\ajfileio.h"
+				>
+			</File>
+			<File
 				RelativePath="..\..\ajax\ajfmt.h"
 				>
 			</File>
