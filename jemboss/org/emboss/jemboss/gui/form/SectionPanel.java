@@ -545,7 +545,7 @@ public class SectionPanel
       }
 
 //using jni?
-      if(AdvancedOptions.prefjni.isSelected())
+      if(AdvancedOptions.prefJNI.isSelected())
         checkDependents(section,envp);
 
       if((att.startsWith("seqset") || att.startsWith("seqall")||
