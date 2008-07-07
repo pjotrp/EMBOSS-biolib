@@ -207,7 +207,7 @@ AjBool embReadAminoDataIntC(const char *s, ajint **a, ajint fill)
     ajint  idx;
     ajint  i;
 
-    ajDatafileNewInNameC(s);
+    inf = ajDatafileNewInNameC(s);
 
     if(!inf)
     {
