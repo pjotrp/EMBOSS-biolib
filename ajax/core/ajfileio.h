@@ -66,9 +66,6 @@ AjBool         ajBuffreadLineStore(AjPFilebuff buff, AjPStr* pdest,
 AjBool         ajBuffreadLinePosStore(AjPFilebuff buff, AjPStr* pdest,
                                       ajlong* Ppos, AjBool store, AjPStr *astr);
 AjBool         ajBuffreadLineTrim(AjPFilebuff buff, AjPStr* pdest);
-AjBool         ajBuffreadLineTrimPos(AjPFilebuff buff, AjPStr* pdest,
-                                     ajlong* Ppos);
-void           ajBuffreadAll(AjPFilebuff thys);
 
 __deprecated void    ajFileBuffLoad (AjPFilebuff thys);
 __deprecated AjBool  ajFileBuffGet  (AjPFilebuff thys, AjPStr *pdest);
