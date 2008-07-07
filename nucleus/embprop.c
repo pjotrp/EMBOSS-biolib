@@ -7,6 +7,7 @@
 ** @modified 1 Sept 2000 - GWW - Added embPropTransition embPropTranversion
 ** @modified 4 July 2001 - DMAM - Modified embPropAminoRead embPropCalcMolwt
 ** @modified 4 July 2001 - DMAM - Added embPropCalcMolwtMod
+** @modified 1 July 2008 - JISON - Added embPropGet* functions
 ** @@
 **
 ** This program is free software; you can redistribute it and/or
@@ -255,6 +256,148 @@ float embPropGetCharge(const EmbPPropAmino prop)
 }
 
 
+
+
+/* @func embPropGetTiny *****************************************************
+**
+** Return tiny value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] tiny
+** @@
+******************************************************************************/
+
+ajint embPropGetTiny(const EmbPPropAmino prop)
+{
+    return prop->tiny;
+}
+
+
+/* @func embPropGetSmall *****************************************************
+**
+** Return small value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] small
+** @@
+******************************************************************************/
+
+ajint embPropGetSmall(const EmbPPropAmino prop)
+{
+    return prop->small;
+}
+
+/* @func embPropGetAliphatic *****************************************************
+**
+** Return aliphatic value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] aliphatic
+** @@
+******************************************************************************/
+
+ajint embPropGetAliphatic(const EmbPPropAmino prop)
+{
+    return prop->aliphatic;
+}
+
+/* @func embPropGetAromatic *****************************************************
+**
+** Return aromatic value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] aromatic
+** @@
+******************************************************************************/
+
+ajint embPropGetAromatic(const EmbPPropAmino prop)
+{
+    return prop->aromatic;
+}
+
+/* @func embPropGetNonpolar *****************************************************
+**
+** Return nonpolar value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] nonpolar
+** @@
+******************************************************************************/
+
+ajint embPropGetNonpolar(const EmbPPropAmino prop)
+{
+    return prop->nonpolar;
+}
+
+/* @func embPropGetPolar *****************************************************
+**
+** Return polar value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] polar
+** @@
+******************************************************************************/
+
+ajint embPropGetPolar(const EmbPPropAmino prop)
+{
+    return prop->polar;
+}
+
+/* @func embPropGetCharge *****************************************************
+**
+** Return charge value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] charge
+** @@
+******************************************************************************/
+
+ajint embPropGetCharge(const EmbPPropAmino prop)
+{
+    return prop->charge;
+}
+
+/* @func embPropGetPve *****************************************************
+**
+** Return pve value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] pve
+** @@
+******************************************************************************/
+
+ajint embPropGetPve(const EmbPPropAmino prop)
+{
+    return prop->pve;
+}
+
+/* @func embPropGetNve *****************************************************
+**
+** Return nve value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] nve
+** @@
+******************************************************************************/
+
+ajint embPropGetNve(const EmbPPropAmino prop)
+{
+    return prop->nve;
+}
+
+/* @func embPropGetExtcoeff *****************************************************
+**
+** Return extcoeff value
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @return [ajint] extcoeff
+** @@
+******************************************************************************/
+
+ajint embPropGetExtcoeff(const EmbPPropAmino prop)
+{
+    return prop->extcoeff;
+}
 
 
 /* @func embPropCalcMolwt  ****************************************************

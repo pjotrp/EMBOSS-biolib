@@ -111,6 +111,16 @@ void          embPropAminoDel(EmbPPropAmino **thys);
 void          embPropMolwtDel(EmbPPropMolwt **thys);
 
 float embPropGetCharge(const EmbPPropAmino prop);
+ajint embPropGetTiny(const EmbPPropAmino prop);
+ajint embPropGetSmall(const EmbPPropAmino prop);
+ajint embPropGetAliphatic(const EmbPPropAmino prop);
+ajint embPropGetAromatic(const EmbPPropAmino prop);
+ajint embPropGetNonpolar(const EmbPPropAmino prop);
+ajint embPropGetPolar(const EmbPPropAmino prop);
+ajint embPropGetPve(const EmbPPropAmino prop);
+ajint embPropGetNve(const EmbPPropAmino prop);
+ajint embPropGetExtcoeff(const EmbPPropAmino prop);
+
 
 
 /* void    embPropAminoRead (void); */
