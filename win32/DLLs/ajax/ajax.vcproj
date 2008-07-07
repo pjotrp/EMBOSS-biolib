@@ -253,6 +253,10 @@
 				>
 			</File>
 			<File
+				RelativePath="..\..\ajax\ajfiledata.c"
+				>
+			</File>
+			<File
 				RelativePath="..\..\ajax\ajfileio.c"
 				>
 			</File>
@@ -516,6 +520,10 @@
 			</File>
 			<File
 				RelativePath="..\..\ajax\ajfile.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\ajax\ajfiledata.h"
 				>
 			</File>
 			<File
