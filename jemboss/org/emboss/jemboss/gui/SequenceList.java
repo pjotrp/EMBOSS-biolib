@@ -68,7 +68,13 @@ public class SequenceList extends JFrame implements TableModelListener
   
   protected static JCheckBoxMenuItem getSeqLength;
   private final static String GET_SEQUENCE_LENGTH_AUTO ="GET_SEQUENCE_LENGTH_AUTOMATICALLY"; 
-  private final static String STORE_SEQUENCE_LIST ="STORE_SEQUENCE_LIST"; 
+  private final static String STORE_SEQUENCE_LIST ="STORE_SEQUENCE_LIST";
+  // Keys for this frame's preferences
+  private static final String WINDOW_X_KEY = "WINDOW_X";
+  private static final String WINDOW_Y_KEY = "WINDOW_Y";
+  private static final String WINDOW_WIDTH_KEY = "WINDOW_WIDTH";
+  private static final String WINDOW_HEIGHT_KEY = "WINDOW_HEIGHT";
+
 
   /**
   *
@@ -253,8 +259,24 @@ public class SequenceList extends JFrame implements TableModelListener
     helpMenu.add(fmh);
     menuPanel.add(helpMenu);
     table.getModel().addTableModelListener(this);
+    setBounds();
   }
   
+  
+  private void setBounds(){
+      int x = myPreferences.getInt(WINDOW_X_KEY, 10);
+      int y = myPreferences.getInt(WINDOW_Y_KEY, 10);
+      int width = myPreferences.getInt(WINDOW_WIDTH_KEY, 400);
+      int height = myPreferences.getInt(WINDOW_HEIGHT_KEY, 200);
+      this.setBounds(x,y,width, height);
+  }
+  
+  public void saveBounds(){
+      myPreferences.putInt(WINDOW_X_KEY, getX());
+      myPreferences.putInt(WINDOW_Y_KEY, getY());
+      myPreferences.putInt(WINDOW_WIDTH_KEY, getWidth());
+      myPreferences.putInt(WINDOW_HEIGHT_KEY, getHeight());
+  }
   
   /**
      * 
@@ -384,34 +406,32 @@ public static int getSeqAttr(String fc, JembossParams mysettings)
 
   private void getSequenceLength(){
       int row = table.getSelectedRow();
-      String fn = table.getFileName(row);
+      String fileOrEntryName = (String)seqModel.getValueAt(row,
+                      SequenceListTableModel.COL_NAME);
 
-      if(fn!=null && !fn.equals("") && !(new File(fn).exists()))
+      if(fileOrEntryName!=null && !fileOrEntryName.equals("") && !(new File(fileOrEntryName).exists()))
       {
         setCursor(cbusy);
-        //if(table.isListFile(row).booleanValue()){
-        //  fn = "list::"+fn;
-        //}
       
-        String fc = AjaxUtil.getFileOrDatabaseForAjax(fn,
+        String fc = AjaxUtil.getFileOrDatabaseForAjax(fileOrEntryName,
                     BuildProgramMenu.getDatabaseList(),
                     null,withSoap);
       
         boolean ok = false;
-        int ajaxLength=0;
+        int length=0;
 
         if(!withSoap && fc!=null)    //Ajax without SOAP
         {
           if(JembossParams.isCygwin())
           {
-            ajaxLength = cygwinSeqAttr(fc,mysettings);
-            if(ajaxLength > -1)
+            length = cygwinSeqAttr(fc,mysettings);
+            if(length > -1)
               ok = true;
           }
           else
           {
-              ajaxLength = getSeqAttr(fc, mysettings);
-              if (ajaxLength > -1)
+              length = getSeqAttr(fc, mysettings);
+              if (length > -1)
                   ok = true;                
           }
         }
@@ -422,7 +442,7 @@ public static int getSeqAttr(String fc, JembossParams mysettings)
             CallAjax ca = new CallAjax(fc,"sequence",mysettings);
             if(ca.getStatus().equals("0"))
             {
-              ajaxLength  = ca.getLength();
+              length  = ca.getLength();
               ok = true;
             }
           }
@@ -455,9 +475,9 @@ public static int getSeqAttr(String fc, JembossParams mysettings)
         {
           seqModel.setValueAt(new Integer(1),row,
                     SequenceListTableModel.COL_BEG);
-          seqModel.setValueAt(new Integer(ajaxLength),row,
+          seqModel.setValueAt(new Integer(length),row,
                     SequenceListTableModel.COL_END);
-          table.repaint();
+          seqModel.fireTableDataChanged();
         }
         setCursor(cdone);
       }    
@@ -538,11 +558,6 @@ class DragJTable extends JTable implements DragGestureListener,
   public void dragOver(DragSourceDragEvent e) {}
   public void dropActionChanged(DragSourceDragEvent e) {}
 
-  public String getFileName(int row)
-  {
-    return (String)seqModel.getValueAt(row,
-                  SequenceListTableModel.COL_NAME);
-  }
 
   /**
   *
