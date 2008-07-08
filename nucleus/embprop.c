@@ -273,6 +273,8 @@ ajint embPropGetTiny(const EmbPPropAmino prop)
 }
 
 
+
+
 /* @func embPropGetSmall *****************************************************
 **
 ** Return small value
@@ -284,10 +286,13 @@ ajint embPropGetTiny(const EmbPPropAmino prop)
 
 ajint embPropGetSmall(const EmbPPropAmino prop)
 {
-    return prop->small;
+    return prop->sm_all;
 }
 
-/* @func embPropGetAliphatic *****************************************************
+
+
+
+/* @func embPropGetAliphatic **************************************************
 **
 ** Return aliphatic value
 **
@@ -300,6 +305,9 @@ ajint embPropGetAliphatic(const EmbPPropAmino prop)
 {
     return prop->aliphatic;
 }
+
+
+
 
 /* @func embPropGetAromatic *****************************************************
 **
@@ -315,6 +323,9 @@ ajint embPropGetAromatic(const EmbPPropAmino prop)
     return prop->aromatic;
 }
 
+
+
+
 /* @func embPropGetNonpolar *****************************************************
 **
 ** Return nonpolar value
@@ -328,6 +339,9 @@ ajint embPropGetNonpolar(const EmbPPropAmino prop)
 {
     return prop->nonpolar;
 }
+
+
+
 
 /* @func embPropGetPolar *****************************************************
 **
@@ -343,6 +357,10 @@ ajint embPropGetPolar(const EmbPPropAmino prop)
     return prop->polar;
 }
 
+
+
+
+#if 0
 /* @func embPropGetCharge *****************************************************
 **
 ** Return charge value
@@ -356,6 +374,10 @@ ajint embPropGetCharge(const EmbPPropAmino prop)
 {
     return prop->charge;
 }
+#endif
+
+
+
 
 /* @func embPropGetPve *****************************************************
 **
@@ -371,6 +393,9 @@ ajint embPropGetPve(const EmbPPropAmino prop)
     return prop->pve;
 }
 
+
+
+
 /* @func embPropGetNve *****************************************************
 **
 ** Return nve value
@@ -385,7 +410,10 @@ ajint embPropGetNve(const EmbPPropAmino prop)
     return prop->nve;
 }
 
-/* @func embPropGetExtcoeff *****************************************************
+
+
+
+/* @func embPropGetExtcoeff ***************************************************
 **
 ** Return extcoeff value
 **
@@ -398,6 +426,8 @@ ajint embPropGetExtcoeff(const EmbPPropAmino prop)
 {
     return prop->extcoeff;
 }
+
+
 
 
 /* @func embPropCalcMolwt  ****************************************************
