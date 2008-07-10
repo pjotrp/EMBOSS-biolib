@@ -101,6 +101,7 @@ public class Graph2DPlot extends ScrollPanel
   private Image offscreen = null;
 
   private String maintitle = "";
+  private String subtitle = "";
   private String xtitle = "";
   private String ytitle = "";
   private String fileName = null;
@@ -1226,19 +1227,8 @@ public class Graph2DPlot extends ScrollPanel
       }
       else if( ((Integer)emboss_data[0][i]).intValue() == TEXTLINE)
       {
-        boolean number = true;
-        try
-        {
-          String text = (String)emboss_data[6][i];
-          Float.parseFloat(text);
-        }
-        catch(NumberFormatException nfe)
-        {
-          number = false;
-        }
-
         if( x1 >= 0 && y1 <= 0 &&
-            x1 <= xendPoint && y1 >= -yendPoint )
+            x1 <= xendPoint && y1 >= -yendPoint && emboss_data[5][i] instanceof Float)
         {
           int colourID = (int) ((Float)emboss_data[5][i]).floatValue();
 //        int textWidth = justify((String)emboss_data[6][i],fm);
@@ -1246,12 +1236,12 @@ public class Graph2DPlot extends ScrollPanel
           g.setColor(plplot_colour[colourID]);
           g.drawString((String)emboss_data[6][i],(int)x1,(int)y1);
         }
-        else if(y1 > 0 && !number)  // looks like x-axis title
+        else if( emboss_data[6][i] instanceof String)  // looks like y-axis title
         {
           if(ytitle_field == null)
-            ytitle_field = new JTextField((String)emboss_data[5][i]);
+            ytitle_field = new JTextField((String)emboss_data[6][i]);
         }
-        else if(y1 < yendPoint && !number)  // looks like main title
+        else if(y1 < yendPoint && emboss_data[5][i] instanceof String)  // looks like main title
         {
           if(maintitle_field == null)
             maintitle_field = new JTextField((String)emboss_data[5][i]);
@@ -1260,6 +1250,8 @@ public class Graph2DPlot extends ScrollPanel
     }
     g2d.translate(-xborder, -getHeight()+yborder);
     g2d.setStroke(stroke);
+    g2d.drawString(maintitle,20,20);
+    g2d.drawString(subtitle,20,40);
   }
 
  
@@ -1433,6 +1425,11 @@ public class Graph2DPlot extends ScrollPanel
       {
         int ind = line.indexOf(" ");
         maintitle = line.substring(ind).trim();
+      }
+      else if(line.startsWith("##Subtitle "))
+      {
+        int ind = line.indexOf(" ");
+        subtitle = line.substring(ind).trim();
       }
       else if(line.startsWith("Text"))
         vx.add(line);
