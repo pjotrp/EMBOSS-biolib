@@ -1256,6 +1256,11 @@ static void GraphLabelTitle(const char *title, const char *subtitle)
 	fold = ajGraphSetCharScale(fold);
     }
 
+	if (graphData){
+		ajFmtPrintF(graphData->File,"##Maintitle %s\n",title);
+		ajFmtPrintF(graphData->File,"##Subtitle %s\n",subtitle);
+	    graphData->Lines += 2;
+	}
     /*  pllab(x,y,title);*/
 
     ajStrDel(&tmpstr);
@@ -4409,7 +4414,7 @@ void ajGraphSetTitleC(AjPGraph thys, const char* title)
 
 void ajGraphSetTitlePlus(AjPGraph thys, const AjPStr title)
 {
-    ajDebug("ajGraphSetTitle '%S'\n", title);
+    ajDebug("ajGraphSetTitlePlus '%S'\n", title);
     if (!thys->plplot)
 	return;
     if(ajStrGetLen(thys->plplot->title))
