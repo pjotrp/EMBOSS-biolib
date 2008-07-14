@@ -9158,6 +9158,27 @@ table 8.</p>
 
  <tr>
   <td>
+  <p>gapnucleotidesimple</p>
+  </td>
+  <td>
+  <p>Nucleotide only</p>
+  </td>
+  <td>
+  <p>Kept</p>
+  </td>
+  <td>
+  <p>Yes</p>
+  </td>
+  <td>
+  <p> 'B'=&gt;'N'<br> 'D'=&gt;'N'<br> 'H'=&gt;'N'<br> 'K'=&gt;'N'<br> 'M'=&gt;'N'<br> 'R'=&gt;'N'<br> 'S'=&gt;'N'<br> 'V'=&gt;'N'<br> 'W'=&gt;'N'<br> 'X'=&gt;'N'<br> 'Y'=&gt;'N'<br> '?'=&gt;'N'</p>
+  </td>
+  <td>
+  <p>nucleotide sequence with gaps but only N for ambiguity</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>protein</p>
   </td>
   <td>
@@ -9339,6 +9360,27 @@ table 8.</p>
   </td>
   <td>
   <p> '?'=&gt;'X'<br> '*'=&gt;'X'<br> 'U'=&gt;'X'<br> 'J'=&gt;'X'<br> 'O'=&gt;'X'</p>
+  </td>
+  <td>
+  <p>protein sequence with gaps but no selenocysteine</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>gapproteinsimple</p>
+  </td>
+  <td>
+  <p>Protein only</p>
+  </td>
+  <td>
+  <p>Kept</p>
+  </td>
+  <td>
+  <p>Yes</p>
+  </td>
+  <td>
+  <p> '?'=&gt;'X'<br> '*'=&gt;'X'<br> 'B'=&gt;'X'<br> 'Z'=&gt;'X'<br> 'U'=&gt;'X'<br> 'J'=&gt;'X'<br> 'O'=&gt;'X'</p>
   </td>
   <td>
   <p>protein sequence with gaps but no selenocysteine</p>
@@ -12606,6 +12648,18 @@ a variable to be defined in this file.</p>
   </td>
   <td>
   <p>Date and time to override the current date - used to give a standard date and time for test runs<br>Default: "2006-07-15 12:00:00"</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>EMBOSS_WARNOBSOLETE</p>
+  </td>
+  <td>
+  <p>boolean</p>
+  </td>
+  <td>
+  <p>Print warning messages when ACD file declares an application as 'obsolete'<br>Default: Y</p>
   </td>
  </tr>
 
