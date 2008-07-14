@@ -53,6 +53,8 @@ public class ShowResultSet extends JFrame
   private JTabbedPane rtp;
   /** grout panel */
   private GroutPanel grout = null;
+  /** toolbar */
+  private JToolBar toolbar = null;
 
   /**
   * 
@@ -188,13 +190,14 @@ public class ShowResultSet extends JFrame
   {
     int index = rtp.getSelectedIndex();
     String title = rtp.getTitleAt(index);
+    if (toolbar != null)
+        remove(toolbar);
     if(title.endsWith("x3d"))
     {
       grout = (GroutPanel)rtp.getSelectedComponent();
       JMenuBar groutMenuBar = grout.getMenuBar();
       setJMenuBar(groutMenuBar);
-      remove(menuBar.getToolBar());
-      getContentPane().add(grout.getToolBar(),BorderLayout.NORTH);
+      toolbar = grout.getToolBar();
     }
     else if(title.endsWith(".dat"))
     {
@@ -203,17 +206,21 @@ public class ShowResultSet extends JFrame
         return;
 
       JMenuBar graphMenuBar = graph.getMenuBar(false, this);
-      remove(menuBar.getToolBar());
+      toolbar = graph.getToolBar();
       setJMenuBar(graphMenuBar);
     }
+    else if(title.endsWith(".png"))
+    {
+      setJMenuBar(menuBar);
+      toolbar = null;
+    }    
     else 
     {
       setJMenuBar(menuBar);
-      if(grout != null)
-        remove(grout.getToolBar());
-
-      getContentPane().add(menuBar.getToolBar(),BorderLayout.NORTH);
+      toolbar = menuBar.getToolBar();
     }
+    if (toolbar !=null)
+        getContentPane().add(toolbar,BorderLayout.NORTH);
   }
 
 
