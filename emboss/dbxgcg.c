@@ -33,6 +33,8 @@
 #define GCGTYPE_TAX 5
 #define GCGTYPE_VER 6
 
+static ajuint maxidlen = 0;
+static ajuint idtrunc  = 0;
 
 static AjPRegexp dbxgcg_embl_typexp = NULL;
 static AjPRegexp dbxgcg_embl_idexp  = NULL;
@@ -137,6 +139,7 @@ int main(int argc, char **argv)
     AjPStr filename;
     AjPStr exclude;
     AjPStr dbtype = NULL;
+    AjPFile outf = NULL;
 
     AjPStr *fieldarray = NULL;
     
@@ -158,12 +161,18 @@ int main(int argc, char **argv)
     AjPBtPri priobj = NULL;
     AjPBtHybrid hyb = NULL;
     
+    ajulong nentries = 0L;
+    ajulong ientries = 0L;
+    AjPTime starttime = NULL;
+    AjPTime begintime = NULL;
+    AjPTime nowtime = NULL;
 
     embInit("dbxgcg", argc, argv);
 
     dbtype     = ajAcdGetListSingle("idformat");
     fieldarray = ajAcdGetList("fields");
     directory  = ajAcdGetDirectoryName("directory");
+    outf       = ajAcdGetOutfile("outfile");
     indexdir   = ajAcdGetOutdirName("indexoutdir");
     filename   = ajAcdGetString("filenames");
     exclude    = ajAcdGetString("exclude");
@@ -187,7 +196,8 @@ int main(int argc, char **argv)
     embBtreeGetRsInfo(entry);
 
     nfiles = embBtreeGetFiles(entry,directory,filename,exclude);
-    for(i=0; i<nfiles; ++i)
+
+     for(i=0; i<nfiles; ++i)
     {
 	ajListPop(entry->files,(void **) &seqname);
 	refname = ajStrNew();
@@ -203,16 +213,13 @@ int main(int argc, char **argv)
 
     embBtreeOpenCaches(entry);
 
+    starttime = ajTimeNewToday();
 
+    ajFmtPrintF(outf, "Processing directory: %S\n", directory);
 
     for(i=0;i<nfiles;++i)
     {
-	ajListPop(entry->files,(void **)&thysfile);
-	ajListPushAppend(entry->files,(void *)thysfile);
-	ajFmtPrintS(&tmpstr,"%S%S",entry->directory,thysfile);
-	printf("Processing file %s\n",MAJSTRGETPTR(tmpstr));
-	if(!(infs=ajFileNewInNameS(tmpstr)))
-	    ajFatal("Cannot open input file %S\n",tmpstr);
+        begintime = ajTimeNewToday();
 
 	ajListPop(entry->reffiles,(void **)&thysfile);
 	ajListPushAppend(entry->files,(void *)thysfile);
@@ -220,11 +227,34 @@ int main(int argc, char **argv)
 	if(!(infr=ajFileNewInNameS(tmpstr)))
 	    ajFatal("Cannot open input file %S\n",tmpstr);
 	
+	ajListPop(entry->files,(void **)&thysfile);
+	ajListPushAppend(entry->files,(void *)thysfile);
+	ajFmtPrintS(&tmpstr,"%S%S",entry->directory,thysfile);
+	if(!(infs=ajFileNewInNameS(tmpstr)))
+	    ajFatal("Cannot open input file %S\n",tmpstr);
+
+	ajFilenameTrimPath(&tmpstr);
+	ajFmtPrintF(outf,"Processing file: %S",tmpstr);
+
+	ientries = 0L;
 
 	while(dbxgcg_NextEntry(entry,infs,infr,dbtype))
 	{
+	    ++ientries;
 	    if(entry->do_id)
 	    {
+               if(ajStrGetLen(entry->id) > entry->idlen)
+                {
+                    if(ajStrGetLen(entry->id) > maxidlen)
+                    {
+                        ajWarn("id '%S' too long, truncating to idlen %d",
+                               entry->id, entry->idlen);
+                        maxidlen = ajStrGetLen(entry->id);
+                    }
+                    idtrunc++;
+                    ajStrKeepRange(&entry->id,0,entry->idlen-1);
+                }
+    
 		ajStrFmtLower(&entry->id);
 		ajStrAssignS(&hyb->key1,entry->id);
 		hyb->dbno = i;
@@ -306,13 +336,36 @@ int main(int argc, char **argv)
 	
 	ajFileClose(&infs);
 	ajFileClose(&infr);
+	nentries += ientries;
+	nowtime = ajTimeNewToday();
+	ajFmtPrintF(outf, " entries: %Lu (%Lu) time: %.1fs (%.1fs)\n",
+		    nentries, ientries,
+		    ajTimeDiff(starttime, nowtime),
+		    ajTimeDiff(begintime, nowtime));
+	ajTimeDel(&begintime);
+	ajTimeDel(&nowtime);
     }
     
 
+    nowtime = ajTimeNewToday();
+    ajFmtPrintF(outf, "Total time: %.1fs\n", ajTimeDiff(starttime, nowtime));
+    ajTimeDel(&nowtime);
+    ajTimeDel(&starttime);
+
+    if(maxidlen)
+    {
+        ajFmtPrintF(outf,
+                    "Resource idlen truncated %u IDs. "
+                    "Maximum ID length was %u.",
+                    idtrunc, maxidlen);
+        ajWarn("Resource idlen truncated %u IDs. Maximum ID length was %u.",
+               idtrunc, maxidlen);
+    }
+    
     embBtreeDumpParameters(entry);
     embBtreeCloseCaches(entry);
     
-
+    ajFileClose(&outf);
     embBtreeEntryDel(&entry);
     ajStrDel(&tmpstr);
     ajStrDel(&filename);
