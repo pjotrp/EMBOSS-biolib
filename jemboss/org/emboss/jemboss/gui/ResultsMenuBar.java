@@ -569,7 +569,7 @@ public class ResultsMenuBar extends JMenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        frame.setVisible(false);
+        frame.dispose();
       }
     });
     fileMenu.add(resFileMenuExit);
