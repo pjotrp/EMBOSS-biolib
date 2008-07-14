@@ -18,8 +18,7 @@ section: input [
   datafile: mwdata [
     additional: "Y"
     default: "Emolwt.dat"
-    information: "Amino acids properties and molecular weight
-                  data file"
+    information: "Molecular weights data file"
     knowntype: "molecular weights"
   ]
 
