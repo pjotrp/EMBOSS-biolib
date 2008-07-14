@@ -52,7 +52,20 @@ with 'N'.
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with maskambignuc</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>maskambignuc </b>
+Masks all ambiguity characters in nucleotide sequences with N
+Input (gapped) nucleotide sequence(s): <b>ambignuc.fasta</b>
+output sequence(s) [ambignuc.fasta]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -63,8 +76,8 @@ with 'N'.
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          seqall     Sequence(s) filename and optional format, or
-                                  reference (input USA)
+  [-sequence]          seqall     (Gapped) nucleotide sequence(s) filename and
+                                  optional format, or reference (input USA)
   [-outseq]            seqoutall  [<sequence>.<format>] Sequence set(s)
                                   filename and optional format (output USA)
 
@@ -130,7 +143,7 @@ with 'N'.
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence(s) filename and optional format, or reference (input USA)</td>
+<td>(Gapped) nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
@@ -194,7 +207,17 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: ambignuc.fasta</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;AMBIGNUC
+ABCDGHKMNRSTUVWY
+abcdghkmnrstuvwy
+</pre>
+</td></tr></table><p>
 
 
 
@@ -221,7 +244,16 @@ rewrites the input sequence.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: ambignuc.fasta</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;AMBIGNUC
+ANCNGNNNNNNTUNNNancngnnnnnntunnn
+</pre>
+</td></tr></table><p>
 
 
 
@@ -571,11 +603,9 @@ None.
     Author(s)
 </H2>
 
-Jon Ison (jison&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+Jon Ison (jison&nbsp;&copy;&nbsp;ebi.ac.uk)
 <br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 
 

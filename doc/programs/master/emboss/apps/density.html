@@ -1,19 +1,19 @@
 <HTML>
 <HEAD>
   <TITLE>
-  EMBOSS: dbxstat
+  EMBOSS: density
   </TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF" text="#000000">
 
 <!--#include file="header1.inc" -->
-dbxstat
+density
 <!--#include file="header2.inc" -->
 
 <H2>
     Function
 </H2>
-<!--#include file="inc/dbxstat.ione" -->
+<!--#include file="inc/density.ione" -->
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -27,14 +27,7 @@ IT IS DONE FOR YOU.
     Description
 </H2>
 
-<b>dbxstat</b> reports the contents of a B+ tree database index.
-
-
-
-
-
-
-
+<b>density</b> produces a density plot of a nuleotide sequence.
 
 
 
@@ -51,7 +44,7 @@ IT IS DONE FOR YOU.
         Many examples illustrating different behaviours is good.
  -->
 
-<!--#include file="inc/dbxstat.usage" -->
+<!--#include file="inc/density.usage" -->
 
 
 
@@ -61,11 +54,11 @@ IT IS DONE FOR YOU.
 
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
-<!--#include file="inc/dbxstat.ihelp" -->
+<!--#include file="inc/density.ihelp" -->
 </pre>
 </td></tr></table>
 <P>
-<!--#include file="inc/dbxstat.itable" -->
+<!--#include file="inc/density.itable" -->
 
 <!--
 DON'T WRITE ANYTHING HERE.
@@ -90,11 +83,11 @@ IT IS DONE FOR YOU.
         happens in unusual cases - null input, etc. 
    -->
 
-<b>dbxstat</b> reads the index files for any database defined with
-"emboss" access method.
+<b>density</b> reads any normal sequence USAs.
 
+<p>
 
-<!--#include file="inc/dbxstat.input" -->
+<!--#include file="inc/density.input" -->
 
 
 
@@ -115,13 +108,12 @@ IT IS DONE FOR YOU.
         #include file="inc/reportformats.ihtml"
    -->
 
-<b>dbxstat</b> 
-reports the contents of the selected index files.
-
+<b>density</b> 
+outputs a graph to the specified graphics device. 
 
 <p>
 
-<!--#include file="inc/dbxstat.output" -->
+<!--#include file="inc/density.output" -->
 
 
 
@@ -131,7 +123,7 @@ reports the contents of the selected index files.
     Data files
 </H2>
 
-None.
+None
 
 
 <H2>
@@ -248,7 +240,7 @@ None.
     See also
 </H2>
 -->
-<!--#include file="inc/dbxstat.isee" -->
+<!--#include file="inc/density.isee" -->
 <!-- 
         Add any comments about other associated programs (to prepare
         data files?) that seealso doesn't find. 
@@ -266,7 +258,6 @@ None.
 <H2>
     Author(s)
 </H2>
-
 <!--#include file="inc/ableasby.address" -->
 
 
@@ -280,7 +271,7 @@ None.
 <!--
         Date written and what changes have been made go in this file.
    -->
-<!--#include file="inc/dbxstat.history" -->
+<!--#include file="inc/density.history" -->
 
 
 
@@ -298,7 +289,7 @@ None.
 <!--
         User/developer/other comments go in this file.
    -->
-<!--#include file="inc/dbxstat.comment" -->
+<!--#include file="inc/density.comment" -->
 
 
 </BODY>

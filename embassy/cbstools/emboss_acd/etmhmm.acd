@@ -59,7 +59,7 @@ section: output [
 
   outfile: outfile [
     parameter: "Y"
-    knowntype: "esignalp output"
+    knowntype: "etmhmm output"
   ]
 
 endsection: output

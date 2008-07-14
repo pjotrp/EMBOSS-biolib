@@ -7,7 +7,7 @@
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>Sequence(s) filename and optional format, or reference (input USA)</td>
+<td>(Gapped) nucleotide sequence(s) filename and optional format, or reference (input USA)</td>
 <td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>

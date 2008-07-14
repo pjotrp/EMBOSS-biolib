@@ -53,7 +53,7 @@ section: output [
 
   outfile: outfile [
     parameter: "Y"
-    knowntype: "enetphos output"
+    knowntype: "eprop output"
   ]
 
 endsection: output

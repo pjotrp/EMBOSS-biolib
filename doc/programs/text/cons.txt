@@ -245,7 +245,7 @@ Known bugs
 See also
 
    Program name Description
-   consambig Create an ambiguouos consensus sequence from a multiple
+   consambig Create an ambiguous consensus sequence from a multiple
    alignment
    megamerger Merge two large overlapping DNA sequences
    merger Merge two overlapping sequences

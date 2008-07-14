@@ -60,7 +60,20 @@ alignment formats.
         Many examples illustrating different behaviours is good.
  -->
 
-[an error has occurred processing this directive]
+<b>Here is a sample session with aligncopypair</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>aligncopypair </b>
+Reads and writes pairs from alignments
+Input (aligned) sequence set: <b>globins.msf</b>
+Output alignment [globins.aligncopypair]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
 
 
 
@@ -219,7 +232,64 @@ IT IS DONE FOR YOU.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: globins.msf</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+!!AA_MULTIPLE_ALIGNMENT 1.0
+
+  ../data/globins.msf MSF:  164 Type: P 25/06/01 CompCheck: 4278 ..
+
+  Name: HBB_HUMAN Len: 164  Check: 6914 Weight: 0.61
+  Name: HBB_HORSE Len: 164  Check: 6007 Weight: 0.65
+  Name: HBA_HUMAN Len: 164  Check: 3921 Weight: 0.65
+  Name: HBA_HORSE Len: 164  Check: 4770 Weight: 0.83
+  Name: MYG_PHYCA Len: 164  Check: 7930 Weight: 1.00
+  Name: GLB5_PETMA Len: 164  Check: 1857 Weight: 0.91
+  Name: LGB2_LUPLU Len: 164  Check: 2879 Weight: 0.43
+
+//
+
+           1                                               50
+HBB_HUMAN  ~~~~~~~~VHLTPEEKSAVTALWGKVN.VDEVGGEALGR.LLVVYPWTQR
+HBB_HORSE  ~~~~~~~~VQLSGEEKAAVLALWDKVN.EEEVGGEALGR.LLVVYPWTQR
+HBA_HUMAN  ~~~~~~~~~~~~~~VLSPADKTNVKAA.WGKVGAHAGEYGAEALERMFLS
+HBA_HORSE  ~~~~~~~~~~~~~~VLSAADKTNVKAA.WSKVGGHAGEYGAEALERMFLG
+MYG_PHYCA  ~~~~~~~VLSEGEWQLVLHVWAKVEAD.VAGHGQDILIR.LFKSHPETLE
+GLB5_PETMA PIVDTGSVAPLSAAEKTKIRSAWAPVYSTYETSGVDILVKFFTSTPAAQE
+LGB2_LUPLU ~~~~~~~~GALTESQAALVKSSWEEFNANIPKHTHRFFILVLEIAPAAKD
+
+           51                                             100
+HBB_HUMAN  FFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSE
+HBB_HORSE  FFDSFGDLSNPGAVMGNPKVKAHGKKVLHSFGEGVHHLDNLKGTFAALSE
+HBA_HUMAN  FPTTKTYFPHFDLSHGSAQVKGHGKKVADALTNAVAHVDDMPNALSALSD
+HBA_HORSE  FPTTKTYFPHFDLSHGSAQVKAHGKKVGDALTLAVGHLDDLPGALSNLSD
+MYG_PHYCA  KFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQ
+GLB5_PETMA FFPKFKGLTTADQLKKSADVRWHAERIINAVNDAVASMDDTEKMSMKLRD
+LGB2_LUPLU LFSFLKGTSEVPQNNPELQAHAGKVFKLVYEAAIQLQVTGVVVTDATLKN
+
+           101                                            150
+HBB_HUMAN  LHCDKLH..VDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVA
+HBB_HORSE  LHCDKLH..VDPENFRLLGNVLVVVLARHFGKDFTPELQASYQKVVAGVA
+HBA_HUMAN  LHAHKLR..VDPVNFKLLSHCLLVTLAAHLPAEFTPAVHASLDKFLASVS
+HBA_HORSE  LHAHKLR..VDPVNFKLLSHCLLSTLAVHLPNDFTPAVHASLDKFLSSVS
+MYG_PHYCA  SHATKHK..IPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFR
+GLB5_PETMA LSGKHAK..SFQVDPQYFKVLAAVIADTVAAGDAGFEKLMSMICILLRSA
+LGB2_LUPLU LGSVHVSKGVADAHFPVVKEAILKTIKEVVGAKWSEELNSAWTIAYDELA
+
+           151        164
+HBB_HUMAN  NALAHKYH~~~~~~
+HBB_HORSE  NALAHKYH~~~~~~
+HBA_HUMAN  TVLTSKYR~~~~~~
+HBA_HORSE  TVLTSKYR~~~~~~
+MYG_PHYCA  KDIAAKYKELGYQG
+GLB5_PETMA Y~~~~~~~~~~~~~
+LGB2_LUPLU IVIKKEMNDAA~~~
+
+</pre>
+</td></tr></table><p>
 
 
 
@@ -274,7 +344,119 @@ for further information on alignment formats.
 
 <p>
 
-[an error has occurred processing this directive]
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: globins.aligncopypair</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+########################################
+# Program: aligncopypair
+# Rundate: Tue 15 Jul 2008 12:00:00
+# Commandline: aligncopypair
+#    -sequences ../../data/globins.msf
+# Align_format: simple
+# Report_file: globins.aligncopypair
+########################################
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: HBB_HUMAN
+# 2: HBB_HORSE
+# Matrix: EBLOSUM62
+#
+# Length: 164
+# Identity:     122/164 (74.4%)
+# Similarity:   146/164 (89.0%)
+# Gaps:          18/164 (11.0%)
+# 
+#
+#=======================================
+
+HBB_HUMAN          1 --------VHLTPEEKSAVTALWGKVN-VDEVGGEALGR-LLVVYPWTQR     40
+                             |.|:.|||:||.|||.||| .:||||||||| ||||||||||
+HBB_HORSE          1 --------VQLSGEEKAAVLALWDKVN-EEEVGGEALGR-LLVVYPWTQR     40
+
+HBB_HUMAN         41 FFESFGDLSTPDAVMGNPKVKAHGKKVLGAFSDGLAHLDNLKGTFATLSE     90
+                     ||:||||||.|.||||||||||||||||.:|.:|:.||||||||||.|||
+HBB_HORSE         41 FFDSFGDLSNPGAVMGNPKVKAHGKKVLHSFGEGVHHLDNLKGTFAALSE     90
+
+HBB_HUMAN         91 LHCDKLH--VDPENFRLLGNVLVCVLAHHFGKEFTPPVQAAYQKVVAGVA    138
+                     |||||||  ||||||||||||||.|||.||||:|||.:||:|||||||||
+HBB_HORSE         91 LHCDKLH--VDPENFRLLGNVLVVVLARHFGKDFTPELQASYQKVVAGVA    138
+
+HBB_HUMAN        139 NALAHKYH------    146
+                     ||||||||      
+HBB_HORSE        139 NALAHKYH------    146
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: HBB_HUMAN
+# 2: HBA_HUMAN
+# Matrix: EBLOSUM62
+#
+# Length: 164
+# Identity:      48/164 (29.3%)
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+MYG_PHYCA          1 -------VLSEGEWQLVLHVWAKVEAD-VAGHGQDILIR-LFKSHPETLE     41
+                             .:..|.|..|...:..|.: ........... :.:..|...:
+LGB2_LUPLU         1 --------GALTESQAALVKSSWEEFNANIPKHTHRFFILVLEIAPAAKD     42
+
+MYG_PHYCA         42 KFDRFKHLKTEAEMKASEDLKKHGVTVLTALGAILKKKGHHEAELKPLAQ     91
+                     .|...|......:...........|..|....||..:..........|..
+LGB2_LUPLU        43 LFSFLKGTSEVPQNNPELQAHAGKVFKLVYEAAIQLQVTGVVVTDATLKN     92
+
+MYG_PHYCA         92 SHATKHK--IPIKYLEFISEAIIHVLHSRHPGDFGADAQGAMNKALELFR    139
+                     ..:....  :...:...:.|||:..:.......:..:...|...|.:...
+LGB2_LUPLU        93 LGSVHVSKGVADAHFPVVKEAILKTIKEVVGAKWSEELNSAWTIAYDELA    142
+
+MYG_PHYCA        140 KDIAAKYKELGYQG    153
+                     ..|..:..:..   
+LGB2_LUPLU       143 IVIKKEMNDAA---    153
+
+
+#=======================================
+#
+# Aligned_sequences: 2
+# 1: GLB5_PETMA
+# 2: LGB2_LUPLU
+# Matrix: EBLOSUM62
+#
+# Length: 164
+# Identity:      17/164 (10.4%)
+# Similarity:   149/164 (90.9%)
+# Gaps:          23/164 (14.0%)
+# 
+#
+#=======================================
+
+GLB5_PETMA         1 PIVDTGSVAPLSAAEKTKIRSAWAPVYSTYETSGVDILVKFFTSTPAAQE     50
+                             ..|:.::...::|:|....:..........:......|||::
+LGB2_LUPLU         1 --------GALTESQAALVKSSWEEFNANIPKHTHRFFILVLEIAPAAKD     42
+
+GLB5_PETMA        51 FFPKFKGLTTADQLKKSADVRWHAERIINAVNDAVASMDDTEKMSMKLRD    100
+                     .|...||.:...|..............:.........:.........|::
+LGB2_LUPLU        43 LFSFLKGTSEVPQNNPELQAHAGKVFKLVYEAAIQLQVTGVVVTDATLKN     92
+
+GLB5_PETMA       101 LSGKHAK--SFQVDPQYFKVLAAVIADTVAAGDAGFEKLMSMICILLRSA    148
+                     |...|..  .........|.........|.......|...:........|
+LGB2_LUPLU        93 LGSVHVSKGVADAHFPVVKEAILKTIKEVVGAKWSEELNSAWTIAYDELA    142
+
+GLB5_PETMA       149 Y-------------    149
+                     .             
+LGB2_LUPLU       143 IVIKKEMNDAA---    153
+
+
+#---------------------------------------
+#---------------------------------------
+</pre>
+</td></tr></table><p>
 
 
 
@@ -674,11 +856,9 @@ None.
     Author(s)
 </H2>
 
-Jon Ison (jison&nbsp;&copy;&nbsp;rfcgr.mrc.ac.uk)
+Jon Ison (jison&nbsp;&copy;&nbsp;ebi.ac.uk)
 <br>
-MRC Rosalind Franklin Centre for Genomics Research
-Wellcome Trust Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
-
+European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
 
 
 

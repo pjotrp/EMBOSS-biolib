@@ -261,9 +261,7 @@ Known bugs
 
 See also
 
-   Program name            Description
-   myseq        Demonstration of sequence reading
-   mytest       Demonstration of sequence reading
+   Program name Description
 
 Author(s)
 

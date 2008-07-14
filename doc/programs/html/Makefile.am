@@ -19,7 +19,8 @@ pkgdata_DATA =  abiview.1.abiview.gif \
 	wobble.1.wobble.gif \
 	aaindexextract.html abiview.html acd_group.html acdc.html \
 	acdlog.html acdpretty.html acdtable.html acdtrace.html \
-	acdvalid.html ajtest.html alignment_consensus_group.html \
+	acdvalid.html ajtest.html aligncopy.html aligncopypair.html \
+	alignment_consensus_group.html \
 	alignment_differences_group.html \
 	alignment_dot_plots_group.html alignment_global_group.html \
 	alignment_local_group.html alignment_multiple_group.html \
@@ -28,7 +29,7 @@ pkgdata_DATA =  abiview.1.abiview.gif \
 	btwisted.html \
 	cai.html chaos.html charge.html checktrans.html chips.html \
 	cirdna.html codcmp.html codcopy.html coderet.html \
-	complex.html compseq.html cons.html cpgplot.html \
+	complex.html compseq.html cons.html consambig.html cpgplot.html \
 	cpgreport.html cusp.html cutgextract.html cutseq.html \
 	dan.html dbiblast.html dbifasta.html dbiflat.html \
 	dbigcg.html dbxfasta.html dbxflat.html dbxgcg.html \
@@ -40,19 +41,23 @@ pkgdata_DATA =  abiview.1.abiview.gif \
 	enzyme_kinetics_group.html epestfind.html eprimer3.html \
 	equicktandem.html est2genome.html etandem.html \
 	extractalign.html extractfeat.html extractseq.html \
-	feature_tables_group.html findkm.html freak.html \
+	feature_tables_group.html featcopy.html featreport.html \
+	findkm.html freak.html \
 	fuzznuc.html fuzzpro.html fuzztran.html \
 	garnier.html geecee.html getorf.html groups.html \
 	helixturnhelix.html hmm_group.html hmoment.html \
-	iep.html index.html infoalign.html information_group.html \
-	infoseq.html isochore.html \
+	iep.html index.html infoalign.html infobase.html \
+	information_group.html \
+	inforesidue.html infoseq.html isochore.html \
 	jaspextract.html jaspscan.html jembossctl.html
 pkgdata2_DATA = libscan.html lindna.html listor.html \
-	makenucseq.html makeprotseq.html marscan.html maskfeat.html \
+	makenucseq.html makeprotseq.html marscan.html \
+	maskambignuc.html maskambigprot.html maskfeat.html \
 	maskseq.html matcher.html megamerger.html menus_group.html \
 	merger.html msbar.html mwcontam.html mwfilter.html \
 	needle.html newcpgreport.html newcpgseek.html newseq.html \
-	noreturn.html notseq.html nthseq.html \
+	nohtml.html noreturn.html nospace.html notab.html \
+	notseq.html nthseq.html \
 	nucleic_2d_structure_group.html \
 	nucleic_codon_usage_group.html \
 	nucleic_codon_usage_nucleic_gene_finding_group.html \
@@ -89,11 +94,12 @@ pkgdata2_DATA = libscan.html lindna.html listor.html \
 	seealso.html seqmatchall.html seqret.html seqretsplit.html \
 	showalign.html showdb.html showfeat.html showorf.html \
 	showseq.html shuffleseq.html sigcleave.html silent.html \
-	sirna.html sixpack.html skipseq.html splitter.html \
+	sirna.html sixpack.html sizeseq.html skipredundant.html \
+	skipseq.html splitter.html \
 	stretcher.html stssearch.html supermatcher.html syco.html \
 	tcode.html template.html test_group.html textsearch.html \
 	tfextract.html tfm.html tfscan.html tmap.html tranalign.html \
-	transeq.html trimest.html trimseq.html twofeat.html \
+	transeq.html trimest.html trimseq.html trimspace.html twofeat.html \
 	union.html utils_database_creation_group.html \
 	utils_database_indexing_group.html utils_misc_group.html \
 	vectorstrip.html \

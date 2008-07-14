@@ -8,16 +8,4 @@ href="ftp://emboss.open-bio.org/pub/EMBOSS/">current myemboss release</a></h3>
 <th>Description</th>
 </tr>
 
-<tr>
-<td><a href="myseq.html">myseq</a></td>
-<td>
-Demonstration of sequence reading
-</td>
-</tr>
-<tr>
-<td><a href="mytest.html">mytest</a></td>
-<td>
-Demonstration of sequence reading
-</td>
-</tr>
 </table>

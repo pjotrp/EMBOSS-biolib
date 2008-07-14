@@ -49,7 +49,7 @@ section: advanced [
 
   boolean: html [
     default: "N"
-    information: "html output"
+    information: "Html output"
   ]
 
   boolean: format [

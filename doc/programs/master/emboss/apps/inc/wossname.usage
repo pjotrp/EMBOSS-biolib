@@ -48,7 +48,7 @@ acdvalid         Validate an application ACD file
 
 ALIGNMENT CONSENSUS
 cons             Create a consensus sequence from a multiple alignment
-consambig        Create an ambiguouos consensus sequence from a multiple alignment
+consambig        Create an ambiguous consensus sequence from a multiple alignment
 megamerger       Merge two large overlapping DNA sequences
 merger           Merge two overlapping sequences
 
@@ -486,8 +486,6 @@ prophet          Scan one or more sequences with a Gribskov or Henikoff profile
 
 TEST
 crystalball      Answers every drug discovery question about a sequence
-myseq            Demonstration of sequence reading
-mytest           Demonstration of sequence reading
 
 UTILS DATABASE CREATION
 aaindexextract   Extract amino acid property data from AAINDEX
@@ -570,7 +568,7 @@ codcopy          Copy and reformat a codon usage table
 coderet          Extract CDS, mRNA and translations from feature tables
 compseq          Calculate the composition of unique words in sequences
 cons             Create a consensus sequence from a multiple alignment
-consambig        Create an ambiguouos consensus sequence from a multiple alignment
+consambig        Create an ambiguous consensus sequence from a multiple alignment
 contacts         Generate intra-chain CON files from CCF files
 cpgplot          Identify and plot CpG islands in nucleotide sequence(s)
 cpgreport        Identify and report CpG-rich regions in nucleotide sequence(s)
@@ -747,8 +745,6 @@ msbar            Mutate a sequence
 mse              Multiple Sequence Editor
 mwcontam         Find weights common to multiple molecular weights files
 mwfilter         Filter noisy data from molecular weights file
-myseq            Demonstration of sequence reading
-mytest           Demonstration of sequence reading
 needle           Needleman-Wunsch global alignment of two sequences
 newcpgreport     Identify CpG islands in nucleotide sequence(s)
 newcpgseek       Identify and report CpG-rich regions in nucleotide sequence(s)

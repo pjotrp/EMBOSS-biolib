@@ -15,7 +15,16 @@ Description
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with nohtml
+
+
+% nohtml 
+Remove mark-up (e.g. HTML tags) from an ASCII text file
+ASCII text file: webfile.html
+ASCII text output file [webfile.nohtml]: 
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
@@ -60,13 +69,25 @@ Input file format
 
    nohtml reads any text file.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: webfile.html
+
+SEE ALSO
+
+   Program name             Description
+   embossdata   Find and retrieve EMBOSS data files
 
 Output file format
 
    nohtml rewrites the input file
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: webfile.nohtml
+
+   SEE ALSO Program name Description embossdata Find and retrieve EMBOSS
+   data files
 
 Data files
 
@@ -145,9 +166,9 @@ See also
 
 Author(s)
 
-   Jon Ison (jison © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   Jon Ison (jison © ebi.ac.uk)
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

@@ -2377,9 +2377,9 @@ See also
 
 Author(s)
 
-   Jon Ison (jison © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   Jon Ison (jison © ebi.ac.uk)
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
    This program is an EMBASSY wrapper to a program written by Timothy L.
    Bailey as part of his meme package.

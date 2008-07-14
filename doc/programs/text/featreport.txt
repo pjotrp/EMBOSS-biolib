@@ -14,7 +14,17 @@ Description
 
 Usage
 
-   [an error has occurred processing this directive]
+   Here is a sample session with featreport
+
+
+% featreport 
+Reads and writes a feature table
+Input sequence: paamir.fasta
+Input features: paamir.gff
+Output report [x13776.featreport]: test.out
+
+   Go to the input files for this example
+   Go to the output files for this example
 
 Command line arguments
 
@@ -85,13 +95,135 @@ Input file format
 
    featreport reads any normal sequence USAs and features UFOs.
 
-   [an error has occurred processing this directive]
+  Input files for usage example
+
+  File: paamir.fasta
+
+>X13776 X13776.1 Pseudomonas aeruginosa amiC and amiR gene for aliphatic amidas
+e regulation
+ggtaccgctggccgagcatctgctcgatcaccaccagccgggcgacgggaactgcacgat
+ctacctggcgagcctggagcacgagcgggttcgcttcgtacggcgctgagcgacagtcac
+aggagaggaaacggatgggatcgcaccaggagcggccgctgatcggcctgctgttctccg
+aaaccggcgtcaccgccgatatcgagcgctcgcacgcgtatggcgcattgctcgcggtcg
+agcaactgaaccgcgagggcggcgtcggcggtcgcccgatcgaaacgctgtcccaggacc
+ccggcggcgacccggaccgctatcggctgtgcgccgaggacttcattcgcaaccgggggg
+tacggttcctcgtgggctgctacatgtcgcacacgcgcaaggcggtgatgccggtggtcg
+agcgcgccgacgcgctgctctgctacccgaccccctacgagggcttcgagtattcgccga
+acatcgtctacggcggtccggcgccgaaccagaacagtgcgccgctggcggcgtacctga
+ttcgccactacggcgagcgggtggtgttcatcggctcggactacatctatccgcgggaaa
+gcaaccatgtgatgcgccacctgtatcgccagcacggcggcacggtgctcgaggaaatct
+acattccgctgtatccctccgacgacgacttgcagcgcgccgtcgagcgcatctaccagg
+cgcgcgccgacgtggtcttctccaccgtggtgggcaccggcaccgccgagctgtatcgcg
+ccatcgcccgtcgctacggcgacggcaggcggccgccgatcgccagcctgaccaccagcg
+aggcggaggtggcgaagatggagagtgacgtggcagaggggcaggtggtggtcgcgcctt
+acttctccagcatcgatacgcccgccagccgggccttcgtccaggcctgccatggtttct
+tcccggagaacgcgaccatcaccgcctgggccgaggcggcctactggcagaccttgttgc
+tcggccgcgccgcgcaggccgcaggcaactggcgggtggaagacgtgcagcggcacctgt
+acgacatcgacatcgacgcgccacaggggccggtccgggtggagcgccagaacaaccaca
+gccgcctgtcttcgcgcatcgcggaaatcgatgcgcgcggcgtgttccaggtccgctggc
+agtcgcccgaaccgattcgccccgacccttatgtcgtcgtgcataacctcgacgactggt
+ccgccagcatgggcgggggaccgctcccatgagcgccaactcgctgctcggcagcctgcg
+cgagttgcaggtgctggtcctcaacccgccgggggaggtcagcgacgccctggtcttgca
+gctgatccgcatcggttgttcggtgcgccagtgctggccgccgccggaagccttcgacgt
+gccggtggacgtggtcttcaccagcattttccagaatggccaccacgacgagatcgctgc
+gctgctcgccgccgggactccgcgcactaccctggtggcgctggtggagtacgaaagccc
+cgcggtgctctcgcagatcatcgagctggagtgccacggcgtgatcacccagccgctcga
+tgcccaccgggtgctgcctgtgctggtatcggcgcggcgcatcagcgaggaaatggcgaa
+gctgaagcagaagaccgagcagctccaggaccgcatcgccggccaggcccggatcaacca
+ggccaaggtgttgctgatgcagcgccatggctgggacgagcgcgaggcgcaccagcacct
+gtcgcgggaagcgatgaagcggcgcgagccgatcctgaagatcgctcaggagttgctggg
+aaacgagccgtccgcctgagcgatccgggccgaccagaacaataacaagaggggtatcgt
+catcatgctgggactggttctgctgtacgttggcgcggtgctgtttctcaatgccgtctg
+gttgctgggcaagatcagcggtcgggaggtggcggtgatcaacttcctggtcggcgtgct
+gagcgcctgcgtcgcgttctacctgatcttttccgcagcagccgggcagggctcgctgaa
+ggccggagcgctgaccctgctattcgcttttacctatctgtgggtggccgccaaccagtt
+cctcgag
+
+  File: paamir.gff
+
+##gff-version 2.0
+##date 2003-02-14
+##Type DNA PAAMIR
+PAAMIR  EMBL    source  1       2167    0.000   +       .       Sequence "PAAMI
+R.1" ; db_xref "taxon:287" ; organism "Pseudomonas aeruginosa" ; strain "PAC" ;
+ isolate "PAC 1" ; map "38 min"
+PAAMIR  EMBL    CDS     1289    1879    0.000   +       .       Sequence "PAAMI
+R.2" ; db_xref "SWISS-PROT:P10932" ; note "aliphatic amidase regulator, positiv
+e regulator of amiE" ; transl_table 11 ; gene "amiR" ; protein_id "CAA32023.1"
+; translation "MSANSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPPPEAFDVPVDVVFTSIFQNG
+HHDEIAALLAAGTPRTTLVALVEYESPAVLSQIIELECHGVITQPLDAHRVLPVLVSARRISEEMAKLKQKTEQLQDRI
+AGQARINQAKVLLMQRHGWDEREAHQHLSREAMKRREPILKIAQELLGNEPSA"
+PAAMIR  EMBL    CDS     135     1292    0.000   +       .       Sequence "PAAMI
+R.3" ; db_xref "SWISS-PROT:P27017" ; note "negative regulator of amiR" ; transl
+_table 11 ; gene "amiC" ; protein_id "CAA32024.1" ; translation "MGSHQERPLIGLLF
+SETGVTADIERSHAYGALLAVEQLNREGGVGGRPIETLSQDPGGDPDRYRLCAEDFIRNRGVRFLVGCYMSHTRKAVMP
+VVERADALLCYPTPYEGFEYSPNIVYGGPAPNQNSAPLAAYLIRHYGERVVFIGSDYIYPRESNHVMRHLYRQHGGTVL
+EEIYIPLYPSDDDLQRAVERIYQARADVVFSTVVGTGTAELYRAIARRYGDGRRPPIASLTTSEAEVAKMESDVAEGQV
+VVAPYFSSIDTPASRAFVQACHGFFPENATITAWAEAAYWQTLLLGRAAQAAGNWRVEDVQRHLYDIDIDAPQGPVRVE
+RQNNHSRLSSRIAEIDARGVFQVRWQSPEPIRPDPYVVVHNLDDWSASMGGGPLP"
+PAAMIR  EMBL    promoter        8       24      0.000   +       .       Sequenc
+e "PAAMIR.4" ; note "proposed rpoN-dependent promoter"
+PAAMIR  EMBL    promoter        65      81      0.000   +       .       Sequenc
+e "PAAMIR.5" ; note "proposed rpoN-dependent promoter"
+PAAMIR  EMBL    RBS     121     126     0.000   +       .       Sequence "PAAMI
+R.6" ; note "proposed Shine-Dalgarno sequence"
+PAAMIR  EMBL    variation       912     1167    0.000   +       .       Sequenc
+e "PAAMIR.7" ; note "ClaI fragment deleted in pSW36, constitutive phenotype" ;
+replace "" ; gene "amiC"
+PAAMIR  EMBL    misc_feature    1       1       0.000   +       .       Sequenc
+e "PAAMIR.8" ; FeatFlags "0x40" ; note "last base of an XhoI site"
+PAAMIR  EMBL    misc_feature    648     653     0.000   +       .       Sequenc
+e "PAAMIR.9" ; note "end of 658bp XhoI fragment, deletion in pSW3 causes consti
+tutive expression of amiE"
+PAAMIR  EMBL    conflict        1281    1281    0.000   +       .       Sequenc
+e "PAAMIR.10" ; FeatFlags "0x40" ; replace "g" ; citation [3]
 
 Output file format
 
    featreport outputs a report format file.
 
-   [an error has occurred processing this directive]
+  Output files for usage example
+
+  File: test.out
+
+##gff-version 3
+##sequence-region PAAMIR 1 2167
+#!Date 2008-07-15
+#!Type DNA
+#!Source-version EMBOSS 6.0.0
+PAAMIR  EMBL    databank_entry  1       2167    0.000   +       .       ID="PAA
+MIR.1";db_xref="taxon:287";organism="Pseudomonas aeruginosa";strain="PAC";isola
+te="PAC 1";map="38 min"
+PAAMIR  EMBL    CDS     1289    1879    0.000   +       0       ID="PAAMIR.2";d
+b_xref="SWISS-PROT:P10932";note="aliphatic amidase regulator, positive regulato
+r of amiE";transl_table=11;gene="amiR";protein_id="CAA32023.1";translation="MSA
+NSLLGSLRELQVLVLNPPGEVSDALVLQLIRIGCSVRQCWPPPEAFDVPVDVVFTSIFQNGHHDEIAALLAAGTPRTTL
+VALVEYESPAVLSQIIELECHGVITQPLDAHRVLPVLVSARRISEEMAKLKQKTEQLQDRIAGQARINQAKVLLMQRHG
+WDEREAHQHLSREAMKRREPILKIAQELLGNEPSA"
+PAAMIR  EMBL    CDS     135     1292    0.000   +       0       ID="PAAMIR.3";d
+b_xref="SWISS-PROT:P27017";note="negative regulator of amiR";transl_table=11;ge
+ne="amiC";protein_id="CAA32024.1";translation="MGSHQERPLIGLLFSETGVTADIERSHAYGAL
+LAVEQLNREGGVGGRPIETLSQDPGGDPDRYRLCAEDFIRNRGVRFLVGCYMSHTRKAVMPVVERADALLCYPTPYEGF
+EYSPNIVYGGPAPNQNSAPLAAYLIRHYGERVVFIGSDYIYPRESNHVMRHLYRQHGGTVLEEIYIPLYPSDDDLQRAV
+ERIYQARADVVFSTVVGTGTAELYRAIARRYGDGRRPPIASLTTSEAEVAKMESDVAEGQVVVAPYFSSIDTPASRAFV
+QACHGFFPENATITAWAEAAYWQTLLLGRAAQAAGNWRVEDVQRHLYDIDIDAPQGPVRVERQNNHSRLSSRIAEIDAR
+GVFQVRWQSPEPIRPDPYVVVHNLDDWSASMGGGPLP"
+PAAMIR  EMBL    promoter        8       24      0.000   +       .       ID="PAA
+MIR.4";note="proposed rpoN-dependent promoter"
+PAAMIR  EMBL    promoter        65      81      0.000   +       .       ID="PAA
+MIR.5";note="proposed rpoN-dependent promoter"
+PAAMIR  EMBL    ribosome_entry_site     121     126     0.000   +       .
+ID="PAAMIR.6";note="proposed Shine-Dalgarno sequence"
+PAAMIR  EMBL    sequence_variant        912     1167    0.000   +       .
+ID="PAAMIR.7";note="ClaI fragment deleted in pSW36, constitutive phenotype";rep
+lace="";gene="amiC"
+PAAMIR  EMBL    located_sequence_feature        1       1       0.000   +
+.       ID="PAAMIR.8";featflags="0x40";note="last base of an XhoI site"
+PAAMIR  EMBL    located_sequence_feature        648     653     0.000   +
+.       ID="PAAMIR.9";note="end of 658bp XhoI fragment, deletion in pSW3 causes
+ constitutive expression of amiE"
+PAAMIR  EMBL    sequence_conflict       1281    1281    0.000   +       .
+ID="PAAMIR.10";featflags="0x40";replace="g";citation=[3]
 
 Data files
 

@@ -676,7 +676,7 @@ See also
 
    Program name Description
    cons Create a consensus sequence from a multiple alignment
-   consambig Create an ambiguouos consensus sequence from a multiple
+   consambig Create an ambiguous consensus sequence from a multiple
    alignment
    megamerger Merge two large overlapping DNA sequences
 

@@ -692,9 +692,9 @@ Author(s)
    before publication.
 
    Please report all bugs in the EMBOSS version to the EMBOSS bug team,
-   not to the original author. Jon Ison (jison © rfcgr.mrc.ac.uk)
-   MRC Rosalind Franklin Centre for Genomics Research Wellcome Trust
-   Genome Campus, Hinxton, Cambridge, CB10 1SB, UK
+   not to the original author. Jon Ison (jison © ebi.ac.uk)
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
    This program is an EMBASSY wrapper to a program written by Sean Eddy
    as part of his hmmer package.
