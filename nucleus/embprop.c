@@ -55,7 +55,6 @@ float dayhoff[] = {
 #define RAG_MINPEPLEN 3
 
 #define AMINODATFILE "Eamino.dat"
-#define EAMINODATFILE "Ebmino.dat"
 
 
 /* static AjBool propInit = 0;*/
@@ -147,7 +146,38 @@ EmbPPropAmino* embPropEaminoRead(AjPFile mfptr)
     return ret;
 }
 
+/* @func embPropGetProperties **************************************************
+**
+** Returns a string containing a list of defined properties
+**
+** @param [r] prop [const EmbPPropAmino] Input properties object
+** @param [w] Pstr [AjPStr*] String of properties separated by commas
+** @return [AjBool] True if properties are defined
+** @@
+******************************************************************************/
 
+AjBool embPropGetProperties(const EmbPPropAmino prop, AjPStr* Pstr)
+{
+    ajStrAssignC(Pstr, "");
+    if(prop->tiny)
+        ajStrAppendC(Pstr, "tiny,");
+    if(prop->sm_all)
+        ajStrAppendC(Pstr, "small,");
+    if(prop->aliphatic)
+        ajStrAppendC(Pstr, "aliphatic,");
+    if(prop->aromatic)
+        ajStrAppendC(Pstr, "aromatic,");
+    if(prop->polar)
+        ajStrAppendC(Pstr, "polar,");
+    if(prop->nonpolar)
+        ajStrAppendC(Pstr, "nonpolar,");
+    ajStrTrimEndC(Pstr, ",");
+
+    if(!ajStrGetLen(*Pstr))
+        return ajFalse;
+
+    return ajTrue;
+}
 
 
 /* @func embPropEmolwtRead ****************************************************
@@ -236,6 +266,23 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
     ajStrDel(&token);
 
     return ret;
+}
+
+
+
+
+/* @func embPropMolwtGetMolwt *************************************************
+**
+** Return charge value
+**
+** @param [r] prop [const EmbPPropMolwt] Input mOlecular weights object
+** @return [float] charge
+** @@
+******************************************************************************/
+
+float embPropMolwtGetMolwt(const EmbPPropMolwt prop)
+{
+    return prop->average;
 }
 
 
@@ -356,25 +403,6 @@ ajint embPropGetPolar(const EmbPPropAmino prop)
 {
     return prop->polar;
 }
-
-
-
-
-#if 0
-/* @func embPropGetCharge *****************************************************
-**
-** Return charge value
-**
-** @param [r] prop [const EmbPPropAmino] Input properties object
-** @return [ajint] charge
-** @@
-******************************************************************************/
-
-ajint embPropGetCharge(const EmbPPropAmino prop)
-{
-    return prop->charge;
-}
-#endif
 
 
 

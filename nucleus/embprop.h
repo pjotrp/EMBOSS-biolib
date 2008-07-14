@@ -110,7 +110,9 @@ EmbPPropMolwt *embPropEmolwtRead(AjPFile fp);
 void          embPropAminoDel(EmbPPropAmino **thys);
 void          embPropMolwtDel(EmbPPropMolwt **thys);
 
+float embPropMolwtGetMolwt(const EmbPPropMolwt prop);
 float embPropGetCharge(const EmbPPropAmino prop);
+AjBool embPropGetProperties(const EmbPPropAmino prop, AjPStr* Pstr);
 ajint embPropGetTiny(const EmbPPropAmino prop);
 ajint embPropGetSmall(const EmbPPropAmino prop);
 ajint embPropGetAliphatic(const EmbPPropAmino prop);
