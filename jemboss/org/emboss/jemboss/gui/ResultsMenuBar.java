@@ -466,6 +466,7 @@ public class ResultsMenuBar extends JMenuBar
     //Font size selection
     String sizes[] = {"10", "12", "14", "16", "18"};
     final JComboBox fntSize = new JComboBox(sizes);
+    fntSize.setToolTipText("Font size");
     fntSize.setSelectedItem("12");
     fntSize.setPreferredSize(fntSize.getMinimumSize());
     fntSize.setMaximumSize(fntSize.getMinimumSize());
@@ -492,11 +493,13 @@ public class ResultsMenuBar extends JMenuBar
       }
     });
 
+    toolBar.addSeparator();
+    
     //Font style
     String styles[] = {"Plain","Bold","Italic"};
     final JComboBox cbFonts = new JComboBox(styles);
     cbFonts.setMaximumSize(cbFonts.getPreferredSize());
-    cbFonts.setToolTipText("Available styles");
+    cbFonts.setToolTipText("Available font styles");
     cbFonts.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
