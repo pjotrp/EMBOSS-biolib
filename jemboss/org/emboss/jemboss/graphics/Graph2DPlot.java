@@ -553,12 +553,18 @@ public class Graph2DPlot extends ScrollPanel
     });
     optionsMenu.add(axesOptions);
     menubar.add(optionsMenu);
-
+    return menubar;
+  }
+  
+  
+  public JToolBar getToolBar(){
+    JToolBar toolbar = new JToolBar();
 // font menu
     String sizes[] = {"10", "12", "14", "16", "18"};
     final JComboBox fntSize = new JComboBox(sizes);
+    fntSize.setToolTipText("Font size");
     fntSize.setSelectedItem(Integer.toString(getFont().getSize()));
-    menubar.add(fntSize);
+    toolbar.add(fntSize);
     fntSize.setEditable(true);
     Dimension dfont = new Dimension(50,20);
     fntSize.setPreferredSize(dfont);
@@ -578,12 +584,14 @@ public class Graph2DPlot extends ScrollPanel
       }
     });
 
+    toolbar.addSeparator();
 
 // zoom
     String zoom[] = {"70", "80", "90", "100", "150", "200"};
     final JComboBox zoomSize = new JComboBox(zoom);
+    zoomSize.setToolTipText("Zoom (%)");
     zoomSize.setSelectedItem("100");
-    menubar.add(zoomSize);
+    toolbar.add(zoomSize);
     zoomSize.setEditable(true);
     zoomSize.setPreferredSize(dfont);
     zoomSize.setMaximumSize(dfont);
@@ -609,8 +617,8 @@ public class Graph2DPlot extends ScrollPanel
         setCursor(cdone);
       }
     });
-    menubar.add(new JLabel("%"));
-    return menubar;
+    toolbar.add(new JLabel("%"));
+    return toolbar;
   }
   
 
@@ -792,6 +800,8 @@ public class Graph2DPlot extends ScrollPanel
 
     if(offscreen == null)
     {
+      try
+      {
       offscreen = createImage(getWidth(),getHeight());
       Graphics og = offscreen.getGraphics();
      
@@ -810,6 +820,12 @@ public class Graph2DPlot extends ScrollPanel
       
       if(draw_axes)
         drawAxes(og,tick_height);
+      } catch (OutOfMemoryError e) {
+          String msg ="Memory error: "+e+
+          "\nPlease check Jemboss JVM startup options";
+          JOptionPane.showMessageDialog(null, msg, "Error", JOptionPane.ERROR_MESSAGE);
+          throw e;
+      }
     }
     g.drawImage(offscreen, 0, 0, null);
   }
