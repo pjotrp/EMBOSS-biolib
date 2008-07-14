@@ -1,0 +1,23 @@
+<h3><A NAME="mira">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current mira release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="emira.html">emira</a></td>
+<td>
+MIRA fragment assembly program
+</td>
+</tr>
+<tr>
+<td><a href="emiraest.html">emiraest</a></td>
+<td>
+MIRAest fragment assembly program
+</td>
+</tr>
+</table>
