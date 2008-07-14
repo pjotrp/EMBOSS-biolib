@@ -83,7 +83,7 @@ int main(int argc, char **argv)
 ** Builds a list of sequences from a sequence set.
 ** The sequences are NOT copied (only a reference is pushed onto the list)
 **
-** @param [r] list   [const AjPList] List 
+** @param [u] list   [AjPList] List 
 ** @param [w] seqset [AjPSeqset] Sequence set
 ** @return [AjBool] True on success
 ******************************************************************************/

@@ -134,13 +134,13 @@ int main(int argc, char **argv)
 
 
 
-/* @funcstatic ajSeqsetToList *************************************************
+/* @funcstatic skipredundant_SeqsetToList **************************************
 **
 ** Builds a list of sequences from a sequence set.
 ** The sequences are NOT copied (only a reference is pushed onto the list)
 **
+** @param [u] list   [AjPList] List 
 ** @param [w] seqset [AjPSeqset] Sequence set
-** @param [r] list   [const AjPList] List 
 ** @return [AjBool] True on success
 ******************************************************************************/
 static AjBool skipredundant_SeqsetToList (AjPList list, AjPSeqset seqset)
