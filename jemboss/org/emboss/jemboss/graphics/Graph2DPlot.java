@@ -562,13 +562,11 @@ public class Graph2DPlot extends ScrollPanel
 // font menu
     String sizes[] = {"10", "12", "14", "16", "18"};
     final JComboBox fntSize = new JComboBox(sizes);
+    fntSize.setMaximumSize(fntSize.getMinimumSize());
     fntSize.setToolTipText("Font size");
     fntSize.setSelectedItem(Integer.toString(getFont().getSize()));
     toolbar.add(fntSize);
     fntSize.setEditable(true);
-    Dimension dfont = new Dimension(50,20);
-    fntSize.setPreferredSize(dfont);
-    fntSize.setMaximumSize(dfont);
     fntSize.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -589,12 +587,11 @@ public class Graph2DPlot extends ScrollPanel
 // zoom
     String zoom[] = {"70", "80", "90", "100", "150", "200"};
     final JComboBox zoomSize = new JComboBox(zoom);
+    zoomSize.setMaximumSize(zoomSize.getMinimumSize());
     zoomSize.setToolTipText("Zoom (%)");
     zoomSize.setSelectedItem("100");
     toolbar.add(zoomSize);
     zoomSize.setEditable(true);
-    zoomSize.setPreferredSize(dfont);
-    zoomSize.setMaximumSize(dfont);
     zoomSize.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
