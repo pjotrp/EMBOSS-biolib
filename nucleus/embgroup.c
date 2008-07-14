@@ -1492,8 +1492,8 @@ void embGrpOutputProgsList(AjPFile outfile, const AjPList progslist,
     /* output the programs for each group */
     piter = ajListIterNewread(progslist);
     if(html) ajFmtPrintF(outfile,
-			 "<tr><th>Program name</th><th>Description"
-			 "</th></tr>\n");
+			 "<tr><th>Program name</th>\n"
+                         "<th>Description</th></tr>\n");
 
     while((pl = ajListIterGet(piter)) != NULL)
     {
