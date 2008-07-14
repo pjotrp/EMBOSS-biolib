@@ -860,7 +860,7 @@ AjPFile ajFileNewInNameS(const AjPStr name)
     
     char   *p = NULL;
 
-    ajDebug("ajFileNewIn '%S'\n", name);
+    ajDebug("ajFileNewInNameS '%S'\n", name);
     
     if(ajStrMatchC(name, "stdin"))
     {
