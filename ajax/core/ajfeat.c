@@ -222,7 +222,7 @@ static AjPFeature   featFeatNew(AjPFeattable thys,
 				ajint Start2, ajint End2,
 				const AjPStr entryid,
 				const AjPStr label,
-				ajint        flags );
+				ajint flags );
 static AjPFeature   featFeatNewProt(AjPFeattable thys,
 				    const AjPStr source,
 				    const AjPStr type,
@@ -1227,8 +1227,8 @@ AjPFeattable ajFeatRead(AjPFeattabIn  ftin)
     if(!format)
 	return NULL;
 
-    /*ajDebug("ajFeatRead format %d '%s' file %x\n",
-	    format, featInFormat[format].Name, file);*/
+    ajDebug("ajFeatRead format %d '%s' file %x type: '%S'\n",
+	    format, featInFormat[format].Name, file, ftin->Type);
 
     if(!featInFormat[format].Used)
     {
@@ -1294,8 +1294,11 @@ AjPFeature ajFeatNew(AjPFeattable thys,
     ajint flags    = 0;
     AjPFeature ret = NULL;
 
-    ret = featFeatNew(thys,source,type,Start,End,score,strand,frame,
-		      0,0,0,NULL, NULL,flags);
+    if(ajStrMatchC(thys->Type, "P"))
+        ret = featFeatNewProt(thys,source,type,Start,End,score,flags);
+    else
+        ret = featFeatNew(thys,source,type,Start,End,score,strand,frame,
+                          0,0,0,NULL, NULL,flags);
 
     return ret;
 }
@@ -2381,7 +2384,7 @@ static AjBool featFindInFormatC(const char* format, ajint* iformat)
 	}
     }
 
-    ajErr("Unknown input feat format '%S'", format);
+    ajErr("Unknown input feat format '%s'", format);
 
     ajStrDelStatic(&featFormatTmp);
 
@@ -2603,6 +2606,8 @@ static AjBool featReadEmbl(AjPFeattable thys, AjPFilebuff file)
     AjPStr savefeat = NULL;
     AjPStr saveline = NULL;
     AjPStr saveloc  = NULL;
+    AjBool isEmbl = ajFalse;
+    AjBool isGenbank = ajFalse;
 
     if(!featReadLine)
 	featReadLine = ajStrNewRes(100);
@@ -2612,22 +2617,33 @@ static AjBool featReadEmbl(AjPFeattable thys, AjPFilebuff file)
     while(ajBuffreadLine(file, &featReadLine))
     {
 	/* if it's an EMBL feature do stuff */
-	if(!ajStrCmpLenC(featReadLine, "FT   ", 5))
+	if(ajStrPrefixC(featReadLine, "FEATURES  "))
+	{
+            isGenbank = ajTrue;
+        }
+        
+	else if(ajStrPrefixC(featReadLine, "FT   "))
 	{
 	    ajStrTrimWhiteEnd(&featReadLine); /* remove newline */
 	    if(featEmblFromLine(thys, featReadLine,
 				&savefeat, &saveloc, &saveline))
 		found = ajTrue ;
+            isEmbl = ajTrue;
 	}
 
 	/* if it's a GenBank feature do stuff */
-	else if(!ajStrCmpLenC(featReadLine, "     ", 5))
+	else if(isGenbank && ajStrPrefixC(featReadLine, "     "))
 	{
 	    ajStrTrimWhiteEnd(&featReadLine); /* remove newline */
 	    if(featEmblFromLine(thys, featReadLine,
 				&savefeat, &saveloc, &saveline))
 		found = ajTrue ;
 	}
+        else if(isGenbank) 
+        {
+            isGenbank = ajFalse;
+        }
+        
     }
     if(featEmblFromLine(thys, NULL, &savefeat, &saveloc, &saveline))
 	found = ajTrue;
@@ -4712,16 +4728,22 @@ static AjPFeature featGffFromLine(AjPFeattable thys, const AjPStr line,
 
 	/* feature object construction
 	   and group tag */
-
-    gf = featFeatNew(thys,
-		     featSource,
-		     featFeature,
-		     Start, End,
-		     fscore,
-		     strand,
-		     frame,
-		     0,0,0, NULL, NULL, 0);
-    
+    if(ajStrMatchC(thys->Type, "P"))
+        gf = featFeatNewProt(thys,
+                             featSource,
+                             featFeature,
+                             Start, End,
+                             fscore,
+                             0);
+    else
+        gf = featFeatNew(thys,
+                         featSource,
+                         featFeature,
+                         Start, End,
+                         fscore,
+                         strand,
+                         frame,
+                         0,0,0, NULL, NULL, 0);
     if(ajStrTokenRestParse(&featGffSplit, &featGroup))
 	featGffProcessTagval(gf, thys, featGroup, version) ;
 
@@ -4816,15 +4838,23 @@ static AjPFeature featGff3FromLine(AjPFeattable thys, const AjPStr line)
 	/* feature object construction
 	   and group tag */
 
-    gf = featFeatNew(thys,
-		     featSource,
-		     featFeature,
-		     Start, End,
-		     fscore,
-		     strand,
-		     frame,
-		     0,0,0, NULL, NULL, 0);
-    
+    if(ajStrMatchC(thys->Type, "P"))
+        gf = featFeatNewProt(thys,
+                             featSource,
+                             featFeature,
+                             Start, End,
+                             fscore,
+                            0);
+    else
+        gf = featFeatNew(thys,
+                         featSource,
+                         featFeature,
+                         Start, End,
+                         fscore,
+                         strand,
+                         frame,
+                         0,0,0, NULL, NULL, 0);
+
     if(ajStrTokenRestParse(&featGffSplit, &featGroup))
 	featGff3ProcessTagval(gf, thys, featGroup) ;
 
@@ -4921,6 +4951,7 @@ static AjBool featReadGff(AjPFeattable thys, AjPFilebuff file)
 	    else
 		ajFeattableSetNuc(thys);
 	    ajStrDel(&type);
+	    ajRegSubI(GffRegextype, 3, &thys->Seqid);
 	}
 	else if(ajRegExec(GffRegexcomment,line))
 	    version = 2.0;      /* ignore for now... could store them in
@@ -4975,11 +5006,14 @@ static AjBool featReadGff3(AjPFeattable thys, AjPFilebuff file)
 	    ajRegSubI(Gff3Regexversion, 1, &verstr);
 	    ajStrToFloat(verstr, &version);
 	    ajStrDel(&verstr);
+            if(version < 3.0)
+              return ajFalse;
 	}
 	else if(ajRegExec(Gff3Regexregion,line))
 	{
 	    start = ajStrNew();
 	    end   = ajStrNew();
+	    ajRegSubI(Gff3Regexregion, 1, &thys->Seqid);
 	    ajRegSubI(Gff3Regexregion, 2, &start);
 	    ajRegSubI(Gff3Regexregion, 3, &end);
 	    (void) ajStrToUint(start, &(thys->Start));
@@ -5073,6 +5107,9 @@ AjBool ajFeattableWriteGff3(const AjPFeattable Feattab, AjPFile file)
     /* ajDebug("ajFeattableWriteGff Checking arguments\n"); */
     if(!file)
 	return ajFalse;
+    
+    if(ajStrMatchC(Feattab->Type, "P")) /* until GFF3 protein works */
+        return ajFeattableWriteGff2(Feattab, file);
     
     /* Print GFF3-specific header first with ## tags */
 
@@ -5251,7 +5288,7 @@ static AjBool featRegInitGff(void)
     GffRegexregion    = ajRegCompC("^##sequence-region[ ]+([0-9a-zA-Z]+)"
 				   "[ ]+([\\+-]?[0-9]+)[ ]+([\\+-]?[0-9]+)");
     GffRegexcomment   = ajRegCompC("^#[ ]*(.*)");
-    GffRegextype      = ajRegCompC("^##[Tt]ype +(\\S+)");
+    GffRegextype      = ajRegCompC("^##[Tt]ype +(\\S+)( +(\\S+))?");
 
     GffRegexTvTagval  = ajRegCompC(" *([^ =]+)[ =]((\"(\\.|[^\\\"])*\"|"
 			 	   "[^;]+)*)(;|$)"); /* "tag name */
@@ -5264,7 +5301,7 @@ static AjBool featRegInitGff(void)
 
 
 
-/* @funcstatic featRegInitGff3 *************************************************
+/* @funcstatic featRegInitGff3 ************************************************
 **
 ** Initialize regular expressions and data structures for ajFeat GFF3 format
 **
@@ -5296,7 +5333,7 @@ static AjBool featRegInitGff3(void)
 			 	   "[^;]+)*)(;|$)"); /* "tag name */
 
     FeatInitGff3 = ajTrue;
-
+    if(!featRegInitGff()) return ajFalse;
     return ajTrue;
 }
 
@@ -7681,12 +7718,23 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			name, typecount, savetype, typtagstr);*/
 			ajDebug("+type %S='%S'\n",
 				savetype, typtagstr);
+/*
 			tablestr = ajTablePut(pTypeTable,
 					      savetype, typtagstr);
-			if(tablestr)
-			    ajErr("%S duplicate type %S='%S' already defined as'%S'",
-				  fname, savetype, typtagstr, tablestr);
-			typtagstr = NULL;
+*/
+			tablestr = ajTableFetch(pTypeTable,
+                                                savetype);
+                        if(tablestr)
+                        {
+                            if(recursion)
+                                ajErr("%S duplicate type %S='%S' already defined as'%S'",
+                                      fname, savetype, typtagstr, tablestr);
+                        }
+                        else
+                        {
+                            ajTablePut(pTypeTable, savetype, typtagstr);
+                            typtagstr = NULL;
+                        }
 		    }
 
 		    if(ajStrMatchC(req, "=")) {
@@ -7712,6 +7760,9 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			sofaname = NULL;
 			
 			Ptyptagstr = ajTablestrFetchmod(pTypeTable, intids);
+                        if(!Ptyptagstr)
+                            ajWarn("%S undefined internal ID '%S'",
+                                   fname, intids);
 			ipos = ajStrFindAnyK(*Ptyptagstr, ';');
 			if(ipos >= 0)
 			    ajStrCutStart(Ptyptagstr, ipos);
@@ -7769,17 +7820,26 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 				    name,localname, sofaname);*/
 				    ajDebug("+type (alias) %S='%S'\n",
 					    localname, sofaname);
-				    tablestr = ajTablePut(pTypeTable,
-							  localname,
-							  sofaname);
+				    tablestr = ajTableFetch(pTypeTable,
+                                                            localname);
 				    if(tablestr)
-					ajErr("%S duplicate localname type "
-					      "%S='%S' already defined as '%S'",
-					      fname, localname,
-					      sofaname, tablestr);
-				    localname = NULL;
-				    sofaname = NULL;
-				    storetype  = sofaid;
+                                    {
+                                        if(recursion)
+                                            ajErr("%S duplicate localname type "
+                                                  "%S='%S' already defined as '%S'",
+                                                  fname, localname,
+                                                  sofaname, tablestr);
+                                    }
+
+                                    else
+                                    {
+                                        ajTablePut(pTypeTable, localname,
+                                                   sofaname);
+                                        localname = NULL;
+                                        sofaname = NULL;
+                                        storetype  = sofaid;
+                                    }
+                                    
 				}
 				sofaid = ajStrParseWhite(NULL);
 			    }
@@ -7940,6 +8000,7 @@ static AjBool featVocabInitGff3(void)
     AjBool ret1;
     AjBool ret2;
 
+    if(!featVocabInitGff()) return ajFalse;
     if(!FeatTypeTableGff3) {
 	FeatTypeTableGff3 = ajTablestrNewCaseLen(200);
 	FeatTagsTableGff3 = ajTablestrNewCaseLen(200);
@@ -10201,11 +10262,12 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 	"similar to RNA sequence",
 	"similar to RNA sequence, mRNA",
 	"similar to RNA sequence, EST",
-	"similar to RNA sequence, other",
+	"similar to RNA sequence, other RNA",
 	"profile",
 	"nucleotide motif",
 	"protein motif",
 	"ab initio prediction",
+        "alignment",
 	NULL
     };
 
@@ -10244,7 +10306,7 @@ static AjBool featTagSpecialAllInference(const AjPStr val)
 
     if(!ret)
     {
-	featWarn("bad /collection_date value '%S'", val);
+	featWarn("bad /inference value '%S'", val);
     }
 
     ajStrDel(&typstr);
