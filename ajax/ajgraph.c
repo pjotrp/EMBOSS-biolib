@@ -1259,8 +1259,11 @@ static void GraphLabelTitle(const char *title, const char *subtitle)
     if (graphData)
     {
         ajFmtPrintF(graphData->File,"##Maintitle %s\n",title);
-        ajFmtPrintF(graphData->File,"##Subtitle %s\n",subtitle);
-        graphData->Lines += 2;
+        graphData->Lines++;
+        if(subtitle){
+            ajFmtPrintF(graphData->File,"##Subtitle %s\n",subtitle);
+            graphData->Lines++;
+        }
     }
 
 
@@ -3928,7 +3931,8 @@ static void GraphxyDisplayToData(AjPGraph thys, AjBool closeit,
 	}
 	else
 	{
-	    ajFmtPrintF(outf,"##Subtitle %S\n",graphdata->subtitle);
+	    if(graphdata->subtitle)
+	        ajFmtPrintF(outf,"##Subtitle %S\n",graphdata->subtitle);
 	    ajFmtPrintF(outf,"##Xtitle %S\n",graphdata->xaxis);
 	    ajFmtPrintF(outf,"##Ytitle %S\n",graphdata->yaxis);
 	}
