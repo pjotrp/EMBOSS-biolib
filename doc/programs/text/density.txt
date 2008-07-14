@@ -9,11 +9,7 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
-
-Algorithm
-
-   **************** EDIT HERE ****************
+   density produces a density plot of a nuleotide sequence.
 
 Usage
 
@@ -304,7 +300,7 @@ Output file format
 
 ########################################
 # Program: density
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: density
 #    [-seqall] tembl:x13776
 # Report_format: table
@@ -422,7 +418,7 @@ Output file format
 
 Data files
 
-   **************** EDIT HERE ****************
+   None
 
 Notes
 

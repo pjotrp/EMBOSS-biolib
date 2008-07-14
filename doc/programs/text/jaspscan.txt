@@ -9,11 +9,17 @@ Function
 
 Description
 
-   **************** EDIT HERE ****************
+   jaspscan scans one or more DNA sequences for transcription factor
+   binding sites from the JASPAR database. Matches are searched for using
+   fast sequence word-matching, optionally allowing mismatches. Because
+   the binding sites are so small, there will be many spurious (false
+   positive) matches.
 
-Algorithm
-
-   **************** EDIT HERE ****************
+   An output file is written with information on the matches, including
+   sequence ID and accession number, the start and end positions of the
+   match in an input sequence and the sequence of the region where a
+   match has been found. Binding factor information, where available, is
+   given at the end of the matches for each matching entry.
 
 Usage
 
@@ -299,7 +305,7 @@ Output file format
 
 ########################################
 # Program: jaspscan
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: jaspscan
 #    -both
 #    -sequence tembl:m23100

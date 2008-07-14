@@ -226,6 +226,8 @@ See also
    cirdna Draws circular maps of DNA constructs
    infoalign Display basic information about a multiple sequence
    alignment
+   infobase Return information on a given nucleotide base
+   inforesidue Return information on a given amino acid residue
    infoseq Display basic information about sequences
    lindna Draws linear maps of DNA constructs
    pepnet Draw a helical net for a protein sequence

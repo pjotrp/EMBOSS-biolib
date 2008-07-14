@@ -222,7 +222,7 @@ Output file format
 
 ########################################
 # Program: pepcoil
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: pepcoil
 #    -sequence tsw:gcn4_yeast
 # Report_format: motif

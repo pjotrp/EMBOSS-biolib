@@ -84,16 +84,7 @@ Wildcard database filename [*.seq]: <b></b>
        key : Keywords
        org : Taxonomy
 Index fields [id,acc]: <b></b>
-
-Processing file /homes/user/test/embl/eem_ba1.seq
-Processing file /homes/user/test/embl/eem_est.seq
-Processing file /homes/user/test/embl/eem_fun.seq
-Processing file /homes/user/test/embl/eem_htginv1.seq
-Processing file /homes/user/test/embl/eem_hum1.seq
-Processing file /homes/user/test/embl/eem_in.seq
-Processing file /homes/user/test/embl/eem_ov.seq
-Processing file /homes/user/test/embl/eem_ro.seq
-Processing file /homes/user/test/embl/eem_vi.seq
+General log output file [outfile.dbxgcg]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -124,6 +115,7 @@ Processing file /homes/user/test/embl/eem_vi.seq
                                   (Accession number); sv (Sequence Version and
                                   GI); des (Description); key (Keywords); org
                                   (Taxonomy))
+   -outfile            outfile    [*.dbxgcg] General log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -134,7 +126,11 @@ Processing file /homes/user/test/embl/eem_vi.seq
                                   is accepted)
    -indexoutdir        outdir     [.] Index file output directory
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output
@@ -201,6 +197,13 @@ Processing file /homes/user/test/embl/eem_vi.seq
 <td>Index fields</td>
 <td><table><tr><td>id</td> <td><i>(ID)</i></td></tr><tr><td>acc</td> <td><i>(Accession number)</i></td></tr><tr><td>sv</td> <td><i>(Sequence Version and GI)</i></td></tr><tr><td>des</td> <td><i>(Description)</i></td></tr><tr><td>key</td> <td><i>(Keywords)</i></td></tr><tr><td>org</td> <td><i>(Taxonomy)</i></td></tr></table></td>
 <td>id,acc</td>
+</tr>
+
+<tr>
+<td>-outfile</td>
+<td>General log output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.dbxgcg</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -311,6 +314,22 @@ structure of the ID name index.
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
+<p><h3>File: outfile.dbxgcg</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+Processing directory: /homes/user/test/embl/
+Processing file: eem_ba1.seq entries: 10 (10) time: 0.0s (0.0s)
+Processing file: eem_est.seq entries: 11 (1) time: 0.0s (0.0s)
+Processing file: eem_fun.seq entries: 12 (1) time: 0.0s (0.0s)
+Processing file: eem_htginv1.seq entries: 17 (5) time: 0.0s (0.0s)
+Processing file: eem_hum1.seq entries: 32 (15) time: 0.0s (0.0s)
+Processing file: eem_in.seq entries: 34 (2) time: 0.0s (0.0s)
+Processing file: eem_ov.seq entries: 36 (2) time: 0.0s (0.0s)
+Processing file: eem_ro.seq entries: 39 (3) time: 0.0s (0.0s)
+Processing file: eem_vi.seq entries: 40 (1) time: 0.0s (0.0s)
+Total time: 0.0s
+</pre>
+</td></tr></table><p>
 <p><h3>File: embl.ent</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
@@ -582,7 +601,8 @@ None.
 -->
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
+<tr><th>Program name</th>
+<th>Description</th></tr>
 <tr>
 <td><a href="dbiblast.html">dbiblast</a></td>
 <td>Index a BLAST database</td>

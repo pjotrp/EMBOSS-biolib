@@ -216,7 +216,7 @@ Output file format
 
 ########################################
 # Program: antigenic
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: antigenic
 #    -sequence tsw:actb1_fugru
 # Report_format: motif
@@ -324,47 +324,45 @@ Max_score_pos at "*"
 
   File: actb1_fugru.antigenic
 
-##gff-version 3
-##sequence-region ACTB1_FUGRU 1 375
-#!Date 2007-07-15
-#!Type Protein
-#!Source-version EMBOSS 6.0.0
+##gff-version 2.0
+##date 2007-07-15
+##Type Protein ACTB1_FUGRU
 ACTB1_FUGRU     antigenic       region  214     222     1.207   +       .
-ID="ACTB1_FUGRU.1";note="*pos 218"
+Sequence "ACTB1_FUGRU.1" ; note "*pos 218"
 ACTB1_FUGRU     antigenic       region  131     145     1.187   +       .
-ID="ACTB1_FUGRU.2";note="*pos 137"
+Sequence "ACTB1_FUGRU.2" ; note "*pos 137"
 ACTB1_FUGRU     antigenic       region  5       12      1.166   +       .
-ID="ACTB1_FUGRU.3";note="*pos 8"
+Sequence "ACTB1_FUGRU.3" ; note "*pos 8"
 ACTB1_FUGRU     antigenic       region  27      38      1.164   +       .
-ID="ACTB1_FUGRU.4";note="*pos 32"
+Sequence "ACTB1_FUGRU.4" ; note "*pos 32"
 ACTB1_FUGRU     antigenic       region  160     183     1.136   +       .
-ID="ACTB1_FUGRU.5";note="*pos 173"
+Sequence "ACTB1_FUGRU.5" ; note "*pos 173"
 ACTB1_FUGRU     antigenic       region  367     372     1.135   +       .
-ID="ACTB1_FUGRU.6";note="*pos 372"
+Sequence "ACTB1_FUGRU.6" ; note "*pos 372"
 ACTB1_FUGRU     antigenic       region  93      108     1.116   +       .
-ID="ACTB1_FUGRU.7";note="*pos 103"
+Sequence "ACTB1_FUGRU.7" ; note "*pos 103"
 ACTB1_FUGRU     antigenic       region  295     301     1.113   +       .
-ID="ACTB1_FUGRU.8";note="*pos 296"
+Sequence "ACTB1_FUGRU.8" ; note "*pos 296"
 ACTB1_FUGRU     antigenic       region  256     266     1.110   +       .
-ID="ACTB1_FUGRU.9";note="*pos 264"
+Sequence "ACTB1_FUGRU.9" ; note "*pos 264"
 ACTB1_FUGRU     antigenic       region  336     352     1.107   +       .
-ID="ACTB1_FUGRU.10";note="*pos 347"
+Sequence "ACTB1_FUGRU.10" ; note "*pos 347"
 ACTB1_FUGRU     antigenic       region  62      76      1.102   +       .
-ID="ACTB1_FUGRU.11";note="*pos 68"
+Sequence "ACTB1_FUGRU.11" ; note "*pos 68"
 ACTB1_FUGRU     antigenic       region  232     250     1.086   +       .
-ID="ACTB1_FUGRU.12";note="*pos 245"
+Sequence "ACTB1_FUGRU.12" ; note "*pos 245"
 ACTB1_FUGRU     antigenic       region  327     332     1.083   +       .
-ID="ACTB1_FUGRU.13";note="*pos 330"
+Sequence "ACTB1_FUGRU.13" ; note "*pos 330"
 ACTB1_FUGRU     antigenic       region  317     323     1.074   +       .
-ID="ACTB1_FUGRU.14";note="*pos 320"
+Sequence "ACTB1_FUGRU.14" ; note "*pos 320"
 ACTB1_FUGRU     antigenic       region  186     192     1.068   +       .
-ID="ACTB1_FUGRU.15";note="*pos 191"
+Sequence "ACTB1_FUGRU.15" ; note "*pos 191"
 ACTB1_FUGRU     antigenic       region  40      46      1.066   +       .
-ID="ACTB1_FUGRU.16";note="*pos 43"
+Sequence "ACTB1_FUGRU.16" ; note "*pos 43"
 ACTB1_FUGRU     antigenic       region  269     275     1.045   +       .
-ID="ACTB1_FUGRU.17";note="*pos 269"
+Sequence "ACTB1_FUGRU.17" ; note "*pos 269"
 ACTB1_FUGRU     antigenic       region  51      57      1.034   +       .
-ID="ACTB1_FUGRU.18";note="*pos 52"
+Sequence "ACTB1_FUGRU.18" ; note "*pos 52"
 
 Data files
 

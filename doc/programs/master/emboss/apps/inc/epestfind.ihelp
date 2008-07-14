@@ -12,8 +12,7 @@
                                   tekt, tek, none, data, xterm, png, gif)
 
    Additional (Optional) qualifiers:
-   -mwdata             datafile   [Emolwt.dat] Amino acids properties and
-                                  molecular weight data file
+   -mwdata             datafile   [Emolwt.dat] Molecular weights data file
    -threshold          float      [+5.0] Threshold value to discriminate weak
                                   from potential PEST motifs. Valid PEST
                                   motifs are discriminated into 'poor' and

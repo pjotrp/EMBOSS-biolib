@@ -243,7 +243,7 @@ Output file format
 
 ########################################
 # Program: sigcleave
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: sigcleave
 #    -sequence tsw:ach2_drome
 # Report_format: motif

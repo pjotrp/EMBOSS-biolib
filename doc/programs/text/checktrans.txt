@@ -180,13 +180,11 @@ DQPGQGVADAAPWLGRARGAPAPVAGSDEAARADPEDRSGVAGKRAVRLSDPGRPEQ
 
   File: paamir_1.gff
 
-##gff-version 3
-##sequence-region PAAMIR_1 1 634
-#!Date 2007-07-15
-#!Type Protein
-#!Source-version EMBOSS 6.0.0
+##gff-version 2.0
+##date 2007-07-15
+##Type Protein PAAMIR_1
 PAAMIR_1        checktrans      region  278     634     0.000   +       .
-ID="PAAMIR_1.1"
+Sequence "PAAMIR_1.1"
 
 Data files
 

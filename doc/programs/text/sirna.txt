@@ -336,7 +336,7 @@ Output file format
 
 ########################################
 # Program: sirna
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: sirna
 #    -sequence tembl:x65923
 # Report_format: table
@@ -629,7 +629,7 @@ taaaaaagccacttagttcagtc
 
 ########################################
 # Program: sirna
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: sirna
 #    -context
 #    -sequence tembl:x65923

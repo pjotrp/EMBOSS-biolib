@@ -47,7 +47,7 @@ Usage
 
 
 % cons 
-Creates a consensus from multiple alignments
+Create a consensus sequence from a multiple alignment
 Input (aligned) sequence set: dna.msf
 output sequence [dna.fasta]: aligned.cons
 
@@ -244,9 +244,11 @@ Known bugs
 
 See also
 
-   Program name                Description
-   megamerger   Merge two large overlapping DNA sequences
-   merger       Merge two overlapping sequences
+   Program name Description
+   consambig Create an ambiguouos consensus sequence from a multiple
+   alignment
+   megamerger Merge two large overlapping DNA sequences
+   merger Merge two overlapping sequences
 
 Author(s)
 

@@ -8,6 +8,11 @@
 </tr>
 
 <tr>
+<td><a href="aligncopypair.html">aligncopypair</a></td>
+<td>Reads and writes pairs from alignments</td>
+</tr>
+
+<tr>
 <td><a href="codcopy.html">codcopy</a></td>
 <td>Copy and reformat a codon usage table</td>
 </tr>

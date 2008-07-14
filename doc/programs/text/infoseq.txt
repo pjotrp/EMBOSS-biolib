@@ -414,6 +414,8 @@ See also
    Program name Description
    infoalign Display basic information about a multiple sequence
    alignment
+   infobase Return information on a given nucleotide base
+   inforesidue Return information on a given amino acid residue
    seealso Finds programs with similar function to a specified program
    showdb Displays information on configured databases
    textsearch Search the textual description of sequence(s)

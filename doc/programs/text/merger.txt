@@ -468,7 +468,7 @@ Output file format
 
 ########################################
 # Program: merger
-# Rundate: Sun 15 Jul 2007 12:00:00
+# Rundate: Tue 15 Jul 2008 12:00:00
 # Commandline: merger
 #    -asequence tembl:v00295
 #    -bsequence tembl:x51872
@@ -674,9 +674,11 @@ Known bugs
 
 See also
 
-   Program name                      Description
-   cons         Create a consensus sequence from a multiple alignment
-   megamerger   Merge two large overlapping DNA sequences
+   Program name Description
+   cons Create a consensus sequence from a multiple alignment
+   consambig Create an ambiguouos consensus sequence from a multiple
+   alignment
+   megamerger Merge two large overlapping DNA sequences
 
 Author(s)
 

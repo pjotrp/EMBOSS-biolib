@@ -48,7 +48,7 @@
 
 <tr>
 <td>-mwdata</td>
-<td>Amino acids properties and molecular weight data file</td>
+<td>Molecular weights data file</td>
 <td>Data file</td>
 <td>Emolwt.dat</td>
 </tr>

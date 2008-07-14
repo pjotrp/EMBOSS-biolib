@@ -143,6 +143,7 @@ textsearch       Search the textual description of sequence(s)
 
 EDIT
 aligncopy        Reads and writes alignments
+aligncopypair    Reads and writes pairs from alignments
 biosed           Replace or delete sequence sections
 codcopy          Copy and reformat a codon usage table
 cutseq           Removes a section from a sequence
@@ -157,10 +158,15 @@ featreport       Reads and writes a feature table
 listor           Write a list file of the logical OR of two sets of sequences
 makenucseq       Create random nucleotide sequences
 makeprotseq      Create random protein sequences
+maskambignuc     Masks all ambiguity characters in nucleotide sequences with N
+maskambigprot    Masks all ambiguity characters in protein sequences with X
 maskfeat         Write a sequence with masked features
 maskseq          Write a sequence with masked regions
 newseq           Create a sequence file from a typed-in sequence
+nohtml           Remove mark-up (e.g. HTML tags) from an ASCII text file
 noreturn         Remove carriage return from ASCII files
+nospace          Remove all whitespace from an ASCII text file
+notab            Replace tabs with spaces in an ASCII text file
 notseq           Write to file a subset of an input stream of sequences
 nthseq           Write to file a single sequence from an input stream of sequen
 ces
@@ -168,10 +174,13 @@ pasteseq         Insert one sequence into another
 revseq           Reverse and complement a nucleotide sequence
 seqret           Reads and writes (returns) sequences
 seqretsplit      Reads sequences and writes them to individual files
+sizeseq          Sort sequences by size
+skipredundant    Remove redundant sequences from an input set
 skipseq          Reads and writes (returns) sequences, skipping first few
 splitter         Split sequence(s) into smaller sequences
 trimest          Remove poly-A tails from nucleotide sequences
 trimseq          Remove unwanted characters from start and end of sequence(s)
+trimspace        Remove extra whitespace from an ASCII text file
 union            Concatenate multiple sequences into a single sequence
 vectorstrip      Removes vectors from the ends of nucleotide sequence(s)
 yank             Add a sequence reference (a full USA) to a list file
@@ -590,6 +599,7 @@ ile
 acdtrace         Trace processing of an application ACD file (for testing)
 acdvalid         Validate an application ACD file
 aligncopy        Reads and writes alignments
+aligncopypair    Reads and writes pairs from alignments
 allversusall     Sequence similarity data from all-versus-all comparison
 antigenic        Finds antigenic sites in proteins
 backtranambig    Back-translate a protein sequence to ambiguous nucleotide sequ
@@ -781,6 +791,8 @@ makenucseq       Create random nucleotide sequences
 makeprotseq      Create random protein sequences
 marscan          Finds matrix/scaffold recognition (MRS) signatures in DNA sequ
 ences
+maskambignuc     Masks all ambiguity characters in nucleotide sequences with N
+maskambigprot    Masks all ambiguity characters in protein sequences with X
 maskfeat         Write a sequence with masked features
 maskseq          Write a sequence with masked regions
 matcher          Waterman-Eggert local alignment of two sequences
@@ -797,7 +809,10 @@ needle           Needleman-Wunsch global alignment of two sequences
 newcpgreport     Identify CpG islands in nucleotide sequence(s)
 newcpgseek       Identify and report CpG-rich regions in nucleotide sequence(s)
 newseq           Create a sequence file from a typed-in sequence
+nohtml           Remove mark-up (e.g. HTML tags) from an ASCII text file
 noreturn         Remove carriage return from ASCII files
+nospace          Remove all whitespace from an ASCII text file
+notab            Replace tabs with spaces in an ASCII text file
 notseq           Write to file a subset of an input stream of sequences
 nthseq           Write to file a single sequence from an input stream of sequen
 ces
@@ -883,6 +898,8 @@ change
 sirna            Finds siRNA duplexes in mRNA
 sites            Generate residue-ligand CON files from CCF files
 sixpack          Display a DNA sequence with 6-frame translation and ORFs
+sizeseq          Sort sequences by size
+skipredundant    Remove redundant sequences from an input set
 skipseq          Reads and writes (returns) sequences, skipping first few
 splitter         Split sequence(s) into smaller sequences
 ssematch         Search a DCF file for secondary structure matches
@@ -906,6 +923,7 @@ oteins
 transeq          Translate nucleic acid sequences
 trimest          Remove poly-A tails from nucleotide sequences
 trimseq          Remove unwanted characters from start and end of sequence(s)
+trimspace        Remove extra whitespace from an ASCII text file
 twofeat          Finds neighbouring pairs of features in sequence(s)
 union            Concatenate multiple sequences into a single sequence
 vectorstrip      Removes vectors from the ends of nucleotide sequence(s)
@@ -1129,7 +1147,7 @@ Output file format
   File: wossname.html
 
    <h2><a name="ACD">ACD</a></h2> <table border cellpadding=4
-   bgcolor="#FFFFF0"> <tr><th>Program name</th><th>Description</th></tr>
+   bgcolor="#FFFFF0"> <tr><th>Program name</th> <th>Description</th></tr>
    <tr> <td><a href="acdc.html">acdc</a></td> <td>Test an application ACD
    file</td> </tr> <tr> <td><a href="acdpretty.html">acdpretty</a></td>
    <td>Correctly reformat an application ACD file</td> </tr> <tr> <td><a
@@ -1140,16 +1158,14 @@ Output file format
    href="acdvalid.html">acdvalid</a></td> <td>Validate an application ACD
    file</td> </tr> </table> <h2><a name="ALIGNMENT CONSENSUS">ALIGNMENT
    CONSENSUS</a></h2> <table border cellpadding=4 bgcolor="#FFFFF0">
-   <tr><th>Program name</th><th>Description</th></tr> <tr> <td><a
+   <tr><th>Program name</th> <th>Description</th></tr> <tr> <td><a
    href="cons.html">cons</a></td> <td>Create a consensus sequence from a
    multiple alignment</td> </tr> <tr> <td><a
    href="consambig.html">consambig</a></td> <td>Create an ambiguouos
    consensus sequence from a multiple alignment</td> </tr> <tr> <td><a
    href="megamerger.html">megamerger</a></td> <td>Merge two large
-   overlapping DNA sequences</td> </tr> <tr> <td><a
-   href="merger.html">merger</a></td> <td>Merge two overlapping
-   sequences</td> [Part of this file has been deleted for brevity]
-   <tr><th>Program name</th><th>Description</th></tr> <tr> <td><a
+   overlapping DNA sequences</td> </tr> <tr> [Part of this file has been
+   deleted for brevity] <tr> <td><a
    href="dbiblast.html">dbiblast</a></td> <td>Index a BLAST database</td>
    </tr> <tr> <td><a href="dbifasta.html">dbifasta</a></td> <td>Index a
    fasta file database</td> </tr> <tr> <td><a
@@ -1163,7 +1179,7 @@ Output file format
    href="dbxgcg.html">dbxgcg</a></td> <td>Index a GCG formatted database
    using b+tree indices</td> </tr> </table> <h2><a name="UTILS
    MISC">UTILS MISC</a></h2> <table border cellpadding=4
-   bgcolor="#FFFFF0"> <tr><th>Program name</th><th>Description</th></tr>
+   bgcolor="#FFFFF0"> <tr><th>Program name</th> <th>Description</th></tr>
    <tr> <td><a href="embossdata.html">embossdata</a></td> <td>Find and
    retrieve EMBOSS data files</td> </tr> <tr> <td><a
    href="embossversion.html">embossversion</a></td> <td>Writes the

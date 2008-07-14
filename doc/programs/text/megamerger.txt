@@ -604,9 +604,11 @@ Known bugs
 
 See also
 
-   Program name                      Description
-   cons         Create a consensus sequence from a multiple alignment
-   merger       Merge two overlapping sequences
+   Program name Description
+   cons Create a consensus sequence from a multiple alignment
+   consambig Create an ambiguouos consensus sequence from a multiple
+   alignment
+   merger Merge two overlapping sequences
 
    Compare this with the program merger which does a more accurate
    alignment of more divergent sequences using the Needle and Wunsch

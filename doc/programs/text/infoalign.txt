@@ -874,6 +874,8 @@ See also
    Program name Description
    edialign Local multiple alignment of sequences
    emma Multiple sequence alignment (ClustalW wrapper)
+   infobase Return information on a given nucleotide base
+   inforesidue Return information on a given amino acid residue
    infoseq Display basic information about sequences
    plotcon Plot conservation of a sequence alignment
    prettyplot Draw a sequence alignment with pretty formatting

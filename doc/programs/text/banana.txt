@@ -445,6 +445,8 @@ a       0.0      0.0
 
   File: banana1.dat
 
+##Maintitle Bending and curvature plot of tembl-id:U68037
+##Subtitle Tue 15 Jul 2008 12:00:00
 ##Graphic
 ##Screen x1 -1.000000 y1 0.000000 x2 60.000000 y2 80.000000
 Text3 x1 3.000000 y1 56.099998 colour 0 size 9.600000 a
@@ -493,8 +495,6 @@ Line x1 16.500000 y1 69.829361 x2 17.500000 y2 67.101654 colour 0
 Line x1 16.500000 y1 59.879997 x2 17.500000 y2 59.879997 colour 0
 Text3 x1 18.000000 y1 56.099998 colour 0 size 9.600000 c
 Line x1 17.500000 y1 67.101654 x2 18.500000 y2 63.978653 colour 0
-Line x1 17.500000 y1 59.879997 x2 18.500000 y2 59.879997 colour 0
-Text3 x1 19.000000 y1 56.099998 colour 0 size 9.600000 t
 
 
   [Part of this file has been deleted for brevity]

@@ -8,8 +8,7 @@
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -mwdata             datafile   [Emolwt.dat] Amino acids properties and
-                                  molecular weight data file
+   -mwdata             datafile   [Emolwt.dat] Molecular weights data file
    -frequencies        datafile   [Efreqs.dat] Amino acid frequencies data
                                   file
    -enzyme             menu       [1] Enzyme or reagent (Values: 1 (Trypsin);

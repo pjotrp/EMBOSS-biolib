@@ -300,7 +300,7 @@ Output file format
 
 ##gff-version 3
 ##sequence-region U01317 1 65963
-#!Date 2007-07-15
+#!Date 2008-07-15
 #!Type DNA
 #!Source-version EMBOSS 6.0.0
 U01317  marscan regulatory_region       2242    2458    0.000   +       .

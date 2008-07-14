@@ -36,8 +36,7 @@ Database directory [.]: embl
        key : Keywords
        org : Taxonomy
 Index fields [id,acc]: 
-
-Processing file /homes/user/test/embl/rod.dat
+General log output file [outfile.dbxflat]: 
 
    Go to the output files for this example
 
@@ -60,6 +59,7 @@ Command line arguments
                                   (Accession number); sv (Sequence Version and
                                   GI); des (Description); key (Keywords); org
                                   (Taxonomy))
+   -outfile            outfile    [*.dbxflat] General log output file
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
@@ -70,7 +70,11 @@ Command line arguments
                                   is accepted)
    -indexoutdir        outdir     [.] Index file output directory
 
-   Associated qualifiers: (none)
+   Associated qualifiers:
+
+   "-outfile" associated qualifiers
+   -odirectory         string     Output directory
+
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output
@@ -105,6 +109,12 @@ Output file format
        structure of the ID name index.
 
   Output files for usage example
+
+  File: outfile.dbxflat
+
+Processing directory: /homes/user/test/embl/
+Processing file: rod.dat entries: 6 (6) time: 0.0s (0.0s)
+Total time: 0.0s
 
   File: embl.ent
 
