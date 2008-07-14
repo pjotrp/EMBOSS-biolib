@@ -212,13 +212,16 @@ public class ShowResultSet extends JFrame
     else if(title.endsWith(".png"))
     {
       setJMenuBar(menuBar);
-      toolbar = new JToolBar();
-      toolbar.addSeparator(new Dimension(20,20));
+      toolbar = menuBar.getToolBar();
+      toolbar.getComponent(0).setEnabled(false);
+      toolbar.getComponent(2).setEnabled(false);
     }    
     else 
     {
       setJMenuBar(menuBar);
       toolbar = menuBar.getToolBar();
+      toolbar.getComponent(0).setEnabled(true);
+      toolbar.getComponent(2).setEnabled(true);
     }
     if (toolbar !=null)
         getContentPane().add(toolbar,BorderLayout.NORTH);
