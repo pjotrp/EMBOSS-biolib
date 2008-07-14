@@ -15,7 +15,7 @@ section: input [
 
   seqall: sequence [
     parameter: "Y"
-    type: "gapnucleotidestandard"
+    type: "gapnucleotidesimple"
     features: "$(feature)"
   ]
 
