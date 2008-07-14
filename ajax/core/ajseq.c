@@ -691,8 +691,10 @@ __deprecated AjPSeq  ajSeqNewS(const AjPSeq seq)
 ** @fcategory delete
 **
 ** @nam3rule Del Destroy (free) a sequence object
+** @nam3rule Delarray Array destructor
 **
-** @argrule * Pseq [AjPSeq*] Sequence object address
+** @argrule Del Pseq [AjPSeq*] Sequence object address
+** @argrule Delarray PPseq [AjPSeq**] Sequence object array
 **
 ** @valrule * [void]
 **
@@ -779,6 +781,37 @@ void ajSeqDel(AjPSeq* Pseq)
     return;
 }
 
+
+
+
+/* @func ajSeqDelarray *****************************************************
+**
+** Destructor for array of sequence objects
+**
+** @param [d] PPseq [AjPSeq**] Sequence object array
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqDelarray(AjPSeq **PPseq)
+{
+    ajuint i = 0;
+
+    if(!PPseq || !*PPseq)
+	return;
+
+    while((*PPseq)[i])
+    {
+	ajSeqDel(&(*PPseq)[i]);
+	i++;
+    }
+
+    ajDebug("ajSeqDelarray size: %d\n", i);
+
+    AJFREE(*PPseq);
+
+    return;
+}
 
 
 
@@ -4967,7 +5000,7 @@ void ajSeqsetDel(AjPSeqset *Pseq)
 **
 ** Destructor for array of sequence set objects
 **
-** @param [d] PPseq [AjPSeqset**] Sequence set object reference
+** @param [d] PPseq [AjPSeqset**] Sequence set object array
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -4985,7 +5018,7 @@ void ajSeqsetDelarray(AjPSeqset **PPseq)
 	i++;
     }
 
-    ajDebug("ajSeqsetallDel size: %d\n", i);
+    ajDebug("ajSeqsetDelarray size: %d\n", i);
 
     AJFREE(*PPseq);
 
