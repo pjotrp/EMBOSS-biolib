@@ -139,6 +139,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   EBLOSUMN
   Eangles.dat
   tfinsect
+  Efeatures.gff3protein
   tffungi
   Etcode.dat
   tfother
@@ -184,6 +185,7 @@ DIRECTORY: /homes/pmr/local/share/EMBOSS/data/
   Eamino.dat
   EBLOSUM62-12
   Eantigenic.dat
+  Efeatures.gff2protein
   Efeatures.swiss
   Eembl.ior
   tp400_prot

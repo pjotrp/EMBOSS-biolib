@@ -5,7 +5,8 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 &lt;h2&gt;&lt;a name="ACD"&gt;ACD&lt;/a&gt;&lt;/h2&gt;
 &lt;table border cellpadding=4 bgcolor="#FFFFF0"&gt;
-&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;a href="acdc.html"&gt;acdc&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Test an application ACD file&lt;/td&gt;
@@ -34,10 +35,16 @@
 &lt;/table&gt;
 &lt;h2&gt;&lt;a name="ALIGNMENT CONSENSUS"&gt;ALIGNMENT CONSENSUS&lt;/a&gt;&lt;/h2&gt;
 &lt;table border cellpadding=4 bgcolor="#FFFFF0"&gt;
-&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;a href="cons.html"&gt;cons&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Create a consensus sequence from a multiple alignment&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;&lt;a href="consambig.html"&gt;consambig&lt;/a&gt;&lt;/td&gt;
+&lt;td&gt;Create an ambiguouos consensus sequence from a multiple alignment&lt;/td&gt;
 &lt;/tr&gt;
 
 &lt;tr&gt;
@@ -46,18 +53,10 @@
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td&gt;&lt;a href="merger.html"&gt;merger&lt;/a&gt;&lt;/td&gt;
-&lt;td&gt;Merge two overlapping sequences&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;/table&gt;
-&lt;h2&gt;&lt;a name="ALIGNMENT DIFFERENCES"&gt;ALIGNMENT DIFFERENCES&lt;/a&gt;&lt;/h2&gt;
-&lt;table border cellpadding=4 bgcolor="#FFFFF0"&gt;
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;a href="dbiblast.html"&gt;dbiblast&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Index a BLAST database&lt;/td&gt;
@@ -96,7 +95,8 @@
 &lt;/table&gt;
 &lt;h2&gt;&lt;a name="UTILS MISC"&gt;UTILS MISC&lt;/a&gt;&lt;/h2&gt;
 &lt;table border cellpadding=4 bgcolor="#FFFFF0"&gt;
-&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;th&gt;Program name&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;&lt;/tr&gt;
 &lt;tr&gt;
 &lt;td&gt;&lt;a href="embossdata.html"&gt;embossdata&lt;/a&gt;&lt;/td&gt;
 &lt;td&gt;Find and retrieve EMBOSS data files&lt;/td&gt;

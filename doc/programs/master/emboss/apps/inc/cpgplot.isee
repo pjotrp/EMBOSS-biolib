@@ -1,6 +1,7 @@
 <h2><a name="See also">See also</a></h2>
 <table border cellpadding=4 bgcolor="#FFFFF0">
-<tr><th>Program name</th><th>Description</th></tr>
+<tr><th>Program name</th>
+<th>Description</th></tr>
 <tr>
 <td><a href="cpgreport.html">cpgreport</a></td>
 <td>Identify and report CpG-rich regions in nucleotide sequence(s)</td>

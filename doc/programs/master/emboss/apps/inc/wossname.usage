@@ -48,6 +48,7 @@ acdvalid         Validate an application ACD file
 
 ALIGNMENT CONSENSUS
 cons             Create a consensus sequence from a multiple alignment
+consambig        Create an ambiguouos consensus sequence from a multiple alignment
 megamerger       Merge two large overlapping DNA sequences
 merger           Merge two overlapping sequences
 
@@ -106,6 +107,8 @@ sixpack          Display a DNA sequence with 6-frame translation and ORFs
 textsearch       Search the textual description of sequence(s)
 
 EDIT
+aligncopy        Reads and writes alignments
+aligncopypair    Reads and writes pairs from alignments
 biosed           Replace or delete sequence sections
 codcopy          Copy and reformat a codon usage table
 cutseq           Removes a section from a sequence
@@ -115,23 +118,33 @@ entret           Retrieves sequence entries from flatfile databases and files
 extractalign     Extract regions from a sequence alignment
 extractfeat      Extract features from sequence(s)
 extractseq       Extract regions from a sequence
+featcopy         Reads and writes a feature table
+featreport       Reads and writes a feature table
 listor           Write a list file of the logical OR of two sets of sequences
 makenucseq       Create random nucleotide sequences
 makeprotseq      Create random protein sequences
+maskambignuc     Masks all ambiguity characters in nucleotide sequences with N
+maskambigprot    Masks all ambiguity characters in protein sequences with X
 maskfeat         Write a sequence with masked features
 maskseq          Write a sequence with masked regions
 newseq           Create a sequence file from a typed-in sequence
+nohtml           Remove mark-up (e.g. HTML tags) from an ASCII text file
 noreturn         Remove carriage return from ASCII files
+nospace          Remove all whitespace from an ASCII text file
+notab            Replace tabs with spaces in an ASCII text file
 notseq           Write to file a subset of an input stream of sequences
 nthseq           Write to file a single sequence from an input stream of sequences
 pasteseq         Insert one sequence into another
 revseq           Reverse and complement a nucleotide sequence
 seqret           Reads and writes (returns) sequences
 seqretsplit      Reads sequences and writes them to individual files
+sizeseq          Sort sequences by size
+skipredundant    Remove redundant sequences from an input set
 skipseq          Reads and writes (returns) sequences, skipping first few
 splitter         Split sequence(s) into smaller sequences
 trimest          Remove poly-A tails from nucleotide sequences
 trimseq          Remove unwanted characters from start and end of sequence(s)
+trimspace        Remove extra whitespace from an ASCII text file
 union            Concatenate multiple sequences into a single sequence
 vectorstrip      Removes vectors from the ends of nucleotide sequence(s)
 yank             Add a sequence reference (a full USA) to a list file
@@ -169,6 +182,8 @@ ohmmsearch       Search sequence database with an HMM
 
 INFORMATION
 infoalign        Display basic information about a multiple sequence alignment
+infobase         Return information on a given nucleotide base
+inforesidue      Return information on a given amino acid residue
 infoseq          Display basic information about sequences
 seealso          Finds programs with similar function to a specified program
 showdb           Displays information on configured databases
@@ -534,6 +549,8 @@ acdpretty        Correctly reformat an application ACD file
 acdtable         Generate an HTML table of parameters from an application ACD file
 acdtrace         Trace processing of an application ACD file (for testing)
 acdvalid         Validate an application ACD file
+aligncopy        Reads and writes alignments
+aligncopypair    Reads and writes pairs from alignments
 allversusall     Sequence similarity data from all-versus-all comparison
 antigenic        Finds antigenic sites in proteins
 backtranambig    Back-translate a protein sequence to ambiguous nucleotide sequence
@@ -553,6 +570,7 @@ codcopy          Copy and reformat a codon usage table
 coderet          Extract CDS, mRNA and translations from feature tables
 compseq          Calculate the composition of unique words in sequences
 cons             Create a consensus sequence from a multiple alignment
+consambig        Create an ambiguouos consensus sequence from a multiple alignment
 contacts         Generate intra-chain CON files from CCF files
 cpgplot          Identify and plot CpG islands in nucleotide sequence(s)
 cpgreport        Identify and report CpG-rich regions in nucleotide sequence(s)
@@ -667,6 +685,8 @@ fdolmove         Interactive Dollo or Polymorphism Parsimony
 fdolpenny        Penny algorithm Dollo or polymorphism
 fdrawgram        Plots a cladogram- or phenogram-like rooted tree diagram
 fdrawtree        Plots an unrooted tree diagram
+featcopy         Reads and writes a feature table
+featreport       Reads and writes a feature table
 ffactor          Multistate to binary recoding program
 ffitch           Fitch-Margoliash and Least-Squares Distance Methods
 ffreqboot        Bootstrapped genetic frequencies algorithm
@@ -702,6 +722,8 @@ hetparse         Converts heterogen group dictionary to EMBL-like format
 hmoment          Calculate and plot hydrophobic moment for protein sequence(s)
 iep              Calculate the isoelectric point of proteins
 infoalign        Display basic information about a multiple sequence alignment
+infobase         Return information on a given nucleotide base
+inforesidue      Return information on a given amino acid residue
 infoseq          Display basic information about sequences
 interface        Generate inter-chain CON files from CCF files
 isochore         Plots isochores in DNA sequences
@@ -713,6 +735,8 @@ listor           Write a list file of the logical OR of two sets of sequences
 makenucseq       Create random nucleotide sequences
 makeprotseq      Create random protein sequences
 marscan          Finds matrix/scaffold recognition (MRS) signatures in DNA sequences
+maskambignuc     Masks all ambiguity characters in nucleotide sequences with N
+maskambigprot    Masks all ambiguity characters in protein sequences with X
 maskfeat         Write a sequence with masked features
 maskseq          Write a sequence with masked regions
 matcher          Waterman-Eggert local alignment of two sequences
@@ -729,7 +753,10 @@ needle           Needleman-Wunsch global alignment of two sequences
 newcpgreport     Identify CpG islands in nucleotide sequence(s)
 newcpgseek       Identify and report CpG-rich regions in nucleotide sequence(s)
 newseq           Create a sequence file from a typed-in sequence
+nohtml           Remove mark-up (e.g. HTML tags) from an ASCII text file
 noreturn         Remove carriage return from ASCII files
+nospace          Remove all whitespace from an ASCII text file
+notab            Replace tabs with spaces in an ASCII text file
 notseq           Write to file a subset of an input stream of sequences
 nthseq           Write to file a single sequence from an input stream of sequences
 oalistat         Statistics for multiple alignment files
@@ -808,6 +835,8 @@ silent           Find restriction sites to insert (mutate) with no translation c
 sirna            Finds siRNA duplexes in mRNA
 sites            Generate residue-ligand CON files from CCF files
 sixpack          Display a DNA sequence with 6-frame translation and ORFs
+sizeseq          Sort sequences by size
+skipredundant    Remove redundant sequences from an input set
 skipseq          Reads and writes (returns) sequences, skipping first few
 splitter         Split sequence(s) into smaller sequences
 ssematch         Search a DCF file for secondary structure matches
@@ -826,6 +855,7 @@ tranalign        Generate an aligment of nucleic coding regions from aligned pro
 transeq          Translate nucleic acid sequences
 trimest          Remove poly-A tails from nucleotide sequences
 trimseq          Remove unwanted characters from start and end of sequence(s)
+trimspace        Remove extra whitespace from an ASCII text file
 twofeat          Finds neighbouring pairs of features in sequence(s)
 union            Concatenate multiple sequences into a single sequence
 vectorstrip      Removes vectors from the ends of nucleotide sequence(s)

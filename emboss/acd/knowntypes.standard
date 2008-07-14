@@ -159,7 +159,7 @@ mira_parameters                   file           MIRA program parameters
 mira_strain_data                  file           MIRA program strain data file
 mix_input                         file           Phylip mix program input
 mix_output                        file           Phylip mix program output
-molecolar_weights                 file           Molecular weights
+molecular_weights                 file           Molecular weights
 mrna_sequence                     sequence       Messenger RNA
 multistate_factors                properties     Phylip multistate factors
 naccess_log                       file           Naccess program log
@@ -300,4 +300,4 @@ vienna_structure                  file           Vienna structure postscript
 weights                           properties     Phylip weights
 white_wimley_datafile             file           White-Wimley data
 wildcard_string                   string         String with wildcard characters
-wordfinder_errors                 file           Program wordfinder error output file
+wordfinder_error                  file           Program wordfinder errors

@@ -79,6 +79,8 @@ acdvalid         Validate an application ACD file
 
 ALIGNMENT CONSENSUS
 cons             Create a consensus sequence from a multiple alignment
+consambig        Create an ambiguouos consensus sequence from a multiple alignm
+ent
 megamerger       Merge two large overlapping DNA sequences
 merger           Merge two overlapping sequences
 
@@ -140,6 +142,7 @@ sixpack          Display a DNA sequence with 6-frame translation and ORFs
 textsearch       Search the textual description of sequence(s)
 
 EDIT
+aligncopy        Reads and writes alignments
 biosed           Replace or delete sequence sections
 codcopy          Copy and reformat a codon usage table
 cutseq           Removes a section from a sequence
@@ -149,6 +152,8 @@ entret           Retrieves sequence entries from flatfile databases and files
 extractalign     Extract regions from a sequence alignment
 extractfeat      Extract features from sequence(s)
 extractseq       Extract regions from a sequence
+featcopy         Reads and writes a feature table
+featreport       Reads and writes a feature table
 listor           Write a list file of the logical OR of two sets of sequences
 makenucseq       Create random nucleotide sequences
 makeprotseq      Create random protein sequences
@@ -204,6 +209,8 @@ ohmmsearch       Search sequence database with an HMM
 
 INFORMATION
 infoalign        Display basic information about a multiple sequence alignment
+infobase         Return information on a given nucleotide base
+inforesidue      Return information on a given amino acid residue
 infoseq          Display basic information about sequences
 seealso          Finds programs with similar function to a specified program
 showdb           Displays information on configured databases
@@ -582,6 +589,7 @@ acdtable         Generate an HTML table of parameters from an application ACD f
 ile
 acdtrace         Trace processing of an application ACD file (for testing)
 acdvalid         Validate an application ACD file
+aligncopy        Reads and writes alignments
 allversusall     Sequence similarity data from all-versus-all comparison
 antigenic        Finds antigenic sites in proteins
 backtranambig    Back-translate a protein sequence to ambiguous nucleotide sequ
@@ -603,6 +611,8 @@ codcopy          Copy and reformat a codon usage table
 coderet          Extract CDS, mRNA and translations from feature tables
 compseq          Calculate the composition of unique words in sequences
 cons             Create a consensus sequence from a multiple alignment
+consambig        Create an ambiguouos consensus sequence from a multiple alignm
+ent
 contacts         Generate intra-chain CON files from CCF files
 cpgplot          Identify and plot CpG islands in nucleotide sequence(s)
 cpgreport        Identify and report CpG-rich regions in nucleotide sequence(s)
@@ -720,6 +730,8 @@ fdolmove         Interactive Dollo or Polymorphism Parsimony
 fdolpenny        Penny algorithm Dollo or polymorphism
 fdrawgram        Plots a cladogram- or phenogram-like rooted tree diagram
 fdrawtree        Plots an unrooted tree diagram
+featcopy         Reads and writes a feature table
+featreport       Reads and writes a feature table
 ffactor          Multistate to binary recoding program
 ffitch           Fitch-Margoliash and Least-Squares Distance Methods
 ffreqboot        Bootstrapped genetic frequencies algorithm
@@ -755,6 +767,8 @@ hetparse         Converts heterogen group dictionary to EMBL-like format
 hmoment          Calculate and plot hydrophobic moment for protein sequence(s)
 iep              Calculate the isoelectric point of proteins
 infoalign        Display basic information about a multiple sequence alignment
+infobase         Return information on a given nucleotide base
+inforesidue      Return information on a given amino acid residue
 infoseq          Display basic information about sequences
 interface        Generate inter-chain CON files from CCF files
 isochore         Plots isochores in DNA sequences
@@ -1129,16 +1143,16 @@ Output file format
    <tr><th>Program name</th><th>Description</th></tr> <tr> <td><a
    href="cons.html">cons</a></td> <td>Create a consensus sequence from a
    multiple alignment</td> </tr> <tr> <td><a
+   href="consambig.html">consambig</a></td> <td>Create an ambiguouos
+   consensus sequence from a multiple alignment</td> </tr> <tr> <td><a
    href="megamerger.html">megamerger</a></td> <td>Merge two large
    overlapping DNA sequences</td> </tr> <tr> <td><a
    href="merger.html">merger</a></td> <td>Merge two overlapping
-   sequences</td> </tr> </table> <h2><a name="ALIGNMENT
-   DIFFERENCES">ALIGNMENT DIFFERENCES</a></h2> <table border
-   cellpadding=4 bgcolor="#FFFFF0"> [Part of this file has been deleted
-   for brevity] <tr><th>Program name</th><th>Description</th></tr> <tr>
-   <td><a href="dbiblast.html">dbiblast</a></td> <td>Index a BLAST
-   database</td> </tr> <tr> <td><a href="dbifasta.html">dbifasta</a></td>
-   <td>Index a fasta file database</td> </tr> <tr> <td><a
+   sequences</td> [Part of this file has been deleted for brevity]
+   <tr><th>Program name</th><th>Description</th></tr> <tr> <td><a
+   href="dbiblast.html">dbiblast</a></td> <td>Index a BLAST database</td>
+   </tr> <tr> <td><a href="dbifasta.html">dbifasta</a></td> <td>Index a
+   fasta file database</td> </tr> <tr> <td><a
    href="dbiflat.html">dbiflat</a></td> <td>Index a flat file
    database</td> </tr> <tr> <td><a href="dbigcg.html">dbigcg</a></td>
    <td>Index a GCG formatted database</td> </tr> <tr> <td><a
@@ -1204,6 +1218,8 @@ See also
    Program name Description
    infoalign Display basic information about a multiple sequence
    alignment
+   infobase Return information on a given nucleotide base
+   inforesidue Return information on a given amino acid residue
    infoseq Display basic information about sequences
    seealso Finds programs with similar function to a specified program
    showdb Displays information on configured databases

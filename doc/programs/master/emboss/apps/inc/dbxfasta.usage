@@ -22,8 +22,7 @@ Wildcard database filename [*.fasta]: <b>emrod</b>
         sv : Sequence Version and GI
        des : Description
 Index fields [id,acc]: <b></b>
-
-Processing file /homes/user/test/data/emrod
+General log output file [outfile.dbxfasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

@@ -22,8 +22,7 @@ Database directory [.]: <b>embl</b>
        key : Keywords
        org : Taxonomy
 Index fields [id,acc]: <b></b>
-
-Processing file /homes/user/test/embl/rod.dat
+General log output file [outfile.dbxflat]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
