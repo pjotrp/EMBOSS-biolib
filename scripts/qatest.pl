@@ -302,7 +302,12 @@ sub runtest ($) {
   }
 
   if ($testq) {	# for "make check" apps (AQ lines) we can skip
-    $testpath = "../../emboss/"; #  up from the test/qa directory
+    if($packa eq "") {
+      $testpath = "../../emboss/"; #  up from the test/qa directory
+    }
+    else {
+      $testpath = "../../embassy/$packa/source/"; #  up from the test/qa directory
+    }
     if (! (-e "$testpath$testapp")) {$skipcheck++; return 0} # make check not run
     if ($testappname && defined($acdname{$testapp}) && $acdname{$testapp}) {
       print STDERR "Check application $testapp installed - possible old version\n";
