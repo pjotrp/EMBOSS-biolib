@@ -805,6 +805,9 @@ public class Graph2DPlot extends ScrollPanel
         drawGraphics(og,fm);   
 
       og.setColor(Color.black);
+      
+      drawTitles(og);
+      
       if(draw_axes)
         drawAxes(og,tick_height);
     }
@@ -842,6 +845,30 @@ public class Graph2DPlot extends ScrollPanel
       drawAxes(g,tick_height);
   }
 
+  
+  /**
+  * 
+  * Draws main-title and sub-title
+  * 
+  */
+  private void drawTitles(Graphics g){
+      Graphics2D g2d = (Graphics2D)g;
+      FontMetrics fm = getFontMetrics(getFont());
+      int font_height = fm.getHeight();
+      
+      if(maintitle_field != null)
+          maintitle = maintitle_field.getText();
+
+        int title_width = fm.stringWidth(maintitle);
+        g2d.drawString(maintitle, (int)((getWidth()-title_width)/2),
+                       font_height+1);
+        
+        title_width = fm.stringWidth(subtitle);
+        g2d.drawString(subtitle,(int)((getWidth()-title_width)/2),
+                font_height*2+2);      
+  }
+  
+  
   /**
   *
   * Draw the x and y axes.
@@ -853,13 +880,6 @@ public class Graph2DPlot extends ScrollPanel
     FontMetrics fm = getFontMetrics(getFont());
     int font_height = fm.getHeight();
     int font_height2 = font_height/2;
-
-    if(maintitle_field != null)
-      maintitle = maintitle_field.getText();
-
-    int maintitle_width = fm.stringWidth(maintitle);
-    g2d.drawString(maintitle, (int)((getWidth()-maintitle_width)/2),
-                   font_height);
 
     // x-axis
     g2d.drawLine(xborder,getHeight()-yborder,
@@ -1250,8 +1270,6 @@ public class Graph2DPlot extends ScrollPanel
     }
     g2d.translate(-xborder, -getHeight()+yborder);
     g2d.setStroke(stroke);
-    g2d.drawString(maintitle,20,20);
-    g2d.drawString(subtitle,20,40);
   }
 
  
@@ -1594,11 +1612,13 @@ public class Graph2DPlot extends ScrollPanel
     scroll.setPreferredSize(new Dimension(400,400));
     frame.getContentPane().add(scroll);
 //  gp.setData(emboss_data);
-    File filename = new File(arg[0]);
-    gp.setFileData(filename);
+    File file = new File(/*arg[0]*/"/homes/uludag/jemboss/dotmatcher_Mon_Jul_14_09_32_19_BST_2008_37430/dotmatcher1.dat");
+//    File file = new File(/*arg[0]*/"/homes/uludag/jemboss/pepwheel_Thu_Jul_10_17_02_29_BST_2008_42768/pepwheel1.dat");
+    gp.setFileData(file);
     frame.setJMenuBar(gp.getMenuBar(false, frame));
     frame.pack();
     frame.setVisible(true);
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
 }
