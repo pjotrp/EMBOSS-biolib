@@ -28,6 +28,16 @@
 #define IUBFILE "Ebases.iub"
 #define IUBPFILE "Eresidues.iub"
 
+typedef struct AjIUB AjIUB;
+struct AjIUB
+{
+    AjPStr code;
+    AjPStr list;
+    AjPStr mnemonic;
+};
+
+
+
 AjIUB aj_base_iubS[256];	/* Base letters and their alternatives */
 ajint aj_base_table[256];	/* Base letter numerical codes         */
 float aj_base_prob[32][32];     /* Asym base probability matches       */
@@ -386,6 +396,75 @@ __deprecated char ajBinToAZ(ajint c)
 }
 
 
+/* @section query *************************************************************
+**
+** Functions
+**
+** @fdata      [none]
+**
+** @nam3rule Is test a base code
+** @nam3rule Exists Tests code is valid
+** @suffix Char Character code
+** @suffix Bin Numeric base code
+**
+** @argrule Bin base [ajint] Binary base code in range 0 to 31
+** @argrule Char c [char] Character base code
+**
+** @valrule Exists [AjBool] True is the code exists
+**
+** @fcategory use
+**
+******************************************************************************/
+
+/* @func ajBaseExistsBin ******************************************************
+**
+** Tests whether a base code exists
+**
+** @param [r] base [ajint] Base code in range 0 to 31
+** @return [AjBool] True if base code is known
+**
+******************************************************************************/
+
+AjBool ajBaseExistsBin(ajint base)
+{
+    if(!aj_base_I)
+	baseInit();
+
+    if(ajStrGetLen(aj_base_iubS[base].code))
+        return ajTrue;
+    
+    return ajFalse;
+}
+
+
+/* @func ajBaseExistsChar ******************************************************
+**
+** Tests whether a base code exists
+**
+** @param [r] c [char] Base character
+** @return [AjBool] True if base code is known
+**
+******************************************************************************/
+
+AjBool ajBaseExistsChar(char c)
+{
+    int itest;
+
+    if(!aj_base_I)
+	baseInit();
+
+    itest = toupper((int)c);
+    if(ajStrGetLen(aj_base_iubS[itest].code))
+        return ajTrue;
+    
+    itest = tolower((int)c);
+    if(ajStrGetLen(aj_base_iubS[itest].code))
+        return ajTrue;
+
+    return ajFalse;
+}
+
+
 /* @section retrieval
 **
 ** Functions
@@ -394,10 +473,12 @@ __deprecated char ajBinToAZ(ajint c)
 **
 ** @nam3rule Get Return a value
 ** @nam4rule GetCodes Returns a string of matching base codes
+** @nam4rule GetMnemonic Returns mnemonic string
 **
 ** @argrule Get base [ajint] Binary base code in range 0 to 31
 **
 ** @valrule GetCodes [const AjPStr] Matching base codes
+** @valrule GetMnemonic [const AjPStr] Mnemonic for base code
 **
 ** @fcategory use
 */
@@ -432,6 +513,24 @@ __deprecated const AjPStr ajBaseCodes(ajint ibase)
 }
 
 
+/* @func ajBaseGetMnemonic *****************************************************
+**
+** Returns a string of matching base codes
+**
+** @param [r] base [ajint] Original base code
+**
+** @return [const AjPStr] Base codes
+******************************************************************************/
+
+const AjPStr ajBaseGetMnemonic(ajint base)
+{
+    if(!aj_base_I)
+	baseInit();
+
+    return  aj_base_iubS[base].mnemonic;
+}
+
+
 /* @funcstatic baseInit ******************************************************
 **
 ** Sets up binary OR'd representation of an IUB bases in a table
@@ -446,11 +545,12 @@ __deprecated const AjPStr ajBaseCodes(ajint ibase)
 
 static AjBool baseInit(void)
 {
-    AjPFile bfptr  = NULL;
-    AjPStr  bfname = NULL;
-    AjPStr  line   = NULL;
-    AjPStr  code   = NULL;
-    AjPStr  list   = NULL;
+    AjPFile bfptr    = NULL;
+    AjPStr  bfname   = NULL;
+    AjPStr  line     = NULL;
+    AjPStr  code     = NULL;
+    AjPStr  list     = NULL;
+    AjPStr  mnemonic = NULL;
 
     ajint i;
     ajint j;
@@ -477,6 +577,7 @@ static AjBool baseInit(void)
     {
 	aj_base_iubS[i].code = ajStrNewC("");
 	aj_base_iubS[i].list = ajStrNewC("");
+	aj_base_iubS[i].mnemonic = ajStrNewC("");
 	aj_base_table[i] = 0;
     }
 
@@ -506,11 +607,15 @@ static AjBool baseInit(void)
 	    ajFatal("Bad format IUB file");
 	p = ajSysFuncStrtok(NULL," \t\r\n");
 	ajStrAssignC(&list,p);
+	p = ajSysFuncStrtok(NULL," \t\r\n");
+	ajStrAssignC(&mnemonic,p);
 	qc = (ajint) ajStrGetCharFirst(code);
 	ajStrAssignS(&aj_base_iubS[toupper(qc)].code,code);
 	ajStrAssignS(&aj_base_iubS[toupper(qc)].list,list);
+	ajStrAssignS(&aj_base_iubS[toupper(qc)].mnemonic,mnemonic);
 	ajStrAssignS(&aj_base_iubS[tolower(qc)].code,code);
 	ajStrAssignS(&aj_base_iubS[tolower(qc)].list,list);
+	ajStrAssignS(&aj_base_iubS[tolower(qc)].mnemonic,mnemonic);
 	aj_base_table[toupper(qc)] = n;
 	aj_base_table[tolower(qc)] = n;
     }
@@ -518,6 +623,7 @@ static AjBool baseInit(void)
     ajStrDel(&code);
     ajStrDel(&list);
     ajStrDel(&line);
+    ajStrDel(&mnemonic);
     ajStrDel(&bfname);
 
     ajFileClose(&bfptr);
@@ -591,6 +697,7 @@ void ajBaseExit(void)
         {
             ajStrDel(&aj_base_iubS[i].code);
             ajStrDel(&aj_base_iubS[i].list);
+            ajStrDel(&aj_base_iubS[i].mnemonic);
         }
     
     if(aj_residue_I)
@@ -598,6 +705,7 @@ void ajBaseExit(void)
         {
             ajStrDel(&aj_residue_iubS[i].code);
             ajStrDel(&aj_residue_iubS[i].list);
+            ajStrDel(&aj_residue_iubS[i].mnemonic);
         }
     
     return;
@@ -705,6 +813,75 @@ char ajResidueBinToAlpha(ajint c)
 
 
 
+/* @section query *************************************************************
+**
+** Functions
+**
+** @fdata      [none]
+**
+** @nam3rule Is test a base code
+** @nam3rule Exists Tests code is valid
+** @suffix Char Character code
+** @suffix Bin Numeric base code
+**
+** @argrule Bin base [ajint] Binary base code in range 0 to 31
+** @argrule Char c [char] Character base code
+**
+** @valrule Exists [AjBool] True is the code exists
+**
+** @fcategory use
+**
+******************************************************************************/
+
+/* @func ajResidueExistsBin **************************************************
+**
+** Tests whether a residue code exists
+**
+** @param [r] base [ajint] Base code in range 0 to 31
+** @return [AjBool] True if base code is known
+**
+******************************************************************************/
+
+AjBool ajResidueExistsBin(ajint base)
+{
+    if(!aj_residue_I)
+	residueInit();
+
+    if(ajStrGetLen(aj_residue_iubS[base].code))
+        return ajTrue;
+    
+    return ajFalse;
+}
+
+
+/* @func ajResidueExistsChar ***************************************************
+**
+** Tests whether a residue code exists
+**
+** @param [r] c [char] Base character
+** @return [AjBool] True if base code is known
+**
+******************************************************************************/
+
+AjBool ajResidueExistsChar(char c)
+{
+    int itest;
+
+    if(!aj_residue_I)
+	residueInit();
+
+    itest = toupper((int)c);
+    if(ajStrGetLen(aj_residue_iubS[itest].code))
+        return ajTrue;
+    
+    itest = tolower((int)c);
+    if(ajStrGetLen(aj_residue_iubS[itest].code))
+        return ajTrue;
+
+    return ajFalse;
+}
+
+
 /* @section retrieval
 **
 ** Functions
@@ -713,10 +890,12 @@ char ajResidueBinToAlpha(ajint c)
 **
 ** @nam3rule Get Return a value
 ** @nam4rule GetCodes Returns a string of matching base codes
+** @nam4rule GetMnemonic Returns mnemonic string
 **
 ** @argrule Get base [ajint] Binary base code in range 0 to 31
 **
 ** @valrule GetCodes [const AjPStr] Matching base codes
+** @valrule GetMnemonic [const AjPStr] Mnemonic for base code
 **
 ** @fcategory use
 */
@@ -741,6 +920,24 @@ const AjPStr ajResidueGetCodes(ajint base)
 }
 
 
+/* @func ajResidueGetMnemonic ***********************************************
+**
+** Returns a string of matching amino acid residue codes
+**
+** @param [r] base [ajint] Original base code
+**
+** @return [const AjPStr] Base codes
+******************************************************************************/
+
+const AjPStr ajResidueGetMnemonic(ajint base)
+{
+    if(!aj_residue_I)
+	residueInit();
+
+    return  aj_residue_iubS[base].mnemonic;
+}
+
+
 /* @funcstatic residueInit ****************************************************
 **
 ** Sets up binary OR'd representation of an IUB residues in a table
@@ -755,11 +952,12 @@ const AjPStr ajResidueGetCodes(ajint base)
 
 static AjBool residueInit(void)
 {
-    AjPFile bfptr  = NULL;
-    AjPStr  bfname = NULL;
-    AjPStr  line   = NULL;
-    AjPStr  code   = NULL;
-    AjPStr  list   = NULL;
+    AjPFile bfptr    = NULL;
+    AjPStr  bfname   = NULL;
+    AjPStr  line     = NULL;
+    AjPStr  code     = NULL;
+    AjPStr  list     = NULL;
+    AjPStr  mnemonic = NULL;
 
     ajint i;
     ajint j;
@@ -812,11 +1010,15 @@ static AjBool residueInit(void)
 	    ajFatal("Bad format IUB file");
 	p = ajSysFuncStrtok(NULL," \t\r\n");
 	ajStrAssignC(&list,p);
+	p = ajSysFuncStrtok(NULL," \t\r\n");
+	ajStrAssignC(&mnemonic,p);
 	qc = (ajint) ajStrGetCharFirst(code);
 	ajStrAssignS(&aj_residue_iubS[toupper(qc)].code,code);
 	ajStrAssignS(&aj_residue_iubS[toupper(qc)].list,list);
+	ajStrAssignS(&aj_residue_iubS[toupper(qc)].mnemonic,mnemonic);
 	ajStrAssignS(&aj_residue_iubS[tolower(qc)].code,code);
 	ajStrAssignS(&aj_residue_iubS[tolower(qc)].list,list);
+	ajStrAssignS(&aj_residue_iubS[tolower(qc)].mnemonic,mnemonic);
 	aj_residue_table[toupper(qc)] = n;
 	aj_residue_table[tolower(qc)] = n;
     }
@@ -824,6 +1026,7 @@ static AjBool residueInit(void)
     ajStrDel(&code);
     ajStrDel(&list);
     ajStrDel(&line);
+    ajStrDel(&mnemonic);
     ajStrDel(&bfname);
 
     ajFileClose(&bfptr);

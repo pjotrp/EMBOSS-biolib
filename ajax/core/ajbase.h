@@ -9,21 +9,13 @@ extern "C"
 #include "ajax.h"
 #include <ctype.h>
 
-typedef struct AjIUB AjIUB;
-struct AjIUB
-{
-    AjPStr code;
-    AjPStr list;
-};
-
-
-
 
 /*
 ** Prototype definitions
 */
 
 const AjPStr  ajBaseGetCodes(ajint ibase);
+const AjPStr  ajBaseGetMnemonic(ajint base);
 char          ajBaseAlphacharComp(char base);
 void          ajBaseExit(void);
 float         ajBaseAlphaCompare(ajint base1, ajint base2);
@@ -40,8 +32,13 @@ ajint         ajBasecodeFromInt(ajint n);
 ajint         ajResidueAlphaToBin(ajint c);
 char          ajResidueBinToAlpha(ajint c);
 const AjPStr  ajResidueGetCodes(ajint ires);
+const AjPStr  ajResidueGetMnemonic(ajint base);
 AjBool        ajResidueFromTriplet(const AjPStr aa3, char *Pc);
 AjBool        ajResidueToTriplet(char c, AjPStr *Paa3);
+AjBool        ajBaseExistsBin(ajint base);
+AjBool        ajBaseExistsChar(char c);
+AjBool        ajResidueExistsBin(ajint base);
+AjBool        ajResidueExistsChar(char c);
 
 /*
 ** deprecated prototype  definitions
