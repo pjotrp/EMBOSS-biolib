@@ -620,6 +620,56 @@ void embBtreeFastaDE(const AjPStr kwline, AjPList kwlist, ajuint maxlen)
 
 
 
+/* @func embBtreeFastaSV **************************************************
+**
+** Extract sequence version keywords from a Fasta description
+**
+** @param [r] kwline[const AjPStr] sequence version or GI string
+** @param [w] kwlist [AjPList] list of sequence versions
+** @param [r] maxlen [ajuint] max sequence version length
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void embBtreeFastaSV(const AjPStr kwline, AjPList kwlist, ajuint maxlen)
+{
+    AjPStrTok handle = NULL;
+    AjPStr token     = NULL;
+    AjPStr str       = NULL;
+
+    handle = ajStrTokenNewC(kwline,"\n ");
+
+    while(ajStrTokenNextParse(&handle,&token))
+    {
+	ajStrTrimEndC(&token,".");
+	ajStrTrimWhite(&token);
+	if(ajStrGetLen(token))
+	{
+	    if(maxlen)
+	    {
+		if(ajStrGetLen(token) > maxlen)
+                    ajStrAssignSubS(&str,token,0,maxlen-1);
+		else
+		    ajStrAssignS(&str,token);
+            }
+	    else
+		ajStrAssignS(&str,token);
+	    ajStrFmtLower(&str);
+	    ajListPush(kwlist,(void *)str);
+	    str = NULL;
+	}
+    }
+
+    ajStrDel(&token);
+    ajStrTokenDel(&handle);
+    
+    return;
+}
+
+
+
+
 /* @func embBtreeReadDir ******************************************************
 **
 ** Read files to index

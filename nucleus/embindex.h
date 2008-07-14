@@ -184,6 +184,7 @@ void   embBtreeGenBankDE(const AjPStr kwline, AjPList kwlist, ajuint maxlen);
 void   embBtreeGenBankTX(const AjPStr kwline, AjPList kwlist, ajuint maxlen);
 
 void   embBtreeFastaDE(const AjPStr kwline, AjPList kwlist, ajuint maxlen);
+void   embBtreeFastaSV(const AjPStr kwline, AjPList kwlist, ajuint maxlen);
 
 
 ajuint  embBtreeReadDir(AjPStr **filelist, const AjPStr fdirectory,
