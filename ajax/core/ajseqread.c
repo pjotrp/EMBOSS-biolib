@@ -6968,7 +6968,7 @@ static AjBool seqReadEmbl(AjPSeq thys, AjPSeqin seqin)
 
     seqSetName(&thys->Name, token);
 
-    ajStrTokenNextParse(&handle, &token);	/* entry name */
+    ajStrTokenNextParse(&handle, &token);	/* SV for new syntax */
 
     if(ajStrMatchC(token, "SV"))	/* new post-2006 EMBL line */
     {
@@ -8204,7 +8204,8 @@ static AjBool seqReadGff(AjPSeq thys, AjPSeqin seqin)
 	ajFeattabInDel(&seqin->Ftquery);
 	seqin->Ftquery = ajFeattabInNewSSF(seqFtFmtGff, thys->Name,
 					   ajStrGetPtr(seqin->Type), ftfile);
-	ajDebug("GFF FEAT TabIn %x\n", seqin->Ftquery);
+	ajDebug("GFF FEAT TabIn %x type: '%S'\n",
+                seqin->Ftquery, seqin->Type);
 	ftfile = NULL;		  /* now copied to seqin->FeattabIn */
 	ajFeattableDel(&seqin->Fttable);
 	seqin->Fttable = ajFeatRead(seqin->Ftquery);
