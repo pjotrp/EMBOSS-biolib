@@ -920,6 +920,7 @@ static AjBool    acdVarTest(const AjPStr var);
 static AjBool    acdVarTestValid(const AjPStr var, AjBool* toggle);
 static AjBool    acdVocabCheck(const AjPStr str, const char** vocab);
 static void      acdWarn(const char* fmt, ...);
+static void      acdWarnObsolete(const AjPStr str);
 static AjBool    acdWordNext(AjPList listwords, AjPStr* pword);
 static AjBool    acdWordNextLower(AjPList listwords, AjPStr* pword);
 static AjBool    acdWordNextName(AjPList listwords, AjPStr* pword);
@@ -5904,8 +5905,10 @@ static void acdSetXxxx(AcdPAcd thys)
 static void acdSetAppl(AcdPAcd thys)
 {
     AjPStr appldoc = NULL;
+    AjPStr applobsolete = NULL;
 
     acdAttrResolve(thys, "documentation", &appldoc);
+    acdAttrResolve(thys, "obsolete", &applobsolete);
 
     if(!acdAuto && ajStrGetLen(appldoc))
     {
@@ -5915,7 +5918,13 @@ static void acdSetAppl(AcdPAcd thys)
 
     ajStrAssignS(&thys->ValStr, thys->Name);
 
+    if(ajStrGetLen(applobsolete))
+    {
+        acdWarnObsolete(applobsolete);
+    }
+    
     ajStrDel(&appldoc);
+    ajStrDel(&applobsolete);
 
     return;
 }
@@ -24879,6 +24888,41 @@ static void acdErrorValid(const char* fmt, ...)
 
     ajErr("File %S line %d: %S", acdFName, linenum, errstr);
     ajStrDel(&errstr);
+
+    return;
+}
+
+
+
+
+/* @funcstatic acdWarnObsolete *************************************************
+**
+** Warning about obsolete status of an application
+**
+** @param [r] str [const AjPStr] Format string
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdWarnObsolete(const AjPStr str)
+{
+    AjPStr outstr = NULL;
+    AjPStr tmpstr = NULL;
+    AjBool warnobsolete = ajTrue;
+
+    if(ajNamGetValueC("warnobsolete", &tmpstr))
+	ajStrToBool(tmpstr, &warnobsolete);
+    ajStrDel(&tmpstr);
+
+    if(!warnobsolete)
+        return;
+    
+    ajFmtPrintS(&outstr, "Application %S is marked as obsolete.\n%S",
+                acdProgram, str);
+    ajStrFmtWrap(&outstr, 70);
+    ajWarn("%S", outstr);
+
+    ajStrDel(&outstr);
 
     return;
 }
