@@ -31,6 +31,7 @@ import javax.swing.event.*;
 
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.soap.*;
+import org.emboss.jemboss.Jemboss;
 import org.emboss.jemboss.JembossParams;
 
 /**
@@ -110,7 +111,7 @@ public class ShowSavedResults extends JFrame
   public ShowSavedResults(final JembossParams mysettings, final JFrame f)
   {
 
-    this("Saved Results on Server");
+    this("Saved results list"+(Jemboss.withSoap ? " on server":""));
      
     Dimension d = new Dimension(270,270);
     ss.setPreferredSize(d);
