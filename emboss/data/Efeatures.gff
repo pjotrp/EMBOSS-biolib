@@ -20,6 +20,7 @@ binding_site = SO:0000409
 # EMBL: misc_difference
 
 sequence_difference = SO:0000413
+sequence_conflict = SO:0001085
 
 # EMBL: misc_RNA
 
@@ -55,7 +56,7 @@ signal_peptide = SO:0000418
 
 # EMBL: source
 
-databank_entry = SO:2000061
+#databank_entry = SO:2000061
 
 # EMBL: variation
 
@@ -73,4 +74,4 @@ five_prime_UTR = SO:0000204
 
 region = SO:0000001
 
-misc_difference = SO:0000001_conflict
+misc_difference = SO:0000001

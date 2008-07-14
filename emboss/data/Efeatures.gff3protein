@@ -1,1309 +1,496 @@
+# ===================================================================
 # PROTEIN FEATURES
-# ================
-
-# SO polypeptide terms for BioSapiens DAS servers
-
-# "MERGED DEFINITION:
-# TARGET DEFINITION: A region on the surface of a molecule that
-# may interact with another molecule.
-# --------------------
-# SOURCE DEFINITION: Amino acids involved in binding or interactions.
-# It can also apply to an amino acid bond which is represented
-# by the positions of the two flanking amino acids." [EBIBS:GAR,
-# SO:ke]
-#   cc: Discrete.
-#   synonym: "binding_or_interaction_site" EXACT []
-#   synonym: "site" RELATED []
-#   subset: biosapiens
-#   subset: SOFA
-#   altid: BS:00033
-
-#binding_site SO:0000409
-
-# "MERGED DEFINITION:
-# TARGET DEFINITION: A region of a single polypeptide chain that
-# folds into an independent unit and exhibits biological activity.
-# A polypeptide chain may have multiple domains.
-# --------------------
-# SOURCE DEFINITION: A structurally or functionally defined protein
-# region. In proteins with multiple domains, the combination
-# of the domains determines the function of the protein. Region
-# which
-# has
-# been shown to recur throughout evolution." [EBIBS:GAR, http://www.molbiol.bbsrc.ac.uk/new_protein/domains.html]
-#   cc: Range.
-#   synonym: "ca_bind" NARROW []
-#   synonym: "DNA_bind" NARROW []
-#   synonym: "domain" RELATED []
-#   synonym: "np_bind" NARROW []
-#   synonym: "polypeptide_domain" EXACT []
-#   synonym: "zn_fing" NARROW []
-#   subset: biosapiens
-#   isa: SO:0000839 ! polypeptide_region
-#   altid: BS:00012
-
-#polypeptide_domain SO:0000417
-
-# "MERGED DEFINITION:
-# TARGET DEFINITION: The sequence for an N-terminal domain of a
-# secreted protein; this domain is involved in attaching nascent
-# polypeptide to the membrane leader sequence.
-# --------------------
-# SOURCE DEFINITION: The signal_peptide is a short region of the
-# peptide located at the N-terminal that directs the protein
-# to
-# be secreted or part of membrane components." [http://www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html]
-#   cc: Range.
-#   synonym: "signal" RELATED []
-#   synonym: "signal peptide coding sequence" EXACT []
-#   synonym: "signal_peptide" EXACT []
-#   subset: biosapiens
-#   subset: SOFA
-#   isa: SO:0001063 ! immature_peptide_region
-#   altid: BS:00159
-
-#signal_peptide SO:0000418
-
-# "MERGED DEFINITION:
-# TARGET DEFINITION: The coding sequence for the mature or final
-# peptide or protein product following post-translational modification.
-# --------------------
-# SOURCE
-# DEFINITION: Extent of a polypeptide chain in the mature protein."
-# [EBIBS:GAR,
-# http://www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html]
-#   cc: This term mature peptide, merged with the biosapiens term mature protein region and took that to be the new name.
-#   synonym: "chain" EXACT []
-#   synonym: "mature peptide" RELATED []
-#   synonym: "mature_protein_region" EXACT []
-#   subset: biosapiens
-#   subset: SOFA
-#   isa: SO:0000839 ! polypeptide_region
-#   altid: BS:00149
-
-#mature_protein_region SO:0000419
-
-# "Indicates when the initator
-# methionine has been cleaved from the mature sequence." [EBIBS:GAR]
-#   synonym: "cleaved_initiator_methionine" EXACT []
-#   synonym: "init_met" RELATED []
-#   synonym: "initator methioninie" EXACT [] $$$ spelling!!$$$
-#   subset: biosapiens
-#   isa: SO:0001063 ! immature_peptide_region
-#   namespace: BS
-#   altid: BS:00067
-
-#cleaved_initiator_methionine SO:0000691
-
-# "MERGED DEFINITION:
-# TARGET DEFINITION: The coding sequence for an N-terminal domain
-# of a nuclear-encoded organellar protein. This domain is involved
-# in post translational import of the protein into the
-# organelle.
-# --------------------
-# SOURCE DEFINITION: The transit_peptide is a short region at the
-# N-terminal of the peptide that directs the protein to an organelle
-# (chloroplast, mitochonrion, microbody or cyanelle)."
-# [http://www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html]
-#   cc: MERGED COMMENT:
-#       TARGET COMMENT: Added to bring SO inline with the embl ddbj
-#       genbank feature table.
-#        --------------------
-#       SOURCE COMMENT: Range.
-#   synonym: "signal" RELATED []
-#   synonym: "transit_peptide" EXACT []
-#   subset: biosapiens
-#   subset: SOFA
-#   isa: SO:0001063 ! immature_peptide_region
-#   altid: BS:00055
-
-#transit_peptide SO:0000725
-
-# "MERGED DEFINITION:
-# TARGET DEFINITION: A region of sequence that can be translated
-# into polypeptide sequence. This sequence can be represenseted
-# as nucleotide or amino acid. This sequence must be part of an
-# mRNA sequence.
-# --------------------
-# SOURCE DEFINITION: Biological annotation that can be assigned
-# to a specific subsequence of a protein." [SO:GAR, SO:ke]
-#   cc: MERGED COMMENT:
-#       TARGET COMMENT: Added to allow the polypeptide regions to have
-#       is_a paths back to the root.
-#       --------------------
-#       SOURCE COMMENT: Discrete.
-#   synonym: "positional" EXACT []
-#   synonym: "positional polypeptide feature" EXACT []
-#   synonym: "region or site annotation" EXACT []
-#   subset: biosapiens
-#   subset: SOFA
-#   altid: BS:00331
-
-#polypeptide_region SO:0000839
-
-# "A motif of three consecutive residues and one H-bond in which: residue(i) is Aspartate or Asparagine (Asx), the side-chain O of residue(i)
-# is H-bonded to the main-chain NH of residue(i+2)." [http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "asx_turn" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001128 ! turn
-#   altid: BS:00203
-
-asx_turn SO:0000912
-
-# "The propeptide_cleavage_site is the arginine/lysine
-# boundary on a propeptide where cleavage occurs." [EBIBS:GAR]
-#   cc: Discrete.
-#   synonym: "propeptide_cleavage_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001062 ! propeptide
-#   namespace: BS
-#   altid: BS:00063
-
-#propeptide_cleavage_site SO:0001061
-
-# "Describes part of a peptide chain which is cleaved
-# off during the formation of the mature protein." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "propep" RELATED []
-#   synonym: "propeptide" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001063 ! immature_peptide_region
-#   namespace: BS
-#   altid: BS:00077
-
-#propeptide SO:0001062
-
-# "An immature_peptide_region is the a region of
-# peptide sequence that is cleaved during maturation." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "immature_peptide_region" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000839 ! polypeptide_region
-#   altid: BS:00129
-
-immature_peptide_region SO:0001063
-	/note
-	/comment
-
-# "Active peptides are proteins which are biologically active,
-# released from a precursor molecule. Hormones, neuropeptides,
-# antimicrobial peptides, are active peptides. They are typically
-# short (<40 amino acids) in length." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Range.
-#   synonym: "active_peptide" EXACT []
-#   synonym: "peptide" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000419 ! mature_protein_region
-#   altid: BS:00076
-
-#active_peptide SO:0001064
-
-# "Extent of a compositionally biased region.
-# Used for homopolymeric stretches of residues and also for regions
-# which are rich in a particular amino acid. Not
-# used for a run of less than 4 residues."
-# [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Range.
-#   synonym: "compbias" EXACT []
-#   synonym: "compositional bias" EXACT []
-#   synonym: "compositionally biased" EXACT []
-#   synonym: "compositionally_biased_region" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000839 ! polypeptide_region
-#   altid: BS:00068
-
-#compositionally_biased_region SO:0001066
-
-# "A sequence motif is a short (up to 20 amino acids) region of
-# biological interest.
-# Such motifs, although they are too short to constitute functional domains,
-# share sequence similarities and are conserved in different proteins.
-# They display a common function (protein-binding,
-# subcellular location etc.)."
-# [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Range.
-#   synonym: "motif" RELATED []
-#   synonym: "polypeptide_motif" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000417 ! polypeptide_domain
-#   altid: BS:00032
-
-#polypeptide_motif SO:0001067
-
-# "A polypeptide_repeat
-# is a single copy of an internal sequence repetition." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "polypeptide_repeat" EXACT []
-#   synonym: "repeat" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000417 ! polypeptide_domain
-#   altid: BS:00070
-
-#polypeptide_repeat SO:0001068
-
-# "A polypeptide domain is a structural domain that is self-stabilizing and folds independently
-# of the rest of the protein chain." [EBIBS:GAR, PMID:7020376]
-#   synonym: "polypeptide_structural_domain" EXACT []
-#   synonym: "structural domain" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000417 ! polypeptide_domain
-#   isa: SO:0001070 ! structural_region
-#   altid: BS:00134
-
-#polypeptide_structural_domain SO:0001069
-
-# "Backbone conformation of the polypeptide." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "structural_region" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000839 ! polypeptide_region
-#   altid: BS:00337
-
-structural_region SO:0001070
-	/note
-	/comment
-
-
-# "Arrangement
-# of the polypeptide with respect to the lipid bilayer." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "membrane_structure" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001070 ! structural_region
-#   altid: BS:00128
-
-membrane_structure SO:0001071
-	/note
-	/comment
-
-
-# "Extent
-# of the region not transversing the lipid bilayer." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "extramembrane" EXACT []
-#   synonym: "topo_dom" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001071 ! membrane_structure
-#   altid: BS:00154
+# ===================================================================
 
-#extramembrane SO:0001072
+# Note
 
-# "Region of the peptide in the cytoplasm." [EBIBS:GAR]
-#   synonym: "cytoplasm_location" EXACT []
-#   synonym: "inside" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001072 ! extramembrane
-#   altid: BS:00145
-
-cytoplasm_location SO:0001073
-	/note
-	/comment
-
-inside SO:0001073_inside
-	/note
-	/comment
-
-# "Region of peptide not in the cytoplasm. N.B.
-# This could be inside an organelle within the cell." [EBIBS:GAR]
-#   synonym: "non_cytoplasm_location" EXACT []
-#   synonym: "outside" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001072 ! extramembrane
-#   altid: BS:00144
+# From the Swiss-Prot users manual
+# http://www.expasy.org/sprot/userman.html#FT_keys
+# Last checked 26 May 2006
 
-non_cytoplasm_location SO:0001074
-	/note
-	/comment
-
-outside SO:0001074_outside
-	/note
-	/comment
-
-# "Extent
-# of the region present in the lipid bilayer." [EBIBS:GAR]
-#   synonym: "intramembrane" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001071 ! membrane_structure
-#   altid: BS:00156
-
-intramembrane SO:0001075
-	/note
-	/comment
-
-# "Extent of region which enters the membrane bilayer
-# but emerges on the same side which it entered." [EBIBS:GAR]
-#   synonym: "membrane_loop" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001075 ! intramembrane
-#   altid: BS:00155
-
-membrane_loop SO:0001076
-	/note
-	/comment
-
+# Many features are plain text with a final qualifier in brackets We
+# can represent these with /note plus a /comment for the part in
+# brackets. 
 
-# "Extent
-# of region transversing the lipid bilayer."
-# [EBIBS:GAR, UniProt:curator_manual]
-#   synonym: "transmem" RELATED []
-#   synonym: "transmembrane" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001075 ! intramembrane
-#   altid: BS:00158
 
-# transmembrane SO:0001077
+# We could also implement specific qualifiers for each special format
+# so we can parser the details for each feature, But what to do about
+# new GFF versions of the same features with possibly bad formatting?
 
-# "A region of peptide with secondary structure has hydrogen bonding
-# along the peptide chain that causes a defined conformation of the chain."
-# [EBIBS:GAR]
-#   cc: Biosapien term was secondary_structure.
-#   synonym: "2nary structure" EXACT []
-#   synonym: "secondary structure" EXACT []
-#   synonym: "secondary structure region" RELATED []
-#   synonym: "secondary_structure" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001070 ! structural_region
-#   altid: BS:00003
+# REGION - Extent of a region of interest in the sequence
 
-polypeptide_secondary_structure SO:0001078
+region SO:0000839_region
 	/note
 	/comment
 
-# "Motif is a three-dimensional structural element within the chain, which appears also in a variety of other molecules. Unlike a domain,
-# a motif does not need to form a stable globular unit." [EBIBS:GAR]
-#   synonym: "structural_motif" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001070 ! structural_region
-#   altid: BS:0000338
+# ACT_SITE - Amino acid(s) involved in the activity of an enzyme.
 
-polypeptide_structural_motif SO:0001079
+act_site SO:0001104_act_site
 	/note
 	/comment
 
-structural_motif SO:0001079_structural_motif
+active_site_residue SO:0001104
 	/note
 	/comment
-
-# "A coiled coil is a structural motif in proteins, in which alpha-helices are coiled
-# together like the strands of a rope." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Range.
-#   synonym: "coiled" RELATED []
-#   synonym: "coiled_coil" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001079 ! polypeptide_structural_motif
-#   altid: BS:00041
-
-#coiled_coil = SO:0001080
-
-# "A
-# motif comprising two helices separated by a turn." [EBIBS:GAR]
-#   synonym: "DNA binding motif" RELATED []
-#   synonym: "helix_turn_helix" EXACT []
-#   synonym: "HTH" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001079 ! polypeptide_structural_motif
-#   altid: BS:00147
-
-helix_turn_helix SO:0001081
-	/note
-	/comment
-
-
-# "Incompatibility
-# in the sequence due to some experimental problem." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "sequencing_information" EXACT []
-#   subset: biosapiens
-#   altid: BS:00125
-
-polypeptide_sequencing_information SO:0001082
-	/note
-	/comment
-
-sequencing_information SO:0001082_sequencing_information
-	/note
-	/comment
-
-
-# "Indicates that two consecutive residues in a fragment sequence are not consecutive in the full-length protein and that there are a number
-# of unsequenced residues between them." [EBIBS:GAR, UniProt:curation_manual]
-#   synonym: "non consecutive" EXACT []
-#   synonym: "non_adjacent_residues" EXACT []
-#   synonym: "non_cons" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001082 ! polypeptide_sequencing_information
-#   altid: BS:00182
-
-#non_adjacent_residues SO:0001083
-
-# "The residue at an extremity of
-# the sequence is not the terminal residue." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "<new synonym>" RELATED []
-#   synonym: "non terminal" EXACT []
-#   synonym: "non_ter" EXACT []
-#   synonym: "non_terminal_residue" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001082 ! polypeptide_sequencing_information
-#   altid: BS:00072
-
-#non_terminal_residue SO:0001084
-
-# "Different
-# sources report differing sequences." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "conflict" EXACT []
-#   synonym: "sequence_conflict" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001082 ! polypeptide_sequencing_information
-#   altid: BS:00069
-
-#sequence_conflict SO:0001085
-
-# "Describes the positions in a sequence where the authors
-# are unsure about the sequence assignment." [EBIBS:GAR, UniProt:curation_manual]
-#   synonym: "sequence_uncertainty" EXACT []
-#   synonym: "unsure" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001082 ! polypeptide_sequencing_information
-#   altid: BS:00181
-
-#sequence_uncertainty SO:0001086
-
-# "Posttranslationally
-# formed amino acid bonds." [EBIBS:GAR, UniProt:curation_manual]
-#   synonym: "cross_link" EXACT []
-#   synonym: "crosslink" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001090 ! covalent_binding_site
-#   namespace: BS
-#   altid: BS:00178
-
-#cross_link SO:0001087
-
-# "The covalent bond between sulfur atoms that binds two peptide chains or different parts of one peptide chain and is a structural
-# determinant in many protein molecules." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: 2 discreet & joined.
-#   synonym: "disulfid" RELATED []
-#   synonym: "disulfide" RELATED []
-#   synonym: "disulfide bond" RELATED []
-#   synonym: "disulfide_bond" EXACT []
-#   synonym: "disulphide" EXACT []
-#   synonym: "disulphide bond" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001090 ! covalent_binding_site
-#   namespace: BS
-#   altid: BS:00028
 
-#disulfide_bond SO:0001088
+# BINDING  -  Binding  site  for any chemical group  (co-enzyme,  prosthetic
+# group, etc.).
 
-# "A transformation that occurs in a protein after it has been synthesized, which may regulate, stabilize, crosslink, or introduce new
-# chemical functionalities in the protein." [EBIBS:GAM, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "mod_res" RELATED []
-#   synonym: "modified residue" EXACT []
-#   synonym: "post_translational_modification" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001090 ! covalent_binding_site
-#   namespace: BS
-#   altid: BS:00052
-
-# post_translational_modification SO:0001089
-
-# "Binding involving a covalent bond." [EBIBS:GAR]
-#   synonym: "covalent_binding_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000409 ! binding_site
-#   namespace: BS
-#   altid: BS:00246
-
-covalent_binding_site SO:0001090
+binding_site SO:0000409
 	/note
 	/comment
 
-# "Binding site for any
-# chemical group (co-enzyme, prosthetic group, etc.)." [EBIBS:GAR]
-#   cc: Discrete.
-#   synonym: "binding" RELATED [uniprot:curation]
-#   synonym: "binding site" RELATED []
-#   synonym: "non_covalent_binding_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000409 ! binding_site
-#   namespace: BS
-#   altid: BS:00029
+# CA_BIND - Extent of a calcium-binding region.
 
-non_covalent_binding_site SO:0001091
+ca_bind SO:0001094_ca_bind
 	/note
 	/comment
-
-# "Residue is
-# part of a binding site for a metal ion." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "metal" RELATED []
-#   synonym: "metal_binding" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001091 ! non_covalent_binding_site
-#   namespace: BS
-#   altid: BS:00027
 
-#metal_binding SO:0001092
-
-# "Residues
-# involved in protein-protein interactions." [EBIBS:GAR, UniProt:Curation_manual]
-#   synonym: "protein_protein_interaction" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001091 ! non_covalent_binding_site
-#   namespace: BS
-#   altid: BS:00131
-
-protein_protein_interaction SO:0001093
+ca_contact_site SO:0001094
 	/note
 	/comment
-
-
-# "Residue involved in contact with calcium." [EBIBS:GAR]
-#   synonym: "Ca_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00186
 
-#Ca_contact_site SO:0001094
+# CARBOHYD - Glycosylation site.
+# This key describes the occurrence of the attachment of a  glycan (mono- or
+# polysaccharide) to a residue of the protein:
+# 
+# o The type of linkage (C- N- or O-linked) to the protein is indicated.
+# o If  the nature of the reducing terminal sugar is known, its abbreviation
+#   is   shown   between   parenthesis.  If  three  dots  "..."  follow  the
+#   abbreviation this indicates extension of the carbohydrate chain.
+#   Conversely the absence of the dots indicate that a single monosaccharide
+#   is linked.
+# Examples of CARBOHYD key feature lines:
+# 
+# FT   CARBOHYD     52     52       N-LINKED (GLCNAC...) (POTENTIAL).
+# FT   CARBOHYD    162    162       O-LINKED (GLCNAC).
+# FT   CARBOHYD     10     10       O-LINKED (GALNAC...) (BY SIMILARITY).
+# FT   CARBOHYD     34     34       C-LINKED (MAN).
 
-# "Residue involved in contact with cobalt." [EBIBS:GAR]
-#   synonym: "Co_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00136
-
-Co_contact_site SO:0001095
+carbohyd
 	/note
 	/comment
 
-# "Residue involved in contact with copper." [EBIBS:GAR]
-#   synonym: "ca_bind" RELATED [uniprot:curation] $$$ should be in ca above$$$
-#   synonym: "Cu_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00146
+# CHAIN - Extent of a polypeptide chain in the mature protein.
 
-Cu_contact_site SO:0001096
+chain SO:0000419_chain
 	/note
 	/comment
-
-# "Residue involved in contact with iron." [EBIBS:GAR]
-#   synonym: "ca_bind" RELATED [uniprot:curation]
-#   synonym: "Fe_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00137
 
-Fe_contact_site SO:0001097
+mature_protein_region SO:0000419
 	/note
 	/comment
 
-# "Residue involved in contact with magnesium." [EBIBS:GAR]
-#   synonym: "Mg_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00187
+# COILED - Extent of a coiled-coil region
 
-Mg_contact_site SO:0001098
+coiled SO:0001080_coiled
 	/note
 	/comment
 
-# "Residue involved in contact with manganese." [EBIBS:GAR]
-#   synonym: "Mn_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00140
-
-Mn_contact_site SO:0001099
+coiled_coil SO:0001080
 	/note
 	/comment
+
 
-# "Residue involved in contact with molybdenum." [EBIBS:GAR]
-#   synonym: "Mo_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00141
+# COMPBIAS - Extent of a compositionally biased region
 
-Mo_contact_site SO:0001100
+compbias SO:0001066_compbias
 	/note
 	/comment
 
-# "Residue involved in contact with nickel." [EBIBS:GAR]
-#   synonym: "Ni_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00142
-
-Ni_contact_site SO:0001101
+computationally_biased_region SO:0001066
 	/note
 	/comment
 
-# "Residue involved in contact with tungsten." [EBIBS:GAR]
-#   synonym: "W_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00143
+# CONFLICT - Different papers report differing sequences.
+# note usually begins MISSING or SEQ -> NEW (description optional)
 
-W_contact_site SO:0001102
+conflict SO:0001085_conflict
 	/note
 	/comment
-
-# "Residue involved in contact with zinc." [EBIBS:GAR]
-#   synonym: "Zn_contact_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001092 ! metal_binding
-#   namespace: BS
-#   altid: BS:00185
 
-Zn_contact_site SO:0001103
+sequence_conflict SO:0001085
 	/note
 	/comment
-
-# "Amino acid
-# involved in the activity of an enzyme." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "act_site" RELATED []
-#   synonym: "active site residue" EXACT []
-#   synonym: "catalitic residues" RELATED [] $$$catalytic$$$
-#   synonym: "site" BROAD []
-#   subset: biosapiens
-#   isa: SO:0001105 ! protein_ligand_interaction
-#   namespace: BS
-#   altid: BS:00026
-
-#active_site_residue SO:0001104
-
-# "Residues which interact with a ligand." [EBIBS:GAR]
-#   synonym: "protein-ligand interaction" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000409 ! binding_site
-#   namespace: BS
-#   altid: BS:00157
 
-protein_ligand_interaction SO:0001105
+# CROSSLNK - Posttranslationally formed amino acid bonds.
+# The 'FROM' and 'TO' endpoints designate the two residues, which are
+# linked by an intrachain bond, and the description field indicates
+# the nature of the cross-link. If the 'FROM' and 'TO' endpoints are
+# identical, the amino acid bond is an interchain one. The name of the
+# linked peptide is indicated in the description field.
+ 
+crosslnk
 	/note
 	/comment
 
-# "A motif of five consecutive residues and two H-bonds in which: Residue(i) is Aspartate or Asparagine (Asx), side-chain O of residue(i) is H-bonded to the main-chain NH of residue(i+2) or (i+3), main-chain CO of residue(i) is H-bonded to the
-# main-chain NH of residue(i+3) or (i+4)." [EBIBS:GAR, http://www.ebi.ac.uk/msd_srv/msdmotif/]
-#   synonym: "asx_motif" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00202
+# DISULFID - Disulfide bond.
+# The  'FROM' and 'TO' endpoints represent the two residues which are linked
+# by  an  intra-chain disulfide bond. If the 'FROM' and 'TO'  endpoints  are
+# identical,  the  disulfide bond is an interchain one and  the  description
+# field  indicates  the nature of the cross-link.
 
-asx_motif SO:0001106
+disulfid SO:0001088_disulfid
 	/note
 	/comment
 
-
-# "A motif of three residues within a beta-sheet in which the main chains of two consecutive residues are H-bonded to that of the third, and in which the dihedral angles are as follows: Residue(i): -140 degrees < phi(l) -20 degrees , -90 degrees < psi(l) < 40 degrees. Residue (i+1): -180 degrees < phi < -25 degrees or +120 degrees < phi < +180 degrees, +40 degrees < psi < +180 degrees
-# or -180 degrees < psi < -120 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd_srv/msdmotif/]
-#   synonym: "beta_bulge" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00208
-
-beta_bulge SO:0001107
+disulfide SO:0001088_disulfide
 	/note
 	/comment
-
-
-# "A motif of three residues within a beta-sheet consisting of two H-bonds. Beta bulge loops often
-# occur at the loop ends of beta-hairpins." [EBIBS:GAR, Http://www.ebi.ac.uk/msd_srv/msdmotif/]
-#   synonym: "beta_bulge_loop" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00209
 
-beta_bulge_loop SO:0001108
+disulfide_bond SO:0001088
 	/note
 	/comment
 
+# DNA_BIND - Extent of a DNA-binding region.
 
-# "A motif of three residues within a beta-sheet consisting of two H-bonds in which: the main-chain NH of residue(i) is H-bonded to the main-chain CO of residue(i+4), the main-chain CO of residue i is H-bonded to the main-chain NH of residue(i+3), these loops
-# have an RL nest at residues i+2 and i+3." [EBIBS:GAR, http://www.ebi.ac.uk/msd_srv/msdmotif/]
-#   synonym: "beta_bulge_loop_five" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001108 ! beta_bulge_loop
-#   altid: BS:00210
-
-beta_bulge_loop_five SO:0001109
+DNA_bind SO:0000417_dna_bind
 	/note
 	/comment
-
 
-# "A motif of three residues within a beta-sheet consisting of two H-bonds in which: the main-chain NH of residue(i) is H-bonded to the main-chain CO of residue(i+5), the main-chain CO of residue i is H-bonded to the main-chain NH of residue(i+4), these loops
-# have an RL nest at residues i+3 and i+4." [EBIBS:GAR, http://www.ebi.ac.uk/msd_srv/msdmotif/]
-#   synonym: "beta_bulge_loop_six" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001108 ! beta_bulge_loop
-#   altid: BS:00211
+# DOMAIN - Extent of a domain of interest on the sequence.
 
-beta_bulge_loop_six SO:0001110
+domain SO:0000417_domain
 	/note
 	/comment
-
-
-# "A beta strand describes a single length of polypeptide chain that forms part of a beta sheet. A single continuous stretch of amino acids adopting an extended conformation of hydrogen bonds between the N-O and the C=O of another part of the peptide. This forms a secondary protein structure in which two or more extended polypeptide regions are hydrogen-bonded
-# to one another in a planar array." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Range.
-#   synonym: "beta_strand" EXACT []
-#   synonym: "strand" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00042
 
-#beta_strand SO:0001111
-
-# "A peptide region which hydrogen bonded to another region of peptide running in the oposite direction (one running N-terminal to C-terminal and one running C-terminal to N-terminal). Hydrogen bonding occurs between every other C=O from one strand to every other N-H on the adjacent strand. In this case, if two atoms C-alpha (i) and C-alpha (j) are adjacent in two hydrogen-bonded beta strands, then they form two mutual backbone hydrogen bonds to each other's flanking peptide groups; this is known as a close pair of hydrogen bonds. The peptide backbone dihedral angles (phi, psi) are about (-140 degrees,
-# 135 degrees) in antiparallel sheets." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Range.
-#   synonym: "antiparallel_beta_strand" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001111 ! beta_strand
-#   altid: BS:0000341
-
-antiparallel_beta_strand SO:0001112
+polypeptide_domain SO:0000417
 	/note
 	/comment
 
-# "A peptide region which hydrogen bonded to another region of peptide running in the oposite direction (both running N-terminal to C-terminal). This orientation is slightly less stable because it introduces nonplanarity in the inter-strand hydrogen bonding pattern. Hydrogen bonding occurs between every other C=O from one strand to every other N-H on the adjacent strand. In this case, if two atoms C-alpha (i)and C-alpha (j) are adjacent in two hydrogen-bonded beta strands, then they do not hydrogen bond to each other; rather, one residue forms hydrogen bonds to the residues that flank the other (but not vice versa). For example, residue i may form hydrogen bonds to residues j - 1 and j + 1; this is known as a wide pair of hydrogen bonds. By contrast, residue j may hydrogen-bond to different residues altogether, or to none at all. The dihedral angles (phi, psi) are about (-120
-# degrees, 115 degrees) in parallel sheets." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Range.
-#   synonym: "parallel_beta_strand" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001111 ! beta_strand
-#   altid: BS:00151
-
-parallel_beta_strand SO:0001113
+polypeptide_structural_domain SO:0001069
 	/note
 	/comment
-
-# "A helix is a secondary_structure
-# conformation where the peptide backbone forms a coil." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "helix" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00152
 
-#helix SO:0001114
 
-# "A left handed helix is a region of peptide where the coiled conformation
-# turns in an anticlockwise, left handed screw." [EBIBS:GAR]
-#   synonym: "helix-l" RELATED []
-#   synonym: "left handed helix" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001114 ! helix
-#   altid: BS:00222
+# HELIX -  DSSP secondary structure
 
-left_handed_helix SO:0001115
+helix SO:0001114
 	/note
 	/comment
 
-# "A right handed helix is a region of peptide where the coiled conformation turns in a clockwise, right handed screw." [EBIBS:GAR]
-#   synonym: "helix" RELATED []
-#   synonym: "right handed helix" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001114 ! helix
-#   altid: BS:0000339
+# INIT_MET - Initiator methionine.
+# This feature key is mostly associated with a zero value in the 'FROM'  and
+# 'TO' fields to indicate that the initiator methionine has been cleaved off
+# and is not shown in the sequence:
 
-right_handed_helix SO:0001116
+init_met SO:0000691_init_met
 	/note
 	/comment
 
-# "The helix has 3.6 residues per turn which corersponds to a translation of 1.5 angstroms (= 0.15 nm) along the helical axis. Every backbone N-H group donates a hydrogen bond to the backbone
-# C=O group of the amino acid four residues earlier." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "a-helix" EXACT []
-#   synonym: "alpha_helix" EXACT []
-#   synonym: "helix" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001116 ! right_handed_helix
-#   altid: BS:00040
-
-alpha_helix SO:0001117
+cleaved_initiator_methionine SO:0000691
 	/note
 	/comment
 
-a-helix SO:0001117_a-helix
-	/note
-	/comment
+# LIPID  - Covalent binding of a lipidic moiety
+# note is attached group name (optional comment)
+# known names are:
 
-# "The pi helix has 4.1 residues per turn and a translation of 1.15  (=0.115 nm) along the helical axis. The N-H group of an amino acid forms a hydrogen bond with the
-# C=O group of the amino acid five residues earlier." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "pi_helix" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001116 ! right_handed_helix
-#   altid: BS:00153
+#MYRISTATE          Myristate group attached through an amide bond to the
+#                   N-terminal glycine residue of the mature form of a
+#                   protein [1,2] or to an internal lysine residue
+#
+#PALMITATE          Palmitate group attached through a thioether bond to a
+#                   cysteine residue or through an ester bond to a serine
+#                   or threonine residue [1,2]
+#
+#FARNESYL           Farnesyl group attached through a thioether bond to a
+#                   cysteine residue [3,4]
+#
+#GERANYL-GERANYL    Geranyl-geranyl group attached through a thioether bond
+#                   to a cysteine residue [3,4]
+#
+#GPI-ANCHOR         Glycosyl-phosphatidylinositol (GPI) group linked to the
+#                   alpha-carboxyl group of the C-terminal residue of the
+#                   mature form of a protein [5,6]
 
-pi_helix SO:0001118
+lipid SO:0001090_lipid
 	/note
 	/comment
 
-# "The 3-10 helix has 3 residues per turn with a translation of 2.0 angstroms (=0.2 nm) along the helical axis. The N-H group of an amino acid forms a hydrogen bond with the
-# C=O group of the amino acid three residues earlier." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "3-10 helix" EXACT []
-#   synonym: "three_ten_helix" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001116 ! right_handed_helix
-#   altid: BS:0000340
+# METAL - Binding site for a metal ion.
 
-three_ten_helix SO:0001119
+metal SO:0001092_metal
 	/note
 	/comment
-
-# "A motif of two consecutive residues with dihedral angles. Nest should not have Proline as any residue. Nests frequently occur as parts
-# of other motifs such as Schellman loops." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "nest" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00223
 
-nest SO:0001120
+metal_binding SO:0001092
 	/note
 	/comment
 
-# "A motif of two consecutive residues with dihedral angles: Residue(i): +20 degrees < phi < +140 degrees, -40 degrees < psi < +90 degrees. Residue(i+1): -140 degrees < phi < -20
-# degrees, -90 degrees < psi < +40 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "nest_left_right" EXACT []
-#   synonym: "nest_lr" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001120 ! nest
-#   altid: BS:00224
+# MOD_RES  Post-translational modification of a residue.
+# note usually <modification> (description)
+# Most common codes are:
 
-nest_left_right SO:0001121
+#ACETYLATION                 N-terminal or other
+#AMIDATION                   Generally at the C-terminal of a mature active
+#                            peptide
+#BLOCKED                     Undetermined N- or C-terminal blocking group
+#FORMYLATION                 Of the N-terminal methionine
+#GAMMA-CARBOXYGLUTAMIC ACID  Of glutamate
+#HYDROXYLATION               Of asparagine, aspartic acid, proline or lysine
+#METHYLATION                 Generally of lysine or arginine
+#PHOSPHORYLATION             Of serine, threonine, tyrosine, aspartic acid
+#                            of histidine
+#PYRROLIDONE CARBOXYLIC ACID N-terminal glutamate which has formed an
+#                            internal cyclic lactam
+#SULFATATION                 Generally of tyrosine
+
+mod_res SO:0001089_mod_res
 	/note
 	/comment
 
-nest_lr SO:0001121_nest_lr
+post_translational_modification SO:0001089
 	/note
 	/comment
 
-# "A motif of two consecutive residues with dihedral angles: Residue(i): -140 degrees < phi < -20 degrees, -90 degrees < psi < +40 degrees. Residue(i+1): +20 degrees < phi < +140
-# degrees, -40 degrees < psi < +90 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "nest_right_left" EXACT []
-#   synonym: "nest_rl" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001120 ! nest
-#   altid: BS:00225
+# MOTIF - Short (up to 20 amino acids) sequence motif of biological interest
 
-nest_right_left SO:0001122
+motif SO:0001067_motif
 	/note
 	/comment
 
-nest_rl SO:0001122_nest_rl
+polypeptide_motif SO:0001067
 	/note
 	/comment
 
-# "A motif of six or seven consecutive
-# residues that contains two H-bonds." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "schellmann_loop" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00226
+# MUTAGEN - Site which has been experimentally altered.
+# mutagen note usually SEQ ->NEW: description
 
-schellmann_loop SO:0001123
+mutagen
 	/note
 	/comment
 
-# "Wild type: A motif of seven consecutive residues that contains two H-bonds in which: the main-chain CO of residue(i) is H-bonded to the main-chain NH of residue(i+6), the main-chain CO of residue(i+1) is H-bonded
-# to the main-chain NH of residue(i+5)." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "schellmann_loop_seven" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001123 ! schellmann_loop
-#   altid: BS:00228
+# NON_CONS - Non-consecutive residues.
+# Indicates  that  two residues in a sequence are not consecutive  and  that
+# there  are  a  number of unsequenced residues between  them.
 
-schellmann_loop_seven SO:0001124
+non_cons SO:0001083_non_cons
 	/note
 	/comment
-
-# "Common Type: A motif of six consecutive residues that contains two H-bonds in which: the main-chain CO of residue(i) is H-bonded to the main-chain NH of residue(i+5) the main-chain CO of residue(i+1) is H-bonded
-# to the main-chain NH of residue(i+4)." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "schellmann_loop_six" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001123 ! schellmann_loop
-#   altid: BS:00227
 
-schellmann_loop_six SO:0001125
+non_adjacent_residues SO:0001083
 	/note
 	/comment
 
-# "A motif of five consecutive residues and two hydrogen bonds in which: residue(i) is Serine (S) or Threonine (T), the side-chain O of residue(i) is H-bonded to the main-chain NH of residue(i+2) or (i+3) , the main-chain CO group of residue(i) is H-bonded to the
-# main-chain NH of residue(i+3) or (i+4)." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "st_motif" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00229
+# NON_TER  - The residue at an extremity of the sequence is not the terminal
+# residue.
 
-st_motif SO:0001126
+non_ter SO:0001084_non_ter
 	/note
 	/comment
 
-# "A motif of four or five consecutive residues and one H-bond in which: residue(i) is Serine (S) or Threonine (T), the side-chain OH of residue(i) is H-bonded to the main-chain CO of residue(i3) or (i4), Phi angles of
-# residues(i1), (i2) and (i3) are negative." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "st_staple" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00230
-
-st_staple SO:0001127
+non_terminal_residue SO:0001084
 	/note
 	/comment
-
-# "A reversal in the direction of the backbone of a protein that is stabilized by hydrogen bond between backbone NH and CO
-# groups, involving no more than 4 amino acid residues." [EBIBS:GAR]
-#   cc: Range.
-#   synonym: "turn" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001078 ! polypeptide_secondary_structure
-#   altid: BS:00148
 
-#turn SO:0001128
-
-# "Left handed type I (dihedral angles):- Residue(i): -140 degrees < chi (1) -120 degrees < -20 degrees, -90 degrees < psi +120 degrees < +40 degrees. Residue(i+1): -140 degrees < phi < -20
-# degrees, -90 degrees < psi < +40 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "asx_turn_il" RELATED []
-#   synonym: "asx_turn_left_handed_type_one" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000912 ! asx_turn
-#   namespace: BS
-#   altid: BS:00206
-
-asx_turn_left_handed_type_one SO:0001129
-	/note
-	/comment
+# NP_BIND - Extent of a nucleotide phosphate binding region.
 
-asx_turn_il SO:0001129_asx_turn_il
+np_bind SO:0000409_np_bind
 	/note
 	/comment
 
-# "Left handed type II (dihedral angles):- Residue(i): -140 degrees < chi (1) -120 degrees < -20 degrees, +80 degrees < psi +120 degrees < +180 degrees. Residue(i+1): +20 degrees < phi < +140
-# degrees, -40 degrees < psi < +90 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "asx_turn_iil" EXACT []
-#   synonym: "asx_turn_left_handed_type_two" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000912 ! asx_turn
-#   namespace: BS
-#   altid: BS:00204
+# PEPTIDE - Extent of a released active peptide.
 
-asx_turn_left_handed_type_two SO:0001130
+peptide SO:0001064_peptide
 	/note
 	/comment
 
-asx_turn_iil SO:0001130_asx_turn_iil
+active_peptide SO:0001064
 	/note
 	/comment
 
+# PROPEP - Extent of a propeptide.
 
-# "Right handed type II (dihedral angles):- Residue(i): -140 degrees < chi (1) -120 degrees < -20 degrees, +80 degrees < psi +120 degrees < +180 degrees. Residue(i+1): +20 degrees < phi < +140
-# degrees, -40 degrees < psi < +90 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "asx_turn_iir" EXACT []
-#   synonym: "asx_turn_right_handed_type_two" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000912 ! asx_turn
-#   namespace: BS
-#   altid: BS:00205
-
-asx_turn_right_handed_type_two SO:0001131
+propep SO:0001062_propep
 	/note
 	/comment
 
-asx_turn_iir SO:0001131_asx_turn_iir
+propeptide SO:0001062
 	/note
 	/comment
 
-# "Right handed type I (dihedral angles):- Residue(i): -140 degrees < chi (1) -120 degrees < -20 degrees, -90 degrees < psi +120 degrees < +40 degrees. Residue(i+1): -140 degrees < phi < -20
-# degrees, -90 degrees < psi < +40 degrees." [EBIBS:GAM, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "asx_turn_ir" EXACT []
-#   synonym: "asx_turn_type_right_handed_type_one" EXACT []
-#   subset: biosapiens
-#   isa: SO:0000912 ! asx_turn
-#   namespace: BS
-#   altid: BS:00207
+# REPEAT - Extent of an internal sequence repetition.
 
-asx_turn_type_right_handed_type_one SO:0001132
+repeat SO:0001068_repeat
 	/note
 	/comment
 
-asx_turn_ir SO:0001132_asx_turn_ir
+polypeptide_repeat SO:0001068
 	/note
 	/comment
 
-# "A motif of four consecutive residues that may contain one H-bond, which, if present, is between the main-chain CO of the first residue and the main-chain NH of the fourth. It is characterized by the dihedral angles of the second and third residues, which
-# are the basis for sub-categorization." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "beta_turn" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001128 ! turn
-#   namespace: BS
-#   altid: BS:00212
+# SE_CYS - Selenocysteine
 
-beta_turn SO:0001133
+se_cys
 	/note
 	/comment
 
-# "Left handed type I:A motif of four consecutive residues that may contain one H-bond, which, if present, is between the main-chain CO of the first residue and the main-chain NH of the fourth. It is characterized by the dihedral angles:- Residue(i+1): -140 degrees < phi < -20 degrees, -90 degrees < psi < +40 degrees. Residue(i+2): -140 degrees < phi < -20
-# degrees, -90 degrees < psi < +40 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "beta_turn_il" EXACT []
-#   synonym: "beta_turn_left_handed_type_one" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001133 ! beta_turn
-#   namespace: BS
-#   altid: BS:00215
+# SIGNAL - Extent of a signal sequence (prepeptide).
 
-beta_turn_left_handed_type_one SO:0001134
+signal SO:0000418_signal
 	/note
 	/comment
 
-beta_turn_il SO:0001134_beta_turn_il
+signal_peptide SO:0000418
 	/note
 	/comment
-
-# "Left handed type II: A motif of four consecutive residues that may contain one H-bond, which, if present, is between the main-chain CO of the first residue and the main-chain NH of the fourth. It is characterized by the dihedral angles: Residue(i+1): -140 degrees < phi < -20 degrees, +80 degrees < psi < +180 degrees. Residue(i+2): +20 degrees < phi < +140
-# degrees, -40 degrees < psi < +90 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "beta_turn_iil" EXACT []
-#   synonym: "beta_turn_left_handed_type_two" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001133 ! beta_turn
-#   namespace: BS
-#   altid: BS:00213
 
-beta_turn_left_handed_type_two SO:0001135
-	/note
-	/comment
+# SIMILAR - Extent of a similarity with another protein sequence.
 
-beta_turn_iil SO:0001133_beta_turn_iil
+similar
 	/note
 	/comment
 
-# "Right handed type I:A motif of four consecutive residues that may contain one H-bond, which, if present, is between the main-chain CO of the first residue and the main-chain NH of the fourth. It is characterized by the dihedral angles: Residue(i+1): -140 degrees < phi < -20 degrees, -90 degrees < psi < +40 degrees. Residue(i+2): -140 degrees < phi < -20
-# degrees, -90 degrees < psi < +40 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "beta_turn_ir" EXACT []
-#   synonym: "beta_turn_right_handed_type_one" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001133 ! beta_turn
-#   namespace: BS
-#   altid: BS:00216
+# SITE - Any other interesting site on the sequence.
 
-beta_turn_right_handed_type_one SO:0001136
+site SO:0000839_site
 	/note
 	/comment
 
-beta_turn_ir SO:0001136_beta_turn_ir
+polypeptide_region SO:0000839
 	/note
 	/comment
 
-# "Right handed type II:A motif of four consecutive residues that may contain one H-bond, which, if present, is between the main-chain CO of the first residue and the main-chain NH of the fourth. It is characterized by the dihedral angles: Residue(i+1): -140 degrees < phi < -20 degrees, +80 degrees < psi < +180 degrees. Residue(i+2): +20 degrees < phi < +140
-# degrees, -40 degrees < psi < +90 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "beta_turn_iir" EXACT []
-#   synonym: "beta_turn_right_handed_type_two" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001133 ! beta_turn
-#   namespace: BS
-#   altid: BS:00214
+# STRAND -  DSSP secondary structure
 
-beta_turn_right_handed_type_two SO:0001137
+strand SO:0001111_strand
 	/note
 	/comment
 
-beta_turn_iir SO:0001137_beta_turn_iir
+beta_strand SO:0001111
 	/note
 	/comment
 
-# "Gamma turns, defined for 3 residues i, i+1, i+2 if a hydrogen bond exists between residues i and i+2 and the phi and psi angles
-# of residue i+1 fall within 40 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "gamma_turn" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001128 ! turn
-#   altid: BS:00219
+# THIOETH - Thioether bond.
+# The  'FROM' and 'TO' endpoints represent the two residues which are linked
+# by the thioether bond.
 
-gamma_turn SO:0001138
+thioeth
 	/note
 	/comment
 
-# "Gamma turns, defined for 3 residues i, i+1, i+2 if a hydrogen bond exists between residues i and i+2 and the phi and psi angles of residue i+1 fall within 40
-# degrees: phi(i+1)=75.0 - psi(i+1)=-64.0." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "gamma_turn_classic" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001138 ! gamma_turn
-#   altid: BS:00220
+# THIOLEST - Thiolester bond.
+# The  'FROM' and 'TO' endpoints represent the two residues which are linked
+# by the thiolester bond.
 
-gamma_turn_classic SO:0001139
+thiolest
 	/note
 	/comment
 
-# "Gamma turns, defined for 3 residues i, i+1, i+2 if a hydrogen bond exists between residues i and i+2 and the phi and psi angles of residue i+1 fall within 40
-# degrees: phi(i+1)=-79.0 - psi(i+1)=69.0." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "gamma_turn_inverse" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001138 ! gamma_turn
-#   altid: BS:00221
+# TOPO_DOM - Topological domain
+# New added 26-May-06
 
-gamma_turn_inverse SO:0001140
+# Annotated with cellular component where domain is normally located
+# e.g. "Cytoplasmic" or "Mitochondrial matrix (potential)"
+
+topo_dom SO:0001072_topo_dom
 	/note
 	/comment
-
-# "A motif of three consecutive residues and one H-bond in which: residue(i) is Serine (S) or Threonine (T), the side-chain O of residue(i) is H-bonded
-# to the main-chain NH of residue(i+2)." [EBIBS:GAM, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "st_turn" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001128 ! turn
-#   altid: BS:00231
 
-st_turn SO:0001141
+extramembrane SO:0001072
 	/note
 	/comment
 
-# "The peptide twists in an anticlockwise, left handed manner. The dihedral angles for this turn are: Residue(i): -140 degrees < chi(1) -120 degrees < -20 degrees, -90 degrees psi +120 degrees < +40 degrees, residue(i+1): -140 degrees < phi
-# < -20 degrees, -90 < psi < +40 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "st_turn_il" EXACT []
-#   synonym: "st_turn_left_handed_type_one" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001141 ! st_turn
-#   altid: BS:00234
+# TRANSIT  -  Extent  of  a  transit peptide (mitochondrial,  chloroplastic,
+# cyanelle or for a microbody).
 
-st_turn_left_handed_type_one SO:0001142
+transit SO:0000725_transit
 	/note
 	/comment
 
-st_turn_il SO:0001142_st_turn_il
+transit_peptide SO:0000725
 	/note
 	/comment
 
-# "The peptide twists in an anticlockwise, left handed manner. The dihedral angles for this turn are: Residue(i): -140 degrees < chi(1) -120 degrees < -20 degrees, +80 degrees psi +120 degrees < +180 degrees, residue(i+1): +20 degrees < phi
-# < +140 degrees, -40 < psi < +90 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "st_turn_iil" EXACT []
-#   synonym: "st_turn_left_handed_type_two" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001141 ! st_turn
-#   altid: BS:00232
+# TRANSMEM - Extent of a transmembrane region.
 
-st_turn_left_handed_type_two SO:0001143
+transmem SO:0001077_transmem
 	/note
 	/comment
 
-st_turn_iil SO:0001143_st_turn_iil
+transmembrane SO:0001077
 	/note
 	/comment
 
-# "The peptide twists in an clockwise, right handed manner. The dihedral angles for this turn are: Residue(i): -140 degrees < chi(1) -120 degrees < -20 degrees, -90 degrees psi +120 degrees < +40 degrees, residue(i+1): -140 degrees < phi
-# < -20 degrees, -90 < psi < +40 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "st_turn_ir" EXACT []
-#   synonym: "st_turn_right_handed_type_one" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001141 ! st_turn
-#   altid: BS:00235
-
-st_turn_right_handed_type_one SO:0001144
-	/note
-	/comment
+# TURN -  DSSP secondary structure
 
-st_turn_ir SO:0001144_st_turn_ir
+turn SO:0001128
 	/note
 	/comment
 
-# "The peptide twists in an clockwise, right handed manner. The dihedral angles for this turn are: Residue(i): -140 degrees < chi(1) -120 degrees < -20 degrees, +80 degrees psi +120 degrees < +180 degrees, residue(i+1): +20 degrees < phi
-# < +140 degrees, -40 < psi < +90 degrees." [EBIBS:GAR, http://www.ebi.ac.uk/msd-srv/msdmotif/]
-#   synonym: "st_turn_iir" EXACT []
-#   synonym: "st_turn_right_handed_type_two" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001141 ! st_turn
-#   altid: BS:00233
+# UNSURE - Uncertainties in the sequence
+# Used  to describe region(s) of a sequence for which the authors are unsure
+# about the sequence assignment.
 
-st_turn_right_handed_type_two SO:0001145
+unsure SO:0001086_unsure
 	/note
 	/comment
 
-st_turn_iir SO:0001145_st_turn_iir
+sequence_uncertainty SO:0001086
 	/note
 	/comment
 
-# "MERGED DEFINITION:
-# TARGET DEFINITION: An attribute to catgorize the different kinds
-# of sequence variation (alteration).
-# --------------------
-# SOURCE DEFINITION: Alternative sequence due to naturally occuring
-# events such as polymorphisms and altermatve splicing or
-# experimental methods such as site directed mutagenesis." [EBIBS:GAR,
-# SO:ke]
-#   cc: MERGED COMMENT:\nTARGET COMMENT: For example, was a substitution natural or mutated as part of an experiment? This term is added to merge the biosapiens term sequence_variations.\n--------------------\nSOURCE COMMENT: Discrete.
-#   synonym: "sequence_variations" EXACT []
-#   subset: biosapiens
-#   altid: BS:00336
+# VARIANT - Authors report that sequence variants exist.
+# note usually begins MISSING or SEQ -> NEW (description optional)
 
-sequence_variation_attribute SO:0001146
+variant SO:0001147_variant
 	/note
 	/comment
 	/ftid
 
-sequence_variations SO:0001146_sequence_variations
+natural_variant SO:0001147
 	/note
 	/comment
 	/ftid
 
+# VARSPLIC - Description of sequence variants produced by alternative
+# splicing.
 
-# "Describes the natural sequence variants due to polymorphisms, disease-associated mutations, RNA editing and variations
-# between strains, isolates or cultivars." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "natural_variant" EXACT []
-#   synonym: "sequence variation" RELATED []
-#   synonym: "variant" RELATED []
-#   subset: biosapiens
-#   isa: SO:0001146 ! sequence_variation_attribute
-#   altid: BS:00071
-
-#natural_variant_site SO:0001147
-
-# "Site
-# which has been experimentally altered." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "mutagen" RELATED []
-#   synonym: "mutagenisis" RELATED [] $$$ mutagenesis $$$
-#   synonym: "mutated_site" EXACT []
-#   subset: biosapiens
-#   isa: SO:0001146 ! sequence_variation_attribute
-#   altid: BS:00036
-
-mutated_variant_site SO:0001148
+varsplic
 	/note
 	/comment
 
-mutated_site SO:0001148_mutated_site
+# ZN_FING - Extent of a zinc finger region.
+
+zn_fing SO:0000409_zn_fing
 	/note
 	/comment
 
-# "Description of sequence variants produced by alternative splicing, alternative promoter usage, alternative
-# initiation and ribosomal frameshifting." [EBIBS:GAR, UniProt:curation_manual]
-#   cc: Discrete.
-#   synonym: "alternative_sequence" EXACT []
-#   synonym: "isoform" NARROW []
-#   synonym: "sequence variation" RELATED []
-#   synonym: "var_seq" RELATED []
-#   synonym: "varsplic" NARROW []
-#   subset: biosapiens
-#   isa: SO:0001146 ! sequence_variation_attribute
-#   altid: SO:0001065
 
-alternate_sequence_site SO:0001149
+# Features from PIR feature tables with no match in SwissProt
+
+# Swissprot reports SIGNAL and PEPTIDE
+
+propeptide_cleavage_site SO:0001061
 	/note
 	/comment
 
-alternative_sequence SO:0001149_alternative_sequence
+cleavage_site SO:0001061_propeptide_cleavage_site
 	/note
 	/comment
 
-#include Efeatures.gffprotein
+# Swissprot reports MOD_RES
+
+cross-link SO:0001087_cross-link
+	/note
+	/comment
+
+crosslink SO:0001087_crosslink
+	/note
+	/comment
+
+cross_link SO:0001087
+	/note
+	/comment
+
+# Swissprot reports SITE with note INHIBITORY
+inhibitory_site
+	/note
+	/comment
+
+# Swissprot reports this in the description
+product
+	/note
+	/comment
+

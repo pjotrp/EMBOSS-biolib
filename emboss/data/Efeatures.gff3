@@ -2,6 +2,12 @@
 # Automatically extracted from sofa.definition 8 June 2006
 
 # SO:ke
+# A biological feature that can be attributed to a region of biological
+# sequence.
+
+located_sequence_feature SO:0000110
+
+# SO:ke
 # The reverse complement of the primary transcript.
 
 antisense_primary_transcript SO:0000645
@@ -34,8 +40,7 @@ assembly_component SO:0000143
 # A sequence segment located between the promoter and a structural gene
 # that causes partial termination of transcription.
 
-# already in EMBL
-#attenuator SO:0000140
+attenuator SO:0000140
 
 # SO:ke
 # A self spliced intron.
@@ -46,7 +51,7 @@ autocatalytically_spliced_intron SO:0000588
 # A region on the surface of a molecule that may interact with another
 # molecule.
 
-#binding_site SO:0000409
+binding_site SO:0000409
 
 # SO:ke
 # A pyrimidine rich sequence near the 3' end of an intron to which the
@@ -71,7 +76,7 @@ cDNA_match SO:0000689
 # A contiguous sequence which begins with, and includes, a start codon and
 # ends with, and includes, a stop codon.
 
-#CDS SO:0000316
+CDS SO:0000316
 
 # SO:ke
 # A region of chromosome where the spindle fibers attach during mitosis
@@ -146,7 +151,7 @@ cross_genome_match SO:0000177
 # The sequence referred to by an entry in a databank such as Genbank or
 # SwissProt.
 
-#databank_entry SO:2000061
+databank_entry SO:2000061
 
 # SO:ke
 # A non-functional descendent of an exon.
@@ -180,7 +185,7 @@ dispersed_repeat SO:0000658
 # eukaryotic promoters, and can function in either orientation and in any
 # location (upstream or downstream) relative to the promoter.
 
-#enhancer SO:0000165
+enhancer SO:0000165
 
 # SO:ma
 # A non-coding RNA, usually with a specific secondary structure, that acts
@@ -204,7 +209,7 @@ EST_match SO:0000668
 # (SO:0000234); may contain 5'-untranslated region (SO:0000204), all open
 # reading frames (SO:0000236) and 3'-untranslated region (SO:0000205).
 
-#exon SO:0000147
+exon SO:0000147
 
 # SO:ke
 # The boundary between two exons in a processed transcript.
@@ -225,7 +230,7 @@ expressed_sequence_match SO:0000102
 # A region at the 5' end of a mature transcript (preceding the initiation
 # codon) that is not translated into a protein.
 
-# five_prime_UTR SO:0000204
+five_prime_UTR SO:0000204
 
 # http://biotech.icmb.utexas.edu/search/dict-search.mhtml
 # The DNA sequences extending on either side of a specific locus.
@@ -236,14 +241,14 @@ flanking_region SO:0000239
 # A gap in the sequence of known length. THe unkown bases are filled in
 # with N's.
 
-#gap SO:0000730
+gap SO:0000730
 
 # SO:rd
 # A locatable region of genomic sequence, corresponding to a unit of
 # inheritance, which is associated with regulatory regions, transcribed
 # regions and/or other functional sequence regions
 
-#gene SO:0000704
+gene SO:0000704
 
 # SO:ma
 # A collection of related genes.
@@ -343,7 +348,7 @@ intergenic_region SO:0000605
 # transcript by splicing together the sequences (exons) on either side of
 # it.
 
-#intron SO:0000188
+intron SO:0000188
 
 # http://www.ebi.ac.uk/mutations/recommendations/mutevent.html
 # A continuous nucleotide sequence is inverted in the same position.
@@ -360,12 +365,6 @@ inverted_repeat SO:0000294
 # A junction refers to an interbase location of zero in a sequence.
 
 junction SO:0000699
-
-# SO:ke
-# A biological feature that can be attributed to a region of biological
-# sequence.
-
-#located_sequence_feature SO:0000110
 
 # SO:ke
 # A region of sequence, aligned to another sequence with some statistical
@@ -387,7 +386,7 @@ match_set SO:0000038
 # The coding sequence for the mature or final peptide or protein product
 # following post-translational modification.
 
-#mature_peptide SO:0000419
+mature_peptide SO:0000419
 
 # SO:ke
 # A methylated adenine.
@@ -430,13 +429,13 @@ miRNA SO:0000276
 # A modified nucleotide, i.e. a nucleotide other than A, T, C. G or (in
 # RNA) U.
 
-#modified_base_site SO:0000305
+modified_base_site SO:0000305
 
 # SO:ma
 # Messenger RNA is the intermediate molecule between DNA and protein. It 
 # includes UTR and coding sequences. It does not contain introns.
 
-#mRNA SO:0000234
+mRNA SO:0000234
 
 # SO:ke
 # An mRNA sequence that does not encode for a protein rather the RNA
@@ -485,7 +484,7 @@ operator SO:0000057
 # A group of contiguous genes transcribed as a single (polycistronic) mRNA
 # from a single regulatory region.
 
-#operon SO:0000178
+operon SO:0000178
 
 # SO:rb
 # The inframe interval between the stop codons of a reading frame which
@@ -504,7 +503,7 @@ origin_of_replication SO:0000296
 # A region of a DNA molecule whre transfer is initiated during the process
 # of conjugation or mobilization.
 
-#origin_of_transfer SO:0000724
+origin_of_transfer SO:0000724
 
 # SO:ke
 # A region amplified by a PCR reaction.
@@ -527,13 +526,13 @@ polyA_sequence SO:0000610
 # The recognition sequence necessary for endonuclease cleavage of an RNA
 # transcript that is followed by polyadenylation; consensus=AATAAA.
 
-#polyA_signal_sequence SO:0000551
+polyA_signal_sequence SO:0000551
 
 # http://www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html#line_types
 # The site on an RNA transcript to which will be added adenine residues by
 # post-transcriptional polyadenylation.
 
-#polyA_site SO:0000553
+polyA_site SO:0000553
 
 # SO:ma
 # A sequence of amino acids linked by peptide bonds which may lack
@@ -566,7 +565,7 @@ possible_base_call_error SO:0000701
 # untranslated_region (three_prime_UTR), and three_prime_clip
 # (SO:0000557).
 
-#primary_transcript SO:0000185
+primary_transcript SO:0000185
 
 # http://www.ornl.gov/TechResources/Human_Genome/publicat/primer2001/glossary.html
 # A short preexisting polynucleotide chain to which new
@@ -584,7 +583,7 @@ processed_transcript SO:0000233
 # The region on a DNA molecule involved in RNA polymerase binding to
 # initiate transcription.
 
-#promoter SO:0000167
+promoter SO:0000167
 
 # SO:ke
 # A primary transcript that, at least in part, encodes one or more
@@ -659,12 +658,12 @@ reagent SO:0000695
 # SO:ke
 # Continous sequence.
 
-#region SO:0000001
+region SO:0000001
 
 # http://www.genpromag.com/scripts/glossary.asp?LETTER=R
 # A DNA sequence that controls the expression of a gene.
 
-#regulatory_region SO:0005836
+regulatory_region SO:0005836
 
 # ISBN:0198506732
 # A group of genes, whether linked as a cluster or not, that respond to a
@@ -685,7 +684,7 @@ repeat_family SO:0000187
 # SO:ke
 # A region of sequence containing one or more repeat units.
 
-#repeat_region SO:0000657
+repeat_region SO:0000657
 
 # http://www.agron.missouri.edu/cgi-bin/sybgw_mdb/mdb3/Term/119
 # Any of the individual polynucleotide sequences produced by digestion of
@@ -702,7 +701,7 @@ RFLP_fragment SO:0000193
 # SO:ke
 # Region in mRNA where ribosome assembles.
 
-#ribosome_entry_site SO:0000139
+ribosome_entry_site SO:0000139
 
 # SO:ma
 # An RNA with catalytic activity.
@@ -748,7 +747,7 @@ RNase_P_RNA SO:0000386
 # RNA that comprises part of a ribosome, and that can provide both
 # structural scaffolding and catalytic activity.
 
-#rRNA SO:0000252
+rRNA SO:0000252
 
 # SO:ke
 # 18S_rRNA -A large polynucleotide which functions as a part of the small
@@ -794,24 +793,25 @@ SAGE_tag SO:0000326
 # Any one of several small cytoplasmic RNA moleculespresent in the
 # cytoplasm and sometimes nucleus of a eukaryote.
 
-#scRNA SO:0000013
+scRNA SO:0000013
 
 # SO:ke
 # A region where the sequences differs from that of a specified sequence.
 
-#sequence_difference SO:0000413
+sequence_difference SO:0000413
+sequence_conflict   SO:0001085
 
 # SO:ke
 # A region of sequence where variation has been observed.
 
-#sequence_variant SO:0000109
+sequence_variant SO:0000109
 
 # http:www.ebi.ac.uk/embl/Documentation/FT_definitions/feature_table.html
 # The sequence for an N-terminal domain of a secreted protein; this domain
 # is involved in attaching nascent polypeptide to the membrane leader
 # sequence.
 
-#signal_peptide SO:0000418
+signal_peptide SO:0000418
 
 # http://www.brunel.ac.uk/depts/bio/project/old_hmg/gloss3.htm#s
 # Combination of short DNA sequence elements which suppress the
@@ -854,7 +854,7 @@ small_regulatory_ncRNA SO:0000370
 # motifs are involved in specific protein interactions and are necessary
 # for the rRNA processing functions of U3 snoRNA.
 
-#snoRNA SO:0000275
+snoRNA SO:0000275
 
 # http://www.cgr.ki.se/cgb/groups/brookes/Articles/essence_of_snps_article.pdf
 # SNPs are single base pair positions in genomic DNA at which different
@@ -868,7 +868,7 @@ SNP SO:0000694
 # Small non-coding RNA in the nucleoplasm. A small nuclear RNA molecule
 # involved in pre-mRNA splicing and processing
 
-#snRNA SO:0000274
+snRNA SO:0000274
 
 # SO:ke
 # An intron which is spliced by the spliceosome.
@@ -931,7 +931,7 @@ stRNA SO:0000649
 # single occurrence in a genome and whose location and base sequence are
 # known.
 
-#STS SO:0000331
+STS SO:0000331
 
 # http://www.ebi.ac.uk/mutations/recommendations/mutevent.html
 # Any change in genomic DNA caused by a single event.
@@ -970,7 +970,7 @@ telomere SO:0000624
 # The sequence of DNA located either at the end of the transcript that
 # causes RNA polymerase to terminate transcription.
 
-#terminator SO:0000141
+terminator SO:0000141
 
 # SO:ke
 # A region of a molecule that binds to a transcription factor.
@@ -981,7 +981,7 @@ TF_binding_site SO:0000235
 # A region at the 3' end of a mature transcript (following the stop codon)
 # that is not translated into a protein.
 
-# three_prime_UTR SO:0000205
+three_prime_UTR SO:0000205
 
 # CJM:SO
 # A set of regions which overlap with minimal polymorphism to form a
@@ -997,7 +997,7 @@ tiling_path_fragment SO:0000474
 # SO:ma
 # An RNA synthesized on a DNA or RNA template by an RNA polymerase.
 
-#transcript SO:0000673
+transcript SO:0000673
 
 # SO:ke
 # The site where transcription ends.
@@ -1014,7 +1014,7 @@ transcription_start_site SO:0000315
 # organellar protein: this domain is involved in post translational import
 # of the protein into the organelle.
 
-#transit_peptide SO:0000725
+transit_peptide SO:0000725
 
 # SO:ke
 # A match against a translated sequence.
@@ -1052,7 +1052,7 @@ trans_splice_acceptor_site SO:0000706
 # anti-codon) for a particular amino acid; and 'wobble' base-pairing, i.e.
 # permitting non-standard base-pairing at the 3rd anti-codon position.
 
-#tRNA SO:0000253
+tRNA SO:0000253
 
 # PMID:9622129
 # U11 snRNA plays a role in splicing of the minor U12-dependent class of
@@ -1182,4 +1182,4 @@ virtual_sequence SO:0000499
 Y_RNA SO:0000405
 
 
-#include Efeatures.gff
+####include Efeatures.gff

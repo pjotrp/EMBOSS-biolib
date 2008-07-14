@@ -187,7 +187,7 @@ CDS SO:0000316
 
 # SO: undefined
 
-conflict SO:0000001_conflict
+conflict SO:0001085
        m/citation
        m/compare
         /db_xref
