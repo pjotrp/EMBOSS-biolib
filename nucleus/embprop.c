@@ -282,7 +282,11 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
 
 float embPropMolwtGetMolwt(const EmbPPropMolwt prop)
 {
-    return prop->average;
+    float ret;
+
+    ret = (float) prop->average; /* satisfy VC++ */
+    
+    return ret;
 }
 
 
