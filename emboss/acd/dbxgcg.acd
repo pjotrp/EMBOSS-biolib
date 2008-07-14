@@ -110,4 +110,10 @@ section: output [
     knowntype: "emboss database index"
   ]
 
+  outfile: outfile [
+    standard: "Y"
+    knowntype: "log"
+    information: "General log output file"
+  ]
+
 endsection: output
