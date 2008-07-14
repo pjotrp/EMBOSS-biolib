@@ -37,13 +37,6 @@
 
 
 
-#define IUBFILE "Ebases.iub"
-
-AjIUB aj_base_iubS[256];      /* base letters and their alternatives */
-
-
-
-
 static AjPFloat2d distmat_calc_match(char* const * seqcharptr,
 				     ajint len, ajint nseqs,
 				     AjBool ambig, AjBool nuc,
