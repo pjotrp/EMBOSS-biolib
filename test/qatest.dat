@@ -1279,7 +1279,7 @@ CL testalign
 IN
 FI stderr
 FZ > 0
-FP /Error: Alignment format specifies at least 2 sequences, alignment has only 0\n/
+FP /Error: Alignment format pair specifies at least 2 sequences, alignment has only 0\n/
 FP /Died: Alignment option -test: Validation failed\n/
 FP 0 /Warning: /
 FP 1 /Error: /
@@ -1295,7 +1295,7 @@ CL testalignpair
 IN
 FI stderr
 FZ > 0
-FP /Error: Alignment format specifies at most 2 sequences, alignment has 3\n/
+FP /Error: Alignment format pair specifies at most 2 sequences, alignment has 3\n/
 FP /Died: Alignment option -test: Validation failed\n/
 FP 0 /Warning: /
 FP 1 /Error: /
@@ -1820,9 +1820,8 @@ FI hba_human.fasta
 FC = 4
 FP /^>HBA_HUMAN /
 FI hba_human.gff
-FC = 161
-FP /^#!Type Protein\n/
-FP /^##sequence-region HBA_HUMAN 1 141\n/
+FC = 159
+FP /^##Type Protein HBA_HUMAN\n/
 //
 
 ID qual-ufo-noid
@@ -1840,12 +1839,11 @@ FI stdout
 FC = 2
 FP /^>HBA_HUMAN/
 FI stdout.gff
-FC = 28
-FP /^#!Type Protein\n/
-FP /^##sequence-region HBA_HUMAN 1 141\n/
-FP 2 /^HBA_HUMAN\tSWISSPROT\tlocated_sequence_feature\t19\t19\t/
-FP 0 /^HBA_HUMAN\tSWISSPROT\tlocated_sequence_feature\t20\t20\t/
-FP  /\tID="HBA_HUMAN.4";note="ACETYLATION";note="\*comment: IN VARIANT THION/
+FC = 26
+FP /^##Type Protein HBA_HUMAN\n/
+FP 2 /^HBA_HUMAN\tSWISSPROT\tvariant\t19\t19\t/
+FP 0 /^HBA_HUMAN\tSWISSPROT\tvariant\t20\t20\t/
+FP  /\tSequence "HBA_HUMAN.4" ; note "ACETYLATION" ; comment "IN VARIANT THION/
 FP  /THIONVILLE; WHERE THE INITIATOR MET IS NOT CLEAVED"\n/
 //
 
@@ -2010,6 +2008,36 @@ FP /^%%Title: PLplot Graph\n/
 ##FZ = 0
 ##//
 
+ID aligncopy-ex
+AP aligncopy
+IN ../../data/globins.msf
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI globins.aligncopy
+FC = 68
+FP /HBB_HUMAN          1 --------VHLTPEEKSAVTALWGKVN-VDEVGGEALGR-LLVVYPWTQR     40\n/
+FP /                               ::  : : :.: : : :   :::: ::   :  : :  : \n/
+//
+
+ID aligncopypair-ex
+AP aligncopypair
+IN ../../data/globins.msf
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI globins.aligncopypair
+FC = 683
+FP 21 /Aligned_sequences:/
+FP /HBB_HUMAN          1 --------VHLTPEEKSAVTALWGKVN-VDEVGGEALGR-LLVVYPWTQR     40\n/
+//
+
 ID antigenic-command
 AP antigenic
 CL tsw:amir_pseae -auto
@@ -2049,8 +2077,7 @@ IN tsw:actb1_fugru
 IN
 IN
 FI actb1_fugru.antigenic
-FP /^#!Type Protein\n/
-FP /^##sequence-region ACTB1_FUGRU 1 375\n/
+FP /^##Type Protein ACTB1_FUGRU\n/
 FZ > 100
 FC > 5
 FI stderr
@@ -2286,7 +2313,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI chaos1.dat
-FC = 7493
+FC = 7495
+FP /^##Maintitle Chaos game representation of tembl-id:J01636\n/
+FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
 FP /^##Screen x1 -0\.100000 y1 -0\.100000 x2 1\.400000 y2 1\.100000\n/
 FP /^Line x1 0\.090456 y1 0\.242971 x2 0\.090556 y2 0\.242971 colour 0\n/
 FP /^Text3 x1 0\.000000 y1 0\.000000 colour 0 size 1\.000000 A\n/
@@ -2329,7 +2358,7 @@ FZ = 375
 FP /\A>PAAMIR_1_7\n/
 FP /^PPARRRWRRWRVTWQRGRWWSRLTSPASIRPPAGPSSRPAMVSSRRTRPSPPGPRRPTGR\n/
 FI paamir_1.gff
-FC = 6
+FC = 4
 FP /^PAAMIR_1\t\S+\t\S+\t278\t634\t0\.000/
 //
 
@@ -3118,6 +3147,22 @@ FP /\A>EMBOSS_001\n/
 FP 2 /^ACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGTACGT\n/
 //
 
+ID consambig-ex
+AP consambig
+IN ../../data/dna.msf
+IN aligned.consambig
+FI stderr
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FC = 2
+FI aligned.consambig
+FZ = 134
+FP /\A>EMBOSS_001\n/
+FP /^ACGTACGTACGTACGTACGTacgtACGTACGTACGTACGTMSKWMSKWMSKWMSKWMSKW\n/
+FP /^MSKWMSKWMSKWMSKWMSKWACGTACGTACGTACGTACGTACGTACGTWSSWACGTACGT\n/
+//
+
 ID cpgplot-ex
 AP cpgplot
 CL tembl:u68037 -graph cps
@@ -3174,13 +3219,13 @@ FC = 7
 FP /^U68037\t\S+\t\S+\t104\t509\t/
 FP /^U68037\t\S+\t\S+\t596\t924\t/
 FI cpgplot1.dat
-FZ = 24883
+FZ = 24865
 FP /^444\.000000\s+1\.066856\n/
 FI cpgplot2.dat
-FZ = 25997
+FZ = 25979
 FP /^444\.000000\s+75\.000000\n/
 FI cpgplot3.dat
-FZ = 24881
+FZ = 24863
 FP /^444\.000000\s+1\.000000\n/
 //
 
@@ -6191,14 +6236,16 @@ IN idacc
 IN ../../data
 IN emrod
 IN
+IN
 FI stderr
 FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 1
-FP /Processing file \S+/test/data/emrod\n/
+FI outfile.dbxfasta
+FC = 3
+FP /Processing file: emrod entries: 6 \(6\) /
+FP 1 /Processing file: /
 FI emrod.ent
 FC = 5
 FP 1 /^# Number of files: 1\n/
@@ -6245,14 +6292,16 @@ IN idacc
 IN ../../data
 IN emrod
 IN
+IN
 FI stderr
 FC = 8
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 1
-FP /Processing file \S+/test/data/emrod\n/
+FI outfile.dbxfasta
+FC = 3
+FP /Processing file: emrod entries: 6 \(6\) /
+FP 1 /Processing file: /
 FI emrod.ent
 FC = 5
 FP 1 /^# Number of files: 1\n/
@@ -6387,14 +6436,16 @@ IN idacc
 IN ../../data
 IN swnew
 IN
+IN
 FI stderr
 FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 1
-FP /Processing file \S+/test/data/swnew\n/
+FI outfile.dbxfasta
+FC = 3
+FP /Processing file: swnew entries: 9 \(9\) /
+FP 1 /Processing file: /
 FI swnew.ent
 FC = 5
 FP 1 /^# Number of files: 1\n/
@@ -6498,15 +6549,17 @@ IN simple
 IN ../../data
 IN wormpep.clone.*
 IN
+IN
 FI stderr
 FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 2
-FP 2 /Processing file \S+\/test\/data\/wormpep\.clone\./
-FP 1 /Processing file \S+\/test\/data\/wormpep\.clone\.ZK637\n/
+FI outfile.dbxfasta
+FC = 4
+FP 2 /Processing file: /
+FP 2 /Processing file: wormpep\.clone\./
+FP 1 /Processing file: wormpep\.clone\.ZK637 entries: 66 \(15\) /
 FI worm.ent
 FC = 6
 FP 1 /# Number of files: 2\n/
@@ -6617,15 +6670,16 @@ IN embl
 IN rod.dat
 IN ../../embl
 IN
+IN
 FI stderr
 FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 1
-FP /^Processing file .*rod\.dat\n/
-FP 1 /^Processing file /
+FI outfile.dbxflat
+FC = 3
+FP /^Processing file: rod\.dat entries: 6 \(6\)/
+FP 1 /^Processing file: /
 FI embl.ent
 FC = 5
 FP /^# Number of files: 1\n/
@@ -6757,10 +6811,10 @@ FC = 6
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 10
-FP /^Processing file .*rod\.dat\n/
-FP 10 /^Processing file /
+FI outfile.dbxflat
+FC = 12
+FP /^Processing file: .*rod\.dat entries: 43 \(6\)/
+FP 10 /^Processing file: /
 FI embl.ent
 FC = 14
 FP /^# Number of files: 10\n/
@@ -7010,10 +7064,10 @@ FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 1
-FP /^Processing file .*trembl\.dat\n/
-FP 1 /^Processing file \S+\.dat/
+FI outfile.dbxflat
+FC = 3
+FP /^Processing file: .*trembl\.dat entries: 9 \(9\)/
+FP 1 /^Processing file: \S+\.dat/
 FI swnew.ent
 FC = 5
 FP /# Number of files: 1\n/
@@ -7118,14 +7172,17 @@ IN embl
 IN ../../embl
 IN
 IN
+IN
 FI stderr
 FC = 12
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 9
-FP 9 /^Processing .*\/test\/embl\/eem_[a-z1-9]+\.seq\n/
+FI outfile.dbxgcg
+FC = 11
+FP 9 /^Processing file: /
+FP 9 /^Processing file: eem_[a-z1-9]+\.seq /
+FP 1 /^Processing file: eem_hum1\.seq entries: 32 \(15\) /
 FI embl.ent
 FC = 13
 FP 1 /^Dual filename database\n/
@@ -7354,14 +7411,17 @@ IN embl
 IN ../../embl
 IN
 IN
+IN
 FI stderr
 FC = 6
 FP 0 /Warning:/
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 9
-FP 9 /^Processing .*\/test\/embl\/eem_[a-z1-9]+\.seq\n/
+FI outfile.dbxgcg
+FC = 11
+FP 9 /^Processing file: /
+FP 9 /^Processing file: eem_[a-z1-9]+\.seq /
+FP 1 /^Processing file: eem_hum1.seq entries: 32 \(15\) /
 FI embl.ent
 FC = 13
 FP 1 /^Dual filename database\n/
@@ -7729,14 +7789,17 @@ IN pir
 IN ../../pir
 IN
 IN
+IN
 FI stderr
 FC = 12
 FP 0 /Warning:/
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 4
-FP 4 /^Processing file \S+\/test\/pir\/pir[1-9]\.seq\n/
+FI outfile.dbxgcg
+FC = 6
+FP 4 /^Processing file: /
+FP 4 /^Processing file: pir[1-9]\.seq /
+FP 1 /^Processing file: pir3\.seq entries: 57 \(3\) /
 FI pir.ent
 FC = 8
 FP 1 /^# Number of files: 4\n/
@@ -7929,9 +7992,11 @@ FC = 6
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
-FC = 4
-FP 4 /^Processing file \S+\/test\/pir\/pir[1-9]\.seq\n/
+FI outfile.dbxgcg
+FC = 6
+FP 4 /^Processing file: /
+FP 4 /^Processing file: pir[1-9]\.seq /
+FP 1 /^Processing file: pir3\.seq entries: 57 \(3\) /
 FI pir.ent
 FC = 8
 FP 1 /^# Number of files: 4\n/
@@ -8296,10 +8361,10 @@ FP /^# Overlap_end: 458 in X65923\n/
 FP /^# Overlap_end: 402 in AY411291\n/
 FI AY411291.diffgff
 FC = 6
-FP /^AY411291\tdiffseq\tmisc_difference\t228\t228\t1\.000\t[+]\t\.\tID="AY411291\.1";note="SNP in X65923";replace="t"/
+FP /^AY411291\tdiffseq\tsequence_conflict\t228\t228\t1\.000\t[+]\t\.\tID="AY411291\.1";note="SNP in X65923";replace="t"/
 FI X65923.diffgff
 FC = 6
-FP /^X65923\tdiffseq\tmisc_difference\t284\t284\t1\.000\t[+]\t\.\tID="X65923\.1";note="SNP in AY411291";replace="c"\n/
+FP /^X65923\tdiffseq\tsequence_conflict\t284\t284\t1\.000\t[+]\t\.\tID="X65923\.1";note="SNP in AY411291";replace="c"\n/
 //
 
 ID digest-ex
@@ -8387,7 +8452,9 @@ FI stdout
 FC = 1
 FP /Created dotmatcher1\.dat\n/
 FI dotmatcher1.dat
-FC = 28
+FC = 30
+FP /^##Maintitle Dotmatcher: tsw-id:HBA_HUMAN vs tsw-id:HBB_HUMAN\n/
+FP /^##Subtitle \(windowsize = 10, threshold = 23.00  15\/07\/08\)\n/
 FP /^Text2 x1 71\.000000 y1 -11\.025001 colour 0 size 1\.000000 HBA_HUMAN\n/
 //
 
@@ -8460,8 +8527,10 @@ AP dotpath
 TI 400
 CL tembl:AF129756 tembl:BA000025 -word 20 -graph data
 FI dotpath1.dat
+FC = 254
+FP /^##Maintitle Dotpath: tembl-id:AF129756 vs tembl-id:BA000025\n/
+FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
 FP /^Line x1 1\.000000 y1 193957\.000000 x2 153\.000000 y2 194109\.000000 colour 0\n/
-FC = 252
 FI stdout
 FC = 1
 FP /^Created dotpath1\.dat\n/
@@ -8498,7 +8567,9 @@ FI stdout
 FC = 1
 FP /^Created dottup1\.dat\n/
 FI dottup1.dat
-FC = 2282
+FC = 2284
+FP /^##Maintitle v00294 vs j01636\n/
+FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
 FP /^Line x1 5288\.000000 y1 625\.000000 x2 5298\.000000 y2 635\.000000 colour 0\n/
 FI stderr
 FC = 1
@@ -9899,6 +9970,37 @@ FP /gtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaag/
 FP /^tcttaa\n/
 //
 
+ID featcopy-ex
+AP featcopy
+IN ../../data/paamir.gff3
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI paamir.gff
+FC = 15
+FP /PAAMIR	EMBL	databank_entry	1	2167	0\.000	\+	\.	ID="PAAMIR.1";db_xref="taxon:287";organism="Pseudomonas aeruginosa";strain="PAC";isolate="PAC 1";map="38 min"\n/
+FP /PAAMIR	EMBL	located_sequence_feature	1	1	0\.000	\+	.	ID="PAAMIR.8";featflags="0x40";note="last base of an XhoI site"\n/
+//
+
+ID featreport-ex
+AP featreport
+IN ../../data/paamir.fasta
+IN ../../data/paamir.gff
+IN test.out
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test.out
+FC = 15
+FP /\A##gff-version 3\n/
+FP 10 /^PAAMIR\tEMBL\t/
+//
+
 ID findkm-ex
 AP findkm
 CL -graph cps
@@ -10112,7 +10214,7 @@ ID feat-embl-togff
 AP seqret
 CL -feat ../../data/feat.fasta -ufo ../../data/feat.emft gff::test.out -auto
 FI test.out
-FZ = 58717
+FZ = 58770
 ## Internal quotes
 FP /\tCDS\t1289\t1879\t0\.000\t\+\t0\tID="AB036666\.58";.* of \\"amiE\\" /
 //
@@ -10165,10 +10267,10 @@ ID feat-pir-togff
 AP seqret
 CL -feat ../../data/featprot.fasta -ufo ../../data/feat.pir gff::test.out -auto
 FI test.out
-FZ = 4628
+FZ = 5019
 ## active site two locations with copied annotation (note and comment)
-FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";note="Cys, His";comment="status experimental"\n/
-FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tID="OPSD_HUMAN\.11";featflags="0x4"\n/
+FP /^OPSD_HUMAN\tPIR\tact_site\t38\t38\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; note "Cys, His" ; comment "status experimental"\n/
+FP /^OPSD_HUMAN\tPIR\tact_site\t90\t90\t0\.000\t\+\t\.\tSequence "OPSD_HUMAN\.11" ; FeatFlags "0x4"\n/
 //
 
 ID feat-pir-topir
@@ -10202,9 +10304,9 @@ ID feat-swiss-togff
 AP seqret
 CL -feat tsw:laci_ecoli gff::test.out -auto
 FI test.out
-FZ = 3027
-FP /^LACI_ECOLI\tSWISSPROT\tDNA_bind\t6\t25\t0\.000\t\+\t\.\tID="LACI_ECOLI\.3";note="H-T-H motif"\n/
-FP /^LACI_ECOLI\tSWISSPROT\thelix\t74\t89\t0\.000\t\+\t\.\tID="LACI_ECOLI\.9"\n/
+FZ = 3263
+FP /^LACI_ECOLI\tSWISSPROT\tDNA_bind\t6\t25\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.3" ; note "H-T-H motif"\n/
+FP /^LACI_ECOLI\tSWISSPROT\thelix\t74\t89\t0\.000\t\+\t\.\tSequence "LACI_ECOLI\.9"\n/
 //
 
 ID garnier-ex
@@ -10487,6 +10589,36 @@ CL -auto tembl:v00296 -out test.out
 FI test.out
 FZ = 243
 FP /tembl-id:V00296\s+V00296\s+3078\s+3078\s+0\s+0\s+3078\s+0\s+0\s+0\.0+\s+1\.0+\s+E.*/
+//
+
+ID infobase-ex
+AP infobase
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI outfile.infobase
+FC = 18
+FP /A    A          T          adenine\n/
+FP /K    GT         M          keto_base\n/
+//
+
+ID inforesidue-ex
+AP inforesidue
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI outfile.inforesidue
+FC = 27
+FP /A    Ala   alanine                 0.0   71.0786 tiny,small,aliphatic,nonpolar  A\n/
+FP /Z    Glx   glutamate/glutamine    -0.5  128.6228 polar                          EQ\n/
 //
 
 ID infoseq-ex
@@ -10840,6 +10972,34 @@ FZ = 1523
 FP /\t2242\t2458\t.*start8bp 2451".*end8bp 2458".*start16bp 2242".*end16bp 2257"\n/
 //
 
+ID maskambignuc-ex
+AP maskambignuc
+IN ../../data/ambignuc.fasta
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI ambignuc.fasta
+FC = 2
+FP /^ANCNGNNNNNNTUNNNancngnnnnnntunnn\n/
+//
+
+ID maskambigprot-ex
+AP maskambigprot
+IN ../../data/ambigprot.fasta
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI ambigprot.fasta
+FC = 2
+FP /^AXCDEFGHIXKLMNXPQRSTXVWXYXXaxcdefghixklmnxpqrstxvwxyxX\n/
+//
+
 ID maskfeat-ex
 UC Mask out a feature whose type is "repeat_region" from position 2331 to 2356:
 AP maskfeat
@@ -11144,6 +11304,21 @@ FP /^DE   fragment of cytochrome c\n/
 FP /^SQ   SEQUENCE    12 AA;   1464 MW;  6F142FA88DADC40B CRC64;/
 //
 
+ID nohtml-ex
+AP nohtml
+IN ../../data/webfile.html
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI webfile.nohtml
+FC = 10
+FP /^embossdata\n/
+FP 5 /^.*\S+.*\n/
+//
+
 ID noreturn-ex
 AP noreturn
 CL ../../data/abc.dat
@@ -11186,6 +11361,43 @@ FZ = 71
 FP /carriage return format\rACDEFGHIKLMNPQRSTVWY\r$/
 //
 
+
+ID nospace-ex
+AP nospace
+IN ../../data/seqspace.txt
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI seqspace.nospace
+FC = 46
+FP /^>X13776\n/
+FP /^ggtaccgctggccgagcatctgctcgatcaccaccagccgggcgacggga\n/
+//
+
+
+ID notab-ex
+AP notab
+IN ../../data/tabfile.txt
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI tabfile.notab
+FC = 9
+FP /^a       b       c       d\n/
+FP /^ab      cd      ef      g\n/
+FP /^abc     def     ghi     j\n/
+FP /^abcd    efgh    ijkl    m\n/
+FP /^abcde   fghij   klmno   p\n/
+FP /^abcdef  ghijkl  mnopqr  s\n/
+FP /^abcdefg hijklmn opqrstu v\n/
+FP /^abcdefgh        ijklmnop\n/
+//
 # change example to use globins.fasta
 ID notseq-ex
 UC In this case the excluded sequences (myg_phyca and lgb2_luplu) are not saved to any file:
@@ -11543,7 +11755,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pepnet1.dat
-FC = 103
+FC = 105
+FP /^##Maintitle Helical net of tsw-id:GCN4_YEAST\[253:274\]\n/
+FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
 FP /^Text1 x1 139\.599991 y1 93\.500000 colour 1 size 0\.750000 D\n/
 FP /^Rectangle x1 134\.499985 y1 85\.430000 x2 137\.499985 y2 88\.430000 colour 9\n/
 //
@@ -11600,7 +11814,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI pepwheel1.dat
-FC = 130
+FC = 132
+FP /^##Maintitle Helical wheel of tsw-id:HBB_HUMAN\[:30\]\n/
+FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
 FP /^Text1 x1 0\.446413 y1 -0\.078715 colour 9 size 1\.000000 V\n/
 FP /^Rectangle x1 -0\.025000 y1 0\.431300 x2 0\.025000 y2 0\.481300 colour 9\n/
 //
@@ -11804,7 +12020,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI polydot1.dat
-FC = 200
+FC = 202
+FP /^##Maintitle Polydot of globins.fasta\n/
+FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
 FP /^##Screen x1 -163\.350006 y1 -163\.350006 x2 1690\.672485 y2 1252\.349976\n/
 FP /^Textline x1 -98\.010010 y1 73\.000000 x2 -98\.010010 y2 146\.000000 colour 0 size 0\.300000 HBB_HUMAN\n/
 FP /^Rectangle x1 0\.000000 y1 156\.000000 x2 146\.000000 y2 302\.000000 colour 0\n/
@@ -11830,7 +12048,7 @@ FI polydot.ps
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI globins.gff
-FP /HBB_HUMAN\s+wordmatch\s+region\s+88\s+111\s+1\.000\s+[+]\s+\.\s+ID="HBB_HUMAN\.1";note="HBB_HORSE"\n/
+FP /HBB_HUMAN\s+wordmatch\s+region\s+88\s+111\s+1\.000\s+[+]\s+\.\s+Sequence "HBB_HUMAN\.1" ; note "HBB_HORSE"\n/
 //
 
 ID preg-ex
@@ -11900,7 +12118,9 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI prettyplot1.dat
-FC = 601
+FC = 603
+FP /^##Maintitle Pretty plot of ..\/..\/data\/globins.msf\n/
+FP /^##Subtitle Tue 15 Jul 2008 12:00:00\n/
 FP /^Text1 x1 -10\.000000 y1 49\.[12][09][09][09][09][71] colour 0 size 8\.000000 LGB2_LUPLU\n/
 FP /^Text1 x1 -10\.000000 y1 42\.599998 colour 0 size 8\.000000 Consensus\n/
 FP /^Text1 x1 59\.000000 y1 52\.500000 colour 0 size 8\.000000 50\n/
@@ -14269,22 +14489,20 @@ ID seqret-outmultiusa-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss gff::test.out
 FI test.out
-FZ = 759
-FP 3 /^##sequence-region SWISSM[1-3] 1 \d+\n/
-FP 3 /^#\!Type Protein\n/
-FP /^##sequence-region SWISSM2 1 80\n/
-FP 3 /^##FASTA\n/
+FZ = 543
+FP 3 /^##Protein SWISSM[1-3]\n/
+FP 1 /^##Protein SWISSM2\n/
+FP 3 /^##Protein /
 //
 
 ID seqret-outmulti-gffprot
 AP seqret
 CL -auto ../../data/prot.m-swiss test.out -osf gff
 FI test.out
-FZ = 759
-FP 3 /^##sequence-region SWISSM[1-3] 1 \d+\n/
-FP 3 /^#\!Type Protein\n/
-FP /^##sequence-region SWISSM2 1 80\n/
-FP 3 /^##FASTA\n/
+FZ = 543
+FP 3 /^##Protein SWISSM[1-3]\n/
+FP 1 /^##Protein SWISSM2\n/
+FP 3 /^##Protein /
 //
 
 ID seqret-outmultiusa-hennig86
@@ -17048,6 +17266,44 @@ FZ = 6120
 FP /aaaagtgagaggtcagactccta/
 //
 
+ID sizeseq-ex
+AP sizeseq
+CL -osformat swiss
+IN ../../data/globins.fasta
+IN
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI globins.swiss
+FC = 49
+FP /\AID   HBA_HUMAN      Unreviewed;        141 AA.\n/
+//
+
+ID skipredundant-ex
+AP skipredundant
+CL -threshold 80 -keepredundant
+IN ../../data/globins.fasta
+IN 
+IN 
+IN 
+IN 
+IN 
+FI stderr
+FC = 5
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI globins.keep
+FC = 20
+FP 5 /^>/
+FI globins.redundant
+FC = 8
+FP 2 /^>/
+//
+
 ID skipseq-ex
 UC This does not skip any sequences. It is exactly equivalent to seqret:
 AP skipseq
@@ -17713,6 +17969,21 @@ FP /^ctttctcgactc/
 FP /ttca-gnntcynnnnnn\n/
 //
 
+ID trimspace-ex
+AP trimspace
+IN ../../data/seqspace2.txt
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI seqspace2.trimspace
+FC = 46
+FP /^>X13776 Pseudomonas aeruginosa amiC and amiR gene\n/
+FP /^ggtaccgctg gccgagcatc tgctcgatca ccaccagccg ggcgacggga\n/
+//
+
 ID twofeat-ex
 UC Without the -twoout option the output report contains just one feature
 UC for every pair of features found.
@@ -17912,10 +18183,10 @@ FP /^ +5 HBA_HUMAN +[+] +59\.\.63 +HBB_HUMAN +[+] +64\.\.68\n/
 FP /^ +4 HBA_HUMAN +[+] +15\.\.18 +HBB_HUMAN +[+] +16\.\.19\n/
 FP /^ +4 HBA_HUMAN +[+] +117\.\.120 +HBB_HUMAN +[+] +122\.\.125\n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -19421,10 +19692,10 @@ FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -19447,10 +19718,10 @@ FP 1 /^                     \|\|\|\|\|\n/
 FP 2 /^                     \|\|\|\|\n/
 FP 1 /^HBB_HUMAN         64 HGKKV     68\n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -19473,10 +19744,10 @@ FP 1 /^       :::::\n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -19500,10 +19771,10 @@ FP 2 /^           \n/
 FP 1 /^HBB_HU HGKKV\n/
 FP 1 /^       60   \n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -19526,10 +19797,10 @@ FP 1 /^HBA_HU HGKKV\n/
 FP 1 /^HBB_HU -----\n/
 FP 2 /^HBB_HU ----\n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -19550,10 +19821,10 @@ FZ > 608
 FP 1 /^>HBA_HUMAN \.\.\nHGKKV\n/
 FP 1 /^>HBB_HUMAN \.\.\nHGKKV\n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -19583,10 +19854,10 @@ FP 1 /^; al_start: 64\n/
 FP 1 /^; al_stop: 68\n/
 FP 1 /^; al_display_start: 64\n/
 FI HBA_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBA_HUMAN\twordmatch\tregion\t59\t63\t1\.000\t/
 FI HBB_HUMAN.gff
-FZ = 346
+FZ = 318
 FP /^HBB_HUMAN\twordmatch\tregion\t64\t68\t1\.000\t/
 //
 
@@ -20663,100 +20934,6 @@ CL x13776 test.out
 FI stderr
 FC < 2
 FP 1 /^CORBA support has not been compiled\n/
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID demoalign-check
-AQ demoalign
-CC No documentation, no example
-CL ../../data/dna.msf
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI dna.demoalign
-FZ = 1273
-FP 9 /^MSFM[1-3] +/
-//
-
-ID demofeatures-check
-AQ demofeatures
-CC No documentation, no example
-IN test.out
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI test.out
-FZ = 690
-FP /\A##gff-version 3\n/
-FP 10 /^seq1\tdemofeature\t/
-//
-
-ID demolist-check
-AQ demolist
-CC No documentation, no example
-CL ../../data/paamir.gff
-FI stderr
-FZ = 1083
-FP 30 /^PAAMIR\tEMBL\t[^ \t]/
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID demoreport-check
-AQ demoreport
-CC No documentation, no example
-CL tembl:x13776 test.out -rformat gff
-FI stderr
-FC = 1
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI test.out
-FZ = 2201
-FP 10 /^X13776\tEMBL\t/
-//
-
-ID demosequence-check
-AQ demosequence
-CC No documentation, no example, and no code
-CC Just checking it does nothing
-FI stderr
-FC = 1
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID demostring-check
-AQ demostring
-CC No documentation, no example
-IN How long is a piece of string?
-FI stderr
-FZ = 874
-FP /^first token 'How'\n/
-FP /^second token 'long is a piece of string[?]'\n/
-FP /Warning: Unknown date/time format fred\n/
-FP 1 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-//
-
-ID demotable-check
-AQ demotable
-CC No documentation, no example
-IN ../../data/paamir.gff
-FI stderr
-FC = 16
-FP 7 /^type [a-zA-Z_']+ found/
-FP /^type 'CDS' found 2 times\n/
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
@@ -23518,11 +23695,131 @@ FP 9 /^MSFM/
 
 #######################################
 # MYEMBOSS
+# has no applications
 #######################################
 
+#######################################
+# MYEMBOSSDEMO
+#######################################
+
+ID demoalign-check
+AB myembossdemo
+AQ demoalign
+CC No documentation, no example
+CL ../../data/dna.msf
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI dna.demoalign
+FZ = 1273
+FP 9 /^MSFM[1-3] +/
+//
+
+ID demofeatures-check
+AB myembossdemo
+AQ demofeatures
+CC No documentation, no example
+IN test.out
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test.out
+FZ = 690
+FP /\A##gff-version 3\n/
+FP 10 /^seq1\tdemofeature\t/
+//
+
+ID demolist-check
+AB myembossdemo
+AQ demolist
+CC No documentation, no example
+CL ../../data/paamir.gff3
+FI stderr
+FZ = 1083
+FP 30 /^PAAMIR\tEMBL\t[^ \t]/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID demoreport-check
+AB myembossdemo
+AQ demoreport
+CC No documentation, no example
+CL tembl:x13776 test.out -rformat gff
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test.out
+FZ = 2201
+FP 10 /^X13776\tEMBL\t/
+//
+
+ID demosequence-check
+AB myembossdemo
+AQ demosequence
+CC No documentation, no example, and no code
+CC Just checking it does nothing
+FI stderr
+FC = 1
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID demostring-check
+AB myembossdemo
+AQ demostring
+CC No documentation, no example
+IN How long is a piece of string?
+FI stderr
+FZ = 874
+FP /^first token 'How'\n/
+FP /^second token 'long is a piece of string[?]'\n/
+FP /Warning: Unknown date/time format fred\n/
+FP 1 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
+ID demostringnew-check
+AB myembossdemo
+AQ demostringnew
+CC No documentation, no example
+FI stderr
+FZ = 4062
+FP 3 /str5: String 5 WITHSOMETEXTINABLOCK\n/
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FP /f1 \(from str3\): 0.500000\n/
+FP /d1 \(from str4\): 0.500000\n/
+//
+
+ID demotable-check
+AB myembossdemo
+AQ demotable
+CC No documentation, no example
+IN ../../data/paamir.gff3
+FI stderr
+FC = 16
+FP 7 /^type [a-zA-Z_']+ found/
+FP /^type 'CDS' found 2 times\n/
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+//
+
 ID myseq-ex
-AB myemboss
-AA myseq
+AB myembossdemo
+AQ myseq
 IN tembl:x13776
 IN
 FI stderr
@@ -23537,8 +23834,8 @@ FP /^Length: 2167\n/
 //
 
 ID mytest-ex
-AB myemboss
-AA mytest
+AB myembossdemo
+AQ mytest
 IN tembl:x13776
 IN
 FI stderr
@@ -25829,12 +26126,12 @@ CL -repeats 3
 TI 500
 IN ../../data/rna3.fold
 IN
-## We can only trst the first result to be the same
+## We can only trust the first result to be the same
 ## after that random number functions differ on Linux and Tru64 at least
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9](   d = [0-9\.]+)?\n/
-FP  /^GGGUCGCUUUCCGCUCAGA.*GGCUCGAAA   30   d \= 1\.000000\n/
+FP  /^UGUAGUUACACCCCCGGA.*GACGAUUACACCCG   34   d \= 3\.000000\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25855,9 +26152,9 @@ IN
 FI rna3.vrnainverse
 FC = 3
 FP 3 /^[ACGU]{76}   [0-9][0-9]\n/
-FP  /^CACUACCGUGUCGUGGCGU.*UGGUGCAGC   27\n/
-FP  /^GGUACCGUACUCUUUAAGU.*GUACUAAUC   36\n/
-FP  /^GCGAAGUGUUUCGGAACCA.*UUCGCCCUA   21\n/
+FP  /^AGCAUUAGAGCGGACUGAA.*AUGCUUUGU   26\n/
+FP  /^GUGACUCACGAUCUGCGCA.*GUUAUCCCG   25\n/
+FP  /^GCUAUUAAACAGCUUAAGU.*AUAGCAAUC   19\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -25936,7 +26233,7 @@ FC = 0
 ID emira-ex
 AB mira
 AA emira
-PP ln -f -s ../../../../src/mira-2.8.3/minidemo/data/bbdataset1/cjejuni_demo* .
+PP ln -f -s /homes/pmr/src/mira-2.8.3/minidemo/data/bbdataset1/cjejuni_demo* .
 CL -setparam fasta -project cjejuni_demo -genome accurate
 CL -mxti -rns tigr -orh
 QQ rm cjejuni_demo_backbone_in.gbf
@@ -25967,9 +26264,9 @@ CL -setparam fasta
 TI 300
 IN
 ## Input files absolutely require the step1 prefix for MIRA up to 2.8.3
-PP uncover_at ../../../../src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.masked.fasta -P "-CL:mbc=on:mbcmeg=240" -n -a -r ../../../../src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.fasta step1_in.fasta >ttt
+PP uncover_at /homes/pmr/src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.masked.fasta -P "-CL:mbc=on:mbcmeg=240" -n -a -r /homes/pmr/src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.fasta step1_in.fasta >ttt
 PP rm ttt
-PP ln -f -s ../../../../src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.fasta.qual step1_in.fasta.qual
+PP ln -f -s /homes/pmr/src/mira-2.8.3/minidemo/data/fasta_estset1/triphysaria_versicolor.fasta.qual step1_in.fasta.qual
 PP touch step1_straindata_in.txt
 QQ rm step1_in.fasta.qual
 QQ rm step1_straindata_in.txt
@@ -26018,3 +26315,254 @@ FP 4 /^Contig id: 138\n/
 FP 2 /^Contig id: 1380\n/
 FP 1 /^Contig id: 1390\n/
 //
+
+###############################################################
+#
+# CBS TOOLS
+# Need to be installed individually
+#
+###############################################################
+
+ID echlorop-ex
+AB cbstools
+AA echlorop
+RQ chlorop
+IN ../../data/cbs/test1.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test1.echlorop
+FC = 10
+FP /^P48786;                 1088	   0\.434   -	 -0\.663	    28\n/
+//
+
+ID echlorop-full
+AB cbstools
+AA echlorop
+RQ chlorop
+CL -full
+IN ../../data/cbs/test1.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test1.echlorop
+FC = 1106
+FP /^P48786;                 1088	   0\.434   -	 -0\.663	    28\n/
+FP /^   29 Q   0\.144 0\.008	-0\.663\n/
+//
+
+ID echlorop-ex2
+AB cbstools
+AA echlorop
+RQ chlorop
+IN ../../data/cbs/test12.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test12.echlorop
+FC = 21
+FP /^P48786;                 1088	   0\.434   -	 -0\.663	    28\n/
+//
+
+ID echlorop-full2
+AB cbstools
+AA echlorop
+RQ chlorop
+CL -full
+IN ../../data/cbs/test12.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test12.echlorop
+FC = 4188
+FP /^P48786;                 1088	   0\.434   -	 -0\.663	    28\n/
+FP /^   29 Q   0\.144 0\.008	-0\.663\n/
+//
+
+
+ID elipop-ex
+AB cbstools
+AA elipop
+RQ lipop
+IN ../../data/cbs/5h2a_crigr.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI 5h2a_crigr.elipop
+FC = 5
+FP /5H2A_CRIGR	LipoP1\.0	SEQUENCE	1	70	0	\+	\.	\#you can have comments after the ID\n/
+FP /^5H2A_CRIGR	LipoP1\.0:Signal	CYT	1	1	-0\.200913	\+	0	\#M\n/
+//
+
+ID enetnglyc-ex
+AB cbstools
+AA enetnglyc
+RQ netNglyc
+IN ../../data/cbs/LEUK_RAT.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI leuk_rat.enetnglyc
+FC = 40
+FP /    Warning: This sequence may not contain a signal peptide\!\!/
+FP /^  LEUK_RAT              0\.112  32 N  0\.088  16 N  0\.362   8 N  0\.119 N  0\.104 N\n/
+FP /^LEUK_RAT       274 NGTV		0\.7323		\(9\/9\)		  \+\+\n/
+FP /^LEUK_RAT       300 NKSS		0\.5404		\(6\/9\)		   \+\n/
+//
+
+ID enetoglyc-ex
+AB cbstools
+AA enetoglyc
+RQ netOglyc
+IN ../../data/cbs/LEUK_RAT.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI leuk_rat.enetoglyc
+FC = 129
+FP 45 /^LEUK_RAT\s+T\s+.*\s+T\s+/
+FP 8 /^LEUK_RAT\s+T\s+.*\s+\.\s+/
+FP 35 /^LEUK_RAT\s+S\s+.*\s+S\s+/
+FP 24 /^LEUK_RAT\s+S\s+.*\s+\.\s+/
+FP 112 /^LEUK_RAT\s+/
+FP /LEUK_RAT                      S     25   0\.502   0\.029   S   -\n/
+//
+
+
+ID enetphos-ex
+AB cbstools
+AP enetphos
+IN ../../data/cbs/EFTU_HUMAN.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eftu_human.enetphos
+FC = 748
+FP /^# EFTU_HUMAN               5 T   MAAATLLRA   0.776   PKC        YES\n/
+//
+
+ID eprop-ex
+AB cbstools
+AA eprop
+RQ prop
+IN ../../data/cbs/EDA_HUMAN.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI eda_human.eprop
+FC = 73
+FP /EDA_HUMAN        8    GYPEVER\|RE  0\.057    \.\n/
+//
+
+
+ID esignalp-ex
+AB cbstools
+RQ signalp
+AA esignalp
+IN ../../data/cbs/test.seq
+IN
+IN
+IN
+IN
+IN
+IN
+FI stderr
+FC = 24
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI test.esignalp
+FC = 168
+FP /trained on eukaryotes/
+FP /^\# Measure  Position  Value  Cutoff  signal peptide\?\n/
+FP /^  max\. C    26       0\.681   0\.32   YES\n/
+FP /^  max\. Y    26       0\.731   0\.33   YES\n/
+FP /^  max\. S    18       0\.982   0\.87   YES\n/
+FP /^  mean S     1-25    0\.832   0\.48   YES\n/
+FP /^       D     1-25    0\.782   0\.43   YES\n/
+FP /^\# Most likely cleavage site between pos. 25 and 26: VSS-TE\n/
+//
+
+ID etmhmm-ex
+AB cbstools
+AA etmhmm
+RQ tmhmm
+IN ../../data/cbs/5h2a_crigr.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI 5h2a_crigr.etmhmm
+FC = 20
+FP /^# 5H2A_CRIGR Length: 471\n/
+FP /^# 5H2A_CRIGR Number of predicted TMHs:  7\n/
+FP /^# 5H2A_CRIGR Exp number of AAs in TMHs: 159\.47336\n/
+FP /^# 5H2A_CRIGR Exp number, first 60 AAs:  0\.01677\n/
+FP /^# 5H2A_CRIGR Total prob of N-in:        0\.00629\n/
+FP /^5H2A_CRIGR	TMHMM2\.0	outside	     1    76\n/
+FP /^5H2A_CRIGR	TMHMM2\.0	TMhelix	    77    99\n/
+//
+
+
+ID eyinoyang-ex
+AB cbstools
+AA eyinoyang
+RQ yinoyang
+IN ../../data/cbs/CBG_HUMAN.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI cbg_human.eyinoyang
+FC = 39
+FP /^  CBG_HUMAN             0\.645  23 Y  0\.717  23 Y  0\.981  13 Y  0\.886 Y  0\.801 Y\n/
+//
+
+ID eyinoyang-ex2
+AB cbstools
+AA eyinoyang
+RQ yinoyang
+IN ../../data/cbs/LEUK_RAT.fsa
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI leuk_rat.eyinoyang
+FC = 74
+FP /^LEUK_RAT        6  S    \+\+       0\.5334    0\.4196   0\.5159\n/
+//
+
+
