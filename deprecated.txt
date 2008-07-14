@@ -688,6 +688,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #acdtrace
 #acdvalid
 #ajtest
+#aligncopy
+#aligncopypair
 #antigenic
 #backtranambig
 #backtranseq
@@ -705,6 +707,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #coderet
 #complex
 #compseq
+#consambig
 #cons
 #corbatest
 #cpgplot
@@ -722,14 +725,6 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #dbxgcg
 #dbxstat
 #degapseq
-#demoalign
-#demofeatures
-#demolist
-#demoreport
-#demosequence
-#demostring
-#demostringnew
-#demotable
 #density
 #descseq
 #diffseq
@@ -755,6 +750,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #extractalign
 #extractfeat
 #extractseq
+#featcopy
+#featreport
 #findkm
 #freak
 #fuzznuc
@@ -769,6 +766,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #hmoment
 #iep
 #infoalign
+#infobase
+#inforesidue
 #infoseq
 #intconv
 #isochore
@@ -780,6 +779,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #makenucseq
 #makeprotseq
 #marscan
+#maskambignuc
+#maskambigprot
 #maskfeat
 #maskseq
 #matcher
@@ -793,7 +794,10 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #newcpgreport
 #newcpgseek
 #newseq
+#nohtml
 #noreturn
+#nospace
+#notab
 #notseq
 #nthseq
 #octanol
@@ -855,6 +859,8 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #silent
 #sirna
 #sixpack
+#sizeseq
+#skipredundant
 #skipseq
 #splitter
 #stretcher
@@ -873,6 +879,7 @@ embIepIEP =embIepIepC 1,2,3,4 1,2,0,0,3,4
 #treetypedisplay
 #trimest
 #trimseq
+#trimspace
 #twofeat
 #union
 #vectorstrip
