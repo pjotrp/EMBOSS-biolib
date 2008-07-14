@@ -1612,8 +1612,7 @@ public class Graph2DPlot extends ScrollPanel
     scroll.setPreferredSize(new Dimension(400,400));
     frame.getContentPane().add(scroll);
 //  gp.setData(emboss_data);
-    File file = new File(/*arg[0]*/"/homes/uludag/jemboss/dotmatcher_Mon_Jul_14_09_32_19_BST_2008_37430/dotmatcher1.dat");
-//    File file = new File(/*arg[0]*/"/homes/uludag/jemboss/pepwheel_Thu_Jul_10_17_02_29_BST_2008_42768/pepwheel1.dat");
+    File file = new File(arg[0]);
     gp.setFileData(file);
     frame.setJMenuBar(gp.getMenuBar(false, frame));
     frame.pack();
