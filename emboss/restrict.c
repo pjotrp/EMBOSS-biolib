@@ -922,7 +922,7 @@ static ajint restrict_enzcompare(const void *a, const void *b)
 ** Check that all given restriction enzyme names exists
 **
 ** @param [r] enzymes [const AjPStr] enzyme list
-** @param [r] enzfile [AjPFile] enzyme file
+** @param [u] enzfile [AjPFile] enzyme file
 ** @return [void]
 ** @@
 ******************************************************************************/
