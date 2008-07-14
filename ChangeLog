@@ -1,4 +1,59 @@
 Version 6.0.0
+	New application aligncopy reads a set of aigned sequences and
+	prints a report in one of the standard alignment formats that can
+	accept the same number of sequences. Pairwise alignment formats
+	can only be used if the input has exactly two sequences.
+
+	New application aligncopypair reads a set of aigned sequences and
+	prints a report or each pair of aligned sequences in one of the
+	standard alignment formats.
+
+	New application featreport reads a sequence and a feature table,
+	and writes a report in and of the standard report formats.
+
+	New application featcopy reads and writes a feature table to
+	convert feature formats.
+
+	New applications maskambignuc and maskambigprot replace ambiguity
+	characters in nucleotide sequences with 'N' and in protein
+	sequences with 'X'.
+
+	New application consambig reports an alignment consensus sequence
+	using ambiguity characters. The intended use cases are sequencing
+	reads and SNP reporting.
+
+	New application sizeseq sorts sequences in ascending or descending
+	order of length. This is a port of the application seqsort from
+	the domsearch EMBASSY package.
+
+	New application skipredundant uses pairwise sequence matches to
+	exclude sequences that are similar from an input set. This is a
+	modified version of the application seqnr from the domsearch
+	EMBASSY package.
+
+	New applications provide utility functions for former GCG users:
+	nohtml removes HTML tags, notab replaces tabs with spaces,
+	nospace removes all whitespace from a file, skipspace removes
+	extra whitespace from a file.
+	
+	Older EMBOSS applications can now generate a warning message
+	stating that they are marked as 'obsolete' with an explanation and
+	an indication of alternative programs in EMBOSS or in an EMBASSY
+	package. This warning can be turned off by defining environment
+	variable EMBOSS_WARNOBSOLETE with a value of "N" or by defining
+	the same variable in the emboss.defaults or ~/.embossrc files. We
+	will begin to mark applications as 'obsolete' in future releases.
+
+	A new EMBASSY package "myembossdemo" contains the demonstration
+	applications demoalign, demofeatures, demolist, demoreport,
+	demosequence, demostring, demostringnew and demotable that
+	illustrate how to use EMBOSS data types in your own
+	applications. The myembossdemo package allows novice developers to
+	try simple EMBOSS programming. The myemboss package is available
+	for adding your own applications. The demo applications are no
+	longer distributed with the main EMBOSS package. They were not
+	installed and were only built with the "make check" option.
+
 	Application short descriptions have been revised. The minimum
 	length of application one line descriptions is increased from 60
 	to 70 characters. The descriptions are easier to write. Output
@@ -12,7 +67,7 @@ Version 6.0.0
 	ajfileio.c have been added. The buffered file data structures are
 	renamed internally to be more consistent (AjPFileBuff to AjPFilebuff).
 
-	notseq was unable to search for IDs contaaining '|' characters
+	notseq was unable to search for IDs containing '|' characters
 	but uses string matching (not regular expressions) and these
 	characters are valid in NCBI-style FASTA files if read with the
 	"pearson" format which accepts the whole ID string without parsing.
