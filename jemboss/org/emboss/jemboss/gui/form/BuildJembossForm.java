@@ -445,7 +445,7 @@ public class BuildJembossForm implements ActionListener
   public void actionPerformed(ActionEvent ae)
   {
 
-    //String line;
+    ShowResultSet resultSetFrame = null;
 
     if( ae.getActionCommand().startsWith("Advanced Option"))
     {
@@ -460,9 +460,10 @@ public class BuildJembossForm implements ActionListener
     else if ( ae.getActionCommand().startsWith("GO"))
     {
       f.setCursor(cbusy);
+      try{
       if(!withSoap)
       {
-        final Hashtable filesToMove = new Hashtable();
+        Hashtable filesToMove = new Hashtable();
         final String embossCommand = getCommand(filesToMove);
 
         if(!embossCommand.equals("NOT OK"))
@@ -475,10 +476,18 @@ public class BuildJembossForm implements ActionListener
           }
           else
           {
-            final JembossServer js = new JembossServer(mysettings.getResultsHome());
-            final Vector result = js.run_prog(embossCommand, 
-			    		mysettings.getCurrentMode(), filesToMove);
-		    new ShowResultSet(convert(result,false),filesToMove,mysettings);
+              JembossServer js = new JembossServer(mysettings.getResultsHome());
+              Vector result = js.run_prog(embossCommand, 
+                      mysettings.getCurrentMode(), filesToMove);
+              Hashtable r = convert(result,false);
+              try {
+                  resultSetFrame = new ShowResultSet(r,filesToMove,mysettings);
+              } catch (OutOfMemoryError e) {
+                  result.clear();
+                  filesToMove.clear();
+                  r.clear();
+                  throw e;
+              }
           }
         }
       }
@@ -504,7 +513,7 @@ public class BuildJembossForm implements ActionListener
             {
               JembossRun thisrun = new JembossRun(embossCommand,"",
                                            filesToMove,mysettings);
-              new ShowResultSet(thisrun.hash(),filesToMove,mysettings);
+              resultSetFrame = new ShowResultSet(thisrun.hash(),filesToMove,mysettings);
             }
           }
           catch (JembossSoapException eae)
@@ -514,11 +523,22 @@ public class BuildJembossForm implements ActionListener
             ap.setSize(380,170);
             ap.pack();
             ap.setVisible(true);
-            f.setCursor(cdone);
           }
         }
       }
+      }
+      catch (OutOfMemoryError e){
+          if (resultSetFrame != null){
+              resultSetFrame.dispose();
+          }
+          String msg ="Memory error: "+e+
+          "\nPlease check Jemboss JVM startup options";
+          e.printStackTrace();
+          JOptionPane.showMessageDialog(f, msg, "Error", JOptionPane.ERROR_MESSAGE);
+      }
+      finally {
       f.setCursor(cdone);
+      }
     }
     else if( ae.getActionCommand().startsWith("Show Alignment"))
     {
