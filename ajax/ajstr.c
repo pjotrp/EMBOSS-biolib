@@ -5903,6 +5903,8 @@ AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chrnew)
     char* cp;
     AjPStr thys;
 
+    /*ajDebug("ajStrExchangeSetRestCK '%s' => '%c' for '%S\n",
+      txt, chrnew, *Pstr);*/
     co = txt;
 
     if(!*Pstr)
@@ -5913,13 +5915,16 @@ AjBool ajStrExchangeSetRestCK(AjPStr* Pstr, const char* txt, char chrnew)
 
     while(*co)
     {
-	filter[(ajint)*co++] = chrnew;
+	filter[(ajint)toupper(*co)] = chrnew;
+	filter[(ajint)tolower(*co++)] = chrnew;
     }
 
     for(cp = thys->Ptr; *cp; cp++)
 	if(!filter[(ajint)*cp])
 	    *cp = chrnew;
 
+    /*ajDebug("ajStrExchangeSetRestCK returns '%S\n",
+            *Pstr);*/
     return ajTrue;
 }
 
