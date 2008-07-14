@@ -27,6 +27,7 @@ section: output [
 
   report: outfile [
     parameter: "Y"
+    rformat: "gff"
   ]
 
 endsection: output
