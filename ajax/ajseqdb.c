@@ -573,7 +573,7 @@ static SeqOAccess seqAccess[] =
 	 "retrieve in text format from a local SRS installation"},
     {"srsfasta",  AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessSrsfasta, NULL,
-	 "ertrieve in FASTA format from a local SRS installation"},
+	 "retrieve in FASTA format from a local SRS installation"},
     {"srswww",    AJFALSE, AJTRUE,  AJTRUE,  AJTRUE,  
 	 seqAccessSrswww, NULL,
 	 "retrieve in text format from an SRS webserver"},
