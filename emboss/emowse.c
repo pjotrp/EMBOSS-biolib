@@ -229,6 +229,8 @@ int main(int argc, char **argv)
     ajDoubleDel(&freqs);
     ajListFree(&flist);
 
+    embPropMolwtDel(&mwdata);
+
     embExit();
 
     return 0;

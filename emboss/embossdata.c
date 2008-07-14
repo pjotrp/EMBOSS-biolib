@@ -132,6 +132,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf, "File '%S' has been copied successfully.\n", t);
 	ajStrDel(&t);
 	ajStrDel(&cmd);
+	ajStrDel(&line);
     }
 
 

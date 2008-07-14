@@ -444,6 +444,10 @@ int main(int argc, char **argv)
     ajSeqallDel(&seqall);
     ajSeqDel(&seq);
 
+    ajStrDel(&fthit);
+    ajStrDel(&ftmiss);
+    ajStrDel(&tmpstr);
+
     embExit();
 
     return 0;
