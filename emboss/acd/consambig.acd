@@ -1,5 +1,6 @@
 application: consambig [
-  documentation: "Create an ambiguouos consensus sequence from a multiple alignment"
+  documentation: "Create an ambiguous consensus sequence from a
+                  multiple alignment"
   groups: "Alignment:Consensus"
 ]
 
