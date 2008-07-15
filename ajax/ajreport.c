@@ -1696,11 +1696,11 @@ static void reportWriteSeqTable(AjPReport thys, const AjPFeattable ftable,
     AjPStr tmpstr = NULL;
     AjBool dostrand = ajFalse;
     char strand = '+';
-    ajint seqlen;
+/*    ajint seqlen; */
     const AjPStr seqalias;
 
     outf = thys->File;
-    seqlen = ajSeqGetLen(seq);
+/*    seqlen = ajSeqGetLen(seq); */
 
     if(ajSeqIsReversedTrue(seq))
     {

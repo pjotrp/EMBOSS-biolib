@@ -35,7 +35,6 @@ int main(int argc, char **argv)
     AjPFile outf;
     AjPStr code = NULL;
     char    code1;
-    ajint ibase;
     ajuint i;
     ajuint iend;
 
@@ -56,8 +55,6 @@ int main(int argc, char **argv)
         code1=ajStrGetCharPos(code,i);
         if(ajBaseExistsChar(code1))
         {
-            ibase = ajBaseAlphacharToBin(code1);
-            
             ajFmtPrintF(outf, "%-4c %-10S %-10c %S\n",
                         code1, ajBaseGetCodes(code1),
                         ajBaseAlphacharComp(code1),

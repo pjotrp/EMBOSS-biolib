@@ -2606,7 +2606,6 @@ static AjBool featReadEmbl(AjPFeattable thys, AjPFilebuff file)
     AjPStr savefeat = NULL;
     AjPStr saveline = NULL;
     AjPStr saveloc  = NULL;
-    AjBool isEmbl = ajFalse;
     AjBool isGenbank = ajFalse;
 
     if(!featReadLine)
@@ -2628,7 +2627,6 @@ static AjBool featReadEmbl(AjPFeattable thys, AjPFilebuff file)
 	    if(featEmblFromLine(thys, featReadLine,
 				&savefeat, &saveloc, &saveline))
 		found = ajTrue ;
-            isEmbl = ajTrue;
 	}
 
 	/* if it's a GenBank feature do stuff */

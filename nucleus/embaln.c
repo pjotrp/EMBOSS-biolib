@@ -1547,7 +1547,6 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 
     ajint ix;
     ajint iy;
-    ajint t;
 
     ajint xpos  = 0;
     ajint xpos2 = 0;
@@ -1562,7 +1561,6 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     ajint leftwidth;
     ajint rightwidth;
 
-    ajint xmin;                 /* first x position for this row */
     ajint ymin;
     ajint xmax;                 /* last x position for this row */
     ajint ymax;
@@ -1587,10 +1585,6 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
     if(ymax > lena)
         ymax = lena;
 
-    if(offset <= 0)             /* y (a) offset) */
-        xmin =  -leftwidth;
-    else
-        xmin = offset - leftwidth;
     xmax = lena + rightwidth-1 + offset;
     if(xmax > lenb)
         xmax = lenb;
@@ -1669,7 +1663,6 @@ void embAlignWalkSWMatrixFast(const float *path, const ajint *compass,
 	    score  = path[ip];
 	    gapcnt = 0.;
 	    iy = ypos-1;
-	    t  = iy+1;
 
 	    while(1)
 	    {

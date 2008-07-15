@@ -63,7 +63,6 @@ int main(int argc, char **argv)
     ajint end;
     ajint len;
     ajint coilpos=1;
-    ajint scorepos=1;
 
     const char *p;
     char *q;
@@ -99,7 +98,7 @@ int main(int argc, char **argv)
     ajint isub;
     ajint startcoil;
     ajint endcoil;
-    ajint lencoil;
+/*    ajint lencoil; */
     ajint startframe;
     ajint coilframe;
     ajint fframe;
@@ -236,7 +235,6 @@ int main(int argc, char **argv)
 		    if(ajFloatGet(pscores,i) > maxscore)
 		    {
 			maxscore = ajFloatGet(pscores,i);
-			scorepos = i+1;
 		    }
 		    if(pepcoil_inframe(startframe,i,ajIntGet(frames,i),7)
 		       != coilframe)
@@ -261,7 +259,7 @@ int main(int argc, char **argv)
 		else
 		{
 		    endcoil = i-1;
-		    lencoil = endcoil-startcoil+1;
+		    /* lencoil = endcoil-startcoil+1; */
 		    if(other)
 		    {
 			gf = ajFeatNewProt(TabRpt, NULL, ftmiss,
@@ -286,7 +284,6 @@ int main(int argc, char **argv)
 		    iscoil = ajTrue;
 		    startcoil  = i;
 		    coilpos = i+1;
-		    scorepos = i+1;
 		    maxcoil    = ajFloatGet(probs,i);
 		    maxscore   = ajFloatGet(pscores,i);
 		    coilframe  = ajIntGet(frames,i);
@@ -309,7 +306,7 @@ int main(int argc, char **argv)
 		{
 			    
 		    endcoil = i-1;
-		    lencoil = endcoil - startcoil;
+		    /* lencoil = endcoil - startcoil; */
 		    if(frame)
 		    {
 			/*
@@ -354,7 +351,6 @@ int main(int argc, char **argv)
 		    maxscore  = ajFloatGet(pscores,i);
 		    startcoil = i;
 		    coilpos = i+1;
-		    scorepos = i+1;
 		}
 		else
 		{
@@ -366,13 +362,12 @@ int main(int argc, char **argv)
 		    if(ajFloatGet(pscores,i) > maxscore)
 		    {
 			maxscore = ajFloatGet(pscores,i);
-			scorepos = i+1;
 		    }
 		}
 	    }
 	}
 
-	lencoil = len-startcoil;
+	/* lencoil = len-startcoil; */
 	if(iscoil)
 	{
 	    if(coil)
