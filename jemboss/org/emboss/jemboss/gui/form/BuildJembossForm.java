@@ -60,6 +60,7 @@ import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.graphics.Graph2DPlot;
 import org.emboss.jemboss.server.JembossServer;
+import org.omg.SendingContext.RunTime;
 
 /**
 *
@@ -123,7 +124,7 @@ public class BuildJembossForm implements ActionListener
   private JembossParams mysettings;
   
   public BuildJembossForm(String appDescription, String db[],
-        final String applName, String[] envp, String cwd, 
+        final String applName, final String[] envp, String cwd, 
         String acdText, final boolean withSoap, JPanel p2, 
         final JembossParams mysettings, final JFrame f)
   {
@@ -146,8 +147,10 @@ public class BuildJembossForm implements ActionListener
     pC.setLayout(new BorderLayout());
 
     Box fieldPane = Box.createVerticalBox();
-
+    long t1 = System.currentTimeMillis();
     parseAcd = new ParseAcd(acdText,false);
+    long t2 = System.currentTimeMillis();
+    System.out.println("time passed"+(t2-t1));
     numofFields = parseAcd.getNumofFields();
 
     attach(pC, fieldPane, appDescription);
@@ -158,11 +161,14 @@ public class BuildJembossForm implements ActionListener
 
 // get help for current application
     if(!withSoap) 
-    {
-      String command = embossBin.concat("tfm " + applName + " -html -nomore");
-      RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
-      rea.waitFor();
-      helptext = rea.getProcessStdout(); 
+    { new Runnable(){
+        public void run(){
+            String command = embossBin.concat("tfm " + applName + " -html -nomore");
+            RunEmbossApplication2 rea = new RunEmbossApplication2(command, envp,null);
+            rea.waitFor();
+            helptext = rea.getProcessStdout();
+        }
+    }.run();
     }
 
 // Help button
@@ -186,9 +192,9 @@ public class BuildJembossForm implements ActionListener
           String urlEmbassyPrefix = parseAcd.getUrlPrefix();
           url = mysettings.getembURL();
           if(urlEmbassyPrefix != null)
-            url = url + "apps/release/4.0/embassy/" +applName+ "/" ;
+            url = url + "apps/release/6.0/embassy/" +applName+ "/" ;
           else
-            url = url + "apps/release/4.0/emboss/apps/";
+            url = url + "apps/release/6.0/emboss/apps/";
 
           url = url+applName+".html";
         }
