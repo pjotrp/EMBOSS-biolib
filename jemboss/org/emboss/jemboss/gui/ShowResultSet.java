@@ -211,6 +211,7 @@ public class ShowResultSet extends JFrame
     }
     else if(title.endsWith(".png"))
     {
+      menuBar.getComponent(2).setEnabled(false);
       setJMenuBar(menuBar);
       toolbar = menuBar.getToolBar();
       toolbar.getComponent(0).setEnabled(false);
@@ -218,6 +219,7 @@ public class ShowResultSet extends JFrame
     }    
     else 
     {
+      menuBar.getComponent(2).setEnabled(true);
       setJMenuBar(menuBar);
       toolbar = menuBar.getToolBar();
       toolbar.getComponent(0).setEnabled(true);
