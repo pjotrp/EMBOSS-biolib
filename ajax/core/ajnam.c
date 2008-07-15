@@ -721,15 +721,15 @@ AjBool ajNamDbDetails(const AjPStr name, AjPStr* type, AjBool* id,
     fnew = ajTableFetch(namDbMasterTable, ajStrGetPtr(name));
     if(fnew)
     {
-	/* ajDebug("  '%S' found\n", name); */
+	ajDebug("ajNamDbDetails '%S' found\n", name);
 
 	ajStrAssignS(defined, fnew->file);
 
 	dbattr = (AjPStr *) fnew->data;
 	for(i=0; namDbAttrs[i].Name; i++)
 	{
-	    /* ajDebug("Attribute name = %s, value = %S\n",
-	       namDbAttrs[i].Name, dbattr[i]); */
+	    ajDebug("Attribute name = %s, value = %S\n",
+	       namDbAttrs[i].Name, dbattr[i]);
 	    if(ajStrGetLen(dbattr[i]))
 	    {
 		if(!strcmp("type", namDbAttrs[i].Name))
@@ -826,6 +826,10 @@ static ajint namMethod2Scope(const AjPStr method)
     else if(!ajStrCmpC(method, "emboss"))
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "srs"))
+	result = (METHOD_ENTRY | METHOD_QUERY);
+    else if(!ajStrCmpC(method, "mrs"))
+	result = (METHOD_ENTRY | METHOD_QUERY);
+    else if(!ajStrCmpC(method, "mrs3"))
 	result = (METHOD_ENTRY | METHOD_QUERY);
     else if(!ajStrCmpC(method, "srsfasta"))
 	result = (METHOD_ENTRY | METHOD_QUERY);
