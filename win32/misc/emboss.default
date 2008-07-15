@@ -64,14 +64,14 @@ DB pir [  type: P method: srswww format: nbrf release: "EBI"
   comment: "PIR from the EBI" ]
 
 
-DB gb [ type: N comment: "Genbank mrs"
+DB gb [ type: N
         methodentry: mrs3 format: genbank
         dbalias: "genbank_release"
         url: "http://mrs.cmbi.ru.nl/mrs-3/plain.do"
         comment: "GenBank IDs via MRS"
 ]
 
-DB genbank [ type: N comment: "Genbank mrs"
+DB genbank [ type: N
         methodentry: mrs3 format: genbank
         dbalias: "genbank_release"
         url: "http://mrs.cmbi.ru.nl/mrs-3/plain.do"
