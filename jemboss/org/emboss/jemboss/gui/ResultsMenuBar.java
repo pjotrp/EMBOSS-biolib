@@ -577,9 +577,6 @@ public class ResultsMenuBar extends JMenuBar
     });
     fileMenu.add(resFileMenuExit);
     add(fileMenu);
-
-    frame.setJMenuBar(this);
-    frame.getContentPane().add(toolBar, BorderLayout.NORTH);
   }
 
   /**
@@ -648,16 +645,6 @@ public class ResultsMenuBar extends JMenuBar
     }
   }
 
-  /**
-  *
-  * Get the menu bar
-  * @return 	menu bar
-  *
-  */ 
-//public JMenuBar getJMenuBar()
-//{
-//  return this;
-//}
 
   /**
   * 
