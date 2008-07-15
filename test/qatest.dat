@@ -26566,3 +26566,30 @@ FP /^LEUK_RAT        6  S    \+\+       0\.5334    0\.4196   0\.5159\n/
 //
 
 
+###############################################################
+#
+# IPRSCAN
+# iprscan needs to be installed separately
+#
+###############################################################
+
+ID eiprscan-ex
+AB iprscan
+AA eiprscan
+RQ iprscan
+TI 1500
+CL -nocrc -goterms -iprlookup
+IN ../../data/iprtest.seq
+IN
+IN raw
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI iprtest.eiprscan
+FC = 2
+FP /^\n/
+//
+
