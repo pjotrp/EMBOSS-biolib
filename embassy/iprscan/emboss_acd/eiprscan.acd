@@ -11,8 +11,8 @@ section: input [
 
   seqset: sequence [
     parameter: "Y"
-    type: "any"
-    aligned: "Y"
+    type: "gap"
+    aligned: "N"
   ]
 
 endsection: input
