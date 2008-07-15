@@ -202,6 +202,7 @@ public class Graph2DPlot extends ScrollPanel
   public JMenuBar getMenuBar(boolean bexit, final JFrame frame)
   {
     JMenuBar menubar = new JMenuBar();
+    menubar.add(Box.createRigidArea(new Dimension(5,24)));
     JMenu fileMenu = new JMenu("File");
     fileMenu.setMnemonic(KeyEvent.VK_F);
 
