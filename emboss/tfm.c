@@ -179,6 +179,7 @@ static void tfm_FindAppDocRoot(const AjPStr program,
 		ajDirnameUp(&docrootinst);
 	    }
 	    ajStrAppendC(&docrootinst,"doc");
+	    ajStrAppendC(&docrootinst,SLASH_STRING);
 	}
 	else
 	    ajFmtPrintAppS(&docrootinst, "share%sEMBOSS%sdoc%s",
