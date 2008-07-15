@@ -1,0 +1,14 @@
+<b>Here is a sample session with eprop</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eprop </b>
+Reports propeptide cleavage sites in proteins
+Input (aligned) sequence set: <b>EDA_HUMAN.fsa</b>
+Output file [eda_human.eprop]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

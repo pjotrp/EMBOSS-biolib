@@ -1,0 +1,48 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: leuk_rat.enetnglyc</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+# Predictions for N-Glycosylation sites in 1 sequence
+
+########################################################################################
+
+    Warning: This sequence may not contain a signal peptide!!
+
+    Proteins without signal peptides are unlikely to be exposed to
+    the N-glycosylation machinery and thus may not be glycosylated
+    (in vivo) even though they contain potential motifs.
+
+    SignalP-NN euk predictions are as follows:
+
+  # name                Cmax  pos ?  Ymax  pos ?  Smax  pos ?  Smean ?  D     ? 
+  LEUK_RAT              0.112  32 N  0.088  16 N  0.362   8 N  0.119 N  0.104 N
+
+    SignalP output is explained at http://www.cbs.dtu.dk/services/SignalP/output.html
+
+########################################################################################
+
+Name:  LEUK_RAT 	Length:  378
+WAQVVSQENLPNTMTMLPFTPNSESPSTSEALSTYSSIATVPVTEDPKESISPWGQTTAPASSIPLGTPELSSFFFTSAG      80
+ASGNTPVPELTTSQEVSTEASLVLFPKSSGVASDPPVTITNPATSSAVASTSLETFKGTSAPPVTVTSSTMTSGPFVATT     160
+VSSETSGPPVTMATGSLGPSKETHGLSATIATSSGESSSVAGGTPVFSTKISTTSTPNPITTVPPRPGSSGMLLVSMLIA     240
+LTVVLVLVALLLLWRQRQKRRTGALTLSRGGKRNGTVDAWAGPARVPDEEATTASGSGGNKSSGAPETDGSGQRPTLTTF     320
+FSRRKSRQGSVALEELKPGTGPNLKGEEEPLVGSEDEAVETPTSDGPQAKDGAAPQSL                           400
+................................................................................      80
+................................................................................     160
+................................................................................     240
+.................................N.........................N....................     320
+..........................................................                           400
+
+(Threshold=0.5)
+----------------------------------------------------------------------
+SeqName        Position      Potential          Jury          N-Glyc
+				              agreement       result
+----------------------------------------------------------------------
+LEUK_RAT       274 NGTV		0.7323		(9/9)		  ++
+LEUK_RAT       300 NKSS		0.5404		(6/9)		   +
+----------------------------------------------------------------------
+
+</pre>
+</td></tr></table><p>

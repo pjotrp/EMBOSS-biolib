@@ -1,0 +1,41 @@
+<b>Here is a sample session with esignalp</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>esignalp </b>
+Reports protein signal cleavage sites
+Input (aligned) sequence set: <b>test.seq</b>
+Organism
+       euk : euk
+     gramp : gram positive
+     gramn : gram negative
+Organism type to use [euk]: <b></b>
+Algorithm method
+    nn+hmm : Neural net plus hmm
+        nn : Neural net
+       hmm : Hmm
+Method to use [nn+hmm]: <b></b>
+Text output format
+      full : Full
+   summary : Summary
+     short : Short
+Output format [full]: <b></b>
+Graphics mode
+      none : none
+       gif : gif
+       eps : eps
+   gif+eps : gif+eps
+        ps : ps
+Graphics output [none]: <b></b>
+       1.0 : 1.0
+       1.1 : 1.1
+       2.0 : 2.0
+       3.0 : 3.0
+Signalp version weights [3.0]: <b></b>
+Output file [test.esignalp]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

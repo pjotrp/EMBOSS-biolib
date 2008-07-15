@@ -1,0 +1,113 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eftu_human.enetphos</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+&gt;EFTU_HUMAN	452 amino acids
+#
+# netphos-3.1b prediction results
+#
+# Sequence		   # x   Context     Score   Kinase    Answer
+# -------------------------------------------------------------------
+# EFTU_HUMAN               5 T   MAAATLLRA   0.776   PKC        YES
+# EFTU_HUMAN               5 T   MAAATLLRA   0.520   cdc2       YES
+# EFTU_HUMAN               5 T   MAAATLLRA   0.442   CaM-II      . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.428   GSK3        . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.382   CKI         . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.350   DNAPK       . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.345   p38MAPK     . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.285   CKII        . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.226   ATM         . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.221   PKG         . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.204   RSK         . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.187   cdk5        . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.172   unsp        . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.125   PKA         . 
+# EFTU_HUMAN               5 T   MAAATLLRA   0.073   PKB         . 
+#
+# EFTU_HUMAN              10 T   LLRATPHFS   0.555   cdk5       YES
+# EFTU_HUMAN              10 T   LLRATPHFS   0.531   p38MAPK    YES
+# EFTU_HUMAN              10 T   LLRATPHFS   0.490   GSK3        . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.440   CaM-II      . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.369   CKI         . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.343   DNAPK       . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.341   PKG         . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.322   cdc2        . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.303   unsp        . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.275   RSK         . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.266   ATM         . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.249   CKII        . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.190   PKA         . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.099   PKC         . 
+# EFTU_HUMAN              10 T   LLRATPHFS   0.093   PKB         . 
+#
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.547   cdc2       YES
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.468   CaM-II      . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.444   GSK3        . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.371   CKI         . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.342   DNAPK       . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.332   CKII        . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.306   PKG         . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.304   PKC         . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.290   p38MAPK     . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.270   ATM         . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.248   RSK         . 
+# EFTU_HUMAN              14 S   TPHFSGLAA   0.199   cdk5        . 
+
+
+<font color=red>  [Part of this file has been deleted for brevity]</font>
+
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.446   CKII        . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.441   CaM-II      . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.425   CKI         . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.424   GSK3        . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.420   cdc2        . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.364   PKA         . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.279   p38MAPK     . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.275   ATM         . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.264   PKG         . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.192   RSK         . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.160   cdk5        . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.160   unsp        . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.138   PKC         . 
+# EFTU_HUMAN             439 T   LVTNTLAMT   0.078   PKB         . 
+#
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.678   CKII       YES
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.480   CKI         . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.447   unsp        . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.443   GSK3        . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.425   CaM-II      . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.376   cdc2        . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.348   DNAPK       . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.315   PKG         . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.277   ATM         . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.251   p38MAPK     . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.249   RSK         . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.157   cdk5        . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.132   PKC         . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.081   PKB         . 
+# EFTU_HUMAN             443 T   TLAMTEEEK   0.066   PKA         . 
+#
+    MAAATLLRATPHFSGLAAGRTFLLQGLLRLLKAPALPLLCRGLAVEAKKT   #     50
+    YVRDKPHVNVGTIGHVDHGKTTLTAAITKILAEGGGAKFKKYEEIDNAPE   #    100
+    ERARGITINAAHVEYSTAARHYAHTDCPGHADYVKNMITGTAPLDGCILV   #    150
+    VAANDGPMPQTREHLLLARQIGVEHVVVYVNKADAVQDSEMVELVELEIR   #    200
+    ELLTEFGYKGEETPVIVGSALCALEGRDPELGLKSVQKLLDAVDTYIPVP   #    250
+    ARDLEKPFLLPVEAVYSVPGRGTVVTGTLERGILKKGDECELLGHSKNIR   #    300
+    TVVTGIEMFHKSLERAEAGDNLGALVRGLKREDLRRGLVMVKPGSIKPHQ   #    350
+    KVEAQVYILSKEEGGRHKPFVSHFMPVMFSLTWDMACRIILPPEKELAMP   #    400
+    GEDLKFNLILRQPMILEKGQRFTLRDGNRTIGTGLVTNTLAMTEEEKNIK   #    450
+    WG                                                   #    500
+%1  ....T....T...S...................................T   #     50
+%1  Y....................T.T.................Y........   #    100
+%1  ......T........S................Y.......T.........   #    150
+%1  ..........T.................Y.........S...........   #    200
+%1  .......Y....T...............................TY....   #    250
+%1  ...............Y......T....T.................S....   #    300
+%1  ...T.......S................................S.....   #    350
+%1  .........S........................................   #    400
+%1  ......................T.........T.....T...T.......   #    450
+%1  ..
+</pre>
+</td></tr></table><p>

@@ -1,0 +1,14 @@
+<b>Here is a sample session with enetphos</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>enetphos </b>
+Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
+Input (aligned) sequence set: <b>EFTU_HUMAN.fsa</b>
+Output file [eftu_human.enetphos]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>

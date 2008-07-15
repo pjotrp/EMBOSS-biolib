@@ -1,0 +1,87 @@
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>(Aligned) sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>-type</td>
+<td>Organism type to use</td>
+<td><table><tr><td>euk</td> <td><i>(euk)</i></td></tr><tr><td>gramp</td> <td><i>(gram positive)</i></td></tr><tr><td>gramn</td> <td><i>(gram negative)</i></td></tr></table></td>
+<td>euk</td>
+</tr>
+
+<tr>
+<td>-method</td>
+<td>Method to use</td>
+<td><table><tr><td>nn+hmm</td> <td><i>(Neural net plus hmm)</i></td></tr><tr><td>nn</td> <td><i>(Neural net)</i></td></tr><tr><td>hmm</td> <td><i>(Hmm)</i></td></tr></table></td>
+<td>nn+hmm</td>
+</tr>
+
+<tr>
+<td>-format</td>
+<td>Output format</td>
+<td><table><tr><td>full</td> <td><i>(Full)</i></td></tr><tr><td>summary</td> <td><i>(Summary)</i></td></tr><tr><td>short</td> <td><i>(Short)</i></td></tr></table></td>
+<td>full</td>
+</tr>
+
+<tr>
+<td>-gmode</td>
+<td>Graphics output</td>
+<td><table><tr><td>none</td> <td><i>(none)</i></td></tr><tr><td>gif</td> <td><i>(gif)</i></td></tr><tr><td>eps</td> <td><i>(eps)</i></td></tr><tr><td>gif+eps</td> <td><i>(gif+eps)</i></td></tr><tr><td>ps</td> <td><i>(ps)</i></td></tr></table></td>
+<td>none</td>
+</tr>
+
+<tr>
+<td>-synver</td>
+<td>Signalp version weights</td>
+<td><table><tr><td>1.0</td> <td><i>(1.0)</i></td></tr><tr><td>1.1</td> <td><i>(1.1)</i></td></tr><tr><td>2.0</td> <td><i>(2.0)</i></td></tr><tr><td>3.0</td> <td><i>(3.0)</i></td></tr></table></td>
+<td>3.0</td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.esignalp</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-truncate</td>
+<td>Truncate sequence to n N-terminal residues (0=off)</td>
+<td>Integer 0 or more</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>-keepall</td>
+<td>Keep all gnuplot files</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+</table>

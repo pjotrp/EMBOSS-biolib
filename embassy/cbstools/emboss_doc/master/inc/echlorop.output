@@ -1,0 +1,47 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: test1.echlorop</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+### chlorop v1.1 prediction results ###########################
+Number of query sequences: 1
+
+Name                  Length       Score  cTP       CS-    cTP-
+                                                  score  length
+---------------------------------------------------------------
+P48786;                 1088	   0.434   -	 -0.663	    28
+---------------------------------------------------------------
+ 
+</pre>
+</td></tr></table><p>
+
+<a name="output.2"></a>
+<h3>Output files for usage example 2</h3>
+<p><h3>File: test12.echlorop</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+### chlorop v1.1 prediction results ###########################
+Number of query sequences: 12
+
+Name                  Length       Score  cTP       CS-    cTP-
+                                                  score  length
+---------------------------------------------------------------
+P11043_it_is_a_very_     516	   0.580   Y	  6.765	    65
+P07505;                  222	   0.596   Y	 11.122	    67
+P12360;                  246	   0.566   Y	  1.302	    42
+P12352;                   97	   0.470   -	 13.692	    23
+Q01289;                  399	   0.532   Y	 10.699	    62
+P08817;                  129	   0.559   Y	 12.650	    47
+P07263;                  546	   0.534   Y	  4.495	    41
+P07597;                  117	   0.465   -	  4.575	    22
+P48786;                 1088	   0.434   -	 -0.663	    28
+Q01238;                  102	   0.533   Y	  8.666	    41
+P35334;                  342	   0.465   -	  4.342	    71
+P13086;                  333	   0.460   -	  0.747	    48
+---------------------------------------------------------------
+ 
+</pre>
+</td></tr></table><p>

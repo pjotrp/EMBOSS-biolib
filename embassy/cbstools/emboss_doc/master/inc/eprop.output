@@ -1,0 +1,81 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: eda_human.eprop</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+
+
+         ##### ProP v.1.0b ProPeptide Cleavage Site Prediction #####
+
+
+         ##### Furin-type cleavage site prediction (Arginine/Lysine residues) #####
+
+
+  391 EDA_HUMAN   
+MGYPEVERRELLPAAAPRERGSQGCGCGGAPARAGEGNSCLLFLGFFGLSLALHLLTLCCYLELRSELRRERGAESRLGG      80
+SGTPGTSGTLSSLGGLDPDSPITSHLGQPSPKQQPLEPGEAALHSDSQDGHQMALLNFFFPDEKPYSEEESRRVRRNKRS     160
+KSNEGADGPVKNKKKGKKAGPPGPNGPPGPPGPPGPQGPPGIPGIPGIPGTTVMGPPGPPGPPGPQGPPGLQGPSGAADK     240
+AGTRENQPAVVHLQGQGSAIQVKNDLSGGVLNDWSRITMNPKVFKLHPRSGELEVLVDGTYFIYSQVEVYYINFTDFASY     320
+EVVVDEKPFLQCTRSIETGKTNYNTCYTAGVCLLKARQKIAVKMVHADISINMSKHTTFFGAIRLGEAPAS              400
+................................................................................      80
+..............................................................................P.     160
+................................................................................     240
+................................................................................     320
+.......................................................................              400
+ 
+Propeptide cleavage sites predicted:	Arg(R)/Lys(K): 1
+
+
+
+
+Name           Pos    Context     Score  Pred
+____________________________v_________________
+EDA_HUMAN        8    GYPEVER|RE  0.057    .
+EDA_HUMAN        9    YPEVERR|EL  0.128    .
+EDA_HUMAN       18    LPAAAPR|ER  0.135    .
+EDA_HUMAN       20    AAAPRER|GS  0.102    .
+EDA_HUMAN       33    CGGAPAR|AG  0.090    .
+EDA_HUMAN       65    CCYLELR|SE  0.089    .
+EDA_HUMAN       69    ELRSELR|RE  0.081    .
+EDA_HUMAN       70    LRSELRR|ER  0.195    .
+EDA_HUMAN       72    SELRRER|GA  0.293    .
+EDA_HUMAN       77    ERGAESR|LG  0.112    .
+EDA_HUMAN      112    LGQPSPK|QQ  0.064    .
+EDA_HUMAN      144    FFFPDEK|PY  0.060    .
+EDA_HUMAN      152    YSEEESR|RV  0.096    .
+EDA_HUMAN      153    SEEESRR|VR  0.114    .
+EDA_HUMAN      155    EESRRVR|RN  0.204    .
+EDA_HUMAN      156    ESRRVRR|NK  0.482    .
+EDA_HUMAN      158    RRVRRNK|RS  0.182    .
+EDA_HUMAN      159    RVRRNKR|SK  0.819 *ProP*
+EDA_HUMAN      161    RRNKRSK|SN  0.131    .
+EDA_HUMAN      171    GADGPVK|NK  0.060    .
+EDA_HUMAN      173    DGPVKNK|KK  0.066    .
+EDA_HUMAN      174    GPVKNKK|KG  0.119    .
+EDA_HUMAN      175    PVKNKKK|GK  0.156    .
+EDA_HUMAN      177    KNKKKGK|KA  0.116    .
+EDA_HUMAN      178    NKKKGKK|AG  0.120    .
+EDA_HUMAN      240    PSGAADK|AG  0.060    .
+EDA_HUMAN      244    ADKAGTR|EN  0.082    .
+EDA_HUMAN      263    GSAIQVK|ND  0.066    .
+EDA_HUMAN      276    VLNDWSR|IT  0.077    .
+EDA_HUMAN      282    RITMNPK|VF  0.057    .
+EDA_HUMAN      285    MNPKVFK|LH  0.064    .
+EDA_HUMAN      289    VFKLHPR|SG  0.116    .
+EDA_HUMAN      327    EVVVDEK|PF  0.060    .
+EDA_HUMAN      334    PFLQCTR|SI  0.152    .
+EDA_HUMAN      340    RSIETGK|TN  0.061    .
+EDA_HUMAN      355    AGVCLLK|AR  0.059    .
+EDA_HUMAN      357    VCLLKAR|QK  0.099    .
+EDA_HUMAN      359    LLKARQK|IA  0.073    .
+EDA_HUMAN      363    RQKIAVK|MV  0.078    .
+EDA_HUMAN      375    ISINMSK|HT  0.067    .
+EDA_HUMAN      384    TFFGAIR|LG  0.076    .
+____________________________^_________________
+
+
+
+
+</pre>
+</td></tr></table><p>
