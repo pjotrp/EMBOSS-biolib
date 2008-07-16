@@ -791,9 +791,11 @@ public class SectionPanel
         {
           public void actionPerformed(ActionEvent e)
           {
-            f.setCursor(cbusy);
             String fc = null;
             String fname;
+            f.setCursor(cbusy);
+            try
+            {
             if(sifc.isFileName() || sifc.isListFile())
             {
               if(sifc.isListFile())
@@ -847,28 +849,9 @@ public class SectionPanel
 
             if(!withSoap && fc!=null)    //Ajax without SOAP
             {
-              boolean ok = true;
-//              Ajax aj = null;
-              //if(JembossParams.isCygwin())
-                ok = cygwinSeqAttr(fc,envp,att);
-//              else
-//              {
-//                aj = new Ajax();
-//                if(att.startsWith("seqset"))
-//                  ok = aj.seqsetType(fc);
-//                else
-//                  ok = aj.seqType(fc);
-//              }
-
+              boolean ok = getSeqAttr(fc,envp,att);
               if(ok)
               {
-//                if(!JembossParams.isCygwin())
-//                {
-//                  ajaxLength  = Ajax.length;
-//                  ajaxWeight  = Ajax.weight;
-//                  ajaxProtein = Ajax.protein;
-//                }
- 
                 if( (updateBeginEnd(inSeqAttr[h].getBegSeq(),
                                     inSeqAttr[h].getEndSeq())) &&
                     (!att.startsWith("seqset")) &&
@@ -915,15 +898,21 @@ public class SectionPanel
                           "\nCheck the sequence entered.",
                           "Error Message", JOptionPane.ERROR_MESSAGE);
                 }
-//              System.out.println("PROPERTIES::: "+ca.getStatus()+"  "+ajaxLength+" "+ajaxWeight);
               }
               catch (JembossSoapException eae)
               {
                 System.out.println("Call to Ajax library failed");
               }
             }
+            }
+            catch (Exception exp){
+                JOptionPane.showMessageDialog(sectionPane,
+                        "Error while loading sequence options:\n" +
+                        exp.getMessage(),
+                        "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
             f.setCursor(cdone);
-//          resolveDependents(nod,dep,sifc.getFileChosen(),varName);
+            }
           }
         });
       }
@@ -979,15 +968,23 @@ public class SectionPanel
 
   /**
   *
-  * Cygwin uses infoseq to get sequence length and type
-  * and uses infoalign to get the sequence weight.  
+  * Uses infoseq to get sequence length and type
+  * and uses infoalign to get the sequence weight.
+  * Previously used only for Cygwin systems  
+ * @throws Exception 
   *
   */
-  private boolean cygwinSeqAttr(String fc, String[] envp, String att)
+  private boolean getSeqAttr(String fc, String[] envp, String att) throws Exception
   {
     String command = mysettings.getEmbossBin().concat(
      "infoseq -only -type -length -nohead -auto "+fc);
     RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
+    if (rea.getStatus().equals("1")){
+        String error = rea.getInitialIOError();
+        if (error==null)
+            error = rea.getProcessStderr();
+        throw new Exception(error);
+    }
     rea.waitFor();
 
     String stdout = rea.getProcessStdout();
