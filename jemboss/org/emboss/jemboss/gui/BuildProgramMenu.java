@@ -579,6 +579,10 @@ public class BuildProgramMenu
           new BuildJembossForm(progs.getProgDescription()[i],
                   db,progs.getProgsList()[i],envp,cwd,
                   acdText,withSoap,formPane,mysettings,f);
+          JScrollBar verticalScrollBar = scrollProgForm.getVerticalScrollBar();
+          JScrollBar horizontalScrollBar = scrollProgForm.getHorizontalScrollBar();
+          verticalScrollBar.setValue(verticalScrollBar.getMinimum());
+          horizontalScrollBar.setValue(horizontalScrollBar.getMinimum());
           f.repaint();
       }
       
