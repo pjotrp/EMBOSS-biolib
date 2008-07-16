@@ -139,23 +139,16 @@ public class BuildJembossForm implements ActionListener
     this.envp = envp;
     this.applName = applName;
 
-    JPanel pC = new JPanel();
-//  pC.setBackground(Color.white);
-
-    p2.add(pC, applName);
-    pC.setLayout(new BorderLayout());
-
     Box fieldPane = Box.createVerticalBox();
 
     parseAcd = new ParseAcd(acdText,false);
     numofFields = parseAcd.getNumofFields();
 
-    attach(pC, fieldPane, appDescription);
+    attach(p2, fieldPane, appDescription);
 
-//  JScrollPane scroll = new JScrollPane(fieldPane);
-//  pC.add(scroll, BorderLayout.CENTER);
-    pC.add(fieldPane,BorderLayout.CENTER);
-
+    p2.add(fieldPane,BorderLayout.CENTER);
+    p2.setBackground(inpSection.getBackground());
+    
 // get help for current application
     if(!withSoap) 
     {
