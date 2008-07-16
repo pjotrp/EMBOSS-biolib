@@ -646,7 +646,7 @@ public class SectionPanel
     Box bylabP = new Box(BoxLayout.Y_AXIS);
     Box bxlabP = new Box(BoxLayout.X_AXIS);
   
-    JScrollPane mainScroller = (JScrollPane)(p3.getParent().getParent().getParent());
+    JScrollPane mainScroller = (JScrollPane)(p3.getParent().getParent());
 
     JPanel jTitle = new JPanel(new BorderLayout());
     jTitle.setBackground(Color.white);
