@@ -848,26 +848,26 @@ public class SectionPanel
             if(!withSoap && fc!=null)    //Ajax without SOAP
             {
               boolean ok = true;
-              Ajax aj = null;
-              if(JembossParams.isCygwin())
+//              Ajax aj = null;
+              //if(JembossParams.isCygwin())
                 ok = cygwinSeqAttr(fc,envp,att);
-              else
-              {
-                aj = new Ajax();
-                if(att.startsWith("seqset"))
-                  ok = aj.seqsetType(fc);
-                else
-                  ok = aj.seqType(fc);
-              }
+//              else
+//              {
+//                aj = new Ajax();
+//                if(att.startsWith("seqset"))
+//                  ok = aj.seqsetType(fc);
+//                else
+//                  ok = aj.seqType(fc);
+//              }
 
               if(ok)
               {
-                if(!JembossParams.isCygwin())
-                {
-                  ajaxLength  = Ajax.length;
-                  ajaxWeight  = Ajax.weight;
-                  ajaxProtein = Ajax.protein;
-                }
+//                if(!JembossParams.isCygwin())
+//                {
+//                  ajaxLength  = Ajax.length;
+//                  ajaxWeight  = Ajax.weight;
+//                  ajaxProtein = Ajax.protein;
+//                }
  
                 if( (updateBeginEnd(inSeqAttr[h].getBegSeq(),
                                     inSeqAttr[h].getEndSeq())) &&
