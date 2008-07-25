@@ -50,7 +50,8 @@ int main(int argc, char **argv)
 
     float step;
     ajint amino = 1;
-
+    ajint carboxyl = 1;
+    
     double H;
     double pH;
     double iep;
@@ -84,6 +85,7 @@ int main(int argc, char **argv)
     step      = ajAcdGetFloat("step");
     termini   = ajAcdGetBoolean("termini");
     amino     = ajAcdGetInt("amino");
+    carboxyl  = ajAcdGetInt("carboxyl");
     sscount   = ajAcdGetInt("disulphides");
     modlysine = ajAcdGetInt("lysinemodified");
     outf      = ajAcdGetOutfile("outfile");
@@ -114,13 +116,13 @@ int main(int argc, char **argv)
 	    pro[i]=0.;
 	}
 
-	embIepCompS(substr, amino, sscount, modlysine, c);
+	embIepCompS(substr, amino, carboxyl, sscount, modlysine, c);
 
 	if(dofile && outf)
 	{
 	    ajFmtPrintF(outf,"IEP of %S from %d to %d\n",
 			ajSeqGetNameS(a), be, en);
-	    if(!embIepIepS(substr, amino, sscount, modlysine,
+	    if(!embIepIepS(substr, amino, carboxyl, sscount, modlysine,
 			  &iep, termini))
 		ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	    else
@@ -166,7 +168,7 @@ int main(int argc, char **argv)
 	    tmp = ajStrNew();
 	    ajFmtPrintS(&tit,"%s %d-%d IEP=",ajSeqGetNameC(a),be,en);
 
-	    if(!embIepIepS(substr, amino, sscount, modlysine,
+	    if(!embIepIepS(substr, amino, carboxyl, sscount, modlysine,
 			   &iep,termini))
 		ajStrAssignC(&tmp,"none");
 	    else

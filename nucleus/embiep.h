@@ -19,19 +19,19 @@ extern "C"
 */
 
 void   embIepCalcK (double *K);
-void   embIepCompC (const char *s, ajint amino,
+void   embIepCompC (const char *s, ajint amino, ajint carboxyl,
 		    ajint sscount, ajint modlysine,
 		    ajint *c);
-void   embIepCompS (const AjPStr str, ajint amino,
+void   embIepCompS (const AjPStr str, ajint amino, ajint carboxyl,
 		    ajint sscount, ajint modlysine,
 		    ajint *c);
 double embIepGetCharge (const ajint *c, const double *pro, double *total);
 void   embIepGetProto (const double *K, const ajint *c,
 		       ajint *op, double H, double *pro);
-AjBool embIepIepC (const char *s, ajint amino,
+AjBool embIepIepC (const char *s, ajint amino, ajint carboxyl,
 		   ajint sscount, ajint modlysine,
 		   double *iep, AjBool termini);
-AjBool embIepIepS (const AjPStr str, ajint amino,
+AjBool embIepIepS (const AjPStr str, ajint amino, ajint carboxyl,
 		   ajint sscount, ajint modlysine,
 		   double *iep, AjBool termini);
 double embIepPhFromHconc (double H);
@@ -42,8 +42,8 @@ void   embIepPkRead (void);
 double embIepPkToK (double pK);
 double embIepPkFromK (double K);
 
-__deprecated void    embIepComp (const char *s, ajint amino, ajint *c);
-__deprecated AjBool  embIepIEP (const char *s, ajint amino,
+    __deprecated void    embIepComp (const char *s, ajint amino, ajint carboxyl, ajint *c);
+    __deprecated AjBool  embIepIEP (const char *s, ajint amino, ajint carboxyl,
 			       double *iep, AjBool termini);
 /*
 ** End of prototype definitions

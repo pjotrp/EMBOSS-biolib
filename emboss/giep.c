@@ -125,13 +125,13 @@ int main(int argc, char **argv)
 	    pro[i]=0.;
 	}
 
-	embIepCompS(substr,amino,0,0,c); /* Get sequence composition */
+	embIepCompS(substr,amino,1,0,0,c); /* Get sequence composition */
 
 
 	if (dofile)
 	{
 	    ajFmtPrintF(outf,"IEP of %s from %d to %d\n",ajSeqGetNameC(a),be,en);
-	    if(!embIepIepS(substr,amino,0,0,&iep,termini))
+	    if(!embIepIepS(substr,amino,1,0,0,&iep,termini))
 		ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	    else
 		ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n\n",iep);
@@ -175,7 +175,7 @@ int main(int argc, char **argv)
 	    tmp = ajStrNew();
 	    ajFmtPrintS(&tit,"%s %d-%d IEP=",ajSeqGetNameC(a),be,en);
 
-	    if(!embIepIepS(substr, amino,0,0,&iep,termini))
+	    if(!embIepIepS(substr, amino,1,0,0,&iep,termini))
 		ajStrAssignC(&tmp,"none");
 	    else
 		ajFmtPrintS(&tmp,"%-8.4f",iep);
