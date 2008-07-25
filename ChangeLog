@@ -1,3 +1,5 @@
+Version 6.1.0
+	Allow user-defined -carboxyl parameter for IEP.
 Version 6.0.0
 	New application aligncopy reads a set of aigned sequences and
 	prints a report in one of the standard alignment formats that can
