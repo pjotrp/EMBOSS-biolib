@@ -2390,7 +2390,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI cirdna.ps
-FC = 491
+FC = 658
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 FI stdout
@@ -10760,7 +10760,6 @@ DI JASPAR_PHYLOFACTS
 
 ID jaspscan-ex
 AP jaspscan
-DL keep
 PP EMBOSS_DATA=../jaspextract-keep/
 PP export EMBOSS_DATA
 CL -both
@@ -10809,7 +10808,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI lindna.ps
-FC = 312
+FC = 318
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11663,7 +11662,7 @@ FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 3 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FC = 17026
+FC = 23290
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 2\n/
 //
@@ -11688,7 +11687,7 @@ FP 3 /^\s+4\s+T\s+1\n/
 FP 6 /^\s+4\s+T\s+0\n/
 FP 0 /^\s+4\s+T\s+0\.000\n/
 FI pepinfo.ps
-FC = 16411
+FC = 22675
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11963,7 +11962,7 @@ FI stdout
 FZ = 19
 FP /^Created plotorf\.ps\n/
 FI plotorf.ps
-FC = 681
+FC = 741
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -11983,7 +11982,7 @@ FI stdout
 FZ = 19
 FP /^Created plotorf\.ps\n/
 FI plotorf.ps
-FC = 3275
+FC = 6352
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -17642,7 +17641,7 @@ FP 3 /^     43      70        1 YMF.*KLRT\n/
 FP /^# Total_sequences: 3\n/
 FP /^# Total_hitcount: 21\n/
 FI tmap.ps
-FC = 1234
+FC = 1237
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -17664,7 +17663,7 @@ FP 2 /^     43      69        1 YMFLLIVLGFPINFLTLYVTVQHKKLR\n/
 FP /^# Total_sequences: 2\n/
 FP /^# Total_hitcount: 14\n/
 FI tmap.ps
-FC = 1243
+FC = 1246
 FP /^%%Title: PLplot Graph\n/
 FP /^%%Pages: 1\n/
 //
@@ -23673,7 +23672,6 @@ FP /^>ce1cg\n/
 ID mse-ex
 AB mse
 AA mse
-DL keep
 CL ../../data/dna.msf msf::mse.msf
 IK :21
 IK :1 up
@@ -26584,12 +26582,13 @@ IN
 IN raw
 IN
 FI stderr
-FC = 2
+FC = 26
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI iprtest.eiprscan
-FC = 2
-FP /^\n/
+FC = 53
+FP 22 /^Q9RHD9/
+FP  7 /^RS16_ECOLI/
+FP 24 /^Y902_MYCTU/
 //
-
