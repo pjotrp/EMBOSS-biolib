@@ -880,6 +880,7 @@ void embPropCalcFragments(const char *s, ajint n,
 
     if(allpartials)
     {
+        lim = defcnt;
 	for(i=0;i<lim;++i)
 	    for(j=i+1;j<lim;++j)
 	    {
