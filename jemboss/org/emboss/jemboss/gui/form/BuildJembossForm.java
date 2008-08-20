@@ -52,6 +52,7 @@ import java.util.Comparator;
 
 import java.awt.event.*;
 import java.io.*;
+
 import org.emboss.jemboss.parser.ParseAcd;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.*;
@@ -113,7 +114,6 @@ public class BuildJembossForm implements ActionListener
 // result files
   private String seqoutResult;
   private String outfileResult;
-  private String helptext = "";
   private boolean withSoap;
   private JFrame f;
   private JPanel p2;
@@ -121,6 +121,9 @@ public class BuildJembossForm implements ActionListener
 
   private int numofFields;
   private JembossParams mysettings;
+  
+  final static String fs = System.getProperty("file.separator");
+
   
   public BuildJembossForm(String appDescription, String db[],
         final String applName, String[] envp, String cwd, 
@@ -149,15 +152,6 @@ public class BuildJembossForm implements ActionListener
     p2.add(fieldPane,BorderLayout.CENTER);
     p2.setBackground(inpSection.getBackground());
     
-// get help for current application
-    if(!withSoap) 
-    {
-      String command = embossBin.concat("tfm " + applName + " -html -nomore");
-      RunEmbossApplication2 rea = new RunEmbossApplication2(command,envp,null);
-      rea.waitFor();
-      helptext = rea.getProcessStdout(); 
-    }
-
 // Help button
     ClassLoader cl = this.getClass().getClassLoader();
     JButton bhelp = new JButton(new ImageIcon(
@@ -172,8 +166,26 @@ public class BuildJembossForm implements ActionListener
       {
         String text = "";
         String url = null;
-        if(!withSoap)
-          text = helptext;
+        if (!withSoap) {
+            String dochome;
+            String acddir = mysettings.getAcdDirToParse();
+            if (System.getProperty("os.name").startsWith("Windows"))
+                dochome = ".." + fs + "doc" + fs + "programs" + fs
+                + "html";
+            else
+                dochome = ".." + fs + "doc" + fs + "html" + fs
+                + "emboss" + fs + "apps";
+            url = acddir + fs + dochome + fs + applName + ".html";
+            try {
+                File f = new File(url);
+                if (f.exists())
+                    url = f.getCanonicalFile().toURI().toString();
+                else
+                    url = null;
+            } catch (IOException e1) {
+                url = null;
+            }
+        }
         else 
         {
           String urlEmbassyPrefix = parseAcd.getUrlPrefix();
@@ -186,16 +198,7 @@ public class BuildJembossForm implements ActionListener
           url = url+applName+".html";
         }
 
-        //JEditorPane htmlPane = null;
-        if(url == null)
-        {
-          try
-          {
-            new Browser(url,applName,true,text,mysettings);
-          }
-          catch(IOException ioe1){}
-        }
-        else if(mysettings.isUseTFM())
+        if(url == null || mysettings.isUseTFM())
         {
           GetHelp thishelp = new GetHelp(applName,mysettings);
           text = thishelp.getHelpText();
