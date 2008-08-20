@@ -557,8 +557,9 @@ public class Browser extends JFrame
         warnUser("Can't follow link to " +  
                   event.getDescription() );
       }
-      
-      setCursor(cdone);
+      finally {      
+          setCursor(cdone);
+      }
     }
     else if(event.getEventType() == HyperlinkEvent.EventType.ENTERED)
       statusField.setText(event.getDescription());
