@@ -20,7 +20,6 @@
 
 package org.emboss.jemboss.editor;
 
-import java.awt.*;
 import java.awt.print.*;
 import javax.swing.*;
 
