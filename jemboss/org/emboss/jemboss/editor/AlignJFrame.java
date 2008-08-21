@@ -29,8 +29,6 @@ import javax.swing.border.*;
 import java.net.URL;
 
 import org.emboss.jemboss.gui.form.TextFieldInt;
-import org.emboss.jemboss.gui.sequenceChooser.SequenceFilter;
-import org.emboss.jemboss.gui.filetree.FileEditorDisplay;
 import org.emboss.jemboss.gui.ScrollPanel;
 import org.emboss.jemboss.gui.Browser;
 
@@ -123,7 +121,7 @@ public class AlignJFrame extends JFrame
     this.useExitMenu = useExitMenu;
 
     final Dimension dScreen = getToolkit().getScreenSize();
-    int interval = 10;
+//    int interval = 10;
 //  Vector seqs = new Vector();
     mat = new Matrix("resources/resources.jar",
                      "EBLOSUM62");
@@ -270,7 +268,7 @@ public class AlignJFrame extends JFrame
       public void actionPerformed(ActionEvent e)
       {  
         PrintAlignmentImage pai = new PrintAlignmentImage(gsc);
-        String type = pai.showPrintPreviewOptions();
+        /*String type = */pai.showPrintPreviewOptions();
         pai.printSinglePagePreview();
       }
     });
@@ -573,7 +571,7 @@ public class AlignJFrame extends JFrame
       {
         try
         {
-          Vector vseq = gsc.getSequenceCollection();
+//          Vector vseq = gsc.getSequenceCollection();
 //        Enumeration enumer = vseq.elements();
           float wgt = getTotalWeight(gsc.getSequenceCollection());
           options.setCase(wgt/2.f);
@@ -720,7 +718,7 @@ public class AlignJFrame extends JFrame
   */
   public void setMatrix(Matrix mat)
   {
-    this.mat = mat;
+    AlignJFrame.mat = mat;
   }
 
   /**
