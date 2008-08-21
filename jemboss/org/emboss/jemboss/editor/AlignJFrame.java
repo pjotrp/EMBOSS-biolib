@@ -519,6 +519,7 @@ public class AlignJFrame extends JFrame
       public void actionPerformed(ActionEvent e)
       {
         setCursor(cbusy);
+        try{
         gsc.deleteSequence("Consensus");
 
         float wgt = getTotalWeight(gsc.getSequenceCollection());
@@ -557,8 +558,10 @@ public class AlignJFrame extends JFrame
         gsc.setPreferredSize(dpane);
         gsc.setNamePanelWidth(gsc.getNameWidth());
         jspSequence.setViewportView(gsc);
-        setCursor(cdone);
         calculateCons.setText("Recalculate consensus");
+        } finally {
+            setCursor(cdone);
+        }
       }
     });
     calculateMenu.add(calculateCons);
