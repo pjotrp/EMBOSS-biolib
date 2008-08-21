@@ -28,14 +28,11 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.border.Border;
 import java.awt.event.*;
-import java.awt.print.*;
 import java.awt.*;
 import java.util.Vector;
 import java.awt.Dimension;
 
 import org.emboss.jemboss.gui.form.TextFieldInt;
-import org.emboss.jemboss.gui.form.TextFieldFloat;
-import org.emboss.jemboss.editor.ColourPanel;
 
 public class RestrictionEnzyme extends JPanel
                            implements TableModelListener
