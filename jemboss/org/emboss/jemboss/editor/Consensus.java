@@ -22,7 +22,6 @@ package org.emboss.jemboss.editor;
 
 import java.io.*;
 import java.util.Vector;
-import java.util.Hashtable;
 import java.util.Enumeration;
 
 
