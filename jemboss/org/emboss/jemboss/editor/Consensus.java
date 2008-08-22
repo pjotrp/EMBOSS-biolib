@@ -35,6 +35,8 @@ public class Consensus
 {
   private int matrix[][];
   private String cons = "";
+  
+  public static final String DEFAULT_SEQUENCE_NAME ="Consensus";
 
   /**
   *
@@ -327,7 +329,7 @@ public class Consensus
 */
   public Sequence getConsensusSequence()
   {
-    return new Sequence("Consensus",cons);
+    return new Sequence(DEFAULT_SEQUENCE_NAME,cons);
   }
 
 /**
