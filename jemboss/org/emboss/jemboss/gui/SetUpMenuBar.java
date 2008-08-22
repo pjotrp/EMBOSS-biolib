@@ -26,6 +26,8 @@ import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.filetree.*;
 import org.emboss.jemboss.draw.DNADraw;
 import org.emboss.jemboss.draw.Wizard;
+import org.emboss.jemboss.editor.AlignJFrame;
+import org.emboss.jemboss.editor.Matrix;
 
 import java.net.URL;
 
@@ -195,8 +197,9 @@ public class SetUpMenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        org.emboss.jemboss.editor.AlignJFrame ajFrame =
-                   new org.emboss.jemboss.editor.AlignJFrame();
+        String embossDataDir = mysettings.getEmbossData();
+        Matrix m = new Matrix(embossDataDir, Matrix.DEFAULT_MATRIX);
+        AlignJFrame ajFrame = new AlignJFrame(true, m);
         ajFrame.setVisible(true);
       }
     });
