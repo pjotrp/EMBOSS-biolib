@@ -28,6 +28,7 @@ import java.io.File;
 import javax.swing.border.*;
 import java.net.URL;
 
+import org.emboss.jemboss.JembossParams;
 import org.emboss.jemboss.gui.form.TextFieldInt;
 import org.emboss.jemboss.gui.ScrollPanel;
 import org.emboss.jemboss.gui.Browser;
@@ -54,6 +55,8 @@ public class AlignJFrame extends JFrame
   protected Hashtable currentColour;
   protected boolean useExitMenu = false;  // whether to use 'Exit' or 'Close'
   protected JMenuBar menuBar;
+  
+  JCheckBoxMenuItem drawColorBox;
  
   /**
   *
@@ -116,16 +119,18 @@ public class AlignJFrame extends JFrame
   */
   public AlignJFrame(boolean useExitMenu)
   {
+      this(useExitMenu, new Matrix("resources/resources.jar",
+              Matrix.DEFAULT_MATRIX));
+  }
+  
+  public AlignJFrame(boolean useExitMenu, Matrix mat_){
     super("Jemboss Alignment Editor");
 
     this.useExitMenu = useExitMenu;
 
     final Dimension dScreen = getToolkit().getScreenSize();
-//    int interval = 10;
-//  Vector seqs = new Vector();
-    mat = new Matrix("resources/resources.jar",
-                     "EBLOSUM62");
-    
+  
+    mat = mat_;
     jspSequence = new JScrollPane();
     jspSequence.getViewport().setBackground(Color.white);
 
@@ -484,14 +489,6 @@ public class AlignJFrame extends JFrame
     viewMenu.add(drawBoxes);
 
 //draw colored boxes
-    final JCheckBoxMenuItem drawColorBox = new JCheckBoxMenuItem("Colour boxes",true);
-    drawColorBox.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        gsc.setDrawColor(drawColorBox.isSelected());
-      }
-    });
     viewMenu.add(drawColorBox);
 
     pretty.addActionListener(new ActionListener()
@@ -520,7 +517,7 @@ public class AlignJFrame extends JFrame
       {
         setCursor(cbusy);
         try{
-        gsc.deleteSequence("Consensus");
+        gsc.deleteSequence(Consensus.DEFAULT_SEQUENCE_NAME);
 
         float wgt = getTotalWeight(gsc.getSequenceCollection());
         float plu = 0.f;
@@ -706,7 +703,7 @@ public class AlignJFrame extends JFrame
     while(enumer.hasMoreElements())
     {
       Sequence s = (Sequence)enumer.nextElement();
-      if(!s.getName().equals("Consensus"))
+      if(!s.getName().equals(Consensus.DEFAULT_SEQUENCE_NAME))
         wgt+=s.getWeight();
     }
     return wgt;
@@ -775,6 +772,7 @@ public class AlignJFrame extends JFrame
     else
       statusField.setText(status+"              "+
                           "Colour Scheme: "+colScheme);
+    drawColorBox.setSelected(true);
   }
 
   /**
@@ -784,8 +782,18 @@ public class AlignJFrame extends JFrame
   */
   private void colourMenus(JMenu viewMenu)
   {
-    ButtonGroup group = new ButtonGroup();
-
+    final ButtonGroup group = new ButtonGroup();
+    drawColorBox = new JCheckBoxMenuItem("Colour boxes",true);
+    drawColorBox.addItemListener(new ItemListener()
+    {
+        public void itemStateChanged(ItemEvent e) {
+            boolean selected = e.getStateChange() == ItemEvent.SELECTED;
+            gsc.setDrawColor(selected);
+            if(!selected)
+                group.clearSelection();
+        }
+    });
+    
 // property colour menus
     JMenu propertyMenu = new JMenu("Colour by Property");
     viewMenu.add(propertyMenu);
@@ -952,7 +960,6 @@ public class AlignJFrame extends JFrame
       }
     });
     viewMenu.add(new JSeparator());
-
   }
 
 
@@ -1107,7 +1114,10 @@ public class AlignJFrame extends JFrame
       File seqFile = new File(args[0]);
       if(seqFile.canRead())
       {
-        ajFrame = new AlignJFrame(true);
+        JembossParams jp = new JembossParams();
+        String ed = jp.getEmbossData();
+        Matrix m = new Matrix(ed, Matrix.DEFAULT_MATRIX);
+        ajFrame = new AlignJFrame(true, m);
         SequenceReader sr = new SequenceReader(seqFile);
         sr.getSequenceFile();
         ajFrame.openMethod(sr.getSequenceVector());
