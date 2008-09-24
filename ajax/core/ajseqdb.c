@@ -3025,7 +3025,7 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
     if(qryd->do_kw)
     {
 	if(!qryd->idcache)
-	    seqEmbossOpenCache(qry,ID_EXTENSION,&qryd->idcache);
+	    seqEmbossOpenSecCache(qry,ID_EXTENSION,&qryd->idcache);
 	seqEmbossOpenSecCache(qry,KW_EXTENSION,&qryd->kwcache);
     }
 
