@@ -497,9 +497,10 @@ static AjBool 	  seqEmbossGcgAll(AjPSeqin seqin);
 static void       seqEmbossGcgLoadBuff(AjPSeqin seqin);
 static AjBool     seqEmbossGcgReadRef(AjPSeqin seqin);
 static AjBool     seqEmbossGcgReadSeq(AjPSeqin seqin);
-
+#if 0
 static void	  seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
 				     AjPBtcache *cache);
+#endif
 static void       seqEmbossOpenSecCache(AjPSeqQuery qry, const char *ext,
 					AjPBtcache *cache);
 static AjBool     seqEmbossQryOpen(AjPSeqQuery qry);
@@ -3069,6 +3070,7 @@ static AjBool seqEmbossQryOpen(AjPSeqQuery qry)
 
 
 
+#if 0
 /* @funcstatic seqEmbossOpenCache ********************************************
 **
 ** Create primary B+tree index cache
@@ -3126,6 +3128,7 @@ static void seqEmbossOpenCache(AjPSeqQuery qry, const char *ext,
     
     return;
 }
+#endif
 
 
 
