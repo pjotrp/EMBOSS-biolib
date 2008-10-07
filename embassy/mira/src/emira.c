@@ -609,7 +609,7 @@ static void emira_doinfiles(AjPStr *cl, AjPTable table)
 	   squal = ajStrNewS(ajFileGetName(infile));
 	else
 	    squal = ajStrNewS(ajAcdGetValueDefault(mirainfiles[i].qname));
-	ajStrAssignC(&key,mirainfiles[i].qname);
+	ajStrAssignC(&key,mirainfiles[i].mname);
 	ajStrAssignC(&prefix,"");
 
 	value = ajTableFetch(table, key);
