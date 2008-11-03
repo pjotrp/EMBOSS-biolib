@@ -21,7 +21,6 @@
 #include "ajax.h"
 
 
-
 static AjPBtpage  btreeCacheLocate(const AjPBtcache cache, ajlong page);
 static AjPBtpage  btreeCacheLruUnlink(AjPBtcache cache);
 static void       btreeCacheUnlink(AjPBtcache cache, AjPBtpage cpage);
@@ -66,39 +65,16 @@ static void       btreeSplitRoot(AjPBtcache cache);
 static void       btreeInsertKey(AjPBtcache cache, AjPBtpage page,
 				 const AjPStr key, ajlong less,
 				 ajlong greater);
-static ajlong     btreeFindBalance(AjPBtcache cache, ajlong thisNode,
-				   ajlong leftNode, ajlong rightNode,
-				   ajlong lAnchor, ajlong rAnchor,
-				   const AjPBtId id);
-static AjBool     btreeRemoveEntry(AjPBtcache cache,ajlong pageno,
-				   const AjPBtId id);
-static void       btreeAdjustBuckets(AjPBtcache cache, AjPBtpage leaf);
-static ajlong     btreeCollapseRoot(AjPBtcache cache, ajlong pageno);
-static ajlong     btreeRebalance(AjPBtcache cache, ajlong thisNode,
-				 ajlong leftNode, ajlong rightNode,
-				 ajlong lAnchor, ajlong rAnchor);
-static ajlong     btreeShift(AjPBtcache cache, ajlong thisNode,
-			     ajlong balanceNode, ajlong anchorNode);
-static ajlong     btreeMerge(AjPBtcache cache, ajlong thisNode,
-			     ajlong mergeNode, ajlong anchorNode);
 
-static void       btreeFindMin(AjPBtcache cache, ajlong pageno,
-			       const char *key);
 static ajlong     btreeInsertShift(AjPBtcache cache, AjPBtpage *retpage,
 				   const char *key);
 static void       btreeKeyShift(AjPBtcache cache, AjPBtpage tpage);
-
-
-
-
 
 
 #if 0
 static AjPBtpage  btreeTraverseLeaves(AjPBtcache cache, AjPBtpage thys);
 static void       btreeJoinLeaves(AjPBtcache cache);
 #endif
-
-
 
 
 static AjPBtpage  btreeFindINodeW(AjPBtcache cache, AjPBtpage page,
@@ -229,7 +205,112 @@ static ajlong        btreeNumInsertShift(AjPBtcache cache, AjPBtpage *retpage,
 static AjPBtpage     btreeNumSplitLeaf(AjPBtcache cache, AjPBtpage spage);
 
 
+static ajlong        btreeFindHybBalanceOne(AjPBtcache cache, ajlong thisNode,
+                                            ajlong leftNode, ajlong rightNode,
+                                            ajlong lAnchor, ajlong rAnchor,
+                                            const AjPBtHybrid hyb);
+static void          btreeFindHybMinOne(AjPBtcache cache, ajlong pageno,
+                                        const char *key);
 
+static AjBool        btreeRemoveHybEntryOne(AjPBtcache cache,ajlong pageno,
+                                            const AjPBtHybrid hyb);
+
+static void          btreeAdjustHybBucketsOne(AjPBtcache cache,
+                                              AjPBtpage leaf);
+
+static ajlong        btreeRebalanceHybOne(AjPBtcache cache, ajlong thisNode,
+                                          ajlong leftNode, ajlong rightNode,
+                                          ajlong lAnchor, ajlong rAnchor);
+
+static ajlong        btreeShiftHybOne(AjPBtcache cache, ajlong thisNode,
+                                      ajlong balanceNode, ajlong anchorNode);
+
+static ajlong        btreeMergeHybOne(AjPBtcache cache, ajlong thisNode,
+                                      ajlong mergeNode, ajlong anchorNode);
+
+static ajlong        btreeCollapseRootHybOne(AjPBtcache cache, ajlong pageno);
+
+static AjBool        btreeDeleteHybIdTwo(AjPBtcache cache,
+                                         const AjPBtHybrid hyb,
+                                         AjPBtId did);
+
+static ajlong btreeFindHybBalanceTwo(AjPBtcache cache, ajlong thisNode,
+                                     ajlong leftNode, ajlong rightNode,
+                                     ajlong lAnchor, ajlong rAnchor,
+                                     const ajlong key);
+
+static void   btreeFindHybMinTwo(AjPBtcache cache, ajlong pageno,
+                                 const ajlong key);
+
+static AjBool btreeRemoveHybEntryTwo(AjPBtcache cache, ajlong pageno,
+                                     const ajlong key);
+
+static void   btreeAdjustHybBucketsTwo(AjPBtcache cache, AjPBtpage leaf);
+
+static ajlong btreeRebalanceHybTwo(AjPBtcache cache, ajlong thisNode,
+                                   ajlong leftNode, ajlong rightNode,
+                                   ajlong lAnchor, ajlong rAnchor);
+
+static ajlong btreeShiftHybTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong balanceNode, ajlong anchorNode);
+
+static ajlong btreeMergeHybTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong mergeNode, ajlong anchorNode);
+
+static ajlong btreeCollapseRootHybTwo(AjPBtcache cache, ajlong pageno);
+
+static ajlong btreeFindPriBalanceTwo(AjPBtcache cache, ajlong thisNode,
+                                     ajlong leftNode, ajlong rightNode,
+                                     ajlong lAnchor, ajlong rAnchor,
+                                     const AjPBtPri pri);
+
+static void btreeFindPriMinTwo(AjPBtcache cache, ajlong pageno,
+                               const char *key);
+
+static AjBool btreeRemovePriEntryTwo(AjPBtcache cache, ajlong pageno,
+                                     const AjPBtPri pri);
+
+static void btreeAdjustPriBucketsTwo(AjPBtcache cache, AjPBtpage leaf);
+
+static ajlong btreeRebalancePriTwo(AjPBtcache cache, ajlong thisNode,
+                                   ajlong leftNode, ajlong rightNode,
+                                   ajlong lAnchor, ajlong rAnchor);
+
+static ajlong btreeShiftPriTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong balanceNode, ajlong anchorNode);
+
+static ajlong btreeMergePriTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong mergeNode, ajlong anchorNode);
+
+static ajlong btreeCollapseRootPriTwo(AjPBtcache cache, ajlong pageno);
+
+
+static ajlong btreeFindPriBalanceOne(AjPBtcache cache, ajlong thisNode,
+                                     ajlong leftNode, ajlong rightNode,
+                                     ajlong lAnchor, ajlong rAnchor,
+                                     const AjPBtPri pri);
+
+static void btreeFindPriMinOne(AjPBtcache cache, ajlong pageno,
+                               const char *key);
+
+static AjBool btreeRemovePriEntryOne(AjPBtcache cache, ajlong pageno,
+                                     const AjPBtPri pri);
+
+static void btreeAdjustPriBucketsOne(AjPBtcache cache, AjPBtpage leaf);
+
+static ajlong btreeRebalancePriOne(AjPBtcache cache, ajlong thisNode,
+                                   ajlong leftNode, ajlong rightNode,
+                                   ajlong lAnchor, ajlong rAnchor);
+
+static ajlong btreeShiftPriOne(AjPBtcache cache, ajlong thisNode,
+                               ajlong balanceNode, ajlong anchorNode);
+
+static ajlong btreeMergePriOne(AjPBtcache cache, ajlong thisNode,
+                               ajlong mergeNode, ajlong anchorNode);
+
+static ajlong btreeCollapseRootPriOne(AjPBtcache cache, ajlong pageno);
+
+static AjBool btreeIsSecEmpty(AjPBtcache cache);
 
 
 
@@ -301,8 +382,9 @@ AjPBtcache ajBtreeCacheNewC(const char *file, const char *ext,
     cache->count = 0L;
     cache->fp    = fp;
     
-    cache->replace = ajStrNew();
-
+    cache->replace    = ajStrNew();
+    cache->numreplace = 0L;
+    
     if(pagesize>0)
 	cache->pagesize = pagesize;
     else
@@ -598,7 +680,7 @@ static void btreeCacheFetch(AjPBtcache cache, AjPBtpage cpage,
     ajint retries = 0;
 
     /* ajDebug("In btreeCacheFetch\n"); */
-
+    
     if(fseek(cache->fp,pageno,SEEK_SET))
 	ajFatal("Seek error in ajBtreeCachefetch");
     
@@ -3436,1465 +3518,6 @@ static AjPBtpage btreeSplitLeaf(AjPBtcache cache, AjPBtpage spage)
     page = ajBtreeCacheRead(cache,prevsave);
 
     return page;
-}
-
-
-
-
-/* @func ajBtreeDeleteId *********************************************
-**
-** Entry point for ID deletion
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] id [const AjPBtId] page
-**
-** @return [AjBool] True if found and deleted
-** @@
-******************************************************************************/
-
-AjBool ajBtreeDeleteId(AjPBtcache cache, const AjPBtId id)
-{
-    AjPBtpage rootpage = NULL;
-    
-    /* ajDebug("In ajBtreeDeleteId\n"); */
-    
-    rootpage = btreeCacheLocate(cache,0L);
-    if(!rootpage)
-	ajFatal("Rootpage has been unlocked 2");
-    
-    rootpage->dirty = BT_LOCK;
-    
-    btreeFindBalance(cache,0L,BTNO_NODE,BTNO_NODE,BTNO_NODE,
-		     BTNO_NODE,id);
-
-    
-    if(!cache->deleted)
-	return ajFalse;
-
-    return ajTrue;
-}
-
-
-
-
-/* @funcstatic btreeFindBalance *******************************************
-**
-** Master routine for entry deletion
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] thisNode [ajlong] Current node
-** @param [r] leftNode [ajlong] Node to left
-** @param [r] rightNode [ajlong] Node to right
-** @param [r] lAnchor [ajlong] Left anchor
-** @param [r] rAnchor [ajlong] Right anchor
-** @param [r] id [const AjPBtId] id
-**
-** @return [ajlong] page number or BTNO_NODE
-** @@
-******************************************************************************/
-
-static ajlong btreeFindBalance(AjPBtcache cache, ajlong thisNode,
-			       ajlong leftNode, ajlong rightNode,
-			       ajlong lAnchor, ajlong rAnchor,
-			       const AjPBtId id)
-{
-    unsigned char *buf  = NULL;
-    unsigned char *buf1 = NULL;
-    
-    ajlong nextNode   = BTNO_NODE;
-    ajlong nextLeft   = BTNO_NODE;
-    ajlong nextRight  = BTNO_NODE;
-    ajlong nextAncL   = BTNO_NODE;
-    ajlong nextAncR   = BTNO_NODE;
-    ajlong done       = 0L;
-    
-    ajint  nkeys      = 0;
-    ajint  order      = 0;
-    ajint  minkeys    = 0;
-    ajint  i;
-    ajint  nodetype   = 0;
-
-    ajint n1keys      = 0;
-    
-    AjPBtpage page  = NULL;
-    AjPBtpage page1 = NULL;
-
-    ajlong balanceNode = 0L;
-    ajlong blockno     = 0L;
-    ajlong ptrSave     = 0L;
-
-    AjPStr *karray  = NULL;
-    ajlong *parray  = NULL;
-    AjPStr *k1array = NULL;
-    ajlong *p1array = NULL;
-
-    
-    char *key = NULL;
-    AjBool existed = ajFalse;
-    
-    /* ajDebug("In btreeFindBalance\n"); */
-
-    if(thisNode)
-	page = ajBtreeCacheRead(cache,thisNode);
-    else
-    {
-	page = btreeCacheLocate(cache,thisNode);
-	page->dirty = BT_LOCK;
-    }
-
-    cache->deleted = ajFalse;
-
-    buf = page->buf;
-    GBT_NKEYS(buf,&nkeys);
-    
-    order = cache->order;
-    minkeys = (order-1) / 2;
-    if((order-1)%2)
-	++minkeys;
-
-    if(nkeys >= minkeys)
-	balanceNode = BTNO_BALANCE;
-    else
-	balanceNode = page->pageno;
-
-    AJCNEW0(karray,order);
-    AJCNEW0(parray,order);
-    AJCNEW0(k1array,order);
-    AJCNEW0(p1array,order);
-    
-    for(i=0;i<order;++i)
-    {
-	k1array[i] = ajStrNew();
-	karray[i]  = ajStrNew();
-    }
-
-    key = id->id->Ptr;
-
-    btreeGetKeys(cache,buf,&karray,&parray);
-    i=0;
-    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
-	++i;
-    if(i==nkeys)
-    {
-	if(strcmp(key,karray[i-1]->Ptr)<0)
-	    blockno = parray[i-1];
-	else
-	    blockno = parray[i];
-    }
-    else
-	blockno = parray[i];
-
-    nextNode = blockno;
-    ptrSave = i;
-
-    GBT_NODETYPE(buf,&nodetype);
-    if(!(nodetype == BT_LEAF) && !(nodetype == BT_ROOT && !cache->level))
-    {
-	if(nextNode == parray[0])
-	{
-	    if(leftNode != BTNO_NODE)
-	    {
-		page1 = ajBtreeCacheRead(cache,leftNode);
-		buf1 = page1->buf;
-		GBT_NKEYS(buf1,&n1keys);
-		btreeGetKeys(cache,buf1,&k1array,&p1array);
-		nextLeft = p1array[n1keys];
-	    }
-	    else
-		nextLeft = BTNO_NODE;
-	    
-	    if(!thisNode)
-		nextAncL = thisNode;
-	    else
-		nextAncL = lAnchor;
-	}
-	else
-	{
-	    nextLeft = parray[ptrSave-1];
-	    nextAncL = thisNode;
-	}
-
-	if(nextNode == parray[nkeys])
-	{
-	    if(rightNode != BTNO_NODE)
-	    {
-		page1 = ajBtreeCacheRead(cache,rightNode);
-		buf1 = page1->buf;
-		GBT_NKEYS(buf1,&n1keys);
-		btreeGetKeys(cache,buf1,&k1array,&p1array);
-		nextRight = p1array[0];
-	    }
-	    else
-		nextRight = BTNO_NODE;
-
-	    if(!thisNode)
-		nextAncR = thisNode;
-	    else
-		nextAncR = rAnchor;
-	}
-	else
-	{
-	    nextRight = parray[ptrSave+1];
-	    nextAncR  = thisNode;
-	}
-
-
-
-	/* Check to see whether key exists in an internal node */
-	if(nodetype != BT_LEAF && cache->level)
-	{
-	    i=0;
-	    while(i!=nkeys && strcmp(key,karray[i]->Ptr))
-		++i;
-	    if(i!=nkeys)
-	    {
-		btreeFindMin(cache,parray[i+1],key);
-		ajStrAssignS(&karray[i],cache->replace);
-		btreeWriteNode(cache,page,karray,parray,nkeys);
-	    }
-	
-	}
-	
-	btreeFindBalance(cache,nextNode,nextLeft,nextRight,
-			    nextAncL,nextAncR,id);
-
-	if(thisNode)
-	    page = ajBtreeCacheRead(cache,thisNode);
-	else
-	{
-	    page = btreeCacheLocate(cache,thisNode);
-	    page->dirty = BT_LOCK;
-	}
-	buf = page->buf;
-
-    }
-    else
-    {
-	if(nodetype == BT_LEAF || (nodetype==BT_ROOT && !cache->level))
-	{
-	    existed = btreeRemoveEntry(cache,thisNode,id);
-	    
-	    if(existed)
-		cache->deleted = ajTrue;
-	    GBT_NKEYS(buf,&nkeys);
-	    if(nkeys >= minkeys || (nodetype==BT_ROOT && !cache->level))
-		balanceNode = BTNO_BALANCE;
-	    else
-		balanceNode = page->pageno;
-	}
-    }
-
-
-    if(balanceNode == BTNO_BALANCE || thisNode == 0L)
-	done = BTNO_NODE;
-    else
-	done = btreeRebalance(cache,thisNode,leftNode,rightNode,
-				 lAnchor,rAnchor);
-    
-
-    for(i=0;i<order;++i)
-    {
-	ajStrDel(&k1array[i]);
-	ajStrDel(&karray[i]);
-    }
-    AJFREE(k1array);
-    AJFREE(karray);
-    AJFREE(p1array);
-    AJFREE(parray);
-
-    return done;
-}
-
-
-
-
-/* @funcstatic btreeRemoveEntry *******************************************
-**
-** Find and delete an ID from a given leaf node if necessary
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] pageno [ajlong] leaf node page
-** @param [r] id [const AjPBtId] id
-**
-** @return [AjBool] True if found (and deleted)
-** @@
-******************************************************************************/
-
-static AjBool btreeRemoveEntry(AjPBtcache cache,ajlong pageno,
-			       const AjPBtId id)
-{
-    AjPBtpage page   = NULL;
-    AjPBucket bucket = NULL;
-    
-    AjPStr *karray = NULL;
-    ajlong *parray = NULL;
-    ajlong blockno = 0L;
-    
-    ajint order    = 0;
-    ajint nkeys    = 0;
-    ajint nentries = 0;
-    ajint i;
-
-    ajint dirtysave = 0;
-    
-    AjBool found = ajFalse;
-    char   *key  = NULL;
-
-    unsigned char *buf = NULL;
-
-    /* ajDebug("In btreeRemoveEntry\n"); */
-
-    page = ajBtreeCacheRead(cache,pageno);
-    buf = page->buf;
-    dirtysave = page->dirty;
-    page->dirty = BT_LOCK;
-    order = cache->order;
-    
-    GBT_NKEYS(buf,&nkeys);
-    if(!nkeys)
-	return ajFalse;
-
-    AJCNEW0(karray,order);
-    AJCNEW0(parray,order);
-    for(i=0;i<order;++i)
-	karray[i] = ajStrNew();
-
-    btreeGetKeys(cache,buf,&karray,&parray);
-    
-    key = id->id->Ptr;
-
-    i=0;
-    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
-	++i;
-    if(i==nkeys)
-    {
-	if(strcmp(key,karray[i-1]->Ptr)<0)
-	    blockno = parray[i-1];
-	else
-	    blockno = parray[i];
-    }
-    else
-	blockno = parray[i];
-    
-    bucket = btreeReadBucket(cache,blockno);
-
-
-    nentries = bucket->Nentries;
-    found = ajFalse;
-
-    for(i=0;i<nentries;++i)
-	if(!strcmp(key,bucket->Ids[i]->id->Ptr))
-	{
-	    found = ajTrue;
-	    break;
-	}
-    
-
-    if(found)
-    {
-	/* Perform the deletion */
-	if(nentries == 1)
-	{
-	    bucket->Nentries = 0;
-	    ajBtreeIdDel(&bucket->Ids[0]);
-	}
-	else
-	{
-	    ajBtreeIdDel(&bucket->Ids[i]);
-	    bucket->Ids[i] = bucket->Ids[nentries-1];
-	    --bucket->Nentries;
-	}
-
-	btreeWriteBucket(cache,bucket,blockno);
-	btreeAdjustBuckets(cache,page);
-	page->dirty = BT_DIRTY;
-    }
-    else
-	page->dirty = dirtysave;
-
-    btreeBucketDel(&bucket);
-
-    for(i=0;i<order;++i)
-	ajStrDel(&karray[i]);
-    AJFREE(karray);
-    AJFREE(parray);
-
-    
-    if(!found)
-	return ajFalse;
-
-    return ajTrue;
-}
-
-
-
-
-/* @funcstatic btreeAdjustBuckets *****************************************
-**
-** Re-order leaf buckets
-** Can be called whatever the state of a leaf (used by deletion funcs)
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [u] leaf [AjPBtpage] leaf page
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-static void btreeAdjustBuckets(AjPBtcache cache, AjPBtpage leaf)
-{
-    ajint nkeys = 0;
-    unsigned char *lbuf = NULL;
-    AjPBucket *buckets  = NULL;
-    AjPStr *keys        = NULL;
-    ajlong *ptrs        = NULL;
-    ajlong *overflows   = NULL;
-    
-    ajint i = 0;
-    ajint j = 0;
-    
-    ajint order;
-    ajint bentries      = 0;
-    ajint totalkeys     = 0;
-    ajint nperbucket    = 0;
-    ajint maxnperbucket = 0;
-    ajint count         = 0;
-    ajint totkeylen     = 0;
-    ajint keylimit      = 0;
-    ajint bucketn       = 0;
-    ajint bucketlimit   = 0;
-    ajint nodetype      = 0;
-    ajint nids          = 0;
-    ajint totnids       = 0;
-    
-    AjPList idlist    = NULL;
-    ajint   dirtysave = 0;
-    AjPBtId bid       = NULL;
-    AjPBucket cbucket = NULL;
-    AjPBtId cid       = NULL;
-
-    ajint v = 0;
-    
-    /* ajDebug("In btreeAdjustBuckets\n"); */
-
-    dirtysave = leaf->dirty;
-
-    leaf->dirty = BT_LOCK;
-    lbuf = leaf->buf;
-
-    GBT_NKEYS(lbuf,&nkeys);
-    if(!nkeys)
-    {
-	leaf->dirty = dirtysave;
-	return;
-    }
-
-
-    GBT_NODETYPE(lbuf,&nodetype);
-
-    order = cache->order;
-    nperbucket = cache->nperbucket;
-    
-
-    /* Read keys/ptrs */
-    AJCNEW0(keys,order);
-    AJCNEW0(ptrs,order);
-    AJCNEW0(overflows,order);
-    
-    for(i=0;i<order;++i)
-	keys[i] = ajStrNew();
-
-    btreeGetKeys(cache,lbuf,&keys,&ptrs);
-
-
-    for(i=0;i<nkeys;++i)
-	totalkeys += btreeNumInBucket(cache,ptrs[i]);
-    totalkeys += btreeNumInBucket(cache,ptrs[i]);
-
-
-    /* Set the number of entries per bucket to approximately half full */
-    maxnperbucket = nperbucket >> 1;
-    if(!maxnperbucket)
-	++maxnperbucket;
-
-    if(!leaf->pageno)
-	maxnperbucket = nperbucket;
-
-    /* Work out the number of new buckets needed */
-    bucketn = (totalkeys / maxnperbucket);
-    if(totalkeys % maxnperbucket)
-	++bucketn;
-
-    if(bucketn == 1)
-	++bucketn;
-    
-    
-    if(bucketn > order)
-	ajFatal("AdjustBuckets: bucket number greater than order");
-    
-
-    /* Read buckets */
-    AJCNEW0(buckets,nkeys+1);
-    keylimit = nkeys + 1;
-    
-    for(i=0;i<keylimit;++i)
-	buckets[i] = btreeReadBucket(cache,ptrs[i]);
-
-
-    /* Read IDs from all buckets and push to list and sort (increasing id) */
-    idlist  = ajListNew();
-
-    for(i=0;i<keylimit;++i)
-    {
-	overflows[i] = buckets[i]->Overflow;
-	bentries = buckets[i]->Nentries;
-	for(j=0;j<bentries;++j)
-	    ajListPush(idlist,(void *)buckets[i]->Ids[j]);
-	
-	AJFREE(buckets[i]->keylen);
-	AJFREE(buckets[i]->Ids);
-	AJFREE(buckets[i]);
-    }
-    ajListSort(idlist,btreeIdCompare);
-    AJFREE(buckets);
-
-    cbucket = btreeBucketNew(maxnperbucket);
-    bucketlimit = bucketn - 1;
-
-    totnids = 0;
-    nids = ajListGetLength(idlist);
-
-
-    if(!totalkeys)
-    {
-	v = totalkeys;
-	SBT_NKEYS(lbuf,v);
-	for(i=0;i<order;++i)
-	    ajStrDel(&keys[i]);
-	AJFREE(keys);
-	AJFREE(ptrs);
-	AJFREE(overflows);
-	ajListFree(&idlist);
-	leaf->dirty = BT_DIRTY;
-	return;
-    }
-    
-    if(nids <= maxnperbucket)
-    {
-	cbucket->Overflow = overflows[1];
-	cbucket->Nentries = 0;
-	ajListPeek(idlist,(void **)&bid);
-	ajStrAssignS(&keys[0],bid->id);
-
-	count = 0;
-	while(count!=maxnperbucket && totnids != nids)
-	{
-	    ajListPop(idlist,(void **)&bid);
-	    
-	    cid = cbucket->Ids[count];
-	    ajStrAssignS(&cid->id,bid->id);
-	    cid->dbno = bid->dbno;
-	    cid->dups = bid->dups;
-	    cid->offset = bid->offset;
-	    cid->refoffset = bid->refoffset;
-	    
-	    cbucket->keylen[count] = BT_BUCKIDLEN(bid->id);
-	    ++cbucket->Nentries;
-	    ++count;
-	    ++totnids;
-	    ajBtreeIdDel(&bid);
-	}
-
-
-	totkeylen += ajStrGetLen(keys[0]);
-
-	if(!ptrs[1])
-	    ptrs[1] = cache->totsize;
-	btreeWriteBucket(cache,cbucket,ptrs[1]);
-
-	cbucket->Overflow = overflows[0];
-	cbucket->Nentries = 0;
-	if(!ptrs[0])
-	    ptrs[0] = cache->totsize;
-	btreeWriteBucket(cache,cbucket,ptrs[0]);
-    }
-    else
-    {
-	for(i=0;i<bucketlimit;++i)
-	{
-	    cbucket->Overflow = overflows[i];
-	    cbucket->Nentries = 0;
-
-	    count = 0;
-	    while(count!=maxnperbucket && totnids != nids)
-	    {
-		ajListPop(idlist,(void **)&bid);
-
-		cid = cbucket->Ids[count];
-		ajStrAssignS(&cid->id,bid->id);
-		cid->dbno = bid->dbno;
-		cid->dups = bid->dups;
-		cid->offset = bid->offset;
-		cid->refoffset = bid->refoffset;
-		
-		cbucket->keylen[count] = BT_BUCKIDLEN(bid->id);
-		++cbucket->Nentries;
-		++count;
-		ajBtreeIdDel(&bid);
-	    }
-
-
-	    ajListPeek(idlist,(void **)&bid);
-	    ajStrAssignS(&keys[i],bid->id);
-
-
-	    totkeylen += ajStrGetLen(bid->id);
-
-	    if(!ptrs[i])
-		ptrs[i] = cache->totsize;
-	    btreeWriteBucket(cache,cbucket,ptrs[i]);
-	}
-	
-	
-	/* Deal with greater-than bucket */
-	
-	cbucket->Overflow = overflows[i];
-	cbucket->Nentries = 0;
-	
-	
-	
-	count = 0;
-	while(ajListPop(idlist,(void **)&bid))
-	{
-	    cid = cbucket->Ids[count];
-	    ajStrAssignS(&cid->id,bid->id);
-	    cid->dbno = bid->dbno;
-	    cid->dups = bid->dups;
-	    cid->offset = bid->offset;
-	    cid->refoffset = bid->refoffset;
-	    
-	    ++cbucket->Nentries;
-	    ++count;
-	    ajBtreeIdDel(&bid);
-	}
-	
-	
-	if(!ptrs[i])
-	    ptrs[i] = cache->totsize;
-	
-	btreeWriteBucket(cache,cbucket,ptrs[i]);
-    }
-    
-
-    cbucket->Nentries = maxnperbucket;
-    btreeBucketDel(&cbucket);
-
-    /* Now write out a modified leaf with new keys/ptrs */
-
-    nkeys = bucketn - 1;
-    v = nkeys;
-    SBT_NKEYS(lbuf,v);
-    v = totkeylen;
-    SBT_TOTLEN(lbuf,v);
-
-    btreeWriteNode(cache,leaf,keys,ptrs,nkeys);
-
-    leaf->dirty = dirtysave;
-    if(nodetype == BT_ROOT)
-	leaf->dirty = BT_LOCK;
-
-
-    for(i=0;i<order;++i)
-	ajStrDel(&keys[i]);
-    AJFREE(keys);
-    AJFREE(ptrs);
-    AJFREE(overflows);
-    
-
-    btreeBucketDel(&cbucket);
-    ajListFree(&idlist);
-
-    return;
-}
-
-
-
-
-/* @funcstatic btreeCollapseRoot *******************************************
-**
-** Master routine for entry deletion
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] pageno [ajlong] page number to make new root
-**
-** @return [ajlong] page number or BTNO_NODE
-** @@
-******************************************************************************/
-
-static ajlong btreeCollapseRoot(AjPBtcache cache, ajlong pageno)
-{
-    unsigned char *buf  = NULL;
-    unsigned char *lbuf = NULL;
-
-    AjPStr *karray = NULL;
-    ajlong *parray = NULL;
-
-    AjPBtpage rootpage = NULL;
-    AjPBtpage page     = NULL;
-    
-    ajint nodetype = 0;
-    ajint nkeys    = 0;
-    ajint order    = 0;
-    ajint i;
-
-    ajlong prev = 0L;
-    
-    /* ajDebug("In btreeCollapseRoot\n"); */
-    
-    if(!cache->level)
-	return BTNO_NODE;
-
-    rootpage = btreeCacheLocate(cache,0L);
-    buf = rootpage->buf;
-    page = ajBtreeCacheRead(cache,pageno);
-
-
-    order = cache->order;
-    AJCNEW0(karray,order);
-    AJCNEW0(parray,order);
-    for(i=0;i<order;++i)
-	karray[i] = ajStrNew();
-
-    /*
-    ** Swap pageno values to make root the child and child the root
-    ** Update nodetypes and mark the original root as a clean page
-    */
-
-    /* At this point page->pageno could be added to a free list */
-
-    rootpage->pageno = page->pageno;
-    rootpage->dirty = BT_CLEAN;
-    nodetype = BT_INTERNAL;
-    SBT_NODETYPE(buf,nodetype);
-
-    page->pageno = 0;
-    page->dirty  = BT_LOCK;
-    buf = page->buf;
-    nodetype = BT_ROOT;
-    SBT_NODETYPE(buf,nodetype);
-    
-    --cache->level;
-
-    if(cache->level)
-    {
-	/*
-	 ** Update the PREV pointers of the new root's children
-	 */
-	GBT_NKEYS(buf,&nkeys);
-	btreeGetKeys(cache,buf,&karray,&parray);
-	for(i=0;i<nkeys+1;++i)
-	{
-	    page = ajBtreeCacheRead(cache,parray[i]);
-	    lbuf = page->buf;
-	    SBT_PREV(lbuf,prev);
-	    page->dirty = BT_DIRTY;
-	}
-    }
-
-
-    for(i=0;i<order;++i)
-	ajStrDel(&karray[i]);
-    AJFREE(karray);
-    AJFREE(parray);
-
-    
-    return 0L;
-}
-
-
-
-
-/* @funcstatic btreeRebalance *******************************************
-**
-** Master routine for entry deletion
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] thisNode [ajlong] Node to rebalance
-** @param [r] leftNode [ajlong] left node
-** @param [r] rightNode [ajlong] right node
-** @param [r] lAnchor [ajlong] left anchor
-** @param [r] rAnchor [ajlong] right anchor
-**
-** @return [ajlong] page number or BTNO_NODE
-** @@
-******************************************************************************/
-
-static ajlong btreeRebalance(AjPBtcache cache, ajlong thisNode,
-			     ajlong leftNode, ajlong rightNode,
-			     ajlong lAnchor, ajlong rAnchor)
-{
-    unsigned char *lbuf = NULL;
-    unsigned char *rbuf = NULL;
-    unsigned char *tbuf = NULL;
-
-    ajlong anchorNode   = 0L;
-    ajlong balanceNode  = 0L;
-    ajlong mergeNode    = 0L;
-    ajlong done         = 0L;
-    ajlong parent       = 0L;
-    
-    AjPBtpage lpage = NULL;
-    AjPBtpage rpage = NULL;
-    AjPBtpage tpage = NULL;
-    
-    ajint lnkeys  = 0;
-    ajint rnkeys  = 0;
-    ajint size    = 0;
-    ajint order   = 0;
-    ajint minsize = 0;
-
-    AjBool leftok  = ajFalse;
-    AjBool rightok = ajFalse;
-    
-    
-    /* ajDebug("In btreeRebalance\n"); */
-
-    if(leftNode!=BTNO_NODE && lAnchor!=BTNO_NODE)
-	leftok = ajTrue;
-    if(rightNode!=BTNO_NODE && rAnchor!=BTNO_NODE)
-	rightok = ajTrue;
-
-    if(!leftok && !rightok)
-	return BTNO_NODE;
-    
-
-    if(leftok)
-    {
-	lpage = ajBtreeCacheRead(cache,leftNode);
-	lbuf  = lpage->buf;
-	GBT_NKEYS(lbuf,&lnkeys);
-    }
-    
-
-    if(rightok)
-    {
-	rpage = ajBtreeCacheRead(cache,rightNode);
-	rbuf  = rpage->buf;
-	GBT_NKEYS(rbuf,&rnkeys);
-    }
-    
-
-
-    if(leftok && rightok)
-    {
-	size = (lnkeys >= rnkeys) ? lnkeys : rnkeys;
-	balanceNode = (lnkeys >= rnkeys) ? leftNode : rightNode;
-    }
-    else if(leftok)
-    {
-	size = lnkeys;
-	balanceNode = leftNode;
-    }
-    else
-    {
-	size = rnkeys;
-	balanceNode = rightNode;
-    }
-
-    
-    order = cache->order;
-    minsize = (order-1) / 2;
-    if((order-1)%2)
-	++minsize;
-
-    if(size >= minsize)
-    {
-	if(leftok && rightok)
-	    anchorNode = (lnkeys >= rnkeys) ? lAnchor : rAnchor;
-	else if(leftok)
-	    anchorNode = lAnchor;
-	else
-	    anchorNode = rAnchor;
-	done = btreeShift(cache,thisNode,balanceNode,anchorNode);
-    }
-	    
-    else
-    {
-	tpage = ajBtreeCacheRead(cache,thisNode);
-	tbuf  = tpage->buf;
-	GBT_PREV(tbuf,&parent);
-	if(leftok && rightok)
-	{
-	    anchorNode = (parent == lAnchor) ? lAnchor : rAnchor;
-	    mergeNode  = (anchorNode  == lAnchor) ? leftNode : rightNode;
-	}
-	else if(leftok)
-	{
-	    anchorNode = lAnchor;
-	    mergeNode  = leftNode;
-	}
-	else
-	{
-	    anchorNode = rAnchor;
-	    mergeNode  = rightNode;
-	}
-	done = btreeMerge(cache,thisNode,mergeNode,anchorNode);
-    }
-
-    return done;
-}
-
-
-
-
-/* @funcstatic btreeShift *************************************************
-**
-** Shift spare entries from one node to another
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] thisNode [ajlong] master node
-** @param [r] balanceNode [ajlong] balance node
-** @param [r] anchorNode [ajlong] anchor node
-**
-** @return [ajlong] page number or BTNO_NODE
-** @@
-******************************************************************************/
-
-static ajlong btreeShift(AjPBtcache cache, ajlong thisNode,
-			 ajlong balanceNode, ajlong anchorNode)
-{
-    unsigned char *tbuf = NULL;
-    unsigned char *abuf = NULL;
-    unsigned char *bbuf = NULL;
-    unsigned char *buf  = NULL;
-    
-    AjPStr *kTarray = NULL;
-    AjPStr *kAarray = NULL;
-    AjPStr *kBarray = NULL;
-    ajlong *pTarray = NULL;
-    ajlong *pAarray = NULL;
-    ajlong *pBarray = NULL;
-    
-    ajint  nAkeys = 0;
-    ajint  nBkeys = 0;
-    ajint  nTkeys = 0;
-    ajint  order  = 0;
-    ajint  i;
-    
-    AjPBtpage pageA = NULL;
-    AjPBtpage pageB = NULL;
-    AjPBtpage pageT = NULL;
-    AjPBtpage page  = NULL;
-    
-    AjPBtpage leftpage = NULL;
-
-    ajint  anchorPos   = 0;
-    ajlong prev        = 0L;
-    ajint  nodetype    = 0;
-
-    ajlong lv = 0L;
-    
-    /* ajDebug("In btreeShift\n"); */
-
-    order = cache->order;
-    AJCNEW0(kTarray,order);
-    AJCNEW0(kAarray,order);
-    AJCNEW0(kBarray,order);
-    AJCNEW0(pTarray,order);
-    AJCNEW0(pAarray,order);
-    AJCNEW0(pBarray,order);
-    for(i=0;i<order;++i)
-    {
-	kTarray[i] = ajStrNew();
-	kAarray[i] = ajStrNew();
-	kBarray[i] = ajStrNew();
-    }
-
-
-    pageA = ajBtreeCacheRead(cache,anchorNode);
-    pageA->dirty = BT_LOCK;
-    abuf = pageA->buf;
-    pageB = ajBtreeCacheRead(cache,balanceNode);
-    pageB->dirty = BT_LOCK;
-    bbuf = pageB->buf;
-    pageT = ajBtreeCacheRead(cache,thisNode);
-    pageT->dirty = BT_LOCK;
-    tbuf = pageT->buf;
-
-    GBT_NKEYS(abuf,&nAkeys);
-    GBT_NKEYS(bbuf,&nBkeys);
-    GBT_NKEYS(tbuf,&nTkeys);
-
-    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
-    btreeGetKeys(cache,bbuf,&kBarray,&pBarray);
-    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
-    
-    if(strcmp(kTarray[nTkeys-1]->Ptr,kBarray[nBkeys-1]->Ptr)<0)
-	leftpage = pageT;
-    else
-	leftpage = pageB;
-
-
-    if(leftpage == pageT)
-    {
-	/* Find anchor key position */
-	i=0;
-	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
-	    ++i;
-	anchorPos = i;
-
-	/* Move down anchor key to thisNode */
-	ajStrAssignS(&kTarray[nTkeys],kAarray[anchorPos]);
-	++nTkeys;
-
-	/* Shift extra */
-	while(nTkeys < nBkeys)
-	{
-	    ajStrAssignS(&kTarray[nTkeys],kBarray[0]);
-	    pTarray[nTkeys] = pBarray[0];
-	    ++nTkeys;
-	    --nBkeys;
-
-	    for(i=0;i<nBkeys;++i)
-	    {
-		ajStrAssignS(&kBarray[i],kBarray[i+1]);
-		pBarray[i] = pBarray[i+1];
-	    }
-	    pBarray[i] = pBarray[i+1];
-	}
-
-	/* Adjust anchor key */
-	ajStrAssignS(&kAarray[anchorPos],kTarray[nTkeys-1]);
-	--nTkeys;
-    }
-    else	/* thisNode on the right */
-    {
-	/* Find anchor key position */
-	i=0;
-	while(i!=nAkeys && strcmp(kBarray[nBkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
-	    ++i;
-	anchorPos = i;
-
-	/* Move down anchor key to thisNode */
-	pTarray[nTkeys+1] = pTarray[nTkeys];
-	for(i=nTkeys-1;i>-1;--i)
-	{
-	    ajStrAssignS(&kTarray[i+1],kTarray[i]);
-	    pTarray[i+1] = pTarray[i];
-	}
-	ajStrAssignS(&kTarray[0],kAarray[anchorPos]);
-	++nTkeys;
-
-	/* Shift extra */
-	while(nTkeys < nBkeys)
-	{
-	    pTarray[nTkeys+1] = pTarray[nTkeys];
-	    for(i=nTkeys-1;i>-1;--i)
-	    {
-		ajStrAssignS(&kTarray[i+1],kTarray[i]);
-		pTarray[i+1] = pTarray[i];
-	    }
-	    ajStrAssignS(&kTarray[0],kBarray[nBkeys-1]);
-	    pTarray[1] = pBarray[nBkeys];
-	    ++nTkeys;
-	    --nBkeys;
-	}
-
-
-	/* Adjust anchor key */
-	ajStrAssignS(&kAarray[anchorPos],kTarray[0]);
-	--nTkeys;
-	for(i=0;i<nTkeys;++i)
-	{
-	    ajStrAssignS(&kTarray[i],kTarray[i+1]);
-	    pTarray[i] = pTarray[i+1];
-	}
-	pTarray[i] = pTarray[i+1];
-    }
-    
-
-    /* Adjust PREV pointers for thisNode */
-    prev = pageT->pageno;
-    for(i=0;i<nTkeys+1;++i)
-    {
-	page = ajBtreeCacheRead(cache,pTarray[i]);
-	buf = page->buf;
-	GBT_NODETYPE(buf,&nodetype);
-	if(nodetype != BT_BUCKET)
-	{
-	    lv = prev;
-	    SBT_PREV(buf,lv);
-	    page->dirty = BT_DIRTY;
-	}
-    }
-
-
-
-    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
-    btreeWriteNode(cache,pageB,kBarray,pBarray,nBkeys);
-    btreeWriteNode(cache,pageT,kTarray,pTarray,nTkeys);
-
-    if(!anchorNode)
-	pageA->dirty = BT_LOCK;
-
-    for(i=0;i<order;++i)
-    {
-	ajStrDel(&kTarray[i]);
-	ajStrDel(&kAarray[i]);
-	ajStrDel(&kBarray[i]);
-    }
-    AJFREE(kTarray);
-    AJFREE(kAarray);
-    AJFREE(kBarray);
-    AJFREE(pTarray);
-    AJFREE(pAarray);
-    AJFREE(pBarray);
-
-
-    return BTNO_NODE;
-}
-
-
-
-
-/* @funcstatic btreeMerge *************************************************
-**
-** Merge two nodes
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] thisNode [ajlong] master node
-** @param [r] mergeNode [ajlong] merge node
-** @param [r] anchorNode [ajlong] anchor node
-**
-** @return [ajlong] page number or BTNO_NODE
-** @@
-******************************************************************************/
-
-static ajlong btreeMerge(AjPBtcache cache, ajlong thisNode,
-			 ajlong mergeNode, ajlong anchorNode)
-{
-    unsigned char *tbuf = NULL;
-    unsigned char *abuf = NULL;
-    unsigned char *nbuf = NULL;
-    unsigned char *buf  = NULL;
-    
-    AjPStr *kTarray = NULL;
-    AjPStr *kAarray = NULL;
-    AjPStr *kNarray = NULL;
-    ajlong *pTarray = NULL;
-    ajlong *pAarray = NULL;
-    ajlong *pNarray = NULL;
-
-    ajlong thisprev  = 0L;
-    ajlong mergeprev = 0L;
-    
-    
-    ajint  nAkeys = 0;
-    ajint  nNkeys = 0;
-    ajint  nTkeys = 0;
-    ajint  order  = 0;
-    ajint  count  = 0;
-    ajint  i;
-    ajint  nodetype = 0;
-    
-    ajint saveA = 0;
-    ajint saveN = 0;
-    ajint saveT = 0;
-    
-    AjPBtpage pageA = NULL;
-    AjPBtpage pageN = NULL;
-    AjPBtpage pageT = NULL;
-    AjPBtpage page  = NULL;
-    
-    AjPBtpage leftpage = NULL;
-
-    ajint  anchorPos = 0;
-    ajlong prev      = 0L;
-
-    ajlong lv = 0L;
-    
-
-    AjBool collapse = ajFalse;
-    
-    /* ajDebug("In btreeMerge\n"); */
-
-    order = cache->order;
-
-
-    pageA = ajBtreeCacheRead(cache,anchorNode);
-    saveA = pageA->dirty;
-    pageA->dirty = BT_LOCK;
-    abuf = pageA->buf;
-    pageN = ajBtreeCacheRead(cache,mergeNode);
-    saveN = pageN->dirty;
-    pageN->dirty = BT_LOCK;
-    nbuf = pageN->buf;
-    pageT = ajBtreeCacheRead(cache,thisNode);
-    saveT = pageT->dirty;
-    pageT->dirty = BT_LOCK;
-    tbuf = pageT->buf;
-
-    GBT_PREV(tbuf,&thisprev);
-    GBT_PREV(nbuf,&mergeprev);
-
-    GBT_NKEYS(abuf,&nAkeys);
-    GBT_NKEYS(nbuf,&nNkeys);
-    GBT_NKEYS(tbuf,&nTkeys);
-
-    GBT_NODETYPE(nbuf,&nodetype);
-
-
-    if(nAkeys == 1)
-    {
-	if(!anchorNode && !thisprev && !mergeprev)
-	    collapse = ajTrue;
-	else
-	{
-	    pageA->dirty = saveA;
-	    pageN->dirty = saveN;
-	    pageT->dirty = saveT;
-	    return thisNode;
-	}
-    }
-
-    AJCNEW0(kTarray,order);
-    AJCNEW0(kAarray,order);
-    AJCNEW0(kNarray,order);
-    AJCNEW0(pTarray,order);
-    AJCNEW0(pAarray,order);
-    AJCNEW0(pNarray,order);
-    for(i=0;i<order;++i)
-    {
-	kTarray[i] = ajStrNew();
-	kAarray[i] = ajStrNew();
-	kNarray[i] = ajStrNew();
-    }
-
-    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
-    btreeGetKeys(cache,nbuf,&kNarray,&pNarray);
-    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
-
-    if(strcmp(kTarray[nTkeys-1]->Ptr,kNarray[nNkeys-1]->Ptr)<0)
-	leftpage = pageT;
-    else
-	leftpage = pageN;
-
-
-    if(leftpage == pageT)
-    {
-	/* Find anchor key position */
-	i=0;
-	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
-	    ++i;
-	anchorPos = i;
-
-	/* Move down anchor key to neighbour Node */
-	pNarray[nNkeys+1] = pNarray[nNkeys];
-	for(i=nNkeys-1;i>-1;--i)
-	{
-	    ajStrAssignS(&kNarray[i+1],kNarray[i]);
-	    pNarray[i+1] = pNarray[i];
-	}
-	ajStrAssignS(&kNarray[0],kAarray[anchorPos]);
-	++nNkeys;
-
-
-	/* Adjust anchor node keys/ptrs */
-	++anchorPos;
-	if(anchorPos==nAkeys)
-	    pAarray[nAkeys-1] = pAarray[nAkeys];
-	else
-	{
-	    for(i=anchorPos;i<nAkeys;++i)
-	    {
-		ajStrAssignS(&kAarray[i-1],kAarray[i]);
-		pAarray[i-1] = pAarray[i];
-	    }
-	    pAarray[i-1] = pAarray[i];
-	}
-	--nAkeys;
-	
-
-	/* Merge this to neighbour */
-
-	while(nTkeys)
-	{
-	    pNarray[nNkeys+1] = pNarray[nNkeys];
-	    for(i=nNkeys-1;i>-1;--i)
-	    {
-		ajStrAssignS(&kNarray[i+1],kNarray[i]);
-		pNarray[i+1] = pNarray[i];
-	    }
-	    ajStrAssignS(&kNarray[0],kTarray[nTkeys-1]);
-	    pNarray[1] = pTarray[nTkeys];
-	    pNarray[0] = pTarray[nTkeys-1];
-	    --nTkeys;
-	    ++nNkeys;
-	}
-
-	/* At this point the 'this' node could be added to a freelist */
-    }
-    else
-    {
-	/* Find anchor key position */
-	i=0;
-	while(i!=nAkeys && strcmp(kNarray[nNkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
-	    ++i;
-	anchorPos = i;
-
-	/* Move down anchor key to neighbourNode */
-	ajStrAssignS(&kNarray[nNkeys],kAarray[anchorPos]);
-	++nNkeys;
-
-	/* Adjust anchor node keys/ptrs */
-	++anchorPos;
-	if(anchorPos!=nAkeys)
-	    for(i=anchorPos;i<nAkeys;++i)
-	    {
-		ajStrAssignS(&kAarray[i-1],kAarray[i]);
-		pAarray[i] = pAarray[i+1];
-	    }
-	--nAkeys;
-
-	/* merge extra */
-	count = 0;
-	while(nTkeys)
-	{
-	    ajStrAssignS(&kNarray[nNkeys],kTarray[count]);
-	    pNarray[nNkeys] = pTarray[count];
-	    ++nNkeys;
-	    ++count;
-	    --nTkeys;
-	    pNarray[nNkeys] = pTarray[count];
-	
-	}
-
-	/* At this point the 'this' node could be added to a freelist */
-    }
-    
-    
-    /* Adjust PREV pointers for neighbour Node */
-    prev = pageN->pageno;
-    for(i=0;i<nNkeys+1;++i)
-    {
-	page = ajBtreeCacheRead(cache,pNarray[i]);
-	buf = page->buf;
-	GBT_NODETYPE(buf,&nodetype);
-	if(nodetype != BT_BUCKET)
-	{
-	    lv = prev;
-	    SBT_PREV(buf,lv);
-	    page->dirty = BT_DIRTY;
-	}
-    }
-
-    pageT->dirty = BT_CLEAN;
-    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
-    btreeWriteNode(cache,pageN,kNarray,pNarray,nNkeys);
-
-    if(!anchorNode)
-	pageA->dirty = BT_LOCK;
-
-    
-    for(i=0;i<order;++i)
-    {
-	ajStrDel(&kTarray[i]);
-	ajStrDel(&kAarray[i]);
-	ajStrDel(&kNarray[i]);
-    }
-    AJFREE(kTarray);
-    AJFREE(kAarray);
-    AJFREE(kNarray);
-    AJFREE(pTarray);
-    AJFREE(pAarray);
-    AJFREE(pNarray);
-
-    if(collapse)
-	btreeCollapseRoot(cache,mergeNode);
-
-    return thisNode;
-}
-
-
-
-
-/* @funcstatic btreeFindMin ***********************************************
-**
-** Find minimum key in subtree and store in cache
-**
-** @param [u] cache [AjPBtcache] cache
-** @param [r] pageno [ajlong] page
-** @param [r] key [const char *] key
-**
-** @return [void]
-** @@
-******************************************************************************/
-
-static void btreeFindMin(AjPBtcache cache, ajlong pageno, const char *key)
-{
-    AjPBtpage page   = NULL;
-    AjPBucket bucket = NULL;
-    AjPStr *karray   = NULL;
-    ajlong *parray   = NULL;
-
-    ajint nkeys    = 0;
-    ajint nodetype = 0;
-    ajint order    = 0;
-    ajint nentries = 0;
-    ajint i;
-
-    unsigned char *buf = NULL;
-
-    /* ajDebug("In btreeFindMin\n"); */
-
-    order = cache->order;
-    AJCNEW0(karray,order);
-    AJCNEW0(parray,order);
-    for(i=0;i<order;++i)
-	karray[i] = ajStrNew();
-    
-    page = ajBtreeCacheRead(cache,pageno);
-    buf  = page->buf;
-    GBT_NODETYPE(buf,&nodetype);
-    GBT_NKEYS(buf,&nkeys);
-
-    btreeGetKeys(cache,buf,&karray,&parray);
-
-    if(nodetype == BT_LEAF)
-    {
-	bucket = btreeReadBucket(cache,parray[0]);
-	nentries = bucket->Nentries;
-	if(nentries<2)
-	{
-	    btreeBucketDel(&bucket);
-	    bucket = btreeReadBucket(cache,parray[1]);
-	    nentries = bucket->Nentries;
-	}
-	if(nentries<1)	
-	    ajFatal("FindMin: Too few entries in bucket Nkeys=%d\n",nkeys);
-	ajStrAssignS(&cache->replace,bucket->Ids[0]->id);
-	if(!strcmp(cache->replace->Ptr,key))
-	    ajStrAssignS(&cache->replace,bucket->Ids[1]->id);
-	for(i=1;i<nentries;++i)
-	    if(strcmp(bucket->Ids[i]->id->Ptr,cache->replace->Ptr)<0 &&
-	       strcmp(bucket->Ids[i]->id->Ptr,key))
-		ajStrAssignS(&cache->replace,bucket->Ids[i]->id);
-	btreeBucketDel(&bucket);
-    }
-    else
-    {
-	pageno = parray[0];
-	(void) btreeFindMin(cache,pageno,key);
-	
-    }
-    
-
-    for(i=0;i<order;++i)
-	ajStrDel(&karray[i]);
-    AJFREE(karray);
-    AJFREE(parray);
-
-    return;
 }
 
 
@@ -8526,8 +7149,9 @@ AjPBtcache ajBtreeSecCacheNewC(const char *file, const char *ext,
     cache->count = 0L;
     cache->fp    = fp;
     
-    cache->replace = ajStrNew();
-
+    cache->replace    = ajStrNew();
+    cache->numreplace = 0L;
+    
     if(pagesize>0)
 	cache->pagesize = pagesize;
     else
@@ -16683,4 +15307,6113 @@ void ajBtreeDumpHybKeys(AjPBtcache cache, ajint dmin, ajint dmax, AjPFile outf)
     btreeDeallocPriArray(cache,array);
 
     return;
+}
+
+
+
+
+/* @func ajBtreeDeleteHybId *********************************************
+**
+** Entry point for hybrid ID deletion.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] id [const AjPBtHybrid] hybrid object
+**
+** @return [AjBool] True if found and deleted
+** @@
+******************************************************************************/
+
+AjBool ajBtreeDeleteHybId(AjPBtcache cache, const AjPBtHybrid hyb)
+{
+    AjPBtpage rootpage = NULL;
+    AjPBtpage spage   = NULL;
+    AjPStr key        = NULL;
+    const char *ckey  = NULL;
+    AjPBucket bucket  = NULL;
+    ajlong blockno  = 0L;
+
+    ajint nkeys = 0;
+
+    ajint nodetype = 0;
+    ajint nentries = 0;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    AjPBtMem arrays = NULL;
+    AjBool found = ajFalse;
+    ajint dups = 0;
+    
+    ajint i;
+    
+    unsigned char *buf = NULL;
+    AjPBtId did = NULL;
+    ajlong  secrootpage = 0L;
+    AjBool ret = ajFalse;
+    
+    /* ajDebug("In ajBtreeDeleteHybId\n"); */
+
+    key = ajStrNew();
+    
+
+    ajStrAssignS(&key,hyb->key1);
+    if(!ajStrGetLen(key))
+    {
+	ajStrDel(&key);
+	return ajFalse;
+    }
+
+    ckey = ajStrGetPtr(key);
+    spage = ajBtreeHybFindInsert(cache,ckey);
+    buf = spage->buf;
+
+    GBT_NKEYS(buf,&nkeys);
+    GBT_NODETYPE(buf,&nodetype);
+    
+    arrays = btreeAllocPriArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+    
+    if(!nkeys)
+    {
+	btreeDeallocPriArray(cache,arrays);
+	ajStrDel(&key);
+
+	return ajFalse;
+    }
+
+
+    /* Search to see whether entry exists */
+    
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    i=0;
+    while(i!=nkeys && strcmp(key->Ptr,karray[i]->Ptr)>=0)
+	++i;
+
+    blockno = parray[i];
+
+
+    bucket = btreeReadBucket(cache,blockno);
+    
+    nentries = bucket->Nentries;
+    
+    found = ajFalse;
+
+    for(i=0;i<nentries;++i)
+	if(!strcmp(hyb->key1->Ptr,bucket->Ids[i]->id->Ptr))
+	{
+	    found = ajTrue;
+	    break;
+	}
+    
+
+    if(!found)
+    {
+	btreeDeallocPriArray(cache,arrays);
+	ajStrDel(&key);
+
+	return ajFalse;
+    }
+    
+
+    dups = bucket->Ids[i]->dups;
+    
+
+    if(!dups)
+    {
+        /* ajDebug("No secondary tree\n"); */
+        rootpage = btreeCacheLocate(cache,0L);
+        if(!rootpage)
+            ajFatal("Rootpage has been unlocked (ajBtreeDeleteHybId)");
+    
+        rootpage->dirty = BT_LOCK;
+    
+        btreeFindHybBalanceOne(cache,0L,BTNO_NODE,BTNO_NODE,BTNO_NODE,
+                               BTNO_NODE,hyb);
+
+
+        btreeDeallocPriArray(cache,arrays);
+	ajStrDel(&key);
+        if(cache->deleted)
+            ret = ajTrue;
+        else
+            ret = ajFalse;
+    }
+    else
+    {
+        did = bucket->Ids[i];
+        secrootpage = did->offset;
+        cache->secrootblock = secrootpage;
+
+        ret = btreeDeleteHybIdTwo(cache,hyb,did);
+
+        btreeWriteBucket(cache,bucket,blockno);
+    }
+    
+
+    return ret;
+}
+
+
+
+
+/* @funcstatic btreeFindHybBalanceOne ******************************************
+**
+** Master routine for entry deletion from level 1 hybrid tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Current node
+** @param [r] leftNode [ajlong] Node to left
+** @param [r] rightNode [ajlong] Node to right
+** @param [r] lAnchor [ajlong] Left anchor
+** @param [r] rAnchor [ajlong] Right anchor
+** @param [r] hyb [const AjPBtHybrid] hyb
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeFindHybBalanceOne(AjPBtcache cache, ajlong thisNode,
+                                     ajlong leftNode, ajlong rightNode,
+                                     ajlong lAnchor, ajlong rAnchor,
+                                     const AjPBtHybrid hyb)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *buf1 = NULL;
+    
+    ajlong nextNode   = BTNO_NODE;
+    ajlong nextLeft   = BTNO_NODE;
+    ajlong nextRight  = BTNO_NODE;
+    ajlong nextAncL   = BTNO_NODE;
+    ajlong nextAncR   = BTNO_NODE;
+    ajlong done       = 0L;
+    
+    ajint  nkeys      = 0;
+    ajint  order      = 0;
+    ajint  minkeys    = 0;
+    ajint  i;
+    ajint  nodetype   = 0;
+
+    ajint n1keys      = 0;
+    
+    AjPBtpage page  = NULL;
+    AjPBtpage page1 = NULL;
+
+    ajlong balanceNode = 0L;
+    ajlong blockno     = 0L;
+    ajlong ptrSave     = 0L;
+
+    AjPStr *karray  = NULL;
+    ajlong *parray  = NULL;
+    AjPStr *k1array = NULL;
+    ajlong *p1array = NULL;
+
+    AjPBtMem arrays  = NULL;
+    AjPBtMem arrays1 = NULL;
+    
+    char *key = NULL;
+    AjBool existed = ajFalse;
+    
+    /* ajDebug("In btreeFindBalance\n"); */
+
+    if(thisNode)
+	page = ajBtreeCacheRead(cache,thisNode);
+    else
+    {   /* It's the root node of the primary hyb tree */
+        /* Needs altering for secondary tree          */
+	page = btreeCacheLocate(cache,thisNode);
+	page->dirty = BT_LOCK;
+    }
+
+    cache->deleted = ajFalse;
+
+    buf = page->buf;
+    GBT_NKEYS(buf,&nkeys);
+
+    order = cache->order;
+    /* order-1 is the number of keys in the node */
+    minkeys = (order-1) / 2;
+    if((order-1)%2)
+	++minkeys;
+
+    /*
+    ** If thisNode contains >= minkeys then it is not a candidate
+    ** for balancing
+    */
+    if(nkeys >= minkeys)
+	balanceNode = BTNO_BALANCE;
+    else
+	balanceNode = page->pageno;
+
+    arrays  = btreeAllocPriArray(cache);
+    arrays1 = btreeAllocPriArray(cache);
+
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    k1array = arrays1->karray;
+    p1array = arrays1->parray;
+
+    key = hyb->key1->Ptr;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    i=0;
+    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
+	++i;
+
+    blockno = parray[i];
+
+    nextNode = blockno;
+    ptrSave = i;
+
+    GBT_NODETYPE(buf,&nodetype);
+    if(!(nodetype == BT_LEAF) && !(nodetype == BT_ROOT && !cache->level))
+    {
+	if(nextNode == parray[0])
+	{
+	    if(leftNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,leftNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetKeys(cache,buf1,&k1array,&p1array);
+		nextLeft = p1array[n1keys];
+	    }
+	    else
+		nextLeft = BTNO_NODE;
+	    
+	    if(!thisNode)
+		nextAncL = thisNode;
+	    else
+		nextAncL = lAnchor;
+	}
+	else
+	{
+	    nextLeft = parray[ptrSave-1];
+	    nextAncL = thisNode;
+	}
+
+	if(nextNode == parray[nkeys])
+	{
+	    if(rightNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,rightNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetKeys(cache,buf1,&k1array,&p1array);
+		nextRight = p1array[0];
+	    }
+	    else
+		nextRight = BTNO_NODE;
+
+	    if(!thisNode)
+		nextAncR = thisNode;
+	    else
+		nextAncR = rAnchor;
+	}
+	else
+	{
+	    nextRight = parray[ptrSave+1];
+	    nextAncR  = thisNode;
+	}
+
+
+
+	/* Check to see whether key exists in an internal node */
+	if(nodetype != BT_LEAF && cache->level)
+	{
+	    i=0;
+	    while(i!=nkeys && strcmp(key,karray[i]->Ptr))
+		++i;
+	    if(i!=nkeys)
+	    {
+		btreeFindHybMinOne(cache,parray[i+1],key);
+		ajStrAssignS(&karray[i],cache->replace);
+		btreeWriteNode(cache,page,karray,parray,nkeys);
+	    }
+	
+	}
+	
+	btreeFindHybBalanceOne(cache,nextNode,nextLeft,nextRight,
+                               nextAncL,nextAncR,hyb);
+
+	if(thisNode)
+	    page = ajBtreeCacheRead(cache,thisNode);
+	else
+	{
+	    page = btreeCacheLocate(cache,thisNode);
+	    page->dirty = BT_LOCK;
+	}
+	buf = page->buf;
+
+    }
+    else
+    {
+	if(nodetype == BT_LEAF || (nodetype==BT_ROOT && !cache->level))
+	{
+	    existed = btreeRemoveHybEntryOne(cache,thisNode,hyb);
+
+	    if(existed)
+		cache->deleted = ajTrue;
+	    GBT_NKEYS(buf,&nkeys);
+	    if(nkeys >= minkeys || (nodetype==BT_ROOT && !cache->level))
+		balanceNode = BTNO_BALANCE;
+	    else
+		balanceNode = page->pageno;
+	}
+    }
+
+
+    if(balanceNode == BTNO_BALANCE || thisNode == 0L)
+	done = BTNO_NODE;
+    else
+	done = btreeRebalanceHybOne(cache,thisNode,leftNode,rightNode,
+                                    lAnchor,rAnchor);
+    
+
+    btreeDeallocPriArray(cache,arrays);
+    btreeDeallocPriArray(cache,arrays1);
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeFindHybMinOne *********************************************
+**
+** Find minimum key in hybrid level 1 subtree and store in cache.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page
+** @param [r] key [const char *] key
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeFindHybMinOne(AjPBtcache cache, ajlong pageno,
+                               const char *key)
+{
+    AjPBtpage page   = NULL;
+    AjPBucket bucket = NULL;
+    AjPStr *karray   = NULL;
+    ajlong *parray   = NULL;
+
+    ajint nkeys    = 0;
+    ajint nodetype = 0;
+    ajint nentries = 0;
+    ajint i;
+    AjPBtMem arrays = NULL;
+    
+    unsigned char *buf = NULL;
+
+    /* ajDebug("In btreeFindHybMinOne\n"); */
+
+    arrays = btreeAllocPriArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf  = page->buf;
+    GBT_NODETYPE(buf,&nodetype);
+    GBT_NKEYS(buf,&nkeys);
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    if(nodetype == BT_LEAF)
+    {
+	bucket = btreeReadBucket(cache,parray[0]);
+	nentries = bucket->Nentries;
+
+        /*
+        ** If there's only one entry then it must be the key marked
+        ** for deletion
+        */
+        if(nentries<2)
+	{
+	    btreeBucketDel(&bucket);
+	    bucket = btreeReadBucket(cache,parray[1]);
+	    nentries = bucket->Nentries;
+	}
+
+        /* Check for empty bucket - shouldn't happen */
+        /* Checking solely out of interest */
+	if(nentries<1)	
+	    ajFatal("FindHybMinOne: Too few entries in bucket Nkeys=%d\n",
+                    nkeys);
+
+
+        /* Find lowest value key in the bucket and store in cache */
+        ajStrAssignS(&cache->replace,bucket->Ids[0]->id);
+	if(!strcmp(cache->replace->Ptr,key))
+	    ajStrAssignS(&cache->replace,bucket->Ids[1]->id);
+
+	for(i=1;i<nentries;++i)
+	    if(strcmp(bucket->Ids[i]->id->Ptr,cache->replace->Ptr)<0 &&
+	       strcmp(bucket->Ids[i]->id->Ptr,key))
+		ajStrAssignS(&cache->replace,bucket->Ids[i]->id);
+	btreeBucketDel(&bucket);
+    }
+    else
+    {
+	pageno = parray[0];
+	(void) btreeFindHybMinOne(cache,pageno,key);
+	
+    }
+
+    btreeDeallocPriArray(cache,arrays);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRemoveHybEntryOne *****************************************
+**
+** Find and delete an ID from a given hybrid tree level 1 leaf node if
+** necessary.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] leaf node page
+** @param [r] id [const AjPBtHybrid] hyb
+**
+** @return [AjBool] True if found (and deleted)
+** @@
+******************************************************************************/
+
+static AjBool btreeRemoveHybEntryOne(AjPBtcache cache, ajlong pageno,
+                                     const AjPBtHybrid hyb)
+{
+    AjPBtpage page   = NULL;
+    AjPBucket bucket = NULL;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    ajlong blockno = 0L;
+    
+    ajint nkeys    = 0;
+    ajint nentries = 0;
+    ajint i;
+
+    ajint dirtysave = 0;
+    
+    AjBool found = ajFalse;
+    char   *key  = NULL;
+
+    unsigned char *buf = NULL;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeRemoveHybEntryOne\n"); */
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf = page->buf;
+    dirtysave = page->dirty;
+    page->dirty = BT_LOCK;
+    
+    GBT_NKEYS(buf,&nkeys);
+
+    if(!nkeys)
+	return ajFalse;
+
+
+    arrays = btreeAllocPriArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+    
+    key = hyb->key1->Ptr;
+
+    i=0;
+    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
+	++i;
+
+    blockno = parray[i];
+    
+    bucket = btreeReadBucket(cache,blockno);
+
+    nentries = bucket->Nentries;
+    found = ajFalse;
+
+    for(i=0;i<nentries;++i)
+	if(!strcmp(key,bucket->Ids[i]->id->Ptr))
+	{
+	    found = ajTrue;
+	    break;
+	}
+    
+
+    if(found)
+    {
+	/* Perform the deletion */
+	if(nentries == 1)
+	{
+	    bucket->Nentries = 0;
+	    ajBtreeIdDel(&bucket->Ids[0]);
+	}
+	else
+	{
+	    ajBtreeIdDel(&bucket->Ids[i]);
+	    bucket->Ids[i] = bucket->Ids[nentries-1];
+	    --bucket->Nentries;
+	}
+
+        
+	btreeWriteBucket(cache,bucket,blockno);
+
+	btreeAdjustHybBucketsOne(cache,page);
+
+	page->dirty = BT_DIRTY;
+    }
+    else
+	page->dirty = dirtysave;
+
+    btreeBucketDel(&bucket);
+
+    btreeDeallocPriArray(cache,arrays);
+    
+    if(!found)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic btreeAdjustHybBucketsOne **************************************
+**
+** Re-order leaf buckets
+** Can be called whatever the state of a leaf.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] leaf [AjPBtpage] leaf page
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeAdjustHybBucketsOne(AjPBtcache cache, AjPBtpage leaf)
+{
+    ajint nkeys = 0;
+    unsigned char *lbuf = NULL;
+    AjPBucket *buckets  = NULL;
+    AjPStr *keys        = NULL;
+    ajlong *ptrs        = NULL;
+    ajlong *overflows   = NULL;
+    
+    ajint i = 0;
+    ajint j = 0;
+    
+    ajint order;
+    ajint bentries      = 0;
+    ajint totalkeys     = 0;
+    ajint nperbucket    = 0;
+    ajint maxnperbucket = 0;
+    ajint count         = 0;
+    ajint totkeylen     = 0;
+    ajint keylimit      = 0;
+    ajint bucketn       = 0;
+    ajint bucketlimit   = 0;
+    ajint nodetype      = 0;
+    ajint nids          = 0;
+    ajint totnids       = 0;
+    
+    AjPList idlist    = NULL;
+    ajint   dirtysave = 0;
+    AjPBtId bid       = NULL;
+    AjPBucket cbucket = NULL;
+    AjPBtId cid       = NULL;
+
+    AjPBtMem arrays = NULL;    
+
+    ajint v = 0;
+    
+    /* ajDebug("In btreeAdjustHybBucketsOne\n"); */
+
+    dirtysave = leaf->dirty;
+
+    leaf->dirty = BT_LOCK;
+    lbuf = leaf->buf;
+
+    GBT_NKEYS(lbuf,&nkeys);
+    if(!nkeys)
+    {
+	leaf->dirty = dirtysave;
+	return;
+    }
+
+
+    GBT_NODETYPE(lbuf,&nodetype);
+
+    order = cache->order;
+    nperbucket = cache->nperbucket;
+    
+
+    /* Read keys/ptrs */
+
+    arrays = btreeAllocPriArray(cache);
+    keys = arrays->karray;
+    ptrs = arrays->parray;
+
+    AJCNEW0(overflows,order);
+    
+
+    btreeGetKeys(cache,lbuf,&keys,&ptrs);
+
+
+    for(i=0;i<nkeys;++i)
+	totalkeys += btreeNumInBucket(cache,ptrs[i]);
+    totalkeys += btreeNumInBucket(cache,ptrs[i]);
+
+
+    /* Set the number of entries per bucket to approximately half full */
+    maxnperbucket = nperbucket >> 1;
+    if(!maxnperbucket)
+	++maxnperbucket;
+
+    if(!leaf->pageno)
+	maxnperbucket = nperbucket;
+
+    /* Work out the number of new buckets needed */
+    bucketn = (totalkeys / maxnperbucket);
+    if(totalkeys % maxnperbucket)
+	++bucketn;
+
+    if(bucketn == 1)
+	++bucketn;
+
+    while(bucketn > order)
+    {
+        ++maxnperbucket;
+        bucketn = (totalkeys / maxnperbucket);
+        if(totalkeys % maxnperbucket)
+            ++bucketn;
+    }
+    
+    /* Read buckets */
+    AJCNEW0(buckets,nkeys+1);
+    keylimit = nkeys + 1;
+    
+    for(i=0;i<keylimit;++i)
+	buckets[i] = btreeReadBucket(cache,ptrs[i]);
+
+
+    /* Read IDs from all buckets and push to list and sort (increasing id) */
+    idlist  = ajListNew();
+
+    for(i=0;i<keylimit;++i)
+    {
+	overflows[i] = buckets[i]->Overflow;
+	bentries = buckets[i]->Nentries;
+	for(j=0;j<bentries;++j)
+	    ajListPush(idlist,(void *)buckets[i]->Ids[j]);
+	
+	AJFREE(buckets[i]->keylen);
+	AJFREE(buckets[i]->Ids);
+	AJFREE(buckets[i]);
+    }
+    ajListSort(idlist,btreeIdCompare);
+    AJFREE(buckets);
+
+    cbucket = btreeBucketNew(maxnperbucket);
+    bucketlimit = bucketn - 1;
+
+    totnids = 0;
+    nids = ajListGetLength(idlist);
+
+
+    if(!totalkeys)
+    {
+	v = totalkeys;
+	SBT_NKEYS(lbuf,v);
+
+        btreeDeallocPriArray(cache,arrays);
+
+	AJFREE(overflows);
+	ajListFree(&idlist);
+	leaf->dirty = BT_DIRTY;
+	return;
+    }
+    
+    if(nids <= maxnperbucket)
+    {
+	cbucket->Overflow = overflows[1];
+	cbucket->Nentries = 0;
+	ajListPeek(idlist,(void **)&bid);
+	ajStrAssignS(&keys[0],bid->id);
+
+	count = 0;
+	while(count!=maxnperbucket && totnids != nids)
+	{
+	    ajListPop(idlist,(void **)&bid);
+	    
+	    cid = cbucket->Ids[count];
+	    ajStrAssignS(&cid->id,bid->id);
+	    cid->dbno = bid->dbno;
+	    cid->dups = bid->dups;
+	    cid->offset = bid->offset;
+	    cid->refoffset = bid->refoffset;
+	    
+	    cbucket->keylen[count] = BT_BUCKIDLEN(bid->id);
+	    ++cbucket->Nentries;
+	    ++count;
+	    ++totnids;
+	    ajBtreeIdDel(&bid);
+	}
+
+
+	totkeylen += ajStrGetLen(keys[0]);
+
+	if(!ptrs[1])
+	    ptrs[1] = cache->totsize;
+	btreeWriteBucket(cache,cbucket,ptrs[1]);
+
+	cbucket->Overflow = overflows[0];
+	cbucket->Nentries = 0;
+	if(!ptrs[0])
+	    ptrs[0] = cache->totsize;
+	btreeWriteBucket(cache,cbucket,ptrs[0]);
+    }
+    else
+    {
+	for(i=0;i<bucketlimit;++i)
+	{
+	    cbucket->Overflow = overflows[i];
+	    cbucket->Nentries = 0;
+
+	    count = 0;
+	    while(count!=maxnperbucket && totnids != nids)
+	    {
+		ajListPop(idlist,(void **)&bid);
+
+		cid = cbucket->Ids[count];
+		ajStrAssignS(&cid->id,bid->id);
+		cid->dbno = bid->dbno;
+		cid->dups = bid->dups;
+		cid->offset = bid->offset;
+		cid->refoffset = bid->refoffset;
+		
+		cbucket->keylen[count] = BT_BUCKIDLEN(bid->id);
+		++cbucket->Nentries;
+		++count;
+		ajBtreeIdDel(&bid);
+	    }
+
+
+	    ajListPeek(idlist,(void **)&bid);
+	    ajStrAssignS(&keys[i],bid->id);
+
+
+	    totkeylen += ajStrGetLen(bid->id);
+
+	    if(!ptrs[i])
+		ptrs[i] = cache->totsize;
+	    btreeWriteBucket(cache,cbucket,ptrs[i]);
+	}
+	
+	
+	/* Deal with greater-than bucket */
+	
+	cbucket->Overflow = overflows[i];
+	cbucket->Nentries = 0;
+	
+	
+	
+	count = 0;
+	while(ajListPop(idlist,(void **)&bid))
+	{
+	    cid = cbucket->Ids[count];
+	    ajStrAssignS(&cid->id,bid->id);
+	    cid->dbno = bid->dbno;
+	    cid->dups = bid->dups;
+	    cid->offset = bid->offset;
+	    cid->refoffset = bid->refoffset;
+	    
+	    ++cbucket->Nentries;
+	    ++count;
+	    ajBtreeIdDel(&bid);
+	}
+	
+	
+	if(!ptrs[i])
+	    ptrs[i] = cache->totsize;
+	
+	btreeWriteBucket(cache,cbucket,ptrs[i]);
+    }
+    
+
+    cbucket->Nentries = maxnperbucket;
+    btreeBucketDel(&cbucket);
+
+    /* Now write out a modified leaf with new keys/ptrs */
+
+    nkeys = bucketn - 1;
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
+    v = totkeylen;
+    SBT_TOTLEN(lbuf,v);
+
+    btreeWriteNode(cache,leaf,keys,ptrs,nkeys);
+
+    leaf->dirty = dirtysave;
+    if(nodetype == BT_ROOT)
+	leaf->dirty = BT_LOCK;
+
+    btreeDeallocPriArray(cache,arrays);
+
+    AJFREE(overflows);
+
+    btreeBucketDel(&cbucket);
+    ajListFree(&idlist);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRebalanceHybOne ******************************************
+**
+** Rebalance Hybrid level 1 tree after deletion
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Node to rebalance
+** @param [r] leftNode [ajlong] left node
+** @param [r] rightNode [ajlong] right node
+** @param [r] lAnchor [ajlong] left anchor
+** @param [r] rAnchor [ajlong] right anchor
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeRebalanceHybOne(AjPBtcache cache, ajlong thisNode,
+                                   ajlong leftNode, ajlong rightNode,
+                                   ajlong lAnchor, ajlong rAnchor)
+{
+    unsigned char *lbuf = NULL;
+    unsigned char *rbuf = NULL;
+    unsigned char *tbuf = NULL;
+
+    ajlong anchorNode   = 0L;
+    ajlong balanceNode  = 0L;
+    ajlong mergeNode    = 0L;
+    ajlong done         = 0L;
+    ajlong parent       = 0L;
+    
+    AjPBtpage lpage = NULL;
+    AjPBtpage rpage = NULL;
+    AjPBtpage tpage = NULL;
+    
+    ajint lnkeys  = 0;
+    ajint rnkeys  = 0;
+    ajint size    = 0;
+    ajint order   = 0;
+    ajint minsize = 0;
+
+    AjBool leftok  = ajFalse;
+    AjBool rightok = ajFalse;
+    
+    
+    /* ajDebug("In btreeRebalanceHybOne\n"); */
+
+    if(leftNode!=BTNO_NODE && lAnchor!=BTNO_NODE)
+	leftok = ajTrue;
+    if(rightNode!=BTNO_NODE && rAnchor!=BTNO_NODE)
+	rightok = ajTrue;
+
+    if(!leftok && !rightok)
+	return BTNO_NODE;
+    
+
+    if(leftok)
+    {
+	lpage = ajBtreeCacheRead(cache,leftNode);
+	lbuf  = lpage->buf;
+	GBT_NKEYS(lbuf,&lnkeys);
+    }
+    
+
+    if(rightok)
+    {
+	rpage = ajBtreeCacheRead(cache,rightNode);
+	rbuf  = rpage->buf;
+	GBT_NKEYS(rbuf,&rnkeys);
+    }
+    
+
+
+    if(leftok && rightok)
+    {
+	size = (lnkeys >= rnkeys) ? lnkeys : rnkeys;
+	balanceNode = (lnkeys >= rnkeys) ? leftNode : rightNode;
+    }
+    else if(leftok)
+    {
+	size = lnkeys;
+	balanceNode = leftNode;
+    }
+    else
+    {
+	size = rnkeys;
+	balanceNode = rightNode;
+    }
+
+    
+    order = cache->order;
+    minsize = (order-1) / 2;
+    if((order-1)%2)
+	++minsize;
+
+    if(size >= minsize)
+    {
+	if(leftok && rightok)
+	    anchorNode = (lnkeys >= rnkeys) ? lAnchor : rAnchor;
+	else if(leftok)
+	    anchorNode = lAnchor;
+	else
+	    anchorNode = rAnchor;
+	done = btreeShiftHybOne(cache,thisNode,balanceNode,anchorNode);
+    }
+	    
+    else
+    {
+	tpage = ajBtreeCacheRead(cache,thisNode);
+	tbuf  = tpage->buf;
+	GBT_PREV(tbuf,&parent);
+	if(leftok && rightok)
+	{
+	    anchorNode = (parent == lAnchor) ? lAnchor : rAnchor;
+	    mergeNode  = (anchorNode == lAnchor) ? leftNode : rightNode;
+	}
+	else if(leftok)
+	{
+	    anchorNode = lAnchor;
+	    mergeNode  = leftNode;
+	}
+	else
+	{
+	    anchorNode = rAnchor;
+	    mergeNode  = rightNode;
+	}
+	done = btreeMergeHybOne(cache,thisNode,mergeNode,anchorNode);
+    }
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeShiftHybOne ***********************************************
+**
+** Shift spare entries from one hybrid tree level 1 node to another.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] balanceNode [ajlong] balance node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeShiftHybOne(AjPBtcache cache, ajlong thisNode,
+                               ajlong balanceNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *bbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    AjPStr *kTarray = NULL;
+    AjPStr *kAarray = NULL;
+    AjPStr *kBarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pBarray = NULL;
+    
+    ajint  nAkeys = 0;
+    ajint  nBkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  i;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageB = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos   = 0;
+    ajlong prev        = 0L;
+    ajint  nodetype    = 0;
+
+    ajlong lv = 0L;
+    
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysB = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    /* ajDebug("In btreeShiftHybOne\n"); */
+
+
+    arraysA = btreeAllocPriArray(cache);
+    kAarray = arraysA->karray;
+    pAarray = arraysA->parray;
+
+    arraysB = btreeAllocPriArray(cache);
+    kBarray = arraysB->karray;
+    pBarray = arraysB->parray;
+
+    arraysT = btreeAllocPriArray(cache);
+    kTarray = arraysT->karray;
+    pTarray = arraysT->parray;
+
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageB = ajBtreeCacheRead(cache,balanceNode);
+    pageB->dirty = BT_LOCK;
+    bbuf = pageB->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(bbuf,&nBkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetKeys(cache,bbuf,&kBarray,&pBarray);
+    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
+    
+    if(strcmp(kTarray[nTkeys-1]->Ptr,kBarray[nBkeys-1]->Ptr)<0)
+	leftpage = pageT;
+    else
+	leftpage = pageB;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+	ajStrAssignS(&kTarray[nTkeys],kAarray[anchorPos]);
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+	    ajStrAssignS(&kTarray[nTkeys],kBarray[0]);
+	    pTarray[nTkeys] = pBarray[0];
+	    ++nTkeys;
+	    --nBkeys;
+
+	    for(i=0;i<nBkeys;++i)
+	    {
+		ajStrAssignS(&kBarray[i],kBarray[i+1]);
+		pBarray[i] = pBarray[i+1];
+	    }
+	    pBarray[i] = pBarray[i+1];
+	}
+
+	/* Adjust anchor key */
+	ajStrAssignS(&kAarray[anchorPos],kTarray[nTkeys-1]);
+	--nTkeys;
+    }
+    else	/* thisNode on the right */
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kBarray[nBkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+	pTarray[nTkeys+1] = pTarray[nTkeys];
+	for(i=nTkeys-1;i>-1;--i)
+	{
+	    ajStrAssignS(&kTarray[i+1],kTarray[i]);
+	    pTarray[i+1] = pTarray[i];
+	}
+	ajStrAssignS(&kTarray[0],kAarray[anchorPos]);
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+	    pTarray[nTkeys+1] = pTarray[nTkeys];
+	    for(i=nTkeys-1;i>-1;--i)
+	    {
+		ajStrAssignS(&kTarray[i+1],kTarray[i]);
+		pTarray[i+1] = pTarray[i];
+	    }
+	    ajStrAssignS(&kTarray[0],kBarray[nBkeys-1]);
+	    pTarray[1] = pBarray[nBkeys];
+	    ++nTkeys;
+	    --nBkeys;
+	}
+
+
+	/* Adjust anchor key */
+	ajStrAssignS(&kAarray[anchorPos],kTarray[0]);
+	--nTkeys;
+	for(i=0;i<nTkeys;++i)
+	{
+	    ajStrAssignS(&kTarray[i],kTarray[i+1]);
+	    pTarray[i] = pTarray[i+1];
+	}
+	pTarray[i] = pTarray[i+1];
+    }
+    
+
+    /* Adjust PREV pointers for thisNode */
+    prev = pageT->pageno;
+    for(i=0;i<nTkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pTarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNode(cache,pageB,kBarray,pBarray,nBkeys);
+    btreeWriteNode(cache,pageT,kTarray,pTarray,nTkeys);
+
+    if(!anchorNode)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocPriArray(cache,arraysA);
+    btreeDeallocPriArray(cache,arraysB);
+    btreeDeallocPriArray(cache,arraysT);
+
+    return BTNO_NODE;
+}
+
+
+
+
+/* @funcstatic btreeMergeHybOne ***********************************************
+**
+** Merge two nodes.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] mergeNode [ajlong] merge node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeMergeHybOne(AjPBtcache cache, ajlong thisNode,
+                               ajlong mergeNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *nbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    AjPStr *kTarray = NULL;
+    AjPStr *kAarray = NULL;
+    AjPStr *kNarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pNarray = NULL;
+
+    ajlong thisprev  = 0L;
+    ajlong mergeprev = 0L;
+    
+    
+    ajint  nAkeys = 0;
+    ajint  nNkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  count  = 0;
+    ajint  i;
+    ajint  nodetype = 0;
+    
+    ajint saveA = 0;
+    ajint saveN = 0;
+    ajint saveT = 0;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageN = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos = 0;
+    ajlong prev      = 0L;
+
+    ajlong lv = 0L;
+
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysN = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    AjBool collapse = ajFalse;
+    
+    /* ajDebug("In btreeMergeHybOne\n"); */
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    saveA = pageA->dirty;
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageN = ajBtreeCacheRead(cache,mergeNode);
+    saveN = pageN->dirty;
+    pageN->dirty = BT_LOCK;
+    nbuf = pageN->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    saveT = pageT->dirty;
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_PREV(tbuf,&thisprev);
+    GBT_PREV(nbuf,&mergeprev);
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(nbuf,&nNkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    GBT_NODETYPE(nbuf,&nodetype);
+
+
+    if(nAkeys == 1)
+    {
+	if(!anchorNode && !thisprev && !mergeprev)
+	    collapse = ajTrue;
+	else
+	{
+	    pageA->dirty = saveA;
+	    pageN->dirty = saveN;
+	    pageT->dirty = saveT;
+	    return thisNode;
+	}
+    }
+
+    arraysA = btreeAllocPriArray(cache);
+    kAarray = arraysA->karray;
+    pAarray = arraysA->parray;
+
+    arraysN = btreeAllocPriArray(cache);
+    kNarray = arraysN->karray;
+    pNarray = arraysN->parray;
+
+    arraysT = btreeAllocPriArray(cache);
+    kTarray = arraysT->karray;
+    pTarray = arraysT->parray;
+
+    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetKeys(cache,nbuf,&kNarray,&pNarray);
+    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
+
+    if(strcmp(kTarray[nTkeys-1]->Ptr,kNarray[nNkeys-1]->Ptr)<0)
+	leftpage = pageT;
+    else
+	leftpage = pageN;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbour Node */
+	pNarray[nNkeys+1] = pNarray[nNkeys];
+	for(i=nNkeys-1;i>-1;--i)
+	{
+	    ajStrAssignS(&kNarray[i+1],kNarray[i]);
+	    pNarray[i+1] = pNarray[i];
+	}
+	ajStrAssignS(&kNarray[0],kAarray[anchorPos]);
+	++nNkeys;
+
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos==nAkeys)
+	    pAarray[nAkeys-1] = pAarray[nAkeys];
+	else
+	{
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		ajStrAssignS(&kAarray[i-1],kAarray[i]);
+		pAarray[i-1] = pAarray[i];
+	    }
+	    pAarray[i-1] = pAarray[i];
+	}
+	--nAkeys;
+	
+
+	/* Merge this to neighbour */
+
+	while(nTkeys)
+	{
+	    pNarray[nNkeys+1] = pNarray[nNkeys];
+	    for(i=nNkeys-1;i>-1;--i)
+	    {
+		ajStrAssignS(&kNarray[i+1],kNarray[i]);
+		pNarray[i+1] = pNarray[i];
+	    }
+	    ajStrAssignS(&kNarray[0],kTarray[nTkeys-1]);
+	    pNarray[1] = pTarray[nTkeys];
+	    pNarray[0] = pTarray[nTkeys-1];
+	    --nTkeys;
+	    ++nNkeys;
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    else
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kNarray[nNkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbourNode */
+	ajStrAssignS(&kNarray[nNkeys],kAarray[anchorPos]);
+	++nNkeys;
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos!=nAkeys)
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		ajStrAssignS(&kAarray[i-1],kAarray[i]);
+		pAarray[i] = pAarray[i+1];
+	    }
+	--nAkeys;
+
+	/* merge extra */
+	count = 0;
+	while(nTkeys)
+	{
+	    ajStrAssignS(&kNarray[nNkeys],kTarray[count]);
+	    pNarray[nNkeys] = pTarray[count];
+	    ++nNkeys;
+	    ++count;
+	    --nTkeys;
+	    pNarray[nNkeys] = pTarray[count];
+	
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    
+    
+    /* Adjust PREV pointers for neighbour Node */
+    prev = pageN->pageno;
+    for(i=0;i<nNkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pNarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    pageT->dirty = BT_CLEAN;
+    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNode(cache,pageN,kNarray,pNarray,nNkeys);
+
+    if(!anchorNode)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocPriArray(cache,arraysA);
+    btreeDeallocPriArray(cache,arraysN);
+    btreeDeallocPriArray(cache,arraysT);
+    
+    if(collapse)
+	btreeCollapseRootHybOne(cache,mergeNode);
+
+    return thisNode;
+}
+
+
+
+
+/* @funcstatic btreeCollapseRootHybOne ****************************************
+**
+** Collapse root page for hybrid level 1 tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page number to make new root
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeCollapseRootHybOne(AjPBtcache cache, ajlong pageno)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *lbuf = NULL;
+
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+
+    AjPBtpage rootpage = NULL;
+    AjPBtpage page     = NULL;
+    
+    ajint nodetype = 0;
+    ajint nkeys    = 0;
+    ajint i;
+
+    ajlong prev = 0L;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeCollapseRootHybOne\n"); */
+    
+    if(!cache->level)
+	return BTNO_NODE;
+
+    rootpage = btreeCacheLocate(cache,0L);
+    buf = rootpage->buf;
+    page = ajBtreeCacheRead(cache,pageno);
+
+
+    arrays = btreeAllocPriArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    /*
+    ** Swap pageno values to make root the child and child the root
+    ** Update nodetypes and mark the original root as a clean page
+    */
+
+    /* At this point page->pageno could be added to a free list */
+
+    rootpage->pageno = page->pageno;
+    rootpage->dirty = BT_CLEAN;
+    nodetype = BT_INTERNAL;
+    SBT_NODETYPE(buf,nodetype);
+
+    page->pageno = 0;
+    page->dirty  = BT_LOCK;
+    buf = page->buf;
+    nodetype = BT_ROOT;
+    SBT_NODETYPE(buf,nodetype);
+    
+    --cache->level;
+
+    if(cache->level)
+    {
+	/*
+	 ** Update the PREV pointers of the new root's children
+	 */
+	GBT_NKEYS(buf,&nkeys);
+	btreeGetKeys(cache,buf,&karray,&parray);
+	for(i=0;i<nkeys+1;++i)
+	{
+	    page = ajBtreeCacheRead(cache,parray[i]);
+	    lbuf = page->buf;
+	    SBT_PREV(lbuf,prev);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeDeallocPriArray(cache,arrays);
+    
+    return 0L;
+}
+
+
+
+
+/* @funcstatic btreeDeleteHybIdTwo *********************************************
+**
+** Entry point for secondary hybrid tree ID deletion.
+** Assumes cache->secrootblock has been initialised.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] hyb [const AjPBtHybrid] hybrid object
+** @param [r] did [AjPBtId] ID object in primary tree
+**
+** @return [AjBool] True if found and deleted
+** @@
+******************************************************************************/
+
+static AjBool btreeDeleteHybIdTwo(AjPBtcache cache, const AjPBtHybrid hyb,
+                                  AjPBtId did)
+{
+    AjPBtpage rpage = NULL;
+    AjPBtpage page  = NULL;
+
+    ajlong sval = 0L;
+    ajlong key  = 0L;
+    ajlong *karray = NULL;
+    ajlong *parray = NULL;
+    ajlong blockno = 0L;
+    
+    unsigned char *rbuf = NULL;
+    unsigned char *buf  = NULL;
+
+    ajint dups     = 0;
+    ajint nkeys    = 0;
+    ajint nentries = 0;
+    ajint dirtysave;
+    
+    ajint i;
+
+    AjBool found = ajFalse;
+    
+    AjPBtNumId num      = NULL;
+    AjPNumBucket bucket = NULL;
+    
+    AjPBtMem array = NULL;
+    
+    rpage = ajBtreeCacheWrite(cache,cache->secrootblock);
+
+    dirtysave = rpage->dirty;
+    rpage->dirty = BT_LOCK;
+    rbuf = rpage->buf;
+    GBT_RIGHT(rbuf,&sval);
+    cache->slevel = (ajint) sval;
+
+    dups = did->dups;
+    key  = hyb->offset;
+
+    page = ajBtreeNumFindInsert(cache,key);
+    buf  = page->buf;
+
+    GBT_NKEYS(buf,&nkeys);
+
+    array  = btreeAllocSecArray(cache);
+
+    karray = array->overflows;
+    parray = array->parray;
+    
+    if(!nkeys)
+    {
+        ajWarn("btreeDeleteHybIdTwo: No keys in findinsert node");
+        btreeDeallocSecArray(cache,array);
+        rpage->dirty = BT_CLEAN;
+        return ajFalse;
+    }
+
+    btreeGetNumKeys(cache,buf,&karray,&parray);
+    i = 0;
+    while(i != nkeys && key >= karray[i])
+        ++i;
+
+    blockno = parray[i];
+
+    bucket = btreeReadNumBucket(cache,blockno);
+    nentries = bucket->Nentries;
+
+    found = ajFalse;
+    for(i=0; i < nentries; ++i)
+    {
+        num = bucket->NumId[i];
+        
+        if(num->offset == key)
+        {
+            found = ajTrue;
+            break;
+        }
+    }
+
+    if(!found)
+    {
+        ajWarn("btreeDeleteHybIdTwo: Numeric key not in bucket");
+        btreeDeallocSecArray(cache,array);
+        rpage->dirty = BT_CLEAN;
+        return ajFalse;
+    }
+
+    btreeFindHybBalanceTwo(cache,cache->secrootblock,BTNO_NODE,BTNO_NODE,
+                           BTNO_NODE,BTNO_NODE,key);
+
+    if(!cache->deleted)
+    {
+        ajWarn("btreeDeleteHybIdTwo: entry %Ld not deleted",key);
+        rpage->dirty = BT_CLEAN;
+        btreeDeallocSecArray(cache,array);
+        return ajFalse;
+    }
+
+    --did->dups;
+    if(did->dups != 1)
+    {
+        rpage->dirty = BT_DIRTY;
+        btreeDeallocSecArray(cache,array);
+        return ajTrue;
+    }
+    
+    /*
+    ** Need to find remaining 2ry key here. Should be in root node.
+    */
+    buf = rpage->buf;
+    btreeGetNumKeys(cache,buf,&karray,&parray);
+    bucket = btreeReadNumBucket(cache,parray[0]);
+    if(!bucket->Nentries)
+        bucket = btreeReadNumBucket(cache,parray[1]);
+    if(bucket->Nentries != 1)
+        ajFatal("Expected only one remaining entry in btreeDeleteHybIdTwo");
+    
+    num = bucket->NumId[0];
+
+    did->refoffset = num->refoffset;
+    did->offset    = num->offset;
+    did->dups      = 0;
+    rpage->dirty = BT_CLEAN; /* Doesn't matter as page is now defunct */
+
+    /*
+    ** At this point pages parray[0], parray[1] and cache->secrootblock
+    ** could be reused.
+    **/
+    
+    
+    btreeDeallocSecArray(cache,array);
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic btreeFindHybBalanceTwo ******************************************
+**
+** Master routine for entry deletion from level 2 hybrid tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Current node
+** @param [r] leftNode [ajlong] Node to left
+** @param [r] rightNode [ajlong] Node to right
+** @param [r] lAnchor [ajlong] Left anchor
+** @param [r] rAnchor [ajlong] Right anchor
+** @param [r] key [const ajlong] key
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeFindHybBalanceTwo(AjPBtcache cache, ajlong thisNode,
+                                     ajlong leftNode, ajlong rightNode,
+                                     ajlong lAnchor, ajlong rAnchor,
+                                     const ajlong key)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *buf1 = NULL;
+    
+    ajlong nextNode   = BTNO_NODE;
+    ajlong nextLeft   = BTNO_NODE;
+    ajlong nextRight  = BTNO_NODE;
+    ajlong nextAncL   = BTNO_NODE;
+    ajlong nextAncR   = BTNO_NODE;
+    ajlong done       = 0L;
+    
+    ajint  nkeys      = 0;
+    ajint  order      = 0;
+    ajint  minkeys    = 0;
+    ajint  i;
+    ajint  nodetype   = 0;
+
+    ajint n1keys      = 0;
+    
+    AjPBtpage page  = NULL;
+    AjPBtpage page1 = NULL;
+
+    ajlong balanceNode = 0L;
+    ajlong blockno     = 0L;
+    ajlong ptrSave     = 0L;
+
+    ajlong *karray  = NULL;
+    ajlong *parray  = NULL;
+    ajlong *k1array = NULL;
+    ajlong *p1array = NULL;
+
+    AjPBtMem arrays  = NULL;
+    AjPBtMem arrays1 = NULL;
+    
+    AjBool existed = ajFalse;
+    
+    /* ajDebug("In btreeFindHybBalanceTwo\n"); */
+
+    if(thisNode != cache->secrootblock)
+	page = ajBtreeCacheRead(cache,thisNode);
+    else
+    {   /* It's the root node of the primary hyb tree */
+	page = btreeCacheLocate(cache,thisNode);
+	page->dirty = BT_LOCK;
+    }
+
+    cache->deleted = ajFalse;
+
+    buf = page->buf;
+    GBT_NKEYS(buf,&nkeys);
+    
+    order = cache->sorder;
+    /* order-1 is the number of keys in the node */
+    minkeys = (order-1) / 2;
+    if((order-1)%2)
+	++minkeys;
+
+    /*
+    ** If thisNode contains >= minkeys then it is not a candidate
+    ** for balancing
+    */
+    if(nkeys >= minkeys)
+	balanceNode = BTNO_BALANCE;
+    else
+	balanceNode = page->pageno;
+
+    arrays  = btreeAllocSecArray(cache);
+    arrays1 = btreeAllocSecArray(cache);
+
+    karray = arrays->overflows;
+    parray = arrays->parray;
+
+    k1array = arrays1->overflows;
+    p1array = arrays1->parray;
+
+    btreeGetNumKeys(cache,buf,&karray,&parray);
+
+    i=0;
+    while(i!=nkeys && key >= karray[i])
+	++i;
+
+    blockno = parray[i];
+
+    nextNode = blockno;
+    ptrSave = i;
+
+    GBT_NODETYPE(buf,&nodetype);
+    if(!(nodetype == BT_LEAF) && !(nodetype == BT_ROOT && !cache->slevel))
+    {
+	if(nextNode == parray[0])
+	{
+	    if(leftNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,leftNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetNumKeys(cache,buf1,&k1array,&p1array);
+		nextLeft = p1array[n1keys];
+	    }
+	    else
+		nextLeft = BTNO_NODE;
+	    
+	    if(thisNode == cache->secrootblock)
+		nextAncL = thisNode;
+	    else
+		nextAncL = lAnchor;
+	}
+	else
+	{
+	    nextLeft = parray[ptrSave-1];
+	    nextAncL = thisNode;
+	}
+
+	if(nextNode == parray[nkeys])
+	{
+	    if(rightNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,rightNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetNumKeys(cache,buf1,&k1array,&p1array);
+		nextRight = p1array[0];
+	    }
+	    else
+		nextRight = BTNO_NODE;
+
+	    if(thisNode == cache->secrootblock)
+		nextAncR = thisNode;
+	    else
+		nextAncR = rAnchor;
+	}
+	else
+	{
+	    nextRight = parray[ptrSave+1];
+	    nextAncR  = thisNode;
+	}
+
+
+
+	/* Check to see whether key exists in an internal node */
+	if(nodetype != BT_LEAF && cache->slevel)
+	{
+	    i=0;
+	    while(i!=nkeys && key > karray[i])
+		++i;
+	    if(i!=nkeys)
+	    {
+		btreeFindHybMinTwo(cache,parray[i+1],key);
+		karray[i] = cache->numreplace;
+		btreeWriteNumNode(cache,page,karray,parray,nkeys);
+	    }
+	
+	}
+	
+	btreeFindHybBalanceTwo(cache,nextNode,nextLeft,nextRight,
+                               nextAncL,nextAncR,key);
+
+	if(thisNode != cache->secrootblock)
+	    page = ajBtreeCacheRead(cache,thisNode);
+	else
+	{
+	    page = btreeCacheLocate(cache,thisNode);
+	    page->dirty = BT_LOCK;
+	}
+	buf = page->buf;
+
+    }
+    else
+    {
+	if(nodetype == BT_LEAF || (nodetype==BT_ROOT && !cache->slevel))
+	{
+	    existed = btreeRemoveHybEntryTwo(cache,thisNode,key);
+
+	    if(existed)
+		cache->deleted = ajTrue;
+	    GBT_NKEYS(buf,&nkeys);
+	    if(nkeys >= minkeys || (nodetype==BT_ROOT && !cache->slevel))
+		balanceNode = BTNO_BALANCE;
+	    else
+		balanceNode = page->pageno;
+	}
+    }
+
+
+    if(balanceNode == BTNO_BALANCE || thisNode == cache->secrootblock)
+	done = BTNO_NODE;
+    else
+	done = btreeRebalanceHybTwo(cache,thisNode,leftNode,rightNode,
+                                    lAnchor,rAnchor);
+    
+
+    btreeDeallocSecArray(cache,arrays);
+    btreeDeallocSecArray(cache,arrays1);
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeFindHybMinTwo *********************************************
+**
+** Find minimum key in hybrid level 2 subtree and store in cache.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page
+** @param [r] key [const ajlong] key
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeFindHybMinTwo(AjPBtcache cache, ajlong pageno,
+                               const ajlong key)
+{
+    AjPBtpage page   = NULL;
+
+    ajlong *karray   = NULL;
+    ajlong *parray   = NULL;
+
+    ajint nkeys    = 0;
+    ajint nodetype = 0;
+    ajint nentries = 0;
+    ajint i;
+
+    AjPBtMem arrays = NULL;
+
+    AjPNumBucket bucket = NULL;
+    
+    unsigned char *buf = NULL;
+
+    /* ajDebug("In btreeFindHybMinTwo\n"); */
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->overflows;
+    parray = arrays->parray;
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf  = page->buf;
+    GBT_NODETYPE(buf,&nodetype);
+    GBT_NKEYS(buf,&nkeys);
+
+    btreeGetNumKeys(cache,buf,&karray,&parray);
+
+    if(nodetype == BT_LEAF)
+    {
+	bucket = btreeReadNumBucket(cache,parray[0]);
+	nentries = bucket->Nentries;
+
+        /*
+        ** If there's only one entry then it must be the key marked
+        ** for deletion
+        */
+        if(nentries<2)
+	{
+	    btreeNumBucketDel(&bucket);
+	    bucket = btreeReadNumBucket(cache,parray[1]);
+	    nentries = bucket->Nentries;
+	}
+
+        /* Check for empty bucket - shouldn't happen */
+        /* Checking solely out of interest */
+	if(nentries<1)	
+	    ajFatal("FindHybMinTwo: Too few entries in bucket Nkeys=%d\n",
+                    nkeys);
+
+
+        /* Find lowest value key in the bucket and store in cache */
+        cache->numreplace = bucket->NumId[0]->offset;
+	if(cache->numreplace == key)
+	    cache->numreplace = bucket->NumId[1]->offset;
+
+        for(i=1;i<nentries;++i)
+            if(bucket->NumId[i]->offset < cache->numreplace  &&
+               bucket->NumId[i]->offset != key)
+                cache->numreplace = bucket->NumId[i]->offset;
+
+	btreeNumBucketDel(&bucket);
+    }
+    else
+    {
+	pageno = parray[0];
+	(void) btreeFindHybMinTwo(cache,pageno,key);
+	
+    }
+
+    btreeDeallocSecArray(cache,arrays);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRemoveHybEntryTwo *****************************************
+**
+** Find and delete an ID from a given hybrid tree level 2 leaf node if
+** necessary.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] leaf node page
+** @param [r] key [const ajlong] key
+**
+** @return [AjBool] True if found (and deleted)
+** @@
+******************************************************************************/
+
+static AjBool btreeRemoveHybEntryTwo(AjPBtcache cache, ajlong pageno,
+                                     const ajlong key)
+{
+    AjPBtpage page   = NULL;
+    AjPNumBucket bucket = NULL;
+    
+    ajlong *karray = NULL;
+    ajlong *parray = NULL;
+    ajlong blockno = 0L;
+    
+    ajint nkeys    = 0;
+    ajint nentries = 0;
+    ajint i;
+
+    ajint dirtysave = 0;
+    
+    AjBool found = ajFalse;
+
+    unsigned char *buf = NULL;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeRemoveHybEntryTwo\n"); */
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf = page->buf;
+    dirtysave = page->dirty;
+    page->dirty = BT_LOCK;
+    
+    GBT_NKEYS(buf,&nkeys);
+    if(!nkeys)
+	return ajFalse;
+
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->overflows;
+    parray = arrays->parray;
+
+    btreeGetNumKeys(cache,buf,&karray,&parray);
+    
+    i=0;
+    while(i!=nkeys && key >= karray[i])
+	++i;
+
+    blockno = parray[i];
+    
+    bucket = btreeReadNumBucket(cache,blockno);
+
+
+    nentries = bucket->Nentries;
+    found = ajFalse;
+
+    for(i=0;i<nentries;++i)
+	if(key == bucket->NumId[i]->offset)
+	{
+	    found = ajTrue;
+	    break;
+	}
+    
+
+    if(found)
+    {
+	/* Perform the deletion */
+	if(nentries == 1)
+	{
+	    bucket->Nentries = 0;
+            AJFREE(bucket->NumId[0]);
+	}
+	else
+	{
+            AJFREE(bucket->NumId[i]);
+	    bucket->NumId[i] = bucket->NumId[nentries-1];
+	    --bucket->Nentries;
+	}
+
+	btreeWriteNumBucket(cache,bucket,blockno);
+	btreeAdjustHybBucketsTwo(cache,page);
+	page->dirty = BT_DIRTY;
+    }
+    else
+	page->dirty = dirtysave;
+
+    btreeNumBucketDel(&bucket);
+
+    btreeDeallocSecArray(cache,arrays);
+    
+    if(!found)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic btreeAdjustHybBucketsTwo **************************************
+**
+** Re-order leaf buckets in 2ry hybrid tree
+** Can be called whatever the state of a leaf.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] leaf [AjPBtpage] leaf page
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeAdjustHybBucketsTwo(AjPBtcache cache, AjPBtpage leaf)
+{
+    ajint nkeys = 0;
+    unsigned char *lbuf = NULL;
+    AjPNumBucket *buckets  = NULL;
+    ajlong *keys           = NULL;
+    ajlong *ptrs           = NULL;
+    ajlong *overflows      = NULL;
+    
+    ajint i = 0;
+    ajint j = 0;
+    
+    ajint order;
+    ajint bentries      = 0;
+    ajint totalkeys     = 0;
+    ajint nperbucket    = 0;
+    ajint maxnperbucket = 0;
+    ajint count         = 0;
+    ajint keylimit      = 0;
+    ajint bucketn       = 0;
+    ajint bucketlimit   = 0;
+    ajint nodetype      = 0;
+    ajint nids          = 0;
+    ajint totnids       = 0;
+    
+    AjPList idlist    = NULL;
+    ajint   dirtysave = 0;
+    AjPBtNumId bid       = NULL;
+    AjPNumBucket cbucket = NULL;
+    AjPBtNumId cid       = NULL;
+
+    AjPBtMem arrays = NULL;    
+
+    ajint v = 0;
+    
+    /* ajDebug("In btreeAdjustHybBucketsTwo\n"); */
+
+    dirtysave = leaf->dirty;
+
+    leaf->dirty = BT_LOCK;
+    lbuf = leaf->buf;
+
+    GBT_NKEYS(lbuf,&nkeys);
+    if(!nkeys)
+    {
+	leaf->dirty = dirtysave;
+	return;
+    }
+
+
+    GBT_NODETYPE(lbuf,&nodetype);
+
+    order = cache->sorder;
+    nperbucket = cache->snperbucket;
+    
+
+    /* Read keys/ptrs */
+
+    arrays = btreeAllocSecArray(cache);
+    keys = arrays->overflows;
+    ptrs = arrays->parray;
+
+    AJCNEW0(overflows,order);
+    
+
+    btreeGetNumKeys(cache,lbuf,&keys,&ptrs);
+
+
+    for(i=0;i<nkeys;++i)
+	totalkeys += btreeNumInNumBucket(cache,ptrs[i]);
+    totalkeys += btreeNumInNumBucket(cache,ptrs[i]);
+
+
+    /* Set the number of entries per bucket to approximately half full */
+    maxnperbucket = nperbucket >> 1;
+    if(!maxnperbucket)
+	++maxnperbucket;
+
+    if(!leaf->pageno)
+	maxnperbucket = nperbucket;
+
+    /* Work out the number of new buckets needed */
+    bucketn = (totalkeys / maxnperbucket);
+    if(totalkeys % maxnperbucket)
+	++bucketn;
+
+    if(bucketn == 1)
+	++bucketn;
+
+
+    while(bucketn > order)
+    {
+        ++maxnperbucket;
+        bucketn = (totalkeys / maxnperbucket);
+        if(totalkeys % maxnperbucket)
+            ++bucketn;
+    }
+
+    /* Read buckets */
+    AJCNEW0(buckets,nkeys+1);
+    keylimit = nkeys + 1;
+    
+    for(i=0;i<keylimit;++i)
+	buckets[i] = btreeReadNumBucket(cache,ptrs[i]);
+
+
+    /* Read IDs from all buckets and push to list and sort (increasing id) */
+    idlist  = ajListNew();
+
+    for(i=0;i<keylimit;++i)
+    {
+	overflows[i] = buckets[i]->Overflow;
+	bentries = buckets[i]->Nentries;
+	for(j=0;j<bentries;++j)
+	    ajListPush(idlist,(void *)buckets[i]->NumId[j]);
+	
+	AJFREE(buckets[i]->NumId);
+	AJFREE(buckets[i]);
+    }
+    ajListSort(idlist,btreeNumIdCompare);
+    AJFREE(buckets);
+
+    cbucket = btreeNumBucketNew(maxnperbucket);
+    bucketlimit = bucketn - 1;
+
+    totnids = 0;
+    nids = ajListGetLength(idlist);
+
+
+    if(!totalkeys)
+    {
+	v = totalkeys;
+	SBT_NKEYS(lbuf,v);
+
+        btreeDeallocSecArray(cache,arrays);
+
+	AJFREE(overflows);
+	ajListFree(&idlist);
+	leaf->dirty = BT_DIRTY;
+	return;
+    }
+    
+    if(nids <= maxnperbucket)
+    {
+	cbucket->Overflow = overflows[1];
+	cbucket->Nentries = 0;
+	ajListPeek(idlist,(void **)&bid);
+	keys[0] = bid->offset;
+
+	count = 0;
+	while(count!=maxnperbucket && totnids != nids)
+	{
+	    ajListPop(idlist,(void **)&bid);
+	    
+	    cid = cbucket->NumId[count];
+	    cid->dbno = bid->dbno;
+	    cid->offset = bid->offset;
+	    cid->refoffset = bid->refoffset;
+	    
+	    ++cbucket->Nentries;
+	    ++count;
+	    ++totnids;
+	    AJFREE(bid);
+	}
+
+
+	if(!ptrs[1])
+	    ptrs[1] = cache->totsize;
+	btreeWriteNumBucket(cache,cbucket,ptrs[1]);
+
+	cbucket->Overflow = overflows[0];
+	cbucket->Nentries = 0;
+	if(!ptrs[0])
+	    ptrs[0] = cache->totsize;
+	btreeWriteNumBucket(cache,cbucket,ptrs[0]);
+    }
+    else
+    {
+	for(i=0;i<bucketlimit;++i)
+	{
+	    cbucket->Overflow = overflows[i];
+	    cbucket->Nentries = 0;
+
+	    count = 0;
+	    while(count!=maxnperbucket && totnids != nids)
+	    {
+		ajListPop(idlist,(void **)&bid);
+
+		cid = cbucket->NumId[count];
+		cid->dbno = bid->dbno;
+		cid->offset = bid->offset;
+		cid->refoffset = bid->refoffset;
+		
+		++cbucket->Nentries;
+		++count;
+		AJFREE(bid);
+	    }
+
+
+	    ajListPeek(idlist,(void **)&bid);
+	    keys[i] = bid->offset;
+
+
+	    if(!ptrs[i])
+		ptrs[i] = cache->totsize;
+	    btreeWriteNumBucket(cache,cbucket,ptrs[i]);
+	}
+	
+	
+	/* Deal with greater-than bucket */
+	
+	cbucket->Overflow = overflows[i];
+	cbucket->Nentries = 0;
+	
+	
+	
+	count = 0;
+	while(ajListPop(idlist,(void **)&bid))
+	{
+	    cid = cbucket->NumId[count];
+	    cid->dbno = bid->dbno;
+	    cid->offset = bid->offset;
+	    cid->refoffset = bid->refoffset;
+	    
+	    ++cbucket->Nentries;
+	    ++count;
+	    AJFREE(bid);
+	}
+	
+	
+	if(!ptrs[i])
+	    ptrs[i] = cache->totsize;
+	
+	btreeWriteNumBucket(cache,cbucket,ptrs[i]);
+    }
+    
+
+    cbucket->Nentries = maxnperbucket;
+    btreeNumBucketDel(&cbucket);
+
+    /* Now write out a modified leaf with new keys/ptrs */
+
+    nkeys = bucketn - 1;
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
+
+    btreeWriteNumNode(cache,leaf,keys,ptrs,nkeys);
+
+    leaf->dirty = dirtysave;
+    if(nodetype == BT_ROOT)
+	leaf->dirty = BT_LOCK;
+
+    btreeDeallocSecArray(cache,arrays);
+
+    AJFREE(overflows);
+
+    btreeNumBucketDel(&cbucket);
+    ajListFree(&idlist);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRebalanceHybTwo ******************************************
+**
+** Rebalance Hybrid level 2 tree after deletion
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Node to rebalance
+** @param [r] leftNode [ajlong] left node
+** @param [r] rightNode [ajlong] right node
+** @param [r] lAnchor [ajlong] left anchor
+** @param [r] rAnchor [ajlong] right anchor
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeRebalanceHybTwo(AjPBtcache cache, ajlong thisNode,
+                                   ajlong leftNode, ajlong rightNode,
+                                   ajlong lAnchor, ajlong rAnchor)
+{
+    unsigned char *lbuf = NULL;
+    unsigned char *rbuf = NULL;
+    unsigned char *tbuf = NULL;
+
+    ajlong anchorNode   = 0L;
+    ajlong balanceNode  = 0L;
+    ajlong mergeNode    = 0L;
+    ajlong done         = 0L;
+    ajlong parent       = 0L;
+    
+    AjPBtpage lpage = NULL;
+    AjPBtpage rpage = NULL;
+    AjPBtpage tpage = NULL;
+    
+    ajint lnkeys  = 0;
+    ajint rnkeys  = 0;
+    ajint size    = 0;
+    ajint order   = 0;
+    ajint minsize = 0;
+
+    AjBool leftok  = ajFalse;
+    AjBool rightok = ajFalse;
+    
+    
+    /* ajDebug("In btreeRebalanceHybTwo\n"); */
+
+    if(leftNode!=BTNO_NODE && lAnchor!=BTNO_NODE)
+	leftok = ajTrue;
+    if(rightNode!=BTNO_NODE && rAnchor!=BTNO_NODE)
+	rightok = ajTrue;
+
+    if(!leftok && !rightok)
+	return BTNO_NODE;
+    
+
+    if(leftok)
+    {
+	lpage = ajBtreeCacheRead(cache,leftNode);
+	lbuf  = lpage->buf;
+	GBT_NKEYS(lbuf,&lnkeys);
+    }
+    
+
+    if(rightok)
+    {
+	rpage = ajBtreeCacheRead(cache,rightNode);
+	rbuf  = rpage->buf;
+	GBT_NKEYS(rbuf,&rnkeys);
+    }
+    
+
+
+    if(leftok && rightok)
+    {
+	size = (lnkeys >= rnkeys) ? lnkeys : rnkeys;
+	balanceNode = (lnkeys >= rnkeys) ? leftNode : rightNode;
+    }
+    else if(leftok)
+    {
+	size = lnkeys;
+	balanceNode = leftNode;
+    }
+    else
+    {
+	size = rnkeys;
+	balanceNode = rightNode;
+    }
+
+    
+    order = cache->sorder;
+    minsize = (order-1) / 2;
+    if((order-1)%2)
+	++minsize;
+
+    if(size >= minsize)
+    {
+	if(leftok && rightok)
+	    anchorNode = (lnkeys >= rnkeys) ? lAnchor : rAnchor;
+	else if(leftok)
+	    anchorNode = lAnchor;
+	else
+	    anchorNode = rAnchor;
+
+	done = btreeShiftHybTwo(cache,thisNode,balanceNode,anchorNode);
+    }
+	    
+    else
+    {
+	tpage = ajBtreeCacheRead(cache,thisNode);
+	tbuf  = tpage->buf;
+	GBT_PREV(tbuf,&parent);
+	if(leftok && rightok)
+	{
+	    anchorNode = (parent == lAnchor) ? lAnchor : rAnchor;
+	    mergeNode  = (anchorNode == lAnchor) ? leftNode : rightNode;
+	}
+	else if(leftok)
+	{
+	    anchorNode = lAnchor;
+	    mergeNode  = leftNode;
+	}
+	else
+	{
+	    anchorNode = rAnchor;
+	    mergeNode  = rightNode;
+	}
+
+	done = btreeMergeHybTwo(cache,thisNode,mergeNode,anchorNode);
+    }
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeShiftHybTwo ***********************************************
+**
+** Shift spare entries from one hybrid tree level 2 node to another.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] balanceNode [ajlong] balance node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeShiftHybTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong balanceNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *bbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    ajlong *kTarray = NULL;
+    ajlong *kAarray = NULL;
+    ajlong *kBarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pBarray = NULL;
+    
+    ajint  nAkeys = 0;
+    ajint  nBkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  i;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageB = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos   = 0;
+    ajlong prev        = 0L;
+    ajint  nodetype    = 0;
+
+    ajlong lv = 0L;
+    
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysB = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    /* ajDebug("In btreeShiftHybTwo\n"); */
+
+
+    arraysA = btreeAllocSecArray(cache);
+    kAarray = arraysA->overflows;
+    pAarray = arraysA->parray;
+
+    arraysB = btreeAllocSecArray(cache);
+    kBarray = arraysB->overflows;
+    pBarray = arraysB->parray;
+
+    arraysT = btreeAllocSecArray(cache);
+    kTarray = arraysT->overflows;
+    pTarray = arraysT->parray;
+
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageB = ajBtreeCacheRead(cache,balanceNode);
+    pageB->dirty = BT_LOCK;
+    bbuf = pageB->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(bbuf,&nBkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    btreeGetNumKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetNumKeys(cache,bbuf,&kBarray,&pBarray);
+    btreeGetNumKeys(cache,tbuf,&kTarray,&pTarray);
+
+    if(kTarray[nTkeys-1] < kBarray[nBkeys-1])
+	leftpage = pageT;
+    else
+	leftpage = pageB;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && kTarray[nTkeys-1] >= kAarray[i])
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+        kTarray[nTkeys] = kAarray[anchorPos];
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+            kTarray[nTkeys] = kBarray[0];
+	    pTarray[nTkeys] = pBarray[0];
+	    ++nTkeys;
+	    --nBkeys;
+
+	    for(i=0;i<nBkeys;++i)
+	    {
+                kBarray[i] = kBarray[i+1];
+		pBarray[i] = pBarray[i+1];
+	    }
+	    pBarray[i] = pBarray[i+1];
+	}
+
+	/* Adjust anchor key */
+        kAarray[anchorPos] = kTarray[nTkeys-1];
+	--nTkeys;
+    }
+    else	/* thisNode on the right */
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && kBarray[nBkeys-1] >= kAarray[i])
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+	pTarray[nTkeys+1] = pTarray[nTkeys];
+	for(i=nTkeys-1;i>-1;--i)
+	{
+            kTarray[i+1] = kTarray[i];
+	    pTarray[i+1] = pTarray[i];
+	}
+        kTarray[0] = kAarray[anchorPos];
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+	    pTarray[nTkeys+1] = pTarray[nTkeys];
+	    for(i=nTkeys-1;i>-1;--i)
+	    {
+                kTarray[i+1] = kTarray[i];
+		pTarray[i+1] = pTarray[i];
+	    }
+            kTarray[0] = kBarray[nBkeys-1];
+	    pTarray[1] = pBarray[nBkeys];
+	    ++nTkeys;
+	    --nBkeys;
+	}
+
+
+	/* Adjust anchor key */
+        kAarray[anchorPos] = kTarray[0];
+	--nTkeys;
+	for(i=0;i<nTkeys;++i)
+	{
+            kTarray[i] = kTarray[i+1];
+	    pTarray[i] = pTarray[i+1];
+	}
+	pTarray[i] = pTarray[i+1];
+    }
+    
+
+    /* Adjust PREV pointers for thisNode */
+    prev = pageT->pageno;
+    for(i=0;i<nTkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pTarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeWriteNumNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNumNode(cache,pageB,kBarray,pBarray,nBkeys);
+    btreeWriteNumNode(cache,pageT,kTarray,pTarray,nTkeys);
+
+    if(anchorNode == cache->secrootblock)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocSecArray(cache,arraysA);
+    btreeDeallocSecArray(cache,arraysB);
+    btreeDeallocSecArray(cache,arraysT);
+
+    return BTNO_NODE;
+}
+
+
+
+
+/* @funcstatic btreeMergeHybTwo ***********************************************
+**
+** Merge two nodes in Hybrid 2ry tree
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] mergeNode [ajlong] merge node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeMergeHybTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong mergeNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *nbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    ajlong *kTarray = NULL;
+    ajlong *kAarray = NULL;
+    ajlong *kNarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pNarray = NULL;
+
+    ajlong thisprev  = 0L;
+    ajlong mergeprev = 0L;
+    
+    
+    ajint  nAkeys = 0;
+    ajint  nNkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  count  = 0;
+    ajint  i;
+    ajint  nodetype = 0;
+    
+    ajint saveA = 0;
+    ajint saveN = 0;
+    ajint saveT = 0;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageN = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos = 0;
+    ajlong prev      = 0L;
+
+    ajlong lv = 0L;
+
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysN = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    AjBool collapse = ajFalse;
+    ajlong csrb     = 0L;
+    
+    /* ajDebug("In btreeMergeHybTwo\n"); */
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    saveA = pageA->dirty;
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageN = ajBtreeCacheRead(cache,mergeNode);
+    saveN = pageN->dirty;
+    pageN->dirty = BT_LOCK;
+    nbuf = pageN->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    saveT = pageT->dirty;
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_PREV(tbuf,&thisprev);
+    GBT_PREV(nbuf,&mergeprev);
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(nbuf,&nNkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    GBT_NODETYPE(nbuf,&nodetype);
+
+    csrb = cache->secrootblock;
+
+    if(nAkeys == 1)
+    {
+	if(anchorNode==csrb && thisprev==csrb && mergeprev==csrb)
+	    collapse = ajTrue;
+	else
+	{
+	    pageA->dirty = saveA;
+	    pageN->dirty = saveN;
+	    pageT->dirty = saveT;
+	    return thisNode;
+	}
+    }
+
+    arraysA = btreeAllocSecArray(cache);
+    kAarray = arraysA->overflows;
+    pAarray = arraysA->parray;
+
+    arraysN = btreeAllocSecArray(cache);
+    kNarray = arraysN->overflows;
+    pNarray = arraysN->parray;
+
+    arraysT = btreeAllocSecArray(cache);
+    kTarray = arraysT->overflows;
+    pTarray = arraysT->parray;
+
+    btreeGetNumKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetNumKeys(cache,nbuf,&kNarray,&pNarray);
+    btreeGetNumKeys(cache,tbuf,&kTarray,&pTarray);
+
+    if(kTarray[nTkeys-1] < kNarray[nNkeys-1])
+	leftpage = pageT;
+    else
+	leftpage = pageN;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && kTarray[nTkeys-1] >= kAarray[i])
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbour Node */
+	pNarray[nNkeys+1] = pNarray[nNkeys];
+	for(i=nNkeys-1;i>-1;--i)
+	{
+	    kNarray[i+1] = kNarray[i];
+	    pNarray[i+1] = pNarray[i];
+	}
+	kNarray[0] = kAarray[anchorPos];
+	++nNkeys;
+
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos==nAkeys)
+	    pAarray[nAkeys-1] = pAarray[nAkeys];
+	else
+	{
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		kAarray[i-1] = kAarray[i];
+		pAarray[i-1] = pAarray[i];
+	    }
+	    pAarray[i-1] = pAarray[i];
+	}
+	--nAkeys;
+	
+
+	/* Merge this to neighbour */
+
+	while(nTkeys)
+	{
+	    pNarray[nNkeys+1] = pNarray[nNkeys];
+	    for(i=nNkeys-1;i>-1;--i)
+	    {
+		kNarray[i+1] = kNarray[i];
+		pNarray[i+1] = pNarray[i];
+	    }
+	    kNarray[0] = kTarray[nTkeys-1];
+	    pNarray[1] = pTarray[nTkeys];
+	    pNarray[0] = pTarray[nTkeys-1];
+	    --nTkeys;
+	    ++nNkeys;
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    else
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && kNarray[nNkeys-1] >= kAarray[i])
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbourNode */
+	kNarray[nNkeys] = kAarray[anchorPos];
+	++nNkeys;
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos!=nAkeys)
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		kAarray[i-1] = kAarray[i];
+		pAarray[i]   = pAarray[i+1];
+	    }
+	--nAkeys;
+
+	/* merge extra */
+	count = 0;
+	while(nTkeys)
+	{
+	    kNarray[nNkeys] = kTarray[count];
+	    pNarray[nNkeys] = pTarray[count];
+	    ++nNkeys;
+	    ++count;
+	    --nTkeys;
+	    pNarray[nNkeys] = pTarray[count];
+	
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    
+    
+    /* Adjust PREV pointers for neighbour Node */
+    prev = pageN->pageno;
+    for(i=0;i<nNkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pNarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    pageT->dirty = BT_CLEAN;
+    btreeWriteNumNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNumNode(cache,pageN,kNarray,pNarray,nNkeys);
+
+    if(anchorNode == csrb)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocSecArray(cache,arraysA);
+    btreeDeallocSecArray(cache,arraysN);
+    btreeDeallocSecArray(cache,arraysT);
+
+    if(collapse)
+	btreeCollapseRootHybTwo(cache,mergeNode);
+
+    return thisNode;
+}
+
+
+
+
+/* @funcstatic btreeCollapseRootHybTwo ****************************************
+**
+** Collapse root page for hybrid level 2 tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page number to make new root
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeCollapseRootHybTwo(AjPBtcache cache, ajlong pageno)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *lbuf = NULL;
+
+    ajlong *karray = NULL;
+    ajlong *parray = NULL;
+
+    AjPBtpage rootpage = NULL;
+    AjPBtpage page     = NULL;
+    
+    ajint nodetype = 0;
+    ajint nkeys    = 0;
+    ajint i;
+
+    ajlong prev = 0L;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeCollapseRootHybTwo\n"); */
+    
+    if(!cache->slevel)
+	return BTNO_NODE;
+
+    rootpage = btreeCacheLocate(cache,cache->secrootblock);
+    buf = rootpage->buf;
+    page = ajBtreeCacheRead(cache,pageno);
+
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->overflows;
+    parray = arrays->parray;
+
+    /*
+    ** Swap pageno values to make root the child and child the root
+    ** Update nodetypes and mark the original root as a clean page
+    */
+
+    /* At this point page->pageno could be added to a free list */
+
+    rootpage->pageno = page->pageno;
+    rootpage->dirty = BT_CLEAN;
+    nodetype = BT_INTERNAL;
+    SBT_NODETYPE(buf,nodetype);
+
+    page->pageno = cache->secrootblock;
+    page->dirty  = BT_LOCK;
+    buf = page->buf;
+    nodetype = BT_ROOT;
+    SBT_NODETYPE(buf,nodetype);
+    
+    --cache->slevel;
+
+    if(cache->slevel)
+    {
+	/*
+	 ** Update the PREV pointers of the new root's children
+	 */
+	GBT_NKEYS(buf,&nkeys);
+	btreeGetNumKeys(cache,buf,&karray,&parray);
+	for(i=0;i<nkeys+1;++i)
+	{
+	    page = ajBtreeCacheRead(cache,parray[i]);
+	    lbuf = page->buf;
+	    SBT_PREV(lbuf,prev);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeDeallocSecArray(cache,arrays);
+
+    cache->secrootblock = pageno;
+    
+    return 0L;
+}
+
+
+
+
+/* AJB: Pri tree deletion */
+
+/* @func ajBtreeDeletePriId *********************************************
+**
+** Entry point for keyword tree ID deletion.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] id [const AjPBtPri] keyword object
+**
+** @return [AjBool] True if found and deleted
+** @@
+******************************************************************************/
+
+AjBool ajBtreeDeletePriId(AjPBtcache cache, const AjPBtPri pri)
+{
+    AjPBtpage rootpage = NULL;
+    AjPBtpage spage    = NULL;
+    AjPBtpage page     = NULL;
+    AjPStr key         = NULL;
+    const char *ckey   = NULL;
+    const char *cid    = NULL;
+    AjPSecBucket bucket  = NULL;
+    ajlong blockno  = 0L;
+
+    ajint nkeys = 0;
+    ajint sorder = 0;
+    ajlong slevel = 0L;
+
+    ajint nentries = 0;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    AjPBtMem arrays = NULL;
+    AjBool found = ajFalse;
+    AjPBtPri exists = NULL;
+    
+    
+    ajint i;
+    
+    unsigned char *buf = NULL;
+    ajlong  secrootpage = 0L;
+
+    AjBool empty = ajFalse;
+    AjBool ret   = ajFalse;
+
+    AjPBtpage prirootpage = NULL;
+    
+
+    
+    /* ajDebug("In ajBtreeDeletePriId\n"); */
+
+    key = ajStrNew();
+    
+
+    ajStrAssignS(&key,pri->keyword);
+    if(!ajStrGetLen(key))
+    {
+	ajStrDel(&key);
+	return ajFalse;
+    }
+
+    ckey = ajStrGetPtr(key);
+
+
+    exists = ajBtreePriFromKeyword(cache,ckey);
+
+    if(!exists)
+    {
+        ajBtreePriDel(&exists);
+        ajStrDel(&key);
+        ajWarn("DeletePriId: Keyword %S not found",pri->keyword);
+        return ajFalse;
+    }
+
+    secrootpage = exists->treeblock;
+    cache->secrootblock = exists->treeblock;
+    
+    sorder = cache->sorder;
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+    
+    page = ajBtreeCacheRead(cache,secrootpage);
+    page->dirty = BT_LOCK;
+    buf = page->buf;
+
+    GBT_RIGHT(buf,&slevel);
+    cache->slevel = (ajint)slevel;
+
+    cid = ajStrGetPtr(pri->id);
+
+    spage = ajBtreeSecFindInsert(cache,cid);
+    buf = spage->buf;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+
+    
+    GBT_NKEYS(buf,&nkeys);
+
+    if(!nkeys)
+    {
+	btreeDeallocSecArray(cache,arrays);
+	ajStrDel(&key);
+        page->dirty = BT_CLEAN;
+        
+	return ajFalse;
+    }
+
+
+    i=0;
+    while(i!=nkeys && strcmp(cid,karray[i]->Ptr)>=0)
+        ++i;
+
+    blockno = parray[i];
+
+    bucket = btreeReadSecBucket(cache,blockno);
+
+    nentries = bucket->Nentries;
+
+    found = ajFalse;
+
+    for(i=0;i<nentries;++i)
+	if(!strcmp(cid,bucket->ids[i]->Ptr))
+	{
+	    found = ajTrue;
+	    break;
+	}
+
+    if(!found)
+    {
+        ajWarn("DeletePriId: ID %S  not found for Keyword %S",pri->id,
+               pri->keyword);
+	btreeDeallocPriArray(cache,arrays);
+	ajStrDel(&key);
+        page->dirty = BT_CLEAN;
+
+	return ajFalse;
+    }
+    
+
+    
+    /*
+    ** Have to delete ID from secondary tree. If that empties the
+    ** tree then have to delete keyword from primary tree.
+    ** Needs a little thought. Maybe use cache->deleted for multiple
+    ** purposes i.e. 0=not deleted  1=keyword deleted 2=tree deleted
+    */
+
+    rootpage = btreeCacheLocate(cache,secrootpage);
+    if(!rootpage)
+        ajFatal("DeletePriId: secondary root page became unlocked");
+    rootpage->dirty = BT_LOCK;
+    buf = rootpage->buf;
+
+    GBT_RIGHT(buf,&slevel);
+    cache->slevel = (ajint)slevel;
+
+    btreeFindPriBalanceTwo(cache,secrootpage,BTNO_NODE,BTNO_NODE,BTNO_NODE,
+                           BTNO_NODE,pri);
+
+    ret = cache->deleted;
+
+    if(!ret)
+    {
+        btreeDeallocSecArray(cache,arrays);
+        ajStrDel(&key);
+        page->dirty = BT_CLEAN;
+        return ajFalse;
+    }
+    
+    empty = btreeIsSecEmpty(cache);
+
+    
+    if(empty)
+    {
+        prirootpage = btreeCacheLocate(cache,0L);
+        if(!prirootpage)
+            ajFatal("ajBtreeDeletePriId: prirootpage unlocked");
+        
+    
+        btreeFindPriBalanceOne(cache,0L,BTNO_NODE,BTNO_NODE,BTNO_NODE,
+                               BTNO_NODE,pri);
+
+        ret = cache->deleted;
+    }
+    
+
+    btreeDeallocSecArray(cache,arrays);
+    ajStrDel(&key);
+
+    return ret;
+}
+
+
+
+
+/* @funcstatic btreeFindPriBalanceTwo ******************************************
+**
+** Master routine for entry deletion from level 2 keyword tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Current node
+** @param [r] leftNode [ajlong] Node to left
+** @param [r] rightNode [ajlong] Node to right
+** @param [r] lAnchor [ajlong] Left anchor
+** @param [r] rAnchor [ajlong] Right anchor
+** @param [r] pri [const AjPBtPri] pri
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeFindPriBalanceTwo(AjPBtcache cache, ajlong thisNode,
+                                     ajlong leftNode, ajlong rightNode,
+                                     ajlong lAnchor, ajlong rAnchor,
+                                     const AjPBtPri pri)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *buf1 = NULL;
+    
+    ajlong nextNode   = BTNO_NODE;
+    ajlong nextLeft   = BTNO_NODE;
+    ajlong nextRight  = BTNO_NODE;
+    ajlong nextAncL   = BTNO_NODE;
+    ajlong nextAncR   = BTNO_NODE;
+    ajlong done       = 0L;
+    
+    ajint  nkeys      = 0;
+    ajint  order      = 0;
+    ajint  minkeys    = 0;
+    ajint  i;
+    ajint  nodetype   = 0;
+
+    ajint n1keys      = 0;
+    
+    AjPBtpage page  = NULL;
+    AjPBtpage page1 = NULL;
+
+    ajlong balanceNode = 0L;
+    ajlong blockno     = 0L;
+    ajlong ptrSave     = 0L;
+
+    AjPStr *karray  = NULL;
+    ajlong *parray  = NULL;
+    AjPStr *k1array = NULL;
+    ajlong *p1array = NULL;
+
+    AjPBtMem arrays  = NULL;
+    AjPBtMem arrays1 = NULL;
+    
+    char *key = NULL;
+    AjBool existed = ajFalse;
+    
+    /* ajDebug("In btreeFindPriBalanceTwo\n"); */
+
+    if(thisNode != cache->secrootblock)
+	page = ajBtreeCacheRead(cache,thisNode);
+    else
+    {
+	page = btreeCacheLocate(cache,thisNode);
+	page->dirty = BT_LOCK;
+    }
+
+    cache->deleted = ajFalse;
+
+    buf = page->buf;
+    GBT_NKEYS(buf,&nkeys);
+    
+    order = cache->sorder;
+    /* order-1 is the number of keys in the node */
+    minkeys = (order-1) / 2;
+    if((order-1)%2)
+	++minkeys;
+
+    /*
+    ** If thisNode contains >= minkeys then it is not a candidate
+    ** for balancing
+    */
+    if(nkeys >= minkeys)
+	balanceNode = BTNO_BALANCE;
+    else
+	balanceNode = page->pageno;
+
+    arrays  = btreeAllocSecArray(cache);
+    arrays1 = btreeAllocSecArray(cache);
+
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    k1array = arrays1->karray;
+    p1array = arrays1->parray;
+
+    key = pri->id->Ptr;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    i=0;
+    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
+	++i;
+
+    blockno = parray[i];
+
+    nextNode = blockno;
+    ptrSave = i;
+
+    GBT_NODETYPE(buf,&nodetype);
+    if(!(nodetype == BT_LEAF) && !(nodetype == BT_ROOT && !cache->slevel))
+    {
+	if(nextNode == parray[0])
+	{
+	    if(leftNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,leftNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetKeys(cache,buf1,&k1array,&p1array);
+		nextLeft = p1array[n1keys];
+	    }
+	    else
+		nextLeft = BTNO_NODE;
+	    
+	    if(thisNode == cache->secrootblock)
+		nextAncL = thisNode;
+	    else
+		nextAncL = lAnchor;
+	}
+	else
+	{
+	    nextLeft = parray[ptrSave-1];
+	    nextAncL = thisNode;
+	}
+
+	if(nextNode == parray[nkeys])
+	{
+	    if(rightNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,rightNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetKeys(cache,buf1,&k1array,&p1array);
+		nextRight = p1array[0];
+	    }
+	    else
+		nextRight = BTNO_NODE;
+
+	    if(thisNode == cache->secrootblock)
+		nextAncR = thisNode;
+	    else
+		nextAncR = rAnchor;
+	}
+	else
+	{
+	    nextRight = parray[ptrSave+1];
+	    nextAncR  = thisNode;
+	}
+
+
+
+	/* Check to see whether key exists in an internal node */
+	if(nodetype != BT_LEAF && cache->slevel)
+	{
+	    i=0;
+	    while(i!=nkeys && strcmp(key,karray[i]->Ptr))
+		++i;
+	    if(i!=nkeys)
+	    {
+		btreeFindPriMinTwo(cache,parray[i+1],key);
+		ajStrAssignS(&karray[i],cache->replace);
+		btreeWriteNode(cache,page,karray,parray,nkeys);
+	    }
+	
+	}
+	
+	btreeFindPriBalanceTwo(cache,nextNode,nextLeft,nextRight,
+                               nextAncL,nextAncR,pri);
+
+	if(thisNode != cache->secrootblock)
+	    page = ajBtreeCacheRead(cache,thisNode);
+	else
+	{
+	    page = btreeCacheLocate(cache,thisNode);
+	    page->dirty = BT_LOCK;
+	}
+	buf = page->buf;
+
+    }
+    else
+    {
+	if(nodetype == BT_LEAF || (nodetype==BT_ROOT && !cache->slevel))
+	{
+	    existed = btreeRemovePriEntryTwo(cache,thisNode,pri);
+
+	    if(existed)
+		cache->deleted = ajTrue;
+	    GBT_NKEYS(buf,&nkeys);
+	    if(nkeys >= minkeys || (nodetype==BT_ROOT && !cache->slevel))
+		balanceNode = BTNO_BALANCE;
+	    else
+		balanceNode = page->pageno;
+	}
+    }
+
+
+    if(balanceNode == BTNO_BALANCE || thisNode == cache->secrootblock)
+	done = BTNO_NODE;
+    else
+	done = btreeRebalancePriTwo(cache,thisNode,leftNode,rightNode,
+                                    lAnchor,rAnchor);
+
+    btreeDeallocSecArray(cache,arrays);
+    btreeDeallocSecArray(cache,arrays1);
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeFindPriMinTwo *********************************************
+**
+** Find minimum key in keyword level 2 subtree and store in cache.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page
+** @param [r] key [const char *] key
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeFindPriMinTwo(AjPBtcache cache, ajlong pageno,
+                               const char *key)
+{
+    AjPBtpage page   = NULL;
+    AjPSecBucket bucket = NULL;
+    AjPStr *karray   = NULL;
+    ajlong *parray   = NULL;
+
+    ajint nkeys    = 0;
+    ajint nodetype = 0;
+    ajint nentries = 0;
+    ajint i;
+    AjPBtMem arrays = NULL;
+    
+    unsigned char *buf = NULL;
+
+    /* ajDebug("In btreeFindPriMinTwo\n"); */
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf  = page->buf;
+    GBT_NODETYPE(buf,&nodetype);
+    GBT_NKEYS(buf,&nkeys);
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    if(nodetype == BT_LEAF)
+    {
+	bucket = btreeReadSecBucket(cache,parray[0]);
+	nentries = bucket->Nentries;
+
+        /*
+        ** If there's only one entry then it must be the key marked
+        ** for deletion
+        */
+        if(nentries<2)
+	{
+	    btreeSecBucketDel(&bucket);
+	    bucket = btreeReadSecBucket(cache,parray[1]);
+	    nentries = bucket->Nentries;
+	}
+
+        /* Check for empty bucket - shouldn't happen */
+        /* Checking solely out of interest */
+	if(nentries<1)	
+	    ajFatal("FindPriMinTwo: Too few entries in bucket Nkeys=%d\n",
+                    nkeys);
+
+
+        /* Find lowest value key in the bucket and store in cache */
+        ajStrAssignS(&cache->replace,bucket->ids[0]);
+	if(!strcmp(cache->replace->Ptr,key))
+	    ajStrAssignS(&cache->replace,bucket->ids[1]);
+
+	for(i=1;i<nentries;++i)
+	    if(strcmp(bucket->ids[i]->Ptr,cache->replace->Ptr)<0 &&
+	       strcmp(bucket->ids[i]->Ptr,key))
+		ajStrAssignS(&cache->replace,bucket->ids[i]);
+	btreeSecBucketDel(&bucket);
+    }
+    else
+    {
+	pageno = parray[0];
+	btreeFindPriMinTwo(cache,pageno,key);
+	
+    }
+
+    btreeDeallocSecArray(cache,arrays);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRemovePriEntryTwo *****************************************
+**
+** Find and delete an ID from a given keyword tree level 2 leaf node if
+** necessary.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] leaf node page
+** @param [r] id [const AjPBtPri] pri
+**
+** @return [AjBool] True if found (and deleted)
+** @@
+******************************************************************************/
+
+static AjBool btreeRemovePriEntryTwo(AjPBtcache cache, ajlong pageno,
+                                     const AjPBtPri pri)
+{
+    AjPBtpage page   = NULL;
+    AjPSecBucket bucket = NULL;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    ajlong blockno = 0L;
+    
+    ajint nkeys    = 0;
+    ajint nentries = 0;
+    ajint i;
+
+    ajint dirtysave = 0;
+    
+    AjBool found = ajFalse;
+    char   *key  = NULL;
+
+    unsigned char *buf = NULL;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeRemovePriEntryTwo\n"); */
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf = page->buf;
+    dirtysave = page->dirty;
+    page->dirty = BT_LOCK;
+    
+    GBT_NKEYS(buf,&nkeys);
+    if(!nkeys)
+	return ajFalse;
+
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+    
+    key = pri->id->Ptr;
+
+    i=0;
+    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
+	++i;
+
+    blockno = parray[i];
+    
+    bucket = btreeReadSecBucket(cache,blockno);
+
+
+    nentries = bucket->Nentries;
+    found = ajFalse;
+
+    for(i=0;i<nentries;++i)
+	if(!strcmp(key,bucket->ids[i]->Ptr))
+	{
+	    found = ajTrue;
+	    break;
+	}
+    
+
+    if(found)
+    {
+	/* Perform the deletion */
+	if(nentries == 1)
+	{
+	    bucket->Nentries = 0;
+	    AJFREE(bucket->ids[0]);
+	}
+	else
+	{
+	    AJFREE(bucket->ids[i]);
+	    bucket->ids[i] = bucket->ids[nentries-1];
+	    --bucket->Nentries;
+	}
+
+	btreeWriteSecBucket(cache,bucket,blockno);
+	btreeAdjustPriBucketsTwo(cache,page);
+	page->dirty = BT_DIRTY;
+    }
+    else
+	page->dirty = dirtysave;
+
+    btreeSecBucketDel(&bucket);
+
+    btreeDeallocSecArray(cache,arrays);
+    
+    if(!found)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic btreeAdjustPriBucketsTwo **************************************
+**
+** Re-order leaf buckets in keyword level 2 tree
+** Can be called whatever the state of a leaf.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] leaf [AjPBtpage] leaf page
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeAdjustPriBucketsTwo(AjPBtcache cache, AjPBtpage leaf)
+{
+    ajint nkeys = 0;
+    unsigned char *lbuf = NULL;
+    AjPSecBucket *buckets  = NULL;
+    AjPStr *keys        = NULL;
+    ajlong *ptrs        = NULL;
+    ajlong *overflows   = NULL;
+    
+    ajint i = 0;
+    ajint j = 0;
+    
+    ajint order;
+    ajint bentries      = 0;
+    ajint totalkeys     = 0;
+    ajint nperbucket    = 0;
+    ajint maxnperbucket = 0;
+    ajint count         = 0;
+    ajint totkeylen     = 0;
+    ajint keylimit      = 0;
+    ajint bucketn       = 0;
+    ajint bucketlimit   = 0;
+    ajint nodetype      = 0;
+    ajint nids          = 0;
+    ajint totnids       = 0;
+    
+    AjPList idlist    = NULL;
+    ajint   dirtysave = 0;
+    AjPStr bid       = NULL;
+    AjPSecBucket cbucket = NULL;
+    AjPStr cid       = NULL;
+
+    AjPBtMem arrays = NULL;    
+
+    ajint v = 0;
+    
+    /* ajDebug("In btreeAdjustPriBucketsTwo\n"); */
+
+    dirtysave = leaf->dirty;
+
+    leaf->dirty = BT_LOCK;
+    lbuf = leaf->buf;
+
+    GBT_NKEYS(lbuf,&nkeys);
+    if(!nkeys)
+    {
+	leaf->dirty = dirtysave;
+	return;
+    }
+
+
+    GBT_NODETYPE(lbuf,&nodetype);
+
+    order = cache->sorder;
+    nperbucket = cache->snperbucket;
+    
+
+    /* Read keys/ptrs */
+
+    arrays = btreeAllocSecArray(cache);
+    keys = arrays->karray;
+    ptrs = arrays->parray;
+
+    AJCNEW0(overflows,order);
+    
+
+    btreeGetKeys(cache,lbuf,&keys,&ptrs);
+
+
+    for(i=0;i<nkeys;++i)
+	totalkeys += btreeNumInSecBucket(cache,ptrs[i]);
+    totalkeys += btreeNumInSecBucket(cache,ptrs[i]);
+
+
+    /* Set the number of entries per bucket to approximately half full */
+    maxnperbucket = nperbucket >> 1;
+    if(!maxnperbucket)
+	++maxnperbucket;
+
+    if(!leaf->pageno)
+	maxnperbucket = nperbucket;
+
+    /* Work out the number of new buckets needed */
+    bucketn = (totalkeys / maxnperbucket);
+    if(totalkeys % maxnperbucket)
+	++bucketn;
+
+    if(bucketn == 1)
+	++bucketn;
+    
+    while(bucketn > order)
+    {
+        ++maxnperbucket;
+        bucketn = (totalkeys / maxnperbucket);
+        if(totalkeys % maxnperbucket)
+            ++bucketn;
+    }
+
+    /* Read buckets */
+    AJCNEW0(buckets,nkeys+1);
+    keylimit = nkeys + 1;
+    
+    for(i=0;i<keylimit;++i)
+	buckets[i] = btreeReadSecBucket(cache,ptrs[i]);
+
+
+    /* Read IDs from all buckets and push to list and sort (increasing id) */
+    idlist  = ajListNew();
+
+    for(i=0;i<keylimit;++i)
+    {
+	overflows[i] = buckets[i]->Overflow;
+	bentries = buckets[i]->Nentries;
+	for(j=0;j<bentries;++j)
+	    ajListPush(idlist,(void *)buckets[i]->ids[j]);
+	
+	AJFREE(buckets[i]->keylen);
+	AJFREE(buckets[i]->ids);
+	AJFREE(buckets[i]);
+    }
+
+/* AJB: check this compares ajStr objs OK */
+    ajListSort(idlist,ajStrVcmp);
+    AJFREE(buckets);
+
+    cbucket = btreeSecBucketNew(maxnperbucket);
+    bucketlimit = bucketn - 1;
+
+    totnids = 0;
+    nids = ajListGetLength(idlist);
+
+
+    if(!totalkeys)
+    {
+	v = totalkeys;
+	SBT_NKEYS(lbuf,v);
+
+        btreeDeallocSecArray(cache,arrays);
+
+	AJFREE(overflows);
+	ajListFree(&idlist);
+	leaf->dirty = BT_DIRTY;
+	return;
+    }
+    
+    if(nids <= maxnperbucket)
+    {
+	cbucket->Overflow = overflows[1];
+	cbucket->Nentries = 0;
+	ajListPeek(idlist,(void **)&bid);
+	ajStrAssignS(&keys[0],bid);
+
+	count = 0;
+	while(count!=maxnperbucket && totnids != nids)
+	{
+	    ajListPop(idlist,(void **)&bid);
+	    
+	    cid = cbucket->ids[count];
+	    ajStrAssignS(&cid,bid);
+	    
+	    cbucket->keylen[count] = BT_BUCKSECLEN(bid);
+	    ++cbucket->Nentries;
+	    ++count;
+	    ++totnids;
+	    ajStrDel(&bid);
+	}
+
+
+	totkeylen += ajStrGetLen(keys[0]);
+
+	if(!ptrs[1])
+	    ptrs[1] = cache->totsize;
+	btreeWriteSecBucket(cache,cbucket,ptrs[1]);
+
+	cbucket->Overflow = overflows[0];
+	cbucket->Nentries = 0;
+	if(!ptrs[0])
+	    ptrs[0] = cache->totsize;
+	btreeWriteSecBucket(cache,cbucket,ptrs[0]);
+    }
+    else
+    {
+	for(i=0;i<bucketlimit;++i)
+	{
+	    cbucket->Overflow = overflows[i];
+	    cbucket->Nentries = 0;
+
+	    count = 0;
+	    while(count!=maxnperbucket && totnids != nids)
+	    {
+		ajListPop(idlist,(void **)&bid);
+
+		cid = cbucket->ids[count];
+		ajStrAssignS(&cid,bid);
+		
+		cbucket->keylen[count] = BT_BUCKSECLEN(bid);
+		++cbucket->Nentries;
+		++count;
+		ajStrDel(&bid);
+	    }
+
+
+	    ajListPeek(idlist,(void **)&bid);
+	    ajStrAssignS(&keys[i],bid);
+
+
+	    totkeylen += ajStrGetLen(bid);
+
+	    if(!ptrs[i])
+		ptrs[i] = cache->totsize;
+	    btreeWriteSecBucket(cache,cbucket,ptrs[i]);
+	}
+	
+	
+	/* Deal with greater-than bucket */
+	
+	cbucket->Overflow = overflows[i];
+	cbucket->Nentries = 0;
+	
+	
+	
+	count = 0;
+	while(ajListPop(idlist,(void **)&bid))
+	{
+	    cid = cbucket->ids[count];
+	    ajStrAssignS(&cid,bid);
+	    
+	    ++cbucket->Nentries;
+	    ++count;
+	    ajStrDel(&bid);
+	}
+	
+	
+	if(!ptrs[i])
+	    ptrs[i] = cache->totsize;
+	
+	btreeWriteSecBucket(cache,cbucket,ptrs[i]);
+    }
+    
+
+    cbucket->Nentries = maxnperbucket;
+    btreeSecBucketDel(&cbucket);
+
+    /* Now write out a modified leaf with new keys/ptrs */
+
+    nkeys = bucketn - 1;
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
+    v = totkeylen;
+    SBT_TOTLEN(lbuf,v);
+
+    btreeWriteNode(cache,leaf,keys,ptrs,nkeys);
+
+    leaf->dirty = dirtysave;
+    if(nodetype == BT_ROOT)
+	leaf->dirty = BT_LOCK;
+
+    btreeDeallocSecArray(cache,arrays);
+
+    AJFREE(overflows);
+
+    btreeSecBucketDel(&cbucket);
+    ajListFree(&idlist);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRebalancePriTwo ******************************************
+**
+** Rebalance keyword level 2 tree after deletion
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Node to rebalance
+** @param [r] leftNode [ajlong] left node
+** @param [r] rightNode [ajlong] right node
+** @param [r] lAnchor [ajlong] left anchor
+** @param [r] rAnchor [ajlong] right anchor
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeRebalancePriTwo(AjPBtcache cache, ajlong thisNode,
+                                   ajlong leftNode, ajlong rightNode,
+                                   ajlong lAnchor, ajlong rAnchor)
+{
+    unsigned char *lbuf = NULL;
+    unsigned char *rbuf = NULL;
+    unsigned char *tbuf = NULL;
+
+    ajlong anchorNode   = 0L;
+    ajlong balanceNode  = 0L;
+    ajlong mergeNode    = 0L;
+    ajlong done         = 0L;
+    ajlong parent       = 0L;
+    
+    AjPBtpage lpage = NULL;
+    AjPBtpage rpage = NULL;
+    AjPBtpage tpage = NULL;
+    
+    ajint lnkeys  = 0;
+    ajint rnkeys  = 0;
+    ajint size    = 0;
+    ajint order   = 0;
+    ajint minsize = 0;
+
+    AjBool leftok  = ajFalse;
+    AjBool rightok = ajFalse;
+    
+    
+    /* ajDebug("In btreeRebalancePriTwo\n"); */
+
+    if(leftNode!=BTNO_NODE && lAnchor!=BTNO_NODE)
+	leftok = ajTrue;
+    if(rightNode!=BTNO_NODE && rAnchor!=BTNO_NODE)
+	rightok = ajTrue;
+
+    if(!leftok && !rightok)
+	return BTNO_NODE;
+    
+
+    if(leftok)
+    {
+	lpage = ajBtreeCacheRead(cache,leftNode);
+	lbuf  = lpage->buf;
+	GBT_NKEYS(lbuf,&lnkeys);
+    }
+    
+
+    if(rightok)
+    {
+	rpage = ajBtreeCacheRead(cache,rightNode);
+	rbuf  = rpage->buf;
+	GBT_NKEYS(rbuf,&rnkeys);
+    }
+    
+
+
+    if(leftok && rightok)
+    {
+	size = (lnkeys >= rnkeys) ? lnkeys : rnkeys;
+	balanceNode = (lnkeys >= rnkeys) ? leftNode : rightNode;
+    }
+    else if(leftok)
+    {
+	size = lnkeys;
+	balanceNode = leftNode;
+    }
+    else
+    {
+	size = rnkeys;
+	balanceNode = rightNode;
+    }
+
+    
+    order = cache->sorder;
+    minsize = (order-1) / 2;
+    if((order-1)%2)
+	++minsize;
+
+    if(size >= minsize)
+    {
+	if(leftok && rightok)
+	    anchorNode = (lnkeys >= rnkeys) ? lAnchor : rAnchor;
+	else if(leftok)
+	    anchorNode = lAnchor;
+	else
+	    anchorNode = rAnchor;
+
+	done = btreeShiftPriTwo(cache,thisNode,balanceNode,anchorNode);
+    }
+	    
+    else
+    {
+	tpage = ajBtreeCacheRead(cache,thisNode);
+	tbuf  = tpage->buf;
+	GBT_PREV(tbuf,&parent);
+	if(leftok && rightok)
+	{
+	    anchorNode = (parent == lAnchor) ? lAnchor : rAnchor;
+	    mergeNode  = (anchorNode == lAnchor) ? leftNode : rightNode;
+	}
+	else if(leftok)
+	{
+	    anchorNode = lAnchor;
+	    mergeNode  = leftNode;
+	}
+	else
+	{
+	    anchorNode = rAnchor;
+	    mergeNode  = rightNode;
+	}
+
+	done = btreeMergePriTwo(cache,thisNode,mergeNode,anchorNode);
+    }
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeShiftPriTwo ***********************************************
+**
+** Shift spare entries from one keyword tree level 2 node to another.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] balanceNode [ajlong] balance node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeShiftPriTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong balanceNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *bbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    AjPStr *kTarray = NULL;
+    AjPStr *kAarray = NULL;
+    AjPStr *kBarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pBarray = NULL;
+    
+    ajint  nAkeys = 0;
+    ajint  nBkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  i;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageB = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos   = 0;
+    ajlong prev        = 0L;
+    ajint  nodetype    = 0;
+
+    ajlong lv = 0L;
+    
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysB = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    /* ajDebug("In btreeShiftPriTwo\n"); */
+
+
+    arraysA = btreeAllocSecArray(cache);
+    kAarray = arraysA->karray;
+    pAarray = arraysA->parray;
+
+    arraysB = btreeAllocSecArray(cache);
+    kBarray = arraysB->karray;
+    pBarray = arraysB->parray;
+
+    arraysT = btreeAllocSecArray(cache);
+    kTarray = arraysT->karray;
+    pTarray = arraysT->parray;
+
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageB = ajBtreeCacheRead(cache,balanceNode);
+    pageB->dirty = BT_LOCK;
+    bbuf = pageB->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(bbuf,&nBkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetKeys(cache,bbuf,&kBarray,&pBarray);
+    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
+    
+    if(strcmp(kTarray[nTkeys-1]->Ptr,kBarray[nBkeys-1]->Ptr)<0)
+	leftpage = pageT;
+    else
+	leftpage = pageB;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+	ajStrAssignS(&kTarray[nTkeys],kAarray[anchorPos]);
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+	    ajStrAssignS(&kTarray[nTkeys],kBarray[0]);
+	    pTarray[nTkeys] = pBarray[0];
+	    ++nTkeys;
+	    --nBkeys;
+
+	    for(i=0;i<nBkeys;++i)
+	    {
+		ajStrAssignS(&kBarray[i],kBarray[i+1]);
+		pBarray[i] = pBarray[i+1];
+	    }
+	    pBarray[i] = pBarray[i+1];
+	}
+
+	/* Adjust anchor key */
+	ajStrAssignS(&kAarray[anchorPos],kTarray[nTkeys-1]);
+	--nTkeys;
+    }
+    else	/* thisNode on the right */
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kBarray[nBkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+	pTarray[nTkeys+1] = pTarray[nTkeys];
+	for(i=nTkeys-1;i>-1;--i)
+	{
+	    ajStrAssignS(&kTarray[i+1],kTarray[i]);
+	    pTarray[i+1] = pTarray[i];
+	}
+	ajStrAssignS(&kTarray[0],kAarray[anchorPos]);
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+	    pTarray[nTkeys+1] = pTarray[nTkeys];
+	    for(i=nTkeys-1;i>-1;--i)
+	    {
+		ajStrAssignS(&kTarray[i+1],kTarray[i]);
+		pTarray[i+1] = pTarray[i];
+	    }
+	    ajStrAssignS(&kTarray[0],kBarray[nBkeys-1]);
+	    pTarray[1] = pBarray[nBkeys];
+	    ++nTkeys;
+	    --nBkeys;
+	}
+
+
+	/* Adjust anchor key */
+	ajStrAssignS(&kAarray[anchorPos],kTarray[0]);
+	--nTkeys;
+	for(i=0;i<nTkeys;++i)
+	{
+	    ajStrAssignS(&kTarray[i],kTarray[i+1]);
+	    pTarray[i] = pTarray[i+1];
+	}
+	pTarray[i] = pTarray[i+1];
+    }
+    
+
+    /* Adjust PREV pointers for thisNode */
+    prev = pageT->pageno;
+    for(i=0;i<nTkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pTarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNode(cache,pageB,kBarray,pBarray,nBkeys);
+    btreeWriteNode(cache,pageT,kTarray,pTarray,nTkeys);
+
+    if(anchorNode == cache->secrootblock)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocSecArray(cache,arraysA);
+    btreeDeallocSecArray(cache,arraysB);
+    btreeDeallocSecArray(cache,arraysT);
+
+    return BTNO_NODE;
+}
+
+
+
+
+/* @funcstatic btreeMergePriTwo ***********************************************
+**
+** Merge two nodes.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] mergeNode [ajlong] merge node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeMergePriTwo(AjPBtcache cache, ajlong thisNode,
+                               ajlong mergeNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *nbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    AjPStr *kTarray = NULL;
+    AjPStr *kAarray = NULL;
+    AjPStr *kNarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pNarray = NULL;
+
+    ajlong thisprev  = 0L;
+    ajlong mergeprev = 0L;
+    
+    
+    ajint  nAkeys = 0;
+    ajint  nNkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  count  = 0;
+    ajint  i;
+    ajint  nodetype = 0;
+    
+    ajint saveA = 0;
+    ajint saveN = 0;
+    ajint saveT = 0;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageN = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos = 0;
+    ajlong prev      = 0L;
+
+    ajlong lv = 0L;
+
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysN = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    AjBool collapse = ajFalse;
+    ajlong csrb = 0L;
+    
+    /* ajDebug("In btreeMergePriTwo\n"); */
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    saveA = pageA->dirty;
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageN = ajBtreeCacheRead(cache,mergeNode);
+    saveN = pageN->dirty;
+    pageN->dirty = BT_LOCK;
+    nbuf = pageN->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    saveT = pageT->dirty;
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_PREV(tbuf,&thisprev);
+    GBT_PREV(nbuf,&mergeprev);
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(nbuf,&nNkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    GBT_NODETYPE(nbuf,&nodetype);
+
+    csrb = cache->secrootblock;
+
+    if(nAkeys == 1)
+    {
+	if(anchorNode==csrb && thisprev==csrb && mergeprev==csrb)
+	    collapse = ajTrue;
+	else
+	{
+	    pageA->dirty = saveA;
+	    pageN->dirty = saveN;
+	    pageT->dirty = saveT;
+	    return thisNode;
+	}
+    }
+
+    arraysA = btreeAllocSecArray(cache);
+    kAarray = arraysA->karray;
+    pAarray = arraysA->parray;
+
+    arraysN = btreeAllocSecArray(cache);
+    kNarray = arraysN->karray;
+    pNarray = arraysN->parray;
+
+    arraysT = btreeAllocSecArray(cache);
+    kTarray = arraysT->karray;
+    pTarray = arraysT->parray;
+
+    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetKeys(cache,nbuf,&kNarray,&pNarray);
+    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
+
+    if(strcmp(kTarray[nTkeys-1]->Ptr,kNarray[nNkeys-1]->Ptr)<0)
+	leftpage = pageT;
+    else
+	leftpage = pageN;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbour Node */
+	pNarray[nNkeys+1] = pNarray[nNkeys];
+	for(i=nNkeys-1;i>-1;--i)
+	{
+	    ajStrAssignS(&kNarray[i+1],kNarray[i]);
+	    pNarray[i+1] = pNarray[i];
+	}
+	ajStrAssignS(&kNarray[0],kAarray[anchorPos]);
+	++nNkeys;
+
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos==nAkeys)
+	    pAarray[nAkeys-1] = pAarray[nAkeys];
+	else
+	{
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		ajStrAssignS(&kAarray[i-1],kAarray[i]);
+		pAarray[i-1] = pAarray[i];
+	    }
+	    pAarray[i-1] = pAarray[i];
+	}
+	--nAkeys;
+	
+
+	/* Merge this to neighbour */
+
+	while(nTkeys)
+	{
+	    pNarray[nNkeys+1] = pNarray[nNkeys];
+	    for(i=nNkeys-1;i>-1;--i)
+	    {
+		ajStrAssignS(&kNarray[i+1],kNarray[i]);
+		pNarray[i+1] = pNarray[i];
+	    }
+	    ajStrAssignS(&kNarray[0],kTarray[nTkeys-1]);
+	    pNarray[1] = pTarray[nTkeys];
+	    pNarray[0] = pTarray[nTkeys-1];
+	    --nTkeys;
+	    ++nNkeys;
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    else
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kNarray[nNkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbourNode */
+	ajStrAssignS(&kNarray[nNkeys],kAarray[anchorPos]);
+	++nNkeys;
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos!=nAkeys)
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		ajStrAssignS(&kAarray[i-1],kAarray[i]);
+		pAarray[i] = pAarray[i+1];
+	    }
+	--nAkeys;
+
+	/* merge extra */
+	count = 0;
+	while(nTkeys)
+	{
+	    ajStrAssignS(&kNarray[nNkeys],kTarray[count]);
+	    pNarray[nNkeys] = pTarray[count];
+	    ++nNkeys;
+	    ++count;
+	    --nTkeys;
+	    pNarray[nNkeys] = pTarray[count];
+	
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    
+    
+    /* Adjust PREV pointers for neighbour Node */
+    prev = pageN->pageno;
+    for(i=0;i<nNkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pNarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    pageT->dirty = BT_CLEAN;
+    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNode(cache,pageN,kNarray,pNarray,nNkeys);
+
+    if(anchorNode == cache->secrootblock)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocSecArray(cache,arraysA);
+    btreeDeallocSecArray(cache,arraysN);
+    btreeDeallocSecArray(cache,arraysT);
+    
+    if(collapse)
+	btreeCollapseRootPriTwo(cache,mergeNode);
+
+    return thisNode;
+}
+
+
+
+
+/* @funcstatic btreeCollapseRootPriTwo ****************************************
+**
+** Collapse root page for keyword level 2 tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page number to make new root
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeCollapseRootPriTwo(AjPBtcache cache, ajlong pageno)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *lbuf = NULL;
+
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+
+    AjPBtpage rootpage = NULL;
+    AjPBtpage page     = NULL;
+    
+    ajint nodetype = 0;
+    ajint nkeys    = 0;
+    ajint i;
+
+    ajlong prev = 0L;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeCollapseRootPriTwo\n"); */
+    
+    if(!cache->slevel)
+	return BTNO_NODE;
+
+    rootpage = btreeCacheLocate(cache,cache->secrootblock);
+    buf = rootpage->buf;
+    page = ajBtreeCacheRead(cache,pageno);
+
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    /*
+    ** Swap pageno values to make root the child and child the root
+    ** Update nodetypes and mark the original root as a clean page
+    */
+
+    /* At this point page->pageno could be added to a free list */
+
+    rootpage->pageno = page->pageno;
+    rootpage->dirty = BT_CLEAN;
+    nodetype = BT_INTERNAL;
+    SBT_NODETYPE(buf,nodetype);
+
+    page->pageno = cache->secrootblock;
+    page->dirty  = BT_LOCK;
+    buf = page->buf;
+    nodetype = BT_ROOT;
+    SBT_NODETYPE(buf,nodetype);
+    
+    --cache->slevel;
+
+    if(cache->slevel)
+    {
+	/*
+	 ** Update the PREV pointers of the new root's children
+	 */
+	GBT_NKEYS(buf,&nkeys);
+	btreeGetKeys(cache,buf,&karray,&parray);
+	for(i=0;i<nkeys+1;++i)
+	{
+	    page = ajBtreeCacheRead(cache,parray[i]);
+	    lbuf = page->buf;
+	    SBT_PREV(lbuf,prev);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeDeallocSecArray(cache,arrays);
+    
+    return 0L;
+}
+
+
+
+
+/* @funcstatic btreeFindPriBalanceOne ******************************************
+**
+** Master routine for entry deletion from level 1 keyword tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Current node
+** @param [r] leftNode [ajlong] Node to left
+** @param [r] rightNode [ajlong] Node to right
+** @param [r] lAnchor [ajlong] Left anchor
+** @param [r] rAnchor [ajlong] Right anchor
+** @param [r] pri [const AjPBtPri] pri
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeFindPriBalanceOne(AjPBtcache cache, ajlong thisNode,
+                                     ajlong leftNode, ajlong rightNode,
+                                     ajlong lAnchor, ajlong rAnchor,
+                                     const AjPBtPri pri)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *buf1 = NULL;
+    
+    ajlong nextNode   = BTNO_NODE;
+    ajlong nextLeft   = BTNO_NODE;
+    ajlong nextRight  = BTNO_NODE;
+    ajlong nextAncL   = BTNO_NODE;
+    ajlong nextAncR   = BTNO_NODE;
+    ajlong done       = 0L;
+    
+    ajint  nkeys      = 0;
+    ajint  order      = 0;
+    ajint  minkeys    = 0;
+    ajint  i;
+    ajint  nodetype   = 0;
+
+    ajint n1keys      = 0;
+    
+    AjPBtpage page  = NULL;
+    AjPBtpage page1 = NULL;
+
+    ajlong balanceNode = 0L;
+    ajlong blockno     = 0L;
+    ajlong ptrSave     = 0L;
+
+    AjPStr *karray  = NULL;
+    ajlong *parray  = NULL;
+    AjPStr *k1array = NULL;
+    ajlong *p1array = NULL;
+
+    AjPBtMem arrays  = NULL;
+    AjPBtMem arrays1 = NULL;
+    
+    char *key = NULL;
+    AjBool existed = ajFalse;
+    
+    /* ajDebug("In btreeFindPriBalanceOne\n"); */
+
+    if(thisNode)
+	page = ajBtreeCacheRead(cache,thisNode);
+    else
+    {   /* It's the root node of the primary hyb tree */
+        /* Needs altering for secondary tree          */
+	page = btreeCacheLocate(cache,thisNode);
+	page->dirty = BT_LOCK;
+    }
+
+    cache->deleted = ajFalse;
+
+    buf = page->buf;
+    GBT_NKEYS(buf,&nkeys);
+    
+    order = cache->order;
+    /* order-1 is the number of keys in the node */
+    minkeys = (order-1) / 2;
+    if((order-1)%2)
+	++minkeys;
+
+    /*
+    ** If thisNode contains >= minkeys then it is not a candidate
+    ** for balancing
+    */
+    if(nkeys >= minkeys)
+	balanceNode = BTNO_BALANCE;
+    else
+	balanceNode = page->pageno;
+
+    arrays  = btreeAllocPriArray(cache);
+    arrays1 = btreeAllocPriArray(cache);
+
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    k1array = arrays1->karray;
+    p1array = arrays1->parray;
+
+    key = pri->keyword->Ptr;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    i=0;
+    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
+	++i;
+
+    blockno = parray[i];
+
+    nextNode = blockno;
+    ptrSave = i;
+
+    GBT_NODETYPE(buf,&nodetype);
+    if(!(nodetype == BT_LEAF) && !(nodetype == BT_ROOT && !cache->level))
+    {
+	if(nextNode == parray[0])
+	{
+	    if(leftNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,leftNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetKeys(cache,buf1,&k1array,&p1array);
+		nextLeft = p1array[n1keys];
+	    }
+	    else
+		nextLeft = BTNO_NODE;
+	    
+	    if(!thisNode)
+		nextAncL = thisNode;
+	    else
+		nextAncL = lAnchor;
+	}
+	else
+	{
+	    nextLeft = parray[ptrSave-1];
+	    nextAncL = thisNode;
+	}
+
+	if(nextNode == parray[nkeys])
+	{
+	    if(rightNode != BTNO_NODE)
+	    {
+		page1 = ajBtreeCacheRead(cache,rightNode);
+		buf1 = page1->buf;
+		GBT_NKEYS(buf1,&n1keys);
+		btreeGetKeys(cache,buf1,&k1array,&p1array);
+		nextRight = p1array[0];
+	    }
+	    else
+		nextRight = BTNO_NODE;
+
+	    if(!thisNode)
+		nextAncR = thisNode;
+	    else
+		nextAncR = rAnchor;
+	}
+	else
+	{
+	    nextRight = parray[ptrSave+1];
+	    nextAncR  = thisNode;
+	}
+
+
+
+	/* Check to see whether key exists in an internal node */
+	if(nodetype != BT_LEAF && cache->level)
+	{
+	    i=0;
+	    while(i!=nkeys && strcmp(key,karray[i]->Ptr))
+		++i;
+	    if(i!=nkeys)
+	    {
+		btreeFindPriMinOne(cache,parray[i+1],key);
+		ajStrAssignS(&karray[i],cache->replace);
+		btreeWriteNode(cache,page,karray,parray,nkeys);
+	    }
+	
+	}
+	
+	btreeFindPriBalanceOne(cache,nextNode,nextLeft,nextRight,
+                               nextAncL,nextAncR,pri);
+
+	if(thisNode)
+	    page = ajBtreeCacheRead(cache,thisNode);
+	else
+	{
+	    page = btreeCacheLocate(cache,thisNode);
+	    page->dirty = BT_LOCK;
+	}
+	buf = page->buf;
+
+    }
+    else
+    {
+	if(nodetype == BT_LEAF || (nodetype==BT_ROOT && !cache->level))
+	{
+	    existed = btreeRemovePriEntryOne(cache,thisNode,pri);
+
+	    if(existed)
+		cache->deleted = ajTrue;
+	    GBT_NKEYS(buf,&nkeys);
+	    if(nkeys >= minkeys || (nodetype==BT_ROOT && !cache->level))
+		balanceNode = BTNO_BALANCE;
+	    else
+		balanceNode = page->pageno;
+	}
+    }
+
+
+    if(balanceNode == BTNO_BALANCE || thisNode == 0L)
+	done = BTNO_NODE;
+    else
+	done = btreeRebalancePriOne(cache,thisNode,leftNode,rightNode,
+                                    lAnchor,rAnchor);
+    
+
+    btreeDeallocPriArray(cache,arrays);
+    btreeDeallocPriArray(cache,arrays1);
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeFindPriMinOne *********************************************
+**
+** Find minimum key in keyword level 1 subtree and store in cache.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page
+** @param [r] key [const char *] key
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeFindPriMinOne(AjPBtcache cache, ajlong pageno,
+                               const char *key)
+{
+    AjPBtpage page   = NULL;
+    AjPPriBucket bucket = NULL;
+    AjPStr *karray   = NULL;
+    ajlong *parray   = NULL;
+
+    ajint nkeys    = 0;
+    ajint nodetype = 0;
+    ajint nentries = 0;
+    ajint i;
+    AjPBtMem arrays = NULL;
+    
+    unsigned char *buf = NULL;
+
+    /* ajDebug("In btreeFindPriMinOne\n"); */
+
+    arrays = btreeAllocPriArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf  = page->buf;
+    GBT_NODETYPE(buf,&nodetype);
+    GBT_NKEYS(buf,&nkeys);
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    if(nodetype == BT_LEAF)
+    {
+	bucket = btreeReadPriBucket(cache,parray[0]);
+	nentries = bucket->Nentries;
+
+        /*
+        ** If there's only one entry then it must be the key marked
+        ** for deletion
+        */
+        if(nentries<2)
+	{
+	    btreePriBucketDel(&bucket);
+	    bucket = btreeReadPriBucket(cache,parray[1]);
+	    nentries = bucket->Nentries;
+	}
+
+        /* Check for empty bucket - shouldn't happen */
+        /* Checking solely out of interest */
+	if(nentries<1)	
+	    ajFatal("FindPriMinOne: Too few entries in bucket Nkeys=%d\n",
+                    nkeys);
+
+
+        /* Find lowest value key in the bucket and store in cache */
+        ajStrAssignS(&cache->replace,bucket->codes[0]->keyword);
+	if(!strcmp(cache->replace->Ptr,key))
+	    ajStrAssignS(&cache->replace,bucket->codes[1]->keyword);
+
+	for(i=1;i<nentries;++i)
+	    if(strcmp(bucket->codes[i]->keyword->Ptr,cache->replace->Ptr)<0 &&
+	       strcmp(bucket->codes[i]->keyword->Ptr,key))
+		ajStrAssignS(&cache->replace,bucket->codes[i]->keyword);
+	btreePriBucketDel(&bucket);
+    }
+    else
+    {
+	pageno = parray[0];
+	btreeFindPriMinOne(cache,pageno,key);
+	
+    }
+
+    btreeDeallocPriArray(cache,arrays);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRemovePriEntryOne *****************************************
+**
+** Find and delete an ID from a given hybrid tree level 1 leaf node if
+** necessary.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] leaf node page
+** @param [r] pri [const AjPBtPri] keyword object
+**
+** @return [AjBool] True if found (and deleted)
+** @@
+******************************************************************************/
+
+static AjBool btreeRemovePriEntryOne(AjPBtcache cache, ajlong pageno,
+                                     const AjPBtPri pri)
+{
+    AjPBtpage page   = NULL;
+    AjPPriBucket bucket = NULL;
+    
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+    ajlong blockno = 0L;
+    
+    ajint nkeys    = 0;
+    ajint nentries = 0;
+    ajint i;
+
+    ajint dirtysave = 0;
+    
+    AjBool found = ajFalse;
+    char   *key  = NULL;
+
+    unsigned char *buf = NULL;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeRemovePriEntryOne\n"); */
+
+    page = ajBtreeCacheRead(cache,pageno);
+    buf = page->buf;
+    dirtysave = page->dirty;
+    page->dirty = BT_LOCK;
+    
+    GBT_NKEYS(buf,&nkeys);
+    if(!nkeys)
+	return ajFalse;
+
+
+    arrays = btreeAllocPriArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    btreeGetKeys(cache,buf,&karray,&parray);
+    
+    key = pri->keyword->Ptr;
+
+    i=0;
+    while(i!=nkeys && strcmp(key,karray[i]->Ptr)>=0)
+	++i;
+
+    blockno = parray[i];
+    
+    bucket = btreeReadPriBucket(cache,blockno);
+
+
+    nentries = bucket->Nentries;
+    found = ajFalse;
+
+    for(i=0;i<nentries;++i)
+	if(!strcmp(key,bucket->codes[i]->keyword->Ptr))
+	{
+	    found = ajTrue;
+	    break;
+	}
+    
+
+    if(found)
+    {
+	/* Perform the deletion */
+	if(nentries == 1)
+	{
+	    bucket->Nentries = 0;
+	    ajBtreePriDel(&bucket->codes[0]);
+	}
+	else
+	{
+	    ajBtreePriDel(&bucket->codes[i]);
+	    bucket->codes[i] = bucket->codes[nentries-1];
+	    --bucket->Nentries;
+	}
+
+	btreeWritePriBucket(cache,bucket,blockno);
+	btreeAdjustPriBucketsOne(cache,page);
+	page->dirty = BT_DIRTY;
+    }
+    else
+	page->dirty = dirtysave;
+
+    btreePriBucketDel(&bucket);
+
+    btreeDeallocPriArray(cache,arrays);
+    
+    if(!found)
+	return ajFalse;
+
+    return ajTrue;
+}
+
+
+
+
+/* @funcstatic btreeAdjustPriBucketsOne **************************************
+**
+** Re-order leaf buckets
+** Can be called whatever the state of a leaf.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [u] leaf [AjPBtpage] leaf page
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+static void btreeAdjustPriBucketsOne(AjPBtcache cache, AjPBtpage leaf)
+{
+    ajint nkeys = 0;
+    unsigned char *lbuf = NULL;
+    AjPPriBucket *buckets  = NULL;
+    AjPStr *keys        = NULL;
+    ajlong *ptrs        = NULL;
+    ajlong *overflows   = NULL;
+    
+    ajint i = 0;
+    ajint j = 0;
+    
+    ajint order;
+    ajint bentries      = 0;
+    ajint totalkeys     = 0;
+    ajint nperbucket    = 0;
+    ajint maxnperbucket = 0;
+    ajint count         = 0;
+    ajint totkeylen     = 0;
+    ajint keylimit      = 0;
+    ajint bucketn       = 0;
+    ajint bucketlimit   = 0;
+    ajint nodetype      = 0;
+    ajint nids          = 0;
+    ajint totnids       = 0;
+    
+    AjPList idlist    = NULL;
+    ajint   dirtysave = 0;
+    AjPBtPri bid       = NULL;
+    AjPPriBucket cbucket = NULL;
+    AjPBtPri cid       = NULL;
+
+    AjPBtMem arrays = NULL;    
+
+    ajint v = 0;
+    
+    /* ajDebug("In btreeAdjustPriBucketsOne\n"); */
+
+    dirtysave = leaf->dirty;
+
+    leaf->dirty = BT_LOCK;
+    lbuf = leaf->buf;
+
+    GBT_NKEYS(lbuf,&nkeys);
+    if(!nkeys)
+    {
+	leaf->dirty = dirtysave;
+	return;
+    }
+
+    GBT_NODETYPE(lbuf,&nodetype);
+
+    order = cache->order;
+    nperbucket = cache->nperbucket;
+    
+
+    /* Read keys/ptrs */
+
+    arrays = btreeAllocPriArray(cache);
+    keys = arrays->karray;
+    ptrs = arrays->parray;
+
+    AJCNEW0(overflows,order);
+    
+
+    btreeGetKeys(cache,lbuf,&keys,&ptrs);
+
+
+    for(i=0;i<nkeys;++i)
+	totalkeys += btreeNumInPriBucket(cache,ptrs[i]);
+    totalkeys += btreeNumInPriBucket(cache,ptrs[i]);
+
+
+    /* Set the number of entries per bucket to approximately half full */
+    maxnperbucket = nperbucket >> 1;
+    if(!maxnperbucket)
+	++maxnperbucket;
+
+    if(!leaf->pageno)
+	maxnperbucket = nperbucket;
+
+    /* Work out the number of new buckets needed */
+    bucketn = (totalkeys / maxnperbucket);
+    if(totalkeys % maxnperbucket)
+	++bucketn;
+
+    if(bucketn == 1)
+	++bucketn;
+
+    while(bucketn > order)
+    {
+        ++maxnperbucket;
+        bucketn = (totalkeys / maxnperbucket);
+        if(totalkeys % maxnperbucket)
+            ++bucketn;
+    }
+    
+
+    /* Read buckets */
+    AJCNEW0(buckets,nkeys+1);
+    keylimit = nkeys + 1;
+    
+    for(i=0;i<keylimit;++i)
+	buckets[i] = btreeReadPriBucket(cache,ptrs[i]);
+
+
+    /* Read IDs from all buckets and push to list and sort (increasing id) */
+    idlist  = ajListNew();
+
+    for(i=0;i<keylimit;++i)
+    {
+	overflows[i] = buckets[i]->Overflow;
+	bentries = buckets[i]->Nentries;
+	for(j=0;j<bentries;++j)
+	    ajListPush(idlist,(void *)buckets[i]->codes[j]);
+	
+	AJFREE(buckets[i]->keylen);
+	AJFREE(buckets[i]->codes);
+	AJFREE(buckets[i]);
+    }
+    ajListSort(idlist,btreeKeywordCompare);
+    AJFREE(buckets);
+
+    cbucket = btreePriBucketNew(maxnperbucket);
+    bucketlimit = bucketn - 1;
+
+    totnids = 0;
+    nids = ajListGetLength(idlist);
+
+
+    if(!totalkeys)
+    {
+	v = totalkeys;
+	SBT_NKEYS(lbuf,v);
+
+        btreeDeallocPriArray(cache,arrays);
+
+	AJFREE(overflows);
+	ajListFree(&idlist);
+	leaf->dirty = BT_DIRTY;
+	return;
+    }
+    
+    if(nids <= maxnperbucket)
+    {
+	cbucket->Overflow = overflows[1];
+	cbucket->Nentries = 0;
+	ajListPeek(idlist,(void **)&bid);
+	ajStrAssignS(&keys[0],bid->keyword);
+
+	count = 0;
+	while(count!=maxnperbucket && totnids != nids)
+	{
+	    ajListPop(idlist,(void **)&bid);
+	    
+	    cid = cbucket->codes[count];
+	    ajStrAssignS(&cid->keyword,bid->keyword);
+	    cid->treeblock = bid->treeblock;
+	    
+	    cbucket->keylen[count] = BT_BUCKPRILEN(bid->keyword);
+	    ++cbucket->Nentries;
+	    ++count;
+	    ++totnids;
+	    ajBtreePriDel(&bid);
+	}
+
+
+	totkeylen += ajStrGetLen(keys[0]);
+
+	if(!ptrs[1])
+	    ptrs[1] = cache->totsize;
+	btreeWritePriBucket(cache,cbucket,ptrs[1]);
+
+	cbucket->Overflow = overflows[0];
+	cbucket->Nentries = 0;
+	if(!ptrs[0])
+	    ptrs[0] = cache->totsize;
+	btreeWritePriBucket(cache,cbucket,ptrs[0]);
+    }
+    else
+    {
+	for(i=0;i<bucketlimit;++i)
+	{
+	    cbucket->Overflow = overflows[i];
+	    cbucket->Nentries = 0;
+
+	    count = 0;
+	    while(count!=maxnperbucket && totnids != nids)
+	    {
+		ajListPop(idlist,(void **)&bid);
+
+		cid = cbucket->codes[count];
+		ajStrAssignS(&cid->keyword,bid->keyword);
+		cid->treeblock = bid->treeblock;
+		
+		cbucket->keylen[count] = BT_BUCKPRILEN(bid->id);
+		++cbucket->Nentries;
+		++count;
+		ajBtreePriDel(&bid);
+	    }
+
+
+	    ajListPeek(idlist,(void **)&bid);
+	    ajStrAssignS(&keys[i],bid->keyword);
+
+
+	    totkeylen += ajStrGetLen(bid->keyword);
+
+	    if(!ptrs[i])
+		ptrs[i] = cache->totsize;
+	    btreeWritePriBucket(cache,cbucket,ptrs[i]);
+	}
+	
+	
+	/* Deal with greater-than bucket */
+	
+	cbucket->Overflow = overflows[i];
+	cbucket->Nentries = 0;
+	
+	
+	
+	count = 0;
+	while(ajListPop(idlist,(void **)&bid))
+	{
+	    cid = cbucket->codes[count];
+	    ajStrAssignS(&cid->keyword,bid->keyword);
+	    cid->treeblock = bid->treeblock;
+	    
+	    ++cbucket->Nentries;
+	    ++count;
+	    ajBtreePriDel(&bid);
+	}
+	
+	
+	if(!ptrs[i])
+	    ptrs[i] = cache->totsize;
+	
+	btreeWritePriBucket(cache,cbucket,ptrs[i]);
+    }
+    
+
+    cbucket->Nentries = maxnperbucket;
+    btreePriBucketDel(&cbucket);
+
+    /* Now write out a modified leaf with new keys/ptrs */
+
+    nkeys = bucketn - 1;
+    v = nkeys;
+    SBT_NKEYS(lbuf,v);
+    v = totkeylen;
+    SBT_TOTLEN(lbuf,v);
+
+    btreeWriteNode(cache,leaf,keys,ptrs,nkeys);
+
+    leaf->dirty = dirtysave;
+    if(nodetype == BT_ROOT)
+	leaf->dirty = BT_LOCK;
+
+    btreeDeallocPriArray(cache,arrays);
+
+    AJFREE(overflows);
+
+    btreePriBucketDel(&cbucket);
+    ajListFree(&idlist);
+
+    return;
+}
+
+
+
+
+/* @funcstatic btreeRebalancePriOne ******************************************
+**
+** Rebalance keyword level 1 tree after deletion
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] Node to rebalance
+** @param [r] leftNode [ajlong] left node
+** @param [r] rightNode [ajlong] right node
+** @param [r] lAnchor [ajlong] left anchor
+** @param [r] rAnchor [ajlong] right anchor
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeRebalancePriOne(AjPBtcache cache, ajlong thisNode,
+                                   ajlong leftNode, ajlong rightNode,
+                                   ajlong lAnchor, ajlong rAnchor)
+{
+    unsigned char *lbuf = NULL;
+    unsigned char *rbuf = NULL;
+    unsigned char *tbuf = NULL;
+
+    ajlong anchorNode   = 0L;
+    ajlong balanceNode  = 0L;
+    ajlong mergeNode    = 0L;
+    ajlong done         = 0L;
+    ajlong parent       = 0L;
+    
+    AjPBtpage lpage = NULL;
+    AjPBtpage rpage = NULL;
+    AjPBtpage tpage = NULL;
+    
+    ajint lnkeys  = 0;
+    ajint rnkeys  = 0;
+    ajint size    = 0;
+    ajint order   = 0;
+    ajint minsize = 0;
+
+    AjBool leftok  = ajFalse;
+    AjBool rightok = ajFalse;
+    
+    
+    /* ajDebug("In btreeRebalancePriOne\n"); */
+
+    if(leftNode!=BTNO_NODE && lAnchor!=BTNO_NODE)
+	leftok = ajTrue;
+    if(rightNode!=BTNO_NODE && rAnchor!=BTNO_NODE)
+	rightok = ajTrue;
+
+    if(!leftok && !rightok)
+	return BTNO_NODE;
+    
+
+    if(leftok)
+    {
+	lpage = ajBtreeCacheRead(cache,leftNode);
+	lbuf  = lpage->buf;
+	GBT_NKEYS(lbuf,&lnkeys);
+    }
+    
+
+    if(rightok)
+    {
+	rpage = ajBtreeCacheRead(cache,rightNode);
+	rbuf  = rpage->buf;
+	GBT_NKEYS(rbuf,&rnkeys);
+    }
+    
+
+
+    if(leftok && rightok)
+    {
+	size = (lnkeys >= rnkeys) ? lnkeys : rnkeys;
+	balanceNode = (lnkeys >= rnkeys) ? leftNode : rightNode;
+    }
+    else if(leftok)
+    {
+	size = lnkeys;
+	balanceNode = leftNode;
+    }
+    else
+    {
+	size = rnkeys;
+	balanceNode = rightNode;
+    }
+
+    
+    order = cache->order;
+    minsize = (order-1) / 2;
+    if((order-1)%2)
+	++minsize;
+
+    if(size >= minsize)
+    {
+	if(leftok && rightok)
+	    anchorNode = (lnkeys >= rnkeys) ? lAnchor : rAnchor;
+	else if(leftok)
+	    anchorNode = lAnchor;
+	else
+	    anchorNode = rAnchor;
+	done = btreeShiftPriOne(cache,thisNode,balanceNode,anchorNode);
+    }
+	    
+    else
+    {
+	tpage = ajBtreeCacheRead(cache,thisNode);
+	tbuf  = tpage->buf;
+	GBT_PREV(tbuf,&parent);
+	if(leftok && rightok)
+	{
+	    anchorNode = (parent == lAnchor) ? lAnchor : rAnchor;
+	    mergeNode  = (anchorNode == lAnchor) ? leftNode : rightNode;
+	}
+	else if(leftok)
+	{
+	    anchorNode = lAnchor;
+	    mergeNode  = leftNode;
+	}
+	else
+	{
+	    anchorNode = rAnchor;
+	    mergeNode  = rightNode;
+	}
+	done = btreeMergePriOne(cache,thisNode,mergeNode,anchorNode);
+    }
+
+    return done;
+}
+
+
+
+
+/* @funcstatic btreeShiftPriOne ***********************************************
+**
+** Shift spare entries from one keyword tree level 1 node to another.
+** Same as btreeShiftHybOne but duplicated for clarity
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] balanceNode [ajlong] balance node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeShiftPriOne(AjPBtcache cache, ajlong thisNode,
+                               ajlong balanceNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *bbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    AjPStr *kTarray = NULL;
+    AjPStr *kAarray = NULL;
+    AjPStr *kBarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pBarray = NULL;
+    
+    ajint  nAkeys = 0;
+    ajint  nBkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  i;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageB = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos   = 0;
+    ajlong prev        = 0L;
+    ajint  nodetype    = 0;
+
+    ajlong lv = 0L;
+    
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysB = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    /* ajDebug("In btreeShiftPriOne\n"); */
+
+
+    arraysA = btreeAllocPriArray(cache);
+    kAarray = arraysA->karray;
+    pAarray = arraysA->parray;
+
+    arraysB = btreeAllocPriArray(cache);
+    kBarray = arraysB->karray;
+    pBarray = arraysB->parray;
+
+    arraysT = btreeAllocPriArray(cache);
+    kTarray = arraysT->karray;
+    pTarray = arraysT->parray;
+
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageB = ajBtreeCacheRead(cache,balanceNode);
+    pageB->dirty = BT_LOCK;
+    bbuf = pageB->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(bbuf,&nBkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetKeys(cache,bbuf,&kBarray,&pBarray);
+    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
+    
+    if(strcmp(kTarray[nTkeys-1]->Ptr,kBarray[nBkeys-1]->Ptr)<0)
+	leftpage = pageT;
+    else
+	leftpage = pageB;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+	ajStrAssignS(&kTarray[nTkeys],kAarray[anchorPos]);
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+	    ajStrAssignS(&kTarray[nTkeys],kBarray[0]);
+	    pTarray[nTkeys] = pBarray[0];
+	    ++nTkeys;
+	    --nBkeys;
+
+	    for(i=0;i<nBkeys;++i)
+	    {
+		ajStrAssignS(&kBarray[i],kBarray[i+1]);
+		pBarray[i] = pBarray[i+1];
+	    }
+	    pBarray[i] = pBarray[i+1];
+	}
+
+	/* Adjust anchor key */
+	ajStrAssignS(&kAarray[anchorPos],kTarray[nTkeys-1]);
+	--nTkeys;
+    }
+    else	/* thisNode on the right */
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kBarray[nBkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to thisNode */
+	pTarray[nTkeys+1] = pTarray[nTkeys];
+	for(i=nTkeys-1;i>-1;--i)
+	{
+	    ajStrAssignS(&kTarray[i+1],kTarray[i]);
+	    pTarray[i+1] = pTarray[i];
+	}
+	ajStrAssignS(&kTarray[0],kAarray[anchorPos]);
+	++nTkeys;
+
+	/* Shift extra */
+	while(nTkeys < nBkeys)
+	{
+	    pTarray[nTkeys+1] = pTarray[nTkeys];
+	    for(i=nTkeys-1;i>-1;--i)
+	    {
+		ajStrAssignS(&kTarray[i+1],kTarray[i]);
+		pTarray[i+1] = pTarray[i];
+	    }
+	    ajStrAssignS(&kTarray[0],kBarray[nBkeys-1]);
+	    pTarray[1] = pBarray[nBkeys];
+	    ++nTkeys;
+	    --nBkeys;
+	}
+
+
+	/* Adjust anchor key */
+	ajStrAssignS(&kAarray[anchorPos],kTarray[0]);
+	--nTkeys;
+	for(i=0;i<nTkeys;++i)
+	{
+	    ajStrAssignS(&kTarray[i],kTarray[i+1]);
+	    pTarray[i] = pTarray[i+1];
+	}
+	pTarray[i] = pTarray[i+1];
+    }
+    
+
+    /* Adjust PREV pointers for thisNode */
+    prev = pageT->pageno;
+    for(i=0;i<nTkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pTarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNode(cache,pageB,kBarray,pBarray,nBkeys);
+    btreeWriteNode(cache,pageT,kTarray,pTarray,nTkeys);
+
+    if(!anchorNode)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocPriArray(cache,arraysA);
+    btreeDeallocPriArray(cache,arraysB);
+    btreeDeallocPriArray(cache,arraysT);
+
+    return BTNO_NODE;
+}
+
+
+
+
+/* @funcstatic btreeMergePriOne ***********************************************
+**
+** Merge two nodes.
+** Deletion software
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] thisNode [ajlong] master node
+** @param [r] mergeNode [ajlong] merge node
+** @param [r] anchorNode [ajlong] anchor node
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeMergePriOne(AjPBtcache cache, ajlong thisNode,
+                               ajlong mergeNode, ajlong anchorNode)
+{
+    unsigned char *tbuf = NULL;
+    unsigned char *abuf = NULL;
+    unsigned char *nbuf = NULL;
+    unsigned char *buf  = NULL;
+    
+    AjPStr *kTarray = NULL;
+    AjPStr *kAarray = NULL;
+    AjPStr *kNarray = NULL;
+    ajlong *pTarray = NULL;
+    ajlong *pAarray = NULL;
+    ajlong *pNarray = NULL;
+
+    ajlong thisprev  = 0L;
+    ajlong mergeprev = 0L;
+    
+    
+    ajint  nAkeys = 0;
+    ajint  nNkeys = 0;
+    ajint  nTkeys = 0;
+    ajint  count  = 0;
+    ajint  i;
+    ajint  nodetype = 0;
+    
+    ajint saveA = 0;
+    ajint saveN = 0;
+    ajint saveT = 0;
+    
+    AjPBtpage pageA = NULL;
+    AjPBtpage pageN = NULL;
+    AjPBtpage pageT = NULL;
+    AjPBtpage page  = NULL;
+    
+    AjPBtpage leftpage = NULL;
+
+    ajint  anchorPos = 0;
+    ajlong prev      = 0L;
+
+    ajlong lv = 0L;
+
+    AjPBtMem arraysA = NULL;    
+    AjPBtMem arraysN = NULL;    
+    AjPBtMem arraysT = NULL;    
+
+    AjBool collapse = ajFalse;
+    
+    /* ajDebug("In btreeMergePriOne\n"); */
+
+    pageA = ajBtreeCacheRead(cache,anchorNode);
+    saveA = pageA->dirty;
+    pageA->dirty = BT_LOCK;
+    abuf = pageA->buf;
+    pageN = ajBtreeCacheRead(cache,mergeNode);
+    saveN = pageN->dirty;
+    pageN->dirty = BT_LOCK;
+    nbuf = pageN->buf;
+    pageT = ajBtreeCacheRead(cache,thisNode);
+    saveT = pageT->dirty;
+    pageT->dirty = BT_LOCK;
+    tbuf = pageT->buf;
+
+    GBT_PREV(tbuf,&thisprev);
+    GBT_PREV(nbuf,&mergeprev);
+
+    GBT_NKEYS(abuf,&nAkeys);
+    GBT_NKEYS(nbuf,&nNkeys);
+    GBT_NKEYS(tbuf,&nTkeys);
+
+    GBT_NODETYPE(nbuf,&nodetype);
+
+
+    if(nAkeys == 1)
+    {
+	if(!anchorNode && !thisprev && !mergeprev)
+	    collapse = ajTrue;
+	else
+	{
+	    pageA->dirty = saveA;
+	    pageN->dirty = saveN;
+	    pageT->dirty = saveT;
+	    return thisNode;
+	}
+    }
+
+    arraysA = btreeAllocPriArray(cache);
+    kAarray = arraysA->karray;
+    pAarray = arraysA->parray;
+
+    arraysN = btreeAllocPriArray(cache);
+    kNarray = arraysN->karray;
+    pNarray = arraysN->parray;
+
+    arraysT = btreeAllocPriArray(cache);
+    kTarray = arraysT->karray;
+    pTarray = arraysT->parray;
+
+    btreeGetKeys(cache,abuf,&kAarray,&pAarray);
+    btreeGetKeys(cache,nbuf,&kNarray,&pNarray);
+    btreeGetKeys(cache,tbuf,&kTarray,&pTarray);
+
+    if(strcmp(kTarray[nTkeys-1]->Ptr,kNarray[nNkeys-1]->Ptr)<0)
+	leftpage = pageT;
+    else
+	leftpage = pageN;
+
+
+    if(leftpage == pageT)
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kTarray[nTkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbour Node */
+	pNarray[nNkeys+1] = pNarray[nNkeys];
+	for(i=nNkeys-1;i>-1;--i)
+	{
+	    ajStrAssignS(&kNarray[i+1],kNarray[i]);
+	    pNarray[i+1] = pNarray[i];
+	}
+	ajStrAssignS(&kNarray[0],kAarray[anchorPos]);
+	++nNkeys;
+
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos==nAkeys)
+	    pAarray[nAkeys-1] = pAarray[nAkeys];
+	else
+	{
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		ajStrAssignS(&kAarray[i-1],kAarray[i]);
+		pAarray[i-1] = pAarray[i];
+	    }
+	    pAarray[i-1] = pAarray[i];
+	}
+	--nAkeys;
+	
+
+	/* Merge this to neighbour */
+
+	while(nTkeys)
+	{
+	    pNarray[nNkeys+1] = pNarray[nNkeys];
+	    for(i=nNkeys-1;i>-1;--i)
+	    {
+		ajStrAssignS(&kNarray[i+1],kNarray[i]);
+		pNarray[i+1] = pNarray[i];
+	    }
+	    ajStrAssignS(&kNarray[0],kTarray[nTkeys-1]);
+	    pNarray[1] = pTarray[nTkeys];
+	    pNarray[0] = pTarray[nTkeys-1];
+	    --nTkeys;
+	    ++nNkeys;
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    else
+    {
+	/* Find anchor key position */
+	i=0;
+	while(i!=nAkeys && strcmp(kNarray[nNkeys-1]->Ptr,kAarray[i]->Ptr)>=0)
+	    ++i;
+	anchorPos = i;
+
+	/* Move down anchor key to neighbourNode */
+	ajStrAssignS(&kNarray[nNkeys],kAarray[anchorPos]);
+	++nNkeys;
+
+	/* Adjust anchor node keys/ptrs */
+	++anchorPos;
+	if(anchorPos!=nAkeys)
+	    for(i=anchorPos;i<nAkeys;++i)
+	    {
+		ajStrAssignS(&kAarray[i-1],kAarray[i]);
+		pAarray[i] = pAarray[i+1];
+	    }
+	--nAkeys;
+
+	/* merge extra */
+	count = 0;
+	while(nTkeys)
+	{
+	    ajStrAssignS(&kNarray[nNkeys],kTarray[count]);
+	    pNarray[nNkeys] = pTarray[count];
+	    ++nNkeys;
+	    ++count;
+	    --nTkeys;
+	    pNarray[nNkeys] = pTarray[count];
+	
+	}
+
+	/* At this point the 'this' node could be added to a freelist */
+    }
+    
+    
+    /* Adjust PREV pointers for neighbour Node */
+    prev = pageN->pageno;
+    for(i=0;i<nNkeys+1;++i)
+    {
+	page = ajBtreeCacheRead(cache,pNarray[i]);
+	buf = page->buf;
+	GBT_NODETYPE(buf,&nodetype);
+	if(nodetype != BT_BUCKET)
+	{
+	    lv = prev;
+	    SBT_PREV(buf,lv);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    pageT->dirty = BT_CLEAN;
+    btreeWriteNode(cache,pageA,kAarray,pAarray,nAkeys);
+    btreeWriteNode(cache,pageN,kNarray,pNarray,nNkeys);
+
+    if(!anchorNode)
+	pageA->dirty = BT_LOCK;
+
+    btreeDeallocPriArray(cache,arraysA);
+    btreeDeallocPriArray(cache,arraysN);
+    btreeDeallocPriArray(cache,arraysT);
+    
+    if(collapse)
+	btreeCollapseRootPriOne(cache,mergeNode);
+
+    return thisNode;
+}
+
+
+
+
+/* @funcstatic btreeCollapseRootPriOne ****************************************
+**
+** Collapse root page for keyword level 1 tree.
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+** @param [r] pageno [ajlong] page number to make new root
+**
+** @return [ajlong] page number or BTNO_NODE
+** @@
+******************************************************************************/
+
+static ajlong btreeCollapseRootPriOne(AjPBtcache cache, ajlong pageno)
+{
+    unsigned char *buf  = NULL;
+    unsigned char *lbuf = NULL;
+
+    AjPStr *karray = NULL;
+    ajlong *parray = NULL;
+
+    AjPBtpage rootpage = NULL;
+    AjPBtpage page     = NULL;
+    
+    ajint nodetype = 0;
+    ajint nkeys    = 0;
+    ajint i;
+
+    ajlong prev = 0L;
+    AjPBtMem arrays = NULL;
+    
+    /* ajDebug("In btreeCollapseRootPriOne\n"); */
+    
+    if(!cache->level)
+	return BTNO_NODE;
+
+    rootpage = btreeCacheLocate(cache,0L);
+    buf = rootpage->buf;
+    page = ajBtreeCacheRead(cache,pageno);
+
+
+    arrays = btreeAllocPriArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+
+    /*
+    ** Swap pageno values to make root the child and child the root
+    ** Update nodetypes and mark the original root as a clean page
+    */
+
+    /* At this point page->pageno could be added to a free list */
+
+    rootpage->pageno = page->pageno;
+    rootpage->dirty = BT_CLEAN;
+    nodetype = BT_INTERNAL;
+    SBT_NODETYPE(buf,nodetype);
+
+    page->pageno = 0;
+    page->dirty  = BT_LOCK;
+    buf = page->buf;
+    nodetype = BT_ROOT;
+    SBT_NODETYPE(buf,nodetype);
+    
+    --cache->level;
+
+    if(cache->level)
+    {
+	/*
+	 ** Update the PREV pointers of the new root's children
+	 */
+	GBT_NKEYS(buf,&nkeys);
+	btreeGetKeys(cache,buf,&karray,&parray);
+	for(i=0;i<nkeys+1;++i)
+	{
+	    page = ajBtreeCacheRead(cache,parray[i]);
+	    lbuf = page->buf;
+	    SBT_PREV(lbuf,prev);
+	    page->dirty = BT_DIRTY;
+	}
+    }
+
+    btreeDeallocPriArray(cache,arrays);
+    
+    return 0L;
+}
+
+
+
+
+/* @funcstatic btreeIsSecEmpty ****************************************
+**
+** Tests whether a secondary tree is empty
+** Deletion software.
+**
+** @param [u] cache [AjPBtcache] cache
+**
+** @return [AjBool] true if empty, false otherwise
+** @@
+******************************************************************************/
+
+static AjBool btreeIsSecEmpty(AjPBtcache cache)
+{
+    AjPBtpage rootpage  = NULL;
+    AjPSecBucket bucket = NULL;
+    unsigned char *buf  = NULL;
+    AjPStr *karray  = NULL;
+    ajlong *parray  = NULL;
+    AjPBtMem arrays = NULL;
+    ajint nkeys = 0;
+    ajint tkeys = 0;
+
+    if(cache->slevel)
+        return ajFalse;
+
+    rootpage = btreeCacheLocate(cache,cache->secrootblock);
+    if(!rootpage)
+        ajFatal("btreeSecIsEmpty: root page unlocked");
+
+    buf = rootpage->buf;
+    GBT_NKEYS(buf,&nkeys);
+    if(!nkeys)
+        return ajTrue;
+    if(nkeys > 1)
+        return ajFalse;
+
+    arrays = btreeAllocSecArray(cache);
+    karray = arrays->karray;
+    parray = arrays->parray;
+    btreeGetKeys(cache,buf,&karray,&parray);
+
+    tkeys = 0;
+    if(parray[0])
+    {
+        bucket = btreeReadSecBucket(cache,parray[0]);
+        tkeys += bucket->Nentries;
+    }
+    if(parray[1])
+    {
+        bucket = btreeReadSecBucket(cache,parray[1]);
+        tkeys += bucket->Nentries;
+    }
+
+    btreeDeallocSecArray(cache,arrays);
+
+    if(tkeys)
+        return ajFalse;
+
+    return ajTrue;
 }
