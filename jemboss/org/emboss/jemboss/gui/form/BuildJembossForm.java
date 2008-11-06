@@ -24,23 +24,7 @@ package org.emboss.jemboss.gui.form;
 
 import java.awt.*;
 
-import javax.swing.Box;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JMenuBar;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 import org.apache.regexp.*;
@@ -57,6 +41,7 @@ import org.emboss.jemboss.parser.ParseAcd;
 import org.emboss.jemboss.programs.*;
 import org.emboss.jemboss.*;
 import org.emboss.jemboss.gui.*;
+import org.emboss.jemboss.gui.SwingWorker;
 import org.emboss.jemboss.soap.*;
 import org.emboss.jemboss.gui.sequenceChooser.*;
 import org.emboss.jemboss.graphics.Graph2DPlot;
@@ -127,12 +112,12 @@ public class BuildJembossForm implements ActionListener
   
   public BuildJembossForm(String appDescription, String db[],
         final String applName, String[] envp, String cwd, 
-        String acdText, final boolean withSoap, JPanel p2, 
+        String acdText, final boolean withSoap, JPanel formPane, 
         final JembossParams mysettings, final JFrame f)
   {
 
     this.f = f;
-    this.p2 = p2;
+    this.p2 = formPane;
     this.db = db;
     this.cwd = cwd;
     this.mysettings = mysettings;
@@ -238,15 +223,24 @@ public class BuildJembossForm implements ActionListener
     
     ImageIcon rfii = new ImageIcon(cl.getResource("images/Go_button.gif"));
     JButton bgo = new JButton(rfii);
+    bgo.setToolTipText("Start a new job using the selected execution mode");
     bgo.setActionCommand("GO");
     bgo.setMargin(new Insets(0,0,0,0));
     bgo.addActionListener(this);
 
-    Box tools;
-    tools = Box.createHorizontalBox();
-    tools.add(Box.createRigidArea(new Dimension(2,0)));
+    Box tools = Box.createHorizontalBox();
+    Box modeSelectionBox = Box.createVerticalBox();
+    JLabel mode = new JLabel("Execution mode:");
+    mode.setAlignmentX(Component.LEFT_ALIGNMENT);
+    modeSelectionBox.add(mode);
+    JComboBox excMode = Jemboss.resultsManager.getExcModeComboBox(mode.getPreferredSize().width);
+    modeSelectionBox.add(Box.createRigidArea(new Dimension(5,0)));
+    modeSelectionBox.add(excMode);
+    tools.add(Box.createRigidArea(new Dimension(5,0)));
+    tools.add(modeSelectionBox);
+    tools.add(Box.createRigidArea(new Dimension(10,0)));
     tools.add(bgo);
-    tools.add(Box.createRigidArea(new Dimension(4,0)));
+    tools.add(Box.createRigidArea(new Dimension(20,0)));
     tools.add(bhelp);
       
 // Advanced options
@@ -255,7 +249,7 @@ public class BuildJembossForm implements ActionListener
     {
       JButton badvanced = new JButton("Advanced Options");
       badvanced.addActionListener(this);
-      tools.add(Box.createRigidArea(new Dimension(4,0)));
+      tools.add(Box.createRigidArea(new Dimension(20,0)));
       tools.add(badvanced);
     }
 
@@ -266,6 +260,13 @@ public class BuildJembossForm implements ActionListener
     tools.add(Box.createHorizontalGlue());
     fieldPane.add(Box.createRigidArea(new Dimension(0,10)));
     fieldPane.add(tools);
+    Box msgBox = new Box(BoxLayout.X_AXIS);
+    msgBox.add(Box.createHorizontalStrut(5));
+    jobSubmittedMessage.setAlignmentY(Component.LEFT_ALIGNMENT);
+    jobSubmittedMessage.setText("");
+    msgBox.add(jobSubmittedMessage);
+    msgBox.add(Box.createHorizontalGlue());
+    fieldPane.add(msgBox);
 
     fieldPane.add(Box.createVerticalStrut(10));
     bgo.setMinimumSize(new Dimension(200, 40));
@@ -287,13 +288,13 @@ public class BuildJembossForm implements ActionListener
 
     fieldPane.add(Box.createVerticalGlue());
   }
+  
+  JLabel jobSubmittedMessage = new JLabel("");
 
 
   public void attach(JPanel p3, Box fieldPane, 
                      String appDescription)
   {
-
-    //String appN = "";
 
 // get total number of Swing components
     int ntextf = parseAcd.getNumTextf();
@@ -440,9 +441,9 @@ public class BuildJembossForm implements ActionListener
 */
   public void actionPerformed(ActionEvent ae)
   {
-
     ShowResultSet resultSetFrame = null;
-
+    jobSubmittedMessage.setText("");
+    
     if( ae.getActionCommand().startsWith("Advanced Option"))
     {
       if(advSectionBox != null)
@@ -455,7 +456,20 @@ public class BuildJembossForm implements ActionListener
     }
     else if ( ae.getActionCommand().startsWith("GO"))
     {
+      boolean batchStart = false;
+      String jobSubmittedMsg = null;
       f.setCursor(cbusy);
+      if (mysettings.getCurrentMode().equals("batch")){
+          batchStart = true;
+          jobSubmittedMsg = "<html><font color=red size=-1>Your <i>"+applName+
+          "</i> job has been " +
+          (withSoap ?
+               "sent to your Jemboss server":
+               "started in a new background process")+
+          "</font><br>" +
+          "<font size=-2>You can get its results using the <i>Batch Job Manager</i> " +
+          "(see its activation button below)</font></html>";          
+      }
       try{
       if(!withSoap)
       {
@@ -464,11 +478,12 @@ public class BuildJembossForm implements ActionListener
 
         if(!embossCommand.equals("NOT OK"))
         {
-          if(mysettings.getCurrentMode().equals("batch"))
+          if(batchStart)
           {
             BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
             bsp.setWithSoap(false);
             bsp.start();
+            jobSubmittedMessage.setText(jobSubmittedMsg);
           }
           else
           {
@@ -500,10 +515,11 @@ public class BuildJembossForm implements ActionListener
 
           try
           {
-            if(mysettings.getCurrentMode().equals("batch"))
+            if(batchStart)
             {
               BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
               bsp.start();
+              jobSubmittedMessage.setText(jobSubmittedMsg);
             }
             else
             {
@@ -762,10 +778,6 @@ public class BuildJembossForm implements ActionListener
   private String checkParameters(ParseAcd parseAcd, int numofFields, 
                                  Hashtable filesToMove)
   {
-
-    //String params = new String("");
-    //String appN = "";
-    //String file = "";
     String options = "";
     String fn = "";
     String sfn;
