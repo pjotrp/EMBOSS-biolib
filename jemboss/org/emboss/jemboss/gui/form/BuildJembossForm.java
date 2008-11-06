@@ -260,13 +260,13 @@ public class BuildJembossForm implements ActionListener
     tools.add(Box.createHorizontalGlue());
     fieldPane.add(Box.createRigidArea(new Dimension(0,10)));
     fieldPane.add(tools);
-    Box msgBox = new Box(BoxLayout.X_AXIS);
-    msgBox.add(Box.createHorizontalStrut(5));
-    jobSubmittedMessage.setAlignmentY(Component.LEFT_ALIGNMENT);
-    jobSubmittedMessage.setText("");
-    msgBox.add(jobSubmittedMessage);
-    msgBox.add(Box.createHorizontalGlue());
-    fieldPane.add(msgBox);
+//    Box msgBox = new Box(BoxLayout.X_AXIS);
+//    msgBox.add(Box.createHorizontalStrut(5));
+//    jobSubmittedMessage.setAlignmentY(Component.LEFT_ALIGNMENT);
+//    jobSubmittedMessage.setText("");
+//    msgBox.add(jobSubmittedMessage);
+//    msgBox.add(Box.createHorizontalGlue());
+//    fieldPane.add(msgBox);
 
     fieldPane.add(Box.createVerticalStrut(10));
     bgo.setMinimumSize(new Dimension(200, 40));
@@ -289,7 +289,7 @@ public class BuildJembossForm implements ActionListener
     fieldPane.add(Box.createVerticalGlue());
   }
   
-  JLabel jobSubmittedMessage = new JLabel("");
+//  JLabel jobSubmittedMessage = new JLabel("");
 
 
   public void attach(JPanel p3, Box fieldPane, 
@@ -442,7 +442,7 @@ public class BuildJembossForm implements ActionListener
   public void actionPerformed(ActionEvent ae)
   {
     ShowResultSet resultSetFrame = null;
-    jobSubmittedMessage.setText("");
+//    jobSubmittedMessage.setText("");
     
     if( ae.getActionCommand().startsWith("Advanced Option"))
     {
@@ -457,18 +457,18 @@ public class BuildJembossForm implements ActionListener
     else if ( ae.getActionCommand().startsWith("GO"))
     {
       boolean batchStart = false;
-      String jobSubmittedMsg = null;
+//      String jobSubmittedMsg = null;
       f.setCursor(cbusy);
       if (mysettings.getCurrentMode().equals("batch")){
           batchStart = true;
-          jobSubmittedMsg = "<html><font color=red size=-1>Your <i>"+applName+
-          "</i> job has been " +
-          (withSoap ?
-               "sent to your Jemboss server":
-               "started in a new background process")+
-          "</font><br>" +
-          "<font size=-2>You can get its results using the <i>Batch Job Manager</i> " +
-          "(see its activation button below)</font></html>";          
+//          jobSubmittedMsg = "<html><font color=green size=-1>Your <i>"+applName+
+//          "</i> job has been " +
+//          (withSoap ?
+//               "sent to your Jemboss server":
+//               "started in a new background process")+
+//          "</font><br>" +
+//          "<font size=-2>You can get its results using the <i>Batch Job Manager</i> " +
+//          "(see its activation button below)</font></html>";          
       }
       try{
       if(!withSoap)
@@ -483,7 +483,7 @@ public class BuildJembossForm implements ActionListener
             BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
             bsp.setWithSoap(false);
             bsp.start();
-            jobSubmittedMessage.setText(jobSubmittedMsg);
+//            jobSubmittedMessage.setText(jobSubmittedMsg);
           }
           else
           {
@@ -519,7 +519,7 @@ public class BuildJembossForm implements ActionListener
             {
               BatchSoapProcess bsp = new BatchSoapProcess(embossCommand,filesToMove,mysettings);
               bsp.start();
-              jobSubmittedMessage.setText(jobSubmittedMsg);
+//              jobSubmittedMessage.setText(jobSubmittedMsg);
             }
             else
             {
