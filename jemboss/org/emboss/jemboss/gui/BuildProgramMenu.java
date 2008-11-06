@@ -693,7 +693,7 @@ public class BuildProgramMenu
       }
       catch (IOException e)
       {
-        System.out.println("BuildProgramMenu: Cannot read acd file " + acdText);
+        System.err.println("BuildProgramMenu: Cannot read acd file " + acdToParse);
       }
     }
     else 
