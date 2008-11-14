@@ -521,6 +521,8 @@ typedef struct AjSSeqset {
 **
 ** @attr Seq [AjPSeq] Current sequence
 ** @attr Seqin [AjPSeqin] Sequence input for reading next
+** @attr Totseqs [ajlong] Count of sequences so far
+** @attr Totlength [ajlong] Count of sequence lengths so far
 ** @attr Count [ajint] Count of sequences so far
 ** @attr Begin [ajint] start position
 ** @attr End [ajint] end position
@@ -534,6 +536,8 @@ typedef struct AjSSeqset {
 typedef struct AjSSeqall {
   AjPSeq Seq;
   AjPSeqin Seqin;
+  ajlong Totseqs;
+  ajlong Totlength;
   ajint Count;
   ajint Begin;
   ajint End;
