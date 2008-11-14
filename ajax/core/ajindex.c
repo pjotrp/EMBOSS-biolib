@@ -15315,10 +15315,11 @@ void ajBtreeDumpHybKeys(AjPBtcache cache, ajint dmin, ajint dmax, AjPFile outf)
 /* @func ajBtreeDeleteHybId *********************************************
 **
 ** Entry point for hybrid ID deletion.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
-** @param [r] id [const AjPBtHybrid] hybrid object
+** @param [r] hyb [const AjPBtHybrid] hybrid object
 **
 ** @return [AjBool] True if found and deleted
 ** @@
@@ -15461,6 +15462,7 @@ AjBool ajBtreeDeleteHybId(AjPBtcache cache, const AjPBtHybrid hyb)
 /* @funcstatic btreeFindHybBalanceOne ******************************************
 **
 ** Master routine for entry deletion from level 1 hybrid tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -15686,6 +15688,7 @@ static ajlong btreeFindHybBalanceOne(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeFindHybMinOne *********************************************
 **
 ** Find minimum key in hybrid level 1 subtree and store in cache.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -15778,11 +15781,12 @@ static void btreeFindHybMinOne(AjPBtcache cache, ajlong pageno,
 **
 ** Find and delete an ID from a given hybrid tree level 1 leaf node if
 ** necessary.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
 ** @param [r] pageno [ajlong] leaf node page
-** @param [r] id [const AjPBtHybrid] hyb
+** @param [r] hyb [const AjPBtHybrid] hyb
 **
 ** @return [AjBool] True if found (and deleted)
 ** @@
@@ -15892,6 +15896,7 @@ static AjBool btreeRemoveHybEntryOne(AjPBtcache cache, ajlong pageno,
 **
 ** Re-order leaf buckets
 ** Can be called whatever the state of a leaf.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -16184,6 +16189,7 @@ static void btreeAdjustHybBucketsOne(AjPBtcache cache, AjPBtpage leaf)
 /* @funcstatic btreeRebalanceHybOne ******************************************
 **
 ** Rebalance Hybrid level 1 tree after deletion
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -16318,6 +16324,7 @@ static ajlong btreeRebalanceHybOne(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeShiftHybOne ***********************************************
 **
 ** Shift spare entries from one hybrid tree level 1 node to another.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -16519,6 +16526,7 @@ static ajlong btreeShiftHybOne(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeMergeHybOne ***********************************************
 **
 ** Merge two nodes.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -16769,6 +16777,7 @@ static ajlong btreeMergeHybOne(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeCollapseRootHybOne ****************************************
 **
 ** Collapse root page for hybrid level 1 tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -16858,11 +16867,12 @@ static ajlong btreeCollapseRootHybOne(AjPBtcache cache, ajlong pageno)
 **
 ** Entry point for secondary hybrid tree ID deletion.
 ** Assumes cache->secrootblock has been initialised.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
 ** @param [r] hyb [const AjPBtHybrid] hybrid object
-** @param [r] did [AjPBtId] ID object in primary tree
+** @param [u] did [AjPBtId] ID object in primary tree
 **
 ** @return [AjBool] True if found and deleted
 ** @@
@@ -17010,6 +17020,7 @@ static AjBool btreeDeleteHybIdTwo(AjPBtcache cache, const AjPBtHybrid hyb,
 /* @funcstatic btreeFindHybBalanceTwo ******************************************
 **
 ** Master routine for entry deletion from level 2 hybrid tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -17231,6 +17242,7 @@ static ajlong btreeFindHybBalanceTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeFindHybMinTwo *********************************************
 **
 ** Find minimum key in hybrid level 2 subtree and store in cache.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -17327,6 +17339,7 @@ static void btreeFindHybMinTwo(AjPBtcache cache, ajlong pageno,
 **
 ** Find and delete an ID from a given hybrid tree level 2 leaf node if
 ** necessary.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -17435,6 +17448,7 @@ static AjBool btreeRemoveHybEntryTwo(AjPBtcache cache, ajlong pageno,
 **
 ** Re-order leaf buckets in 2ry hybrid tree
 ** Can be called whatever the state of a leaf.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -17712,6 +17726,7 @@ static void btreeAdjustHybBucketsTwo(AjPBtcache cache, AjPBtpage leaf)
 /* @funcstatic btreeRebalanceHybTwo ******************************************
 **
 ** Rebalance Hybrid level 2 tree after deletion
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -17848,6 +17863,7 @@ static ajlong btreeRebalanceHybTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeShiftHybTwo ***********************************************
 **
 ** Shift spare entries from one hybrid tree level 2 node to another.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -18049,6 +18065,7 @@ static ajlong btreeShiftHybTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeMergeHybTwo ***********************************************
 **
 ** Merge two nodes in Hybrid 2ry tree
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -18301,6 +18318,7 @@ static ajlong btreeMergeHybTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeCollapseRootHybTwo ****************************************
 **
 ** Collapse root page for hybrid level 2 tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -18393,10 +18411,11 @@ static ajlong btreeCollapseRootHybTwo(AjPBtcache cache, ajlong pageno)
 /* @func ajBtreeDeletePriId *********************************************
 **
 ** Entry point for keyword tree ID deletion.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
-** @param [r] id [const AjPBtPri] keyword object
+** @param [r] pri [const AjPBtPri] keyword object
 **
 ** @return [AjBool] True if found and deleted
 ** @@
@@ -18590,6 +18609,7 @@ AjBool ajBtreeDeletePriId(AjPBtcache cache, const AjPBtPri pri)
 /* @funcstatic btreeFindPriBalanceTwo ******************************************
 **
 ** Master routine for entry deletion from level 2 keyword tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -18813,6 +18833,7 @@ static ajlong btreeFindPriBalanceTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeFindPriMinTwo *********************************************
 **
 ** Find minimum key in keyword level 2 subtree and store in cache.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -18905,11 +18926,12 @@ static void btreeFindPriMinTwo(AjPBtcache cache, ajlong pageno,
 **
 ** Find and delete an ID from a given keyword tree level 2 leaf node if
 ** necessary.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
 ** @param [r] pageno [ajlong] leaf node page
-** @param [r] id [const AjPBtPri] pri
+** @param [r] pri [const AjPBtPri] pri
 **
 ** @return [AjBool] True if found (and deleted)
 ** @@
@@ -19016,6 +19038,7 @@ static AjBool btreeRemovePriEntryTwo(AjPBtcache cache, ajlong pageno,
 **
 ** Re-order leaf buckets in keyword level 2 tree
 ** Can be called whatever the state of a leaf.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -19298,6 +19321,7 @@ static void btreeAdjustPriBucketsTwo(AjPBtcache cache, AjPBtpage leaf)
 /* @funcstatic btreeRebalancePriTwo ******************************************
 **
 ** Rebalance keyword level 2 tree after deletion
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -19434,6 +19458,7 @@ static ajlong btreeRebalancePriTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeShiftPriTwo ***********************************************
 **
 ** Shift spare entries from one keyword tree level 2 node to another.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -19635,6 +19660,7 @@ static ajlong btreeShiftPriTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeMergePriTwo ***********************************************
 **
 ** Merge two nodes.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -19887,6 +19913,7 @@ static ajlong btreeMergePriTwo(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeCollapseRootPriTwo ****************************************
 **
 ** Collapse root page for keyword level 2 tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -19975,6 +20002,7 @@ static ajlong btreeCollapseRootPriTwo(AjPBtcache cache, ajlong pageno)
 /* @funcstatic btreeFindPriBalanceOne ******************************************
 **
 ** Master routine for entry deletion from level 1 keyword tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -20200,6 +20228,7 @@ static ajlong btreeFindPriBalanceOne(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeFindPriMinOne *********************************************
 **
 ** Find minimum key in keyword level 1 subtree and store in cache.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -20292,6 +20321,7 @@ static void btreeFindPriMinOne(AjPBtcache cache, ajlong pageno,
 **
 ** Find and delete an ID from a given hybrid tree level 1 leaf node if
 ** necessary.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -20403,6 +20433,7 @@ static AjBool btreeRemovePriEntryOne(AjPBtcache cache, ajlong pageno,
 **
 ** Re-order leaf buckets
 ** Can be called whatever the state of a leaf.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -20686,6 +20717,7 @@ static void btreeAdjustPriBucketsOne(AjPBtcache cache, AjPBtpage leaf)
 /* @funcstatic btreeRebalancePriOne ******************************************
 **
 ** Rebalance keyword level 1 tree after deletion
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -20821,6 +20853,7 @@ static ajlong btreeRebalancePriOne(AjPBtcache cache, ajlong thisNode,
 **
 ** Shift spare entries from one keyword tree level 1 node to another.
 ** Same as btreeShiftHybOne but duplicated for clarity
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -21022,6 +21055,7 @@ static ajlong btreeShiftPriOne(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeMergePriOne ***********************************************
 **
 ** Merge two nodes.
+**
 ** Deletion software
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -21272,6 +21306,7 @@ static ajlong btreeMergePriOne(AjPBtcache cache, ajlong thisNode,
 /* @funcstatic btreeCollapseRootPriOne ****************************************
 **
 ** Collapse root page for keyword level 1 tree.
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
@@ -21360,6 +21395,7 @@ static ajlong btreeCollapseRootPriOne(AjPBtcache cache, ajlong pageno)
 /* @funcstatic btreeIsSecEmpty ****************************************
 **
 ** Tests whether a secondary tree is empty
+**
 ** Deletion software.
 **
 ** @param [u] cache [AjPBtcache] cache
