@@ -602,7 +602,13 @@ __deprecated AjBool ajSysWhichEnv(AjPStr *Pfilename, char * const env[])
 
 FILE* ajSysFuncFdopen(ajint filedes, const char *mode)
 {
-    return fdopen(filedes,mode);
+    FILE *ret;
+    
+    ret = fdopen(filedes,mode);
+    if(ret)
+        errno = 0;              /* set to "Illegal seek" on some systems */
+
+    return ret;
 }
 
 
