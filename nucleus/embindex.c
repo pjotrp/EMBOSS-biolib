@@ -1073,7 +1073,7 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
     const char *resource;
     AjPStr value = NULL;
     ajuint  n = 0;
-    
+
     value = ajStrNew();
     
 
@@ -1084,6 +1084,41 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
 	ajFatal("Incorrect 'type' field for resource (%S)",entry->dbrs);
 
 
+    if(!ajNamGetValueC("CACHESIZE",&value))
+    {
+	entry->cachesize = BTREE_DEF_CACHESIZE;
+	ajUser("CACHESIZE defaults to %d", entry->cachesize);
+    }
+    else
+    {
+	if(ajStrToUint(value,&n))
+	{
+	    entry->cachesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for environment variable 'CACHESIZE'");
+	    entry->cachesize = BTREE_DEF_CACHESIZE;
+	}
+    }
+
+    if(!ajNamGetValueC("PAGESIZE",&value))
+    {
+	entry->pagesize = BTREE_DEF_PAGESIZE;
+	ajUser("PAGESIZE defaults to %d", entry->pagesize);
+    }
+    else
+    {
+	if(ajStrToUint(value,&n))
+	{
+	    entry->pagesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for environment variable 'PAGESIZE'");
+	    entry->pagesize = BTREE_DEF_PAGESIZE;
+	}
+    }
 
     if(!ajNamRsAttrValueC(resource,"idlen",&value))
 	entry->idlen = BTREE_DEF_IDLEN;
@@ -1163,97 +1198,240 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
 	}
     }
 
-    if(!ajNamGetValueC("CACHESIZE",&value))
-    {
-	entry->cachesize = BTREE_DEF_CACHESIZE;
-	ajUser("CACHESIZE defaults to %d", entry->cachesize);
-    }
+    if(!ajNamRsAttrValueC(resource,"idpagesize",&value))
+	entry->idpagesize = entry->pagesize;
     else
     {
-	if(ajStrToUint(value,&n))
+        if(ajStrToUint(value,&n))
 	{
-	    entry->cachesize = n;
+	    entry->idpagesize = n;
 	}
 	else
 	{
-	    ajErr("Bad value for environment variable 'CACHESIZE'");
-	    entry->cachesize = BTREE_DEF_CACHESIZE;
+	    ajErr("Bad value for index resource 'idpagesize'");
+	    entry->idpagesize = entry->pagesize;
 	}
     }
-
-    if(!ajNamGetValueC("PAGESIZE",&value))
-    {
-	entry->pagesize = BTREE_DEF_PAGESIZE;
-	ajUser("PAGESIZE defaults to %d", entry->pagesize);
-    }
+        
+    if(!ajNamRsAttrValueC(resource,"accpagesize",&value))
+	entry->acpagesize = entry->pagesize;
     else
     {
-	if(ajStrToUint(value,&n))
+        if(ajStrToUint(value,&n))
 	{
-	    entry->pagesize = n;
+	    entry->acpagesize = n;
 	}
 	else
 	{
-	    ajErr("Bad value for environment variable 'PAGESIZE'");
-	    entry->pagesize = BTREE_DEF_PAGESIZE;
+	    ajErr("Bad value for index resource 'accpagesize'");
+	    entry->acpagesize = entry->pagesize;
 	}
     }
-
-    
-    entry->idorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+        
+    if(!ajNamRsAttrValueC(resource,"svpagesize",&value))
+	entry->svpagesize = entry->pagesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->svpagesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'svpagesize'");
+	    entry->svpagesize = entry->pagesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"keypagesize",&value))
+	entry->kwpagesize = entry->pagesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->kwpagesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'keypagesize'");
+	    entry->kwpagesize = entry->pagesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"despagesize",&value))
+	entry->depagesize = entry->pagesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->depagesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'despagesize'");
+	    entry->depagesize = entry->pagesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"orgpagesize",&value))
+	entry->txpagesize = entry->pagesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->txpagesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'orgpagesize'");
+	    entry->txpagesize = entry->pagesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"idcachesize",&value))
+	entry->idcachesize = entry->cachesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->idcachesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'idcachesize'");
+	    entry->idcachesize = entry->cachesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"acccachesize",&value))
+	entry->accachesize = entry->cachesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->accachesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'acccachesize'");
+	    entry->accachesize = entry->cachesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"svcachesize",&value))
+	entry->svcachesize = entry->cachesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->svcachesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'svcachesize'");
+	    entry->svcachesize = entry->cachesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"keycachesize",&value))
+	entry->kwcachesize = entry->cachesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->kwcachesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'keycachesize'");
+	    entry->kwcachesize = entry->cachesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"descachesize",&value))
+	entry->decachesize = entry->cachesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->decachesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'descachesize'");
+	    entry->decachesize = entry->cachesize;
+	}
+    }
+        
+    if(!ajNamRsAttrValueC(resource,"orgcachesize",&value))
+	entry->txcachesize = entry->cachesize;
+    else
+    {
+        if(ajStrToUint(value,&n))
+	{
+	    entry->txcachesize = n;
+	}
+	else
+	{
+	    ajErr("Bad value for index resource 'orgcachesize'");
+	    entry->txcachesize = entry->cachesize;
+	}
+    }
+        
+    entry->idorder = (entry->idpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->idlen + 1) + BT_IDKEYEXTRA);
 
-    entry->idfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->idfill  = (entry->idpagesize - BT_BUCKPREAMBLE) /
         ((entry->idlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->acorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->acorder = (entry->acpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->aclen + 1) + BT_IDKEYEXTRA);
 
-    entry->acfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->acfill  = (entry->acpagesize - BT_BUCKPREAMBLE) /
         ((entry->aclen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->svorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->svorder = (entry->svpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->svlen + 1) + BT_IDKEYEXTRA);
 
-    entry->svfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->svfill  = (entry->svpagesize - BT_BUCKPREAMBLE) /
         ((entry->svlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->kworder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->kworder = (entry->kwpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->kwlen + 1) + BT_IDKEYEXTRA);
 
-    entry->kwfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->kwfill  = (entry->kwpagesize - BT_BUCKPREAMBLE) /
         ((entry->kwlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->deorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->deorder = (entry->depagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->delen + 1) + BT_IDKEYEXTRA);
 
-    entry->defill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->defill  = (entry->depagesize - BT_BUCKPREAMBLE) /
         ((entry->delen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
-    entry->txorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->txorder = (entry->txpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->txlen + 1) + BT_IDKEYEXTRA);
 
-    entry->txfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->txfill  = (entry->txpagesize - BT_BUCKPREAMBLE) /
         ((entry->txlen + 1) + BT_KEYLENENTRY + BT_DDOFFROFF);
 
  
-    entry->idsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->idsecorder = (entry->idpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         (BT_OFFKEYLEN + BT_IDKEYEXTRA);
 
-    entry->acsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->acsecorder = (entry->acpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         (BT_OFFKEYLEN + BT_IDKEYEXTRA);
 
-    entry->svsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->svsecorder = (entry->svpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         (BT_OFFKEYLEN + BT_IDKEYEXTRA);
 
  
-    entry->idsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->idsecfill  = (entry->idpagesize - BT_BUCKPREAMBLE) /
         BT_DOFFROFF;
 
-    entry->acsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->acsecfill  = (entry->acpagesize - BT_BUCKPREAMBLE) /
         BT_DOFFROFF;
 
-    entry->svsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->svsecfill  = (entry->svpagesize - BT_BUCKPREAMBLE) /
         BT_DOFFROFF;
 
 
@@ -1262,19 +1440,19 @@ void embBtreeGetRsInfo(EmbPBtreeEntry entry)
      *  the keywords
      */
 
-    entry->kwsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->kwsecorder = (entry->kwpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->idlen + 1) + BT_IDKEYEXTRA);
-    entry->desecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->desecorder = (entry->depagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->idlen + 1) + BT_IDKEYEXTRA);
-    entry->txsecorder = (entry->pagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
+    entry->txsecorder = (entry->txpagesize - (BT_NODEPREAMBLE + BT_PTRLEN)) /
         ((entry->idlen + 1) + BT_IDKEYEXTRA);
 
 
-    entry->kwsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->kwsecfill  = (entry->kwpagesize - BT_BUCKPREAMBLE) /
         ((entry->idlen + 1) + BT_KEYLENENTRY);
-    entry->desecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->desecfill  = (entry->depagesize - BT_BUCKPREAMBLE) /
         ((entry->idlen + 1) + BT_KEYLENENTRY);
-    entry->txsecfill  = (entry->pagesize - BT_BUCKPREAMBLE) /
+    entry->txsecfill  = (entry->txpagesize - BT_BUCKPREAMBLE) /
         ((entry->idlen + 1) + BT_KEYLENENTRY);
 
     ajStrDel(&value);
@@ -1310,9 +1488,9 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_id)
     {
 	entry->idcache = ajBtreeSecCacheNewC(basenam,ID_EXTENSION,idir,"w+",
-					     entry->pagesize, entry->idorder,
+					     entry->idpagesize, entry->idorder,
 					     entry->idfill, level,
-					     entry->cachesize,
+					     entry->idcachesize,
 					     entry->idsecorder, slevel,
 					     entry->idsecfill, count,
 					     entry->idlen);
@@ -1325,10 +1503,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_accession)
     {
 	entry->accache = ajBtreeSecCacheNewC(basenam,AC_EXTENSION,idir,"w+",
-					     entry->pagesize,
+					     entry->acpagesize,
 					     entry->acorder, entry->acfill,
 					     level,
-					     entry->cachesize,
+					     entry->accachesize,
 					     entry->acsecorder, slevel,
 					     entry->acsecfill, count,
 					     entry->aclen);
@@ -1341,9 +1519,9 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_sv)
     {
 	entry->svcache = ajBtreeSecCacheNewC(basenam,SV_EXTENSION,idir,"w+",
-					     entry->pagesize, entry->svorder,
+					     entry->svpagesize, entry->svorder,
 					     entry->svfill, level,
-					     entry->cachesize,
+					     entry->svcachesize,
 					     entry->svsecorder, slevel,
 					     entry->svsecfill, count,
 					     entry->svlen);
@@ -1358,10 +1536,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_keyword)
     {
 	entry->kwcache = ajBtreeSecCacheNewC(basenam,KW_EXTENSION,idir,"w+",
-					     entry->pagesize,
+					     entry->kwpagesize,
 					     entry->kworder, entry->kwfill,
 					     level,
-					     entry->cachesize,
+					     entry->kwcachesize,
 					     entry->kwsecorder, slevel,
 					     entry->kwsecfill, count,
 					     entry->kwlen);
@@ -1375,10 +1553,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_description)
     {
 	entry->decache = ajBtreeSecCacheNewC(basenam,DE_EXTENSION,idir,"w+",
-					     entry->pagesize,
+					     entry->depagesize,
 					     entry->deorder, entry->defill,
 					     level,
-					     entry->cachesize,
+					     entry->decachesize,
 					     entry->desecorder, slevel,
 					     entry->desecfill, count,
 					     entry->delen);
@@ -1392,10 +1570,10 @@ AjBool embBtreeOpenCaches(EmbPBtreeEntry entry)
     if(entry->do_taxonomy)
     {
 	entry->txcache = ajBtreeSecCacheNewC(basenam,TX_EXTENSION,idir,"w+",
-					     entry->pagesize,
+					     entry->txpagesize,
 					     entry->txorder, entry->txfill,
 					     level,
-					     entry->cachesize,
+					     entry->txcachesize,
 					     entry->txsecorder, slevel,
 					     entry->txsecfill, count,
 					     entry->txlen);
