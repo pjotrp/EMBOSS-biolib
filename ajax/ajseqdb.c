@@ -6984,6 +6984,7 @@ static FILE* seqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
     ajDebug("\n");
 
     fp = seqHttpSocket(qry, hp, iport, host, iport, get);
+    fp = seqHttpSocket(qry, hp, iport, host, iport, get);
 
     return fp;
 }
@@ -7067,8 +7068,9 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
 
     ajDebug("connect status %d errno %d msg '%s'\n",
 	    istatus, errno, ajMessSysErrorText());
-
     ajDebug("inet_ntoa '%s'\n", inet_ntoa(sin.sin_addr));
+    
+
     isendlen = send(sock, ajStrGetPtr(get), ajStrGetLen(get), 0);
     if(isendlen != ajStrGetLen(get))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
@@ -7082,10 +7084,14 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
        ajDebug("sending: '%S'\n", gethead);
        send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
        
-       ajFmtPrintS(&gethead, "User-Agent: EMBOSS\n");
-       ajDebug("sending: '%S'\n", gethead);
-       send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
-       */
+    */
+
+    ajFmtPrintS(&gethead, "User-Agent: EMBOSS/%s\n", VERSION);
+    isendlen = send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
+    if(isendlen != ajStrGetLen(gethead))
+	ajErr("send failure, expected %d bytes returned %d : %s\n",
+	      ajStrGetLen(gethead), istatus, ajMessSysErrorText());
+    ajDebug("sending: '%S' status: %d\n", gethead, istatus);
 
     ajFmtPrintS(&gethead, "Host: %S:%d\n", host, iport);
     isendlen =  send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
@@ -7116,9 +7122,9 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
     }
 #endif
 
-
     ajDebug("fdopen errno %d msg '%s'\n",
-	    errno, ajMessSysErrorText());
+            errno, ajMessSysErrorText());
+
     if(!fp)
     {
 	ajDebug("socket open failed sock: %d\n", sock);
