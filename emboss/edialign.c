@@ -151,7 +151,7 @@ char *upg_str;
 ajint dcount = 0;
 
 
-ajint **shift; 
+ajint **shift = NULL; 
 ajint   thr_sim_score = 4 ;
 
 char **seq = NULL;
@@ -162,7 +162,7 @@ char *newseq[MAX_SEQNUM];   /* sequences */
 ajint sim_score[21][21];  /* similarity matrix */
 float av_sim_score_pep ;
 float av_sim_score_nuc ;
-float **glob_sim;        /* overall similarity between any two sequences */
+float **glob_sim = NULL;        /* overall similarity between any two sequences */
 float **wgt_prot  ;      /* `weight' of diagonals */
 float **wgt_dna   ;      /* `weight' of diagonals */
 float **wgt_trans ;      /* `weight' of diagonals */
@@ -176,8 +176,8 @@ char **full_name = NULL;
 /*char *full_name[MAX_SEQNUM] ;*/
 
 
-float **pair_score;
-short **cont_it_p; 
+float **pair_score = NULL;
+short **cont_it_p = NULL; 
 float score;
 ajint maxlen;              /* maximum length of sequences */
 ajuint seqnum;              /* number of sequences */
@@ -236,10 +236,10 @@ char *par_file;
 
 short **mot_pos ;       /* positions of pre-defined motifs */ 
 
-ajint **amino;           /* amino acid residues in protein sequences or 
+ajint **amino = NULL;           /* amino acid residues in protein sequences or 
                           translated DNA sequences, respective */
 
-ajint **amino_c;         /* amino acid residues on crick strand */ 
+ajint **amino_c = NULL;         /* amino acid residues on crick strand */ 
  
 
 
@@ -256,15 +256,15 @@ ajint ***open_pos;           /* open_pos[i][j][p] = 1, if the p-th residue of
 struct multi_frag *pair_dia;   /* diagonals in pairwise alignemnt */
 
 
-double **tp400_prot ;    /* propability distribution for sums of similarity
+double **tp400_prot =NULL;    /* propability distribution for sums of similarity
                        socores in diagonals occurring in comparison matrix
                        (by random experiments and approximation  */
 
-double **tp400_dna ;    /* propability distribution for sums of similarity
+double **tp400_dna =NULL;    /* propability distribution for sums of similarity
                        socores in diagonals occurring in comparison matrix
                        (by random experiments and approximation  */
 
-double **tp400_trans ;    /* propability distribution for sums of similarity
+double **tp400_trans =NULL;    /* propability distribution for sums of similarity
                        socores in diagonals occurring in comparison matrix
                        (by random experiments and approximation  */
 
@@ -1800,7 +1800,34 @@ int main(int argc, char **argv)
     } 
 
 
+    for(i=0;i<seqnum;i++)
+    {
+        if(pair_score) AJFREE(pair_score[i]);
+        if(cont_it_p) AJFREE(cont_it_p[i]);
+        if(glob_sim) AJFREE(glob_sim[i]);
+        if(amino) AJFREE(amino[i]);
+        if(amino_c) AJFREE(amino_c[i]);
+    }
+    
+    AJFREE(pair_score);
+    AJFREE(cont_it_p);
+    AJFREE(glob_sim);
+    AJFREE(amino);
+    AJFREE(amino_c);
+
     ajStrDel(&tnstr);
+    ajSeqsetDel(&seqset);
+    ajSeqoutDel(&seqout);
+    for(ii=1;ii<max_dia+1;ii++)
+    {
+        if(tp400_prot)AJFREE(tp400_prot[ii]);
+        if(tp400_dna)AJFREE(tp400_dna[ii]);
+        if(tp400_trans)AJFREE(tp400_trans[ii]);
+    }
+    
+    AJFREE(tp400_prot);
+    AJFREE(tp400_dna);
+    AJFREE(tp400_trans);
 
     embExit();
 
@@ -4907,7 +4934,7 @@ static void edialign_frag_sort(ajint number , struct multi_frag *dp ,
 {
     ajint i=1;
 
-    struct multi_frag **array;
+    struct multi_frag **array = NULL;
     if((array = (struct multi_frag**)calloc(number+1,
 					    sizeof(struct multi_frag*)))==0)
     {
@@ -4926,6 +4953,7 @@ static void edialign_frag_sort(ajint number , struct multi_frag *dp ,
   
     edialign_assemble_list(array, dp, number+1);
 
+    AJFREE(array);
     return;
 }
 
@@ -5226,10 +5254,10 @@ static void edialign_throw_out( float *weight_sum )
     ajint nc;
     short consist_found = 0; 
   
-    struct multi_frag *cp;		/* current diagonal */
-    struct multi_frag *hp;		/* predecedor of cp */ 
+    struct multi_frag *cp = NULL;		/* current diagonal */
+    struct multi_frag *hp = NULL;		/* predecedor of cp */ 
     
-    hp = ( struct multi_frag *) calloc( 1 , sizeof( struct multi_frag ) ); 
+/*    hp = ( struct multi_frag *) calloc( 1 , sizeof( struct multi_frag ) ); */
     cp = this_it_dia;
     hp = NULL;
     *weight_sum = 0;
@@ -5447,11 +5475,11 @@ static void edialign_av_tree_print(void)
     ajint max_pair[2];
     ajuint m1;
     ajuint m2;
-    struct subtree *all_clades;
-    double **clade_similarity;
+    struct subtree *all_clades = NULL;
+    double **clade_similarity = NULL;
     double new_similarity = 0.; 
     double max_sim; 
-    char *string;
+    char *string = NULL;
     char l_name[2][20];   
     float branch_len[2];
     float depth; 
@@ -5618,7 +5646,16 @@ static void edialign_av_tree_print(void)
     for(i = 0 ; i <= strlen( string ) ; i++ )
 	upg_str[i] = string[i] ;
 
-
+    for(i=0; i < seqnum; i++)
+    {
+        AJFREE(all_clades[i].member);
+        AJFREE(all_clades[i].name);
+        AJFREE(clade_similarity[i]);
+    }
+    AJFREE(all_clades);
+    AJFREE(clade_similarity);
+    
+    AJFREE(string);
     return;
 }
 
@@ -6626,24 +6663,25 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
     float strong_wgt_type_thr = STRONG_WGT_TYPE_THR  ; 
     float frac_plus, frac_minus, frac_nuc, f_inv ;
  
-    char **endseq;
-    char **hseq;
-    char *clear_seq;
-    float *weight_count;
-    ajint *plus_count;
-    ajint *minus_count;
-    ajint *nuc_count;
-    ajint *frg_involved;
-    float *plot;  /* plot[i] = sum of weights of fragments involved at
+    char **endseq = NULL;
+    char **hseq = NULL;
+    char *clear_seq = NULL;
+    float *weight_count = NULL;
+    ajint *plus_count = NULL;
+    ajint *minus_count = NULL;
+    ajint *nuc_count = NULL;
+    ajint *frg_involved = NULL;
+    float *plot = NULL;  /* plot[i] = sum of weights of fragments involved at
 		     position i normalized such that the maximum value */
  
     char gap_char = '-';
     char ambi_char = ' ';
-    ajint *begin, *end, *b_len, *first_pos, pl_int ;
+    ajint *begin = NULL, *end = NULL, *b_len = NULL, *first_pos = NULL;
+    ajint pl_int ;
     ajint b_size;				/* size of fragments */
     struct multi_frag *fragments = NULL;
-    struct multi_frag *dia; 
-    ajint **inv_shift;     
+    struct multi_frag *dia = NULL; 
+    ajint **inv_shift = NULL;     
     ajint char_per_line; /* number of residues per line in output file */
     char aligned; 
     ajuint fragno = ifragno;
@@ -7299,25 +7337,46 @@ static void edialign_ali_arrange(ajint ifragno , struct multi_frag *d,
 	fprintf(fp,"\n \n \n");
            
 	for(hv=0;hv<seqnum;hv++)
-	    free(hseq[hv]);  
+	    AJFREE(hseq[hv]);  
 
 	for(hv=0;hv<seqnum;hv++)
-	    free(endseq[hv]);
+	    AJFREE(endseq[hv]);
 
 	if( fragno > 0 )
-	    free( fragments );
+	    AJFREE( fragments );
 
-	free(plot);
+	AJFREE(plot);
 
-	free(weight_count);
+	AJFREE(weight_count);
 
 
     } /* for(bc=0;bc<1;bc++) */
 
 
     for(hv=0;hv<seqnum;hv++)
+    {
 	free(shift[hv]);  
+	free(inv_shift[hv]);  
+    }
+    
+    AJFREE(endseq);
+    AJFREE (hseq);
+    AJFREE(begin);
+    AJFREE(end);
+    AJFREE(b_len);
+    AJFREE(first_pos);
 
+    AJFREE(inv_shift);
+    AJFREE(shift);
+    AJFREE(frg_involved);
+    AJFREE(nuc_count);
+    AJFREE(minus_count);
+    AJFREE(plus_count);
+    AJFREE(weight_count);
+    AJFREE(plot);
+    AJFREE(clear_seq);
+        
+    
     return;
 }
 
