@@ -436,9 +436,17 @@ typedef struct AcdSTableItem
 **                        or by an associated qualifier ACD attribute
 ** @attr UserDefined [AjBool] Set when a value is defined by the user
 **                            including replies to prompts
+** @attr UserSetNull [AjBool] Set when a value is undefined by the user
+**                            with -no before a qualifier name
 ** @attr Used [ajint] Use count, saved for a possible diagnostic message to
 **                    catch ACD items declared and never referenced by the
 **                    calling program.
+** @attr RefPassed [ajint] Enumerated value for reference 0= not passed,
+**                         1= values only passed,
+**                         2= values and reference passed
+** @attr LineNum [ajint] Source file line number of definition start,
+**                       saved for use in diagnostic messages 
+** @attr SAttr [ajint] Number of calculated attributes for this ACD type
 ** @attr Assoc [AjBool] ajTrue if this is an associated qualifier, listed
 **                      in the AssocQuals structure of another ACD item
 ** @attr AssocQuals [struct AcdSAcd*] Associated qualifiers list, or
@@ -449,13 +457,6 @@ typedef struct AcdSTableItem
 ** @attr ValStr [AjPStr] Value as a string for printing
 ** @attr Value [void*] Value as a pointer to the native object to be
 **                     returned by an ajAcdGet function call
-** @attr SAttr [ajint] Number of calculated attributes for this ACD type
-** @attr RefPassed [ajint] Enumerated value for reference 0= not passed,
-**                         1= values only passed,
-**                         2= values and reference passed
-** @attr LineNum [ajint] Source file line number of definition start,
-**                       saved for use in diagnostic messages 
-** @attr Padding [ajint] Padding to alignment boundary
 ** @@
 ******************************************************************************/
 
@@ -474,17 +475,17 @@ typedef struct AcdSAcd
     AjPPStr DefStr;
     AjBool Defined;
     AjBool UserDefined;
+    AjBool UserSetNull;
     ajint Used;
+    ajint RefPassed;
+    ajint LineNum;
+    ajint SAttr;
     AjBool Assoc;
     struct AcdSAcd* AssocQuals;
     AjPStr StdPrompt;
     AjPStr OrigStr;
     AjPStr ValStr;
     void* Value;
-    ajint SAttr;
-    ajint RefPassed;
-    ajint LineNum;
-    ajint Padding;
 } AcdOAcd;
 #define AcdPAcd AcdOAcd*
 
@@ -629,6 +630,9 @@ static AjBool    acdAttrToBool(const AcdPAcd thys,
 static AjBool    acdAttrToBoolTest(const AcdPAcd thys,
 				   const char *attr, AjBool defval,
 				   AjBool *result);
+static AjBool    acdAttrToDouble(const AcdPAcd thys,
+                                 const char *attr, double defval,
+                                 double *result);
 static AjBool    acdAttrToFloat(const AcdPAcd thys,
 				const char *attr, float defval,
 				float *result);
@@ -639,6 +643,8 @@ static AjBool    acdAttrToChar(const AcdPAcd thys,
 			       const char *attr, char defval, char *result);
 static AjBool    acdAttrToInt(const AcdPAcd thys,
 			      const char *attr, ajint defval, ajint *result);
+static AjBool    acdAttrToLong(const AcdPAcd thys,
+                               const char *attr, ajlong defval, ajlong *result);
 static AjBool    acdAttrToStr(const AcdPAcd thys,
 			      const char *attr, const char* defval,
 			      AjPStr *result);
@@ -1463,6 +1469,8 @@ AcdOAttr acdAttrFloat[] =
 	 "Precision for printing values"},
     {"warnrange", VT_BOOL, 0, "Y",
 	 "Warning if values are out of range"},
+    {"large", VT_BOOL, 0, "N",
+	 "Large values returned as double"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -1517,6 +1525,8 @@ AcdOAttr acdAttrInt[] =
 	 "(Not used by ACD) Increment for GUIs"},
     {"warnrange", VT_BOOL, 0, "Y",
 	 "Warning if values are out of range"},
+    {"large", VT_BOOL, 0, "N",
+	 "Large values returned as long"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -2001,8 +2011,6 @@ AcdOAttr acdAttrSeqset[] =
 	 "Minimum number of sequences"},
     {"maxseqs", VT_INT, 0, "(INT_MAX)",
 	 "Maximum number of sequences"},
-    {"nulldefault", VT_BOOL, 0, "N",
-	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null filename as 'no file'"},
     {NULL, VT_NULL, 0, NULL,
@@ -5414,7 +5422,7 @@ static AjBool acdDefinedEmpty (const AcdPAcd thys)
     if(thys->DefStr)
     {
 	def = thys->DefStr[DEF_DEFAULT];
-	if(thys->Defined && !ajStrGetLen(def))
+	if(thys->Defined && !thys->UserSetNull && !ajStrGetLen(def))
 	    return ajTrue;
     }
 
@@ -5750,6 +5758,9 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @nam3rule  Is    Test value
 ** @nam4rule  IsUserdefined    Test value is defined by the user
 **
+** @suffix Double Return double precision
+** @suffix Long   Return long integer
+**
 ** @argrule   Get    token [const char*] Token name
 ** @argrule   Is    token [const char*] Token name
 ** @argrule   Num    token [const char*] Token name
@@ -5770,11 +5781,13 @@ static void acdBadVal(const AcdPAcd thys, AjBool required,
 ** @valrule   Features  [AjPFeattable]
 ** @valrule   Filelist  [AjPList]
 ** @valrule   Float  [float]
+** @valrule   *FloatDouble  [double]
 ** @valrule   Frequencies  [AjPPhyloFreq]
 ** @valrule   Graph  [AjPGraph]
 ** @valrule   Graphxy  [AjPGraph]
 ** @valrule   Infile  [AjPFile]
 ** @valrule   Int  [ajint]
+** @valrule   *IntLong  [ajlong]
 ** @valrule   List  [AjPStr*]
 ** @valrule   *ListSingle  [AjPStr]
 ** @valrule   Matrix  [AjPMatrix]
@@ -7932,7 +7945,30 @@ static void acdSetFilelist(AcdPAcd thys)
 
 float ajAcdGetFloat(const char *token)
 {
-    float *val;
+    double *val;
+
+    val = acdGetValue(token, "float");
+    return *val;
+}
+
+
+
+
+/* @func ajAcdGetFloatDouble****************************************************
+**
+** Returns an item of type Float as defined in a named ACD item. Called by the
+** application after all ACD values have been set, and simply returns
+** what the ACD item already has.
+**
+** @param [r] token [const char*] Text token name
+** @return [double] Floating point value from ACD item
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+double ajAcdGetFloatDouble(const char *token)
+{
+    double *val;
 
     val = acdGetValue(token, "float");
     return *val;
@@ -7963,22 +7999,24 @@ float ajAcdGetFloat(const char *token)
 
 static void acdSetFloat(AcdPAcd thys)
 {
-    float* val;
+    double* val;
+    float  fval;
     
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
 
     ajint itry;
     AjBool warnrange;
+    AjBool isdouble;
     
-    float fmin;
-    float fmax;
+    double fmin;
+    double fmax;
     ajint precision;
     
-    acdAttrToFloat(thys, "minimum", -FLT_MAX, &fmin);
+    acdAttrToDouble(thys, "minimum", -FLT_MAX, &fmin);
     acdLog("minimum: %e\n", fmin);
     
-    acdAttrToFloat(thys, "maximum", FLT_MAX, &fmax);
+    acdAttrToDouble(thys, "maximum", FLT_MAX, &fmax);
     acdLog("maximum: %e\n", fmax);
     
     acdAttrToInt(thys, "precision", 3, &precision);
@@ -7987,6 +8025,9 @@ static void acdSetFloat(AcdPAcd thys)
     acdAttrToBool(thys, "warnrange", acdDoWarnRange, &warnrange);
     acdLog("warnrange: %B\n", warnrange);
     
+    acdAttrToBool(thys, "large", AJFALSE, &isdouble);
+    acdLog("large: %B\n", isdouble);
+
     AJNEW0(val);		   /* create storage for the result */
     
     *val = 0.0;				/* set the default value */
@@ -8001,7 +8042,13 @@ static void acdSetFloat(AcdPAcd thys)
 	if(required)
 	    acdUserGet(thys, &acdReply);
 
-	ok = ajStrToFloat(acdReply, val);
+        if(isdouble)
+            ok = ajStrToDouble(acdReply, val);
+        else
+        {
+            ok = ajStrToFloat(acdReply, &fval);
+            *val = fval;
+        }
 	if(!ok)
 	    acdBadVal(thys, required,
 		      "Invalid decimal value '%S', please try again",
@@ -8010,6 +8057,11 @@ static void acdSetFloat(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
+    
+    if(isdouble && fmin == FLT_MIN)
+        fmin = DBL_MIN;
+    if(isdouble && fmax == FLT_MAX)
+        fmax = DBL_MAX;
     
     if(*val < fmin)
     {					/* reset within limits */
@@ -8632,6 +8684,8 @@ static void acdSetInfile(AcdPAcd thys)
 ** application after all ACD values have been set, and simply returns
 ** what the ACD item already has.
 **
+** The ACD item is expected to have the large attribute set to false.
+**
 ** @param [r] token [const char*] Text token name
 ** @return [ajint] Integer value from ACD item
 ** @cre failure to find an item with the right name and type aborts.
@@ -8640,7 +8694,32 @@ static void acdSetInfile(AcdPAcd thys)
 
 ajint ajAcdGetInt(const char *token)
 {
-    ajint *val;
+    ajlong *val;
+
+    val = acdGetValue(token, "integer");
+    return *val;
+}
+
+
+
+
+/* @func ajAcdGetIntLong *******************************************************
+**
+** Returns an item of type ajlong as defined in a named ACD item. Called by the
+** application after all ACD values have been set, and simply returns
+** what the ACD item already has.
+**
+** The ACD item is expected to have the large attribute set to true.
+**
+** @param [r] token [const char*] Text token name
+** @return [ajlong] Integer value from ACD item
+** @cre failure to find an item with the right name and type aborts.
+** @@
+******************************************************************************/
+
+ajlong ajAcdGetIntLong(const char *token)
+{
+    ajlong *val;
 
     val = acdGetValue(token, "integer");
     return *val;
@@ -8670,25 +8749,30 @@ ajint ajAcdGetInt(const char *token)
 
 static void acdSetInt(AcdPAcd thys)
 {
-    ajint* val;
+    ajlong* val;
+    ajint ival;
     
     AjBool required = ajFalse;
     AjBool ok       = ajFalse;
 
     ajint itry;
     AjBool warnrange;
+    AjBool islong;
     
-    ajint imin;
-    ajint imax;
+    ajlong imin;
+    ajlong imax;
     
-    acdAttrToInt(thys, "minimum", INT_MIN, &imin);
-    acdLog("minimum: %d\n", imin);
+    acdAttrToLong(thys, "minimum", INT_MIN, &imin);
+    acdLog("minimum: %Ld\n", imin);
     
-    acdAttrToInt(thys, "maximum", INT_MAX, &imax);
-    acdLog("maximum: %d\n", imax);
+    acdAttrToLong(thys, "maximum", INT_MAX, &imax);
+    acdLog("maximum: %Ld\n", imax);
     
     acdAttrToBool(thys, "warnrange", acdDoWarnRange, &warnrange);
     acdLog("warnrange: %B\n", warnrange);
+    
+    acdAttrToBool(thys, "large", AJFALSE, &islong);
+    acdLog("large: %B\n", islong);
     
     AJNEW0(val);		   /* create storage for the result */
     
@@ -8710,8 +8794,16 @@ static void acdSetInt(AcdPAcd thys)
 	acdLog(" reply: '%S' \n", acdReply);
 	if(ajStrMatchC(acdReply, "default"))
 	    ajStrAssignC(&acdReply, "0");
-	ok = ajStrToInt(acdReply, val);
-	acdLog(" modified reply: '%S' val: %d ok: %B\n", acdReply, *val, ok);
+
+        if(islong)
+            ok = ajStrToLong(acdReply, val);
+        else
+        {
+            ok = ajStrToInt(acdReply, &ival);
+            *val = ival;
+        }
+        
+	acdLog(" modified reply: '%S' val: %Ld ok: %B\n", acdReply, *val, ok);
 	if(!ok)
 	    acdBadVal(thys, required,
 		      "Invalid integer value '%S'", acdReply);
@@ -8719,11 +8811,16 @@ static void acdSetInt(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
+
+    if(islong && imin == INT_MIN)
+        imin = LONG_MIN;
+    if(islong && imax == INT_MAX)
+        imax = LONG_MAX;
     
     if(*val < imin)
     {					/* reset within limits */
 	if(warnrange)
-	    ajWarn("integer value out of range %d less than (reset to) %d",
+	    ajWarn("integer value out of range %Ld less than (reset to) %Ld",
 		   *val, imin);
 	*val = imin;
     }
@@ -8731,13 +8828,13 @@ static void acdSetInt(AcdPAcd thys)
     if(*val > imax)
     {
 	if(warnrange)
-	    ajWarn("integer value out of range %d more than (reset to) %d",
+	    ajWarn("integer value out of range %Ld more than (reset to) %Ld",
 		   *val, imax);
 	*val = imax;
     }
     
     thys->Value = val;
-    ajStrFromInt(&thys->ValStr, *val);
+    ajStrFromLong(&thys->ValStr, *val);
     
     return;
 }
@@ -16973,6 +17070,49 @@ static AjBool acdAttrToBool(const AcdPAcd thys,
 
 
 
+/* @funcstatic acdAttrToDouble ************************************************
+**
+** Resolves and tests an attribute string. If it has a float value, returns
+** true and sets the value. Otherwise returns false and the default value.
+**
+** @param [r] thys [const AcdPAcd] ACD item
+** @param [r] attr [const char*] Attribute name
+** @param [r] defval [double] Default value
+** @param [w] result [double*] Resulting value.
+** @return [AjBool] ajTrue if a value was defined, ajFalse if the
+**         default value was used.
+** @@
+******************************************************************************/
+
+static AjBool acdAttrToDouble(const AcdPAcd thys,
+                              const char *attr, double defval, double *result)
+{
+    acdAttrResolve(thys, attr, &acdAttrValTmp);
+
+    if(ajStrGetLen(acdAttrValTmp))
+    {
+	if(ajStrToDouble(acdAttrValTmp, result))
+	{
+	    ajStrDelStatic(&acdAttrValTmp);
+	    return ajTrue;
+	}
+	else
+	{
+	    acdErrorAcd(thys,
+			"Bad attribute double value %s = %S\n",
+			attr, acdAttrValTmp);
+	}
+    }
+
+    *result = defval;
+    ajStrDelStatic(&acdAttrValTmp);
+
+    return ajFalse;
+}
+
+
+
+
 /* @funcstatic acdAttrToFloat *************************************************
 **
 ** Resolves and tests an attribute string. If it has a float value, returns
@@ -17044,6 +17184,46 @@ static AjBool acdAttrToInt(const AcdPAcd thys,
 	}
 	else
 	    acdErrorAcd(thys, "Bad attribute integer value %s = %S\n",
+			attr, acdAttrValTmp);
+    }
+
+    *result = defval;
+    ajStrDelStatic(&acdAttrValTmp);
+
+    return ajFalse;
+}
+
+
+
+
+/* @funcstatic acdAttrToLong **************************************************
+**
+** Resolves and tests an attribute string. If it has an integer value, returns
+** true and sets the value. Otherwise returns false and the default value.
+**
+** @param [r] thys [const AcdPAcd] ACD item
+** @param [r] attr [const char*] Attribute name
+** @param [r] defval [ajlong] Default value
+** @param [w] result [ajlong*] Resulting value.
+** @return [AjBool] ajTrue if a value was defined, ajFalse if the
+**         default value was used.
+** @@
+******************************************************************************/
+
+static AjBool acdAttrToLong(const AcdPAcd thys,
+			   const char *attr, ajlong defval, ajlong *result)
+{
+    acdAttrResolve(thys, attr, &acdAttrValTmp);
+
+    if(ajStrGetLen(acdAttrValTmp))
+    {
+	if(ajStrToLong(acdAttrValTmp, result))
+	{
+	    ajStrDelStatic(&acdAttrValTmp);
+	    return ajTrue;
+	}
+	else
+	    acdErrorAcd(thys, "Bad attribute long integer value %s = %S\n",
 			attr, acdAttrValTmp);
     }
 
@@ -19641,6 +19821,7 @@ static ajint acdIsQual(const char* arg, const char* arg2,
 		acdLog("-no%S='' nullOK accepted\n", noqual);
 		gotvalue = ajTrue;
 		ret = 1;
+                (*acd)->UserSetNull = ajTrue;
 		ajStrAssignClear(pvalue);
 		ajStrDel(&noqual);
 		return ret;
