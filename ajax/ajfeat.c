@@ -5005,7 +5005,10 @@ static AjBool featReadGff3(AjPFeattable thys, AjPFilebuff file)
 	    ajStrToFloat(verstr, &version);
 	    ajStrDel(&verstr);
             if(version < 3.0)
-              return ajFalse;
+            {
+                ajStrDel(&line);
+                return ajFalse;
+            }
 	}
 	else if(ajRegExec(Gff3Regexregion,line))
 	{
@@ -7416,8 +7419,8 @@ static AjBool featVocabRead(const char* name,
     if(!featVocabReadTags(TagsFName, pTagsTable, ajTrue))
 	return ajFalse;
 
-    ajDebug("Trace tagstable '%S'", TagsFName);
-    ajTablestrTrace(pTagsTable);
+    /*ajDebug("Trace tagstable '%S'", TagsFName);*/
+    /*ajTablestrTrace(pTagsTable);*/
 
   /* Efeatures file
   ** format: featuretype
@@ -7433,8 +7436,8 @@ static AjBool featVocabRead(const char* name,
     if(!featVocabReadTypes(TypeFName, pTypeTable, pTagsTable, ajTrue))
 	return ajFalse;
 
-    ajDebug("Trace typetable '%S'", TypeFName);
-    ajTablestrTrace(pTypeTable);
+    /*ajDebug("Trace typetable '%S'", TypeFName);*/
+    /*ajTablestrTrace(pTypeTable);*/
 
     ajStrDel(&TagsFName);
     ajStrDel(&TypeFName);
@@ -7659,6 +7662,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     ajint ipos;
     AjBool ismodtype = ajFalse;
     AjPStr* Ptyptagstr = NULL;
+    AjBool taginternal = ajFalse;
 
     TypeFile = ajDatafileNewInNameS(fname);
     if(!TypeFile)
@@ -7714,8 +7718,8 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 		    {
 			/*ajDebug("Efeatures.%s %d saved '%S' as '%S'\n",
 			name, typecount, savetype, typtagstr);*/
-			ajDebug("+type %S='%S'\n",
-				savetype, typtagstr);
+			/*ajDebug("+type %S='%S'\n",
+                          savetype, typtagstr);*/
 /*
 			tablestr = ajTablePut(pTypeTable,
 					      savetype, typtagstr);
@@ -7725,8 +7729,16 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
                         if(tablestr)
                         {
                             if(recursion)
-                                ajErr("%S duplicate type %S='%S' already defined as'%S'",
+                                ajErr("%S duplicate type %S='%S' "
+                                      "already defined as '%S'",
                                       fname, savetype, typtagstr, tablestr);
+                            else
+                            {
+                                ajDebug("found savetype '%S' with value '%S'\n",
+                                       savetype, tablestr);
+                                ajStrDel(&typtagstr);
+                                ajStrDel(&savetype);
+                            }
                         }
                         else
                         {
@@ -7748,7 +7760,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			if(tablestr)
 			{
 			    ajDebug("%S duplicate alias type "
-				  "%S='%S' already defined as'%S'",
+				  "%S='%S' already defined as '%S'\n",
 				  fname, localname,
 				  sofaname, tablestr);
 			    ajStrDel(&tablestr);
@@ -7769,6 +7781,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			ajStrInsertS(Ptyptagstr, 0, type);
 			savetype  = type;
 			typtagstr = *Ptyptagstr;
+                        taginternal = ajTrue;
 		    }
 		    else
 		    {
@@ -7782,12 +7795,13 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			    ajStrAssignS(&typtagstr, type);
 			    /*ajDebug("Efeatures.%s %d saved '%S'\n",
 			    name, typecount, type);*/
-			    ajDebug("+type (default) %S='%S'\n",
-				    defname, typtagstr);
+			    /*ajDebug("+type (default) %S='%S'\n",
+				    defname, typtagstr);*/
 			    tablestr = ajTablePut(pTypeTable,
 						  defname, typtagstr);
 			    if(tablestr)
-				ajErr("%S duplicate type %S='%S' already defined as '%S'",
+				ajErr("%S duplicate type %S='%S' "
+                                      "already defined as '%S'",
 				      fname, defname, typtagstr, tablestr);
 			    typtagstr = NULL;
 			}
@@ -7796,8 +7810,9 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			** set up new feature type and type-tag strings
 			** ready to save the details
 			*/
-		    
+
 			typtagstr = ajStrNewResC(";", 256);
+                        taginternal = ajFalse;
 			if(ajStrGetLen(intids))
 			{
 			    sofaid = ajStrParseWhite(intids);
@@ -7805,10 +7820,10 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			    storetype = type;
 			    while(sofaid)
 			    {
-				ajDebug("+type %B storetype:'%S' "
+				/*ajDebug("+type %B storetype:'%S' "
 					"firstid:'%S'\n",
 					ajStrMatchCaseS(storetype, firstid),
-					storetype, firstid);
+					storetype, firstid);*/
 				if(!ajStrMatchCaseS(storetype, firstid))
 				{
 				    ajStrAssignS(&localname, storetype);
@@ -7816,8 +7831,8 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 				    /*ajDebug("Efeatures.%s sofaid "
 				    "'%S' = '%S'\n",
 				    name,localname, sofaname);*/
-				    ajDebug("+type (alias) %S='%S'\n",
-					    localname, sofaname);
+				    /*ajDebug("+type (alias) %S='%S'\n",
+                                      localname, sofaname);*/
 				    tablestr = ajTableFetch(pTypeTable,
                                                             localname);
 				    if(tablestr)
@@ -7901,15 +7916,16 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     
     if(filetypecount > 0)		/* save the last feature type */
     {
-	ajDebug("+type (final) %S='%S'\n",
-		savetype, typtagstr);
+	/*ajDebug("+type (final) %S='%S'\n",
+          savetype, typtagstr);*/
 	tablestr = ajTablePut(pTypeTable, savetype, typtagstr);
 	if(tablestr)
-	    ajErr("%S: duplicate type %S='%S' already defined as'%S'",
+	    ajErr("%S: duplicate type %S='%S' already defined as '%S'",
 		  fname, savetype, typtagstr, tablestr);
 	typtagstr = NULL;
 	savetype  = NULL;
     }
+    
     
     ajFileClose(&TypeFile);
    
