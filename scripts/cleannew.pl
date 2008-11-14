@@ -79,6 +79,8 @@ while (<>) {
     if ($file =~ /^test\/memtest\/valgrind\/([^\/]+)$/) {next}
     if ($file =~ /^test\/memtest\/valgrind.err/) {next}
     if ($file =~ /^test\/memtest\/valgrind.out/) {next}
+    if ($file =~ /^test\/memtest\/valgrindqa.err/) {next}
+    if ($file =~ /^test\/memtest\/valgrindqa.out/) {next}
     if ($file =~ /^test\/memtest\/valgrind.result/) {next}
     if ($file =~ /^test\/memtest\/valgrind.summary/) {next}
     if ($file =~ /^test\/memtest\/valgrind.txt/) {next}
@@ -86,6 +88,7 @@ while (<>) {
     if ($file =~ /^test\/qa\/qatest.doclog/) {next}
     if ($file =~ /^test\/qa\/qatest.out/) {next}
     if ($file =~ /^test\/qa\/qatest.summary/) {next}
+    if ($file =~ /^test\/qa\/qatestcmd.dat/) {next}
     if ($file =~ /^emboss\/([^\/]+)$/) {
 	if(defined($progs{$1})) {next}
     }
