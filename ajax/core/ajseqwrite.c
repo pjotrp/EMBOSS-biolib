@@ -210,7 +210,7 @@ static SeqOOutFormat seqOutFormat[] =
 {
 /*   Name,         Description */
 /*      Alias     Single,  Save,    Nucleotide, Protein */
-/*      Feature, Gap,     Multiset,WriteFunction */
+/*      Feature, Gap,     Multiset, WriteFunction */
     {"unknown",    "Unknown format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteFasta}, /* internal default
@@ -3743,7 +3743,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, "DE   %S\n", outseq->Desc);
     
     if(ajStrGetLen(outseq->Tax))
-	ajFmtPrintF(outseq->File, "OS   %S\n", outseq->Tax);
+	ajFmtPrintF(outseq->File, "OS   %S.\n", outseq->Tax);
     
     if(ajListGetLength(outseq->Taxlist) > 1)
     {
@@ -5893,14 +5893,16 @@ static void seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf)
 ** caution.
 **
 ** @nam3rule Get Return an element or property
-** @nam4rule Checkgcg GCG checksum
 ** @nam4rule Basecount Counts of nucleotide bases
+** @nam4rule Checkgcg GCG checksum
+** @nam4rule Filename Ouptut filename
 **
 ** @argrule Get seqout [const AjPSeqout] Sequence output object
 ** @argrule Basecount bases [ajuint*] Base counts
 **
 ** @valrule Checkgcg [ajint] GCG checksum
 ** @valrule Basecount [void]
+** @valrule Filename [const AjPStr] Output filename
 **
 ** @fcategory cast
 **
@@ -6015,6 +6017,20 @@ __deprecated ajint ajSeqoutCheckGcg(const AjPSeqout seqout)
     return ajSeqoutGetCheckgcg(seqout);
 }
 
+/* @func ajSeqoutGetFilename ***********************************************
+**
+** Returns the filename for a sequence output object
+**
+** @param [r] seqout [const AjPSeqout] Sequence output object
+** @return [const AjPStr] Filename
+**
+******************************************************************************/
+
+const AjPStr ajSeqoutGetFilename(const AjPSeqout seqout)
+{
+    if(!seqout) return NULL;
+    return ajFileGetNameS(seqout->File);
+}
 
 
 /* @funcstatic seqClone ****************************************************
