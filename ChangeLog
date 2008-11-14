@@ -1,15 +1,81 @@
 Version 6.1.0
+	HTTP access now adds a User-Agent string with the EMBOSS version
+	number so that servers can count the number of EMBOSS requests.
+
+	PDB model structures failed to generate a new name for each
+	model. Duplicate sequence names are not ideal. The model number
+	(from the MODEL record) is now appebded to each sequence name in
+	"pdb" and "pdbnuc" format. The "pdbseq" and "pdbnucseq" formats
+	read a single copy of each sequence from the SEQRES records.
+
+	Added two new PDB formats to read nucleotide data. These are named
+	"pdbnuc" and "pdbnucseq". They are not available by default, to
+	avoid the problem of reading both protein and nucleotide sequence
+	data from a structure file for an oligonucleotide binding protein.
+
+	Alignment outputs now include most of the multiple sequence
+	alignment formats that EMBOSS can write. The functions for these
+	are trivial to write. New functions can be added to use any
+	existing sequence output format for alignments.
+
+	PDB entries can be read in two ways, with two named
+	formats. Sequence format "pdb" reads the ATOM records. Sequence
+	format "pdbseq" reads the SEQRES records. By default, only "pdb"
+	format was used, and could crash on entries where the ATOM records
+	were missing. Both formats now fail silently if no sequences are
+	found. By default, "pdb" format is used first, and if that fails
+	"pdbseq" will be tried.
+
+	The EMBOSS logfile (defined by variable EMBOSS_LOGFILE) now
+	reports two extra values: the number of cpu seconds and the
+	number of elapsed time seconds.
+
+	Extra stop codons in getorf for ORFs ending close to the end of
+	the input sequence no longer appear.
+
+	For optional qualifiers (defined as "nullok" in the ACD file) the
+	command line option -no(qualname) was causing output files to
+	appear by resetting the value to an empty string, which in turn
+	was converted to the default filename. Now -no(qualname) turns off
+	any output file defined with nullok, and -(qualname) "" asks for
+	an output file that is off by default and uses the default
+	filename for it.
+
+	Report output has a new tail format that reports the total
+	sequences and total sequence length read by the applications. The
+	previous "Total_sequences" report was the number of sequences
+	included in the report. This is renamed to "Reported_sequences".
+	Where the number of hits was limited by the -rmaxseq or -rmaxall
+	options, the number of unreported hits also appears. If the
+	rmaxall limit was exceeded, the report tails ends with
+	"Maxhits_stop: Y". If the -rmaxseq limit is exceeded, the sequence
+	report includes (as before) "HitLimit: max/total"
+
+	Refseq protein and Genpept now use a modified genbank format to
+	avoid warnings for "aa" replacing "bp" on the LOCUS line and to
+	provide better control over any other differences between
+	nucleotide and protein entries. Genbank format automatically calls
+	refseqp format if a LOCUS line has "aa".
+
+	Swissprot output was missing a '.' at the end of the organism line.
+
+	vectorstrip failed if the user failed to provide a filename for
+	the -vectorsfile option and failed to specify -novectorfile to
+	turn off file reading. The ACD file is changed so a vectorsfile is
+	required if -vectorfile is true and a check is put into the code
+	to catch the problem if the ACD interface changes in future.
+
 	Allow user-defined -carboxyl parameter for iep.
 
 	jaspscan now allows multiple sequences to be scanned.
 
 Version 6.0.0
-	New application aligncopy reads a set of aigned sequences and
+	New application aligncopy reads a set of aligned sequences and
 	prints a report in one of the standard alignment formats that can
 	accept the same number of sequences. Pairwise alignment formats
 	can only be used if the input has exactly two sequences.
 
-	New application aligncopypair reads a set of aigned sequences and
+	New application aligncopypair reads a set of aligned sequences and
 	prints a report or each pair of aligned sequences in one of the
 	standard alignment formats.
 
