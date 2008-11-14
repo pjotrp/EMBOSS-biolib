@@ -228,6 +228,20 @@ NamOAttr namRsAttrs[] =
     {"deslen", "", "maximum DE length"},
     {"orglen", "", "maximum TX length"},
 
+    {"idpagesize",   "", "ID pagesize"},
+    {"accpagesize",  "", "AC pagesize"},
+    {"svpagesize",   "", "SV pagesize"},
+    {"keypagesize",  "", "KW pagesize"},
+    {"despagesize",  "", "DE pagesize"},
+    {"orgpagesize",  "", "TX pagesize"},
+
+    {"idcachesize",  "", "ID cachesize"},
+    {"acccachesize", "", "AC cachesize"},
+    {"svcachesize",  "", "SV cachesize"},
+    {"keycachesize", "", "KW cachesize"},
+    {"descachesize", "", "DE cachesize"},
+    {"orgcachesize", "", "TX cachesize"},
+
     {"value", "", "value appropriate to the resource type"},
     {NULL, NULL, NULL}
 };
@@ -819,11 +833,11 @@ static ajint namMethod2Scope(const AjPStr method)
 
     ajint result = 0;
 
-    if(!ajStrCmpC(method, "emblcd"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "embossgcg"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
+    if(!ajStrCmpC(method, "dbfetch"))
+	result = METHOD_ENTRY;
     else if(!ajStrCmpC(method, "emboss"))
+	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
+    else if(!ajStrCmpC(method, "emblcd"))
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "srs"))
 	result = (METHOD_ENTRY | METHOD_QUERY);
@@ -835,10 +849,12 @@ static ajint namMethod2Scope(const AjPStr method)
 	result = (METHOD_ENTRY | METHOD_QUERY);
     else if(!ajStrCmpC(method, "srswww"))
 	result = METHOD_ENTRY;
-    else if(!ajStrCmpC(method, "dbfetch"))
-	result = METHOD_ENTRY;
     else if(!ajStrCmpC(method, "mrs"))
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
+    else if(!ajStrCmpC(method, "entrez"))
+	result = (METHOD_ENTRY | METHOD_QUERY);
+    else if(!ajStrCmpC(method, "seqhound"))
+	result = (METHOD_ENTRY | METHOD_QUERY);
     else if(!ajStrCmpC(method, "url"))
 	result = METHOD_ENTRY;
     else if(!ajStrCmpC(method, "app"))
@@ -847,14 +863,12 @@ static ajint namMethod2Scope(const AjPStr method)
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "direct"))
 	result = (METHOD_ALL | SLOW_QUERY | SLOW_ENTRY );
-    else if(!ajStrCmpC(method, "blast"))
-	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     else if(!ajStrCmpC(method, "gcg"))
 	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
-    else if(!ajStrCmpC(method, "entrez"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
-    else if(!ajStrCmpC(method, "seqhound"))
-	result = (METHOD_ENTRY | METHOD_QUERY);
+    else if(!ajStrCmpC(method, "embossgcg"))
+	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
+    else if(!ajStrCmpC(method, "blast"))
+	result = (METHOD_ENTRY | METHOD_QUERY | METHOD_ALL);
     /* not in ajseqdb seqAccess list */
     /*
        else if(!ajStrCmpC(method, "corba"))
@@ -1966,6 +1980,17 @@ void ajNamInit(const char* prefix)
 #endif
 
 
+    /*
+    ** static namPrefixStr is the prefix for all variable names
+    */
+    
+    ajStrAssignC(&namPrefixStr, prefix);
+    
+    ajStrAppendC(&namPrefixStr, "_");
+    
+    ajClockReset();
+    ajTimeReset();
+
     /* create new tables to hold the values */
 
     namVarMasterTable = ajTablecharNewCase();
@@ -1974,14 +1999,9 @@ void ajNamInit(const char* prefix)
     
     /*
     ** for each type of file read it and save the values 
-    ** Start at system level then go to user 
-    ** static namPrefixStr is the prefix for all variable names
+    ** Start at system level then go to user
     */
-    
-    ajStrAssignC(&namPrefixStr, prefix);
-    
-    ajStrAppendC(&namPrefixStr, "_");
-    
+
     /*
     ** local prefixRoot is the root directory 
     ** it is the value of (PREFIX)_ROOT (if set) or namFixedRoot
