@@ -1371,12 +1371,12 @@ void ajGraphOpenWin(AjPGraph thys, float xmin, float xmax,
 	graphType[thys->plplot->displaytype].GOpen(thys,
 			     graphType[thys->plplot->displaytype].Ext);
 
-	if( ajStrGetLen(thys->plplot->title) <=1)
+	if(!ajStrGetLen(thys->plplot->title))
 	{
 	    ajFmtPrintAppS(&thys->plplot->title,"%S",
 			   ajAcdGetProgram());
 	}
-	if( ajStrGetLen(thys->plplot->subtitle) <=1)
+	if(!ajStrGetLen(thys->plplot->subtitle))
 	{
 	    ajtime = ajTimeNewTodayFmt("report");
 	    ajFmtPrintAppS(&thys->plplot->subtitle,"%D",
