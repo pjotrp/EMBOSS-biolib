@@ -1149,6 +1149,9 @@ AjBool ajCharPrefixS(const char* txt, const AjPStr str)
     if(!txt)
 	return ajFalse;
 
+    if(!str)
+	return ajFalse;
+
     if(str->Len > strlen(txt))	/* pref longer */
 	return ajFalse;
 
@@ -1183,6 +1186,11 @@ AjBool ajCharPrefixCaseC(const char* txt, const char* txt2)
 {
     const char* cp;
     const char* cq;
+
+    if(!txt)
+	return ajFalse;
+    if(!txt2)
+	return ajFalse;
 
     cp = txt;
     cq = txt2;
@@ -1227,6 +1235,9 @@ __deprecated AjBool  ajStrPrefixCaseCC(const char* thys, const char* pref)
 
 AjBool ajCharPrefixCaseS(const char* txt, const AjPStr str)
 {
+    if(!str)
+	return ajFalse;
+
     return ajCharPrefixCaseC(txt, str->Ptr);
 }
 
@@ -1258,6 +1269,11 @@ AjBool ajCharSuffixC(const char* txt, const char* txt2)
     ajuint ilen;
     ajuint jlen;
     ajuint jstart;
+
+    if(!txt)
+	return ajFalse;
+    if(!txt2)
+	return ajFalse;
 
     ilen   = strlen(txt2);
     jlen   = strlen(txt);
@@ -1296,6 +1312,11 @@ AjBool ajCharSuffixS(const char* txt, const AjPStr str)
 {
     ajuint jlen;
     ajuint jstart;
+
+    if(!txt)
+	return ajFalse;
+    if(!str)
+	return ajFalse;
 
     jlen   = strlen(txt);
     jstart = jlen - str->Len;
@@ -1340,6 +1361,11 @@ AjBool ajCharSuffixCaseC(const char* txt, const char* txt2)
     const char* cp;
     const char* cq;
 
+    if(!txt)
+	return ajFalse;
+    if(!txt2)
+	return ajFalse;
+
     ilen   = strlen(txt2);
     jlen   = strlen(txt);
     jstart = jlen - ilen;
@@ -1375,6 +1401,12 @@ AjBool ajCharSuffixCaseS(const char* txt, const AjPStr str)
     ajuint jstart;
     const char* cp;
     const char* cq;
+
+    if(!txt)
+	return ajFalse;
+    if(!str)
+	return ajFalse;
+
     jlen   = strlen(txt);
     jstart = jlen - str->Len;
 
