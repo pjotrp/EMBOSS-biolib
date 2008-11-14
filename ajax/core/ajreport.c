@@ -242,6 +242,7 @@ static void reportWriteTrace(AjPReport thys, const AjPFeattable ftable,
     ajFmtPrintF(thys->File, "Mintags: %d\n", thys->Mintags);
     ajFmtPrintF(thys->File, "CountSeq: %d\n", thys->CountSeq);
     ajFmtPrintF(thys->File, "CountHit: %d\n", thys->CountHit);
+    ajFmtPrintF(thys->File, "TotHits: %d\n", thys->TotHits);
     ajFmtPrintF(thys->File, "MaxHitAll: %d\n", thys->MaxHitAll);
     ajFmtPrintF(thys->File, "MaxHitSeq: %d\n", thys->MaxHitSeq);
     ajFmtPrintF(thys->File, "Format: %d\n", thys->Format);
@@ -2669,6 +2670,7 @@ AjPReport ajReportNew(void)
 
     pthis->CountSeq  = 0;
     pthis->CountHit  = 0;
+    pthis->TotHits   = 0;
     pthis->Name      = ajStrNew();
     pthis->Formatstr = ajStrNew();
     pthis->Format    = 0;
@@ -2693,7 +2695,7 @@ AjPReport ajReportNew(void)
 ** @param [r] ftable [const AjPFeattable] Feature table object
 ** @param [r] seq [const AjPSeq] Sequence object
 ** @return [AjBool] True if data was written
-**                  False is maximum output has already been reached.
+**                  False if maximum output has already been reached.
 ** @category output [AjPReport] Master sequence output routine
 ** @@
 ******************************************************************************/
@@ -2748,6 +2750,7 @@ AjBool ajReportWrite(AjPReport thys,
 	maxreport = thys->MaxHitAll - thys->CountHit;
 	if(maxreport <= 0)
 	{
+            thys->MaxLimit = ajTrue;
 	    return ajFalse;
 	}
     }
@@ -2780,11 +2783,13 @@ AjBool ajReportWrite(AjPReport thys,
 	reportFormat[thys->Format].Write(thys, ftcopy, seq);
 	ajFeattableDel(&ftcopy);
 	thys->CountHit += maxreport;
+	thys->TotHits += ajFeattableSize(ftable);
     }
     else
     {
 	reportFormat[thys->Format].Write(thys, ftable, seq);
 	thys->CountHit += ajFeattableSize(ftable);
+	thys->TotHits += ajFeattableSize(ftable);
     }
 
     ++thys->CountSeq;
@@ -3086,10 +3091,19 @@ void ajReportWriteTail(AjPReport thys,
 
     if(!ftable)
     {
-	ajFmtPrintF(outf, "# Total_sequences: %d\n", thys->CountSeq);
-	ajFmtPrintF(outf, "# Total_hitcount: %d\n", thys->CountHit);
+	if(thys->Totseqs)
+            ajFmtPrintF(outf, "# Total_sequences: %Ld\n", thys->Totseqs);
+	if(thys->Totlength)
+            ajFmtPrintF(outf, "# Total_length: %Ld\n", thys->Totlength);
+	ajFmtPrintF(outf, "# Reported_sequences: %d\n", thys->CountSeq);
+	ajFmtPrintF(outf, "# Reported_hitcount: %d\n", thys->CountHit);
+        if(thys->CountHit < thys->TotHits)
+            ajFmtPrintF(outf, "# Unreported_hitcount: %d\n",
+                        thys->TotHits - thys->CountHit);
 	if(thys->MaxHitAll)
-	ajFmtPrintF(outf, "# Max_hitcount: %d\n", thys->MaxHitAll);
+            ajFmtPrintF(outf, "# Max_hitcount: %d\n", thys->MaxHitAll);
+	if(thys->MaxLimit)
+            ajFmtPrintF(outf, "# Maxhits_stop: %B\n", thys->MaxLimit);
     }
 
     if(!doSingle || thys->Multi)
@@ -3117,6 +3131,8 @@ void ajReportWriteTail(AjPReport thys,
 
 void ajReportSetHeader(AjPReport thys, const AjPStr header)
 {
+    if(!thys) return;
+
     ajStrAssignS(&thys->Header, header);
 
     return;
@@ -3137,6 +3153,8 @@ void ajReportSetHeader(AjPReport thys, const AjPStr header)
 
 void ajReportSetHeaderC(AjPReport thys, const char* header)
 {
+    if(!thys) return;
+
     ajStrAssignC(&thys->Header, header);
 
     return;
@@ -3157,6 +3175,8 @@ void ajReportSetHeaderC(AjPReport thys, const char* header)
 
 void ajReportAppendHeader(AjPReport thys, const AjPStr header)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->Header))
     {
 	if(ajStrGetCharLast(thys->Header) != '\n')
@@ -3182,6 +3202,8 @@ void ajReportAppendHeader(AjPReport thys, const AjPStr header)
 
 void ajReportAppendHeaderC(AjPReport thys, const char* header)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->Header))
     {
 	if(ajStrGetCharLast(thys->Header) != '\n')
@@ -3207,6 +3229,8 @@ void ajReportAppendHeaderC(AjPReport thys, const char* header)
 
 void ajReportSetSubHeader(AjPReport thys, const AjPStr header)
 {
+    if(!thys) return;
+
     ajStrAssignS(&thys->SubHeader, header);
 
     return;
@@ -3227,6 +3251,8 @@ void ajReportSetSubHeader(AjPReport thys, const AjPStr header)
 
 void ajReportSetSubHeaderC(AjPReport thys, const char* header)
 {
+    if(!thys) return;
+
     ajStrAssignC(&thys->SubHeader, header);
 
     return;
@@ -3246,6 +3272,8 @@ void ajReportSetSubHeaderC(AjPReport thys, const char* header)
 
 void ajReportAppendSubHeader(AjPReport thys, const AjPStr header)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->SubHeader))
     {
 	if(ajStrGetCharLast(thys->SubHeader) != '\n')
@@ -3271,6 +3299,8 @@ void ajReportAppendSubHeader(AjPReport thys, const AjPStr header)
 
 void ajReportAppendSubHeaderC(AjPReport thys, const char* header)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->SubHeader))
     {
 	if(ajStrGetCharLast(thys->SubHeader) != '\n')
@@ -3281,6 +3311,76 @@ void ajReportAppendSubHeaderC(AjPReport thys, const char* header)
     return;
 }
 
+
+
+
+
+/* @func ajReportSetSeqstats ***************************************************
+**
+** Defines a feature report tail
+**
+** @param [u] thys [AjPReport] Report object
+** @param [r] seqall [const AjPSeqall] Sequence stream object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetSeqstats(AjPReport thys, const AjPSeqall seqall)
+{
+    if(!thys) return;
+
+    thys->Totseqs = ajSeqallGetCount(seqall);
+    thys->Totlength = ajSeqallGetTotlength(seqall);
+
+    return;
+}
+
+
+
+
+/* @func ajReportSetSeqsetstats ************************************************
+**
+** Defines a feature report tail
+**
+** @param [u] thys [AjPReport] Report object
+** @param [r] seqset [const AjPSeqset] Sequence set object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetSeqsetstats(AjPReport thys, const AjPSeqset seqset)
+{
+    if(!thys) return;
+
+    thys->Totseqs = ajSeqsetGetSize(seqset);
+    thys->Totlength = ajSeqsetGetTotlength(seqset);
+
+    return;
+}
+
+
+
+
+/* @func ajReportSetStatistics ************************************************
+**
+** Defines a feature report tail
+**
+** @param [u] thys [AjPReport] Report object
+** @param [r] totseqs [ajlong] Total number of sequences processed
+** @param [r] totlength [ajlong] Total sequence length processed
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajReportSetStatistics(AjPReport thys, ajlong totseqs, ajlong totlength)
+{
+    if(!thys) return;
+
+    thys->Totseqs = totseqs;
+    thys->Totlength = totlength;
+
+    return;
+}
 
 
 
@@ -3297,6 +3397,8 @@ void ajReportAppendSubHeaderC(AjPReport thys, const char* header)
 
 void ajReportSetTail(AjPReport thys, const AjPStr tail)
 {
+    if(!thys) return;
+
     ajStrAssignS(&thys->Tail, tail);
 
     return;
@@ -3317,6 +3419,8 @@ void ajReportSetTail(AjPReport thys, const AjPStr tail)
 
 void ajReportSetTailC(AjPReport thys, const char* tail)
 {
+    if(!thys) return;
+
     ajStrAssignC(&thys->Tail, tail);
 
     return;
@@ -3337,6 +3441,8 @@ void ajReportSetTailC(AjPReport thys, const char* tail)
 
 void ajReportAppendTail(AjPReport thys, const AjPStr tail)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->Tail))
     {
 	if(ajStrGetCharLast(thys->Tail) != '\n')
@@ -3362,6 +3468,8 @@ void ajReportAppendTail(AjPReport thys, const AjPStr tail)
 
 void ajReportAppendTailC(AjPReport thys, const char* tail)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->Tail))
     {
 	if(ajStrGetCharLast(thys->Tail) != '\n')
@@ -3387,6 +3495,8 @@ void ajReportAppendTailC(AjPReport thys, const char* tail)
 
 void ajReportSetSubTail(AjPReport thys, const AjPStr tail)
 {
+    if(!thys) return;
+
     ajStrAssignS(&thys->SubTail, tail);
 
     return;
@@ -3407,6 +3517,8 @@ void ajReportSetSubTail(AjPReport thys, const AjPStr tail)
 
 void ajReportSetSubTailC(AjPReport thys, const char* tail)
 {
+    if(!thys) return;
+
     ajStrAssignC(&thys->SubTail, tail);
 
     return;
@@ -3427,6 +3539,8 @@ void ajReportSetSubTailC(AjPReport thys, const char* tail)
 
 void ajReportAppendSubTail(AjPReport thys, const AjPStr tail)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->SubTail))
     {
 	if(ajStrGetCharLast(thys->SubTail) != '\n')
@@ -3452,6 +3566,8 @@ void ajReportAppendSubTail(AjPReport thys, const AjPStr tail)
 
 void ajReportAppendSubTailC(AjPReport thys, const char* tail)
 {
+    if(!thys) return;
+
     if(ajStrGetLen(thys->SubTail))
     {
 	if(ajStrGetCharLast(thys->SubTail) != '\n')
