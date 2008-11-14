@@ -712,7 +712,14 @@ AjPFile ajFileNewFromCfile(FILE* file)
     AJNEW0(thys);
     thys->fp     = file;
     thys->Handle = ++fileHandle;
-    thys->Name   = ajStrNew();
+    if(file == stdout)
+        thys->Name = ajStrNewC("stdout");
+    else if(file == stderr)
+        thys->Name = ajStrNewC("stderr");
+    else if(file == stdin)
+        thys->Name = ajStrNewC("stdin");
+    else
+        thys->Name   = ajStrNew();
     thys->End    = ajFalse;
 
     fileOpenCnt++;
@@ -1609,7 +1616,7 @@ AjPFile ajFileNewOutNamePathS(const AjPStr name, const AjPStr path)
 {
     AjPFile thys;
 
-    ajDebug("ajFileNewOutPath('%S' '%S')\n", path, name);
+    ajDebug("ajFileNewOutNamePathS('%S' '%S')\n", path, name);
 
     if(ajStrMatchC(name, "stdout"))
 	return ajFileNewFromCfile(stdout);
@@ -1622,7 +1629,7 @@ AjPFile ajFileNewOutNamePathS(const AjPStr name, const AjPStr path)
     if(!ajStrGetLen(path))
     {
 	thys->fp = fopen(ajStrGetPtr(name), "wb");
-	ajDebug("ajFileNewOutPathS open name '%S'\n", name);
+	ajDebug("ajFileNewOutNamePathS open name '%S'\n", name);
     }
     else
     {
@@ -1636,7 +1643,7 @@ AjPFile ajFileNewOutNamePathS(const AjPStr name, const AjPStr path)
 	    ajStrAppendS(&fileDirfixTmp, name);
 	}
 	thys->fp = fopen(ajStrGetPtr(fileDirfixTmp), "wb");
-	ajDebug("ajFileNewOutPathS open dirfix '%S'\n", fileDirfixTmp);
+	ajDebug("ajFileNewOutNamePathS open dirfix '%S'\n", fileDirfixTmp);
     }
 
     if(!thys->fp)
@@ -2152,6 +2159,7 @@ __deprecated void ajFileUnbuffer(AjPFile thys)
 
 FILE* ajFileGetFileptr(const AjPFile file)
 {
+    if(!file) return NULL;
     return file->fp;
 }
 
@@ -2178,6 +2186,7 @@ __deprecated FILE* ajFileFp(const AjPFile thys)
 
 const char* ajFileGetNameC(const AjPFile file)
 {
+    if(!file) return "";
     return ajStrGetPtr(file->Name);
 }
 
@@ -2207,6 +2216,7 @@ __deprecated const char* ajFileName(const AjPFile file)
 
 const AjPStr ajFileGetNameS(const AjPFile file)
 {
+    if(!file) return NULL;
     return file->Name;
 }
 
@@ -2244,6 +2254,7 @@ __deprecated const AjPStr ajFileGetName(const AjPFile file)
 
 AjBool ajFileIsAppend(const AjPFile file)
 {
+    if(!file) return ajFalse;
     return file->App;
 }
 
@@ -2268,6 +2279,7 @@ __deprecated AjBool ajFileGetApp(const AjPFile thys)
 
 AjBool ajFileIsEof(const AjPFile file)
 {
+    if(!file) return ajTrue;
     return file->End;
 }
 
@@ -2292,6 +2304,8 @@ __deprecated AjBool ajFileEof(const AjPFile thys)
 
 AjBool ajFileIsStderr(const AjPFile file)
 {
+    if(!file) return ajFalse;
+
     if(file->fp == stderr)
 	return ajTrue;
 
@@ -2320,6 +2334,8 @@ __deprecated AjBool ajFileStderr(const AjPFile file)
 
 AjBool ajFileIsStdin(const AjPFile file)
 {
+    if(!file) return ajFalse;
+
     if(file->fp == stdin)
 	return ajTrue;
 
@@ -2348,6 +2364,8 @@ __deprecated AjBool ajFileStdin(const AjPFile file)
 
 AjBool ajFileIsStdout(const AjPFile file)
 {
+    if(!file) return ajFalse;
+
     if(file->fp == stdout)
 	return ajTrue;
 
