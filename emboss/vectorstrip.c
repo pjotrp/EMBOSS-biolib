@@ -174,8 +174,12 @@ int main(int argc, char **argv)
     vectorlist = ajListNew();
 
     /* data from command line or file? */
-    if(vec == AJTRUE)
+    if(vec)
+    {
+        if (!vectorfile)
+            ajFatal("vectors file not found");
 	vectorstrip_read_vector_data(vectorfile, vectorlist);
+    }
     else
     {
 	Vector v = NULL;
