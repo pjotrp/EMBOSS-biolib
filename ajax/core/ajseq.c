@@ -2538,7 +2538,9 @@ void ajSeqTrim(AjPSeq seq)
 **
 ** @suffix S Return a string
 ** @suffix C Return a character string
+** @suffix Trimmed After trimming begin and end positions
 ** @suffix True True position in original sequence
+** @suffix Ungapped Ignoring all gap characters
 ** @suffix Copy Editable copy
 **
 ** @argrule * seq [const AjPSeq] Sequence
@@ -3018,6 +3020,23 @@ __deprecated ajint  ajSeqLen(const AjPSeq seq)
 
 
 
+
+/* @func ajSeqGetLenTrimmed ****************************************************
+**
+** Returns the sequence length after trimming begin and end positions
+**
+** @param [r] seq [const AjPSeq] Sequence object
+** @return [ajuint] Sequence length.
+** @@
+******************************************************************************/
+
+ajuint ajSeqGetLenTrimmed(const AjPSeq seq)
+{
+    return ajSeqGetEnd(seq) - ajSeqGetBegin(seq) + 1 ;
+}
+
+
+
 /* @func ajSeqGetLenTrue ******************************************************
 **
 ** Returns the length of the original sequence, including any gap characters.
@@ -3039,6 +3058,38 @@ ajuint ajSeqGetLenTrue(const AjPSeq seq)
 __deprecated ajint  ajSeqTrueLen(const AjPSeq seq)
 {
     return ajSeqGetLenTrue(seq);
+}
+
+
+
+/* @func ajSeqGetLenUngapped ***************************************************
+**
+** Returns the sequence length excluding all gap characters.
+**
+** @param [r] seq [const AjPSeq] Sequence object
+** @return [ajuint] Sequence length.
+** @@
+******************************************************************************/
+
+ajuint ajSeqGetLenUngapped(const AjPSeq seq)
+{
+    ajint ret = 0;
+    const char *gapchars = "-.~";
+    const char* cp;
+    size_t i;
+
+    cp = ajStrGetPtr(seq->Seq);
+    i = strspn(cp, gapchars);
+    cp += i;
+    while (*cp)
+    {
+        i = strcspn(cp, gapchars);
+        ret += i;
+        cp += i;
+        cp += strspn(cp, gapchars);
+    }
+    
+    return ret;
 }
 
 
@@ -4350,6 +4401,8 @@ AjPSeqall ajSeqallNew(void)
     pthis->Seq   = ajSeqNew();
     pthis->Seqin = ajSeqinNew();
     pthis->Count = 0;
+    pthis->Totseqs = 0;
+    pthis->Totlength = 0;
 
     return pthis;
 }
@@ -4410,7 +4463,8 @@ void ajSeqallDel(AjPSeqall *Pseq)
 ** @fdata [AjPSeqall]
 ** @fcategory modify
 **
-** @nam3rule Clear     Clear all contents
+** @nam3rule Clear       Clear all sequence reading internals except statistics
+** @nam4rule ClearStats  Clear all contents and reset statistics
 **
 ** @nam3rule Set      Set properties within sequence stream
 ** @nam4rule SetRange Set start and end position within sequence stream
@@ -4429,7 +4483,8 @@ void ajSeqallDel(AjPSeqall *Pseq)
 
 /* @func ajSeqallClear ********************************************************
 **
-** Resets all data for a sequence stream object so that it can be reused.
+** Resets all data internals for a sequence stream object when
+** input has been read, but leaves statistics for reporting.
 **
 ** @param [u] seq [AjPSeqall] Sequence stream
 ** @return [void]
@@ -4445,6 +4500,30 @@ void ajSeqallClear(AjPSeqall seq)
     seq->End   = 0;
     seq->Rev   = ajFalse;
     seq->Returned = ajFalse;
+ 
+    return;
+}
+
+
+
+
+
+/* @func ajSeqallClearStats ****************************************************
+**
+** Resets all data for a sequence stream object so that it can be reused,
+** including statistics.
+**
+** @param [u] seq [AjPSeqall] Sequence stream
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqallClearStats(AjPSeqall seq)
+{
+    ajSeqallClear(seq);
+
+    seq->Totlength = 0;
+    seq->Totseqs = 0;
  
     return;
 }
@@ -4583,8 +4662,10 @@ __deprecated void  ajSeqallToUpper(AjPSeqall seqall)
 ** @fcategory cast
 **
 ** @nam3rule Get Return properties of sequence stream
+** @nam4rule GetCount Return number of sequences read
 ** @nam4rule GetFilename Return filename used for stream
 ** @nam4rule GetName Return name of sequence stream
+** @nam4rule GetTotlength Return total length of sequences read
 ** @nam4rule GetUsa Return USA of sequence stream
 **
 ** @nam3rule Getseq Return properties of current sequence from stream
@@ -4599,14 +4680,39 @@ __deprecated void  ajSeqallToUpper(AjPSeqall seqall)
 ** @argrule Range end [ajint*] Returns end position of range
 **
 ** @valrule Begin [ajint] Begin position
+** @valrule Count [ajlong] Count of sequences read
 ** @valrule End [ajint] End position
 ** @valrule Filename [const AjPStr] Filename
 ** @valrule Name [const AjPStr] Sequence name
 ** @valrule Len [ajint] Sequence length
 ** @valrule Range [ajint] Sequence length
+** @valrule Totlength [ajlong] Total length of sequences read
 ** @valrule Usa [const AjPStr] Sequence USA
 **
 ******************************************************************************/
+
+
+
+
+/* @func ajSeqallGetCount **************************************************
+**
+** Returns the number of sequences read by a seqall object
+**
+** @param [r] seq [const AjPSeqall] Seqall object pointer.
+** @return [ajlong] Number of sequences read.
+** @@
+******************************************************************************/
+
+ajlong ajSeqallGetCount(const AjPSeqall seq)
+{
+    if(!seq)
+	return 0;
+    if(!seq->Seqin)
+	return 0;
+
+    return seq->Totseqs;
+}
+
 
 
 
@@ -4665,6 +4771,27 @@ const AjPStr ajSeqallGetName(const AjPSeqall seq)
 
     return seq->Seqin->Name;
 }
+
+
+
+
+/* @func ajSeqallGetTotlength **************************************************
+**
+** Returns the total length of sequences read by a seqall object
+**
+** @param [r] seq [const AjPSeqall] Seqall object pointer.
+** @return [ajlong] Total length of sequences read.
+** @@
+******************************************************************************/
+
+ajlong ajSeqallGetTotlength(const AjPSeqall seq)
+{
+    if(!seq)
+	return 0;
+
+    return seq->Totlength;
+}
+
 
 
 
@@ -5044,6 +5171,7 @@ void ajSeqsetDelarray(AjPSeqset **PPseq)
 ** @nam4rule GetOffend   Return end offset
 ** @nam4rule GetOffset   Return start offset
 ** @nam4rule GetRange    Return start and end
+** @nam4rule GetTotlength Return total sequence length
 ** @nam4rule GetUsa      Return input USA
 **
 ** @argrule * seq [const AjPSeqset] Sequence object
@@ -5056,6 +5184,7 @@ void ajSeqsetDelarray(AjPSeqset **PPseq)
 ** @valrule GetOffset [ajint] Start offset
 ** @valrule GetRange [ajint] Sequence length
 ** @valrule GetUsa [const AjPStr] Input sequence USA
+** @valrule GetTotlength [ajint] Total ungapped sequence length
 **
 ******************************************************************************/
 
@@ -5184,6 +5313,34 @@ ajint ajSeqsetGetRange(const AjPSeqset seq, ajint* begin, ajint* end)
 
 
 
+/* @func ajSeqsetGetTotlength **************************************************
+**
+** Returns the total number of bases or residues in a sequence set,
+** ignoring any gap characters in aligned sequences.
+**
+** @param [r] seq [const AjPSeqset] Sequence set object.
+** @return [ajint] Total ungapped length
+** @@
+******************************************************************************/
+
+ajint ajSeqsetGetTotlength(const AjPSeqset seq)
+{
+    ajuint n;
+    ajuint i;
+    ajint ret = 0;
+
+    n = seq->Size;
+    for(i=0; i < n; i++)
+        ret += ajSeqGetLenUngapped(seq->Seq[i]);
+    
+    return ret;
+}
+
+
+
+
+
+
 /* @func ajSeqsetGetUsa *******************************************************
 **
 ** Returns the sequence name of a sequence set.
@@ -5222,6 +5379,8 @@ const AjPStr ajSeqsetGetUsa(const AjPSeqset seq)
 ** @nam3rule Fmt Reformats sequence
 ** @nam4rule FmtLower reformats sequence to lower case
 ** @nam4rule FmtUpper reformats sequence to upper case
+** @nam3rule Sort Reorders sequences
+** @nam4rule SortLen Reorders sequences by length
 **
 ** @nam3rule Reverse Reverse complements all sequences
 ** @nam3rule Trim    Trim sequences to defined range
@@ -5372,6 +5531,53 @@ void ajSeqsetReverse(AjPSeqset seq)
     return;
 }
 
+
+/* @func ajSeqsetSortLen ******************************************************
+**
+** Sorts a sequence set by sequence length
+**
+** @param [u] seq [AjPSeqset] Sequence set object
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajSeqsetSortLen(AjPSeqset seq)
+{
+    ajuint i;
+    ajuint j;
+    ajuint k;
+    ajuint * lengths;
+    ajuint * seqnum;
+    AjPSeq tmp;
+
+    AJCNEW0(lengths,seq->Size);
+    AJCNEW0(seqnum,seq->Size);
+    for(i=0;i<seq->Size;i++)
+    {
+        lengths[i] = ajSeqGetLenUngapped(seq->Seq[i]);
+        seqnum[i] = i;
+    }
+
+    ajSortUintIncI(lengths,seqnum,seq->Size);
+
+    j = 0;
+    for(i=0;i<seq->Size;i++)
+    {
+        tmp = seq->Seq[i];
+        for(k=i; seqnum[k] != i; k=seqnum[j], seqnum[j]=j)
+        {
+            j = k;
+            seq->Seq[k] = seq->Seq[seqnum[k]];
+        }
+        seq->Seq[k] = tmp;
+        seqnum[k] = k;
+    }
+    
+    AJFREE(lengths);
+    AJFREE(seqnum);
+
+    return;
+}
 
 
 /* @func ajSeqsetTrim ******************************************************
