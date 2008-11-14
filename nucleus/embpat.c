@@ -4175,8 +4175,8 @@ void embPatFuzzSearch(ajuint type, ajuint begin, const AjPStr pattern,
 	{
 	    start = embPatMatchGetStart(ppm,i);
 	    end   = embPatMatchGetEnd(ppm,i);
-	    ajDebug("embPatFuzzSearch embPatMatchFind left:%B start:%d\n",
-		    left, start);
+	    ajDebug("embPatFuzzSearch embPatMatchFind left:%B start:%d count:%d\n",
+		    left, start, count);
 	    if(left && start)
 	    {
 		--count;
@@ -4367,8 +4367,8 @@ void embPatFuzzSearchII (AjPPatComp thys, ajuint begin, const AjPStr name,
 	{
 	    start = embPatMatchGetStart(ppm,i);
 	    end   = embPatMatchGetEnd(ppm,i);
-	    ajDebug("embPatFuzzSearch embPatMatchFind left:%B start:%d\n",
-		    thys->amino, start);
+	    ajDebug("embPatFuzzSearchII embPatMatchFind left:%B start:%d count:%d\n",
+		    thys->amino, start, count);
 	    if(thys->amino && start)
 	    {
 		--count;
