@@ -57,6 +57,15 @@ static const char *BaseAaTable[]=
 };
 
 
+static const char *BaseNucTable[]=
+{
+    "DA","DB","DC","DD","--","--","DG","DH",
+    "--","--","DK","--","DM","DN","--","--",
+    "--","DR","DS","DT","DU","DV","DW","DX",
+    "DY","--" 
+};
+
+
 static AjBool aj_base_I = AJFALSE;
 static AjBool aj_residue_I = AJFALSE;
 
@@ -663,6 +672,63 @@ static AjBool baseInit(void)
 }
 
 
+/* @section Doublet names
+**
+** Functions exchanging residue codes with PDB two letter codes
+**
+** @fdata      [none]
+**
+** @nam3rule From Convert some other form to a residue
+** @nam3rule To   Convert residue to another form
+** @nam4rule Doublet Convert a doublet 2-letter base name
+**
+** @argrule FromDoublet nuc2 [const AjPStr] Doublet base name
+** @argrule From Pc [char*] Doublet base name
+** @argrule To c [char] Base character code
+** @argrule ToDoublet Pnuc2 [AjPStr*] Doublet base name
+**
+** @valrule * [AjBool] True if code was recognized.
+**
+** @fcategory cast
+*/
+
+
+/* @func ajBaseFromDoublet ************************************************
+**
+** Takes a 2 character PDB base code and writes a char with the 
+** corresponding single letter code.
+**
+** @param [r] nuc2 [const AjPStr]   AjPStr object (2 letter code)
+** @param [w] Pc [char *] Resulting residue code
+**
+** @return [AjBool] True on success, false if doublet is not recognized
+** @@
+******************************************************************************/
+
+AjBool ajBaseFromDoublet(const AjPStr nuc2, char* Pc)
+{
+    ajint i;
+    
+    for(i=0; i<26; i++)
+	if(!ajStrCmpC(nuc2, BaseNucTable[i]))
+	{
+	    *Pc = (char) (i + (int) 'A');
+	    return ajTrue;
+	}
+    
+    if(!ajStrCmpC(nuc2, "UNK"))
+    {
+	*Pc = 'N';
+
+	return ajTrue;
+    }	
+    
+    *Pc='N';
+    return ajFalse;
+}
+
+
+
 
 
 /* @section exit
@@ -720,27 +786,23 @@ void ajBaseExit(void)
 */
 
 
-
-
 /* @section character conversion
 **
-** Functions converting binary forms of base codes
+** Functions converting binary forms of amino acid residue codes
 **
 ** @fdata      [none]
 **
 ** @nam3rule Alpha Converts a character value
-** @nam4rule AlphaCompare Compares two base codes
 ** @nam4rule AlphaTo Converts to a specific type
 ** @nam5rule AlphaToBin Converts to binary code type
 **
 ** @argrule Alpha base [ajint] Alphabetic character as an integer
-** @argrule Compare base2 [ajint] Comparison alphabetic character as a character
 **
-** @valrule Compare [float] Probability bases are the same
 ** @valrule ToBin [ajint] Binary code in range 0 to 31
 **
 ** @fcategory cast
 */
+
 
 
 
@@ -1164,6 +1226,16 @@ __deprecated AjBool  ajBaseAa1ToAa3(char aa1, AjPStr *Paa3)
 {
     return ajResidueToTriplet(aa1, Paa3);
 }
+
+/* @datasection [none] Base *************************************************
+**
+** Function is for manipulating nucleotide base codes
+** 
+** @nam2rule Base 
+**
+*/
+
+
 
 /* @datasection [none] Basecode *******************************************
 **
