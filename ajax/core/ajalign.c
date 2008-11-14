@@ -164,6 +164,7 @@ static void       alignSim(AjPStr* pmark, const char idch, const char simch,
 static float      alignTotweight(const AjPAlign thys, ajint iali);
 static void       alignTraceData(const AjPAlign thys);
 
+static void       alignWriteClustal(AjPAlign thys);
 static void       alignWriteFasta(AjPAlign thys);
 static void       alignWriteMark(AjPAlign thys, ajint iali, ajint markx);
 static void       alignWriteMarkX0(AjPAlign thys);
@@ -172,17 +173,25 @@ static void       alignWriteMarkX2(AjPAlign thys);
 static void       alignWriteMarkX3(AjPAlign thys);
 static void       alignWriteMarkX10(AjPAlign thys);
 static void       alignWriteMatch(AjPAlign thys);
+static void       alignWriteMega(AjPAlign thys);
+static void       alignWriteMeganon(AjPAlign thys);
 static void       alignWriteMsf(AjPAlign thys);
+static void       alignWriteNexus(AjPAlign thys);
+static void       alignWriteNexusnon(AjPAlign thys);
+static void       alignWritePhylip(AjPAlign thys);
+static void       alignWritePhylipnon(AjPAlign thys);
 static void       alignWriteScore(AjPAlign thys);
+static void       alignWriteSelex(AjPAlign thys);
 static void       alignWriteSeqformat(AjPAlign thys, ajint iali,
 				      const char* sqfmt);
+static void       alignWriteSimple(AjPAlign thys);
 static void       alignWriteSrs(AjPAlign thys);
 static void       alignWriteSrsAny(AjPAlign thys,
 				   ajint imax, AjBool mark);
 static void       alignWriteSrsPair(AjPAlign thys);
 static void       alignWriteTCoffee(AjPAlign thys);
 static void       alignWriteTrace(AjPAlign thys);
-static void       alignWriteSimple(AjPAlign thys);
+static void       alignWriteTreecon(AjPAlign thys);
 static void       alignWriteHeaderNum(AjPAlign thys, ajint iali);
 
 
@@ -194,8 +203,8 @@ static void       alignWriteHeaderNum(AjPAlign thys, ajint iali);
 ******************************************************************************/
 
 static AlignOFormat alignFormat[] = {
-  /* name       description */
-  /*   Alias    dna      protein min max function */
+  /* name       description       function */
+  /*   Alias    dna      protein min max zero */
   /* standard sequence formats */
   {"unknown",   "Unknown format", alignWriteSimple,
        AJFALSE, AJFALSE, AJFALSE, 0, 0, 0},
@@ -204,6 +213,30 @@ static AlignOFormat alignFormat[] = {
   {"a2m",     "A2M (fasta) format sequence", alignWriteFasta,
        AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0}, /* same as fasta */
   {"msf",       "MSF format sequence", alignWriteMsf,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"clustal",   "clustalw format sequence", alignWriteClustal,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"mega",       "Mega format sequence", alignWriteMega,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"meganon",       "Mega non-interleaved format sequence", alignWriteMeganon,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"nexus",   "nexus/paup format sequence", alignWriteNexus,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"paup",    "nexus/paup format sequence (alias)", alignWriteNexus,
+       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0},
+  {"nexusnon",   "nexus/paup non-interleaved format sequence",
+                                        alignWriteNexusnon,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"paupnon",    "nexus/paup non-interleaved format sequence (alias)",
+                                        alignWriteNexusnon,
+       AJTRUE,  AJTRUE,  AJTRUE,  0, 0, 0},
+  {"phylip",   "phylip format sequence", alignWritePhylip,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"phylipnon", "phylip non-interleaved format sequence", alignWritePhylipnon,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"selex",       "SELEX format sequence", alignWriteSelex,
+       AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
+  {"treecon",       "Treecon format sequence", alignWriteTreecon,
        AJFALSE, AJTRUE,  AJTRUE,  0, 0, 0},
   /* trace  for debug */
   {"debug", "Debugging trace of full internal data content", alignWriteTrace,
@@ -400,6 +433,60 @@ static void alignWriteTrace(AjPAlign thys)
 
 
 
+/* @funcstatic alignWriteClustal ***********************************************
+**
+** Writes an alignment in ClustalW format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteClustal(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "clustal");
+    return;
+}
+
+
+
+
+/* @funcstatic alignWriteMega *************************************************
+**
+** Writes an alignment in Mega format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteMega(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "mega");
+    return;
+}
+
+
+
+
+/* @funcstatic alignWriteMeganon **********************************************
+**
+** Writes an alignment in Mega non-interleaved format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteMeganon(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "meganon");
+    return;
+}
+
+
+
+
 /* @funcstatic alignWriteMsf **************************************************
 **
 ** Writes an alignment in MSF format
@@ -412,6 +499,113 @@ static void alignWriteTrace(AjPAlign thys)
 static void alignWriteMsf(AjPAlign thys)
 {
     alignWriteSeqformat(thys, 0, "msf");
+    return;
+}
+
+
+
+
+/* @funcstatic alignWriteNexus ************************************************
+**
+** Writes an alignment in Nexus/PAUP interleaved format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteNexus(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "nexus");
+    return;
+}
+
+
+
+
+/* @funcstatic alignWriteNexusnon *********************************************
+**
+** Writes an alignment in Nexus/PAUP non-interleaved format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteNexusnon(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "nexusnon");
+    return;
+}
+
+
+
+
+/* @funcstatic alignWritePhylip ************************************************
+**
+** Writes an alignment in Phylip interleaved format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWritePhylip(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "phylip");
+    return;
+}
+
+
+
+
+/* @funcstatic alignWritePhylipnon *********************************************
+**
+** Writes an alignment in Phylip non-interleaved format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWritePhylipnon(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "phylipnon");
+    return;
+}
+
+
+
+
+/* @funcstatic alignWriteSelex ***********************************************
+**
+** Writes an alignment in SELEX format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteSelex(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "selex");
+    return;
+}
+
+
+
+/* @funcstatic alignWriteTreecon ***********************************************
+**
+** Writes an alignment in Treecon format
+**
+** @param [u] thys [AjPAlign] Alignment object
+** @return [void]
+** @@
+******************************************************************************/
+
+static void alignWriteTreecon(AjPAlign thys)
+{
+    alignWriteSeqformat(thys, 0, "treecon");
     return;
 }
 
