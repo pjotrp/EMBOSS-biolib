@@ -3446,7 +3446,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x13776.density
-FC = 2095
+FC = 2097
 FP / +1 +1 +[+] +0\.000  0\.180  0\.330  0\.330  0\.160  0\.340  0\.660\n/
 //
 
@@ -7873,7 +7873,7 @@ FP 1 /^>S29350 /
 FP 1 /^>/
 //
 
-ID dbxxgcg-pir-nextlast
+ID dbxgcg-pir-nextlast
 AP seqret
 CL qaxpir-id:S11172 test.out -auto
 FI test.out
@@ -8352,7 +8352,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.diffseq
-FZ = 1379
+FZ = 1426
 FP /^# X65923 overlap starts at 57\n/
 FP /^# AY411291 overlap starts at 1\n/
 FP /^X65923 284-284 Length: 1\n/
@@ -8621,10 +8621,10 @@ IN tembl:x13776
 IN ggtacc
 IN
 FI x13776.dreg
-FC = 29
+FC = 31
 FP /      1       6       [+] regex1       ggtacc\n/
-FP 1 /^# Total_sequences: 1\n/
-FP 1 /^# Total_hitcount: 1\n/
+FP 1 /^# Reported_sequences: 1\n/
+FP 1 /^# Reported_hitcount: 1\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -8639,12 +8639,12 @@ IN asis::caaggttccaacc
 IN aa
 IN test.out
 FI test.out
-FC = 31
+FC = 33
 FP 2 /^asis::/
 FP 1 /^asis::caaggttccaacc\[2\:3\]\n/
 FP 1 /^asis::caaggttccaacc\[10\:11\]\n/
-FP 1 /^# Total_sequences: 1\n/
-FP 1 /^# Total_hitcount: 2\n/
+FP 1 /^# Reported_sequences: 1\n/
+FP 1 /^# Reported_hitcount: 2\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -8659,11 +8659,11 @@ IN asis::caaggttccaacc
 IN aa
 IN test.out
 FI test.out
-FC = 31
+FC = 33
 FP 1 /^asis::/
 FP 1 /^asis::caaggttccaacc\[6:7\:r\]\n/
-FP 1 /^# Total_sequences: 1\n/
-FP 1 /^# Total_hitcount: 1\n/
+FP 1 /^# Reported_sequences: 1\n/
+FP 1 /^# Reported_hitcount: 1\n/
 FI stderr
 FC = 2
 FP 0 /Warning: /
@@ -10050,12 +10050,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI l46634.fuzznuc
-FC = 33
+FC = 35
 FP /^# HitCount: 2\n/
 FP /^      1       6       [+] pattern1            . aagctt\n/
 FP /^   1267    1272       [+] pattern1            . aagctt\n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 2\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 2\n/
 //
 
 ID fuzznuc-rev
@@ -10070,14 +10070,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI test.out
-FC = 37
+FC = 39
 FP /^# HitCount: 4\n/
 FP /^      1       4       [+] pattern1            . GATA\n/
 FP /^     28      31       [+] pattern1            . GATA\n/
 FP /^     39      42       [+] pattern1            . GATA\n/
 FP /^     35      38       [-] pattern1            . GATA\n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 4\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 4\n/
 //
 
 ID fuzznuc-ex2
@@ -10091,12 +10091,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI l46634.fuzznuc
-FC = 33
+FC = 35
 FP /^# HitCount: 2\n/
 FP /^    429     448       [+] targetseq           \. cggccctaaccctagcccta\n/
 FP /^    491     510       [+] targetseq           \. cggccctaaccctagcccta\n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 2\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 2\n/
 //
 
 ID fuzznuc-ex3
@@ -10111,14 +10111,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI l46634.fuzznuc
-FC = 46
+FC = 48
 FP /^# HitCount: 13\n/
 FP /^    429     438       [+] test1               \. cggccctaac\n/
 FP /^    801     810       [+] test2               \. cctagcccta\n/
 FP 8 /^ +\d+ +\d+       [+-] test1 +/
 FP 5 /^ +\d+ +\d+       [+-] test2 +/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 13\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 13\n/
 //
 
 ID fuzznuc-ex4
@@ -10132,7 +10132,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI l46634.fuzznuc
-FC = 52
+FC = 54
 FP /^# HitCount: 19\n/
 FP /^    429     448       [+] pat1                \. cggccctaaccctagcccta\n/
 FP /^    491     510       [+] pat2                \. cggccctaaccctagcccta\n/
@@ -10142,8 +10142,8 @@ FP 8 /^\s+\d+\s+\d+\s+[+-]\s+pat3/
 FP 9 /^\s+\d+\s+\d+\s+[+-]\s+pat2/
 FP 7 /^\s+\d+\s+\d+\s+[+-]\s+pat2\s+1\s+/
 FP 2 /^\s+\d+\s+\d+\s+[+-]\s+pat2\s+\.\s+/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 19\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 19\n/
 //
 
 ID fuzzpro-ex
@@ -10157,14 +10157,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI edd1_rat.fuzzpro
-FC = 135
+FC = 137
 FP 8 /^# HitCount: 1\n/
 FP 8 /^# HitCount: [1-9]\d*/
 FP /^     53      63 pattern1            . YVGDEAQSKRG\n/
 FP 4 /^     53      63 pattern1            . YVGDEAQSKRG\n/
 FP 4 /^     55      65 pattern1            . YVGDEAQSKRG\n/
-FP /^# Total_sequences: 8\n/
-FP /^# Total_hitcount: 8\n/
+FP /^# Reported_sequences: 8\n/
+FP /^# Reported_hitcount: 8\n/
 //
 
 ID fuzztran-ex
@@ -10181,7 +10181,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI z46957.fuzztran
-FC = 42
+FC = 44
 FP /^# HitCount: 9\n/
 FP /^    919     924       [+]       2 pattern1            .      1    307    308 RA         \n/
 FP /^    752     757       [+]       2 pattern1            .      2    251    252 RA         \n/
@@ -10189,8 +10189,8 @@ FP /^     72      77       [+]       2 pattern1            .      3     24     2
 FP 6 /^.* 1 +\d+ +\d+ RA +\n/
 FP 2 /^.* 2 +\d+ +\d+ RA +\n/
 FP 1 /^.* 3 +\d+ +\d+ RA +\n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 9\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 9\n/
 //
 
 ID feat-embl
@@ -10286,7 +10286,7 @@ ID feat-swiss
 AP seqret
 CL -feat tsw:laci_ecoli sw::test.out -auto
 FI test.out
-FZ = 2099
+FZ = 2100
 FP /^FT   DNA_BIND      6     25       H-T-H motif\.\n/
 FP /^FT   HELIX        74     89\n/
 //
@@ -10319,11 +10319,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI amic_pseae.garnier
-FC = 82
+FC = 84
 FP /^#  Residue totals: H:103   E:102   T: 86   C: 94\n/
 FP /RADA\nhelix                HHHHHH            HHHH H     HHHHHH\n/
-FP 1 /^# Total_sequences: 1\n/
-FP 1 /^# Total_hitcount: 113\n/
+FP 1 /^# Reported_sequences: 1\n/
+FP 1 /^# Reported_hitcount: 113\n/
 //
 
 ID garnier-range
@@ -10337,12 +10337,12 @@ FP 0 /Error: /
 FP 0 /Died: /
 FC = 2
 FI amic_pseae.garnier
-FC = 48
+FC = 50
 FP /^#  Residue totals: H: 17   E: 22   T: 21   C: 10\n/
 FP /RADA\nhelix                HHHHHH            HHHH H     HHHHHH\n/
 FP /^turns        T TTT  TTT   \n/
-FP 1 /^# Total_sequences: 1\n/
-FP 1 /^# Total_hitcount: 25\n/
+FP 1 /^# Reported_sequences: 1\n/
+FP 1 /^# Reported_hitcount: 25\n/
 //
 
 ID garnier-short
@@ -10385,11 +10385,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI v00294.orf
-FZ = 877
+FZ = 876
 FP /^>V00294_1 \[735 - 1112\]/
 FP /^TGKRAV\n/
 FP /^>V00294_2 \[1 - 1110\]/
-FP /^RQVSRLESGQ\*\n/
+FP /^RQVSRLESGQ\n/
 FP /^>V00294_3 \[465 - 49\]/
 //
 
@@ -11591,14 +11591,14 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI edd1_rat.patmatdb 
-FC = 78
+FC = 80
 FP /^# Sequence: HD_FUGRU     from: 1   to: 3148\n# HitCount: 1\n/
 FP /^Length = 4\n/
 FP /^Start = position 1038 of sequence\n/
 FP /^End = position 1041 of sequence\n/
 FP /^STPASSTTSSAVDP\n/
-FP /^# Total_sequences: 3\n/
-FP /^# Total_hitcount: 3\n/
+FP /^# Reported_sequences: 3\n/
+FP /^# Reported_hitcount: 3\n/
 //
 
 # change the example (was an arabidopsis entry)
@@ -12061,10 +12061,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI edd1_rat.preg
-FC = 42
+FC = 44
 FP /^    421     424 regex1       IAQA\n/
-FP /^# Total_sequences: 2\n/
-FP /^# Total_hitcount: 1\n/
+FP /^# Reported_sequences: 2\n/
+FP /^# Reported_hitcount: 1\n/
 //
 
 ID prettyplot-ex
@@ -12393,10 +12393,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.recoder
-FC = 70
+FC = 72
 FP 3 / +77 +81 +[+] . +EcoRII +CCWGG +78 +P\.P +C->[ACGT]\n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 34\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 34\n/
 //
 
 ID recoder-seqs
@@ -12413,11 +12413,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.recoder
-FC = 106
+FC = 108
 FP 3 / +77 +81 +[+] . +EcoRII +CCWGG +78 +P\.P +C->[ACGT]\n/
 FP /# 61 +AGCTCTTTGT CCGCGCCCAG GAGCTACACA CCTTCGAGGT GACCGGCCAG GAAACGGTCG \n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 34\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 34\n/
 //
 
 # make bamhi explicit in reply to prompt
@@ -15331,7 +15331,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ID:AB000095
 FI test.out
-FZ = 4559
+FZ = 4655
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15341,7 +15341,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-ACC:AB000095
 FI test.out
-FZ = 4559
+FZ = 4655
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15351,7 +15351,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww-SV:AB000095.1
 FI test.out
-FZ = 4559
+FZ = 4655
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -15361,7 +15361,7 @@ AP seqret
 CC Requires http access to EBI SRS server
 CL -auto -out test.out -osf embl qasrswww:AB000095
 FI test.out
-FZ = 4559
+FZ = 4655
 FP /^ID   AB000095; /
 FP 1 /^ID /
 //
@@ -17147,10 +17147,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.silent 
-FC = 37
+FC = 39
 FP /^ +267 +272 +[-] +HindIII +AAGCTT +268 +A\.A +Yes +A->T\n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 1\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 1\n/
 //
 
 ID silent-seqs
@@ -17167,11 +17167,11 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.silent 
-FC = 73
+FC = 75
 FP /^ +267 +272 +[-] +HindIII +AAGCTT +268 +A\.A +Yes +A->T\n/
 FP /^\n/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 1\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 1\n/
 //
 
 ID sixpack-ex
@@ -17232,10 +17232,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.sirna
-FC = 112
+FC = 114
 FP /GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 85\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 85\n/
 FI x65923.fasta
 FC = 170
 FP /aaaagtgagaggtcagactccta/
@@ -17256,10 +17256,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.sirna
-FC = 116
+FC = 118
 FP /\(AA\)GAAGAAGACAGGUCGGGCUdTdT AGCCCGACCUGUCUUCUUCdTdT/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 85\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 85\n/
 FI x65923.fasta
 FZ = 6120
 FP /aaaagtgagaggtcagactccta/
@@ -17283,9 +17283,8 @@ FP /\AID   HBA_HUMAN      Unreviewed;        141 AA.\n/
 
 ID skipredundant-ex
 AP skipredundant
-CL -threshold 80 -keepredundant
+CL -threshold 80 -redundant ""
 IN ../../data/globins.fasta
-IN 
 IN 
 IN 
 IN 
@@ -17483,7 +17482,7 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65921.tcode
-FC = 633
+FC = 635
 FP /^      1     200       [+]   0\.673 Non-coding/
 FP /^     22     221       [+]   0\.76[78] No opinion/
 FP /^     37     236       [+]   0\.951 Coding/
@@ -17636,10 +17635,10 @@ FI stdout
 FZ = 16
 FP /^Created tmap\.ps\n/
 FI tmap.res
-FZ = 2290
+FZ = 2337
 FP 3 /^     43      70        1 YMF.*KLRT\n/
-FP /^# Total_sequences: 3\n/
-FP /^# Total_hitcount: 21\n/
+FP /^# Reported_sequences: 3\n/
+FP /^# Reported_hitcount: 21\n/
 FI tmap.ps
 FC = 1237
 FP /^%%Title: PLplot Graph\n/
@@ -17658,10 +17657,10 @@ FI stdout
 FZ = 16
 FP /^Created tmap\.ps\n/
 FI tmap.res
-FZ = 1649
+FZ = 1696
 FP 2 /^     43      69        1 YMFLLIVLGFPINFLTLYVTVQHKKLR\n/
-FP /^# Total_sequences: 2\n/
-FP /^# Total_hitcount: 14\n/
+FP /^# Reported_sequences: 2\n/
+FP /^# Reported_hitcount: 14\n/
 FI tmap.ps
 FC = 1246
 FP /^%%Title: PLplot Graph\n/
@@ -17999,10 +17998,10 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.twofeat
-FZ = 795
+FZ = 842
 FP /484     509       [+]   0\.000    484    489    509    509/
-FP /^# Total_sequences: 1\n/
-FP /^# Total_hitcount: 1\n/
+FP /^# Reported_sequences: 1\n/
+FP /^# Reported_hitcount: 1\n/
 //
 
 ID twofeat-ex2
@@ -26450,7 +26449,7 @@ FP /LEUK_RAT                      S     25   0\.502   0\.029   S   -\n/
 
 ID enetphos-ex
 AB cbstools
-AP enetphos
+AA enetphos
 IN ../../data/cbs/EFTU_HUMAN.fsa
 IN
 FI stderr
@@ -26576,6 +26575,8 @@ AB iprscan
 AA eiprscan
 RQ iprscan
 TI 1500
+DL keep
+QQ ../../../scripts/eiprscan-sort.pl iprtest.eiprscan
 CL -nocrc -goterms -iprlookup
 IN ../../data/iprtest.seq
 IN
