@@ -14,7 +14,7 @@ endif
 
 check_PROGRAMS = acdlog ajtest \
 complex corbatest dbxstat \
-entrails giep histogramtest intconv \
+entrails histogramtest intconv \
 origsplitter origunion \
 newcoils \
 patmattest \
