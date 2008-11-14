@@ -11,7 +11,7 @@ section: input [
 
   seqset: sequence [
     parameter: "Y"
-    type: "gap"
+    type: "gapany"
     aligned: "N"
   ]
 
@@ -33,7 +33,7 @@ section: required [
 	     hmmpfam:hmmpfam, hmmsmart:hmmsmart, hmmtigr:hmmtigr,
 	     fprintscan:fprintscan, scanregexp:scanregexp,
 	     profilescan:profilescan, superfamily:superfamily,
-	     seq:seq, signalp:signalp, tmhmm:tmhmm"
+	     seg:seg, signalp:signalp, tmhmm:tmhmm"
     delimiter: ","
     codedelimiter: ":"
     information: "Application(s) to use"
@@ -61,8 +61,8 @@ section: additional [
   string: email [
     additional: "Y"
     default: ""
-    information: "Sumbitter email address"
-    knowntype: "email input"
+    information: "Submitter email address"
+    knowntype: "email address"
   ]
 
  
@@ -89,6 +89,7 @@ section: additional [
   ]
 
   integer: trlen [
+    additional: "Y"
     default: "1"
     minimum: "1"
     information: "Minimum size of ORFs"
@@ -105,7 +106,7 @@ section: additional [
   boolean: goterms [
     additional: "$(iprlookup)"
     default: "N"
-    information: "Show GO terms is InterPro lookup is on"
+    information: "Show GO terms in InterPro lookup"
   ]
 
   boolean: crc [
@@ -117,7 +118,7 @@ section: additional [
   boolean: altjobs [
     additional: "Y"
     default: "N"
-    information: "Launch jobs alternatively (chunk after chunk)"
+    information: "Launch jobs alternately (chunk after chunk)"
   ]
 
 
