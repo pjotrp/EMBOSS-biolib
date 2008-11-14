@@ -185,7 +185,7 @@ int main(int argc, char **argv)
 	ajFeattableDel(&TabRpt);
 	ajStrDel(&strand);
     }
-
+    ajReportSetSeqstats(report, seqall);
 
     if(!n)
     {

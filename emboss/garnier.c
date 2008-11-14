@@ -412,7 +412,7 @@ int main(int argc, char **argv)
 	ajReportWrite(report, TabRpt, seq);
 	ajFeattableDel(&TabRpt);
     }
-
+    ajReportSetSeqstats(report, seqall);
 
     ajSeqDel(&seq);
     ajStrDel(&substr);

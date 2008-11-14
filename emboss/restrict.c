@@ -213,6 +213,7 @@ int main(int argc, char **argv)
 
 	ajListFree(&l);
     }
+    ajReportSetSeqstats(report, seqall);
 
 
     ajListFree(&l);

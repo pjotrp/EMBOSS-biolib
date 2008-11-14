@@ -131,6 +131,7 @@ int main(int argc, char **argv)
 	embPatMatchDel(&match);
 	ajStrDel(&str);
     }
+    ajReportSetSeqstats(report, seqall);
 
     ajStrDel(&regexp);
     ajStrDel(&temp);

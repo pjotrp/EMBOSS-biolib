@@ -300,6 +300,7 @@ int main(int argc, char **argv)
 
 	ajFeattableDel(&TabRpt);
     }
+    ajReportSetSeqstats(report, seqall);
 
     ajStrDel(&strand);
 

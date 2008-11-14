@@ -274,7 +274,13 @@ int main(int argc, char **argv)
 
 	ajFeattableClear(ftable);
     }
-
+    if(report)
+    {
+        ajReportSetSeqstats(report, seqall);
+        ajReportClose(report);
+        ajReportDel(&report);
+    }
+    
     if(quad || dual)
         ajGraphClose();
 
@@ -285,9 +291,6 @@ int main(int argc, char **argv)
 
     ajGraphxyDel(&qgraph);
     ajGraphxyDel(&dgraph);
-
-    ajReportClose(report);
-    ajReportDel(&report);
     
     ajFeattableDel(&ftable);
 
