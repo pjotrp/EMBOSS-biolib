@@ -26,7 +26,7 @@ section: input [
 
     infile: vectorsfile [
       standard: "$(vectorfile)"
-      nullok: "Y"
+      nullok: "@(!$(vectorfile))"
       default: ""
       information: "Cloning vector definition file (optional)"
       knowntype: "vector"
