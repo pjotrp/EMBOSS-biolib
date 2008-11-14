@@ -1099,6 +1099,7 @@ maximum: <i>(FLT_MAX)</i><br>
 increment: 1.0<br>
 precision: 3<br>
 warnrange: Y<br>
+large: N<br>
 
  </p>
  </td>
@@ -1131,6 +1132,7 @@ minimum: <i>(INT_MIN)</i><br>
 maximum: <i>(INT_MAX)</i><br>
 increment: 0<br>
 warnrange: Y<br>
+large: N<br>
 
  </p>
  </td>
@@ -1935,7 +1937,6 @@ features: N<br>
 aligned: N<br>
 minseqs: 1<br>
 maxseqs: <i>(INT_MAX)</i><br>
-nulldefault: N<br>
 nullok: N<br>
 
  </p>
@@ -4303,6 +4304,18 @@ attributes, summarized in Table 1 and described in more detail below.</p>
 
  <tr>
   <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>large: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Large values returned as double<br>Default: N</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
   <p>integer</p>
   </td>
   <td>
@@ -4346,6 +4359,18 @@ attributes, summarized in Table 1 and described in more detail below.</p>
   </td>
   <td>
   <p>Warning if values are out of range<br>Default: Y</p>
+  </td>
+ </tr>
+
+ <tr>
+  <td>
+  <p>&nbsp;</p>
+  </td>
+  <td>
+  <p>large: <i>Y/N<i></p>
+  </td>
+  <td>
+  <p>Large values returned as long<br>Default: N</p>
   </td>
  </tr>
 
@@ -5466,18 +5491,6 @@ they can fix the value, or provide parsers for each alternative.
   </td>
   <td>
   <p>Maximum number of sequences<br>Default: <i>(INT_MAX)</i></p>
-  </td>
- </tr>
-
- <tr>
-  <td>
-  <p>&nbsp;</p>
-  </td>
-  <td>
-  <p>nulldefault: <i>Y/N<i></p>
-  </td>
-  <td>
-  <p>Defaults to 'no file'<br>Default: N</p>
   </td>
  </tr>
 
