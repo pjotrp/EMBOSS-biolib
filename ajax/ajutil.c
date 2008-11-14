@@ -752,27 +752,35 @@ void ajUtilLoginfo(void)
     AjPStr logfname = NULL;
     AjPStr uids    = NULL;
     AjPTime today = NULL;
+    double walltime;
+    double cputime;
 
     today = ajTimeNewTodayFmt("log");
-    
+
     if(ajNamGetValueC("logfile", &logfname))
     {
 	logf = ajFileNewOutappendNameS(logfname);
 	if(!logf)
 	    return;
 
+        walltime = ajTimeDiff(ajTimeRefToday(),today);
+        cputime = ajClockSeconds();
+        if(walltime < cputime)
+            walltime = cputime; /* avoid reporting 0.0 if cpu time appears */
+
 	ajUtilGetUid(&uids),
-	ajFmtPrintF(logf, "%S\t%S\t%D\n",
+	ajFmtPrintF(logf, "%S\t%S\t%D\t%.1f\t%.1f\n",
 		    ajAcdGetProgram(),
 		    uids,
-		    today);
+		    today,
+                    cputime, walltime);
 	ajStrDel(&uids);
 	ajStrDel(&logfname);
 	ajFileClose(&logf);
     }
 
 
-    AJFREE(today);
+    ajTimeDel(&today);
 
     return;
 }
