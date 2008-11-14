@@ -79,6 +79,26 @@
 **
 ****************************************************************************/
 
+/* @func embDmxNrseqNew *******************************************************
+**
+** Creates an empty non redundant sequence object
+**
+** @param [r] seq [const AjPSeq] Sequence object
+** @return [EmbPDmxNrseq] New non-redundant sequence object
+******************************************************************************/
+
+EmbPDmxNrseq embDmxNrseqNew(const AjPSeq seq)
+{
+    EmbPDmxNrseq ret;
+
+    AJNEW0(ret);
+    ret->Seq = ajSeqNewSeq(seq);
+
+    return ret;
+}
+
+
+
 /* @func embDmxScophitsToHitlist *********************************************
 **
 ** Reads from a list of Scophit objects and writes a Hitlist object 
@@ -2198,6 +2218,30 @@ AjBool embDmxHitlistToScophits(const AjPList in, AjPList out)
 **
 ****************************************************************************/
 
+
+/* @func embDmxNrseqDel *******************************************************
+**
+** Creates an empty non redundant sequence object
+**
+** @param [d] Pnrseq [EmbPDmxNrseq*] Non-redundant sequence object
+** @return [void]
+******************************************************************************/
+
+void embDmxNrseqDel(EmbPDmxNrseq* Pnrseq)
+{
+    EmbPDmxNrseq nrseq;
+
+    if(!Pnrseq)
+        return;
+    nrseq = *Pnrseq;
+
+    if(!nrseq) return;
+    
+    ajSeqDel(&nrseq->Seq);
+    AJFREE(*Pnrseq);
+
+    return;
+}
 
 
 
