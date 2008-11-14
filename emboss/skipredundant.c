@@ -45,7 +45,6 @@ int main(int argc, char **argv)
     AjPSeqout  seqoutred = NULL;
     AjPStr     mode      = NULL;
     ajint      moden;
-    AjBool     keepredundant = ajFalse;
     ajuint i;
 
 
@@ -68,7 +67,6 @@ int main(int argc, char **argv)
     threshup      = ajAcdGetFloat("maxthreshold");
     gapopen       = ajAcdGetFloat("gapopen");
     gapextend     = ajAcdGetFloat("gapextend");
-    keepredundant = ajAcdGetToggle("keepredundant");
     seqout        = ajAcdGetSeqoutall("outseq");
     seqoutred     = ajAcdGetSeqoutall("redundantoutseq");
 
@@ -105,7 +103,7 @@ int main(int argc, char **argv)
 
 	if(ajUintGet(keep, i))
 	  ajSeqoutWriteSeq(seqout, seq);
-	else if(keepredundant)
+	else if(seqoutred)
 	  ajSeqoutWriteSeq(seqoutred, seq);
       }
 
@@ -120,7 +118,6 @@ int main(int argc, char **argv)
 	ajSeqoutClose(seqoutred);
 	ajSeqoutDel(&seqoutred);
       }
-
     ajListFree(&list);
     ajUintDel(&keep);
 
@@ -155,8 +152,7 @@ static AjBool skipredundant_SeqsetToList (AjPList list, AjPSeqset seqset)
     n = ajSeqsetGetSize(seqset);
     for(x=0; x<n; x++)
     {
-        AJNEW0(seq_tmp);
-        seq_tmp->Seq = ajSeqNewSeq(ajSeqsetGetseqSeq(seqset, x));
+        seq_tmp = embDmxNrseqNew(ajSeqsetGetseqSeq(seqset, x));
 	ajListPushAppend(list, seq_tmp);
         seq_tmp = NULL;
     }
