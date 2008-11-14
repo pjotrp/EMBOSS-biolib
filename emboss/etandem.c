@@ -388,6 +388,7 @@ int main(int argc, char **argv)
 	for(ibase = 0; ibase < nbase; ++ibase, ++cp)
 	{
 	    base = *cp - 1;
+            if(base < 0) base = 4;
 
 	    /* set up local ring */
 	    phase = ibase % n;
@@ -418,6 +419,7 @@ int main(int argc, char **argv)
 		    for(i = 0; i < n; ++i)
 		    {
 			x = ring[i];
+                        if((x+5*i) < 0) ajErr("ATAB(%d,%d) n:%d ibase:%d", x, i, n, ibase);
 			if(x == 4 && mismatch)
 			{
 			    --a->score;

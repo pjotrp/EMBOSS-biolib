@@ -111,7 +111,7 @@ int main(int argc, char **argv)
     ajStrAssignSubS(&substr,str,begin,end);
     ajSeqAssignSeqS(sequence,substr);
 
-    cvt = ajSeqcvtNewNumberC("ACGTN");
+    cvt = ajSeqcvtNewNumberC("ACGTN"); /* 1-4=ACGT 5=N 0=other */
     ajSeqConvertNum(sequence, cvt, &tseq);
     sq = ajStrGetuniquePtr(&tseq);
 
@@ -127,7 +127,7 @@ int main(int argc, char **argv)
 	score = max = 0;
 	while(front-sq<=len)
 	{
-	    if(*front == 'Z')
+	    if(*front == 'Z')   /* 'Z' marks a repeat */
 	    {
 		if(max >= thresh)
 		{
