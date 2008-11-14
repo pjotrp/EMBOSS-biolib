@@ -27,6 +27,10 @@
 
 #include "ajax.h"
 
+static clock_t timeClockSave = 0;
+
+ajlong timeClockOverflow = 0;
+ajlong timeClockMax = 0;
 
 /* @datastatic TimePFormat ****************************************************
 **
@@ -399,17 +403,18 @@ __deprecated time_t ajTimeMake(const AjPTime thys)
 const AjPTime ajTimeRefToday(void)
 {
     time_t tim;
-    
-    tim = time(0);
 
     if(!timeTodaySaved)
+    {
 	AJNEW0(timeTodaySaved);
 
-    if(!ajTimeSetLocal(timeTodaySaved, tim))
-        return NULL;
+        tim = time(0);
+        if(!ajTimeSetLocal(timeTodaySaved, tim))
+            return NULL;
 
-    timeTodaySaved->format = NULL;
-
+        timeTodaySaved->format = NULL;
+    }
+    
     return timeTodaySaved;
 }
 
@@ -717,8 +722,6 @@ static const char* TimeFormat(const char *timefmt, AjBool* makeupper)
 
 
 
-
-
 /* @section debug *************************************************************
 **
 ** Functions for debugging time objects.
@@ -784,3 +787,167 @@ void ajTimeExit(void)
 
     return;
 }
+
+/* @datasection [none] time internals ***********************************
+**
+** Function is for processing time internals.
+**
+** @nam2rule Time Time processing
+**
+*/
+
+
+
+/* @section reset **************************************************************
+**
+** Functions for memory cleanup
+**
+** @fdata [none]
+**
+** @nam3rule Reset Reset internals
+** 
+** @valrule   *  [void] No return value
+** 
+** @fcategory misc
+**
+******************************************************************************/
+
+/* @func ajTimeReset **********************************************************
+**
+** Resets the clock time to zero
+**
+** @return [void]
+******************************************************************************/
+
+void ajTimeReset(void)
+{
+    time_t tim;
+
+    if(!timeTodaySaved)
+	AJNEW0(timeTodaySaved);
+
+    tim = time(0);
+    if(ajTimeSetLocal(timeTodaySaved, tim))
+        timeTodaySaved->format = NULL;
+    
+    return;
+}
+
+
+/* @datasection [none] Cpu clock object ****************************************
+**
+** @nam2rule Clock     Function is for handling CPU clock time
+**
+******************************************************************************/
+
+/* @section get cpu time *******************************************************
+**
+** Functions for retrieving CPU time
+**
+** @fdata [none]
+**
+** @nam3rule Now Return current cpu clock ticks as a long integer
+** @nam3rule Seconds Return current cpu clock time in seconds as a long integer
+**
+** @valrule Now [ajlong] CPU ticks
+** @valrule Seconds [double] CPU time in seconds
+**
+** @fcategory use
+**
+******************************************************************************/
+
+/* @func ajClockNow ************************************************************
+**
+** Returns the clock time as a long even for systems where the clock_t type
+** is 4 bytes
+**
+** @return [ajlong] Total clock ticks
+******************************************************************************/
+
+ajlong ajClockNow(void)
+{
+    clock_t now;
+
+    now = clock();
+    if(now < timeClockSave)
+    {
+        ajUser("ajClockNow overflow now:%Ld "
+               "timeClockSave:%Ld timeClockOverflow:%Ld",
+               (long)now, (long)timeClockSave, timeClockOverflow);
+        if(!timeClockMax)
+        {
+            if(sizeof(now) == 4)
+                timeClockMax = UINT_MAX;
+        }
+        
+        
+        timeClockOverflow += timeClockMax;
+        ajUser("timeClockOverflow:%Ld timeClockMax:%Ld",
+               timeClockOverflow, timeClockMax);
+    }
+    
+    timeClockSave = now;
+
+    if(timeClockOverflow)
+        return (timeClockOverflow + now);
+    
+    return now; 
+}
+
+/* @func ajClockSeconds ********************************************************
+**
+** Returns the cpu time in seconds since the start
+**
+** @return [double] Total cpu clock time in seconds
+**
+******************************************************************************/
+
+double ajClockSeconds(void)
+{
+    double x;
+    x = ajClockNow();
+    return x/(double)CLOCKS_PER_SEC;
+}
+
+
+/* @datasection [none] cpu time internals ***********************************
+**
+** Function is for processing cpu time internals.
+**
+** @nam2rule Clock Cpu time processing
+**
+*/
+
+
+
+
+/* @section reset **************************************************************
+**
+** Functions for CPU time memory cleanup
+**
+** @fdata [none]
+**
+** @nam3rule Reset Reset internals
+**
+** @valrule   *  [void] No return value
+** 
+** @fcategory misc
+**
+******************************************************************************/
+
+/* @func ajClockReset **********************************************************
+**
+** Resets the clock time to zero
+**
+** @return [void]
+******************************************************************************/
+
+void ajClockReset(void)
+{
+    timeClockSave = clock();
+    timeClockOverflow = 0;
+
+    return;
+}
+
+
