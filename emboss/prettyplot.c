@@ -8,7 +8,7 @@
 **
 ** options.
 **
-** -ccolours    Colour residues by there consensus value. (TRUE)
+** -ccolours    Colour residues by their consensus value. (TRUE)
 ** -cidentity   Colour to display identical matches. (RED)
 ** -csimilarity Colour to display similar matches.   (GREEN)
 ** -cother      Colour to display other matches.     (BLACK)
