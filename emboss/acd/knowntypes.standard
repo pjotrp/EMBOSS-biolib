@@ -78,6 +78,7 @@ domainatrix_signature             file           Domainatrix signature
 domainatrix_substitution_matrix   file           Domainatrix substitution matrix
 drawgram_output                   file           Phylip drawgram output
 drawtree_output                   file           Phylip drawtree output
+email_address                     string         Email address
 embassy_package                   string         EMBASSY package name
 emboss_database_directory         directory      Database directory
 emboss_database_index             file           Index
