@@ -70,7 +70,8 @@ void ajMeltInit(AjBool isdna, ajint savesize)
     float enthalpy;
     float entropy;
     float energy;
-    
+    ajuint iline = 0;
+
     AjBool got1;
     AjBool got2;
 
@@ -113,26 +114,40 @@ void ajMeltInit(AjBool isdna, ajint savesize)
 	}
     }
 
-
+    iline = 0;
     while(ajReadline(mfptr, &line))
     {
+        ajStrRemoveWhiteExcess(&line);
+        iline++;
 	p = ajStrGetuniquePtr(&line);
 	if(*p=='#' || *p=='!' || !*p)
 	    continue;
 
-	p = ajSysFuncStrtok(p," \t\n\r");
+	p = ajSysFuncStrtok(p," ");
+        if(!p)
+            ajDie("Bad melt data file '%F' line %d '%S'",
+                  mfptr, iline, line);
 	ajStrAssignC(&pair1,p);
-	p = ajSysFuncStrtok(NULL," \t\n\r");
+	p = ajSysFuncStrtok(NULL," ");
+        if(!p)
+            ajDie("Bad melt data file '%F' line %d '%S'",
+                  mfptr, iline, line);
 	ajStrAssignC(&pair2,p);
-	p = ajSysFuncStrtok(NULL," \t\n\r");
+	p = ajSysFuncStrtok(NULL," ");
+        if(!p)
+            ajDie("Bad melt data file '%F' line %d '%S'",
+                  mfptr, iline, line);
 	if(sscanf(p,"%f",&enthalpy)!=1)
-	    ajFatal("No enthalpy found");
-	p = ajSysFuncStrtok(NULL," \t\n\r");
+	    ajDie("Bad melt data file '%F' line %d '%S'",
+                  mfptr, iline, line);
+	p = ajSysFuncStrtok(NULL," ");
 	if(sscanf(p,"%f",&entropy)!=1)
-	    ajFatal("No entropy found");
-	p = ajSysFuncStrtok(NULL," \t\n\r");
+	    ajDie("Bad melt data file '%F' line %d '%S'",
+                  mfptr, iline, line);
+	p = ajSysFuncStrtok(NULL," ");
 	if(sscanf(p,"%f",&energy)!=1)
-	    ajFatal("No energy found");
+	    ajDie("Bad melt data file '%F' line %d '%S'",
+                  mfptr, iline, line);
 
 	got1 = got2 = ajFalse;
 
@@ -155,7 +170,8 @@ void ajMeltInit(AjBool isdna, ajint savesize)
 	    }
 
 	if(!got1 || !got2)
-	    ajFatal("ajMeltInit data error");
+	    ajDie("Bad melt data file '%F' line %d '%S' duplicate pair",
+                  mfptr, iline, line);
     }
 
 
