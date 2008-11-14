@@ -143,6 +143,7 @@ typedef struct AjSSeqout {
 AjBool       ajSeqoutWriteSeq (AjPSeqout outseq, const AjPSeq seq);
 AjBool       ajSeqoutOpenFilename (AjPSeqout seqout, const AjPStr name);
 ajint        ajSeqoutGetCheckgcg (const AjPSeqout outseq);
+const AjPStr ajSeqoutGetFilename(const AjPSeqout thys);
 void         ajSeqoutClear (AjPSeqout thys);
 void         ajSeqoutGetBasecount(const AjPSeqout seqout, ajuint* bases);
 AjBool       ajSeqoutSetNameDefaultC(AjPSeqout thys,
