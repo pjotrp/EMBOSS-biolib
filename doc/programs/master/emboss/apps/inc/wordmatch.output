@@ -33,7 +33,7 @@
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2007-07-15
+##date 2008-07-15
 ##Type Protein HBA_HUMAN
 HBA_HUMAN	wordmatch	region	59	63	1.000	+	.	Sequence "HBA_HUMAN.1" ; note "HBB_HUMAN"
 HBA_HUMAN	wordmatch	region	15	18	1.000	+	.	Sequence "HBA_HUMAN.2" ; note "HBB_HUMAN"
@@ -44,7 +44,7 @@ HBA_HUMAN	wordmatch	region	117	120	1.000	+	.	Sequence "HBA_HUMAN.3" ; note "HBB_
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ##gff-version 2.0
-##date 2007-07-15
+##date 2008-07-15
 ##Type Protein HBB_HUMAN
 HBB_HUMAN	wordmatch	region	64	68	1.000	+	.	Sequence "HBB_HUMAN.1" ; note "HBA_HUMAN"
 HBB_HUMAN	wordmatch	region	16	19	1.000	+	.	Sequence "HBB_HUMAN.2" ; note "HBA_HUMAN"

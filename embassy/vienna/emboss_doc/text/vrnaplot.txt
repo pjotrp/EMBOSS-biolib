@@ -84,113 +84,9 @@ Output file format
 
   Output files for usage example
 
-  File: rna1.vrnaplot
+  Graphics File: rna1.vrnaplot
 
-%!PS-Adobe-3.0 EPSF-3.0
-%%Creator: ePS_dot.c,v 1.6 2008/06/26 08:40:00 rice Exp $, ViennaRNA-1.7.2
-%%CreationDate: Sun Jul 15 12:00:00 2007
-%%Title: RNA Secondary Structure Plot
-%%BoundingBox: 66 210 518 662
-%%DocumentFonts: Helvetica
-%%Pages: 1
-%%EndComments
-
-%Options:
-% to switch off outline pairs of sequence comment or
-% delete the appropriate line near the end of the file
-
-%%BeginProlog
-/RNAplot 100 dict def
-RNAplot begin
-/fsize  14 def
-/outlinecolor {0.2 setgray} bind def
-/paircolor    {0.2 setgray} bind def
-/seqcolor     {0   setgray} bind def
-/cshow  { dup stringwidth pop -2 div fsize -3 div rmoveto show} bind def
-/min { 2 copy gt { exch } if pop } bind def
-/max { 2 copy lt { exch } if pop } bind def
-/drawoutline {
-  gsave outlinecolor newpath
-  coor 0 get aload pop 0.8 0 360 arc % draw 5' circle of 1st sequence
-  currentdict /cutpoint known        % check if cutpoint is defined
-  {coor 0 cutpoint getinterval
-   {aload pop lineto} forall         % draw outline of 1st sequence
-   coor cutpoint get aload pop
-   2 copy moveto 0.8 0 360 arc       % draw 5' circle of 2nd sequence
-   coor cutpoint coor length cutpoint sub getinterval
-   {aload pop lineto} forall}        % draw outline of 2nd sequence
-  {coor {aload pop lineto} forall}   % draw outline as a whole
-  ifelse
-  stroke grestore
-} bind def
-/drawpairs {
-  paircolor
-  0.7 setlinewidth
-  [9 3.01] 9 setdash
-  newpath
-  pairs {aload pop
-     coor exch 1 sub get aload pop moveto
-     coor exch 1 sub get aload pop lineto
-  } forall
-  stroke
-} bind def
-% draw bases
-/drawbases {
-
-
-  [Part of this file has been deleted for brevity]
-
-[76.515 91.594]
-[88.932 77.646]
-[107.552 76.227]
-[116.182 63.958]
-[124.812 51.689]
-[133.442 39.420]
-[142.071 27.151]
-[136.924 12.513]
-[141.395 -2.346]
-[153.767 -11.712]
-[169.282 -11.983]
-[181.974 -3.056]
-[186.962 11.637]
-[182.330 26.446]
-[169.857 35.678]
-[154.340 35.781]
-[145.711 48.050]
-[137.081 60.319]
-[128.451 72.587]
-[119.821 84.856]
-[124.925 99.035]
-[120.932 113.567]
-[109.299 123.146]
-[110.447 138.102]
-[111.596 153.058]
-[121.300 166.278]
-[114.456 181.181]
-] def
-/pairs [
-[2 38]
-[3 37]
-[4 36]
-[7 14]
-[8 13]
-[16 33]
-[17 32]
-[18 31]
-[19 30]
-[20 29]
-] def
-
-init
-
-% switch off outline pairs or bases by removing these lines
-drawoutline
-drawpairs
-drawbases
-% show it
-showpage
-end
-%%EOF
+   [vrnaplot results]
 
 Data files
 
@@ -244,8 +140,8 @@ See also
 Author(s)
 
    Peter Rice (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

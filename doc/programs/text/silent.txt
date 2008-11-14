@@ -238,7 +238,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 1
+# Total_length: 518
+# Reported_sequences: 1
+# Reported_hitcount: 1
 #---------------------------------------
 
 Data files

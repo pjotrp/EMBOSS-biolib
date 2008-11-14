@@ -1,0 +1,65 @@
+<h3><A NAME="cbstools">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current cbstools release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="echlorop.html">echlorop</a></td>
+<td>
+Reports presence of chloroplast transit peptides
+</td>
+</tr>
+<tr>
+<td><a href="elipop.html">elipop</a></td>
+<td>
+Prediction of lipoproteins
+</td>
+</tr>
+<tr>
+<td><a href="enetnglyc.html">enetnglyc</a></td>
+<td>
+Reports N-glycosylation sites in human proteins
+</td>
+</tr>
+<tr>
+<td><a href="enetoglyc.html">enetoglyc</a></td>
+<td>
+Reports mucin type GalNAc O-glycosylation sites in mammalian proteins
+</td>
+</tr>
+<tr>
+<td><a href="enetphos.html">enetphos</a></td>
+<td>
+Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins
+</td>
+</tr>
+<tr>
+<td><a href="eprop.html">eprop</a></td>
+<td>
+Reports propeptide cleavage sites in proteins
+</td>
+</tr>
+<tr>
+<td><a href="esignalp.html">esignalp</a></td>
+<td>
+Reports protein signal cleavage sites
+</td>
+</tr>
+<tr>
+<td><a href="etmhmm.html">etmhmm</a></td>
+<td>
+Reports transmembrane helices
+</td>
+</tr>
+<tr>
+<td><a href="eyinoyang.html">eyinoyang</a></td>
+<td>
+Reports O-(beta)-GlcNAc attachment sites
+</td>
+</tr>
+</table>

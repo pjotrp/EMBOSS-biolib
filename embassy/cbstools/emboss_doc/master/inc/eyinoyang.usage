@@ -1,0 +1,29 @@
+<b>Here is a sample session with eyinoyang</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eyinoyang </b>
+Reports O-(beta)-GlcNAc attachment sites
+Input (aligned) sequence set: <b>CBG_HUMAN.fsa</b>
+Output file [cbg_human.eyinoyang]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+<p>
+<b>Example 2</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>eyinoyang </b>
+Reports O-(beta)-GlcNAc attachment sites
+Input (aligned) sequence set: <b>LEUK_RAT.fsa</b>
+Output file [leuk_rat.eyinoyang]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.2">Go to the input files for this example</a><br><a href="#output.2">Go to the output files for this example</a><p><p>

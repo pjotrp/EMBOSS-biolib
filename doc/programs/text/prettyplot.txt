@@ -354,8 +354,8 @@ Author(s)
 
    Many features were first implemented in the EGCG program "prettyplot"
    by Peter Rice (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
    The original suggestions for the PrettyPlot program were from Denis
    Duboule and Sigfried Labeit at EMBL. Gert Vriend added the star

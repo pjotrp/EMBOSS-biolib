@@ -1,0 +1,608 @@
+<HTML>
+<HEAD>
+  <TITLE>
+  EMBASSY: CBSTOOLS: elipop
+  </TITLE>
+</HEAD>
+<BODY BGCOLOR="#FFFFFF" text="#000000">
+
+<table align=center border=0 cellspacing=0 cellpadding=0>
+<tr><td valign=top>
+<A HREF="/" ONMOUSEOVER="self.status='Go to the EMBOSS home page';return true"><img border=0 src="emboss_icon.jpg" alt="" width=150 height=48></a>
+</td>
+<td align=left valign=middle>
+<b><font size="+6">
+elipop
+</font></b>
+</td></tr>
+</table>
+<br>&nbsp;
+<p>
+
+
+
+<H2>
+    Function
+</H2>
+Prediction of lipoproteins
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+<H2>
+    Description
+</H2>
+
+The LipoP 1.0 server produces predictions of lipoproteins and
+ discriminates between lipoprotein signal peptides, other signal
+ peptides and n-terminal membrane helices in Gram negative bacteria.
+
+
+<H2>
+    Usage
+</H2>
+
+<!--  
+	Example usage, as run from the command-line.
+        Many examples illustrating different behaviours is good.
+ -->
+
+<b>Here is a sample session with elipop</b>
+<p>
+
+<p>
+<table width="90%"><tr><td bgcolor="#CCFFFF"><pre>
+
+% <b>elipop </b>
+Prediction of lipoproteins
+Input (aligned) sequence set: <b>5h2a_crigr.fsa</b>
+Output file [5h2a_crigr.elipop]: <b></b>
+
+</pre></td></tr></table><p>
+<p>
+<a href="#input.1">Go to the input files for this example</a><br><a href="#output.1">Go to the output files for this example</a><p><p>
+
+
+
+<H2>
+    Command line arguments
+</H2>
+
+<table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
+<pre>
+   Standard (Mandatory) qualifiers:
+  [-sequence]          seqset     (Aligned) sequence set filename and optional
+                                  format, or reference (input USA)
+  [-outfile]           outfile    [*.elipop] Output file name
+
+   Additional (Optional) qualifiers: (none)
+   Advanced (Unprompted) qualifiers:
+   -plot               boolean    [N] Produce graphics
+   -short              boolean    [N] Short output
+   -html               boolean    [N] Html output
+   -format             boolean    [N] Run LipoPformat script
+   -cutoff             integer    [-3] Log-odds cutoff (Any integer value)
+
+   Associated qualifiers:
+
+   "-sequence" associated qualifiers
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
+   -sreverse1          boolean    Reverse (if DNA)
+   -sask1              boolean    Ask for begin/end/reverse
+   -snucleotide1       boolean    Sequence is nucleotide
+   -sprotein1          boolean    Sequence is protein
+   -slower1            boolean    Make lower case
+   -supper1            boolean    Make upper case
+   -sformat1           string     Input sequence format
+   -sdbname1           string     Database name
+   -sid1               string     Entryname
+   -ufo1               string     UFO features
+   -fformat1           string     Features format
+   -fopenfile1         string     Features file name
+
+   "-outfile" associated qualifiers
+   -odirectory2        string     Output directory
+
+   General qualifiers:
+   -auto               boolean    Turn off prompts
+   -stdout             boolean    Write first file to standard output
+   -filter             boolean    Read first file from standard input, write
+                                  first file to standard output
+   -options            boolean    Prompt for standard and additional values
+   -debug              boolean    Write debug output to program.dbg
+   -verbose            boolean    Report some/full command line options
+   -help               boolean    Report command line options. More
+                                  information on associated and general
+                                  qualifiers can be found with -help -verbose
+   -warning            boolean    Report warnings
+   -error              boolean    Report errors
+   -fatal              boolean    Report fatal errors
+   -die                boolean    Report dying program messages
+
+</pre>
+</td></tr></table>
+<P>
+<table border cellspacing=0 cellpadding=3 bgcolor="#ccccff">
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Standard (Mandatory) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>[-sequence]<br>(Parameter 1)</td>
+<td>(Aligned) sequence set filename and optional format, or reference (input USA)</td>
+<td>Readable set of sequences</td>
+<td><b>Required</b></td>
+</tr>
+
+<tr>
+<td>[-outfile]<br>(Parameter 2)</td>
+<td>Output file name</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.elipop</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Additional (Optional) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td colspan=4>(none)</td>
+</tr>
+
+<tr bgcolor="#FFFFCC">
+<th align="left" colspan=2>Advanced (Unprompted) qualifiers</th>
+<th align="left">Allowed values</th>
+<th align="left">Default</th>
+</tr>
+
+<tr>
+<td>-plot</td>
+<td>Produce graphics</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-short</td>
+<td>Short output</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-html</td>
+<td>Html output</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-format</td>
+<td>Run LipoPformat script</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-cutoff</td>
+<td>Log-odds cutoff</td>
+<td>Any integer value</td>
+<td>-3</td>
+</tr>
+
+</table>
+
+<!--
+DON'T WRITE ANYTHING HERE.
+IT IS DONE FOR YOU.
+-->
+
+
+
+
+
+
+
+
+<H2>
+    Input file format
+</H2>
+
+<!-- 
+        This includes example input file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null input, etc. 
+   -->
+
+<b>elipop</b> reads any normal sequence USAs.
+
+<p>
+
+
+<a name="input.1"></a>
+<h3>Input files for usage example </h3>
+<p><h3>File: 5h2a_crigr.fsa</h3>
+<table width="90%"><tr><td bgcolor="#FFCCFF">
+<pre>
+&gt;5H2A_CRIGR you can have comments after the ID
+MEILCEDNTSLSSIPNSLMQVDGDSGLYRNDFNSRDANSSDASNWTIDGENRTNLSFEGYLPPTCLSILHL
+QEKNWSALLTAVVIILTIAGNILVIMAVSLEKKLQNATNYFLMSLAIADMLLGFLVMPVSMLTILYGYRWP
+LPSKLCAVWIYLDVLFSTASIMHLCAISLDRYVAIQNPIHHSRFNSRTKAFLKIIAVWTISVGVSMPIPVF
+GLQDDSKVFKQGSCLLADDNFVLIGSFVAFFIPLTIMVITYFLTIKSLQKEATLCVSDLSTRAKLASFSFL
+PQSSLSSEKLFQRSIHREPGSYTGRRTMQSISNEQKACKVLGIVFFLFVVMWCPFFITNIMAVICKESCNE
+HVIGALLNVFVWIGYLSSAVNPLVYTLFNKTYRSAFSRYIQCQYKENRKPLQLILVNTIPALAYKSSQLQA
+GQNKDSKEDAEPTDNDCSMVTLGKQQSEETCTDNINTVNEKVSCV
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Output file format
+</H2>
+
+<!-- 
+        This includes example output file formats.
+        This should be a detailed description and example - assume
+        someone will want to parse this file and will want to know what
+        happens in unusual cases - null output, errors etc. 
+
+        If you wish to include the standard description of the avalable
+	report formats, use:
+
+        #include file="inc/reportformats.ihtml"
+   -->
+
+<b>elipop</b> 
+outputs a graph to the specified graphics device. 
+outputs a report format file. The default format is ...
+
+
+<p>
+
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: 5h2a_crigr.elipop</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+# 5H2A_CRIGR you can have comments after the ID
+# len 70
+# lett A:2 C:2 D:7 E:4 F:2 G:4 H:1 I:4 K:0 L:8 M:2 N:8 P:3 Q:1 R:3 S:11 T:4 V:1 W:1 Y:2
+5H2A_CRIGR	LipoP1.0	SEQUENCE	1	70	0	+	.	#you can have comments after the ID
+5H2A_CRIGR	LipoP1.0:Signal	CYT	1	1	-0.200913	+	0	#M
+</pre>
+</td></tr></table><p>
+
+
+
+
+
+<H2>
+    Data files
+</H2>
+
+None.
+
+
+
+
+<H2>
+    Notes
+</H2>
+
+<!-- 
+        Restrictions.
+        Interesting behaviour.
+        Useful things you can do with this program.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    References
+</H2>
+
+<!-- 
+        Bibliography for methods used.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<H2>
+    Warnings
+</H2>
+
+<!-- 
+        Potentially stupid things the program will let you do.
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Diagnostic Error Messages
+</H2>
+
+<!-- 
+        Error messages specific to this program, eg:
+        "FATAL xxx" - means you have not set up the xxx data using program <b>prog</b>.<p>
+   -->
+
+None.
+
+
+
+
+
+
+
+<H2>
+    Exit status
+</H2>
+
+<!-- 
+        Description of the exit status for various error conditions
+   -->
+
+It always exits with status 0.
+
+
+
+
+
+
+
+
+<H2>
+    Known bugs
+</H2>
+
+
+<!-- 
+        Bugs noted but not yet fixed.
+   -->
+
+None.
+
+
+
+
+
+
+
+
+<!--
+<H2>
+    See also
+</H2>
+-->
+<h2><a name="See also">See also</a></h2>
+<table border cellpadding=4 bgcolor="#FFFFF0">
+<tr><th>Program name</th>
+<th>Description</th></tr>
+<tr>
+<td><a href="/emboss/apps/antigenic.html">antigenic</a></td>
+<td>Finds antigenic sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/digest.html">digest</a></td>
+<td>Reports on protein proteolytic enzyme or reagent cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="echlorop.html">echlorop</a></td>
+<td>Reports presence of chloroplast transit peptides</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/iprscan/eiprscan.html">eiprscan</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/emast.html">emast</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/memenew/ememe.html">ememe</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="enetnglyc.html">enetnglyc</a></td>
+<td>Reports N-glycosylation sites in human proteins</td>
+</tr>
+
+<tr>
+<td><a href="enetoglyc.html">enetoglyc</a></td>
+<td>Reports mucin type GalNAc O-glycosylation sites in mammalian proteins</td>
+</tr>
+
+<tr>
+<td><a href="enetphos.html">enetphos</a></td>
+<td>Reports ser, thr and tyr phosphorylation sites in eukaryotic proteins</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/epestfind.html">epestfind</a></td>
+<td>Finds PEST motifs as potential proteolytic cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="eprop.html">eprop</a></td>
+<td>Reports propeptide cleavage sites in proteins</td>
+</tr>
+
+<tr>
+<td><a href="esignalp.html">esignalp</a></td>
+<td>Reports protein signal cleavage sites</td>
+</tr>
+
+<tr>
+<td><a href="etmhmm.html">etmhmm</a></td>
+<td>Reports transmembrane helices</td>
+</tr>
+
+<tr>
+<td><a href="eyinoyang.html">eyinoyang</a></td>
+<td>Reports O-(beta)-GlcNAc attachment sites</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzzpro.html">fuzzpro</a></td>
+<td>Search for patterns in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/fuzztran.html">fuzztran</a></td>
+<td>Search for patterns in protein sequences (translated)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/helixturnhelix.html">helixturnhelix</a></td>
+<td>Identify nucleic acid-binding motifs in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/oddcomp.html">oddcomp</a></td>
+<td>Identify proteins with specified sequence word composition</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/meme/omeme.html">omeme</a></td>
+<td>Motif detection</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatdb.html">patmatdb</a></td>
+<td>Searches protein sequences with a sequence motif</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/patmatmotifs.html">patmatmotifs</a></td>
+<td>Scan a protein sequence with motifs from the PROSITE database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pepcoil.html">pepcoil</a></td>
+<td>Predicts coiled coil regions in protein sequences</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/preg.html">preg</a></td>
+<td>Regular expression search of protein sequence(s)</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/pscan.html">pscan</a></td>
+<td>Scans protein sequence(s) with fingerprints from the PRINTS database</td>
+</tr>
+
+<tr>
+<td><a href="/emboss/apps/sigcleave.html">sigcleave</a></td>
+<td>Reports on signal cleavage sites in a protein sequence</td>
+</tr>
+
+</table>
+<!-- 
+        Add any comments about other associated programs (to prepare
+        data files?) that seealso doesn't find. 
+   -->
+
+
+
+
+
+
+
+
+
+
+<H2>
+    Author(s)
+</H2>
+
+This program is an EMBOSS wrapper for a program written by the CBS group
+http://www.cbs.dtu.dk/index.shtml
+
+<p>
+The original CBS group application must be licensed and installed to
+use this wrapper.
+
+
+<p>
+Although we take every care to ensure that the results of the EMBOSS
+version are identical to those from the original package, we recommend
+that you check your inputs give the same results in both versions
+before publication.
+
+<p>
+Please report all bugs in the EMBOSS version to the EMBOSS bug team,
+not to the original author.
+
+<H2>
+    History
+</H2>
+
+
+
+
+
+<H2>
+    Target users
+</H2>
+
+<!--
+        For general users, requested by one user, for EMBOSS site
+        maintainers, for EMBOSS developers etc.
+        eg:
+        "This program is intended to be used by everyone and everything,
+        from naive users to embedded scripts." 
+	Which is easy to include using:
+   -->
+
+This program is intended to be used by everyone and everything, from naive users to embedded scripts.
+
+
+<H2>
+    Comments
+</H2>
+
+None
+
+</BODY>
+</HTML>
+

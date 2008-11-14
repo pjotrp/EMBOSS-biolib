@@ -1,0 +1,28 @@
+
+<a name="output.1"></a>
+<h3>Output files for usage example </h3>
+<p><h3>File: 5h2a_crigr.etmhmm</h3>
+<table width="90%"><tr><td bgcolor="#CCFFCC">
+<pre>
+# 5H2A_CRIGR Length: 471
+# 5H2A_CRIGR Number of predicted TMHs:  7
+# 5H2A_CRIGR Exp number of AAs in TMHs: 159.47336
+# 5H2A_CRIGR Exp number, first 60 AAs:  0.01677
+# 5H2A_CRIGR Total prob of N-in:        0.00629
+5H2A_CRIGR	TMHMM2.0	outside	     1    76
+5H2A_CRIGR	TMHMM2.0	TMhelix	    77    99
+5H2A_CRIGR	TMHMM2.0	inside	   100   111
+5H2A_CRIGR	TMHMM2.0	TMhelix	   112   134
+5H2A_CRIGR	TMHMM2.0	outside	   135   148
+5H2A_CRIGR	TMHMM2.0	TMhelix	   149   171
+5H2A_CRIGR	TMHMM2.0	inside	   172   191
+5H2A_CRIGR	TMHMM2.0	TMhelix	   192   214
+5H2A_CRIGR	TMHMM2.0	outside	   215   233
+5H2A_CRIGR	TMHMM2.0	TMhelix	   234   256
+5H2A_CRIGR	TMHMM2.0	inside	   257   324
+5H2A_CRIGR	TMHMM2.0	TMhelix	   325   347
+5H2A_CRIGR	TMHMM2.0	outside	   348   356
+5H2A_CRIGR	TMHMM2.0	TMhelix	   357   379
+5H2A_CRIGR	TMHMM2.0	inside	   380   471
+</pre>
+</td></tr></table><p>

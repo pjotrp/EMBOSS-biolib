@@ -328,7 +328,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 9
+# Total_length: 576
+# Reported_sequences: 1
+# Reported_hitcount: 9
 #---------------------------------------
 
 Data files
@@ -459,8 +461,8 @@ Author(s)
 
    Original program "SIGCLEAVE" (EGCG 1989) by Peter Rice
    (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

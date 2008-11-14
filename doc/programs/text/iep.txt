@@ -49,6 +49,7 @@ Command line arguments
 
    Additional (Optional) qualifiers:
    -amino              integer    [1] Number of N-termini (Integer 0 or more)
+   -carboxyl           integer    [1] Number of C-termini (Integer 0 or more)
    -[no]termini        boolean    [Y] Include charge at N and C terminus
    -lysinemodified     integer    [0] Number of modified lysines (Integer 0 or
                                   more)

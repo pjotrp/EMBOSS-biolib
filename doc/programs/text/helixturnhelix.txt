@@ -261,7 +261,9 @@ Maximum_score_at at "*"
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 1
+# Total_length: 360
+# Reported_sequences: 1
+# Reported_hitcount: 1
 #---------------------------------------
 
 Data files
@@ -405,8 +407,8 @@ Author(s)
 
    Original program "HELIXTURNHELIX" (EGCG 1990) by Peter Rice
    (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

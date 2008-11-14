@@ -126,7 +126,7 @@ Output file format
 ##sequence-region PAAMIR 1 2167
 #!Date 2008-07-15
 #!Type DNA
-#!Source-version EMBOSS 6.0.0
+#!Source-version EMBOSS 6.1.0
 PAAMIR  EMBL    databank_entry  1       2167    0.000   +       .       ID="PAA
 MIR.1";db_xref="taxon:287";organism="Pseudomonas aeruginosa";strain="PAC";isola
 te="PAC 1";map="38 min"
@@ -239,8 +239,8 @@ See also
 Author(s)
 
    Peter Rice (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

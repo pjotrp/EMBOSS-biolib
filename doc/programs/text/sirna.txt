@@ -420,10 +420,6 @@ CCUdTdT
 
   [Part of this file has been deleted for brevity]
 
-    353     375       +   5.000   55.0 AGAAGAAGACAGGUCGGGCdTdT GCCCGACCUGUCUUCU
-UCUdTdT
-    360     382       +   5.000   65.0 GACAGGUCGGGCUAAGCGGdTdT CCGCUUAGCCCGACCU
-GUCdTdT
     374     396       +   5.000   55.0 AGCGGCGGAUGCAGUACAAdTdT UUGUACUGCAUCCGCC
 GCUdTdT
     383     405       +   5.000   55.0 UGCAGUACAACCGGCGCUUdTdT AAGCGCCGGUUGUACU
@@ -512,7 +508,9 @@ UUUdTdT
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 85
+# Total_length: 518
+# Reported_sequences: 1
+# Reported_hitcount: 85
 #---------------------------------------
 
   File: x65923.fasta
@@ -709,10 +707,6 @@ UGAACUUdTdT
 
   [Part of this file has been deleted for brevity]
 
-    353     375       +   5.000   55.0 (GA)AGAAGAAGACAGGUCGGGCdTdT GCCCGACCUGUC
-UUCUUCUdTdT
-    360     382       +   5.000   65.0 (AA)GACAGGUCGGGCUAAGCGGdTdT CCGCUUAGCCCG
-ACCUGUCdTdT
     374     396       +   5.000   55.0 (UA)AGCGGCGGAUGCAGUACAAdTdT UUGUACUGCAUC
 CGCCGCUdTdT
     383     405       +   5.000   55.0 (GA)UGCAGUACAACCGGCGCUUdTdT AAGCGCCGGUUG
@@ -801,7 +795,9 @@ GCUUUUUdTdT
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 85
+# Total_length: 518
+# Reported_sequences: 1
+# Reported_hitcount: 85
 #---------------------------------------
 
    The siRNAs are reported in order of best score first.

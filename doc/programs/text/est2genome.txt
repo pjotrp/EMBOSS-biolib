@@ -680,8 +680,8 @@ Author(s)
 
    This application was modified for inclusion in EMBOSS by Peter Rice
    (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
    The original program was est_genome, written by Richard Mott at the
    Sanger Centre. The original version is available from

@@ -143,7 +143,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 2
-# Total_hitcount: 1
+# Total_length: 1101
+# Reported_sequences: 2
+# Reported_hitcount: 1
 #---------------------------------------
 
 Data files
@@ -838,8 +840,8 @@ See also
 Author(s)
 
    Peter Rice (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

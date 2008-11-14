@@ -352,8 +352,6 @@ Output file format
 
   [Part of this file has been deleted for brevity]
 
-   2026    2026       +   0.000  0.110  0.340  0.330  0.220  0.330  0.670
-   2027    2027       +   0.000  0.110  0.330  0.340  0.220  0.330  0.670
    2028    2028       +   0.000  0.110  0.330  0.340  0.220  0.330  0.670
    2029    2029       +   0.000  0.110  0.330  0.340  0.220  0.330  0.670
    2030    2030       +   0.000  0.110  0.330  0.330  0.230  0.340  0.660
@@ -401,7 +399,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 2068
+# Total_length: 2167
+# Reported_sequences: 1
+# Reported_hitcount: 2068
 #---------------------------------------
 
   Output files for usage example 2

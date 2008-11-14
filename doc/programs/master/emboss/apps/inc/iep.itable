@@ -40,6 +40,13 @@
 </tr>
 
 <tr>
+<td>-carboxyl</td>
+<td>Number of C-termini</td>
+<td>Integer 0 or more</td>
+<td>1</td>
+</tr>
+
+<tr>
 <td>-[no]termini</td>
 <td>Include charge at N and C terminus</td>
 <td>Boolean value Yes/No</td>

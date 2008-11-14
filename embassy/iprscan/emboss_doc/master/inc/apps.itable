@@ -1,0 +1,17 @@
+<h3><A NAME="iprscan">Applications</A> in the <a
+href="ftp://emboss.open-bio.org/pub/EMBOSS/">current iprscan release</a></h3>
+
+<table border cellpadding=4 bgcolor="#FFFFF0">
+
+<tr>
+<th>Program name</th>
+<th>Description</th>
+</tr>
+
+<tr>
+<td><a href="eiprscan.html">eiprscan</a></td>
+<td>
+Motif detection
+</td>
+</tr>
+</table>

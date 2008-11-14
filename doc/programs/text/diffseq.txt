@@ -408,8 +408,10 @@ AY411291 228-228 Length: 1
 #---------------------------------------
 
 #---------------------------------------
-# Total_sequences: 1
-# Total_hitcount: 1
+# Total_sequences: 2
+# Total_length: 920
+# Reported_sequences: 1
+# Reported_hitcount: 1
 #---------------------------------------
 
   File: AY411291.diffgff
@@ -418,7 +420,7 @@ AY411291 228-228 Length: 1
 ##sequence-region AY411291 1 402
 #!Date 2008-07-15
 #!Type DNA
-#!Source-version EMBOSS 6.0.0
+#!Source-version EMBOSS 6.1.0
 AY411291        diffseq sequence_conflict       228     228     1.000   +
 .       ID="AY411291.1";note="SNP in X65923";replace="t"
 
@@ -428,7 +430,7 @@ AY411291        diffseq sequence_conflict       228     228     1.000   +
 ##sequence-region X65923 1 518
 #!Date 2008-07-15
 #!Type DNA
-#!Source-version EMBOSS 6.0.0
+#!Source-version EMBOSS 6.1.0
 X65923  diffseq sequence_conflict       284     284     1.000   +       .
 ID="X65923.1";note="SNP in AY411291";replace="c"
 

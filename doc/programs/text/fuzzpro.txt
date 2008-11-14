@@ -247,8 +247,6 @@ Output file format
 
   [Part of this file has been deleted for brevity]
 
-#---------------------------------------
-#=======================================
 #
 # Sequence: ACTSA_FUGRU     from: 1   to: 377
 # HitCount: 1
@@ -295,8 +293,10 @@ Output file format
 #---------------------------------------
 
 #---------------------------------------
-# Total_sequences: 8
-# Total_hitcount: 8
+# Total_sequences: 100
+# Total_length: 35262
+# Reported_sequences: 8
+# Reported_hitcount: 8
 #---------------------------------------
 
 Data files

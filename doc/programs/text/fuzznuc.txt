@@ -388,7 +388,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 2
+# Total_length: 1272
+# Reported_sequences: 1
+# Reported_hitcount: 2
 #---------------------------------------
 
   Output files for usage example 2
@@ -426,7 +428,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 2
+# Total_length: 1272
+# Reported_sequences: 1
+# Reported_hitcount: 2
 #---------------------------------------
 
   Output files for usage example 3
@@ -477,7 +481,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 13
+# Total_length: 1272
+# Reported_sequences: 1
+# Reported_hitcount: 13
 #---------------------------------------
 
   Output files for usage example 4
@@ -534,7 +540,9 @@ Output file format
 
 #---------------------------------------
 # Total_sequences: 1
-# Total_hitcount: 19
+# Total_length: 1272
+# Reported_sequences: 1
+# Reported_hitcount: 19
 #---------------------------------------
 
 Data files

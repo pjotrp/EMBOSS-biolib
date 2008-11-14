@@ -325,7 +325,7 @@ Max_score_pos at "*"
   File: actb1_fugru.antigenic
 
 ##gff-version 2.0
-##date 2007-07-15
+##date 2008-07-15
 ##Type Protein ACTB1_FUGRU
 ACTB1_FUGRU     antigenic       region  214     222     1.207   +       .
 Sequence "ACTB1_FUGRU.1" ; note "*pos 218"
@@ -476,8 +476,8 @@ Author(s)
 
    Original program "ANTIGENIC" by Peter Rice (EGCG 1991) Peter Rice
    (pmr © ebi.ac.uk)
-   Informatics Division, European Bioinformatics Institute, Wellcome
-   Trust Genome Campus, Hinxton, Cambridge CB10 1SD, UK
+   European Bioinformatics Institute, Wellcome Trust Genome Campus,
+   Hinxton, Cambridge CB10 1SD, UK
 
 History
 

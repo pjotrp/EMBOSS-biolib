@@ -29,10 +29,11 @@ Algorithm
    and DNA concentration. Optionally, the percent formamide, percent of
    mismatches allowed and product length may be specified.
 
-   For the Melting temperature profile, free energy values calculated
+   For the melting temperature profile, free energy values calculated
    from nearest neighbor thermodynamics are used (Breslauer et al. Proc.
-   Natl. Acad. Sci. USA 83, 3746-3750 and Baldino et al. Methods in
-   Enzymol. 168, 761-777).
+   Natl. Acad. Sci. USA 83, 3746-3750, Baldino et al. Methods in Enzymol.
+   168, 761-777, Allawi and SantaLucia (1997), Biochemistry
+   36:10581-10594).
 
 Usage
 
@@ -634,6 +635,8 @@ References
     2. Baldino, M., Jr. (1989). "High Resolution In Situ Hybridization
        Histochemistry." In Methods in Enzymology, (P.M. Conn, ed.), 168,
        761-777, Academic Press, San Diego, California, USA.
+    3. Allawi H.T. and SantaLucia J. Jr. (1997), "Thermodynamics and NMR
+       of Internal G*T Mismatches in DNA" Biochemistry 36, 10581-10594.
 
 Warnings
 
