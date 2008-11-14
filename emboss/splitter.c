@@ -286,15 +286,16 @@ static void splitter_AddSubSeqFeat(AjPFeattable ftable, ajuint start,
 
     AjPFeature copy = NULL;
 
-    copy = ajFeatCopy(gf);
 
-    if (((ajFeatGetEnd(copy) < start + 1) &&
-        (copy->End2 == 0 || copy->End2 < start + 1)) ||
-        ((ajFeatGetStart(copy) > end + 1) &&
-        (copy->Start2 == 0 || copy->Start2 > end + 1))) {
-      continue;
+    if (((ajFeatGetEnd(gf) < start + 1) &&
+        (gf->End2 == 0 || gf->End2 < start + 1)) ||
+        ((ajFeatGetStart(gf) > end + 1) &&
+        (gf->Start2 == 0 || gf->Start2 > end + 1)))
+    {
+        continue;
     }
 
+    copy = ajFeatCopy(gf);
     copy->Start = copy->Start - start;
     copy->End = copy->End - start;
 
