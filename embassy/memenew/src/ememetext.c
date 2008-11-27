@@ -25,10 +25,6 @@
 #include "emboss.h"
 
 
-static void ememe_copydelfile(AjPFile outf, const AjPStr rnddir,
-                              const char *name);
-
-
 
 
 /* @prog ememe ****************************************************************
@@ -77,15 +73,11 @@ int main(int argc, char **argv)
     AjBool     xbranch   = ajFalse;
     AjBool     wbranch   = ajFalse;
     ajint      bfactor   = 0;
-    AjPFile    outhtml   = NULL;
     AjPFile    outtext   = NULL;
-    AjPFile    outxml    = NULL;
-    AjPFile    outxsl    = NULL;
     
     /* Housekeeping variables */
     AjPStr     cmd       = NULL;
     AjPStr     ssname    = NULL;      
-    AjPStr     rnddir    = NULL;
     AjPSeqout  outseq    = NULL;   
     AjPStr     tmp       = NULL;
     char       option;
@@ -94,7 +86,7 @@ int main(int argc, char **argv)
 
     
     /* ACD file processing */
-    embInitP("ememe",argc,argv,"MEMENEW");
+    embInitP("ememetext",argc,argv,"MEMENEW");
     dataset   = ajAcdGetSeqset("dataset");
     bfile     = ajAcdGetInfile("bfile");
     plib      = ajAcdGetInfile("plibfile");
@@ -132,19 +124,15 @@ int main(int argc, char **argv)
     wbranch   = ajAcdGetBoolean("wbranch");
     bfactor   = ajAcdGetInt("bfactor");    
 
-    outhtml   = ajAcdGetOutfile("outhtml");
     outtext   = ajAcdGetOutfile("outtext");
-    outxml    = ajAcdGetOutfile("outxml");
-    outxsl    = ajAcdGetOutfile("outxsl");
     outseq    = ajAcdGetSeqoutset("outseq");
     
     
 
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
-    cmd    = ajStrNew();
-    tmp    = ajStrNew();
-    rnddir = ajStrNew();
+    cmd      = ajStrNew();
+    tmp      = ajStrNew();
     
     /* 2. Re-write dataset to a temporary file in a format (fasta) MEME
     ** can understand.
@@ -152,7 +140,6 @@ int main(int argc, char **argv)
     ** might be a USA which MEME would not understand.
     */
 
-    /*fafname = ajFileGetNameS(outseq->File);*/
     ssname = ajStrNewS(ajFileGetNameS(outseq->File));
     
     ajSeqoutSetFormatC(outseq, "fasta");
@@ -290,9 +277,9 @@ int main(int argc, char **argv)
     else
 	ajFmtPrintAppS(&cmd, "-dna ");
 
-    ajFilenameSetTempname(&rnddir);
-    
-    ajFmtPrintAppS(&cmd, " -oc %S",rnddir);
+    ajFmtPrintAppS(&cmd, " -text");
+
+    ajFmtPrintAppS(&cmd, " > %S ", ajFileGetNameS(outtext));
 
 
     /* 4. Close files from ACD before calling meme */	
@@ -305,16 +292,6 @@ int main(int argc, char **argv)
     system(ajStrGetPtr(cmd));    
 
 
-    /* 5a. Copy output files */
-    ememe_copydelfile(outhtml, rnddir, "meme.html");
-    ememe_copydelfile(outtext, rnddir, "meme.txt");
-    ememe_copydelfile(outxml, rnddir, "meme.xml");
-    ememe_copydelfile(outxsl, rnddir, "meme.xsl");
-    
-    if(rmdir(ajStrGetPtr(rnddir)))
-        ajFatal("Cannot delete temporary directory (%S)",rnddir);
-    
-    
     /* 6. Exit cleanly */
 
     ajSeqsetDel(&dataset);
@@ -327,53 +304,10 @@ int main(int argc, char **argv)
     ajStrDel(&cmd);
     ajStrDel(&ssname);
     ajStrDel(&tmp);
-    ajStrDel(&rnddir);
     
-    ajFileClose(&outhtml);
     ajFileClose(&outtext);
-    ajFileClose(&outxml);
-    ajFileClose(&outxsl);
-
     
     embExit();
 
     return 0;
-}
-
-
-
-
-/* @funcstatic ememe_copydelfile **********************************************
-**
-** Copy file to acd output file from temporary directory, then delete
-** the source file.
-**
-** @param [w] outf [AjPFile] output file
-** @param [r] rnddir [const AjPStr] temporary directory name
-** @param [r] name [const char*] name of meme output file
-** @return [void]
-** @@
-******************************************************************************/
-
-static void ememe_copydelfile(AjPFile outf, const AjPStr rnddir,
-                              const char *name)
-{
-    AjPFile ifile  = NULL;
-    AjPStr  ifname = NULL;
-    AjPStr  line   = NULL;
-    
-    ifname = ajStrNew();
-    line   = ajStrNew();
-    
-    ajFmtPrintS(&ifname,"%S%c%s",rnddir,SLASH_CHAR,name);
-    ifile = ajFileNewInNameS(ifname);
-    if(!ifile)
-        ajFatal("Cannot open file %S\n",ifname);
-
-    while(ajReadline(ifile,&line))
-        ajFmtPrintF(outf,"%S",line);
-
-    unlink(ajStrGetPtr(ifname));
-
-    return;
 }

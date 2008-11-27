@@ -2,8 +2,8 @@
 
 SUBDIRS =
 
-bin_PROGRAMS = emast ememe
-               
+bin_PROGRAMS = emast ememe ememetext
+
 if LOCALLINK
 INCLUDES = -I../../../plplot -I../../../ajax -I../../../nucleus
 else
@@ -24,6 +24,7 @@ endif
 
 emast_SOURCES = emast.c
 ememe_SOURCES = ememe.c
+ememetext_SOURCES = ememetext.c
 
 if LOCALLINK
 LDADD = ../../../nucleus/libnucleus.la ../../../ajax/libajax.la ../../../plplot/libeplplot.la $(XLIB)

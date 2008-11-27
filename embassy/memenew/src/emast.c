@@ -29,7 +29,7 @@
 
 /* @prog emast ****************************************************************
 **
-** EMBOSS wrapper to meme from Timothy Bailey's MEME package version 3.0.14 
+** EMBOSS wrapper to meme from Timothy Bailey's MEME package version 4.0.0 
 ** Searches sequences for motifs. 
 **
 ******************************************************************************/
@@ -74,7 +74,8 @@ int main(int argc, char **argv)
     AjPStr  stdoutname  = NULL;   /* Name of temp. file for holding data written to stdout */
     AjPStr  stdouttemp  = NULL;   /* Temp. string */
     AjPFile stdoutf     = NULL;
-
+    ajint ret;
+    
     /* ACD file processing */
     embInitP("emast",argc,argv,"MEMENEW");
     mfile    = ajAcdGetInfile("mfile");
@@ -206,8 +207,11 @@ int main(int argc, char **argv)
 
     /* 4. Call mast */
     ajDebug("%S\n", cmd);
-    system(ajStrGetPtr(cmd));    
+    ret = system(ajStrGetPtr(cmd));    
+    if(ret)
+        ajFatal("Error from mast program. Aborting.");
 
+    
 
     /* 5. The mast output file name is hard-coded to a name derived from the 
        mast command-line (white-space removed, ".html" appended and other

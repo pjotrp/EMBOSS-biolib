@@ -1,5 +1,5 @@
-application: ememe [
-  documentation: "Multiple EM for Motif Elicitation"
+application: ememetext [
+  documentation: "Multiple EM for Motif Elicitation. Text file only."
   groups: "Protein:Motifs"
   embassy: "memenew"
 ]
@@ -478,32 +478,11 @@ section: output [
   type: "page"
 ]
 
-  outfile: outhtml [
-    parameter: "Y"
-    information: "MEME program html output file"
-    knowntype: "meme html output"
-    extension: "html"
-  ]
-
   outfile: outtext [
     parameter: "Y"
     information: "MEME program text output file"
     knowntype: "meme text output"
     extension: "text"
-  ]
-
-  outfile: outxml [
-    parameter: "Y"
-    information: "MEME program xml output file"
-    knowntype: "meme html output"
-    extension: "xml"
-  ]
-
-  outfile: outxsl [
-    parameter: "Y"
-    information: "MEME program xsl output file"
-    knowntype: "meme xsl output"
-    extension: "xsl"
   ]
 
   seqoutset: outseq [
