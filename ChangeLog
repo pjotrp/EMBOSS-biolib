@@ -1,4 +1,11 @@
 Version 6.1.0
+	MEMENEW updated for meme/mast version 4.0.0. ememe now
+	produces fasta, html, text, xml and xsl outputs. A new variant,
+	ememetext, produces only the text and fasta outputs.
+
+	DBX index file key deletion code added for ID/ACC/SV/KW/DE/TX
+	indexes.
+
 	HTTP access now adds a User-Agent string with the EMBOSS version
 	number so that servers can count the number of EMBOSS requests.
 
