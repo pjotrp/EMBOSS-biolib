@@ -233,7 +233,7 @@ int main(int argc, char **argv)
 	    AJCNEW(seqboxptr[i], ajSeqsetGetLen(seqset));
     }
     boxcol      = ajAcdGetBoolean("boxcol");
-    sboxcolval  = ajAcdGetString("boxcolval");
+    sboxcolval  = ajAcdGetString("boxuse");
 
     if(boxcol)
     {

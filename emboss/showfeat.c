@@ -108,10 +108,10 @@ int main(int argc, char **argv)
 
     seqall      = ajAcdGetSeqall("sequence");
     outfile     = ajAcdGetOutfile("outfile");
-    matchsource = ajAcdGetString("matchsource");
-    matchtype   = ajAcdGetString("matchtype");
-    matchtag    = ajAcdGetString("matchtag");
-    matchvalue  = ajAcdGetString("matchvalue");
+    matchsource = ajAcdGetString("sourcematch");
+    matchtype   = ajAcdGetString("typematch");
+    matchtag    = ajAcdGetString("tagmatch");
+    matchvalue  = ajAcdGetString("valuematch");
     sortlist    = ajAcdGetListSingle("sort");
     html        = ajAcdGetBoolean("html");
     id          = ajAcdGetBoolean("id");
@@ -123,7 +123,7 @@ int main(int argc, char **argv)
     reverse     = ajAcdGetBoolean("reverse");
     unknown     = ajAcdGetBoolean("unknown");
     strand      = ajAcdGetBoolean("strand");
-    source      = ajAcdGetBoolean("source");
+    source      = ajAcdGetBoolean("origin");
     position    = ajAcdGetBoolean("position");
     type        = ajAcdGetBoolean("type");
     tags        = ajAcdGetBoolean("tags");

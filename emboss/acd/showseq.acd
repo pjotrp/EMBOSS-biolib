@@ -189,7 +189,7 @@ section: additional [
     type: "frame"
   ]
 
-    string: matchsource [
+    string: sourcematch [
       additional: "Y"
       default: "*"
       information: "Source of feature to display"
@@ -206,7 +206,7 @@ section: additional [
       knowntype: "feature source list"
     ]
 
-    string: matchtype [
+    string: typematch [
       additional: "Y"
       default: "*"
       information: "Type of feature to display"
@@ -224,7 +224,7 @@ section: additional [
       knowntype: "feature key list"
     ]
 
-    integer: matchsense [
+    integer: sensematch [
       additional: "Y"
       default: "0"
       information: "Sense of feature to display"
@@ -251,7 +251,7 @@ section: additional [
              any score is permitted"
     ]
 
-    string: matchtag [
+    string: tagmatch [
       additional: "Y"
       default: "*"
       information: "Tag of feature to display"
@@ -273,7 +273,7 @@ section: additional [
       knowntype: "feature tag list"
     ]
 
-    string: matchvalue [
+    string: valuematch [
       additional: "Y"
       default: "*"
       information: "Value of feature tags to display"

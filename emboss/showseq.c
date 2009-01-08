@@ -178,13 +178,13 @@ int main(int argc, char **argv)
     enzymes    = ajAcdGetString("enzymes");
 
     /* feature filter criteria */
-    matchsource = ajAcdGetString("matchsource");
-    matchtype   = ajAcdGetString("matchtype");
-    matchsense  = ajAcdGetInt("matchsense");
+    matchsource = ajAcdGetString("sourcematch");
+    matchtype   = ajAcdGetString("typematch");
+    matchsense  = ajAcdGetInt("sensematch");
     minscore    = ajAcdGetFloat("minscore");
     maxscore    = ajAcdGetFloat("maxscore");
-    matchtag    = ajAcdGetString("matchtag");
-    matchvalue  = ajAcdGetString("matchvalue");
+    matchtag    = ajAcdGetString("tagmatch");
+    matchvalue  = ajAcdGetString("valuematch");
     stricttags  = ajAcdGetBoolean("stricttags");
 
 

@@ -954,7 +954,7 @@ FZ > 0
 FP 1 /Warning: /
 FP 0 /Error: /
 FP 1 /Died: /
-FP /Warning: Ambiguous master qualifier 'a' in sbegin_a \(auto,asequence\)/
+FP /Warning: Ambiguous master qualifier 'a' in sbegin_a \(auto,asequence,atest\)/
 FP /Died: Unknown qualifier -sbegin_a/
 //
 
@@ -1157,7 +1157,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## -send after another qualifier should work on all sequences
-CL testassoc tembl:v00294 tembl:x13776 -testc "fred" -send -1001
+CL testassoc tembl:v00294 tembl:x13776 -ctest "fred" -send -1001
 IN
 IN
 FI stderr
@@ -1174,7 +1174,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -send for first sequence
-CL testassoc tembl:v00294 tembl:x13776 -testc "fred" -send1 -1001
+CL testassoc tembl:v00294 tembl:x13776 -ctest "fred" -send1 -1001
 IN
 IN
 FI stderr
@@ -1191,7 +1191,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -send for first sequence
-CL testassoc  -send1 -1001 tembl:v00294 tembl:x13776 -testc "fred"
+CL testassoc  -send1 -1001 tembl:v00294 tembl:x13776 -ctest "fred"
 IN
 IN
 FI stderr
@@ -1208,7 +1208,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -send for first sequence
-CL testassoc  tembl:v00294 tembl:x13776 -send1 -1001 -testc "fred"
+CL testassoc  tembl:v00294 tembl:x13776 -send1 -1001 -ctest "fred"
 IN
 IN
 FI stderr
@@ -1225,7 +1225,7 @@ AP acdc
 PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 ## Numbered -sformat for first sequence makes -send global
-CL testassoc  tembl:v00294 tembl:x13776 -sformat1 embl -send -1001 -testc "fred"
+CL testassoc  tembl:v00294 tembl:x13776 -sformat1 embl -send -1001 -ctest "fred"
 IN
 IN
 FI stderr
@@ -1264,7 +1264,7 @@ IN
 FI stderr
 FZ > 0
 FP /Error: Unknown alignment format 'fred'\n/
-FP /Died: Alignment option -test: Validation failed\n/
+FP /Died: Alignment option -atest: Validation failed\n/
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 1 /Died: /
@@ -1280,7 +1280,7 @@ IN
 FI stderr
 FZ > 0
 FP /Error: Alignment format pair specifies at least 2 sequences, alignment has only 0\n/
-FP /Died: Alignment option -test: Validation failed\n/
+FP /Died: Alignment option -atest: Validation failed\n/
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 1 /Died: /
@@ -1296,7 +1296,7 @@ IN
 FI stderr
 FZ > 0
 FP /Error: Alignment format pair specifies at most 2 sequences, alignment has 3\n/
-FP /Died: Alignment option -test: Validation failed\n/
+FP /Died: Alignment option -atest: Validation failed\n/
 FP 0 /Warning: /
 FP 1 /Error: /
 FP 1 /Died: /
@@ -1462,7 +1462,7 @@ FP 0 /Warning: /
 FP 1 /Error: /
 FP 1 /Died: /
 FP /Error: Unknown report format 'fred'\n/
-FP /Died: Report option -test: Validation failed\n/
+FP /Died: Report option -rtest: Validation failed\n/
 //
 
 ID acdc-reportbadtaglist
@@ -1478,7 +1478,7 @@ FP 0 /Warning: /
 FP 2 /Error: /
 FP 0 /Died: /
 FP /Error: Bad report taglist at ' str s=String'\n/
-FP /Error: File .*testreporttags\.acd line 8: \(test\) Bad tag list for report\n/
+FP /Error: File .*testreporttags\.acd line 8: \(rtest\) Bad tag list for report\n/
 //
 
 ID acdc-selectambig
@@ -1583,7 +1583,7 @@ FP 0 /Warning: /
 FP 4 /Error: /
 FP 1 /Died: /
 FP 2 /Error: Bad select option '[1-9]'\n/
-FP /Died: testselect terminated: Bad value for '-test' and no more retries\n/
+FP /Died: testselect terminated: Bad value for '-stest' and no more retries\n/
 //
 
 ID acdc-badadvanced
@@ -1593,7 +1593,7 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 PP EMBOSS_ACDPROMPTS=2
 PP export EMBOSS_ACDPROMPTS
-CL testselect -testnum fred
+CL testselect -numtest fred
 IN 5
 FI stderr
 FZ > 0
@@ -1601,7 +1601,7 @@ FP 0 /Warning: /
 FP 1 /Error: /
 FP 1 /Died: /
 FP /Error: Invalid integer value 'fred'\n/
-FP /Died: testselect terminated: Bad value for '-testnum' and no prompt\n/
+FP /Died: testselect terminated: Bad value for '-numtest' and no prompt\n/
 //
 
 ID acdc-badauto
@@ -1611,14 +1611,14 @@ PP EMBOSS_ACDROOT=../../acd
 PP export EMBOSS_ACDROOT
 PP EMBOSS_ACDPROMPTS=2
 PP export EMBOSS_ACDPROMPTS
-CL testselect -test 6 -auto
+CL testselect -stest 6 -auto
 FI stderr
 FZ > 0
 FP 0 /Warning: /
 FP 2 /Error: /
 FP 1 /Died: /
 FP 1 /Error: Bad select option '[1-9]'\n/
-FP /Died: testselect terminated: Bad value for '-test' with -auto defined\n/
+FP /Died: testselect terminated: Bad value for '-stest' with -auto defined\n/
 //
 
 ##########################
@@ -9695,7 +9695,7 @@ FP 0 /^Exon/
 ID est2genome-nosplice-both
 TI 200
 AP est2genome
-CL -nosplice -mode both
+CL -nousesplice -mode both
 IN ../../data/pax6_cdna.fasta
 IN ../../data/z83307.seq
 IN
@@ -9713,7 +9713,7 @@ FP /^Exon       124  99\.2  1380  1505 HSA1280        428   553 pax6/
 ID est2genome-nosplice-both2
 TI 200
 AP est2genome
-CL -sreverse -nosplice -mode both
+CL -sreverse -nousesplice -mode both
 IN ../../data/pax6_cdna.fasta
 IN ../../data/z83307.seq
 IN
@@ -9734,7 +9734,7 @@ CC is found in both directions and the forward gene is the one reported
 ID est2genome-nosplice-forward
 TI 200
 AP est2genome
-CL -nosplice -mode forward
+CL -nousesplice -mode forward
 IN ../../data/pax6_cdna.fasta
 IN ../../data/z83307.seq
 IN
@@ -9752,7 +9752,7 @@ FP /^Exon       124  99\.2  1380  1505 HSA1280        428   553 pax6/
 ID est2genome-nosplice-reverse
 TI 200
 AP est2genome
-CL -nosplice -mode reverse -srev1
+CL -nousesplice -mode reverse -srev1
 IN ../../data/pax6_cdna.fasta
 IN ../../data/z83307.seq
 IN
@@ -9770,7 +9770,7 @@ FP /^Exon       124  99\.2  1380  1505 HSA1280        428   553 pax6/
 ID est2genome-nosplice-reverse2
 TI 200
 AP est2genome
-CL -nosplice -mode reverse
+CL -nousesplice -mode reverse
 IN ../../data/pax6_cdna.fasta
 IN ../../data/z83307.seq
 IN
@@ -11480,7 +11480,7 @@ FP /^%%Pages: 1\n/
 
 ID octanol-nodiff
 AP octanol
-CL -nodiff
+CL -noplotdiff
 IN tsw:opsd_human
 IN ps
 FI stdout
@@ -16902,7 +16902,7 @@ FP /source\n/
 ID showfeat-ex3
 UC Display just positions and names of CDS features - this can be used as a regions file in showseq:
 AP showfeat
-CL -matchtype CDS -width 0 -noid -nodesc -noscale -pos 
+CL -typematch CDS -width 0 -noid -nodesc -noscale -pos 
 IN tembl:x65921
 IN
 FI stderr
