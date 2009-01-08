@@ -16,7 +16,7 @@
 ** @modified May 06 2004 Jon Ison Minor mods.
 ** @@
 **
-** This library is free software; you can redistribute it and/or
+** this library is free software; you can redistribute it and/or
 ** modify it under the terms of the GNU Library General Public
 ** License as published by the Free Software Foundation; either
 ** version 2 of the License, or (at your option) any later version.
@@ -69,6 +69,7 @@ static AjBool acdDoPretty = AJFALSE;
 static AjBool acdDoTable = AJFALSE;
 static AjBool acdDoTrace = AJFALSE;
 static AjBool acdDoValid = AJFALSE;
+static AjBool acdDoXsd = AJFALSE;
 static AjBool acdVerbose = AJFALSE;
 static AjBool acdCommandLine = AJTRUE;
 static AjBool acdAuto = AJFALSE;
@@ -90,6 +91,9 @@ static ajint acdPromptTry = 2;
 
 static AjPStr acdTmpStr = NULL;
 static AjPStr acdTmpStr2 = NULL;
+
+static AjPStr acdPrefName = NULL;
+static AjPStr acdPrefToken = NULL;
 
 static AjPStr acdArgSave = NULL;
 static AjPStr acdInputSave = NULL;
@@ -400,6 +404,32 @@ typedef struct AcdSTableItem
 
 
 
+/* @datastatic AcdPXsdItem ****************************************************
+**
+** XSD data structure
+**
+** @alias AcdSXsdItem
+** @alias AcdOXsdItem
+**
+** @attr Qual [AjPStr] Qualifier name
+** @attr Annotation [AjPStr] Annotation text
+** @attr Valid [AjPStr] Valid input
+** @attr Expect [AjPStr] Expected value(s)
+** @@
+******************************************************************************/
+
+typedef struct AcdSAXsdItem
+{
+    AjPStr Qual;
+    AjPStr Annotation;
+    AjPStr Valid;
+    AjPStr Expect;
+} AcdOXsdItem;
+#define AcdPXsdItem AcdOXsdItem*
+
+
+
+
 /* @datastatic AcdPAcd ********************************************************
 **
 ** AJAX Command Definition item data.
@@ -690,8 +720,8 @@ static AjBool    acdExpCase(AjPStr* result, const AjPStr str);
 static AjBool    acdExpFilename(AjPStr* result, const AjPStr str);
 static AjBool    acdExpExists(AjPStr* result, const AjPStr str);
 
-static AcdPAcd   acdFindAcd(const AjPStr name, const AjPStr token,
-			    ajint pnum);
+static AcdPAcd   acdFindAcd(const AjPStr name, const AjPStr token);
+static AcdPAcd   acdFindAcdTest(const AjPStr name, const AjPStr token);
 static AcdPAcd   acdFindAssoc(const AcdPAcd thys,
 			      const AjPStr name, const AjPStr altname);
 static ajint     acdFindAttr(const AcdPAttr attr, const AjPStr attrib);
@@ -739,6 +769,8 @@ static void      acdHelpTableShow(const AjPList tablist, const char* title);
 static void      acdHelpText(const AcdPAcd thys, AjPStr* msg);
 static void      acdHelpValid(const AcdPAcd thys, AjBool table, AjPStr *str);
 static AjBool    acdHelpVarResolve(AjPStr* str, const AjPStr src);
+static void      acdHelpXsd(const AcdPAcd thys, AjPList tablist);
+static void      acdHelpXsdShow(const AjPList inlist, const AjPList outlist);
 static AjBool    acdInFilename(AjPStr* infname);
 static AjBool    acdInFileSave(const AjPStr infname, AjBool reset);
 static AjBool    acdInTypeFeat(AjPStr* intype);
@@ -747,6 +779,7 @@ static AjBool    acdInTypeFeatSaveC(const char* intype);
 static AjBool    acdInTypeSeq(AjPStr* intype);
 static AjBool    acdInTypeSeqSave(const AjPStr intype);
 static AjBool    acdIsLeftB(AjPList listwords);
+static AjBool    acdIsAtype(const AcdPAcd thys);
 static AjBool    acdIsParam(const char* arg, AjPStr* param, ajint* iparam,
 			    AcdPAcd* acd);
 static AjBool    acdIsParamValue(const AjPStr pval);
@@ -773,7 +806,7 @@ static AcdPAcd   acdNewAcdKey(const AjPStr name, const AjPStr token,
 static AcdPAcd   acdNewAppl(const AjPStr name);
 static AcdPAcd   acdNewEndsec(const AjPStr name);
 static AcdPAcd   acdNewQual(const AjPStr name, const AjPStr token,
-			    AjPStr* type, ajint pnum);
+			    AjPStr* type);
 static AcdPAcd   acdNewQualQual(const AjPStr name, AjPStr* type);
 static AcdPAcd   acdNewRel(const AjPStr name);
 static AcdPAcd   acdNewSec(const AjPStr name);
@@ -899,8 +932,7 @@ static AjBool    acdTestDebug(void);
 static AjBool    acdTestFilter(void);
 static AjBool    acdTestQualC(const char *name);
 static AjBool    acdTestStdout(void);
-static void      acdTestUnknown(const AjPStr name, const AjPStr alias,
-				ajint pnum);
+static void      acdTestUnknown(const AjPStr name, const AjPStr alias);
 static AjBool    acdTextFormat(AjPStr* text);
 static void      acdTextTrim(AjPStr* text);
 static void      acdTokenToLowerS(AjPStr *token, ajint* number);
@@ -1971,6 +2003,8 @@ AcdOAttr acdAttrSeqoutall[] =
 	 "Defaults to 'no file'"},
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null USA as 'no output'"},
+    {"aligned", VT_BOOL, 0, "N",
+	 "Sequences are aligned"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -3405,7 +3439,7 @@ void ajAcdInitP(const char *pgm, ajint argc, char * const argv[],
     
     /* set the true values and prompt for missing standard values */
 
-    if(acdDoTable)
+    if(acdDoTable || acdDoXsd)
 	acdHelp();
 
     acdSetAll();
@@ -3646,7 +3680,7 @@ static void acdParse(AjPList listwords, AjPList listcount)
 	    else	/* we have an alternate name before the '[' */
 		ajStrAssignS(&acdStrAlias, acdStrName);
 	    
-	    acdNewCurr = acdNewQual(acdStrName, acdStrAlias, &acdStrType, 0);
+	    acdNewCurr = acdNewQual(acdStrName, acdStrAlias, &acdStrType);
 
 	    acdWordNum++;		/* add one for '[' */
 
@@ -4253,7 +4287,7 @@ static AcdPAcd acdNewAppl(const AjPStr name)
 	{
 	    ajStrAssignC(&qname, quals[i].Name);
 	    ajStrAssignC(&qtype, quals[i].Type);
-	    /*   qacd = acdNewQual(qname, qname, &qtype, o);*/
+	    /*   qacd = acdNewQual(qname, qname, &qtype);*/
 	    qacd = acdNewQualQual(qname, &qtype);
 	    if(*quals[i].Default)
 		acdSetDefC(qacd, quals[i].Default);
@@ -4452,13 +4486,12 @@ static AcdPAcd acdNewEndsec(const AjPStr name)
 ** @param [r] token [const AjPStr] Qualifier name to be used on command line
 ** @param [u] type [AjPStr*] Type of value to be defined. Expanded to full
 **                           type name.
-** @param [r] pnum [ajint] Parameter number (zero for general qualifiers)
 ** @return [AcdPAcd] ACD parameter object for name.
 ** @@
 ******************************************************************************/
 
 static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
-			  AjPStr* type, ajint pnum)
+			  AjPStr* type)
 {
     AcdPAcd acd;
     AcdPAcd qacd;
@@ -4498,7 +4531,7 @@ static AcdPAcd acdNewQual(const AjPStr name, const AjPStr token,
      ** (if any) from earlier
      */
     
-    acdTestUnknown(name, token, pnum);
+    acdTestUnknown(name, token);
     acd = acdNewAcd(name, token, itype);
     acd->Level = ACD_QUAL;
     if(saveqacd)
@@ -4785,40 +4818,25 @@ static void acdDel(AcdPAcd *Pacd)
 **
 ** @param [r] name [const AjPStr] Token name to be used by applications
 ** @param [r] alias [const AjPStr] Qualifier name to be used on command line
-** @param [r] pnum [ajint] Parameter number (zero for general qualifiers)
 ** @return [void]
 ** @@
 ******************************************************************************/
 
-static void acdTestUnknown(const AjPStr name, const AjPStr alias, ajint pnum)
+static void acdTestUnknown(const AjPStr name, const AjPStr alias)
 {
     AcdPAcd pa;
     
-    pa = acdFindAcd(name, alias, pnum);
-    if(pa)
-    {
-	if(ajStrMatchS(name, alias))
-	{
-	    if(pnum)			/* never used? */
-		acdErrorAcd(pa, "Name '%S%d' not unique\n",
-			    name, pnum);
-	    else			/* test: dupname.acd */
-		acdErrorAcd(pa, "Name '%S' not unique\n",
-			    name);
-	}
-	else
-	{
-	    if(pnum)			/* never used? */
-		acdErrorAcd(pa,
-			    "Name/Alias '%S%d'/'%S%d' not unique\n",
-			    name, pnum, alias, pnum);
-	    else			/* test: dupalias.acd */
-		acdErrorAcd(pa,
-			    "Name/Alias '%S'/'%S' not unique\n",
-			    name, alias);
-	}
-    }
+    pa = acdFindAcdTest(name, alias);
+    if(!pa)
+      return;
 
+    if(ajStrMatchS(name, alias))
+      acdErrorAcd(pa, "Name '%S' not unique\n",
+		  name);
+    else
+      acdErrorAcd(pa,
+		  "Name/Alias '%S'/'%S' not unique\n",
+		  name, alias);
     return;
 }
 
@@ -4874,7 +4892,7 @@ static void acdTestAssocUnknown(const AjPStr name)
 	if(!pa->Assoc &&(ajStrMatchS(pa->Name, name) ||
 			 ajStrMatchS(pa->Token, name)))
 	{
-	    if(ajStrMatchS(pa->Name, pa->Token))	/* test: dupassoc.acd */
+	    if(ajStrMatchS(pa->Name, pa->Token)) /* test: dupassoc.acd */
 		acdErrorAcd(pa,
 			    "Associated qualifier '%S' clashes with '%S' "
 			    "in ACD file\n",
@@ -4900,31 +4918,148 @@ static void acdTestAssocUnknown(const AjPStr name)
 **
 ** @param [r] name [const AjPStr] Token name to be used by applications
 ** @param [r] token [const AjPStr] Qualifier name to be used on command line
-** @param [r] pnum [ajint] Parameter number (zero for general qualifiers)
 ** @return [AcdPAcd] ACD object or NULL if not found
 ** @@
 ******************************************************************************/
 
-static AcdPAcd acdFindAcd(const AjPStr name, const AjPStr token, ajint pnum)
+static AcdPAcd acdFindAcd(const AjPStr name, const AjPStr token)
 {
     AcdPAcd pa;
+    AjBool sametoken = ajFalse;
 
-    acdLog("acdFindAcd ('%S', '%S', %d)\n", name, token, pnum);
+    sametoken = ajStrMatchS(name, token);
+
+    acdLog("acdFindAcd ('%S', '%S', %d)\n", name, token);
     for(pa=acdList; pa; pa=pa->Next)
     {
-        if(acdIsStype(pa))
-	    continue;
-	if(ajStrMatchS(pa->Name, name) || ajStrMatchS(pa->Token, token))
-	    if(!pa->PNum || !pnum || (pa->PNum == pnum))
-	    {
-		acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
-		return pa;
-	    }
-    }
+      if(acdIsStype(pa))
+	continue;
+      if(ajStrMatchS(pa->Name, name))
+      {
+	acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	return pa;
+      }
+      if(ajStrMatchS(pa->Token, name))
+      {
+	acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	return pa;
+      }
 
+      if(!sametoken)
+	continue;
+
+      if(ajStrMatchS(pa->Name, token))
+      {
+	acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	return pa;
+      }
+      if(ajStrMatchS(pa->Token, token))
+      {
+	acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	return pa;
+      }
+    }
     return NULL;
 }
 
+
+
+
+/* @funcstatic acdFindAcdTest *************************************************
+**
+** Locates an ACD object by name, and (if different) by token.
+**
+** Tests for unique 4 character prefix and issues a warning if
+** a clash is found with any already defined qualifier.
+**
+** All other tests are the same as in acdFindAcd
+**
+** @param [r] name [const AjPStr] Token name to be used by applications
+** @param [r] token [const AjPStr] Qualifier name to be used on command line
+** @return [AcdPAcd] ACD object or NULL if not found
+** @@
+******************************************************************************/
+
+static AcdPAcd acdFindAcdTest(const AjPStr name, const AjPStr token)
+{
+    AcdPAcd pa;
+    AjBool usetoken = ajFalse;
+
+    ajuint minunique=5;
+
+    ajStrAssignSubS(&acdPrefName, name, 0, minunique);
+
+    usetoken = !ajStrMatchS(name, token);
+    if(usetoken)
+    {
+      ajStrAssignSubS(&acdPrefToken, token, 0, minunique);
+      acdLog("acdFindAcdTest ('%S' ['%S'], '%S' ['%S'])\n",
+	     name, acdPrefName, token, acdPrefToken);
+    }
+    else
+    {
+      acdLog("acdFindAcdTest ('%S' ['%S'])\n",
+	     name, acdPrefName);
+    }
+    for(pa=acdList; pa; pa=pa->Next)
+    {
+      if(acdIsStype(pa) || acdIsAtype(pa))
+	continue;
+      if(ajStrPrefixS(pa->Name, acdPrefName))
+      {
+	if(ajStrMatchS(pa->Name, name))
+	{
+	  acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	  return pa;
+	}
+	if(ajStrGetLen(name) >= minunique)
+	  acdWarn("Qualifier '%S' matches start of '%S'",
+		  name, pa->Name);
+      }
+
+      if(!ajStrMatchS(pa->Token, pa->Name) &&
+	 ajStrPrefixS(pa->Token, acdPrefName))
+      {
+	if(ajStrMatchS(pa->Token, name))
+	{
+	  acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	  return pa;
+	}
+	if(ajStrGetLen(name) >= minunique)
+	  acdWarn("Qualifier '%S' matches start of '%S'",
+		  name, pa->Token);
+      }
+
+      if(!usetoken)
+	continue;
+
+      if(ajStrPrefixS(pa->Name, acdPrefToken))
+      {
+	if(ajStrMatchS(pa->Name, token))
+	{
+	  acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	  return pa;
+	}
+	if(ajStrGetLen(token) >= minunique)
+	  acdWarn("Qualifier '%S' matches start of '%S'",
+		  token, pa->Name);
+      }
+
+      if(!ajStrMatchS(pa->Token, pa->Name) &&
+	 ajStrPrefixS(pa->Token, acdPrefToken))
+      {
+	if(ajStrMatchS(pa->Token, token))
+	{
+	  acdLog("..found '%S' %d\n", pa->Name, pa->PNum);
+	  return pa;
+	}
+	if(ajStrGetLen(token) >= minunique)
+	  acdWarn("Qualifier '%S' matches start of '%S'",
+		  token, pa->Token);
+      }
+    }
+    return NULL;
+}
 
 
 
@@ -13616,7 +13751,7 @@ AjBool ajAcdIsUserdefined(const char *token)
 
     acdTokenToLowerS(&tmpstr, &pnum);
 
-    acd = acdFindAcd(tmpstr, tmpstr, pnum);
+    acd = acdFindAcd(tmpstr, tmpstr);
     if(!acd)
     {
         ajErr("Qualifier '-%s' not found", token);
@@ -13836,7 +13971,7 @@ static const AjPStr acdGetValStr(const char *token)
 
     acdTokenToLowerS(&tmpstr, &pnum);
 
-    acd = acdFindAcd(tmpstr, tmpstr, pnum);
+    acd = acdFindAcd(tmpstr, tmpstr);
     ajStrDel(&tmpstr);
     if(!acd) return NULL;
 
@@ -13869,7 +14004,7 @@ static const AjPStr acdGetValDefault(const char *token)
 
     acdTokenToLowerS(&tmpstr, &pnum);
 
-    acd = acdFindAcd(tmpstr, tmpstr, pnum);
+    acd = acdFindAcd(tmpstr, tmpstr);
     ajStrDel(&tmpstr);
     if(!acd) return NULL;
 
@@ -14077,6 +14212,9 @@ static void acdHelp(void)
     AjPStr* def;
     AjBool tmpBool;
     char hlpFlag;
+    ajint iattr = 0;
+    ajint igrp = 0;
+    AjPStr groupname = NULL;
 
     AjBool flagReq = ajFalse;
     AjBool flagOpt = ajFalse;
@@ -14086,6 +14224,8 @@ static void acdHelp(void)
     AjPList advlist = NULL;
     AjPList genlist = NULL;
     AjPList asslist = NULL;
+    AjPList inlist = NULL;
+    AjPList outlist = NULL;
     
     acdLog("acdHelp %B\n", acdDoHelp);
     
@@ -14103,7 +14243,13 @@ static void acdHelp(void)
 	       "bgcolor=\"#ccccff\">");
 	/* was #f5f5ff */
     }
-    
+
+    if(acdDoXsd)
+    {
+        inlist = ajListNew();
+        outlist = ajListNew();
+    }
+
     acdLog("++ acdHelp\n");
     for(pa=acdList; pa; pa=pa->Next)
     {
@@ -14163,6 +14309,26 @@ static void acdHelp(void)
 	switch(helpType)
 	{
 	case HELP_APP:			/* application, do nothing */
+            iattr = acdFindAttrC(acdAttrAppl, "groups");
+            ajStrAssignS(&groupname, pa->AttrStr[iattr]);
+            igrp = ajStrFindAnyK(groupname, ',');
+            if(igrp != -1)
+                ajStrTruncateLen(&groupname, igrp);
+            ajStrFmtLower(&groupname);
+            ajStrExchangeKK(&groupname, ':', '_');
+            ajStrExchangeKK(&groupname, ' ', '_');
+            if(acdDoXsd)
+            {
+                ajUserDumpC("<?xml version=\"1.0\" encoding=\"UTF-8\" "
+                            "standalone=\"yes\"?>");
+                ajUser("<xs:schema version=\"1.0\" "
+                       "targetNamespace=\"http://embossws.ebi/%S\"",
+                       acdProgram);
+                ajUser("  xmlns:tns=\"http://embossws.ebi/%S\"",
+                       acdProgram);
+                ajUser("  xmlns:tns=\"http://www.w3.org/2001/XMLSchema\"");
+                ajUser("  xmlns:tns=\"http://embossws.ebi/common\"");
+            }
 	    break;
 	case HELP_REQ:
 	    acdHelpAppend(pa, &helpReq, hlpFlag);
@@ -14183,21 +14349,21 @@ static void acdHelp(void)
 	default:
 	    acdErrorAcd(pa, "unknown qualifier type %d in acdHelp", helpType);
 	}
-	
+
+	if(acdType[pa->Type].Section == acdSecOutput)
+            acdHelpXsd(pa, outlist);
+        else if(pa->Level != ACD_APPL)
+            acdHelpXsd(pa, inlist);
+
 	if(pa->AssocQuals)
 	{
 	    if(helpType == HELP_APP)
 	    {
 		if(acdVerbose)
-		{
 		    acdHelpAssoc(pa, &helpGen, NULL);
-		    acdHelpAssocTable(pa, genlist);
-		}
 		else
-		{
 		    acdHelpAssoc(pa, &helpGen, "help");
-		    acdHelpAssocTable(pa, genlist);
-		}
+                acdHelpAssocTable(pa, genlist);
 	    }
 	    else
 	    {
@@ -14236,8 +14402,13 @@ static void acdHelp(void)
     if(acdVerbose && acdDoTable)
 	acdHelpTableShow(genlist, "General qualifiers");
     
+    if(acdDoXsd)
+	acdHelpXsdShow(inlist, outlist);
+    
     if(acdDoTable)
 	ajUserDumpC("</table>");
+    if(acdDoXsd)
+	ajUserDumpC("</xs:schema>");
     
     ajExit();
 }
@@ -15848,6 +16019,89 @@ static void acdHelpTableShow(const AjPList tablist, const char* title)
 
 
 
+/* @funcstatic acdHelpXsdShow *************************************************
+**
+** Prints the qualifier category and the help for any
+** qualifiers in that category (or "(none)" if there are none).
+**
+** @param [r] inlist [const AjPList] Help text (if any).
+** @param [r] outlist [const AjPList] Help text (if any).
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
+{
+    AcdPXsdItem item;
+    AjIList iter = NULL;
+
+    if(!acdDoXsd)
+	return;
+
+    ajUserDumpC("  <xs:complexType name=\"appInputs\">");
+    ajUserDumpC("    <xs:sequence>");
+
+    if(ajListGetLength(inlist))
+    {
+	iter = ajListIterNewread(inlist);
+	while((item = ajListIterGet(iter)))
+	{
+	    acdTextTrim(&item->Annotation);
+
+/* sequences: 1 for required values - e.g. parameters - 0 for others*/
+	    ajUser("      <xs:element name=\"%S\" minOccurs=\"1\">",
+                   item->Qual);
+            ajUser("        type=\"embossSequenceInput\" />");
+/* datatypes with more than one value - sequences see above, others
+ * may explicitly write their choices */
+            
+            ajUser("      <xs:choice id=\"%S\" "
+                   "minOccurs=\"0\" maxOccurs=\"1\">",
+                   item->Qual);
+	    ajUser("      </xs:choice>");
+
+	    ajUser("          <xs:annotation>");
+            ajUser("            <xs:documentation>");
+            ajUser("%S", item->Annotation);
+            ajUser("            </xs:documentation>");
+	    ajUser("          </xs:annotation>");
+
+	    ajUser("      <xs:element name=\"%S\" minOccurs=\"1\"",
+                   item->Qual);
+            ajUser("        <xs:simpleType>");
+            ajUser("          <xs:restriction base=\"xs:long\"");
+            ajUser("            <xs:mininclusive value=\"1\">"
+                   "</xs:minInclusive>");
+            ajUser("          </xs:restriction");
+            ajUser("        </xs:simpleType>");
+	    ajUser("      </xs:element>");
+	}
+    }
+    ajListIterDel(&iter);
+    ajUserDumpC("    </xs:sequence>");
+
+
+    
+    ajUserDumpC("  <xs:complexType name=\"appResults\">");
+    ajUserDumpC("    <xs:sequence>");
+
+    if(ajListGetLength(outlist))
+    {
+	iter = ajListIterNewread(inlist);
+	while((item = ajListIterGet(iter)))
+	{
+	}
+    }
+    ajUserDumpC("    </xs:sequence>");
+
+    ajListIterDel(&iter);
+
+    return;
+}
+
+
+
+
 /* @funcstatic acdHelpAssocTable **********************************************
 **
 ** Appends an associated qualifier and its help text to the table list.
@@ -15977,6 +16231,84 @@ static void acdHelpTable(const AcdPAcd thys, AjPList tablist)
     
     acdHelpValid(thys, ajTrue, &item->Valid);
     acdHelpText(thys, &item->Help);
+    
+    ajListPushAppend(tablist, item);
+    
+    return;
+}
+
+
+
+
+/* @funcstatic acdHelpXsd *****************************************************
+**
+** Appends a qualifier and its help text to the XSD list.
+**
+** @param [r] thys [const AcdPAcd]  ACD object
+** @param [u] tablist [AjPList] Xsd list being built
+** @return [void]
+** @@
+******************************************************************************/
+
+static void acdHelpXsd(const AcdPAcd thys, AjPList tablist)
+{    
+    AcdPXsdItem item;
+    
+    static AjPStr nostr   = NULL;
+    static AjPStr nullstr = NULL;
+    static AjPStr type    = NULL;
+    AjBool boolval;
+    
+    AjPStr defstr;
+    
+    if(!acdDoXsd)
+	return;
+    
+    AJNEW0(item);
+    
+    if(!nullstr)
+	nullstr = ajStrNew();
+    
+    if(thys->DefStr)
+	defstr = thys->OrigStr;
+    else
+	defstr = nullstr;
+    
+    ajStrAssignClear(&nostr);
+    if(acdIsQtype(thys) &&
+       (ajCharMatchC("boolean", acdType[thys->Type].Name) ||
+	ajCharMatchC("toggle", acdType[thys->Type].Name) ))
+    {
+	if(ajStrToBool(defstr, &boolval))
+	{
+	    if(boolval)
+		ajStrAssignC(&nostr, "no");
+	    ajFmtPrintS(&item->Expect, "%B", boolval);
+	}
+	else
+	    if(!ajStrGetLen(defstr))
+		ajFmtPrintS(&item->Expect, "%B", ajFalse);
+
+	defstr = nullstr;
+    }
+    
+    if(thys->Level == ACD_PARAM)
+	ajFmtPrintS(&item->Qual, "%S%S<br>(Parameter %d)",
+		    nostr, thys->Name, thys->PNum);
+    else
+	ajFmtPrintS(&item->Qual, "%S%S", nostr, thys->Name);
+    
+    ajStrAssignC(&type, acdType[thys->Type].Name);
+    
+    acdHelpExpect(thys, ajTrue, &item->Expect);
+    
+    /*
+     **  warning - don't try acdVarResolve here because we have not yet
+     **  read in the data and things like calculated attributes do not exist
+     */
+    
+    acdHelpValid(thys, ajTrue, &item->Valid);
+    acdHelpText(thys, &item->Annotation);
     
     ajListPushAppend(tablist, item);
     
@@ -17434,7 +17766,7 @@ static AjBool acdVarTestValid(const AjPStr var, AjBool* toggle)
 	ajRegSubI(toggleexp, 2, &varref); /* returns $(varname) */
 	if(acdVarSimple(varref, &varname))
 	{
-	    acd = acdFindAcd(varname, varname, 0);
+	    acd = acdFindAcd(varname, varname);
 	    if (acd)
 	    {
 		acdLog("acdVarTestValid varname %S acd %S type %s\n",
@@ -19090,8 +19422,8 @@ static AjBool acdAttrValueStr(const AcdPAcd thys,
 **
 ** Sets special internal variables to reflect their presence.
 **
-** Currently these are "acdlog", "acdpretty", "acdtable", "acdtrace" and
-** "acdvalid"
+** Currently these are "acdhelp", "acdlog", "acdpretty", "acdtable",
+** "acdtrace", "acdvalid", "acdverbose", "acdxsd" and "acdnocommandline"
 **
 ** @param [r] optionName [const char*] option name
 ** @return [AjBool] ajTrue if option was recognised
@@ -19100,9 +19432,21 @@ static AjBool acdAttrValueStr(const AcdPAcd thys,
 
 AjBool ajAcdSetControl(const char* optionName)
 {
+    if(!ajCharCmpCase(optionName, "acdhelp"))
+    {
+	acdDoHelp = ajTrue;
+	return ajTrue;
+    }
+
     if(!ajCharCmpCase(optionName, "acdlog"))
     {
 	acdDoLog = ajTrue;
+	return ajTrue;
+    }
+
+    if(!ajCharCmpCase(optionName, "acdnocommandline"))
+    {
+	acdCommandLine = ajFalse;
 	return ajTrue;
     }
 
@@ -19130,21 +19474,15 @@ AjBool ajAcdSetControl(const char* optionName)
 	return ajTrue;
     }
 
-    if(!ajCharCmpCase(optionName, "acdhelp"))
-    {
-	acdDoHelp = ajTrue;
-	return ajTrue;
-    }
-
     if(!ajCharCmpCase(optionName, "acdverbose"))
     {
 	acdVerbose = ajTrue;
 	return ajTrue;
     }
 
-    if(!ajCharCmpCase(optionName, "acdnocommandline"))
+    if(!ajCharCmpCase(optionName, "acdxsd"))
     {
-	acdCommandLine = ajFalse;
+	acdDoXsd = ajTrue;
 	return ajTrue;
     }
 
@@ -24655,6 +24993,25 @@ static AjBool acdIsStype(const AcdPAcd thys)
 
 
 
+/* @funcstatic acdIsAtype *****************************************************
+**
+** Tests whether an ACD object is an application type.
+**
+** @param [r] thys [const AcdPAcd] ACD object
+** @return [AjBool] ajTrue if the object is a qualifier or parameter
+** @@
+******************************************************************************/
+
+static AjBool acdIsAtype(const AcdPAcd thys)
+{
+    if(thys->Level == ACD_APPL)
+	return ajTrue;
+
+    return ajFalse;
+}
+
+
+
 /* @funcstatic acdTextFormat **************************************************
 **
 ** Converts backslash codes in a string into special characters
@@ -25170,7 +25527,7 @@ __noreturn static void acdErrorAcd(const AcdPAcd thys, const char* fmt, ...)
     AjPStr errstr = NULL;
 
     acdErrorCount++;
-
+    ajUtilCatch();
     va_start(args, fmt) ;
     ajFmtVPrintS(&errstr, fmt, args);
     va_end(args) ;
@@ -25344,6 +25701,9 @@ static void acdReset(void)
 
     ajStrDel(&acdTmpStr);
     ajStrDel(&acdTmpStr2);
+
+    ajStrDel(&acdPrefName);
+    ajStrDel(&acdPrefToken);
 
     ajStrDel(&acdArgSave);
     ajStrDel(&acdInputSave);
