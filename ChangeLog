@@ -1,4 +1,14 @@
 Version 6.1.0
+	Command line qualifiers are renamed where the first 5 characters
+	are the same. These were:
+	    est2genome -splice to -usesplace
+	    prettyplot -boxcolval to -boxuse
+            octanol -*plot to -plot*
+            showfeat -match* to -*match; -source to -origin
+            showseq -match* to -*match; -source to -origin
+	    vectorstrip -vectorfile to -readfile; -linker* to -*linker
+	and similar changes for EMBASSY applications.
+
 	MEMENEW updated for meme/mast version 4.0.0. ememe now
 	produces fasta, html, text, xml and xsl outputs. A new variant,
 	ememetext, produces only the text and fasta outputs.
