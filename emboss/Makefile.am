@@ -24,7 +24,7 @@ seqretset seqretsingle seqrettype \
 testplot treetypedisplay
 
 bin_PROGRAMS = aaindexextract abiview \
-acdc acdpretty acdtable acdtrace acdvalid \
+acdc acdpretty acdtable acdtrace acdvalid acdxsd \
 aligncopy aligncopypair antigenic \
 backtranambig backtranseq banana biosed btwisted \
 cai chaos charge checktrans chips \
@@ -81,6 +81,7 @@ acdpretty_SOURCES = acdpretty.c
 acdtable_SOURCES = acdtable.c
 acdtrace_SOURCES = acdtrace.c
 acdvalid_SOURCES = acdvalid.c
+acdxsd_SOURCES = acdxsd.c
 aligncopy_SOURCES = aligncopy.c
 aligncopypair_SOURCES = aligncopypair.c
 antigenic_SOURCES = antigenic.c
