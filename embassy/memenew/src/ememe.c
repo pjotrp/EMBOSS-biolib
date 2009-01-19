@@ -25,12 +25,6 @@
 #include "emboss.h"
 
 
-static void ememe_copydelfile(AjPFile outf, const AjPStr rnddir,
-                              const char *name);
-static void ememe_graphmove(const AjPStr rnddir);
-
-
-
 /* @prog ememe ****************************************************************
 **
 ** EMBOSS wrapper to meme from Timothy Bailey's MEME package version 3.0.14 
@@ -77,20 +71,22 @@ int main(int argc, char **argv)
     AjBool     xbranch   = ajFalse;
     AjBool     wbranch   = ajFalse;
     ajint      bfactor   = 0;
-    AjPFile    outhtml   = NULL;
-    AjPFile    outtext   = NULL;
-    AjPFile    outxml    = NULL;
-    AjPFile    outxsl    = NULL;
+
+    AjPDirout  outdir    = NULL;
+
+    const AjPStr dirext = NULL;
+
     
     /* Housekeeping variables */
     AjPStr     cmd       = NULL;
-    AjPStr     ssname    = NULL;      
-    AjPStr     rnddir    = NULL;
+    AjPStr     userdir   = NULL;
     AjPSeqout  outseq    = NULL;   
     AjPStr     tmp       = NULL;
     char       option;
 
-
+    AjPFile outs = NULL;
+    AjPStr  outsname = NULL;
+    
 
     
     /* ACD file processing */
@@ -132,34 +128,43 @@ int main(int argc, char **argv)
     wbranch   = ajAcdGetBoolean("wbranch");
     bfactor   = ajAcdGetInt("bfactor");    
 
-    outhtml   = ajAcdGetOutfile("outhtml");
-    outtext   = ajAcdGetOutfile("outtext");
-    outxml    = ajAcdGetOutfile("outxml");
-    outxsl    = ajAcdGetOutfile("outxsl");
-    outseq    = ajAcdGetSeqoutset("outseq");
-    
-    
+    outdir    = ajAcdGetOutdir("outdir");    
+
 
     /* MAIN APPLICATION CODE */
     /* 1. Housekeeping */
-    cmd    = ajStrNew();
-    tmp    = ajStrNew();
-    rnddir = ajStrNew();
+    cmd     = ajStrNew();
+    tmp     = ajStrNew();
+    userdir = ajStrNew();
+
+    outsname = ajStrNew();
+
+
+    ajStrAssignS(&userdir,ajDiroutGetPath(outdir));
+    dirext = ajDiroutGetExt(outdir);
     
+    if(ajStrGetLen(dirext))
+        ajFmtPrintAppS(&userdir,".%S",dirext);
+
     /* 2. Re-write dataset to a temporary file in a format (fasta) MEME
     ** can understand.
     ** Can't just pass the name of dataset to MEME as the name provided
     ** might be a USA which MEME would not understand.
     */
 
-    /*fafname = ajFileGetNameS(outseq->File);*/
-    ssname = ajStrNewS(ajFileGetNameS(outseq->File));
+    ajFmtPrintS(&outsname,"%Smeme.fasta",userdir);
+    outs = ajFileNewOutNameS(outsname);
+    if(!outs)
+        ajFatal("Cannot open output fasta file %S",outsname);
     
+    outseq = ajSeqoutNewFile(outs);
+
     ajSeqoutSetFormatC(outseq, "fasta");
     ajSeqoutWriteSet(outseq, dataset);
     ajSeqoutClose(outseq);
     ajSeqoutDel(&outseq);
-
+    ajFileClose(&outs);
+    
 
     /* 3. Build ememe command line */
     /* Command line is built in this order: 
@@ -171,7 +176,7 @@ int main(int argc, char **argv)
     if(!ajNamGetValueC("meme", &cmd))
 	ajStrAssignC(&cmd, "meme");
 
-    ajFmtPrintAppS(&cmd, " %S", ssname);
+    ajFmtPrintAppS(&cmd, " %S", outsname);
 
     if(bfile)
 	ajFmtPrintAppS(&cmd, " -bfile %s ", ajFileGetNameC(bfile));
@@ -290,9 +295,8 @@ int main(int argc, char **argv)
     else
 	ajFmtPrintAppS(&cmd, "-dna ");
 
-    ajFilenameSetTempname(&rnddir);
     
-    ajFmtPrintAppS(&cmd, " -oc %S",rnddir);
+    ajFmtPrintAppS(&cmd, " -oc %S",userdir);
 
 
     /* 4. Close files from ACD before calling meme */	
@@ -302,22 +306,10 @@ int main(int argc, char **argv)
 
     /* 5. Call meme */
     /* ajFmtPrint("\n%S\n", cmd); */
-    system(ajStrGetPtr(cmd));    
-
-    /* 5a. Copy output files */
-    ememe_copydelfile(outhtml, rnddir, "meme.html");
-    ememe_copydelfile(outtext, rnddir, "meme.txt");
-    ememe_copydelfile(outxml, rnddir, "meme.xml");
-    ememe_copydelfile(outxsl, rnddir, "meme.xsl");
-
-    /* 5b Copy output png and eps files */
-    ememe_graphmove(rnddir);
-
+    if(system(ajStrGetPtr(cmd)))
+        ajFatal("meme application error using command line: %S",cmd);
     
-    if(rmdir(ajStrGetPtr(rnddir)))
-        ajFatal("Cannot delete temporary directory (%S)",rnddir);
-    
-    
+
     /* 6. Exit cleanly */
 
     ajSeqsetDel(&dataset);
@@ -328,83 +320,13 @@ int main(int argc, char **argv)
        so leave it to the o.s. */
     
     ajStrDel(&cmd);
-    ajStrDel(&ssname);
+    ajStrDel(&outsname);
     ajStrDel(&tmp);
-    ajStrDel(&rnddir);
+    ajStrDel(&userdir);
     
-    ajFileClose(&outhtml);
-    ajFileClose(&outtext);
-    ajFileClose(&outxml);
-    ajFileClose(&outxsl);
-
+    ajDiroutDel(&outdir);
     
     embExit();
 
     return 0;
-}
-
-
-
-
-/* @funcstatic ememe_copydelfile **********************************************
-**
-** Copy file to acd output file from temporary directory, then delete
-** the source file.
-**
-** @param [w] outf [AjPFile] output file
-** @param [r] rnddir [const AjPStr] temporary directory name
-** @param [r] name [const char*] name of meme output file
-** @return [void]
-** @@
-******************************************************************************/
-
-static void ememe_copydelfile(AjPFile outf, const AjPStr rnddir,
-                              const char *name)
-{
-    AjPFile ifile  = NULL;
-    AjPStr  ifname = NULL;
-    AjPStr  line   = NULL;
-    
-    ifname = ajStrNew();
-    line   = ajStrNew();
-    
-    ajFmtPrintS(&ifname,"%S%c%s",rnddir,SLASH_CHAR,name);
-    ifile = ajFileNewInNameS(ifname);
-    if(!ifile)
-        ajFatal("Cannot open file %S\n",ifname);
-
-    while(ajReadline(ifile,&line))
-        ajFmtPrintF(outf,"%S",line);
-
-    unlink(ajStrGetPtr(ifname));
-
-    return;
-}
-
-
-
-
-/* @funcstatic ememe_graphmove **********************************************
-**
-** Move any png and eps motif graphics to the current directory
-**
-** @param [r] rnddir [const AjPStr] temporary directory name
-** @return [void]
-** @@
-******************************************************************************/
-
-static void ememe_graphmove(const AjPStr rnddir)
-{
-    AjPStr cmd  = NULL;
-    
-    cmd = ajStrNew();
-    
-    ajFmtPrintS(&cmd,"mv %S%c*.png %S%c*.eps . > /dev/null 2>&1",
-                rnddir,SLASH_CHAR,rnddir,SLASH_CHAR);
-
-    system(ajStrGetPtr(cmd));
-
-    ajStrDel(&cmd);
-    
-    return;
 }
