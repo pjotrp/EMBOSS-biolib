@@ -27,7 +27,7 @@
 
 static void ememe_copydelfile(AjPFile outf, const AjPStr rnddir,
                               const char *name);
-
+static void ememe_graphmove(const AjPStr rnddir);
 
 
 
@@ -304,12 +304,15 @@ int main(int argc, char **argv)
     /* ajFmtPrint("\n%S\n", cmd); */
     system(ajStrGetPtr(cmd));    
 
-
     /* 5a. Copy output files */
     ememe_copydelfile(outhtml, rnddir, "meme.html");
     ememe_copydelfile(outtext, rnddir, "meme.txt");
     ememe_copydelfile(outxml, rnddir, "meme.xml");
     ememe_copydelfile(outxsl, rnddir, "meme.xsl");
+
+    /* 5b Copy output png and eps files */
+    ememe_graphmove(rnddir);
+
     
     if(rmdir(ajStrGetPtr(rnddir)))
         ajFatal("Cannot delete temporary directory (%S)",rnddir);
@@ -375,5 +378,33 @@ static void ememe_copydelfile(AjPFile outf, const AjPStr rnddir,
 
     unlink(ajStrGetPtr(ifname));
 
+    return;
+}
+
+
+
+
+/* @funcstatic ememe_graphmove **********************************************
+**
+** Move any png and eps motif graphics to the current directory
+**
+** @param [r] rnddir [const AjPStr] temporary directory name
+** @return [void]
+** @@
+******************************************************************************/
+
+static void ememe_graphmove(const AjPStr rnddir)
+{
+    AjPStr cmd  = NULL;
+    
+    cmd = ajStrNew();
+    
+    ajFmtPrintS(&cmd,"mv %S%c*.png %S%c*.eps . > /dev/null 2>&1",
+                rnddir,SLASH_CHAR,rnddir,SLASH_CHAR);
+
+    system(ajStrGetPtr(cmd));
+
+    ajStrDel(&cmd);
+    
     return;
 }
