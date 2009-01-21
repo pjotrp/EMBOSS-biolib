@@ -421,7 +421,7 @@ typedef struct AcdSTableItem
 ** @@
 ******************************************************************************/
 
-typedef struct AcdSAXsdItem
+typedef struct AcdSXsdItem
 {
     AjPStr Type;
     AjPStr Qual;
@@ -14345,8 +14345,8 @@ static void acdHelp(void)
                        acdProgram);
                 ajUser("  xmlns:tns=\"http://embossws.ebi/%S\"",
                        acdProgram);
-                ajUser("  xmlns:tns=\"http://www.w3.org/2001/XMLSchema\"");
-                ajUser("  xmlns:tns=\"http://embossws.ebi/common\"");
+                ajUser("  xmlns:xs=\"http://www.w3.org/2001/XMLSchema\"");
+                ajUser("  xmlns:emboss=\"http://embossws.ebi/common\">");
             }
 	    break;
 	case HELP_REQ:
@@ -14395,6 +14395,8 @@ static void acdHelp(void)
 	}
     }
 
+    if(!acdDoXsd)
+    {
     if(flagReq)
 	acdHelpShow(helpReq,
 		    "Standard (Mandatory) qualifiers "
@@ -14420,14 +14422,15 @@ static void acdHelp(void)
 	acdHelpTableShow(asslist, "Associated qualifiers");
     if(acdVerbose && acdDoTable)
 	acdHelpTableShow(genlist, "General qualifiers");
-    
-    if(acdDoXsd)
+    }    
+    else
+        {
 	acdHelpXsdShow(inlist, outlist);
-    
-    if(acdDoTable)
-	ajUserDumpC("</table>");
+        }
     if(acdDoXsd)
-	ajUserDumpC("</xs:schema>");
+    ajUserDumpC("</xs:schema>");
+    else if(acdDoTable)
+	ajUserDumpC("</table>");
     
     ajExit();
 }
@@ -16056,50 +16059,69 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
 
     if(!acdDoXsd)
 	return;
-
+    ajUserDumpC("  <xs:import namespace=\"http://embossws.ebi/common\"");
+    ajUserDumpC("    schemaLocation=\"sequence_input.xsd\" />");
     ajUserDumpC("  <xs:complexType name=\"appInputs\">");
     ajUserDumpC("    <xs:sequence>");
 
     if(ajListGetLength(inlist))
     {
-	iter = ajListIterNewread(inlist);
-	while((item = ajListIterGet(iter)))
-	{
-	    acdTextTrim(&item->Annotation);
+        iter = ajListIterNewread(inlist);
+        while((item = ajListIterGet(iter)))
+        {
+            acdTextTrim(&item->Annotation);
 
-/* sequences: 1 for required values - e.g. parameters - 0 for others*/
-	    ajUser("      <xs:element name=\"%S\" minOccurs=\"1\">",
-                   item->Qual);
-            ajUser("        type=\"embossSequenceInput\" />");
-/* datatypes with more than one value - sequences see above, others
- * may explicitly write their choices */
-            
-            ajUser("      <xs:choice id=\"%S\" "
-                   "minOccurs=\"0\" maxOccurs=\"1\">",
-                   item->Qual);
-	    ajUser("      </xs:choice>");
 
-	    ajUser("          <xs:annotation>");
-            ajUser("            <xs:documentation>");
-            ajUser("%S", item->Annotation);
-            ajUser("            </xs:documentation>");
-	    ajUser("          </xs:annotation>");
+            /* need specific strings for each datatype */
+            /* add a block here as a temporary solution */
+            /* later create a functions for each datatype 
+             ** and a default function for general datatypes */
 
-	    ajUser("      <xs:element name=\"%S\" minOccurs=\"1\"",
-                   item->Qual);
-            ajUser("        <xs:simpleType>");
-            ajUser("          <xs:restriction base=\"xs:long\"");
-            ajUser("            <xs:mininclusive value=\"1\">"
-                   "</xs:minInclusive>");
-            ajUser("          </xs:restriction");
-            ajUser("        </xs:simpleType>");
-	    ajUser("      </xs:element>");
-	}
+            /* datatypes with more than one value - sequences see above, others
+             * may explicitly write their choices */
+            //ajUser("      <xs:choice id=\"%S\" "
+            //        "minOccurs=\"0\" maxOccurs=\"1\">",
+            //        item->Qual);
+            //ajUser("      </xs:choice>");
+
+
+            /* sequences: 1 for required values - e.g. parameters - 0 for others*/            
+            if (ajStrMatchC(item->Type, "long")){
+                ajUser("      <xs:element name=\"%S\" minOccurs=\"1\">", item->Qual);
+                ajUser("        <xs:annotation>");
+                ajUser("          <xs:documentation>");
+                ajUser("            %S", item->Annotation);
+                ajUser("          </xs:documentation>");
+                ajUser("        </xs:annotation>");
+                ajUser("        <xs:simpleType>");
+                ajUser("          <xs:restriction base=\"xs:long\">");
+                ajUser("            <xs:minInclusive value=\"1\">");//TODO actual min value
+                ajUser("            </xs:minInclusive>");
+                ajUser("          </xs:restriction>");
+                ajUser("        </xs:simpleType>");
+            } else if (ajStrMatchC(item->Type, "seqall")){
+                ajUser("      <xs:element name=\"%S\" type=\"emboss:sequenceInput\" minOccurs=\"1\">",
+                        item->Qual);
+                ajUser("        <xs:annotation>");
+                ajUser("          <xs:documentation>");
+                ajUser("            %S", item->Annotation);
+                ajUser("          </xs:documentation>");
+                ajUser("        </xs:annotation>");                
+            } else{
+                ajUser("      <xs:element name=\"%S\" type=\"xs:%S\" minOccurs=\"1\">",
+                        item->Qual, item->Type);
+                ajUser("        <xs:annotation>");
+                ajUser("          <xs:documentation>");
+                ajUser("            %S", item->Annotation);
+                ajUser("          </xs:documentation>");
+                ajUser("        </xs:annotation>");
+            }
+            ajUser("      </xs:element>");
+        }
     }
     ajListIterDel(&iter);
     ajUserDumpC("    </xs:sequence>");
-
-
+    ajUserDumpC("  </xs:complexType>");
     
     ajUserDumpC("  <xs:complexType name=\"appResults\">");
     ajUserDumpC("    <xs:sequence>");
@@ -16112,6 +16134,7 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
 	}
     }
     ajUserDumpC("    </xs:sequence>");
+    ajUserDumpC("  </xs:complexType>");
 
     ajListIterDel(&iter);
 
@@ -16350,7 +16373,7 @@ static void acdHelpXsd(const AcdPAcd thys, AjPList tablist)
     }
 
     ajStrAssignC(&item->Type, acdType[thys->Type].Name);
-    
+    ajStrAssignS(&item->Qual, thys->Name);
     acdHelpExpect(thys, ajTrue, &item->Expect);
     
     /*
