@@ -220,8 +220,10 @@ AjPDir         ajDirNewPath(const AjPStr path);
 AjPDir         ajDirNewPathExt(const AjPStr path, const AjPStr ext);
 AjPDir         ajDirNewPathPreExt(const AjPStr path, const AjPStr prefix,
                                 const AjPStr ext);
+AjBool         ajDiroutExists(AjPDirout thys);
 AjPDirout      ajDiroutNewPath(const AjPStr name);
 AjPDirout      ajDiroutNewPathExt(const AjPStr name, const AjPStr ext);
+AjBool         ajDiroutOpen(AjPDirout thys);
 ajint          ajFilelistAddPathWildRecursiveIgnore(AjPList list,
 						    const AjPStr path,
 						    const AjPStr wildname,

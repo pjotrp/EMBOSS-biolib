@@ -607,6 +607,71 @@ const AjPStr ajDiroutGetPath(const AjPDirout thys)
 
 
 
+/* @section Output directory element modifiers ********************************
+**
+** @fdata [AjPDirout]
+**
+** Modifies attributes of a directory
+**
+** @nam3rule Exists tests whether directory exists already
+** @nam3rule Open Open the directory, creating if needed
+**
+** @argrule * thys [AjPDirout] Directory
+**
+** @valrule * [AjBool] True on success
+**
+** @fcategory use
+**
+******************************************************************************/
+
+/* @func ajDiroutExists ********************************************************
+**
+** Tests a directory output object is for an existing irectory
+**
+** @param [r] thys [AjPDirout] Directory name
+** @return [AjBool] True on success.
+** @@
+******************************************************************************/
+
+AjBool ajDiroutExists(AjPDirout thys)
+{
+    if(ajStrGetCharLast(thys->Name) != SLASH_CHAR)
+	ajStrAppendC(&thys->Name, SLASH_STRING);
+    if(!ajFilenameExistsDir(thys->Name))
+        return ajFalse;
+    return ajTrue;
+}
+
+
+/* @func ajDiroutOpen *********************************************************
+**
+** Opens a directory output object, creating it if it does not alreday exist
+**
+** @param [r] thys [AjPDirout] Directory name
+** @return [AjBool] True on success.
+** @@
+******************************************************************************/
+
+AjBool ajDiroutOpen(AjPDirout thys)
+{
+    AjPStr cmdstr = NULL;
+
+    if(ajStrGetCharLast(thys->Name) != SLASH_CHAR)
+	ajStrAppendC(&thys->Name, SLASH_STRING);
+    if(!ajFilenameExists(thys->Name))
+    {
+        ajFmtPrintS(&cmdstr, "mkdir %S", thys->Name);
+        ajSysSystem(cmdstr);
+        ajStrDel(&cmdstr);
+    }
+
+    
+    if(!ajFilenameExistsDir(thys->Name))
+        return ajFalse;
+    return ajTrue;
+}
+
+
 /* @datasection [AjPFile] File object *****************************************
 **
 ** Function is for manipulating uffered files and returns or takes at least
@@ -3167,7 +3232,7 @@ __deprecated void ajFileBuffDel(AjPFilebuff* Pbuff)
 ******************************************************************************/
 
 
-/* @func ajFilebuffReopenFile **************************************************
+/* @func ajFilebuffReopenFile *************************************************
 **
 ** Sets buffered input file to use a new open file.
 **
@@ -3222,11 +3287,12 @@ __deprecated AjBool ajFileBuffSetFile(AjPFilebuff* pthys,
     return ajTrue;
 }
 
-/* @section Buffered File Modifiers ********************************************
+/* @section Buffered File Modifiers *******************************************
 **
 ** @fdata [AjPFilebuff]
 **
-** These functions use the attributes of a buffered file object and update them.
+** These functions use the attributes of a buffered file object and
+** update them.
 **
 ** @nam3rule Clear Removes processed lines from the buffer
 ** @nam3rule Fix Resets the pointer and current record of a file buffer
@@ -4183,7 +4249,7 @@ __deprecated void ajFileBuffLoadS(AjPFilebuff buff, const AjPStr line)
 
 
 
-/* @func ajFilebuffLoadAll *****************************************************
+/* @func ajFilebuffLoadAll ****************************************************
 **
 ** Reads all input lines from a file into the buffer.
 **
