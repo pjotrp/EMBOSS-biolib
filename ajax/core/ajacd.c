@@ -14424,13 +14424,12 @@ static void acdHelp(void)
 	acdHelpTableShow(genlist, "General qualifiers");
     }    
 
-    if(acdDoXsd)
+    if(acdDoXsd){
         acdHelpXsdShow(inlist, outlist);
-
-    if(acdDoXsd)
-    ajUserDumpC("</xs:schema>");
+        ajUserDumpC("</xs:schema>");
+    }
     else if(acdDoTable)
-	ajUserDumpC("</table>");
+        ajUserDumpC("</table>");
     
     ajExit();
 }
@@ -16128,17 +16127,24 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
 
     if(ajListGetLength(outlist))
     {
-	iter = ajListIterNewread(outlist);
-	while((item = ajListIterGet(iter)))
-	{
-            ajUser("      <xs:element name=\"%S\" type=\"xs:%S\" minOccurs=\"1\">",
-                   item->Qual, item->Type);
+        iter = ajListIterNewread(outlist);
+        while((item = ajListIterGet(iter)))
+        {
+            if (ajStrMatchC(item->Type, "seqoutall")) {
+                ajUser("      <xs:element name=\"%S\" type=\"xs:string\" minOccurs=\"1\">",
+                        item->Qual, item->Type);
+            }
+            else {
+                ajUser("      <xs:element name=\"%S\" type=\"xs:%S\" minOccurs=\"1\">",
+                        item->Qual, item->Type);
+            }
             ajUser("        <xs:annotation>");
             ajUser("          <xs:documentation>");
             ajUser("            %S", item->Annotation);
             ajUser("          </xs:documentation>");
             ajUser("        </xs:annotation>");
-	}
+            ajUser("    </xs:element>");
+        }
     }
     ajUserDumpC("    </xs:sequence>");
     ajUserDumpC("  </xs:complexType>");
