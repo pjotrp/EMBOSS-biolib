@@ -412,18 +412,24 @@ typedef struct AcdSTableItem
 ** @alias AcdOXsdItem
 **
 ** @attr Qual [AjPStr] Qualifier name
+** @attr Type [AjPStr] Qualifier type
 ** @attr Annotation [AjPStr] Annotation text
 ** @attr Valid [AjPStr] Valid input
 ** @attr Expect [AjPStr] Expected value(s)
+** @attr Required [AjBool] True if a required value
+** @attr Optional[AjBool] True if an optional value
 ** @@
 ******************************************************************************/
 
 typedef struct AcdSAXsdItem
 {
+    AjPStr Type;
     AjPStr Qual;
     AjPStr Annotation;
     AjPStr Valid;
     AjPStr Expect;
+    AjBool Required;
+    AjBool Optional;
 } AcdOXsdItem;
 #define AcdPXsdItem AcdOXsdItem*
 
@@ -772,7 +778,8 @@ static AjBool    acdHelpVarResolve(AjPStr* str, const AjPStr src);
 static void      acdHelpXsd(const AcdPAcd thys, AjPList tablist);
 static void      acdHelpXsdShow(const AjPList inlist, const AjPList outlist);
 static AjBool    acdInFilename(AjPStr* infname);
-static AjBool    acdInFileSave(const AjPStr infname, AjBool reset);
+static AjBool    acdInFileSave(const AjPStr infname, const AjPStr seqname,
+                               AjBool reset);
 static AjBool    acdInTypeFeat(AjPStr* intype);
 static AjBool    acdInTypeFeatSave(const AjPStr intype);
 static AjBool    acdInTypeFeatSaveC(const char* intype);
@@ -1671,6 +1678,8 @@ AcdOAttr acdAttrOutdir[] =
 	 "Default file extension"},
     {"binary", VT_BOOL, 0, "N",
 	 "Files contain binary data"},
+    {"create", VT_BOOL, 0, "N",
+	 "Can create directory if not found"},
     {"temporary", VT_BOOL, 0, "N",
 	 "Scratch directory for temporary files deleted on completion"},
     {NULL, VT_NULL, 0, NULL,
@@ -2004,7 +2013,7 @@ AcdOAttr acdAttrSeqoutall[] =
     {"nullok", VT_BOOL, 0, "N",
 	 "Can accept a null USA as 'no output'"},
     {"aligned", VT_BOOL, 0, "N",
-	 "Sequences are aligned"},
+         "Sequences are aligned"},
     {NULL, VT_NULL, 0, NULL,
 	 NULL}
 };
@@ -4969,7 +4978,7 @@ static AcdPAcd acdFindAcd(const AjPStr name, const AjPStr token)
 **
 ** Locates an ACD object by name, and (if different) by token.
 **
-** Tests for unique 4 character prefix and issues a warning if
+** Tests for unique 6 character prefix and issues a warning if
 ** a clash is found with any already defined qualifier.
 **
 ** All other tests are the same as in acdFindAcd
@@ -4985,7 +4994,7 @@ static AcdPAcd acdFindAcdTest(const AjPStr name, const AjPStr token)
     AcdPAcd pa;
     AjBool usetoken = ajFalse;
 
-    ajuint minunique=5;
+    ajuint minunique=6;
 
     ajStrAssignSubS(&acdPrefName, name, 0, minunique);
 
@@ -6741,7 +6750,7 @@ static void acdSetCodon(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
 
-    acdInFileSave(acdReply, ajFalse);
+    acdInFileSave(acdReply, NULL, ajFalse);
 
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
@@ -7409,7 +7418,7 @@ static void acdSetDiscretestates(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
-    acdInFileSave(acdReply, ajTrue);
+    acdInFileSave(acdReply, NULL, ajTrue);
     
     /* properties have special set attributes */
     
@@ -7580,7 +7589,7 @@ static void acdSetDistances(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
-    acdInFileSave(acdReply, ajTrue);
+    acdInFileSave(acdReply, NULL, ajTrue);
     
     /* properties have special set attributes */
     
@@ -7896,7 +7905,8 @@ static void acdSetFeatures(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    acdInFileSave(ajFeattableGetName(val), ajTrue); /* save sequence name */
+    acdInFileSave(acdReply, ajFeattableGetName(val),
+                  ajTrue); /* save sequence name */
     
     /* now process the begin, end and reverse options */
     
@@ -8327,7 +8337,7 @@ static void acdSetFrequencies(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
-    acdInFileSave(acdReply, ajTrue);
+    acdInFileSave(acdReply, NULL, ajTrue);
     
     /* properties have special set attributes */
     
@@ -8802,7 +8812,7 @@ static void acdSetInfile(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    acdInFileSave(acdReply, ajTrue);
+    acdInFileSave(acdReply, NULL, ajTrue);
     
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
@@ -9700,12 +9710,14 @@ static void acdSetOutdir(AcdPAcd thys)
 
     AjBool nullok = ajFalse;
     AjBool dopath = ajFalse;
+    AjBool create = ajFalse;
     AjPStr ext = NULL;
 
     val = NULL;				/* set the default value */
 
     acdAttrToBool(thys, "fullpath", ajFalse, &dopath);
     acdAttrToBool(thys, "nullok", ajFalse, &nullok);
+    acdAttrToBool(thys, "create", ajFalse, &create);
     acdAttrResolve(thys, "extension", &ext);
 
     required = acdIsRequired(thys);
@@ -9727,8 +9739,6 @@ static void acdSetOutdir(AcdPAcd thys)
 		    acdReply, dopath,ok);
 	    if(dopath)
 		ok = ajDirnameFillPath(&acdReply);
-	    else
-		ok = ajDirnameFixExists(&acdReply);
 
 	    ajDebug("acdSetOutdir dir done reply '%S' dopath:%B ok:%B\n",
 		    acdReply, dopath,ok);
@@ -9737,6 +9747,14 @@ static void acdSetOutdir(AcdPAcd thys)
 		val = ajDiroutNewPathExt(acdReply, ext);
 		if (!val)
 		    ok = ajFalse;
+                else
+                {
+                    if(create)
+                        ok = ajDiroutOpen(val);
+                    else
+                        ok = ajDiroutExists(val);
+                }
+                
 	    }
 	    if(!ok)
 		acdBadVal(thys, required,
@@ -10677,7 +10695,7 @@ static void acdSetProperties(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
-    acdInFileSave(acdReply, ajTrue);
+    acdInFileSave(acdReply, NULL, ajTrue);
     
     /* properties have special set attributes */
     
@@ -11601,7 +11619,8 @@ static void acdSetSeq(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    acdInFileSave(ajSeqGetNameS(val), ajTrue);	/* save sequence name */
+    acdInFileSave(acdReply, ajSeqGetNameS(val),
+                  ajTrue);	/* save sequence name */
     
     /* some standard options using associated qualifiers */
     
@@ -11884,11 +11903,9 @@ static void acdSetSeqall(AcdPAcd thys)
 	acdBadRetry(thys);
     
     /*  commentedout__ajSeqinDel(&seqin);*/
-    
-    acdInFileSave(ajSeqallGetName(val), ajTrue); /* save sequence name */
-    
+        
     acdQualToBool(thys, "sask", ajFalse, &sprompt, &acdReplyDef);
-    
+
     /* now process the begin, end and reverse options */
     
     if(seqin->Begin)
@@ -12004,7 +12021,7 @@ static void acdSetSeqall(AcdPAcd thys)
     ajStrAssignS(&thys->SetStr[ACD_SEQ_NAME], seq->Name);
     ajStrAssignS(&thys->SetStr[ACD_SEQ_USA], ajSeqallGetUsa(val));
     
-    acdInFileSave(ajSeqallGetseqName(val), ajTrue);
+    acdInFileSave(acdReply, ajSeqallGetseqName(val), ajTrue);
 
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
@@ -12163,7 +12180,8 @@ static void acdSetSeqsetall(AcdPAcd thys)
     val   = (AjPSeqset*) sets;
     ajListFree(&seqlist);
 
-    acdInFileSave(ajSeqsetGetNameS(val[0]), ajTrue); /* save sequence name */
+    acdInFileSave(acdReply, ajSeqsetGetNameS(val[0]),
+                  ajTrue);      /* save sequence name */
     
     acdQualToBool(thys, "sask", ajFalse, &sprompt, &acdReplyDef);
     
@@ -12299,7 +12317,7 @@ static void acdSetSeqsetall(AcdPAcd thys)
     ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetGetSize(val[0]));
     ajStrFromInt(&thys->SetStr[ACD_SEQ_MULTICOUNT], nsets);
     
-    acdInFileSave(ajSeqsetGetNameS(val[0]), ajTrue);
+    acdInFileSave(acdReply, ajSeqsetGetNameS(val[0]), ajTrue);
 
     for(iattr=0; iattr < thys->SAttr; iattr++)
 	ajDebug("CalcAttr %s: '%S'\n",
@@ -13040,7 +13058,8 @@ static void acdSetSeqset(AcdPAcd thys)
     if(!ok)
 	acdBadRetry(thys);
     
-    acdInFileSave(ajSeqsetGetNameS(val), ajTrue); /* save sequence name */
+    acdInFileSave(acdReply, ajSeqsetGetNameS(val),
+                  ajTrue);      /* save sequence name */
     
     acdQualToBool(thys, "sask", ajFalse, &sprompt, &acdReplyDef);
     
@@ -13165,7 +13184,7 @@ static void acdSetSeqset(AcdPAcd thys)
 		   ajSeqsetGetTotweight(val), 3);
     ajStrFromInt(&thys->SetStr[ACD_SEQ_COUNT], ajSeqsetGetSize(val));
     
-    acdInFileSave(ajSeqsetGetNameS(val), ajTrue);
+    acdInFileSave(acdReply, ajSeqsetGetNameS(val), ajTrue);
     
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
@@ -13652,7 +13671,7 @@ static void acdSetTree(AcdPAcd thys)
 
     if(!ok)
 	acdBadRetry(thys);
-    acdInFileSave(acdReply, ajTrue);
+    acdInFileSave(acdReply, NULL, ajTrue);
     
     /* trees have special set attributes */
 
@@ -16256,11 +16275,13 @@ static void acdHelpXsd(const AcdPAcd thys, AjPList tablist)
     
     static AjPStr nostr   = NULL;
     static AjPStr nullstr = NULL;
-    static AjPStr type    = NULL;
     AjBool boolval;
-    
-    AjPStr defstr;
-    
+    AjBool tmpBool;
+    AjPStr helpStr = NULL;
+
+    AjPStr defstr = NULL;
+    AjPStr* def = NULL;
+
     if(!acdDoXsd)
 	return;
     
@@ -16275,30 +16296,60 @@ static void acdHelpXsd(const AcdPAcd thys, AjPList tablist)
 	defstr = nullstr;
     
     ajStrAssignClear(&nostr);
-    if(acdIsQtype(thys) &&
-       (ajCharMatchC("boolean", acdType[thys->Type].Name) ||
-	ajCharMatchC("toggle", acdType[thys->Type].Name) ))
+    if(acdIsQtype(thys))
     {
-	if(ajStrToBool(defstr, &boolval))
+        if((ajCharMatchC("boolean", acdType[thys->Type].Name) ||
+            ajCharMatchC("toggle", acdType[thys->Type].Name) ))
+        {
+            if(ajStrToBool(defstr, &boolval))
+            {
+                if(boolval)
+                    ajStrAssignC(&nostr, "no");
+                ajFmtPrintS(&item->Expect, "%B", boolval);
+            }
+            else
+                if(!ajStrGetLen(defstr))
+                    ajFmtPrintS(&item->Expect, "%B", ajFalse);
+        }
+    
+	def = thys->DefStr;
+	
+	if(def && ajStrGetLen(def[DEF_ADDITIONAL]))
 	{
-	    if(boolval)
-		ajStrAssignC(&nostr, "no");
-	    ajFmtPrintS(&item->Expect, "%B", boolval);
-	}
-	else
-	    if(!ajStrGetLen(defstr))
-		ajFmtPrintS(&item->Expect, "%B", ajFalse);
+	    if(acdHelpVarResolve(&helpStr, def[DEF_ADDITIONAL]))
+	    {
+		if(!ajStrToBool(helpStr, &tmpBool))
+		    acdErrorAcd(thys, "Bad additional flag %S\n",
+				def[DEF_ADDITIONAL]);
+	    }
+	    else
+	    {
+		tmpBool = ajTrue;
+	    }
 
-	defstr = nullstr;
+	    if(tmpBool)
+		item->Optional = ajTrue;
+	}
+	
+	if(def && ajStrGetLen(def[DEF_STANDARD]))
+	{
+	    if(acdHelpVarResolve(&helpStr, def[DEF_STANDARD]))
+	    {
+		if(!ajStrToBool( helpStr, &tmpBool))
+		    acdErrorAcd(thys, "Bad standard flag %S\n",
+				def[DEF_STANDARD]);
+	    }
+	    else
+	    {
+		tmpBool = ajTrue;
+	    }
+	    if(tmpBool)
+		item->Required = ajTrue;
+	}
+	
     }
-    
-    if(thys->Level == ACD_PARAM)
-	ajFmtPrintS(&item->Qual, "%S%S<br>(Parameter %d)",
-		    nostr, thys->Name, thys->PNum);
-    else
-	ajFmtPrintS(&item->Qual, "%S%S", nostr, thys->Name);
-    
-    ajStrAssignC(&type, acdType[thys->Type].Name);
+
+    ajStrAssignC(&item->Type, acdType[thys->Type].Name);
     
     acdHelpExpect(thys, ajTrue, &item->Expect);
     
@@ -16311,7 +16362,8 @@ static void acdHelpXsd(const AcdPAcd thys, AjPList tablist)
     acdHelpText(thys, &item->Annotation);
     
     ajListPushAppend(tablist, item);
-    
+    ajStrDel (&helpStr);
+
     return;
 }
 
@@ -24190,10 +24242,10 @@ static AjBool acdOutFilename(AjPStr* outfname,
     }
 
     ajStrAssignEmptyS(&acdOutFName, name);		/* use name if given */
-    ajStrAssignEmptyS(&acdOutFName, acdInFName);	/* else use saved name */
-    ajStrAssignEmptyC(&acdOutFName, "outfile"); /* all else fails, use "outfile" */
+    ajStrAssignEmptyS(&acdOutFName, acdInFName); /* else use saved name */
+    ajStrAssignEmptyC(&acdOutFName, "outfile"); /* else, use "outfile" */
 
-    ajStrAssignEmptyS(&acdOutFExt, ext);		/* use extension if given */
+    ajStrAssignEmptyS(&acdOutFExt, ext); /* use extension if given */
     if(!acdOutFile)
 	ajStrAssignEmptyS(&acdOutFExt, acdProgram);
 
@@ -24228,35 +24280,68 @@ static AjBool acdOutFilename(AjPStr* outfname,
 ** file name(s).
 **
 ** @param [r] infname [const AjPStr] Input file name
+** @param [r] seqname [const AjPStr] Input sequence name (or NULL)
 ** @param [r] reset [AjBool] Reset the saved name if this is the first time
 **                           a true value has been passed.
 ** @return [AjBool] ajTrue if a name was successfully set
 ** @@
 ******************************************************************************/
 
-static AjBool acdInFileSave(const AjPStr infname, AjBool reset)
+static AjBool acdInFileSave(const AjPStr infname, const AjPStr seqname,
+                            AjBool reset)
 {
+    static AjBool usefile = AJFALSE;
+    static ajint called = 0;
+
+    AjBool useseq = ajTrue;
+    if(!called)
+    {
+        if(ajNamGetValueC("acdfilename", &acdTmpStr))
+            ajStrToBool(acdTmpStr, &usefile);
+        called = 1;
+    }
+
     if(acdInFileSet)			/* already have a name */
 	return ajFalse;
 
-    if(!reset && ajStrGetLen(acdInFName))	/* have a name, no reset forced */
+    if(!reset && ajStrGetLen(acdInFName)) /* have a name, no reset forced */
 	return ajFalse;
 
-    acdLog("acdInFileSave (%S) reset: %B saved name '%S\n",
-	   infname, reset, acdInFName);
+    if(usefile)
+    {
+        useseq = ajFalse;
+        if(ajStrMatchC(infname, "stdin")) 
+            useseq = ajTrue;
+    }
+    
+    acdLog("acdInFileSave (%S,%S) reset: %B usefile: %B, saved name '%S'\n",
+	   infname, seqname, reset, usefile, acdInFName);
 
-    if(!ajStrGetLen(infname))
-	return ajFalse;
+    if(useseq && ajStrGetLen(seqname))
+    {
+        if(!ajStrGetLen(seqname))
+            return ajFalse;
 
-    ajStrAssignS(&acdInFName, infname);
-    ajFilenameTrimAll(&acdInFName);
-    ajStrFmtLower(&acdInFName);
+        ajStrAssignS(&acdInFName, seqname);
+        ajFilenameTrimAll(&acdInFName);
+        ajStrFmtLower(&acdInFName);
+    }
+    else
+    {
+        if(!ajStrGetLen(infname))
+            return ajFalse;
 
+        ajStrAssignS(&acdInFName, infname);
+        ajFilenameTrimAll(&acdInFName);
+        if(useseq)
+            ajStrFmtLower(&acdInFName);
+    }
+    
     if(reset)
 	acdInFileSet = ajTrue;
 
-    acdLog("acdInFileSave (%S) input file set to '%S'\n",
-	   infname, acdInFName);
+    acdLog("acdInFileSave (%S, %S) input file set to '%S'\n",
+	   infname, seqname, acdInFName);
 
     return ajTrue;
 }
