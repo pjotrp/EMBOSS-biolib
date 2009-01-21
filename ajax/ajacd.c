@@ -14423,10 +14423,10 @@ static void acdHelp(void)
     if(acdVerbose && acdDoTable)
 	acdHelpTableShow(genlist, "General qualifiers");
     }    
-    else
-        {
-	acdHelpXsdShow(inlist, outlist);
-        }
+
+    if(acdDoXsd)
+        acdHelpXsdShow(inlist, outlist);
+
     if(acdDoXsd)
     ajUserDumpC("</xs:schema>");
     else if(acdDoTable)
@@ -16128,9 +16128,16 @@ static void acdHelpXsdShow(const AjPList inlist, const AjPList outlist)
 
     if(ajListGetLength(outlist))
     {
-	iter = ajListIterNewread(inlist);
+	iter = ajListIterNewread(outlist);
 	while((item = ajListIterGet(iter)))
 	{
+            ajUser("      <xs:element name=\"%S\" type=\"xs:%S\" minOccurs=\"1\">",
+                   item->Qual, item->Type);
+            ajUser("        <xs:annotation>");
+            ajUser("          <xs:documentation>");
+            ajUser("            %S", item->Annotation);
+            ajUser("          </xs:documentation>");
+            ajUser("        </xs:annotation>");
 	}
     }
     ajUserDumpC("    </xs:sequence>");
@@ -16307,9 +16314,17 @@ static void acdHelpXsd(const AcdPAcd thys, AjPList tablist)
 
     if(!acdDoXsd)
 	return;
+
+    /* skip associated qualifiers:
+    ** handled separatedly in XSD for types that use them
+    ** Note: this also excludes application associated general qualifiers
+    **       -auto -verbose -filter and so on
+    */
+
+    if(thys->Assoc)
+        return;
     
     AJNEW0(item);
-    
     if(!nullstr)
 	nullstr = ajStrNew();
     
