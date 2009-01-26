@@ -78,6 +78,8 @@ typedef struct AjSFeattabIn {
 ** @attr Basename [AjPStr] Basename for output file
 ** @attr Format [ajint] Output format index
 ** @attr Local [AjBool] Opened as a local file if ajTrue
+** @attr Count [ajuint] Number of feature tables written
+** @attr Cleanup [(void*)] Function to write remaining lines on closing
 ** @@
 ******************************************************************************/
 
@@ -93,6 +95,8 @@ typedef struct AjSFeattabOut {
   AjPStr        Basename;
   ajint         Format;
   AjBool        Local;
+  ajuint        Count;
+  void (*Cleanup) (AjPFile filethys);
 }  AjOFeattabOut;
 
 #define AjPFeattabOut AjOFeattabOut*
