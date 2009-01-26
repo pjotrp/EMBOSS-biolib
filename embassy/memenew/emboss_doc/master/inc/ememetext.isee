@@ -28,18 +28,13 @@
 </tr>
 
 <tr>
-<td><a href="/embassy/memenew/emast.html">emast</a></td>
+<td><a href="emast.html">emast</a></td>
 <td>Motif detection</td>
 </tr>
 
 <tr>
-<td><a href="/embassy/memenew/ememe.html">ememe</a></td>
+<td><a href="ememe.html">ememe</a></td>
 <td>Multiple EM for Motif Elicitation</td>
-</tr>
-
-<tr>
-<td><a href="/embassy/memenew/ememetext.html">ememetext</a></td>
-<td>Multiple EM for Motif Elicitation. Text file only</td>
 </tr>
 
 <tr>
@@ -100,6 +95,11 @@
 <tr>
 <td><a href="/emboss/apps/oddcomp.html">oddcomp</a></td>
 <td>Identify proteins with specified sequence word composition</td>
+</tr>
+
+<tr>
+<td><a href="/embassy/meme/omeme.html">omeme</a></td>
+<td>Motif detection</td>
 </tr>
 
 <tr>
