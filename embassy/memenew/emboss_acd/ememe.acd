@@ -483,6 +483,7 @@ section: output [
     information: "MEME program output directory"
     knowntype: "meme output"
     default: "."
+    create: "Y"
   ]
 
 endsection: output
