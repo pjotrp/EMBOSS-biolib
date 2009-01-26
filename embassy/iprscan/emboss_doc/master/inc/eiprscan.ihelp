@@ -16,7 +16,7 @@
   [-outfile]           outfile    [*.eiprscan] EIPRSCAN program output file
 
    Additional (Optional) qualifiers (* if not always prompted):
-   -email              string     Sumbitter email address (Any string is
+   -email              string     Submitter email address (Any string is
                                   accepted)
    -trtable            menu       [0] Genetic codes used for translation
                                   (Values: 0 (Standard); 1 (Standard (with
@@ -35,17 +35,16 @@
                                   Mitochondrial); 21 (Trematode
                                   Mitochondrial); 22 (Scenedesmus obliquus);
                                   23 (Thraustochytrium Mitochondrial))
+   -trlen              integer    [1] Minimum size of Open Reading Frames
+                                  (ORFs) in the translations. (Integer 1 or
+                                  more)
    -iprlookup          boolean    [N] Turn on InterPro lookup for results
 *  -goterms            boolean    [N] Show GO terms in InterPro lookup
    -[no]crc            boolean    [Y] Perform CRC64 check
    -altjobs            boolean    [N] Launch jobs alternately (chunk after
                                   chunk)
 
-   Advanced (Unprompted) qualifiers:
-   -trlen              integer    [1] Minimum size of Open Reading Frames
-                                  (ORFs) in the translations. (Integer 1 or
-                                  more)
-
+   Advanced (Unprompted) qualifiers: (none)
    Associated qualifiers:
 
    "-sequence" associated qualifiers
