@@ -1,4 +1,5 @@
 acdcommandlinelog string "" "Log file for full commandline, used to convert QA test definitions into memory leak test command lines"
+acdfilename boolean "N" "Use filename rather than sequence name as default for file naming"
 acdlog      boolean "N" "Log ACD processing to file program.acdlog"
 acdprompts   integer "1" "Number of times to prompt for a value when interactive"
 acdroot     string "(install directory)" "EMBOSS root directory for finding files"
