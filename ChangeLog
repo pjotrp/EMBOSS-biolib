@@ -1,13 +1,74 @@
 Version 6.1.0
+	Extractfeat now cleanly processes minscore and maxscore as limits
+	on the score. By default any score is allowed if these are
+	unchanged. Previous releases required minimum and maximum to be
+	equal - or minimum greater than maximum - to permit any feature
+	score.
+
+	New feature XML output format DASGFF. Feature output functions
+	have a changed interface to pass the AjPFeattabOut object so that
+	additional processing can handle the opening and cloing of an XML
+	output file.
+
+	New sequence output formats "dasdna" and "das" write DASDNA and
+	DASSEQUENCE XML outputs. Sequence output functions have a new
+	capability to define a Cleanup function to write the final lines
+	of an XML output file. The AjPSeqout data structure already has
+	the Count attribute needed to identify the first sequence so that
+	the XML header can be written.
+
+	New environment variable EMBOSS_ACDFILENAME provides an
+	alternative way to set the default output filename for EMBOSS
+	applications. If set to true, the filename is used rather than the
+	current behaviour of using the first sequence name as the default
+	filenaame. When the filename is used the case of the name is
+	preserved.
+
+	Corrected display of exon ranges in showseq. Exons now display in
+	their original frame (all were displayed in frame1 in earlier
+	versions). Display of 3-letter amino acid names corrected (but we
+	hope nobody is using 3-letter codes any more!)
+
+	Added create attribute for outdir datatype in ACD. If true, the
+	output directory will be created if it does not already exist.
+	The default is false. output directories must already exist. This
+	is the behaviour in previous releases.
+
+	Added attribute aligned for datatype seqoutall in ACD
+	files. Applications can write multiple sequences as a seqoutset
+	(aligned or unaligned) and can also write seqoutall - writing
+	sequences one at a time without first storing them as a set.
+
+	For phylogenetic applications (PHYLIPNEW) reading distance matrix
+	files failed for some formats written by other
+	applications. Distance matrix input now works for multiple
+	matrices in square, upper-triangular and lower-triangular formats.
+
+	The PLPLOT graphics library uses 4 environment variables to allow
+	local configuration. EMBOSS uses a local copy in libeplplot. For
+	sites that have the native PLPLOT also in use we have renamed the
+	environment variables to use the prefix EPLPLOT. This protects
+	EMBOSS from any configuration set only for the local plplot.
+	The variables are: EPLPLOT_BIN EPLPLOT_LIB EPLPLOT_TCL and
+	EPLPLOT_HOME. Versions of EMBOSS up to 2.8.0 defined PLPLOT_LIB
+	but this value is now automatically set and the environment
+	variable is no longer needed.
+
 	Command line qualifiers are renamed where the first 5 characters
 	are the same. These were:
 	    est2genome -splice to -usesplace
 	    prettyplot -boxcolval to -boxuse
             octanol -*plot to -plot*
             showfeat -match* to -*match; -source to -origin
+            showpep -match* to -*match
             showseq -match* to -*match; -source to -origin
 	    vectorstrip -vectorfile to -readfile; -linker* to -*linker
 	and similar changes for EMBASSY applications.
+
+	ACD processing now objects if two or more qualifiers are not
+	unique in the first 6 characters. In a future release we cwould
+	like to reduce this to a 5 character unique name. Several EMBASSY
+	applications need to be modified to comply with this requirement.
 
 	MEMENEW updated for meme/mast version 4.0.0. ememe now
 	produces fasta, html, text, xml and xsl outputs. A new variant,
