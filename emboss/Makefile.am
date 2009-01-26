@@ -60,9 +60,9 @@ prosextract pscan psiphi \
 rebaseextract recoder redata remap  \
 restover restrict revseq \
 seealso seqmatchall seqret seqretsplit \
-showalign showdb showfeat showorf showseq \
+showalign showdb showfeat showorf showpep showseq \
 shuffleseq sigcleave silent sirna sixpack sizeseq \
-skipredundant skipseq splitter stretcher \
+skipredundant skipseq splitsource splitter stretcher \
 stssearch supermatcher syco \
 tcode textsearch tfextract tfm tfscan \
 tmap tranalign transeq \
@@ -226,6 +226,7 @@ showalign_SOURCES = showalign.c
 showdb_SOURCES = showdb.c
 showfeat_SOURCES = showfeat.c
 showorf_SOURCES = showorf.c
+showpep_SOURCES = showpep.c
 showseq_SOURCES = showseq.c
 shuffleseq_SOURCES = shuffleseq.c
 sigcleave_SOURCES = sigcleave.c
