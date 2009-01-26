@@ -192,7 +192,8 @@ See also
    eiprscan Motif detection
    elipop Prediction of lipoproteins
    emast Motif detection
-   ememe Motif detection
+   ememe Multiple EM for Motif Elicitation
+   ememetext Multiple EM for Motif Elicitation. Text file only
    enetoglyc Reports mucin type GalNAc O-glycosylation sites in mammalian
    proteins
    enetphos Reports ser, thr and tyr phosphorylation sites in eukaryotic

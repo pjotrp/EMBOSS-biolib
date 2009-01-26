@@ -248,7 +248,8 @@ See also
    eiprscan Motif detection
    elipop Prediction of lipoproteins
    emast Motif detection
-   ememe Motif detection
+   ememe Multiple EM for Motif Elicitation
+   ememetext Multiple EM for Motif Elicitation. Text file only
    enetnglyc Reports N-glycosylation sites in human proteins
    enetphos Reports ser, thr and tyr phosphorylation sites in eukaryotic
    proteins
