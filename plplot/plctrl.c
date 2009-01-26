@@ -1,4 +1,4 @@
-/* $Id: plctrl.c,v 1.11 2007/05/17 12:04:46 ajb Exp $
+/* $Id: plctrl.c,v 1.12 2009/01/26 14:28:59 rice Exp $
 
 	Misc. control routines, like begin, end, exit, change graphics/text
 	mode, change color.  Includes some spillage from plcore.c.  If you
@@ -1151,9 +1151,9 @@ pl_cmd(PLINT op, void *ptr)
  *         build_tree/tk (plserver lies there - needed for the tk driver)
  *         build_tree/scripts (plpr lies there - needed for the tk driver)
  *      else
- *	PLPLOT_BIN_ENV = $(PLPLOT_BIN)
+ *	PLPLOT_BIN_ENV = $(EPLPLOT_BIN)
  *	current directory
- *	PLPLOT_HOME_ENV/bin = $(PLPLOT_HOME)/bin
+ *	PLPLOT_HOME_ENV/bin = $(EPLPLOT_HOME)/bin
  *	BIN_DIR
  *
  * The caller must free the returned pointer (points to malloc'ed memory)
@@ -1177,7 +1177,7 @@ plFindCommand(char *fn)
 	}
     }
 
-/* PLPLOT_BIN_ENV = $(PLPLOT_BIN) */
+/* PLPLOT_BIN_ENV = $(EPLPLOT_BIN) */
 
 #if defined(PLPLOT_BIN_ENV)
     if ((dn = getenv(PLPLOT_BIN_ENV)) != NULL) {
@@ -1194,7 +1194,7 @@ plFindCommand(char *fn)
     if ( ! plFindName(fs))
 	return fs;
 
-/* PLPLOT_HOME_ENV/bin = $(PLPLOT_HOME)/bin */
+/* PLPLOT_HOME_ENV/bin = $(EPLPLOT_HOME)/bin */
 
 #if defined(PLPLOT_HOME_ENV)
     if ((dn = getenv(PLPLOT_HOME_ENV)) != NULL) {
@@ -1228,9 +1228,9 @@ plFindCommand(char *fn)
  *
  * Return file pointer to lib file.
  * Locations checked:
- *	PLPLOT_LIB_ENV = $(PLPLOT_LIB)
+ *	PLPLOT_LIB_ENV = $(EPLPLOT_LIB)
  *	current directory
- *	PLPLOT_HOME_ENV/lib = $(PLPLOT_HOME)/lib
+ *	PLPLOT_HOME_ENV/lib = $(EPLPLOT_HOME)/lib
  *	DATA_DIR
  *	PLLIBDEV
 \*--------------------------------------------------------------------------*/
@@ -1294,7 +1294,7 @@ plLibOpenPdfstrm(const char *fn)		/* pmr: const */
         goto done;
     }
 
-/****	search PLPLOT_LIB_ENV = $(PLPLOT_LIB)	****/
+/****	search PLPLOT_LIB_ENV = $(EPLPLOT_LIB)	****/
 
 #if defined(PLPLOT_LIB_ENV)
     if ((dn = getenv(PLPLOT_LIB_ENV)) != NULL) {
@@ -1312,7 +1312,7 @@ plLibOpenPdfstrm(const char *fn)		/* pmr: const */
     if ((file = pdf_fopen(fn, "rb")) != NULL)
         goto done;
 
-/****	search PLPLOT_HOME_ENV/lib = $(PLPLOT_HOME)/lib	****/
+/****	search PLPLOT_HOME_ENV/lib = $(EPLPLOT_HOME)/lib	****/
 
 #if defined (PLPLOT_HOME_ENV)
     if ((dn = getenv(PLPLOT_HOME_ENV)) != NULL) {
