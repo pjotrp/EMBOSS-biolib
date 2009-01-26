@@ -298,6 +298,9 @@ int main(int argc, char **argv)
     outfile = ajAcdGetOutfile("outfile");
     
     
+    ajStrRemoveWhite(&left_input);
+    ajStrRemoveWhite(&right_input);
+
     /*
     ** OK - we will now try to do a separate fork-exec for each sequence.
     */
