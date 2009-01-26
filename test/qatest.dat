@@ -373,7 +373,7 @@ IN
 FI actb1_fugru.antigenic
 FZ = 0
 FI antigenic.acdlog
-FC = 5485
+FC = 5504
 FP 50 /^acdProcess/
 FI stderr
 FC = 2
@@ -9826,13 +9826,14 @@ FP 3 /^>/
 ID extractfeat-ex
 UC To write out the exons of a sequence: 
 AP extractfeat
-CL tembl:x65921 -type exon stdout
+CL tembl:x65921 -type exon
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
+FI x65921.fasta
 FZ = 743
 FP 5 /^>X65921_/
 FP /^>X65921_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
@@ -9842,13 +9843,14 @@ FP /^gtaaagtccatggttccctggcccgtgctggaaaagtgagaggtcagactcctaag\n/
 ID extractfeat-ex2
 UC To write out the exons with 10 extra bases at the start and end so that you can inspect the splice sites:
 AP extractfeat
-CL tembl:x65921 -type exon -before 10 -after 10 stdout
+CL tembl:x65921 -type exon -before 10 -after 10
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
+FI x65921.fasta
 FZ = 844
 FP 5 /^>X65921_/
 FP /^>X65921_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
@@ -9859,13 +9861,14 @@ FP /^cctaaggtgagtgaga\n/
 ID extractfeat-ex3
 UC To write out the 10 bases around the start of all 'exon' features in the tembl database: 
 AP extractfeat
-CL tembl:*  -type exon -before 5 -after -5 stdout
+CL tembl:*  -type exon -before 5 -after -5
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
+FI h45989.fasta
 FZ = 85971
 FP 5 /^>X65921_/
 FP 811 /^>/
@@ -9875,10 +9878,11 @@ FP /^>X65921_951_1095 \[exon\] H\.sapiens fau 1 gene\n/
 ID extractfeat-ex4
 UC To extract the CDS region with the exons joined into one sequence:
 AP extractfeat
-CL tembl:x65921 -type CDS -join stdout
+CL tembl:x65921 -type CDS -join
+IN
 FI stderr
-FC = 1
-FI stdout
+FC = 2
+FI x65921.fasta
 FZ = 453
 FP /^>X65921_782_1912 \[CDS\] H\.sapiens fau 1 gene\n/
 //
@@ -9889,13 +9893,14 @@ ID extractfeat-ex5
 UC To write out the 7 residues around all phosphorylated serine residues
 ## in the tsw database
 AP extractfeat
-CL tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4 stdout
+CL tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FI stdout
+FI edd1_rat.fasta
 FZ = 321
 FP 6 /^>/
 FP 6 /\[mod_res\]/
@@ -12644,7 +12649,8 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x65923.rev
-FZ = 563
+FZ = 573
+FP /^>X65923 X65923\.1 Reversed: H\.sapiens fau mRNA\n/
 FP /^gtcccagctaccgcgaagatggagtcgagaaagaggaa\n/
 //
 
@@ -16931,6 +16937,142 @@ FP /^F1 +1 G  T  A  G  R  A  S  A  R  S  P  P  A  G  R  R  E  17\n/
 FP /^R2 +106    Y  R  Q  G  L  M  Q  E  I  V  V  L  R  A  V  P  91\n/
 //
 
+ID showpep-ex
+AP showpep
+CL tsw:laci_ecoli -sbeg 1 -send 100
+IN
+IN
+FI stderr
+FC = 7
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.showpep 
+FZ = 1166
+FP 1 /^\s+\|=+\|\n\s+domain note="/
+FP 2 /^\s+\|\n\s+mutagen note="/
+//
+
+ID showpep-ex2
+UC The standard list of output formats are only a small selection of the
+UC possible ways in which a sequence might be displayed.  Precise control
+UC over the output format is acheived by selecting the qualifier '-format 0' 
+UC (Option 0 in the list of things to display).  For example,
+UC by choosing format '0' and then specifying that we want to display the
+UC things: 'b,t,s', we will output the sequence in the following way:
+AP showpep
+CL tsw:laci_ecoli -sbeg 1 -send 120
+IN 0
+IN b,t,s
+IN 
+FI stderr
+FC = 14
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.showpep 
+FZ = 324
+FP 2 /^          ----:----\|----:----\|----:----\|----:----\|----:----\|----:----\|\n/
+FP /^          SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVERSGVEACKAAVHNLLAQRVS/
+//
+
+ID showpep-ex3
+UC Display only the sequence:
+AP showpep
+CL tsw:laci_ecoli -sbeg 1 -send 100 -noname -nodesc -format 0 -thing S
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.showpep
+FZ = 123
+FP /^          MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ\n/
+FP /^          SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE\n/
+//
+
+ID showpep-ex4
+UC Protein sequence can be displayed in three-letter codes.
+UC (The codes are displayed downwards, so the first code is 'Met'): 
+AP showpep
+CL tsw:rs24_fugru -three -format 2
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI rs24_fugru.showpep
+FZ = 1270
+FP /^          MAATVT/
+//
+
+ID showpep-ex5
+UC Number the sequence lines in the margin: 
+AP showpep
+CL tsw:laci_ecoli -sbeg 1 -send 100 -format 1 -number
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.showpep
+FZ = 167
+FP /^       61 SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE 100\n/
+//
+
+ID showpep-ex6
+UC Start the numbering at a specified value ('123' in this case):
+AP showpep
+CL tsw:laci_ecoli -sbeg 1 -send 100 -format 1 -number -offset 123
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.showpep 
+FZ = 168
+FP /^      183 SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE 222\n/
+//
+
+ID showpep-ex7
+UC Make selected regions uppercase. (Use '-slower' to force the rest of
+UC the sequence to be lowercase). 
+AP showpep
+CL tsw:laci_ecoli -sbeg 1 -send 100 -format 1 -slower -upper
+CL '17-17,22-22'
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.showpep
+FZ = 160
+FP /          mkpvtlydvaeyagvsYqtvsRvvnqashvsaktrekveaamaelnyipnrvaqqlagkq\n/
+FP /          slligvatsslalhapsqivaaiksradqlgasvvvsmve\n/
+//
+
+ID showpep-ex9
+UC Add your own annotation to the display:
+AP showpep
+CL tsw:laci_ecoli -sbeg 1 -send 100 -format 2 -send 120
+CL  -annotation '6-25 binding site 17-17 SNP 22-22 SNP'
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI laci_ecoli.showpep
+FZ = 1544
+FP /binding site/
+FP /^                          SNP  SNP\n/
+//
+
 ID showseq-ex
 AP showseq
 CL tembl:x13776 -sbeg 1 -send 100
@@ -16944,10 +17086,6 @@ FP 0 /Died: /
 FI x13776.showseq 
 FZ = 729
 FP 2 /^\s+\|=+\|\n\s+promoter note="/
-OC Note that although we asked for the sequence display to end at
-OC position '100', it has displayed the sequence up to the end of the line
-OC - position '120'.  This is a feature of this program to make the display
-OC of things like restriction enzyme cutting sites easier. 
 //
 
 ID showseq-ex2
@@ -16989,21 +17127,6 @@ FP /^          ctacctggcgagcctggagcacgagcgggttcgcttcgta\n/
 //
 
 ID showseq-ex4
-UC Protein sequence can be displayed in three-letter codes. (The codes are displayed downwards, so the first code is 'Met'): 
-AP showseq
-CL tsw:rs24_fugru -three -format 2
-IN
-FI stderr
-FC = 2
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FI rs24_fugru.showseq
-FZ = 1270
-FP /^          MAATVT/
-//
-
-ID showseq-ex5
 UC Number the sequence lines in the margin: 
 AP showseq
 CL tembl:x13776 -sbeg 1 -send 100 -format 1 -number
@@ -17018,7 +17141,7 @@ FZ = 212
 FP /^        1 ggtacc/
 //
 
-ID showseq-ex6
+ID showseq-ex5
 UC Start the numbering at a specified value ('123' in this case):
 AP showseq
 CL tembl:x13776 -sbeg 1 -send 100 -format 1 -number -offset 123
@@ -17033,10 +17156,12 @@ FZ = 213
 FP /^      123 ggtacc/
 //
 
-ID showseq-ex7
-UC Make selected regions uppercase. (Use '-slower' to force the rest of the sequence to be lowercase). 
+ID showseq-ex6
+UC Make selected regions uppercase.
+UC (Use '-slower' to force the rest of the sequence to be lowercase). 
 AP showseq
-CL tembl:x13776 -sbeg 1 -send 100 -format 1 -slower -upper '25-45,101-203,333-362'
+CL tembl:x13776 -sbeg 1 -send 100 -format 1 -slower
+CL -upper '8-24,65-81'
 IN
 FI stderr
 FC = 2
@@ -17045,15 +17170,14 @@ FP 0 /Error: /
 FP 0 /Died: /
 FI x13776.showseq 
 FZ = 205
-FP /tgctCGAT/
-FP /^          ggtaccgctggccgagcatctgctCGATCACCACCAGCCGGGCGAcgggaactgcacgat\n/
-FP /^          ctacctggcgagcctggagcacgagcgggttcgcttcgta\n/
+FP /^          ggtaccgCTGGCCGAGCATCTGCTcgatcaccaccagccgggcgacgggaactgcacgat\n/
+FP /^          ctacCTGGCGAGCCTGGAGCAcgagcgggttcgcttcgta\n/
 //
 
-ID showseq-ex8
+ID showseq-ex7
 UC Translate selected regions: 
 AP showseq
-CL tembl:x13776 -sbeg 1 -send 120 -format 4 -trans 25-49,66-76
+CL tembl:x13776 -sbeg 1 -send 120 -format 5 -trans 25-49,66-76
 IN
 FI stderr
 FC = 2
@@ -17061,11 +17185,12 @@ FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
 FI x13776.showseq 
-FZ = 937
+FZ = 1221
 FP /R  S  P  P  A  G  R  R  V/
+FP /A  S  L/
 //
 
-ID showseq-ex9
+ID showseq-ex8
 UC Add your own annotation to the display:
 AP showseq
 CL tembl:x13776 -sbeg 1 -send 100 -format 2 -send 120 -annotation '13-26 binding site 15-15 SNP'
@@ -17334,6 +17459,23 @@ FZ = 7940
 FP 4 /^>/
 //
 
+ID splitsource-ex
+UC Split a sequence into original subsequences
+AP splitsource
+CL qasrswww:A01139
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI a01139.fasta
+FZ = 579
+FP /\A>A01139_1_1-81/
+FP /^>A01139_1_1-81 organism="Lactococcus lactis"/
+FP /^>A01139_2_82-279 organism="Hirudo medicinalis"/
+FP 2 /^>/
+//
 ID splitter-ex
 UC Split a sequence into sub-sequences of 10,000 bases (the default size) with no overlap between the sub-sequences:
 AP splitter
@@ -20878,7 +21020,7 @@ FC = 0
 
 ID ajtest-all-check
 AQ ajtest
-CL -nostdout -outfile
+CL -nostdout -outfile ""
 CL -outseq outseq
 IN tembl:x13776
 IN ../../data/globins.msf
@@ -21020,7 +21162,7 @@ FP 0 /Died: /
 
 ID prima-check
 AQ prima
-CL -minprodlen 200 -maxprodlen 250
+CL -minplen 200 -maxplen 250
 IN tembl:v00294
 IN
 IN
@@ -23425,6 +23567,12 @@ FP /^Most distant seq:    6%\n/
 
 #######################################
 # MEME
+# 1. Examples taken from meme-3.0.14/ README
+# 2. Data lives in: /emboss/emboss/test/data/memenew
+# 3. Do not use FZ lines as ememe & emast use temp 
+#    files with random names: these names are printed
+#    to the output files. 
+#######################################
 #######################################
 
 ID omeme-ex
@@ -23452,7 +23600,7 @@ FP 3 /^MOTIF/
 
 #######################################
 # MEMENEW
-# 1. Examples taken from meme-3.0.14/ README
+# 1. Examples taken from meme_4.0.0/ README
 # 2. Data lives in: /emboss/emboss/test/data/memenew
 # 3. Do not use FZ lines as ememe & emast use temp 
 #    files with random names: these names are printed
@@ -23464,170 +23612,229 @@ AB memenew
 RQ meme
 AA ememe
 DL keep
-CL ../../data/memenew/crp0.s -mod oops -pal ex1.html
+CL ../../data/memenew/crp0.s -mod oops
+IN
+IN
+IN
+IN
+IN 
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
+FP /^Multiple EM for Motif Elicitation\n/
 FI stdout
 FC = 0
-FI ex1.html
-FC = 1382
+FI logo1.eps
+FZ = 13332
+FP /^%%Pages: 0\n/
+FI logo1.png
+FZ > 11800
+FP /PNG/
+FI logo_ssc1.eps
+FZ = 13310
+FP /^%%Pages: 0\n/
+FI logo_ssc1.png
+FZ > 12600
+FP /PNG/
+FI meme.html
+FC = 1401
+FP /^ce1cg 1\.74e-03 1 105 [+]1 63 1\.91e-05 \n/
+FP /^ce1cg  \( 63\) TTTGATCGTTTTCAC 1 \n/
+FI meme.fasta
+FC = 54
+FP 18 /^>/
+FI meme.txt
+FC = 272
+FP /^ce1cg +1\.0000    105  ara +1\.0000    105  \n/
+FI meme.xml
+FC = 860
+FP /^<contributing_site sequence_id="sequence_ce1cg" position="63" strand="plus" pvalue="1.91e-05" >\n/
+FP /^<scanned_sites sequence_id="sequence_ce1cg" pvalue="1.74e-03" num_sites="1"><scanned_site motif_id="motif_1" strand="plus" position="63" pvalue="1.91e-05"/>\n/
+FI meme.xsl
+FC = 1608
+FP 472 /<xsl:/
+//
+
+ID ememetext-ex
+AB memenew
+RQ meme
+AA ememetext
+CL ../../data/memenew/crp0.s  -mod oops -revcomp ex.text
+IN
+FI stderr
+FC = 2
+FP 0 /Warning: /
+FP 0 /Error: /
+FP 0 /Died: /
+FI stdout
+FC = 0
+FI crp0.fasta
+FC = 54
+FP 18 /^>/
+FI ex.text
+FC = 272
 FP /^ce1cg                    1\.0000    105  ara                      1\.0000    105  \n/
 FP /^bglr1                    1\.0000    105  crp                      1\.0000    105  \n/
 //
 
-ID ememe-ex2
+ID ememetext-ex2
 AB memenew
 RQ meme
-AA ememe
-CL ../../data/memenew/crp0.s  -mod oops -revcomp ex2.html
+AA ememetext
+CL ../../data/memenew/crp0.s -mod oops -revcomp -w 20 ex2.text
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
 FI stdout
 FC = 0
-FI ex2.html
-FC = 1372
+FI crp0.fasta
+FC = 54
+FP 18 /^>/
+FI ex2.text
+FC = 282
 FP /^ce1cg                    1\.0000    105  ara                      1\.0000    105  \n/
 FP /^bglr1                    1\.0000    105  crp                      1\.0000    105  \n/
 //
 
-ID ememe-ex3
+ID ememetext-ex3
 AB memenew
 RQ meme
-AA ememe
-CL ../../data/memenew/crp0.s -mod oops -revcomp -w 20 ex3.html
+AA ememetext
+CL ../../data/memenew/INO_up800.s -mod anr -revcomp
+CL -bfile ../../data/memenew/yeast.nc.6.freq ex3.text
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
 FI stdout
 FC = 0
-FI ex3.html
-FC = 1451
-FP /^ce1cg                    1\.0000    105  ara                      1\.0000    105  \n/
-FP /^bglr1                    1\.0000    105  crp                      1\.0000    105  \n/
-//
-
-ID ememe-ex4
-AB memenew
-RQ meme
-AA ememe
-CL ../../data/memenew/INO_up800.s -mod anr -revcomp -bfile ../../data/memenew/yeast.nc.6.freq ex4.html
-FI stderr
-FC = 1
-FP 0 /Warning: /
-FP 0 /Error: /
-FP 0 /Died: /
-FP /^Motif detection\n/
-FI stdout
-FC = 0
-FI ex4.html
-FC = 1260
+FI ino_up800.fasta
+FC = 105
+FP 7 /^>/
+FI ex3.text
+FC = 237
 FP /^CHO1                     1\.0000    800  CHO2                     1\.0000    800  \n/
 FP /^FAS1                     1\.0000    800  FAS2                     1\.0000    800  \n/
 //
 
-ID ememe-ex5
+ID ememetext-ex4
 AB memenew
 RQ meme
-AA ememe
-CL ../../data/memenew/lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex5.html
+AA ememetext
+CL ../../data/memenew/lipocalin.s -mod oops -maxw 20 -nmotifs 2 ex4.text
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
 FI stdout
 FC = 0
-FI ex5.html
-FC > 1499
+FI lipocalin.fasta
+FC = 22
+FP 5 /^>/
+FI ex4.text
+FC = 392
 FP /^ICYA_MANSE               1\.0000    189  LACB_BOVIN               1\.0000    178  \n/
 FP /^BBP_PIEBR                1\.0000    173  RETB_BOVIN               1\.0000    183  \n/
 //
 
-ID ememe-ex6
+ID ememetext-ex5
 AB memenew
 RQ meme
-AA ememe
-CL ../../data/memenew/farntrans5.s -mod anr -maxw 40 -maxsites 50 ex6.html
+AA ememetext
+CL ../../data/memenew/farntrans5.s -mod anr -maxw 40 -maxsites 50
+CL ex5.text
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
 FI stdout
 FC = 0
-FI ex6.html
-FC = 1807
+FI farntrans5.fasta
+FC = 40
+FP 5 /^>/
+FI ex5.text
+FC = 272
 FP /^RAM1_YEAST               1\.0000    431  PFTB_RAT                 1\.0000    437  \n/
 FP /^BET2_YEAST               1\.0000    325  RATRABGERB               1\.0000    331  \n/
 //
 
-ID ememe-ex7
+ID ememetext-ex6
 AB memenew
 RQ meme
-AA ememe
-CL ../../data/memenew/farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3 ex7.html
+AA ememetext
+CL ../../data/memenew/farntrans5.s -mod anr -w 10 -maxsites 30 -nmotifs 3
+CL ex6.text
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
 FI stdout
 FC = 0
-FI ex7.html
-FC > 2056
+FI farntrans5.fasta
+FC = 40
+FP 5 /^>/
+FI ex6.text
+FC = 557
 FP /^RAM1_YEAST               1\.0000    431  PFTB_RAT                 1\.0000    437  \n/
 FP /^BET2_YEAST               1\.0000    325  RATRABGERB               1\.0000    331  \n/
 //
 
-ID ememe-ex8
+ID ememetext-ex7
 AB memenew
 RQ meme
-AA ememe
-CL ../../data/memenew/farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3 ex8.html
+AA ememetext
+CL ../../data/memenew/farntrans5.s -mod anr -maxw 12 -nsites 24 -nmotifs 3
+CL ex7.text
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
 FI stdout
 FC = 0
-FI ex8.html
-FC = 2545
+FI farntrans5.fasta
+FC = 40
+FP 5 /^>/
+FI ex7.text
+FC = 615
 FP /^RAM1_YEAST               1\.0000    431  PFTB_RAT                 1\.0000    437  \n/
 FP /^BET2_YEAST               1\.0000    325  RATRABGERB               1\.0000    331  \n/
 //
 
-ID ememe-ex9
-TI 120 
+ID ememetext-ex8
 AB memenew
 RQ meme
-AA ememe
-CL ../../data/memenew/adh.s -mod zoops -nmotifs 20 -evt 0.01  ex9.html
+AA ememetext
+TI 200
+CL ../../data/memenew/adh.s -mod zoops -nmotifs 20 -evt 0.01
+CL ex8.text
+IN
 FI stderr
-FC = 1
+FC = 2
 FP 0 /Warning: /
 FP 0 /Error: /
 FP 0 /Died: /
-FP /^Motif detection\n/
 FI stdout
 FC = 0
-FI ex9.html
-FC = 7816
+FI adh.fasta
+FC = 219
+FP 33 /^>/
+FI ex8.text
+FC = 1817
 FP /^2BHD_STREX               1\.0000    255  3BHD_COMTE               1\.0000    253  \n/
 FP /^ADH_DROME                1\.0000    255  AP27_MOUSE               1\.0000    244  \n/
 //
