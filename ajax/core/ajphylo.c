@@ -402,7 +402,10 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
     AjPStr tmpval   = NULL;
     AjBool lowertri = ajFalse;
     AjBool uppertri = ajFalse;
-
+    AjPStr name = NULL;
+    AjPStr rest = NULL;
+    ajuint imaxlen;
+    
     if(!phyloRegDistFloat)
 	phyloRegDistFloat =
 	    ajRegCompC("^\\s*([0-9]+[.]?[0-9]*)\\s+(([0-9]+)[^0-9.])?");
@@ -413,27 +416,27 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
     if(!distfile)
 	return NULL;
 
-    ajReadlineTrim(distfile, &rdline);
-    if(!ajStrToInt(rdline, &count))
-    {
-	ajErr("Distance file '%S' bad header record '%S'",
-	      filename, rdline);
-	return NULL;
-    }
-    ajDebug("DistRead: row count: %d\n", count);
-
-    if(size && (count != size))
-    {
-	ajErr("Distance file '%S' found %d expected %d rows '%S'",
-	      filename, count, size);
-	return NULL;
-    }
-
-
     done = ajTrue;
     while(ajReadline(distfile, &rdline))
     {
+        if(ajStrIsWhite(rdline)) continue;
 	if(done) {
+            ajStrTrimWhite(&rdline);
+            if(!ajStrToInt(rdline, &count))
+            {
+                ajErr("Distance file '%S' bad header record '%S'",
+                      filename, rdline);
+                return NULL;
+            }
+            ajDebug("DistRead: row count: %d\n", count);
+
+            if(size && (count != size))
+            {
+                ajErr("Distance file '%S' found %d expected %d rows '%S'",
+                      filename, count, size);
+                return NULL;
+            }
+
 	    irow = -1;
 	    icol = 0;
 
@@ -446,13 +449,12 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 	    ncells = count*count;
 	    AJCNEW0(dist->Data,ncells);
 	    AJCNEW0(dist->Replicates,ncells);
+            continue;
 	}
 
 	/*ajDebug("DistRead line: %S", rdline); */
 	if(!i || !ajRegExec(phyloRegDistFloat, rdline))
 	{
-	    if(ajStrGetLen(rdline) < 11)	/* skip this line? */
-		continue;
 	    if(!irow)		     /* how long was that first row */
 	    {
 		if(!icol)		/* empty - lower triangular */
@@ -516,8 +518,14 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 		ajErr("Distances file read beyond %d rows", count);
 		return NULL;
 	    }
-	    ajStrAssignSubS(&dist->Names[irow], rdline, 0, 9);
-	    ajStrCutStart(&rdline, 10);
+            ajStrExtractWord(rdline, &rest, &name);
+            if(ajStrGetLen(name) >= 10)
+                imaxlen = 10;
+            else
+                imaxlen = ajStrGetLen(name);
+	    ajStrAssignSubS(&dist->Names[irow], rdline, 0, imaxlen-1);
+                    
+            ajStrCutStart(&rdline, imaxlen);
 	    ajStrTrimWhiteEnd(&dist->Names[irow]);
 	    ajDebug("DistRead name [%d] '%S' i: %d\n",
 		    irow, dist->Names[irow], i);
@@ -576,9 +584,7 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 	}
 	if(irow == (count-1))
 	{
-	    done = ajTrue;
-
-	    if(lowertri)			/* fill in the rest */
+	    if(lowertri) /* fill in the rest */
 	    {
 		for(k=0; k < count; k++)
 		{
@@ -596,12 +602,13 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 			jpos += count;
 		    }
 		}
+                done = ajTrue;
 	    }
-	    if(uppertri)			/* fill in the rest */
+	    else if(uppertri)			/* fill in the rest */
 	    {
 		for(k=0; k < count; k++)
 		{
-		    idiag = k*count + i;	/* diagonal */
+		    idiag = k*count + k;	/* diagonal */
 		    dist->Data[idiag] = 0.0;
 		    dist->Replicates[idiag] = 1;
 		    ipos = k*count;		/* start of row*/
@@ -614,10 +621,17 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 			jpos += count;
 		    }
 		}
+                done = ajTrue;
 	    }
-
-	    ajListPushAppend(distlist, dist);
-	    dist = NULL;
+            else if(icol == count)
+            {
+                done = ajTrue;
+            }
+        
+	    if(done){
+                ajListPushAppend(distlist, dist);
+                dist = NULL;
+            }
 	}
     }
 
@@ -627,8 +641,8 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
 	return NULL;
     }
 
-    ajDebug("Distances file '%S' has %d (%d) distance matrices\n",
-	    filename, i, ajListGetLength(distlist));
+    ajDebug("Distances file '%S' has %u distance matrices\n",
+	    filename, ajListGetLength(distlist));
     ajFileClose(&distfile);
     ajListToarray(distlist, (void***) &ret);
     /*ret = (AjPPhyloTree*) trees;*/
@@ -636,6 +650,8 @@ AjPPhyloDist* ajPhyloDistRead(const AjPStr filename, ajint size,
     for(i=0; ret[i]; i++)
 	ajPhyloDistTrace(ret[i]);
 
+    ajStrDel(&name);
+    ajStrDel(&rest);
     return ret;
 }
 
