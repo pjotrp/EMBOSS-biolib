@@ -124,6 +124,7 @@ section: output [
   seqoutall: outseq [
     parameter: "Y"
     type: "gapany"
+    aligned: "Y"
   ]
 
 endsection: output
