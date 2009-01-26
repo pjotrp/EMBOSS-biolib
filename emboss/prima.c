@@ -230,13 +230,13 @@ int main(int argc, char **argv)
     maxprimerlen = ajAcdGetInt("maxprimerlen");
     minpmGCcont  = ajAcdGetFloat("minpmGCcont");
     maxpmGCcont  = ajAcdGetFloat("maxpmGCcont");
-    minprimerTm  = ajAcdGetFloat("minprimerTm");
-    maxprimerTm  = ajAcdGetFloat("maxprimerTm");
+    minprimerTm  = ajAcdGetFloat("mintmprimer");
+    maxprimerTm  = ajAcdGetFloat("maxtmprimer");
 
-    minprodlen    = ajAcdGetInt("minprodlen");
-    maxprodlen    = ajAcdGetInt("maxprodlen");
-    minprodGCcont = ajAcdGetFloat("minprodGCcont");
-    maxprodGCcont = ajAcdGetFloat("maxprodGCcont");
+    minprodlen    = ajAcdGetInt("minplen");
+    maxprodlen    = ajAcdGetInt("maxplen");
+    minprodGCcont = ajAcdGetFloat("minpgccont");
+    maxprodGCcont = ajAcdGetFloat("maxpgccont");
 
     saltconc = ajAcdGetFloat("saltconc");
     dnaconc  = ajAcdGetFloat("dnaconc");
