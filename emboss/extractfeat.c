@@ -54,14 +54,14 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr, ajint
 
 static void extractfeat_FeatureFilter(AjPFeattable featab,
 				      const AjPStr source, const AjPStr type,
-				      ajint sense,
+				      ajint sense, AjBool testscore,
 				      float minscore,
 				      float maxscore, const AjPStr tag,
 				      const AjPStr value);
 
 static AjBool extractfeat_MatchFeature(const AjPFeature gf,
 				       const AjPStr source, const AjPStr type,
-				       ajint sense,
+				       ajint sense, AjBool testscore,
 				       float minscore,
 				       float maxscore, const AjPStr tag,
 				       const AjPStr value, AjBool *tagsmatch);
@@ -103,6 +103,7 @@ int main(int argc, char **argv)
     float maxscore;
     AjPStr tag  = NULL;
     AjPStr value = NULL;
+    AjBool testscore = AJFALSE;
 
     embInit("extractfeat", argc, argv);
     
@@ -123,6 +124,14 @@ int main(int argc, char **argv)
     tag      = ajAcdGetString("tag");
     value    = ajAcdGetString("value");
     
+    testscore = (minscore || maxscore);
+    if(minscore && !maxscore)
+        if(minscore > maxscore)
+            maxscore = minscore;
+    if(!minscore && maxscore)
+        if(minscore > maxscore)
+            minscore = maxscore;
+
     while(ajSeqallNext(seqall, &seq))
     {
 	/* get the feature table of the sequence */
@@ -130,7 +139,7 @@ int main(int argc, char **argv)
 
         /* delete features in the table that don't match our criteria */
         extractfeat_FeatureFilter(featab, source, type, sense,
-				  minscore, maxscore, tag, value);
+				  testscore, minscore, maxscore, tag, value);
 
         /* extract the features */
         extractfeat_FeatSeqExtract(seq, seqout, featab, before,
@@ -796,6 +805,7 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
 ** @param [r] source [const AjPStr] Required Source pattern
 ** @param [r] type [const AjPStr] Required Type pattern
 ** @param [r] sense [ajint] Required Sense pattern +1,0,-1 (or other value$
+** @param [r] testscore [AjBool] Filter by score values
 ** @param [r] minscore [float] Min required Score pattern
 ** @param [r] maxscore [float] Max required Score pattern
 ** @param [r] tag [const AjPStr] Required Tag pattern
@@ -806,7 +816,7 @@ static void extractfeat_GetRegionPad(const AjPSeq seq, AjPStr *featstr,
 
 static void extractfeat_FeatureFilter(AjPFeattable featab,
 				      const AjPStr source, const AjPStr type,
-				      ajint sense,
+				      ajint sense, AjBool testscore,
 				      float minscore, float maxscore,
 				      const AjPStr tag, const AjPStr value)
 {
@@ -830,7 +840,7 @@ static void extractfeat_FeatureFilter(AjPFeattable featab,
 	while(!ajListIterDone(iter))
 	{
 	    gf = (AjPFeature)ajListIterGet(iter);
-	    if(!extractfeat_MatchFeature(gf, source, type, sense,
+	    if(!extractfeat_MatchFeature(gf, source, type, sense, testscore,
 					 minscore, maxscore, tag, value,
 					 &tagsmatch))
 	    {
@@ -856,6 +866,7 @@ static void extractfeat_FeatureFilter(AjPFeattable featab,
 ** @param [r] source [const AjPStr] Required Source pattern
 ** @param [r] type [const AjPStr] Required Type pattern
 ** @param [r] sense [ajint] Required Sense pattern +1,0,-1 (or other value)
+** @param [r] testscore [AjBool] Filter by score values
 ** @param [r] minscore [float] Min required Score pattern
 ** @param [r] maxscore [float] Max required Score pattern
 ** @param [r] tag [const AjPStr] Required Tag pattern
@@ -868,15 +879,10 @@ static void extractfeat_FeatureFilter(AjPFeattable featab,
 static AjBool extractfeat_MatchFeature(const AjPFeature gf,
 				       const AjPStr source,
 				       const AjPStr type, ajint sense,
-				       float minscore,
+				       AjBool testscore, float minscore,
 				       float maxscore, const AjPStr tag,
 				       const AjPStr value, AjBool *tagsmatch)
 {
-    AjBool scoreok;
-
-    /* if maxscore < minscore, then don't test the scores */
-    scoreok = (minscore < maxscore);
-
 
      /*
      ** is this a child of a join() ?
@@ -909,14 +915,14 @@ static AjBool extractfeat_MatchFeature(const AjPFeature gf,
     ajDebug("embMiscMatchPattern(ajFeatGetType(gf), type) %B\n",
 	    embMiscMatchPattern(ajFeatGetType(gf), type));
     ajDebug("ajFeatGetStrand(gf) '%x' sense %d\n", ajFeatGetStrand(gf), sense);
-    ajDebug("scoreok: %B ajFeatGetScore(gf): %f minscore:%f maxscore:%f\n",
-	    scoreok, ajFeatGetScore(gf), minscore, maxscore);
+    ajDebug("testscore: %B ajFeatGetScore(gf): %f minscore:%f maxscore:%f\n",
+	    testscore, ajFeatGetScore(gf), minscore, maxscore);
     if(!embMiscMatchPattern(ajFeatGetSource(gf), source) ||
        !embMiscMatchPattern(ajFeatGetType(gf), type) ||
        (ajFeatGetStrand(gf) == '+' && sense == -1) ||
        (ajFeatGetStrand(gf) == '-' && sense == +1) ||
-       (scoreok && ajFeatGetScore(gf) < minscore) ||
-       (scoreok && ajFeatGetScore(gf) > maxscore) ||
+       (testscore && ajFeatGetScore(gf) < minscore) ||
+       (testscore && ajFeatGetScore(gf) > maxscore) ||
        !*tagsmatch)
     {
 	ajDebug("return ajFalse\n");
