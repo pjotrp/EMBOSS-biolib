@@ -10,7 +10,7 @@ AC_DEFUN([CHECK_JAVA],
 #
 [AC_MSG_CHECKING(if java include directory given)
 AC_ARG_WITH(java,
-[  --with-java=DIR         root directory path of java  installation
+[  --with-java=DIR         root directory path of java installation
   --without-java          to disable java],
 [if test "$withval" != no ; then
   AC_MSG_RESULT(yes)
