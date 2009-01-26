@@ -59,6 +59,15 @@
 **      case SH_COMP:
 **      showFillComp(this, lines, info, pos);
 **      break;
+**
+** Changes needed:
+** Sorting of ranges for translation
+**
+** Translation of entire sequence range and then division of the
+** resulting sequence into reading frames. Needed so that translation
+** across the joins gives the correct residue. This may involve some
+** changes to the timing of conversion from 1 letter to 3 letter code.
+**
 */
 
 
@@ -862,7 +871,7 @@ void embShowPrint(AjPFile out, const EmbPShow thys)
     ajuint line_no = 0;		    /* line number on page */
     ajuint last = 0;
 
-    ajDebug("embShowPrint\n");
+    ajDebug("embShowPrint start:%u end:%u\n", thys->start, thys->end);
 
     /* set up the start and end positions to print */
     start = thys->start;
@@ -1719,7 +1728,7 @@ static void showFillTran(const EmbPShow thys,
     ajint j;
     ajint orflast;
 
-    ajDebug("showFillTran\n");
+    ajDebug("showFillTran pos:%u last:%u\n", pos, last);
 
     line = ajStrNewRes(81);
 
@@ -1734,14 +1743,21 @@ static void showFillTran(const EmbPShow thys,
     /* if the translation has not yet been done, do it now - once only */
     if(!info->transeq)
     {
-	/* translate a set of ranges ... */
+	/* translate a set of ranges ... using frame number */
 	if(info->regions && ajRangeNumber(info->regions))
 	{
-	    framepad = 0;
+	    frame = info->frame;
+            /* shift the translation to the correct frame */
+            if(frame == 1 || frame == 5)
+                framepad = 0;
+            else if(frame == 2 || frame == 6)
+                framepad = 1;
+            else if(frame == 3 || frame == 4)
+                framepad = 2;
+            framepad = 0;
 	    seq = ajSeqNewSeq(thys->seq);
-	    ajRangeSeqExtract(info->regions, seq);
-	    tran = ajTrnSeqOrig(info->trnTable, seq, 1);
-	    ajSeqDel(&seq);
+	    tran = ajRangeSeqExtractPep(info->regions, seq,
+                                        info->trnTable, frame);
 
 	    /* expand to fill line or change to three-letter code */
 	    if(info->threeletter)
@@ -1761,8 +1777,11 @@ static void showFillTran(const EmbPShow thys,
 	    **  now put in spaces to align the translation to the
 	    **  sequence ranges
 	    */
-	    ajRangeSeqStuff(info->regions, tran);
+	    ajRangeSeqStuffPep(info->regions, tran, frame);
 	    ajStrSetClear(&temp);
+	/* store the resulting translation in our descriptor structure */
+            info->transeq = tran;
+            ajSeqDel(&seq);
 	}
 	else
 	{
@@ -1880,7 +1899,10 @@ static void showFillTran(const EmbPShow thys,
 	    /* expand to fill line or change to three-letter code */
 	    if(info->threeletter)
 	    {
-		sajb = embPropProt1to3(tran,framepad);
+		if(info->frame > 0)
+                    sajb = embPropProt1to3(tran,framepad);
+                else
+                    sajb = embPropProt1to3Rev(tran,framepad);
 		ajSeqAssignSeqS(tran,sajb );
 	    }
 	    else
@@ -1891,17 +1913,17 @@ static void showFillTran(const EmbPShow thys,
 		ajSeqAssignSeqS(tran,sajb );
 	    }
 	    ajStrDel(&sajb);
+	/* store the resulting translation in our descriptor structure */
+            info->transeq = tran;
 	}
 
-	/* store the resulting translation in our descriptor structure */
-	info->transeq = tran;
     }
 
-
     /* get the sequence at this position */
-    ajStrAppendSubS(&line, ajSeqGetSeqS(info->transeq),
-		    pos, last);
-
+    if(pos < ajSeqGetLen(info->transeq))
+        ajStrAppendSubS(&line, ajSeqGetSeqS(info->transeq),
+                        pos, last);
+    
     /* get the number of the starting and ending amino-acid on this line */
     startpos = info->tranpos;
     endpos = info->tranpos;
@@ -1917,7 +1939,6 @@ static void showFillTran(const EmbPShow thys,
     /* less than width in the line? Add blanks to pad it out */
     for(;linepos < thys->width; linepos++)
 	ajStrAppendC(&line, " ");
-
 
     /* if at least one residue, count it at start */
     if(info->tranpos != endpos)
