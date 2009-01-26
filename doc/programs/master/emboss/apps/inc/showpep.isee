@@ -8,38 +8,13 @@
 </tr>
 
 <tr>
-<td><a href="backtranambig.html">backtranambig</a></td>
-<td>Back-translate a protein sequence to ambiguous nucleotide sequence</td>
-</tr>
-
-<tr>
-<td><a href="backtranseq.html">backtranseq</a></td>
-<td>Back-translate a protein sequence to a nucleotide sequence</td>
-</tr>
-
-<tr>
 <td><a href="cirdna.html">cirdna</a></td>
 <td>Draws circular maps of DNA constructs</td>
 </tr>
 
 <tr>
-<td><a href="coderet.html">coderet</a></td>
-<td>Extract CDS, mRNA and translations from feature tables</td>
-</tr>
-
-<tr>
-<td><a href="getorf.html">getorf</a></td>
-<td>Finds and extracts open reading frames (ORFs)</td>
-</tr>
-
-<tr>
 <td><a href="lindna.html">lindna</a></td>
 <td>Draws linear maps of DNA constructs</td>
-</tr>
-
-<tr>
-<td><a href="marscan.html">marscan</a></td>
-<td>Finds matrix/scaffold recognition (MRS) signatures in DNA sequences</td>
 </tr>
 
 <tr>
@@ -50,11 +25,6 @@
 <tr>
 <td><a href="pepwheel.html">pepwheel</a></td>
 <td>Draw a helical wheel diagram for a protein sequence</td>
-</tr>
-
-<tr>
-<td><a href="plotorf.html">plotorf</a></td>
-<td>Plot potential open reading frames in a nucleotide sequence</td>
 </tr>
 
 <tr>
@@ -93,43 +63,18 @@
 </tr>
 
 <tr>
-<td><a href="showorf.html">showorf</a></td>
-<td>Display a nucleotide sequence and translation in pretty format</td>
-</tr>
-
-<tr>
-<td><a href="showpep.html">showpep</a></td>
-<td>Displays protein sequences with features in pretty format</td>
-</tr>
-
-<tr>
 <td><a href="showseq.html">showseq</a></td>
 <td>Displays sequences with features in pretty format</td>
 </tr>
 
 <tr>
-<td><a href="syco.html">syco</a></td>
-<td>Draw synonymous codon usage statictic plot for a nucleotide sequence</td>
-</tr>
-
-<tr>
-<td><a href="tcode.html">tcode</a></td>
-<td>Identify protein-coding regions using Fickett TESTCODE statistic</td>
+<td><a href="sixpack.html">sixpack</a></td>
+<td>Display a DNA sequence with 6-frame translation and ORFs</td>
 </tr>
 
 <tr>
 <td><a href="textsearch.html">textsearch</a></td>
 <td>Search the textual description of sequence(s)</td>
-</tr>
-
-<tr>
-<td><a href="transeq.html">transeq</a></td>
-<td>Translate nucleic acid sequences</td>
-</tr>
-
-<tr>
-<td><a href="wobble.html">wobble</a></td>
-<td>Plot third base position variability in a nucleotide sequence</td>
 </tr>
 
 </table>
