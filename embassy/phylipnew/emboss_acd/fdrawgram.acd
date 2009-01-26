@@ -12,7 +12,7 @@ section: input [
 ]
 
   string: fontfile [
-    default: "font2"
+    default: "font1"
     information: "Fontfile name"
     knowntype: "phylip font"
   ]
@@ -177,18 +177,18 @@ section: output [
     information: "Vertical margin (cm)"
   ]
 
-  float: xmarginray [
+  float: xrayshade [
     additional: "@($(plotter)==r)"
     default: "1.65"
     minimum: "0.1"
-    information: "Horizontal margin (pixels)"
+    information: "Horizontal margin (pixels) for Rayshade output"
   ]
 
-  float: ymarginray [
+  float: yrayshade [
     additional: "@($(plotter)==r)"
     default: "2.16"
     minimum: "0.1"
-    information: "Vertical margin (pixels)"
+    information: "Vertical margin (pixels) for Rayshade output"
   ]
 
   float: paperx [

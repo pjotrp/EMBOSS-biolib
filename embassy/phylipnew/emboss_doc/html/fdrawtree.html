@@ -143,28 +143,28 @@ Done.
    -plotter            menu       [l] Plotter or printer the tree will be
                                   drawn on (Values: l (Postscript printer file
                                   format); m (PICT format (for drawing
-                                  programs)); j (HP Laserjet PCL file format);
-                                  w (MS-Windows Bitmap); f (FIG 2.0 drawing
-                                  program format); a (Idraw drawing program
-                                  format); z (VRML Virtual Reality Markup
-                                  Language file); p (PCX file format (for
-                                  drawing programs)); k (TeKtronix 4010
-                                  graphics terminal); x (X Bitmap format); v
-                                  (POVRAY 3D rendering program file); r
-                                  (Rayshade 3D rendering program file); h
-                                  (Hewlett-Packard pen plotter (HPGL file
-                                  format)); d (DEC ReGIS graphics (VT240
-                                  terminal)); e (Epson MX-80 dot-matrix
-                                  printer); c (Prowriter/Imagewriter
-                                  dot-matrix printer); t (Toshiba 24-pin
-                                  dot-matrix printer); o (Okidata dot-matrix
-                                  printer); b (Houston Instruments plotter); u
-                                  (other (one you have inserted code for)))
-*  -plotterpcl         menu       [1] Laserjet resolution (Values: 1 (75 DPI);
-                                  2 (150 DPI); 3 (300 DPI))
-*  -plotterpcx         menu       [1] PCX file resolution (Values: 1 (EGA 640
-                                  X 350); 2 (VGA 800 X 600); 3 (VGA 1024 X
-                                  768))
+                                  programs)); j (HP Laserjet 75 dpi PCL file
+                                  format); s (HP Laserjet 150 dpi PCL file
+                                  format); y (HP Laserjet 300 dpi PCL file
+                                  format); w (MS-Windows Bitmap); f (FIG 2.0
+                                  drawing program format); a (Idraw drawing
+                                  program format); z (VRML Virtual Reality
+                                  Markup Language file); n (PCX 640x350 file
+                                  format (for drawing programs)); p (PCX
+                                  800x600 file format (for drawing programs));
+                                  q (PCX 1024x768 file format (for drawing
+                                  programs)); k (TeKtronix 4010 graphics
+                                  terminal); x (X Bitmap format); v (POVRAY 3D
+                                  rendering program file); r (Rayshade 3D
+                                  rendering program file); h (Hewlett-Packard
+                                  pen plotter (HPGL file format)); d (DEC
+                                  ReGIS graphics (VT240 terminal)); e (Epson
+                                  MX-80 dot-matrix printer); c
+                                  (Prowriter/Imagewriter dot-matrix printer);
+                                  t (Toshiba 24-pin dot-matrix printer); o
+                                  (Okidata dot-matrix printer); b (Houston
+                                  Instruments plotter); u (other (one you have
+                                  inserted code for)))
    -previewer          menu       [x] Previewing device (Values: n (Will not
                                   be previewed); I i (MSDOS graphics screen
                                   m:Macintosh screens); x (X Windows display);
@@ -194,9 +194,9 @@ Done.
                                   or more)
 *  -ymargin            float      [2.16] Vertical margin (cm) (Number 0.100 or
                                   more)
-*  -xmarginray         float      [1.65] Horizontal margin (pixels) (Number
+*  -xrayshade          float      [1.65] Horizontal margin (pixels) (Number
                                   0.100 or more)
-*  -ymarginray         float      [2.16] Vertical margin (pixels) (Number
+*  -yrayshade          float      [2.16] Vertical margin (pixels) (Number
                                   0.100 or more)
    -paperx             float      [20.63750] Paper width (Any numeric value)
    -papery             float      [26.98750] Paper height (Number 0.100 or
@@ -211,7 +211,7 @@ Done.
                                   0.001 or more)
 
    Advanced (Unprompted) qualifiers:
-   -fontfile           string     [font2] Fontfile name (Any string is
+   -fontfile           string     [font1] Fontfile name (Any string is
                                   accepted)
 
    Associated qualifiers:
@@ -268,22 +268,8 @@ Done.
 <tr>
 <td>-plotter</td>
 <td>Plotter or printer the tree will be drawn on</td>
-<td><table><tr><td>l</td> <td><i>(Postscript printer file format)</i></td></tr><tr><td>m</td> <td><i>(PICT format (for drawing programs))</i></td></tr><tr><td>j</td> <td><i>(HP Laserjet PCL file format)</i></td></tr><tr><td>w</td> <td><i>(MS-Windows Bitmap)</i></td></tr><tr><td>f</td> <td><i>(FIG 2.0 drawing program format)</i></td></tr><tr><td>a</td> <td><i>(Idraw drawing program format)</i></td></tr><tr><td>z</td> <td><i>(VRML Virtual Reality Markup Language file)</i></td></tr><tr><td>p</td> <td><i>(PCX file format (for drawing programs))</i></td></tr><tr><td>k</td> <td><i>(TeKtronix 4010 graphics terminal)</i></td></tr><tr><td>x</td> <td><i>(X Bitmap format)</i></td></tr><tr><td>v</td> <td><i>(POVRAY 3D rendering program file)</i></td></tr><tr><td>r</td> <td><i>(Rayshade 3D rendering program file)</i></td></tr><tr><td>h</td> <td><i>(Hewlett-Packard pen plotter (HPGL file format))</i></td></tr><tr><td>d</td> <td><i>(DEC ReGIS graphics (VT240 terminal))</i></td></tr><tr><td>e</td> <td><i>(Epson MX-80 dot-matrix printer)</i></td></tr><tr><td>c</td> <td><i>(Prowriter/Imagewriter dot-matrix printer)</i></td></tr><tr><td>t</td> <td><i>(Toshiba 24-pin dot-matrix printer)</i></td></tr><tr><td>o</td> <td><i>(Okidata dot-matrix printer)</i></td></tr><tr><td>b</td> <td><i>(Houston Instruments plotter)</i></td></tr><tr><td>u</td> <td><i>(other (one you have inserted code for))</i></td></tr></table></td>
+<td><table><tr><td>l</td> <td><i>(Postscript printer file format)</i></td></tr><tr><td>m</td> <td><i>(PICT format (for drawing programs))</i></td></tr><tr><td>j</td> <td><i>(HP Laserjet 75 dpi PCL file format)</i></td></tr><tr><td>s</td> <td><i>(HP Laserjet 150 dpi PCL file format)</i></td></tr><tr><td>y</td> <td><i>(HP Laserjet 300 dpi PCL file format)</i></td></tr><tr><td>w</td> <td><i>(MS-Windows Bitmap)</i></td></tr><tr><td>f</td> <td><i>(FIG 2.0 drawing program format)</i></td></tr><tr><td>a</td> <td><i>(Idraw drawing program format)</i></td></tr><tr><td>z</td> <td><i>(VRML Virtual Reality Markup Language file)</i></td></tr><tr><td>n</td> <td><i>(PCX 640x350 file format (for drawing programs))</i></td></tr><tr><td>p</td> <td><i>(PCX 800x600 file format (for drawing programs))</i></td></tr><tr><td>q</td> <td><i>(PCX 1024x768 file format (for drawing programs))</i></td></tr><tr><td>k</td> <td><i>(TeKtronix 4010 graphics terminal)</i></td></tr><tr><td>x</td> <td><i>(X Bitmap format)</i></td></tr><tr><td>v</td> <td><i>(POVRAY 3D rendering program file)</i></td></tr><tr><td>r</td> <td><i>(Rayshade 3D rendering program file)</i></td></tr><tr><td>h</td> <td><i>(Hewlett-Packard pen plotter (HPGL file format))</i></td></tr><tr><td>d</td> <td><i>(DEC ReGIS graphics (VT240 terminal))</i></td></tr><tr><td>e</td> <td><i>(Epson MX-80 dot-matrix printer)</i></td></tr><tr><td>c</td> <td><i>(Prowriter/Imagewriter dot-matrix printer)</i></td></tr><tr><td>t</td> <td><i>(Toshiba 24-pin dot-matrix printer)</i></td></tr><tr><td>o</td> <td><i>(Okidata dot-matrix printer)</i></td></tr><tr><td>b</td> <td><i>(Houston Instruments plotter)</i></td></tr><tr><td>u</td> <td><i>(other (one you have inserted code for))</i></td></tr></table></td>
 <td>l</td>
-</tr>
-
-<tr>
-<td>-plotterpcl</td>
-<td>Laserjet resolution</td>
-<td><table><tr><td>1</td> <td><i>(75 DPI)</i></td></tr><tr><td>2</td> <td><i>(150 DPI)</i></td></tr><tr><td>3</td> <td><i>(300 DPI)</i></td></tr></table></td>
-<td>1</td>
-</tr>
-
-<tr>
-<td>-plotterpcx</td>
-<td>PCX file resolution</td>
-<td><table><tr><td>1</td> <td><i>(EGA 640 X 350)</i></td></tr><tr><td>2</td> <td><i>(VGA 800 X 600)</i></td></tr><tr><td>3</td> <td><i>(VGA 1024 X 768)</i></td></tr></table></td>
-<td>1</td>
 </tr>
 
 <tr>
@@ -371,14 +357,14 @@ Done.
 </tr>
 
 <tr>
-<td>-xmarginray</td>
+<td>-xrayshade</td>
 <td>Horizontal margin (pixels)</td>
 <td>Number 0.100 or more</td>
 <td>1.65</td>
 </tr>
 
 <tr>
-<td>-ymarginray</td>
+<td>-yrayshade</td>
 <td>Vertical margin (pixels)</td>
 <td>Number 0.100 or more</td>
 <td>2.16</td>
@@ -436,7 +422,7 @@ Done.
 <td>-fontfile</td>
 <td>Fontfile name</td>
 <td>Any string is accepted</td>
-<td>font2</td>
+<td>font1</td>
 </tr>
 
 </table>

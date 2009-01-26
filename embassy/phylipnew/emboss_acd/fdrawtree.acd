@@ -11,7 +11,7 @@ section: input [
 ]
 
   string: fontfile [
-    default: "font2"
+    default: "font1"
     information: "Fontfile name"
     knowntype: "phylip font"
   ]
@@ -47,40 +47,32 @@ section: output [
     minimum: "1"
     maximum: "1"
     header: "Plotter or printer"
-    values: "l:Postscript printer file format; m:PICT format (for
-             drawing programs); j:HP Laserjet PCL file format; w:MS-Windows
-             Bitmap; f:FIG 2.0 drawing program format; a:Idraw drawing
-             program format; z:VRML Virtual Reality Markup Language file;
-             p:PCX file format (for drawing programs); k:TeKtronix 4010
-             graphics terminal; x:X Bitmap format; v:POVRAY 3D rendering
-             program file; r:Rayshade 3D rendering program file;
-             h:Hewlett-Packard pen plotter (HPGL file format); d:DEC ReGIS
-             graphics (VT240 terminal); e:Epson MX-80 dot-matrix printer;
-             c:Prowriter/Imagewriter dot-matrix printer; t:Toshiba 24-pin
-             dot-matrix printer; o:Okidata dot-matrix printer; b:Houston
-             Instruments plotter; u:other (one you have inserted code for)"
+    values: "l:Postscript printer file format;
+             m:PICT format (for drawing programs);
+             j:HP Laserjet 75 dpi PCL file format;
+             s:HP Laserjet 150 dpi PCL file format;
+             y:HP Laserjet 300 dpi PCL file format;
+             w:MS-Windows Bitmap;
+             f:FIG 2.0 drawing program format;
+             a:Idraw drawing program format;
+             z:VRML Virtual Reality Markup Language file;
+             n:PCX 640x350 file format (for drawing programs);
+             p:PCX 800x600 file format (for drawing programs);
+             q:PCX 1024x768 file format (for drawing programs);
+             k:TeKtronix 4010 graphics terminal;
+             x:X Bitmap format;
+             v:POVRAY 3D rendering program file;
+             r:Rayshade 3D rendering program file;
+             h:Hewlett-Packard pen plotter (HPGL file format);
+             d:DEC ReGIS graphics (VT240 terminal);
+             e:Epson MX-80 dot-matrix printer;
+             c:Prowriter/Imagewriter dot-matrix printer;
+             t:Toshiba 24-pin dot-matrix printer;
+             o:Okidata dot-matrix printer;
+             b:Houston Instruments plotter;
+             u:other (one you have inserted code for)"
     information: "Plotter or printer the tree will be drawn on"
     default: "l"
-  ]
-
-  list: plotterpcl [
-    additional: "@($(plotter)==j)"
-    minimum: "1"
-    maximum: "1"
-    header: "Laserjet resolution"
-    values: "1:75 DPI; 2:150 DPI; 3:300 DPI"
-    information: "Laserjet resolution"
-    default: "1"
-  ]
-
-  list: plotterpcx [
-    additional: "@($(plotter)==p)"
-    minimum: "1"
-    maximum: "1"
-    header: "PCX file resolution"
-    values: "1:EGA 640 X 350; 2:VGA 800 X 600; 3:VGA 1024 X 768"
-    information: "PCX file resolution"
-    default: "1"
   ]
 
   list: previewer [
@@ -181,14 +173,14 @@ section: output [
     information: "Vertical margin (cm)"
   ]
 
-  float: xmarginray [
+  float: xrayshade [
     additional: "@($(plotter)==r)"
     default: "1.65"
     minimum: "0.1"
     information: "Horizontal margin (pixels)"
   ]
 
-  float: ymarginray [
+  float: yrayshade [
     additional: "@($(plotter)==r)"
     default: "2.16"
     minimum: "0.1"

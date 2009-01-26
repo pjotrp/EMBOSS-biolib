@@ -124,15 +124,15 @@
 </tr>
 
 <tr>
-<td>-xmarginray</td>
-<td>Horizontal margin (pixels)</td>
+<td>-xrayshade</td>
+<td>Horizontal margin (pixels) for Rayshade output</td>
 <td>Number 0.100 or more</td>
 <td>1.65</td>
 </tr>
 
 <tr>
-<td>-ymarginray</td>
-<td>Vertical margin (pixels)</td>
+<td>-yrayshade</td>
+<td>Vertical margin (pixels) for Rayshade output</td>
 <td>Number 0.100 or more</td>
 <td>2.16</td>
 </tr>
@@ -189,7 +189,7 @@
 <td>-fontfile</td>
 <td>Fontfile name</td>
 <td>Any string is accepted</td>
-<td>font2</td>
+<td>font1</td>
 </tr>
 
 </table>
