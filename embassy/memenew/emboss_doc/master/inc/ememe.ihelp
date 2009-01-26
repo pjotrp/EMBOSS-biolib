@@ -2,7 +2,12 @@
   [-dataset]           seqset     User must provide the full filename of a set
                                   of sequences, not an indirect reference,
                                   e.g. a USA is NOT acceptable.
-  [-outfile]           outfile    [*.ememe] MEME program output file
+  [-outhtml]           outfile    [*.ememe] MEME program html output file
+  [-outtext]           outfile    [*.ememe] MEME program text output file
+  [-outxml]            outfile    [*.ememe] MEME program xml output file
+  [-outxsl]            outfile    [*.ememe] MEME program xsl output file
+  [-outseq]            seqoutset  [<sequence>.<format>] Sequence set filename
+                                  and optional format (output USA)
 
    Additional (Optional) qualifiers:
    -bfile              infile     The name of the file containing the
@@ -25,7 +30,7 @@
                                   sequences, you can specify it with these
                                   options. The default distribution of motif
                                   occurrences is assumed to be zero or one
-                                  occurrence of per sequence. oops : One
+                                  occurrence per sequence. oops : One
                                   Occurrence Per Sequence. MEME assumes that
                                   each sequence in the dataset contains
                                   exactly one occurrence of each motif. This
@@ -77,8 +82,9 @@
    -evt                float      [-1] Quit looking for motifs if E-value
                                   exceeds this value. Has an extremely high
                                   default so by default MEME never quits
-                                  before -nmotifs <n> have been found. (Any
-                                  numeric value)
+                                  before -nmotifs <n> have been found. A value
+                                  of -1 here is a shorthand for infinity.
+                                  (Any numeric value)
    -nsites             integer    [-1] These switches are ignored if mod =
                                   oops. The (expected) number of occurrences
                                   of each motif. If a value for -nsites is
@@ -95,7 +101,9 @@
                                   sequences). The hardcoded default value of
                                   -maxsites is equal to the number of
                                   sequences (zoops) or MIN(5* num.sequences,
-                                  50) (anr). (Any integer value)
+                                  50) (anr). A value of -1 here represents
+                                  nsites being unspecified. (Any integer
+                                  value)
    -minsites           integer    [-1] These switches are ignored if mod =
                                   oops. The (expected) number of occurrences
                                   of each motif. If a value for -nsites is
@@ -112,7 +120,9 @@
                                   sequences). The hardcoded default value of
                                   -maxsites is equal to the number of
                                   sequences (zoops) or MIN(5 * num.sequences,
-                                  50) (anr). (Any integer value)
+                                  50) (anr). A value of -1 here represents
+                                  minsites being unspecified. (Any integer
+                                  value)
    -maxsites           integer    [-1] These switches are ignored if mod =
                                   oops. The (expected) number of occurrences
                                   of each motif. If a value for -nsites is
@@ -129,10 +139,12 @@
                                   sequences). The hardcoded default value of
                                   -maxsites is equal to the number of
                                   sequences (zoops) or MIN(5 * num.sequences,
-                                  50) (anr). (Any integer value)
-   -wnsites            float      [.8] The weight on the prior on nsites. This
-                                  controls how strong the bias towards motifs
-                                  with exactly nsites sites (or between
+                                  50) (anr). A value of -1 here represents
+                                  maxsites being unspecified. (Any integer
+                                  value)
+   -wnsites            float      [0.8] The weight of the prior on nsites.
+                                  This controls how strong the bias towards
+                                  motifs with exactly nsites sites (or between
                                   minsites and maxsites sites) is. It is a
                                   number in the range [0..1). The larger it
                                   is, the stronger the bias towards motifs
@@ -144,7 +156,8 @@
                                   -maxw are tried. Note: if width is less than
                                   the length of the shortest sequence in the
                                   dataset, width is reset by MEME to that
-                                  value. (Any integer value)
+                                  value. A value of -1 here represents -w
+                                  being unspecified. (Any integer value)
    -minw               integer    [8] The width of the motif(s) to search for.
                                   If -w is given, only that width is tried.
                                   Otherwise, widths between -minw and -maxw
@@ -199,9 +212,9 @@
                                   ignored. The pairwise alignment is
                                   controlled by the switches -wg (gap cost),
                                   -ws (space cost) and -noendgaps (do not
-                                  penalize endgaps). See application
+                                  penalise endgaps). See application
                                   documentation for further information.
-   -revcomp            boolean    [N] Motifs occurrences may be on the given
+   -revcomp            boolean    [N] Motif occurrences may be on the given
                                   DNA strand or on its reverse complement. The
                                   default is to look for DNA motifs only on
                                   the strand given in the training set.
@@ -215,8 +228,8 @@
                                   combines the frequency of A in one column
                                   with T in the other, and the frequency of C
                                   in one column with G in the other.
-   -[no]nostatus       boolean    [Y] Set this option to print a progress
-                                  report to the terminal.
+   -[no]nostatus       boolean    [Y] Set this option to prevent progress
+                                  reports to the terminal.
 
    Advanced (Unprompted) qualifiers:
    -maxiter            integer    [50] The number of iterations of EM to run
@@ -236,21 +249,24 @@
                                   default values are 0.01 if prior = dirichlet
                                   or 0 if prior = dmix. These defaults are
                                   hardcoded into MEME (the value of the
-                                  default in the ACD file is not used). (Any
-                                  numeric value)
+                                  default in the ACD file is not used). A
+                                  value of -1 here represents -b being
+                                  unspecified. (Any numeric value)
    -spfuzz             float      [-1.0] The fuzziness of the mapping.
                                   Possible values are greater than 0. Meaning
                                   depends on -spmap, see below. See the
                                   application documentation for more
-                                  information. (Any numeric value)
-   -spmap              selection  [uni] The type of mapping function to use.
-                                  uni: Use prior when converting a substring
-                                  to an estimate of theta. Default -spfuzz
-                                  <a>: 0.5. pam: Use columns of PAM <a> matrix
-                                  when converting a substring to an estimate
-                                  of theta. Default -spfuzz <a>: 120 (PAM
-                                  120). See the application documentation for
-                                  more information.
+                                  information. A value of -1.0 here represents
+                                  -spfuzz being unspecified. (Any numeric
+                                  value)
+   -spmap              selection  [default] The type of mapping function to
+                                  use. uni: Use prior when converting a
+                                  substring to an estimate of theta. Default
+                                  -spfuzz <a>: 0.5. pam: Use columns of PAM
+                                  <a> matrix when converting a substring to an
+                                  estimate of theta. Default -spfuzz <a>: 120
+                                  (PAM 120). See the application
+                                  documentation for more information.
    -cons               string     Override the sampling of starting points and
                                   just use a starting point derived from
                                   <string>. This is useful when an actual
@@ -258,8 +274,8 @@
                                   used as the starting point for finding the
                                   motif. See the application documentation for
                                   more information. (Any string is accepted)
-   -maxsize            integer    [-1] Maximum dataset size in characters (Any
-                                  integer value)
+   -maxsize            integer    [-1] Maximum dataset size in characters (-1
+                                  = use meme default). (Any integer value)
    -p                  integer    [0] Only values of >0 will be applied. The
                                   -p <np> argument causes a version of MEME
                                   compiled for a parallel CPU architecture to
@@ -272,6 +288,48 @@
                                   applied. (Any integer value)
    -sf                 string     Print <sf> as name of sequence file (Any
                                   string is accepted)
+   -heapsize           integer    [64] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information. (Any
+                                  integer value)
+   -xbranch            boolean    [N] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information.
+   -wbranch            boolean    [N] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information.
+   -bfactor            integer    [3] The search for good EM starting points
+                                  can be improved by using a branching search.
+                                  A branching search begins with a fixed-size
+                                  heap of best EM starts identified during
+                                  the search of subsequences from the dataset.
+                                  These starts are also called seeds. The
+                                  fixed-size heap of seeds is used as the
+                                  branch-heap during the first iteration of
+                                  branching search. See the application
+                                  documentation for more information. (Any
+                                  integer value)
 
    Associated qualifiers:
 
@@ -291,8 +349,29 @@
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
 
-   "-outfile" associated qualifiers
+   "-outhtml" associated qualifiers
    -odirectory2        string     Output directory
+
+   "-outtext" associated qualifiers
+   -odirectory3        string     Output directory
+
+   "-outxml" associated qualifiers
+   -odirectory4        string     Output directory
+
+   "-outxsl" associated qualifiers
+   -odirectory5        string     Output directory
+
+   "-outseq" associated qualifiers
+   -osformat6          string     Output seq format
+   -osextension6       string     File name extension
+   -osname6            string     Base file name
+   -osdirectory6       string     Output directory
+   -osdbname6          string     Database name to add
+   -ossingle6          boolean    Separate file for each entry
+   -oufo6              string     UFO features
+   -offormat6          string     Features format
+   -ofname6            string     Features file name
+   -ofdirectory6       string     Output directory
 
    General qualifiers:
    -auto               boolean    Turn off prompts

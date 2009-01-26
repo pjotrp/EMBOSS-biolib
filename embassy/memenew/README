@@ -12,7 +12,7 @@ CONTENTS
 1. Installing EMBASSY MEME
 The EMBASSY MEME package contains "wrapper" applications providing an 
 EMBOSS-style interface to the applications in the original MEME package 
-version 3.0.14 developed by Timothy L. Bailey.
+version 4.0.0 developed by Timothy L. Bailey.
 
 Please read the file README in the EMBASSY MEME package distribution 
 for installation instructions.
@@ -32,7 +32,7 @@ for installation instructions.
 
 3. Setting up MEME
 For the EMBASSY MEME package to work, the directory containing the original 
-MEME executables *must* be in your path. For example if you executables 
+MEME executables *must* be in your path. For example if your executables 
 were installed to "/usr/local/meme/bin", then type:
 
 set path=(/usr/local/meme/bin/ $path)
@@ -59,8 +59,8 @@ Read the documentation on-line: http://emboss.sourceforge.net/apps/
 
 
 5. EMBASSY MEME notes
-EMBASSY MEME is a suite of application wrappers to the original meme v3.0.14 
-applications.  meme v3.0.14 must be installed on the same system as EMBOSS and 
+EMBASSY MEME is a suite of application wrappers to the original meme v4.0.0 
+applications.  meme v4.0.0 must be installed on the same system as EMBOSS and 
 the location of the meme executables must be defined in your path for EMBASSY
 MEME to work.
 
@@ -145,8 +145,8 @@ http://meme.nbcr.net/downloads/old_versions/
 
 7.2  Install software
 Follow the install instructions in the file README in the original MEME distro:
-   tar -xvf meme-3.0.14.tar.gz 
-   cd meme-3.0.14 
+   tar -xvf meme_4.0.0.tar.gz 
+   cd meme_4.0.0
    bin/install meme
    bin/runtests  
 
@@ -264,20 +264,25 @@ Copy "help" information from ememe.txt / emast.txt
 7.15 Decide whether a new parameter (typically for the application output, 
 which might be written to stdout by default) is required.
 
-7.16 Paste in appropriate documentation text into meme/mast.html
-Copy text from ememe.txt / emast.txt.  Better to paste in everything to maintain 
-continuity, even though there'll be some redundancy (e.g. in descriptions of 
-qualifiers) with the documentation generated automatically from the ACD file.
+7.16 Paste in appropriate documentation text into meme/mast.html Copy
+text from ememe.txt / emast.txt.  Better to paste in everything to
+maintain continuity, even though there'll be some redundancy (e.g. in
+descriptions of qualifiers) with the documentation generated
+automatically from the ACD file.
 
-7.17 Write QA tests, see entry under MEMENEW in emboss/emboss/test/qatest.dat 
-in the EMBOSS distribution.  Use the examples from the MEME README and any test 
-data files as are necessary from the "tests" directory of the MEME distribution. 
-There are a couple of issues (documented in qatest.dat):
-i.  Do not use FZ lines as ememe & emast use temp files with random names: these 
-names are printed to the output files. 
-ii. Consider ommitting tests for all but the first example for MEME. For 
-meme-3.0.14 these examples seemed to require a full-length swissprot database 
-and a different MEME dictionary to that provided in the MEME distribution.
+7.17 Write QA tests, see entry under MEMENEW in
+emboss/emboss/test/qatest.dat in the EMBOSS distribution.  Use the
+examples from the MEME README and any test data files as are necessary
+from the "tests" directory of the MEME distribution.  There are a
+couple of issues (documented in qatest.dat):
+
+i.  Do not use FZ lines as ememe & emast use temp files with random
+names: these names are printed to the output files.
+
+ii. Consider ommitting tests for all but the first example for
+MEME. For meme-4.0.0 these examples seemed to require a full-length
+swissprot database and a different MEME dictionary to that provided in
+the MEME distribution.
 
 
 

@@ -543,7 +543,7 @@ Output file format
   <TD BGCOLOR='#DDFFDD'><A HREF='#d17'>D</A>
   <TD BGCOLOR='#FFFFFF'><A HREF='#bh'>?</A></TABLE><BR CLEAR=LEFT>
   <BR>
-  LENGTH = 105  COMBINED P-VALUE = 6.96e-02  E-VALUE =      1.3<BR>
+  LENGTH = 105  COMBINED P-VALUE = 6.93e-02  E-VALUE =      1.2<BR>
   DIAGRAM: 105<PRE>
 
 
@@ -555,7 +555,7 @@ Output file format
   <TD BGCOLOR='#DDFFDD'><A HREF='#d18'>D</A>
   <TD BGCOLOR='#FFFFFF'><A HREF='#bh'>?</A></TABLE><BR CLEAR=LEFT>
   <BR>
-  LENGTH = 105  COMBINED P-VALUE = 2.43e-01  E-VALUE =      4.4<BR>
+  LENGTH = 105  COMBINED P-VALUE = 2.42e-01  E-VALUE =      4.4<BR>
   DIAGRAM: 105<PRE></PRE>
 
 <A NAME=debug></A><HR><CENTER><H3>Debugging Information</H3></CENTER><HR>
@@ -932,7 +932,8 @@ See also
    echlorop Reports presence of chloroplast transit peptides
    eiprscan Motif detection
    elipop Prediction of lipoproteins
-   ememe Motif detection
+   ememe Multiple EM for Motif Elicitation
+   ememetext Multiple EM for Motif Elicitation. Text file only
    enetnglyc Reports N-glycosylation sites in human proteins
    enetoglyc Reports mucin type GalNAc O-glycosylation sites in mammalian
    proteins

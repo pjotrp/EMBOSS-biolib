@@ -13,10 +13,38 @@
 </tr>
 
 <tr>
-<td>[-outfile]<br>(Parameter 2)</td>
-<td>MEME program output file</td>
+<td>[-outhtml]<br>(Parameter 2)</td>
+<td>MEME program html output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.ememe</td>
+</tr>
+
+<tr>
+<td>[-outtext]<br>(Parameter 3)</td>
+<td>MEME program text output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ememe</td>
+</tr>
+
+<tr>
+<td>[-outxml]<br>(Parameter 4)</td>
+<td>MEME program xml output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ememe</td>
+</tr>
+
+<tr>
+<td>[-outxsl]<br>(Parameter 5)</td>
+<td>MEME program xsl output file</td>
+<td>Output file</td>
+<td><i>&lt;*&gt;</i>.ememe</td>
+</tr>
+
+<tr>
+<td>[-outseq]<br>(Parameter 6)</td>
+<td>Sequence set filename and optional format (output USA)</td>
+<td>Writeable sequences</td>
+<td><i>&lt;*&gt;</i>.<i>format</i></td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -41,7 +69,7 @@
 
 <tr>
 <td>-mod</td>
-<td>If you know how occurrences of motifs are distributed in the training set sequences, you can specify it with these options. The default distribution of motif occurrences is assumed to be zero or one occurrence of per sequence. oops : One Occurrence Per Sequence. MEME assumes that each sequence in the dataset contains exactly one occurrence of each motif. This option is the fastest and most sensitive but the motifs returned by MEME may be 'blurry' if any of the sequences is missing them. zoops : Zero or One Occurrence Per Sequence. MEME assumes that each sequence may contain at most one occurrence of each motif. This option is useful when you suspect that some motifs may be missing from some of the sequences. In that case, the motifs found will be more accurate than using the first option. This option takes more computer time than the first option (about twice as much) and is slightly less sensitive to weak motifs present in all of the sequences. anr : Any Number of Repetitions. MEME assumes each sequence may contain any number of non-overlapping occurrences of each motif. This option is useful when you suspect that motifs repeat multiple times within a single sequence. In that case, the motifs found will be much more accurate than using one of the other options. This option can also be used to discover repeats within a single sequence. This option takes the much more computer time than the first option (about ten times as much) and is somewhat less sensitive to weak motifs which do not repeat within a single sequence than the other two options.</td>
+<td>If you know how occurrences of motifs are distributed in the training set sequences, you can specify it with these options. The default distribution of motif occurrences is assumed to be zero or one occurrence per sequence. oops : One Occurrence Per Sequence. MEME assumes that each sequence in the dataset contains exactly one occurrence of each motif. This option is the fastest and most sensitive but the motifs returned by MEME may be 'blurry' if any of the sequences is missing them. zoops : Zero or One Occurrence Per Sequence. MEME assumes that each sequence may contain at most one occurrence of each motif. This option is useful when you suspect that some motifs may be missing from some of the sequences. In that case, the motifs found will be more accurate than using the first option. This option takes more computer time than the first option (about twice as much) and is slightly less sensitive to weak motifs present in all of the sequences. anr : Any Number of Repetitions. MEME assumes each sequence may contain any number of non-overlapping occurrences of each motif. This option is useful when you suspect that motifs repeat multiple times within a single sequence. In that case, the motifs found will be much more accurate than using one of the other options. This option can also be used to discover repeats within a single sequence. This option takes the much more computer time than the first option (about ten times as much) and is somewhat less sensitive to weak motifs which do not repeat within a single sequence than the other two options.</td>
 <td>Choose from selection list of values</td>
 <td>zoops</td>
 </tr>
@@ -69,42 +97,42 @@
 
 <tr>
 <td>-evt</td>
-<td>Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs &lt;n&gt; have been found.</td>
+<td>Quit looking for motifs if E-value exceeds this value. Has an extremely high default so by default MEME never quits before -nmotifs &lt;n&gt; have been found. A value of -1 here is a shorthand for infinity.</td>
 <td>Any numeric value</td>
 <td>-1</td>
 </tr>
 
 <tr>
 <td>-nsites</td>
-<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5* num.sequences, 50) (anr).</td>
+<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5* num.sequences, 50) (anr). A value of -1 here represents nsites being unspecified.</td>
 <td>Any integer value</td>
 <td>-1</td>
 </tr>
 
 <tr>
 <td>-minsites</td>
-<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr).</td>
+<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr). A value of -1 here represents minsites being unspecified.</td>
 <td>Any integer value</td>
 <td>-1</td>
 </tr>
 
 <tr>
 <td>-maxsites</td>
-<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr).</td>
+<td>These switches are ignored if mod = oops. The (expected) number of occurrences of each motif. If a value for -nsites is specified, only that number of occurrences is tried. Otherwise, numbers of occurrences between -minsites and -maxsites are tried as initial guesses for the number of motif occurrences. If a value is not specified for -minsites and maxsites then the default hardcoded into MEME, as opposed to the default value given in the ACD file, is used. The hardcoded default value of -minsites is equal to sqrt(number sequences). The hardcoded default value of -maxsites is equal to the number of sequences (zoops) or MIN(5 * num.sequences, 50) (anr). A value of -1 here represents maxsites being unspecified.</td>
 <td>Any integer value</td>
 <td>-1</td>
 </tr>
 
 <tr>
 <td>-wnsites</td>
-<td>The weight on the prior on nsites. This controls how strong the bias towards motifs with exactly nsites sites (or between minsites and maxsites sites) is. It is a number in the range [0..1). The larger it is, the stronger the bias towards motifs with exactly nsites occurrences is.</td>
+<td>The weight of the prior on nsites. This controls how strong the bias towards motifs with exactly nsites sites (or between minsites and maxsites sites) is. It is a number in the range [0..1). The larger it is, the stronger the bias towards motifs with exactly nsites occurrences is.</td>
 <td>Any numeric value</td>
-<td>.8</td>
+<td>0.8</td>
 </tr>
 
 <tr>
 <td>-w</td>
-<td>The width of the motif(s) to search for. If -w is given, only that width is tried. Otherwise, widths between -minw and -maxw are tried. Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value.</td>
+<td>The width of the motif(s) to search for. If -w is given, only that width is tried. Otherwise, widths between -minw and -maxw are tried. Note: if width is less than the length of the shortest sequence in the dataset, width is reset by MEME to that value. A value of -1 here represents -w being unspecified.</td>
 <td>Any integer value</td>
 <td>-1</td>
 </tr>
@@ -146,14 +174,14 @@
 
 <tr>
 <td>-noendgaps</td>
-<td>The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method. Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored. The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalize endgaps). See application documentation for further information.</td>
+<td>The -nomatrim, -wg, -ws and -noendgaps switches control trimming (shortening) of motifs using the multiple alignment method. Specifying -nomatrim causes MEME to skip this and causes the other switches to be ignored. The pairwise alignment is controlled by the switches -wg (gap cost), -ws (space cost) and -noendgaps (do not penalise endgaps). See application documentation for further information.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
 <td>-revcomp</td>
-<td>Motifs occurrences may be on the given DNA strand or on its reverse complement. The default is to look for DNA motifs only on the strand given in the training set.</td>
+<td>Motif occurrences may be on the given DNA strand or on its reverse complement. The default is to look for DNA motifs only on the strand given in the training set.</td>
 <td>Boolean value Yes/No</td>
 <td>No</td>
 </tr>
@@ -167,7 +195,7 @@
 
 <tr>
 <td>-[no]nostatus</td>
-<td>Set this option to print a progress report to the terminal.</td>
+<td>Set this option to prevent progress reports to the terminal.</td>
 <td>Boolean value Yes/No</td>
 <td>Yes</td>
 </tr>
@@ -194,14 +222,14 @@
 
 <tr>
 <td>-b</td>
-<td>The strength of the prior on model parameters. A value of 0 means use intrinsic strength of prior if prior = dmix. The default values are 0.01 if prior = dirichlet or 0 if prior = dmix. These defaults are hardcoded into MEME (the value of the default in the ACD file is not used).</td>
+<td>The strength of the prior on model parameters. A value of 0 means use intrinsic strength of prior if prior = dmix. The default values are 0.01 if prior = dirichlet or 0 if prior = dmix. These defaults are hardcoded into MEME (the value of the default in the ACD file is not used). A value of -1 here represents -b being unspecified.</td>
 <td>Any numeric value</td>
 <td>-1.0</td>
 </tr>
 
 <tr>
 <td>-spfuzz</td>
-<td>The fuzziness of the mapping. Possible values are greater than 0. Meaning depends on -spmap, see below. See the application documentation for more information.</td>
+<td>The fuzziness of the mapping. Possible values are greater than 0. Meaning depends on -spmap, see below. See the application documentation for more information. A value of -1.0 here represents -spfuzz being unspecified.</td>
 <td>Any numeric value</td>
 <td>-1.0</td>
 </tr>
@@ -210,7 +238,7 @@
 <td>-spmap</td>
 <td>The type of mapping function to use. uni: Use prior when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 0.5. pam: Use columns of PAM &lt;a&gt; matrix when converting a substring to an estimate of theta. Default -spfuzz &lt;a&gt;: 120 (PAM 120). See the application documentation for more information.</td>
 <td>Choose from selection list of values</td>
-<td>uni</td>
+<td>default</td>
 </tr>
 
 <tr>
@@ -222,7 +250,7 @@
 
 <tr>
 <td>-maxsize</td>
-<td>Maximum dataset size in characters</td>
+<td>Maximum dataset size in characters (-1 = use meme default).</td>
 <td>Any integer value</td>
 <td>-1</td>
 </tr>
@@ -246,6 +274,34 @@
 <td>Print &lt;sf&gt; as name of sequence file</td>
 <td>Any string is accepted</td>
 <td><i>An empty string is accepted</i></td>
+</tr>
+
+<tr>
+<td>-heapsize</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Any integer value</td>
+<td>64</td>
+</tr>
+
+<tr>
+<td>-xbranch</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-wbranch</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Boolean value Yes/No</td>
+<td>No</td>
+</tr>
+
+<tr>
+<td>-bfactor</td>
+<td>The search for good EM starting points can be improved by using a branching search. A branching search begins with a fixed-size heap of best EM starts identified during the search of subsequences from the dataset. These starts are also called seeds. The fixed-size heap of seeds is used as the branch-heap during the first iteration of branching search. See the application documentation for more information.</td>
+<td>Any integer value</td>
+<td>3</td>
 </tr>
 
 </table>

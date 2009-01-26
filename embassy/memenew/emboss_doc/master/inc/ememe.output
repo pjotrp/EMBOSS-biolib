@@ -1,999 +1,508 @@
 
 <a name="output.1"></a>
 <h3>Output files for usage example </h3>
-<p><h3>File: ex2.html</h3>
+<p><h3>Graphics File: logo1.eps</h3>
+<p><img src="ememe.1.logo1.e.gif" alt="[ememe results]">
+<p><h3>File: logo1.png</h3>
+<p>This file contains non-printing characters and so cannot be displayed here.
+<p><h3>Graphics File: logo_ssc1.eps</h3>
+<p><img src="ememe.1.logo_ssc1.e.gif" alt="[ememe results]">
+<p><h3>File: logo_ssc1.png</h3>
+<p>This file contains non-printing characters and so cannot be displayed here.
+<p><h3>File: crp0.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
+&lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8"&gt;
+&lt;title&gt;MEME&lt;/title&gt;
+&lt;style type="text/css"&gt;
+        td.left {text-align: left;}
+        td.right {text-align: right; padding-right: 1cm;}
+      &lt;/style&gt;
+&lt;/head&gt;
+&lt;body bgcolor="#D5F0FF"&gt;&lt;form enctype="application/x-www-form-urlencoded" method="post" target="_new" action="http://emboss6.ebi.ac.uk/meme/cgi-bin/process_request.cgi"&gt;
+&lt;a name="top_buttons"&gt;&lt;/a&gt;&lt;hr&gt;
+&lt;table summary="buttons" align="left" cellspacing="0"&gt;&lt;tr&gt;
+&lt;td bgcolor="#DDDDFF"&gt;&lt;a href="#command"&gt;&lt;b&gt;Command line&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td bgcolor="#00FFFF"&gt;&lt;a href="#sequences"&gt;&lt;b&gt;Training Set&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td bgcolor="#DDFFDD"&gt;&lt;a href="#summary1"&gt;&lt;b&gt;First Motif&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td bgcolor="#FFDDFF"&gt;&lt;a href="#motif-summary"&gt;&lt;b&gt;Summary of Motifs&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td bgcolor="#00FF00"&gt;&lt;a href="#stopped"&gt;&lt;b&gt;Termination&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;td bgcolor="#FFFF00"&gt;&lt;a href="#explanation"&gt;&lt;b&gt;Explanation&lt;/b&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;&lt;/table&gt;
+&lt;br clear="left"&gt;&lt;b&gt;&lt;br&gt;&lt;input type="submit" name="action" value="MAST"&gt;
+      Search sequence databases with these motifs using
+      &lt;a href="http://meme.nbcr.net/meme/mast-intro.html"&gt;MAST.&lt;/a&gt;&lt;br&gt;&lt;input type="submit" name="action" value="BLOCKS"&gt;
+      Submit these motifs to 
+      &lt;a href="http://blocks.fhcrc.org/blocks/process_blocks.html"&gt;
+      BLOCKS multiple alignment processor.
+      &lt;/a&gt;&lt;/b&gt;&lt;br clear="left"&gt;&lt;hr&gt;
+&lt;center&gt;
+&lt;a name="version"&gt;&lt;/a&gt;&lt;big&gt;&lt;b&gt;&lt;a href="#version_doc"&gt;MEME - Motif discovery tool&lt;/a&gt;&lt;/b&gt;&lt;/big&gt;
+&lt;/center&gt;
+&lt;hr&gt;
+&lt;p&gt;
+MEME version 4.0.0 (Release date: 0 PDT 20)
+     &lt;/p&gt;
+&lt;p&gt;
+     For further information on how to interpret these results or to get
+     a copy of the MEME software please access 
+     &lt;a href="http://meme.sdsc.edu"&gt;http://meme.sdsc.edu&lt;/a&gt;.
+     &lt;/p&gt;
+&lt;p&gt;
+     This file may be used as input to the MAST algorithm for searching
+     sequence databases for matches to groups of motifs.  MAST is available
+     for interactive use and downloading at 
+     &lt;a href="http://meme.sdsc.edu"&gt;http://meme.sdsc.edu&lt;/a&gt;.
+     &lt;/p&gt;
+&lt;hr&gt;
+&lt;center&gt;
+&lt;a name="reference"&gt;&lt;/a&gt;&lt;big&gt;&lt;b&gt;&lt;a href="#reference_doc"&gt;REFERENCE&lt;/a&gt;&lt;/b&gt;&lt;/big&gt;
+&lt;/center&gt;
+&lt;hr&gt;
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
-
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
+        The motif is preceded by a line starting with
+        "letter-probability matrix:" and containing the length of the 
+        alphabet, width of the motif, number of occurrences of the motif,
+        and the &lt;i&gt;E&lt;/i&gt;-value of the motif.
+        &lt;p&gt;&lt;b&gt;Note:&lt;/b&gt; Earlier versions
+        of MEME gave the posterior probabilities--the probability after 
+        applying a prior on letter frequencies--rather than the observed 
+        frequencies.
+        These versions of MEME also gave the number of &lt;i&gt;possible&lt;/i&gt;
+        positions for the motif rather than the actual number of occurrences.
+        The output from these earlier versions of MEME can be distinguished
+        by "n=" rather than "nsites=" in the line preceding the matrix.
+        &lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;h4&gt;&lt;a name="regular_expression_doc2" href="#regular_expression1"&gt;Regular Expression&lt;/a&gt;&lt;/h4&gt;
+        This is a regular expression (RE) describing the motif.  In each column,
+        all letters with observed frequencies greater than 0.2 are shown;
+        less-frequent letters are not included in the RE.
+        MEME regular expressions are interpreted as follows: 
+        single letters match that letter; groups of letters in square brackets 
+        match any of the letters in the group.
+        Regular expressions can be used for searching for the motif in
+        sequences (using, for example,
+        &lt;a href="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;
+         PatMatch
+        &lt;/a&gt;
+        ) but the search accuracy will usually be better with the PSSM (using,
+        for example
+        &lt;a href="http://meme.nbcr.net/meme/mast-intro.html"&gt;MAST&lt;/a&gt;.)
+      &lt;/li&gt;
+&lt;li&gt;
+&lt;h4&gt;&lt;a name="motif-summary-doc2" href="#motif-summary"&gt;Motif Summary Tiling&lt;/a&gt;&lt;/h4&gt;
+        The motif summary tiling is done using the same algorithm as used by 
+        &lt;a href="http://meme.nbcr.net/meme/mast-intro.html"&gt;MAST&lt;/a&gt;.
+        The motif occurrences shown in the motif summary
+        &lt;b&gt;may not be exactly the same as those reported in each motif section&lt;/b&gt;
+        because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
+        don't overlap other, more significant motif occurrences are shown.
+        The format of the machine readable motif-summary is:
+        &lt;pre&gt;
+        [sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
+        &lt;/pre&gt;
+        See the documentation for 
+        &lt;a href="http://meme.nbcr.net/meme/mast-output.html"&gt;MAST output&lt;/a&gt;
+        for the definition of position and
+        combined &lt;em&gt;p&lt;/em&gt;-values.
+      &lt;/li&gt;
+&lt;/ul&gt;
+&lt;/form&gt;&lt;/body&gt;
+&lt;/html&gt;
 </td></tr></table><p>
-
-<a name="output.2"></a>
-<h3>Output files for usage example 2</h3>
-<p><h3>File: ex3.html</h3>
+<p><h3>File: crp0.fasta</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
-
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
+<pre>
+&gt;ce1cg
+TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGT
+TTTTTTGATCGTTTTCACAAAAATGGAAGTCCACAGTCTTGACAG
+&gt;ara
+GACAAAAACGCGTAACAAAAGTGTCTATAATCACGGCAGAAAAGTCCACATTGATTATTT
+GCACGGCGTCACACTTTGCTATGCCATAGCATTTTTATCCATAAG
+&gt;bglr1
+ACAAATCCCAATAACTTAATTATTGGGATTTGTTATATATAACTTTATAAATTCCTAAAA
+TTACACAAAGTTAATAACTGTGAGCATGGTCATATTTTTATCAAT
+&gt;crp
+CACAAAGCGAAAGCTATGCTAAAACAGTCAGGATGCTACAGTAATACATTGATGTACTGC
+ATGTATGCAAAGGACGTCACATTACCGTGCAGTACAGTTGATAGC
+&gt;cya
+ACGGTGCTACACTTGTATGTAGCGCATCTTTCTTTACGGTCAATCAGCAAGGTGTTAAAT
+TGATCACGTTTTAGACCATTTTTTCGTCGTGAAACTAAAAAAACC
+&gt;deop2
+AGTGAATTATTTGAACCAGATCGCATTACAGTGATGCAAACTTGTAAGTAGATTTCCTTA
+ATTGTGATGTGTATCGAAGTGTGTTGCGGAGTAGATGTTAGAATA
+&gt;gale
+GCGCATAAAAAACGGCTAAATTCTTGTGTAAACGATTCCACTAATTTATTCCATGTCACA
+CTTTTCGCATCTTTGTTATGCTATGGTTATTTCATACCATAAGCC
+&gt;ilv
+GCTCCGGCGGGGTTTTTTGTTATCTGCAATTCAGTACAAAACGTGATCAACCCCTCAATT
+TTCCCTTTGCTGAAAAATTTTCCATTGTCTCCCCTGTAAAGCTGT
+&gt;lac
+AACGCAATTAATGTGAGTTAGCTCACTCATTAGGCACCCCAGGCTTTACACTTTATGCTT
+CCGGCTCGTATGTTGTGTGGAATTGTGAGCGGATAACAATTTCAC
+&gt;male
+ACATTACCGCCAATTCTGTAACAGAGATCACACAAAGCGACGGTGGGGCGTAGGGGCAAG
+GAGGATGGAAAGAGGTTGCCGTATAAAGAAACTAGAGTCCGTTTA
+&gt;malk
+GGAGGAGGCGGGAGGATGAGAACACGGCTTCTGTGAACTAAACCGAGGTCATGTAAGGAA
+TTTCGTGATGTTGCTTGCAAAAATCGTGGCGATTTTATGTGCGCA
+&gt;malt
+GATCAGCGTCGTTTTAGGTGAGTTGTTAATAAAGATTTGGAATTGTGACACAGTGCAAAT
+TCAGACACATAAAAAAACGTCATCGCTTGCATTAGAAAGGTTTCT
+&gt;ompa
+GCTGACAAAAAAGATTAAACATACCTTATACAAGACTTTTTTTTCATATGCCTGACGGAG
+TTCACACTTGTAAGTTTTCAACTACGTTGTAGACTTTACATCGCC
+&gt;tnaa
+TTTTTTAAACATTAAAATTCTTACGTAATTTATAATCTTTAAAAAAAGCATTTAATATTG
+CTCCCCGAACGATTGTGATTCGATTCACATTTAAACAATTTCAGA
+&gt;uxu1
+CCCATGAGAGTGAAATTGTTGTGATGTGGTTAACCCAATTAGAATTCGGGATTGACATGT
+CTTACCAAAAGGTAGAACTTATACGCCATCTCATCCGATGCAAGC
+&gt;pbr322
+CTGGCTTAACTATGCGGCATCAGAGCAGATTGTACTGAGAGTGCACCATATGCGGTGTGA
+AATACCGCACAGATGCGTAAGGAGAAAATACCGCATCAGGCGCTC
+&gt;trn9cat
+CTGTGACGGAAGATCACTTCGCAGAATAAATAAATCCTGGTGTCCCTGTTGATACCGGGA
+AGCCCTGGGCCAACTTTTGGCGAAAATGAGACGTTGATCGGCACG
+&gt;tdc
+GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTG
+GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
+</pre>
 </td></tr></table><p>
-
-<a name="output.3"></a>
-<h3>Output files for usage example 3</h3>
-<p><h3>File: ex4.html</h3>
+<p><h3>File: crp0.text</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
+<pre>
+********************************************************************************
+MEME - Motif discovery tool
+********************************************************************************
+MEME version 4.0.0 (Release date: 0 PDT 20)
+
+For further information on how to interpret these results or to get
+a copy of the MEME software please access http://meme.nbcr.net.
+
+This file may be used as input to the MAST algorithm for searching
+sequence databases for matches to groups of motifs.  MAST is available
+for interactive use and downloading at http://meme.nbcr.net.
+********************************************************************************
+
+
+********************************************************************************
+REFERENCE
+********************************************************************************
+If you use this program in your research, please cite:
+
+Timothy L. Bailey and Charles Elkan,
+"Fitting a mixture model by expectation maximization to discover
+motifs in biopolymers", Proceedings of the Second International
+Conference on Intelligent Systems for Molecular Biology, pp. 28-36,
+AAAI Press, Menlo Park, California, 1994.
+********************************************************************************
+
+
+********************************************************************************
+TRAINING SET
+********************************************************************************
+DATAFILE= crp0.fasta
+ALPHABET= ACGT
+Sequence name            Weight Length  Sequence name            Weight Length  
+-------------            ------ ------  -------------            ------ ------  
+ce1cg                    1.0000    105  ara                      1.0000    105  
+bglr1                    1.0000    105  crp                      1.0000    105  
+cya                      1.0000    105  deop2                    1.0000    105  
+gale                     1.0000    105  ilv                      1.0000    105  
+lac                      1.0000    105  male                     1.0000    105  
+malk                     1.0000    105  malt                     1.0000    105  
+ompa                     1.0000    105  tnaa                     1.0000    105  
+uxu1                     1.0000    105  pbr322                   1.0000    105  
+trn9cat                  1.0000    105  tdc                      1.0000    105  
+********************************************************************************
+
+********************************************************************************
+COMMAND LINE SUMMARY
+********************************************************************************
+This information can also be useful in the event you wish to report a
+problem with the MEME software.
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
+--------------------------------------------------------------------------------
+TGTGA[ACT][CAG][GT][AGT][GC][TAC]TCAC
+--------------------------------------------------------------------------------
 
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
 
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
 
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
+
+Time  0.66 secs.
+
+********************************************************************************
+
+
+********************************************************************************
+SUMMARY OF MOTIFS
+********************************************************************************
+
+--------------------------------------------------------------------------------
+	Combined block diagrams: non-overlapping sites with p-value &lt; 0.0001
+--------------------------------------------------------------------------------
+SEQUENCE NAME            COMBINED P-VALUE  MOTIF DIAGRAM
+-------------            ----------------  -------------
+ce1cg                            1.74e-03  63_[1(1.91e-05)]_27
+ara                              4.00e-03  57_[1(4.41e-05)]_33
+bglr1                            7.85e-03  78_[1(8.66e-05)]_12
+crp                              4.37e-03  65_[1(4.81e-05)]_25
+cya                              3.66e-03  52_[1(4.03e-05)]_38
+deop2                            5.47e-04  9_[1(6.01e-06)]_81
+gale                             9.45e-04  26_[1(1.04e-05)]_64
+ilv                              2.54e-02  105
+lac                              5.39e-05  11_[1(5.92e-07)]_79
+male                             2.12e-04  16_[1(2.33e-06)]_74
+malk                             1.35e-02  105
+malt                             2.55e-03  43_[1(2.80e-05)]_47
+ompa                             1.42e-03  50_[1(1.57e-05)]_40
+tnaa                             2.11e-03  73_[1(2.32e-05)]_17
+uxu1                             3.35e-03  19_[1(3.69e-05)]_71
+pbr322                           2.12e-04  55_[1(2.33e-06)]_35
+trn9cat                          5.08e-02  105
+tdc                              1.57e-03  80_[1(1.73e-05)]_10
+--------------------------------------------------------------------------------
+
+********************************************************************************
+
+
+********************************************************************************
+Stopped because nmotifs = 1 reached.
+********************************************************************************
+
+CPU: emboss6.ebi.ac.uk
+
+********************************************************************************
+</pre>
 </td></tr></table><p>
-
-<a name="output.4"></a>
-<h3>Output files for usage example 4</h3>
-<p><h3>File: ex5.html</h3>
+<p><h3>File: crp0.xml</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
+<pre>
+&lt;?xml version='1.0' encoding='UTF-8' standalone='yes'?&gt;
+&lt;?xml-stylesheet type='text/xsl' href='meme.xsl'?&gt;
+&lt;!-- Document definition --&gt;
+&lt;!DOCTYPE MEME[
+&lt;!ELEMENT MEME (
+  training_set,
+  model, 
+  motifs, 
+  scanned_sites_summary?
+)&gt;
+&lt;!ATTLIST MEME 
+  version CDATA #REQUIRED
+  release CDATA #REQUIRED
+&gt;
+&lt;!-- Training-set elements --&gt;
+&lt;!ELEMENT training_set (alphabet, ambigs, sequence+, letter_frequencies)&gt;
+&lt;!ATTLIST training_set datafile CDATA #REQUIRED length CDATA #REQUIRED&gt;
+&lt;!ELEMENT alphabet (letter+)&gt;
+&lt;!ATTLIST alphabet id (amino-acid|nucleotide) #REQUIRED
+                   length CDATA #REQUIRED&gt;
+&lt;!ELEMENT ambigs (letter+)&gt;
+&lt;!ELEMENT letter EMPTY&gt;
+&lt;!ATTLIST letter id ID #REQUIRED&gt;
+&lt;!ATTLIST letter symbol CDATA #REQUIRED&gt;
+&lt;!ELEMENT sequence EMPTY&gt;
+&lt;!ATTLIST sequence id ID #REQUIRED
+                   name CDATA #REQUIRED
+                   length CDATA #REQUIRED
+                   weight CDATA #REQUIRED
+&gt;
+&lt;!ELEMENT letter_frequencies (alphabet_array)&gt;
+
+&lt;!-- Model elements --&gt;
+&lt;!ELEMENT model (
+  command_line,
+  host,
+  type,
+  nmotifs,
+  evalue_threshold,
+  object_function,
+  min_width,
+  max_width,
+  minic,
+  wg,
+  ws,
+  endgaps,
+  minsites,
+  maxsites,
+  wnsites,
+  prob,
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
-
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;letter_ref letter_id="letter_T"/&gt;
+&lt;letter_ref letter_id="letter_T"/&gt;
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;letter_ref letter_id="letter_A"/&gt;
+&lt;letter_ref letter_id="letter_T"/&gt;
+&lt;letter_ref letter_id="letter_C"/&gt;
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;letter_ref letter_id="letter_G"/&gt;
+&lt;/site&gt;
+&lt;right_flank&gt;CACG&lt;/right_flank&gt;
+&lt;/contributing_site&gt;
+&lt;/contributing_sites&gt;
+&lt;/motif&gt;
+&lt;/motifs&gt;
+&lt;scanned_sites_summary p_thresh="0.0001"&gt;
+&lt;scanned_sites sequence_id="sequence_ce1cg" pvalue="1.74e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="63" pvalue="1.91e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_ara" pvalue="4.00e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="57" pvalue="4.41e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_bglr1" pvalue="7.85e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="78" pvalue="8.66e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_crp" pvalue="4.37e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="65" pvalue="4.81e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_cya" pvalue="3.66e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="52" pvalue="4.03e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_deop2" pvalue="5.47e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="9" pvalue="6.01e-06"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_gale" pvalue="9.45e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="26" pvalue="1.04e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_ilv" pvalue="2.54e-02" num_sites="0"&gt;&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_lac" pvalue="5.39e-05" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="11" pvalue="5.92e-07"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_male" pvalue="2.12e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="16" pvalue="2.33e-06"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_malk" pvalue="1.35e-02" num_sites="0"&gt;&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_malt" pvalue="2.55e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="43" pvalue="2.80e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_ompa" pvalue="1.42e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="50" pvalue="1.57e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_tnaa" pvalue="2.11e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="73" pvalue="2.32e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_uxu1" pvalue="3.35e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="19" pvalue="3.69e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_pbr322" pvalue="2.12e-04" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="55" pvalue="2.33e-06"/&gt;
+&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_trn9cat" pvalue="5.08e-02" num_sites="0"&gt;&lt;/scanned_sites&gt;
+&lt;scanned_sites sequence_id="sequence_tdc" pvalue="1.57e-03" num_sites="1"&gt;&lt;scanned_site motif_id="motif_1" strand="plus" position="80" pvalue="1.73e-05"/&gt;
+&lt;/scanned_sites&gt;
+&lt;/scanned_sites_summary&gt;
+&lt;/MEME&gt;
+</pre>
 </td></tr></table><p>
-
-<a name="output.5"></a>
-<h3>Output files for usage example 5</h3>
-<p><h3>File: ex6.html</h3>
+<p><h3>File: crp0.xsl</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
+<pre>
+&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
+&lt;xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"&gt;
+
+&lt;!-- 
+  This file is automatically built from meme.xsl.in at MAKE time.
+
+  This stylesheet transforms the XML output of MEME into HTML closely matching
+  the appearance of the HTML generated by previous versions of MEME.
+--&gt;
+
+  &lt;xsl:output method="html" indent="yes" 
+    doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"
+    doctype-system="http://www.w3.org/TR/html4/loose.dtd"
+  /&gt;
+
+  &lt;!-- Stylesheet processing starts here --&gt;
+  &lt;xsl:template match="/MEME"&gt;
+    &lt;html&gt;
+      &lt;xsl:call-template name="html-head"/&gt;
+      &lt;body bgcolor='#D5F0FF'&gt;
+        &lt;form 
+          enctype="application/x-www-form-urlencoded"
+          method = "post"
+          target = "_new"
+          action = "http://emboss6.ebi.ac.uk/meme/cgi-bin/process_request.cgi"
+        &gt;
+        &lt;!-- Create the various sub-sections of the document --&gt;
+        &lt;xsl:call-template name="top-buttons"/&gt;
+        &lt;xsl:call-template name="meme-version"/&gt;
+        &lt;xsl:call-template name="reference"/&gt;
+        &lt;xsl:call-template name="training-set"/&gt;
+        &lt;xsl:call-template name="model"/&gt;
+        &lt;xsl:call-template name="motifs"/&gt;
+        &lt;xsl:call-template name="scanned_site_summary"/&gt;
+        &lt;xsl:call-template name="explanation"/&gt;
+      &lt;/form&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  &lt;/xsl:template&gt;
+
+  &lt;xsl:template name="html-head"&gt;
+    &lt;!-- This template prints the HTML head block, including the document level CSS. --&gt;
+    &lt;head&gt;
+      &lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"/&gt;
+      &lt;title&gt;MEME&lt;/title&gt;
+      &lt;style type="text/css"&gt;
+        td.left {text-align: left;}
+        td.right {text-align: right; padding-right: 1cm;}
+      &lt;/style&gt;
+    &lt;/head&gt;
 
 
 <font color=red>  [Part of this file has been deleted for brevity]</font>
 
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
+"/&gt;
+&lt;/xsl:template&gt;
 
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
+&lt;xsl:template name="pspm"&gt;
+  &lt;xsl:param name="motif_index"/&gt;
+  &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+  &lt;hr/&gt;&lt;center&gt;&lt;a name="pspm{$motif_index}"/&gt;
+    &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+    &lt;big&gt;&lt;b&gt;&lt;a href="#pspm_doc"&gt;Motif &lt;xsl:value-of select="$motif_index"/&gt; position-specific probability matrix&lt;/a&gt; 
+    &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+    &lt;/b&gt;&lt;/big&gt;&lt;/center&gt;&lt;hr/&gt;
+    &lt;xsl:variable name="pspm"&gt;
+letter-probability matrix: alength= &lt;xsl:value-of
+select="/MEME/training_set/alphabet/@length"/&gt; w= &lt;xsl:value-of select="@width"/&gt; nsites= &lt;xsl:value-of select="@sites"/&gt; E= &lt;xsl:value-of select="@e_value"/&gt; &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+      &lt;xsl:for-each select="/MEME/motifs/motif[$motif_index]/probabilities/alphabet_matrix/alphabet_array"&gt;
+        &lt;xsl:for-each select="value"&gt;
+          &lt;xsl:value-of select="."/&gt;&lt;xsl:text&gt; &lt;/xsl:text&gt;
+        &lt;/xsl:for-each&gt;
+      &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+      &lt;/xsl:for-each&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+    &lt;input type="hidden" name="pspm{$motif_index}" value="{$pspm} "/&gt;
+    &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+&lt;/xsl:template&gt;
 
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
+&lt;xsl:template name="pssm"&gt;
+  &lt;xsl:param name="motif_index"/&gt;
+  &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+  &lt;hr/&gt;&lt;center&gt;&lt;a name="pssm{$motif_index}"/&gt;
+  &lt;big&gt;&lt;b&gt;&lt;a href="#pssm_doc"&gt;Motif &lt;xsl:value-of select="$motif_index"/&gt; position-specific scoring matrix&lt;/a&gt; 
+  &lt;/b&gt;&lt;/big&gt;&lt;/center&gt;&lt;hr/&gt;
+    &lt;xsl:variable name="pssm"&gt;
+log-odds matrix: alength= &lt;xsl:value-of select="/MEME/training_set/alphabet/@length"/&gt; w= &lt;xsl:value-of select="@width"/&gt; n= &lt;xsl:value-of select="@sites"/&gt; bayes= &lt;xsl:value-of select="@bayes_threshold"/&gt; E= &lt;xsl:value-of select="@e_value"/&gt;
+      &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+      &lt;xsl:for-each select="/MEME/motifs/motif[$motif_index]/scores/alphabet_matrix/alphabet_array"&gt;
+        &lt;xsl:for-each select="value"&gt;
+          &lt;xsl:value-of select="."/&gt;&lt;xsl:text&gt; &lt;/xsl:text&gt;
+        &lt;/xsl:for-each&gt;
+        &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+      &lt;/xsl:for-each&gt;
+    &lt;/xsl:variable&gt;
+    &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+&lt;!-- don't change the next 3 lines or make_logodds breaks --&gt;
+    &lt;input type="hidden" name="pssm{$motif_index}" value="
+{$pssm}
+"/&gt;
+    &lt;xsl:text&gt;&amp;#10;&lt;/xsl:text&gt;
+&lt;/xsl:template&gt;
 
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
-</td></tr></table><p>
-
-<a name="output.6"></a>
-<h3>Output files for usage example 6</h3>
-<p><h3>File: ex7.html</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
-
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
-</td></tr></table><p>
-
-<a name="output.7"></a>
-<h3>Output files for usage example 7</h3>
-<p><h3>File: ex8.html</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
-
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
-</td></tr></table><p>
-
-<a name="output.8"></a>
-<h3>Output files for usage example 8</h3>
-<p><h3>File: ex9.html</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
-
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
-</td></tr></table><p>
-
-<a name="output.9"></a>
-<h3>Output files for usage example 9</h3>
-<p><h3>File: ex1.html</h3>
-<table width="90%"><tr><td bgcolor="#CCFFCC">
-&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"&gt;
-&lt;HTML&gt;
-&lt;HEAD&gt;
-&lt;meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"&gt;
-&lt;TITLE&gt;MEME&lt;/TITLE&gt;
-&lt;STYLE type="text/css"&gt;
-  TD.invisible { color: '#D5F0FF'; }
-  TD.c0 { background: aqua; color: black; }
-  TD.cw0 { background: aqua; color: black; font: 50% sans-serif; }
-  TD.c1 { background: blue; color: white; }
-  TD.cw1 { background: blue; color: white; font: 50% sans-serif; }
-  TD.c2 { background: red; color: white; }
-  TD.cw2 { background: red; color: white; font: 50% sans-serif; }
-  TD.c3 { background: fuchsia; color: black; }
-  TD.cw3 { background: fuchsia; color: black; font: 50% sans-serif; }
-  TD.c4 { background: yellow; color: black; }
-  TD.cw4 { background: yellow; color: black; font: 50% sans-serif; }
-  TD.c5 { background: lime; color: black; }
-  TD.cw5 { background: lime; color: black; font: 50% sans-serif; }
-  TD.c6 { background: teal; color: white; }
-  TD.cw6 { background: teal; color: white; font: 50% sans-serif; }
-  TD.c7 { background: #444444; color: white; }
-  TD.cw7 { background: #444444; color: white; font: 50% sans-serif; }
-  TD.c8 { background: green; color: white; }
-  TD.cw8 { background: green; color: white; font: 50% sans-serif; }
-  TD.c9 { background: silver; color: black; }
-  TD.cw9 { background: silver; color: black; font: 50% sans-serif; }
-  TD.c10 { background: purple; color: white; }
-  TD.cw10 { background: purple; color: white; font: 50% sans-serif; }
-  TD.c11 { background: olive; color: black; }
-  TD.cw11 { background: olive; color: black; font: 50% sans-serif; }
-  TD.c12 { background: navy; color: white; }
-  TD.cw12 { background: navy; color: white; font: 50% sans-serif; }
-  TD.c13 { background: maroon; color: white; }
-  TD.cw13 { background: maroon; color: white; font: 50% sans-serif; }
-  TD.c14 { background: black; color: white; }
-  TD.cw14 { background: black; color: white; font: 50% sans-serif; }
-  TD.c15 { background: white; color: black; }
-  TD.cw15 { background: white; color: black; font: 50% sans-serif; }
-  B.red { color: red; }
-  TD.red { color: red; }
-  TH.red { color: red; }
-  B.blue { color: blue; }
-  TD.blue { color: blue; }
-  TH.blue { color: blue; }
-  B.orange { color: orange; }
-  TD.orange { color: orange; }
-  TH.orange { color: orange; }
-  B.green { color: green; }
-  TD.green { color: green; }
-
-
-<font color=red>  [Part of this file has been deleted for brevity]</font>
-
-position one first.
-The motif is preceded by a line starting with
-"letter-probability matrix:" and containing the length of the alphabet, width
-of the motif, number of occurrences of the motif, and the &lt;I&gt;E&lt;/I&gt;-value of the
-motif.
-&lt;p&gt;
-&lt;b&gt;Note:&lt;/b&gt; Earlier versions
-of MEME gave the posterior probabilities--the probability after applying
-a prior on letter frequencies--rather than the observed frequencies.
-These versions of MEME also gave the number of &lt;I&gt;possible&lt;/I&gt;
-positions for the motif rather than the actual number of occurrences.
-The output from these earlier versions of MEME can be distinguished
-by "n=" rather than "nsites=" in the line preceding the matrix.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=regular_expression_doc2 HREF=#regular_expression1&gt;&lt;H4&gt;
-Regular Expression&lt;/H4&gt;&lt;/A&gt;
-This is the &lt;A HREF=#consensus_doc2&gt;multilevel consensus&lt;/A&gt; expressed as
-a regular expression for convenience.  Regular expressions can
-be used for searching for against sequences (using, for example,
-&lt;A HREF="http://nar.oxfordjournals.org/cgi/content/full/33/suppl_2/W262"&gt;PatMatch&lt;/A&gt;)  
-but the search accuracy will usually be better with the PSSM (using,
-for example
-&lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.)
-MEME regular expressions are interpreted as follows: 
-single letters match that letter; groups of letters in square brackets 
-match any of the letters in the group.
-
-&lt;P&gt;
-&lt;LI&gt; &lt;A NAME=motif-summary-doc2 HREF=#motif-summary&gt;&lt;H4&gt;
-Motif Summary Tiling&lt;/H4&gt;&lt;/A&gt;
-The motif summary tiling is done using the same algorithm as used
-by &lt;A HREF=http://meme.nbcr.net/meme/mast-intro.html&gt;MAST&lt;/A&gt;.
-The motif occurrences shown in the motif summary
-&lt;B&gt;may not be exactly the same as those reported in each motif section&lt;/B&gt;
-because only motifs with a position &lt;em&gt;p&lt;/em&gt;-value of 0.0001 that
-don't overlap other, more significant motif occurrences are shown.
-The format of the machine readable motif-summary is:
-&lt;pre&gt;
-[sequence_name combined_&lt;em&gt;p&lt;/em&gt;-value number_of_motif_occurrences [motif_number start_of_motif position_&lt;em&gt;p&lt;/em&gt;-value]+]+
-&lt;/pre&gt;
-See the documentation for 
-&lt;A HREF=http://meme.nbcr.net/meme/mast-output.html&gt;MAST output&lt;/A&gt; for the definition of position and
-combined &lt;em&gt;p&lt;/em&gt;-values.
-
-&lt;/UL&gt;
-&lt;HR&gt;&lt;TABLE SUMMARY='buttons' ALIGN=LEFT CELLSPACING=0&gt;&lt;TR&gt;
-  &lt;TD BGCOLOR='#DDDDFF'&gt;&lt;A HREF="#top_buttons"&gt;&lt;B&gt;Go to top&lt;/B&gt;&lt;/A&gt;&lt;/TABLE&gt;&lt;BR&gt;
-&lt;/FORM&gt;
-&lt;/BODY&gt;
-&lt;/HTML&gt;
+&lt;/xsl:stylesheet&gt;
+</pre>
 </td></tr></table><p>

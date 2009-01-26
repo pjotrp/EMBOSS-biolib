@@ -65,7 +65,7 @@
   &lt;TD BGCOLOR='#DDFFDD'&gt;&lt;A HREF='#d17'&gt;D&lt;/A&gt;
   &lt;TD BGCOLOR='#FFFFFF'&gt;&lt;A HREF='#bh'&gt;?&lt;/A&gt;&lt;/TABLE&gt;&lt;BR CLEAR=LEFT&gt;
   &lt;BR&gt;
-  LENGTH = 105  COMBINED P-VALUE = 6.96e-02  E-VALUE =      1.3&lt;BR&gt;
+  LENGTH = 105  COMBINED P-VALUE = 6.93e-02  E-VALUE =      1.2&lt;BR&gt;
   DIAGRAM: 105&lt;PRE&gt;
 
 
@@ -77,7 +77,7 @@
   &lt;TD BGCOLOR='#DDFFDD'&gt;&lt;A HREF='#d18'&gt;D&lt;/A&gt;
   &lt;TD BGCOLOR='#FFFFFF'&gt;&lt;A HREF='#bh'&gt;?&lt;/A&gt;&lt;/TABLE&gt;&lt;BR CLEAR=LEFT&gt;
   &lt;BR&gt;
-  LENGTH = 105  COMBINED P-VALUE = 2.43e-01  E-VALUE =      4.4&lt;BR&gt;
+  LENGTH = 105  COMBINED P-VALUE = 2.42e-01  E-VALUE =      4.4&lt;BR&gt;
   DIAGRAM: 105&lt;PRE&gt;&lt;/PRE&gt;
 
 &lt;A NAME=debug&gt;&lt;/A&gt;&lt;HR&gt;&lt;CENTER&gt;&lt;H3&gt;Debugging Information&lt;/H3&gt;&lt;/CENTER&gt;&lt;HR&gt;
