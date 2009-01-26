@@ -81,8 +81,6 @@ static void reportWritePir(AjPReport outrpt, const AjPFeattable ftable,
 			   const AjPSeq seq);
 static void reportWriteSwiss(AjPReport outrpt,const  AjPFeattable ftable,
 			     const AjPSeq seq);
-static void reportWriteDasgff(AjPReport outrpt,const  AjPFeattable ftable,
-			     const AjPSeq seq);
 
 static void reportWriteTrace(AjPReport outrpt, const AjPFeattable ftable,
 			     const AjPSeq seq);
@@ -149,8 +147,6 @@ static ReportOFormat reportFormat[] =
 	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  AJFALSE, reportWritePir},
     {"swiss",     "Swissprot feature format",
 	 AJFALSE, 0, AJFALSE, AJFALSE, AJTRUE,  AJFALSE, reportWriteSwiss},
-    {"dasgff",    "DAS GFF feature format",
-	 AJFALSE, 0, AJFALSE, AJTRUE,  AJTRUE,  AJFALSE, reportWriteDasgff},
     /* trace  for debug */
     {"debug",     "Debugging trace of full internal data content",
 	 AJFALSE, 0, AJTRUE,  AJTRUE,  AJTRUE,  AJTRUE,  reportWriteTrace},
@@ -435,41 +431,6 @@ static void reportWriteSwiss(AjPReport thys,
 				       thys->File);
     if(!ajFeatWrite(thys->Ftquery, ftable))
 	ajWarn("ajReportWriteSwiss features output failed format: '%S'",
-	       ftfmt);
-
-    ajStrDel(&ftfmt);
-
-    return;
-}
-
-
-
-
-/* @funcstatic reportWriteDasgff **********************************************
-**
-** Writes a report in DAS GFF format
-**
-** @param [u] thys [AjPReport] Report object
-** @param [r] ftable [const AjPFeattable] Feature table object
-** @param [r] seq [const AjPSeq] Sequence object
-** @return [void]
-** @@
-******************************************************************************/
-
-static void reportWriteDasgff(AjPReport thys,
-                              const AjPFeattable ftable, const AjPSeq seq)
-{
-    static AjPStr ftfmt = NULL;
-
-    if(!ftfmt)
-	ajStrAssignC(&ftfmt, "dasgff");
-
-    ajFeattabOutDel(&thys->Ftquery);
-    thys->Ftquery = ajFeattabOutNewSSF(ftfmt, ajSeqGetNameS(seq),
-				       ajStrGetPtr(thys->Type),
-				       thys->File);
-    if(!ajFeatWrite(thys->Ftquery, ftable))
-	ajWarn("ajReportWriteDasgff features output failed format: '%S'",
 	       ftfmt);
 
     ajStrDel(&ftfmt);

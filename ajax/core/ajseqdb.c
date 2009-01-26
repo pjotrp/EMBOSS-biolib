@@ -6984,6 +6984,7 @@ static FILE* seqHttpGet(const AjPSeqQuery qry, const AjPStr host, ajint iport,
     ajDebug("\n");
 
     fp = seqHttpSocket(qry, hp, iport, host, iport, get);
+    fp = seqHttpSocket(qry, hp, iport, host, iport, get);
 
     return fp;
 }

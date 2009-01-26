@@ -76,7 +76,6 @@ extern "C"
 ** @modify ajSeqsetWrite Master sequence set output routine
 ** @modify ajSeqFileNewOut Opens an output file for sequence writing.
 ** @other AjPSeq Sequences
-** @attr Cleanup [(void*)] Function to write remaining lines on closing
 ** @@
 ******************************************************************************/
 
@@ -130,7 +129,6 @@ typedef struct AjSSeqout {
   AjPList Savelist;
   ajint Count;
   ajint Offset;
-  void (*Cleanup) (AjPFile filethys);
 } AjOSeqout;
 
 #define AjPSeqout AjOSeqout*

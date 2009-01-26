@@ -628,7 +628,7 @@ const AjPStr ajDiroutGetPath(const AjPDirout thys)
 **
 ** Tests a directory output object is for an existing irectory
 **
-** @param [u] thys [AjPDirout] Directory name
+** @param [r] thys [AjPDirout] Directory name
 ** @return [AjBool] True on success.
 ** @@
 ******************************************************************************/
@@ -645,9 +645,9 @@ AjBool ajDiroutExists(AjPDirout thys)
 
 /* @func ajDiroutOpen *********************************************************
 **
-** Opens a directory output object, creating it if it does not already exist
+** Opens a directory output object, creating it if it does not alreday exist
 **
-** @param [u] thys [AjPDirout] Directory name
+** @param [r] thys [AjPDirout] Directory name
 ** @return [AjBool] True on success.
 ** @@
 ******************************************************************************/
@@ -784,7 +784,7 @@ AjPFile ajFileNewFromCfile(FILE* file)
     else if(file == stdin)
         thys->Name = ajStrNewC("stdin");
     else
-        thys->Name = ajStrNew();
+        thys->Name   = ajStrNew();
     thys->End    = ajFalse;
 
     fileOpenCnt++;
@@ -798,8 +798,6 @@ AjPFile ajFileNewFromCfile(FILE* file)
 	fileUsedStdout = ajTrue;
     else if(file == stderr)
 	fileUsedStderr = ajTrue;
-
-    ajDebug("Created file from C FILE %p\n", file);
 
     return thys;
 }
@@ -1879,6 +1877,7 @@ static void fileClose(AjPFile thys)
 
     if(thys->Handle)
     {
+	ajDebug("closing file '%F'\n", thys);
 	if(thys->fp)
 	{
 	    if(thys->fp == stdout)
@@ -1895,9 +1894,9 @@ static void fileClose(AjPFile thys)
 	    }
 	    else
 	    {
-                if(fclose(thys->fp))
+		if(fclose(thys->fp))
 		    ajFatal("File close problem in fileClose");
-            }
+	    }
 	}
 	thys->Handle = 0;
 
@@ -3194,8 +3193,7 @@ void ajFilebuffDel(AjPFilebuff* Pbuff)
     
     if(!thys)
 	return;
-    if(thys->File)
-        ajDebug("ajFilebuffDel fp: %p\n", thys->File->fp);
+
     ajFilebuffClear(thys, -1);
     filebuffFreeClear(thys);
     ajFileClose(&thys->File);

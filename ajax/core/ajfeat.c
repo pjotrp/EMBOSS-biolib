@@ -126,7 +126,6 @@ static AjBool   FeatInitSwiss      = AJFALSE;
 static AjPTable FeatTypeTableSwiss = NULL;
 static AjPTable FeatTagsTableSwiss = NULL;
 
-static AjPTable FeatCategoryTable     = NULL;
 static ajint featWarnCount = 0;
 
 static AjPStr featTypeMiscfeat   = NULL;
@@ -174,7 +173,6 @@ static AjPStr featTransAaStr  = NULL;
 static ajint featSaveExon  = 0;
 static ajint featSaveGroup = 0;
  
-static void         featCleanDasgff(AjPFile file);
 static void         featClear(AjPFeature thys );
 static ajint        featCompByEnd(const void *a, const void *b);
 static ajint        featCompByGroup(const void *a, const void *b);
@@ -242,7 +240,6 @@ static AjBool       featFindOutFormatS(const AjPStr format, ajint* iformat);
 static void         featFlagSet(AjPFeature gf, const AjPStr flags);
 static AjBool       featFormatSet(AjPFeattabIn featin);
 static char         featFrame(ajint frame);
-static char         featFrameNuc(ajint frame);
 static AjPSeq       featLocToSeq(const AjPStr location, const AjPStr db,
 				 ajint* begin, ajint* end);
 static void         featGroupSet(AjPFeature gf, AjPFeattable table,
@@ -474,8 +471,8 @@ static FeatOInFormat featInFormatDef[] =
 static FeatPInFormat featInFormat = featInFormatDef;
 
 
-static AjBool      feattableWriteUnknown(AjPFeattabOut ftout,
-                                         const AjPFeattable features);
+static AjBool      feattableWriteUnknown(const AjPFeattable features,
+					   AjPFile file);
 
 static AjPFeature  featEmblFromLine(AjPFeattable thys, const AjPStr line,
 				    AjPStr* savefeat,
@@ -524,7 +521,7 @@ typedef struct FeatSOutFormat
     AjBool Nucleotide;
     AjBool Protein;
     AjBool (*VocInit) (void);
-    AjBool (*Write) (AjPFeattabOut ftout, const AjPFeattable thys);
+    AjBool (*Write) (const AjPFeattable thys, AjPFile file);
     const char* Desc;
     AjBool Alias;
     ajint Padding;
@@ -588,11 +585,8 @@ static FeatOOutFormat featOutFormatDef[] =
     {"swissprot", AJFALSE,   AJTRUE,
 	 featVocabInitSwiss, ajFeattableWriteSwiss,
 	 "SwissProt format", AJFALSE, 0},
-    {"dasgff",        AJTRUE,   AJTRUE,
-	 featVocabInitGff3, ajFeattableWriteDasgff,
-	 "DAS GFF format", AJFALSE, 0},
     {"debug",     AJTRUE,    AJTRUE,
-	 featVocabInitEmbl, ajFeattableWriteDebug,
+	 featVocabInitEmbl, ajFeattablePrint,
 	 "Debugging trace of full internal data content", AJFALSE, 0},
     {NULL, AJFALSE, AJFALSE, NULL, NULL, NULL, AJFALSE, 0}
 };
@@ -737,69 +731,6 @@ static FeatOTypeOut featOutTypes[] =
     {"nucleotide", "N"},
     {"any", ""},
     {NULL, NULL}
-};
-
-
-
-
-/* @datastatic FeatPCategory ***************************************************
-**
-** Feature output types
-**
-** @alias FeatSTypeOut
-** @alias FeatOTypeOut
-**
-** @attr Name [const char*] Specified name
-** @attr Desc [const char*] Description
-** @attr Types [const char*] Internal type names in this category
-** @@
-******************************************************************************/
-
-typedef struct FeatSCategory
-{
-    const char* Name;
-    const char* Desc;
-    const char* Types;
-} FeatOCategory;
-#define FeatPCategory FeatOCategory*
-
-
-
-
-static FeatOCategory featCategory[] =
-{
-    {"other", "all other features",
-     "SO:2000061,SO:0000110,SO:0000723,SO:0000298,SO:0000724,SO:0000704,"
-     "SO:0000410,SO:0000409,SO:0000297,SO:0000313,SO:0005836_rep_origin"},
-    {"component", "component of a sequence assembly",
-     ""},
-    {"supercomonent", "reference sequence assembly",
-     ""},
-    {"translation", "translation to protein",
-     "SO:0000316,SO:0000419,SO:0000418,SO:0000725,"
-     "SO:0000204,SO:0000205,SO:0000139"},
-    {"transcription", "transcription of RNA",
-     "SO:0000147,SO:0000188,SO:0000673,SO:0005836,SO:0000234,SO:0000551,"
-     "SO:0000553,SO:0000185_precursor_RNA,SO:0000185,SO:0000252,"
-     "SO:0000013,SO:0000275,SO:0000274,SO:0000253,SO:0000557,SO:0000555"},
-    {"promoter", "promoter regions and regulation of transcription",
-     "SO:0000167,SO:0000172,SO:0000174,SO:0000178,SO:0000140,SO:0000173"
-     "SO:0000175,SO:0000176,SO:0000165,SO:0000141"},
-    {"variation", "polymorphic regions",
-     ""},
-    {"structural", "mapping, sequence and assembly - with no biological information",
-     "SO:0005850,SO:0000002,SO:0000331,SO:0000730"},
-    {"similarity", "areas similar to other sequences",
-     ""},
-    {"repeat", "areas of repetitive sequence",
-     "SO:0000657,SO:0000726,SO:0000005,SO:0000286"},
-    {"experimental", "experimental results",
-     ""},
-    {"immunoglobulin", "immunoglobulin processing regions",
-     "SO:0000001_C_region,SO:0000001_J_segment,SO:0000001_N_region,"
-     "SO:0000001_S_region,SO:0000001_V_region,SO:0000001_V_segment,SO:0000458"},
-    {NULL, NULL,
-     NULL}
 };
 
 
@@ -1906,14 +1837,9 @@ void ajFeattabInDel(AjPFeattabIn* pthis)
     if(!thys)
 	return;
 
-    if(thys->Handle)
-        ajDebug("ajFeattabInDel %x Handle %x Local:%B\n",
-            thys, thys->Handle, thys->Local);
-    else
-        ajDebug("ajFeattabInDel %x Handle %x fp:UNKNOWN Local:%B\n",
-            thys, thys->Handle, thys->Local);
+    /*ajDebug("ajFeattabInDel %x Handle %x\n", thys, thys->Handle);*/
     if(!thys->Local)
-	ajFilebuffDel(&thys->Handle);    
+	ajFilebuffDel(&thys->Handle);
 
     ajStrDel(&thys->Ufo);
     ajStrDel(&thys->Formatstr);
@@ -2032,6 +1958,7 @@ static void featClear(AjPFeature thys)
 	}
 	ajListIterDel(&iter);
     }
+    ajListFree(&(thys->Tags));
     ajListFree(&(thys->Tags));
 
     ajStrDel(&thys->Source);
@@ -2651,9 +2578,8 @@ AjBool ajFeatWrite(AjPFeattabOut ftout, const AjPFeattable features)
 	/*ajDebug("ajFeatWrite format is %d OK\n",ftout->Format);*/
 
 	featOutFormat[format].VocInit();
-	result = featOutFormat[format].Write(ftout, features);
+	result = featOutFormat[format].Write(features, file);
 
-        ftout->Count++;
 	return result;
     }
 
@@ -5114,17 +5040,16 @@ static AjBool featReadGff3(AjPFeattable thys, AjPFilebuff file)
 **
 ** Write feature table in GFF 2.0 format
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
 ** @param [r] Feattab [const AjPFeattable] feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWriteGff2(AjPFeattabOut ftout, const AjPFeattable Feattab)
+AjBool ajFeattableWriteGff2(const AjPFeattable Feattab, AjPFile file)
 {
     AjIList    iter = NULL;
     AjPFeature gf   = NULL;
-    AjPFile file = ftout->Handle;
 
     /* Check arguments */
     /* ajDebug("ajFeattableWriteGff Checking arguments\n"); */
@@ -5168,17 +5093,16 @@ AjBool ajFeattableWriteGff2(AjPFeattabOut ftout, const AjPFeattable Feattab)
 **
 ** Write feature table in GFF format
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
 ** @param [r] Feattab [const AjPFeattable] feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWriteGff3(AjPFeattabOut ftout, const AjPFeattable Feattab)
+AjBool ajFeattableWriteGff3(const AjPFeattable Feattab, AjPFile file)
 {
     AjIList    iter = NULL;
     AjPFeature gf   = NULL;
-    AjPFile file = ftout->Handle;
 
     /* Check arguments */
     /* ajDebug("ajFeattableWriteGff Checking arguments\n"); */
@@ -5186,7 +5110,7 @@ AjBool ajFeattableWriteGff3(AjPFeattabOut ftout, const AjPFeattable Feattab)
 	return ajFalse;
     
     if(ajStrMatchC(Feattab->Type, "P")) /* until GFF3 protein works */
-        return ajFeattableWriteGff2(ftout, Feattab);
+        return ajFeattableWriteGff2(Feattab, file);
     
     /* Print GFF3-specific header first with ## tags */
 
@@ -5563,7 +5487,6 @@ static AjBool featDelRegGff3(void)
 
     FeatInitGff3 = ajFalse;
 
-    featDelRegGff();
     return ajTrue;
 }
 
@@ -5574,15 +5497,15 @@ static AjBool featDelRegGff3(void)
 **
 ** Write a feature table in DDBJ format.
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] thys [const AjPFeattable] feature table
+** @param [r] thys [const AjPFeattable] Feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWriteDdbj(AjPFeattabOut ftout, const AjPFeattable thys)
+AjBool ajFeattableWriteDdbj(const AjPFeattable thys, AjPFile file)
 {
-    return feattableWriteEmbl(thys,ftout->Handle,ajFalse);
+    return feattableWriteEmbl(thys,file,ajFalse);
 }
 
 
@@ -5592,15 +5515,15 @@ AjBool ajFeattableWriteDdbj(AjPFeattabOut ftout, const AjPFeattable thys)
 **
 ** Write a feature table in EMBL format.
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] thys [const AjPFeattable] feature table
+** @param [r] thys [const AjPFeattable] Feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWriteEmbl(AjPFeattabOut ftout, const AjPFeattable thys)
+AjBool ajFeattableWriteEmbl(const AjPFeattable thys, AjPFile file)
 {
-    return feattableWriteEmbl(thys,ftout->Handle,ajTrue);
+    return feattableWriteEmbl(thys,file,ajTrue);
 }
 
 
@@ -5610,15 +5533,15 @@ AjBool ajFeattableWriteEmbl(AjPFeattabOut ftout, const AjPFeattable thys)
 **
 ** Write a feature table in GenBank format.
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] thys [const AjPFeattable] feature table
+** @param [r] thys [const AjPFeattable] Feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWriteGenbank(AjPFeattabOut ftout, const AjPFeattable thys)
+AjBool ajFeattableWriteGenbank(const AjPFeattable thys, AjPFile file)
 {
-    return feattableWriteEmbl(thys,ftout->Handle,ajFalse);
+    return feattableWriteEmbl(thys,file,ajFalse);
 }
 
 
@@ -5859,20 +5782,20 @@ static AjBool feattableWriteEmbl(const AjPFeattable thys, AjPFile file,
 **
 ** Write a feature table in 'unknown' format.
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] thys [const AjPFeattable] feature table
+** @param [r] thys [const AjPFeattable] Feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-static AjBool feattableWriteUnknown(AjPFeattabOut ftout,
-                                    const AjPFeattable thys)
+static AjBool feattableWriteUnknown(const AjPFeattable thys,
+				    AjPFile file)
 {
     (void) thys;			/* just so it is used */
 
-    if(!ftout || !ftout->Handle)
+    if(!file)
 	return ajFalse;
-    ajFmtPrintF(ftout->Handle, "Unknown feature format hence no output."
+    ajFmtPrintF(file, "Unknown feature format hence no output."
 		"Except this line!!\n");
 
     return ajFalse;
@@ -5885,20 +5808,18 @@ static AjBool feattableWriteUnknown(AjPFeattabOut ftout,
 **
 ** Write a feature table in SwissProt format.
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] thys [const AjPFeattable] feature table
+** @param [r] thys [const AjPFeattable] Feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWriteSwiss(AjPFeattabOut ftout,
-                             const AjPFeattable thys)
+AjBool ajFeattableWriteSwiss(const AjPFeattable thys, AjPFile file)
 {
     AjIList iter     = NULL;
     AjPFeature gf    = NULL;
     AjPFeature gftop = NULL;
     ajuint oldgroup   = UINT_MAX;
-    AjPFile file = ftout->Handle;
 
     /* Check arguments */
     ajDebug("ajFeattableWriteSwiss Checking arguments\n");
@@ -5943,13 +5864,13 @@ AjBool ajFeattableWriteSwiss(AjPFeattabOut ftout,
 **
 ** Write a feature table in PIR format.
 **
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] thys [const AjPFeattable] feature table
+** @param [r] thys [const AjPFeattable] Feature table
+** @param [u] file [AjPFile] Output file
 ** @return [AjBool] ajTrue on success
 ** @@
 ******************************************************************************/
 
-AjBool ajFeattableWritePir(AjPFeattabOut ftout, const AjPFeattable thys)
+AjBool ajFeattableWritePir(const AjPFeattable thys, AjPFile file)
 {
     AjIList iter      = NULL;
     AjPFeature gf     = NULL;
@@ -5958,8 +5879,7 @@ AjBool ajFeattableWritePir(AjPFeattabOut ftout, const AjPFeattable thys)
     AjPStr temp       = NULL;
     AjPStr pos        = NULL;
     ajuint oldgroup    = UINT_MAX;
-    AjPFile file = ftout->Handle;
-
+    
     /* Check arguments */
     
     /*ajDebug("ajFeattableWritePir Checking arguments\n");*/
@@ -6048,380 +5968,6 @@ AjBool ajFeattableWritePir(AjPFeattabOut ftout, const AjPFeattable thys)
 
 
 
-/* @func ajFeattableWriteDasgff ***********************************************
-**
-** Write a feature table in DAS GFF format.
-**
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] thys [const AjPFeattable] Feature table
-** @return [AjBool] ajTrue on success
-** @@
-******************************************************************************/
-
-AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
-{
-    /*
-    ** Things to do:
-    **
-    ** Where do the tag-values go? In <NOTE> for now
-    **
-    ** Check standards for id, type etc. for table and features
-    */
-
-    AjPFile file = ftout->Handle;
-    AjIList iter     = NULL;
-    AjIList tagiter     = NULL;
-    const AjPStr outtyp = NULL;		/* these come from AjPTable */
-    const AjPStr outtag = NULL;		/* so please, please */
-    FeatPTagval item = NULL;
-    AjPFeature gf    = NULL;
-    AjPFeature gftop = NULL;
-    AjPTable tagstable = NULL;
-    AjPTable typetable = NULL;
-    ajuint oldgroup   = UINT_MAX;
-    ajuint nfeat = 0;
-    char frame;
-    AjBool knowntag = ajTrue;
-
-    ajuint ntags;
-    ajuint itag;
-    const char* cp;
-
-    /* Check arguments */
-    ajDebug("ajFeattableWriteDasgff Checking arguments\n");
-    if(!file)
-	return ajFalse;
-
-    if(!ftout->Count)
-    {
-        ftout->Cleanup = featCleanDasgff;
-        ajFmtPrintF(file,
-                    "<?xml version=\"1.0\" standalone=\"no\"?>\n");
-        ajFmtPrintF(file,
-                    "<!DOCTYPE DASGFF SYSTEM \"http://www.biodas.org/dtd/dasgff.dtd\">\n");
-        ajFmtPrintF(file,
-                    "<DASGFF>\n");
-        ajFmtPrintF(file,
-                    "  <GFF version=\"1.0\" href=\"url\">\n");
-    }
-
-    ajFmtPrintF(file,
-                "    <SEGMENT id=\"%S\" start=\"%d\" stop=\"%d\"\n",
-                thys->Seqid,
-                1+thys->Offset+thys->Start,
-                1+thys->Offset+thys->Len);
-
-/* label is optional */
-    /*
-    ajFmtPrintF(outseq->File,
-                    "                label=\"%s\">", "");
-    */
-    /* type attribute is optional and may not mean this */
-    /*
-    if(ajFeattableIsProt(thys))
-        ajFmtPrintF(outseq->File,
-                    " type=\"Protein\">");
-    else
-        ajFmtPrintF(outseq->File,
-                    " type=\"DNA\">");
-    */
-    ajFmtPrintF(file,
-                "                version=\"%s\">\n",
-                "0.0");
-
-    
-    /* For all features... */
-
-    /* SEGMENT requires at least one feature - if none, make one up */
-
-    if(thys->Features)
-    {
-	iter = ajListIterNewread(thys->Features);
-	while(!ajListIterDone(iter))
-	{
-	    gf = ajListIterGet(iter);
-            nfeat++;
-
-            if(gf->Protein)
-            {
-                typetable = FeatTypeTableGff3protein;
-                tagstable = FeatTagsTableGff3protein;
-            }
-            else
-            {
-                typetable = FeatTypeTableGff3;
-                tagstable = FeatTagsTableGff3;
-            }
-            outtyp = featTableTypeExternal(gf->Type, typetable);
-
-	    if(oldgroup != gf->Group)
-	    {
-		oldgroup = gf->Group;
-		gftop = gf;
-	    }
-	    else
-	    {
-		if(!(gf->Flags & FEATFLAG_CHILD))
-		    gftop = gf; /* this is the parent/only feature */
-	    }
-            ajFmtPrintF(file,
-                        "      <FEATURE id=\"%S\">\n",
-                        gf->Source);
-            ajFmtPrintF(file,
-                        "         <TYPE id=\"%S\" category=\"%S\" reference=\"no\" subparts=\"no\">%S</TYPE>\n",
-                        gf->Type, ajFeatTypeGetCategory(gf->Type), outtyp);
-            if(ajStrGetLen(gf->Source))
-                ajFmtPrintF(file,
-                            "         <METHOD id=\"%S\"></METHOD>\n",
-                            gf->Source);
-            else
-                ajFmtPrintF(file,
-                        "         <METHOD></METHOD>\n",
-                        gf->Source);
-            ajFmtPrintF(file,
-                        "         <START>%d</START>\n",
-                        gf->Start);
-            ajFmtPrintF(file,
-                        "         <END>%d</END>\n",
-                        gf->End);
-            ajFmtPrintF(file,
-                        "         <SCORE>%.f</SCORE>\n",
-                        gf->Score);
-            ajFmtPrintF(file,
-                        "         <ORIENTATION>%c</ORIENTATION>\n",
-                        gf->Strand); /* 0 or - or + */
-
-            if(ajFeatTypeIsCds(gf))
-                frame = featFrameNuc(gf->Frame);
-            else
-                frame = featFrame(gf->Frame);
-
-            if(gf->Frame == 0)
-                ajFmtPrintF(file,
-                            "         <PHASE>-</PHASE>\n");
-            else if(gf->Frame > 0)
-                ajFmtPrintF(file,
-                            "         <PHASE>%c</PHASE>\n",
-                            frame);
-            else
-                ajFmtPrintF(file,
-                            "         <PHASE>%c</PHASE>\n",
-                            frame);
-            if(gf->Tags)
-            {
-                ntags = ajListGetLength(gf->Tags);
-                itag = 0;
-                tagiter = ajListIterNewread(gf->Tags);
-                while(!ajListIterDone(tagiter))
-                {
-                    item = (FeatPTagval)ajListIterGet(tagiter);
-                    outtag = featTableTag(item->Tag, tagstable, &knowntag);
-                    if(!outtag)
-                    {
-                        featWarn("Unknown GFF3 feature tag '%S'",
-                                 item->Tag);
-                        continue;
-                    }
-                    featTagFmt(outtag, tagstable, &featFmtTmp);
-
-                    if(ntags == 1)
-                    {
-                        ajFmtPrintF(file,
-                                        "         <NOTE>",
-                                        "");
-                    }
-                    else 
-                    {
-                        if(!itag)
-                            ajFmtPrintF(file,
-                                        "         <NOTE>\n");
-                    }
-                    
-
-                    ajFmtPrintS(&featOutStr, "%S", outtag);
-                    ajStrAssignS(&featValTmp, item->Value);
-                    cp = ajStrGetPtr(featFmtTmp);
-                    switch(CASE2(cp[0], cp[1]))
-                    {
-                        case CASE2('L','I') :	/* limited */
-                            /*ajDebug("case limited\n");*/
-                            featTagLimit(outtag, tagstable, &featLimTmp);
-                            featTagAllLimit(&featValTmp, featLimTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
-                            break;
-                        case CASE2('Q', 'L') :	/* limited, escape quotes */
-                            /*ajDebug("case qlimited\n");*/
-                            featTagLimit(outtag, tagstable, &featLimTmp);
-                            featTagAllLimit(&featValTmp, featLimTmp);
-                            featTagQuoteGff3(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
-                            break;
-                        case CASE2('T','E') : /* no space, no quotes, wrap at margin */
-                            /*ajDebug("case text\n");*/
-                            ajStrRemoveWhite(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
-                            break;
-                        case CASE2('Q','T') :	/* escape quotes, wrap at space */
-                            /*ajDebug("case qtext\n");*/
-                            featTagQuoteGff3(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
-                            break;
-                        case CASE2('Q','W') :	/* escape quotes, remove space */
-                            /*ajDebug("case qtext\n");*/
-                            featTagQuoteGff3(&featValTmp);
-                            ajStrRemoveWhite(&featValTmp);
-                            ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
-                            break;
-                        case CASE2('Q', 'S') :	/* special regexp, quoted */
-                            /*ajDebug("case qspecial\n");*/
-                            if(!featTagGff3Special(&featValTmp, outtag))
-                                featTagGff3Default(&featOutStr, outtag, &featValTmp);
-                            else
-                            {
-                                featTagQuoteGff3(&featValTmp);
-                                ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
-                            }
-                            break;
-                        case CASE2('S','P') :	/* special regexp */
-                            /*ajDebug("case special\n");*/
-                            if(!featTagGff3Special(&featValTmp, outtag))
-                                featTagGff3Default(&featOutStr, outtag, &featValTmp);
-                            else
-                                ajFmtPrintAppS(&featOutStr, "=%S", featValTmp);
-                            
-                            break;
-                        case CASE2('V','O') :	/* no value, so an error here */
-                            /*ajDebug("case void\n");*/
-                            break;
-                        default:
-                            featWarn("Unknown GFF3 feature tag type '%S' for '%S'",
-                                     featFmtTmp, outtag);
-                    }
-                    
-                    if(++itag < ntags)
-                        ajFmtPrintAppS(&featOutStr,";");
-
-                    if(ntags == 1)
-                    {
-                        ajFmtPrintF(file,
-                                    "%S</NOTE>\n",featOutStr);
-
-                    }
-                    else 
-                    {
-                        ajFmtPrintF(file, "           %S\n", featOutStr);
-                       if(itag == ntags)
-                            ajFmtPrintF(file,
-                                        "         </NOTE>\n");
-
-                    }
-                    
-                }
-                ajListIterDel(&tagiter);
-                
-            }
-
-/* link to more information */
-            /*
-            ajFmtPrintF(file,
-                        "         <LINK href=\"%s\">%s</LINK>\n",
-                        "url-here", "text-here);
-*/
-            
-/* target in an alignment */
-            /*
-            ajFmtPrintF(file,
-                        "         <TARGET id\"%s\" start=\"%d\" stop=\"%d\">%s</TARGET>\n",
-                        "target-id", target->start, target->stop,"target-name");
-*/
-           ajFmtPrintF(file,
-                       "         <GROUP id=\"%S.%d\" label=\"%S.%d\" type=\"%S.%d\">\n",
-                       thys->Seqid, gf->Group,
-                       thys->Seqid, gf->Group,
-                       thys->Seqid, gf->Group);
-/* link to more information */
-            /*
-            ajFmtPrintF(file,
-                        "               <LINK href=\"%s\">%s</LINK>\n",
-                        "url-here", "text-here);
-*/
-
-/* target in an alignment */
-            /*
-            ajFmtPrintF(file,
-                        "               <TARGET id\"%s\" start=\"%d\" stop=\"%d\">%s</TARGET>\n",
-                        "target-id", target->start, target->stop,"target-name");
-*/
-           ajFmtPrintF(file,
-                       "         </GROUP>\n");
-           ajFmtPrintF(file,
-                        "      </FEATURE>\n");
- 	}
-	ajListIterDel(&iter) ;
-    }
-    if(!nfeat)
-    {
-            ajFmtPrintF(file,
-                        "      <FEATURE id=\"%S\">\n",
-                        thys->Seqid);
-
-            ajFmtPrintF(file,
-                        "         <TYPE id=\"%S\" category=\"%s\" reference=\"no\" subparts=\"no\">%S</TYPE>\n",
-                        gf->Type, "feature", gf->Type);
-            if(ajStrGetLen(gf->Source))
-                ajFmtPrintF(file,
-                            "         <METHOD id=\"%S\"></METHOD>\n",
-                            gf->Source);
-            else
-                ajFmtPrintF(file,
-                        "         <METHOD></METHOD>\n");
-            ajFmtPrintF(file,
-                        "         <START>1</START>\n");
-            ajFmtPrintF(file,
-                        "         <END>%d</END>\n",
-                        thys->Len);
-            ajFmtPrintF(file,
-                        "         <SCORE>0.0</SCORE>\n");
-            ajFmtPrintF(file,
-                        "         <ORIENTATION>0</ORIENTATION>\n");
-            ajFmtPrintF(file,
-                        "         <PHASE>-</PHASE>\n");
-            ajFmtPrintF(file,
-                        "         <NOTE>%s</NOTE>\n",
-                        "Written by EMBOSS");
-            ajFmtPrintF(file,
-                        "      </FEATURE>\n");
-    }
-    
-    ajFmtPrintF(file,
-                "    </SEGMENT>\n");
-
-    return ajTrue ;
-}
-
-
-/* @funcstatic featCleanDasgff *************************************************
-**
-** Writes the remaining lines to complete and close a DASGFF XML file
-**
-** @param [r] file [AjPFile] Output file
-** @return [void]
-** @@
-******************************************************************************/
-
-
-static void featCleanDasgff(AjPFile file)
-{
-
-    ajFmtPrintF(file,
-                "  </GFF>\n");
-    ajFmtPrintF(file,
-                "</DASGFF>\n");
-
-    return;
-}
-
-
 /* @func ajFeattableGetName ***************************************************
 **
 ** Returns the name of a feature table object. This is a copy of the
@@ -6440,65 +5986,7 @@ const AjPStr ajFeattableGetName(const AjPFeattable thys)
 
 
 
-/* @func ajFeatTypeGetCategory ************************************************
-**
-** returns the category name for a feature type
-**
-** Used to identify category for DASGFF output
-**
-** @param [r] type [const AjPStr] Feature type
-** @return [const AjPStr] Feature category
-**
-******************************************************************************/
 
-const AjPStr ajFeatTypeGetCategory(const AjPStr type)
-{
-    ajuint i;
-    AjPStrTok catsplit  = NULL;
-    AjPStr token = NULL;
-    AjPStr name = NULL;
-    AjPStr types = NULL;
-    AjPStr refname = NULL;
-    const AjPStr ret = NULL;
-
-    if(FeatCategoryTable == NULL)
-    {
-        FeatCategoryTable = ajTablestrNewCaseLen(200);
-        for(i=0;featCategory[i].Name;i++)
-        {
-            name = ajStrNewC(featCategory[i].Name);
-            types = ajStrNewC(featCategory[i].Types);
-            if(!i)
-            {
-                token = ajStrNewC("");
-                refname = ajStrNewRef(name);
-                ajTablePut(FeatCategoryTable, token, refname);
-                token = NULL;
-            }
-            
-            catsplit = ajStrTokenNewC(types,",");
-            while(ajStrTokenNextParse(&catsplit,&token))
-            {
-                refname = ajStrNewRef(name);
-                ajTablePut(FeatCategoryTable, token, refname);
-                token = NULL;
-            }
-            ajStrDel(&name);
-            ajStrDel(&types);
-            ajStrTokenDel(&catsplit);
-        }
-        
-    }
-    
-    ret = ajTablestrFetch(FeatCategoryTable,type);
-    if(!ret)
-    {
-        token = ajStrNewC("");
-        ret = ajTablestrFetch(FeatCategoryTable,token);
-        ajStrDel(&token);
-    }
-    return ret;
-}
 
 /* @func ajFeattableGetTypeC **************************************************
 **
@@ -6745,7 +6233,7 @@ ajint ajFeattableSize(const AjPFeattable thys)
 
 void ajFeattabInClear(AjPFeattabIn thys)
 {
-    ajDebug("ajFeattabInClear called Local:%B\n", thys->Local);
+    /*ajDebug("ajFeattabInClear called\n");*/
 
     ajStrSetClear(&thys->Ufo);
     ajStrSetClear(&thys->Seqname);
@@ -6753,12 +6241,9 @@ void ajFeattabInClear(AjPFeattabIn thys)
     ajStrSetClear(&thys->Filename);
     ajStrSetClear(&thys->Seqid);
     ajStrSetClear(&thys->Type);
-    if(!thys->Local)
-    {
-        ajFilebuffDel(&thys->Handle);
-        if(thys->Handle)
-            ajFatal("ajFeattabInClear did not delete Handle");
-    }
+    ajFilebuffDel(&thys->Handle);
+    if(thys->Handle)
+	ajFatal("ajFeattabInClear did not delete Handle");
 
     return;
 }
@@ -13771,12 +13256,6 @@ void ajFeattabOutClear(AjPFeattabOut *thys)
     ajStrSetClear(&pthis->Seqname);
     ajStrSetClear(&pthis->Basename);
 
-    if(pthis->Cleanup)
-        pthis->Cleanup(pthis->Handle);
-
-    pthis->Cleanup = NULL;
-    pthis->Count = 0;
-
     /* "Local" tables have borrowed an open file with NewSSF */
     if(!pthis->Local)
 	ajFileClose(&pthis->Handle);
@@ -13812,12 +13291,6 @@ void ajFeattabOutDel(AjPFeattabOut *thys)
     ajStrDel(&pthis->Type);
     ajStrDel(&pthis->Seqname);
     ajStrDel(&pthis->Basename);
-
-    if(pthis->Cleanup)
-        pthis->Cleanup(pthis->Handle);
-
-    pthis->Cleanup = NULL;
-    pthis->Count = 0;
 
     /* "Local" tables have borrowed an open file with NewSSF */
     if(!pthis->Local)
@@ -14145,32 +13618,12 @@ void ajFeatDefName(AjPFeattable thys, const AjPStr setname)
     return;
 }
 
-
-
-
-/* @func ajFeattableWriteDebug ************************************************
-**
-** Print contents of a feature table to a file
-**
-** @param [u] ftout [AjPFeattabOut] Feature table output object
-** @param [r] ftable [const AjPFeattable] Feature table
-** @return [AjBool] Always true
-******************************************************************************/
-
-AjBool ajFeattableWriteDebug(AjPFeattabOut ftout, const AjPFeattable ftable)
-{
-    return ajFeattablePrint(ftable, ftout->Handle);
-}
-
-
-
-
 /* @func ajFeattablePrint ******************************************************
 **
 ** Print contents of a feature table to a file
 **
 ** @param [r] ftable [const AjPFeattable] Feature table
-** @param [u] outf [AjPFile] Output file object
+** @param [u] outf [AjPFile] Output file
 ** @return [AjBool] Always true
 ******************************************************************************/
 
