@@ -266,8 +266,8 @@ void emboss_getoptions(char *pgm, int argc, char *argv[])
     labelrotation = ajAcdGetFloat("labelrotation");
 
     if(plotter==ray) {
-      xmargin = ajAcdGetFloat("xmarginray");
-      ymargin = ajAcdGetFloat("ymarginray");
+      xmargin = ajAcdGetFloat("xrayshade");
+      ymargin = ajAcdGetFloat("yrayshade");
     }
     else {
       xmargin = ajAcdGetFloat("xmargin");

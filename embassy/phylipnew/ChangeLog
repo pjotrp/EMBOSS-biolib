@@ -1,4 +1,15 @@
-	Updated all code to phylip 3.67. The output of sevral programs has
+	Renamed fdrawgram qualifiers to make unambiguous names shorter:
+	xmarginray => xrayshade ymarginray => yrayshade for RayShade
+	output image size in pixels.
+
+	Removed unused fdrawtree qualifiers plotterpcl and plotterpcx.
+	Added 4 new plotter options for the additional resolutions
+	previously defined by plotterpcl and plotterpcx.
+	Renamed fdrawtree qualifiers to make unambiguous names shorter:
+	xmarginray => xrayshade; ymarginray => yrayshade for RayShade
+	output image size in pixels.
+
+	Updated all code to phylip 3.67. The output of several programs has
 	changed - see the phylip release notes for details. Programs with
 	changed output are all the molecular clock algorithms : fcontml,
 	fdnaml, fdnamlk, proml, promlk, restml. ftreedist and ftreedistpair

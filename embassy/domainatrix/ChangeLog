@@ -1,0 +1,6 @@
+Version 7.0.0
+	Renamed ssematch qualifiers to make non-ambiguous names shorter.
+	gapopenr => rgapopen
+	gapextendr => rgapextend
+	gapopene => egapopen
+	gapextende => egapextend

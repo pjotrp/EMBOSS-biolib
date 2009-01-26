@@ -33,7 +33,7 @@
    Additional (Optional) qualifiers:
    -datafile           matrixf    [SSSUB] This option specifies the secondary
                                   structure substitution matrix.
-   -gapopenr           float      [10.0 for any sequence] This options
+   -rgapopen           float      [10.0 for any sequence] This options
                                   specifies the gap insertion penalty for
                                   reside-based alignment. The gap insertion
                                   penalty is the score taken away when a gap
@@ -43,7 +43,7 @@
                                   matrix for protein sequences, and the
                                   EDNAFULL matrix for nucleotide sequences.
                                   (Floating point number from 1.0 to 100.0)
-   -gapextendr         float      [0.5 for any sequence] This options
+   -rgapextend         float      [0.5 for any sequence] This options
                                   specifies the gap extension penalty for
                                   residue-based alignment. The gap extension,
                                   penalty is added to the standard gap penalty
@@ -53,7 +53,7 @@
                                   short gaps, so the gap extension penalty
                                   should be lower than the gap penalty.
                                   (Floating point number from 0.0 to 10.0)
-   -gapopene           float      [10.0 for any sequence] This options
+   -egapopen           float      [10.0 for any sequence] This options
                                   specifies the gap insertion penalty for
                                   element-based alignment. The gap insertion
                                   penalty is the score taken away when a gap
@@ -63,7 +63,7 @@
                                   matrix for protein sequences, and the
                                   EDNAFULL matrix for nucleotide sequences.
                                   (Floating point number from 1.0 to 100.0)
-   -gapextende         float      [0.5 for any sequence] This options
+   -egapextend         float      [0.5 for any sequence] This options
                                   specifies the gap extension penalty for
                                   secondary structure element-based alignment.
                                   The gap extension, penalty is added to the

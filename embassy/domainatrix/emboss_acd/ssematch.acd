@@ -63,7 +63,7 @@ section: additional [
   type: "page"
 ]
 
-  float: gapopenr [
+  float: rgapopen [
     additional: "Y"
     information: "Gap insertion penalty for reside-based
                   alignment"
@@ -80,7 +80,7 @@ section: additional [
            matrix for nucleotide sequences."
   ]
 
-  float: gapextendr [
+  float: rgapextend [
     additional: "Y"
     information: "Gap extension penalty for residue-based
                   alignment"
@@ -97,7 +97,7 @@ section: additional [
            penalty should be lower than the gap penalty."
   ]
 
-  float: gapopene [
+  float: egapopen [
     additional: "Y"
     information: "Gap insertion penalty for secondary structure
                   element-based alignment."
@@ -114,7 +114,7 @@ section: additional [
            matrix for nucleotide sequences."
   ]
 
-  float: gapextende [
+  float: egapextend [
     additional: "Y"
     information: "Gap extension penalty for secondary structure
                   element-based alignment"

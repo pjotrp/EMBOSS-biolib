@@ -13,9 +13,9 @@
                                   value)
    -cutoff             integer    [3] Sets the cutoff (E) in range [3,10].
                                   (Integer up to 10)
-   -usermspa           toggle     [N] False: esim4 calculates mspA, True:
+   -useramsp           toggle     [N] False: esim4 calculates mspA, True:
                                   value from mspA command line argument.
-*  -mspa               integer    [16] MSP score threshold (K) for the first
+*  -amsp               integer    [16] MSP score threshold (K) for the first
                                   stage of the algorithm. (If this option is
                                   not specified, the threshold is computed
                                   from the lengths of the sequences, using
@@ -25,9 +25,9 @@
                                   matches, however, a larger value may be
                                   needed for longer sequences. (Any integer
                                   value)
-   -usermspb           toggle     [N] False: esim4 calculates mspB, True:
+   -userbmsp           toggle     [N] False: esim4 calculates mspB, True:
                                   value from mspB command line argument.
-*  -mspb               integer    [12] Sets the threshold for the MSP scores
+*  -bmsp               integer    [12] Sets the threshold for the MSP scores
                                   (C) when aligning the as-yet-unmatched
                                   fragments, during the second stage of the
                                   algorithm. By default, the smaller of the
@@ -101,9 +101,9 @@
                                   database, the command line specification for
                                   the CDS will apply to the first sequence in
                                   the file only. (Any string is accepted)
-   -offseta            integer    [0] Undocumented (f) - some sort of offset
+   -aoffset            integer    [0] Undocumented (f) - some sort of offset
                                   in first sequence. (Any integer value)
-   -offsetb            integer    [0] Undocumented (F) - some sort of offset
+   -boffset            integer    [0] Undocumented (F) - some sort of offset
                                   in second sequence. (Any integer value)
    -toa                integer    [0] Undocumented (t)- offset end of first
                                   sequence? (Any integer value)

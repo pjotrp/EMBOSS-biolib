@@ -12,7 +12,7 @@ section: input [
   type: "page"
 ]
 
-  infile: hmmfilein [
+  infile: inhmmfile [
     parameter: "Y"
     information: "HMMER hidden markov model file"
     knowntype: "hmm"
@@ -102,7 +102,7 @@ section: output [
   type: "page"
 ]
 
-  outfile: hmmfileout [
+  outfile: outhmmfile [
     parameter: "Y"
     information: "HMMER hmmcalibrate program output file"
     knowntype: "hmmcalibrate output"

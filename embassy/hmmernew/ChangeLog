@@ -1,0 +1,5 @@
+Version 7.0.0 (EMBOSS)
+	Renamed commandline qualifiers for ehmmcalilbaret to make
+	unambiguous names shorter:
+	hmmfilein => inhmmfile
+	hmmfileout => outhmmfile

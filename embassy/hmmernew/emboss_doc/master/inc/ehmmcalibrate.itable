@@ -6,14 +6,14 @@
 </tr>
 
 <tr>
-<td>[-hmmfilein]<br>(Parameter 1)</td>
+<td>[-inhmmfile]<br>(Parameter 1)</td>
 <td>File containing an HMM.</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
-<td>[-hmmfileout]<br>(Parameter 2)</td>
+<td>[-outhmmfile]<br>(Parameter 2)</td>
 <td>File containing an HMM with EVD parameters.</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.ehmmcalibrate</td>

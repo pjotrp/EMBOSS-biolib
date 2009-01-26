@@ -200,8 +200,8 @@ Where possible, the same command-line qualifier names and parameter order is use
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-hmmfilein]         infile     File containing an HMM.
-  [-hmmfileout]        outfile    [*.ehmmcalibrate] File containing an HMM
+  [-inhmmfile]         infile     File containing an HMM.
+  [-outhmmfile]        outfile    [*.ehmmcalibrate] File containing an HMM
                                   with EVD parameters.
 
    Additional (Optional) qualifiers: (none)
@@ -257,7 +257,7 @@ Where possible, the same command-line qualifier names and parameter order is use
 
    Associated qualifiers:
 
-   "-hmmfileout" associated qualifiers
+   "-outhmmfile" associated qualifiers
    -odirectory2        string     Output directory
 
    "-histfile" associated qualifiers
@@ -290,14 +290,14 @@ Where possible, the same command-line qualifier names and parameter order is use
 </tr>
 
 <tr>
-<td>[-hmmfilein]<br>(Parameter 1)</td>
+<td>[-inhmmfile]<br>(Parameter 1)</td>
 <td>File containing an HMM.</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
-<td>[-hmmfileout]<br>(Parameter 2)</td>
+<td>[-outhmmfile]<br>(Parameter 2)</td>
 <td>File containing an HMM with EVD parameters.</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.ehmmcalibrate</td>

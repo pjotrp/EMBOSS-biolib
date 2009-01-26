@@ -49,15 +49,15 @@ section: additional [
     information: "Sets the cutoff (E) in range [3,10]."
   ]
 
-  toggle: usermspa [
+  toggle: useramsp [
     additional: "Y"
     default: "N"
     information: "False: esim4 calculates mspA, True: value
                   from mspA command line argument."
   ]
 
-  integer: mspa [
-    additional: "$(usermspa)"
+  integer: amsp [
+    additional: "$(useramsp)"
     default: "16"
     information: "MSP score threshold (K) for the first stage
                   of the algorithm."
@@ -69,15 +69,15 @@ section: additional [
            however, a larger value may be needed for longer sequences."
   ]
 
-  toggle: usermspb [
+  toggle: userbmsp [
     additional: "Y"
     default: "N"
     information: "False: esim4 calculates mspB, True: value
                   from mspB command line argument."
   ]
 
-  integer: mspb [
-    additional: "$(usermspb)"
+  integer: bmsp [
+    additional: "$(userbmsp)"
     default: "12"
     information: "MSP score threshold (C) during the second
                   stage of the algorithm."
@@ -183,13 +183,13 @@ section: additional [
     knowntype: "sequence range"
   ]
 
-  integer: offseta [
+  integer: aoffset [
     additional: "Y"
     information: "Undocumented (f) - some sort of offset in
                   first sequence."
   ]
 
-  integer: offsetb [
+  integer: boffset [
     additional: "Y"
     information: "Undocumented (F) - some sort of offset in
                   second sequence."

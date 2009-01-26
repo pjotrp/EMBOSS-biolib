@@ -122,10 +122,10 @@ int main(int argc, char **argv)
     ssin       = ajAcdGetInfile("ssinfile");
     max_hits      = ajAcdGetInt("maxhits");
     matrix        = ajAcdGetMatrixf("datafile");
-    gapopen_sss   = ajAcdGetFloat("gapopenr");
-    gapextend_sss = ajAcdGetFloat("gapextendr");
-    gapopen_sse   = ajAcdGetFloat("gapopene");
-    gapextend_sse = ajAcdGetFloat("gapextende");
+    gapopen_sss   = ajAcdGetFloat("rgapopen");
+    gapextend_sss = ajAcdGetFloat("rgapextend");
+    gapopen_sse   = ajAcdGetFloat("egapopen");
+    gapextend_sse = ajAcdGetFloat("egapextend");
     out_ss        = ajAcdGetOutfile("outssfile");
     out_se        = ajAcdGetOutfile("outsefile");
     logf       = ajAcdGetOutfile("logfile");

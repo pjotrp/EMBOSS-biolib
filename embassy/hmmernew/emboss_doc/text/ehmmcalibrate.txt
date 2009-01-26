@@ -123,8 +123,8 @@ Command line arguments
    them).
 
    Standard (Mandatory) qualifiers:
-  [-hmmfilein]         infile     File containing an HMM.
-  [-hmmfileout]        outfile    [*.ehmmcalibrate] File containing an HMM
+  [-inhmmfile]         infile     File containing an HMM.
+  [-outhmmfile]        outfile    [*.ehmmcalibrate] File containing an HMM
                                   with EVD parameters.
 
    Additional (Optional) qualifiers: (none)
@@ -180,7 +180,7 @@ Command line arguments
 
    Associated qualifiers:
 
-   "-hmmfileout" associated qualifiers
+   "-outhmmfile" associated qualifiers
    -odirectory2        string     Output directory
 
    "-histfile" associated qualifiers

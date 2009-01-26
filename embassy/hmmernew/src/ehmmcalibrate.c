@@ -62,7 +62,7 @@ int main(int argc, char **argv)
     /* ACD file processing */
     embInitP("ehmmcalibrate",argc,argv,"HMMERNEW");
 
-    hmmfilein  = ajAcdGetInfile("hmmfilein");
+    hmmfilein  = ajAcdGetInfile("inhmmfile");
     cpu        = ajAcdGetInt("cpu");
     fixed      = ajAcdGetInt("fixed");
     mean       = ajAcdGetFloat("mean");
@@ -70,7 +70,7 @@ int main(int argc, char **argv)
     pvm        = ajAcdGetBoolean("pvm");
     sd         = ajAcdGetFloat("sd");
     seed       = ajAcdGetInt("seed");
-    hmmfileout = ajAcdGetOutfile("hmmfileout");
+    hmmfileout = ajAcdGetOutfile("outhmmfile");
     histfile   = ajAcdGetOutfile("histfile");
 
 

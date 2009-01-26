@@ -424,7 +424,7 @@ C  -4  -4   2  -7
    Additional (Optional) qualifiers:
    -datafile           matrixf    [SSSUB] This option specifies the secondary
                                   structure substitution matrix.
-   -gapopenr           float      [10.0 for any sequence] This options
+   -rgapopen           float      [10.0 for any sequence] This options
                                   specifies the gap insertion penalty for
                                   reside-based alignment. The gap insertion
                                   penalty is the score taken away when a gap
@@ -434,7 +434,7 @@ C  -4  -4   2  -7
                                   matrix for protein sequences, and the
                                   EDNAFULL matrix for nucleotide sequences.
                                   (Floating point number from 1.0 to 100.0)
-   -gapextendr         float      [0.5 for any sequence] This options
+   -rgapextend         float      [0.5 for any sequence] This options
                                   specifies the gap extension penalty for
                                   residue-based alignment. The gap extension,
                                   penalty is added to the standard gap penalty
@@ -444,7 +444,7 @@ C  -4  -4   2  -7
                                   short gaps, so the gap extension penalty
                                   should be lower than the gap penalty.
                                   (Floating point number from 0.0 to 10.0)
-   -gapopene           float      [10.0 for any sequence] This options
+   -egapopen           float      [10.0 for any sequence] This options
                                   specifies the gap insertion penalty for
                                   element-based alignment. The gap insertion
                                   penalty is the score taken away when a gap
@@ -454,7 +454,7 @@ C  -4  -4   2  -7
                                   matrix for protein sequences, and the
                                   EDNAFULL matrix for nucleotide sequences.
                                   (Floating point number from 1.0 to 100.0)
-   -gapextende         float      [0.5 for any sequence] This options
+   -egapextend         float      [0.5 for any sequence] This options
                                   specifies the gap extension penalty for
                                   secondary structure element-based alignment.
                                   The gap extension, penalty is added to the
@@ -560,28 +560,28 @@ C  -4  -4   2  -7
 </tr>
 
 <tr>
-<td>-gapopenr</td>
+<td>-rgapopen</td>
 <td>This options specifies the gap insertion penalty for reside-based alignment. The gap insertion penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL matrix for nucleotide sequences.</td>
 <td>Floating point number from 1.0 to 100.0</td>
 <td>10.0 for any sequence</td>
 </tr>
 
 <tr>
-<td>-gapextendr</td>
+<td>-rgapextend</td>
 <td>This options specifies the gap extension penalty for residue-based alignment. The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty.</td>
 <td>Floating point number from 0.0 to 10.0</td>
 <td>0.5 for any sequence</td>
 </tr>
 
 <tr>
-<td>-gapopene</td>
+<td>-egapopen</td>
 <td>This options specifies the gap insertion penalty for element-based alignment. The gap insertion penalty is the score taken away when a gap is created. The best value depends on the choice of comparison matrix. The default value assumes you are using the EBLOSUM62 matrix for protein sequences, and the EDNAFULL matrix for nucleotide sequences.</td>
 <td>Floating point number from 1.0 to 100.0</td>
 <td>10.0 for any sequence</td>
 </tr>
 
 <tr>
-<td>-gapextende</td>
+<td>-egapextend</td>
 <td>This options specifies the gap extension penalty for secondary structure element-based alignment. The gap extension, penalty is added to the standard gap penalty for each base or residue in the gap. This is how long gaps are penalized. Usually you will expect a few long gaps rather than many short gaps, so the gap extension penalty should be lower than the gap penalty.</td>
 <td>Floating point number from 0.0 to 10.0</td>
 <td>0.5 for any sequence</td>

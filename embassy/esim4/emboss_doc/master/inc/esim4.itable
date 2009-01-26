@@ -54,28 +54,28 @@
 </tr>
 
 <tr>
-<td>-usermspa</td>
+<td>-useramsp</td>
 <td>False: esim4 calculates mspA, True: value from mspA command line argument.</td>
 <td>Toggle value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
-<td>-mspa</td>
+<td>-amsp</td>
 <td>MSP score threshold (K) for the first stage of the algorithm. (If this option is not specified, the threshold is computed from the lengths of the sequences, using statistical criteria.) For example, a good value for genomic sequences in the range of a few hundred Kb is 16. To avoid spurious matches, however, a larger value may be needed for longer sequences.</td>
 <td>Any integer value</td>
 <td>16</td>
 </tr>
 
 <tr>
-<td>-usermspb</td>
+<td>-userbmsp</td>
 <td>False: esim4 calculates mspB, True: value from mspB command line argument.</td>
 <td>Toggle value Yes/No</td>
 <td>No</td>
 </tr>
 
 <tr>
-<td>-mspb</td>
+<td>-bmsp</td>
 <td>Sets the threshold for the MSP scores (C) when aligning the as-yet-unmatched fragments, during the second stage of the algorithm. By default, the smaller of the constant 12 and a statistics-based threshold is chosen.</td>
 <td>Any integer value</td>
 <td>12</td>
@@ -138,14 +138,14 @@
 </tr>
 
 <tr>
-<td>-offseta</td>
+<td>-aoffset</td>
 <td>Undocumented (f) - some sort of offset in first sequence.</td>
 <td>Any integer value</td>
 <td>0</td>
 </tr>
 
 <tr>
-<td>-offsetb</td>
+<td>-boffset</td>
 <td>Undocumented (F) - some sort of offset in second sequence.</td>
 <td>Any integer value</td>
 <td>0</td>
