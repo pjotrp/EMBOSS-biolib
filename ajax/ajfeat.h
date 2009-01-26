@@ -112,7 +112,10 @@ ajuint        ajFeattablePos (const AjPFeattable thys, ajint ipos);
 ajuint        ajFeattablePosI (const AjPFeattable thys,
 			       ajuint imin, ajint ipos);
 ajuint        ajFeattablePosII (ajuint ilen, ajuint imin, ajint ipos);
-AjBool        ajFeattablePrint(const AjPFeattable ftable, AjPFile outf);
+AjBool        ajFeattableWriteDebug(AjPFeattabOut ftout,
+                               const AjPFeattable ftable);
+AjBool        ajFeattablePrint(const AjPFeattable ftable,
+                               AjPFile file);
 void          ajFeattableReverse  (AjPFeattable  thys) ;
 void          ajFeattableSetLength(AjPFeattable thys, ajuint len);
 void          ajFeattableSetNuc (AjPFeattable thys);
@@ -124,20 +127,22 @@ void          ajFeattableTrace (const AjPFeattable thys);
 AjBool        ajFeattableTrimOff (AjPFeattable thys,
 				  ajuint ioffset, ajuint ilen);
 AjBool        ajFeattableWrite(AjPFeattable thys, const AjPStr ufo);
-AjBool        ajFeattableWriteDdbj (const AjPFeattable features,
-				    AjPFile file);
-AjBool        ajFeattableWriteEmbl (const AjPFeattable features,
-				    AjPFile file);
-AjBool        ajFeattableWriteGenbank (const AjPFeattable features,
-				       AjPFile file);
-AjBool        ajFeattableWriteGff2 (const AjPFeattable features,
-				    AjPFile file);
-AjBool        ajFeattableWriteGff3 (const AjPFeattable features,
-				   AjPFile file);
-AjBool        ajFeattableWritePir (const AjPFeattable features,
-				   AjPFile file);
-AjBool        ajFeattableWriteSwiss (const AjPFeattable features,
-				     AjPFile file);
+AjBool        ajFeattableWriteDasgff(AjPFeattabOut ftout,
+                                    const AjPFeattable features);
+AjBool        ajFeattableWriteDdbj (AjPFeattabOut ftout,
+                                    const AjPFeattable features);
+AjBool        ajFeattableWriteEmbl (AjPFeattabOut ftout,
+                                    const AjPFeattable features);
+AjBool        ajFeattableWriteGenbank (AjPFeattabOut ftout,
+                                    const AjPFeattable features);
+AjBool        ajFeattableWriteGff2 (AjPFeattabOut ftout,
+                                    const AjPFeattable features);
+AjBool        ajFeattableWriteGff3 (AjPFeattabOut ftout,
+                                    const AjPFeattable features);
+AjBool        ajFeattableWritePir (AjPFeattabOut ftout,
+                                    const AjPFeattable features);
+AjBool        ajFeattableWriteSwiss (AjPFeattabOut ftout,
+                                    const AjPFeattable features);
 void          ajFeattabInClear (AjPFeattabIn thys);
 void          ajFeattabInDel (AjPFeattabIn* pthis);
 AjPFeattabIn  ajFeattabInNew (void);
@@ -185,6 +190,7 @@ void          ajFeatTrace (const AjPFeature thys);
 AjBool        ajFeatTrimOffRange (AjPFeature ft, ajuint ioffset,
 				  ajuint begin, ajuint end,
 				  AjBool dobegin, AjBool doend);
+const AjPStr  ajFeatTypeGetCategory(const AjPStr type);
 AjBool        ajFeatTypeIsCds(const AjPFeature gf);
 const AjPStr  ajFeatTypeNuc(const AjPStr type);
 const AjPStr  ajFeatTypeProt(const AjPStr type);
