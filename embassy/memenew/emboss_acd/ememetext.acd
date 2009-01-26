@@ -62,7 +62,6 @@ section: additional [
     additional: "Y"
     casesensitive: "N"
     default: "zoops"
-    delimiter: ","
     header: "Distribution of motifs"
     help: "If you know how occurrences of motifs are distributed in
            the training set sequences, you can specify it with these options.
