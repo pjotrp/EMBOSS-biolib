@@ -37,8 +37,6 @@ int main(int argc, char **argv)
     ajuint nseqs;
     ajuint i;
 
-    AjPList   list   = NULL;   
-
     /* ACD File Processing */
     embInit("sizeseq", argc, argv);
     seqset      = ajAcdGetSeqset("sequences");
@@ -46,7 +44,6 @@ int main(int argc, char **argv)
     seqout      = ajAcdGetSeqoutall("outseq");
 
     /* Application logic */
-    list    = ajListNew();
     ajSeqsetSortLen(seqset);
     nseqs = ajSeqsetGetSize(seqset);
     
