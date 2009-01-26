@@ -846,6 +846,8 @@ void ajSeqDelarray(AjPSeq **PPseq)
 **                       of a sequence
 ** @nam4rule SetUnique Make sure sequence is modifiable (no other pointer
 **                     uses the same internal string)
+** @nam3rule Tag       Add tag to the sequence description
+** @nam4rule TagRev    Add 'Reversed' tag to the sequence description
 **
 ** @suffix Len [ajint] Length of character string
 ** @suffix C [const char*] Character string
@@ -1929,6 +1931,25 @@ __deprecated void  ajSeqMod(AjPSeq seq)
 }
 
 
+/* @func ajSeqTagRev **********************************************************
+**
+** Adds a tag to the sequence description to note it has been reversed
+**
+** @param [u] seq [AjPSeq] Sequence object to be set.
+** @return [void]
+******************************************************************************/
+
+void ajSeqTagRev(AjPSeq seq)
+{
+    if(ajStrGetLen(seq->Desc))
+        ajStrInsertC(&seq->Desc, 0, "Reversed: ");
+    else
+        ajStrAssignC(&seq->Desc, "Reversed:");
+    return;
+}
+
+
+
 
 /* @obsolete ajSeqReplace
 ** @rename ajSeqAssignSeqS
@@ -2058,8 +2079,6 @@ static void seqMakeUsa(const AjPSeq thys, AjPStr* usa)
 
     return;
 }
-
-
 
 /* @section process *******************************************************
 **
@@ -4444,6 +4463,7 @@ void ajSeqallDel(AjPSeqall *Pseq)
     if(!(*Pseq)->Returned)
 	ajSeqDel(&(*Pseq)->Seq);
 
+    ajDebug("ajSeqallDel\n");
     ajSeqinDel(&(*Pseq)->Seqin);
 
     AJFREE(*Pseq);

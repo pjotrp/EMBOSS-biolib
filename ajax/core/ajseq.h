@@ -270,6 +270,7 @@ void         ajSeqsetTrim(AjPSeqset thys);
 float        ajSeqsetGetseqWeight (const AjPSeqset seq, ajuint i) ;
 void         ajSeqFmtLower (AjPSeq thys);
 void         ajSeqFmtUpper (AjPSeq thys);
+void         ajSeqTagRev(AjPSeq seq);
 void         ajSeqTrace (const AjPSeq seq);
 void         ajSeqTraceTitle (const AjPSeq seq, const char* title);
 void         ajSeqTrim(AjPSeq thys);
