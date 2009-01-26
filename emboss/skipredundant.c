@@ -22,6 +22,7 @@
 #include "emboss.h"
 
 
+static AjBool skipredundant_ClearList (AjPList list);
 static AjBool skipredundant_SeqsetToList (AjPList list, AjPSeqset seqset);
 
 
@@ -114,10 +115,12 @@ int main(int argc, char **argv)
     ajSeqoutClose(seqout);
     ajSeqoutDel(&seqout);
     if(seqoutred)
-      {
+    {
 	ajSeqoutClose(seqoutred);
 	ajSeqoutDel(&seqoutred);
-      }
+    }
+    skipredundant_ClearList(list);
+
     ajListFree(&list);
     ajUintDel(&keep);
 
@@ -157,5 +160,36 @@ static AjBool skipredundant_SeqsetToList (AjPList list, AjPSeqset seqset)
         seq_tmp = NULL;
     }
 
+    return ajTrue;
+}
+
+
+
+
+
+/* @funcstatic skipredundant_ClearList **************************************
+**
+** Clears a list of sequences from a sequence set.
+** The sequences are copied
+**
+** @param [u] list   [AjPList] List 
+** @return [AjBool] True on success
+******************************************************************************/
+static AjBool skipredundant_ClearList (AjPList list)
+{
+    EmbPDmxNrseq seq_tmp = NULL;
+    AjIList iter;
+
+    if(!list)
+      return ajFalse;
+    
+    iter = ajListIterNew(list);
+    while(!ajListIterDone(iter))
+    {
+        seq_tmp = (EmbPDmxNrseq)ajListIterGet(iter);
+        embDmxNrseqDel(&seq_tmp);
+    }
+    ajListIterDel(&iter);
+    
     return ajTrue;
 }

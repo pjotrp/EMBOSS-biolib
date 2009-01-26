@@ -92,7 +92,7 @@ int main(int argc, char **argv)
     AjPStr release = NULL;
     AjPStr comment = NULL;
 
-    AjPList dbnames;
+    AjPList dbnames = NULL;
     AjIList iter = NULL;
 
     ajuint maxname = 14;
@@ -249,7 +249,6 @@ int main(int argc, char **argv)
 	}
 
 	ajListIterDel(&iter);
-	ajListFree(&dbnames);
     }
     
     /* end the HTML table */
@@ -264,6 +263,7 @@ int main(int argc, char **argv)
     ajStrDel(&defined);
     ajStrDel(&release);
     ajStrDel(&comment);
+    ajListFree(&dbnames);
 
     embExit();
 
