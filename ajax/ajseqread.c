@@ -208,6 +208,7 @@ typedef struct SeqSMsfItem
 ** @attr dr [AjPStr] Undocumented
 ** @attr cc [AjPStr] Undocumented
 ** @attr sacons [AjPStr] Undocumented
+** @attr sqcons [AjPStr] Undocumented
 ** @attr sscons [AjPStr] Undocumented
 ** @attr gs [AjPStr] Undocumented
 ** @attr name [AjPStr*] Undocumented
@@ -235,6 +236,7 @@ typedef struct SeqSStockholm
     AjPStr dr;
     AjPStr cc;
     AjPStr sacons;
+    AjPStr sqcons;
     AjPStr sscons;
     AjPStr gs;
     AjPStr *name;
@@ -263,8 +265,9 @@ typedef struct SeqSStockholm
 ** @attr tp [AjPStr] Undocumented
 ** @attr se [AjPStr] Undocumented
 ** @attr bm [AjPStr] Undocumented
-** @attr sscons [AjPStr] Undocumented
 ** @attr sacons [AjPStr] Undocumented
+** @attr sqcons [AjPStr] Undocumented
+** @attr sscons [AjPStr] Undocumented
 ** @attr ref [AjPStr] Undocumented
 ** @attr dc [AjPStr] Undocumented
 ** @attr dr [AjPStr] Undocumented
@@ -286,8 +289,9 @@ typedef struct SeqSStockholmdata
     AjPStr tp;
     AjPStr se;
     AjPStr bm;
-    AjPStr sscons;
     AjPStr sacons;
+    AjPStr sqcons;
+    AjPStr sscons;
     AjPStr ref;
     AjPStr dc;
     AjPStr dr;
@@ -2636,7 +2640,7 @@ static AjBool seqReadNbrf(AjPSeq thys, AjPSeqin seqin)
 	   the ID line but with a few digits in front, and then repeats the
 	   description */
 
-	/* just for another oddity ... the entra ID line always starts >P1;
+	/* just for another oddity ... the extra ID line always starts >P1;
 	   even if the protein is a fragment */
 
 	if(ok && !ajStrGetLen(thys->Seq) &&
@@ -3173,7 +3177,6 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
     ajuint i     = 0;
     ajuint n     = 0;
-    ajlong lpos = 0L;
     ajuint  scnt = 0;
 
     line = ajStrNew();
@@ -3184,10 +3187,9 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	stock = seqin->Data;
     else
     {
-	ajFilebuffSetBuffered(buff); 		/* must buffer to test sequences */
-	ajFilebuffTraceFull(buff, 20, 0);
-	lpos = ajFileResetPos(buff->File);
-	ok=ajBuffreadLineStore(buff,&line, seqin->Text, &thys->TextPtr);
+	ajFilebuffSetBuffered(buff); /* must buffer to test sequences */
+	ok=ajBuffreadLineStore(buff, &line, seqin->Text, &thys->TextPtr);
+        ajStrTrimWhiteEnd(&line);
 
 	if(!ok || !ajStrPrefixC(line,"# STOCKHOLM 1."))
 	{
@@ -3202,37 +3204,37 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
 	ajDebug("Stockholm: good first line: %S", line);
 
-	while(ok && (ajStrPrefixC(line, "#") || ajStrMatchC(line, "\n")))
+	while(ok && (ajStrPrefixC(line, "#") || !ajStrGetLen(line)))
 	{
 	    if(ajStrPrefixC(line,"#=GF SQ"))
 	    {
 		ajFmtScanS(line,"%*s%*s%d",&n);
 		ajDebug("Stockholm: parsed SQ line of %d sequences\n", n);
 	    }
-	    ok=ajBuffreadLineStore(buff,&line, seqin->Text, &thys->TextPtr);
-	    ajDebug("Stockholm: SQ search: %S", line);
+	    ok=ajBuffreadLineStore(buff, &line, seqin->Text, &thys->TextPtr);
+            ajStrTrimWhiteEnd(&line);
+	    ajDebug("Stockholm: SQ search: %S\n", line);
 	}
 
 	if (!n)				/* no SQ line, count first block */
 	{
-	    while(ok && !ajStrMatchC(line, "\n"))
+	    while(ok && ajStrGetLen(line))
 	    {
-		n++;
-		ok=ajBuffreadLineStore(buff,&line, seqin->Text, &thys->TextPtr);
-		ajDebug("Stockholm: block %d read: %S", n, line);
+		if(!ajStrPrefixC(line, "#") &&
+                   !ajStrMatchC(line, "//"))
+                    n++;
+		ok=ajBuffreadLineStore(buff,&line,
+                                       seqin->Text, &thys->TextPtr);
+                ajStrTrimWhiteEnd(&line);
+		ajDebug("Stockholm: block %d read: %S\n", n, line);
 	    }
 	    ajDebug("Stockholm: read block of %d sequences\n", n);
 	}
-	ajFileSeek(buff->File,lpos,0);
-	ajFilebuffClear(buff,-1);
 	ajFilebuffResetStore(buff, seqin->Text, &thys->TextPtr);
 
-	/* Commented out by jison ... was causing incorrect parsing for input file
-	   from HMMER tutorial. */
-        /* ok=ajBuffreadLineStore(buff,&line,
-	                       seqin->Text, &thys->TextPtr); */
 	ok=ajBuffreadLineStore(buff,&line,
 			       seqin->Text, &thys->TextPtr);
+        ajStrTrimWhiteEnd(&line);
 	stock = stockholmNew(n);
 
 	ajDebug("Created stockholm data object size: %d\n", n);
@@ -3242,7 +3244,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	post  = ajStrNew();
 
 	if(!seqRegStockholmSeq)
-	    seqRegStockholmSeq = ajRegCompC("^([^ \t\n]+)[ \t]+([^ \t\n]+)[ \t]+");
+	    seqRegStockholmSeq = ajRegCompC("^([^ \t\n]+)[ \t]+"
+                                            "([^ \t\n]+)[ \t]+");
 	while(ok && !ajStrPrefixC(line,"//"))
 	{
 	    if(ajRegExec(seqRegStockholmSeq,line))
@@ -3329,7 +3332,7 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		    }
 		}
 
-		if(!ajStrCmpC(word,"#=GS"))
+		else if(!ajStrCmpC(word,"#=GS"))
 		{
 		    if(gsf)
 		    {
@@ -3340,16 +3343,17 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 			ajStrAppendS(&stock->gs,line);
 		}
 
-		if(!ajStrCmpC(word,"#=GC"))
+		else if(!ajStrCmpC(word,"#=GC"))
 		{
 		    if(!ajStrCmpC(token,"SS_cons"))
 			ajStrAssignS(&stock->sscons,post);
 		    else if(!ajStrCmpC(token,"SA_cons"))
 			ajStrAssignS(&stock->sacons,post);
+		    else if(!ajStrCmpC(token,"seq_cons"))
+			ajStrAssignS(&stock->sqcons,post);
 		}
-
 	    }
-	    else if (!ajStrMatchC(line, "\n"))
+	    else if (ajStrGetLen(line))
 	    {
 		ajFmtScanS(line,"%S%S", &namstr,&seqstr);
 		if(!ajStrGetLen(stock->name[scnt]))
@@ -3357,7 +3361,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 		else
 		{
 		    if(!ajStrMatchS(namstr, stock->name[scnt]))
-			ajWarn("Bad stockholm format found id %d '%S' expect '%S'",
+			ajWarn("Bad stockholm format found id %d '%S' "
+                               "expect '%S'",
 			       scnt, namstr, stock->name[scnt]);
 		}
 		ajStrRemoveLastNewline(&seqstr);
@@ -3369,6 +3374,7 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
 	    ok = ajBuffreadLineStore(buff,&line,
 				     seqin->Text, &thys->TextPtr);
+            ajStrTrimWhiteEnd(&line);
 	}
 	while(ok && !ajStrPrefixC(line, "# STOCKHOLM 1."))
 	{
@@ -3387,6 +3393,8 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 	ajStrDel(&namstr);
 	ajStrDel(&seqstr);
 	seqin->Data = stock;
+
+        ajFilebuffClear(buff,0);
     }
 
 
@@ -3404,15 +3412,10 @@ static AjBool seqReadStockholm(AjPSeq thys, AjPSeqin seqin)
 
     seqStockholmCopy(&thys,stock,i);
 
-
     ++stock->Count;
 
-
-
-    
-
-
-    ajFilebuffClear(buff,0);
+    ajDebug("Stockholm returning %d/%d '%S' len: %d\n",
+            stock->Count, stock->n, ajSeqGetNameS(thys),ajSeqGetLen(thys));
 
     ajStrDel(&line);
 
@@ -3524,6 +3527,7 @@ static void seqStockholmCopy(AjPSeq *thys, SeqPStockholm stock, ajint n)
     ajStrAssignS(&sdata->cc,stock->cc);
     ajStrAssignS(&sdata->ref,stock->ref);
     ajStrAssignS(&sdata->sacons,stock->sacons);
+    ajStrAssignS(&sdata->sqcons,stock->sqcons);
     ajStrAssignS(&sdata->sscons,stock->sscons);
     sdata->ga[0] = stock->ga[0];
     sdata->ga[1] = stock->ga[1];
@@ -12734,6 +12738,7 @@ void ajSeqReadExit(void)
     ajRegFree(&seqRegJackTop);
     ajRegFree(&seqRegJackSeq);
     ajRegFree(&seqRegGffTyp);
+    ajRegFree(&seqRegGff3Typ);
     ajRegFree(&seqRegGcgDot);
     ajRegFree(&seqRegGcgChk);
     ajRegFree(&seqRegGcgLen);
@@ -12917,6 +12922,7 @@ static SeqPStockholm stockholmNew(ajuint i)
     thys->gs  = ajStrNew();
     thys->ref = ajStrNew();
     thys->sacons  = ajStrNew();
+    thys->sqcons  = ajStrNew();
     thys->sscons  = ajStrNew();
 
     thys->n = i;
@@ -12964,6 +12970,7 @@ static SeqPStockholm stockholmNew(ajuint i)
     thys->gs  = ajStrNew();
     thys->ref = ajStrNew();
     thys->sacons  = ajStrNew();
+    thys->sqcons  = ajStrNew();
     thys->sscons  = ajStrNew();
 
     return thys;
@@ -13004,6 +13011,7 @@ static void stockholmDel(SeqPStockholm *Pseq)
     ajStrDel(&pthis->gs);
     ajStrDel(&pthis->ref);
     ajStrDel(&pthis->sacons);
+    ajStrDel(&pthis->sqcons);
     ajStrDel(&pthis->sscons);
 
     for(i=0;i<pthis->n;++i)
@@ -13055,6 +13063,7 @@ static void stockholmDel(SeqPStockholm *Pseq)
     ajStrDel(&pthis->gs);
     ajStrDel(&pthis->ref);
     ajStrDel(&pthis->sacons);
+    ajStrDel(&pthis->sqcons);
     ajStrDel(&pthis->sscons);
 
     AJFREE(*Pseq);
