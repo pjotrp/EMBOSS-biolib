@@ -43,10 +43,12 @@ pkgdata2_DATA = needle.acd newcoils.acd newcpgreport.acd newcpgseek.acd \
 	restrict.acd revseq.acd seealso.acd seqinfo.acd seqmatchall.acd \
 	seqret.acd seqretall.acd seqretallfeat.acd seqretset.acd \
 	seqretsingle.acd seqretsplit.acd seqrettype.acd showalign.acd \
-	showdb.acd showfeat.acd showorf.acd showseq.acd shuffleseq.acd \
+	showdb.acd showfeat.acd showorf.acd \
+	showpep.acd showseq.acd shuffleseq.acd \
 	sigcleave.acd silent.acd sirna.acd \
 	sixpack.acd sizeseq.acd skipredundant.acd skipseq.acd \
-	splitter.acd stretcher.acd stssearch.acd supermatcher.acd syco.acd \
+	splitsource.acd splitter.acd stretcher.acd \
+	stssearch.acd supermatcher.acd syco.acd \
 	tcode.acd testplot.acd textsearch.acd tfextract.acd tfm.acd \
 	tfscan.acd tmap.acd tranalign.acd transeq.acd treetypedisplay.acd \
 	trimest.acd trimseq.acd trimspace.acd twofeat.acd union.acd \
