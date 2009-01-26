@@ -1029,6 +1029,65 @@ AjPStr embPropProt1to3(AjPSeq seq, ajint pad)
 
 
 
+/* @func embPropProt1to3Rev ****************************************************
+**
+** Creates a a 3-letter sequence protein string from single-letter sequence
+** in the reverse direction.
+** EMBOSS is bad at reading 3-letter sequences, but this may be useful
+** when displaying translations.
+**
+** @param [u] seq [AjPSeq] protein sequence to convert to 3-letter codes
+** @param [r] pad [ajint] number of characters to skip at the start
+**                        of the result
+** @return [AjPStr] string containing 3-letter protein sequence
+** @@
+******************************************************************************/
+
+AjPStr embPropProt1to3Rev(AjPSeq seq, ajint pad)
+{
+    const char *p;
+    const char *p3;
+    AjPStr temp;
+    ajint i=0;
+
+    temp = ajStrNewRes(ajSeqGetLen(seq)*3 + pad+1);
+
+    for(p=ajSeqGetSeqC(seq); *p; p++)
+    {
+	if(*p == '*')
+	    ajStrAppendC(&temp, "***");
+	else if(*p == '.')
+	    ajStrAppendC(&temp, "...");
+	else if(*p == '-')
+	    ajStrAppendC(&temp, "---");
+	else if(!isalpha((ajint)*p))
+	    ajStrAppendC(&temp, "???");
+	else
+	{
+            p3 = embPropCharToThree(*p);
+            if(i++)
+            {
+                ajStrAppendK(&temp, *(p3+2));
+                ajStrAppendK(&temp, *(p3+1));
+                ajStrAppendK(&temp, *p3);
+            }
+            else
+            {
+                if(pad >= 2) 
+                    ajStrAppendK(&temp, *(p3+2));
+                if(pad >= 1) 
+                    ajStrAppendK(&temp, *(p3+1));
+                ajStrAppendK(&temp, *p3);
+            }            
+        }
+    }
+
+    return temp;
+}
+
+
+
+
 /* @func embPropPurine ********************************************************
 **
 ** Returns ajTrue if the input base is a Purine.
