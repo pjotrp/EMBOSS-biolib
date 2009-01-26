@@ -11,7 +11,7 @@ section: input [
   seqall: sequence [
     parameter: "Y"
     features: "Y"
-    type: "gapany"
+    type: "gapdna"
   ]
 
 endsection: input
@@ -77,9 +77,24 @@ section: additional [
            They are separated by any non-digit, non-alpha character. \
            Examples of region specifications are: \
            24-45, 56-78 \
-           1:45, 67=99;765..888 \
-           1,5,8,10,23,45,57,99"
+           1:45, 67=99;765..888"
     expected: "If this is left blank the complete sequence is
+               translated."
+  ]
+
+  range: revtranslate [
+    additional: "Y"
+    default: ""
+    information: "Regions to translate in reverse direction (eg: 78-94,4-57)"
+    help: "Regions to translate (if translating). \
+           If this is left blank the complete sequence is translated. \
+           A set of regions is specified by a set of pairs of positions. \
+           The positions are integers. \
+           They are separated by any non-digit, non-alpha character. \
+           Examples of region specifications are: \
+           78-56, 45-24, \
+           888..765, 99=67; 45:1"
+    expected: "If this is left blank the complete reverse sequence is
                translated."
   ]
 
@@ -239,16 +254,16 @@ section: additional [
       additional: "Y"
       default: "0.0"
       information: "Minimum score of feature to display"
-      help: "If this is greater than or equal to the maximum score,
-             then any score is permitted"
+      help: "Minimum score of feature to display (see also maxscore)"
     ]
 
     float: maxscore [
       additional: "Y"
       default: "0.0"
       information: "Maximum score of feature to display"
-      help: "If this is less than or equal to the maximum score, then
-             any score is permitted"
+      help: "Maximum score of feature to display. \
+             If both minscore and maxscore are zero (the default),
+             then any score is ignored"
     ]
 
     string: tagmatch [
