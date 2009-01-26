@@ -158,11 +158,15 @@ static AjBool     seqoutUsaProcess(AjPSeqout thys);
 static void       seqsetClone(AjPSeqout outseq, const AjPSeqset seq, ajint i);
 static AjBool     seqoutFindOutFormat(const AjPStr format, ajint* iformat);
 
+static void       seqCleanDasdna(AjPFile file);
+static void       seqCleanDasseq(AjPFile file);
 static void       seqSeqFormat(ajint seqlen, SeqPSeqFormat* psf);
 static void       seqWriteAcedb(AjPSeqout outseq);
 static void       seqWriteAsn1(AjPSeqout outseq);
 static void       seqWriteClustal(AjPSeqout outseq);
 static void       seqWriteCodata(AjPSeqout outseq);
+static void       seqWriteDasdna(AjPSeqout outseq);
+static void       seqWriteDasseq(AjPSeqout outseq);
 static void       seqWriteDebug(AjPSeqout outseq);
 static void       seqWriteEmbl(AjPSeqout outseq);
 static void       seqWriteEmblnew(AjPSeqout outseq);
@@ -390,6 +394,12 @@ static SeqOOutFormat seqOutFormat[] =
     {"mase",       "Mase program format",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteMase},
+    {"dasdna",     "DASDNA DAS nucleotide-only sequence",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJFALSE,
+	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDasdna},
+    {"das",        "DASSEQUENCE DAS any sequence",
+	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
+	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDasseq},
     {"debug",      "Debugging trace of full internal data content",
 	 AJFALSE, AJFALSE, AJFALSE, AJTRUE,  AJTRUE,
 	 AJFALSE, AJTRUE,  AJFALSE, seqWriteDebug}, /* trace report */
@@ -663,6 +673,10 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 	ajSeqDel(&seq);
     ajListFree(&seqout->Savelist);
     ajFeattabOutDel(&seqout->Ftquery);
+
+    if(seqout->Cleanup)
+        seqout->Cleanup(seqout->File);
+    seqout->Cleanup = NULL;
 
     if(seqout->Knownfile)
 	seqout->File = NULL;
@@ -4669,6 +4683,171 @@ static void seqWriteAcedb(AjPSeqout outseq)
 
 
 
+/* @funcstatic seqWriteDasdna *************************************************
+**
+** Writes a sequence in DASDNA XML format.
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteDasdna(AjPSeqout outseq)
+{
+    ajuint i;
+    ajuint ilen;
+    ajuint iend;
+    ajuint linelen     = 50;
+    AjPStr seq = NULL;
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    if(!outseq->Count)
+    {
+        outseq->Cleanup = seqCleanDasdna;
+        ajFmtPrintF(outseq->File,
+                    "<?xml version=\"1.0\" standalone=\"no\"?>\n");
+        ajFmtPrintF(outseq->File,
+                    "<!DOCTYPE DASDNA SYSTEM "
+                    "\"http://www.biodas.org/dtd/dasdna.dtd\">\n");
+            ajFmtPrintF(outseq->File,
+                        "<DASDNA>\n");
+    }
+    
+
+    ajFmtPrintF(outseq->File,
+                "  <SEQUENCE id=\"%S\" start=\"%d\" stop=\"%d\" "
+                "version=\"%S\">\n",
+                outseq->Name, 1+outseq->Offset,
+                ilen+outseq->Offset,
+                outseq->Sv);
+
+    ajFmtPrintF(outseq->File,
+                "    <DNA length=\"%d\">\n", ilen);
+
+    for(i=0; i < ilen; i += linelen)
+    {
+	iend = AJMIN(ilen-1, i+linelen-1);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
+	ajFmtPrintF(outseq->File, "      %S\n", seq);
+    }
+
+    ajFmtPrintF(outseq->File,
+                "    </DNA>\n");
+    ajFmtPrintF(outseq->File,
+                "  </SEQUENCE>\n");
+
+    ajStrDel(&seq);
+    return;
+}
+
+
+
+/* @funcstatic seqCleanDasdna *************************************************
+**
+** Writes the remaining lines to complete and close a DASDNA XML file
+**
+** @param [r] file [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+
+static void seqCleanDasdna(AjPFile file)
+{
+    ajFmtPrintF(file,
+                "</DASDNA>\n");
+
+    return;
+}
+
+/* @funcstatic seqWriteDasseq *************************************************
+**
+** Writes a sequence in DAS SEQUENCE XML format.
+**
+** @param [u] outseq [AjPSeqout] Sequence output object.
+** @return [void]
+** @@
+******************************************************************************/
+
+static void seqWriteDasseq(AjPSeqout outseq)
+{
+    ajuint i;
+    ajuint ilen;
+    ajuint iend;
+    ajuint linelen     = 50;
+    AjPStr seq = NULL;
+
+    ilen = ajStrGetLen(outseq->Seq);
+
+    if(!outseq->Count)
+    {
+        outseq->Cleanup = seqCleanDasseq;
+        ajFmtPrintF(outseq->File,
+                    "<?xml version=\"1.0\" standalone=\"no\"?>\n");
+        ajFmtPrintF(outseq->File,
+                    "<!DOCTYPE DASSEQUENCE SYSTEM "
+                    "\"http://www.biodas.org/dtd/dassequence.dtd\">\n");
+    }
+
+
+    ajFmtPrintF(outseq->File,
+                "<DASSEQUENCE>\n");
+
+    ajFmtPrintF(outseq->File,
+                "  <SEQUENCE id=\"%S\" start=\"%d\" stop=\"%d\"\n",
+                outseq->Name,
+                1+outseq->Offset,
+                ilen+outseq->Offset);
+    if(ajStrMatchC(outseq->Type, "P"))
+        ajFmtPrintF(outseq->File,
+                    "               moltype=\"Protein\"",
+                    outseq->Sv);
+    else
+        ajFmtPrintF(outseq->File,
+                    "               moltype=\"DNA\"");
+    if(ajStrGetLen(outseq->Sv))
+        ajFmtPrintF(outseq->File,
+                    " version=\"%S\">\n",
+                    outseq->Sv);
+    else
+        ajFmtPrintF(outseq->File,
+                    " version=\"0.0\">\n");
+
+    for(i=0; i < ilen; i += linelen)
+    {
+	iend = AJMIN(ilen-1, i+linelen-1);
+	ajStrAssignSubS(&seq, outseq->Seq, i, iend);
+	ajFmtPrintF(outseq->File, "      %S\n", seq);
+    }
+    ajFmtPrintF(outseq->File,
+                "  </SEQUENCE>\n");
+
+    ajStrDel(&seq);
+    return;
+}
+
+
+
+
+/* @funcstatic seqCleanDasseq *************************************************
+**
+** Writes the remaining lines to complete and close a DASDNA XML file
+**
+** @param [r] file [AjPFile] Output file
+** @return [void]
+** @@
+******************************************************************************/
+
+
+static void seqCleanDasseq(AjPFile file)
+{
+    ajFmtPrintF(file,
+                "</DASSEQUENCE>\n");
+
+    return;
+}
+
 /* @funcstatic seqWriteDebug **************************************************
 **
 ** Writes a sequence in debug report format.
@@ -5298,13 +5477,18 @@ void ajSeqoutClear(AjPSeqout seqout)
     seqout->Rev    = ajFalse;
     seqout->Format = 0;
 
+
     if(seqout->File)
     {
+        if(seqout->Cleanup)
+            seqout->Cleanup(seqout->File);
 	if(seqout->Knownfile)
 	    seqout->File = NULL;
 	else
 	    ajFileClose(&seqout->File);
     }
+
+    seqout->Cleanup = NULL;
 
     seqout->Count    = 0;
     seqout->Single   = ajFalse;
@@ -5389,6 +5573,8 @@ void ajSeqoutClose(AjPSeqout seqout)
 	seqOutFormat[seqout->Format].Write(seqout);
     }
 
+    if(seqout->Cleanup)
+        seqout->Cleanup(seqout->File);
     if(seqout->Knownfile)
 	seqout->File = NULL;
     else
