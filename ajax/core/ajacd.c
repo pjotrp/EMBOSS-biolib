@@ -423,8 +423,8 @@ typedef struct AcdSTableItem
 
 typedef struct AcdSXsdItem
 {
-    AjPStr Type;
     AjPStr Qual;
+    AjPStr Type;
     AjPStr Annotation;
     AjPStr Valid;
     AjPStr Expect;
@@ -7983,7 +7983,8 @@ static void acdSetFeatures(AcdPAcd thys)
     
     thys->Value = val;
     ajStrAssignS(&thys->ValStr, acdReply);
-    
+
+    ajStrDel(&type);
     return;
 }
 
