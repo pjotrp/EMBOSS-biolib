@@ -64,12 +64,14 @@ Command line arguments
 
 Input file format
 
-   codcopy reads any normal sequence USAs.
+   codcopy reads a codon usage file.
 
 Output file format
 
-   codcopy outputs a graph to the specified graphics device. outputs a
-   report format file. The default format is ...
+   codcopy writes a codon usage table. The user can choose any supported
+   output format. ,p> See the full specification of codon tabel formats
+   at:
+   http://emboss.sourceforge.net/docs/themes/CodonUsage.html 
 
   Output files for usage example
 
@@ -218,6 +220,7 @@ See also
    sizeseq Sort sequences by size
    skipredundant Remove redundant sequences from an input set
    skipseq Reads and writes (returns) sequences, skipping first few
+   splitsource Split sequence(s) into original source sequences
    splitter Split sequence(s) into smaller sequences
    trimest Remove poly-A tails from nucleotide sequences
    trimseq Remove unwanted characters from start and end of sequence(s)

@@ -45,7 +45,7 @@ Output file [x65921.showfeat]:
    a regions file in showseq:
 
 
-% showfeat -matchtype CDS -width 0 -noid -nodesc -noscale -pos  
+% showfeat -typematch CDS -width 0 -noid -nodesc -noscale -pos  
 Display features of a sequence in pretty format
 Input sequence(s): tembl:x65921
 Output file [x65921.showfeat]: 
@@ -60,7 +60,7 @@ Command line arguments
   [-outfile]           outfile    [*.showfeat] Output file name
 
    Additional (Optional) qualifiers:
-   -matchsource        string     [*] By default any feature source in the
+   -sourcematch        string     [*] By default any feature source in the
                                   feature table is shown. You can set this to
                                   match any feature source you wish to show.
                                   The source name is usually either the name
@@ -72,7 +72,7 @@ Command line arguments
                                   separate their names with the character '|',
                                   eg:
                                   gene* | embl (Any string is accepted)
-   -matchtype          string     [*] By default any feature type in the
+   -typematch          string     [*] By default any feature type in the
                                   feature table is shown. You can set this to
                                   match any feature type you wish to show.
                                   See http://www3.ebi.ac.uk/Services/WebFeat/
@@ -85,7 +85,7 @@ Command line arguments
                                   separate their names with the character '|',
                                   eg:
                                   *UTR | intron (Any string is accepted)
-   -matchtag           string     [*] Tags are the types of extra values that
+   -tagmatch           string     [*] Tags are the types of extra values that
                                   a feature may have. For example in the EMBL
                                   feature table, a 'CDS' type of feature may
                                   have the tags '/codon', '/codon_start',
@@ -106,7 +106,7 @@ Command line arguments
                                   separate their names with the character '|',
                                   eg:
                                   gene | label (Any string is accepted)
-   -matchvalue         string     [*] Tag values are the values associated
+   -valuematch         string     [*] Tag values are the values associated
                                   with a feature tag. Tags are the types of
                                   extra values that a feature may have. For
                                   example in the EMBL feature table, a 'CDS'
@@ -199,8 +199,8 @@ Command line arguments
                                   always directionless (indicated by '0'),
                                   forward is indicated by '+' and reverse is
                                   '-'.
-   -source             boolean    [N] Set this if you wish to display the
-                                  source of the features.
+   -origin             boolean    [N] Set this if you wish to display the
+                                  origin of the features.
                                   The source name is usually either the name
                                   of the program that detected the feature or
                                   it is the name of the feature table (eg:
@@ -557,6 +557,7 @@ See also
    seealso Finds programs with similar function to a specified program
    showalign Display a multiple sequence alignment in pretty format
    showdb Displays information on configured databases
+   showpep Displays protein sequences with features in pretty format
    showseq Displays sequences with features in pretty format
    sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search the textual description of sequence(s)

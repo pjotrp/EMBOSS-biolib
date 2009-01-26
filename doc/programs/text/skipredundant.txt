@@ -368,6 +368,7 @@ See also
    seqretsplit Reads sequences and writes them to individual files
    sizeseq Sort sequences by size
    skipseq Reads and writes (returns) sequences, skipping first few
+   splitsource Split sequence(s) into original source sequences
    splitter Split sequence(s) into smaller sequences
    trimest Remove poly-A tails from nucleotide sequences
    trimseq Remove unwanted characters from start and end of sequence(s)

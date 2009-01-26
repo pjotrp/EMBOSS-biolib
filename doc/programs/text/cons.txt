@@ -27,6 +27,7 @@ Algorithm
    where score(ij) is taken from a nucleotide or protein scoring matrix
    (see -datafile qualifier) and the "weight(j)" is the weighting given
    to the sequence j, which is given in the alignment file.
+   q
 
    The highest scoring type of residue is then found in the column. If
    the number of "positive matches" (see below) for this residue is

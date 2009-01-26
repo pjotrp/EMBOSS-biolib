@@ -258,7 +258,7 @@ See also
    alignment
    prettyplot Draw a sequence alignment with pretty formatting
    showalign Display a multiple sequence alignment in pretty format
-   tranalign Generate an aligment of nucleic coding regions from aligned
+   tranalign Generate an alignment of nucleic coding regions from aligned
    proteins
 
 Author(s)

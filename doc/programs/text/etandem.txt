@@ -19,6 +19,10 @@ Description
    repeats. Optionally, the output can be written in the format of the
    Sanger Centre quicktandem program.
 
+   Running etandem with a wide range of repeat sizes is inefficient. It
+   is normally used after equicktandem has been run to identify putative
+   sizes and locations of repeats.
+
 Algorithm
 
    The input sequence is first converted so that it contains the

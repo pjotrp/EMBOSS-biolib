@@ -80,9 +80,9 @@ Command line arguments
                                   reference (input USA)
    -word               integer    [2] This is the size of word (n-mer) to
                                   count.
-                                  Thus if you want to count codon frequencies,
-                                  you should enter 3 here. (Integer from 1 to
-                                  20)
+                                  Thus if you want to count codon frequencies
+                                  for a nucleotide sequence, you should enter
+                                  3 here. (Integer 1 or more)
   [-outfile]           outfile    [*.compseq] This is the results file.
 
    Additional (Optional) qualifiers (* if not always prompted):
@@ -186,7 +186,17 @@ Command line arguments
 
 Input file format
 
-   Normal sequence(s) USA.
+   compseq reads a normal sequence(s) USA.
+
+   An optional second input file is the output from a previous compseq
+   run used to set the expected word frequencies.
+
+   The optional second input data file format is exactly the same as the
+   output file format.
+
+   It expects to read in a previous output file of this program. An error
+   is produced if the word size of the current compseq job and that of
+   the output file being read in are different.
 
   Input files for usage example
 
@@ -631,16 +641,22 @@ Other   0               0.0000000       0.0000000       10000000000.0000000
 
 Data files
 
-   The input data file is not required.
-
-   The input data file format is exactly the same as the output file
-   format.
-
-   It expects to read in a previous output file of this program. An error
-   is produced if the word size of the current compseq job and that of
-   the output file being read in are different.
+   None.
 
 Notes
+
+   The maximum word size is limited to 4 for proteins, and 6 for
+   nucleotide sequences.
+
+   Large word sizes are not appropriate for the compseq algorithm. All
+   possible words will be stored and reported. The algorithm is designed
+   to generate useful information for word sizes expected to occur at
+   least once in the input sequence.
+
+   The results are held in an array in memory before being written to a
+   file. For large values of wordsize (over about 7 for nucleic, 5 for
+   protein), you may run out of memory or generate a very large output
+   file.
 
    There is no way for compseq to guess what the true expected frequency
    should be for each word. It can however read in the result of a
@@ -680,11 +696,6 @@ References
 
 Warnings
 
-   The results are held in an array in memory before being written to a
-   file. For large values of wordsize (over about 7 for nucleic, 5 for
-   protein), you may run out of memory or generate a very large output
-   file.
-
 Diagnostic Error Messages
 
    "The word size is too large for the data structure available."
@@ -710,9 +721,9 @@ Exit status
 
 Known bugs
 
-   This program can use a large amount of memory is you specify a large
-   word size (7 or above). This may impact the behaviour of other
-   programs on your machine.
+   This program can use a large amount of memory is you were allowed to
+   specify a large word size (7 or above). This may impact the behaviour
+   of other programs on your machine.
 
    If you run out of memory, you may see the program crash with a generic
    error message that will be specific to your machine's operating
@@ -721,7 +732,8 @@ Known bugs
    machine)
 
    This is not a bug, it is a feature of the way this program grabs large
-   amounts of memory.
+   amounts of memory. The maximum word size is restricted to avoid this
+   problem.
 
 See also
 

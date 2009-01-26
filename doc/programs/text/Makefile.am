@@ -41,11 +41,11 @@ pkgdata2_DATA = lindna.txt listor.txt \
 	restover.txt restrict.txt revseq.txt \
 	seealso.txt seqmatchall.txt seqret.txt seqretsplit.txt \
 	showalign.txt showdb.txt showfeat.txt showorf.txt \
-	showseq.txt shuffleseq.txt sigcleave.txt silent.txt \
+	showpep.txt showseq.txt shuffleseq.txt sigcleave.txt silent.txt \
 	sirna.txt \
 	SITE-DIRECTED.txt \
 	sixpack.txt sizeseq.txt skipredundant.txt \
-	skipseq.txt splitter.txt stretcher.txt \
+	skipseq.txt splitsource.txt splitter.txt stretcher.txt \
 	stssearch.txt supermatcher.txt syco.txt \
 	tcode.txt textsearch.txt tfextract.txt tfm.txt tfscan.txt \
 	tmap.txt tranalign.txt transeq.txt trimest.txt trimseq.txt \

@@ -5,7 +5,7 @@
 
 Function
 
-   Generate an aligment of nucleic coding regions from aligned proteins
+   Generate an alignment of nucleic coding regions from aligned proteins
 
 Description
 
@@ -33,7 +33,7 @@ Usage
 
 
 % tranalign ../data/tranalign.pep tranalign2.seq 
-Generate an aligment of nucleic coding regions from aligned proteins
+Generate an alignment of nucleic coding regions from aligned proteins
 
    Go to the input files for this example
    Go to the output files for this example

@@ -884,7 +884,7 @@ See also
    showdb Displays information on configured databases
    textsearch Search the textual description of sequence(s)
    tfm Displays full documentation for an application
-   tranalign Generate an aligment of nucleic coding regions from aligned
+   tranalign Generate an alignment of nucleic coding regions from aligned
    proteins
    whichdb Search all sequence databases for an entry and retrieve it
    wossname Finds programs by keywords in their short description

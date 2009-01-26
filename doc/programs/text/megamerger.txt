@@ -447,8 +447,9 @@ Output file format
    using regions of the two sequences where they have a mismatch is
    marked with the word WARNING!. Where there was a mismatch between the
    two sequences, the merged sequence is written out in uppercase and the
-   sequence whose mismatch region is furthest from the edges of the
-   sequence is used in the merged sequence.
+   sequence whose mismatch region is furthest from the end of the
+   sequence (the one with most remaining bases or residues) is used in
+   the merged sequence.
 
    The name and description of the first input sequence is used for the
    name and description of the output sequence.

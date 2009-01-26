@@ -30,8 +30,8 @@ Usage
 
 % backtranambig 
 Back-translate a protein sequence to ambiguous nucleotide sequence
-Input (gapped) protein sequence: tsw:opsd_human
-(gapped) nucleotide output sequence [opsd_human.fasta]: 
+Input (gapped) protein sequence(s): tsw:opsd_human
+(gapped) nucleotide output sequence(s) [opsd_human.fasta]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -39,10 +39,10 @@ Input (gapped) protein sequence: tsw:opsd_human
 Command line arguments
 
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   (Gapped) protein sequence filename and
+  [-sequence]          seqall     (Gapped) protein sequence(s) filename and
                                   optional format, or reference (input USA)
-  [-outfile]           seqout     [.] (Gapped) nucleotide
-                                  sequence filename and optional format
+  [-outfile]           seqoutall  [.] (Aligned) nucleotide
+                                  sequence set(s) filename and optional format
                                   (output USA)
 
    Additional (Optional) qualifiers:
@@ -67,8 +67,8 @@ Command line arguments
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1            integer    Start of the sequence to be used
-   -send1              integer    End of the sequence to be used
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
    -sreverse1          boolean    Reverse (if DNA)
    -sask1              boolean    Ask for begin/end/reverse
    -snucleotide1       boolean    Sequence is nucleotide

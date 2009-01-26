@@ -23,7 +23,7 @@ Usage
 % emma 
 Multiple sequence alignment (ClustalW wrapper)
 Input (gapped) sequence(s): globins.fasta
-output sequence set [hbb_human.aln]: 
+(aligned) output sequence set [hbb_human.aln]: 
 Dendrogram (tree file) from clustalw output file [hbb_human.dnd]: 
 
 
@@ -1187,7 +1187,7 @@ See also
    plotcon Plot conservation of a sequence alignment
    prettyplot Draw a sequence alignment with pretty formatting
    showalign Display a multiple sequence alignment in pretty format
-   tranalign Generate an aligment of nucleic coding regions from aligned
+   tranalign Generate an alignment of nucleic coding regions from aligned
    proteins
 
 Author(s)

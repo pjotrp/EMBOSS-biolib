@@ -732,6 +732,7 @@ See also
    showdb Displays information on configured databases
    showfeat Display features of a sequence in pretty format
    showorf Display a nucleotide sequence and translation in pretty format
+   showpep Displays protein sequences with features in pretty format
    showseq Displays sequences with features in pretty format
    syco Draw synonymous codon usage statictic plot for a nucleotide
    sequence

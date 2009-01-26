@@ -51,8 +51,8 @@ Back-translate a protein sequence to ambiguous nucleotide sequence
 
 % <b>backtranambig </b>
 Back-translate a protein sequence to ambiguous nucleotide sequence
-Input (gapped) protein sequence: <b>tsw:opsd_human</b>
-(gapped) nucleotide output sequence [opsd_human.fasta]: <b></b>
+Input (gapped) protein sequence(s): <b>tsw:opsd_human</b>
+(gapped) nucleotide output sequence(s) [opsd_human.fasta]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -64,10 +64,10 @@ Input (gapped) protein sequence: <b>tsw:opsd_human</b>
 <table CELLSPACING=0 CELLPADDING=3 BGCOLOR="#f5f5ff" ><tr><td>
 <pre>
    Standard (Mandatory) qualifiers:
-  [-sequence]          sequence   (Gapped) protein sequence filename and
+  [-sequence]          seqall     (Gapped) protein sequence(s) filename and
                                   optional format, or reference (input USA)
-  [-outfile]           seqout     [<sequence>.<format>] (Gapped) nucleotide
-                                  sequence filename and optional format
+  [-outfile]           seqoutall  [<sequence>.<format>] (Aligned) nucleotide
+                                  sequence set(s) filename and optional format
                                   (output USA)
 
    Additional (Optional) qualifiers:
@@ -92,8 +92,8 @@ Input (gapped) protein sequence: <b>tsw:opsd_human</b>
    Associated qualifiers:
 
    "-sequence" associated qualifiers
-   -sbegin1            integer    Start of the sequence to be used
-   -send1              integer    End of the sequence to be used
+   -sbegin1            integer    Start of each sequence to be used
+   -send1              integer    End of each sequence to be used
    -sreverse1          boolean    Reverse (if DNA)
    -sask1              boolean    Ask for begin/end/reverse
    -snucleotide1       boolean    Sequence is nucleotide
@@ -147,15 +147,15 @@ Input (gapped) protein sequence: <b>tsw:opsd_human</b>
 
 <tr>
 <td>[-sequence]<br>(Parameter 1)</td>
-<td>(Gapped) protein sequence filename and optional format, or reference (input USA)</td>
-<td>Readable sequence</td>
+<td>(Gapped) protein sequence(s) filename and optional format, or reference (input USA)</td>
+<td>Readable sequence(s)</td>
 <td><b>Required</b></td>
 </tr>
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>(Gapped) nucleotide sequence filename and optional format (output USA)</td>
-<td>Writeable sequence</td>
+<td>(Aligned) nucleotide sequence set(s) filename and optional format (output USA)</td>
+<td>Writeable sequence(s)</td>
 <td><i>&lt;*&gt;</i>.<i>format</i></td>
 </tr>
 

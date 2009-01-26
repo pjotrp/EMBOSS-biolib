@@ -93,9 +93,9 @@ pkgdata2_DATA = libscan.html lindna.html listor.html \
 	restover.html restrict.html revseq.html \
 	seealso.html seqmatchall.html seqret.html seqretsplit.html \
 	showalign.html showdb.html showfeat.html showorf.html \
-	showseq.html shuffleseq.html sigcleave.html silent.html \
+	showpep.html showseq.html shuffleseq.html sigcleave.html silent.html \
 	sirna.html sixpack.html sizeseq.html skipredundant.html \
-	skipseq.html splitter.html \
+	skipseq.html splitsource.html splitter.html \
 	stretcher.html stssearch.html supermatcher.html syco.html \
 	tcode.html template.html test_group.html textsearch.html \
 	tfextract.html tfm.html tfscan.html tmap.html tranalign.html \

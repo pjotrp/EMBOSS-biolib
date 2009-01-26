@@ -304,11 +304,6 @@ See also
    etandem      Finds tandem repeats in a nucleotide sequence
    palindrome   Finds inverted repeats in nucleotide sequence(s)
 
-   equicktandem identifies regions wich are likely to contain tanden
-   repeats. tandem should then be run on those regions to confirm them
-   and to get an accurate specification of the repeats. tandem runs
-   slowly.
-
 Author(s)
 
    This program was originally written by Richard Durbin

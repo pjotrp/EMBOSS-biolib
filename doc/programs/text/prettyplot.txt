@@ -89,7 +89,7 @@ Command line arguments
                                   all sequences. (Integer 0 or more)
    -[no]box            boolean    [Y] Display prettyboxes
    -boxcol             boolean    [N] Colour the background in the boxes
-   -boxcolval          string     [GREY] Colour to be used for background.
+   -boxuse             string     [GREY] Colour to be used for background.
                                   (GREY) (Any string is accepted)
    -[no]name           boolean    [Y] Display the sequence names
    -maxnamelen         integer    [10] Margin size for the sequence name. (Any
@@ -340,10 +340,11 @@ See also
    showalign Display a multiple sequence alignment in pretty format
    showdb Displays information on configured databases
    showfeat Display features of a sequence in pretty format
+   showpep Displays protein sequences with features in pretty format
    showseq Displays sequences with features in pretty format
    sixpack Display a DNA sequence with 6-frame translation and ORFs
    textsearch Search the textual description of sequence(s)
-   tranalign Generate an aligment of nucleic coding regions from aligned
+   tranalign Generate an alignment of nucleic coding regions from aligned
    proteins
 
 Author(s)

@@ -10,13 +10,16 @@ Function
 Description
 
    diffseq reads two sequences which typically are very similar or almost
-   identical. It finds regions of identity (exact matches) in the two
-   sequences and reports on similarities and differences between the
-   features of the two sequences within these regions. The output is a
-   standard EMBOSS report file. The start and end positions of the
-   regions of identity are reported. Any features that are shared and any
-   differerences in features are reported. The original feature table of
-   each sequence may also (optionally) be written to file.
+   identical. It finds regions of overlap between the two sequences and
+   reports on differences between the features of the two sequences
+   within these regions. The output is a standard EMBOSS report file. The
+   start and end positions of the regions of overlap are reported. Any
+   differences between the sequences, and any features (except the source
+   feature) that overlap those differences, are included in the output
+   report.
+
+   The differences are also reported for each input sequence as two
+   separate feature table output files.
 
 Algorithm
 
@@ -505,27 +508,22 @@ Notes
    word size of 50 will report two single-base differences that are with
    50 bases of each other as one mismatch.
 
+   By default, diffseq finds regions of identity that are at least as
+   long as the specified word-size. This is what is typically required
+   when working with long overlapping nucleic acid sequences, where the
+   non-overlapping sequence ends are less interesting. If however, you
+   have protein sequences or short RNA sequences then you may well be
+   interested in differences at the very ends. The -globaldifferences
+   option when set means the differences at the ends will also be
+   reported.
+
 References
 
    None.
 
 Warnings
 
-   Not all features are compared and reported. The 'source' feature found
-   in all EMBL/Genbank feature table entries is not reported. This
-   feature is uninformative; it covers the entire sequence and therefore
-   would always be reported. The translation information of CDS features
-   is often extremely long and does not add useful information to the
-   report. It has therefore been removed from the output report.
-
-   By default diffseq finds regions of identity that are at least as long
-   as the specified word-size. This is what's typically required when
-   working with long overlapping nucleic acid sequences, where the
-   non-overlapping sequence ends are less interesting. If however, you
-   have protein sequences or short RNA sequences however, you may well be
-   interested in differences at the very ends. The -globaldifferences
-   option when set means the differences at the ends will also be
-   reported.
+   None.
 
 Diagnostic Error Messages
 

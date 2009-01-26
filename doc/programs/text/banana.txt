@@ -1407,7 +1407,7 @@ Data files
 
          Roll = 10 degrees * (% + 36)/(45 + 36)
 
-   Chenging the maximum roll value will scale the entire profile up or
+   Changing the maximum roll value will scale the entire profile up or
    down proportionately, but will not change the shape of the profile.
    Peaks will remain peaks, and valleys, valleys. The absolute magnitide
    of all the roll values is less important than their relative
