@@ -197,7 +197,7 @@ AjPTable ajTableNewFunctionLen(ajuint size,
     for(i = 1; primes[i] < hint; i++); /* else use default i=0 */
 
     iprime = primes[i-1];
-    ajDebug("ajTableNewFunctionLen hint %d size %d\n", hint, iprime);
+    /*ajDebug("ajTableNewFunctionLen hint %d size %d\n", hint, iprime);*/
 
     table = AJALLOC(sizeof(*table) +
 		    iprime*sizeof(table->buckets[0]));
