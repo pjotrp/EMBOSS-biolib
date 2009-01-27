@@ -5628,7 +5628,8 @@ AjBool ajFilenameReplaceExtC(AjPStr* Pfilename, const char* txt)
         doext = ajFalse;
 
 
-    ajDebug("ajFilenameReplaceExtC '%S' '%s'\n", *Pfilename, txt);
+    /*ajDebug("ajFilenameReplaceExtC '%S' '%s'\n", *Pfilename, txt);*/
+
     ajStrAssignS(&fileTmpStr,*Pfilename);
 
     /* Skip any directory path */
@@ -5652,7 +5653,7 @@ AjBool ajFilenameReplaceExtC(AjPStr* Pfilename, const char* txt)
 
     ajStrAssignS(Pfilename,fileTmpStr);
 
-    ajDebug("result '%S'\n", *Pfilename);
+    /*ajDebug("result '%S'\n", *Pfilename);*/
 
     return ajTrue;
 }
