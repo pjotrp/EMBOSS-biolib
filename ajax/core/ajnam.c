@@ -3214,6 +3214,9 @@ AjBool ajNamRsAttrValue(const AjPStr name, const AjPStr attribute,
 
     rsattr = (AjPStr *) fnew->data;
     j = namRsAttr(attribute);
+    if(j < 0)
+	ajFatal("unknown attribute '%s' requested for resource '%s'",
+                attribute, name);
 
     if(ajStrGetLen(rsattr[j]))
     {
@@ -3251,6 +3254,9 @@ AjBool ajNamRsAttrValueC(const char *name, const char *attribute,
     
     rsattr = (const AjPStr *) fnew->data;
     j = namRsAttrC(attribute);
+    if(j < 0)
+	ajFatal("unknown attribute '%s' requested for resource '%s'",
+                attribute, name);
 
     if(ajStrGetLen(rsattr[j]))
     {
