@@ -29,8 +29,8 @@
 
 static clock_t timeClockSave = 0;
 
-ajlong timeClockOverflow = 0;
-ajlong timeClockMax = 0;
+ajlong timeClockOverflow = 0L;
+ajlong timeClockMax = 0L;
 
 /* @datastatic TimePFormat ****************************************************
 **
@@ -871,19 +871,21 @@ ajlong ajClockNow(void)
     now = clock();
     if(now < timeClockSave)
     {
-        ajUser("ajClockNow overflow now:%Ld "
+        /* ajUser("ajClockNow overflow now:%Ld "
                "timeClockSave:%Ld timeClockOverflow:%Ld",
-               (long)now, (long)timeClockSave, timeClockOverflow);
+               (ajlong)now, (ajlong)timeClockSave, timeClockOverflow); */
         if(!timeClockMax)
         {
             if(sizeof(now) == 4)
+                timeClockMax = UINT_MAX;
+            else
                 timeClockMax = UINT_MAX;
         }
         
         
         timeClockOverflow += timeClockMax;
-        ajUser("timeClockOverflow:%Ld timeClockMax:%Ld",
-               timeClockOverflow, timeClockMax);
+        /* ajUser("timeClockOverflow:%Ld timeClockMax:%Ld",
+           timeClockOverflow, timeClockMax); */
     }
     
     timeClockSave = now;
@@ -893,6 +895,22 @@ ajlong ajClockNow(void)
     
     return now; 
 }
+
+/* @func ajClockDiff ********************************************************
+**
+** Returns the cpu time in seconds between two clock values
+**
+** @return [double] Total cpu clock time in seconds
+**
+******************************************************************************/
+
+double ajClockDiff(ajlong starttime, ajlong nowtime)
+{
+    double x;
+    x = (nowtime - starttime);
+    return x/(double)CLOCKS_PER_SEC;
+}
+
 
 /* @func ajClockSeconds ********************************************************
 **
