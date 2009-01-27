@@ -6975,6 +6975,15 @@ FP 9 />A/
 FP 9 />/
 //
 
+ID dbxflatall-multiacc
+AP seqret
+CL qanxflatall-acc:X01958 test.out -auto
+FI test.out
+FZ = 2225
+FP 3 /^>M1190/
+FP 3 /^>/
+//
+
 ID dbxflatall-keywild
 AP seqret
 CL qanxflatall-key:a* test.out -auto
