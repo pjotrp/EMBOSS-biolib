@@ -61,6 +61,7 @@ void          ajTimeReset(void);
 
 ajlong        ajClockNow(void);
 void          ajClockReset(void);
+double        ajClockDiff(ajlong starttime, ajlong nowtime);
 double        ajClockSeconds(void);
 
 /*
