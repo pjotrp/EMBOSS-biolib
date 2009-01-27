@@ -13,7 +13,7 @@ endif
 
 
 check_PROGRAMS = acdlog ajtest \
-complex corbatest dbxreport dbxstat \
+complex corbatest \
 entrails giep histogramtest intconv \
 origsplitter origunion \
 newcoils \
@@ -113,8 +113,6 @@ dbiflat_SOURCES = dbiflat.c
 dbigcg_SOURCES = dbigcg.c
 dbxfasta_SOURCES = dbxfasta.c
 dbxflat_SOURCES = dbxflat.c
-dbxreport_SOURCES = dbxreport.c
-dbxstat_SOURCES = dbxstat.c
 dbxgcg_SOURCES = dbxgcg.c
 degapseq_SOURCES = degapseq.c
 density_SOURCES = density.c
