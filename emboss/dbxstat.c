@@ -33,6 +33,7 @@
 **
 ** @attr name [const char*] Field name
 ** @attr iname [const char*] Field index name
+** @attr isid [AjBool] Field is an identifier (false for keywords)
 ** @@
 ******************************************************************************/
 
@@ -40,6 +41,7 @@ typedef struct DbxflatSNames
 {
     const char* name;
     const char* iname;
+    AjBool isid;
 } DbxflatONames;
 #define DbxflatPNames DbxflatONames*
 
@@ -48,15 +50,13 @@ typedef struct DbxflatSNames
 
 static DbxflatONames inxnames[] =
 {
-    {"id", "xid"},
-    {"ac", "xac"},
-    {"sv", "xsv"},
-/* To be done if requested
-    {"de", "xde"},
-    {"kw", "xkw"},
-    {"tx", "xtx"},
-*/
-    {NULL, NULL}
+    {"id", "xid", AJTRUE},
+    {"ac", "xac", AJTRUE},
+    {"sv", "xsv", AJTRUE},
+    {"de", "xde", AJFALSE},
+    {"kw", "xkw", AJFALSE},
+    {"tx", "xtx", AJFALSE},
+    {NULL, NULL, 0}
 };
 
 
@@ -72,7 +72,7 @@ int main(int argc, char **argv)
 {
     AjPStr   dbname = NULL;
     AjPStr   idir   = NULL;
-    AjPStr  *itype  = NULL;
+    AjPStr   itype  = NULL;
     ajint    imin;
     ajint    imax;
     AjPFile  outf = NULL;
@@ -91,14 +91,26 @@ int main(int argc, char **argv)
     ajint snperbucket;
     ajint kwlimit;
     ajlong count;
+    ajlong countall;
+    ajint idorder;
+    ajint idnperbucket;
+    ajint idpagesize;
+    ajint idlevel;
+    ajint idcachesize;
+    ajint idsorder;
+    ajint idsnperbucket;
+    ajint idkwlimit;
+    ajlong idcount;
+    ajlong idcountall;
 
     AjPBtcache cache = NULL;
+    AjPBtcache idcache = NULL;
     
     embInit("dbxstat", argc, argv);
     
     dbname = ajAcdGetString("dbname");
     idir   = ajAcdGetDirectoryName("indexdir");
-    itype  = ajAcdGetList("idtype");
+    itype  = ajAcdGetListSingle("idtype");
     imin   = ajAcdGetInt("minimum");
     imax   = ajAcdGetInt("maximum");
     outf   = ajAcdGetOutfile("outfile");
@@ -109,7 +121,7 @@ int main(int argc, char **argv)
     i = 0;
     while(inxnames[i].name)
     {
-	if(ajStrMatchC(*itype,inxnames[i].name))
+	if(ajStrMatchC(itype,inxnames[i].name))
 	    break;
 	++i;
     }
@@ -120,18 +132,29 @@ int main(int argc, char **argv)
     ajBtreeReadParams(basenam,inxnames[i].iname,baseidir,
 		      &order,&nperbucket,&pagesize,&level,
 		      &cachesize,&sorder,&snperbucket,
-		      &count,&kwlimit);
+		      &count,&countall,&kwlimit);
     
+    ajBtreeReadParams(basenam,"xid",baseidir,
+		      &idorder,&idnperbucket,&idpagesize,&idlevel,
+		      &idcachesize,&idsorder,&idsnperbucket,
+		      &idcount,&idcountall,&idkwlimit);
     cache = ajBtreeSecCacheNewC(basenam,inxnames[i].iname,baseidir,"r+",
 				pagesize, order, nperbucket, level,
 				cachesize, sorder, 0, snperbucket,
-				count, kwlimit);
+				count, countall, kwlimit);
+    idcache = ajBtreeSecCacheNewC(basenam,"xid",baseidir,"r+",
+				idpagesize, idorder, idnperbucket, idlevel,
+				idcachesize, idsorder, 0, idsnperbucket,
+                                idcount, idcountall, idkwlimit);
     if(!cache)
-	ajFatal("Cannot open index file for reading");
+	ajFatal("Cannot open index file '%s' for reading",
+                inxnames[i].name);
     
 
-    ajBtreeDumpHybKeys(cache,imin,imax,outf);
-
+    if(inxnames[i].isid)
+        ajBtreeDumpHybKeys(cache,imin,imax,outf);
+    else
+        ajBtreeDumpKeywords(cache,idcache,imin,imax,outf);
 
     ajStrDel(&dbname);
     ajStrDel(&idir);
