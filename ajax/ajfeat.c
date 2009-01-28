@@ -6187,9 +6187,14 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
             ajFmtPrintF(file,
                         "         <SCORE>%.f</SCORE>\n",
                         gf->Score);
-            ajFmtPrintF(file,
-                        "         <ORIENTATION>%c</ORIENTATION>\n",
-                        gf->Strand); /* 0 or - or + */
+            if(gf->Strand)
+                ajFmtPrintF(file,
+                            "         <ORIENTATION>%c</ORIENTATION>\n",
+                            gf->Strand); /* 0 or - or + */
+
+            else
+                ajFmtPrintF(file,
+                            "         <ORIENTATION>0</ORIENTATION>\n");
 
             if(ajFeatTypeIsCds(gf))
                 frame = featFrameNuc(gf->Frame);
@@ -6404,7 +6409,7 @@ AjBool ajFeattableWriteDasgff(AjPFeattabOut ftout, const AjPFeattable thys)
 **
 ** Writes the remaining lines to complete and close a DASGFF XML file
 **
-** @param [r] file [AjPFile] Output file
+** @param [u] file [AjPFile] Output file
 ** @return [void]
 ** @@
 ******************************************************************************/
