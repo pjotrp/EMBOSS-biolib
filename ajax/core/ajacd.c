@@ -8094,7 +8094,7 @@ float ajAcdGetFloat(const char *token)
     double *val;
 
     val = acdGetValue(token, "float");
-    return *val;
+    return (float) *val;
 }
 
 
@@ -8228,7 +8228,7 @@ static void acdSetFloat(AcdPAcd thys)
     }
     
     thys->Value = val;
-    ajStrFromFloat(&thys->ValStr, *val, precision);
+    ajStrFromFloat(&thys->ValStr, (float) *val, precision);
     
     return;
 }

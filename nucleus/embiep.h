@@ -20,7 +20,7 @@ extern "C"
 
 void   embIepCalcK (double *K, double *pK);
 double *embIeppKNew (void);
-void   embIeppKdel (double *pK);
+void   embIeppKDel (double *pK);
 void   embIepCompC (const char *s, ajint amino, ajint carboxyl,
 		    ajint sscount, ajint modlysine,
 		    ajint *c);

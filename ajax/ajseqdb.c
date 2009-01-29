@@ -7085,7 +7085,11 @@ static FILE* seqHttpSocket(const AjPSeqQuery qry,
        
     */
 
+#ifndef WIN32
     ajFmtPrintS(&gethead, "User-Agent: EMBOSS/%s\n", VERSION);
+#else
+    ajFmtPrintS(&gethead, "User-Agent: EMBOSS/1.0.0\n");
+#endif
     isendlen = send(sock, ajStrGetPtr(gethead), ajStrGetLen(gethead), 0);
     if(isendlen != ajStrGetLen(gethead))
 	ajErr("send failure, expected %d bytes returned %d : %s\n",
