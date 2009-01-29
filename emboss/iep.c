@@ -58,6 +58,7 @@ int main(int argc, char **argv)
 
     ajint *c    = NULL;
     ajint *op   = NULL;
+    double *pK  = NULL;
     double *K   = NULL;
     double *pro = NULL;
     double sum;
@@ -97,8 +98,9 @@ int main(int argc, char **argv)
     AJCNEW(op,  EMBIEPSIZE);
     AJCNEW(pro, EMBIEPSIZE);
 
-    embIepPkRead();				/* read pK's */
-    embIepCalcK(K);				/* Convert to dissoc consts */
+    pK = embIeppKNew();
+    
+    embIepCalcK(K,pK);				/* Convert to dissoc consts */
 
      /* only used if variable 'plot' is true */
 
@@ -123,7 +125,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintF(outf,"IEP of %S from %d to %d\n",
 			ajSeqGetNameS(a), be, en);
 	    if(!embIepIepS(substr, amino, carboxyl, sscount, modlysine,
-			  &iep, termini))
+                           pK, &iep, termini))
 		ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	    else
 		ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n\n", iep);
@@ -169,7 +171,7 @@ int main(int argc, char **argv)
 	    ajFmtPrintS(&tit,"%s %d-%d IEP=",ajSeqGetNameC(a),be,en);
 
 	    if(!embIepIepS(substr, amino, carboxyl, sscount, modlysine,
-			   &iep,termini))
+			   pK, &iep,termini))
 		ajStrAssignC(&tmp,"none");
 	    else
 		ajFmtPrintS(&tmp,"%-8.4f",iep);
@@ -205,6 +207,8 @@ int main(int argc, char **argv)
     ajGraphClose();
     ajGraphxyDel(&graph);
 
+    embIeppKDel(pK);
+    
     AJFREE(K);
     AJFREE(pro);
     AJFREE(op);

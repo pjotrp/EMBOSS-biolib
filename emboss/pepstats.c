@@ -68,6 +68,8 @@ int main(int argc, char **argv)
     double charge;
     double iep;
     double molpc;
+    double *pK = NULL;
+    
     ajint *c;
     ajint i;
     ajint j;
@@ -102,6 +104,7 @@ int main(int argc, char **argv)
     
     substr  = ajStrNew();
 
+    pK = embIeppKNew();
 
     aadata = embPropEaminoRead(mfptr);
     mwdata = embPropEmolwtRead(wfptr);
@@ -134,7 +137,7 @@ int main(int argc, char **argv)
 	ajFmtPrintF(outf,"Average Residue Weight  = %-7.3f \t"
 		    "Charge   = %-6.1f\n", molwt/(double)len,charge);
 
-	if(!embIepIepS(substr,1,1,0,0,&iep,termini))
+	if(!embIepIepS(substr,1,1,0,0,pK,&iep,termini))
 	    ajFmtPrintF(outf,"Isoelectric Point = None\n\n");
 	else
 	    ajFmtPrintF(outf,"Isoelectric Point = %-6.4lf\n",iep);
@@ -193,7 +196,8 @@ int main(int argc, char **argv)
 
     embPropAminoDel(&aadata);
     embPropMolwtDel(&mwdata);
-
+    embIeppKDel(pK);
+    
     AJFREE(dhstat);
     AJFREE(c);
 

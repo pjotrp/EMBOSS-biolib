@@ -29,8 +29,46 @@
 
 #define PKFILE "Epk.dat"
 
-static  AjBool AjIEPinit=0;		/* Has Epk.dat file been read? */
-static  double AjpK[EMBIEPSIZE];	/* pK values from Epk.dat      */
+
+
+
+/* @func embIeppKNew  *****************************************************
+**
+** Create a pK array and read the data
+**
+** @return [double*] pK data
+******************************************************************************/
+
+double *embIeppKNew(void)
+{
+    double *pK = NULL;
+
+    AJCNEW(pK,EMBIEPSIZE);
+
+    embIepPkRead(pK);			/* read pK's */
+    
+    return pK;
+}
+
+
+
+
+/* @func embIeppKDel  *****************************************************
+**
+** Delete a pK array and read the data
+**
+** @param [w] pK [double*] pKs
+**
+** @return [void]
+******************************************************************************/
+
+void embIeppKDel(double *pK)
+{
+
+    AJFREE(pK);
+
+    return;
+}
 
 
 
@@ -107,10 +145,12 @@ double embIepPkFromK(double K)
 **
 ** Read the pK values from Epk.dat
 **
+** @param [r] pK [double*] pK
+**
 ** @return [void]
 ******************************************************************************/
 
-void embIepPkRead(void)
+void embIepPkRead(double *pK)
 {
     AjPFile inf = NULL;
     AjPStr line;
@@ -120,15 +160,13 @@ void embIepPkRead(void)
     char ch;
     ajint i;
 
-    if(AjIEPinit)
-	return;
 
     inf = ajDatafileNewInNameC(PKFILE);
     if(!inf)
 	ajFatal("%s file not found",PKFILE);
 
     for(i=0;i<EMBIEPSIZE;++i)
-	AjpK[i]=0.0;
+	pK[i]=0.0;
 
     line = ajStrNew();
     while(ajReadline(inf,&line))
@@ -156,13 +194,12 @@ void embIepPkRead(void)
 	p  = ajSysFuncStrtok(p," \t\n\r");
 	ch = ajSysCastItoc(toupper((ajint)*p));
 	p  = ajSysFuncStrtok(NULL," \t\n\r");
-	sscanf(p,"%lf",&AjpK[ajBasecodeToInt(ch)]);
+	sscanf(p,"%lf",&pK[ajBasecodeToInt(ch)]);
     }
 
-    AjpK[EMBIEPAMINO]    = amino;
-    AjpK[EMBIEPCARBOXYL] = carboxyl;
+    pK[EMBIEPAMINO]    = amino;
+    pK[EMBIEPCARBOXYL] = carboxyl;
 
-    AjIEPinit = ajTrue;
     ajStrDel(&line);
     ajFileClose(&inf);
 
@@ -193,7 +230,7 @@ void embIepCompC(const char *s, ajint amino, ajint carboxyl,
     ajint i;
     ajint j;
     const char *p;
-
+    
     for(i=0;i<EMBIEPSIZE;++i)
 	c[i]=0;
 
@@ -298,22 +335,20 @@ __deprecated void  embIepComp(const char *s, ajint amino, ajint carboxyl,
 ** Amino acids for which there is no entry in Epk.dat have K set to 0.0
 **
 ** @param [w] K [double *] dissociation constants
+** @param [r] pK [double *] pK values
 **
 ** @return [void]
 ******************************************************************************/
 
-void embIepCalcK(double *K)
+void embIepCalcK(double *K, double *pK)
 {
     ajint i;
-
-    if(!AjIEPinit)
-	embIepPkRead();
-
+    
     for(i=0;i<EMBIEPSIZE;++i)
-	if(!AjpK[i])
+	if(!pK[i])
 	    K[i] = 0.0;
 	else
-	    K[i] = embIepPkToK(AjpK[i]);
+	    K[i] = embIepPkToK(pK[i]);
 
     return;
 }
@@ -462,6 +497,7 @@ double embIepPhConverge(const ajint *c, const double *K,
 ** @param [r] carboxyl [ajint] number of C-termini
 ** @param [r] sscount [ajint] number of disulphide bridges
 ** @param [r] modlysine [ajint] number of modified lysines
+** @param [w] pK [double *] pK values
 ** @param [w] iep [double *] IEP
 ** @param [r] termini [AjBool] use termini
 **
@@ -470,13 +506,13 @@ double embIepPhConverge(const ajint *c, const double *K,
 
 AjBool embIepIepC(const char *s, ajint amino, ajint carboxyl,
 		  ajint sscount, ajint modlysine,
-		  double *iep, AjBool termini)
+		  double *pK, double *iep, AjBool termini)
 {
     ajint *c    = NULL;
     ajint *op   = NULL;
     double *K   = NULL;
     double *pro = NULL;
-
+    
     *iep = 0.0;
 
     AJCNEW(c,   EMBIEPSIZE);
@@ -484,8 +520,8 @@ AjBool embIepIepC(const char *s, ajint amino, ajint carboxyl,
     AJCNEW(K,   EMBIEPSIZE);
     AJCNEW(pro, EMBIEPSIZE);
 
-    embIepPkRead();			/* read pK's */
-    embIepCalcK(K);			/* Convert to dissoc consts */
+
+    embIepCalcK(K,pK);			/* Convert to dissoc consts */
     /* Get sequence composition */
     embIepCompC(s,amino,carboxyl,sscount, modlysine,c);
 
@@ -516,6 +552,7 @@ AjBool embIepIepC(const char *s, ajint amino, ajint carboxyl,
 ** @param [r] carboxyl [ajint] number of C-termini
 ** @param [r] sscount [ajint] number of disulphide bridges
 ** @param [r] modlysine [ajint] number of modified lysines
+** @param [r] pK [double *] pK values
 ** @param [w] iep [double *] IEP
 ** @param [r] termini [AjBool] use termini
 **
@@ -524,10 +561,10 @@ AjBool embIepIepC(const char *s, ajint amino, ajint carboxyl,
 
 AjBool embIepIepS(const AjPStr str, ajint amino, ajint carboxyl,
 		  ajint sscount, ajint modlysine,
-		  double *iep, AjBool termini)
+		  double *pK, double *iep, AjBool termini)
 {
     return embIepIepC(ajStrGetPtr(str), amino, carboxyl, sscount, modlysine,
-		      iep, termini);
+		      pK, iep, termini);
 }
 
 
@@ -538,7 +575,7 @@ AjBool embIepIepS(const AjPStr str, ajint amino, ajint carboxyl,
 */
 
 __deprecated AjBool  embIepIEP(const char *s, ajint amino, ajint carboxyl,
-			      double *iep, AjBool termini)
+                               double *pK, double *iep, AjBool termini)
 {
-    return embIepIepC(s, amino, carboxyl, 0, 0, iep, termini);
+    return embIepIepC(s, amino, carboxyl, 0, 0, pK, iep, termini);
 }

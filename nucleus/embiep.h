@@ -18,7 +18,9 @@ extern "C"
 ** Prototype definitions
 */
 
-void   embIepCalcK (double *K);
+void   embIepCalcK (double *K, double *pK);
+double *embIeppKNew (void);
+void   embIeppKdel (double *pK);
 void   embIepCompC (const char *s, ajint amino, ajint carboxyl,
 		    ajint sscount, ajint modlysine,
 		    ajint *c);
@@ -30,21 +32,21 @@ void   embIepGetProto (const double *K, const ajint *c,
 		       ajint *op, double H, double *pro);
 AjBool embIepIepC (const char *s, ajint amino, ajint carboxyl,
 		   ajint sscount, ajint modlysine,
-		   double *iep, AjBool termini);
+		   double *pK, double *iep, AjBool termini);
 AjBool embIepIepS (const AjPStr str, ajint amino, ajint carboxyl,
 		   ajint sscount, ajint modlysine,
-		   double *iep, AjBool termini);
+		   double *pK, double *iep, AjBool termini);
 double embIepPhFromHconc (double H);
 double embIepPhToHconc (double pH);
 double embIepPhConverge (const ajint *c, const double *K,
 			 ajint *op, double *pro);
-void   embIepPkRead (void);
+void   embIepPkRead (double *pK);
 double embIepPkToK (double pK);
 double embIepPkFromK (double K);
 
     __deprecated void    embIepComp (const char *s, ajint amino, ajint carboxyl, ajint *c);
     __deprecated AjBool  embIepIEP (const char *s, ajint amino, ajint carboxyl,
-			       double *iep, AjBool termini);
+                                    double *pK, double *iep, AjBool termini);
 /*
 ** End of prototype definitions
 */
