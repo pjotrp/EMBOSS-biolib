@@ -265,7 +265,7 @@ ajuint       ajSeqsetGetSize (const AjPSeqset seq);
 void         ajSeqsetFmtLower (AjPSeqset seq);
 void         ajSeqsetFmtUpper (AjPSeqset seq);
 float        ajSeqsetGetTotweight (const AjPSeqset seq);
-    void         ajSeqsetSortLen(AjPSeqset seq);
+void         ajSeqsetSortLen(AjPSeqset seq);
 void         ajSeqsetTrim(AjPSeqset thys);
 float        ajSeqsetGetseqWeight (const AjPSeqset seq, ajuint i) ;
 void         ajSeqFmtLower (AjPSeq thys);
