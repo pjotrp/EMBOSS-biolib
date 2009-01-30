@@ -101,7 +101,7 @@ int main(int argc, char **argv)
     fprintf(propfp,"plplot=%s\\\\data\\\\\n",ins);
     fprintf(propfp,"embossData=%s\\\\data\\\\\n",ins);
     fprintf(propfp,"embossBin=%s\\\\\n",ins);
-    fprintf(propfp,"embossPath=\n");
+    fprintf(propfp,"embossPath=%s\\\\system32\\\\\n",sr);
     fprintf(propfp,"acdDirToParse=%s\\\\acd\\\\\n",ins);
     fprintf(propfp,"embossURL=http://emboss.sourceforge.net/apps/\n");
     fprintf(propfp,"embossEnvironment=SystemRoot=%s EMBOSS_ROOT=%s\\\\ "
