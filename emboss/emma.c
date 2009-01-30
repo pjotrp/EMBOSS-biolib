@@ -390,7 +390,11 @@ int main(int argc, char **argv, char **env)
     ajSysSystemEnv(cmd, env);
 #else
     if(system(ajStrGetPtr(cmd)) == -1)
+    {
+        fprintf(stderr,"Command: %s\n",ajStrGetPtr(cmd));        
 	ajFatal("clustalw execution failure");
+    }
+    
 #endif
 
     /* produce alignment file only if one was produced */
