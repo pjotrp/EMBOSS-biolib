@@ -2869,6 +2869,7 @@ void ajReportClose(AjPReport thys)
 	ajReportWriteTail(thys, NULL, NULL);
     }
 
+    ajFeattabOutClear(&thys->Ftquery);
     ajFileClose(&thys->File);
 
     return;
