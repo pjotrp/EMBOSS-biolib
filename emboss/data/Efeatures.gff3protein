@@ -67,7 +67,7 @@ ca_contact_site SO:0001094
 # FT   CARBOHYD     10     10       O-LINKED (GALNAC...) (BY SIMILARITY).
 # FT   CARBOHYD     34     34       C-LINKED (MAN).
 
-carbohyd
+carbohyd SO:0001089_carbohyd
 	/note
 	/comment
 
@@ -78,6 +78,13 @@ chain SO:0000419_chain
 	/comment
 
 mature_protein_region SO:0000419
+	/note
+	/comment
+
+# coil: random coiled region of secondary structure e.g. predicted by
+# garnier algorithm
+
+intrinsically_unstructured_region SO:0100003
 	/note
 	/comment
 
@@ -120,7 +127,7 @@ sequence_conflict SO:0001085
 # identical, the amino acid bond is an interchain one. The name of the
 # linked peptide is indicated in the description field.
  
-crosslnk
+crosslnk SO:0001087_crosslnk
 	/note
 	/comment
 
@@ -165,7 +172,11 @@ polypeptide_structural_domain SO:0001069
 
 # HELIX -  DSSP secondary structure
 
-helix SO:0001114
+helix SO:0001117_helix
+	/note
+	/comment
+
+alpha_helix SO:0001117
 	/note
 	/comment
 
