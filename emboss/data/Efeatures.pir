@@ -10,7 +10,7 @@ Region SO:0000839_region SO:0001117_helix SO:0001111_strand SO:0001128
 
 ###   4281 in PIR 62
 ### ACT_SITE in EMBOSS
-Active_site act_site SO:0001104
+Active_site SO:0001104 act_site
        /note
        /comment
 
@@ -33,7 +33,7 @@ Cross-link SO:0001087 crosslnk SO:0001087_cross-link SO:0001087_crosslink crossl
 
 ###   3713 in PIR 62
 ### DISULFID in EMBOSS
-Disulfide_bonds SO:0001088_disulfid disulfid
+Disulfide_bonds SO:0001088 SO:0001088_disulfid disulfid
        /note
        /comment
 

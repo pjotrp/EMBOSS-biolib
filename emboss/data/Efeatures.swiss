@@ -50,6 +50,7 @@
 #      * UNSURE
 #      * CONFLICT
 #      * NON_CONS
+#      * NON_STD
 #      * NON_TER
 # 7. Secondary structure
 #       * HELIX, TURN, STRAND
@@ -103,6 +104,7 @@ CA_BIND SO:0001094
 CARBOHYD SO:0001089_carbohyd
 	/note
 	/comment
+	/ftid
 
 # CHAIN - Extent of a polypeptide chain in the mature protein.
 
@@ -122,6 +124,7 @@ CARBOHYD SO:0001089_carbohyd
 CHAIN   SO:0000419_chain
 	/note
 	/comment
+	/ftid
 
 
 # COILED - Extent of a coiled-coil region
@@ -296,6 +299,12 @@ NON_CONS SO:0001083
 	/note
 	/comment
 
+# NON_STD - Non-standard aminoacid used for pyrrolysine
+
+NON_STD  SO:0000884
+	/note
+	/comment
+
 # NON_TER  - The residue at an extremity of the sequence is not the terminal
 # residue.
 
@@ -317,12 +326,14 @@ NP_BIND SO:0000409_np_bind
 PEPTIDE SO:0001064
 	/note
 	/comment
+	/ftid
 
 # PROPEP - Extent of a propeptide.
 
 PROPEP  SO:0001062
 	/note
 	/comment
+	/ftid
 
 # REPEAT - Extent of an internal sequence repetition.
 
@@ -333,7 +344,7 @@ REPEAT  SO:0001068
 # SE_CYS - Selenocysteine
 # This key describes the occurrence of a selenocysteine in the sequence record
 
-SE_CYS
+SE_CYS  SO:0000885
 	/note
 	/comment
 
@@ -434,6 +445,7 @@ VARIANT SO:0001147_variant
 VAR_SEQ SO:0001147_var_seq
 	/note
 	/comment
+	/ftid
 
 # VARSPLIC - Description  of  sequence variants  produced  by  alternative
 # splicing.
