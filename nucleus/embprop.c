@@ -244,6 +244,13 @@ EmbPPropMolwt* embPropEmolwtRead(AjPFile mfptr)
 			      &ret[EMBPROPOINDEX]->mono) != 2)
 		    ajFatal("Bad format oxygen data line");
 	    }
+	    else if(ajStrPrefixC(token,"WATER"))
+	    {
+		if(ajFmtScanS(line,"%*s%lf%lf",
+			      &ret[EMBPROPWINDEX]->average,
+			      &ret[EMBPROPWINDEX]->mono) != 2)
+		    ajFatal("Bad format water data line");
+	    }
 	    else
 		ajFatal("Unknown molwt token %S",token);
 	    continue;
