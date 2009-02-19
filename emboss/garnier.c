@@ -365,7 +365,7 @@ int main(int argc, char **argv)
 {
     AjPSeqall seqall;
     AjPSeq    seq  = NULL;
-    AjPFile   outf = NULL;
+    AjPFile   outf = NULL;      /* no longer used */
     AjPReport report = NULL;
     AjPFeattable TabRpt = NULL;
     AjPStr    strand = NULL;
@@ -668,10 +668,10 @@ static void garnier_report(AjPReport report, AjPFeattable TabRpt,
 
     if(!strHelix)
     {
-	ajStrAssignC(&strHelix, "helix");
-	ajStrAssignC(&strExtend, "strand");
+	ajStrAssignC(&strHelix, "alpha_helix");
+	ajStrAssignC(&strExtend, "beta_strand");
 	ajStrAssignC(&strTurns, "turn");
-	ajStrAssignC(&strCoil, "coiled");
+	ajStrAssignC(&strCoil, "coil");
     }
     
     idc = Idc;
