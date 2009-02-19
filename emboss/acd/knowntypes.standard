@@ -70,6 +70,7 @@ domain_classification             file           Domain classification
 domain_clean_coordinates          file           Clean domain coordinates
 domain_families                   file           Domain families
 domain_hits                       file           Domain hits
+domain_hits_filter                file           Domain hits filter
 domain_pdb                        file           Domain pdb
 domainatrix_calculations_log      file           Domainatrix calculations log
 domainatrix_ligand_hits           file           Domainatrix LHF ligand hits
@@ -156,6 +157,7 @@ meme_database                     file           MEME database
 meme_background_frequencies       file           MEME background frequencies file
 meme_motif_order                  string         MEME directive for ordering and spacing of motifs
 meme_output                       file           MEME program output
+meme_text_output                  file           MEME program text output
 mira_parameters                   file           MIRA program parameters
 mira_strain_data                  file           MIRA program strain data file
 mix_input                         file           Phylip mix program input
@@ -297,7 +299,8 @@ van_der_waals_radii               file           Van der waals radii
 vector                            file           Cloning vector definition
 vienna_alignment                  file           Vienna RNA alignment
 vienna_dotplot                    file           Vienna dotplot postscript
-vienna_structure                  file           Vienna structure postscript
+vienna_postscript_alignment       file           Vienna RNA alignment postscript
+vienna_structure                  file           Vienna RNA structure postscript
 weights                           properties     Phylip weights
 white_wimley_datafile             file           White-Wimley data
 wildcard_string                   string         String with wildcard characters
