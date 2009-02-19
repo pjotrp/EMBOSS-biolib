@@ -128,7 +128,7 @@
 
 <tr>
 <td>-ssoutfile</td>
-<td>Vienna structure postscript output file</td>
+<td>Vienna RNA structure postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnafold</td>
 </tr>

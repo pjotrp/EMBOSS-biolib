@@ -135,14 +135,14 @@
 
 <tr>
 <td>-bdotoutfile</td>
-<td>Vienna dotplot postscript output file</td>
+<td>Second vienna dotplot postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnafoldpf</td>
 </tr>
 
 <tr>
 <td>-ssoutfile</td>
-<td>Vienna structure postscript output file</td>
+<td>Third vienna structure postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnafoldpf</td>
 </tr>

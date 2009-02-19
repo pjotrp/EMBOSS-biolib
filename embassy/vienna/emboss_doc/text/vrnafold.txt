@@ -73,7 +73,7 @@ Command line arguments
                                   unpaired bases for just one dangling end); 2
                                   (Always use dangling energies); 3 (Allow
                                   coaxial stacking of adjacent helices))
-   -ssoutfile          outfile    [*.vrnafold] Vienna structure postscript
+   -ssoutfile          outfile    [*.vrnafold] Vienna RNA structure postscript
                                   output file
 
    Associated qualifiers:

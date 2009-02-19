@@ -163,14 +163,14 @@
 
 <tr>
 <td>-ssoutfile</td>
-<td>Vienna structure postscript output file</td>
+<td>Vienna RNA structure postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnaalifold</td>
 </tr>
 
 <tr>
 <td>-alignoutfile</td>
-<td>Vienna alignment colour postscript output file</td>
+<td>Vienna RNA alignment postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnaalifold</td>
 </tr>

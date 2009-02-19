@@ -154,20 +154,20 @@ section: output [
     nullok: "Y"
     extension: "ps"
     knowntype: "vienna dotplot"
-    information: "Vienna dotplot postscript output file"
+    information: "Vienna dotplot postscript output file (optional)"
   ]
 
   outfile: ssoutfile [
     extension: "ssps"
     knowntype: "Vienna structure"
-    information: "Vienna structure postscript output file"
+    information: "Vienna RNA structure postscript output file"
   ]
 
   outfile: alignoutfile [
     nullok: "Y"
     default: ""
     extension: "alirnaps"
-    information: "Vienna alignment colour postscript output file"
+    information: "Vienna RNA alignment postscript output file (optional)"
     knowntype: "vienna alignment"
   ]
 

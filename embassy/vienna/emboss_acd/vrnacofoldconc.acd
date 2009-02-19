@@ -146,6 +146,7 @@ section: output [
   outfile: ssoutfile [
     name: "$(asequence.name)"
     extension: "ssps"
+    information: "Vienna structure postscript output file"
     knowntype: "vienna structure"
   ]
 

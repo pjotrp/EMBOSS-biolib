@@ -71,7 +71,8 @@ Command line arguments
                                   (Always use dangling energies); 3 (Allow
                                   coaxial stacking of adjacent helices))
    -paired             boolean    [N] Calculate probabilities of base pairing
-   -ssoutfile          outfile    [*.vrnacofoldconc] Output file name
+   -ssoutfile          outfile    [*.vrnacofoldconc] Vienna structure
+                                  postscript output file
    -aoutfile           outfile    [*.vrnacofoldconc] First (a) vienna dotplot
                                   output file
    -aaoutfile          outfile    [*.vrnacofoldconc] Second (a-a) vienna

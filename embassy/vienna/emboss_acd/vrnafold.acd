@@ -127,8 +127,8 @@ section: output [
   outfile: ssoutfile [
     name: "$(sequence.name)"
     extension: "ssps"
-    knowntype: "postscript"
-    information: "Vienna structure postscript output file"
+    knowntype: "vienna structure"
+    information: "Vienna RNA structure postscript output file"
   ]
 
 endsection: output

@@ -7,7 +7,7 @@
 % <b>vrnaeval </b>
 RNA eval
 Input nucleotide sequence: <b>evalrna.fasta</b>
-Vienna RNA structure constraints file (optional): <b>eval1.con</b>
+Vienna RNA structure constraints file: <b>eval1.con</b>
 Vienna RNAeval output file [eval.vrnaeval]: <b></b>
 
 </pre></td></tr></table><p>

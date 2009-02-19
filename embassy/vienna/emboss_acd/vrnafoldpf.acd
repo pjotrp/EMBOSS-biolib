@@ -128,22 +128,22 @@ section: output [
   outfile: adotoutfile [
     name: "$(sequence.name)"
     extension: "ps"
-    knowntype: "postscript"
+    knowntype: "vienna dotplot"
     information: "Vienna dotplot postscript output file"
   ]
 
   outfile: bdotoutfile [
     name: "$(sequence.name)"
     extension: "ps2"
-    knowntype: "postscript"
-    information: "Vienna dotplot postscript output file"
+    knowntype: "vienna dotplot"
+    information: "Second vienna dotplot postscript output file"
   ]
 
   outfile: ssoutfile [
     name: "$(sequence.name)"
     extension: "ssps"
     knowntype: "postscript"
-    information: "Vienna structure postscript output file"
+    information: "Third vienna structure postscript output file"
   ]
 
 endsection: output

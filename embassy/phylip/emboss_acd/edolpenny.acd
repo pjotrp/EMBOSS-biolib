@@ -94,7 +94,7 @@ section: output [
     parameter: "Y"
     default: "edolpenny.outfile"
     knowntype: "dolpenny output"
-    information: "phylip dolpenny program output file"
+    information: "Phylip dolpenny program output file"
   ]
 
   boolean: printdata [

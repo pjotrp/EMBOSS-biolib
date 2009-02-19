@@ -99,7 +99,7 @@ section: output [
 
   outfile: logfile [
     standard: "Y"
-    information: "Name allversusall log file (output)"
+    information: "Domainatrix log output file"
     default: "allversusall.log"
     help: "This option specifies the name of ALLVERSUSALL log file
            (output). The log file contains messages about any errors arising

@@ -16,7 +16,7 @@ section: input [
   infile: hmmfile [
     parameter: "Y"
     knowntype: "hmm"
-    information: "MMER hidden markov model file"
+    information: "HMMER hidden markov model file"
     help: "File of HMMs."
   ]
 

@@ -28,7 +28,7 @@ Usage
 % vrnaeval 
 RNA eval
 Input nucleotide sequence: evalrna.fasta
-Vienna RNA structure constraints file (optional): eval1.con
+Vienna RNA structure constraints file: eval1.con
 Vienna RNAeval output file [eval.vrnaeval]: 
 
    Go to the input files for this example
@@ -40,7 +40,6 @@ Command line arguments
   [-sequence]          sequence   Nucleotide sequence filename and optional
                                   format, or reference (input USA)
   [-constraintfile]    infile     Vienna RNA structure constraints file
-                                  (optional)
   [-outfile]           outfile    [*.vrnaeval] Vienna RNAeval output file
 
    Additional (Optional) qualifiers: (none)

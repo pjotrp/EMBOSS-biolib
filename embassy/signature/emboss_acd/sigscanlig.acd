@@ -15,7 +15,7 @@ section: input [
 
   dirlist: siginfilesdir [
     parameter: "Y"
-    information: "Domainatrix signature file directories"
+    information: "Domainatrix signature directories"
     help: "This option specifies the directory of signature files
            (input). A 'signature file' contains a sparse sequence signature
            suitable for use with the SIGSCAN and SIGSCANLIG programs. The

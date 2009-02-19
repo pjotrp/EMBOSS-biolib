@@ -34,11 +34,11 @@
    -endgaps            boolean    [N] Mark end gaps
    -most               boolean    [N] Use most informative sequence algorithm
    -dotoutfile         outfile    [*.vrnaalifoldpf] Vienna dotplot postscript
-                                  output file
-   -ssoutfile          outfile    [*.vrnaalifoldpf] Vienna structure
+                                  output file (optional)
+   -ssoutfile          outfile    [*.vrnaalifoldpf] Vienna RNA structure
                                   postscript output file
-   -alignoutfile       outfile    [*.vrnaalifoldpf] Vienna alignment colour
-                                  postscript output file
+   -alignoutfile       outfile    [*.vrnaalifoldpf] Vienna RNA alignment
+                                  postscript output file (optional)
 
    Associated qualifiers:
 

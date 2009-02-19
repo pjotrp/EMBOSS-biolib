@@ -143,7 +143,7 @@ section: output [
     information: "Domain classification residue-based output
                   file"
     help: "This option specifies the name of the file containing
-           top-scoring domains for residue-based alinnment (output).A 'domain
+           top-scoring domains for residue-based alignment (output).A 'domain
            classification file' contains classification and other data for
            domains from SCOP or CATH, in DCF format (EMBL-like)."
     knowntype: "domain classification"
@@ -155,7 +155,7 @@ section: output [
                   file"
     help: "This option specifies the name of the file containing
            top-scoring domains for secondary structure element-based
-           alinnment (output). A 'domain classification file' contains
+           alignment (output). A 'domain classification file' contains
            classification and other data for domains from SCOP or CATH, in
            DCF format (EMBL-like)."
     knowntype: "domain classification"

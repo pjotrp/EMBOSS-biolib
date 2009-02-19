@@ -149,7 +149,7 @@
 
 <tr>
 <td>-ssoutfile</td>
-<td>Output file name</td>
+<td>Vienna structure postscript output file</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.vrnacofoldconc</td>
 </tr>

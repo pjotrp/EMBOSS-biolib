@@ -70,9 +70,9 @@ Command line arguments
                                   numeric value)
    -endgaps            boolean    [N] Mark end gaps
    -most               boolean    [N] Use most informative sequence algorithm
-   -ssoutfile          outfile    [*.vrnaalifold] Vienna structure postscript
-                                  output file
-   -alignoutfile       outfile    [*.vrnaalifold] Vienna alignment colour
+   -ssoutfile          outfile    [*.vrnaalifold] Vienna RNA structure
+                                  postscript output file
+   -alignoutfile       outfile    [*.vrnaalifold] Vienna RNA alignment
                                   postscript output file
 
    Associated qualifiers:

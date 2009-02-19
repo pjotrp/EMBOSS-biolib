@@ -153,15 +153,15 @@ section: output [
   outfile: ssoutfile [
     extension: "ssps"
     knowntype: "vienna structure"
-    information: "Vienna structure postscript output file"
+    information: "Vienna RNA structure postscript output file"
   ]
 
   outfile: alignoutfile [
     nullok: "Y"
     default: ""
     extension: "alirnaps"
-    information: "Vienna alignment colour postscript output file"
-    knowntype: "vienna alignment"
+    information: "Vienna RNA alignment postscript output file"
+    knowntype: "vienna postscript alignment"
   ]
 
 endsection: output

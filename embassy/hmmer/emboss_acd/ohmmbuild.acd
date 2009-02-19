@@ -20,7 +20,7 @@ section: input [
 
   infile: priorfile [
     default: ""
-    information: "HMMER dirichlet prior file"
+    information: "HMMER dirichlet prior file (optional)"
     knowntype: "dirichlet prior hmmer"
     nullok: "Y"
   ]
@@ -168,7 +168,7 @@ section: output [
 
   outfile: resavefile [
     default: ""
-    information: "elex alignment output file (optional)"
+    information: "Selex alignment output file (optional)"
     knowntype: "selex"
     nullok: "Y"
   ]

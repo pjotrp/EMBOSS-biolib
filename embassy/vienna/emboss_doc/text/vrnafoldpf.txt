@@ -63,10 +63,10 @@ Command line arguments
                                   coaxial stacking of adjacent helices))
    -adotoutfile        outfile    [*.vrnafoldpf] Vienna dotplot postscript
                                   output file
-   -bdotoutfile        outfile    [*.vrnafoldpf] Vienna dotplot postscript
-                                  output file
-   -ssoutfile          outfile    [*.vrnafoldpf] Vienna structure postscript
-                                  output file
+   -bdotoutfile        outfile    [*.vrnafoldpf] Second vienna dotplot
+                                  postscript output file
+   -ssoutfile          outfile    [*.vrnafoldpf] Third vienna structure
+                                  postscript output file
 
    Associated qualifiers:
 

@@ -134,7 +134,7 @@ section: required [
     standard: "@($(type)==2)"
     default: "1"
     minimum: "1"
-    maximum: "16"
+    maximum: "1"
     values: "1: Env1,2: Env2,3: Env3,4: Env4,5: Env5,6: Env6,7:
              Env7,8: Env8,9: Env9,10: Env10,11: Env11,12: Env12,13: Env13,14:
              Env14,15: Env15,16: Env16"
