@@ -39,7 +39,7 @@
 ** @return [double*] pK data
 ******************************************************************************/
 
-double *embIeppKNew(void)
+double* embIeppKNew(void)
 {
     double *pK = NULL;
 
@@ -57,7 +57,7 @@ double *embIeppKNew(void)
 **
 ** Delete a pK array and read the data
 **
-** @param [w] pK [double*] pKs
+** @param [w] pK [double *] pKs
 **
 ** @return [void]
 ******************************************************************************/
@@ -145,7 +145,7 @@ double embIepPkFromK(double K)
 **
 ** Read the pK values from Epk.dat
 **
-** @param [r] pK [double*] pK
+** @param [w] pK [double*] pK
 **
 ** @return [void]
 ******************************************************************************/
@@ -335,7 +335,7 @@ __deprecated void  embIepComp(const char *s, ajint amino, ajint carboxyl,
 ** Amino acids for which there is no entry in Epk.dat have K set to 0.0
 **
 ** @param [w] K [double *] dissociation constants
-** @param [r] pK [double *] pK values
+** @param [w] pK [double *] pK values
 **
 ** @return [void]
 ******************************************************************************/
@@ -552,7 +552,7 @@ AjBool embIepIepC(const char *s, ajint amino, ajint carboxyl,
 ** @param [r] carboxyl [ajint] number of C-termini
 ** @param [r] sscount [ajint] number of disulphide bridges
 ** @param [r] modlysine [ajint] number of modified lysines
-** @param [r] pK [double *] pK values
+** @param [w] pK [double *] pK values
 ** @param [w] iep [double *] IEP
 ** @param [r] termini [AjBool] use termini
 **
