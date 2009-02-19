@@ -215,6 +215,22 @@ typedef struct AjSCathName
 
 
 
+static AjPStr domainStrline     = NULL;   /* Line from file */
+static AjPStr domainStrsunidstr = NULL;   /* sunid as string */
+static AjPStr domainStrtentry   = NULL;
+static AjPStr domainStrtmp      = NULL;
+static AjPStr domainStrscopid = NULL;  /* SCOP code */
+static AjPStr domainStrpdbid  = NULL;  /* PDB code */
+static AjPStr domainStrchains = NULL;  /* Chain data */
+static AjPStr domainStrsccs   = NULL;  /* Scop compact classification */
+static AjPStr domainStrclass  = NULL;  /* Classification containing all
+                                          SCOP sunid's  */
+static AjPStr domainStrtoken  = NULL;
+static AjPStr domainStrstr    = NULL;
+
+static AjPRegexp domainRegexp = NULL;
+static AjPRegexp domainRegrexp  = NULL;
+
 
 /* ======================================================================= */
 /* ================= Prototypes for private functions ==================== */
@@ -386,42 +402,39 @@ static AjPScopdes domainScopdesRead(AjPFile inf, const AjPStr entry)
 static AjPScopdes domainScopdesReadC(AjPFile inf, const char *entry)
 {
     AjPScopdes ret = NULL;
-    static AjPStr line     = NULL;   /* Line from file */
-    static AjPStr sunidstr = NULL;   /* sunid as string */
-    static AjPStr tentry   = NULL;
-    static AjPStr tmp      = NULL;
-    static AjPRegexp rexp  = NULL;
-
     AjBool ok = ajFalse;
-    
+    static AjBool called = AJFALSE;
     
     /* Only initialise strings if this is called for the first time */
-    if(!line)
-    {    
-	line     = ajStrNew();
-	tentry   = ajStrNew();
-	sunidstr = ajStrNew();
-	tmp      = ajStrNew();
+    if(!called)
+    {
+        called = ajTrue;
+	if(!domainStrline)
+            domainStrline = ajStrNew();
+	if(!domainStrtentry)
+            domainStrtentry = ajStrNew();
+	domainStrsunidstr = ajStrNew();
+	domainStrtmp      = ajStrNew();
 
-	rexp  = ajRegCompC(
+	domainRegrexp  = ajRegCompC(
 	    "^([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)[ \t]+([^ \t]+)[ \t]+");
     }
     
 
     /* Read up to the correcty entry (line) */
-    ajStrAssignC(&tentry,entry);
-    ajStrFmtUpper(&tentry);
+    ajStrAssignC(&domainStrtentry,entry);
+    ajStrFmtUpper(&domainStrtentry);
     
-    while((ok=ajReadlineTrim(inf,&line)))
+    while((ok=ajReadlineTrim(inf,&domainStrline)))
     {
-	if((ajFmtScanS(line, "%S", &sunidstr)==0))
+	if((ajFmtScanS(domainStrline, "%S", &domainStrsunidstr)==0))
 	    return NULL;
 
 	/* Ignore comment lines */
-	if(*(line->Ptr) == '#')
+	if(*(domainStrline->Ptr) == '#')
 	    continue;
 	
-	if(ajStrMatchWildS(sunidstr,tentry))
+	if(ajStrMatchWildS(domainStrsunidstr,domainStrtentry))
 	    break;
     }
     
@@ -430,7 +443,7 @@ static AjPScopdes domainScopdesReadC(AjPFile inf, const char *entry)
 
     ret = domainScopdesNew();
     
-    if((ajFmtScanS(line, "%d %S %S %S", &ret->Sunid,&ret->Type,
+    if((ajFmtScanS(domainStrline, "%d %S %S %S", &ret->Sunid,&ret->Type,
 		   &ret->Sccs, &ret->Entry)!=4))
     {
 	domainScopdesDel(&ret);
@@ -439,18 +452,18 @@ static AjPScopdes domainScopdesReadC(AjPFile inf, const char *entry)
 
     /* Tokenise the line by ' ' and discard the first 4 strings */
     
-    if(!ajRegExec(rexp,line))
+    if(!ajRegExec(domainRegrexp,domainStrline))
     {
-	ajFmtPrint("-->  %S\n", line);
+	ajFmtPrint("-->  %S\n", domainStrline);
 	ajFatal("File read error in domainScopdesReadC");
     }
 
     
-    ajRegSubI(rexp,1,&tmp);
-    ajRegSubI(rexp,2,&tmp);
-    ajRegSubI(rexp,3,&tmp);
-    ajRegSubI(rexp,4,&tmp);
-    ajRegPost(rexp,&ret->Desc);
+    ajRegSubI(domainRegrexp,1,&domainStrtmp);
+    ajRegSubI(domainRegrexp,2,&domainStrtmp);
+    ajRegSubI(domainRegrexp,3,&domainStrtmp);
+    ajRegSubI(domainRegrexp,4,&domainStrtmp);
+    ajRegPost(domainRegrexp,&ret->Desc);
     ajStrRemoveWhiteExcess(&ret->Desc);
 
     return ret;
@@ -475,18 +488,6 @@ static AjPScopdes domainScopdesReadC(AjPFile inf, const char *entry)
 static AjPScopcla domainScopclaReadC(AjPFile inf, const char *entry)
 {
     AjPScopcla ret = NULL;
-    static AjPStr line   = NULL;
-    static AjPStr scopid = NULL;  /* SCOP code */
-    static AjPStr pdbid  = NULL;  /* PDB code */
-    static AjPStr chains = NULL;  /* Chain data */
-    static AjPStr sccs   = NULL;  /* Scop compact classification string */
-    static AjPStr class  = NULL;  /* Classification containing all
-					 SCOP sunid's  */
-    static AjPStr tentry = NULL;
-    static AjPStr token  = NULL;
-    static AjPStr str    = NULL;
-
-    static AjPRegexp exp = NULL;
 
     AjPStrTok handle  = NULL;
     AjPStrTok bhandle = NULL;
@@ -498,38 +499,40 @@ static AjPScopcla domainScopclaReadC(AjPFile inf, const char *entry)
     ajint i  = 0;
     ajint from;
     ajint to;
-
+    static AjBool called = AJFALSE;
 
     /* Only initialise strings if this is called for the first time */
-    if(!line)
-    {    
-	line    = ajStrNew();
-	scopid  = ajStrNew();
-	pdbid   = ajStrNew();
-	chains  = ajStrNew();
-	sccs    = ajStrNew();
-	tentry  = ajStrNew();
-	token   = ajStrNew();
-	str     = ajStrNew();
+    if(!called)
+    {
+        called = ajTrue;
+	domainStrline    = ajStrNew();
+	domainStrscopid  = ajStrNew();
+	domainStrpdbid   = ajStrNew();
+	domainStrchains  = ajStrNew();
+	domainStrsccs    = ajStrNew();
+	domainStrtentry  = ajStrNew();
+	domainStrtoken   = ajStrNew();
+	domainStrstr     = ajStrNew();
+	domainStrclass   = ajStrNew();
 	
-	exp   = ajRegCompC("^([0-9]+)([A-Za-z]+)[-]([0-9]+)");
+	domainRegexp   = ajRegCompC("^([0-9]+)([A-Za-z]+)[-]([0-9]+)");
     }
     
 
     /* Read up to the correcty entry (line) */
-    ajStrAssignC(&tentry,entry);
-    ajStrFmtUpper(&tentry);
+    ajStrAssignC(&domainStrtentry,entry);
+    ajStrFmtUpper(&domainStrtentry);
     
-    while((ok=ajReadlineTrim(inf,&line)))
+    while((ok=ajReadlineTrim(inf,&domainStrline)))
     {
-	if((ajFmtScanS(line, "%S", &scopid)==0))
+	if((ajFmtScanS(domainStrline, "%S", &domainStrscopid)==0))
 	    return NULL;
 
 	/* Ignore comment lines */
-	if(*scopid->Ptr == '#')
+	if(ajStrGetCharFirst(domainStrscopid) == '#')
 	    continue;
 		
-	if(ajStrMatchWildS(scopid,tentry))
+	if(ajStrMatchWildS(domainStrscopid,domainStrtentry))
 	    break;
     }
     
@@ -537,29 +540,30 @@ static AjPScopcla domainScopclaReadC(AjPFile inf, const char *entry)
 	return NULL;
 
 
-    if((ajFmtScanS(line, "%*S %S %S %S %*d %S", &pdbid,&chains, &sccs,
-		   &class)!=4))
+    if((ajFmtScanS(domainStrline, "%*S %S %S %S %*d %S",
+                   &domainStrpdbid,&domainStrchains, &domainStrsccs,
+		   &domainStrclass)!=4))
 	return NULL;
 
     /* Count chains and allocate Scopcla object */
-    n = ajStrParseCountC(chains,",");
+    n = ajStrParseCountC(domainStrchains,",");
     ret = domainScopclaNew(n);
 
-    ajStrFmtUpper(&scopid);
-    ajStrAssignS(&ret->Entry,scopid);
+    ajStrFmtUpper(&domainStrscopid);
+    ajStrAssignS(&ret->Entry,domainStrscopid);
 
-    ajStrFmtUpper(&pdbid);
-    ajStrAssignS(&ret->Pdb,pdbid);
+    ajStrFmtUpper(&domainStrpdbid);
+    ajStrAssignS(&ret->Pdb,domainStrpdbid);
 
-    ajStrFmtUpper(&sccs);
-    ajStrAssignS(&ret->Sccs,sccs);
+    ajStrFmtUpper(&domainStrsccs);
+    ajStrAssignS(&ret->Sccs,domainStrsccs);
 
-    handle = ajStrTokenNewC(chains,",");
+    handle = ajStrTokenNewC(domainStrchains,",");
     for(i=0;i<n;++i)
     {
-	ajStrTokenNextParse(&handle,&token);
+	ajStrTokenNextParse(&handle,&domainStrtoken);
 	    	    
-	p = ajStrGetPtr(token);
+	p = ajStrGetPtr(domainStrtoken);
 	if(sscanf(p,"%d-%d",&from,&to)==2)
 	{
 	    ret->Chain[i]='.';
@@ -572,51 +576,51 @@ static AjPScopcla domainScopclaReadC(AjPFile inf, const char *entry)
 	    ajFmtPrintS(&ret->End[i],"%d",to);
 	    ret->Chain[i]=c;
 	}
-	else if(ajStrGetCharPos(token,1)==':')
+	else if(ajStrGetCharPos(domainStrtoken,1)==':')
 	{
 	    ajStrAssignC(&ret->Start[i],".");
 	    ajStrAssignC(&ret->End[i],".");
-	    ret->Chain[i]=*ajStrGetPtr(token);
+	    ret->Chain[i]=*ajStrGetPtr(domainStrtoken);
 	}
-	else if(ajRegExec(exp,token))
+	else if(ajRegExec(domainRegexp,domainStrtoken))
 	{
-	    ajRegSubI(exp,1,&str);
-	    ajStrAssignS(&ret->Start[i],str);
-	    ajRegSubI(exp,2,&str);
-	    ret->Chain[i] = *ajStrGetPtr(str);
-	    ajRegSubI(exp,3,&str);
-	    ajStrAssignS(&ret->End[i],str);
+	    ajRegSubI(domainRegexp,1,&domainStrstr);
+	    ajStrAssignS(&ret->Start[i],domainStrstr);
+	    ajRegSubI(domainRegexp,2,&domainStrstr);
+	    ret->Chain[i] = *ajStrGetPtr(domainStrstr);
+	    ajRegSubI(domainRegexp,3,&domainStrstr);
+	    ajStrAssignS(&ret->End[i],domainStrstr);
 	}
-	else if(ajStrGetCharFirst(token)=='-')
+	else if(ajStrGetCharFirst(domainStrtoken)=='-')
 	{
 	    ret->Chain[i]='.';
 	    ajStrAssignC(&ret->Start[i],".");
 	    ajStrAssignC(&ret->End[i],".");
 	}
 	else
-	    ajFatal("Unparseable chain line [%S]\n",chains);
+	    ajFatal("Unparseable chain line [%S]\n",domainStrchains);
     }
     ajStrTokenDel(&handle);
 	      
 	      
     /* Read SCOP sunid's from classification string */
-    bhandle = ajStrTokenNewC(class,",\n");
-    while(ajStrTokenNextParse(&bhandle,&token))
+    bhandle = ajStrTokenNewC(domainStrclass,",\n");
+    while(ajStrTokenNextParse(&bhandle,&domainStrtoken))
     {
-	if(ajStrPrefixC(token,"cl"))
-	    ajFmtScanS(token, "cl=%d", &ret->Class);
-	else if(ajStrPrefixC(token,"cf"))
-	    ajFmtScanS(token, "cf=%d", &ret->Fold);
-	else if(ajStrPrefixC(token,"sf"))
-	    ajFmtScanS(token, "sf=%d", &ret->Superfamily);
-	else if(ajStrPrefixC(token,"fa"))
-	    ajFmtScanS(token, "fa=%d", &ret->Family);
-	else if(ajStrPrefixC(token,"dm"))
-	    ajFmtScanS(token, "dm=%d", &ret->Domain);
-	else if(ajStrPrefixC(token,"sp"))
-	    ajFmtScanS(token, "sp=%d", &ret->Source);
-	else if(ajStrPrefixC(token,"px"))
-	    ajFmtScanS(token, "px=%d", &ret->Domdat);
+	if(ajStrPrefixC(domainStrtoken,"cl"))
+	    ajFmtScanS(domainStrtoken, "cl=%d", &ret->Class);
+	else if(ajStrPrefixC(domainStrtoken,"cf"))
+	    ajFmtScanS(domainStrtoken, "cf=%d", &ret->Fold);
+	else if(ajStrPrefixC(domainStrtoken,"sf"))
+	    ajFmtScanS(domainStrtoken, "sf=%d", &ret->Superfamily);
+	else if(ajStrPrefixC(domainStrtoken,"fa"))
+	    ajFmtScanS(domainStrtoken, "fa=%d", &ret->Family);
+	else if(ajStrPrefixC(domainStrtoken,"dm"))
+	    ajFmtScanS(domainStrtoken, "dm=%d", &ret->Domain);
+	else if(ajStrPrefixC(domainStrtoken,"sp"))
+	    ajFmtScanS(domainStrtoken, "sp=%d", &ret->Source);
+	else if(ajStrPrefixC(domainStrtoken,"px"))
+	    ajFmtScanS(domainStrtoken, "px=%d", &ret->Domdat);
     }
     ajStrTokenDel(&bhandle);
 
@@ -4636,8 +4640,8 @@ AjBool ajScopWrite(AjPFile outf, const AjPScop obj)
 ajint ajDomainDCFType(AjPFile inf)
 {
     ajlong  offset      = 0;
-    static  AjPStr line = NULL;
-    static  AjPStr tmp  = NULL;	
+    AjPStr line = NULL;
+    AjPStr tmp  = NULL;	
 
 
     /* Only initialise strings if this is called for the first time */
@@ -4658,26 +4662,62 @@ ajint ajDomainDCFType(AjPFile inf)
 	if(ajStrMatchC(tmp, "SCOP"))
 	{
 	    ajFileSeek(inf, offset, 0);
+            ajStrDel(&line);
+            ajStrDel(&tmp);
 	    return ajSCOP;
 	}
 	
 	else if(ajStrMatchC(tmp, "CATH"))
 	{
 	    ajFileSeek(inf, offset, 0);
+            ajStrDel(&line);
+            ajStrDel(&tmp);
 	    return ajCATH;
 	}
 	else 
 	{
 	    ajWarn("Serious error: Unknown domain type in DCF file");
+            ajStrDel(&line);
+            ajStrDel(&tmp);
 	    return -1;
 	}
     }
 
+    ajStrDel(&line);
+    ajStrDel(&tmp);
     
     return -1;
 }
 
 
+
+/* @func ajDomainExit **********************************************************
+**
+** Cleanup of Domain function internals.
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void ajDomainExit(void)
+{
+    ajStrDel(&domainStrline);
+    ajStrDel(&domainStrsunidstr);
+    ajStrDel(&domainStrtentry);
+    ajStrDel(&domainStrtmp);
+    ajStrDel(&domainStrscopid);
+    ajStrDel(&domainStrpdbid);
+    ajStrDel(&domainStrchains);
+    ajStrDel(&domainStrsccs);
+    ajStrDel(&domainStrclass);
+    ajStrDel(&domainStrtoken);
+    ajStrDel(&domainStrstr);
+
+    ajRegFree(&domainRegexp);
+    ajRegFree(&domainRegrexp);
+
+    return;
+}
 
 
 
