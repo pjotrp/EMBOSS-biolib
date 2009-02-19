@@ -55,7 +55,7 @@ int main(int argc, char *argv[])
   
     AjPStr ensbases = NULL;
     AjBool etloop;
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
 
     ajint s1len;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     dosort    = ajAcdGetBoolean("sort");
     edelta    = ajAcdGetFloat("delta");
   
-    edangles  = ajAcdGetList("dangles");
+    edangles  = ajAcdGetListSingle("dangles");
     outf      = ajAcdGetOutfile("outfile");
 
     pf = 0;
@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -186,7 +186,12 @@ int main(int argc, char *argv[])
     free(s1);
     free(s2);
 
-
+    ajSeqDel(&seq1);
+    ajSeqDel(&seq2);
+    ajStrDel(&ensbases);
+    ajStrDel(&edangles);
+    ajFileClose(&paramfile);
+    ajFileClose(&outf);
 
     embExit();
 

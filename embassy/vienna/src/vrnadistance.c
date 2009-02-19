@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     AjPFile sfile  = NULL;
     AjPFile outf   = NULL;
     AjPStr  *edist = NULL;
-    AjPStr  *ecomp = NULL;
+    AjPStr  ecomp = NULL;
     AjBool  eschapiro = ajFalse;
     AjBool  doalign   = ajFalse;
     char ec;
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 
     sfile     = ajAcdGetInfile("structuresfile");
     edist     = ajAcdGetList("distance");
-    ecomp     = ajAcdGetList("compare");
+    ecomp     = ajAcdGetListSingle("compare");
     eschapiro = ajAcdGetBoolean("schapiro");
     doalign   = ajAcdGetBoolean("doalignment");
     outf      = ajAcdGetOutfile("outfile");
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
     strcpy(ttype,ajStrGetPtr(etypes));
     
 
-    ec = *ajStrGetPtr(ecomp[0]);
+    ec = *ajStrGetPtr(ecomp);
     switch(ec)
     {
     case 'p':
@@ -463,9 +463,13 @@ int main(int argc, char *argv[])
  doexit:
 
     ajStrDel(&etypes);
+    ajStrDelarray(&edist);
+    ajStrDel(&ecomp);
     ajFileClose(&outf);
-/*    ajFileClose(&sfile); */
+    ajFileClose(&sfile);
 
+    AJFREE(aligned_line[0]);
+    AJFREE(aligned_line[1]);
 
     embExit();
 

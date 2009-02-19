@@ -136,9 +136,9 @@ int main(int argc, char *argv[])
     AjBool convert;
     AjPStr ensbases = NULL;
     AjBool etloop;
-    AjPStr *eenergy = NULL;
+    AjPStr eenergy = NULL;
     char ewt = '\0';
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
 
 
@@ -155,8 +155,8 @@ int main(int argc, char *argv[])
     convert   = ajAcdGetBoolean("convert");
     ensbases  = ajAcdGetString("nsbases");
     etloop    = ajAcdGetBoolean("tetraloop");
-    eenergy   = ajAcdGetList("energy");
-    edangles  = ajAcdGetList("dangles");
+    eenergy   = ajAcdGetListSingle("energy");
+    edangles  = ajAcdGetListSingle("dangles");
     h         = ajAcdGetFloat("step");
     mpoints   = ajAcdGetInt("smoothing");
    
@@ -174,7 +174,7 @@ int main(int argc, char *argv[])
     ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrGetPtr(*eenergy);
+    ewt = *ajStrGetPtr(eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -182,7 +182,7 @@ int main(int argc, char *argv[])
     else if(ewt == '2')
 	energy_set = 2;
     
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '2')
@@ -236,6 +236,13 @@ int main(int argc, char *argv[])
     heat_capacity(string, T_min, T_max, h, mpoints, outf);
     free(string);
 
+    ajSeqDel(&seq);
+    ajStrDel(&ensbases);
+    ajStrDel(&eenergy);
+    ajStrDel(&edangles);
+
+    ajFileClose(&paramfile);
+    ajFileClose(&outf);
 
     embExit();
 

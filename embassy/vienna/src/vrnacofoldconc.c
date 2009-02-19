@@ -24,7 +24,7 @@ extern AjBool vienna_GetConstraints(AjPFile confile, AjPStr *constring);
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: vrnacofoldconc.c,v 1.10 2008/06/26 08:40:00 rice Exp $";
+static char rcsid[] = "$Id: vrnacofoldconc.c,v 1.11 2009/02/19 13:11:56 rice Exp $";
 #endif
 
 #define PRIVATE static
@@ -104,10 +104,10 @@ int main(int argc, char *argv[])
     AjBool convert;
     AjPStr ensbases = NULL;
     AjBool etloop;
-    AjPStr *eenergy = NULL;
+    AjPStr eenergy = NULL;
     char ewt = '\0';
     float escale = 0.;
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
 
 /*    AjBool dimers; */
@@ -134,9 +134,9 @@ int main(int argc, char *argv[])
     convert   = ajAcdGetBoolean("convert");
     ensbases  = ajAcdGetString("nsbases");
     etloop    = ajAcdGetBoolean("tetraloop");
-    eenergy   = ajAcdGetList("energy");
+    eenergy   = ajAcdGetListSingle("energy");
     escale    = ajAcdGetFloat("scale");
-    edangles  = ajAcdGetList("dangles");
+    edangles  = ajAcdGetListSingle("dangles");
 /*    dimers    = ajAcdGetBoolean("dimers"); */
     paired    = ajAcdGetBoolean("paired");
     outf      = ajAcdGetOutfile("outfile");
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
     ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrGetPtr(*eenergy);
+    ewt = *ajStrGetPtr(eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
     
     sfact = (double) escale;
     
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -229,7 +229,7 @@ int main(int argc, char *argv[])
     cut_point = -1;
 
     ajFmtPrintS(&seqstring1,"%s&%s",ajSeqGetSeqC(seq1),ajSeqGetSeqC(seq2));
-    string = tokenize(MAJSTRGETPTR(seqstring1));  /* frees line */
+    string = tokenize(MAJSTRGETPTR(seqstring1));  /* no longer free line */
 
     length = (int) strlen(string);
 
@@ -313,16 +313,17 @@ int main(int argc, char *argv[])
 
         if (do_backtrack)
         {
-            char *costruc;
-            costruc = (char *) space(sizeof(char)*(strlen(structure)+2));
             if (cut_point<0)
                 ajFmtPrintF(outf,"%s", structure);
             else
             {
+                char *costruc;
+                costruc = (char *) space(sizeof(char)*(strlen(structure)+2));
                 strncpy(costruc, structure, cut_point-1);
                 strcat(costruc, "&");
                 strcat(costruc, structure+cut_point-1);
                 ajFmtPrintF(outf,"%s", costruc);
+                AJFREE(costruc);
             }
             ajFmtPrintF(outf," [%6.2f]\n", AB.FAB);
         }
@@ -489,9 +490,23 @@ int main(int argc, char *argv[])
 
     ajStrDel(&constring1);
     ajStrDel(&constring2);
+    ajStrDel(&seqstring1);
 
+    ajFileClose(&confile1);
+    ajFileClose(&confile2);
+    ajFileClose(&concfile);
+    ajFileClose(&paramfile);
+    ajStrDel(&ensbases);
+    ajStrDel(&eenergy);
+    ajStrDel(&edangles);
 
     ajFileClose(&outf);
+    ajFileClose(&essfile);
+    ajFileClose(&aoutf);
+    ajFileClose(&boutf);
+    ajFileClose(&aaoutf);
+    ajFileClose(&bboutf);
+    ajFileClose(&aboutf);
 
     embExit();
 
@@ -522,7 +537,7 @@ PRIVATE char *tokenize(char *line)
       nrerror("Sequence and Structure have different cut points.");
     }
   }
-  free(line);
+  /*free(line);*/
   return copy;
 }
 

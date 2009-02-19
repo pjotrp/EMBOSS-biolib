@@ -62,10 +62,10 @@ int main(int argc, char *argv[])
     AjBool eclose;
     AjBool lonely;
     AjBool etloop;
-    AjPStr *eenergy = NULL;
+    AjPStr eenergy = NULL;
     char ewt = '\0';
-    AjPStr *edangles = NULL;
-    AjPStr *method   = NULL;
+    AjPStr edangles = NULL;
+    AjPStr method   = NULL;
     AjPStr ealpha    = NULL;
     AjBool showfails = ajFalse;
     AjBool succeed = ajFalse;
@@ -88,9 +88,9 @@ int main(int argc, char *argv[])
     eclose     = ajAcdGetBoolean("closegu");
     lonely     = ajAcdGetBoolean("lp");
     etloop     = ajAcdGetBoolean("tetraloop");
-    eenergy    = ajAcdGetList("energy");
-    edangles   = ajAcdGetList("dangles");
-    method     = ajAcdGetList("folding");
+    eenergy    = ajAcdGetListSingle("energy");
+    edangles   = ajAcdGetListSingle("dangles");
+    method     = ajAcdGetListSingle("folding");
     ealpha     = ajAcdGetString("alphabet");
     final_cost = ajAcdGetFloat("final");
     repeat     = ajAcdGetInt("repeats");
@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
     noLonelyPairs = (lonely) ? 0 : 1;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrGetPtr(*eenergy);
+    ewt = *ajStrGetPtr(eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     else if(ewt == '2')
 	energy_set = 2;
     
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -127,17 +127,17 @@ int main(int argc, char *argv[])
     else if(edangle == '3')
 	dangles = 3;
     
-    if(ajStrMatchC(method[0],"mp"))
+    if(ajStrMatchC(method,"mp"))
     {
 	mfe = 1;
 	pf  = 1;
     }
-    else if(ajStrMatchC(method[0],"m"))
+    else if(ajStrMatchC(method,"m"))
     {
 	mfe = 1;
 	pf  = 0;
     }
-    else if(ajStrMatchC(method[0],"p"))
+    else if(ajStrMatchC(method,"p"))
     {
 	mfe = 0;
 	pf  = 1;
@@ -277,7 +277,18 @@ int main(int argc, char *argv[])
 	free(start);
 
     } while (1);
-    
+
+    ajSeqDel(&seq);
+    ajStrDel(&eenergy);
+    ajStrDel(&edangles);
+    ajStrDel(&method);
+    ajStrDel(&ealpha);
+
+    ajFileClose(&inf);
+    ajFileClose(&paramfile);
+    ajFileClose(&outf);
+    AJFREE(symbolset);
+
     embExit();
     return 0;
 }

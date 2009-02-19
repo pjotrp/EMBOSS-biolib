@@ -31,8 +31,8 @@ int main(int argc, char *argv[])
     char  format[5]="ps";
     AjPFile inf = NULL;
     AjPFile outf = NULL;
-    AjPStr *layout = NULL;
-    AjPStr *optype = NULL;
+    AjPStr layout = NULL;
+    AjPStr optype = NULL;
     AjPStr epre = NULL;
     AjPStr epost = NULL;
     AjPStr eline = NULL;
@@ -42,18 +42,18 @@ int main(int argc, char *argv[])
 
 
     inf    = ajAcdGetInfile("structuresfile");
-    layout = ajAcdGetList("layout");
-    optype = ajAcdGetList("optype");
+    layout = ajAcdGetListSingle("layout");
+    optype = ajAcdGetListSingle("optype");
     epre   = ajAcdGetString("pre");
     epost  = ajAcdGetString("post");
     outf   = ajAcdGetOutfile("outfile");
    
-    if(ajStrMatchC(layout[0],"radial"))
+    if(ajStrMatchC(layout,"radial"))
 	rna_plot_type = 0;
-    else if (ajStrMatchC(layout[0],"naview"))
+    else if (ajStrMatchC(layout,"naview"))
 	rna_plot_type = 1;
    
-    strcpy(format,ajStrGetPtr(optype[0]));
+    strcpy(format,ajStrGetPtr(optype));
    
     if(ajStrGetLen(epre))
 	pre = MAJSTRGETPTR(epre);
@@ -112,7 +112,13 @@ int main(int argc, char *argv[])
     free(structure); 
 
     ajStrDel(&eline);
-   
+    ajStrDel(&epre);
+    ajStrDel(&epost);
+    ajStrDel(&layout);
+    ajStrDel(&optype);
+    ajFileClose(&inf);
+    ajFileClose(&outf);
+    
     embExit();
     return 0;
 }

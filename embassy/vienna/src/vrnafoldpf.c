@@ -26,7 +26,7 @@ extern void init_pf_circ_fold(int length);
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[] = "$Id: vrnafoldpf.c,v 1.8 2008/06/10 12:51:15 rice Exp $";
+static char UNUSED rcsid[] = "$Id: vrnafoldpf.c,v 1.9 2009/02/19 13:11:56 rice Exp $";
 #endif
 
 #define PRIVATE static
@@ -80,10 +80,10 @@ int main(int argc, char *argv[])
     AjBool convert;
     AjPStr ensbases = NULL;
     AjBool etloop;
-    AjPStr *eenergy = NULL;
+    AjPStr eenergy = NULL;
     char ewt = '\0';
     float escale = 0.;
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
 
     ajint len;
@@ -109,9 +109,9 @@ int main(int argc, char *argv[])
     convert   = ajAcdGetBoolean("convert");
     ensbases  = ajAcdGetString("nsbases");
     etloop    = ajAcdGetBoolean("tetraloop");
-    eenergy   = ajAcdGetList("energy");
+    eenergy   = ajAcdGetListSingle("energy");
     escale    = ajAcdGetFloat("scale");
-    edangles  = ajAcdGetList("dangles");
+    edangles  = ajAcdGetListSingle("dangles");
     outf      = ajAcdGetOutfile("outfile");
     essfile   = ajAcdGetOutfile("ssoutfile");
 
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
     ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrGetPtr(*eenergy);
+    ewt = *ajStrGetPtr(eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -142,7 +142,7 @@ int main(int argc, char *argv[])
     
     sfact = (double) escale;
     
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -325,15 +325,25 @@ int main(int argc, char *argv[])
     ajStrDel(&seqstring);
     ajStrDel(&constring);
     ajStrDel(&seqname);
+
+    ajStrDel(&eenergy);
+    ajStrDel(&edangles);
+    ajStrDel(&ensbases);
+
     ajSeqDel(&seq);
+
+    ajFileClose(&confile);
+    ajFileClose(&paramfile);
 
     ajFileClose(&outf);
     ajFileClose(&essfile);
-
     ajFileClose(&dotfilea);
     ajFileClose(&dotfileb);
   
-    embExit();
+    if(length < 2000)
+        free_arrays();
+
+     embExit();
     
     return 0;
 }

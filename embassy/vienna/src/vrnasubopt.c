@@ -21,7 +21,7 @@
 extern void  read_parameter_file(AjPFile fname);
 extern int   st_back;
 
-static char UNUSED rcsid[] = "$Id: vrnasubopt.c,v 1.8 2008/06/26 08:40:00 rice Exp $";
+static char UNUSED rcsid[] = "$Id: vrnasubopt.c,v 1.9 2009/02/19 13:11:56 rice Exp $";
 #define PRIVATE static
 
 extern double print_energy;
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     AjBool convert;
     AjPStr ensbases = NULL;
     AjBool etloop;
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
 
     ajint len;
@@ -97,7 +97,7 @@ int main(int argc, char *argv[])
     logML         = !!ajAcdGetBoolean("logml");
     n_back        = ajAcdGetInt("nrandom");
    
-    edangles      = ajAcdGetList("dangles");
+    edangles      = ajAcdGetListSingle("dangles");
     outf      = ajAcdGetOutfile("outfile");
 
     if(dos)
@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
     delta = (int) (0.1 + erange * 100);
     deltap = prange;
     
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -247,7 +247,13 @@ int main(int argc, char *argv[])
     free(sequence);
     free(structure); 
 
+    ajSeqDel(&seq);
+    ajStrDel(&ensbases);
+    ajStrDel(&edangles);
+
+    ajFileClose(&confile);
     ajFileClose(&outf);
+    ajFileClose(&paramfile);
 
     embExit();
 

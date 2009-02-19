@@ -24,7 +24,7 @@
 
 /*@unused@*/
 #if 0
-static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.7 2008/06/10 12:51:15 rice Exp $";
+static char UNUSED rcsid[]="$Id: vrnaevalpair.c,v 1.8 2009/02/19 13:11:56 rice Exp $";
 #endif
 
 #define  PUBLIC
@@ -71,9 +71,9 @@ int main(int argc, char *argv[])
     float eT = 0.;
     AjBool convert;
     AjBool etloop;
-    AjPStr *eenergy = NULL;
+    AjPStr eenergy = NULL;
     char ewt = '\0';
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
     AjBool logml;
    
@@ -106,9 +106,9 @@ int main(int argc, char *argv[])
     convert   = ajAcdGetBoolean("convert");
 
     etloop    = ajAcdGetBoolean("tetraloop");
-    eenergy   = ajAcdGetList("energy");
+    eenergy   = ajAcdGetListSingle("energy");
 
-    edangles  = ajAcdGetList("dangles");
+    edangles  = ajAcdGetListSingle("dangles");
     logml     = ajAcdGetBoolean("logml");
     outf      = ajAcdGetOutfile("outfile");
 
@@ -117,7 +117,7 @@ int main(int argc, char *argv[])
     tetra_loop    = !!etloop;
     circ          = !!ajAcdGetBoolean("circular");
     
-    ewt = *ajStrGetPtr(*eenergy);
+    ewt = *ajStrGetPtr(eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -125,7 +125,7 @@ int main(int argc, char *argv[])
     else if(ewt == '2')
 	energy_set = 2;
   
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -198,12 +198,17 @@ int main(int argc, char *argv[])
     ajStrDel(&seqstring1);
     ajStrDel(&constring1);
     ajStrDel(&constring2);
+    ajStrDel(&eenergy);
+    ajStrDel(&edangles);
     ajSeqDel(&seq1);
     ajSeqDel(&seq2);
-    
+
+    ajFileClose(&confile1);
+    ajFileClose(&confile2);
+    ajFileClose(&paramfile);
     ajFileClose(&outf);
 
-    ajExit();
+    embExit();
     
     return 0;
 }

@@ -1,5 +1,6 @@
 extern float  alifold(char **strings, char *structure);
 extern  void  free_alifold_arrays(void);
+extern  void  free_alipf_arrays(void);
 extern double cv_fact /* =1 */;
 extern double nc_fact /* =1 */;
 typedef struct {

@@ -21,7 +21,7 @@
 
 /*@unused@*/
 #if 0
-static char rcsid[] = "$Id: alipfold.c,v 1.6 2008/06/26 08:40:00 rice Exp $";
+static char rcsid[] = "$Id: alipfold.c,v 1.7 2009/02/19 13:11:56 rice Exp $";
 #endif
 
 #define eMAX(x,y) (((x)>(y)) ? (x) : (y))
@@ -35,7 +35,7 @@ static char rcsid[] = "$Id: alipfold.c,v 1.6 2008/06/26 08:40:00 rice Exp $";
 
 PUBLIC  float alipf_fold(char **sequences, char *structure, pair_info **pi);
 PRIVATE void  init_alipf_fold(int length, int n_seq);
-PRIVATE void  free_alipf_arrays(void);
+PUBLIC  void  free_alipf_arrays(void);
 /* PRIVATE void  update_alipf_params(int length); */
 PRIVATE void  sprintf_bppm(int length, char *structure);
 PRIVATE void  scale_pf_params(unsigned int length, int n_seq);
@@ -887,7 +887,7 @@ PUBLIC void init_alipf_fold(int length, int n_seq)
   init_length=length;
 }
 
-PRIVATE void free_alipf_arrays(void)
+PUBLIC void free_alipf_arrays(void)
 {
   free(q);
   free(qb);
@@ -903,6 +903,7 @@ PRIVATE void free_alipf_arrays(void)
   free(expMLbase);
   free(scale);
   free(iindx);
+  free(jindx);
 #ifdef SUN4
   standard_arithmetic();
 #else

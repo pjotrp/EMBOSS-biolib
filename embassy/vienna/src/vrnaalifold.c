@@ -28,7 +28,7 @@ extern float energy_of_circ_struct(const char *seq, const char *structure);
 extern AjBool vienna_GetConstraints(AjPFile file, AjPStr *constring);
 
 /*@unused@*/
-static const char rcsid[] = "$Id: vrnaalifold.c,v 1.12 2008/06/26 08:40:00 rice Exp $";
+static const char rcsid[] = "$Id: vrnaalifold.c,v 1.13 2009/02/19 13:11:56 rice Exp $";
 
 #define PRIVATE static
 
@@ -85,10 +85,10 @@ int main(int argc, char *argv[])
     AjBool lonely;
     AjPStr ensbases = NULL;
     AjBool etloop;
-    AjPStr *eenergy = NULL;
+    AjPStr eenergy = NULL;
     char ewt = '\0';
     float escale = 0.;
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
 
     ajint len;
@@ -115,9 +115,9 @@ int main(int argc, char *argv[])
     lonely    = ajAcdGetBoolean("lp");
     ensbases  = ajAcdGetString("nsbases");
     etloop    = ajAcdGetBoolean("tetraloop");
-    eenergy   = ajAcdGetList("energy");
+    eenergy   = ajAcdGetListSingle("energy");
     escale    = ajAcdGetFloat("scale");
-    edangles  = ajAcdGetList("dangles");
+    edangles  = ajAcdGetListSingle("dangles");
     mis       = !!ajAcdGetBoolean("most");
     endgaps   = !!ajAcdGetBoolean("endgaps");
     nc_fact   = (double) ajAcdGetFloat("nspenalty");
@@ -145,7 +145,7 @@ int main(int argc, char *argv[])
     ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
     
-    ewt = *ajStrGetPtr(*eenergy);
+    ewt = *ajStrGetPtr(eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -155,7 +155,7 @@ int main(int argc, char *argv[])
     
     sfact = (double) escale;
     
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -355,9 +355,17 @@ int main(int argc, char *argv[])
   }
 
 
-    ajStrDel(&constring);
-    ajFileClose(&outf);
-    ajFileClose(&essfile);
+  ajStrDel(&constring);
+  ajFileClose(&outf);
+  ajFileClose(&essfile);
+  ajFileClose(&alifile);
+  ajSeqsetDel(&seq);
+  ajFileClose(&confile);
+  ajFileClose(&paramfile);
+  ajStrDel(&ensbases);
+  ajStrDel(&eenergy);
+  ajStrDel(&edangles);
+
 /*    ajFileClose(&dotfile); */
 
     embExit();  

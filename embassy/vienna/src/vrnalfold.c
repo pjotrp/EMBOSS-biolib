@@ -63,10 +63,10 @@ int main(int argc, char *argv[])
     AjBool convert;
     AjPStr ensbases = NULL;
     AjBool etloop;
-    AjPStr *eenergy = NULL;
+    AjPStr eenergy = NULL;
     char ewt = '\0';
     float escale = 0.;
-    AjPStr *edangles = NULL;
+    AjPStr edangles = NULL;
     char edangle = '\0';
 
     AjPStr seqstring = NULL;
@@ -103,9 +103,9 @@ int main(int argc, char *argv[])
     convert   = ajAcdGetBoolean("convert");
     ensbases  = ajAcdGetString("nsbases");
     etloop    = ajAcdGetBoolean("tetraloop");
-    eenergy   = ajAcdGetList("energy");
+    eenergy   = ajAcdGetListSingle("energy");
     escale    = ajAcdGetFloat("scale");
-    edangles  = ajAcdGetList("dangles");
+    edangles  = ajAcdGetListSingle("dangles");
     outf      = ajAcdGetOutfile("outfile");
 
     temperature   = (double) eT;
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
     ns_bases      = (ajStrGetLen(ensbases)) ? MAJSTRGETPTR(ensbases) : NULL;
     tetra_loop    = !!etloop;
 
-    ewt = *ajStrGetPtr(*eenergy);
+    ewt = *ajStrGetPtr(eenergy);
     if(ewt == '0')
 	energy_set = 0;
     else if(ewt == '1')
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
   
     sfact = (double) escale;
   
-    edangle = *ajStrGetPtr(*edangles);
+    edangle = *ajStrGetPtr(edangles);
     if(edangle == '0')
 	dangles = 0;
     else if(edangle == '1')
@@ -211,9 +211,16 @@ int main(int argc, char *argv[])
     ajStrDel(&constring);
     ajStrDel(&seqname);
 
+    ajSeqDel(&seq);
+    ajStrDel(&ensbases);
+    ajStrDel(&eenergy);
+    ajStrDel(&edangles);
+
+    ajFileClose(&confile);
+    ajFileClose(&paramfile);
     ajFileClose(&outf);
 
     embExit();
-    
+
     return 0;
 }
