@@ -602,7 +602,7 @@ void ajGraphSetName(const AjPGraph thys)
 
 /* @funcstatic GraphSetName ***************************************************
 **
-** set BaseName and extension.
+** Set BaseName and extension.
 **
 ** @param [r] thys [const AjPGraph] Graph object.
 ** @param [r] txt [const AjPStr] base name for files
