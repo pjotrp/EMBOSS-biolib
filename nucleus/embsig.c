@@ -82,6 +82,13 @@ typedef struct EmbSSigcell
 #define EmbPSigcell EmbOSigcell*
 
 
+static EmbPSigcell embSigpath = NULL;  /*Path matrix as 1D array */
+static char *embSigprot = NULL;  /*Protein sequence */
+static char *embSigalign = NULL;   /*String for alignment */
+
+static ajint embSigsavedim = 0;		/* dimension of path */
+static ajint embSigsavenres = 0;		/* dimension of alg and p */
+
 
 
 
@@ -2889,21 +2896,21 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
 {
     EmbPSignature ret = NULL;
     
-    static AjPStr type   = NULL;
-    static AjPStr typesig= NULL;
-    static AjPStr line   = NULL;
-    static AjPStr class  = NULL;
-    static AjPStr arch   = NULL;
-    static AjPStr top    = NULL;
-    static AjPStr fold   = NULL;
-    static AjPStr super  = NULL;
-    static AjPStr family = NULL;
+    AjPStr type   = NULL;
+    AjPStr typesig= NULL;
+    AjPStr line   = NULL;
+    AjPStr class  = NULL;
+    AjPStr arch   = NULL;
+    AjPStr top    = NULL;
+    AjPStr fold   = NULL;
+    AjPStr super  = NULL;
+    AjPStr family = NULL;
     ajuint  Sunid_Family;        /* SCOP sunid for family */
 
-    static AjPStr id     = NULL;
-    static AjPStr domid  = NULL;
-    static AjPStr ligid  = NULL;
-    static AjPStr desc   = NULL;
+    AjPStr id     = NULL;
+    AjPStr domid  = NULL;
+    AjPStr ligid  = NULL;
+    AjPStr desc   = NULL;
 
     AjBool ok   = ajFalse;
     ajuint  npos = 0;   /* No. signature positions */
@@ -2915,7 +2922,7 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
     ajuint  v1   = 0;
     ajuint  v2   = 0;
     char   c1   = '\0';
-    static AjPStr env  = NULL;
+    AjPStr env  = NULL;
     const AjPStr token = NULL;   /* For parsing      */
     
     /* Signature of type ajLIGAND only */
@@ -2931,24 +2938,20 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
 	return NULL;
     
 
-    /* Only initialise strings if this is called for the first time */
-    if(!line)
-    {
-	class   = ajStrNew();
-	arch    = ajStrNew();
-	top     = ajStrNew();
-	fold    = ajStrNew();
-	super   = ajStrNew();
-	family  = ajStrNew();
-	line    = ajStrNew();
-	id      = ajStrNew();
-	domid   = ajStrNew();
-	ligid   = ajStrNew();
-	desc    = ajStrNew();
-	type    = ajStrNew();
-	typesig = ajStrNew();
-	env     = ajStrNew();
-    }
+    class   = ajStrNew();
+    arch    = ajStrNew();
+    top     = ajStrNew();
+    fold    = ajStrNew();
+    super   = ajStrNew();
+    family  = ajStrNew();
+    line    = ajStrNew();
+    id      = ajStrNew();
+    domid   = ajStrNew();
+    ligid   = ajStrNew();
+    desc    = ajStrNew();
+    type    = ajStrNew();
+    typesig = ajStrNew();
+    env     = ajStrNew();
 
 
     /* Read first line */
@@ -3184,6 +3187,21 @@ EmbPSignature embSignatureReadNew(AjPFile inf)
 	ok = ajReadlineTrim(inf,&line);
     }
     
+    ajStrDel(&line);
+    ajStrDel(&type);
+    ajStrDel(&typesig);
+    ajStrDel(&class);
+    ajStrDel(&arch);
+    ajStrDel(&top);
+    ajStrDel(&fold);
+    ajStrDel(&super);
+    ajStrDel(&family);
+    ajStrDel(&id);
+    ajStrDel(&domid);
+    ajStrDel(&ligid);
+    ajStrDel(&desc);
+    ajStrDel(&env);
+
     if(!ok)
 	return NULL;
 
@@ -4298,13 +4316,9 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
     ajuint  glast  = 0;	  /*Index of last gap to try */
     ajint  nres   = 0;	  /*No. of residues in protein */
     ajuint  nresm1 = 0;	  /*== nres-1 */
-    static EmbPSigcell path = NULL;  /*Path matrix as 1D array */
 
-    static ajint savedim = 0;		/* dimension of path */
-    static ajint savenres = 0;		/* dimension of alg and p */
     ajint dim =0;         /*Dimension of 1D path matrix == nres 
 				   * S->npos */
-    static char *p = NULL;  /*Protein sequence */
     ajint  start   = 0;	    /* Index into path matrix of first position 
 			    ** in the previous row to grow an alignment 
 			    ** from
@@ -4324,7 +4338,6 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
     ajint max  = 0;	  /*Index into path matrix for cell with mval */
     ajint maxp = 0;      /*Index into protein sequence for path matrix 
 				    cell with mval */
-    static char *alg = NULL;   /*String for alignment */
     ajint cnt;                 /*A loop counter */
     ajint mlen = 0;            /*Min. possible length of the alignment of the 
 				    signature */
@@ -4352,30 +4365,31 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 
     /* ALLOCATE MEMORY */
     /*First time the function is called */
-    if(!path)
+    if(!embSigpath)
     {
 	/* CREATE PATH MATRIX */
-	AJCNEW(path, dim);
-	savedim = dim;
+	AJCNEW(embSigpath, dim);
+	embSigsavedim = dim;
 
 	/* CREATE ALIGNMENT AND PROTEIN SEQUENCE STRINGS */
-	alg = AJALLOC((nres*sizeof(char))+1);
-	p = AJALLOC((nres*sizeof(char))+1);
-	savenres = nres;
+	embSigalign = AJALLOC((nres*sizeof(char))+1);
+	embSigprot = AJALLOC((nres*sizeof(char))+1);
+	embSigsavenres = nres;
     }	
     else 
     {
 	/* CREATE PATH MATRIX */
-	if(dim > savedim)
+	if(dim > embSigsavedim)
 	{
-	    AJCRESIZE(path, dim);
+	    AJCRESIZE(embSigpath, dim);
+            embSigsavedim = dim;
 	}
 	/* CREATE ALIGNMENT AND PROTEIN SEQUENCE STRINGS */
-	if((nres) > savenres)
+	if((nres) > embSigsavenres)
 	{
-	    AJCRESIZE(alg, nres+1);
-	    AJCRESIZE(p, nres+1);
-	    savenres = nres;
+	    AJCRESIZE(embSigalign, nres+1);
+	    AJCRESIZE(embSigprot, nres+1);
+	    embSigsavenres = nres;
 	}
     }
 
@@ -4386,17 +4400,17 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
     ** Only necessary to initialise <try> element to ajFalse
     */
     for(cnt=0;cnt<dim;cnt++)
-	path[cnt].visited = ajFalse;
+	embSigpath[cnt].visited = ajFalse;
     
     
 
 
     /* COPY SEQUENCE AND CONVERT TO UPPER CASE, OVERWRITE ALIGNMENT STRING */
-    strcpy(p, ajStrGetPtr(P));
-    ajCharFmtUpper(p);
+    strcpy(embSigprot, ajStrGetPtr(P));
+    ajCharFmtUpper(embSigprot);
     for(cnt=0;cnt<nres;cnt++)
-	alg[cnt] = '-';
-    alg[cnt] = '\0';
+	embSigalign[cnt] = '-';
+    embSigalign[cnt] = '\0';
     
     switch(nterm)
     {
@@ -4435,10 +4449,11 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 	*/
 	for(this=0;this<=stop;this++)
 	{
-	    path[this].val = S->pos[0]->subs[(ajint) ((ajint)p[this] -
-						      (ajint)'A')];
-	    path[this].prev    = 0;
-	    path[this].visited = ajTrue;
+	    embSigpath[this].val =
+                S->pos[0]->subs[(ajint) ((ajint)embSigprot[this] -
+                                         (ajint)'A')];
+	    embSigpath[this].prev    = 0;
+	    embSigpath[this].visited = ajTrue;
 	}
 	break;
 	
@@ -4453,10 +4468,11 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 	
 	for(this=0;this<nres;this++)
 	{
-	    path[this].val=S->pos[0]->subs[(ajint) ((ajint)p[this] -
-						    (ajint)'A')];
-	    path[this].prev=0;
-	    path[this].visited=ajTrue;
+	    embSigpath[this].val =
+                S->pos[0]->subs[(ajint) ((ajint)embSigprot[this] -
+                                         (ajint)'A')];
+	    embSigpath[this].prev=0;
+	    embSigpath[this].visited=ajTrue;
 	}
 	start = startp = 0;
 	stop  = nresm1;
@@ -4480,10 +4496,11 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 	for(gidx=0; gidx<=glast; ++gidx)
 	{	
 	    this=S->pos[0]->gsiz[gidx];
-	    path[this].val=S->pos[0]->subs[(ajint) ((ajint)p[this] -
-						    (ajint)'A')];
-	    path[this].prev    = 0;
-	    path[this].visited = ajTrue;
+	    embSigpath[this].val =
+                S->pos[0]->subs[(ajint) ((ajint)embSigprot[this] -
+                                         (ajint)'A')];
+	    embSigpath[this].prev    = 0;
+	    embSigpath[this].visited = ajTrue;
 	}
 	startp = start = S->pos[0]->gsiz[0];
 	stop=S->pos[0]->gsiz[gidx-1];
@@ -4505,7 +4522,7 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 	/*Loop for permissible region of previous row */
 	for(last=start, lastp=startp; last<=stop; last++, lastp++)
 	{
-	    if(path[last].visited==ajFalse)
+	    if(embSigpath[last].visited==ajFalse)
 		continue;
 
 	    /*Loop for each permissible gap in current row */
@@ -4515,23 +4532,24 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 		    break;
 
 		this = last+nres+S->pos[sidx]->gsiz[gidx]+1;
-		val  = path[last].val +
-		    S->pos[sidx]->subs[(ajint) (p[thisp] - (ajint)'A')] -
+		val  = embSigpath[last].val +
+		    S->pos[sidx]->subs[(ajint)(embSigprot[thisp]-(ajint)'A')] -
 			S->pos[sidx]->gpen[gidx];
 		
 
-		if((path[this].visited==ajTrue)&&(val > path[this].val))
+		if((embSigpath[this].visited==ajTrue)&&
+                   (val > embSigpath[this].val))
 		{
-		    path[this].val  = val;
-		    path[this].prev = last;
+		    embSigpath[this].val  = val;
+		    embSigpath[this].prev = last;
 		    continue;
 		}				
 		/*The cell hasn't been visited before so give it a score */
-		if(path[this].visited==ajFalse)
+		if(embSigpath[this].visited==ajFalse)
 		{
-		    path[this].val     = val;
-		    path[this].prev    = last;
-		    path[this].visited = ajTrue;
+		    embSigpath[this].val     = val;
+		    embSigpath[this].prev    = last;
+		    embSigpath[this].visited = ajTrue;
 		    continue;
 		}	
 	    }
@@ -4566,11 +4584,11 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
     */
     for(mval=-1000000 ; thisp>=0; this--, thisp--)
     {
-	if(path[this].visited==ajFalse)
+	if(embSigpath[this].visited==ajFalse)
 	    continue;
-	if(path[this].val > mval)
+	if(embSigpath[this].val > mval)
 	{
-	    mval = path[this].val;
+	    mval = embSigpath[this].val;
 	    max  = this;
 	    maxp = thisp;
 	}
@@ -4583,14 +4601,14 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 
 
     /* Backtrack through matrix */
-    alg[maxp] = '*';
+    embSigalign[maxp] = '*';
 
-    for(this=path[max].prev; sidx>0; this=path[this].prev)
+    for(this=embSigpath[max].prev; sidx>0; this=embSigpath[this].prev)
     {
 	td = floor((double)(this/nres));
 	sidx = (ajuint) td;
 	thisp= this - (sidx * nres);
-	alg[thisp] = '*';
+	embSigalign[thisp] = '*';
     }
     
 
@@ -4599,7 +4617,7 @@ AjBool embSignatureAlignSeq(const EmbPSignature S, const AjPSeq seq,
 	*hit = embHitNew();
     
     ajStrAssignC(&(*hit)->Model, "SPARSE");    
-    ajStrAssignC(&(*hit)->Alg, alg);
+    ajStrAssignC(&(*hit)->Alg, embSigalign);
     ajStrAssignS(&(*hit)->Seq, P);
     (*hit)->Start=thisp;
     (*hit)->End=maxp;
@@ -4719,6 +4737,27 @@ AjBool embSignatureAlignSeqall(const EmbPSignature sig, AjPSeqall db,
     return ajTrue;
 }
 
+
+
+
+/* @func embSigExit ************************************************************
+**
+** Cleanup of signature function internals.
+**
+** @return [void]
+** @@
+******************************************************************************/
+
+void embSigExit(void)
+{
+    AJFREE(embSigpath);
+    AJFREE(embSigprot);
+    AJFREE(embSigalign);
+    embSigsavedim = 0;
+    embSigsavenres = 0;
+
+    return;
+}
 
 
 

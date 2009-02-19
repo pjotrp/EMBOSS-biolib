@@ -33,6 +33,7 @@
 
 __noreturn void embExit (void)
 {
+    embSigExit();
     embDbiExit();
     embGrpExit();
     embIndexExit();
