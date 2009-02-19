@@ -65,7 +65,7 @@ int main(int argc, char **argv)
     double charge;
 
     AjPGraphPlpData phGraph = NULL;
-    AjPStr tit = NULL;
+    AjPStr title = NULL;
     AjPStr tmp = NULL;
 
     float *xa = NULL;
@@ -166,20 +166,20 @@ int main(int argc, char **argv)
 	    }
 	    npoints = k;
 
-	    tit = ajStrNew();
+	    title = ajStrNew();
 	    tmp = ajStrNew();
-	    ajFmtPrintS(&tit,"%s %d-%d IEP=",ajSeqGetNameC(a),be,en);
+	    ajFmtPrintS(&title,"%s %d-%d IEP=",ajSeqGetNameC(a),be,en);
 
 	    if(!embIepIepS(substr, amino, carboxyl, sscount, modlysine,
 			   pK, &iep,termini))
 		ajStrAssignC(&tmp,"none");
 	    else
 		ajFmtPrintS(&tmp,"%-8.4f",iep);
-	    ajStrAppendS(&tit,tmp);
+	    ajStrAppendS(&title,tmp);
 
 
 	    phGraph = ajGraphPlpDataNewI(npoints);
-	    ajGraphSetTitle(graph,tit);
+	    ajGraphSetTitle(graph,title);
 	    ajGraphSetXTitleC(graph,"pH");
 	    ajGraphSetYTitleC(graph,"Charge");
 
@@ -199,7 +199,7 @@ int main(int argc, char **argv)
 
 	    ajGraphxyDisplay(graph,ajFalse);
 	    ajStrDel(&tmp);
-	    ajStrDel(&tit);
+	    ajStrDel(&title);
 	    AJFREE(ya);
 	    AJFREE(xa);
 	}
