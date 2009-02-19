@@ -81,6 +81,7 @@ output sequence [x65921.fasta]:
 % extractfeat tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4 
 Extract features from sequence(s)
 output sequence [edd1_rat.fasta]: 
+UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example

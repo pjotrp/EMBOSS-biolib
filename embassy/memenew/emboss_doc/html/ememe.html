@@ -591,11 +591,7 @@ Please read the file README distributed with the original MEME.
 
 % <b>ememe crp0.s -mod oops </b>
 Multiple EM for Motif Elicitation
-MEME program html output file [crp0.html]: <b></b>
-MEME program text output file [crp0.text]: <b></b>
-MEME program xml output file [crp0.xml]: <b></b>
-MEME program xsl output file [crp0.xsl]: <b></b>
-output sequence set [crp0.fasta]: <b></b>
+MEME program output file output directory [.]: <b></b>
 
 </pre></td></tr></table><p>
 <p>
@@ -722,12 +718,8 @@ will never be prompted for.
   [-dataset]           seqset     User must provide the full filename of a set
                                   of sequences, not an indirect reference,
                                   e.g. a USA is NOT acceptable.
-  [-outhtml]           outfile    [*.ememe] MEME program html output file
-  [-outtext]           outfile    [*.ememe] MEME program text output file
-  [-outxml]            outfile    [*.ememe] MEME program xml output file
-  [-outxsl]            outfile    [*.ememe] MEME program xsl output file
-  [-outseq]            seqoutset  [<sequence>.<format>] Sequence set filename
-                                  and optional format (output USA)
+  [-outdir]            outdir     [.] MEME program output file output
+                                  directory
 
    Additional (Optional) qualifiers:
    -bfile              infile     The name of the file containing the
@@ -1069,30 +1061,6 @@ will never be prompted for.
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
 
-   "-outhtml" associated qualifiers
-   -odirectory2        string     Output directory
-
-   "-outtext" associated qualifiers
-   -odirectory3        string     Output directory
-
-   "-outxml" associated qualifiers
-   -odirectory4        string     Output directory
-
-   "-outxsl" associated qualifiers
-   -odirectory5        string     Output directory
-
-   "-outseq" associated qualifiers
-   -osformat6          string     Output seq format
-   -osextension6       string     File name extension
-   -osname6            string     Base file name
-   -osdirectory6       string     Output directory
-   -osdbname6          string     Database name to add
-   -ossingle6          boolean    Separate file for each entry
-   -oufo6              string     UFO features
-   -offormat6          string     Features format
-   -ofname6            string     Features file name
-   -ofdirectory6       string     Output directory
-
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output
@@ -1127,38 +1095,10 @@ will never be prompted for.
 </tr>
 
 <tr>
-<td>[-outhtml]<br>(Parameter 2)</td>
-<td>MEME program html output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outtext]<br>(Parameter 3)</td>
-<td>MEME program text output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outxml]<br>(Parameter 4)</td>
-<td>MEME program xml output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outxsl]<br>(Parameter 5)</td>
-<td>MEME program xsl output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outseq]<br>(Parameter 6)</td>
-<td>Sequence set filename and optional format (output USA)</td>
-<td>Writeable sequences</td>
-<td><i>&lt;*&gt;</i>.<i>format</i></td>
+<td>[-outdir]<br>(Parameter 2)</td>
+<td>MEME program output file output directory</td>
+<td>Output directory</td>
+<td>.</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">
@@ -1547,7 +1487,7 @@ include file="inc/reportformats.ihtml"
 <p><img src="ememe.1.logo_ssc1.e.gif" alt="[ememe results]">
 <p><h3>File: logo_ssc1.png</h3>
 <p>This file contains non-printing characters and so cannot be displayed here.
-<p><h3>File: crp0.html</h3>
+<p><h3>File: meme.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
 &lt;html&gt;
@@ -1655,7 +1595,7 @@ MEME version 4.0.0 (Release date: 0 PDT 20)
 &lt;/form&gt;&lt;/body&gt;
 &lt;/html&gt;
 </td></tr></table><p>
-<p><h3>File: crp0.fasta</h3>
+<p><h3>File: meme.fasta</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &gt;ce1cg
@@ -1714,7 +1654,7 @@ GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTG
 GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
 </pre>
 </td></tr></table><p>
-<p><h3>File: crp0.text</h3>
+<p><h3>File: meme.txt</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ********************************************************************************
@@ -1747,7 +1687,7 @@ AAAI Press, Menlo Park, California, 1994.
 ********************************************************************************
 TRAINING SET
 ********************************************************************************
-DATAFILE= crp0.fasta
+DATAFILE= ./meme.fasta
 ALPHABET= ACGT
 Sequence name            Weight Length  Sequence name            Weight Length  
 -------------            ------ ------  -------------            ------ ------  
@@ -1778,7 +1718,7 @@ TGTGA[ACT][CAG][GT][AGT][GC][TAC]TCAC
 
 
 
-Time  0.66 secs.
+Time  0.68 secs.
 
 ********************************************************************************
 
@@ -1824,7 +1764,7 @@ CPU: emboss6.ebi.ac.uk
 ********************************************************************************
 </pre>
 </td></tr></table><p>
-<p><h3>File: crp0.xml</h3>
+<p><h3>File: meme.xml</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &lt;?xml version='1.0' encoding='UTF-8' standalone='yes'?&gt;
@@ -1934,7 +1874,7 @@ CPU: emboss6.ebi.ac.uk
 &lt;/MEME&gt;
 </pre>
 </td></tr></table><p>
-<p><h3>File: crp0.xsl</h3>
+<p><h3>File: meme.xsl</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;

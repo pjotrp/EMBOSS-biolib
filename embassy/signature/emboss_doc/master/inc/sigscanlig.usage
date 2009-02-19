@@ -6,7 +6,7 @@
 
 % <b>sigscanlig </b>
 Search ligand-signature library & write hits (LHF file).
-Domainatrix signature file directories [./]: <b>../siggenlig-keep</b>
+Domainatrix signature directories [./]: <b>../siggenlig-keep</b>
 Database of query sequences.: <b>swtiny</b>
 Scoring matrix [EBLOSUM62]: <b></b>
 Available modes

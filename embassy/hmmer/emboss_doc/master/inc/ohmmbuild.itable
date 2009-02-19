@@ -37,7 +37,7 @@
 
 <tr>
 <td>-priorfile</td>
-<td>HMMER dirichlet prior file</td>
+<td>HMMER dirichlet prior file (optional)</td>
 <td>Input file</td>
 <td><b>Required</b></td>
 </tr>
@@ -177,7 +177,7 @@
 
 <tr>
 <td>-resavefile</td>
-<td>elex alignment output file (optional)</td>
+<td>Selex alignment output file (optional)</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.ohmmbuild</td>
 </tr>

@@ -4,7 +4,7 @@
   [-[no]dollo]         boolean    [Y] Dollo Parsimony method (else
                                   Polymorphism)
 *  -valthresh          float      [1.0] Threshold value (Number 1.000 or more)
-  [-outfile]           outfile    [edolpenny.outfile] phylip dolpenny program
+  [-outfile]           outfile    [edolpenny.outfile] Phylip dolpenny program
                                   output file
   [-[no]trout]         toggle     [Y] Create a tree file
 *  -treefile           outfile    [edolpenny.treefile] Phylip tree output file

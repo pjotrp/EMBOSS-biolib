@@ -73,6 +73,7 @@ To write out the 7 residues around all phosphorylated serine residues
 % <b>extractfeat tsw:*  -type mod_res -value phosphoserine* -before 3 -after -4 </b>
 Extract features from sequence(s)
 output sequence [edd1_rat.fasta]: <b></b>
+UNKNOWN token '[Contains:'
 
 </pre></td></tr></table><p>
 <p>

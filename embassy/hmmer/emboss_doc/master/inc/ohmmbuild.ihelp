@@ -6,7 +6,7 @@
 
    Additional (Optional) qualifiers: (none)
    Advanced (Unprompted) qualifiers:
-   -priorfile          infile     HMMER dirichlet prior file
+   -priorfile          infile     HMMER dirichlet prior file (optional)
    -nullfile           infile     HMMER null model file (optional)
    -pamfile            infile     HMMER matrix file (optional)
    -strategy           menu       [L] Select preference (Values: M (multiple);
@@ -34,7 +34,7 @@
    -weighting          menu       [G] Select weighting (Values: B (Blosum); G
                                   (Gerstein/Sonnhammer/Chothia); K
                                   (Krogh/Mitchison); N (None); V (Voronoi))
-   -resavefile         outfile    [*.ohmmbuild] elex alignment output file
+   -resavefile         outfile    [*.ohmmbuild] Selex alignment output file
                                   (optional)
    -cfile              outfile    [*.ohmmbuild] HMMER emission and transition
                                   count output file (optional)

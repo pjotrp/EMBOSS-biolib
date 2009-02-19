@@ -6,11 +6,7 @@
 
 % <b>ememe crp0.s -mod oops </b>
 Multiple EM for Motif Elicitation
-MEME program html output file [crp0.html]: <b></b>
-MEME program text output file [crp0.text]: <b></b>
-MEME program xml output file [crp0.xml]: <b></b>
-MEME program xsl output file [crp0.xsl]: <b></b>
-output sequence set [crp0.fasta]: <b></b>
+MEME program output file output directory [.]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

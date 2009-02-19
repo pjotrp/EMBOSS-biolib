@@ -133,7 +133,7 @@
 
 <tr>
 <td>[-outfile]<br>(Parameter 2)</td>
-<td>phylip dnamlk program output file</td>
+<td>Phylip dnamlk program output file</td>
 <td>Output file</td>
 <td>ednamlk.outfile</td>
 </tr>
@@ -147,7 +147,7 @@
 
 <tr>
 <td>-treefile</td>
-<td>Phylip output tree file</td>
+<td>Phylip tree output file</td>
 <td>Output file</td>
 <td>ednamlk.treefile</td>
 </tr>

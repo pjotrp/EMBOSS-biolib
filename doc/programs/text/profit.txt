@@ -71,6 +71,7 @@ Scan one or more sequences with a simple frequency matrix
 Profile or weight matrix file: outfile.prophecy
 Input sequence(s): tsw:*
 Output file [outfile.profit]: 
+UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example

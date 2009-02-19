@@ -11,11 +11,11 @@ Lactose operon repressor.
           ----:----|----:----|----:----|----:----|----:----|----:----|
           MKPVTLYDVAEYAGVSYQTVSRVVNQASHVSAKTREKVEAAMAELNYIPNRVAQQLAGKQ
           |===========================================================
-          chain ftid="PRO_0000107963" note="Lactose operon repressor"
+          chain note="Lactose operon repressor" ftid="PRO_0000107963"
           |========================================================|
           domain note="HTH lacI-type"
                |==================|
-               dna_bind note="H-T-H motif"
+               DNA_bind note="H-T-H motif"
                           |
                           mutagen note="Y-&gt;H: Broadening of specificity"
                                |
@@ -25,9 +25,11 @@ Lactose operon repressor.
           ----:----|----:----|----:----|----:----|
           SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVE
           ========================================
-          chain ftid="PRO_0000107963" note="Lactose operon repressor"
-            |=====|    |==============|   |====|
-            strand     helix              strand
+          chain note="Lactose operon repressor" ftid="PRO_0000107963"
+            |=====|                       |====|
+            beta_strand                   beta_strand
+                       |==============|
+                       alpha_helix
 
 </pre>
 </td></tr></table><p>
@@ -74,7 +76,7 @@ RS24_FUGRU
           esshaharhryhehsreelryleaasaeirlylharyhllrlyelyeyyhhrsaahahlh
           tnprlrlgrgsetrnguungsntllplusoysarlosruegusuastrsrroplleleye
           |===========================================================
-          chain ftid="PRO_0000137627" note="40S ribosomal protein S24"
+          chain note="40S ribosomal protein S24" ftid="PRO_0000137627"
 
                    70        80        90        100       110       120       
           ----:----|----:----|----:----|----:----|----:----|----:----|
@@ -82,7 +84,7 @@ RS24_FUGRU
           rhlhlllyhhlhleayseesylyyslryirelrilehlyyyherylrylrysreyyarlh
           grneyyysrryeatlrpruprassnuossguagsyueusssrrgsngsugsngtsslgyr
           ============================================================
-          chain ftid="PRO_0000137627" note="40S ribosomal protein S24"
+          chain note="40S ribosomal protein S24" ftid="PRO_0000137627"
 
                    130       
           ----:----|--
@@ -90,7 +92,7 @@ RS24_FUGRU
           yylealleyyys
           ssarlyarsssp
           ===========|
-          chain ftid="PRO_0000137627" note="40S ribosomal protein S24"
+          chain note="40S ribosomal protein S24" ftid="PRO_0000137627"
 
 </pre>
 </td></tr></table><p>
@@ -150,11 +152,11 @@ Lactose operon repressor.
                           |    |
                           SNP  SNP
           |===========================================================
-          chain ftid="PRO_0000107963" note="Lactose operon repressor"
+          chain note="Lactose operon repressor" ftid="PRO_0000107963"
           |========================================================|
           domain note="HTH lacI-type"
                |==================|
-               dna_bind note="H-T-H motif"
+               DNA_bind note="H-T-H motif"
                           |
                           mutagen note="Y-&gt;H: Broadening of specificity"
                                |
@@ -164,11 +166,13 @@ Lactose operon repressor.
           ----:----|----:----|----:----|----:----|----:----|----:----|
           SLLIGVATSSLALHAPSQIVAAIKSRADQLGASVVVSMVERSGVEACKAAVHNLLAQRVS
           ============================================================
-          chain ftid="PRO_0000107963" note="Lactose operon repressor"
-            |=====|    |==============|   |====|  |=|            |=|
-            strand     helix              strand  strand         turn
+          chain note="Lactose operon repressor" ftid="PRO_0000107963"
+            |=====|                       |====|                 |=|
+            beta_strand                   beta_strand            turn
+                       |==============|           |=|
+                       alpha_helix                beta_strand
                                                      |==========|
-                                                     helix
+                                                     alpha_helix
 
 </pre>
 </td></tr></table><p>

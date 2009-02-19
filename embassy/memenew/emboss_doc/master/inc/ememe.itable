@@ -13,38 +13,10 @@
 </tr>
 
 <tr>
-<td>[-outhtml]<br>(Parameter 2)</td>
-<td>MEME program html output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outtext]<br>(Parameter 3)</td>
-<td>MEME program text output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outxml]<br>(Parameter 4)</td>
-<td>MEME program xml output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outxsl]<br>(Parameter 5)</td>
-<td>MEME program xsl output file</td>
-<td>Output file</td>
-<td><i>&lt;*&gt;</i>.ememe</td>
-</tr>
-
-<tr>
-<td>[-outseq]<br>(Parameter 6)</td>
-<td>Sequence set filename and optional format (output USA)</td>
-<td>Writeable sequences</td>
-<td><i>&lt;*&gt;</i>.<i>format</i></td>
+<td>[-outdir]<br>(Parameter 2)</td>
+<td>MEME program output file output directory</td>
+<td>Output directory</td>
+<td>.</td>
 </tr>
 
 <tr bgcolor="#FFFFCC">

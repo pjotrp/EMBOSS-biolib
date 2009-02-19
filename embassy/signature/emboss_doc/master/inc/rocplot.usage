@@ -20,7 +20,7 @@ Available modes
          2 : Multiple lists of known true relatives
 Select mode of operation. [1]: <b>1</b>
 Overlap threshold for hits. [10]: <b></b>
-General output file directory [./]: <b></b>
+General output file output directory [./]: <b></b>
 Base name of ROC plot file(s) (output). [_rocplot]: <b></b>
 Rocplot summary output file [_summary]: <b></b>
 Base name of classification plot file(s) (output). [_classplot]: <b></b>

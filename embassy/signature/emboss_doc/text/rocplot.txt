@@ -957,7 +957,7 @@ hitcnt[0]: 80
                                   classed as unique if they have different
                                   accession numbers (no requirement for
                                   overlapping ranges).
-   -logfile            outfile    [rocplot.log] Output file name
+   -logfile            outfile    [rocplot.log] Domainatrix log output file
 
    Associated qualifiers:
 

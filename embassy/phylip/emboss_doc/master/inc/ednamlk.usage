@@ -12,9 +12,9 @@ Global rearrangements [N]: <b></b>
 Randomize input order of species [N]: <b></b>
 Use empirical base frequencies [Y]: <b></b>
 Use Default Mean block length of sites [N]: <b></b>
-phylip dnamlk program output file [ednamlk.outfile]: <b></b>
+Phylip dnamlk program output file [ednamlk.outfile]: <b></b>
 Create a tree file [Y]: <b></b>
-Phylip output tree file [ednamlk.treefile]: <b></b>
+Phylip tree output file [ednamlk.treefile]: <b></b>
 
 </pre></td></tr></table><p>
 <p>

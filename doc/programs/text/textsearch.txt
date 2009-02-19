@@ -33,6 +33,7 @@ Usage
 % textsearch tsw:* 'lactose' 
 Search the textual description of sequence(s)
 Output file [edd1_rat.textsearch]: 
+UNKNOWN token '[Contains:'
 
    Go to the input files for this example
    Go to the output files for this example

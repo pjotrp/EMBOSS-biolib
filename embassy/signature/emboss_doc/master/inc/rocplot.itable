@@ -100,7 +100,7 @@
 
 <tr>
 <td>-logfile</td>
-<td>Output file name</td>
+<td>Domainatrix log output file</td>
 <td>Output file</td>
 <td>rocplot.log</td>
 </tr>

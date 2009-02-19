@@ -28,14 +28,14 @@
 
 <tr>
 <td>[-outssfile]<br>(Parameter 3)</td>
-<td>This option specifies the name of the file containing top-scoring domains for residue-based alinnment (output).A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like).</td>
+<td>This option specifies the name of the file containing top-scoring domains for residue-based alignment (output).A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like).</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.ssematch</td>
 </tr>
 
 <tr>
 <td>[-outsefile]<br>(Parameter 4)</td>
-<td>This option specifies the name of the file containing top-scoring domains for secondary structure element-based alinnment (output). A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like).</td>
+<td>This option specifies the name of the file containing top-scoring domains for secondary structure element-based alignment (output). A 'domain classification file' contains classification and other data for domains from SCOP or CATH, in DCF format (EMBL-like).</td>
 <td>Output file</td>
 <td><i>&lt;*&gt;</i>.ssematch</td>
 </tr>

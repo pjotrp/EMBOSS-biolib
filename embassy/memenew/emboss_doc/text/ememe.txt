@@ -427,11 +427,7 @@ Usage
 
 % ememe crp0.s -mod oops 
 Multiple EM for Motif Elicitation
-MEME program html output file [crp0.html]: 
-MEME program text output file [crp0.text]: 
-MEME program xml output file [crp0.xml]: 
-MEME program xsl output file [crp0.xsl]: 
-output sequence set [crp0.fasta]: 
+MEME program output file output directory [.]: 
 
    Go to the input files for this example
    Go to the output files for this example
@@ -555,12 +551,8 @@ Command line arguments
   [-dataset]           seqset     User must provide the full filename of a set
                                   of sequences, not an indirect reference,
                                   e.g. a USA is NOT acceptable.
-  [-outhtml]           outfile    [*.ememe] MEME program html output file
-  [-outtext]           outfile    [*.ememe] MEME program text output file
-  [-outxml]            outfile    [*.ememe] MEME program xml output file
-  [-outxsl]            outfile    [*.ememe] MEME program xsl output file
-  [-outseq]            seqoutset  [.] Sequence set filename
-                                  and optional format (output USA)
+  [-outdir]            outdir     [.] MEME program output file output
+                                  directory
 
    Additional (Optional) qualifiers:
    -bfile              infile     The name of the file containing the
@@ -902,30 +894,6 @@ Command line arguments
    -fformat1           string     Features format
    -fopenfile1         string     Features file name
 
-   "-outhtml" associated qualifiers
-   -odirectory2        string     Output directory
-
-   "-outtext" associated qualifiers
-   -odirectory3        string     Output directory
-
-   "-outxml" associated qualifiers
-   -odirectory4        string     Output directory
-
-   "-outxsl" associated qualifiers
-   -odirectory5        string     Output directory
-
-   "-outseq" associated qualifiers
-   -osformat6          string     Output seq format
-   -osextension6       string     File name extension
-   -osname6            string     Base file name
-   -osdirectory6       string     Output directory
-   -osdbname6          string     Database name to add
-   -ossingle6          boolean    Separate file for each entry
-   -oufo6              string     UFO features
-   -offormat6          string     Features format
-   -ofname6            string     Features file name
-   -ofdirectory6       string     Output directory
-
    General qualifiers:
    -auto               boolean    Turn off prompts
    -stdout             boolean    Write first file to standard output
@@ -1049,7 +1017,7 @@ Output file format
    This file contains non-printing characters and so cannot be displayed
    here.
 
-  File: crp0.html
+  File: meme.html
 
    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd"> <html> <head> <meta
@@ -1125,7 +1093,7 @@ Output file format
    the definition of position and combined <em>p</em>-values. </li> </ul>
    </form></body> </html>
 
-  File: crp0.fasta
+  File: meme.fasta
 
 >ce1cg
 TAATGTTTGTGCTGGTTTTTGTGGCATCGGGCGAGAATAGCGCGTGGTGTGAAAGACTGT
@@ -1182,7 +1150,7 @@ AGCCCTGGGCCAACTTTTGGCGAAAATGAGACGTTGATCGGCACG
 GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTG
 GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
 
-  File: crp0.text
+  File: meme.txt
 
 *******************************************************************************
 *
@@ -1222,7 +1190,7 @@ AAAI Press, Menlo Park, California, 1994.
 TRAINING SET
 *******************************************************************************
 *
-DATAFILE= crp0.fasta
+DATAFILE= ./meme.fasta
 ALPHABET= ACGT
 Sequence name            Weight Length  Sequence name            Weight Length
 
@@ -1269,7 +1237,7 @@ TGTGA[ACT][CAG][GT][AGT][GC][TAC]TCAC
 
 
 
-Time  0.66 secs.
+Time  0.68 secs.
 
 *******************************************************************************
 *
@@ -1324,7 +1292,7 @@ CPU: emboss6.ebi.ac.uk
 *******************************************************************************
 *
 
-  File: crp0.xml
+  File: meme.xml
 
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <?xml-stylesheet type='text/xsl' href='meme.xsl'?>
@@ -1450,7 +1418,7 @@ ned_site motif_id="motif_1" strand="plus" position="80" pvalue="1.73e-05"/>
 </scanned_sites_summary>
 </MEME>
 
-  File: crp0.xsl
+  File: meme.xsl
 
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">

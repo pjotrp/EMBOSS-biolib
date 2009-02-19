@@ -29,10 +29,10 @@
 *  -lambda             float      [1.0] Mean block length of sites having the
                                   same rate (greater than 1) (Number 1.000 or
                                   more)
-  [-outfile]           outfile    [ednamlk.outfile] phylip dnamlk program
+  [-outfile]           outfile    [ednamlk.outfile] Phylip dnamlk program
                                   output file
   [-[no]trout]         toggle     [Y] Create a tree file
-*  -treefile           outfile    [ednamlk.treefile] Phylip output tree file
+*  -treefile           outfile    [ednamlk.treefile] Phylip tree output file
 
    Additional (Optional) qualifiers:
    -ttratio            float      [2.0] Transition/transversion ratio (Any

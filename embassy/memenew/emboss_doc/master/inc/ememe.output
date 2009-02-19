@@ -9,7 +9,7 @@
 <p><img src="ememe.1.logo_ssc1.e.gif" alt="[ememe results]">
 <p><h3>File: logo_ssc1.png</h3>
 <p>This file contains non-printing characters and so cannot be displayed here.
-<p><h3>File: crp0.html</h3>
+<p><h3>File: meme.html</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 &lt;!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"&gt;
 &lt;html&gt;
@@ -117,7 +117,7 @@ MEME version 4.0.0 (Release date: 0 PDT 20)
 &lt;/form&gt;&lt;/body&gt;
 &lt;/html&gt;
 </td></tr></table><p>
-<p><h3>File: crp0.fasta</h3>
+<p><h3>File: meme.fasta</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &gt;ce1cg
@@ -176,7 +176,7 @@ GATTTTTATACTTTAACTTGTTGATATTTAAAGGTATTTAATTGTAATAACGATACTCTG
 GAAAGTATTGAAAGTTAATTTGTGAGTGGTCGCACATATCCTGTT
 </pre>
 </td></tr></table><p>
-<p><h3>File: crp0.text</h3>
+<p><h3>File: meme.txt</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 ********************************************************************************
@@ -209,7 +209,7 @@ AAAI Press, Menlo Park, California, 1994.
 ********************************************************************************
 TRAINING SET
 ********************************************************************************
-DATAFILE= crp0.fasta
+DATAFILE= ./meme.fasta
 ALPHABET= ACGT
 Sequence name            Weight Length  Sequence name            Weight Length  
 -------------            ------ ------  -------------            ------ ------  
@@ -240,7 +240,7 @@ TGTGA[ACT][CAG][GT][AGT][GC][TAC]TCAC
 
 
 
-Time  0.66 secs.
+Time  0.68 secs.
 
 ********************************************************************************
 
@@ -286,7 +286,7 @@ CPU: emboss6.ebi.ac.uk
 ********************************************************************************
 </pre>
 </td></tr></table><p>
-<p><h3>File: crp0.xml</h3>
+<p><h3>File: meme.xml</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &lt;?xml version='1.0' encoding='UTF-8' standalone='yes'?&gt;
@@ -396,7 +396,7 @@ CPU: emboss6.ebi.ac.uk
 &lt;/MEME&gt;
 </pre>
 </td></tr></table><p>
-<p><h3>File: crp0.xsl</h3>
+<p><h3>File: meme.xsl</h3>
 <table width="90%"><tr><td bgcolor="#CCFFCC">
 <pre>
 &lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;
