@@ -1,4 +1,33 @@
 Version 6.1.0
+	When a sequence is reversed by revseq the description is tagged
+	with "Reversed: " so that the output and any sequence derived from
+	it has a note of the history.
+
+	EMBL and GenBank formats when used to read multiple entries failed
+	to reset the list of citations. Although the first set of
+	citations was reported correctly, all other entries in the same
+	run included the citation list from the first entry.
+
+	SwissProt/UniProt entries now preserve the complete entry content
+	when read and rewritten. All feature types are preserved and
+	feature lines wrap according to the widths in UniProt 14.8. Date
+	lines are stored and written. Comments are stored in blocks.
+	Database cross-references ar stored in a list. The description
+	lines are saved in the new SwissProt structure. Tests on a set of
+	complex entries confirm that EMBOSS is able to read and write an
+	exact copy of this sample set.
+
+	Protein feature keys now use the Sequence Ontology identifiers
+	as internal names. This may change the way some feature keys are
+	converted between data formats. Protein feature keys have been
+	updated to correct some conversions, for example to distinguish
+	between "coiled coil" from pepcoil and "random coil" from garnier
+	output.
+
+	Fitch sequence format was only able to read a single
+	sequence. EMBOSS can nmow read 'fitch' as a multiple sequence
+	format.
+
 	Extractfeat now cleanly processes minscore and maxscore as limits
 	on the score. By default any score is allowed if these are
 	unchanged. Previous releases required minimum and maximum to be
