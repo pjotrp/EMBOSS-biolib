@@ -650,6 +650,7 @@ void ajErr(const char *format, ...)
 	    fprintf(stderr, "%s\n", mesg_buf);
 
 	ajMessInvokeDebugger();
+        ajUtilCatch();
     }
 
     return;
