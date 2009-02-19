@@ -3472,8 +3472,6 @@ static AjPFeature featSwissProcess(AjPFeattable thys, const AjPStr feature,
 	ajRegSubI(SwRegexFtid, 2, &ftid);
 	/*ajDebug("Swiss ftid found\nftid: '%S'\n",
 		ftid);*/
-	if(ajStrGetLen(ftid))
-	    ajFeatTagAdd(ret, featTagFtid, ftid);
 	ajStrAssignS(&tagstr, note);
 	ajStrTrimC(&tagstr, " .");
     }
@@ -3496,6 +3494,8 @@ static AjPFeature featSwissProcess(AjPFeattable thys, const AjPStr feature,
 	if(ajStrGetLen(tagstr))
 	    ajFeatTagAdd(ret, featTagNote, tagstr);
     }
+    if(ajStrGetLen(ftid))
+        ajFeatTagAdd(ret, featTagFtid, ftid);
 
     ajStrDel(&note);
     ajStrDel(&comment);
@@ -8218,7 +8218,9 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 		{
 		    ajStrDel(&line);
 		    ajStrDel(&TypeFName);
-		    return ajFalse;
+                    ajStrDel(&firstid);
+                    ajStrDel(&savetype);
+                    return ajFalse;
 		}
 		typecount = ajTableGetLength(pTypeTable);
 	    }
@@ -8232,6 +8234,8 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 		{
 		    ajStrDel(&line);
 		    ajStrDel(&TypeFName);
+                    ajStrDel(&firstid);
+                    ajStrDel(&savetype);
 		    return ajFalse;
 		}
 		typecount = ajTableGetLength(pTypeTable);
@@ -8315,6 +8319,7 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
 			    ajStrInsertK(Ptyptagstr, 0, ';');
 			ajStrInsertS(Ptyptagstr, 0, type);
 			savetype  = type;
+                        type = NULL; /* pmr: check if this should be NULL now */
 			typtagstr = *Ptyptagstr;
                         taginternal = ajTrue;
 		    }
@@ -8501,6 +8506,10 @@ static AjBool featVocabReadTypes(const AjPStr fname, AjPTable pTypeTable,
     ajStrDel(&type);
     ajStrDel(&intids);
     ajStrDel(&modtype);
+    ajStrDel(&localname);
+    ajStrDel(&sofaname);
+    ajStrDel(&firstid);
+    ajStrDel(&savetype);
     
     return ajTrue;    
 }
@@ -9078,8 +9087,8 @@ AjBool ajFeatTagAdd(AjPFeature thys, const AjPStr tag, const AjPStr value)
     AjBool knowntag = ajTrue;
     const char* cp;
     
-/*    ajDebug("ajFeatTagAdd '%S' '%S' Prot: %B\n",
-	    tag, value, thys->Protein);*/
+    ajDebug("ajFeatTagAdd '%S' '%S' Prot: %B\n",
+	    tag, value, thys->Protein);
     
     featInit();
     
@@ -12024,59 +12033,90 @@ static void featTagEmblWrapC(AjPStr *pval, ajuint margin, const char* prefix,
 static void featTagSwissWrapC(AjPStr *pval, ajuint margin, const char* prefix,
 			      AjPStr* retstr)
 {
-    ajint left  = 0;
-    ajint width = 0;
-    ajint len   = 0;
-    ajint i;
-    ajint j;
-    ajint k;
+    ajuint left  = 0;
+    ajuint width = 0;
+    ajuint len   = 0;
+    ajuint i;
+    ajuint j;
+    ajuint k;
+    ajint iftid = -1;
+    AjBool isftidstart = ajFalse;
+    AjBool isftid = ajFalse;
 
     AjPStr valstr = NULL;
-    ajint last;
+    ajuint last;
     
     left = strlen(prefix);
     width = margin - left;	/* available width for printing */
     
     k = width; /* will be reset in the loop */
     
-    /* ajDebug("featTagSwissWrapC %d <%d> '%S'\n",
-       ajStrGetLen(*pval), width, *pval); */
+    ajDebug("featTagSwissWrapC %d <%d> '%S'\n",
+       ajStrGetLen(*pval), width, *pval);
     
-    if(ajStrGetLen(*pval) <= margin)	/* no need to wrap */
+    if(ajStrGetLen(*pval) <= left)	/* no need to wrap */
     {
 	ajStrAssignS(retstr, *pval);
 	ajStrAppendK(retstr, '\n');
-	/* ajDebug("simple '%S'\n", *retstr); */
+	ajDebug("simple '%S'\n", *retstr);
 	return;
-    }
-    
+    }   
+
     ajStrAssignSubS(retstr, *pval, 0, left-1);
     ajStrAssignSubS(&valstr, *pval, left, -1);
     len = ajStrGetLen(valstr);
-    /* ajDebug("rest '%S'\n", valstr); */
+    ajDebug("rest '%S'\n", valstr);
     
+    if(ajStrPrefixC(valstr, "/FTId="))
+    {
+        ajStrTrimEndC(retstr, " ");
+        ajStrAppendK(retstr, '\n');
+        isftidstart = ajTrue;
+    }
+    
+
     for(i=0; i < len; i+= k)
     {
 	last = i + width - 1;
 
-	/* ajDebug("try %d to %d (len %d)\n", i, last, len); */
-
-	if((last+1) >= len)		/* no need to split */
+        ajStrAssignSubS(&featTmpStr, valstr, i, len-1);
+        iftid = ajStrFindC(featTmpStr, " /FTId=");
+        isftid = ajFalse;
+	ajDebug("try %d to %d (len %d) iftid:%d\n", i, last, len, iftid);
+        if(iftid >= 0 && iftid+(ajint)i <= (ajint)last)
+        {
+            if(iftid)
+            {
+                isftid = ajTrue;
+                ajStrAssignSubS(&featTmpStr, valstr, i, i+iftid-1);
+                j = iftid;
+            }
+            else
+            {
+                ajStrAssignSubS(&featTmpStr, valstr, i, i+iftid-2);
+                j = 0;
+            }
+            
+	    ajDebug("' /FTId=' found iftid:%d isftid:%B, j:%d\n",
+                    iftid, isftid, j);
+        }
+	else if((last+1) >= len)		/* no need to split */
 	{
 	    ajStrAssignSubS(&featTmpStr, valstr, i, len-1);
-	    /* ajDebug("last %d >= len %d\n", last, len); */
+	    ajDebug("last %d >= len %d\n", last, len);
 	    j = 0;
 	}
 	else if(ajStrGetCharPos(valstr, (last+1)) == ' ') /* split at max width */
 	{
 	    ajStrAssignSubS(&featTmpStr, valstr, i, last);
-	    j = last + 1;
+	    j = width;
+	    ajDebug("split at max width last+1 %d\n", last+1);
 	}
 	else
 	{
 	    ajStrAssignSubS(&featTmpStr, valstr, i, last); /* save max string */
 	    j = ajStrFindlastC(featTmpStr, " "); /* last space in featTmpStr */
-	    /* ajDebug("space at %d\n", j); */
+	    ajDebug("space at %d\n", j);
 	}
 
 	if(j < 1)			/* no space found */
@@ -12088,9 +12128,9 @@ static void featTagSwissWrapC(AjPStr *pval, ajuint margin, const char* prefix,
 	{
 	    k = j + 1;			/* start after the space */
 	}
-	/* ajDebug("%d +%d '%.*S'\n", i, j, j, featTmpStr); */
+	ajDebug("%d +%d (%d) '%.*S'\n", i, j, k, j, featTmpStr);
 
-	if(i)
+	if(i || isftidstart)
 	    ajFmtPrintAppS(retstr, "%s%.*S\n", prefix,j, featTmpStr);
 	else
 	    ajFmtPrintAppS(retstr, "%.*S\n", j, featTmpStr);
@@ -12764,6 +12804,7 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
     AjPStr wrapstr        = NULL;
     AjPStr fromstr = NULL;
     AjPStr tostr   = NULL;
+    AjBool wasnote = ajFalse;
     
     outtyp = featTableTypeExternal(thys->Type, FeatTypeTableSwiss);
     
@@ -12804,8 +12845,8 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
 	tv = ajListIterGet(iter);
 	outtag = featTableTag(tv->Tag, FeatTagsTableSwiss, &knowntag);
 	featTagFmt(outtag, FeatTagsTableSwiss, &outfmt);
-	/*ajDebug("Tag '%S' => '%S' %S '%S'\n",
-		tv->Tag, outtag, outfmt, tv->Value);*/
+	ajDebug("Tag '%S' => '%S' %S '%S'\n",
+		tv->Tag, outtag, outfmt, tv->Value);
 	if(i++)
 	    ajFmtPrintAppS(&featOutStr, " ") ;
 	else
@@ -12824,27 +12865,37 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
 		/*ajDebug("case limited\n");*/
 		featTagLimit(outtag, FeatTagsTableSwiss, &tmplim);
 		featTagAllLimit(&featValTmp, tmplim);
-		ajFmtPrintAppS(&featOutStr, "%S", featValTmp);
+		ajFmtPrintAppS(&featOutStr, "%S.", featValTmp);
 		ajStrDel(&tmplim);
+                wasnote = ajFalse;
 		break;
 	    case CASE2('T','A') :	/* tag=text */
 		/*ajDebug("case tagval\n");*/
 		if(ajStrMatchCaseC(outtag, "ftid")) /* fix case for tag */
-		    ajFmtPrintAppS(&featOutStr, "/FTId=%S",featValTmp);
+		    ajFmtPrintAppS(&featOutStr, "/FTId=%S.",featValTmp);
 		else			/* lower case is fine */
 		    ajFmtPrintAppS(&featOutStr, "/%S=%S",outtag, featValTmp);
+                wasnote = ajFalse;
 		break;
-	    case CASE2('T','E') :     /* simple test, wrap at space */
+	    case CASE2('T','E') :     /* simple text, wrap at space */
 		/*ajDebug("case text\n");*/
-		ajFmtPrintAppS(&featOutStr, "%S", featValTmp);
+		ajFmtPrintAppS(&featOutStr, "%S.", featValTmp);
+                wasnote = ajTrue;
 		break;
 	    case CASE2('B','T') :	/* bracketed, wrap at space */
 		/*ajDebug("case btext\n");*/
-		ajFmtPrintAppS(&featOutStr, "(%S)", featValTmp);
+                if(wasnote)
+                {
+                    ajStrCutEnd(&featOutStr, 2); /* remove ". " */
+                    ajStrAppendK(&featOutStr, ' '); /* replace the space */
+                }
+                ajFmtPrintAppS(&featOutStr, "(%S).", featValTmp);
+                wasnote = ajFalse;
 		break;
 	    default:
 		featWarn("Unknown SWISS feature tag type '%S' for '%S'",
 		       outfmt, outtag);
+                wasnote = ajFalse;
 	    }
 	}
 	else
@@ -12855,10 +12906,8 @@ static void featDumpSwiss(const AjPFeature thys, AjPFile file,
     
     ajListIterDel(&iter);
     
-    if(i)
-	ajFmtPrintAppS(&featOutStr, ".");
     
-    featTagSwissWrapC(&featOutStr, 80, "FT                                ",
+    featTagSwissWrapC(&featOutStr, 75, "FT                                ",
 		      &wrapstr);
     ajFmtPrintF(file, "%S", wrapstr);
     ajStrDelStatic(&featOutStr);
@@ -13332,7 +13381,7 @@ static AjBool featTypePirIn(AjPStr* type)
 /* @funcstatic featTypePirOut *************************************************
 **
 ** Converts an internal feature type into the corresponding PIR type,
-** because internal types are based on SwissProt.
+** because internal types are based on GFF3.
 **
 ** @param [u] type [AjPStr*] PIR feature type in, returned as internal type
 ** @return [AjBool] ajTrue if the type name was found and changed
