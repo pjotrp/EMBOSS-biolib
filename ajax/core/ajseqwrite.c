@@ -461,8 +461,6 @@ AjPSeqout ajSeqoutNew(void)
     pthis->Sv    = ajStrNew();
     pthis->Gi    = ajStrNew();
     pthis->Tax   = ajStrNew();
-    pthis->Taxid = ajStrNew();
-    pthis->Organelle = ajStrNew();
     pthis->Desc  = ajStrNew();
     pthis->Type  = ajStrNew();
     pthis->EType = 0;
@@ -499,11 +497,9 @@ AjPSeqout ajSeqoutNew(void)
     pthis->Acclist = ajListstrNew();
     pthis->Keylist = ajListstrNew();
     pthis->Taxlist = ajListstrNew();
-    pthis->Genelist = ajListstrNew();
     pthis->Cmtlist = ajListstrNew();
     pthis->Xreflist = ajListstrNew();
     pthis->Reflist = ajListNew();
-    pthis->Fulldesc = ajSeqdescNew();
 
     return pthis;
 }
@@ -613,8 +609,7 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
     AjPSeqout seqout;
     AjPSeq    seq    = NULL;
     AjPStr    tmpstr = NULL;
-    AjPSeqRef  tmpref  = NULL;
-    AjPSeqGene tmpgene = NULL;
+    AjPSeqRef tmpref = NULL;
 
     seqout = *Pseqout;
 
@@ -626,7 +621,6 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
     ajStrDel(&seqout->Sv);
     ajStrDel(&seqout->Gi);
     ajStrDel(&seqout->Tax);
-    ajStrDel(&seqout->Taxid);
     ajStrDel(&seqout->Organelle);
     ajStrDel(&seqout->Desc);
     ajStrDel(&seqout->Type);
@@ -634,7 +628,6 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
     ajStrDel(&seqout->Molecule);
     ajStrDel(&seqout->Class);
     ajStrDel(&seqout->Division);
-    ajStrDel(&seqout->Evidence);
     ajStrDel(&seqout->Db);
     ajStrDel(&seqout->Setdb);
     ajStrDel(&seqout->Setoutdb);
@@ -664,10 +657,6 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 	ajStrDel(&tmpstr);
     ajListFree(&seqout->Taxlist);
 
-    while(ajListPop(seqout->Genelist,(void **)&tmpgene))
-	ajSeqgeneDel(&tmpgene);
-    ajListFree(&seqout->Genelist);
-
     while(ajListPop(seqout->Reflist,(void **)&tmpref))
 	ajSeqrefDel(&tmpref);
     ajListFree(&seqout->Reflist);
@@ -695,7 +684,6 @@ void ajSeqoutDel(AjPSeqout* Pseqout)
 	ajFileClose(&seqout->File);
 
     ajSeqdateDel(&seqout->Date);
-    ajSeqdescDel(&seqout->Fulldesc);
 
     AJFREE(seqout->Accuracy);
     AJFREE(*Pseqout);
@@ -3720,46 +3708,26 @@ static void seqWriteSwissnew(AjPSeqout outseq)
     /*  ajuint crc; old 32-bit crc */
     unsigned long long crc;
     AjIList it;
-    AjIList itb;
-    AjIList itc;
     AjPStr cur;
     ajuint ilen;
-    const AjPStr cmtstr = NULL;		/* from list - do not delete */
-    AjPStr tmpstr = NULL;
-    const AjPSeqRef  seqref  = NULL;
-    const AjPSeqGene seqgene = NULL;
-    const AjPSeqDesc    desc    = NULL;
-    const AjPStr tmpline = NULL;
-    const AjPSeqSubdesc subdesc = NULL;
-    const char* altnames="AltName:";
-    const char* altspace="        ";
-    const char* alttext;
-
+    
     if(ajStrMatchC(outseq->Type, "N"))
     {
 	seqWriteEmbl(outseq);
 	return;
     }
-    if(ajStrFindAnyK(outseq->Name, '_') > 0)
-    {
-        ajFmtPrintF(outseq->File,
-                    "ID   %-19S     Reviewed;    %8d AA.\n",
-                    outseq->Name, ajStrGetLen(outseq->Seq));
-    }
-
-    else
-    {
-        ajFmtPrintF(outseq->File,
-                    "ID   %-19S     Unreviewed;    %8d AA.\n",
-                    outseq->Name, ajStrGetLen(outseq->Seq));
-    }
+    
+    ajFmtPrintF(outseq->File,
+		"ID   %-10S     Unreviewed;    %7d AA.\n",
+		outseq->Name, ajStrGetLen(outseq->Seq));
+    
     if(ajListGetLength(outseq->Acclist))
     {
 	ilen = 0;
 	it = ajListIterNewread(outseq->Acclist);
 	while((cur = (AjPStr) ajListIterGet(it)))
 	{
-	    if(ilen + ajStrGetLen(cur) > 73)
+	    if(ilen + ajStrGetLen(cur) > 79)
 	    {
 		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
@@ -3785,353 +3753,11 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, ";\n");
     }
     
-    if(outseq->Date)
-    {
-	if(outseq->Date->CreDate)
-	    ajFmtPrintF(outseq->File,
-			"DT   %D, integrated into %S.\n",
-			outseq->Date->CreDate, outseq->Date->CreVer);
-	if (outseq->Date->SeqDate)
-	    ajFmtPrintF(outseq->File,
-			"DT   %D, sequence version %S.\n",
-			outseq->Date->SeqDate, outseq->Date->SeqVer);
-
-	if(outseq->Date->ModDate)
-	    ajFmtPrintF(outseq->File,
-			"DT   %D, entry version %S.\n",
-			outseq->Date->ModDate, outseq->Date->ModVer);
-    }
-
-    if(ajStrGetLen(outseq->Fulldesc->Name))
-    {
-        ajFmtPrintF(outseq->File,
-                    "DE   RecName: Full=%S\n", outseq->Fulldesc->Name);
-
-        it = ajListIterNewread(outseq->Fulldesc->Short);
-        while((cur = (AjPStr) ajListIterGet(it)))
-            ajFmtPrintF(outseq->File,
-                        "DE            Short=%S\n", cur);
-        ajListIterDel(&it);
-        
-        it = ajListIterNewread(outseq->Fulldesc->EC);
-        while((cur = (AjPStr) ajListIterGet(it)))
-            ajFmtPrintF(outseq->File,
-                        "DE            EC=%S\n", cur);
-        ajListIterDel(&it);
-        
-        it = ajListIterNewread(outseq->Fulldesc->AltNames);
-        while((subdesc = (AjPSeqSubdesc) ajListIterGet(it)))
-        {
-            alttext = altnames;
-            if(ajStrGetLen(subdesc->Name))
-            {
-                ajFmtPrintF(outseq->File,
-                            "DE   %s Full=%S\n", alttext, subdesc->Name);
-                alttext = altspace;
-            }
-
-            itb = ajListIterNewread(subdesc->Inn);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-            {
-                ajFmtPrintF(outseq->File,
-                            "DE   %s INN=%S\n", alttext, cur);
-                alttext = altspace;
-            }
-            
-            ajListIterDel(&itb);
-
-            itb = ajListIterNewread(subdesc->Short);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-                ajFmtPrintF(outseq->File,
-                            "DE            Short=%S\n", cur);
-            ajListIterDel(&itb);
-
-            itb = ajListIterNewread(subdesc->EC);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-                ajFmtPrintF(outseq->File,
-                            "DE            EC=%S\n", cur);
-            ajListIterDel(&itb);
-
-            itb = ajListIterNewread(subdesc->Allergen);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-                ajFmtPrintF(outseq->File,
-                            "DE            Allergen=%S\n", cur);
-            ajListIterDel(&itb);
-
-            itb = ajListIterNewread(subdesc->Biotech);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-                ajFmtPrintF(outseq->File,
-                            "DE            Biotech=%S\n", cur);
-            ajListIterDel(&itb);
-
-            itb = ajListIterNewread(subdesc->Cdantigen);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-                ajFmtPrintF(outseq->File,
-                            "DE            CD_antigen=%S\n", cur);
-            ajListIterDel(&itb);
-
-        }
-        ajListIterDel(&it);
-        
-        it = ajListIterNewread(outseq->Fulldesc->SubNames);
-        while((subdesc = (AjPSeqSubdesc) ajListIterGet(it)))
-        {
-            ajFmtPrintF(outseq->File,
-                        "DE     SubName: Full=%S\n", subdesc->Name);
-            itb = ajListIterNewread(subdesc->Short);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-                ajFmtPrintF(outseq->File,
-                            "DE              Short=%S\n", cur);
-            ajListIterDel(&itb);
-            itb = ajListIterNewread(subdesc->EC);
-            while((cur = (AjPStr) ajListIterGet(itb)))
-                ajFmtPrintF(outseq->File,
-                            "DE              EC=%S\n", cur);
-            ajListIterDel(&itb);
-        }
-        ajListIterDel(&it);
-
-        itc = ajListIterNewread(outseq->Fulldesc->Includes);
-        while((desc = (AjPSeqDesc) ajListIterGet(itc)))
-        {
-            ajFmtPrintF(outseq->File,
-                        "DE   Includes:\n");
-            ajFmtPrintF(outseq->File,
-                        "DE     RecName: Full=%S\n", desc->Name);
-            it = ajListIterNewread(desc->Short);
-            while((cur = (AjPStr) ajListIterGet(it)))
-                ajFmtPrintF(outseq->File,
-                            "DE              Short=%S\n", cur);
-            ajListIterDel(&it);
-
-            it = ajListIterNewread(desc->EC);
-            while((cur = (AjPStr) ajListIterGet(it)))
-                ajFmtPrintF(outseq->File,
-                            "DE              EC=%S\n", cur);
-            ajListIterDel(&it);
-
-            it = ajListIterNewread(desc->AltNames);
-            while((subdesc = (AjPSeqSubdesc) ajListIterGet(it)))
-            {
-                alttext = altnames;
-                if(ajStrGetLen(subdesc->Name))
-                {
-                    ajFmtPrintF(outseq->File,
-                                "DE     %s Full=%S\n", alttext, subdesc->Name);
-                    alttext = altspace;
-                }
-
-                itb = ajListIterNewread(subdesc->Inn);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                {
-                    ajFmtPrintF(outseq->File,
-                                "DE     %s INN=%S\n", alttext, cur);
-                    alttext = altspace;
-                }
-
-                ajListIterDel(&itb);
-                itb = ajListIterNewread(subdesc->Short);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              Short=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->EC);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              EC=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->Allergen);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              Allergen=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->Biotech);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              Biotech=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->Cdantigen);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              CD_antigen=%S\n", cur);
-                ajListIterDel(&itb);
-
-            }
-            ajListIterDel(&it);
-        
-            it = ajListIterNewread(desc->SubNames);
-            while((subdesc = (AjPSeqSubdesc) ajListIterGet(it)))
-            {
-                ajFmtPrintF(outseq->File,
-                            "DE     SubName: Full=%S\n", subdesc->Name);
-                itb = ajListIterNewread(subdesc->Short);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              Short=%S\n", cur);
-                ajListIterDel(&itb);
-                itb = ajListIterNewread(subdesc->EC);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              EC=%S\n", cur);
-                ajListIterDel(&itb);
-            }
-            ajListIterDel(&it);
-
-        }
-        ajListIterDel(&itc);
-
-        itc = ajListIterNewread(outseq->Fulldesc->Contains);
-        while((desc = (AjPSeqDesc) ajListIterGet(itc)))
-        {
-            ajFmtPrintF(outseq->File,
-                        "DE   Contains:\n");
-            ajFmtPrintF(outseq->File,
-                        "DE     RecName: Full=%S\n", desc->Name);
-            it = ajListIterNewread(desc->Short);
-            while((cur = (AjPStr) ajListIterGet(it)))
-                ajFmtPrintF(outseq->File,
-                            "DE              Short=%S\n", cur);
-            ajListIterDel(&it);
-
-            it = ajListIterNewread(desc->EC);
-            while((cur = (AjPStr) ajListIterGet(it)))
-                ajFmtPrintF(outseq->File,
-                            "DE              EC=%S\n", cur);
-            ajListIterDel(&it);
-
-            it = ajListIterNewread(desc->AltNames);
-            while((subdesc = (AjPSeqSubdesc) ajListIterGet(it)))
-            {
-                alttext = altnames;
-                if(ajStrGetLen(subdesc->Name))
-                {
-                    ajFmtPrintF(outseq->File,
-                                "DE     %s Full=%S\n", alttext, subdesc->Name);
-                    alttext = altspace;
-                }
-
-                itb = ajListIterNewread(subdesc->Inn);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                {
-                    ajFmtPrintF(outseq->File,
-                                "DE     %s INN=%S\n", alttext, cur);
-                    alttext = altspace;
-                }
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->Short);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              Short=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->EC);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              EC=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->Allergen);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              Allergen=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->Biotech);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              Biotech=%S\n", cur);
-                ajListIterDel(&itb);
-
-                itb = ajListIterNewread(subdesc->Cdantigen);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE              CD_antigen=%S\n", cur);
-                ajListIterDel(&itb);
-            }
-            ajListIterDel(&it);
-        
-            it = ajListIterNewread(desc->SubNames);
-            while((subdesc = (AjPSeqSubdesc) ajListIterGet(it)))
-            {
-                ajFmtPrintF(outseq->File,
-                            "DE     SubName: Full=%S\n", subdesc->Name);
-                itb = ajListIterNewread(subdesc->Short);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE            Short=%S\n", cur);
-                ajListIterDel(&itb);
-                itb = ajListIterNewread(subdesc->EC);
-                while((cur = (AjPStr) ajListIterGet(itb)))
-                    ajFmtPrintF(outseq->File,
-                                "DE            EC=%S\n", cur);
-                ajListIterDel(&itb);
-            }
-            ajListIterDel(&it);
-
-        }
-        ajListIterDel(&itc);
-
-        if(outseq->Fulldesc->Fragments || outseq->Fulldesc->Precursor)
-        {
-            ajFmtPrintF(outseq->File,
-                        "DE   Flags:");
-
-            if(outseq->Fulldesc->Fragments == 1)
-                ajFmtPrintF(outseq->File,
-                            " Fragment;");
-
-            if(outseq->Fulldesc->Fragments == 2)
-                ajFmtPrintF(outseq->File,
-                            " Fragments;");
-
-            if(outseq->Fulldesc->Precursor)
-                ajFmtPrintF(outseq->File,
-                            " Precursor;");
-
-            ajFmtPrintF(outseq->File,
-                        "\n");
-        }
-                
-
-    }
-    else if(ajStrGetLen(outseq->Desc))
+    if(ajStrGetLen(outseq->Desc))
 	ajFmtPrintF(outseq->File, "DE   %S\n", outseq->Desc);
     
-    if(ajListGetLength(outseq->Genelist))
-    {
-        ajStrAssignClear(&tmpstr);
-	it = ajListIterNewread(outseq->Genelist);
-	while ((seqgene = (const AjPSeqGene) ajListIterGet(it)))
-	{
-            if(ajStrGetLen(tmpstr))
-                ajFmtPrintF(outseq->File,
-                            "GN   and\n");
-            ajStrAssignClear(&tmpstr);
-            if(ajStrGetLen(seqgene->Name))
-		ajFmtPrintAppS(&tmpstr, " Name=%S;", seqgene->Name);
-            if(ajStrGetLen(seqgene->Synonyms))
-		ajFmtPrintAppS(&tmpstr, " Synonyms=%S;", seqgene->Synonyms);
-            if(ajStrGetLen(seqgene->Oln))
-		ajFmtPrintAppS(&tmpstr, " OrderedLocusNames=%S;", seqgene->Oln);
-            if(ajStrGetLen(seqgene->Orf))
-		ajFmtPrintAppS(&tmpstr, " ORFNames=%S;", seqgene->Orf);
-            if(ajStrGetLen(tmpstr))
-                ajFmtPrintF(outseq->File,
-                            "GN  %S\n", tmpstr);
-        }
-        ajListIterDel(&it);
-    }
-
     if(ajStrGetLen(outseq->Tax))
 	ajFmtPrintF(outseq->File, "OS   %S.\n", outseq->Tax);
-    
-    if(ajStrGetLen(outseq->Organelle))
-	ajFmtPrintF(outseq->File, "OG   %S.\n", outseq->Organelle);
     
     if(ajListGetLength(outseq->Taxlist) > 1)
     {
@@ -4139,7 +3765,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	it   = ajListIterNewread(outseq->Taxlist);
 	while((cur = (AjPStr) ajListIterGet(it)))
 	{
-	    if(ilen+ajStrGetLen(cur) >= 74)
+	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
 		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
@@ -4163,146 +3789,13 @@ static void seqWriteSwissnew(AjPSeqout outseq)
 	ajFmtPrintF(outseq->File, ".\n");
     }
     
-    if(ajStrGetLen(outseq->Taxid))
-	ajFmtPrintF(outseq->File, "OX   NCBI_TaxID=%S;\n", outseq->Taxid);
-    
-    if(ajListGetLength(outseq->Reflist))
-    {
-	it = ajListIterNewread(outseq->Reflist);
-	while ((seqref = (const AjPSeqRef) ajListIterGet(it)))
-	{
-	    ajFmtPrintF(outseq->File, "RN   [%u]\n", seqref->Number);
-
-	    if(ajStrGetLen(seqref->Position))
-	    {
-		ajStrAssignS(&tmpstr, seqref->Position);
-		ajStrFmtWrap(&tmpstr, 70);
-		tmpline = ajStrParseC(tmpstr, "\n");
-		while (tmpline)
-		{
-		    ajFmtPrintF(outseq->File, "RP   %S\n", tmpline);
-		    tmpline = ajStrParseC(NULL, "\n");
-		}
-	    }
-
-	    if(ajStrGetLen(seqref->Comment))
-	    {
-		ajStrAssignS(&tmpstr, seqref->Comment);
-		ajStrFmtWrap(&tmpstr, 70);
-		tmpline = ajStrParseC(tmpstr, "\n");
-		while (tmpline)
-		{
-		    ajFmtPrintF(outseq->File, "RC   %S\n", tmpline);
-		    tmpline = ajStrParseC(NULL, "\n");
-		}
-	    }
-
-	    if(ajStrGetLen(seqref->Xref))
-	    {
-		ajStrAssignS(&tmpstr, seqref->Xref);
-		ajStrFmtWrap(&tmpstr, 70);
-		tmpline = ajStrParseC(tmpstr, "\n");
-		while (tmpline)
-		{
-		    ajFmtPrintF(outseq->File, "RX   %S\n", tmpline);
-		    tmpline = ajStrParseC(NULL, "\n");
-		}
-	    }
-
-	    if(ajStrGetLen(seqref->Groupname))
-	    {
-		ajStrAssignS(&tmpstr, seqref->Groupname);
-		ajStrFmtWrap(&tmpstr, 70);
-		tmpline = ajStrParseC(tmpstr, "\n");
-		while (tmpline)
-		{
-		    ajFmtPrintF(outseq->File, "RG   %S\n", tmpline);
-		    tmpline = ajStrParseC(NULL, "\n");
-		}
-	    }
-
-	    if(ajStrGetLen(seqref->Authors))
-	    {
-		ajStrAssignS(&tmpstr, seqref->Authors);
-		ajStrAppendK(&tmpstr, ';');
-		ajStrFmtWrapAt(&tmpstr, 70, ',');
-		tmpline = ajStrParseC(tmpstr, "\n");
-		while (tmpline)
-		{
-		    ajFmtPrintF(outseq->File, "RA   %S\n", tmpline);
-		    tmpline = ajStrParseC(NULL, "\n");
-		}
-	    }
-
-	    if(ajStrGetLen(seqref->Title))
-	    {
-		ajStrAssignS(&tmpstr, seqref->Title);
-		ajStrInsertC(&tmpstr, 0, "\"");
-		ajStrAppendC(&tmpstr, "\";");
-		ajStrFmtWrap(&tmpstr, 70);
-		tmpline = ajStrParseC(tmpstr, "\n");
-		while (tmpline)
-		{
-		    ajFmtPrintF(outseq->File, "RT   %S\n", tmpline);
-		    tmpline = ajStrParseC(NULL, "\n");
-		}
-	    }
-
-	    if(ajStrGetLen(seqref->Location))
-	    {
-		ajStrAssignS(&tmpstr, seqref->Location);
-		ajStrAppendK(&tmpstr, '.');
-		ajStrFmtWrap(&tmpstr, 70);
-		tmpline = ajStrParseC(tmpstr, "\n");
-		while (tmpline)
-		{
-		    ajFmtPrintF(outseq->File, "RL   %S\n", tmpline);
-		    tmpline = ajStrParseC(NULL, "\n");
-		}
-	    }
-	}
-	ajListIterDel(&it);
-    }
-
-    if(ajListGetLength(outseq->Cmtlist))
-    {
-	it = ajListIterNewread(outseq->Cmtlist);
-	while ((cmtstr = (const AjPStr) ajListIterGet(it)))
-	{
-	    ajStrAssignS(&tmpstr,  cmtstr);
-	    tmpline = ajStrParseC(tmpstr, "\n");
-	    while (tmpline)
-	    {
-		if(ajStrMatchC(tmpline, " "))
-		    ajFmtPrintF(outseq->File, "CC   \n");
-		else
-		    ajFmtPrintF(outseq->File, "CC   %S\n", tmpline);
-		tmpline = ajStrParseC(NULL, "\n");
-	    }
-	}
-	ajListIterDel(&it);
-    }
-
-    if(ajListGetLength(outseq->Xreflist))
-    {
-	it = ajListIterNewread(outseq->Xreflist);
-	while ((cmtstr = (const AjPStr) ajListIterGet(it)))
-            ajFmtPrintF(outseq->File, "DR   %S\n", cmtstr);
-	ajListIterDel(&it);
-    }
-
-    if(ajStrGetLen(outseq->Evidence))
-    {
-	ajFmtPrintF(outseq->File, "PE   %S\n", outseq->Evidence);
-    }
-
     if(ajListGetLength(outseq->Keylist))
     {
 	ilen = 0;
 	it   = ajListIterNewread(outseq->Keylist);
 	while((cur = (AjPStr) ajListIterGet(it)))
 	{
-	    if(ilen+ajStrGetLen(cur) >= 74)
+	    if(ilen+ajStrGetLen(cur) >= 79)
 	    {
 		ajFmtPrintF(outseq->File, ";\n");
 		ilen = 0;
@@ -4347,7 +3840,7 @@ static void seqWriteSwissnew(AjPSeqout outseq)
        */
     
     ajFmtPrintF(outseq->File,
-		"SQ   SEQUENCE   %d AA;  %d MW;  %08X",
+		"SQ   SEQUENCE %5d AA; %6d MW;  %08X",
 		ajStrGetLen(outseq->Seq), mw, (crc>>32)&0xffffffff);
     ajFmtPrintF(outseq->File,
 		"%08X CRC64;\n",crc&0xffffffff);
@@ -4360,8 +3853,6 @@ static void seqWriteSwissnew(AjPSeqout outseq)
     
     seqWriteSeq(outseq, sf);
     seqFormatDel(&sf);
-
-    ajStrDel(&tmpstr);
 
     return;
 }
@@ -5256,7 +4747,7 @@ static void seqWriteDasdna(AjPSeqout outseq)
 **
 ** Writes the remaining lines to complete and close a DASDNA XML file
 **
-** @param [u] file [AjPFile] Output file
+** @param [r] file [AjPFile] Output file
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -5343,7 +4834,7 @@ static void seqWriteDasseq(AjPSeqout outseq)
 **
 ** Writes the remaining lines to complete and close a DASDNA XML file
 **
-** @param [u] file [AjPFile] Output file
+** @param [r] file [AjPFile] Output file
 ** @return [void]
 ** @@
 ******************************************************************************/
@@ -5408,7 +4899,6 @@ static void seqWriteDebug(AjPSeqout outseq)
 	ajListIterDel(&it);
     }
     ajFmtPrintF(outseq->File, "  Taxonomy: '%S'\n", outseq->Tax);
-    ajFmtPrintF(outseq->File, "  TaxId: '%S'\n", outseq->Taxid);
     ajFmtPrintF(outseq->File, "  Organelle: '%S'\n", outseq->Organelle);
 
     if(ajListGetLength(outseq->Taxlist))
@@ -5960,8 +5450,7 @@ void ajSeqoutClear(AjPSeqout seqout)
 {
 
     AjPStr ptr = NULL;
-    AjPSeqRef  tmpref  = NULL;
-    AjPSeqGene tmpgene = NULL;
+    AjPSeqRef tmpref = NULL;
 
     ajDebug("ajSeqoutClear called\n");
 
@@ -5970,8 +5459,6 @@ void ajSeqoutClear(AjPSeqout seqout)
     ajStrSetClear(&seqout->Sv);
     ajStrSetClear(&seqout->Gi);
     ajStrSetClear(&seqout->Tax);
-    ajStrSetClear(&seqout->Taxid);
-    ajStrSetClear(&seqout->Organelle);
     ajStrSetClear(&seqout->Desc);
     ajStrSetClear(&seqout->Type);
     ajStrSetClear(&seqout->Outputtype);
@@ -6016,9 +5503,6 @@ void ajSeqoutClear(AjPSeqout seqout)
     while(ajListstrPop(seqout->Taxlist,&ptr))
 	ajStrDel(&ptr);
 
-    while(ajListPop(seqout->Genelist,(void **)&tmpgene))
-	ajSeqgeneDel(&tmpgene);
-
     while(ajListPop(seqout->Reflist,(void **)&tmpref))
 	ajSeqrefDel(&tmpref);
 
@@ -6028,7 +5512,6 @@ void ajSeqoutClear(AjPSeqout seqout)
     while(ajListstrPop(seqout->Xreflist,&ptr))
 	ajStrDel(&ptr);
 
-    ajSeqdescClear(seqout->Fulldesc);
     ajFeattabOutClear(&seqout->Ftquery);
     AJFREE(seqout->Accuracy);
 
@@ -6784,7 +6267,6 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajStrAssignS(&outseq->Molecule, seq->Molecule);
     ajStrAssignS(&outseq->Class, seq->Class);
     ajStrAssignS(&outseq->Division, seq->Division);
-    ajStrAssignS(&outseq->Evidence, seq->Evidence);
     ajStrAssignS(&outseq->Db, seq->Db);
     ajStrAssignS(&outseq->Name, seq->Name);
     ajStrAssignS(&outseq->Acc, seq->Acc);
@@ -6795,8 +6277,6 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajStrAssignS(&outseq->Sv, seq->Sv);
     ajStrAssignS(&outseq->Gi, seq->Gi);
     ajStrAssignS(&outseq->Tax, seq->Tax);
-    ajStrAssignS(&outseq->Taxid, seq->Taxid);
-    ajStrAssignS(&outseq->Organelle, seq->Organelle);
 
     ajListstrFreeData(&outseq->Taxlist);
     outseq->Taxlist = ajListstrNewList(seq->Taxlist);
@@ -6810,7 +6290,6 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     ajListstrFreeData(&outseq->Xreflist);
     outseq->Xreflist = ajListstrNewList(seq->Xreflist);
 
-    ajSeqgenelistClone(seq->Genelist, outseq->Genelist);
     ajSeqreflistClone(seq->Reflist, outseq->Reflist);
 
     ajStrAssignS(&outseq->Desc, seq->Desc);
@@ -6823,8 +6302,6 @@ static void seqClone(AjPSeqout outseq, const AjPSeq seq)
     if(seq->Date)
 	outseq->Date = ajSeqdateNewDate(seq->Date);
 
-    ajSeqdescDel(&outseq->Fulldesc);
-    outseq->Fulldesc = ajSeqdescNewDesc(seq->Fulldesc);
     AJFREE(outseq->Accuracy);
     if(seq->Accuracy)
     {
@@ -6900,8 +6377,6 @@ static void seqsetClone(AjPSeqout outseq, const AjPSeqset seqset, ajint i)
 static void seqDeclone(AjPSeqout outseq)
 {
     AjPStr ptr = NULL;
-    AjPSeqRef  tmpref  = NULL;
-    AjPSeqGene tmpgene = NULL;
 
     ajStrSetClear(&outseq->Db);
     ajStrSetClear(&outseq->Setdb);
@@ -6910,8 +6385,6 @@ static void seqDeclone(AjPSeqout outseq)
     ajStrSetClear(&outseq->Sv);
     ajStrSetClear(&outseq->Gi);
     ajStrSetClear(&outseq->Tax);
-    ajStrSetClear(&outseq->Taxid);
-    ajStrSetClear(&outseq->Organelle);
     ajStrSetClear(&outseq->Desc);
     ajStrSetClear(&outseq->Type);
     ajStrSetClear(&outseq->Informatstr);
@@ -6929,21 +6402,7 @@ static void seqDeclone(AjPSeqout outseq)
     while(ajListstrPop(outseq->Taxlist,&ptr))
 	ajStrDel(&ptr);
 
-    while(ajListstrPop(outseq->Cmtlist,&ptr))
-	ajStrDel(&ptr);
-
-    while(ajListstrPop(outseq->Xreflist,&ptr))
-	ajStrDel(&ptr);
-
-    while(ajListPop(outseq->Genelist,(void **)&tmpgene))
-	ajSeqgeneDel(&tmpgene);
-
-    while(ajListPop(outseq->Reflist,(void **)&tmpref))
-	ajSeqrefDel(&tmpref);
-
     ajStrSetClear(&outseq->Seq);
-    ajSeqdescClear(outseq->Fulldesc);
-
     AJFREE(outseq->Accuracy);
 
     return;
@@ -7060,8 +6519,6 @@ void ajSeqoutTrace(const AjPSeqout seqout)
 	ajDebug("\n");
     }
     ajDebug("  Taxonomy: '%S'\n", seqout->Tax);
-    ajDebug("  Taxid: '%S'\n", seqout->Taxid);
-    ajDebug("  Organelle: '%S'\n", seqout->Organelle);
 
     if(ajListGetLength(seqout->Taxlist))
     {

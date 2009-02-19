@@ -36,8 +36,6 @@
 #endif
 
 
-static AjPStr sysTname = NULL;
-static AjPStr sysFname = NULL;
 static AjPStr sysTokRets = NULL;
 static AjPStr sysTokSou  = NULL;
 static const char *sysTokp = NULL;
@@ -353,49 +351,51 @@ __deprecated AjBool ajSysUnlink(const AjPStr s)
 AjBool ajSysFileWhich(AjPStr *Pfilename)
 {
     char *p;
+    static AjPStr tname = NULL;
+    static AjPStr fname = NULL;
 
     p = getenv("PATH");
     if(!p)
 	return ajFalse;
 
-    ajStrAssignS(&sysTname, *Pfilename);
+    ajStrAssignS(&tname, *Pfilename);
 
-    if(!sysFname)
-	sysFname = ajStrNew();
+    if(!fname)
+	fname = ajStrNew();
 
-    ajFilenameTrimPath(&sysTname);
+    ajFilenameTrimPath(&tname);
 
     p=ajSysFuncStrtok(p,PATH_SEPARATOR);
 
     if(p==NULL)
     {
-	ajStrDelStatic(&sysFname);
-	ajStrDelStatic(&sysTname);
+	ajStrDelStatic(&fname);
+	ajStrDelStatic(&tname);
 	return ajFalse;
     }
 
 
     while(1)
     {
-	ajFmtPrintS(&sysFname,"%s%s%S",p,SLASH_STRING,sysTname);
+	ajFmtPrintS(&fname,"%s%s%S",p,SLASH_STRING,tname);
 
-	if(ajFilenameExistsExec(sysFname))
+	if(ajFilenameExistsExec(fname))
 	{
 	    ajStrSetClear(Pfilename);
-	    ajStrAssignEmptyS(Pfilename,sysFname);
+	    ajStrAssignEmptyS(Pfilename,fname);
 	    break;
 	}
 
 	if((p = ajSysFuncStrtok(NULL,PATH_SEPARATOR))==NULL)
         {
-	    ajStrDelStatic(&sysFname);
-	    ajStrDelStatic(&sysTname);
+	    ajStrDelStatic(&fname);
+	    ajStrDelStatic(&tname);
 	    return ajFalse;
         }
     }
 
-    ajStrDelStatic(&sysFname);
-    ajStrDelStatic(&sysTname);
+    ajStrDelStatic(&fname);
+    ajStrDelStatic(&tname);
 
     return ajTrue;
 }
@@ -1190,8 +1190,6 @@ void ajSysCanon(AjBool state)
 
 void ajSysExit(void)
 {
-    ajStrDel(&sysFname);
-    ajStrDel(&sysTname);
     ajStrDel(&sysTokSou);
     ajStrDel(&sysTokRets);
 

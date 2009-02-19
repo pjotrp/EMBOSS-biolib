@@ -323,8 +323,6 @@ __deprecated AjPTime ajTimeTodayF(const char* timefmt)
 void ajTimeDel(AjPTime *Ptime)
 {
     /* Check arg's */
-    if(Ptime==NULL)
-	return;
     if(*Ptime==NULL)
 	return;
 
@@ -848,37 +846,15 @@ void ajTimeReset(void)
 **
 ** @fdata [none]
 **
-** @nam3rule Diff Return time difference in seconds as a double
 ** @nam3rule Now Return current cpu clock ticks as a long integer
 ** @nam3rule Seconds Return current cpu clock time in seconds as a long integer
 **
-** @argrule Diff starttime [ajlong] start time
-** @argrule Diff nowtime [ajlong] current time
-** @valrule Diff [double] CPU time in seconds
 ** @valrule Now [ajlong] CPU ticks
 ** @valrule Seconds [double] CPU time in seconds
 **
 ** @fcategory use
 **
 ******************************************************************************/
-
-/* @func ajClockDiff ********************************************************
-**
-** Returns the cpu time in seconds between two clock values
-**
-** @param [r] starttime [ajlong] start time
-** @param [r] nowtime [ajlong] current time
-** @return [double] Total cpu clock time in seconds
-**
-******************************************************************************/
-
-double ajClockDiff(ajlong starttime, ajlong nowtime)
-{
-    double x;
-    x = (nowtime - starttime);
-    return x/(double)CLOCKS_PER_SEC;
-}
-
 
 /* @func ajClockNow ************************************************************
 **
@@ -919,6 +895,22 @@ ajlong ajClockNow(void)
     
     return now; 
 }
+
+/* @func ajClockDiff ********************************************************
+**
+** Returns the cpu time in seconds between two clock values
+**
+** @return [double] Total cpu clock time in seconds
+**
+******************************************************************************/
+
+double ajClockDiff(ajlong starttime, ajlong nowtime)
+{
+    double x;
+    x = (nowtime - starttime);
+    return x/(double)CLOCKS_PER_SEC;
+}
+
 
 /* @func ajClockSeconds ********************************************************
 **
