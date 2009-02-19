@@ -2284,6 +2284,8 @@ void ajStrDel(AjPStr* Pstr)
 
     thys = *Pstr;
 
+    if(!thys->Use)
+        ajErr("trying to delete unused string");
     --thys->Use;
     if(!thys->Use)
     {					/* any other references? */
@@ -3927,9 +3929,9 @@ __deprecated AjBool  ajStrReplace( AjPStr* pthis, ajint begin,
 ** @argrule   C        txt   [const char*]  Text string
 ** @argrule   K        chr   [char]         Single character
 ** @argrule   S        str   [const AjPStr] Text string
-** @argrule   Len      len   [ajuint] Number of characters to copy
-** @argrule   CutEnd   len   [ajuint] Number of characters to copy
-** @argrule   CutStart len   [ajuint] Number of characters to copy
+** @argrule   Len      len   [ajuint] Number of characters to process
+** @argrule   CutEnd   len   [ajuint] Number of characters to remove
+** @argrule   CutStart len   [ajuint] Number of characters to remove
 ** @argrule   Range    pos1  [ajint]  Start position in string, negative
 **                                    numbers count from end
 ** @argrule   Range    pos2  [ajint]  End position in string, negative
