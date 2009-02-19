@@ -285,7 +285,7 @@ section: output [
 
   outfile: outfile [
     parameter: "Y"
-    knowntype: "showseq output"
+    knowntype: "showpep output"
   ]
 
 endsection: output
